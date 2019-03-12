@@ -57,19 +57,6 @@ const finnAntallPrikker = (menypunkt, oppgaver) => {
     }).length;
 };
 
-const setMotemodulSti = (motebehovReducer, motebehovet) => {
-    if (motebehovReducer.hentet && motebehovet) {
-        return 'moteoversikt';
-    }
-    return 'mote';
-};
-
-const setNySti = (sti, menypunkt, motebehovet, motebehovReducer) => {
-    if (menypunkt === menypunkter.MOETEPLANLEGGER) {
-        return setMotemodulSti(motebehovReducer, motebehovet);
-    }
-    return sti;
-};
 
 class GlobalNavigasjon extends Component {
     constructor(props) {
@@ -77,9 +64,6 @@ class GlobalNavigasjon extends Component {
         this.state = {
             focusIndex: -1,
         };
-        if (!this.props.motebehovForsoktHentet) {
-            this.props.hentMotebehov(this.props.fnr);
-        }
     }
 
     setFocus(fokusId) {
@@ -131,7 +115,7 @@ class GlobalNavigasjon extends Component {
     }
 
     render() {
-        const { fnr, aktivtMenypunkt, oppgaver, motebehovet, motebehovReducer } = this.props;
+        const { fnr, aktivtMenypunkt, oppgaver } = this.props;
         this.menypunkter = [historikkMenypunkt, tidslinjeMenypunkt, sykmeldingerMenypunkt, sykepengesoknadMenypunkt, oppfoelgingsplanMenypunkt, motemodulMenypunkt];
 
         return (<ul aria-label="Navigasjon" className="navigasjon">
@@ -140,13 +124,12 @@ class GlobalNavigasjon extends Component {
                     const className = cn('navigasjonspanel', {
                         'navigasjonspanel--aktiv': menypunkt === aktivtMenypunkt,
                     });
-                    const nySti = setNySti(sti, menypunkt, motebehovet, motebehovReducer);
                     const antallPrikker = finnAntallPrikker(menypunkt, oppgaver);
                     return (<li key={index} className="navigasjon__element">
                         <a
                             ref={this.getRef(index)}
                             className={className}
-                            href={`/sykefravaer/${fnr}/${nySti}`}
+                            href={`/sykefravaer/${fnr}/${sti}`}
                             onFocus={() => {
                                 this.setFocusIndex(index);
                             }}
@@ -157,7 +140,7 @@ class GlobalNavigasjon extends Component {
                                 e.preventDefault();
                                 // Dette gjøres slik for å slippe å laste siden på nytt.
                                 // <Link /> fra react-router kan ikke brukes da den ikke støtter ref-attributtet.
-                                browserHistory.push(`/sykefravaer/${fnr}/${nySti}`);
+                                browserHistory.push(`/sykefravaer/${fnr}/${sti}`);
                             }}>
                             <span className="navigasjon__element__tekst" dangerouslySetInnerHTML={{ __html: navn }} />
                             {
@@ -175,10 +158,6 @@ GlobalNavigasjon.propTypes = {
     fnr: PropTypes.string,
     aktivtMenypunkt: PropTypes.string,
     oppgaver: PropTypes.arrayOf(PropTypes.object),
-    motebehovForsoktHentet: PropTypes.bool,
-    motebehovet: PropTypes.object,
-    motebehovReducer: PropTypes.object,
-    hentMotebehov: PropTypes.func,
 };
 
 export default GlobalNavigasjon;

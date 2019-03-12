@@ -104,3 +104,7 @@ export const tilLesbarDatoMedAarUtenMaanedNavn = (datoArg) => {
 export const tilLesbarPeriodeMedAarUtenMaanednavn = (fomArg, tomArg) => {
     return `${tilLesbarDatoMedAarUtenMaanedNavn(fomArg)} - ${tilLesbarDatoMedAarUtenMaanedNavn(tomArg)}`;
 };
+
+export const hentDagerMellomDatoer = (startDato, sluttDato) => {
+    return Math.round(Math.abs((sluttDato.getTime() - startDato.getTime()) / (ANTALL_MS_DAG)));
+};

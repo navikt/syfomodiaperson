@@ -6,6 +6,7 @@ import AppSpinner from '../../js/components/AppSpinner';
 import Feilmelding from '../../js/components/Feilmelding';
 import Motebehov from '../../js/components/Motebehov';
 import { mapStateToProps, MotebehovSide } from '../../js/containers/MotebehovContainer';
+import { ANTALL_MS_DAG } from '../../js/utils/datoUtils';
 
 describe('MotebehovContainer', () => {
     describe('MotebehovSide', () => {
@@ -138,7 +139,8 @@ describe('MotebehovContainer', () => {
                 },
                 sykmeldinger: {
                     data: [],
-                }
+                },
+                oppfolgingstilfelleperioder: [],
             };
             ownProps = {
                 params: {
@@ -275,32 +277,12 @@ describe('MotebehovContainer', () => {
             expect(motebehovet.opprettetDato).to.equal(nyesteDato);
         });
 
-        it('Skal returnere ledereUtenInnsendtMotebehov hvis sykmeldt har sendt inn svar men ikke leder i samme virksomhet', () => {
+        it('Skal returnere ledereUtenInnsendtMotebehov hvis den sykmeldte er i et aktivt oppfølgingstilfelle i møtebehovperioden', () => {
             const leder1 = 'Leder1';
             const leder2 = 'Leder2';
             const virksomhet1 = '123';
             const virksomhet2 = '999';
             const sykmeldt = 'Sykmeldt';
-            state.motebehov.data = [
-                {
-                    id: '1',
-                    virksomhetsnummer: virksomhet1,
-                    opprettetAv: sykmeldt,
-                    aktorId: sykmeldt,
-                },
-                {
-                    id: '2',
-                    virksomhetsnummer: virksomhet2,
-                    opprettetAv: leder2,
-                    aktorId: sykmeldt,
-                },
-                {
-                    id: '3',
-                    virksomhetsnummer: virksomhet2,
-                    opprettetAv: sykmeldt,
-                    aktorId: sykmeldt,
-                },
-            ];
 
             state.ledere.data = [
                 {
@@ -312,6 +294,45 @@ describe('MotebehovContainer', () => {
                     orgnummer: virksomhet2,
                 },
             ];
+
+            state.oppfolgingstilfelleperioder[virksomhet1] = {
+                data: [
+                    {
+                        orgnummer: virksomhet1,
+                        fom: new Date(Date.now() - (ANTALL_MS_DAG * 120)),
+                        tom: new Date(Date.now() - (ANTALL_MS_DAG * 90)),
+                    },
+                    {
+                        orgnummer: virksomhet1,
+                        fom: new Date(Date.now() - (ANTALL_MS_DAG * 80)),
+                        tom: new Date(Date.now() - (ANTALL_MS_DAG * 50)),
+                    },
+                    {
+                        orgnummer: virksomhet1,
+                        fom: new Date(Date.now() - (ANTALL_MS_DAG * 40)),
+                        tom: new Date(Date.now() - (ANTALL_MS_DAG * 10)),
+                    },
+                    {
+                        orgnummer: virksomhet1,
+                        fom: new Date(Date.now() - (ANTALL_MS_DAG * 5)),
+                        tom: new Date(Date.now() + (ANTALL_MS_DAG * 15)),
+                    },
+                ]
+        };
+            state.oppfolgingstilfelleperioder[virksomhet2] = {
+                data: [
+                    {
+                        orgnummer: virksomhet2,
+                        fom: new Date(Date.now() - (ANTALL_MS_DAG * 80)),
+                        tom: new Date(Date.now() - (ANTALL_MS_DAG * 50)),
+                    },
+                    {
+                        orgnummer: virksomhet2,
+                        fom: new Date(Date.now() - (ANTALL_MS_DAG * 40)),
+                        tom: new Date(Date.now() - (ANTALL_MS_DAG * 10)),
+                    },
+                ]
+            };
 
             const props = mapStateToProps(state, ownProps);
             const leder = props.ledereUtenInnsendtMotebehov[0];

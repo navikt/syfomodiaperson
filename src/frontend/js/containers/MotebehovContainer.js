@@ -111,26 +111,20 @@ export class MotebehovSide extends Component {
                     if (hentingFeilet) {
                         return <Feilmelding />;
                     }
-                    if (motebehovListeUtenFlereSvarFraSammePerson.length > 0) {
-                        return (<Motebehov
-                            actions={actions}
-                            fnr={fnr}
-                            ledereData={ledereData}
-                            ledereUtenInnsendtMotebehov={ledereUtenInnsendtMotebehov}
-                            ledetekster={ledetekster}
-                            motebehovListe={motebehovListeUtenFlereSvarFraSammePerson}
-                            oppgaver={oppgaver}
-                            sykmeldt={sykmeldt}
-                            ufiltrertMotebehovListeTilOppgavebehandling={ufiltrertMotebehovListeTilOppgavebehandling}
-                            veilederinfo={veilederinfo}
-                            aktiveDialoger={aktiveDialoger}
-                            oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}
-                            sykmeldinger={sykmeldinger}
-                        />);
-                    }
-                    return (<Feilmelding
-                        tittel={getLedetekst('mote.motebehov.feilmelding.tittel', ledetekster)}
-                        melding={getHtmlLedetekst('mote.motebehov.feilmelding.ikkeFunnet', ledetekster)}
+                    return (<Motebehov
+                        actions={actions}
+                        fnr={fnr}
+                        ledereData={ledereData}
+                        ledereUtenInnsendtMotebehov={ledereUtenInnsendtMotebehov}
+                        ledetekster={ledetekster}
+                        motebehovListe={motebehovListeUtenFlereSvarFraSammePerson}
+                        oppgaver={oppgaver}
+                        sykmeldt={sykmeldt}
+                        ufiltrertMotebehovListeTilOppgavebehandling={ufiltrertMotebehovListeTilOppgavebehandling}
+                        veilederinfo={veilederinfo}
+                        aktiveDialoger={aktiveDialoger}
+                        oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}
+                        sykmeldinger={sykmeldinger}
                     />);
                 })()
             }
@@ -175,7 +169,8 @@ export const mapStateToProps = (state, ownProps) => {
     const motebehovListeUtenFlereSvarFraSammePerson = finnNyesteMotebehovsvarFraHverDeltaker(sortertMotebehovListe);
 
     const ledereData = state.ledere.data;
-    const ledereUtenInnsendtMotebehov = finnLedereUtenInnsendtMotebehov(ledereData, motebehovData);
+    const oppfolgingstilfelleperioder = state.oppfolgingstilfelleperioder;
+    const ledereUtenInnsendtMotebehov = finnLedereUtenInnsendtMotebehov(ledereData, motebehovData, oppfolgingstilfelleperioder);
 
     const aktiveDialoger = state.oppfoelgingsdialoger.data.filter((dialog) => {
         return dialog.status !== 'AVBRUTT' && new Date(dialog.godkjentPlan.gyldighetstidspunkt.tom) > new Date();
@@ -206,7 +201,7 @@ export const mapStateToProps = (state, ownProps) => {
         ufiltrertMotebehovListeTilOppgavebehandling: state.motebehov.data,
         veilederinfo: state.veilederinfo.data,
         aktiveDialoger,
-        oppfolgingstilfelleperioder: state.oppfolgingstilfelleperioder,
+        oppfolgingstilfelleperioder,
         sykmeldinger: state.sykmeldinger.data,
     };
 };

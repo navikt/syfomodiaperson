@@ -14,9 +14,9 @@ export const erEkstraDiagnoseInformasjon = (sykmelding) => {
 
 export const erMulighetForArbeidInformasjon = (sykmelding) => {
     return sykmelding.mulighetForArbeid
-    && ((sykmelding.mulighetForArbeid.aktivitetIkkeMulig433 && sykmelding.mulighetForArbeid.aktivitetIkkeMulig433.length)
+    && ((sykmelding.mulighetForArbeid.aktivitetIkkeMulig433 && sykmelding.mulighetForArbeid.aktivitetIkkeMulig433.length > 0)
         || sykmelding.mulighetForArbeid.aarsakAktivitetIkkeMulig433
-        || (sykmelding.mulighetForArbeid.aktivitetIkkeMulig434 && sykmelding.mulighetForArbeid.aktivitetIkkeMulig434.length)
+        || (sykmelding.mulighetForArbeid.aktivitetIkkeMulig434 && sykmelding.mulighetForArbeid.aktivitetIkkeMulig434.length > 0)
         || sykmelding.mulighetForArbeid.aarsakAktivitetIkkeMulig434);
 };
 
