@@ -8,6 +8,7 @@ import {
 } from '../../utils/sykmeldingUtils';
 import Diagnoser from './Diagnoser';
 import Perioder from './Perioder';
+import EkstraDiagnoseInformasjon from './EkstraDiagnoseInformasjon';
 
 const tekster = {
     generellSykmeldingInfo: {
@@ -33,6 +34,8 @@ export const GenerellSykmeldingInfo = (
         <Perioder perioder={sykmeldingPerioderSortertEtterDato} />
 
         <Diagnoser hovedDiagnose={hovedDiagnose} biDiagnoser={biDiagnoser} />
+
+        <EkstraDiagnoseInformasjon sykmelding={sykmelding} />
 
         {
             erArbeidsforEtterPerioden(sykmelding) &&
