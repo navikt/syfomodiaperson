@@ -13,7 +13,9 @@ export const opprettWebsocketConnection = (ident, callback) => {
     connection.onmessage = (e) => {
         callback(e);
     };
-    connection.onerror = () => {
+    connection.onerror = (error) => {
+        // eslint-disable-next-line no-console
+        console.error(error.message || 'Noe gikk galt under oppkobling av WS til ModiaContextHolddr', error);
     };
     connection.onclose = () => {
         setTimeout(() => {
