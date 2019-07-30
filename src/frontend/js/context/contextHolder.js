@@ -1,5 +1,5 @@
 import { finnMiljoStreng } from '../utils/index';
-
+import { post } from '../api';
 const ContextholderConnection = (ident) => {
     return new WebSocket(`wss://veilederflatehendelser${finnMiljoStreng()}.adeo.no/modiaeventdistribution/ws/${ident}`);
 };
@@ -14,8 +14,11 @@ export const opprettWebsocketConnection = (ident, callback) => {
         callback(e);
     };
     connection.onerror = (error) => {
+        const message = error.message || 'Noe gikk galt under oppkobling av WS til ModiaContextHolder';
         // eslint-disable-next-line no-console
-        console.error(error.message || 'Noe gikk galt under oppkobling av WS til ModiaContextHolddr', error);
+        console.error(message, error);
+        // logg fra server (for kibana)
+        post('/logs/error', { message, data: error }).then(() => {});
     };
     connection.onclose = () => {
         setTimeout(() => {
