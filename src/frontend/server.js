@@ -50,6 +50,19 @@ function nocache(req, res, next) {
 }
 
 const startServer = (html) => {
+
+    server.post('/sykefravaer/logs/:level', (req, res) => {
+        res.status(200).send({});
+        const message = req.body.message;
+        const data = req.body.data;
+        switch(req.params.level.toLowerCase()) {
+            case 'info': console.info(message, data)
+            case 'error': console.error(message, data)
+            case 'warning': console.warn(message, data)
+            default: console.log(message, data);
+        },
+    });
+
     server.use(
         '/sykefravaer/resources',
         express.static(path.resolve(__dirname, 'dist/resources')),
@@ -83,18 +96,6 @@ const startServer = (html) => {
         res.sendStatus(200);
     });
 
-
-    server.post('/logs/:level', (req, res) => {
-        res.status(200).send({});
-        const message = req.body.message;
-        const data = req.body.data;
-        switch(req.params.level.toLowerCase()) {
-            case 'info': console.info(message, data)
-            case 'error': console.error(message, data)
-            case 'warning': console.warn(message, data)
-            default: console.log(message, data);
-        }
-    });
 
     if (env === 'local') {
         require('./mock/mockEndepunkter')(server, env === 'local');
