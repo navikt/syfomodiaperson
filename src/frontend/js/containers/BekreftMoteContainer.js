@@ -44,7 +44,17 @@ export class BekreftMoteSide extends Component {
     }
 
     render() {
-        const { alternativ, henterMoterBool, fnr, mote, ledetekster, bekrefter, bekreftFeilet, hentBekreftMoteEpostinnhold, arbeidstaker } = this.props;
+        const {
+            alternativ,
+            henterMoterBool,
+            fnr,
+            mote,
+            ledetekster,
+            bekrefter,
+            bekreftFeilet,
+            hentBekreftMoteEpostinnhold,
+            arbeidstaker,
+        } = this.props;
         return (<Side fnr={fnr} tittel="Bekreft møte" aktivtMenypunkt={MOETEPLANLEGGER}>
             {
                 (() => {

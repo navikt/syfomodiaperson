@@ -1,27 +1,32 @@
 import * as actionstype from './actiontyper';
 
+export const HENT_VEILEDEROPPGAVER_FORESPURT = 'HENT_VEILEDEROPPGAVER_FORESPURT';
+export const HENTER_VEILEDEROPPGAVER = 'HENTER_VEILEDEROPPGAVER';
+export const HENT_VEILEDEROPPGAVER_FEILET = 'HENT_VEILEDEROPPGAVER_FEILET';
+export const VEILEDEROPPGAVER_HENTET = 'VEILEDEROPPGAVER_HENTET';
+
 export function hentVeilederOppgaverFeilet() {
     return {
-        type: actionstype.HENT_VEILEDEROPPGAVER_FEILET,
+        type: HENT_VEILEDEROPPGAVER_FEILET,
     };
 }
 
 export function henterVeilederOppgaver() {
     return {
-        type: actionstype.HENTER_VEILEDEROPPGAVER,
+        type: HENTER_VEILEDEROPPGAVER,
     };
 }
 
 export function veilederOppgaverHentet(data) {
     return {
-        type: actionstype.VEILEDEROPPGAVER_HENTET,
+        type: VEILEDEROPPGAVER_HENTET,
         data,
     };
 }
 
 export function hentVeilederOppgaver(fnr) {
     return {
-        type: actionstype.HENT_VEILEDEROPPGAVER_FORESPURT,
+        type: HENT_VEILEDEROPPGAVER_FORESPURT,
         fnr,
     };
 }

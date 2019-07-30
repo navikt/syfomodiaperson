@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getLedetekst, getHtmlLedetekst } from '@navikt/digisyfo-npm';
+import {
+    getLedetekst,
+    getHtmlLedetekst,
+} from '@navikt/digisyfo-npm';
 import Side from '../sider/Side';
 import * as oppdialogActions from '../actions/oppfoelgingsdialoger_actions';
 import * as virksomhetActions from '../actions/virksomhet_actions';

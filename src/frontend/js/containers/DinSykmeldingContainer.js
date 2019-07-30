@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getSykmelding, getHtmlLedetekst, getLedetekst, sykmeldingstatuser } from '@navikt/digisyfo-npm';
+import {
+    getSykmelding,
+    getHtmlLedetekst,
+    getLedetekst,
+    sykmeldingstatuser,
+} from '@navikt/digisyfo-npm';
 import Side from '../sider/Side';
 import SidetoppSpeilet from '../components/SidetoppSpeilet';
 import * as sykmeldingerActions from '../actions/sykmeldinger_actions';
@@ -25,7 +30,16 @@ export class DinSykmeldingSide extends Component {
     }
 
     render() {
-        const { brukernavn, ledetekster, henter, hentingFeilet, tilgang, dinSykmelding, fnr, arbeidsgiversSykmelding } = this.props;
+        const {
+            ledetekster,
+            arbeidsgiversSykmelding,
+            brukernavn,
+            fnr,
+            dinSykmelding,
+            henter,
+            hentingFeilet,
+            tilgang,
+        } = this.props;
 
         const brodsmuler = [{
             tittel: 'Ditt sykefravær',

@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getLedetekst, getHtmlLedetekst } from '@navikt/digisyfo-npm';
+import {
+    getLedetekst,
+    getHtmlLedetekst,
+} from '@navikt/digisyfo-npm';
 import * as ledereActions from '../actions/ledere_actions';
 import * as moteActions from '../actions/moter_actions';
 import * as virksomhetActions from '../actions/virksomhet_actions';
@@ -9,7 +12,21 @@ import MotebookingSkjema from '../mote/skjema/MotebookingSkjema';
 import AppSpinner from '../components/AppSpinner';
 import Feilmelding from '../components/Feilmelding';
 
-const MotebookingSkjemaContainer = ({ opprettMote, ledetekster, henter, skjermetBruker, hentingFeilet, valgtEnhet, ledere, arbeidstaker, fnr, flereAlternativ, fjernAlternativ, antallNyeTidspunkt }) => {
+const MotebookingSkjemaContainer = (
+    {
+        ledetekster,
+        antallNyeTidspunkt,
+        arbeidstaker,
+        fjernAlternativ,
+        flereAlternativ,
+        fnr,
+        henter,
+        hentingFeilet,
+        ledere,
+        opprettMote,
+        skjermetBruker,
+        valgtEnhet,
+    }) => {
     if (henter) {
         return <AppSpinner />;
     } else if (skjermetBruker) {
@@ -28,22 +45,32 @@ const MotebookingSkjemaContainer = ({ opprettMote, ledetekster, henter, skjermet
             tittel="Lederen mangler!"
             melding={{ __html: '<p>Møteplanleggeren kan bare brukes hvis nærmeste leder er registrert. Arbeidsgiveren må gjøre dette i Altinn.</p>' }} />);
     }
-    return <MotebookingSkjema antallNyeTidspunkt={antallNyeTidspunkt} fjernAlternativ={fjernAlternativ} flereAlternativ={flereAlternativ} opprettMote={opprettMote} ledetekster={ledetekster} ledere={ledere} valgtEnhet={valgtEnhet} arbeidstaker={arbeidstaker} fnr={fnr} />;
+    return (<MotebookingSkjema
+        antallNyeTidspunkt={antallNyeTidspunkt}
+        arbeidstaker={arbeidstaker}
+        fjernAlternativ={fjernAlternativ}
+        flereAlternativ={flereAlternativ}
+        fnr={fnr}
+        ledetekster={ledetekster}
+        ledere={ledere}
+        opprettMote={opprettMote}
+        valgtEnhet={valgtEnhet}
+    />);
 };
 
 MotebookingSkjemaContainer.propTypes = {
+    antallNyeTidspunkt: PropTypes.number,
     arbeidstaker: PropTypes.object,
-    valgtEnhet: PropTypes.string,
     fnr: PropTypes.string,
-    opprettMote: PropTypes.func,
+    fjernAlternativ: PropTypes.func,
+    flereAlternativ: PropTypes.func,
     henter: PropTypes.bool,
-    skjermetBruker: PropTypes.bool,
     hentingFeilet: PropTypes.bool,
     ledetekster: PropTypes.object,
     ledere: PropTypes.array,
-    flereAlternativ: PropTypes.func,
-    fjernAlternativ: PropTypes.func,
-    antallNyeTidspunkt: PropTypes.number,
+    opprettMote: PropTypes.func,
+    skjermetBruker: PropTypes.bool,
+    valgtEnhet: PropTypes.string,
 };
 
 export function mapStateToProps(state, ownProps) {

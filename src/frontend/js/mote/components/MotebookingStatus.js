@@ -15,7 +15,11 @@ import InformasjonSendt from './InformasjonSendt';
 import FlereTidspunktSkjema from '../skjema/FlereTidspunktSkjema';
 import Svarstatus from './Svarstatus';
 
-export const MotetidspunktValgt = ({ bekreftetTidspunkt, ledetekster }) => {
+export const MotetidspunktValgt = (
+    {
+        bekreftetTidspunkt,
+        ledetekster,
+    }) => {
     return <div className="motetidspunktValgt">{getLedetekst('mote.bookingstatus.valgt-sendt-til-parter', ledetekster, { '%TID%': getDatoFraZulu(bekreftetTidspunkt) })}</div>;
 };
 
@@ -83,7 +87,12 @@ const getSidetoppNokkel = (mote, motePassert) => {
     return 'mote.bookingstatus.bekreftet.tittel';
 };
 
-export const StatusVarsel = ({ mote, ledetekster, arbeidstaker }) => {
+export const StatusVarsel = (
+    {
+        mote,
+        ledetekster,
+        arbeidstaker,
+    }) => {
     const dato = (mote.status === OPPRETTET || mote.status === FLERE_TIDSPUNKT) ? mote.opprettetTidspunkt : mote.bekreftetAlternativ.created;
     return (<div className="panel statusVarsel">
         <AlertStripe type="suksess">
@@ -128,20 +137,34 @@ PassertVarsel.propTypes = {
 };
 
 const MotebookingStatus = (props) => {
-    const { ledetekster, fnr, mote, avbrytMoteUtenVarsel, skalViseFlereAlternativ, arbeidstaker } = props;
+    const {
+        ledetekster,
+        fnr,
+        mote,
+        avbrytMoteUtenVarsel,
+        skalViseFlereAlternativ,
+        arbeidstaker,
+    } = props;
     const { alternativer, status } = mote;
     const krrMeldingPanel = !arbeidstaker.kontaktinfo.skalHaVarsel ?
         <KontaktInfoFeilmelding melding={getLedetekstFraFeilAarsak(arbeidstaker.kontaktinfo.feilAarsak, ledetekster)} />
         : null;
     const motePassert = erMotePassert(mote);
-    const flereTidspunktBoks = skalViseFlereAlternativ ? <FlereTidspunktSkjema {...props} antallEksisterendeTidspunkter={alternativer.length} /> : null;
+    const flereTidspunktBoks = skalViseFlereAlternativ
+        ? <FlereTidspunktSkjema {...props} antallEksisterendeTidspunkter={alternativer.length} />
+        : null;
     const sidetoppNokkel = getSidetoppNokkel(mote, motePassert);
-    const knapp = erMotePassert(mote) ? <button className="js-ny knapp" onClick={() => { avbrytMoteUtenVarsel(mote.moteUuid, fnr); }}>{getLedetekst('mote.bookingstatus.knapp.planlegg-nytt-mote', ledetekster)}</button>
+    const knapp = erMotePassert(mote)
+        ? <button className="js-ny knapp" onClick={() => { avbrytMoteUtenVarsel(mote.moteUuid, fnr); }}>{getLedetekst('mote.bookingstatus.knapp.planlegg-nytt-mote', ledetekster)}</button>
         : <Link role="button" className="knapp knapp--enten js-avbryt" to={`/sykefravaer/${fnr}/mote/${mote.moteUuid}/avbryt`}>{getLedetekst('mote.bookingstatus.knapp.avbryt', ledetekster)}</Link>;
 
     return (<div>
         <Sidetopp tittel={getLedetekst(sidetoppNokkel, ledetekster)} />
-        { !motePassert && <StatusVarsel mote={mote} ledetekster={ledetekster} arbeidstaker={arbeidstaker} /> }
+        { !motePassert && <StatusVarsel
+            mote={mote}
+            ledetekster={ledetekster}
+            arbeidstaker={arbeidstaker}
+        /> }
         {krrMeldingPanel}
         <div className="panel">
             { status === BEKREFTET && <BekreftetMotetidspunkt {...props} /> }

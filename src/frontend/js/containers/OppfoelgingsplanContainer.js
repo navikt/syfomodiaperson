@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getLedetekst, getHtmlLedetekst } from '@navikt/digisyfo-npm';
+import {
+    getLedetekst,
+    getHtmlLedetekst,
+} from '@navikt/digisyfo-npm';
 import SideFullbredde from '../sider/SideFullbredde';
 import * as oppdialogActions from '../actions/oppfoelgingsdialoger_actions';
 import Feilmelding from '../components/Feilmelding';
@@ -20,7 +23,14 @@ export class OppfoelgingsPlanerOversiktSide extends Component {
     }
 
     render() {
-        const { oppfoelgingsdialog, ledetekster, henter, hentingFeilet, tilgang, fnr } = this.props;
+        const {
+            fnr,
+            henter,
+            hentingFeilet,
+            ledetekster,
+            oppfoelgingsdialog,
+            tilgang,
+        } = this.props;
         return (<SideFullbredde fnr={fnr} tittel="Oppfølgingsplan" aktivtMenypunkt={OPPFOELGINGSPLANER}>
             {
                 (() => {

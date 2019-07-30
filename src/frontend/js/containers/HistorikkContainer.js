@@ -33,7 +33,15 @@ export class HistorikkSide extends Component {
     }
 
     render() {
-        const { fnr, henter, hentingFeilet, tilgang, ledetekster, historikk, sykeforloep } = this.props;
+        const {
+            fnr,
+            henter,
+            hentingFeilet,
+            historikk,
+            ledetekster,
+            sykeforloep,
+            tilgang,
+        } = this.props;
         return (<Side fnr={fnr} tittel="Historikk" aktivtMenypunkt={HISTORIKK}>
             {
                 (() => {

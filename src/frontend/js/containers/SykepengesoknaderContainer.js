@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getLedetekst, getHtmlLedetekst } from '@navikt/digisyfo-npm';
+import {
+    getLedetekst,
+    getHtmlLedetekst,
+} from '@navikt/digisyfo-npm';
 import Side from '../sider/Side';
 import * as sykepengesoknaderActions from '../actions/sykepengesoknader_actions';
 import * as soknaderActions from '../actions/soknader_actions';
@@ -11,7 +14,10 @@ import AppSpinner from '../components/AppSpinner';
 import Soknader from '../components/sykepengesoknader/Soknader';
 import Brodsmuler from '../components/Brodsmuler';
 import { SYKEPENGESOKNADER } from '../enums/menypunkter';
-import { sykepengesoknad as sykepengesoknadPt, soknad as soknadPt } from '../propTypes';
+import {
+    sykepengesoknad as sykepengesoknadPt,
+    soknad as soknadPt,
+} from '../propTypes';
 import Speilingvarsel from '../components/Speilingvarsel';
 import { hentBegrunnelseTekst } from '../utils/tilgangUtils';
 import { erDev } from '../selectors/toggleSelectors';
@@ -66,14 +72,16 @@ export class SykepengesoknaderSide extends Component {
                         <Feilstripe
                             className="blokk--s"
                             tekst={`Beklager – vi kunne ikke hente alle sykepengesøknadene til ${brukernavn}`}
-                            vis={hentingFeiletSoknader || hentingFeiletSykepengesoknader} />
+                            vis={hentingFeiletSoknader || hentingFeiletSykepengesoknader}
+                        />
                         <Speilingvarsel brukernavn={brukernavn} />
                         <div className="speiling">
                             <Brodsmuler brodsmuler={brodsmuler} />
                             <Soknader
                                 sykepengesoknader={sykepengesoknader}
                                 soknader={soknader}
-                                fnr={fnr} />
+                                fnr={fnr}
+                            />
                         </div>
                     </div>);
                 })()

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getHtmlLedetekst, getLedetekst } from '@navikt/digisyfo-npm';
+import {
+    getHtmlLedetekst,
+    getLedetekst,
+} from '@navikt/digisyfo-npm';
 import Side from '../sider/Side';
 import { MOETEPLANLEGGER } from '../enums/menypunkter';
 import * as moterActions from '../actions/moter_actions';
@@ -22,11 +25,11 @@ export class MotelandingssideSide extends Component {
     render() {
         const {
             fnr,
-            mote,
             henter,
             hentingFeilet,
-            tilgang,
             ledetekster,
+            mote,
+            tilgang,
         } = this.props;
         return (<Side fnr={fnr} tittel="Møtelandingsside" aktivtMenypunkt={MOETEPLANLEGGER}>
             {

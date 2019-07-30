@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Sidetopp = ({ tittel, htmlTekst }) => {
+const Sidetopp = (
+    {
+        tittel,
+        htmlTekst,
+    }) => {
     return (<header className="sidetopp js-sidetopp">
         <h1 className="sidetopp__tittel">{tittel}</h1>
         {

@@ -29,7 +29,7 @@ describe('fastleger', () => {
             });
         });
 
-        it('håndterer FASTLEGER_HENTET', () => {
+        it('håndterer FASTLEGER_HENTET med liste med innhold', () => {
             const nesteDag = new Date();
             nesteDag.setDate(nesteDag.getDate() + 1);
             const forrigeDag = new Date();
@@ -58,6 +58,20 @@ describe('fastleger', () => {
                 data: leger,
                 aktiv: leger[0],
                 tidligere: [leger[1]],
+            });
+        });
+
+        it('håndterer FASTLEGER_HENTET med tom liste gir IkkeFunnet', () => {
+            const action = actions.fastlegerHentet([]);
+            const nextState = fastleger(initialState, action);
+            expect(nextState).to.deep.equal({
+                henter: false,
+                hentet: true,
+                ikkeFunnet: true,
+                hentingFeilet: false,
+                data: [],
+                aktiv: {},
+                tidligere: [],
             });
         });
 

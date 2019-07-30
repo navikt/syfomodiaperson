@@ -9,10 +9,6 @@ export function* hentFastleger(action) {
         const data = yield call(get, `${window.APP_SETTINGS.FASTLEGEREST_ROOT}/fastlege/v1/fastleger?fnr=${action.fnr}`);
         yield put(actions.fastlegerHentet(data));
     } catch (e) {
-        if (e.message === '404') {
-            yield put(actions.fastlegerIkkeFunnet());
-            return;
-        }
         yield put(actions.hentFastlegerFeilet());
     }
 }

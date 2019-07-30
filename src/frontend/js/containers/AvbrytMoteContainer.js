@@ -24,12 +24,25 @@ export class AvbrytMoteSide extends Component {
     }
 
     avbrytMote() {
-        const { avbrytMote, mote, fnr } = this.props;
+        const {
+            avbrytMote,
+            mote,
+            fnr,
+        } = this.props;
         avbrytMote(mote.moteUuid, fnr);
     }
 
     render() {
-        const { ledetekster, avbryter, avbrytFeilet, hentingFeiletBool, fnr, mote, henter, arbeidstaker } = this.props;
+        const {
+            ledetekster,
+            avbryter,
+            avbrytFeilet,
+            hentingFeiletBool,
+            fnr,
+            mote,
+            henter,
+            arbeidstaker,
+        } = this.props;
         return (<Side fnr={fnr} tittel="Avbryt møteforespørsel">
             {
                 (() => {

@@ -57,7 +57,17 @@ export class TidslinjeSide extends Component {
     }
 
     render() {
-        const { fnr, hendelser, ledetekster, actions, henter, hentingFeilet, brukernavn, tilgang, arbeidssituasjon } = this.props;
+        const {
+            fnr,
+            hendelser,
+            ledetekster,
+            actions,
+            henter,
+            hentingFeilet,
+            brukernavn,
+            tilgang,
+            arbeidssituasjon,
+        } = this.props;
         const htmlIntro = {
             __html: `<p>${getLedetekst('tidslinje.introtekst', ledetekster)}</p>`,
         };

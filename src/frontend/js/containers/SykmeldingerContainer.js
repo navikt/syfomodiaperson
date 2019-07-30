@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getLedetekst, getHtmlLedetekst } from '@navikt/digisyfo-npm';
+import {
+    getLedetekst,
+    getHtmlLedetekst,
+} from '@navikt/digisyfo-npm';
 import Side from '../sider/Side';
 import SidetoppSpeilet from '../components/SidetoppSpeilet';
 import * as actionCreators from '../actions/sykmeldinger_actions';
@@ -22,7 +25,16 @@ export class SykmeldingerSide extends Component {
     }
 
     render() {
-        const { brukernavn, ledetekster, henter, hentingFeilet, tilgang, sykmeldinger, fnr, sortering } = this.props;
+        const {
+            brukernavn,
+            fnr,
+            henter,
+            hentingFeilet,
+            ledetekster,
+            sortering,
+            sykmeldinger,
+            tilgang,
+        } = this.props;
         const htmlIntro = {
             __html: `<p>${getLedetekst('dine-sykmeldinger.introduksjonstekst', ledetekster)}</p>`,
         };
@@ -56,7 +68,8 @@ export class SykmeldingerSide extends Component {
                                 fnr={fnr}
                                 sykmeldinger={sykmeldinger}
                                 ledetekster={ledetekster}
-                                sortering={sortering} />
+                                sortering={sortering}
+                            />
                         </div>
                     </div>);
                 })()

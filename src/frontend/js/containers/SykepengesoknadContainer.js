@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getLedetekst, getHtmlLedetekst, sykmelding as sykmeldingPt } from '@navikt/digisyfo-npm';
+import {
+    getLedetekst,
+    getHtmlLedetekst,
+    sykmelding as sykmeldingPt,
+} from '@navikt/digisyfo-npm';
 import Side from '../sider/Side';
 import * as sykepengesoknaderActions from '../actions/sykepengesoknader_actions';
 import * as soknaderActions from '../actions/soknader_actions';
@@ -10,15 +14,26 @@ import * as sykmeldingerActions from '../actions/sykmeldinger_actions';
 import Feilmelding from '../components/Feilmelding';
 import AppSpinner from '../components/AppSpinner';
 import { SYKEPENGESOKNADER } from '../enums/menypunkter';
-import { sykepengesoknad as sykepengesoknadPt, soknad as soknadPt } from '../propTypes';
+import {
+    sykepengesoknad as sykepengesoknadPt,
+    soknad as soknadPt,
+} from '../propTypes';
 import { hentBegrunnelseTekst } from '../utils/tilgangUtils';
 import { erDev } from '../selectors/toggleSelectors';
 import SykepengesoknadArbeidstaker from '../components/sykepengesoknad-arbeidstaker/SykepengesoknadArbeidstaker';
-import { ARBEIDSTAKERE, OPPHOLD_UTLAND, SELVSTENDIGE_OG_FRILANSERE } from '../enums/soknadtyper';
+import {
+    ARBEIDSTAKERE,
+    OPPHOLD_UTLAND,
+    SELVSTENDIGE_OG_FRILANSERE,
+} from '../enums/soknadtyper';
 import SykepengesoknadSelvstendig from '../components/sykepengesoknad-selvstendig/SykepengesoknadSelvstendig';
 import SykepengesoknadUtland from '../components/sykepengesoknad-utland/SykepengesoknadUtland';
 import SendtSoknadArbeidstakerNy from '../components/sykepengesoknad-arbeidstaker-ny/SendtSoknadArbeidstakerNy';
-import { AVBRUTT, KORRIGERT, SENDT } from '../enums/soknadstatuser';
+import {
+    AVBRUTT,
+    KORRIGERT,
+    SENDT,
+} from '../enums/soknadstatuser';
 import IkkeInnsendtSoknad from '../components/sykepengesoknad-felles/IkkeInnsendtSoknad';
 import AvbruttSoknadArbeidtakerNy from '../components/sykepengesoknad-arbeidstaker-ny/AvbruttSoknadArbeidtakerNy';
 

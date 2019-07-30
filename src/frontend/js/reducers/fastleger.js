@@ -22,19 +22,27 @@ export default function fastleger(state = initiellState, action) {
             });
         }
         case actiontyper.FASTLEGER_HENTET: {
-            const aktiv = action.data.filter((lege) => {
-                return new Date(lege.pasientforhold.fom) < new Date() && new Date(lege.pasientforhold.tom) > new Date();
-            })[0];
+            if (action.data.length > 0) {
+                const aktiv = action.data.filter((lege) => {
+                    return new Date(lege.pasientforhold.fom) < new Date() && new Date(lege.pasientforhold.tom) > new Date();
+                })[0];
 
-            const tidligere = action.data.filter((lege) => {
-                return new Date(lege.pasientforhold.tom) < new Date();
-            });
+                const tidligere = action.data.filter((lege) => {
+                    return new Date(lege.pasientforhold.tom) < new Date();
+                });
+                return Object.assign({}, state, {
+                    henter: false,
+                    hentet: true,
+                    data: action.data,
+                    aktiv,
+                    tidligere,
+                });
+            }
             return Object.assign({}, state, {
                 henter: false,
                 hentet: true,
-                data: action.data,
-                aktiv,
-                tidligere,
+                data: [],
+                ikkeFunnet: true,
             });
         }
         case actiontyper.FASTLEGER_IKKE_FUNNET: {
