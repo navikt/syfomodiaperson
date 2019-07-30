@@ -12,9 +12,10 @@ export const opprettWebsocketConnection = (ident, callback) => {
     const connection = new ContextholderConnection(ident);
     connection.onmessage = (e) => {
         callback(e);
+        post('/logs/info', { message: `ContextHolderConnection.onmessage - Mottok endring av ident fra ModiaContextHolder: ${ident}`, data: { ident } }).then(() => {});
     };
     connection.onerror = (error) => {
-        const message = error.message || 'Noe gikk galt under oppkobling av WS til ModiaContextHolder';
+        const message = `ContextHolderConnection.onerror: ${error.message || 'Noe gikk galt i wss-connection til ModiaContextHolder'}`;
         // eslint-disable-next-line no-console
         console.error(message, error);
         // logg fra server (for kibana)
