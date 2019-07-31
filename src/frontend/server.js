@@ -37,7 +37,7 @@ const renderApp = () => {
                 } else {
                     resolve(html);
                 }
-            }
+            },
         );
     });
 };
@@ -50,10 +50,9 @@ function nocache(req, res, next) {
 }
 
 const startServer = (html) => {
-
     server.use(
         '/sykefravaer/resources',
-        express.static(path.resolve(__dirname, 'dist/resources'))
+        express.static(path.resolve(__dirname, 'dist/resources')),
     );
 
     server.use(
@@ -83,7 +82,6 @@ const startServer = (html) => {
     server.get('/health/isReady', (req, res) => {
         res.sendStatus(200);
     });
-
 
     if (env === 'local') {
         require('./mock/mockEndepunkter')(server, env === 'local');

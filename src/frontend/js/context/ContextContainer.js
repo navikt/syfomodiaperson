@@ -27,8 +27,7 @@ const opprettWSConnection = (actions, veilederinfo) => {
         } else if (wsCallback.data === CONTEXT_EVENT_TYPE.NY_AKTIV_ENHET) {
             actions.hentAktivEnhet({
                 callback: (aktivEnhet) => {
-                    // eslint-disable-next-line no-console
-                    if (config.config.initiellEnhet !== aktivEnhet) {
+                    if (aktivEnhet !== config.config.initiellEnhet) {
                         actions.valgtEnhet(aktivEnhet);
                         config.config.initiellEnhet = aktivEnhet;
                         window.renderDecoratorHead(config);
