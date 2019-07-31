@@ -11,27 +11,28 @@ import {
 import { valgtEnhet } from '../actions/enhet_actions';
 import { hentVeilederinfo } from '../actions/veilederinfo_actions';
 import { opprettWebsocketConnection } from './contextHolder';
+import { config } from '../index';
 
 const opprettWSConnection = (actions, veilederinfo) => {
     const ident = veilederinfo.data.ident;
     opprettWebsocketConnection(ident, (wsCallback) => {
-        // eslint-disable-next-line no-console
-        console.log(wsCallback.data);
         if (wsCallback.data === CONTEXT_EVENT_TYPE.NY_AKTIV_BRUKER) {
             actions.hentAktivBruker({
                 callback: (aktivBruker) => {
-                    // eslint-disable-next-line no-undef
-                    window.location.href = `/sykefravaer/${aktivBruker}`;
+                    if (aktivBruker !== config.config.fnr) {
+                        window.location.href = `/sykefravaer/${aktivBruker}`;
+                    }
                 },
             });
         } else if (wsCallback.data === CONTEXT_EVENT_TYPE.NY_AKTIV_ENHET) {
             actions.hentAktivEnhet({
                 callback: (aktivEnhet) => {
                     // eslint-disable-next-line no-console
-                    console.log(config);
-                    actions.valgtEnhet(aktivEnhet);
-                    config.config.initiellEnhet = aktivEnhet;
-                    window.renderDecoratorHead(config);
+                    if (config.config.initiellEnhet !== aktivEnhet) {
+                        actions.valgtEnhet(aktivEnhet);
+                        config.config.initiellEnhet = aktivEnhet;
+                        window.renderDecoratorHead(config);
+                    }
                 },
             });
         }
