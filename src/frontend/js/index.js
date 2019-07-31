@@ -92,7 +92,7 @@ const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootSaga);
 
 const fnr = window.location.pathname.split('/')[2];
-export const config = {
+const config = {
     config: {
         dataSources: {
             veileder: `${window.location.origin}/syfomoteadmin/api/veilederinfo`,
@@ -176,4 +176,5 @@ if (window.location.hostname.indexOf('localhost') !== -1) {
 export {
     store,
     history,
+    config,
 };

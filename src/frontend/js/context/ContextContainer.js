@@ -11,9 +11,9 @@ import {
 import { valgtEnhet } from '../actions/enhet_actions';
 import { hentVeilederinfo } from '../actions/veilederinfo_actions';
 import { opprettWebsocketConnection } from './contextHolder';
-import { config } from '../index';
 
 const opprettWSConnection = (actions, veilederinfo) => {
+    const config = require('../index').config;
     const ident = veilederinfo.data.ident;
     opprettWebsocketConnection(ident, (wsCallback) => {
         if (wsCallback.data === CONTEXT_EVENT_TYPE.NY_AKTIV_BRUKER) {
