@@ -14,13 +14,8 @@ import { opprettWebsocketConnection } from './contextHolder';
 import ModalWrapper, { } from 'nav-frontend-modal';
 import { Hovedknapp, Flatknapp } from 'nav-frontend-knapper';
 
-
-const redirectNyttFnr = (fnr) => {
-    window.location.href = `/sykefravaer/${fnr}`;
-};
-
 const oppdaterAktivBruker = (nyttFnr) => {
-    redirectNyttFnr(nyttFnr);
+    window.location.href = `/sykefravaer/${fnr}`;
 };
 
 const oppdaterAktivEnhet = (actions, nyEnhet) => {
@@ -54,13 +49,14 @@ const endretSideModal = (visModal, endretType, nyttFnrEllerEnhet, byttTilNyClick
     const modalTekster = endretType === 'bruker' ? tekster.endretBrukerModal : tekster.endretEnhetModal;
     return (
         <ModalWrapper
+            className="contextContainer__modal"
             closeButton={false}
             isOpen={visModal}>
-            <div>
+            <div style={{ maxWidth: '640px' }}>
                 <h2>{modalTekster.header}</h2>
                 <p>{modalTekster.beskrivelse}</p>
                 <p>Ønsker du å bytte til <strong>{nyttFnrEllerEnhet}</strong></p>
-                <div>
+                <div className="contextContainer__modal--knapper">
                     <Hovedknapp
                         onClick={() => {
                             byttTilNyClickHandler();
@@ -84,13 +80,15 @@ export class Context extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            visEndretBrukerModal: false,
+            visEndretBrukerModal: true,
             visEndretEnhetModal: false,
             nyttFnr: null,
             nyEnhet: null,
         };
         this.onByttBrukerClicked = this.onByttBrukerClicked.bind(this);
         this.onByttEnhetClicked = this.onByttEnhetClicked.bind(this);
+        this.beholdGammelBrukerClicked = this.beholdGammelBrukerClicked.bind(this);
+        this.beholdGammelEnhetClicked = this.beholdGammelEnhetClicked.bind(this);
         this.skjulEndreModal = this.skjulEndreModal.bind(this);
     }
 
@@ -110,6 +108,7 @@ export class Context extends Component {
         } = this.props;
 
         if (!veilederinfo.hentet && nextProps.veilederinfo.hentet) {
+            // todo refaktorer dennne?
             opprettWSConnection(nextProps.veilederinfo, (wsCallback) => {
                 if (wsCallback.data === CONTEXT_EVENT_TYPE.NY_AKTIV_BRUKER) {
                     actions.hentAktivBruker({
@@ -171,6 +170,18 @@ export class Context extends Component {
         }
     }
 
+    beholdGammelEnhetClicked() {
+        this.skjulEndreModal();
+        // todo
+        // oppdater context holder med gammel enhet slik at det trigges i andre faner også.
+    }
+
+    beholdGammelBrukerClicked() {
+        this.skjulEndreModal();
+        // todo
+        // oppdater context holder med gammelt fnr slik at det trigges i andre faner også.
+    }
+
     render() {
         const {
             veilederinfo,
@@ -183,8 +194,8 @@ export class Context extends Component {
             nyEnhet,
         } = this.state;
         return (<div className="contextContainer">
-            {endretSideModal(visEndretBrukerModal, 'bruker', nyttFnr, this.onByttBrukerClicked, this.skjulEndreModal)}
-            {endretSideModal(visEndretEnhetModal, 'enhet', nyEnhet, this.onByttEnhetClicked, this.skjulEndreModal)}
+            {endretSideModal(visEndretBrukerModal, 'bruker', nyttFnr, this.onByttBrukerClicked, this.beholdGammelBrukerClicked)}
+            {endretSideModal(visEndretEnhetModal, 'enhet', nyEnhet, this.onByttEnhetClicked, this.beholdGammelEnhetClicked)}
             {veilederinfo.hentingFeilet &&
                 <AlertStripe
                     className="contextContainer__alertstripe"
