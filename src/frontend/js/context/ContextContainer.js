@@ -21,8 +21,8 @@ const redirectTilNyBruker = (nyttFnr) => {
 };
 
 const oppdaterAktivEnhet = (actions, nyEnhet) => {
-    actions.valgtEnhet(nyEnhet);
     config.config.initiellEnhet = nyEnhet;
+    actions.valgtEnhet(nyEnhet);
     window.renderDecoratorHead(config);
 };
 
@@ -141,8 +141,10 @@ export class Context extends Component {
         this.setState({
             visEndretBrukerModal: false,
             visEndretEnhetModal: false,
-            nyEnhet: null,
-            nyttFnr: null,
+            nyEnhet: undefined,
+            nyttFnr: undefined,
+            gammeltFnr: undefined,
+            gammelEnhet: undefined,
         });
     }
 
@@ -184,7 +186,7 @@ export class Context extends Component {
         if (this.state.gammeltFnr) {
             actions.pushModiaContext({
                 verdi: this.state.gammeltFnr,
-                eventType: CONTEXT_EVENT_TYPE.NY_AKTIV_ENHET, 
+                eventType: CONTEXT_EVENT_TYPE.NY_AKTIV_BRUKER,
             });
             this.setState({
                 nyttFnr: undefined,
