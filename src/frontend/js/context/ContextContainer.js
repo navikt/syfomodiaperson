@@ -151,6 +151,7 @@ export class Context extends Component {
         if (nyttFnr && gammeltFnr !== nyttFnr) {
             this.setState({
                 visEndretBrukerModal: true,
+                visEndretEnhetModal: false,
                 nyttFnr,
                 gammeltFnr,
             });
