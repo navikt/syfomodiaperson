@@ -174,7 +174,7 @@ export class Context extends Component {
 
     beholdGammelEnhetClicked() {
         if (this.state.gammelEnhet) {
-            oppdaterAktivEnhet(this.state.gammelEnhet);
+            oppdaterAktivEnhet(this.props.actions, this.state.gammelEnhet);
         }
         this.skjulEndreModal();
     }
