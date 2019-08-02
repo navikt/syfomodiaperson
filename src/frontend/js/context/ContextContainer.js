@@ -7,19 +7,20 @@ import { CONTEXT_EVENT_TYPE } from '../konstanter';
 import {
     hentAktivBruker,
     hentAktivEnhet,
+    pushModiaContext,
 } from '../actions/modiacontext_actions';
 import { valgtEnhet } from '../actions/enhet_actions';
 import { hentVeilederinfo } from '../actions/veilederinfo_actions';
 import { opprettWebsocketConnection } from './contextHolder';
 import ModalWrapper, { } from 'nav-frontend-modal';
 import { Hovedknapp, Flatknapp } from 'nav-frontend-knapper';
+import { config } from '../global';
 
-const oppdaterAktivBruker = (nyttFnr) => {
-    window.location.href = `/sykefravaer/${fnr}`;
+const redirectTilNyBruker = (nyttFnr) => {
+    window.location.href = `/sykefravaer/${nyttFnr}`;
 };
 
 const oppdaterAktivEnhet = (actions, nyEnhet) => {
-    const config = require('../index').config;
     actions.valgtEnhet(nyEnhet);
     config.config.initiellEnhet = nyEnhet;
     window.renderDecoratorHead(config);
@@ -80,10 +81,10 @@ export class Context extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            visEndretBrukerModal: true,
+            visEndretBrukerModal: false,
             visEndretEnhetModal: false,
-            nyttFnr: null,
-            nyEnhet: null,
+            nyttFnr: undefined,
+            nyEnhet: undefined,
         };
         this.onByttBrukerClicked = this.onByttBrukerClicked.bind(this);
         this.onByttEnhetClicked = this.onByttEnhetClicked.bind(this);
@@ -128,7 +129,7 @@ export class Context extends Component {
     }
 
     onByttBrukerClicked() {
-        oppdaterAktivBruker(this.state.nyttFnr);
+        redirectTilNyBruker(this.state.nyttFnr);
     }
 
     onByttEnhetClicked() {
@@ -146,7 +147,6 @@ export class Context extends Component {
     }
 
     visEndretBrukerModal(nyttFnr) {
-        const config = require('../index').config;
         const gammeltFnr = config.config.fnr;
         if (nyttFnr && gammeltFnr !== nyttFnr) {
             this.setState({
@@ -158,7 +158,6 @@ export class Context extends Component {
     }
 
     visEndretEnhetModal(nyEnhet) {
-        const config = require('../index').config;
         const gammelEnhet = config.config.initiellEnhet;
         if (nyEnhet && gammelEnhet !== nyEnhet) {
             this.setState({
@@ -171,15 +170,27 @@ export class Context extends Component {
     }
 
     beholdGammelEnhetClicked() {
+        if (this.state.gammelEnhet) {
+            oppdaterAktivEnhet(this.state.gammelEnhet);
+        }
         this.skjulEndreModal();
-        // todo
-        // oppdater context holder med gammel enhet slik at det trigges i andre faner også.
     }
 
     beholdGammelBrukerClicked() {
+        const {
+            actions,
+        } = this.props;
+        if (this.state.gammeltFnr) {
+            actions.pushModiaContext({
+                verdi: this.state.gammeltFnr,
+                eventType: CONTEXT_EVENT_TYPE.NY_AKTIV_ENHET, 
+            });
+            this.setState({
+                nyttFnr: undefined,
+                gammeltFnr: undefined,
+            });
+        }
         this.skjulEndreModal();
-        // todo
-        // oppdater context holder med gammelt fnr slik at det trigges i andre faner også.
     }
 
     render() {
@@ -219,6 +230,7 @@ export function mapDispatchToProps(dispatch) {
         hentAktivEnhet,
         hentVeilederinfo,
         valgtEnhet,
+        pushModiaContext,
     });
     return {
         actions: bindActionCreators(actions, dispatch),

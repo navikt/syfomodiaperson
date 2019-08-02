@@ -49,6 +49,7 @@ import { pushModiaContext, hentAktivBruker, hentAktivEnhet } from './actions/mod
 import { valgtEnhet } from './actions/enhet_actions';
 import { CONTEXT_EVENT_TYPE } from './konstanter';
 import soknader from './reducers/soknader';
+import { config } from './global';
 import '../styles/styles.less';
 
 const rootReducer = combineReducers({
@@ -92,37 +93,7 @@ const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootSaga);
 
 const fnr = window.location.pathname.split('/')[2];
-const config = {
-    config: {
-        dataSources: {
-            veileder: `${window.location.origin}/syfomoteadmin/api/veilederinfo`,
-            enheter: `${window.location.origin}/syfomoteadmin/api/enheter`,
-        },
-        toggles: {
-            visEnhetVelger: true,
-            visVeileder: true,
-            visSokefelt: true,
-            toggleSendEventVedEnEnhet: true,
-        },
-        handlePersonsokSubmit: (nyttFnr) => {
-            if (nyttFnr !== fnr) {
-                window.location = `/sykefravaer/${nyttFnr}`;
-            }
-        },
-        fnr,
-        applicationName: 'Sykefraværsoppfølging',
-        handleChangeEnhet: (data) => {
-            if (config.config.initiellEnhet !== data) {
-                store.dispatch(valgtEnhet(data));
-                store.dispatch(pushModiaContext({
-                    verdi: data,
-                    eventType: CONTEXT_EVENT_TYPE.NY_AKTIV_ENHET,
-                }));
-                config.config.initiellEnhet = data;
-            }
-        },
-    },
-};
+
 const fnrRegex = new RegExp('^[0-9]{11}$');
 if (fnrRegex.test(fnr)) {
     store.dispatch(hentVeilederinfo());
@@ -176,5 +147,4 @@ if (window.location.hostname.indexOf('localhost') !== -1) {
 export {
     store,
     history,
-    config,
 };
