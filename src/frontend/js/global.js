@@ -19,6 +19,6 @@ export const config = {
 };
 
 export const contextHolderEventHandlers = (handlePersonSokSubmit, handleChangeEnhet) => {
-    config.handlePersonsokSubmit = handlePersonSokSubmit;
-    config.handleChangeEnhet = handleChangeEnhet;
+    config.config.handlePersonsokSubmit = handlePersonSokSubmit;
+    config.config.handleChangeEnhet = handleChangeEnhet;
 };

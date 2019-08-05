@@ -136,8 +136,6 @@ store.dispatch(hentAktivEnhet({
         if (aktivEnhet && config.config.initiellEnhet !== aktivEnhet) {
             store.dispatch(valgtEnhet(aktivEnhet));
             config.config.initiellEnhet = aktivEnhet;
-            // eslint-disable-next-line no-console
-            console.log(config);
             window.renderDecoratorHead(config);
         }
     },
