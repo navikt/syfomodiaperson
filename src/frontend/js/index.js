@@ -87,12 +87,25 @@ const rootReducer = combineReducers({
 
 
 const sagaMiddleware = createSagaMiddleware();
-
 const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
-
 sagaMiddleware.run(rootSaga);
 
 const fnr = window.location.pathname.split('/')[2];
+
+contextHolderEventHandlers((nyttFnr) => {
+    if (nyttFnr !== config.config.fnr) {
+        window.location = `/sykefravaer/${nyttFnr}`;
+    }
+}, (data) => {
+    if (config.config.initiellEnhet !== data) {
+        store.dispatch(valgtEnhet(data));
+        store.dispatch(pushModiaContext({
+            verdi: data,
+            eventType: CONTEXT_EVENT_TYPE.NY_AKTIV_ENHET,
+        }));
+        config.config.initiellEnhet = data;
+    }
+});
 
 const fnrRegex = new RegExp('^[0-9]{11}$');
 if (fnrRegex.test(fnr)) {
@@ -136,20 +149,6 @@ render(<Provider store={store}>
 </Provider>, document.getElementById('maincontent'));
 
 document.addEventListener('DOMContentLoaded', () => {
-    contextHolderEventHandlers((nyttFnr) => {
-        if (nyttFnr !== config.config.fnr) {
-            window.location = `/sykefravaer/${nyttFnr}`;
-        }
-    }, (data) => {
-        if (config.config.initiellEnhet !== data) {
-            store.dispatch(valgtEnhet(data));
-            store.dispatch(pushModiaContext({
-                verdi: data,
-                eventType: CONTEXT_EVENT_TYPE.NY_AKTIV_ENHET,
-            }));
-            config.config.initiellEnhet = data;
-        }
-    });
     // eslint-disable-next-line no-unused-expressions
     window.renderDecoratorHead && window.renderDecoratorHead(config);
 });
