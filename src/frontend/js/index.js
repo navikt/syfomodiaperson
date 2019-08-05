@@ -137,7 +137,7 @@ render(<Provider store={store}>
 
 document.addEventListener('DOMContentLoaded', () => {
     contextHolderEventHandlers((nyttFnr) => {
-        if (nyttFnr !== fnr) {
+        if (nyttFnr !== config.config.fnr) {
             window.location = `/sykefravaer/${nyttFnr}`;
         }
     }, (data) => {
