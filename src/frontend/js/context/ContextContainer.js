@@ -23,7 +23,9 @@ const redirectTilNyBruker = (nyttFnr) => {
 const oppdaterAktivEnhet = (actions, nyEnhet) => {
     config.config.initiellEnhet = nyEnhet;
     actions.valgtEnhet(nyEnhet);
-    window.renderDecoratorHead(config);
+    if (window.renderDecoratorHead) {
+        window.renderDecoratorHead(config);
+    }
 };
 
 const opprettWSConnection = (veilederinfo, wsCallback) => {
@@ -208,8 +210,8 @@ export class Context extends Component {
             nyEnhet,
         } = this.state;
         return (<div className="contextContainer">
-            {endretSideModal(visEndretBrukerModal, 'bruker', nyttFnr, this.onByttBrukerClicked, this.beholdGammelBrukerClicked)}
-            {endretSideModal(visEndretEnhetModal, 'enhet', nyEnhet, this.onByttEnhetClicked, this.beholdGammelEnhetClicked)}
+            {visEndretBrukerModal && endretSideModal(visEndretBrukerModal, 'bruker', nyttFnr, this.onByttBrukerClicked, this.beholdGammelBrukerClicked)}
+            {visEndretEnhetModal && endretSideModal(visEndretEnhetModal, 'enhet', nyEnhet, this.onByttEnhetClicked, this.beholdGammelEnhetClicked)}
             {veilederinfo.hentingFeilet &&
                 <AlertStripe
                     className="contextContainer__alertstripe"
