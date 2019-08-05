@@ -136,6 +136,8 @@ store.dispatch(hentAktivEnhet({
         if (aktivEnhet && config.config.initiellEnhet !== aktivEnhet) {
             store.dispatch(valgtEnhet(aktivEnhet));
             config.config.initiellEnhet = aktivEnhet;
+            // eslint-disable-next-line no-console
+            console.log(config);
             window.renderDecoratorHead(config);
         }
     },
@@ -155,6 +157,8 @@ render(<Provider store={store}>
 document.addEventListener('DOMContentLoaded', () => {
     // eslint-disable-next-line no-unused-expressions
     window.renderDecoratorHead && window.renderDecoratorHead(config);
+    // eslint-disable-next-line no-console
+    console.log(config);
 });
 
 if (window.location.hostname.indexOf('localhost') !== -1) {

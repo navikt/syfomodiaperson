@@ -24,6 +24,8 @@ const oppdaterAktivEnhet = (actions, nyEnhet) => {
     config.config.initiellEnhet = nyEnhet;
     actions.valgtEnhet(nyEnhet);
     if (window.renderDecoratorHead) {
+        // eslint-disable-next-line no-console
+        console.log(config);
         window.renderDecoratorHead(config);
     }
 };
