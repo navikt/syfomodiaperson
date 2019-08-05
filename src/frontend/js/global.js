@@ -17,3 +17,8 @@ export const config = {
         applicationName: 'Sykefraværsoppfølging',
     },
 };
+
+export const contextHolderEventHandlers = (handlePersonSokSubmit, handleChangeEnhet) => {
+    config.handlePersonSokSubmit = handlePersonSokSubmit;
+    config.handleChangeEnhet = handleChangeEnhet;
+};

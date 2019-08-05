@@ -65,7 +65,7 @@ const endretSideModal = (visModal, endretType, nyttFnrEllerEnhet, byttTilNyClick
                             byttTilNyClickHandler();
                         }}>
                         {modalTekster.byttKnapp}
-                        </Hovedknapp>
+                    </Hovedknapp>
                     <Flatknapp
                         onClick={() => {
                             beholdGammelClickHandler();

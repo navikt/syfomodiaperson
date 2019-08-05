@@ -49,7 +49,7 @@ import { pushModiaContext, hentAktivBruker, hentAktivEnhet } from './actions/mod
 import { valgtEnhet } from './actions/enhet_actions';
 import { CONTEXT_EVENT_TYPE } from './konstanter';
 import soknader from './reducers/soknader';
-import { config } from './global';
+import { config, contextHolderEventHandlers } from './global';
 import '../styles/styles.less';
 
 const rootReducer = combineReducers({
@@ -136,6 +136,20 @@ render(<Provider store={store}>
 </Provider>, document.getElementById('maincontent'));
 
 document.addEventListener('DOMContentLoaded', () => {
+    contextHolderEventHandlers((nyttFnr) => {
+        if (nyttFnr !== fnr) {
+            window.location = `/sykefravaer/${nyttFnr}`;
+        }
+    }, (data) => {
+        if (config.config.initiellEnhet !== data) {
+            store.dispatch(valgtEnhet(data));
+            store.dispatch(pushModiaContext({
+                verdi: data,
+                eventType: CONTEXT_EVENT_TYPE.NY_AKTIV_ENHET,
+            }));
+            config.config.initiellEnhet = data;
+        }
+    });
     // eslint-disable-next-line no-unused-expressions
     window.renderDecoratorHead && window.renderDecoratorHead(config);
 });
