@@ -93,10 +93,14 @@ sagaMiddleware.run(rootSaga);
 const fnr = window.location.pathname.split('/')[2];
 
 contextHolderEventHandlers((nyttFnr) => {
+    // eslint-disable-next-line no-console
+    console.log(`handlePersonsokSubmit contextHolder ${nyttFnr}`);
     if (nyttFnr !== config.config.fnr) {
         window.location = `/sykefravaer/${nyttFnr}`;
     }
 }, (data) => {
+    // eslint-disable-next-line no-console
+    console.log('handleChangeEvent contextHolder');
     if (config.config.initiellEnhet !== data) {
         store.dispatch(valgtEnhet(data));
         store.dispatch(pushModiaContext({
