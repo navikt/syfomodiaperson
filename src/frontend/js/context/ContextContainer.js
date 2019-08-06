@@ -86,7 +86,7 @@ export class Context extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            visEndretBrukerModal: true,
+            visEndretBrukerModal: false,
             visEndretEnhetModal: false,
             nyttFnr: undefined,
             nyEnhet: undefined,
