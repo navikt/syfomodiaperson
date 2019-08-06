@@ -49,7 +49,7 @@ import { pushModiaContext, hentAktivBruker, hentAktivEnhet } from './actions/mod
 import { valgtEnhet } from './actions/enhet_actions';
 import { CONTEXT_EVENT_TYPE } from './konstanter';
 import soknader from './reducers/soknader';
-import { config, contextHolderEventHandlers } from './global';
+import { config, setContextHolderEventHandlers } from './global';
 import '../styles/styles.less';
 
 const rootReducer = combineReducers({
@@ -85,31 +85,30 @@ const rootReducer = combineReducers({
     oppfolgingstilfelleperioder,
 });
 
-
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootSaga);
 
 const fnr = window.location.pathname.split('/')[2];
 
-contextHolderEventHandlers((nyttFnr) => {
-    // eslint-disable-next-line no-console
-    console.log(`handlePersonsokSubmit contextHolder ${nyttFnr}`);
+const nyPersonHandler = (nyttFnr) => {
     if (nyttFnr !== config.config.fnr) {
         window.location = `/sykefravaer/${nyttFnr}`;
     }
-}, (data) => {
-    // eslint-disable-next-line no-console
-    console.log('handleChangeEvent contextHolder');
-    if (config.config.initiellEnhet !== data) {
-        store.dispatch(valgtEnhet(data));
+};
+
+const nyEnhetHandler = (enhetNr) => {
+    if (config.config.initiellEnhet !== enhetNr) {
+        store.dispatch(valgtEnhet(enhetNr));
         store.dispatch(pushModiaContext({
-            verdi: data,
+            verdi: enhetNr,
             eventType: CONTEXT_EVENT_TYPE.NY_AKTIV_ENHET,
         }));
-        config.config.initiellEnhet = data;
+        config.config.initiellEnhet = enhetNr;
     }
-});
+};
+
+setContextHolderEventHandlers(nyPersonHandler, nyEnhetHandler);
 
 const fnrRegex = new RegExp('^[0-9]{11}$');
 if (fnrRegex.test(fnr)) {
