@@ -16,6 +16,7 @@ import ModalWrapper, { } from 'nav-frontend-modal';
 import { Hovedknapp, Flatknapp } from 'nav-frontend-knapper';
 import { config } from '../global';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { isNullOrUndefined } from 'util';
 
 const redirectTilNyBruker = (nyttFnr) => {
     window.location.href = `/sykefravaer/${nyttFnr}`;
@@ -154,7 +155,8 @@ export class Context extends Component {
 
     visEndretBrukerModal(nyttFnr) {
         const gammeltFnr = config.config.fnr;
-        if (nyttFnr && gammeltFnr !== nyttFnr) {
+        
+        if (!isNullOrUndefined(nyttFnr) && gammeltFnr !== nyttFnr) {
             this.setState({
                 visEndretBrukerModal: true,
                 visEndretEnhetModal: false,
@@ -166,7 +168,7 @@ export class Context extends Component {
 
     visEndretEnhetModal(nyEnhet) {
         const gammelEnhet = config.config.initiellEnhet;
-        if (nyEnhet && gammelEnhet !== nyEnhet) {
+        if (!isNullOrUndefined(gammelEnhet) && gammelEnhet !== nyEnhet) {
             this.setState({
                 visEndretBrukerModal: false,
                 visEndretEnhetModal: true,
