@@ -39,7 +39,7 @@ const tekster = {
     endretBrukerModal: {
         header: 'Du har endret bruker',
         beskrivelse: 'Du har endret bruker i et annet vindu. Du kan ikke jobbe med 2 brukere samtidig.\nVelger du å endre bruker mister du arbeidet du ikke har lagret.',
-        beholdKnapp: 'Behold gammel',
+        beholdKnapp: 'Avbryt, jeg vil ikke miste ulagret arbeide',
         byttKnapp: 'Bytt til ny bruker',
     },
     endretEnhetModal: {
