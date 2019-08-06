@@ -15,6 +15,7 @@ import { opprettWebsocketConnection } from './contextHolder';
 import ModalWrapper, { } from 'nav-frontend-modal';
 import { Hovedknapp, Flatknapp } from 'nav-frontend-knapper';
 import { config } from '../global';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 const redirectTilNyBruker = (nyttFnr) => {
     window.location.href = `/sykefravaer/${nyttFnr}`;
@@ -55,10 +56,10 @@ const endretSideModal = (visModal, endretType, nyttFnrEllerEnhet, byttTilNyClick
             className="contextContainer__modal"
             closeButton={false}
             isOpen={visModal}>
-            <div className="contextContainer__modal--innhold" style={{ maxWidth: '640px' }}>
-                <h2>{modalTekster.header}</h2>
-                <p>{modalTekster.beskrivelse}</p>
-                <p>Ønsker du å bytte til <strong>{nyttFnrEllerEnhet}</strong>?</p>
+            <div className="contextContainer__modal--innhold">
+                <h2 className="contextContainer__modal--header">{modalTekster.header}</h2>
+                <Normaltekst>{modalTekster.beskrivelse}</Normaltekst>
+                <Normaltekst>Ønsker du å bytte til <strong>{nyttFnrEllerEnhet}</strong>?</Normaltekst>
                 <div className="contextContainer__modal--knapper">
                     <Hovedknapp
                         onClick={() => {
