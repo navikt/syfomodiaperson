@@ -24,8 +24,6 @@ const oppdaterAktivEnhet = (actions, nyEnhet) => {
     config.config.initiellEnhet = nyEnhet;
     actions.valgtEnhet(nyEnhet);
     if (window.renderDecoratorHead) {
-        // eslint-disable-next-line no-console
-        console.log(config);
         window.renderDecoratorHead(config);
     }
 };
@@ -57,10 +55,10 @@ const endretSideModal = (visModal, endretType, nyttFnrEllerEnhet, byttTilNyClick
             className="contextContainer__modal"
             closeButton={false}
             isOpen={visModal}>
-            <div style={{ maxWidth: '640px' }}>
+            <div className="contextContainer__modal--innhold" style={{ maxWidth: '640px' }}>
                 <h2>{modalTekster.header}</h2>
                 <p>{modalTekster.beskrivelse}</p>
-                <p>Ønsker du å bytte til <strong>{nyttFnrEllerEnhet}</strong></p>
+                <p>Ønsker du å bytte til <strong>{nyttFnrEllerEnhet}</strong>?</p>
                 <div className="contextContainer__modal--knapper">
                     <Hovedknapp
                         onClick={() => {
