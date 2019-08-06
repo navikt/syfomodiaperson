@@ -50,7 +50,6 @@ class BekreftMote extends Component {
         return (
             <BekreftMoteUtenSvarSkjema
                 mote={this.props.mote}
-                ledetekster={this.props.ledetekster}
                 avbrytHref={this.props.avbrytHref}
                 bekrefter={this.props.bekrefter}
                 bekreftFeilet={this.props.bekreftFeilet}

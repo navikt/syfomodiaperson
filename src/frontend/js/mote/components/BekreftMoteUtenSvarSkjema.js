@@ -3,18 +3,30 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import AlertStripe from 'nav-frontend-alertstriper';
 import KnappBase from 'nav-frontend-knapper';
-import { getLedetekst } from '@navikt/digisyfo-npm';
+
+export const tekster = {
+    mote: {
+        bekreftmote: {
+            feil: 'Det skjedde en feil',
+        },
+        bekreftmoteutensvar: {
+            lightboxOverskrift: 'Har du avklart møtet på andre måter?',
+            lightboxSendKnapp: 'ja, dette er avklart',
+            lightboxAvbrytKnapp: 'Avbryt',
+        },
+    },
+};
 
 const BekreftMoteUtenSvarSkjema = (props) => {
-    const { ledetekster, bekrefter, bekreftFeilet, avbrytHref, bekreftMoteUtenSvar } = props;
+    const { bekrefter, bekreftFeilet, avbrytHref, bekreftMoteUtenSvar } = props;
 
     return (<div className="bekreftutensvarinnhold">
-        <h2 className="sidetopp__tittel">{getLedetekst('mote.bekreftmoteutensvar.lightbox-overskrift', ledetekster)}</h2>
+        <h2 className="sidetopp__tittel">{tekster.mote.bekreftmoteutensvar.lightboxOverskrift}</h2>
         <div aria-live="polite" role="alert">
             { bekreftFeilet && (<div className="blokk">
                 <AlertStripe
                     type="advarsel">
-                    <p>{getLedetekst('mote.bekreftmote.feil', ledetekster)}</p>
+                    <p>{tekster.mote.bekreftmote.feil}</p>
                 </AlertStripe>
             </div>)}
         </div>
@@ -24,15 +36,14 @@ const BekreftMoteUtenSvarSkjema = (props) => {
                 spinner={bekrefter}
                 disabled={bekrefter}
                 onClick={bekreftMoteUtenSvar}>
-                {getLedetekst('mote.bekreftmoteutensvar.lightbox-send-knapp', ledetekster)}
+                {tekster.mote.bekreftmoteutensvar.lightboxSendKnapp}
             </KnappBase>
-            <Link to={avbrytHref} className="hjelpetekstlenke">{getLedetekst('mote.bekreftmoteutensvar.lightbox-avbryt-knapp', ledetekster)}</Link>
+            <Link to={avbrytHref} className="hjelpetekstlenke">{tekster.mote.bekreftmoteutensvar.lightboxAvbrytKnapp}</Link>
         </div>
     </div>);
 };
 
 BekreftMoteUtenSvarSkjema.propTypes = {
-    ledetekster: PropTypes.object,
     avbrytHref: PropTypes.string,
     bekrefter: PropTypes.bool,
     bekreftFeilet: PropTypes.bool,

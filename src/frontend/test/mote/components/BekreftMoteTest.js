@@ -3,8 +3,9 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import sinon from 'sinon';
 import KnappBase from 'nav-frontend-knapper';
-import BekreftMoteSkjema, { InnholdsviserContainer } from '../../../js/mote/components/BekreftMoteSkjema';
-import BekreftMoteUtenSvarSkjema from '../../../js/mote/components/BekreftMoteUtenSvarSkjema';
+import
+    BekreftMoteSkjema, { InnholdsviserContainer, tekster as bekreftMoteTeskter } from '../../../js/mote/components/BekreftMoteSkjema';
+import BekreftMoteUtenSvarSkjema, { tekster as bekreftMoteUtenSvarTekster} from '../../../js/mote/components/BekreftMoteUtenSvarSkjema';
 import {
     ARBEIDSGIVER,
     BRUKER,
@@ -156,9 +157,8 @@ describe('BekreftMoteSkjemaComponent', () => {
     it('Viser tittel', () => {
         component = shallow(<BekreftMoteSkjema
             mote={mote}
-            ledetekster={ledetekster}
         />);
-        expect(component.text()).to.contain('Bekreft møteforespørsel');
+        expect(component.text()).to.contain(bekreftMoteTeskter.mote.bekreftmote.lightboxOverskrift);
     });
 
     it('Viser mottakere det er to mottakere', () => {
@@ -182,30 +182,24 @@ describe('BekreftMoteSkjemaComponent', () => {
 
 describe('BekreftMoteUtenSvarSkjemaComponent', () => {
     let component;
-    let ledetekster;
     let mote;
     let handleSubmit;
 
     beforeEach(() => {
         mote = getMoteUtenSvar();
-        ledetekster = {
-            'mote.bekreftmoteutensvar.lightbox-overskrift': 'Har du avklart møtet på andre måter?',
-        };
         handleSubmit = sinon.spy();
     });
 
     it('Viser tittel', () => {
         component = shallow(<BekreftMoteUtenSvarSkjema
             mote={mote}
-            ledetekster={ledetekster}
         />);
-        expect(component.text()).to.contain('Har du avklart møtet på andre måter?');
+        expect(component.text()).to.contain(bekreftMoteUtenSvarTekster.mote.bekreftmoteutensvar.lightboxOverskrift);
     });
 
     it('Bekrefter at møte er avtalt på annen måte', () => {
         component = shallow(<BekreftMoteUtenSvarSkjema
             mote={mote}
-            ledetekster={ledetekster}
             bekreftMoteUtenSvar={handleSubmit}
         />);
         component.find(KnappBase).simulate('click');
