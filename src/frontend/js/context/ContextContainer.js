@@ -144,7 +144,7 @@ export class Context extends Component {
 
     skjulEndreModal() {
         this.setState({
-            visEndretBrukerModal: true,
+            visEndretBrukerModal: false,
             visEndretEnhetModal: false,
             nyEnhet: undefined,
             nyttFnr: undefined,
