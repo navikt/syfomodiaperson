@@ -49,13 +49,14 @@ const tekster = {
     },
 };
 
-const endretSideModal = (visModal, endretType, nyttFnrEllerEnhet, byttTilNyClickHandler, beholdGammelClickHandler) => {
+const endretSideModal = (endretType, nyttFnrEllerEnhet, byttTilNyClickHandler, beholdGammelClickHandler) => {
     const modalTekster = endretType === 'bruker' ? tekster.endretBrukerModal : tekster.endretEnhetModal;
     return (
         <ModalWrapper
             className="contextContainer__modal"
             closeButton={false}
-            isOpen={visModal}>
+            isOpen
+        >
             <div className="contextContainer__modal--innhold">
                 <h2 className="contextContainer__modal--header">{modalTekster.header}</h2>
                 <Normaltekst>{modalTekster.beskrivelse}</Normaltekst>
@@ -84,7 +85,7 @@ export class Context extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            visEndretBrukerModal: false,
+            visEndretBrukerModal: true,
             visEndretEnhetModal: false,
             nyttFnr: undefined,
             nyEnhet: undefined,
@@ -211,8 +212,8 @@ export class Context extends Component {
             nyEnhet,
         } = this.state;
         return (<div className="contextContainer">
-            {visEndretBrukerModal && endretSideModal(visEndretBrukerModal, 'bruker', nyttFnr, this.onByttBrukerClicked, this.beholdGammelBrukerClicked)}
-            {visEndretEnhetModal && endretSideModal(visEndretEnhetModal, 'enhet', nyEnhet, this.onByttEnhetClicked, this.beholdGammelEnhetClicked)}
+            {visEndretBrukerModal && endretSideModal('bruker', nyttFnr, this.onByttBrukerClicked, this.beholdGammelBrukerClicked)}
+            {visEndretEnhetModal && endretSideModal('enhet', nyEnhet, this.onByttEnhetClicked, this.beholdGammelEnhetClicked)}
             {veilederinfo.hentingFeilet &&
                 <AlertStripe
                     className="contextContainer__alertstripe"
