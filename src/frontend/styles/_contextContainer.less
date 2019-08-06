@@ -3,7 +3,7 @@
 }
 
 .contextContainer__modal {
-  max-width: 640px;
+  min-width: 640px;
   padding: 1.5rem;
 }
 
@@ -21,7 +21,6 @@
 }
 
 .contextContainer__modal--knapper {
-  max-width: 320px;
   display: flex;
   margin: auto;
   flex-direction: column;
@@ -30,5 +29,9 @@
   }
   :first-child {
     margin-top: 1rem;
+  }
+
+  * {
+    margin: auto;
   }
 }
