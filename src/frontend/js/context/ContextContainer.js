@@ -45,7 +45,7 @@ const tekster = {
     endretEnhetModal: {
         header: 'Du har endret enhet',
         beskrivelse: 'Du har endret enhet i et annet vindu. Du kan ikke jobbe med 2 enheter samtidig.\nVelger du å endre enhet mister du arbeidet du ikke har lagret.',
-        beholdKnapp: 'Behold gammel',
+        beholdKnapp: 'Avbryt, jeg vil ikke miste ulagret arbeide',
         byttKnapp: 'Bytt til ny enhet',
     },
 };
@@ -65,15 +65,15 @@ const endretSideModal = (endretType, nyttFnrEllerEnhet, byttTilNyClickHandler, b
                 <div className="contextContainer__modal--knapper">
                     <Hovedknapp
                         onClick={() => {
-                            byttTilNyClickHandler();
-                        }}>
-                        {modalTekster.byttKnapp}
-                    </Hovedknapp>
-                    <Flatknapp
-                        onClick={() => {
                             beholdGammelClickHandler();
                         }}>
                         {modalTekster.beholdKnapp}
+                    </Hovedknapp>
+                    <Flatknapp
+                        onClick={() => {
+                            byttTilNyClickHandler();
+                        }}>
+                        {modalTekster.byttKnapp}
                     </Flatknapp>
                 </div>
             </div>
@@ -144,10 +144,10 @@ export class Context extends Component {
 
     skjulEndreModal() {
         this.setState({
-            visEndretBrukerModal: false,
+            visEndretBrukerModal: true,
             visEndretEnhetModal: false,
             nyEnhet: undefined,
-            nyttFnr: undefined,
+            nyttFnr: '23',
             gammeltFnr: undefined,
             gammelEnhet: undefined,
         });
@@ -155,7 +155,6 @@ export class Context extends Component {
 
     visEndretBrukerModal(nyttFnr) {
         const gammeltFnr = config.config.fnr;
-        
         if (!isNullOrUndefined(nyttFnr) && gammeltFnr !== nyttFnr) {
             this.setState({
                 visEndretBrukerModal: true,
