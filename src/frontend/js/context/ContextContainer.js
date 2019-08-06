@@ -147,7 +147,7 @@ export class Context extends Component {
             visEndretBrukerModal: true,
             visEndretEnhetModal: false,
             nyEnhet: undefined,
-            nyttFnr: '23',
+            nyttFnr: undefined,
             gammeltFnr: undefined,
             gammelEnhet: undefined,
         });
