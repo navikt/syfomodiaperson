@@ -13,10 +13,10 @@ import { valgtEnhet } from '../actions/enhet_actions';
 import { hentVeilederinfo } from '../actions/veilederinfo_actions';
 import { opprettWebsocketConnection } from './contextHolder';
 import ModalWrapper, { } from 'nav-frontend-modal';
-import { Hovedknapp, Flatknapp } from 'nav-frontend-knapper';
+import { Knapp } from 'nav-frontend-knapper';
 import { config } from '../global';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { isNullOrUndefined } from 'util';
+import Lenke from 'nav-frontend-lenker';
 
 const redirectTilNyBruker = (nyttFnr) => {
     window.location.href = `/sykefravaer/${nyttFnr}`;
@@ -38,43 +38,55 @@ const opprettWSConnection = (veilederinfo, wsCallback) => {
 const tekster = {
     endretBrukerModal: {
         header: 'Du har endret bruker',
-        beskrivelse: 'Du har endret bruker i et annet vindu. Du kan ikke jobbe med 2 brukere samtidig.\nVelger du å endre bruker mister du arbeidet du ikke har lagret.',
+        beskrivelse: 'Du har allerede et vindu med Modia åpent. Hvis du fortsetter i dette vinduet vil du miste ulagret arbeid i det andre vinduet. Ønsker du å fortsette med dette vinduet?',
         beholdKnapp: 'Avbryt, jeg vil ikke miste ulagret arbeide',
-        byttKnapp: 'Bytt til ny bruker',
+        byttKnapp: 'Fortsett med ny bruker',
     },
     endretEnhetModal: {
         header: 'Du har endret enhet',
-        beskrivelse: 'Du har endret enhet i et annet vindu. Du kan ikke jobbe med 2 enheter samtidig.\nVelger du å endre enhet mister du arbeidet du ikke har lagret.',
+        beskrivelse: 'Du har allerede et vindu med Modia åpent. Hvis du fortsetter i dette vinduet vil du miste ulagret arbeid i det andre vinduet. Ønsker du å fortsette med dette vinduet?',
         beholdKnapp: 'Avbryt, jeg vil ikke miste ulagret arbeide',
-        byttKnapp: 'Bytt til ny enhet',
+        byttKnapp: 'Fortsett med ny enhet',
     },
 };
 
-const endretSideModal = (endretType, nyttFnrEllerEnhet, byttTilNyClickHandler, beholdGammelClickHandler) => {
+const endretSideModal = (endretType, byttTilNyClickHandler, beholdGammelClickHandler) => {
     const modalTekster = endretType === 'bruker' ? tekster.endretBrukerModal : tekster.endretEnhetModal;
     return (
         <ModalWrapper
             className="contextContainer__modal"
             closeButton={false}
             isOpen
+            shouldFocusAfterRender
         >
             <div className="contextContainer__modal--innhold">
                 <h2 className="contextContainer__modal--header">{modalTekster.header}</h2>
-                <Normaltekst>{modalTekster.beskrivelse}</Normaltekst>
-                <Normaltekst>Ønsker du å bytte til <strong>{nyttFnrEllerEnhet}</strong>?</Normaltekst>
+                <p>{modalTekster.beskrivelse}</p>
+                <div className="divider"></div>
                 <div className="contextContainer__modal--knapper">
-                    <Hovedknapp
+                    <Knapp
+                        autoFocus
+                        tabIndex={1}
+                        ariaLabel={`Behold gammel ${endretType}`}
                         onClick={() => {
                             beholdGammelClickHandler();
                         }}>
                         {modalTekster.beholdKnapp}
-                    </Hovedknapp>
-                    <Flatknapp
+                    </Knapp>
+                    <Lenke
+                        tabIndex={2}
+                        ref={"byttLenke"}
+                        ariaLabel={`Bytt til ny ${endretType}`}
+                        onKeyDown={(e) => { // gjør lenken klikkbar med enter-tast
+                            if (e.keyCode === 13) {
+                                byttTilNyClickHandler();
+                            }
+                        }}
                         onClick={() => {
                             byttTilNyClickHandler();
                         }}>
                         {modalTekster.byttKnapp}
-                    </Flatknapp>
+                    </Lenke>
                 </div>
             </div>
         </ModalWrapper>
@@ -209,12 +221,10 @@ export class Context extends Component {
         const {
             visEndretBrukerModal,
             visEndretEnhetModal,
-            nyttFnr,
-            nyEnhet,
         } = this.state;
         return (<div className="contextContainer">
-            {visEndretBrukerModal && endretSideModal('bruker', nyttFnr, this.onByttBrukerClicked, this.beholdGammelBrukerClicked)}
-            {visEndretEnhetModal && endretSideModal('enhet', nyEnhet, this.onByttEnhetClicked, this.beholdGammelEnhetClicked)}
+            {visEndretBrukerModal && endretSideModal('bruker', this.onByttBrukerClicked, this.beholdGammelBrukerClicked)}
+            {visEndretEnhetModal && endretSideModal('enhet', this.onByttEnhetClicked, this.beholdGammelEnhetClicked)}
             {veilederinfo.hentingFeilet &&
                 <AlertStripe
                     className="contextContainer__alertstripe"
