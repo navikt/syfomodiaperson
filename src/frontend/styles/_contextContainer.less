@@ -10,6 +10,7 @@
 .contextContainer__modal--innhold {
   text-align: center;
   max-width: 540px;
+  margin: auto;
 
   .contextContainer__modal--header {
     font-weight: 400;
@@ -29,16 +30,12 @@
 
 .contextContainer__modal--knapper {
   display: flex;
-  margin: auto;
   flex-direction: column;
   :not(:first-child) {
-    margin-top: 1.25em;
+    margin: auto;
+    margin-top: 1rem;
   }
   :first-child {
     margin-top: 1em;
-  }
-
-  * {
-    margin: auto;
   }
 }

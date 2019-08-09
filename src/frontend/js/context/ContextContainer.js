@@ -59,6 +59,7 @@ const endretSideModal = (endretType, byttTilNyClickHandler, beholdGammelClickHan
         <ModalWrapper
             className="contextContainer__modal"
             closeButton={false}
+            ariaHideApp={false}
             isOpen
             shouldFocusAfterRender
         >
@@ -76,20 +77,16 @@ const endretSideModal = (endretType, byttTilNyClickHandler, beholdGammelClickHan
                         }}>
                         {modalTekster.beholdKnapp}
                     </Knapp>
-                    <Lenke
+                    <Knapp
+                        className="lenke"
                         tabIndex={2}
                         ref={"byttLenke"}
                         ariaLabel={`Bytt til ny ${endretType}`}
-                        onKeyDown={(e) => { // gjør lenken klikkbar med enter-tast
-                            if (e.keyCode === 13) {
-                                byttTilNyClickHandler();
-                            }
-                        }}
                         onClick={() => {
                             byttTilNyClickHandler();
                         }}>
                         {modalTekster.byttKnapp}
-                    </Lenke>
+                    </Knapp>
                 </div>
             </div>
         </ModalWrapper>
