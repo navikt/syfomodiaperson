@@ -12,7 +12,7 @@ import {
 import { valgtEnhet } from '../actions/enhet_actions';
 import { hentVeilederinfo } from '../actions/veilederinfo_actions';
 import { opprettWebsocketConnection } from './contextHolder';
-import ModalWrapper, { } from 'nav-frontend-modal';
+import ModalWrapper from 'nav-frontend-modal';
 import { Knapp } from 'nav-frontend-knapper';
 import { config } from '../global';
 import { isNullOrUndefined } from 'util';
@@ -51,7 +51,10 @@ const tekster = {
 };
 
 const endretSideModal = (endretType, byttTilNyClickHandler, beholdGammelClickHandler) => {
-    const modalTekster = endretType === 'bruker' ? tekster.endretBrukerModal : tekster.endretEnhetModal;
+    const modalTekster = endretType === 'bruker' 
+        ? tekster.endretBrukerModal
+        : tekster.endretEnhetModal;
+
     return (
         <ModalWrapper
             className="contextContainer__modal"
@@ -126,7 +129,6 @@ export class Context extends Component {
         } = this.props;
 
         if (!veilederinfo.hentet && nextProps.veilederinfo.hentet) {
-            // todo refaktorer dennne?
             opprettWSConnection(nextProps.veilederinfo, (wsCallback) => {
                 if (wsCallback.data === CONTEXT_EVENT_TYPE.NY_AKTIV_BRUKER) {
                     actions.hentAktivBruker({
