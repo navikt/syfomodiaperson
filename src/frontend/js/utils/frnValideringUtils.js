@@ -1,3 +1,5 @@
+import { erDev } from '../selectors/toggleSelectors';
+
 const kontrollRekke1 = [3, 7, 6, 1, 8, 9, 4, 5, 2];
 const kontrollRekke2 = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
 
@@ -38,6 +40,9 @@ function hentKontrollSiffer(fodselsnummer, kontrollrekke) {
 export function erGyldigFodselsnummer(fodselsnummer) {
     if (!fodselsnummer.match(new RegExp('[0-9]{11}'))) {
         return false;
+    }
+    if (erDev()) {
+        return true
     }
     if (!erGyldigFodselsdato(fodselsnummer.substring(0, 6))) {
         return false;
