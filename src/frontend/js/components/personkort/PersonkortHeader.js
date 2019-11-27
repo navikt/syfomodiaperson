@@ -16,10 +16,10 @@ const PersonkortHeader = ({ diskresjonskode, egenansatt, navbruker }) => {
     const isItChristmasTime = new Date().getMonth() === 11; // december
 
     const mann = isItChristmasTime
-        ? '/sykefravaer/img/svg/pepperkakemann.png'
+        ? '/sykefravaer/img/png/pepperkakemann.png'
         : '/sykefravaer/img/svg/mann.svg';
     const kvinne = isItChristmasTime
-        ? '/sykefravaer/img/svg/pepperkadame.png'
+        ? '/sykefravaer/img/png/pepperkadame.png'
         : '/sykefravaer/img/svg/kvinne.svg';
 
     const tittelImg = hentBrukersKjoennFraFnr(navbruker.kontaktinfo.fnr) === KJOENN.KVINNE
