@@ -13,7 +13,7 @@ const PersonkortHeader = ({ diskresjonskode, egenansatt, navbruker }) => {
         || diskresjonskode.data.diskresjonskode === '7'
         || egenansatt.data.erEgenAnsatt;
 
-    const isItChristmasTime = new Date().getMonth() === 12;
+    const isItChristmasTime = new Date().getMonth() === 11; // december
 
     const mann = isItChristmasTime
         ? '/sykefravaer/img/svg/pepperkakemann.png'
