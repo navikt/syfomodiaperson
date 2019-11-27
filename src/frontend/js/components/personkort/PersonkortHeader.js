@@ -12,8 +12,19 @@ const PersonkortHeader = ({ diskresjonskode, egenansatt, navbruker }) => {
     const visEtiketter = diskresjonskode.data.diskresjonskode === '6'
         || diskresjonskode.data.diskresjonskode === '7'
         || egenansatt.data.erEgenAnsatt;
-    const tittelImg = hentBrukersKjoennFraFnr(navbruker.kontaktinfo.fnr) === KJOENN.KVINNE ?
-        '/sykefravaer/img/svg/kvinne.svg' : '/sykefravaer/img/svg/mann.svg';
+
+    const isItChristmasTime = new Date().getMonth() === 12;
+
+    const mann = isItChristmasTime
+        ? '/sykefravaer/img/svg/pepperkakemann.png'
+        : '/sykefravaer/img/svg/mann.svg';
+    const kvinne = isItChristmasTime
+        ? '/sykefravaer/img/svg/pepperkadame.png'
+        : '/sykefravaer/img/svg/kvinne.svg';
+
+    const tittelImg = hentBrukersKjoennFraFnr(navbruker.kontaktinfo.fnr) === KJOENN.KVINNE
+        ? kvinne
+        : mann;
 
     return (<div className="personkortHeader">
         <div className="personkortHeader__info">
