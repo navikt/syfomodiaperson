@@ -6,7 +6,7 @@ metadata:
   labels:
     team: teamsykefravr
 spec:
-  image: docker.pkg.github.com/navikt/modiasyfofront/syfomodiaperson:d6b99d98ca6c8443dd5be5348ef416f86bde4281
+  image: {{ image }}
   replicas:
     min: 1
     max: 2
