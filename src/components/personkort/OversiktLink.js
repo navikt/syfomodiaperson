@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 import { fullNaisUrlDefault } from '../../utils/miljoUtil';
 
 const texts = {
