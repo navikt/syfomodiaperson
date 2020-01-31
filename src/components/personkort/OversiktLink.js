@@ -8,9 +8,9 @@ const texts = {
 
 const OversiktLink = () => {
     return (
-        <Link to={fullNaisUrlDefault('syfooversikt', '/enhet')} className="oversiktlenke">
+        <a href={fullNaisUrlDefault('syfooversikt', '/enhet')} alt="syfooversikt" className="oversiktlenke">
             {texts.link}
-        </Link>
+        </a>
     );
 };
 
