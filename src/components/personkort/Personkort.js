@@ -9,6 +9,7 @@ import {
     henterEllerHarHentetFastleger,
 } from '../../utils/reducerUtils';
 import PersonkortHeader from './PersonkortHeader';
+import OversiktLink from './OversiktLink';
 
 const texts = {
     buttons: {
@@ -57,6 +58,7 @@ class Personkort extends Component {
         const visning = this.state.visning;
 
         return (<div className="personkort">
+            <OversiktLink />
             <Utvidbar
                 erApen={false}
                 tittel={<PersonkortHeader
