@@ -14,7 +14,9 @@
     "lintTest:fix": "eslint test/. --ext .js --fix",
     "start": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "sec-audit": "npm audit --audit-level=moderate"
+    "sec-audit": "npm audit --audit-level=moderate",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": "Team DigiSyfo <digisyfo@nav.no>",
   "license": "ISC",
@@ -83,7 +85,8 @@
     "redux-form": "6.8.0",
     "redux-saga": "0.16.0",
     "scroll-behavior": "0.3.2",
-    "simple-ajax": "2.6.0"
+    "simple-ajax": "2.6.0",
+    "snyk": "^1.349.0"
   },
   "devDependencies": {
     "@babel/cli": "7.10.1",
@@ -123,5 +126,6 @@
     "webpack-cli": "3.3.10",
     "webpack-dev-server": "3.11.0",
     "webpack-merge": "4.2.2"
-  }
+  },
+  "snyk": true
 }
