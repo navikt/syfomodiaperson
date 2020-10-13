@@ -11,7 +11,7 @@ import Sidetopp from '../../components/Sidetopp';
 import { genererDato, erGyldigKlokkeslett, erGyldigDato } from '../utils';
 import { getLedetekstFraFeilAarsak } from '../components/MotebookingStatus';
 
-export const MAX_LENGTH_STED = 200;
+export const MAX_LENGTH_STED = 255;
 
 const texts = {
     pageHeader: 'Møteforespørsel',
