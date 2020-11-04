@@ -25,6 +25,7 @@ import soknaderSagas from './soknaderSagas';
 import oppfolgingstilfelleperioderSagas from './oppfolgingstilfelleperioderSagas';
 import personoppgaveSagas from './personoppgaveSagas';
 import flaggPersonSagas from './flaggPersonSagas';
+import vedtakSagas from './vedtakSagas';
 
 export default function* rootSaga() {
     yield all([
@@ -52,5 +53,6 @@ export default function* rootSaga() {
         oppfolgingstilfelleperioderSagas(),
         personoppgaveSagas(),
         flaggPersonSagas(),
+        vedtakSagas(),
     ]);
 }

@@ -49,6 +49,7 @@ import { CONTEXT_EVENT_TYPE } from './konstanter';
 import soknader from './reducers/soknader';
 import { config, setContextHolderEventHandlers } from './global';
 import './styles/styles.less';
+import vedtak from './reducers/vedtak';
 
 const rootReducer = combineReducers({
     history,
@@ -81,6 +82,7 @@ const rootReducer = combineReducers({
     personoppgaver,
     flaggperson,
     prediksjon,
+    vedtak,
 });
 
 const sagaMiddleware = createSagaMiddleware();
