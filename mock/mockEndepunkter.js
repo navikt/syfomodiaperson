@@ -14,6 +14,7 @@ const mockSyfoperson = require('./mockSyfoperson');
 const mockSyfosmregiser = require('./mockSyfosmregister');
 const mockIspengestopp = require('./mockIspengestopp');
 const mockIsprediksjon = require('./mockIsprediksjon');
+const mockVedtak = require('./mockVedtak');
 
 function mockEndepunkter(server, erLokal) {
     server.use(express.json());
@@ -35,6 +36,7 @@ function mockEndepunkter(server, erLokal) {
         mockSyfosmregiser,
         mockIspengestopp,
         mockIsprediksjon,
+        mockVedtak,
     ].forEach((func) => {
         func(server, erLokal);
     });

@@ -17,6 +17,7 @@ const TEKSTER = 'tekster';
 const TILGANGTILBRUKER = 'tilgangtilbruker';
 const VEILEDERINFO = 'veilederinfo';
 const PREDIKSJON = 'prediksjon';
+const VEDTAK = 'vedtak';
 
 module.exports = {
     AKTIVBRUKER,
@@ -38,4 +39,5 @@ module.exports = {
     TILGANGTILBRUKER,
     VEILEDERINFO,
     PREDIKSJON,
+    VEDTAK,
 };

@@ -29,5 +29,6 @@ lastFilTilMinne(enums.TEKSTER);
 lastFilTilMinne(enums.TILGANGTILBRUKER);
 lastFilTilMinne(enums.VEILEDERINFO);
 lastFilTilMinne(enums.PREDIKSJON);
+lastFilTilMinne(enums.VEDTAK);
 
 module.exports = mockData;

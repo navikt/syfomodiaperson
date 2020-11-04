@@ -1,0 +1,51 @@
+[
+  {
+    "id": "5937a1cb-f449-33b8-bab7-9cb94b641bd5",
+    "lest": true,
+    "vedtak": {
+      "fom": "2020-10-09",
+      "tom": "2020-10-15",
+      "forbrukteSykedager": 19,
+      "gjenståendeSykedager": 229,
+      "automatiskBehandling": true,
+      "utbetalinger": [
+        {
+          "mottaker": "910825526",
+          "fagområde": "SPREF",
+          "totalbeløp": 19950,
+          "utbetalingslinjer": [
+            {
+              "fom": "2020-09-21",
+              "tom": "2020-10-15",
+              "dagsats": 1050,
+              "beløp": 1050,
+              "grad": 100.0,
+              "sykedager": 19
+            }
+          ]
+        },
+        {
+          "mottaker": "11109726259",
+          "fagområde": "SP",
+          "totalbeløp": 0,
+          "utbetalingslinjer": []
+        }
+      ],
+      "dokumenter": [
+        {
+          "dokumentId": "361a2836-2a56-4fa3-92eb-0181a727d6e2",
+          "type": "Søknad"
+        },
+        {
+          "dokumentId": "fde29a45-2e13-426f-868c-f152899c6ca1",
+          "type": "Sykmelding"
+        },
+        {
+          "dokumentId": "31761b42-42ba-476a-9aaf-0155512a5be2",
+          "type": "Inntektsmelding"
+        }
+      ]
+    },
+    "opprettet": "2020-10-16"
+  }
+]
