@@ -32,7 +32,7 @@ const VedtakOppsummering = (vedtakOppsummering: VedtakOppsummeringProps) => {
 
     useEffect(() => {
         dispatch(hentVirksomhet(orgnr));
-    });
+    }, []);
 
     useEffect(() => {
         if (virksomhetState[orgnr]?.hentet) {

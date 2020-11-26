@@ -68,7 +68,7 @@ const VedtakEkspanderbartPanel = (panelProps: VedtakEkspanderbartPanelProps) => 
 
     useEffect(() => {
         dispatch(hentVirksomhet(orgnr));
-    });
+    }, []);
 
     useEffect(() => {
         if (virksomhetState[orgnr]?.hentet) {
