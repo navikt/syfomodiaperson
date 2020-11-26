@@ -7,7 +7,7 @@ import {
 import {
     Utbetaling,
     Utbetalingslinje,
-    VedtakDTO,
+    VedtakSuperContainer,
 } from '../../reducers/vedtak';
 import { restdatoTildato } from '../../utils/datoUtils';
 import styled from 'styled-components';
@@ -18,7 +18,7 @@ const texts = {
 };
 
 interface VedtakUtbetaltePerioderProps {
-    selectedVedtak: VedtakDTO,
+    selectedVedtak: VedtakSuperContainer,
 }
 
 const StyledIngress = styled(Ingress)`

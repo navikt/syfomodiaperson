@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, {
     useEffect,
     useState,
@@ -15,9 +16,22 @@ import { VedtakDTO } from '../../reducers/vedtak';
 import { estimertMaksdato } from '../../utils/vedtakUtils';
 import { ValutaFormat } from '../../utils/valutaUtils';
 import { VedtakInfopanelRow } from './VedtakInfopanel';
+=======
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { Column, Row } from 'nav-frontend-grid';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { restdatoTildato } from '../../utils/datoUtils';
+import { VedtakSuperContainer } from '../../reducers/vedtak';
+import styled from 'styled-components';
+import { estimertMaksdato } from '../../utils/vedtakUtils';
+import { useDispatch, useSelector } from 'react-redux';
+import { hentVirksomhet } from '../../actions/virksomhet_actions';
+>>>>>>> Implement expandable panel with grouping by orgnr and display of arbeidsgiver
 
 const texts = {
     oppsummering: 'Oppsummering',
+    arbeidsgiver: 'Arbeidsgiver',
     maksdato: 'Maksdato',
     vedtaksdato: 'Vedtaksdato',
     dagerGjenstar: 'Dager gjenstår',
@@ -29,11 +43,12 @@ const texts = {
 };
 
 interface VedtakOppsummeringProps {
-    selectedVedtak: VedtakDTO,
+    selectedVedtak: VedtakSuperContainer,
 }
 
 const VedtakOppsummering = (vedtakOppsummering: VedtakOppsummeringProps) => {
     const { selectedVedtak } = vedtakOppsummering;
+<<<<<<< HEAD
 
     const [ sykepengegrunnlag, setSykepengegrunnlag ] = useState<string>('-')
     const [ manedsinntekt, setManedsinntekt ] = useState<string>('-')
@@ -62,6 +77,35 @@ const VedtakOppsummering = (vedtakOppsummering: VedtakOppsummeringProps) => {
                 <Undertittel>{texts.oppsummering}</Undertittel>
             </VedtakInfopanelRow>
             <VedtakInfopanelRow>
+=======
+    const dispatch = useDispatch();
+    const virksomhetState = useSelector((state: any) => state.virksomhet);
+    const [arbeidsgiver, setArbeidsgiver] = useState<string>();
+    const orgnr = selectedVedtak.vedtak.organisasjonsnummer;
+
+    useEffect(() => {
+        dispatch(hentVirksomhet(orgnr));
+    });
+
+    useEffect(() => {
+        if (virksomhetState[orgnr]?.hentet) {
+            setArbeidsgiver(virksomhetState[orgnr].data[orgnr]);
+        }
+    }, [virksomhetState]);
+
+    return (
+        <>
+            <Row>
+                <Column className='col-xs-4'>
+                    <Row><Normaltekst>{texts.arbeidsgiver}</Normaltekst></Row>
+                </Column>
+                <Column className='col-xs-5'>
+                    <Row><Normaltekst>{arbeidsgiver}</Normaltekst></Row>
+                </Column>
+            </Row>
+
+            <Row>
+>>>>>>> Implement expandable panel with grouping by orgnr and display of arbeidsgiver
                 <Column className='col-xs-4'>
                     <Row><Normaltekst>{texts.maksdato}</Normaltekst></Row>
                     <Row><Normaltekst>{texts.vedtaksdato}</Normaltekst></Row>

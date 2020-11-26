@@ -1,12 +1,12 @@
 import dayjs from 'dayjs'
-import { VedtakDTO } from '../reducers/vedtak';
+import { VedtakSuperContainer } from '../reducers/vedtak';
 
 
 export const erHelg = (dato: Date) => {
     return dato.getDay() === 6 || dato.getDay() === 0
 }
 
-export const estimertMaksdato = (vedtak: VedtakDTO) => {
+export const estimertMaksdato = (vedtak: VedtakSuperContainer) => {
     let slutt = dayjs(vedtak!.vedtak.tom)
     let x = 0
     while (x < vedtak.vedtak.gjenståendeSykedager) {

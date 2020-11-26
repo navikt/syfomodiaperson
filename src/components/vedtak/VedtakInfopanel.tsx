@@ -2,17 +2,17 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Row } from 'nav-frontend-grid';
 import { Innholdstittel } from 'nav-frontend-typografi';
-import Panel from 'nav-frontend-paneler';
 import { restdatoTildato } from '../../utils/datoUtils';
-import { VedtakDTO } from '../../reducers/vedtak';
 import VedtakMetaInformasjon from "./VedtakMetaInformasjon";
+import { VedtakSuperContainer } from '../../reducers/vedtak';
+import Panel from 'nav-frontend-paneler';
 import VedtakOppsummering from './VedtakOppsummering';
 import VedtakUtbetaltePerioder from './VedtakUtbetaltePerioder';
 import VedtakAnnullertAlertStripe from './VedtakAnnullertAlertStripe';
 
 
 interface VedtakInfopanelProps {
-    selectedVedtak: VedtakDTO,
+    selectedVedtak: VedtakSuperContainer,
 }
 
 const StyledPanel = styled(Panel)`

@@ -4,7 +4,16 @@ import {
     HENT_VEDTAK_HENTET
 } from '../actions/vedtak_actions';
 
-export interface VedtakDTO {
+export interface VedtakState {
+    henter: boolean,
+    hentingFeilet: boolean,
+    hentet: boolean,
+    hentingForsokt: boolean,
+
+    data: VedtakSuperContainer[] | null,
+}
+
+export interface VedtakSuperContainer {
     id: String,
     lest: Boolean,
     lestDato: Date,
@@ -21,6 +30,9 @@ export interface Vedtak {
     forbrukteSykedager: number,
     gjenståendeSykedager: number,
     automatiskBehandling: boolean,
+    sykepengegrunnlag: number,
+    månedsinntekt: number,
+    organisasjonsnummer: string,
     utbetalinger: Utbetaling[]
 }
 
@@ -40,14 +52,6 @@ export interface Utbetalingslinje {
     sykedager: number
 }
 
-export interface VedtakState {
-    henter: boolean,
-    hentingFeilet: boolean,
-    hentet: boolean,
-    hentingForsokt: boolean,
-
-    data: VedtakDTO[] | null,
-}
 
 export const initialState: VedtakState = {
     henter: false,
