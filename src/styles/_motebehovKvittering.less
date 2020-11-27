@@ -1,49 +1,49 @@
 .motebehovKvitteringInnhold {
-    padding-top: .5em;
-    margin: 1em 0;
-    padding-bottom: .5em;
-    label {
-        margin-left: .75em;
-        display: block;
-        margin-top: .5em;
-        font-weight: bold;
-    }
+  padding-top: 0.5em;
+  margin: 1em 0;
+  padding-bottom: 0.5em;
+  label {
+    margin-left: 0.75em;
+    display: block;
+    margin-top: 0.5em;
+    font-weight: bold;
+  }
 }
 
 .motebehovKvitteringBoksInnhold {
-    @iconWidth: 23px;
-    @iconMarginRight: .5em;
-    @totalIconWidth: calc(@iconWidth + @iconMarginRight);
+  @iconWidth: 23px;
+  @iconMarginRight: 0.5em;
+  @totalIconWidth: calc(@iconWidth + @iconMarginRight);
 
-    margin-bottom: 1em;
-    margin-top: 1em;
+  margin-bottom: 1em;
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+
+  div:first-child {
     display: flex;
-    flex-direction: column;
+    flex-grow: 0;
+    margin-right: 1em;
+    font-style: italic;
 
-    div:first-child {
-        display: flex;
-        flex-grow: 0;
-        margin-right: 1em;
-        font-style: italic;
-
-        @media all and (max-width: @screen-xs-max) {
-            justify-content: center;
-        }
+    @media all and (max-width: @screen-xs-max) {
+      justify-content: center;
     }
-    img {
-        width: @iconWidth;
-        height: auto;
-        margin-right: @iconMarginRight;
-    }
-    div:last-child {
-        margin-left: @totalIconWidth;
-        flex-grow: 1;
-    }
+  }
+  img {
+    width: @iconWidth;
+    height: auto;
+    margin-right: @iconMarginRight;
+  }
+  div:last-child {
+    margin-left: @totalIconWidth;
+    flex-grow: 1;
+  }
 }
 
 .behandleMotebehovKnapp {
-    border: 1px solid @navGra20;
-    .skjemaelement {
-        margin: 0;
-    }
+  border: 1px solid @navGra20;
+  .skjemaelement {
+    margin: 0;
+  }
 }

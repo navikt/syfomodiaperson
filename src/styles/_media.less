@@ -1,30 +1,29 @@
 .media {
-    display: flex;
+  display: flex;
 }
 
 .media__img {
-    margin-right: 1rem;
+  margin-right: 1rem;
 }
 
 .media__img--desktop {
-    display: none;
+  display: none;
 }
 
 .media__img--mobil {
-    display: block;
+  display: block;
 }
 
-@media(min-width: @screen-sm-min) {
+@media (min-width: @screen-sm-min) {
+  .media__img {
+    margin-right: 2rem;
+  }
 
-    .media__img {
-        margin-right: 2rem;
-    }
+  .media__img--desktop {
+    display: block;
+  }
 
-    .media__img--desktop {
-        display: block;
-    }
-
-    .media__img--mobil {
-        display: none;
-    }
+  .media__img--mobil {
+    display: none;
+  }
 }

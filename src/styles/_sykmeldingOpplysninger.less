@@ -1,113 +1,114 @@
 .opplysning {
-    margin-bottom: 1rem; 
-    page-break-inside: avoid;
-    display: inline-table;
-    width: 100%;
-    margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  page-break-inside: avoid;
+  display: inline-table;
+  width: 100%;
+  margin-bottom: 2rem;
 
-    h4, h5, h6 {
-        .typo-element-mixin();
-        margin-top: 0;
-        margin-bottom: .25rem; 
-    }
+  h4,
+  h5,
+  h6 {
+    .typo-element-mixin();
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+  }
 
-    p {
-        margin-bottom: 0; 
-    }
-
+  p {
+    margin-bottom: 0;
+  }
 }
 
 .opplysning__verdi:before {
-    content: "\2013 ";
-    display: inline-block;
-    margin-right: .25rem;
+  content: "\2013 ";
+  display: inline-block;
+  margin-right: 0.25rem;
 }
 
 .opplysning__tittel {
-    .typo-element-mixin();
-    margin-top: 0;
-    margin-bottom: .25rem;
+  .typo-element-mixin();
+  margin-top: 0;
+  margin-bottom: 0.25rem;
 }
 
 .nokkelopplysning {
-    margin-bottom: 2rem;
-    page-break-inside: avoid;
-    display: inline-table;
-    width: 100%;
+  margin-bottom: 2rem;
+  page-break-inside: avoid;
+  display: inline-table;
+  width: 100%;
 
-    h2, h3, h4 {
-        margin-bottom: .25rem;
-        .typo-etikett-liten-mixin();
-        color: @navGra60;
-        margin-top: 0; 
-    }   
+  h2,
+  h3,
+  h4 {
+    margin-bottom: 0.25rem;
+    .typo-etikett-liten-mixin();
+    color: @navGra60;
+    margin-top: 0;
+  }
 
-    p {
-        .typo-normal-mixin();
-        margin: 0; 
-    }
+  p {
+    .typo-normal-mixin();
+    margin: 0;
+  }
 }
 
 .nokkelopplysning__meta,
 p.nokkelopplysning__meta {
-    .typo-normal-mixin();
+  .typo-normal-mixin();
 }
 
 .hoveddiagnose {
-    .nokkelopplysning--hoveddiagnose {
-        margin-bottom: 0em;
+  .nokkelopplysning--hoveddiagnose {
+    margin-bottom: 0em;
+  }
+  .nokkelopplysning__meta--desktop {
+    display: none;
+  }
+
+  @media (min-width: @screen-sm-min) {
+    .nokkelopplysning__meta--mobil {
+      display: none;
     }
+
     .nokkelopplysning__meta--desktop {
-        display: none;
+      display: block;
     }
-
-    @media (min-width: @screen-sm-min) {
-        .nokkelopplysning__meta--mobil {
-            display: none;
-        }
-
-        .nokkelopplysning__meta--desktop {
-            display: block;
-        }
-    }
-    .nokkelopplysning__meta:last-child {
-        margin-bottom: 1em;
-    }
+  }
+  .nokkelopplysning__meta:last-child {
+    margin-bottom: 1em;
+  }
 }
 
 .subopplysning {
-    margin-left: 1.5rem;
+  margin-left: 1.5rem;
 }
 
 .checkboxOpplysning {
-    display: flex; 
-    page-break-inside: avoid;
+  display: flex;
+  page-break-inside: avoid;
 
-    img {
-        align-self: flex-start; 
-        display: inline-block;
-        width: 1rem;
-        height: auto;
-        margin-right: .5rem; 
-        margin-top: 2px; 
-        vertical-align: top; 
+  img {
+    align-self: flex-start;
+    display: inline-block;
+    width: 1rem;
+    height: auto;
+    margin-right: 0.5rem;
+    margin-top: 2px;
+    vertical-align: top;
 
-        @media(min-width: @screen-sm-min) {
-            margin-top: 1px; 
-        }
+    @media (min-width: @screen-sm-min) {
+      margin-top: 1px;
     }
-    
+  }
 }
 
 .checkboxOpplysning__label {
-    flex: 1;
+  flex: 1;
 }
 
 .opplysning .checkboxOpplysning {
-    margin-bottom: .5rem; 
+  margin-bottom: 0.5rem;
 
-    &:last-child {
-        margin-bottom: 1rem; 
-    }
+  &:last-child {
+    margin-bottom: 1rem;
+  }
 }
-

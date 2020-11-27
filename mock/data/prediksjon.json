@@ -1,15 +1,7 @@
 {
-  "kortereVarighetGrunner": [
-    "Sykmeldingsgrad",
-    "Lege",
-    "Alder"
-  ],
+  "kortereVarighetGrunner": ["Sykmeldingsgrad", "Lege", "Alder"],
   "langt": true,
-  "lengreVarighetGrunner": [
-    "Diagnose",
-    "Bosted",
-    "Yrke"
-  ],
+  "lengreVarighetGrunner": ["Diagnose", "Bosted", "Yrke"],
   "prediksjonsDato": "2020-09-20",
   "treffsikkerhetProsent": 99
 }

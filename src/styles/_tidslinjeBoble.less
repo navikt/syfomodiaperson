@@ -1,150 +1,146 @@
 .tidslinjeBoble__header {
-    .mixin-panel-padding();
-    display: flex;
-    width: 100%;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    border-radius: 4px;
-    border: 0;
-    text-align: left;
+  .mixin-panel-padding();
+  display: flex;
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 4px;
+  border: 0;
+  text-align: left;
+  background: @white;
+  color: #000;
+
+  img {
+    width: 1rem;
+    height: auto;
+  }
+
+  &:focus {
     background: @white;
-    color: #000;
+    border: 0;
+    outline: 0;
+  }
 
-    img {
-        width: 1rem;
-        height: auto;
-    }
-
-    &:focus {
-        background: @white;
-        border: 0;
-        outline: 0;
-    }
-
-    &:focus .tidslinjeBoble__tittel {
-        background-color: @white;
-        outline: 3px solid @orangeFocus;
-    }
+  &:focus .tidslinjeBoble__tittel {
+    background-color: @white;
+    outline: 3px solid @orangeFocus;
+  }
 }
 
 .tidslinjeBoble__header .tidslinjeBoble__headeractive {
-    color: @navMorkGra;
+  color: @navMorkGra;
 }
 
 .tidslinjeBoble__header--erApen {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .tidslinjeBoble__tittel {
-    width: 100%;
-    background: url("/sykefravaer/img/svg/arrow-down.svg") no-repeat right 2px;
-    background-size: 1rem 1rem;
-    padding-right: 2rem;
+  width: 100%;
+  background: url("/sykefravaer/img/svg/arrow-down.svg") no-repeat right 2px;
+  background-size: 1rem 1rem;
+  padding-right: 2rem;
 
+  span {
+    flex: 1;
+  }
 
-    span {
-        flex: 1;
-    }
+  h3 {
+    margin: 0;
+    margin-bottom: 0.5rem;
+    .typo-element-mixin();
+  }
 
-    h3 {
-        margin: 0;
-        margin-bottom: .5rem;
-        .typo-element-mixin();
-    }
+  h3:only-child {
+    margin: 0;
+    .typo-normal-mixin();
+  }
 
-    h3:only-child {
-        margin: 0;
-        .typo-normal-mixin();
-    }
+  p {
+    margin-bottom: 0;
+  }
 
-    p {
-        margin-bottom: 0;
-    }
-
-    &:hover {
-        background-image: url("/sykefravaer/img/svg/arrow-down_hover.svg");
-    }
-
+  &:hover {
+    background-image: url("/sykefravaer/img/svg/arrow-down_hover.svg");
+  }
 }
 
 .tidslinjeBoble__tittel--erApen {
-    background-image: url("/sykefravaer/img/svg/arrow-up.svg");
+  background-image: url("/sykefravaer/img/svg/arrow-up.svg");
 
-    &:hover {
-        background-image: url("/sykefravaer/img/svg/arrow-up_hover.svg")
-    }
+  &:hover {
+    background-image: url("/sykefravaer/img/svg/arrow-up_hover.svg");
+  }
 }
 
 .tidslinjeBoble__budskapContainer {
-    height: 0;
-    overflow: hidden;
-    transform: translate3d(0, 0, 0);
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
+  height: 0;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .tidslinjeBoble__budskapContainer--medAnimasjon {
-    transition: all ease-in-out 300ms;
+  transition: all ease-in-out 300ms;
 }
 
 .tidslinjeBoble__budskapContainer--erApen {
-    height: auto;
+  height: auto;
 }
 
 .tidslinjeBoble__budskap {
-    .redaksjonelt-innhold();
+  .redaksjonelt-innhold();
 
-    img {
-        width: 100%;
-        max-width: 370px;
-        height: auto;
-        margin-bottom: 1rem;
-    }
+  img {
+    width: 100%;
+    max-width: 370px;
+    height: auto;
+    margin-bottom: 1rem;
+  }
 
-    h4 {
-        .typo-element-mixin();
-        margin-top: 20px;
-        margin-bottom: 0;
-    }
+  h4 {
+    .typo-element-mixin();
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
 
-    ol {
-        padding-left: .5rem;
-    }
+  ol {
+    padding-left: 0.5rem;
+  }
 }
 
 .tidslinjeBoble__innhold {
-    .panel-mixin();
-    background-color: @white;
-    border-top: 1px solid @navGra40;
-    margin-bottom: 0;
+  .panel-mixin();
+  background-color: @white;
+  border-top: 1px solid @navGra40;
+  margin-bottom: 0;
 }
 
 .tidslinjeBoble__innhold--erUsynlig {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .contrast {
+  .tidslinjeBoble__header,
+  .tidslinjeBoble__budskapContainer--erApen {
+    outline: 1px solid @white;
+  }
 
-    .tidslinjeBoble__header,
-    .tidslinjeBoble__budskapContainer--erApen {
-        outline: 1px solid @white;
+  .tidslinjeBoble__tittel {
+    background-image: url("/sykefravaer/img/svg/arrow-down-highcontrast.svg");
+
+    &:hover {
+      background-image: url("/sykefravaer/img/svg/arrow-down_hover-highcontrast.svg");
     }
+  }
 
-    .tidslinjeBoble__tittel {
-        background-image: url("/sykefravaer/img/svg/arrow-down-highcontrast.svg");
+  .tidslinjeBoble__tittel--erApen {
+    background-image: url("/sykefravaer/img/svg/arrow-up-highcontrast.svg");
 
-        &:hover {
-            background-image: url("/sykefravaer/img/svg/arrow-down_hover-highcontrast.svg");
-        }
+    &:hover {
+      background-image: url("/sykefravaer/img/svg/arrow-up_hover-highcontrast.svg");
     }
-
-    .tidslinjeBoble__tittel--erApen {
-        background-image: url("/sykefravaer/img/svg/arrow-up-highcontrast.svg");
-
-        &:hover {
-            background-image: url("/sykefravaer/img/svg/arrow-up_hover-highcontrast.svg")
-        }
-    }
-
+  }
 }

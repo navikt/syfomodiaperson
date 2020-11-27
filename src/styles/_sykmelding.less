@@ -1,73 +1,70 @@
 .sykmeldingPerioder {
-
-	.nokkelopplysning:not(:only-child) {
-		padding-bottom: 1rem;
-		margin-bottom: 1rem;
-		border-bottom: 1px solid @navGra40;
-	}
-
+  .nokkelopplysning:not(:only-child) {
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid @navGra40;
+  }
 }
 
 .sykmeldingPerioder--flere {
-	margin-bottom: 1rem;
-}
-
-@media(min-width: @screen-sm) {
-	.rad-container {
-		display: flex;
-
-		.nokkelopplysning {
-			margin-right: 2rem;
-			flex: 1;
-			width: ~"calc(50% - 2rem)";
-		}
-
-		.nokkelopplysning:last-child {
-			width: 50%;
-			margin-right: 0;
-		}
-	}
+  margin-bottom: 1rem;
 }
 
 @media (min-width: @screen-sm) {
-	.hoveddiagnose {
-		margin-bottom: 2rem;
-	}
+  .rad-container {
+    display: flex;
+
+    .nokkelopplysning {
+      margin-right: 2rem;
+      flex: 1;
+      width: ~"calc(50% - 2rem)";
+    }
+
+    .nokkelopplysning:last-child {
+      width: 50%;
+      margin-right: 0;
+    }
+  }
+}
+
+@media (min-width: @screen-sm) {
+  .hoveddiagnose {
+    margin-bottom: 2rem;
+  }
 }
 
 /* Flere opplysninger fra den som har sykmeldt deg */
 
 .sykmeldingSeksjon {
-	margin-bottom: 2rem;
-	border-bottom: 1px solid @navGra40;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid @navGra40;
 
-	&:last-of-type
-	{
-		margin: 0;
-		border: 0;
-	}
+  &:last-of-type {
+    margin: 0;
+    border: 0;
+  }
 }
 
 .sykmeldingSeksjon__tittel {
-	.typo-undertittel-mixin();
-	margin-bottom: 2rem;
-	margin-top: 0;
+  .typo-undertittel-mixin();
+  margin-bottom: 2rem;
+  margin-top: 0;
 }
 
 /* introtekst */
 
 .introtekst__knapperad {
-	text-align: center;
+  text-align: center;
 }
 
 @media (min-width: @screen-sm) {
-	.introtekst__knapperad {
-		text-align: left;
-	}
+  .introtekst__knapperad {
+    text-align: left;
+  }
 }
 
 .bekreftLestAvvistSykmelding {
-	max-width: 27rem;
-	margin-right: auto;
-	margin-left: auto;
+  max-width: 27rem;
+  margin-right: auto;
+  margin-left: auto;
 }

@@ -1,9 +1,9 @@
 function getVirksomhet(name) {
-    return {
-        navn: name || 'PONTYPANDY FIRE SERVICE',
-    };
+  return {
+    navn: name || "PONTYPANDY FIRE SERVICE",
+  };
 }
 
 module.exports = {
-    getVirksomhet,
+  getVirksomhet,
 };

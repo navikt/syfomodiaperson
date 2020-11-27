@@ -1,49 +1,48 @@
 {
-
-    "110110110": [
-      {
-        "orgnummer": "110110110",
-        "fom": "2019-06-06",
-        "tom": "2019-07-10",
-        "grad": 100,
-        "aktivitet": "Heihei"
-      },
-      {
-        "orgnummer": "110110110",
-        "fom": "2019-07-11",
-        "tom": "2019-08-26",
-        "grad": 100,
-        "aktivitet": "Heihei"
-      },
-      {
-        "orgnummer": "110110110",
-        "fom": "2019-09-01",
-        "tom": "2019-09-10",
-        "grad": 100,
-        "aktivitet": "Heihei"
-      },
-      {
-        "orgnummer": "110110110",
-        "fom": "2019-09-20",
-        "tom": "2019-10-01",
-        "grad": 100,
-        "aktivitet": "Heihei"
-      },
-      {
-        "orgnummer": "110110110",
-        "fom": "2019-10-02",
-        "tom": "2019-12-22",
-        "grad": 100,
-        "aktivitet": "Heihei"
-      },
-      {
-        "orgnummer": "110110110",
-        "fom": "2019-12-23",
-        "tom": "2020-05-22",
-        "grad": 100,
-        "aktivitet": "Heihei"
-      }
-    ],
+  "110110110": [
+    {
+      "orgnummer": "110110110",
+      "fom": "2019-06-06",
+      "tom": "2019-07-10",
+      "grad": 100,
+      "aktivitet": "Heihei"
+    },
+    {
+      "orgnummer": "110110110",
+      "fom": "2019-07-11",
+      "tom": "2019-08-26",
+      "grad": 100,
+      "aktivitet": "Heihei"
+    },
+    {
+      "orgnummer": "110110110",
+      "fom": "2019-09-01",
+      "tom": "2019-09-10",
+      "grad": 100,
+      "aktivitet": "Heihei"
+    },
+    {
+      "orgnummer": "110110110",
+      "fom": "2019-09-20",
+      "tom": "2019-10-01",
+      "grad": 100,
+      "aktivitet": "Heihei"
+    },
+    {
+      "orgnummer": "110110110",
+      "fom": "2019-10-02",
+      "tom": "2019-12-22",
+      "grad": 100,
+      "aktivitet": "Heihei"
+    },
+    {
+      "orgnummer": "110110110",
+      "fom": "2019-12-23",
+      "tom": "2020-05-22",
+      "grad": 100,
+      "aktivitet": "Heihei"
+    }
+  ],
   "555666444": [
     {
       "orgnummer": "555666444",

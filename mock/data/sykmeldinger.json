@@ -23,17 +23,11 @@
         "aktivitetIkkeMulig": {
           "medisinskArsak": {
             "beskrivelse": "Medisinsk årsak som hindrer arbeid",
-            "arsak": [
-              "TILSTAND_HINDRER_AKTIVITET",
-              "ANNET"
-            ]
+            "arsak": ["TILSTAND_HINDRER_AKTIVITET", "ANNET"]
           },
           "arbeidsrelatertArsak": {
             "beskrivelse": "Forhold på arbeidsplassen vanskeliggjør arbeid",
-            "arsak": [
-              "MANGLENDE_TILRETTELEGGING",
-              "ANNET"
-            ]
+            "arsak": ["MANGLENDE_TILRETTELEGGING", "ANNET"]
           }
         },
         "fom": "2020-07-22",
@@ -148,30 +142,22 @@
         "6.2.1": {
           "sporsmal": "Beskriv kort sykehistorie, symptomer og funn i dagens situasjon.",
           "svar": "Langvarig korsryggsmerter. Ømhet og smerte",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.2": {
           "sporsmal": "Hvordan påvirker sykdommen arbeidsevnen",
           "svar": "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket.",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.3": {
           "sporsmal": "Har behandlingen frem til nå bedret arbeidsevnen?",
           "svar": "Nei",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.4": {
           "sporsmal": "Beskriv Pågående og planlagt henvisning, utredning og/eller behandling",
           "svar": "Henvist til fysio",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         }
       }
     },
@@ -231,17 +217,11 @@
         "aktivitetIkkeMulig": {
           "medisinskArsak": {
             "beskrivelse": "Medisinsk årsak som hindrer arbeid",
-            "arsak": [
-              "TILSTAND_HINDRER_AKTIVITET",
-              "ANNET"
-            ]
+            "arsak": ["TILSTAND_HINDRER_AKTIVITET", "ANNET"]
           },
           "arbeidsrelatertArsak": {
             "beskrivelse": "Forhold på arbeidsplassen vanskeliggjør arbeid",
-            "arsak": [
-              "MANGLENDE_TILRETTELEGGING",
-              "ANNET"
-            ]
+            "arsak": ["MANGLENDE_TILRETTELEGGING", "ANNET"]
           }
         },
         "fom": "2020-07-22",
@@ -356,30 +336,22 @@
         "6.2.1": {
           "sporsmal": "Beskriv kort sykehistorie, symptomer og funn i dagens situasjon.",
           "svar": "Langvarig korsryggsmerter. Ømhet og smerte",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.2": {
           "sporsmal": "Hvordan påvirker sykdommen arbeidsevnen",
           "svar": "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket.",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.3": {
           "sporsmal": "Har behandlingen frem til nå bedret arbeidsevnen?",
           "svar": "Nei",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.4": {
           "sporsmal": "Beskriv Pågående og planlagt henvisning, utredning og/eller behandling",
           "svar": "Henvist til fysio",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         }
       }
     },
@@ -523,30 +495,22 @@
         "6.2.1": {
           "sporsmal": "Beskriv kort sykehistorie, symptomer og funn i dagens situasjon.",
           "svar": "Langvarig korsryggsmerter. Ømhet og smerte",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.2": {
           "sporsmal": "Hvordan påvirker sykdommen arbeidsevnen",
           "svar": "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket. Duplikatbuster: 6828077b-bfce-488d-b04b-22afe7f64500",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.3": {
           "sporsmal": "Har behandlingen frem til nå bedret arbeidsevnen?",
           "svar": "Nei",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.4": {
           "sporsmal": "Beskriv Pågående og planlagt henvisning, utredning og/eller behandling",
           "svar": "Henvist til fysio",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         }
       }
     },
@@ -648,30 +612,22 @@
         "6.2.1": {
           "sporsmal": "Beskriv kort sykehistorie, symptomer og funn i dagens situasjon.",
           "svar": "Langvarig korsryggsmerter. Ømhet og smerte",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.2": {
           "sporsmal": "Hvordan påvirker sykdommen arbeidsevnen",
           "svar": "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket. Duplikatbuster: 6828077b-bfce-488d-b04b-22afe7f64500",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.3": {
           "sporsmal": "Har behandlingen frem til nå bedret arbeidsevnen?",
           "svar": "Nei",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.4": {
           "sporsmal": "Beskriv Pågående og planlagt henvisning, utredning og/eller behandling",
           "svar": "Henvist til fysio",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         }
       }
     },
@@ -773,30 +729,22 @@
         "6.2.1": {
           "sporsmal": "Beskriv kort sykehistorie, symptomer og funn i dagens situasjon.",
           "svar": "Langvarig korsryggsmerter. Ømhet og smerte",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.2": {
           "sporsmal": "Hvordan påvirker sykdommen arbeidsevnen",
           "svar": "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket. Duplikatbuster: 6828077b-bfce-488d-b04b-22afe7f64500",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.3": {
           "sporsmal": "Har behandlingen frem til nå bedret arbeidsevnen?",
           "svar": "Nei",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.4": {
           "sporsmal": "Beskriv Pågående og planlagt henvisning, utredning og/eller behandling",
           "svar": "Henvist til fysio",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         }
       }
     },
@@ -856,17 +804,11 @@
         "aktivitetIkkeMulig": {
           "medisinskArsak": {
             "beskrivelse": "Medisinsk årsak som hindrer arbeid",
-            "arsak": [
-              "TILSTAND_HINDRER_AKTIVITET",
-              "ANNET"
-            ]
+            "arsak": ["TILSTAND_HINDRER_AKTIVITET", "ANNET"]
           },
           "arbeidsrelatertArsak": {
             "beskrivelse": "Forhold på arbeidsplassen vanskeliggjør arbeid",
-            "arsak": [
-              "MANGLENDE_TILRETTELEGGING",
-              "ANNET"
-            ]
+            "arsak": ["MANGLENDE_TILRETTELEGGING", "ANNET"]
           }
         },
         "fom": "2020-03-22",
@@ -966,30 +908,22 @@
         "6.2.1": {
           "sporsmal": "Beskriv kort sykehistorie, symptomer og funn i dagens situasjon.",
           "svar": "Langvarig korsryggsmerter. Ømhet og smerte",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.2": {
           "sporsmal": "Hvordan påvirker sykdommen arbeidsevnen",
           "svar": "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket.",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.3": {
           "sporsmal": "Har behandlingen frem til nå bedret arbeidsevnen?",
           "svar": "Nei",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.4": {
           "sporsmal": "Beskriv Pågående og planlagt henvisning, utredning og/eller behandling",
           "svar": "Henvist til fysio",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         }
       }
     },
@@ -1331,17 +1265,11 @@
         "aktivitetIkkeMulig": {
           "medisinskArsak": {
             "beskrivelse": "Medisinsk årsak som hindrer arbeid",
-            "arsak": [
-              "TILSTAND_HINDRER_AKTIVITET",
-              "ANNET"
-            ]
+            "arsak": ["TILSTAND_HINDRER_AKTIVITET", "ANNET"]
           },
           "arbeidsrelatertArsak": {
             "beskrivelse": "Forhold på arbeidsplassen vanskeliggjør arbeid",
-            "arsak": [
-              "MANGLENDE_TILRETTELEGGING",
-              "ANNET"
-            ]
+            "arsak": ["MANGLENDE_TILRETTELEGGING", "ANNET"]
           }
         },
         "fom": "2020-03-22",
@@ -1390,30 +1318,22 @@
         "6.2.1": {
           "sporsmal": "Beskriv kort sykehistorie, symptomer og funn i dagens situasjon.",
           "svar": "Langvarig korsryggsmerter. Ømhet og smerte",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.2": {
           "sporsmal": "Hvordan påvirker sykdommen arbeidsevnen",
           "svar": "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket.",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.3": {
           "sporsmal": "Har behandlingen frem til nå bedret arbeidsevnen?",
           "svar": "Nei",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         },
         "6.2.4": {
           "sporsmal": "Beskriv Pågående og planlagt henvisning, utredning og/eller behandling",
           "svar": "Henvist til fysio",
-          "restriksjoner": [
-            "SKJERMET_FOR_ARBEIDSGIVER"
-          ]
+          "restriksjoner": ["SKJERMET_FOR_ARBEIDSGIVER"]
         }
       }
     },

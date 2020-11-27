@@ -1,56 +1,57 @@
 .lightbox {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, .7);
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .lightbox__innhold {
-    .panel-mixin();
-    background: @white;
-    width: 100%;
-    max-height: 90%;
-    max-width: 40em;
-    position: relative;
+  .panel-mixin();
+  background: @white;
+  width: 100%;
+  max-height: 90%;
+  max-width: 40em;
+  position: relative;
 }
 
 .lightbox__innhold--medScroll {
-    overflow-y: scroll;
+  overflow-y: scroll;
 }
 
 .lightbox__lukk {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 2rem;
-    height: 2rem;
-    border: 0;
-    text-indent: -9999px;
-    border: 1px solid @navGra40;
-    background: transparent url('/sykefravaer/img/modig-frontend/ikoner-svg/ikon-kryss-sort.svg') no-repeat center center;
-    background-size: 1rem 1rem;
-    cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  text-indent: -9999px;
+  border: 1px solid @navGra40;
+  background: transparent
+    url("/sykefravaer/img/modig-frontend/ikoner-svg/ikon-kryss-sort.svg")
+    no-repeat center center;
+  background-size: 1rem 1rem;
+  cursor: pointer;
 
-    @media (min-width: 30em) {
-        top: 2em;
-        right: 2em;
-    }
+  @media (min-width: 30em) {
+    top: 2em;
+    right: 2em;
+  }
 
-    &:hover {
-        border-color: @navBla;
-        background-color: @navBla;
-        background-image: url('/sykefravaer/img/modig-frontend/ikoner-svg/ikon-kryss-hvit.svg');
-    }
+  &:hover {
+    border-color: @navBla;
+    background-color: @navBla;
+    background-image: url("/sykefravaer/img/modig-frontend/ikoner-svg/ikon-kryss-hvit.svg");
+  }
 
-    &:focus {
-        outline: none;
-        box-shadow: 0 0 0 3px @orangeFocus;
-    }
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px @orangeFocus;
+  }
 }
-

@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="no">
-<head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Sykefravær</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <% if (process.env.NODE_ENV === 'production') { %>
     <script src="https://internarbeidsflatedecorator.nais.adeo.no/internarbeidsflatedecorator/js/head.min.js"></script>
     <% } %>
-</head>
-<body>
-<div id="header"></div>
+  </head>
+  <body>
+    <div id="header"></div>
 
-<div id="maincontent" class="app app--laster" tabindex="-1">
-    <div class="app-spinner" aria-label="Vent litt mens siden laster"></div>
-</div>
-</body>
+    <div id="maincontent" class="app app--laster" tabindex="-1">
+      <div class="app-spinner" aria-label="Vent litt mens siden laster"></div>
+    </div>
+  </body>
 </html>

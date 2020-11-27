@@ -1,59 +1,59 @@
 .motelandingsside {
-    margin: 0;
+  margin: 0;
 }
 
 .motelandingssidepanel__innhold {
-    display: flex;
-    width: 100%;
-    border: 0;
-    background-color: @white;
-    padding: 1.5em 3em 1.5em 2em;
-    margin-bottom: .2em;
-    color: @navMorkGra;
-    border-left: 0;
-    background-image: url("/sykefravaer/img/svg/pilVidere--graa.svg");
-    background-repeat: no-repeat;
-    background-position: 97% center;
-    background-size: 1rem 1rem;
-    transition: background-position ease-in-out .1s;
-    transform: translate3d(0, 0, 0);
+  display: flex;
+  width: 100%;
+  border: 0;
+  background-color: @white;
+  padding: 1.5em 3em 1.5em 2em;
+  margin-bottom: 0.2em;
+  color: @navMorkGra;
+  border-left: 0;
+  background-image: url("/sykefravaer/img/svg/pilVidere--graa.svg");
+  background-repeat: no-repeat;
+  background-position: 97% center;
+  background-size: 1rem 1rem;
+  transition: background-position ease-in-out 0.1s;
+  transform: translate3d(0, 0, 0);
 }
 
 .motelandingssidepanel {
-    display: flex;
-    margin-left: -2em;
-    list-style-type: none;
+  display: flex;
+  margin-left: -2em;
+  list-style-type: none;
 }
 
 .motelandingssidepanel__tekst {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .motelandingssidepanel__ikon {
-    width: 3em;
-    position: relative;
-    left: -1em;
+  width: 3em;
+  position: relative;
+  left: -1em;
 }
 
 .motelandingsside__tittel {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+.motelandingssidepanel__tekst--tittel {
+  display: flex;
+  width: 100%;
+  background: @white;
+  h3 {
     display: block;
     margin: 0;
     padding: 0;
     font-weight: normal;
+    font-size: medium;
     text-transform: uppercase;
-}
-
-.motelandingssidepanel__tekst--tittel {
-    display: flex;
-    width: 100%;
-    background: @white;
-    h3 {
-        display: block;
-        margin: 0;
-        padding: 0;
-        font-weight: normal;
-        font-size: medium;
-        text-transform: uppercase;
-    }
+  }
 }

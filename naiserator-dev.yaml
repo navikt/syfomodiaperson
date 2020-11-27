@@ -6,7 +6,7 @@ metadata:
   labels:
     team: teamsykefravr
 spec:
-  image: {{ image }}
+  image: { { image } }
   replicas:
     min: 2
     max: 4
@@ -38,4 +38,4 @@ spec:
     - "https://syfomodiaperson.nais.preprod.local"
   env:
     - name: NAIS_CONTEXT
-      value: 'dev'
+      value: "dev"

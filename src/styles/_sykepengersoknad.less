@@ -2,255 +2,255 @@
 }
 
 .inputgruppe--horisontal {
-    display: flex;
+  display: flex;
 
-    .skjema__input {
-        margin-right: 2em;
-    }
+  .skjema__input {
+    margin-right: 2em;
+  }
 }
 
 .medEnhet {
-    display: flex;
+  display: flex;
 }
 
 .medEnhet__enhet {
-    margin: 0;
-    margin-left: .5em;
-    align-self: center;
+  margin: 0;
+  margin-left: 0.5em;
+  align-self: center;
 }
 
 .skjema__feilmelding:empty {
-    display: none;
+  display: none;
 }
 
 .oppsummering__seksjon {
-    border-bottom: 1px solid @navGra40;
-    margin-bottom: 2em;
-    padding-bottom: 2em;
-    line-height: 1.3;
+  border-bottom: 1px solid @navGra40;
+  margin-bottom: 2em;
+  padding-bottom: 2em;
+  line-height: 1.3;
 }
 
 .oppsummering__seksjon:last-child {
-    border-bottom-width: 0;
-    margin-bottom: 0;
-    padding-bottom: 0;
+  border-bottom-width: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .oppsummering__sporsmalscontainer {
-    margin-bottom: 2em;
+  margin-bottom: 2em;
 
-    &:last-child {
-        margin-bottom: 0;
-    }
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .oppsummering__sporsmal {
-    .typo-element-mixin();
-    margin-top: 0;
-    margin-bottom: .5em;
+  .typo-element-mixin();
+  margin-top: 0;
+  margin-bottom: 0.5em;
 }
 
 .oppsummering__avkrysset {
-    display: flex;
-    width: 100%;
-    line-height: 1.3;
+  display: flex;
+  width: 100%;
+  line-height: 1.3;
 
-    img {
-        width: 1em;
-        height: 1em;
-        margin-right: .5em;
-        margin-top: .175em;
-    }
+  img {
+    width: 1em;
+    height: 1em;
+    margin-right: 0.5em;
+    margin-top: 0.175em;
+  }
 
-    span {
-        flex: 1;
-    }
+  span {
+    flex: 1;
+  }
 }
 
 .oppsummering__undersporsmal .oppsummering__undersporsmal {
-    padding-left: 1.5em;
-    margin-bottom: 1.5em;
+  padding-left: 1.5em;
+  margin-bottom: 1.5em;
 }
 
 .oppsummering__undersporsmal + .oppsummering__undersporsmal {
-    margin-top: 1.5em;
+  margin-top: 1.5em;
 }
 
 .oppsummering__tekst,
 .oppsummering__dato {
-    margin-bottom: .5em;
+  margin-bottom: 0.5em;
 }
 
 .oppsummering__avkrysset + .oppsummering__tekstsvar,
 .oppsummering__svarliste + .oppsummering__tekstsvar,
 .oppsummering__avkrysset + .oppsummering__undersporsmalsliste,
 .oppsummering__tekstsvar + .oppsummering__tekstsvar {
-    padding-left: 1.5em;
+  padding-left: 1.5em;
 }
 
 .oppsummering__svarliste:last-child .oppsummering__undersporsmalsliste {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .oppsummering__svarliste + .oppsummering__svarliste {
-    margin-top: 1em;
+  margin-top: 1em;
 }
 
 .oppsummering__undersporsmalsliste {
-    margin-top: 2em;
+  margin-top: 2em;
 }
 
 .oppsummering__sporsmal + .oppsummering__undersporsmalsliste,
 .oppsummering__avkrysset + .oppsummering__undersporsmalsliste {
-    margin-bottom: 1em;
+  margin-bottom: 1em;
+  margin-top: 1em;
+
+  > .oppsummering__tekstsvar:first-child {
+    margin-top: -1em;
+  }
+
+  > .oppsummering__tekstsvar {
+    padding-left: 0;
+  }
+
+  .oppsummering__tekstsvar + .oppsummering__sporsmalscontainer {
     margin-top: 1em;
-
-    > .oppsummering__tekstsvar:first-child {
-        margin-top: -1em;
-    }
-
-    > .oppsummering__tekstsvar {
-        padding-left: 0;
-    }
-
-    .oppsummering__tekstsvar + .oppsummering__sporsmalscontainer {
-        margin-top: 1em;
-    }
+  }
 }
 
 .oppsummering__sporsmal + .oppsummering__undersporsmalsliste {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .oppsummering__dato {
-    margin-bottom: 0;
+  margin-bottom: 0;
 
-    &:before {
-        content: "\2022";
-        display: inline-block;
-        width: .5em;
-        margin-right: .5em;
-    }
+  &:before {
+    content: "\2022";
+    display: inline-block;
+    width: 0.5em;
+    margin-right: 0.5em;
+  }
 }
 
-.periodevelger__fom, .periodevelger__tom {
-    margin-bottom: 1em;
+.periodevelger__fom,
+.periodevelger__tom {
+  margin-bottom: 1em;
 }
 
-@media(min-width: @screen-sm-min) {
-    .periodevelger__periode {
-        display: flex;
-    }
-
-    .periodevelger__fom, .periodevelger__tom {
-        margin-right: 2em;
-    }
-
-    .periodevelger__verktoy {
-        padding-top: 1.55em;
-        height: 4em;
-        line-height: 2;
-    }
-}
-
-@media(max-width: @screen-sm-min) {
-    .periodevelger__periode {
-        margin-bottom: 2em;
-    }
-    .periodevelger__periode:not(:last-child) {
-        padding-bottom: 2em;
-        border-bottom: 1px solid @navGra40;
-    }
-}
-
-.knapperad--forrigeNeste {
+@media (min-width: @screen-sm-min) {
+  .periodevelger__periode {
     display: flex;
-    justify-content: center;
-}
+  }
 
-.knapperad--adskilt {
-    margin-top: 1em;
-    padding-top: 2em;
-    border-top: 1px solid @navGra40;
-}
+  .periodevelger__fom,
+  .periodevelger__tom {
+    margin-right: 2em;
+  }
 
-.knapperad--tight {
-    padding-top: 0;
+  .periodevelger__verktoy {
+    padding-top: 1.55em;
+    height: 4em;
+    line-height: 2;
+  }
 }
 
 @media (max-width: @screen-sm-min) {
-    .knapperad--forrigeNeste {
-        flex-direction: column-reverse;
-    }
-
-    .knapperad__element {
-        margin-bottom: 2em;
-    }
+  .periodevelger__periode {
+    margin-bottom: 2em;
+  }
+  .periodevelger__periode:not(:last-child) {
+    padding-bottom: 2em;
+    border-bottom: 1px solid @navGra40;
+  }
 }
 
-@media(min-width: @screen-sm-min) {
+.knapperad--forrigeNeste {
+  display: flex;
+  justify-content: center;
+}
 
-    .knapperad__element {
-        display: inline-block;
-        margin-right: 2em;
-    }
+.knapperad--adskilt {
+  margin-top: 1em;
+  padding-top: 2em;
+  border-top: 1px solid @navGra40;
+}
 
-    .knapperad__element:last-child {
-        margin-right: 0;
-    }
+.knapperad--tight {
+  padding-top: 0;
+}
 
+@media (max-width: @screen-sm-min) {
+  .knapperad--forrigeNeste {
+    flex-direction: column-reverse;
+  }
+
+  .knapperad__element {
+    margin-bottom: 2em;
+  }
+}
+
+@media (min-width: @screen-sm-min) {
+  .knapperad__element {
+    display: inline-block;
+    margin-right: 2em;
+  }
+
+  .knapperad__element:last-child {
+    margin-right: 0;
+  }
 }
 
 .sykepenger__stegtittel {
-    .typo-innholdstittel-mixin();
-    margin-top: 0;
-    margin-bottom: 1em;
+  .typo-innholdstittel-mixin();
+  margin-top: 0;
+  margin-bottom: 1em;
 }
 
 .bekreftet-container {
-    .mixin-panel-padding();
+  .mixin-panel-padding();
 }
 
 .verktoylinje {
-    padding-top: 2em;
-    display: flex;
+  padding-top: 2em;
+  display: flex;
 }
 
 .verktoylinje__element {
-    margin-right: 1em;
+  margin-right: 1em;
 
-    &:last-child {
-        margin-right: 0;
-    }
+  &:last-child {
+    margin-right: 0;
+  }
 }
 
 .verktoylinje:empty {
-    display: none;
+  display: none;
 }
 
 .tidligereVersjoner__tittel {
-    .typo-undertittel-mixin();
-    margin: 0;
+  .typo-undertittel-mixin();
+  margin: 0;
 }
 
 .tidligereVersjoner a {
-    color: @navBla;
-    border-bottom: 1px solid @navGra40;
+  color: @navBla;
+  border-bottom: 1px solid @navGra40;
 
-    &:hover, &:focus {
-        border-bottom-color: @navBla;
-    }
+  &:hover,
+  &:focus {
+    border-bottom-color: @navBla;
+  }
 }
 
 .tidligereVersjoner__liste {
+  margin-bottom: 0;
 
-    margin-bottom: 0;
+  li {
+    margin-bottom: 0.5em;
 
-    li {
-        margin-bottom: .5em;
-
-        &:last-child {
-            margin-bottom: 0;
-        }
+    &:last-child {
+      margin-bottom: 0;
     }
+  }
 }

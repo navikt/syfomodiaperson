@@ -1,3 +1,3 @@
 export const isPersonOppgaveBehandlet = (personOppgave) => {
-    return !!(personOppgave && personOppgave.behandletTidspunkt);
+  return !!(personOppgave && personOppgave.behandletTidspunkt);
 };

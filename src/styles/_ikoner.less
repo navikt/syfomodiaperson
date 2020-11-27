@@ -1,58 +1,58 @@
 .ikonKollaps {
+  position: absolute;
+  right: 1em;
+  width: 2em;
+  height: 2em;
+  display: inline-block;
+  border: 0;
+  background-color: transparent;
+  text-indent: -9999px;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px @orangeFocus;
+  }
+
+  &:after,
+  &:before {
+    content: "";
+    display: block;
+    width: 1.2em;
+    height: 2px;
+    background: @navGra40;
     position: absolute;
-    right: 1em;
-    width: 2em;
-    height: 2em;
-    display: inline-block; 
-    border: 0;
-    background-color: transparent;
-    text-indent: -9999px;
+    top: 50%;
+  }
 
-    &:focus {
-        outline: none;
-        box-shadow: 0 0 0 3px @orangeFocus;
-    }
+  &:before {
+    transform: rotate(-45deg);
+    left: 0;
+  }
 
-    &:after, &:before {
-        content: "";
-        display: block;
-        width: 1.2em;
-        height: 2px;
-        background: @navGra40;
-        position: absolute;
-        top: 50%;
-    }
-
-    &:before {
-        transform: rotate(-45deg);
-        left: 0;
-    }
-
-    &:after {
-        transform: rotate(45deg);
-        right: 0;
-    }
-
+  &:after {
+    transform: rotate(45deg);
+    right: 0;
+  }
 }
 
 .ikonKollaps--erKollapsert {
-    &:before {
-        transform: rotate(45deg);
-    }
+  &:before {
+    transform: rotate(45deg);
+  }
 
-    &:after {
-        transform: rotate(-45deg);
-    }
+  &:after {
+    transform: rotate(-45deg);
+  }
 }
 
-.ikonKollaps--erHover:after  {
-    background-color: @navGra40;
+.ikonKollaps--erHover:after {
+  background-color: @navGra40;
 }
 
 .ferdigbehandlet__ikon {
-    margin-right: .5rem;
-    img {
-        width: 1.5rem;
-        height: 1.5rem;
-    }
+  margin-right: 0.5rem;
+  img {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 }

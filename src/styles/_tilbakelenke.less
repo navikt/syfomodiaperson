@@ -1,28 +1,29 @@
 .tilbakelenke {
-	color: @navBla;
-	position: relative;
-	padding-left: 1.5em;
+  color: @navBla;
+  position: relative;
+  padding-left: 1.5em;
 
-	&:before {
-		content: "";
-		display: block;
-		width: 1em;
-		height: 100%;
-		position: absolute;
-		left: 0;
-		top: 0;
-		background: data-uri('../../img/png/pilForrige--blaa.png') left center no-repeat;
-		background-size: 1em 1em;
-		.transition-mixin(.2s, left);
-	}
+  &:before {
+    content: "";
+    display: block;
+    width: 1em;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: data-uri("../../img/png/pilForrige--blaa.png") left center
+      no-repeat;
+    background-size: 1em 1em;
+    .transition-mixin(0.2s, left);
+  }
 
-	&:focus {
-	   	outline: none;
-		box-shadow: 0 0 0 3px @orangeFocus;
-	}
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px @orangeFocus;
+  }
 
-	&:hover:before,
-	&:focus:before {
-		left: -.25em;
-	}
+  &:hover:before,
+  &:focus:before {
+    left: -0.25em;
+  }
 }

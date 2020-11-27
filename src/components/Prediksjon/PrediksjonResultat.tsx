@@ -1,51 +1,57 @@
-import * as React from 'react';
-import styled from 'styled-components';
-import { Prediksjon } from '../../reducers/prediksjon';
-import { tilDatoMedUkedagOgManedNavn } from '../../utils/datoUtils';
+import * as React from "react";
+import styled from "styled-components";
+import { Prediksjon } from "../../reducers/prediksjon";
+import { tilDatoMedUkedagOgManedNavn } from "../../utils/datoUtils";
 
 interface PrediksjonResultatProps {
-    prediksjon: Prediksjon,
+  prediksjon: Prediksjon;
 }
 
 interface ResultTextProps {
-    langt: boolean,
-    certainty: number,
+  langt: boolean;
+  certainty: number;
 }
 
 interface CalculationTextProps {
-    prediksjonsDato: string,
+  prediksjonsDato: string;
 }
 
 const ResultatWrapper = styled.div`
   margin-bottom: 1em;
-`
+`;
 
 const TextWithBottomMargin = styled.p`
-  margin-bottom: .5em;
-`
+  margin-bottom: 0.5em;
+`;
 
 const ResultText = ({ langt, certainty }: ResultTextProps) => {
-    const yesOrNo = langt
-        ? 'Ja'
-        : 'Nei';
+  const yesOrNo = langt ? "Ja" : "Nei";
 
-    return (<TextWithBottomMargin>
-        {`${yesOrNo}, med `} <b>{`${certainty}%`}</b> {' sannsynlighet'}
-    </TextWithBottomMargin>);
-}
+  return (
+    <TextWithBottomMargin>
+      {`${yesOrNo}, med `} <b>{`${certainty}%`}</b> {" sannsynlighet"}
+    </TextWithBottomMargin>
+  );
+};
 
 const CalculationText = ({ prediksjonsDato }: CalculationTextProps) => {
-    return (<p>{`Utregningen ble gjort ${tilDatoMedUkedagOgManedNavn(prediksjonsDato)}`}</p>)
-}
+  return (
+    <p>{`Utregningen ble gjort ${tilDatoMedUkedagOgManedNavn(
+      prediksjonsDato
+    )}`}</p>
+  );
+};
 
 const PrediksjonResultat = ({ prediksjon }: PrediksjonResultatProps) => {
-    return (<ResultatWrapper>
-        <ResultText
-            langt={prediksjon.langt}
-            certainty={prediksjon.treffsikkerhetProsent}
-        />
-        <CalculationText prediksjonsDato={prediksjon.prediksjonsDato} />
-    </ResultatWrapper>)
-}
+  return (
+    <ResultatWrapper>
+      <ResultText
+        langt={prediksjon.langt}
+        certainty={prediksjon.treffsikkerhetProsent}
+      />
+      <CalculationText prediksjonsDato={prediksjon.prediksjonsDato} />
+    </ResultatWrapper>
+  );
+};
 
 export default PrediksjonResultat;

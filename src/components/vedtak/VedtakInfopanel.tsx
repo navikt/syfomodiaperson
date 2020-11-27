@@ -1,49 +1,50 @@
-import * as React from 'react';
-import styled from 'styled-components';
-import { Row } from 'nav-frontend-grid';
-import { Innholdstittel } from 'nav-frontend-typografi';
-import Panel from 'nav-frontend-paneler';
-import { restdatoTildato } from '../../utils/datoUtils';
-import { VedtakDTO } from '../../reducers/vedtak';
+import * as React from "react";
+import styled from "styled-components";
+import { Row } from "nav-frontend-grid";
+import { Innholdstittel } from "nav-frontend-typografi";
+import Panel from "nav-frontend-paneler";
+import { restdatoTildato } from "../../utils/datoUtils";
+import { VedtakDTO } from "../../reducers/vedtak";
 import VedtakMetaInformasjon from "./VedtakMetaInformasjon";
-import VedtakOppsummering from './VedtakOppsummering';
-import VedtakUtbetaltePerioder from './VedtakUtbetaltePerioder';
-import VedtakAnnullertAlertStripe from './VedtakAnnullertAlertStripe';
-
+import VedtakOppsummering from "./VedtakOppsummering";
+import VedtakUtbetaltePerioder from "./VedtakUtbetaltePerioder";
+import VedtakAnnullertAlertStripe from "./VedtakAnnullertAlertStripe";
 
 interface VedtakInfopanelProps {
-    selectedVedtak: VedtakDTO,
+  selectedVedtak: VedtakDTO;
 }
 
 const StyledPanel = styled(Panel)`
-    padding: 1.5em;
-    margin-bottom: .5em;
+  padding: 1.5em;
+  margin-bottom: 0.5em;
 `;
 
 export const VedtakInfopanelRow = styled(Row)`
-    margin-bottom: 1em;
+  margin-bottom: 1em;
 `;
 
 const VedtakInfopanel = (vedtakProps: VedtakInfopanelProps) => {
-    const { selectedVedtak } = vedtakProps;
+  const { selectedVedtak } = vedtakProps;
 
-    return (
-        <StyledPanel>
-            <VedtakInfopanelRow>
-                <Innholdstittel>
-                    {`${restdatoTildato(selectedVedtak.vedtak.fom)} - ${restdatoTildato(selectedVedtak.vedtak.tom)}`}
-                </Innholdstittel>
-            </VedtakInfopanelRow>
-            <VedtakMetaInformasjon selectedVedtak={selectedVedtak}/>
-            <VedtakOppsummering selectedVedtak={selectedVedtak}/>
-            <VedtakUtbetaltePerioder selectedVedtak={selectedVedtak}/>
-            {selectedVedtak.annullert &&
-            <VedtakInfopanelRow>
-                <VedtakAnnullertAlertStripe />
-            </VedtakInfopanelRow>
-            }
-        </StyledPanel>
-    );
+  return (
+    <StyledPanel>
+      <VedtakInfopanelRow>
+        <Innholdstittel>
+          {`${restdatoTildato(selectedVedtak.vedtak.fom)} - ${restdatoTildato(
+            selectedVedtak.vedtak.tom
+          )}`}
+        </Innholdstittel>
+      </VedtakInfopanelRow>
+      <VedtakMetaInformasjon selectedVedtak={selectedVedtak} />
+      <VedtakOppsummering selectedVedtak={selectedVedtak} />
+      <VedtakUtbetaltePerioder selectedVedtak={selectedVedtak} />
+      {selectedVedtak.annullert && (
+        <VedtakInfopanelRow>
+          <VedtakAnnullertAlertStripe />
+        </VedtakInfopanelRow>
+      )}
+    </StyledPanel>
+  );
 };
 
 export default VedtakInfopanel;

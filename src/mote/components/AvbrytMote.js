@@ -1,76 +1,95 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router';
-import {
-    keyValue,
-} from '@navikt/digisyfo-npm';
-import * as moterPropTypes from '../../propTypes';
-import { connect } from 'react-redux';
-import AlertStripe from 'nav-frontend-alertstriper';
-import KnappBase from 'nav-frontend-knapper';
-import * as epostinnholdActions from '../../actions/epostinnhold_actions';
-import Innholdsviser from './Innholdsviser';
-import Epostmottakere from './Epostmottakere';
+import React from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router";
+import { keyValue } from "@navikt/digisyfo-npm";
+import * as moterPropTypes from "../../propTypes";
+import { connect } from "react-redux";
+import AlertStripe from "nav-frontend-alertstriper";
+import KnappBase from "nav-frontend-knapper";
+import * as epostinnholdActions from "../../actions/epostinnhold_actions";
+import Innholdsviser from "./Innholdsviser";
+import Epostmottakere from "./Epostmottakere";
 
 const texts = {
-    overskrift: 'Avbryt møteforespørsel',
-    feil: 'Beklager, det oppstod en…Prøv igjen litt senere.',
-    avbryt: 'Avbryt',
-    submit: 'Send',
+  overskrift: "Avbryt møteforespørsel",
+  feil: "Beklager, det oppstod en…Prøv igjen litt senere.",
+  avbryt: "Avbryt",
+  submit: "Send",
 };
 
 export const mapStateToInnholdsviserProps = (state) => {
-    return {
-        epostinnhold: state.epostinnhold.data,
-        arbeidstaker: state.navbruker.data,
-        henter: state.epostinnhold.henter || state.navbruker.henter,
-        hentingFeilet: state.epostinnhold.hentingFeilet || state.navbruker.henter,
-    };
+  return {
+    epostinnhold: state.epostinnhold.data,
+    arbeidstaker: state.navbruker.data,
+    henter: state.epostinnhold.henter || state.navbruker.henter,
+    hentingFeilet: state.epostinnhold.hentingFeilet || state.navbruker.henter,
+  };
 };
 
 const actions = Object.assign({}, epostinnholdActions, {
-    hentEpostinnhold: epostinnholdActions.hentAvbrytMoteEpostinnhold,
+  hentEpostinnhold: epostinnholdActions.hentAvbrytMoteEpostinnhold,
 });
 
-export const InnholdsviserContainer = connect(mapStateToInnholdsviserProps, actions)(Innholdsviser);
+export const InnholdsviserContainer = connect(
+  mapStateToInnholdsviserProps,
+  actions
+)(Innholdsviser);
 
 const AvbrytMote = (props) => {
-    const { ledetekster, mote, avbrytFeilet, avbryter, avbrytHref, onSubmit, arbeidstaker } = props;
+  const {
+    ledetekster,
+    mote,
+    avbrytFeilet,
+    avbryter,
+    avbrytHref,
+    onSubmit,
+    arbeidstaker,
+  } = props;
 
-    return (<div className="epostinnhold">
-        <h2 className="epostinnhold__tittel">{texts.overskrift}</h2>
-        <Epostmottakere mote={mote} ledetekster={ledetekster} arbeidstaker={arbeidstaker} />
-        <InnholdsviserContainer mote={mote} ledetekster={ledetekster} />
-        <div aria-live="polite" role="alert">
-            { avbrytFeilet && (<div className="blokk">
-                <AlertStripe
-                    type="advarsel">
-                    <p>{texts.feil}</p>
-                </AlertStripe>
-            </div>)}
-        </div>
-        <div className="blokk--s">
-            <KnappBase
-                type="hoved"
-                spinner={avbryter}
-                disabled={avbryter}
-                className="knapp--enten"
-                onClick={onSubmit}>
-                {texts.submit}
-            </KnappBase>
-            <Link className="lenke" to={avbrytHref}>{texts.avbryt}</Link>
-        </div>
-    </div>);
+  return (
+    <div className="epostinnhold">
+      <h2 className="epostinnhold__tittel">{texts.overskrift}</h2>
+      <Epostmottakere
+        mote={mote}
+        ledetekster={ledetekster}
+        arbeidstaker={arbeidstaker}
+      />
+      <InnholdsviserContainer mote={mote} ledetekster={ledetekster} />
+      <div aria-live="polite" role="alert">
+        {avbrytFeilet && (
+          <div className="blokk">
+            <AlertStripe type="advarsel">
+              <p>{texts.feil}</p>
+            </AlertStripe>
+          </div>
+        )}
+      </div>
+      <div className="blokk--s">
+        <KnappBase
+          type="hoved"
+          spinner={avbryter}
+          disabled={avbryter}
+          className="knapp--enten"
+          onClick={onSubmit}
+        >
+          {texts.submit}
+        </KnappBase>
+        <Link className="lenke" to={avbrytHref}>
+          {texts.avbryt}
+        </Link>
+      </div>
+    </div>
+  );
 };
 
 AvbrytMote.propTypes = {
-    ledetekster: keyValue,
-    arbeidstaker: PropTypes.object,
-    onSubmit: PropTypes.func,
-    avbrytHref: PropTypes.string,
-    avbryter: PropTypes.bool,
-    avbrytFeilet: PropTypes.bool,
-    mote: moterPropTypes.motePt,
+  ledetekster: keyValue,
+  arbeidstaker: PropTypes.object,
+  onSubmit: PropTypes.func,
+  avbrytHref: PropTypes.string,
+  avbryter: PropTypes.bool,
+  avbrytFeilet: PropTypes.bool,
+  mote: moterPropTypes.motePt,
 };
 
 export default AvbrytMote;

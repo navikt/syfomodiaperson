@@ -1,44 +1,55 @@
-import React from 'react';
-import OppsummeringSporsmalscontainer from './OppsummeringSporsmalscontainer';
-import OppsummeringSporsmalstekst from './OppsummeringSporsmalstekst';
-import OppsummeringAvkrysset from './OppsummeringAvkrysset';
-import OppsummeringUndersporsmalsliste from './OppsummeringUndersporsmalsliste';
-import { oppsummeringSporsmal } from '../../propTypes';
+import React from "react";
+import OppsummeringSporsmalscontainer from "./OppsummeringSporsmalscontainer";
+import OppsummeringSporsmalstekst from "./OppsummeringSporsmalstekst";
+import OppsummeringAvkrysset from "./OppsummeringAvkrysset";
+import OppsummeringUndersporsmalsliste from "./OppsummeringUndersporsmalsliste";
+import { oppsummeringSporsmal } from "../../propTypes";
 
 const texts = {
-    ja: 'Ja',
-    nei: 'Nei',
+  ja: "Ja",
+  nei: "Nei",
 };
 
 const getLedetekstFraSvar = (svar) => {
-    return svar.toLowerCase() === 'ja'
-        ? texts.ja
-        : texts.nei;
+  return svar.toLowerCase() === "ja" ? texts.ja : texts.nei;
 };
 
 const erUndersporsmalStilt = (svar, kriterieForVisningAvUndersporsmal) => {
-    return svar.map((s) => {
+  return (
+    svar
+      .map((s) => {
         return s.verdi;
-    }).indexOf(kriterieForVisningAvUndersporsmal) > -1;
+      })
+      .indexOf(kriterieForVisningAvUndersporsmal) > -1
+  );
 };
 
-const OppsummeringJaEllerNei = ({ svar, sporsmalstekst, tag, overskriftsnivaa = 3, kriterieForVisningAvUndersporsmal, undersporsmal }) => {
-    if (svar[0] === undefined) {
-        return '';
-    }
-    const svartekst = getLedetekstFraSvar(svar[0].verdi);
-    return (
-        <OppsummeringSporsmalscontainer tag={tag}>
-            <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
-                {sporsmalstekst}
-            </OppsummeringSporsmalstekst>
-            <OppsummeringAvkrysset tekst={svartekst} />
-            {
-                erUndersporsmalStilt(svar, kriterieForVisningAvUndersporsmal)
-                && <OppsummeringUndersporsmalsliste sporsmalsliste={undersporsmal} overskriftsnivaa={overskriftsnivaa + 1} />
-            }
-        </OppsummeringSporsmalscontainer>
-    );
+const OppsummeringJaEllerNei = ({
+  svar,
+  sporsmalstekst,
+  tag,
+  overskriftsnivaa = 3,
+  kriterieForVisningAvUndersporsmal,
+  undersporsmal,
+}) => {
+  if (svar[0] === undefined) {
+    return "";
+  }
+  const svartekst = getLedetekstFraSvar(svar[0].verdi);
+  return (
+    <OppsummeringSporsmalscontainer tag={tag}>
+      <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
+        {sporsmalstekst}
+      </OppsummeringSporsmalstekst>
+      <OppsummeringAvkrysset tekst={svartekst} />
+      {erUndersporsmalStilt(svar, kriterieForVisningAvUndersporsmal) && (
+        <OppsummeringUndersporsmalsliste
+          sporsmalsliste={undersporsmal}
+          overskriftsnivaa={overskriftsnivaa + 1}
+        />
+      )}
+    </OppsummeringSporsmalscontainer>
+  );
 };
 
 OppsummeringJaEllerNei.propTypes = oppsummeringSporsmal;

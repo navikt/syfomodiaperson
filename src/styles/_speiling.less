@@ -1,24 +1,25 @@
 .speiling {
-    position: relative;
-    border-top: 1px solid @navGra40;
-    padding-top: 3em;
-    .mixin-panel-padding();
+  position: relative;
+  border-top: 1px solid @navGra40;
+  padding-top: 3em;
+  .mixin-panel-padding();
 }
 
-.speiling:before, .speiling:after {
-    width: 1px;
-    height: 2em;
-    position: absolute;
-    top: 0;
-    content: "";
-    background-color: @navGra40;
-    display: block;
+.speiling:before,
+.speiling:after {
+  width: 1px;
+  height: 2em;
+  position: absolute;
+  top: 0;
+  content: "";
+  background-color: @navGra40;
+  display: block;
 }
 
 .speiling:before {
-    left: 0;
+  left: 0;
 }
 
 .speiling:after {
-    right: 0;
+  right: 0;
 }
