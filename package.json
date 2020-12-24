@@ -20,7 +20,7 @@
     "@types/react-dom": "16.9.4",
     "@types/react-redux": "7.1.9",
     "@types/styled-components": "5.1.2",
-    "axios": "0.19.2",
+    "axios": "0.21.1",
     "classnames": "2.2.6",
     "cookie-parser": "1.4.4",
     "dayjs": "1.9.6",
