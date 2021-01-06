@@ -27,7 +27,7 @@
     "deep-freeze": "0.0.1",
     "express": "4.16.2",
     "express-http-proxy": "1.6.0",
-    "fetch-ponyfill": "4.1.0",
+    "fetch-ponyfill": "6.1.0",
     "http-proxy": "1.18.1",
     "lodash.throttle": "4.1.1",
     "nav-frontend-alertstriper": "3.0.23",
