@@ -112,7 +112,7 @@ export const UtvidbarTittel = (utvidbarTittelProps: UtvidbarTittelProps) => {
         )}: `}</span>
         {sykmelding.diagnose.hoveddiagnose && (
           <span className="utvidbarTittel__diagnose">
-            {sykmelding.diagnose.hoveddiagnose.diagnosekode}
+            {`${sykmelding.diagnose.hoveddiagnose.diagnosekode} - ${sykmelding.diagnose.hoveddiagnose.diagnose}`}
           </span>
         )}
         <span className="utvidbarTittel__grad">
