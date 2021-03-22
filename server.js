@@ -322,7 +322,7 @@ server.use("/isprediksjon/api/v1/prediksjon", cookieParser(), (req, res) => {
   const options = {
     headers: {
       Authorization: `Bearer ${token}`,
-      fnr,
+      "nav-personident": fnr,
     },
   };
 
