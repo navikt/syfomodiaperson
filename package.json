@@ -31,7 +31,7 @@
     "cookie-parser": "1.4.4",
     "dayjs": "1.10.4",
     "deep-freeze": "0.0.1",
-    "express": "4.16.2",
+    "express": "4.17.1",
     "express-http-proxy": "1.6.0",
     "fetch-ponyfill": "7.1.0",
     "final-form": "4.20.2",
