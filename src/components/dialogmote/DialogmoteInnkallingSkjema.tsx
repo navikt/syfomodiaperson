@@ -1,5 +1,6 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import Panel from "nav-frontend-paneler";
+import ModalWrapper from "nav-frontend-modal";
 import DialogmoteInnkallingVelgArbeidsgiver from "./DialogmoteInnkallingVelgArbeidsgiver";
 import DialogmoteInnkallingTidOgSted from "./DialogmoteInnkallingTidOgSted";
 import DialogmoteInnkallingTekster from "./DialogmoteInnkallingTekster";
@@ -22,6 +23,7 @@ import { useNavEnhet } from "../../hooks/useNavEnhet";
 import { AlertStripeFeil } from "nav-frontend-alertstriper";
 import { useAppSelector } from "../../hooks/hooks";
 import { useFnrParam } from "../../hooks/useFnrParam";
+import InnkallingForhandsvisning from "./InnkallingForhandsvisning";
 
 interface DialogmoteInnkallingSkjemaValues {
   arbeidsgiver: string;
@@ -95,6 +97,12 @@ const CancelButtonColumn = styled(Column)`
 `;
 
 const DialogmoteInnkallingSkjema = (): ReactElement => {
+  // State som avgjør om en forhåndsvisningmodal skal vises, foreløpig er kun innbygger implementert
+  const [
+    visForhandsvisningArbeidstaker,
+    setVisForhandsvisningArbeidstaker,
+  ] = useState(false);
+
   const initialValues: Partial<DialogmoteInnkallingSkjemaValues> = {};
   const dispatch = useDispatch();
   const fnr = useFnrParam();
@@ -114,14 +122,32 @@ const DialogmoteInnkallingSkjema = (): ReactElement => {
     return <Redirect to={`/sykefravaer/${fnr}/moteoversikt`} />;
   }
 
+  // Legg til en ModalWrapper med forhåndsvisning, den må ligge inne i <Form> for at useFormState() skal fungere.
+  // Den trenger ikke noe data, siden den henter state fra formen selv. (Men kanskje info om hvilken bruker som er valgt for forhåndsvisning)
+  // Send en metode til tekster, som inneholder forhåndsvisningknappene, slik at man kan oppdatere vis/ikke vis modal.
   return (
     <Panel>
       <Form initialValues={initialValues} onSubmit={submit} validate={validate}>
         {({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
+            <ModalWrapper
+              isOpen={visForhandsvisningArbeidstaker}
+              onRequestClose={() => setVisForhandsvisningArbeidstaker(false)}
+              closeButton={true}
+              contentLabel={"Content Label!"}
+              ariaHideApp={false}
+            >
+              <InnkallingForhandsvisning />
+            </ModalWrapper>
             <DialogmoteInnkallingVelgArbeidsgiver />
             <DialogmoteInnkallingTidOgSted />
-            <DialogmoteInnkallingTekster />
+            <DialogmoteInnkallingTekster
+              onClick={() => {
+                setVisForhandsvisningArbeidstaker(
+                  !visForhandsvisningArbeidstaker
+                );
+              }}
+            />
             {senderInnkallingFeilet && (
               <DialogmoteInnkallingSkjemaRow>
                 <Column className="col-xs-12">

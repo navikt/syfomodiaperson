@@ -19,6 +19,7 @@ const texts = {
 interface FritekstBoksProps {
   fieldName: string;
   label: string;
+  onClick: () => void;
 }
 
 const TeksterAlert = styled(AlertStripe)`
@@ -36,7 +37,7 @@ const TextAreaRow = styled(Row)`
   margin-bottom: 1rem;
 `;
 
-const FritekstBoks = ({ fieldName, label }: FritekstBoksProps) => (
+const FritekstBoks = ({ fieldName, label, onClick }: FritekstBoksProps) => (
   <FritekstBoksRow>
     <Column className="col-xs-12">
       <TextAreaRow>
@@ -48,12 +49,27 @@ const FritekstBoks = ({ fieldName, label }: FritekstBoksProps) => (
           </Field>
         </Column>
       </TextAreaRow>
-      <Knapp htmlType="button">{texts.preview}</Knapp>
+      <Knapp htmlType="button" onClick={onClick}>
+        {texts.preview}
+      </Knapp>
     </Column>
   </FritekstBoksRow>
 );
 
-const DialogmoteInnkallingTekster = (): ReactElement => (
+const noOp = () => {
+  // Do nothing
+};
+
+interface DialogmoteInnkallingTeksterProps {
+  onClick: () => void;
+}
+
+// Denne tar nå inn en metode som oppdaterer state i Skjemaet, slik at vi vet om modalen skal vises eller ikke
+// Send metoden til <FritekstBoks> siden knappen ligger der
+// AG-knappen er ikke i bruk enda.
+const DialogmoteInnkallingTekster = ({
+  onClick,
+}: DialogmoteInnkallingTeksterProps): ReactElement => (
   <DialogmoteInnkallingSkjemaSeksjon>
     <DialogmoteInnkallingSkjemaTittel>
       {texts.title}
@@ -62,10 +78,12 @@ const DialogmoteInnkallingTekster = (): ReactElement => (
     <FritekstBoks
       fieldName="fritekstArbeidstaker"
       label={texts.sykmeldtLabel}
+      onClick={onClick}
     />
     <FritekstBoks
       fieldName="fritekstArbeidsgiver"
       label={texts.arbeidsgiverLabel}
+      onClick={noOp}
     />
   </DialogmoteInnkallingSkjemaSeksjon>
 );
