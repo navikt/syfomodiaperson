@@ -13,17 +13,12 @@ import VedtakUnselected from "../VedtakUnselected";
 import VedtakColumn from "../VedtakColumn";
 import VedtakInfoBox from "../VedtakInfoBox";
 import { sjekkTilgang } from "../../../data/tilgang/tilgang_actions";
-import AppSpinner from "../../AppSpinner";
-import { useTilgang } from "../../../hooks/useTilgang";
-import {
-  MappeAdvarselImage,
-  MappeFeilImage,
-} from "../../../../img/ImageComponents";
+import { MappeAdvarselImage } from "../../../../img/ImageComponents";
 import { useValgtPersonident } from "../../../hooks/useValgtBruker";
+import SideLaster from "../../SideLaster";
 
 const texts = {
   pageTitle: "Vedtak",
-  noAccess: "Du har ikke tilgang til denne personens vedtak",
   noVedtak: "Denne personen har ingen vedtak",
   comingSoon: `
        Dette er en tidlig versjon av vedtakshistorikken. 
@@ -39,7 +34,6 @@ const VedtakContainer = () => {
   const fnr = useValgtPersonident();
 
   const vedtakState = useSelector((state: any) => state.vedtak);
-  const { tilgang, hentetTilgang, henterTilgang } = useTilgang();
 
   const [selectedVedtak, setSelectedVedtak] = useState<VedtakDTO>();
   const dispatch = useDispatch();
@@ -49,42 +43,38 @@ const VedtakContainer = () => {
     dispatch(sjekkTilgang(fnr));
   }, []);
 
+  const harForsoktHentetAlt = vedtakState.hentingForsokt;
+  const hentingFeilet = vedtakState.hentingFeilet;
+
   return (
     <Side fnr={fnr} tittel={texts.pageTitle} aktivtMenypunkt={VEDTAK}>
-      <>
+      <SideLaster henter={!harForsoktHentetAlt} hentingFeilet={hentingFeilet}>
         <Row>
           <StyledAlertStripe>{texts.comingSoon}</StyledAlertStripe>
         </Row>
-        {vedtakState.henter && henterTilgang && <AppSpinner />}
-        {vedtakState.hentet && hentetTilgang && (
-          <Row>
-            {vedtakState.data.length > 0 && (
-              <VedtakColumn
-                data={vedtakState.data}
-                selectedVedtak={selectedVedtak}
-                setSelectedVedtak={setSelectedVedtak}
-              />
-            )}
+        <Row>
+          {vedtakState.data?.length > 0 && (
+            <VedtakColumn
+              data={vedtakState.data}
+              selectedVedtak={selectedVedtak}
+              setSelectedVedtak={setSelectedVedtak}
+            />
+          )}
 
-            {selectedVedtak && (
-              <Column className="col-xs-7">
-                <VedtakInfopanel selectedVedtak={selectedVedtak} />
-              </Column>
-            )}
+          {selectedVedtak && (
+            <Column className="col-xs-7">
+              <VedtakInfopanel selectedVedtak={selectedVedtak} />
+            </Column>
+          )}
 
-            {!selectedVedtak && vedtakState.data.length > 0 && (
-              <VedtakUnselected />
-            )}
-            {!vedtakState.data.length && (
-              <VedtakInfoBox title={texts.noVedtak} icon={MappeAdvarselImage} />
-            )}
-
-            {!tilgang.harTilgang && (
-              <VedtakInfoBox title={texts.noAccess} icon={MappeFeilImage} />
-            )}
-          </Row>
-        )}
-      </>
+          {!selectedVedtak && vedtakState.data?.length > 0 && (
+            <VedtakUnselected />
+          )}
+          {!vedtakState.data?.length && (
+            <VedtakInfoBox title={texts.noVedtak} icon={MappeAdvarselImage} />
+          )}
+        </Row>
+      </SideLaster>
     </Side>
   );
 };

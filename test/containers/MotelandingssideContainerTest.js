@@ -135,6 +135,7 @@ describe("MotelandingssideContainer", () => {
 
     it("Skal vise feilmelding hvis ikke tilgang", () => {
       mockState.tilgang = {
+        hentingForsokt: true,
         data: {
           harTilgang: false,
         },
@@ -150,6 +151,7 @@ describe("MotelandingssideContainer", () => {
 
     it("Skal vise feilmelding hvis hentingFeilet", () => {
       mockState.tilgang = {
+        hentingForsokt: true,
         hentingFeilet: true,
         data: {
           harTilgang: true,

@@ -1,13 +1,12 @@
-import { Tilgang } from "../data/tilgang/tilgang";
 import React, { ReactElement } from "react";
 import AppSpinner from "./AppSpinner";
 import Feilmelding from "./Feilmelding";
 import { hentBegrunnelseTekst } from "../utils/tilgangUtils";
+import { useAppSelector } from "../hooks/hooks";
 
 interface SideLasterProps {
   henter: boolean;
   hentingFeilet: boolean;
-  tilgang: Tilgang;
   children: ReactElement[] | ReactElement;
 }
 
@@ -18,20 +17,20 @@ const texts = {
 const SideLaster = ({
   henter,
   hentingFeilet,
-  tilgang,
   children,
 }: SideLasterProps): ReactElement => {
-  if (henter) {
+  const tilgangState = useAppSelector((state) => state.tilgang);
+  if (henter || !tilgangState.hentingForsokt) {
     return <AppSpinner />;
   }
-  if (hentingFeilet) {
+  if (hentingFeilet || tilgangState.hentingFeilet) {
     return <Feilmelding />;
   }
-  if (!tilgang.harTilgang) {
+  if (!tilgangState.data.harTilgang) {
     return (
       <Feilmelding
         tittel={texts.errorTitle}
-        melding={hentBegrunnelseTekst(tilgang.begrunnelse)}
+        melding={hentBegrunnelseTekst(tilgangState.data.begrunnelse)}
       />
     );
   }

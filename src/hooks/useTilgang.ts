@@ -4,6 +4,7 @@ export const useTilgang = () => {
   const {
     henter: henterTilgang,
     hentingFeilet: hentingTilgangFeilet,
+    hentingForsokt: hentingTilgangForsokt,
     hentet: hentetTilgang,
     data: tilgang,
   } = useAppSelector((state) => state.tilgang);
@@ -12,5 +13,6 @@ export const useTilgang = () => {
     henterTilgang,
     hentetTilgang,
     hentingTilgangFeilet,
+    hentingTilgangForsokt,
   };
 };

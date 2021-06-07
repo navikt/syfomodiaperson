@@ -19,7 +19,6 @@ import {
   harForsoktHentetMotebehov,
 } from "../../../utils/reducerUtils";
 import { useOppfoelgingsDialoger } from "../../../hooks/useOppfoelgingsDialoger";
-import { Tilgang } from "../../../data/tilgang/tilgang";
 import { DialogmoteOnskePanel } from "../../motebehov/DialogmoteOnskePanel";
 import { fetchDialogmote } from "../../../data/dialogmote/dialogmote_actions";
 import { MotehistorikkPanel } from "../../dialogmote/motehistorikk/MotehistorikkPanel";
@@ -48,7 +47,6 @@ export const Motelandingsside = ({ fnr }: Props) => {
     dialogmote,
     navbruker,
     veilederinfo,
-    tilgang,
     oppfolgingstilfelleperioder,
   } = useAppSelector((state) => state);
 
@@ -73,29 +71,17 @@ export const Motelandingsside = ({ fnr }: Props) => {
     });
   }, []);
 
-  const findRelevantTilgang = (): Tilgang => {
-    if (motebehov.tilgang?.harTilgang === false) return motebehov.tilgang;
-
-    return tilgang.data;
-  };
-
   const harForsoktHentetAlt =
     harForsoktHentetMotebehov(motebehov) &&
     harForsoktHentetOppfoelgingsdialoger &&
     harForsoktHentetLedere(ledere) &&
     !moter.henter &&
-    !dialogmote.henterMote &&
-    !tilgang.henter;
+    !dialogmote.henterMote;
 
   return (
     <SideLaster
       henter={!harForsoktHentetAlt}
-      hentingFeilet={
-        motebehov.hentingFeilet ||
-        dialogmote.henterMoteFeilet ||
-        tilgang.hentingFeilet
-      }
-      tilgang={findRelevantTilgang()}
+      hentingFeilet={motebehov.hentingFeilet || dialogmote.henterMoteFeilet}
     >
       <Sidetopp tittel={texts.dialogmoter} />
 

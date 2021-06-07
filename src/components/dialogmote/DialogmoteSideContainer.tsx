@@ -1,7 +1,6 @@
 import React, { ReactElement, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../hooks/hooks";
-import { useTilgang } from "../../hooks/useTilgang";
 import { useDispatch } from "react-redux";
 import { fetchDialogmote } from "../../data/dialogmote/dialogmote_actions";
 import Side from "../../sider/Side";
@@ -36,7 +35,6 @@ export const DialogmoteSideContainer = ({
     dialogmoter,
     moterHentet,
   } = useAppSelector((state) => state.dialogmote);
-  const { tilgang, hentingTilgangFeilet, henterTilgang } = useTilgang();
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -45,19 +43,15 @@ export const DialogmoteSideContainer = ({
     }
   }, [moterHentet]);
 
-  const henter = henterTilgang || henterMote;
-  const hentingFeilet = hentingTilgangFeilet || henterMoteFeilet;
+  const henter = henterMote;
+  const hentingFeilet = henterMoteFeilet;
   const dialogmote = dialogmoter.find(
     (dialogmote) => dialogmote.uuid === dialogmoteUuid
   );
 
   return (
     <Side fnr={fnr} tittel={title} aktivtMenypunkt={MOETEPLANLEGGER}>
-      <SideLaster
-        henter={henter}
-        hentingFeilet={hentingFeilet}
-        tilgang={tilgang}
-      >
+      <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
         <Sidetopp tittel={header} />
         {dialogmote ? (
           children(dialogmote)

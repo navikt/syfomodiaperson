@@ -3,20 +3,14 @@ import PropTypes from "prop-types";
 import { connect, useDispatch } from "react-redux";
 import Side from "../../../sider/Side";
 import * as oppdialogActions from "../../../data/oppfolgingsplan/oppfoelgingsdialoger_actions";
-import Feilmelding from "../../Feilmelding";
 import OppfolgingsplanerOversikt from "../oppfoelgingsdialoger/OppfolgingsplanerOversikt";
-import AppSpinner from "../../AppSpinner";
 import IngenPlaner from "../oppfoelgingsdialoger/IngenPlaner";
 import { OPPFOELGINGSPLANER } from "../../../enums/menypunkter";
-import { hentBegrunnelseTekst } from "../../../utils/tilgangUtils";
 import { activeOppfolgingsplaner } from "../../../utils/oppfolgingsplanerUtils";
 import { harForsoktHentetOppfoelgingsdialoger } from "../../../utils/reducerUtils";
 import { hentOppfolgingsplanerLPS } from "../../../data/oppfolgingsplan/oppfolgingsplanerlps_actions";
 import { hentPersonOppgaver } from "../../../data/personoppgave/personoppgave_actions";
-
-const texts = {
-  errorTitle: "Du har ikke tilgang til denne tjenesten",
-};
+import SideLaster from "../../SideLaster";
 
 const OppfoelgingsPlanerOversiktSide = ({
   aktiveDialoger,
@@ -25,7 +19,6 @@ const OppfoelgingsPlanerOversiktSide = ({
   oppfolgingsplanerLPS,
   henter,
   hentingFeilet,
-  tilgang,
   fnr,
   veilederIdent,
 }) => {
@@ -47,38 +40,26 @@ const OppfoelgingsPlanerOversiktSide = ({
       tittel="Oppfølgingsplaner"
       aktivtMenypunkt={OPPFOELGINGSPLANER}
     >
-      {(() => {
-        if (henter) {
-          return <AppSpinner />;
-        }
-        if (!tilgang.harTilgang) {
+      <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
+        {(() => {
+          if (
+            aktiveDialoger.length === 0 &&
+            inaktiveDialoger.length === 0 &&
+            oppfolgingsplanerLPS.length === 0
+          ) {
+            return <IngenPlaner />;
+          }
           return (
-            <Feilmelding
-              tittel={texts.errorTitle}
-              melding={hentBegrunnelseTekst(tilgang.begrunnelse)}
+            <OppfolgingsplanerOversikt
+              aktiveDialoger={aktiveDialoger}
+              inaktiveDialoger={inaktiveDialoger}
+              oppfolgingsplanerLPS={oppfolgingsplanerLPS}
+              fnr={fnr}
+              veilederIdent={veilederIdent}
             />
           );
-        }
-        if (hentingFeilet) {
-          return <Feilmelding />;
-        }
-        if (
-          aktiveDialoger.length === 0 &&
-          inaktiveDialoger.length === 0 &&
-          oppfolgingsplanerLPS.length === 0
-        ) {
-          return <IngenPlaner />;
-        }
-        return (
-          <OppfolgingsplanerOversikt
-            aktiveDialoger={aktiveDialoger}
-            inaktiveDialoger={inaktiveDialoger}
-            oppfolgingsplanerLPS={oppfolgingsplanerLPS}
-            fnr={fnr}
-            veilederIdent={veilederIdent}
-          />
-        );
-      })()}
+        })()}
+      </SideLaster>
     </Side>
   );
 };
@@ -91,7 +72,6 @@ OppfoelgingsPlanerOversiktSide.propTypes = {
   personOppgaveList: PropTypes.array,
   henter: PropTypes.bool,
   hentingFeilet: PropTypes.bool,
-  tilgang: PropTypes.object,
   veilederIdent: PropTypes.string,
 };
 
@@ -100,12 +80,11 @@ export function mapStateToProps(state) {
     harForsoktHentetOppfoelgingsdialoger(state.oppfoelgingsdialoger) &&
     state.oppfolgingsplanerlps.hentingForsokt &&
     state.personoppgaver.hentingForsokt;
-  const henter = !harForsoktHentetAlt || state.tilgang.henter;
+  const henter = !harForsoktHentetAlt;
   const hentingFeilet =
     state.oppfoelgingsdialoger.hentingFeilet ||
     state.oppfolgingsplanerlps.hentingFeilet ||
-    state.personoppgaver.hentingFeilet ||
-    state.tilgang.hentingFeilet;
+    state.personoppgaver.hentingFeilet;
 
   const oppfoelgingsdialoger = state.oppfoelgingsdialoger.data;
   const oppfolgingsplanerLPS = state.oppfolgingsplanerlps.data;
@@ -130,7 +109,6 @@ export function mapStateToProps(state) {
     aktiveDialoger,
     oppfolgingsplanerLPS,
     personOppgaveList,
-    tilgang: state.tilgang.data,
     veilederIdent: state.veilederinfo.data && state.veilederinfo.data.ident,
   };
 }

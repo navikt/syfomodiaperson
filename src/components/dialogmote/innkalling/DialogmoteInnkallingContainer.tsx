@@ -6,7 +6,6 @@ import DialogmoteInnkallingSkjema from "./DialogmoteInnkallingSkjema";
 import SideLaster from "../../SideLaster";
 import styled from "styled-components";
 import { useLedere } from "../../../hooks/useLedere";
-import { useTilgang } from "../../../hooks/useTilgang";
 import { useValgtPersonident } from "../../../hooks/useValgtBruker";
 import { AlertstripeFullbredde } from "../../AlertstripeFullbredde";
 
@@ -24,18 +23,13 @@ const DialogmoteInnkallingWarningAlert = styled(AlertstripeFullbredde)`
 const DialogmoteInnkallingContainer = (): ReactElement => {
   const fnr = useValgtPersonident();
   const { henterLedere, hentingLedereFeilet } = useLedere();
-  const { henterTilgang, hentingTilgangFeilet, tilgang } = useTilgang();
 
-  const henter = henterTilgang || henterLedere;
-  const hentingFeilet = hentingTilgangFeilet || hentingLedereFeilet;
+  const henter = henterLedere;
+  const hentingFeilet = hentingLedereFeilet;
 
   return (
     <Side fnr={fnr} tittel={texts.pageTitle} aktivtMenypunkt={MOETEPLANLEGGER}>
-      <SideLaster
-        henter={henter}
-        hentingFeilet={hentingFeilet}
-        tilgang={tilgang}
-      >
+      <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
         <Sidetopp tittel={texts.pageHeader} />
         <DialogmoteInnkallingWarningAlert type="advarsel">
           {texts.alert}

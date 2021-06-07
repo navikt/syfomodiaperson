@@ -6,19 +6,15 @@ import { hentOppfolgingstilfelleperioder } from "../../../data/oppfolgingstilfel
 import { hentSykmeldinger } from "../../../data/sykmelding/sykmeldinger_actions";
 import { hentLedere } from "../../../data/leder/ledere_actions";
 import { NOKKELINFORMASJON } from "../../../enums/menypunkter";
-import { hentBegrunnelseTekst } from "../../../utils/tilgangUtils";
 import { harForsoktHentetLedere } from "../../../utils/reducerUtils";
 import Side from "../../../sider/Side";
-import Feilmelding from "../../Feilmelding";
-import AppSpinner from "../../AppSpinner";
 import Nokkelinformasjon from "../Nokkelinformasjon";
 import { useOppfoelgingsDialoger } from "../../../hooks/useOppfoelgingsDialoger";
-import { useTilgang } from "../../../hooks/useTilgang";
 import { useValgtPersonident } from "../../../hooks/useValgtBruker";
+import SideLaster from "../../SideLaster";
 
 const texts = {
   pageTitle: "Nøkkelinformasjon",
-  feilmelding: "Du har ikke tilgang til denne tjenesten",
 };
 
 export const NokkelinformasjonSide = () => {
@@ -41,7 +37,6 @@ export const NokkelinformasjonSide = () => {
 
   const ledereState = useSelector((state: any) => state.ledere);
   const sykmeldingerState = useSelector((state: any) => state.sykmeldinger);
-  const { tilgang } = useTilgang();
 
   const harForsoktHentetAlt =
     harForsoktHentetOppfoelgingsdialoger && harForsoktHentetLedere(ledereState);
@@ -74,32 +69,18 @@ export const NokkelinformasjonSide = () => {
       tittel={texts.pageTitle}
       aktivtMenypunkt={NOKKELINFORMASJON}
     >
-      {(() => {
-        if (henter) {
-          return <AppSpinner />;
-        } else if (!tilgang.harTilgang) {
-          return (
-            <Feilmelding
-              tittel={texts.feilmelding}
-              melding={hentBegrunnelseTekst(tilgang.begrunnelse)}
-            />
-          );
-        } else if (hentingFeilet) {
-          return <Feilmelding />;
-        }
-        return (
-          <Nokkelinformasjon
-            fnr={fnr}
-            aktiveDialoger={aktiveDialoger}
-            oppfolgingstilfelleUtenArbeidsgiver={
-              oppfolgingstilfelleUtenArbeidsgiver
-            }
-            oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}
-            sykmeldinger={sykmeldinger}
-            pageTitle={texts.pageTitle}
-          />
-        );
-      })()}
+      <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
+        <Nokkelinformasjon
+          fnr={fnr}
+          aktiveDialoger={aktiveDialoger}
+          oppfolgingstilfelleUtenArbeidsgiver={
+            oppfolgingstilfelleUtenArbeidsgiver
+          }
+          oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}
+          sykmeldinger={sykmeldinger}
+          pageTitle={texts.pageTitle}
+        />
+      </SideLaster>
     </Side>
   );
 };

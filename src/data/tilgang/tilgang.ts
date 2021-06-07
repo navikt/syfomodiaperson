@@ -15,6 +15,7 @@ export interface TilgangState {
   henter: boolean;
   hentet: boolean;
   hentingFeilet: boolean;
+  hentingForsokt: boolean;
   data: Tilgang;
 }
 
@@ -22,6 +23,7 @@ const initialState: TilgangState = {
   henter: false,
   hentet: false,
   hentingFeilet: false,
+  hentingForsokt: false,
   data: {
     harTilgang: false,
   },
@@ -36,6 +38,7 @@ const tilgang: Reducer<TilgangState> = (
       return Object.assign({}, state, {
         henter: true,
         hentingFeilet: false,
+        hentingForsokt: false,
       });
     }
     case HAR_TILGANG: {
@@ -46,6 +49,7 @@ const tilgang: Reducer<TilgangState> = (
         henter: false,
         hentingFeilet: false,
         hentet: true,
+        hentingForsokt: true,
       });
     }
     case HAR_IKKE_TILGANG: {
@@ -57,12 +61,14 @@ const tilgang: Reducer<TilgangState> = (
         henter: false,
         hentingFeilet: false,
         hentet: true,
+        hentingForsokt: true,
       });
     }
     case SJEKK_TILGANG_FEILET: {
       return Object.assign({}, state, {
         henter: false,
         hentingFeilet: true,
+        hentingForsokt: true,
       });
     }
     default: {

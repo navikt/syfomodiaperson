@@ -3,23 +3,16 @@ import PropTypes from "prop-types";
 import { connect, useDispatch } from "react-redux";
 import SideFullbredde from "../../../sider/SideFullbredde";
 import * as oppdialogActions from "../../../data/oppfolgingsplan/oppfoelgingsdialoger_actions";
-import Feilmelding from "../../Feilmelding";
 import Oppfolgingsplan from "../oppfoelgingsdialoger/Oppfolgingsplan";
-import AppSpinner from "../../AppSpinner";
 import { OPPFOELGINGSPLANER } from "../../../enums/menypunkter";
-import { hentBegrunnelseTekst } from "../../../utils/tilgangUtils";
 import { harForsoktHentetOppfoelgingsdialoger } from "../../../utils/reducerUtils";
-
-const texts = {
-  errorTitle: "Du har ikke tilgang til denne tjenesten",
-};
+import SideLaster from "../../SideLaster";
 
 const OppfoelgingsPlanerOversiktSide = ({
   fnr,
   henter,
   hentingFeilet,
   oppfoelgingsdialog,
-  tilgang,
 }) => {
   const dispatch = useDispatch();
 
@@ -33,23 +26,9 @@ const OppfoelgingsPlanerOversiktSide = ({
       tittel="Oppfølgingsplan"
       aktivtMenypunkt={OPPFOELGINGSPLANER}
     >
-      {(() => {
-        if (henter) {
-          return <AppSpinner />;
-        }
-        if (!tilgang.harTilgang) {
-          return (
-            <Feilmelding
-              tittel={texts.errorTitle}
-              melding={hentBegrunnelseTekst(tilgang.begrunnelse)}
-            />
-          );
-        }
-        if (hentingFeilet) {
-          return <Feilmelding />;
-        }
-        return <Oppfolgingsplan oppfolgingsplan={oppfoelgingsdialog} />;
-      })()}
+      <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
+        <Oppfolgingsplan oppfolgingsplan={oppfoelgingsdialog} />
+      </SideLaster>
     </SideFullbredde>
   );
 };
@@ -59,7 +38,6 @@ OppfoelgingsPlanerOversiktSide.propTypes = {
   oppfoelgingsdialog: PropTypes.object,
   henter: PropTypes.bool,
   hentingFeilet: PropTypes.bool,
-  tilgang: PropTypes.object,
 };
 
 export function mapStateToProps(state, ownProps) {
@@ -67,10 +45,8 @@ export function mapStateToProps(state, ownProps) {
   const harForsoktHentetAlt = harForsoktHentetOppfoelgingsdialoger(
     state.oppfoelgingsdialoger
   );
-  const henter =
-    !harForsoktHentetAlt || state.tilgang.henter || state.veilederinfo.henter;
-  const hentingFeilet =
-    state.oppfoelgingsdialoger.hentingFeilet || state.tilgang.hentingFeilet;
+  const henter = !harForsoktHentetAlt || state.veilederinfo.henter;
+  const hentingFeilet = state.oppfoelgingsdialoger.hentingFeilet;
 
   const oppfoelgingsdialog = state.oppfoelgingsdialoger.data.filter(
     (dialog) => {
@@ -83,7 +59,6 @@ export function mapStateToProps(state, ownProps) {
     fnr: state.valgtbruker.personident,
     henter,
     hentingFeilet,
-    tilgang: state.tilgang.data,
   };
 }
 

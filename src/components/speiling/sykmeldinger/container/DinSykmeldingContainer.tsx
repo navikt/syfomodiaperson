@@ -8,21 +8,17 @@ import {
 import Side from "../../../../sider/Side";
 import SidetoppSpeilet from "../../../SidetoppSpeilet";
 import SykmeldingSide from "../sykmelding/SykmeldingSide";
-import Feilmelding from "../../../Feilmelding";
-import AppSpinner from "../../../AppSpinner";
 import Brodsmuler from "../../Brodsmuler";
 import Speilingvarsel from "../../Speilingvarsel";
 import { SYKMELDINGER } from "../../../../enums/menypunkter";
 import { ARBEIDSTAKER } from "../../../../enums/arbeidssituasjoner";
-import { hentBegrunnelseTekst } from "../../../../utils/tilgangUtils";
 import { harForsoktHentetSykmeldinger } from "../../../../utils/reducerUtils";
-import { useTilgang } from "../../../../hooks/useTilgang";
 import { useValgtPersonident } from "../../../../hooks/useValgtBruker";
+import SideLaster from "../../../SideLaster";
 
 const texts = {
   pageTitleSykmelding: "Sykmelding",
   pageTitleEgenmelding: "Egenmelding",
-  feilmelding: "Du har ikke tilgang til denne tjenesten",
 };
 
 const pageTitle = (dinSykmelding?: SykmeldingOldFormat) => {
@@ -46,11 +42,10 @@ const DinSykmeldingSide = () => {
 
   const navbrukerState = useSelector((state: any) => state.navbruker);
   const sykmeldingerState = useSelector((state: any) => state.sykmeldinger);
-  const { tilgang, hentingTilgangFeilet } = useTilgang();
 
   const harForsoktHentetAlt = harForsoktHentetSykmeldinger(sykmeldingerState);
   const henter = !harForsoktHentetAlt;
-  const hentingFeilet = sykmeldingerState.hentingFeilet || hentingTilgangFeilet;
+  const hentingFeilet = sykmeldingerState.hentingFeilet;
   const dinSykmelding = getSykmelding(sykmeldingerState.data, sykmeldingId);
   let arbeidsgiversSykmelding = {} as SykmeldingOldFormat | undefined;
 
@@ -91,36 +86,19 @@ const DinSykmeldingSide = () => {
       tittel={texts.pageTitleSykmelding}
       aktivtMenypunkt={SYKMELDINGER}
     >
-      {(() => {
-        if (henter) {
-          return <AppSpinner />;
-        }
-        if (hentingFeilet) {
-          return <Feilmelding />;
-        }
-        if (!tilgang.harTilgang) {
-          return (
-            <Feilmelding
-              tittel={texts.feilmelding}
-              melding={hentBegrunnelseTekst(tilgang.begrunnelse)}
+      <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
+        <div>
+          <Speilingvarsel brukernavn={brukernavn} />
+          <div className="speiling">
+            <Brodsmuler brodsmuler={brodsmuler} />
+            <SidetoppSpeilet tittel={pageTitle(dinSykmelding)} />
+            <SykmeldingSide
+              dinSykmelding={dinSykmelding}
+              arbeidsgiversSykmelding={arbeidsgiversSykmelding}
             />
-          );
-        }
-
-        return (
-          <div>
-            <Speilingvarsel brukernavn={brukernavn} />
-            <div className="speiling">
-              <Brodsmuler brodsmuler={brodsmuler} />
-              <SidetoppSpeilet tittel={pageTitle(dinSykmelding)} />
-              <SykmeldingSide
-                dinSykmelding={dinSykmelding}
-                arbeidsgiversSykmelding={arbeidsgiversSykmelding}
-              />
-            </div>
           </div>
-        );
-      })()}
+        </div>
+      </SideLaster>
     </Side>
   );
 };
