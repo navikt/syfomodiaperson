@@ -35,7 +35,7 @@
     "axios": "0.21.1",
     "classnames": "2.3.1",
     "cookie-parser": "1.4.5",
-    "dayjs": "1.10.4",
+    "dayjs": "1.10.6",
     "deep-freeze": "0.0.1",
     "express": "4.17.1",
     "express-http-proxy": "1.6.2",
