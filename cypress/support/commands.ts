@@ -26,3 +26,11 @@
 Cypress.Commands.add("dataCy", (value) => {
   return cy.get(`[data-cy=${value}]`);
 });
+
+Cypress.Commands.add("OAuth2Login", () => {
+  cy.get('input[name="username"]').type("La den rette komme inn!");
+
+  cy.get('input[name="acr"]').type(`Sesam sesam`);
+
+  cy.get("input[value=Sign-in]").click();
+});

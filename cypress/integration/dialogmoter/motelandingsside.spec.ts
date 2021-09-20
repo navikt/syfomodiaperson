@@ -4,6 +4,7 @@ import { selectors } from "../../support/constants";
 context("Møtelandingsside actions", () => {
   beforeEach(() => {
     cy.visit("/sykefravaer/moteoversikt");
+    cy.OAuth2Login();
   });
 
   it("Oppretter nytt møte der behandler skal være med", () => {

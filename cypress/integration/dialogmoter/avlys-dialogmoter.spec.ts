@@ -10,6 +10,7 @@ context("Avlys dialogmøte", () => {
   beforeEach(() => {
     cy.stubMoter(MoteState.INNKALT_DIALOGMOTE);
     cy.visit("/sykefravaer/moteoversikt");
+    cy.OAuth2Login();
   });
 
   it("Tester feilhåndtering for manglende begrunnelse", () => {

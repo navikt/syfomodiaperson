@@ -22,6 +22,8 @@ declare global {
       dataCy(value: string): Chainable<Element>;
 
       stubMoter(state: MoteState): Chainable<Element>;
+
+      OAuth2Login(): Chainable<Element>;
     }
   }
 }

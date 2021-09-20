@@ -12,6 +12,7 @@ context("Ferdigstill dialogmøte", () => {
   beforeEach(() => {
     cy.stubMoter(MoteState.INNKALT_DIALOGMOTE);
     cy.visit("/sykefravaer/moteoversikt");
+    cy.OAuth2Login();
   });
 
   it("Går til skriv referat, sjekker forhåndsvisning og avbryter", () => {
