@@ -17,12 +17,14 @@ const texts = {
 };
 
 export const getData = (values) => {
-  return values.tidspunkter.map((tidspunkt) => {
-    return {
-      tid: genererDato(tidspunkt.dato, tidspunkt.klokkeslett),
-      valgt: false,
-    };
-  });
+  return values.tidspunkter
+    .filter((tidspunkt) => tidspunkt.dato && tidspunkt.klokkeslett)
+    .map((tidspunkt) => {
+      return {
+        tid: genererDato(tidspunkt.dato, tidspunkt.klokkeslett),
+        valgt: false,
+      };
+    });
 };
 
 export const dekorerMedSted = (data, sted) => {
@@ -67,9 +69,11 @@ export const FlereTidspunktSkjema = (props) => {
     setShowSameTidspunktErrorMessage,
   ] = useState(false);
   const submit = (values) => {
-    const duplicateTidspunkt = values.tidspunkter.find((newAlternativ) => {
-      return alternativAlreadyExists(mote, newAlternativ);
-    });
+    const duplicateTidspunkt = (values.tidspunkter || []).find(
+      (newAlternativ) => {
+        return alternativAlreadyExists(mote, newAlternativ);
+      }
+    );
 
     if (duplicateTidspunkt) {
       setShowSameTidspunktErrorMessage(true);

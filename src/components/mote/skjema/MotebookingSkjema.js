@@ -30,12 +30,14 @@ const texts = {
 };
 
 export function getData(values) {
-  const alternativer = values.tidspunkter.map((tidspunkt) => {
-    return {
-      tid: genererDato(tidspunkt.dato, tidspunkt.klokkeslett),
-      sted: values.sted,
-    };
-  });
+  const alternativer = values.tidspunkter
+    .filter((tidspunkt) => tidspunkt.dato && tidspunkt.klokkeslett)
+    .map((tidspunkt) => {
+      return {
+        tid: genererDato(tidspunkt.dato, tidspunkt.klokkeslett),
+        sted: values.sted,
+      };
+    });
   return {
     alternativer,
   };
