@@ -6,4 +6,5 @@ export type Toggles = {
 export enum ToggleNames {
   dm2 = "syfo.syfomodiaperson.dm2",
   dm2VarselFysiskBrev = "syfo.syfomodiaperson.dm2varselFysiskBrev",
+  dm2InnkallingFastlege = "syfo.syfomodiaperson.dm2innkallingFastlege",
 }
