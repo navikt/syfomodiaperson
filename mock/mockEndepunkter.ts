@@ -11,7 +11,6 @@ import { mockSyfobehandlendeenhet } from "./syfobehandlendeenhet/mockSyfobehandl
 import { mockSyfoperson } from "./syfoperson/mockSyfoperson";
 import { mockSyfosmregister } from "./syfosmregister/mockSyfosmregister";
 import { mockIspengestopp } from "./ispengestopp/mockIspengestopp";
-import { mockIsprediksjon } from "./isprediksjon/mockIsprediksjon";
 import { mockVedtak } from "./spinnsyn/mockVedtak";
 import { mockIsdialogmote } from "./isdialogmote/mockIsdialogmote";
 import { mockSyfoveileder } from "./syfoveileder/mockSyfoveileder";
@@ -37,7 +36,6 @@ const mockEndepunkter = (server) => {
     mockSyfoperson,
     mockSyfosmregister,
     mockIspengestopp,
-    mockIsprediksjon,
     mockVedtak,
     mockIsdialogmote,
     mockSyfoveileder,

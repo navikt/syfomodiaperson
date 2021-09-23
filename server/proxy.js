@@ -123,10 +123,6 @@ const setup = (authClient) => {
     proxyOnBehalfOf(req, res, next, authClient, Config.auth.ispersonoppgave);
   });
 
-  router.use("/isprediksjon/*", (req, res, next) => {
-    proxyOnBehalfOf(req, res, next, authClient, Config.auth.isprediksjon);
-  });
-
   router.use("/fastlegerest/*", (req, res, next) => {
     proxyOnBehalfOf(req, res, next, authClient, Config.auth.fastlegerest);
   });

@@ -5,8 +5,6 @@ import { hentMoter } from "@/data/mote/moter_actions";
 import { useAppSelector } from "@/hooks/hooks";
 import UtdragFraSykefravaeretPanel from "../../utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { InnkallingDialogmotePanel } from "./innkalling/InnkallingDialogmotePanel";
-import { erLokal } from "@/utils/miljoUtil";
-import PrediksjonVisningPanel from "../../Prediksjon/PrediksjonVisning";
 import SideLaster from "../../SideLaster";
 import { hentLedere } from "@/data/leder/ledere_actions";
 import { hentMotebehov } from "@/data/motebehov/motebehov_actions";
@@ -90,8 +88,6 @@ export const Motelandingsside = ({ fnr }: Props) => {
       />
 
       <InnkallingDialogmotePanel />
-
-      {erLokal() ? <PrediksjonVisningPanel fnr={fnr} /> : <></>}
 
       <UtdragFraSykefravaeretPanel
         aktiveDialoger={aktiveDialoger}

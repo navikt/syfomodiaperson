@@ -158,16 +158,6 @@ const auth = {
     }),
     removePathPrefix: true,
   },
-  isprediksjon: {
-    applicationName: "isprediksjon",
-    clientId: envVar({
-      name: "ISPREDIKSJON_AAD_APP_CLIENT_ID",
-    }),
-    host: envVar({
-      name: "ISPREDIKSJON_HOST",
-    }),
-    removePathPrefix: true,
-  },
   modiacontextholder: {
     applicationName: "modiacontextholder",
     clientId: graphapiClientId,

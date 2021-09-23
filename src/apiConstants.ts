@@ -2,7 +2,6 @@ export const FASTLEGEREST_ROOT = "/fastlegerest/api/v2/fastlege";
 export const ISDIALOGMOTE_ROOT = "/isdialogmote/api/v2";
 export const ISPENGESTOPP_ROOT = "/ispengestopp/api/v2";
 export const ISPERSONOPPGAVE_ROOT = "/ispersonoppgave/api/v2";
-export const ISPREDIKSJON_ROOT = "/isprediksjon/api/v2";
 export const MODIACONTEXTHOLDER_ROOT = "/modiacontextholder/api";
 export const MODIASYFOREST_ROOT = "/modiasyforest/api/internad/v2";
 export const SYFOBEHANDLENDEENHET_ROOT =

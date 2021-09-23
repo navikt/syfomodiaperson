@@ -78,10 +78,6 @@ spec:
       value: "2acdc183-399f-4e67-a011-83ea72d83176"
     - name: ISPERSONOPPGAVE_HOST
       value: "ispersonoppgave.intern.nav.no"
-    - name: ISPREDIKSJON_AAD_APP_CLIENT_ID
-      value: "332ff36d-b9fe-41f7-9910-b18a9fd099b5"
-    - name: ISPREDIKSJON_HOST
-      value: "isprediksjon.intern.nav.no"
     - name: MODIACONTEXTHOLDER_HOST
       value: "modiacontextholder.intern.nav.no"
     - name: MODIASYFOREST_AAD_APP_CLIENT_ID
