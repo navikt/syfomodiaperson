@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 import IngenBrukerContainer from "../containers/IngenBrukerContainer";
 import MotebookingContainer from "../components/mote/container/MotebookingContainer";
 import AvbrytMoteContainer from "../components/mote/container/AvbrytMoteContainer";
@@ -39,6 +39,9 @@ const getFnrFromParams = (): string => {
 const AktivBrukerRouter = (): ReactElement => {
   return (
     <Router>
+      <Route exact path="/">
+        <Redirect to="/sykefravaer" />
+      </Route>
       <Route path="/sykefravaer" exact component={NokkelinformasjonContainer} />
       <Route
         path="/sykefravaer/nokkelinformasjon"
