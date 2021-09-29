@@ -25,7 +25,7 @@ class ByUserId extends Strategy {
   }
 
   isEnabled(parameters, context) {
-    return parameters.user.indexOf(context.user) !== -1;
+    return context.user && parameters.user.indexOf(context.user) !== -1;
   }
 }
 

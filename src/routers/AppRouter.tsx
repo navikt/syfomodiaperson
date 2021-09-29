@@ -156,15 +156,17 @@ const AktivBrukerLoader = () => {
 const AppRouter = () => {
   const fnrFromParam = getFnrFromParams();
   const userProperties = useUserProperties();
-  const userId = useAppSelector((state) => state.veilederinfo.data?.ident);
+  const veilederIdent = useAppSelector(
+    (state) => state.veilederinfo.data?.ident
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (userProperties.valgtEnhet && userId) {
-      dispatch(fetchUnleashToggles(userProperties.valgtEnhet, userId));
+    if (userProperties.valgtEnhet || veilederIdent) {
+      dispatch(fetchUnleashToggles(userProperties.valgtEnhet, veilederIdent));
       setAmplitudeUserProperties(userProperties);
     }
-  }, [dispatch, userProperties, userId]);
+  }, [dispatch, userProperties, veilederIdent]);
 
   useEffect(() => {
     if (erGyldigFodselsnummer(fnrFromParam)) {
