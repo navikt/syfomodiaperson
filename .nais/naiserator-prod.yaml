@@ -66,6 +66,10 @@ spec:
       value: "flex-intern-gateway.intern.nav.no"
     - name: INTERNARBEIDSFLATEDECORATOR_HOST
       value: "internarbeidsflatedecorator.intern.nav.no"
+    - name: ISDIALOGMELDING_AAD_APP_CLIENT_ID
+      value: "prod-gcp.teamsykefravr.isdialogmelding"
+    - name: ISDIALOGMELDING_HOST
+      value: "isdialogmelding.intern.nav.no"
     - name: ISDIALOGMOTE_AAD_APP_CLIENT_ID
       value: "4898e614-e73d-4067-aafd-5afc2254c6b6"
     - name: ISDIALOGMOTE_HOST

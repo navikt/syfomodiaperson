@@ -15,6 +15,7 @@ import { mockVedtak } from "./spinnsyn/mockVedtak";
 import { mockIsdialogmote } from "./isdialogmote/mockIsdialogmote";
 import { mockSyfoveileder } from "./syfoveileder/mockSyfoveileder";
 import { mockUnleash } from "./unleash/mockUnleash";
+import { mockIsdialogmelding } from "./isdialogmelding/mockIsdialogmelding";
 
 const express = require("express");
 
@@ -38,6 +39,7 @@ const mockEndepunkter = (server) => {
     mockIspengestopp,
     mockVedtak,
     mockIsdialogmote,
+    mockIsdialogmelding,
     mockSyfoveileder,
     mockUnleash,
   ].forEach((func) => {

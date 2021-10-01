@@ -128,6 +128,16 @@ const auth = {
       name: "FLEX_INTERN_GATEWAY_HOST",
     }),
   },
+  isdialogmelding: {
+    applicationName: "isdialogmelding",
+    clientId: envVar({
+      name: "ISDIALOGMELDING_AAD_APP_CLIENT_ID",
+    }),
+    host: envVar({
+      name: "ISDIALOGMELDING_HOST",
+    }),
+    removePathPrefix: true,
+  },
   isdialogmote: {
     applicationName: "isdialogmote",
     clientId: envVar({

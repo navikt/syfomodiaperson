@@ -1,5 +1,6 @@
 export const FASTLEGEREST_ROOT = "/fastlegerest/api/v2/fastlege";
 export const ISDIALOGMOTE_ROOT = "/isdialogmote/api/v2";
+export const ISDIALOGMELDING_ROOT = "/isdialogmelding/api/v1";
 export const ISPENGESTOPP_ROOT = "/ispengestopp/api/v2";
 export const ISPERSONOPPGAVE_ROOT = "/ispersonoppgave/api/v2";
 export const MODIACONTEXTHOLDER_ROOT = "/modiacontextholder/api";

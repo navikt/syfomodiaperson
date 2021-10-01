@@ -115,6 +115,10 @@ const setup = (authClient) => {
     proxyOnBehalfOf(req, res, next, authClient, Config.auth.isdialogmote);
   });
 
+  router.use("/isdialogmelding/*", (req, res, next) => {
+    proxyOnBehalfOf(req, res, next, authClient, Config.auth.isdialogmelding);
+  });
+
   router.use("/ispengestopp/*", (req, res, next) => {
     proxyOnBehalfOf(req, res, next, authClient, Config.auth.ispengestopp);
   });

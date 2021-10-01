@@ -7,6 +7,8 @@ import "./styles/styles.less";
 import { initAmplitude } from "./amplitude/amplitude";
 import * as Sentry from "@sentry/react";
 import { getEnvironmentAsString } from "./utils/miljoUtil";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { minutesToMillis } from "@/utils/timeUtils";
 
 const store = setupStore();
 
@@ -16,9 +18,21 @@ Sentry.init({
   environment: getEnvironmentAsString(),
 });
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      cacheTime: minutesToMillis(60),
+      staleTime: minutesToMillis(30),
+    },
+  },
+});
+
 ReactDOM.render(
   <Provider store={store}>
-    <AppRouter />
+    <QueryClientProvider client={queryClient}>
+      <AppRouter />
+    </QueryClientProvider>
   </Provider>,
   document.getElementById("maincontent")
 );
