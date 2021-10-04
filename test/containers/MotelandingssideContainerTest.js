@@ -11,6 +11,7 @@ import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
+import { NarmesteLederRelasjonStatus } from "../../mock/data/ledereMock";
 
 const realState = createStore(rootReducer).getState();
 const fnr = "19026900010";
@@ -70,18 +71,19 @@ describe("MotelandingssideContainer", () => {
           hentingForsokt: true,
           currentLedere: [
             {
-              navn: "Tatten Tattover",
-              id: 2,
-              aktoerId: "1902690001009",
-              tlf: "12345666",
-              epost: "test3@test.no",
-              aktiv: null,
-              erOppgitt: true,
-              fomDato: "2020-10-03",
-              orgnummer: "110110110",
-              organisasjonsnavn: "PONTYPANDY FIRE SERVICE",
+              uuid: "3",
+              arbeidstakerPersonIdentNumber: "19026900010",
+              virksomhetsnummer: "110110110",
+              virksomhetsnavn: "PONTYPANDY FIRE SERVICE",
+              narmesteLederPersonIdentNumber: "02690001009",
+              narmesteLederTelefonnummer: "12345666",
+              narmesteLederEpost: "test3@test.no",
+              narmesteLederNavn: "Tatten Tattover",
+              aktivFom: "2020-10-03",
               aktivTom: null,
               arbeidsgiverForskuttererLoenn: false,
+              timestamp: "2020-02-06T12:00:00+01:00",
+              status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
             },
           ],
         },

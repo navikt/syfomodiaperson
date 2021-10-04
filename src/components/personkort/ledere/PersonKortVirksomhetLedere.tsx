@@ -2,7 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { Row, Column } from "nav-frontend-grid";
 import { Undertekst } from "nav-frontend-typografi";
-import { Leder } from "@/data/leder/ledere";
+import {
+  NarmesteLederRelasjonDTO,
+  NarmesteLederRelasjonStatus,
+} from "@/data/leder/ledere";
 import { restdatoTildato } from "@/utils/datoUtils";
 import PersonKortVirksomhetHeader from "./PersonKortVirksomhetHeader";
 import EpostButton from "../EpostButton";
@@ -14,6 +17,20 @@ const texts = {
   orgnummer: "Org.nummer",
   startDate: "Meldt inn",
   active: "Nåværende",
+  deactivated: "Deaktivert",
+};
+
+const getNarmesteLederRelasjonStatusText = (
+  status: NarmesteLederRelasjonStatus
+) => {
+  switch (status) {
+    case NarmesteLederRelasjonStatus.INNMELDT_AKTIV:
+      return texts.active;
+    case NarmesteLederRelasjonStatus.DEAKTIVERT:
+      return texts.deactivated;
+    default:
+      return "";
+  }
 };
 
 const RowFullWidth = styled(Row)`
@@ -62,38 +79,38 @@ export const PersonKortVirksomhetLederColumn = (
 };
 
 interface PersonKortVirksomhetLederRowProps {
-  leder: Leder;
-  isActive: boolean;
+  leder: NarmesteLederRelasjonDTO;
 }
 
 export const PersonKortVirksomhetLederRow = (
   personKortVirksomhetLederRowProps: PersonKortVirksomhetLederRowProps
 ) => {
-  const { leder, isActive } = personKortVirksomhetLederRowProps;
+  const { leder } = personKortVirksomhetLederRowProps;
+  const isActive = leder.status === NarmesteLederRelasjonStatus.INNMELDT_AKTIV;
   return (
     <RowFullWidth>
       <PersonKortVirksomhetLederColumn
         colSize={4}
-        text={leder.navn}
+        text={leder.narmesteLederNavn}
         isActive={isActive}
       />
-      <EpostButton epost={leder.epost} />
+      <EpostButton epost={leder.narmesteLederEpost} />
       <PersonKortVirksomhetLederColumn
         colSize={2}
-        text={leder.tlf}
+        text={leder.narmesteLederTelefonnummer}
         isActive={isActive}
       />
-      {leder.fomDato && (
+      {leder.aktivFom && (
         <PersonKortVirksomhetLederColumn
           colSize={2}
-          text={restdatoTildato(leder.fomDato)}
+          text={restdatoTildato(leder.aktivFom)}
           isActive={isActive}
         />
       )}
-      {isActive && (
+      {leder.status && (
         <PersonKortVirksomhetLederColumn
           colSize={2}
-          text={texts.active}
+          text={getNarmesteLederRelasjonStatusText(leder.status)}
           isActive={isActive}
         />
       )}
@@ -123,14 +140,8 @@ const PersonKortVirksomhetLedere = (
     >
       <PersonKortVirksomhetLederIngressRow />
       {virksomhetLederMap[virksomhetsnummer].map(
-        (leder: Leder, idx: number) => {
-          return (
-            <PersonKortVirksomhetLederRow
-              key={idx}
-              leder={leder}
-              isActive={idx === 0}
-            />
-          );
+        (leder: NarmesteLederRelasjonDTO, idx: number) => {
+          return <PersonKortVirksomhetLederRow key={idx} leder={leder} />;
         }
       )}
     </PersonKortVirksomhetHeader>

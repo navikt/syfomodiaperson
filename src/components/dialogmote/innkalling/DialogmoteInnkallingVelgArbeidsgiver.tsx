@@ -32,7 +32,7 @@ const DialogmoteInnkallingVelgArbeidsgiver = (): ReactElement => {
       <Field<string> name={field}>
         {({ input, meta }) => {
           const valgtLeder = currentLedere.find(
-            (l) => l.orgnummer === input.value
+            (l) => l.virksomhetsnummer === input.value
           );
 
           return (
@@ -53,7 +53,7 @@ const DialogmoteInnkallingVelgArbeidsgiver = (): ReactElement => {
                       bredde="L"
                       label={texts.navnLabel}
                       disabled
-                      value={valgtLeder.navn}
+                      value={valgtLeder.narmesteLederNavn}
                     />
                   </LederNavnColumn>
                   <FlexColumn flex={1}>
@@ -61,7 +61,7 @@ const DialogmoteInnkallingVelgArbeidsgiver = (): ReactElement => {
                       bredde="L"
                       label={texts.epostLabel}
                       disabled
-                      value={valgtLeder.epost}
+                      value={valgtLeder.narmesteLederEpost}
                     />
                   </FlexColumn>
                 </FlexRow>

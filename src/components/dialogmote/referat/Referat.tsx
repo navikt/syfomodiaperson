@@ -111,7 +111,7 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
   const initialValues: Partial<ReferatSkjemaValues> = {
     naermesteLeder: getCurrentNarmesteLeder(
       dialogmote.arbeidsgiver.virksomhetsnummer
-    )?.navn,
+    )?.narmesteLederNavn,
   };
 
   if (ferdigstillDialogmote.isSuccess) {

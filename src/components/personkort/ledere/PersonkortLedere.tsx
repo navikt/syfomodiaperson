@@ -3,7 +3,7 @@ import {
   ledereWithActiveLedereFirst,
   virksomheterWithoutLeder,
 } from "@/utils/ledereUtils";
-import { Leder } from "@/data/leder/ledere";
+import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
 import { groupArrayByKey } from "@/utils/sortUtils";
 import PersonkortFeilmelding from "../PersonkortFeilmelding";
 import PersonKortVirksomhetLedere from "./PersonKortVirksomhetLedere";
@@ -14,14 +14,16 @@ const texts = {
     "Nærmeste leder mangler. Arbeidsgiveren må melde inn nærmeste leder i Altinn.",
 };
 
-export const sortLeaderListNewestFomDatoFirst = (leaderList: any[]) => {
+export const sortLeaderListNewestFomDatoFirst = (
+  leaderList: NarmesteLederRelasjonDTO[]
+) => {
   return [...leaderList].sort((l1, l2) => {
-    return new Date(l2.fomDato).getTime() - new Date(l1.fomDato).getTime();
+    return new Date(l2.aktivFom).getTime() - new Date(l1.aktivFom).getTime();
   });
 };
 
 interface PersonkortLedereProps {
-  ledere: Leder[];
+  ledere: NarmesteLederRelasjonDTO[];
   sykmeldinger: any[];
 }
 
@@ -38,7 +40,7 @@ const PersonkortLedere = (personkortLedereProps: PersonkortLedereProps) => {
 
   const virksomhetLederMap = groupArrayByKey(
     sortLeaderListNewestFomDatoFirst(ledereWithActiveFirst),
-    "orgnummer"
+    "virksomhetsnummer"
   );
   if (Object.keys(virksomhetLederMap).length === 0) {
     return <PersonkortFeilmelding>{texts.noLeader}</PersonkortFeilmelding>;

@@ -1,4 +1,3 @@
-import { ledereMock } from "../data/ledereMock";
 import { oppfolgingstilfelleperioderMock } from "../data/oppfolgingstilfelleperioderMock";
 import { brukerinfoMock } from "../data/brukerinfoMock";
 import { MODIASYFOREST_ROOT } from "../../src/apiConstants";
@@ -15,15 +14,6 @@ const getOppfolgingstilfellerPerson = () => {
 };
 
 export const mockModiasyforest = (server) => {
-  server.get(
-    `${MODIASYFOREST_ROOT}/allnaermesteledere`,
-    Auth.ensureAuthenticated(),
-    (req, res) => {
-      res.setHeader("Content-Type", "application/json");
-      res.send(JSON.stringify(ledereMock));
-    }
-  );
-
   server.get(
     `${MODIASYFOREST_ROOT}/oppfolgingstilfelleperioder`,
     Auth.ensureAuthenticated(),

@@ -9,7 +9,6 @@ import {
   ledereWithActiveLedereFirst,
   virksomheterWithoutLeder,
   ledereSortertPaaNavnOgOrganisasjonsnavn,
-  newestLederForEachVirksomhet,
 } from "@/utils/ledereUtils";
 import { ANTALL_MS_DAG } from "@/utils/datoUtils";
 import {
@@ -19,22 +18,23 @@ import {
   mockLederWithoutActiveSykmelding,
   mockSykmeldingWithStatusNyForLeder,
 } from "../mockdata/mockLedere";
+import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 
 describe("ledereUtils", () => {
   describe("ledereIVirksomheterMedMotebehovsvarFraArbeidstaker", () => {
     it("skal finne alle ledere som hører til en bedrift den sykmeldte har sendt inn møtebehovsvar for", () => {
       const ledere = [
         {
-          orgnummer: "123",
-          aktoerId: "1",
+          virksomhetsnummer: "123",
+          narmesteLederPersonIdentNumber: "1",
         },
         {
-          orgnummer: "321",
-          aktoerId: "2",
+          virksomhetsnummer: "321",
+          narmesteLederPersonIdentNumber: "2",
         },
         {
-          orgnummer: "999",
-          aktoerId: "3",
+          virksomhetsnummer: "999",
+          narmesteLederPersonIdentNumber: "3",
         },
       ];
       const motebehovData = [
@@ -56,20 +56,20 @@ describe("ledereUtils", () => {
       );
 
       expect(filtrertLederListe.length).to.equal(2);
-      expect(filtrertLederListe[0].orgnummer).to.equal("123");
-      expect(filtrertLederListe[1].orgnummer).to.equal("999");
+      expect(filtrertLederListe[0].virksomhetsnummer).to.equal("123");
+      expect(filtrertLederListe[1].virksomhetsnummer).to.equal("999");
     });
   });
   describe("ledereIVirksomheterDerIngenLederHarSvartPaMotebehov", () => {
     it("skal fjerne ledere med innsendt møtebehov fra lederlisten", () => {
       const ledere = [
         {
-          orgnummer: "123",
-          aktoerId: "1",
+          virksomhetsnummer: "123",
+          narmesteLederPersonIdentNumber: "1",
         },
         {
-          orgnummer: "321",
-          aktoerId: "2",
+          virksomhetsnummer: "321",
+          narmesteLederPersonIdentNumber: "2",
         },
       ];
       const motebehovData = [
@@ -86,24 +86,24 @@ describe("ledereUtils", () => {
       );
 
       expect(filtrertLederListe.length).to.equal(1);
-      expect(filtrertLederListe[0].orgnummer).to.equal("321");
+      expect(filtrertLederListe[0].virksomhetsnummer).to.equal("321");
     });
     it("skal fjerne ledere for virksomheter hvor minst én leder har innsendt møtebehov, fra lederlisten", () => {
       const ledere = [
         {
-          orgnummer: "123",
-          aktoerId: "1",
-          fomDato: "2020-01-01",
+          virksomhetsnummer: "123",
+          narmesteLederPersonIdentNumber: "1",
+          aktivFom: "2020-01-01",
         },
         {
-          orgnummer: "123",
-          aktoerId: "2",
-          fomDato: "2020-09-01",
+          virksomhetsnummer: "123",
+          narmesteLederPersonIdentNumber: "2",
+          aktivFom: "2020-09-01",
         },
         {
-          orgnummer: "321",
-          aktoerId: "3",
-          fomDato: "2020-01-01",
+          virksomhetsnummer: "321",
+          narmesteLederPersonIdentNumber: "3",
+          aktivFom: "2020-01-01",
         },
       ];
       const motebehovData = [
@@ -120,19 +120,19 @@ describe("ledereUtils", () => {
       );
 
       expect(filtrertLederListe.length).to.equal(1);
-      expect(filtrertLederListe[0].orgnummer).to.equal("321");
+      expect(filtrertLederListe[0].virksomhetsnummer).to.equal("321");
     });
     it("skal returnere en liste med alle ledere for en virksomhet hvis kun sykmeldt har svart på møtebehov", () => {
       const ledere = [
         {
-          orgnummer: "123",
-          aktoerId: "1",
-          fomDato: "2020-01-01",
+          virksomhetsnummer: "123",
+          narmesteLederPersonIdentNumber: "1",
+          aktivFom: "2020-01-01",
         },
         {
-          orgnummer: "123",
-          aktoerId: "2",
-          fomDato: "2020-09-01",
+          virksomhetsnummer: "123",
+          narmesteLederPersonIdentNumber: "2",
+          aktivFom: "2020-09-01",
         },
       ];
       const motebehovData = [
@@ -149,20 +149,20 @@ describe("ledereUtils", () => {
       );
 
       expect(filtrertLederListe.length).to.equal(2);
-      expect(filtrertLederListe[0].orgnummer).to.equal("123");
-      expect(filtrertLederListe[1].orgnummer).to.equal("123");
+      expect(filtrertLederListe[0].virksomhetsnummer).to.equal("123");
+      expect(filtrertLederListe[1].virksomhetsnummer).to.equal("123");
     });
   });
   describe("ledereMedOppfolgingstilfelleInnenforMotebehovperioden", () => {
     it("skal fjerne ledere uten oppfølgingstilfelle innenfor møtebehovperioden", () => {
       const ledere = [
         {
-          orgnummer: "123",
-          aktoerId: "1",
+          virksomhetsnummer: "123",
+          narmesteLederPersonIdentNumber: "1",
         },
         {
-          orgnummer: "321",
-          aktoerId: "2",
+          virksomhetsnummer: "321",
+          narmesteLederPersonIdentNumber: "2",
         },
       ];
       let oppfolgingstilfeller = [];
@@ -212,26 +212,29 @@ describe("ledereUtils", () => {
       );
 
       expect(filtrertLederListe.length).to.equal(1);
-      expect(filtrertLederListe[0].orgnummer).to.equal("123");
+      expect(filtrertLederListe[0].virksomhetsnummer).to.equal("123");
     });
   });
   describe("ledereUtenMotebehovsvar", () => {
     it("skal finne ledere som ikke har sendt inn møtebehov, men som er i møtebehovperioden", () => {
       const ledere = [
         {
-          orgnummer: "123",
-          aktoerId: "1",
-          fomDato: "2020-01-01",
+          virksomhetsnummer: "123",
+          narmesteLederPersonIdentNumber: "1",
+          aktivFom: "2020-01-01",
+          status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
         },
         {
-          orgnummer: "321",
-          aktoerId: "2",
-          fomDato: "2020-01-01",
+          virksomhetsnummer: "321",
+          narmesteLederPersonIdentNumber: "2",
+          aktivFom: "2020-01-01",
+          status: NarmesteLederRelasjonStatus.DEAKTIVERT,
         },
         {
-          orgnummer: "999",
-          aktoerId: "3",
-          fomDato: "2020-01-01",
+          virksomhetsnummer: "999",
+          narmesteLederPersonIdentNumber: "3",
+          aktivFom: "2020-01-01",
+          status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
         },
       ];
       let oppfolgingstilfeller = [];
@@ -315,25 +318,28 @@ describe("ledereUtils", () => {
       );
 
       expect(filtrertLederListe.length).to.equal(1);
-      expect(filtrertLederListe[0].orgnummer).to.equal("999");
+      expect(filtrertLederListe[0].virksomhetsnummer).to.equal("999");
     });
     it("skal finne ledere som ikke har sendt inn møtebehov men hadde muligheten, og SM svarte", () => {
       const oppfolgingstilfeller = [];
       const ledere = [
         {
-          orgnummer: "123",
-          aktoerId: "1",
-          fomDato: "2020-01-01",
+          virksomhetsnummer: "123",
+          narmesteLederPersonIdentNumber: "1",
+          aktivFom: "2020-01-01",
+          status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
         },
         {
-          orgnummer: "321",
-          aktoerId: "2",
-          fomDato: "2020-01-01",
+          virksomhetsnummer: "321",
+          narmesteLederPersonIdentNumber: "2",
+          aktivFom: "2020-01-01",
+          status: NarmesteLederRelasjonStatus.DEAKTIVERT,
         },
         {
-          orgnummer: "999",
-          aktoerId: "3",
-          fomDato: "2020-01-01",
+          virksomhetsnummer: "999",
+          narmesteLederPersonIdentNumber: "3",
+          aktivFom: "2020-01-01",
+          status: NarmesteLederRelasjonStatus.DEAKTIVERT,
         },
       ];
       const motebehovData = [
@@ -361,25 +367,28 @@ describe("ledereUtils", () => {
       );
 
       expect(filtrertLederListe.length).to.equal(1);
-      expect(filtrertLederListe[0].orgnummer).to.equal("123");
+      expect(filtrertLederListe[0].virksomhetsnummer).to.equal("123");
     });
     it("skal finne nyeste leder hvis flere tilhører en virksomhet hvor kun sykmeldt har svart", () => {
       const oppfolgingstilfeller = [];
       const ledere = [
         {
-          orgnummer: "123",
-          aktoerId: "1",
-          fomDato: "2020-01-01",
+          virksomhetsnummer: "123",
+          narmesteLederPersonIdentNumber: "1",
+          aktivFom: "2020-01-01",
+          status: NarmesteLederRelasjonStatus.DEAKTIVERT,
         },
         {
-          orgnummer: "123",
-          aktoerId: "2",
-          fomDato: "2020-09-30",
+          virksomhetsnummer: "123",
+          narmesteLederPersonIdentNumber: "2",
+          aktivFom: "2020-09-30",
+          status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
         },
         {
-          orgnummer: "999",
-          aktoerId: "3",
-          fomDato: "2020-01-01",
+          virksomhetsnummer: "999",
+          narmesteLederPersonIdentNumber: "3",
+          aktivFom: "2020-01-01",
+          status: NarmesteLederRelasjonStatus.DEAKTIVERT,
         },
       ];
       const motebehovData = [
@@ -397,9 +406,11 @@ describe("ledereUtils", () => {
       );
 
       expect(filtrertLederListe.length).to.equal(1);
-      expect(filtrertLederListe[0].orgnummer).to.equal("123");
-      expect(filtrertLederListe[0].aktoerId).to.equal("2");
-      expect(filtrertLederListe[0].fomDato).to.equal("2020-09-30");
+      expect(filtrertLederListe[0].virksomhetsnummer).to.equal("123");
+      expect(filtrertLederListe[0].narmesteLederPersonIdentNumber).to.equal(
+        "2"
+      );
+      expect(filtrertLederListe[0].aktivFom).to.equal("2020-09-30");
     });
   });
 
@@ -566,16 +577,16 @@ describe("ledereUtils", () => {
   describe("ledereSortertPaaNavnOgOrganisasjonsnavn", () => {
     it("sorterer ledere etter organisasjonsnavn og deretter navn", () => {
       const leder1 = {
-        navn: "Per",
-        organisasjonsnavn: "The Syndicate",
+        narmesteLederNavn: "Per",
+        virksomhetsnavn: "The Syndicate",
       };
       const leder2 = {
-        navn: "Carl",
-        organisasjonsnavn: "The Syndicate",
+        narmesteLederNavn: "Carl",
+        virksomhetsnavn: "The Syndicate",
       };
       const leder3 = {
-        navn: "John",
-        organisasjonsnavn: "FBI",
+        narmesteLederNavn: "John",
+        virksomhetsnavn: "FBI",
       };
       const ledere = [leder1, leder2, leder3];
       const ledereSortert = ledereSortertPaaNavnOgOrganisasjonsnavn(ledere);
@@ -583,32 +594,6 @@ describe("ledereUtils", () => {
       expect(ledereSortert[0]).to.deep.equal(leder3);
       expect(ledereSortert[1]).to.deep.equal(leder2);
       expect(ledereSortert[2]).to.deep.equal(leder1);
-    });
-  });
-
-  describe("newestLederForEachVirksomhet", () => {
-    it("returns newest leder for each virksomhet (orgnummer)", () => {
-      const lederFor123Old = {
-        orgnummer: "123",
-        aktoerId: "1",
-        fomDato: "2020-01-01",
-      };
-      const lederFor123New = {
-        orgnummer: "123",
-        aktoerId: "2",
-        fomDato: "2020-09-30",
-      };
-      const lederFor999 = {
-        orgnummer: "999",
-        aktoerId: "3",
-        fomDato: "2020-01-01",
-      };
-      const ledere = [lederFor123Old, lederFor123New, lederFor999];
-
-      const newestLedere = newestLederForEachVirksomhet(ledere);
-      expect(newestLedere.length).to.equal(2);
-      expect(newestLedere[0]).to.deep.equal(lederFor123New);
-      expect(newestLedere[1]).to.deep.equal(lederFor999);
     });
   });
 });

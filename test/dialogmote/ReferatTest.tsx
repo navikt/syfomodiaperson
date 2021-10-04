@@ -35,6 +35,7 @@ import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubFerdigstillApi } from "../stubs/stubIsdialogmote";
 import { apiMock } from "../stubs/stubApi";
 import { arbeidstaker, dialogmote, navEnhet, veileder } from "./testData";
+import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -63,14 +64,14 @@ const mockState = {
   ledere: {
     currentLedere: [
       {
-        navn: lederNavn,
-        aktiv: true,
-        orgnummer: "912345678",
+        narmesteLederNavn: lederNavn,
+        status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
+        virksomhetsnummer: "912345678",
       },
       {
-        navn: "Annen Leder",
-        aktiv: true,
-        orgnummer: "89829812",
+        narmesteLederNavn: "Annen Leder",
+        status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
+        virksomhetsnummer: "89829812",
       },
     ],
   },

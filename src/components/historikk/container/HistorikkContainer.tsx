@@ -12,7 +12,7 @@ import { hentHistorikk } from "@/data/historikk/historikk_actions";
 import { hentLedere } from "@/data/leder/ledere_actions";
 import { hentOppfolgingstilfelleperioder } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder_actions";
 import { tilfellerFromTilfelleperioder } from "@/utils/periodeUtils";
-import { Leder } from "@/data/leder/ledere";
+import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import IngenHistorikk from "../IngenHistorikk";
 import { useHistorikk } from "@/data/historikk/historikk_hooks";
@@ -24,11 +24,13 @@ const texts = {
   errorTitle: "Du har ikke tilgang til denne tjenesten",
 };
 
-const createHistorikkEventsFromLedere = (ledere: Leder[]): HistorikkEvent[] => {
+const createHistorikkEventsFromLedere = (
+  ledere: NarmesteLederRelasjonDTO[]
+): HistorikkEvent[] => {
   return ledere.map((leder) => ({
-    opprettetAv: leder.organisasjonsnavn,
-    tekst: `${leder.organisasjonsnavn} har oppgitt ${leder.navn} som nærmeste leder`,
-    tidspunkt: leder.fomDato,
+    opprettetAv: leder.virksomhetsnavn,
+    tekst: `${leder.virksomhetsnavn} har oppgitt ${leder.narmesteLederNavn} som nærmeste leder`,
+    tidspunkt: leder.aktivFom,
     kilde: "LEDER",
   }));
 };

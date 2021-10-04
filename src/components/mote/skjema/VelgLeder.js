@@ -13,13 +13,13 @@ const ValgtLeder = ({ valgtArbeidsgiver }) => {
       <div className="navInput blokk">
         <label htmlFor="js-ledernavn">{texts.name}</label>
         <label className="input--xxl textfieldLocked">
-          {valgtArbeidsgiver.navn}
+          {valgtArbeidsgiver.narmesteLederNavn}
         </label>
       </div>
       <div className="navInput blokk ">
         <label htmlFor="js-lederepost">{texts.email}</label>
         <label className="input--xxl textfieldLocked">
-          {valgtArbeidsgiver.epost}
+          {valgtArbeidsgiver.narmesteLederEpost}
         </label>
       </div>
     </div>
@@ -33,7 +33,7 @@ ValgtLeder.propTypes = {
 const VelgLeder = ({ ledere, valgtArbeidsgiver, velgArbeidsgiver }) => {
   const valgtLeder =
     ledere.filter((leder) => {
-      return leder.orgnummer === valgtArbeidsgiver;
+      return leder.virksomhetsnummer === valgtArbeidsgiver;
     })[0] || null;
   return (
     <div>

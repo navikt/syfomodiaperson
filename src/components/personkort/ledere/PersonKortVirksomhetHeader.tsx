@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import EtikettBase from "nav-frontend-etiketter";
-import { Leder } from "@/data/leder/ledere";
+import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
 import { formaterOrgnr } from "@/utils";
 import { lederHasActiveSykmelding } from "@/utils/ledereUtils";
 import kanskjeBooleanTilJaNeiKanskje from "../kanskjeBooleanTilJaNeiKanskje";
@@ -48,7 +48,7 @@ const textForskuttering = (arbeidsgiverForskuttererLoenn?: boolean) => {
 
 interface PersonKortVirksomhetHeaderProps {
   children?: any;
-  currentLeder: Leder;
+  currentLeder: NarmesteLederRelasjonDTO;
   sykmeldinger: any[];
 }
 
@@ -60,7 +60,9 @@ const PersonKortVirksomhetHeader = (
     currentLeder,
     sykmeldinger,
   } = personKortVirksomhetHeaderProps;
-  const virksomhetsnummerText = textVirksomhetsnummer(currentLeder.orgnummer);
+  const virksomhetsnummerText = textVirksomhetsnummer(
+    currentLeder.virksomhetsnummer
+  );
   const forskutteringText = textForskuttering(
     currentLeder.arbeidsgiverForskuttererLoenn
   );
@@ -72,7 +74,7 @@ const PersonKortVirksomhetHeader = (
       <HeaderStyled className="personkortElement__tittel">
         <img src={FabrikkImage} alt="Fabrikk" />
         <GridRow>
-          <FlexColumn>{currentLeder.organisasjonsnavn}</FlexColumn>
+          <FlexColumn>{currentLeder.virksomhetsnavn}</FlexColumn>
           <FlexColumn>{virksomhetsnummerText}</FlexColumn>
           <FlexColumn>{forskutteringText}</FlexColumn>
           {activeSykmeldingText && (

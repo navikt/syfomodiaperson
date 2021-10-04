@@ -5,7 +5,7 @@ import BehandleMotebehovKnapp from "./BehandleMotebehovKnapp";
 import { DialogmotePanel } from "../mote/components/DialogmotePanel";
 import React from "react";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
-import { Leder } from "@/data/leder/ledere";
+import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
 import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder";
 import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
 
@@ -15,7 +15,7 @@ const texts = {
 
 interface Props {
   motebehovData: MotebehovVeilederDTO[];
-  ledereData: Leder[];
+  ledereData: NarmesteLederRelasjonDTO[];
   oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState;
   sykmeldt?: Brukerinfo;
 }

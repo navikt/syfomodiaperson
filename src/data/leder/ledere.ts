@@ -7,17 +7,25 @@ import {
 } from "./ledere_actions";
 import { currentLedere, formerLedere } from "@/utils/ledereUtils";
 
-export interface Leder {
-  aktoerId: string;
-  epost?: string;
-  tlf?: string;
-  navn: string;
-  aktiv: boolean;
-  orgnummer: string;
-  organisasjonsnavn: string;
-  fomDato: Date;
+export enum NarmesteLederRelasjonStatus {
+  INNMELDT_AKTIV = "INNMELDT_AKTIV",
+  DEAKTIVERT = "DEAKTIVERT",
+}
+
+export interface NarmesteLederRelasjonDTO {
+  uuid: string;
+  arbeidstakerPersonIdentNumber: string;
+  virksomhetsnummer: string;
+  virksomhetsnavn: string;
+  narmesteLederPersonIdentNumber: string;
+  narmesteLederEpost: string;
+  narmesteLederTelefonnummer: string;
+  narmesteLederNavn: string;
+  aktivFom: Date;
   aktivTom?: Date;
   arbeidsgiverForskuttererLoenn?: boolean;
+  timestamp: Date;
+  status: NarmesteLederRelasjonStatus;
 }
 
 export interface LedereState {
@@ -25,9 +33,9 @@ export interface LedereState {
   hentet: boolean;
   hentingFeilet: boolean;
   hentingForsokt: boolean;
-  currentLedere: Leder[];
-  allLedere: Leder[];
-  formerLedere: Leder[];
+  currentLedere: NarmesteLederRelasjonDTO[];
+  allLedere: NarmesteLederRelasjonDTO[];
+  formerLedere: NarmesteLederRelasjonDTO[];
 }
 
 export const initialState: LedereState = {

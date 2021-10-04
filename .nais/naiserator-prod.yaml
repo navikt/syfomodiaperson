@@ -74,6 +74,10 @@ spec:
       value: "4898e614-e73d-4067-aafd-5afc2254c6b6"
     - name: ISDIALOGMOTE_HOST
       value: "isdialogmote.intern.nav.no"
+    - name: ISNARMESTELEDER_AAD_APP_CLIENT_ID
+      value: "prod-gcp.teamsykefravr.isnarmesteleder"
+    - name: ISNARMESTELEDER_HOST
+      value: "isnarmesteleder.intern.nav.no"
     - name: ISPENGESTOPP_AAD_APP_CLIENT_ID
       value: "1504ecde-3da0-4698-b030-ae7350228f57"
     - name: ISPENGESTOPP_HOST

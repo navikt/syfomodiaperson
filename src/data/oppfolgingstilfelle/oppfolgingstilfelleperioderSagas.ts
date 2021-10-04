@@ -32,7 +32,7 @@ export const hentLedereVirksomhetsnummerList = (ledere: LedereState) => {
   const erLedereHentet = ledere.hentet;
   if (erLedereHentet) {
     return ledere.currentLedere.map((leder) => {
-      return leder.orgnummer;
+      return leder.virksomhetsnummer;
     });
   }
   return [];

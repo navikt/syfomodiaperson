@@ -1,3 +1,5 @@
+import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
+
 const VIRKSOMHETSNUMMER_WITH_ACTIVE_SYKMELDING = "123456789";
 const VIRKSOMHETSNUMMER_WITHOUT_ACTIVE_SYKMELDING = "987654321";
 
@@ -9,32 +11,34 @@ const YESTERDAY = new Date(Date.now() - DAY_IN_MILLISECONDS);
 const TWO_DAYS_AGO = new Date(Date.now() - DAY_IN_MILLISECONDS * 2);
 
 export const mockLederWithActiveSykmelding = {
-  navn: "Walter Sergei Skinner",
-  id: 0,
-  aktoerId: "1902690001002",
-  tlf: "112",
-  epost: "skinner@fbi.no",
-  aktiv: null,
-  erOppgitt: true,
-  fomDato: "1994-22-04T12:00:00+01:00",
-  orgnummer: VIRKSOMHETSNUMMER_WITH_ACTIVE_SYKMELDING,
-  organisasjonsnavn: "FBI",
-  aktivTom: null,
+  uuid: "0",
+  arbeidstakerPersonIdentNumber: "19026900010",
+  virksomhetsnummer: VIRKSOMHETSNUMMER_WITH_ACTIVE_SYKMELDING,
+  virksomhetsnavn: "FBI",
+  narmesteLederPersonIdentNumber: "02690001002",
+  narmesteLederEpost: "skinner@fbi.no",
+  narmesteLederTelefonnummer: "112",
+  narmesteLederNavn: "Walter Sergei Skinner",
+  aktivFom: "1994-22-04",
+  aktivTom: "1995-22-04",
+  timestamp: "1995-22-04T12:00:00+01:00",
+  status: NarmesteLederRelasjonStatus.DEAKTIVERT,
   arbeidsgiverForskuttererLoenn: null,
 };
 
 export const mockLederWithoutActiveSykmelding = {
-  navn: "Carl Gerhard Busch",
-  id: 1,
-  aktoerId: "1902690001003",
-  tlf: "xxx",
-  epost: "spender@syndicate.no",
-  aktiv: null,
-  erOppgitt: true,
-  fomDato: "1993-10-09T12:00:00+01:00",
-  orgnummer: VIRKSOMHETSNUMMER_WITHOUT_ACTIVE_SYKMELDING,
-  organisasjonsnavn: "The Syndicate",
-  aktivTom: null,
+  uuid: "1",
+  arbeidstakerPersonIdentNumber: "19026900010",
+  virksomhetsnummer: VIRKSOMHETSNUMMER_WITHOUT_ACTIVE_SYKMELDING,
+  virksomhetsnavn: "The Syndicate",
+  narmesteLederPersonIdentNumber: "02690001003",
+  narmesteLederEpost: "spender@syndicate.no",
+  narmesteLederTelefonnummer: "xxx",
+  narmesteLederNavn: "Carl Gerhard Busch",
+  aktivFom: "1993-10-09",
+  aktivTom: "1994-10-09",
+  timestamp: "1994-10-09T12:00:00+01:00",
+  status: NarmesteLederRelasjonStatus.DEAKTIVERT,
   arbeidsgiverForskuttererLoenn: null,
 };
 

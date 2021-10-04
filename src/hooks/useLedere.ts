@@ -1,13 +1,14 @@
 import { useAppSelector } from "./hooks";
-import { newestLederForEachVirksomhet } from "@/utils/ledereUtils";
-import { Leder } from "@/data/leder/ledere";
+import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
 
 export const useLedere = (): {
-  currentLedere: Leder[];
-  formerLedere: Leder[];
+  currentLedere: NarmesteLederRelasjonDTO[];
+  formerLedere: NarmesteLederRelasjonDTO[];
   henterLedere: boolean;
   hentingLedereFeilet: boolean;
-  getCurrentNarmesteLeder: (virksomhetsnummer: string) => Leder | undefined;
+  getCurrentNarmesteLeder: (
+    virksomhetsnummer: string
+  ) => NarmesteLederRelasjonDTO | undefined;
   hentingLedereForsokt: boolean;
 } => {
   const {
@@ -20,9 +21,10 @@ export const useLedere = (): {
 
   const getCurrentNarmesteLeder = (
     virksomhetsnummer: string
-  ): Leder | undefined => {
-    const newestLedere = newestLederForEachVirksomhet(currentLedere);
-    return newestLedere.find((leder) => leder.orgnummer === virksomhetsnummer);
+  ): NarmesteLederRelasjonDTO | undefined => {
+    return currentLedere.find(
+      (leder) => leder.virksomhetsnummer === virksomhetsnummer
+    );
   };
 
   return {

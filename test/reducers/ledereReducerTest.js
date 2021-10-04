@@ -1,6 +1,8 @@
 import { expect } from "chai";
 import deepFreeze from "deep-freeze";
-import ledere from "../../src/data/leder/ledere";
+import ledere, {
+  NarmesteLederRelasjonStatus,
+} from "../../src/data/leder/ledere";
 import {
   HENTER_LEDERE,
   LEDERE_HENTET,
@@ -14,16 +16,24 @@ describe("ledere", () => {
       type: LEDERE_HENTET,
       data: [
         {
-          navn: "Kurt Nilsen",
+          narmesteLederNavn: "Kurt Nilsen",
           aktivTom: null,
+          status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
         },
         {
-          navn: "Hans Hansen",
+          narmesteLederNavn: "Trine Fransen",
+          aktivTom: "2020-04-20T12:00:00+01:00",
+          status: NarmesteLederRelasjonStatus.DEAKTIVERT,
+        },
+        {
+          narmesteLederNavn: "Hans Hansen",
           aktivTom: "2020-02-20T12:00:00+01:00",
+          status: NarmesteLederRelasjonStatus.DEAKTIVERT,
         },
         {
-          navn: "Nina Knutsen",
+          narmesteLederNavn: "Nina Knutsen",
           aktivTom: null,
+          status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
         },
       ],
     };
@@ -36,18 +46,26 @@ describe("ledere", () => {
       hentingForsokt: true,
       currentLedere: [
         {
-          navn: "Kurt Nilsen",
+          narmesteLederNavn: "Kurt Nilsen",
           aktivTom: null,
+          status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
         },
         {
-          navn: "Nina Knutsen",
+          narmesteLederNavn: "Nina Knutsen",
           aktivTom: null,
+          status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
         },
       ],
       formerLedere: [
         {
-          navn: "Hans Hansen",
+          narmesteLederNavn: "Trine Fransen",
+          aktivTom: "2020-04-20T12:00:00+01:00",
+          status: NarmesteLederRelasjonStatus.DEAKTIVERT,
+        },
+        {
+          narmesteLederNavn: "Hans Hansen",
           aktivTom: "2020-02-20T12:00:00+01:00",
+          status: NarmesteLederRelasjonStatus.DEAKTIVERT,
         },
       ],
       allLedere: [...action.data],

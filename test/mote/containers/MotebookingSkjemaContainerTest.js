@@ -14,12 +14,10 @@ describe("MotebookingSkjemaContainer", () => {
         ledere: {
           currentLedere: [
             {
-              navn: "Ole",
-              erOppgitt: true,
+              narmesteLederNavn: "Ole",
             },
             {
-              navn: "Per",
-              erOppgitt: false,
+              narmesteLederNavn: "Per",
             },
           ],
           henter: false,
@@ -35,16 +33,6 @@ describe("MotebookingSkjemaContainer", () => {
           navn: "Ole",
         },
       };
-    });
-
-    it("Skal returnere ledere som er oppgitt", () => {
-      const props = mapStateToProps(state, ownProps);
-      expect(props.ledere).to.deep.equal([
-        {
-          navn: "Ole",
-          erOppgitt: true,
-        },
-      ]);
     });
 
     it("Skal returnere hentingFeilet når henting av ledere feiler", () => {

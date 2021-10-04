@@ -82,7 +82,7 @@ const ParticipantInfo = ({
   const { getCurrentNarmesteLeder } = useLedere();
   const narmesteLederNavn = getCurrentNarmesteLeder(
     dialogmote.arbeidsgiver.virksomhetsnummer
-  )?.navn;
+  )?.narmesteLederNavn;
 
   return (
     <FlexColumn>

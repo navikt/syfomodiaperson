@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { Leder } from "@/data/leder/ledere";
+import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
 import {
   finnArbeidstakerMotebehovSvar,
   motebehovFromLatestActiveTilfelle,
@@ -191,32 +191,34 @@ export const MotebehovKvitteringInnholdArbeidsgiver = ({
 );
 
 interface MotebehovKvitteringInnholdArbeidsgiverUtenMotebehovProps {
-  ledereUtenInnsendtMotebehov: Leder[];
+  ledereUtenInnsendtMotebehov: NarmesteLederRelasjonDTO[];
 }
 
 export const MotebehovKvitteringInnholdArbeidsgiverUtenMotebehov = ({
   ledereUtenInnsendtMotebehov,
 }: MotebehovKvitteringInnholdArbeidsgiverUtenMotebehovProps) => (
   <>
-    {ledereUtenInnsendtMotebehov.map((leder: Leder, index: number) => {
-      const ikonAltTekst = `Arbeidsgiver ${arbeidsgiverNavnEllerTomStreng(
-        leder.navn
-      )} ${ikonAlternativTekst(undefined)}`;
-      return (
-        <MotebehovKvitteringInnhold
-          key={index}
-          ikonAltTekst={ikonAltTekst}
-          tekst={composeArbeidsgiverSvarText(leder.navn)}
-          topPadding={PaddingSize.SM}
-        />
-      );
-    })}
+    {ledereUtenInnsendtMotebehov.map(
+      (leder: NarmesteLederRelasjonDTO, index: number) => {
+        const ikonAltTekst = `Arbeidsgiver ${arbeidsgiverNavnEllerTomStreng(
+          leder.narmesteLederNavn
+        )} ${ikonAlternativTekst(undefined)}`;
+        return (
+          <MotebehovKvitteringInnhold
+            key={index}
+            ikonAltTekst={ikonAltTekst}
+            tekst={composeArbeidsgiverSvarText(leder.narmesteLederNavn)}
+            topPadding={PaddingSize.SM}
+          />
+        );
+      }
+    )}
   </>
 );
 
 interface MotebehovKvitteringProps {
   motebehovData: MotebehovVeilederDTO[];
-  ledereData: Leder[];
+  ledereData: NarmesteLederRelasjonDTO[];
   oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState;
   sykmeldt?: Brukerinfo;
 }

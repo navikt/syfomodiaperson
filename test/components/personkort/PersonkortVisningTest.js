@@ -18,6 +18,7 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
+import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 
 describe("PersonkortVisning", () => {
   let komponent;
@@ -50,14 +51,14 @@ describe("PersonkortVisning", () => {
       },
       ledere: [
         {
-          navn: "Station Officer Steele",
-          orgnummer: "000999000",
-          erOppgitt: true,
+          narmesteLederNavn: "Station Officer Steele",
+          virksomhetsnummer: "000999000",
+          status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
         },
         {
-          navn: "Are Arbeidsgiver",
-          orgnummer: "000999001",
-          erOppgitt: false,
+          narmesteLederNavn: "Are Arbeidsgiver",
+          virksomhetsnummer: "000999001",
+          status: NarmesteLederRelasjonStatus.DEAKTIVERT,
         },
       ],
       navbruker: {

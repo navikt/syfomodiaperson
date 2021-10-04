@@ -33,6 +33,7 @@ import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubInnkallingApi } from "../stubs/stubIsdialogmote";
 import { apiMock } from "../stubs/stubApi";
 import { arbeidsgiver, arbeidstaker, navEnhet, veileder } from "./testData";
+import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 
 const realState = createStore(rootReducer).getState();
 
@@ -69,15 +70,19 @@ const mockState = {
   ledere: {
     currentLedere: [
       {
-        navn: "Tatten Tattover",
-        aktoerId: "1902690001009",
-        tlf: "12345666",
-        epost: "test3@test.no",
-        fomDato: new Date(),
-        aktiv: true,
-        orgnummer: arbeidsgiver.orgnr,
-        organisasjonsnavn: "PONTYPANDY FIRE SERVICE",
+        uuid: "3",
+        arbeidstakerPersonIdentNumber: "19026900010",
+        virksomhetsnummer: "110110110",
+        virksomhetsnavn: "PONTYPANDY FIRE SERVICE",
+        narmesteLederPersonIdentNumber: "02690001009",
+        narmesteLederTelefonnummer: "12345666",
+        narmesteLederEpost: "test3@test.no",
+        narmesteLederNavn: "Tatten Tattover",
+        aktivFom: new Date(),
+        aktivTom: null,
         arbeidsgiverForskuttererLoenn: false,
+        timestamp: "2020-02-06T12:00:00+01:00",
+        status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
       },
     ],
   },

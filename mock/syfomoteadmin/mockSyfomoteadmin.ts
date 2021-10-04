@@ -25,7 +25,7 @@ const mockMoteAlternativer = (alternativer) => {
 
 const mockMoteDeltakere = (alternativer, orgnummer) => {
   const leder = ledereMock.find((leder) => {
-    return leder.orgnummer === orgnummer;
+    return leder.virksomhetsnummer === orgnummer;
   });
 
   return [
@@ -41,10 +41,10 @@ const mockMoteDeltakere = (alternativer, orgnummer) => {
     },
     {
       deltakerUuid: "198a6dbf-c987-4b57-a401-a3915ec11424",
-      navn: leder!!.navn,
+      navn: leder!!.narmesteLederNavn,
       fnr: "12345678913",
       orgnummer: orgnummer,
-      epost: leder!!.epost,
+      epost: leder!!.narmesteLederEpost,
       type: "arbeidsgiver",
       svartidspunkt: null,
       svar: alternativer,

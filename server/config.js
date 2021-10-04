@@ -148,6 +148,16 @@ const auth = {
     }),
     removePathPrefix: true,
   },
+  isnarmesteleder: {
+    applicationName: "isnarmesteleder",
+    clientId: envVar({
+      name: "ISNARMESTELEDER_AAD_APP_CLIENT_ID",
+    }),
+    host: envVar({
+      name: "ISNARMESTELEDER_HOST",
+    }),
+    removePathPrefix: true,
+  },
   ispengestopp: {
     applicationName: "ispengestopp",
     clientId: envVar({

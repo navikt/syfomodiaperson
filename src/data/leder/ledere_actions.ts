@@ -1,4 +1,4 @@
-import { Leder } from "./ledere";
+import { NarmesteLederRelasjonDTO } from "./ledere";
 
 export const HENT_LEDERE_FORESPURT = "HENT_LEDERE_FORESPURT";
 export const HENTER_LEDERE = "HENTER_LEDERE";
@@ -16,7 +16,7 @@ export interface HenterLedereAction {
 
 export interface LedereHentetAction {
   type: typeof LEDERE_HENTET;
-  data: Leder[];
+  data: NarmesteLederRelasjonDTO[];
 }
 
 export interface HentLedereFeiletAction {
@@ -42,7 +42,9 @@ export const hentLedereFailed = (): HentLedereFeiletAction => ({
   type: HENT_LEDERE_FEILET,
 });
 
-export const ledereHentet = (data: Leder[]): LedereHentetAction => ({
+export const ledereHentet = (
+  data: NarmesteLederRelasjonDTO[]
+): LedereHentetAction => ({
   type: LEDERE_HENTET,
   data,
 });

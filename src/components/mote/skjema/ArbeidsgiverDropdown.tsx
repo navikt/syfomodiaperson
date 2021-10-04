@@ -1,6 +1,6 @@
 import React from "react";
 import { Select } from "nav-frontend-skjema";
-import { Leder } from "@/data/leder/ledere";
+import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
 import { ledereSortertPaaNavnOgOrganisasjonsnavn } from "@/utils/ledereUtils";
 
 const texts = {
@@ -10,7 +10,7 @@ const texts = {
 interface ArbeidsgiverDropdownProps {
   velgArbeidsgiver(orgNr: string): void;
 
-  ledere: Leder[];
+  ledere: NarmesteLederRelasjonDTO[];
   label?: string;
   id?: string;
 }
@@ -30,8 +30,8 @@ const ArbeidsgiverDropdown = ({
   >
     <option value="VELG">{texts.chooseArbeidsgiver}</option>
     {ledereSortertPaaNavnOgOrganisasjonsnavn(ledere).map((leder, idx) => (
-      <option value={leder.orgnummer} key={idx}>
-        {leder.organisasjonsnavn}
+      <option value={leder.virksomhetsnummer} key={idx}>
+        {leder.virksomhetsnavn}
       </option>
     ))}
   </Select>

@@ -1,4 +1,7 @@
-import { Leder } from "@/data/leder/ledere";
+import {
+  NarmesteLederRelasjonDTO,
+  NarmesteLederRelasjonStatus,
+} from "@/data/leder/ledere";
 import { senesteTom, tidligsteFom } from "./periodeUtils";
 import {
   erOppfoelgingsdatoPassertMed16UkerOgIkke26Uker,
@@ -11,46 +14,48 @@ import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
 export const ledereIVirksomheterMedMotebehovsvarFraArbeidstaker = (
-  ledereData: Leder[],
+  ledereData: NarmesteLederRelasjonDTO[],
   motebehovData: MotebehovVeilederDTO[]
-): Leder[] => {
-  return ledereData.filter((leder: Leder) =>
+): NarmesteLederRelasjonDTO[] => {
+  return ledereData.filter((leder: NarmesteLederRelasjonDTO) =>
     motebehovData.some(
       (motebehov) =>
         motebehov.opprettetAv === motebehov.aktorId &&
-        leder.orgnummer === motebehov.virksomhetsnummer
+        leder.virksomhetsnummer === motebehov.virksomhetsnummer
     )
   );
 };
 
 export const ledereIVirksomheterDerIngenLederHarSvartPaMotebehov = (
-  ledereListe: Leder[],
+  ledereListe: NarmesteLederRelasjonDTO[],
   motebehovData: MotebehovVeilederDTO[]
-): Leder[] => {
+): NarmesteLederRelasjonDTO[] => {
   return ledereListe.filter(
     (leder) =>
       !motebehovData.some(
         (motebehov) =>
           motebehov.opprettetAv !== motebehov.aktorId &&
-          motebehov.virksomhetsnummer === leder.orgnummer
+          motebehov.virksomhetsnummer === leder.virksomhetsnummer
       )
   );
 };
 
 export const ledereMedOppfolgingstilfelleInnenforMotebehovperioden = (
-  ledereData: Leder[],
+  ledereData: NarmesteLederRelasjonDTO[],
   oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState
-): Leder[] => {
+): NarmesteLederRelasjonDTO[] => {
   return ledereData.filter((leder) => {
     const startOppfolgingsdato =
-      oppfolgingstilfelleperioder[leder.orgnummer] &&
-      oppfolgingstilfelleperioder[leder.orgnummer].data
-        ? tidligsteFom(oppfolgingstilfelleperioder[leder.orgnummer].data)
+      oppfolgingstilfelleperioder[leder.virksomhetsnummer] &&
+      oppfolgingstilfelleperioder[leder.virksomhetsnummer].data
+        ? tidligsteFom(
+            oppfolgingstilfelleperioder[leder.virksomhetsnummer].data
+          )
         : new Date();
     const sluttOppfolgingsdato =
-      oppfolgingstilfelleperioder[leder.orgnummer] &&
-      oppfolgingstilfelleperioder[leder.orgnummer].data
-        ? senesteTom(oppfolgingstilfelleperioder[leder.orgnummer].data)
+      oppfolgingstilfelleperioder[leder.virksomhetsnummer] &&
+      oppfolgingstilfelleperioder[leder.virksomhetsnummer].data
+        ? senesteTom(oppfolgingstilfelleperioder[leder.virksomhetsnummer].data)
         : new Date();
 
     return (
@@ -62,26 +67,11 @@ export const ledereMedOppfolgingstilfelleInnenforMotebehovperioden = (
   });
 };
 
-const isNewerLeader = (ledere: Leder[], givenLeder: Leder): boolean => {
-  return ledere.some(
-    (lederCandidate) =>
-      givenLeder.aktoerId !== lederCandidate.aktoerId &&
-      givenLeder.orgnummer === lederCandidate.orgnummer &&
-      new Date(givenLeder.fomDato) < new Date(lederCandidate.fomDato)
-  );
-};
-
-export const newestLederForEachVirksomhet = (ledere: Leder[]): Leder[] => {
-  return ledere.filter((leder) => {
-    return !isNewerLeader(ledere, leder);
-  });
-};
-
 export const ledereUtenMotebehovsvar = (
-  ledereData: Leder[],
+  ledereData: NarmesteLederRelasjonDTO[],
   motebehovData: MotebehovVeilederDTO[],
   oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState
-): Leder[] => {
+): NarmesteLederRelasjonDTO[] => {
   const arbeidstakerHarSvartPaaMotebehov =
     motebehovData && harArbeidstakerSvartPaaMotebehov(motebehovData);
 
@@ -100,13 +90,13 @@ export const ledereUtenMotebehovsvar = (
     motebehovData
   );
 
-  return newestLederForEachVirksomhet(
-    ledereIVirksomhetUtenMotebehovSvarFraLeder
-  );
+  return ledereIVirksomhetUtenMotebehovSvarFraLeder.filter((leder) => {
+    return leder.status === NarmesteLederRelasjonStatus.INNMELDT_AKTIV;
+  });
 };
 
 export const lederHasActiveSykmelding = (
-  leder: Leder,
+  leder: NarmesteLederRelasjonDTO,
   sykmeldinger: SykmeldingOldFormat[]
 ): boolean => {
   const activeSykmeldingerWithArbeidsgiver = activeSykmeldingerSentToArbeidsgiver(
@@ -115,14 +105,15 @@ export const lederHasActiveSykmelding = (
 
   return activeSykmeldingerWithArbeidsgiver.some(
     (sykmelding) =>
-      sykmelding.mottakendeArbeidsgiver?.virksomhetsnummer === leder.orgnummer
+      sykmelding.mottakendeArbeidsgiver?.virksomhetsnummer ===
+      leder.virksomhetsnummer
   );
 };
 
 export const ledereWithActiveLedereFirst = (
-  ledereData: Leder[],
+  ledereData: NarmesteLederRelasjonDTO[],
   sykmeldinger: SykmeldingOldFormat[]
-): Leder[] => {
+): NarmesteLederRelasjonDTO[] => {
   return ledereData.sort((leder1, leder2) => {
     const leder1Active = lederHasActiveSykmelding(leder1, sykmeldinger);
     const leder2Active = lederHasActiveSykmelding(leder2, sykmeldinger);
@@ -138,14 +129,14 @@ export const ledereWithActiveLedereFirst = (
 };
 
 const sykmeldingerWithoutMatchingLeder = (
-  ledere: Leder[],
+  ledere: NarmesteLederRelasjonDTO[],
   sykmeldinger: SykmeldingOldFormat[]
 ): SykmeldingOldFormat[] => {
   return sykmeldinger.filter(
     (sykmelding) =>
       !ledere.some(
         (leder) =>
-          leder.orgnummer ===
+          leder.virksomhetsnummer ===
           sykmelding.mottakendeArbeidsgiver?.virksomhetsnummer
       )
   );
@@ -178,7 +169,7 @@ const removeDuplicatesFromLederList = (
 };
 
 export const virksomheterWithoutLeder = (
-  ledere: Leder[],
+  ledere: NarmesteLederRelasjonDTO[],
   sykmeldinger: SykmeldingOldFormat[]
 ): SykmeldingLeder[] => {
   const activeSykmeldinger = activeSykmeldingerSentToArbeidsgiver(sykmeldinger);
@@ -193,30 +184,38 @@ export const virksomheterWithoutLeder = (
   return removeDuplicatesFromLederList(virksomheterAsLedere);
 };
 
-export const currentLedere = (ledere: Leder[]): Leder[] => {
-  return ledere.filter((leder) => leder.aktivTom === null);
+export const currentLedere = (
+  ledere: NarmesteLederRelasjonDTO[]
+): NarmesteLederRelasjonDTO[] => {
+  return ledere.filter(
+    (leder) => leder.status === NarmesteLederRelasjonStatus.INNMELDT_AKTIV
+  );
 };
 
-export const formerLedere = (ledere: Leder[]): Leder[] => {
-  return ledere.filter((leder) => leder.aktivTom !== null);
+export const formerLedere = (
+  ledere: NarmesteLederRelasjonDTO[]
+): NarmesteLederRelasjonDTO[] => {
+  return ledere.filter(
+    (leder) => leder.status !== NarmesteLederRelasjonStatus.INNMELDT_AKTIV
+  );
 };
 
 export const ledereSortertPaaNavnOgOrganisasjonsnavn = (
-  ledere: Leder[]
-): Leder[] =>
+  ledere: NarmesteLederRelasjonDTO[]
+): NarmesteLederRelasjonDTO[] =>
   ledere
     .sort((a, b) => {
-      if (a.navn > b.navn) {
+      if (a.narmesteLederNavn > b.narmesteLederNavn) {
         return 1;
-      } else if (b.navn > a.navn) {
+      } else if (b.narmesteLederNavn > a.narmesteLederNavn) {
         return -1;
       }
       return 0;
     })
     .sort((a, b) => {
-      if (a.organisasjonsnavn > b.organisasjonsnavn) {
+      if (a.virksomhetsnavn > b.virksomhetsnavn) {
         return 1;
-      } else if (b.organisasjonsnavn > a.organisasjonsnavn) {
+      } else if (b.virksomhetsnavn > a.virksomhetsnavn) {
         return -1;
       }
       return 0;

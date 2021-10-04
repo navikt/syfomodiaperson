@@ -1,4 +1,5 @@
 import { mockFastlegerest } from "./fastlegerest/mockFastlegerest";
+import { mockIsnarmesteleder } from "./isnarmesteleder/mockIsnarmesteleder";
 import { mockIspersonoppgave } from "./ispersonoppgave/mockIspersonoppgave";
 import { mockModiacontextholder } from "./modiacontextholder/mockModiacontextholder";
 import { mockModiasyforest } from "./modiasyforest/mockModiasyforest";
@@ -25,6 +26,7 @@ const mockEndepunkter = (server) => {
 
   [
     mockFastlegerest,
+    mockIsnarmesteleder,
     mockIspersonoppgave,
     mockModiacontextholder,
     mockModiasyforest,
