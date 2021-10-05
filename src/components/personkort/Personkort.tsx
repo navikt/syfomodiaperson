@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PERSONKORTVISNING_TYPE } from "@/konstanter";
 import { hentDiskresjonskode } from "@/data/diskresjonskode/diskresjonskode_actions";
-import { hentEgenansatt } from "@/data/egenansatt/egenansatt_actions";
 import { hentFastleger } from "@/data/fastlege/fastleger_actions";
 import { hentLedere } from "@/data/leder/ledere_actions";
 import { hentOppfolgingstilfelleperioder } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder_actions";
@@ -23,7 +22,6 @@ const texts = {
 };
 
 const Personkort = () => {
-  const egenansatt = useSelector((state: any) => state.egenansatt);
   const fastleger = useSelector((state: any) => state.fastleger);
 
   const personadresseState = useSelector((state: any) => state.personadresse);
@@ -45,7 +43,6 @@ const Personkort = () => {
   useEffect(() => {
     if (brukerFnr) {
       dispatch(hentDiskresjonskode(brukerFnr));
-      dispatch(hentEgenansatt(brukerFnr));
       dispatch(hentFastleger(brukerFnr));
       dispatch(hentLedere(brukerFnr));
       dispatch(hentSykmeldinger(brukerFnr));
@@ -62,11 +59,7 @@ const Personkort = () => {
       <Utvidbar
         erApen={false}
         tittel={
-          <PersonkortHeader
-            egenansatt={egenansatt}
-            navbruker={navbruker}
-            sykmeldinger={sykmeldinger}
-          />
+          <PersonkortHeader navbruker={navbruker} sykmeldinger={sykmeldinger} />
         }
       >
         <div>

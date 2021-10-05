@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import EtikettBase from "nav-frontend-etiketter";
 import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
-import { EgenansattState } from "@/data/egenansatt/egenansatt";
 import {
   formaterFnr,
   hentBrukersAlderFraFnr,
@@ -16,6 +15,8 @@ import { KvinneImage, MannImage } from "../../../img/ImageComponents";
 import { useAppSelector } from "@/hooks/hooks";
 import ErrorBoundary from "../ErrorBoundary";
 import { useStartDateFromLatestOppfolgingstilfellePeriode } from "@/data/oppfolgingstilfelle/oppfolgingstilfellerperson_hooks";
+import { useEgenansattQuery } from "@/data/egenansatt/egenansattQueryHooks";
+import { useValgtPersonident } from "@/hooks/useValgtBruker";
 
 const texts = {
   copied: "Kopiert!",
@@ -56,13 +57,14 @@ const StyledFnr = styled.div`
 `;
 
 interface PersonkortHeaderProps {
-  egenansatt: EgenansattState;
   navbruker: Brukerinfo;
   sykmeldinger: any[];
 }
 
 const PersonkortHeader = (personkortHeaderProps: PersonkortHeaderProps) => {
-  const { egenansatt, navbruker, sykmeldinger } = personkortHeaderProps;
+  const fnr = useValgtPersonident();
+  const { data: isEgenAnsatt } = useEgenansattQuery(fnr);
+  const { navbruker, sykmeldinger } = personkortHeaderProps;
   const {
     data: { diskresjonskode },
     error,
@@ -71,7 +73,7 @@ const PersonkortHeader = (personkortHeaderProps: PersonkortHeaderProps) => {
   const visEtiketter =
     diskresjonskode === "6" ||
     diskresjonskode === "7" ||
-    egenansatt.isEgenAnsatt ||
+    isEgenAnsatt ||
     hasCoronaDiagnose;
 
   const startDate = useStartDateFromLatestOppfolgingstilfellePeriode();
@@ -113,9 +115,7 @@ const PersonkortHeader = (personkortHeaderProps: PersonkortHeaderProps) => {
             {diskresjonskode === "7" && (
               <EtikettBase type="fokus">Kode 7</EtikettBase>
             )}
-            {egenansatt.isEgenAnsatt && (
-              <EtikettBase type="fokus">Egenansatt</EtikettBase>
-            )}
+            {isEgenAnsatt && <EtikettBase type="fokus">Egenansatt</EtikettBase>}
             {hasCoronaDiagnose && (
               <EtikettBase type="fokus">Koronasykmeldt</EtikettBase>
             )}

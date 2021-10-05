@@ -8,6 +8,7 @@ import { initAmplitude } from "./amplitude/amplitude";
 import * as Sentry from "@sentry/react";
 import { getEnvironmentAsString } from "./utils/miljoUtil";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import { minutesToMillis } from "@/utils/timeUtils";
 
 const store = setupStore();
@@ -32,6 +33,7 @@ ReactDOM.render(
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>
       <AppRouter />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </Provider>,
   document.getElementById("maincontent")

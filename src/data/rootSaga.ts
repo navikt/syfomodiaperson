@@ -15,7 +15,6 @@ import dokumentInfoSagas from "./oppfolgingsplan/dokumentInfoSagas";
 import virksomhetSagas from "./virksomhet/virksomhetSagas";
 import veilederinfoSagas from "./veilederinfo/veilederinfoSagas";
 import diskresjonskodeSagas from "./diskresjonskode/diskresjonskodeSagas";
-import egenansattSagas from "./egenansatt/egenansattSagas";
 import tilgangSagas from "./tilgang/tilgangSagas";
 import soknaderSagas from "./sykepengesoknad/soknaderSagas";
 import oppfolgingstilfellePersonSagas from "./oppfolgingstilfelle/oppfolgingstilfellePersonSagas";
@@ -45,7 +44,6 @@ export default function* rootSaga() {
     dokumentInfoSagas(),
     veilederinfoSagas(),
     diskresjonskodeSagas(),
-    egenansattSagas(),
     tilgangSagas(),
     soknaderSagas(),
     oppfolgingstilfellePersonSagas(),
