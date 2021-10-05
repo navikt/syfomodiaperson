@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import * as ledereActions from "../../../data/leder/ledere_actions";
 import * as moteActions from "../../../data/mote/moter_actions";
-import * as virksomhetActions from "../../../data/virksomhet/virksomhet_actions";
 import MotebookingSkjema from "../skjema/MotebookingSkjema";
 import AppSpinner from "../../AppSpinner";
 import Feilmelding from "../../Feilmelding";
@@ -121,7 +120,7 @@ export function mapStateToProps(state, ownProps) {
 
 const container = connect(
   mapStateToProps,
-  Object.assign({}, ledereActions, virksomhetActions, moteActions)
+  Object.assign({}, ledereActions, moteActions)
 )(MotebookingSkjemaContainer);
 
 export default container;

@@ -15,9 +15,9 @@ import {
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
 import { hentPersonOppgaver } from "@/data/personoppgave/personoppgave_actions";
 import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
-import { hentVirksomhet } from "@/data/virksomhet/virksomhet_actions";
 import { H3NoMargins } from "../Layout";
 import { SYFOOPPFOLGINGSPLANSERVICE_ROOT } from "@/apiConstants";
+import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 
 const texts = {
   header: "Oppfølgingsplan",
@@ -41,33 +41,60 @@ const Gyldighetsperiode = styled.span`
   margin-left: 2em;
 `;
 
-const AktiveDialoger = ({ aktiveDialoger }: AktiveDialogerProps) => {
+interface AktivDialogLenkeProps {
+  aktivDialog: OppfolgingsplanDTO;
+}
+
+const AktivDialogLenke = ({ aktivDialog }: AktivDialogLenkeProps) => {
+  const { data: virksomhet } = useVirksomhetQuery(
+    aktivDialog.virksomhet.virksomhetsnummer
+  );
+  const virksomhetsNavn = virksomhet?.navn;
   return (
-    <>
-      {aktiveDialoger.map((dialog, index) => {
-        const virksomhetsNavn = dialog.virksomhet.navn;
-        return (
-          <AktivDialog key={index}>
-            <span>
-              <Lenke
-                className="lenke"
-                href={`/sykefravaer/oppfoelgingsplaner/${dialog.id}`}
-              >
-                {virksomhetsNavn && virksomhetsNavn.length > 0
-                  ? virksomhetsNavn.toLowerCase()
-                  : dialog.virksomhet.virksomhetsnummer}
-              </Lenke>
-            </span>
-            <Gyldighetsperiode>
-              {tilLesbarPeriodeMedArstall(
-                dialog.godkjentPlan.gyldighetstidspunkt.fom,
-                dialog.godkjentPlan.gyldighetstidspunkt.tom
-              )}
-            </Gyldighetsperiode>
-          </AktivDialog>
-        );
-      })}
-    </>
+    <span>
+      <Lenke
+        className="lenke"
+        href={`/sykefravaer/oppfoelgingsplaner/${aktivDialog.id}`}
+      >
+        {virksomhetsNavn && virksomhetsNavn.length > 0
+          ? virksomhetsNavn.toLowerCase()
+          : aktivDialog.virksomhet.virksomhetsnummer}
+      </Lenke>
+    </span>
+  );
+};
+
+const AktiveDialoger = ({ aktiveDialoger }: AktiveDialogerProps) => (
+  <>
+    {aktiveDialoger.map((dialog, index) => (
+      <AktivDialog key={index}>
+        <AktivDialogLenke aktivDialog={dialog} />
+        <Gyldighetsperiode>
+          {tilLesbarPeriodeMedArstall(
+            dialog.godkjentPlan.gyldighetstidspunkt.fom,
+            dialog.godkjentPlan.gyldighetstidspunkt.tom
+          )}
+        </Gyldighetsperiode>
+      </AktivDialog>
+    ))}
+  </>
+);
+
+interface LpsPlanLenkeProps {
+  lpsPlan: OppfolgingsplanLPS;
+}
+
+const LpsPlanLenke = ({ lpsPlan }: LpsPlanLenkeProps) => {
+  const { data: virksomhet } = useVirksomhetQuery(lpsPlan.virksomhetsnummer);
+  const virksomhetsNavn = virksomhet?.navn || lpsPlan.virksomhetsnummer;
+  return (
+    <a
+      className="lenke"
+      href={`${SYFOOPPFOLGINGSPLANSERVICE_ROOT}/dokument/lps/${lpsPlan.uuid}`}
+      download="oppfølgingsplan"
+    >
+      {`${virksomhetsNavn} (pdf)`}
+    </a>
   );
 };
 
@@ -75,28 +102,19 @@ interface LpsPlanerProps {
   lpsPlaner: OppfolgingsplanLPS[];
 }
 
-const LpsPlaner = ({ lpsPlaner }: LpsPlanerProps) => {
-  return (
-    <>
-      {lpsPlaner.map((plan, index) => {
-        const lesbarDato = tilLesbarDatoMedArstall(plan.opprettet);
-        const virksomhet = plan.virksomhetsnavn || plan.virksomhetsnummer;
-        return (
-          <div key={index}>
-            <a
-              className="lenke"
-              href={`${SYFOOPPFOLGINGSPLANSERVICE_ROOT}/dokument/lps/${plan.uuid}`}
-              download="oppfølgingsplan"
-            >
-              {`${virksomhet} (pdf)`}
-            </a>
-            <span>{` innsendt ${lesbarDato} (LPS)`}</span>
-          </div>
-        );
-      })}
-    </>
-  );
-};
+const LpsPlaner = ({ lpsPlaner }: LpsPlanerProps) => (
+  <>
+    {lpsPlaner.map((plan, index) => {
+      const lesbarDato = tilLesbarDatoMedArstall(plan.opprettet);
+      return (
+        <div key={index}>
+          <LpsPlanLenke lpsPlan={plan} />
+          <span>{` innsendt ${lesbarDato} (LPS)`}</span>
+        </div>
+      );
+    })}
+  </>
+);
 
 interface OppfolgingsplanerProps {
   aktiveDialoger: OppfolgingsplanDTO[];
@@ -158,16 +176,6 @@ export const UtdragOppfolgingsplaner = ({
     oppfolgingsplanerlpsState.data,
     oppfolgingstilfelleperioderMapState
   );
-
-  useEffect(() => {
-    activeLpsPlaner.forEach((plan: OppfolgingsplanLPS) => {
-      dispatch(hentVirksomhet(plan.virksomhetsnummer));
-    });
-
-    aktiveDialoger?.forEach((plan: OppfolgingsplanDTO) => {
-      dispatch(hentVirksomhet(plan.virksomhet.virksomhetsnummer));
-    });
-  }, [dispatch, activeLpsPlaner, aktiveDialoger]);
 
   const anyActivePlaner =
     aktiveDialoger?.length > 0 || activeLpsPlaner.length > 0;

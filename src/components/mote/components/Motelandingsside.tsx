@@ -11,7 +11,6 @@ import { hentMotebehov } from "@/data/motebehov/motebehov_actions";
 import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
 import { hentOppfoelgingsdialoger } from "@/data/oppfolgingsplan/oppfoelgingsdialoger_actions";
 import { hentOppfolgingstilfelleperioder } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder_actions";
-import { hentVirksomhet } from "@/data/virksomhet/virksomhet_actions";
 import { useOppfoelgingsDialoger } from "@/hooks/useOppfoelgingsDialoger";
 import { DialogmoteOnskePanel } from "../../motebehov/DialogmoteOnskePanel";
 import { fetchDialogmote } from "@/data/dialogmote/dialogmote_actions";
@@ -56,14 +55,6 @@ export const Motelandingsside = ({ fnr }: Props) => {
   useEffect(() => {
     dispatch(hentOppfolgingstilfelleperioder(fnr));
   }, [dispatch, fnr, ledere, sykmeldinger]);
-
-  useEffect(() => {
-    aktiveDialoger?.forEach((plan) => {
-      if (!plan.virksomhet.navn) {
-        dispatch(hentVirksomhet(plan.virksomhet.virksomhetsnummer));
-      }
-    });
-  }, [dispatch, aktiveDialoger]);
 
   const harForsoktHentetAlt =
     motebehov.hentingForsokt &&

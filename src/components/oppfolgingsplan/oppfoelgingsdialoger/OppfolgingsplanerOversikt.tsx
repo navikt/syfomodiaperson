@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 import { Link } from "react-router-dom";
 import Alertstripe from "nav-frontend-alertstriper";
 import Sidetopp from "../../Sidetopp";
@@ -10,10 +9,10 @@ import {
   restdatoTilLesbarDato,
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
-import { hentVirksomhet } from "@/data/virksomhet/virksomhet_actions";
 import OppfolgingsplanerOversiktLPS from "../lps/OppfolgingsplanerOversiktLPS";
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/oppfoelgingsdialoger";
+import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 
 const texts = {
   titles: {
@@ -44,6 +43,23 @@ const deltMedNavText = (plan: OppfolgingsplanDTO) => {
   return `${texts.shared} ${sharedDate}`;
 };
 
+interface OppfolgingsplanVirksomhetTittelProps {
+  plan: OppfolgingsplanDTO;
+}
+
+const OppfolgingsplanVirksomhetTittel = ({
+  plan,
+}: OppfolgingsplanVirksomhetTittelProps) => {
+  const { data: virksomhet } = useVirksomhetQuery(
+    plan.virksomhet.virksomhetsnummer
+  );
+  return (
+    <h3 className="panel__tittel navigasjonselement__tittel">
+      {virksomhet?.navn}
+    </h3>
+  );
+};
+
 interface OppfolgingsplanerOversiktProps {
   aktiveDialoger: OppfolgingsplanDTO[];
   inaktiveDialoger: OppfolgingsplanDTO[];
@@ -59,8 +75,6 @@ const OppfolgingsplanerOversikt = (
     inaktiveDialoger,
     oppfolgingsplanerLPS,
   } = oppfolgingsplanerOversiktProps;
-
-  const dispatch = useDispatch();
 
   const oppfolgingsplanerLPSUnprocessed = oppfolgingsplanerLPS
     .filter((oppfolgingsplanLPS: OppfolgingsplanLPS) => {
@@ -92,22 +106,6 @@ const OppfolgingsplanerOversikt = (
     .sort((a, b) => {
       return new Date(a.opprettet).getTime() - new Date(b.opprettet).getTime();
     });
-
-  useEffect(() => {
-    const virksomhetsnummerSet = new Set();
-    aktiveDialoger.forEach((plan) => {
-      virksomhetsnummerSet.add(plan.virksomhet.virksomhetsnummer);
-    });
-    inaktiveDialoger.forEach((plan) => {
-      virksomhetsnummerSet.add(plan.virksomhet.virksomhetsnummer);
-    });
-    oppfolgingsplanerLPS.forEach((planLPS) => {
-      virksomhetsnummerSet.add(planLPS.virksomhetsnummer);
-    });
-    virksomhetsnummerSet.forEach((virksomhetsnummer: string) => {
-      dispatch(hentVirksomhet(virksomhetsnummer));
-    });
-  }, [dispatch, aktiveDialoger, inaktiveDialoger, oppfolgingsplanerLPS]);
 
   aktiveDialoger.sort((a, b) => {
     return (
@@ -152,9 +150,7 @@ const OppfolgingsplanerOversikt = (
               to={`/sykefravaer/oppfoelgingsplaner/${dialog.id}`}
             >
               <div className="navigasjonselement">
-                <h3 className="panel__tittel navigasjonselement__tittel">
-                  {dialog.virksomhet.navn}
-                </h3>
+                <OppfolgingsplanVirksomhetTittel plan={dialog} />
                 <p className="navigasjonselement__undertittel">
                   {durationText(dialog)}
                 </p>
@@ -184,9 +180,7 @@ const OppfolgingsplanerOversikt = (
             to={`/sykefravaer/oppfoelgingsplaner/${dialog.id}`}
           >
             <div className="navigasjonselement">
-              <h3 className="panel__tittel navigasjonselement__tittel">
-                {dialog.virksomhet.navn}
-              </h3>
+              <OppfolgingsplanVirksomhetTittel plan={dialog} />
               <p className="navigasjonselement__undertittel">
                 {durationText(dialog)}
               </p>

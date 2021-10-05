@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 import styled from "styled-components";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/oppfoelgingsdialoger";
 import { AlertStripeInfo } from "nav-frontend-alertstriper";
-import { hentVirksomhet } from "@/data/virksomhet/virksomhet_actions";
 import Sidetopp from "../Sidetopp";
 import UtdragFraSykefravaeret from "../utdragFraSykefravaeret/UtdragFraSykefravaeret";
 
@@ -37,16 +35,6 @@ const Nokkelinformasjon = (
     sykmeldinger,
     pageTitle,
   } = meldingTilArbeidsgiverProps;
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    aktiveDialoger.forEach((dialog: any) => {
-      if (!dialog.virksomhet.navn) {
-        dispatch(hentVirksomhet(dialog.virksomhet.virksomhetsnummer));
-      }
-    });
-  }, [dispatch, aktiveDialoger]);
 
   return (
     <div>

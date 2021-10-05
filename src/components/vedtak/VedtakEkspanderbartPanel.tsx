@@ -2,14 +2,12 @@ import { Normaltekst, Undertekst, Undertittel } from "nav-frontend-typografi";
 import { restdatoTildato } from "@/utils/datoUtils";
 import VedtakAnnullertLabel from "./VedtakAnnullertLabel";
 import * as React from "react";
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Panel from "nav-frontend-paneler";
-import { useDispatch, useSelector } from "react-redux";
-import { hentVirksomhet } from "@/data/virksomhet/virksomhet_actions";
 import Ekspanderbartpanel from "nav-frontend-ekspanderbartpanel";
 import { VedtakDTO } from "@/data/vedtak/vedtak";
 import navFarger from "nav-frontend-core";
+import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 
 interface StyledPanelProps {
   readonly selected: boolean;
@@ -63,22 +61,10 @@ const VedtakEkspanderbartPanel = (
     setSelectedVedtak,
     selectedVedtak,
   } = panelProps;
-  const dispatch = useDispatch();
-  const virksomhetState = useSelector((state: any) => state.virksomhet);
-  const [arbeidsgiver, setArbeidsgiver] = useState<string>("");
-  const orgnr = vedtakPerArbeidsgiver[0].vedtak.organisasjonsnummer || "";
-
-  useEffect(() => {
-    if (orgnr) {
-      dispatch(hentVirksomhet(orgnr));
-    }
-  }, [dispatch, orgnr]);
-
-  useEffect(() => {
-    if (virksomhetState[orgnr]?.hentet) {
-      setArbeidsgiver(virksomhetState[orgnr].data[orgnr]);
-    }
-  }, [virksomhetState, orgnr]);
+  const { data: virksomhet } = useVirksomhetQuery(
+    vedtakPerArbeidsgiver[0].vedtak.organisasjonsnummer
+  );
+  const arbeidsgiver = virksomhet?.navn || "";
 
   return (
     <StyledEkspanderbartPanel

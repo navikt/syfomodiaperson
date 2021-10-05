@@ -4,7 +4,6 @@ import {
   OPPFOELGINGSDIALOGER_HENTET,
   HENT_OPPFOELGINGSDIALOGER_FEILET,
 } from "./oppfoelgingsdialoger_actions";
-import { VIRKSOMHET_HENTET } from "../virksomhet/virksomhet_actions";
 
 export interface GodkjentPlanGyldighetTidspunktDTO {
   fom: Date;
@@ -76,21 +75,6 @@ const oppfoelgingsdialoger: Reducer<OppfolgingsplanerState> = (
         hentingFeilet: false,
         hentet: true,
         data: action.data,
-      });
-    }
-    case VIRKSOMHET_HENTET: {
-      const data = state.data.map((dialog) => {
-        if (dialog.virksomhet.virksomhetsnummer === action.orgnummer) {
-          return Object.assign({}, dialog, {
-            virksomhet: Object.assign({}, dialog.virksomhet, {
-              navn: action.data.navn,
-            }),
-          });
-        }
-        return dialog;
-      });
-      return Object.assign({}, state, {
-        data,
       });
     }
     default: {

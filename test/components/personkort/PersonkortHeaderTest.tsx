@@ -1,4 +1,4 @@
-import { stubEgenansatt } from "../../stubs/stubSyfoperson";
+import { stubEgenansattApi } from "../../stubs/stubSyfoperson";
 import { apiMock } from "../../stubs/stubApi";
 import { QueryClient, QueryClientProvider } from "react-query";
 import nock from "nock";
@@ -34,7 +34,7 @@ describe("PersonkortHeader", () => {
   });
 
   it("viser 'Egenansatt' når isEgenansatt er true fra API", async () => {
-    stubEgenansatt(apiMockScope, true);
+    stubEgenansattApi(apiMockScope, true);
     const wrapper = render(
       <QueryClientProvider client={queryClient}>
         <Provider store={store(mockState)}>
@@ -47,7 +47,7 @@ describe("PersonkortHeader", () => {
   });
 
   it("viser ikke 'Egenansatt' når isEgenansatt er false fra API", async () => {
-    stubEgenansatt(apiMockScope, false);
+    stubEgenansattApi(apiMockScope, false);
     const wrapper = render(
       <QueryClientProvider client={queryClient}>
         <Provider store={store(mockState)}>

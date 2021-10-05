@@ -12,7 +12,6 @@ import modiacontextSagas from "./modiacontext/modiacontextSagas";
 import historikkSagas from "./historikk/historikkSagas";
 import behandlendeEnhetSagas from "./behandlendeenhet/behandlendeEnhetSagas";
 import dokumentInfoSagas from "./oppfolgingsplan/dokumentInfoSagas";
-import virksomhetSagas from "./virksomhet/virksomhetSagas";
 import veilederinfoSagas from "./veilederinfo/veilederinfoSagas";
 import diskresjonskodeSagas from "./diskresjonskode/diskresjonskodeSagas";
 import tilgangSagas from "./tilgang/tilgangSagas";
@@ -34,7 +33,6 @@ export default function* rootSaga() {
     moterSagas(),
     motebehovSagas(),
     epostinnholdSagas(),
-    virksomhetSagas(),
     modiacontextSagas(),
     sykmeldingerSagas(),
     oppfoelgingsdialogerSagas(),

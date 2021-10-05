@@ -9,6 +9,7 @@ import OppfolgingsplanLPSEtikett from "./OppfolgingsplanLPSEtikett";
 import { StatusKanImage } from "../../../../img/ImageComponents";
 import { SYFOOPPFOLGINGSPLANSERVICE_ROOT } from "@/apiConstants";
 import { useVeilederinfo } from "@/hooks/useVeilederinfo";
+import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 
 const texts = {
   buttonOpenPlan: "Åpne oppfølgingsplanen(pdf)",
@@ -53,10 +54,13 @@ const OppfolgingsplanerOversiktLPS = ({
   const { veilederinfo } = useVeilederinfo();
   const personOppgave = oppfolgingsplanLPSBistandsbehov.personoppgave;
   const erPersonOppgaveBehandlet = isPersonOppgaveBehandlet(personOppgave);
+  const { data: virksomhet } = useVirksomhetQuery(
+    oppfolgingsplanLPSBistandsbehov.virksomhetsnummer
+  );
   return (
     <LPSPlanPanel>
       <UnderTittelInline className="panel__tittel">
-        {oppfolgingsplanLPSBistandsbehov.virksomhetsnavn}
+        {virksomhet?.navn}
       </UnderTittelInline>
       <p>
         Mottatt:{" "}

@@ -4,7 +4,6 @@ import {
   HENT_OPPFOLGINGSPLANER_LPS_HENTER,
   HENT_OPPFOLGINGSPLANER_LPS_HENTET,
 } from "./oppfolgingsplanerlps_actions";
-import { VIRKSOMHET_HENTET } from "../virksomhet/virksomhet_actions";
 import { OppfolgingsplanLPS } from "./types/OppfolgingsplanLPS";
 import { PersonOppgave } from "../personoppgave/types/PersonOppgave";
 import { BEHANDLE_PERSONOPPGAVE_BEHANDLET } from "../personoppgave/personoppgave_actions";
@@ -87,21 +86,6 @@ const oppfolgingsplanerlps: Reducer<OppfolgingsplanerlpsState> = (
           };
         }
         return oppfolgingsplanLPS;
-      });
-      return {
-        ...state,
-        data,
-      };
-    }
-    case VIRKSOMHET_HENTET: {
-      const data = state.data.map((oppfolgingsplan) => {
-        if (oppfolgingsplan.virksomhetsnummer === action.orgnummer) {
-          return {
-            ...oppfolgingsplan,
-            virksomhetsnavn: action.data.navn,
-          };
-        }
-        return oppfolgingsplan;
       });
       return {
         ...state,

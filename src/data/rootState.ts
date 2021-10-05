@@ -9,7 +9,6 @@ import motebehov, { MotebehovState } from "./motebehov/motebehov";
 import motebehovBehandling, {
   MotebehovBehandlingState,
 } from "./motebehov/motebehovBehandling";
-import virksomhet, { VirksomhetMapState } from "./virksomhet/virksomhet";
 import epostinnhold, { EpostInnholdState } from "./mote/epostinnhold";
 import arbeidsgiverEpostinnhold, {
   ArbeidsgiverEpostinnholdState,
@@ -59,7 +58,6 @@ export interface RootState {
   moter: MoterState;
   motebehov: MotebehovState;
   motebehovBehandling: MotebehovBehandlingState;
-  virksomhet: VirksomhetMapState;
   epostinnhold: EpostInnholdState;
   arbeidsgiverEpostinnhold: ArbeidsgiverEpostinnholdState;
   oppfoelgingsdialoger: OppfolgingsplanerState;
@@ -92,7 +90,6 @@ export const rootReducer = combineReducers<RootState>({
   moter,
   motebehov,
   motebehovBehandling,
-  virksomhet,
   epostinnhold,
   arbeidsgiverEpostinnhold,
   oppfoelgingsdialoger,
