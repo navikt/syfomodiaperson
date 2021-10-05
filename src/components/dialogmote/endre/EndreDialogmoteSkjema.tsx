@@ -123,7 +123,7 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
     },
     arbeidsgiver: {
       begrunnelse: values.begrunnelseArbeidsgiver,
-      endringsdokument: forhandsvisEndreTidStedGenerator.generateArbeidstakerTidStedDocument(
+      endringsdokument: forhandsvisEndreTidStedGenerator.generateArbeidsgiverTidStedDocument(
         values,
         dialogmote.tid
       ),
