@@ -17,7 +17,7 @@ export const innkallingTexts = {
     intro1:
       "Velkommen til dialogmøte i regi av NAV. NAV har ansvar for å innkalle til dialogmøte senest når en sykmelding har vart i seks måneder, eventuelt på et annet tidspunkt hvis noen av partene ser behov for det.",
     intro2:
-      "I møtet vil vi høre både hva du og arbeidsgiveren sier om arbeidssituasjonen og mulighetene for å jobbe.",
+      "I møtet vil vi høre både hva du og den ansatte sier om arbeidssituasjonen og mulighetene for å jobbe.",
     outro1:
       "Det er obligatorisk å delta i dialogmøtet. Hvis vårt forslag ikke passer, ber vi om at du tar kontakt. Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
     outro2:
