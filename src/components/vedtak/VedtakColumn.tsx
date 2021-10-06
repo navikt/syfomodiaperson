@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Column } from "nav-frontend-grid";
 import { groupVedtakByOrgnr } from "@/utils/vedtakUtils";
-import { VedtakDTO } from "@/data/vedtak/vedtak";
 import VedtakEkspanderbartPanel from "./VedtakEkspanderbartPanel";
+import { VedtakDTO } from "@/data/vedtak/vedtakTypes";
 
 interface VedtakColumnProps {
   data: VedtakDTO[];

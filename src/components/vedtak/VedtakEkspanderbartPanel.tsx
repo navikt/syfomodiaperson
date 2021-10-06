@@ -5,9 +5,9 @@ import * as React from "react";
 import styled from "styled-components";
 import Panel from "nav-frontend-paneler";
 import Ekspanderbartpanel from "nav-frontend-ekspanderbartpanel";
-import { VedtakDTO } from "@/data/vedtak/vedtak";
 import navFarger from "nav-frontend-core";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
+import { VedtakDTO } from "@/data/vedtak/vedtakTypes";
 
 interface StyledPanelProps {
   readonly selected: boolean;

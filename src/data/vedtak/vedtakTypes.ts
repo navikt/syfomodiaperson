@@ -1,10 +1,3 @@
-import {
-  HENT_VEDTAK_FEILET,
-  HENT_VEDTAK_HENTER,
-  HENT_VEDTAK_HENTET,
-} from "./vedtak_actions";
-import { Reducer } from "redux";
-
 export interface VedtakDTO {
   id: string;
   lest: boolean;
@@ -89,45 +82,3 @@ enum Type {
   Søknad,
   Inntektsmelding,
 }
-
-export const initialState: VedtakState = {
-  henter: false,
-  hentingFeilet: false,
-  hentet: false,
-  hentingForsokt: false,
-  data: null,
-};
-
-const vedtak: Reducer<VedtakState> = (state = initialState, action) => {
-  switch (action.type) {
-    case HENT_VEDTAK_HENTER: {
-      return {
-        ...state,
-        henter: true,
-        hentingFeilet: false,
-        hentet: false,
-      };
-    }
-    case HENT_VEDTAK_HENTET: {
-      return {
-        ...state,
-        henter: false,
-        hentet: true,
-        hentingForsokt: true,
-        data: action.data.reverse(),
-      };
-    }
-    case HENT_VEDTAK_FEILET: {
-      return {
-        ...state,
-        henter: false,
-        hentingFeilet: true,
-        hentingForsokt: true,
-      };
-    }
-    default:
-      return state;
-  }
-};
-
-export default vedtak;

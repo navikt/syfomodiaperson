@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Column, Row } from "nav-frontend-grid";
 import { Normaltekst } from "nav-frontend-typografi";
-import { VedtakDTO } from "@/data/vedtak/vedtak";
 import {
   estimertMaksdato,
   refusjonTilUtbetalingsdager,
 } from "@/utils/vedtakUtils";
 import { ValutaFormat } from "@/utils/valutaUtils";
 import { VedtakInfopanelRow } from "./VedtakInfopanel";
+import { VedtakDTO } from "@/data/vedtak/vedtakTypes";
 
 const texts = {
   utbetalingsdager: "Utbetalingsdager",

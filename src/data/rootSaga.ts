@@ -20,7 +20,6 @@ import oppfolgingstilfelleperioderSagas from "./oppfolgingstilfelle/oppfolgingst
 import personInfoSagas from "./personinfo/personInfoSagas";
 import personoppgaveSagas from "./personoppgave/personoppgaveSagas";
 import flaggPersonSagas from "./pengestopp/flaggPersonSagas";
-import vedtakSagas from "./vedtak/vedtakSagas";
 import dialogmoteSagas from "./dialogmote/dialogmoteSagas";
 import unleashSagas from "./unleash/unleashSagas";
 
@@ -47,7 +46,6 @@ export default function* rootSaga() {
     personInfoSagas(),
     personoppgaveSagas(),
     flaggPersonSagas(),
-    vedtakSagas(),
     dialogmoteSagas(),
     unleashSagas(),
   ]);

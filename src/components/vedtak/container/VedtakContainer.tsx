@@ -1,11 +1,9 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Column, Row } from "nav-frontend-grid";
 import { AlertStripeInfo } from "nav-frontend-alertstriper";
-import { hentVedtak } from "@/data/vedtak/vedtak_actions";
 import Side from "../../../sider/Side";
-import { VedtakDTO } from "@/data/vedtak/vedtak";
 import VedtakInfopanel from "../VedtakInfopanel";
 import styled from "styled-components";
 import { VEDTAK } from "@/enums/menypunkter";
@@ -16,6 +14,8 @@ import { sjekkTilgang } from "@/data/tilgang/tilgang_actions";
 import { MappeAdvarselImage } from "../../../../img/ImageComponents";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import SideLaster from "../../SideLaster";
+import { VedtakDTO } from "@/data/vedtak/vedtakTypes";
+import { useVedtakQuery } from "@/data/vedtak/vedtakQueryHooks";
 
 const texts = {
   pageTitle: "Vedtak",
@@ -33,29 +33,26 @@ const StyledAlertStripe = styled(AlertStripeInfo)`
 const VedtakContainer = () => {
   const fnr = useValgtPersonident();
 
-  const vedtakState = useSelector((state: any) => state.vedtak);
+  const { isLoading, isError, data: vedtakListe } = useVedtakQuery(fnr);
+  const harVedtak = vedtakListe && vedtakListe.length > 0;
 
   const [selectedVedtak, setSelectedVedtak] = useState<VedtakDTO>();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(hentVedtak(fnr));
     dispatch(sjekkTilgang(fnr));
   }, [dispatch, fnr]);
 
-  const harForsoktHentetAlt = vedtakState.hentingForsokt;
-  const hentingFeilet = vedtakState.hentingFeilet;
-
   return (
     <Side fnr={fnr} tittel={texts.pageTitle} aktivtMenypunkt={VEDTAK}>
-      <SideLaster henter={!harForsoktHentetAlt} hentingFeilet={hentingFeilet}>
+      <SideLaster henter={isLoading} hentingFeilet={isError}>
         <Row>
           <StyledAlertStripe>{texts.comingSoon}</StyledAlertStripe>
         </Row>
         <Row>
-          {vedtakState.data?.length > 0 && (
+          {harVedtak && (
             <VedtakColumn
-              data={vedtakState.data}
+              data={vedtakListe || []}
               selectedVedtak={selectedVedtak}
               setSelectedVedtak={setSelectedVedtak}
             />
@@ -67,10 +64,8 @@ const VedtakContainer = () => {
             </Column>
           )}
 
-          {!selectedVedtak && vedtakState.data?.length > 0 && (
-            <VedtakUnselected />
-          )}
-          {!vedtakState.data?.length && (
+          {!selectedVedtak && harVedtak && <VedtakUnselected />}
+          {!harVedtak && (
             <VedtakInfoBox title={texts.noVedtak} icon={MappeAdvarselImage} />
           )}
         </Row>
