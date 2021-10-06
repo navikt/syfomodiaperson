@@ -8,7 +8,6 @@ import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import { Leder } from "@/data/leder/ledere";
 import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder";
 import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
-import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
 
 const texts = {
   onskerOmDialogmote: "Ønsker om dialogmøte",
@@ -19,7 +18,6 @@ interface Props {
   ledereData: Leder[];
   oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState;
   sykmeldt?: Brukerinfo;
-  veilederinfo?: VeilederinfoDTO;
 }
 
 export const DialogmoteOnskePanel = ({
@@ -27,7 +25,6 @@ export const DialogmoteOnskePanel = ({
   ledereData,
   oppfolgingstilfelleperioder,
   sykmeldt,
-  veilederinfo,
 }: Props) => {
   return (
     <DialogmotePanel icon={UtropstegnImage} header={texts.onskerOmDialogmote}>
@@ -39,10 +36,7 @@ export const DialogmoteOnskePanel = ({
       />
 
       <FlexRow topPadding={PaddingSize.MD}>
-        <BehandleMotebehovKnapp
-          motebehovData={motebehovData}
-          veilederinfo={veilederinfo}
-        />
+        <BehandleMotebehovKnapp motebehovData={motebehovData} />
       </FlexRow>
     </DialogmotePanel>
   );

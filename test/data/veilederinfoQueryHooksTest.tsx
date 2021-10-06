@@ -1,19 +1,17 @@
-import { stubVirksomhetApi } from "../stubs/stubSyfomoteadmin";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { apiMock } from "../stubs/stubApi";
 import nock from "nock";
 import React from "react";
 import { renderHook } from "@testing-library/react-hooks";
-import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { expect } from "chai";
-import { virksomhetMock } from "../../mock/data/virksomhetMock";
+import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { stubVeilederinfoApi } from "../stubs/stubSyfoveileder";
+import { veilederMock } from "../../mock/data/veilederMock";
 
 let queryClient;
 let apiMockScope;
 
-const orgnummer = "110110110";
-
-describe("virksomhetQueryHooks tests", () => {
+describe("veilederinfoQueryHooks tests", () => {
   beforeEach(() => {
     queryClient = new QueryClient();
     apiMockScope = apiMock();
@@ -22,20 +20,19 @@ describe("virksomhetQueryHooks tests", () => {
     nock.cleanAll();
   });
 
-  it("loads virksomhet for orgnummer", async () => {
-    stubVirksomhetApi(apiMockScope, orgnummer);
+  it("loads veilederinfo", async () => {
+    stubVeilederinfoApi(apiMockScope);
 
     const wrapper = ({ children }) => (
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     );
 
-    const { result, waitFor } = renderHook(
-      () => useVirksomhetQuery(orgnummer),
-      { wrapper }
-    );
+    const { result, waitFor } = renderHook(() => useVeilederinfoQuery(), {
+      wrapper,
+    });
 
     await waitFor(() => result.current.isSuccess);
 
-    expect(result.current.data).to.deep.equal(virksomhetMock());
+    expect(result.current.data).to.deep.equal(veilederMock);
   });
 });

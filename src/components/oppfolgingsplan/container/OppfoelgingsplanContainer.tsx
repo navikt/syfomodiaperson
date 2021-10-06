@@ -7,9 +7,9 @@ import { OPPFOELGINGSPLANER } from "@/enums/menypunkter";
 import SideLaster from "../../SideLaster";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useParams } from "react-router-dom";
-import { useVeilederinfo } from "@/hooks/useVeilederinfo";
 import Feilmelding from "@/components/Feilmelding";
 import { useOppfoelgingsDialoger } from "@/hooks/useOppfoelgingsDialoger";
+import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
 const texts = {
   tittel: "Oppfølgingsplan",
@@ -21,7 +21,7 @@ export const OppfoelgingsplanContainer = () => {
     oppfoelgingsdialogId: string;
   }>();
   const fnr = useValgtPersonident();
-  const { henterVeilederinfo } = useVeilederinfo();
+  const { isLoading: henterVeilederinfo } = useVeilederinfoQuery();
   const dispatch = useDispatch();
   const {
     oppfoelgingsdialoger,

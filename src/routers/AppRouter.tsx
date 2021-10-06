@@ -31,10 +31,13 @@ import { fetchUnleashToggles } from "@/data/unleash/unleash_actions";
 import { SykepengesoknadSide } from "@/components/speiling/sykepengsoknader/container/SykepengesoknadSide";
 import { OppfoelgingsPlanerOversiktContainer } from "@/components/oppfolgingsplan/container/OppfoelgingsPlanerOversiktContainer";
 import { OppfoelgingsplanContainer } from "@/components/oppfolgingsplan/container/OppfoelgingsplanContainer";
+import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
 const getFnrFromParams = (): string => {
   return window.location.pathname.split("/")[2];
 };
+
+export const dialogmoteRoutePath = "/sykefravaer/dialogmote";
 
 const AktivBrukerRouter = (): ReactElement => {
   return (
@@ -56,22 +59,22 @@ const AktivBrukerRouter = (): ReactElement => {
       />
       <Route path="/sykefravaer/mote" exact component={MotebookingContainer} />
       <Route
-        path="/sykefravaer/dialogmote"
+        path={dialogmoteRoutePath}
         exact
         component={DialogmoteInnkallingContainer}
       />
       <Route
-        path="/sykefravaer/dialogmote/:dialogmoteUuid/avlys"
+        path={`${dialogmoteRoutePath}/:dialogmoteUuid/avlys`}
         exact
         component={AvlysDialogmoteContainer}
       />
       <Route
-        path="/sykefravaer/dialogmote/:dialogmoteUuid/referat"
+        path={`${dialogmoteRoutePath}/:dialogmoteUuid/referat`}
         exact
         component={DialogmoteReferatContainer}
       />
       <Route
-        path="/sykefravaer/dialogmote/:dialogmoteUuid/endre"
+        path={`${dialogmoteRoutePath}/:dialogmoteUuid/endre`}
         exact
         component={EndreDialogmoteContainer}
       />
@@ -156,9 +159,8 @@ const AktivBrukerLoader = () => {
 const AppRouter = () => {
   const fnrFromParam = getFnrFromParams();
   const userProperties = useUserProperties();
-  const veilederIdent = useAppSelector(
-    (state) => state.veilederinfo.data?.ident
-  );
+  const { data: veilederinfo } = useVeilederinfoQuery();
+  const veilederIdent = veilederinfo?.ident;
   const dispatch = useDispatch();
 
   useEffect(() => {

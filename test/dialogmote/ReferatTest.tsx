@@ -6,7 +6,7 @@ import Referat, {
 } from "../../src/components/dialogmote/referat/Referat";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
-import configureStore from "redux-mock-store";
+import configureStore, { MockStore } from "redux-mock-store";
 import { mount } from "enzyme";
 import {
   DialogmoteDTO,
@@ -31,6 +31,10 @@ import { Knapp } from "nav-frontend-knapper";
 import Lukknapp from "nav-frontend-lukknapp";
 import { AndreDeltakere } from "@/components/dialogmote/referat/AndreDeltakere";
 import { SlettKnapp } from "@/components/SlettKnapp";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
+import { dialogmoteRoutePath } from "@/routers/AppRouter";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -72,11 +76,6 @@ const mockState = {
       navn: navEnhetNavn,
     },
   },
-  veilederinfo: {
-    data: {
-      navn: veilederNavn,
-    },
-  },
   navbruker: {
     data: {
       navn: arbeidstakerNavn,
@@ -110,19 +109,18 @@ const arbeidsgiversOppgave = "Noe tekst om arbeidsgivers oppgave";
 const arbeidstakersOppgave = "Noe tekst om arbeidstakers oppgave";
 const veiledersOppgave = "Noe tekst om veileders oppgave";
 
+const veilederinfo: Partial<VeilederinfoDTO> = {
+  navn: veilederNavn,
+};
+const queryClient = new QueryClient();
+queryClient.setQueryData(
+  veilederinfoQueryKeys.veilederinfo,
+  () => veilederinfo
+);
+
 describe("ReferatTest", () => {
   it("viser arbeidstaker, dato og sted i tittel", () => {
-    const wrapper = mount(
-      <MemoryRouter
-        initialEntries={[`/sykefravaer/dialogmote/${moteUuid}/referat`]}
-      >
-        <Route path="/sykefravaer/dialogmote/:dialogmoteUuid/referat">
-          <Provider store={store({ ...realState, ...mockState })}>
-            <Referat dialogmote={mote} pageTitle="Test" />
-          </Provider>
-        </Route>
-      </MemoryRouter>
-    );
+    const wrapper = mountReferat(store({ ...realState, ...mockState }));
 
     expect(wrapper.find(Innholdstittel).text()).to.equal(
       `${arbeidstakerNavn}, 10. mai 2021, Videomøte`
@@ -130,17 +128,7 @@ describe("ReferatTest", () => {
   });
 
   it("viser alle deltakere forhåndsutfylt med nærmeste leder redigerbar og påkrevd", () => {
-    const wrapper = mount(
-      <MemoryRouter
-        initialEntries={[`/sykefravaer/dialogmote/${moteUuid}/referat`]}
-      >
-        <Route path="/sykefravaer/dialogmote/:dialogmoteUuid/referat">
-          <Provider store={store({ ...realState, ...mockState })}>
-            <Referat dialogmote={mote} pageTitle="Test" />
-          </Provider>
-        </Route>
-      </MemoryRouter>
-    );
+    const wrapper = mountReferat(store({ ...realState, ...mockState }));
 
     expect(
       wrapper
@@ -178,17 +166,7 @@ describe("ReferatTest", () => {
   });
 
   it("validerer alle fritekstfelter unntatt veileders oppgave", () => {
-    const wrapper = mount(
-      <MemoryRouter
-        initialEntries={[`/sykefravaer/dialogmote/${moteUuid}/referat`]}
-      >
-        <Route path="/sykefravaer/dialogmote/:dialogmoteUuid/referat">
-          <Provider store={store({ ...realState, ...mockState })}>
-            <Referat dialogmote={mote} pageTitle="Test" />
-          </Provider>
-        </Route>
-      </MemoryRouter>
-    );
+    const wrapper = mountReferat(store({ ...realState, ...mockState }));
 
     wrapper.find("form").simulate("submit");
 
@@ -219,17 +197,7 @@ describe("ReferatTest", () => {
   });
 
   it("validerer navn og funksjon på andre deltakere", () => {
-    const wrapper = mount(
-      <MemoryRouter
-        initialEntries={[`/sykefravaer/dialogmote/${moteUuid}/referat`]}
-      >
-        <Route path="/sykefravaer/dialogmote/:dialogmoteUuid/referat">
-          <Provider store={store({ ...realState, ...mockState })}>
-            <Referat dialogmote={mote} pageTitle="Test" />
-          </Provider>
-        </Route>
-      </MemoryRouter>
-    );
+    const wrapper = mountReferat(store({ ...realState, ...mockState }));
 
     const addDeltakerButton = wrapper.find(Knapp).at(0);
     addDeltakerButton.simulate("click");
@@ -265,17 +233,7 @@ describe("ReferatTest", () => {
 
   it("ferdigstiller dialogmote ved submit av skjema", () => {
     const mockStore = store({ ...realState, ...mockState });
-    const wrapper = mount(
-      <MemoryRouter
-        initialEntries={[`/sykefravaer/dialogmote/${moteUuid}/referat`]}
-      >
-        <Route path="/sykefravaer/dialogmote/:dialogmoteUuid/referat">
-          <Provider store={mockStore}>
-            <Referat dialogmote={mote} pageTitle="Test" />
-          </Provider>
-        </Route>
-      </MemoryRouter>
-    );
+    const wrapper = mountReferat(mockStore);
 
     changeTextAreaValue(wrapper, "situasjon", situasjonTekst);
     changeTextAreaValue(wrapper, "konklusjon", konklusjonTekst);
@@ -312,17 +270,7 @@ describe("ReferatTest", () => {
 
   it("forhåndsviser referat", () => {
     const mockStore = store({ ...realState, ...mockState });
-    const wrapper = mount(
-      <MemoryRouter
-        initialEntries={[`/sykefravaer/dialogmote/${moteUuid}/referat`]}
-      >
-        <Route path="/sykefravaer/dialogmote/:dialogmoteUuid/referat">
-          <Provider store={mockStore}>
-            <Referat dialogmote={mote} pageTitle="Test" />
-          </Provider>
-        </Route>
-      </MemoryRouter>
-    );
+    const wrapper = mountReferat(mockStore);
 
     changeTextAreaValue(wrapper, "situasjon", situasjonTekst);
     changeTextAreaValue(wrapper, "konklusjon", konklusjonTekst);
@@ -352,6 +300,22 @@ describe("ReferatTest", () => {
     expect(forhandsvisningModal().prop("isOpen")).to.be.false;
   });
 });
+
+const mountReferat = (mockStore: MockStore<unknown>) => {
+  return mount(
+    <MemoryRouter
+      initialEntries={[`${dialogmoteRoutePath}/${moteUuid}/referat`]}
+    >
+      <Route path={`${dialogmoteRoutePath}/:dialogmoteUuid/referat`}>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={mockStore}>
+            <Referat dialogmote={mote} pageTitle="Test" />
+          </Provider>
+        </QueryClientProvider>
+      </Route>
+    </MemoryRouter>
+  );
+};
 
 const expectedReferat: DocumentComponentDto[] = [
   {

@@ -8,8 +8,8 @@ import BehandleOppfolgingsplanLPS from "./BehandleOppfolgingsplanLPS";
 import OppfolgingsplanLPSEtikett from "./OppfolgingsplanLPSEtikett";
 import { StatusKanImage } from "../../../../img/ImageComponents";
 import { SYFOOPPFOLGINGSPLANSERVICE_ROOT } from "@/apiConstants";
-import { useVeilederinfo } from "@/hooks/useVeilederinfo";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
+import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
 const texts = {
   buttonOpenPlan: "Åpne oppfølgingsplanen(pdf)",
@@ -51,7 +51,7 @@ interface BehandleOppfolgingsplanLPSProps {
 const OppfolgingsplanerOversiktLPS = ({
   oppfolgingsplanLPSBistandsbehov,
 }: BehandleOppfolgingsplanLPSProps) => {
-  const { veilederinfo } = useVeilederinfo();
+  const { data: veilederinfo } = useVeilederinfoQuery();
   const personOppgave = oppfolgingsplanLPSBistandsbehov.personoppgave;
   const erPersonOppgaveBehandlet = isPersonOppgaveBehandlet(personOppgave);
   const { data: virksomhet } = useVirksomhetQuery(

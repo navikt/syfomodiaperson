@@ -1,13 +1,13 @@
 import { useBehandlendeEnhet } from "@/data/behandlendeenhet/behandlendeEnhet_hooks";
-import { useVeilederinfo } from "../useVeilederinfo";
 import { createParagraph } from "@/utils/documentComponentUtils";
 import { commonTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { DocumentComponentDto } from "@/data/dialogmote/types/dialogmoteTypes";
+import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
 export const useForhandsvisningHilsen = (): DocumentComponentDto[] => {
-  const { data } = useBehandlendeEnhet();
-  const { veilederinfo } = useVeilederinfo();
-  const hilsen = [createParagraph(commonTexts.hilsen, data.navn)];
+  const { data: behandlendeEnhet } = useBehandlendeEnhet();
+  const { data: veilederinfo } = useVeilederinfoQuery();
+  const hilsen = [createParagraph(commonTexts.hilsen, behandlendeEnhet.navn)];
   if (veilederinfo) {
     hilsen.push(createParagraph(veilederinfo.navn));
   }

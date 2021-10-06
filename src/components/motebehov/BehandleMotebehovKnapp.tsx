@@ -1,7 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Checkbox } from "nav-frontend-skjema";
-import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
 import {
   erMotebehovBehandlet,
   harUbehandletMotebehov,
@@ -13,6 +12,7 @@ import { behandleMotebehov } from "@/data/motebehov/behandlemotebehov_actions";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useTrackOnClick } from "@/data/logging/loggingHooks";
+import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
 const texts = {
   fjernOppgave: "Jeg har vurdert behovet. Oppgaven kan fjernes fra oversikten.",
@@ -31,18 +31,17 @@ const behandleMotebehovKnappLabel = (
 
 interface BehandleMotebehovKnappProps {
   motebehovData: MotebehovVeilederDTO[];
-  veilederinfo?: VeilederinfoDTO;
 }
 
 const BehandleMotebehovKnapp = ({
   motebehovData,
-  veilederinfo,
 }: BehandleMotebehovKnappProps) => {
   const motebehovListe = motebehovlisteMedKunJaSvar(motebehovData);
   const sistBehandletMotebehov = hentSistBehandletMotebehov(motebehovListe);
   const erBehandlet = erMotebehovBehandlet(motebehovListe);
   const fnr = useValgtPersonident();
   const trackOnClick = useTrackOnClick();
+  const { data: veilederinfo } = useVeilederinfoQuery();
 
   const dispatch = useDispatch();
 

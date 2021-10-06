@@ -31,7 +31,6 @@ import diskresjonskode, {
 import dokumentinfo, {
   DokumentinfoMapState,
 } from "./oppfolgingsplan/dokumentinfo";
-import veilederinfo, { VeilederinfoState } from "./veilederinfo/veilederinfo";
 import tilgang, { TilgangState } from "./tilgang/tilgang";
 import soknader, { SykepengesoknaderState } from "./sykepengesoknad/soknader";
 import oppfolgingstilfellerperson, {
@@ -68,7 +67,6 @@ export interface RootState {
   behandlendeEnhet: BehandlendeEnhetState;
   diskresjonskode: DiskresjonskodeState;
   dokumentinfo: DokumentinfoMapState;
-  veilederinfo: VeilederinfoState;
   tilgang: TilgangState;
   soknader: SykepengesoknaderState;
   oppfolgingstilfellerperson: OppfolgingstilfellerPersonState;
@@ -100,7 +98,6 @@ export const rootReducer = combineReducers<RootState>({
   behandlendeEnhet,
   diskresjonskode,
   dokumentinfo,
-  veilederinfo,
   tilgang,
   soknader,
   oppfolgingstilfellerperson,

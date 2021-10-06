@@ -1,5 +1,4 @@
 import React, { ReactElement } from "react";
-import { useVeilederinfo } from "@/hooks/useVeilederinfo";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { Element } from "nav-frontend-typografi";
 import { Field } from "react-final-form";
@@ -7,6 +6,7 @@ import styled from "styled-components";
 import { Input } from "nav-frontend-skjema";
 import { FlexColumn, FlexRow, PaddingSize } from "../../Layout";
 import { AndreDeltakere } from "./AndreDeltakere";
+import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
 const texts = {
   title: "Deltakere i møtet",
@@ -23,7 +23,7 @@ const Header = styled(Element)`
 
 const Deltakere = (): ReactElement => {
   const navbruker = useNavBrukerData();
-  const { veilederinfo } = useVeilederinfo();
+  const { data: veilederinfo } = useVeilederinfoQuery();
 
   return (
     <DeltakereBoks>

@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 import { TrackedKnapp } from "../../../buttons/TrackedKnapp";
 import { TrackedHovedknapp } from "../../../buttons/TrackedHovedknapp";
 import { useLedere } from "@/hooks/useLedere";
+import { dialogmoteRoutePath } from "@/routers/AppRouter";
 
 const texts = {
   innkallingSendtTrackingContext: "Møtelandingsside: Sendt innkalling",
@@ -130,7 +131,7 @@ export const DialogmoteMoteStatusPanel = ({ dialogmote }: Props) => {
       </FlexRow>
 
       <FlexRow topPadding={PaddingSize.MD}>
-        <Link to={`/sykefravaer/dialogmote/${dialogmote.uuid}/endre`}>
+        <Link to={`${dialogmoteRoutePath}/${dialogmote.uuid}/endre`}>
           <TrackedKnapp
             data-cy="endreMoteKnapp"
             context={texts.innkallingSendtTrackingContext}
@@ -138,7 +139,7 @@ export const DialogmoteMoteStatusPanel = ({ dialogmote }: Props) => {
             {texts.endreMote}
           </TrackedKnapp>
         </Link>
-        <Link to={`/sykefravaer/dialogmote/${dialogmote.uuid}/avlys`}>
+        <Link to={`${dialogmoteRoutePath}/${dialogmote.uuid}/avlys`}>
           <TrackedKnapp
             data-cy="avlysMoteKnapp"
             context={texts.innkallingSendtTrackingContext}
@@ -146,7 +147,7 @@ export const DialogmoteMoteStatusPanel = ({ dialogmote }: Props) => {
             {texts.avlysMote}
           </TrackedKnapp>
         </Link>
-        <Link to={`/sykefravaer/dialogmote/${dialogmote.uuid}/referat`}>
+        <Link to={`${dialogmoteRoutePath}/${dialogmote.uuid}/referat`}>
           <TrackedHovedknapp
             data-cy="skrivReferatKnapp"
             context={texts.innkallingSendtTrackingContext}

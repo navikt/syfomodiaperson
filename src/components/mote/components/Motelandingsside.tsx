@@ -39,7 +39,6 @@ export const Motelandingsside = ({ fnr }: Props) => {
     motebehov,
     dialogmote,
     navbruker,
-    veilederinfo,
     oppfolgingstilfelleperioder,
   } = useAppSelector((state) => state);
 
@@ -75,7 +74,6 @@ export const Motelandingsside = ({ fnr }: Props) => {
         ledereData={ledere.currentLedere}
         oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}
         sykmeldt={navbruker.data}
-        veilederinfo={veilederinfo.data}
       />
 
       <InnkallingDialogmotePanel />

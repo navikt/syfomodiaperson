@@ -9,6 +9,7 @@ import { TrackedFlatknapp } from "../../../buttons/TrackedFlatknapp";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { Link } from "react-router-dom";
 import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
+import { dialogmoteRoutePath } from "@/routers/AppRouter";
 
 const ModalText = styled.div`
   max-width: 40ch;
@@ -141,7 +142,7 @@ export const NyttDialogMote = (): ReactElement => {
 
           <FlexRow>
             <FlexColumn>
-              <Link to="/sykefravaer/dialogmote">
+              <Link to={dialogmoteRoutePath}>
                 <TrackedKnapp
                   context={texts.modalOnskerDuProveTrackingContext}
                   onClick={() => setNyLosningModalIsOpen(false)}

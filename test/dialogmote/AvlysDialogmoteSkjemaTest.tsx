@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 import React from "react";
 import { MemoryRouter, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+import configureStore, { MockStore } from "redux-mock-store";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import { expect } from "chai";
@@ -23,6 +23,10 @@ import { avlysningTexts, commonTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { Forhandsvisning } from "@/components/dialogmote/Forhandsvisning";
 import Lukknapp from "nav-frontend-lukknapp";
 import { assertFeilmelding, changeTextAreaValue } from "../testUtils";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
+import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { dialogmoteRoutePath } from "@/routers/AppRouter";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -63,13 +67,6 @@ const mockState = {
       navn: navEnhetNavn,
     },
   },
-  veilederinfo: {
-    data: {
-      navn: veilederNavn,
-      epost: veilederEpost,
-      telefonnummer: veilederTlf,
-    },
-  },
   navbruker: {
     data: {
       navn: arbeidstakerNavn,
@@ -82,33 +79,32 @@ const mockState = {
     personident: arbeidstakerPersonIdent,
   },
 };
+const veilederinfo: Partial<VeilederinfoDTO> = {
+  navn: veilederNavn,
+  epost: veilederEpost,
+  telefonnummer: veilederTlf,
+};
 const tekstTilArbeidstaker = "Noe tekst til arbeidstaker";
 const tekstTilArbeidsgiver = "Noe tekst til arbeidsgiver";
 
+const queryClient = new QueryClient();
+queryClient.setQueryData(
+  veilederinfoQueryKeys.veilederinfo,
+  () => veilederinfo
+);
+
 describe("AvlysDialogmoteSkjemaTest", () => {
   it("viser møtetidspunkt", () => {
-    const wrapper = mount(
-      <MemoryRouter initialEntries={["/sykefravaer/dialogmote/123abc/avlys"]}>
-        <Route path="/sykefravaer/dialogmote/:dialogmoteUuid/avlys">
-          <Provider store={store({ ...realState, ...mockState })}>
-            <AvlysDialogmoteSkjema dialogmote={mote} pageTitle="test" />
-          </Provider>
-        </Route>
-      </MemoryRouter>
+    const wrapper = mountAvlysDialogmoteSkjema(
+      store({ ...realState, ...mockState })
     );
 
     expect(wrapper.text()).to.contain("Gjelder dialogmøtet");
     expect(wrapper.text()).to.contain("Mandag 10. mai 2021 kl. 09.00");
   });
   it("validerer begrunnelser", () => {
-    const wrapper = mount(
-      <MemoryRouter initialEntries={["/sykefravaer/dialogmote/123abc/avlys"]}>
-        <Route path="/sykefravaer/dialogmote/:dialogmoteUuid/avlys">
-          <Provider store={store({ ...realState, ...mockState })}>
-            <AvlysDialogmoteSkjema dialogmote={mote} pageTitle="test" />
-          </Provider>
-        </Route>
-      </MemoryRouter>
+    const wrapper = mountAvlysDialogmoteSkjema(
+      store({ ...realState, ...mockState })
     );
 
     wrapper.find("form").simulate("submit");
@@ -137,14 +133,8 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     );
   });
   it("valideringsmeldinger forsvinner ved utbedring", () => {
-    const wrapper = mount(
-      <MemoryRouter initialEntries={["/sykefravaer/dialogmote/123abc/avlys"]}>
-        <Route path="/sykefravaer/dialogmote/:dialogmoteUuid/avlys">
-          <Provider store={store({ ...realState, ...mockState })}>
-            <AvlysDialogmoteSkjema dialogmote={mote} pageTitle="test" />
-          </Provider>
-        </Route>
-      </MemoryRouter>
+    const wrapper = mountAvlysDialogmoteSkjema(
+      store({ ...realState, ...mockState })
     );
 
     wrapper.find("form").simulate("submit");
@@ -201,15 +191,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
   });
   it("avlyser møte ved submit av skjema", () => {
     const mockStore = store({ ...realState, ...mockState });
-    const wrapper = mount(
-      <MemoryRouter initialEntries={["/sykefravaer/dialogmote/123abc/avlys"]}>
-        <Route path="/sykefravaer/dialogmote/:dialogmoteUuid/avlys">
-          <Provider store={mockStore}>
-            <AvlysDialogmoteSkjema dialogmote={mote} pageTitle="test" />
-          </Provider>
-        </Route>
-      </MemoryRouter>
-    );
+    const wrapper = mountAvlysDialogmoteSkjema(mockStore);
 
     changeTextAreaValue(
       wrapper,
@@ -243,15 +225,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
 
   it("forhåndsviser avlysning til arbeidstaker og arbeidsgiver", () => {
     const mockStore = store({ ...realState, ...mockState });
-    const wrapper = mount(
-      <MemoryRouter initialEntries={["/sykefravaer/dialogmote/123abc/avlys"]}>
-        <Route path="/sykefravaer/dialogmote/:dialogmoteUuid/avlys">
-          <Provider store={mockStore}>
-            <AvlysDialogmoteSkjema dialogmote={mote} pageTitle="test" />
-          </Provider>
-        </Route>
-      </MemoryRouter>
-    );
+    const wrapper = mountAvlysDialogmoteSkjema(mockStore);
 
     changeTextAreaValue(
       wrapper,
@@ -318,6 +292,20 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     );
   });
 });
+
+const mountAvlysDialogmoteSkjema = (mockStore: MockStore<unknown>) => {
+  return mount(
+    <MemoryRouter initialEntries={[`${dialogmoteRoutePath}/123abc/avlys`]}>
+      <Route path={`${dialogmoteRoutePath}/:dialogmoteUuid/avlys`}>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={mockStore}>
+            <AvlysDialogmoteSkjema dialogmote={mote} pageTitle="test" />
+          </Provider>
+        </QueryClientProvider>
+      </Route>
+    </MemoryRouter>
+  );
+};
 
 const expectedAvlysningArbeidsgiver = [
   {

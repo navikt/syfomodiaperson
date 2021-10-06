@@ -11,11 +11,11 @@ import {
   createStandardtekstParagraph,
   createParagraphWithTitle,
 } from "@/utils/documentComponentUtils";
-import { useVeilederinfo } from "../useVeilederinfo";
 import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
 import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
 import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { useForhandsvisningHilsen } from "./useForhandsvisningHilsen";
+import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
 export interface ForhandsvisReferatGenerator {
   generateReferatDocument(
@@ -27,7 +27,7 @@ export const useForhandsvisReferat = (
   dialogmote: DialogmoteDTO
 ): ForhandsvisReferatGenerator => {
   const navbruker = useNavBrukerData();
-  const { veilederinfo } = useVeilederinfo();
+  const { data: veilederinfo } = useVeilederinfoQuery();
   const hilsen = useForhandsvisningHilsen();
 
   const generateReferatDocument = (
