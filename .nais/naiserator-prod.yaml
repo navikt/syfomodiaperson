@@ -105,7 +105,7 @@ spec:
     - name: SYFOOPPFOLGINGSPLANSERVICE_HOST
       value: "syfooppfolgingsplanservice.intern.nav.no"
     - name: SYFOPERSON_AAD_APP_CLIENT_ID
-      value: "65bd6a4c-e757-487f-9767-619a5307278f"
+      value: "prod-gcp.teamsykefravr.syfoperson"
     - name: SYFOPERSON_HOST
       value: "syfoperson.intern.nav.no"
     - name: SYFOSMREGISTER_AAD_APP_CLIENT_ID
