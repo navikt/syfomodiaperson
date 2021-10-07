@@ -10,5 +10,7 @@ const vedtakQueryKeys = {
 export const useVedtakQuery = (fnr: string) => {
   const path = `${VEDTAK_ROOT}?fnr=${fnr}`;
   const fetchVedtak = () => get<VedtakDTO[]>(path);
-  return useQuery(vedtakQueryKeys.vedtak(fnr), fetchVedtak);
+  return useQuery(vedtakQueryKeys.vedtak(fnr), fetchVedtak, {
+    enabled: !!fnr,
+  });
 };

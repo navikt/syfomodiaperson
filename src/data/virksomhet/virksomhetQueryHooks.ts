@@ -11,6 +11,6 @@ export const useVirksomhetQuery = (orgnummer: string | undefined) => {
   const path = `${SYFOMOTEADMIN_ROOT}/virksomhet/${orgnummer}`;
   const fetchVirksomhet = () => get<Virksomhet>(path);
   return useQuery(virksomhetQueryKeys.virksomhet(orgnummer), fetchVirksomhet, {
-    enabled: orgnummer !== undefined,
+    enabled: !!orgnummer,
   });
 };
