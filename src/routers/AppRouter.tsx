@@ -38,6 +38,7 @@ const getFnrFromParams = (): string => {
 };
 
 export const dialogmoteRoutePath = "/sykefravaer/dialogmote";
+export const moteoversiktRoutePath = "/sykefravaer/moteoversikt";
 
 const AktivBrukerRouter = (): ReactElement => {
   return (
@@ -53,7 +54,7 @@ const AktivBrukerRouter = (): ReactElement => {
       />
       <Route path="/sykefravaer/logg" component={HistorikkContainer} />
       <Route
-        path="/sykefravaer/moteoversikt"
+        path={moteoversiktRoutePath}
         exact
         component={MotelandingssideContainer}
       />

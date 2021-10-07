@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 import React from "react";
 import { MemoryRouter, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-import configureStore, { MockStore } from "redux-mock-store";
+import configureStore from "redux-mock-store";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import { expect } from "chai";
@@ -27,6 +27,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
+import { stubAvlysApi } from "../stubs/stubIsdialogmote";
+import { apiMock } from "../stubs/stubApi";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -95,17 +97,13 @@ queryClient.setQueryData(
 
 describe("AvlysDialogmoteSkjemaTest", () => {
   it("viser møtetidspunkt", () => {
-    const wrapper = mountAvlysDialogmoteSkjema(
-      store({ ...realState, ...mockState })
-    );
+    const wrapper = mountAvlysDialogmoteSkjema();
 
     expect(wrapper.text()).to.contain("Gjelder dialogmøtet");
     expect(wrapper.text()).to.contain("Mandag 10. mai 2021 kl. 09.00");
   });
   it("validerer begrunnelser", () => {
-    const wrapper = mountAvlysDialogmoteSkjema(
-      store({ ...realState, ...mockState })
-    );
+    const wrapper = mountAvlysDialogmoteSkjema();
 
     wrapper.find("form").simulate("submit");
 
@@ -133,9 +131,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     );
   });
   it("valideringsmeldinger forsvinner ved utbedring", () => {
-    const wrapper = mountAvlysDialogmoteSkjema(
-      store({ ...realState, ...mockState })
-    );
+    const wrapper = mountAvlysDialogmoteSkjema();
 
     wrapper.find("form").simulate("submit");
 
@@ -190,8 +186,8 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     expect(wrapper.find(Feiloppsummering)).to.have.length(1);
   });
   it("avlyser møte ved submit av skjema", () => {
-    const mockStore = store({ ...realState, ...mockState });
-    const wrapper = mountAvlysDialogmoteSkjema(mockStore);
+    stubAvlysApi(apiMock(), moteUuid);
+    const wrapper = mountAvlysDialogmoteSkjema();
 
     changeTextAreaValue(
       wrapper,
@@ -206,26 +202,22 @@ describe("AvlysDialogmoteSkjemaTest", () => {
 
     wrapper.find("form").simulate("submit");
 
-    expect(mockStore.getActions()[0]).to.deep.equal({
-      type: "AVLYS_MOTE_FORESPURT",
-      fnr: arbeidstakerPersonIdent,
-      moteUuid: moteUuid,
-      data: {
-        arbeidsgiver: {
-          avlysning: expectedAvlysningArbeidsgiver,
-          begrunnelse: tekstTilArbeidsgiver,
-        },
-        arbeidstaker: {
-          avlysning: expectedAvlysningArbeidstaker,
-          begrunnelse: tekstTilArbeidstaker,
-        },
+    const avlysMutation = queryClient.getMutationCache().getAll()[0];
+    const expectedAvlysning = {
+      arbeidsgiver: {
+        avlysning: expectedAvlysningArbeidsgiver,
+        begrunnelse: tekstTilArbeidsgiver,
       },
-    });
+      arbeidstaker: {
+        avlysning: expectedAvlysningArbeidstaker,
+        begrunnelse: tekstTilArbeidstaker,
+      },
+    };
+    expect(avlysMutation.options.variables).to.deep.equal(expectedAvlysning);
   });
 
   it("forhåndsviser avlysning til arbeidstaker og arbeidsgiver", () => {
-    const mockStore = store({ ...realState, ...mockState });
-    const wrapper = mountAvlysDialogmoteSkjema(mockStore);
+    const wrapper = mountAvlysDialogmoteSkjema();
 
     changeTextAreaValue(
       wrapper,
@@ -293,12 +285,12 @@ describe("AvlysDialogmoteSkjemaTest", () => {
   });
 });
 
-const mountAvlysDialogmoteSkjema = (mockStore: MockStore<unknown>) => {
+const mountAvlysDialogmoteSkjema = () => {
   return mount(
     <MemoryRouter initialEntries={[`${dialogmoteRoutePath}/123abc/avlys`]}>
       <Route path={`${dialogmoteRoutePath}/:dialogmoteUuid/avlys`}>
         <QueryClientProvider client={queryClient}>
-          <Provider store={mockStore}>
+          <Provider store={store({ ...realState, ...mockState })}>
             <AvlysDialogmoteSkjema dialogmote={mote} pageTitle="test" />
           </Provider>
         </QueryClientProvider>

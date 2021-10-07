@@ -5,7 +5,7 @@ import { MemoryRouter, Route } from "react-router-dom";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import { Provider } from "react-redux";
-import configureStore, { MockStore } from "redux-mock-store";
+import configureStore from "redux-mock-store";
 import DialogmoteInnkallingSkjema from "../../src/components/dialogmote/innkalling/DialogmoteInnkallingSkjema";
 import {
   leggTilDagerPaDato,
@@ -31,6 +31,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
+import { stubInnkallingApi } from "../stubs/stubIsdialogmote";
+import { apiMock } from "../stubs/stubApi";
 
 const realState = createStore(rootReducer).getState();
 
@@ -101,9 +103,7 @@ queryClient.setQueryData(
 
 describe("DialogmoteInnkallingSkjema", () => {
   it("validerer arbeidsgiver, dato, tid og sted", () => {
-    const wrapper = mountDialogmoteInnkallingSkjema(
-      store({ ...realState, ...mockState })
-    );
+    const wrapper = mountDialogmoteInnkallingSkjema();
 
     wrapper.find("form").simulate("submit");
 
@@ -142,9 +142,7 @@ describe("DialogmoteInnkallingSkjema", () => {
   });
 
   it("valideringsmeldinger forsvinner ved utbedring", () => {
-    const wrapper = mountDialogmoteInnkallingSkjema(
-      store({ ...realState, ...mockState })
-    );
+    const wrapper = mountDialogmoteInnkallingSkjema();
 
     wrapper.find("form").simulate("submit");
 
@@ -227,8 +225,8 @@ describe("DialogmoteInnkallingSkjema", () => {
   });
 
   it("oppretter innkalling med verdier fra skjema", () => {
-    const mockStore = store({ ...realState, ...mockState });
-    const wrapper = mountDialogmoteInnkallingSkjema(mockStore);
+    stubInnkallingApi(apiMock());
+    const wrapper = mountDialogmoteInnkallingSkjema();
 
     const arbeidsgiverDropdown = wrapper.find("select");
     changeFieldValue(arbeidsgiverDropdown, arbeigsgiverOrgnr);
@@ -261,35 +259,33 @@ describe("DialogmoteInnkallingSkjema", () => {
 
     wrapper.find("form").simulate("submit");
 
-    const expectedAction = {
-      type: "OPPRETT_INNKALLING_FORESPURT",
-      fnr: arbeidstakerFnr,
-      data: {
-        tildeltEnhet: navEnhet,
-        arbeidsgiver: {
-          virksomhetsnummer: arbeigsgiverOrgnr,
-          fritekstInnkalling: fritekstTilArbeidsgiver,
-          innkalling: expectedArbeidsgiverInnkalling,
-        },
-        arbeidstaker: {
-          personIdent: arbeidstakerFnr,
-          fritekstInnkalling: fritekstTilArbeidstaker,
-          innkalling: expectedArbeidstakerInnkalling,
-        },
-        tidSted: {
-          sted: moteSted,
-          tid: moteDatoTid,
-          videoLink: moteVideoLink,
-        },
+    const innkallingMutation = queryClient.getMutationCache().getAll()[0];
+    const expectedInnkalling = {
+      tildeltEnhet: navEnhet,
+      arbeidsgiver: {
+        virksomhetsnummer: arbeigsgiverOrgnr,
+        fritekstInnkalling: fritekstTilArbeidsgiver,
+        innkalling: expectedArbeidsgiverInnkalling,
+      },
+      arbeidstaker: {
+        personIdent: arbeidstakerFnr,
+        fritekstInnkalling: fritekstTilArbeidstaker,
+        innkalling: expectedArbeidstakerInnkalling,
+      },
+      tidSted: {
+        sted: moteSted,
+        tid: moteDatoTid,
+        videoLink: moteVideoLink,
       },
     };
 
-    expect(mockStore.getActions()[0]).to.deep.equal(expectedAction);
+    expect(innkallingMutation.options.variables).to.deep.equal(
+      expectedInnkalling
+    );
   });
 
   it("forhåndsviser innkalling til arbeidstaker og arbeidsgiver", () => {
-    const mockStore = store({ ...realState, ...mockState });
-    const wrapper = mountDialogmoteInnkallingSkjema(mockStore);
+    const wrapper = mountDialogmoteInnkallingSkjema();
 
     const arbeidsgiverDropdown = wrapper.find("select");
     changeFieldValue(arbeidsgiverDropdown, arbeigsgiverOrgnr);
@@ -376,12 +372,12 @@ describe("DialogmoteInnkallingSkjema", () => {
   });
 });
 
-const mountDialogmoteInnkallingSkjema = (mockStore: MockStore<unknown>) => {
+const mountDialogmoteInnkallingSkjema = () => {
   return mount(
     <MemoryRouter initialEntries={[dialogmoteRoutePath]}>
       <Route path={dialogmoteRoutePath}>
         <QueryClientProvider client={queryClient}>
-          <Provider store={mockStore}>
+          <Provider store={store({ ...realState, ...mockState })}>
             <DialogmoteInnkallingSkjema pageTitle="Test" />
           </Provider>
         </QueryClientProvider>

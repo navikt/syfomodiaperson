@@ -55,7 +55,7 @@ describe("InnkallingDialogmotePanel med dm2 enabled og dm2 fysisk brev disabled"
               navbruker: brukerKanIkkeVarsles,
             })}
           >
-            <InnkallingDialogmotePanel />
+            <InnkallingDialogmotePanel aktivtDialogmote={undefined} />
           </Provider>
         </Route>
       </MemoryRouter>
@@ -78,7 +78,7 @@ describe("InnkallingDialogmotePanel med dm2 enabled og dm2 fysisk brev disabled"
               navbruker: brukerKanIkkeVarsles,
             })}
           >
-            <InnkallingDialogmotePanel />
+            <InnkallingDialogmotePanel aktivtDialogmote={undefined} />
           </Provider>
         </Route>
       </MemoryRouter>
@@ -99,7 +99,7 @@ describe("InnkallingDialogmotePanel med dm2 enabled og dm2 fysisk brev disabled"
               navbruker: brukerKanVarsles,
             })}
           >
-            <InnkallingDialogmotePanel />
+            <InnkallingDialogmotePanel aktivtDialogmote={undefined} />
           </Provider>
         </Route>
       </MemoryRouter>
@@ -117,7 +117,7 @@ describe("InnkallingDialogmotePanel med dm2 enabled og dm2 fysisk brev disabled"
               navbruker: brukerKanVarsles,
             })}
           >
-            <InnkallingDialogmotePanel />
+            <InnkallingDialogmotePanel aktivtDialogmote={undefined} />
           </Provider>
         </Route>
       </MemoryRouter>
@@ -148,7 +148,7 @@ describe("InnkallingDialogmotePanel med dm2 enabled og dm2 fysisk brev enabled",
               navbruker: brukerKanIkkeVarsles,
             })}
           >
-            <InnkallingDialogmotePanel />
+            <InnkallingDialogmotePanel aktivtDialogmote={undefined} />
           </Provider>
         </Route>
       </MemoryRouter>
@@ -171,7 +171,7 @@ describe("InnkallingDialogmotePanel med dm2 enabled og dm2 fysisk brev enabled",
               navbruker: brukerKanIkkeVarsles,
             })}
           >
-            <InnkallingDialogmotePanel />
+            <InnkallingDialogmotePanel aktivtDialogmote={undefined} />
           </Provider>
         </Route>
       </MemoryRouter>
@@ -190,7 +190,7 @@ describe("InnkallingDialogmotePanel med dm2 enabled og dm2 fysisk brev enabled",
               navbruker: brukerKanVarsles,
             })}
           >
-            <InnkallingDialogmotePanel />
+            <InnkallingDialogmotePanel aktivtDialogmote={undefined} />
           </Provider>
         </Route>
       </MemoryRouter>
@@ -208,7 +208,7 @@ describe("InnkallingDialogmotePanel med dm2 enabled og dm2 fysisk brev enabled",
               navbruker: brukerKanVarsles,
             })}
           >
-            <InnkallingDialogmotePanel />
+            <InnkallingDialogmotePanel aktivtDialogmote={undefined} />
           </Provider>
         </Route>
       </MemoryRouter>
@@ -237,7 +237,7 @@ describe("InnkallingDialogmotePanel med dm2 disabled", () => {
               navbruker: brukerKanIkkeVarsles,
             })}
           >
-            <InnkallingDialogmotePanel />
+            <InnkallingDialogmotePanel aktivtDialogmote={undefined} />
           </Provider>
         </Route>
       </MemoryRouter>
@@ -255,7 +255,7 @@ describe("InnkallingDialogmotePanel med dm2 disabled", () => {
               navbruker: brukerKanVarsles,
             })}
           >
-            <InnkallingDialogmotePanel />
+            <InnkallingDialogmotePanel aktivtDialogmote={undefined} />
           </Provider>
         </Route>
       </MemoryRouter>

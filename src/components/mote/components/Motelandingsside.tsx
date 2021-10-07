@@ -13,8 +13,9 @@ import { hentOppfoelgingsdialoger } from "@/data/oppfolgingsplan/oppfoelgingsdia
 import { hentOppfolgingstilfelleperioder } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder_actions";
 import { useOppfoelgingsDialoger } from "@/hooks/useOppfoelgingsDialoger";
 import { DialogmoteOnskePanel } from "../../motebehov/DialogmoteOnskePanel";
-import { fetchDialogmote } from "@/data/dialogmote/dialogmote_actions";
 import { MotehistorikkPanel } from "../../dialogmote/motehistorikk/MotehistorikkPanel";
+import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
+import { DialogmoteStatus } from "@/data/dialogmote/types/dialogmoteTypes";
 
 interface Props {
   fnr: string;
@@ -31,13 +32,17 @@ export const Motelandingsside = ({ fnr }: Props) => {
     aktiveDialoger,
     harForsoktHentetOppfoelgingsdialoger,
   } = useOppfoelgingsDialoger();
+  const {
+    isLoading: henterDialogmoter,
+    isError: henterDialogmoterFeilet,
+    data: dialogmoter,
+  } = useDialogmoterQuery(fnr);
 
   const {
     ledere,
     sykmeldinger,
     moter,
     motebehov,
-    dialogmote,
     navbruker,
     oppfolgingstilfelleperioder,
   } = useAppSelector((state) => state);
@@ -45,7 +50,6 @@ export const Motelandingsside = ({ fnr }: Props) => {
   useEffect(() => {
     dispatch(hentLedere(fnr));
     dispatch(hentMoter(fnr));
-    dispatch(fetchDialogmote(fnr));
     dispatch(hentMotebehov(fnr));
     dispatch(hentSykmeldinger(fnr));
     dispatch(hentOppfoelgingsdialoger(fnr));
@@ -59,13 +63,23 @@ export const Motelandingsside = ({ fnr }: Props) => {
     motebehov.hentingForsokt &&
     harForsoktHentetOppfoelgingsdialoger &&
     ledere.hentingForsokt &&
-    moter.hentingForsokt &&
-    dialogmote.henterMoteForsokt;
+    moter.hentingForsokt;
+
+  const aktivtDialogmote = dialogmoter?.find(
+    (mote) =>
+      mote.status === DialogmoteStatus.NYTT_TID_STED ||
+      mote.status === DialogmoteStatus.INNKALT
+  );
+  const historiskeMoter = dialogmoter?.filter(
+    (mote) =>
+      mote.status === DialogmoteStatus.FERDIGSTILT ||
+      mote.status === DialogmoteStatus.AVLYST
+  );
 
   return (
     <SideLaster
-      henter={!harForsoktHentetAlt}
-      hentingFeilet={motebehov.hentingFeilet || !!dialogmote.henterMoteFeil}
+      henter={!harForsoktHentetAlt || henterDialogmoter}
+      hentingFeilet={motebehov.hentingFeilet || henterDialogmoterFeilet}
     >
       <Sidetopp tittel={texts.dialogmoter} />
 
@@ -76,7 +90,7 @@ export const Motelandingsside = ({ fnr }: Props) => {
         sykmeldt={navbruker.data}
       />
 
-      <InnkallingDialogmotePanel />
+      <InnkallingDialogmotePanel aktivtDialogmote={aktivtDialogmote} />
 
       <UtdragFraSykefravaeretPanel
         aktiveDialoger={aktiveDialoger}
@@ -85,7 +99,7 @@ export const Motelandingsside = ({ fnr }: Props) => {
         sykmeldinger={sykmeldinger.data}
       />
 
-      <MotehistorikkPanel />
+      <MotehistorikkPanel historiskeMoter={historiskeMoter || []} />
     </SideLaster>
   );
 };

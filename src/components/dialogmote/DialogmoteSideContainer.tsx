@@ -1,8 +1,5 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement } from "react";
 import { useParams } from "react-router-dom";
-import { useAppSelector } from "@/hooks/hooks";
-import { useDispatch } from "react-redux";
-import { fetchDialogmote } from "@/data/dialogmote/dialogmote_actions";
 import Side from "../../sider/Side";
 import { MOETEPLANLEGGER } from "@/enums/menypunkter";
 import SideLaster from "../SideLaster";
@@ -12,6 +9,8 @@ import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/components/dialogmote/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
+import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
+import { useValgtPersonident } from "@/hooks/useValgtBruker";
 
 interface DialogmoteSideProps {
   title: string;
@@ -28,34 +27,21 @@ export const DialogmoteSideContainer = ({
   header,
   children,
 }: DialogmoteSideProps): ReactElement => {
-  const { dialogmoteUuid, fnr } = useParams<{
+  const { dialogmoteUuid } = useParams<{
     dialogmoteUuid: string;
-    fnr: string;
   }>();
-  const {
-    henterMote,
-    henterMoteFeil,
-    dialogmoter,
-    moterHentet,
-  } = useAppSelector((state) => state.dialogmote);
+  const fnr = useValgtPersonident();
+  const { isLoading, isError, data: dialogmoter } = useDialogmoterQuery(fnr);
   const { isDm2FysiskBrevEnabled } = useDM2FeatureToggles();
   const { brukerKanIkkeVarslesDigitalt } = useNavBrukerData();
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (!moterHentet) {
-      dispatch(fetchDialogmote(fnr));
-    }
-  }, [dispatch, fnr, moterHentet]);
-
-  const henter = henterMote;
-  const dialogmote = dialogmoter.find(
+  const dialogmote = dialogmoter?.find(
     (dialogmote) => dialogmote.uuid === dialogmoteUuid
   );
 
   return (
     <Side fnr={fnr} tittel={title} aktivtMenypunkt={MOETEPLANLEGGER}>
-      <SideLaster henter={henter} hentingFeilet={!!henterMoteFeil}>
+      <SideLaster henter={isLoading} hentingFeilet={isError}>
         <Sidetopp tittel={header} />
         {isDm2FysiskBrevEnabled && brukerKanIkkeVarslesDigitalt && (
           <BrukerKanIkkeVarslesPapirpostAdvarsel />

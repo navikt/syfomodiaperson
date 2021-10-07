@@ -44,7 +44,6 @@ import personoppgaver, {
   PersonOppgaverState,
 } from "./personoppgave/personoppgaver";
 import flaggperson, { FlaggpersonState } from "./pengestopp/flaggperson";
-import dialogmote, { DialogmoteState } from "./dialogmote/dialogmote";
 import unleash, { UnleashState } from "./unleash/unleash";
 
 export interface RootState {
@@ -73,7 +72,6 @@ export interface RootState {
   personadresse: PersonAdresseState;
   personoppgaver: PersonOppgaverState;
   flaggperson: FlaggpersonState;
-  dialogmote: DialogmoteState;
   unleash: UnleashState;
 }
 
@@ -103,6 +101,5 @@ export const rootReducer = combineReducers<RootState>({
   personadresse,
   personoppgaver,
   flaggperson,
-  dialogmote,
   unleash,
 });

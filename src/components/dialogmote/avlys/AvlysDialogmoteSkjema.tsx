@@ -1,13 +1,9 @@
 import Panel from "nav-frontend-paneler";
 import React, { ReactElement, useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { FlexRow, PaddingSize } from "../../Layout";
-import { useDispatch } from "react-redux";
-import { avlysMote } from "@/data/dialogmote/dialogmote_actions";
-import { useAppSelector } from "@/hooks/hooks";
-import { AlertStripeFeil } from "nav-frontend-alertstriper";
+import { FlexRow } from "../../Layout";
 import { Form } from "react-final-form";
 import DialogmoteInfo from "./DialogmoteInfo";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
@@ -20,6 +16,9 @@ import { TrackedFlatknapp } from "../../buttons/TrackedFlatknapp";
 import { useForhandsvisAvlysning } from "@/hooks/dialogmote/useForhandsvisAvlysning";
 import { Forhandsvisning } from "../Forhandsvisning";
 import { AlertstripeFullbredde } from "../../AlertstripeFullbredde";
+import { moteoversiktRoutePath } from "@/routers/AppRouter";
+import { useAvlysDialogmote } from "@/data/dialogmote/useAvlysDialogmote";
+import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 
 export const texts = {
   begrunnelseArbeidstakerLabel: "Begrunnelse til arbeidstakeren",
@@ -63,11 +62,8 @@ const AvlysDialogmoteSkjema = ({
   dialogmote,
   pageTitle,
 }: AvlysDialogmoteSkjemaProps): ReactElement => {
-  const dispatch = useDispatch();
   const fnr = useValgtPersonident();
-  const { avlyserMote, avlysMoteFeil } = useAppSelector(
-    (state) => state.dialogmote
-  );
+  const avlysDialogmote = useAvlysDialogmote(fnr, dialogmote.uuid);
   const {
     feilUtbedret,
     resetFeilUtbedret,
@@ -98,19 +94,21 @@ const AvlysDialogmoteSkjema = ({
   };
 
   const submit = (values: AvlysDialogmoteSkjemaValues) => {
-    dispatch(
-      avlysMote(dialogmote.uuid, fnr, {
-        arbeidstaker: {
-          begrunnelse: values.begrunnelseArbeidstaker,
-          avlysning: generateAvlysningArbeidstakerDocument(values),
-        },
-        arbeidsgiver: {
-          begrunnelse: values.begrunnelseArbeidsgiver,
-          avlysning: generateAvlysningArbeidsgiverDocument(values),
-        },
-      })
-    );
+    avlysDialogmote.mutate({
+      arbeidstaker: {
+        begrunnelse: values.begrunnelseArbeidstaker,
+        avlysning: generateAvlysningArbeidstakerDocument(values),
+      },
+      arbeidsgiver: {
+        begrunnelse: values.begrunnelseArbeidsgiver,
+        avlysning: generateAvlysningArbeidsgiverDocument(values),
+      },
+    });
   };
+
+  if (avlysDialogmote.isSuccess) {
+    return <Redirect to={moteoversiktRoutePath} />;
+  }
 
   return (
     <AvlysPanel>
@@ -152,12 +150,8 @@ const AvlysDialogmoteSkjema = ({
                 generateAvlysningArbeidsgiverDocument(values)
               }
             />
-            {avlysMoteFeil && (
-              <FlexRow bottomPadding={PaddingSize.MD}>
-                <AlertStripeFeil>
-                  {avlysMoteFeil.defaultErrorMsg}
-                </AlertStripeFeil>
-              </FlexRow>
+            {avlysDialogmote.isError && (
+              <SkjemaInnsendingFeil error={avlysDialogmote.error} />
             )}
             <AvlysningAlertStripe type="advarsel">
               {texts.alert}
@@ -171,12 +165,12 @@ const AvlysDialogmoteSkjema = ({
                 context={pageTitle}
                 onClick={resetFeilUtbedret}
                 htmlType="submit"
-                spinner={avlyserMote}
+                spinner={avlysDialogmote.isLoading}
                 autoDisableVedSpinner
               >
                 {texts.send}
               </SendButton>
-              <Link to={`/sykefravaer/moteoversikt`}>
+              <Link to={moteoversiktRoutePath}>
                 <TrackedFlatknapp context={pageTitle} htmlType="button">
                   {texts.avbryt}
                 </TrackedFlatknapp>

@@ -22,17 +22,16 @@ import {
 } from "@/utils/valideringUtils";
 import { useFeilUtbedret } from "@/hooks/useFeilUtbedret";
 import { SkjemaFeiloppsummering } from "../../SkjemaFeiloppsummering";
-import { useDispatch } from "react-redux";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { useAppSelector } from "@/hooks/hooks";
-import { ferdigstillMote } from "@/data/dialogmote/dialogmote_actions";
-import { FlexRow, PaddingSize } from "../../Layout";
-import { AlertStripeFeil } from "nav-frontend-alertstriper";
 import { Forhandsvisning } from "../Forhandsvisning";
 import { useForhandsvisReferat } from "@/hooks/dialogmote/useForhandsvisReferat";
 import { StandardTekst } from "@/data/dialogmote/dialogmoteTexts";
 import { NewDialogmotedeltakerAnnenDTO } from "@/data/dialogmote/types/dialogmoteReferatTypes";
 import { useLedere } from "@/hooks/useLedere";
+import { useFerdigstillDialogmote } from "@/data/dialogmote/useFerdigstillDialogmote";
+import { Redirect } from "react-router-dom";
+import { moteoversiktRoutePath } from "@/routers/AppRouter";
+import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 
 export const texts = {
   digitalReferat:
@@ -68,11 +67,9 @@ interface ReferatProps {
 }
 
 const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
-  const dispatch = useDispatch();
   const fnr = useValgtPersonident();
-  const { ferdigstillerMote, ferdigstillMoteFeil } = useAppSelector(
-    (state) => state.dialogmote
-  );
+  const ferdigstillDialogmote = useFerdigstillDialogmote(fnr, dialogmote.uuid);
+
   const navbruker = useNavBrukerData();
   const { getCurrentNarmesteLeder } = useLedere();
   const [displayReferatPreview, setDisplayReferatPreview] = useState(false);
@@ -99,18 +96,16 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
   };
 
   const submit = (values: ReferatSkjemaValues) => {
-    dispatch(
-      ferdigstillMote(dialogmote.uuid, fnr, {
-        narmesteLederNavn: values.naermesteLeder,
-        situasjon: values.situasjon,
-        konklusjon: values.konklusjon,
-        arbeidsgiverOppgave: values.arbeidsgiversOppgave,
-        arbeidstakerOppgave: values.arbeidstakersOppgave,
-        veilederOppgave: values.veiledersOppgave,
-        document: generateReferatDocument(values),
-        andreDeltakere: values.andreDeltakere || [],
-      })
-    );
+    ferdigstillDialogmote.mutate({
+      narmesteLederNavn: values.naermesteLeder,
+      situasjon: values.situasjon,
+      konklusjon: values.konklusjon,
+      arbeidsgiverOppgave: values.arbeidsgiversOppgave,
+      arbeidstakerOppgave: values.arbeidstakersOppgave,
+      veilederOppgave: values.veiledersOppgave,
+      document: generateReferatDocument(values),
+      andreDeltakere: values.andreDeltakere || [],
+    });
   };
 
   const initialValues: Partial<ReferatSkjemaValues> = {
@@ -118,6 +113,10 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
       dialogmote.arbeidsgiver.virksomhetsnummer
     )?.navn,
   };
+
+  if (ferdigstillDialogmote.isSuccess) {
+    return <Redirect to={moteoversiktRoutePath} />;
+  }
 
   return (
     <Panel>
@@ -143,12 +142,8 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
             <ArbeidsgiversOppgave />
             <VeiledersOppgave />
             <StandardTekster />
-            {ferdigstillMoteFeil && (
-              <FlexRow bottomPadding={PaddingSize.MD}>
-                <AlertStripeFeil>
-                  {ferdigstillMoteFeil.defaultErrorMsg}
-                </AlertStripeFeil>
-              </FlexRow>
+            {ferdigstillDialogmote.isError && (
+              <SkjemaInnsendingFeil error={ferdigstillDialogmote.error} />
             )}
             {submitFailed && !feilUtbedret && (
               <SkjemaFeiloppsummering errors={errors} />
@@ -157,7 +152,7 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
               pageTitle={pageTitle}
               onSendClick={resetFeilUtbedret}
               onPreviewClick={() => setDisplayReferatPreview(true)}
-              showSendSpinner={ferdigstillerMote}
+              showSendSpinner={ferdigstillDialogmote.isLoading}
             />
             <Forhandsvisning
               title={texts.forhandsvisningTitle}

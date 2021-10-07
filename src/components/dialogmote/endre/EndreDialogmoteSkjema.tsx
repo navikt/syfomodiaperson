@@ -1,14 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
 
 import { TrackedFlatknapp } from "../../buttons/TrackedFlatknapp";
 import Panel from "nav-frontend-paneler";
-import { FlexRow, PaddingSize } from "../../Layout";
-import { useAppSelector } from "@/hooks/hooks";
+import { FlexRow } from "../../Layout";
 import { TrackedHovedknapp } from "../../buttons/TrackedHovedknapp";
-import { endreTidSted } from "@/data/dialogmote/dialogmote_actions";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { Form } from "react-final-form";
 import {
@@ -27,7 +24,9 @@ import {
   DialogmoteDTO,
   EndreTidStedDialogmoteDTO,
 } from "@/data/dialogmote/types/dialogmoteTypes";
-import { AlertStripeFeil } from "nav-frontend-alertstriper";
+import { moteoversiktRoutePath } from "@/routers/AppRouter";
+import { useEndreTidStedDialogmote } from "@/data/dialogmote/useEndreTidStedDialogmote";
+import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 
 const texts = {
   send: "Lagre endringer",
@@ -69,7 +68,6 @@ interface Props {
 }
 
 const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
-  const dispatch = useDispatch();
   const fnr = useValgtPersonident();
 
   const dato = dialogmote.tid.split("T")[0];
@@ -82,8 +80,9 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
     videoLink: dialogmote.videoLink,
   };
 
-  const { endrerTidSted, endreTidStedFeil } = useAppSelector(
-    (state) => state.dialogmote
+  const endreTidStedDialogmote = useEndreTidStedDialogmote(
+    fnr,
+    dialogmote.uuid
   );
 
   const {
@@ -135,8 +134,12 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
 
   const submit = (values: EndreTidStedSkjemaValues) => {
     const dialogmoteEndring = toEndreTidSted(values);
-    dispatch(endreTidSted(dialogmote.uuid, fnr, dialogmoteEndring));
+    endreTidStedDialogmote.mutate(dialogmoteEndring);
   };
+
+  if (endreTidStedDialogmote.isSuccess) {
+    return <Redirect to={moteoversiktRoutePath} />;
+  }
 
   return (
     <EndrePanel>
@@ -145,12 +148,8 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
           <form onSubmit={handleSubmit}>
             <DialogmoteTidOgSted />
             <EndreDialogmoteTekster opprinneligTid={dialogmote.tid} />
-            {endreTidStedFeil && (
-              <FlexRow bottomPadding={PaddingSize.MD}>
-                <AlertStripeFeil>
-                  {endreTidStedFeil.defaultErrorMsg}
-                </AlertStripeFeil>
-              </FlexRow>
+            {endreTidStedDialogmote.isError && (
+              <SkjemaInnsendingFeil error={endreTidStedDialogmote.error} />
             )}
             {submitFailed && !feilUtbedret && (
               <SkjemaFeiloppsummering errors={errors} />
@@ -160,12 +159,12 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
                 context={pageTitle}
                 onClick={resetFeilUtbedret}
                 htmlType="submit"
-                spinner={endrerTidSted}
+                spinner={endreTidStedDialogmote.isLoading}
                 autoDisableVedSpinner
               >
                 {texts.send}
               </SendButton>
-              <Link to={`/sykefravaer/moteoversikt`}>
+              <Link to={moteoversiktRoutePath}>
                 <TrackedFlatknapp context={pageTitle} htmlType="button">
                   {texts.avbryt}
                 </TrackedFlatknapp>

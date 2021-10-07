@@ -9,8 +9,13 @@ import Motelandingsside from "../../src/components/mote/components/Motelandingss
 import { MemoryRouter } from "react-router-dom";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
 
 const realState = createStore(rootReducer).getState();
+const fnr = "19026900010";
+const queryClient = new QueryClient();
+queryClient.setQueryData(dialogmoterQueryKeys.dialogmoter(fnr), () => []);
 
 describe("MotelandingssideContainer", () => {
   describe("MotelandingssideSide", () => {
@@ -21,9 +26,6 @@ describe("MotelandingssideContainer", () => {
     beforeEach(() => {
       store = configureStore([]);
       mockState = {
-        dialogmote: {
-          henterMoteForsokt: true,
-        },
         unleash: {
           fetching: false,
         },
@@ -35,7 +37,7 @@ describe("MotelandingssideContainer", () => {
         navbruker: {
           data: {
             kontaktinfo: {
-              fnr: "19026900010",
+              fnr: fnr,
             },
           },
         },
@@ -93,9 +95,11 @@ describe("MotelandingssideContainer", () => {
         data: [],
       };
       component = mount(
-        <Provider store={store({ ...realState, ...mockState })}>
-          <Motelandingsside fnr="19026900010" />
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store({ ...realState, ...mockState })}>
+            <Motelandingsside fnr="19026900010" />
+          </Provider>
+        </QueryClientProvider>
       );
 
       expect(component.find(AppSpinner)).to.have.length(1);
@@ -106,9 +110,11 @@ describe("MotelandingssideContainer", () => {
         henter: true,
       };
       component = mount(
-        <Provider store={store({ ...realState, ...mockState })}>
-          <Motelandingsside fnr="19026900010" />
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store({ ...realState, ...mockState })}>
+            <Motelandingsside fnr="19026900010" />
+          </Provider>
+        </QueryClientProvider>
       );
 
       expect(component.find(AppSpinner)).to.have.length(1);
@@ -122,21 +128,22 @@ describe("MotelandingssideContainer", () => {
       };
       const mockStore = store({ ...realState, ...mockState });
       component = mount(
-        <Provider store={mockStore}>
-          <Motelandingsside fnr="19026900010" />
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={mockStore}>
+            <Motelandingsside fnr="19026900010" />
+          </Provider>
+        </QueryClientProvider>
       );
 
       const expectedActions = [
-        { type: "HENT_LEDERE_FORESPURT", fnr: "19026900010" },
-        { type: "HENT_MOTER_FORESPURT", fnr: "19026900010" },
-        { type: "FETCH_DIALOGMOTE", fnr: "19026900010" },
-        { type: "HENT_MOTEBEHOV_FORESPURT", fnr: "19026900010" },
-        { type: "HENT_SYKMELDINGER_FORESPURT", fnr: "19026900010" },
-        { type: "HENT_OPPFOELGINGSDIALOGER_FORESPURT", fnr: "19026900010" },
+        { type: "HENT_LEDERE_FORESPURT", fnr: fnr },
+        { type: "HENT_MOTER_FORESPURT", fnr: fnr },
+        { type: "HENT_MOTEBEHOV_FORESPURT", fnr: fnr },
+        { type: "HENT_SYKMELDINGER_FORESPURT", fnr: fnr },
+        { type: "HENT_OPPFOELGINGSDIALOGER_FORESPURT", fnr: fnr },
         {
           type: "HENT_OPPFOLGINGSTILFELLEPERIODER_FORESPURT",
-          fnr: "19026900010",
+          fnr: fnr,
         },
       ];
       expect(mockStore.getActions()).to.deep.equal(expectedActions);
@@ -150,9 +157,11 @@ describe("MotelandingssideContainer", () => {
         },
       };
       component = mount(
-        <Provider store={store({ ...realState, ...mockState })}>
-          <Motelandingsside fnr="19026900010" />
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store({ ...realState, ...mockState })}>
+            <Motelandingsside fnr="19026900010" />
+          </Provider>
+        </QueryClientProvider>
       );
 
       expect(component.find(Feilmelding)).to.have.length(1);
@@ -167,9 +176,11 @@ describe("MotelandingssideContainer", () => {
         },
       };
       component = mount(
-        <Provider store={store({ ...realState, ...mockState })}>
-          <Motelandingsside fnr="19026900010" />
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store({ ...realState, ...mockState })}>
+            <Motelandingsside fnr="19026900010" />
+          </Provider>
+        </QueryClientProvider>
       );
 
       expect(component.find(Feilmelding)).to.have.length(1);
@@ -189,11 +200,13 @@ describe("MotelandingssideContainer", () => {
         ],
       };
       component = mount(
-        <Provider store={store({ ...realState, ...mockState })}>
-          <MemoryRouter>
-            <Motelandingsside fnr="887766" />
-          </MemoryRouter>
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store({ ...realState, ...mockState })}>
+            <MemoryRouter>
+              <Motelandingsside fnr="887766" />
+            </MemoryRouter>
+          </Provider>
+        </QueryClientProvider>
       );
 
       expect(component.find("h2").contains("Se møtestatus"));
@@ -210,11 +223,13 @@ describe("MotelandingssideContainer", () => {
         ],
       };
       component = mount(
-        <Provider store={store({ ...realState, ...mockState })}>
-          <MemoryRouter>
-            <Motelandingsside fnr="887766" />
-          </MemoryRouter>
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store({ ...realState, ...mockState })}>
+            <MemoryRouter>
+              <Motelandingsside fnr="887766" />
+            </MemoryRouter>
+          </Provider>
+        </QueryClientProvider>
       );
 
       expect(component.find("h2").contains("Bekreftet møte"));
@@ -230,11 +245,13 @@ describe("MotelandingssideContainer", () => {
         ],
       };
       component = mount(
-        <Provider store={store({ ...realState, ...mockState })}>
-          <MemoryRouter>
-            <Motelandingsside fnr="887766" />
-          </MemoryRouter>
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store({ ...realState, ...mockState })}>
+            <MemoryRouter>
+              <Motelandingsside fnr="887766" />
+            </MemoryRouter>
+          </Provider>
+        </QueryClientProvider>
       );
 
       expect(component.find("h2").contains("Forespør møte"));
@@ -242,11 +259,13 @@ describe("MotelandingssideContainer", () => {
 
     it("Skal vise Forespør møte når det ikke finnes møter", () => {
       component = mount(
-        <Provider store={store({ ...realState, ...mockState })}>
-          <MemoryRouter>
-            <Motelandingsside fnr="887766" />
-          </MemoryRouter>
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store({ ...realState, ...mockState })}>
+            <MemoryRouter>
+              <Motelandingsside fnr="887766" />
+            </MemoryRouter>
+          </Provider>
+        </QueryClientProvider>
       );
 
       expect(component.find("h2").contains("Forespør møte"));

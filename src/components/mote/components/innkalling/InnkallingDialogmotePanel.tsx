@@ -8,7 +8,6 @@ import { tilDatoMedUkedagOgManedNavn } from "@/utils/datoUtils";
 import { useAktivtMoteplanleggerMote } from "@/data/mote/moter_hooks";
 import { Moteplanleggeren } from "./Moteplanleggeren";
 import { DialogmoteMoteStatusPanel } from "./DialogmoteMoteStatusPanel";
-import { useAktivtDialogmote } from "@/data/dialogmote/dialogmote_hooks";
 import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import styled from "styled-components";
@@ -16,6 +15,7 @@ import { AlertstripeFullbredde } from "../../../AlertstripeFullbredde";
 import { Normaltekst } from "nav-frontend-typografi";
 import { BrukerKanIkkeVarslesText } from "../../../BrukerKanIkkeVarslesText";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/components/dialogmote/BrukerKanIkkeVarslesPapirpostAdvarsel";
+import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 
 export const texts = {
   bekreftetMote: "Bekreftet møte",
@@ -57,10 +57,15 @@ const resolveUndertittelForMoteStatus = (mote: MoteDTO) => {
   }
 };
 
-export const InnkallingDialogmotePanel = (): ReactElement => {
+interface InnkallingDialogmotePanelProps {
+  aktivtDialogmote: DialogmoteDTO | undefined;
+}
+
+export const InnkallingDialogmotePanel = ({
+  aktivtDialogmote,
+}: InnkallingDialogmotePanelProps): ReactElement => {
   const { isDm2Enabled } = useDM2FeatureToggles();
   const aktivtMoteplanleggerMote = useAktivtMoteplanleggerMote();
-  const aktivtDialogmote = useAktivtDialogmote();
   const { brukerKanIkkeVarslesDigitalt } = useNavBrukerData();
 
   if (!isDm2Enabled) {

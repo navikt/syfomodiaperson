@@ -11,16 +11,12 @@ import {
   validerTidspunkt,
   validerVideoLink,
 } from "@/utils/valideringUtils";
-import { opprettInnkalling } from "@/data/dialogmote/dialogmote_actions";
-import { useDispatch } from "react-redux";
 import { DialogmoteInnkallingDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { genererDato } from "../../mote/utils";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { useNavEnhet } from "@/hooks/useNavEnhet";
-import { AlertStripeFeil } from "nav-frontend-alertstriper";
-import { useAppSelector } from "@/hooks/hooks";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { FlexRow, PaddingSize } from "../../Layout";
+import { FlexRow } from "../../Layout";
 import { SkjemaFeiloppsummering } from "../../SkjemaFeiloppsummering";
 import { useFeilUtbedret } from "@/hooks/useFeilUtbedret";
 import { TrackedFlatknapp } from "../../buttons/TrackedFlatknapp";
@@ -29,6 +25,9 @@ import {
   ForhandsvisInnkallingGenerator,
   useForhandsvisInnkalling,
 } from "@/hooks/dialogmote/useForhandsvisInnkalling";
+import { useOpprettInnkallingDialogmote } from "@/data/dialogmote/useOpprettInnkallingDialogmote";
+import { moteoversiktRoutePath } from "@/routers/AppRouter";
+import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 
 export interface DialogmoteInnkallingSkjemaValues {
   arbeidsgiver: string;
@@ -88,18 +87,15 @@ const DialogmoteInnkallingSkjema = ({
   pageTitle,
 }: DialogmoteInnkallingSkjemaProps): ReactElement => {
   const initialValues: Partial<DialogmoteInnkallingSkjemaValues> = {};
-  const dispatch = useDispatch();
   const fnr = useValgtPersonident();
   const navEnhet = useNavEnhet();
-  const { senderInnkalling, sendInnkallingFeil } = useAppSelector(
-    (state) => state.dialogmote
-  );
   const {
     feilUtbedret,
     resetFeilUtbedret,
     updateFeilUtbedret,
   } = useFeilUtbedret();
   const innkallingDocumentGenerator = useForhandsvisInnkalling();
+  const opprettInnkalling = useOpprettInnkallingDialogmote(fnr);
 
   const validate = (
     values: Partial<DialogmoteInnkallingSkjemaValues>
@@ -130,8 +126,12 @@ const DialogmoteInnkallingSkjema = ({
       navEnhet,
       innkallingDocumentGenerator
     );
-    dispatch(opprettInnkalling(fnr, dialogmoteInnkalling));
+    opprettInnkalling.mutate(dialogmoteInnkalling);
   };
+
+  if (opprettInnkalling.isSuccess) {
+    return <Redirect to={moteoversiktRoutePath} />;
+  }
 
   return (
     <Panel>
@@ -141,12 +141,8 @@ const DialogmoteInnkallingSkjema = ({
             <DialogmoteInnkallingVelgArbeidsgiver />
             <DialogmoteTidOgSted />
             <DialogmoteInnkallingTekster />
-            {sendInnkallingFeil && (
-              <FlexRow bottomPadding={PaddingSize.MD}>
-                <AlertStripeFeil>
-                  {sendInnkallingFeil.defaultErrorMsg}
-                </AlertStripeFeil>
-              </FlexRow>
+            {opprettInnkalling.isError && (
+              <SkjemaInnsendingFeil error={opprettInnkalling.error} />
             )}
             {submitFailed && !feilUtbedret && (
               <SkjemaFeiloppsummering errors={errors} />
@@ -155,13 +151,13 @@ const DialogmoteInnkallingSkjema = ({
               <TrackedHovedknapp
                 context={pageTitle}
                 onClick={resetFeilUtbedret}
-                spinner={senderInnkalling}
+                spinner={opprettInnkalling.isLoading}
                 autoDisableVedSpinner
                 htmlType="submit"
               >
                 {texts.send}
               </TrackedHovedknapp>
-              <Link to={`/sykefravaer/moteoversikt`}>
+              <Link to={moteoversiktRoutePath}>
                 <TrackedFlatknapp context={pageTitle} htmlType="button">
                   {texts.cancel}
                 </TrackedFlatknapp>

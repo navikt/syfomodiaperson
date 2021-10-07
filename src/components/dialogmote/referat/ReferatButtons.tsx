@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { TrackedHovedknapp } from "../../buttons/TrackedHovedknapp";
 import { Link } from "react-router-dom";
 import { TrackedFlatknapp } from "../../buttons/TrackedFlatknapp";
+import { moteoversiktRoutePath } from "@/routers/AppRouter";
 
 const texts = {
   send: "Lagre og send",
@@ -45,7 +46,7 @@ const ReferatButtons = ({
       >
         {texts.send}
       </HovedKnappRightMargin>
-      <Link to={`/sykefravaer/moteoversikt`}>
+      <Link to={moteoversiktRoutePath}>
         <TrackedFlatknapp context={pageTitle} htmlType="button">
           {texts.abort}
         </TrackedFlatknapp>

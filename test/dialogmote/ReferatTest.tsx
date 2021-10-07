@@ -6,7 +6,7 @@ import Referat, {
 } from "../../src/components/dialogmote/referat/Referat";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
-import configureStore, { MockStore } from "redux-mock-store";
+import configureStore from "redux-mock-store";
 import { mount } from "enzyme";
 import {
   DialogmoteDTO,
@@ -35,6 +35,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
+import { stubFerdigstillApi } from "../stubs/stubIsdialogmote";
+import { apiMock } from "../stubs/stubApi";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -120,7 +122,7 @@ queryClient.setQueryData(
 
 describe("ReferatTest", () => {
   it("viser arbeidstaker, dato og sted i tittel", () => {
-    const wrapper = mountReferat(store({ ...realState, ...mockState }));
+    const wrapper = mountReferat();
 
     expect(wrapper.find(Innholdstittel).text()).to.equal(
       `${arbeidstakerNavn}, 10. mai 2021, Videomøte`
@@ -128,7 +130,7 @@ describe("ReferatTest", () => {
   });
 
   it("viser alle deltakere forhåndsutfylt med nærmeste leder redigerbar og påkrevd", () => {
-    const wrapper = mountReferat(store({ ...realState, ...mockState }));
+    const wrapper = mountReferat();
 
     expect(
       wrapper
@@ -166,7 +168,7 @@ describe("ReferatTest", () => {
   });
 
   it("validerer alle fritekstfelter unntatt veileders oppgave", () => {
-    const wrapper = mountReferat(store({ ...realState, ...mockState }));
+    const wrapper = mountReferat();
 
     wrapper.find("form").simulate("submit");
 
@@ -197,7 +199,7 @@ describe("ReferatTest", () => {
   });
 
   it("validerer navn og funksjon på andre deltakere", () => {
-    const wrapper = mountReferat(store({ ...realState, ...mockState }));
+    const wrapper = mountReferat();
 
     const addDeltakerButton = wrapper.find(Knapp).at(0);
     addDeltakerButton.simulate("click");
@@ -232,8 +234,8 @@ describe("ReferatTest", () => {
   });
 
   it("ferdigstiller dialogmote ved submit av skjema", () => {
-    const mockStore = store({ ...realState, ...mockState });
-    const wrapper = mountReferat(mockStore);
+    stubFerdigstillApi(apiMock(), moteUuid);
+    const wrapper = mountReferat();
 
     changeTextAreaValue(wrapper, "situasjon", situasjonTekst);
     changeTextAreaValue(wrapper, "konklusjon", konklusjonTekst);
@@ -249,28 +251,26 @@ describe("ReferatTest", () => {
 
     wrapper.find("form").simulate("submit");
 
-    expect(mockStore.getActions()[0]).to.deep.equal({
-      type: "FERDIGSTILL_MOTE_FORESPURT",
-      fnr: arbeidstakerPersonIdent,
-      moteUuid: moteUuid,
-      data: {
-        narmesteLederNavn: lederNavn,
-        situasjon: situasjonTekst,
-        konklusjon: konklusjonTekst,
-        arbeidsgiverOppgave: arbeidsgiversOppgave,
-        arbeidstakerOppgave: arbeidstakersOppgave,
-        veilederOppgave: veiledersOppgave,
-        document: expectedReferat,
-        andreDeltakere: [
-          { funksjon: annenDeltakerFunksjon, navn: annenDeltakerNavn },
-        ],
-      },
-    });
+    const ferdigstillMutation = queryClient.getMutationCache().getAll()[0];
+    const expectedFerdigstilling = {
+      narmesteLederNavn: lederNavn,
+      situasjon: situasjonTekst,
+      konklusjon: konklusjonTekst,
+      arbeidsgiverOppgave: arbeidsgiversOppgave,
+      arbeidstakerOppgave: arbeidstakersOppgave,
+      veilederOppgave: veiledersOppgave,
+      document: expectedReferat,
+      andreDeltakere: [
+        { funksjon: annenDeltakerFunksjon, navn: annenDeltakerNavn },
+      ],
+    };
+    expect(ferdigstillMutation.options.variables).to.deep.equal(
+      expectedFerdigstilling
+    );
   });
 
   it("forhåndsviser referat", () => {
-    const mockStore = store({ ...realState, ...mockState });
-    const wrapper = mountReferat(mockStore);
+    const wrapper = mountReferat();
 
     changeTextAreaValue(wrapper, "situasjon", situasjonTekst);
     changeTextAreaValue(wrapper, "konklusjon", konklusjonTekst);
@@ -301,14 +301,14 @@ describe("ReferatTest", () => {
   });
 });
 
-const mountReferat = (mockStore: MockStore<unknown>) => {
+const mountReferat = () => {
   return mount(
     <MemoryRouter
       initialEntries={[`${dialogmoteRoutePath}/${moteUuid}/referat`]}
     >
       <Route path={`${dialogmoteRoutePath}/:dialogmoteUuid/referat`}>
         <QueryClientProvider client={queryClient}>
-          <Provider store={mockStore}>
+          <Provider store={store({ ...realState, ...mockState })}>
             <Referat dialogmote={mote} pageTitle="Test" />
           </Provider>
         </QueryClientProvider>

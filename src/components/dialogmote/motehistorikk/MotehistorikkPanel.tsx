@@ -2,7 +2,6 @@ import { DialogmotePanel } from "../../mote/components/DialogmotePanel";
 import { FortidenImage } from "../../../../img/ImageComponents";
 import { FlexRow } from "../../Layout";
 import React, { ReactElement, useState } from "react";
-import { useHistoriskeDialogmoter } from "@/data/dialogmote/dialogmote_hooks";
 import {
   DialogmoteDTO,
   DialogmoteStatus,
@@ -87,9 +86,13 @@ const UlWithoutIndentation = styled.ul`
   margin: 0;
 `;
 
-export const MotehistorikkPanel = () => {
-  const historiskeMoter = useHistoriskeDialogmoter();
+interface MotehistorikkPanelProps {
+  historiskeMoter: DialogmoteDTO[];
+}
 
+export const MotehistorikkPanel = ({
+  historiskeMoter,
+}: MotehistorikkPanelProps) => {
   if (historiskeMoter.length === 0) return <></>;
 
   return (
