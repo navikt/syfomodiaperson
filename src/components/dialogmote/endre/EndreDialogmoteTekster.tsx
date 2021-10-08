@@ -3,11 +3,11 @@ import { useFormState } from "react-final-form";
 import { Forhandsvisning } from "../Forhandsvisning";
 import { EndreTidStedSkjemaValues } from "./EndreDialogmoteSkjema";
 import { useForhandsvisTidSted } from "@/hooks/dialogmote/useForhandsvisTidSted";
-import FritekstSeksjon from "../FritekstSeksjon";
+import FritekstSeksjon from "@/components/dialogmote/FritekstSeksjon";
 
-const MAX_LENGTH_ENDRE_FRITEKST = 200;
+export const MAX_LENGTH_ENDRE_BEGRUNNELSE = 200;
 
-const texts = {
+export const texts = {
   send: "Lagre endringer",
   avbryt: "Avbryt",
   begrunnelseArbeidsgiver: "Begrunnelse til nærmeste leder",
@@ -46,7 +46,7 @@ const EndreDialogmoteTekster = ({ opprinneligTid }: Props) => {
         fieldName="begrunnelseArbeidstaker"
         label={texts.begrunnelseArbeidstaker}
         handlePreviewClick={() => setDisplayEndringArbeidstakerPreview(true)}
-        maxLength={MAX_LENGTH_ENDRE_FRITEKST}
+        maxLength={MAX_LENGTH_ENDRE_BEGRUNNELSE}
       />
       <Forhandsvisning
         title={texts.forhandsvisningTitle}
@@ -62,7 +62,7 @@ const EndreDialogmoteTekster = ({ opprinneligTid }: Props) => {
         fieldName="begrunnelseArbeidsgiver"
         label={texts.begrunnelseArbeidsgiver}
         handlePreviewClick={() => setDisplayEndringArbeidsgiverPreview(true)}
-        maxLength={MAX_LENGTH_ENDRE_FRITEKST}
+        maxLength={MAX_LENGTH_ENDRE_BEGRUNNELSE}
       />
       <Forhandsvisning
         title={texts.forhandsvisningTitle}

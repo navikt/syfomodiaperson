@@ -16,7 +16,9 @@ import {
 } from "@/utils/valideringUtils";
 import { useFeilUtbedret } from "@/hooks/useFeilUtbedret";
 import DialogmoteTidOgSted from "../DialogmoteTidOgSted";
-import EndreDialogmoteTekster from "./EndreDialogmoteTekster";
+import EndreDialogmoteTekster, {
+  MAX_LENGTH_ENDRE_BEGRUNNELSE,
+} from "./EndreDialogmoteTekster";
 import { SkjemaFeiloppsummering } from "../../SkjemaFeiloppsummering";
 import { genererDato } from "../../mote/utils";
 import { useForhandsvisTidSted } from "@/hooks/dialogmote/useForhandsvisTidSted";
@@ -101,9 +103,9 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
         dato: values.dato,
         klokkeslett: values.klokkeslett,
       }),
-      ...validerBegrunnelser({ ...values }),
       sted: validerSted(values.sted),
       videoLink: validerVideoLink(values.videoLink),
+      ...validerBegrunnelser({ ...values }, MAX_LENGTH_ENDRE_BEGRUNNELSE),
     };
     updateFeilUtbedret(feilmeldinger);
 

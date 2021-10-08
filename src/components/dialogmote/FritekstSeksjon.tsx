@@ -1,9 +1,9 @@
 import { FlexColumn, FlexRow, PaddingSize } from "../Layout";
 import { Field } from "react-final-form";
 import Fritekst from "../Fritekst";
-import { Knapp } from "nav-frontend-knapper";
 import React from "react";
 import styled from "styled-components";
+import { TrackedKnapp } from "@/components/buttons/TrackedKnapp";
 
 const texts = {
   forhandsvisning: "Forhåndsvisning",
@@ -30,11 +30,14 @@ const FritekstSeksjon = ({
     <FlexRow bottomPadding={PaddingSize.SM}>
       <FlexColumn flex={1}>
         <Field<string> name={fieldName}>
-          {({ input }) => (
+          {({ input, meta }) => (
             <Fritekst
+              data-cy={fieldName + "TextArea"}
               size="medium"
               maxLength={maxLength}
               label={label}
+              feil={meta.submitFailed && meta.error}
+              id={fieldName}
               {...input}
             />
           )}
@@ -42,9 +45,14 @@ const FritekstSeksjon = ({
       </FlexColumn>
     </FlexRow>
     <FlexRow>
-      <Knapp htmlType="button" onClick={handlePreviewClick}>
+      <TrackedKnapp
+        htmlType="button"
+        data-cy={fieldName + "Knapp"}
+        context={label}
+        onClick={handlePreviewClick}
+      >
         {texts.forhandsvisning}
-      </Knapp>
+      </TrackedKnapp>
     </FlexRow>
   </FritekstWrapper>
 );

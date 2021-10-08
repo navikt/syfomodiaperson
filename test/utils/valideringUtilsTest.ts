@@ -5,7 +5,6 @@ import {
 } from "@/utils/valideringUtils";
 import { MAX_LENGTH_INNKALLING_FRITEKST } from "@/components/dialogmote/innkalling/DialogmoteInnkallingTekster";
 import { expect } from "chai";
-import { MAX_LENGTH_AVLYS_BEGRUNNELSE } from "@/components/dialogmote/avlys/AvlysDialogmoteBegrunnelse";
 import { MAX_LENGTH_SITUASJON } from "@/components/dialogmote/referat/Situasjon";
 import { MAX_LENGTH_KONKLUSJON } from "@/components/dialogmote/referat/Konklusjon";
 import { MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE } from "@/components/dialogmote/referat/ArbeidsgiversOppgave";
@@ -28,15 +27,19 @@ describe("valideringUtils", () => {
     });
   });
 
-  it("validerer maks lengde på begrunnelse for avlysning", () => {
-    const tooLongBegrunnelse = getTooLongText(MAX_LENGTH_AVLYS_BEGRUNNELSE);
-    const feil = validerBegrunnelser({
-      begrunnelseArbeidstaker: tooLongBegrunnelse,
-      begrunnelseArbeidsgiver: tooLongBegrunnelse,
-    });
+  it("validerer maks lengde på begrunnelser", () => {
+    const maxLength = 200;
+    const tooLongBegrunnelse = getTooLongText(maxLength);
+    const feil = validerBegrunnelser(
+      {
+        begrunnelseArbeidstaker: tooLongBegrunnelse,
+        begrunnelseArbeidsgiver: tooLongBegrunnelse,
+      },
+      maxLength
+    );
     expect(feil).to.deep.equal({
-      begrunnelseArbeidstaker: maxMessage(MAX_LENGTH_AVLYS_BEGRUNNELSE),
-      begrunnelseArbeidsgiver: maxMessage(MAX_LENGTH_AVLYS_BEGRUNNELSE),
+      begrunnelseArbeidstaker: maxMessage(maxLength),
+      begrunnelseArbeidsgiver: maxMessage(maxLength),
     });
   });
 

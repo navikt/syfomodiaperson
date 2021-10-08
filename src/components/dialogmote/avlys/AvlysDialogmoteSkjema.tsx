@@ -7,7 +7,6 @@ import { FlexRow } from "../../Layout";
 import { Form } from "react-final-form";
 import DialogmoteInfo from "./DialogmoteInfo";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
-import AvlysDialogmoteBegrunnelse from "./AvlysDialogmoteBegrunnelse";
 import { SkjemaFeiloppsummering } from "../../SkjemaFeiloppsummering";
 import { useFeilUtbedret } from "@/hooks/useFeilUtbedret";
 import { validerBegrunnelser } from "@/utils/valideringUtils";
@@ -19,6 +18,9 @@ import { AlertstripeFullbredde } from "../../AlertstripeFullbredde";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { useAvlysDialogmote } from "@/data/dialogmote/useAvlysDialogmote";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
+import FritekstSeksjon from "@/components/dialogmote/FritekstSeksjon";
+
+const MAX_LENGTH_AVLYS_BEGRUNNELSE = 200;
 
 export const texts = {
   begrunnelseArbeidstakerLabel: "Begrunnelse til arbeidstakeren",
@@ -85,9 +87,12 @@ const AvlysDialogmoteSkjema = ({
   const validate = (
     values: Partial<AvlysDialogmoteSkjemaValues>
   ): Partial<AvlysDialogmoteSkjemaValues> => {
-    const feil = validerBegrunnelser({
-      ...values,
-    });
+    const feil = validerBegrunnelser(
+      {
+        ...values,
+      },
+      MAX_LENGTH_AVLYS_BEGRUNNELSE
+    );
     updateFeilUtbedret(feil);
 
     return feil;
@@ -116,12 +121,13 @@ const AvlysDialogmoteSkjema = ({
         {({ handleSubmit, submitFailed, errors, values }) => (
           <form onSubmit={handleSubmit}>
             <DialogmoteInfo dialogmote={dialogmote} />
-            <AvlysDialogmoteBegrunnelse
+            <FritekstSeksjon
               fieldName="begrunnelseArbeidstaker"
               label={texts.begrunnelseArbeidstakerLabel}
               handlePreviewClick={() =>
                 setDisplayAvlysningArbeidstakerPreview(true)
               }
+              maxLength={MAX_LENGTH_AVLYS_BEGRUNNELSE}
             />
             <Forhandsvisning
               title={texts.forhandsvisningTitle}
@@ -133,12 +139,13 @@ const AvlysDialogmoteSkjema = ({
                 generateAvlysningArbeidstakerDocument(values)
               }
             />
-            <AvlysDialogmoteBegrunnelse
+            <FritekstSeksjon
               fieldName="begrunnelseArbeidsgiver"
               label={texts.begrunnelseArbeidsgiverLabel}
               handlePreviewClick={() =>
                 setDisplayAvlysningArbeidsgiverPreview(true)
               }
+              maxLength={MAX_LENGTH_AVLYS_BEGRUNNELSE}
             />
             <Forhandsvisning
               title={texts.forhandsvisningTitle}

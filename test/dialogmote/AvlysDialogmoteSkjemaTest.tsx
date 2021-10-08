@@ -6,10 +6,6 @@ import configureStore from "redux-mock-store";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import { expect } from "chai";
-import {
-  DialogmoteDTO,
-  DialogmoteStatus,
-} from "@/data/dialogmote/types/dialogmoteTypes";
 import { Feilmelding } from "nav-frontend-typografi";
 import { Feiloppsummering } from "nav-frontend-skjema";
 import { Hovedknapp, Knapp } from "nav-frontend-knapper";
@@ -24,76 +20,39 @@ import { Forhandsvisning } from "@/components/dialogmote/Forhandsvisning";
 import Lukknapp from "nav-frontend-lukknapp";
 import { assertFeilmelding, changeTextAreaValue } from "../testUtils";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubAvlysApi } from "../stubs/stubIsdialogmote";
 import { apiMock } from "../stubs/stubApi";
+import { arbeidstaker, dialogmote, navEnhet, veileder } from "./testData";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
-const arbeidstakerPersonIdent = "05087321470";
-const arbeidstakerNavn = "Arne Arbeidstaker";
-const navEnhet = "0315";
-const navEnhetNavn = "NAV Grünerløkka";
-const veilederNavn = "Vetle Veileder";
-const veilederEpost = "vetle.veileder@nav.no";
-const veilederTlf = "12345678";
-const moteUuid = "123abc";
-const mote: DialogmoteDTO = {
-  arbeidsgiver: {
-    virksomhetsnummer: "912345678",
-    type: "ARBEIDSGIVER",
-    varselList: [],
-  },
-  arbeidstaker: {
-    personIdent: arbeidstakerPersonIdent,
-    type: "ARBEIDSTAKER",
-    varselList: [],
-  },
-  createdAt: "",
-  opprettetAv: "",
-  status: DialogmoteStatus.INNKALT,
-  tildeltEnhet: "",
-  tildeltVeilederIdent: "",
-  updatedAt: "",
-  uuid: moteUuid,
-  tid: "2021-05-10T09:00:00.000",
-  sted: "Videomøte",
-};
 
 const mockState = {
   behandlendeEnhet: {
     data: {
-      enhetId: navEnhet,
-      navn: navEnhetNavn,
+      enhetId: navEnhet.id,
+      navn: navEnhet.navn,
     },
   },
   navbruker: {
     data: {
-      navn: arbeidstakerNavn,
+      navn: arbeidstaker.navn,
       kontaktinfo: {
-        fnr: arbeidstakerPersonIdent,
+        fnr: arbeidstaker.personident,
       },
     },
   },
   valgtbruker: {
-    personident: arbeidstakerPersonIdent,
+    personident: arbeidstaker.personident,
   },
-};
-const veilederinfo: Partial<VeilederinfoDTO> = {
-  navn: veilederNavn,
-  epost: veilederEpost,
-  telefonnummer: veilederTlf,
 };
 const tekstTilArbeidstaker = "Noe tekst til arbeidstaker";
 const tekstTilArbeidsgiver = "Noe tekst til arbeidsgiver";
 
 const queryClient = new QueryClient();
-queryClient.setQueryData(
-  veilederinfoQueryKeys.veilederinfo,
-  () => veilederinfo
-);
+queryClient.setQueryData(veilederinfoQueryKeys.veilederinfo, () => veileder);
 
 describe("AvlysDialogmoteSkjemaTest", () => {
   it("viser møtetidspunkt", () => {
@@ -186,7 +145,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     expect(wrapper.find(Feiloppsummering)).to.have.length(1);
   });
   it("avlyser møte ved submit av skjema", () => {
-    stubAvlysApi(apiMock(), moteUuid);
+    stubAvlysApi(apiMock(), dialogmote.uuid);
     const wrapper = mountAvlysDialogmoteSkjema();
 
     changeTextAreaValue(
@@ -291,7 +250,7 @@ const mountAvlysDialogmoteSkjema = () => {
       <Route path={`${dialogmoteRoutePath}/:dialogmoteUuid/avlys`}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
-            <AvlysDialogmoteSkjema dialogmote={mote} pageTitle="test" />
+            <AvlysDialogmoteSkjema dialogmote={dialogmote} pageTitle="test" />
           </Provider>
         </QueryClientProvider>
       </Route>
@@ -301,13 +260,13 @@ const mountAvlysDialogmoteSkjema = () => {
 
 const expectedAvlysningArbeidsgiver = [
   {
-    texts: [`Gjelder ${arbeidstakerNavn}, f.nr. ${arbeidstakerPersonIdent}.`],
+    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}.`],
     type: "PARAGRAPH",
   },
   {
     texts: [
       `${avlysningTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
-        mote.tid
+        dialogmote.tid
       )}. ${avlysningTexts.intro2}`,
     ],
     type: "PARAGRAPH",
@@ -317,23 +276,23 @@ const expectedAvlysningArbeidsgiver = [
     type: "PARAGRAPH",
   },
   {
-    texts: [commonTexts.hilsen, navEnhetNavn],
+    texts: [commonTexts.hilsen, navEnhet.navn],
     type: "PARAGRAPH",
   },
   {
-    texts: [veilederNavn],
+    texts: [veileder.navn],
     type: "PARAGRAPH",
   },
 ];
 const expectedAvlysningArbeidstaker = [
   {
-    texts: [`Gjelder ${arbeidstakerNavn}, f.nr. ${arbeidstakerPersonIdent}.`],
+    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}.`],
     type: "PARAGRAPH",
   },
   {
     texts: [
       `${avlysningTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
-        mote.tid
+        dialogmote.tid
       )}. ${avlysningTexts.intro2}`,
     ],
     type: "PARAGRAPH",
@@ -343,11 +302,11 @@ const expectedAvlysningArbeidstaker = [
     type: "PARAGRAPH",
   },
   {
-    texts: [commonTexts.hilsen, navEnhetNavn],
+    texts: [commonTexts.hilsen, navEnhet.navn],
     type: "PARAGRAPH",
   },
   {
-    texts: [veilederNavn],
+    texts: [veileder.navn],
     type: "PARAGRAPH",
   },
 ];

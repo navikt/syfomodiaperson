@@ -9,8 +9,6 @@ import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
 import { mount } from "enzyme";
 import {
-  DialogmoteDTO,
-  DialogmoteStatus,
   DocumentComponentDto,
   DocumentComponentType,
 } from "@/data/dialogmote/types/dialogmoteTypes";
@@ -33,61 +31,34 @@ import { AndreDeltakere } from "@/components/dialogmote/referat/AndreDeltakere";
 import { SlettKnapp } from "@/components/SlettKnapp";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
-import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubFerdigstillApi } from "../stubs/stubIsdialogmote";
 import { apiMock } from "../stubs/stubApi";
+import { arbeidstaker, dialogmote, navEnhet, veileder } from "./testData";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
-const arbeidstakerPersonIdent = "05087321470";
-const arbeidstakerNavn = "Arne Arbeidstaker";
-const veilederNavn = "Vetle Veileder";
-const navEnhet = "0315";
-const navEnhetNavn = "NAV Grünerløkka";
-const moteUuid = "123abc";
 const lederNavn = "Grønn Bamse";
 const annenDeltakerFunksjon = "Verneombud";
 const annenDeltakerNavn = "Bodil Bolle";
-const mote: DialogmoteDTO = {
-  arbeidsgiver: {
-    virksomhetsnummer: "912345678",
-    type: "ARBEIDSGIVER",
-    varselList: [],
-  },
-  arbeidstaker: {
-    personIdent: arbeidstakerPersonIdent,
-    type: "ARBEIDSTAKER",
-    varselList: [],
-  },
-  createdAt: "",
-  opprettetAv: "",
-  status: DialogmoteStatus.INNKALT,
-  tildeltEnhet: "",
-  tildeltVeilederIdent: "",
-  updatedAt: "",
-  uuid: moteUuid,
-  tid: "2021-05-10T09:00:00.000",
-  sted: "Videomøte",
-};
 
 const mockState = {
   behandlendeEnhet: {
     data: {
-      enhetId: navEnhet,
-      navn: navEnhetNavn,
+      enhetId: navEnhet.id,
+      navn: navEnhet.navn,
     },
   },
   navbruker: {
     data: {
-      navn: arbeidstakerNavn,
+      navn: arbeidstaker.navn,
       kontaktinfo: {
-        fnr: arbeidstakerPersonIdent,
+        fnr: arbeidstaker.personident,
       },
     },
   },
   valgtbruker: {
-    personident: arbeidstakerPersonIdent,
+    personident: arbeidstaker.personident,
   },
   ledere: {
     currentLedere: [
@@ -111,21 +82,15 @@ const arbeidsgiversOppgave = "Noe tekst om arbeidsgivers oppgave";
 const arbeidstakersOppgave = "Noe tekst om arbeidstakers oppgave";
 const veiledersOppgave = "Noe tekst om veileders oppgave";
 
-const veilederinfo: Partial<VeilederinfoDTO> = {
-  navn: veilederNavn,
-};
 const queryClient = new QueryClient();
-queryClient.setQueryData(
-  veilederinfoQueryKeys.veilederinfo,
-  () => veilederinfo
-);
+queryClient.setQueryData(veilederinfoQueryKeys.veilederinfo, () => veileder);
 
 describe("ReferatTest", () => {
   it("viser arbeidstaker, dato og sted i tittel", () => {
     const wrapper = mountReferat();
 
     expect(wrapper.find(Innholdstittel).text()).to.equal(
-      `${arbeidstakerNavn}, 10. mai 2021, Videomøte`
+      `${arbeidstaker.navn}, 10. mai 2021, Videomøte`
     );
   });
 
@@ -135,12 +100,12 @@ describe("ReferatTest", () => {
     expect(
       wrapper
         .find("li")
-        .findWhere((li) => li.text() === `Fra NAV: ${veilederNavn}`)
+        .findWhere((li) => li.text() === `Fra NAV: ${veileder.navn}`)
     ).to.exist;
     expect(
       wrapper
         .find("li")
-        .findWhere((li) => li.text() === `Arbeidstaker: ${arbeidstakerNavn}`)
+        .findWhere((li) => li.text() === `Arbeidstaker: ${arbeidstaker.navn}`)
     ).to.exist;
 
     const getNaermesteLederInput = () =>
@@ -234,7 +199,7 @@ describe("ReferatTest", () => {
   });
 
   it("ferdigstiller dialogmote ved submit av skjema", () => {
-    stubFerdigstillApi(apiMock(), moteUuid);
+    stubFerdigstillApi(apiMock(), dialogmote.uuid);
     const wrapper = mountReferat();
 
     changeTextAreaValue(wrapper, "situasjon", situasjonTekst);
@@ -304,12 +269,12 @@ describe("ReferatTest", () => {
 const mountReferat = () => {
   return mount(
     <MemoryRouter
-      initialEntries={[`${dialogmoteRoutePath}/${moteUuid}/referat`]}
+      initialEntries={[`${dialogmoteRoutePath}/${dialogmote.uuid}/referat`]}
     >
       <Route path={`${dialogmoteRoutePath}/:dialogmoteUuid/referat`}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
-            <Referat dialogmote={mote} pageTitle="Test" />
+            <Referat dialogmote={dialogmote} pageTitle="Test" />
           </Provider>
         </QueryClientProvider>
       </Route>
@@ -319,25 +284,25 @@ const mountReferat = () => {
 
 const expectedReferat: DocumentComponentDto[] = [
   {
-    texts: [arbeidstakerNavn],
+    texts: [arbeidstaker.navn],
     type: DocumentComponentType.HEADER,
   },
   {
-    texts: [`F.nr. ${arbeidstakerPersonIdent}`],
+    texts: [`F.nr. ${arbeidstaker.personident}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [
-      `Dato: ${tilDatoMedUkedagOgManedNavn(mote.tid)}`,
-      `Sted: ${mote.sted}`,
+      `Dato: ${tilDatoMedUkedagOgManedNavn(dialogmote.tid)}`,
+      `Sted: ${dialogmote.sted}`,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [
-      `Arbeidstaker: ${arbeidstakerNavn}`,
+      `Arbeidstaker: ${arbeidstaker.navn}`,
       `Arbeidsgiver: ${lederNavn}`,
-      `Fra NAV: ${veilederNavn}`,
+      `Fra NAV: ${veileder.navn}`,
       `${annenDeltakerFunksjon}: ${annenDeltakerNavn}`,
     ],
     title: referatTexts.deltakereTitle,
@@ -381,11 +346,11 @@ const expectedReferat: DocumentComponentDto[] = [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [commonTexts.hilsen, navEnhetNavn],
+    texts: [commonTexts.hilsen, navEnhet.navn],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [veilederNavn],
+    texts: [veileder.navn || ""],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];

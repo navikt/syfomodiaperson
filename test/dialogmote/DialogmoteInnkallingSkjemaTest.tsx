@@ -28,15 +28,14 @@ import { texts as innkallingSkjemaTexts } from "../../src/components/dialogmote/
 import Lukknapp from "nav-frontend-lukknapp";
 import { changeFieldValue, changeTextAreaValue } from "../testUtils";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubInnkallingApi } from "../stubs/stubIsdialogmote";
 import { apiMock } from "../stubs/stubApi";
+import { arbeidsgiver, arbeidstaker, navEnhet, veileder } from "./testData";
 
 const realState = createStore(rootReducer).getState();
 
-const arbeigsgiverOrgnr = "110110110";
 const moteSted = "Møtested";
 const moteDato = toDatePrettyPrint(leggTilDagerPaDato(new Date(), 1)) as string;
 const moteDatoAsISODateString = InputDateStringToISODateString(moteDato);
@@ -45,26 +44,19 @@ const moteDatoTid = `${moteDatoAsISODateString}T${moteKlokkeslett}:00`;
 const moteVideoLink = "https://video.nav.no";
 const fritekstTilArbeidstaker = "Noe fritekst til arbeidstaker";
 const fritekstTilArbeidsgiver = "Noe fritekst til arbeidsgiver";
-const arbeidstakerFnr = "05087321470";
-const arbeidstakerNavn = "Arne Arbeistaker";
-const navEnhet = "0315";
-const navEnhetNavn = "NAV Grünerløkka";
-const veilederNavn = "Vetle Veileder";
-const veilederEpost = "vetle.veileder@nav.no";
-const veilederTlf = "12345678";
 const store = configureStore([]);
 const mockState = {
   behandlendeEnhet: {
     data: {
-      enhetId: navEnhet,
-      navn: navEnhetNavn,
+      enhetId: navEnhet.id,
+      navn: navEnhet.navn,
     },
   },
   navbruker: {
     data: {
-      navn: arbeidstakerNavn,
+      navn: arbeidstaker.navn,
       kontaktinfo: {
-        fnr: arbeidstakerFnr,
+        fnr: arbeidstaker.personident,
       },
     },
   },
@@ -72,7 +64,7 @@ const mockState = {
     valgtEnhet: navEnhet,
   },
   valgtbruker: {
-    personident: arbeidstakerFnr,
+    personident: arbeidstaker.personident,
   },
   ledere: {
     currentLedere: [
@@ -83,23 +75,15 @@ const mockState = {
         epost: "test3@test.no",
         fomDato: new Date(),
         aktiv: true,
-        orgnummer: arbeigsgiverOrgnr,
+        orgnummer: arbeidsgiver.orgnr,
         organisasjonsnavn: "PONTYPANDY FIRE SERVICE",
         arbeidsgiverForskuttererLoenn: false,
       },
     ],
   },
 };
-const veilederinfo: Partial<VeilederinfoDTO> = {
-  navn: veilederNavn,
-  epost: veilederEpost,
-  telefonnummer: veilederTlf,
-};
 const queryClient = new QueryClient();
-queryClient.setQueryData(
-  veilederinfoQueryKeys.veilederinfo,
-  () => veilederinfo
-);
+queryClient.setQueryData(veilederinfoQueryKeys.veilederinfo, () => veileder);
 
 describe("DialogmoteInnkallingSkjema", () => {
   it("validerer arbeidsgiver, dato, tid og sted", () => {
@@ -181,7 +165,7 @@ describe("DialogmoteInnkallingSkjema", () => {
 
     // Fyll inn felter i skjema
     const arbeidsgiverDropdown = wrapper.find("select");
-    changeFieldValue(arbeidsgiverDropdown, arbeigsgiverOrgnr);
+    changeFieldValue(arbeidsgiverDropdown, arbeidsgiver.orgnr);
     const datoVelger = wrapper.find("ForwardRef(DateInput)");
     changeFieldValue(datoVelger, moteDato);
     datoVelger.simulate("blur");
@@ -229,7 +213,7 @@ describe("DialogmoteInnkallingSkjema", () => {
     const wrapper = mountDialogmoteInnkallingSkjema();
 
     const arbeidsgiverDropdown = wrapper.find("select");
-    changeFieldValue(arbeidsgiverDropdown, arbeigsgiverOrgnr);
+    changeFieldValue(arbeidsgiverDropdown, arbeidsgiver.orgnr);
     const datoVelger = wrapper.find("ForwardRef(DateInput)");
     changeFieldValue(datoVelger, moteDato);
     datoVelger.simulate("blur");
@@ -263,12 +247,12 @@ describe("DialogmoteInnkallingSkjema", () => {
     const expectedInnkalling = {
       tildeltEnhet: navEnhet,
       arbeidsgiver: {
-        virksomhetsnummer: arbeigsgiverOrgnr,
+        virksomhetsnummer: arbeidsgiver.orgnr,
         fritekstInnkalling: fritekstTilArbeidsgiver,
         innkalling: expectedArbeidsgiverInnkalling,
       },
       arbeidstaker: {
-        personIdent: arbeidstakerFnr,
+        personIdent: arbeidstaker.personident,
         fritekstInnkalling: fritekstTilArbeidstaker,
         innkalling: expectedArbeidstakerInnkalling,
       },
@@ -288,7 +272,7 @@ describe("DialogmoteInnkallingSkjema", () => {
     const wrapper = mountDialogmoteInnkallingSkjema();
 
     const arbeidsgiverDropdown = wrapper.find("select");
-    changeFieldValue(arbeidsgiverDropdown, arbeigsgiverOrgnr);
+    changeFieldValue(arbeidsgiverDropdown, arbeidsgiver.orgnr);
     const datoVelger = wrapper.find("ForwardRef(DateInput)");
     changeFieldValue(datoVelger, moteDato);
     datoVelger.simulate("blur");
@@ -407,7 +391,7 @@ const expectedArbeidsgiverInnkalling = [
     type: "LINK",
   },
   {
-    texts: [`Gjelder ${arbeidstakerNavn}, f.nr. ${arbeidstakerFnr}`],
+    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
     type: "PARAGRAPH",
   },
   {
@@ -431,11 +415,11 @@ const expectedArbeidsgiverInnkalling = [
     type: "PARAGRAPH",
   },
   {
-    texts: [commonTexts.hilsen, navEnhetNavn],
+    texts: [commonTexts.hilsen, navEnhet.navn],
     type: "PARAGRAPH",
   },
   {
-    texts: [veilederNavn],
+    texts: [veileder.navn],
     type: "PARAGRAPH",
   },
   {
@@ -464,7 +448,7 @@ const expectedArbeidstakerInnkalling = [
     type: "LINK",
   },
   {
-    texts: [`Hei ${arbeidstakerNavn}`],
+    texts: [`Hei ${arbeidstaker.navn}`],
     type: "PARAGRAPH",
   },
   {
@@ -489,11 +473,11 @@ const expectedArbeidstakerInnkalling = [
     type: "PARAGRAPH",
   },
   {
-    texts: [commonTexts.hilsen, navEnhetNavn],
+    texts: [commonTexts.hilsen, navEnhet.navn],
     type: "PARAGRAPH",
   },
   {
-    texts: [veilederNavn],
+    texts: [veileder.navn],
     type: "PARAGRAPH",
   },
 ];

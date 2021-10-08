@@ -6,7 +6,6 @@ import { MAX_LENGTH_SITUASJON } from "@/components/dialogmote/referat/Situasjon"
 import { MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE } from "@/components/dialogmote/referat/ArbeidstakersOppgave";
 import { MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE } from "@/components/dialogmote/referat/ArbeidsgiversOppgave";
 import { MAX_LENGTH_VEILEDERS_OPPGAVE } from "@/components/dialogmote/referat/VeiledersOppgave";
-import { MAX_LENGTH_AVLYS_BEGRUNNELSE } from "@/components/dialogmote/avlys/AvlysDialogmoteBegrunnelse";
 import { MAX_LENGTH_INNKALLING_FRITEKST } from "@/components/dialogmote/innkalling/DialogmoteInnkallingTekster";
 
 export interface SkjemaFeil {
@@ -130,21 +129,22 @@ export const validerInnkallingFritekster = (
 };
 
 export const validerBegrunnelser = (
-  begrunnelser: Begrunnelser
+  begrunnelser: Begrunnelser,
+  maxLength: number
 ): Partial<Begrunnelser> => {
   const { begrunnelseArbeidstaker, begrunnelseArbeidsgiver } = begrunnelser;
   return {
-    begrunnelseArbeidsgiver: validerFritekst(
-      begrunnelseArbeidsgiver,
-      true,
-      MAX_LENGTH_AVLYS_BEGRUNNELSE,
-      texts.begrunnelseArbeidsgiverMissing
-    ),
     begrunnelseArbeidstaker: validerFritekst(
       begrunnelseArbeidstaker,
       true,
-      MAX_LENGTH_AVLYS_BEGRUNNELSE,
+      maxLength,
       texts.begrunnelseArbeidstakerMissing
+    ),
+    begrunnelseArbeidsgiver: validerFritekst(
+      begrunnelseArbeidsgiver,
+      true,
+      maxLength,
+      texts.begrunnelseArbeidsgiverMissing
     ),
   };
 };
