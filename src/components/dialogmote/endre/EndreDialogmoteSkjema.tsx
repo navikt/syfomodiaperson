@@ -158,6 +158,7 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
             )}
             <FlexRow>
               <SendButton
+                data-cy="sendEndringKnapp"
                 context={pageTitle}
                 onClick={resetFeilUtbedret}
                 htmlType="submit"

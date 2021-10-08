@@ -1,7 +1,9 @@
 // Matches data-cy attributes in components
 export const selectors = {
   avlysMoteKnapp: "avlysMoteKnapp",
+  endreMoteKnapp: "endreMoteKnapp",
   sendAvlysningKnapp: "sendAvlysningKnapp",
+  sendEndringKnapp: "sendEndringKnapp",
   begrunnelseArbeidstakerKnapp: "begrunnelseArbeidstakerKnapp",
   begrunnelseArbeidstakerTextArea: "begrunnelseArbeidstakerTextArea",
   begrunnelseArbeidsgiverKnapp: "begrunnelseArbeidsgiverKnapp",

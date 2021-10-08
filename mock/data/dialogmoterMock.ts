@@ -61,7 +61,7 @@ const createDialogmote = (
     sted:
       "This is a very lang text that has a lot of characters and describes where the meeting will take place.",
     tid: moteTid,
-    videoLink: "https://meet.google.com/xyz",
+    videoLink: "https://video.nav.no/xyz",
   };
 
   if (moteStatus === DialogmoteStatus.FERDIGSTILT) {
