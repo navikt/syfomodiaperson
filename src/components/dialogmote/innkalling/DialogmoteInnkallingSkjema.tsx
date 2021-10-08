@@ -9,6 +9,7 @@ import {
   validerInnkallingFritekster,
   validerSted,
   validerTidspunkt,
+  validerVideoLink,
 } from "@/utils/valideringUtils";
 import { opprettInnkalling } from "@/data/dialogmote/dialogmote_actions";
 import { useDispatch } from "react-redux";
@@ -46,7 +47,7 @@ interface DialogmoteInnkallingSkjemaProps {
 type DialogmoteInnkallingSkjemaFeil = Partial<
   Pick<
     DialogmoteInnkallingSkjemaValues,
-    "arbeidsgiver" | "sted" | "klokkeslett" | "dato"
+    "arbeidsgiver" | "sted" | "klokkeslett" | "dato" | "videoLink"
   >
 >;
 
@@ -114,6 +115,7 @@ const DialogmoteInnkallingSkjema = ({
         fritekstArbeidstaker: values.fritekstArbeidstaker,
         fritekstArbeidsgiver: values.fritekstArbeidsgiver,
       }),
+      videoLink: validerVideoLink(values.videoLink),
     };
 
     updateFeilUtbedret(feilmeldinger);

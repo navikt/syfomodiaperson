@@ -31,6 +31,7 @@ const DialogmoteTidOgSted = (): ReactElement => {
   const datoField = "dato";
   const klokkeslettField = "klokkeslett";
   const stedField = "sted";
+  const videoLinkField = "videoLink";
   return (
     <DialogmoteInnkallingSkjemaSeksjon>
       <TidOgStedTittel>{texts.title}</TidOgStedTittel>
@@ -68,12 +69,14 @@ const DialogmoteTidOgSted = (): ReactElement => {
       </FlexRow>
       <FlexRow>
         <FlexColumn flex={1}>
-          <Field<string> name="videoLink">
-            {({ input }) => (
+          <Field<string> name={videoLinkField}>
+            {({ input, meta }) => (
               <Input
                 {...input}
+                id={videoLinkField}
                 label={texts.videoLabel}
                 placeholder={texts.videoPlaceholder}
+                feil={meta.submitFailed && meta.error}
               />
             )}
           </Field>

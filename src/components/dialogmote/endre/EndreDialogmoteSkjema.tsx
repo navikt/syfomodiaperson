@@ -15,6 +15,7 @@ import {
   validerBegrunnelser,
   validerSted,
   validerTidspunkt,
+  validerVideoLink,
 } from "@/utils/valideringUtils";
 import { useFeilUtbedret } from "@/hooks/useFeilUtbedret";
 import DialogmoteTidOgSted from "../DialogmoteTidOgSted";
@@ -58,6 +59,7 @@ type EndreTidStedDialogmoteSkjemaFeil = Partial<
     | "dato"
     | "begrunnelseArbeidsgiver"
     | "begrunnelseArbeidstaker"
+    | "videoLink"
   >
 >;
 
@@ -102,6 +104,7 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
       }),
       ...validerBegrunnelser({ ...values }),
       sted: validerSted(values.sted),
+      videoLink: validerVideoLink(values.videoLink),
     };
     updateFeilUtbedret(feilmeldinger);
 
