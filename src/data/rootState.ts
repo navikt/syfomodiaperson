@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import fastleger, { FastlegerState } from "./fastlege/fastleger";
 import ledere, { LedereState } from "./leder/ledere";
 import navbruker, { NavbrukerState } from "./navbruker/navbruker";
 import modiacontext, { ModiaContextState } from "./modiacontext/modiacontext";
@@ -47,7 +46,6 @@ import flaggperson, { FlaggpersonState } from "./pengestopp/flaggperson";
 import unleash, { UnleashState } from "./unleash/unleash";
 
 export interface RootState {
-  fastleger: FastlegerState;
   ledere: LedereState;
   navbruker: NavbrukerState;
   modiacontext: ModiaContextState;
@@ -76,7 +74,6 @@ export interface RootState {
 }
 
 export const rootReducer = combineReducers<RootState>({
-  fastleger,
   ledere,
   navbruker,
   modiacontext,

@@ -1,7 +1,6 @@
 import React from "react";
 import { PERSONKORTVISNING_TYPE } from "@/konstanter";
 import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
-import { FastlegerState } from "@/data/fastlege/fastleger";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
 import VisningLege from "./PersonkortLege";
 import VisningLedere from "./ledere/PersonkortLedere";
@@ -9,7 +8,6 @@ import PersonkortSykmeldt from "./PersonkortSykmeldt";
 import VisningEnhet from "./PersonkortEnhet";
 
 interface PersonkortVisningProps {
-  fastleger: FastlegerState;
   ledere: NarmesteLederRelasjonDTO[];
   navbruker: Brukerinfo;
   personadresse: any;
@@ -19,7 +17,6 @@ interface PersonkortVisningProps {
 
 const PersonkortVisning = (personkortVisningProps: PersonkortVisningProps) => {
   const {
-    fastleger,
     ledere,
     navbruker,
     personadresse,
@@ -33,7 +30,7 @@ const PersonkortVisning = (personkortVisningProps: PersonkortVisningProps) => {
       {(() => {
         switch (visning) {
           case LEGE: {
-            return <VisningLege fastleger={fastleger} />;
+            return <VisningLege />;
           }
           case LEDER: {
             return (

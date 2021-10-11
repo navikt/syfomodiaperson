@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PERSONKORTVISNING_TYPE } from "@/konstanter";
 import { hentDiskresjonskode } from "@/data/diskresjonskode/diskresjonskode_actions";
-import { hentFastleger } from "@/data/fastlege/fastleger_actions";
 import { hentLedere } from "@/data/leder/ledere_actions";
 import { hentOppfolgingstilfelleperioder } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder_actions";
 import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
@@ -22,8 +21,6 @@ const texts = {
 };
 
 const Personkort = () => {
-  const fastleger = useSelector((state: any) => state.fastleger);
-
   const personadresseState = useSelector((state: any) => state.personadresse);
   const personadresse = personadresseState.data;
 
@@ -43,7 +40,6 @@ const Personkort = () => {
   useEffect(() => {
     if (brukerFnr) {
       dispatch(hentDiskresjonskode(brukerFnr));
-      dispatch(hentFastleger(brukerFnr));
       dispatch(hentLedere(brukerFnr));
       dispatch(hentSykmeldinger(brukerFnr));
     }
@@ -124,7 +120,6 @@ const Personkort = () => {
 
           <div aria-live="polite">
             <PersonkortVisning
-              fastleger={fastleger}
               ledere={ledere}
               navbruker={navbruker}
               personadresse={personadresse}

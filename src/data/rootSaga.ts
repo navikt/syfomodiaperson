@@ -1,6 +1,5 @@
 import { all } from "redux-saga/effects";
 import ledereSagas from "./leder/ledereSagas";
-import fastlegerSagas from "./fastlege/fastlegerSagas";
 import navbrukerSagas from "./navbruker/navbrukerSagas";
 import moterSagas from "./mote/moterSagas";
 import motebehovSagas from "./motebehov/motebehovSagas";
@@ -25,7 +24,6 @@ import unleashSagas from "./unleash/unleashSagas";
 export default function* rootSaga() {
   yield all([
     ledereSagas(),
-    fastlegerSagas(),
     navbrukerSagas(),
     moterSagas(),
     motebehovSagas(),

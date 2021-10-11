@@ -3,12 +3,13 @@ import { restdatoTilLesbarDato } from "@/utils/datoUtils";
 import PersonkortFeilmelding from "./PersonkortFeilmelding";
 import PersonkortElement from "./PersonkortElement";
 import PersonkortInformasjon from "./PersonkortInformasjon";
-import { FastlegerState } from "@/data/fastlege/fastleger";
 import { Fastlege } from "@/data/fastlege/types/Fastlege";
 import {
   MedisinboksImage,
   MedisinskrinImage,
 } from "../../../img/ImageComponents";
+import { useFastlegerQuery } from "@/data/fastlege/fastlegerQueryHooks";
+import { useValgtPersonident } from "@/hooks/useValgtBruker";
 
 const texts = {
   startDate: "Brukers fastlege siden",
@@ -34,8 +35,7 @@ interface TidligereLegerProps {
   tidligereFastleger: Fastlege[];
 }
 
-export const TidligereLeger = (tidligereLegerProps: TidligereLegerProps) => {
-  const { tidligereFastleger } = tidligereLegerProps;
+export const TidligereLeger = ({ tidligereFastleger }: TidligereLegerProps) => {
   const fastlegerMedPasientforhold = tidligereFastleger.filter((lege) => {
     return lege.pasientforhold;
   });
@@ -54,18 +54,16 @@ export const TidligereLeger = (tidligereLegerProps: TidligereLegerProps) => {
   ) : null;
 };
 
-interface PersonkortLegeProps {
-  fastleger: FastlegerState;
-}
-
-const PersonkortLege = (personkortLegeProps: PersonkortLegeProps) => {
-  const { fastleger } = personkortLegeProps;
+const PersonkortLege = () => {
+  const fnr = useValgtPersonident();
+  const { aktivFastlege, tidligereFastleger, ikkeFunnet } = useFastlegerQuery(
+    fnr
+  );
   const informasjonNokkelTekster = new Map([
     ["fom", texts.startDate],
     ["navn", texts.name],
     ["telefon", texts.phone],
   ]);
-  const aktivFastlege = fastleger.aktiv;
   const valgteElementerKontor =
     aktivFastlege?.fastlegekontor &&
     (({ navn, telefon }) => {
@@ -75,19 +73,17 @@ const PersonkortLege = (personkortLegeProps: PersonkortLegeProps) => {
     aktivFastlege?.pasientforhold &&
     (({ fom }) => {
       return { fom };
-    })(
-      Object.assign({}, aktivFastlege.pasientforhold, {
-        fom:
-          aktivFastlege.pasientforhold.fom &&
-          restdatoTilLesbarDato(aktivFastlege.pasientforhold.fom),
-      })
-    );
-  const valgteElementer = Object.assign(
-    {},
-    valgteElementerPasientforhold,
-    valgteElementerKontor
-  );
-  return fastleger.ikkeFunnet ? (
+    })({
+      ...aktivFastlege.pasientforhold,
+      fom:
+        aktivFastlege.pasientforhold.fom &&
+        restdatoTilLesbarDato(aktivFastlege.pasientforhold.fom),
+    });
+  const valgteElementer = {
+    ...valgteElementerPasientforhold,
+    ...valgteElementerKontor,
+  };
+  return ikkeFunnet ? (
     <PersonkortFeilmelding>{texts.error}</PersonkortFeilmelding>
   ) : (
     <>
@@ -101,7 +97,7 @@ const PersonkortLege = (personkortLegeProps: PersonkortLegeProps) => {
           informasjon={valgteElementer}
         />
       </PersonkortElement>
-      <TidligereLeger tidligereFastleger={fastleger.tidligere} />
+      <TidligereLeger tidligereFastleger={tidligereFastleger || []} />
     </>
   );
 };

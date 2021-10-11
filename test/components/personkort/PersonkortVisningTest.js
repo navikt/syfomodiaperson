@@ -19,6 +19,31 @@ import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { fastlegerQueryKeys } from "@/data/fastlege/fastlegerQueryHooks";
+import { arbeidstaker } from "../../dialogmote/testData";
+
+const queryClient = new QueryClient();
+const aktivFastlege = {
+  pasientforhold: {
+    fom: "2021-10-01",
+    tom: "9999-12-31",
+  },
+};
+const tidligereFastleger = [
+  {
+    pasientforhold: {
+      fom: "2019-10-01",
+      tom: "2020-10-01",
+    },
+  },
+  {
+    pasientforhold: {
+      fom: "2020-10-01",
+      tom: "2021-10-01",
+    },
+  },
+];
 
 describe("PersonkortVisning", () => {
   let komponent;
@@ -67,48 +92,23 @@ describe("PersonkortVisning", () => {
           fnr: "1234",
         },
       },
-      fastleger: {
-        henter: false,
-        hentingFeilet: false,
-        hentet: false,
-        data: [{}, {}, {}],
-        aktiv: {
-          fastlegekontor: {},
-          pasientforhold: {
-            fom: "",
-            tom: "",
-          },
-        },
-        tidligere: [
-          {
-            fastlegekontor: {},
-            pasientforhold: {
-              fom: "",
-              tom: "",
-            },
-          },
-          {
-            fastlegekontor: {},
-            pasientforhold: {
-              fom: "",
-              tom: "",
-            },
-          },
-        ],
-      },
       personadresse: {},
       sykmeldinger: [sykmeldingOldFormat],
+      valgtbruker: {
+        personident: arbeidstaker.personident,
+      },
     };
 
     komponent = mount(
-      <PersonkortVisning
-        visning={""}
-        ledere={mockState.ledere}
-        fastleger={mockState.fastleger}
-        navbruker={mockState.navbruker}
-        personadresse={mockState.personadresse}
-        sykmeldinger={null}
-      />
+      <Provider store={store({ ...realState, ...mockState })}>
+        <PersonkortVisning
+          visning={""}
+          ledere={mockState.ledere}
+          navbruker={mockState.navbruker}
+          personadresse={mockState.personadresse}
+          sykmeldinger={null}
+        />
+      </Provider>
     );
   });
 
@@ -118,14 +118,17 @@ describe("PersonkortVisning", () => {
 
   it("Skal vise VisningLege, dersom visning for lege er valgt", () => {
     komponent = mount(
-      <PersonkortVisning
-        visning={PERSONKORTVISNING_TYPE.LEGE}
-        ledere={mockState.ledere}
-        fastleger={mockState.fastleger}
-        navbruker={mockState.navbruker}
-        personadresse={mockState.personadresse}
-        sykmeldinger={null}
-      />
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store({ ...realState, ...mockState })}>
+          <PersonkortVisning
+            visning={PERSONKORTVISNING_TYPE.LEGE}
+            ledere={mockState.ledere}
+            navbruker={mockState.navbruker}
+            personadresse={mockState.personadresse}
+            sykmeldinger={null}
+          />
+        </Provider>
+      </QueryClientProvider>
     );
     expect(komponent.find(PersonkortLege)).to.have.length(1);
   });
@@ -136,7 +139,6 @@ describe("PersonkortVisning", () => {
         <PersonkortVisning
           visning={PERSONKORTVISNING_TYPE.ENHET}
           ledere={mockState.ledere}
-          fastleger={mockState.fastleger}
           navbruker={mockState.navbruker}
           personadresse={mockState.personadresse}
           sykmeldinger={null}
@@ -167,22 +169,31 @@ describe("PersonkortVisning", () => {
 
   describe("PersonkortLege", () => {
     beforeEach(() => {
+      queryClient.setQueryData(
+        fastlegerQueryKeys.fastleger(arbeidstaker.personident),
+        () => [aktivFastlege, ...tidligereFastleger]
+      );
+
       komponent = mount(
-        <PersonkortLege
-          fastleger={mockState.fastleger}
-          sykmeldtNavn={mockState.navbruker.navn}
-        />
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store({ ...realState, ...mockState })}>
+            <PersonkortLege />
+          </Provider>
+        </QueryClientProvider>
       );
     });
 
-    it("Skal vise feilmelding, fastleger ikke ble funnet", () => {
+    it("Skal vise feilmelding, fastleger ikke ble funnet, når ingen fastleger", () => {
+      queryClient.setQueryData(
+        fastlegerQueryKeys.fastleger(arbeidstaker.personident),
+        () => []
+      );
       komponent = mount(
-        <PersonkortLege
-          fastleger={Object.assign({}, mockState.fastleger, {
-            ikkeFunnet: true,
-          })}
-          sykmeldtNavn={mockState.navbruker.navn}
-        />
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store({ ...realState, ...mockState })}>
+            <PersonkortLege />
+          </Provider>
+        </QueryClientProvider>
       );
       expect(komponent.find(Alertstripe)).to.have.length(1);
     });
@@ -199,14 +210,17 @@ describe("PersonkortVisning", () => {
       expect(komponent.find(TidligereLeger)).to.have.length(1);
     });
 
-    it("Skal ikke tidligere leger dersom det ikke er tidligere fastleger", () => {
+    it("Skal ikke vise tidligere leger dersom det ikke er tidligere fastleger", () => {
+      queryClient.setQueryData(
+        fastlegerQueryKeys.fastleger(arbeidstaker.personident),
+        () => [aktivFastlege]
+      );
       komponent = mount(
-        <PersonkortLege
-          fastleger={Object.assign({}, mockState.fastleger, {
-            tidligere: [],
-          })}
-          sykmeldtNavn={mockState.navbruker.navn}
-        />
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store({ ...realState, ...mockState })}>
+            <PersonkortLege />
+          </Provider>
+        </QueryClientProvider>
       );
       expect(komponent.find(TidligereLeger)).to.have.length(1);
       expect(komponent.find(TidligereLeger).html()).to.equal(null);
@@ -216,14 +230,12 @@ describe("PersonkortVisning", () => {
   describe("TidligereLeger", () => {
     beforeEach(() => {
       komponent = mount(
-        <TidligereLeger tidligereFastleger={mockState.fastleger.tidligere} />
+        <TidligereLeger tidligereFastleger={tidligereFastleger} />
       );
     });
 
     it("Skal vise en liste med antall element lik antall tidligere fastleger", () => {
-      expect(komponent.find("li")).to.have.length(
-        mockState.fastleger.tidligere.length
-      );
+      expect(komponent.find("li")).to.have.length(tidligereFastleger.length);
     });
   });
 });
