@@ -20,7 +20,11 @@ import { Feiloppsummering } from "nav-frontend-skjema";
 import { expect } from "chai";
 import { texts as skjemaFeilOppsummeringTexts } from "@/components/SkjemaFeiloppsummering";
 import { Hovedknapp, Knapp } from "nav-frontend-knapper";
-import { leggTilDagerPaDato, toDatePrettyPrint } from "@/utils/datoUtils";
+import {
+  leggTilDagerPaDato,
+  tilDatoMedUkedagOgManedNavnOgKlokkeslett,
+  toDatePrettyPrint,
+} from "@/utils/datoUtils";
 import { apiMock } from "../stubs/stubApi";
 import { stubEndreApi } from "../stubs/stubIsdialogmote";
 import { InputDateStringToISODateString } from "nav-datovelger/lib/utils/dateFormatUtils";
@@ -28,6 +32,7 @@ import { Forhandsvisning } from "@/components/dialogmote/Forhandsvisning";
 import { texts as endringSkjemaTexts } from "../../src/components/dialogmote/endre/EndreDialogmoteTekster";
 import Lukknapp from "nav-frontend-lukknapp";
 import { arbeidstaker, dialogmote, navEnhet, veileder } from "./testData";
+import { genererDato } from "@/components/mote/utils";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -53,9 +58,13 @@ const mockState = {
 const tekstTilArbeidstaker = "Noe tekst til arbeidstaker";
 const tekstTilArbeidsgiver = "Noe tekst til arbeidsgiver";
 const nyDato = toDatePrettyPrint(leggTilDagerPaDato(new Date(), 1)) as string;
+const moteKlokkeslett = "09:00";
+const nyDatoAsISODateString = InputDateStringToISODateString(nyDato);
 const nyVideolink = "https://video.nav.no";
 const nyttSted = "Videomøte endret";
-const nyDatoTid = `${InputDateStringToISODateString(nyDato)}T09:00:00`;
+const nyDatoTid = `${InputDateStringToISODateString(
+  nyDato
+)}T${moteKlokkeslett}:00`;
 
 const queryClient = new QueryClient();
 queryClient.setQueryData(veilederinfoQueryKeys.veilederinfo, () => veileder);
@@ -315,7 +324,11 @@ const expectedArbeidsgiverEndringsdokument = [
     type: "PARAGRAPH",
   },
   {
-    texts: ["Lørdag 9. oktober 2021 kl. 09.00"],
+    texts: [
+      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
+        genererDato(nyDatoAsISODateString, moteKlokkeslett)
+      ),
+    ],
     title: "Møtetidspunkt",
     type: "PARAGRAPH",
   },
@@ -362,7 +375,11 @@ const expectedArbeidstakerEndringsdokument = [
     type: "PARAGRAPH",
   },
   {
-    texts: ["Lørdag 9. oktober 2021 kl. 09.00"],
+    texts: [
+      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
+        genererDato(nyDatoAsISODateString, moteKlokkeslett)
+      ),
+    ],
     title: "Møtetidspunkt",
     type: "PARAGRAPH",
   },
