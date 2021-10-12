@@ -49,6 +49,12 @@ export const useForhandsvisTidSted = (): ForhandsvisTidStedGenerator => {
     }
 
     documentComponents.push(
+      createParagraph(endreTidStedTexts.arbeidsgiver.outro)
+    );
+
+    documentComponents.push(...outro);
+
+    documentComponents.push(
       ...hilsen,
       createParagraph(
         commonTexts.arbeidsgiverTlfLabel,
@@ -71,6 +77,12 @@ export const useForhandsvisTidSted = (): ForhandsvisTidStedGenerator => {
     if (values.begrunnelseArbeidstaker) {
       documentComponents.push(createParagraph(values.begrunnelseArbeidstaker));
     }
+
+    documentComponents.push(
+      createParagraph(endreTidStedTexts.arbeidstaker.outro)
+    );
+
+    documentComponents.push(...outro);
 
     documentComponents.push(...hilsen);
 
@@ -121,3 +133,11 @@ const arbeidsgiverIntro = (navBruker: Brukerinfo): DocumentComponentDto =>
   createParagraph(
     `Gjelder ${navBruker.navn} (f.nr ${navBruker.kontaktinfo.fnr})`
   );
+
+const outro: DocumentComponentDto[] = [
+  createParagraph(endreTidStedTexts.commonOutro),
+  createParagraphWithTitle(
+    endreTidStedTexts.preMeetingTitle,
+    endreTidStedTexts.preMeeting
+  ),
+];

@@ -33,6 +33,19 @@ export const endreTidStedTexts = {
   moteTidTitle: "Møtetidspunkt",
   moteStedTitle: "Møtested",
   videoLinkTitle: "Lenke til videomøte",
+  preMeetingTitle: "Før møtet",
+  commonOutro:
+    "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi ikke sett behov for det.",
+  preMeeting:
+    "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+  arbeidsgiver: {
+    outro:
+      "I møtet vil vi høre både hva du og arbeidstakeren sier om arbeidssituasjonen og mulighetene for å jobbe. Vi blir enige om en plan som kan hjelpe arbeidstakeren videre.",
+  },
+  arbeidstaker: {
+    outro:
+      "I møtet vil vi høre både hva du og arbeidsgiveren sier om arbeidssituasjonen og mulighetene for å jobbe. Vi blir enige om en plan som kan hjelpe deg videre.",
+  },
 };
 
 export const avlysningTexts = {
