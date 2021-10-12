@@ -2,7 +2,7 @@ import { call, put, select, takeEvery } from "redux-saga/effects";
 import * as actions from "./oppfolgingstilfellerperson_actions";
 import { get } from "@/api/axios";
 import { OppfolgingstilfellePerson } from "./types/OppfolgingstilfellePerson";
-import { MODIASYFOREST_ROOT } from "@/apiConstants";
+import { SYFOPERSON_ROOT } from "@/apiConstants";
 
 export const harInnsendtSykmeldingUtenArbeidsgiver = (sykmeldinger: any) => {
   const erSykmeldingerHentet = sykmeldinger.hentet;
@@ -30,9 +30,13 @@ export function* hentOppfolgingstilfellerPersonHvisIkkeHentet(action: any) {
   if (skalHente) {
     yield put(actions.hentOppfolgingstilfellerPersonUtenArbeidsiverHenter());
 
-    const path = `${MODIASYFOREST_ROOT}/oppfolgingstilfelleperioder/utenarbeidsgiver?fnr=${action.fnr}`;
+    const path = `${SYFOPERSON_ROOT}/person/oppfolgingstilfelle/utenarbeidsgiver`;
     try {
-      const data: OppfolgingstilfellePerson[] = yield call(get, path);
+      const data: OppfolgingstilfellePerson[] = yield call(
+        get,
+        path,
+        action.fnr
+      );
       yield put(
         actions.hentOppfolgingstilfellerPersonUtenArbeidsiverHentet(data)
       );

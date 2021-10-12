@@ -1,7 +1,16 @@
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import { personAdresseMock } from "../data/personAdresseMock";
 import { brukerinfoMock } from "../data/brukerinfoMock";
-import { MODIASYFOREST_ROOT, SYFOPERSON_ROOT } from "../../src/apiConstants";
+import { SYFOPERSON_ROOT } from "../../src/apiConstants";
+
+const getOppfolgingstilfellerPerson = () => {
+  return [
+    {
+      fom: "2020-10-15",
+      tom: "2020-10-21",
+    },
+  ];
+};
 
 const Auth = require("../../server/auth/index.js");
 
@@ -51,6 +60,22 @@ export const mockSyfoperson = (server) => {
       ) {
         res.setHeader("Content-Type", "application/json");
         res.send(JSON.stringify(personAdresseMock));
+      } else {
+        res.status(400).send("Did not find PersonIdent in headers");
+      }
+    }
+  );
+
+  server.get(
+    `${SYFOPERSON_ROOT}/person/oppfolgingstilfelle/utenarbeidsgiver`,
+    Auth.ensureAuthenticated(),
+    (req, res) => {
+      if (
+        req.headers[NAV_PERSONIDENT_HEADER] &&
+        req.headers[NAV_PERSONIDENT_HEADER].length === 11
+      ) {
+        res.setHeader("Content-Type", "application/json");
+        res.send(getOppfolgingstilfellerPerson());
       } else {
         res.status(400).send("Did not find PersonIdent in headers");
       }
