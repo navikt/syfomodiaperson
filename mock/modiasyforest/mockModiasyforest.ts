@@ -1,5 +1,4 @@
 import { oppfolgingstilfelleperioderMock } from "../data/oppfolgingstilfelleperioderMock";
-import { brukerinfoMock } from "../data/brukerinfoMock";
 import { MODIASYFOREST_ROOT } from "../../src/apiConstants";
 
 const Auth = require("../../server/auth/index.js");
@@ -30,15 +29,6 @@ export const mockModiasyforest = (server) => {
     (req, res) => {
       res.setHeader("Content-Type", "application/json");
       res.send(getOppfolgingstilfellerPerson());
-    }
-  );
-
-  server.get(
-    `${MODIASYFOREST_ROOT}/brukerinfo`,
-    Auth.ensureAuthenticated(),
-    (req, res) => {
-      res.setHeader("Content-Type", "application/json");
-      res.send(JSON.stringify(brukerinfoMock));
     }
   );
 };

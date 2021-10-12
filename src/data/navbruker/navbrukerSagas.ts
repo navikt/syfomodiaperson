@@ -6,15 +6,17 @@ import {
   NAVBRUKER_HENTET,
 } from "./navbruker_actions";
 import { get } from "@/api/axios";
-import { MODIASYFOREST_ROOT } from "@/apiConstants";
+import { SYFOPERSON_ROOT } from "@/apiConstants";
+import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
 
 export function* hentNavbruker(action: any) {
   yield put({ type: HENTER_NAVBRUKER });
 
-  const path = `${MODIASYFOREST_ROOT}/brukerinfo?fnr=${action.fnr}`;
+  const path = `${SYFOPERSON_ROOT}/person/brukerinfo`;
   try {
     //TODO: Add proper actions and types
-    const data: string = yield call(get, path);
+    const data: Brukerinfo = yield call(get, path, action.fnr);
+    yield put({ type: NAVBRUKER_HENTET, data });
     yield put({ type: NAVBRUKER_HENTET, data });
   } catch (e) {
     //TODO: Add error to reducer and errorboundary to components
