@@ -7,6 +7,7 @@ import { MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE } from "@/components/dialogmote/refera
 import { MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE } from "@/components/dialogmote/referat/ArbeidsgiversOppgave";
 import { MAX_LENGTH_VEILEDERS_OPPGAVE } from "@/components/dialogmote/referat/VeiledersOppgave";
 import { MAX_LENGTH_INNKALLING_FRITEKST } from "@/components/dialogmote/innkalling/DialogmoteInnkallingTekster";
+import { genererDato } from "@/components/mote/utils";
 
 export interface SkjemaFeil {
   [key: string]: string | undefined;
@@ -31,6 +32,7 @@ export const texts = {
   dateMissing: "Vennligst angi dato",
   dateWrongFormat: "Vennligst angi riktig datoformat; dd.mm.åååå",
   timeMissing: "Vennligst angi klokkeslett",
+  timePassed: "Tidspunktet har passert",
   placeMissing: "Vennligst angi møtested",
   textTooLong: (maxLength: number) => `Maks ${maxLength} tegn tillatt`,
   orgMissing: "Vennligst velg arbeidsgiver",
@@ -87,6 +89,15 @@ export const validerTidspunkt = (tidspunkt?: Tidspunkt): Partial<Tidspunkt> => {
     const klokkeslettValue = tidspunkt.klokkeslett;
     if (!klokkeslettValue) {
       feil.klokkeslett = texts.timeMissing;
+    }
+
+    if (isISODateString(datoValue) && klokkeslettValue) {
+      const today = new Date();
+      const generertDato = genererDato(tidspunkt.dato, tidspunkt.klokkeslett);
+
+      if (new Date(generertDato) < today) {
+        feil.klokkeslett = texts.timePassed;
+      }
     }
   }
 

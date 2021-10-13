@@ -11,6 +11,7 @@ import {
 } from "@/components/mote/skjema/MotebookingSkjema";
 import Tidspunkter from "../../../src/components/mote/skjema/Tidspunkter";
 import { Field } from "react-final-form";
+import sinon from "sinon";
 
 describe("MotebookingSkjemaTest", () => {
   let arbeidstaker;
@@ -109,7 +110,11 @@ describe("MotebookingSkjemaTest", () => {
     let values;
     let props;
 
+    let clock;
+    const today = new Date("2016-01-01");
+
     beforeEach(() => {
+      clock = sinon.useFakeTimers(today.getTime()); // 16. januar 2017
       values = {};
       props = {
         nullstillVirksomhet: Function,
@@ -117,6 +122,10 @@ describe("MotebookingSkjemaTest", () => {
         ledere: [],
         antallNyeTidspunkt: 2,
       };
+    });
+
+    afterEach(() => {
+      clock.restore();
     });
 
     it("Skal validere tidspunkter dersom ingen felt er angitt (1)", () => {
@@ -214,6 +223,26 @@ describe("MotebookingSkjemaTest", () => {
         {},
         {
           klokkeslett: "Vennligst angi klokkeslett",
+        },
+      ]);
+    });
+
+    it("Skal validere tidspunkt og dato dersom tidspunkt har passert", () => {
+      values.tidspunkter = [
+        {
+          dato: "2016-12-12",
+          klokkeslett: "10:00",
+        },
+        {
+          dato: "2015-12-12",
+          klokkeslett: "10:00",
+        },
+      ];
+      const res = validate(values, props);
+      expect(res.tidspunkter).to.deep.equal([
+        {},
+        {
+          klokkeslett: "Tidspunktet har passert",
         },
       ]);
     });
