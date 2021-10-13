@@ -1,6 +1,11 @@
 export enum NarmesteLederRelasjonStatus {
   INNMELDT_AKTIV = "INNMELDT_AKTIV",
   DEAKTIVERT = "DEAKTIVERT",
+  DEAKTIVERT_ARBEIDSTAKER = "DEAKTIVERT_ARBEIDSTAKER",
+  DEAKTIVERT_ARBEIDSTAKER_INNSENDT_SYKMELDING = "DEAKTIVERT_ARBEIDSTAKER_INNSENDT_SYKMELDING",
+  DEAKTIVERT_LEDER = "DEAKTIVERT_LEDER",
+  DEAKTIVERT_ARBEIDSFORHOLD = "DEAKTIVERT_ARBEIDSFORHOLD",
+  DEAKTIVERT_NY_LEDER = "DEAKTIVERT_NY_LEDER,",
 }
 
 export const ledereMock = [
@@ -32,7 +37,7 @@ export const ledereMock = [
     aktivTom: "2020-02-06",
     arbeidsgiverForskuttererLoenn: false,
     timestamp: "2020-02-03T12:00:00+01:00",
-    status: NarmesteLederRelasjonStatus.DEAKTIVERT,
+    status: NarmesteLederRelasjonStatus.DEAKTIVERT_NY_LEDER,
   },
   {
     uuid: "3",
@@ -77,7 +82,7 @@ export const ledereMock = [
     aktivTom: "2020-02-02",
     arbeidsgiverForskuttererLoenn: null,
     timestamp: "2020-02-02T12:00:00+01:00",
-    status: NarmesteLederRelasjonStatus.DEAKTIVERT,
+    status: NarmesteLederRelasjonStatus.DEAKTIVERT_LEDER,
   },
   {
     uuid: "6",
@@ -92,7 +97,7 @@ export const ledereMock = [
     aktivTom: "2020-03-03",
     arbeidsgiverForskuttererLoenn: null,
     timestamp: "2020-03-03T12:00:00+01:00",
-    status: NarmesteLederRelasjonStatus.DEAKTIVERT,
+    status: NarmesteLederRelasjonStatus.DEAKTIVERT_ARBEIDSTAKER,
   },
   {
     uuid: "7",
@@ -107,7 +112,7 @@ export const ledereMock = [
     aktivTom: "2020-04-04",
     arbeidsgiverForskuttererLoenn: null,
     timestamp: "2020-04-04T12:00:00+01:00",
-    status: NarmesteLederRelasjonStatus.DEAKTIVERT,
+    status: NarmesteLederRelasjonStatus.DEAKTIVERT_ARBEIDSFORHOLD,
   },
   {
     uuid: "8",

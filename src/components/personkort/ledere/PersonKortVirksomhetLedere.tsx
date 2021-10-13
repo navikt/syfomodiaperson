@@ -18,6 +18,10 @@ const texts = {
   startDate: "Meldt inn",
   active: "Nåværende",
   deactivated: "Deaktivert",
+  deactivatedArbeidstaker: "Deaktivert av arbeidstaker",
+  deactivatedLeder: "Deaktivert av leder",
+  deactivatedArbeidsforhold: "Deaktivert ved utdatert arbeidsforhold",
+  deactivatedNyLeder: "Deaktivert ved ny innmeldt leder",
 };
 
 const getNarmesteLederRelasjonStatusText = (
@@ -28,6 +32,16 @@ const getNarmesteLederRelasjonStatusText = (
       return texts.active;
     case NarmesteLederRelasjonStatus.DEAKTIVERT:
       return texts.deactivated;
+    case NarmesteLederRelasjonStatus.DEAKTIVERT_ARBEIDSTAKER:
+      return texts.deactivatedArbeidstaker;
+    case NarmesteLederRelasjonStatus.DEAKTIVERT_ARBEIDSTAKER_INNSENDT_SYKMELDING:
+      return texts.deactivatedArbeidstaker;
+    case NarmesteLederRelasjonStatus.DEAKTIVERT_LEDER:
+      return texts.deactivatedLeder;
+    case NarmesteLederRelasjonStatus.DEAKTIVERT_ARBEIDSFORHOLD:
+      return texts.deactivatedArbeidsforhold;
+    case NarmesteLederRelasjonStatus.DEAKTIVERT_NY_LEDER:
+      return texts.deactivatedNyLeder;
     default:
       return "";
   }
