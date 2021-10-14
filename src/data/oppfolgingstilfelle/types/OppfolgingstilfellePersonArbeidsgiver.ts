@@ -1,5 +1,5 @@
 export interface OppfolgingstilfellePersonArbeidsgiver {
-  orgnummer: string;
+  virksomhetsnummer: string;
   fom: Date;
   tom: Date;
 }

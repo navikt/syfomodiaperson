@@ -37,7 +37,7 @@ describe("oppfolgingstilfelleperioder", () => {
     const action = actions.hentOppfolgingstilfelleperioderHentet(
       [
         {
-          orgnummer,
+          virksomhetsnummer: orgnummer,
           fom: new Date(Date.now() - ANTALL_MS_DAG * 120),
           tom: new Date(Date.now() - ANTALL_MS_DAG * 90),
           grad: 100,
@@ -56,7 +56,7 @@ describe("oppfolgingstilfelleperioder", () => {
         hentingForsokt: true,
         data: [
           {
-            orgnummer,
+            virksomhetsnummer: orgnummer,
             fom: new Date(Date.now() - ANTALL_MS_DAG * 120),
             tom: new Date(Date.now() - ANTALL_MS_DAG * 90),
             grad: 100,

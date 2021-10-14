@@ -186,15 +186,6 @@ const auth = {
     }),
     tokenSetId: tokenSetIdType.graph,
   },
-  modiasyforest: {
-    applicationName: "modiasyforest",
-    clientId: envVar({
-      name: "MODIASYFOREST_AAD_APP_CLIENT_ID",
-    }),
-    host: envVar({
-      name: "MODIASYFOREST_HOST",
-    }),
-  },
   syfobehandlendeenhet: {
     applicationName: "syfobehandlendeenhet",
     clientId: envVar({

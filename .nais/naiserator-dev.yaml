@@ -88,10 +88,6 @@ spec:
       value: "ispersonoppgave.dev.intern.nav.no"
     - name: MODIACONTEXTHOLDER_HOST
       value: "modiacontextholder-q0.dev.intern.nav.no"
-    - name: MODIASYFOREST_AAD_APP_CLIENT_ID
-      value: "9214f26e-b991-42a4-80c6-5defeadd9d63"
-    - name: MODIASYFOREST_HOST
-      value: "modiasyforest.dev.intern.nav.no"
     - name: SYFOBEHANDLENDEENHET_AAD_APP_CLIENT_ID
       value: "c3de32aa-370c-4357-b46c-64784217920f"
     - name: SYFOBEHANDLENDEENHET_HOST

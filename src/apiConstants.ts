@@ -5,7 +5,6 @@ export const ISNARMESTELEDER_ROOT = "/isnarmesteleder/api/v1";
 export const ISPENGESTOPP_ROOT = "/ispengestopp/api/v2";
 export const ISPERSONOPPGAVE_ROOT = "/ispersonoppgave/api/v2";
 export const MODIACONTEXTHOLDER_ROOT = "/modiacontextholder/api";
-export const MODIASYFOREST_ROOT = "/modiasyforest/api/internad/v2";
 export const SYFOBEHANDLENDEENHET_ROOT =
   "/syfobehandlendeenhet/api/internad/v2";
 export const SYFOMOTEADMIN_ROOT = "/syfomoteadmin/api/internad/v2";

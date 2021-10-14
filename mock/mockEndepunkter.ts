@@ -2,7 +2,6 @@ import { mockFastlegerest } from "./fastlegerest/mockFastlegerest";
 import { mockIsnarmesteleder } from "./isnarmesteleder/mockIsnarmesteleder";
 import { mockIspersonoppgave } from "./ispersonoppgave/mockIspersonoppgave";
 import { mockModiacontextholder } from "./modiacontextholder/mockModiacontextholder";
-import { mockModiasyforest } from "./modiasyforest/mockModiasyforest";
 import { mockSyfomoteadmin } from "./syfomoteadmin/mockSyfomoteadmin";
 import { mockSyfomotebehov } from "./syfomotebehov/mockSyfomotebehov";
 import { mockSyfooppfolgingsplanservice } from "./syfooppfolgingsplanservice/mockSyfooppfolgingsplanservice";
@@ -29,7 +28,6 @@ const mockEndepunkter = (server) => {
     mockIsnarmesteleder,
     mockIspersonoppgave,
     mockModiacontextholder,
-    mockModiasyforest,
     mockSyfomoteadmin,
     mockSyfomotebehov,
     mockSyfooppfolgingsplanservice,

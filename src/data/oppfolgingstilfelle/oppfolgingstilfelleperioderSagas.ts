@@ -10,7 +10,7 @@ import {
   hentOppfolgingstilfelleperioderHentet,
   OppfolgingstilfelleperioderActionTypes,
 } from "./oppfolgingstilfelleperioder_actions";
-import { MODIASYFOREST_ROOT } from "@/apiConstants";
+import { SYFOPERSON_ROOT } from "@/apiConstants";
 
 export function* hentOppfolgingstilfelleperioder(
   action: HentOppfolgingstilfelleperioderAction,
@@ -18,9 +18,13 @@ export function* hentOppfolgingstilfelleperioder(
 ) {
   yield put(hentOppfolgingstilfelleperioderHenter(orgnummer));
 
-  const path = `${MODIASYFOREST_ROOT}/oppfolgingstilfelleperioder?fnr=${action.fnr}&orgnummer=${orgnummer}`;
+  const path = `${SYFOPERSON_ROOT}/person/oppfolgingstilfelle/arbeidsgiver/${orgnummer}`;
   try {
-    const data: OppfolgingstilfellePersonArbeidsgiver[] = yield call(get, path);
+    const data: OppfolgingstilfellePersonArbeidsgiver[] = yield call(
+      get,
+      path,
+      action.fnr
+    );
     yield put(hentOppfolgingstilfelleperioderHentet(data, orgnummer));
   } catch (e) {
     //TODO: Add error to reducer and errorboundary to components
