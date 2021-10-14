@@ -45,8 +45,7 @@ export const texts = {
   naermesteLederMissing: "Vennligst angi nærmeste leder",
   andreDeltakereMissingFunksjon: "Vennligst angi funksjon på deltaker",
   andreDeltakereMissingNavn: "Vennligst angi navn på deltaker",
-  invalidVideoLink: "Ugyldig lenke til videomøte",
-  invalidVideoLinkDomain: "Lenke må begynne med https://video.nav.no",
+  invalidVideoLink: "Lenke må begynne med https://video.nav.no",
 };
 
 export const harFeilmeldinger = (errors: SkjemaFeil): boolean =>
@@ -101,7 +100,7 @@ export const validerVideoLink = (videoLink?: string): string | undefined => {
   try {
     const url = new URL(videoLink);
     if (url.origin !== "https://video.nav.no") {
-      return texts.invalidVideoLinkDomain;
+      return texts.invalidVideoLink;
     }
   } catch (err) {
     return texts.invalidVideoLink;
