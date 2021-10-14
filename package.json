@@ -13,7 +13,6 @@
     "test": "mocha -r ./test/babel-register.js -r @babel/polyfill -r jsdom-global/register -r ignore-styles --recursive --extension ts,js,jsx,tsx --exit",
     "start": "webpack serve --config webpack.dev.ts",
     "build": "webpack --config webpack.prod.ts",
-    "sec-audit": "npm audit --audit-level=critical",
     "lint": "eslint src  --ext .ts  --ext .tsx  --ext .js  --ext .jsx",
     "lint:fix": "npm run lint -- --fix",
     "prepare": "husky install"
