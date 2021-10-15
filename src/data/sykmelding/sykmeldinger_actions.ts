@@ -2,6 +2,7 @@ import { SykmeldingNewFormatDTO } from "./types/SykmeldingNewFormatDTO";
 import { ApiError } from "@/api/errors";
 
 export enum SykmeldingerActionTypes {
+  HENT_SYKMELDINGER_HENTER = "HENT_SYKMELDINGER_HENTER",
   HENT_SYKMELDINGER_FEILET = "HENT_SYKMELDINGER_FEILET",
   HENT_SYKMELDINGER_FORESPURT = "HENT_SYKMELDINGER_FORESPURT",
   SYKMELDINGER_HENTET = "SYKMELDINGER_HENTET",
@@ -10,6 +11,10 @@ export enum SykmeldingerActionTypes {
 export interface HentSykmeldingerAction {
   type: SykmeldingerActionTypes.HENT_SYKMELDINGER_FORESPURT;
   fnr: string;
+}
+
+export interface HentSykmeldingerHenterAction {
+  type: SykmeldingerActionTypes.HENT_SYKMELDINGER_HENTER;
 }
 
 export interface HentSykmeldingerFeiletAction {
@@ -25,6 +30,7 @@ export interface SykmeldingerHentetAction {
 
 export type SykmeldingerActions =
   | HentSykmeldingerAction
+  | HentSykmeldingerHenterAction
   | HentSykmeldingerFeiletAction
   | SykmeldingerHentetAction;
 
@@ -32,6 +38,12 @@ export function hentSykmeldinger(fnr: string): HentSykmeldingerAction {
   return {
     type: SykmeldingerActionTypes.HENT_SYKMELDINGER_FORESPURT,
     fnr,
+  };
+}
+
+export function hentSykmeldingerHenter(): HentSykmeldingerHenterAction {
+  return {
+    type: SykmeldingerActionTypes.HENT_SYKMELDINGER_HENTER,
   };
 }
 

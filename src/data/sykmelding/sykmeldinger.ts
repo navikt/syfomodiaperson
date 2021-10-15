@@ -42,7 +42,7 @@ const sykmeldinger: Reducer<SykmeldingerState, SykmeldingerActions> = (
         error: action.error,
       };
     }
-    case SykmeldingerActionTypes.HENT_SYKMELDINGER_FORESPURT: {
+    case SykmeldingerActionTypes.HENT_SYKMELDINGER_HENTER: {
       return {
         ...state,
         data: [],

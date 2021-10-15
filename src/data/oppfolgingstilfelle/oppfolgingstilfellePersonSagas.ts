@@ -3,12 +3,17 @@ import * as actions from "./oppfolgingstilfellerperson_actions";
 import { get } from "@/api/axios";
 import { OppfolgingstilfellePerson } from "./types/OppfolgingstilfellePerson";
 import { SYFOPERSON_ROOT } from "@/apiConstants";
+import { SykmeldingerState } from "@/data/sykmelding/sykmeldinger";
+import { RootState } from "@/data/rootState";
+import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
-export const harInnsendtSykmeldingUtenArbeidsgiver = (sykmeldinger: any) => {
+export const harInnsendtSykmeldingUtenArbeidsgiver = (
+  sykmeldinger: SykmeldingerState
+) => {
   const erSykmeldingerHentet = sykmeldinger.hentet;
   if (erSykmeldingerHentet) {
     return (
-      sykmeldinger.data.filter((sykmelding: any) => {
+      sykmeldinger.data.filter((sykmelding: SykmeldingOldFormat) => {
         return !sykmelding.mottakendeArbeidsgiver;
       }).length > 0
     );
@@ -16,7 +21,7 @@ export const harInnsendtSykmeldingUtenArbeidsgiver = (sykmeldinger: any) => {
   return false;
 };
 
-export const skalHenteOppfolgingstilfelleperioder = (state: any) => {
+export const skalHenteOppfolgingstilfelleperioder = (state: RootState) => {
   if (harInnsendtSykmeldingUtenArbeidsgiver(state.sykmeldinger)) {
     const reducer = state.oppfolgingstilfellerperson;
     return (!reducer.henter && !reducer.hentingForsokt) || false;

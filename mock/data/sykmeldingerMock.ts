@@ -1,3 +1,5 @@
+import { leggTilDagerPaDato } from "../util/dateUtil";
+
 export const sykmeldingerMock = [
   {
     id: "1111a750-7f39-4974-9a06-fa1775f987d1",
@@ -1110,8 +1112,8 @@ export const sykmeldingerMock = [
     },
     sykmeldingsperioder: [
       {
-        fom: "2020-10-15",
-        tom: "2020-10-21",
+        fom: leggTilDagerPaDato(new Date(), -10).toJSON(),
+        tom: leggTilDagerPaDato(new Date(), 20).toJSON(),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -1435,8 +1437,8 @@ export const sykmeldingerMock = [
     arbeidsgiver: { navn: "LOMMEN BARNEHAVE", stillingsprosent: 100 },
     sykmeldingsperioder: [
       {
-        fom: "2020-10-15",
-        tom: "2020-10-21",
+        fom: leggTilDagerPaDato(new Date(), -10).toJSON(),
+        tom: leggTilDagerPaDato(new Date(), 20).toJSON(),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,

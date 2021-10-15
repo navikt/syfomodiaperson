@@ -4,6 +4,7 @@ import { SykmeldingNewFormatDTO } from "./types/SykmeldingNewFormatDTO";
 import { RootState } from "../rootState";
 import { SYFOSMREGISTER_ROOT } from "@/apiConstants";
 import {
+  hentSykmeldingerHenter,
   hentSykmeldingerFeilet,
   SykmeldingerActionTypes,
   sykmeldingerHentet,
@@ -12,12 +13,14 @@ import { ApiErrorException, generalError } from "@/api/errors";
 
 export const skalHenteSykmeldinger = (state: RootState) => {
   const reducer = state.sykmeldinger;
-  return !(reducer.hentet || reducer.error);
+  return !(reducer.henter || reducer.hentet || reducer.error);
 };
 
 export function* hentSykmeldingerHvisIkkeHentet(action: any) {
   const skalHente = yield select(skalHenteSykmeldinger);
   if (skalHente) {
+    yield put(hentSykmeldingerHenter());
+
     const path = `${SYFOSMREGISTER_ROOT}/internal/sykmeldinger`;
     try {
       const data: SykmeldingNewFormatDTO[] = yield call(get, path, action.fnr);
