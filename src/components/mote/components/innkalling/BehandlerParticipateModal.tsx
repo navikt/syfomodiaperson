@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { TrackedKnapp } from "@/components/buttons/TrackedKnapp";
 import { TrackedFlatknapp } from "@/components/buttons/TrackedFlatknapp";
 import ModalWrapper from "nav-frontend-modal";
+import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 
 const texts = {
   behandlerVaereMedTrackingContext:
@@ -18,16 +19,57 @@ const texts = {
   avbryt: "Avbryt",
 };
 
+interface BehandlerYesButtonProps {
+  setIsOpen: (newState: boolean) => void;
+  setChooseBehandlerModalIsOpen: (newState: boolean) => void;
+  isDm2InnkallingFastlegeEnabled: boolean;
+  behandlere: BehandlerDialogmeldingDTO[];
+}
+
+const BehandlerYesButton = ({
+  setIsOpen,
+  setChooseBehandlerModalIsOpen,
+  isDm2InnkallingFastlegeEnabled,
+  behandlere,
+}: BehandlerYesButtonProps) => {
+  return isDm2InnkallingFastlegeEnabled && behandlere.length > 0 ? (
+    <TrackedKnapp
+      context={texts.behandlerVaereMedTrackingContext}
+      onClick={() => {
+        setIsOpen(false);
+        setChooseBehandlerModalIsOpen(true);
+      }}
+    >
+      {texts.ja}
+    </TrackedKnapp>
+  ) : (
+    <Link to="/sykefravaer/mote">
+      <TrackedKnapp
+        context={texts.behandlerVaereMedTrackingContext}
+        onClick={() => setIsOpen(false)}
+      >
+        {texts.ja}
+      </TrackedKnapp>
+    </Link>
+  );
+};
+
 interface SkalBehandlerDeltaModalProps {
   isOpen: boolean;
   setIsOpen: (newState: boolean) => void;
   setNyLosningModalIsOpen: (newState: boolean) => void;
+  setChooseBehandlerModalIsOpen: (newState: boolean) => void;
+  isDm2InnkallingFastlegeEnabled: boolean;
+  behandlere: BehandlerDialogmeldingDTO[];
 }
 
 export const BehandlerParticipateModal = ({
   isOpen,
   setIsOpen,
   setNyLosningModalIsOpen,
+  setChooseBehandlerModalIsOpen,
+  isDm2InnkallingFastlegeEnabled,
+  behandlere,
 }: SkalBehandlerDeltaModalProps) => {
   return (
     <ModalWrapper
@@ -44,14 +86,12 @@ export const BehandlerParticipateModal = ({
 
         <FlexRow>
           <FlexColumn>
-            <Link to="/sykefravaer/mote">
-              <TrackedKnapp
-                context={texts.behandlerVaereMedTrackingContext}
-                onClick={() => setIsOpen(false)}
-              >
-                {texts.ja}
-              </TrackedKnapp>
-            </Link>
+            <BehandlerYesButton
+              setIsOpen={setIsOpen}
+              setChooseBehandlerModalIsOpen={setChooseBehandlerModalIsOpen}
+              isDm2InnkallingFastlegeEnabled={isDm2InnkallingFastlegeEnabled}
+              behandlere={behandlere}
+            />
           </FlexColumn>
           <FlexColumn>
             <TrackedKnapp
