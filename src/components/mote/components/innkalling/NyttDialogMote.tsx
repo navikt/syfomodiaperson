@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
 import { BehandlerParticipateModal } from "@/components/mote/components/innkalling/BehandlerParticipateModal";
 import { NyLosningModal } from "@/components/mote/components/innkalling/NyLosningModal";
+import { ChooseBehandlerModal } from "@/components/mote/components/innkalling/ChooseBehandlerModal";
+import { useValgtPersonident } from "@/hooks/useValgtBruker";
+import { useBehandlereDialogmeldingQuery } from "@/data/behandlerdialogmelding/behandlereDialogmeldingQueryHooks";
 
 const texts = {
   nyttMote: "Nytt dialogmøte",
@@ -14,9 +17,19 @@ const texts = {
 
 export const NyttDialogMote = (): ReactElement => {
   const [behandlerModalIsOpen, setBehandlerModalIsOpen] = useState(false);
+  const [chooseBehandlerModalIsOpen, setChooseBehandlerModalIsOpen] = useState(
+    false
+  );
   const [nyLosningModalIsOpen, setNyLosningModalIsOpen] = useState(false);
   const { brukerKanVarslesDigitalt } = useNavBrukerData();
-  const { isDm2FysiskBrevEnabled } = useDM2FeatureToggles();
+
+  const fnr = useValgtPersonident();
+  const { data: behandlere } = useBehandlereDialogmeldingQuery(fnr);
+
+  const {
+    isDm2FysiskBrevEnabled,
+    isDm2InnkallingFastlegeEnabled,
+  } = useDM2FeatureToggles();
   const kanBrukeNyLosningInnkalling =
     brukerKanVarslesDigitalt || isDm2FysiskBrevEnabled;
 
@@ -53,7 +66,19 @@ export const NyttDialogMote = (): ReactElement => {
         isOpen={behandlerModalIsOpen}
         setIsOpen={setBehandlerModalIsOpen}
         setNyLosningModalIsOpen={setNyLosningModalIsOpen}
+        setChooseBehandlerModalIsOpen={setChooseBehandlerModalIsOpen}
+        isDm2InnkallingFastlegeEnabled={isDm2InnkallingFastlegeEnabled}
+        behandlere={behandlere || []}
       />
+
+      {isDm2InnkallingFastlegeEnabled && (
+        <ChooseBehandlerModal
+          isOpen={chooseBehandlerModalIsOpen}
+          setIsOpen={setChooseBehandlerModalIsOpen}
+          setNyLosningModalIsOpen={setNyLosningModalIsOpen}
+          behandlere={behandlere || []}
+        />
+      )}
 
       <NyLosningModal
         isOpen={nyLosningModalIsOpen}

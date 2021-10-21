@@ -3,7 +3,7 @@ import { ISDIALOGMELDING_ROOT } from "@/apiConstants";
 import { useQuery } from "react-query";
 import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 
-const behandlereDialogmeldingQueryKeys = {
+export const behandlereDialogmeldingQueryKeys = {
   behandleredialogmelding: (fnr: string) => ["behandleredialogmelding", fnr],
 };
 
