@@ -57,7 +57,7 @@ spec:
     - name: AUTH_REDIRECT_URI
       value: "https://syfomodiaperson.dev.intern.nav.no/oauth2/callback"
     - name: FASTLEGEREST_AAD_APP_CLIENT_ID
-      value: "c5e5194c-5513-40d0-ba26-d38e70a65427"
+      value: "dev-gcp:teamsykefravr:fastlegerest"
     - name: FASTLEGEREST_HOST
       value: "fastlegerest.dev.intern.nav.no"
     - name: FLEX_INTERN_GATEWAY_AAD_APP_CLIENT_ID
