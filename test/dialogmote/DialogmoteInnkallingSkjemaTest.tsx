@@ -1,7 +1,7 @@
 import React from "react";
 import { mount } from "enzyme";
 import { expect } from "chai";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter, Route, Router } from "react-router-dom";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import { Provider } from "react-redux";
@@ -13,7 +13,11 @@ import {
   toDatePrettyPrint,
 } from "@/utils/datoUtils";
 import { InputDateStringToISODateString } from "nav-datovelger/lib/utils/dateFormatUtils";
-import { Feilmelding } from "nav-frontend-typografi";
+import {
+  Feilmelding,
+  Innholdstittel,
+  Normaltekst,
+} from "nav-frontend-typografi";
 import { Feiloppsummering } from "nav-frontend-skjema";
 import { Hovedknapp, Knapp } from "nav-frontend-knapper";
 import { texts as skjemaFeilOppsummeringTexts } from "../../src/components/SkjemaFeiloppsummering";
@@ -40,7 +44,14 @@ import {
   veileder,
 } from "./testData";
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
+import DialogmoteInnkallingBehandler from "@/components/dialogmote/innkalling/DialogmoteInnkallingBehandler";
+import {
+  BehandlerDialogmeldingDTO,
+  BehandlerType,
+} from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
+import { createMemoryHistory } from "history";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
+import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
 
 const realState = createStore(rootReducer).getState();
 
@@ -52,6 +63,20 @@ const moteDatoTid = `${moteDatoAsISODateString}T${moteKlokkeslett}:00`;
 const moteVideoLink = "https://video.nav.no";
 const fritekstTilArbeidstaker = "Noe fritekst til arbeidstaker";
 const fritekstTilArbeidsgiver = "Noe fritekst til arbeidsgiver";
+const valgtBehandler: BehandlerDialogmeldingDTO = {
+  kontor: "Greendale Legekontor",
+  telefon: "11223344",
+  fornavn: "Dean",
+  etternavn: "Pelton",
+  type: BehandlerType.FASTLEGE,
+  fnr: "01010112345",
+  partnerId: "12345",
+  herId: "7654321",
+};
+const legeNavn = `${capitalizeFoersteBokstav(
+  valgtBehandler.type.toLowerCase()
+)}: ${valgtBehandler.fornavn} ${valgtBehandler.etternavn}`;
+
 const store = configureStore([]);
 const mockState = {
   navbruker: {
@@ -364,6 +389,29 @@ describe("DialogmoteInnkallingSkjema", () => {
       innkallingSkjemaTexts.forhandsvisningArbeidsgiverSubtitle
     );
   });
+
+  it("Viser DialogmoteInnkallingBehandler hvis valgtBehandler er satt", () => {
+    const wrapper = mountDialogmoteInnkallingSkjemaWithValgtBehandler();
+
+    const dialogmoteInnkallingBehandler = wrapper.find(
+      DialogmoteInnkallingBehandler
+    );
+    const tittel = dialogmoteInnkallingBehandler.find(Innholdstittel);
+    const legeInfo = wrapper.find(Normaltekst).first();
+
+    expect(tittel).contain("Behandler");
+    expect(legeInfo).to.have.text(legeNavn);
+  });
+
+  it("Viser ikke DialogmoteInnkallingBehandler hvis valgtBehandler ikke er satt", () => {
+    const wrapper = mountDialogmoteInnkallingSkjema();
+
+    const dialogmoteInnkallingBehandler = wrapper.find(
+      DialogmoteInnkallingBehandler
+    );
+
+    expect(dialogmoteInnkallingBehandler).to.not.exist;
+  });
 });
 
 const mountDialogmoteInnkallingSkjema = () => {
@@ -377,6 +425,25 @@ const mountDialogmoteInnkallingSkjema = () => {
         </QueryClientProvider>
       </Route>
     </MemoryRouter>
+  );
+};
+
+const mountDialogmoteInnkallingSkjemaWithValgtBehandler = () => {
+  const history = createMemoryHistory();
+  const state = { valgtBehandler: valgtBehandler };
+
+  history.push(dialogmoteRoutePath, state);
+
+  return mount(
+    <Router history={history}>
+      <Route path={dialogmoteRoutePath}>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store({ ...realState, ...mockState })}>
+            <DialogmoteInnkallingSkjema pageTitle="Test" />
+          </Provider>
+        </QueryClientProvider>
+      </Route>
+    </Router>
   );
 };
 

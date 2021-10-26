@@ -34,6 +34,7 @@ interface ChooseBehandlerModalProps {
   setIsOpen: (newState: boolean) => void;
   setNyLosningModalIsOpen: (newState: boolean) => void;
   behandlere: BehandlerDialogmeldingDTO[];
+  setBehandler: (behandler: BehandlerDialogmeldingDTO) => void;
 }
 
 export const ChooseBehandlerModal = ({
@@ -41,6 +42,7 @@ export const ChooseBehandlerModal = ({
   setIsOpen,
   setNyLosningModalIsOpen,
   behandlere,
+  setBehandler,
 }: ChooseBehandlerModalProps) => {
   const trackButtonClick = useTrackOnClick();
 
@@ -68,6 +70,7 @@ export const ChooseBehandlerModal = ({
                   onClick={() => {
                     setIsOpen(false);
                     setNyLosningModalIsOpen(true);
+                    setBehandler(behandler);
                   }}
                 >
                   <BehandlerPanelInfo>

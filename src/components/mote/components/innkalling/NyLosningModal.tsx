@@ -12,6 +12,7 @@ import { TrackedFlatknapp } from "@/components/buttons/TrackedFlatknapp";
 import ModalWrapper from "nav-frontend-modal";
 import React from "react";
 import styled from "styled-components";
+import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 
 const texts = {
   nyLosningInnkalling: "Ny løsning for innkalling til Dialogmøte",
@@ -33,11 +34,13 @@ const ModalText = styled.div`
 interface NyLosningModalDeltaModalProps {
   isOpen: boolean;
   setIsOpen: (newState: boolean) => void;
+  valgtBehandler?: BehandlerDialogmeldingDTO;
 }
 
 export const NyLosningModal = ({
   isOpen,
   setIsOpen,
+  valgtBehandler,
 }: NyLosningModalDeltaModalProps) => {
   return (
     <ModalWrapper
@@ -64,7 +67,14 @@ export const NyLosningModal = ({
 
         <FlexRow>
           <FlexColumn>
-            <Link to={dialogmoteRoutePath}>
+            <Link
+              to={{
+                pathname: dialogmoteRoutePath,
+                state: {
+                  valgtBehandler: valgtBehandler,
+                },
+              }}
+            >
               <TrackedKnapp
                 context={texts.modalOnskerDuProveTrackingContext}
                 onClick={() => setIsOpen(false)}

@@ -13,7 +13,7 @@ import {
 } from "@/utils/valideringUtils";
 import { DialogmoteInnkallingDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { genererDato } from "../../mote/utils";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, useLocation } from "react-router-dom";
 import { useNavEnhet } from "@/hooks/useNavEnhet";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { FlexRow } from "../../Layout";
@@ -28,6 +28,8 @@ import {
 import { useOpprettInnkallingDialogmote } from "@/data/dialogmote/useOpprettInnkallingDialogmote";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
+import DialogmoteInnkallingBehandler from "@/components/dialogmote/innkalling/DialogmoteInnkallingBehandler";
+import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 
 export interface DialogmoteInnkallingSkjemaValues {
   arbeidsgiver: string;
@@ -41,6 +43,10 @@ export interface DialogmoteInnkallingSkjemaValues {
 
 interface DialogmoteInnkallingSkjemaProps {
   pageTitle: string;
+}
+
+interface DialogmoteInnkallingRouteStateProps {
+  valgtBehandler?: BehandlerDialogmeldingDTO;
 }
 
 type DialogmoteInnkallingSkjemaFeil = Partial<
@@ -129,6 +135,10 @@ const DialogmoteInnkallingSkjema = ({
     opprettInnkalling.mutate(dialogmoteInnkalling);
   };
 
+  const location = useLocation<DialogmoteInnkallingRouteStateProps>();
+
+  const valgtBehandler = location.state?.valgtBehandler;
+
   if (opprettInnkalling.isSuccess) {
     return <Redirect to={moteoversiktRoutePath} />;
   }
@@ -138,6 +148,9 @@ const DialogmoteInnkallingSkjema = ({
       <Form initialValues={initialValues} onSubmit={submit} validate={validate}>
         {({ handleSubmit, submitFailed, errors }) => (
           <form onSubmit={handleSubmit}>
+            {!!valgtBehandler && (
+              <DialogmoteInnkallingBehandler behandler={valgtBehandler} />
+            )}
             <DialogmoteInnkallingVelgArbeidsgiver />
             <DialogmoteTidOgSted />
             <DialogmoteInnkallingTekster />

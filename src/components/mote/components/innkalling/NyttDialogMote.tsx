@@ -8,6 +8,7 @@ import { BehandlerParticipateModal } from "@/components/mote/components/innkalli
 import { NyLosningModal } from "@/components/mote/components/innkalling/NyLosningModal";
 import { ChooseBehandlerModal } from "@/components/mote/components/innkalling/ChooseBehandlerModal";
 import { useBehandlereDialogmeldingQuery } from "@/data/behandlerdialogmelding/behandlereDialogmeldingQueryHooks";
+import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 
 const texts = {
   nyttMote: "Nytt dialogmøte",
@@ -30,6 +31,11 @@ export const NyttDialogMote = (): ReactElement => {
   } = useDM2FeatureToggles();
   const kanBrukeNyLosningInnkalling =
     brukerKanVarslesDigitalt || isDm2FysiskBrevEnabled;
+
+  const [
+    valgtBehandler,
+    setValgtBehandler,
+  ] = useState<BehandlerDialogmeldingDTO>();
 
   if (!kanBrukeNyLosningInnkalling) {
     return (
@@ -75,12 +81,14 @@ export const NyttDialogMote = (): ReactElement => {
           setIsOpen={setChooseBehandlerModalIsOpen}
           setNyLosningModalIsOpen={setNyLosningModalIsOpen}
           behandlere={behandlere || []}
+          setBehandler={setValgtBehandler}
         />
       )}
 
       <NyLosningModal
         isOpen={nyLosningModalIsOpen}
         setIsOpen={setNyLosningModalIsOpen}
+        valgtBehandler={valgtBehandler}
       />
     </>
   );
