@@ -9,7 +9,6 @@ import oppfoelgingsdialogerSagas from "./oppfolgingsplan/oppfoelgingsdialogerSag
 import oppfolgingsplanerLPSSagas from "./oppfolgingsplan/oppfolgingsplanerLPSSagas";
 import modiacontextSagas from "./modiacontext/modiacontextSagas";
 import historikkSagas from "./historikk/historikkSagas";
-import behandlendeEnhetSagas from "./behandlendeenhet/behandlendeEnhetSagas";
 import dokumentInfoSagas from "./oppfolgingsplan/dokumentInfoSagas";
 import diskresjonskodeSagas from "./diskresjonskode/diskresjonskodeSagas";
 import tilgangSagas from "./tilgang/tilgangSagas";
@@ -33,7 +32,6 @@ export default function* rootSaga() {
     oppfoelgingsdialogerSagas(),
     oppfolgingsplanerLPSSagas(),
     historikkSagas(),
-    behandlendeEnhetSagas(),
     dokumentInfoSagas(),
     diskresjonskodeSagas(),
     tilgangSagas(),

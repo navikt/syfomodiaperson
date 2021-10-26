@@ -5,7 +5,6 @@ import { DecoratorProps } from "./decoratorProps";
 import decoratorConfig from "./decoratorConfig";
 import { valgtEnhet } from "@/data/valgtenhet/enhet_actions";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { hentBehandlendeEnhet } from "@/data/behandlendeenhet/behandlendeEnhet_actions";
 import { hentNavbruker } from "@/data/navbruker/navbruker_actions";
 import { hentLedere } from "@/data/leder/ledere_actions";
 import { hentPersonAdresse } from "@/data/personinfo/personInfo_actions";
@@ -23,7 +22,6 @@ const Decorator = () => {
 
   useEffect(() => {
     if (erGyldigFodselsnummer(fnr)) {
-      dispatch(hentBehandlendeEnhet(fnr));
       dispatch(hentNavbruker(fnr));
       dispatch(hentLedere(fnr));
       dispatch(hentPersonAdresse(fnr));

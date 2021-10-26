@@ -11,9 +11,11 @@ import {
   MotedeltakerVarselType,
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { MotehistorikkPanel } from "@/components/dialogmote/motehistorikk/MotehistorikkPanel";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
+const queryClient = new QueryClient();
 const dialogmoter: DialogmoteDTO[] = [
   {
     uuid: "1",
@@ -98,9 +100,11 @@ const dialogmoter: DialogmoteDTO[] = [
 describe("Historiske dialogmøter", () => {
   it("Fremviser avholdte og avlyste dialogmøter", () => {
     const wrapper = mount(
-      <Provider store={store(realState)}>
-        <MotehistorikkPanel historiskeMoter={dialogmoter} />
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store(realState)}>
+          <MotehistorikkPanel historiskeMoter={dialogmoter} />
+        </Provider>
+      </QueryClientProvider>
     );
 
     expect(wrapper.text()).to.contain("Avholdt møte Fredag 15. januar 2021");

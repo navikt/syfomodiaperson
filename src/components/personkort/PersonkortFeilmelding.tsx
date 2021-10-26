@@ -1,14 +1,11 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import Alertstripe from "nav-frontend-alertstriper";
 
 interface PersonkortFeilmeldingProps {
-  children: any;
+  children: ReactNode;
 }
 
-const PersonkortFeilmelding = (
-  personkortFeilmeldingProps: PersonkortFeilmeldingProps
-) => {
-  const { children } = personkortFeilmeldingProps;
+const PersonkortFeilmelding = ({ children }: PersonkortFeilmeldingProps) => {
   return <Alertstripe type="info">{children}</Alertstripe>;
 };
 

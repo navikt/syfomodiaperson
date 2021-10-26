@@ -1,12 +1,8 @@
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import { SYFOBEHANDLENDEENHET_ROOT } from "../../src/apiConstants";
+import { behandlendeEnhetMock } from "../data/behandlendeEnhetMock";
 
 const Auth = require("../../server/auth/index.js");
-
-const behandlendeEnhet = {
-  enhetId: "0315",
-  navn: "NAV Grünerløkka",
-};
 
 export const mockSyfobehandlendeenhet = (server) => {
   server.get(
@@ -18,7 +14,7 @@ export const mockSyfobehandlendeenhet = (server) => {
         req.headers[NAV_PERSONIDENT_HEADER].length === 11
       ) {
         res.setHeader("Content-Type", "application/json");
-        res.send(JSON.stringify(behandlendeEnhet));
+        res.send(JSON.stringify(behandlendeEnhetMock));
       } else {
         res.status(400).send("Did not find PersonIdent in headers");
       }

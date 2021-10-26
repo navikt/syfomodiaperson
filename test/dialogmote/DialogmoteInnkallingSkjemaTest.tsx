@@ -32,8 +32,15 @@ import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHook
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubInnkallingApi } from "../stubs/stubIsdialogmote";
 import { apiMock } from "../stubs/stubApi";
-import { arbeidsgiver, arbeidstaker, navEnhet, veileder } from "./testData";
+import {
+  arbeidsgiver,
+  arbeidstaker,
+  behandlendeEnhet,
+  navEnhet,
+  veileder,
+} from "./testData";
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
+import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 
 const realState = createStore(rootReducer).getState();
 
@@ -47,12 +54,6 @@ const fritekstTilArbeidstaker = "Noe fritekst til arbeidstaker";
 const fritekstTilArbeidsgiver = "Noe fritekst til arbeidsgiver";
 const store = configureStore([]);
 const mockState = {
-  behandlendeEnhet: {
-    data: {
-      enhetId: navEnhet.id,
-      navn: navEnhet.navn,
-    },
-  },
   navbruker: {
     data: {
       navn: arbeidstaker.navn,
@@ -89,6 +90,10 @@ const mockState = {
 };
 const queryClient = new QueryClient();
 queryClient.setQueryData(veilederinfoQueryKeys.veilederinfo, () => veileder);
+queryClient.setQueryData(
+  behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
+  () => behandlendeEnhet
+);
 
 describe("DialogmoteInnkallingSkjema", () => {
   it("validerer arbeidsgiver, dato, tid og sted", () => {

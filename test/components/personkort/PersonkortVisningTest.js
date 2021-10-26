@@ -22,6 +22,7 @@ import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { fastlegerQueryKeys } from "@/data/fastlege/fastlegerQueryHooks";
 import { arbeidstaker } from "../../dialogmote/testData";
+import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 
 const queryClient = new QueryClient();
 const aktivFastlege = {
@@ -68,12 +69,6 @@ describe("PersonkortVisning", () => {
 
   beforeEach(() => {
     mockState = {
-      behandlendeEnhet: {
-        data: {
-          navn: "NAV Drammen",
-          enhetId: "1234",
-        },
-      },
       ledere: [
         {
           narmesteLederNavn: "Station Officer Steele",
@@ -133,17 +128,26 @@ describe("PersonkortVisning", () => {
     expect(komponent.find(PersonkortLege)).to.have.length(1);
   });
 
-  it("Skal vise VisningEnhet, dersom visning for lege er valgt", () => {
+  it("Skal vise VisningEnhet, dersom visning for enhet er valgt", () => {
+    queryClient.setQueryData(
+      behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
+      () => ({
+        navn: "NAV Drammen",
+        enhetId: "1234",
+      })
+    );
     komponent = mount(
-      <Provider store={store({ ...realState, ...mockState })}>
-        <PersonkortVisning
-          visning={PERSONKORTVISNING_TYPE.ENHET}
-          ledere={mockState.ledere}
-          navbruker={mockState.navbruker}
-          personadresse={mockState.personadresse}
-          sykmeldinger={null}
-        />
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store({ ...realState, ...mockState })}>
+          <PersonkortVisning
+            visning={PERSONKORTVISNING_TYPE.ENHET}
+            ledere={mockState.ledere}
+            navbruker={mockState.navbruker}
+            personadresse={mockState.personadresse}
+            sykmeldinger={null}
+          />
+        </Provider>
+      </QueryClientProvider>
     );
     expect(komponent.find(PersonkortEnhet)).to.have.length(1);
   });

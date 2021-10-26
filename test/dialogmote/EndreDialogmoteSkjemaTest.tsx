@@ -31,18 +31,19 @@ import { InputDateStringToISODateString } from "nav-datovelger/lib/utils/dateFor
 import { Forhandsvisning } from "@/components/dialogmote/Forhandsvisning";
 import { texts as endringSkjemaTexts } from "../../src/components/dialogmote/endre/EndreDialogmoteTekster";
 import Lukknapp from "nav-frontend-lukknapp";
-import { arbeidstaker, dialogmote, navEnhet, veileder } from "./testData";
+import {
+  arbeidstaker,
+  behandlendeEnhet,
+  dialogmote,
+  navEnhet,
+  veileder,
+} from "./testData";
 import { genererDato } from "@/components/mote/utils";
+import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
 const mockState = {
-  behandlendeEnhet: {
-    data: {
-      enhetId: navEnhet.id,
-      navn: navEnhet.navn,
-    },
-  },
   navbruker: {
     data: {
       navn: arbeidstaker.navn,
@@ -68,6 +69,10 @@ const nyDatoTid = `${InputDateStringToISODateString(
 
 const queryClient = new QueryClient();
 queryClient.setQueryData(veilederinfoQueryKeys.veilederinfo, () => veileder);
+queryClient.setQueryData(
+  behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
+  () => behandlendeEnhet
+);
 
 describe("EndreDialogmoteSkjemaTest", () => {
   it("validerer begrunnelser og dato", () => {

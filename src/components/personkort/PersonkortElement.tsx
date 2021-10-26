@@ -1,13 +1,12 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import cn from "classnames";
 
 interface PersonkortElementProps {
   tittel: string;
   imgUrl: string;
   imgAlt: string;
-  children?: any;
+  children: ReactElement;
   antallKolonner?: number;
-  titleMetaChildren?: number;
 }
 
 const PersonkortElement = (personkortElementProps: PersonkortElementProps) => {
@@ -17,7 +16,6 @@ const PersonkortElement = (personkortElementProps: PersonkortElementProps) => {
     imgAlt,
     children,
     antallKolonner = 2,
-    titleMetaChildren,
   } = personkortElementProps;
   const classNameRad = cn("personkortElement__rad", {
     "personkortElement__rad--treKolonner": antallKolonner === 3,
@@ -25,14 +23,10 @@ const PersonkortElement = (personkortElementProps: PersonkortElementProps) => {
   });
   return (
     <div className="personkortElement">
-      {titleMetaChildren ? (
-        titleMetaChildren
-      ) : (
-        <div className="personkortElement__tittel">
-          <img src={imgUrl} alt={imgAlt} />
-          <h4>{tittel}</h4>
-        </div>
-      )}
+      <div className="personkortElement__tittel">
+        <img src={imgUrl} alt={imgAlt} />
+        <h4>{tittel}</h4>
+      </div>
       <div className={classNameRad}>{children}</div>
     </div>
   );

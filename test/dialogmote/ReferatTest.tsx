@@ -34,8 +34,15 @@ import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHook
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubFerdigstillApi } from "../stubs/stubIsdialogmote";
 import { apiMock } from "../stubs/stubApi";
-import { arbeidstaker, dialogmote, navEnhet, veileder } from "./testData";
+import {
+  arbeidstaker,
+  behandlendeEnhet,
+  dialogmote,
+  navEnhet,
+  veileder,
+} from "./testData";
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
+import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -44,12 +51,6 @@ const annenDeltakerFunksjon = "Verneombud";
 const annenDeltakerNavn = "Bodil Bolle";
 
 const mockState = {
-  behandlendeEnhet: {
-    data: {
-      enhetId: navEnhet.id,
-      navn: navEnhet.navn,
-    },
-  },
   navbruker: {
     data: {
       navn: arbeidstaker.navn,
@@ -85,6 +86,10 @@ const veiledersOppgave = "Noe tekst om veileders oppgave";
 
 const queryClient = new QueryClient();
 queryClient.setQueryData(veilederinfoQueryKeys.veilederinfo, () => veileder);
+queryClient.setQueryData(
+  behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
+  () => behandlendeEnhet
+);
 
 describe("ReferatTest", () => {
   it("viser arbeidstaker, dato og sted i tittel", () => {

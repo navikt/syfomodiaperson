@@ -21,9 +21,6 @@ import oppfolgingsplanerlps, {
 import enhet, { EnhetState } from "./valgtenhet/enhet";
 import valgtbruker, { ValgtBrukerState } from "./valgtbruker/valgtbruker";
 import sykmeldinger, { SykmeldingerState } from "./sykmelding/sykmeldinger";
-import behandlendeEnhet, {
-  BehandlendeEnhetState,
-} from "./behandlendeenhet/behandlendeEnhet";
 import diskresjonskode, {
   DiskresjonskodeState,
 } from "./diskresjonskode/diskresjonskode";
@@ -60,7 +57,6 @@ export interface RootState {
   enhet: EnhetState;
   valgtbruker: ValgtBrukerState;
   sykmeldinger: SykmeldingerState;
-  behandlendeEnhet: BehandlendeEnhetState;
   diskresjonskode: DiskresjonskodeState;
   dokumentinfo: DokumentinfoMapState;
   tilgang: TilgangState;
@@ -88,7 +84,6 @@ export const rootReducer = combineReducers<RootState>({
   enhet,
   valgtbruker,
   sykmeldinger,
-  behandlendeEnhet,
   diskresjonskode,
   dokumentinfo,
   tilgang,

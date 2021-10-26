@@ -24,18 +24,19 @@ import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHook
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubAvlysApi } from "../stubs/stubIsdialogmote";
 import { apiMock } from "../stubs/stubApi";
-import { arbeidstaker, dialogmote, navEnhet, veileder } from "./testData";
+import {
+  arbeidstaker,
+  behandlendeEnhet,
+  dialogmote,
+  navEnhet,
+  veileder,
+} from "./testData";
+import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
 
 const mockState = {
-  behandlendeEnhet: {
-    data: {
-      enhetId: navEnhet.id,
-      navn: navEnhet.navn,
-    },
-  },
   navbruker: {
     data: {
       navn: arbeidstaker.navn,
@@ -53,6 +54,10 @@ const tekstTilArbeidsgiver = "Noe tekst til arbeidsgiver";
 
 const queryClient = new QueryClient();
 queryClient.setQueryData(veilederinfoQueryKeys.veilederinfo, () => veileder);
+queryClient.setQueryData(
+  behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
+  () => behandlendeEnhet
+);
 
 describe("AvlysDialogmoteSkjemaTest", () => {
   it("viser møtetidspunkt", () => {

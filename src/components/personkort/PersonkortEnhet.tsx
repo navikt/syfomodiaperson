@@ -2,31 +2,43 @@ import React from "react";
 import PersonkortElement from "./PersonkortElement";
 import PersonkortInformasjon from "./PersonkortInformasjon";
 import { KontorByggImage } from "../../../img/ImageComponents";
-import { useBehandlendeEnhet } from "@/data/behandlendeenhet/behandlendeEnhet_hooks";
 import ErrorBoundary from "../ErrorBoundary";
+import { useBehandlendeEnhetQuery } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
+import { useValgtPersonident } from "@/hooks/useValgtBruker";
+import { ApiErrorException } from "@/api/errors";
+import AppSpinner from "@/components/AppSpinner";
+import PersonkortFeilmelding from "@/components/personkort/PersonkortFeilmelding";
 
 const texts = {
   enhet: "Enhet",
+  notFound: "Fant ikke behandlende enhet for person, prøv igjen senere.",
 };
 
 const PersonkortEnhet = () => {
-  const { error, data } = useBehandlendeEnhet();
+  const fnr = useValgtPersonident();
+  const { error, data: behandlendeenhet, isLoading } = useBehandlendeEnhetQuery(
+    fnr
+  );
   const informasjonNokkelTekster = new Map([["enhetId", texts.enhet]]);
-  const valgteElementer = (({ enhetId }) => {
-    return { enhetId };
-  })(data);
+  const apiError = error instanceof ApiErrorException ? error.error : undefined;
   return (
-    <ErrorBoundary apiError={error}>
-      <PersonkortElement
-        tittel={data.navn}
-        imgUrl={KontorByggImage}
-        imgAlt="Kontorbygg"
-      >
-        <PersonkortInformasjon
-          informasjonNokkelTekster={informasjonNokkelTekster}
-          informasjon={valgteElementer}
-        />
-      </PersonkortElement>
+    <ErrorBoundary apiError={apiError}>
+      {isLoading ? (
+        <AppSpinner />
+      ) : behandlendeenhet ? (
+        <PersonkortElement
+          tittel={behandlendeenhet.navn}
+          imgUrl={KontorByggImage}
+          imgAlt="Kontorbygg"
+        >
+          <PersonkortInformasjon
+            informasjonNokkelTekster={informasjonNokkelTekster}
+            informasjon={{ enhetId: behandlendeenhet.enhetId }}
+          />
+        </PersonkortElement>
+      ) : (
+        <PersonkortFeilmelding>{texts.notFound}</PersonkortFeilmelding>
+      )}
     </ErrorBoundary>
   );
 };

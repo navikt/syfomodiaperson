@@ -15,6 +15,10 @@ export const navEnhet = {
   id: "0315",
   navn: "NAV Grünerløkka",
 };
+export const behandlendeEnhet = {
+  enhetId: navEnhet.id,
+  navn: navEnhet.navn,
+};
 export const veileder: Partial<VeilederinfoDTO> = {
   navn: "Vetle Veileder",
   epost: "vetle.veileder@nav.no",
