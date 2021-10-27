@@ -4,7 +4,6 @@ import PersonkortInformasjon from "./PersonkortInformasjon";
 import { KontorByggImage } from "../../../img/ImageComponents";
 import ErrorBoundary from "../ErrorBoundary";
 import { useBehandlendeEnhetQuery } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { ApiErrorException } from "@/api/errors";
 import AppSpinner from "@/components/AppSpinner";
 import PersonkortFeilmelding from "@/components/personkort/PersonkortFeilmelding";
@@ -15,10 +14,11 @@ const texts = {
 };
 
 const PersonkortEnhet = () => {
-  const fnr = useValgtPersonident();
-  const { error, data: behandlendeenhet, isLoading } = useBehandlendeEnhetQuery(
-    fnr
-  );
+  const {
+    error,
+    data: behandlendeenhet,
+    isLoading,
+  } = useBehandlendeEnhetQuery();
   const informasjonNokkelTekster = new Map([["enhetId", texts.enhet]]);
   const apiError = error instanceof ApiErrorException ? error.error : undefined;
   return (

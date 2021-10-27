@@ -7,7 +7,6 @@ export const behandlereDialogmeldingQueryKeys = {
   behandleredialogmelding: (fnr: string) => ["behandleredialogmelding", fnr],
 };
 
-// TODO: Ta i bruk i DM2 MVP-inngang hvis dm2InnkallingFastlege feature toggle er enabled
 export const useBehandlereDialogmeldingQuery = (fnr: string) => {
   const fetchBehandlereDialogmelding = () =>
     get<BehandlerDialogmeldingDTO[]>(

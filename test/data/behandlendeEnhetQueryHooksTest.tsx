@@ -7,8 +7,15 @@ import React from "react";
 import { stubBehandlendeEnhetApi } from "../stubs/stubSyfobehandlendeEnhet";
 import { useBehandlendeEnhetQuery } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { behandlendeEnhetMock } from "../../mock/data/behandlendeEnhetMock";
+import configureStore from "redux-mock-store";
+import { Provider } from "react-redux";
 
-const fnr = "05087321470";
+const store = configureStore([]);
+const mockState = {
+  valgtbruker: {
+    personident: "05087321470",
+  },
+};
 let queryClient;
 let apiMockScope;
 
@@ -21,19 +28,20 @@ describe("behandlendeEnhetQueryHooks tests", () => {
     nock.cleanAll();
   });
 
-  it("loads behandlende enhet for fnr", async () => {
+  it("loads behandlende enhet for valgt personident", async () => {
     stubBehandlendeEnhetApi(apiMockScope, behandlendeEnhetMock);
 
     const wrapper = ({ children }) => (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <Provider store={store(mockState)}>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      </Provider>
     );
 
-    const { result, waitFor } = renderHook(
-      () => useBehandlendeEnhetQuery(fnr),
-      {
-        wrapper,
-      }
-    );
+    const { result, waitFor } = renderHook(() => useBehandlendeEnhetQuery(), {
+      wrapper,
+    });
 
     await waitFor(() => result.current.isSuccess);
 
