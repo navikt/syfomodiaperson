@@ -1,12 +1,12 @@
 import { stubVirksomhetApi } from "../stubs/stubSyfomoteadmin";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient } from "react-query";
 import { apiMock } from "../stubs/stubApi";
 import nock from "nock";
-import React from "react";
 import { renderHook } from "@testing-library/react-hooks";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { expect } from "chai";
 import { virksomhetMock } from "../../mock/data/virksomhetMock";
+import { queryHookWrapper } from "./queryHookTestUtils";
 
 let queryClient;
 let apiMockScope;
@@ -25,9 +25,7 @@ describe("virksomhetQueryHooks tests", () => {
   it("loads virksomhet for orgnummer", async () => {
     stubVirksomhetApi(apiMockScope, orgnummer);
 
-    const wrapper = ({ children }) => (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    );
+    const wrapper = queryHookWrapper(queryClient);
 
     const { result, waitFor } = renderHook(
       () => useVirksomhetQuery(orgnummer),

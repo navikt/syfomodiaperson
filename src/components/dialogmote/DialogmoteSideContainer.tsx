@@ -31,7 +31,7 @@ export const DialogmoteSideContainer = ({
     dialogmoteUuid: string;
   }>();
   const fnr = useValgtPersonident();
-  const { isLoading, isError, data: dialogmoter } = useDialogmoterQuery(fnr);
+  const { isLoading, isError, data: dialogmoter } = useDialogmoterQuery();
   const { isDm2FysiskBrevEnabled } = useDM2FeatureToggles();
   const { brukerKanIkkeVarslesDigitalt } = useNavBrukerData();
 

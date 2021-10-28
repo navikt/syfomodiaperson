@@ -1,14 +1,13 @@
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient } from "react-query";
 import { apiMock } from "../stubs/stubApi";
 import nock from "nock";
 import { stubDialogmoterApi } from "../stubs/stubIsdialogmote";
 import { renderHook } from "@testing-library/react-hooks";
 import { expect } from "chai";
-import React from "react";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { dialogmoterMock } from "../../mock/data/dialogmoterMock";
+import { queryHookWrapper } from "./queryHookTestUtils";
 
-const fnr = "05087321470";
 let queryClient;
 let apiMockScope;
 
@@ -21,14 +20,12 @@ describe("dialogmoteQueryHooks tests", () => {
     nock.cleanAll();
   });
 
-  it("loads dialogmoter for fnr", async () => {
+  it("loads dialogmoter for valgt personident", async () => {
     stubDialogmoterApi(apiMockScope);
 
-    const wrapper = ({ children }) => (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    );
+    const wrapper = queryHookWrapper(queryClient);
 
-    const { result, waitFor } = renderHook(() => useDialogmoterQuery(fnr), {
+    const { result, waitFor } = renderHook(() => useDialogmoterQuery(), {
       wrapper,
     });
 

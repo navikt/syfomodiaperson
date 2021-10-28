@@ -16,7 +16,6 @@ import { useAppSelector } from "@/hooks/hooks";
 import ErrorBoundary from "../ErrorBoundary";
 import { useStartDateFromLatestOppfolgingstilfellePeriode } from "@/data/oppfolgingstilfelle/oppfolgingstilfellerperson_hooks";
 import { useEgenansattQuery } from "@/data/egenansatt/egenansattQueryHooks";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
 
 const texts = {
   copied: "Kopiert!",
@@ -62,8 +61,7 @@ interface PersonkortHeaderProps {
 }
 
 const PersonkortHeader = (personkortHeaderProps: PersonkortHeaderProps) => {
-  const fnr = useValgtPersonident();
-  const { data: isEgenAnsatt } = useEgenansattQuery(fnr);
+  const { data: isEgenAnsatt } = useEgenansattQuery();
   const { navbruker, sykmeldinger } = personkortHeaderProps;
   const {
     data: { diskresjonskode },

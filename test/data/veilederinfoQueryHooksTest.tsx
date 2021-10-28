@@ -1,12 +1,12 @@
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient } from "react-query";
 import { apiMock } from "../stubs/stubApi";
 import nock from "nock";
-import React from "react";
 import { renderHook } from "@testing-library/react-hooks";
 import { expect } from "chai";
 import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { stubVeilederinfoApi } from "../stubs/stubSyfoveileder";
 import { veilederMock } from "../../mock/data/veilederMock";
+import { queryHookWrapper } from "./queryHookTestUtils";
 
 let queryClient;
 let apiMockScope;
@@ -23,9 +23,7 @@ describe("veilederinfoQueryHooks tests", () => {
   it("loads veilederinfo", async () => {
     stubVeilederinfoApi(apiMockScope);
 
-    const wrapper = ({ children }) => (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    );
+    const wrapper = queryHookWrapper(queryClient);
 
     const { result, waitFor } = renderHook(() => useVeilederinfoQuery(), {
       wrapper,

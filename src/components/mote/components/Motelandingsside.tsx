@@ -36,7 +36,7 @@ export const Motelandingsside = ({ fnr }: Props) => {
     isLoading: henterDialogmoter,
     isError: henterDialogmoterFeilet,
     data: dialogmoter,
-  } = useDialogmoterQuery(fnr);
+  } = useDialogmoterQuery();
 
   const {
     ledere,

@@ -1,14 +1,13 @@
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient } from "react-query";
 import { apiMock } from "../stubs/stubApi";
 import nock from "nock";
 import { renderHook } from "@testing-library/react-hooks";
 import { expect } from "chai";
-import React from "react";
 import { stubFastlegerApi } from "../stubs/stubFastlegeRest";
 import { useFastlegerQuery } from "@/data/fastlege/fastlegerQueryHooks";
 import { fastlegerMock } from "../../mock/fastlegerest/fastlegerMock";
+import { personident, queryHookWrapper } from "./queryHookTestUtils";
 
-const fnr = "05087321470";
 let queryClient;
 let apiMockScope;
 
@@ -21,14 +20,12 @@ describe("fastlegerQueryHooks tests", () => {
     nock.cleanAll();
   });
 
-  it("loads fastleger for fnr", async () => {
-    stubFastlegerApi(apiMockScope, fnr);
+  it("loads fastleger for valgt personident", async () => {
+    stubFastlegerApi(apiMockScope, personident);
 
-    const wrapper = ({ children }) => (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    );
+    const wrapper = queryHookWrapper(queryClient);
 
-    const { result, waitFor } = renderHook(() => useFastlegerQuery(fnr), {
+    const { result, waitFor } = renderHook(() => useFastlegerQuery(), {
       wrapper,
     });
 

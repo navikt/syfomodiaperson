@@ -9,7 +9,6 @@ import {
   MedisinskrinImage,
 } from "../../../img/ImageComponents";
 import { useFastlegerQuery } from "@/data/fastlege/fastlegerQueryHooks";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
 
 const texts = {
   startDate: "Brukers fastlege siden",
@@ -55,10 +54,7 @@ export const TidligereLeger = ({ tidligereFastleger }: TidligereLegerProps) => {
 };
 
 const PersonkortLege = () => {
-  const fnr = useValgtPersonident();
-  const { aktivFastlege, tidligereFastleger, ikkeFunnet } = useFastlegerQuery(
-    fnr
-  );
+  const { aktivFastlege, tidligereFastleger, ikkeFunnet } = useFastlegerQuery();
   const informasjonNokkelTekster = new Map([
     ["fom", texts.startDate],
     ["navn", texts.name],

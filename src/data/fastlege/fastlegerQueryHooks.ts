@@ -3,12 +3,14 @@ import { get } from "@/api/axios";
 import { Fastlege } from "@/data/fastlege/types/Fastlege";
 import { useQuery } from "react-query";
 import { useMemo } from "react";
+import { useValgtPersonident } from "@/hooks/useValgtBruker";
 
 export const fastlegerQueryKeys = {
   fastleger: (fnr: string) => ["fastleger", fnr],
 };
 
-export const useFastlegerQuery = (fnr: string) => {
+export const useFastlegerQuery = () => {
+  const fnr = useValgtPersonident();
   const path = `${FASTLEGEREST_ROOT}/fastleger?fnr=${fnr}`;
   const fetchFastleger = () => get<Fastlege[]>(path);
   const query = useQuery(fastlegerQueryKeys.fastleger(fnr), fetchFastleger, {

@@ -1,14 +1,13 @@
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient } from "react-query";
 import { apiMock } from "../stubs/stubApi";
 import nock from "nock";
 import { renderHook } from "@testing-library/react-hooks";
 import { expect } from "chai";
-import React from "react";
 import { stubVedtakApi } from "../stubs/stubVedtakApi";
 import { useVedtakQuery } from "@/data/vedtak/vedtakQueryHooks";
 import { vedtakMock } from "../../mock/data/vedtakMock";
+import { personident, queryHookWrapper } from "./queryHookTestUtils";
 
-const fnr = "05087321470";
 let queryClient;
 let apiMockScope;
 
@@ -21,14 +20,12 @@ describe("vedtakQueryHooks tests", () => {
     nock.cleanAll();
   });
 
-  it("loads vedtak for fnr", async () => {
-    stubVedtakApi(apiMockScope, fnr);
+  it("loads vedtak for valgt personident", async () => {
+    stubVedtakApi(apiMockScope, personident);
 
-    const wrapper = ({ children }) => (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    );
+    const wrapper = queryHookWrapper(queryClient);
 
-    const { result, waitFor } = renderHook(() => useVedtakQuery(fnr), {
+    const { result, waitFor } = renderHook(() => useVedtakQuery(), {
       wrapper,
     });
 

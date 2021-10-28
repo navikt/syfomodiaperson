@@ -7,7 +7,6 @@ import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
 import { BehandlerParticipateModal } from "@/components/mote/components/innkalling/BehandlerParticipateModal";
 import { NyLosningModal } from "@/components/mote/components/innkalling/NyLosningModal";
 import { ChooseBehandlerModal } from "@/components/mote/components/innkalling/ChooseBehandlerModal";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useBehandlereDialogmeldingQuery } from "@/data/behandlerdialogmelding/behandlereDialogmeldingQueryHooks";
 
 const texts = {
@@ -23,8 +22,7 @@ export const NyttDialogMote = (): ReactElement => {
   const [nyLosningModalIsOpen, setNyLosningModalIsOpen] = useState(false);
   const { brukerKanVarslesDigitalt } = useNavBrukerData();
 
-  const fnr = useValgtPersonident();
-  const { data: behandlere } = useBehandlereDialogmeldingQuery(fnr);
+  const { data: behandlere } = useBehandlereDialogmeldingQuery();
 
   const {
     isDm2FysiskBrevEnabled,
