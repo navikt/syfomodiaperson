@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PERSONKORTVISNING_TYPE } from "@/konstanter";
-import { hentDiskresjonskode } from "@/data/diskresjonskode/diskresjonskode_actions";
 import { hentLedere } from "@/data/leder/ledere_actions";
 import { hentOppfolgingstilfelleperioder } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder_actions";
 import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
@@ -39,7 +38,6 @@ const Personkort = () => {
 
   useEffect(() => {
     if (brukerFnr) {
-      dispatch(hentDiskresjonskode(brukerFnr));
       dispatch(hentLedere(brukerFnr));
       dispatch(hentSykmeldinger(brukerFnr));
     }

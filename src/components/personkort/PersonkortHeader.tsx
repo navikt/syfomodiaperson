@@ -12,10 +12,11 @@ import { sykmeldingerHasCoronaDiagnose } from "@/utils/sykmeldinger/sykmeldingUt
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import CopyButton from "../kopierknapp/CopyButton";
 import { KvinneImage, MannImage } from "../../../img/ImageComponents";
-import { useAppSelector } from "@/hooks/hooks";
 import ErrorBoundary from "../ErrorBoundary";
 import { useStartDateFromLatestOppfolgingstilfellePeriode } from "@/data/oppfolgingstilfelle/oppfolgingstilfellerperson_hooks";
 import { useEgenansattQuery } from "@/data/egenansatt/egenansattQueryHooks";
+import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
+import { ApiErrorException } from "@/api/errors";
 
 const texts = {
   copied: "Kopiert!",
@@ -63,10 +64,7 @@ interface PersonkortHeaderProps {
 const PersonkortHeader = (personkortHeaderProps: PersonkortHeaderProps) => {
   const { data: isEgenAnsatt } = useEgenansattQuery();
   const { navbruker, sykmeldinger } = personkortHeaderProps;
-  const {
-    data: { diskresjonskode },
-    error,
-  } = useAppSelector((state) => state.diskresjonskode);
+  const { error, data: diskresjonskode } = useDiskresjonskodeQuery();
   const hasCoronaDiagnose = sykmeldingerHasCoronaDiagnose(sykmeldinger);
   const visEtiketter =
     diskresjonskode === "6" ||
@@ -103,7 +101,9 @@ const PersonkortHeader = (personkortHeaderProps: PersonkortHeaderProps) => {
       </div>
       {visEtiketter && (
         <ErrorBoundary
-          apiError={error}
+          apiError={
+            error instanceof ApiErrorException ? error.error : undefined
+          }
           errorMessage={texts.fetchDiskresjonskodeFailed}
         >
           <div className="personkortHeader__etikker">

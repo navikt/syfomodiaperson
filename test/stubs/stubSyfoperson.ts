@@ -5,3 +5,11 @@ export const stubEgenansattApi = (scope: nock.Scope, isEgenansatt: boolean) =>
   scope
     .get(`${SYFOPERSON_ROOT}/person/egenansatt`)
     .reply(200, () => isEgenansatt);
+
+export const stubDiskresjonskodeApi = (
+  scope: nock.Scope,
+  diskresjonskode = ""
+) =>
+  scope
+    .get(`${SYFOPERSON_ROOT}/person/diskresjonskode`)
+    .reply(200, () => diskresjonskode);
