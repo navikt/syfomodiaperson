@@ -10,6 +10,7 @@ import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/Behandl
 import { LenkepanelBase } from "nav-frontend-lenkepanel";
 import { Systemtittel } from "nav-frontend-typografi";
 import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
+import { useTrackOnClick } from "@/data/logging/loggingHooks";
 
 const texts = {
   chooseBehandler: "Velg behandler",
@@ -41,6 +42,8 @@ export const ChooseBehandlerModal = ({
   setNyLosningModalIsOpen,
   behandlere,
 }: ChooseBehandlerModalProps) => {
+  const trackButtonClick = useTrackOnClick();
+
   return (
     <ModalWrapper
       isOpen={isOpen}
@@ -76,7 +79,13 @@ export const ChooseBehandlerModal = ({
                 </LenkepanelBase>
               );
             })}
-            <LenkepanelBase href={"/sykefravaer/mote"} border>
+            <LenkepanelBase
+              href={"/sykefravaer/mote"}
+              border
+              onClick={() => {
+                trackButtonClick(texts.otherBehandler);
+              }}
+            >
               <BehandlerPanelInfo>
                 <RedHeader className="lenkepanel__heading">
                   {texts.otherBehandler}
