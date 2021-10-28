@@ -23,7 +23,7 @@ export const mockLederWithActiveSykmelding = {
   aktivTom: "1995-22-04",
   timestamp: "1995-22-04T12:00:00+01:00",
   status: NarmesteLederRelasjonStatus.DEAKTIVERT,
-  arbeidsgiverForskuttererLoenn: null,
+  arbeidsgiverForskutterer: null,
 };
 
 export const mockLederWithoutActiveSykmelding = {
@@ -39,7 +39,7 @@ export const mockLederWithoutActiveSykmelding = {
   aktivTom: "1994-10-09",
   timestamp: "1994-10-09T12:00:00+01:00",
   status: NarmesteLederRelasjonStatus.DEAKTIVERT,
-  arbeidsgiverForskuttererLoenn: null,
+  arbeidsgiverForskutterer: null,
 };
 
 export const mockActiveSykmeldingForLeder = {

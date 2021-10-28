@@ -28,7 +28,7 @@ export interface NarmesteLederRelasjonDTO {
   narmesteLederNavn: string;
   aktivFom: Date;
   aktivTom?: Date;
-  arbeidsgiverForskuttererLoenn?: boolean;
+  arbeidsgiverForskutterer?: boolean;
   timestamp: Date;
   status: NarmesteLederRelasjonStatus;
 }

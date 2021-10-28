@@ -40,10 +40,8 @@ const textVirksomhetsnummer = (orgnummer: string) => {
   return `Org.nr.: ${formaterOrgnr(orgnummer)}`;
 };
 
-const textForskuttering = (arbeidsgiverForskuttererLoenn?: boolean) => {
-  return `Forsk.: ${kanskjeBooleanTilJaNeiKanskje(
-    arbeidsgiverForskuttererLoenn
-  )}`;
+const textForskuttering = (arbeidsgiverForskutterer?: boolean) => {
+  return `Forsk.: ${kanskjeBooleanTilJaNeiKanskje(arbeidsgiverForskutterer)}`;
 };
 
 interface PersonKortVirksomhetHeaderProps {
@@ -64,7 +62,7 @@ const PersonKortVirksomhetHeader = (
     currentLeder.virksomhetsnummer
   );
   const forskutteringText = textForskuttering(
-    currentLeder.arbeidsgiverForskuttererLoenn
+    currentLeder.arbeidsgiverForskutterer
   );
   const activeSykmeldingText =
     lederHasActiveSykmelding(currentLeder, sykmeldinger) &&

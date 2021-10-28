@@ -81,7 +81,7 @@ const mockState = {
         narmesteLederNavn: "Tatten Tattover",
         aktivFom: new Date(),
         aktivTom: null,
-        arbeidsgiverForskuttererLoenn: false,
+        arbeidsgiverForskutterer: false,
         timestamp: "2020-02-06T12:00:00+01:00",
         status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
       },
