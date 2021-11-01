@@ -89,7 +89,7 @@ spec:
     - name: MODIACONTEXTHOLDER_HOST
       value: "modiacontextholder.intern.nav.no"
     - name: SYFOBEHANDLENDEENHET_AAD_APP_CLIENT_ID
-      value: "97815ed7-ee77-4d6c-ab3b-ea86d93750a7"
+      value: "prod-gcp.teamsykefravr.syfobehandlendeenhet"
     - name: SYFOBEHANDLENDEENHET_HOST
       value: "syfobehandlendeenhet.intern.nav.no"
     - name: SYFOMOTEADMIN_AAD_APP_CLIENT_ID
