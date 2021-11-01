@@ -33,8 +33,8 @@ const texts = {
   skrivReferat: "Skriv referat",
   naermesteLeder: "Nærmeste leder:",
   denSykmeldte: "Den sykmeldte:",
-  harLestInnkalling: " har lest innkallingen",
-  harIkkeLestInnkalling: " har ikke lest innkallingen",
+  harLestInnkalling: " har åpnet innkallingen",
+  harIkkeLestInnkalling: " har ikke åpnet innkallingen",
 };
 
 const subtitle = (dialogmote: DialogmoteDTO) => {
