@@ -9,6 +9,8 @@ export const innkallingTexts = {
       "I møtet vil vi høre både hva du og arbeidsgiveren sier om arbeidssituasjonen og mulighetene for å jobbe.",
     outro1:
       "Den som har sykmeldt deg, eller en annen behandler, kan også bli invitert til å delta i møtet. Til dette møtet har vi ikke sett behov for det.",
+    outro1WithBehandler:
+      "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi sett behov for å innkalle",
     outro2Title: "Før møtet",
     outro2Text:
       "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
@@ -22,6 +24,19 @@ export const innkallingTexts = {
       "Det er obligatorisk å delta i dialogmøtet. Hvis vårt forslag ikke passer, ber vi om at du tar kontakt. Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
     outro2:
       "NAV kan be fastlegen eller annet helsepersonell om å delta i møtet. Til dette møtet har vi ikke sett behov for det.",
+    outro2MedBehandler:
+      "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi sett behov for å innkalle",
+  },
+
+  behandler: {
+    intro1:
+      "Velkommen til dialogmøte i regi av NAV. NAV har ansvar for å innkalle til dialogmøte senest når en sykmelding har vart i seks måneder, eventuelt på et annet tidspunkt hvis noen av partene ser behov for det.",
+    intro2:
+      "I møtet vil vi høre både hva du, arbeidsgiveren og den ansatte sier om arbeidssituasjonen og mulighetene for å jobbe.",
+    outro1:
+      "Det er obligatorisk å delta i dialogmøtet. Hvis vårt forslag ikke passer, ber vi om at du tar kontakt. Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
+    outro2:
+      "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi sett behov for å invitere deg.",
   },
 };
 

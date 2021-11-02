@@ -3,11 +3,15 @@ import { useFormState } from "react-final-form";
 import DialogmoteInnkallingSkjemaSeksjon from "./DialogmoteInnkallingSkjemaSeksjon";
 import styled from "styled-components";
 import { Innholdstittel } from "nav-frontend-typografi";
-import { DialogmoteInnkallingSkjemaValues } from "./DialogmoteInnkallingSkjema";
+import {
+  DialogmoteInnkallingRouteStateProps,
+  DialogmoteInnkallingSkjemaValues,
+} from "./DialogmoteInnkallingSkjema";
 import { useForhandsvisInnkalling } from "@/hooks/dialogmote/useForhandsvisInnkalling";
 import { Forhandsvisning } from "../Forhandsvisning";
 import FritekstSeksjon from "../FritekstSeksjon";
 import { DialogmoteInnkallingTeksterAlert } from "./DialogmoteInnkallingTeksterAlert";
+import { useLocation } from "react-router-dom";
 
 export const MAX_LENGTH_INNKALLING_FRITEKST = 2000;
 
@@ -15,6 +19,7 @@ export const texts = {
   title: "Tekster i innkallingen",
   arbeidstakerLabel: "Fritekst til arbeidstakeren (valgfri)",
   arbeidsgiverLabel: "Fritekst til nærmeste leder (valgfri)",
+  behandlerLabel: "Fritekst til behandler (valgfri)",
   forhandsvisningTitle: "Innkalling til dialogmøte",
   forhandsvisningArbeidstakerSubtitle: "(brev til arbeidstakeren)",
   forhandsvisningArbeidstakerContentLabel:
@@ -22,6 +27,9 @@ export const texts = {
   forhandsvisningArbeidsgiverSubtitle: "(brev til nærmeste leder)",
   forhandsvisningArbeidsgiverContentLabel:
     "Forhåndsvis innkalling til dialogmøte arbeidsgiver",
+  forhandsvisningBehandlerSubtitle: "(brev til behandler)",
+  forhandsvisningBehandlerContentLabel:
+    "Forhåndsvis innkalling til dialogmøte behandler",
 };
 
 const TeksterTittel = styled(Innholdstittel)`
@@ -38,10 +46,22 @@ const DialogmoteInnkallingTekster = (): ReactElement => {
     displayInnkallingArbeidsgiverPreview,
     setDisplayInnkallingArbeidsgiverPreview,
   ] = useState(false);
+
+  const [
+    displayInnkallingBehandlerPreview,
+    setDisplayInnkallingBehandlerPreview,
+  ] = useState(false);
+
   const {
     generateArbeidstakerInnkallingDocument,
     generateArbeidsgiverInnkallingDocument,
+    generateBehandlerInnkallingDocument,
   } = useForhandsvisInnkalling();
+
+  const location = useLocation<DialogmoteInnkallingRouteStateProps>();
+
+  const valgtBehandler = location.state?.valgtBehandler;
+
   return (
     <DialogmoteInnkallingSkjemaSeksjon>
       <TeksterTittel>{texts.title}</TeksterTittel>
@@ -59,7 +79,7 @@ const DialogmoteInnkallingTekster = (): ReactElement => {
         isOpen={displayInnkallingArbeidstakerPreview}
         handleClose={() => setDisplayInnkallingArbeidstakerPreview(false)}
         getDocumentComponents={() =>
-          generateArbeidstakerInnkallingDocument(values)
+          generateArbeidstakerInnkallingDocument(values, valgtBehandler)
         }
       />
       <FritekstSeksjon
@@ -75,9 +95,32 @@ const DialogmoteInnkallingTekster = (): ReactElement => {
         isOpen={displayInnkallingArbeidsgiverPreview}
         handleClose={() => setDisplayInnkallingArbeidsgiverPreview(false)}
         getDocumentComponents={() =>
-          generateArbeidsgiverInnkallingDocument(values)
+          generateArbeidsgiverInnkallingDocument(values, valgtBehandler)
         }
       />
+
+      {!!valgtBehandler && (
+        <>
+          <FritekstSeksjon
+            fieldName="fritekstBehandler"
+            label={texts.behandlerLabel}
+            handlePreviewClick={() =>
+              setDisplayInnkallingBehandlerPreview(true)
+            }
+            maxLength={MAX_LENGTH_INNKALLING_FRITEKST}
+          />
+          <Forhandsvisning
+            title={texts.forhandsvisningTitle}
+            subtitle={texts.forhandsvisningBehandlerSubtitle}
+            contentLabel={texts.forhandsvisningBehandlerContentLabel}
+            isOpen={displayInnkallingBehandlerPreview}
+            handleClose={() => setDisplayInnkallingBehandlerPreview(false)}
+            getDocumentComponents={() =>
+              generateBehandlerInnkallingDocument(values)
+            }
+          />
+        </>
+      )}
     </DialogmoteInnkallingSkjemaSeksjon>
   );
 };

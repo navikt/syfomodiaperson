@@ -39,13 +39,14 @@ export interface DialogmoteInnkallingSkjemaValues {
   videoLink?: string;
   fritekstArbeidsgiver?: string;
   fritekstArbeidstaker?: string;
+  fritekstBehandler?: string;
 }
 
 interface DialogmoteInnkallingSkjemaProps {
   pageTitle: string;
 }
 
-interface DialogmoteInnkallingRouteStateProps {
+export interface DialogmoteInnkallingRouteStateProps {
   valgtBehandler?: BehandlerDialogmeldingDTO;
 }
 
