@@ -11,9 +11,9 @@ const mockState = {
   },
 };
 
-export const queryHookWrapper = (client: QueryClient) => {
+export const queryHookWrapper = (client: QueryClient, extraState?: any) => {
   const wrapper = ({ children }) => (
-    <Provider store={store(mockState)}>
+    <Provider store={store({ ...mockState, ...extraState })}>
       <QueryClientProvider client={client}>{children}</QueryClientProvider>
     </Provider>
   );
