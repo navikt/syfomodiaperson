@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import Panel from "nav-frontend-paneler";
 import DialogmoteInnkallingVelgArbeidsgiver from "./DialogmoteInnkallingVelgArbeidsgiver";
 import DialogmoteTidOgSted from "../DialogmoteTidOgSted";
@@ -13,7 +13,7 @@ import {
 } from "@/utils/valideringUtils";
 import { DialogmoteInnkallingDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { genererDato } from "../../mote/utils";
-import { Link, Redirect, useLocation } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { useNavEnhet } from "@/hooks/useNavEnhet";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { FlexRow } from "../../Layout";
@@ -30,6 +30,8 @@ import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import DialogmoteInnkallingBehandler from "@/components/dialogmote/innkalling/DialogmoteInnkallingBehandler";
 import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
+import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
+import styled from "styled-components";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 
 export interface DialogmoteInnkallingSkjemaValues {
@@ -47,9 +49,10 @@ interface DialogmoteInnkallingSkjemaProps {
   pageTitle: string;
 }
 
-export interface DialogmoteInnkallingRouteStateProps {
-  valgtBehandler?: BehandlerDialogmeldingDTO;
-}
+const StyledPanel = styled(Panel)`
+  margin-bottom: 2em;
+  padding: 2em;
+`;
 
 type DialogmoteInnkallingSkjemaFeil = Partial<
   Pick<
@@ -150,30 +153,37 @@ const DialogmoteInnkallingSkjema = ({
       fnr,
       navEnhet,
       innkallingDocumentGenerator,
-      valgtBehandler
+      selectedBehandler
     );
     opprettInnkalling.mutate(dialogmoteInnkalling);
   };
 
-  const location = useLocation<DialogmoteInnkallingRouteStateProps>();
+  const { isDm2InnkallingFastlegeEnabled } = useDM2FeatureToggles();
 
-  const valgtBehandler = location.state?.valgtBehandler;
+  const [
+    selectedBehandler,
+    setSelectedBehandler,
+  ] = useState<BehandlerDialogmeldingDTO>();
 
   if (opprettInnkalling.isSuccess) {
     return <Redirect to={moteoversiktRoutePath} />;
   }
 
   return (
-    <Panel>
+    <StyledPanel>
       <Form initialValues={initialValues} onSubmit={submit} validate={validate}>
         {({ handleSubmit, submitFailed, errors }) => (
           <form onSubmit={handleSubmit}>
-            {!!valgtBehandler && (
-              <DialogmoteInnkallingBehandler behandler={valgtBehandler} />
-            )}
             <DialogmoteInnkallingVelgArbeidsgiver />
+            {isDm2InnkallingFastlegeEnabled && (
+              <DialogmoteInnkallingBehandler
+                setSelectedBehandler={setSelectedBehandler}
+              />
+            )}
             <DialogmoteTidOgSted />
-            <DialogmoteInnkallingTekster />
+            <DialogmoteInnkallingTekster
+              selectedBehandler={selectedBehandler}
+            />
             {opprettInnkalling.isError && (
               <SkjemaInnsendingFeil error={opprettInnkalling.error} />
             )}
@@ -199,7 +209,7 @@ const DialogmoteInnkallingSkjema = ({
           </form>
         )}
       </Form>
-    </Panel>
+    </StyledPanel>
   );
 };
 

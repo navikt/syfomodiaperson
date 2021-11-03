@@ -46,7 +46,7 @@ import {
 } from "./testData";
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
-import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
+import { capitalizeWord } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 
 const realState = createStore(rootReducer).getState();
@@ -89,7 +89,7 @@ const arbeidsgiversOppgave = "Noe tekst om arbeidsgivers oppgave";
 const arbeidstakersOppgave = "Noe tekst om arbeidstakers oppgave";
 const veiledersOppgave = "Noe tekst om veileders oppgave";
 const behandlersOppgave = "Noe tekst om behandlers oppgave";
-const behandlerDeltakerTekst = `Behandler: ${capitalizeFoersteBokstav(
+const behandlerDeltakerTekst = `Behandler: ${capitalizeWord(
   behandler.type.toLowerCase()
 )} ${behandlerNavn(behandler)}`;
 

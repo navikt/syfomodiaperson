@@ -13,7 +13,7 @@ import {
 } from "@/utils/documentComponentUtils";
 import { useForhandsvisningHilsen } from "./useForhandsvisningHilsen";
 import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
-import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
+import { capitalizeWord } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useForhandsvisningIntro } from "@/hooks/dialogmote/useForhandsvisningIntro";
 
@@ -151,9 +151,9 @@ const addBehandlerTypeAndName = (
   preText: string,
   valgtBehandler: BehandlerDialogmeldingDTO
 ) => {
-  return `${preText} ${capitalizeFoersteBokstav(
-    valgtBehandler.type.toLowerCase()
-  )} ${behandlerNavn(valgtBehandler)}`;
+  return `${preText} ${capitalizeWord(valgtBehandler.type)} ${behandlerNavn(
+    valgtBehandler
+  )}`;
 };
 
 const arbeidstakerOutro = (

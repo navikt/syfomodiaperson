@@ -1,7 +1,7 @@
 import { BehandlerDTO } from "@/data/sykmelding/types/BehandlerDTO";
 import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 import { DialogmotedeltakerBehandlerDTO } from "@/data/dialogmote/types/dialogmoteTypes";
-import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
+import { capitalizeWord } from "@/utils/stringUtils";
 
 export const behandlerNavn = (
   behandler: BehandlerDTO | BehandlerDialogmeldingDTO
@@ -17,7 +17,7 @@ export const behandlerDeltakerTekst = (
   pretekst: string,
   behandler: DialogmotedeltakerBehandlerDTO
 ) => {
-  return `${pretekst} ${capitalizeFoersteBokstav(
+  return `${pretekst} ${capitalizeWord(
     behandler.behandlerType.toLowerCase()
   )} ${behandler.behandlerNavn}`;
 };

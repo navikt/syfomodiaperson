@@ -45,8 +45,8 @@ import { genererDato } from "@/components/mote/utils";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { endreTidStedTexts } from "@/data/dialogmote/dialogmoteTexts";
-import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
+import { capitalizeWord } from "@/utils/stringUtils";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -483,9 +483,9 @@ const expectedArbeidsgiverEndringsdokument = (medBehandler = false) => [
       medBehandler
         ? `${
             endreTidStedTexts.arbeidsgiver.outro2WithBehandler
-          } ${capitalizeFoersteBokstav(
-            behandler.type.toLowerCase()
-          )} ${behandlerNavn(behandler)}.`
+          } ${capitalizeWord(behandler.type.toLowerCase())} ${behandlerNavn(
+            behandler
+          )}.`
         : endreTidStedTexts.arbeidsgiver.outro2,
     ],
     type: "PARAGRAPH",
@@ -561,9 +561,9 @@ const expectedArbeidstakerEndringsdokument = (medBehandler = false) => [
       medBehandler
         ? `${
             endreTidStedTexts.arbeidstaker.outro2WithBehandler
-          } ${capitalizeFoersteBokstav(
-            behandler.type.toLowerCase()
-          )} ${behandlerNavn(behandler)}.`
+          } ${capitalizeWord(behandler.type.toLowerCase())} ${behandlerNavn(
+            behandler
+          )}.`
         : endreTidStedTexts.arbeidstaker.outro2,
     ],
     type: "PARAGRAPH",
