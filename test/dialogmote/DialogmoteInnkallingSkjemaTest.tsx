@@ -64,14 +64,12 @@ const moteVideoLink = "https://video.nav.no";
 const fritekstTilArbeidstaker = "Noe fritekst til arbeidstaker";
 const fritekstTilArbeidsgiver = "Noe fritekst til arbeidsgiver";
 const valgtBehandler: BehandlerDialogmeldingDTO = {
+  behandlerRef: "behandler-ref-uuid",
   kontor: "Greendale Legekontor",
   telefon: "11223344",
   fornavn: "Dean",
   etternavn: "Pelton",
   type: BehandlerType.FASTLEGE,
-  fnr: "01010112345",
-  partnerId: "12345",
-  herId: "7654321",
 };
 const legeNavn = `${capitalizeFoersteBokstav(
   valgtBehandler.type.toLowerCase()
