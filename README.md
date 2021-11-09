@@ -39,7 +39,7 @@ $ ./start-dev.sh # starter Redis og mock-oauth2-server (se under for mer info)
 
 Brukes for å cache bruker-sessions.
 Lokalt oppsett ligger i `docker-compose.yml`, mens nais-oppsettet ligger i `redis.yaml`.
-Redis pod kan startes manuelt i NAIS ved å kjøre følgdende kommando: `kubectl apply -f .nais/redis.yaml`.
+Redis pod deployes automatisk ved endringer i workflow eller config i master, men kan også deployes manuelt i NAIS ved å kjøre følgdende kommando: `kubectl apply -f .nais/redis.yaml`.
 
 ## Logger
 
