@@ -84,14 +84,21 @@ const arbeidsgiversOppgave = "Noe tekst om arbeidsgivers oppgave";
 const arbeidstakersOppgave = "Noe tekst om arbeidstakers oppgave";
 const veiledersOppgave = "Noe tekst om veileders oppgave";
 
-const queryClient = new QueryClient();
-queryClient.setQueryData(veilederinfoQueryKeys.veilederinfo, () => veileder);
-queryClient.setQueryData(
-  behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
-  () => behandlendeEnhet
-);
+let queryClient;
 
 describe("ReferatTest", () => {
+  beforeEach(() => {
+    queryClient = new QueryClient();
+    queryClient.setQueryData(
+      veilederinfoQueryKeys.veilederinfo,
+      () => veileder
+    );
+    queryClient.setQueryData(
+      behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
+      () => behandlendeEnhet
+    );
+  });
+
   it("viser arbeidstaker, dato og sted i tittel", () => {
     const wrapper = mountReferat();
 

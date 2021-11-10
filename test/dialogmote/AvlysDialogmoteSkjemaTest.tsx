@@ -52,14 +52,21 @@ const mockState = {
 const tekstTilArbeidstaker = "Noe tekst til arbeidstaker";
 const tekstTilArbeidsgiver = "Noe tekst til arbeidsgiver";
 
-const queryClient = new QueryClient();
-queryClient.setQueryData(veilederinfoQueryKeys.veilederinfo, () => veileder);
-queryClient.setQueryData(
-  behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
-  () => behandlendeEnhet
-);
+let queryClient;
 
 describe("AvlysDialogmoteSkjemaTest", () => {
+  beforeEach(() => {
+    queryClient = new QueryClient();
+    queryClient.setQueryData(
+      veilederinfoQueryKeys.veilederinfo,
+      () => veileder
+    );
+    queryClient.setQueryData(
+      behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
+      () => behandlendeEnhet
+    );
+  });
+
   it("viser møtetidspunkt", () => {
     const wrapper = mountAvlysDialogmoteSkjema();
 

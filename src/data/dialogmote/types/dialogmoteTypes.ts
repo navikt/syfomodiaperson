@@ -1,4 +1,5 @@
 import { ReferatDTO } from "./dialogmoteReferatTypes";
+import { BehandlerType } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 
 export enum MotedeltakerVarselType {
   AVLYST = "AVLYST",
@@ -21,6 +22,14 @@ export interface DialogmotedeltakerArbeidsgiverVarselDTO {
   readonly varselType: MotedeltakerVarselType;
   readonly status: string;
   readonly lestDato?: string;
+  readonly fritekst: string;
+  readonly document: DocumentComponentDto[];
+}
+
+export interface DialogmotedeltakerBehandlerVarselDTO {
+  readonly uuid: string;
+  readonly createdAt: string;
+  readonly varselType: MotedeltakerVarselType;
   readonly fritekst: string;
   readonly document: DocumentComponentDto[];
 }
@@ -57,6 +66,16 @@ export interface DialogmotedeltakerArbeidsgiverDTO {
   readonly varselList: DialogmotedeltakerArbeidsgiverVarselDTO[];
 }
 
+export interface DialogmotedeltakerBehandlerDTO {
+  readonly uuid: string;
+  readonly behandlerRef: string;
+  readonly behandlerNavn: string;
+  readonly behandlerKontor: string;
+  readonly behandlerType: BehandlerType;
+  readonly type: string;
+  readonly varselList: DialogmotedeltakerBehandlerVarselDTO[];
+}
+
 export interface DialogmoteInnkallingDTO {
   tildeltEnhet: string;
   arbeidstaker: {
@@ -66,6 +85,13 @@ export interface DialogmoteInnkallingDTO {
   };
   arbeidsgiver: {
     virksomhetsnummer: string;
+    fritekstInnkalling?: string;
+    innkalling: DocumentComponentDto[];
+  };
+  behandler?: {
+    behandlerRef: string;
+    behandlerNavn: string;
+    behandlerKontor: string;
     fritekstInnkalling?: string;
     innkalling: DocumentComponentDto[];
   };
@@ -111,6 +137,7 @@ export interface DialogmoteDTO {
   readonly tildeltEnhet: string;
   readonly arbeidstaker: DialogmotedeltakerArbeidstakerDTO;
   readonly arbeidsgiver: DialogmotedeltakerArbeidsgiverDTO;
+  readonly behandler?: DialogmotedeltakerBehandlerDTO;
   readonly sted: string;
   readonly tid: string;
   readonly videoLink?: string;

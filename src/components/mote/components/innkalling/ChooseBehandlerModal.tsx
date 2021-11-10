@@ -11,6 +11,7 @@ import { LenkepanelBase } from "nav-frontend-lenkepanel";
 import { Systemtittel } from "nav-frontend-typografi";
 import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
 import { useTrackOnClick } from "@/data/logging/loggingHooks";
+import { behandlerNavn } from "@/utils/behandlerUtils";
 
 const texts = {
   chooseBehandler: "Velg behandler",
@@ -74,7 +75,9 @@ export const ChooseBehandlerModal = ({
                   }}
                 >
                   <BehandlerPanelInfo>
-                    <Systemtittel className="lenkepanel__heading">{`${behandler.fornavn} ${behandler.etternavn}, ${behandler.kontor}`}</Systemtittel>
+                    <Systemtittel className="lenkepanel__heading">{`${behandlerNavn(
+                      behandler
+                    )}, ${behandler.kontor}`}</Systemtittel>
                     <p>
                       {capitalizeFoersteBokstav(behandler.type.toLowerCase())}
                     </p>

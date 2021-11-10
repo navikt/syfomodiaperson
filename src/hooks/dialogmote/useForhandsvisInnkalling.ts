@@ -16,6 +16,7 @@ import {
 import { useForhandsvisningHilsen } from "./useForhandsvisningHilsen";
 import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
+import { behandlerNavn } from "@/utils/behandlerUtils";
 
 export interface ForhandsvisInnkallingGenerator {
   generateArbeidstakerInnkallingDocument(
@@ -153,7 +154,7 @@ const addBehandlerTypeAndName = (
 ) => {
   return `${preText} ${capitalizeFoersteBokstav(
     valgtBehandler.type.toLowerCase()
-  )} ${valgtBehandler.fornavn} ${valgtBehandler.etternavn}`;
+  )} ${behandlerNavn(valgtBehandler)}`;
 };
 
 const arbeidstakerOutro = (

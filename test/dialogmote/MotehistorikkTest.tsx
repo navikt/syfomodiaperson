@@ -15,7 +15,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
-const queryClient = new QueryClient();
+let queryClient;
 const dialogmoter: DialogmoteDTO[] = [
   {
     uuid: "1",
@@ -98,6 +98,9 @@ const dialogmoter: DialogmoteDTO[] = [
 ];
 
 describe("Historiske dialogmøter", () => {
+  beforeEach(() => {
+    queryClient = new QueryClient();
+  });
   it("Fremviser avholdte og avlyste dialogmøter", () => {
     const wrapper = mount(
       <QueryClientProvider client={queryClient}>

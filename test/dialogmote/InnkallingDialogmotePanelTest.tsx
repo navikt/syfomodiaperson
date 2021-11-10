@@ -20,11 +20,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { behandlereDialogmeldingQueryKeys } from "@/data/behandlerdialogmelding/behandlereDialogmeldingQueryHooks";
 
 const fnr = "19026900010";
-const queryClient = new QueryClient();
-queryClient.setQueryData(
-  behandlereDialogmeldingQueryKeys.behandleredialogmelding(fnr),
-  () => []
-);
+let queryClient;
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -64,6 +60,13 @@ const innkallingDialogmotePanelWrapper = (mockState, navbruker) => {
 };
 
 describe("InnkallingDialogmotePanel med dm2 enabled og dm2 fysisk brev disabled", () => {
+  beforeEach(() => {
+    queryClient = new QueryClient();
+    queryClient.setQueryData(
+      behandlereDialogmeldingQueryKeys.behandleredialogmelding(fnr),
+      () => []
+    );
+  });
   const mockState = {
     unleash: {
       toggles: {

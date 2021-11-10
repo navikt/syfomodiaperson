@@ -67,14 +67,21 @@ const nyDatoTid = `${InputDateStringToISODateString(
   nyDato
 )}T${moteKlokkeslett}:00`;
 
-const queryClient = new QueryClient();
-queryClient.setQueryData(veilederinfoQueryKeys.veilederinfo, () => veileder);
-queryClient.setQueryData(
-  behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
-  () => behandlendeEnhet
-);
+let queryClient;
 
 describe("EndreDialogmoteSkjemaTest", () => {
+  beforeEach(() => {
+    queryClient = new QueryClient();
+    queryClient.setQueryData(
+      veilederinfoQueryKeys.veilederinfo,
+      () => veileder
+    );
+    queryClient.setQueryData(
+      behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
+      () => behandlendeEnhet
+    );
+  });
+
   it("validerer begrunnelser og dato", () => {
     const wrapper = mountEndreDialogmoteSkjema();
 

@@ -4,6 +4,7 @@ import { Innholdstittel, Normaltekst } from "nav-frontend-typografi";
 import DialogmoteInnkallingSkjemaSeksjon from "@/components/dialogmote/innkalling/DialogmoteInnkallingSkjemaSeksjon";
 import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
+import { behandlerNavn } from "@/utils/behandlerUtils";
 
 const BehandlerTittel = styled(Innholdstittel)`
   margin-bottom: 1em;
@@ -30,9 +31,9 @@ const DialogmoteInnkallingBehandler = ({
     <DialogmoteInnkallingSkjemaSeksjon>
       <BehandlerTittel>{texts.title}</BehandlerTittel>
       <BehandlerInfoRad>
-        {`${capitalizeFoersteBokstav(behandler.type.toLowerCase())}: ${
-          behandler.fornavn
-        } ${behandler.etternavn}`}
+        {`${capitalizeFoersteBokstav(
+          behandler.type.toLowerCase()
+        )}: ${behandlerNavn(behandler)}`}
       </BehandlerInfoRad>
       <BehandlerInfoRad>
         {`${texts.legekontor}: ${behandler.kontor}`}

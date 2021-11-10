@@ -15,8 +15,7 @@ import { NarmesteLederRelasjonStatus } from "../../mock/data/ledereMock";
 
 const realState = createStore(rootReducer).getState();
 const fnr = "19026900010";
-const queryClient = new QueryClient();
-queryClient.setQueryData(dialogmoterQueryKeys.dialogmoter(fnr), () => []);
+let queryClient;
 
 describe("MotelandingssideContainer", () => {
   describe("MotelandingssideSide", () => {
@@ -25,6 +24,8 @@ describe("MotelandingssideContainer", () => {
     let mockState;
 
     beforeEach(() => {
+      queryClient = new QueryClient();
+      queryClient.setQueryData(dialogmoterQueryKeys.dialogmoter(fnr), () => []);
       store = configureStore([]);
       mockState = {
         unleash: {

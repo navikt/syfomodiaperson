@@ -52,6 +52,7 @@ import {
 import { createMemoryHistory } from "history";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
+import { behandlerNavn } from "@/utils/behandlerUtils";
 
 const realState = createStore(rootReducer).getState();
 
@@ -63,6 +64,7 @@ const moteDatoTid = `${moteDatoAsISODateString}T${moteKlokkeslett}:00`;
 const moteVideoLink = "https://video.nav.no";
 const fritekstTilArbeidstaker = "Noe fritekst til arbeidstaker";
 const fritekstTilArbeidsgiver = "Noe fritekst til arbeidsgiver";
+const fritekstTilBehandler = "Noe fritekst til behandler";
 const valgtBehandler: BehandlerDialogmeldingDTO = {
   behandlerRef: "behandler-ref-uuid",
   kontor: "Greendale Legekontor",
@@ -73,7 +75,7 @@ const valgtBehandler: BehandlerDialogmeldingDTO = {
 };
 const legeNavn = `${capitalizeFoersteBokstav(
   valgtBehandler.type.toLowerCase()
-)}: ${valgtBehandler.fornavn} ${valgtBehandler.etternavn}`;
+)}: ${behandlerNavn(valgtBehandler)}`;
 
 const store = configureStore([]);
 const mockState = {
@@ -111,14 +113,21 @@ const mockState = {
     ],
   },
 };
-const queryClient = new QueryClient();
-queryClient.setQueryData(veilederinfoQueryKeys.veilederinfo, () => veileder);
-queryClient.setQueryData(
-  behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
-  () => behandlendeEnhet
-);
+let queryClient;
 
 describe("DialogmoteInnkallingSkjema", () => {
+  beforeEach(() => {
+    queryClient = new QueryClient();
+    queryClient.setQueryData(
+      veilederinfoQueryKeys.veilederinfo,
+      () => veileder
+    );
+    queryClient.setQueryData(
+      behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
+      () => behandlendeEnhet
+    );
+  });
+
   it("validerer arbeidsgiver, dato, tid og sted", () => {
     const wrapper = mountDialogmoteInnkallingSkjema();
 
@@ -397,8 +406,8 @@ describe("DialogmoteInnkallingSkjema", () => {
     const tittel = dialogmoteInnkallingBehandler.find(Innholdstittel);
     const legeInfo = wrapper.find(Normaltekst).first();
 
-    expect(tittel).contain("Behandler");
-    expect(legeInfo).to.have.text(legeNavn);
+    expect(tittel.text()).to.contain("Behandler");
+    expect(legeInfo.text()).to.equal(legeNavn);
   });
 
   it("Viser ikke DialogmoteInnkallingBehandler hvis valgtBehandler ikke er satt", () => {
@@ -408,7 +417,118 @@ describe("DialogmoteInnkallingSkjema", () => {
       DialogmoteInnkallingBehandler
     );
 
-    expect(dialogmoteInnkallingBehandler).to.not.exist;
+    expect(dialogmoteInnkallingBehandler).to.have.length(0);
+  });
+
+  it("submit oppretter innkalling med behandler hvis valgtBehandler er satt", () => {
+    stubInnkallingApi(apiMock());
+    const wrapper = mountDialogmoteInnkallingSkjemaWithValgtBehandler();
+
+    const arbeidsgiverDropdown = wrapper.find("select");
+    changeFieldValue(arbeidsgiverDropdown, arbeidsgiver.orgnr);
+    const datoVelger = wrapper.find("ForwardRef(DateInput)");
+    changeFieldValue(datoVelger, moteDato);
+    datoVelger.simulate("blur");
+
+    const inputs = wrapper.find("input");
+    const stedInput = inputs.findWhere((w) => w.prop("name") === "sted");
+    const videoLinkInput = inputs.findWhere(
+      (w) => w.prop("name") === "videoLink"
+    );
+    const klokkeslettInput = inputs.findWhere(
+      (w) => w.prop("name") === "klokkeslett"
+    );
+    changeFieldValue(stedInput, moteSted);
+    changeFieldValue(videoLinkInput, moteVideoLink);
+    changeFieldValue(klokkeslettInput, moteKlokkeslett);
+
+    changeTextAreaValue(
+      wrapper,
+      "fritekstArbeidsgiver",
+      fritekstTilArbeidsgiver
+    );
+    changeTextAreaValue(
+      wrapper,
+      "fritekstArbeidstaker",
+      fritekstTilArbeidstaker
+    );
+    changeTextAreaValue(wrapper, "fritekstBehandler", fritekstTilBehandler);
+
+    wrapper.find("form").simulate("submit");
+
+    const innkallingMutation = queryClient.getMutationCache().getAll()[0];
+    const expectedInnkalling = {
+      tildeltEnhet: navEnhet,
+      arbeidsgiver: {
+        virksomhetsnummer: arbeidsgiver.orgnr,
+        fritekstInnkalling: fritekstTilArbeidsgiver,
+        innkalling: expectedArbeidsgiverInnkalling,
+      },
+      arbeidstaker: {
+        personIdent: arbeidstaker.personident,
+        fritekstInnkalling: fritekstTilArbeidstaker,
+        innkalling: expectedArbeidstakerInnkalling,
+      },
+      behandler: {
+        behandlerRef: valgtBehandler.behandlerRef,
+        behandlerNavn: behandlerNavn(valgtBehandler),
+        behandlerKontor: valgtBehandler.kontor,
+        fritekstInnkalling: fritekstTilBehandler,
+        innkalling: expectedBehandlerInnkalling,
+      },
+      tidSted: {
+        sted: moteSted,
+        tid: moteDatoTid,
+        videoLink: moteVideoLink,
+      },
+    };
+
+    expect(innkallingMutation.options.variables).to.deep.equal(
+      expectedInnkalling
+    );
+  });
+
+  it("forhåndsviser innkalling til behandler hvis valgtBehandler er satt", () => {
+    const wrapper = mountDialogmoteInnkallingSkjemaWithValgtBehandler();
+
+    const arbeidsgiverDropdown = wrapper.find("select");
+    changeFieldValue(arbeidsgiverDropdown, arbeidsgiver.orgnr);
+    const datoVelger = wrapper.find("ForwardRef(DateInput)");
+    changeFieldValue(datoVelger, moteDato);
+    datoVelger.simulate("blur");
+
+    const inputs = wrapper.find("input");
+    const stedInput = inputs.findWhere((w) => w.prop("name") === "sted");
+    const videoLinkInput = inputs.findWhere(
+      (w) => w.prop("name") === "videoLink"
+    );
+    const klokkeslettInput = inputs.findWhere(
+      (w) => w.prop("name") === "klokkeslett"
+    );
+    changeFieldValue(stedInput, moteSted);
+    changeFieldValue(videoLinkInput, moteVideoLink);
+    changeFieldValue(klokkeslettInput, moteKlokkeslett);
+
+    changeTextAreaValue(wrapper, "fritekstBehandler", fritekstTilBehandler);
+    const getForhandsvisningsModaler = () => wrapper.find(Forhandsvisning);
+    let forhandsvisninger = getForhandsvisningsModaler();
+    expect(
+      forhandsvisninger.at(2).props().getDocumentComponents()
+    ).to.deep.equal(expectedBehandlerInnkalling);
+
+    const previewButtons = wrapper.find(Knapp);
+
+    // Forhåndsvis innkalling til behandler og sjekk at modal vises med riktig tittel
+    previewButtons.at(2).simulate("click");
+    forhandsvisninger = getForhandsvisningsModaler();
+    const forhandsvisningInnkallingBehandler = forhandsvisninger.at(2);
+    expect(forhandsvisningInnkallingBehandler.prop("isOpen")).to.be.true;
+    expect(forhandsvisningInnkallingBehandler.text()).to.contain(
+      innkallingSkjemaTexts.forhandsvisningTitle
+    );
+    expect(forhandsvisningInnkallingBehandler.text()).to.contain(
+      innkallingSkjemaTexts.forhandsvisningBehandlerSubtitle
+    );
   });
 });
 
@@ -545,6 +665,60 @@ const expectedArbeidstakerInnkalling = [
   {
     texts: [innkallingTexts.arbeidstaker.outro2Text],
     title: innkallingTexts.arbeidstaker.outro2Title,
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [commonTexts.hilsen, navEnhet.navn],
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [veileder.navn],
+    type: "PARAGRAPH",
+  },
+];
+
+const expectedBehandlerInnkalling = [
+  {
+    texts: [
+      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
+        genererDato(moteDatoAsISODateString, moteKlokkeslett)
+      ),
+    ],
+    title: innkallingTexts.moteTidTitle,
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [moteSted],
+    title: innkallingTexts.moteStedTitle,
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [moteVideoLink],
+    title: innkallingTexts.videoLinkTitle,
+    type: "LINK",
+  },
+  {
+    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [innkallingTexts.behandler.intro1],
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [innkallingTexts.behandler.intro2],
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [fritekstTilBehandler],
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [innkallingTexts.behandler.outro1],
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [innkallingTexts.behandler.outro2],
     type: "PARAGRAPH",
   },
   {

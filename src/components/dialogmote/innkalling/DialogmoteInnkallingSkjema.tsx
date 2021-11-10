@@ -30,6 +30,7 @@ import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import DialogmoteInnkallingBehandler from "@/components/dialogmote/innkalling/DialogmoteInnkallingBehandler";
 import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
+import { behandlerNavn } from "@/utils/behandlerUtils";
 
 export interface DialogmoteInnkallingSkjemaValues {
   arbeidsgiver: string;
@@ -66,29 +67,46 @@ const toInnkalling = (
   values: DialogmoteInnkallingSkjemaValues,
   fnr: string,
   navEnhet: string,
-  innkallingDocumentGenerator: ForhandsvisInnkallingGenerator
-): DialogmoteInnkallingDTO => ({
-  tildeltEnhet: navEnhet,
-  arbeidsgiver: {
-    virksomhetsnummer: values.arbeidsgiver,
-    fritekstInnkalling: values.fritekstArbeidsgiver,
-    innkalling: innkallingDocumentGenerator.generateArbeidsgiverInnkallingDocument(
-      values
-    ),
-  },
-  arbeidstaker: {
-    personIdent: fnr,
-    fritekstInnkalling: values.fritekstArbeidstaker,
-    innkalling: innkallingDocumentGenerator.generateArbeidstakerInnkallingDocument(
-      values
-    ),
-  },
-  tidSted: {
-    sted: values.sted,
-    videoLink: values.videoLink,
-    tid: genererDato(values.dato, values.klokkeslett),
-  },
-});
+  innkallingDocumentGenerator: ForhandsvisInnkallingGenerator,
+  valgtBehandler: BehandlerDialogmeldingDTO | undefined
+): DialogmoteInnkallingDTO => {
+  const innkalling: DialogmoteInnkallingDTO = {
+    tildeltEnhet: navEnhet,
+    arbeidsgiver: {
+      virksomhetsnummer: values.arbeidsgiver,
+      fritekstInnkalling: values.fritekstArbeidsgiver,
+      innkalling: innkallingDocumentGenerator.generateArbeidsgiverInnkallingDocument(
+        values
+      ),
+    },
+    arbeidstaker: {
+      personIdent: fnr,
+      fritekstInnkalling: values.fritekstArbeidstaker,
+      innkalling: innkallingDocumentGenerator.generateArbeidstakerInnkallingDocument(
+        values
+      ),
+    },
+    tidSted: {
+      sted: values.sted,
+      videoLink: values.videoLink,
+      tid: genererDato(values.dato, values.klokkeslett),
+    },
+  };
+
+  if (valgtBehandler) {
+    innkalling.behandler = {
+      behandlerRef: valgtBehandler.behandlerRef,
+      behandlerNavn: behandlerNavn(valgtBehandler),
+      behandlerKontor: valgtBehandler.kontor ?? "",
+      fritekstInnkalling: values.fritekstBehandler,
+      innkalling: innkallingDocumentGenerator.generateBehandlerInnkallingDocument(
+        values
+      ),
+    };
+  }
+
+  return innkalling;
+};
 
 const DialogmoteInnkallingSkjema = ({
   pageTitle,
@@ -131,7 +149,8 @@ const DialogmoteInnkallingSkjema = ({
       values,
       fnr,
       navEnhet,
-      innkallingDocumentGenerator
+      innkallingDocumentGenerator,
+      valgtBehandler
     );
     opprettInnkalling.mutate(dialogmoteInnkalling);
   };

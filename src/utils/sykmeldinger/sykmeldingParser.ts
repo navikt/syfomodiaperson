@@ -10,12 +10,12 @@ import {
 import { toDate, toDateWithoutNullCheck } from "../datoUtils";
 import { PeriodetypeDTO } from "@/data/sykmelding/types/PeriodetypeDTO";
 import { SykmeldingsperiodeDTO } from "@/data/sykmelding/types/SykmeldingsperiodeDTO";
-import { BehandlerDTO } from "@/data/sykmelding/types/BehandlerDTO";
 import { SporsmalDTO } from "@/data/sykmelding/types/SporsmalDTO";
 import { ShortNameDTO } from "@/data/sykmelding/types/ShortNameDTO";
 import { DiagnoseDTO } from "@/data/sykmelding/types/DiagnoseDTO";
 import { medisinskArsakTypeTekster } from "@/data/sykmelding/types/MedisinskArsakTypeDTO";
 import { arbeidsrelatertArsakTypetekster } from "@/data/sykmelding/types/ArbeidsrelatertArsakTypeDTO";
+import { behandlerNavn } from "@/utils/behandlerUtils";
 
 const mapArbeidsevne = (sykmelding: SykmeldingNewFormatDTO) => {
   return {
@@ -23,13 +23,6 @@ const mapArbeidsevne = (sykmelding: SykmeldingNewFormatDTO) => {
     tiltakAndre: sykmelding.andreTiltak,
     tiltakNAV: sykmelding.tiltakNAV,
   };
-};
-
-const sykmelderNavn = (behandler: BehandlerDTO): string => {
-  if (behandler.mellomnavn) {
-    return `${behandler.fornavn} ${behandler.mellomnavn} ${behandler.etternavn}`;
-  }
-  return `${behandler.fornavn} ${behandler.etternavn}`;
 };
 
 const mapSingleDiagnose = (diagnose: DiagnoseDTO): SykmeldingDiagnose => {
@@ -272,7 +265,7 @@ export const newSMFormat2OldFormat = (
     arbeidsevne: mapArbeidsevne(sykmelding),
     arbeidsgiver: sykmelding.arbeidsgiver?.navn,
     bekreftelse: {
-      sykmelder: sykmelderNavn(sykmelding.behandler),
+      sykmelder: behandlerNavn(sykmelding.behandler),
       sykmelderTlf: sykmelding.behandler.tlf,
       utstedelsesdato: toDate(sykmelding.behandletTidspunkt),
     },
