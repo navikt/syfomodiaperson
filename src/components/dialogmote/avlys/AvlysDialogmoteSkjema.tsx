@@ -6,7 +6,10 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { FlexRow } from "../../Layout";
 import { Form } from "react-final-form";
 import DialogmoteInfo from "./DialogmoteInfo";
-import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import {
+  AvlysDialogmoteDTO,
+  DialogmoteDTO,
+} from "@/data/dialogmote/types/dialogmoteTypes";
 import { SkjemaFeiloppsummering } from "../../SkjemaFeiloppsummering";
 import { useFeilUtbedret } from "@/hooks/useFeilUtbedret";
 import { validerBegrunnelser } from "@/utils/valideringUtils";
@@ -99,7 +102,7 @@ const AvlysDialogmoteSkjema = ({
   };
 
   const submit = (values: AvlysDialogmoteSkjemaValues) => {
-    avlysDialogmote.mutate({
+    const avlysDto: AvlysDialogmoteDTO = {
       arbeidstaker: {
         begrunnelse: values.begrunnelseArbeidstaker,
         avlysning: generateAvlysningArbeidstakerDocument(values),
@@ -108,7 +111,17 @@ const AvlysDialogmoteSkjema = ({
         begrunnelse: values.begrunnelseArbeidsgiver,
         avlysning: generateAvlysningArbeidsgiverDocument(values),
       },
-    });
+    };
+
+    if (dialogmote.behandler) {
+      // TODO: Implementere med verdier fra skjema i egen oppgave
+      avlysDto.behandler = {
+        begrunnelse: "",
+        avlysning: [],
+      };
+    }
+
+    avlysDialogmote.mutate(avlysDto);
   };
 
   if (avlysDialogmote.isSuccess) {

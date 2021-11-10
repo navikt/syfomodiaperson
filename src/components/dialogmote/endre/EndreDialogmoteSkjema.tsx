@@ -114,25 +114,36 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
 
   const toEndreTidSted = (
     values: EndreTidStedSkjemaValues
-  ): EndreTidStedDialogmoteDTO => ({
-    sted: values.sted,
-    tid: genererDato(values.dato, values.klokkeslett),
-    videoLink: values.videoLink,
-    arbeidstaker: {
-      begrunnelse: values.begrunnelseArbeidstaker,
-      endringsdokument: forhandsvisEndreTidStedGenerator.generateArbeidstakerTidStedDocument(
-        values,
-        dialogmote.tid
-      ),
-    },
-    arbeidsgiver: {
-      begrunnelse: values.begrunnelseArbeidsgiver,
-      endringsdokument: forhandsvisEndreTidStedGenerator.generateArbeidsgiverTidStedDocument(
-        values,
-        dialogmote.tid
-      ),
-    },
-  });
+  ): EndreTidStedDialogmoteDTO => {
+    const endreTidStedDto: EndreTidStedDialogmoteDTO = {
+      sted: values.sted,
+      tid: genererDato(values.dato, values.klokkeslett),
+      videoLink: values.videoLink,
+      arbeidstaker: {
+        begrunnelse: values.begrunnelseArbeidstaker,
+        endringsdokument: forhandsvisEndreTidStedGenerator.generateArbeidstakerTidStedDocument(
+          values,
+          dialogmote.tid
+        ),
+      },
+      arbeidsgiver: {
+        begrunnelse: values.begrunnelseArbeidsgiver,
+        endringsdokument: forhandsvisEndreTidStedGenerator.generateArbeidsgiverTidStedDocument(
+          values,
+          dialogmote.tid
+        ),
+      },
+    };
+    if (dialogmote.behandler) {
+      // TODO: Implementere med verdier fra skjema i egen oppgave
+      endreTidStedDto.behandler = {
+        begrunnelse: "",
+        endringsdokument: [],
+      };
+    }
+
+    return endreTidStedDto;
+  };
 
   const submit = (values: EndreTidStedSkjemaValues) => {
     const dialogmoteEndring = toEndreTidSted(values);

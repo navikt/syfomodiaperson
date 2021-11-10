@@ -114,11 +114,16 @@ export interface EndreTidStedDialogmoteDTO {
     begrunnelse: string;
     endringsdokument: DocumentComponentDto[];
   };
+  behandler?: {
+    begrunnelse: string;
+    endringsdokument: DocumentComponentDto[];
+  };
 }
 
 export interface AvlysDialogmoteDTO {
   arbeidstaker: AvlysningDto;
   arbeidsgiver: AvlysningDto;
+  behandler?: AvlysningDto;
 }
 
 interface AvlysningDto {
