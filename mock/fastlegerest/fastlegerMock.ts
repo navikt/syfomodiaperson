@@ -5,7 +5,7 @@ export const fastlegerMock = [
     etternavn: "Legesen",
     fnr: "99900011122",
     herId: 7777777,
-    helsepersonellregisterId: "8888888",
+    helsepersonellregisterId: 8888888,
     pasient: {
       fnr: "19026900010",
       fornavn: 'Samuel "Sam"',
@@ -39,7 +39,7 @@ export const fastlegerMock = [
     etternavn: "Legesen",
     fnr: "99900011142",
     herId: 8887777,
-    helsepersonellregisterId: "8888888",
+    helsepersonellregisterId: 8888888,
     pasient: {
       fnr: "19026900010",
       fornavn: 'Samuel "Sam"',
