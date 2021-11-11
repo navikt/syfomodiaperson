@@ -11,12 +11,12 @@ import { KJOENN } from "@/konstanter";
 import { sykmeldingerHasCoronaDiagnose } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import CopyButton from "../kopierknapp/CopyButton";
-import { KvinneImage, MannImage } from "../../../img/ImageComponents";
 import ErrorBoundary from "../ErrorBoundary";
 import { useStartDateFromLatestOppfolgingstilfellePeriode } from "@/data/oppfolgingstilfelle/oppfolgingstilfellerperson_hooks";
 import { useEgenansattQuery } from "@/data/egenansatt/egenansattQueryHooks";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { ApiErrorException } from "@/api/errors";
+import { getKvinneImage, getMannImage } from "@/utils/festiveUtils";
 
 const texts = {
   copied: "Kopiert!",
@@ -80,8 +80,8 @@ const PersonkortHeader = (personkortHeaderProps: PersonkortHeaderProps) => {
         <img
           src={
             hentBrukersKjoennFraFnr(navbruker.kontaktinfo.fnr) === KJOENN.KVINNE
-              ? KvinneImage
-              : MannImage
+              ? getKvinneImage()
+              : getMannImage()
           }
           alt="person"
         />

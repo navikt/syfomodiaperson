@@ -28,7 +28,9 @@ import BlaaKalenderImage from "./svg/kalender--blaa.svg";
 import SortKalenderImage from "./svg/kalender--sort.svg";
 import KontorByggImage from "./svg/kontorbygg.svg";
 import KvinneImage from "./svg/kvinne.svg";
+import PepperkakeKvinneImage from "./svg/pepperkakekvinne.svg";
 import MannImage from "./svg/mann.svg";
+import PepperkakeMannImage from "./svg/pepperkakemann.svg";
 import MappeAdvarselImage from "./svg/mappe-advarsel.svg";
 import MappeFeilImage from "./svg/mappe-feil.svg";
 import MedisinboksImage from "./svg/medisinboks.svg";
@@ -106,6 +108,8 @@ export {
   PersonImage,
   PersonHighContrastImage,
   PersonHoverImage,
+  PepperkakeKvinneImage,
+  PepperkakeMannImage,
   PilVidereBlaaImage,
   PilVidereGraaImage,
   PilVidereHvitImage,
