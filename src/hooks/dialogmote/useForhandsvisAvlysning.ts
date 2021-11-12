@@ -1,7 +1,4 @@
-import {
-  DialogmoteDTO,
-  DocumentComponentDto,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+import { DocumentComponentDto } from "@/data/dialogmote/types/dialogmoteTypes";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { AvlysDialogmoteSkjemaValues } from "@/components/dialogmote/avlys/AvlysDialogmoteSkjema";
 import { avlysningTexts } from "@/data/dialogmote/dialogmoteTexts";
@@ -17,10 +14,14 @@ export interface ForhandsvisAvlysningGenerator {
   generateAvlysningArbeidsgiverDocument(
     values: Partial<AvlysDialogmoteSkjemaValues>
   ): DocumentComponentDto[];
+
+  generateAvlysningBehandlerDocument(
+    values: Partial<AvlysDialogmoteSkjemaValues>
+  ): DocumentComponentDto[];
 }
 
 export const useForhandsvisAvlysning = (
-  dialogmote: DialogmoteDTO
+  opprinneligTid: string
 ): ForhandsvisAvlysningGenerator => {
   const hilsen = useForhandsvisningHilsen();
   const navBruker = useNavBrukerData();
@@ -29,34 +30,35 @@ export const useForhandsvisAvlysning = (
   );
   const introText = createParagraph(
     `${avlysningTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
-      dialogmote.tid
+      opprinneligTid
     )}. ${avlysningTexts.intro2}`
   );
 
-  const generateAvlysningArbeidstakerDocument = (
-    values: Partial<AvlysDialogmoteSkjemaValues>
-  ): DocumentComponentDto[] => {
+  const generateAvlysningDocument = (
+    values: Partial<AvlysDialogmoteSkjemaValues>,
+    begrunnelse?: string
+  ) => {
     const documentComponents = [gjelderText, introText];
-    if (values.begrunnelseArbeidstaker) {
-      documentComponents.push(createParagraph(values.begrunnelseArbeidstaker));
+    if (begrunnelse) {
+      documentComponents.push(createParagraph(begrunnelse));
     }
     documentComponents.push(...hilsen);
-    return documentComponents;
-  };
 
-  const generateAvlysningArbeidsgiverDocument = (
-    values: Partial<AvlysDialogmoteSkjemaValues>
-  ): DocumentComponentDto[] => {
-    const documentComponents = [gjelderText, introText];
-    if (values.begrunnelseArbeidsgiver) {
-      documentComponents.push(createParagraph(values.begrunnelseArbeidsgiver));
-    }
-    documentComponents.push(...hilsen);
     return documentComponents;
   };
 
   return {
-    generateAvlysningArbeidstakerDocument,
-    generateAvlysningArbeidsgiverDocument,
+    generateAvlysningArbeidstakerDocument: (
+      values: Partial<AvlysDialogmoteSkjemaValues>
+    ): DocumentComponentDto[] =>
+      generateAvlysningDocument(values, values.begrunnelseArbeidstaker),
+    generateAvlysningArbeidsgiverDocument: (
+      values: Partial<AvlysDialogmoteSkjemaValues>
+    ): DocumentComponentDto[] =>
+      generateAvlysningDocument(values, values.begrunnelseArbeidsgiver),
+    generateAvlysningBehandlerDocument: (
+      values: Partial<AvlysDialogmoteSkjemaValues>
+    ): DocumentComponentDto[] =>
+      generateAvlysningDocument(values, values.begrunnelseBehandler),
   };
 };

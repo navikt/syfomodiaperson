@@ -12,7 +12,10 @@ import {
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { SkjemaFeiloppsummering } from "../../SkjemaFeiloppsummering";
 import { useFeilUtbedret } from "@/hooks/useFeilUtbedret";
-import { validerBegrunnelser } from "@/utils/valideringUtils";
+import {
+  validerBegrunnelser,
+  validerBegrunnelserIncludingBehandler,
+} from "@/utils/valideringUtils";
 import { TrackedHovedknapp } from "../../buttons/TrackedHovedknapp";
 import { TrackedFlatknapp } from "../../buttons/TrackedFlatknapp";
 import { useForhandsvisAvlysning } from "@/hooks/dialogmote/useForhandsvisAvlysning";
@@ -28,6 +31,7 @@ const MAX_LENGTH_AVLYS_BEGRUNNELSE = 200;
 export const texts = {
   begrunnelseArbeidstakerLabel: "Begrunnelse til arbeidstakeren",
   begrunnelseArbeidsgiverLabel: "Begrunnelse til nærmeste leder",
+  begrunnelseBehandlerLabel: "Begrunnelse til behandler",
   send: "Send avlysning",
   avbryt: "Avbryt",
   alert:
@@ -35,10 +39,13 @@ export const texts = {
   forhandsvisningTitle: "Avlysning av dialogmøte",
   forhandsvisningArbeidstakerSubtitle: "(brev til arbeidstakeren)",
   forhandsvisningArbeidsgiverSubtitle: "(brev til nærmeste leder)",
+  forhandsvisningBehandlerSubtitle: "(brev til behandler)",
   forhandsvisningArbeidstakerContentlabel:
     "Forhåndsvis avlysning av dialogmøte arbeidstaker",
   forhandsvisningArbeidsgiverContentlabel:
     "Forhåndsvis avlysning av dialogmøte arbeidsgiver",
+  forhandsvisningBehandlerContentlabel:
+    "Forhåndsvis avlysning av dialogmøte behandler",
 };
 
 interface AvlysDialogmoteSkjemaProps {
@@ -49,6 +56,7 @@ interface AvlysDialogmoteSkjemaProps {
 export interface AvlysDialogmoteSkjemaValues {
   begrunnelseArbeidstaker: string;
   begrunnelseArbeidsgiver: string;
+  begrunnelseBehandler: string;
 }
 
 const AvlysPanel = styled(Panel)`
@@ -82,20 +90,25 @@ const AvlysDialogmoteSkjema = ({
     displayAvlysningArbeidsgiverPreview,
     setDisplayAvlysningArbeidsgiverPreview,
   ] = useState(false);
+  const [
+    displayAvlysningBehandlerPreview,
+    setDisplayAvlysningBehandlerPreview,
+  ] = useState(false);
   const {
     generateAvlysningArbeidstakerDocument,
     generateAvlysningArbeidsgiverDocument,
-  } = useForhandsvisAvlysning(dialogmote);
+    generateAvlysningBehandlerDocument,
+  } = useForhandsvisAvlysning(dialogmote.tid);
 
   const validate = (
     values: Partial<AvlysDialogmoteSkjemaValues>
   ): Partial<AvlysDialogmoteSkjemaValues> => {
-    const feil = validerBegrunnelser(
-      {
-        ...values,
-      },
-      MAX_LENGTH_AVLYS_BEGRUNNELSE
-    );
+    const feil = dialogmote.behandler
+      ? validerBegrunnelserIncludingBehandler(
+          values,
+          MAX_LENGTH_AVLYS_BEGRUNNELSE
+        )
+      : validerBegrunnelser(values, MAX_LENGTH_AVLYS_BEGRUNNELSE);
     updateFeilUtbedret(feil);
 
     return feil;
@@ -114,10 +127,9 @@ const AvlysDialogmoteSkjema = ({
     };
 
     if (dialogmote.behandler) {
-      // TODO: Implementere med verdier fra skjema i egen oppgave
       avlysDto.behandler = {
-        begrunnelse: "",
-        avlysning: [],
+        begrunnelse: values.begrunnelseBehandler,
+        avlysning: generateAvlysningBehandlerDocument(values),
       };
     }
 
@@ -170,6 +182,28 @@ const AvlysDialogmoteSkjema = ({
                 generateAvlysningArbeidsgiverDocument(values)
               }
             />
+            {dialogmote.behandler && (
+              <>
+                <FritekstSeksjon
+                  fieldName="begrunnelseBehandler"
+                  label={texts.begrunnelseBehandlerLabel}
+                  handlePreviewClick={() =>
+                    setDisplayAvlysningBehandlerPreview(true)
+                  }
+                  maxLength={MAX_LENGTH_AVLYS_BEGRUNNELSE}
+                />
+                <Forhandsvisning
+                  title={texts.forhandsvisningTitle}
+                  subtitle={texts.forhandsvisningBehandlerSubtitle}
+                  contentLabel={texts.forhandsvisningBehandlerContentlabel}
+                  isOpen={displayAvlysningBehandlerPreview}
+                  handleClose={() => setDisplayAvlysningBehandlerPreview(false)}
+                  getDocumentComponents={() =>
+                    generateAvlysningBehandlerDocument(values)
+                  }
+                />
+              </>
+            )}
             {avlysDialogmote.isError && (
               <SkjemaInnsendingFeil error={avlysDialogmote.error} />
             )}

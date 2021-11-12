@@ -4,6 +4,7 @@ import { Forhandsvisning } from "../Forhandsvisning";
 import { EndreTidStedSkjemaValues } from "./EndreDialogmoteSkjema";
 import { useForhandsvisTidSted } from "@/hooks/dialogmote/useForhandsvisTidSted";
 import FritekstSeksjon from "@/components/dialogmote/FritekstSeksjon";
+import { DialogmotedeltakerBehandlerDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 
 export const MAX_LENGTH_ENDRE_BEGRUNNELSE = 200;
 
@@ -12,6 +13,7 @@ export const texts = {
   avbryt: "Avbryt",
   begrunnelseArbeidsgiver: "Begrunnelse til nærmeste leder",
   begrunnelseArbeidstaker: "Begrunnelse til arbeidstakeren",
+  begrunnelseBehandler: "Begrunnelse til behandler",
   forhandsvisningTitle: "Endret dialogmøte",
   forhandsvisningArbeidstakerSubtitle: "(brev til arbeidstakeren)",
   forhandsvisningArbeidstakerContentLabel:
@@ -19,13 +21,17 @@ export const texts = {
   forhandsvisningArbeidsgiverSubtitle: "(brev til nærmeste leder)",
   forhandsvisningArbeidsgiverContentLabel:
     "Forhåndsvis endring av dialogmøte arbeidsgiver",
+  forhandsvisningBehandlerSubtitle: "(brev til behandler)",
+  forhandsvisningBehandlerContentLabel:
+    "Forhåndsvis endring av dialogmøte behandler",
 };
 
 interface Props {
   opprinneligTid: string;
+  behandler: DialogmotedeltakerBehandlerDTO | undefined;
 }
 
-const EndreDialogmoteTekster = ({ opprinneligTid }: Props) => {
+const EndreDialogmoteTekster = ({ opprinneligTid, behandler }: Props) => {
   const { values } = useFormState<EndreTidStedSkjemaValues>();
   const [
     displayEndringArbeidstakerPreview,
@@ -35,10 +41,15 @@ const EndreDialogmoteTekster = ({ opprinneligTid }: Props) => {
     displayEndringArbeidsgiverPreview,
     setDisplayEndringArbeidsgiverPreview,
   ] = useState(false);
+  const [
+    displayEndringBehandlerPreview,
+    setDisplayEndringBehandlerPreview,
+  ] = useState(false);
   const {
     generateArbeidstakerTidStedDocument,
     generateArbeidsgiverTidStedDocument,
-  } = useForhandsvisTidSted();
+    generateBehandlerTidStedDocument,
+  } = useForhandsvisTidSted(opprinneligTid, behandler);
 
   return (
     <>
@@ -55,7 +66,7 @@ const EndreDialogmoteTekster = ({ opprinneligTid }: Props) => {
         isOpen={displayEndringArbeidstakerPreview}
         handleClose={() => setDisplayEndringArbeidstakerPreview(false)}
         getDocumentComponents={() =>
-          generateArbeidstakerTidStedDocument(values, opprinneligTid)
+          generateArbeidstakerTidStedDocument(values)
         }
       />
       <FritekstSeksjon
@@ -71,9 +82,29 @@ const EndreDialogmoteTekster = ({ opprinneligTid }: Props) => {
         isOpen={displayEndringArbeidsgiverPreview}
         handleClose={() => setDisplayEndringArbeidsgiverPreview(false)}
         getDocumentComponents={() =>
-          generateArbeidsgiverTidStedDocument(values, opprinneligTid)
+          generateArbeidsgiverTidStedDocument(values)
         }
       />
+      {behandler && (
+        <>
+          <FritekstSeksjon
+            fieldName="begrunnelseBehandler"
+            label={texts.begrunnelseBehandler}
+            handlePreviewClick={() => setDisplayEndringBehandlerPreview(true)}
+            maxLength={MAX_LENGTH_ENDRE_BEGRUNNELSE}
+          />
+          <Forhandsvisning
+            title={texts.forhandsvisningTitle}
+            subtitle={texts.forhandsvisningBehandlerSubtitle}
+            contentLabel={texts.forhandsvisningBehandlerContentLabel}
+            isOpen={displayEndringBehandlerPreview}
+            handleClose={() => setDisplayEndringBehandlerPreview(false)}
+            getDocumentComponents={() =>
+              generateBehandlerTidStedDocument(values)
+            }
+          />
+        </>
+      )}
     </>
   );
 };

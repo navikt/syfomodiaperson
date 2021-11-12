@@ -21,6 +21,7 @@ interface Tidspunkt {
 interface Begrunnelser {
   begrunnelseArbeidstaker?: string;
   begrunnelseArbeidsgiver?: string;
+  begrunnelseBehandler?: string;
 }
 
 interface InnkallingFritekster {
@@ -40,6 +41,7 @@ export const texts = {
     "Vennligst angi begrunnelse til arbeidstakeren",
   begrunnelseArbeidsgiverMissing:
     "Vennligst angi begrunnelse til nærmeste leder",
+  begrunnelseBehandlerMissing: "Vennligst angi begrunnelse til behandler",
   situasjonMissing: "Vennligst angi situasjon og muligheter",
   konklusjonMissing: "Vennligst angi konklusjon",
   arbeidstakersOppgaveMissing: "Vennligst angi arbeidstakerens oppgave",
@@ -134,6 +136,21 @@ export const validerInnkallingFritekster = (
       fritekstArbeidstaker,
       false,
       MAX_LENGTH_INNKALLING_FRITEKST
+    ),
+  };
+};
+
+export const validerBegrunnelserIncludingBehandler = (
+  begrunnelser: Begrunnelser,
+  maxLength: number
+): Partial<Begrunnelser> => {
+  return {
+    ...validerBegrunnelser(begrunnelser, maxLength),
+    begrunnelseBehandler: validerFritekst(
+      begrunnelser.begrunnelseBehandler,
+      true,
+      maxLength,
+      texts.begrunnelseBehandlerMissing
     ),
   };
 };

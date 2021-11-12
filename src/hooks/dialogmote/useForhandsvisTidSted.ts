@@ -16,31 +16,39 @@ import {
   endreTidStedTexts,
   innkallingTexts,
 } from "@/data/dialogmote/dialogmoteTexts";
-import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
-import { DocumentComponentDto } from "@/data/dialogmote/types/dialogmoteTypes";
+import {
+  DialogmotedeltakerBehandlerDTO,
+  DocumentComponentDto,
+} from "@/data/dialogmote/types/dialogmoteTypes";
+import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
 
 export interface ForhandsvisTidStedGenerator {
   generateArbeidsgiverTidStedDocument(
-    values: Partial<EndreTidStedSkjemaValues>,
-    opprinneligTid: string
+    values: Partial<EndreTidStedSkjemaValues>
   ): DocumentComponentDto[];
 
   generateArbeidstakerTidStedDocument(
-    values: Partial<EndreTidStedSkjemaValues>,
-    opprinneligTid: string
+    values: Partial<EndreTidStedSkjemaValues>
+  ): DocumentComponentDto[];
+
+  generateBehandlerTidStedDocument(
+    values: Partial<EndreTidStedSkjemaValues>
   ): DocumentComponentDto[];
 }
 
-export const useForhandsvisTidSted = (): ForhandsvisTidStedGenerator => {
+export const useForhandsvisTidSted = (
+  opprinneligTid: string,
+  behandler?: DialogmotedeltakerBehandlerDTO
+): ForhandsvisTidStedGenerator => {
   const navBruker = useNavBrukerData();
   const hilsen = useForhandsvisningHilsen();
+  const navnFnrTekst = `${navBruker.navn} (f.nr ${navBruker.kontaktinfo.fnr})`;
 
   const generateArbeidsgiverTidStedDocument = (
-    values: Partial<EndreTidStedSkjemaValues>,
-    opprinneligTid: string
+    values: Partial<EndreTidStedSkjemaValues>
   ) => {
     const documentComponents = [
-      arbeidsgiverIntro(navBruker),
+      createParagraph(`Gjelder ${navnFnrTekst}`),
       ...fellesInfo(values, opprinneligTid),
     ];
 
@@ -48,13 +56,28 @@ export const useForhandsvisTidSted = (): ForhandsvisTidStedGenerator => {
       documentComponents.push(createParagraph(values.begrunnelseArbeidsgiver));
     }
 
-    documentComponents.push(
-      createParagraph(endreTidStedTexts.arbeidsgiver.outro)
-    );
+    if (behandler) {
+      documentComponents.push(
+        createParagraph(endreTidStedTexts.arbeidsgiver.outro1WithBehandler),
+        createParagraph(
+          addBehandlerTypeAndName(
+            endreTidStedTexts.arbeidsgiver.outro2WithBehandler,
+            behandler
+          )
+        )
+      );
+    } else {
+      documentComponents.push(
+        createParagraph(endreTidStedTexts.arbeidsgiver.outro1),
+        createParagraph(endreTidStedTexts.arbeidsgiver.outro2)
+      );
+    }
 
-    documentComponents.push(...outro);
-
     documentComponents.push(
+      createParagraphWithTitle(
+        endreTidStedTexts.preMeetingTitle,
+        endreTidStedTexts.preMeeting
+      ),
       ...hilsen,
       createParagraph(
         commonTexts.arbeidsgiverTlfLabel,
@@ -66,11 +89,10 @@ export const useForhandsvisTidSted = (): ForhandsvisTidStedGenerator => {
   };
 
   const generateArbeidstakerTidStedDocument = (
-    values: Partial<EndreTidStedSkjemaValues>,
-    opprinneligTid: string
+    values: Partial<EndreTidStedSkjemaValues>
   ) => {
     const documentComponents = [
-      arbeidstakerIntro(navBruker),
+      createParagraph(navnFnrTekst),
       ...fellesInfo(values, opprinneligTid),
     ];
 
@@ -78,13 +100,51 @@ export const useForhandsvisTidSted = (): ForhandsvisTidStedGenerator => {
       documentComponents.push(createParagraph(values.begrunnelseArbeidstaker));
     }
 
+    if (behandler) {
+      documentComponents.push(
+        createParagraph(endreTidStedTexts.arbeidstaker.outro1WithBehandler),
+        createParagraph(
+          addBehandlerTypeAndName(
+            endreTidStedTexts.arbeidstaker.outro2WithBehandler,
+            behandler
+          )
+        )
+      );
+    } else {
+      documentComponents.push(
+        createParagraph(endreTidStedTexts.arbeidstaker.outro1),
+        createParagraph(endreTidStedTexts.arbeidstaker.outro2)
+      );
+    }
+
     documentComponents.push(
-      createParagraph(endreTidStedTexts.arbeidstaker.outro)
+      createParagraphWithTitle(
+        endreTidStedTexts.preMeetingTitle,
+        endreTidStedTexts.preMeeting
+      ),
+      ...hilsen
     );
 
-    documentComponents.push(...outro);
+    return documentComponents;
+  };
 
-    documentComponents.push(...hilsen);
+  const generateBehandlerTidStedDocument = (
+    values: Partial<EndreTidStedSkjemaValues>
+  ) => {
+    const documentComponents = [
+      createParagraph(`Gjelder ${navnFnrTekst}`),
+      ...fellesInfo(values, opprinneligTid),
+    ];
+
+    if (values.begrunnelseBehandler) {
+      documentComponents.push(createParagraph(values.begrunnelseBehandler));
+    }
+
+    documentComponents.push(
+      createParagraph(endreTidStedTexts.behandler.outro1),
+      createParagraph(endreTidStedTexts.behandler.outro2),
+      ...hilsen
+    );
 
     return documentComponents;
   };
@@ -92,6 +152,7 @@ export const useForhandsvisTidSted = (): ForhandsvisTidStedGenerator => {
   return {
     generateArbeidstakerTidStedDocument,
     generateArbeidsgiverTidStedDocument,
+    generateBehandlerTidStedDocument,
   };
 };
 
@@ -126,18 +187,11 @@ const fellesInfo = (
   return components;
 };
 
-const arbeidstakerIntro = (navBruker: Brukerinfo): DocumentComponentDto =>
-  createParagraph(`${navBruker.navn} (f.nr ${navBruker.kontaktinfo.fnr})`);
-
-const arbeidsgiverIntro = (navBruker: Brukerinfo): DocumentComponentDto =>
-  createParagraph(
-    `Gjelder ${navBruker.navn} (f.nr ${navBruker.kontaktinfo.fnr})`
-  );
-
-const outro: DocumentComponentDto[] = [
-  createParagraph(endreTidStedTexts.commonOutro),
-  createParagraphWithTitle(
-    endreTidStedTexts.preMeetingTitle,
-    endreTidStedTexts.preMeeting
-  ),
-];
+const addBehandlerTypeAndName = (
+  preText: string,
+  behandler: DialogmotedeltakerBehandlerDTO
+) => {
+  return `${preText} ${capitalizeFoersteBokstav(
+    behandler.behandlerType.toLowerCase()
+  )} ${behandler.behandlerNavn}.`;
+};

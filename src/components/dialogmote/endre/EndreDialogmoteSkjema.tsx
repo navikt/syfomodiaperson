@@ -10,6 +10,7 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { Form } from "react-final-form";
 import {
   validerBegrunnelser,
+  validerBegrunnelserIncludingBehandler,
   validerSted,
   validerTidspunkt,
   validerVideoLink,
@@ -50,6 +51,7 @@ export interface EndreTidStedSkjemaValues {
   videoLink?: string;
   begrunnelseArbeidsgiver: string;
   begrunnelseArbeidstaker: string;
+  begrunnelseBehandler: string;
 }
 
 type EndreTidStedDialogmoteSkjemaFeil = Partial<
@@ -60,6 +62,7 @@ type EndreTidStedDialogmoteSkjemaFeil = Partial<
     | "dato"
     | "begrunnelseArbeidsgiver"
     | "begrunnelseArbeidstaker"
+    | "begrunnelseBehandler"
     | "videoLink"
   >
 >;
@@ -93,11 +96,22 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
     updateFeilUtbedret,
   } = useFeilUtbedret();
 
-  const forhandsvisEndreTidStedGenerator = useForhandsvisTidSted();
+  const {
+    generateArbeidstakerTidStedDocument,
+    generateArbeidsgiverTidStedDocument,
+    generateBehandlerTidStedDocument,
+  } = useForhandsvisTidSted(dialogmote.tid, dialogmote.behandler);
 
   const validate = (
     values: Partial<EndreTidStedSkjemaValues>
   ): EndreTidStedDialogmoteSkjemaFeil => {
+    const begrunnelserFeil = dialogmote.behandler
+      ? validerBegrunnelserIncludingBehandler(
+          values,
+          MAX_LENGTH_ENDRE_BEGRUNNELSE
+        )
+      : validerBegrunnelser(values, MAX_LENGTH_ENDRE_BEGRUNNELSE);
+
     const feilmeldinger: EndreTidStedDialogmoteSkjemaFeil = {
       ...validerTidspunkt({
         dato: values.dato,
@@ -105,7 +119,7 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
       }),
       sted: validerSted(values.sted),
       videoLink: validerVideoLink(values.videoLink),
-      ...validerBegrunnelser({ ...values }, MAX_LENGTH_ENDRE_BEGRUNNELSE),
+      ...begrunnelserFeil,
     };
     updateFeilUtbedret(feilmeldinger);
 
@@ -121,24 +135,17 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
       videoLink: values.videoLink,
       arbeidstaker: {
         begrunnelse: values.begrunnelseArbeidstaker,
-        endringsdokument: forhandsvisEndreTidStedGenerator.generateArbeidstakerTidStedDocument(
-          values,
-          dialogmote.tid
-        ),
+        endringsdokument: generateArbeidstakerTidStedDocument(values),
       },
       arbeidsgiver: {
         begrunnelse: values.begrunnelseArbeidsgiver,
-        endringsdokument: forhandsvisEndreTidStedGenerator.generateArbeidsgiverTidStedDocument(
-          values,
-          dialogmote.tid
-        ),
+        endringsdokument: generateArbeidsgiverTidStedDocument(values),
       },
     };
     if (dialogmote.behandler) {
-      // TODO: Implementere med verdier fra skjema i egen oppgave
       endreTidStedDto.behandler = {
-        begrunnelse: "",
-        endringsdokument: [],
+        begrunnelse: values.begrunnelseBehandler,
+        endringsdokument: generateBehandlerTidStedDocument(values),
       };
     }
 
@@ -160,7 +167,10 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
         {({ handleSubmit, submitFailed, errors }) => (
           <form onSubmit={handleSubmit}>
             <DialogmoteTidOgSted />
-            <EndreDialogmoteTekster opprinneligTid={dialogmote.tid} />
+            <EndreDialogmoteTekster
+              opprinneligTid={dialogmote.tid}
+              behandler={dialogmote.behandler}
+            />
             {endreTidStedDialogmote.isError && (
               <SkjemaInnsendingFeil error={endreTidStedDialogmote.error} />
             )}
