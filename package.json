@@ -50,6 +50,7 @@
     "history": "5.0.1",
     "http-proxy": "1.18.1",
     "https-proxy-agent": "5.0.0",
+    "magic-snowflakes": "6.0.0",
     "nav-datovelger": "11.3.0",
     "nav-frontend-alertstriper": "4.0.1",
     "nav-frontend-alertstriper-style": "3.0.1",

@@ -9,6 +9,9 @@ import PersonkortHeader from "./PersonkortHeader";
 import PersonkortVisning from "./PersonkortVisning";
 import Utvidbar from "../Utvidbar";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
+import SnowButton from "@/components/personkort/SnowButton";
+import styled from "styled-components";
+import { isDecember } from "@/utils/festiveUtils";
 
 const texts = {
   buttons: {
@@ -18,6 +21,11 @@ const texts = {
     enhet: "Behandlende enhet",
   },
 };
+
+const LinkRow = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
 const Personkort = () => {
   const personadresseState = useSelector((state: any) => state.personadresse);
@@ -36,6 +44,8 @@ const Personkort = () => {
   const navbruker = useNavBrukerData();
   const brukerFnr = navbruker.kontaktinfo && navbruker.kontaktinfo.fnr;
 
+  const showSnowButton = isDecember();
+
   useEffect(() => {
     if (brukerFnr) {
       dispatch(hentLedere(brukerFnr));
@@ -49,7 +59,10 @@ const Personkort = () => {
 
   return (
     <div className="personkort">
-      <OversiktLink />
+      <LinkRow>
+        <OversiktLink />
+        {showSnowButton && <SnowButton />}
+      </LinkRow>
       <Utvidbar
         erApen={false}
         tittel={
