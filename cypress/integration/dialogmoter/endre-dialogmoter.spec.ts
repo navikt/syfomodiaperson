@@ -18,7 +18,7 @@ context("Endre dialogmøte", () => {
     cy.OAuth2Login();
   });
 
-  xit("Tester feilhåndtering for manglende begrunnelse", () => {
+  it("Tester feilhåndtering for manglende begrunnelse", () => {
     cy.dataCy(selectors.endreMoteKnapp).click();
 
     cy.dataCy(selectors.begrunnelseArbeidstakerTextArea).should(
@@ -48,7 +48,7 @@ context("Endre dialogmøte", () => {
     );
   });
 
-  xit("Går til endre dialogmøte, sjekker forhåndsvisning og avbryter", () => {
+  it("Går til endre dialogmøte, sjekker forhåndsvisning og avbryter", () => {
     cy.dataCy(selectors.endreMoteKnapp).click();
 
     cy.dataCy(selectors.begrunnelseArbeidstakerTextArea).type(
