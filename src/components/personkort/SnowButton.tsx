@@ -15,11 +15,23 @@ const StyledButton = styled(Knapp)`
 `;
 
 const SnowButton = () => {
+  // Bruker require her, siden testene får ikke kjørt hvis vi importerer i starten av filen
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const jingle = require("../../../music/jingle_bells_trimmed.mp3");
+  const jingleAudio = new Audio(jingle);
+
+  jingleAudio.onended = () => {
+    stopAndHideSnow();
+  };
+
   const clickButton = () => {
-    startSnow();
-    setTimeout(() => {
+    if (jingleAudio.paused || jingleAudio.ended) {
+      jingleAudio.play();
+      startSnow();
+    } else {
       stopAndHideSnow();
-    }, 10000);
+      jingleAudio.load();
+    }
   };
 
   return (
