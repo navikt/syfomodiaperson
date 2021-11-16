@@ -1,5 +1,4 @@
 import { EndreTidStedSkjemaValues } from "@/components/dialogmote/endre/EndreDialogmoteSkjema";
-import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import {
   createLink,
   createParagraph,
@@ -21,6 +20,7 @@ import {
   DocumentComponentDto,
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
+import { useForhandsvisningIntro } from "@/hooks/dialogmote/useForhandsvisningIntro";
 
 export interface ForhandsvisTidStedGenerator {
   generateArbeidsgiverTidStedDocument(
@@ -40,15 +40,18 @@ export const useForhandsvisTidSted = (
   opprinneligTid: string,
   behandler?: DialogmotedeltakerBehandlerDTO
 ): ForhandsvisTidStedGenerator => {
-  const navBruker = useNavBrukerData();
   const hilsen = useForhandsvisningHilsen();
-  const navnFnrTekst = `${navBruker.navn} (f.nr ${navBruker.kontaktinfo.fnr})`;
+  const {
+    introHilsenArbeidstaker,
+    introHilsenArbeidsgiver,
+    introHilsenBehandler,
+  } = useForhandsvisningIntro();
 
   const generateArbeidsgiverTidStedDocument = (
     values: Partial<EndreTidStedSkjemaValues>
   ) => {
     const documentComponents = [
-      createParagraph(`Gjelder ${navnFnrTekst}`),
+      introHilsenArbeidsgiver,
       ...fellesInfo(values, opprinneligTid),
     ];
 
@@ -92,7 +95,7 @@ export const useForhandsvisTidSted = (
     values: Partial<EndreTidStedSkjemaValues>
   ) => {
     const documentComponents = [
-      createParagraph(navnFnrTekst),
+      introHilsenArbeidstaker,
       ...fellesInfo(values, opprinneligTid),
     ];
 
@@ -132,7 +135,7 @@ export const useForhandsvisTidSted = (
     values: Partial<EndreTidStedSkjemaValues>
   ) => {
     const documentComponents = [
-      createParagraph(`Gjelder ${navnFnrTekst}`),
+      introHilsenBehandler,
       ...fellesInfo(values, opprinneligTid),
     ];
 

@@ -2,8 +2,6 @@ import { DialogmoteInnkallingSkjemaValues } from "@/components/dialogmote/innkal
 import { DocumentComponentDto } from "@/data/dialogmote/types/dialogmoteTypes";
 import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { genererDato } from "../../components/mote/utils";
-import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
-import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
 import {
   commonTexts,
   innkallingTexts,
@@ -17,6 +15,7 @@ import { useForhandsvisningHilsen } from "./useForhandsvisningHilsen";
 import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
+import { useForhandsvisningIntro } from "@/hooks/dialogmote/useForhandsvisningIntro";
 
 export interface ForhandsvisInnkallingGenerator {
   generateArbeidstakerInnkallingDocument(
@@ -35,8 +34,12 @@ export interface ForhandsvisInnkallingGenerator {
 }
 
 export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
-  const navBruker = useNavBrukerData();
   const hilsen = useForhandsvisningHilsen();
+  const {
+    introHilsenArbeidstaker,
+    introHilsenArbeidsgiver,
+    introHilsenBehandler,
+  } = useForhandsvisningIntro();
 
   const generateArbeidstakerInnkallingDocument = (
     values: Partial<DialogmoteInnkallingSkjemaValues>,
@@ -44,7 +47,8 @@ export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
   ) => {
     const documentComponents = [
       ...fellesInfo(values),
-      ...arbeidstakerIntro(navBruker),
+      introHilsenArbeidstaker,
+      ...arbeidstakerIntro(),
     ];
     if (values.fritekstArbeidstaker) {
       documentComponents.push(createParagraph(values.fritekstArbeidstaker));
@@ -60,7 +64,8 @@ export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
   ) => {
     const documentComponents = [
       ...fellesInfo(values),
-      ...arbeidsgiverIntro(navBruker),
+      introHilsenArbeidsgiver,
+      ...arbeidsgiverIntro(),
     ];
     if (values.fritekstArbeidsgiver) {
       documentComponents.push(createParagraph(values.fritekstArbeidsgiver));
@@ -82,7 +87,8 @@ export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
   ) => {
     const documentComponents = [
       ...fellesInfo(values),
-      ...behandlerIntro(navBruker),
+      introHilsenBehandler,
+      ...behandlerIntro(),
     ];
     if (values.fritekstBehandler) {
       documentComponents.push(createParagraph(values.fritekstBehandler));
@@ -120,29 +126,22 @@ const fellesInfo = (
   return components;
 };
 
-const arbeidstakerIntro = (navBruker: Brukerinfo): DocumentComponentDto[] => {
+const arbeidstakerIntro = (): DocumentComponentDto[] => {
   return [
-    createParagraph(`Hei ${navBruker.navn}`),
     createParagraph(innkallingTexts.arbeidstaker.intro1),
     createParagraph(innkallingTexts.arbeidstaker.intro2),
   ];
 };
 
-const arbeidsgiverIntro = (navBruker: Brukerinfo): DocumentComponentDto[] => {
+const arbeidsgiverIntro = (): DocumentComponentDto[] => {
   return [
-    createParagraph(
-      `Gjelder ${navBruker.navn}, f.nr. ${navBruker.kontaktinfo.fnr}`
-    ),
     createParagraph(innkallingTexts.arbeidsgiver.intro1),
     createParagraph(innkallingTexts.arbeidsgiver.intro2),
   ];
 };
 
-const behandlerIntro = (navBruker: Brukerinfo): DocumentComponentDto[] => {
+const behandlerIntro = (): DocumentComponentDto[] => {
   return [
-    createParagraph(
-      `Gjelder ${navBruker.navn}, f.nr. ${navBruker.kontaktinfo.fnr}`
-    ),
     createParagraph(innkallingTexts.behandler.intro1),
     createParagraph(innkallingTexts.behandler.intro2),
   ];

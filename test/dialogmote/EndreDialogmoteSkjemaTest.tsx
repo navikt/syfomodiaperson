@@ -322,7 +322,7 @@ const mountEndreDialogmoteSkjema = () => {
 
 const expectedArbeidsgiverEndringsdokument = [
   {
-    texts: [`Gjelder ${arbeidstaker.navn} (f.nr ${arbeidstaker.personident})`],
+    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
     type: "PARAGRAPH",
   },
   {
@@ -392,7 +392,7 @@ const expectedArbeidsgiverEndringsdokument = [
 ];
 const expectedArbeidstakerEndringsdokument = [
   {
-    texts: [`${arbeidstaker.navn} (f.nr ${arbeidstaker.personident})`],
+    texts: [`Hei ${arbeidstaker.navn}`],
     type: "PARAGRAPH",
   },
   {

@@ -272,7 +272,7 @@ const mountAvlysDialogmoteSkjema = () => {
 
 const expectedAvlysningArbeidsgiver = [
   {
-    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}.`],
+    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
     type: "PARAGRAPH",
   },
   {
@@ -298,7 +298,7 @@ const expectedAvlysningArbeidsgiver = [
 ];
 const expectedAvlysningArbeidstaker = [
   {
-    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}.`],
+    texts: [`Hei ${arbeidstaker.navn}`],
     type: "PARAGRAPH",
   },
   {

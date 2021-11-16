@@ -1,10 +1,10 @@
 import { DocumentComponentDto } from "@/data/dialogmote/types/dialogmoteTypes";
-import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { AvlysDialogmoteSkjemaValues } from "@/components/dialogmote/avlys/AvlysDialogmoteSkjema";
 import { avlysningTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
 import { createParagraph } from "@/utils/documentComponentUtils";
 import { useForhandsvisningHilsen } from "./useForhandsvisningHilsen";
+import { useForhandsvisningIntro } from "@/hooks/dialogmote/useForhandsvisningIntro";
 
 export interface ForhandsvisAvlysningGenerator {
   generateAvlysningArbeidstakerDocument(
@@ -24,10 +24,11 @@ export const useForhandsvisAvlysning = (
   opprinneligTid: string
 ): ForhandsvisAvlysningGenerator => {
   const hilsen = useForhandsvisningHilsen();
-  const navBruker = useNavBrukerData();
-  const gjelderText = createParagraph(
-    `Gjelder ${navBruker.navn}, f.nr. ${navBruker.kontaktinfo.fnr}.`
-  );
+  const {
+    introHilsenArbeidstaker,
+    introHilsenArbeidsgiver,
+    introHilsenBehandler,
+  } = useForhandsvisningIntro();
   const introText = createParagraph(
     `${avlysningTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
       opprinneligTid
@@ -36,9 +37,10 @@ export const useForhandsvisAvlysning = (
 
   const generateAvlysningDocument = (
     values: Partial<AvlysDialogmoteSkjemaValues>,
+    introHilsen: DocumentComponentDto,
     begrunnelse?: string
   ) => {
-    const documentComponents = [gjelderText, introText];
+    const documentComponents = [introHilsen, introText];
     if (begrunnelse) {
       documentComponents.push(createParagraph(begrunnelse));
     }
@@ -51,14 +53,26 @@ export const useForhandsvisAvlysning = (
     generateAvlysningArbeidstakerDocument: (
       values: Partial<AvlysDialogmoteSkjemaValues>
     ): DocumentComponentDto[] =>
-      generateAvlysningDocument(values, values.begrunnelseArbeidstaker),
+      generateAvlysningDocument(
+        values,
+        introHilsenArbeidstaker,
+        values.begrunnelseArbeidstaker
+      ),
     generateAvlysningArbeidsgiverDocument: (
       values: Partial<AvlysDialogmoteSkjemaValues>
     ): DocumentComponentDto[] =>
-      generateAvlysningDocument(values, values.begrunnelseArbeidsgiver),
+      generateAvlysningDocument(
+        values,
+        introHilsenArbeidsgiver,
+        values.begrunnelseArbeidsgiver
+      ),
     generateAvlysningBehandlerDocument: (
       values: Partial<AvlysDialogmoteSkjemaValues>
     ): DocumentComponentDto[] =>
-      generateAvlysningDocument(values, values.begrunnelseBehandler),
+      generateAvlysningDocument(
+        values,
+        introHilsenBehandler,
+        values.begrunnelseBehandler
+      ),
   };
 };
