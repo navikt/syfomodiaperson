@@ -22,6 +22,7 @@ import { texts as skjemaFeilOppsummeringTexts } from "@/components/SkjemaFeilopp
 import { Hovedknapp, Knapp } from "nav-frontend-knapper";
 import {
   leggTilDagerPaDato,
+  tilDatoMedManedNavnOgKlokkeslettWithComma,
   tilDatoMedUkedagOgManedNavnOgKlokkeslett,
   toDatePrettyPrint,
 } from "@/utils/datoUtils";
@@ -34,12 +35,18 @@ import Lukknapp from "nav-frontend-lukknapp";
 import {
   arbeidstaker,
   behandlendeEnhet,
+  behandler,
   dialogmote,
+  dialogmoteMedBehandler,
   navEnhet,
   veileder,
 } from "./testData";
 import { genererDato } from "@/components/mote/utils";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
+import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { endreTidStedTexts } from "@/data/dialogmote/dialogmoteTexts";
+import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
+import { behandlerNavn } from "@/utils/behandlerUtils";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -58,6 +65,7 @@ const mockState = {
 };
 const tekstTilArbeidstaker = "Noe tekst til arbeidstaker";
 const tekstTilArbeidsgiver = "Noe tekst til arbeidsgiver";
+const tekstTilBehandler = "Noe tekst til behandler";
 const nyDato = toDatePrettyPrint(leggTilDagerPaDato(new Date(), 1)) as string;
 const moteKlokkeslett = "09:00";
 const nyDatoAsISODateString = InputDateStringToISODateString(nyDato);
@@ -83,7 +91,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
   });
 
   it("validerer begrunnelser og dato", () => {
-    const wrapper = mountEndreDialogmoteSkjema();
+    const wrapper = mountEndreDialogmoteSkjema(dialogmote);
 
     wrapper.find("form").simulate("submit");
 
@@ -116,9 +124,28 @@ describe("EndreDialogmoteSkjemaTest", () => {
     );
     expect(feiloppsummering.text()).to.contain("Datoen må være etter");
   });
+  it("validerer begrunnelse til behandler når behandler er med", () => {
+    const wrapper = mountEndreDialogmoteSkjema(dialogmoteMedBehandler);
 
+    wrapper.find("form").simulate("submit");
+
+    // Feilmelding i skjema
+    assertFeilmelding(
+      wrapper.find(Feilmelding),
+      valideringsTexts.begrunnelseBehandlerMissing
+    );
+
+    // Feilmeldinger i oppsummering
+    const feiloppsummering = wrapper.find(Feiloppsummering);
+    expect(feiloppsummering.text()).to.contain(
+      skjemaFeilOppsummeringTexts.title
+    );
+    expect(feiloppsummering.text()).to.contain(
+      valideringsTexts.begrunnelseBehandlerMissing
+    );
+  });
   it("valideringsmeldinger forsvinner ved utbedring", () => {
-    const wrapper = mountEndreDialogmoteSkjema();
+    const wrapper = mountEndreDialogmoteSkjema(dialogmote);
 
     wrapper.find("form").simulate("submit");
 
@@ -181,9 +208,9 @@ describe("EndreDialogmoteSkjemaTest", () => {
     wrapper.find(Hovedknapp).simulate("click");
     expect(wrapper.find(Feiloppsummering)).to.have.length(1);
   });
-  it("endrer møte tid og sted ved submit av skjema", () => {
+  it("endrer møte ved submit", () => {
     stubEndreApi(apiMock(), dialogmote.uuid);
-    const wrapper = mountEndreDialogmoteSkjema();
+    const wrapper = mountEndreDialogmoteSkjema(dialogmote);
 
     const inputs = wrapper.find("input");
     const stedInput = inputs.findWhere((w) => w.prop("name") === "sted");
@@ -212,11 +239,59 @@ describe("EndreDialogmoteSkjemaTest", () => {
     const expectedEndring = {
       arbeidsgiver: {
         begrunnelse: tekstTilArbeidsgiver,
-        endringsdokument: expectedArbeidsgiverEndringsdokument,
+        endringsdokument: expectedArbeidsgiverEndringsdokument(),
       },
       arbeidstaker: {
         begrunnelse: tekstTilArbeidstaker,
-        endringsdokument: expectedArbeidstakerEndringsdokument,
+        endringsdokument: expectedArbeidstakerEndringsdokument(),
+      },
+      videoLink: nyVideolink,
+      sted: nyttSted,
+      tid: nyDatoTid,
+    };
+    expect(endreMutation.options.variables).to.deep.equal(expectedEndring);
+  });
+  it("endrer møte med behandler ved submit når behandler er med", () => {
+    stubEndreApi(apiMock(), dialogmote.uuid);
+    const wrapper = mountEndreDialogmoteSkjema(dialogmoteMedBehandler);
+
+    const inputs = wrapper.find("input");
+    const stedInput = inputs.findWhere((w) => w.prop("name") === "sted");
+    const videoLinkInput = inputs.findWhere(
+      (w) => w.prop("name") === "videoLink"
+    );
+    const datoVelger = wrapper.find("ForwardRef(DateInput)");
+    changeFieldValue(datoVelger, nyDato);
+    datoVelger.simulate("blur");
+    changeTextAreaValue(
+      wrapper,
+      "begrunnelseArbeidsgiver",
+      tekstTilArbeidsgiver
+    );
+    changeTextAreaValue(
+      wrapper,
+      "begrunnelseArbeidstaker",
+      tekstTilArbeidstaker
+    );
+    changeTextAreaValue(wrapper, "begrunnelseBehandler", tekstTilBehandler);
+    changeFieldValue(stedInput, nyttSted);
+    changeFieldValue(videoLinkInput, nyVideolink);
+
+    wrapper.find("form").simulate("submit");
+
+    const endreMutation = queryClient.getMutationCache().getAll()[0];
+    const expectedEndring = {
+      arbeidsgiver: {
+        begrunnelse: tekstTilArbeidsgiver,
+        endringsdokument: expectedArbeidsgiverEndringsdokument(true),
+      },
+      arbeidstaker: {
+        begrunnelse: tekstTilArbeidstaker,
+        endringsdokument: expectedArbeidstakerEndringsdokument(true),
+      },
+      behandler: {
+        begrunnelse: tekstTilBehandler,
+        endringsdokument: expectedBehandlerEndringsdokument,
       },
       videoLink: nyVideolink,
       sted: nyttSted,
@@ -225,7 +300,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
     expect(endreMutation.options.variables).to.deep.equal(expectedEndring);
   });
   it("forhåndsviser endret tid og sted til arbeidstaker og arbeidsgiver", () => {
-    const wrapper = mountEndreDialogmoteSkjema();
+    const wrapper = mountEndreDialogmoteSkjema(dialogmote);
 
     const inputs = wrapper.find("input");
     const stedInput = inputs.findWhere((w) => w.prop("name") === "sted");
@@ -250,14 +325,16 @@ describe("EndreDialogmoteSkjemaTest", () => {
 
     const getForhandsvisningsModaler = () => wrapper.find(Forhandsvisning);
     let forhandsvisninger = getForhandsvisningsModaler();
+    expect(forhandsvisninger).to.have.length(2);
     expect(
       forhandsvisninger.at(0).props().getDocumentComponents()
-    ).to.deep.equal(expectedArbeidstakerEndringsdokument);
+    ).to.deep.equal(expectedArbeidstakerEndringsdokument());
     expect(
       forhandsvisninger.at(1).props().getDocumentComponents()
-    ).to.deep.equal(expectedArbeidsgiverEndringsdokument);
+    ).to.deep.equal(expectedArbeidsgiverEndringsdokument());
 
     const previewButtons = wrapper.find(Knapp);
+    expect(previewButtons).to.have.length(2);
 
     // Forhåndsvis endringsbrev til arbeidstaker og sjekk at modal vises med riktig tittel
     previewButtons.at(0).simulate("click");
@@ -302,9 +379,42 @@ describe("EndreDialogmoteSkjemaTest", () => {
       endringSkjemaTexts.forhandsvisningArbeidsgiverSubtitle
     );
   });
+  it("forhåndsviser endret tid og sted til behandler når behandler er med", () => {
+    const wrapper = mountEndreDialogmoteSkjema(dialogmoteMedBehandler);
+
+    const inputs = wrapper.find("input");
+    const stedInput = inputs.findWhere((w) => w.prop("name") === "sted");
+    const videoLinkInput = inputs.findWhere(
+      (w) => w.prop("name") === "videoLink"
+    );
+    const datoVelger = wrapper.find("ForwardRef(DateInput)");
+    changeFieldValue(datoVelger, nyDato);
+    datoVelger.simulate("blur");
+    changeTextAreaValue(wrapper, "begrunnelseBehandler", tekstTilBehandler);
+    changeFieldValue(stedInput, nyttSted);
+    changeFieldValue(videoLinkInput, nyVideolink);
+
+    // Forhåndsvis endringsbrev til behandler og sjekk at modal vises med riktig tittel
+    const previewButtons = wrapper.find(Knapp);
+    expect(previewButtons).to.have.length(3);
+    previewButtons.at(2).simulate("click");
+    const forhandsvisningModaler = wrapper.find(Forhandsvisning);
+    expect(forhandsvisningModaler).to.have.length(3);
+    const forhandsvisningEndringBehandler = forhandsvisningModaler.at(2);
+    expect(
+      forhandsvisningEndringBehandler.props().getDocumentComponents()
+    ).to.deep.equal(expectedBehandlerEndringsdokument);
+    expect(forhandsvisningEndringBehandler.prop("isOpen")).to.be.true;
+    expect(forhandsvisningEndringBehandler.text()).to.contain(
+      endringSkjemaTexts.forhandsvisningTitle
+    );
+    expect(forhandsvisningEndringBehandler.text()).to.contain(
+      endringSkjemaTexts.forhandsvisningBehandlerSubtitle
+    );
+  });
 });
 
-const mountEndreDialogmoteSkjema = () => {
+const mountEndreDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
   return mount(
     <MemoryRouter
       initialEntries={[`${dialogmoteRoutePath}/${dialogmote.uuid}/endre`]}
@@ -320,19 +430,21 @@ const mountEndreDialogmoteSkjema = () => {
   );
 };
 
-const expectedArbeidsgiverEndringsdokument = [
+const expectedArbeidsgiverEndringsdokument = (medBehandler = false) => [
   {
     texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
     type: "PARAGRAPH",
   },
   {
     texts: [
-      "Du har tidligere blitt innkalt til et dialogmøte. Møtet skulle vært avholdt 10. mai 2021, kl. 09.00.",
+      `${endreTidStedTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
+        dialogmote.tid
+      )}.`,
     ],
     type: "PARAGRAPH",
   },
   {
-    texts: ["Møtet må flyttes. Dette tidspunktet og møtestedet gjelder nå:"],
+    texts: [endreTidStedTexts.intro2],
     type: "PARAGRAPH",
   },
   {
@@ -360,21 +472,27 @@ const expectedArbeidsgiverEndringsdokument = [
   },
   {
     texts: [
-      "I møtet vil vi høre både hva du og arbeidstakeren sier om arbeidssituasjonen og mulighetene for å jobbe. Vi blir enige om en plan som kan hjelpe arbeidstakeren videre.",
+      medBehandler
+        ? endreTidStedTexts.arbeidsgiver.outro1WithBehandler
+        : endreTidStedTexts.arbeidsgiver.outro1,
     ],
     type: "PARAGRAPH",
   },
   {
     texts: [
-      "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi ikke sett behov for det.",
+      medBehandler
+        ? `${
+            endreTidStedTexts.arbeidsgiver.outro2WithBehandler
+          } ${capitalizeFoersteBokstav(
+            behandler.type.toLowerCase()
+          )} ${behandlerNavn(behandler)}.`
+        : endreTidStedTexts.arbeidsgiver.outro2,
     ],
     type: "PARAGRAPH",
   },
   {
-    texts: [
-      "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
-    ],
-    title: "Før møtet",
+    texts: [endreTidStedTexts.preMeeting],
+    title: endreTidStedTexts.preMeetingTitle,
     type: "PARAGRAPH",
   },
   {
@@ -390,19 +508,21 @@ const expectedArbeidsgiverEndringsdokument = [
     type: "PARAGRAPH",
   },
 ];
-const expectedArbeidstakerEndringsdokument = [
+const expectedArbeidstakerEndringsdokument = (medBehandler = false) => [
   {
     texts: [`Hei ${arbeidstaker.navn}`],
     type: "PARAGRAPH",
   },
   {
     texts: [
-      "Du har tidligere blitt innkalt til et dialogmøte. Møtet skulle vært avholdt 10. mai 2021, kl. 09.00.",
+      `${endreTidStedTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
+        dialogmote.tid
+      )}.`,
     ],
     type: "PARAGRAPH",
   },
   {
-    texts: ["Møtet må flyttes. Dette tidspunktet og møtestedet gjelder nå:"],
+    texts: [endreTidStedTexts.intro2],
     type: "PARAGRAPH",
   },
   {
@@ -430,21 +550,84 @@ const expectedArbeidstakerEndringsdokument = [
   },
   {
     texts: [
-      "I møtet vil vi høre både hva du og arbeidsgiveren sier om arbeidssituasjonen og mulighetene for å jobbe. Vi blir enige om en plan som kan hjelpe deg videre.",
+      medBehandler
+        ? endreTidStedTexts.arbeidstaker.outro1WithBehandler
+        : endreTidStedTexts.arbeidstaker.outro1,
     ],
     type: "PARAGRAPH",
   },
   {
     texts: [
-      "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi ikke sett behov for det.",
+      medBehandler
+        ? `${
+            endreTidStedTexts.arbeidstaker.outro2WithBehandler
+          } ${capitalizeFoersteBokstav(
+            behandler.type.toLowerCase()
+          )} ${behandlerNavn(behandler)}.`
+        : endreTidStedTexts.arbeidstaker.outro2,
     ],
     type: "PARAGRAPH",
   },
   {
+    texts: [endreTidStedTexts.preMeeting],
+    title: endreTidStedTexts.preMeetingTitle,
+    type: "PARAGRAPH",
+  },
+  {
+    texts: ["Vennlig hilsen", navEnhet.navn],
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [veileder.navn],
+    type: "PARAGRAPH",
+  },
+];
+const expectedBehandlerEndringsdokument = [
+  {
+    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
+    type: "PARAGRAPH",
+  },
+  {
     texts: [
-      "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+      `${endreTidStedTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
+        dialogmote.tid
+      )}.`,
     ],
-    title: "Før møtet",
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [endreTidStedTexts.intro2],
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [
+      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
+        genererDato(nyDatoAsISODateString, moteKlokkeslett)
+      ),
+    ],
+    title: "Møtetidspunkt",
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [nyttSted],
+    title: "Møtested",
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [nyVideolink],
+    title: "Lenke til videomøte",
+    type: "LINK",
+  },
+  {
+    texts: [tekstTilBehandler],
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [endreTidStedTexts.behandler.outro1],
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [endreTidStedTexts.behandler.outro2],
     type: "PARAGRAPH",
   },
   {

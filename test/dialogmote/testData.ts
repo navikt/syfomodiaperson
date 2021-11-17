@@ -3,6 +3,10 @@ import {
   DialogmoteStatus,
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
+import {
+  BehandlerDialogmeldingDTO,
+  BehandlerType,
+} from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 
 export const arbeidstaker = {
   navn: "Arne Arbeidstaker",
@@ -24,6 +28,14 @@ export const veileder: Partial<VeilederinfoDTO> = {
   epost: "vetle.veileder@nav.no",
   telefonnummer: "12345678",
 };
+export const behandler: BehandlerDialogmeldingDTO = {
+  behandlerRef: "behandler-ref-uuid",
+  kontor: "Greendale Legekontor",
+  telefon: "11223344",
+  fornavn: "Dean",
+  etternavn: "Pelton",
+  type: BehandlerType.FASTLEGE,
+};
 export const dialogmote: DialogmoteDTO = {
   arbeidsgiver: {
     virksomhetsnummer: arbeidsgiver.orgnr,
@@ -44,4 +56,16 @@ export const dialogmote: DialogmoteDTO = {
   uuid: "123abc",
   tid: "2021-05-10T09:00:00.000",
   sted: "Videomøte",
+};
+export const dialogmoteMedBehandler: DialogmoteDTO = {
+  ...dialogmote,
+  behandler: {
+    behandlerType: behandler.type,
+    type: "BEHANDLER",
+    uuid: "456def",
+    behandlerRef: "456def",
+    varselList: [],
+    behandlerKontor: "Greendale Legekontor",
+    behandlerNavn: "Dean Pelton",
+  },
 };

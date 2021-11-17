@@ -40,15 +40,12 @@ import {
   arbeidsgiver,
   arbeidstaker,
   behandlendeEnhet,
+  behandler,
   navEnhet,
   veileder,
 } from "./testData";
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 import DialogmoteInnkallingBehandler from "@/components/dialogmote/innkalling/DialogmoteInnkallingBehandler";
-import {
-  BehandlerDialogmeldingDTO,
-  BehandlerType,
-} from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 import { createMemoryHistory } from "history";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
@@ -65,17 +62,9 @@ const moteVideoLink = "https://video.nav.no";
 const fritekstTilArbeidstaker = "Noe fritekst til arbeidstaker";
 const fritekstTilArbeidsgiver = "Noe fritekst til arbeidsgiver";
 const fritekstTilBehandler = "Noe fritekst til behandler";
-const valgtBehandler: BehandlerDialogmeldingDTO = {
-  behandlerRef: "behandler-ref-uuid",
-  kontor: "Greendale Legekontor",
-  telefon: "11223344",
-  fornavn: "Dean",
-  etternavn: "Pelton",
-  type: BehandlerType.FASTLEGE,
-};
 const legeNavn = `${capitalizeFoersteBokstav(
-  valgtBehandler.type.toLowerCase()
-)}: ${behandlerNavn(valgtBehandler)}`;
+  behandler.type.toLowerCase()
+)}: ${behandlerNavn(behandler)}`;
 
 const store = configureStore([]);
 const mockState = {
@@ -470,9 +459,9 @@ describe("DialogmoteInnkallingSkjema", () => {
         innkalling: expectedArbeidstakerInnkalling,
       },
       behandler: {
-        behandlerRef: valgtBehandler.behandlerRef,
-        behandlerNavn: behandlerNavn(valgtBehandler),
-        behandlerKontor: valgtBehandler.kontor,
+        behandlerRef: behandler.behandlerRef,
+        behandlerNavn: behandlerNavn(behandler),
+        behandlerKontor: behandler.kontor,
         fritekstInnkalling: fritekstTilBehandler,
         innkalling: expectedBehandlerInnkalling,
       },
@@ -548,7 +537,7 @@ const mountDialogmoteInnkallingSkjema = () => {
 
 const mountDialogmoteInnkallingSkjemaWithValgtBehandler = () => {
   const history = createMemoryHistory();
-  const state = { valgtBehandler: valgtBehandler };
+  const state = { valgtBehandler: behandler };
 
   history.push(dialogmoteRoutePath, state);
 

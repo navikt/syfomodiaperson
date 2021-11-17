@@ -28,10 +28,12 @@ import {
   arbeidstaker,
   behandlendeEnhet,
   dialogmote,
+  dialogmoteMedBehandler,
   navEnhet,
   veileder,
 } from "./testData";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
+import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -51,6 +53,7 @@ const mockState = {
 };
 const tekstTilArbeidstaker = "Noe tekst til arbeidstaker";
 const tekstTilArbeidsgiver = "Noe tekst til arbeidsgiver";
+const tekstTilBehandler = "Noe tekst til behandler";
 
 let queryClient;
 
@@ -68,13 +71,13 @@ describe("AvlysDialogmoteSkjemaTest", () => {
   });
 
   it("viser møtetidspunkt", () => {
-    const wrapper = mountAvlysDialogmoteSkjema();
+    const wrapper = mountAvlysDialogmoteSkjema(dialogmote);
 
     expect(wrapper.text()).to.contain("Gjelder dialogmøtet");
     expect(wrapper.text()).to.contain("Mandag 10. mai 2021 kl. 09.00");
   });
   it("validerer begrunnelser", () => {
-    const wrapper = mountAvlysDialogmoteSkjema();
+    const wrapper = mountAvlysDialogmoteSkjema(dialogmote);
 
     wrapper.find("form").simulate("submit");
 
@@ -101,8 +104,28 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       valideringsTexts.begrunnelseArbeidsgiverMissing
     );
   });
+  it("validerer begrunnelse til behandler når behandler er med", () => {
+    const wrapper = mountAvlysDialogmoteSkjema(dialogmoteMedBehandler);
+
+    wrapper.find("form").simulate("submit");
+
+    // Feilmelding i skjema
+    assertFeilmelding(
+      wrapper.find(Feilmelding),
+      valideringsTexts.begrunnelseBehandlerMissing
+    );
+
+    // Feilmelding i oppsummering
+    const feiloppsummering = wrapper.find(Feiloppsummering);
+    expect(feiloppsummering.text()).to.contain(
+      skjemaFeilOppsummeringTexts.title
+    );
+    expect(feiloppsummering.text()).to.contain(
+      valideringsTexts.begrunnelseBehandlerMissing
+    );
+  });
   it("valideringsmeldinger forsvinner ved utbedring", () => {
-    const wrapper = mountAvlysDialogmoteSkjema();
+    const wrapper = mountAvlysDialogmoteSkjema(dialogmote);
 
     wrapper.find("form").simulate("submit");
 
@@ -156,9 +179,9 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     wrapper.find(Hovedknapp).simulate("click");
     expect(wrapper.find(Feiloppsummering)).to.have.length(1);
   });
-  it("avlyser møte ved submit av skjema", () => {
+  it("avlyser møte ved submit", () => {
     stubAvlysApi(apiMock(), dialogmote.uuid);
-    const wrapper = mountAvlysDialogmoteSkjema();
+    const wrapper = mountAvlysDialogmoteSkjema(dialogmote);
 
     changeTextAreaValue(
       wrapper,
@@ -186,9 +209,43 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     };
     expect(avlysMutation.options.variables).to.deep.equal(expectedAvlysning);
   });
+  it("avlyser med behandler ved submit når behandler er med", () => {
+    stubAvlysApi(apiMock(), dialogmote.uuid);
+    const wrapper = mountAvlysDialogmoteSkjema(dialogmoteMedBehandler);
 
+    changeTextAreaValue(
+      wrapper,
+      "begrunnelseArbeidsgiver",
+      tekstTilArbeidsgiver
+    );
+    changeTextAreaValue(
+      wrapper,
+      "begrunnelseArbeidstaker",
+      tekstTilArbeidstaker
+    );
+    changeTextAreaValue(wrapper, "begrunnelseBehandler", tekstTilBehandler);
+
+    wrapper.find("form").simulate("submit");
+
+    const avlysMutation = queryClient.getMutationCache().getAll()[0];
+    const expectedAvlysning = {
+      arbeidsgiver: {
+        avlysning: expectedAvlysningArbeidsgiver,
+        begrunnelse: tekstTilArbeidsgiver,
+      },
+      arbeidstaker: {
+        avlysning: expectedAvlysningArbeidstaker,
+        begrunnelse: tekstTilArbeidstaker,
+      },
+      behandler: {
+        avlysning: expectedAvlysningBehandler,
+        begrunnelse: tekstTilBehandler,
+      },
+    };
+    expect(avlysMutation.options.variables).to.deep.equal(expectedAvlysning);
+  });
   it("forhåndsviser avlysning til arbeidstaker og arbeidsgiver", () => {
-    const wrapper = mountAvlysDialogmoteSkjema();
+    const wrapper = mountAvlysDialogmoteSkjema(dialogmote);
 
     changeTextAreaValue(
       wrapper,
@@ -202,6 +259,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     );
 
     let forhandsvisningModaler = wrapper.find(Forhandsvisning);
+    expect(forhandsvisningModaler).to.have.length(2);
     expect(
       forhandsvisningModaler.at(0).props().getDocumentComponents()
     ).to.deep.equal(expectedAvlysningArbeidstaker);
@@ -210,6 +268,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     ).to.deep.equal(expectedAvlysningArbeidsgiver);
 
     const previewButtons = wrapper.find(Knapp);
+    expect(previewButtons).to.have.length(2);
 
     // Forhåndsvis avlysning til arbeidstaker og sjekk at modal vises med riktig tittel
     previewButtons.at(0).simulate("click");
@@ -254,9 +313,32 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       avlysningSkjemaTexts.forhandsvisningArbeidsgiverSubtitle
     );
   });
+  it("forhåndsviser avlysning til behandler når behandler er med", () => {
+    const wrapper = mountAvlysDialogmoteSkjema(dialogmoteMedBehandler);
+
+    changeTextAreaValue(wrapper, "begrunnelseBehandler", tekstTilBehandler);
+
+    // Forhåndsvis avlysning til behandler og sjekk at modal vises med riktig tittel
+    const previewButtons = wrapper.find(Knapp);
+    expect(previewButtons).to.have.length(3);
+    previewButtons.at(2).simulate("click");
+    const forhandsvisningModaler = wrapper.find(Forhandsvisning);
+    expect(forhandsvisningModaler).to.have.length(3);
+    const forhandsvisningAvlysningBehandler = forhandsvisningModaler.at(2);
+    expect(
+      forhandsvisningAvlysningBehandler.props().getDocumentComponents()
+    ).to.deep.equal(expectedAvlysningBehandler);
+    expect(forhandsvisningAvlysningBehandler.prop("isOpen")).to.be.true;
+    expect(forhandsvisningAvlysningBehandler.text()).to.contain(
+      avlysningSkjemaTexts.forhandsvisningTitle
+    );
+    expect(forhandsvisningAvlysningBehandler.text()).to.contain(
+      avlysningSkjemaTexts.forhandsvisningBehandlerSubtitle
+    );
+  });
 });
 
-const mountAvlysDialogmoteSkjema = () => {
+const mountAvlysDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
   return mount(
     <MemoryRouter initialEntries={[`${dialogmoteRoutePath}/123abc/avlys`]}>
       <Route path={`${dialogmoteRoutePath}/:dialogmoteUuid/avlys`}>
@@ -311,6 +393,33 @@ const expectedAvlysningArbeidstaker = [
   },
   {
     texts: [tekstTilArbeidstaker],
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [commonTexts.hilsen, navEnhet.navn],
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [veileder.navn],
+    type: "PARAGRAPH",
+  },
+];
+
+const expectedAvlysningBehandler = [
+  {
+    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [
+      `${avlysningTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
+        dialogmote.tid
+      )}. ${avlysningTexts.intro2}`,
+    ],
+    type: "PARAGRAPH",
+  },
+  {
+    texts: [tekstTilBehandler],
     type: "PARAGRAPH",
   },
   {

@@ -8,6 +8,8 @@ export const selectors = {
   begrunnelseArbeidstakerTextArea: "begrunnelseArbeidstakerTextArea",
   begrunnelseArbeidsgiverKnapp: "begrunnelseArbeidsgiverKnapp",
   begrunnelseArbeidsgiverTextArea: "begrunnelseArbeidsgiverTextArea",
+  begrunnelseBehandlerKnapp: "begrunnelseBehandlerKnapp",
+  begrunnelseBehandlerTextArea: "begrunnelseBehandlerTextArea",
   situasjonTextArea: "situasjonTextArea",
   konklusjonTextArea: "konklusjonTextArea",
   arbeidstakersOppgaveTextArea: "arbeidstakersOppgaveTextArea",

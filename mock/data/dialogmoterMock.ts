@@ -1,13 +1,16 @@
 import {
+  DialogmotedeltakerBehandlerDTO,
   DialogmoteStatus,
   MotedeltakerVarselType,
 } from "../../src/data/dialogmote/types/dialogmoteTypes";
+import { BehandlerType } from "../../src/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 
 const createDialogmote = (
   uuid: string,
   moteStatus: DialogmoteStatus,
   varselType: MotedeltakerVarselType,
-  moteTid: string
+  moteTid: string,
+  behandler?: DialogmotedeltakerBehandlerDTO
 ) => {
   const dialogMote = {
     uuid: uuid,
@@ -58,6 +61,7 @@ const createDialogmote = (
         },
       ],
     },
+    ...(behandler ? { behandler } : {}),
     sted:
       "This is a very lang text that has a lot of characters and describes where the meeting will take place.",
     tid: moteTid,
@@ -108,11 +112,23 @@ const createDialogmote = (
   return dialogMote;
 };
 
+const behandler = (uuid: string) => {
+  return {
+    uuid: uuid + 4,
+    behandlerRef: uuid + 5,
+    behandlerNavn: "Lego Legesen",
+    behandlerKontor: "Fastlegekontoret",
+    behandlerType: BehandlerType.FASTLEGE,
+    type: "BEHANDLER",
+    varselList: [],
+  };
+};
+
 export const innkaltDialogmote = createDialogmote(
   "1",
   DialogmoteStatus.INNKALT,
   MotedeltakerVarselType.INNKALT,
-  "2021-06-25T14:22:23.539843"
+  "2021-11-15T14:22:23.539843"
 );
 export const avlystDialogmote = createDialogmote(
   "2",
@@ -127,8 +143,17 @@ export const ferdigstiltDialogmote = createDialogmote(
   "2020-03-21T12:34:23.539843"
 );
 
+export const innkaltDialogmoteMedBehandler = createDialogmote(
+  "4",
+  DialogmoteStatus.INNKALT,
+  MotedeltakerVarselType.INNKALT,
+  "2021-11-10T14:22:23.539843",
+  behandler("4")
+);
+
 export const dialogmoterMock = [
   innkaltDialogmote,
   avlystDialogmote,
   ferdigstiltDialogmote,
+  innkaltDialogmoteMedBehandler,
 ];

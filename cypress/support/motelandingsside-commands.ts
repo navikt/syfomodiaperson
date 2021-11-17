@@ -1,8 +1,12 @@
-import { innkaltDialogmote } from "../../mock/data/dialogmoterMock";
+import {
+  innkaltDialogmote,
+  innkaltDialogmoteMedBehandler,
+} from "../../mock/data/dialogmoterMock";
 import { ISDIALOGMOTE_ROOT, SYFOMOTEADMIN_ROOT } from "../../src/apiConstants";
 
 export enum MoteState {
   INNKALT_DIALOGMOTE,
+  INNKALT_DIALOGMOTE_MED_BEHANDLER,
   INGEN_MOTER,
 }
 
@@ -17,6 +21,12 @@ const getMoter = (state: MoteState): TestMoter => {
       return {
         moter: [],
         dialogmoter: [innkaltDialogmote],
+      };
+    }
+    case MoteState.INNKALT_DIALOGMOTE_MED_BEHANDLER: {
+      return {
+        moter: [],
+        dialogmoter: [innkaltDialogmoteMedBehandler],
       };
     }
     case MoteState.INGEN_MOTER: {
