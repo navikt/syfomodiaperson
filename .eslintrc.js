@@ -15,8 +15,10 @@ module.exports = {
     "plugin:@typescript-eslint/recommended", // Uses the recommended rules from the @typescript-eslint/eslint-plugin
     "prettier", // Make sure this is always the last configuration in the extends array.
   ],
+  plugins: ["unused-imports"],
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
+    "unused-imports/no-unused-imports": "error",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "react/no-string-refs": "off",
