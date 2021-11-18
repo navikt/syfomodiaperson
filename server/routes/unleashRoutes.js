@@ -8,12 +8,13 @@ class ByEnhetAndEnvironment extends Strategy {
   }
 
   isEnabled(parameters, context) {
+    if (process.env.NAIS_CONTEXT === "dev") {
+      return true;
+    }
+
     const valgtEnhetMatches =
       parameters.valgtEnhet.indexOf(context.valgtEnhet) !== -1;
-    const environmentEnabled =
-      parameters.tilgjengeligIProd === "true"
-        ? true
-        : process.env.NAIS_CONTEXT === "dev";
+    const environmentEnabled = parameters.tilgjengeligIProd === "true";
 
     return valgtEnhetMatches && environmentEnabled;
   }
