@@ -10,6 +10,7 @@ import { MAX_LENGTH_KONKLUSJON } from "@/components/dialogmote/referat/Konklusjo
 import { MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE } from "@/components/dialogmote/referat/ArbeidsgiversOppgave";
 import { MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE } from "@/components/dialogmote/referat/ArbeidstakersOppgave";
 import { MAX_LENGTH_VEILEDERS_OPPGAVE } from "@/components/dialogmote/referat/VeiledersOppgave";
+import { MAX_LENGTH_BEHANDLERS_OPPGAVE } from "@/components/dialogmote/referat/BehandlersOppgave";
 
 const maxMessage = (max: number) => `Maks ${max} tegn tillatt`;
 const getTooLongText = (max: number) => "t".repeat(max + 1);
@@ -50,6 +51,7 @@ describe("valideringUtils", () => {
       arbeidsgiversOppgave: getTooLongText(MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE),
       arbeidstakersOppgave: getTooLongText(MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE),
       veiledersOppgave: getTooLongText(MAX_LENGTH_VEILEDERS_OPPGAVE),
+      behandlersOppgave: getTooLongText(MAX_LENGTH_BEHANDLERS_OPPGAVE),
     });
     expect(feil).to.deep.equal({
       situasjon: maxMessage(MAX_LENGTH_SITUASJON),
@@ -57,6 +59,7 @@ describe("valideringUtils", () => {
       arbeidsgiversOppgave: maxMessage(MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE),
       arbeidstakersOppgave: maxMessage(MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE),
       veiledersOppgave: maxMessage(MAX_LENGTH_VEILEDERS_OPPGAVE),
+      behandlersOppgave: maxMessage(MAX_LENGTH_BEHANDLERS_OPPGAVE),
     });
   });
 });

@@ -9,6 +9,7 @@ import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
 import { mount } from "enzyme";
 import {
+  DialogmoteDTO,
   DocumentComponentDto,
   DocumentComponentType,
 } from "@/data/dialogmote/types/dialogmoteTypes";
@@ -37,12 +38,16 @@ import { apiMock } from "../stubs/stubApi";
 import {
   arbeidstaker,
   behandlendeEnhet,
+  behandler,
   dialogmote,
+  dialogmoteMedBehandler,
   navEnhet,
   veileder,
 } from "./testData";
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
+import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
+import { behandlerNavn } from "@/utils/behandlerUtils";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -83,6 +88,10 @@ const konklusjonTekst = "Noe tekst om konklusjon";
 const arbeidsgiversOppgave = "Noe tekst om arbeidsgivers oppgave";
 const arbeidstakersOppgave = "Noe tekst om arbeidstakers oppgave";
 const veiledersOppgave = "Noe tekst om veileders oppgave";
+const behandlersOppgave = "Noe tekst om behandlers oppgave";
+const behandlerDeltakerTekst = `Behandler: ${capitalizeFoersteBokstav(
+  behandler.type.toLowerCase()
+)} ${behandlerNavn(behandler)}`;
 
 let queryClient;
 
@@ -100,7 +109,7 @@ describe("ReferatTest", () => {
   });
 
   it("viser arbeidstaker, dato og sted i tittel", () => {
-    const wrapper = mountReferat();
+    const wrapper = mountReferat(dialogmote);
 
     expect(wrapper.find(Innholdstittel).text()).to.equal(
       `${arbeidstaker.navn}, 10. mai 2021, Videomøte`
@@ -108,18 +117,17 @@ describe("ReferatTest", () => {
   });
 
   it("viser alle deltakere forhåndsutfylt med nærmeste leder redigerbar og påkrevd", () => {
-    const wrapper = mountReferat();
+    const wrapper = mountReferat(dialogmote);
 
+    const listElements = wrapper.find("li");
     expect(
-      wrapper
-        .find("li")
-        .findWhere((li) => li.text() === `Fra NAV: ${veileder.navn}`)
-    ).to.exist;
+      listElements.someWhere((li) => li.text() === `Fra NAV: ${veileder.navn}`)
+    ).to.be.true;
     expect(
-      wrapper
-        .find("li")
-        .findWhere((li) => li.text() === `Arbeidstaker: ${arbeidstaker.navn}`)
-    ).to.exist;
+      listElements.someWhere(
+        (li) => li.text() === `Arbeidstaker: ${arbeidstaker.navn}`
+      )
+    ).to.be.true;
 
     const getNaermesteLederInput = () =>
       wrapper
@@ -145,8 +153,16 @@ describe("ReferatTest", () => {
     expect(naermesteLederInput.prop("value")).to.equal(endretNaermesteLeder);
   });
 
+  it("viser behandler som deltaker når behandler er med", () => {
+    const wrapper = mountReferat(dialogmoteMedBehandler);
+
+    const listElements = wrapper.find("li");
+    expect(listElements.someWhere((li) => li.text() === behandlerDeltakerTekst))
+      .to.be.true;
+  });
+
   it("validerer alle fritekstfelter unntatt veileders oppgave", () => {
-    const wrapper = mountReferat();
+    const wrapper = mountReferat(dialogmote);
 
     wrapper.find("form").simulate("submit");
 
@@ -177,7 +193,7 @@ describe("ReferatTest", () => {
   });
 
   it("validerer navn og funksjon på andre deltakere", () => {
-    const wrapper = mountReferat();
+    const wrapper = mountReferat(dialogmote);
 
     const addDeltakerButton = wrapper.find(Knapp).at(0);
     addDeltakerButton.simulate("click");
@@ -212,14 +228,15 @@ describe("ReferatTest", () => {
   });
 
   it("ferdigstiller dialogmote ved submit av skjema", () => {
-    stubFerdigstillApi(apiMock(), dialogmote.uuid);
-    const wrapper = mountReferat();
+    stubFerdigstillApi(apiMock(), dialogmoteMedBehandler.uuid);
+    const wrapper = mountReferat(dialogmoteMedBehandler);
 
     changeTextAreaValue(wrapper, "situasjon", situasjonTekst);
     changeTextAreaValue(wrapper, "konklusjon", konklusjonTekst);
     changeTextAreaValue(wrapper, "arbeidstakersOppgave", arbeidstakersOppgave);
     changeTextAreaValue(wrapper, "arbeidsgiversOppgave", arbeidsgiversOppgave);
     changeTextAreaValue(wrapper, "veiledersOppgave", veiledersOppgave);
+    changeTextAreaValue(wrapper, "behandlersOppgave", behandlersOppgave);
 
     const addDeltakerButton = wrapper.find(Knapp).at(0);
     addDeltakerButton.simulate("click");
@@ -236,6 +253,7 @@ describe("ReferatTest", () => {
       konklusjon: konklusjonTekst,
       arbeidsgiverOppgave: arbeidsgiversOppgave,
       arbeidstakerOppgave: arbeidstakersOppgave,
+      behandlerOppgave: behandlersOppgave,
       veilederOppgave: veiledersOppgave,
       document: expectedReferat,
       andreDeltakere: [
@@ -248,13 +266,14 @@ describe("ReferatTest", () => {
   });
 
   it("forhåndsviser referat", () => {
-    const wrapper = mountReferat();
+    const wrapper = mountReferat(dialogmoteMedBehandler);
 
     changeTextAreaValue(wrapper, "situasjon", situasjonTekst);
     changeTextAreaValue(wrapper, "konklusjon", konklusjonTekst);
     changeTextAreaValue(wrapper, "arbeidstakersOppgave", arbeidstakersOppgave);
     changeTextAreaValue(wrapper, "arbeidsgiversOppgave", arbeidsgiversOppgave);
     changeTextAreaValue(wrapper, "veiledersOppgave", veiledersOppgave);
+    changeTextAreaValue(wrapper, "behandlersOppgave", behandlersOppgave);
 
     const addDeltakerButton = wrapper.find(Knapp).at(0);
     addDeltakerButton.simulate("click");
@@ -279,15 +298,15 @@ describe("ReferatTest", () => {
   });
 });
 
-const mountReferat = () => {
+const mountReferat = (dialogmoteDTO: DialogmoteDTO) => {
   return mount(
     <MemoryRouter
-      initialEntries={[`${dialogmoteRoutePath}/${dialogmote.uuid}/referat`]}
+      initialEntries={[`${dialogmoteRoutePath}/${dialogmoteDTO.uuid}/referat`]}
     >
       <Route path={`${dialogmoteRoutePath}/:dialogmoteUuid/referat`}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
-            <Referat dialogmote={dialogmote} pageTitle="Test" />
+            <Referat dialogmote={dialogmoteDTO} pageTitle="Test" />
           </Provider>
         </QueryClientProvider>
       </Route>
@@ -316,6 +335,7 @@ const expectedReferat: DocumentComponentDto[] = [
       `Arbeidstaker: ${arbeidstaker.navn}`,
       `Arbeidsgiver: ${lederNavn}`,
       `Fra NAV: ${veileder.navn}`,
+      behandlerDeltakerTekst,
       `${annenDeltakerFunksjon}: ${annenDeltakerNavn}`,
     ],
     title: referatTexts.deltakereTitle,
@@ -346,6 +366,11 @@ const expectedReferat: DocumentComponentDto[] = [
   {
     texts: [arbeidsgiversOppgave],
     title: referatTexts.arbeidsgiversOppgaveTitle,
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [behandlersOppgave],
+    title: referatTexts.behandlersOppgave,
     type: DocumentComponentType.PARAGRAPH,
   },
   {

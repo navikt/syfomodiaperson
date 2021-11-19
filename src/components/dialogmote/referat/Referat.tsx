@@ -32,6 +32,7 @@ import { useFerdigstillDialogmote } from "@/data/dialogmote/useFerdigstillDialog
 import { Redirect } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
+import { BehandlersOppgave } from "@/components/dialogmote/referat/BehandlersOppgave";
 
 export const texts = {
   digitalReferat:
@@ -48,6 +49,7 @@ export interface ReferatSkjemaValues {
   konklusjon: string;
   arbeidstakersOppgave: string;
   arbeidsgiversOppgave: string;
+  behandlersOppgave?: string;
   veiledersOppgave?: string;
   standardtekster: StandardTekst[];
   andreDeltakere: NewDialogmotedeltakerAnnenDTO[];
@@ -102,6 +104,9 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
       konklusjon: values.konklusjon,
       arbeidsgiverOppgave: values.arbeidsgiversOppgave,
       arbeidstakerOppgave: values.arbeidstakersOppgave,
+      ...(dialogmote.behandler
+        ? { behandlerOppgave: values.behandlersOppgave }
+        : {}),
       veilederOppgave: values.veiledersOppgave,
       document: generateReferatDocument(values),
       andreDeltakere: values.andreDeltakere || [],
@@ -132,7 +137,7 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
             <ReferatWarningAlert type="advarsel">
               {texts.digitalReferat}
             </ReferatWarningAlert>
-            <Deltakere />
+            <Deltakere behandler={dialogmote.behandler} />
             <ReferatWarningAlert type="advarsel">
               {texts.personvern}
             </ReferatWarningAlert>
@@ -140,6 +145,7 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
             <Konklusjon />
             <ArbeidstakersOppgave />
             <ArbeidsgiversOppgave />
+            {dialogmote.behandler && <BehandlersOppgave />}
             <VeiledersOppgave />
             <StandardTekster />
             {ferdigstillDialogmote.isError && (

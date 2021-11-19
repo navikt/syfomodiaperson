@@ -35,6 +35,7 @@ export interface NewDialogmoteReferatDTO {
   konklusjon: string;
   arbeidstakerOppgave: string;
   arbeidsgiverOppgave: string;
+  behandlerOppgave?: string;
   veilederOppgave?: string;
   document: DocumentComponentDto[];
   andreDeltakere: NewDialogmotedeltakerAnnenDTO[];

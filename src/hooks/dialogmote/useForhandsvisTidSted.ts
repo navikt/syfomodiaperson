@@ -19,8 +19,8 @@ import {
   DialogmotedeltakerBehandlerDTO,
   DocumentComponentDto,
 } from "@/data/dialogmote/types/dialogmoteTypes";
-import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
 import { useForhandsvisningIntro } from "@/hooks/dialogmote/useForhandsvisningIntro";
+import { behandlerDeltakerTekst } from "@/utils/behandlerUtils";
 
 export interface ForhandsvisTidStedGenerator {
   generateArbeidsgiverTidStedDocument(
@@ -194,7 +194,5 @@ const addBehandlerTypeAndName = (
   preText: string,
   behandler: DialogmotedeltakerBehandlerDTO
 ) => {
-  return `${preText} ${capitalizeFoersteBokstav(
-    behandler.behandlerType.toLowerCase()
-  )} ${behandler.behandlerNavn}.`;
+  return `${behandlerDeltakerTekst(preText, behandler)}.`;
 };

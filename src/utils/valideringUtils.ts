@@ -8,6 +8,7 @@ import { MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE } from "@/components/dialogmote/refera
 import { MAX_LENGTH_VEILEDERS_OPPGAVE } from "@/components/dialogmote/referat/VeiledersOppgave";
 import { MAX_LENGTH_INNKALLING_FRITEKST } from "@/components/dialogmote/innkalling/DialogmoteInnkallingTekster";
 import { genererDato } from "@/components/mote/utils";
+import { MAX_LENGTH_BEHANDLERS_OPPGAVE } from "@/components/dialogmote/referat/BehandlersOppgave";
 
 export interface SkjemaFeil {
   [key: string]: string | undefined;
@@ -229,6 +230,11 @@ export const validerReferatTekster = (
       values.veiledersOppgave,
       false,
       MAX_LENGTH_VEILEDERS_OPPGAVE
+    ),
+    behandlersOppgave: validerFritekst(
+      values.behandlersOppgave,
+      false,
+      MAX_LENGTH_BEHANDLERS_OPPGAVE
     ),
   };
 };
