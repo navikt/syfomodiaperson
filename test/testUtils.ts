@@ -27,3 +27,7 @@ export const assertFeilmelding = (
   feilmeldinger: ReactWrapper<any, any>,
   msg: string
 ) => expect(feilmeldinger.someWhere((feil) => feil.text() === msg)).to.be.true;
+
+export const maxLengthErrorMessage = (max: number) =>
+  `Maks ${max} tegn tillatt`;
+export const getTooLongText = (max: number) => "t".repeat(max + 1);

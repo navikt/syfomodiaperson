@@ -7,8 +7,6 @@ import { rootReducer } from "@/data/rootState";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import DialogmoteInnkallingSkjema from "@/components/dialogmote/innkalling/DialogmoteInnkallingSkjema";
-import { leggTilDagerPaDato, toDatePrettyPrint } from "@/utils/datoUtils";
-import { InputDateStringToISODateString } from "nav-datovelger/lib/utils/dateFormatUtils";
 import { Feilmelding } from "nav-frontend-typografi";
 import { Feiloppsummering } from "nav-frontend-skjema";
 import { Hovedknapp } from "nav-frontend-knapper";
@@ -28,55 +26,19 @@ import {
   expectedArbeidstakerInnkalling,
   fritekstTilArbeidsgiver,
   fritekstTilArbeidstaker,
+  mockState,
+  moteDato,
+  moteDatoTid,
+  moteKlokkeslett,
+  moteSted,
+  moteVideoLink,
   navEnhet,
   veileder,
 } from "../testData";
-import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 
 const realState = createStore(rootReducer).getState();
-const moteSted = "Møtested";
-const moteDato = toDatePrettyPrint(leggTilDagerPaDato(new Date(), 1)) as string;
-const moteDatoAsISODateString = InputDateStringToISODateString(moteDato);
-const moteKlokkeslett = "08:00";
-const moteDatoTid = `${moteDatoAsISODateString}T${moteKlokkeslett}:00`;
-const moteVideoLink = "https://video.nav.no";
 const store = configureStore([]);
-const mockState = {
-  navbruker: {
-    data: {
-      navn: arbeidstaker.navn,
-      kontaktinfo: {
-        fnr: arbeidstaker.personident,
-      },
-    },
-  },
-  enhet: {
-    valgtEnhet: navEnhet,
-  },
-  valgtbruker: {
-    personident: arbeidstaker.personident,
-  },
-  ledere: {
-    currentLedere: [
-      {
-        uuid: "3",
-        arbeidstakerPersonIdentNumber: "19026900010",
-        virksomhetsnummer: "110110110",
-        virksomhetsnavn: "PONTYPANDY FIRE SERVICE",
-        narmesteLederPersonIdentNumber: "02690001009",
-        narmesteLederTelefonnummer: "12345666",
-        narmesteLederEpost: "test3@test.no",
-        narmesteLederNavn: "Tatten Tattover",
-        aktivFom: new Date(),
-        aktivTom: null,
-        arbeidsgiverForskutterer: false,
-        timestamp: "2020-02-06T12:00:00+01:00",
-        status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
-      },
-    ],
-  },
-};
 let queryClient;
 
 describe("DialogmoteInnkallingSkjema", () => {

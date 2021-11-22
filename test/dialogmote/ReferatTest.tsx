@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import React from "react";
 import Referat, {
   texts as referatSkjemaTexts,
+  valideringsTexts as referatSkjemaValideringsTexts,
 } from "../../src/components/dialogmote/referat/Referat";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
@@ -22,6 +23,7 @@ import {
   assertFeilmelding,
   changeFieldValue,
   changeTextAreaValue,
+  getTooLongText,
 } from "../testUtils";
 import { commonTexts, referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { tilDatoMedUkedagOgManedNavn } from "@/utils/datoUtils";
@@ -48,6 +50,12 @@ import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { capitalizeWord } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
+import { MAX_LENGTH_SITUASJON } from "@/components/dialogmote/referat/Situasjon";
+import { MAX_LENGTH_KONKLUSJON } from "@/components/dialogmote/referat/Konklusjon";
+import { MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE } from "@/components/dialogmote/referat/ArbeidstakersOppgave";
+import { MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE } from "@/components/dialogmote/referat/ArbeidsgiversOppgave";
+import { MAX_LENGTH_VEILEDERS_OPPGAVE } from "@/components/dialogmote/referat/VeiledersOppgave";
+import { MAX_LENGTH_BEHANDLERS_OPPGAVE } from "@/components/dialogmote/referat/BehandlersOppgave";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -168,10 +176,16 @@ describe("ReferatTest", () => {
 
     // Feilmeldinger i skjema
     const feil = wrapper.find(Feilmelding);
-    assertFeilmelding(feil, valideringsTexts.situasjonMissing);
-    assertFeilmelding(feil, valideringsTexts.konklusjonMissing);
-    assertFeilmelding(feil, valideringsTexts.arbeidstakersOppgaveMissing);
-    assertFeilmelding(feil, valideringsTexts.arbeidsgiversOppgaveMissing);
+    assertFeilmelding(feil, referatSkjemaValideringsTexts.situasjonMissing);
+    assertFeilmelding(feil, referatSkjemaValideringsTexts.konklusjonMissing);
+    assertFeilmelding(
+      feil,
+      referatSkjemaValideringsTexts.arbeidstakersOppgaveMissing
+    );
+    assertFeilmelding(
+      feil,
+      referatSkjemaValideringsTexts.arbeidsgiversOppgaveMissing
+    );
 
     // Feilmelding i oppsummering
     const feiloppsummering = wrapper.find(Feiloppsummering);
@@ -179,16 +193,16 @@ describe("ReferatTest", () => {
       skjemaFeilOppsummeringTexts.title
     );
     expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.situasjonMissing
+      referatSkjemaValideringsTexts.situasjonMissing
     );
     expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.konklusjonMissing
+      referatSkjemaValideringsTexts.konklusjonMissing
     );
     expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.arbeidstakersOppgaveMissing
+      referatSkjemaValideringsTexts.arbeidstakersOppgaveMissing
     );
     expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.arbeidsgiversOppgaveMissing
+      referatSkjemaValideringsTexts.arbeidsgiversOppgaveMissing
     );
   });
 
@@ -224,6 +238,63 @@ describe("ReferatTest", () => {
     );
     expect(feiloppsummering().text()).not.to.contain(
       valideringsTexts.andreDeltakereMissingFunksjon
+    );
+  });
+
+  it("validerer maks lengde på fritekstfelter", () => {
+    const wrapper = mountReferat(dialogmoteMedBehandler);
+
+    changeTextAreaValue(wrapper, "situasjon", situasjonTekst);
+    changeTextAreaValue(wrapper, "konklusjon", konklusjonTekst);
+    changeTextAreaValue(wrapper, "arbeidstakersOppgave", arbeidstakersOppgave);
+    changeTextAreaValue(wrapper, "arbeidsgiversOppgave", arbeidsgiversOppgave);
+    changeTextAreaValue(wrapper, "veiledersOppgave", veiledersOppgave);
+    changeTextAreaValue(wrapper, "behandlersOppgave", behandlersOppgave);
+    wrapper.find("form").simulate("submit");
+
+    let maxLengthFeilmeldinger = wrapper
+      .find(Feilmelding)
+      .filterWhere((feil) => feil.text().includes("tegn tillatt"));
+    expect(maxLengthFeilmeldinger).to.have.length(0);
+
+    changeTextAreaValue(
+      wrapper,
+      "situasjon",
+      getTooLongText(MAX_LENGTH_SITUASJON)
+    );
+    changeTextAreaValue(
+      wrapper,
+      "konklusjon",
+      getTooLongText(MAX_LENGTH_KONKLUSJON)
+    );
+    changeTextAreaValue(
+      wrapper,
+      "arbeidstakersOppgave",
+      getTooLongText(MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE)
+    );
+    changeTextAreaValue(
+      wrapper,
+      "arbeidsgiversOppgave",
+      getTooLongText(MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE)
+    );
+    changeTextAreaValue(
+      wrapper,
+      "veiledersOppgave",
+      getTooLongText(MAX_LENGTH_VEILEDERS_OPPGAVE)
+    );
+    changeTextAreaValue(
+      wrapper,
+      "behandlersOppgave",
+      getTooLongText(MAX_LENGTH_BEHANDLERS_OPPGAVE)
+    );
+    wrapper.find("form").simulate("submit");
+
+    maxLengthFeilmeldinger = wrapper
+      .find(Feilmelding)
+      .filterWhere((feil) => feil.text().includes("tegn tillatt"));
+    expect(maxLengthFeilmeldinger).to.have.length(
+      6,
+      "Validerer maks lengde på alle fritekstfelter"
     );
   });
 

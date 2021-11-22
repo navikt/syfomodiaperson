@@ -41,14 +41,6 @@ export const veileder: Partial<VeilederinfoDTO> = {
   epost: "vetle.veileder@nav.no",
   telefonnummer: "12345678",
 };
-export const behandlere: BehandlerDialogmeldingDTO[] = [
-  {
-    type: BehandlerType.FASTLEGE,
-    behandlerRef: "123",
-    fornavn: "Dorte",
-    etternavn: "Doktorsen",
-  },
-];
 
 export const behandler: BehandlerDialogmeldingDTO = {
   behandlerRef: "behandler-ref-uuid",
@@ -172,18 +164,36 @@ export const mockStateBehandler = {
   },
 };
 
+export const moteSted = "Møtested";
+export const moteDato = toDatePrettyPrint(
+  leggTilDagerPaDato(new Date(), 1)
+) as string;
+export const moteDatoAsISODateString = InputDateStringToISODateString(moteDato);
+export const moteKlokkeslett = "08:00";
+export const moteDatoTid = `${moteDatoAsISODateString}T${moteKlokkeslett}:00`;
+export const moteVideoLink = "https://video.nav.no";
+
 export const fritekstTilBehandler = "Noe fritekst til behandler";
 
 export const expectedBehandlerInnkalling = [
   {
-    texts: [""],
+    texts: [
+      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
+        genererDato(moteDatoAsISODateString, moteKlokkeslett)
+      ),
+    ],
     title: innkallingTexts.moteTidTitle,
     type: "PARAGRAPH",
   },
   {
-    texts: [""],
+    texts: [moteSted],
     title: innkallingTexts.moteStedTitle,
     type: "PARAGRAPH",
+  },
+  {
+    texts: [moteVideoLink],
+    title: innkallingTexts.videoLinkTitle,
+    type: "LINK",
   },
   {
     texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
@@ -218,15 +228,6 @@ export const expectedBehandlerInnkalling = [
     type: "PARAGRAPH",
   },
 ];
-
-export const moteSted = "Møtested";
-export const moteDato = toDatePrettyPrint(
-  leggTilDagerPaDato(new Date(), 1)
-) as string;
-export const moteDatoAsISODateString = InputDateStringToISODateString(moteDato);
-export const moteKlokkeslett = "08:00";
-export const moteDatoTid = `${moteDatoAsISODateString}T${moteKlokkeslett}:00`;
-export const moteVideoLink = "https://video.nav.no";
 export const fritekstTilArbeidstaker = "Noe fritekst til arbeidstaker";
 export const expectedArbeidstakerInnkalling = [
   {

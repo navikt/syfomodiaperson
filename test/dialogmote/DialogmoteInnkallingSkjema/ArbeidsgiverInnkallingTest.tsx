@@ -3,7 +3,6 @@ import { expect } from "chai";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import {
-  arbeidsgiver,
   arbeidstaker,
   behandlendeEnhet,
   expectedArbeidsgiverInnkalling,

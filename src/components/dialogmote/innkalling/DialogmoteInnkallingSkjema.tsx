@@ -2,11 +2,13 @@ import React, { ReactElement, useState } from "react";
 import Panel from "nav-frontend-paneler";
 import DialogmoteInnkallingVelgArbeidsgiver from "./DialogmoteInnkallingVelgArbeidsgiver";
 import DialogmoteTidOgSted from "../DialogmoteTidOgSted";
-import DialogmoteInnkallingTekster from "./DialogmoteInnkallingTekster";
+import DialogmoteInnkallingTekster, {
+  MAX_LENGTH_INNKALLING_FRITEKST,
+} from "./DialogmoteInnkallingTekster";
 import { Form } from "react-final-form";
 import {
   validerArbeidsgiver,
-  validerInnkallingFritekster,
+  validerSkjemaTekster,
   validerSted,
   validerTidspunkt,
   validerVideoLink,
@@ -34,15 +36,19 @@ import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
 import styled from "styled-components";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 
-export interface DialogmoteInnkallingSkjemaValues {
+interface DialogmoteInnkallingSkjemaTekster {
+  fritekstArbeidsgiver: string;
+  fritekstArbeidstaker: string;
+  fritekstBehandler?: string;
+}
+
+export interface DialogmoteInnkallingSkjemaValues
+  extends DialogmoteInnkallingSkjemaTekster {
   arbeidsgiver: string;
   klokkeslett: string;
   dato: string;
   sted: string;
   videoLink?: string;
-  fritekstArbeidsgiver?: string;
-  fritekstArbeidstaker?: string;
-  fritekstBehandler?: string;
 }
 
 interface DialogmoteInnkallingSkjemaProps {
@@ -128,6 +134,27 @@ const DialogmoteInnkallingSkjema = ({
   const validate = (
     values: Partial<DialogmoteInnkallingSkjemaValues>
   ): DialogmoteInnkallingSkjemaFeil => {
+    const friteksterFeil = validerSkjemaTekster<DialogmoteInnkallingSkjemaTekster>(
+      {
+        fritekstArbeidsgiver: {
+          maxLength: MAX_LENGTH_INNKALLING_FRITEKST,
+          value: values.fritekstArbeidsgiver || "",
+        },
+        fritekstArbeidstaker: {
+          maxLength: MAX_LENGTH_INNKALLING_FRITEKST,
+          value: values.fritekstArbeidstaker || "",
+        },
+        ...(selectedBehandler
+          ? {
+              fritekstBehandler: {
+                maxLength: MAX_LENGTH_INNKALLING_FRITEKST,
+                value: values.fritekstBehandler || "",
+              },
+            }
+          : {}),
+      }
+    );
+
     const feilmeldinger: DialogmoteInnkallingSkjemaFeil = {
       arbeidsgiver: validerArbeidsgiver(values.arbeidsgiver),
       ...validerTidspunkt({
@@ -135,10 +162,7 @@ const DialogmoteInnkallingSkjema = ({
         klokkeslett: values.klokkeslett,
       }),
       sted: validerSted(values.sted),
-      ...validerInnkallingFritekster({
-        fritekstArbeidstaker: values.fritekstArbeidstaker,
-        fritekstArbeidsgiver: values.fritekstArbeidsgiver,
-      }),
+      ...friteksterFeil,
       videoLink: validerVideoLink(values.videoLink),
     };
 

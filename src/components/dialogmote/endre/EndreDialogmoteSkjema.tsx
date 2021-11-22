@@ -10,7 +10,6 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { Form } from "react-final-form";
 import {
   validerBegrunnelser,
-  validerBegrunnelserIncludingBehandler,
   validerSted,
   validerTidspunkt,
   validerVideoLink,
@@ -44,14 +43,17 @@ const SendButton = styled(TrackedHovedknapp)`
   margin-right: 0.5rem;
 `;
 
-export interface EndreTidStedSkjemaValues {
+interface EndreTidStedSkjemaTekster {
+  begrunnelseArbeidsgiver: string;
+  begrunnelseArbeidstaker: string;
+  begrunnelseBehandler?: string;
+}
+
+export interface EndreTidStedSkjemaValues extends EndreTidStedSkjemaTekster {
   klokkeslett: string;
   dato: string;
   sted: string;
   videoLink?: string;
-  begrunnelseArbeidsgiver: string;
-  begrunnelseArbeidstaker: string;
-  begrunnelseBehandler: string;
 }
 
 type EndreTidStedDialogmoteSkjemaFeil = Partial<
@@ -105,12 +107,11 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
   const validate = (
     values: Partial<EndreTidStedSkjemaValues>
   ): EndreTidStedDialogmoteSkjemaFeil => {
-    const begrunnelserFeil = dialogmote.behandler
-      ? validerBegrunnelserIncludingBehandler(
-          values,
-          MAX_LENGTH_ENDRE_BEGRUNNELSE
-        )
-      : validerBegrunnelser(values, MAX_LENGTH_ENDRE_BEGRUNNELSE);
+    const begrunnelserFeil = validerBegrunnelser(
+      values,
+      MAX_LENGTH_ENDRE_BEGRUNNELSE,
+      !!dialogmote.behandler
+    );
 
     const feilmeldinger: EndreTidStedDialogmoteSkjemaFeil = {
       ...validerTidspunkt({
@@ -144,7 +145,7 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
     };
     if (dialogmote.behandler) {
       endreTidStedDto.behandler = {
-        begrunnelse: values.begrunnelseBehandler,
+        begrunnelse: values.begrunnelseBehandler || "",
         endringsdokument: generateBehandlerTidStedDocument(values),
       };
     }

@@ -4,6 +4,7 @@ import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
 import React from "react";
+import { texts as valideringsTexts } from "@/utils/valideringUtils";
 import EndreDialogmoteSkjema from "@/components/dialogmote/endre/EndreDialogmoteSkjema";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
@@ -14,8 +15,9 @@ import {
   assertFeilmelding,
   changeFieldValue,
   changeTextAreaValue,
+  getTooLongText,
+  maxLengthErrorMessage,
 } from "../testUtils";
-import { texts as valideringsTexts } from "@/utils/valideringUtils";
 import { Feiloppsummering } from "nav-frontend-skjema";
 import { expect } from "chai";
 import { texts as skjemaFeilOppsummeringTexts } from "@/components/SkjemaFeiloppsummering";
@@ -30,7 +32,10 @@ import { apiMock } from "../stubs/stubApi";
 import { stubEndreApi } from "../stubs/stubIsdialogmote";
 import { InputDateStringToISODateString } from "nav-datovelger/lib/utils/dateFormatUtils";
 import { Forhandsvisning } from "@/components/dialogmote/Forhandsvisning";
-import { texts as endringSkjemaTexts } from "../../src/components/dialogmote/endre/EndreDialogmoteTekster";
+import {
+  MAX_LENGTH_ENDRE_BEGRUNNELSE,
+  texts as endringSkjemaTexts,
+} from "../../src/components/dialogmote/endre/EndreDialogmoteTekster";
 import Lukknapp from "nav-frontend-lukknapp";
 import {
   arbeidstaker,
@@ -38,6 +43,10 @@ import {
   behandler,
   dialogmote,
   dialogmoteMedBehandler,
+  fritekstTilArbeidsgiver,
+  fritekstTilArbeidstaker,
+  fritekstTilBehandler,
+  mockState,
   navEnhet,
   veileder,
 } from "./testData";
@@ -50,22 +59,6 @@ import { capitalizeWord } from "@/utils/stringUtils";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
-const mockState = {
-  navbruker: {
-    data: {
-      navn: arbeidstaker.navn,
-      kontaktinfo: {
-        fnr: arbeidstaker.personident,
-      },
-    },
-  },
-  valgtbruker: {
-    personident: arbeidstaker.personident,
-  },
-};
-const tekstTilArbeidstaker = "Noe tekst til arbeidstaker";
-const tekstTilArbeidsgiver = "Noe tekst til arbeidsgiver";
-const tekstTilBehandler = "Noe tekst til behandler";
 const nyDato = toDatePrettyPrint(leggTilDagerPaDato(new Date(), 1)) as string;
 const moteKlokkeslett = "09:00";
 const nyDatoAsISODateString = InputDateStringToISODateString(nyDato);
@@ -185,12 +178,12 @@ describe("EndreDialogmoteSkjemaTest", () => {
     changeTextAreaValue(
       wrapper,
       "begrunnelseArbeidsgiver",
-      tekstTilArbeidsgiver
+      fritekstTilArbeidsgiver
     );
     changeTextAreaValue(
       wrapper,
       "begrunnelseArbeidstaker",
-      tekstTilArbeidstaker
+      fritekstTilArbeidstaker
     );
 
     // Feilmeldinger og feiloppsummering forsvinner
@@ -208,6 +201,45 @@ describe("EndreDialogmoteSkjemaTest", () => {
     wrapper.find(Hovedknapp).simulate("click");
     expect(wrapper.find(Feiloppsummering)).to.have.length(1);
   });
+  it("validerer maks lengde på begrunnelser", () => {
+    const tooLongFritekst = getTooLongText(MAX_LENGTH_ENDRE_BEGRUNNELSE);
+    const maxLengthErrorMsg = maxLengthErrorMessage(
+      MAX_LENGTH_ENDRE_BEGRUNNELSE
+    );
+    const wrapper = mountEndreDialogmoteSkjema(dialogmoteMedBehandler);
+
+    changeTextAreaValue(
+      wrapper,
+      "begrunnelseArbeidsgiver",
+      fritekstTilArbeidsgiver
+    );
+    changeTextAreaValue(
+      wrapper,
+      "begrunnelseArbeidstaker",
+      fritekstTilArbeidstaker
+    );
+    changeTextAreaValue(wrapper, "begrunnelseBehandler", fritekstTilBehandler);
+
+    wrapper.find("form").simulate("submit");
+
+    let maxLengthFeilmeldinger = wrapper
+      .find(Feilmelding)
+      .filterWhere((feil) => feil.text() === maxLengthErrorMsg);
+    expect(maxLengthFeilmeldinger).to.have.length(0);
+
+    changeTextAreaValue(wrapper, "begrunnelseArbeidsgiver", tooLongFritekst);
+    changeTextAreaValue(wrapper, "begrunnelseArbeidstaker", tooLongFritekst);
+    changeTextAreaValue(wrapper, "begrunnelseBehandler", tooLongFritekst);
+    wrapper.find("form").simulate("submit");
+
+    maxLengthFeilmeldinger = wrapper
+      .find(Feilmelding)
+      .filterWhere((feil) => feil.text() === maxLengthErrorMsg);
+    expect(maxLengthFeilmeldinger).to.have.length(
+      3,
+      "Validerer maks lengde på alle begrunnelser"
+    );
+  });
   it("endrer møte ved submit", () => {
     stubEndreApi(apiMock(), dialogmote.uuid);
     const wrapper = mountEndreDialogmoteSkjema(dialogmote);
@@ -223,12 +255,12 @@ describe("EndreDialogmoteSkjemaTest", () => {
     changeTextAreaValue(
       wrapper,
       "begrunnelseArbeidsgiver",
-      tekstTilArbeidsgiver
+      fritekstTilArbeidsgiver
     );
     changeTextAreaValue(
       wrapper,
       "begrunnelseArbeidstaker",
-      tekstTilArbeidstaker
+      fritekstTilArbeidstaker
     );
     changeFieldValue(stedInput, nyttSted);
     changeFieldValue(videoLinkInput, nyVideolink);
@@ -238,11 +270,11 @@ describe("EndreDialogmoteSkjemaTest", () => {
     const endreMutation = queryClient.getMutationCache().getAll()[0];
     const expectedEndring = {
       arbeidsgiver: {
-        begrunnelse: tekstTilArbeidsgiver,
+        begrunnelse: fritekstTilArbeidsgiver,
         endringsdokument: expectedArbeidsgiverEndringsdokument(),
       },
       arbeidstaker: {
-        begrunnelse: tekstTilArbeidstaker,
+        begrunnelse: fritekstTilArbeidstaker,
         endringsdokument: expectedArbeidstakerEndringsdokument(),
       },
       videoLink: nyVideolink,
@@ -266,14 +298,14 @@ describe("EndreDialogmoteSkjemaTest", () => {
     changeTextAreaValue(
       wrapper,
       "begrunnelseArbeidsgiver",
-      tekstTilArbeidsgiver
+      fritekstTilArbeidsgiver
     );
     changeTextAreaValue(
       wrapper,
       "begrunnelseArbeidstaker",
-      tekstTilArbeidstaker
+      fritekstTilArbeidstaker
     );
-    changeTextAreaValue(wrapper, "begrunnelseBehandler", tekstTilBehandler);
+    changeTextAreaValue(wrapper, "begrunnelseBehandler", fritekstTilBehandler);
     changeFieldValue(stedInput, nyttSted);
     changeFieldValue(videoLinkInput, nyVideolink);
 
@@ -282,15 +314,15 @@ describe("EndreDialogmoteSkjemaTest", () => {
     const endreMutation = queryClient.getMutationCache().getAll()[0];
     const expectedEndring = {
       arbeidsgiver: {
-        begrunnelse: tekstTilArbeidsgiver,
+        begrunnelse: fritekstTilArbeidsgiver,
         endringsdokument: expectedArbeidsgiverEndringsdokument(true),
       },
       arbeidstaker: {
-        begrunnelse: tekstTilArbeidstaker,
+        begrunnelse: fritekstTilArbeidstaker,
         endringsdokument: expectedArbeidstakerEndringsdokument(true),
       },
       behandler: {
-        begrunnelse: tekstTilBehandler,
+        begrunnelse: fritekstTilBehandler,
         endringsdokument: expectedBehandlerEndringsdokument,
       },
       videoLink: nyVideolink,
@@ -313,12 +345,12 @@ describe("EndreDialogmoteSkjemaTest", () => {
     changeTextAreaValue(
       wrapper,
       "begrunnelseArbeidsgiver",
-      tekstTilArbeidsgiver
+      fritekstTilArbeidsgiver
     );
     changeTextAreaValue(
       wrapper,
       "begrunnelseArbeidstaker",
-      tekstTilArbeidstaker
+      fritekstTilArbeidstaker
     );
     changeFieldValue(stedInput, nyttSted);
     changeFieldValue(videoLinkInput, nyVideolink);
@@ -390,7 +422,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
     const datoVelger = wrapper.find("ForwardRef(DateInput)");
     changeFieldValue(datoVelger, nyDato);
     datoVelger.simulate("blur");
-    changeTextAreaValue(wrapper, "begrunnelseBehandler", tekstTilBehandler);
+    changeTextAreaValue(wrapper, "begrunnelseBehandler", fritekstTilBehandler);
     changeFieldValue(stedInput, nyttSted);
     changeFieldValue(videoLinkInput, nyVideolink);
 
@@ -467,7 +499,7 @@ const expectedArbeidsgiverEndringsdokument = (medBehandler = false) => [
     type: "LINK",
   },
   {
-    texts: [tekstTilArbeidsgiver],
+    texts: [fritekstTilArbeidsgiver],
     type: "PARAGRAPH",
   },
   {
@@ -545,7 +577,7 @@ const expectedArbeidstakerEndringsdokument = (medBehandler = false) => [
     type: "LINK",
   },
   {
-    texts: [tekstTilArbeidstaker],
+    texts: [fritekstTilArbeidstaker],
     type: "PARAGRAPH",
   },
   {
@@ -619,7 +651,7 @@ const expectedBehandlerEndringsdokument = [
     type: "LINK",
   },
   {
-    texts: [tekstTilBehandler],
+    texts: [fritekstTilBehandler],
     type: "PARAGRAPH",
   },
   {
