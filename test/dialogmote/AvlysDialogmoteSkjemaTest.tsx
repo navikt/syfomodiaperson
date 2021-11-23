@@ -10,15 +10,21 @@ import { Feilmelding } from "nav-frontend-typografi";
 import { Feiloppsummering } from "nav-frontend-skjema";
 import { Hovedknapp, Knapp } from "nav-frontend-knapper";
 import AvlysDialogmoteSkjema, {
+  MAX_LENGTH_AVLYS_BEGRUNNELSE,
   texts as avlysningSkjemaTexts,
 } from "../../src/components/dialogmote/avlys/AvlysDialogmoteSkjema";
+import { texts as valideringsTexts } from "@/utils/valideringUtils";
 import { texts as skjemaFeilOppsummeringTexts } from "../../src/components/SkjemaFeiloppsummering";
-import { texts as valideringsTexts } from "../../src/utils/valideringUtils";
 import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
 import { avlysningTexts, commonTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { Forhandsvisning } from "@/components/dialogmote/Forhandsvisning";
 import Lukknapp from "nav-frontend-lukknapp";
-import { assertFeilmelding, changeTextAreaValue } from "../testUtils";
+import {
+  assertFeilmelding,
+  changeTextAreaValue,
+  getTooLongText,
+  maxLengthErrorMessage,
+} from "../testUtils";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
@@ -29,6 +35,10 @@ import {
   behandlendeEnhet,
   dialogmote,
   dialogmoteMedBehandler,
+  fritekstTilArbeidsgiver,
+  fritekstTilArbeidstaker,
+  fritekstTilBehandler,
+  mockState,
   navEnhet,
   veileder,
 } from "./testData";
@@ -37,23 +47,6 @@ import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
-
-const mockState = {
-  navbruker: {
-    data: {
-      navn: arbeidstaker.navn,
-      kontaktinfo: {
-        fnr: arbeidstaker.personident,
-      },
-    },
-  },
-  valgtbruker: {
-    personident: arbeidstaker.personident,
-  },
-};
-const tekstTilArbeidstaker = "Noe tekst til arbeidstaker";
-const tekstTilArbeidsgiver = "Noe tekst til arbeidsgiver";
-const tekstTilBehandler = "Noe tekst til behandler";
 
 let queryClient;
 
@@ -156,12 +149,12 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     changeTextAreaValue(
       wrapper,
       "begrunnelseArbeidsgiver",
-      tekstTilArbeidsgiver
+      fritekstTilArbeidsgiver
     );
     changeTextAreaValue(
       wrapper,
       "begrunnelseArbeidstaker",
-      tekstTilArbeidstaker
+      fritekstTilArbeidstaker
     );
 
     // Feilmeldinger og feiloppsummering forsvinner
@@ -179,6 +172,45 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     wrapper.find(Hovedknapp).simulate("click");
     expect(wrapper.find(Feiloppsummering)).to.have.length(1);
   });
+  it("validerer maks lengde på begrunnelser", () => {
+    const tooLongFritekst = getTooLongText(MAX_LENGTH_AVLYS_BEGRUNNELSE);
+    const maxLengthErrorMsg = maxLengthErrorMessage(
+      MAX_LENGTH_AVLYS_BEGRUNNELSE
+    );
+    const wrapper = mountAvlysDialogmoteSkjema(dialogmoteMedBehandler);
+
+    changeTextAreaValue(
+      wrapper,
+      "begrunnelseArbeidsgiver",
+      fritekstTilArbeidsgiver
+    );
+    changeTextAreaValue(
+      wrapper,
+      "begrunnelseArbeidstaker",
+      fritekstTilArbeidstaker
+    );
+    changeTextAreaValue(wrapper, "begrunnelseBehandler", fritekstTilBehandler);
+
+    wrapper.find("form").simulate("submit");
+
+    let maxLengthFeilmeldinger = wrapper
+      .find(Feilmelding)
+      .filterWhere((feil) => feil.text() === maxLengthErrorMsg);
+    expect(maxLengthFeilmeldinger).to.have.length(0);
+
+    changeTextAreaValue(wrapper, "begrunnelseArbeidsgiver", tooLongFritekst);
+    changeTextAreaValue(wrapper, "begrunnelseArbeidstaker", tooLongFritekst);
+    changeTextAreaValue(wrapper, "begrunnelseBehandler", tooLongFritekst);
+    wrapper.find("form").simulate("submit");
+
+    maxLengthFeilmeldinger = wrapper
+      .find(Feilmelding)
+      .filterWhere((feil) => feil.text() === maxLengthErrorMsg);
+    expect(maxLengthFeilmeldinger).to.have.length(
+      3,
+      "Validerer maks lengde på alle begrunnelser"
+    );
+  });
   it("avlyser møte ved submit", () => {
     stubAvlysApi(apiMock(), dialogmote.uuid);
     const wrapper = mountAvlysDialogmoteSkjema(dialogmote);
@@ -186,12 +218,12 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     changeTextAreaValue(
       wrapper,
       "begrunnelseArbeidsgiver",
-      tekstTilArbeidsgiver
+      fritekstTilArbeidsgiver
     );
     changeTextAreaValue(
       wrapper,
       "begrunnelseArbeidstaker",
-      tekstTilArbeidstaker
+      fritekstTilArbeidstaker
     );
 
     wrapper.find("form").simulate("submit");
@@ -200,11 +232,11 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     const expectedAvlysning = {
       arbeidsgiver: {
         avlysning: expectedAvlysningArbeidsgiver,
-        begrunnelse: tekstTilArbeidsgiver,
+        begrunnelse: fritekstTilArbeidsgiver,
       },
       arbeidstaker: {
         avlysning: expectedAvlysningArbeidstaker,
-        begrunnelse: tekstTilArbeidstaker,
+        begrunnelse: fritekstTilArbeidstaker,
       },
     };
     expect(avlysMutation.options.variables).to.deep.equal(expectedAvlysning);
@@ -216,14 +248,14 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     changeTextAreaValue(
       wrapper,
       "begrunnelseArbeidsgiver",
-      tekstTilArbeidsgiver
+      fritekstTilArbeidsgiver
     );
     changeTextAreaValue(
       wrapper,
       "begrunnelseArbeidstaker",
-      tekstTilArbeidstaker
+      fritekstTilArbeidstaker
     );
-    changeTextAreaValue(wrapper, "begrunnelseBehandler", tekstTilBehandler);
+    changeTextAreaValue(wrapper, "begrunnelseBehandler", fritekstTilBehandler);
 
     wrapper.find("form").simulate("submit");
 
@@ -231,15 +263,15 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     const expectedAvlysning = {
       arbeidsgiver: {
         avlysning: expectedAvlysningArbeidsgiver,
-        begrunnelse: tekstTilArbeidsgiver,
+        begrunnelse: fritekstTilArbeidsgiver,
       },
       arbeidstaker: {
         avlysning: expectedAvlysningArbeidstaker,
-        begrunnelse: tekstTilArbeidstaker,
+        begrunnelse: fritekstTilArbeidstaker,
       },
       behandler: {
         avlysning: expectedAvlysningBehandler,
-        begrunnelse: tekstTilBehandler,
+        begrunnelse: fritekstTilBehandler,
       },
     };
     expect(avlysMutation.options.variables).to.deep.equal(expectedAvlysning);
@@ -250,12 +282,12 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     changeTextAreaValue(
       wrapper,
       "begrunnelseArbeidsgiver",
-      tekstTilArbeidsgiver
+      fritekstTilArbeidsgiver
     );
     changeTextAreaValue(
       wrapper,
       "begrunnelseArbeidstaker",
-      tekstTilArbeidstaker
+      fritekstTilArbeidstaker
     );
 
     let forhandsvisningModaler = wrapper.find(Forhandsvisning);
@@ -316,7 +348,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
   it("forhåndsviser avlysning til behandler når behandler er med", () => {
     const wrapper = mountAvlysDialogmoteSkjema(dialogmoteMedBehandler);
 
-    changeTextAreaValue(wrapper, "begrunnelseBehandler", tekstTilBehandler);
+    changeTextAreaValue(wrapper, "begrunnelseBehandler", fritekstTilBehandler);
 
     // Forhåndsvis avlysning til behandler og sjekk at modal vises med riktig tittel
     const previewButtons = wrapper.find(Knapp);
@@ -366,7 +398,7 @@ const expectedAvlysningArbeidsgiver = [
     type: "PARAGRAPH",
   },
   {
-    texts: [tekstTilArbeidsgiver],
+    texts: [fritekstTilArbeidsgiver],
     type: "PARAGRAPH",
   },
   {
@@ -392,7 +424,7 @@ const expectedAvlysningArbeidstaker = [
     type: "PARAGRAPH",
   },
   {
-    texts: [tekstTilArbeidstaker],
+    texts: [fritekstTilArbeidstaker],
     type: "PARAGRAPH",
   },
   {
@@ -419,7 +451,7 @@ const expectedAvlysningBehandler = [
     type: "PARAGRAPH",
   },
   {
-    texts: [tekstTilBehandler],
+    texts: [fritekstTilBehandler],
     type: "PARAGRAPH",
   },
   {

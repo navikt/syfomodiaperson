@@ -10,15 +10,24 @@ import { AlertstripeFullbredde } from "../../AlertstripeFullbredde";
 import ReferatButtons from "./ReferatButtons";
 import { Innholdstittel } from "nav-frontend-typografi";
 import styled from "styled-components";
-import { Situasjon } from "./Situasjon";
-import { Konklusjon } from "./Konklusjon";
-import { ArbeidstakersOppgave } from "./ArbeidstakersOppgave";
-import { ArbeidsgiversOppgave } from "./ArbeidsgiversOppgave";
-import { VeiledersOppgave } from "./VeiledersOppgave";
+import { MAX_LENGTH_SITUASJON, Situasjon } from "./Situasjon";
+import { Konklusjon, MAX_LENGTH_KONKLUSJON } from "./Konklusjon";
+import {
+  ArbeidstakersOppgave,
+  MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE,
+} from "./ArbeidstakersOppgave";
+import {
+  ArbeidsgiversOppgave,
+  MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE,
+} from "./ArbeidsgiversOppgave";
+import {
+  MAX_LENGTH_VEILEDERS_OPPGAVE,
+  VeiledersOppgave,
+} from "./VeiledersOppgave";
 import { StandardTekster } from "./StandardTekster";
 import {
   validerReferatDeltakere,
-  validerReferatTekster,
+  validerSkjemaTekster,
 } from "@/utils/valideringUtils";
 import { useFeilUtbedret } from "@/hooks/useFeilUtbedret";
 import { SkjemaFeiloppsummering } from "../../SkjemaFeiloppsummering";
@@ -32,6 +41,10 @@ import { useFerdigstillDialogmote } from "@/data/dialogmote/useFerdigstillDialog
 import { Redirect } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
+import {
+  BehandlersOppgave,
+  MAX_LENGTH_BEHANDLERS_OPPGAVE,
+} from "@/components/dialogmote/referat/BehandlersOppgave";
 
 export const texts = {
   digitalReferat:
@@ -42,13 +55,24 @@ export const texts = {
   forhandsvisningContentLabel: "Forhåndsvis referat fra dialogmøte",
 };
 
-export interface ReferatSkjemaValues {
-  naermesteLeder: string;
+export const valideringsTexts = {
+  situasjonMissing: "Vennligst angi situasjon og muligheter",
+  konklusjonMissing: "Vennligst angi konklusjon",
+  arbeidstakersOppgaveMissing: "Vennligst angi arbeidstakerens oppgave",
+  arbeidsgiversOppgaveMissing: "Vennligst angi arbeidsgiverens oppgave",
+};
+
+interface ReferatSkjemaTekster {
   situasjon: string;
   konklusjon: string;
   arbeidstakersOppgave: string;
   arbeidsgiversOppgave: string;
-  veiledersOppgave?: string;
+  behandlersOppgave?: string;
+  veiledersOppgave: string;
+}
+
+export interface ReferatSkjemaValues extends ReferatSkjemaTekster {
+  naermesteLeder: string;
   standardtekster: StandardTekst[];
   andreDeltakere: NewDialogmotedeltakerAnnenDTO[];
 }
@@ -85,9 +109,44 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
   const { generateReferatDocument } = useForhandsvisReferat(dialogmote);
 
   const validate = (values: Partial<ReferatSkjemaValues>) => {
+    const friteksterFeil = validerSkjemaTekster<ReferatSkjemaTekster>({
+      situasjon: {
+        value: values.situasjon || "",
+        maxLength: MAX_LENGTH_SITUASJON,
+        missingRequiredMessage: valideringsTexts.situasjonMissing,
+      },
+      konklusjon: {
+        value: values.konklusjon || "",
+        maxLength: MAX_LENGTH_KONKLUSJON,
+        missingRequiredMessage: valideringsTexts.konklusjonMissing,
+      },
+      arbeidstakersOppgave: {
+        value: values.arbeidstakersOppgave || "",
+        maxLength: MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE,
+        missingRequiredMessage: valideringsTexts.arbeidstakersOppgaveMissing,
+      },
+      arbeidsgiversOppgave: {
+        value: values.arbeidsgiversOppgave || "",
+        maxLength: MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE,
+        missingRequiredMessage: valideringsTexts.arbeidsgiversOppgaveMissing,
+      },
+      ...(dialogmote.behandler
+        ? {
+            behandlersOppgave: {
+              value: values.behandlersOppgave || "",
+              maxLength: MAX_LENGTH_BEHANDLERS_OPPGAVE,
+            },
+          }
+        : {}),
+      veiledersOppgave: {
+        value: values.veiledersOppgave || "",
+        maxLength: MAX_LENGTH_VEILEDERS_OPPGAVE,
+      },
+    });
+
     const feilmeldinger = {
       ...validerReferatDeltakere(values),
-      ...validerReferatTekster(values),
+      ...friteksterFeil,
     };
 
     updateFeilUtbedret(feilmeldinger);
@@ -102,6 +161,9 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
       konklusjon: values.konklusjon,
       arbeidsgiverOppgave: values.arbeidsgiversOppgave,
       arbeidstakerOppgave: values.arbeidstakersOppgave,
+      ...(dialogmote.behandler
+        ? { behandlerOppgave: values.behandlersOppgave }
+        : {}),
       veilederOppgave: values.veiledersOppgave,
       document: generateReferatDocument(values),
       andreDeltakere: values.andreDeltakere || [],
@@ -132,7 +194,7 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
             <ReferatWarningAlert type="advarsel">
               {texts.digitalReferat}
             </ReferatWarningAlert>
-            <Deltakere />
+            <Deltakere behandler={dialogmote.behandler} />
             <ReferatWarningAlert type="advarsel">
               {texts.personvern}
             </ReferatWarningAlert>
@@ -140,6 +202,7 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
             <Konklusjon />
             <ArbeidstakersOppgave />
             <ArbeidsgiversOppgave />
+            {dialogmote.behandler && <BehandlersOppgave />}
             <VeiledersOppgave />
             <StandardTekster />
             {ferdigstillDialogmote.isError && (

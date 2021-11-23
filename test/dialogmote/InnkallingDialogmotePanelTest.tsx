@@ -116,7 +116,7 @@ describe("InnkallingDialogmotePanel med dm2 enabled og dm2 fysisk brev disabled"
     );
 
     expect(wrapper.find(NyttDialogMote).find(Link)).to.have.length(0);
-    expect(wrapper.find(NyttDialogMote).find(ModalWrapper)).to.have.length(2);
+    expect(wrapper.find(NyttDialogMote).find(ModalWrapper)).to.have.length(1);
   });
 });
 
@@ -151,8 +151,9 @@ describe("InnkallingDialogmotePanel med dm2 enabled og dm2 fysisk brev enabled",
     );
 
     expect(wrapper.find(NyttDialogMote).find(Link)).to.have.length(0);
-    expect(wrapper.find(NyttDialogMote).find(ModalWrapper)).to.have.length(2);
+    expect(wrapper.find(NyttDialogMote).find(ModalWrapper)).to.have.length(1);
   });
+
   it("viser ingen advarsel når bruker kan varsles", () => {
     const wrapper = innkallingDialogmotePanelWrapper(
       mockState,
@@ -161,14 +162,14 @@ describe("InnkallingDialogmotePanel med dm2 enabled og dm2 fysisk brev enabled",
 
     expect(wrapper.find(Alertstripe)).to.have.length(0);
   });
-  it("Nytt dialogmøte-knapp viser modaler når bruker kan varsles", () => {
+  it("Nytt dialogmøte-knapp viser modal når bruker kan varsles", () => {
     const wrapper = innkallingDialogmotePanelWrapper(
       mockState,
       brukerKanVarsles
     );
 
     expect(wrapper.find(NyttDialogMote).find(Link)).to.have.length(0);
-    expect(wrapper.find(NyttDialogMote).find(ModalWrapper)).to.have.length(2);
+    expect(wrapper.find(NyttDialogMote).find(ModalWrapper)).to.have.length(1);
   });
 });
 
@@ -190,7 +191,7 @@ describe("InnkallingDialogmotePanel with dm2, fysisk brev, and innkalling fastle
     );
 
     expect(wrapper.find(NyttDialogMote).find(Link)).to.have.length(0);
-    expect(wrapper.find(NyttDialogMote).find(ModalWrapper)).to.have.length(3);
+    expect(wrapper.find(NyttDialogMote).find(ModalWrapper)).to.have.length(1);
   });
 });
 

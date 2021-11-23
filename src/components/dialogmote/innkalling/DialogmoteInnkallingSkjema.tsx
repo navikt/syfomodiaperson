@@ -1,19 +1,21 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import Panel from "nav-frontend-paneler";
 import DialogmoteInnkallingVelgArbeidsgiver from "./DialogmoteInnkallingVelgArbeidsgiver";
 import DialogmoteTidOgSted from "../DialogmoteTidOgSted";
-import DialogmoteInnkallingTekster from "./DialogmoteInnkallingTekster";
+import DialogmoteInnkallingTekster, {
+  MAX_LENGTH_INNKALLING_FRITEKST,
+} from "./DialogmoteInnkallingTekster";
 import { Form } from "react-final-form";
 import {
   validerArbeidsgiver,
-  validerInnkallingFritekster,
+  validerSkjemaTekster,
   validerSted,
   validerTidspunkt,
   validerVideoLink,
 } from "@/utils/valideringUtils";
 import { DialogmoteInnkallingDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { genererDato } from "../../mote/utils";
-import { Link, Redirect, useLocation } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { useNavEnhet } from "@/hooks/useNavEnhet";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { FlexRow } from "../../Layout";
@@ -30,26 +32,33 @@ import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import DialogmoteInnkallingBehandler from "@/components/dialogmote/innkalling/DialogmoteInnkallingBehandler";
 import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
+import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
+import styled from "styled-components";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 
-export interface DialogmoteInnkallingSkjemaValues {
+interface DialogmoteInnkallingSkjemaTekster {
+  fritekstArbeidsgiver: string;
+  fritekstArbeidstaker: string;
+  fritekstBehandler?: string;
+}
+
+export interface DialogmoteInnkallingSkjemaValues
+  extends DialogmoteInnkallingSkjemaTekster {
   arbeidsgiver: string;
   klokkeslett: string;
   dato: string;
   sted: string;
   videoLink?: string;
-  fritekstArbeidsgiver?: string;
-  fritekstArbeidstaker?: string;
-  fritekstBehandler?: string;
 }
 
 interface DialogmoteInnkallingSkjemaProps {
   pageTitle: string;
 }
 
-export interface DialogmoteInnkallingRouteStateProps {
-  valgtBehandler?: BehandlerDialogmeldingDTO;
-}
+const StyledPanel = styled(Panel)`
+  margin-bottom: 2em;
+  padding: 2em;
+`;
 
 type DialogmoteInnkallingSkjemaFeil = Partial<
   Pick<
@@ -125,6 +134,27 @@ const DialogmoteInnkallingSkjema = ({
   const validate = (
     values: Partial<DialogmoteInnkallingSkjemaValues>
   ): DialogmoteInnkallingSkjemaFeil => {
+    const friteksterFeil = validerSkjemaTekster<DialogmoteInnkallingSkjemaTekster>(
+      {
+        fritekstArbeidsgiver: {
+          maxLength: MAX_LENGTH_INNKALLING_FRITEKST,
+          value: values.fritekstArbeidsgiver || "",
+        },
+        fritekstArbeidstaker: {
+          maxLength: MAX_LENGTH_INNKALLING_FRITEKST,
+          value: values.fritekstArbeidstaker || "",
+        },
+        ...(selectedBehandler
+          ? {
+              fritekstBehandler: {
+                maxLength: MAX_LENGTH_INNKALLING_FRITEKST,
+                value: values.fritekstBehandler || "",
+              },
+            }
+          : {}),
+      }
+    );
+
     const feilmeldinger: DialogmoteInnkallingSkjemaFeil = {
       arbeidsgiver: validerArbeidsgiver(values.arbeidsgiver),
       ...validerTidspunkt({
@@ -132,10 +162,7 @@ const DialogmoteInnkallingSkjema = ({
         klokkeslett: values.klokkeslett,
       }),
       sted: validerSted(values.sted),
-      ...validerInnkallingFritekster({
-        fritekstArbeidstaker: values.fritekstArbeidstaker,
-        fritekstArbeidsgiver: values.fritekstArbeidsgiver,
-      }),
+      ...friteksterFeil,
       videoLink: validerVideoLink(values.videoLink),
     };
 
@@ -150,30 +177,37 @@ const DialogmoteInnkallingSkjema = ({
       fnr,
       navEnhet,
       innkallingDocumentGenerator,
-      valgtBehandler
+      selectedBehandler
     );
     opprettInnkalling.mutate(dialogmoteInnkalling);
   };
 
-  const location = useLocation<DialogmoteInnkallingRouteStateProps>();
+  const { isDm2InnkallingFastlegeEnabled } = useDM2FeatureToggles();
 
-  const valgtBehandler = location.state?.valgtBehandler;
+  const [
+    selectedBehandler,
+    setSelectedBehandler,
+  ] = useState<BehandlerDialogmeldingDTO>();
 
   if (opprettInnkalling.isSuccess) {
     return <Redirect to={moteoversiktRoutePath} />;
   }
 
   return (
-    <Panel>
+    <StyledPanel>
       <Form initialValues={initialValues} onSubmit={submit} validate={validate}>
         {({ handleSubmit, submitFailed, errors }) => (
           <form onSubmit={handleSubmit}>
-            {!!valgtBehandler && (
-              <DialogmoteInnkallingBehandler behandler={valgtBehandler} />
-            )}
             <DialogmoteInnkallingVelgArbeidsgiver />
+            {isDm2InnkallingFastlegeEnabled && (
+              <DialogmoteInnkallingBehandler
+                setSelectedBehandler={setSelectedBehandler}
+              />
+            )}
             <DialogmoteTidOgSted />
-            <DialogmoteInnkallingTekster />
+            <DialogmoteInnkallingTekster
+              selectedBehandler={selectedBehandler}
+            />
             {opprettInnkalling.isError && (
               <SkjemaInnsendingFeil error={opprettInnkalling.error} />
             )}
@@ -199,7 +233,7 @@ const DialogmoteInnkallingSkjema = ({
           </form>
         )}
       </Form>
-    </Panel>
+    </StyledPanel>
   );
 };
 

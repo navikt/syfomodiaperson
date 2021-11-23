@@ -7,12 +7,12 @@ context("Møtelandingsside actions", () => {
     cy.OAuth2Login();
   });
 
-  it("Oppretter nytt møte der behandler skal være med", () => {
+  it("Oppretter nytt møte uten at man ønsker å prøve ny løsning", () => {
     cy.stubMoter(MoteState.INGEN_MOTER);
 
     cy.dataCy(selectors.nyttDM2Mote).click();
 
-    cy.get("button").contains("Ja").click();
+    cy.get("button").contains("Nei").click();
 
     cy.url().should("include", "/sykefravaer/mote");
   });
@@ -21,8 +21,6 @@ context("Møtelandingsside actions", () => {
     cy.stubMoter(MoteState.INGEN_MOTER);
 
     cy.dataCy(selectors.nyttDM2Mote).click();
-
-    cy.get("button").contains("Nei").click();
 
     cy.get("button").contains("Ja").click();
 

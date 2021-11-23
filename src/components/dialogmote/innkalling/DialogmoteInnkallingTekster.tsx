@@ -3,15 +3,12 @@ import { useFormState } from "react-final-form";
 import DialogmoteInnkallingSkjemaSeksjon from "./DialogmoteInnkallingSkjemaSeksjon";
 import styled from "styled-components";
 import { Innholdstittel } from "nav-frontend-typografi";
-import {
-  DialogmoteInnkallingRouteStateProps,
-  DialogmoteInnkallingSkjemaValues,
-} from "./DialogmoteInnkallingSkjema";
+import { DialogmoteInnkallingSkjemaValues } from "./DialogmoteInnkallingSkjema";
 import { useForhandsvisInnkalling } from "@/hooks/dialogmote/useForhandsvisInnkalling";
 import { Forhandsvisning } from "../Forhandsvisning";
 import FritekstSeksjon from "../FritekstSeksjon";
 import { DialogmoteInnkallingTeksterAlert } from "./DialogmoteInnkallingTeksterAlert";
-import { useLocation } from "react-router-dom";
+import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 
 export const MAX_LENGTH_INNKALLING_FRITEKST = 2000;
 
@@ -36,7 +33,13 @@ const TeksterTittel = styled(Innholdstittel)`
   margin-bottom: 0.5em;
 `;
 
-const DialogmoteInnkallingTekster = (): ReactElement => {
+interface DialogmoteInnkallingTeksterProps {
+  selectedBehandler?: BehandlerDialogmeldingDTO;
+}
+
+const DialogmoteInnkallingTekster = ({
+  selectedBehandler,
+}: DialogmoteInnkallingTeksterProps): ReactElement => {
   const { values } = useFormState<DialogmoteInnkallingSkjemaValues>();
   const [
     displayInnkallingArbeidstakerPreview,
@@ -58,10 +61,6 @@ const DialogmoteInnkallingTekster = (): ReactElement => {
     generateBehandlerInnkallingDocument,
   } = useForhandsvisInnkalling();
 
-  const location = useLocation<DialogmoteInnkallingRouteStateProps>();
-
-  const valgtBehandler = location.state?.valgtBehandler;
-
   return (
     <DialogmoteInnkallingSkjemaSeksjon>
       <TeksterTittel>{texts.title}</TeksterTittel>
@@ -79,7 +78,7 @@ const DialogmoteInnkallingTekster = (): ReactElement => {
         isOpen={displayInnkallingArbeidstakerPreview}
         handleClose={() => setDisplayInnkallingArbeidstakerPreview(false)}
         getDocumentComponents={() =>
-          generateArbeidstakerInnkallingDocument(values, valgtBehandler)
+          generateArbeidstakerInnkallingDocument(values, selectedBehandler)
         }
       />
       <FritekstSeksjon
@@ -95,11 +94,11 @@ const DialogmoteInnkallingTekster = (): ReactElement => {
         isOpen={displayInnkallingArbeidsgiverPreview}
         handleClose={() => setDisplayInnkallingArbeidsgiverPreview(false)}
         getDocumentComponents={() =>
-          generateArbeidsgiverInnkallingDocument(values, valgtBehandler)
+          generateArbeidsgiverInnkallingDocument(values, selectedBehandler)
         }
       />
 
-      {!!valgtBehandler && (
+      {!!selectedBehandler && (
         <>
           <FritekstSeksjon
             fieldName="fritekstBehandler"
