@@ -79,7 +79,7 @@ spec:
     - name: ISNARMESTELEDER_HOST
       value: "isnarmesteleder.intern.nav.no"
     - name: ISPENGESTOPP_AAD_APP_CLIENT_ID
-      value: "1504ecde-3da0-4698-b030-ae7350228f57"
+      value: "prod-gcp.teamsykefravr.ispengestopp"
     - name: ISPENGESTOPP_HOST
       value: "ispengestopp.intern.nav.no"
     - name: ISPERSONOPPGAVE_AAD_APP_CLIENT_ID

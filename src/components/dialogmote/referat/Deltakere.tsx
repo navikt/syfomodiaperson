@@ -7,6 +7,8 @@ import { Input } from "nav-frontend-skjema";
 import { FlexColumn, FlexRow, PaddingSize } from "../../Layout";
 import { AndreDeltakere } from "./AndreDeltakere";
 import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { DialogmotedeltakerBehandlerDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { behandlerDeltakerTekst } from "@/utils/behandlerUtils";
 
 const texts = {
   title: "Deltakere i møtet",
@@ -21,7 +23,11 @@ const Header = styled(Element)`
   margin-bottom: 1em;
 `;
 
-const Deltakere = (): ReactElement => {
+interface DeltakereProps {
+  behandler: DialogmotedeltakerBehandlerDTO | undefined;
+}
+
+const Deltakere = ({ behandler }: DeltakereProps): ReactElement => {
   const navbruker = useNavBrukerData();
   const { data: veilederinfo } = useVeilederinfoQuery();
 
@@ -31,6 +37,9 @@ const Deltakere = (): ReactElement => {
       <ul>
         <li>{`Fra NAV: ${veilederinfo?.navn}`}</li>
         <li>{`Arbeidstaker: ${navbruker?.navn}`}</li>
+        {behandler && (
+          <li>{behandlerDeltakerTekst("Behandler:", behandler)}</li>
+        )}
       </ul>
       <FlexRow bottomPadding={PaddingSize.MD}>
         <FlexColumn flex={0.3}>

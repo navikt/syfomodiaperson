@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { getDuration } from "@/utils/datoUtils";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { capitalizeFoersteBokstav } from "@/utils/stringUtils";
+import { firstLetterToUpperCase } from "@/utils/stringUtils";
 
 const textBehandlingsdagEnDag = (behandlingsdager: number, dager: number) => {
   return `${behandlingsdager} behandlingsdag i løpet av ${dager} dag\n`;
@@ -55,7 +55,7 @@ const textDefault = (dager: number, arbeidsgiver?: string, grad?: number) => {
   const textArbeidsgiver = textDefaultArbeidsgiver(arbeidsgiver);
   const textDager = textDefaultDager(dager);
   const text = `${textArbeidsgiver}${textDager}`;
-  return grad ? `${grad} %${text}` : `${capitalizeFoersteBokstav(text.trim())}`;
+  return grad ? `${grad} %${text}` : `${firstLetterToUpperCase(text.trim())}`;
 };
 
 interface SykmeldingPeriodeInfoProps {

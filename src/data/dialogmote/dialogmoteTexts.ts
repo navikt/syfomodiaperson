@@ -198,6 +198,7 @@ export const referatTexts = {
   arbeidstakersOppgaveTitle: "Din oppgave",
   arbeidsgiversOppgaveTitle: "Arbeidsgiverens oppgave",
   navOppgaveTitle: "NAVs oppgave",
+  behandlersOppgave: "Behandlerens oppgave",
   situasjonTitle: "Situasjon og muligheter",
   standardTeksterHeader: "Dette informerte NAV om i møtet",
   standardTekster: referatStandardTekster,

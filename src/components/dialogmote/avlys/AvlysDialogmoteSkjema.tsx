@@ -12,10 +12,7 @@ import {
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { SkjemaFeiloppsummering } from "../../SkjemaFeiloppsummering";
 import { useFeilUtbedret } from "@/hooks/useFeilUtbedret";
-import {
-  validerBegrunnelser,
-  validerBegrunnelserIncludingBehandler,
-} from "@/utils/valideringUtils";
+import { validerBegrunnelser } from "@/utils/valideringUtils";
 import { TrackedHovedknapp } from "../../buttons/TrackedHovedknapp";
 import { TrackedFlatknapp } from "../../buttons/TrackedFlatknapp";
 import { useForhandsvisAvlysning } from "@/hooks/dialogmote/useForhandsvisAvlysning";
@@ -26,7 +23,7 @@ import { useAvlysDialogmote } from "@/data/dialogmote/useAvlysDialogmote";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import FritekstSeksjon from "@/components/dialogmote/FritekstSeksjon";
 
-const MAX_LENGTH_AVLYS_BEGRUNNELSE = 200;
+export const MAX_LENGTH_AVLYS_BEGRUNNELSE = 200;
 
 export const texts = {
   begrunnelseArbeidstakerLabel: "Begrunnelse til arbeidstakeren",
@@ -56,7 +53,7 @@ interface AvlysDialogmoteSkjemaProps {
 export interface AvlysDialogmoteSkjemaValues {
   begrunnelseArbeidstaker: string;
   begrunnelseArbeidsgiver: string;
-  begrunnelseBehandler: string;
+  begrunnelseBehandler?: string;
 }
 
 const AvlysPanel = styled(Panel)`
@@ -103,15 +100,14 @@ const AvlysDialogmoteSkjema = ({
   const validate = (
     values: Partial<AvlysDialogmoteSkjemaValues>
   ): Partial<AvlysDialogmoteSkjemaValues> => {
-    const feil = dialogmote.behandler
-      ? validerBegrunnelserIncludingBehandler(
-          values,
-          MAX_LENGTH_AVLYS_BEGRUNNELSE
-        )
-      : validerBegrunnelser(values, MAX_LENGTH_AVLYS_BEGRUNNELSE);
-    updateFeilUtbedret(feil);
+    const begrunnelserFeil = validerBegrunnelser(
+      values,
+      MAX_LENGTH_AVLYS_BEGRUNNELSE,
+      !!dialogmote.behandler
+    );
+    updateFeilUtbedret(begrunnelserFeil);
 
-    return feil;
+    return begrunnelserFeil;
   };
 
   const submit = (values: AvlysDialogmoteSkjemaValues) => {
@@ -128,7 +124,7 @@ const AvlysDialogmoteSkjema = ({
 
     if (dialogmote.behandler) {
       avlysDto.behandler = {
-        begrunnelse: values.begrunnelseBehandler,
+        begrunnelse: values.begrunnelseBehandler || "",
         avlysning: generateAvlysningBehandlerDocument(values),
       };
     }
