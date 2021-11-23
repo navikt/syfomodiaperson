@@ -1,4 +1,4 @@
-import { capitalizeFoersteBokstav } from "./stringUtils";
+import { firstLetterToUpperCase } from "./stringUtils";
 
 const maneder = [
   "januar",
@@ -172,7 +172,7 @@ export const tilDatoMedUkedagOgManedNavn = (dato) => {
 
 const getDatoKomponenter = (dato) => {
   const nyDato = new Date(dato);
-  const ukeDag = capitalizeFoersteBokstav(ukedagListe[nyDato.getDay()]);
+  const ukeDag = firstLetterToUpperCase(ukedagListe[nyDato.getDay()]);
   const dag = nyDato.getDate();
   const maaned = maanedListe[nyDato.getMonth()];
   const aar = nyDato.getFullYear();

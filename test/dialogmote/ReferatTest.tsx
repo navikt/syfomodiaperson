@@ -3,12 +3,14 @@ import { Provider } from "react-redux";
 import React from "react";
 import Referat, {
   texts as referatSkjemaTexts,
+  valideringsTexts as referatSkjemaValideringsTexts,
 } from "../../src/components/dialogmote/referat/Referat";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
 import { mount } from "enzyme";
 import {
+  DialogmoteDTO,
   DocumentComponentDto,
   DocumentComponentType,
 } from "@/data/dialogmote/types/dialogmoteTypes";
@@ -21,6 +23,7 @@ import {
   assertFeilmelding,
   changeFieldValue,
   changeTextAreaValue,
+  getTooLongText,
 } from "../testUtils";
 import { commonTexts, referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { tilDatoMedUkedagOgManedNavn } from "@/utils/datoUtils";
@@ -37,12 +40,22 @@ import { apiMock } from "../stubs/stubApi";
 import {
   arbeidstaker,
   behandlendeEnhet,
+  behandler,
   dialogmote,
+  dialogmoteMedBehandler,
   navEnhet,
   veileder,
 } from "./testData";
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
+import { capitalizeWord } from "@/utils/stringUtils";
+import { behandlerNavn } from "@/utils/behandlerUtils";
+import { MAX_LENGTH_SITUASJON } from "@/components/dialogmote/referat/Situasjon";
+import { MAX_LENGTH_KONKLUSJON } from "@/components/dialogmote/referat/Konklusjon";
+import { MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE } from "@/components/dialogmote/referat/ArbeidstakersOppgave";
+import { MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE } from "@/components/dialogmote/referat/ArbeidsgiversOppgave";
+import { MAX_LENGTH_VEILEDERS_OPPGAVE } from "@/components/dialogmote/referat/VeiledersOppgave";
+import { MAX_LENGTH_BEHANDLERS_OPPGAVE } from "@/components/dialogmote/referat/BehandlersOppgave";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -83,6 +96,10 @@ const konklusjonTekst = "Noe tekst om konklusjon";
 const arbeidsgiversOppgave = "Noe tekst om arbeidsgivers oppgave";
 const arbeidstakersOppgave = "Noe tekst om arbeidstakers oppgave";
 const veiledersOppgave = "Noe tekst om veileders oppgave";
+const behandlersOppgave = "Noe tekst om behandlers oppgave";
+const behandlerDeltakerTekst = `Behandler: ${capitalizeWord(
+  behandler.type.toLowerCase()
+)} ${behandlerNavn(behandler)}`;
 
 let queryClient;
 
@@ -100,7 +117,7 @@ describe("ReferatTest", () => {
   });
 
   it("viser arbeidstaker, dato og sted i tittel", () => {
-    const wrapper = mountReferat();
+    const wrapper = mountReferat(dialogmote);
 
     expect(wrapper.find(Innholdstittel).text()).to.equal(
       `${arbeidstaker.navn}, 10. mai 2021, Videomøte`
@@ -108,18 +125,17 @@ describe("ReferatTest", () => {
   });
 
   it("viser alle deltakere forhåndsutfylt med nærmeste leder redigerbar og påkrevd", () => {
-    const wrapper = mountReferat();
+    const wrapper = mountReferat(dialogmote);
 
+    const listElements = wrapper.find("li");
     expect(
-      wrapper
-        .find("li")
-        .findWhere((li) => li.text() === `Fra NAV: ${veileder.navn}`)
-    ).to.exist;
+      listElements.someWhere((li) => li.text() === `Fra NAV: ${veileder.navn}`)
+    ).to.be.true;
     expect(
-      wrapper
-        .find("li")
-        .findWhere((li) => li.text() === `Arbeidstaker: ${arbeidstaker.navn}`)
-    ).to.exist;
+      listElements.someWhere(
+        (li) => li.text() === `Arbeidstaker: ${arbeidstaker.navn}`
+      )
+    ).to.be.true;
 
     const getNaermesteLederInput = () =>
       wrapper
@@ -145,17 +161,31 @@ describe("ReferatTest", () => {
     expect(naermesteLederInput.prop("value")).to.equal(endretNaermesteLeder);
   });
 
+  it("viser behandler som deltaker når behandler er med", () => {
+    const wrapper = mountReferat(dialogmoteMedBehandler);
+
+    const listElements = wrapper.find("li");
+    expect(listElements.someWhere((li) => li.text() === behandlerDeltakerTekst))
+      .to.be.true;
+  });
+
   it("validerer alle fritekstfelter unntatt veileders oppgave", () => {
-    const wrapper = mountReferat();
+    const wrapper = mountReferat(dialogmote);
 
     wrapper.find("form").simulate("submit");
 
     // Feilmeldinger i skjema
     const feil = wrapper.find(Feilmelding);
-    assertFeilmelding(feil, valideringsTexts.situasjonMissing);
-    assertFeilmelding(feil, valideringsTexts.konklusjonMissing);
-    assertFeilmelding(feil, valideringsTexts.arbeidstakersOppgaveMissing);
-    assertFeilmelding(feil, valideringsTexts.arbeidsgiversOppgaveMissing);
+    assertFeilmelding(feil, referatSkjemaValideringsTexts.situasjonMissing);
+    assertFeilmelding(feil, referatSkjemaValideringsTexts.konklusjonMissing);
+    assertFeilmelding(
+      feil,
+      referatSkjemaValideringsTexts.arbeidstakersOppgaveMissing
+    );
+    assertFeilmelding(
+      feil,
+      referatSkjemaValideringsTexts.arbeidsgiversOppgaveMissing
+    );
 
     // Feilmelding i oppsummering
     const feiloppsummering = wrapper.find(Feiloppsummering);
@@ -163,21 +193,21 @@ describe("ReferatTest", () => {
       skjemaFeilOppsummeringTexts.title
     );
     expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.situasjonMissing
+      referatSkjemaValideringsTexts.situasjonMissing
     );
     expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.konklusjonMissing
+      referatSkjemaValideringsTexts.konklusjonMissing
     );
     expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.arbeidstakersOppgaveMissing
+      referatSkjemaValideringsTexts.arbeidstakersOppgaveMissing
     );
     expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.arbeidsgiversOppgaveMissing
+      referatSkjemaValideringsTexts.arbeidsgiversOppgaveMissing
     );
   });
 
   it("validerer navn og funksjon på andre deltakere", () => {
-    const wrapper = mountReferat();
+    const wrapper = mountReferat(dialogmote);
 
     const addDeltakerButton = wrapper.find(Knapp).at(0);
     addDeltakerButton.simulate("click");
@@ -211,15 +241,73 @@ describe("ReferatTest", () => {
     );
   });
 
-  it("ferdigstiller dialogmote ved submit av skjema", () => {
-    stubFerdigstillApi(apiMock(), dialogmote.uuid);
-    const wrapper = mountReferat();
+  it("validerer maks lengde på fritekstfelter", () => {
+    const wrapper = mountReferat(dialogmoteMedBehandler);
 
     changeTextAreaValue(wrapper, "situasjon", situasjonTekst);
     changeTextAreaValue(wrapper, "konklusjon", konklusjonTekst);
     changeTextAreaValue(wrapper, "arbeidstakersOppgave", arbeidstakersOppgave);
     changeTextAreaValue(wrapper, "arbeidsgiversOppgave", arbeidsgiversOppgave);
     changeTextAreaValue(wrapper, "veiledersOppgave", veiledersOppgave);
+    changeTextAreaValue(wrapper, "behandlersOppgave", behandlersOppgave);
+    wrapper.find("form").simulate("submit");
+
+    let maxLengthFeilmeldinger = wrapper
+      .find(Feilmelding)
+      .filterWhere((feil) => feil.text().includes("tegn tillatt"));
+    expect(maxLengthFeilmeldinger).to.have.length(0);
+
+    changeTextAreaValue(
+      wrapper,
+      "situasjon",
+      getTooLongText(MAX_LENGTH_SITUASJON)
+    );
+    changeTextAreaValue(
+      wrapper,
+      "konklusjon",
+      getTooLongText(MAX_LENGTH_KONKLUSJON)
+    );
+    changeTextAreaValue(
+      wrapper,
+      "arbeidstakersOppgave",
+      getTooLongText(MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE)
+    );
+    changeTextAreaValue(
+      wrapper,
+      "arbeidsgiversOppgave",
+      getTooLongText(MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE)
+    );
+    changeTextAreaValue(
+      wrapper,
+      "veiledersOppgave",
+      getTooLongText(MAX_LENGTH_VEILEDERS_OPPGAVE)
+    );
+    changeTextAreaValue(
+      wrapper,
+      "behandlersOppgave",
+      getTooLongText(MAX_LENGTH_BEHANDLERS_OPPGAVE)
+    );
+    wrapper.find("form").simulate("submit");
+
+    maxLengthFeilmeldinger = wrapper
+      .find(Feilmelding)
+      .filterWhere((feil) => feil.text().includes("tegn tillatt"));
+    expect(maxLengthFeilmeldinger).to.have.length(
+      6,
+      "Validerer maks lengde på alle fritekstfelter"
+    );
+  });
+
+  it("ferdigstiller dialogmote ved submit av skjema", () => {
+    stubFerdigstillApi(apiMock(), dialogmoteMedBehandler.uuid);
+    const wrapper = mountReferat(dialogmoteMedBehandler);
+
+    changeTextAreaValue(wrapper, "situasjon", situasjonTekst);
+    changeTextAreaValue(wrapper, "konklusjon", konklusjonTekst);
+    changeTextAreaValue(wrapper, "arbeidstakersOppgave", arbeidstakersOppgave);
+    changeTextAreaValue(wrapper, "arbeidsgiversOppgave", arbeidsgiversOppgave);
+    changeTextAreaValue(wrapper, "veiledersOppgave", veiledersOppgave);
+    changeTextAreaValue(wrapper, "behandlersOppgave", behandlersOppgave);
 
     const addDeltakerButton = wrapper.find(Knapp).at(0);
     addDeltakerButton.simulate("click");
@@ -236,6 +324,7 @@ describe("ReferatTest", () => {
       konklusjon: konklusjonTekst,
       arbeidsgiverOppgave: arbeidsgiversOppgave,
       arbeidstakerOppgave: arbeidstakersOppgave,
+      behandlerOppgave: behandlersOppgave,
       veilederOppgave: veiledersOppgave,
       document: expectedReferat,
       andreDeltakere: [
@@ -248,13 +337,14 @@ describe("ReferatTest", () => {
   });
 
   it("forhåndsviser referat", () => {
-    const wrapper = mountReferat();
+    const wrapper = mountReferat(dialogmoteMedBehandler);
 
     changeTextAreaValue(wrapper, "situasjon", situasjonTekst);
     changeTextAreaValue(wrapper, "konklusjon", konklusjonTekst);
     changeTextAreaValue(wrapper, "arbeidstakersOppgave", arbeidstakersOppgave);
     changeTextAreaValue(wrapper, "arbeidsgiversOppgave", arbeidsgiversOppgave);
     changeTextAreaValue(wrapper, "veiledersOppgave", veiledersOppgave);
+    changeTextAreaValue(wrapper, "behandlersOppgave", behandlersOppgave);
 
     const addDeltakerButton = wrapper.find(Knapp).at(0);
     addDeltakerButton.simulate("click");
@@ -279,15 +369,15 @@ describe("ReferatTest", () => {
   });
 });
 
-const mountReferat = () => {
+const mountReferat = (dialogmoteDTO: DialogmoteDTO) => {
   return mount(
     <MemoryRouter
-      initialEntries={[`${dialogmoteRoutePath}/${dialogmote.uuid}/referat`]}
+      initialEntries={[`${dialogmoteRoutePath}/${dialogmoteDTO.uuid}/referat`]}
     >
       <Route path={`${dialogmoteRoutePath}/:dialogmoteUuid/referat`}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
-            <Referat dialogmote={dialogmote} pageTitle="Test" />
+            <Referat dialogmote={dialogmoteDTO} pageTitle="Test" />
           </Provider>
         </QueryClientProvider>
       </Route>
@@ -316,6 +406,7 @@ const expectedReferat: DocumentComponentDto[] = [
       `Arbeidstaker: ${arbeidstaker.navn}`,
       `Arbeidsgiver: ${lederNavn}`,
       `Fra NAV: ${veileder.navn}`,
+      behandlerDeltakerTekst,
       `${annenDeltakerFunksjon}: ${annenDeltakerNavn}`,
     ],
     title: referatTexts.deltakereTitle,
@@ -346,6 +437,11 @@ const expectedReferat: DocumentComponentDto[] = [
   {
     texts: [arbeidsgiversOppgave],
     title: referatTexts.arbeidsgiversOppgaveTitle,
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [behandlersOppgave],
+    title: referatTexts.behandlersOppgave,
     type: DocumentComponentType.PARAGRAPH,
   },
   {
