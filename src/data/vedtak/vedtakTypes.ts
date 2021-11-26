@@ -29,7 +29,7 @@ export interface UtbetalingUtbetalt {
   forbrukteSykedager: number;
   gjenståendeSykedager: number;
   automatiskBehandling: boolean;
-  arbeidsgiverOppdrag: Oppdrag;
+  arbeidsgiverOppdrag?: Oppdrag;
   utbetalingsdager: Utbetalingdag[];
   utbetalingType: string;
 }
