@@ -7,10 +7,12 @@ export interface VedtakDTO {
   opprettetTimestamp: string;
   annullert: boolean;
   revurdert: boolean;
-  dager: Dag[];
+  dagerArbeidsgiver: Dag[];
+  dagerPerson: Dag[];
   dagligUtbetalingsbelop: number;
   antallDagerMedUtbetaling: number;
-  sykepengebelop: number;
+  sykepengebelopArbeidsgiver: number;
+  sykepengebelopPerson: number;
 }
 
 export interface Vedtak {
