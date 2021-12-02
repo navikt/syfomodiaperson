@@ -57,4 +57,37 @@ context("Møtelandingsside actions", () => {
 
     cy.url().should("include", "/sykefravaer/mote");
   });
+
+  it("Har ikke tilgang til DM2 og ingen aktive møter, blir sendt til møte-landingsside når man forsøker gå direkte til ny løsning for innkalling", () => {
+    cy.stubMoter(MoteState.INGEN_MOTER);
+    cy.intercept(
+      {
+        method: "POST",
+        url: "/isenabled/dm2*",
+      },
+      {
+        "syfo.syfomodiaperson.dm2": false,
+      }
+    );
+
+    cy.visit("/sykefravaer/dialogmote");
+
+    cy.url().should("include", "/sykefravaer/mote");
+  });
+
+  it("Har tilgang til DM2 og aktiv dialogmøte-innkalling, blir sendt til møte-landingsside når man forsøker gå direkte til ny løsning for innkalling", () => {
+    cy.stubMoter(MoteState.INNKALT_DIALOGMOTE);
+
+    cy.visit("/sykefravaer/dialogmote");
+
+    cy.url().should("include", "/sykefravaer/mote");
+  });
+
+  it("Har tilgang til DM2 og ikke aktiv dialogmøte-innkalling, kan gå direkte til ny løsning for innkalling", () => {
+    cy.stubMoter(MoteState.INGEN_MOTER);
+
+    cy.visit("/sykefravaer/dialogmote");
+
+    cy.url().should("include", "/sykefravaer/dialogmote");
+  });
 });
