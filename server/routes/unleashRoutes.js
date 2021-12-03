@@ -11,6 +11,9 @@ class ByEnhetAndEnvironment extends Strategy {
     if (process.env.NAIS_CONTEXT === "dev") {
       return true;
     }
+    if (!context.valgtEnhet) {
+      return false;
+    }
 
     const valgtEnhetMatches =
       parameters.valgtEnhet.indexOf(context.valgtEnhet) !== -1;
@@ -26,7 +29,11 @@ class ByUserId extends Strategy {
   }
 
   isEnabled(parameters, context) {
-    return context.user && parameters.user.indexOf(context.user) !== -1;
+    if (!context.user) {
+      return false;
+    }
+
+    return parameters.user.indexOf(context.user) !== -1;
   }
 }
 
