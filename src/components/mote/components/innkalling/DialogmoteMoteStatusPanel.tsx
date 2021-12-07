@@ -4,7 +4,7 @@ import {
   MoteIkonBlaaImage,
 } from "../../../../../img/ImageComponents";
 import { DialogmotePanel } from "../DialogmotePanel";
-import React, { ReactElement } from "react";
+import React, { ReactElement, ReactNode } from "react";
 import Alertstripe from "nav-frontend-alertstriper";
 import { FlexColumn, FlexRow, PaddingSize } from "../../../Layout";
 import { InfoRow } from "../../../InfoRow";
@@ -22,6 +22,7 @@ import { TrackedKnapp } from "../../../buttons/TrackedKnapp";
 import { TrackedHovedknapp } from "../../../buttons/TrackedHovedknapp";
 import { useLedere } from "@/hooks/useLedere";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
+import { Normaltekst } from "nav-frontend-typografi";
 
 const texts = {
   innkallingSendtTrackingContext: "Møtelandingsside: Sendt innkalling",
@@ -35,13 +36,19 @@ const texts = {
   denSykmeldte: "Den sykmeldte:",
   harLestInnkalling: " har åpnet innkallingen",
   harIkkeLestInnkalling: " har ikke åpnet innkallingen",
+  moteTid: "Møtetidspunkt",
+  moteSted: "Sted",
 };
 
-const subtitle = (dialogmote: DialogmoteDTO) => {
-  const meetTimeText = tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid);
-  const videoText = dialogmote.videoLink ? " - Videomøte" : "";
+const Subtitle = (dialogmote: DialogmoteDTO): ReactNode => {
+  const moteDatoTid = tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid);
 
-  return `Møtetidspunkt: ${meetTimeText}${videoText}`;
+  return (
+    <>
+      <Normaltekst>{`${texts.moteTid}: ${moteDatoTid}`}</Normaltekst>
+      <Normaltekst>{`${texts.moteSted}: ${dialogmote.sted}`}</Normaltekst>
+    </>
+  );
 };
 
 const getHarLestIcon = (harLest: boolean): string => {
@@ -120,7 +127,7 @@ export const DialogmoteMoteStatusPanel = ({ dialogmote }: Props) => {
     <DialogmotePanel
       icon={MoteIkonBlaaImage}
       header={texts.header}
-      subtitle={subtitle(dialogmote)}
+      subtitle={Subtitle(dialogmote)}
     >
       <FlexRow>
         <ParticipantInfo dialogmote={dialogmote} bruker={bruker} />
