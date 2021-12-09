@@ -7,7 +7,7 @@ import {
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useLedere } from "@/hooks/useLedere";
 import { FlexColumn, FlexRow } from "@/components/Layout";
-import { MinusCircleFilled } from "@navikt/ds-icons";
+import { MinusCircleFilled, SuccessFilled } from "@navikt/ds-icons";
 import navFarger from "nav-frontend-core";
 import React from "react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
@@ -22,45 +22,26 @@ const texts = {
   harIkkeAapnetInnkalling: "har ikke åpnet innkallingen",
   harAapnetEndring: "åpnet endringen",
   harIkkeAapnetEndring: "har ikke åpnet endringen",
-  harIkkeSvar: "Har ikke gitt svar",
   harIkkeSvarDetaljer: "Ingen detaljer er tilgjengelig.",
 };
 
 const getHarAapnetTekst = (
-  latestVarsel?: Pick<
-    DialogmotedeltakerArbeidsgiverVarselDTO,
-    "varselType" | "lestDato"
-  >
+  varselType: MotedeltakerVarselType | undefined,
+  lestDato: string | undefined
 ): string => {
-  const aapnetDatoTekst = latestVarsel?.lestDato
-    ? `${tilLesbarDatoMedArUtenManedNavn(latestVarsel.lestDato)}`
-    : "";
-
-  if (latestVarsel?.varselType === MotedeltakerVarselType.INNKALT) {
-    return latestVarsel?.lestDato
-      ? `${texts.harAapnetInnkalling} ${aapnetDatoTekst} - ${texts.harIkkeSvar}`
+  if (varselType === MotedeltakerVarselType.INNKALT) {
+    return lestDato
+      ? `${texts.harAapnetInnkalling} ${tilLesbarDatoMedArUtenManedNavn(
+          lestDato
+        )}`
       : texts.harIkkeAapnetInnkalling;
-  } else if (
-    latestVarsel?.varselType === MotedeltakerVarselType.NYTT_TID_STED
-  ) {
-    return latestVarsel?.lestDato
-      ? `${texts.harAapnetEndring} ${aapnetDatoTekst} - ${texts.harIkkeSvar}`
+  } else if (varselType === MotedeltakerVarselType.NYTT_TID_STED) {
+    return lestDato
+      ? `${texts.harAapnetEndring} ${tilLesbarDatoMedArUtenManedNavn(lestDato)}`
       : texts.harIkkeAapnetEndring;
   } else {
     return "";
   }
-};
-
-const DeltakerSvarIcon = () => {
-  // TODO: Avhengig av svar
-  return (
-    <MinusCircleFilled
-      color={navFarger.navGra40}
-      aria-label="Minus sirkel"
-      role="img"
-      focusable="false"
-    />
-  );
 };
 
 const DeltakerLabel = styled(Element)`
@@ -94,13 +75,31 @@ const DeltakerSvarPanel = ({
   deltakerLabel,
   deltakerNavn,
 }: DeltakerSvarPanelProps) => {
-  const harAapnetTekst = getHarAapnetTekst(varsler[0]);
+  const latestVarsel = varsler[0];
+  const harAapnetTekst = getHarAapnetTekst(
+    latestVarsel?.varselType,
+    latestVarsel?.lestDato
+  );
 
   return (
     <StyledEkspanderbartpanel
       tittel={
         <FlexRow>
-          <DeltakerSvarIcon />
+          {latestVarsel?.lestDato ? (
+            <SuccessFilled
+              color={navFarger.navGronn}
+              aria-label="suksess-ikon"
+              role="img"
+              focusable="false"
+            />
+          ) : (
+            <MinusCircleFilled
+              color={navFarger.navGra40}
+              aria-label="minus-sirkel-ikon"
+              role="img"
+              focusable="false"
+            />
+          )}
           <DeltakerLabel>{deltakerLabel}</DeltakerLabel>
           <TittelTekst>{`${deltakerNavn}, ${harAapnetTekst}`}</TittelTekst>
         </FlexRow>

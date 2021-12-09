@@ -89,16 +89,21 @@ describe("DeltakereSvarInfo", () => {
       );
     });
     it("viser nærmeste leder har åpnet innkalling", () => {
-      const expectedText = `${narmesteLederNavn}, åpnet innkallingen 01.12.2021 - Har ikke gitt svar`;
+      const expectedText = `${narmesteLederNavn}, åpnet innkallingen 01.12.2021`;
 
       expect(wrapper.getByText("Nærmeste leder:", { exact: false })).to.exist;
       expect(wrapper.getByText(expectedText, { exact: false })).to.exist;
     });
     it("viser arbeidstaker har åpnet innkalling", () => {
-      const expectedText = `${arbeidstaker.navn}, åpnet innkallingen 02.12.2021 - Har ikke gitt svar`;
+      const expectedText = `${arbeidstaker.navn}, åpnet innkallingen 02.12.2021`;
 
       expect(wrapper.getByText("Arbeidstakeren", { exact: false })).to.exist;
       expect(wrapper.getByText(expectedText, { exact: false })).to.exist;
+    });
+    it("viser suksess-ikon for nærmeste leder og arbeidstaker", () => {
+      expect(
+        wrapper.getAllByRole("img", { name: "suksess-ikon" })
+      ).to.have.length(2);
     });
   });
 
@@ -129,6 +134,11 @@ describe("DeltakereSvarInfo", () => {
       expect(wrapper.getByText("Arbeidstakeren", { exact: false })).to.exist;
       expect(wrapper.getByText(expectedText, { exact: false })).to.exist;
     });
+    it("viser minus-sirkel-ikon for nærmeste leder og arbeidstaker", () => {
+      expect(
+        wrapper.getAllByRole("img", { name: "minus-sirkel-ikon" })
+      ).to.have.length(2);
+    });
   });
 
   describe("arbeidstaker og arbeidsgiver har åpnet endring", () => {
@@ -153,16 +163,21 @@ describe("DeltakereSvarInfo", () => {
       );
     });
     it("viser nærmeste leder har åpnet endring", () => {
-      const expectedText = `${narmesteLederNavn}, åpnet endringen 03.12.2021 - Har ikke gitt svar`;
+      const expectedText = `${narmesteLederNavn}, åpnet endringen 03.12.2021`;
 
       expect(wrapper.getByText("Nærmeste leder:", { exact: false })).to.exist;
       expect(wrapper.getByText(expectedText, { exact: false })).to.exist;
     });
     it("viser arbeidstaker har åpnet endring", () => {
-      const expectedText = `${arbeidstaker.navn}, åpnet endringen 04.12.2021 - Har ikke gitt svar`;
+      const expectedText = `${arbeidstaker.navn}, åpnet endringen 04.12.2021`;
 
       expect(wrapper.getByText("Arbeidstakeren", { exact: false })).to.exist;
       expect(wrapper.getByText(expectedText, { exact: false })).to.exist;
+    });
+    it("viser suksess-ikon for nærmeste leder og arbeidstaker", () => {
+      expect(
+        wrapper.getAllByRole("img", { name: "suksess-ikon" })
+      ).to.have.length(2);
     });
   });
 
@@ -192,6 +207,11 @@ describe("DeltakereSvarInfo", () => {
 
       expect(wrapper.getByText("Arbeidstakeren", { exact: false })).to.exist;
       expect(wrapper.getByText(expectedText, { exact: false })).to.exist;
+    });
+    it("viser minus-sirkel-ikon for nærmeste leder og arbeidstaker", () => {
+      expect(
+        wrapper.getAllByRole("img", { name: "minus-sirkel-ikon" })
+      ).to.have.length(2);
     });
   });
 });
