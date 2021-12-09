@@ -173,6 +173,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     expect(wrapper.find(Feiloppsummering)).to.have.length(1);
   });
   it("validerer maks lengde på begrunnelser", () => {
+    stubAvlysApi(apiMock(), dialogmoteMedBehandler.uuid);
     const tooLongFritekst = getTooLongText(MAX_LENGTH_AVLYS_BEGRUNNELSE);
     const maxLengthErrorMsg = maxLengthErrorMessage(
       MAX_LENGTH_AVLYS_BEGRUNNELSE

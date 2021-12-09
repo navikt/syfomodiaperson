@@ -15,7 +15,6 @@ import { useOppfoelgingsDialoger } from "@/hooks/useOppfoelgingsDialoger";
 import { DialogmoteOnskePanel } from "../../motebehov/DialogmoteOnskePanel";
 import { MotehistorikkPanel } from "../../dialogmote/motehistorikk/MotehistorikkPanel";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
-import { DialogmoteStatus } from "@/data/dialogmote/types/dialogmoteTypes";
 
 interface Props {
   fnr: string;
@@ -35,7 +34,8 @@ export const Motelandingsside = ({ fnr }: Props) => {
   const {
     isLoading: henterDialogmoter,
     isError: henterDialogmoterFeilet,
-    data: dialogmoter,
+    aktivtDialogmote,
+    historiskeDialogmoter,
   } = useDialogmoterQuery();
 
   const {
@@ -65,17 +65,6 @@ export const Motelandingsside = ({ fnr }: Props) => {
     ledere.hentingForsokt &&
     moter.hentingForsokt;
 
-  const aktivtDialogmote = dialogmoter?.find(
-    (mote) =>
-      mote.status === DialogmoteStatus.NYTT_TID_STED ||
-      mote.status === DialogmoteStatus.INNKALT
-  );
-  const historiskeMoter = dialogmoter?.filter(
-    (mote) =>
-      mote.status === DialogmoteStatus.FERDIGSTILT ||
-      mote.status === DialogmoteStatus.AVLYST
-  );
-
   return (
     <SideLaster
       henter={!harForsoktHentetAlt || henterDialogmoter}
@@ -99,7 +88,7 @@ export const Motelandingsside = ({ fnr }: Props) => {
         sykmeldinger={sykmeldinger.data}
       />
 
-      <MotehistorikkPanel historiskeMoter={historiskeMoter || []} />
+      <MotehistorikkPanel historiskeMoter={historiskeDialogmoter || []} />
     </SideLaster>
   );
 };

@@ -83,7 +83,7 @@ spec:
     - name: ISPENGESTOPP_HOST
       value: "ispengestopp.intern.nav.no"
     - name: ISPERSONOPPGAVE_AAD_APP_CLIENT_ID
-      value: "2acdc183-399f-4e67-a011-83ea72d83176"
+      value: "prod-gcp.teamsykefravr.ispersonoppgave"
     - name: ISPERSONOPPGAVE_HOST
       value: "ispersonoppgave.intern.nav.no"
     - name: MODIACONTEXTHOLDER_HOST

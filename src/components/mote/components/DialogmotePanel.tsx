@@ -12,7 +12,7 @@ import {
 interface Props {
   icon: string;
   header: string;
-  subtitle?: string;
+  subtitle?: ReactNode;
   topRightElement?: ReactElement;
   children: ReactNode;
 }
