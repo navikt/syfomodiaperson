@@ -1,4 +1,5 @@
 import {
+  DialogmotedeltakerBehandlerDTO,
   DialogmoteDTO,
   DialogmoteStatus,
 } from "@/data/dialogmote/types/dialogmoteTypes";
@@ -51,6 +52,15 @@ export const behandler: BehandlerDialogmeldingDTO = {
   etternavn: "Pelton",
   type: BehandlerType.FASTLEGE,
 };
+export const behandlerDeltaker: DialogmotedeltakerBehandlerDTO = {
+  behandlerType: behandler.type,
+  type: "BEHANDLER",
+  uuid: "456def",
+  behandlerRef: "456def",
+  varselList: [],
+  behandlerKontor: "Greendale Legekontor",
+  behandlerNavn: "Dean Pelton",
+};
 
 export const dialogmote: DialogmoteDTO = {
   arbeidsgiver: {
@@ -75,15 +85,7 @@ export const dialogmote: DialogmoteDTO = {
 };
 export const dialogmoteMedBehandler: DialogmoteDTO = {
   ...dialogmote,
-  behandler: {
-    behandlerType: behandler.type,
-    type: "BEHANDLER",
-    uuid: "456def",
-    behandlerRef: "456def",
-    varselList: [],
-    behandlerKontor: "Greendale Legekontor",
-    behandlerNavn: "Dean Pelton",
-  },
+  behandler: behandlerDeltaker,
 };
 
 export const mockState = {

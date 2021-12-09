@@ -46,7 +46,7 @@ export const DialogmotePanel = ({
         <Icon src={icon} alt="moteikon" />
         <FlexColumn justifyContent={JustifyContentType.CENTER}>
           <H2NoMargins>{header}</H2NoMargins>
-          <p>{subtitle}</p>
+          {typeof subtitle === "string" ? <p>{subtitle}</p> : subtitle}
         </FlexColumn>
         {topRightElement && (
           <DivRightAligned>{topRightElement}</DivRightAligned>

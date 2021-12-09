@@ -25,7 +25,8 @@ let queryClient;
 const varselArbeidsgiver = (
   type: MotedeltakerVarselType,
   lestDato?: string
-) => ({
+): DialogmotedeltakerArbeidsgiverVarselDTO => ({
+  uuid: "",
   varselType: type,
   fritekst: "",
   document: [],
@@ -36,7 +37,8 @@ const varselArbeidsgiver = (
 const varselArbeidstaker = (
   type: MotedeltakerVarselType,
   lestDato?: string
-) => ({
+): DialogmotedeltakerArbeidstakerVarselDTO => ({
+  uuid: "",
   varselType: type,
   fritekst: "",
   document: [],
@@ -62,7 +64,10 @@ const dialogmoteMedVarsel = (
   },
 });
 
-describe("DeltakereSvarInfo", () => {
+const ingenDetaljerTekst = "Ingen detaljer er tilgjengelig.";
+const ikkeSvartTekst = "Har ikke gitt svar";
+
+describe("DeltakereSvarInfo for arbeidstaker og arbeidsgiver", () => {
   beforeEach(() => {
     queryClient = new QueryClient();
   });
@@ -100,10 +105,18 @@ describe("DeltakereSvarInfo", () => {
       expect(wrapper.getByText("Arbeidstakeren", { exact: false })).to.exist;
       expect(wrapper.getByText(expectedText, { exact: false })).to.exist;
     });
+    it("viser manglende begrunnelse-tekst for nærmeste leder og arbeidstaker", () => {
+      expect(wrapper.getAllByText(ingenDetaljerTekst)).to.have.length(2);
+      expect(wrapper.queryByText("Begrunnelse", { exact: false })).to.not.exist;
+    });
     it("viser suksess-ikon for nærmeste leder og arbeidstaker", () => {
       expect(
         wrapper.getAllByRole("img", { name: "suksess-ikon" })
       ).to.have.length(2);
+    });
+    it("viser ikke svar-tekst", () => {
+      expect(wrapper.queryByText(ikkeSvartTekst, { exact: false })).to.not
+        .exist;
     });
   });
 
@@ -134,10 +147,18 @@ describe("DeltakereSvarInfo", () => {
       expect(wrapper.getByText("Arbeidstakeren", { exact: false })).to.exist;
       expect(wrapper.getByText(expectedText, { exact: false })).to.exist;
     });
+    it("viser manglende begrunnelse-tekst for nærmeste leder og arbeidstaker", () => {
+      expect(wrapper.getAllByText(ingenDetaljerTekst)).to.have.length(2);
+      expect(wrapper.queryByText("Begrunnelse", { exact: false })).to.not.exist;
+    });
     it("viser minus-sirkel-ikon for nærmeste leder og arbeidstaker", () => {
       expect(
         wrapper.getAllByRole("img", { name: "minus-sirkel-ikon" })
       ).to.have.length(2);
+    });
+    it("viser ikke svar-tekst", () => {
+      expect(wrapper.queryByText(ikkeSvartTekst, { exact: false })).to.not
+        .exist;
     });
   });
 
@@ -174,10 +195,18 @@ describe("DeltakereSvarInfo", () => {
       expect(wrapper.getByText("Arbeidstakeren", { exact: false })).to.exist;
       expect(wrapper.getByText(expectedText, { exact: false })).to.exist;
     });
+    it("viser manglende begrunnelse-tekst for nærmeste leder og arbeidstaker", () => {
+      expect(wrapper.getAllByText(ingenDetaljerTekst)).to.have.length(2);
+      expect(wrapper.queryByText("Begrunnelse", { exact: false })).to.not.exist;
+    });
     it("viser suksess-ikon for nærmeste leder og arbeidstaker", () => {
       expect(
         wrapper.getAllByRole("img", { name: "suksess-ikon" })
       ).to.have.length(2);
+    });
+    it("viser ikke svar-tekst", () => {
+      expect(wrapper.queryByText(ikkeSvartTekst, { exact: false })).to.not
+        .exist;
     });
   });
 
@@ -208,10 +237,18 @@ describe("DeltakereSvarInfo", () => {
       expect(wrapper.getByText("Arbeidstakeren", { exact: false })).to.exist;
       expect(wrapper.getByText(expectedText, { exact: false })).to.exist;
     });
+    it("viser manglende begrunnelse-tekst for nærmeste leder og arbeidstaker", () => {
+      expect(wrapper.getAllByText(ingenDetaljerTekst)).to.have.length(2);
+      expect(wrapper.queryByText("Begrunnelse", { exact: false })).to.not.exist;
+    });
     it("viser minus-sirkel-ikon for nærmeste leder og arbeidstaker", () => {
       expect(
         wrapper.getAllByRole("img", { name: "minus-sirkel-ikon" })
       ).to.have.length(2);
+    });
+    it("viser ikke svar-tekst", () => {
+      expect(wrapper.queryByText(ikkeSvartTekst, { exact: false })).to.not
+        .exist;
     });
   });
 });

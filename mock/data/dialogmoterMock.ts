@@ -61,7 +61,30 @@ const createDialogmote = (
         },
       ],
     },
-    ...(behandler ? { behandler } : {}),
+    ...(behandler
+      ? {
+          behandler: {
+            ...behandler,
+            varselList: [
+              {
+                uuid: uuid + 5,
+                createdAt: "2021-12-01T12:56:26.282386",
+                varselType: varselType,
+                fritekst: "Ipsum lorum behandler",
+                document: [],
+                svar: [
+                  {
+                    uuid: uuid + 6,
+                    createdAt: "2021-12-03T12:56:26.282386",
+                    svarType: "KOMMER",
+                    tekst: "Jeg kommer i møtet.",
+                  },
+                ],
+              },
+            ],
+          },
+        }
+      : {}),
     sted:
       "This is a very lang text that has a lot of characters and describes where the meeting will take place.",
     tid: moteTid,

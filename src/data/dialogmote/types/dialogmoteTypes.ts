@@ -8,30 +8,45 @@ export enum MotedeltakerVarselType {
   NYTT_TID_STED = "NYTT_TID_STED",
 }
 
-export interface DialogmotedeltakerArbeidstakerVarselDTO {
-  readonly createdAt: string;
-  readonly varselType: MotedeltakerVarselType;
-  readonly digitalt: boolean;
-  readonly lestDato?: string;
-  readonly fritekst: string;
-  readonly document: DocumentComponentDto[];
-}
-
-export interface DialogmotedeltakerArbeidsgiverVarselDTO {
-  readonly createdAt: string;
-  readonly varselType: MotedeltakerVarselType;
-  readonly status: string;
-  readonly lestDato?: string;
-  readonly fritekst: string;
-  readonly document: DocumentComponentDto[];
-}
-
-export interface DialogmotedeltakerBehandlerVarselDTO {
+export interface DialogmotedeltakerVarselDTO {
   readonly uuid: string;
   readonly createdAt: string;
+  readonly lestDato?: string;
   readonly varselType: MotedeltakerVarselType;
   readonly fritekst: string;
   readonly document: DocumentComponentDto[];
+}
+
+export interface DialogmotedeltakerArbeidstakerVarselDTO
+  extends DialogmotedeltakerVarselDTO {
+  readonly digitalt: boolean;
+}
+
+export interface DialogmotedeltakerArbeidsgiverVarselDTO
+  extends DialogmotedeltakerVarselDTO {
+  readonly status: string;
+}
+
+export interface DialogmotedeltakerBehandlerVarselDTO
+  extends Omit<DialogmotedeltakerVarselDTO, "lestDato"> {
+  readonly svar: DialogmotedeltakerBehandlerVarselSvarDTO[];
+}
+
+export interface DialogmotedeltakerBehandlerVarselSvarDTO
+  extends VarselSvarDTO {
+  readonly uuid: string;
+}
+
+export interface VarselSvarDTO {
+  readonly createdAt: string;
+  readonly svarType: SvarType;
+  readonly tekst?: string;
+}
+
+export enum SvarType {
+  KOMMER = "KOMMER",
+  NYTT_TID_STED = "NYTT_TID_STED",
+  KOMMER_IKKE = "KOMMER_IKKE",
 }
 
 export enum DocumentComponentType {
