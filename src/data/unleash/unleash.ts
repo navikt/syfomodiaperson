@@ -5,12 +5,14 @@ import { ToggleNames, Toggles } from "@/data/unleash/unleash_types";
 export interface UnleashState {
   fetching: boolean;
   fetchingFailed: boolean;
+  triedFetchingToggles: boolean;
   toggles: Toggles;
 }
 
 export const initialState: UnleashState = {
   fetching: false,
   fetchingFailed: false,
+  triedFetchingToggles: false,
   toggles: {
     [ToggleNames.dm2]: false,
     [ToggleNames.dm2VarselFysiskBrev]: false,
@@ -28,6 +30,7 @@ const unleash: Reducer<UnleashState, UnleashActions> = (
         ...state,
         fetching: true,
         fetchingFailed: false,
+        triedFetchingToggles: false,
       };
     }
     case UnleashActionTypes.FETCH_UNLEASH_TOGGLES_FAILED: {
@@ -35,6 +38,7 @@ const unleash: Reducer<UnleashState, UnleashActions> = (
         ...state,
         fetching: false,
         fetchingFailed: true,
+        triedFetchingToggles: true,
       };
     }
     case UnleashActionTypes.FETCH_UNLEASH_TOGGLES_SUCCESS: {
@@ -42,6 +46,7 @@ const unleash: Reducer<UnleashState, UnleashActions> = (
         ...state,
         fetching: false,
         fetchingFailed: false,
+        triedFetchingToggles: true,
         toggles: action.toggles,
       };
     }

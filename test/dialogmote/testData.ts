@@ -41,6 +41,7 @@ export const veileder: Partial<VeilederinfoDTO> = {
   epost: "vetle.veileder@nav.no",
   telefonnummer: "12345678",
 };
+export const narmesteLederNavn = "Tatten Tattover";
 
 export const behandler: BehandlerDialogmeldingDTO = {
   behandlerRef: "behandler-ref-uuid",
@@ -105,12 +106,12 @@ export const mockState = {
       {
         uuid: "3",
         arbeidstakerPersonIdentNumber: "19026900010",
-        virksomhetsnummer: "110110110",
+        virksomhetsnummer: arbeidsgiver.orgnr,
         virksomhetsnavn: "PONTYPANDY FIRE SERVICE",
         narmesteLederPersonIdentNumber: "02690001009",
         narmesteLederTelefonnummer: "12345666",
         narmesteLederEpost: "test3@test.no",
-        narmesteLederNavn: "Tatten Tattover",
+        narmesteLederNavn: narmesteLederNavn,
         aktivFom: new Date(),
         aktivTom: null,
         arbeidsgiverForskutterer: false,
@@ -122,39 +123,7 @@ export const mockState = {
 };
 
 export const mockStateBehandler = {
-  navbruker: {
-    data: {
-      navn: arbeidstaker.navn,
-      kontaktinfo: {
-        fnr: arbeidstaker.personident,
-      },
-    },
-  },
-  enhet: {
-    valgtEnhet: navEnhet,
-  },
-  valgtbruker: {
-    personident: arbeidstaker.personident,
-  },
-  ledere: {
-    currentLedere: [
-      {
-        uuid: "3",
-        arbeidstakerPersonIdentNumber: "19026900010",
-        virksomhetsnummer: "110110110",
-        virksomhetsnavn: "PONTYPANDY FIRE SERVICE",
-        narmesteLederPersonIdentNumber: "02690001009",
-        narmesteLederTelefonnummer: "12345666",
-        narmesteLederEpost: "test3@test.no",
-        narmesteLederNavn: "Tatten Tattover",
-        aktivFom: new Date(),
-        aktivTom: null,
-        arbeidsgiverForskutterer: false,
-        timestamp: "2020-02-06T12:00:00+01:00",
-        status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
-      },
-    ],
-  },
+  ...mockState,
   unleash: {
     toggles: {
       [ToggleNames.dm2]: true,

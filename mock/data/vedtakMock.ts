@@ -208,7 +208,7 @@ export const vedtakMock = [
     opprettetTimestamp: "2021-08-23T11:28:46.266617Z",
     annullert: false,
     revurdert: true,
-    dager: [
+    dagerArbeidsgiver: [
       {
         dato: "2021-07-01",
         belop: 0,
@@ -427,9 +427,11 @@ export const vedtakMock = [
         begrunnelser: [],
       },
     ],
+    dagerPerson: [],
     dagligUtbetalingsbelop: 831,
     antallDagerMedUtbetaling: 10,
-    sykepengebelop: 8310,
+    sykepengebelopArbeidsgiver: 8310,
+    sykepengebelopPerson: 0,
   },
   {
     id: "bf223c94-4929-4551-badb-c364c35d9e69",
@@ -740,7 +742,7 @@ export const vedtakMock = [
     opprettetTimestamp: "2021-08-23T11:30:36.649348Z",
     annullert: false,
     revurdert: true,
-    dager: [
+    dagerArbeidsgiver: [
       {
         dato: "2021-08-01",
         belop: 0,
@@ -882,9 +884,11 @@ export const vedtakMock = [
         begrunnelser: [],
       },
     ],
+    dagerPerson: [],
     dagligUtbetalingsbelop: 831,
     antallDagerMedUtbetaling: 15,
-    sykepengebelop: 12465,
+    sykepengebelopArbeidsgiver: 12465,
+    sykepengebelopPerson: 0,
   },
   {
     id: "3ffed449-9a28-463b-9809-0120fab12fbe",
@@ -1216,7 +1220,7 @@ export const vedtakMock = [
     opprettetTimestamp: "2021-08-23T11:32:13.791948Z",
     annullert: false,
     revurdert: true,
-    dager: [
+    dagerArbeidsgiver: [
       {
         dato: "2021-07-01",
         belop: 0,
@@ -1575,9 +1579,11 @@ export const vedtakMock = [
         begrunnelser: [],
       },
     ],
+    dagerPerson: [],
     dagligUtbetalingsbelop: 831,
     antallDagerMedUtbetaling: 24,
-    sykepengebelop: 19944,
+    sykepengebelopArbeidsgiver: 19944,
+    sykepengebelopPerson: 0,
   },
   {
     id: "468d05fe-279b-4d57-9538-af113672a989",
@@ -1909,7 +1915,7 @@ export const vedtakMock = [
     opprettetTimestamp: "2021-08-23T11:35:45.164628Z",
     annullert: false,
     revurdert: false,
-    dager: [
+    dagerArbeidsgiver: [
       {
         dato: "2021-07-01",
         belop: 0,
@@ -2268,8 +2274,10 @@ export const vedtakMock = [
         begrunnelser: [],
       },
     ],
+    dagerPerson: [],
     dagligUtbetalingsbelop: 831,
     antallDagerMedUtbetaling: 23,
-    sykepengebelop: 19113,
+    sykepengebelopArbeidsgiver: 19113,
+    sykepengebelopPerson: 0,
   },
 ];

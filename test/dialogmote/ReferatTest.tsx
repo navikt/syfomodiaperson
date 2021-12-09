@@ -242,6 +242,7 @@ describe("ReferatTest", () => {
   });
 
   it("validerer maks lengde på fritekstfelter", () => {
+    stubFerdigstillApi(apiMock(), dialogmoteMedBehandler.uuid);
     const wrapper = mountReferat(dialogmoteMedBehandler);
 
     changeTextAreaValue(wrapper, "situasjon", situasjonTekst);
