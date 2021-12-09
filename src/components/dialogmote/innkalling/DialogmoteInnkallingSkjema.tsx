@@ -35,6 +35,7 @@ import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/Behandl
 import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
 import styled from "styled-components";
 import { behandlerNavn } from "@/utils/behandlerUtils";
+import { useTrackOnClick } from "@/data/logging/loggingHooks";
 
 interface DialogmoteInnkallingSkjemaTekster {
   fritekstArbeidsgiver: string;
@@ -70,6 +71,7 @@ type DialogmoteInnkallingSkjemaFeil = Partial<
 const texts = {
   send: "Send innkallingene",
   cancel: "Avbryt",
+  behandler: "Behandler",
 };
 
 const toInnkalling = (
@@ -170,8 +172,9 @@ const DialogmoteInnkallingSkjema = ({
 
     return feilmeldinger;
   };
-
+  const trackOnClick = useTrackOnClick();
   const submit = (values: DialogmoteInnkallingSkjemaValues) => {
+    trackOnClick(texts.behandler, selectedBehandler?.type || "ingen behandler");
     const dialogmoteInnkalling = toInnkalling(
       values,
       fnr,

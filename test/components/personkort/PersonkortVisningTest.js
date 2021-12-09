@@ -23,8 +23,11 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { fastlegerQueryKeys } from "@/data/fastlege/fastlegerQueryHooks";
 import { arbeidstaker } from "../../dialogmote/testData";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
+import { apiMock } from "../../stubs/stubApi";
+import { stubFastlegerApi } from "../../stubs/stubFastlegeRest";
 
 const queryClient = new QueryClient();
+let apiMockScope;
 const aktivFastlege = {
   pasientforhold: {
     fom: "2021-10-01",
@@ -68,6 +71,8 @@ describe("PersonkortVisning", () => {
   });
 
   beforeEach(() => {
+    apiMockScope = apiMock();
+    stubFastlegerApi(apiMockScope, arbeidstaker.personident);
     mockState = {
       ledere: [
         {

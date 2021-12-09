@@ -45,9 +45,6 @@ const utbetalingslinjerTilDager = (
   return dager;
 };
 
-const refusjonUtbetalingsLinjer = (vedtak: VedtakDTO): Utbetalingslinje[] =>
-  vedtak.vedtak.utbetaling.arbeidsgiverOppdrag.utbetalingslinjer;
-
 const dagerInnenforPeriode = (dager: Dag[], vedtak: VedtakDTO): Dag[] => {
   const min = dayjs(vedtak.vedtak.fom).toDate();
   const max = dayjs(vedtak.vedtak.tom).toDate();
@@ -60,7 +57,11 @@ const dagerInnenforPeriode = (dager: Dag[], vedtak: VedtakDTO): Dag[] => {
 export const refusjonsdagerInnenforVedtakPeriode = (
   vedtak: VedtakDTO
 ): Dag[] => {
-  const refusjoner = refusjonUtbetalingsLinjer(vedtak);
+  if (vedtak.vedtak.utbetaling.arbeidsgiverOppdrag === undefined) {
+    return [];
+  }
+  const refusjoner =
+    vedtak.vedtak.utbetaling.arbeidsgiverOppdrag.utbetalingslinjer;
   const refusjonsdager = utbetalingslinjerTilDager(refusjoner);
   return dagerInnenforPeriode(refusjonsdager, vedtak);
 };

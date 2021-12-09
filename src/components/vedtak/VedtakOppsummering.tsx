@@ -58,7 +58,8 @@ const VedtakOppsummering = (vedtakOppsummering: VedtakOppsummeringProps) => {
     );
     if (utbetalingsdagerArbeidsgiver > 0) {
       setUtbetalingsdagerArbeidsgiver(utbetalingsdagerArbeidsgiver + " dager");
-      const utbetalingsbelopBruttoArbeidsgiver = selectedVedtak.sykepengebelop;
+      const utbetalingsbelopBruttoArbeidsgiver =
+        selectedVedtak.sykepengebelopArbeidsgiver;
       setUtbetalingbelopBruttoArbeidsgiver(
         ValutaFormat.format(utbetalingsbelopBruttoArbeidsgiver) + " kr"
       );

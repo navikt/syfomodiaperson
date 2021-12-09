@@ -6,8 +6,10 @@ import {
   loginRequiredError,
   networkError,
 } from "@/api/errors";
+import { generateUUID } from "@/utils/uuidUtils";
 
-export const NAV_CONSUMER_ID_HEADER = "nav-consumer-id";
+export const NAV_CALL_ID_HEADER = "Nav-Call-Id";
+export const NAV_CONSUMER_ID_HEADER = "Nav-Consumer-Id";
 export const NAV_CONSUMER_ID = "syfomodiaperson";
 export const NAV_PERSONIDENT_HEADER = "nav-personident";
 
@@ -20,6 +22,7 @@ export const defaultRequestHeaders = (personIdent?: string): HeadersInit => {
   if (personIdent) {
     headers[NAV_PERSONIDENT_HEADER] = personIdent;
   }
+  headers[NAV_CALL_ID_HEADER] = `${NAV_CONSUMER_ID}-${generateUUID()}`;
   return headers;
 };
 

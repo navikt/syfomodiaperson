@@ -11,6 +11,9 @@ import { AlertstripeFullbredde } from "../../AlertstripeFullbredde";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/components/dialogmote/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
+import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
+import { Redirect } from "react-router-dom";
+import { moteoversiktRoutePath } from "@/routers/AppRouter";
 
 const texts = {
   title: "Innkalling til dialogmøte",
@@ -25,8 +28,17 @@ const DialogmoteInnkallingWarningAlert = styled(AlertstripeFullbredde)`
 const DialogmoteInnkallingContainer = (): ReactElement => {
   const fnr = useValgtPersonident();
   const { hentingLedereForsokt, hentingLedereFeilet } = useLedere();
-  const { isDm2FysiskBrevEnabled } = useDM2FeatureToggles();
+  const {
+    triedFetchingToggles,
+    isDm2FysiskBrevEnabled,
+    isDm2Enabled,
+  } = useDM2FeatureToggles();
   const { brukerKanIkkeVarslesDigitalt } = useNavBrukerData();
+  const { aktivtDialogmote } = useDialogmoterQuery();
+
+  if ((triedFetchingToggles && !isDm2Enabled) || aktivtDialogmote) {
+    return <Redirect to={moteoversiktRoutePath} />;
+  }
 
   return (
     <Side fnr={fnr} tittel={texts.title} aktivtMenypunkt={MOETEPLANLEGGER}>
