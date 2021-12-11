@@ -92,7 +92,7 @@
     "nav-frontend-veileder-style": "3.0.1",
     "nav-frontend-veilederpanel": "2.0.1",
     "nav-frontend-veilederpanel-style": "2.0.1",
-    "node-fetch": "2.6.1",
+    "node-fetch": "2.6.6",
     "openid-client": "4.2.2",
     "passport": "0.4.1",
     "passport-jwt": "4.0.0",
