@@ -12,12 +12,11 @@
     "paths": {
       "@/*": ["*"]
     },
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    //Todo: Endre til true og legg inn returntyper i sagas
+    "strict": true,
+    //Todo: Endre til true under og legg inn returntyper i sagas
     "noImplicitAny": false,
-    "strictNullChecks": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "exclude": [
     "node_modules",

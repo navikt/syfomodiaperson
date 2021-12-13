@@ -31,9 +31,9 @@ jobs:
       - name: Prettier check 💅
         run: |
           npx prettier --check .
-      - name: Run lint check
+      - name: Run lint and typecheck
         run: |
-          npm run lint
+          npm run lint-and-typecheck
       - name: Run unit tests
         run: |
           npm run test

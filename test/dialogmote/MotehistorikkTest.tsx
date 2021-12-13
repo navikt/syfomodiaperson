@@ -30,6 +30,7 @@ const dialogmoter: DialogmoteDTO[] = [
       type: "ARBEIDSTAKER",
       varselList: [
         {
+          uuid: "123",
           createdAt: "2021-05-26T12:56:26.271381",
           varselType: MotedeltakerVarselType.INNKALT,
           digitalt: true,
@@ -44,6 +45,7 @@ const dialogmoter: DialogmoteDTO[] = [
       type: "ARBEIDSGIVER",
       varselList: [
         {
+          uuid: "456",
           createdAt: "2021-05-26T12:56:26.282386",
           varselType: MotedeltakerVarselType.INNKALT,
           lestDato: "2021-05-26T12:56:26.271381",
@@ -69,6 +71,7 @@ const dialogmoter: DialogmoteDTO[] = [
       type: "ARBEIDSTAKER",
       varselList: [
         {
+          uuid: "abc",
           createdAt: "2021-05-26T12:56:26.271381",
           varselType: MotedeltakerVarselType.AVLYST,
           digitalt: true,
@@ -83,6 +86,7 @@ const dialogmoter: DialogmoteDTO[] = [
       type: "ARBEIDSGIVER",
       varselList: [
         {
+          uuid: "def",
           createdAt: "2021-05-26T12:56:26.282386",
           varselType: MotedeltakerVarselType.AVLYST,
           lestDato: "2021-05-26T12:56:26.271381",
