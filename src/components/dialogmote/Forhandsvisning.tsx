@@ -27,10 +27,12 @@ const texts = {
 
 const Paragraph = styled.div`
   margin-bottom: 1em;
+  white-space: pre-wrap;
 `;
 
 const TitledParagraph = styled.div`
   margin: 1em 0;
+  white-space: pre-wrap;
 `;
 
 const ForhandsvisningModal = styled(ModalWrapper)`
