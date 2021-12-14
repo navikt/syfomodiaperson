@@ -45,6 +45,7 @@ export const veileder: Partial<VeilederinfoDTO> = {
 export const narmesteLederNavn = "Tatten Tattover";
 
 export const behandler: BehandlerDialogmeldingDTO = {
+  fnr: "01038521470",
   behandlerRef: "behandler-ref-uuid",
   kontor: "Greendale Legekontor",
   telefon: "11223344",
@@ -56,6 +57,7 @@ export const behandlerDeltaker: DialogmotedeltakerBehandlerDTO = {
   behandlerType: behandler.type,
   type: "BEHANDLER",
   uuid: "456def",
+  personIdent: "01038521470",
   behandlerRef: "456def",
   varselList: [],
   behandlerKontor: "Greendale Legekontor",

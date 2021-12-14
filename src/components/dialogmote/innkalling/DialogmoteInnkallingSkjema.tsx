@@ -106,6 +106,7 @@ const toInnkalling = (
 
   if (valgtBehandler) {
     innkalling.behandler = {
+      personIdent: valgtBehandler.fnr,
       behandlerRef: valgtBehandler.behandlerRef,
       behandlerNavn: behandlerNavn(valgtBehandler),
       behandlerKontor: valgtBehandler.kontor ?? "",

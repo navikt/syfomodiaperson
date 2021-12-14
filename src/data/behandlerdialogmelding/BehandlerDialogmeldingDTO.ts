@@ -3,6 +3,7 @@ import { capitalizeWord } from "../../utils/stringUtils";
 export interface BehandlerDialogmeldingDTO {
   type: BehandlerType;
   behandlerRef: string;
+  fnr?: string;
   fornavn: string;
   mellomnavn?: string;
   etternavn: string;

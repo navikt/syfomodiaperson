@@ -138,6 +138,7 @@ const createDialogmote = (
 const behandler = (uuid: string) => {
   return {
     uuid: uuid + 4,
+    personIdent: "01038521470",
     behandlerRef: uuid + 5,
     behandlerNavn: "Lego Legesen",
     behandlerKontor: "Fastlegekontoret",

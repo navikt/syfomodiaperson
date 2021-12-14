@@ -83,6 +83,7 @@ export interface DialogmotedeltakerArbeidsgiverDTO {
 
 export interface DialogmotedeltakerBehandlerDTO {
   readonly uuid: string;
+  readonly personIdent?: string;
   readonly behandlerRef: string;
   readonly behandlerNavn: string;
   readonly behandlerKontor: string;
@@ -104,6 +105,7 @@ export interface DialogmoteInnkallingDTO {
     innkalling: DocumentComponentDto[];
   };
   behandler?: {
+    personIdent?: string;
     behandlerRef: string;
     behandlerNavn: string;
     behandlerKontor: string;

@@ -169,6 +169,7 @@ describe("Dialogmoteinnkallingskjema", () => {
         innkalling: expectedArbeidstakerInnkalling,
       },
       behandler: {
+        personIdent: behandler.fnr,
         behandlerRef: behandler.behandlerRef,
         behandlerNavn: behandlerNavn(behandler),
         behandlerKontor: behandler.kontor,
