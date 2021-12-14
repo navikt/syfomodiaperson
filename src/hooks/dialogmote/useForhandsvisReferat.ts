@@ -139,7 +139,7 @@ const standardTekster = (
   values: Partial<ReferatSkjemaValues>
 ): DocumentComponentDto[] => {
   const documentComponents: DocumentComponentDto[] = [];
-  if (values.standardtekster) {
+  if (values.standardtekster && values.standardtekster.length > 0) {
     documentComponents.push(
       createHeader(referatTexts.standardTeksterHeader),
       ...values.standardtekster.map((standardtekst) =>
