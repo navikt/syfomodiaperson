@@ -48,7 +48,7 @@ export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
     const documentComponents = [
       ...fellesInfo(values),
       introHilsenArbeidstaker,
-      ...arbeidstakerIntro(),
+      ...arbeidstakerIntro(valgtBehandler),
     ];
     if (values.fritekstArbeidstaker) {
       documentComponents.push(createParagraph(values.fritekstArbeidstaker));
@@ -65,7 +65,7 @@ export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
     const documentComponents = [
       ...fellesInfo(values),
       introHilsenArbeidsgiver,
-      ...arbeidsgiverIntro(),
+      ...arbeidsgiverIntro(valgtBehandler),
     ];
     if (values.fritekstArbeidsgiver) {
       documentComponents.push(createParagraph(values.fritekstArbeidsgiver));
@@ -126,17 +126,29 @@ const fellesInfo = (
   return components;
 };
 
-const arbeidstakerIntro = (): DocumentComponentDto[] => {
+const arbeidstakerIntro = (
+  valgtBehandler?: BehandlerDialogmeldingDTO
+): DocumentComponentDto[] => {
+  const introParagraph2 = !!valgtBehandler
+    ? createParagraph(innkallingTexts.arbeidstaker.intro2WithBehandler)
+    : createParagraph(innkallingTexts.arbeidstaker.intro2);
+
   return [
     createParagraph(innkallingTexts.arbeidstaker.intro1),
-    createParagraph(innkallingTexts.arbeidstaker.intro2),
+    introParagraph2,
   ];
 };
 
-const arbeidsgiverIntro = (): DocumentComponentDto[] => {
+const arbeidsgiverIntro = (
+  valgtBehandler?: BehandlerDialogmeldingDTO
+): DocumentComponentDto[] => {
+  const introParagraph2 = !!valgtBehandler
+    ? createParagraph(innkallingTexts.arbeidsgiver.intro2withBehandler)
+    : createParagraph(innkallingTexts.arbeidsgiver.intro2);
+
   return [
     createParagraph(innkallingTexts.arbeidsgiver.intro1),
-    createParagraph(innkallingTexts.arbeidsgiver.intro2),
+    introParagraph2,
   ];
 };
 
