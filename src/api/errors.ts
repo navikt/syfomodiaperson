@@ -49,3 +49,6 @@ export const networkError = (message: string): ApiError => ({
   message,
   defaultErrorMsg: defaultErrorTexts.networkError,
 });
+
+export const getErrorMessage = (error: unknown): string =>
+  error instanceof Error ? error.message : String(error);

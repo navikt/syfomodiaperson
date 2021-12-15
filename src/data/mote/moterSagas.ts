@@ -4,6 +4,7 @@ import * as actions from "./moter_actions";
 import * as historikkActions from "../historikk/historikk_actions";
 import { MoteDTO } from "./types/moteTypes";
 import { SYFOMOTEADMIN_ROOT } from "@/apiConstants";
+import { ApiErrorException } from "@/api/errors";
 
 export function* opprettMote(action: any) {
   yield put(actions.oppretterMote());
@@ -28,7 +29,7 @@ export function* hentMoter(action: any) {
     yield put(actions.moterHentet(data));
   } catch (e) {
     //TODO: Add error to reducer and errorboundary to components
-    if (e.code === 403) {
+    if (e instanceof ApiErrorException && e.code === 403) {
       yield put(
         actions.hentMoterIkkeTilgang({
           harTilgang: false,

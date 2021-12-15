@@ -7,6 +7,7 @@ import { BehandleMotebehovAction } from "./behandlemotebehov_actions";
 import { RootState } from "../rootState";
 import { MotebehovVeilederDTO } from "./types/motebehovTypes";
 import { SYFOMOTEBEHOV_ROOT } from "@/apiConstants";
+import { ApiErrorException } from "@/api/errors";
 
 export const skalHenteMotebehov = (state: RootState) => {
   const reducer = state.motebehov;
@@ -25,7 +26,7 @@ export function* hentMotebehovHvisIkkeHentet(action: HentMotebehovAction) {
       yield put(actions.motebehovHentet(data));
     } catch (e) {
       //TODO: Add error to reducer and errorboundary to components
-      if (e.code === 403) {
+      if (e instanceof ApiErrorException && e.code === 403) {
         yield put(actions.hentMotebehovIkkeTilgang(e.error.message));
         return;
       }
@@ -44,10 +45,10 @@ export function* behandleMotebehov(action: BehandleMotebehovAction) {
     yield put(behandleActions.behandleMotebehovBehandlet(action.veilederIdent));
   } catch (e) {
     //TODO: Add error to reducer and errorboundary to components
-    if (e.code === 403) {
+    if (e instanceof ApiErrorException && e.code === 403) {
       yield put(behandleActions.behandleMotebehovForbudt());
       return;
-    } else if (e.code === 409) {
+    } else if (e instanceof ApiErrorException && e.code === 409) {
       window.location.reload();
       return;
     }

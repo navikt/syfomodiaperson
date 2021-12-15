@@ -4,12 +4,12 @@ import { SykmeldingNewFormatDTO } from "./types/SykmeldingNewFormatDTO";
 import { RootState } from "../rootState";
 import { SYFOSMREGISTER_ROOT } from "@/apiConstants";
 import {
-  hentSykmeldingerHenter,
   hentSykmeldingerFeilet,
+  hentSykmeldingerHenter,
   SykmeldingerActionTypes,
   sykmeldingerHentet,
 } from "./sykmeldinger_actions";
-import { ApiErrorException, generalError } from "@/api/errors";
+import { ApiErrorException, generalError, getErrorMessage } from "@/api/errors";
 
 export const skalHenteSykmeldinger = (state: RootState) => {
   const reducer = state.sykmeldinger;
@@ -29,7 +29,7 @@ export function* hentSykmeldingerHvisIkkeHentet(action: any) {
       if (e instanceof ApiErrorException) {
         yield put(hentSykmeldingerFeilet(e.error));
       } else {
-        yield put(hentSykmeldingerFeilet(generalError(e.message)));
+        yield put(hentSykmeldingerFeilet(generalError(getErrorMessage(e))));
       }
     }
   }

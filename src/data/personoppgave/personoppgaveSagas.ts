@@ -3,6 +3,7 @@ import { get, post } from "@/api/axios";
 import * as actions from "./personoppgave_actions";
 import { PersonOppgave } from "./types/PersonOppgave";
 import { ISPERSONOPPGAVE_ROOT } from "@/apiConstants";
+import { ApiErrorException } from "@/api/errors";
 
 export const skalHentePersonOppgaver = (state: any) => {
   const reducer = state.personoppgaver;
@@ -38,7 +39,7 @@ export function* behandlePersonOppgave(action: any) {
     );
   } catch (e) {
     //TODO: Add error to reducer and errorboundary to components
-    if (e.code === 409) {
+    if (e instanceof ApiErrorException && e.code === 409) {
       window.location.reload();
       return;
     }
