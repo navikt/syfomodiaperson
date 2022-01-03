@@ -1,16 +1,12 @@
 import { MoteState } from "../../support/motelandingsside-commands";
 import { selectors } from "../../support/constants";
+import { tommorrowDateAsString } from "../../support/utils";
 
 const texts = {
   begrunnelseArbeidstaker: "Begrunnelse til arbeidstaker",
   begrunnelseArbeidsgiver: "Begrunnelse til arbeidsgiver",
   begrunnelseBehandler: "Begrunnelse til behandler",
 };
-
-const MILLISECONDS_PER_HOUR = 3600000;
-const DAY_IN_MILLISECONDS = MILLISECONDS_PER_HOUR * 24;
-
-const TOMORROW = new Date(Date.now() + DAY_IN_MILLISECONDS);
 
 context("Endre dialogmøte", () => {
   beforeEach(() => {
@@ -85,15 +81,7 @@ context("Endre dialogmøte", () => {
       texts.begrunnelseArbeidsgiver
     );
 
-    const day =
-      TOMORROW.getUTCDate() < 10
-        ? `0${TOMORROW.getUTCDate()}`
-        : TOMORROW.getUTCDate();
-    cy.get("[id=dato]")
-      .clear()
-      .type(
-        `${day}.${TOMORROW.getUTCMonth() + 1}.${TOMORROW.getUTCFullYear()}`
-      );
+    cy.get("[id=dato]").clear().type(tommorrowDateAsString());
 
     cy.contains("Lagre endringer").click();
 
@@ -153,15 +141,7 @@ context("Endre dialogmøte med behandler", () => {
       texts.begrunnelseBehandler
     );
 
-    const day =
-      TOMORROW.getUTCDate() < 10
-        ? `0${TOMORROW.getUTCDate()}`
-        : TOMORROW.getUTCDate();
-    cy.get("[id=dato]")
-      .clear()
-      .type(
-        `${day}.${TOMORROW.getUTCMonth() + 1}.${TOMORROW.getUTCFullYear()}`
-      );
+    cy.get("[id=dato]").clear().type(tommorrowDateAsString());
 
     cy.contains("Lagre endringer").click();
 
