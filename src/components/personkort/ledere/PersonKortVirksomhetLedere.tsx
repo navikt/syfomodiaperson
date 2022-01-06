@@ -146,10 +146,13 @@ const PersonKortVirksomhetLedere = (
     virksomhetLederMap,
     virksomhetsnummer,
   } = personKortVirksomhetLedereProps;
-  const currentLeder = virksomhetLederMap[virksomhetsnummer][0];
+  const currentLeder: NarmesteLederRelasjonDTO =
+    virksomhetLederMap[virksomhetsnummer][0];
   return (
     <PersonKortVirksomhetHeader
-      currentLeder={currentLeder}
+      arbeidsgiverForskutterer={currentLeder.arbeidsgiverForskutterer}
+      virksomhetsnavn={currentLeder.virksomhetsnavn}
+      virksomhetsnummer={currentLeder.virksomhetsnummer}
       sykmeldinger={sykmeldinger}
     >
       <PersonKortVirksomhetLederIngressRow />

@@ -1,6 +1,7 @@
 import React from "react";
 import {
   ledereWithActiveLedereFirst,
+  SykmeldingLeder,
   virksomheterWithoutLeder,
 } from "@/utils/ledereUtils";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
@@ -57,15 +58,19 @@ const PersonkortLedere = (personkortLedereProps: PersonkortLedereProps) => {
             />
           );
         })}
-        {virksomheterFromSykmeldinger.map((virksomhet: any, idx: number) => {
-          return (
-            <PersonKortVirksomhetHeader
-              key={idx}
-              currentLeder={virksomhet}
-              sykmeldinger={sykmeldinger}
-            />
-          );
-        })}
+        {virksomheterFromSykmeldinger.map(
+          (virksomhet: SykmeldingLeder, idx: number) => {
+            return (
+              <PersonKortVirksomhetHeader
+                key={idx}
+                arbeidsgiverForskutterer={virksomhet.arbeidsgiverForskutterer}
+                virksomhetsnavn={virksomhet.virksomhetsnavn}
+                virksomhetsnummer={virksomhet.virksomhetsnummer}
+                sykmeldinger={sykmeldinger}
+              />
+            );
+          }
+        )}
       </div>
     );
   }

@@ -71,8 +71,8 @@ export const oppfolgingstilfelleperioderMock = {
   912345678: [
     {
       orgnummer: "912345678",
-      fom: "2020-05-07",
-      tom: "2021-12-10",
+      fom: "2019-06-06",
+      tom: "2030-12-10",
       grad: 100,
       aktivitet: "Heihei",
     },

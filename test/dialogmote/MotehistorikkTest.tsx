@@ -41,7 +41,7 @@ const dialogmoter: DialogmoteDTO[] = [
       ],
     },
     arbeidsgiver: {
-      virksomhetsnummer: "912345678",
+      virksomhetsnummer: "110110110",
       type: "ARBEIDSGIVER",
       varselList: [
         {
@@ -82,7 +82,7 @@ const dialogmoter: DialogmoteDTO[] = [
       ],
     },
     arbeidsgiver: {
-      virksomhetsnummer: "912345678",
+      virksomhetsnummer: "110110110",
       type: "ARBEIDSGIVER",
       varselList: [
         {

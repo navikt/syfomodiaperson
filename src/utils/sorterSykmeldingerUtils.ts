@@ -5,7 +5,9 @@ import {
   sykmeldingperioderSortertEldstTilNyest,
 } from "./sykmeldinger/sykmeldingUtils";
 
-const hentArbeidsgivernavn = (sykmelding: SykmeldingOldFormat): string => {
+export const hentArbeidsgivernavn = (
+  sykmelding: SykmeldingOldFormat
+): string => {
   return sykmelding.mottakendeArbeidsgiver
     ? sykmelding.mottakendeArbeidsgiver.navn
     : sykmelding.arbeidsgiver

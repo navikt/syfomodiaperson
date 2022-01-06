@@ -214,14 +214,14 @@ describe("periodeUtils", () => {
         110110110: {
           data: [
             {
-              orgnummer: "110110110",
+              orgnummer: "922345678",
               fom: "2019-06-07",
               tom: "2019-07-10",
               grad: 100,
               aktivitet: "Heihei",
             },
             {
-              orgnummer: "110110110",
+              orgnummer: "922345678",
               fom: "2019-07-11",
               tom: "2019-08-26",
               grad: 100,

@@ -430,7 +430,10 @@ describe("ledereUtils", () => {
       const leder = mockLederWithActiveSykmelding;
       const sykmeldinger = [mockActiveSykmeldingForLeder];
 
-      const hasActiveSykmelding = lederHasActiveSykmelding(leder, sykmeldinger);
+      const hasActiveSykmelding = lederHasActiveSykmelding(
+        leder.virksomhetsnummer,
+        sykmeldinger
+      );
 
       expect(hasActiveSykmelding).to.be.equal(true);
     });
@@ -439,7 +442,10 @@ describe("ledereUtils", () => {
       const leder = mockLederWithoutActiveSykmelding;
       const sykmeldinger = [mockInactiveSykmeldingForLeder];
 
-      const hasActiveSykmelding = lederHasActiveSykmelding(leder, sykmeldinger);
+      const hasActiveSykmelding = lederHasActiveSykmelding(
+        leder.virksomhetsnummer,
+        sykmeldinger
+      );
 
       expect(hasActiveSykmelding).to.be.equal(false);
     });
@@ -448,7 +454,10 @@ describe("ledereUtils", () => {
       const leder = mockLederWithActiveSykmelding;
       const sykmeldinger = [mockInactiveSykmeldingForLeder];
 
-      const hasActiveSykmelding = lederHasActiveSykmelding(leder, sykmeldinger);
+      const hasActiveSykmelding = lederHasActiveSykmelding(
+        leder.virksomhetsnummer,
+        sykmeldinger
+      );
 
       expect(hasActiveSykmelding).to.be.equal(false);
     });
@@ -457,7 +466,10 @@ describe("ledereUtils", () => {
       const leder = mockLederWithActiveSykmelding;
       const sykmeldinger = [mockSykmeldingWithStatusNyForLeder];
 
-      const hasActiveSykmelding = lederHasActiveSykmelding(leder, sykmeldinger);
+      const hasActiveSykmelding = lederHasActiveSykmelding(
+        leder.virksomhetsnummer,
+        sykmeldinger
+      );
 
       expect(hasActiveSykmelding).to.be.equal(false);
     });
@@ -514,10 +526,10 @@ describe("ledereUtils", () => {
       );
 
       const expectedLeder = {
-        erOppgitt: false,
-        orgnummer:
+        arbeidsgiverForskutterer: undefined,
+        virksomhetsnummer:
           mockActiveSykmeldingForLeder.mottakendeArbeidsgiver.virksomhetsnummer,
-        organisasjonsnavn:
+        virksomhetsnavn:
           mockActiveSykmeldingForLeder.mottakendeArbeidsgiver.navn,
       };
 
@@ -562,10 +574,10 @@ describe("ledereUtils", () => {
       );
 
       const expectedLeder = {
-        erOppgitt: false,
-        orgnummer:
+        arbeidsgiverForskutterer: undefined,
+        virksomhetsnummer:
           mockActiveSykmeldingForLeder.mottakendeArbeidsgiver.virksomhetsnummer,
-        organisasjonsnavn:
+        virksomhetsnavn:
           mockActiveSykmeldingForLeder.mottakendeArbeidsgiver.navn,
       };
 

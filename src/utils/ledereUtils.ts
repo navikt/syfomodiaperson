@@ -96,7 +96,7 @@ export const ledereUtenMotebehovsvar = (
 };
 
 export const lederHasActiveSykmelding = (
-  leder: NarmesteLederRelasjonDTO,
+  lederVirksomhetsnummer: string,
   sykmeldinger: SykmeldingOldFormat[]
 ): boolean => {
   const activeSykmeldingerWithArbeidsgiver = activeSykmeldingerSentToArbeidsgiver(
@@ -106,7 +106,7 @@ export const lederHasActiveSykmelding = (
   return activeSykmeldingerWithArbeidsgiver.some(
     (sykmelding) =>
       sykmelding.mottakendeArbeidsgiver?.virksomhetsnummer ===
-      leder.virksomhetsnummer
+      lederVirksomhetsnummer
   );
 };
 
@@ -115,8 +115,14 @@ export const ledereWithActiveLedereFirst = (
   sykmeldinger: SykmeldingOldFormat[]
 ): NarmesteLederRelasjonDTO[] => {
   return ledereData.sort((leder1, leder2) => {
-    const leder1Active = lederHasActiveSykmelding(leder1, sykmeldinger);
-    const leder2Active = lederHasActiveSykmelding(leder2, sykmeldinger);
+    const leder1Active = lederHasActiveSykmelding(
+      leder1.virksomhetsnummer,
+      sykmeldinger
+    );
+    const leder2Active = lederHasActiveSykmelding(
+      leder2.virksomhetsnummer,
+      sykmeldinger
+    );
 
     if (leder1Active && !leder2Active) {
       return -1;
@@ -142,17 +148,18 @@ const sykmeldingerWithoutMatchingLeder = (
   );
 };
 
-interface SykmeldingLeder {
-  erOppgitt: boolean;
-  orgnummer?: string;
-  organisasjonsnavn?: string;
+export interface SykmeldingLeder {
+  arbeidsgiverForskutterer?: boolean;
+  virksomhetsnummer: string;
+  virksomhetsnavn: string;
 }
 
 const sykmelding2Leder = (sykmelding: SykmeldingOldFormat): SykmeldingLeder => {
   return {
-    erOppgitt: false,
-    orgnummer: sykmelding.mottakendeArbeidsgiver?.virksomhetsnummer,
-    organisasjonsnavn: sykmelding.mottakendeArbeidsgiver?.navn,
+    arbeidsgiverForskutterer: undefined,
+    virksomhetsnummer:
+      sykmelding.mottakendeArbeidsgiver?.virksomhetsnummer || "",
+    virksomhetsnavn: sykmelding.mottakendeArbeidsgiver?.navn || "",
   };
 };
 
@@ -162,7 +169,7 @@ const removeDuplicatesFromLederList = (
   return ledere.filter((leder, index) => {
     return (
       ledere.findIndex((leder2) => {
-        return leder2.orgnummer === leder.orgnummer;
+        return leder2.virksomhetsnummer === leder.virksomhetsnummer;
       }) === index
     );
   });

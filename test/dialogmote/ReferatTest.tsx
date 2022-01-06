@@ -80,7 +80,7 @@ const mockState = {
       {
         narmesteLederNavn: lederNavn,
         status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
-        virksomhetsnummer: "912345678",
+        virksomhetsnummer: "110110110",
       },
       {
         narmesteLederNavn: "Annen Leder",

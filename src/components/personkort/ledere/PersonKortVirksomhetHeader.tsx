@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import EtikettBase from "nav-frontend-etiketter";
-import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
 import { formaterOrgnr } from "@/utils";
 import { lederHasActiveSykmelding } from "@/utils/ledereUtils";
 import kanskjeBooleanTilJaNeiKanskje from "../kanskjeBooleanTilJaNeiKanskje";
@@ -46,7 +45,9 @@ const textForskuttering = (arbeidsgiverForskutterer?: boolean) => {
 
 interface PersonKortVirksomhetHeaderProps {
   children?: any;
-  currentLeder: NarmesteLederRelasjonDTO;
+  arbeidsgiverForskutterer?: boolean;
+  virksomhetsnavn: string;
+  virksomhetsnummer: string;
   sykmeldinger: any[];
 }
 
@@ -55,24 +56,22 @@ const PersonKortVirksomhetHeader = (
 ) => {
   const {
     children,
-    currentLeder,
+    arbeidsgiverForskutterer,
+    virksomhetsnavn,
+    virksomhetsnummer,
     sykmeldinger,
   } = personKortVirksomhetHeaderProps;
-  const virksomhetsnummerText = textVirksomhetsnummer(
-    currentLeder.virksomhetsnummer
-  );
-  const forskutteringText = textForskuttering(
-    currentLeder.arbeidsgiverForskutterer
-  );
+  const virksomhetsnummerText = textVirksomhetsnummer(virksomhetsnummer);
+  const forskutteringText = textForskuttering(arbeidsgiverForskutterer);
   const activeSykmeldingText =
-    lederHasActiveSykmelding(currentLeder, sykmeldinger) &&
+    lederHasActiveSykmelding(virksomhetsnummer, sykmeldinger) &&
     texts.activeSykmelding;
   return (
     <PersonKortVirksomhetLederHeaderStyled>
       <HeaderStyled className="personkortElement__tittel">
         <img src={FabrikkImage} alt="Fabrikk" />
         <GridRow>
-          <FlexColumn>{currentLeder.virksomhetsnavn}</FlexColumn>
+          <FlexColumn>{virksomhetsnavn}</FlexColumn>
           <FlexColumn>{virksomhetsnummerText}</FlexColumn>
           <FlexColumn>{forskutteringText}</FlexColumn>
           {activeSykmeldingText && (

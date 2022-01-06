@@ -27,7 +27,7 @@ export const arbeidstaker = {
   personident: "05087321470",
 };
 export const arbeidsgiver = {
-  orgnr: "912345678",
+  orgnr: "110110110",
 };
 export const navEnhet = {
   id: "0315",
