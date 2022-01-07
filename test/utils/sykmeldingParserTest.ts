@@ -4,7 +4,11 @@ import {
   newSMFormat2OldFormat,
   oldFormatSMForAG,
 } from "@/utils/sykmeldinger/sykmeldingParser";
-import mockSykmeldinger from "../mockdata/sykmeldinger/mockSykmeldinger";
+import {
+  mockOldSykmeldinger,
+  mockSykmeldinger,
+  mockSykmeldingId,
+} from "../mockdata/sykmeldinger/mockSykmeldinger";
 import {
   mockSykmeldingerWithBekreftelse,
   mockSykmeldingerWithEgenmeldt,
@@ -32,7 +36,6 @@ import {
   gamleSMStatuser,
   nyeSMStatuser,
 } from "@/utils/sykmeldinger/sykmeldingstatuser";
-import mockOldSykmeldinger from "../mockdata/sykmeldinger/mockOldSykmeldinger";
 import { FriskmeldingDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { medisinskArsakTypeTekster } from "@/data/sykmelding/types/MedisinskArsakTypeDTO";
 import { arbeidsrelatertArsakTypetekster } from "@/data/sykmelding/types/ArbeidsrelatertArsakTypeDTO";
@@ -280,7 +283,7 @@ describe("sykmeldingParser", () => {
     it("Returns correct id", () => {
       const mockSM = mockSykmeldinger[0];
 
-      const expectedId = "e425a750-7f39-4974-9a06-fa1775f987c9";
+      const expectedId = mockSykmeldingId;
 
       const outputSM = newSMFormat2OldFormat(mockSM, sykmeldtFnr);
 

@@ -1,4 +1,3 @@
-import mockSykmeldinger from "./mockSykmeldinger";
 import { SykmeldingNewFormatDTO } from "@/data/sykmelding/types/SykmeldingNewFormatDTO";
 import { PeriodetypeDTO } from "@/data/sykmelding/types/PeriodetypeDTO";
 import { MedisinskArsakTypeDTO } from "@/data/sykmelding/types/MedisinskArsakTypeDTO";
@@ -8,6 +7,7 @@ import { SvarRestriksjonDTO } from "@/data/sykmelding/types/SvarRestriksjonDTO";
 import { SvartypeDTO } from "@/data/sykmelding/types/SvartypeDTO";
 import { ShortNameDTO } from "@/data/sykmelding/types/ShortNameDTO";
 import { AnnenFraverGrunnDTO } from "@/data/sykmelding/types/AnnenFraverGrunnDTO";
+import { mockSykmeldinger } from "./mockSykmeldinger";
 
 const mockSM = mockSykmeldinger[0];
 

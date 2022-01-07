@@ -3,10 +3,37 @@ import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/Behandlingsu
 import { PeriodetypeDTO } from "@/data/sykmelding/types/PeriodetypeDTO";
 import { ShortNameDTO } from "@/data/sykmelding/types/ShortNameDTO";
 import { SvartypeDTO } from "@/data/sykmelding/types/SvartypeDTO";
+import {
+  SykmeldingOldFormat,
+  SykmeldingStatus,
+} from "@/data/sykmelding/types/SykmeldingOldFormat";
+import { toDate, toDateWithoutNullCheck } from "@/utils/datoUtils";
+import {
+  SoknadstatusDTO,
+  SoknadstypeDTO,
+  SykepengesoknadDTO,
+} from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 
-const mockSykmeldinger: SykmeldingNewFormatDTO[] = [
+export const mockSykmeldingId = "test-id";
+
+export const mockSykepengeSoknad: SykepengesoknadDTO = {
+  arbeidsgiver: {
+    navn: "KONKURS BEDRIFT OG VENNER AS",
+    orgnummer: "000111222",
+  },
+  fom: toDateWithoutNullCheck("2018-08-18"),
+  id: "123test",
+  opprettetDato: toDateWithoutNullCheck("2018-09-07"),
+  status: SoknadstatusDTO.NY,
+  sykmeldingId: mockSykmeldingId,
+  tom: toDateWithoutNullCheck("2018-08-31"),
+  soknadstype: SoknadstypeDTO.ARBEIDSTAKERE,
+  sporsmal: [],
+};
+
+export const mockSykmeldinger: SykmeldingNewFormatDTO[] = [
   {
-    id: "e425a750-7f39-4974-9a06-fa1775f987c9",
+    id: mockSykmeldingId,
     mottattTidspunkt: "2020-01-21T23:00:00Z",
     behandlingsutfall: {
       status: BehandlingsutfallStatusDTO.OK,
@@ -73,4 +100,110 @@ const mockSykmeldinger: SykmeldingNewFormatDTO[] = [
   },
 ];
 
-export default mockSykmeldinger;
+export const mockOldSykmeldinger: SykmeldingOldFormat[] = [
+  {
+    arbeidsevne: {
+      tilretteleggingArbeidsplass: undefined,
+      tiltakAndre: undefined,
+      tiltakNAV: undefined,
+    },
+    arbeidsgiver: undefined,
+    bekreftelse: {
+      sykmelder: "Lego Legesen",
+      sykmelderTlf: undefined,
+      utstedelsesdato: toDate("2020-01-21T22:00:00Z"),
+    },
+    diagnose: {
+      bidiagnoser: [],
+      fravaerBeskrivelse: undefined,
+      fravaersgrunnLovfestet: undefined,
+      hoveddiagnose: {
+        diagnose: undefined,
+        diagnosekode: "tt",
+        diagnosesystem: "tt",
+      },
+      svangerskap: false,
+      yrkesskade: false,
+      yrkesskadeDato: undefined,
+    },
+    friskmelding: {
+      antarReturAnnenArbeidsgiver: undefined,
+      antarReturSammeArbeidsgiver: undefined,
+      antattDatoReturSammeArbeidsgiver: undefined,
+      arbeidsfoerEtterPerioden: undefined,
+      hensynPaaArbeidsplassen: undefined,
+      tilbakemeldingReturArbeid: undefined,
+      utenArbeidsgiverAntarTilbakeIArbeid: undefined,
+      utenArbeidsgiverAntarTilbakeIArbeidDato: undefined,
+      utenArbeidsgiverTilbakemelding: undefined,
+    },
+    id: mockSykmeldingId,
+    innsendtArbeidsgivernavn: "PONTYPANDY FIRE SERVICE",
+    innspillTilArbeidsgiver: undefined,
+    meldingTilNav: {
+      navBoerTaTakISaken: undefined,
+      navBoerTaTakISakenBegrunnelse: undefined,
+    },
+    mottakendeArbeidsgiver: {
+      juridiskOrgnummer: "110110110",
+      navn: "PONTYPANDY FIRE SERVICE",
+      virksomhetsnummer: "110110110",
+    },
+    mulighetForArbeid: {
+      aarsakAktivitetIkkeMulig433: undefined,
+      aarsakAktivitetIkkeMulig434: undefined,
+      aktivitetIkkeMulig433: undefined,
+      aktivitetIkkeMulig434: undefined,
+      perioder: [
+        {
+          avventende: undefined,
+          behandlingsdager: undefined,
+          fom: toDateWithoutNullCheck("2020-01-22"),
+          grad: 100,
+          reisetilskudd: undefined,
+          tom: toDateWithoutNullCheck("2020-05-22"),
+        },
+      ],
+    },
+    naermesteLederStatus: undefined,
+    orgnummer: "110110110",
+    pasient: {
+      etternavn: undefined,
+      fnr: "99887766554",
+      fornavn: undefined,
+      mellomnavn: undefined,
+    },
+    sendtdato: "2020-01-29T09:38:05.414834Z",
+    mottattTidspunkt: new Date("2020-01-21T23:00:00Z"),
+    skalViseSkravertFelt: true,
+    sporsmal: {
+      arbeidssituasjon: undefined,
+      fravaersperioder: [],
+      harAnnetFravaer: false,
+      harForsikring: false,
+    },
+    startLegemeldtFravaer: undefined,
+    status: SykmeldingStatus.SENDT,
+    stillingsprosent: undefined,
+    tilbakedatering: {
+      dokumenterbarPasientkontakt: undefined,
+      tilbakedatertBegrunnelse: undefined,
+    },
+    utdypendeOpplysninger: new Map(),
+    valgtArbeidssituasjon: undefined,
+    behandlingsutfall: {
+      status: BehandlingsutfallStatusDTO.OK,
+      ruleHits: [
+        {
+          messageForSender: "messageForSender",
+          messageForUser: "messageForUser",
+          ruleName: "Rule",
+          ruleStatus: BehandlingsutfallStatusDTO.OK,
+        },
+      ],
+    },
+    egenmeldt: undefined,
+    papirsykmelding: undefined,
+    harRedusertArbeidsgiverperiode: undefined,
+  },
+];
