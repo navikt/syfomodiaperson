@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { PersonImage } from "../../../img/ImageComponents";
 
 export type Brodsmule = {
   tittel: string;
-  sti?: string;
   sisteSmule?: boolean;
-  erKlikkbar?: boolean;
 };
 
-const Brodsmule = ({ sti, tittel, sisteSmule, erKlikkbar }: Brodsmule) => {
+const Brodsmule = ({ tittel, sisteSmule }: Brodsmule) => {
   if (sisteSmule) {
     return (
       <span className="js-smuletekst">
@@ -17,16 +14,8 @@ const Brodsmule = ({ sti, tittel, sisteSmule, erKlikkbar }: Brodsmule) => {
         <span className="brodsmule">{tittel}</span>
       </span>
     );
-  } else if (erKlikkbar) {
-    return (
-      <span className="js-smuletekst">
-        <Link className="js-smule brodsmule" to={`/sykefravaer/${sti}`}>
-          {tittel}
-        </Link>
-        <span className="brodsmule__skille"> / </span>
-      </span>
-    );
   }
+
   return (
     <span>
       <span className="brodsmule">{tittel}</span>

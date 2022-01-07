@@ -90,7 +90,7 @@ class Utvidbar extends Component {
       harTransisjon: true,
     });
     setTimeout(() => {
-      const hoyde = this.innhold.offsetHeight;
+      const hoyde = this.innhold?.offsetHeight || "auto";
       this.setState({
         erApen: true,
         hoyde,

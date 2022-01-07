@@ -1,6 +1,6 @@
 interface Pasientforhold {
-  fom: Date;
-  tom: Date;
+  fom: Date | string;
+  tom: Date | string;
 }
 
 interface Adresse {

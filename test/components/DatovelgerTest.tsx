@@ -1,59 +1,44 @@
-import chai from "chai";
+import { expect } from "chai";
 import React from "react";
-import { shallow } from "enzyme";
-import chaiEnzyme from "chai-enzyme";
-import sinon from "sinon";
-import { Field } from "react-final-form";
+import { Form } from "react-final-form";
 import Datovelger, { validerDatoField } from "../../src/components/Datovelger";
-
-chai.use(chaiEnzyme());
-const expect = chai.expect;
+import { render } from "@testing-library/react";
 
 describe("Datovelger", () => {
   let component;
-  let clock;
-  const today = new Date("2017-01-16");
-
-  beforeEach(() => {
-    clock = sinon.useFakeTimers(today.getTime()); // 16. januar 2017
-  });
-
-  afterEach(() => {
-    clock.restore();
-  });
 
   describe("Datovelger", () => {
     beforeEach(() => {
-      component = shallow(<Datovelger name="halla" id="id" />);
-    });
-
-    it("Skal inneholde et Field", () => {
-      expect(component.find(Field)).to.have.length(1);
-    });
-
-    it("Skal sende en validate-funksjon videre til Field", () => {
-      expect(typeof component.find(Field).prop("validate")).to.equal(
-        "function"
+      component = render(
+        <Form
+          onSubmit={() => {
+            /* Do nothing */
+          }}
+        >
+          {() => <Datovelger name="halla" id="id" />}
+        </Form>
       );
     });
 
-    it("Skal sende props videre til Field", () => {
-      expect(component.find(Field).prop("name")).to.equal("halla");
-      expect(component.find(Field).prop("id")).to.equal("id");
+    it("Skal inneholde input-felt og kalender", () => {
+      expect(
+        component.getByRole("textbox", { selector: ".nav-datovelger__input" })
+      ).to.exist;
+      expect(component.getByRole("button", { name: "Kalender" })).to.exist;
     });
   });
 
   describe("validerDatoField", () => {
     it("Skal returnere Vennligst angi dato hvis dato ikke er sendt inn", () => {
-      const res = validerDatoField();
+      const res = validerDatoField(undefined, undefined);
       expect(res).to.be.equal("Vennligst angi dato");
     });
 
     it("Skal returnere Datoen er ikke gyldig eller har ikke riktig format hvis dato er på feil format", () => {
       const s =
         "Datoen er ikke gyldig eller har ikke riktig format (dd.mm.åååå)";
-      const res = validerDatoField("olsen");
-      const res2 = validerDatoField("200-02-22");
+      const res = validerDatoField("olsen", undefined);
+      const res2 = validerDatoField("200-02-22", undefined);
       expect(res).to.equal(s);
       expect(res2).to.equal(s);
     });
