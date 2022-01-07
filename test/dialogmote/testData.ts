@@ -1,7 +1,11 @@
 import {
+  DialogmotedeltakerArbeidsgiverVarselDTO,
+  DialogmotedeltakerArbeidstakerVarselDTO,
   DialogmotedeltakerBehandlerDTO,
   DialogmoteDTO,
   DialogmoteStatus,
+  MotedeltakerVarselType,
+  VarselSvarDTO,
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
 import {
@@ -94,6 +98,53 @@ export const dialogmoteMedBehandler: DialogmoteDTO = {
   ...dialogmote,
   behandler: behandlerDeltaker,
 };
+
+export const varselArbeidsgiver = (
+  type: MotedeltakerVarselType,
+  lestDato?: string,
+  svar?: VarselSvarDTO
+): DialogmotedeltakerArbeidsgiverVarselDTO => ({
+  uuid: "",
+  varselType: type,
+  fritekst: "",
+  document: [],
+  createdAt: "",
+  lestDato,
+  status: "",
+  svar,
+});
+
+export const varselArbeidstaker = (
+  type: MotedeltakerVarselType,
+  lestDato?: string,
+  svar?: VarselSvarDTO
+): DialogmotedeltakerArbeidstakerVarselDTO => ({
+  uuid: "",
+  varselType: type,
+  fritekst: "",
+  document: [],
+  digitalt: true,
+  createdAt: "",
+  lestDato,
+  svar,
+});
+
+export const dialogmoteMedVarsel = (
+  varselArbeidsgiver: DialogmotedeltakerArbeidsgiverVarselDTO[],
+  varselArbeidstaker: DialogmotedeltakerArbeidstakerVarselDTO[]
+): DialogmoteDTO => ({
+  ...dialogmote,
+  arbeidsgiver: {
+    virksomhetsnummer: arbeidsgiver.orgnr,
+    type: "ARBEIDSGIVER",
+    varselList: varselArbeidsgiver,
+  },
+  arbeidstaker: {
+    personIdent: arbeidstaker.personident,
+    type: "ARBEIDSTAKER",
+    varselList: varselArbeidstaker,
+  },
+});
 
 export const mockState = {
   navbruker: {

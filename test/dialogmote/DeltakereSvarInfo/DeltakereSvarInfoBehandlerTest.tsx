@@ -11,7 +11,7 @@ import {
   dialogmote,
   dialogmoteMedBehandler,
   mockState,
-} from "./testData";
+} from "../testData";
 import { render, RenderResult, within } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { DeltakereSvarInfo } from "@/components/dialogmote/DeltakereSvarInfo";
@@ -55,19 +55,17 @@ const getBehandlerExpanded = (wrapper: RenderResult) =>
     name: /Behandleren/,
   });
 
-describe("DeltakereSvarInfo dialogmote uten behandler", () => {
-  let wrapper;
-  beforeEach(() => {
+describe("DeltakereSvarInfo uten behandler", () => {
+  it("viser ikke ekspanderbart panel for svar fra behandler", () => {
     queryClient = new QueryClient();
-    wrapper = render(
+    const wrapper = render(
       <QueryClientProvider client={queryClient}>
         <Provider store={store(mockState)}>
           <DeltakereSvarInfo dialogmote={dialogmote} />
         </Provider>
       </QueryClientProvider>
     );
-  });
-  it("viser ikke ekspanderbart panel for svar fra behandler", () => {
+
     expect(wrapper.queryByText("Behandleren", { exact: false })).to.not.exist;
     expect(
       wrapper.queryByRole("button", {
@@ -82,38 +80,32 @@ describe("DeltakereSvarInfo dialogmote uten behandler", () => {
   });
 });
 
-describe("DeltakereSvarInfo dialogmote med behandler", () => {
+describe("DeltakereSvarInfo med behandler", () => {
   beforeEach(() => {
     queryClient = new QueryClient();
   });
   describe("behandler har ikke svart på innkalling", () => {
     const dialogmoteMedUbesvartVarsel = dialogmoteBehandlerMedSvar([]);
-    let wrapper;
-    beforeEach(() => {
-      wrapper = render(
+
+    it("viser at behandler ikke har gitt svar med minus-sirkel ikon og manglende begrunnelse", () => {
+      const expectedText = `${behandlerDeltaker.behandlerNavn}, har ikke gitt svar`;
+      const wrapper = render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store(mockState)}>
             <DeltakereSvarInfo dialogmote={dialogmoteMedUbesvartVarsel} />
           </Provider>
         </QueryClientProvider>
       );
-    });
-    it("viser at behandler ikke har gitt svar", () => {
-      const expectedText = `${behandlerDeltaker.behandlerNavn}, har ikke gitt svar`;
+      const behandlerExpandableButon = getBehandlerExpandableButton(wrapper);
+      const behandlerExpanded = getBehandlerExpanded(wrapper);
 
       expect(wrapper.getByText("Behandleren:", { exact: false })).to.exist;
       expect(wrapper.getByText(expectedText, { exact: false })).to.exist;
-    });
-    it("viser minus-sirkel ikon", () => {
-      const behandlerExpandable = getBehandlerExpandableButton(wrapper);
       expect(
-        within(behandlerExpandable).getByRole("img", {
+        within(behandlerExpandableButon).getByRole("img", {
           name: "minus-sirkel-ikon",
         })
       ).to.exist;
-    });
-    it("viser manglende begrunnelse-tekst", () => {
-      const behandlerExpanded = getBehandlerExpanded(wrapper);
       expect(within(behandlerExpanded).getByText(ingenDetaljerTekst)).to.exist;
       expect(within(behandlerExpanded).queryByText("Begrunnelse")).to.not.exist;
     });
@@ -125,32 +117,26 @@ describe("DeltakereSvarInfo dialogmote med behandler", () => {
         createdAt: "2021-12-07T12:56:26.271381",
       },
     ]);
-    let wrapper;
-    beforeEach(() => {
-      wrapper = render(
+
+    it("viser behandler 'kommer' med suksess-ikon og manglende begrunnelse", () => {
+      const expectedText = `${behandlerDeltaker.behandlerNavn}, kommer - Svar mottatt 07.12.2021`;
+      const wrapper = render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store(mockState)}>
             <DeltakereSvarInfo dialogmote={dialogmoteMedSvar} />
           </Provider>
         </QueryClientProvider>
       );
-    });
-    it("viser behandler 'kommer'", () => {
-      const expectedText = `${behandlerDeltaker.behandlerNavn}, kommer - Svar mottatt 07.12.2021`;
+      const behandlerExpandableButton = getBehandlerExpandableButton(wrapper);
+      const behandlerExpanded = getBehandlerExpanded(wrapper);
 
       expect(wrapper.getByText("Behandleren:", { exact: false })).to.exist;
       expect(wrapper.getByText(expectedText, { exact: false })).to.exist;
-    });
-    it("viser suksess-ikon", () => {
-      const behandlerExpandable = getBehandlerExpandableButton(wrapper);
       expect(
-        within(behandlerExpandable).getByRole("img", {
+        within(behandlerExpandableButton).getByRole("img", {
           name: "suksess-ikon",
         })
       ).to.exist;
-    });
-    it("viser manglende begrunnelse-tekst", () => {
-      const behandlerExpanded = getBehandlerExpanded(wrapper);
       expect(within(behandlerExpanded).getByText(ingenDetaljerTekst)).to.exist;
       expect(within(behandlerExpanded).queryByText("Begrunnelse")).to.not.exist;
     });
@@ -163,32 +149,26 @@ describe("DeltakereSvarInfo dialogmote med behandler", () => {
         createdAt: "2021-12-08T12:56:26.271381",
       },
     ]);
-    let wrapper;
-    beforeEach(() => {
-      wrapper = render(
+
+    it("viser behandler ønsker å avlyse med feil-ikon og begrunnelse", () => {
+      const expectedText = `${behandlerDeltaker.behandlerNavn}, ønsker å avlyse - Svar mottatt 08.12.2021`;
+      const wrapper = render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store(mockState)}>
             <DeltakereSvarInfo dialogmote={dialogmoteMedSvar} />
           </Provider>
         </QueryClientProvider>
       );
-    });
-    it("viser behandler ønsker å avlyse", () => {
-      const expectedText = `${behandlerDeltaker.behandlerNavn}, ønsker å avlyse - Svar mottatt 08.12.2021`;
+      const behandlerExpandableButton = getBehandlerExpandableButton(wrapper);
+      const behandlerExpanded = getBehandlerExpanded(wrapper);
 
       expect(wrapper.getByText("Behandleren:", { exact: false })).to.exist;
       expect(wrapper.getByText(expectedText, { exact: false })).to.exist;
-    });
-    it("viser feil-ikon", () => {
-      const behandlerExpandable = getBehandlerExpandableButton(wrapper);
       expect(
-        within(behandlerExpandable).getByRole("img", {
+        within(behandlerExpandableButton).getByRole("img", {
           name: "feil-ikon",
         })
       ).to.exist;
-    });
-    it("viser begrunnelse", () => {
-      const behandlerExpanded = getBehandlerExpanded(wrapper);
       expect(
         within(behandlerExpanded).getByText("Begrunnelse mottatt 08.12.2021", {
           exact: false,
@@ -214,32 +194,26 @@ describe("DeltakereSvarInfo dialogmote med behandler", () => {
         createdAt: "2021-12-07T12:56:26.271381",
       },
     ]);
-    let wrapper;
-    beforeEach(() => {
-      wrapper = render(
+
+    it("viser behandler ønsker å endre tid/sted med advarsel-ikon og begrunnelser fra siste og tidligere svar", () => {
+      const expectedText = `${behandlerDeltaker.behandlerNavn}, ønsker å endre tidspunkt eller sted - Oppdatering mottatt 08.12.2021`;
+      const wrapper = render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store(mockState)}>
             <DeltakereSvarInfo dialogmote={dialogmoteMedSvar} />
           </Provider>
         </QueryClientProvider>
       );
-    });
-    it("viser behandler ønsker å endre tid/sted", () => {
-      const expectedText = `${behandlerDeltaker.behandlerNavn}, ønsker å endre tidspunkt eller sted - Oppdatering mottatt 08.12.2021`;
+      const behandlerExpandableButton = getBehandlerExpandableButton(wrapper);
+      const behandlerExpanded = getBehandlerExpanded(wrapper);
 
       expect(wrapper.getByText("Behandleren:", { exact: false })).to.exist;
       expect(wrapper.getByText(expectedText, { exact: false })).to.exist;
-    });
-    it("viser advarsel-ikon", () => {
-      const behandlerExpandable = getBehandlerExpandableButton(wrapper);
       expect(
-        within(behandlerExpandable).getByRole("img", {
+        within(behandlerExpandableButton).getByRole("img", {
           name: "advarsel-ikon",
         })
       ).to.exist;
-    });
-    it("viser begrunnelser fra siste og tidligere svar", () => {
-      const behandlerExpanded = getBehandlerExpanded(wrapper);
       expect(
         within(behandlerExpanded).getByText("Begrunnelse mottatt 08.12.2021", {
           exact: false,
@@ -259,10 +233,9 @@ describe("DeltakereSvarInfo dialogmote med behandler", () => {
         within(behandlerExpanded).getByText("Jeg kommer", { exact: false })
       ).to.exist;
       expect(
-        within(behandlerExpanded).queryByText(
-          "Ingen detaljer er tilgjengelig.",
-          { exact: false }
-        )
+        within(behandlerExpanded).queryByText(ingenDetaljerTekst, {
+          exact: false,
+        })
       ).to.not.exist;
     });
   });
@@ -278,32 +251,27 @@ describe("DeltakereSvarInfo dialogmote med behandler", () => {
         createdAt: "2021-12-07T12:56:26.271381",
       },
     ]);
-    let wrapper;
-    beforeEach(() => {
-      wrapper = render(
+
+    it("viser behandler ønsker å avlyse med feil-ikon og begrunnelse", () => {
+      const expectedText = `${behandlerDeltaker.behandlerNavn}, ønsker å avlyse - Oppdatering mottatt 08.12.2021`;
+      const wrapper = render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store(mockState)}>
             <DeltakereSvarInfo dialogmote={dialogmoteMedSvar} />
           </Provider>
         </QueryClientProvider>
       );
-    });
-    it("viser behandler ønsker å avlyse", () => {
-      const expectedText = `${behandlerDeltaker.behandlerNavn}, ønsker å avlyse - Oppdatering mottatt 08.12.2021`;
+
+      const behandlerExpandableButton = getBehandlerExpandableButton(wrapper);
+      const behandlerExpanded = getBehandlerExpanded(wrapper);
 
       expect(wrapper.getByText("Behandleren:", { exact: false })).to.exist;
       expect(wrapper.getByText(expectedText, { exact: false })).to.exist;
-    });
-    it("viser feil-ikon", () => {
-      const behandlerExpandable = getBehandlerExpandableButton(wrapper);
       expect(
-        within(behandlerExpandable).getByRole("img", {
+        within(behandlerExpandableButton).getByRole("img", {
           name: "feil-ikon",
         })
       ).to.exist;
-    });
-    it("viser begrunnelse", () => {
-      const behandlerExpanded = getBehandlerExpanded(wrapper);
       expect(
         within(behandlerExpanded).getByText("Begrunnelse mottatt 08.12.2021", {
           exact: false,
@@ -315,10 +283,9 @@ describe("DeltakereSvarInfo dialogmote med behandler", () => {
         })
       ).to.exist;
       expect(
-        within(behandlerExpanded).queryByText(
-          "Ingen detaljer er tilgjengelig.",
-          { exact: false }
-        )
+        within(behandlerExpanded).queryByText(ingenDetaljerTekst, {
+          exact: false,
+        })
       ).to.not.exist;
     });
   });

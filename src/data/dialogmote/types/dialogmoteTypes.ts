@@ -15,6 +15,7 @@ export interface DialogmotedeltakerVarselDTO {
   readonly varselType: MotedeltakerVarselType;
   readonly fritekst: string;
   readonly document: DocumentComponentDto[];
+  readonly svar?: VarselSvarDTO;
 }
 
 export interface DialogmotedeltakerArbeidstakerVarselDTO
@@ -27,17 +28,19 @@ export interface DialogmotedeltakerArbeidsgiverVarselDTO
   readonly status: string;
 }
 
+export interface VarselSvarDTO {
+  readonly svarTidspunkt: string;
+  readonly svarType: SvarType;
+  readonly svarTekst?: string;
+}
+
 export interface DialogmotedeltakerBehandlerVarselDTO
-  extends Omit<DialogmotedeltakerVarselDTO, "lestDato"> {
+  extends Omit<DialogmotedeltakerVarselDTO, "lestDato" | "svar"> {
   readonly svar: DialogmotedeltakerBehandlerVarselSvarDTO[];
 }
 
-export interface DialogmotedeltakerBehandlerVarselSvarDTO
-  extends VarselSvarDTO {
+export interface DialogmotedeltakerBehandlerVarselSvarDTO {
   readonly uuid: string;
-}
-
-export interface VarselSvarDTO {
   readonly createdAt: string;
   readonly svarType: SvarType;
   readonly tekst?: string;

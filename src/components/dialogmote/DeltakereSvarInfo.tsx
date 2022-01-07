@@ -1,10 +1,10 @@
 import {
   DialogmotedeltakerBehandlerDTO,
+  DialogmotedeltakerBehandlerVarselSvarDTO,
   DialogmotedeltakerVarselDTO,
   DialogmoteDTO,
   MotedeltakerVarselType,
   SvarType,
-  VarselSvarDTO,
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { FlexColumn, FlexRow } from "@/components/Layout";
 import {
@@ -49,24 +49,30 @@ const getHarAapnetTekst = (
     return lestDato
       ? `${texts.harAapnetInnkalling} ${tilLesbarDatoMedArUtenManedNavn(
           lestDato
-        )}`
+        )} - ${texts.svarIkkeMottatt}`
       : texts.harIkkeAapnetInnkalling;
   } else if (varselType === MotedeltakerVarselType.NYTT_TID_STED) {
     return lestDato
-      ? `${texts.harAapnetEndring} ${tilLesbarDatoMedArUtenManedNavn(lestDato)}`
+      ? `${texts.harAapnetEndring} ${tilLesbarDatoMedArUtenManedNavn(
+          lestDato
+        )} - ${texts.svarIkkeMottatt}`
       : texts.harIkkeAapnetEndring;
   } else {
     return "";
   }
 };
 
-const getSvarTekst = (svar: VarselSvarDTO, antallSvar = 1) => {
+const getSvarTekst = (
+  svarTidspunkt: string,
+  svarType: SvarType,
+  antallSvar = 1
+) => {
   const mottattPrefiks =
     antallSvar > 1 ? texts.oppdateringMottatt : texts.svarMottatt;
   const mottattTekst = `${mottattPrefiks} ${tilLesbarDatoMedArUtenManedNavn(
-    svar.createdAt
+    svarTidspunkt
   )}`;
-  switch (svar.svarType) {
+  switch (svarType) {
     case SvarType.KOMMER:
       return `${texts.svarKommer} - ${mottattTekst}`;
     case SvarType.NYTT_TID_STED:
@@ -77,11 +83,13 @@ const getSvarTekst = (svar: VarselSvarDTO, antallSvar = 1) => {
 };
 
 interface DeltakerSvarIconProps {
-  svar: VarselSvarDTO | undefined;
+  svarType: SvarType | undefined;
 }
 
-const DeltakerSvarIcon = ({ svar }: DeltakerSvarIconProps): ReactElement => {
-  switch (svar?.svarType) {
+const DeltakerSvarIcon = ({
+  svarType,
+}: DeltakerSvarIconProps): ReactElement => {
+  switch (svarType) {
     case SvarType.KOMMER:
       return (
         <SuccessFilled
@@ -134,13 +142,15 @@ const SvarDetaljerTekst = ({ header, tekst }: SvarDetaljerTekstProps) => (
 );
 
 interface DeltakerBehandlerSvarDetaljerProps {
-  svarList: VarselSvarDTO[];
+  svarList: DialogmotedeltakerBehandlerVarselSvarDTO[];
 }
 
 const DeltakerBehandlerSvarDetaljer = ({
   svarList,
 }: DeltakerBehandlerSvarDetaljerProps) => {
-  const begrunnelseHeaderTekst = (svar: VarselSvarDTO) =>
+  const begrunnelseHeaderTekst = (
+    svar: DialogmotedeltakerBehandlerVarselSvarDTO
+  ) =>
     `${texts.begrunnelseMottattHeader} ${tilLesbarDatoMedArUtenManedNavn(
       svar.createdAt
     )}`;
@@ -184,16 +194,17 @@ const DeltakerBehandlerSvarPanel = ({
   behandler,
 }: DeltakerBehandlerSvarPanelProps) => {
   const svarList = behandler.varselList[0]?.svar || [];
-  const latestSvar: VarselSvarDTO | undefined = svarList[0];
-  const svarTekst = !latestSvar
+  const latestSvar: DialogmotedeltakerBehandlerVarselSvarDTO | undefined =
+    svarList[0];
+  const svarTittelTekst = !latestSvar
     ? texts.svarIkkeMottatt.toLowerCase()
-    : getSvarTekst(latestSvar, svarList.length);
+    : getSvarTekst(latestSvar.createdAt, latestSvar.svarType, svarList.length);
 
   return (
     <EkspanderbartSvarPanel
-      icon={<DeltakerSvarIcon svar={latestSvar} />}
+      icon={<DeltakerSvarIcon svarType={latestSvar?.svarType} />}
       deltaker={texts.behandler}
-      tittel={`${behandler.behandlerNavn}, ${svarTekst}`}
+      tittel={`${behandler.behandlerNavn}, ${svarTittelTekst}`}
     >
       <DeltakerBehandlerSvarDetaljer svarList={svarList} />
     </EkspanderbartSvarPanel>
@@ -255,35 +266,25 @@ const DeltakerSvarPanel = ({
   deltakerLabel,
   deltakerNavn,
 }: DeltakerSvarPanelProps) => {
-  const harAapnetTekst = getHarAapnetTekst(
-    varsel?.varselType,
-    varsel?.lestDato
-  );
+  const svar = varsel?.svar;
+  const svarTittelTekst = !svar
+    ? getHarAapnetTekst(varsel?.varselType, varsel?.lestDato)
+    : getSvarTekst(svar.svarTidspunkt, svar.svarType);
 
   return (
     <EkspanderbartSvarPanel
-      // TODO: Kan bruke <DeltakerSvarIcon svar={<svar fra varsel>}> når vi støtter svar fra AT/NL
-      icon={
-        varsel?.lestDato ? (
-          <SuccessFilled
-            color={navFarger.navGronn}
-            aria-label="suksess-ikon"
-            role="img"
-            focusable="false"
-          />
-        ) : (
-          <MinusCircleFilled
-            color={navFarger.navGra40}
-            aria-label="minus-sirkel-ikon"
-            role="img"
-            focusable="false"
-          />
-        )
-      }
+      icon={<DeltakerSvarIcon svarType={svar?.svarType} />}
       deltaker={deltakerLabel}
-      tittel={`${deltakerNavn}, ${harAapnetTekst}`}
+      tittel={`${deltakerNavn}, ${svarTittelTekst}`}
     >
-      <DetaljerTekst>{texts.harIkkeBegrunnelse}</DetaljerTekst>
+      {svar?.svarTekst ? (
+        <SvarDetaljerTekst
+          header={texts.begrunnelseHeader}
+          tekst={svar.svarTekst}
+        />
+      ) : (
+        <DetaljerTekst>{texts.harIkkeBegrunnelse}</DetaljerTekst>
+      )}
     </EkspanderbartSvarPanel>
   );
 };

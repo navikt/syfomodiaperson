@@ -49,6 +49,10 @@ const createDialogmote = (
               texts: ["Vennlig hilsen", "NAV Staden", "Kari Saksbehandler"],
             },
           ],
+          svar: {
+            svarTidspunkt: "2021-05-26T12:56:26.271381",
+            svarType: "KOMMER",
+          },
         },
       ],
     },
@@ -64,6 +68,11 @@ const createDialogmote = (
           lestDato: "2021-05-26T12:56:26.271381",
           fritekst: "Ipsum lorum arbeidsgiver",
           document: [],
+          svar: {
+            svarTidspunkt: "2021-05-26T12:56:26.271381",
+            svarTekst: "Passer ikke denne dagen.",
+            svarType: "NYTT_TID_STED",
+          },
         },
       ],
     },
