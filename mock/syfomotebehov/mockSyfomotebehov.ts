@@ -1,6 +1,7 @@
 import { motebehovMock } from "../data/motebehovMock";
 import { SYFOMOTEBEHOV_ROOT } from "../../src/apiConstants";
 import { historikkmotebehovMock } from "../data/historikkmotebehovMock";
+import { VEILEDER_IDENT_DEFAULT } from "../common/mockConstants";
 
 const Auth = require("../../server/auth/index.js");
 
@@ -37,7 +38,7 @@ export const mockSyfomotebehov = (server) => {
     (req, res) => {
       const oppdaterteMotebehov = motebehovMock.map((motebehov) => {
         motebehov.behandletTidspunkt = new Date().toDateString();
-        motebehov.behandletVeilederIdent = "Z990000";
+        motebehov.behandletVeilederIdent = VEILEDER_IDENT_DEFAULT;
       });
 
       Object.assign(motebehovMock, ...oppdaterteMotebehov);

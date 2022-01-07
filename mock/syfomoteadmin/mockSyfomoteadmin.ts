@@ -3,6 +3,10 @@ import { moterMock } from "../data/moterMock";
 import { historikkmoterMock } from "../data/historikkmoterMock";
 import { ledereMock } from "../data/ledereMock";
 import { SYFOMOTEADMIN_ROOT } from "../../src/apiConstants";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  VEILEDER_IDENT_DEFAULT,
+} from "../common/mockConstants";
 
 const Auth = require("../../server/auth/index.js");
 
@@ -32,7 +36,7 @@ const mockMoteDeltakere = (alternativer, orgnummer) => {
     {
       deltakerUuid: "66f1d827-94db-43d4-b6de-2f7902e76bf8",
       navn: "Samuel Jones",
-      fnr: "19026900010",
+      fnr: ARBEIDSTAKER_DEFAULT,
       orgnummer: orgnummer,
       epost: "samuel@pontypandyfire.gov.uk",
       type: "Bruker",
@@ -168,14 +172,14 @@ const mockEndepunkterSomEndrerState = (server) => {
     const nyttMote = {
       id: (mockOpprettetIdResultat.rollingCounter += 1),
       moteUuid: `${mockOpprettetIdResultat.rollingCounter}-abc`,
-      opprettetAv: "Z990000",
+      opprettetAv: VEILEDER_IDENT_DEFAULT,
       aktorId: "1",
       status: "OPPRETTET",
       fnr: reqBody.fnr,
       opprettetTidspunkt: new Date().toDateString(),
       bekreftetTidspunkt: null,
       navEnhet: reqBody.navEnhet,
-      eier: "Z990000",
+      eier: VEILEDER_IDENT_DEFAULT,
       deltakere: deltakere,
       bekreftetAlternativ: null,
       alternativer: alternativer,

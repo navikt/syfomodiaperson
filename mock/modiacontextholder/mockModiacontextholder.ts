@@ -1,4 +1,9 @@
 import { MODIACONTEXTHOLDER_ROOT } from "../../src/apiConstants";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  ENHET_GAMLEOSLO,
+  ENHET_GRUNERLOKKA,
+} from "../common/mockConstants";
 
 const Auth = require("../../server/auth/index.js");
 
@@ -9,24 +14,24 @@ const saksbehandler = {
   etternavn: "Veileder",
   enheter: [
     {
-      enhetId: "0315",
-      navn: "NAV Grünerløkka",
+      enhetId: ENHET_GRUNERLOKKA.nummer,
+      navn: ENHET_GRUNERLOKKA.navn,
     },
     {
-      enhetId: "0316",
-      navn: "NAV Gamle Oslo",
+      enhetId: ENHET_GAMLEOSLO.nummer,
+      navn: ENHET_GAMLEOSLO.navn,
     },
   ],
 };
 
 const aktivBruker = {
-  aktivBruker: "19026900010",
+  aktivBruker: ARBEIDSTAKER_DEFAULT.personIdent,
   aktivEnhet: null,
 };
 
 const aktivEnhet = {
   aktivBruker: null,
-  aktivEnhet: "0316",
+  aktivEnhet: ENHET_GRUNERLOKKA.nummer,
 };
 
 export const mockModiacontextholder = (server) => {

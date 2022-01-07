@@ -1,3 +1,5 @@
+import { VIRKSOMHET_PONTYPANDY } from "../common/mockConstants";
+
 export const oppfolgingsplanMock = [
   {
     id: 2956,
@@ -7,7 +9,7 @@ export const oppfolgingsplanMock = [
     status: "AKTIV",
     virksomhet: {
       navn: null,
-      virksomhetsnummer: "110110110",
+      virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
     },
     godkjentPlan: {
       opprettetTidspunkt: "2020-01-30T08:49:05.621",
@@ -63,7 +65,7 @@ export const oppfolgingsplanMock = [
     status: "AVBRUTT",
     virksomhet: {
       navn: null,
-      virksomhetsnummer: "110110110",
+      virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
     },
     godkjentPlan: {
       opprettetTidspunkt: "2019-02-20T11:41:09.374",
@@ -91,7 +93,7 @@ export const oppfolgingsplanMock = [
     status: "AKTIV",
     virksomhet: {
       navn: null,
-      virksomhetsnummer: "110110110",
+      virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
     },
     godkjentPlan: {
       opprettetTidspunkt: "2019-02-12T08:36:21.31",

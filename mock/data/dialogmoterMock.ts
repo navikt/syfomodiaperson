@@ -4,6 +4,7 @@ import {
   MotedeltakerVarselType,
 } from "../../src/data/dialogmote/types/dialogmoteTypes";
 import { BehandlerType } from "../../src/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
+import { VIRKSOMHET_PONTYPANDY } from "../common/mockConstants";
 
 const createDialogmote = (
   uuid: string,
@@ -48,7 +49,7 @@ const createDialogmote = (
     },
     arbeidsgiver: {
       uuid: uuid + 3,
-      virksomhetsnummer: "110110110",
+      virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
       type: "ARBEIDSGIVER",
       varselList: [
         {

@@ -1,4 +1,5 @@
 import { ISPENGESTOPP_ROOT } from "../../src/apiConstants";
+import { ARBEIDSTAKER_DEFAULT } from "../common/mockConstants";
 
 const Auth = require("../../server/auth/index.js");
 
@@ -14,7 +15,7 @@ const createStatusList = (stoppAutomatikk) => {
         value: "A111111",
       },
       sykmeldtFnr: {
-        value: "19026900010",
+        value: ARBEIDSTAKER_DEFAULT.personIdent,
       },
       status: Status.STOPP_AUTOMATIKK,
       virksomhetNr: {

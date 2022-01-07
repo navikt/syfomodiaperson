@@ -1,3 +1,5 @@
+import { ARBEIDSTAKER_DEFAULT } from "../common/mockConstants";
+
 export const fastlegerMock = [
   {
     fornavn: "Lego",
@@ -7,7 +9,7 @@ export const fastlegerMock = [
     herId: 7777777,
     helsepersonellregisterId: 8888888,
     pasient: {
-      fnr: "19026900010",
+      fnr: ARBEIDSTAKER_DEFAULT.personIdent,
       fornavn: 'Samuel "Sam"',
       mellomnavn: "Peyton",
       etternavn: "Jones",
@@ -41,7 +43,7 @@ export const fastlegerMock = [
     herId: 8887777,
     helsepersonellregisterId: 8888888,
     pasient: {
-      fnr: "19026900010",
+      fnr: ARBEIDSTAKER_DEFAULT.personIdent,
       fornavn: 'Samuel "Sam"',
       mellomnavn: "Peyton",
       etternavn: "Jones",

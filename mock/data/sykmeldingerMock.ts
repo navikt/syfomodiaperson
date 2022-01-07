@@ -1,4 +1,8 @@
 import { leggTilDagerPaDato } from "../util/dateUtil";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  VIRKSOMHET_PONTYPANDY,
+} from "../common/mockConstants";
 
 export const sykmeldingerMock = [
   {
@@ -306,8 +310,8 @@ export const sykmeldingerMock = [
       statusEvent: "SENDT",
       timestamp: "2020-01-29T09:38:05.414834Z",
       arbeidsgiver: {
-        orgnummer: "110110110",
-        juridiskOrgnummer: "110110110",
+        orgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+        juridiskOrgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
         orgNavn: "PONTYPANDY FIRE SERVICE",
       },
       sporsmalOgSvarListe: null,
@@ -474,8 +478,8 @@ export const sykmeldingerMock = [
       statusEvent: "SENDT",
       timestamp: "2020-01-29T09:38:05.414834Z",
       arbeidsgiver: {
-        orgnummer: "110110110",
-        juridiskOrgnummer: "110110110",
+        orgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+        juridiskOrgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
         orgNavn: "PONTYPANDY FIRE SERVICE",
       },
       sporsmalOgSvarListe: null,
@@ -1073,7 +1077,7 @@ export const sykmeldingerMock = [
       mellomnavn: null,
       etternavn: "Jones",
       aktoerId: "190269000101",
-      fnr: "19026900010",
+      fnr: ARBEIDSTAKER_DEFAULT.personIdent,
       hpr: "egenmeldt",
       her: null,
       adresse: {
@@ -1173,7 +1177,7 @@ export const sykmeldingerMock = [
       mellomnavn: null,
       etternavn: "Jones",
       aktoerId: "190269000101",
-      fnr: "19026900010",
+      fnr: ARBEIDSTAKER_DEFAULT.personIdent,
       hpr: "egenmeldt",
       her: null,
       adresse: {
@@ -1266,7 +1270,7 @@ export const sykmeldingerMock = [
       mellomnavn: null,
       etternavn: "Jones",
       aktoerId: "190269000101",
-      fnr: "19026900010",
+      fnr: ARBEIDSTAKER_DEFAULT.personIdent,
       hpr: "egenmeldt",
       her: null,
       adresse: {

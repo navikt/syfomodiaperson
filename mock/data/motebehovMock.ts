@@ -1,3 +1,9 @@
+import {
+  ENHET_GRUNERLOKKA,
+  VEILEDER_IDENT_DEFAULT,
+  VIRKSOMHET_PONTYPANDY,
+} from "../common/mockConstants";
+
 const motebehovArbeidstakerUbehandletMock = {
   UUID:
     "11111111-c987-4b57-a401-a3915ec11429198a6dbf-c987-4b57-a401-a3915ec11429",
@@ -6,7 +12,7 @@ const motebehovArbeidstakerUbehandletMock = {
   aktorId: "1",
   opprettetAv: "1",
   opprettetAvNavn: "Sygve Sykmeldt",
-  virksomhetsnummer: "110110110",
+  virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
   motebehovSvar: {
     harMotebehov: true,
     friskmeldingForventning: "Nei",
@@ -14,7 +20,7 @@ const motebehovArbeidstakerUbehandletMock = {
     tiltakResultat: "",
     forklaring: "",
   },
-  tildeltEnhet: "0330",
+  tildeltEnhet: ENHET_GRUNERLOKKA.nummer,
   behandletTidspunkt: null,
   behandletVeilederIdent: null,
 };
@@ -34,9 +40,9 @@ const motebehovArbeidstakerBehandletMock = {
     tiltakResultat: "",
     forklaring: "Møter er bra!",
   },
-  tildeltEnhet: "0330",
+  tildeltEnhet: ENHET_GRUNERLOKKA.nummer,
   behandletTidspunkt: "2019-01-10T13:53:57.047+01:00",
-  behandletVeilederIdent: "Z990000",
+  behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
 };
 
 const motebehovArbeidsgiverMock = {
@@ -46,7 +52,7 @@ const motebehovArbeidsgiverMock = {
   aktorId: "1",
   opprettetAv: "1902690001009",
   opprettetAvNavn: "Are Arbeidsgiver",
-  virksomhetsnummer: "110110110",
+  virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
   motebehovSvar: {
     harMotebehov: false,
     friskmeldingForventning: "Nei",

@@ -1,6 +1,10 @@
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import { leggTilDagerPaDato } from "../util/dateUtil";
 import { ISPERSONOPPGAVE_ROOT } from "../../src/apiConstants";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  VIRKSOMHET_PONTYPANDY,
+} from "../common/mockConstants";
 
 const Auth = require("../../server/auth/index.js");
 
@@ -9,8 +13,8 @@ const getDefaultPersonOppgaveUbehandlet = () => {
   return {
     uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd1",
     referanseUuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd2",
-    fnr: "19026900010",
-    virksomhetsnummer: "110110110",
+    fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+    virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
     type: "OPPFOLGINGSPLANLPS",
     behandletTidspunkt: null,
     behandletVeilederIdent: null,

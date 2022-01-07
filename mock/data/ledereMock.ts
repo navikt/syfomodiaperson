@@ -1,3 +1,8 @@
+import {
+  ARBEIDSTAKER_DEFAULT,
+  VIRKSOMHET_PONTYPANDY,
+} from "../common/mockConstants";
+
 export enum NarmesteLederRelasjonStatus {
   INNMELDT_AKTIV = "INNMELDT_AKTIV",
   DEAKTIVERT = "DEAKTIVERT",
@@ -11,9 +16,9 @@ export enum NarmesteLederRelasjonStatus {
 export const ledereMock = [
   {
     uuid: "1",
-    arbeidstakerPersonIdentNumber: "19026900010",
-    virksomhetsnummer: "110110110",
-    virksomhetsnavn: "PONTYPANDY FIRE SERVICE",
+    arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
+    virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+    virksomhetsnavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
     narmesteLederPersonIdentNumber: "02690001002",
     narmesteLederTelefonnummer: "110",
     narmesteLederEpost: "steele@pontypandyfire.gov.uk",
@@ -26,9 +31,9 @@ export const ledereMock = [
   },
   {
     uuid: "2",
-    arbeidstakerPersonIdentNumber: "19026900010",
-    virksomhetsnummer: "110110110",
-    virksomhetsnavn: "PONTYPANDY FIRE SERVICE",
+    arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
+    virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+    virksomhetsnavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
     narmesteLederPersonIdentNumber: "02690001008",
     narmesteLederTelefonnummer: "12345678",
     narmesteLederEpost: "test2@test.no",
@@ -41,9 +46,9 @@ export const ledereMock = [
   },
   {
     uuid: "3",
-    arbeidstakerPersonIdentNumber: "19026900010",
-    virksomhetsnummer: "110110110",
-    virksomhetsnavn: "PONTYPANDY FIRE SERVICE",
+    arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
+    virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+    virksomhetsnavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
     narmesteLederPersonIdentNumber: "02690001009",
     narmesteLederTelefonnummer: "12345666",
     narmesteLederEpost: "test3@test.no",
