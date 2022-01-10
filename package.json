@@ -23,7 +23,9 @@
   "license": "ISC",
   "dependencies": {
     "@babel/polyfill": "7.12.1",
+    "@navikt/ds-css": "0.12.6",
     "@navikt/ds-icons": "0.5.2",
+    "@navikt/ds-react": "0.14.4",
     "@navikt/fnrvalidator": "1.1.4",
     "@navikt/navspa": "3.0.1",
     "@sentry/react": "6.15.0",

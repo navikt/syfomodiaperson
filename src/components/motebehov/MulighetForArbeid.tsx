@@ -1,10 +1,12 @@
 import React from "react";
-import { Checkbox } from "nav-frontend-skjema";
 import {
   erMulighetForArbeidInformasjon,
   finnAvventendeSykmeldingTekst,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import { SuccessFilled, SuccessStroke } from "@navikt/ds-icons";
+import { Heading, Label } from "@navikt/ds-react";
+import styled from "styled-components";
 
 const tekster = {
   mulighetForArbeid: {
@@ -43,22 +45,45 @@ interface AktivitetIkkeMuligProps {
   tittel: string;
 }
 
+const AktivitetHeading = styled(Heading)`
+  display: flex;
+  align-items: center;
+`;
+
+const AktivitetLabel = styled(Label)`
+  display: flex;
+  align-items: center;
+  margin-left: 2em;
+  margin-top: 1.5em;
+`;
+
+const StyledSuccessFilled = styled(SuccessFilled)`
+  margin-right: 0.5em;
+  font-size: 1.5rem;
+`;
+
+const StyledSuccessStroke = styled(SuccessStroke)`
+  margin-right: 0.2em;
+  font-size: 1.5rem;
+`;
+
 const AktivitetIkkeMulig = ({
   beskrivelse,
   ikkeMuligListe,
   tittel,
 }: AktivitetIkkeMuligProps) => (
   <div className="MulighetForArbeid">
-    <h5 className="undertittel">{tittel}</h5>
+    <AktivitetHeading spacing size="medium" level="4">
+      <StyledSuccessFilled />
+      {tittel}
+    </AktivitetHeading>
+
     {ikkeMuligListe.map((ikkeMuligTekst: string, index: number) => {
       return (
-        <Checkbox
-          key={index}
-          className="sykmeldingMotebehovVisning__checkbox"
-          label={ikkeMuligTekst}
-          checked
-          disabled
-        />
+        <AktivitetLabel key={index} spacing>
+          <StyledSuccessStroke key={index} />
+          {ikkeMuligTekst}
+        </AktivitetLabel>
       );
     })}
     {beskrivelse && [
@@ -92,14 +117,14 @@ const MulighetForArbeid = ({ sykmelding }: MulighetForArbeidProps) => {
           {!!avventendeTekst && (
             <AvventendeSykmelding avventendeTekst={avventendeTekst} />
           )}
-          {aktivitetIkkeMulig433 && aktivitetIkkeMulig433.length > 0 && (
+          {aktivitetIkkeMulig433 && (
             <AktivitetIkkeMulig
               beskrivelse={aarsakAktivitetIkkeMulig433}
               ikkeMuligListe={aktivitetIkkeMulig433}
               tittel={tekster.mulighetForArbeid.medisinskAarsak.tittel}
             />
           )}
-          {aktivitetIkkeMulig434 && aktivitetIkkeMulig434.length > 0 && (
+          {aktivitetIkkeMulig434 && (
             <AktivitetIkkeMulig
               beskrivelse={aarsakAktivitetIkkeMulig434}
               ikkeMuligListe={aktivitetIkkeMulig434}
