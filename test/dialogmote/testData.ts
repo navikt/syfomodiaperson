@@ -21,17 +21,22 @@ import {
 } from "@/utils/datoUtils";
 import { genererDato } from "@/components/mote/utils";
 import { InputDateStringToISODateString } from "nav-datovelger/lib/utils/dateFormatUtils";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  ENHET_GRUNERLOKKA,
+  VIRKSOMHET_PONTYPANDY,
+} from "../../mock/common/mockConstants";
 
 export const arbeidstaker = {
   navn: "Arne Arbeidstaker",
   personident: "05087321470",
 };
 export const arbeidsgiver = {
-  orgnr: "110110110",
+  orgnr: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
 };
 export const navEnhet = {
-  id: "0315",
-  navn: "NAV Grünerløkka",
+  id: ENHET_GRUNERLOKKA.nummer,
+  navn: ENHET_GRUNERLOKKA.navn,
 };
 export const behandlendeEnhet = {
   enhetId: navEnhet.id,
@@ -109,9 +114,9 @@ export const mockState = {
     currentLedere: [
       {
         uuid: "3",
-        arbeidstakerPersonIdentNumber: "19026900010",
+        arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
         virksomhetsnummer: arbeidsgiver.orgnr,
-        virksomhetsnavn: "PONTYPANDY FIRE SERVICE",
+        virksomhetsnavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
         narmesteLederPersonIdentNumber: "02690001009",
         narmesteLederTelefonnummer: "12345666",
         narmesteLederEpost: "test3@test.no",

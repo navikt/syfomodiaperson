@@ -12,6 +12,11 @@ import {
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { MotehistorikkPanel } from "@/components/dialogmote/motehistorikk/MotehistorikkPanel";
 import { QueryClient, QueryClientProvider } from "react-query";
+import {
+  ENHET_GRUNERLOKKA,
+  VEILEDER_IDENT_DEFAULT,
+  VIRKSOMHET_PONTYPANDY,
+} from "../../mock/common/mockConstants";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -22,9 +27,9 @@ const dialogmoter: DialogmoteDTO[] = [
     createdAt: "2021-05-26T12:56:26.238385",
     updatedAt: "2021-05-26T12:56:26.238385",
     status: DialogmoteStatus.FERDIGSTILT,
-    opprettetAv: "Z999999",
-    tildeltVeilederIdent: "Z999999",
-    tildeltEnhet: "1000",
+    opprettetAv: VEILEDER_IDENT_DEFAULT,
+    tildeltVeilederIdent: VEILEDER_IDENT_DEFAULT,
+    tildeltEnhet: ENHET_GRUNERLOKKA.nummer,
     arbeidstaker: {
       personIdent: "12345678912",
       type: "ARBEIDSTAKER",
@@ -41,7 +46,7 @@ const dialogmoter: DialogmoteDTO[] = [
       ],
     },
     arbeidsgiver: {
-      virksomhetsnummer: "110110110",
+      virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
       type: "ARBEIDSGIVER",
       varselList: [
         {
@@ -63,9 +68,9 @@ const dialogmoter: DialogmoteDTO[] = [
     createdAt: "2020-05-26T12:56:26.238385",
     updatedAt: "2020-05-26T12:56:26.238385",
     status: DialogmoteStatus.AVLYST,
-    opprettetAv: "Z999999",
-    tildeltVeilederIdent: "Z999999",
-    tildeltEnhet: "1000",
+    opprettetAv: VEILEDER_IDENT_DEFAULT,
+    tildeltVeilederIdent: VEILEDER_IDENT_DEFAULT,
+    tildeltEnhet: ENHET_GRUNERLOKKA.nummer,
     arbeidstaker: {
       personIdent: "12345678912",
       type: "ARBEIDSTAKER",
@@ -82,7 +87,7 @@ const dialogmoter: DialogmoteDTO[] = [
       ],
     },
     arbeidsgiver: {
-      virksomhetsnummer: "110110110",
+      virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
       type: "ARBEIDSGIVER",
       varselList: [
         {

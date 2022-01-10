@@ -12,9 +12,14 @@ import { rootReducer } from "@/data/rootState";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { NarmesteLederRelasjonStatus } from "../../mock/data/ledereMock";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  VEILEDER_IDENT_DEFAULT,
+  VIRKSOMHET_PONTYPANDY,
+} from "../../mock/common/mockConstants";
 
 const realState = createStore(rootReducer).getState();
-const fnr = "19026900010";
+const fnr = ARBEIDSTAKER_DEFAULT;
 let queryClient;
 
 describe("MotelandingssideContainer", () => {
@@ -60,7 +65,7 @@ describe("MotelandingssideContainer", () => {
               virksomhetsnummer: "000999000",
               tildeltEnhet: "0330",
               behandletTidspunkt: "2019-01-10T13:53:57.047+01:00",
-              behandletVeilederIdent: "Z990000",
+              behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
             },
           ],
         },
@@ -73,9 +78,9 @@ describe("MotelandingssideContainer", () => {
           currentLedere: [
             {
               uuid: "3",
-              arbeidstakerPersonIdentNumber: "19026900010",
-              virksomhetsnummer: "110110110",
-              virksomhetsnavn: "PONTYPANDY FIRE SERVICE",
+              arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
+              virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+              virksomhetsnavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
               narmesteLederPersonIdentNumber: "02690001009",
               narmesteLederTelefonnummer: "12345666",
               narmesteLederEpost: "test3@test.no",
@@ -100,7 +105,7 @@ describe("MotelandingssideContainer", () => {
       component = mount(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
-            <Motelandingsside fnr="19026900010" />
+            <Motelandingsside fnr={ARBEIDSTAKER_DEFAULT} />
           </Provider>
         </QueryClientProvider>
       );
@@ -115,7 +120,7 @@ describe("MotelandingssideContainer", () => {
       component = mount(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
-            <Motelandingsside fnr="19026900010" />
+            <Motelandingsside fnr={ARBEIDSTAKER_DEFAULT} />
           </Provider>
         </QueryClientProvider>
       );
@@ -133,7 +138,7 @@ describe("MotelandingssideContainer", () => {
       component = mount(
         <QueryClientProvider client={queryClient}>
           <Provider store={mockStore}>
-            <Motelandingsside fnr="19026900010" />
+            <Motelandingsside fnr={ARBEIDSTAKER_DEFAULT} />
           </Provider>
         </QueryClientProvider>
       );
@@ -162,7 +167,7 @@ describe("MotelandingssideContainer", () => {
       component = mount(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
-            <Motelandingsside fnr="19026900010" />
+            <Motelandingsside fnr={ARBEIDSTAKER_DEFAULT} />
           </Provider>
         </QueryClientProvider>
       );
@@ -181,7 +186,7 @@ describe("MotelandingssideContainer", () => {
       component = mount(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
-            <Motelandingsside fnr="19026900010" />
+            <Motelandingsside fnr={ARBEIDSTAKER_DEFAULT} />
           </Provider>
         </QueryClientProvider>
       );

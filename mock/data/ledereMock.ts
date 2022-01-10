@@ -61,7 +61,7 @@ export const ledereMock = [
   },
   {
     uuid: "4",
-    arbeidstakerPersonIdentNumber: "19026900001",
+    arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
     virksomhetsnummer: "555666444",
     virksomhetsnavn: "BRANN OG BIL AS",
     narmesteLederPersonIdentNumber: "02690001009",
@@ -76,7 +76,7 @@ export const ledereMock = [
   },
   {
     uuid: "5",
-    arbeidstakerPersonIdentNumber: "19026900002",
+    arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
     virksomhetsnummer: "000999000",
     virksomhetsnavn: "KONKURS BEDRIFT OG VENNER AS",
     narmesteLederPersonIdentNumber: "02690001009",
@@ -91,7 +91,7 @@ export const ledereMock = [
   },
   {
     uuid: "6",
-    arbeidstakerPersonIdentNumber: "19026900002",
+    arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
     virksomhetsnummer: "000999000",
     virksomhetsnavn: "KONKURS BEDRIFT OG VENNER AS",
     narmesteLederPersonIdentNumber: "02690001009",
@@ -106,7 +106,7 @@ export const ledereMock = [
   },
   {
     uuid: "7",
-    arbeidstakerPersonIdentNumber: "19026900002",
+    arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
     virksomhetsnummer: "000999000",
     virksomhetsnavn: "KONKURS BEDRIFT OG VENNER AS",
     narmesteLederPersonIdentNumber: "02690001009",
@@ -121,7 +121,7 @@ export const ledereMock = [
   },
   {
     uuid: "8",
-    arbeidstakerPersonIdentNumber: "19026900003",
+    arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
     virksomhetsnummer: "170100000",
     virksomhetsnavn: "USS Enterprise",
     narmesteLederPersonIdentNumber: "02690001009",

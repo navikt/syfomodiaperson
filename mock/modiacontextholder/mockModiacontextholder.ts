@@ -3,12 +3,13 @@ import {
   ARBEIDSTAKER_DEFAULT,
   ENHET_GAMLEOSLO,
   ENHET_GRUNERLOKKA,
+  VEILEDER_IDENT_DEFAULT,
 } from "../common/mockConstants";
 
 const Auth = require("../../server/auth/index.js");
 
 const saksbehandler = {
-  ident: "Z999999",
+  ident: VEILEDER_IDENT_DEFAULT,
   navn: "Vetle Veileder",
   fornavn: "Vetle",
   etternavn: "Veileder",

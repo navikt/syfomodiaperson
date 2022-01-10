@@ -13,6 +13,7 @@ import {
   SoknadstypeDTO,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import { VIRKSOMHET_PONTYPANDY } from "../../../mock/common/mockConstants";
 
 export const mockSykmeldingId = "test-id";
 
@@ -58,9 +59,9 @@ export const mockSykmeldinger: SykmeldingNewFormatDTO[] = [
       statusEvent: "SENDT",
       timestamp: "2020-01-29T09:38:05.414834Z",
       arbeidsgiver: {
-        orgnummer: "110110110",
-        juridiskOrgnummer: "110110110",
-        orgNavn: "PONTYPANDY FIRE SERVICE",
+        orgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+        juridiskOrgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+        orgNavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
       },
       sporsmalOgSvarListe: [
         {
@@ -138,16 +139,16 @@ export const mockOldSykmeldinger: SykmeldingOldFormat[] = [
       utenArbeidsgiverTilbakemelding: undefined,
     },
     id: mockSykmeldingId,
-    innsendtArbeidsgivernavn: "PONTYPANDY FIRE SERVICE",
+    innsendtArbeidsgivernavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
     innspillTilArbeidsgiver: undefined,
     meldingTilNav: {
       navBoerTaTakISaken: undefined,
       navBoerTaTakISakenBegrunnelse: undefined,
     },
     mottakendeArbeidsgiver: {
-      juridiskOrgnummer: "110110110",
-      navn: "PONTYPANDY FIRE SERVICE",
-      virksomhetsnummer: "110110110",
+      juridiskOrgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+      navn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
+      virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
     },
     mulighetForArbeid: {
       aarsakAktivitetIkkeMulig433: undefined,
@@ -166,7 +167,7 @@ export const mockOldSykmeldinger: SykmeldingOldFormat[] = [
       ],
     },
     naermesteLederStatus: undefined,
-    orgnummer: "110110110",
+    orgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
     pasient: {
       etternavn: undefined,
       fnr: "99887766554",

@@ -5,7 +5,9 @@ import { ledereMock } from "../data/ledereMock";
 import { SYFOMOTEADMIN_ROOT } from "../../src/apiConstants";
 import {
   ARBEIDSTAKER_DEFAULT,
+  ARBEIDSTAKER_DEFAULT_FULL_NAME,
   VEILEDER_IDENT_DEFAULT,
+  VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
 
 const Auth = require("../../server/auth/index.js");
@@ -35,10 +37,10 @@ const mockMoteDeltakere = (alternativer, orgnummer) => {
   return [
     {
       deltakerUuid: "66f1d827-94db-43d4-b6de-2f7902e76bf8",
-      navn: "Samuel Jones",
-      fnr: ARBEIDSTAKER_DEFAULT,
+      navn: ARBEIDSTAKER_DEFAULT_FULL_NAME,
+      fnr: ARBEIDSTAKER_DEFAULT.personIdent,
       orgnummer: orgnummer,
-      epost: "samuel@pontypandyfire.gov.uk",
+      epost: ARBEIDSTAKER_DEFAULT.epost,
       type: "Bruker",
       svartidspunkt: null,
       svar: alternativer,
@@ -76,7 +78,7 @@ const mockForLokal = (server) => {
   );
 
   server.get(
-    `${SYFOMOTEADMIN_ROOT}/virksomhet/110110110`,
+    `${SYFOMOTEADMIN_ROOT}/virksomhet/${VIRKSOMHET_PONTYPANDY.virksomhetsnummer}`,
     Auth.ensureAuthenticated(),
     (req, res) => {
       res.setHeader("Content-Type", "application/json");

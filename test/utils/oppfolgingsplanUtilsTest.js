@@ -2,23 +2,27 @@ import { expect } from "chai";
 import { leggTilDagerPaDato } from "../../mock/util/dateUtil";
 import { lpsPlanerWithActiveTilfelle } from "@/utils/oppfolgingsplanUtils";
 import { customOppfolgingstilfelleperioder } from "../mockdata/mockOppfolgingstilfelleperioder";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  VIRKSOMHET_PONTYPANDY,
+} from "../../mock/common/mockConstants";
 
 describe("oppfolgingsplanUtils", () => {
   describe("lpsPlanerWithActiveTilfelle", () => {
     const today = new Date();
     const defaultLpsplan = {
       uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd2",
-      fnr: "19026900010",
-      virksomhetsnummer: "110110110",
+      fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+      virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
       opprettet: leggTilDagerPaDato(today, -1).toJSON(),
       sistEndret: leggTilDagerPaDato(today, -1).toJSON(),
     };
 
     const defaultActiveTilfelleMapState = {
-      110110110: {
+      [VIRKSOMHET_PONTYPANDY.virksomhetsnummer]: {
         data: [
           {
-            orgnummer: "110110110",
+            orgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
             fom: leggTilDagerPaDato(today, -10),
             tom: leggTilDagerPaDato(today, 10),
             grad: 100,
@@ -108,9 +112,15 @@ describe("oppfolgingsplanUtils", () => {
 
     it("should return 2 planer for different virksomheter if both are within combined tilfelle", () => {
       const allTilfeller = {
-        110110110: { ...defaultActiveTilfelleMapState["110110110"] },
+        [VIRKSOMHET_PONTYPANDY.virksomhetsnummer]: {
+          ...defaultActiveTilfelleMapState[
+            VIRKSOMHET_PONTYPANDY.virksomhetsnummer
+          ],
+        },
         123456789: {
-          ...defaultActiveTilfelleMapState["110110110"],
+          ...defaultActiveTilfelleMapState[
+            VIRKSOMHET_PONTYPANDY.virksomhetsnummer
+          ],
           orgnummer: "123456789",
         },
       };

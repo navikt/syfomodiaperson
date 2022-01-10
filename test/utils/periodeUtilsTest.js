@@ -20,6 +20,7 @@ import {
   START_DATE_OLDEST_TILFELLE,
   TODAY,
 } from "../mockdata/mockOppfolgingstilfelleperioder";
+import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
 
 chai.use(chaiDatetime);
 const expect = chai.expect;
@@ -211,7 +212,7 @@ describe("periodeUtils", () => {
     });
     it("Skal gi en liste med to objekter hvis det er to bedrifter med tilfelleperioder", () => {
       const oppfolgingstilfelleperioder = {
-        110110110: {
+        [VIRKSOMHET_PONTYPANDY.virksomhetsnummer]: {
           data: [
             {
               orgnummer: "922345678",

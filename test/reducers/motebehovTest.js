@@ -4,6 +4,7 @@ import sinon from "sinon";
 import motebehov, { sorterEtterDato } from "../../src/data/motebehov/motebehov";
 import * as actions from "../../src/data/motebehov/motebehov_actions";
 import * as behandleActions from "../../src/data/motebehov/behandlemotebehov_actions";
+import { VEILEDER_IDENT_DEFAULT } from "../../mock/common/mockConstants";
 
 describe("motebehov", () => {
   let clock;
@@ -45,7 +46,7 @@ describe("motebehov", () => {
       },
     ];
     clock = sinon.useFakeTimers(today.getTime()); // 16. januar 2017
-    veilederIdent = "Z990000";
+    veilederIdent = VEILEDER_IDENT_DEFAULT;
   });
 
   afterEach(() => {

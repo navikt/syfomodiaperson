@@ -56,6 +56,7 @@ import { MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE } from "@/components/dialogmote/refera
 import { MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE } from "@/components/dialogmote/referat/ArbeidsgiversOppgave";
 import { MAX_LENGTH_VEILEDERS_OPPGAVE } from "@/components/dialogmote/referat/VeiledersOppgave";
 import { MAX_LENGTH_BEHANDLERS_OPPGAVE } from "@/components/dialogmote/referat/BehandlersOppgave";
+import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -80,7 +81,7 @@ const mockState = {
       {
         narmesteLederNavn: lederNavn,
         status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
-        virksomhetsnummer: "110110110",
+        virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
       },
       {
         narmesteLederNavn: "Annen Leder",

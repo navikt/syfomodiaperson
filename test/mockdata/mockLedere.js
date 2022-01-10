@@ -1,4 +1,5 @@
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
+import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 
 const VIRKSOMHETSNUMMER_WITH_ACTIVE_SYKMELDING = "123456789";
 const VIRKSOMHETSNUMMER_WITHOUT_ACTIVE_SYKMELDING = "987654321";
@@ -12,7 +13,7 @@ const TWO_DAYS_AGO = new Date(Date.now() - DAY_IN_MILLISECONDS * 2);
 
 export const mockLederWithActiveSykmelding = {
   uuid: "0",
-  arbeidstakerPersonIdentNumber: "19026900010",
+  arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
   virksomhetsnummer: VIRKSOMHETSNUMMER_WITH_ACTIVE_SYKMELDING,
   virksomhetsnavn: "FBI",
   narmesteLederPersonIdentNumber: "02690001002",
@@ -28,7 +29,7 @@ export const mockLederWithActiveSykmelding = {
 
 export const mockLederWithoutActiveSykmelding = {
   uuid: "1",
-  arbeidstakerPersonIdentNumber: "19026900010",
+  arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
   virksomhetsnummer: VIRKSOMHETSNUMMER_WITHOUT_ACTIVE_SYKMELDING,
   virksomhetsnavn: "The Syndicate",
   narmesteLederPersonIdentNumber: "02690001003",

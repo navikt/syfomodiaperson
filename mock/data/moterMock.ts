@@ -1,5 +1,7 @@
 import {
   ARBEIDSTAKER_DEFAULT,
+  ARBEIDSTAKER_DEFAULT_FULL_NAME,
+  ENHET_GRUNERLOKKA,
   VEILEDER_IDENT_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
@@ -13,15 +15,15 @@ export const moterMock: any[] = [
     status: "OPPRETTET",
     fnr: ARBEIDSTAKER_DEFAULT.personIdent,
     opprettetTidspunkt: "2019-10-13",
-    navEnhet: "0315",
+    navEnhet: ENHET_GRUNERLOKKA.nummer,
     eier: VEILEDER_IDENT_DEFAULT,
     deltakere: [
       {
         deltakerUuid: "66f1d827-94db-43d4-b6de-2f7902e76bf8",
-        navn: "Samuel Jones",
+        navn: ARBEIDSTAKER_DEFAULT_FULL_NAME,
         fnr: ARBEIDSTAKER_DEFAULT.personIdent,
         orgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-        epost: "samuel@pontypandyfire.gov.uk",
+        epost: ARBEIDSTAKER_DEFAULT.epost,
         type: "Bruker",
         svartidspunkt: "2019-10-14",
         svar: [

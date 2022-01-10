@@ -18,8 +18,9 @@ import { brukerKanIkkeVarslesTekst } from "@/components/BrukerKanIkkeVarslesText
 import { ToggleNames } from "@/data/unleash/unleash_types";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { behandlereDialogmeldingQueryKeys } from "@/data/behandlerdialogmelding/behandlereDialogmeldingQueryHooks";
+import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 
-const fnr = "19026900010";
+const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient;
 
 const realState = createStore(rootReducer).getState();

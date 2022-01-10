@@ -10,9 +10,9 @@ export const fastlegerMock = [
     helsepersonellregisterId: 8888888,
     pasient: {
       fnr: ARBEIDSTAKER_DEFAULT.personIdent,
-      fornavn: 'Samuel "Sam"',
-      mellomnavn: "Peyton",
-      etternavn: "Jones",
+      fornavn: ARBEIDSTAKER_DEFAULT.navn.fornavn,
+      mellomnavn: ARBEIDSTAKER_DEFAULT.navn.mellomnavn,
+      etternavn: ARBEIDSTAKER_DEFAULT.navn.etternavn,
     },
     fastlegekontor: {
       navn: "PONTYPANDY LEGEKONTOR.",
@@ -44,9 +44,9 @@ export const fastlegerMock = [
     helsepersonellregisterId: 8888888,
     pasient: {
       fnr: ARBEIDSTAKER_DEFAULT.personIdent,
-      fornavn: 'Samuel "Sam"',
-      mellomnavn: "Peyton",
-      etternavn: "Jones",
+      fornavn: ARBEIDSTAKER_DEFAULT.navn.fornavn,
+      mellomnavn: ARBEIDSTAKER_DEFAULT.navn.mellomnavn,
+      etternavn: ARBEIDSTAKER_DEFAULT.navn.etternavn,
     },
     fastlegekontor: {
       navn: "PONTYPANDY LEGEKONTOR.",

@@ -1,6 +1,13 @@
 export const ARBEIDSTAKER_DEFAULT = {
+  epost: "samuel@pontypandyfire.gov.uk",
   personIdent: "19026900010",
+  navn: {
+    fornavn: "Samuel",
+    mellomnavn: "Sam",
+    etternavn: "Jones",
+  },
 };
+export const ARBEIDSTAKER_DEFAULT_FULL_NAME = `${ARBEIDSTAKER_DEFAULT.navn.fornavn} ${ARBEIDSTAKER_DEFAULT.navn.mellomnavn} ${ARBEIDSTAKER_DEFAULT.navn.etternavn}`;
 
 export const ENHET_GRUNERLOKKA = {
   nummer: "0315",

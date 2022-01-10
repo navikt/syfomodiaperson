@@ -12,6 +12,7 @@ import { Provider } from "react-redux";
 import { newSMFormat2OldFormat } from "@/utils/sykmeldinger/sykmeldingParser";
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -51,8 +52,8 @@ describe("SykmeldingUtdrag", () => {
     );
     userEvent.click(wrapper.getByRole("button"));
     expect(sykmelding?.sykmeldingStatus?.arbeidsgiver?.orgNavn).to.equal(
-      "PONTYPANDY FIRE SERVICE"
+      VIRKSOMHET_PONTYPANDY.virksomhetsnavn
     );
-    expect(wrapper.getByText("PONTYPANDY FIRE SERVICE")).to.exist;
+    expect(wrapper.getByText(VIRKSOMHET_PONTYPANDY.virksomhetsnavn)).to.exist;
   });
 });

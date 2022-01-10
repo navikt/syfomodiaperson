@@ -1,14 +1,17 @@
-import { VEILEDER_IDENT_DEFAULT } from "../common/mockConstants";
+import {
+  ARBEIDSTAKER_DEFAULT_FULL_NAME,
+  VEILEDER_IDENT_DEFAULT,
+} from "../common/mockConstants";
 
 export const historikkmoterMock = [
   {
     opprettetAv: VEILEDER_IDENT_DEFAULT,
-    tekst: `${VEILEDER_IDENT_DEFAULT} opprettet møte med Samuel Jones og Station Officer Steele`,
+    tekst: `${VEILEDER_IDENT_DEFAULT} opprettet møte med ${ARBEIDSTAKER_DEFAULT_FULL_NAME} og Station Officer Steele`,
     tidspunkt: "2019-04-04T10:38:53.361",
   },
   {
     opprettetAv: VEILEDER_IDENT_DEFAULT,
-    tekst: `${VEILEDER_IDENT_DEFAULT} opprettet møte med Samuel Jones og Station Officer Steele`,
+    tekst: `${VEILEDER_IDENT_DEFAULT} opprettet møte med ${ARBEIDSTAKER_DEFAULT_FULL_NAME} og Station Officer Steele`,
     tidspunkt: "2019-03-27T09:05:43.116",
   },
   {

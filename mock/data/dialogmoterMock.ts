@@ -4,7 +4,12 @@ import {
   MotedeltakerVarselType,
 } from "../../src/data/dialogmote/types/dialogmoteTypes";
 import { BehandlerType } from "../../src/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
-import { VIRKSOMHET_PONTYPANDY } from "../common/mockConstants";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  ENHET_GRUNERLOKKA,
+  VEILEDER_IDENT_DEFAULT,
+  VIRKSOMHET_PONTYPANDY,
+} from "../common/mockConstants";
 
 const createDialogmote = (
   uuid: string,
@@ -18,12 +23,12 @@ const createDialogmote = (
     createdAt: "2021-05-26T12:56:26.238385",
     updatedAt: "2021-05-26T12:56:26.238385",
     status: moteStatus.toString(),
-    opprettetAv: "Z999999",
-    tildeltVeilederIdent: "Z999999",
-    tildeltEnhet: "1000",
+    opprettetAv: VEILEDER_IDENT_DEFAULT,
+    tildeltVeilederIdent: VEILEDER_IDENT_DEFAULT,
+    tildeltEnhet: ENHET_GRUNERLOKKA.nummer,
     arbeidstaker: {
       uuid: uuid + 1,
-      personIdent: "12345678912",
+      personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
       type: "ARBEIDSTAKER",
       varselList: [
         {

@@ -2,6 +2,7 @@ import { expect } from "chai";
 import deepFreeze from "deep-freeze";
 import motebehovBehandling from "../../src/data/motebehov/motebehovBehandling";
 import * as actions from "../../src/data/motebehov/behandlemotebehov_actions";
+import { VEILEDER_IDENT_DEFAULT } from "../../mock/common/mockConstants";
 
 describe("motebehovBehandling", () => {
   const initState = deepFreeze({
@@ -13,7 +14,7 @@ describe("motebehovBehandling", () => {
 
   let veilederIdent;
   beforeEach(() => {
-    veilederIdent = "Z990000";
+    veilederIdent = VEILEDER_IDENT_DEFAULT;
   });
 
   it(`håndterer ${actions.BEHANDLE_MOTEBEHOV_BEHANDLER}`, () => {

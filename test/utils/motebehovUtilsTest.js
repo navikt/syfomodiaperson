@@ -11,6 +11,7 @@ import {
   motebehovFromLatestActiveTilfelle,
 } from "@/utils/motebehovUtils";
 import { ANTALL_MS_DAG } from "@/utils/datoUtils";
+import { VEILEDER_IDENT_DEFAULT } from "../../mock/common/mockConstants";
 
 describe("motebehovUtils", () => {
   describe("finnNyesteMotebehovsvarFraHverDeltaker", () => {
@@ -202,7 +203,7 @@ describe("motebehovUtils", () => {
         harMotebehov: true,
       },
       behandletTidspunkt: new Date(),
-      behandletVeilederIdent: "Z990000",
+      behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
     };
     const motebehovMedBehovUbehandlet = {
       motebehovSvar: {

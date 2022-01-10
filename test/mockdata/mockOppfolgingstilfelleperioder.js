@@ -1,10 +1,12 @@
+import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
+
 export const START_DATE_NEWEST_TILFELLE = "2020-04-18";
 export const START_DATE_OLDEST_TILFELLE = "2020-03-20";
 export const END_DATE_MORE_THAN_16_DAYS_EARLIER = "2020-04-01";
 export const END_DATE_16_DAYS_EARLIER = "2020-04-02";
 export const TODAY = "2020-04-20";
 
-const NEWEST_VIRKSOMHET = "110110110";
+const NEWEST_VIRKSOMHET = VIRKSOMHET_PONTYPANDY.virksomhetsnummer;
 const OLDEST_VIRKSOMHET = "123456789";
 
 const newestPeriode = {
@@ -86,10 +88,10 @@ export const oppfolgingstilfelleperioderMoreThanOneTilfelleInactive = {
 
 export const customOppfolgingstilfelleperioder = (fom, tom) => {
   return {
-    110110110: {
+    [VIRKSOMHET_PONTYPANDY.virksomhetsnummer]: {
       data: [
         {
-          orgnummer: "110110110",
+          orgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
           fom: fom,
           tom: tom,
           grad: 100,

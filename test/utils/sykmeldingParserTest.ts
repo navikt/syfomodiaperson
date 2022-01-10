@@ -39,6 +39,7 @@ import {
 import { FriskmeldingDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { medisinskArsakTypeTekster } from "@/data/sykmelding/types/MedisinskArsakTypeDTO";
 import { arbeidsrelatertArsakTypetekster } from "@/data/sykmelding/types/ArbeidsrelatertArsakTypeDTO";
+import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
 
 const sykmeldtFnr = "99887766554";
 
@@ -320,7 +321,8 @@ describe("sykmeldingParser", () => {
     it("Returns correct innsendtArbeidsgivernavn withouth info", () => {
       const mockSM = mockSykmeldinger[0];
 
-      const expectedInnsendtArbeidsgivernavn = "PONTYPANDY FIRE SERVICE";
+      const expectedInnsendtArbeidsgivernavn =
+        VIRKSOMHET_PONTYPANDY.virksomhetsnavn;
 
       const outputSM = newSMFormat2OldFormat(mockSM, sykmeldtFnr);
 

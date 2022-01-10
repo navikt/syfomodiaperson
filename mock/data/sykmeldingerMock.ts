@@ -1,6 +1,7 @@
 import { leggTilDagerPaDato } from "../util/dateUtil";
 import {
   ARBEIDSTAKER_DEFAULT,
+  ARBEIDSTAKER_DEFAULT_FULL_NAME,
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
 
@@ -223,7 +224,7 @@ export const sykmeldingerMock = [
     },
     legekontorOrgnummer: "223456789",
     arbeidsgiver: {
-      navn: "PONTYPANDY FIRE SERVICE",
+      navn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
       stillingsprosent: 100,
     },
     sykmeldingsperioder: [
@@ -312,7 +313,7 @@ export const sykmeldingerMock = [
       arbeidsgiver: {
         orgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
         juridiskOrgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-        orgNavn: "PONTYPANDY FIRE SERVICE",
+        orgNavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
       },
       sporsmalOgSvarListe: null,
     },
@@ -423,7 +424,7 @@ export const sykmeldingerMock = [
     },
     legekontorOrgnummer: "223456789",
     arbeidsgiver: {
-      navn: "PONTYPANDY FIRE SERVICE",
+      navn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
       stillingsprosent: 100,
     },
     sykmeldingsperioder: [
@@ -480,7 +481,7 @@ export const sykmeldingerMock = [
       arbeidsgiver: {
         orgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
         juridiskOrgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-        orgNavn: "PONTYPANDY FIRE SERVICE",
+        orgNavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
       },
       sporsmalOgSvarListe: null,
     },
@@ -588,7 +589,7 @@ export const sykmeldingerMock = [
     },
     legekontorOrgnummer: "223456789",
     arbeidsgiver: {
-      navn: "PONTYPANDY FIRE SERVICE",
+      navn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
       stillingsprosent: 100,
     },
     sykmeldingsperioder: [
@@ -711,7 +712,7 @@ export const sykmeldingerMock = [
     },
     legekontorOrgnummer: "223456789",
     arbeidsgiver: {
-      navn: "PONTYPANDY FIRE SERVICE",
+      navn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
       stillingsprosent: 100,
     },
     sykmeldingsperioder: [
@@ -1073,9 +1074,9 @@ export const sykmeldingerMock = [
     },
     behandletTidspunkt: "2020-03-30T17:31:45.629313Z",
     behandler: {
-      fornavn: 'Samuel "Sam"',
+      fornavn: ARBEIDSTAKER_DEFAULT.navn.fornavn,
       mellomnavn: null,
-      etternavn: "Jones",
+      etternavn: ARBEIDSTAKER_DEFAULT.navn.etternavn,
       aktoerId: "190269000101",
       fnr: ARBEIDSTAKER_DEFAULT.personIdent,
       hpr: "egenmeldt",
@@ -1173,9 +1174,9 @@ export const sykmeldingerMock = [
     },
     behandletTidspunkt: "2020-03-30T17:31:45.629313Z",
     behandler: {
-      fornavn: 'Samuel "Sam"',
+      fornavn: ARBEIDSTAKER_DEFAULT.navn.fornavn,
       mellomnavn: null,
-      etternavn: "Jones",
+      etternavn: ARBEIDSTAKER_DEFAULT.navn.etternavn,
       aktoerId: "190269000101",
       fnr: ARBEIDSTAKER_DEFAULT.personIdent,
       hpr: "egenmeldt",
@@ -1266,9 +1267,9 @@ export const sykmeldingerMock = [
     },
     behandletTidspunkt: "2020-03-30T20:24:34.496114Z",
     behandler: {
-      fornavn: 'Samuel "Sam"',
+      fornavn: ARBEIDSTAKER_DEFAULT.navn.fornavn,
       mellomnavn: null,
-      etternavn: "Jones",
+      etternavn: ARBEIDSTAKER_DEFAULT.navn.etternavn,
       aktoerId: "190269000101",
       fnr: ARBEIDSTAKER_DEFAULT.personIdent,
       hpr: "egenmeldt",

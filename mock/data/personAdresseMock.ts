@@ -1,5 +1,7 @@
+import { ARBEIDSTAKER_DEFAULT_FULL_NAME } from "../common/mockConstants";
+
 export const personAdresseMock = {
-  navn: "Samuel Jones",
+  navn: ARBEIDSTAKER_DEFAULT_FULL_NAME,
   bostedsadresse: {
     angittFlyttedato: "2019-11-03",
     gyldigFraOgMed: "2019-11-03T00:00:00",

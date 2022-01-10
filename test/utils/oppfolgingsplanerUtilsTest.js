@@ -10,6 +10,10 @@ import {
   activeLPSOppfolgingsplaner,
   activeOppfolgingsplaner,
 } from "@/utils/oppfolgingsplanerUtils";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  VIRKSOMHET_PONTYPANDY,
+} from "../../mock/common/mockConstants";
 
 describe("oppfolgingsplanerUtils", () => {
   let clock;
@@ -81,15 +85,15 @@ describe("oppfolgingsplanerUtils", () => {
     it("Gives the plan created last, if more than one from a virksomhet", () => {
       const planOne = {
         uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd2",
-        fnr: "19026900010",
-        virksomhetsnummer: "110110110",
+        fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+        virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
         opprettet: new Date(),
       };
 
       const planTwo = {
         uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd2",
-        fnr: "19026900010",
-        virksomhetsnummer: "110110110",
+        fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+        virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
         opprettet: new Date() - 3600000 * 24,
       };
 

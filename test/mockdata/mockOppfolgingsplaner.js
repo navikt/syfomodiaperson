@@ -1,3 +1,5 @@
+import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
+
 const MILLISECONDS_PER_HOUR = 3600000;
 const DAY_IN_MILLISECONDS = MILLISECONDS_PER_HOUR * 24;
 
@@ -14,7 +16,7 @@ export const mockValidActiveOppfolgingsplan = {
   status: "AKTIV",
   virksomhet: {
     navn: "X-Files",
-    virksomhetsnummer: "110110110",
+    virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
   },
   godkjentPlan: {
     opprettetTidspunkt: TODAY,
@@ -43,7 +45,7 @@ export const mockAvbruttActiveOppfolgingsplan = {
   status: "AVBRUTT",
   virksomhet: {
     navn: "X-Files",
-    virksomhetsnummer: "110110110",
+    virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
   },
   godkjentPlan: {
     opprettetTidspunkt: YESTERDAY,
@@ -72,7 +74,7 @@ export const mockAvbruttInactiveOppfolgingsplan = {
   status: "AVBRUTT",
   virksomhet: {
     navn: "X-Files",
-    virksomhetsnummer: "110110110",
+    virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
   },
   godkjentPlan: {
     opprettetTidspunkt: TWO_DAYS_AGO,

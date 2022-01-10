@@ -7,11 +7,12 @@ import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { expect } from "chai";
 import { virksomhetMock } from "../../mock/data/virksomhetMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
+import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
 
 let queryClient;
 let apiMockScope;
 
-const orgnummer = "110110110";
+const orgnummer = VIRKSOMHET_PONTYPANDY.virksomhetsnummer;
 
 describe("virksomhetQueryHooks tests", () => {
   beforeEach(() => {
