@@ -2,14 +2,12 @@ import { expect } from "chai";
 import React from "react";
 import { Form } from "react-final-form";
 import Datovelger, { validerDatoField } from "../../src/components/Datovelger";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 describe("Datovelger", () => {
-  let component;
-
   describe("Datovelger", () => {
-    beforeEach(() => {
-      component = render(
+    it("Skal inneholde input-felt og kalender", () => {
+      render(
         <Form
           onSubmit={() => {
             /* Do nothing */
@@ -18,16 +16,11 @@ describe("Datovelger", () => {
           {() => <Datovelger name="halla" id="id" />}
         </Form>
       );
-    });
 
-    it("Skal inneholde input-felt og kalender", () => {
-      expect(
-        component.getByRole("textbox", { selector: ".nav-datovelger__input" })
-      ).to.exist;
-      expect(component.getByRole("button", { name: "Kalender" })).to.exist;
+      expect(screen.getByRole("textbox")).to.exist;
+      expect(screen.getByRole("button", { name: "Kalender" })).to.exist;
     });
   });
-
   describe("validerDatoField", () => {
     it("Skal returnere Vennligst angi dato hvis dato ikke er sendt inn", () => {
       const res = validerDatoField(undefined, undefined);

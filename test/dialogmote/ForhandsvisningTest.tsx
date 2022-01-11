@@ -17,6 +17,10 @@ import {
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import Lenke from "nav-frontend-lenker";
 
+const doNothing = () => {
+  /* do nothing */
+};
+
 describe("Forhandsvisning", () => {
   it("inneholder tittel, undertittel og knapper", () => {
     const wrapper = mount(
@@ -25,7 +29,7 @@ describe("Forhandsvisning", () => {
         subtitle={"(undertittel)"}
         contentLabel={"Test"}
         isOpen={true}
-        handleClose={() => {}}
+        handleClose={doNothing}
         getDocumentComponents={() => []}
       />
     );
@@ -62,7 +66,7 @@ describe("Forhandsvisning", () => {
         subtitle={"(undertittel)"}
         contentLabel={"Test"}
         isOpen={true}
-        handleClose={() => {}}
+        handleClose={doNothing}
         getDocumentComponents={() => documentComponents}
       />
     );

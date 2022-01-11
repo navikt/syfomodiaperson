@@ -1,6 +1,6 @@
 import { fastlegerQueryKeys } from "@/data/fastlege/fastlegerQueryHooks";
 import { arbeidstaker } from "../../dialogmote/testData";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
 import PersonkortLege, {
@@ -16,7 +16,6 @@ import { stubFastlegerApi } from "../../stubs/stubFastlegeRest";
 
 let queryClient;
 let apiMockScope;
-let komponent;
 
 const aktivFastlege = {
   pasientforhold: {
@@ -46,6 +45,15 @@ const mockState = {
   },
 };
 
+const renderPersonkortLege = () =>
+  render(
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store({ ...realState, ...mockState })}>
+        <PersonkortLege />
+      </Provider>
+    </QueryClientProvider>
+  );
+
 describe("PersonkortLege", () => {
   beforeEach(() => {
     queryClient = new QueryClient();
@@ -60,14 +68,9 @@ describe("PersonkortLege", () => {
       fastlegerQueryKeys.fastleger(arbeidstaker.personident),
       () => []
     );
-    komponent = render(
-      <QueryClientProvider client={queryClient}>
-        <Provider store={store({ ...realState, ...mockState })}>
-          <PersonkortLege />
-        </Provider>
-      </QueryClientProvider>
-    );
-    expect(komponent.getByText(expectedFeilmelding)).to.exist;
+    renderPersonkortLege();
+
+    expect(screen.getByText(expectedFeilmelding)).to.exist;
   });
 
   it("Skal vise overskrifter for aktiv fastlege og tidligere fastleger", async () => {
@@ -75,19 +78,12 @@ describe("PersonkortLege", () => {
       fastlegerQueryKeys.fastleger(arbeidstaker.personident),
       () => [aktivFastlege, ...tidligereFastleger]
     );
+    renderPersonkortLege();
 
-    komponent = render(
-      <QueryClientProvider client={queryClient}>
-        <Provider store={store({ ...realState, ...mockState })}>
-          <PersonkortLege />
-        </Provider>
-      </QueryClientProvider>
-    );
-    expect(await komponent.findByRole("heading", { name: "Lego Legesen" })).to
+    expect(await screen.findByRole("heading", { name: "Lego Legesen" })).to
       .exist;
-    expect(
-      await komponent.findByRole("heading", { name: "Tidligere fastleger" })
-    ).to.exist;
+    expect(await screen.findByRole("heading", { name: "Tidligere fastleger" }))
+      .to.exist;
   });
 
   it("Skal vise tidligere leger", async () => {
@@ -95,18 +91,10 @@ describe("PersonkortLege", () => {
       fastlegerQueryKeys.fastleger(arbeidstaker.personident),
       () => [aktivFastlege, ...tidligereFastleger]
     );
+    renderPersonkortLege();
 
-    komponent = render(
-      <QueryClientProvider client={queryClient}>
-        <Provider store={store({ ...realState, ...mockState })}>
-          <PersonkortLege />
-        </Provider>
-      </QueryClientProvider>
-    );
     expect(
-      await komponent.findByText(
-        "1. oktober 2011 - 1. oktober 2021 Annen Legesen"
-      )
+      await screen.findByText("1. oktober 2011 - 1. oktober 2021 Annen Legesen")
     ).to.exist;
   });
 
@@ -115,27 +103,21 @@ describe("PersonkortLege", () => {
       fastlegerQueryKeys.fastleger(arbeidstaker.personident),
       () => [aktivFastlege]
     );
-    komponent = render(
-      <QueryClientProvider client={queryClient}>
-        <Provider store={store({ ...realState, ...mockState })}>
-          <PersonkortLege />
-        </Provider>
-      </QueryClientProvider>
-    );
-    expect(komponent.queryByRole("heading", { name: "Tidligere fastleger" })).to
+    renderPersonkortLege();
+
+    expect(screen.queryByRole("heading", { name: "Tidligere fastleger" })).to
       .not.exist;
   });
 
   describe("TidligereLeger", () => {
     it("Skal vise en liste med antall element lik antall tidligere fastleger", () => {
-      komponent = render(
-        <TidligereLeger tidligereFastleger={tidligereFastleger} />
-      );
-      expect(komponent.getAllByRole("listitem")).to.have.length(
+      render(<TidligereLeger tidligereFastleger={tidligereFastleger} />);
+
+      expect(screen.getAllByRole("listitem")).to.have.length(
         tidligereFastleger.length
       );
-      expect(komponent.getByText(/1. oktober 2019 - 1. oktober 2020/)).to.exist;
-      expect(komponent.getByText(/1. oktober 2020 - 1. oktober 2021/)).to.exist;
+      expect(screen.getByText(/1. oktober 2019 - 1. oktober 2020/)).to.exist;
+      expect(screen.getByText(/1. oktober 2020 - 1. oktober 2021/)).to.exist;
     });
   });
 });

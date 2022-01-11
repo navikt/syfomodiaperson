@@ -3,7 +3,7 @@ import { expect } from "chai";
 import SykmeldingPeriodeInfo from "../../src/components/speiling/sykmeldinger/sykmeldinger/SykmeldingPeriodeInfo";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { toDateWithoutNullCheck } from "@/utils/datoUtils";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 const arbeidsgiver = "Arne Arbeidsgiver";
 const periodeFlereDager: SykmeldingPeriodeDTO = {
@@ -17,26 +17,26 @@ const periodeEnDag: SykmeldingPeriodeDTO = {
 
 describe("SykmeldingPeriodeInfo", () => {
   it("viser tekst med antall dager når sykmeldt flere dager", () => {
-    const wrapper = render(
+    render(
       <SykmeldingPeriodeInfo
         periode={periodeFlereDager}
         arbeidsgiver={arbeidsgiver}
       />
     );
 
-    expect(wrapper.getByText(`Sykmeldt fra ${arbeidsgiver} i 10 dager`)).to
+    expect(screen.getByText(`Sykmeldt fra ${arbeidsgiver} i 10 dager`)).to
       .exist;
   });
 
   it("viser tekst med én dag når sykmeldt én dag", () => {
-    const wrapper = render(
+    render(
       <SykmeldingPeriodeInfo
         periode={periodeEnDag}
         arbeidsgiver={arbeidsgiver}
       />
     );
 
-    expect(wrapper.getByText(`Sykmeldt fra ${arbeidsgiver} i 1 dag`)).to.exist;
+    expect(screen.getByText(`Sykmeldt fra ${arbeidsgiver} i 1 dag`)).to.exist;
   });
 
   it("viser tekst med behandlingsdag når sykmeldt én dag, ingen gradering, med behandlingsdag", () => {
@@ -44,11 +44,11 @@ describe("SykmeldingPeriodeInfo", () => {
       ...periodeEnDag,
       behandlingsdager: 1,
     };
-    const wrapper = render(
+    render(
       <SykmeldingPeriodeInfo periode={periode} arbeidsgiver={arbeidsgiver} />
     );
 
-    expect(wrapper.getByText(`1 behandlingsdag i løpet av 1 dag`)).to.exist;
+    expect(screen.getByText(`1 behandlingsdag i løpet av 1 dag`)).to.exist;
   });
 
   it("viser tekst med behandlingsdager når sykmeldt én dag, ingen gradering, med behandlingsdager", () => {
@@ -56,11 +56,11 @@ describe("SykmeldingPeriodeInfo", () => {
       ...periodeEnDag,
       behandlingsdager: 3,
     };
-    const wrapper = render(
+    render(
       <SykmeldingPeriodeInfo periode={periode} arbeidsgiver={arbeidsgiver} />
     );
 
-    expect(wrapper.getByText(`3 behandlingsdager`)).to.exist;
+    expect(screen.getByText(`3 behandlingsdager`)).to.exist;
   });
 
   it("viser tekst med behandlingsdager når sykmeldt flere dager med behandlingsdager", () => {
@@ -68,12 +68,11 @@ describe("SykmeldingPeriodeInfo", () => {
       ...periodeFlereDager,
       behandlingsdager: 3,
     };
-    const wrapper = render(
+    render(
       <SykmeldingPeriodeInfo periode={periode} arbeidsgiver={arbeidsgiver} />
     );
 
-    expect(wrapper.getByText(`3 behandlingsdager i løpet av 10 dager`)).to
-      .exist;
+    expect(screen.getByText(`3 behandlingsdager i løpet av 10 dager`)).to.exist;
   });
 
   it("viser tekst med reisetilskudd hvis sykmeldt én dag, ingen gradering med reisetilskudd", () => {
@@ -82,11 +81,11 @@ describe("SykmeldingPeriodeInfo", () => {
       reisetilskudd: true,
     };
 
-    const wrapper = render(
+    render(
       <SykmeldingPeriodeInfo periode={periode} arbeidsgiver={arbeidsgiver} />
     );
 
-    expect(wrapper.getByText(`Reisetilskudd i 1 dag`)).to.exist;
+    expect(screen.getByText(`Reisetilskudd i 1 dag`)).to.exist;
   });
 
   it("viser tekst med reisetilskudd hvis sykmeldt flere dager med reisetilskudd", () => {
@@ -95,11 +94,11 @@ describe("SykmeldingPeriodeInfo", () => {
       reisetilskudd: true,
     };
 
-    const wrapper = render(
+    render(
       <SykmeldingPeriodeInfo periode={periode} arbeidsgiver={arbeidsgiver} />
     );
 
-    expect(wrapper.getByText(`Reisetilskudd i 10 dager`)).to.exist;
+    expect(screen.getByText(`Reisetilskudd i 10 dager`)).to.exist;
   });
 
   it("viser tekst med reisetilskudd hvis gradert sykmeldt flere dager med reisetilskudd", () => {
@@ -109,11 +108,11 @@ describe("SykmeldingPeriodeInfo", () => {
       grad: 80,
     };
 
-    const wrapper = render(
+    render(
       <SykmeldingPeriodeInfo periode={periode} arbeidsgiver={arbeidsgiver} />
     );
 
-    expect(wrapper.getByText(`80 % sykmelding med reisetilskudd i 10 dager`)).to
+    expect(screen.getByText(`80 % sykmelding med reisetilskudd i 10 dager`)).to
       .exist;
   });
 
@@ -123,12 +122,12 @@ describe("SykmeldingPeriodeInfo", () => {
       avventende: "Avventende",
     };
 
-    const wrapper = render(
+    render(
       <SykmeldingPeriodeInfo periode={periode} arbeidsgiver={arbeidsgiver} />
     );
 
     expect(
-      wrapper.getByText(`Avventende sykmelding fra ${arbeidsgiver} i 1 dag`)
+      screen.getByText(`Avventende sykmelding fra ${arbeidsgiver} i 1 dag`)
     ).to.exist;
   });
 
@@ -138,12 +137,12 @@ describe("SykmeldingPeriodeInfo", () => {
       avventende: "Avventende",
     };
 
-    const wrapper = render(
+    render(
       <SykmeldingPeriodeInfo periode={periode} arbeidsgiver={arbeidsgiver} />
     );
 
     expect(
-      wrapper.getByText(`Avventende sykmelding fra ${arbeidsgiver} i 10 dager`)
+      screen.getByText(`Avventende sykmelding fra ${arbeidsgiver} i 10 dager`)
     ).to.exist;
   });
 
@@ -153,9 +152,9 @@ describe("SykmeldingPeriodeInfo", () => {
       avventende: "Avventende",
     };
 
-    const wrapper = render(<SykmeldingPeriodeInfo periode={periode} />);
+    render(<SykmeldingPeriodeInfo periode={periode} />);
 
-    expect(wrapper.getByText(`Avventende sykemelding i 10 dager`)).to.exist;
+    expect(screen.getByText(`Avventende sykemelding i 10 dager`)).to.exist;
   });
 
   it("viser tekst avventende hvis avventende sykmeldt én dag uten arbeidsgiver", () => {
@@ -164,8 +163,8 @@ describe("SykmeldingPeriodeInfo", () => {
       avventende: "Avventende",
     };
 
-    const wrapper = render(<SykmeldingPeriodeInfo periode={periode} />);
+    render(<SykmeldingPeriodeInfo periode={periode} />);
 
-    expect(wrapper.getByText(`Avventende sykemelding i 1 dag`)).to.exist;
+    expect(screen.getByText(`Avventende sykemelding i 1 dag`)).to.exist;
   });
 });

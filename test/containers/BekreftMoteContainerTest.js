@@ -41,7 +41,9 @@ describe("BekreftMoteContainer", () => {
       compo = shallow(
         <BekreftMoteSide
           fnr="44556677889"
-          hentBekreftMoteEpostinnhold={() => {}}
+          hentBekreftMoteEpostinnhold={() => {
+            /* Do nothing */
+          }}
           bekreftMote={bekreftMote}
           alternativ={alternativ}
           mote={mote}

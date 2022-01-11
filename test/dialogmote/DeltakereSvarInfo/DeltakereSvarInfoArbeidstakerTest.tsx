@@ -4,7 +4,7 @@ import {
   mockState,
   varselArbeidstaker,
 } from "../testData";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { expect } from "chai";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
@@ -12,6 +12,7 @@ import React from "react";
 import configureStore from "redux-mock-store";
 import { DeltakereSvarInfo } from "@/components/dialogmote/DeltakereSvarInfo";
 import {
+  DialogmoteDTO,
   MotedeltakerVarselType,
   SvarType,
 } from "@/data/dialogmote/types/dialogmoteTypes";
@@ -20,6 +21,15 @@ const store = configureStore([]);
 let queryClient;
 
 const ingenDetaljerTekst = "Ingen detaljer er tilgjengelig.";
+
+const renderDeltakereSvarInfo = (dialogmote: DialogmoteDTO) =>
+  render(
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store(mockState)}>
+        <DeltakereSvarInfo dialogmote={dialogmote} />
+      </Provider>
+    </QueryClientProvider>
+  );
 
 describe("DeltakereSvarInfo for arbeidstaker", () => {
   beforeEach(() => {
@@ -39,19 +49,13 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
 
     it("viser arbeidstaker har åpnet innkalling med minus-sirkel-ikon og manglende begrunnelse", () => {
       const expectedText = `${arbeidstaker.navn}, åpnet innkallingen 02.12.2021 - Har ikke gitt svar`;
-      const wrapper = render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store(mockState)}>
-            <DeltakereSvarInfo dialogmote={dialogmoteMedLestInnkalling} />
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderDeltakereSvarInfo(dialogmoteMedLestInnkalling);
 
-      expect(wrapper.getByText("Arbeidstakeren:")).to.exist;
-      expect(wrapper.getByText(expectedText)).to.exist;
-      expect(wrapper.getAllByText(ingenDetaljerTekst)).to.not.be.empty;
-      expect(wrapper.queryByText("Begrunnelse")).to.not.exist;
-      expect(wrapper.getAllByRole("img", { name: "minus-sirkel-ikon" })).to.not
+      expect(screen.getByText("Arbeidstakeren:")).to.exist;
+      expect(screen.getByText(expectedText)).to.exist;
+      expect(screen.getAllByText(ingenDetaljerTekst)).to.not.be.empty;
+      expect(screen.queryByText("Begrunnelse")).to.not.exist;
+      expect(screen.getAllByRole("img", { name: "minus-sirkel-ikon" })).to.not
         .be.empty;
     });
   });
@@ -73,19 +77,13 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
 
     it("viser arbeidstaker 'kommer' med suksess-ikon og manglende begrunnelse", () => {
       const expectedText = `${arbeidstaker.navn}, kommer - Svar mottatt 02.12.2021`;
-      const wrapper = render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store(mockState)}>
-            <DeltakereSvarInfo dialogmote={dialogmoteMedLestInnkalling} />
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderDeltakereSvarInfo(dialogmoteMedLestInnkalling);
 
-      expect(wrapper.getByText("Arbeidstakeren:")).to.exist;
-      expect(wrapper.getByText(expectedText)).to.exist;
-      expect(wrapper.getAllByText(ingenDetaljerTekst)).to.not.be.empty;
-      expect(wrapper.queryByText("Begrunnelse")).to.not.exist;
-      expect(wrapper.getByRole("img", { name: "suksess-ikon" })).to.exist;
+      expect(screen.getByText("Arbeidstakeren:")).to.exist;
+      expect(screen.getByText(expectedText)).to.exist;
+      expect(screen.getAllByText(ingenDetaljerTekst)).to.not.be.empty;
+      expect(screen.queryByText("Begrunnelse")).to.not.exist;
+      expect(screen.getByRole("img", { name: "suksess-ikon" })).to.exist;
     });
   });
 
@@ -107,19 +105,13 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
 
     it("viser arbeidstaker ønsker å endre tid/sted med advarsel-ikon og begrunnelse", () => {
       const expectedText = `${arbeidstaker.navn}, ønsker å endre tidspunkt eller sted - Svar mottatt 02.12.2021`;
-      const wrapper = render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store(mockState)}>
-            <DeltakereSvarInfo dialogmote={dialogmoteMedLestInnkalling} />
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderDeltakereSvarInfo(dialogmoteMedLestInnkalling);
 
-      expect(wrapper.getByText("Arbeidstakeren:")).to.exist;
-      expect(wrapper.getByText(expectedText)).to.exist;
-      expect(wrapper.getByText("Begrunnelse")).to.exist;
-      expect(wrapper.getByText("Passer ikke")).to.exist;
-      expect(wrapper.getByRole("img", { name: "advarsel-ikon" })).to.exist;
+      expect(screen.getByText("Arbeidstakeren:")).to.exist;
+      expect(screen.getByText(expectedText)).to.exist;
+      expect(screen.getByText("Begrunnelse")).to.exist;
+      expect(screen.getByText("Passer ikke")).to.exist;
+      expect(screen.getByRole("img", { name: "advarsel-ikon" })).to.exist;
     });
   });
 
@@ -141,19 +133,13 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
 
     it("viser arbeidstaker ønsker å avlyse med feil-ikon og begrunnelse", () => {
       const expectedText = `${arbeidstaker.navn}, ønsker å avlyse - Svar mottatt 01.12.2021`;
-      const wrapper = render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store(mockState)}>
-            <DeltakereSvarInfo dialogmote={dialogmoteMedLestInnkalling} />
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderDeltakereSvarInfo(dialogmoteMedLestInnkalling);
 
-      expect(wrapper.getByText("Arbeidstakeren:")).to.exist;
-      expect(wrapper.getByText(expectedText)).to.exist;
-      expect(wrapper.getByText("Begrunnelse")).to.exist;
-      expect(wrapper.getByText("Kommer ikke")).to.exist;
-      expect(wrapper.getByRole("img", { name: "feil-ikon" })).to.exist;
+      expect(screen.getByText("Arbeidstakeren:")).to.exist;
+      expect(screen.getByText(expectedText)).to.exist;
+      expect(screen.getByText("Begrunnelse")).to.exist;
+      expect(screen.getByText("Kommer ikke")).to.exist;
+      expect(screen.getByRole("img", { name: "feil-ikon" })).to.exist;
     });
   });
 
@@ -165,21 +151,15 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
 
     it("viser arbeidstaker har ikke åpnet innkalling med minus-sirkel-ikon og manglende begrunnelse", () => {
       const expectedText = `${arbeidstaker.navn}, har ikke åpnet innkallingen`;
-      const wrapper = render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store(mockState)}>
-            <DeltakereSvarInfo dialogmote={dialogmoteMedUlestInnkalling} />
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderDeltakereSvarInfo(dialogmoteMedUlestInnkalling);
 
-      expect(wrapper.getByText("Arbeidstakeren:")).to.exist;
-      expect(wrapper.getByText(expectedText)).to.exist;
-      expect(wrapper.getAllByText(ingenDetaljerTekst)).to.not.be.empty;
-      expect(wrapper.queryByText("Begrunnelse")).to.not.exist;
-      expect(wrapper.getAllByRole("img", { name: "minus-sirkel-ikon" })).to.not
+      expect(screen.getByText("Arbeidstakeren:")).to.exist;
+      expect(screen.getByText(expectedText)).to.exist;
+      expect(screen.getAllByText(ingenDetaljerTekst)).to.not.be.empty;
+      expect(screen.queryByText("Begrunnelse")).to.not.exist;
+      expect(screen.getAllByRole("img", { name: "minus-sirkel-ikon" })).to.not
         .be.empty;
-      expect(wrapper.queryByText("Har ikke gitt svar", { exact: false })).to.not
+      expect(screen.queryByText("Har ikke gitt svar", { exact: false })).to.not
         .exist;
     });
   });
@@ -197,19 +177,13 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
 
     it("viser arbeidstaker har åpnet endring med minus-sirkel-ikon og begrunnelse", () => {
       const expectedText = `${arbeidstaker.navn}, åpnet endringen 04.12.2021 - Har ikke gitt svar`;
-      const wrapper = render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store(mockState)}>
-            <DeltakereSvarInfo dialogmote={dialogmoteMedLestEndring} />
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderDeltakereSvarInfo(dialogmoteMedLestEndring);
 
-      expect(wrapper.getByText("Arbeidstakeren:")).to.exist;
-      expect(wrapper.getByText(expectedText)).to.exist;
-      expect(wrapper.getAllByText(ingenDetaljerTekst)).to.not.be.empty;
-      expect(wrapper.queryByText("Begrunnelse")).to.not.exist;
-      expect(wrapper.getAllByRole("img", { name: "minus-sirkel-ikon" })).to.not
+      expect(screen.getByText("Arbeidstakeren:")).to.exist;
+      expect(screen.getByText(expectedText)).to.exist;
+      expect(screen.getAllByText(ingenDetaljerTekst)).to.not.be.empty;
+      expect(screen.queryByText("Begrunnelse")).to.not.exist;
+      expect(screen.getAllByRole("img", { name: "minus-sirkel-ikon" })).to.not
         .be.empty;
     });
   });
@@ -231,19 +205,13 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
 
     it("viser arbeidstaker 'kommer' med sukess-ikon og manglende begrunnelse", () => {
       const expectedText = `${arbeidstaker.navn}, kommer - Svar mottatt 04.12.2021`;
-      const wrapper = render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store(mockState)}>
-            <DeltakereSvarInfo dialogmote={dialogmoteMedLestEndring} />
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderDeltakereSvarInfo(dialogmoteMedLestEndring);
 
-      expect(wrapper.getByText("Arbeidstakeren:")).to.exist;
-      expect(wrapper.getByText(expectedText)).to.exist;
-      expect(wrapper.getAllByText(ingenDetaljerTekst)).to.not.be.empty;
-      expect(wrapper.queryByText("Begrunnelse")).to.not.exist;
-      expect(wrapper.getByRole("img", { name: "suksess-ikon" })).to.exist;
+      expect(screen.getByText("Arbeidstakeren:")).to.exist;
+      expect(screen.getByText(expectedText)).to.exist;
+      expect(screen.getAllByText(ingenDetaljerTekst)).to.not.be.empty;
+      expect(screen.queryByText("Begrunnelse")).to.not.exist;
+      expect(screen.getByRole("img", { name: "suksess-ikon" })).to.exist;
     });
   });
 
@@ -265,19 +233,13 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
 
     it("viser arbeidstaker ønsker å endre tid/sted med advarsel-ikon og begrunnelse", () => {
       const expectedText = `${arbeidstaker.navn}, ønsker å endre tidspunkt eller sted - Svar mottatt 04.12.2021`;
-      const wrapper = render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store(mockState)}>
-            <DeltakereSvarInfo dialogmote={dialogmoteMedLestEndring} />
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderDeltakereSvarInfo(dialogmoteMedLestEndring);
 
-      expect(wrapper.getByText("Arbeidstakeren:")).to.exist;
-      expect(wrapper.getByText(expectedText)).to.exist;
-      expect(wrapper.getByText("Begrunnelse")).to.exist;
-      expect(wrapper.getByText("Kan vi endre sted?")).to.exist;
-      expect(wrapper.getByRole("img", { name: "advarsel-ikon" })).to.exist;
+      expect(screen.getByText("Arbeidstakeren:")).to.exist;
+      expect(screen.getByText(expectedText)).to.exist;
+      expect(screen.getByText("Begrunnelse")).to.exist;
+      expect(screen.getByText("Kan vi endre sted?")).to.exist;
+      expect(screen.getByRole("img", { name: "advarsel-ikon" })).to.exist;
     });
   });
 
@@ -299,19 +261,13 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
 
     it("viser arbeidstaker ønsker å avlyse med feil-ikon og begrunnelse", () => {
       const expectedText = `${arbeidstaker.navn}, ønsker å avlyse - Svar mottatt 04.12.2021`;
-      const wrapper = render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store(mockState)}>
-            <DeltakereSvarInfo dialogmote={dialogmoteMedLestEndring} />
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderDeltakereSvarInfo(dialogmoteMedLestEndring);
 
-      expect(wrapper.getByText("Arbeidstakeren:")).to.exist;
-      expect(wrapper.getByText(expectedText)).to.exist;
-      expect(wrapper.getByText("Begrunnelse")).to.exist;
-      expect(wrapper.getByText("Jeg kommer ikke")).to.exist;
-      expect(wrapper.getByRole("img", { name: "feil-ikon" })).to.exist;
+      expect(screen.getByText("Arbeidstakeren:")).to.exist;
+      expect(screen.getByText(expectedText)).to.exist;
+      expect(screen.getByText("Begrunnelse")).to.exist;
+      expect(screen.getByText("Jeg kommer ikke")).to.exist;
+      expect(screen.getByRole("img", { name: "feil-ikon" })).to.exist;
     });
   });
 
@@ -323,21 +279,15 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
 
     it("viser arbeidstaker har ikke åpnet endring med minus-sirkel-ikon og manglende begrunnelse", () => {
       const expectedText = `${arbeidstaker.navn}, har ikke åpnet endringen`;
-      const wrapper = render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store(mockState)}>
-            <DeltakereSvarInfo dialogmote={dialogmoteMedUlestEndring} />
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderDeltakereSvarInfo(dialogmoteMedUlestEndring);
 
-      expect(wrapper.getByText("Arbeidstakeren:")).to.exist;
-      expect(wrapper.getByText(expectedText)).to.exist;
-      expect(wrapper.getAllByText(ingenDetaljerTekst)).to.not.be.empty;
-      expect(wrapper.queryByText("Begrunnelse")).to.not.exist;
-      expect(wrapper.getAllByRole("img", { name: "minus-sirkel-ikon" })).to.not
+      expect(screen.getByText("Arbeidstakeren:")).to.exist;
+      expect(screen.getByText(expectedText)).to.exist;
+      expect(screen.getAllByText(ingenDetaljerTekst)).to.not.be.empty;
+      expect(screen.queryByText("Begrunnelse")).to.not.exist;
+      expect(screen.getAllByRole("img", { name: "minus-sirkel-ikon" })).to.not
         .be.empty;
-      expect(wrapper.queryByText("Har ikke gitt svar", { exact: false })).to.not
+      expect(screen.queryByText("Har ikke gitt svar", { exact: false })).to.not
         .exist;
     });
   });

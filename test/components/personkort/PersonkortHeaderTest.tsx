@@ -5,7 +5,7 @@ import {
 import { apiMock } from "../../stubs/stubApi";
 import { QueryClient, QueryClientProvider } from "react-query";
 import nock from "nock";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import React from "react";
 import PersonkortHeader from "@/components/personkort/PersonkortHeader";
 import configureStore from "redux-mock-store";
@@ -26,6 +26,15 @@ const navbruker = {
   arbeidssituasjon: "ARBEIDSTAKER",
 };
 
+const renderPersonkortHeader = () =>
+  render(
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store(mockState)}>
+        <PersonkortHeader navbruker={navbruker} sykmeldinger={[]} />
+      </Provider>
+    </QueryClientProvider>
+  );
+
 describe("PersonkortHeader", () => {
   beforeEach(() => {
     queryClient = new QueryClient();
@@ -38,70 +47,40 @@ describe("PersonkortHeader", () => {
   it("viser 'Egenansatt' når isEgenansatt er true fra API", async () => {
     stubEgenansattApi(apiMockScope, true);
     stubDiskresjonskodeApi(apiMockScope);
-    const wrapper = render(
-      <QueryClientProvider client={queryClient}>
-        <Provider store={store(mockState)}>
-          <PersonkortHeader navbruker={navbruker} sykmeldinger={[]} />
-        </Provider>
-      </QueryClientProvider>
-    );
+    renderPersonkortHeader();
 
-    expect(await wrapper.findByText("Egenansatt")).to.exist;
+    expect(await screen.findByText("Egenansatt")).to.exist;
   });
 
   it("viser ikke 'Egenansatt' når isEgenansatt er false fra API", async () => {
     stubEgenansattApi(apiMockScope, false);
     stubDiskresjonskodeApi(apiMockScope);
-    const wrapper = render(
-      <QueryClientProvider client={queryClient}>
-        <Provider store={store(mockState)}>
-          <PersonkortHeader navbruker={navbruker} sykmeldinger={[]} />
-        </Provider>
-      </QueryClientProvider>
-    );
+    renderPersonkortHeader();
 
-    expect(wrapper.queryByText("Egenansatt")).not.to.exist;
+    expect(screen.queryByText("Egenansatt")).not.to.exist;
   });
 
   it("viser 'Kode 6' når diskresjonskode er 6 fra API", async () => {
     stubEgenansattApi(apiMockScope, true);
     stubDiskresjonskodeApi(apiMockScope, "6");
-    const wrapper = render(
-      <QueryClientProvider client={queryClient}>
-        <Provider store={store(mockState)}>
-          <PersonkortHeader navbruker={navbruker} sykmeldinger={[]} />
-        </Provider>
-      </QueryClientProvider>
-    );
+    renderPersonkortHeader();
 
-    expect(await wrapper.findByText("Kode 6")).to.exist;
+    expect(await screen.findByText("Kode 6")).to.exist;
   });
 
   it("viser 'Kode 7' når diskresjonskode er 7 fra API", async () => {
     stubEgenansattApi(apiMockScope, true);
     stubDiskresjonskodeApi(apiMockScope, "7");
-    const wrapper = render(
-      <QueryClientProvider client={queryClient}>
-        <Provider store={store(mockState)}>
-          <PersonkortHeader navbruker={navbruker} sykmeldinger={[]} />
-        </Provider>
-      </QueryClientProvider>
-    );
+    renderPersonkortHeader();
 
-    expect(await wrapper.findByText("Kode 7")).to.exist;
+    expect(await screen.findByText("Kode 7")).to.exist;
   });
 
   it("viser ingen diskresjonskode når diskresjonskode er tom fra API", async () => {
     stubEgenansattApi(apiMockScope, true);
     stubDiskresjonskodeApi(apiMockScope);
-    const wrapper = render(
-      <QueryClientProvider client={queryClient}>
-        <Provider store={store(mockState)}>
-          <PersonkortHeader navbruker={navbruker} sykmeldinger={[]} />
-        </Provider>
-      </QueryClientProvider>
-    );
+    renderPersonkortHeader();
 
-    expect(wrapper.queryByText("Kode")).not.to.exist;
+    expect(screen.queryByText("Kode")).not.to.exist;
   });
 });

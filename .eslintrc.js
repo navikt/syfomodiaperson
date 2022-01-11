@@ -13,9 +13,11 @@ module.exports = {
     "plugin:react/recommended", // Uses the recommended rules from @eslint-plugin-react
     "plugin:react-hooks/recommended", //Uses the recommended rules from @eslint-plugin-react-hooks
     "plugin:@typescript-eslint/recommended", // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+    "plugin:testing-library/react",
     "prettier", // Make sure this is always the last configuration in the extends array.
   ],
   plugins: ["unused-imports"],
+  ignorePatterns: ["test/setup.js", "test/babel-register.js"],
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     "unused-imports/no-unused-imports": "error",

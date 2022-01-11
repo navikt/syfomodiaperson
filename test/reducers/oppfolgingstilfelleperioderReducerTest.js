@@ -7,15 +7,8 @@ import { ANTALL_MS_DAG } from "@/utils/datoUtils";
 describe("oppfolgingstilfelleperioder", () => {
   const initState = deepFreeze({});
 
-  let sykmeldt;
-  let fnr;
   let orgnummer;
   beforeEach(() => {
-    sykmeldt = {
-      fnr: "1234",
-      orgnummer: "1234",
-    };
-    fnr = "1234";
     orgnummer = "5678";
   });
 

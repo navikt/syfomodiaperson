@@ -10,7 +10,7 @@ import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import { newSMFormat2OldFormat } from "@/utils/sykmeldinger/sykmeldingParser";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
 
@@ -45,15 +45,15 @@ describe("SykmeldingUtdrag", () => {
       ...realState,
       sykmeldinger: { data: sykmeldingerData },
     });
-    const wrapper = render(
+    render(
       <Provider store={mockStore}>
         <SykmeldingUtdragContainer fnr={fnr} soknad={mockSykepengeSoknad} />
       </Provider>
     );
-    userEvent.click(wrapper.getByRole("button"));
+    userEvent.click(screen.getByRole("button"));
     expect(sykmelding?.sykmeldingStatus?.arbeidsgiver?.orgNavn).to.equal(
       VIRKSOMHET_PONTYPANDY.virksomhetsnavn
     );
-    expect(wrapper.getByText(VIRKSOMHET_PONTYPANDY.virksomhetsnavn)).to.exist;
+    expect(screen.getByText(VIRKSOMHET_PONTYPANDY.virksomhetsnavn)).to.exist;
   });
 });

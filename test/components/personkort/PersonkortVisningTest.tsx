@@ -12,14 +12,13 @@ import { arbeidstaker } from "../../dialogmote/testData";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { apiMock } from "../../stubs/stubApi";
 import { stubFastlegerApi } from "../../stubs/stubFastlegeRest";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { fastlegerMock } from "../../../mock/fastlegerest/fastlegerMock";
 
 let queryClient;
 let apiMockScope;
 
 describe("PersonkortVisning", () => {
-  let komponent;
   let mockState;
   const realState = createStore(rootReducer).getState();
   const store = configureStore([]);
@@ -52,8 +51,10 @@ describe("PersonkortVisning", () => {
         personident: arbeidstaker.personident,
       },
     };
+  });
 
-    komponent = render(
+  it("Skal vise PersonkortSykmeldt, som initielt valg", () => {
+    render(
       <Provider store={store({ ...realState, ...mockState })}>
         <PersonkortVisning
           visning={""}
@@ -64,16 +65,14 @@ describe("PersonkortVisning", () => {
         />
       </Provider>
     );
-  });
 
-  it("Skal vise PersonkortSykmeldt, som initielt valg", () => {
-    expect(komponent.getByRole("heading", { name: "Kontaktinformasjon" })).to
+    expect(screen.getByRole("heading", { name: "Kontaktinformasjon" })).to
       .exist;
   });
 
   it("Skal vise VisningLege, dersom visning for lege er valgt", async () => {
     const expectedLegeNavn = `${fastlegerMock[0].fornavn} ${fastlegerMock[0].etternavn}`;
-    komponent = render(
+    render(
       <QueryClientProvider client={queryClient}>
         <Provider store={store({ ...realState, ...mockState })}>
           <PersonkortVisning
@@ -86,7 +85,8 @@ describe("PersonkortVisning", () => {
         </Provider>
       </QueryClientProvider>
     );
-    expect(await komponent.findByRole("heading", { name: expectedLegeNavn })).to
+
+    expect(await screen.findByRole("heading", { name: expectedLegeNavn })).to
       .exist;
   });
 
@@ -99,7 +99,7 @@ describe("PersonkortVisning", () => {
         enhetId: "1234",
       })
     );
-    komponent = render(
+    render(
       <QueryClientProvider client={queryClient}>
         <Provider store={store({ ...realState, ...mockState })}>
           <PersonkortVisning
@@ -112,6 +112,7 @@ describe("PersonkortVisning", () => {
         </Provider>
       </QueryClientProvider>
     );
-    expect(await komponent.findByRole("heading", { name: enhetNavn })).to.exist;
+
+    expect(await screen.findByRole("heading", { name: enhetNavn })).to.exist;
   });
 });
