@@ -57,8 +57,9 @@ module.exports = {
             loader: "css-loader",
             options: {
               modules: {
-                compileType: "icss",
+                mode: "icss",
               },
+              url: false,
             },
           },
           {
