@@ -4,7 +4,7 @@ import { Normaltekst } from "nav-frontend-typografi";
 import { ReferatInfoColumn } from "./ReferatInfoColumn";
 import { ReferatTextareaFieldColumn } from "./ReferatTextareaFieldColumn";
 
-export const MAX_LENGTH_SITUASJON = 2000;
+export const MAX_LENGTH_SITUASJON = 3500;
 
 const texts = {
   label: "Situasjon og muligheter",
