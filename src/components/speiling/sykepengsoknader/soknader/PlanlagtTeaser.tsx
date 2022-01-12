@@ -1,6 +1,7 @@
 import React, { ReactElement, useState } from "react";
 import { Knapp } from "nav-frontend-knapper";
 import {
+  leggTilDagerPaDato,
   tilLesbarDatoMedArstall,
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
@@ -60,7 +61,9 @@ interface SoknadLightboxProps {
 const SoknadLightbox = ({ soknad, onClose }: SoknadLightboxProps) => (
   <Lightbox onClose={onClose}>
     <h3 className="panel__tittel">{texts.dato.tittel}</h3>
-    <p>{textDatoInfo(tilLesbarDatoMedArstall(soknad.tom))}</p>
+    <p>
+      {textDatoInfo(tilLesbarDatoMedArstall(leggTilDagerPaDato(soknad.tom, 1)))}
+    </p>
     <div className="knapperad">
       <Knapp onClick={onClose}>Lukk</Knapp>
     </div>
@@ -92,7 +95,9 @@ const FremtidigSoknadTeaser = ({
           <header className="inngangspanel__header">
             <h3 className="js-title" id={`soknad-header-${soknad.id}`}>
               <small className="inngangspanel__meta js-meta">
-                {textDatoFremtidig(tilLesbarDatoMedArstall(soknad.tom))}
+                {textDatoFremtidig(
+                  tilLesbarDatoMedArstall(leggTilDagerPaDato(soknad.tom, 1))
+                )}
               </small>
               <span className="inngangspanel__tittel">{texts.tittel}</span>
             </h3>
