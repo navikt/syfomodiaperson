@@ -11,6 +11,8 @@ import {
   SorteringsKriteriumVerdi,
   sorterSykmeldinger,
 } from "@/utils/sorterSykmeldingerUtils";
+import { senesteTom } from "@/utils/periodeUtils";
+import { manederMellomDatoer } from "@/utils/datoUtils";
 
 const texts = {
   ingenSykmeldinger: "Tidligere sykmeldinger",
@@ -40,10 +42,22 @@ const DineSykmeldinger = ({
   sykmeldinger = [],
 }: DineSykmeldingerProps): ReactElement => {
   const nyeSykmeldinger = sykmeldinger.filter((sykmld) => {
-    return sykmld.status === SykmeldingStatus.NY;
+    return (
+      sykmld.status === SykmeldingStatus.NY ||
+      manederMellomDatoer(
+        senesteTom(sykmld.mulighetForArbeid.perioder),
+        new Date()
+      ) < 3
+    );
   });
   const tidligereSykmeldinger = sykmeldinger.filter((sykmld) => {
-    return sykmld.status !== SykmeldingStatus.NY;
+    return (
+      sykmld.status !== SykmeldingStatus.NY ||
+      manederMellomDatoer(
+        senesteTom(sykmld.mulighetForArbeid.perioder),
+        new Date()
+      ) > 3
+    );
   });
   const trackOnClick = useTrackOnClick();
   const [
