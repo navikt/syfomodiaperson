@@ -1,8 +1,5 @@
 import React, { ReactElement, useState } from "react";
-import {
-  SykmeldingOldFormat,
-  SykmeldingStatus,
-} from "@/data/sykmelding/types/SykmeldingOldFormat";
+import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import SykmeldingTeasere from "./SykmeldingTeasere";
 import { useTrackOnClick } from "@/data/logging/loggingHooks";
 import { VelgSykmeldingSorteringDropdown } from "./VelgSykmeldingSorteringDropdown";
@@ -11,8 +8,10 @@ import {
   SorteringsKriteriumVerdi,
   sorterSykmeldinger,
 } from "@/utils/sorterSykmeldingerUtils";
-import { senesteTom } from "@/utils/periodeUtils";
-import { manederMellomDatoer } from "@/utils/datoUtils";
+import {
+  skalVisesSomAktivSykmelding,
+  skalVisesSomTidligereSykmelding,
+} from "@/utils/sykmeldinger/sykmeldingUtils";
 
 const texts = {
   ingenSykmeldinger: "Tidligere sykmeldinger",
@@ -42,22 +41,10 @@ const DineSykmeldinger = ({
   sykmeldinger = [],
 }: DineSykmeldingerProps): ReactElement => {
   const nyeSykmeldinger = sykmeldinger.filter((sykmld) => {
-    return (
-      sykmld.status === SykmeldingStatus.NY ||
-      manederMellomDatoer(
-        senesteTom(sykmld.mulighetForArbeid.perioder),
-        new Date()
-      ) < 3
-    );
+    return skalVisesSomAktivSykmelding(sykmld);
   });
   const tidligereSykmeldinger = sykmeldinger.filter((sykmld) => {
-    return (
-      sykmld.status !== SykmeldingStatus.NY ||
-      manederMellomDatoer(
-        senesteTom(sykmld.mulighetForArbeid.perioder),
-        new Date()
-      ) > 3
-    );
+    return skalVisesSomTidligereSykmelding(sykmld);
   });
   const trackOnClick = useTrackOnClick();
   const [

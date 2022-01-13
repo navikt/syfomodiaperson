@@ -7,6 +7,7 @@ import {
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { OppfolgingstilfellePerson } from "@/data/oppfolgingstilfelle/types/OppfolgingstilfellePerson";
 import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder";
+import { manederMellomDatoer } from "@/utils/datoUtils";
 
 export const finnAvventendeSykmeldingTekst = (
   sykmelding: SykmeldingOldFormat
@@ -350,3 +351,17 @@ export const latestSykmeldingForVirksomhet = (
 
   return sykmeldingerSortertNyestTilEldst(sykmeldingerForVirksomhet)[0];
 };
+
+export const skalVisesSomAktivSykmelding = (sykmld: SykmeldingOldFormat) =>
+  sykmld.status === SykmeldingStatus.NY &&
+  manederMellomDatoer(
+    senesteTom(sykmld.mulighetForArbeid.perioder),
+    new Date()
+  ) < 3;
+
+export const skalVisesSomTidligereSykmelding = (sykmld: SykmeldingOldFormat) =>
+  sykmld.status === SykmeldingStatus.NY ||
+  manederMellomDatoer(
+    senesteTom(sykmld.mulighetForArbeid.perioder),
+    new Date()
+  ) > 3;
