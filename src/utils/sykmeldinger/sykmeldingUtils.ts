@@ -360,7 +360,7 @@ export const skalVisesSomAktivSykmelding = (sykmld: SykmeldingOldFormat) =>
   ) < 3;
 
 export const skalVisesSomTidligereSykmelding = (sykmld: SykmeldingOldFormat) =>
-  sykmld.status === SykmeldingStatus.NY ||
+  sykmld.status !== SykmeldingStatus.NY ||
   manederMellomDatoer(
     senesteTom(sykmld.mulighetForArbeid.perioder),
     new Date()

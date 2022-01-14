@@ -4,6 +4,7 @@ import {
   erIdag,
   erIkkeIdag,
   leggTilDagerPaDato,
+  manederMellomDatoer,
   restdatoTildato,
   restdatoTilLesbarDato,
   tilDatoMedManedNavnOgKlokkeslettWithComma,
@@ -125,6 +126,56 @@ describe("datoUtils", () => {
       const expected = new Date("2020-10-08");
       const actual = leggTilDagerPaDato("2020-10-09", -1);
       expect(actual.toDateString()).to.equal(expected.toDateString());
+    });
+  });
+
+  describe("manederMellomDatoer", () => {
+    it("finner antall måneder mellom Dates som har samme måned", () => {
+      const date1 = new Date("2020-10-10");
+      const date2 = new Date("2020-10-10");
+
+      const manederMellom = manederMellomDatoer(date1, date2);
+      expect(manederMellom).to.equal(0);
+    });
+
+    it("finner antall måneder mellom to Dates med én måned mellom", () => {
+      const date1 = new Date("2020-10-10");
+      const date2 = new Date("2020-11-10");
+
+      const manederMellom = manederMellomDatoer(date1, date2);
+      expect(manederMellom).to.equal(1);
+    });
+
+    it("finner antall måneder mellom når Date2 er før Date1", () => {
+      const date1 = new Date("2020-11-10");
+      const date2 = new Date("2020-10-10");
+
+      const manederMellom = manederMellomDatoer(date1, date2);
+      expect(manederMellom).to.equal(0);
+    });
+
+    it("finner antall måneder mellom når Date1 er fra året før", () => {
+      const date1 = new Date("2019-11-10");
+      const date2 = new Date("2020-02-10");
+
+      const manederMellom = manederMellomDatoer(date1, date2);
+      expect(manederMellom).to.equal(3);
+    });
+
+    it("finner antall måneder mellom Dates når date2 sin dag er mindre enn date1", () => {
+      const date1 = new Date("2020-10-30");
+      const date2 = new Date("2020-12-01");
+
+      const manederMellom = manederMellomDatoer(date1, date2);
+      expect(manederMellom).to.equal(1);
+    });
+
+    it("finner antall måneder mellom Dates når date2 sin dag er etter date1", () => {
+      const date1 = new Date("2020-10-10");
+      const date2 = new Date("2020-12-11");
+
+      const manederMellom = manederMellomDatoer(date1, date2);
+      expect(manederMellom).to.equal(2);
     });
   });
 });
