@@ -1,5 +1,4 @@
 import React from "react";
-import { mount } from "enzyme";
 import { expect } from "chai";
 import { MemoryRouter, Route } from "react-router-dom";
 import { createStore } from "redux";
@@ -7,12 +6,8 @@ import { rootReducer } from "@/data/rootState";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import DialogmoteInnkallingSkjema from "@/components/dialogmote/innkalling/DialogmoteInnkallingSkjema";
-import { Feilmelding } from "nav-frontend-typografi";
-import { Feiloppsummering } from "nav-frontend-skjema";
-import { Hovedknapp } from "nav-frontend-knapper";
 import { texts as skjemaFeilOppsummeringTexts } from "@/components/SkjemaFeiloppsummering";
 import { texts as valideringsTexts } from "@/utils/valideringUtils";
-import { changeFieldValue, changeTextAreaValue } from "../../testUtils";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
@@ -22,20 +17,16 @@ import {
   arbeidsgiver,
   arbeidstaker,
   behandlendeEnhet,
-  expectedArbeidsgiverInnkalling,
-  expectedArbeidstakerInnkalling,
-  fritekstTilArbeidsgiver,
-  fritekstTilArbeidstaker,
   mockState,
-  moteDato,
-  moteDatoTid,
-  moteKlokkeslett,
-  moteSted,
-  moteVideoLink,
+  mote,
+  moteTekster,
   navEnhet,
   veileder,
 } from "../testData";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { changeTextInput, clickButton, getTextInput } from "../../testUtils";
+import { expectedInnkallingDocuments } from "../testDataDocuments";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -55,190 +46,104 @@ describe("DialogmoteInnkallingSkjema", () => {
   });
 
   it("validerer arbeidsgiver, dato, tid og sted", () => {
-    const wrapper = mountDialogmoteInnkallingSkjema();
+    renderDialogmoteInnkallingSkjema();
+    clickButton("Send innkallingene");
 
-    wrapper.find("form").simulate("submit");
-
-    // Feilmeldinger i skjema
-    const feilmeldinger = wrapper.find(Feilmelding);
-    expect(
-      feilmeldinger.someWhere(
-        (feil) => feil.text() === valideringsTexts.orgMissing
-      )
-    ).to.be.true;
-    expect(
-      feilmeldinger.someWhere(
-        (feil) => feil.text() === valideringsTexts.dateMissing
-      )
-    ).to.be.true;
-    expect(
-      feilmeldinger.someWhere(
-        (feil) => feil.text() === valideringsTexts.timeMissing
-      )
-    ).to.be.true;
-    expect(
-      feilmeldinger.someWhere(
-        (feil) => feil.text() === valideringsTexts.placeMissing
-      )
-    ).to.be.true;
+    expect(screen.getAllByText(valideringsTexts.orgMissing)).to.not.be.empty;
+    expect(screen.getAllByText(valideringsTexts.dateMissing)).to.not.be.empty;
+    expect(screen.getAllByText(valideringsTexts.timeMissing)).to.not.be.empty;
+    expect(screen.getAllByText(valideringsTexts.placeMissing)).to.not.be.empty;
 
     // Feilmeldinger i oppsummering
-    const feiloppsummering = wrapper.find(Feiloppsummering);
-    expect(feiloppsummering.text()).to.contain(
-      skjemaFeilOppsummeringTexts.title
-    );
-    expect(feiloppsummering.text()).to.contain(valideringsTexts.orgMissing);
-    expect(feiloppsummering.text()).to.contain(valideringsTexts.dateMissing);
-    expect(feiloppsummering.text()).to.contain(valideringsTexts.timeMissing);
-    expect(feiloppsummering.text()).to.contain(valideringsTexts.placeMissing);
+    expect(screen.getByText(skjemaFeilOppsummeringTexts.title)).to.exist;
+    expect(screen.getByRole("link", { name: valideringsTexts.orgMissing })).to
+      .exist;
+    expect(screen.getByRole("link", { name: valideringsTexts.dateMissing })).to
+      .exist;
+    expect(screen.getByRole("link", { name: valideringsTexts.timeMissing })).to
+      .exist;
+    expect(screen.getByRole("link", { name: valideringsTexts.placeMissing })).to
+      .exist;
   });
 
   it("valideringsmeldinger forsvinner ved utbedring", () => {
-    const wrapper = mountDialogmoteInnkallingSkjema();
+    renderDialogmoteInnkallingSkjema();
+    clickButton("Send innkallingene");
 
-    wrapper.find("form").simulate("submit");
-
-    // Feilmeldinger i skjema
-    const feilmeldinger = wrapper.find(Feilmelding);
-    expect(
-      feilmeldinger.someWhere(
-        (feil) => feil.text() === valideringsTexts.orgMissing
-      )
-    ).to.be.true;
-    expect(
-      feilmeldinger.someWhere(
-        (feil) => feil.text() === valideringsTexts.dateMissing
-      )
-    ).to.be.true;
-    expect(
-      feilmeldinger.someWhere(
-        (feil) => feil.text() === valideringsTexts.timeMissing
-      )
-    ).to.be.true;
-    expect(
-      feilmeldinger.someWhere(
-        (feil) => feil.text() === valideringsTexts.placeMissing
-      )
-    ).to.be.true;
+    expect(screen.getAllByText(valideringsTexts.orgMissing)).to.not.be.empty;
+    expect(screen.getAllByText(valideringsTexts.dateMissing)).to.not.be.empty;
+    expect(screen.getAllByText(valideringsTexts.timeMissing)).to.not.be.empty;
+    expect(screen.getAllByText(valideringsTexts.placeMissing)).to.not.be.empty;
 
     // Feilmeldinger i oppsummering
-    const feiloppsummering = wrapper.find(Feiloppsummering);
-    expect(feiloppsummering.text()).to.contain(
-      skjemaFeilOppsummeringTexts.title
-    );
-    expect(feiloppsummering.text()).to.contain(valideringsTexts.orgMissing);
-    expect(feiloppsummering.text()).to.contain(valideringsTexts.dateMissing);
-    expect(feiloppsummering.text()).to.contain(valideringsTexts.timeMissing);
-    expect(feiloppsummering.text()).to.contain(valideringsTexts.placeMissing);
+    expect(screen.getByText(skjemaFeilOppsummeringTexts.title)).to.exist;
+    expect(screen.getByRole("link", { name: valideringsTexts.orgMissing })).to
+      .exist;
+    expect(screen.getByRole("link", { name: valideringsTexts.dateMissing })).to
+      .exist;
+    expect(screen.getByRole("link", { name: valideringsTexts.timeMissing })).to
+      .exist;
+    expect(screen.getByRole("link", { name: valideringsTexts.placeMissing })).to
+      .exist;
 
-    // Fyll inn felter i skjema
-    const arbeidsgiverDropdown = wrapper.find("select");
-    changeFieldValue(arbeidsgiverDropdown, arbeidsgiver.orgnr);
-    const datoVelger = wrapper.find("ForwardRef(DateInput)");
-    changeFieldValue(datoVelger, moteDato);
-    datoVelger.simulate("blur");
-
-    const inputs = wrapper.find("input");
-    const stedInput = inputs.findWhere((w) => w.prop("name") === "sted");
-    const videoLinkInput = inputs.findWhere(
-      (w) => w.prop("name") === "videoLink"
-    );
-    const klokkeslettInput = inputs.findWhere(
-      (w) => w.prop("name") === "klokkeslett"
-    );
-    changeFieldValue(stedInput, moteSted);
-    changeFieldValue(videoLinkInput, moteVideoLink);
-    changeFieldValue(klokkeslettInput, moteKlokkeslett);
-
-    changeTextAreaValue(
-      wrapper,
-      "fritekstArbeidsgiver",
-      fritekstTilArbeidsgiver
-    );
-    changeTextAreaValue(
-      wrapper,
-      "fritekstArbeidstaker",
-      fritekstTilArbeidstaker
-    );
+    passSkjemaInput();
 
     // Feilmeldinger og feiloppsummering forsvinner
-    expect(wrapper.find(Feiloppsummering)).to.have.length(0);
-    expect(wrapper.find(Feilmelding)).to.have.length(0);
+    expect(screen.queryAllByText(valideringsTexts.orgMissing)).to.be.empty;
+    expect(screen.queryAllByText(valideringsTexts.dateMissing)).to.be.empty;
+    expect(screen.queryAllByText(valideringsTexts.timeMissing)).to.be.empty;
+    expect(screen.queryAllByText(valideringsTexts.placeMissing)).to.be.empty;
 
     // Tøm felt for sted
-    changeFieldValue(stedInput, "");
+    const stedInput = getTextInput("Sted");
+    changeTextInput(stedInput, "");
 
     // Feilmelding vises, feiloppsummering vises ved neste submit
-    expect(wrapper.find(Feiloppsummering)).to.have.length(0);
-    expect(wrapper.find(Feilmelding)).to.have.length(1);
+    expect(screen.getAllByText(valideringsTexts.placeMissing)).to.have.length(
+      1
+    );
 
-    wrapper.find(Hovedknapp).simulate("click");
-    expect(wrapper.find(Feiloppsummering)).to.have.length(1);
+    clickButton("Send innkallingene");
+    expect(screen.getAllByText(valideringsTexts.placeMissing)).to.have.length(
+      2
+    );
   });
 
   it("oppretter innkalling med verdier fra skjema", () => {
     stubInnkallingApi(apiMock());
-    const wrapper = mountDialogmoteInnkallingSkjema();
+    renderDialogmoteInnkallingSkjema();
+    passSkjemaInput();
 
-    const arbeidsgiverDropdown = wrapper.find("select");
-    changeFieldValue(arbeidsgiverDropdown, arbeidsgiver.orgnr);
-    const datoVelger = wrapper.find("ForwardRef(DateInput)");
-    changeFieldValue(datoVelger, moteDato);
-    datoVelger.simulate("blur");
-
-    const inputs = wrapper.find("input");
-    const stedInput = inputs.findWhere((w) => w.prop("name") === "sted");
-    const videoLinkInput = inputs.findWhere(
-      (w) => w.prop("name") === "videoLink"
-    );
-    const klokkeslettInput = inputs.findWhere(
-      (w) => w.prop("name") === "klokkeslett"
-    );
-    changeFieldValue(stedInput, moteSted);
-    changeFieldValue(videoLinkInput, moteVideoLink);
-    changeFieldValue(klokkeslettInput, moteKlokkeslett);
-
-    changeTextAreaValue(
-      wrapper,
-      "fritekstArbeidsgiver",
-      fritekstTilArbeidsgiver
-    );
-    changeTextAreaValue(
-      wrapper,
-      "fritekstArbeidstaker",
-      fritekstTilArbeidstaker
-    );
-
-    wrapper.find("form").simulate("submit");
+    clickButton("Send innkallingene");
 
     const innkallingMutation = queryClient.getMutationCache().getAll()[0];
-    const expectedInnkalling = {
+    const expectedInnkallingDto = {
       tildeltEnhet: navEnhet,
       arbeidsgiver: {
         virksomhetsnummer: arbeidsgiver.orgnr,
-        fritekstInnkalling: fritekstTilArbeidsgiver,
-        innkalling: expectedArbeidsgiverInnkalling,
+        fritekstInnkalling: moteTekster.fritekstTilArbeidsgiver,
+        innkalling: expectedInnkallingDocuments.arbeidsgiver,
       },
       arbeidstaker: {
         personIdent: arbeidstaker.personident,
-        fritekstInnkalling: fritekstTilArbeidstaker,
-        innkalling: expectedArbeidstakerInnkalling,
+        fritekstInnkalling: moteTekster.fritekstTilArbeidstaker,
+        innkalling: expectedInnkallingDocuments.arbeidstaker,
       },
       tidSted: {
-        sted: moteSted,
-        tid: moteDatoTid,
-        videoLink: moteVideoLink,
+        sted: mote.sted,
+        tid: mote.datoTid,
+        videoLink: mote.videolink,
       },
     };
 
     expect(innkallingMutation.options.variables).to.deep.equal(
-      expectedInnkalling
+      expectedInnkallingDto
     );
   });
 });
 
-const mountDialogmoteInnkallingSkjema = () => {
-  return mount(
+const renderDialogmoteInnkallingSkjema = () => {
+  return render(
     <MemoryRouter initialEntries={[dialogmoteRoutePath]}>
       <Route path={dialogmoteRoutePath}>
         <QueryClientProvider client={queryClient}>
@@ -248,5 +153,35 @@ const mountDialogmoteInnkallingSkjema = () => {
         </QueryClientProvider>
       </Route>
     </MemoryRouter>
+  );
+};
+
+const passSkjemaInput = () => {
+  const virksomhetSelect = screen.getByRole("combobox", {
+    name: "Arbeidsgiver",
+  });
+  const datoInput = getTextInput("Dato");
+  const klokkeslettInput = screen.getByLabelText("Klokkeslett");
+  const stedInput = getTextInput("Sted");
+  const videoLinkInput = getTextInput("Lenke til videomøte (valgfritt)");
+  const fritekstArbeidstakerInput = getTextInput(
+    "Fritekst til arbeidstakeren (valgfri)"
+  );
+  const fritekstArbeidsgiverInput = getTextInput(
+    "Fritekst til nærmeste leder (valgfri)"
+  );
+  fireEvent.change(virksomhetSelect, { target: { value: arbeidsgiver.orgnr } });
+  changeTextInput(datoInput, mote.dato);
+  fireEvent.blur(datoInput);
+  changeTextInput(klokkeslettInput, mote.klokkeslett);
+  changeTextInput(stedInput, mote.sted);
+  changeTextInput(videoLinkInput, mote.videolink);
+  changeTextInput(
+    fritekstArbeidstakerInput,
+    moteTekster.fritekstTilArbeidstaker
+  );
+  changeTextInput(
+    fritekstArbeidsgiverInput,
+    moteTekster.fritekstTilArbeidsgiver
   );
 };

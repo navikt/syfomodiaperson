@@ -10,7 +10,7 @@
     ]
   },
   "scripts": {
-    "test": "mocha -r ./test/babel-register.js -r @babel/polyfill -r jsdom-global/register -r ignore-styles --file ./test/setup.js --recursive --extension ts,js,jsx,tsx --exit",
+    "test": "mocha -r ./test/babel-register.js -r @babel/polyfill -r jsdom-global/register -r ignore-styles --file ./test/setup.js --recursive --extension ts,js,jsx,tsx --exit --timeout 0",
     "start": "webpack serve --config webpack.dev.ts",
     "build": "webpack --config webpack.prod.ts",
     "lint-and-typecheck": "npm run lint && npm run typecheck",

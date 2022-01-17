@@ -1,21 +1,11 @@
-import { mount } from "enzyme";
 import React from "react";
 import { Forhandsvisning } from "@/components/dialogmote/Forhandsvisning";
-import {
-  Element,
-  Innholdstittel,
-  Normaltekst,
-  Sidetittel,
-  Systemtittel,
-} from "nav-frontend-typografi";
 import { expect } from "chai";
-import { Hovedknapp } from "nav-frontend-knapper";
-import Lukknapp from "nav-frontend-lukknapp";
 import {
   DocumentComponentDto,
   DocumentComponentType,
 } from "@/data/dialogmote/types/dialogmoteTypes";
-import Lenke from "nav-frontend-lenker";
+import { render, screen } from "@testing-library/react";
 
 const doNothing = () => {
   /* do nothing */
@@ -23,7 +13,7 @@ const doNothing = () => {
 
 describe("Forhandsvisning", () => {
   it("inneholder tittel, undertittel og knapper", () => {
-    const wrapper = mount(
+    render(
       <Forhandsvisning
         title={"Tittel her"}
         subtitle={"(undertittel)"}
@@ -33,11 +23,9 @@ describe("Forhandsvisning", () => {
         getDocumentComponents={() => []}
       />
     );
-
-    expect(wrapper.find(Sidetittel).text()).to.equal("Tittel her");
-    expect(wrapper.find(Innholdstittel).text()).to.equal("(undertittel)");
-    expect(wrapper.find(Hovedknapp).text()).to.equal("Lukk");
-    expect(wrapper.find(Lukknapp)).to.have.length(1);
+    expect(screen.getByRole("heading", { name: "Tittel her" })).to.exist;
+    expect(screen.getByRole("heading", { name: "(undertittel)" })).to.exist;
+    expect(screen.getAllByRole("button", { name: "Lukk" })).to.not.be.empty;
   });
   it("rendrer document components", () => {
     const documentComponents: DocumentComponentDto[] = [
@@ -60,7 +48,7 @@ describe("Forhandsvisning", () => {
         texts: ["En overskrift"],
       },
     ];
-    const wrapper = mount(
+    render(
       <Forhandsvisning
         title={"Tittel her"}
         subtitle={"(undertittel)"}
@@ -70,15 +58,12 @@ describe("Forhandsvisning", () => {
         getDocumentComponents={() => documentComponents}
       />
     );
-
-    expect(wrapper.find(Element).at(0).text()).to.equal("Her er en link");
-    expect(wrapper.find(Lenke).text()).to.equal("www.test.no");
-    expect(wrapper.find(Lenke).prop("href")).to.equal("www.test.no");
-
-    expect(wrapper.find(Normaltekst).at(0).text()).to.equal("En paragraph");
-    expect(wrapper.find(Element).at(1).text()).to.equal("Paragraph title");
-    expect(wrapper.find(Normaltekst).at(1).text()).to.equal("A paragraph");
-    expect(wrapper.find(Normaltekst).at(2).text()).to.equal("Other paragraph");
-    expect(wrapper.find(Systemtittel).text()).to.equal("En overskrift");
+    expect(screen.getByRole("heading", { name: "En overskrift" })).to.exist;
+    expect(screen.getByRole("link", { name: "www.test.no" })).to.exist;
+    expect(screen.getByText("Her er en link")).to.exist;
+    expect(screen.getByText("En paragraph")).to.exist;
+    expect(screen.getByText("Paragraph title")).to.exist;
+    expect(screen.getByText("A paragraph")).to.exist;
+    expect(screen.getByText("Other paragraph")).to.exist;
   });
 });

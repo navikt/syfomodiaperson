@@ -8,48 +8,36 @@ import Referat, {
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
-import { mount } from "enzyme";
-import {
-  DialogmoteDTO,
-  DocumentComponentDto,
-  DocumentComponentType,
-} from "@/data/dialogmote/types/dialogmoteTypes";
-import { Feilmelding, Innholdstittel } from "nav-frontend-typografi";
+import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { expect } from "chai";
-import { Feiloppsummering } from "nav-frontend-skjema";
 import { texts as skjemaFeilOppsummeringTexts } from "../../src/components/SkjemaFeiloppsummering";
 import { texts as valideringsTexts } from "../../src/utils/valideringUtils";
 import {
-  assertFeilmelding,
-  changeFieldValue,
-  changeTextAreaValue,
+  changeTextInput,
+  clickButton,
+  getFeilmeldingLink,
+  getTextInput,
   getTooLongText,
 } from "../testUtils";
-import { commonTexts, referatTexts } from "@/data/dialogmote/dialogmoteTexts";
-import { tilDatoMedUkedagOgManedNavn } from "@/utils/datoUtils";
-import { Forhandsvisning } from "@/components/dialogmote/Forhandsvisning";
-import { Knapp } from "nav-frontend-knapper";
-import Lukknapp from "nav-frontend-lukknapp";
-import { AndreDeltakere } from "@/components/dialogmote/referat/AndreDeltakere";
-import { SlettKnapp } from "@/components/SlettKnapp";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubFerdigstillApi } from "../stubs/stubIsdialogmote";
 import { apiMock } from "../stubs/stubApi";
 import {
+  annenDeltakerFunksjon,
+  annenDeltakerNavn,
   arbeidstaker,
   behandlendeEnhet,
-  behandler,
+  behandlerDeltakerTekst,
   dialogmote,
   dialogmoteMedBehandler,
-  navEnhet,
+  lederNavn,
+  moteTekster,
   veileder,
 } from "./testData";
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
-import { capitalizeWord } from "@/utils/stringUtils";
-import { behandlerNavn } from "@/utils/behandlerUtils";
 import { MAX_LENGTH_SITUASJON } from "@/components/dialogmote/referat/Situasjon";
 import { MAX_LENGTH_KONKLUSJON } from "@/components/dialogmote/referat/Konklusjon";
 import { MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE } from "@/components/dialogmote/referat/ArbeidstakersOppgave";
@@ -57,12 +45,12 @@ import { MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE } from "@/components/dialogmote/refera
 import { MAX_LENGTH_VEILEDERS_OPPGAVE } from "@/components/dialogmote/referat/VeiledersOppgave";
 import { MAX_LENGTH_BEHANDLERS_OPPGAVE } from "@/components/dialogmote/referat/BehandlersOppgave";
 import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { expectedReferatDocument } from "./testDataDocuments";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
-const lederNavn = "Grønn Bamse";
-const annenDeltakerFunksjon = "Verneombud";
-const annenDeltakerNavn = "Bodil Bolle";
 
 const mockState = {
   navbruker: {
@@ -92,16 +80,6 @@ const mockState = {
   },
 };
 
-const situasjonTekst = "Noe tekst om situasjonen";
-const konklusjonTekst = "Noe tekst om konklusjon";
-const arbeidsgiversOppgave = "Noe tekst om arbeidsgivers oppgave";
-const arbeidstakersOppgave = "Noe tekst om arbeidstakers oppgave";
-const veiledersOppgave = "Noe tekst om veileders oppgave";
-const behandlersOppgave = "Noe tekst om behandlers oppgave";
-const behandlerDeltakerTekst = `Behandler: ${capitalizeWord(
-  behandler.type.toLowerCase()
-)} ${behandlerNavn(behandler)}`;
-
 let queryClient;
 
 describe("ReferatTest", () => {
@@ -118,217 +96,183 @@ describe("ReferatTest", () => {
   });
 
   it("viser arbeidstaker, dato og sted i tittel", () => {
-    const wrapper = mountReferat(dialogmote);
+    renderReferat(dialogmote);
 
-    expect(wrapper.find(Innholdstittel).text()).to.equal(
-      `${arbeidstaker.navn}, 10. mai 2021, Videomøte`
-    );
+    expect(
+      screen.getByRole("heading", {
+        name: `${arbeidstaker.navn}, 10. mai 2021, Videomøte`,
+      })
+    ).to.exist;
   });
 
   it("viser alle deltakere forhåndsutfylt med nærmeste leder redigerbar og påkrevd", () => {
-    const wrapper = mountReferat(dialogmote);
+    renderReferat(dialogmote);
 
-    const listElements = wrapper.find("li");
-    expect(
-      listElements.someWhere((li) => li.text() === `Fra NAV: ${veileder.navn}`)
-    ).to.be.true;
-    expect(
-      listElements.someWhere(
-        (li) => li.text() === `Arbeidstaker: ${arbeidstaker.navn}`
-      )
-    ).to.be.true;
+    const deltakerList = screen.getByRole("list");
+    expect(within(deltakerList).getByText(`Fra NAV: ${veileder.navn}`)).to
+      .exist;
+    expect(within(deltakerList).getByText(`Arbeidstaker: ${arbeidstaker.navn}`))
+      .to.exist;
 
-    const getNaermesteLederInput = () =>
-      wrapper
-        .find("input")
-        .findWhere((input) => input.prop("name") === "naermesteLeder");
+    const getNaermesteLederInput = () => getTextInput("Nærmeste leder");
 
     // Sjekk nærmeste leder preutfylt
-    let naermesteLederInput = getNaermesteLederInput();
-    expect(naermesteLederInput.prop("value")).to.equal(lederNavn);
+    expect(getNaermesteLederInput().getAttribute("value")).to.equal(lederNavn);
 
     // Sjekk at nærmeste leder valideres
-    changeFieldValue(naermesteLederInput, "");
-    wrapper.find("form").simulate("submit");
-    assertFeilmelding(
-      wrapper.find(Feilmelding),
-      valideringsTexts.naermesteLederMissing
-    );
+    changeTextInput(getNaermesteLederInput(), "");
+    clickButton("Lagre og send");
+    expect(screen.getAllByText(valideringsTexts.naermesteLederMissing)).to.not
+      .be.empty;
 
     // Sjekk at nærmeste leder kan endres
     const endretNaermesteLeder = "Ny Leder";
-    changeFieldValue(naermesteLederInput, endretNaermesteLeder);
-    naermesteLederInput = getNaermesteLederInput();
-    expect(naermesteLederInput.prop("value")).to.equal(endretNaermesteLeder);
+    changeTextInput(getNaermesteLederInput(), endretNaermesteLeder);
+    expect(getNaermesteLederInput().getAttribute("value")).to.equal(
+      endretNaermesteLeder
+    );
   });
 
   it("viser behandler som deltaker når behandler er med", () => {
-    const wrapper = mountReferat(dialogmoteMedBehandler);
+    renderReferat(dialogmoteMedBehandler);
 
-    const listElements = wrapper.find("li");
-    expect(listElements.someWhere((li) => li.text() === behandlerDeltakerTekst))
-      .to.be.true;
+    const deltakerList = screen.getByRole("list");
+    expect(within(deltakerList).getByText(behandlerDeltakerTekst)).to.exist;
   });
 
   it("validerer alle fritekstfelter unntatt veileders oppgave", () => {
-    const wrapper = mountReferat(dialogmote);
+    renderReferat(dialogmote);
 
-    wrapper.find("form").simulate("submit");
+    clickButton("Lagre og send");
 
-    // Feilmeldinger i skjema
-    const feil = wrapper.find(Feilmelding);
-    assertFeilmelding(feil, referatSkjemaValideringsTexts.situasjonMissing);
-    assertFeilmelding(feil, referatSkjemaValideringsTexts.konklusjonMissing);
-    assertFeilmelding(
-      feil,
-      referatSkjemaValideringsTexts.arbeidstakersOppgaveMissing
-    );
-    assertFeilmelding(
-      feil,
-      referatSkjemaValideringsTexts.arbeidsgiversOppgaveMissing
-    );
+    expect(screen.getAllByText(referatSkjemaValideringsTexts.situasjonMissing))
+      .to.not.be.empty;
+    expect(screen.getAllByText(referatSkjemaValideringsTexts.konklusjonMissing))
+      .to.not.be.empty;
+    expect(
+      screen.getAllByText(
+        referatSkjemaValideringsTexts.arbeidstakersOppgaveMissing
+      )
+    ).to.not.be.empty;
+    expect(
+      screen.getAllByText(
+        referatSkjemaValideringsTexts.arbeidsgiversOppgaveMissing
+      )
+    ).to.not.be.empty;
 
-    // Feilmelding i oppsummering
-    const feiloppsummering = wrapper.find(Feiloppsummering);
-    expect(feiloppsummering.text()).to.contain(
-      skjemaFeilOppsummeringTexts.title
-    );
-    expect(feiloppsummering.text()).to.contain(
-      referatSkjemaValideringsTexts.situasjonMissing
-    );
-    expect(feiloppsummering.text()).to.contain(
-      referatSkjemaValideringsTexts.konklusjonMissing
-    );
-    expect(feiloppsummering.text()).to.contain(
-      referatSkjemaValideringsTexts.arbeidstakersOppgaveMissing
-    );
-    expect(feiloppsummering.text()).to.contain(
-      referatSkjemaValideringsTexts.arbeidsgiversOppgaveMissing
-    );
+    // Feilmeldinger i oppsummering
+    expect(screen.getByText(skjemaFeilOppsummeringTexts.title)).to.exist;
+    expect(getFeilmeldingLink(referatSkjemaValideringsTexts.situasjonMissing))
+      .to.exist;
+    expect(getFeilmeldingLink(referatSkjemaValideringsTexts.konklusjonMissing))
+      .to.exist;
+    expect(
+      getFeilmeldingLink(
+        referatSkjemaValideringsTexts.arbeidstakersOppgaveMissing
+      )
+    ).to.exist;
+    expect(
+      getFeilmeldingLink(
+        referatSkjemaValideringsTexts.arbeidsgiversOppgaveMissing
+      )
+    ).to.exist;
   });
 
   it("validerer navn og funksjon på andre deltakere", () => {
-    const wrapper = mountReferat(dialogmote);
+    renderReferat(dialogmote);
 
-    const addDeltakerButton = wrapper.find(Knapp).at(0);
-    addDeltakerButton.simulate("click");
-
-    wrapper.find("form").simulate("submit");
+    const addDeltakerButton = screen.getByRole("button", {
+      name: "Pluss ikon Legg til en deltaker",
+    });
+    userEvent.click(addDeltakerButton);
+    clickButton("Lagre og send");
 
     // Feilmeldinger i skjema
-    const feil = () => wrapper.find(Feilmelding);
-    assertFeilmelding(feil(), valideringsTexts.andreDeltakereMissingNavn);
-    assertFeilmelding(feil(), valideringsTexts.andreDeltakereMissingFunksjon);
+    expect(screen.getAllByText(valideringsTexts.andreDeltakereMissingNavn)).to
+      .not.be.empty;
+    expect(screen.getAllByText(valideringsTexts.andreDeltakereMissingFunksjon))
+      .to.not.be.empty;
 
     // Feilmelding i oppsummering
-    const feiloppsummering = () => wrapper.find(Feiloppsummering);
-    expect(feiloppsummering().text()).to.contain(
-      skjemaFeilOppsummeringTexts.title
-    );
-    expect(feiloppsummering().text()).to.contain(
-      valideringsTexts.andreDeltakereMissingNavn
-    );
-    expect(feiloppsummering().text()).to.contain(
-      valideringsTexts.andreDeltakereMissingFunksjon
-    );
+    expect(getFeilmeldingLink(valideringsTexts.andreDeltakereMissingNavn)).to
+      .exist;
+    expect(getFeilmeldingLink(valideringsTexts.andreDeltakereMissingFunksjon))
+      .to.exist;
 
     // Slett deltaker og sjekk at feil forsvinner
-    wrapper.find(SlettKnapp).simulate("click");
-    expect(feiloppsummering().text()).not.to.contain(
-      valideringsTexts.andreDeltakereMissingNavn
-    );
-    expect(feiloppsummering().text()).not.to.contain(
-      valideringsTexts.andreDeltakereMissingFunksjon
-    );
+    const fjernDeltakerButton = screen.getByRole("button", {
+      name: "Slett ikon",
+    });
+    userEvent.click(fjernDeltakerButton);
+    expect(screen.queryAllByText(valideringsTexts.andreDeltakereMissingNavn)).to
+      .be.empty;
+    expect(
+      screen.queryAllByText(valideringsTexts.andreDeltakereMissingFunksjon)
+    ).to.be.empty;
   });
 
   it("validerer maks lengde på fritekstfelter", () => {
-    stubFerdigstillApi(apiMock(), dialogmoteMedBehandler.uuid);
-    const wrapper = mountReferat(dialogmoteMedBehandler);
+    renderReferat(dialogmoteMedBehandler);
 
-    changeTextAreaValue(wrapper, "situasjon", situasjonTekst);
-    changeTextAreaValue(wrapper, "konklusjon", konklusjonTekst);
-    changeTextAreaValue(wrapper, "arbeidstakersOppgave", arbeidstakersOppgave);
-    changeTextAreaValue(wrapper, "arbeidsgiversOppgave", arbeidsgiversOppgave);
-    changeTextAreaValue(wrapper, "veiledersOppgave", veiledersOppgave);
-    changeTextAreaValue(wrapper, "behandlersOppgave", behandlersOppgave);
-    wrapper.find("form").simulate("submit");
-
-    let maxLengthFeilmeldinger = wrapper
-      .find(Feilmelding)
-      .filterWhere((feil) => feil.text().includes("tegn tillatt"));
-    expect(maxLengthFeilmeldinger).to.have.length(0);
-
-    changeTextAreaValue(
-      wrapper,
-      "situasjon",
-      getTooLongText(MAX_LENGTH_SITUASJON)
-    );
-    changeTextAreaValue(
-      wrapper,
-      "konklusjon",
-      getTooLongText(MAX_LENGTH_KONKLUSJON)
-    );
-    changeTextAreaValue(
-      wrapper,
-      "arbeidstakersOppgave",
+    const situasjonInput = getTextInput("Situasjon og muligheter");
+    const konklusjonInput = getTextInput("Konklusjon");
+    const arbeidstakerInput = getTextInput("Arbeidstakerens oppgave:");
+    const arbeidsgiverInput = getTextInput("Arbeidsgiverens oppgave:");
+    const behandlerInput = getTextInput("Behandlerens oppgave (valgfri):");
+    const veilederInput = getTextInput("Veilederens oppgave (valgfri):");
+    changeTextInput(situasjonInput, getTooLongText(MAX_LENGTH_SITUASJON));
+    changeTextInput(konklusjonInput, getTooLongText(MAX_LENGTH_KONKLUSJON));
+    changeTextInput(
+      arbeidstakerInput,
       getTooLongText(MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE)
     );
-    changeTextAreaValue(
-      wrapper,
-      "arbeidsgiversOppgave",
+    changeTextInput(
+      arbeidsgiverInput,
       getTooLongText(MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE)
     );
-    changeTextAreaValue(
-      wrapper,
-      "veiledersOppgave",
-      getTooLongText(MAX_LENGTH_VEILEDERS_OPPGAVE)
-    );
-    changeTextAreaValue(
-      wrapper,
-      "behandlersOppgave",
+    changeTextInput(
+      behandlerInput,
       getTooLongText(MAX_LENGTH_BEHANDLERS_OPPGAVE)
     );
-    wrapper.find("form").simulate("submit");
-
-    maxLengthFeilmeldinger = wrapper
-      .find(Feilmelding)
-      .filterWhere((feil) => feil.text().includes("tegn tillatt"));
-    expect(maxLengthFeilmeldinger).to.have.length(
-      6,
-      "Validerer maks lengde på alle fritekstfelter"
+    changeTextInput(
+      veilederInput,
+      getTooLongText(MAX_LENGTH_VEILEDERS_OPPGAVE)
     );
+
+    clickButton("Lagre og send");
+
+    expect(
+      screen.getAllByRole("link", { name: /tegn tillatt/ })
+    ).to.have.length(6, "Validerer maks lengde på alle fritekstfelter");
   });
 
   it("ferdigstiller dialogmote ved submit av skjema", () => {
     stubFerdigstillApi(apiMock(), dialogmoteMedBehandler.uuid);
-    const wrapper = mountReferat(dialogmoteMedBehandler);
+    renderReferat(dialogmoteMedBehandler);
 
-    changeTextAreaValue(wrapper, "situasjon", situasjonTekst);
-    changeTextAreaValue(wrapper, "konklusjon", konklusjonTekst);
-    changeTextAreaValue(wrapper, "arbeidstakersOppgave", arbeidstakersOppgave);
-    changeTextAreaValue(wrapper, "arbeidsgiversOppgave", arbeidsgiversOppgave);
-    changeTextAreaValue(wrapper, "veiledersOppgave", veiledersOppgave);
-    changeTextAreaValue(wrapper, "behandlersOppgave", behandlersOppgave);
+    passSkjemaTekstInput();
 
-    const addDeltakerButton = wrapper.find(Knapp).at(0);
-    addDeltakerButton.simulate("click");
-    const deltakerInput = wrapper.find(AndreDeltakere).find("input");
-    changeFieldValue(deltakerInput.at(0), annenDeltakerFunksjon);
-    changeFieldValue(deltakerInput.at(1), annenDeltakerNavn);
+    const addDeltakerButton = screen.getByRole("button", {
+      name: "Pluss ikon Legg til en deltaker",
+    });
+    userEvent.click(addDeltakerButton);
+    const annenDeltakerNavnInput = getTextInput("Navn");
+    const annenDeltakerFunksjonInput = getTextInput("Funksjon");
+    changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
+    changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
 
-    wrapper.find("form").simulate("submit");
+    clickButton("Lagre og send");
 
     const ferdigstillMutation = queryClient.getMutationCache().getAll()[0];
     const expectedFerdigstilling = {
       narmesteLederNavn: lederNavn,
-      situasjon: situasjonTekst,
-      konklusjon: konklusjonTekst,
-      arbeidsgiverOppgave: arbeidsgiversOppgave,
-      arbeidstakerOppgave: arbeidstakersOppgave,
-      behandlerOppgave: behandlersOppgave,
-      veilederOppgave: veiledersOppgave,
-      document: expectedReferat,
+      situasjon: moteTekster.situasjonTekst,
+      konklusjon: moteTekster.konklusjonTekst,
+      arbeidsgiverOppgave: moteTekster.arbeidsgiversOppgave,
+      arbeidstakerOppgave: moteTekster.arbeidstakersOppgave,
+      behandlerOppgave: moteTekster.behandlersOppgave,
+      veilederOppgave: moteTekster.veiledersOppgave,
+      document: expectedReferatDocument,
       andreDeltakere: [
         { funksjon: annenDeltakerFunksjon, navn: annenDeltakerNavn },
       ],
@@ -339,40 +283,41 @@ describe("ReferatTest", () => {
   });
 
   it("forhåndsviser referat", () => {
-    const wrapper = mountReferat(dialogmoteMedBehandler);
+    renderReferat(dialogmoteMedBehandler);
+    passSkjemaTekstInput();
 
-    changeTextAreaValue(wrapper, "situasjon", situasjonTekst);
-    changeTextAreaValue(wrapper, "konklusjon", konklusjonTekst);
-    changeTextAreaValue(wrapper, "arbeidstakersOppgave", arbeidstakersOppgave);
-    changeTextAreaValue(wrapper, "arbeidsgiversOppgave", arbeidsgiversOppgave);
-    changeTextAreaValue(wrapper, "veiledersOppgave", veiledersOppgave);
-    changeTextAreaValue(wrapper, "behandlersOppgave", behandlersOppgave);
+    const addDeltakerButton = screen.getByRole("button", {
+      name: "Pluss ikon Legg til en deltaker",
+    });
+    userEvent.click(addDeltakerButton);
+    const annenDeltakerNavnInput = getTextInput("Navn");
+    const annenDeltakerFunksjonInput = getTextInput("Funksjon");
+    changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
+    changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
 
-    const addDeltakerButton = wrapper.find(Knapp).at(0);
-    addDeltakerButton.simulate("click");
-    const deltakerInput = wrapper.find(AndreDeltakere).find("input");
-    changeFieldValue(deltakerInput.at(0), annenDeltakerFunksjon);
-    changeFieldValue(deltakerInput.at(1), annenDeltakerNavn);
+    const previewButton = screen.getByRole("button", {
+      name: "Se forhåndsvisning",
+    });
+    userEvent.click(previewButton);
+    const forhandsvisningReferat = screen.getByRole("dialog", {
+      name: referatSkjemaTexts.forhandsvisningContentLabel,
+    });
 
-    const forhandsvisningModal = () => wrapper.find(Forhandsvisning);
     expect(
-      forhandsvisningModal().props().getDocumentComponents()
-    ).to.deep.equal(expectedReferat);
-
-    const previewButton = wrapper.find(Knapp).at(1);
-
-    previewButton.simulate("click");
-    expect(forhandsvisningModal().prop("isOpen")).to.be.true;
-    expect(forhandsvisningModal().text()).to.contain(
-      referatSkjemaTexts.forhandsvisningTitle
-    );
-    forhandsvisningModal().find(Lukknapp).simulate("click");
-    expect(forhandsvisningModal().prop("isOpen")).to.be.false;
+      within(forhandsvisningReferat).getByRole("heading", {
+        name: referatSkjemaTexts.forhandsvisningTitle,
+      })
+    ).to.exist;
+    expectedReferatDocument
+      .flatMap((documentComponent) => documentComponent.texts)
+      .forEach((text) => {
+        expect(within(forhandsvisningReferat).getByText(text)).to.exist;
+      });
   });
 });
 
-const mountReferat = (dialogmoteDTO: DialogmoteDTO) => {
-  return mount(
+const renderReferat = (dialogmoteDTO: DialogmoteDTO) => {
+  return render(
     <MemoryRouter
       initialEntries={[`${dialogmoteRoutePath}/${dialogmoteDTO.uuid}/referat`]}
     >
@@ -387,81 +332,17 @@ const mountReferat = (dialogmoteDTO: DialogmoteDTO) => {
   );
 };
 
-const expectedReferat: DocumentComponentDto[] = [
-  {
-    texts: [arbeidstaker.navn],
-    type: DocumentComponentType.HEADER,
-  },
-  {
-    texts: [`F.nr. ${arbeidstaker.personident}`],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [
-      `Dato: ${tilDatoMedUkedagOgManedNavn(dialogmote.tid)}`,
-      `Sted: ${dialogmote.sted}`,
-    ],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [
-      `Arbeidstaker: ${arbeidstaker.navn}`,
-      `Arbeidsgiver: ${lederNavn}`,
-      `Fra NAV: ${veileder.navn}`,
-      behandlerDeltakerTekst,
-      `${annenDeltakerFunksjon}: ${annenDeltakerNavn}`,
-    ],
-    title: referatTexts.deltakereTitle,
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [referatTexts.intro1],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [referatTexts.intro2],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [referatTexts.detteSkjeddeHeader],
-    type: DocumentComponentType.HEADER,
-  },
-  {
-    texts: [konklusjonTekst],
-    title: referatTexts.konklusjonTitle,
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [arbeidstakersOppgave],
-    title: referatTexts.arbeidstakersOppgaveTitle,
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [arbeidsgiversOppgave],
-    title: referatTexts.arbeidsgiversOppgaveTitle,
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [behandlersOppgave],
-    title: referatTexts.behandlersOppgave,
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [veiledersOppgave],
-    title: referatTexts.navOppgaveTitle,
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [situasjonTekst],
-    title: referatTexts.situasjonTitle,
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [commonTexts.hilsen, navEnhet.navn],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [veileder.navn || ""],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-];
+const passSkjemaTekstInput = () => {
+  const situasjonInput = getTextInput("Situasjon og muligheter");
+  const konklusjonInput = getTextInput("Konklusjon");
+  const arbeidstakerInput = getTextInput("Arbeidstakerens oppgave:");
+  const arbeidsgiverInput = getTextInput("Arbeidsgiverens oppgave:");
+  const behandlerInput = getTextInput("Behandlerens oppgave (valgfri):");
+  const veilederInput = getTextInput("Veilederens oppgave (valgfri):");
+  changeTextInput(situasjonInput, moteTekster.situasjonTekst);
+  changeTextInput(konklusjonInput, moteTekster.konklusjonTekst);
+  changeTextInput(arbeidstakerInput, moteTekster.arbeidstakersOppgave);
+  changeTextInput(arbeidsgiverInput, moteTekster.arbeidsgiversOppgave);
+  changeTextInput(behandlerInput, moteTekster.behandlersOppgave);
+  changeTextInput(veilederInput, moteTekster.veiledersOppgave);
+};

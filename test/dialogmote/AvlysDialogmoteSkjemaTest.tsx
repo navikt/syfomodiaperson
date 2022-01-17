@@ -1,4 +1,3 @@
-import { mount } from "enzyme";
 import React from "react";
 import { MemoryRouter, Route } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -6,22 +5,17 @@ import configureStore from "redux-mock-store";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import { expect } from "chai";
-import { Feilmelding } from "nav-frontend-typografi";
-import { Feiloppsummering } from "nav-frontend-skjema";
-import { Hovedknapp, Knapp } from "nav-frontend-knapper";
 import AvlysDialogmoteSkjema, {
   MAX_LENGTH_AVLYS_BEGRUNNELSE,
   texts as avlysningSkjemaTexts,
 } from "../../src/components/dialogmote/avlys/AvlysDialogmoteSkjema";
 import { texts as valideringsTexts } from "@/utils/valideringUtils";
 import { texts as skjemaFeilOppsummeringTexts } from "../../src/components/SkjemaFeiloppsummering";
-import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
-import { avlysningTexts, commonTexts } from "@/data/dialogmote/dialogmoteTexts";
-import { Forhandsvisning } from "@/components/dialogmote/Forhandsvisning";
-import Lukknapp from "nav-frontend-lukknapp";
 import {
-  assertFeilmelding,
-  changeTextAreaValue,
+  changeTextInput,
+  clickButton,
+  getFeilmeldingLink,
+  getTextInput,
   getTooLongText,
   maxLengthErrorMessage,
 } from "../testUtils";
@@ -35,15 +29,15 @@ import {
   behandlendeEnhet,
   dialogmote,
   dialogmoteMedBehandler,
-  fritekstTilArbeidsgiver,
-  fritekstTilArbeidstaker,
-  fritekstTilBehandler,
   mockState,
-  navEnhet,
+  moteTekster,
   veileder,
 } from "./testData";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { expectedAvlysningDocuments } from "./testDataDocuments";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -64,315 +58,338 @@ describe("AvlysDialogmoteSkjemaTest", () => {
   });
 
   it("viser møtetidspunkt", () => {
-    const wrapper = mountAvlysDialogmoteSkjema(dialogmote);
+    renderAvlysDialogmoteSkjema(dialogmote);
 
-    expect(wrapper.text()).to.contain("Gjelder dialogmøtet");
-    expect(wrapper.text()).to.contain("Mandag 10. mai 2021 kl. 09.00");
+    expect(screen.getByText("Gjelder dialogmøtet")).to.exist;
+    expect(screen.getByText("Mandag 10. mai 2021 kl. 09.00")).to.exist;
   });
   it("validerer begrunnelser", () => {
-    const wrapper = mountAvlysDialogmoteSkjema(dialogmote);
+    renderAvlysDialogmoteSkjema(dialogmote);
+    clickButton("Send avlysning");
 
-    wrapper.find("form").simulate("submit");
-
-    // Feilmeldinger i skjema
-    const feilmeldinger = wrapper.find(Feilmelding);
-    assertFeilmelding(
-      feilmeldinger,
-      valideringsTexts.begrunnelseArbeidstakerMissing
-    );
-    assertFeilmelding(
-      feilmeldinger,
-      valideringsTexts.begrunnelseArbeidsgiverMissing
-    );
+    expect(screen.getAllByText(valideringsTexts.begrunnelseArbeidstakerMissing))
+      .to.not.be.empty;
+    expect(screen.getAllByText(valideringsTexts.begrunnelseArbeidsgiverMissing))
+      .to.not.be.empty;
 
     // Feilmeldinger i oppsummering
-    const feiloppsummering = wrapper.find(Feiloppsummering);
-    expect(feiloppsummering.text()).to.contain(
-      skjemaFeilOppsummeringTexts.title
-    );
-    expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.begrunnelseArbeidstakerMissing
-    );
-    expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.begrunnelseArbeidsgiverMissing
-    );
+    expect(screen.getByText(skjemaFeilOppsummeringTexts.title)).to.exist;
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidstakerMissing))
+      .to.exist;
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidsgiverMissing))
+      .to.exist;
   });
   it("validerer begrunnelse til behandler når behandler er med", () => {
-    const wrapper = mountAvlysDialogmoteSkjema(dialogmoteMedBehandler);
+    renderAvlysDialogmoteSkjema(dialogmoteMedBehandler);
+    clickButton("Send avlysning");
 
-    wrapper.find("form").simulate("submit");
-
-    // Feilmelding i skjema
-    assertFeilmelding(
-      wrapper.find(Feilmelding),
-      valideringsTexts.begrunnelseBehandlerMissing
-    );
+    expect(screen.getAllByText(valideringsTexts.begrunnelseBehandlerMissing)).to
+      .not.be.empty;
 
     // Feilmelding i oppsummering
-    const feiloppsummering = wrapper.find(Feiloppsummering);
-    expect(feiloppsummering.text()).to.contain(
-      skjemaFeilOppsummeringTexts.title
-    );
-    expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.begrunnelseBehandlerMissing
-    );
+    expect(screen.getByText(skjemaFeilOppsummeringTexts.title)).to.exist;
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseBehandlerMissing)).to
+      .exist;
   });
   it("valideringsmeldinger forsvinner ved utbedring", () => {
-    const wrapper = mountAvlysDialogmoteSkjema(dialogmote);
-
-    wrapper.find("form").simulate("submit");
-
-    // Feilmeldinger i skjema
-    const feilmeldinger = wrapper.find(Feilmelding);
-    assertFeilmelding(
-      feilmeldinger,
-      valideringsTexts.begrunnelseArbeidstakerMissing
-    );
-    assertFeilmelding(
-      feilmeldinger,
-      valideringsTexts.begrunnelseArbeidsgiverMissing
-    );
+    renderAvlysDialogmoteSkjema(dialogmote);
+    clickButton("Send avlysning");
+    expect(screen.getAllByText(valideringsTexts.begrunnelseArbeidstakerMissing))
+      .to.not.be.empty;
+    expect(screen.getAllByText(valideringsTexts.begrunnelseArbeidsgiverMissing))
+      .to.not.be.empty;
 
     // Feilmeldinger i oppsummering
-    const feiloppsummering = wrapper.find(Feiloppsummering);
-    expect(feiloppsummering.text()).to.contain(
-      skjemaFeilOppsummeringTexts.title
-    );
-    expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.begrunnelseArbeidstakerMissing
-    );
-    expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.begrunnelseArbeidsgiverMissing
-    );
+    expect(screen.getByText(skjemaFeilOppsummeringTexts.title)).to.exist;
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidstakerMissing))
+      .to.exist;
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidsgiverMissing))
+      .to.exist;
 
     // Angi begrunnelser
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidsgiver",
-      fritekstTilArbeidsgiver
+    const begrunnelseArbeidstakerInput = getTextInput(
+      "Begrunnelse til arbeidstakeren"
     );
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidstaker",
-      fritekstTilArbeidstaker
+    const begrunnelseArbeidsgiverInput = getTextInput(
+      "Begrunnelse til nærmeste leder"
+    );
+    changeTextInput(
+      begrunnelseArbeidstakerInput,
+      moteTekster.fritekstTilArbeidstaker
+    );
+    changeTextInput(
+      begrunnelseArbeidsgiverInput,
+      moteTekster.fritekstTilArbeidsgiver
     );
 
     // Feilmeldinger og feiloppsummering forsvinner
-    expect(wrapper.find(Feiloppsummering)).to.have.length(0);
-    expect(wrapper.find(Feilmelding)).to.have.length(0);
+    expect(
+      screen.queryAllByText(valideringsTexts.begrunnelseArbeidstakerMissing)
+    ).to.be.empty;
+    expect(
+      screen.queryAllByText(valideringsTexts.begrunnelseArbeidsgiverMissing)
+    ).to.be.empty;
 
     // Fjern begrunnelser
-    changeTextAreaValue(wrapper, "begrunnelseArbeidsgiver", "");
-    changeTextAreaValue(wrapper, "begrunnelseArbeidstaker", "");
+    changeTextInput(begrunnelseArbeidstakerInput, "");
+    changeTextInput(begrunnelseArbeidsgiverInput, "");
 
     // Feilmeldinger vises, feiloppsummering vises ved neste submit
-    expect(wrapper.find(Feiloppsummering)).to.have.length(0);
-    expect(wrapper.find(Feilmelding)).to.have.length(2);
+    expect(screen.getAllByText(valideringsTexts.begrunnelseArbeidstakerMissing))
+      .to.not.be.empty;
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidstakerMissing))
+      .to.not.exist;
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidstakerMissing))
+      .to.not.exist;
 
-    wrapper.find(Hovedknapp).simulate("click");
-    expect(wrapper.find(Feiloppsummering)).to.have.length(1);
+    clickButton("Send avlysning");
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidstakerMissing))
+      .to.exist;
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidstakerMissing))
+      .to.exist;
   });
   it("validerer maks lengde på begrunnelser", () => {
-    stubAvlysApi(apiMock(), dialogmoteMedBehandler.uuid);
     const tooLongFritekst = getTooLongText(MAX_LENGTH_AVLYS_BEGRUNNELSE);
     const maxLengthErrorMsg = maxLengthErrorMessage(
       MAX_LENGTH_AVLYS_BEGRUNNELSE
     );
-    const wrapper = mountAvlysDialogmoteSkjema(dialogmoteMedBehandler);
+    renderAvlysDialogmoteSkjema(dialogmoteMedBehandler);
 
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidsgiver",
-      fritekstTilArbeidsgiver
+    const begrunnelseArbeidstakerInput = getTextInput(
+      "Begrunnelse til arbeidstakeren"
     );
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidstaker",
-      fritekstTilArbeidstaker
+    const begrunnelseArbeidsgiverInput = getTextInput(
+      "Begrunnelse til nærmeste leder"
     );
-    changeTextAreaValue(wrapper, "begrunnelseBehandler", fritekstTilBehandler);
+    const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
+    changeTextInput(begrunnelseArbeidstakerInput, tooLongFritekst);
+    changeTextInput(begrunnelseArbeidsgiverInput, tooLongFritekst);
+    changeTextInput(begrunnelseBehandlerInput, tooLongFritekst);
 
-    wrapper.find("form").simulate("submit");
+    clickButton("Send avlysning");
 
-    let maxLengthFeilmeldinger = wrapper
-      .find(Feilmelding)
-      .filterWhere((feil) => feil.text() === maxLengthErrorMsg);
-    expect(maxLengthFeilmeldinger).to.have.length(0);
-
-    changeTextAreaValue(wrapper, "begrunnelseArbeidsgiver", tooLongFritekst);
-    changeTextAreaValue(wrapper, "begrunnelseArbeidstaker", tooLongFritekst);
-    changeTextAreaValue(wrapper, "begrunnelseBehandler", tooLongFritekst);
-    wrapper.find("form").simulate("submit");
-
-    maxLengthFeilmeldinger = wrapper
-      .find(Feilmelding)
-      .filterWhere((feil) => feil.text() === maxLengthErrorMsg);
-    expect(maxLengthFeilmeldinger).to.have.length(
-      3,
-      "Validerer maks lengde på alle begrunnelser"
-    );
+    expect(
+      screen.getAllByRole("link", { name: maxLengthErrorMsg })
+    ).to.have.length(3, "Validerer maks lengde på alle begrunnelser");
   });
   it("avlyser møte ved submit", () => {
     stubAvlysApi(apiMock(), dialogmote.uuid);
-    const wrapper = mountAvlysDialogmoteSkjema(dialogmote);
+    renderAvlysDialogmoteSkjema(dialogmote);
 
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidsgiver",
-      fritekstTilArbeidsgiver
+    const begrunnelseArbeidstakerInput = getTextInput(
+      "Begrunnelse til arbeidstakeren"
     );
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidstaker",
-      fritekstTilArbeidstaker
+    const begrunnelseArbeidsgiverInput = getTextInput(
+      "Begrunnelse til nærmeste leder"
+    );
+    changeTextInput(
+      begrunnelseArbeidstakerInput,
+      moteTekster.fritekstTilArbeidstaker
+    );
+    changeTextInput(
+      begrunnelseArbeidsgiverInput,
+      moteTekster.fritekstTilArbeidsgiver
     );
 
-    wrapper.find("form").simulate("submit");
+    clickButton("Send avlysning");
 
     const avlysMutation = queryClient.getMutationCache().getAll()[0];
-    const expectedAvlysning = {
+    const expectedAvlysningDto = {
       arbeidsgiver: {
-        avlysning: expectedAvlysningArbeidsgiver,
-        begrunnelse: fritekstTilArbeidsgiver,
+        avlysning: expectedAvlysningDocuments.arbeidsgiver,
+        begrunnelse: moteTekster.fritekstTilArbeidsgiver,
       },
       arbeidstaker: {
-        avlysning: expectedAvlysningArbeidstaker,
-        begrunnelse: fritekstTilArbeidstaker,
+        avlysning: expectedAvlysningDocuments.arbeidstaker,
+        begrunnelse: moteTekster.fritekstTilArbeidstaker,
       },
     };
-    expect(avlysMutation.options.variables).to.deep.equal(expectedAvlysning);
+    expect(avlysMutation.options.variables).to.deep.equal(expectedAvlysningDto);
   });
   it("avlyser med behandler ved submit når behandler er med", () => {
     stubAvlysApi(apiMock(), dialogmote.uuid);
-    const wrapper = mountAvlysDialogmoteSkjema(dialogmoteMedBehandler);
+    renderAvlysDialogmoteSkjema(dialogmoteMedBehandler);
 
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidsgiver",
-      fritekstTilArbeidsgiver
+    const begrunnelseArbeidstakerInput = getTextInput(
+      "Begrunnelse til arbeidstakeren"
     );
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidstaker",
-      fritekstTilArbeidstaker
+    const begrunnelseArbeidsgiverInput = getTextInput(
+      "Begrunnelse til nærmeste leder"
     );
-    changeTextAreaValue(wrapper, "begrunnelseBehandler", fritekstTilBehandler);
+    const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
+    changeTextInput(
+      begrunnelseArbeidstakerInput,
+      moteTekster.fritekstTilArbeidstaker
+    );
+    changeTextInput(
+      begrunnelseArbeidsgiverInput,
+      moteTekster.fritekstTilArbeidsgiver
+    );
+    changeTextInput(
+      begrunnelseBehandlerInput,
+      moteTekster.fritekstTilBehandler
+    );
 
-    wrapper.find("form").simulate("submit");
+    clickButton("Send avlysning");
 
     const avlysMutation = queryClient.getMutationCache().getAll()[0];
-    const expectedAvlysning = {
+    const expectedAvlysningDto = {
       arbeidsgiver: {
-        avlysning: expectedAvlysningArbeidsgiver,
-        begrunnelse: fritekstTilArbeidsgiver,
+        avlysning: expectedAvlysningDocuments.arbeidsgiver,
+        begrunnelse: moteTekster.fritekstTilArbeidsgiver,
       },
       arbeidstaker: {
-        avlysning: expectedAvlysningArbeidstaker,
-        begrunnelse: fritekstTilArbeidstaker,
+        avlysning: expectedAvlysningDocuments.arbeidstaker,
+        begrunnelse: moteTekster.fritekstTilArbeidstaker,
       },
       behandler: {
-        avlysning: expectedAvlysningBehandler,
-        begrunnelse: fritekstTilBehandler,
+        avlysning: expectedAvlysningDocuments.behandler,
+        begrunnelse: moteTekster.fritekstTilBehandler,
       },
     };
-    expect(avlysMutation.options.variables).to.deep.equal(expectedAvlysning);
+    expect(avlysMutation.options.variables).to.deep.equal(expectedAvlysningDto);
   });
-  it("forhåndsviser avlysning til arbeidstaker og arbeidsgiver", () => {
-    const wrapper = mountAvlysDialogmoteSkjema(dialogmote);
+  it("forhåndsviser avlysning til arbeidstaker", () => {
+    renderAvlysDialogmoteSkjema(dialogmote);
 
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidsgiver",
-      fritekstTilArbeidsgiver
+    const begrunnelseArbeidstakerInput = getTextInput(
+      "Begrunnelse til arbeidstakeren"
     );
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidstaker",
-      fritekstTilArbeidstaker
+    const begrunnelseArbeidsgiverInput = getTextInput(
+      "Begrunnelse til nærmeste leder"
+    );
+    changeTextInput(
+      begrunnelseArbeidstakerInput,
+      moteTekster.fritekstTilArbeidstaker
+    );
+    changeTextInput(
+      begrunnelseArbeidsgiverInput,
+      moteTekster.fritekstTilArbeidsgiver
     );
 
-    let forhandsvisningModaler = wrapper.find(Forhandsvisning);
-    expect(forhandsvisningModaler).to.have.length(2);
-    expect(
-      forhandsvisningModaler.at(0).props().getDocumentComponents()
-    ).to.deep.equal(expectedAvlysningArbeidstaker);
-    expect(
-      forhandsvisningModaler.at(1).props().getDocumentComponents()
-    ).to.deep.equal(expectedAvlysningArbeidsgiver);
-
-    const previewButtons = wrapper.find(Knapp);
+    const previewButtons = screen.getAllByRole("button", {
+      name: "Forhåndsvisning",
+    });
     expect(previewButtons).to.have.length(2);
+    userEvent.click(previewButtons[0]);
 
-    // Forhåndsvis avlysning til arbeidstaker og sjekk at modal vises med riktig tittel
-    previewButtons.at(0).simulate("click");
-    forhandsvisningModaler = wrapper.find(Forhandsvisning);
-    let forhandsvisningAvlysningArbeidstaker = forhandsvisningModaler.at(0);
-    let forhandsvisningAvlysningArbeidsgiver = forhandsvisningModaler.at(1);
-    expect(forhandsvisningAvlysningArbeidstaker.prop("isOpen")).to.be.true;
-    expect(forhandsvisningAvlysningArbeidsgiver.prop("isOpen")).to.be.false;
-    expect(forhandsvisningAvlysningArbeidstaker.text()).to.contain(
-      avlysningSkjemaTexts.forhandsvisningTitle
+    const forhandsvisningAvlysningArbeidstaker = screen.getByRole("dialog", {
+      name: avlysningSkjemaTexts.forhandsvisningArbeidstakerContentlabel,
+    });
+    expect(
+      within(forhandsvisningAvlysningArbeidstaker).getByRole("heading", {
+        name: avlysningSkjemaTexts.forhandsvisningTitle,
+      })
+    ).to.exist;
+    expect(
+      within(forhandsvisningAvlysningArbeidstaker).getByRole("heading", {
+        name: avlysningSkjemaTexts.forhandsvisningArbeidstakerSubtitle,
+      })
+    ).to.exist;
+    expectedAvlysningDocuments.arbeidstaker
+      .flatMap((documentComponent) => documentComponent.texts)
+      .forEach((text) => {
+        expect(within(forhandsvisningAvlysningArbeidstaker).getByText(text)).to
+          .exist;
+      });
+  });
+  it("forhåndsviser avlysning til arbeidsgiver", () => {
+    renderAvlysDialogmoteSkjema(dialogmote);
+
+    const begrunnelseArbeidstakerInput = getTextInput(
+      "Begrunnelse til arbeidstakeren"
     );
-    expect(forhandsvisningAvlysningArbeidstaker.text()).to.contain(
-      avlysningSkjemaTexts.forhandsvisningArbeidstakerSubtitle
+    const begrunnelseArbeidsgiverInput = getTextInput(
+      "Begrunnelse til nærmeste leder"
     );
-    expect(forhandsvisningAvlysningArbeidsgiver.text()).not.to.contain(
-      avlysningSkjemaTexts.forhandsvisningTitle
+    changeTextInput(
+      begrunnelseArbeidstakerInput,
+      moteTekster.fritekstTilArbeidstaker
     );
-    expect(forhandsvisningAvlysningArbeidsgiver.text()).not.to.contain(
-      avlysningSkjemaTexts.forhandsvisningArbeidsgiverSubtitle
+    changeTextInput(
+      begrunnelseArbeidsgiverInput,
+      moteTekster.fritekstTilArbeidsgiver
     );
 
-    // Lukk forhåndsvis avlysning til arbeidstaker
-    forhandsvisningAvlysningArbeidstaker.find(Lukknapp).simulate("click");
+    const previewButtons = screen.getAllByRole("button", {
+      name: "Forhåndsvisning",
+    });
+    expect(previewButtons).to.have.length(2);
+    userEvent.click(previewButtons[1]);
 
-    // Forhåndsvis avlysning til arbeidsgiver og sjekk at modal vises med riktig tittel
-    previewButtons.at(1).simulate("click");
-    forhandsvisningModaler = wrapper.find(Forhandsvisning);
-    forhandsvisningAvlysningArbeidstaker = forhandsvisningModaler.at(0);
-    forhandsvisningAvlysningArbeidsgiver = forhandsvisningModaler.at(1);
-    expect(forhandsvisningAvlysningArbeidstaker.prop("isOpen")).to.be.false;
-    expect(forhandsvisningAvlysningArbeidsgiver.prop("isOpen")).to.be.true;
-    expect(forhandsvisningAvlysningArbeidstaker.text()).not.to.contain(
-      avlysningSkjemaTexts.forhandsvisningTitle
-    );
-    expect(forhandsvisningAvlysningArbeidstaker.text()).not.to.contain(
-      avlysningSkjemaTexts.forhandsvisningArbeidstakerSubtitle
-    );
-    expect(forhandsvisningAvlysningArbeidsgiver.text()).to.contain(
-      avlysningSkjemaTexts.forhandsvisningTitle
-    );
-    expect(forhandsvisningAvlysningArbeidsgiver.text()).to.contain(
-      avlysningSkjemaTexts.forhandsvisningArbeidsgiverSubtitle
-    );
+    const forhandsvisningAvlysningArbeidsgiver = screen.getByRole("dialog", {
+      name: avlysningSkjemaTexts.forhandsvisningArbeidsgiverContentlabel,
+    });
+    expect(
+      within(forhandsvisningAvlysningArbeidsgiver).getByRole("heading", {
+        name: avlysningSkjemaTexts.forhandsvisningTitle,
+      })
+    ).to.exist;
+    expect(
+      within(forhandsvisningAvlysningArbeidsgiver).getByRole("heading", {
+        name: avlysningSkjemaTexts.forhandsvisningArbeidsgiverSubtitle,
+      })
+    ).to.exist;
+    expectedAvlysningDocuments.arbeidsgiver
+      .flatMap((documentComponent) => documentComponent.texts)
+      .forEach((text) => {
+        expect(within(forhandsvisningAvlysningArbeidsgiver).getByText(text)).to
+          .exist;
+      });
   });
   it("forhåndsviser avlysning til behandler når behandler er med", () => {
-    const wrapper = mountAvlysDialogmoteSkjema(dialogmoteMedBehandler);
+    renderAvlysDialogmoteSkjema(dialogmoteMedBehandler);
 
-    changeTextAreaValue(wrapper, "begrunnelseBehandler", fritekstTilBehandler);
+    const begrunnelseArbeidstakerInput = getTextInput(
+      "Begrunnelse til arbeidstakeren"
+    );
+    const begrunnelseArbeidsgiverInput = getTextInput(
+      "Begrunnelse til nærmeste leder"
+    );
+    const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
+    changeTextInput(
+      begrunnelseArbeidstakerInput,
+      moteTekster.fritekstTilArbeidstaker
+    );
+    changeTextInput(
+      begrunnelseArbeidsgiverInput,
+      moteTekster.fritekstTilArbeidsgiver
+    );
+    changeTextInput(
+      begrunnelseBehandlerInput,
+      moteTekster.fritekstTilBehandler
+    );
 
-    // Forhåndsvis avlysning til behandler og sjekk at modal vises med riktig tittel
-    const previewButtons = wrapper.find(Knapp);
+    const previewButtons = screen.getAllByRole("button", {
+      name: "Forhåndsvisning",
+    });
     expect(previewButtons).to.have.length(3);
-    previewButtons.at(2).simulate("click");
-    const forhandsvisningModaler = wrapper.find(Forhandsvisning);
-    expect(forhandsvisningModaler).to.have.length(3);
-    const forhandsvisningAvlysningBehandler = forhandsvisningModaler.at(2);
+    userEvent.click(previewButtons[2]);
+
+    const forhandsvisningAvlysningBehandler = screen.getByRole("dialog", {
+      name: avlysningSkjemaTexts.forhandsvisningBehandlerContentlabel,
+    });
     expect(
-      forhandsvisningAvlysningBehandler.props().getDocumentComponents()
-    ).to.deep.equal(expectedAvlysningBehandler);
-    expect(forhandsvisningAvlysningBehandler.prop("isOpen")).to.be.true;
-    expect(forhandsvisningAvlysningBehandler.text()).to.contain(
-      avlysningSkjemaTexts.forhandsvisningTitle
-    );
-    expect(forhandsvisningAvlysningBehandler.text()).to.contain(
-      avlysningSkjemaTexts.forhandsvisningBehandlerSubtitle
-    );
+      within(forhandsvisningAvlysningBehandler).getByRole("heading", {
+        name: avlysningSkjemaTexts.forhandsvisningTitle,
+      })
+    ).to.exist;
+    expect(
+      within(forhandsvisningAvlysningBehandler).getByRole("heading", {
+        name: avlysningSkjemaTexts.forhandsvisningBehandlerSubtitle,
+      })
+    ).to.exist;
+    expectedAvlysningDocuments.behandler
+      .flatMap((documentComponent) => documentComponent.texts)
+      .forEach((text) => {
+        expect(within(forhandsvisningAvlysningBehandler).getByText(text)).to
+          .exist;
+      });
   });
 });
 
-const mountAvlysDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
-  return mount(
+const renderAvlysDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
+  return render(
     <MemoryRouter initialEntries={[`${dialogmoteRoutePath}/123abc/avlys`]}>
       <Route path={`${dialogmoteRoutePath}/:dialogmoteUuid/avlys`}>
         <QueryClientProvider client={queryClient}>
@@ -384,83 +401,3 @@ const mountAvlysDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
     </MemoryRouter>
   );
 };
-
-const expectedAvlysningArbeidsgiver = [
-  {
-    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [
-      `${avlysningTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
-        dialogmote.tid
-      )}. ${avlysningTexts.intro2}`,
-    ],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [fritekstTilArbeidsgiver],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [commonTexts.hilsen, navEnhet.navn],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [veileder.navn],
-    type: "PARAGRAPH",
-  },
-];
-const expectedAvlysningArbeidstaker = [
-  {
-    texts: [`Hei ${arbeidstaker.navn}`],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [
-      `${avlysningTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
-        dialogmote.tid
-      )}. ${avlysningTexts.intro2}`,
-    ],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [fritekstTilArbeidstaker],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [commonTexts.hilsen, navEnhet.navn],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [veileder.navn],
-    type: "PARAGRAPH",
-  },
-];
-
-const expectedAvlysningBehandler = [
-  {
-    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [
-      `${avlysningTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
-        dialogmote.tid
-      )}. ${avlysningTexts.intro2}`,
-    ],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [fritekstTilBehandler],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [commonTexts.hilsen, navEnhet.navn],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [veileder.navn],
-    type: "PARAGRAPH",
-  },
-];

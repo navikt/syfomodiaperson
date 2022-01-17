@@ -7,36 +7,22 @@ import {
   arbeidstaker,
   behandlendeEnhet,
   behandler,
-  expectedArbeidsgiverInnkalling,
-  expectedArbeidstakerInnkalling,
-  expectedBehandlerInnkalling,
-  fritekstTilArbeidsgiver,
-  fritekstTilArbeidstaker,
-  fritekstTilBehandler,
   mockStateBehandler,
-  moteDato,
-  moteDatoTid,
-  moteKlokkeslett,
-  moteSted,
-  moteVideoLink,
+  mote,
+  moteTekster,
   navEnhet,
   veileder,
 } from "../testData";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import {
-  changeFieldValue,
-  changeTextAreaValue,
+  changeTextInput,
+  clickButton,
+  getTextInput,
   getTooLongText,
   maxLengthErrorMessage,
 } from "../../testUtils";
-import { Forhandsvisning } from "@/components/dialogmote/Forhandsvisning";
-import { Knapp } from "nav-frontend-knapper";
-import {
-  MAX_LENGTH_INNKALLING_FRITEKST,
-  texts as innkallingSkjemaTexts,
-} from "@/components/dialogmote/innkalling/DialogmoteInnkallingTekster";
+import { MAX_LENGTH_INNKALLING_FRITEKST } from "@/components/dialogmote/innkalling/DialogmoteInnkallingTekster";
 import { behandlereDialogmeldingQueryKeys } from "@/data/behandlerdialogmelding/behandlereDialogmeldingQueryHooks";
-import { mount } from "enzyme";
 import { MemoryRouter, Route } from "react-router-dom";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { Provider } from "react-redux";
@@ -44,10 +30,12 @@ import DialogmoteInnkallingSkjema from "@/components/dialogmote/innkalling/Dialo
 import configureStore from "redux-mock-store";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
-import { Feilmelding } from "nav-frontend-typografi";
 import { stubInnkallingApi } from "../../stubs/stubIsdialogmote";
 import { apiMock } from "../../stubs/stubApi";
 import { behandlerNavn } from "@/utils/behandlerUtils";
+import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { expectedInnkallingDocuments } from "../testDataDocuments";
 
 let queryClient;
 const store = configureStore([]);
@@ -77,190 +65,100 @@ describe("Dialogmoteinnkallingskjema", () => {
     const maxLengthErrorMsg = maxLengthErrorMessage(
       MAX_LENGTH_INNKALLING_FRITEKST
     );
-    const wrapper = mountDialogmoteInnkallingSkjema();
-    const behandlereRadioKnapper = wrapper.find('input[type="radio"]');
-    behandlereRadioKnapper
-      .at(1)
-      .simulate("change", { target: { checked: true } });
+    renderDialogmoteInnkallingSkjemaMedFastlegeEnabled();
 
-    changeTextAreaValue(
-      wrapper,
-      "fritekstArbeidsgiver",
-      fritekstTilArbeidsgiver
+    const fastlegeInput = screen.getByRole("radio", { name: /Fastlege/ });
+    userEvent.click(fastlegeInput);
+
+    const fritekstArbeidstakerInput = getTextInput(
+      "Fritekst til arbeidstakeren (valgfri)"
     );
-    changeTextAreaValue(
-      wrapper,
-      "fritekstArbeidstaker",
-      fritekstTilArbeidstaker
+    const fritekstArbeidsgiverInput = getTextInput(
+      "Fritekst til nærmeste leder (valgfri)"
     );
-    changeTextAreaValue(wrapper, "fritekstBehandler", fritekstTilBehandler);
-    wrapper.find("form").simulate("submit");
-
-    let maxLengthFeilmeldinger = wrapper
-      .find(Feilmelding)
-      .filterWhere((feil) => feil.text() === maxLengthErrorMsg);
-    expect(maxLengthFeilmeldinger).to.have.length(0);
-
-    changeTextAreaValue(wrapper, "fritekstArbeidsgiver", tooLongFritekst);
-    changeTextAreaValue(wrapper, "fritekstArbeidstaker", tooLongFritekst);
-    changeTextAreaValue(wrapper, "fritekstBehandler", tooLongFritekst);
-    wrapper.find("form").simulate("submit");
-
-    maxLengthFeilmeldinger = wrapper
-      .find(Feilmelding)
-      .filterWhere((feil) => feil.text() === maxLengthErrorMsg);
-    expect(maxLengthFeilmeldinger).to.have.length(
-      3,
-      "Validerer maks lengde på alle fritekstfelter"
+    const fritekstBehandlerInput = getTextInput(
+      "Fritekst til behandler (valgfri)"
     );
+    changeTextInput(
+      fritekstArbeidstakerInput,
+      moteTekster.fritekstTilArbeidstaker
+    );
+    changeTextInput(
+      fritekstArbeidsgiverInput,
+      moteTekster.fritekstTilArbeidsgiver
+    );
+    changeTextInput(fritekstBehandlerInput, moteTekster.fritekstTilBehandler);
+    clickButton("Send innkallingene");
+
+    expect(screen.queryAllByText(maxLengthErrorMsg)).to.have.length(0);
+
+    changeTextInput(fritekstArbeidstakerInput, tooLongFritekst);
+    changeTextInput(fritekstArbeidsgiverInput, tooLongFritekst);
+    changeTextInput(fritekstBehandlerInput, tooLongFritekst);
+    clickButton("Send innkallingene");
+
+    expect(
+      screen.queryAllByRole("link", { name: maxLengthErrorMsg })
+    ).to.have.length(3);
   });
 
   it("submit creates innkalling with behandler when behandler is selected", () => {
     stubInnkallingApi(apiMock());
-    const wrapper = mountDialogmoteInnkallingSkjema();
+    renderDialogmoteInnkallingSkjemaMedFastlegeEnabled();
+    passSkjemaInput();
 
-    const behandlereRadioKnapper = wrapper.find('input[type="radio"]');
-    behandlereRadioKnapper
-      .at(1)
-      .simulate("change", { target: { checked: true } });
-    const arbeidsgiverDropdown = wrapper.find("select");
-    changeFieldValue(arbeidsgiverDropdown, arbeidsgiver.orgnr);
-    const datoVelger = wrapper.find("ForwardRef(DateInput)");
-    changeFieldValue(datoVelger, moteDato);
-    datoVelger.simulate("blur");
-
-    const inputs = wrapper.find("input");
-    const stedInput = inputs.findWhere((w) => w.prop("name") === "sted");
-    const videoLinkInput = inputs.findWhere(
-      (w) => w.prop("name") === "videoLink"
-    );
-    const klokkeslettInput = inputs.findWhere(
-      (w) => w.prop("name") === "klokkeslett"
-    );
-    changeFieldValue(stedInput, moteSted);
-    changeFieldValue(videoLinkInput, moteVideoLink);
-    changeFieldValue(klokkeslettInput, moteKlokkeslett);
-
-    changeTextAreaValue(
-      wrapper,
-      "fritekstArbeidsgiver",
-      fritekstTilArbeidsgiver
-    );
-    changeTextAreaValue(
-      wrapper,
-      "fritekstArbeidstaker",
-      fritekstTilArbeidstaker
-    );
-    changeTextAreaValue(wrapper, "fritekstBehandler", fritekstTilBehandler);
-
-    wrapper.find("form").simulate("submit");
+    clickButton("Send innkallingene");
 
     const innkallingMutation = queryClient.getMutationCache().getAll()[0];
-    const expectedInnkalling = {
+    const expectedInnkallingDto = {
       tildeltEnhet: navEnhet,
       arbeidsgiver: {
         virksomhetsnummer: arbeidsgiver.orgnr,
-        fritekstInnkalling: fritekstTilArbeidsgiver,
-        innkalling: expectedArbeidsgiverInnkalling,
+        fritekstInnkalling: moteTekster.fritekstTilArbeidsgiver,
+        innkalling: expectedInnkallingDocuments.arbeidsgiver,
       },
       arbeidstaker: {
         personIdent: arbeidstaker.personident,
-        fritekstInnkalling: fritekstTilArbeidstaker,
-        innkalling: expectedArbeidstakerInnkalling,
+        fritekstInnkalling: moteTekster.fritekstTilArbeidstaker,
+        innkalling: expectedInnkallingDocuments.arbeidstaker,
       },
       behandler: {
         personIdent: behandler.fnr,
         behandlerRef: behandler.behandlerRef,
         behandlerNavn: behandlerNavn(behandler),
         behandlerKontor: behandler.kontor,
-        fritekstInnkalling: fritekstTilBehandler,
-        innkalling: expectedBehandlerInnkalling,
+        fritekstInnkalling: moteTekster.fritekstTilBehandler,
+        innkalling: expectedInnkallingDocuments.behandler,
       },
       tidSted: {
-        sted: moteSted,
-        tid: moteDatoTid,
-        videoLink: moteVideoLink,
+        sted: mote.sted,
+        tid: mote.datoTid,
+        videoLink: mote.videolink,
       },
     };
 
     expect(innkallingMutation.options.variables).to.deep.equal(
-      expectedInnkalling
+      expectedInnkallingDto
     );
   });
 
-  it("previews innkalling to behandler when behandler is selected", () => {
-    const skjemaWrapper = mountDialogmoteInnkallingSkjema();
-
-    const behandlereRadioKnapper = skjemaWrapper.find('input[type="radio"]');
-    behandlereRadioKnapper
-      .at(1)
-      .simulate("change", { target: { checked: true } });
-    const arbeidsgiverDropdown = skjemaWrapper.find("select");
-    changeFieldValue(arbeidsgiverDropdown, arbeidsgiver.orgnr);
-    const datoVelger = skjemaWrapper.find("ForwardRef(DateInput)");
-    changeFieldValue(datoVelger, moteDato);
-    datoVelger.simulate("blur");
-
-    const inputs = skjemaWrapper.find("input");
-    const stedInput = inputs.findWhere((w) => w.prop("name") === "sted");
-    const videoLinkInput = inputs.findWhere(
-      (w) => w.prop("name") === "videoLink"
-    );
-    const klokkeslettInput = inputs.findWhere(
-      (w) => w.prop("name") === "klokkeslett"
-    );
-    changeFieldValue(stedInput, moteSted);
-    changeFieldValue(videoLinkInput, moteVideoLink);
-    changeFieldValue(klokkeslettInput, moteKlokkeslett);
-
-    changeTextAreaValue(
-      skjemaWrapper,
-      "fritekstArbeidsgiver",
-      fritekstTilArbeidsgiver
-    );
-    changeTextAreaValue(
-      skjemaWrapper,
-      "fritekstArbeidstaker",
-      fritekstTilArbeidstaker
-    );
-    changeTextAreaValue(
-      skjemaWrapper,
-      "fritekstBehandler",
-      fritekstTilBehandler
-    );
-
-    const previewButtons = skjemaWrapper.find(Knapp);
-    previewButtons.at(2).simulate("click");
-    const forhandsvisninger = skjemaWrapper.find(Forhandsvisning);
-    const forhandsvisningInnkallingBehandler = forhandsvisninger.at(2);
+  it("doesn't display behandler fritekst and preview when none is selected", () => {
+    renderDialogmoteInnkallingSkjemaMedFastlegeEnabled();
 
     expect(
-      forhandsvisningInnkallingBehandler.props().getDocumentComponents()
-    ).to.deep.equal(expectedBehandlerInnkalling);
-    expect(forhandsvisningInnkallingBehandler.prop("isOpen")).to.be.true;
-    expect(forhandsvisningInnkallingBehandler.text()).to.contain(
-      innkallingSkjemaTexts.forhandsvisningTitle
-    );
-    expect(forhandsvisningInnkallingBehandler.text()).to.contain(
-      innkallingSkjemaTexts.forhandsvisningBehandlerSubtitle
-    );
-  });
-
-  it("doesn't display behandler when none is selected", () => {
-    const skjemaWrapper = mountDialogmoteInnkallingSkjema();
-
-    const textAreaBehandler = skjemaWrapper
-      .find("textarea")
-      .findWhere((w) => w.prop("name") === "fritekstBehandler");
-    const previewButtons = skjemaWrapper.find(Knapp);
-
-    expect(textAreaBehandler).to.be.empty;
-    expect(previewButtons).lengthOf(2);
+      screen.queryByRole("textbox", {
+        name: /Fritekst til behandler/,
+      })
+    ).to.not.exist;
+    const previewButtons = screen.getAllByRole("button", {
+      name: "Forhåndsvisning",
+    });
+    expect(previewButtons).to.have.length(2);
   });
 });
 
-const mountDialogmoteInnkallingSkjema = () => {
-  return mount(
+const renderDialogmoteInnkallingSkjemaMedFastlegeEnabled = () => {
+  return render(
     <MemoryRouter initialEntries={[dialogmoteRoutePath]}>
       <Route path={dialogmoteRoutePath}>
         <QueryClientProvider client={queryClient}>
@@ -271,4 +169,40 @@ const mountDialogmoteInnkallingSkjema = () => {
       </Route>
     </MemoryRouter>
   );
+};
+
+const passSkjemaInput = () => {
+  const virksomhetSelect = screen.getByRole("combobox", {
+    name: "Arbeidsgiver",
+  });
+  const datoInput = getTextInput("Dato");
+  const klokkeslettInput = screen.getByLabelText("Klokkeslett");
+  const stedInput = getTextInput("Sted");
+  const videoLinkInput = getTextInput("Lenke til videomøte (valgfritt)");
+  const fastlegeInput = screen.getByRole("radio", { name: /Fastlege/ });
+  userEvent.click(fastlegeInput);
+  const fritekstArbeidstakerInput = getTextInput(
+    "Fritekst til arbeidstakeren (valgfri)"
+  );
+  const fritekstArbeidsgiverInput = getTextInput(
+    "Fritekst til nærmeste leder (valgfri)"
+  );
+  const fritekstBehandlerInput = getTextInput(
+    "Fritekst til behandler (valgfri)"
+  );
+  fireEvent.change(virksomhetSelect, { target: { value: arbeidsgiver.orgnr } });
+  changeTextInput(datoInput, mote.dato);
+  fireEvent.blur(datoInput);
+  changeTextInput(klokkeslettInput, mote.klokkeslett);
+  changeTextInput(stedInput, mote.sted);
+  changeTextInput(videoLinkInput, mote.videolink);
+  changeTextInput(
+    fritekstArbeidstakerInput,
+    moteTekster.fritekstTilArbeidstaker
+  );
+  changeTextInput(
+    fritekstArbeidsgiverInput,
+    moteTekster.fritekstTilArbeidsgiver
+  );
+  changeTextInput(fritekstBehandlerInput, moteTekster.fritekstTilBehandler);
 };

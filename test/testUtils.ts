@@ -1,33 +1,25 @@
-import { ReactWrapper } from "enzyme";
-import { expect } from "chai";
+import userEvent from "@testing-library/user-event";
+import { fireEvent, screen } from "@testing-library/react";
 
-export const changeTextAreaValue = (
-  wrapper: ReactWrapper<any, any>,
-  textAreaName: string,
-  value: string
-) => {
-  const textArea = wrapper
-    .find("textarea")
-    .findWhere((w) => w.prop("name") === textAreaName);
-  changeFieldValue(textArea, value);
-};
+export const clickButton = (buttonText: string) =>
+  userEvent.click(screen.getByRole("button", { name: buttonText }));
 
-export const changeFieldValue = (
-  field: ReactWrapper<any, any>,
-  newValue: string
-) => {
-  field.simulate("change", {
-    target: {
-      value: newValue,
-    },
+export const getFeilmeldingLink = (feilmelding: string) =>
+  screen.queryByRole("link", {
+    name: feilmelding,
   });
-};
 
-export const assertFeilmelding = (
-  feilmeldinger: ReactWrapper<any, any>,
-  msg: string
-) => expect(feilmeldinger.someWhere((feil) => feil.text() === msg)).to.be.true;
+export const getTextInput = (name: string) =>
+  screen.getByRole("textbox", {
+    name,
+  });
+
+export const changeTextInput = (input: HTMLElement, value: string) =>
+  fireEvent.change(input, {
+    target: { value },
+  });
 
 export const maxLengthErrorMessage = (max: number) =>
   `Maks ${max} tegn tillatt`;
+
 export const getTooLongText = (max: number) => "t".repeat(max + 1);

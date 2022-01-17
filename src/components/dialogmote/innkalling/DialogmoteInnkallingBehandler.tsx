@@ -12,7 +12,7 @@ const BehandlerTittel = styled(Innholdstittel)`
   margin-bottom: 1em;
 `;
 
-const texts = {
+export const texts = {
   title: "Behandler",
   legekontor: "Legekontor",
   tlf: "Telefonnummer",

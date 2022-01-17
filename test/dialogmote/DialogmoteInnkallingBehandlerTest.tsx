@@ -1,7 +1,8 @@
 import { expect } from "chai";
-import { mount } from "enzyme";
 import React from "react";
-import DialogmoteInnkallingBehandler from "@/components/dialogmote/innkalling/DialogmoteInnkallingBehandler";
+import DialogmoteInnkallingBehandler, {
+  texts,
+} from "@/components/dialogmote/innkalling/DialogmoteInnkallingBehandler";
 import {
   BehandlerDialogmeldingDTO,
   BehandlerType,
@@ -15,6 +16,7 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
+import { render, screen } from "@testing-library/react";
 
 let queryClient;
 const noOpMethod = () => {
@@ -44,16 +46,19 @@ describe("DialogmoteInnkallingBehandler", () => {
       ),
       () => behandlere
     );
-    const behandlerComponent = mountDialogmoteInnkallingBehandler();
+    renderDialogmoteInnkallingBehandler();
 
-    expect(behandlerComponent.find("BehandlerRadioGruppe")).to.exist;
-    expect(behandlerComponent.find("AppSpinner")).to.not.exist;
+    expect(screen.getAllByRole("radio")).to.have.length(2);
+    expect(screen.getByRole("radio", { name: "Ingen behandler" })).to.exist;
+    expect(screen.getByRole("radio", { name: "Fastlege: Lego Las Legesen" })).to
+      .exist;
+    expect(screen.queryByText("Venter...")).to.not.exist;
   });
   it("displays an app spinner when loading", () => {
-    const behandlerComponent = mountDialogmoteInnkallingBehandler();
+    renderDialogmoteInnkallingBehandler();
 
-    expect(behandlerComponent.find("BehandlerRadioGruppe")).to.not.exist;
-    expect(behandlerComponent.find("AppSpinner")).to.exist;
+    expect(screen.getByText("Venter...")).to.exist;
+    expect(screen.queryAllByRole("radio")).to.be.empty;
   });
 
   it("displays alert message when no behandlere", () => {
@@ -63,13 +68,15 @@ describe("DialogmoteInnkallingBehandler", () => {
       ),
       () => []
     );
-    const behandlerComponent = mountDialogmoteInnkallingBehandler();
-    expect(behandlerComponent.find("AlertStripe")).to.exist;
+    renderDialogmoteInnkallingBehandler();
+
+    expect(screen.getByRole("img", { name: "advarsel-ikon" })).to.exist;
+    expect(screen.getByText(texts.noBehandlerFound)).to.exist;
   });
 });
 
-const mountDialogmoteInnkallingBehandler = () => {
-  return mount(
+const renderDialogmoteInnkallingBehandler = () => {
+  return render(
     <MemoryRouter initialEntries={[dialogmoteRoutePath]}>
       <Route path={dialogmoteRoutePath}>
         <QueryClientProvider client={queryClient}>

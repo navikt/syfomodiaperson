@@ -1,6 +1,5 @@
 import { expect } from "chai";
-import { mount } from "enzyme";
-import { Link, MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import React from "react";
 import {
@@ -11,17 +10,20 @@ import { texts as brukerKanIkkeVarslesPapirpostTexts } from "../../src/component
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
-import Alertstripe from "nav-frontend-alertstriper";
-import { NyttDialogMote } from "@/components/mote/components/innkalling/NyttDialogMote";
-import ModalWrapper from "nav-frontend-modal";
 import { brukerKanIkkeVarslesTekst } from "@/components/BrukerKanIkkeVarslesText";
 import { ToggleNames } from "@/data/unleash/unleash_types";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { behandlereDialogmeldingQueryKeys } from "@/data/behandlerdialogmelding/behandlereDialogmeldingQueryHooks";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
-let queryClient;
+const queryClient = new QueryClient();
+queryClient.setQueryData(
+  behandlereDialogmeldingQueryKeys.behandleredialogmelding(fnr),
+  () => []
+);
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -40,8 +42,8 @@ const brukerKanIkkeVarsles = {
   },
 };
 
-const innkallingDialogmotePanelWrapper = (mockState, navbruker) => {
-  return mount(
+const renderInnkallingDialogmotePanel = (mockState, navbruker) => {
+  return render(
     <MemoryRouter initialEntries={[`/sykefravaer/moteoversikt`]}>
       <Route path="/sykefravaer/moteoversikt">
         <QueryClientProvider client={queryClient}>
@@ -61,13 +63,6 @@ const innkallingDialogmotePanelWrapper = (mockState, navbruker) => {
 };
 
 describe("InnkallingDialogmotePanel med dm2 enabled og dm2 fysisk brev disabled", () => {
-  beforeEach(() => {
-    queryClient = new QueryClient();
-    queryClient.setQueryData(
-      behandlereDialogmeldingQueryKeys.behandleredialogmelding(fnr),
-      () => []
-    );
-  });
   const mockState = {
     unleash: {
       toggles: {
@@ -79,45 +74,47 @@ describe("InnkallingDialogmotePanel med dm2 enabled og dm2 fysisk brev disabled"
   };
 
   it("viser advarsel når bruker ikke kan varsles", () => {
-    const wrapper = innkallingDialogmotePanelWrapper(
-      mockState,
-      brukerKanIkkeVarsles
-    );
+    renderInnkallingDialogmotePanel(mockState, brukerKanIkkeVarsles);
 
-    const alertstripe = wrapper.find(Alertstripe);
-    expect(alertstripe.prop("type")).to.equal("advarsel");
-    expect(alertstripe.text()).to.contain(brukerKanIkkeVarslesTekst);
-    expect(alertstripe.text()).to.contain(
-      innkallingDialmotePanelTexts.arenaDialogmoteInnkalling
-    );
+    expect(screen.getByRole("img", { name: "advarsel-ikon" })).to.exist;
+    expect(screen.getByText(brukerKanIkkeVarslesTekst)).to.exist;
+    expect(
+      screen.getByText(innkallingDialmotePanelTexts.arenaDialogmoteInnkalling)
+    ).to.exist;
   });
-  it("Nytt dialogmøte-knapp linker direkte til møteplanleggeren uten modaler når bruker ikke kan varsles", () => {
-    const wrapper = innkallingDialogmotePanelWrapper(
-      mockState,
-      brukerKanIkkeVarsles
-    );
+  it("Nytt dialogmøte-knapp linker direkte til møteplanleggeren når bruker ikke kan varsles", () => {
+    renderInnkallingDialogmotePanel(mockState, brukerKanIkkeVarsles);
 
-    expect(wrapper.find(NyttDialogMote).find(Link).prop("to")).to.equal(
-      "/sykefravaer/mote"
-    );
-    expect(wrapper.find(NyttDialogMote).find(ModalWrapper)).to.have.length(0);
+    const button = screen.getByRole("button", { name: "Nytt dialogmøte" });
+    expect(button).to.exist;
+    const link = screen.getByRole("link", { name: "Nytt dialogmøte" });
+    expect(link.getAttribute("href")).to.equal("/sykefravaer/mote");
+    userEvent.click(button);
+    expect(
+      screen.queryByRole("dialog", {
+        name: "Ny løsning for innkalling til Dialogmøte",
+      })
+    ).to.not.exist;
   });
   it("viser ingen advarsel når bruker kan varsles", () => {
-    const wrapper = innkallingDialogmotePanelWrapper(
-      mockState,
-      brukerKanVarsles
-    );
+    renderInnkallingDialogmotePanel(mockState, brukerKanVarsles);
 
-    expect(wrapper.find(Alertstripe)).to.have.length(0);
+    expect(screen.queryByRole("img", { name: "advarsel-ikon" })).to.not.exist;
+    expect(screen.queryByRole(brukerKanIkkeVarslesTekst)).to.not.exist;
   });
   it("Nytt dialogmøte-knapp viser modaler når bruker kan varsles", () => {
-    const wrapper = innkallingDialogmotePanelWrapper(
-      mockState,
-      brukerKanVarsles
-    );
+    renderInnkallingDialogmotePanel(mockState, brukerKanVarsles);
 
-    expect(wrapper.find(NyttDialogMote).find(Link)).to.have.length(0);
-    expect(wrapper.find(NyttDialogMote).find(ModalWrapper)).to.have.length(1);
+    const button = screen.getByRole("button", { name: "Nytt dialogmøte" });
+    expect(button).to.exist;
+    expect(screen.queryByRole("link", { name: "Nytt dialogmøte" })).to.not
+      .exist;
+    userEvent.click(button);
+    expect(
+      screen.getByRole("dialog", {
+        name: "Ny løsning for innkalling til Dialogmøte",
+      })
+    ).to.exist;
   });
 });
 
@@ -133,44 +130,48 @@ describe("InnkallingDialogmotePanel med dm2 enabled og dm2 fysisk brev enabled",
   };
 
   it("viser advarsel om fysisk brev når bruker ikke kan varsles", () => {
-    const wrapper = innkallingDialogmotePanelWrapper(
-      mockState,
-      brukerKanIkkeVarsles
-    );
+    renderInnkallingDialogmotePanel(mockState, brukerKanIkkeVarsles);
 
-    const alertstripe = wrapper.find(Alertstripe);
-    expect(alertstripe.prop("type")).to.equal("advarsel");
-    expect(alertstripe.text()).to.contain(brukerKanIkkeVarslesTekst);
-    expect(alertstripe.text()).to.contain(
-      brukerKanIkkeVarslesPapirpostTexts.papirpostDialogmote
-    );
+    expect(screen.getByRole("img", { name: "advarsel-ikon" })).to.exist;
+    expect(screen.getByText(brukerKanIkkeVarslesTekst)).to.exist;
+    expect(
+      screen.getByText(brukerKanIkkeVarslesPapirpostTexts.papirpostDialogmote)
+    ).to.exist;
   });
   it("Nytt dialogmøte-knapp viser modaler når bruker ikke kan varsles", () => {
-    const wrapper = innkallingDialogmotePanelWrapper(
-      mockState,
-      brukerKanIkkeVarsles
-    );
+    renderInnkallingDialogmotePanel(mockState, brukerKanIkkeVarsles);
 
-    expect(wrapper.find(NyttDialogMote).find(Link)).to.have.length(0);
-    expect(wrapper.find(NyttDialogMote).find(ModalWrapper)).to.have.length(1);
+    const button = screen.getByRole("button", { name: "Nytt dialogmøte" });
+    expect(button).to.exist;
+    expect(screen.queryByRole("link", { name: "Nytt dialogmøte" })).to.not
+      .exist;
+    userEvent.click(button);
+    expect(
+      screen.getByRole("dialog", {
+        name: "Ny løsning for innkalling til Dialogmøte",
+      })
+    ).to.exist;
   });
 
   it("viser ingen advarsel når bruker kan varsles", () => {
-    const wrapper = innkallingDialogmotePanelWrapper(
-      mockState,
-      brukerKanVarsles
-    );
+    renderInnkallingDialogmotePanel(mockState, brukerKanVarsles);
 
-    expect(wrapper.find(Alertstripe)).to.have.length(0);
+    expect(screen.queryByRole("img", { name: "advarsel-ikon" })).to.not.exist;
+    expect(screen.queryByRole(brukerKanIkkeVarslesTekst)).to.not.exist;
   });
   it("Nytt dialogmøte-knapp viser modal når bruker kan varsles", () => {
-    const wrapper = innkallingDialogmotePanelWrapper(
-      mockState,
-      brukerKanVarsles
-    );
+    renderInnkallingDialogmotePanel(mockState, brukerKanVarsles);
 
-    expect(wrapper.find(NyttDialogMote).find(Link)).to.have.length(0);
-    expect(wrapper.find(NyttDialogMote).find(ModalWrapper)).to.have.length(1);
+    const button = screen.getByRole("button", { name: "Nytt dialogmøte" });
+    expect(button).to.exist;
+    expect(screen.queryByRole("link", { name: "Nytt dialogmøte" })).to.not
+      .exist;
+    userEvent.click(button);
+    expect(
+      screen.getByRole("dialog", {
+        name: "Ny løsning for innkalling til Dialogmøte",
+      })
+    ).to.exist;
   });
 });
 
@@ -185,14 +186,18 @@ describe("InnkallingDialogmotePanel with dm2, fysisk brev, and innkalling fastle
     },
   };
 
-  it("Nytt dialogmøte-knapp viser 3 modaler ", () => {
-    const wrapper = innkallingDialogmotePanelWrapper(
-      mockState,
-      brukerKanVarsles
-    );
+  it("Nytt dialogmøte-knapp viser modal ", () => {
+    renderInnkallingDialogmotePanel(mockState, brukerKanVarsles);
 
-    expect(wrapper.find(NyttDialogMote).find(Link)).to.have.length(0);
-    expect(wrapper.find(NyttDialogMote).find(ModalWrapper)).to.have.length(1);
+    const nyttDialogmoteKnapp = screen.getByRole("button", {
+      name: "Nytt dialogmøte",
+    });
+    userEvent.click(nyttDialogmoteKnapp);
+    expect(
+      screen.getByRole("dialog", {
+        name: "Ny løsning for innkalling til Dialogmøte",
+      })
+    ).to.exist;
   });
 });
 
@@ -208,29 +213,28 @@ describe("InnkallingDialogmotePanel with dm2 and innkalling fastlege enabled, bu
   };
 
   it("viser advarsel når bruker ikke kan varsles", () => {
-    const wrapper = innkallingDialogmotePanelWrapper(
-      mockState,
-      brukerKanIkkeVarsles
-    );
+    renderInnkallingDialogmotePanel(mockState, brukerKanIkkeVarsles);
 
-    const alertstripe = wrapper.find(Alertstripe);
-    expect(alertstripe.prop("type")).to.equal("advarsel");
-    expect(alertstripe.text()).to.contain(brukerKanIkkeVarslesTekst);
-    expect(alertstripe.text()).to.contain(
-      innkallingDialmotePanelTexts.arenaDialogmoteInnkalling
-    );
+    expect(screen.getByRole("img", { name: "advarsel-ikon" })).to.exist;
+    expect(screen.getByText(brukerKanIkkeVarslesTekst)).to.exist;
+    expect(
+      screen.getByText(innkallingDialmotePanelTexts.arenaDialogmoteInnkalling)
+    ).to.exist;
   });
 
   it("Nytt dialogmøte-knapp linker direkte til møteplanleggeren uten modaler når bruker ikke kan varsles", () => {
-    const wrapper = innkallingDialogmotePanelWrapper(
-      mockState,
-      brukerKanIkkeVarsles
-    );
+    renderInnkallingDialogmotePanel(mockState, brukerKanIkkeVarsles);
 
-    expect(wrapper.find(NyttDialogMote).find(Link).prop("to")).to.equal(
-      "/sykefravaer/mote"
-    );
-    expect(wrapper.find(NyttDialogMote).find(ModalWrapper)).to.have.length(0);
+    const button = screen.getByRole("button", { name: "Nytt dialogmøte" });
+    expect(button).to.exist;
+    const link = screen.getByRole("link", { name: "Nytt dialogmøte" });
+    expect(link.getAttribute("href")).to.equal("/sykefravaer/mote");
+    userEvent.click(button);
+    expect(
+      screen.queryByRole("dialog", {
+        name: "Ny løsning for innkalling til Dialogmøte",
+      })
+    ).to.not.exist;
   });
 });
 
@@ -244,19 +248,31 @@ describe("InnkallingDialogmotePanel med dm2 disabled", () => {
   };
 
   it("Nytt dialogmøte-knapp linker direkte til møteplanleggeren når bruker ikke kan varsles", () => {
-    const wrapper = innkallingDialogmotePanelWrapper(
-      mockState,
-      brukerKanIkkeVarsles
-    );
+    renderInnkallingDialogmotePanel(mockState, brukerKanIkkeVarsles);
 
-    expect(wrapper.find(Link).prop("to")).to.equal("/sykefravaer/mote");
+    const button = screen.getByRole("button", { name: "Nytt dialogmøte" });
+    expect(button).to.exist;
+    const link = screen.getByRole("link", { name: "Nytt dialogmøte" });
+    expect(link.getAttribute("href")).to.equal("/sykefravaer/mote");
+    userEvent.click(button);
+    expect(
+      screen.queryByRole("dialog", {
+        name: "Ny løsning for innkalling til Dialogmøte",
+      })
+    ).to.not.exist;
   });
   it("Nytt dialogmøte-knapp linker direkte til møteplanleggeren når bruker kan varsles", () => {
-    const wrapper = innkallingDialogmotePanelWrapper(
-      mockState,
-      brukerKanVarsles
-    );
+    renderInnkallingDialogmotePanel(mockState, brukerKanVarsles);
 
-    expect(wrapper.find(Link).prop("to")).to.equal("/sykefravaer/mote");
+    const button = screen.getByRole("button", { name: "Nytt dialogmøte" });
+    expect(button).to.exist;
+    const link = screen.getByRole("link", { name: "Nytt dialogmøte" });
+    expect(link.getAttribute("href")).to.equal("/sykefravaer/mote");
+    userEvent.click(button);
+    expect(
+      screen.queryByRole("dialog", {
+        name: "Ny løsning for innkalling til Dialogmøte",
+      })
+    ).to.not.exist;
   });
 });

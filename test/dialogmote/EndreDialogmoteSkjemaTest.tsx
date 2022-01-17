@@ -1,4 +1,3 @@
-import { mount } from "enzyme";
 import { MemoryRouter, Route } from "react-router-dom";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -10,63 +9,38 @@ import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
-import { Feilmelding } from "nav-frontend-typografi";
 import {
-  assertFeilmelding,
-  changeFieldValue,
-  changeTextAreaValue,
+  changeTextInput,
+  clickButton,
+  getFeilmeldingLink,
+  getTextInput,
   getTooLongText,
   maxLengthErrorMessage,
 } from "../testUtils";
-import { Feiloppsummering } from "nav-frontend-skjema";
 import { expect } from "chai";
 import { texts as skjemaFeilOppsummeringTexts } from "@/components/SkjemaFeiloppsummering";
-import { Hovedknapp, Knapp } from "nav-frontend-knapper";
-import {
-  leggTilDagerPaDato,
-  tilDatoMedManedNavnOgKlokkeslettWithComma,
-  tilDatoMedUkedagOgManedNavnOgKlokkeslett,
-  toDatePrettyPrint,
-} from "@/utils/datoUtils";
 import { apiMock } from "../stubs/stubApi";
 import { stubEndreApi } from "../stubs/stubIsdialogmote";
-import { InputDateStringToISODateString } from "nav-datovelger/lib/utils/dateFormatUtils";
-import { Forhandsvisning } from "@/components/dialogmote/Forhandsvisning";
-import {
-  MAX_LENGTH_ENDRE_BEGRUNNELSE,
-  texts as endringSkjemaTexts,
-} from "../../src/components/dialogmote/endre/EndreDialogmoteTekster";
-import Lukknapp from "nav-frontend-lukknapp";
+import { texts as endringSkjemaTexts } from "../../src/components/dialogmote/endre/EndreDialogmoteTekster";
 import {
   arbeidstaker,
   behandlendeEnhet,
-  behandler,
   dialogmote,
   dialogmoteMedBehandler,
-  fritekstTilArbeidsgiver,
-  fritekstTilArbeidstaker,
-  fritekstTilBehandler,
+  endretMote,
   mockState,
-  navEnhet,
+  moteTekster,
   veileder,
 } from "./testData";
-import { genererDato } from "@/components/mote/utils";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
-import { endreTidStedTexts } from "@/data/dialogmote/dialogmoteTexts";
-import { behandlerNavn } from "@/utils/behandlerUtils";
-import { capitalizeWord } from "@/utils/stringUtils";
+import { fireEvent, render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { MAX_LENGTH_AVLYS_BEGRUNNELSE } from "@/components/dialogmote/avlys/AvlysDialogmoteSkjema";
+import { expectedEndringDocuments } from "./testDataDocuments";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
-const nyDato = toDatePrettyPrint(leggTilDagerPaDato(new Date(), 1)) as string;
-const moteKlokkeslett = "09:00";
-const nyDatoAsISODateString = InputDateStringToISODateString(nyDato);
-const nyVideolink = "https://video.nav.no";
-const nyttSted = "Videomøte endret";
-const nyDatoTid = `${InputDateStringToISODateString(
-  nyDato
-)}T${moteKlokkeslett}:00`;
 
 let queryClient;
 
@@ -84,370 +58,289 @@ describe("EndreDialogmoteSkjemaTest", () => {
   });
 
   it("validerer begrunnelser og dato", () => {
-    const wrapper = mountEndreDialogmoteSkjema(dialogmote);
+    renderEndreDialogmoteSkjema(dialogmote);
 
-    wrapper.find("form").simulate("submit");
+    clickButton("Lagre endringer");
 
-    // Feilmeldinger i skjema
-    const feilmeldinger = wrapper.find(Feilmelding);
-    assertFeilmelding(
-      feilmeldinger,
-      valideringsTexts.begrunnelseArbeidstakerMissing
-    );
-    assertFeilmelding(
-      feilmeldinger,
-      valideringsTexts.begrunnelseArbeidsgiverMissing
-    );
-    expect(
-      feilmeldinger.someWhere((feil) =>
-        feil.text().includes("Datoen må være etter")
-      )
-    ).to.be.true;
+    expect(screen.getAllByText(valideringsTexts.begrunnelseArbeidstakerMissing))
+      .to.not.be.empty;
+    expect(screen.getAllByText(valideringsTexts.begrunnelseArbeidsgiverMissing))
+      .to.not.be.empty;
+    expect(screen.getAllByText(/Datoen må være etter/)).to.not.be.empty;
 
     // Feilmeldinger i oppsummering
-    const feiloppsummering = wrapper.find(Feiloppsummering);
-    expect(feiloppsummering.text()).to.contain(
-      skjemaFeilOppsummeringTexts.title
-    );
-    expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.begrunnelseArbeidstakerMissing
-    );
-    expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.begrunnelseArbeidsgiverMissing
-    );
-    expect(feiloppsummering.text()).to.contain("Datoen må være etter");
+    expect(screen.getByText(skjemaFeilOppsummeringTexts.title)).to.exist;
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidstakerMissing))
+      .to.exist;
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidsgiverMissing))
+      .to.exist;
+    expect(
+      screen.getByRole("link", {
+        name: /Datoen må være etter/,
+      })
+    ).to.exist;
   });
   it("validerer begrunnelse til behandler når behandler er med", () => {
-    const wrapper = mountEndreDialogmoteSkjema(dialogmoteMedBehandler);
+    renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
 
-    wrapper.find("form").simulate("submit");
+    clickButton("Lagre endringer");
 
-    // Feilmelding i skjema
-    assertFeilmelding(
-      wrapper.find(Feilmelding),
-      valideringsTexts.begrunnelseBehandlerMissing
-    );
-
-    // Feilmeldinger i oppsummering
-    const feiloppsummering = wrapper.find(Feiloppsummering);
-    expect(feiloppsummering.text()).to.contain(
-      skjemaFeilOppsummeringTexts.title
-    );
-    expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.begrunnelseBehandlerMissing
-    );
+    expect(screen.getAllByText(valideringsTexts.begrunnelseBehandlerMissing));
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseBehandlerMissing)).to
+      .exist;
   });
   it("valideringsmeldinger forsvinner ved utbedring", () => {
-    const wrapper = mountEndreDialogmoteSkjema(dialogmote);
+    renderEndreDialogmoteSkjema(dialogmote);
 
-    wrapper.find("form").simulate("submit");
+    clickButton("Lagre endringer");
 
-    // Feilmeldinger i skjema
-    const feilmeldinger = wrapper.find(Feilmelding);
-    assertFeilmelding(
-      feilmeldinger,
-      valideringsTexts.begrunnelseArbeidstakerMissing
-    );
-    assertFeilmelding(
-      feilmeldinger,
-      valideringsTexts.begrunnelseArbeidsgiverMissing
-    );
+    expect(screen.getAllByText(valideringsTexts.begrunnelseArbeidstakerMissing))
+      .to.not.be.empty;
+    expect(screen.getAllByText(valideringsTexts.begrunnelseArbeidsgiverMissing))
+      .to.not.be.empty;
+    expect(screen.getAllByText(/Datoen må være etter/)).to.not.be.empty;
+    expect(screen.getByText(skjemaFeilOppsummeringTexts.title)).to.exist;
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidstakerMissing))
+      .to.exist;
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidsgiverMissing))
+      .to.exist;
     expect(
-      feilmeldinger.someWhere((feil) =>
-        feil.text().includes("Datoen må være etter")
-      )
-    ).to.be.true;
-
-    // Feilmeldinger i oppsummering
-    const feiloppsummering = wrapper.find(Feiloppsummering);
-    expect(feiloppsummering.text()).to.contain(
-      skjemaFeilOppsummeringTexts.title
-    );
-    expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.begrunnelseArbeidstakerMissing
-    );
-    expect(feiloppsummering.text()).to.contain(
-      valideringsTexts.begrunnelseArbeidsgiverMissing
-    );
-    expect(feiloppsummering.text()).to.contain("Datoen må være etter");
+      screen.getByRole("link", {
+        name: /Datoen må være etter/,
+      })
+    ).to.exist;
 
     // Angi dato og begrunnelser
-    const datoVelger = wrapper.find("ForwardRef(DateInput)");
-    changeFieldValue(datoVelger, nyDato);
-    datoVelger.simulate("blur");
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidsgiver",
-      fritekstTilArbeidsgiver
+    const datoInput = getTextInput("Dato");
+    const begrunnelseArbeidstakerInput = getTextInput(
+      "Begrunnelse til arbeidstakeren"
     );
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidstaker",
-      fritekstTilArbeidstaker
+    const begrunnelseArbeidsgiverInput = getTextInput(
+      "Begrunnelse til nærmeste leder"
     );
+    changeTextInput(
+      begrunnelseArbeidstakerInput,
+      moteTekster.fritekstTilArbeidstaker
+    );
+    changeTextInput(
+      begrunnelseArbeidsgiverInput,
+      moteTekster.fritekstTilArbeidsgiver
+    );
+    changeTextInput(datoInput, endretMote.dato);
+    fireEvent.blur(datoInput);
 
     // Feilmeldinger og feiloppsummering forsvinner
-    expect(wrapper.find(Feiloppsummering)).to.have.length(0);
-    expect(wrapper.find(Feilmelding)).to.have.length(0);
+    expect(
+      screen.queryAllByText(valideringsTexts.begrunnelseArbeidstakerMissing)
+    ).to.be.empty;
+    expect(
+      screen.queryAllByText(valideringsTexts.begrunnelseArbeidsgiverMissing)
+    ).to.be.empty;
+    expect(screen.queryAllByText(/Datoen må være etter/)).to.be.empty;
 
     // Fjern begrunnelser
-    changeTextAreaValue(wrapper, "begrunnelseArbeidsgiver", "");
-    changeTextAreaValue(wrapper, "begrunnelseArbeidstaker", "");
+    changeTextInput(begrunnelseArbeidstakerInput, "");
+    changeTextInput(begrunnelseArbeidsgiverInput, "");
 
     // Feilmeldinger vises, feiloppsummering vises ved neste submit
-    expect(wrapper.find(Feiloppsummering)).to.have.length(0);
-    expect(wrapper.find(Feilmelding)).to.have.length(2);
+    expect(screen.getAllByText(valideringsTexts.begrunnelseArbeidstakerMissing))
+      .to.not.be.empty;
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidstakerMissing))
+      .to.not.exist;
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidsgiverMissing))
+      .to.not.exist;
 
-    wrapper.find(Hovedknapp).simulate("click");
-    expect(wrapper.find(Feiloppsummering)).to.have.length(1);
+    clickButton("Lagre endringer");
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidstakerMissing))
+      .to.exist;
+    expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidsgiverMissing))
+      .to.exist;
   });
   it("validerer maks lengde på begrunnelser", () => {
-    const tooLongFritekst = getTooLongText(MAX_LENGTH_ENDRE_BEGRUNNELSE);
+    const tooLongFritekst = getTooLongText(MAX_LENGTH_AVLYS_BEGRUNNELSE);
     const maxLengthErrorMsg = maxLengthErrorMessage(
-      MAX_LENGTH_ENDRE_BEGRUNNELSE
+      MAX_LENGTH_AVLYS_BEGRUNNELSE
     );
-    const wrapper = mountEndreDialogmoteSkjema(dialogmoteMedBehandler);
+    renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
 
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidsgiver",
-      fritekstTilArbeidsgiver
+    const begrunnelseArbeidstakerInput = getTextInput(
+      "Begrunnelse til arbeidstakeren"
     );
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidstaker",
-      fritekstTilArbeidstaker
+    const begrunnelseArbeidsgiverInput = getTextInput(
+      "Begrunnelse til nærmeste leder"
     );
-    changeTextAreaValue(wrapper, "begrunnelseBehandler", fritekstTilBehandler);
+    const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
+    changeTextInput(begrunnelseArbeidstakerInput, tooLongFritekst);
+    changeTextInput(begrunnelseArbeidsgiverInput, tooLongFritekst);
+    changeTextInput(begrunnelseBehandlerInput, tooLongFritekst);
 
-    wrapper.find("form").simulate("submit");
+    clickButton("Lagre endringer");
 
-    let maxLengthFeilmeldinger = wrapper
-      .find(Feilmelding)
-      .filterWhere((feil) => feil.text() === maxLengthErrorMsg);
-    expect(maxLengthFeilmeldinger).to.have.length(0);
-
-    changeTextAreaValue(wrapper, "begrunnelseArbeidsgiver", tooLongFritekst);
-    changeTextAreaValue(wrapper, "begrunnelseArbeidstaker", tooLongFritekst);
-    changeTextAreaValue(wrapper, "begrunnelseBehandler", tooLongFritekst);
-    wrapper.find("form").simulate("submit");
-
-    maxLengthFeilmeldinger = wrapper
-      .find(Feilmelding)
-      .filterWhere((feil) => feil.text() === maxLengthErrorMsg);
-    expect(maxLengthFeilmeldinger).to.have.length(
-      3,
-      "Validerer maks lengde på alle begrunnelser"
-    );
+    expect(
+      screen.getAllByRole("link", { name: maxLengthErrorMsg })
+    ).to.have.length(3, "Validerer maks lengde på alle begrunnelser");
   });
+
   it("endrer møte ved submit", () => {
     stubEndreApi(apiMock(), dialogmote.uuid);
-    const wrapper = mountEndreDialogmoteSkjema(dialogmote);
+    renderEndreDialogmoteSkjema(dialogmote);
+    passSkjemaInput();
 
-    const inputs = wrapper.find("input");
-    const stedInput = inputs.findWhere((w) => w.prop("name") === "sted");
-    const videoLinkInput = inputs.findWhere(
-      (w) => w.prop("name") === "videoLink"
-    );
-    const datoVelger = wrapper.find("ForwardRef(DateInput)");
-    changeFieldValue(datoVelger, nyDato);
-    datoVelger.simulate("blur");
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidsgiver",
-      fritekstTilArbeidsgiver
-    );
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidstaker",
-      fritekstTilArbeidstaker
-    );
-    changeFieldValue(stedInput, nyttSted);
-    changeFieldValue(videoLinkInput, nyVideolink);
-
-    wrapper.find("form").simulate("submit");
+    clickButton("Lagre endringer");
 
     const endreMutation = queryClient.getMutationCache().getAll()[0];
     const expectedEndring = {
       arbeidsgiver: {
-        begrunnelse: fritekstTilArbeidsgiver,
-        endringsdokument: expectedArbeidsgiverEndringsdokument(),
+        begrunnelse: moteTekster.fritekstTilArbeidsgiver,
+        endringsdokument: expectedEndringDocuments.arbeidsgiver(),
       },
       arbeidstaker: {
-        begrunnelse: fritekstTilArbeidstaker,
-        endringsdokument: expectedArbeidstakerEndringsdokument(),
+        begrunnelse: moteTekster.fritekstTilArbeidstaker,
+        endringsdokument: expectedEndringDocuments.arbeidstaker(),
       },
-      videoLink: nyVideolink,
-      sted: nyttSted,
-      tid: nyDatoTid,
+      videoLink: endretMote.videolink,
+      sted: endretMote.sted,
+      tid: endretMote.datoTid,
     };
     expect(endreMutation.options.variables).to.deep.equal(expectedEndring);
   });
+
   it("endrer møte med behandler ved submit når behandler er med", () => {
     stubEndreApi(apiMock(), dialogmote.uuid);
-    const wrapper = mountEndreDialogmoteSkjema(dialogmoteMedBehandler);
+    renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
+    passSkjemaInput();
+    const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
+    changeTextInput(
+      begrunnelseBehandlerInput,
+      moteTekster.fritekstTilBehandler
+    );
 
-    const inputs = wrapper.find("input");
-    const stedInput = inputs.findWhere((w) => w.prop("name") === "sted");
-    const videoLinkInput = inputs.findWhere(
-      (w) => w.prop("name") === "videoLink"
-    );
-    const datoVelger = wrapper.find("ForwardRef(DateInput)");
-    changeFieldValue(datoVelger, nyDato);
-    datoVelger.simulate("blur");
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidsgiver",
-      fritekstTilArbeidsgiver
-    );
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidstaker",
-      fritekstTilArbeidstaker
-    );
-    changeTextAreaValue(wrapper, "begrunnelseBehandler", fritekstTilBehandler);
-    changeFieldValue(stedInput, nyttSted);
-    changeFieldValue(videoLinkInput, nyVideolink);
-
-    wrapper.find("form").simulate("submit");
+    clickButton("Lagre endringer");
 
     const endreMutation = queryClient.getMutationCache().getAll()[0];
     const expectedEndring = {
       arbeidsgiver: {
-        begrunnelse: fritekstTilArbeidsgiver,
-        endringsdokument: expectedArbeidsgiverEndringsdokument(true),
+        begrunnelse: moteTekster.fritekstTilArbeidsgiver,
+        endringsdokument: expectedEndringDocuments.arbeidsgiver(true),
       },
       arbeidstaker: {
-        begrunnelse: fritekstTilArbeidstaker,
-        endringsdokument: expectedArbeidstakerEndringsdokument(true),
+        begrunnelse: moteTekster.fritekstTilArbeidstaker,
+        endringsdokument: expectedEndringDocuments.arbeidstaker(true),
       },
       behandler: {
-        begrunnelse: fritekstTilBehandler,
-        endringsdokument: expectedBehandlerEndringsdokument,
+        begrunnelse: moteTekster.fritekstTilBehandler,
+        endringsdokument: expectedEndringDocuments.behandler,
       },
-      videoLink: nyVideolink,
-      sted: nyttSted,
-      tid: nyDatoTid,
+      videoLink: endretMote.videolink,
+      sted: endretMote.sted,
+      tid: endretMote.datoTid,
     };
     expect(endreMutation.options.variables).to.deep.equal(expectedEndring);
   });
-  it("forhåndsviser endret tid og sted til arbeidstaker og arbeidsgiver", () => {
-    const wrapper = mountEndreDialogmoteSkjema(dialogmote);
+  it("forhåndsviser endret tid og sted til arbeidstaker", () => {
+    renderEndreDialogmoteSkjema(dialogmote);
+    passSkjemaInput();
 
-    const inputs = wrapper.find("input");
-    const stedInput = inputs.findWhere((w) => w.prop("name") === "sted");
-    const videoLinkInput = inputs.findWhere(
-      (w) => w.prop("name") === "videoLink"
-    );
-    const datoVelger = wrapper.find("ForwardRef(DateInput)");
-    changeFieldValue(datoVelger, nyDato);
-    datoVelger.simulate("blur");
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidsgiver",
-      fritekstTilArbeidsgiver
-    );
-    changeTextAreaValue(
-      wrapper,
-      "begrunnelseArbeidstaker",
-      fritekstTilArbeidstaker
-    );
-    changeFieldValue(stedInput, nyttSted);
-    changeFieldValue(videoLinkInput, nyVideolink);
-
-    const getForhandsvisningsModaler = () => wrapper.find(Forhandsvisning);
-    let forhandsvisninger = getForhandsvisningsModaler();
-    expect(forhandsvisninger).to.have.length(2);
-    expect(
-      forhandsvisninger.at(0).props().getDocumentComponents()
-    ).to.deep.equal(expectedArbeidstakerEndringsdokument());
-    expect(
-      forhandsvisninger.at(1).props().getDocumentComponents()
-    ).to.deep.equal(expectedArbeidsgiverEndringsdokument());
-
-    const previewButtons = wrapper.find(Knapp);
+    const previewButtons = screen.getAllByRole("button", {
+      name: "Forhåndsvisning",
+    });
     expect(previewButtons).to.have.length(2);
+    userEvent.click(previewButtons[0]);
 
-    // Forhåndsvis endringsbrev til arbeidstaker og sjekk at modal vises med riktig tittel
-    previewButtons.at(0).simulate("click");
-    forhandsvisninger = getForhandsvisningsModaler();
-    let forhandsvisningEndringArbeidstaker = forhandsvisninger.at(0);
-    let forhandsvisningEndringArbeidsgiver = forhandsvisninger.at(1);
-    expect(forhandsvisningEndringArbeidstaker.prop("isOpen")).to.be.true;
-    expect(forhandsvisningEndringArbeidsgiver.prop("isOpen")).to.be.false;
-    expect(forhandsvisningEndringArbeidstaker.text()).to.contain(
-      endringSkjemaTexts.forhandsvisningTitle
-    );
-    expect(forhandsvisningEndringArbeidstaker.text()).to.contain(
-      endringSkjemaTexts.forhandsvisningArbeidstakerSubtitle
-    );
-    expect(forhandsvisningEndringArbeidsgiver.text()).not.to.contain(
-      endringSkjemaTexts.forhandsvisningTitle
-    );
-    expect(forhandsvisningEndringArbeidsgiver.text()).not.to.contain(
-      endringSkjemaTexts.forhandsvisningArbeidsgiverSubtitle
-    );
+    const forhandsvisningEndringArbeidstaker = screen.getByRole("dialog", {
+      name: endringSkjemaTexts.forhandsvisningArbeidstakerContentLabel,
+    });
 
-    // Lukk forhåndsvis endringsbrev til arbeidstaker
-    forhandsvisningEndringArbeidstaker.find(Lukknapp).simulate("click");
+    expect(
+      within(forhandsvisningEndringArbeidstaker).getByRole("heading", {
+        name: endringSkjemaTexts.forhandsvisningTitle,
+      })
+    ).to.exist;
+    expect(
+      within(forhandsvisningEndringArbeidstaker).getByRole("heading", {
+        name: endringSkjemaTexts.forhandsvisningArbeidstakerSubtitle,
+      })
+    ).to.exist;
+    expectedEndringDocuments
+      .arbeidstaker()
+      .flatMap((documentComponent) => documentComponent.texts)
+      .forEach((text) => {
+        expect(within(forhandsvisningEndringArbeidstaker).getByText(text)).to
+          .exist;
+      });
+  });
+  it("forhåndsviser endret tid og sted til arbeidsgiver", () => {
+    renderEndreDialogmoteSkjema(dialogmote);
+    passSkjemaInput();
 
-    // Forhåndsvis endringsbrev til arbeidsgiver og sjekk at modal vises med riktig tittel
-    previewButtons.at(1).simulate("click");
-    forhandsvisninger = getForhandsvisningsModaler();
-    forhandsvisningEndringArbeidstaker = forhandsvisninger.at(0);
-    forhandsvisningEndringArbeidsgiver = forhandsvisninger.at(1);
-    expect(forhandsvisningEndringArbeidstaker.prop("isOpen")).to.be.false;
-    expect(forhandsvisningEndringArbeidsgiver.prop("isOpen")).to.be.true;
-    expect(forhandsvisningEndringArbeidstaker.text()).not.to.contain(
-      endringSkjemaTexts.forhandsvisningTitle
-    );
-    expect(forhandsvisningEndringArbeidstaker.text()).not.to.contain(
-      endringSkjemaTexts.forhandsvisningArbeidstakerSubtitle
-    );
-    expect(forhandsvisningEndringArbeidsgiver.text()).to.contain(
-      endringSkjemaTexts.forhandsvisningTitle
-    );
-    expect(forhandsvisningEndringArbeidsgiver.text()).to.contain(
-      endringSkjemaTexts.forhandsvisningArbeidsgiverSubtitle
-    );
+    const previewButtons = screen.getAllByRole("button", {
+      name: "Forhåndsvisning",
+    });
+    expect(previewButtons).to.have.length(2);
+    userEvent.click(previewButtons[1]);
+
+    const forhandsvisningEndringArbeidsgiver = screen.getByRole("dialog", {
+      name: endringSkjemaTexts.forhandsvisningArbeidsgiverContentLabel,
+    });
+
+    expect(
+      within(forhandsvisningEndringArbeidsgiver).getByRole("heading", {
+        name: endringSkjemaTexts.forhandsvisningTitle,
+      })
+    ).to.exist;
+    expect(
+      within(forhandsvisningEndringArbeidsgiver).getByRole("heading", {
+        name: endringSkjemaTexts.forhandsvisningArbeidsgiverSubtitle,
+      })
+    ).to.exist;
+    expectedEndringDocuments
+      .arbeidsgiver()
+      .flatMap((documentComponent) => documentComponent.texts)
+      .forEach((text) => {
+        expect(within(forhandsvisningEndringArbeidsgiver).getByText(text)).to
+          .exist;
+      });
   });
   it("forhåndsviser endret tid og sted til behandler når behandler er med", () => {
-    const wrapper = mountEndreDialogmoteSkjema(dialogmoteMedBehandler);
-
-    const inputs = wrapper.find("input");
-    const stedInput = inputs.findWhere((w) => w.prop("name") === "sted");
-    const videoLinkInput = inputs.findWhere(
-      (w) => w.prop("name") === "videoLink"
+    renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
+    passSkjemaInput();
+    const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
+    changeTextInput(
+      begrunnelseBehandlerInput,
+      moteTekster.fritekstTilBehandler
     );
-    const datoVelger = wrapper.find("ForwardRef(DateInput)");
-    changeFieldValue(datoVelger, nyDato);
-    datoVelger.simulate("blur");
-    changeTextAreaValue(wrapper, "begrunnelseBehandler", fritekstTilBehandler);
-    changeFieldValue(stedInput, nyttSted);
-    changeFieldValue(videoLinkInput, nyVideolink);
 
-    // Forhåndsvis endringsbrev til behandler og sjekk at modal vises med riktig tittel
-    const previewButtons = wrapper.find(Knapp);
+    const previewButtons = screen.getAllByRole("button", {
+      name: "Forhåndsvisning",
+    });
     expect(previewButtons).to.have.length(3);
-    previewButtons.at(2).simulate("click");
-    const forhandsvisningModaler = wrapper.find(Forhandsvisning);
-    expect(forhandsvisningModaler).to.have.length(3);
-    const forhandsvisningEndringBehandler = forhandsvisningModaler.at(2);
+    userEvent.click(previewButtons[2]);
+
+    const forhandsvisningEndringBehandler = screen.getByRole("dialog", {
+      name: endringSkjemaTexts.forhandsvisningBehandlerContentLabel,
+    });
+
     expect(
-      forhandsvisningEndringBehandler.props().getDocumentComponents()
-    ).to.deep.equal(expectedBehandlerEndringsdokument);
-    expect(forhandsvisningEndringBehandler.prop("isOpen")).to.be.true;
-    expect(forhandsvisningEndringBehandler.text()).to.contain(
-      endringSkjemaTexts.forhandsvisningTitle
-    );
-    expect(forhandsvisningEndringBehandler.text()).to.contain(
-      endringSkjemaTexts.forhandsvisningBehandlerSubtitle
-    );
+      within(forhandsvisningEndringBehandler).getByRole("heading", {
+        name: endringSkjemaTexts.forhandsvisningTitle,
+      })
+    ).to.exist;
+    expect(
+      within(forhandsvisningEndringBehandler).getByRole("heading", {
+        name: endringSkjemaTexts.forhandsvisningBehandlerSubtitle,
+      })
+    ).to.exist;
+    expectedEndringDocuments.behandler
+      .flatMap((documentComponent) => documentComponent.texts)
+      .forEach((text) => {
+        expect(within(forhandsvisningEndringBehandler).getByText(text)).to
+          .exist;
+      });
   });
 });
 
-const mountEndreDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
-  return mount(
+const renderEndreDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
+  return render(
     <MemoryRouter
       initialEntries={[`${dialogmoteRoutePath}/${dialogmote.uuid}/endre`]}
     >
@@ -462,212 +355,28 @@ const mountEndreDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
   );
 };
 
-const expectedArbeidsgiverEndringsdokument = (medBehandler = false) => [
-  {
-    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [
-      `${endreTidStedTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
-        dialogmote.tid
-      )}.`,
-    ],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [endreTidStedTexts.intro2],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [
-      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
-        genererDato(nyDatoAsISODateString, moteKlokkeslett)
-      ),
-    ],
-    title: "Møtetidspunkt",
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [nyttSted],
-    title: "Møtested",
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [nyVideolink],
-    title: "Lenke til videomøte",
-    type: "LINK",
-  },
-  {
-    texts: [fritekstTilArbeidsgiver],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [
-      medBehandler
-        ? endreTidStedTexts.arbeidsgiver.outro1WithBehandler
-        : endreTidStedTexts.arbeidsgiver.outro1,
-    ],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [
-      medBehandler
-        ? `${
-            endreTidStedTexts.arbeidsgiver.outro2WithBehandler
-          } ${capitalizeWord(behandler.type.toLowerCase())} ${behandlerNavn(
-            behandler
-          )}.`
-        : endreTidStedTexts.arbeidsgiver.outro2,
-    ],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [endreTidStedTexts.preMeeting],
-    title: endreTidStedTexts.preMeetingTitle,
-    type: "PARAGRAPH",
-  },
-  {
-    texts: ["Vennlig hilsen", navEnhet.navn],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [veileder.navn],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: ["Arbeidsgivertelefonen", "55 55 33 36"],
-    type: "PARAGRAPH",
-  },
-];
-const expectedArbeidstakerEndringsdokument = (medBehandler = false) => [
-  {
-    texts: [`Hei ${arbeidstaker.navn}`],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [
-      `${endreTidStedTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
-        dialogmote.tid
-      )}.`,
-    ],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [endreTidStedTexts.intro2],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [
-      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
-        genererDato(nyDatoAsISODateString, moteKlokkeslett)
-      ),
-    ],
-    title: "Møtetidspunkt",
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [nyttSted],
-    title: "Møtested",
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [nyVideolink],
-    title: "Lenke til videomøte",
-    type: "LINK",
-  },
-  {
-    texts: [fritekstTilArbeidstaker],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [
-      medBehandler
-        ? endreTidStedTexts.arbeidstaker.outro1WithBehandler
-        : endreTidStedTexts.arbeidstaker.outro1,
-    ],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [
-      medBehandler
-        ? `${
-            endreTidStedTexts.arbeidstaker.outro2WithBehandler
-          } ${capitalizeWord(behandler.type.toLowerCase())} ${behandlerNavn(
-            behandler
-          )}.`
-        : endreTidStedTexts.arbeidstaker.outro2,
-    ],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [endreTidStedTexts.preMeeting],
-    title: endreTidStedTexts.preMeetingTitle,
-    type: "PARAGRAPH",
-  },
-  {
-    texts: ["Vennlig hilsen", navEnhet.navn],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [veileder.navn],
-    type: "PARAGRAPH",
-  },
-];
-const expectedBehandlerEndringsdokument = [
-  {
-    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [
-      `${endreTidStedTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
-        dialogmote.tid
-      )}.`,
-    ],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [endreTidStedTexts.intro2],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [
-      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
-        genererDato(nyDatoAsISODateString, moteKlokkeslett)
-      ),
-    ],
-    title: "Møtetidspunkt",
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [nyttSted],
-    title: "Møtested",
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [nyVideolink],
-    title: "Lenke til videomøte",
-    type: "LINK",
-  },
-  {
-    texts: [fritekstTilBehandler],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [endreTidStedTexts.behandler.outro1],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [endreTidStedTexts.behandler.outro2],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: ["Vennlig hilsen", navEnhet.navn],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [veileder.navn],
-    type: "PARAGRAPH",
-  },
-];
+const passSkjemaInput = () => {
+  const datoInput = getTextInput("Dato");
+  const klokkeslettInput = screen.getByLabelText("Klokkeslett");
+  const stedInput = getTextInput("Sted");
+  const videoLinkInput = getTextInput("Lenke til videomøte (valgfritt)");
+  const begrunnelseArbeidstakerInput = getTextInput(
+    "Begrunnelse til arbeidstakeren"
+  );
+  const begrunnelseArbeidsgiverInput = getTextInput(
+    "Begrunnelse til nærmeste leder"
+  );
+  changeTextInput(datoInput, endretMote.dato);
+  fireEvent.blur(datoInput);
+  changeTextInput(klokkeslettInput, endretMote.klokkeslett);
+  changeTextInput(stedInput, endretMote.sted);
+  changeTextInput(videoLinkInput, endretMote.videolink);
+  changeTextInput(
+    begrunnelseArbeidstakerInput,
+    moteTekster.fritekstTilArbeidstaker
+  );
+  changeTextInput(
+    begrunnelseArbeidsgiverInput,
+    moteTekster.fritekstTilArbeidsgiver
+  );
+};

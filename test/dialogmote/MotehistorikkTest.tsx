@@ -1,4 +1,3 @@
-import { mount } from "enzyme";
 import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -17,6 +16,7 @@ import {
   VEILEDER_IDENT_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
 } from "../../mock/common/mockConstants";
+import { render, screen } from "@testing-library/react";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -111,7 +111,7 @@ describe("Historiske dialogmøter", () => {
     queryClient = new QueryClient();
   });
   it("Fremviser avholdte og avlyste dialogmøter", () => {
-    const wrapper = mount(
+    render(
       <QueryClientProvider client={queryClient}>
         <Provider store={store(realState)}>
           <MotehistorikkPanel historiskeMoter={dialogmoter} />
@@ -119,7 +119,7 @@ describe("Historiske dialogmøter", () => {
       </QueryClientProvider>
     );
 
-    expect(wrapper.text()).to.contain("Avholdt møte Fredag 15. januar 2021");
-    expect(wrapper.text()).to.contain("Avlyst møte Søndag 22. mars 2020");
+    expect(screen.getByText("Avholdt møte Fredag 15. januar 2021")).to.exist;
+    expect(screen.getByText("Avlyst møte Søndag 22. mars 2020")).to.exist;
   });
 });

@@ -14,22 +14,15 @@ import {
 } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 import { ToggleNames } from "@/data/unleash/unleash_types";
-import {
-  commonTexts,
-  innkallingTexts,
-} from "@/data/dialogmote/dialogmoteTexts";
-import {
-  leggTilDagerPaDato,
-  tilDatoMedUkedagOgManedNavnOgKlokkeslett,
-  toDatePrettyPrint,
-} from "@/utils/datoUtils";
-import { genererDato } from "@/components/mote/utils";
+import { leggTilDagerPaDato, toDatePrettyPrint } from "@/utils/datoUtils";
 import { InputDateStringToISODateString } from "nav-datovelger/lib/utils/dateFormatUtils";
 import {
   ARBEIDSTAKER_DEFAULT,
   ENHET_GRUNERLOKKA,
   VIRKSOMHET_PONTYPANDY,
 } from "../../mock/common/mockConstants";
+import { capitalizeWord } from "@/utils/stringUtils";
+import { behandlerNavn } from "@/utils/behandlerUtils";
 
 export const arbeidstaker = {
   navn: "Arne Arbeidstaker",
@@ -193,181 +186,66 @@ export const mockStateBehandler = {
   },
 };
 
-export const moteSted = "Møtested";
-export const moteDato = toDatePrettyPrint(
-  leggTilDagerPaDato(new Date(), 1)
+const moteSted = "Sted for møtet";
+const moteDato = toDatePrettyPrint(leggTilDagerPaDato(new Date(), 1)) as string;
+const moteDatoAsISODateString = InputDateStringToISODateString(moteDato);
+const moteKlokkeslett = "08:00";
+const moteDatoTid = `${moteDatoAsISODateString}T${moteKlokkeslett}:00`;
+const moteVideoLink = "https://video.nav.no";
+
+const endretSted = "Videomøte endret";
+const endretDato = toDatePrettyPrint(
+  leggTilDagerPaDato(new Date(), 2)
 ) as string;
-export const moteDatoAsISODateString = InputDateStringToISODateString(moteDato);
-export const moteKlokkeslett = "08:00";
-export const moteDatoTid = `${moteDatoAsISODateString}T${moteKlokkeslett}:00`;
-export const moteVideoLink = "https://video.nav.no";
+const endretKlokkeslett = "09:00";
+const endretDatoAsISODateString = InputDateStringToISODateString(endretDato);
+const endretDatoTid = `${InputDateStringToISODateString(
+  endretDato
+)}T${endretKlokkeslett}:00`;
+const endretVideolink = "https://video.nav.no/asxs";
 
-export const fritekstTilBehandler = "Noe fritekst til behandler";
+const fritekstTilBehandler = "Noe fritekst til behandler";
+const fritekstTilArbeidstaker = "Noe fritekst til arbeidstaker";
+const fritekstTilArbeidsgiver = "Noe fritekst til arbeidsgiver";
+const situasjonTekst = "Noe tekst om situasjonen";
+const konklusjonTekst = "Noe tekst om konklusjon";
+const arbeidsgiversOppgave = "Noe tekst om arbeidsgivers oppgave";
+const arbeidstakersOppgave = "Noe tekst om arbeidstakers oppgave";
+const veiledersOppgave = "Noe tekst om veileders oppgave";
+const behandlersOppgave = "Noe tekst om behandlers oppgave";
 
-export const expectedBehandlerInnkalling = [
-  {
-    texts: [
-      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
-        genererDato(moteDatoAsISODateString, moteKlokkeslett)
-      ),
-    ],
-    title: innkallingTexts.moteTidTitle,
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [moteSted],
-    title: innkallingTexts.moteStedTitle,
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [moteVideoLink],
-    title: innkallingTexts.videoLinkTitle,
-    type: "LINK",
-  },
-  {
-    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [innkallingTexts.behandler.intro1],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [innkallingTexts.behandler.intro2],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [fritekstTilBehandler],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [innkallingTexts.behandler.outro1],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [innkallingTexts.behandler.outro2],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [commonTexts.hilsen, navEnhet.navn],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [veileder.navn],
-    type: "PARAGRAPH",
-  },
-];
-export const fritekstTilArbeidstaker = "Noe fritekst til arbeidstaker";
-export const expectedArbeidstakerInnkalling = [
-  {
-    texts: [
-      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
-        genererDato(moteDatoAsISODateString, moteKlokkeslett)
-      ),
-    ],
-    title: innkallingTexts.moteTidTitle,
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [moteSted],
-    title: innkallingTexts.moteStedTitle,
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [moteVideoLink],
-    title: innkallingTexts.videoLinkTitle,
-    type: "LINK",
-  },
-  {
-    texts: [`Hei ${arbeidstaker.navn}`],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [innkallingTexts.arbeidstaker.intro1],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [innkallingTexts.arbeidstaker.intro2],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [fritekstTilArbeidstaker],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [innkallingTexts.arbeidstaker.outro1],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [innkallingTexts.arbeidstaker.outro2Text],
-    title: innkallingTexts.arbeidstaker.outro2Title,
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [commonTexts.hilsen, navEnhet.navn],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [veileder.navn],
-    type: "PARAGRAPH",
-  },
-];
+export const annenDeltakerNavn = "Bodil Bolle";
+export const annenDeltakerFunksjon = "Verneombud";
+export const lederNavn = "Grønn Bamse";
+export const behandlerDeltakerTekst = `Behandler: ${capitalizeWord(
+  behandler.type.toLowerCase()
+)} ${behandlerNavn(behandler)}`;
 
-export const fritekstTilArbeidsgiver = "Noe fritekst til arbeidsgiver";
-export const expectedArbeidsgiverInnkalling = [
-  {
-    texts: [
-      tilDatoMedUkedagOgManedNavnOgKlokkeslett(
-        genererDato(moteDatoAsISODateString, moteKlokkeslett)
-      ),
-    ],
-    title: innkallingTexts.moteTidTitle,
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [moteSted],
-    title: innkallingTexts.moteStedTitle,
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [moteVideoLink],
-    title: innkallingTexts.videoLinkTitle,
-    type: "LINK",
-  },
-  {
-    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [innkallingTexts.arbeidsgiver.intro1],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [innkallingTexts.arbeidsgiver.intro2],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [fritekstTilArbeidsgiver],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [innkallingTexts.arbeidsgiver.outro1],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [innkallingTexts.arbeidsgiver.outro2],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [commonTexts.hilsen, navEnhet.navn],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [veileder.navn],
-    type: "PARAGRAPH",
-  },
-  {
-    texts: [commonTexts.arbeidsgiverTlfLabel, commonTexts.arbeidsgiverTlf],
-    type: "PARAGRAPH",
-  },
-];
+export const mote = {
+  sted: moteSted,
+  dato: moteDato,
+  datoAsISODateString: moteDatoAsISODateString,
+  klokkeslett: moteKlokkeslett,
+  datoTid: moteDatoTid,
+  videolink: moteVideoLink,
+};
+export const endretMote: typeof mote = {
+  sted: endretSted,
+  dato: endretDato,
+  datoAsISODateString: endretDatoAsISODateString,
+  datoTid: endretDatoTid,
+  klokkeslett: endretKlokkeslett,
+  videolink: endretVideolink,
+};
+
+export const moteTekster = {
+  fritekstTilArbeidstaker,
+  fritekstTilArbeidsgiver,
+  fritekstTilBehandler,
+  situasjonTekst,
+  konklusjonTekst,
+  arbeidsgiversOppgave,
+  arbeidstakersOppgave,
+  veiledersOppgave,
+  behandlersOppgave,
+};
