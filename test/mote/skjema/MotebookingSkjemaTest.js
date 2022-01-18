@@ -67,7 +67,7 @@ describe("MotebookingSkjemaTest", () => {
           sendingFeilet
         />
       );
-      expect(compo.find(AlertStripe)).to.have.length(1);
+      expect(compo.find(AlertStripe)).to.have.length(2);
     });
 
     describe("Visning av arbeidstakers opplysninger", () => {
