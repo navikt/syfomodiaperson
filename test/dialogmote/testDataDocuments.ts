@@ -34,6 +34,10 @@ import { behandlerNavn } from "@/utils/behandlerUtils";
 
 const expectedArbeidstakerInnkalling: DocumentComponentDto[] = [
   {
+    texts: [`Sendt ${tilDatoMedUkedagOgManedNavn(new Date())}`],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [
       tilDatoMedUkedagOgManedNavnOgKlokkeslett(
         genererDato(mote.datoAsISODateString, mote.klokkeslett)
@@ -88,6 +92,10 @@ const expectedArbeidstakerInnkalling: DocumentComponentDto[] = [
 ];
 
 const expectedArbeidsgiverInnkalling: DocumentComponentDto[] = [
+  {
+    texts: [`Sendt ${tilDatoMedUkedagOgManedNavn(new Date())}`],
+    type: DocumentComponentType.PARAGRAPH,
+  },
   {
     texts: [
       tilDatoMedUkedagOgManedNavnOgKlokkeslett(
@@ -146,6 +154,10 @@ const expectedArbeidsgiverInnkalling: DocumentComponentDto[] = [
 ];
 
 const expectedBehandlerInnkalling: DocumentComponentDto[] = [
+  {
+    texts: [`Sendt ${tilDatoMedUkedagOgManedNavn(new Date())}`],
+    type: DocumentComponentType.PARAGRAPH,
+  },
   {
     texts: [
       tilDatoMedUkedagOgManedNavnOgKlokkeslett(
