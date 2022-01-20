@@ -1,7 +1,7 @@
 import { DialogmoteInnkallingSkjemaValues } from "@/components/dialogmote/innkalling/DialogmoteInnkallingSkjema";
 import { DocumentComponentDto } from "@/data/dialogmote/types/dialogmoteTypes";
 import {
-  tilDatoMedUkedagOgManedNavn,
+  tilDatoMedManedNavnOgKlokkeslettWithComma,
   tilDatoMedUkedagOgManedNavnOgKlokkeslett,
 } from "@/utils/datoUtils";
 import { genererDato } from "../../components/mote/utils";
@@ -113,7 +113,9 @@ const fellesInfo = (
 ): DocumentComponentDto[] => {
   const { dato, klokkeslett, sted, videoLink } = values;
   const components = [
-    createParagraph(`Sendt ${tilDatoMedUkedagOgManedNavn(new Date())}`),
+    createParagraph(
+      `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
+    ),
     createParagraphWithTitle(
       innkallingTexts.moteTidTitle,
       dato && klokkeslett

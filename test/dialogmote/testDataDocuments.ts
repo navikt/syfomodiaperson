@@ -34,7 +34,7 @@ import { behandlerNavn } from "@/utils/behandlerUtils";
 
 const expectedArbeidstakerInnkalling: DocumentComponentDto[] = [
   {
-    texts: [`Sendt ${tilDatoMedUkedagOgManedNavn(new Date())}`],
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -93,7 +93,7 @@ const expectedArbeidstakerInnkalling: DocumentComponentDto[] = [
 
 const expectedArbeidsgiverInnkalling: DocumentComponentDto[] = [
   {
-    texts: [`Sendt ${tilDatoMedUkedagOgManedNavn(new Date())}`],
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -155,7 +155,7 @@ const expectedArbeidsgiverInnkalling: DocumentComponentDto[] = [
 
 const expectedBehandlerInnkalling: DocumentComponentDto[] = [
   {
-    texts: [`Sendt ${tilDatoMedUkedagOgManedNavn(new Date())}`],
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
