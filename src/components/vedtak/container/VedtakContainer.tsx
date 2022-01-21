@@ -43,7 +43,7 @@ const VedtakContainer = () => {
   }, [dispatch, fnr]);
 
   return (
-    <Side fnr={fnr} tittel={texts.pageTitle} aktivtMenypunkt={VEDTAK}>
+    <Side tittel={texts.pageTitle} aktivtMenypunkt={VEDTAK}>
       <SideLaster henter={isLoading} hentingFeilet={isError}>
         <Row>
           <StyledAlertStripe>{texts.comingSoon}</StyledAlertStripe>

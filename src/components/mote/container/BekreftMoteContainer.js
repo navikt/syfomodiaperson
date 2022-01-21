@@ -47,7 +47,6 @@ export class BekreftMoteSide extends Component {
     const {
       alternativ,
       henterMoterBool,
-      fnr,
       mote,
       bekrefter,
       bekreftFeilet,
@@ -56,7 +55,7 @@ export class BekreftMoteSide extends Component {
       history,
     } = this.props;
     return (
-      <Side fnr={fnr} tittel="Bekreft møte" aktivtMenypunkt={MOETEPLANLEGGER}>
+      <Side tittel="Bekreft møte" aktivtMenypunkt={MOETEPLANLEGGER}>
         {(() => {
           if (henterMoterBool) {
             return <AppSpinner />;

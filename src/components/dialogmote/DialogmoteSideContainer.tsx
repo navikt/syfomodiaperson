@@ -10,7 +10,6 @@ import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/components/dialogmote/B
 import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
 
 interface DialogmoteSideProps {
   title: string;
@@ -30,7 +29,6 @@ export const DialogmoteSideContainer = ({
   const { dialogmoteUuid } = useParams<{
     dialogmoteUuid: string;
   }>();
-  const fnr = useValgtPersonident();
   const { isLoading, isError, data: dialogmoter } = useDialogmoterQuery();
   const { isDm2FysiskBrevEnabled } = useDM2FeatureToggles();
   const { brukerKanIkkeVarslesDigitalt } = useNavBrukerData();
@@ -40,7 +38,7 @@ export const DialogmoteSideContainer = ({
   );
 
   return (
-    <Side fnr={fnr} tittel={title} aktivtMenypunkt={MOETEPLANLEGGER}>
+    <Side tittel={title} aktivtMenypunkt={MOETEPLANLEGGER}>
       <SideLaster henter={isLoading} hentingFeilet={isError}>
         <Sidetopp tittel={header} />
         {isDm2FysiskBrevEnabled && brukerKanIkkeVarslesDigitalt && (

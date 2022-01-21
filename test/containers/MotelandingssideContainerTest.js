@@ -19,7 +19,7 @@ import {
 } from "../../mock/common/mockConstants";
 
 const realState = createStore(rootReducer).getState();
-const fnr = ARBEIDSTAKER_DEFAULT;
+const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient;
 
 describe("MotelandingssideContainer", () => {
@@ -33,6 +33,7 @@ describe("MotelandingssideContainer", () => {
       queryClient.setQueryData(dialogmoterQueryKeys.dialogmoter(fnr), () => []);
       store = configureStore([]);
       mockState = {
+        valgtbruker: { personident: fnr },
         unleash: {
           fetching: false,
         },
@@ -105,7 +106,7 @@ describe("MotelandingssideContainer", () => {
       component = mount(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
-            <Motelandingsside fnr={ARBEIDSTAKER_DEFAULT} />
+            <Motelandingsside />
           </Provider>
         </QueryClientProvider>
       );
@@ -120,7 +121,7 @@ describe("MotelandingssideContainer", () => {
       component = mount(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
-            <Motelandingsside fnr={ARBEIDSTAKER_DEFAULT} />
+            <Motelandingsside />
           </Provider>
         </QueryClientProvider>
       );
@@ -138,7 +139,7 @@ describe("MotelandingssideContainer", () => {
       component = mount(
         <QueryClientProvider client={queryClient}>
           <Provider store={mockStore}>
-            <Motelandingsside fnr={ARBEIDSTAKER_DEFAULT} />
+            <Motelandingsside />
           </Provider>
         </QueryClientProvider>
       );
@@ -167,7 +168,7 @@ describe("MotelandingssideContainer", () => {
       component = mount(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
-            <Motelandingsside fnr={ARBEIDSTAKER_DEFAULT} />
+            <Motelandingsside />
           </Provider>
         </QueryClientProvider>
       );
@@ -186,7 +187,7 @@ describe("MotelandingssideContainer", () => {
       component = mount(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
-            <Motelandingsside fnr={ARBEIDSTAKER_DEFAULT} />
+            <Motelandingsside />
           </Provider>
         </QueryClientProvider>
       );
@@ -211,7 +212,7 @@ describe("MotelandingssideContainer", () => {
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
             <MemoryRouter>
-              <Motelandingsside fnr="887766" />
+              <Motelandingsside />
             </MemoryRouter>
           </Provider>
         </QueryClientProvider>
@@ -234,7 +235,7 @@ describe("MotelandingssideContainer", () => {
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
             <MemoryRouter>
-              <Motelandingsside fnr="887766" />
+              <Motelandingsside />
             </MemoryRouter>
           </Provider>
         </QueryClientProvider>
@@ -256,7 +257,7 @@ describe("MotelandingssideContainer", () => {
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
             <MemoryRouter>
-              <Motelandingsside fnr="887766" />
+              <Motelandingsside />
             </MemoryRouter>
           </Provider>
         </QueryClientProvider>
@@ -270,7 +271,7 @@ describe("MotelandingssideContainer", () => {
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
             <MemoryRouter>
-              <Motelandingsside fnr="887766" />
+              <Motelandingsside />
             </MemoryRouter>
           </Provider>
         </QueryClientProvider>

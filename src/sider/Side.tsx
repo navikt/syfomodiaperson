@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Column, Container, Row } from "nav-frontend-grid";
-import GlobalNavigasjonContainer from "../components/globalnavigasjon/GlobalNavigasjonContainer";
 import Personkort from "../components/personkort/Personkort";
 import Decorator from "../decorator/Decorator";
 import DocumentTitle from "react-document-title";
@@ -9,6 +8,7 @@ import {
   useHasLoadedMetaData,
   useTrackPageLoad,
 } from "@/data/logging/loggingHooks";
+import { GlobalNavigasjon } from "@/components/globalnavigasjon/GlobalNavigasjon";
 
 const StyledContainer = styled(Container)`
   width: 95%;
@@ -18,11 +18,10 @@ interface SideProps {
   tittel: string;
   children?: any;
   aktivtMenypunkt: string;
-  fnr?: string;
 }
 
 const Side = (sideProps: SideProps) => {
-  const { tittel, children, aktivtMenypunkt, fnr } = sideProps;
+  const { tittel, children, aktivtMenypunkt } = sideProps;
   const metaDataLoaded = useHasLoadedMetaData();
   const trackPageLoad = useTrackPageLoad();
 
@@ -46,10 +45,7 @@ const Side = (sideProps: SideProps) => {
           </Row>
           <Row>
             <nav className="col-xs-12 col-sm-3">
-              <GlobalNavigasjonContainer
-                fnr={fnr}
-                aktivtMenypunkt={aktivtMenypunkt}
-              />
+              <GlobalNavigasjon aktivtMenypunkt={aktivtMenypunkt} />
             </nav>
             <Column className="col-xs-12 col-sm-9">{children}</Column>
           </Row>

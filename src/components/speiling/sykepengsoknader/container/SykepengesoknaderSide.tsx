@@ -42,11 +42,7 @@ const SykepengesoknaderSide = (): ReactElement => {
     },
   ];
   return (
-    <Side
-      fnr={fnr}
-      tittel="Sykepengesøknader"
-      aktivtMenypunkt={SYKEPENGESOKNADER}
-    >
+    <Side tittel="Sykepengesøknader" aktivtMenypunkt={SYKEPENGESOKNADER}>
       <SideLaster
         henter={!harForsoktHentetSoknader}
         hentingFeilet={hentingFeiletSoknader}

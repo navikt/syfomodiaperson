@@ -6,7 +6,6 @@ import DialogmoteInnkallingSkjema from "./DialogmoteInnkallingSkjema";
 import SideLaster from "../../SideLaster";
 import styled from "styled-components";
 import { useLedere } from "@/hooks/useLedere";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { AlertstripeFullbredde } from "../../AlertstripeFullbredde";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/components/dialogmote/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
@@ -26,7 +25,6 @@ const DialogmoteInnkallingWarningAlert = styled(AlertstripeFullbredde)`
 `;
 
 const DialogmoteInnkallingContainer = (): ReactElement => {
-  const fnr = useValgtPersonident();
   const { hentingLedereForsokt, hentingLedereFeilet } = useLedere();
   const {
     triedFetchingToggles,
@@ -41,7 +39,7 @@ const DialogmoteInnkallingContainer = (): ReactElement => {
   }
 
   return (
-    <Side fnr={fnr} tittel={texts.title} aktivtMenypunkt={MOETEPLANLEGGER}>
+    <Side tittel={texts.title} aktivtMenypunkt={MOETEPLANLEGGER}>
       <SideLaster
         henter={!hentingLedereForsokt}
         hentingFeilet={hentingLedereFeilet}

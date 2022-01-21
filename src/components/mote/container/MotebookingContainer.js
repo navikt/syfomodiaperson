@@ -30,11 +30,7 @@ export class MotebookingSide extends Component {
       moterTilgang,
     } = this.props;
     return (
-      <Side
-        fnr={fnr}
-        tittel={texts.pageTitle}
-        aktivtMenypunkt={MOETEPLANLEGGER}
-      >
+      <Side tittel={texts.pageTitle} aktivtMenypunkt={MOETEPLANLEGGER}>
         {(() => {
           if (henter) {
             return <AppSpinner />;

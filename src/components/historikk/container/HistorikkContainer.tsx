@@ -111,7 +111,7 @@ export const HistorikkContainer = (): ReactElement => {
     tilfeller.length === 0 || (hentetHistorikk && historikkEvents.length === 0);
 
   return (
-    <Side fnr={fnr} tittel={texts.pageTitle} aktivtMenypunkt={HISTORIKK}>
+    <Side tittel={texts.pageTitle} aktivtMenypunkt={HISTORIKK}>
       <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
         <Sidetopp tittel={texts.topp} />
         {ingenHistorikk ? (

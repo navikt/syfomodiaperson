@@ -84,11 +84,7 @@ const DinSykmeldingSide = (): ReactElement => {
   ];
 
   return (
-    <Side
-      fnr={fnr}
-      tittel={texts.pageTitleSykmelding}
-      aktivtMenypunkt={SYKMELDINGER}
-    >
+    <Side tittel={texts.pageTitleSykmelding} aktivtMenypunkt={SYKMELDINGER}>
       <SideLaster henter={henter} hentingFeilet={hentingSykmeldingerFeilet}>
         <div>
           <Speilingvarsel brukernavn={brukernavn} />

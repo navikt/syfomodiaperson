@@ -55,11 +55,7 @@ export const NokkelinformasjonSide = () => {
   }, [dispatch, fnr, ledereState]);
 
   return (
-    <Side
-      fnr={fnr}
-      tittel={texts.pageTitle}
-      aktivtMenypunkt={NOKKELINFORMASJON}
-    >
+    <Side tittel={texts.pageTitle} aktivtMenypunkt={NOKKELINFORMASJON}>
       <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
         <Nokkelinformasjon
           fnr={fnr}

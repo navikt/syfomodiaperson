@@ -15,16 +15,14 @@ import { useOppfoelgingsDialoger } from "@/hooks/useOppfoelgingsDialoger";
 import { DialogmoteOnskePanel } from "../../motebehov/DialogmoteOnskePanel";
 import { MotehistorikkPanel } from "../../dialogmote/motehistorikk/MotehistorikkPanel";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
-
-interface Props {
-  fnr: string;
-}
+import { useValgtPersonident } from "@/hooks/useValgtBruker";
 
 const texts = {
   dialogmoter: "Dialogmøter",
 };
 
-export const Motelandingsside = ({ fnr }: Props) => {
+export const Motelandingsside = () => {
+  const fnr = useValgtPersonident();
   const dispatch = useDispatch();
 
   const {

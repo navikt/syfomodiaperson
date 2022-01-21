@@ -33,14 +33,13 @@ export class AvbrytMoteSide extends Component {
       avbryter,
       avbrytFeilet,
       hentingFeiletBool,
-      fnr,
       mote,
       henter,
       arbeidstaker,
       history,
     } = this.props;
     return (
-      <Side fnr={fnr} tittel="Avbryt møteforespørsel">
+      <Side tittel="Avbryt møteforespørsel">
         {(() => {
           if (hentingFeiletBool) {
             return <Feilmelding />;

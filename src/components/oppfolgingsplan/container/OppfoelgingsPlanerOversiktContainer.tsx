@@ -59,11 +59,7 @@ export const OppfoelgingsPlanerOversiktContainer = () => {
   }, [dispatch, fnr, personOppgaver]);
 
   return (
-    <Side
-      fnr={fnr}
-      tittel="Oppfølgingsplaner"
-      aktivtMenypunkt={OPPFOELGINGSPLANER}
-    >
+    <Side tittel="Oppfølgingsplaner" aktivtMenypunkt={OPPFOELGINGSPLANER}>
       <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
         {(() => {
           if (

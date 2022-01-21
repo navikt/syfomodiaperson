@@ -47,7 +47,7 @@ const SykmeldingerSide = (): ReactElement => {
   ];
 
   return (
-    <Side fnr={fnr} tittel="Sykmeldinger" aktivtMenypunkt={SYKMELDINGER}>
+    <Side tittel="Sykmeldinger" aktivtMenypunkt={SYKMELDINGER}>
       <SideLaster henter={henter} hentingFeilet={hentingSykmeldingerFeilet}>
         <div>
           <Pengestopp sykmeldinger={sykmeldinger} />
