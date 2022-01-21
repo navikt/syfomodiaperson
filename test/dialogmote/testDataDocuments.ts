@@ -32,7 +32,9 @@ import { genererDato } from "@/components/mote/utils";
 import { capitalizeWord } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 
-const expectedArbeidstakerInnkalling: DocumentComponentDto[] = [
+const expectedArbeidstakerInnkalling = (
+  medBehandler = false
+): DocumentComponentDto[] => [
   {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
@@ -65,7 +67,11 @@ const expectedArbeidstakerInnkalling: DocumentComponentDto[] = [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [innkallingTexts.arbeidstaker.intro2],
+    texts: [
+      medBehandler
+        ? innkallingTexts.arbeidstaker.intro2WithBehandler
+        : innkallingTexts.arbeidstaker.intro2,
+    ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -73,7 +79,13 @@ const expectedArbeidstakerInnkalling: DocumentComponentDto[] = [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [innkallingTexts.arbeidstaker.outro1],
+    texts: [
+      medBehandler
+        ? `${innkallingTexts.arbeidstaker.outro1WithBehandler} ${capitalizeWord(
+            behandler.type.toLowerCase()
+          )} ${behandlerNavn(behandler)}.`
+        : innkallingTexts.arbeidstaker.outro1,
+    ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -91,7 +103,9 @@ const expectedArbeidstakerInnkalling: DocumentComponentDto[] = [
   },
 ];
 
-const expectedArbeidsgiverInnkalling: DocumentComponentDto[] = [
+const expectedArbeidsgiverInnkalling = (
+  medBehandler = false
+): DocumentComponentDto[] => [
   {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
@@ -124,7 +138,11 @@ const expectedArbeidsgiverInnkalling: DocumentComponentDto[] = [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [innkallingTexts.arbeidsgiver.intro2],
+    texts: [
+      medBehandler
+        ? innkallingTexts.arbeidsgiver.intro2withBehandler
+        : innkallingTexts.arbeidsgiver.intro2,
+    ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -136,7 +154,13 @@ const expectedArbeidsgiverInnkalling: DocumentComponentDto[] = [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [innkallingTexts.arbeidsgiver.outro2],
+    texts: [
+      medBehandler
+        ? `${innkallingTexts.arbeidsgiver.outro2MedBehandler} ${capitalizeWord(
+            behandler.type.toLowerCase()
+          )} ${behandlerNavn(behandler)}.`
+        : innkallingTexts.arbeidsgiver.outro2,
+    ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -588,8 +612,10 @@ export const expectedReferatDocument: DocumentComponentDto[] = [
 ];
 
 export const expectedInnkallingDocuments = {
-  arbeidsgiver: expectedArbeidsgiverInnkalling,
-  arbeidstaker: expectedArbeidstakerInnkalling,
+  arbeidsgiver: (medBehandler = false) =>
+    expectedArbeidsgiverInnkalling(medBehandler),
+  arbeidstaker: (medBehandler = false) =>
+    expectedArbeidstakerInnkalling(medBehandler),
   behandler: expectedBehandlerInnkalling,
 };
 

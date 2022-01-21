@@ -67,7 +67,8 @@ describe("Dialogmoteinnkallingskjema", () => {
         name: innkallingSkjemaTexts.forhandsvisningArbeidstakerSubtitle,
       })
     ).to.exist;
-    expectedInnkallingDocuments.arbeidstaker
+    expectedInnkallingDocuments
+      .arbeidstaker()
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningInnkallingArbeidstaker).getByText(text)).to
@@ -98,7 +99,8 @@ describe("Dialogmoteinnkallingskjema", () => {
         name: innkallingSkjemaTexts.forhandsvisningArbeidsgiverSubtitle,
       })
     ).to.exist;
-    expectedInnkallingDocuments.arbeidsgiver
+    expectedInnkallingDocuments
+      .arbeidsgiver()
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningInnkallingArbeidsgiver).getByText(text)).to

@@ -87,14 +87,16 @@ const toInnkalling = (
       virksomhetsnummer: values.arbeidsgiver,
       fritekstInnkalling: values.fritekstArbeidsgiver,
       innkalling: innkallingDocumentGenerator.generateArbeidsgiverInnkallingDocument(
-        values
+        values,
+        valgtBehandler
       ),
     },
     arbeidstaker: {
       personIdent: fnr,
       fritekstInnkalling: values.fritekstArbeidstaker,
       innkalling: innkallingDocumentGenerator.generateArbeidstakerInnkallingDocument(
-        values
+        values,
+        valgtBehandler
       ),
     },
     tidSted: {

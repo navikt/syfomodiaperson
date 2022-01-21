@@ -115,12 +115,12 @@ describe("Dialogmoteinnkallingskjema", () => {
       arbeidsgiver: {
         virksomhetsnummer: arbeidsgiver.orgnr,
         fritekstInnkalling: moteTekster.fritekstTilArbeidsgiver,
-        innkalling: expectedInnkallingDocuments.arbeidsgiver,
+        innkalling: expectedInnkallingDocuments.arbeidsgiver(true),
       },
       arbeidstaker: {
         personIdent: arbeidstaker.personident,
         fritekstInnkalling: moteTekster.fritekstTilArbeidstaker,
-        innkalling: expectedInnkallingDocuments.arbeidstaker,
+        innkalling: expectedInnkallingDocuments.arbeidstaker(true),
       },
       behandler: {
         personIdent: behandler.fnr,

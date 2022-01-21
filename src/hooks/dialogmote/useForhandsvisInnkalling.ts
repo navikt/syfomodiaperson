@@ -23,12 +23,12 @@ import { useForhandsvisningIntro } from "@/hooks/dialogmote/useForhandsvisningIn
 export interface ForhandsvisInnkallingGenerator {
   generateArbeidstakerInnkallingDocument(
     values: Partial<DialogmoteInnkallingSkjemaValues>,
-    valgtBehandler?: BehandlerDialogmeldingDTO
+    valgtBehandler: BehandlerDialogmeldingDTO | undefined
   ): DocumentComponentDto[];
 
   generateArbeidsgiverInnkallingDocument(
     values: Partial<DialogmoteInnkallingSkjemaValues>,
-    valgtBehandler?: BehandlerDialogmeldingDTO
+    valgtBehandler: BehandlerDialogmeldingDTO | undefined
   ): DocumentComponentDto[];
 
   generateBehandlerInnkallingDocument(
@@ -171,11 +171,11 @@ const addBehandlerTypeAndName = (
 ) => {
   return `${preText} ${capitalizeWord(valgtBehandler.type)} ${behandlerNavn(
     valgtBehandler
-  )}`;
+  )}.`;
 };
 
 const arbeidstakerOutro = (
-  valgtBehandler?: BehandlerDialogmeldingDTO
+  valgtBehandler: BehandlerDialogmeldingDTO | undefined
 ): DocumentComponentDto[] => {
   const outroParagraph1 = !!valgtBehandler
     ? createParagraph(
@@ -196,7 +196,7 @@ const arbeidstakerOutro = (
 };
 
 const arbeidsgiverOutro = (
-  valgtBehandler?: BehandlerDialogmeldingDTO
+  valgtBehandler: BehandlerDialogmeldingDTO | undefined
 ): DocumentComponentDto[] => {
   const outroParagraph2 = !!valgtBehandler
     ? createParagraph(
