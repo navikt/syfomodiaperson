@@ -22,6 +22,24 @@ export enum SvarTypeDTO {
   RADIO_GRUPPE_TIMER_PROSENT = "RADIO_GRUPPE_TIMER_PROSENT",
   RADIO = "RADIO",
   RADIO_GRUPPE_UKEKALENDER = "RADIO_GRUPPE_UKEKALENDER",
+  BELOP = "BELOP",
+  KILOMETER = "KILOMETER",
+  DATOER = "DATOER",
+  KVITTERING = "KVITTERING",
+}
+
+enum UtgiftTyper {
+  OFFENTLIG_TRANSPORT = "Offentlig transport",
+  TAXI = "Taxi",
+  PARKERING = "Parkering",
+  ANNET = "Annet",
+}
+
+export interface Kvittering {
+  blobId: string;
+  belop: number; // Beløp i heltall øre
+  typeUtgift: keyof typeof UtgiftTyper;
+  opprettet?: string;
 }
 
 export interface SvarDTO {
@@ -54,6 +72,7 @@ export enum SoknadstypeDTO {
   ARBEIDSLEDIG = "ARBEIDSLEDIG",
   BEHANDLINGSDAGER = "BEHANDLINGSDAGER",
   ANNET_ARBEIDSFORHOLD = "ANNET_ARBEIDSFORHOLD",
+  REISETILSKUDD = "REISETILSKUDD",
 }
 
 export enum SoknadstatusDTO {

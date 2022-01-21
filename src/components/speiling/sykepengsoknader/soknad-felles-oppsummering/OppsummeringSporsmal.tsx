@@ -13,6 +13,7 @@ import {
   SporsmalDTO,
   SvarTypeDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import OppsummeringKvittering from "@/components/speiling/sykepengsoknader/soknad-felles-oppsummering/OppsummeringKvittering";
 
 export interface OppsummeringSporsmalProps extends SporsmalDTO {
   overskriftsnivaa?: number;
@@ -29,7 +30,8 @@ const OppsummeringSporsmal = (
     case SvarTypeDTO.JA_NEI: {
       return <OppsummeringJaEllerNei {...props} />;
     }
-    case SvarTypeDTO.DATO: {
+    case SvarTypeDTO.DATO:
+    case SvarTypeDTO.DATOER: {
       return <OppsummeringDato {...props} />;
     }
     case SvarTypeDTO.PERIODER: {
@@ -50,7 +52,9 @@ const OppsummeringSporsmal = (
     }
     case SvarTypeDTO.TALL:
     case SvarTypeDTO.PROSENT:
-    case SvarTypeDTO.TIMER: {
+    case SvarTypeDTO.TIMER:
+    case SvarTypeDTO.BELOP:
+    case SvarTypeDTO.KILOMETER: {
       return <OppsummeringTall {...props} />;
     }
     case SvarTypeDTO.RADIO_GRUPPE_TIMER_PROSENT:
@@ -59,6 +63,9 @@ const OppsummeringSporsmal = (
     }
     case SvarTypeDTO.RADIO_GRUPPE_UKEKALENDER:
       return <OppsummeringGruppeRadioUkekalender {...props} />;
+    case SvarTypeDTO.KVITTERING: {
+      return <OppsummeringKvittering {...props} />;
+    }
     default: {
       return null;
     }

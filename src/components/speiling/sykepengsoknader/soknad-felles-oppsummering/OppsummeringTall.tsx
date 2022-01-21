@@ -3,11 +3,24 @@ import OppsummeringSporsmalscontainer from "./OppsummeringSporsmalscontainer";
 import OppsummeringSporsmalstekst from "./OppsummeringSporsmalstekst";
 import { getKey } from "./Oppsummeringsvisning";
 import { OppsummeringSporsmalProps } from "./OppsummeringSporsmal";
-import { SvarTypeDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import {
+  SvarDTO,
+  SvarTypeDTO,
+} from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 
 const texts = {
   timerTot: "timer totalt",
   prosent: "prosent",
+};
+
+const verdiAdjustedIfBelop = (
+  svar: SvarDTO,
+  svartype?: SvarTypeDTO
+): string => {
+  if (svartype == SvarTypeDTO.BELOP) {
+    return (Number(svar.verdi) / 100).toString();
+  }
+  return svar.verdi as string;
 };
 
 const OppsummeringTall = ({
@@ -26,11 +39,14 @@ const OppsummeringTall = ({
         {sporsmalstekst}
       </OppsummeringSporsmalstekst>
       <div className="oppsummering__tekstsvar">
-        {svar.map((svarverdi, index) => (
-          <p className="oppsummering__tekst" key={getKey(tag, index)}>
-            {svarverdi.verdi} {label}
-          </p>
-        ))}
+        {svar.map((svarverdi, index) => {
+          const verdi = verdiAdjustedIfBelop(svarverdi, svartype);
+          return (
+            <p className="oppsummering__tekst" key={getKey(tag, index)}>
+              {verdi} {label}
+            </p>
+          );
+        })}
       </div>
     </OppsummeringSporsmalscontainer>
   );

@@ -33,7 +33,7 @@ export const KorrigertAv = ({ soknadId }: KorrigertAvProps): ReactElement => {
       <p className="sist">
         <Link
           className="lenke"
-          to={`/sykefravaer/sykepengesoknader/${soknadId}`}
+          to={`/sykefravaer/sykepengesoknader/${korrigertAvSoknad?.id}`}
         >
           {texts.lenketekst}
         </Link>

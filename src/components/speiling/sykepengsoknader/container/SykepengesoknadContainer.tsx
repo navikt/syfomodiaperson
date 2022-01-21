@@ -20,6 +20,7 @@ import {
   SoknadstypeDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { useSykmeldinger } from "@/data/sykmelding/sykmeldinger_hooks";
+import SykepengesoknadReisetilskudd from "@/components/speiling/sykepengsoknader/soknad-reisetilskudd/SykepengesoknadReisetilskudd";
 
 const SykepengesoknadContainer = (): ReactElement => {
   const dispatch = useDispatch();
@@ -120,6 +121,16 @@ const SykepengesoknadContainer = (): ReactElement => {
           case SoknadstypeDTO.BEHANDLINGSDAGER: {
             return (
               <SykepengesoknadBehandlingsdager
+                brodsmuler={brodsmuler}
+                brukernavn={brukernavn}
+                soknad={soknad}
+              />
+            );
+          }
+          case SoknadstypeDTO.REISETILSKUDD: {
+            return (
+              <SykepengesoknadReisetilskudd
+                fnr={fnr}
                 brodsmuler={brodsmuler}
                 brukernavn={brukernavn}
                 soknad={soknad}

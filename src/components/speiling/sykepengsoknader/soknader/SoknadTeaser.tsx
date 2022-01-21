@@ -27,6 +27,7 @@ const texts = {
   avbrutt: "Avbrutt av deg",
   teaser: "Gjelder perioden",
   utland: "Søknad om å beholde sykepenger utenfor EØS\n",
+  reisetilskudd: "Søknad om reisetilskudd",
   tittel: "Søknad om sykepenger",
 };
 
@@ -203,15 +204,27 @@ const TeaserStatus = ({ soknad }: TeaserComponentProps) => (
   </p>
 );
 
+const tittelFromSoknadstype = (soknadstype: SoknadstypeDTO) => {
+  switch (soknadstype) {
+    case SoknadstypeDTO.OPPHOLD_UTLAND: {
+      return texts.utland;
+    }
+    case SoknadstypeDTO.REISETILSKUDD: {
+      return texts.reisetilskudd;
+    }
+    default: {
+      return texts.tittel;
+    }
+  }
+};
+
 const TeaserTittel = ({ soknad }: TeaserComponentProps) => (
   <h3 className="js-title" id={`soknad-header-${soknad.id}`}>
     <small className="inngangspanel__meta js-meta">
       {textDato(tilLesbarDatoMedArstall(soknad.opprettetDato))}
     </small>
     <span className="inngangspanel__tittel">
-      {soknad.soknadstype === SoknadstypeDTO.OPPHOLD_UTLAND
-        ? texts.utland
-        : texts.tittel}
+      {tittelFromSoknadstype(soknad.soknadstype)}
     </span>
   </h3>
 );
