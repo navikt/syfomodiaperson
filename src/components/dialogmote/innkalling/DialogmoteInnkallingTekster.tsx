@@ -9,6 +9,8 @@ import { Forhandsvisning } from "../Forhandsvisning";
 import FritekstSeksjon from "../FritekstSeksjon";
 import { DialogmoteInnkallingTeksterAlert } from "./DialogmoteInnkallingTeksterAlert";
 import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
+import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
+import { AlertstripeFullbredde } from "@/components/AlertstripeFullbredde";
 
 export const MAX_LENGTH_INNKALLING_FRITEKST = 2000;
 
@@ -27,19 +29,25 @@ export const texts = {
   forhandsvisningBehandlerSubtitle: "(brev til behandler)",
   forhandsvisningBehandlerContentLabel:
     "Forhåndsvis innkalling til dialogmøte behandler",
+  reservertAlert:
+    "Denne arbeidstakeren vil få brevet sendt som papirpost. Du kan inkludere telefonnummeret til kontaktsenteret i fritekstfeltet (55 55 33 33), slik at arbeidstakeren kan ta kontakt på telefon hvis tidspunktet ikke passer.",
 };
 
 const TeksterTittel = styled(Innholdstittel)`
   margin-bottom: 0.5em;
 `;
+const ReservertAlert = styled(AlertstripeFullbredde)`
+  margin-bottom: 1em;
+`;
 
 interface DialogmoteInnkallingTeksterProps {
-  selectedBehandler?: BehandlerDialogmeldingDTO;
+  selectedBehandler: BehandlerDialogmeldingDTO | undefined;
 }
 
 const DialogmoteInnkallingTekster = ({
   selectedBehandler,
 }: DialogmoteInnkallingTeksterProps): ReactElement => {
+  const { brukerKanIkkeVarslesDigitalt } = useNavBrukerData();
   const { values } = useFormState<DialogmoteInnkallingSkjemaValues>();
   const [
     displayInnkallingArbeidstakerPreview,
@@ -64,6 +72,9 @@ const DialogmoteInnkallingTekster = ({
   return (
     <DialogmoteInnkallingSkjemaSeksjon>
       <TeksterTittel>{texts.title}</TeksterTittel>
+      {brukerKanIkkeVarslesDigitalt && (
+        <ReservertAlert type="advarsel">{texts.reservertAlert}</ReservertAlert>
+      )}
       <DialogmoteInnkallingTeksterAlert />
       <FritekstSeksjon
         fieldName="fritekstArbeidstaker"
