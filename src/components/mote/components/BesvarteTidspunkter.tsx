@@ -1,8 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ARBEIDSGIVER, BRUKER, MULIGE_SVAR, NAV_VEILEDER } from "@/konstanter";
-import { MoteAlternativDTO, MoteDTO } from "@/data/mote/types/moteTypes";
-import { MotedeltakerType } from "@/data/mote/types/MotedeltakerType";
+import { MULIGE_SVAR } from "@/konstanter";
+import {
+  MoteAlternativDTO,
+  MotedeltakerType,
+  MoteDTO,
+} from "@/data/mote/types/moteTypes";
 import { getSvar } from "@/utils/moteplanleggerUtils";
 import SvarMedIkon, { NavKan } from "./SvarMedIkon";
 import DatoOgTid from "./DatoOgTid";
@@ -22,20 +25,20 @@ const BesvarteTidspunkter = (
 ) => {
   const {
     alternativer,
-    deltakertype = BRUKER,
+    deltakertype = MotedeltakerType.BRUKER,
     mote,
   } = besvarteTidspunkterProps;
   const arbeidsgiver = mote.deltakere.filter((d) => {
-    return d.type === ARBEIDSGIVER;
+    return d.type === MotedeltakerType.ARBEIDSGIVER;
   })[0];
   const bruker = mote.deltakere.filter((d) => {
-    return d.type === BRUKER;
+    return d.type === MotedeltakerType.BRUKER;
   })[0];
 
   let forsteDeltaker = bruker;
   let andreDeltaker = arbeidsgiver;
 
-  if (deltakertype === ARBEIDSGIVER) {
+  if (deltakertype === MotedeltakerType.ARBEIDSGIVER) {
     forsteDeltaker = arbeidsgiver;
     andreDeltaker = bruker;
   }
@@ -66,7 +69,10 @@ const BesvarteTidspunkter = (
           const _forsteDeltaker =
             forsteDeltaker &&
             Object.assign({}, forsteDeltaker, {
-              navn: deltakertype === NAV_VEILEDER ? forsteDeltaker.navn : "Du",
+              navn:
+                deltakertype === MotedeltakerType.NAV_VEILEDER
+                  ? forsteDeltaker.navn
+                  : "Du",
             });
 
           let className = "motetidspunkt--besvart";
@@ -100,9 +106,9 @@ const BesvarteTidspunkter = (
                     svar={andreDeltakersSvar}
                   />
                 )}
-                {deltakertype !== NAV_VEILEDER && <NavKan />}
+                {deltakertype !== MotedeltakerType.NAV_VEILEDER && <NavKan />}
               </ul>
-              {deltakertype === NAV_VEILEDER && (
+              {deltakertype === MotedeltakerType.NAV_VEILEDER && (
                 <div className="alternativsvar__bekreft">
                   <Link
                     to={`/sykefravaer/mote/bekreft/${field.id}`}

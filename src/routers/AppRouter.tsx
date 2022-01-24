@@ -1,6 +1,5 @@
 import React, { ReactElement, useEffect } from "react";
 import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
-import IngenBrukerContainer from "../containers/IngenBrukerContainer";
 import MotebookingContainer from "../components/mote/container/MotebookingContainer";
 import AvbrytMoteContainer from "../components/mote/container/AvbrytMoteContainer";
 import BekreftMoteContainer from "../components/mote/container/BekreftMoteContainer";
@@ -32,6 +31,7 @@ import { SykepengesoknadSide } from "@/components/speiling/sykepengsoknader/cont
 import { OppfoelgingsPlanerOversiktContainer } from "@/components/oppfolgingsplan/container/OppfoelgingsPlanerOversiktContainer";
 import { OppfoelgingsplanContainer } from "@/components/oppfolgingsplan/container/OppfoelgingsplanContainer";
 import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { IngenBrukerSide } from "@/components/IngenBrukerSide";
 
 const getFnrFromParams = (): string => {
   return window.location.pathname.split("/")[2];
@@ -127,7 +127,7 @@ const AktivBrukerRouter = (): ReactElement => {
 const IngenAktivBrukerRouter = (): ReactElement => {
   return (
     <Router>
-      <Route path="*" component={IngenBrukerContainer} />
+      <Route path="*" component={IngenBrukerSide} />
     </Router>
   );
 };

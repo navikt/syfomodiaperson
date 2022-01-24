@@ -1,8 +1,5 @@
 import React from "react";
 import { expect } from "chai";
-import { mount } from "enzyme";
-import AppSpinner from "../../src/components/AppSpinner";
-import Feilmelding from "../../src/components/Feilmelding";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import Motelandingsside from "../../src/components/mote/components/Motelandingsside";
@@ -17,6 +14,7 @@ import {
   VEILEDER_IDENT_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
 } from "../../mock/common/mockConstants";
+import { render, screen } from "@testing-library/react";
 
 const realState = createStore(rootReducer).getState();
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
@@ -24,7 +22,6 @@ let queryClient;
 
 describe("MotelandingssideContainer", () => {
   describe("MotelandingssideSide", () => {
-    let component;
     let store;
     let mockState;
 
@@ -36,8 +33,11 @@ describe("MotelandingssideContainer", () => {
         valgtbruker: { personident: fnr },
         unleash: {
           fetching: false,
+          triedFetchingToggles: true,
+          toggles: {},
         },
         tilgang: {
+          hentingForsokt: true,
           data: {
             harTilgang: true,
           },
@@ -103,7 +103,7 @@ describe("MotelandingssideContainer", () => {
         hentet: false,
         data: [],
       };
-      component = mount(
+      render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
             <Motelandingsside />
@@ -111,14 +111,14 @@ describe("MotelandingssideContainer", () => {
         </QueryClientProvider>
       );
 
-      expect(component.find(AppSpinner)).to.have.length(1);
+      expect(screen.getByLabelText("Vent litt mens siden laster")).to.exist;
     });
 
     it("Skal vise AppSpinner når henter tilgang", () => {
       mockState.tilgang = {
         henter: true,
       };
-      component = mount(
+      render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
             <Motelandingsside />
@@ -126,7 +126,7 @@ describe("MotelandingssideContainer", () => {
         </QueryClientProvider>
       );
 
-      expect(component.find(AppSpinner)).to.have.length(1);
+      expect(screen.getByLabelText("Vent litt mens siden laster")).to.exist;
     });
 
     it("Skal kjøre actions ved init", () => {
@@ -136,7 +136,7 @@ describe("MotelandingssideContainer", () => {
         },
       };
       const mockStore = store({ ...realState, ...mockState });
-      component = mount(
+      render(
         <QueryClientProvider client={queryClient}>
           <Provider store={mockStore}>
             <Motelandingsside />
@@ -165,7 +165,7 @@ describe("MotelandingssideContainer", () => {
           harTilgang: false,
         },
       };
-      component = mount(
+      render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
             <Motelandingsside />
@@ -173,7 +173,11 @@ describe("MotelandingssideContainer", () => {
         </QueryClientProvider>
       );
 
-      expect(component.find(Feilmelding)).to.have.length(1);
+      expect(
+        screen.getByRole("heading", {
+          name: "Du har ikke tilgang til denne tjenesten",
+        })
+      ).to.exist;
     });
 
     it("Skal vise feilmelding hvis hentingFeilet", () => {
@@ -184,7 +188,7 @@ describe("MotelandingssideContainer", () => {
           harTilgang: true,
         },
       };
-      component = mount(
+      render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
             <Motelandingsside />
@@ -192,11 +196,16 @@ describe("MotelandingssideContainer", () => {
         </QueryClientProvider>
       );
 
-      expect(component.find(Feilmelding)).to.have.length(1);
+      expect(
+        screen.getByRole("heading", {
+          name: "Beklager, det oppstod en feil",
+        })
+      ).to.exist;
     });
 
     it("Skal vise Se møtestatus når møte opprettet", () => {
       mockState.moter = {
+        hentingForsokt: true,
         data: [
           {
             id: 1,
@@ -208,7 +217,7 @@ describe("MotelandingssideContainer", () => {
           },
         ],
       };
-      component = mount(
+      render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
             <MemoryRouter>
@@ -218,11 +227,16 @@ describe("MotelandingssideContainer", () => {
         </QueryClientProvider>
       );
 
-      expect(component.find("h2").contains("Se møtestatus"));
+      expect(
+        screen.getByRole("heading", {
+          name: "Se møtestatus",
+        })
+      ).to.exist;
     });
 
     it("Skal vise Bekreftet møte når møte bekreftet", () => {
       mockState.moter = {
+        ...mockState.moter,
         data: [
           {
             id: 1,
@@ -231,7 +245,7 @@ describe("MotelandingssideContainer", () => {
           },
         ],
       };
-      component = mount(
+      render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
             <MemoryRouter>
@@ -241,11 +255,16 @@ describe("MotelandingssideContainer", () => {
         </QueryClientProvider>
       );
 
-      expect(component.find("h2").contains("Bekreftet møte"));
+      expect(
+        screen.getByRole("heading", {
+          name: "Bekreftet møte",
+        })
+      ).to.exist;
     });
 
-    it("Skal vise Forespør møte når møte avbrutt", () => {
+    it("Skal vise Planlegg nytt dialogmøte når møte avbrutt", () => {
       mockState.moter = {
+        ...mockState.moter,
         data: [
           {
             id: 1,
@@ -253,7 +272,7 @@ describe("MotelandingssideContainer", () => {
           },
         ],
       };
-      component = mount(
+      render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
             <MemoryRouter>
@@ -263,11 +282,15 @@ describe("MotelandingssideContainer", () => {
         </QueryClientProvider>
       );
 
-      expect(component.find("h2").contains("Forespør møte"));
+      expect(
+        screen.getByRole("heading", {
+          name: "Planlegg nytt dialogmøte",
+        })
+      ).to.exist;
     });
 
-    it("Skal vise Forespør møte når det ikke finnes møter", () => {
-      component = mount(
+    it("Skal vise Planlegg nytt dialogmøte når det ikke finnes møter", () => {
+      render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
             <MemoryRouter>
@@ -277,7 +300,11 @@ describe("MotelandingssideContainer", () => {
         </QueryClientProvider>
       );
 
-      expect(component.find("h2").contains("Forespør møte"));
+      expect(
+        screen.getByRole("heading", {
+          name: "Planlegg nytt dialogmøte",
+        })
+      ).to.exist;
     });
   });
 });

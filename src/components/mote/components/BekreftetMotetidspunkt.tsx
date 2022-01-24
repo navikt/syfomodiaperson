@@ -1,6 +1,5 @@
 import React from "react";
-import { MoteDTO } from "@/data/mote/types/moteTypes";
-import { ARBEIDSGIVER, BRUKER } from "@/konstanter";
+import { MotedeltakerType, MoteDTO } from "@/data/mote/types/moteTypes";
 import DatoOgTid from "./DatoOgTid";
 import SvarMedIkon from "./SvarMedIkon";
 
@@ -13,10 +12,10 @@ const BekreftetMotetidspunkt = (
 ) => {
   const { mote } = bekreftetMotetidspunktProps;
   const arbeidsgiver = mote.deltakere.filter((d) => {
-    return d.type === ARBEIDSGIVER;
+    return d.type === MotedeltakerType.ARBEIDSGIVER;
   })[0];
   const arbeidstaker = mote.deltakere.filter((d) => {
-    return d.type === BRUKER;
+    return d.type === MotedeltakerType.BRUKER;
   })[0];
   const arbeidstakerSvar =
     arbeidstaker &&

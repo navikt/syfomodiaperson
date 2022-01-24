@@ -1,7 +1,6 @@
 import React from "react";
 import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
-import { MoteDTO } from "@/data/mote/types/moteTypes";
-import { BRUKER, ARBEIDSGIVER } from "@/konstanter";
+import { MotedeltakerType, MoteDTO } from "@/data/mote/types/moteTypes";
 
 const texts = {
   arbeidsgiver: "Sendes til arbeidsgiver",
@@ -16,10 +15,10 @@ interface EpostmottakereProps {
 const Epostmottakere = (epostmottakereProps: EpostmottakereProps) => {
   const { arbeidstaker, mote } = epostmottakereProps;
   const sykmeldt = mote.deltakere.filter((d) => {
-    return d.type === BRUKER;
+    return d.type === MotedeltakerType.BRUKER;
   })[0];
   const arbeidsgiver = mote.deltakere.filter((d) => {
-    return d.type === ARBEIDSGIVER;
+    return d.type === MotedeltakerType.ARBEIDSGIVER;
   })[0];
 
   return (

@@ -1,6 +1,9 @@
 import React from "react";
-import { MotedeltakerType } from "@/data/mote/types/MotedeltakerType";
-import { MoteAlternativDTO, MoteDTO } from "@/data/mote/types/moteTypes";
+import {
+  MoteAlternativDTO,
+  MoteDTO,
+  MotedeltakerType,
+} from "@/data/mote/types/moteTypes";
 import BesvarteTidspunkter from "./BesvarteTidspunkter";
 import Utvidbar from "../../Utvidbar";
 import {
