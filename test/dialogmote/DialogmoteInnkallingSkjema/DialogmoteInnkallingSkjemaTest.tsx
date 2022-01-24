@@ -27,12 +27,16 @@ import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEn
 import { fireEvent, render, screen } from "@testing-library/react";
 import { changeTextInput, clickButton, getTextInput } from "../../testUtils";
 import { expectedInnkallingDocuments } from "../testDataDocuments";
+import sinon from "sinon";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
 let queryClient;
 
 describe("DialogmoteInnkallingSkjema", () => {
+  let clock;
+  const today = new Date(Date.now());
+
   beforeEach(() => {
     queryClient = new QueryClient();
     queryClient.setQueryData(
@@ -43,6 +47,11 @@ describe("DialogmoteInnkallingSkjema", () => {
       behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
       () => behandlendeEnhet
     );
+    clock = sinon.useFakeTimers(today.getTime());
+  });
+
+  afterEach(() => {
+    clock.restore();
   });
 
   it("validerer arbeidsgiver, dato, tid og sted", () => {

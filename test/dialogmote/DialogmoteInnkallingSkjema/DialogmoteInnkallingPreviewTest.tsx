@@ -26,12 +26,16 @@ import React from "react";
 import { behandlereDialogmeldingQueryKeys } from "@/data/behandlerdialogmelding/behandlereDialogmeldingQueryHooks";
 import { changeTextInput, getTextInput } from "../../testUtils";
 import { expectedInnkallingDocuments } from "../testDataDocuments";
+import sinon from "sinon";
 
 let queryClient;
 const store = configureStore([]);
 const realState = createStore(rootReducer).getState();
 
 describe("Dialogmoteinnkallingskjema", () => {
+  let clock;
+  const today = new Date(Date.now());
+
   beforeEach(() => {
     queryClient = new QueryClient();
     queryClient.setQueryData(
@@ -42,6 +46,11 @@ describe("Dialogmoteinnkallingskjema", () => {
       behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
       () => behandlendeEnhet
     );
+    clock = sinon.useFakeTimers(today.getTime());
+  });
+
+  afterEach(() => {
+    clock.restore();
   });
 
   it("previews innkalling to arbeidstaker", () => {

@@ -36,12 +36,16 @@ import { behandlerNavn } from "@/utils/behandlerUtils";
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expectedInnkallingDocuments } from "../testDataDocuments";
+import sinon from "sinon";
 
 let queryClient;
 const store = configureStore([]);
 const realState = createStore(rootReducer).getState();
 
 describe("Dialogmoteinnkallingskjema", () => {
+  let clock;
+  const today = new Date(Date.now());
+
   beforeEach(() => {
     queryClient = new QueryClient();
     queryClient.setQueryData(
@@ -58,6 +62,11 @@ describe("Dialogmoteinnkallingskjema", () => {
       ),
       () => [behandler]
     );
+    clock = sinon.useFakeTimers(today.getTime());
+  });
+
+  afterEach(() => {
+    clock.restore();
   });
 
   it("validerer maks lengde på alle fritekstfelter inkl behandler", () => {
