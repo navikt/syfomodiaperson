@@ -4,6 +4,7 @@ import { rootReducer } from "@/data/rootState";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import {
+  arbeidsgiver,
   arbeidstaker,
   behandlendeEnhet,
   behandler,
@@ -189,6 +190,9 @@ const renderDialogmoteInnkallingSkjemaMedFastlegeEnabled = () =>
   );
 
 const passSkjemaInput = () => {
+  const virksomhetSelect = screen.getByRole("combobox", {
+    name: "Arbeidsgiver",
+  });
   const datoInput = getTextInput("Dato");
   const klokkeslettInput = screen.getByLabelText("Klokkeslett");
   const stedInput = getTextInput("Sted");
@@ -199,6 +203,8 @@ const passSkjemaInput = () => {
   const fritekstArbeidsgiverInput = getTextInput(
     "Fritekst til nærmeste leder (valgfri)"
   );
+
+  fireEvent.change(virksomhetSelect, { target: { value: arbeidsgiver.orgnr } });
   changeTextInput(datoInput, mote.dato);
   fireEvent.blur(datoInput);
   changeTextInput(klokkeslettInput, mote.klokkeslett);

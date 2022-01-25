@@ -59,6 +59,11 @@ const expectedArbeidstakerInnkalling = (
     type: DocumentComponentType.LINK,
   },
   {
+    texts: [mote.arbeidsgivernavn],
+    title: "Arbeidsgiver",
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [`Hei ${arbeidstaker.navn}`],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -128,6 +133,11 @@ const expectedArbeidsgiverInnkalling = (
     texts: [mote.videolink],
     title: innkallingTexts.videoLinkTitle,
     type: DocumentComponentType.LINK,
+  },
+  {
+    texts: [mote.arbeidsgivernavn],
+    title: "Arbeidsgiver",
+    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
@@ -200,6 +210,11 @@ const expectedBehandlerInnkalling: DocumentComponentDto[] = [
     texts: [mote.videolink],
     title: innkallingTexts.videoLinkTitle,
     type: DocumentComponentType.LINK,
+  },
+  {
+    texts: [mote.arbeidsgivernavn],
+    title: "Arbeidsgiver",
+    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],

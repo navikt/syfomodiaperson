@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { useState } from "react";
 import Panel from "nav-frontend-paneler";
 import DialogmoteInnkallingVelgArbeidsgiver from "./DialogmoteInnkallingVelgArbeidsgiver";
 import DialogmoteTidOgSted from "../DialogmoteTidOgSted";
@@ -124,7 +124,7 @@ const toInnkalling = (
 
 const DialogmoteInnkallingSkjema = ({
   pageTitle,
-}: DialogmoteInnkallingSkjemaProps): ReactElement => {
+}: DialogmoteInnkallingSkjemaProps) => {
   const initialValues: Partial<DialogmoteInnkallingSkjemaValues> = {};
   const fnr = useValgtPersonident();
   const navEnhet = useNavEnhet();
@@ -176,17 +176,6 @@ const DialogmoteInnkallingSkjema = ({
     return feilmeldinger;
   };
   const trackOnClick = useTrackOnClick();
-  const submit = (values: DialogmoteInnkallingSkjemaValues) => {
-    trackOnClick(texts.behandler, selectedBehandler?.type || "ingen behandler");
-    const dialogmoteInnkalling = toInnkalling(
-      values,
-      fnr,
-      navEnhet,
-      innkallingDocumentGenerator,
-      selectedBehandler
-    );
-    opprettInnkalling.mutate(dialogmoteInnkalling);
-  };
 
   const { isDm2InnkallingFastlegeEnabled } = useDM2FeatureToggles();
 
@@ -198,6 +187,18 @@ const DialogmoteInnkallingSkjema = ({
   if (opprettInnkalling.isSuccess) {
     return <Redirect to={moteoversiktRoutePath} />;
   }
+
+  const submit = (values: DialogmoteInnkallingSkjemaValues) => {
+    trackOnClick(texts.behandler, selectedBehandler?.type || "ingen behandler");
+    const dialogmoteInnkalling = toInnkalling(
+      values,
+      fnr,
+      navEnhet,
+      innkallingDocumentGenerator,
+      selectedBehandler
+    );
+    opprettInnkalling.mutate(dialogmoteInnkalling);
+  };
 
   return (
     <StyledPanel>

@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import { Input, SkjemaelementFeilmelding } from "nav-frontend-skjema";
 import { Field } from "react-final-form";
 import ArbeidsgiverDropdown from "../../mote/skjema/ArbeidsgiverDropdown";
@@ -23,9 +23,10 @@ const ArbeidsgiverTittel = styled(Innholdstittel)`
   margin-bottom: 1em;
 `;
 
-const DialogmoteInnkallingVelgArbeidsgiver = (): ReactElement => {
+const DialogmoteInnkallingVelgArbeidsgiver = () => {
   const { currentLedere } = useLedere();
   const field = "arbeidsgiver";
+
   return (
     <DialogmoteInnkallingSkjemaSeksjon>
       <ArbeidsgiverTittel>{texts.title}</ArbeidsgiverTittel>

@@ -192,6 +192,7 @@ const moteDatoAsISODateString = InputDateStringToISODateString(moteDato);
 const moteKlokkeslett = "08:00";
 const moteDatoTid = `${moteDatoAsISODateString}T${moteKlokkeslett}:00`;
 const moteVideoLink = "https://video.nav.no";
+const arbeidsgivernavn = VIRKSOMHET_PONTYPANDY.virksomhetsnavn;
 
 const endretSted = "Videomøte endret";
 const endretDato = toDatePrettyPrint(
@@ -228,6 +229,7 @@ export const mote = {
   klokkeslett: moteKlokkeslett,
   datoTid: moteDatoTid,
   videolink: moteVideoLink,
+  arbeidsgivernavn: arbeidsgivernavn,
 };
 export const endretMote: typeof mote = {
   sted: endretSted,
@@ -236,6 +238,7 @@ export const endretMote: typeof mote = {
   datoTid: endretDatoTid,
   klokkeslett: endretKlokkeslett,
   videolink: endretVideolink,
+  arbeidsgivernavn: arbeidsgivernavn,
 };
 
 export const moteTekster = {

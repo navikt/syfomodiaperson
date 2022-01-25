@@ -179,6 +179,7 @@ const passSkjemaInput = () => {
   const fritekstArbeidsgiverInput = getTextInput(
     "Fritekst til nærmeste leder (valgfri)"
   );
+
   fireEvent.change(virksomhetSelect, { target: { value: arbeidsgiver.orgnr } });
   changeTextInput(datoInput, mote.dato);
   fireEvent.blur(datoInput);

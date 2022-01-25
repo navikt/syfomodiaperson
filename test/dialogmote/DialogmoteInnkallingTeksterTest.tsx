@@ -8,7 +8,7 @@ import DialogmoteInnkallingTekster, {
   texts,
 } from "@/components/dialogmote/innkalling/DialogmoteInnkallingTekster";
 import { Form } from "react-final-form";
-import { arbeidstaker } from "./testData";
+import { arbeidsgiver, arbeidstaker } from "./testData";
 import { expect } from "chai";
 
 const store = configureStore([]);
@@ -25,6 +25,13 @@ const renderDialogmoteInnkallingTekster = (navBrukerKanVarsles: boolean) => {
     },
     valgtbruker: {
       personident: arbeidstaker.personident,
+    },
+    ledere: {
+      currentLedere: [
+        {
+          virksomhetsnummer: arbeidsgiver.orgnr,
+        },
+      ],
     },
   };
 

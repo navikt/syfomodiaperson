@@ -19,6 +19,7 @@ import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/Behandl
 import { capitalizeWord } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useForhandsvisningIntro } from "@/hooks/dialogmote/useForhandsvisningIntro";
+import { useLedere } from "@/hooks/useLedere";
 
 export interface ForhandsvisInnkallingGenerator {
   generateArbeidstakerInnkallingDocument(
@@ -44,12 +45,19 @@ export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
     introHilsenBehandler,
   } = useForhandsvisningIntro();
 
+  const { getCurrentNarmesteLeder } = useLedere();
+  const getValgtArbeidsgiver = (
+    values: Partial<DialogmoteInnkallingSkjemaValues>
+  ) =>
+    values.arbeidsgiver &&
+    getCurrentNarmesteLeder(values.arbeidsgiver)?.virksomhetsnavn;
+
   const generateArbeidstakerInnkallingDocument = (
     values: Partial<DialogmoteInnkallingSkjemaValues>,
     valgtBehandler?: BehandlerDialogmeldingDTO
   ) => {
     const documentComponents = [
-      ...fellesInfo(values),
+      ...fellesInfo(values, getValgtArbeidsgiver(values)),
       introHilsenArbeidstaker,
       ...arbeidstakerIntro(valgtBehandler),
     ];
@@ -66,7 +74,7 @@ export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
     valgtBehandler?: BehandlerDialogmeldingDTO
   ) => {
     const documentComponents = [
-      ...fellesInfo(values),
+      ...fellesInfo(values, getValgtArbeidsgiver(values)),
       introHilsenArbeidsgiver,
       ...arbeidsgiverIntro(valgtBehandler),
     ];
@@ -89,7 +97,7 @@ export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
     values: Partial<DialogmoteInnkallingSkjemaValues>
   ) => {
     const documentComponents = [
-      ...fellesInfo(values),
+      ...fellesInfo(values, getValgtArbeidsgiver(values)),
       introHilsenBehandler,
       ...behandlerIntro(),
     ];
@@ -109,7 +117,8 @@ export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
 };
 
 const fellesInfo = (
-  values: Partial<DialogmoteInnkallingSkjemaValues>
+  values: Partial<DialogmoteInnkallingSkjemaValues>,
+  arbeidsgiver?: string
 ): DocumentComponentDto[] => {
   const { dato, klokkeslett, sted, videoLink } = values;
   const components = [
@@ -129,6 +138,11 @@ const fellesInfo = (
   if (videoLink) {
     components.push(createLink(innkallingTexts.videoLinkTitle, videoLink));
   }
+
+  if (arbeidsgiver) {
+    components.push(createParagraphWithTitle("Arbeidsgiver", arbeidsgiver));
+  }
+
   return components;
 };
 
