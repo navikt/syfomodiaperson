@@ -1,6 +1,10 @@
 import React from "react";
 import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
-import { MotedeltakerType, MoteDTO } from "@/data/mote/types/moteTypes";
+import {
+  MoteDeltakerDTO,
+  MotedeltakerType,
+  MoteDTO,
+} from "@/data/mote/types/moteTypes";
 
 const texts = {
   arbeidsgiver: "Sendes til arbeidsgiver",
@@ -14,23 +18,25 @@ interface EpostmottakereProps {
 
 const Epostmottakere = (epostmottakereProps: EpostmottakereProps) => {
   const { arbeidstaker, mote } = epostmottakereProps;
-  const sykmeldt = mote.deltakere.filter((d) => {
+  const sykmeldt: MoteDeltakerDTO | undefined = mote.deltakere.filter((d) => {
     return d.type === MotedeltakerType.BRUKER;
   })[0];
-  const arbeidsgiver = mote.deltakere.filter((d) => {
-    return d.type === MotedeltakerType.ARBEIDSGIVER;
-  })[0];
+  const arbeidsgiver: MoteDeltakerDTO | undefined = mote.deltakere.filter(
+    (d) => {
+      return d.type === MotedeltakerType.ARBEIDSGIVER;
+    }
+  )[0];
 
   return (
     <div className="mottakere">
       <div className="epostinnhold__mottaker js-mottaker blokk">
         <h3>{texts.arbeidsgiver}</h3>
-        <p>{arbeidsgiver.navn}</p>
+        <p>{arbeidsgiver?.navn}</p>
       </div>
       {arbeidstaker.kontaktinfo.skalHaVarsel && (
         <div className="epostinnhold__mottaker js-mottaker blokk">
           <h3>{texts.arbeidstaker}</h3>
-          <p>{sykmeldt.navn}</p>
+          <p>{sykmeldt?.navn}</p>
         </div>
       )}
     </div>

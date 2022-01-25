@@ -48,7 +48,7 @@ export interface MoteDTO {
 }
 
 export enum MotedeltakerType {
-  BRUKER = "BRUKER",
+  BRUKER = "Bruker",
   ARBEIDSGIVER = "arbeidsgiver",
   NAV_VEILEDER = "NAV-veileder",
 }

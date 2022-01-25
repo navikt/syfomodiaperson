@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { MULIGE_SVAR } from "@/konstanter";
 import {
   MoteAlternativDTO,
+  MoteDeltakerDTO,
   MotedeltakerType,
   MoteDTO,
 } from "@/data/mote/types/moteTypes";
@@ -28,10 +29,12 @@ const BesvarteTidspunkter = (
     deltakertype = MotedeltakerType.BRUKER,
     mote,
   } = besvarteTidspunkterProps;
-  const arbeidsgiver = mote.deltakere.filter((d) => {
-    return d.type === MotedeltakerType.ARBEIDSGIVER;
-  })[0];
-  const bruker = mote.deltakere.filter((d) => {
+  const arbeidsgiver: MoteDeltakerDTO | undefined = mote.deltakere.filter(
+    (d) => {
+      return d.type === MotedeltakerType.ARBEIDSGIVER;
+    }
+  )[0];
+  const bruker: MoteDeltakerDTO | undefined = mote.deltakere.filter((d) => {
     return d.type === MotedeltakerType.BRUKER;
   })[0];
 
