@@ -170,7 +170,7 @@ export const tilDatoMedUkedagOgManedNavn = (dato) => {
   return `${ukeDag} ${dag}. ${maaned} ${aar}`;
 };
 
-const getDatoKomponenter = (dato) => {
+export const getDatoKomponenter = (dato) => {
   const nyDato = new Date(dato);
   const ukeDag = firstLetterToUpperCase(ukedagListe[nyDato.getDay()]);
   const dag = nyDato.getDate();

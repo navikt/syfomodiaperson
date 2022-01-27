@@ -4,6 +4,9 @@ import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/oppfoelgingsdialoger"
 import { AlertStripeInfo } from "nav-frontend-alertstriper";
 import Sidetopp from "../Sidetopp";
 import UtdragFraSykefravaeret from "../utdragFraSykefravaeret/UtdragFraSykefravaeret";
+import { Sykmeldingsgrad } from "@/components/sykmeldingsgrad/Sykmeldingsgrad";
+import { useAppSelector } from "@/hooks/hooks";
+import { ToggleNames } from "@/data/unleash/unleash_types";
 
 const texts = {
   comingSoon: `
@@ -36,11 +39,21 @@ const Nokkelinformasjon = (
     pageTitle,
   } = meldingTilArbeidsgiverProps;
 
+  const { toggles } = useAppSelector((state) => state.unleash);
+  const visSykmeldingsgrad = toggles[ToggleNames.sykmeldingsgrad];
+
   return (
     <div>
       <Sidetopp tittel={pageTitle} />
 
       <AlertStripeDevelopment>{texts.comingSoon}</AlertStripeDevelopment>
+
+      {visSykmeldingsgrad && (
+        <Sykmeldingsgrad
+          sykmeldinger={sykmeldinger}
+          oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}
+        />
+      )}
 
       <UtdragFraSykefravaeret
         aktiveDialoger={aktiveDialoger}

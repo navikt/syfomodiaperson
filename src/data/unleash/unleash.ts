@@ -15,6 +15,7 @@ export const initialState: UnleashState = {
   triedFetchingToggles: false,
   toggles: {
     [ToggleNames.dm2]: false,
+    [ToggleNames.sykmeldingsgrad]: false,
   },
 };
 
