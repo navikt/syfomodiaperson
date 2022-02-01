@@ -48,7 +48,7 @@ export const MotebookingContainer = () => {
               <MotestatusContainer fnr={fnr} moteUuid={aktivtMote.moteUuid} />
             );
           }
-          return <MotebookingSkjemaContainer />;
+          return <MotebookingSkjemaContainer fnr={fnr} />;
         })()}
       </SideLaster>
     </Side>
