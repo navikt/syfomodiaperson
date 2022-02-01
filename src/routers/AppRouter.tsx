@@ -1,6 +1,5 @@
 import React, { ReactElement, useEffect } from "react";
 import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
-import MotebookingContainer from "../components/mote/container/MotebookingContainer";
 import AvbrytMoteContainer from "../components/mote/container/AvbrytMoteContainer";
 import BekreftMoteContainer from "../components/mote/container/BekreftMoteContainer";
 import SykmeldingerContainer from "../components/speiling/sykmeldinger/container/SykmeldingerContainer";
@@ -32,6 +31,7 @@ import { OppfoelgingsPlanerOversiktContainer } from "@/components/oppfolgingspla
 import { OppfoelgingsplanContainer } from "@/components/oppfolgingsplan/container/OppfoelgingsplanContainer";
 import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { IngenBrukerSide } from "@/components/IngenBrukerSide";
+import { MotebookingContainer } from "@/components/mote/container/MotebookingContainer";
 
 const getFnrFromParams = (): string => {
   return window.location.pathname.split("/")[2];

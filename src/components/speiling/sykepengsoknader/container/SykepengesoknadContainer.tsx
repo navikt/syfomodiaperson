@@ -12,7 +12,6 @@ import { hentSoknader } from "@/data/sykepengesoknad/soknader_actions";
 import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
 import { useSykepengeSoknader } from "@/data/sykepengesoknad/soknader_hooks";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
-import { useTilgang } from "@/hooks/useTilgang";
 import { useParams } from "react-router-dom";
 import SideLaster from "../../../SideLaster";
 import {
@@ -35,7 +34,6 @@ const SykepengesoknadContainer = (): ReactElement => {
     dispatch(hentSykmeldinger(fnr));
   }, [dispatch, fnr]);
 
-  const { henterTilgang } = useTilgang();
   const {
     harForsoktHentetSoknader,
     hentingFeiletSoknader,
@@ -49,7 +47,7 @@ const SykepengesoknadContainer = (): ReactElement => {
 
   const harForsoktHentetAlt =
     harForsoktHentetSykmeldinger && harForsoktHentetSoknader;
-  const henter = !harForsoktHentetAlt || henterTilgang;
+  const henter = !harForsoktHentetAlt;
   const hentingFeilet = hentingFeiletSoknader || hentingSykmeldingerFeilet;
   const soknad = sykepengesoknader.find((s) => s.id === sykepengesoknadId);
   const sykmelding = sykmeldinger.find((sykmld) =>

@@ -1,6 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
 import { Column, Row } from "nav-frontend-grid";
 import { AlertStripeInfo } from "nav-frontend-alertstriper";
 import Side from "../../../sider/Side";
@@ -10,9 +9,7 @@ import { VEDTAK } from "@/enums/menypunkter";
 import VedtakUnselected from "../VedtakUnselected";
 import VedtakColumn from "../VedtakColumn";
 import VedtakInfoBox from "../VedtakInfoBox";
-import { sjekkTilgang } from "@/data/tilgang/tilgang_actions";
 import { MappeAdvarselImage } from "../../../../img/ImageComponents";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import SideLaster from "../../SideLaster";
 import { VedtakDTO } from "@/data/vedtak/vedtakTypes";
 import { useVedtakQuery } from "@/data/vedtak/vedtakQueryHooks";
@@ -31,16 +28,10 @@ const StyledAlertStripe = styled(AlertStripeInfo)`
 `;
 
 const VedtakContainer = () => {
-  const fnr = useValgtPersonident();
   const { isLoading, isError, data: vedtakListe } = useVedtakQuery();
   const harVedtak = vedtakListe && vedtakListe.length > 0;
 
   const [selectedVedtak, setSelectedVedtak] = useState<VedtakDTO>();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(sjekkTilgang(fnr));
-  }, [dispatch, fnr]);
 
   return (
     <Side tittel={texts.pageTitle} aktivtMenypunkt={VEDTAK}>

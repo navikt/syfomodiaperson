@@ -1,9 +1,9 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { Tilgang } from "@/data/tilgang/tilgang";
 import { expect } from "chai";
 import { get, post } from "@/api/axios";
 import { ApiErrorException, ErrorType } from "@/api/errors";
+import { Tilgang } from "@/data/tilgang/tilgangTypes";
 
 describe("Axios API tests", () => {
   let stub: MockAdapter;

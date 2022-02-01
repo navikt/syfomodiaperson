@@ -188,7 +188,7 @@ const MotebookingStatus = (props) => {
         {status !== BEKREFTET && motePassert && <PassertVarsel />}
         <div className="motested">
           <h3 className="motested__tittel">{texts.motested}</h3>
-          <p className="motested__sted">{mote.alternativer[0].sted}</p>
+          <p className="motested__sted">{mote.alternativer[0]?.sted}</p>
         </div>
         {status === BEKREFTET && !motePassert && (
           <InformasjonSendt {...props} />

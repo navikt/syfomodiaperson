@@ -5,7 +5,6 @@ import Historikk from "../Historikk";
 import { HISTORIKK } from "@/enums/menypunkter";
 import SideLaster from "../../SideLaster";
 import { useAppSelector } from "@/hooks/hooks";
-import { useTilgang } from "@/hooks/useTilgang";
 import { useLedere } from "@/hooks/useLedere";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { hentHistorikk } from "@/data/historikk/historikk_actions";
@@ -53,7 +52,6 @@ export const HistorikkContainer = (): ReactElement => {
     (state) => state.oppfolgingstilfelleperioder
   );
 
-  const { henterTilgang, hentingTilgangFeilet } = useTilgang();
   const {
     henterLedere,
     hentingLedereFeilet,
@@ -63,10 +61,8 @@ export const HistorikkContainer = (): ReactElement => {
   const henterTilfeller = Object.keys(oppfolgingstilfelleperioder).some(
     (orgnummer) => oppfolgingstilfelleperioder[orgnummer].henter
   );
-  const henter =
-    henterTilgang || henterLedere || henterTilfeller || henterHistorikk;
-  const hentingFeilet =
-    hentingTilgangFeilet || hentingLedereFeilet || hentingHistorikkFeilet;
+  const henter = henterLedere || henterTilfeller || henterHistorikk;
+  const hentingFeilet = hentingLedereFeilet || hentingHistorikkFeilet;
 
   const allLedere = useMemo(() => [...currentLedere, ...formerLedere], [
     currentLedere,

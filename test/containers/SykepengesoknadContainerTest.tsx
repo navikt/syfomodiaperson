@@ -8,22 +8,18 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import { MemoryRouter, Route } from "react-router-dom";
 import { render, screen } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
+import { tilgangBrukerMock } from "../../mock/data/tilgangtilbrukerMock";
 
 const NAERINGSDRIVENDESOKNAD_ID = "faadf7c1-3aac-4758-8673-e9cee1316a3c";
 const OPPHOLD_UTLAND_ID = "e16ff778-8475-47e1-b5dc-d2ce4ad6b9ee";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
+let queryClient;
+
 const mockState = {
-  tilgang: {
-    hentingForsokt: true,
-    hentingFeilet: false,
-    henter: false,
-    hentet: true,
-    data: {
-      harTilgang: true,
-    },
-  },
   sykmeldinger: {
     hentet: true,
     hentingFeilet: false,
@@ -41,6 +37,14 @@ const mockState = {
 };
 
 describe("SykepengesoknadContainer", () => {
+  beforeEach(() => {
+    queryClient = new QueryClient();
+    queryClient.setQueryData(
+      tilgangQueryKeys.tilgang("887766"),
+      () => tilgangBrukerMock
+    );
+  });
+
   describe("Visning av sykepengesøknad for arbeidstakere", () => {
     it("Skal vise SendtSoknadArbeidstakerNy", () => {
       const soknaderState = {
@@ -55,15 +59,17 @@ describe("SykepengesoknadContainer", () => {
           ]}
         >
           <Route path="/sykefravaer/sykepengesoknader/:sykepengesoknadId">
-            <Provider
-              store={store({
-                ...realState,
-                ...mockState,
-                soknader: soknaderState,
-              })}
-            >
-              <SykepengesoknadContainer />
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+              <Provider
+                store={store({
+                  ...realState,
+                  ...mockState,
+                  soknader: soknaderState,
+                })}
+              >
+                <SykepengesoknadContainer />
+              </Provider>
+            </QueryClientProvider>
           </Route>
         </MemoryRouter>
       );
@@ -89,15 +95,17 @@ describe("SykepengesoknadContainer", () => {
           ]}
         >
           <Route path="/sykefravaer/sykepengesoknader/:sykepengesoknadId">
-            <Provider
-              store={store({
-                ...realState,
-                ...mockState,
-                soknader: soknaderState,
-              })}
-            >
-              <SykepengesoknadContainer />
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+              <Provider
+                store={store({
+                  ...realState,
+                  ...mockState,
+                  soknader: soknaderState,
+                })}
+              >
+                <SykepengesoknadContainer />
+              </Provider>
+            </QueryClientProvider>
           </Route>
         </MemoryRouter>
       );

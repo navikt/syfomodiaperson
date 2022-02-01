@@ -2,6 +2,7 @@ import { Reducer } from "redux";
 import { MoteAlternativDTO, MoteDTO } from "./types/moteTypes";
 import * as actions from "./moter_actions";
 import { konverterTid } from "@/utils/datoUtils";
+import { Tilgang } from "@/data/tilgang/tilgangTypes";
 
 export interface MoterState {
   henter: boolean;
@@ -14,7 +15,7 @@ export interface MoterState {
   senderNyeAlternativ: boolean;
   skalViseFlereAlternativ: boolean;
   antallNyeTidspunkt: number;
-  tilgang: Record<string, unknown>;
+  tilgang?: Tilgang;
 }
 
 const initialState: MoterState = {
@@ -28,7 +29,6 @@ const initialState: MoterState = {
   senderNyeAlternativ: false,
   skalViseFlereAlternativ: false,
   antallNyeTidspunkt: 1,
-  tilgang: {},
 };
 
 const moter: Reducer<MoterState> = (

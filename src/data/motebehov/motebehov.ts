@@ -11,7 +11,7 @@ import {
   BehandleMotebehovBehandletAction,
 } from "./behandlemotebehov_actions";
 import { MotebehovVeilederDTO } from "./types/motebehovTypes";
-import { Tilgang } from "../tilgang/tilgang";
+import { Tilgang } from "@/data/tilgang/tilgangTypes";
 
 export const sorterEtterDato = (
   a: MotebehovVeilederDTO,

@@ -1,7 +1,7 @@
 import { MoteDTO } from "./types/moteTypes";
 import { NyttAlternativDTO } from "./types/NyttAlternativDTO";
 import { NyttMoteDTO } from "./types/NyttMoteDTO";
-import { Tilgang } from "../tilgang/tilgang";
+import { Tilgang } from "@/data/tilgang/tilgangTypes";
 
 export const HENT_MOTER_FORESPURT = "HENT_MOTER_FORESPURT";
 export const HENTER_MOTER = "HENTER_MOTER";

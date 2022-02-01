@@ -15,10 +15,16 @@ import {
   VIRKSOMHET_PONTYPANDY,
 } from "../../mock/common/mockConstants";
 import { render, screen } from "@testing-library/react";
+import { stubTilgangApi } from "../stubs/stubSyfotilgangskontroll";
+import { apiMock } from "../stubs/stubApi";
+import nock from "nock";
+import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
+import { tilgangBrukerMock } from "../../mock/data/tilgangtilbrukerMock";
 
 const realState = createStore(rootReducer).getState();
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient;
+let apiMockScope;
 
 describe("MotelandingssideContainer", () => {
   describe("MotelandingssideSide", () => {
@@ -28,6 +34,7 @@ describe("MotelandingssideContainer", () => {
     beforeEach(() => {
       queryClient = new QueryClient();
       queryClient.setQueryData(dialogmoterQueryKeys.dialogmoter(fnr), () => []);
+      apiMockScope = apiMock();
       store = configureStore([]);
       mockState = {
         valgtbruker: { personident: fnr },
@@ -35,12 +42,6 @@ describe("MotelandingssideContainer", () => {
           fetching: false,
           triedFetchingToggles: true,
           toggles: {},
-        },
-        tilgang: {
-          hentingForsokt: true,
-          data: {
-            harTilgang: true,
-          },
         },
         navbruker: {
           data: {
@@ -97,7 +98,12 @@ describe("MotelandingssideContainer", () => {
       };
     });
 
+    afterEach(() => {
+      nock.cleanAll();
+    });
+
     it("Skal vise AppSpinner når henter data", () => {
+      stubTilgangApi(apiMockScope);
       mockState.motebehov = {
         henter: true,
         hentet: false,
@@ -114,10 +120,8 @@ describe("MotelandingssideContainer", () => {
       expect(screen.getByLabelText("Vent litt mens siden laster")).to.exist;
     });
 
-    it("Skal vise AppSpinner når henter tilgang", () => {
-      mockState.tilgang = {
-        henter: true,
-      };
+    it("Skal vise AppSpinner når henter tilgang", async () => {
+      stubTilgangApi(apiMockScope);
       render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
@@ -126,15 +130,11 @@ describe("MotelandingssideContainer", () => {
         </QueryClientProvider>
       );
 
-      expect(screen.getByLabelText("Vent litt mens siden laster")).to.exist;
+      expect(await screen.findByLabelText("Vent litt mens siden laster")).to
+        .exist;
     });
 
     it("Skal kjøre actions ved init", () => {
-      mockState.tilgang = {
-        data: {
-          harTilgang: false,
-        },
-      };
       const mockStore = store({ ...realState, ...mockState });
       render(
         <QueryClientProvider client={queryClient}>
@@ -158,35 +158,36 @@ describe("MotelandingssideContainer", () => {
       expect(mockStore.getActions()).to.deep.equal(expectedActions);
     });
 
-    it("Skal vise feilmelding hvis ikke tilgang", () => {
-      mockState.tilgang = {
-        hentingForsokt: true,
-        data: {
-          harTilgang: false,
-        },
-      };
+    it("Skal vise feilmelding hvis ikke tilgang", async () => {
+      stubTilgangApi(apiMockScope, {
+        harTilgang: false,
+        begrunnelse: "Ikke tilgang",
+      });
       render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
-            <Motelandingsside />
+            <MemoryRouter>
+              <Motelandingsside />
+            </MemoryRouter>
           </Provider>
         </QueryClientProvider>
       );
 
       expect(
-        screen.getByRole("heading", {
+        await screen.findByRole("heading", {
           name: "Du har ikke tilgang til denne tjenesten",
         })
       ).to.exist;
     });
 
     it("Skal vise feilmelding hvis hentingFeilet", () => {
-      mockState.tilgang = {
-        hentingForsokt: true,
+      queryClient.setQueryData(
+        tilgangQueryKeys.tilgang(fnr),
+        () => tilgangBrukerMock
+      );
+      mockState.motebehov = {
         hentingFeilet: true,
-        data: {
-          harTilgang: true,
-        },
+        hentingForsokt: true,
       };
       render(
         <QueryClientProvider client={queryClient}>
@@ -204,6 +205,10 @@ describe("MotelandingssideContainer", () => {
     });
 
     it("Skal vise Se møtestatus når møte opprettet", () => {
+      queryClient.setQueryData(
+        tilgangQueryKeys.tilgang(fnr),
+        () => tilgangBrukerMock
+      );
       mockState.moter = {
         hentingForsokt: true,
         data: [
@@ -235,6 +240,10 @@ describe("MotelandingssideContainer", () => {
     });
 
     it("Skal vise Bekreftet møte når møte bekreftet", () => {
+      queryClient.setQueryData(
+        tilgangQueryKeys.tilgang(fnr),
+        () => tilgangBrukerMock
+      );
       mockState.moter = {
         ...mockState.moter,
         data: [
@@ -263,6 +272,10 @@ describe("MotelandingssideContainer", () => {
     });
 
     it("Skal vise Planlegg nytt dialogmøte når møte avbrutt", () => {
+      queryClient.setQueryData(
+        tilgangQueryKeys.tilgang(fnr),
+        () => tilgangBrukerMock
+      );
       mockState.moter = {
         ...mockState.moter,
         data: [
@@ -290,6 +303,10 @@ describe("MotelandingssideContainer", () => {
     });
 
     it("Skal vise Planlegg nytt dialogmøte når det ikke finnes møter", () => {
+      queryClient.setQueryData(
+        tilgangQueryKeys.tilgang(fnr),
+        () => tilgangBrukerMock
+      );
       render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>

@@ -11,7 +11,7 @@ const texts = {
 };
 
 export const hentBegrunnelseTekst = (
-  begrunnelse?: string
+  begrunnelse: string | null
 ): { __html: string } => {
   let begrunnelseTekst = texts.genericError;
   if (begrunnelse === "GEOGRAFISK") {

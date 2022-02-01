@@ -2,7 +2,7 @@ import React, { ReactElement, ReactNode } from "react";
 import AppSpinner from "./AppSpinner";
 import Feilmelding from "./Feilmelding";
 import { hentBegrunnelseTekst } from "@/utils/tilgangUtils";
-import { useTilgang } from "@/hooks/useTilgang";
+import { useTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
 
 interface SideLasterProps {
   henter: boolean;
@@ -19,15 +19,21 @@ const SideLaster = ({
   hentingFeilet,
   children,
 }: SideLasterProps): ReactElement => {
-  const { hentingTilgangForsokt, tilgang, hentingTilgangFeilet } = useTilgang();
-  if (henter || !hentingTilgangForsokt) {
+  const {
+    isLoading: henterTilgang,
+    isError: hentingTilgangFeilet,
+    data: tilgang,
+  } = useTilgangQuery();
+  const harTilgang = tilgang?.harTilgang === true;
+
+  if (henter || henterTilgang) {
     return <AppSpinner />;
   }
-  if (!tilgang.harTilgang) {
+  if (!harTilgang) {
     return (
       <Feilmelding
         tittel={texts.errorTitle}
-        melding={hentBegrunnelseTekst(tilgang.begrunnelse)}
+        melding={hentBegrunnelseTekst(tilgang?.begrunnelse || null)}
       />
     );
   }

@@ -8,7 +8,6 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { hentNavbruker } from "@/data/navbruker/navbruker_actions";
 import { hentLedere } from "@/data/leder/ledere_actions";
 import { hentPersonAdresse } from "@/data/personinfo/personInfo_actions";
-import { sjekkTilgang } from "@/data/tilgang/tilgang_actions";
 import { erGyldigFodselsnummer } from "@/utils/frnValideringUtils";
 
 const InternflateDecorator = NAVSPA.importer<DecoratorProps>(
@@ -25,7 +24,6 @@ const Decorator = () => {
       dispatch(hentNavbruker(fnr));
       dispatch(hentLedere(fnr));
       dispatch(hentPersonAdresse(fnr));
-      dispatch(sjekkTilgang(fnr));
     }
   }, [dispatch, fnr]);
 
