@@ -254,6 +254,10 @@ const expectedArbeidsgiverEndringsdokument = (
   medBehandler = false
 ): DocumentComponentDto[] => [
   {
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -287,6 +291,11 @@ const expectedArbeidsgiverEndringsdokument = (
     texts: [endretMote.videolink],
     title: "Lenke til videomøte",
     type: DocumentComponentType.LINK,
+  },
+  {
+    texts: [mote.arbeidsgivernavn],
+    title: "Arbeidsgiver",
+    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [moteTekster.fritekstTilArbeidsgiver],
@@ -335,6 +344,10 @@ const expectedArbeidstakerEndringsdokument = (
   medBehandler = false
 ): DocumentComponentDto[] => [
   {
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [`Hei ${arbeidstaker.navn}`],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -368,6 +381,11 @@ const expectedArbeidstakerEndringsdokument = (
     texts: [endretMote.videolink],
     title: "Lenke til videomøte",
     type: DocumentComponentType.LINK,
+  },
+  {
+    texts: [mote.arbeidsgivernavn],
+    title: "Arbeidsgiver",
+    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [moteTekster.fritekstTilArbeidstaker],
@@ -410,6 +428,10 @@ const expectedArbeidstakerEndringsdokument = (
 
 const expectedBehandlerEndringsdokument: DocumentComponentDto[] = [
   {
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -445,6 +467,11 @@ const expectedBehandlerEndringsdokument: DocumentComponentDto[] = [
     type: DocumentComponentType.LINK,
   },
   {
+    texts: [mote.arbeidsgivernavn],
+    title: "Arbeidsgiver",
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [moteTekster.fritekstTilBehandler],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -468,6 +495,10 @@ const expectedBehandlerEndringsdokument: DocumentComponentDto[] = [
 
 const expectedAvlysningArbeidsgiver: DocumentComponentDto[] = [
   {
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -484,6 +515,11 @@ const expectedAvlysningArbeidsgiver: DocumentComponentDto[] = [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
+    texts: [mote.arbeidsgivernavn],
+    title: "Arbeidsgiver",
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [commonTexts.hilsen, navEnhet.navn],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -494,6 +530,10 @@ const expectedAvlysningArbeidsgiver: DocumentComponentDto[] = [
 ];
 
 const expectedAvlysningArbeidstaker: DocumentComponentDto[] = [
+  {
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    type: DocumentComponentType.PARAGRAPH,
+  },
   {
     texts: [`Hei ${arbeidstaker.navn}`],
     type: DocumentComponentType.PARAGRAPH,
@@ -511,6 +551,11 @@ const expectedAvlysningArbeidstaker: DocumentComponentDto[] = [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
+    texts: [mote.arbeidsgivernavn],
+    title: "Arbeidsgiver",
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [commonTexts.hilsen, navEnhet.navn],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -521,6 +566,10 @@ const expectedAvlysningArbeidstaker: DocumentComponentDto[] = [
 ];
 
 const expectedAvlysningBehandler: DocumentComponentDto[] = [
+  {
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    type: DocumentComponentType.PARAGRAPH,
+  },
   {
     texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
     type: DocumentComponentType.PARAGRAPH,
@@ -538,6 +587,11 @@ const expectedAvlysningBehandler: DocumentComponentDto[] = [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
+    texts: [mote.arbeidsgivernavn],
+    title: "Arbeidsgiver",
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [commonTexts.hilsen, navEnhet.navn],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -548,6 +602,10 @@ const expectedAvlysningBehandler: DocumentComponentDto[] = [
 ];
 
 export const expectedReferatDocument: DocumentComponentDto[] = [
+  {
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    type: DocumentComponentType.PARAGRAPH,
+  },
   {
     texts: [arbeidstaker.navn],
     type: DocumentComponentType.HEADER,
@@ -572,6 +630,11 @@ export const expectedReferatDocument: DocumentComponentDto[] = [
       `${annenDeltakerFunksjon}: ${annenDeltakerNavn}`,
     ],
     title: referatTexts.deltakereTitle,
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [mote.arbeidsgivernavn],
+    title: "Arbeidsgiver",
     type: DocumentComponentType.PARAGRAPH,
   },
   {

@@ -4,7 +4,10 @@ import {
   DocumentComponentDto,
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
-import { tilDatoMedUkedagOgManedNavn } from "@/utils/datoUtils";
+import {
+  tilDatoMedManedNavnOgKlokkeslettWithComma,
+  tilDatoMedUkedagOgManedNavn,
+} from "@/utils/datoUtils";
 import {
   createHeader,
   createParagraph,
@@ -17,6 +20,7 @@ import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { useForhandsvisningHilsen } from "./useForhandsvisningHilsen";
 import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { behandlerDeltakerTekst } from "@/utils/behandlerUtils";
+import { useLedere } from "@/hooks/useLedere";
 
 export interface ForhandsvisReferatGenerator {
   generateReferatDocument(
@@ -31,17 +35,39 @@ export const useForhandsvisReferat = (
   const { data: veilederinfo } = useVeilederinfoQuery();
   const hilsen = useForhandsvisningHilsen();
 
+  const { getCurrentNarmesteLeder } = useLedere();
+
+  const getValgtArbeidsgiver = () =>
+    getCurrentNarmesteLeder(dialogmote.arbeidsgiver.virksomhetsnummer)
+      ?.virksomhetsnavn;
+
   const generateReferatDocument = (
     values: Partial<ReferatSkjemaValues>
   ): DocumentComponentDto[] => {
-    return [
+    const documentComponents = [
+      createParagraph(
+        `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
+      ),
       createHeader(navbruker?.navn),
       ...info(dialogmote, values, navbruker, veilederinfo),
+    ];
+
+    const virksomhetsnavn = getValgtArbeidsgiver();
+
+    if (virksomhetsnavn) {
+      documentComponents.push(
+        createParagraphWithTitle("Arbeidsgiver", virksomhetsnavn)
+      );
+    }
+
+    documentComponents.push(
       ...intro(),
       ...fritekster(values),
       ...standardTekster(values),
-      ...hilsen,
-    ];
+      ...hilsen
+    );
+
+    return documentComponents;
   };
 
   return {

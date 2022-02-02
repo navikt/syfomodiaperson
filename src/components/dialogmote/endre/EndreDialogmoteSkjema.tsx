@@ -102,7 +102,7 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
     generateArbeidstakerTidStedDocument,
     generateArbeidsgiverTidStedDocument,
     generateBehandlerTidStedDocument,
-  } = useForhandsvisTidSted(dialogmote.tid, dialogmote.behandler);
+  } = useForhandsvisTidSted(dialogmote);
 
   const validate = (
     values: Partial<EndreTidStedSkjemaValues>
@@ -168,10 +168,7 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
         {({ handleSubmit, submitFailed, errors }) => (
           <form onSubmit={handleSubmit}>
             <DialogmoteTidOgSted />
-            <EndreDialogmoteTekster
-              opprinneligTid={dialogmote.tid}
-              behandler={dialogmote.behandler}
-            />
+            <EndreDialogmoteTekster dialogmote={dialogmote} />
             {endreTidStedDialogmote.isError && (
               <SkjemaInnsendingFeil error={endreTidStedDialogmote.error} />
             )}

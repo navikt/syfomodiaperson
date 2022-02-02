@@ -48,6 +48,7 @@ import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expectedReferatDocument } from "./testDataDocuments";
+import sinon from "sinon";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -70,6 +71,7 @@ const mockState = {
         narmesteLederNavn: lederNavn,
         status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
         virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+        virksomhetsnavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
       },
       {
         narmesteLederNavn: "Annen Leder",
@@ -83,6 +85,9 @@ const mockState = {
 let queryClient;
 
 describe("ReferatTest", () => {
+  let clock;
+  const today = new Date(Date.now());
+
   beforeEach(() => {
     queryClient = new QueryClient();
     queryClient.setQueryData(
@@ -93,6 +98,12 @@ describe("ReferatTest", () => {
       behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
       () => behandlendeEnhet
     );
+
+    clock = sinon.useFakeTimers(today.getTime());
+  });
+
+  afterEach(() => {
+    clock.restore();
   });
 
   it("viser arbeidstaker, dato og sted i tittel", () => {

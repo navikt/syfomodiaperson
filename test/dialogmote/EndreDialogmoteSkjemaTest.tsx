@@ -38,6 +38,7 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MAX_LENGTH_AVLYS_BEGRUNNELSE } from "@/components/dialogmote/avlys/AvlysDialogmoteSkjema";
 import { expectedEndringDocuments } from "./testDataDocuments";
+import sinon from "sinon";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -45,6 +46,9 @@ const store = configureStore([]);
 let queryClient;
 
 describe("EndreDialogmoteSkjemaTest", () => {
+  let clock;
+  const today = new Date(Date.now());
+
   beforeEach(() => {
     queryClient = new QueryClient();
     queryClient.setQueryData(
@@ -55,6 +59,11 @@ describe("EndreDialogmoteSkjemaTest", () => {
       behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
       () => behandlendeEnhet
     );
+    clock = sinon.useFakeTimers(today.getTime());
+  });
+
+  afterEach(() => {
+    clock.restore();
   });
 
   it("validerer begrunnelser og dato", () => {

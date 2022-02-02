@@ -4,7 +4,7 @@ import { Forhandsvisning } from "../Forhandsvisning";
 import { EndreTidStedSkjemaValues } from "./EndreDialogmoteSkjema";
 import { useForhandsvisTidSted } from "@/hooks/dialogmote/useForhandsvisTidSted";
 import FritekstSeksjon from "@/components/dialogmote/FritekstSeksjon";
-import { DialogmotedeltakerBehandlerDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 
 export const MAX_LENGTH_ENDRE_BEGRUNNELSE = 200;
 
@@ -27,11 +27,11 @@ export const texts = {
 };
 
 interface Props {
-  opprinneligTid: string;
-  behandler: DialogmotedeltakerBehandlerDTO | undefined;
+  dialogmote: DialogmoteDTO;
 }
 
-const EndreDialogmoteTekster = ({ opprinneligTid, behandler }: Props) => {
+const EndreDialogmoteTekster = ({ dialogmote }: Props) => {
+  const { behandler } = dialogmote;
   const { values } = useFormState<EndreTidStedSkjemaValues>();
   const [
     displayEndringArbeidstakerPreview,
@@ -49,7 +49,7 @@ const EndreDialogmoteTekster = ({ opprinneligTid, behandler }: Props) => {
     generateArbeidstakerTidStedDocument,
     generateArbeidsgiverTidStedDocument,
     generateBehandlerTidStedDocument,
-  } = useForhandsvisTidSted(opprinneligTid, behandler);
+  } = useForhandsvisTidSted(dialogmote);
 
   return (
     <>

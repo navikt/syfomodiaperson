@@ -95,7 +95,7 @@ const AvlysDialogmoteSkjema = ({
     generateAvlysningArbeidstakerDocument,
     generateAvlysningArbeidsgiverDocument,
     generateAvlysningBehandlerDocument,
-  } = useForhandsvisAvlysning(dialogmote.tid);
+  } = useForhandsvisAvlysning(dialogmote);
 
   const validate = (
     values: Partial<AvlysDialogmoteSkjemaValues>

@@ -38,6 +38,7 @@ import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expectedAvlysningDocuments } from "./testDataDocuments";
+import sinon from "sinon";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -45,6 +46,9 @@ const store = configureStore([]);
 let queryClient;
 
 describe("AvlysDialogmoteSkjemaTest", () => {
+  let clock;
+  const today = new Date(Date.now());
+
   beforeEach(() => {
     queryClient = new QueryClient();
     queryClient.setQueryData(
@@ -55,6 +59,12 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
       () => behandlendeEnhet
     );
+
+    clock = sinon.useFakeTimers(today.getTime());
+  });
+
+  afterEach(() => {
+    clock.restore();
   });
 
   it("viser møtetidspunkt", () => {

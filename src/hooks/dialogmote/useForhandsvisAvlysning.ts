@@ -1,10 +1,17 @@
-import { DocumentComponentDto } from "@/data/dialogmote/types/dialogmoteTypes";
+import {
+  DialogmoteDTO,
+  DocumentComponentDto,
+} from "@/data/dialogmote/types/dialogmoteTypes";
 import { AvlysDialogmoteSkjemaValues } from "@/components/dialogmote/avlys/AvlysDialogmoteSkjema";
 import { avlysningTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
-import { createParagraph } from "@/utils/documentComponentUtils";
+import {
+  createParagraph,
+  createParagraphWithTitle,
+} from "@/utils/documentComponentUtils";
 import { useForhandsvisningHilsen } from "./useForhandsvisningHilsen";
 import { useForhandsvisningIntro } from "@/hooks/dialogmote/useForhandsvisningIntro";
+import { useLedere } from "@/hooks/useLedere";
 
 export interface ForhandsvisAvlysningGenerator {
   generateAvlysningArbeidstakerDocument(
@@ -21,9 +28,14 @@ export interface ForhandsvisAvlysningGenerator {
 }
 
 export const useForhandsvisAvlysning = (
-  opprinneligTid: string
+  dialogmote: DialogmoteDTO
 ): ForhandsvisAvlysningGenerator => {
   const hilsen = useForhandsvisningHilsen();
+
+  const sendt = createParagraph(
+    `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
+  );
+
   const {
     introHilsenArbeidstaker,
     introHilsenArbeidsgiver,
@@ -31,19 +43,32 @@ export const useForhandsvisAvlysning = (
   } = useForhandsvisningIntro();
   const introText = createParagraph(
     `${avlysningTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
-      opprinneligTid
+      dialogmote.tid
     )}. ${avlysningTexts.intro2}`
   );
+
+  const { getCurrentNarmesteLeder } = useLedere();
+
+  const getValgtArbeidsgiver = (arbeidsgiver) =>
+    getCurrentNarmesteLeder(arbeidsgiver.virksomhetsnummer)?.virksomhetsnavn;
 
   const generateAvlysningDocument = (
     values: Partial<AvlysDialogmoteSkjemaValues>,
     introHilsen: DocumentComponentDto,
     begrunnelse?: string
   ) => {
-    const documentComponents = [introHilsen, introText];
+    const documentComponents = [sendt, introHilsen, introText];
     if (begrunnelse) {
       documentComponents.push(createParagraph(begrunnelse));
     }
+
+    const virksomhetsnavn = getValgtArbeidsgiver(dialogmote.arbeidsgiver);
+    if (virksomhetsnavn) {
+      documentComponents.push(
+        createParagraphWithTitle("Arbeidsgiver", virksomhetsnavn)
+      );
+    }
+
     documentComponents.push(...hilsen);
 
     return documentComponents;

@@ -17,10 +17,12 @@ import {
 } from "@/data/dialogmote/dialogmoteTexts";
 import {
   DialogmotedeltakerBehandlerDTO,
+  DialogmoteDTO,
   DocumentComponentDto,
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { useForhandsvisningIntro } from "@/hooks/dialogmote/useForhandsvisningIntro";
 import { behandlerDeltakerTekst } from "@/utils/behandlerUtils";
+import { useLedere } from "@/hooks/useLedere";
 
 export interface ForhandsvisTidStedGenerator {
   generateArbeidsgiverTidStedDocument(
@@ -37,9 +39,10 @@ export interface ForhandsvisTidStedGenerator {
 }
 
 export const useForhandsvisTidSted = (
-  opprinneligTid: string,
-  behandler?: DialogmotedeltakerBehandlerDTO
+  dialogmote: DialogmoteDTO
 ): ForhandsvisTidStedGenerator => {
+  const { tid, arbeidsgiver, behandler } = dialogmote;
+
   const hilsen = useForhandsvisningHilsen();
   const {
     introHilsenArbeidstaker,
@@ -47,12 +50,22 @@ export const useForhandsvisTidSted = (
     introHilsenBehandler,
   } = useForhandsvisningIntro();
 
+  const sendtDato = createParagraph(
+    `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
+  );
+
+  const { getCurrentNarmesteLeder } = useLedere();
+
+  const getValgtArbeidsgiver = () =>
+    getCurrentNarmesteLeder(arbeidsgiver.virksomhetsnummer)?.virksomhetsnavn;
+
   const generateArbeidsgiverTidStedDocument = (
     values: Partial<EndreTidStedSkjemaValues>
   ) => {
     const documentComponents = [
+      sendtDato,
       introHilsenArbeidsgiver,
-      ...fellesInfo(values, opprinneligTid),
+      ...fellesInfo(values, tid, getValgtArbeidsgiver()),
     ];
 
     if (values.begrunnelseArbeidsgiver) {
@@ -95,8 +108,9 @@ export const useForhandsvisTidSted = (
     values: Partial<EndreTidStedSkjemaValues>
   ) => {
     const documentComponents = [
+      sendtDato,
       introHilsenArbeidstaker,
-      ...fellesInfo(values, opprinneligTid),
+      ...fellesInfo(values, tid, getValgtArbeidsgiver()),
     ];
 
     if (values.begrunnelseArbeidstaker) {
@@ -135,8 +149,9 @@ export const useForhandsvisTidSted = (
     values: Partial<EndreTidStedSkjemaValues>
   ) => {
     const documentComponents = [
+      sendtDato,
       introHilsenBehandler,
-      ...fellesInfo(values, opprinneligTid),
+      ...fellesInfo(values, tid, getValgtArbeidsgiver()),
     ];
 
     if (values.begrunnelseBehandler) {
@@ -161,7 +176,8 @@ export const useForhandsvisTidSted = (
 
 const fellesInfo = (
   values: Partial<EndreTidStedSkjemaValues>,
-  opprinneligTid: string
+  opprinneligTid: string,
+  arbeidsgiver?: string
 ): DocumentComponentDto[] => {
   const { dato, klokkeslett, sted, videoLink } = values;
 
@@ -185,6 +201,10 @@ const fellesInfo = (
 
   if (videoLink) {
     components.push(createLink(innkallingTexts.videoLinkTitle, videoLink));
+  }
+
+  if (arbeidsgiver) {
+    components.push(createParagraphWithTitle("Arbeidsgiver", arbeidsgiver));
   }
 
   return components;
