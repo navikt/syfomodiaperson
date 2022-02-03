@@ -8,7 +8,7 @@ import {
   BehandlerType,
 } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { arbeidstaker, mockStateBehandler } from "./testData";
+import { arbeidstaker, mockState } from "./testData";
 import { behandlereDialogmeldingQueryKeys } from "@/data/behandlerdialogmelding/behandlereDialogmeldingQueryHooks";
 import { MemoryRouter, Route } from "react-router-dom";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
@@ -24,7 +24,6 @@ const noOpMethod = () => {
 };
 const store = configureStore([]);
 const realState = createStore(rootReducer).getState();
-
 describe("DialogmoteInnkallingBehandler", () => {
   const fastlege = {
     type: BehandlerType.FASTLEGE,
@@ -80,7 +79,7 @@ const renderDialogmoteInnkallingBehandler = () => {
     <MemoryRouter initialEntries={[dialogmoteRoutePath]}>
       <Route path={dialogmoteRoutePath}>
         <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockStateBehandler })}>
+          <Provider store={store({ ...realState, ...mockState })}>
             <DialogmoteInnkallingBehandler setSelectedBehandler={noOpMethod} />
           </Provider>
         </QueryClientProvider>

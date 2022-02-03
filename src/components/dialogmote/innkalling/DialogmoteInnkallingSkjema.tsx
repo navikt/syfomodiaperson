@@ -32,7 +32,6 @@ import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import DialogmoteInnkallingBehandler from "@/components/dialogmote/innkalling/DialogmoteInnkallingBehandler";
 import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
-import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
 import styled from "styled-components";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useTrackOnClick } from "@/data/logging/loggingHooks";
@@ -177,8 +176,6 @@ const DialogmoteInnkallingSkjema = ({
   };
   const trackOnClick = useTrackOnClick();
 
-  const { isDm2InnkallingFastlegeEnabled } = useDM2FeatureToggles();
-
   const [
     selectedBehandler,
     setSelectedBehandler,
@@ -206,11 +203,9 @@ const DialogmoteInnkallingSkjema = ({
         {({ handleSubmit, submitFailed, errors }) => (
           <form onSubmit={handleSubmit}>
             <DialogmoteInnkallingVelgArbeidsgiver />
-            {isDm2InnkallingFastlegeEnabled && (
-              <DialogmoteInnkallingBehandler
-                setSelectedBehandler={setSelectedBehandler}
-              />
-            )}
+            <DialogmoteInnkallingBehandler
+              setSelectedBehandler={setSelectedBehandler}
+            />
             <DialogmoteTidOgSted />
             <DialogmoteInnkallingTekster
               selectedBehandler={selectedBehandler}

@@ -7,8 +7,6 @@ export const mockUnleash = (server) => {
     res.send(
       JSON.stringify({
         "syfo.syfomodiaperson.dm2": true,
-        "syfo.syfomodiaperson.dm2varselFysiskBrev": true,
-        "syfo.syfomodiaperson.dm2innkallingFastlege": true,
       })
     );
   });

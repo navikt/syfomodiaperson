@@ -15,8 +15,6 @@ export const initialState: UnleashState = {
   triedFetchingToggles: false,
   toggles: {
     [ToggleNames.dm2]: false,
-    [ToggleNames.dm2VarselFysiskBrev]: false,
-    [ToggleNames.dm2InnkallingFastlege]: false,
   },
 };
 

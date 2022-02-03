@@ -13,7 +13,6 @@ import {
   BehandlerType,
 } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
-import { ToggleNames } from "@/data/unleash/unleash_types";
 import { leggTilDagerPaDato, toDatePrettyPrint } from "@/utils/datoUtils";
 import { InputDateStringToISODateString } from "nav-datovelger/lib/utils/dateFormatUtils";
 import {
@@ -172,17 +171,6 @@ export const mockState = {
         status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
       },
     ],
-  },
-};
-
-export const mockStateBehandler = {
-  ...mockState,
-  unleash: {
-    toggles: {
-      [ToggleNames.dm2]: true,
-      [ToggleNames.dm2VarselFysiskBrev]: false,
-      [ToggleNames.dm2InnkallingFastlege]: true,
-    },
   },
 };
 

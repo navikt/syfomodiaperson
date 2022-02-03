@@ -10,10 +10,6 @@ import { Moteplanleggeren } from "./Moteplanleggeren";
 import { DialogmoteMoteStatusPanel } from "./DialogmoteMoteStatusPanel";
 import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
-import styled from "styled-components";
-import { AlertstripeFullbredde } from "../../../AlertstripeFullbredde";
-import { Normaltekst } from "nav-frontend-typografi";
-import { BrukerKanIkkeVarslesText } from "../../../BrukerKanIkkeVarslesText";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/components/dialogmote/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 
@@ -26,23 +22,6 @@ export const texts = {
   moteforesporselSendt: "Møteforespørsel sendt",
   arenaDialogmoteInnkalling:
     "Dialogmøter med denne innbyggeren må fortsatt kalles inn via Arena.",
-};
-
-const BrukerKanIkkeVarslesAlertStripe = styled(AlertstripeFullbredde)`
-  margin-bottom: 2em;
-`;
-
-const BrukerKanIkkeVarslesWarning = () => {
-  const { isDm2FysiskBrevEnabled } = useDM2FeatureToggles();
-  return isDm2FysiskBrevEnabled ? (
-    <BrukerKanIkkeVarslesPapirpostAdvarsel />
-  ) : (
-    <BrukerKanIkkeVarslesAlertStripe type="advarsel">
-      <BrukerKanIkkeVarslesText />
-      <br />
-      <Normaltekst>{texts.arenaDialogmoteInnkalling}</Normaltekst>
-    </BrukerKanIkkeVarslesAlertStripe>
-  );
 };
 
 const resolveUndertittelForMoteStatus = (mote: MoteDTO) => {
@@ -95,7 +74,9 @@ export const InnkallingDialogmotePanel = ({
         header={texts.planleggNyttMote}
         subtitle={texts.ingenMoterPlanlagt}
       >
-        {brukerKanIkkeVarslesDigitalt && <BrukerKanIkkeVarslesWarning />}
+        {brukerKanIkkeVarslesDigitalt && (
+          <BrukerKanIkkeVarslesPapirpostAdvarsel />
+        )}
         <NyttDialogMote />
       </DialogmotePanel>
     );

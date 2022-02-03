@@ -26,11 +26,7 @@ const DialogmoteInnkallingWarningAlert = styled(AlertstripeFullbredde)`
 
 const DialogmoteInnkallingContainer = (): ReactElement => {
   const { hentingLedereForsokt, hentingLedereFeilet } = useLedere();
-  const {
-    triedFetchingToggles,
-    isDm2FysiskBrevEnabled,
-    isDm2Enabled,
-  } = useDM2FeatureToggles();
+  const { triedFetchingToggles, isDm2Enabled } = useDM2FeatureToggles();
   const { brukerKanIkkeVarslesDigitalt } = useNavBrukerData();
   const { aktivtDialogmote } = useDialogmoterQuery();
 
@@ -48,7 +44,7 @@ const DialogmoteInnkallingContainer = (): ReactElement => {
         <DialogmoteInnkallingWarningAlert type="advarsel">
           {texts.alert}
         </DialogmoteInnkallingWarningAlert>
-        {isDm2FysiskBrevEnabled && brukerKanIkkeVarslesDigitalt && (
+        {brukerKanIkkeVarslesDigitalt && (
           <BrukerKanIkkeVarslesPapirpostAdvarsel />
         )}
         <DialogmoteInnkallingSkjema pageTitle={texts.title} />

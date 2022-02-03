@@ -7,7 +7,6 @@ import { expect } from "chai";
 import { stubBehandlereDialogmeldingApi } from "../stubs/stubIsdialogmelding";
 import { useBehandlereDialogmeldingQuery } from "@/data/behandlerdialogmelding/behandlereDialogmeldingQueryHooks";
 import { behandlereDialogmeldingMock } from "../../mock/isdialogmelding/behandlereDialogmeldingMock";
-import { ToggleNames } from "@/data/unleash/unleash_types";
 
 let queryClient;
 let apiMockScope;
@@ -21,17 +20,9 @@ describe("behandlereDialogmeldingQueryHooks tests", () => {
     nock.cleanAll();
   });
 
-  it("loads behandlere for valgt personident if dm2innkallingFastlege is toggled on", async () => {
-    const mockStateWithFastlegeEnabled = {
-      unleash: {
-        toggles: {
-          [ToggleNames.dm2InnkallingFastlege]: true,
-        },
-      },
-    };
-
+  it("loads behandlere for valgt personident", async () => {
     stubBehandlereDialogmeldingApi(apiMockScope);
-    const wrapper = queryHookWrapper(queryClient, mockStateWithFastlegeEnabled);
+    const wrapper = queryHookWrapper(queryClient);
 
     const { result, waitFor } = renderHook(
       () => useBehandlereDialogmeldingQuery(),
@@ -43,27 +34,5 @@ describe("behandlereDialogmeldingQueryHooks tests", () => {
     await waitFor(() => result.current.isSuccess);
 
     expect(result.current.data).to.deep.equal(behandlereDialogmeldingMock);
-  });
-
-  it("doesn't load behandlere for valgt personident if dm2innkallingFastlege is toggled off", async () => {
-    const mockStateWithFastlegeDisabled = {
-      unleash: {
-        toggles: {
-          [ToggleNames.dm2InnkallingFastlege]: false,
-        },
-      },
-    };
-
-    stubBehandlereDialogmeldingApi(apiMockScope);
-    const wrapper = queryHookWrapper(
-      queryClient,
-      mockStateWithFastlegeDisabled
-    );
-
-    const { result } = renderHook(() => useBehandlereDialogmeldingQuery(), {
-      wrapper,
-    });
-
-    expect(result.current.isIdle).to.be.true;
   });
 });

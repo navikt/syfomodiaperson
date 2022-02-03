@@ -7,7 +7,7 @@ import {
   arbeidstaker,
   behandlendeEnhet,
   behandler,
-  mockStateBehandler,
+  mockState,
   mote,
   moteTekster,
   navEnhet,
@@ -74,7 +74,7 @@ describe("Dialogmoteinnkallingskjema", () => {
     const maxLengthErrorMsg = maxLengthErrorMessage(
       MAX_LENGTH_INNKALLING_FRITEKST
     );
-    renderDialogmoteInnkallingSkjemaMedFastlegeEnabled();
+    renderDialogmoteInnkallingSkjema();
 
     const fastlegeInput = screen.getByRole("radio", { name: /Fastlege/ });
     userEvent.click(fastlegeInput);
@@ -113,7 +113,7 @@ describe("Dialogmoteinnkallingskjema", () => {
 
   it("submit creates innkalling with behandler when behandler is selected", () => {
     stubInnkallingApi(apiMock());
-    renderDialogmoteInnkallingSkjemaMedFastlegeEnabled();
+    renderDialogmoteInnkallingSkjema();
     passSkjemaInput();
 
     clickButton("Send innkallingene");
@@ -152,7 +152,7 @@ describe("Dialogmoteinnkallingskjema", () => {
   });
 
   it("doesn't display behandler fritekst and preview when none is selected", () => {
-    renderDialogmoteInnkallingSkjemaMedFastlegeEnabled();
+    renderDialogmoteInnkallingSkjema();
 
     expect(
       screen.queryByRole("textbox", {
@@ -166,12 +166,12 @@ describe("Dialogmoteinnkallingskjema", () => {
   });
 });
 
-const renderDialogmoteInnkallingSkjemaMedFastlegeEnabled = () => {
+const renderDialogmoteInnkallingSkjema = () => {
   return render(
     <MemoryRouter initialEntries={[dialogmoteRoutePath]}>
       <Route path={dialogmoteRoutePath}>
         <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockStateBehandler })}>
+          <Provider store={store({ ...realState, ...mockState })}>
             <DialogmoteInnkallingSkjema pageTitle="Test" />
           </Provider>
         </QueryClientProvider>

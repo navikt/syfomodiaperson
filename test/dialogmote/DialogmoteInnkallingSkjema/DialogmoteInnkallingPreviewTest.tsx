@@ -9,7 +9,6 @@ import {
   behandlendeEnhet,
   behandler,
   mockState,
-  mockStateBehandler,
   mote,
   moteTekster,
   veileder,
@@ -125,7 +124,7 @@ describe("Dialogmoteinnkallingskjema", () => {
       ),
       () => [behandler]
     );
-    renderDialogmoteInnkallingSkjemaMedFastlegeEnabled();
+    renderDialogmoteInnkallingSkjema();
     passSkjemaInput();
 
     const fastlegeInput = screen.getByRole("radio", { name: /Fastlege/ });
@@ -169,19 +168,6 @@ const renderDialogmoteInnkallingSkjema = () =>
       <Route path={dialogmoteRoutePath}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
-            <DialogmoteInnkallingSkjema pageTitle="Test" />
-          </Provider>
-        </QueryClientProvider>
-      </Route>
-    </MemoryRouter>
-  );
-
-const renderDialogmoteInnkallingSkjemaMedFastlegeEnabled = () =>
-  render(
-    <MemoryRouter initialEntries={[dialogmoteRoutePath]}>
-      <Route path={dialogmoteRoutePath}>
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockStateBehandler })}>
             <DialogmoteInnkallingSkjema pageTitle="Test" />
           </Provider>
         </QueryClientProvider>
