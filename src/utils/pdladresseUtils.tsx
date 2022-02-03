@@ -1,9 +1,24 @@
 import React from "react";
+import {
+  Bostedsadresse,
+  Kontaktadresse,
+  KontaktadresseType,
+  Matrikkeladresse,
+  Oppholdsadresse,
+  PostadresseIFrittFormat,
+  Postboksadresse,
+  UkjentBosted,
+  UtenlandskAdresse,
+  UtenlandskAdresseIFrittFormat,
+  Vegadresse,
+} from "@/data/personinfo/types/PersonAdresse";
 
 const emdashCharacterCode = 8212;
 const EMDASH = String.fromCharCode(emdashCharacterCode);
 
-export const formaterBostedsadresse = (bostedsadresse: any) => {
+export const formaterBostedsadresse = (
+  bostedsadresse: Bostedsadresse | undefined
+) => {
   if (bostedsadresse) {
     if (bostedsadresse.vegadresse) {
       return formaterVegadresse(bostedsadresse.vegadresse);
@@ -18,47 +33,48 @@ export const formaterBostedsadresse = (bostedsadresse: any) => {
   return <span className="adresselinje">{EMDASH}</span>;
 };
 
-export const formaterKontaktadresse = (kontaktadresse: any) => {
+export const formaterKontaktadresse = (
+  kontaktadresse: Kontaktadresse | undefined
+) => {
   if (kontaktadresse) {
-    const kontaktadresseType = kontaktadresse && kontaktadresse.type;
-    if (kontaktadresseType === "Innland") {
+    if (kontaktadresse.type === KontaktadresseType.Innland) {
       return formaterKontaktadresseInnland(kontaktadresse);
-    } else if (kontaktadresseType === "Utland") {
+    } else if (kontaktadresse.type === KontaktadresseType.Utland) {
       return formaterKontaktadresseUtland(kontaktadresse);
     }
   }
   return <span className="adresselinje">{EMDASH}</span>;
 };
 
-export const formaterKontaktadresseInnland = (kontaktadresse: any) => {
-  if (kontaktadresse) {
-    if (kontaktadresse.postboksadresse) {
-      return formaterPostboksadresse(kontaktadresse.postboksadresse);
-    } else if (kontaktadresse.vegadresse) {
-      return formaterVegadresse(kontaktadresse.vegadresse);
-    } else if (kontaktadresse.postadresseIFrittFormat) {
-      return formaterPostadresseIFrittFormat(
-        kontaktadresse.postadresseIFrittFormat
-      );
-    }
+const formaterKontaktadresseInnland = (kontaktadresse: Kontaktadresse) => {
+  if (kontaktadresse.postboksadresse) {
+    return formaterPostboksadresse(kontaktadresse.postboksadresse);
+  } else if (kontaktadresse.vegadresse) {
+    return formaterVegadresse(kontaktadresse.vegadresse);
+  } else if (kontaktadresse.postadresseIFrittFormat) {
+    return formaterPostadresseIFrittFormat(
+      kontaktadresse.postadresseIFrittFormat
+    );
   }
+
   return <span className="adresselinje">{EMDASH}</span>;
 };
 
-export const formaterKontaktadresseUtland = (kontaktadresse: any) => {
-  if (kontaktadresse) {
-    if (kontaktadresse.utenlandskAdresse) {
-      return formaterUtenlandskAdresse(kontaktadresse.utenlandskAdresse);
-    } else if (kontaktadresse.utenlandskAdresseIFrittFormat) {
-      return formaterUtenlandskAdresseIFrittFormat(
-        kontaktadresse.utenlandskAdresseIFrittFormat
-      );
-    }
+const formaterKontaktadresseUtland = (kontaktadresse: Kontaktadresse) => {
+  if (kontaktadresse.utenlandskAdresse) {
+    return formaterUtenlandskAdresse(kontaktadresse.utenlandskAdresse);
+  } else if (kontaktadresse.utenlandskAdresseIFrittFormat) {
+    return formaterUtenlandskAdresseIFrittFormat(
+      kontaktadresse.utenlandskAdresseIFrittFormat
+    );
   }
+
   return <span className="adresselinje">{EMDASH}</span>;
 };
 
-export const formaterOppholdsadresse = (oppholdsadresse: any) => {
+export const formaterOppholdsadresse = (
+  oppholdsadresse: Oppholdsadresse | undefined
+) => {
   if (oppholdsadresse) {
     if (oppholdsadresse.vegadresse) {
       return formaterVegadresse(oppholdsadresse.vegadresse);
@@ -73,11 +89,11 @@ export const formaterOppholdsadresse = (oppholdsadresse: any) => {
   return <span className="adresselinje">{EMDASH}</span>;
 };
 
-const formaterOppholdAnnetSted = (oppholdAnnetSted: any) => {
+const formaterOppholdAnnetSted = (oppholdAnnetSted: string) => {
   return hentAdresseRader(oppholdAnnetSted || "", "", "", "", "");
 };
 
-const formaterPostboksadresse = (postboksadresse: any) => {
+const formaterPostboksadresse = (postboksadresse: Postboksadresse) => {
   return hentAdresseRader(
     postboksadresse.postbokseier || "",
     postboksadresse.postboks,
@@ -87,7 +103,9 @@ const formaterPostboksadresse = (postboksadresse: any) => {
   );
 };
 
-const formaterPostadresseIFrittFormat = (postadresseIFrittFormat: any) => {
+const formaterPostadresseIFrittFormat = (
+  postadresseIFrittFormat: PostadresseIFrittFormat
+) => {
   return hentAdresseRader(
     postadresseIFrittFormat.adresselinje1 || "",
     postadresseIFrittFormat.adresselinje2 || "",
@@ -97,19 +115,19 @@ const formaterPostadresseIFrittFormat = (postadresseIFrittFormat: any) => {
   );
 };
 
-const formaterVegadresse = (vegadresse: any) => {
+const formaterVegadresse = (vegadresse: Vegadresse) => {
   return hentAdresseRader(
     `${vegadresse.adressenavn || ""} ${vegadresse.husnummer || ""} ${
       vegadresse.husbokstav || ""
     }`,
     vegadresse.tilleggsnavn || "",
     vegadresse.postnummer,
-    vegadresse.land || "",
+    "",
     ""
   );
 };
 
-const formaterMatrikkeladresse = (matrikkeladresse: any) => {
+const formaterMatrikkeladresse = (matrikkeladresse: Matrikkeladresse) => {
   return hentAdresseRader(
     matrikkeladresse.bruksenhetsnummer || "",
     matrikkeladresse.tilleggsnavn || "",
@@ -119,7 +137,7 @@ const formaterMatrikkeladresse = (matrikkeladresse: any) => {
   );
 };
 
-const formaterUtenlandskAdresse = (utenlandskAdresse: any) => {
+const formaterUtenlandskAdresse = (utenlandskAdresse: UtenlandskAdresse) => {
   return hentAdresseRader(
     `${utenlandskAdresse.adressenavnNummer} ${utenlandskAdresse.bygningEtasjeLeilighet}`,
     utenlandskAdresse.postboksNummerNavn || "",
@@ -132,7 +150,7 @@ const formaterUtenlandskAdresse = (utenlandskAdresse: any) => {
 };
 
 const formaterUtenlandskAdresseIFrittFormat = (
-  utenlandskAdresseIFrittFormat: any
+  utenlandskAdresseIFrittFormat: UtenlandskAdresseIFrittFormat
 ) => {
   return hentAdresseRader(
     utenlandskAdresseIFrittFormat.adresselinje1 || "",
@@ -145,7 +163,7 @@ const formaterUtenlandskAdresseIFrittFormat = (
   );
 };
 
-const formaterUkjentBosted = (ukjentBosted: any) => {
+const formaterUkjentBosted = (ukjentBosted: UkjentBosted) => {
   return hentAdresseRader(ukjentBosted.bostedskommune || "", "", "", "", "");
 };
 

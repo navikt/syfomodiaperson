@@ -1,4 +1,12 @@
 import { ARBEIDSTAKER_DEFAULT_FULL_NAME } from "../common/mockConstants";
+import { Vegadresse } from "@/data/personinfo/types/PersonAdresse";
+
+export const vegadresse: Vegadresse = {
+  husnummer: "20",
+  adressenavn: "ØKERNVEIEN",
+  kommunenummer: "0301",
+  postnummer: "0301",
+};
 
 export const personAdresseMock = {
   navn: ARBEIDSTAKER_DEFAULT_FULL_NAME,
@@ -7,17 +15,7 @@ export const personAdresseMock = {
     gyldigFraOgMed: "2019-11-03T00:00:00",
     gyldigTilOgMed: null,
     coAdressenavn: null,
-    vegadresse: {
-      matrikkelId: null,
-      husnummer: "20",
-      husbokstav: null,
-      bruksenhetsnummer: null,
-      adressenavn: "ØKERNVEIEN",
-      kommunenummer: "0301",
-      bydelsnummer: null,
-      tilleggsnavn: null,
-      postnummer: "0301",
-    },
+    vegadresse,
     matrikkeladresse: null,
     utenlandskAdresse: null,
     ukjentBosted: null,
@@ -45,17 +43,7 @@ export const personAdresseMock = {
     gyldigTilOgMed: null,
     coAdressenavn: null,
     utenlandskAdresse: null,
-    vegadresse: {
-      matrikkelId: null,
-      husnummer: "20",
-      husbokstav: null,
-      bruksenhetsnummer: null,
-      adressenavn: "ØKERNVEIEN",
-      kommunenummer: "0301",
-      bydelsnummer: null,
-      tilleggsnavn: null,
-      postnummer: "0301",
-    },
+    vegadresse,
     matrikkeladresse: null,
     oppholdAnnetSted: null,
   },

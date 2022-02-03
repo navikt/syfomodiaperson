@@ -46,7 +46,6 @@ describe("PersonkortVisning", () => {
           fnr: "1234",
         },
       },
-      personadresse: {},
       valgtbruker: {
         personident: arbeidstaker.personident,
       },
@@ -55,15 +54,16 @@ describe("PersonkortVisning", () => {
 
   it("Skal vise PersonkortSykmeldt, som initielt valg", () => {
     render(
-      <Provider store={store({ ...realState, ...mockState })}>
-        <PersonkortVisning
-          visning={""}
-          ledere={mockState.ledere}
-          navbruker={mockState.navbruker}
-          personadresse={mockState.personadresse}
-          sykmeldinger={[]}
-        />
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store({ ...realState, ...mockState })}>
+          <PersonkortVisning
+            visning={""}
+            ledere={mockState.ledere}
+            navbruker={mockState.navbruker}
+            sykmeldinger={[]}
+          />
+        </Provider>
+      </QueryClientProvider>
     );
 
     expect(screen.getByRole("heading", { name: "Kontaktinformasjon" })).to
@@ -79,7 +79,6 @@ describe("PersonkortVisning", () => {
             visning={PERSONKORTVISNING_TYPE.LEGE}
             ledere={mockState.ledere}
             navbruker={mockState.navbruker}
-            personadresse={mockState.personadresse}
             sykmeldinger={[]}
           />
         </Provider>
@@ -106,7 +105,6 @@ describe("PersonkortVisning", () => {
             visning={PERSONKORTVISNING_TYPE.ENHET}
             ledere={mockState.ledere}
             navbruker={mockState.navbruker}
-            personadresse={mockState.personadresse}
             sykmeldinger={[]}
           />
         </Provider>

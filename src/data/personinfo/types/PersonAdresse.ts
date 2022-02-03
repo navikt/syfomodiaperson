@@ -28,9 +28,9 @@ export interface Kontaktadresse {
   utenlandskAdresseIFrittFormat?: UtenlandskAdresseIFrittFormat;
 }
 
-enum KontaktadresseType {
-  Innland,
-  Utland,
+export enum KontaktadresseType {
+  Innland = "Innland",
+  Utland = "Utland",
 }
 
 export interface Oppholdsadresse {

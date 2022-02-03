@@ -31,7 +31,6 @@ import oppfolgingstilfellerperson, {
 import oppfolgingstilfelleperioder, {
   OppfolgingstilfelleperioderMapState,
 } from "./oppfolgingstilfelle/oppfolgingstilfelleperioder";
-import personadresse, { PersonAdresseState } from "./personinfo/personadresse";
 import personoppgaver, {
   PersonOppgaverState,
 } from "./personoppgave/personoppgaver";
@@ -57,7 +56,6 @@ export interface RootState {
   soknader: SykepengesoknaderState;
   oppfolgingstilfellerperson: OppfolgingstilfellerPersonState;
   oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState;
-  personadresse: PersonAdresseState;
   personoppgaver: PersonOppgaverState;
   flaggperson: FlaggpersonState;
   unleash: UnleashState;
@@ -82,7 +80,6 @@ export const rootReducer = combineReducers<RootState>({
   soknader,
   oppfolgingstilfellerperson,
   oppfolgingstilfelleperioder,
-  personadresse,
   personoppgaver,
   flaggperson,
   unleash,

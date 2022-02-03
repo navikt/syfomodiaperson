@@ -28,9 +28,6 @@ const LinkRow = styled.div`
 `;
 
 const Personkort = () => {
-  const personadresseState = useSelector((state: any) => state.personadresse);
-  const personadresse = personadresseState.data;
-
   const sykmeldingerState = useSelector((state: any) => state.sykmeldinger);
   const sykmeldinger = sykmeldingerState.data;
 
@@ -133,7 +130,6 @@ const Personkort = () => {
             <PersonkortVisning
               ledere={ledere}
               navbruker={navbruker}
-              personadresse={personadresse}
               sykmeldinger={sykmeldinger}
               visning={visning}
             />

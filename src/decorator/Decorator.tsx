@@ -7,7 +7,6 @@ import { valgtEnhet } from "@/data/valgtenhet/enhet_actions";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { hentNavbruker } from "@/data/navbruker/navbruker_actions";
 import { hentLedere } from "@/data/leder/ledere_actions";
-import { hentPersonAdresse } from "@/data/personinfo/personInfo_actions";
 import { erGyldigFodselsnummer } from "@/utils/frnValideringUtils";
 
 const InternflateDecorator = NAVSPA.importer<DecoratorProps>(
@@ -23,7 +22,6 @@ const Decorator = () => {
     if (erGyldigFodselsnummer(fnr)) {
       dispatch(hentNavbruker(fnr));
       dispatch(hentLedere(fnr));
-      dispatch(hentPersonAdresse(fnr));
     }
   }, [dispatch, fnr]);
 

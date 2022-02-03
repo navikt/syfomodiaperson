@@ -10,19 +10,12 @@ import VisningEnhet from "./PersonkortEnhet";
 interface PersonkortVisningProps {
   ledere: NarmesteLederRelasjonDTO[];
   navbruker: Brukerinfo;
-  personadresse: any;
   sykmeldinger: any[];
   visning: string;
 }
 
 const PersonkortVisning = (personkortVisningProps: PersonkortVisningProps) => {
-  const {
-    ledere,
-    navbruker,
-    personadresse,
-    sykmeldinger,
-    visning,
-  } = personkortVisningProps;
+  const { ledere, navbruker, sykmeldinger, visning } = personkortVisningProps;
   const { LEGE, LEDER, ENHET } = PERSONKORTVISNING_TYPE;
 
   return (
@@ -41,12 +34,7 @@ const PersonkortVisning = (personkortVisningProps: PersonkortVisningProps) => {
             return <VisningEnhet />;
           }
           default: {
-            return (
-              <PersonkortSykmeldt
-                navbruker={navbruker}
-                personadresse={personadresse}
-              />
-            );
+            return <PersonkortSykmeldt navbruker={navbruker} />;
           }
         }
       })()}

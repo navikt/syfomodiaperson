@@ -13,7 +13,6 @@ import dokumentInfoSagas from "./oppfolgingsplan/dokumentInfoSagas";
 import soknaderSagas from "./sykepengesoknad/soknaderSagas";
 import oppfolgingstilfellePersonSagas from "./oppfolgingstilfelle/oppfolgingstilfellePersonSagas";
 import oppfolgingstilfelleperioderSagas from "./oppfolgingstilfelle/oppfolgingstilfelleperioderSagas";
-import personInfoSagas from "./personinfo/personInfoSagas";
 import personoppgaveSagas from "./personoppgave/personoppgaveSagas";
 import flaggPersonSagas from "./pengestopp/flaggPersonSagas";
 import unleashSagas from "./unleash/unleashSagas";
@@ -34,7 +33,6 @@ export default function* rootSaga() {
     soknaderSagas(),
     oppfolgingstilfellePersonSagas(),
     oppfolgingstilfelleperioderSagas(),
-    personInfoSagas(),
     personoppgaveSagas(),
     flaggPersonSagas(),
     unleashSagas(),
