@@ -9,27 +9,35 @@ export const innkallingTexts = {
       "I møtet vil vi høre både hva du og arbeidsgiveren sier om arbeidssituasjonen og mulighetene for å jobbe.",
     intro2WithBehandler:
       "I møtet vil vi høre både hva du, arbeidsgiveren og behandleren sier om arbeidssituasjonen og mulighetene for å jobbe.",
+    outroObligatorisk: "Det er obligatorisk å delta i dialogmøtet.",
     outro1:
-      "Den som har sykmeldt deg, eller en annen behandler, kan også bli invitert til å delta i møtet. Til dette møtet har vi ikke sett behov for det.",
+      "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi ikke sett behov for det.",
     outro1WithBehandler:
       "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi sett behov for å innkalle",
     outro2Title: "Før møtet",
-    outro2Text:
+    outro2:
       "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+    outro2WithBehandler:
+      "Det er viktig at du og arbeidsgiveren din fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
   },
   arbeidsgiver: {
     intro1:
       "Velkommen til dialogmøte i regi av NAV. NAV har ansvar for å innkalle til dialogmøte senest når en sykmelding har vart i seks måneder, eventuelt på et annet tidspunkt hvis noen av partene ser behov for det.",
     intro2:
       "I møtet vil vi høre både hva du og den ansatte sier om arbeidssituasjonen og mulighetene for å jobbe.",
-    intro2withBehandler:
+    intro2WithBehandler:
       "I møtet vil vi høre både hva du, den ansatte og behandleren sier om arbeidssituasjonen og mulighetene for å jobbe.",
+    outroObligatorisk:
+      "Det er obligatorisk å delta i dialogmøtet. Gi oss svar om tidspunktet passer eller ikke. Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
     outro1:
-      "Det er obligatorisk å delta i dialogmøtet. Hvis vårt forslag ikke passer, ber vi om at du tar kontakt. Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
-    outro2:
-      "NAV kan be fastlegen eller annet helsepersonell om å delta i møtet. Til dette møtet har vi ikke sett behov for det.",
-    outro2MedBehandler:
+      "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi ikke sett behov for det.",
+    outro1WithBehandler:
       "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi sett behov for å innkalle",
+    outro2Title: "Før møtet",
+    outro2:
+      "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med NAV senest én uke før møtet. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+    outro2WithBehandler:
+      "Det er viktig at du og arbeidstakeren fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
   },
 
   behandler: {
@@ -38,7 +46,7 @@ export const innkallingTexts = {
     intro2:
       "I møtet vil vi høre både hva du, arbeidsgiveren og den ansatte sier om arbeidssituasjonen og mulighetene for å jobbe.",
     outro1:
-      "Det er obligatorisk å delta i dialogmøtet. Hvis vårt forslag ikke passer, ber vi om at du tar kontakt. Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
+      "Det er obligatorisk å delta i dialogmøtet. Gi oss svar om tidspunktet passer eller ikke. Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
     outro2:
       "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi sett behov for å invitere deg.",
   },
@@ -48,13 +56,9 @@ export const endreTidStedTexts = {
   intro1:
     "Du har tidligere blitt innkalt til et dialogmøte. Møtet skulle vært avholdt",
   intro2: "Møtet må flyttes. Dette tidspunktet og møtestedet gjelder nå:",
-
   moteTidTitle: "Møtetidspunkt",
   moteStedTitle: "Møtested",
   videoLinkTitle: "Lenke til videomøte",
-  preMeetingTitle: "Før møtet",
-  preMeeting:
-    "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
   arbeidsgiver: {
     outro1:
       "I møtet vil vi høre både hva du og arbeidstakeren sier om arbeidssituasjonen og mulighetene for å jobbe. Vi blir enige om en plan som kan hjelpe arbeidstakeren videre.",
@@ -64,6 +68,13 @@ export const endreTidStedTexts = {
       "I møtet vil vi høre både hva du, den ansatte og behandleren sier om arbeidssituasjonen og mulighetene for å jobbe.",
     outro2WithBehandler:
       "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi sett behov for å innkalle",
+    outroObligatorisk:
+      "Det er obligatorisk å delta i dialogmøtet. Gi oss svar om tidspunktet passer eller ikke. Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
+    outro3Title: "Før møtet",
+    outro3:
+      "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+    outro3WithBehandler:
+      "Det er viktig at du og arbeidstakeren fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
   },
   arbeidstaker: {
     outro1:
@@ -74,12 +85,20 @@ export const endreTidStedTexts = {
       "I møtet vil vi høre både hva du, arbeidsgiveren og behandleren sier om arbeidssituasjonen og mulighetene for å jobbe.",
     outro2WithBehandler:
       "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi sett behov for å innkalle",
+    outroObligatorisk: "Det er obligatorisk å delta i dialogmøtet.",
+    outro3Title: "Før møtet",
+    outro3:
+      "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+    outro3WithBehandler:
+      "Det er viktig at du og arbeidsgiveren din fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
   },
   behandler: {
     outro1:
       "I møtet vil vi høre både hva du, arbeidsgiveren og den ansatte sier om arbeidssituasjonen og mulighetene for å jobbe.",
     outro2:
       "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi sett behov for å invitere deg.",
+    outroObligatorisk:
+      "Det er obligatorisk å delta i dialogmøtet. Gi oss svar om tidspunktet passer eller ikke. Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
   },
 };
 

@@ -32,6 +32,10 @@ import { genererDato } from "@/components/mote/utils";
 import { capitalizeWord } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 
+const behandlerTypeNavnText = `${capitalizeWord(
+  behandler.type.toLowerCase()
+)} ${behandlerNavn(behandler)}`;
+
 const expectedArbeidstakerInnkalling = (
   medBehandler = false
 ): DocumentComponentDto[] => [
@@ -64,7 +68,7 @@ const expectedArbeidstakerInnkalling = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [`Hei ${arbeidstaker.navn}`],
+    texts: [`Hei, ${arbeidstaker.navn}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -84,17 +88,23 @@ const expectedArbeidstakerInnkalling = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
+    texts: [innkallingTexts.arbeidstaker.outroObligatorisk],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [
       medBehandler
-        ? `${innkallingTexts.arbeidstaker.outro1WithBehandler} ${capitalizeWord(
-            behandler.type.toLowerCase()
-          )} ${behandlerNavn(behandler)}.`
+        ? `${innkallingTexts.arbeidstaker.outro1WithBehandler} ${behandlerTypeNavnText}.`
         : innkallingTexts.arbeidstaker.outro1,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [innkallingTexts.arbeidstaker.outro2Text],
+    texts: [
+      medBehandler
+        ? innkallingTexts.arbeidstaker.outro2WithBehandler
+        : innkallingTexts.arbeidstaker.outro2,
+    ],
     title: innkallingTexts.arbeidstaker.outro2Title,
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -150,7 +160,7 @@ const expectedArbeidsgiverInnkalling = (
   {
     texts: [
       medBehandler
-        ? innkallingTexts.arbeidsgiver.intro2withBehandler
+        ? innkallingTexts.arbeidsgiver.intro2WithBehandler
         : innkallingTexts.arbeidsgiver.intro2,
     ],
     type: DocumentComponentType.PARAGRAPH,
@@ -160,15 +170,22 @@ const expectedArbeidsgiverInnkalling = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [innkallingTexts.arbeidsgiver.outro1],
+    texts: [innkallingTexts.arbeidsgiver.outroObligatorisk],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [
       medBehandler
-        ? `${innkallingTexts.arbeidsgiver.outro2MedBehandler} ${capitalizeWord(
-            behandler.type.toLowerCase()
-          )} ${behandlerNavn(behandler)}.`
+        ? `${innkallingTexts.arbeidsgiver.outro1WithBehandler} ${behandlerTypeNavnText}.`
+        : innkallingTexts.arbeidsgiver.outro1,
+    ],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    title: innkallingTexts.arbeidsgiver.outro2Title,
+    texts: [
+      medBehandler
+        ? innkallingTexts.arbeidsgiver.outro2WithBehandler
         : innkallingTexts.arbeidsgiver.outro2,
     ],
     type: DocumentComponentType.PARAGRAPH,
@@ -310,20 +327,24 @@ const expectedArbeidsgiverEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
+    texts: [endreTidStedTexts.arbeidsgiver.outroObligatorisk],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [
       medBehandler
-        ? `${
-            endreTidStedTexts.arbeidsgiver.outro2WithBehandler
-          } ${capitalizeWord(behandler.type.toLowerCase())} ${behandlerNavn(
-            behandler
-          )}.`
+        ? `${endreTidStedTexts.arbeidsgiver.outro2WithBehandler} ${behandlerTypeNavnText}.`
         : endreTidStedTexts.arbeidsgiver.outro2,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [endreTidStedTexts.preMeeting],
-    title: endreTidStedTexts.preMeetingTitle,
+    texts: [
+      medBehandler
+        ? endreTidStedTexts.arbeidsgiver.outro3WithBehandler
+        : endreTidStedTexts.arbeidsgiver.outro3,
+    ],
+    title: endreTidStedTexts.arbeidsgiver.outro3Title,
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -348,7 +369,7 @@ const expectedArbeidstakerEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [`Hei ${arbeidstaker.navn}`],
+    texts: [`Hei, ${arbeidstaker.navn}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -400,20 +421,24 @@ const expectedArbeidstakerEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
+    texts: [endreTidStedTexts.arbeidstaker.outroObligatorisk],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [
       medBehandler
-        ? `${
-            endreTidStedTexts.arbeidstaker.outro2WithBehandler
-          } ${capitalizeWord(behandler.type.toLowerCase())} ${behandlerNavn(
-            behandler
-          )}.`
+        ? `${endreTidStedTexts.arbeidstaker.outro2WithBehandler} ${behandlerTypeNavnText}.`
         : endreTidStedTexts.arbeidstaker.outro2,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [endreTidStedTexts.preMeeting],
-    title: endreTidStedTexts.preMeetingTitle,
+    texts: [
+      medBehandler
+        ? endreTidStedTexts.arbeidstaker.outro3WithBehandler
+        : endreTidStedTexts.arbeidstaker.outro3,
+    ],
+    title: endreTidStedTexts.arbeidstaker.outro3Title,
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -480,6 +505,10 @@ const expectedBehandlerEndringsdokument: DocumentComponentDto[] = [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
+    texts: [endreTidStedTexts.behandler.outroObligatorisk],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [endreTidStedTexts.behandler.outro2],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -535,7 +564,7 @@ const expectedAvlysningArbeidstaker: DocumentComponentDto[] = [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [`Hei ${arbeidstaker.navn}`],
+    texts: [`Hei, ${arbeidstaker.navn}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {

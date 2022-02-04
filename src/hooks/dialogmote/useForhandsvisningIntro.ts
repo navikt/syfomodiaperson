@@ -6,7 +6,7 @@ export const useForhandsvisningIntro = () => {
   const gjelder = createParagraph(
     `Gjelder ${navBruker.navn}, f.nr. ${navBruker.kontaktinfo.fnr}`
   );
-  const hei = createParagraph(`Hei ${navBruker.navn}`);
+  const hei = createParagraph(`Hei, ${navBruker.navn}`);
 
   return {
     introHilsenArbeidstaker: hei,

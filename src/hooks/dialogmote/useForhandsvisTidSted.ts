@@ -72,27 +72,26 @@ export const useForhandsvisTidSted = (
       documentComponents.push(createParagraph(values.begrunnelseArbeidsgiver));
     }
 
-    if (behandler) {
-      documentComponents.push(
-        createParagraph(endreTidStedTexts.arbeidsgiver.outro1WithBehandler),
-        createParagraph(
-          addBehandlerTypeAndName(
-            endreTidStedTexts.arbeidsgiver.outro2WithBehandler,
-            behandler
-          )
+    const outro1 = behandler
+      ? endreTidStedTexts.arbeidsgiver.outro1WithBehandler
+      : endreTidStedTexts.arbeidsgiver.outro1;
+    const outro2 = behandler
+      ? addBehandlerTypeAndName(
+          endreTidStedTexts.arbeidsgiver.outro2WithBehandler,
+          behandler
         )
-      );
-    } else {
-      documentComponents.push(
-        createParagraph(endreTidStedTexts.arbeidsgiver.outro1),
-        createParagraph(endreTidStedTexts.arbeidsgiver.outro2)
-      );
-    }
+      : endreTidStedTexts.arbeidsgiver.outro2;
+    const outro3 = behandler
+      ? endreTidStedTexts.arbeidsgiver.outro3WithBehandler
+      : endreTidStedTexts.arbeidsgiver.outro3;
 
     documentComponents.push(
+      createParagraph(outro1),
+      createParagraph(endreTidStedTexts.arbeidsgiver.outroObligatorisk),
+      createParagraph(outro2),
       createParagraphWithTitle(
-        endreTidStedTexts.preMeetingTitle,
-        endreTidStedTexts.preMeeting
+        endreTidStedTexts.arbeidsgiver.outro3Title,
+        outro3
       ),
       ...hilsen,
       createParagraph(
@@ -117,27 +116,26 @@ export const useForhandsvisTidSted = (
       documentComponents.push(createParagraph(values.begrunnelseArbeidstaker));
     }
 
-    if (behandler) {
-      documentComponents.push(
-        createParagraph(endreTidStedTexts.arbeidstaker.outro1WithBehandler),
-        createParagraph(
-          addBehandlerTypeAndName(
-            endreTidStedTexts.arbeidstaker.outro2WithBehandler,
-            behandler
-          )
+    const outro1 = behandler
+      ? endreTidStedTexts.arbeidstaker.outro1WithBehandler
+      : endreTidStedTexts.arbeidstaker.outro1;
+    const outro2 = behandler
+      ? addBehandlerTypeAndName(
+          endreTidStedTexts.arbeidstaker.outro2WithBehandler,
+          behandler
         )
-      );
-    } else {
-      documentComponents.push(
-        createParagraph(endreTidStedTexts.arbeidstaker.outro1),
-        createParagraph(endreTidStedTexts.arbeidstaker.outro2)
-      );
-    }
+      : endreTidStedTexts.arbeidstaker.outro2;
+    const outro3 = behandler
+      ? endreTidStedTexts.arbeidstaker.outro3WithBehandler
+      : endreTidStedTexts.arbeidstaker.outro3;
 
     documentComponents.push(
+      createParagraph(outro1),
+      createParagraph(endreTidStedTexts.arbeidstaker.outroObligatorisk),
+      createParagraph(outro2),
       createParagraphWithTitle(
-        endreTidStedTexts.preMeetingTitle,
-        endreTidStedTexts.preMeeting
+        endreTidStedTexts.arbeidstaker.outro3Title,
+        outro3
       ),
       ...hilsen
     );
@@ -160,6 +158,7 @@ export const useForhandsvisTidSted = (
 
     documentComponents.push(
       createParagraph(endreTidStedTexts.behandler.outro1),
+      createParagraph(endreTidStedTexts.behandler.outroObligatorisk),
       createParagraph(endreTidStedTexts.behandler.outro2),
       ...hilsen
     );

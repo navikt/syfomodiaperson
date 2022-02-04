@@ -54,7 +54,7 @@ export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
 
   const generateArbeidstakerInnkallingDocument = (
     values: Partial<DialogmoteInnkallingSkjemaValues>,
-    valgtBehandler?: BehandlerDialogmeldingDTO
+    valgtBehandler: BehandlerDialogmeldingDTO | undefined
   ) => {
     const documentComponents = [
       ...fellesInfo(values, getValgtArbeidsgiver(values)),
@@ -71,7 +71,7 @@ export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
 
   const generateArbeidsgiverInnkallingDocument = (
     values: Partial<DialogmoteInnkallingSkjemaValues>,
-    valgtBehandler?: BehandlerDialogmeldingDTO
+    valgtBehandler: BehandlerDialogmeldingDTO | undefined
   ) => {
     const documentComponents = [
       ...fellesInfo(values, getValgtArbeidsgiver(values)),
@@ -147,7 +147,7 @@ const fellesInfo = (
 };
 
 const arbeidstakerIntro = (
-  valgtBehandler?: BehandlerDialogmeldingDTO
+  valgtBehandler: BehandlerDialogmeldingDTO | undefined
 ): DocumentComponentDto[] => {
   const introParagraph2 = !!valgtBehandler
     ? createParagraph(innkallingTexts.arbeidstaker.intro2WithBehandler)
@@ -160,10 +160,10 @@ const arbeidstakerIntro = (
 };
 
 const arbeidsgiverIntro = (
-  valgtBehandler?: BehandlerDialogmeldingDTO
+  valgtBehandler: BehandlerDialogmeldingDTO | undefined
 ): DocumentComponentDto[] => {
   const introParagraph2 = !!valgtBehandler
-    ? createParagraph(innkallingTexts.arbeidsgiver.intro2withBehandler)
+    ? createParagraph(innkallingTexts.arbeidsgiver.intro2WithBehandler)
     : createParagraph(innkallingTexts.arbeidsgiver.intro2);
 
   return [
@@ -191,39 +191,40 @@ const addBehandlerTypeAndName = (
 const arbeidstakerOutro = (
   valgtBehandler: BehandlerDialogmeldingDTO | undefined
 ): DocumentComponentDto[] => {
-  const outroParagraph1 = !!valgtBehandler
-    ? createParagraph(
-        addBehandlerTypeAndName(
-          innkallingTexts.arbeidstaker.outro1WithBehandler,
-          valgtBehandler
-        )
+  const outro1 = valgtBehandler
+    ? addBehandlerTypeAndName(
+        innkallingTexts.arbeidstaker.outro1WithBehandler,
+        valgtBehandler
       )
-    : createParagraph(innkallingTexts.arbeidstaker.outro1);
+    : innkallingTexts.arbeidstaker.outro1;
+  const outro2 = valgtBehandler
+    ? innkallingTexts.arbeidstaker.outro2WithBehandler
+    : innkallingTexts.arbeidstaker.outro2;
 
   return [
-    outroParagraph1,
-    createParagraphWithTitle(
-      innkallingTexts.arbeidstaker.outro2Title,
-      innkallingTexts.arbeidstaker.outro2Text
-    ),
+    createParagraph(innkallingTexts.arbeidstaker.outroObligatorisk),
+    createParagraph(outro1),
+    createParagraphWithTitle(innkallingTexts.arbeidstaker.outro2Title, outro2),
   ];
 };
 
 const arbeidsgiverOutro = (
   valgtBehandler: BehandlerDialogmeldingDTO | undefined
 ): DocumentComponentDto[] => {
-  const outroParagraph2 = !!valgtBehandler
-    ? createParagraph(
-        addBehandlerTypeAndName(
-          innkallingTexts.arbeidsgiver.outro2MedBehandler,
-          valgtBehandler
-        )
+  const outro1 = valgtBehandler
+    ? addBehandlerTypeAndName(
+        innkallingTexts.arbeidsgiver.outro1WithBehandler,
+        valgtBehandler
       )
-    : createParagraph(innkallingTexts.arbeidsgiver.outro2);
+    : innkallingTexts.arbeidsgiver.outro1;
+  const outro2 = valgtBehandler
+    ? innkallingTexts.arbeidsgiver.outro2WithBehandler
+    : innkallingTexts.arbeidsgiver.outro2;
 
   return [
-    createParagraph(innkallingTexts.arbeidsgiver.outro1),
-    outroParagraph2,
+    createParagraph(innkallingTexts.arbeidsgiver.outroObligatorisk),
+    createParagraph(outro1),
+    createParagraphWithTitle(innkallingTexts.arbeidsgiver.outro2Title, outro2),
   ];
 };
 
