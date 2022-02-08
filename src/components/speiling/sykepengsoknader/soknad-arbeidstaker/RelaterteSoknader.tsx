@@ -5,8 +5,8 @@ import {
   getTidligsteSendtDato,
   sorterEtterDato,
 } from "@/utils/sykepengesoknadUtils";
-import { useSykepengeSoknader } from "@/data/sykepengesoknad/soknader_hooks";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 
 const texts = {
   tittel: "Tidligere utgaver som du har sendt",
@@ -20,8 +20,8 @@ interface RelaterteSoknaderProps {
 export const RelaterteSoknader = ({
   soknad,
 }: RelaterteSoknaderProps): ReactElement => {
-  const { sykepengesoknader } = useSykepengeSoknader();
-  const relaterteSoknader = sykepengesoknader
+  const { data: sykepengesoknader } = useSykepengesoknaderQuery();
+  const relaterteSoknader = (sykepengesoknader || [])
     .filter((s) => s.id === soknad.korrigerer)
     .reverse();
   if (relaterteSoknader.length === 0) {

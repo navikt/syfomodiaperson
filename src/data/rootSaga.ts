@@ -10,7 +10,6 @@ import oppfolgingsplanerLPSSagas from "./oppfolgingsplan/oppfolgingsplanerLPSSag
 import modiacontextSagas from "./modiacontext/modiacontextSagas";
 import historikkSagas from "./historikk/historikkSagas";
 import dokumentInfoSagas from "./oppfolgingsplan/dokumentInfoSagas";
-import soknaderSagas from "./sykepengesoknad/soknaderSagas";
 import oppfolgingstilfellePersonSagas from "./oppfolgingstilfelle/oppfolgingstilfellePersonSagas";
 import oppfolgingstilfelleperioderSagas from "./oppfolgingstilfelle/oppfolgingstilfelleperioderSagas";
 import personoppgaveSagas from "./personoppgave/personoppgaveSagas";
@@ -30,7 +29,6 @@ export default function* rootSaga() {
     oppfolgingsplanerLPSSagas(),
     historikkSagas(),
     dokumentInfoSagas(),
-    soknaderSagas(),
     oppfolgingstilfellePersonSagas(),
     oppfolgingstilfelleperioderSagas(),
     personoppgaveSagas(),

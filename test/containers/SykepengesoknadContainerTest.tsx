@@ -11,12 +11,15 @@ import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
 import { tilgangBrukerMock } from "../../mock/data/tilgangtilbrukerMock";
+import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import { sykepengesoknaderQueryKeys } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 
 const NAERINGSDRIVENDESOKNAD_ID = "faadf7c1-3aac-4758-8673-e9cee1316a3c";
 const OPPHOLD_UTLAND_ID = "e16ff778-8475-47e1-b5dc-d2ce4ad6b9ee";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
+const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient;
 
 const mockState = {
@@ -32,7 +35,7 @@ const mockState = {
     },
   },
   valgtbruker: {
-    personident: "887766",
+    personident: fnr,
   },
 };
 
@@ -40,18 +43,17 @@ describe("SykepengesoknadContainer", () => {
   beforeEach(() => {
     queryClient = new QueryClient();
     queryClient.setQueryData(
-      tilgangQueryKeys.tilgang("887766"),
+      tilgangQueryKeys.tilgang(fnr),
       () => tilgangBrukerMock
     );
   });
 
   describe("Visning av sykepengesøknad for arbeidstakere", () => {
     it("Skal vise SendtSoknadArbeidstakerNy", () => {
-      const soknaderState = {
-        hentet: true,
-        hentingFeilet: false,
-        data: mockSoknader,
-      };
+      queryClient.setQueryData(
+        sykepengesoknaderQueryKeys.sykepengesoknader(fnr),
+        () => mockSoknader
+      );
       render(
         <MemoryRouter
           initialEntries={[
@@ -64,7 +66,6 @@ describe("SykepengesoknadContainer", () => {
                 store={store({
                   ...realState,
                   ...mockState,
-                  soknader: soknaderState,
                 })}
               >
                 <SykepengesoknadContainer />
@@ -84,10 +85,10 @@ describe("SykepengesoknadContainer", () => {
 
   describe("Håndtering av feil", () => {
     it("Skal vise feilmelding hvis søknaden er en selvstendig-søknad og henting av selvstendig-søknader feiler", () => {
-      const soknaderState = {
-        data: [],
-        hentingFeilet: true,
-      };
+      queryClient.setQueryData(
+        sykepengesoknaderQueryKeys.sykepengesoknader(fnr),
+        () => []
+      );
       render(
         <MemoryRouter
           initialEntries={[
@@ -100,7 +101,6 @@ describe("SykepengesoknadContainer", () => {
                 store={store({
                   ...realState,
                   ...mockState,
-                  soknader: soknaderState,
                 })}
               >
                 <SykepengesoknadContainer />

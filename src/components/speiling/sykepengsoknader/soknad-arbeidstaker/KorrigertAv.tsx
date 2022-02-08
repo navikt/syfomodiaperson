@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import AlertStripe from "nav-frontend-alertstriper";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { getTidligsteSendtDato } from "@/utils/sykepengesoknadUtils";
-import { useSykepengeSoknader } from "@/data/sykepengesoknad/soknader_hooks";
+import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 
 const texts = {
   korrigert: "Du sendte inn en endring av denne søknaden den ",
@@ -19,8 +19,8 @@ interface KorrigertAvProps {
 }
 
 export const KorrigertAv = ({ soknadId }: KorrigertAvProps): ReactElement => {
-  const { sykepengesoknader } = useSykepengeSoknader();
-  const korrigertAvSoknad = sykepengesoknader.find(
+  const { data: sykepengesoknader } = useSykepengesoknaderQuery();
+  const korrigertAvSoknad = sykepengesoknader?.find(
     (s) => s.korrigerer === soknadId
   );
   return (

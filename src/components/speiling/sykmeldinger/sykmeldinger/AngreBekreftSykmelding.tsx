@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react";
 import Knapp from "nav-frontend-knapper";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { useAppSelector } from "@/hooks/hooks";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 
 const texts = {
   angre: "Endre opplysninger",
@@ -21,18 +21,16 @@ interface AngreBekreftSykmeldingProps {
   sykmelding: SykmeldingOldFormat;
 }
 
-const AngreBekreftSykmelding = (
-  angreBekreftSykmeldingProps: AngreBekreftSykmeldingProps
-): ReactElement => {
-  const { sykmelding } = angreBekreftSykmeldingProps;
-
-  const { data: sykepengeSoknader } = useAppSelector((state) => state.soknader);
+const AngreBekreftSykmelding = ({
+  sykmelding,
+}: AngreBekreftSykmeldingProps): ReactElement => {
+  const { data: sykepengeSoknader } = useSykepengesoknaderQuery();
 
   const FIRE_MANEDER_SIDEN = new Date();
   FIRE_MANEDER_SIDEN.setMonth(FIRE_MANEDER_SIDEN.getMonth() - 4);
   const vis =
     new Date(sykmelding.sendtdato) > FIRE_MANEDER_SIDEN &&
-    !sykmeldingHarSoknad(sykepengeSoknader, sykmelding.id);
+    !sykmeldingHarSoknad(sykepengeSoknader || [], sykmelding.id);
   return (
     <>
       {vis ? (

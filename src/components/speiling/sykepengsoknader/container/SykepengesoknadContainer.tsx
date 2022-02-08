@@ -8,9 +8,7 @@ import IkkeInnsendtSoknad from "../soknad-felles/IkkeInnsendtSoknad";
 import AvbruttSoknadArbeidtakerNy from "../soknad-arbeidstaker-ny/AvbruttSoknadArbeidtakerNy";
 import SykepengesoknadBehandlingsdager from "../soknad-behandlingsdager/SykepengesoknadBehandlingsdager";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { hentSoknader } from "@/data/sykepengesoknad/soknader_actions";
 import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
-import { useSykepengeSoknader } from "@/data/sykepengesoknad/soknader_hooks";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useParams } from "react-router-dom";
 import SideLaster from "../../../SideLaster";
@@ -20,6 +18,7 @@ import {
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { useSykmeldinger } from "@/data/sykmelding/sykmeldinger_hooks";
 import SykepengesoknadReisetilskudd from "@/components/speiling/sykepengsoknader/soknad-reisetilskudd/SykepengesoknadReisetilskudd";
+import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 
 const SykepengesoknadContainer = (): ReactElement => {
   const dispatch = useDispatch();
@@ -30,26 +29,23 @@ const SykepengesoknadContainer = (): ReactElement => {
   }>();
 
   useEffect(() => {
-    dispatch(hentSoknader(fnr));
     dispatch(hentSykmeldinger(fnr));
   }, [dispatch, fnr]);
 
   const {
-    harForsoktHentetSoknader,
-    hentingFeiletSoknader,
-    sykepengesoknader,
-  } = useSykepengeSoknader();
+    data: sykepengesoknader,
+    isError: hentingFeiletSoknader,
+    isLoading: henterSoknader,
+  } = useSykepengesoknaderQuery();
   const {
     sykmeldinger,
     hentingSykmeldingerFeilet,
     harForsoktHentetSykmeldinger,
   } = useSykmeldinger();
 
-  const harForsoktHentetAlt =
-    harForsoktHentetSykmeldinger && harForsoktHentetSoknader;
-  const henter = !harForsoktHentetAlt;
+  const henter = !harForsoktHentetSykmeldinger || henterSoknader;
   const hentingFeilet = hentingFeiletSoknader || hentingSykmeldingerFeilet;
-  const soknad = sykepengesoknader.find((s) => s.id === sykepengesoknadId);
+  const soknad = sykepengesoknader?.find((s) => s.id === sykepengesoknadId);
   const sykmelding = sykmeldinger.find((sykmld) =>
     soknad ? sykmld.id === soknad.sykmeldingId : false
   );

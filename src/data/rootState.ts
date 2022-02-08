@@ -24,7 +24,6 @@ import sykmeldinger, { SykmeldingerState } from "./sykmelding/sykmeldinger";
 import dokumentinfo, {
   DokumentinfoMapState,
 } from "./oppfolgingsplan/dokumentinfo";
-import soknader, { SykepengesoknaderState } from "./sykepengesoknad/soknader";
 import oppfolgingstilfellerperson, {
   OppfolgingstilfellerPersonState,
 } from "./oppfolgingstilfelle/oppfolgingstilfellerperson";
@@ -53,7 +52,6 @@ export interface RootState {
   valgtbruker: ValgtBrukerState;
   sykmeldinger: SykmeldingerState;
   dokumentinfo: DokumentinfoMapState;
-  soknader: SykepengesoknaderState;
   oppfolgingstilfellerperson: OppfolgingstilfellerPersonState;
   oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState;
   personoppgaver: PersonOppgaverState;
@@ -77,7 +75,6 @@ export const rootReducer = combineReducers<RootState>({
   valgtbruker,
   sykmeldinger,
   dokumentinfo,
-  soknader,
   oppfolgingstilfellerperson,
   oppfolgingstilfelleperioder,
   personoppgaver,
