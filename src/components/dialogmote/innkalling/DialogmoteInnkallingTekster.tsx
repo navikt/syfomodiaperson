@@ -7,7 +7,6 @@ import { DialogmoteInnkallingSkjemaValues } from "./DialogmoteInnkallingSkjema";
 import { useForhandsvisInnkalling } from "@/hooks/dialogmote/useForhandsvisInnkalling";
 import { Forhandsvisning } from "../Forhandsvisning";
 import FritekstSeksjon from "../FritekstSeksjon";
-import { DialogmoteInnkallingTeksterAlert } from "./DialogmoteInnkallingTeksterAlert";
 import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { AlertstripeFullbredde } from "@/components/AlertstripeFullbredde";
@@ -75,7 +74,6 @@ const DialogmoteInnkallingTekster = ({
       {brukerKanIkkeVarslesDigitalt && (
         <ReservertAlert type="advarsel">{texts.reservertAlert}</ReservertAlert>
       )}
-      <DialogmoteInnkallingTeksterAlert />
       <FritekstSeksjon
         fieldName="fritekstArbeidstaker"
         label={texts.arbeidstakerLabel}
