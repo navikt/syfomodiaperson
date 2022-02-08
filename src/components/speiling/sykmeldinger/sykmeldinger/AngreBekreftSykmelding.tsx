@@ -30,7 +30,7 @@ const AngreBekreftSykmelding = ({
   FIRE_MANEDER_SIDEN.setMonth(FIRE_MANEDER_SIDEN.getMonth() - 4);
   const vis =
     new Date(sykmelding.sendtdato) > FIRE_MANEDER_SIDEN &&
-    !sykmeldingHarSoknad(sykepengeSoknader || [], sykmelding.id);
+    !sykmeldingHarSoknad(sykepengeSoknader, sykmelding.id);
   return (
     <>
       {vis ? (

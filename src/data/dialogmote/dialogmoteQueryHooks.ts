@@ -23,8 +23,10 @@ export const useDialogmoterQuery = () => {
       enabled: !!fnr,
     }
   );
+
   return {
     ...query,
+    data: query.data || [],
     aktivtDialogmote: useMemo(
       () =>
         query.data?.find(
@@ -40,7 +42,7 @@ export const useDialogmoterQuery = () => {
           (mote) =>
             mote.status === DialogmoteStatus.FERDIGSTILT ||
             mote.status === DialogmoteStatus.AVLYST
-        ),
+        ) || [],
       [query.data]
     ),
   };

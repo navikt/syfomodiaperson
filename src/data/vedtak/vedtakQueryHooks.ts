@@ -13,8 +13,13 @@ export const useVedtakQuery = () => {
   const fnr = useValgtPersonident();
   const path = `${VEDTAK_ROOT}?fnr=${fnr}`;
   const fetchVedtak = () => get<VedtakDTO[]>(path);
-  return useQuery(vedtakQueryKeys.vedtak(fnr), fetchVedtak, {
+  const query = useQuery(vedtakQueryKeys.vedtak(fnr), fetchVedtak, {
     enabled: !!fnr,
     staleTime: minutesToMillis(60 * 12),
   });
+
+  return {
+    ...query,
+    data: query.data || [],
+  };
 };

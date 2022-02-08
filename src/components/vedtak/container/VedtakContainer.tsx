@@ -29,7 +29,7 @@ const StyledAlertStripe = styled(AlertStripeInfo)`
 
 const VedtakContainer = () => {
   const { isLoading, isError, data: vedtakListe } = useVedtakQuery();
-  const harVedtak = vedtakListe && vedtakListe.length > 0;
+  const harVedtak = vedtakListe.length > 0;
 
   const [selectedVedtak, setSelectedVedtak] = useState<VedtakDTO>();
 

@@ -17,7 +17,7 @@ export const useSykepengesoknaderQuery = () => {
   const fnr = useValgtPersonident();
   const path = `${SYFOSOKNAD_ROOT}/soknader?fnr=${fnr}`;
   const fetchSykepengesoknader = () => get<SykepengesoknadDTO[]>(path);
-  return useQuery(
+  const query = useQuery(
     sykepengesoknaderQueryKeys.sykepengesoknader(fnr),
     fetchSykepengesoknader,
     {
@@ -26,6 +26,11 @@ export const useSykepengesoknaderQuery = () => {
       select: (data) => data.map(parseSoknad),
     }
   );
+
+  return {
+    ...query,
+    data: query.data || [],
+  };
 };
 
 export const parseSoknad = (soknad: SykepengesoknadDTO) => {

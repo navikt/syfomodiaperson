@@ -31,7 +31,7 @@ export const DialogmoteSideContainer = ({
   const { isLoading, isError, data: dialogmoter } = useDialogmoterQuery();
   const { brukerKanIkkeVarslesDigitalt } = useNavBrukerData();
 
-  const dialogmote = dialogmoter?.find(
+  const dialogmote = dialogmoter.find(
     (dialogmote) => dialogmote.uuid === dialogmoteUuid
   );
 

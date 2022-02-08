@@ -45,7 +45,7 @@ const SykepengesoknadContainer = (): ReactElement => {
 
   const henter = !harForsoktHentetSykmeldinger || henterSoknader;
   const hentingFeilet = hentingFeiletSoknader || hentingSykmeldingerFeilet;
-  const soknad = sykepengesoknader?.find((s) => s.id === sykepengesoknadId);
+  const soknad = sykepengesoknader.find((s) => s.id === sykepengesoknadId);
   const sykmelding = sykmeldinger.find((sykmld) =>
     soknad ? sykmld.id === soknad.sykmeldingId : false
   );

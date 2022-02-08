@@ -34,7 +34,7 @@ const DialogmoteInnkallingBehandler = ({
       <BehandlerTittel>{texts.title}</BehandlerTittel>
       {isLoading ? (
         <AppSpinner />
-      ) : !!behandlere && behandlere.length > 0 ? (
+      ) : behandlere.length > 0 ? (
         <BehandlerRadioGruppe
           behandlere={behandlere}
           setSelectedBehandler={setSelectedBehandler}

@@ -15,9 +15,14 @@ export const useBehandlereDialogmeldingQuery = () => {
       `${ISDIALOGMELDING_ROOT}/behandler/personident`,
       fnr
     );
-  return useQuery(
+  const query = useQuery(
     behandlereDialogmeldingQueryKeys.behandleredialogmelding(fnr),
     fetchBehandlereDialogmelding,
     { enabled: !!fnr }
   );
+
+  return {
+    ...query,
+    data: query.data || [],
+  };
 };

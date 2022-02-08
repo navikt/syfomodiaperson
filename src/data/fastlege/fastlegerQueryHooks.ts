@@ -18,14 +18,16 @@ export const useFastlegerQuery = () => {
     enabled: !!fnr,
     staleTime: minutesToMillis(60 * 12),
   });
+
   return {
     ...query,
+    data: query.data || [],
     ikkeFunnet: query.data && query.data.length === 0,
     tidligereFastleger: useMemo(
       () =>
         query.data?.filter(
           (fastlege) => new Date(fastlege.pasientforhold.tom) < new Date()
-        ),
+        ) || [],
       [query.data]
     ),
     aktivFastlege: useMemo(

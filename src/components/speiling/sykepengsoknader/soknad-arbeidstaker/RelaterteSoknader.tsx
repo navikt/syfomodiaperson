@@ -21,7 +21,7 @@ export const RelaterteSoknader = ({
   soknad,
 }: RelaterteSoknaderProps): ReactElement => {
   const { data: sykepengesoknader } = useSykepengesoknaderQuery();
-  const relaterteSoknader = (sykepengesoknader || [])
+  const relaterteSoknader = sykepengesoknader
     .filter((s) => s.id === soknad.korrigerer)
     .reverse();
   if (relaterteSoknader.length === 0) {

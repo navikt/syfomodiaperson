@@ -20,7 +20,7 @@ interface KorrigertAvProps {
 
 export const KorrigertAv = ({ soknadId }: KorrigertAvProps): ReactElement => {
   const { data: sykepengesoknader } = useSykepengesoknaderQuery();
-  const korrigertAvSoknad = sykepengesoknader?.find(
+  const korrigertAvSoknad = sykepengesoknader.find(
     (s) => s.korrigerer === soknadId
   );
   return (

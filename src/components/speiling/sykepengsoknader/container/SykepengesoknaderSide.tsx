@@ -43,7 +43,7 @@ const SykepengesoknaderSide = (): ReactElement => {
           <Speilingvarsel brukernavn={brukernavn} />
           <div className="speiling">
             <Brodsmuler brodsmuler={brodsmuler} />
-            <Soknader fnr={fnr} soknader={sykepengesoknader || []} />
+            <Soknader fnr={fnr} soknader={sykepengesoknader} />
           </div>
         </div>
       </SideLaster>

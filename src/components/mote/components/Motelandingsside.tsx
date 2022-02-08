@@ -86,7 +86,7 @@ export const Motelandingsside = () => {
         sykmeldinger={sykmeldinger.data}
       />
 
-      <MotehistorikkPanel historiskeMoter={historiskeDialogmoter || []} />
+      <MotehistorikkPanel historiskeMoter={historiskeDialogmoter} />
     </SideLaster>
   );
 };

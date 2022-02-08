@@ -93,7 +93,7 @@ const PersonkortLege = () => {
           informasjon={valgteElementer}
         />
       </PersonkortElement>
-      <TidligereLeger tidligereFastleger={tidligereFastleger || []} />
+      <TidligereLeger tidligereFastleger={tidligereFastleger} />
     </>
   );
 };
