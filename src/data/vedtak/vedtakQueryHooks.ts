@@ -3,6 +3,7 @@ import { VEDTAK_ROOT } from "@/apiConstants";
 import { useQuery } from "react-query";
 import { VedtakDTO } from "./vedtakTypes";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
+import { minutesToMillis } from "@/utils/timeUtils";
 
 const vedtakQueryKeys = {
   vedtak: (fnr: string) => ["vedtak", fnr],
@@ -14,5 +15,6 @@ export const useVedtakQuery = () => {
   const fetchVedtak = () => get<VedtakDTO[]>(path);
   return useQuery(vedtakQueryKeys.vedtak(fnr), fetchVedtak, {
     enabled: !!fnr,
+    staleTime: minutesToMillis(60 * 12),
   });
 };

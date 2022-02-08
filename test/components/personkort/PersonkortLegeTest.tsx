@@ -11,32 +11,12 @@ import React from "react";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
-import { apiMock } from "../../stubs/stubApi";
-import { stubFastlegerApi } from "../../stubs/stubFastlegeRest";
+import { fastlegerMock } from "../../../mock/fastlegerest/fastlegerMock";
 
 let queryClient;
-let apiMockScope;
 
-const aktivFastlege = {
-  pasientforhold: {
-    fom: "2021-10-01",
-    tom: "9999-12-31",
-  },
-};
-const tidligereFastleger = [
-  {
-    pasientforhold: {
-      fom: "2019-10-01",
-      tom: "2020-10-01",
-    },
-  },
-  {
-    pasientforhold: {
-      fom: "2020-10-01",
-      tom: "2021-10-01",
-    },
-  },
-];
+const aktivFastlege = fastlegerMock[0];
+const tidligereFastleger = [fastlegerMock[1]];
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
 const mockState = {
@@ -57,8 +37,6 @@ const renderPersonkortLege = () =>
 describe("PersonkortLege", () => {
   beforeEach(() => {
     queryClient = new QueryClient();
-    apiMockScope = apiMock();
-    stubFastlegerApi(apiMockScope, arbeidstaker.personident);
   });
 
   it("Skal vise feilmelding, fastleger ikke ble funnet, når ingen fastleger", async () => {
@@ -116,8 +94,7 @@ describe("PersonkortLege", () => {
       expect(screen.getAllByRole("listitem")).to.have.length(
         tidligereFastleger.length
       );
-      expect(screen.getByText(/1. oktober 2019 - 1. oktober 2020/)).to.exist;
-      expect(screen.getByText(/1. oktober 2020 - 1. oktober 2021/)).to.exist;
+      expect(screen.getByText(/1. oktober 2011 - 1. oktober 2021/)).to.exist;
     });
   });
 });

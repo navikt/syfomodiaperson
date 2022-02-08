@@ -4,6 +4,7 @@ import { Fastlege } from "@/data/fastlege/types/Fastlege";
 import { useQuery } from "react-query";
 import { useMemo } from "react";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
+import { minutesToMillis } from "@/utils/timeUtils";
 
 export const fastlegerQueryKeys = {
   fastleger: (fnr: string) => ["fastleger", fnr],
@@ -15,6 +16,7 @@ export const useFastlegerQuery = () => {
   const fetchFastleger = () => get<Fastlege[]>(path);
   const query = useQuery(fastlegerQueryKeys.fastleger(fnr), fetchFastleger, {
     enabled: !!fnr,
+    staleTime: minutesToMillis(60 * 12),
   });
   return {
     ...query,
