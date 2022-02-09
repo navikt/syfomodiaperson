@@ -33,9 +33,21 @@ export const useSykepengesoknaderQuery = () => {
   };
 };
 
-export const parseSoknad = (soknad: SykepengesoknadDTO) => {
+export const parseSoknad = (soknad: SykepengesoknadDTO): SykepengesoknadDTO => {
   return {
     ...soknad,
+    fom: new Date(soknad.fom),
+    tom: new Date(soknad.tom),
+    opprettetDato: new Date(soknad.opprettetDato),
+    innsendtDato: soknad.innsendtDato
+      ? new Date(soknad.innsendtDato)
+      : undefined,
+    sendtTilNAVDato: soknad.sendtTilNAVDato
+      ? new Date(soknad.sendtTilNAVDato)
+      : undefined,
+    sendtTilArbeidsgiverDato: soknad.sendtTilArbeidsgiverDato
+      ? new Date(soknad.sendtTilArbeidsgiverDato)
+      : undefined,
     sporsmal: [...soknad.sporsmal].map(parseSporsmal),
   };
 };

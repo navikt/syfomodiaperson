@@ -51,7 +51,9 @@ export const sorterEtterPerioder = (soknad1: any, soknad2: any) => {
   return 0;
 };
 
-export const erSendtTilBeggeMenIkkeSamtidig = (sykepengesoknad: any) => {
+export const erSendtTilBeggeMenIkkeSamtidig = (
+  sykepengesoknad: SykepengesoknadDTO
+) => {
   return (
     sykepengesoknad.sendtTilNAVDato &&
     sykepengesoknad.sendtTilArbeidsgiverDato &&
@@ -60,7 +62,7 @@ export const erSendtTilBeggeMenIkkeSamtidig = (sykepengesoknad: any) => {
   );
 };
 
-export const getSendtTilSuffix = (sykepengesoknad: any) => {
+export const getSendtTilSuffix = (sykepengesoknad: SykepengesoknadDTO) => {
   if (
     sykepengesoknad.sendtTilArbeidsgiverDato &&
     sykepengesoknad.sendtTilNAVDato
