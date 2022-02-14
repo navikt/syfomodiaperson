@@ -1,6 +1,6 @@
 import { FASTLEGEREST_ROOT } from "@/apiConstants";
 import { get } from "@/api/axios";
-import { Fastlege } from "@/data/fastlege/types/Fastlege";
+import { Fastlege, RelasjonKodeVerdi } from "@/data/fastlege/types/Fastlege";
 import { useQuery } from "react-query";
 import { useMemo } from "react";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
@@ -23,20 +23,19 @@ export const useFastlegerQuery = () => {
     ...query,
     data: query.data || [],
     ikkeFunnet: query.data && query.data.length === 0,
-    tidligereFastleger: useMemo(
-      () =>
-        query.data?.filter(
-          (fastlege) => new Date(fastlege.pasientforhold.tom) < new Date()
-        ) || [],
-      [query.data]
-    ),
-    aktivFastlege: useMemo(
+    fastlege: useMemo(
       () =>
         query.data?.find(
           (fastlege) =>
-            new Date(fastlege.pasientforhold.fom) < new Date() &&
-            new Date(fastlege.pasientforhold.tom) > new Date()
+            fastlege.relasjon.kodeVerdi === RelasjonKodeVerdi.FASTLEGE
         ),
+      [query.data]
+    ),
+    fastlegeVikarer: useMemo(
+      () =>
+        query.data?.filter(
+          (fastlege) => fastlege.relasjon.kodeVerdi === RelasjonKodeVerdi.VIKAR
+        ) || [],
       [query.data]
     ),
   };

@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
 import PersonkortLege, {
-  TidligereLeger,
+  FastlegeVikar,
 } from "@/components/personkort/PersonkortLege";
 import { expect } from "chai";
 import React from "react";
@@ -16,7 +16,7 @@ import { fastlegerMock } from "../../../mock/fastlegerest/fastlegerMock";
 let queryClient;
 
 const aktivFastlege = fastlegerMock[0];
-const tidligereFastleger = [fastlegerMock[1]];
+const fastlegeVikarer = [fastlegerMock[1], fastlegerMock[2]];
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
 const mockState = {
@@ -51,50 +51,49 @@ describe("PersonkortLege", () => {
     expect(screen.getByText(expectedFeilmelding)).to.exist;
   });
 
-  it("Skal vise overskrifter for aktiv fastlege og tidligere fastleger", async () => {
+  it("Skal vise overskrifter for aktiv fastlege og fastlegevikarer", async () => {
     queryClient.setQueryData(
       fastlegerQueryKeys.fastleger(arbeidstaker.personident),
-      () => [aktivFastlege, ...tidligereFastleger]
+      () => [aktivFastlege, ...fastlegeVikarer]
     );
     renderPersonkortLege();
 
-    expect(await screen.findByRole("heading", { name: "Lego Legesen" })).to
+    expect(await screen.findByRole("heading", { name: "Lege Legesen" })).to
       .exist;
-    expect(await screen.findByRole("heading", { name: "Tidligere fastleger" }))
-      .to.exist;
+    expect(await screen.findByRole("heading", { name: "Vikar" })).to.exist;
   });
 
-  it("Skal vise tidligere leger", async () => {
+  it("Skal vise vikarlege", async () => {
     queryClient.setQueryData(
       fastlegerQueryKeys.fastleger(arbeidstaker.personident),
-      () => [aktivFastlege, ...tidligereFastleger]
+      () => [aktivFastlege, ...fastlegeVikarer]
     );
     renderPersonkortLege();
 
-    expect(
-      await screen.findByText("1. oktober 2011 - 1. oktober 2021 Annen Legesen")
-    ).to.exist;
+    expect(await screen.findByText("Vikarlege Vikarsen")).to.exist;
+    expect(await screen.findByText("Legensvikar Vikarheim")).to.exist;
   });
 
-  it("Skal ikke vise tidligere leger dersom det ikke er tidligere fastleger", () => {
+  it("Skal ikke vise fastlegevikarer dersom det ikke er fastlegevikarer", () => {
     queryClient.setQueryData(
       fastlegerQueryKeys.fastleger(arbeidstaker.personident),
       () => [aktivFastlege]
     );
     renderPersonkortLege();
 
-    expect(screen.queryByRole("heading", { name: "Tidligere fastleger" })).to
-      .not.exist;
+    expect(screen.queryByRole("heading", { name: "Vikar" })).to.not.exist;
   });
 
-  describe("TidligereLeger", () => {
-    it("Skal vise en liste med antall element lik antall tidligere fastleger", () => {
-      render(<TidligereLeger tidligereFastleger={tidligereFastleger} />);
+  describe("Fastlegevikar", () => {
+    it("Skal vise en liste med antall element lik antall fastlegervikarer", () => {
+      const view = <FastlegeVikar fastlegeVikarer={fastlegeVikarer} />;
+      render(view);
 
       expect(screen.getAllByRole("listitem")).to.have.length(
-        tidligereFastleger.length
+        fastlegeVikarer.length
       );
-      expect(screen.getByText(/1. oktober 2011 - 1. oktober 2021/)).to.exist;
+      expect(screen.getByText(/Vikarlege Vikarsen/)).to.exist;
+      expect(screen.getByText(/Legensvikar Vikarheim/)).to.exist;
     });
   });
 });
