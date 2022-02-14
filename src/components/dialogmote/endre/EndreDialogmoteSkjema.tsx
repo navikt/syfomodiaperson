@@ -93,7 +93,7 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
   );
 
   const {
-    feilUtbedret,
+    harIkkeUtbedretFeil,
     resetFeilUtbedret,
     updateFeilUtbedret,
   } = useFeilUtbedret();
@@ -172,7 +172,7 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
             {endreTidStedDialogmote.isError && (
               <SkjemaInnsendingFeil error={endreTidStedDialogmote.error} />
             )}
-            {submitFailed && !feilUtbedret && (
+            {submitFailed && harIkkeUtbedretFeil && (
               <SkjemaFeiloppsummering errors={errors} />
             )}
             <FlexRow>

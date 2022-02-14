@@ -128,7 +128,7 @@ const DialogmoteInnkallingSkjema = ({
   const fnr = useValgtPersonident();
   const navEnhet = useNavEnhet();
   const {
-    feilUtbedret,
+    harIkkeUtbedretFeil,
     resetFeilUtbedret,
     updateFeilUtbedret,
   } = useFeilUtbedret();
@@ -213,7 +213,7 @@ const DialogmoteInnkallingSkjema = ({
             {opprettInnkalling.isError && (
               <SkjemaInnsendingFeil error={opprettInnkalling.error} />
             )}
-            {submitFailed && !feilUtbedret && (
+            {submitFailed && harIkkeUtbedretFeil && (
               <SkjemaFeiloppsummering errors={errors} />
             )}
             <FlexRow>

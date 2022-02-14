@@ -4,6 +4,7 @@ import {
   DialogmotedeltakerBehandlerDTO,
   DialogmoteDTO,
   DialogmoteStatus,
+  DocumentComponentType,
   MotedeltakerVarselType,
   VarselSvarDTO,
 } from "@/data/dialogmote/types/dialogmoteTypes";
@@ -22,6 +23,7 @@ import {
 } from "../../mock/common/mockConstants";
 import { capitalizeWord } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
+import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 
 export const arbeidstaker = {
   navn: "Arne Arbeidstaker",
@@ -239,4 +241,30 @@ export const moteTekster = {
   arbeidstakersOppgave,
   veiledersOppgave,
   behandlersOppgave,
+};
+
+export const referatStandardTekst = referatTexts.standardTekster[3];
+
+export const dialogmoteMedReferat: DialogmoteDTO = {
+  ...dialogmote,
+  referat: {
+    uuid: "123abc",
+    situasjon: situasjonTekst,
+    arbeidsgiverOppgave: arbeidsgiversOppgave,
+    arbeidstakerOppgave: arbeidstakersOppgave,
+    narmesteLederNavn: lederNavn,
+    konklusjon: konklusjonTekst,
+    document: [
+      {
+        key: referatStandardTekst.key,
+        title: referatStandardTekst.label,
+        texts: [referatStandardTekst.text],
+        type: DocumentComponentType.PARAGRAPH,
+      },
+    ],
+    ferdigstilt: false,
+    andreDeltakere: [
+      { navn: annenDeltakerNavn, funksjon: annenDeltakerFunksjon },
+    ],
+  },
 };

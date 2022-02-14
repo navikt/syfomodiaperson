@@ -32,3 +32,12 @@ export const stubFerdigstillApi = (
     .post(`${ISDIALOGMOTE_ROOT}/dialogmote/${dialogmoteUuid}/ferdigstill`)
     .reply(200);
 };
+
+export const stubMellomlagreApi = (
+  scope: nock.Scope,
+  dialogmoteUuid: string
+) => {
+  return scope
+    .post(`${ISDIALOGMOTE_ROOT}/dialogmote/${dialogmoteUuid}/mellomlagre`)
+    .reply(200);
+};

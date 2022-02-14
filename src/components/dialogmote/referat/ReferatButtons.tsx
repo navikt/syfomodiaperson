@@ -1,43 +1,53 @@
 import React, { ReactElement } from "react";
-import { Knapp } from "nav-frontend-knapper";
 import { FlexRow, PaddingSize } from "../../Layout";
 import styled from "styled-components";
 import { TrackedHovedknapp } from "../../buttons/TrackedHovedknapp";
 import { Link } from "react-router-dom";
 import { TrackedFlatknapp } from "../../buttons/TrackedFlatknapp";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
+import { TrackedKnapp } from "@/components/buttons/TrackedKnapp";
 
 const texts = {
+  save: "Lagre",
   send: "Lagre og send",
-  preview: "Se forhåndsvisning",
   abort: "Avbryt",
 };
 
 interface ReferatButtonsProps {
+  onSaveClick: () => void;
   onSendClick: () => void;
-  onPreviewClick: () => void;
   pageTitle: string;
+  showSaveSpinner: boolean;
   showSendSpinner: boolean;
 }
 
-const HovedKnappRightMargin = styled(TrackedHovedknapp)`
-  margin-right: 2em;
+const HovedKnapp = styled(TrackedHovedknapp)`
+  margin-right: 1em;
+  transform: none;
+`;
+const LagreKnapp = styled(TrackedKnapp)`
+  margin-right: 1em;
 `;
 
 const ReferatButtons = ({
+  onSaveClick,
   onSendClick,
-  onPreviewClick,
   pageTitle,
+  showSaveSpinner,
   showSendSpinner,
 }: ReferatButtonsProps): ReactElement => (
   <>
-    <FlexRow topPadding={PaddingSize.MD}>
-      <Knapp htmlType="button" onClick={onPreviewClick}>
-        {texts.preview}
-      </Knapp>
-    </FlexRow>
     <FlexRow topPadding={PaddingSize.LG}>
-      <HovedKnappRightMargin
+      <LagreKnapp
+        context={pageTitle}
+        htmlType="button"
+        onClick={onSaveClick}
+        autoDisableVedSpinner
+        spinner={showSaveSpinner}
+      >
+        {texts.save}
+      </LagreKnapp>
+      <HovedKnapp
         context={pageTitle}
         htmlType="submit"
         onClick={onSendClick}
@@ -45,7 +55,7 @@ const ReferatButtons = ({
         spinner={showSendSpinner}
       >
         {texts.send}
-      </HovedKnappRightMargin>
+      </HovedKnapp>
       <Link to={moteoversiktRoutePath}>
         <TrackedFlatknapp context={pageTitle} htmlType="button">
           {texts.abort}

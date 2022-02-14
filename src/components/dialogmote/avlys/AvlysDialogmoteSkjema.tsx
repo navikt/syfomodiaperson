@@ -75,7 +75,7 @@ const AvlysDialogmoteSkjema = ({
   const fnr = useValgtPersonident();
   const avlysDialogmote = useAvlysDialogmote(fnr, dialogmote.uuid);
   const {
-    feilUtbedret,
+    harIkkeUtbedretFeil,
     resetFeilUtbedret,
     updateFeilUtbedret,
   } = useFeilUtbedret();
@@ -206,7 +206,7 @@ const AvlysDialogmoteSkjema = ({
             <AvlysningAlertStripe type="advarsel">
               {texts.alert}
             </AvlysningAlertStripe>
-            {submitFailed && !feilUtbedret && (
+            {submitFailed && harIkkeUtbedretFeil && (
               <SkjemaFeiloppsummering errors={errors} />
             )}
             <FlexRow>
