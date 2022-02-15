@@ -39,6 +39,7 @@ const texts = {
   svarKommer: "kommer",
   svarNyttTidSted: "ønsker å endre tidspunkt eller sted",
   svarKommerIkke: "ønsker å avlyse",
+  noNarmesteleder: "Nærmeste leder er ikke registrert.",
 };
 
 const getHarAapnetTekst = (
@@ -259,23 +260,29 @@ interface DeltakerSvarPanelProps {
   deltakerLabel: string;
   deltakerNavn: string;
   varsel: DialogmotedeltakerVarselDTO | undefined;
+  customTitle?: string;
 }
 
 const DeltakerSvarPanel = ({
   varsel,
   deltakerLabel,
   deltakerNavn,
+  customTitle,
 }: DeltakerSvarPanelProps) => {
   const svar = varsel?.svar;
   const svarTittelTekst = !svar
     ? getHarAapnetTekst(varsel?.varselType, varsel?.lestDato)
     : getSvarTekst(svar.svarTidspunkt, svar.svarType);
 
+  const title = customTitle
+    ? customTitle
+    : `${deltakerNavn}, ${svarTittelTekst}`;
+
   return (
     <EkspanderbartSvarPanel
       icon={<DeltakerSvarIcon svarType={svar?.svarType} />}
       deltaker={deltakerLabel}
-      tittel={`${deltakerNavn}, ${svarTittelTekst}`}
+      tittel={title}
     >
       {svar?.svarTekst ? (
         <SvarDetaljerTekst
@@ -304,12 +311,16 @@ export const DeltakereSvarInfo = ({ dialogmote }: DeltakereSvarInfoProps) => {
     dialogmote.arbeidsgiver.virksomhetsnummer
   )?.narmesteLederNavn;
 
+  const noNarmesteLeder = !narmesteLederNavn;
+  const customTitle = noNarmesteLeder ? texts.noNarmesteleder : undefined;
+
   return (
     <StyledColumn>
       <DeltakerSvarPanel
         deltakerLabel={texts.naermesteLeder}
         deltakerNavn={narmesteLederNavn ?? ""}
         varsel={dialogmote.arbeidsgiver.varselList[0]}
+        customTitle={customTitle}
       />
       <DeltakerSvarPanel
         deltakerLabel={texts.arbeidstaker}

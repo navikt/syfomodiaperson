@@ -48,6 +48,16 @@ export const VIRKSOMHET_PONTYPANDY = {
   virksomhetsnummer: "110110110",
 };
 
+export const VIRKSOMHET_UTEN_NARMESTE_LEDER = {
+  virksomhetsnavn: "Virksomhet uten leder",
+  virksomhetsnummer: "000999000",
+};
+
+export const VIRKSOMHET_BRANNOGBIL = {
+  virksomhetsnavn: "BRANN OG BIL AS",
+  virksomhetsnummer: "555666444",
+};
+
 export const NARMESTE_LEDER_DEFAULT = {
   navn: "Tatten Tattover",
 };

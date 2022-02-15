@@ -4,6 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import { TrackedKnapp } from "@/components/buttons/TrackedKnapp";
 import Fritekst from "@/components/Fritekst";
+import { AlertstripeFullbredde } from "@/components/AlertstripeFullbredde";
 
 const texts = {
   forhandsvisning: "Forhåndsvisning",
@@ -18,6 +19,7 @@ interface FritekstSeksjonProps {
   label: string;
   handlePreviewClick: () => void;
   maxLength: number;
+  alertText?: string;
 }
 
 const FritekstSeksjon = ({
@@ -25,6 +27,7 @@ const FritekstSeksjon = ({
   label,
   handlePreviewClick,
   maxLength,
+  alertText,
 }: FritekstSeksjonProps) => (
   <FritekstWrapper>
     <FlexRow bottomPadding={PaddingSize.SM}>
@@ -44,6 +47,13 @@ const FritekstSeksjon = ({
         </Field>
       </FlexColumn>
     </FlexRow>
+    {!!alertText && (
+      <FlexRow bottomPadding={PaddingSize.SM}>
+        <AlertstripeFullbredde type="advarsel">
+          <p>{alertText}</p>
+        </AlertstripeFullbredde>
+      </FlexRow>
+    )}
     <FlexRow>
       <TrackedKnapp
         htmlType="button"

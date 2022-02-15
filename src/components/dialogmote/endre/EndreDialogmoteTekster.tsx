@@ -5,6 +5,8 @@ import { EndreTidStedSkjemaValues } from "./EndreDialogmoteSkjema";
 import { useForhandsvisTidSted } from "@/hooks/dialogmote/useForhandsvisTidSted";
 import FritekstSeksjon from "@/components/dialogmote/FritekstSeksjon";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { narmesteLederForVirksomhet } from "@/utils/ledereUtils";
 
 export const MAX_LENGTH_ENDRE_BEGRUNNELSE = 200;
 
@@ -24,6 +26,9 @@ export const texts = {
   forhandsvisningBehandlerTitle: "Brev til behandler",
   forhandsvisningBehandlerContentLabel:
     "Forhåndsvis endring av dialogmøte behandler",
+  noNarmesteleder:
+    "Det er ikke registrert en nærmeste leder fra denne arbeidsgiveren, derfor sender vi dette brevet automatisk til " +
+    "Altinn. Lederen må registrere seg som nærmeste leder i Altinn for å kunne gi svar på Nav.no.",
 };
 
 interface Props {
@@ -31,7 +36,16 @@ interface Props {
 }
 
 const EndreDialogmoteTekster = ({ dialogmote }: Props) => {
-  const { behandler } = dialogmote;
+  const { behandler, arbeidsgiver } = dialogmote;
+  const { currentLedere } = useLedereQuery();
+
+  const virksomhetsnummer = arbeidsgiver.virksomhetsnummer;
+  const narmesteLeder = narmesteLederForVirksomhet(
+    currentLedere,
+    virksomhetsnummer
+  );
+  const noNarmesteLeder = !narmesteLeder;
+
   const { values } = useFormState<EndreTidStedSkjemaValues>();
   const [
     displayEndringArbeidstakerPreview,
@@ -68,11 +82,13 @@ const EndreDialogmoteTekster = ({ dialogmote }: Props) => {
           generateArbeidstakerTidStedDocument(values)
         }
       />
+
       <FritekstSeksjon
         fieldName="begrunnelseArbeidsgiver"
         label={texts.begrunnelseArbeidsgiver}
         handlePreviewClick={() => setDisplayEndringArbeidsgiverPreview(true)}
         maxLength={MAX_LENGTH_ENDRE_BEGRUNNELSE}
+        alertText={noNarmesteLeder ? texts.noNarmesteleder : undefined}
       />
       <Forhandsvisning
         title={texts.forhandsvisningArbeidsgiverTitle}

@@ -1,6 +1,7 @@
 import {
   ARBEIDSTAKER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
+  VIRKSOMHET_UTEN_NARMESTE_LEDER,
 } from "../common/mockConstants";
 
 export const oppfolgingstilfellePersonMock = {
@@ -19,7 +20,7 @@ export const oppfolgingstilfellePersonMock = {
         VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
         "333666999",
         "912345678",
-        "000999000",
+        VIRKSOMHET_UTEN_NARMESTE_LEDER.virksomhetsnummer,
       ],
     },
   ],

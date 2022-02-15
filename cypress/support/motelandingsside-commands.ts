@@ -4,7 +4,12 @@ import {
   innkaltDialogmote,
   innkaltDialogmoteMedBehandler,
 } from "../../mock/data/dialogmoterMock";
-import { ISDIALOGMOTE_ROOT, SYFOMOTEADMIN_ROOT } from "../../src/apiConstants";
+import {
+  ISDIALOGMOTE_ROOT,
+  ISOPPFOLGINGSTILFELLE_ROOT,
+  SYFOMOTEADMIN_ROOT,
+} from "../../src/apiConstants";
+import { oppfolgingstilfellePersonMock } from "../../mock/data/oppfolgingstilfellePersonMock";
 
 export enum MoteState {
   INNKALT_DIALOGMOTE,
@@ -47,7 +52,7 @@ const getMoter = (state: MoteState): TestMoter => {
   }
 };
 
-Cypress.Commands.add("stubMoter", (state: MoteState) => {
+Cypress.Commands.add("stubEndepunkter", (state: MoteState) => {
   const moter = getMoter(state);
   cy.intercept(
     {
@@ -62,5 +67,12 @@ Cypress.Commands.add("stubMoter", (state: MoteState) => {
       url: `${ISDIALOGMOTE_ROOT}/dialogmote/personident`,
     },
     moter.dialogmoter
+  );
+  cy.intercept(
+    {
+      method: "GET",
+      url: `${ISOPPFOLGINGSTILFELLE_ROOT}/oppfolgingstilfelle/personident`,
+    },
+    oppfolgingstilfellePersonMock
   );
 });

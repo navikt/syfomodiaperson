@@ -1,8 +1,7 @@
 import React from "react";
 import { Select } from "nav-frontend-skjema";
-import { ledereSortertPaaNavnOgOrganisasjonsnavn } from "@/utils/ledereUtils";
 import { AlertstripeFullbredde } from "@/components/AlertstripeFullbredde";
-import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
+import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 
 const texts = {
   chooseArbeidsgiver: "Velg arbeidsgiver",
@@ -12,19 +11,37 @@ const texts = {
 
 interface ArbeidsgiverDropdownProps {
   velgArbeidsgiver(orgNr: string): void;
-
-  ledere: NarmesteLederRelasjonDTO[];
+  virksomheter: string[];
   label?: string;
   id?: string;
 }
 
+const removeDuplicates = (virksomheter: string[]): string[] => {
+  return virksomheter.filter((virksomhet, index) => {
+    return (
+      virksomheter.findIndex((virksomhet2) => {
+        return virksomhet2 === virksomhet;
+      }) === index
+    );
+  });
+};
+interface VirksomhetOptionProps {
+  virksomhetsnummer: string;
+}
+const VirksomhetOption = ({ virksomhetsnummer }: VirksomhetOptionProps) => {
+  const { data } = useVirksomhetQuery(virksomhetsnummer);
+  const virksomhetsnavn =
+    data?.navn || `Fant ikke virksomhetsnavn for ${virksomhetsnummer}`;
+  return <option value={virksomhetsnummer}>{virksomhetsnavn}</option>;
+};
+
 const ArbeidsgiverDropdown = ({
   velgArbeidsgiver,
-  ledere,
+  virksomheter,
   label,
   id,
 }: ArbeidsgiverDropdownProps) =>
-  ledere.length !== 0 ? (
+  virksomheter.length !== 0 ? (
     <Select
       id={id}
       label={label}
@@ -33,10 +50,8 @@ const ArbeidsgiverDropdown = ({
       }}
     >
       <option value="VELG">{texts.chooseArbeidsgiver}</option>
-      {ledereSortertPaaNavnOgOrganisasjonsnavn(ledere).map((leder, idx) => (
-        <option value={leder.virksomhetsnummer} key={idx}>
-          {leder.virksomhetsnavn}
-        </option>
+      {removeDuplicates(virksomheter).map((virksomhet, idx) => (
+        <VirksomhetOption virksomhetsnummer={virksomhet} key={idx} />
       ))}
     </Select>
   ) : (

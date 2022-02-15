@@ -1,6 +1,7 @@
 import { NarmesteLederRelasjonStatus } from "../../src/data/leder/ledereTypes";
 import {
   ARBEIDSTAKER_DEFAULT,
+  VIRKSOMHET_BRANNOGBIL,
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
 
@@ -53,8 +54,8 @@ export const ledereMock = [
   {
     uuid: "4",
     arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
-    virksomhetsnummer: "555666444",
-    virksomhetsnavn: "BRANN OG BIL AS",
+    virksomhetsnummer: VIRKSOMHET_BRANNOGBIL.virksomhetsnummer,
+    virksomhetsnavn: VIRKSOMHET_BRANNOGBIL.virksomhetsnavn,
     narmesteLederPersonIdentNumber: "02690001009",
     narmesteLederTelefonnummer: "87654321",
     narmesteLederEpost: "test3@test.no",

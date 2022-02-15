@@ -26,6 +26,7 @@ import { expectedInnkallingDocuments } from "../testDataDocuments";
 import sinon from "sinon";
 import { queryClientWithMockData } from "../../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
+import { VIRKSOMHET_UTEN_NARMESTE_LEDER } from "../../../mock/common/mockConstants";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -137,6 +138,28 @@ describe("DialogmoteInnkallingSkjema", () => {
     expect(innkallingMutation.options.variables).to.deep.equal(
       expectedInnkallingDto
     );
+
+    expect(screen.queryByText(/Det er ikke registrert en nærmeste leder/i)).to
+      .not.exist;
+    expect(screen.queryByLabelText("Nærmeste leder")).to.exist;
+    expect(screen.queryByLabelText("Epost")).to.exist;
+  });
+
+  it("viser alertstripe hvis valgt arbeidsgiver ikke har registrert nærmeste leder", () => {
+    stubInnkallingApi(apiMock());
+    renderDialogmoteInnkallingSkjema();
+    passSkjemaInput();
+    const virksomhetSelect = screen.getByRole("combobox", {
+      name: "Arbeidsgiver",
+    });
+    fireEvent.change(virksomhetSelect, {
+      target: { value: VIRKSOMHET_UTEN_NARMESTE_LEDER.virksomhetsnummer },
+    });
+
+    expect(screen.queryByText(/Det er ikke registrert en nærmeste leder/i)).to
+      .exist;
+    expect(screen.queryByLabelText("Nærmeste leder")).to.not.exist;
+    expect(screen.queryByLabelText("Epost")).to.not.exist;
   });
 });
 

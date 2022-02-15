@@ -7,7 +7,6 @@ import {
   ARBEIDSTAKER_DEFAULT,
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
   VEILEDER_IDENT_DEFAULT,
-  VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
 
 const Auth = require("../../server/auth/index.js");
@@ -78,20 +77,11 @@ const mockForLokal = (server) => {
   );
 
   server.get(
-    `${SYFOMOTEADMIN_ROOT}/virksomhet/${VIRKSOMHET_PONTYPANDY.virksomhetsnummer}`,
-    Auth.ensureAuthenticated(),
-    (req, res) => {
-      res.setHeader("Content-Type", "application/json");
-      res.send(virksomhetMock("Fire Station"));
-    }
-  );
-
-  server.get(
     `${SYFOMOTEADMIN_ROOT}/virksomhet/:virksomhetsnummer`,
     Auth.ensureAuthenticated(),
     (req, res) => {
       res.setHeader("Content-Type", "application/json");
-      res.send(virksomhetMock());
+      res.send(JSON.stringify(virksomhetMock(req.params.virksomhetsnummer)));
     }
   );
 };

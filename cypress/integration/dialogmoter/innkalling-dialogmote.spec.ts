@@ -1,6 +1,7 @@
 import { MoteState } from "../../support/motelandingsside-commands";
 import { selectors } from "../../support/constants";
 import { tommorrowDateAsString } from "../../support/utils";
+import { VIRKSOMHET_PONTYPANDY } from "../../../mock/common/mockConstants";
 
 const texts = {
   fritekstArbeidstaker: "Fritekst til arbeidstaker",
@@ -10,7 +11,7 @@ const texts = {
 
 context("Innkalling dialogmøte", () => {
   beforeEach(() => {
-    cy.stubMoter(MoteState.INGEN_MOTER);
+    cy.stubEndepunkter(MoteState.INGEN_MOTER);
     cy.visit("/sykefravaer/moteoversikt");
     cy.OAuth2Login();
   });
@@ -20,7 +21,7 @@ context("Innkalling dialogmøte", () => {
 
     cy.url().should("include", "/sykefravaer/dialogmote");
 
-    cy.get("[id=arbeidsgiver]").select("BRANN OG BIL AS");
+    cy.get("[id=arbeidsgiver]").select(VIRKSOMHET_PONTYPANDY.virksomhetsnavn);
     cy.get("[id=sted]").type("Videomøte");
 
     cy.get('[type="radio"]').first().check({ force: true });
@@ -57,7 +58,7 @@ context("Innkalling dialogmøte", () => {
 
     cy.url().should("include", "/sykefravaer/dialogmote");
 
-    cy.get("[id=arbeidsgiver]").select("BRANN OG BIL AS");
+    cy.get("[id=arbeidsgiver]").select(VIRKSOMHET_PONTYPANDY.virksomhetsnavn);
     cy.get("[id=sted]").type("Videomøte");
 
     cy.get('[type="radio"]').last().check({ force: true });

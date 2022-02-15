@@ -9,7 +9,7 @@ const texts = {
 
 context("Avlys dialogmøte", () => {
   beforeEach(() => {
-    cy.stubMoter(MoteState.INNKALT_DIALOGMOTE);
+    cy.stubEndepunkter(MoteState.INNKALT_DIALOGMOTE);
     cy.visit("/sykefravaer/moteoversikt");
     cy.OAuth2Login();
   });
@@ -88,7 +88,7 @@ context("Avlys dialogmøte", () => {
 
 context("Avlys dialogmøte med behandler", () => {
   beforeEach(() => {
-    cy.stubMoter(MoteState.INNKALT_DIALOGMOTE_MED_BEHANDLER);
+    cy.stubEndepunkter(MoteState.INNKALT_DIALOGMOTE_MED_BEHANDLER);
     cy.visit("/sykefravaer/moteoversikt");
     cy.OAuth2Login();
   });

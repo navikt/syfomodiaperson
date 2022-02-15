@@ -10,7 +10,7 @@ const texts = {
 
 context("Endre dialogmøte", () => {
   beforeEach(() => {
-    cy.stubMoter(MoteState.INNKALT_DIALOGMOTE);
+    cy.stubEndepunkter(MoteState.INNKALT_DIALOGMOTE);
     cy.visit("/sykefravaer/moteoversikt");
     cy.OAuth2Login();
   });
@@ -91,7 +91,7 @@ context("Endre dialogmøte", () => {
 
 context("Endre dialogmøte med behandler", () => {
   beforeEach(() => {
-    cy.stubMoter(MoteState.INNKALT_DIALOGMOTE_MED_BEHANDLER);
+    cy.stubEndepunkter(MoteState.INNKALT_DIALOGMOTE_MED_BEHANDLER);
     cy.visit("/sykefravaer/moteoversikt");
     cy.OAuth2Login();
   });

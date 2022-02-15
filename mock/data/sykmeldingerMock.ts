@@ -2,9 +2,11 @@ import { leggTilDagerPaDato } from "../util/dateUtil";
 import {
   ARBEIDSTAKER_DEFAULT,
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
+  VIRKSOMHET_BRANNOGBIL,
   TODAY,
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
+import { daysFromToday } from "../../test/testUtils";
 
 export const sykmeldingerMock = [
   {
@@ -225,7 +227,7 @@ export const sykmeldingerMock = [
     },
     legekontorOrgnummer: "223456789",
     arbeidsgiver: {
-      navn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
+      navn: "BRANN OG BIL AS",
       stillingsprosent: 100,
     },
     sykmeldingsperioder: [
@@ -240,8 +242,8 @@ export const sykmeldingerMock = [
             arsak: ["MANGLENDE_TILRETTELEGGING", "ANNET"],
           },
         },
-        fom: "2020-07-22",
-        tom: "2020-12-22",
+        fom: daysFromToday(-50),
+        tom: daysFromToday(50),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -312,9 +314,9 @@ export const sykmeldingerMock = [
       statusEvent: "SENDT",
       timestamp: "2020-01-29T09:38:05.414834Z",
       arbeidsgiver: {
-        orgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-        juridiskOrgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-        orgNavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
+        orgnummer: VIRKSOMHET_BRANNOGBIL.virksomhetsnummer,
+        juridiskOrgnummer: VIRKSOMHET_BRANNOGBIL.virksomhetsnummer,
+        orgNavn: VIRKSOMHET_BRANNOGBIL.virksomhetsnavn,
       },
       sporsmalOgSvarListe: null,
     },

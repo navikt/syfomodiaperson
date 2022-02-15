@@ -15,6 +15,9 @@ import { Normaltekst } from "nav-frontend-typografi";
 import { DeltakereSvarInfo } from "@/components/dialogmote/DeltakereSvarInfo";
 import dayjs from "dayjs";
 import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { narmesteLederForVirksomhet } from "@/utils/ledereUtils";
+import { NoNarmesteLederAlert } from "@/components/mote/NoNarmestLederAlert";
 
 const texts = {
   innkallingSendtTrackingContext: "Møtelandingsside: Sendt innkalling",
@@ -59,6 +62,16 @@ interface Props {
 }
 
 export const DialogmoteMoteStatusPanel = ({ dialogmote }: Props) => {
+  const { arbeidsgiver } = dialogmote;
+  const { currentLedere } = useLedereQuery();
+
+  const virksomhetsnummer = arbeidsgiver.virksomhetsnummer;
+  const narmesteLeder = narmesteLederForVirksomhet(
+    currentLedere,
+    virksomhetsnummer
+  );
+  const noNarmesteLeder = !narmesteLeder;
+
   const { mellomlagretReferat } = useDialogmoteReferat(dialogmote);
   const referatKnappText = mellomlagretReferat
     ? texts.fortsettReferat
@@ -74,7 +87,13 @@ export const DialogmoteMoteStatusPanel = ({ dialogmote }: Props) => {
         <DeltakereSvarInfo dialogmote={dialogmote} />
       </FlexRow>
 
-      <FlexRow topPadding={PaddingSize.MD}>{texts.infoMessage}</FlexRow>
+      <FlexRow topPadding={PaddingSize.SM}>{texts.infoMessage}</FlexRow>
+
+      {noNarmesteLeder && (
+        <FlexRow>
+          <NoNarmesteLederAlert />
+        </FlexRow>
+      )}
 
       <FlexRow topPadding={PaddingSize.MD}>
         <Link to={`${dialogmoteRoutePath}/${dialogmote.uuid}/endre`}>

@@ -15,7 +15,7 @@ describe(
     });
 
     it("Sender til ny løsning for Dialogmøte", () => {
-      cy.stubMoter(MoteState.INGEN_MOTER);
+      cy.stubEndepunkter(MoteState.INGEN_MOTER);
 
       cy.dataCy(selectors.nyttDM2Mote).click();
 
@@ -23,7 +23,7 @@ describe(
     });
 
     it("Ser på referat og avlysningsbrev i møtehistorikk", () => {
-      cy.stubMoter(MoteState.AVLYST_OG_FERDIG_MOTE);
+      cy.stubEndepunkter(MoteState.AVLYST_OG_FERDIG_MOTE);
 
       cy.dataCy("Avlysningsbrev").click();
       cy.dataCy(selectors.forhandsvisningModal).contains("Avlysningsbrev");
@@ -35,7 +35,7 @@ describe(
     });
 
     it("Har tilgang til DM2 og aktiv dialogmøte-innkalling, blir sendt til møte-landingsside når man forsøker gå direkte til ny løsning for innkalling", () => {
-      cy.stubMoter(MoteState.INNKALT_DIALOGMOTE);
+      cy.stubEndepunkter(MoteState.INNKALT_DIALOGMOTE);
 
       cy.visit("/sykefravaer/dialogmote");
 
@@ -43,7 +43,7 @@ describe(
     });
 
     it("Har tilgang til DM2 og ikke aktiv dialogmøte-innkalling, kan gå direkte til ny løsning for innkalling", () => {
-      cy.stubMoter(MoteState.INGEN_MOTER);
+      cy.stubEndepunkter(MoteState.INGEN_MOTER);
 
       cy.visit("/sykefravaer/dialogmote");
 

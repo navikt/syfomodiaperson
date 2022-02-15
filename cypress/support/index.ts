@@ -21,7 +21,7 @@ declare global {
     interface Chainable {
       dataCy(value: string): Chainable<Element>;
 
-      stubMoter(state: MoteState): Chainable<Element>;
+      stubEndepunkter(state: MoteState): Chainable<Element>;
 
       OAuth2Login(): Chainable<Element>;
     }

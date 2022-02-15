@@ -10,7 +10,7 @@ const texts = {
 
 context("Ferdigstill dialogmøte", () => {
   beforeEach(() => {
-    cy.stubMoter(MoteState.INNKALT_DIALOGMOTE);
+    cy.stubEndepunkter(MoteState.INNKALT_DIALOGMOTE);
     cy.visit("/sykefravaer/moteoversikt");
     cy.OAuth2Login();
   });

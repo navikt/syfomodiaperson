@@ -10,7 +10,10 @@ import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  VIRKSOMHET_PONTYPANDY,
+} from "../../mock/common/mockConstants";
 import {
   OppfolgingstilfelleDTO,
   OppfolgingstilfellePersonDTO,
@@ -40,7 +43,7 @@ const mockOppfolgingstilfellePerson = (
 
 const createOppfolgingstilfelle = (end: Date): OppfolgingstilfelleDTO => {
   return {
-    virksomhetsnummerList: [],
+    virksomhetsnummerList: [VIRKSOMHET_PONTYPANDY.virksomhetsnummer],
     arbeidstakerAtTilfelleEnd: true,
     end,
     start: daysFromToday(-10),

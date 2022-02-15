@@ -209,3 +209,10 @@ export const ledereSortertPaaNavnOgOrganisasjonsnavn = (
       }
       return 0;
     });
+
+export const narmesteLederForVirksomhet = (
+  ledere: NarmesteLederRelasjonDTO[],
+  virksomhetsnummer: string
+): NarmesteLederRelasjonDTO | undefined => {
+  return ledere.find((leder) => leder.virksomhetsnummer === virksomhetsnummer);
+};
