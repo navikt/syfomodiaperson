@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from "react";
-import { Form } from "react-final-form";
+import { Form, FormSpy } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import Panel from "nav-frontend-paneler";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
@@ -125,6 +125,9 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
   const fnr = useValgtPersonident();
   const ferdigstillDialogmote = useFerdigstillDialogmote(fnr, dialogmote.uuid);
   const mellomlagreReferat = useMellomlagreReferat(fnr, dialogmote.uuid);
+  const [uendretSidenMellomlagring, setUendretSidenMellomlagring] = useState<
+    boolean | undefined
+  >();
 
   const navbruker = useNavBrukerData();
   const [displayReferatPreview, setDisplayReferatPreview] = useState(false);
@@ -193,7 +196,8 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
 
   const mellomlagre = (values: ReferatSkjemaValues) => {
     mellomlagreReferat.mutate(
-      toNewReferat(dialogmote, values, generateReferatDocument)
+      toNewReferat(dialogmote, values, generateReferatDocument),
+      { onSuccess: () => setUendretSidenMellomlagring(true) }
     );
   };
 
@@ -213,6 +217,14 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
       >
         {({ handleSubmit, submitFailed, errors, values }) => (
           <form onSubmit={handleSubmit}>
+            <FormSpy
+              subscription={{ values: true }}
+              onChange={() => {
+                if (uendretSidenMellomlagring) {
+                  setUendretSidenMellomlagring(false);
+                }
+              }}
+            />
             <ReferatTittel>{header}</ReferatTittel>
             <ReferatWarningAlert type="advarsel">
               {texts.digitalReferat}
@@ -245,7 +257,7 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
             {submitFailed && harIkkeUtbedretFeil && (
               <SkjemaFeiloppsummering errors={errors} />
             )}
-            {mellomlagreReferat.isSuccess && (
+            {mellomlagreReferat.isSuccess && uendretSidenMellomlagring && (
               <AlertstripeFullbredde type="suksess">
                 {texts.referatSaved}
               </AlertstripeFullbredde>
