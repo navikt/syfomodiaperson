@@ -1,11 +1,10 @@
 import { Area, AreaChart, XAxis, YAxis } from "recharts";
 import React, { ReactElement } from "react";
-import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { Normaltekst, Systemtittel } from "nav-frontend-typografi";
 import Panel from "nav-frontend-paneler";
 import {
-  sykmeldingerInnenforOppfolgingstilfellet,
+  sykmeldingerInnenforSisteOppfolgingstilfelle,
   sykmeldingerMedStatusSendt,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import {
@@ -14,7 +13,7 @@ import {
   leggTilDagerPaDato,
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
-import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
+import { OppfolgingstilfellePersonDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 const texts = {
   title: "Sykmeldingsgrad",
@@ -25,19 +24,23 @@ const texts = {
 };
 
 interface SykmeldingsgradProps {
-  oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState;
+  oppfolgingstilfellePerson?: OppfolgingstilfellePersonDTO;
   sykmeldinger: SykmeldingOldFormat[];
 }
 
 export const Sykmeldingsgrad = ({
   sykmeldinger,
-  oppfolgingstilfelleperioder,
+  oppfolgingstilfellePerson,
 }: SykmeldingsgradProps) => {
   const innsendteSykmeldinger = sykmeldingerMedStatusSendt(sykmeldinger);
-  const sykmeldingerIOppfolgingstilfellet = sykmeldingerInnenforOppfolgingstilfellet(
+  const sisteOppfolgingstilfelle =
+    oppfolgingstilfellePerson?.oppfolgingstilfelleList[0];
+  const sykmeldingerIOppfolgingstilfellet = sykmeldingerInnenforSisteOppfolgingstilfelle(
     innsendteSykmeldinger,
-    oppfolgingstilfelleperioder
+    sisteOppfolgingstilfelle
   );
+
+  console.log("sisteOppfolgingstilfelle", sisteOppfolgingstilfelle);
 
   const DAYS_IN_GRAPH = 55 * 7;
   const sykmeldingsgradPerDay = new Int32Array(DAYS_IN_GRAPH);
@@ -89,12 +92,12 @@ export const Sykmeldingsgrad = ({
     <Panel className="blokk">
       <Systemtittel>{texts.title}</Systemtittel>
       <Normaltekst>{texts.subtitle}</Normaltekst>
-      {perioderListSortert.length > 0 && (
+      {sisteOppfolgingstilfelle && perioderListSortert.length > 0 && (
         <Normaltekst>
           {texts.tilfelleVarighet}
           {tilLesbarPeriodeMedArstall(
-            tidligsteFom(perioderListSortert),
-            senesteTom(perioderListSortert)
+            sisteOppfolgingstilfelle.start,
+            sisteOppfolgingstilfelle.end
           )}
         </Normaltekst>
       )}

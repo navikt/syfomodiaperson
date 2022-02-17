@@ -1,5 +1,6 @@
 import { mockFastlegerest } from "./fastlegerest/mockFastlegerest";
 import { mockIsnarmesteleder } from "./isnarmesteleder/mockIsnarmesteleder";
+import { mockIsoppfolgingstilfelle } from "./isoppfolgingstilfelle/mockIsoppfolgingstilfelle";
 import { mockIspersonoppgave } from "./ispersonoppgave/mockIspersonoppgave";
 import { mockModiacontextholder } from "./modiacontextholder/mockModiacontextholder";
 import { mockSyfomoteadmin } from "./syfomoteadmin/mockSyfomoteadmin";
@@ -26,6 +27,7 @@ const mockEndepunkter = (server) => {
   [
     mockFastlegerest,
     mockIsnarmesteleder,
+    mockIsoppfolgingstilfelle,
     mockIspersonoppgave,
     mockModiacontextholder,
     mockSyfomoteadmin,

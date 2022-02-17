@@ -7,6 +7,7 @@ import UtdragFraSykefravaeret from "../utdragFraSykefravaeret/UtdragFraSykefrava
 import { Sykmeldingsgrad } from "@/components/sykmeldingsgrad/Sykmeldingsgrad";
 import { useAppSelector } from "@/hooks/hooks";
 import { ToggleNames } from "@/data/unleash/unleash_types";
+import { OppfolgingstilfellePersonDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 const texts = {
   comingSoon: `
@@ -21,6 +22,7 @@ const AlertStripeDevelopment = styled(AlertStripeInfo)`
 interface MeldingTilArbeidsgiverProps {
   aktiveDialoger: OppfolgingsplanDTO[];
   fnr: string;
+  oppfolgingstilfellePerson?: OppfolgingstilfellePersonDTO;
   oppfolgingstilfelleUtenArbeidsgiver: any;
   oppfolgingstilfelleperioder: any;
   sykmeldinger: any;
@@ -33,6 +35,7 @@ const Nokkelinformasjon = (
   const {
     aktiveDialoger,
     fnr,
+    oppfolgingstilfellePerson,
     oppfolgingstilfelleUtenArbeidsgiver,
     oppfolgingstilfelleperioder,
     sykmeldinger,
@@ -51,7 +54,7 @@ const Nokkelinformasjon = (
       {visSykmeldingsgrad && (
         <Sykmeldingsgrad
           sykmeldinger={sykmeldinger}
-          oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}
+          oppfolgingstilfellePerson={oppfolgingstilfellePerson}
         />
       )}
 

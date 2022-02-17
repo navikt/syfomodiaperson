@@ -40,7 +40,7 @@ export const sykmeldingerMock = [
           },
         },
         fom: "2020-07-22",
-        tom: "2030-12-22",
+        tom: "2021-02-22",
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -49,7 +49,7 @@ export const sykmeldingerMock = [
       {
         aktivitetIkkeMulig: null,
         fom: "2020-06-25",
-        tom: "2030-01-25",
+        tom: "2021-01-25",
         gradert: {
           grad: 50,
           reisetilskudd: true,

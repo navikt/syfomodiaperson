@@ -78,6 +78,10 @@ spec:
       value: "dev-gcp.teamsykefravr.isnarmesteleder"
     - name: ISNARMESTELEDER_HOST
       value: "isnarmesteleder.dev.intern.nav.no"
+    - name: ISOPPFOLGINGSTILFELLE_HOST
+      value: "isoppfolgingstilfelle.dev.intern.nav.no"
+    - name: ISOPPFOLGINGSTILFELLE_AAD_APP_CLIENT_ID
+      value: "dev-gcp.teamsykefravr.isoppfolgingstilfelle"
     - name: ISPENGESTOPP_AAD_APP_CLIENT_ID
       value: "dev-gcp.teamsykefravr.ispengestopp"
     - name: ISPENGESTOPP_HOST

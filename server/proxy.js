@@ -123,6 +123,16 @@ const setup = (authClient) => {
     proxyOnBehalfOf(req, res, next, authClient, Config.auth.isnarmesteleder);
   });
 
+  router.use("/isoppfolgingstilfelle/*", (req, res, next) => {
+    proxyOnBehalfOf(
+      req,
+      res,
+      next,
+      authClient,
+      Config.auth.isoppfolgingstilfelle
+    );
+  });
+
   router.use("/ispengestopp/*", (req, res, next) => {
     proxyOnBehalfOf(req, res, next, authClient, Config.auth.ispengestopp);
   });
