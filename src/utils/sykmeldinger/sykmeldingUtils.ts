@@ -364,4 +364,4 @@ export const skalVisesSomTidligereSykmelding = (sykmld: SykmeldingOldFormat) =>
   manederMellomDatoer(
     senesteTom(sykmld.mulighetForArbeid.perioder),
     new Date()
-  ) > 3;
+  ) >= 3;
