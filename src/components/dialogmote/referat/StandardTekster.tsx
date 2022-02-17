@@ -3,9 +3,9 @@ import { Field } from "react-final-form";
 import React, { ReactElement } from "react";
 import { referatTexts, StandardTekst } from "@/data/dialogmote/dialogmoteTexts";
 import styled from "styled-components";
-import { ReferatCheckbox } from "./ReferatCheckbox";
 import { FlexColumn, FlexRow, PaddingSize } from "../../Layout";
 import { ReferatInfoColumn } from "./ReferatInfoColumn";
+import { Checkbox } from "nav-frontend-skjema";
 
 const texts = {
   header: "Dette informerte NAV om i møtet",
@@ -13,6 +13,10 @@ const texts = {
   info:
     "Det blir hentet opp standardtekster i referatet avhengig av hva du velger.",
 };
+
+const StandardTekstCheckbox = styled(Checkbox)`
+  margin-bottom: 1.125em;
+`;
 
 const Header = styled(Element)`
   margin-bottom: 1em;
@@ -35,7 +39,7 @@ export const StandardTekster = (): ReactElement => (
           value={standardtekst}
         >
           {({ input }) => (
-            <ReferatCheckbox
+            <StandardTekstCheckbox
               {...input}
               value={standardtekst.text}
               label={standardtekst.label}

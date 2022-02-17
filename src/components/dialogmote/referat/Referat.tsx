@@ -13,21 +13,6 @@ import { AlertstripeFullbredde } from "../../AlertstripeFullbredde";
 import ReferatButtons from "./ReferatButtons";
 import { Innholdstittel } from "nav-frontend-typografi";
 import styled from "styled-components";
-import { MAX_LENGTH_SITUASJON, Situasjon } from "./Situasjon";
-import { Konklusjon, MAX_LENGTH_KONKLUSJON } from "./Konklusjon";
-import {
-  ArbeidstakersOppgave,
-  MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE,
-} from "./ArbeidstakersOppgave";
-import {
-  ArbeidsgiversOppgave,
-  MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE,
-} from "./ArbeidsgiversOppgave";
-import {
-  MAX_LENGTH_VEILEDERS_OPPGAVE,
-  VeiledersOppgave,
-} from "./VeiledersOppgave";
-import { StandardTekster } from "./StandardTekster";
 import {
   validerReferatDeltakere,
   validerSkjemaTekster,
@@ -46,14 +31,20 @@ import { useFerdigstillDialogmote } from "@/data/dialogmote/useFerdigstillDialog
 import { Redirect } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import {
-  BehandlersOppgave,
-  MAX_LENGTH_BEHANDLERS_OPPGAVE,
-} from "@/components/dialogmote/referat/BehandlersOppgave";
 import { useMellomlagreReferat } from "@/data/dialogmote/useMellomlagreReferat";
 import { FlexRow, PaddingSize } from "@/components/Layout";
 import { Knapp } from "nav-frontend-knapper";
 import { useInitialValuesReferat } from "@/hooks/dialogmote/useInitialValuesReferat";
+import {
+  MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE,
+  MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE,
+  MAX_LENGTH_BEHANDLERS_OPPGAVE,
+  MAX_LENGTH_KONKLUSJON,
+  MAX_LENGTH_SITUASJON,
+  MAX_LENGTH_VEILEDERS_OPPGAVE,
+  ReferatFritekster,
+} from "@/components/dialogmote/referat/ReferatFritekster";
+import { StandardTekster } from "@/components/dialogmote/referat/StandardTekster";
 
 export const texts = {
   digitalReferat:
@@ -233,12 +224,7 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
             <ReferatWarningAlert type="advarsel">
               {texts.personvern}
             </ReferatWarningAlert>
-            <Situasjon />
-            <Konklusjon />
-            <ArbeidstakersOppgave />
-            <ArbeidsgiversOppgave />
-            {dialogmote.behandler && <BehandlersOppgave />}
-            <VeiledersOppgave />
+            <ReferatFritekster dialogmote={dialogmote} />
             <StandardTekster />
             <FlexRow topPadding={PaddingSize.SM} bottomPadding={PaddingSize.MD}>
               <Knapp
