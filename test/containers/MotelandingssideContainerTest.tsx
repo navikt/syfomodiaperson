@@ -20,6 +20,7 @@ import { apiMock } from "../stubs/stubApi";
 import nock from "nock";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
 import { tilgangBrukerMock } from "../../mock/data/tilgangtilbrukerMock";
+import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 
 const realState = createStore(rootReducer).getState();
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
@@ -34,6 +35,10 @@ describe("MotelandingssideContainer", () => {
     beforeEach(() => {
       queryClient = new QueryClient();
       queryClient.setQueryData(dialogmoterQueryKeys.dialogmoter(fnr), () => []);
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplaner(fnr),
+        () => []
+      );
       apiMockScope = apiMock();
       store = configureStore([]);
       mockState = {
@@ -70,9 +75,6 @@ describe("MotelandingssideContainer", () => {
               behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
             },
           ],
-        },
-        oppfoelgingsdialoger: {
-          hentet: true,
         },
         ledere: {
           hentet: true,
@@ -149,7 +151,6 @@ describe("MotelandingssideContainer", () => {
         { type: "HENT_MOTER_FORESPURT", fnr: fnr },
         { type: "HENT_MOTEBEHOV_FORESPURT", fnr: fnr },
         { type: "HENT_SYKMELDINGER_FORESPURT", fnr: fnr },
-        { type: "HENT_OPPFOELGINGSDIALOGER_FORESPURT", fnr: fnr },
         {
           type: "HENT_OPPFOLGINGSTILFELLEPERIODER_FORESPURT",
           fnr: fnr,

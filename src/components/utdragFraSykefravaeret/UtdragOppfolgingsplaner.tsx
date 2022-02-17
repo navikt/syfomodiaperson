@@ -1,10 +1,6 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 import styled from "styled-components";
 import Lenke from "nav-frontend-lenker";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/oppfoelgingsdialoger";
-import { hentOppfolgingsplanerLPS } from "@/data/oppfolgingsplan/oppfolgingsplanerlps_actions";
-import { OppfolgingsplanerlpsState } from "@/data/oppfolgingsplan/oppfolgingsplanerlps";
 import { useAppSelector } from "@/hooks/hooks";
 import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder";
 import { lpsPlanerWithActiveTilfelle } from "@/utils/oppfolgingsplanUtils";
@@ -13,11 +9,11 @@ import {
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
-import { hentPersonOppgaver } from "@/data/personoppgave/personoppgave_actions";
-import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 import { H3NoMargins } from "../Layout";
 import { SYFOOPPFOLGINGSPLANSERVICE_ROOT } from "@/apiConstants";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
+import { useOppfolgingsplanerLPSQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 
 const texts = {
   header: "Oppfølgingsplan",
@@ -134,7 +130,6 @@ const Oppfolgingsplaner = ({
 };
 
 interface UtdragOppfolgingsplanerProps {
-  fnr: string;
   aktiveDialoger: OppfolgingsplanDTO[];
 }
 
@@ -148,32 +143,15 @@ const UtdragOppfolgingsplanerWrapper = styled.div`
 
 export const UtdragOppfolgingsplaner = ({
   aktiveDialoger,
-  fnr,
 }: UtdragOppfolgingsplanerProps) => {
-  const dispatch = useDispatch();
-
-  const personOppgaveList: PersonOppgave[] = useAppSelector(
-    (state) => state.personoppgaver.data
-  );
-
-  useEffect(() => {
-    dispatch(hentPersonOppgaver(fnr));
-  }, [dispatch, fnr]);
-
-  useEffect(() => {
-    dispatch(hentOppfolgingsplanerLPS(fnr));
-  }, [dispatch, personOppgaveList, fnr]);
-
-  const oppfolgingsplanerlpsState: OppfolgingsplanerlpsState = useAppSelector(
-    (state) => state.oppfolgingsplanerlps
-  );
+  const { data: oppfolgingsplanerLPS } = useOppfolgingsplanerLPSQuery();
 
   const oppfolgingstilfelleperioderMapState: OppfolgingstilfelleperioderMapState = useAppSelector(
     (state) => state.oppfolgingstilfelleperioder
   );
 
   const activeLpsPlaner = lpsPlanerWithActiveTilfelle(
-    oppfolgingsplanerlpsState.data,
+    oppfolgingsplanerLPS,
     oppfolgingstilfelleperioderMapState
   );
 

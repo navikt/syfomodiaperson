@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/oppfoelgingsdialoger";
 import { AlertStripeInfo } from "nav-frontend-alertstriper";
 import Sidetopp from "../Sidetopp";
 import UtdragFraSykefravaeret from "../utdragFraSykefravaeret/UtdragFraSykefravaeret";
@@ -8,6 +7,7 @@ import { Sykmeldingsgrad } from "@/components/sykmeldingsgrad/Sykmeldingsgrad";
 import { useAppSelector } from "@/hooks/hooks";
 import { ToggleNames } from "@/data/unleash/unleash_types";
 import { OppfolgingstilfellePersonDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 
 const texts = {
   comingSoon: `

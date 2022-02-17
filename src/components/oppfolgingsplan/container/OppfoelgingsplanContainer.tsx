@@ -1,15 +1,12 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 import SideFullbredde from "../../../sider/SideFullbredde";
-import * as oppdialogActions from "../../../data/oppfolgingsplan/oppfoelgingsdialoger_actions";
 import Oppfolgingsplan from "../oppfoelgingsdialoger/Oppfolgingsplan";
 import { OPPFOELGINGSPLANER } from "@/enums/menypunkter";
 import SideLaster from "../../SideLaster";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useParams } from "react-router-dom";
 import Feilmelding from "@/components/Feilmelding";
-import { useOppfoelgingsDialoger } from "@/hooks/useOppfoelgingsDialoger";
 import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { useOppfolgingsplanerQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 
 const texts = {
   tittel: "Oppfølgingsplan",
@@ -20,22 +17,16 @@ export const OppfoelgingsplanContainer = () => {
   const { oppfoelgingsdialogId } = useParams<{
     oppfoelgingsdialogId: string;
   }>();
-  const fnr = useValgtPersonident();
   const { isLoading: henterVeilederinfo } = useVeilederinfoQuery();
-  const dispatch = useDispatch();
   const {
-    oppfoelgingsdialoger,
-    oppfoelgingsdialogerHentingFeilet,
-    harForsoktHentetOppfoelgingsdialoger,
-  } = useOppfoelgingsDialoger();
-  const henter = !harForsoktHentetOppfoelgingsdialoger || henterVeilederinfo;
+    data: oppfoelgingsdialoger,
+    isError: oppfoelgingsdialogerHentingFeilet,
+    isLoading: henterOppfoelgingsdialoger,
+  } = useOppfolgingsplanerQuery();
+  const henter = henterOppfoelgingsdialoger || henterVeilederinfo;
   const oppfoelgingsdialog = oppfoelgingsdialoger.find((dialog) => {
     return dialog.id === parseInt(oppfoelgingsdialogId, 10);
   });
-
-  useEffect(() => {
-    dispatch(oppdialogActions.hentOppfoelgingsdialoger(fnr));
-  }, [dispatch, fnr]);
 
   return (
     <SideFullbredde tittel={texts.tittel} aktivtMenypunkt={OPPFOELGINGSPLANER}>

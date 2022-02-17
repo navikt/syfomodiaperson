@@ -6,11 +6,14 @@ import { useDispatch } from "react-redux";
 import { hentMotebehov } from "@/data/motebehov/motebehov_actions";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { hentMoter } from "@/data/mote/moter_actions";
-import { hentOppfoelgingsdialoger } from "@/data/oppfolgingsplan/oppfoelgingsdialoger_actions";
-import { hentPersonOppgaver } from "@/data/personoppgave/personoppgave_actions";
 import { useAppSelector } from "@/hooks/hooks";
 import { Link } from "react-router-dom";
 import { numberOfTasks } from "@/utils/globalNavigasjonUtils";
+import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
+import {
+  useOppfolgingsplanerLPSQuery,
+  useOppfolgingsplanerQuery,
+} from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 
 const nokkelinformasjonMenypunkt = {
   navn: "Nøkkelinformasjon",
@@ -76,20 +79,16 @@ export const GlobalNavigasjon = ({
   const [focusIndex, setFocusIndex] = useState(-1);
   const refs = useRef<HTMLAnchorElement[]>([]);
 
+  const { data: personoppgaver } = usePersonoppgaverQuery();
+  const { data: oppfoelgingsdialoger } = useOppfolgingsplanerQuery();
+  const { data: oppfolgingsplanerlps } = useOppfolgingsplanerLPSQuery();
+
   useEffect(() => {
     dispatch(hentMotebehov(fnr));
     dispatch(hentMoter(fnr));
-    dispatch(hentOppfoelgingsdialoger(fnr));
-    dispatch(hentPersonOppgaver(fnr));
   }, [dispatch, fnr]);
 
-  const {
-    motebehov,
-    moter,
-    oppfoelgingsdialoger,
-    oppfolgingsplanerlps,
-    personoppgaver,
-  } = useAppSelector((state) => state);
+  const { motebehov, moter } = useAppSelector((state) => state);
 
   const setFocus = (index: number) => {
     refs.current[index].focus();

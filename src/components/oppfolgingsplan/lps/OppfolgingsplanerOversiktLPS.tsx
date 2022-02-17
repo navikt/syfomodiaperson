@@ -1,15 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import Panel from "nav-frontend-paneler";
-import { restdatoTilLesbarDato, toDatePrettyPrint } from "@/utils/datoUtils";
-import { isPersonOppgaveBehandlet } from "@/utils/personOppgaveUtils";
+import { restdatoTilLesbarDato } from "@/utils/datoUtils";
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
 import BehandleOppfolgingsplanLPS from "./BehandleOppfolgingsplanLPS";
 import OppfolgingsplanLPSEtikett from "./OppfolgingsplanLPSEtikett";
-import { StatusKanImage } from "../../../../img/ImageComponents";
 import { SYFOOPPFOLGINGSPLANSERVICE_ROOT } from "@/apiConstants";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
-import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
 const texts = {
   buttonOpenPlan: "Åpne oppfølgingsplanen(pdf)",
@@ -51,12 +48,10 @@ interface BehandleOppfolgingsplanLPSProps {
 const OppfolgingsplanerOversiktLPS = ({
   oppfolgingsplanLPSBistandsbehov,
 }: BehandleOppfolgingsplanLPSProps) => {
-  const { data: veilederinfo } = useVeilederinfoQuery();
-  const personOppgave = oppfolgingsplanLPSBistandsbehov.personoppgave;
-  const erPersonOppgaveBehandlet = isPersonOppgaveBehandlet(personOppgave);
   const { data: virksomhet } = useVirksomhetQuery(
     oppfolgingsplanLPSBistandsbehov.virksomhetsnummer
   );
+
   return (
     <LPSPlanPanel>
       <UnderTittelInline className="panel__tittel">
@@ -72,22 +67,9 @@ const OppfolgingsplanerOversiktLPS = ({
       <DivMarginBottom>
         <ButtonOpenPlan oppfolgingsplanLPS={oppfolgingsplanLPSBistandsbehov} />
       </DivMarginBottom>
-      {veilederinfo && personOppgave && !erPersonOppgaveBehandlet && (
-        <BehandleOppfolgingsplanLPS
-          oppfolgingsplanLPS={oppfolgingsplanLPSBistandsbehov}
-          veilederIdent={veilederinfo.ident}
-        />
-      )}
-      {personOppgave && erPersonOppgaveBehandlet && (
-        <p>
-          <span className="ferdigbehandlet__ikon">
-            <img src={StatusKanImage} alt="Ferdig behandlet" />
-          </span>{" "}
-          {`Ferdigbehandlet: ${toDatePrettyPrint(
-            personOppgave.behandletTidspunkt
-          )} av ${personOppgave.behandletVeilederIdent}`}
-        </p>
-      )}
+      <BehandleOppfolgingsplanLPS
+        oppfolgingsplanLPS={oppfolgingsplanLPSBistandsbehov}
+      />
     </LPSPlanPanel>
   );
 };

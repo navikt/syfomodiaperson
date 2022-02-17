@@ -8,27 +8,21 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import * as menypunkter from "@/enums/menypunkter";
 import { expect } from "chai";
 import { MemoryRouter } from "react-router-dom";
+import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
 
+const fnr = arbeidstaker.personident;
 const store = configureStore([]);
 const mockState = {
-  valgtbruker: { personident: arbeidstaker.personident },
-  oppfolgingsplanerlps: {
-    data: [],
-  },
-  personoppgaver: {
-    data: [],
-  },
+  valgtbruker: { personident: fnr },
   moter: {
     data: [],
   },
   motebehov: {
     data: [],
   },
-  oppfoelgingsdialoger: {
-    data: [],
-  },
 };
-const queryClient = new QueryClient();
+let queryClient;
 
 const renderGlobalNavigasjon = () =>
   render(
@@ -42,6 +36,21 @@ const renderGlobalNavigasjon = () =>
   );
 
 describe("GlobalNavigasjon", () => {
+  beforeEach(() => {
+    queryClient = new QueryClient();
+    queryClient.setQueryData(
+      oppfolgingsplanQueryKeys.oppfolgingsplaner(fnr),
+      () => []
+    );
+    queryClient.setQueryData(
+      oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(fnr),
+      () => []
+    );
+    queryClient.setQueryData(
+      personoppgaverQueryKeys.personoppgaver(fnr),
+      () => []
+    );
+  });
   it("viser linker for alle menypunkter", () => {
     renderGlobalNavigasjon();
     const navnMenypunkter = [

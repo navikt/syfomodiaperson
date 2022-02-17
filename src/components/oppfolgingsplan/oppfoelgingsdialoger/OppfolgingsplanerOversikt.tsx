@@ -11,8 +11,10 @@ import {
 } from "@/utils/datoUtils";
 import OppfolgingsplanerOversiktLPS from "../lps/OppfolgingsplanerOversiktLPS";
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/oppfoelgingsdialoger";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
+import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
+import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
+import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 
 const texts = {
   titles: {
@@ -67,17 +69,44 @@ interface OppfolgingsplanerOversiktProps {
   oppfolgingsplanerLPS: OppfolgingsplanLPS[];
 }
 
+type OppfolgingsplanLPSMedPersonoppgave = OppfolgingsplanLPS & {
+  personoppgave?: PersonOppgave;
+};
+
+const toOppfolgingsplanLPSMedPersonoppgave = (
+  oppfolgingsplanLPS: OppfolgingsplanLPS,
+  personoppgaver: PersonOppgave[]
+): OppfolgingsplanLPSMedPersonoppgave => {
+  const personoppgave = personoppgaver.find(
+    (personoppgave) => personoppgave.referanseUuid === oppfolgingsplanLPS.uuid
+  );
+
+  if (personoppgave) {
+    return {
+      ...oppfolgingsplanLPS,
+      personoppgave,
+    };
+  }
+
+  return oppfolgingsplanLPS;
+};
+
 const OppfolgingsplanerOversikt = (
   oppfolgingsplanerOversiktProps: OppfolgingsplanerOversiktProps
 ) => {
+  const { data: personoppgaver } = usePersonoppgaverQuery();
   const {
     aktiveDialoger,
     inaktiveDialoger,
     oppfolgingsplanerLPS,
   } = oppfolgingsplanerOversiktProps;
+  const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.map(
+    (oppfolgingsplanLPS) =>
+      toOppfolgingsplanLPSMedPersonoppgave(oppfolgingsplanLPS, personoppgaver)
+  );
 
-  const oppfolgingsplanerLPSUnprocessed = oppfolgingsplanerLPS
-    .filter((oppfolgingsplanLPS: OppfolgingsplanLPS) => {
+  const oppfolgingsplanerLPSUnprocessed = oppfolgingsplanerLPSMedPersonOppgave
+    .filter((oppfolgingsplanLPS) => {
       if (oppfolgingsplanLPS.personoppgave) {
         if (oppfolgingsplanLPS.personoppgave.behandletTidspunkt) {
           return (
@@ -96,7 +125,7 @@ const OppfolgingsplanerOversikt = (
       return new Date(a.opprettet).getTime() - new Date(b.opprettet).getTime();
     });
 
-  const oppfolgingsplanerLPSProcessed = oppfolgingsplanerLPS
+  const oppfolgingsplanerLPSProcessed = oppfolgingsplanerLPSMedPersonOppgave
     .filter((oppfolgingsplanLPS) => {
       if (oppfolgingsplanLPS.personoppgave) {
         return oppfolgingsplanLPS.personoppgave.behandletTidspunkt;

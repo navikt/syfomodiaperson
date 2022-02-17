@@ -1,5 +1,5 @@
 import { erIdag } from "./datoUtils";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/oppfoelgingsdialoger";
+import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 
 const oppfolgingsplanerValidNow = (oppfolgingsplaner: any[]) => {
   return oppfolgingsplaner.filter((plan) => {

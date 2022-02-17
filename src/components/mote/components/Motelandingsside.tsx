@@ -9,13 +9,12 @@ import SideLaster from "../../SideLaster";
 import { hentLedere } from "@/data/leder/ledere_actions";
 import { hentMotebehov } from "@/data/motebehov/motebehov_actions";
 import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
-import { hentOppfoelgingsdialoger } from "@/data/oppfolgingsplan/oppfoelgingsdialoger_actions";
 import { hentOppfolgingstilfelleperioder } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder_actions";
-import { useOppfoelgingsDialoger } from "@/hooks/useOppfoelgingsDialoger";
 import { DialogmoteOnskePanel } from "../../motebehov/DialogmoteOnskePanel";
 import { MotehistorikkPanel } from "../../dialogmote/motehistorikk/MotehistorikkPanel";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
+import { useOppfolgingsplanerQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 
 const texts = {
   dialogmoter: "Dialogmøter",
@@ -26,9 +25,9 @@ export const Motelandingsside = () => {
   const dispatch = useDispatch();
 
   const {
+    isLoading: henterOppfolgingsplaner,
     aktiveDialoger,
-    harForsoktHentetOppfoelgingsdialoger,
-  } = useOppfoelgingsDialoger();
+  } = useOppfolgingsplanerQuery();
   const {
     isLoading: henterDialogmoter,
     isError: henterDialogmoterFeilet,
@@ -50,7 +49,6 @@ export const Motelandingsside = () => {
     dispatch(hentMoter(fnr));
     dispatch(hentMotebehov(fnr));
     dispatch(hentSykmeldinger(fnr));
-    dispatch(hentOppfoelgingsdialoger(fnr));
   }, [dispatch, fnr]);
 
   useEffect(() => {
@@ -58,14 +56,13 @@ export const Motelandingsside = () => {
   }, [dispatch, fnr, ledere, sykmeldinger]);
 
   const harForsoktHentetAlt =
-    motebehov.hentingForsokt &&
-    harForsoktHentetOppfoelgingsdialoger &&
-    ledere.hentingForsokt &&
-    moter.hentingForsokt;
+    motebehov.hentingForsokt && ledere.hentingForsokt && moter.hentingForsokt;
 
   return (
     <SideLaster
-      henter={!harForsoktHentetAlt || henterDialogmoter}
+      henter={
+        !harForsoktHentetAlt || henterDialogmoter || henterOppfolgingsplaner
+      }
       hentingFeilet={motebehov.hentingFeilet || henterDialogmoterFeilet}
     >
       <Sidetopp tittel={texts.dialogmoter} />

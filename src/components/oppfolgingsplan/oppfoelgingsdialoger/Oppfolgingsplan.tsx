@@ -1,14 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import Knapp from "nav-frontend-knapper";
 import { DokumentinfoDTO } from "@/data/oppfolgingsplan/types/DokumentinfoDTO";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/oppfoelgingsdialoger";
-import { hentDokumentinfo } from "@/data/oppfolgingsplan/dokumentinfo_actions";
 import Feilmelding from "../../Feilmelding";
 import AppSpinner from "../../AppSpinner";
 import { SYFOOPPFOLGINGSPLANSERVICE_ROOT } from "@/apiConstants";
-import { useAppSelector } from "@/hooks/hooks";
+import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import { useDokumentinfoQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 
 interface PlanVisningProps {
   dokumentinfo?: DokumentinfoDTO;
@@ -77,20 +75,13 @@ interface OppfolgingsplanProps {
 }
 
 const Oppfolgingsplan = ({ oppfolgingsplan }: OppfolgingsplanProps) => {
-  const dispatch = useDispatch();
-  const dokumentinfoState = useAppSelector((state) => state.dokumentinfo);
-  const { data, hentingFeilet, hentingForsokt } =
-    dokumentinfoState[oppfolgingsplan.id] || {};
-
-  useEffect(() => {
-    dispatch(hentDokumentinfo(oppfolgingsplan.id));
-  }, [dispatch, oppfolgingsplan.id]);
+  const { data, isLoading, isError } = useDokumentinfoQuery(oppfolgingsplan.id);
 
   return (() => {
-    if (!hentingForsokt) {
+    if (isLoading) {
       return <AppSpinner />;
     }
-    if (hentingFeilet) {
+    if (isError) {
       return <Feilmelding />;
     }
     return (

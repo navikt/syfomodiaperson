@@ -1,7 +1,6 @@
 import React from "react";
 import EtikettBase from "nav-frontend-etiketter";
 import Lenke from "nav-frontend-lenker";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/oppfoelgingsdialoger";
 import SykmeldingMotebehovVisning from "../motebehov/SykmeldingMotebehovVisning";
 import {
   arbeidsgivernavnEllerArbeidssituasjon,
@@ -30,6 +29,7 @@ import {
 import { UtdragOppfolgingsplaner } from "./UtdragOppfolgingsplaner";
 import { DialogmotePanel } from "../mote/components/DialogmotePanel";
 import { useTrackOnClick } from "@/data/logging/loggingHooks";
+import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 
 const tekster = {
   header: "Utdrag fra sykefraværet",
@@ -242,7 +242,7 @@ const UtdragFraSykefravaeret = ({
   return (
     <DialogmotePanel icon={GultDokumentImage} header={tekster.header}>
       <div className="utdragFraSykefravaeret">
-        <UtdragOppfolgingsplaner aktiveDialoger={aktiveDialoger} fnr={fnr} />
+        <UtdragOppfolgingsplaner aktiveDialoger={aktiveDialoger} />
 
         <Sykmeldinger
           oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}

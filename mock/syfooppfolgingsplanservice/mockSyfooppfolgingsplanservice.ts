@@ -3,12 +3,11 @@ import { historikkoppfolgingsplanMock } from "../data/historikkoppfolgingsplanMo
 import { oppfolgingsplanerLPSMock } from "./oppfolgingsplanLPSMock";
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import { SYFOOPPFOLGINGSPLANSERVICE_ROOT } from "../../src/apiConstants";
+import { dokumentinfoMock } from "../data/dokumentinfoMock";
 
 const path = require("path");
 
 const Auth = require("../../server/auth/index.js");
-
-const dokumentinfo = { antallSider: 4 };
 
 export const mockSyfooppfolgingsplanservice = (server) => {
   server.get(
@@ -20,7 +19,7 @@ export const mockSyfooppfolgingsplanservice = (server) => {
         req.headers[NAV_PERSONIDENT_HEADER].length === 11
       ) {
         res.setHeader("Content-Type", "application/json");
-        res.send(JSON.stringify(oppfolgingsplanerLPSMock()));
+        res.send(JSON.stringify(oppfolgingsplanerLPSMock(new Date())));
       } else {
         res.status(400).send();
       }
@@ -66,7 +65,7 @@ export const mockSyfooppfolgingsplanservice = (server) => {
     Auth.ensureAuthenticated(),
     (req, res) => {
       res.setHeader("Content-Type", "application/json");
-      res.send(JSON.stringify(dokumentinfo));
+      res.send(JSON.stringify(dokumentinfoMock));
     }
   );
 };

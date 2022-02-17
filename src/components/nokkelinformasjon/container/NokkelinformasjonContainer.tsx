@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { hentOppfoelgingsdialoger } from "@/data/oppfolgingsplan/oppfoelgingsdialoger_actions";
 import { hentOppfolgingstilfellerPersonUtenArbeidsiver } from "@/data/oppfolgingstilfelle/oppfolgingstilfellerperson_actions";
 import { hentOppfolgingstilfelleperioder } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder_actions";
 import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
@@ -8,9 +7,9 @@ import { hentLedere } from "@/data/leder/ledere_actions";
 import { NOKKELINFORMASJON } from "@/enums/menypunkter";
 import Side from "../../../sider/Side";
 import Nokkelinformasjon from "../Nokkelinformasjon";
-import { useOppfoelgingsDialoger } from "@/hooks/useOppfoelgingsDialoger";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import SideLaster from "../../SideLaster";
+import { useOppfolgingsplanerQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 const texts = {
@@ -19,11 +18,10 @@ const texts = {
 
 export const NokkelinformasjonSide = () => {
   const fnr = useValgtPersonident();
-
   const {
     aktiveDialoger,
-    harForsoktHentetOppfoelgingsdialoger,
-  } = useOppfoelgingsDialoger();
+    isLoading: henterOppfolgingsplaner,
+  } = useOppfolgingsplanerQuery();
 
   const {
     data: oppfolgingstilfellePerson,
@@ -42,10 +40,7 @@ export const NokkelinformasjonSide = () => {
   const ledereState = useSelector((state: any) => state.ledere);
   const sykmeldingerState = useSelector((state: any) => state.sykmeldinger);
 
-  const harForsoktHentetAlt =
-    harForsoktHentetOppfoelgingsdialoger && ledereState.hentingForsokt;
-
-  const henter = !harForsoktHentetAlt;
+  const henter = !ledereState.hentingForsokt || henterOppfolgingsplaner;
   const hentingFeilet = sykmeldingerState.hentingFeilet;
   const sykmeldinger = sykmeldingerState.data;
 
@@ -54,7 +49,6 @@ export const NokkelinformasjonSide = () => {
   useEffect(() => {
     dispatch(hentLedere(fnr));
     dispatch(hentSykmeldinger(fnr));
-    dispatch(hentOppfoelgingsdialoger(fnr));
     dispatch(hentOppfolgingstilfellerPersonUtenArbeidsiver(fnr));
     dispatch(hentOppfolgingstilfelleperioder(fnr));
   }, [dispatch, fnr, ledereState]);
