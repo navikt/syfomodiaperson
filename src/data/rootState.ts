@@ -15,9 +15,6 @@ import arbeidsgiverEpostinnhold, {
 import enhet, { EnhetState } from "./valgtenhet/enhet";
 import valgtbruker, { ValgtBrukerState } from "./valgtbruker/valgtbruker";
 import sykmeldinger, { SykmeldingerState } from "./sykmelding/sykmeldinger";
-import oppfolgingstilfellerperson, {
-  OppfolgingstilfellerPersonState,
-} from "./oppfolgingstilfelle/oppfolgingstilfellerperson";
 import oppfolgingstilfelleperioder, {
   OppfolgingstilfelleperioderMapState,
 } from "./oppfolgingstilfelle/oppfolgingstilfelleperioder";
@@ -37,7 +34,6 @@ export interface RootState {
   enhet: EnhetState;
   valgtbruker: ValgtBrukerState;
   sykmeldinger: SykmeldingerState;
-  oppfolgingstilfellerperson: OppfolgingstilfellerPersonState;
   oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState;
   flaggperson: FlaggpersonState;
   unleash: UnleashState;
@@ -56,7 +52,6 @@ export const rootReducer = combineReducers<RootState>({
   enhet,
   valgtbruker,
   sykmeldinger,
-  oppfolgingstilfellerperson,
   oppfolgingstilfelleperioder,
   flaggperson,
   unleash,

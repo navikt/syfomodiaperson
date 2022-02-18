@@ -4,7 +4,7 @@ import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat
 import { Normaltekst, Systemtittel } from "nav-frontend-typografi";
 import Panel from "nav-frontend-paneler";
 import {
-  sykmeldingerInnenforSisteOppfolgingstilfelle,
+  sykmeldingerInnenforOppfolgingstilfelle,
   sykmeldingerMedStatusSendt,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import {
@@ -28,16 +28,12 @@ interface SykmeldingsgradProps {
 }
 
 export const Sykmeldingsgrad = ({ sykmeldinger }: SykmeldingsgradProps) => {
-  const {
-    data: oppfolgingstilfellePerson,
-  } = useOppfolgingstilfellePersonQuery();
+  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
   const innsendteSykmeldinger = sykmeldingerMedStatusSendt(sykmeldinger);
-  const sisteOppfolgingstilfelle =
-    oppfolgingstilfellePerson?.oppfolgingstilfelleList[0];
-  const sykmeldingerIOppfolgingstilfellet = sykmeldingerInnenforSisteOppfolgingstilfelle(
+  const sykmeldingerIOppfolgingstilfellet = sykmeldingerInnenforOppfolgingstilfelle(
     innsendteSykmeldinger,
-    sisteOppfolgingstilfelle
+    latestOppfolgingstilfelle
   );
 
   const DAYS_IN_GRAPH = 55 * 7;
@@ -90,12 +86,12 @@ export const Sykmeldingsgrad = ({ sykmeldinger }: SykmeldingsgradProps) => {
     <Panel className="blokk">
       <Systemtittel>{texts.title}</Systemtittel>
       <Normaltekst>{texts.subtitle}</Normaltekst>
-      {sisteOppfolgingstilfelle && perioderListSortert.length > 0 && (
+      {latestOppfolgingstilfelle && perioderListSortert.length > 0 && (
         <Normaltekst>
           {texts.tilfelleVarighet}
           {tilLesbarPeriodeMedArstall(
-            sisteOppfolgingstilfelle.start,
-            sisteOppfolgingstilfelle.end
+            latestOppfolgingstilfelle.start,
+            latestOppfolgingstilfelle.end
           )}
         </Normaltekst>
       )}

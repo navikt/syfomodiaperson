@@ -17,7 +17,7 @@ export const useOppfolgingstilfellePersonQuery = () => {
   const path = `${ISOPPFOLGINGSTILFELLE_ROOT}/oppfolgingstilfelle/personident`;
   const fetchOppfolgingstilfellePerson = () =>
     get<OppfolgingstilfellePersonDTO>(path, personIdent);
-  return useQuery(
+  const query = useQuery(
     oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(personIdent),
     fetchOppfolgingstilfellePerson,
     {
@@ -25,11 +25,14 @@ export const useOppfolgingstilfellePersonQuery = () => {
       staleTime: minutesToMillis(60 * 12),
     }
   );
+  const latestOppfolgingstilfelle = query.data?.oppfolgingstilfelleList[0];
+  return {
+    ...query,
+    latestOppfolgingstilfelle,
+  };
 };
 
 export const useStartOfLatestOppfolgingstilfelle = (): Date | undefined => {
-  const {
-    data: oppfolgingstilfellePerson,
-  } = useOppfolgingstilfellePersonQuery();
-  return oppfolgingstilfellePerson?.oppfolgingstilfelleList[0]?.start;
+  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+  return latestOppfolgingstilfelle?.start;
 };

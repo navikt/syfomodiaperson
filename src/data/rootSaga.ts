@@ -7,7 +7,6 @@ import epostinnholdSagas from "./mote/epostinnholdSagas";
 import sykmeldingerSagas from "./sykmelding/sykmeldingerSagas";
 import modiacontextSagas from "./modiacontext/modiacontextSagas";
 import historikkSagas from "./historikk/historikkSagas";
-import oppfolgingstilfellePersonSagas from "./oppfolgingstilfelle/oppfolgingstilfellePersonSagas";
 import oppfolgingstilfelleperioderSagas from "./oppfolgingstilfelle/oppfolgingstilfelleperioderSagas";
 import flaggPersonSagas from "./pengestopp/flaggPersonSagas";
 import unleashSagas from "./unleash/unleashSagas";
@@ -22,7 +21,6 @@ export default function* rootSaga() {
     modiacontextSagas(),
     sykmeldingerSagas(),
     historikkSagas(),
-    oppfolgingstilfellePersonSagas(),
     oppfolgingstilfelleperioderSagas(),
     flaggPersonSagas(),
     unleashSagas(),

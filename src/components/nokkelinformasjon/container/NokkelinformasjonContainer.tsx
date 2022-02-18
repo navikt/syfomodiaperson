@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { hentOppfolgingstilfellerPersonUtenArbeidsiver } from "@/data/oppfolgingstilfelle/oppfolgingstilfellerperson_actions";
-import { hentOppfolgingstilfelleperioder } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder_actions";
 import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
 import { hentLedere } from "@/data/leder/ledere_actions";
 import { NOKKELINFORMASJON } from "@/enums/menypunkter";
@@ -22,16 +20,6 @@ export const NokkelinformasjonSide = () => {
     isLoading: henterOppfolgingsplaner,
   } = useOppfolgingsplanerQuery();
 
-  const oppfolgingstilfelleperioder = useSelector(
-    (state: any) => state.oppfolgingstilfelleperioder
-  );
-
-  const oppfolgingstilfelleUtenArbeidsgiverState = useSelector(
-    (state: any) => state.oppfolgingstilfellerperson
-  );
-  const oppfolgingstilfelleUtenArbeidsgiver =
-    oppfolgingstilfelleUtenArbeidsgiverState.data[0] || {};
-
   const ledereState = useSelector((state: any) => state.ledere);
   const sykmeldingerState = useSelector((state: any) => state.sykmeldinger);
 
@@ -44,8 +32,6 @@ export const NokkelinformasjonSide = () => {
   useEffect(() => {
     dispatch(hentLedere(fnr));
     dispatch(hentSykmeldinger(fnr));
-    dispatch(hentOppfolgingstilfellerPersonUtenArbeidsiver(fnr));
-    dispatch(hentOppfolgingstilfelleperioder(fnr));
   }, [dispatch, fnr, ledereState]);
 
   return (
@@ -54,10 +40,6 @@ export const NokkelinformasjonSide = () => {
         <Nokkelinformasjon
           fnr={fnr}
           aktivePlaner={aktivePlaner}
-          oppfolgingstilfelleUtenArbeidsgiver={
-            oppfolgingstilfelleUtenArbeidsgiver
-          }
-          oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}
           sykmeldinger={sykmeldinger}
           pageTitle={texts.pageTitle}
         />

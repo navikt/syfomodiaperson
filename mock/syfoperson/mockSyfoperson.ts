@@ -4,15 +4,6 @@ import { oppfolgingstilfelleperioderMock } from "../data/oppfolgingstilfelleperi
 import { brukerinfoMock } from "../data/brukerinfoMock";
 import { SYFOPERSON_ROOT } from "../../src/apiConstants";
 
-const getOppfolgingstilfellerPerson = () => {
-  return [
-    {
-      fom: "2020-10-15",
-      tom: "2020-10-21",
-    },
-  ];
-};
-
 const Auth = require("../../server/auth/index.js");
 
 const diskresjonskode = "7";
@@ -82,22 +73,6 @@ export const mockSyfoperson = (server) => {
         res.send(
           JSON.stringify(oppfolgingstilfelleperioderMock[virksomhetsnummer])
         );
-      } else {
-        res.status(400).send("Did not find PersonIdent in headers");
-      }
-    }
-  );
-
-  server.get(
-    `${SYFOPERSON_ROOT}/person/oppfolgingstilfelle/utenarbeidsgiver`,
-    Auth.ensureAuthenticated(),
-    (req, res) => {
-      if (
-        req.headers[NAV_PERSONIDENT_HEADER] &&
-        req.headers[NAV_PERSONIDENT_HEADER].length === 11
-      ) {
-        res.setHeader("Content-Type", "application/json");
-        res.send(getOppfolgingstilfellerPerson());
       } else {
         res.status(400).send("Did not find PersonIdent in headers");
       }

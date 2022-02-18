@@ -10,7 +10,7 @@ import {
   erMulighetForArbeidInformasjon,
   arbeidsgivernavnEllerArbeidssituasjon,
   sykmeldingerMedStatusSendt,
-  sykmeldingerInnenforOppfolgingstilfellet,
+  sykmeldingerInnenforOppfolgingstilfelle,
   sykmeldingerSortertNyestTilEldst,
   sykmeldingerGruppertEtterVirksomhet,
   sykmeldingperioderSortertEldstTilNyest,
@@ -426,47 +426,13 @@ describe("sykmeldingUtils", () => {
     });
   });
 
-  describe("sykmeldingerInnenforOppfolgingstilfellet", () => {
+  describe("sykmeldingerInnenforOppfolgingstilfelle", () => {
     it("skal returnere en liste med bare sykmeldinger innenfor oppfølgingstilfellet", () => {
-      let oppfolgingstilfelleperioder = [];
-      oppfolgingstilfelleperioder["123"] = {
-        data: [
-          {
-            orgnummer: "123",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 120),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 90),
-          },
-          {
-            orgnummer: "123",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 80),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 50),
-          },
-          {
-            orgnummer: "123",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 40),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 10),
-          },
-          {
-            orgnummer: "123",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 5),
-            tom: new Date(Date.now() + ANTALL_MS_DAG * 15),
-          },
-        ],
-      };
-
-      oppfolgingstilfelleperioder["321"] = {
-        data: [
-          {
-            orgnummer: "321",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 80),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 50),
-          },
-          {
-            orgnummer: "321",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 40),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 10),
-          },
-        ],
+      const oppfolgingstilfelle = {
+        arbeidstakerAtTilfelleEnd: true,
+        start: new Date(Date.now() - ANTALL_MS_DAG * 120),
+        end: new Date(Date.now() + ANTALL_MS_DAG * 15),
+        virksomhetsnummerList: ["123", "321"],
       };
 
       const sykmeldinger = [
@@ -494,9 +460,9 @@ describe("sykmeldingUtils", () => {
         },
       ];
 
-      const sykmeldingerIOppfolgingstilfellet = sykmeldingerInnenforOppfolgingstilfellet(
+      const sykmeldingerIOppfolgingstilfellet = sykmeldingerInnenforOppfolgingstilfelle(
         sykmeldinger,
-        oppfolgingstilfelleperioder
+        oppfolgingstilfelle
       );
 
       expect(sykmeldingerIOppfolgingstilfellet.length).to.equal(1);

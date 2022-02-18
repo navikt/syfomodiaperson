@@ -21,21 +21,12 @@ const AlertStripeDevelopment = styled(AlertStripeInfo)`
 interface NokkelinformasjonProps {
   aktivePlaner: OppfolgingsplanDTO[];
   fnr: string;
-  oppfolgingstilfelleUtenArbeidsgiver: any;
-  oppfolgingstilfelleperioder: any;
   sykmeldinger: any;
   pageTitle: string;
 }
 
 const Nokkelinformasjon = (nokkelinformasjonProps: NokkelinformasjonProps) => {
-  const {
-    aktivePlaner,
-    fnr,
-    oppfolgingstilfelleUtenArbeidsgiver,
-    oppfolgingstilfelleperioder,
-    sykmeldinger,
-    pageTitle,
-  } = nokkelinformasjonProps;
+  const { aktivePlaner, fnr, sykmeldinger, pageTitle } = nokkelinformasjonProps;
 
   const { toggles } = useAppSelector((state) => state.unleash);
   const visSykmeldingsgrad = toggles[ToggleNames.sykmeldingsgrad];
@@ -51,10 +42,6 @@ const Nokkelinformasjon = (nokkelinformasjonProps: NokkelinformasjonProps) => {
       <UtdragFraSykefravaeret
         aktivePlaner={aktivePlaner}
         fnr={fnr}
-        oppfolgingstilfelleUtenArbeidsgiver={
-          oppfolgingstilfelleUtenArbeidsgiver
-        }
-        oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}
         sykmeldinger={sykmeldinger}
       />
     </div>

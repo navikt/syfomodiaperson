@@ -5,8 +5,6 @@ import {
   SykmeldingPeriodeDTO,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { OppfolgingstilfellePerson } from "@/data/oppfolgingstilfelle/types/OppfolgingstilfellePerson";
-import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder";
 import { manederMellomDatoer } from "@/utils/datoUtils";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
@@ -169,9 +167,16 @@ export const sykmeldingerMedStatusSendt = (
 export const sykmeldingerUtenArbeidsgiver = (
   sykmeldinger: SykmeldingOldFormat[]
 ): SykmeldingOldFormat[] => {
-  return sykmeldinger.filter(
-    (sykmelding) =>
-      !sykmelding.orgnummer && sykmelding.status === SykmeldingStatus.BEKREFTET
+  return sykmeldinger.filter((sykmelding) =>
+    erSykmeldingUtenArbeidsgiver(sykmelding)
+  );
+};
+
+export const erSykmeldingUtenArbeidsgiver = (
+  sykmelding: SykmeldingOldFormat
+): boolean => {
+  return (
+    !sykmelding.orgnummer && sykmelding.status === SykmeldingStatus.BEKREFTET
   );
 };
 
@@ -192,77 +197,33 @@ export function getSykmeldingStartdato(sykmelding: SykmeldingOldFormat): Date {
   return new Date(sykmeldingperioderSortertEldstTilNyest(perioder)[0].fom);
 }
 
-export const sykmeldingerInnenforSisteOppfolgingstilfelle = (
+export const sykmeldingerInnenforOppfolgingstilfelle = (
   sykmeldinger: SykmeldingOldFormat[],
-  sisteOppfolgingstilfelle?: OppfolgingstilfelleDTO
+  oppfolgingstilfelle?: OppfolgingstilfelleDTO
 ): SykmeldingOldFormat[] => {
-  if (!sisteOppfolgingstilfelle) {
+  if (!oppfolgingstilfelle) {
     return [];
   }
   return sykmeldinger.filter((sykmelding) => {
-    const sykmeldingOrgnummer = sykmelding.orgnummer;
-    if (!sykmeldingOrgnummer) {
-      return false;
+    if (!erSykmeldingUtenArbeidsgiver(sykmelding)) {
+      const sykmeldingOrgnummer = sykmelding.orgnummer;
+      if (!sykmeldingOrgnummer) {
+        return false;
+      }
+      if (
+        !oppfolgingstilfelle.virksomhetsnummerList.includes(sykmeldingOrgnummer)
+      ) {
+        return false;
+      }
     }
-    if (
-      !sisteOppfolgingstilfelle.virksomhetsnummerList.includes(
-        sykmeldingOrgnummer
-      )
-    ) {
-      return false;
-    }
 
     const sykmeldingStart: Date = getSykmeldingStartdato(sykmelding);
     sykmeldingStart.setHours(0, 0, 0, 0);
 
-    const sisteOppfolgingstilfelleStart = new Date(
-      sisteOppfolgingstilfelle.start
-    );
-    sisteOppfolgingstilfelleStart.setHours(0, 0, 0, 0);
+    const oppfolgingstilfelleStart = new Date(oppfolgingstilfelle.start);
+    oppfolgingstilfelleStart.setHours(0, 0, 0, 0);
 
-    return (
-      sykmeldingStart.getTime() - sisteOppfolgingstilfelleStart.getTime() >= 0
-    );
-  });
-};
-
-export const sykmeldingerInnenforOppfolgingstilfellet = (
-  sykmeldinger: SykmeldingOldFormat[],
-  oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState
-): SykmeldingOldFormat[] => {
-  return sykmeldinger.filter((sykmelding) => {
-    const tilfelleperioderReducer =
-      sykmelding.orgnummer && oppfolgingstilfelleperioder[sykmelding.orgnummer];
-    const sykmeldingStart: Date = getSykmeldingStartdato(sykmelding);
-    sykmeldingStart.setHours(0, 0, 0, 0);
-
-    const tilfelleStart =
-      tilfelleperioderReducer &&
-      tilfelleperioderReducer.data &&
-      tilfelleperioderReducer.data[0] &&
-      tilfelleperioderReducer.data[0].fom
-        ? new Date(tilfelleperioderReducer.data[0].fom)
-        : new Date();
-    tilfelleStart.setHours(0, 0, 0, 0);
-
-    return sykmeldingStart.getTime() - tilfelleStart.getTime() >= 0;
-  });
-};
-
-export const sykmeldingerInnenforOppfolgingstilfellePerson = (
-  sykmeldinger: SykmeldingOldFormat[],
-  oppfolgingstilfelleperson: OppfolgingstilfellePerson
-): SykmeldingOldFormat[] => {
-  return sykmeldinger.filter((sykmelding) => {
-    const sykmeldingStart: Date = getSykmeldingStartdato(sykmelding);
-    sykmeldingStart.setHours(0, 0, 0, 0);
-
-    const tilfelleStart = oppfolgingstilfelleperson.fom
-      ? new Date(oppfolgingstilfelleperson.fom)
-      : new Date();
-    tilfelleStart.setHours(0, 0, 0, 0);
-
-    return sykmeldingStart.getTime() - tilfelleStart.getTime() >= 0;
+    return sykmeldingStart.getTime() - oppfolgingstilfelleStart.getTime() >= 0;
   });
 };
 

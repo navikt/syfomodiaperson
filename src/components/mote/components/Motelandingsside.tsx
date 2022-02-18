@@ -79,7 +79,6 @@ export const Motelandingsside = () => {
       <UtdragFraSykefravaeretPanel
         aktivePlaner={aktivePlaner}
         fnr={fnr}
-        oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}
         sykmeldinger={sykmeldinger.data}
       />
 
