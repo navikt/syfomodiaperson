@@ -10,7 +10,6 @@ import Nokkelinformasjon from "../Nokkelinformasjon";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import SideLaster from "../../SideLaster";
 import { useOppfolgingsplanerQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
-import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 const texts = {
   pageTitle: "Nøkkelinformasjon",
@@ -22,10 +21,6 @@ export const NokkelinformasjonSide = () => {
     aktiveDialoger,
     isLoading: henterOppfolgingsplaner,
   } = useOppfolgingsplanerQuery();
-
-  const {
-    data: oppfolgingstilfellePerson,
-  } = useOppfolgingstilfellePersonQuery();
 
   const oppfolgingstilfelleperioder = useSelector(
     (state: any) => state.oppfolgingstilfelleperioder
@@ -59,7 +54,6 @@ export const NokkelinformasjonSide = () => {
         <Nokkelinformasjon
           fnr={fnr}
           aktiveDialoger={aktiveDialoger}
-          oppfolgingstilfellePerson={oppfolgingstilfellePerson}
           oppfolgingstilfelleUtenArbeidsgiver={
             oppfolgingstilfelleUtenArbeidsgiver
           }

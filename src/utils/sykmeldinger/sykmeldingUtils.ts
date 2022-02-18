@@ -8,7 +8,6 @@ import {
 import { OppfolgingstilfellePerson } from "@/data/oppfolgingstilfelle/types/OppfolgingstilfellePerson";
 import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder";
 import { manederMellomDatoer } from "@/utils/datoUtils";
-import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 export const finnAvventendeSykmeldingTekst = (
   sykmelding: SykmeldingOldFormat
@@ -191,40 +190,6 @@ export function getSykmeldingStartdato(sykmelding: SykmeldingOldFormat): Date {
   const perioder = sykmelding.mulighetForArbeid.perioder;
   return new Date(sykmeldingperioderSortertEldstTilNyest(perioder)[0].fom);
 }
-
-export const sykmeldingerInnenforSisteOppfolgingstilfelle = (
-  sykmeldinger: SykmeldingOldFormat[],
-  sisteOppfolgingstilfelle?: OppfolgingstilfelleDTO
-): SykmeldingOldFormat[] => {
-  if (!sisteOppfolgingstilfelle) {
-    return [];
-  }
-  return sykmeldinger.filter((sykmelding) => {
-    const sykmeldingOrgnummer = sykmelding.orgnummer;
-    if (!sykmeldingOrgnummer) {
-      return false;
-    }
-    if (
-      !sisteOppfolgingstilfelle.virksomhetsnummerList.includes(
-        sykmeldingOrgnummer
-      )
-    ) {
-      return false;
-    }
-
-    const sykmeldingStart: Date = getSykmeldingStartdato(sykmelding);
-    sykmeldingStart.setHours(0, 0, 0, 0);
-
-    const sisteOppfolgingstilfelleStart = new Date(
-      sisteOppfolgingstilfelle.start
-    );
-    sisteOppfolgingstilfelleStart.setHours(0, 0, 0, 0);
-
-    return (
-      sykmeldingStart.getTime() - sisteOppfolgingstilfelleStart.getTime() >= 0
-    );
-  });
-};
 
 export const sykmeldingerInnenforOppfolgingstilfellet = (
   sykmeldinger: SykmeldingOldFormat[],

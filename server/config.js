@@ -158,16 +158,6 @@ const auth = {
     }),
     removePathPrefix: true,
   },
-  isoppfolgingstilfelle: {
-    applicationName: "isoppfolgingstilfelle",
-    clientId: envVar({
-      name: "ISOPPFOLGINGSTILFELLE_AAD_APP_CLIENT_ID",
-    }),
-    host: envVar({
-      name: "ISOPPFOLGINGSTILFELLE_HOST",
-    }),
-    removePathPrefix: true,
-  },
   ispengestopp: {
     applicationName: "ispengestopp",
     clientId: envVar({
