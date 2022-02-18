@@ -1,7 +1,7 @@
 import React from "react";
 import Side from "../../../sider/Side";
-import OppfolgingsplanerOversikt from "../oppfoelgingsdialoger/OppfolgingsplanerOversikt";
-import IngenPlaner from "../oppfoelgingsdialoger/IngenPlaner";
+import OppfolgingsplanerOversikt from "../oppfolgingsplaner/OppfolgingsplanerOversikt";
+import IngenPlaner from "../oppfolgingsplaner/IngenPlaner";
 import { OPPFOELGINGSPLANER } from "@/enums/menypunkter";
 import { activeOppfolgingsplaner } from "@/utils/oppfolgingsplanerUtils";
 import SideLaster from "../../SideLaster";
@@ -14,9 +14,9 @@ import {
 export const OppfoelgingsPlanerOversiktContainer = () => {
   const fnr = useValgtPersonident();
   const {
-    data: oppfoelgingsdialoger,
-    isError: oppfoelgingsdialogerHentingFeilet,
-    isLoading: henterOppfoelgingsdialoger,
+    data: oppfolgingsplaner,
+    isError: oppfolgingsplanerHentingFeilet,
+    isLoading: henterOppfolgingsplaner,
   } = useOppfolgingsplanerQuery();
   const {
     data: oppfolgingsplanerLPS,
@@ -24,14 +24,14 @@ export const OppfoelgingsPlanerOversiktContainer = () => {
     isLoading: henterOppfolgingsplanerLPS,
   } = useOppfolgingsplanerLPSQuery();
 
-  const henter = henterOppfoelgingsdialoger || henterOppfolgingsplanerLPS;
+  const henter = henterOppfolgingsplaner || henterOppfolgingsplanerLPS;
 
   const hentingFeilet =
-    oppfoelgingsdialogerHentingFeilet || oppfolgingsplanerLPSHentingFeilet;
+    oppfolgingsplanerHentingFeilet || oppfolgingsplanerLPSHentingFeilet;
 
-  const aktiveDialoger = activeOppfolgingsplaner(oppfoelgingsdialoger);
-  const inaktiveDialoger = oppfoelgingsdialoger.filter(
-    (dialog) => !aktiveDialoger.includes(dialog)
+  const aktivePlaner = activeOppfolgingsplaner(oppfolgingsplaner);
+  const inaktivePlaner = oppfolgingsplaner.filter(
+    (plan) => !aktivePlaner.includes(plan)
   );
 
   return (
@@ -39,16 +39,16 @@ export const OppfoelgingsPlanerOversiktContainer = () => {
       <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
         {(() => {
           if (
-            aktiveDialoger.length === 0 &&
-            inaktiveDialoger.length === 0 &&
+            aktivePlaner.length === 0 &&
+            inaktivePlaner.length === 0 &&
             oppfolgingsplanerLPS.length === 0
           ) {
             return <IngenPlaner />;
           }
           return (
             <OppfolgingsplanerOversikt
-              aktiveDialoger={aktiveDialoger}
-              inaktiveDialoger={inaktiveDialoger}
+              aktivePlaner={aktivePlaner}
+              inaktivePlaner={inaktivePlaner}
               oppfolgingsplanerLPS={oppfolgingsplanerLPS}
               fnr={fnr}
             />

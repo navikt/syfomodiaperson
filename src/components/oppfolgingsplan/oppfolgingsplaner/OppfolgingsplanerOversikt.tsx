@@ -63,8 +63,8 @@ const OppfolgingsplanVirksomhetTittel = ({
 };
 
 interface OppfolgingsplanerOversiktProps {
-  aktiveDialoger: OppfolgingsplanDTO[];
-  inaktiveDialoger: OppfolgingsplanDTO[];
+  aktivePlaner: OppfolgingsplanDTO[];
+  inaktivePlaner: OppfolgingsplanDTO[];
   fnr: string;
   oppfolgingsplanerLPS: OppfolgingsplanLPS[];
 }
@@ -96,8 +96,8 @@ const OppfolgingsplanerOversikt = (
 ) => {
   const { data: personoppgaver } = usePersonoppgaverQuery();
   const {
-    aktiveDialoger,
-    inaktiveDialoger,
+    aktivePlaner,
+    inaktivePlaner,
     oppfolgingsplanerLPS,
   } = oppfolgingsplanerOversiktProps;
   const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.map(
@@ -136,14 +136,14 @@ const OppfolgingsplanerOversikt = (
       return new Date(a.opprettet).getTime() - new Date(b.opprettet).getTime();
     });
 
-  aktiveDialoger.sort((a, b) => {
+  aktivePlaner.sort((a, b) => {
     return (
       new Date(b.godkjentPlan.deltMedNAVTidspunkt).getTime() -
       new Date(a.godkjentPlan.deltMedNAVTidspunkt).getTime()
     );
   });
 
-  inaktiveDialoger.sort((a, b) => {
+  inaktivePlaner.sort((a, b) => {
     return (
       new Date(b.godkjentPlan.deltMedNAVTidspunkt).getTime() -
       new Date(a.godkjentPlan.deltMedNAVTidspunkt).getTime()
@@ -157,7 +157,7 @@ const OppfolgingsplanerOversikt = (
         <h2 className="typo-systemtittel blokk--xs">
           {texts.titles.relevantOppfolgingsplaner}
         </h2>
-        {aktiveDialoger.length === 0 &&
+        {aktivePlaner.length === 0 &&
           oppfolgingsplanerLPSUnprocessed.length === 0 && (
             <Alertstripe type="info">
               <p>{texts.alertMessages.noRelevantOppfolgingsplaner}</p>
@@ -171,7 +171,7 @@ const OppfolgingsplanerOversikt = (
             />
           );
         })}
-        {aktiveDialoger.map((dialog, index) => {
+        {aktivePlaner.map((dialog, index) => {
           return (
             <Link
               key={index}
@@ -195,13 +195,13 @@ const OppfolgingsplanerOversikt = (
       <h2 className="typo-systemtittel blokk--xs">
         {texts.titles.inactiveOppfolgingsplaner}
       </h2>
-      {inaktiveDialoger.length === 0 &&
+      {inaktivePlaner.length === 0 &&
         oppfolgingsplanerLPSProcessed.length === 0 && (
           <Alertstripe type="info">
             <p>{texts.alertMessages.noInactiveOppfolgingsplaner}</p>
           </Alertstripe>
         )}
-      {inaktiveDialoger.map((dialog, index) => {
+      {inaktivePlaner.map((dialog, index) => {
         return (
           <Link
             key={index}

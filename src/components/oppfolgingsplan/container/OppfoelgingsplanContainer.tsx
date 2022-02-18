@@ -1,6 +1,6 @@
 import React from "react";
 import SideFullbredde from "../../../sider/SideFullbredde";
-import Oppfolgingsplan from "../oppfoelgingsdialoger/Oppfolgingsplan";
+import Oppfolgingsplan from "../oppfolgingsplaner/Oppfolgingsplan";
 import { OPPFOELGINGSPLANER } from "@/enums/menypunkter";
 import SideLaster from "../../SideLaster";
 import { useParams } from "react-router-dom";
@@ -19,23 +19,23 @@ export const OppfoelgingsplanContainer = () => {
   }>();
   const { isLoading: henterVeilederinfo } = useVeilederinfoQuery();
   const {
-    data: oppfoelgingsdialoger,
-    isError: oppfoelgingsdialogerHentingFeilet,
-    isLoading: henterOppfoelgingsdialoger,
+    data: oppfolgingsplaner,
+    isError: oppfolgingsplanerHentingFeilet,
+    isLoading: henterOppfolgingsplaner,
   } = useOppfolgingsplanerQuery();
-  const henter = henterOppfoelgingsdialoger || henterVeilederinfo;
-  const oppfoelgingsdialog = oppfoelgingsdialoger.find((dialog) => {
-    return dialog.id === parseInt(oppfoelgingsdialogId, 10);
+  const henter = henterOppfolgingsplaner || henterVeilederinfo;
+  const oppfolgingsplan = oppfolgingsplaner.find((plan) => {
+    return plan.id === parseInt(oppfoelgingsdialogId, 10);
   });
 
   return (
     <SideFullbredde tittel={texts.tittel} aktivtMenypunkt={OPPFOELGINGSPLANER}>
       <SideLaster
         henter={henter}
-        hentingFeilet={oppfoelgingsdialogerHentingFeilet}
+        hentingFeilet={oppfolgingsplanerHentingFeilet}
       >
-        {oppfoelgingsdialog ? (
-          <Oppfolgingsplan oppfolgingsplan={oppfoelgingsdialog} />
+        {oppfolgingsplan ? (
+          <Oppfolgingsplan oppfolgingsplan={oppfolgingsplan} />
         ) : (
           <Feilmelding tittel={texts.notFound} />
         )}

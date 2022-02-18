@@ -26,7 +26,7 @@ export const Motelandingsside = () => {
 
   const {
     isLoading: henterOppfolgingsplaner,
-    aktiveDialoger,
+    aktivePlaner,
   } = useOppfolgingsplanerQuery();
   const {
     isLoading: henterDialogmoter,
@@ -77,7 +77,7 @@ export const Motelandingsside = () => {
       <InnkallingDialogmotePanel aktivtDialogmote={aktivtDialogmote} />
 
       <UtdragFraSykefravaeretPanel
-        aktiveDialoger={aktiveDialoger}
+        aktivePlaner={aktivePlaner}
         fnr={fnr}
         oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}
         sykmeldinger={sykmeldinger.data}

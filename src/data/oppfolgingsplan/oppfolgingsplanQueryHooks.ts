@@ -30,12 +30,12 @@ export const useOppfolgingsplanerQuery = () => {
   return {
     ...query,
     data: query.data || [],
-    aktiveDialoger: useMemo(
+    aktivePlaner: useMemo(
       () =>
         query.data?.filter(
-          (dialog) =>
-            dialog.status !== "AVBRUTT" &&
-            new Date(dialog.godkjentPlan.gyldighetstidspunkt.tom) > new Date()
+          (plan) =>
+            plan.status !== "AVBRUTT" &&
+            new Date(plan.godkjentPlan.gyldighetstidspunkt.tom) > new Date()
         ) || [],
       [query.data]
     ),

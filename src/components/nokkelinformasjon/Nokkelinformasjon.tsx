@@ -19,7 +19,7 @@ const AlertStripeDevelopment = styled(AlertStripeInfo)`
 `;
 
 interface MeldingTilArbeidsgiverProps {
-  aktiveDialoger: OppfolgingsplanDTO[];
+  aktivePlaner: OppfolgingsplanDTO[];
   fnr: string;
   oppfolgingstilfelleUtenArbeidsgiver: any;
   oppfolgingstilfelleperioder: any;
@@ -31,7 +31,7 @@ const Nokkelinformasjon = (
   meldingTilArbeidsgiverProps: MeldingTilArbeidsgiverProps
 ) => {
   const {
-    aktiveDialoger,
+    aktivePlaner,
     fnr,
     oppfolgingstilfelleUtenArbeidsgiver,
     oppfolgingstilfelleperioder,
@@ -56,7 +56,7 @@ const Nokkelinformasjon = (
       )}
 
       <UtdragFraSykefravaeret
-        aktiveDialoger={aktiveDialoger}
+        aktivePlaner={aktivePlaner}
         fnr={fnr}
         oppfolgingstilfelleUtenArbeidsgiver={
           oppfolgingstilfelleUtenArbeidsgiver

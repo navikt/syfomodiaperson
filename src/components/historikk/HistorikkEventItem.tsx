@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
-import OppfoelgingsdialogIkon from "../../ikoner/OppfoelgingsdialogIkon";
+import OppfolgingsplanIkon from "../../ikoner/OppfolgingsplanIkon";
 import MoteIkon from "../../ikoner/MoteIkon";
 import LederIkon from "../../ikoner/LederIkon";
 import styled from "styled-components";
@@ -15,7 +15,7 @@ const hentIkon = (event: HistorikkEvent) => {
       return <MoteIkon />;
     }
     case "OPPFOELGINGSDIALOG": {
-      return <OppfoelgingsdialogIkon />;
+      return <OppfolgingsplanIkon />;
     }
     case "LEDER": {
       return <LederIkon />;

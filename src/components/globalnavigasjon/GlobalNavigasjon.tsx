@@ -80,7 +80,7 @@ export const GlobalNavigasjon = ({
   const refs = useRef<HTMLAnchorElement[]>([]);
 
   const { data: personoppgaver } = usePersonoppgaverQuery();
-  const { data: oppfoelgingsdialoger } = useOppfolgingsplanerQuery();
+  const { data: oppfolgingsplaner } = useOppfolgingsplanerQuery();
   const { data: oppfolgingsplanerlps } = useOppfolgingsplanerLPSQuery();
 
   useEffect(() => {
@@ -132,7 +132,7 @@ export const GlobalNavigasjon = ({
           menypunkt,
           motebehov,
           moter,
-          oppfoelgingsdialoger,
+          oppfolgingsplaner,
           personoppgaver,
           oppfolgingsplanerlps
         );

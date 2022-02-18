@@ -223,7 +223,7 @@ export const Samtalereferat = ({ fnr, trackOnClick }: SamtalereferatProps) => (
 );
 
 interface UtdragFraSykefravaeretProps {
-  aktiveDialoger: OppfolgingsplanDTO[];
+  aktivePlaner: OppfolgingsplanDTO[];
   fnr: string;
   oppfolgingstilfelleUtenArbeidsgiver?: OppfolgingstilfellePerson;
   oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState;
@@ -231,7 +231,7 @@ interface UtdragFraSykefravaeretProps {
 }
 
 const UtdragFraSykefravaeret = ({
-  aktiveDialoger,
+  aktivePlaner,
   fnr,
   oppfolgingstilfelleUtenArbeidsgiver,
   oppfolgingstilfelleperioder,
@@ -242,7 +242,7 @@ const UtdragFraSykefravaeret = ({
   return (
     <DialogmotePanel icon={GultDokumentImage} header={tekster.header}>
       <div className="utdragFraSykefravaeret">
-        <UtdragOppfolgingsplaner aktiveDialoger={aktiveDialoger} />
+        <UtdragOppfolgingsplaner aktivePlaner={aktivePlaner} />
 
         <Sykmeldinger
           oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}

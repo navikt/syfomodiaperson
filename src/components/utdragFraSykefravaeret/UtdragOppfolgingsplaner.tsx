@@ -20,11 +20,11 @@ const texts = {
   ingenPlanerDelt: "Ingen planer er delt med NAV",
 };
 
-interface AktiveDialogerProps {
-  aktiveDialoger: OppfolgingsplanDTO[];
+interface AktivePlanerProps {
+  aktivePlaner: OppfolgingsplanDTO[];
 }
 
-const AktivDialog = styled.div`
+const AktivPlan = styled.div`
   margin-top: 0.5em;
   margin-bottom: 1em;
 
@@ -37,41 +37,41 @@ const Gyldighetsperiode = styled.span`
   margin-left: 2em;
 `;
 
-interface AktivDialogLenkeProps {
-  aktivDialog: OppfolgingsplanDTO;
+interface AktivPlanLenkeProps {
+  aktivPlan: OppfolgingsplanDTO;
 }
 
-const AktivDialogLenke = ({ aktivDialog }: AktivDialogLenkeProps) => {
+const AktivPlanLenke = ({ aktivPlan }: AktivPlanLenkeProps) => {
   const { data: virksomhet } = useVirksomhetQuery(
-    aktivDialog.virksomhet.virksomhetsnummer
+    aktivPlan.virksomhet.virksomhetsnummer
   );
   const virksomhetsNavn = virksomhet?.navn;
   return (
     <span>
       <Lenke
         className="lenke"
-        href={`/sykefravaer/oppfoelgingsplaner/${aktivDialog.id}`}
+        href={`/sykefravaer/oppfoelgingsplaner/${aktivPlan.id}`}
       >
         {virksomhetsNavn && virksomhetsNavn.length > 0
           ? virksomhetsNavn.toLowerCase()
-          : aktivDialog.virksomhet.virksomhetsnummer}
+          : aktivPlan.virksomhet.virksomhetsnummer}
       </Lenke>
     </span>
   );
 };
 
-const AktiveDialoger = ({ aktiveDialoger }: AktiveDialogerProps) => (
+const AktivePlaner = ({ aktivePlaner }: AktivePlanerProps) => (
   <>
-    {aktiveDialoger.map((dialog, index) => (
-      <AktivDialog key={index}>
-        <AktivDialogLenke aktivDialog={dialog} />
+    {aktivePlaner.map((plan, index) => (
+      <AktivPlan key={index}>
+        <AktivPlanLenke aktivPlan={plan} />
         <Gyldighetsperiode>
           {tilLesbarPeriodeMedArstall(
-            dialog.godkjentPlan.gyldighetstidspunkt.fom,
-            dialog.godkjentPlan.gyldighetstidspunkt.tom
+            plan.godkjentPlan.gyldighetstidspunkt.fom,
+            plan.godkjentPlan.gyldighetstidspunkt.tom
           )}
         </Gyldighetsperiode>
-      </AktivDialog>
+      </AktivPlan>
     ))}
   </>
 );
@@ -113,24 +113,24 @@ const LpsPlaner = ({ lpsPlaner }: LpsPlanerProps) => (
 );
 
 interface OppfolgingsplanerProps {
-  aktiveDialoger: OppfolgingsplanDTO[];
+  aktivePlaner: OppfolgingsplanDTO[];
   lpsPlaner: OppfolgingsplanLPS[];
 }
 
 const Oppfolgingsplaner = ({
-  aktiveDialoger,
+  aktivePlaner,
   lpsPlaner,
 }: OppfolgingsplanerProps) => {
   return (
     <div>
-      <AktiveDialoger aktiveDialoger={aktiveDialoger} />
+      <AktivePlaner aktivePlaner={aktivePlaner} />
       <LpsPlaner lpsPlaner={lpsPlaner} />
     </div>
   );
 };
 
 interface UtdragOppfolgingsplanerProps {
-  aktiveDialoger: OppfolgingsplanDTO[];
+  aktivePlaner: OppfolgingsplanDTO[];
 }
 
 const UtdragOppfolgingsplanerWrapper = styled.div`
@@ -142,7 +142,7 @@ const UtdragOppfolgingsplanerWrapper = styled.div`
 `;
 
 export const UtdragOppfolgingsplaner = ({
-  aktiveDialoger,
+  aktivePlaner,
 }: UtdragOppfolgingsplanerProps) => {
   const { data: oppfolgingsplanerLPS } = useOppfolgingsplanerLPSQuery();
 
@@ -156,14 +156,14 @@ export const UtdragOppfolgingsplaner = ({
   );
 
   const anyActivePlaner =
-    aktiveDialoger?.length > 0 || activeLpsPlaner.length > 0;
+    aktivePlaner?.length > 0 || activeLpsPlaner.length > 0;
 
   return (
     <UtdragOppfolgingsplanerWrapper>
       <H3NoMargins>{texts.header}</H3NoMargins>
       {anyActivePlaner ? (
         <Oppfolgingsplaner
-          aktiveDialoger={aktiveDialoger}
+          aktivePlaner={aktivePlaner}
           lpsPlaner={activeLpsPlaner}
         />
       ) : (

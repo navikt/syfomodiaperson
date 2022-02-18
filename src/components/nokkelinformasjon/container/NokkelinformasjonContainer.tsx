@@ -18,7 +18,7 @@ const texts = {
 export const NokkelinformasjonSide = () => {
   const fnr = useValgtPersonident();
   const {
-    aktiveDialoger,
+    aktivePlaner,
     isLoading: henterOppfolgingsplaner,
   } = useOppfolgingsplanerQuery();
 
@@ -53,7 +53,7 @@ export const NokkelinformasjonSide = () => {
       <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
         <Nokkelinformasjon
           fnr={fnr}
-          aktiveDialoger={aktiveDialoger}
+          aktivePlaner={aktivePlaner}
           oppfolgingstilfelleUtenArbeidsgiver={
             oppfolgingstilfelleUtenArbeidsgiver
           }
