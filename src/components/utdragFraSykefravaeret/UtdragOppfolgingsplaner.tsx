@@ -9,11 +9,11 @@ import {
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
-import { H3NoMargins } from "../Layout";
 import { SYFOOPPFOLGINGSPLANSERVICE_ROOT } from "@/apiConstants";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { useOppfolgingsplanerLPSQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import { Undertittel } from "nav-frontend-typografi";
 
 const texts = {
   header: "Oppfølgingsplan",
@@ -135,10 +135,6 @@ interface UtdragOppfolgingsplanerProps {
 
 const UtdragOppfolgingsplanerWrapper = styled.div`
   margin-bottom: 2.5em;
-
-  h3 {
-    margin-bottom: 0;
-  }
 `;
 
 export const UtdragOppfolgingsplaner = ({
@@ -160,7 +156,7 @@ export const UtdragOppfolgingsplaner = ({
 
   return (
     <UtdragOppfolgingsplanerWrapper>
-      <H3NoMargins>{texts.header}</H3NoMargins>
+      <Undertittel>{texts.header}</Undertittel>
       {anyActivePlaner ? (
         <Oppfolgingsplaner
           aktivePlaner={aktivePlaner}

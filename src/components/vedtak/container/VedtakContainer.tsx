@@ -1,67 +1,32 @@
 import * as React from "react";
-import { useState } from "react";
-import { Column, Row } from "nav-frontend-grid";
-import { AlertStripeInfo } from "nav-frontend-alertstriper";
 import Side from "../../../sider/Side";
-import VedtakInfopanel from "../VedtakInfopanel";
 import styled from "styled-components";
 import { VEDTAK } from "@/enums/menypunkter";
-import VedtakUnselected from "../VedtakUnselected";
-import VedtakColumn from "../VedtakColumn";
-import VedtakInfoBox from "../VedtakInfoBox";
-import { MappeAdvarselImage } from "../../../../img/ImageComponents";
-import SideLaster from "../../SideLaster";
-import { VedtakDTO } from "@/data/vedtak/vedtakTypes";
-import { useVedtakQuery } from "@/data/vedtak/vedtakQueryHooks";
+import { SpinnsynLenke } from "@/components/vedtak/SpinnsynLenke";
+import Panel from "nav-frontend-paneler";
+import { Normaltekst } from "nav-frontend-typografi";
 
 const texts = {
   pageTitle: "Vedtak",
-  noVedtak: "Denne personen har ingen vedtak",
-  comingSoon: `
-       Dette er en tidlig versjon av vedtakshistorikken. 
-       Feil og mangler kan forekomme. Bruk Yammer til å komme med forslag og Porten til å melde feil. 
-    `,
+  info:
+    "Denne lenken gir deg mer utfyllende og riktig informasjon enn vi tidligere kunne vise her i Modia.",
 };
 
-const StyledAlertStripe = styled(AlertStripeInfo)`
-  margin: 0 0.5em 0.5em 0.5em;
+const VedtakPanel = styled(Panel)`
+  padding: 2em;
 `;
 
-const VedtakContainer = () => {
-  const { isLoading, isError, data: vedtakListe } = useVedtakQuery();
-  const harVedtak = vedtakListe.length > 0;
+const InfoTekst = styled(Normaltekst)`
+  margin-top: 0.75em;
+`;
 
-  const [selectedVedtak, setSelectedVedtak] = useState<VedtakDTO>();
-
-  return (
-    <Side tittel={texts.pageTitle} aktivtMenypunkt={VEDTAK}>
-      <SideLaster henter={isLoading} hentingFeilet={isError}>
-        <Row>
-          <StyledAlertStripe>{texts.comingSoon}</StyledAlertStripe>
-        </Row>
-        <Row>
-          {harVedtak && (
-            <VedtakColumn
-              data={vedtakListe || []}
-              selectedVedtak={selectedVedtak}
-              setSelectedVedtak={setSelectedVedtak}
-            />
-          )}
-
-          {selectedVedtak && (
-            <Column className="col-xs-7">
-              <VedtakInfopanel selectedVedtak={selectedVedtak} />
-            </Column>
-          )}
-
-          {!selectedVedtak && harVedtak && <VedtakUnselected />}
-          {!harVedtak && (
-            <VedtakInfoBox title={texts.noVedtak} icon={MappeAdvarselImage} />
-          )}
-        </Row>
-      </SideLaster>
-    </Side>
-  );
-};
+const VedtakContainer = () => (
+  <Side tittel={texts.pageTitle} aktivtMenypunkt={VEDTAK}>
+    <VedtakPanel>
+      <SpinnsynLenke />
+      <InfoTekst>{texts.info}</InfoTekst>
+    </VedtakPanel>
+  </Side>
+);
 
 export default VedtakContainer;

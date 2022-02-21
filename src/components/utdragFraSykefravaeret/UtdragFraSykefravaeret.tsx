@@ -30,6 +30,8 @@ import { UtdragOppfolgingsplaner } from "./UtdragOppfolgingsplaner";
 import { DialogmotePanel } from "../mote/components/DialogmotePanel";
 import { useTrackOnClick } from "@/data/logging/loggingHooks";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import { Undertittel } from "nav-frontend-typografi";
+import { SpinnsynLenke } from "@/components/vedtak/SpinnsynLenke";
 
 const tekster = {
   header: "Utdrag fra sykefraværet",
@@ -41,6 +43,9 @@ const tekster = {
   samtalereferat: {
     header: "Samtalereferat",
     lenkeTekst: "Samtalereferat",
+  },
+  vedtak: {
+    header: "Vedtak",
   },
   apneSykmelding: "Åpne sykmelding",
 };
@@ -148,7 +153,7 @@ export const Sykmeldinger = ({
   );
   return (
     <div className="utdragFraSykefravaeret__sykmeldinger">
-      <h3>{tekster.sykmeldinger.header}</h3>
+      <Undertittel>{tekster.sykmeldinger.header}</Undertittel>
       {Object.keys(sykmeldingerSortertPaaVirksomhet).map((key, index) => (
         <SykmeldingerForVirksomhet
           key={index}
@@ -203,14 +208,18 @@ export const SykmeldingerUtenArbeidsgiver = ({
   );
 };
 
+const SamtalereferatWrapper = styled.div`
+  margin-bottom: 2em;
+`;
+
 interface SamtalereferatProps {
   fnr: string;
   trackOnClick: () => void;
 }
 
 export const Samtalereferat = ({ fnr, trackOnClick }: SamtalereferatProps) => (
-  <div className="utdragFraSykefravaeret__samtalereferat">
-    <h3>{tekster.samtalereferat.header}</h3>
+  <SamtalereferatWrapper>
+    <Undertittel>{tekster.samtalereferat.header}</Undertittel>
     <Lenke
       className="lenke"
       onClick={trackOnClick}
@@ -219,7 +228,7 @@ export const Samtalereferat = ({ fnr, trackOnClick }: SamtalereferatProps) => (
     >
       {tekster.samtalereferat.lenkeTekst}
     </Lenke>
-  </div>
+  </SamtalereferatWrapper>
 );
 
 interface UtdragFraSykefravaeretProps {
@@ -264,6 +273,8 @@ const UtdragFraSykefravaeret = ({
           fnr={fnr}
           trackOnClick={() => trackOnClick(tekster.samtalereferat.header)}
         />
+        <Undertittel>{tekster.vedtak.header}</Undertittel>
+        <SpinnsynLenke />
       </div>
     </DialogmotePanel>
   );
