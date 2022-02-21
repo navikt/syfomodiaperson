@@ -18,5 +18,4 @@ export const SYFOSMREGISTER_ROOT = "/syfosmregister/api/v2";
 export const SYFOSOKNAD_ROOT = "/syfosoknad/api/veileder";
 export const SYFOTILGANGSKONTROLL_ROOT = "/syfo-tilgangskontroll/api";
 export const SYFOVEILEDER_ROOT = "/syfoveileder/api/v2";
-export const VEDTAK_ROOT = "/spinnsyn-backend/api/v3/veileder/vedtak";
 export const UNLEASH_ROOT = "/isenabled";
