@@ -18,7 +18,7 @@ const AlertStripeDevelopment = styled(AlertStripeInfo)`
   margin: 0 0 1em 0;
 `;
 
-interface MeldingTilArbeidsgiverProps {
+interface NokkelinformasjonProps {
   aktivePlaner: OppfolgingsplanDTO[];
   fnr: string;
   oppfolgingstilfelleUtenArbeidsgiver: any;
@@ -27,9 +27,7 @@ interface MeldingTilArbeidsgiverProps {
   pageTitle: string;
 }
 
-const Nokkelinformasjon = (
-  meldingTilArbeidsgiverProps: MeldingTilArbeidsgiverProps
-) => {
+const Nokkelinformasjon = (nokkelinformasjonProps: NokkelinformasjonProps) => {
   const {
     aktivePlaner,
     fnr,
@@ -37,7 +35,7 @@ const Nokkelinformasjon = (
     oppfolgingstilfelleperioder,
     sykmeldinger,
     pageTitle,
-  } = meldingTilArbeidsgiverProps;
+  } = nokkelinformasjonProps;
 
   const { toggles } = useAppSelector((state) => state.unleash);
   const visSykmeldingsgrad = toggles[ToggleNames.sykmeldingsgrad];
@@ -48,12 +46,7 @@ const Nokkelinformasjon = (
 
       <AlertStripeDevelopment>{texts.comingSoon}</AlertStripeDevelopment>
 
-      {visSykmeldingsgrad && (
-        <Sykmeldingsgrad
-          sykmeldinger={sykmeldinger}
-          oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}
-        />
-      )}
+      {visSykmeldingsgrad && <Sykmeldingsgrad sykmeldinger={sykmeldinger} />}
 
       <UtdragFraSykefravaeret
         aktivePlaner={aktivePlaner}
