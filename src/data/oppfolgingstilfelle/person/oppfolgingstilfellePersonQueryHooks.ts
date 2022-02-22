@@ -26,3 +26,10 @@ export const useOppfolgingstilfellePersonQuery = () => {
     }
   );
 };
+
+export const useStartOfLatestOppfolgingstilfelle = (): Date | undefined => {
+  const {
+    data: oppfolgingstilfellePerson,
+  } = useOppfolgingstilfellePersonQuery();
+  return oppfolgingstilfellePerson?.oppfolgingstilfelleList[0]?.start;
+};

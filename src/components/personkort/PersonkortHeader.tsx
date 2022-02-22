@@ -12,11 +12,11 @@ import { sykmeldingerHasCoronaDiagnose } from "@/utils/sykmeldinger/sykmeldingUt
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import CopyButton from "../kopierknapp/CopyButton";
 import ErrorBoundary from "../ErrorBoundary";
-import { useStartDateFromLatestOppfolgingstilfellePeriode } from "@/data/oppfolgingstilfelle/oppfolgingstilfellerperson_hooks";
 import { useEgenansattQuery } from "@/data/egenansatt/egenansattQueryHooks";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { ApiErrorException } from "@/api/errors";
 import { getKvinneImage, getMannImage } from "@/utils/festiveUtils";
+import { useStartOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 const texts = {
   copied: "Kopiert!",
@@ -72,7 +72,7 @@ const PersonkortHeader = (personkortHeaderProps: PersonkortHeaderProps) => {
     isEgenAnsatt ||
     hasCoronaDiagnose;
 
-  const startDate = useStartDateFromLatestOppfolgingstilfellePeriode();
+  const startDate = useStartOfLatestOppfolgingstilfelle();
 
   return (
     <div className="personkortHeader">
