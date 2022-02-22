@@ -7,7 +7,6 @@ import UtdragFraSykefravaeretPanel from "../../utdragFraSykefravaeret/UtdragFraS
 import { InnkallingDialogmotePanel } from "./innkalling/InnkallingDialogmotePanel";
 import SideLaster from "../../SideLaster";
 import { hentLedere } from "@/data/leder/ledere_actions";
-import { hentMotebehov } from "@/data/motebehov/motebehov_actions";
 import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
 import { hentOppfolgingstilfelleperioder } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder_actions";
 import { DialogmoteOnskePanel } from "../../motebehov/DialogmoteOnskePanel";
@@ -15,6 +14,7 @@ import { MotehistorikkPanel } from "../../dialogmote/motehistorikk/Motehistorikk
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useOppfolgingsplanerQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 
 const texts = {
   dialogmoter: "Dialogmøter",
@@ -34,12 +34,16 @@ export const Motelandingsside = () => {
     aktivtDialogmote,
     historiskeDialogmoter,
   } = useDialogmoterQuery();
+  const {
+    data: motebehov,
+    isError: henterMotebehovFeilet,
+    isLoading: henterMotebehov,
+  } = useMotebehovQuery();
 
   const {
     ledere,
     sykmeldinger,
     moter,
-    motebehov,
     navbruker,
     oppfolgingstilfelleperioder,
   } = useAppSelector((state) => state);
@@ -47,7 +51,6 @@ export const Motelandingsside = () => {
   useEffect(() => {
     dispatch(hentLedere(fnr));
     dispatch(hentMoter(fnr));
-    dispatch(hentMotebehov(fnr));
     dispatch(hentSykmeldinger(fnr));
   }, [dispatch, fnr]);
 
@@ -55,20 +58,22 @@ export const Motelandingsside = () => {
     dispatch(hentOppfolgingstilfelleperioder(fnr));
   }, [dispatch, fnr, ledere, sykmeldinger]);
 
-  const harForsoktHentetAlt =
-    motebehov.hentingForsokt && ledere.hentingForsokt && moter.hentingForsokt;
+  const harForsoktHentetAlt = ledere.hentingForsokt && moter.hentingForsokt;
+  const henter =
+    !harForsoktHentetAlt ||
+    henterDialogmoter ||
+    henterOppfolgingsplaner ||
+    henterMotebehov;
 
   return (
     <SideLaster
-      henter={
-        !harForsoktHentetAlt || henterDialogmoter || henterOppfolgingsplaner
-      }
-      hentingFeilet={motebehov.hentingFeilet || henterDialogmoterFeilet}
+      henter={henter}
+      hentingFeilet={henterMotebehovFeilet || henterDialogmoterFeilet}
     >
       <Sidetopp tittel={texts.dialogmoter} />
 
       <DialogmoteOnskePanel
-        motebehovData={motebehov.data}
+        motebehovData={motebehov}
         ledereData={ledere.currentLedere}
         oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}
         sykmeldt={navbruker.data}

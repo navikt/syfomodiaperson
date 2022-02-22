@@ -2,7 +2,6 @@ import { all } from "redux-saga/effects";
 import ledereSagas from "./leder/ledereSagas";
 import navbrukerSagas from "./navbruker/navbrukerSagas";
 import moterSagas from "./mote/moterSagas";
-import motebehovSagas from "./motebehov/motebehovSagas";
 import epostinnholdSagas from "./mote/epostinnholdSagas";
 import sykmeldingerSagas from "./sykmelding/sykmeldingerSagas";
 import modiacontextSagas from "./modiacontext/modiacontextSagas";
@@ -16,7 +15,6 @@ export default function* rootSaga() {
     ledereSagas(),
     navbrukerSagas(),
     moterSagas(),
-    motebehovSagas(),
     epostinnholdSagas(),
     modiacontextSagas(),
     sykmeldingerSagas(),

@@ -3,7 +3,6 @@ import * as menypunkter from "../../enums/menypunkter";
 import cn from "classnames";
 import UnfinishedTasks from "./UnfinishedTasks";
 import { useDispatch } from "react-redux";
-import { hentMotebehov } from "@/data/motebehov/motebehov_actions";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { hentMoter } from "@/data/mote/moter_actions";
 import { useAppSelector } from "@/hooks/hooks";
@@ -14,6 +13,7 @@ import {
   useOppfolgingsplanerLPSQuery,
   useOppfolgingsplanerQuery,
 } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 
 const nokkelinformasjonMenypunkt = {
   navn: "Nøkkelinformasjon",
@@ -82,13 +82,13 @@ export const GlobalNavigasjon = ({
   const { data: personoppgaver } = usePersonoppgaverQuery();
   const { data: oppfolgingsplaner } = useOppfolgingsplanerQuery();
   const { data: oppfolgingsplanerlps } = useOppfolgingsplanerLPSQuery();
+  const { data: motebehov } = useMotebehovQuery();
 
   useEffect(() => {
-    dispatch(hentMotebehov(fnr));
     dispatch(hentMoter(fnr));
   }, [dispatch, fnr]);
 
-  const { motebehov, moter } = useAppSelector((state) => state);
+  const { moter } = useAppSelector((state) => state);
 
   const setFocus = (index: number) => {
     refs.current[index].focus();

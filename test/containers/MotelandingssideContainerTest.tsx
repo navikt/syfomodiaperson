@@ -21,11 +21,25 @@ import nock from "nock";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
 import { tilgangBrukerMock } from "../../mock/data/tilgangtilbrukerMock";
 import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 
 const realState = createStore(rootReducer).getState();
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient;
 let apiMockScope;
+const motebehovData = [
+  {
+    UUID: "33333333-c987-4b57-a401-a3915ec11411",
+    id: "33333333-ee10-44b6-bddf-54d049ef25f2",
+    opprettetDato: "2019-01-08T13:53:57.047+01:00",
+    aktorId: "1",
+    opprettetAv: "1",
+    virksomhetsnummer: "000999000",
+    tildeltEnhet: "0330",
+    behandletTidspunkt: "2019-01-10T13:53:57.047+01:00",
+    behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
+  },
+];
 
 describe("MotelandingssideContainer", () => {
   describe("MotelandingssideSide", () => {
@@ -38,6 +52,10 @@ describe("MotelandingssideContainer", () => {
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplaner(fnr),
         () => []
+      );
+      queryClient.setQueryData(
+        motebehovQueryKeys.motebehov(fnr),
+        () => motebehovData
       );
       apiMockScope = apiMock();
       store = configureStore([]);
@@ -58,23 +76,6 @@ describe("MotelandingssideContainer", () => {
         moter: {
           hentingForsokt: true,
           data: [],
-        },
-        motebehov: {
-          hentet: true,
-          hentingForsokt: true,
-          data: [
-            {
-              UUID: "33333333-c987-4b57-a401-a3915ec11411",
-              id: "33333333-ee10-44b6-bddf-54d049ef25f2",
-              opprettetDato: "2019-01-08T13:53:57.047+01:00",
-              aktorId: "1",
-              opprettetAv: "1",
-              virksomhetsnummer: "000999000",
-              tildeltEnhet: "0330",
-              behandletTidspunkt: "2019-01-10T13:53:57.047+01:00",
-              behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
-            },
-          ],
         },
         ledere: {
           hentet: true,
@@ -106,11 +107,6 @@ describe("MotelandingssideContainer", () => {
 
     it("Skal vise AppSpinner når henter data", () => {
       stubTilgangApi(apiMockScope);
-      mockState.motebehov = {
-        henter: true,
-        hentet: false,
-        data: [],
-      };
       render(
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
@@ -149,7 +145,6 @@ describe("MotelandingssideContainer", () => {
       const expectedActions = [
         { type: "HENT_LEDERE_FORESPURT", fnr: fnr },
         { type: "HENT_MOTER_FORESPURT", fnr: fnr },
-        { type: "HENT_MOTEBEHOV_FORESPURT", fnr: fnr },
         { type: "HENT_SYKMELDINGER_FORESPURT", fnr: fnr },
         {
           type: "HENT_OPPFOLGINGSTILFELLEPERIODER_FORESPURT",
@@ -177,30 +172,6 @@ describe("MotelandingssideContainer", () => {
       expect(
         await screen.findByRole("heading", {
           name: "Du har ikke tilgang til denne tjenesten",
-        })
-      ).to.exist;
-    });
-
-    it("Skal vise feilmelding hvis hentingFeilet", () => {
-      queryClient.setQueryData(
-        tilgangQueryKeys.tilgang(fnr),
-        () => tilgangBrukerMock
-      );
-      mockState.motebehov = {
-        hentingFeilet: true,
-        hentingForsokt: true,
-      };
-      render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <Motelandingsside />
-          </Provider>
-        </QueryClientProvider>
-      );
-
-      expect(
-        screen.getByRole("heading", {
-          name: "Beklager, det oppstod en feil",
         })
       ).to.exist;
     });

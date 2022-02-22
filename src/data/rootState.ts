@@ -4,10 +4,6 @@ import navbruker, { NavbrukerState } from "./navbruker/navbruker";
 import modiacontext, { ModiaContextState } from "./modiacontext/modiacontext";
 import historikk, { HistorikkState } from "./historikk/historikk";
 import moter, { MoterState } from "./mote/moter";
-import motebehov, { MotebehovState } from "./motebehov/motebehov";
-import motebehovBehandling, {
-  MotebehovBehandlingState,
-} from "./motebehov/motebehovBehandling";
 import epostinnhold, { EpostInnholdState } from "./mote/epostinnhold";
 import arbeidsgiverEpostinnhold, {
   ArbeidsgiverEpostinnholdState,
@@ -27,8 +23,6 @@ export interface RootState {
   modiacontext: ModiaContextState;
   historikk: HistorikkState;
   moter: MoterState;
-  motebehov: MotebehovState;
-  motebehovBehandling: MotebehovBehandlingState;
   epostinnhold: EpostInnholdState;
   arbeidsgiverEpostinnhold: ArbeidsgiverEpostinnholdState;
   enhet: EnhetState;
@@ -45,8 +39,6 @@ export const rootReducer = combineReducers<RootState>({
   modiacontext,
   historikk,
   moter,
-  motebehov,
-  motebehovBehandling,
   epostinnhold,
   arbeidsgiverEpostinnhold,
   enhet,
