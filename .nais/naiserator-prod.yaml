@@ -60,10 +60,6 @@ spec:
       value: "prod-gcp.teamsykefravr.fastlegerest"
     - name: FASTLEGEREST_HOST
       value: "fastlegerest.intern.nav.no"
-    - name: FLEX_INTERN_GATEWAY_AAD_APP_CLIENT_ID
-      value: "bc7df6d5-a41a-4fcb-9575-cf1a4375e7d8"
-    - name: FLEX_INTERN_GATEWAY_HOST
-      value: "flex-intern-gateway.intern.nav.no"
     - name: INTERNARBEIDSFLATEDECORATOR_HOST
       value: "internarbeidsflatedecorator.intern.nav.no"
     - name: ISDIALOGMELDING_AAD_APP_CLIENT_ID

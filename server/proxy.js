@@ -149,10 +149,6 @@ const setup = (authClient) => {
     proxyOnBehalfOf(req, res, next, authClient, Config.auth.modiacontextholder);
   });
 
-  router.use("/spinnsyn-backend/*", (req, res, next) => {
-    proxyOnBehalfOf(req, res, next, authClient, Config.auth.flexInternGateway);
-  });
-
   router.use("/syfobehandlendeenhet/*", (req, res, next) => {
     proxyOnBehalfOf(
       req,

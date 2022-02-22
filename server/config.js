@@ -119,15 +119,6 @@ const auth = {
       name: "FASTLEGEREST_HOST",
     }),
   },
-  flexInternGateway: {
-    applicationName: "flex-intern-gateway",
-    clientId: envVar({
-      name: "FLEX_INTERN_GATEWAY_AAD_APP_CLIENT_ID",
-    }),
-    host: envVar({
-      name: "FLEX_INTERN_GATEWAY_HOST",
-    }),
-  },
   isdialogmelding: {
     applicationName: "isdialogmelding",
     clientId: envVar({
