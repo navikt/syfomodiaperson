@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Lenke from "nav-frontend-lenker";
-import { useAppSelector } from "@/hooks/hooks";
-import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder";
 import { lpsPlanerWithActiveTilfelle } from "@/utils/oppfolgingsplanUtils";
 import {
   tilLesbarDatoMedArstall,
@@ -14,6 +12,7 @@ import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { useOppfolgingsplanerLPSQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 import { Undertittel } from "nav-frontend-typografi";
+import { useStartOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 const texts = {
   header: "Oppfølgingsplan",
@@ -142,13 +141,11 @@ export const UtdragOppfolgingsplaner = ({
 }: UtdragOppfolgingsplanerProps) => {
   const { data: oppfolgingsplanerLPS } = useOppfolgingsplanerLPSQuery();
 
-  const oppfolgingstilfelleperioderMapState: OppfolgingstilfelleperioderMapState = useAppSelector(
-    (state) => state.oppfolgingstilfelleperioder
-  );
+  const startDateNewestActiveTilfelle = useStartOfLatestOppfolgingstilfelle();
 
   const activeLpsPlaner = lpsPlanerWithActiveTilfelle(
     oppfolgingsplanerLPS,
-    oppfolgingstilfelleperioderMapState
+    startDateNewestActiveTilfelle
   );
 
   const anyActivePlaner =

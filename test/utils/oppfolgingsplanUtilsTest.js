@@ -18,25 +18,11 @@ describe("oppfolgingsplanUtils", () => {
       sistEndret: leggTilDagerPaDato(today, -1).toJSON(),
     };
 
-    const defaultActiveTilfelleMapState = {
-      [VIRKSOMHET_PONTYPANDY.virksomhetsnummer]: {
-        data: [
-          {
-            orgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-            fom: leggTilDagerPaDato(today, -10),
-            tom: leggTilDagerPaDato(today, 10),
-            grad: 100,
-            aktivitet: "aktivitet",
-          },
-        ],
-      },
-    };
-
     it("should return 1 plan if inside an active tilfelle", () => {
       const planer = [defaultLpsplan];
       const activePlaner = lpsPlanerWithActiveTilfelle(
         planer,
-        defaultActiveTilfelleMapState
+        leggTilDagerPaDato(today, -10)
       );
 
       expect(activePlaner.length).to.be.equal(1);
@@ -103,7 +89,7 @@ describe("oppfolgingsplanUtils", () => {
 
       const activePlaner = lpsPlanerWithActiveTilfelle(
         planer,
-        defaultActiveTilfelleMapState
+        leggTilDagerPaDato(today, -10)
       );
 
       expect(activePlaner.length).to.be.equal(1);
@@ -111,20 +97,6 @@ describe("oppfolgingsplanUtils", () => {
     });
 
     it("should return 2 planer for different virksomheter if both are within combined tilfelle", () => {
-      const allTilfeller = {
-        [VIRKSOMHET_PONTYPANDY.virksomhetsnummer]: {
-          ...defaultActiveTilfelleMapState[
-            VIRKSOMHET_PONTYPANDY.virksomhetsnummer
-          ],
-        },
-        123456789: {
-          ...defaultActiveTilfelleMapState[
-            VIRKSOMHET_PONTYPANDY.virksomhetsnummer
-          ],
-          orgnummer: "123456789",
-        },
-      };
-
       const plan1 = {
         ...defaultLpsplan,
       };
@@ -136,7 +108,10 @@ describe("oppfolgingsplanUtils", () => {
 
       const planer = [plan1, plan2];
 
-      const activePlaner = lpsPlanerWithActiveTilfelle(planer, allTilfeller);
+      const activePlaner = lpsPlanerWithActiveTilfelle(
+        planer,
+        leggTilDagerPaDato(today, -10)
+      );
 
       expect(activePlaner.length).to.be.equal(2);
       expect(activePlaner[0].virksomhetsnummer).to.be.not.equal(
@@ -154,7 +129,7 @@ describe("oppfolgingsplanUtils", () => {
 
       const activePlaner = lpsPlanerWithActiveTilfelle(
         planer,
-        defaultActiveTilfelleMapState
+        leggTilDagerPaDato(today, -10)
       );
 
       expect(activePlaner.length).to.be.equal(1);
