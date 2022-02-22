@@ -4,18 +4,16 @@ import Side from "../../../sider/Side";
 import Historikk from "../Historikk";
 import { HISTORIKK } from "@/enums/menypunkter";
 import SideLaster from "../../SideLaster";
-import { useAppSelector } from "@/hooks/hooks";
 import { useLedere } from "@/hooks/useLedere";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { hentHistorikk } from "@/data/historikk/historikk_actions";
 import { hentLedere } from "@/data/leder/ledere_actions";
-import { hentOppfolgingstilfelleperioder } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder_actions";
-import { tilfellerFromTilfelleperioder } from "@/utils/periodeUtils";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import IngenHistorikk from "../IngenHistorikk";
 import { useHistorikk } from "@/data/historikk/historikk_hooks";
 import Sidetopp from "../../Sidetopp";
+import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 const texts = {
   topp: "Logg",
@@ -48,9 +46,6 @@ export const HistorikkContainer = (): ReactElement => {
     motebehovHistorikk,
     oppfoelgingsdialogHistorikk,
   } = useHistorikk();
-  const oppfolgingstilfelleperioder = useAppSelector(
-    (state) => state.oppfolgingstilfelleperioder
-  );
 
   const {
     henterLedere,
@@ -58,11 +53,16 @@ export const HistorikkContainer = (): ReactElement => {
     currentLedere,
     formerLedere,
   } = useLedere();
-  const henterTilfeller = Object.keys(oppfolgingstilfelleperioder).some(
-    (orgnummer) => oppfolgingstilfelleperioder[orgnummer].henter
-  );
-  const henter = henterLedere || henterTilfeller || henterHistorikk;
-  const hentingFeilet = hentingLedereFeilet || hentingHistorikkFeilet;
+
+  const {
+    data: oppfolgingstilfellePerson,
+    isLoading: henterTilfeller,
+    isError: hentingTilfellerFeilet,
+  } = useOppfolgingstilfellePersonQuery();
+
+  const henter = henterLedere || henterHistorikk || henterTilfeller;
+  const hentingFeilet =
+    hentingLedereFeilet || hentingHistorikkFeilet || hentingTilfellerFeilet;
 
   const allLedere = useMemo(() => [...currentLedere, ...formerLedere], [
     currentLedere,
@@ -91,13 +91,7 @@ export const HistorikkContainer = (): ReactElement => {
     dispatch(hentLedere(fnr));
   }, [dispatch, fnr]);
 
-  useEffect(() => {
-    if (allLedere && allLedere.length > 0) {
-      dispatch(hentOppfolgingstilfelleperioder(fnr));
-    }
-  }, [dispatch, fnr, allLedere]);
-
-  const tilfeller = tilfellerFromTilfelleperioder(oppfolgingstilfelleperioder);
+  const tilfeller = oppfolgingstilfellePerson?.oppfolgingstilfelleList || [];
   const lederHistorikk = createHistorikkEventsFromLedere(allLedere);
   const historikkEvents = motebehovHistorikk
     .concat(moteHistorikk)

@@ -1,15 +1,14 @@
 import React, { ReactElement } from "react";
-import Panel from "nav-frontend-paneler";
 import HistorikkEventItem from "./HistorikkEventItem";
 import UtvidbarHistorikk from "./UtvidbarHistorikk";
-import { TilfellePeriode, tilfellerNewestToOldest } from "@/utils/periodeUtils";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
+import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 const texts = {
   errorMessage:
     "Det skjedde en feil! Det er ikke sikkert du får all historikken som finnes.",
-  tidligereHendelserUtvidbarTitle: "Tidligere hendelser",
+  utenforTilfelleHendelserUtvidbarTitle: "Hendelser uten tilfelle",
   laterEventsTitle: "Hendelser",
   tilfellerTitle: "Sykefraværstilfeller",
 };
@@ -21,44 +20,42 @@ const byTidspunkt: () => (
   return new Date(h2.tidspunkt).getTime() - new Date(h1.tidspunkt).getTime();
 };
 
-const isEventInPeriode = (
+const isEventInTilfelle = (
   event: HistorikkEvent,
-  periode: TilfellePerioderMedSkyggeFom
+  tilfelle: OppfolgingstilfelleDTO
 ): boolean => {
   return (
-    new Date(periode.skyggeFom) < new Date(event.tidspunkt) &&
-    new Date(event.tidspunkt) < new Date(periode.tom)
+    new Date(tilfelle.start) < new Date(event.tidspunkt) &&
+    new Date(event.tidspunkt) < new Date(tilfelle.end)
   );
 };
 
-const hentSykeforloepMedEvents = (
-  periodeliste: TilfellePerioderMedSkyggeFom[],
+const hentTilfelleMedEvents = (
+  tilfelleliste: OppfolgingstilfelleDTO[],
   eventliste: HistorikkEvent[]
 ) => {
-  return periodeliste.filter((periode: TilfellePerioderMedSkyggeFom) => {
+  return tilfelleliste.filter((tilfelle: OppfolgingstilfelleDTO) => {
     return eventliste.some((event: HistorikkEvent) =>
-      isEventInPeriode(event, periode)
+      isEventInTilfelle(event, tilfelle)
     );
   });
 };
 
-interface TidligereHendelserProps {
-  eventsForForsteSykefravaer: HistorikkEvent[];
+interface UtenforTilfelleHendelserProps {
+  eventUtenforTilfelleList: HistorikkEvent[];
 }
 
-const TidligereHendelser = ({
-  eventsForForsteSykefravaer,
-}: TidligereHendelserProps) => {
+const UtenforTilfelleHendelser = ({
+  eventUtenforTilfelleList,
+}: UtenforTilfelleHendelserProps) => {
   return (
     <>
-      {eventsForForsteSykefravaer.length > 0 && (
-        <UtvidbarHistorikk tittel={texts.tidligereHendelserUtvidbarTitle}>
+      {eventUtenforTilfelleList.length > 0 && (
+        <UtvidbarHistorikk tittel={texts.utenforTilfelleHendelserUtvidbarTitle}>
           <ol className="historikkeventliste">
-            {eventsForForsteSykefravaer
-              .sort(byTidspunkt())
-              .map((event, idx) => {
-                return <HistorikkEventItem key={idx} event={event} />;
-              })}
+            {eventUtenforTilfelleList.sort(byTidspunkt()).map((event, idx) => {
+              return <HistorikkEventItem key={idx} event={event} />;
+            })}
           </ol>
         </UtvidbarHistorikk>
       )}
@@ -66,86 +63,49 @@ const TidligereHendelser = ({
   );
 };
 
+const hentEventUtenforTilfelleList = (
+  tilfelleliste: OppfolgingstilfelleDTO[],
+  historikkEvents: HistorikkEvent[]
+): HistorikkEvent[] => {
+  return historikkEvents.filter((event) => {
+    return !tilfelleliste.some((tilfelle) =>
+      isEventInTilfelle(event, tilfelle)
+    );
+  });
+};
+
 interface HistorikkProps {
   historikkEvents: HistorikkEvent[];
-  tilfeller: TilfellePeriode[];
+  tilfeller: OppfolgingstilfelleDTO[];
 }
-
-type TilfellePerioderMedSkyggeFom = TilfellePeriode & { skyggeFom: Date };
-
-// Dette er en hack for at alle historikkEvents skal få en plassering i et sykefraværstilfellet, selv om de skjer "utenfor".
-const tilfellerSortertMedSkyggeFom = (
-  tilfeller: TilfellePeriode[]
-): TilfellePerioderMedSkyggeFom[] => {
-  const tilfellerSortert = tilfellerNewestToOldest(tilfeller).map(
-    (tilfellePeriode) => ({
-      ...tilfellePeriode,
-      skyggeFom: new Date(),
-    })
-  );
-
-  for (let i = 0; i < tilfellerSortert.length; i += 1) {
-    if (i === tilfellerSortert.length - 1) {
-      tilfellerSortert[i].skyggeFom = new Date(tilfellerSortert[i].fom);
-    } else {
-      tilfellerSortert[i].skyggeFom?.setDate(
-        new Date(tilfellerSortert[i + 1].tom).getDate() + 1
-      );
-    }
-  }
-
-  return tilfellerSortert;
-};
 
 const Historikk = ({
   historikkEvents,
   tilfeller,
 }: HistorikkProps): ReactElement => {
-  const tilfellerSortert = tilfellerSortertMedSkyggeFom(tilfeller);
-  const eventsEtterSisteSykefravaer = historikkEvents.filter(
-    (event: HistorikkEvent) => {
-      return new Date(event.tidspunkt) > new Date(tilfellerSortert[0].tom);
-    }
-  );
-  const eventsForForsteSykefravaer = historikkEvents.filter(
-    (event: HistorikkEvent) => {
-      return (
-        new Date(event.tidspunkt) <
-        new Date(tilfellerSortert[tilfellerSortert.length - 1].fom)
-      );
-    }
-  );
-  const perioderMedEvents = hentSykeforloepMedEvents(
-    tilfellerSortert,
+  const tilfellerMedEvents = hentTilfelleMedEvents(tilfeller, historikkEvents);
+  const eventUtenforTilfelleList = hentEventUtenforTilfelleList(
+    tilfeller,
     historikkEvents
   );
 
   return (
     <>
-      {eventsEtterSisteSykefravaer.length > 0 && (
-        <Panel className="blokk">
-          <h2 className="panel__tittel">{texts.laterEventsTitle}</h2>
-          <ol className="historikkeventliste">
-            {eventsEtterSisteSykefravaer
-              .sort(byTidspunkt())
-              .map((event: HistorikkEvent, index: number) => (
-                <HistorikkEventItem event={event} key={index} />
-              ))}
-          </ol>
-        </Panel>
-      )}
-      {perioderMedEvents.length > 0 && (
+      {tilfellerMedEvents.length > 0 && (
         <div className="blokk--l">
           <h2 className="panel__tittel">{texts.tilfellerTitle}</h2>
-          {perioderMedEvents.map(
-            (periode: TilfellePerioderMedSkyggeFom, index: number) => (
+          {tilfellerMedEvents.map(
+            (tilfelle: OppfolgingstilfelleDTO, index: number) => (
               <UtvidbarHistorikk
                 key={index}
-                tittel={tilLesbarPeriodeMedArstall(periode.fom, periode.tom)}
+                tittel={tilLesbarPeriodeMedArstall(
+                  tilfelle.start,
+                  tilfelle.end
+                )}
               >
                 <ol className="historikkeventliste">
                   {historikkEvents
-                    .filter((event) => isEventInPeriode(event, periode))
+                    .filter((event) => isEventInTilfelle(event, tilfelle))
                     .sort(byTidspunkt())
                     .map((event, idx) => (
                       <HistorikkEventItem key={idx} event={event} />
@@ -156,8 +116,8 @@ const Historikk = ({
           )}
         </div>
       )}
-      <TidligereHendelser
-        eventsForForsteSykefravaer={eventsForForsteSykefravaer}
+      <UtenforTilfelleHendelser
+        eventUtenforTilfelleList={eventUtenforTilfelleList}
       />
     </>
   );
