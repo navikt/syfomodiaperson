@@ -18,14 +18,14 @@ export const texts = {
   arbeidstakerLabel: "Fritekst til arbeidstakeren (valgfri)",
   arbeidsgiverLabel: "Fritekst til nærmeste leder (valgfri)",
   behandlerLabel: "Fritekst til behandler (valgfri)",
-  forhandsvisningTitle: "Innkalling til dialogmøte",
-  forhandsvisningArbeidstakerSubtitle: "(brev til arbeidstakeren)",
+  forhandsvisningSubtitle: "Innkalling til dialogmøte",
+  forhandsvisningArbeidstakerTitle: "Brev til arbeidstakeren",
   forhandsvisningArbeidstakerContentLabel:
     "Forhåndsvis innkalling til dialogmøte arbeidstaker",
-  forhandsvisningArbeidsgiverSubtitle: "(brev til nærmeste leder)",
+  forhandsvisningArbeidsgiverTitle: "Brev til nærmeste leder",
   forhandsvisningArbeidsgiverContentLabel:
     "Forhåndsvis innkalling til dialogmøte arbeidsgiver",
-  forhandsvisningBehandlerSubtitle: "(brev til behandler)",
+  forhandsvisningBehandlerTitle: "Brev til behandler",
   forhandsvisningBehandlerContentLabel:
     "Forhåndsvis innkalling til dialogmøte behandler",
   reservertAlert:
@@ -81,8 +81,8 @@ const DialogmoteInnkallingTekster = ({
         maxLength={MAX_LENGTH_INNKALLING_FRITEKST}
       />
       <Forhandsvisning
-        title={texts.forhandsvisningTitle}
-        subtitle={texts.forhandsvisningArbeidstakerSubtitle}
+        title={texts.forhandsvisningArbeidstakerTitle}
+        subtitle={texts.forhandsvisningSubtitle}
         contentLabel={texts.forhandsvisningArbeidstakerContentLabel}
         isOpen={displayInnkallingArbeidstakerPreview}
         handleClose={() => setDisplayInnkallingArbeidstakerPreview(false)}
@@ -97,8 +97,8 @@ const DialogmoteInnkallingTekster = ({
         maxLength={MAX_LENGTH_INNKALLING_FRITEKST}
       />
       <Forhandsvisning
-        title={texts.forhandsvisningTitle}
-        subtitle={texts.forhandsvisningArbeidsgiverSubtitle}
+        title={texts.forhandsvisningArbeidsgiverTitle}
+        subtitle={texts.forhandsvisningSubtitle}
         contentLabel={texts.forhandsvisningArbeidsgiverContentLabel}
         isOpen={displayInnkallingArbeidsgiverPreview}
         handleClose={() => setDisplayInnkallingArbeidsgiverPreview(false)}
@@ -118,8 +118,8 @@ const DialogmoteInnkallingTekster = ({
             maxLength={MAX_LENGTH_INNKALLING_FRITEKST}
           />
           <Forhandsvisning
-            title={texts.forhandsvisningTitle}
-            subtitle={texts.forhandsvisningBehandlerSubtitle}
+            title={texts.forhandsvisningBehandlerTitle}
+            subtitle={texts.forhandsvisningSubtitle}
             contentLabel={texts.forhandsvisningBehandlerContentLabel}
             isOpen={displayInnkallingBehandlerPreview}
             handleClose={() => setDisplayInnkallingBehandlerPreview(false)}

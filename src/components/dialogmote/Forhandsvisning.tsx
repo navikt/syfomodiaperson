@@ -137,7 +137,7 @@ export const Forhandsvisning = ({
             <Sidetittel>{title}</Sidetittel>
           </FlexRow>
           {subtitle ? (
-            <FlexRow justifyContent={JustifyContentType.CENTER}>
+            <FlexRow justifyContent={JustifyContentType.FLEX_START}>
               <Innholdstittel>{subtitle}</Innholdstittel>
             </FlexRow>
           ) : null}

@@ -288,12 +288,12 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     });
     expect(
       within(forhandsvisningAvlysningArbeidstaker).getByRole("heading", {
-        name: avlysningSkjemaTexts.forhandsvisningTitle,
+        name: avlysningSkjemaTexts.forhandsvisningArbeidstakerTitle,
       })
     ).to.exist;
     expect(
       within(forhandsvisningAvlysningArbeidstaker).getByRole("heading", {
-        name: avlysningSkjemaTexts.forhandsvisningArbeidstakerSubtitle,
+        name: avlysningSkjemaTexts.forhandsvisningSubtitle,
       })
     ).to.exist;
     expectedAvlysningDocuments
@@ -333,12 +333,12 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     });
     expect(
       within(forhandsvisningAvlysningArbeidsgiver).getByRole("heading", {
-        name: avlysningSkjemaTexts.forhandsvisningTitle,
+        name: avlysningSkjemaTexts.forhandsvisningArbeidsgiverTitle,
       })
     ).to.exist;
     expect(
       within(forhandsvisningAvlysningArbeidsgiver).getByRole("heading", {
-        name: avlysningSkjemaTexts.forhandsvisningArbeidsgiverSubtitle,
+        name: avlysningSkjemaTexts.forhandsvisningSubtitle,
       })
     ).to.exist;
     expectedAvlysningDocuments
@@ -383,12 +383,12 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     });
     expect(
       within(forhandsvisningAvlysningBehandler).getByRole("heading", {
-        name: avlysningSkjemaTexts.forhandsvisningTitle,
+        name: avlysningSkjemaTexts.forhandsvisningBehandlerTitle,
       })
     ).to.exist;
     expect(
       within(forhandsvisningAvlysningBehandler).getByRole("heading", {
-        name: avlysningSkjemaTexts.forhandsvisningBehandlerSubtitle,
+        name: avlysningSkjemaTexts.forhandsvisningSubtitle,
       })
     ).to.exist;
     expectedAvlysningDocuments

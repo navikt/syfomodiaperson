@@ -262,12 +262,12 @@ describe("EndreDialogmoteSkjemaTest", () => {
 
     expect(
       within(forhandsvisningEndringArbeidstaker).getByRole("heading", {
-        name: endringSkjemaTexts.forhandsvisningTitle,
+        name: endringSkjemaTexts.forhandsvisningArbeidstakerTitle,
       })
     ).to.exist;
     expect(
       within(forhandsvisningEndringArbeidstaker).getByRole("heading", {
-        name: endringSkjemaTexts.forhandsvisningArbeidstakerSubtitle,
+        name: endringSkjemaTexts.forhandsvisningSubtitle,
       })
     ).to.exist;
     expectedEndringDocuments
@@ -294,12 +294,12 @@ describe("EndreDialogmoteSkjemaTest", () => {
 
     expect(
       within(forhandsvisningEndringArbeidsgiver).getByRole("heading", {
-        name: endringSkjemaTexts.forhandsvisningTitle,
+        name: endringSkjemaTexts.forhandsvisningArbeidsgiverTitle,
       })
     ).to.exist;
     expect(
       within(forhandsvisningEndringArbeidsgiver).getByRole("heading", {
-        name: endringSkjemaTexts.forhandsvisningArbeidsgiverSubtitle,
+        name: endringSkjemaTexts.forhandsvisningSubtitle,
       })
     ).to.exist;
     expectedEndringDocuments
@@ -331,12 +331,12 @@ describe("EndreDialogmoteSkjemaTest", () => {
 
     expect(
       within(forhandsvisningEndringBehandler).getByRole("heading", {
-        name: endringSkjemaTexts.forhandsvisningTitle,
+        name: endringSkjemaTexts.forhandsvisningBehandlerTitle,
       })
     ).to.exist;
     expect(
       within(forhandsvisningEndringBehandler).getByRole("heading", {
-        name: endringSkjemaTexts.forhandsvisningBehandlerSubtitle,
+        name: endringSkjemaTexts.forhandsvisningSubtitle,
       })
     ).to.exist;
     expectedEndringDocuments

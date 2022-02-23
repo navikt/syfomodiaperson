@@ -33,10 +33,10 @@ export const texts = {
   avbryt: "Avbryt",
   alert:
     "Hvis årsaken til avlysning er at arbeidstakeren ikke møtte opp, bør du vurdere om sykepengene skal stanses.",
-  forhandsvisningTitle: "Avlysning av dialogmøte",
-  forhandsvisningArbeidstakerSubtitle: "(brev til arbeidstakeren)",
-  forhandsvisningArbeidsgiverSubtitle: "(brev til nærmeste leder)",
-  forhandsvisningBehandlerSubtitle: "(brev til behandler)",
+  forhandsvisningSubtitle: "Avlysning av dialogmøte",
+  forhandsvisningArbeidstakerTitle: "Brev til arbeidstakeren",
+  forhandsvisningArbeidsgiverTitle: "Brev til nærmeste leder",
+  forhandsvisningBehandlerTitle: "Brev til behandler",
   forhandsvisningArbeidstakerContentlabel:
     "Forhåndsvis avlysning av dialogmøte arbeidstaker",
   forhandsvisningArbeidsgiverContentlabel:
@@ -151,8 +151,8 @@ const AvlysDialogmoteSkjema = ({
               maxLength={MAX_LENGTH_AVLYS_BEGRUNNELSE}
             />
             <Forhandsvisning
-              title={texts.forhandsvisningTitle}
-              subtitle={texts.forhandsvisningArbeidstakerSubtitle}
+              title={texts.forhandsvisningArbeidstakerTitle}
+              subtitle={texts.forhandsvisningSubtitle}
               contentLabel={texts.forhandsvisningArbeidstakerContentlabel}
               isOpen={displayAvlysningArbeidstakerPreview}
               handleClose={() => setDisplayAvlysningArbeidstakerPreview(false)}
@@ -169,8 +169,8 @@ const AvlysDialogmoteSkjema = ({
               maxLength={MAX_LENGTH_AVLYS_BEGRUNNELSE}
             />
             <Forhandsvisning
-              title={texts.forhandsvisningTitle}
-              subtitle={texts.forhandsvisningArbeidsgiverSubtitle}
+              title={texts.forhandsvisningArbeidsgiverTitle}
+              subtitle={texts.forhandsvisningSubtitle}
               contentLabel={texts.forhandsvisningArbeidsgiverContentlabel}
               isOpen={displayAvlysningArbeidsgiverPreview}
               handleClose={() => setDisplayAvlysningArbeidsgiverPreview(false)}
@@ -189,8 +189,8 @@ const AvlysDialogmoteSkjema = ({
                   maxLength={MAX_LENGTH_AVLYS_BEGRUNNELSE}
                 />
                 <Forhandsvisning
-                  title={texts.forhandsvisningTitle}
-                  subtitle={texts.forhandsvisningBehandlerSubtitle}
+                  title={texts.forhandsvisningBehandlerTitle}
+                  subtitle={texts.forhandsvisningSubtitle}
                   contentLabel={texts.forhandsvisningBehandlerContentlabel}
                   isOpen={displayAvlysningBehandlerPreview}
                   handleClose={() => setDisplayAvlysningBehandlerPreview(false)}
