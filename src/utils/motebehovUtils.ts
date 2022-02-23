@@ -1,7 +1,6 @@
-import { dagerMellomDatoer } from "./datoUtils";
-import { startDateFromLatestActiveTilfelle } from "./periodeUtils";
+import { dagerMellomDatoer, leggTilDagerPaDato } from "./datoUtils";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
-import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder";
+import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 export const sorterMotebehovDataEtterDato = (
   a: MotebehovVeilederDTO,
@@ -130,23 +129,20 @@ export const motebehovlisteMedKunJaSvar = (
 
 export const motebehovFromLatestActiveTilfelle = (
   sortertMotebehovListe: MotebehovVeilederDTO[],
-  oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState
+  latestOppfolgingstilfelle?: OppfolgingstilfelleDTO
 ): MotebehovVeilederDTO[] => {
-  const startDateNewestActiveTilfelle = startDateFromLatestActiveTilfelle(
-    oppfolgingstilfelleperioder
-  );
-
-  if (startDateNewestActiveTilfelle === null) {
+  if (
+    latestOppfolgingstilfelle === undefined ||
+    latestOppfolgingstilfelle?.start < leggTilDagerPaDato(new Date(), -16)
+  ) {
     return motebehovUbehandlet(sortertMotebehovListe);
   }
 
-  const motebehovFromLatestActiveTilfelle = sortertMotebehovListe.filter(
-    (svar) => {
-      return svar.opprettetDato >= startDateNewestActiveTilfelle;
-    }
-  );
-  if (motebehovFromLatestActiveTilfelle.length > 0) {
-    return motebehovFromLatestActiveTilfelle;
+  const motebehovFromLatestTilfelle = sortertMotebehovListe.filter((svar) => {
+    return svar.opprettetDato >= latestOppfolgingstilfelle.start;
+  });
+  if (motebehovFromLatestTilfelle.length > 0) {
+    return motebehovFromLatestTilfelle;
   } else {
     return motebehovUbehandlet(sortertMotebehovListe);
   }

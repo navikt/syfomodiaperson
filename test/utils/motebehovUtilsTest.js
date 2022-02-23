@@ -335,14 +335,10 @@ describe("motebehovUtils", () => {
       ];
 
       const activeTilfelle = {
-        123456789: {
-          data: [
-            {
-              fom: fiveDaysAgo,
-              tom: fiveDaysFromNow,
-            },
-          ],
-        },
+        arbeidstakerAtTilfelleEnd: true,
+        start: fiveDaysAgo,
+        end: fiveDaysFromNow,
+        virksomhetsnummerList: ["123456789"],
       };
 
       const activeMotebehovSvar = motebehovFromLatestActiveTilfelle(
@@ -363,14 +359,10 @@ describe("motebehovUtils", () => {
       ];
 
       const activeTilfelle = {
-        123456789: {
-          data: [
-            {
-              fom: fiveDaysAgo,
-              tom: fiveDaysFromNow,
-            },
-          ],
-        },
+        arbeidstakerAtTilfelleEnd: true,
+        start: fiveDaysAgo,
+        end: fiveDaysFromNow,
+        virksomhetsnummerList: ["123456789"],
       };
 
       const activeMotebehovSvar = motebehovFromLatestActiveTilfelle(
@@ -390,14 +382,10 @@ describe("motebehovUtils", () => {
       ];
 
       const activeTilfelle = {
-        123456789: {
-          data: [
-            {
-              fom: seventeenDaysAgo,
-              tom: seventeenDaysAgo,
-            },
-          ],
-        },
+        arbeidstakerAtTilfelleEnd: true,
+        start: seventeenDaysAgo,
+        end: seventeenDaysAgo,
+        virksomhetsnummerList: ["123456789"],
       };
 
       const activeMotebehovSvar = motebehovFromLatestActiveTilfelle(
@@ -422,14 +410,10 @@ describe("motebehovUtils", () => {
       ];
 
       const activeTilfelle = {
-        123456789: {
-          data: [
-            {
-              fom: seventeenDaysAgo,
-              tom: seventeenDaysAgo,
-            },
-          ],
-        },
+        arbeidstakerAtTilfelleEnd: true,
+        start: seventeenDaysAgo,
+        end: seventeenDaysAgo,
+        virksomhetsnummerList: ["123456789"],
       };
 
       const activeMotebehovSvar = motebehovFromLatestActiveTilfelle(
@@ -449,14 +433,10 @@ describe("motebehovUtils", () => {
       ];
 
       const activeTilfelle = {
-        123456789: {
-          data: [
-            {
-              fom: tenDaysAgo,
-              tom: fiveDaysAgo,
-            },
-          ],
-        },
+        arbeidstakerAtTilfelleEnd: true,
+        start: tenDaysAgo,
+        end: seventeenDaysAgo,
+        virksomhetsnummerList: ["123456789"],
       };
 
       const activeMotebehovSvar = motebehovFromLatestActiveTilfelle(
@@ -481,14 +461,10 @@ describe("motebehovUtils", () => {
       ];
 
       const activeTilfelle = {
-        123456789: {
-          data: [
-            {
-              fom: tenDaysAgo,
-              tom: tenDaysFromNow,
-            },
-          ],
-        },
+        arbeidstakerAtTilfelleEnd: true,
+        start: tenDaysAgo,
+        end: tenDaysFromNow,
+        virksomhetsnummerList: ["123456789"],
       };
 
       const activeMotebehovSvar = motebehovFromLatestActiveTilfelle(
@@ -511,14 +487,10 @@ describe("motebehovUtils", () => {
       ];
 
       const activeTilfelle = {
-        123456789: {
-          data: [
-            {
-              fom: tenDaysAgo,
-              tom: tenDaysFromNow,
-            },
-          ],
-        },
+        arbeidstakerAtTilfelleEnd: true,
+        start: tenDaysAgo,
+        end: tenDaysFromNow,
+        virksomhetsnummerList: ["123456789"],
       };
 
       const activeMotebehovSvar = motebehovFromLatestActiveTilfelle(

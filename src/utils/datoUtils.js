@@ -257,15 +257,6 @@ export const toDateWithoutNullCheck = (dato) => {
   return new Date(dato);
 };
 
-export const isDate16DaysAgoOrLater = (date) => {
-  const today = new Date();
-  const isDateBeforeToday = new Date(date) - today < 0;
-
-  return isDateBeforeToday
-    ? dagerMellomDatoer(new Date(date), today) <= 16
-    : true;
-};
-
 export const leggTilDagerPaDato = (dato, dager) => {
   const nyDato = new Date(dato);
   nyDato.setDate(nyDato.getDate() + dager);

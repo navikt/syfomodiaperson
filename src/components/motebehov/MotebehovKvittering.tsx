@@ -17,6 +17,7 @@ import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/
 import { InfoRow } from "../InfoRow";
 import { PaddingSize } from "../Layout";
 import { ledereUtenMotebehovsvar } from "@/utils/ledereUtils";
+import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 export const arbeidsgiverNavnEllerTomStreng = (lederNavn?: string) => {
   return lederNavn ? `${lederNavn}` : "";
@@ -229,9 +230,11 @@ const MotebehovKvittering = ({
   oppfolgingstilfelleperioder,
   sykmeldt,
 }: MotebehovKvitteringProps) => {
+  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+
   const aktiveMotebehovSvar = motebehovFromLatestActiveTilfelle(
     motebehovData?.sort(sorterMotebehovDataEtterDato),
-    oppfolgingstilfelleperioder
+    latestOppfolgingstilfelle
   );
 
   const ledereUtenInnsendtMotebehov = ledereUtenMotebehovsvar(
