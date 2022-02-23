@@ -1,9 +1,19 @@
-interface Pasientforhold {
-  fom: Date | string;
-  tom: Date | string;
+export interface Periode {
+  fom: string;
+  tom: string;
 }
 
-interface Adresse {
+export enum RelasjonKodeVerdi {
+  FASTLEGE = "LPFL",
+  VIKAR = "LPVI",
+}
+
+export interface Relasjon {
+  kodeVerdi: string;
+  kodeTekst: string;
+}
+
+export interface Adresse {
   adresse?: string;
   postnummer?: string;
   poststed?: string;
@@ -34,5 +44,7 @@ export interface Fastlege {
   helsepersonellregisterId?: number;
   pasient?: Pasient;
   fastlegekontor?: Fastlegekontor;
-  pasientforhold: Pasientforhold;
+  pasientforhold: Periode;
+  gyldighet: Periode;
+  relasjon: Relasjon;
 }

@@ -204,7 +204,7 @@ const expectedArbeidsgiverInnkalling = (
   },
 ];
 
-const expectedBehandlerInnkalling: DocumentComponentDto[] = [
+const expectedBehandlerInnkalling = (): DocumentComponentDto[] => [
   {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
@@ -451,7 +451,7 @@ const expectedArbeidstakerEndringsdokument = (
   },
 ];
 
-const expectedBehandlerEndringsdokument: DocumentComponentDto[] = [
+const expectedBehandlerEndringsdokument = (): DocumentComponentDto[] => [
   {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
@@ -522,7 +522,7 @@ const expectedBehandlerEndringsdokument: DocumentComponentDto[] = [
   },
 ];
 
-const expectedAvlysningArbeidsgiver: DocumentComponentDto[] = [
+const expectedAvlysningArbeidsgiver = (): DocumentComponentDto[] => [
   {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
@@ -558,7 +558,7 @@ const expectedAvlysningArbeidsgiver: DocumentComponentDto[] = [
   },
 ];
 
-const expectedAvlysningArbeidstaker: DocumentComponentDto[] = [
+const expectedAvlysningArbeidstaker = (): DocumentComponentDto[] => [
   {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
@@ -594,7 +594,7 @@ const expectedAvlysningArbeidstaker: DocumentComponentDto[] = [
   },
 ];
 
-const expectedAvlysningBehandler: DocumentComponentDto[] = [
+const expectedAvlysningBehandler = (): DocumentComponentDto[] => [
   {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
@@ -630,7 +630,7 @@ const expectedAvlysningBehandler: DocumentComponentDto[] = [
   },
 ];
 
-export const expectedReferatDocument: DocumentComponentDto[] = [
+export const expectedReferatDocument = (): DocumentComponentDto[] => [
   {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,

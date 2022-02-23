@@ -1,5 +1,4 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import { Checkbox } from "nav-frontend-skjema";
 import {
   erMotebehovBehandlet,
@@ -8,11 +7,9 @@ import {
   motebehovlisteMedKunJaSvar,
 } from "@/utils/motebehovUtils";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
-import { behandleMotebehov } from "@/data/motebehov/behandlemotebehov_actions";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useTrackOnClick } from "@/data/logging/loggingHooks";
-import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { useBehandleMotebehov } from "@/data/motebehov/useBehandleMotebehov";
 
 const texts = {
   fjernOppgave: "Jeg har vurdert behovet. Oppgaven kan fjernes fra oversikten.",
@@ -39,13 +36,10 @@ const BehandleMotebehovKnapp = ({
   const motebehovListe = motebehovlisteMedKunJaSvar(motebehovData);
   const sistBehandletMotebehov = hentSistBehandletMotebehov(motebehovListe);
   const erBehandlet = erMotebehovBehandlet(motebehovListe);
-  const fnr = useValgtPersonident();
   const trackOnClick = useTrackOnClick();
-  const { data: veilederinfo } = useVeilederinfoQuery();
+  const behandleMotebehov = useBehandleMotebehov();
 
-  const dispatch = useDispatch();
-
-  return veilederinfo && motebehovListe.length > 0 ? (
+  return motebehovListe.length > 0 ? (
     <div className="panel behandleMotebehovKnapp">
       <div className="skjema__input">
         <Checkbox
@@ -56,7 +50,7 @@ const BehandleMotebehovKnapp = ({
           onClick={() => {
             trackOnClick(texts.fjernOppgave);
             if (harUbehandletMotebehov(motebehovListe)) {
-              dispatch(behandleMotebehov(fnr, veilederinfo.ident));
+              behandleMotebehov.mutate();
             }
           }}
           id="marker__utfoert"

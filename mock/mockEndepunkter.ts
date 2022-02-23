@@ -1,5 +1,6 @@
 import { mockFastlegerest } from "./fastlegerest/mockFastlegerest";
 import { mockIsnarmesteleder } from "./isnarmesteleder/mockIsnarmesteleder";
+import { mockIsoppfolgingstilfelle } from "./isoppfolgingstilfelle/mockIsoppfolgingstilfelle";
 import { mockIspersonoppgave } from "./ispersonoppgave/mockIspersonoppgave";
 import { mockModiacontextholder } from "./modiacontextholder/mockModiacontextholder";
 import { mockSyfomoteadmin } from "./syfomoteadmin/mockSyfomoteadmin";
@@ -11,7 +12,6 @@ import { mockSyfobehandlendeenhet } from "./syfobehandlendeenhet/mockSyfobehandl
 import { mockSyfoperson } from "./syfoperson/mockSyfoperson";
 import { mockSyfosmregister } from "./syfosmregister/mockSyfosmregister";
 import { mockIspengestopp } from "./ispengestopp/mockIspengestopp";
-import { mockVedtak } from "./spinnsyn/mockVedtak";
 import { mockIsdialogmote } from "./isdialogmote/mockIsdialogmote";
 import { mockSyfoveileder } from "./syfoveileder/mockSyfoveileder";
 import { mockUnleash } from "./unleash/mockUnleash";
@@ -26,6 +26,7 @@ const mockEndepunkter = (server) => {
   [
     mockFastlegerest,
     mockIsnarmesteleder,
+    mockIsoppfolgingstilfelle,
     mockIspersonoppgave,
     mockModiacontextholder,
     mockSyfomoteadmin,
@@ -37,7 +38,6 @@ const mockEndepunkter = (server) => {
     mockSyfoperson,
     mockSyfosmregister,
     mockIspengestopp,
-    mockVedtak,
     mockIsdialogmote,
     mockIsdialogmelding,
     mockSyfoveileder,

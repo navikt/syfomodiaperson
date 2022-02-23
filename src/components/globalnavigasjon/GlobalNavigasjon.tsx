@@ -3,14 +3,17 @@ import * as menypunkter from "../../enums/menypunkter";
 import cn from "classnames";
 import UnfinishedTasks from "./UnfinishedTasks";
 import { useDispatch } from "react-redux";
-import { hentMotebehov } from "@/data/motebehov/motebehov_actions";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { hentMoter } from "@/data/mote/moter_actions";
-import { hentOppfoelgingsdialoger } from "@/data/oppfolgingsplan/oppfoelgingsdialoger_actions";
-import { hentPersonOppgaver } from "@/data/personoppgave/personoppgave_actions";
 import { useAppSelector } from "@/hooks/hooks";
 import { Link } from "react-router-dom";
 import { numberOfTasks } from "@/utils/globalNavigasjonUtils";
+import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
+import {
+  useOppfolgingsplanerLPSQuery,
+  useOppfolgingsplanerQuery,
+} from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 
 const nokkelinformasjonMenypunkt = {
   navn: "Nøkkelinformasjon",
@@ -76,20 +79,16 @@ export const GlobalNavigasjon = ({
   const [focusIndex, setFocusIndex] = useState(-1);
   const refs = useRef<HTMLAnchorElement[]>([]);
 
+  const { data: personoppgaver } = usePersonoppgaverQuery();
+  const { data: oppfolgingsplaner } = useOppfolgingsplanerQuery();
+  const { data: oppfolgingsplanerlps } = useOppfolgingsplanerLPSQuery();
+  const { data: motebehov } = useMotebehovQuery();
+
   useEffect(() => {
-    dispatch(hentMotebehov(fnr));
     dispatch(hentMoter(fnr));
-    dispatch(hentOppfoelgingsdialoger(fnr));
-    dispatch(hentPersonOppgaver(fnr));
   }, [dispatch, fnr]);
 
-  const {
-    motebehov,
-    moter,
-    oppfoelgingsdialoger,
-    oppfolgingsplanerlps,
-    personoppgaver,
-  } = useAppSelector((state) => state);
+  const { moter } = useAppSelector((state) => state);
 
   const setFocus = (index: number) => {
     refs.current[index].focus();
@@ -133,7 +132,7 @@ export const GlobalNavigasjon = ({
           menypunkt,
           motebehov,
           moter,
-          oppfoelgingsdialoger,
+          oppfolgingsplaner,
           personoppgaver,
           oppfolgingsplanerlps
         );

@@ -1,42 +1,52 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 import Knapp from "nav-frontend-knapper";
-import { behandlePersonOppgave } from "@/data/personoppgave/personoppgave_actions";
+import { useBehandlePersonoppgave } from "@/data/personoppgave/useBehandlePersonoppgave";
+import { StatusKanImage } from "../../../../img/ImageComponents";
+import { toDatePrettyPrint } from "@/utils/datoUtils";
+import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
 
 interface BehandleOppfolgingsplanLPSProps {
   oppfolgingsplanLPS: OppfolgingsplanLPS;
-  veilederIdent: string;
 }
+
+const texts = {
+  marker: "Marker som behandlet",
+};
 
 const BehandleOppfolgingsplanLPS = ({
   oppfolgingsplanLPS,
-  veilederIdent,
 }: BehandleOppfolgingsplanLPSProps) => {
-  const dispatch = useDispatch();
-  const opLPSPersonOppgave = oppfolgingsplanLPS.personoppgave;
-  const [spinner, setSpinner] = useState(false);
-
-  const markerSomBehandlet = () => {
-    setSpinner(true);
-    dispatch(
-      behandlePersonOppgave(
-        opLPSPersonOppgave.uuid,
-        oppfolgingsplanLPS.uuid,
-        veilederIdent
-      )
-    );
-  };
+  const { data: personoppgaver } = usePersonoppgaverQuery();
+  const personoppgave = personoppgaver.find(
+    (personoppgave) => personoppgave.referanseUuid === oppfolgingsplanLPS.uuid
+  );
+  const behandlePersonoppgave = useBehandlePersonoppgave();
 
   return (
-    <Knapp
-      onClick={markerSomBehandlet}
-      spinner={spinner}
-      id="behandle_personoppgave"
-      mini
-    >
-      Marker som behandlet
-    </Knapp>
+    <>
+      {personoppgave && !personoppgave.behandletTidspunkt && (
+        <Knapp
+          autoDisableVedSpinner
+          onClick={() => behandlePersonoppgave.mutate(personoppgave.uuid)}
+          spinner={behandlePersonoppgave.isLoading}
+          id="behandle_personoppgave"
+          mini
+        >
+          {texts.marker}
+        </Knapp>
+      )}
+      {personoppgave && personoppgave.behandletTidspunkt && (
+        <p>
+          <span className="ferdigbehandlet__ikon">
+            <img src={StatusKanImage} alt="Ferdig behandlet" />
+          </span>{" "}
+          {`Ferdigbehandlet: ${toDatePrettyPrint(
+            personoppgave.behandletTidspunkt
+          )} av ${personoppgave.behandletVeilederIdent}`}
+        </p>
+      )}
+    </>
   );
 };
 

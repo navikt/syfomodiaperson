@@ -1,11 +1,10 @@
 import { Area, AreaChart, XAxis, YAxis } from "recharts";
 import React, { ReactElement } from "react";
-import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { Normaltekst, Systemtittel } from "nav-frontend-typografi";
 import Panel from "nav-frontend-paneler";
 import {
-  sykmeldingerInnenforOppfolgingstilfellet,
+  sykmeldingerInnenforOppfolgingstilfelle,
   sykmeldingerMedStatusSendt,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import {
@@ -14,7 +13,7 @@ import {
   leggTilDagerPaDato,
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
-import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
+import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 const texts = {
   title: "Sykmeldingsgrad",
@@ -25,18 +24,16 @@ const texts = {
 };
 
 interface SykmeldingsgradProps {
-  oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState;
   sykmeldinger: SykmeldingOldFormat[];
 }
 
-export const Sykmeldingsgrad = ({
-  sykmeldinger,
-  oppfolgingstilfelleperioder,
-}: SykmeldingsgradProps) => {
+export const Sykmeldingsgrad = ({ sykmeldinger }: SykmeldingsgradProps) => {
+  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+
   const innsendteSykmeldinger = sykmeldingerMedStatusSendt(sykmeldinger);
-  const sykmeldingerIOppfolgingstilfellet = sykmeldingerInnenforOppfolgingstilfellet(
+  const sykmeldingerIOppfolgingstilfellet = sykmeldingerInnenforOppfolgingstilfelle(
     innsendteSykmeldinger,
-    oppfolgingstilfelleperioder
+    latestOppfolgingstilfelle
   );
 
   const DAYS_IN_GRAPH = 55 * 7;
@@ -89,12 +86,12 @@ export const Sykmeldingsgrad = ({
     <Panel className="blokk">
       <Systemtittel>{texts.title}</Systemtittel>
       <Normaltekst>{texts.subtitle}</Normaltekst>
-      {perioderListSortert.length > 0 && (
+      {latestOppfolgingstilfelle && perioderListSortert.length > 0 && (
         <Normaltekst>
           {texts.tilfelleVarighet}
           {tilLesbarPeriodeMedArstall(
-            tidligsteFom(perioderListSortert),
-            senesteTom(perioderListSortert)
+            latestOppfolgingstilfelle.start,
+            latestOppfolgingstilfelle.end
           )}
         </Normaltekst>
       )}

@@ -238,7 +238,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
       },
       behandler: {
         begrunnelse: moteTekster.fritekstTilBehandler,
-        endringsdokument: expectedEndringDocuments.behandler,
+        endringsdokument: expectedEndringDocuments.behandler(),
       },
       videoLink: endretMote.videolink,
       sted: endretMote.sted,
@@ -339,7 +339,8 @@ describe("EndreDialogmoteSkjemaTest", () => {
         name: endringSkjemaTexts.forhandsvisningBehandlerSubtitle,
       })
     ).to.exist;
-    expectedEndringDocuments.behandler
+    expectedEndringDocuments
+      .behandler()
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningEndringBehandler).getByText(text)).to

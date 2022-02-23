@@ -137,7 +137,7 @@ describe("Dialogmoteinnkallingskjema", () => {
         behandlerNavn: behandlerNavn(behandler),
         behandlerKontor: behandler.kontor,
         fritekstInnkalling: moteTekster.fritekstTilBehandler,
-        innkalling: expectedInnkallingDocuments.behandler,
+        innkalling: expectedInnkallingDocuments.behandler(),
       },
       tidSted: {
         sted: mote.sted,

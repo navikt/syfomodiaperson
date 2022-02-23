@@ -206,11 +206,11 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     const avlysMutation = queryClient.getMutationCache().getAll()[0];
     const expectedAvlysningDto = {
       arbeidsgiver: {
-        avlysning: expectedAvlysningDocuments.arbeidsgiver,
+        avlysning: expectedAvlysningDocuments.arbeidsgiver(),
         begrunnelse: moteTekster.fritekstTilArbeidsgiver,
       },
       arbeidstaker: {
-        avlysning: expectedAvlysningDocuments.arbeidstaker,
+        avlysning: expectedAvlysningDocuments.arbeidstaker(),
         begrunnelse: moteTekster.fritekstTilArbeidstaker,
       },
     };
@@ -245,15 +245,15 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     const avlysMutation = queryClient.getMutationCache().getAll()[0];
     const expectedAvlysningDto = {
       arbeidsgiver: {
-        avlysning: expectedAvlysningDocuments.arbeidsgiver,
+        avlysning: expectedAvlysningDocuments.arbeidsgiver(),
         begrunnelse: moteTekster.fritekstTilArbeidsgiver,
       },
       arbeidstaker: {
-        avlysning: expectedAvlysningDocuments.arbeidstaker,
+        avlysning: expectedAvlysningDocuments.arbeidstaker(),
         begrunnelse: moteTekster.fritekstTilArbeidstaker,
       },
       behandler: {
-        avlysning: expectedAvlysningDocuments.behandler,
+        avlysning: expectedAvlysningDocuments.behandler(),
         begrunnelse: moteTekster.fritekstTilBehandler,
       },
     };
@@ -296,7 +296,8 @@ describe("AvlysDialogmoteSkjemaTest", () => {
         name: avlysningSkjemaTexts.forhandsvisningArbeidstakerSubtitle,
       })
     ).to.exist;
-    expectedAvlysningDocuments.arbeidstaker
+    expectedAvlysningDocuments
+      .arbeidstaker()
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningAvlysningArbeidstaker).getByText(text)).to
@@ -340,7 +341,8 @@ describe("AvlysDialogmoteSkjemaTest", () => {
         name: avlysningSkjemaTexts.forhandsvisningArbeidsgiverSubtitle,
       })
     ).to.exist;
-    expectedAvlysningDocuments.arbeidsgiver
+    expectedAvlysningDocuments
+      .arbeidsgiver()
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningAvlysningArbeidsgiver).getByText(text)).to
@@ -389,7 +391,8 @@ describe("AvlysDialogmoteSkjemaTest", () => {
         name: avlysningSkjemaTexts.forhandsvisningBehandlerSubtitle,
       })
     ).to.exist;
-    expectedAvlysningDocuments.behandler
+    expectedAvlysningDocuments
+      .behandler()
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningAvlysningBehandler).getByText(text)).to

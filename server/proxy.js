@@ -123,6 +123,16 @@ const setup = (authClient) => {
     proxyOnBehalfOf(req, res, next, authClient, Config.auth.isnarmesteleder);
   });
 
+  router.use("/isoppfolgingstilfelle/*", (req, res, next) => {
+    proxyOnBehalfOf(
+      req,
+      res,
+      next,
+      authClient,
+      Config.auth.isoppfolgingstilfelle
+    );
+  });
+
   router.use("/ispengestopp/*", (req, res, next) => {
     proxyOnBehalfOf(req, res, next, authClient, Config.auth.ispengestopp);
   });
@@ -137,10 +147,6 @@ const setup = (authClient) => {
 
   router.use("/modiacontextholder/*", (req, res, next) => {
     proxyOnBehalfOf(req, res, next, authClient, Config.auth.modiacontextholder);
-  });
-
-  router.use("/spinnsyn-backend/*", (req, res, next) => {
-    proxyOnBehalfOf(req, res, next, authClient, Config.auth.flexInternGateway);
   });
 
   router.use("/syfobehandlendeenhet/*", (req, res, next) => {

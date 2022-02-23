@@ -1,6 +1,7 @@
 import {
   DialogmotedeltakerBehandlerDTO,
   DialogmoteStatus,
+  DocumentComponentType,
   MotedeltakerVarselType,
 } from "../../src/data/dialogmote/types/dialogmoteTypes";
 import { BehandlerType } from "../../src/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
@@ -10,6 +11,8 @@ import {
   VEILEDER_IDENT_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
+import { ReferatDTO } from "../../src/data/dialogmote/types/dialogmoteReferatTypes";
+import { referatTexts } from "../../src/data/dialogmote/dialogmoteTexts";
 
 const createDialogmote = (
   uuid: string,
@@ -109,45 +112,48 @@ const createDialogmote = (
   if (moteStatus === DialogmoteStatus.FERDIGSTILT) {
     return {
       ...dialogMote,
-      referat: {
-        uuid: "520239a6-a973-42f6-a4e7-9fe7d27d2f93",
-        createdAt: "2021-06-08T09:23:26.162354",
-        updatedAt: "2021-06-08T09:23:26.162354",
-        digitalt: true,
-        situasjon: "Dette er en beskrivelse av situasjonen",
-        konklusjon: "Dette er en beskrivelse av konklusjon",
-        arbeidstakerOppgave: "Dette er en beskrivelse av arbeidstakerOppgave",
-        arbeidsgiverOppgave: "Dette er en beskrivelse av arbeidsgiverOppgave",
-        veilederOppgave: "Dette er en beskrivelse av veilederOppgave",
-        document: [
-          {
-            type: "HEADER",
-            title: "Tittel referat",
-            texts: [],
-          },
-          {
-            type: "PARAGRAPH",
-            title: null,
-            texts: ["Brødtekst"],
-          },
-        ],
-        pdf: "Lic=",
-        lestDatoArbeidstaker: null,
-        lestDatoArbeidsgiver: null,
-        andreDeltakere: [
-          {
-            uuid: "0c72f8ec-452f-4606-b47e-6da5a408a9f7",
-            createdAt: "2021-06-08T09:23:26.162354",
-            updatedAt: "2021-06-08T09:23:26.162354",
-            funksjon: "Verneombud",
-            navn: "Tøff Pyjamas",
-          },
-        ],
-      },
+      referat: createReferat(true),
     };
   }
 
   return dialogMote;
+};
+
+const createReferat = (ferdigstilt: boolean): ReferatDTO => {
+  const standardTekst = referatTexts.standardTekster[0];
+  return {
+    uuid: "520239a6-a973-42f6-a4e7-9fe7d27d2f93",
+    ferdigstilt,
+    narmesteLederNavn: "Tatten Tattover",
+    situasjon: "Dette er en beskrivelse av situasjonen",
+    konklusjon: "Dette er en beskrivelse av konklusjon",
+    arbeidstakerOppgave: "Dette er en beskrivelse av arbeidstakerOppgave",
+    arbeidsgiverOppgave: "Dette er en beskrivelse av arbeidsgiverOppgave",
+    veilederOppgave: "Dette er en beskrivelse av veilederOppgave",
+    document: [
+      {
+        type: DocumentComponentType.HEADER,
+        title: "Tittel referat",
+        texts: [],
+      },
+      {
+        type: DocumentComponentType.PARAGRAPH,
+        texts: ["Brødtekst"],
+      },
+      {
+        type: DocumentComponentType.PARAGRAPH,
+        key: standardTekst.key,
+        title: standardTekst.label,
+        texts: [standardTekst.text],
+      },
+    ],
+    andreDeltakere: [
+      {
+        funksjon: "Verneombud",
+        navn: "Tøff Pyjamas",
+      },
+    ],
+  };
 };
 
 const behandler = (uuid: string) => {

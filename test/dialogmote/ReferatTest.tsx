@@ -38,17 +38,19 @@ import {
 } from "./testData";
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
-import { MAX_LENGTH_SITUASJON } from "@/components/dialogmote/referat/Situasjon";
-import { MAX_LENGTH_KONKLUSJON } from "@/components/dialogmote/referat/Konklusjon";
-import { MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE } from "@/components/dialogmote/referat/ArbeidstakersOppgave";
-import { MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE } from "@/components/dialogmote/referat/ArbeidsgiversOppgave";
-import { MAX_LENGTH_VEILEDERS_OPPGAVE } from "@/components/dialogmote/referat/VeiledersOppgave";
-import { MAX_LENGTH_BEHANDLERS_OPPGAVE } from "@/components/dialogmote/referat/BehandlersOppgave";
 import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expectedReferatDocument } from "./testDataDocuments";
 import sinon from "sinon";
+import {
+  MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE,
+  MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE,
+  MAX_LENGTH_BEHANDLERS_OPPGAVE,
+  MAX_LENGTH_KONKLUSJON,
+  MAX_LENGTH_SITUASJON,
+  MAX_LENGTH_VEILEDERS_OPPGAVE,
+} from "@/components/dialogmote/referat/ReferatFritekster";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -283,7 +285,7 @@ describe("ReferatTest", () => {
       arbeidstakerOppgave: moteTekster.arbeidstakersOppgave,
       behandlerOppgave: moteTekster.behandlersOppgave,
       veilederOppgave: moteTekster.veiledersOppgave,
-      document: expectedReferatDocument,
+      document: expectedReferatDocument(),
       andreDeltakere: [
         { funksjon: annenDeltakerFunksjon, navn: annenDeltakerNavn },
       ],
@@ -319,7 +321,7 @@ describe("ReferatTest", () => {
         name: referatSkjemaTexts.forhandsvisningTitle,
       })
     ).to.exist;
-    expectedReferatDocument
+    expectedReferatDocument()
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningReferat).getByText(text)).to.exist;

@@ -8,3 +8,7 @@ export interface PersonOppgave {
   behandletVeilederIdent: string;
   opprettet: Date;
 }
+
+export const PersonOppgaveType = {
+  OPPFOLGINGSPLANLPS: "OPPFOLGINGSPLANLPS",
+};

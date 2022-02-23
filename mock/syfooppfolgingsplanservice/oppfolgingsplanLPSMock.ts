@@ -4,25 +4,23 @@ import {
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
 
-const getDefaultOppfolgingsplanLPS = () => {
-  const today = new Date();
+const getDefaultOppfolgingsplanLPS = (created: Date) => {
   return {
     uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd2",
     fnr: ARBEIDSTAKER_DEFAULT.personIdent,
     virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-    opprettet: leggTilDagerPaDato(today, -1).toJSON(),
-    sistEndret: leggTilDagerPaDato(today, -1).toJSON(),
+    opprettet: leggTilDagerPaDato(created, -1).toJSON(),
+    sistEndret: leggTilDagerPaDato(created, -1).toJSON(),
   };
 };
 
-export const oppfolgingsplanerLPSMock = () => {
-  const today = new Date();
+export const oppfolgingsplanerLPSMock = (created: Date) => {
   return [
-    getDefaultOppfolgingsplanLPS(),
+    getDefaultOppfolgingsplanLPS(created),
     {
-      ...getDefaultOppfolgingsplanLPS(),
+      ...getDefaultOppfolgingsplanLPS(created),
       uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd3",
-      opprettet: leggTilDagerPaDato(today, -10).toJSON(),
+      opprettet: leggTilDagerPaDato(created, -10).toJSON(),
     },
   ];
 };

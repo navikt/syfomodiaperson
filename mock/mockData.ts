@@ -10,7 +10,6 @@ import { oppfolgingstilfelleperioderMock } from "./data/oppfolgingstilfelleperio
 import { soknaderMock } from "./data/soknaderMock";
 import { sykmeldingerMock } from "./data/sykmeldingerMock";
 import { tilgangBrukerMock } from "./data/tilgangtilbrukerMock";
-import { vedtakMock } from "./data/vedtakMock";
 import { virksomhetMock } from "./data/virksomhetMock";
 
 export const mockData = {
@@ -26,6 +25,5 @@ export const mockData = {
   soknaderMock,
   sykmeldingerMock,
   tilgangBrukerMock,
-  vedtakMock,
   virksomhetMock: virksomhetMock(),
 };

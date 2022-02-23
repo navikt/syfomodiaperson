@@ -1,34 +1,29 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 import styled from "styled-components";
 import Lenke from "nav-frontend-lenker";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/oppfoelgingsdialoger";
-import { hentOppfolgingsplanerLPS } from "@/data/oppfolgingsplan/oppfolgingsplanerlps_actions";
-import { OppfolgingsplanerlpsState } from "@/data/oppfolgingsplan/oppfolgingsplanerlps";
-import { useAppSelector } from "@/hooks/hooks";
-import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder";
 import { lpsPlanerWithActiveTilfelle } from "@/utils/oppfolgingsplanUtils";
 import {
   tilLesbarDatoMedArstall,
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
-import { hentPersonOppgaver } from "@/data/personoppgave/personoppgave_actions";
-import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
-import { H3NoMargins } from "../Layout";
 import { SYFOOPPFOLGINGSPLANSERVICE_ROOT } from "@/apiConstants";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
+import { useOppfolgingsplanerLPSQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import { Undertittel } from "nav-frontend-typografi";
+import { useStartOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 const texts = {
   header: "Oppfølgingsplan",
   ingenPlanerDelt: "Ingen planer er delt med NAV",
 };
 
-interface AktiveDialogerProps {
-  aktiveDialoger: OppfolgingsplanDTO[];
+interface AktivePlanerProps {
+  aktivePlaner: OppfolgingsplanDTO[];
 }
 
-const AktivDialog = styled.div`
+const AktivPlan = styled.div`
   margin-top: 0.5em;
   margin-bottom: 1em;
 
@@ -41,41 +36,41 @@ const Gyldighetsperiode = styled.span`
   margin-left: 2em;
 `;
 
-interface AktivDialogLenkeProps {
-  aktivDialog: OppfolgingsplanDTO;
+interface AktivPlanLenkeProps {
+  aktivPlan: OppfolgingsplanDTO;
 }
 
-const AktivDialogLenke = ({ aktivDialog }: AktivDialogLenkeProps) => {
+const AktivPlanLenke = ({ aktivPlan }: AktivPlanLenkeProps) => {
   const { data: virksomhet } = useVirksomhetQuery(
-    aktivDialog.virksomhet.virksomhetsnummer
+    aktivPlan.virksomhet.virksomhetsnummer
   );
   const virksomhetsNavn = virksomhet?.navn;
   return (
     <span>
       <Lenke
         className="lenke"
-        href={`/sykefravaer/oppfoelgingsplaner/${aktivDialog.id}`}
+        href={`/sykefravaer/oppfoelgingsplaner/${aktivPlan.id}`}
       >
         {virksomhetsNavn && virksomhetsNavn.length > 0
           ? virksomhetsNavn.toLowerCase()
-          : aktivDialog.virksomhet.virksomhetsnummer}
+          : aktivPlan.virksomhet.virksomhetsnummer}
       </Lenke>
     </span>
   );
 };
 
-const AktiveDialoger = ({ aktiveDialoger }: AktiveDialogerProps) => (
+const AktivePlaner = ({ aktivePlaner }: AktivePlanerProps) => (
   <>
-    {aktiveDialoger.map((dialog, index) => (
-      <AktivDialog key={index}>
-        <AktivDialogLenke aktivDialog={dialog} />
+    {aktivePlaner.map((plan, index) => (
+      <AktivPlan key={index}>
+        <AktivPlanLenke aktivPlan={plan} />
         <Gyldighetsperiode>
           {tilLesbarPeriodeMedArstall(
-            dialog.godkjentPlan.gyldighetstidspunkt.fom,
-            dialog.godkjentPlan.gyldighetstidspunkt.tom
+            plan.godkjentPlan.gyldighetstidspunkt.fom,
+            plan.godkjentPlan.gyldighetstidspunkt.tom
           )}
         </Gyldighetsperiode>
-      </AktivDialog>
+      </AktivPlan>
     ))}
   </>
 );
@@ -117,75 +112,51 @@ const LpsPlaner = ({ lpsPlaner }: LpsPlanerProps) => (
 );
 
 interface OppfolgingsplanerProps {
-  aktiveDialoger: OppfolgingsplanDTO[];
+  aktivePlaner: OppfolgingsplanDTO[];
   lpsPlaner: OppfolgingsplanLPS[];
 }
 
 const Oppfolgingsplaner = ({
-  aktiveDialoger,
+  aktivePlaner,
   lpsPlaner,
 }: OppfolgingsplanerProps) => {
   return (
     <div>
-      <AktiveDialoger aktiveDialoger={aktiveDialoger} />
+      <AktivePlaner aktivePlaner={aktivePlaner} />
       <LpsPlaner lpsPlaner={lpsPlaner} />
     </div>
   );
 };
 
 interface UtdragOppfolgingsplanerProps {
-  fnr: string;
-  aktiveDialoger: OppfolgingsplanDTO[];
+  aktivePlaner: OppfolgingsplanDTO[];
 }
 
 const UtdragOppfolgingsplanerWrapper = styled.div`
   margin-bottom: 2.5em;
-
-  h3 {
-    margin-bottom: 0;
-  }
 `;
 
 export const UtdragOppfolgingsplaner = ({
-  aktiveDialoger,
-  fnr,
+  aktivePlaner,
 }: UtdragOppfolgingsplanerProps) => {
-  const dispatch = useDispatch();
+  const { data: oppfolgingsplanerLPS } = useOppfolgingsplanerLPSQuery();
 
-  const personOppgaveList: PersonOppgave[] = useAppSelector(
-    (state) => state.personoppgaver.data
-  );
-
-  useEffect(() => {
-    dispatch(hentPersonOppgaver(fnr));
-  }, [dispatch, fnr]);
-
-  useEffect(() => {
-    dispatch(hentOppfolgingsplanerLPS(fnr));
-  }, [dispatch, personOppgaveList, fnr]);
-
-  const oppfolgingsplanerlpsState: OppfolgingsplanerlpsState = useAppSelector(
-    (state) => state.oppfolgingsplanerlps
-  );
-
-  const oppfolgingstilfelleperioderMapState: OppfolgingstilfelleperioderMapState = useAppSelector(
-    (state) => state.oppfolgingstilfelleperioder
-  );
+  const startDateNewestActiveTilfelle = useStartOfLatestOppfolgingstilfelle();
 
   const activeLpsPlaner = lpsPlanerWithActiveTilfelle(
-    oppfolgingsplanerlpsState.data,
-    oppfolgingstilfelleperioderMapState
+    oppfolgingsplanerLPS,
+    startDateNewestActiveTilfelle
   );
 
   const anyActivePlaner =
-    aktiveDialoger?.length > 0 || activeLpsPlaner.length > 0;
+    aktivePlaner?.length > 0 || activeLpsPlaner.length > 0;
 
   return (
     <UtdragOppfolgingsplanerWrapper>
-      <H3NoMargins>{texts.header}</H3NoMargins>
+      <Undertittel>{texts.header}</Undertittel>
       {anyActivePlaner ? (
         <Oppfolgingsplaner
-          aktiveDialoger={aktiveDialoger}
+          aktivePlaner={aktivePlaner}
           lpsPlaner={activeLpsPlaner}
         />
       ) : (

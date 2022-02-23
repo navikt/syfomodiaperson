@@ -1,6 +1,4 @@
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
-import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder";
-import { startDateFromLatestActiveTilfelle } from "./periodeUtils";
 
 const newestLpsPlanPerVirksomhet = (lpsplaner: OppfolgingsplanLPS[]) => {
   return lpsplaner.filter((plan) => {
@@ -18,13 +16,9 @@ const newestLpsPlanPerVirksomhet = (lpsplaner: OppfolgingsplanLPS[]) => {
 
 const lpsPlanerWithinActiveTilfelle = (
   lpsplaner: OppfolgingsplanLPS[],
-  oppfolgingstilfelleperioderMapState: OppfolgingstilfelleperioderMapState
+  startDateNewestActiveTilfelle?: Date
 ) => {
-  const startDateNewestActiveTilfelle = startDateFromLatestActiveTilfelle(
-    oppfolgingstilfelleperioderMapState
-  );
-
-  if (startDateNewestActiveTilfelle === null) {
+  if (startDateNewestActiveTilfelle === undefined) {
     return [];
   }
 
@@ -35,12 +29,12 @@ const lpsPlanerWithinActiveTilfelle = (
 
 export const lpsPlanerWithActiveTilfelle = (
   lpsplaner: OppfolgingsplanLPS[],
-  oppfolgingstilfelleperioderMapState: OppfolgingstilfelleperioderMapState
+  startDateNewestActiveTilfelle?: Date
 ) => {
   const newestPlanPerVirksomhet = newestLpsPlanPerVirksomhet(lpsplaner);
 
   return lpsPlanerWithinActiveTilfelle(
     newestPlanPerVirksomhet,
-    oppfolgingstilfelleperioderMapState
+    startDateNewestActiveTilfelle
   );
 };

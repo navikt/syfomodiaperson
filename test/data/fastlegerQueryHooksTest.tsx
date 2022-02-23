@@ -32,7 +32,10 @@ describe("fastlegerQueryHooks tests", () => {
     await waitFor(() => result.current.isSuccess);
 
     expect(result.current.data).to.deep.equal(fastlegerMock);
-    expect(result.current.aktivFastlege).to.deep.equal(fastlegerMock[0]);
-    expect(result.current.tidligereFastleger).to.deep.equal([fastlegerMock[1]]);
+    expect(result.current.fastlege).to.deep.equal(fastlegerMock[0]);
+    expect(result.current.fastlegeVikarer).to.deep.equal([
+      fastlegerMock[1],
+      fastlegerMock[2],
+    ]);
   });
 });

@@ -1,27 +1,23 @@
 import React from "react";
 import EtikettBase from "nav-frontend-etiketter";
 import Lenke from "nav-frontend-lenker";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/oppfoelgingsdialoger";
 import SykmeldingMotebehovVisning from "../motebehov/SykmeldingMotebehovVisning";
 import {
   arbeidsgivernavnEllerArbeidssituasjon,
   erEkstraInformasjonISykmeldingen,
   stringMedAlleGraderingerFraSykmeldingPerioder,
   sykmeldingerGruppertEtterVirksomhet,
-  sykmeldingerInnenforOppfolgingstilfellePerson,
-  sykmeldingerInnenforOppfolgingstilfellet,
+  sykmeldingerInnenforOppfolgingstilfelle,
   sykmeldingerMedStatusSendt,
   sykmeldingerSortertNyestTilEldst,
   sykmeldingerUtenArbeidsgiver,
   sykmeldingperioderSortertEldstTilNyest,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { finnMiljoStreng } from "@/utils/miljoUtil";
-import { OppfolgingstilfellePerson } from "@/data/oppfolgingstilfelle/types/OppfolgingstilfellePerson";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
 import Utvidbar from "../Utvidbar";
 import styled from "styled-components";
-import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import {
   GultDokumentImage,
@@ -30,6 +26,11 @@ import {
 import { UtdragOppfolgingsplaner } from "./UtdragOppfolgingsplaner";
 import { DialogmotePanel } from "../mote/components/DialogmotePanel";
 import { useTrackOnClick } from "@/data/logging/loggingHooks";
+import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import { Undertittel } from "nav-frontend-typografi";
+import { SpinnsynLenke } from "@/components/vedtak/SpinnsynLenke";
+import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 const tekster = {
   header: "Utdrag fra sykefraværet",
@@ -41,6 +42,9 @@ const tekster = {
   samtalereferat: {
     header: "Samtalereferat",
     lenkeTekst: "Samtalereferat",
+  },
+  vedtak: {
+    header: "Vedtak",
   },
   apneSykmelding: "Åpne sykmelding",
 };
@@ -125,20 +129,20 @@ export const SykmeldingerForVirksomhet = ({
 };
 
 interface SykmeldingerProps {
-  oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState;
+  latestOppfolgingstilfelle?: OppfolgingstilfelleDTO;
   sykmeldinger: SykmeldingOldFormat[];
   trackOnClick: () => void;
 }
 
 export const Sykmeldinger = ({
+  latestOppfolgingstilfelle,
   sykmeldinger,
-  oppfolgingstilfelleperioder,
   trackOnClick,
 }: SykmeldingerProps) => {
   const innsendteSykmeldinger = sykmeldingerMedStatusSendt(sykmeldinger);
-  const sykmeldingerIOppfolgingstilfellet = sykmeldingerInnenforOppfolgingstilfellet(
+  const sykmeldingerIOppfolgingstilfellet = sykmeldingerInnenforOppfolgingstilfelle(
     innsendteSykmeldinger,
-    oppfolgingstilfelleperioder
+    latestOppfolgingstilfelle
   );
   const sykmeldingerSortertPaaUtstedelsesdato = sykmeldingerSortertNyestTilEldst(
     sykmeldingerIOppfolgingstilfellet
@@ -148,7 +152,7 @@ export const Sykmeldinger = ({
   );
   return (
     <div className="utdragFraSykefravaeret__sykmeldinger">
-      <h3>{tekster.sykmeldinger.header}</h3>
+      <Undertittel>{tekster.sykmeldinger.header}</Undertittel>
       {Object.keys(sykmeldingerSortertPaaVirksomhet).map((key, index) => (
         <SykmeldingerForVirksomhet
           key={index}
@@ -161,47 +165,55 @@ export const Sykmeldinger = ({
 };
 
 interface SykmeldingerUtenArbeidsgiverProps {
-  oppfolgingstilfelleUtenArbeidsgiver: OppfolgingstilfellePerson;
+  latestOppfolgingstilfelle?: OppfolgingstilfelleDTO;
   sykmeldinger: SykmeldingOldFormat[];
   trackOnClick: () => void;
 }
 
 export const SykmeldingerUtenArbeidsgiver = ({
-  oppfolgingstilfelleUtenArbeidsgiver,
+  latestOppfolgingstilfelle,
   sykmeldinger,
   trackOnClick,
 }: SykmeldingerUtenArbeidsgiverProps) => {
   const innsendteSykmeldinger = sykmeldingerUtenArbeidsgiver(sykmeldinger);
-  const sykmeldingerIOppfolgingstilfellet = sykmeldingerInnenforOppfolgingstilfellePerson(
+  const sykmeldingerIOppfolgingstilfellet = sykmeldingerInnenforOppfolgingstilfelle(
     innsendteSykmeldinger,
-    oppfolgingstilfelleUtenArbeidsgiver
+    latestOppfolgingstilfelle
   );
   const sykmeldingerSortertPaUtstedelsesdato = sykmeldingerSortertNyestTilEldst(
     sykmeldingerIOppfolgingstilfellet
   );
   return (
-    <div className="utdragFraSykefravaeret__sykmeldinger">
-      <h3>{tekster.sykmeldinger.headerUtenArbeidsgiver}</h3>
-      {sykmeldingerSortertPaUtstedelsesdato.length > 0 &&
-        sykmeldingerSortertPaUtstedelsesdato.map((sykmelding, index) => {
-          return (
-            <div
-              className="utdragFraSykefravaeret__sykmeldingerForVirksomhet"
-              key={index}
-            >
-              <Utvidbar
-                tittel={<UtvidbarTittel sykmelding={sykmelding} />}
-                visLukkLenke={false}
-                onExpand={trackOnClick}
-              >
-                <SykmeldingMotebehovVisning sykmelding={sykmelding} />
-              </Utvidbar>
-            </div>
-          );
-        })}
-    </div>
+    <>
+      {sykmeldingerSortertPaUtstedelsesdato?.length > 0 && (
+        <div className="utdragFraSykefravaeret__sykmeldinger">
+          <h3>{tekster.sykmeldinger.headerUtenArbeidsgiver}</h3>
+          {sykmeldingerSortertPaUtstedelsesdato.length > 0 &&
+            sykmeldingerSortertPaUtstedelsesdato.map((sykmelding, index) => {
+              return (
+                <div
+                  className="utdragFraSykefravaeret__sykmeldingerForVirksomhet"
+                  key={index}
+                >
+                  <Utvidbar
+                    tittel={<UtvidbarTittel sykmelding={sykmelding} />}
+                    visLukkLenke={false}
+                    onExpand={trackOnClick}
+                  >
+                    <SykmeldingMotebehovVisning sykmelding={sykmelding} />
+                  </Utvidbar>
+                </div>
+              );
+            })}
+        </div>
+      )}
+    </>
   );
 };
+
+const SamtalereferatWrapper = styled.div`
+  margin-bottom: 2em;
+`;
 
 interface SamtalereferatProps {
   fnr: string;
@@ -209,8 +221,8 @@ interface SamtalereferatProps {
 }
 
 export const Samtalereferat = ({ fnr, trackOnClick }: SamtalereferatProps) => (
-  <div className="utdragFraSykefravaeret__samtalereferat">
-    <h3>{tekster.samtalereferat.header}</h3>
+  <SamtalereferatWrapper>
+    <Undertittel>{tekster.samtalereferat.header}</Undertittel>
     <Lenke
       className="lenke"
       onClick={trackOnClick}
@@ -219,51 +231,47 @@ export const Samtalereferat = ({ fnr, trackOnClick }: SamtalereferatProps) => (
     >
       {tekster.samtalereferat.lenkeTekst}
     </Lenke>
-  </div>
+  </SamtalereferatWrapper>
 );
 
 interface UtdragFraSykefravaeretProps {
-  aktiveDialoger: OppfolgingsplanDTO[];
+  aktivePlaner: OppfolgingsplanDTO[];
   fnr: string;
-  oppfolgingstilfelleUtenArbeidsgiver?: OppfolgingstilfellePerson;
-  oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState;
   sykmeldinger: SykmeldingOldFormat[];
 }
 
 const UtdragFraSykefravaeret = ({
-  aktiveDialoger,
+  aktivePlaner,
   fnr,
-  oppfolgingstilfelleUtenArbeidsgiver,
-  oppfolgingstilfelleperioder,
   sykmeldinger,
 }: UtdragFraSykefravaeretProps) => {
   const trackOnClick = useTrackOnClick();
 
+  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+
   return (
     <DialogmotePanel icon={GultDokumentImage} header={tekster.header}>
       <div className="utdragFraSykefravaeret">
-        <UtdragOppfolgingsplaner aktiveDialoger={aktiveDialoger} fnr={fnr} />
+        <UtdragOppfolgingsplaner aktivePlaner={aktivePlaner} />
 
         <Sykmeldinger
-          oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}
+          latestOppfolgingstilfelle={latestOppfolgingstilfelle}
           sykmeldinger={sykmeldinger}
           trackOnClick={() => trackOnClick(tekster.apneSykmelding)}
         />
 
-        {oppfolgingstilfelleUtenArbeidsgiver && (
-          <SykmeldingerUtenArbeidsgiver
-            oppfolgingstilfelleUtenArbeidsgiver={
-              oppfolgingstilfelleUtenArbeidsgiver
-            }
-            sykmeldinger={sykmeldinger}
-            trackOnClick={() => trackOnClick(tekster.apneSykmelding)}
-          />
-        )}
+        <SykmeldingerUtenArbeidsgiver
+          latestOppfolgingstilfelle={latestOppfolgingstilfelle}
+          sykmeldinger={sykmeldinger}
+          trackOnClick={() => trackOnClick(tekster.apneSykmelding)}
+        />
 
         <Samtalereferat
           fnr={fnr}
           trackOnClick={() => trackOnClick(tekster.samtalereferat.header)}
         />
+        <Undertittel>{tekster.vedtak.header}</Undertittel>
+        <SpinnsynLenke />
       </div>
     </DialogmotePanel>
   );

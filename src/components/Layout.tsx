@@ -55,7 +55,3 @@ export const FlexRow = styled.div<RowProps>`
 export const H2NoMargins = styled.h2`
   margin: 0;
 `;
-
-export const H3NoMargins = styled.h3`
-  margin: 0;
-`;

@@ -4,80 +4,67 @@ import {
   activeLPSOppfolgingsplaner,
   activeOppfolgingsplaner,
 } from "./oppfolgingsplanerUtils";
-import {
-  PersonOppgaverState,
-  PersonOppgaveType,
-} from "@/data/personoppgave/personoppgaver";
-import { MotebehovState } from "@/data/motebehov/motebehov";
 import { MoterState } from "@/data/mote/moter";
-import { OppfolgingsplanerState } from "@/data/oppfolgingsplan/oppfoelgingsdialoger";
-import { OppfolgingsplanerlpsState } from "@/data/oppfolgingsplan/oppfolgingsplanerlps";
-
-export const isUnfinishedMotebehovTask = (motebehovState: MotebehovState) => {
-  return harUbehandletMotebehov(motebehovState.data);
-};
+import {
+  PersonOppgave,
+  PersonOppgaveType,
+} from "@/data/personoppgave/types/PersonOppgave";
+import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
+import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 
 export const isUnfinishedMoterTask = (moterState: MoterState) => {
   return moterState?.data?.[0]?.trengerBehandling;
 };
 
 const moteplanleggerTasks = (
-  motebehovState: MotebehovState,
+  motebehov: MotebehovVeilederDTO[],
   moterState: MoterState
 ) => {
-  const motebehovPrikker = isUnfinishedMotebehovTask(motebehovState) ? 1 : 0;
+  const motebehovPrikker = harUbehandletMotebehov(motebehov) ? 1 : 0;
   const moterPrikker = isUnfinishedMoterTask(moterState) ? 1 : 0;
 
   return motebehovPrikker + moterPrikker;
 };
 
 const numberOfActiveOppfolgingsplaner = (
-  oppfolgingsplanerState: OppfolgingsplanerState
+  oppfolgingsplaner: OppfolgingsplanDTO[]
 ) => {
-  return (
-    oppfolgingsplanerState?.data &&
-    activeOppfolgingsplaner(oppfolgingsplanerState.data).length
-  );
+  return activeOppfolgingsplaner(oppfolgingsplaner).length;
 };
 
 const numberOfActiveLPSOppfolgingsplaner = (
-  oppfolgingsplanerLpsState: OppfolgingsplanerlpsState
+  oppfolgingsplanerLps: OppfolgingsplanLPS[]
 ) => {
-  return (
-    oppfolgingsplanerLpsState?.data &&
-    activeLPSOppfolgingsplaner(oppfolgingsplanerLpsState.data).length
-  );
+  return activeLPSOppfolgingsplaner(oppfolgingsplanerLps).length;
 };
 
 const numberOfUnprocessedPersonOppgaver = (
-  personOppgaverState: PersonOppgaverState,
+  personOppgaver: PersonOppgave[],
   type: string
 ) => {
-  return (
-    personOppgaverState?.data &&
-    personOppgaverState.data.filter((personoppgave) => {
-      return personoppgave.type === type && !personoppgave.behandletTidspunkt;
-    }).length
-  );
+  return personOppgaver.filter((personoppgave) => {
+    return personoppgave.type === type && !personoppgave.behandletTidspunkt;
+  }).length;
 };
 
 export const numberOfTasks = (
   menypunkt: string,
-  motebehovState: MotebehovState,
+  motebehov: MotebehovVeilederDTO[],
   moterState: MoterState,
-  oppfolgingsplanerState: OppfolgingsplanerState,
-  personOppgaverState: PersonOppgaverState,
-  oppfolgingsplanerlpsState: OppfolgingsplanerlpsState
+  oppfolgingsplaner: OppfolgingsplanDTO[],
+  personOppgaver: PersonOppgave[],
+  oppfolgingsplanerlps: OppfolgingsplanLPS[]
 ) => {
   switch (menypunkt) {
     case menypunkter.MOETEPLANLEGGER:
-      return moteplanleggerTasks(motebehovState, moterState);
+      return moteplanleggerTasks(motebehov, moterState);
     case menypunkter.OPPFOELGINGSPLANER:
       return (
-        numberOfActiveOppfolgingsplaner(oppfolgingsplanerState) +
-        numberOfActiveLPSOppfolgingsplaner(oppfolgingsplanerlpsState) +
+        numberOfActiveOppfolgingsplaner(oppfolgingsplaner) +
+        numberOfActiveLPSOppfolgingsplaner(oppfolgingsplanerlps) +
         numberOfUnprocessedPersonOppgaver(
-          personOppgaverState,
+          personOppgaver,
           PersonOppgaveType.OPPFOLGINGSPLANLPS
         )
       );
