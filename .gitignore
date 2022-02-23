@@ -4,6 +4,7 @@ node_modules
 *.log
 npm-debug.log*
 dist/
+cypress/screenshots/
 settings.json
 **/.DS_Store
 .floo
