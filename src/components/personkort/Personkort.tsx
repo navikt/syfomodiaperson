@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PERSONKORTVISNING_TYPE } from "@/konstanter";
 import { hentLedere } from "@/data/leder/ledere_actions";
-import { hentOppfolgingstilfelleperioder } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder_actions";
 import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
 import OversiktLink from "./OversiktLink";
 import PersonkortHeader from "./PersonkortHeader";
@@ -48,10 +47,6 @@ const Personkort = () => {
       dispatch(hentLedere(brukerFnr));
       dispatch(hentSykmeldinger(brukerFnr));
     }
-  }, [dispatch, brukerFnr]);
-
-  useEffect(() => {
-    dispatch(hentOppfolgingstilfelleperioder(brukerFnr));
   }, [dispatch, brukerFnr]);
 
   return (
