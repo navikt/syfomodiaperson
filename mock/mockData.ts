@@ -6,7 +6,6 @@ import { historikkmoterMock } from "./data/historikkmoterMock";
 import { historikkoppfolgingsplanMock } from "./data/historikkoppfolgingsplanMock";
 import { ledereMock } from "./data/ledereMock";
 import { dialogmoterMock } from "./data/dialogmoterMock";
-import { oppfolgingstilfelleperioderMock } from "./data/oppfolgingstilfelleperioderMock";
 import { soknaderMock } from "./data/soknaderMock";
 import { sykmeldingerMock } from "./data/sykmeldingerMock";
 import { tilgangBrukerMock } from "./data/tilgangtilbrukerMock";
@@ -21,7 +20,6 @@ export const mockData = {
   historikkoppfolgingsplanMock,
   ledereMock,
   dialogmoterMock,
-  oppfolgingstilfelleperioderMock,
   soknaderMock,
   sykmeldingerMock,
   tilgangBrukerMock,
