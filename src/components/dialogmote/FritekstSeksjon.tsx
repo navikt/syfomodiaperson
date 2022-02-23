@@ -1,9 +1,9 @@
 import { FlexColumn, FlexRow, PaddingSize } from "../Layout";
 import { Field } from "react-final-form";
-import Fritekst from "../Fritekst";
 import React from "react";
 import styled from "styled-components";
 import { TrackedKnapp } from "@/components/buttons/TrackedKnapp";
+import { Textarea } from "@navikt/ds-react";
 
 const texts = {
   forhandsvisning: "Forhåndsvisning",
@@ -31,12 +31,12 @@ const FritekstSeksjon = ({
       <FlexColumn flex={1}>
         <Field<string> name={fieldName}>
           {({ input, meta }) => (
-            <Fritekst
+            <Textarea
               data-cy={fieldName + "TextArea"}
               size="medium"
               maxLength={maxLength}
               label={label}
-              feil={meta.submitFailed && meta.error}
+              error={meta.submitFailed && meta.error}
               id={fieldName}
               {...input}
             />
