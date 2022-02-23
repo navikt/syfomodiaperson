@@ -318,7 +318,7 @@ describe("ReferatTest", () => {
 
     expect(
       within(forhandsvisningReferat).getByRole("heading", {
-        name: referatSkjemaTexts.forhandsvisningTitle,
+        name: referatSkjemaTexts.forhandsvisningSubtitle,
       })
     ).to.exist;
     expectedReferatDocument()

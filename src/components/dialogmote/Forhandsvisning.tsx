@@ -12,7 +12,6 @@ import {
   Sidetittel,
   Systemtittel,
 } from "nav-frontend-typografi";
-import { Hovedknapp } from "nav-frontend-knapper";
 import React, { ReactElement } from "react";
 import {
   DocumentComponentDto,
@@ -20,6 +19,7 @@ import {
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import styled from "styled-components";
 import Lenke from "nav-frontend-lenker";
+import { Hovedknapp } from "nav-frontend-knapper";
 
 const texts = {
   close: "Lukk",
@@ -106,7 +106,7 @@ const DocumentComponentVisning = ({
 };
 
 interface ForhandsvisningProps {
-  title: string;
+  title?: string;
   subtitle?: string;
   contentLabel: string;
   isOpen: boolean;
@@ -133,11 +133,13 @@ export const Forhandsvisning = ({
     >
       <ModalContentContainer data-cy="ForhåndsvisningModal">
         <FlexRow topPadding={PaddingSize.SM} bottomPadding={PaddingSize.MD}>
-          <FlexRow justifyContent={JustifyContentType.CENTER}>
-            <Sidetittel>{title}</Sidetittel>
-          </FlexRow>
-          {subtitle ? (
+          {title ? (
             <FlexRow justifyContent={JustifyContentType.CENTER}>
+              <Sidetittel>{title}</Sidetittel>
+            </FlexRow>
+          ) : null}
+          {subtitle ? (
+            <FlexRow topPadding={PaddingSize.MD}>
               <Innholdstittel>{subtitle}</Innholdstittel>
             </FlexRow>
           ) : null}

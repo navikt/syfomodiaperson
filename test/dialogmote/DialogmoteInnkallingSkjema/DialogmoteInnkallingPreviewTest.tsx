@@ -68,12 +68,12 @@ describe("Dialogmoteinnkallingskjema", () => {
 
     expect(
       within(forhandsvisningInnkallingArbeidstaker).getByRole("heading", {
-        name: innkallingSkjemaTexts.forhandsvisningTitle,
+        name: innkallingSkjemaTexts.forhandsvisningArbeidstakerTitle,
       })
     ).to.exist;
     expect(
       within(forhandsvisningInnkallingArbeidstaker).getByRole("heading", {
-        name: innkallingSkjemaTexts.forhandsvisningArbeidstakerSubtitle,
+        name: innkallingSkjemaTexts.forhandsvisningSubtitle,
       })
     ).to.exist;
     expectedInnkallingDocuments
@@ -100,12 +100,12 @@ describe("Dialogmoteinnkallingskjema", () => {
 
     expect(
       within(forhandsvisningInnkallingArbeidsgiver).getByRole("heading", {
-        name: innkallingSkjemaTexts.forhandsvisningTitle,
+        name: innkallingSkjemaTexts.forhandsvisningSubtitle,
       })
     ).to.exist;
     expect(
       within(forhandsvisningInnkallingArbeidsgiver).getByRole("heading", {
-        name: innkallingSkjemaTexts.forhandsvisningArbeidsgiverSubtitle,
+        name: innkallingSkjemaTexts.forhandsvisningArbeidsgiverTitle,
       })
     ).to.exist;
     expectedInnkallingDocuments
@@ -145,12 +145,12 @@ describe("Dialogmoteinnkallingskjema", () => {
 
     expect(
       within(forhandsvisningInnkallingBehandler).getByRole("heading", {
-        name: innkallingSkjemaTexts.forhandsvisningTitle,
+        name: innkallingSkjemaTexts.forhandsvisningBehandlerTitle,
       })
     ).to.exist;
     expect(
       within(forhandsvisningInnkallingBehandler).getByRole("heading", {
-        name: innkallingSkjemaTexts.forhandsvisningBehandlerSubtitle,
+        name: innkallingSkjemaTexts.forhandsvisningSubtitle,
       })
     ).to.exist;
     expectedInnkallingDocuments

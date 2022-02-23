@@ -14,14 +14,14 @@ export const texts = {
   begrunnelseArbeidsgiver: "Begrunnelse til nærmeste leder",
   begrunnelseArbeidstaker: "Begrunnelse til arbeidstakeren",
   begrunnelseBehandler: "Begrunnelse til behandler",
-  forhandsvisningTitle: "Endret dialogmøte",
-  forhandsvisningArbeidstakerSubtitle: "(brev til arbeidstakeren)",
+  forhandsvisningSubtitle: "Endret dialogmøte",
+  forhandsvisningArbeidstakerTitle: "Brev til arbeidstakeren",
   forhandsvisningArbeidstakerContentLabel:
     "Forhåndsvis endring av dialogmøte arbeidstaker",
-  forhandsvisningArbeidsgiverSubtitle: "(brev til nærmeste leder)",
+  forhandsvisningArbeidsgiverTitle: "Brev til nærmeste leder",
   forhandsvisningArbeidsgiverContentLabel:
     "Forhåndsvis endring av dialogmøte arbeidsgiver",
-  forhandsvisningBehandlerSubtitle: "(brev til behandler)",
+  forhandsvisningBehandlerTitle: "Brev til behandler",
   forhandsvisningBehandlerContentLabel:
     "Forhåndsvis endring av dialogmøte behandler",
 };
@@ -60,8 +60,8 @@ const EndreDialogmoteTekster = ({ dialogmote }: Props) => {
         maxLength={MAX_LENGTH_ENDRE_BEGRUNNELSE}
       />
       <Forhandsvisning
-        title={texts.forhandsvisningTitle}
-        subtitle={texts.forhandsvisningArbeidstakerSubtitle}
+        title={texts.forhandsvisningArbeidstakerTitle}
+        subtitle={texts.forhandsvisningSubtitle}
         contentLabel={texts.forhandsvisningArbeidstakerContentLabel}
         isOpen={displayEndringArbeidstakerPreview}
         handleClose={() => setDisplayEndringArbeidstakerPreview(false)}
@@ -76,8 +76,8 @@ const EndreDialogmoteTekster = ({ dialogmote }: Props) => {
         maxLength={MAX_LENGTH_ENDRE_BEGRUNNELSE}
       />
       <Forhandsvisning
-        title={texts.forhandsvisningTitle}
-        subtitle={texts.forhandsvisningArbeidsgiverSubtitle}
+        title={texts.forhandsvisningArbeidsgiverTitle}
+        subtitle={texts.forhandsvisningSubtitle}
         contentLabel={texts.forhandsvisningArbeidsgiverContentLabel}
         isOpen={displayEndringArbeidsgiverPreview}
         handleClose={() => setDisplayEndringArbeidsgiverPreview(false)}
@@ -94,8 +94,8 @@ const EndreDialogmoteTekster = ({ dialogmote }: Props) => {
             maxLength={MAX_LENGTH_ENDRE_BEGRUNNELSE}
           />
           <Forhandsvisning
-            title={texts.forhandsvisningTitle}
-            subtitle={texts.forhandsvisningBehandlerSubtitle}
+            title={texts.forhandsvisningBehandlerTitle}
+            subtitle={texts.forhandsvisningSubtitle}
             contentLabel={texts.forhandsvisningBehandlerContentLabel}
             isOpen={displayEndringBehandlerPreview}
             handleClose={() => setDisplayEndringBehandlerPreview(false)}

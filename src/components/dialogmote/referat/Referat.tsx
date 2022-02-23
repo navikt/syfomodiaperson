@@ -51,7 +51,7 @@ export const texts = {
     "Referatet formidles her på nav.no. Det er bare de arbeidstakerne som har reservert seg mot digital kommunikasjon, som vil få referatet i posten.",
   personvern:
     "Du må aldri skrive sensitive opplysninger om helse, diagnose, behandling, og prognose. Dette gjelder også hvis arbeidstakeren er åpen om helsen og snakket om den i møtet.",
-  forhandsvisningTitle: "Referat fra dialogmøte",
+  forhandsvisningSubtitle: "Referat fra dialogmøte",
   forhandsvisningContentLabel: "Forhåndsvis referat fra dialogmøte",
   preview: "Se forhåndsvisning",
   referatSaved: "Referatet er lagret",
@@ -256,7 +256,7 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
               showSendSpinner={ferdigstillDialogmote.isLoading}
             />
             <Forhandsvisning
-              title={texts.forhandsvisningTitle}
+              subtitle={texts.forhandsvisningSubtitle}
               contentLabel={texts.forhandsvisningContentLabel}
               isOpen={displayReferatPreview}
               handleClose={() => setDisplayReferatPreview(false)}
