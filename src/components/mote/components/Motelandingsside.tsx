@@ -8,7 +8,6 @@ import { InnkallingDialogmotePanel } from "./innkalling/InnkallingDialogmotePane
 import SideLaster from "../../SideLaster";
 import { hentLedere } from "@/data/leder/ledere_actions";
 import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
-import { hentOppfolgingstilfelleperioder } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder_actions";
 import { DialogmoteOnskePanel } from "../../motebehov/DialogmoteOnskePanel";
 import { MotehistorikkPanel } from "../../dialogmote/motehistorikk/MotehistorikkPanel";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
@@ -40,23 +39,15 @@ export const Motelandingsside = () => {
     isLoading: henterMotebehov,
   } = useMotebehovQuery();
 
-  const {
-    ledere,
-    sykmeldinger,
-    moter,
-    navbruker,
-    oppfolgingstilfelleperioder,
-  } = useAppSelector((state) => state);
+  const { ledere, sykmeldinger, moter, navbruker } = useAppSelector(
+    (state) => state
+  );
 
   useEffect(() => {
     dispatch(hentLedere(fnr));
     dispatch(hentMoter(fnr));
     dispatch(hentSykmeldinger(fnr));
   }, [dispatch, fnr]);
-
-  useEffect(() => {
-    dispatch(hentOppfolgingstilfelleperioder(fnr));
-  }, [dispatch, fnr, ledere, sykmeldinger]);
 
   const harForsoktHentetAlt = ledere.hentingForsokt && moter.hentingForsokt;
   const henter =
@@ -75,7 +66,6 @@ export const Motelandingsside = () => {
       <DialogmoteOnskePanel
         motebehovData={motebehov}
         ledereData={ledere.currentLedere}
-        oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}
         sykmeldt={navbruker.data}
       />
 

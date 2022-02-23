@@ -13,7 +13,6 @@ import {
   MotebehovKanIkkeImage,
   MotebehovKanImage,
 } from "../../../img/ImageComponents";
-import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder";
 import { InfoRow } from "../InfoRow";
 import { PaddingSize } from "../Layout";
 import { ledereUtenMotebehovsvar } from "@/utils/ledereUtils";
@@ -220,17 +219,18 @@ export const MotebehovKvitteringInnholdArbeidsgiverUtenMotebehov = ({
 interface MotebehovKvitteringProps {
   motebehovData: MotebehovVeilederDTO[];
   ledereData: NarmesteLederRelasjonDTO[];
-  oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState;
   sykmeldt?: Brukerinfo;
 }
 
 const MotebehovKvittering = ({
   motebehovData,
   ledereData,
-  oppfolgingstilfelleperioder,
   sykmeldt,
 }: MotebehovKvitteringProps) => {
-  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+  const {
+    data: oppfolgingstilfellePerson,
+    latestOppfolgingstilfelle,
+  } = useOppfolgingstilfellePersonQuery();
 
   const aktiveMotebehovSvar = motebehovFromLatestActiveTilfelle(
     motebehovData?.sort(sorterMotebehovDataEtterDato),
@@ -240,7 +240,7 @@ const MotebehovKvittering = ({
   const ledereUtenInnsendtMotebehov = ledereUtenMotebehovsvar(
     ledereData,
     motebehovData,
-    oppfolgingstilfelleperioder
+    oppfolgingstilfellePerson?.oppfolgingstilfelleList || []
   );
 
   return (

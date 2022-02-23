@@ -165,46 +165,20 @@ describe("ledereUtils", () => {
           narmesteLederPersonIdentNumber: "2",
         },
       ];
-      let oppfolgingstilfeller = [];
-      oppfolgingstilfeller["123"] = {
-        data: [
-          {
-            orgnummer: "123",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 120),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 90),
-          },
-          {
-            orgnummer: "123",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 80),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 50),
-          },
-          {
-            orgnummer: "123",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 40),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 10),
-          },
-          {
-            orgnummer: "123",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 5),
-            tom: new Date(Date.now() + ANTALL_MS_DAG * 15),
-          },
-        ],
-      };
-
-      oppfolgingstilfeller["321"] = {
-        data: [
-          {
-            orgnummer: "321",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 80),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 50),
-          },
-          {
-            orgnummer: "321",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 40),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 10),
-          },
-        ],
-      };
+      const oppfolgingstilfeller = [
+        {
+          arbeidstakerAtTilfelleEnd: true,
+          start: new Date(Date.now() - ANTALL_MS_DAG * 142),
+          end: new Date(Date.now() - ANTALL_MS_DAG * 140),
+          virksomhetsnummerList: ["321"],
+        },
+        {
+          arbeidstakerAtTilfelleEnd: true,
+          start: new Date(Date.now() - ANTALL_MS_DAG * 120),
+          end: new Date(Date.now() + ANTALL_MS_DAG * 15),
+          virksomhetsnummerList: ["123"],
+        },
+      ];
 
       const filtrertLederListe = ledereMedOppfolgingstilfelleInnenforMotebehovperioden(
         ledere,
@@ -237,71 +211,14 @@ describe("ledereUtils", () => {
           status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
         },
       ];
-      let oppfolgingstilfeller = [];
-      oppfolgingstilfeller["123"] = {
-        data: [
-          {
-            orgnummer: "123",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 120),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 90),
-          },
-          {
-            orgnummer: "123",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 80),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 50),
-          },
-          {
-            orgnummer: "123",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 40),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 10),
-          },
-          {
-            orgnummer: "123",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 5),
-            tom: new Date(Date.now() + ANTALL_MS_DAG * 15),
-          },
-        ],
-      };
-
-      oppfolgingstilfeller["999"] = {
-        data: [
-          {
-            orgnummer: "999",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 120),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 90),
-          },
-          {
-            orgnummer: "999",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 80),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 50),
-          },
-          {
-            orgnummer: "999",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 40),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 10),
-          },
-          {
-            orgnummer: "999",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 5),
-            tom: new Date(Date.now() + ANTALL_MS_DAG * 15),
-          },
-        ],
-      };
-
-      oppfolgingstilfeller["321"] = {
-        data: [
-          {
-            orgnummer: "321",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 80),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 50),
-          },
-          {
-            orgnummer: "321",
-            fom: new Date(Date.now() - ANTALL_MS_DAG * 40),
-            tom: new Date(Date.now() - ANTALL_MS_DAG * 10),
-          },
-        ],
-      };
+      const oppfolgingstilfeller = [
+        {
+          arbeidstakerAtTilfelleEnd: true,
+          start: new Date(Date.now() - ANTALL_MS_DAG * 120),
+          end: new Date(Date.now() + ANTALL_MS_DAG * 15),
+          virksomhetsnummerList: ["123", "321", "999"],
+        },
+      ];
 
       const motebehovData = [
         {

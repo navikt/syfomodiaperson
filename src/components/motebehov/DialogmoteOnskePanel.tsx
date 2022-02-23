@@ -6,7 +6,6 @@ import { DialogmotePanel } from "../mote/components/DialogmotePanel";
 import React from "react";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
-import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder";
 import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
 
 const texts = {
@@ -16,14 +15,12 @@ const texts = {
 interface Props {
   motebehovData: MotebehovVeilederDTO[];
   ledereData: NarmesteLederRelasjonDTO[];
-  oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState;
   sykmeldt?: Brukerinfo;
 }
 
 export const DialogmoteOnskePanel = ({
   motebehovData,
   ledereData,
-  oppfolgingstilfelleperioder,
   sykmeldt,
 }: Props) => {
   return (
@@ -31,7 +28,6 @@ export const DialogmoteOnskePanel = ({
       <MotebehovKvittering
         motebehovData={motebehovData}
         ledereData={ledereData}
-        oppfolgingstilfelleperioder={oppfolgingstilfelleperioder}
         sykmeldt={sykmeldt}
       />
 

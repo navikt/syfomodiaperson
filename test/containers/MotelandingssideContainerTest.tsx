@@ -146,10 +146,6 @@ describe("MotelandingssideContainer", () => {
         { type: "HENT_LEDERE_FORESPURT", fnr: fnr },
         { type: "HENT_MOTER_FORESPURT", fnr: fnr },
         { type: "HENT_SYKMELDINGER_FORESPURT", fnr: fnr },
-        {
-          type: "HENT_OPPFOLGINGSTILFELLEPERIODER_FORESPURT",
-          fnr: fnr,
-        },
       ];
       expect(mockStore.getActions()).to.deep.equal(expectedActions);
     });

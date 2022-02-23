@@ -2,16 +2,15 @@ import {
   NarmesteLederRelasjonDTO,
   NarmesteLederRelasjonStatus,
 } from "@/data/leder/ledere";
-import { senesteTom, tidligsteFom } from "./periodeUtils";
 import {
   erOppfoelgingsdatoPassertMed16UkerOgIkke26Uker,
   erOppfolgingstilfelleSluttDatoPassert,
   harArbeidstakerSvartPaaMotebehov,
 } from "./motebehovUtils";
 import { activeSykmeldingerSentToArbeidsgiver } from "./sykmeldinger/sykmeldingUtils";
-import { OppfolgingstilfelleperioderMapState } from "@/data/oppfolgingstilfelle/oppfolgingstilfelleperioder";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 export const ledereIVirksomheterMedMotebehovsvarFraArbeidstaker = (
   ledereData: NarmesteLederRelasjonDTO[],
@@ -42,27 +41,26 @@ export const ledereIVirksomheterDerIngenLederHarSvartPaMotebehov = (
 
 export const ledereMedOppfolgingstilfelleInnenforMotebehovperioden = (
   ledereData: NarmesteLederRelasjonDTO[],
-  oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState
+  oppfolgingstilfelleList: OppfolgingstilfelleDTO[]
 ): NarmesteLederRelasjonDTO[] => {
   return ledereData.filter((leder) => {
-    const startOppfolgingsdato =
-      oppfolgingstilfelleperioder[leder.virksomhetsnummer] &&
-      oppfolgingstilfelleperioder[leder.virksomhetsnummer].data
-        ? tidligsteFom(
-            oppfolgingstilfelleperioder[leder.virksomhetsnummer].data
-          )
-        : new Date();
-    const sluttOppfolgingsdato =
-      oppfolgingstilfelleperioder[leder.virksomhetsnummer] &&
-      oppfolgingstilfelleperioder[leder.virksomhetsnummer].data
-        ? senesteTom(oppfolgingstilfelleperioder[leder.virksomhetsnummer].data)
-        : new Date();
+    const latestOppfolgingstilfelleForVirksomhet = oppfolgingstilfelleList.find(
+      (tilfelle) => {
+        return tilfelle.virksomhetsnummerList.some((virksomhetsnummer) => {
+          return virksomhetsnummer === leder.virksomhetsnummer;
+        });
+      }
+    );
+    const oppfolgingstilfelleStart = latestOppfolgingstilfelleForVirksomhet
+      ? latestOppfolgingstilfelleForVirksomhet.start
+      : new Date();
+    const oppfolgingstilfelleEnd = latestOppfolgingstilfelleForVirksomhet
+      ? latestOppfolgingstilfelleForVirksomhet.end
+      : new Date();
 
     return (
-      startOppfolgingsdato &&
-      sluttOppfolgingsdato &&
-      !erOppfolgingstilfelleSluttDatoPassert(sluttOppfolgingsdato) &&
-      erOppfoelgingsdatoPassertMed16UkerOgIkke26Uker(startOppfolgingsdato)
+      !erOppfolgingstilfelleSluttDatoPassert(oppfolgingstilfelleEnd) &&
+      erOppfoelgingsdatoPassertMed16UkerOgIkke26Uker(oppfolgingstilfelleStart)
     );
   });
 };
@@ -70,7 +68,7 @@ export const ledereMedOppfolgingstilfelleInnenforMotebehovperioden = (
 export const ledereUtenMotebehovsvar = (
   ledereData: NarmesteLederRelasjonDTO[],
   motebehovData: MotebehovVeilederDTO[],
-  oppfolgingstilfelleperioder: OppfolgingstilfelleperioderMapState
+  oppfolgingstilfelleList: OppfolgingstilfelleDTO[]
 ): NarmesteLederRelasjonDTO[] => {
   const arbeidstakerHarSvartPaaMotebehov =
     motebehovData && harArbeidstakerSvartPaaMotebehov(motebehovData);
@@ -82,7 +80,7 @@ export const ledereUtenMotebehovsvar = (
       )
     : ledereMedOppfolgingstilfelleInnenforMotebehovperioden(
         ledereData,
-        oppfolgingstilfelleperioder
+        oppfolgingstilfelleList
       );
 
   const ledereIVirksomhetUtenMotebehovSvarFraLeder = ledereIVirksomheterDerIngenLederHarSvartPaMotebehov(
