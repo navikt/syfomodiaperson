@@ -13,6 +13,7 @@ import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
 import { tilgangBrukerMock } from "../../mock/data/tilgangtilbrukerMock";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 import { sykepengesoknaderQueryKeys } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
+import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
 
 const NAERINGSDRIVENDESOKNAD_ID = "faadf7c1-3aac-4758-8673-e9cee1316a3c";
 const OPPHOLD_UTLAND_ID = "e16ff778-8475-47e1-b5dc-d2ce4ad6b9ee";
@@ -23,11 +24,6 @@ const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient;
 
 const mockState = {
-  sykmeldinger: {
-    hentet: true,
-    hentingFeilet: false,
-    data: [],
-  },
   navbruker: {
     data: {
       navn: "Ola Nordmann",
@@ -46,6 +42,7 @@ describe("SykepengesoknadContainer", () => {
       tilgangQueryKeys.tilgang(fnr),
       () => tilgangBrukerMock
     );
+    queryClient.setQueryData(sykmeldingerQueryKeys.sykmeldinger(fnr), () => []);
   });
 
   describe("Visning av sykepengesøknad for arbeidstakere", () => {

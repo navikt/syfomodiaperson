@@ -31,7 +31,6 @@ describe("UtdragFraSykefravaeret", () => {
           <UtdragFraSykefravaeret
             aktivePlaner={[]}
             fnr={arbeidstaker.personident}
-            sykmeldinger={[]}
           />
         </Provider>
       </QueryClientProvider>

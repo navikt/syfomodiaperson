@@ -8,12 +8,11 @@ import VisningEnhet from "./PersonkortEnhet";
 
 interface PersonkortVisningProps {
   navbruker: Brukerinfo;
-  sykmeldinger: any[];
   visning: string;
 }
 
 const PersonkortVisning = (personkortVisningProps: PersonkortVisningProps) => {
-  const { navbruker, sykmeldinger, visning } = personkortVisningProps;
+  const { navbruker, visning } = personkortVisningProps;
   const { LEGE, LEDER, ENHET } = PERSONKORTVISNING_TYPE;
 
   return (
@@ -24,7 +23,7 @@ const PersonkortVisning = (personkortVisningProps: PersonkortVisningProps) => {
             return <VisningLege />;
           }
           case LEDER: {
-            return <VisningLedere sykmeldinger={sykmeldinger} />;
+            return <VisningLedere />;
           }
           case ENHET: {
             return <VisningEnhet />;

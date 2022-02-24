@@ -6,6 +6,7 @@ import { lederHasActiveSykmelding } from "@/utils/ledereUtils";
 import kanskjeBooleanTilJaNeiKanskje from "../kanskjeBooleanTilJaNeiKanskje";
 import { FabrikkImage } from "../../../../img/ImageComponents";
 import navFarger from "nav-frontend-core";
+import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
 const texts = {
   activeSykmelding: "Sykmeldt nå",
@@ -48,7 +49,7 @@ interface PersonKortVirksomhetHeaderProps {
   arbeidsgiverForskutterer?: boolean;
   virksomhetsnavn: string;
   virksomhetsnummer: string;
-  sykmeldinger: any[];
+  sykmeldinger: SykmeldingOldFormat[];
 }
 
 const PersonKortVirksomhetHeader = (

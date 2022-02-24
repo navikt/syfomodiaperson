@@ -34,14 +34,12 @@ interface SendtSoknadArbeidstakerNyProps {
   brukernavn: string;
   brodsmuler: Brodsmule[];
   soknad: SykepengesoknadDTO;
-  fnr: string;
 }
 
 const SendtSoknadArbeidstakerNy = ({
   brukernavn,
   brodsmuler,
   soknad,
-  fnr,
 }: SendtSoknadArbeidstakerNyProps): ReactElement => {
   return (
     <SoknadSpeiling
@@ -53,7 +51,7 @@ const SendtSoknadArbeidstakerNy = ({
         <KorrigertAv soknadId={soknad.id} />
       )}
       <SykepengesoknadStatuspanel soknad={soknad} />
-      <SykmeldingUtdragContainer soknad={soknad} fnr={fnr} />
+      <SykmeldingUtdragContainer soknad={soknad} />
       <OppsummeringUtvidbar
         soknad={{
           ...soknad,

@@ -43,11 +43,7 @@ describe("PersonkortVisning", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <Provider store={store({ ...realState, ...mockState })}>
-          <PersonkortVisning
-            visning={""}
-            navbruker={mockState.navbruker}
-            sykmeldinger={[]}
-          />
+          <PersonkortVisning visning={""} navbruker={mockState.navbruker} />
         </Provider>
       </QueryClientProvider>
     );
@@ -64,7 +60,6 @@ describe("PersonkortVisning", () => {
           <PersonkortVisning
             visning={PERSONKORTVISNING_TYPE.LEGE}
             navbruker={mockState.navbruker}
-            sykmeldinger={[]}
           />
         </Provider>
       </QueryClientProvider>
@@ -89,7 +84,6 @@ describe("PersonkortVisning", () => {
           <PersonkortVisning
             visning={PERSONKORTVISNING_TYPE.ENHET}
             navbruker={mockState.navbruker}
-            sykmeldinger={[]}
           />
         </Provider>
       </QueryClientProvider>

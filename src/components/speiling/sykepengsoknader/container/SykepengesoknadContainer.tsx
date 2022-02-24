@@ -1,5 +1,4 @@
-import React, { ReactElement, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { ReactElement } from "react";
 import Feilmelding from "../../../Feilmelding";
 import SykepengesoknadSelvstendig from "../soknad-selvstendig/SykepengesoknadSelvstendig";
 import SykepengesoknadUtland from "../soknad-utland/SykepengesoknadUtland";
@@ -7,8 +6,6 @@ import SendtSoknadArbeidstakerNy from "../soknad-arbeidstaker-ny/SendtSoknadArbe
 import IkkeInnsendtSoknad from "../soknad-felles/IkkeInnsendtSoknad";
 import AvbruttSoknadArbeidtakerNy from "../soknad-arbeidstaker-ny/AvbruttSoknadArbeidtakerNy";
 import SykepengesoknadBehandlingsdager from "../soknad-behandlingsdager/SykepengesoknadBehandlingsdager";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useParams } from "react-router-dom";
 import SideLaster from "../../../SideLaster";
@@ -16,21 +13,15 @@ import {
   SoknadstatusDTO,
   SoknadstypeDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { useSykmeldinger } from "@/data/sykmelding/sykmeldinger_hooks";
 import SykepengesoknadReisetilskudd from "@/components/speiling/sykepengsoknader/soknad-reisetilskudd/SykepengesoknadReisetilskudd";
 import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
+import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 
 const SykepengesoknadContainer = (): ReactElement => {
-  const dispatch = useDispatch();
-  const fnr = useValgtPersonident();
   const { navn: brukernavn } = useNavBrukerData();
   const { sykepengesoknadId } = useParams<{
     sykepengesoknadId: string;
   }>();
-
-  useEffect(() => {
-    dispatch(hentSykmeldinger(fnr));
-  }, [dispatch, fnr]);
 
   const {
     data: sykepengesoknader,
@@ -39,11 +30,11 @@ const SykepengesoknadContainer = (): ReactElement => {
   } = useSykepengesoknaderQuery();
   const {
     sykmeldinger,
-    hentingSykmeldingerFeilet,
-    harForsoktHentetSykmeldinger,
-  } = useSykmeldinger();
+    isError: hentingSykmeldingerFeilet,
+    isLoading: henterSykmeldinger,
+  } = useSykmeldingerQuery();
 
-  const henter = !harForsoktHentetSykmeldinger || henterSoknader;
+  const henter = henterSykmeldinger || henterSoknader;
   const hentingFeilet = hentingFeiletSoknader || hentingSykmeldingerFeilet;
   const soknad = sykepengesoknader.find((s) => s.id === sykepengesoknadId);
   const sykmelding = sykmeldinger.find((sykmld) =>
@@ -90,7 +81,6 @@ const SykepengesoknadContainer = (): ReactElement => {
               case SoknadstatusDTO.KORRIGERT: {
                 return (
                   <SendtSoknadArbeidstakerNy
-                    fnr={fnr}
                     brodsmuler={brodsmuler}
                     brukernavn={brukernavn}
                     soknad={soknad}
@@ -100,7 +90,6 @@ const SykepengesoknadContainer = (): ReactElement => {
               case SoknadstatusDTO.AVBRUTT: {
                 return (
                   <AvbruttSoknadArbeidtakerNy
-                    fnr={fnr}
                     brodsmuler={brodsmuler}
                     brukernavn={brukernavn}
                     soknad={soknad}
@@ -124,7 +113,6 @@ const SykepengesoknadContainer = (): ReactElement => {
           case SoknadstypeDTO.REISETILSKUDD: {
             return (
               <SykepengesoknadReisetilskudd
-                fnr={fnr}
                 brodsmuler={brodsmuler}
                 brukernavn={brukernavn}
                 soknad={soknad}

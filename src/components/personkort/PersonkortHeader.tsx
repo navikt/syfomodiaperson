@@ -17,6 +17,7 @@ import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQ
 import { ApiErrorException } from "@/api/errors";
 import { getKvinneImage, getMannImage } from "@/utils/festiveUtils";
 import { useStartOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 
 const texts = {
   copied: "Kopiert!",
@@ -58,13 +59,13 @@ const StyledFnr = styled.div`
 
 interface PersonkortHeaderProps {
   navbruker: Brukerinfo;
-  sykmeldinger: any[];
 }
 
 const PersonkortHeader = (personkortHeaderProps: PersonkortHeaderProps) => {
   const { data: isEgenAnsatt } = useEgenansattQuery();
-  const { navbruker, sykmeldinger } = personkortHeaderProps;
+  const { navbruker } = personkortHeaderProps;
   const { error, data: diskresjonskode } = useDiskresjonskodeQuery();
+  const { sykmeldinger } = useSykmeldingerQuery();
   const hasCoronaDiagnose = sykmeldingerHasCoronaDiagnose(sykmeldinger);
   const visEtiketter =
     diskresjonskode === "6" ||

@@ -1,17 +1,14 @@
-import React, { ReactElement, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { ReactElement } from "react";
 import Side from "../../../../sider/Side";
-import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
 import SidetoppSpeilet from "../../../SidetoppSpeilet";
 import DineSykmeldinger from "../sykmeldinger/DineSykmeldinger";
 import Brodsmuler from "../../Brodsmuler";
 import { SYKMELDINGER } from "@/enums/menypunkter";
 import Speilingvarsel from "../../Speilingvarsel";
 import Pengestopp from "../../../pengestopp/Pengestopp";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import SideLaster from "../../../SideLaster";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
-import { useSykmeldinger } from "@/data/sykmelding/sykmeldinger_hooks";
+import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 
 const texts = {
   introduksjonstekst:
@@ -19,20 +16,8 @@ const texts = {
 };
 
 const SykmeldingerSide = (): ReactElement => {
-  const fnr = useValgtPersonident();
-
-  const {
-    sykmeldinger,
-    harForsoktHentetSykmeldinger,
-    hentingSykmeldingerFeilet,
-  } = useSykmeldinger();
+  const { isLoading, isError, sykmeldinger } = useSykmeldingerQuery();
   const { navn: brukernavn } = useNavBrukerData();
-
-  const henter = !harForsoktHentetSykmeldinger;
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(hentSykmeldinger(fnr));
-  }, [dispatch, fnr]);
 
   const htmlIntro = {
     __html: `<p>${texts.introduksjonstekst}</p>`,
@@ -48,7 +33,7 @@ const SykmeldingerSide = (): ReactElement => {
 
   return (
     <Side tittel="Sykmeldinger" aktivtMenypunkt={SYKMELDINGER}>
-      <SideLaster henter={henter} hentingFeilet={hentingSykmeldingerFeilet}>
+      <SideLaster henter={isLoading} hentingFeilet={isError}>
         <div>
           <Pengestopp sykmeldinger={sykmeldinger} />
           <Speilingvarsel brukernavn={brukernavn} />

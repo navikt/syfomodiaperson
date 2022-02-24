@@ -1,6 +1,4 @@
-import React, { ReactElement, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
+import React, { ReactElement } from "react";
 import {
   ArbeidssituasjonType,
   SykmeldingOldFormat,
@@ -12,10 +10,9 @@ import SykmeldingSide from "../sykmelding/SykmeldingSide";
 import Brodsmuler from "../../Brodsmuler";
 import Speilingvarsel from "../../Speilingvarsel";
 import { SYKMELDINGER } from "@/enums/menypunkter";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import SideLaster from "../../../SideLaster";
-import { useSykmeldinger } from "@/data/sykmelding/sykmeldinger_hooks";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
+import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 
 const texts = {
   pageTitleSykmelding: "Sykmelding",
@@ -38,18 +35,16 @@ export function getSykmelding(
 }
 
 const DinSykmeldingSide = (): ReactElement => {
-  const fnr = useValgtPersonident();
   const sykmeldingId = window.location.pathname.split("/")[3];
 
   const { navn: brukernavn } = useNavBrukerData();
   const {
-    harForsoktHentetSykmeldinger,
-    hentingSykmeldingerFeilet,
+    isLoading,
+    isError,
     sykmeldinger,
     arbeidsgiverssykmeldinger,
-  } = useSykmeldinger();
+  } = useSykmeldingerQuery();
 
-  const henter = !harForsoktHentetSykmeldinger;
   const dinSykmelding = getSykmelding(sykmeldinger, sykmeldingId);
   let arbeidsgiversSykmelding = {} as SykmeldingOldFormat | undefined;
 
@@ -66,11 +61,6 @@ const DinSykmeldingSide = (): ReactElement => {
     );
   }
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(hentSykmeldinger(fnr));
-  }, [dispatch, fnr]);
-
   const brodsmuler = [
     {
       tittel: "Ditt sykefravær",
@@ -85,7 +75,7 @@ const DinSykmeldingSide = (): ReactElement => {
 
   return (
     <Side tittel={texts.pageTitleSykmelding} aktivtMenypunkt={SYKMELDINGER}>
-      <SideLaster henter={henter} hentingFeilet={hentingSykmeldingerFeilet}>
+      <SideLaster henter={isLoading} hentingFeilet={isError}>
         <div>
           <Speilingvarsel brukernavn={brukernavn} />
           <div className="speiling">

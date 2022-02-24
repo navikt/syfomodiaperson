@@ -30,7 +30,7 @@ const renderPersonkortHeader = () =>
   render(
     <QueryClientProvider client={queryClient}>
       <Provider store={store(mockState)}>
-        <PersonkortHeader navbruker={navbruker} sykmeldinger={[]} />
+        <PersonkortHeader navbruker={navbruker} />
       </Provider>
     </QueryClientProvider>
   );

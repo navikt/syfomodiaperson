@@ -31,6 +31,7 @@ import { Undertittel } from "nav-frontend-typografi";
 import { SpinnsynLenke } from "@/components/vedtak/SpinnsynLenke";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 
 const tekster = {
   header: "Utdrag fra sykefraværet",
@@ -237,16 +238,15 @@ export const Samtalereferat = ({ fnr, trackOnClick }: SamtalereferatProps) => (
 interface UtdragFraSykefravaeretProps {
   aktivePlaner: OppfolgingsplanDTO[];
   fnr: string;
-  sykmeldinger: SykmeldingOldFormat[];
 }
 
 const UtdragFraSykefravaeret = ({
   aktivePlaner,
   fnr,
-  sykmeldinger,
 }: UtdragFraSykefravaeretProps) => {
   const trackOnClick = useTrackOnClick();
 
+  const { sykmeldinger } = useSykmeldingerQuery();
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
   return (

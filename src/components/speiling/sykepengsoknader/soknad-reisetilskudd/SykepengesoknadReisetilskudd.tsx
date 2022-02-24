@@ -34,14 +34,12 @@ interface SykepengesoknadReisetilskuddProps {
   brukernavn: string;
   brodsmuler: Brodsmule[];
   soknad: SykepengesoknadDTO;
-  fnr: string;
 }
 
 const SykepengesoknadReisetilskudd = ({
   brukernavn,
   brodsmuler,
   soknad,
-  fnr,
 }: SykepengesoknadReisetilskuddProps): ReactElement => {
   return (
     <SoknadSpeiling
@@ -53,7 +51,7 @@ const SykepengesoknadReisetilskudd = ({
         <KorrigertAv soknadId={soknad.id} />
       )}
       <SykepengesoknadStatuspanel soknad={soknad} />
-      <SykmeldingUtdragContainer soknad={soknad} fnr={fnr} />
+      <SykmeldingUtdragContainer soknad={soknad} />
       <OppsummeringUtvidbar
         soknad={{
           ...soknad,

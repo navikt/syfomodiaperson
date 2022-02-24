@@ -1,6 +1,5 @@
 import { Area, AreaChart, XAxis, YAxis } from "recharts";
 import React, { ReactElement } from "react";
-import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { Normaltekst, Systemtittel } from "nav-frontend-typografi";
 import Panel from "nav-frontend-paneler";
 import {
@@ -14,6 +13,7 @@ import {
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 
 const texts = {
   title: "Sykmeldingsgrad",
@@ -23,11 +23,8 @@ const texts = {
   yAxis: "Y-akse: sykmeldingsgrad",
 };
 
-interface SykmeldingsgradProps {
-  sykmeldinger: SykmeldingOldFormat[];
-}
-
-export const Sykmeldingsgrad = ({ sykmeldinger }: SykmeldingsgradProps) => {
+export const Sykmeldingsgrad = () => {
+  const { sykmeldinger } = useSykmeldingerQuery();
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
   const innsendteSykmeldinger = sykmeldingerMedStatusSendt(sykmeldinger);

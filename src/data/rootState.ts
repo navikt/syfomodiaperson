@@ -9,7 +9,6 @@ import arbeidsgiverEpostinnhold, {
 } from "./mote/arbeidsgiverEpostinnhold";
 import enhet, { EnhetState } from "./valgtenhet/enhet";
 import valgtbruker, { ValgtBrukerState } from "./valgtbruker/valgtbruker";
-import sykmeldinger, { SykmeldingerState } from "./sykmelding/sykmeldinger";
 import unleash, { UnleashState } from "./unleash/unleash";
 
 export interface RootState {
@@ -21,7 +20,6 @@ export interface RootState {
   arbeidsgiverEpostinnhold: ArbeidsgiverEpostinnholdState;
   enhet: EnhetState;
   valgtbruker: ValgtBrukerState;
-  sykmeldinger: SykmeldingerState;
   unleash: UnleashState;
 }
 
@@ -34,6 +32,5 @@ export const rootReducer = combineReducers<RootState>({
   arbeidsgiverEpostinnhold,
   enhet,
   valgtbruker,
-  sykmeldinger,
   unleash,
 });

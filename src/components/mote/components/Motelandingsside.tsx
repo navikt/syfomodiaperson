@@ -6,7 +6,6 @@ import { useAppSelector } from "@/hooks/hooks";
 import UtdragFraSykefravaeretPanel from "../../utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { InnkallingDialogmotePanel } from "./innkalling/InnkallingDialogmotePanel";
 import SideLaster from "../../SideLaster";
-import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
 import { DialogmoteOnskePanel } from "../../motebehov/DialogmoteOnskePanel";
 import { MotehistorikkPanel } from "../../dialogmote/motehistorikk/MotehistorikkPanel";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
@@ -44,11 +43,10 @@ export const Motelandingsside = () => {
     isError: henterLedereFeilet,
   } = useLedereQuery();
 
-  const { sykmeldinger, moter, navbruker } = useAppSelector((state) => state);
+  const { moter, navbruker } = useAppSelector((state) => state);
 
   useEffect(() => {
     dispatch(hentMoter(fnr));
-    dispatch(hentSykmeldinger(fnr));
   }, [dispatch, fnr]);
 
   const henter =
@@ -72,11 +70,7 @@ export const Motelandingsside = () => {
 
       <InnkallingDialogmotePanel aktivtDialogmote={aktivtDialogmote} />
 
-      <UtdragFraSykefravaeretPanel
-        aktivePlaner={aktivePlaner}
-        fnr={fnr}
-        sykmeldinger={sykmeldinger.data}
-      />
+      <UtdragFraSykefravaeretPanel aktivePlaner={aktivePlaner} fnr={fnr} />
 
       <MotehistorikkPanel historiskeMoter={historiskeDialogmoter} />
     </SideLaster>

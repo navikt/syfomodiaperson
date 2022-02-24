@@ -41,7 +41,6 @@ const AvbruttSoknadArbeidstakerStatuspanel = ({
 
 interface AvbruttSoknadArbeidstakerProps {
   brukernavn: string;
-  fnr: string;
   soknad: SykepengesoknadDTO;
   brodsmuler: Brodsmule[];
 }
@@ -50,7 +49,6 @@ const AvbruttSoknadArbeidstaker = ({
   brukernavn,
   brodsmuler,
   soknad,
-  fnr,
 }: AvbruttSoknadArbeidstakerProps): ReactElement => {
   return (
     <div>
@@ -60,7 +58,7 @@ const AvbruttSoknadArbeidstaker = ({
         brodsmuler={brodsmuler}
       >
         <AvbruttSoknadArbeidstakerStatuspanel soknad={soknad} />
-        <SykmeldingUtdragContainer soknad={soknad} fnr={fnr} />
+        <SykmeldingUtdragContainer soknad={soknad} />
       </SoknadSpeiling>
     </div>
   );

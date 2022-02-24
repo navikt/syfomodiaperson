@@ -10,6 +10,7 @@ import PersonKortVirksomhetLedere from "./PersonKortVirksomhetLedere";
 import PersonKortVirksomhetHeader from "./PersonKortVirksomhetHeader";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 
 const texts = {
   noLeader:
@@ -24,13 +25,9 @@ export const sortLeaderListNewestFomDatoFirst = (
   });
 };
 
-interface PersonkortLedereProps {
-  sykmeldinger: any[];
-}
-
-const PersonkortLedere = (personkortLedereProps: PersonkortLedereProps) => {
+const PersonkortLedere = () => {
   const { allLedere } = useLedereQuery();
-  const { sykmeldinger } = personkortLedereProps;
+  const { sykmeldinger } = useSykmeldingerQuery();
   const virksomheterFromSykmeldinger = virksomheterWithoutLeder(
     allLedere,
     sykmeldinger

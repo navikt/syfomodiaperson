@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
 import { PERSONKORTVISNING_TYPE } from "@/konstanter";
-import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
 import OversiktLink from "./OversiktLink";
 import PersonkortHeader from "./PersonkortHeader";
 import PersonkortVisning from "./PersonkortVisning";
@@ -26,23 +24,9 @@ const LinkRow = styled.div`
 `;
 
 const Personkort = () => {
-  const sykmeldingerState = useSelector((state: any) => state.sykmeldinger);
-  const sykmeldinger = sykmeldingerState.data;
-
   const [visning, setVisning] = useState(PERSONKORTVISNING_TYPE.SYKMELDT);
-
-  const dispatch = useDispatch();
-
   const navbruker = useNavBrukerData();
-  const brukerFnr = navbruker.kontaktinfo && navbruker.kontaktinfo.fnr;
-
   const showSnowButton = isDecember();
-
-  useEffect(() => {
-    if (brukerFnr) {
-      dispatch(hentSykmeldinger(brukerFnr));
-    }
-  }, [dispatch, brukerFnr]);
 
   return (
     <div className="personkort">
@@ -52,9 +36,7 @@ const Personkort = () => {
       </LinkRow>
       <Utvidbar
         erApen={false}
-        tittel={
-          <PersonkortHeader navbruker={navbruker} sykmeldinger={sykmeldinger} />
-        }
+        tittel={<PersonkortHeader navbruker={navbruker} />}
       >
         <div>
           <ul>
@@ -117,11 +99,7 @@ const Personkort = () => {
           </ul>
 
           <div aria-live="polite">
-            <PersonkortVisning
-              navbruker={navbruker}
-              sykmeldinger={sykmeldinger}
-              visning={visning}
-            />
+            <PersonkortVisning navbruker={navbruker} visning={visning} />
           </div>
         </div>
       </Utvidbar>

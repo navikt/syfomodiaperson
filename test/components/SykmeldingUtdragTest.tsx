@@ -9,46 +9,41 @@ import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import { newSMFormat2OldFormat } from "@/utils/sykmeldinger/sykmeldingParser";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
 const fnr = "12345000000";
+let queryClient;
 
 const sykmelding = mockSykmeldinger.find((s) => {
   return s.id === mockSykepengeSoknad.sykmeldingId;
 });
 
 describe("SykmeldingUtdrag", () => {
-  it("Skal hente sykmeldinger", () => {
-    const mockStore = store({ ...realState });
-    render(
-      <Provider store={mockStore}>
-        <SykmeldingUtdragContainer fnr={fnr} soknad={mockSykepengeSoknad} />
-      </Provider>
+  beforeEach(() => {
+    queryClient = new QueryClient();
+    queryClient.setQueryData(
+      sykmeldingerQueryKeys.sykmeldinger(fnr),
+      () => mockSykmeldinger
     );
-    const hentSykmeldingerAction = {
-      type: "HENT_SYKMELDINGER_FORESPURT",
-      fnr: "12345000000",
-    };
-    expect(mockStore.getActions()).to.deep.equal([hentSykmeldingerAction]);
   });
 
   it("Skal vise SykmeldingUtdrag for riktig sykmelding", () => {
-    const sykmeldingerData = mockSykmeldinger.map((s) =>
-      newSMFormat2OldFormat(s, fnr)
-    );
     const mockStore = store({
       ...realState,
-      sykmeldinger: { data: sykmeldingerData },
+      valgtbruker: { personident: fnr },
     });
     render(
-      <Provider store={mockStore}>
-        <SykmeldingUtdragContainer fnr={fnr} soknad={mockSykepengeSoknad} />
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={mockStore}>
+          <SykmeldingUtdragContainer soknad={mockSykepengeSoknad} />
+        </Provider>
+      </QueryClientProvider>
     );
     userEvent.click(screen.getByRole("button"));
     expect(sykmelding?.sykmeldingStatus?.arbeidsgiver?.orgNavn).to.equal(

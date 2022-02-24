@@ -101,6 +101,13 @@ export const mockSykmeldinger: SykmeldingNewFormatDTO[] = [
   },
 ];
 
+export const sykmeldingUtenArbeidsgiverMock = {
+  ...mockSykmeldinger[0],
+  sykmeldingStatus: {
+    arbeidsgiver: undefined,
+  },
+};
+
 export const mockOldSykmeldinger: SykmeldingOldFormat[] = [
   {
     arbeidsevne: {

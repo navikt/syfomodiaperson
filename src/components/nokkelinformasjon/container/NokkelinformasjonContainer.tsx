@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
+import React from "react";
 import { NOKKELINFORMASJON } from "@/enums/menypunkter";
 import Side from "../../../sider/Side";
 import Nokkelinformasjon from "../Nokkelinformasjon";
@@ -8,6 +6,7 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import SideLaster from "../../SideLaster";
 import { useOppfolgingsplanerQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 
 const texts = {
   pageTitle: "Nøkkelinformasjon",
@@ -19,22 +18,14 @@ export const NokkelinformasjonSide = () => {
     aktivePlaner,
     isLoading: henterOppfolgingsplaner,
   } = useOppfolgingsplanerQuery();
-
-  const sykmeldingerState = useSelector((state: any) => state.sykmeldinger);
+  const { isError: henterSykmeldingerFeilet } = useSykmeldingerQuery();
   const {
     isLoading: henterLedere,
     isError: henterLedereFeilet,
   } = useLedereQuery();
 
   const henter = henterOppfolgingsplaner || henterLedere;
-  const hentingFeilet = sykmeldingerState.hentingFeilet || henterLedereFeilet;
-  const sykmeldinger = sykmeldingerState.data;
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(hentSykmeldinger(fnr));
-  }, [dispatch, fnr]);
+  const hentingFeilet = henterSykmeldingerFeilet || henterLedereFeilet;
 
   return (
     <Side tittel={texts.pageTitle} aktivtMenypunkt={NOKKELINFORMASJON}>
@@ -42,7 +33,6 @@ export const NokkelinformasjonSide = () => {
         <Nokkelinformasjon
           fnr={fnr}
           aktivePlaner={aktivePlaner}
-          sykmeldinger={sykmeldinger}
           pageTitle={texts.pageTitle}
         />
       </SideLaster>
