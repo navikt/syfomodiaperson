@@ -1,6 +1,6 @@
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { SYFOMOTEBEHOV_ROOT } from "@/apiConstants";
-import { QueryClient, useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { post } from "@/api/axios";
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
@@ -16,39 +16,24 @@ export const useBehandleMotebehov = () => {
   const motebehovQueryKey = motebehovQueryKeys.motebehov(fnr);
 
   return useMutation(postBehandleMotebehov, {
-    onMutate: () =>
-      optimisticUpdateMotebehovBehandlet(
-        queryClient,
-        motebehovQueryKey,
-        veilederIdent
-      ),
-    onError: (error, variables, context) => {
-      if (context?.previousMotebehov) {
-        queryClient.setQueryData(motebehovQueryKey, context.previousMotebehov);
+    onSuccess: () => {
+      const previousMotebehov = queryClient.getQueryData<
+        MotebehovVeilederDTO[]
+      >(motebehovQueryKey);
+      if (previousMotebehov && veilederIdent) {
+        queryClient.setQueryData(
+          motebehovQueryKey,
+          previousMotebehov.map((motebehov) => ({
+            ...motebehov,
+            behandletTidspunkt: new Date(),
+            behandletVeilederIdent: veilederIdent,
+          }))
+        );
       }
     },
-    onSettled: () => queryClient.invalidateQueries(motebehovQueryKey),
+    onSettled: () =>
+      queryClient.invalidateQueries(motebehovQueryKey, {
+        refetchActive: false,
+      }),
   });
-};
-
-const optimisticUpdateMotebehovBehandlet = (
-  queryClient: QueryClient,
-  queryKey: string[],
-  veilederIdent: string | undefined
-) => {
-  const previousMotebehov = queryClient.getQueryData<MotebehovVeilederDTO[]>(
-    queryKey
-  );
-  if (previousMotebehov && veilederIdent) {
-    queryClient.setQueryData(
-      queryKey,
-      previousMotebehov.map((motebehov) => ({
-        ...motebehov,
-        behandletTidspunkt: new Date(),
-        behandletVeilederIdent: veilederIdent,
-      }))
-    );
-  }
-
-  return { previousMotebehov };
 };

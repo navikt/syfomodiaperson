@@ -54,7 +54,7 @@ const BehandleMotebehovKnapp = ({
             }
           }}
           id="marker__utfoert"
-          disabled={erBehandlet}
+          disabled={erBehandlet || behandleMotebehov.isLoading}
           defaultChecked={erBehandlet}
         />
       </div>
