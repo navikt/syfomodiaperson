@@ -9,7 +9,7 @@ import {
   SykepengestoppArsakType,
 } from "../../src/data/pengestopp/types/FlaggPerson";
 
-const defauktStoppAutomatikk: StoppAutomatikk = {
+const defaultStoppAutomatikk: StoppAutomatikk = {
   enhetNr: { value: ENHET_GAMLEOSLO.nummer },
   virksomhetNr: [{ value: VIRKSOMHET_PONTYPANDY.virksomhetsnummer }],
   sykmeldtFnr: { value: ARBEIDSTAKER_DEFAULT.personIdent },
@@ -18,7 +18,7 @@ const defauktStoppAutomatikk: StoppAutomatikk = {
 
 export const createStatusList = (
   created: Date,
-  stoppAutomatikk = defauktStoppAutomatikk
+  stoppAutomatikk = defaultStoppAutomatikk
 ) => {
   return stoppAutomatikk.virksomhetNr.map((virksomhet) => {
     return {

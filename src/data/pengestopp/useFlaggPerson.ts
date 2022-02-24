@@ -1,4 +1,4 @@
-import { QueryClient, useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { ISPENGESTOPP_ROOT } from "@/apiConstants";
 import { post } from "@/api/axios";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
@@ -19,42 +19,23 @@ export const useFlaggPerson = () => {
   );
 
   return useMutation(postFlaggPerson, {
-    onMutate: (stoppAutomatikk: StoppAutomatikk) =>
-      optimisticUpdateStatusEndring(
-        stoppAutomatikk,
-        queryClient,
-        pengestoppStatusQueryKey
-      ),
-    onError: (error, variables, context) => {
-      if (context?.previousStatusEndring) {
-        queryClient.setQueryData(
-          pengestoppStatusQueryKey,
-          context.previousStatusEndring
-        );
-      }
+    onSuccess: (_, stoppAutomatikk) => {
+      const previousStatusEndring =
+        queryClient.getQueryData<StatusEndring[]>(pengestoppStatusQueryKey) ||
+        [];
+      const updatedStatusEndring = stoppAutomatikk2StatusEndring(
+        stoppAutomatikk
+      );
+      queryClient.setQueryData(pengestoppStatusQueryKey, [
+        ...updatedStatusEndring,
+        ...previousStatusEndring,
+      ]);
     },
     onSettled: () =>
       queryClient.invalidateQueries(pengestoppStatusQueryKey, {
         refetchActive: false,
       }),
   });
-};
-
-const optimisticUpdateStatusEndring = (
-  stoppAutomatikk: StoppAutomatikk,
-  queryClient: QueryClient,
-  queryKey: string[]
-) => {
-  const previousStatusEndring = queryClient.getQueryData<StatusEndring[]>(
-    queryKey
-  );
-  const updatedStatusEndring = stoppAutomatikk2StatusEndring(stoppAutomatikk);
-  queryClient.setQueryData(queryKey, [
-    ...updatedStatusEndring,
-    ...(previousStatusEndring || []),
-  ]);
-
-  return { previousStatusEndring };
 };
 
 const stoppAutomatikk2StatusEndring = (
