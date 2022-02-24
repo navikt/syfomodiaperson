@@ -20,7 +20,7 @@ import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { useForhandsvisningHilsen } from "./useForhandsvisningHilsen";
 import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { behandlerDeltakerTekst } from "@/utils/behandlerUtils";
-import { useLedere } from "@/hooks/useLedere";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 export interface ForhandsvisReferatGenerator {
   generateReferatDocument(
@@ -35,7 +35,7 @@ export const useForhandsvisReferat = (
   const { data: veilederinfo } = useVeilederinfoQuery();
   const hilsen = useForhandsvisningHilsen();
 
-  const { getCurrentNarmesteLeder } = useLedere();
+  const { getCurrentNarmesteLeder } = useLedereQuery();
 
   const getValgtArbeidsgiver = () =>
     getCurrentNarmesteLeder(dialogmote.arbeidsgiver.virksomhetsnummer)

@@ -11,7 +11,7 @@ import {
 } from "@/utils/documentComponentUtils";
 import { useForhandsvisningHilsen } from "./useForhandsvisningHilsen";
 import { useForhandsvisningIntro } from "@/hooks/dialogmote/useForhandsvisningIntro";
-import { useLedere } from "@/hooks/useLedere";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 export interface ForhandsvisAvlysningGenerator {
   generateAvlysningArbeidstakerDocument(
@@ -47,7 +47,7 @@ export const useForhandsvisAvlysning = (
     )}. ${avlysningTexts.intro2}`
   );
 
-  const { getCurrentNarmesteLeder } = useLedere();
+  const { getCurrentNarmesteLeder } = useLedereQuery();
 
   const getValgtArbeidsgiver = (arbeidsgiver) =>
     getCurrentNarmesteLeder(arbeidsgiver.virksomhetsnummer)?.virksomhetsnavn;

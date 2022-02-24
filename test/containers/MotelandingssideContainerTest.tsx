@@ -8,11 +8,10 @@ import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
-import { NarmesteLederRelasjonStatus } from "../../mock/data/ledereMock";
 import {
   ARBEIDSTAKER_DEFAULT,
+  LEDERE_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
-  VIRKSOMHET_PONTYPANDY,
 } from "../../mock/common/mockConstants";
 import { render, screen } from "@testing-library/react";
 import { stubTilgangApi } from "../stubs/stubSyfotilgangskontroll";
@@ -22,6 +21,7 @@ import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
 import { tilgangBrukerMock } from "../../mock/data/tilgangtilbrukerMock";
 import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
+import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 
 const realState = createStore(rootReducer).getState();
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
@@ -57,6 +57,10 @@ describe("MotelandingssideContainer", () => {
         motebehovQueryKeys.motebehov(fnr),
         () => motebehovData
       );
+      queryClient.setQueryData(
+        ledereQueryKeys.ledere(fnr),
+        () => LEDERE_DEFAULT
+      );
       apiMockScope = apiMock();
       store = configureStore([]);
       mockState = {
@@ -76,27 +80,6 @@ describe("MotelandingssideContainer", () => {
         moter: {
           hentingForsokt: true,
           data: [],
-        },
-        ledere: {
-          hentet: true,
-          hentingForsokt: true,
-          currentLedere: [
-            {
-              uuid: "3",
-              arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
-              virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-              virksomhetsnavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
-              narmesteLederPersonIdentNumber: "02690001009",
-              narmesteLederTelefonnummer: "12345666",
-              narmesteLederEpost: "test3@test.no",
-              narmesteLederNavn: "Tatten Tattover",
-              aktivFom: "2020-10-03",
-              aktivTom: null,
-              arbeidsgiverForskutterer: false,
-              timestamp: "2020-02-06T12:00:00+01:00",
-              status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
-            },
-          ],
         },
       };
     });
@@ -143,7 +126,6 @@ describe("MotelandingssideContainer", () => {
       );
 
       const expectedActions = [
-        { type: "HENT_LEDERE_FORESPURT", fnr: fnr },
         { type: "HENT_MOTER_FORESPURT", fnr: fnr },
         { type: "HENT_SYKMELDINGER_FORESPURT", fnr: fnr },
       ];

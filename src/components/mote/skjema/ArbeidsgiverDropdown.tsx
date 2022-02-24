@@ -1,8 +1,8 @@
 import React from "react";
 import { Select } from "nav-frontend-skjema";
-import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
 import { ledereSortertPaaNavnOgOrganisasjonsnavn } from "@/utils/ledereUtils";
 import { AlertstripeFullbredde } from "@/components/AlertstripeFullbredde";
+import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 
 const texts = {
   chooseArbeidsgiver: "Velg arbeidsgiver",

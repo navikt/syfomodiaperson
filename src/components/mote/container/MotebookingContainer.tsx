@@ -10,6 +10,7 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { hentMoter } from "@/data/mote/moter_actions";
 import { useAppSelector } from "@/hooks/hooks";
 import SideLaster from "@/components/SideLaster";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 const texts = {
   pageTitle: "Møteplanlegger",
@@ -24,16 +25,20 @@ export const MotebookingContainer = () => {
     dispatch(hentMoter(fnr));
   }, [dispatch, fnr]);
 
-  const { ledere, moter } = useAppSelector((state) => state);
-  const harForsoktHentetAlt = moter.hentingForsokt && ledere.hentingForsokt;
-  const hentingFeilet = moter.hentingFeilet || ledere.hentingFeilet;
+  const {
+    isLoading: henterLedere,
+    isError: henterLedereFeilet,
+  } = useLedereQuery();
+  const { moter } = useAppSelector((state) => state);
+  const henter = !moter.hentingForsokt || henterLedere;
+  const hentingFeilet = moter.hentingFeilet || henterLedereFeilet;
   const aktivtMote = moter.data.find((mote) => {
     return mote.status !== "AVBRUTT";
   });
 
   return (
     <Side tittel={texts.pageTitle} aktivtMenypunkt={MOETEPLANLEGGER}>
-      <SideLaster henter={!harForsoktHentetAlt} hentingFeilet={hentingFeilet}>
+      <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
         {(() => {
           if (moter.tilgang?.harTilgang === false) {
             return (

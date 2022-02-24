@@ -32,13 +32,11 @@ import {
   behandlerDeltakerTekst,
   dialogmote,
   dialogmoteMedBehandler,
-  lederNavn,
   moteTekster,
+  narmesteLederNavn,
   veileder,
 } from "./testData";
-import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
-import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expectedReferatDocument } from "./testDataDocuments";
@@ -51,6 +49,8 @@ import {
   MAX_LENGTH_SITUASJON,
   MAX_LENGTH_VEILEDERS_OPPGAVE,
 } from "@/components/dialogmote/referat/ReferatFritekster";
+import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
+import { LEDERE_DEFAULT } from "../../mock/common/mockConstants";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -66,21 +66,6 @@ const mockState = {
   },
   valgtbruker: {
     personident: arbeidstaker.personident,
-  },
-  ledere: {
-    currentLedere: [
-      {
-        narmesteLederNavn: lederNavn,
-        status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
-        virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-        virksomhetsnavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
-      },
-      {
-        narmesteLederNavn: "Annen Leder",
-        status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
-        virksomhetsnummer: "89829812",
-      },
-    ],
   },
 };
 
@@ -99,6 +84,10 @@ describe("ReferatTest", () => {
     queryClient.setQueryData(
       behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
       () => behandlendeEnhet
+    );
+    queryClient.setQueryData(
+      ledereQueryKeys.ledere(arbeidstaker.personident),
+      () => LEDERE_DEFAULT
     );
 
     clock = sinon.useFakeTimers(today.getTime());
@@ -130,7 +119,9 @@ describe("ReferatTest", () => {
     const getNaermesteLederInput = () => getTextInput("Nærmeste leder");
 
     // Sjekk nærmeste leder preutfylt
-    expect(getNaermesteLederInput().getAttribute("value")).to.equal(lederNavn);
+    expect(getNaermesteLederInput().getAttribute("value")).to.equal(
+      narmesteLederNavn
+    );
 
     // Sjekk at nærmeste leder valideres
     changeTextInput(getNaermesteLederInput(), "");
@@ -278,7 +269,7 @@ describe("ReferatTest", () => {
 
     const ferdigstillMutation = queryClient.getMutationCache().getAll()[0];
     const expectedFerdigstilling = {
-      narmesteLederNavn: lederNavn,
+      narmesteLederNavn: narmesteLederNavn,
       situasjon: moteTekster.situasjonTekst,
       konklusjon: moteTekster.konklusjonTekst,
       arbeidsgiverOppgave: moteTekster.arbeidsgiversOppgave,

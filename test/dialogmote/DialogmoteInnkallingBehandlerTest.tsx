@@ -17,6 +17,8 @@ import configureStore from "redux-mock-store";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import { render, screen } from "@testing-library/react";
+import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
+import { LEDERE_DEFAULT } from "../../mock/common/mockConstants";
 
 let queryClient;
 const noOpMethod = () => {
@@ -36,6 +38,10 @@ describe("DialogmoteInnkallingBehandler", () => {
 
   beforeEach(() => {
     queryClient = new QueryClient();
+    queryClient.setQueryData(
+      ledereQueryKeys.ledere(arbeidstaker.personident),
+      () => LEDERE_DEFAULT
+    );
   });
 
   it("shows a list of behandlere", () => {

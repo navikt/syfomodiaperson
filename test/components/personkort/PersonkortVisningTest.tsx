@@ -6,7 +6,6 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
-import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { arbeidstaker } from "../../dialogmote/testData";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
@@ -28,18 +27,6 @@ describe("PersonkortVisning", () => {
     apiMockScope = apiMock();
     stubFastlegerApi(apiMockScope, arbeidstaker.personident);
     mockState = {
-      ledere: [
-        {
-          narmesteLederNavn: "Station Officer Steele",
-          virksomhetsnummer: "000999000",
-          status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
-        },
-        {
-          narmesteLederNavn: "Are Arbeidsgiver",
-          virksomhetsnummer: "000999001",
-          status: NarmesteLederRelasjonStatus.DEAKTIVERT,
-        },
-      ],
       navbruker: {
         navn: "Knut",
         kontaktinfo: {
@@ -58,7 +45,6 @@ describe("PersonkortVisning", () => {
         <Provider store={store({ ...realState, ...mockState })}>
           <PersonkortVisning
             visning={""}
-            ledere={mockState.ledere}
             navbruker={mockState.navbruker}
             sykmeldinger={[]}
           />
@@ -77,7 +63,6 @@ describe("PersonkortVisning", () => {
         <Provider store={store({ ...realState, ...mockState })}>
           <PersonkortVisning
             visning={PERSONKORTVISNING_TYPE.LEGE}
-            ledere={mockState.ledere}
             navbruker={mockState.navbruker}
             sykmeldinger={[]}
           />
@@ -103,7 +88,6 @@ describe("PersonkortVisning", () => {
         <Provider store={store({ ...realState, ...mockState })}>
           <PersonkortVisning
             visning={PERSONKORTVISNING_TYPE.ENHET}
-            ledere={mockState.ledere}
             navbruker={mockState.navbruker}
             sykmeldinger={[]}
           />

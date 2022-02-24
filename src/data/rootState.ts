@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import ledere, { LedereState } from "./leder/ledere";
 import navbruker, { NavbrukerState } from "./navbruker/navbruker";
 import modiacontext, { ModiaContextState } from "./modiacontext/modiacontext";
 import historikk, { HistorikkState } from "./historikk/historikk";
@@ -14,7 +13,6 @@ import sykmeldinger, { SykmeldingerState } from "./sykmelding/sykmeldinger";
 import unleash, { UnleashState } from "./unleash/unleash";
 
 export interface RootState {
-  ledere: LedereState;
   navbruker: NavbrukerState;
   modiacontext: ModiaContextState;
   historikk: HistorikkState;
@@ -28,7 +26,6 @@ export interface RootState {
 }
 
 export const rootReducer = combineReducers<RootState>({
-  ledere,
   navbruker,
   modiacontext,
   historikk,

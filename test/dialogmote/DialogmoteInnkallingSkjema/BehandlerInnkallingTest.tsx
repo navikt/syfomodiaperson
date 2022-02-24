@@ -37,6 +37,8 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expectedInnkallingDocuments } from "../testDataDocuments";
 import sinon from "sinon";
+import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
+import { LEDERE_DEFAULT } from "../../../mock/common/mockConstants";
 
 let queryClient;
 const store = configureStore([]);
@@ -61,6 +63,10 @@ describe("Dialogmoteinnkallingskjema", () => {
         arbeidstaker.personident
       ),
       () => [behandler]
+    );
+    queryClient.setQueryData(
+      ledereQueryKeys.ledere(arbeidstaker.personident),
+      () => LEDERE_DEFAULT
     );
     clock = sinon.useFakeTimers(today.getTime());
   });

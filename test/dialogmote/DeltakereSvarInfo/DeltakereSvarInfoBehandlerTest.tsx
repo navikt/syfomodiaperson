@@ -7,6 +7,7 @@ import {
   SvarType,
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import {
+  arbeidstaker,
   behandlerDeltaker,
   dialogmote,
   dialogmoteMedBehandler,
@@ -17,6 +18,8 @@ import { Provider } from "react-redux";
 import { DeltakereSvarInfo } from "@/components/dialogmote/DeltakereSvarInfo";
 import React from "react";
 import { expect } from "chai";
+import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
+import { LEDERE_DEFAULT } from "../../../mock/common/mockConstants";
 
 const store = configureStore([]);
 let queryClient;
@@ -86,6 +89,10 @@ describe("DeltakereSvarInfo uten behandler", () => {
 describe("DeltakereSvarInfo med behandler", () => {
   beforeEach(() => {
     queryClient = new QueryClient();
+    queryClient.setQueryData(
+      ledereQueryKeys.ledere(arbeidstaker.personident),
+      () => LEDERE_DEFAULT
+    );
   });
   describe("behandler har ikke svart på innkalling", () => {
     const dialogmoteMedUbesvartVarsel = dialogmoteBehandlerMedSvar([]);

@@ -1,13 +1,13 @@
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
-import { useLedere } from "@/hooks/useLedere";
 import { ReferatSkjemaValues } from "@/components/dialogmote/referat/Referat";
 import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { useMemo } from "react";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 export const useInitialValuesReferat = (
   dialogmote: DialogmoteDTO
 ): Partial<ReferatSkjemaValues> => {
-  const { getCurrentNarmesteLeder } = useLedere();
+  const { getCurrentNarmesteLeder } = useLedereQuery();
   const {
     referat,
     arbeidsgiver: { virksomhetsnummer },

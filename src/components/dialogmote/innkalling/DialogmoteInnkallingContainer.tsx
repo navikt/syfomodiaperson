@@ -5,7 +5,6 @@ import Sidetopp from "../../Sidetopp";
 import DialogmoteInnkallingSkjema from "./DialogmoteInnkallingSkjema";
 import SideLaster from "../../SideLaster";
 import styled from "styled-components";
-import { useLedere } from "@/hooks/useLedere";
 import { AlertstripeFullbredde } from "../../AlertstripeFullbredde";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/components/dialogmote/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
@@ -13,6 +12,7 @@ import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { Redirect } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 const texts = {
   title: "Innkalling til dialogmøte",
@@ -25,7 +25,10 @@ const DialogmoteInnkallingWarningAlert = styled(AlertstripeFullbredde)`
 `;
 
 const DialogmoteInnkallingContainer = (): ReactElement => {
-  const { hentingLedereForsokt, hentingLedereFeilet } = useLedere();
+  const {
+    isLoading: henterLedere,
+    isError: hentingLedereFeilet,
+  } = useLedereQuery();
   const { triedFetchingToggles, isDm2Enabled } = useDM2FeatureToggles();
   const { brukerKanIkkeVarslesDigitalt } = useNavBrukerData();
   const { aktivtDialogmote } = useDialogmoterQuery();
@@ -36,10 +39,7 @@ const DialogmoteInnkallingContainer = (): ReactElement => {
 
   return (
     <Side tittel={texts.title} aktivtMenypunkt={MOETEPLANLEGGER}>
-      <SideLaster
-        henter={!hentingLedereForsokt}
-        hentingFeilet={hentingLedereFeilet}
-      >
+      <SideLaster henter={henterLedere} hentingFeilet={hentingLedereFeilet}>
         <Sidetopp tittel={texts.title} />
         <DialogmoteInnkallingWarningAlert type="advarsel">
           {texts.alert}

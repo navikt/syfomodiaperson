@@ -39,6 +39,8 @@ import userEvent from "@testing-library/user-event";
 import { MAX_LENGTH_AVLYS_BEGRUNNELSE } from "@/components/dialogmote/avlys/AvlysDialogmoteSkjema";
 import { expectedEndringDocuments } from "./testDataDocuments";
 import sinon from "sinon";
+import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
+import { LEDERE_DEFAULT } from "../../mock/common/mockConstants";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -59,6 +61,11 @@ describe("EndreDialogmoteSkjemaTest", () => {
       behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
       () => behandlendeEnhet
     );
+    queryClient.setQueryData(
+      ledereQueryKeys.ledere(arbeidstaker.personident),
+      () => LEDERE_DEFAULT
+    );
+
     clock = sinon.useFakeTimers(today.getTime());
   });
 

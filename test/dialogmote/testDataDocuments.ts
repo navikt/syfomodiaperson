@@ -10,9 +10,9 @@ import {
   behandlerDeltakerTekst,
   dialogmote,
   endretMote,
-  lederNavn,
   mote,
   moteTekster,
+  narmesteLederNavn,
   navEnhet,
   veileder,
 } from "./testData";
@@ -653,7 +653,7 @@ export const expectedReferatDocument = (): DocumentComponentDto[] => [
   {
     texts: [
       `Arbeidstaker: ${arbeidstaker.navn}`,
-      `Arbeidsgiver: ${lederNavn}`,
+      `Arbeidsgiver: ${narmesteLederNavn}`,
       `Fra NAV: ${veileder.navn}`,
       behandlerDeltakerTekst,
       `${annenDeltakerFunksjon}: ${annenDeltakerNavn}`,

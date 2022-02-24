@@ -16,6 +16,8 @@ import {
   MotedeltakerVarselType,
   SvarType,
 } from "@/data/dialogmote/types/dialogmoteTypes";
+import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
+import { LEDERE_DEFAULT } from "../../../mock/common/mockConstants";
 
 const store = configureStore([]);
 let queryClient;
@@ -34,6 +36,10 @@ const renderDeltakereSvarInfo = (dialogmote: DialogmoteDTO) =>
 describe("DeltakereSvarInfo for arbeidstaker", () => {
   beforeEach(() => {
     queryClient = new QueryClient();
+    queryClient.setQueryData(
+      ledereQueryKeys.ledere(arbeidstaker.personident),
+      () => LEDERE_DEFAULT
+    );
   });
 
   describe("arbeidstaker har åpnet innkalling (ikke svart)", () => {

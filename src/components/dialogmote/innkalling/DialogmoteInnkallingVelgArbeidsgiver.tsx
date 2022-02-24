@@ -4,9 +4,9 @@ import { Field } from "react-final-form";
 import ArbeidsgiverDropdown from "../../mote/skjema/ArbeidsgiverDropdown";
 import styled from "styled-components";
 import DialogmoteInnkallingSkjemaSeksjon from "./DialogmoteInnkallingSkjemaSeksjon";
-import { useLedere } from "@/hooks/useLedere";
 import { FlexColumn, FlexRow, PaddingSize } from "../../Layout";
 import { Innholdstittel } from "nav-frontend-typografi";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 const texts = {
   title: "Arbeidsgiver",
@@ -24,7 +24,7 @@ const ArbeidsgiverTittel = styled(Innholdstittel)`
 `;
 
 const DialogmoteInnkallingVelgArbeidsgiver = () => {
-  const { currentLedere } = useLedere();
+  const { currentLedere } = useLedereQuery();
   const field = "arbeidsgiver";
 
   return (

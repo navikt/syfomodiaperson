@@ -28,6 +28,8 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { changeTextInput, clickButton, getTextInput } from "../../testUtils";
 import { expectedInnkallingDocuments } from "../testDataDocuments";
 import sinon from "sinon";
+import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
+import { LEDERE_DEFAULT } from "../../../mock/common/mockConstants";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -46,6 +48,10 @@ describe("DialogmoteInnkallingSkjema", () => {
     queryClient.setQueryData(
       behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
       () => behandlendeEnhet
+    );
+    queryClient.setQueryData(
+      ledereQueryKeys.ledere(arbeidstaker.personident),
+      () => LEDERE_DEFAULT
     );
     clock = sinon.useFakeTimers(today.getTime());
   });

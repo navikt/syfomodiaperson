@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PERSONKORTVISNING_TYPE } from "@/konstanter";
-import { hentLedere } from "@/data/leder/ledere_actions";
 import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
 import OversiktLink from "./OversiktLink";
 import PersonkortHeader from "./PersonkortHeader";
@@ -34,9 +33,6 @@ const Personkort = () => {
 
   const dispatch = useDispatch();
 
-  const ledereState = useSelector((state: any) => state.ledere);
-  const ledere = ledereState.allLedere;
-
   const navbruker = useNavBrukerData();
   const brukerFnr = navbruker.kontaktinfo && navbruker.kontaktinfo.fnr;
 
@@ -44,7 +40,6 @@ const Personkort = () => {
 
   useEffect(() => {
     if (brukerFnr) {
-      dispatch(hentLedere(brukerFnr));
       dispatch(hentSykmeldinger(brukerFnr));
     }
   }, [dispatch, brukerFnr]);
@@ -123,7 +118,6 @@ const Personkort = () => {
 
           <div aria-live="polite">
             <PersonkortVisning
-              ledere={ledere}
               navbruker={navbruker}
               sykmeldinger={sykmeldinger}
               visning={visning}

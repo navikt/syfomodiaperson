@@ -4,16 +4,15 @@ import Side from "../../../sider/Side";
 import Historikk from "../Historikk";
 import { HISTORIKK } from "@/enums/menypunkter";
 import SideLaster from "../../SideLaster";
-import { useLedere } from "@/hooks/useLedere";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { hentHistorikk } from "@/data/historikk/historikk_actions";
-import { hentLedere } from "@/data/leder/ledere_actions";
-import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import IngenHistorikk from "../IngenHistorikk";
 import { useHistorikk } from "@/data/historikk/historikk_hooks";
 import Sidetopp from "../../Sidetopp";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 const texts = {
   topp: "Logg",
@@ -48,11 +47,11 @@ export const HistorikkContainer = (): ReactElement => {
   } = useHistorikk();
 
   const {
-    henterLedere,
-    hentingLedereFeilet,
+    isLoading: henterLedere,
+    isError: hentingLedereFeilet,
     currentLedere,
     formerLedere,
-  } = useLedere();
+  } = useLedereQuery();
 
   const {
     data: oppfolgingstilfellePerson,
@@ -86,10 +85,6 @@ export const HistorikkContainer = (): ReactElement => {
       dispatch(hentHistorikk(fnr, "OPPFOELGINGSDIALOG"));
     }
   }, [dispatch, fnr, skalHenteOppfoelgingsdialoger]);
-
-  useEffect(() => {
-    dispatch(hentLedere(fnr));
-  }, [dispatch, fnr]);
 
   const tilfeller = oppfolgingstilfellePerson?.oppfolgingstilfelleList || [];
   const lederHistorikk = createHistorikkEventsFromLedere(allLedere);

@@ -1,0 +1,55 @@
+import { ISNARMESTELEDER_ROOT } from "@/apiConstants";
+import { useValgtPersonident } from "@/hooks/useValgtBruker";
+import { get } from "@/api/axios";
+import { useQuery } from "react-query";
+import { minutesToMillis } from "@/utils/timeUtils";
+import { useMemo } from "react";
+import {
+  NarmesteLederRelasjonDTO,
+  NarmesteLederRelasjonStatus,
+} from "@/data/leder/ledereTypes";
+
+export const ledereQueryKeys = {
+  ledere: (fnr: string) => ["ledere", fnr],
+};
+
+export const ISNARMESTELEDER_NARMESTELEDERRELASJON_PERSONIDENT_PATH =
+  "/narmestelederrelasjon/personident";
+
+export const useLedereQuery = () => {
+  const fnr = useValgtPersonident();
+  const path = `${ISNARMESTELEDER_ROOT}${ISNARMESTELEDER_NARMESTELEDERRELASJON_PERSONIDENT_PATH}`;
+  const fetchLedere = () => get<NarmesteLederRelasjonDTO[]>(path, fnr);
+  const query = useQuery(ledereQueryKeys.ledere(fnr), fetchLedere, {
+    enabled: !!fnr,
+    staleTime: minutesToMillis(60 * 12),
+  });
+  const currentLedere = useMemo(
+    () =>
+      query.data?.filter(
+        (leder) => leder.status === NarmesteLederRelasjonStatus.INNMELDT_AKTIV
+      ) || [],
+    [query.data]
+  );
+  const getCurrentNarmesteLeder = (
+    virksomhetsnummer: string
+  ): NarmesteLederRelasjonDTO | undefined => {
+    return currentLedere.find(
+      (leder) => leder.virksomhetsnummer === virksomhetsnummer
+    );
+  };
+
+  return {
+    ...query,
+    getCurrentNarmesteLeder,
+    currentLedere,
+    formerLedere: useMemo(
+      () =>
+        query.data?.filter(
+          (leder) => leder.status !== NarmesteLederRelasjonStatus.INNMELDT_AKTIV
+        ) || [],
+      [query.data]
+    ),
+    allLedere: query.data || [],
+  };
+};

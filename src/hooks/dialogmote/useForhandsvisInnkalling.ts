@@ -19,7 +19,7 @@ import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/Behandl
 import { capitalizeWord } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useForhandsvisningIntro } from "@/hooks/dialogmote/useForhandsvisningIntro";
-import { useLedere } from "@/hooks/useLedere";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 export interface ForhandsvisInnkallingGenerator {
   generateArbeidstakerInnkallingDocument(
@@ -45,7 +45,7 @@ export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
     introHilsenBehandler,
   } = useForhandsvisningIntro();
 
-  const { getCurrentNarmesteLeder } = useLedere();
+  const { getCurrentNarmesteLeder } = useLedereQuery();
   const getValgtArbeidsgiver = (
     values: Partial<DialogmoteInnkallingSkjemaValues>
   ) =>

@@ -27,6 +27,8 @@ import { behandlereDialogmeldingQueryKeys } from "@/data/behandlerdialogmelding/
 import { changeTextInput, getTextInput } from "../../testUtils";
 import { expectedInnkallingDocuments } from "../testDataDocuments";
 import sinon from "sinon";
+import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
+import { LEDERE_DEFAULT } from "../../../mock/common/mockConstants";
 
 let queryClient;
 const store = configureStore([]);
@@ -45,6 +47,10 @@ describe("Dialogmoteinnkallingskjema", () => {
     queryClient.setQueryData(
       behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
       () => behandlendeEnhet
+    );
+    queryClient.setQueryData(
+      ledereQueryKeys.ledere(arbeidstaker.personident),
+      () => LEDERE_DEFAULT
     );
     clock = sinon.useFakeTimers(today.getTime());
   });

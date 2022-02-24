@@ -20,7 +20,7 @@ import styled from "styled-components";
 import { Element, Normaltekst } from "nav-frontend-typografi";
 import Ekspanderbartpanel from "nav-frontend-ekspanderbartpanel";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
-import { useLedere } from "@/hooks/useLedere";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 const texts = {
   naermesteLeder: "Nærmeste leder:",
@@ -299,7 +299,7 @@ interface DeltakereSvarInfoProps {
 
 export const DeltakereSvarInfo = ({ dialogmote }: DeltakereSvarInfoProps) => {
   const bruker = useNavBrukerData();
-  const { getCurrentNarmesteLeder } = useLedere();
+  const { getCurrentNarmesteLeder } = useLedereQuery();
   const narmesteLederNavn = getCurrentNarmesteLeder(
     dialogmote.arbeidsgiver.virksomhetsnummer
   )?.narmesteLederNavn;

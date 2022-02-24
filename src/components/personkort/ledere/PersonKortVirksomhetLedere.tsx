@@ -2,13 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { Row, Column } from "nav-frontend-grid";
 import { Undertekst } from "nav-frontend-typografi";
-import {
-  NarmesteLederRelasjonDTO,
-  NarmesteLederRelasjonStatus,
-} from "@/data/leder/ledere";
 import { restdatoTildato } from "@/utils/datoUtils";
 import PersonKortVirksomhetHeader from "./PersonKortVirksomhetHeader";
 import EpostButton from "../EpostButton";
+import {
+  NarmesteLederRelasjonDTO,
+  NarmesteLederRelasjonStatus,
+} from "@/data/leder/ledereTypes";
 
 const texts = {
   name: "Navn",

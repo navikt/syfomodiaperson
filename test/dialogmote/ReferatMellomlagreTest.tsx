@@ -18,20 +18,20 @@ import {
   behandlendeEnhet,
   dialogmoteMedBehandler,
   dialogmoteMedReferat,
-  lederNavn,
   moteTekster,
+  narmesteLederNavn,
   referatStandardTekst,
   veileder,
 } from "./testData";
-import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
-import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
+import { LEDERE_DEFAULT } from "../../mock/common/mockConstants";
 import { render, screen } from "@testing-library/react";
 import { expectedReferatDocument } from "./testDataDocuments";
 import sinon from "sinon";
 import userEvent from "@testing-library/user-event";
 import { stubMellomlagreApi } from "../stubs/stubIsdialogmote";
 import { apiMock } from "../stubs/stubApi";
+import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -47,21 +47,6 @@ const mockState = {
   },
   valgtbruker: {
     personident: arbeidstaker.personident,
-  },
-  ledere: {
-    currentLedere: [
-      {
-        narmesteLederNavn: lederNavn,
-        status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
-        virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-        virksomhetsnavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
-      },
-      {
-        narmesteLederNavn: "Annen Leder",
-        status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
-        virksomhetsnummer: "89829812",
-      },
-    ],
   },
 };
 
@@ -81,6 +66,10 @@ describe("ReferatMellomlagreTest", () => {
       behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
       () => behandlendeEnhet
     );
+    queryClient.setQueryData(
+      ledereQueryKeys.ledere(arbeidstaker.personident),
+      () => LEDERE_DEFAULT
+    );
 
     clock = sinon.useFakeTimers(today.getTime());
   });
@@ -97,7 +86,7 @@ describe("ReferatMellomlagreTest", () => {
 
     const mellomlagreMutation = queryClient.getMutationCache().getAll()[0];
     const expectedReferat = {
-      narmesteLederNavn: lederNavn,
+      narmesteLederNavn: narmesteLederNavn,
       situasjon: moteTekster.situasjonTekst,
       konklusjon: moteTekster.konklusjonTekst,
       arbeidsgiverOppgave: moteTekster.arbeidsgiversOppgave,
@@ -117,7 +106,7 @@ describe("ReferatMellomlagreTest", () => {
   it("preutfyller referat-skjema fra dialogmote med mellomlagret referat", () => {
     renderReferat(dialogmoteMedReferat);
 
-    expect(screen.getByDisplayValue(lederNavn)).to.exist;
+    expect(screen.getByDisplayValue(narmesteLederNavn)).to.exist;
     expect(screen.getByDisplayValue(moteTekster.situasjonTekst)).to.exist;
     expect(screen.getByDisplayValue(moteTekster.arbeidsgiversOppgave)).to.exist;
     expect(screen.getByDisplayValue(moteTekster.arbeidstakersOppgave)).to.exist;

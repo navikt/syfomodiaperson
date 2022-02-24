@@ -11,10 +11,10 @@ import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
 import { tilgangBrukerMock } from "../../mock/data/tilgangtilbrukerMock";
 import {
   ARBEIDSTAKER_DEFAULT,
-  VIRKSOMHET_PONTYPANDY,
+  LEDERE_DEFAULT,
 } from "../../mock/common/mockConstants";
 import { MemoryRouter } from "react-router-dom";
-import { NarmesteLederRelasjonStatus } from "../../mock/data/ledereMock";
+import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 
 const harIkkeMoterTilgang = {
   harTilgang: false,
@@ -33,30 +33,10 @@ describe("MotebookingContainer", () => {
       tilgangQueryKeys.tilgang(fnr),
       () => tilgangBrukerMock
     );
+    queryClient.setQueryData(ledereQueryKeys.ledere(fnr), () => LEDERE_DEFAULT);
     store = configureStore([]);
     mockState = {
       enhet: { valgtEnhet: "2212" },
-      ledere: {
-        hentet: true,
-        hentingForsokt: true,
-        currentLedere: [
-          {
-            uuid: "3",
-            arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
-            virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-            virksomhetsnavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
-            narmesteLederPersonIdentNumber: "02690001009",
-            narmesteLederTelefonnummer: "12345666",
-            narmesteLederEpost: "test3@test.no",
-            narmesteLederNavn: "Tatten Tattover",
-            aktivFom: "2020-10-03",
-            aktivTom: null,
-            arbeidsgiverForskutterer: false,
-            timestamp: "2020-02-06T12:00:00+01:00",
-            status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
-          },
-        ],
-      },
       valgtbruker: { personident: fnr },
     };
   });

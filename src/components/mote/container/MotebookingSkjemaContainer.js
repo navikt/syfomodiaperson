@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import * as ledereActions from "../../../data/leder/ledere_actions";
 import * as moteActions from "../../../data/mote/moter_actions";
 import MotebookingSkjema from "../skjema/MotebookingSkjema";
 import AppSpinner from "../../AppSpinner";
 import Feilmelding from "../../Feilmelding";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 const texts = {
   skjermetBrukerError: {
@@ -33,14 +33,18 @@ const MotebookingSkjemaContainer = ({
   fnr,
   henter,
   hentingFeilet,
-  ledere,
   opprettMote,
   skjermetBruker,
   valgtEnhet,
   sender,
   sendingFeilet,
 }) => {
-  if (henter) {
+  const {
+    currentLedere: ledere,
+    isLoading: henterLedere,
+    isError: henterLedereFeilet,
+  } = useLedereQuery();
+  if (henter || henterLedere) {
     return <AppSpinner />;
   } else if (skjermetBruker) {
     return (
@@ -49,7 +53,7 @@ const MotebookingSkjemaContainer = ({
         melding={{ __html: texts.skjermetBrukerError.message }}
       />
     );
-  } else if (hentingFeilet) {
+  } else if (hentingFeilet || henterLedereFeilet) {
     return <Feilmelding />;
   } else if (!valgtEnhet) {
     return (
@@ -90,7 +94,6 @@ MotebookingSkjemaContainer.propTypes = {
   flereAlternativ: PropTypes.func,
   henter: PropTypes.bool,
   hentingFeilet: PropTypes.bool,
-  ledere: PropTypes.array,
   opprettMote: PropTypes.func,
   skjermetBruker: PropTypes.bool,
   valgtEnhet: PropTypes.string,
@@ -99,15 +102,11 @@ MotebookingSkjemaContainer.propTypes = {
 };
 
 export function mapStateToProps(state, ownProps) {
-  const ledere = state.ledere.currentLedere;
-
   return {
     fnr: ownProps.fnr,
-    ledere,
     arbeidstaker: state.navbruker.data,
     valgtEnhet: state.enhet.valgtEnhet,
-    henter: state.ledere.henter || state.navbruker.henter,
-    hentLedereFeiletBool: state.ledere.hentingFeilet,
+    henter: state.navbruker.henter,
     skjermetBruker: state.moter.skjermetBruker,
     antallNyeTidspunkt: state.moter.antallNyeTidspunkt,
     hentingFeilet: state.navbruker.hentingFeilet,
@@ -118,7 +117,7 @@ export function mapStateToProps(state, ownProps) {
 
 const container = connect(
   mapStateToProps,
-  Object.assign({}, ledereActions, moteActions)
+  Object.assign({}, moteActions)
 )(MotebookingSkjemaContainer);
 
 export default container;

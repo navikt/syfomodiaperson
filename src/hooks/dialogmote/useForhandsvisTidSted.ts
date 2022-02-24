@@ -22,7 +22,7 @@ import {
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { useForhandsvisningIntro } from "@/hooks/dialogmote/useForhandsvisningIntro";
 import { behandlerDeltakerTekst } from "@/utils/behandlerUtils";
-import { useLedere } from "@/hooks/useLedere";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 export interface ForhandsvisTidStedGenerator {
   generateArbeidsgiverTidStedDocument(
@@ -54,7 +54,7 @@ export const useForhandsvisTidSted = (
     `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
   );
 
-  const { getCurrentNarmesteLeder } = useLedere();
+  const { getCurrentNarmesteLeder } = useLedereQuery();
 
   const getValgtArbeidsgiver = () =>
     getCurrentNarmesteLeder(arbeidsgiver.virksomhetsnummer)?.virksomhetsnavn;

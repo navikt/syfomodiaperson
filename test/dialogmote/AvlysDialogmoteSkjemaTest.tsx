@@ -39,6 +39,8 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expectedAvlysningDocuments } from "./testDataDocuments";
 import sinon from "sinon";
+import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
+import { LEDERE_DEFAULT } from "../../mock/common/mockConstants";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -58,6 +60,10 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     queryClient.setQueryData(
       behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
       () => behandlendeEnhet
+    );
+    queryClient.setQueryData(
+      ledereQueryKeys.ledere(arbeidstaker.personident),
+      () => LEDERE_DEFAULT
     );
 
     clock = sinon.useFakeTimers(today.getTime());

@@ -4,11 +4,12 @@ import {
   SykmeldingLeder,
   virksomheterWithoutLeder,
 } from "@/utils/ledereUtils";
-import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
 import { groupArrayByKey } from "@/utils/sortUtils";
 import PersonkortFeilmelding from "../PersonkortFeilmelding";
 import PersonKortVirksomhetLedere from "./PersonKortVirksomhetLedere";
 import PersonKortVirksomhetHeader from "./PersonKortVirksomhetHeader";
+import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 const texts = {
   noLeader:
@@ -24,18 +25,18 @@ export const sortLeaderListNewestFomDatoFirst = (
 };
 
 interface PersonkortLedereProps {
-  ledere: NarmesteLederRelasjonDTO[];
   sykmeldinger: any[];
 }
 
 const PersonkortLedere = (personkortLedereProps: PersonkortLedereProps) => {
-  const { ledere, sykmeldinger } = personkortLedereProps;
+  const { allLedere } = useLedereQuery();
+  const { sykmeldinger } = personkortLedereProps;
   const virksomheterFromSykmeldinger = virksomheterWithoutLeder(
-    ledere,
+    allLedere,
     sykmeldinger
   );
   const ledereWithActiveFirst = ledereWithActiveLedereFirst(
-    ledere,
+    allLedere,
     sykmeldinger
   );
 

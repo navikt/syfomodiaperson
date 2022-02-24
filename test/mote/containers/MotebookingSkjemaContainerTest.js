@@ -11,18 +11,6 @@ describe("MotebookingSkjemaContainer", () => {
         fnr: "fnr",
       };
       state = {
-        ledere: {
-          currentLedere: [
-            {
-              narmesteLederNavn: "Ole",
-            },
-            {
-              narmesteLederNavn: "Per",
-            },
-          ],
-          henter: false,
-          hentingFeilet: false,
-        },
         moter: {},
         enhet: {
           valgtEnhet: "0021",
@@ -33,32 +21,6 @@ describe("MotebookingSkjemaContainer", () => {
           navn: "Ole",
         },
       };
-    });
-
-    it("Skal returnere hentingFeilet når henting av ledere feiler", () => {
-      state.ledere.currentLedere = [];
-      state.ledere.hentingFeilet = true;
-      const props = mapStateToProps(state, ownProps);
-      expect(props.hentLedereFeiletBool).to.be.equal(true);
-    });
-
-    it("Skal returnere hentingFeilet når henting av ledere ikke feiler", () => {
-      state.ledere.currentLedere = [];
-      state.ledere.hentingFeilet = false;
-      const props = mapStateToProps(state, ownProps);
-      expect(props.hentLedereFeiletBool).to.be.equal(false);
-    });
-
-    it("Skal returnere henter når det hentes ledere", () => {
-      state.moter.data = [
-        {
-          id: 1,
-        },
-      ];
-      state.moter.henter = false;
-      state.ledere.henter = true;
-      const props = mapStateToProps(state, ownProps);
-      expect(props.henter).to.be.equal(true);
     });
 
     it("Skal returnere arbeidstaker", () => {

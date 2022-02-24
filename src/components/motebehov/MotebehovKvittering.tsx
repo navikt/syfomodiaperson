@@ -1,5 +1,4 @@
 import React, { ReactElement } from "react";
-import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
 import {
   finnArbeidstakerMotebehovSvar,
   motebehovFromLatestActiveTilfelle,
@@ -17,6 +16,7 @@ import { InfoRow } from "../InfoRow";
 import { PaddingSize } from "../Layout";
 import { ledereUtenMotebehovsvar } from "@/utils/ledereUtils";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 
 export const arbeidsgiverNavnEllerTomStreng = (lederNavn?: string) => {
   return lederNavn ? `${lederNavn}` : "";

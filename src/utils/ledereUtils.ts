@@ -1,7 +1,7 @@
 import {
   NarmesteLederRelasjonDTO,
   NarmesteLederRelasjonStatus,
-} from "@/data/leder/ledere";
+} from "@/data/leder/ledereTypes";
 import {
   erOppfoelgingsdatoPassertMed16UkerOgIkke26Uker,
   erOppfolgingstilfelleSluttDatoPassert,
@@ -187,22 +187,6 @@ export const virksomheterWithoutLeder = (
   const virksomheterAsLedere = sykmeldingerWithoutLeder.map(sykmelding2Leder);
 
   return removeDuplicatesFromLederList(virksomheterAsLedere);
-};
-
-export const currentLedere = (
-  ledere: NarmesteLederRelasjonDTO[]
-): NarmesteLederRelasjonDTO[] => {
-  return ledere.filter(
-    (leder) => leder.status === NarmesteLederRelasjonStatus.INNMELDT_AKTIV
-  );
-};
-
-export const formerLedere = (
-  ledere: NarmesteLederRelasjonDTO[]
-): NarmesteLederRelasjonDTO[] => {
-  return ledere.filter(
-    (leder) => leder.status !== NarmesteLederRelasjonStatus.INNMELDT_AKTIV
-  );
 };
 
 export const ledereSortertPaaNavnOgOrganisasjonsnavn = (

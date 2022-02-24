@@ -18,7 +18,7 @@ import {
   mockLederWithoutActiveSykmelding,
   mockSykmeldingWithStatusNyForLeder,
 } from "../mockdata/mockLedere";
-import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
+import { NarmesteLederRelasjonStatus } from "@/data/leder/ledereTypes";
 
 describe("ledereUtils", () => {
   describe("ledereIVirksomheterMedMotebehovsvarFraArbeidstaker", () => {

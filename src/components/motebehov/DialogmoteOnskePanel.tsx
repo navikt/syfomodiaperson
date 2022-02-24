@@ -5,8 +5,8 @@ import BehandleMotebehovKnapp from "./BehandleMotebehovKnapp";
 import { DialogmotePanel } from "../mote/components/DialogmotePanel";
 import React from "react";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
-import { NarmesteLederRelasjonDTO } from "@/data/leder/ledere";
 import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
+import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 
 const texts = {
   onskerOmDialogmote: "Ønsker om dialogmøte",

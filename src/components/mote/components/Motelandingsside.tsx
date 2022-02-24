@@ -6,7 +6,6 @@ import { useAppSelector } from "@/hooks/hooks";
 import UtdragFraSykefravaeretPanel from "../../utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { InnkallingDialogmotePanel } from "./innkalling/InnkallingDialogmotePanel";
 import SideLaster from "../../SideLaster";
-import { hentLedere } from "@/data/leder/ledere_actions";
 import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
 import { DialogmoteOnskePanel } from "../../motebehov/DialogmoteOnskePanel";
 import { MotehistorikkPanel } from "../../dialogmote/motehistorikk/MotehistorikkPanel";
@@ -14,6 +13,7 @@ import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useOppfolgingsplanerQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 const texts = {
   dialogmoter: "Dialogmøter",
@@ -38,34 +38,35 @@ export const Motelandingsside = () => {
     isError: henterMotebehovFeilet,
     isLoading: henterMotebehov,
   } = useMotebehovQuery();
+  const {
+    currentLedere,
+    isLoading: henterLedere,
+    isError: henterLedereFeilet,
+  } = useLedereQuery();
 
-  const { ledere, sykmeldinger, moter, navbruker } = useAppSelector(
-    (state) => state
-  );
+  const { sykmeldinger, moter, navbruker } = useAppSelector((state) => state);
 
   useEffect(() => {
-    dispatch(hentLedere(fnr));
     dispatch(hentMoter(fnr));
     dispatch(hentSykmeldinger(fnr));
   }, [dispatch, fnr]);
 
-  const harForsoktHentetAlt = ledere.hentingForsokt && moter.hentingForsokt;
   const henter =
-    !harForsoktHentetAlt ||
+    !moter.hentingForsokt ||
     henterDialogmoter ||
     henterOppfolgingsplaner ||
-    henterMotebehov;
+    henterMotebehov ||
+    henterLedere;
+  const hentingFeilet =
+    henterLedereFeilet || henterMotebehovFeilet || henterDialogmoterFeilet;
 
   return (
-    <SideLaster
-      henter={henter}
-      hentingFeilet={henterMotebehovFeilet || henterDialogmoterFeilet}
-    >
+    <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
       <Sidetopp tittel={texts.dialogmoter} />
 
       <DialogmoteOnskePanel
         motebehovData={motebehov}
-        ledereData={ledere.currentLedere}
+        ledereData={currentLedere}
         sykmeldt={navbruker.data}
       />
 

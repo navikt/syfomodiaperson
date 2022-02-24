@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { hentSykmeldinger } from "@/data/sykmelding/sykmeldinger_actions";
-import { hentLedere } from "@/data/leder/ledere_actions";
 import { NOKKELINFORMASJON } from "@/enums/menypunkter";
 import Side from "../../../sider/Side";
 import Nokkelinformasjon from "../Nokkelinformasjon";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import SideLaster from "../../SideLaster";
 import { useOppfolgingsplanerQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 const texts = {
   pageTitle: "Nøkkelinformasjon",
@@ -20,19 +20,21 @@ export const NokkelinformasjonSide = () => {
     isLoading: henterOppfolgingsplaner,
   } = useOppfolgingsplanerQuery();
 
-  const ledereState = useSelector((state: any) => state.ledere);
   const sykmeldingerState = useSelector((state: any) => state.sykmeldinger);
+  const {
+    isLoading: henterLedere,
+    isError: henterLedereFeilet,
+  } = useLedereQuery();
 
-  const henter = !ledereState.hentingForsokt || henterOppfolgingsplaner;
-  const hentingFeilet = sykmeldingerState.hentingFeilet;
+  const henter = henterOppfolgingsplaner || henterLedere;
+  const hentingFeilet = sykmeldingerState.hentingFeilet || henterLedereFeilet;
   const sykmeldinger = sykmeldingerState.data;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(hentLedere(fnr));
     dispatch(hentSykmeldinger(fnr));
-  }, [dispatch, fnr, ledereState]);
+  }, [dispatch, fnr]);
 
   return (
     <Side tittel={texts.pageTitle} aktivtMenypunkt={NOKKELINFORMASJON}>

@@ -1,5 +1,5 @@
-import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import { NarmesteLederRelasjonStatus } from "@/data/leder/ledereTypes";
 
 const VIRKSOMHETSNUMMER_WITH_ACTIVE_SYKMELDING = "123456789";
 const VIRKSOMHETSNUMMER_WITHOUT_ACTIVE_SYKMELDING = "987654321";

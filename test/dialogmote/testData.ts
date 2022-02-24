@@ -13,12 +13,11 @@ import {
   BehandlerDialogmeldingDTO,
   BehandlerType,
 } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
-import { NarmesteLederRelasjonStatus } from "@/data/leder/ledere";
 import { leggTilDagerPaDato, toDatePrettyPrint } from "@/utils/datoUtils";
 import { InputDateStringToISODateString } from "nav-datovelger/lib/utils/dateFormatUtils";
 import {
-  ARBEIDSTAKER_DEFAULT,
   ENHET_GRUNERLOKKA,
+  NARMESTE_LEDER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
 } from "../../mock/common/mockConstants";
 import { capitalizeWord } from "@/utils/stringUtils";
@@ -45,7 +44,7 @@ export const veileder: Partial<VeilederinfoDTO> = {
   epost: "vetle.veileder@nav.no",
   telefonnummer: "12345678",
 };
-export const narmesteLederNavn = "Tatten Tattover";
+export const narmesteLederNavn = NARMESTE_LEDER_DEFAULT.navn;
 
 export const behandler: BehandlerDialogmeldingDTO = {
   fnr: "01038521470",
@@ -155,25 +154,6 @@ export const mockState = {
   valgtbruker: {
     personident: arbeidstaker.personident,
   },
-  ledere: {
-    currentLedere: [
-      {
-        uuid: "3",
-        arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
-        virksomhetsnummer: arbeidsgiver.orgnr,
-        virksomhetsnavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
-        narmesteLederPersonIdentNumber: "02690001009",
-        narmesteLederTelefonnummer: "12345666",
-        narmesteLederEpost: "test3@test.no",
-        narmesteLederNavn: narmesteLederNavn,
-        aktivFom: new Date(),
-        aktivTom: null,
-        arbeidsgiverForskutterer: false,
-        timestamp: "2020-02-06T12:00:00+01:00",
-        status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
-      },
-    ],
-  },
 };
 
 const moteSted = "Sted for møtet";
@@ -207,7 +187,6 @@ const behandlersOppgave = "Noe tekst om behandlers oppgave";
 
 export const annenDeltakerNavn = "Bodil Bolle";
 export const annenDeltakerFunksjon = "Verneombud";
-export const lederNavn = "Grønn Bamse";
 export const behandlerDeltakerTekst = `Behandler: ${capitalizeWord(
   behandler.type.toLowerCase()
 )} ${behandlerNavn(behandler)}`;
@@ -252,7 +231,7 @@ export const dialogmoteMedReferat: DialogmoteDTO = {
     situasjon: situasjonTekst,
     arbeidsgiverOppgave: arbeidsgiversOppgave,
     arbeidstakerOppgave: arbeidstakersOppgave,
-    narmesteLederNavn: lederNavn,
+    narmesteLederNavn: narmesteLederNavn,
     konklusjon: konklusjonTekst,
     document: [
       {
