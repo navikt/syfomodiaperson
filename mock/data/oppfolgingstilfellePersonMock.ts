@@ -6,6 +6,12 @@ import {
 export const oppfolgingstilfellePersonMock = {
   oppfolgingstilfelleList: [
     {
+      arbeidstakerAtTilfelleEnd: false,
+      start: "2019-06-06",
+      end: "2020-01-21",
+      virksomhetsnummerList: [VIRKSOMHET_PONTYPANDY.virksomhetsnummer],
+    },
+    {
       arbeidstakerAtTilfelleEnd: true,
       start: "2020-02-21",
       end: "2030-12-10",
@@ -15,12 +21,6 @@ export const oppfolgingstilfellePersonMock = {
         "912345678",
         "000999000",
       ],
-    },
-    {
-      arbeidstakerAtTilfelleEnd: false,
-      start: "2019-06-06",
-      end: "2020-01-21",
-      virksomhetsnummerList: [VIRKSOMHET_PONTYPANDY.virksomhetsnummer],
     },
   ],
   personIdent: ARBEIDSTAKER_DEFAULT.personIdent,

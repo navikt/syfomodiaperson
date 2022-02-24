@@ -2,8 +2,19 @@ import { useQuery } from "react-query";
 import { get } from "@/api/axios";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { ISOPPFOLGINGSTILFELLE_ROOT } from "@/apiConstants";
-import { OppfolgingstilfellePersonDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import {
+  OppfolgingstilfelleDTO,
+  OppfolgingstilfellePersonDTO,
+} from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { minutesToMillis } from "@/utils/timeUtils";
+
+const sortByDescendingStart = (
+  oppfolgingstilfelleList: OppfolgingstilfelleDTO[]
+): OppfolgingstilfelleDTO[] => {
+  return oppfolgingstilfelleList.sort((a, b) => {
+    return new Date(b.start).getTime() - new Date(a.start).getTime();
+  });
+};
 
 const oppfolgingstilfellePersonQueryKeys = {
   oppfolgingstilfelleperson: (personIdent: string) => [
@@ -25,7 +36,8 @@ export const useOppfolgingstilfellePersonQuery = () => {
       staleTime: minutesToMillis(60 * 12),
     }
   );
-  const latestOppfolgingstilfelle = query.data?.oppfolgingstilfelleList[0];
+  const latestOppfolgingstilfelle =
+    query.data && sortByDescendingStart(query.data.oppfolgingstilfelleList)[0];
   return {
     ...query,
     latestOppfolgingstilfelle,
