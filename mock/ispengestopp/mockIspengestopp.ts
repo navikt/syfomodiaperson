@@ -1,36 +1,10 @@
 import { ISPENGESTOPP_ROOT } from "../../src/apiConstants";
-import { ARBEIDSTAKER_DEFAULT } from "../common/mockConstants";
+import { createStatusList } from "../data/pengestoppStatusMock";
 
 const Auth = require("../../server/auth/index.js");
 
-const Status = {
-  NORMAL: "NORMAL",
-  STOPP_AUTOMATIKK: "STOPP_AUTOMATIKK",
-};
-
-const createStatusList = (stoppAutomatikk) => {
-  return stoppAutomatikk.virksomhetNr.map((virksomhet) => {
-    return {
-      veilederIdent: {
-        value: "A111111",
-      },
-      sykmeldtFnr: {
-        value: ARBEIDSTAKER_DEFAULT.personIdent,
-      },
-      status: Status.STOPP_AUTOMATIKK,
-      virksomhetNr: {
-        value: virksomhet.value,
-      },
-      opprettet: new Date().toISOString(),
-      enhetNr: {
-        value: "1337",
-      },
-    };
-  });
-};
-
 export const mockIspengestopp = (server) => {
-  let STATUSLIST = undefined;
+  let STATUSLIST;
 
   server.get(
     `${ISPENGESTOPP_ROOT}/person/status`,
@@ -49,7 +23,7 @@ export const mockIspengestopp = (server) => {
     Auth.ensureAuthenticated(),
     (req, res) => {
       const body = req.body;
-      STATUSLIST = createStatusList(body);
+      STATUSLIST = createStatusList(new Date(), body);
 
       const stoppAutomatikk =
         body.sykmeldtFnr && body.virksomhetNr && body.enhetNr;

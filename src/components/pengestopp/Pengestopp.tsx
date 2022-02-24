@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Knapp } from "nav-frontend-knapper";
 import AlertStripe from "nav-frontend-alertstriper";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 import PengestoppModal from "./PengestoppModal";
 import PengestoppHistorikk from "./PengestoppHistorikk";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
@@ -12,9 +11,9 @@ import {
   Status,
   StatusEndring,
 } from "@/data/pengestopp/types/FlaggPerson";
-import { FlaggpersonState } from "@/data/pengestopp/flaggperson";
 import { unikeArbeidsgivereMedSykmeldingSiste3Maneder } from "@/utils/pengestoppUtils";
 import Panel from "nav-frontend-paneler";
+import { usePengestoppStatusQuery } from "@/data/pengestopp/pengestoppQueryHooks";
 
 export const texts = {
   stansSykepenger: "Stanse sykepenger?",
@@ -60,9 +59,7 @@ const KnappWithExplanation = ({ handleClick }: KnappWithExplanationProps) => {
 
 const Pengestopp = ({ sykmeldinger }: IPengestoppProps) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const flaggperson: FlaggpersonState = useSelector(
-    (state: any) => state.flaggperson
-  );
+  const { data: statusEndringList, isError } = usePengestoppStatusQuery();
   const [sykmeldtNotEligible, setSykmeldtNotEligible] = useState(false);
 
   const toggleModal = (arbeidsgivere: Arbeidsgiver[]) => {
@@ -73,8 +70,6 @@ const Pengestopp = ({ sykmeldinger }: IPengestoppProps) => {
       setModalIsOpen(!modalIsOpen);
     }
   };
-
-  const statusEndringList: StatusEndring[] = flaggperson.data;
 
   const pengestopp: StatusEndring | undefined = statusEndringList.find(
     (statusEndring: StatusEndring) =>
@@ -87,9 +82,7 @@ const Pengestopp = ({ sykmeldinger }: IPengestoppProps) => {
 
   return (
     <Wrapper>
-      {flaggperson.hentingFeilet && (
-        <Alert type="feil">{texts.hentingFeiletMessage}</Alert>
-      )}
+      {isError && <Alert type="feil">{texts.hentingFeiletMessage}</Alert>}
       {sykmeldtNotEligible && (
         <Alert type="feil">{texts.sykmeldtNotEligibleError}</Alert>
       )}

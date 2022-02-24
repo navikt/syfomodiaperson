@@ -13,11 +13,9 @@ import {
   VirksomhetNr,
 } from "@/data/pengestopp/types/FlaggPerson";
 import { AlertStripeInfo } from "nav-frontend-alertstriper";
-import { useDispatch } from "react-redux";
-import { endreStatus } from "@/data/pengestopp/flaggperson_actions";
 import { useNavEnhet } from "@/hooks/useNavEnhet";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { useFlaggperson } from "@/data/pengestopp/flaggperson_hooks";
+import { useFlaggPerson } from "@/data/pengestopp/useFlaggPerson";
 
 const texts = {
   notStoppedTittel:
@@ -97,11 +95,9 @@ const PengestoppModal = ({
   arbeidsgivere,
   toggle,
 }: IPengestoppModal) => {
-  const dispatch = useDispatch();
   const navEnhet = useNavEnhet();
   const fnr = useValgtPersonident();
-
-  const { isStopped, hasServerErrors, endrerFlaggperson } = useFlaggperson();
+  const { isLoading, isError, isSuccess, mutate } = useFlaggPerson();
 
   const stoppAutomatikkInitialState = {
     sykmeldtFnr: { value: fnr },
@@ -122,7 +118,7 @@ const PengestoppModal = ({
     } else if (stoppAutomatikk.arsakList.length <= 0) {
       setAarsakError(true);
     } else {
-      dispatch(endreStatus(stoppAutomatikk));
+      mutate(stoppAutomatikk);
     }
   };
 
@@ -195,9 +191,9 @@ const PengestoppModal = ({
         handleCloseModal();
       }}
     >
-      <Systemtittel>{tittel(isStopped)}</Systemtittel>
+      <Systemtittel>{tittel(isSuccess)}</Systemtittel>
 
-      {!isStopped ? (
+      {!isSuccess ? (
         <>
           <Group>
             <CheckboxGruppe
@@ -241,8 +237,8 @@ const PengestoppModal = ({
           <Knapp
             type="hoved"
             mini
-            spinner={endrerFlaggperson}
-            disabled={endrerFlaggperson}
+            spinner={isLoading}
+            autoDisableVedSpinner
             onClick={submit}
           >
             {texts.send}
@@ -258,7 +254,7 @@ const PengestoppModal = ({
           </Group>
         </>
       )}
-      {hasServerErrors && (
+      {isError && (
         <BottomGroup>
           <Feilmelding>{texts.serverError}</Feilmelding>
         </BottomGroup>

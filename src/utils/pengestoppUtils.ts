@@ -2,7 +2,6 @@ import {
   Arbeidsgiver,
   Status,
   StatusEndring,
-  StoppAutomatikk,
   SykepengestoppArsak,
 } from "@/data/pengestopp/types/FlaggPerson";
 import { senesteTom } from "./periodeUtils";
@@ -67,22 +66,6 @@ export const unikeArbeidsgivereMedSykmeldingSiste3Maneder = (
   );
 
   return uniqueArbeidsgivere(arbeidsgiverFromSykmeldinger);
-};
-
-export const stoppAutomatikk2StatusEndring = (
-  stoppAutomatikk: StoppAutomatikk
-) => {
-  return stoppAutomatikk.virksomhetNr.map((virksomhet) => {
-    return {
-      veilederIdent: { value: "" },
-      sykmeldtFnr: stoppAutomatikk.sykmeldtFnr,
-      status: Status.STOPP_AUTOMATIKK,
-      arsakList: stoppAutomatikk.arsakList,
-      virksomhetNr: virksomhet,
-      opprettet: new Date().toISOString(),
-      enhetNr: stoppAutomatikk.enhetNr,
-    };
-  });
 };
 
 export const displayArsakText = (arsakList: SykepengestoppArsak[]) => {
