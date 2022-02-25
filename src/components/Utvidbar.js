@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { scrollTo, erSynligIViewport } from "@/utils/browserUtils";
 
-class Utvidbar extends Component {
+class Utvidbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,10 +56,10 @@ class Utvidbar extends Component {
 
   getHeaderClassName() {
     let c = !this.state.erApen
-      ? "utvidbar__header"
-      : "utvidbar__header utvidbar__header--erApen";
+      ? "utvidbar_old__header"
+      : "utvidbar_old__header utvidbar_old__header--erApen";
     if (this.props.variant) {
-      c = `${c} utvidbar__header--${this.props.variant}`;
+      c = `${c} utvidbar_old__header--${this.props.variant}`;
     }
     return c;
   }
@@ -85,7 +85,7 @@ class Utvidbar extends Component {
     this.setState({
       hoyde: "0",
       hindreToggle: true,
-      containerClassName: " utvidbar__innholdContainer--medAnimasjon",
+      containerClassName: " utvidbar_old__innholdContainer--medAnimasjon",
       visInnhold: true,
       harTransisjon: true,
     });
@@ -107,7 +107,7 @@ class Utvidbar extends Component {
     });
     setTimeout(() => {
       this.setState({
-        containerClassName: " utvidbar__innholdContainer--medAnimasjon",
+        containerClassName: " utvidbar_old__innholdContainer--medAnimasjon",
         hoyde: "0",
         erApen: false,
       });
@@ -134,12 +134,12 @@ class Utvidbar extends Component {
         ref={(c) => {
           this.utvidbar = c;
         }}
-        className={`utvidbar ${
+        className={`utvidbar_old ${
           this.props.className ? this.props.className : ""
         }`}
       >
         <a
-          href="javscript:void(0)"
+          href="javascript:void(0)"
           aria-expanded={this.state.erApen}
           ref={(c) => {
             this["js-toggle"] = c;
@@ -157,7 +157,7 @@ class Utvidbar extends Component {
             }
             this.toggle(event);
           }}
-          className="utvidbar__toggle"
+          className="utvidbar_old__toggle"
         >
           <this.props.Overskrift className={this.getHeaderClassName()}>
             {this.state.ikon && (
@@ -165,20 +165,20 @@ class Utvidbar extends Component {
                 aria-hidden="true"
                 src={this.state.ikon}
                 alt={this.props.ikonAltTekst}
-                className="utvidbar__ikon"
+                className="utvidbar_old__ikon"
               />
             )}
             <div
               className={
                 !this.state.erApen
-                  ? "utvidbar__tittel"
-                  : "utvidbar__tittel utvidbar__tittel--erApen"
+                  ? "utvidbar_old__tittel"
+                  : "utvidbar_old__tittel utvidbar_old__tittel--erApen"
               }
             >
               {this.props.tittel}
             </div>
-            <em className="utvidbar__handling">
-              <span className="utvidbar__handling__tekst">
+            <em className="utvidbar_old__handling">
+              <span className="utvidbar_old__handling__tekst">
                 {this.state.erApen ? "Lukk" : "Åpne"}
               </span>
             </em>
@@ -189,13 +189,13 @@ class Utvidbar extends Component {
             this.container = c;
           }}
           style={{ height: this.state.hoyde }}
-          className={`utvidbar__innholdContainer${this.state.containerClassName}`}
+          className={`utvidbar_old__innholdContainer${this.state.containerClassName}`}
           onTransitionEnd={() => {
             this.onTransitionEnd();
           }}
         >
           <div
-            className="utvidbar__innhold"
+            className="utvidbar_old__innhold"
             ref={(c) => {
               this.innhold = c;
             }}

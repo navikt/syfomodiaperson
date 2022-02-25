@@ -1,19 +1,19 @@
 @purple-light: #e0dae7;
 @skjermMini: 20em;
 
-.utvidbar {
+.utvidbar_old {
   border: 1px solid @navGra40;
   border-radius: 2px;
 }
 
-.utvidbar__toggle {
+.utvidbar_old__toggle {
   color: @navMorkGra;
   display: flex;
   width: 100%;
   border-bottom-width: 0;
 }
 
-.utvidbar__toggle:focus {
+.utvidbar_old__toggle:focus {
   color: @navMorkGra;
   background-color: transparent;
   box-shadow: 0 0 0 3px @navOransjeLighten40;
@@ -21,11 +21,11 @@
   position: relative;
 }
 
-.utvidbar__toggle:hover {
+.utvidbar_old__toggle:hover {
   color: @navBla;
 }
 
-.utvidbar__header:extend(.panelHeader) {
+.utvidbar_old__header:extend(.panelHeader) {
   padding: 0.75rem;
   margin: 0;
   min-height: 3.5rem;
@@ -37,7 +37,7 @@
   }
 }
 
-.utvidbar__ikon {
+.utvidbar_old__ikon {
   width: 1.5rem;
   height: 1.5rem;
   margin-right: 1rem;
@@ -49,13 +49,13 @@
   }
 }
 
-.utvidbar__tittel {
+.utvidbar_old__tittel {
   align-self: center;
   width: 80%;
   flex: 1;
 }
 
-.utvidbar__handling {
+.utvidbar_old__handling {
   padding-right: 1.5rem;
   background-image: data-uri("../../img/svg/arrow-down_hover.svg");
   background-repeat: no-repeat;
@@ -71,7 +71,7 @@
   }
 }
 
-.utvidbar__handling__tekst {
+.utvidbar_old__handling__tekst {
   display: none;
 
   @media (min-width: @skjermMini) {
@@ -79,29 +79,29 @@
   }
 }
 
-.utvidbar__header--lilla {
+.utvidbar_old__header--lilla {
   background: @purple-light;
 }
 
-.utvidbar__header--lysebla {
+.utvidbar_old__header--lysebla {
   background-color: @blueLight;
 }
 
-.utvidbar__header--erApen .utvidbar__handling {
+.utvidbar_old__header--erApen .utvidbar__handling {
   background-image: data-uri("../../img/svg/arrow-up_hover.svg");
 }
 
-.utvidbar__innholdContainer:focus {
+.utvidbar_old__innholdContainer:focus {
   outline: none;
 }
 
-.utvidbar__innholdContainer--medAnimasjon {
+.utvidbar_old__innholdContainer--medAnimasjon {
   overflow: hidden;
   transition: height ease-in-out 0.3s;
   transform: translate3d(0, 0, 0);
 }
 
-.utvidbar__innhold {
+.utvidbar_old__innhold {
   padding: 1.5rem 1rem 2.5rem 1rem;
   background-color: @white;
 
@@ -110,12 +110,12 @@
   }
 }
 
-.utvidbar__innhold:empty {
+.utvidbar_old__innhold:empty {
   padding: 0;
 }
 
 @media print {
-  .utvidbar__toggle {
+  .utvidbar_old__toggle {
     border-bottom: 1px solid @navGra40;
     text-decoration: none;
   }
