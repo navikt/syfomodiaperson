@@ -1,7 +1,7 @@
 import { QueryClient } from "react-query";
 import { apiMock } from "../stubs/stubApi";
 import nock from "nock";
-import { personident, queryHookWrapper } from "./queryHookTestUtils";
+import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook } from "@testing-library/react-hooks";
 import { expect } from "chai";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
@@ -12,6 +12,7 @@ import {
   newSMFormat2OldFormat,
   oldFormatSMForAG,
 } from "@/utils/sykmeldinger/sykmeldingParser";
+import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 
 let queryClient;
 let apiMockScope;
@@ -39,11 +40,13 @@ describe("sykmeldingQueryHooks", () => {
 
     expect(result.current.sykmeldinger).to.deep.equal(
       sykmeldingerMockData.map((value) =>
-        newSMFormat2OldFormat(value, personident)
+        newSMFormat2OldFormat(value, ARBEIDSTAKER_DEFAULT.personIdent)
       )
     );
     expect(result.current.arbeidsgiverssykmeldinger).to.deep.equal(
-      sykmeldingerMockData.map((value) => oldFormatSMForAG(value, personident))
+      sykmeldingerMockData.map((value) =>
+        oldFormatSMForAG(value, ARBEIDSTAKER_DEFAULT.personIdent)
+      )
     );
   });
 });

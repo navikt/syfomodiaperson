@@ -21,7 +21,19 @@ export const ENHET_GAMLEOSLO = {
   navn: "NAV Gamle Oslo",
 };
 
+export const BEHANDLENDE_ENHET_DEFAULT = {
+  enhetId: ENHET_GRUNERLOKKA.nummer,
+  navn: ENHET_GRUNERLOKKA.navn,
+};
+
 export const VEILEDER_IDENT_DEFAULT = "Z990000";
+
+export const VEILEDER_DEFAULT = {
+  ident: VEILEDER_IDENT_DEFAULT,
+  navn: "Vetle Veileder",
+  epost: "vetle.veileder@nav.no",
+  telefonnummer: "12345678",
+};
 
 export const VIRKSOMHET_PONTYPANDY = {
   virksomhetsnavn: "PONTYPANDY FIRE SERVICE",

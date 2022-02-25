@@ -19,8 +19,7 @@ import {
   getTextInput,
   getTooLongText,
 } from "../testUtils";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { QueryClientProvider } from "react-query";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubFerdigstillApi } from "../stubs/stubIsdialogmote";
 import { apiMock } from "../stubs/stubApi";
@@ -28,7 +27,6 @@ import {
   annenDeltakerFunksjon,
   annenDeltakerNavn,
   arbeidstaker,
-  behandlendeEnhet,
   behandlerDeltakerTekst,
   dialogmote,
   dialogmoteMedBehandler,
@@ -36,7 +34,6 @@ import {
   narmesteLederNavn,
   veileder,
 } from "./testData";
-import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expectedReferatDocument } from "./testDataDocuments";
@@ -49,8 +46,7 @@ import {
   MAX_LENGTH_SITUASJON,
   MAX_LENGTH_VEILEDERS_OPPGAVE,
 } from "@/components/dialogmote/referat/ReferatFritekster";
-import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
-import { LEDERE_DEFAULT } from "../../mock/common/mockConstants";
+import { queryClientWithMockData } from "../testQueryClient";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -76,20 +72,7 @@ describe("ReferatTest", () => {
   const today = new Date(Date.now());
 
   beforeEach(() => {
-    queryClient = new QueryClient();
-    queryClient.setQueryData(
-      veilederinfoQueryKeys.veilederinfo,
-      () => veileder
-    );
-    queryClient.setQueryData(
-      behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
-      () => behandlendeEnhet
-    );
-    queryClient.setQueryData(
-      ledereQueryKeys.ledere(arbeidstaker.personident),
-      () => LEDERE_DEFAULT
-    );
-
+    queryClient = queryClientWithMockData();
     clock = sinon.useFakeTimers(today.getTime());
   });
 

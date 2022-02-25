@@ -2,12 +2,12 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
 import React from "react";
 import configureStore from "redux-mock-store";
+import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 
-export const personident = "05087321470";
 const store = configureStore([]);
 const mockState = {
   valgtbruker: {
-    personident,
+    personident: ARBEIDSTAKER_DEFAULT.personIdent,
   },
 };
 

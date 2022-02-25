@@ -8,28 +8,23 @@ import configureStore from "redux-mock-store";
 import DialogmoteInnkallingSkjema from "@/components/dialogmote/innkalling/DialogmoteInnkallingSkjema";
 import { texts as skjemaFeilOppsummeringTexts } from "@/components/SkjemaFeiloppsummering";
 import { texts as valideringsTexts } from "@/utils/valideringUtils";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { QueryClientProvider } from "react-query";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubInnkallingApi } from "../../stubs/stubIsdialogmote";
 import { apiMock } from "../../stubs/stubApi";
 import {
   arbeidsgiver,
   arbeidstaker,
-  behandlendeEnhet,
   mockState,
   mote,
   moteTekster,
   navEnhet,
-  veileder,
 } from "../testData";
-import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { changeTextInput, clickButton, getTextInput } from "../../testUtils";
 import { expectedInnkallingDocuments } from "../testDataDocuments";
 import sinon from "sinon";
-import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
-import { LEDERE_DEFAULT } from "../../../mock/common/mockConstants";
+import { queryClientWithMockData } from "../../testQueryClient";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -40,19 +35,7 @@ describe("DialogmoteInnkallingSkjema", () => {
   const today = new Date(Date.now());
 
   beforeEach(() => {
-    queryClient = new QueryClient();
-    queryClient.setQueryData(
-      veilederinfoQueryKeys.veilederinfo,
-      () => veileder
-    );
-    queryClient.setQueryData(
-      behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
-      () => behandlendeEnhet
-    );
-    queryClient.setQueryData(
-      ledereQueryKeys.ledere(arbeidstaker.personident),
-      () => LEDERE_DEFAULT
-    );
+    queryClient = queryClientWithMockData();
     clock = sinon.useFakeTimers(today.getTime());
   });
 

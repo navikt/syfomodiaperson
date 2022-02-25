@@ -19,28 +19,22 @@ import {
   getTooLongText,
   maxLengthErrorMessage,
 } from "../testUtils";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { QueryClientProvider } from "react-query";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubAvlysApi } from "../stubs/stubIsdialogmote";
 import { apiMock } from "../stubs/stubApi";
 import {
-  arbeidstaker,
-  behandlendeEnhet,
   dialogmote,
   dialogmoteMedBehandler,
   mockState,
   moteTekster,
-  veileder,
 } from "./testData";
-import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expectedAvlysningDocuments } from "./testDataDocuments";
 import sinon from "sinon";
-import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
-import { LEDERE_DEFAULT } from "../../mock/common/mockConstants";
+import { queryClientWithMockData } from "../testQueryClient";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -52,20 +46,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
   const today = new Date(Date.now());
 
   beforeEach(() => {
-    queryClient = new QueryClient();
-    queryClient.setQueryData(
-      veilederinfoQueryKeys.veilederinfo,
-      () => veileder
-    );
-    queryClient.setQueryData(
-      behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
-      () => behandlendeEnhet
-    );
-    queryClient.setQueryData(
-      ledereQueryKeys.ledere(arbeidstaker.personident),
-      () => LEDERE_DEFAULT
-    );
-
+    queryClient = queryClientWithMockData();
     clock = sinon.useFakeTimers(today.getTime());
   });
 

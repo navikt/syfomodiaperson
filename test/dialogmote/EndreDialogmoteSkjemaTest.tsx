@@ -1,6 +1,6 @@
 import { MemoryRouter, Route } from "react-router-dom";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
 import React from "react";
 import { texts as valideringsTexts } from "@/utils/valideringUtils";
@@ -8,7 +8,6 @@ import EndreDialogmoteSkjema from "@/components/dialogmote/endre/EndreDialogmote
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
-import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import {
   changeTextInput,
   clickButton,
@@ -23,24 +22,19 @@ import { apiMock } from "../stubs/stubApi";
 import { stubEndreApi } from "../stubs/stubIsdialogmote";
 import { texts as endringSkjemaTexts } from "../../src/components/dialogmote/endre/EndreDialogmoteTekster";
 import {
-  arbeidstaker,
-  behandlendeEnhet,
   dialogmote,
   dialogmoteMedBehandler,
   endretMote,
   mockState,
   moteTekster,
-  veileder,
 } from "./testData";
-import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MAX_LENGTH_AVLYS_BEGRUNNELSE } from "@/components/dialogmote/avlys/AvlysDialogmoteSkjema";
 import { expectedEndringDocuments } from "./testDataDocuments";
 import sinon from "sinon";
-import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
-import { LEDERE_DEFAULT } from "../../mock/common/mockConstants";
+import { queryClientWithMockData } from "../testQueryClient";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -52,20 +46,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
   const today = new Date(Date.now());
 
   beforeEach(() => {
-    queryClient = new QueryClient();
-    queryClient.setQueryData(
-      veilederinfoQueryKeys.veilederinfo,
-      () => veileder
-    );
-    queryClient.setQueryData(
-      behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
-      () => behandlendeEnhet
-    );
-    queryClient.setQueryData(
-      ledereQueryKeys.ledere(arbeidstaker.personident),
-      () => LEDERE_DEFAULT
-    );
-
+    queryClient = queryClientWithMockData();
     clock = sinon.useFakeTimers(today.getTime());
   });
 

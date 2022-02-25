@@ -1,19 +1,15 @@
 import React from "react";
 import { expect } from "chai";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { QueryClientProvider } from "react-query";
 import {
   arbeidsgiver,
   arbeidstaker,
-  behandlendeEnhet,
   behandler,
   mockState,
   mote,
   moteTekster,
   navEnhet,
-  veileder,
 } from "../testData";
-import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import {
   changeTextInput,
   clickButton,
@@ -37,8 +33,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expectedInnkallingDocuments } from "../testDataDocuments";
 import sinon from "sinon";
-import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
-import { LEDERE_DEFAULT } from "../../../mock/common/mockConstants";
+import { queryClientWithMockData } from "../../testQueryClient";
 
 let queryClient;
 const store = configureStore([]);
@@ -49,25 +44,14 @@ describe("Dialogmoteinnkallingskjema", () => {
   const today = new Date(Date.now());
 
   beforeEach(() => {
-    queryClient = new QueryClient();
-    queryClient.setQueryData(
-      veilederinfoQueryKeys.veilederinfo,
-      () => veileder
-    );
-    queryClient.setQueryData(
-      behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
-      () => behandlendeEnhet
-    );
+    queryClient = queryClientWithMockData();
     queryClient.setQueryData(
       behandlereDialogmeldingQueryKeys.behandleredialogmelding(
         arbeidstaker.personident
       ),
       () => [behandler]
     );
-    queryClient.setQueryData(
-      ledereQueryKeys.ledere(arbeidstaker.personident),
-      () => LEDERE_DEFAULT
-    );
+
     clock = sinon.useFakeTimers(today.getTime());
   });
 

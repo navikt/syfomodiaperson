@@ -1,7 +1,7 @@
 import { QueryClient } from "react-query";
 import { apiMock } from "../stubs/stubApi";
 import nock from "nock";
-import { personident, queryHookWrapper } from "./queryHookTestUtils";
+import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook } from "@testing-library/react-hooks";
 import { expect } from "chai";
 import {
@@ -11,6 +11,7 @@ import {
 import { soknaderMock } from "../../mock/data/soknaderMock";
 import { stubSyfosoknadApi } from "../stubs/stubSyfosoknad";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 
 let queryClient;
 let apiMockScope;
@@ -25,7 +26,7 @@ describe("sykepengesoknadQueryHooks", () => {
   });
 
   it("loads sykepengesoknader", async () => {
-    stubSyfosoknadApi(apiMockScope, personident);
+    stubSyfosoknadApi(apiMockScope, ARBEIDSTAKER_DEFAULT.personIdent);
     const wrapper = queryHookWrapper(queryClient);
 
     const { result, waitFor } = renderHook(() => useSykepengesoknaderQuery(), {

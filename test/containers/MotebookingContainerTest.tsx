@@ -3,18 +3,13 @@ import { expect } from "chai";
 import { MotebookingContainer } from "@/components/mote/container/MotebookingContainer";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "react-query";
 import configureStore from "redux-mock-store";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
-import { tilgangBrukerMock } from "../../mock/data/tilgangtilbrukerMock";
-import {
-  ARBEIDSTAKER_DEFAULT,
-  LEDERE_DEFAULT,
-} from "../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 import { MemoryRouter } from "react-router-dom";
-import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
+import { queryClientWithMockData } from "../testQueryClient";
 
 const harIkkeMoterTilgang = {
   harTilgang: false,
@@ -28,12 +23,7 @@ describe("MotebookingContainer", () => {
   let store;
   let mockState;
   beforeEach(() => {
-    queryClient = new QueryClient();
-    queryClient.setQueryData(
-      tilgangQueryKeys.tilgang(fnr),
-      () => tilgangBrukerMock
-    );
-    queryClient.setQueryData(ledereQueryKeys.ledere(fnr), () => LEDERE_DEFAULT);
+    queryClient = queryClientWithMockData();
     store = configureStore([]);
     mockState = {
       enhet: { valgtEnhet: "2212" },

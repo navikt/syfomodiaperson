@@ -8,7 +8,6 @@ import {
   MotedeltakerVarselType,
   VarselSvarDTO,
 } from "@/data/dialogmote/types/dialogmoteTypes";
-import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
 import {
   BehandlerDialogmeldingDTO,
   BehandlerType,
@@ -16,8 +15,12 @@ import {
 import { leggTilDagerPaDato, toDatePrettyPrint } from "@/utils/datoUtils";
 import { InputDateStringToISODateString } from "nav-datovelger/lib/utils/dateFormatUtils";
 import {
+  ARBEIDSTAKER_DEFAULT,
+  ARBEIDSTAKER_DEFAULT_FULL_NAME,
+  BEHANDLENDE_ENHET_DEFAULT,
   ENHET_GRUNERLOKKA,
   NARMESTE_LEDER_DEFAULT,
+  VEILEDER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
 } from "../../mock/common/mockConstants";
 import { capitalizeWord } from "@/utils/stringUtils";
@@ -25,8 +28,8 @@ import { behandlerNavn } from "@/utils/behandlerUtils";
 import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 
 export const arbeidstaker = {
-  navn: "Arne Arbeidstaker",
-  personident: "05087321470",
+  navn: ARBEIDSTAKER_DEFAULT_FULL_NAME,
+  personident: ARBEIDSTAKER_DEFAULT.personIdent,
 };
 export const arbeidsgiver = {
   orgnr: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
@@ -35,15 +38,9 @@ export const navEnhet = {
   id: ENHET_GRUNERLOKKA.nummer,
   navn: ENHET_GRUNERLOKKA.navn,
 };
-export const behandlendeEnhet = {
-  enhetId: navEnhet.id,
-  navn: navEnhet.navn,
-};
-export const veileder: Partial<VeilederinfoDTO> = {
-  navn: "Vetle Veileder",
-  epost: "vetle.veileder@nav.no",
-  telefonnummer: "12345678",
-};
+export const behandlendeEnhet = BEHANDLENDE_ENHET_DEFAULT;
+export const veileder = VEILEDER_DEFAULT;
+
 export const narmesteLederNavn = NARMESTE_LEDER_DEFAULT.navn;
 
 export const behandler: BehandlerDialogmeldingDTO = {

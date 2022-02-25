@@ -8,30 +8,25 @@ import configureStore from "redux-mock-store";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { expect } from "chai";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { QueryClientProvider } from "react-query";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import {
   annenDeltakerFunksjon,
   annenDeltakerNavn,
   arbeidstaker,
-  behandlendeEnhet,
   dialogmoteMedBehandler,
   dialogmoteMedReferat,
   moteTekster,
   narmesteLederNavn,
   referatStandardTekst,
-  veileder,
 } from "./testData";
-import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
-import { LEDERE_DEFAULT } from "../../mock/common/mockConstants";
 import { render, screen } from "@testing-library/react";
 import { expectedReferatDocument } from "./testDataDocuments";
 import sinon from "sinon";
 import userEvent from "@testing-library/user-event";
 import { stubMellomlagreApi } from "../stubs/stubIsdialogmote";
 import { apiMock } from "../stubs/stubApi";
-import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
+import { queryClientWithMockData } from "../testQueryClient";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -57,20 +52,7 @@ describe("ReferatMellomlagreTest", () => {
   const today = new Date(Date.now());
 
   beforeEach(() => {
-    queryClient = new QueryClient();
-    queryClient.setQueryData(
-      veilederinfoQueryKeys.veilederinfo,
-      () => veileder
-    );
-    queryClient.setQueryData(
-      behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
-      () => behandlendeEnhet
-    );
-    queryClient.setQueryData(
-      ledereQueryKeys.ledere(arbeidstaker.personident),
-      () => LEDERE_DEFAULT
-    );
-
+    queryClient = queryClientWithMockData();
     clock = sinon.useFakeTimers(today.getTime());
   });
 

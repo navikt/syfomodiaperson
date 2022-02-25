@@ -1,5 +1,4 @@
 import {
-  arbeidstaker,
   dialogmoteMedVarsel,
   mockState,
   narmesteLederNavn,
@@ -7,7 +6,7 @@ import {
 } from "../testData";
 import { render, screen } from "@testing-library/react";
 import { expect } from "chai";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
 import React from "react";
 import configureStore from "redux-mock-store";
@@ -17,8 +16,7 @@ import {
   MotedeltakerVarselType,
   SvarType,
 } from "@/data/dialogmote/types/dialogmoteTypes";
-import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
-import { LEDERE_DEFAULT } from "../../../mock/common/mockConstants";
+import { queryClientWithMockData } from "../../testQueryClient";
 
 const store = configureStore([]);
 let queryClient;
@@ -36,11 +34,7 @@ const renderDeltakereSvarInfo = (dialogmote: DialogmoteDTO) =>
 
 describe("DeltakereSvarInfo for arbeidsgiver", () => {
   beforeEach(() => {
-    queryClient = new QueryClient();
-    queryClient.setQueryData(
-      ledereQueryKeys.ledere(arbeidstaker.personident),
-      () => LEDERE_DEFAULT
-    );
+    queryClient = queryClientWithMockData();
   });
 
   describe("arbeidsgiver har åpnet innkalling (ikke svart)", () => {
