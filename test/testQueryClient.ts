@@ -3,6 +3,7 @@ import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
 import { tilgangBrukerMock } from "../mock/data/tilgangtilbrukerMock";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import {
+  AKTIV_BRUKER_DEFAULT,
   ARBEIDSTAKER_DEFAULT,
   BEHANDLENDE_ENHET_DEFAULT,
   LEDERE_DEFAULT,
@@ -10,9 +11,20 @@ import {
 } from "../mock/common/mockConstants";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
+import { modiacontextQueryKeys } from "@/data/modiacontext/modiacontextQueryHooks";
+
+export const queryClientWithAktivBruker = (): QueryClient => {
+  const queryClient = new QueryClient();
+  queryClient.setQueryData(
+    modiacontextQueryKeys.aktivbruker,
+    () => AKTIV_BRUKER_DEFAULT
+  );
+
+  return queryClient;
+};
 
 export const queryClientWithMockData = (): QueryClient => {
-  const queryClient = new QueryClient();
+  const queryClient = queryClientWithAktivBruker();
   queryClient.setQueryData(
     veilederinfoQueryKeys.veilederinfo,
     () => VEILEDER_DEFAULT

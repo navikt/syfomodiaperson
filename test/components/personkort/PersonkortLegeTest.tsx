@@ -1,42 +1,30 @@
 import { fastlegerQueryKeys } from "@/data/fastlege/fastlegerQueryHooks";
 import { render, screen } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { Provider } from "react-redux";
+import { QueryClientProvider } from "react-query";
 import PersonkortLege, {
   FastlegeVikar,
 } from "@/components/personkort/PersonkortLege";
 import { expect } from "chai";
 import React from "react";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
-import configureStore from "redux-mock-store";
 import { fastlegerMock } from "../../../mock/fastlegerest/fastlegerMock";
+import { queryClientWithAktivBruker } from "../../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
 
 let queryClient;
 
 const aktivFastlege = fastlegerMock[0];
 const fastlegeVikarer = [fastlegerMock[1], fastlegerMock[2]];
-const realState = createStore(rootReducer).getState();
-const store = configureStore([]);
-const mockState = {
-  valgtbruker: {
-    personident: ARBEIDSTAKER_DEFAULT.personIdent,
-  },
-};
 
 const renderPersonkortLege = () =>
   render(
     <QueryClientProvider client={queryClient}>
-      <Provider store={store({ ...realState, ...mockState })}>
-        <PersonkortLege />
-      </Provider>
+      <PersonkortLege />
     </QueryClientProvider>
   );
 
 describe("PersonkortLege", () => {
   beforeEach(() => {
-    queryClient = new QueryClient();
+    queryClient = queryClientWithAktivBruker();
   });
 
   it("Skal vise feilmelding, fastleger ikke ble funnet, når ingen fastleger", async () => {

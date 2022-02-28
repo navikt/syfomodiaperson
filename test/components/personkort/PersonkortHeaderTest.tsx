@@ -3,41 +3,34 @@ import {
   stubEgenansattApi,
 } from "../../stubs/stubSyfoperson";
 import { apiMock } from "../../stubs/stubApi";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "react-query";
 import nock from "nock";
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import PersonkortHeader from "@/components/personkort/PersonkortHeader";
-import configureStore from "redux-mock-store";
-import { Provider } from "react-redux";
 import { expect } from "chai";
+import { queryClientWithAktivBruker } from "../../testQueryClient";
+import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
 
-const store = configureStore([]);
 let queryClient;
 let apiMockScope;
 
-const fnr = "05087321470";
-const mockState = {
-  valgtbruker: { personident: fnr },
-};
 const navbruker = {
   navn: "Arne Arbeistaker",
-  kontaktinfo: { fnr },
+  kontaktinfo: { fnr: ARBEIDSTAKER_DEFAULT.personIdent },
   arbeidssituasjon: "ARBEIDSTAKER",
 };
 
 const renderPersonkortHeader = () =>
   render(
     <QueryClientProvider client={queryClient}>
-      <Provider store={store(mockState)}>
-        <PersonkortHeader navbruker={navbruker} />
-      </Provider>
+      <PersonkortHeader navbruker={navbruker} />
     </QueryClientProvider>
   );
 
 describe("PersonkortHeader", () => {
   beforeEach(() => {
-    queryClient = new QueryClient();
+    queryClient = queryClientWithAktivBruker();
     apiMockScope = apiMock();
   });
   afterEach(() => {

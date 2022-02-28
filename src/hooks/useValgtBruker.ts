@@ -1,5 +1,6 @@
-import { useAppSelector } from "./hooks";
+import { useAktivBruker } from "@/data/modiacontext/modiacontextQueryHooks";
 
 export const useValgtPersonident = (): string => {
-  return useAppSelector((state) => state.valgtbruker.personident);
+  const { data } = useAktivBruker();
+  return data?.aktivBruker || "";
 };

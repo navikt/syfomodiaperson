@@ -95,7 +95,6 @@ export function mapStateToProps(state, ownProps) {
     return m.moteUuid === ownProps.match.params.moteUuid;
   })[0];
   return {
-    fnr: state.valgtbruker.personident,
     mote,
     arbeidstaker: state.navbruker.data,
     hentingFeiletBool:

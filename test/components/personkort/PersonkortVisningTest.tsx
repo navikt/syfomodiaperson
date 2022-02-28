@@ -6,12 +6,13 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "react-query";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { apiMock } from "../../stubs/stubApi";
 import { stubFastlegerApi } from "../../stubs/stubFastlegeRest";
 import { render, screen } from "@testing-library/react";
 import { fastlegerMock } from "../../../mock/fastlegerest/fastlegerMock";
+import { queryClientWithAktivBruker } from "../../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
 
 let queryClient;
@@ -23,7 +24,7 @@ describe("PersonkortVisning", () => {
   const store = configureStore([]);
 
   beforeEach(() => {
-    queryClient = new QueryClient();
+    queryClient = queryClientWithAktivBruker();
     apiMockScope = apiMock();
     stubFastlegerApi(apiMockScope, ARBEIDSTAKER_DEFAULT.personIdent);
     mockState = {
@@ -32,9 +33,6 @@ describe("PersonkortVisning", () => {
         kontaktinfo: {
           fnr: "1234",
         },
-      },
-      valgtbruker: {
-        personident: ARBEIDSTAKER_DEFAULT.personIdent,
       },
     };
   });

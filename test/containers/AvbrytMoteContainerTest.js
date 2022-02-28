@@ -146,9 +146,6 @@ describe("AvbrytMoteContainer", () => {
         },
       };
       state = {
-        valgtbruker: {
-          personident: "123",
-        },
         epostinnhold: {
           hentingFeilet: false,
         },
@@ -209,11 +206,6 @@ describe("AvbrytMoteContainer", () => {
           hentingFeilet: false,
         },
       };
-    });
-
-    it("Skal returnere fnr", () => {
-      const props = mapStateToProps(state, ownProps);
-      expect(props.fnr).to.equal("123");
     });
 
     it("Skal returnere møte", () => {

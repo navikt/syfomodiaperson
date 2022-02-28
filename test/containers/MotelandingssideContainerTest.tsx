@@ -6,7 +6,7 @@ import Motelandingsside from "../../src/components/mote/components/Motelandingss
 import { MemoryRouter } from "react-router-dom";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "react-query";
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
 import {
   ARBEIDSTAKER_DEFAULT,
@@ -22,6 +22,7 @@ import { tilgangBrukerMock } from "../../mock/data/tilgangtilbrukerMock";
 import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
+import { queryClientWithAktivBruker } from "../testQueryClient";
 
 const realState = createStore(rootReducer).getState();
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
@@ -47,7 +48,7 @@ describe("MotelandingssideContainer", () => {
     let mockState;
 
     beforeEach(() => {
-      queryClient = new QueryClient();
+      queryClient = queryClientWithAktivBruker();
       queryClient.setQueryData(dialogmoterQueryKeys.dialogmoter(fnr), () => []);
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplaner(fnr),
@@ -64,7 +65,6 @@ describe("MotelandingssideContainer", () => {
       apiMockScope = apiMock();
       store = configureStore([]);
       mockState = {
-        valgtbruker: { personident: fnr },
         unleash: {
           fetching: false,
           triedFetchingToggles: true,

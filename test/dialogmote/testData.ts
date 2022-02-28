@@ -145,9 +145,6 @@ export const mockState = {
       },
     },
   },
-  valgtbruker: {
-    personident: arbeidstaker.personident,
-  },
 };
 
 const moteSted = "Sted for møtet";

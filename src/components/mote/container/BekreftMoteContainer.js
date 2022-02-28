@@ -145,7 +145,6 @@ export const mapStateToProps = (state, ownProps) => {
       })[0]
     : null;
   return {
-    fnr: state.valgtbruker.personident,
     bekrefter: state.moter.bekrefter,
     bekreftFeilet: state.moter.bekreftFeilet,
     henterMoterBool: state.moter.henter || state.navbruker.henter,

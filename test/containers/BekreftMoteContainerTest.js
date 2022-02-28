@@ -130,9 +130,6 @@ describe("BekreftMoteContainer", () => {
         },
       };
       state = {
-        valgtbruker: {
-          personident: "123",
-        },
         epostinnhold: { henter: false, data: {} },
         moter: {
           data: [
@@ -225,11 +222,6 @@ describe("BekreftMoteContainer", () => {
       expect(props.mote.moteUuid).to.equal(
         "2fedc0da-efec-4b6e-8597-a021628058ae"
       );
-    });
-
-    it("Skal returnere fnr", () => {
-      const props = mapStateToProps(state, ownProps);
-      expect(props.fnr).to.equal("123");
     });
 
     it("Skal returnere alternativ", () => {

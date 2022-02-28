@@ -1,8 +1,4 @@
 import React from "react";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
 import { expect } from "chai";
 import {
   DialogmoteDTO,
@@ -18,8 +14,6 @@ import {
 } from "../../mock/common/mockConstants";
 import { render, screen } from "@testing-library/react";
 
-const realState = createStore(rootReducer).getState();
-const store = configureStore([]);
 let queryClient;
 const dialogmoter: DialogmoteDTO[] = [
   {
@@ -113,9 +107,7 @@ describe("Historiske dialogmøter", () => {
   it("Fremviser avholdte og avlyste dialogmøter", () => {
     render(
       <QueryClientProvider client={queryClient}>
-        <Provider store={store(realState)}>
-          <MotehistorikkPanel historiskeMoter={dialogmoter} />
-        </Provider>
+        <MotehistorikkPanel historiskeMoter={dialogmoter} />
       </QueryClientProvider>
     );
 

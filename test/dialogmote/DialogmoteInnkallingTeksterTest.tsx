@@ -1,18 +1,18 @@
 import { render, screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 import { MemoryRouter } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
 import React from "react";
 import DialogmoteInnkallingTekster, {
   texts,
 } from "@/components/dialogmote/innkalling/DialogmoteInnkallingTekster";
 import { Form } from "react-final-form";
-import { arbeidstaker } from "./testData";
 import { expect } from "chai";
+import { queryClientWithAktivBruker } from "../testQueryClient";
 
 const store = configureStore([]);
-const queryClient = new QueryClient();
+const queryClient = queryClientWithAktivBruker();
 
 const renderDialogmoteInnkallingTekster = (navBrukerKanVarsles: boolean) => {
   const mockState = {
@@ -22,9 +22,6 @@ const renderDialogmoteInnkallingTekster = (navBrukerKanVarsles: boolean) => {
           skalHaVarsel: navBrukerKanVarsles,
         },
       },
-    },
-    valgtbruker: {
-      personident: arbeidstaker.personident,
     },
   };
 

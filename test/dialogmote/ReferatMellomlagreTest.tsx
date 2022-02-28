@@ -40,9 +40,6 @@ const mockState = {
       },
     },
   },
-  valgtbruker: {
-    personident: arbeidstaker.personident,
-  },
 };
 
 let queryClient;

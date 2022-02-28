@@ -3,18 +3,18 @@ import { GlobalNavigasjon } from "@/components/globalnavigasjon/GlobalNavigasjon
 import React from "react";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "react-query";
 import * as menypunkter from "@/enums/menypunkter";
 import { expect } from "chai";
 import { MemoryRouter } from "react-router-dom";
 import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
+import { queryClientWithAktivBruker } from "../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 const store = configureStore([]);
 const mockState = {
-  valgtbruker: { personident: fnr },
   moter: {
     data: [],
   },
@@ -37,7 +37,7 @@ const renderGlobalNavigasjon = () =>
 
 describe("GlobalNavigasjon", () => {
   beforeEach(() => {
-    queryClient = new QueryClient();
+    queryClient = queryClientWithAktivBruker();
     queryClient.setQueryData(
       oppfolgingsplanQueryKeys.oppfolgingsplaner(fnr),
       () => []

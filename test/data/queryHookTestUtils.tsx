@@ -1,21 +1,15 @@
 import { QueryClient, QueryClientProvider } from "react-query";
-import { Provider } from "react-redux";
 import React from "react";
-import configureStore from "redux-mock-store";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
-
-const store = configureStore([]);
-const mockState = {
-  valgtbruker: {
-    personident: ARBEIDSTAKER_DEFAULT.personIdent,
-  },
-};
+import { modiacontextQueryKeys } from "@/data/modiacontext/modiacontextQueryHooks";
+import { AKTIV_BRUKER_DEFAULT } from "../../mock/common/mockConstants";
 
 export const queryHookWrapper = (client: QueryClient) => {
+  client.setQueryData(
+    modiacontextQueryKeys.aktivbruker,
+    () => AKTIV_BRUKER_DEFAULT
+  );
   const wrapper = ({ children }) => (
-    <Provider store={store({ ...mockState })}>
-      <QueryClientProvider client={client}>{children}</QueryClientProvider>
-    </Provider>
+    <QueryClientProvider client={client}>{children}</QueryClientProvider>
   );
 
   return wrapper;

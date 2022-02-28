@@ -5,19 +5,16 @@ import {
   mockSykepengeSoknad,
   mockSykmeldinger,
 } from "../mockdata/sykmeldinger/mockSykmeldinger";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
-import configureStore from "redux-mock-store";
-import { Provider } from "react-redux";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
-import { QueryClient, QueryClientProvider } from "react-query";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  VIRKSOMHET_PONTYPANDY,
+} from "../../mock/common/mockConstants";
+import { QueryClientProvider } from "react-query";
 import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { queryClientWithAktivBruker } from "../testQueryClient";
 
-const realState = createStore(rootReducer).getState();
-const store = configureStore([]);
-const fnr = "12345000000";
 let queryClient;
 
 const sykmelding = mockSykmeldinger.find((s) => {
@@ -26,23 +23,17 @@ const sykmelding = mockSykmeldinger.find((s) => {
 
 describe("SykmeldingUtdrag", () => {
   beforeEach(() => {
-    queryClient = new QueryClient();
+    queryClient = queryClientWithAktivBruker();
     queryClient.setQueryData(
-      sykmeldingerQueryKeys.sykmeldinger(fnr),
+      sykmeldingerQueryKeys.sykmeldinger(ARBEIDSTAKER_DEFAULT.personIdent),
       () => mockSykmeldinger
     );
   });
 
   it("Skal vise SykmeldingUtdrag for riktig sykmelding", () => {
-    const mockStore = store({
-      ...realState,
-      valgtbruker: { personident: fnr },
-    });
     render(
       <QueryClientProvider client={queryClient}>
-        <Provider store={mockStore}>
-          <SykmeldingUtdragContainer soknad={mockSykepengeSoknad} />
-        </Provider>
+        <SykmeldingUtdragContainer soknad={mockSykepengeSoknad} />
       </QueryClientProvider>
     );
     userEvent.click(screen.getByRole("button"));

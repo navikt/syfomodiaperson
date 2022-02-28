@@ -12,15 +12,8 @@ import NokkelinformasjonContainer from "../components/nokkelinformasjon/containe
 import VedtakContainer from "../components/vedtak/container/VedtakContainer";
 import DialogmoteInnkallingContainer from "../components/dialogmote/innkalling/DialogmoteInnkallingContainer";
 import AvlysDialogmoteContainer from "../components/dialogmote/avlys/AvlysDialogmoteContainer";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useDispatch } from "react-redux";
-import {
-  hentAktivBruker,
-  pushModiaContext,
-} from "@/data/modiacontext/modiacontext_actions";
-import { EventType } from "@/data/modiacontext/modiacontextTypes";
 import AppSpinner from "../components/AppSpinner";
-import { useAppSelector } from "@/hooks/hooks";
 import DialogmoteReferatContainer from "../components/dialogmote/referat/DialogmoteReferatContainer";
 import { useUserProperties } from "@/data/logging/loggingHooks";
 import { setAmplitudeUserProperties } from "@/amplitude/amplitude";
@@ -32,6 +25,8 @@ import { OppfoelgingsplanContainer } from "@/components/oppfolgingsplan/containe
 import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { IngenBrukerSide } from "@/components/IngenBrukerSide";
 import { MotebookingContainer } from "@/components/mote/container/MotebookingContainer";
+import { usePushAktivBruker } from "@/data/modiacontext/usePushAktivBruker";
+import { useAktivBruker } from "@/data/modiacontext/modiacontextQueryHooks";
 
 const getFnrFromParams = (): string => {
   return window.location.pathname.split("/")[2];
@@ -40,7 +35,7 @@ const getFnrFromParams = (): string => {
 export const dialogmoteRoutePath = "/sykefravaer/dialogmote";
 export const moteoversiktRoutePath = "/sykefravaer/moteoversikt";
 
-const AktivBrukerRouter = (): ReactElement => {
+const AktivBrukerRouter = ({ fnr }: { fnr: string }): ReactElement => {
   return (
     <Router>
       <Route exact path="/">
@@ -82,12 +77,12 @@ const AktivBrukerRouter = (): ReactElement => {
       <Route
         path="/sykefravaer/mote/:moteUuid/avbryt"
         exact
-        component={AvbrytMoteContainer}
+        render={() => <AvbrytMoteContainer fnr={fnr} />}
       />
       <Route
         path="/sykefravaer/mote/bekreft/:alternativId"
         exact
-        component={BekreftMoteContainer}
+        render={() => <BekreftMoteContainer fnr={fnr} />}
       />
       <Route
         path="/sykefravaer/sykmeldinger"
@@ -132,29 +127,18 @@ const IngenAktivBrukerRouter = (): ReactElement => {
   );
 };
 
-const AktivBrukerHentet = (): ReactElement => {
-  const fnr = useValgtPersonident();
-  if (!erGyldigFodselsnummer(fnr)) {
-    return <IngenAktivBrukerRouter />;
-  }
-  return <AktivBrukerRouter />;
-};
-
 const AktivBrukerLoader = () => {
-  const modiacontextState = useAppSelector((state) => state.modiacontext);
-  const harForsoktHentetAktivBruker = modiacontextState.hentingBrukerForsokt;
+  const { isLoading, data } = useAktivBruker();
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (!modiacontextState.henterBruker && !harForsoktHentetAktivBruker) {
-      dispatch(hentAktivBruker());
-    }
-  });
-
-  if (!harForsoktHentetAktivBruker) {
+  if (isLoading) {
     return <AppSpinner />;
   }
-  return <AktivBrukerHentet />;
+
+  if (!data || !erGyldigFodselsnummer(data.aktivBruker)) {
+    return <IngenAktivBrukerRouter />;
+  } else {
+    return <AktivBrukerRouter fnr={data.aktivBruker} />;
+  }
 };
 
 const AppRouter = () => {
@@ -163,6 +147,7 @@ const AppRouter = () => {
   const { data: veilederinfo } = useVeilederinfoQuery();
   const veilederIdent = veilederinfo?.ident;
   const dispatch = useDispatch();
+  const { mutate: pushAktivBruker } = usePushAktivBruker(fnrFromParam);
 
   useEffect(() => {
     if (userProperties.valgtEnhet || veilederIdent) {
@@ -173,14 +158,9 @@ const AppRouter = () => {
 
   useEffect(() => {
     if (erGyldigFodselsnummer(fnrFromParam)) {
-      dispatch(
-        pushModiaContext({
-          verdi: fnrFromParam,
-          eventType: EventType.NY_AKTIV_BRUKER,
-        })
-      );
+      pushAktivBruker();
     }
-  }, [dispatch, fnrFromParam, userProperties.valgtEnhet]);
+  }, [fnrFromParam, pushAktivBruker, userProperties.valgtEnhet]);
 
   return AktivBrukerLoader();
 };

@@ -43,7 +43,6 @@ describe("MotebookingContainer", () => {
     store = configureStore([]);
     mockState = {
       enhet: { valgtEnhet: "2212" },
-      valgtbruker: { personident: fnr },
     };
   });
 

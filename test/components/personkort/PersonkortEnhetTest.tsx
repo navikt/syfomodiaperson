@@ -1,36 +1,28 @@
 import { apiMock } from "../../stubs/stubApi";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "react-query";
 import nock from "nock";
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import configureStore from "redux-mock-store";
-import { Provider } from "react-redux";
 import PersonkortEnhet from "@/components/personkort/PersonkortEnhet";
 import { stubBehandlendeEnhetApi } from "../../stubs/stubSyfobehandlendeEnhet";
 import { expect } from "chai";
-import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
+import { queryClientWithAktivBruker } from "../../testQueryClient";
 
-const store = configureStore([]);
 let queryClient;
 let apiMockScope;
 
-const mockState = {
-  valgtbruker: { personident: ARBEIDSTAKER_DEFAULT.personIdent },
-};
 const enhet = { enhetId: "1234", navn: "NAV Drammen" };
 
 const renderPersonkortEnhet = () =>
   render(
     <QueryClientProvider client={queryClient}>
-      <Provider store={store(mockState)}>
-        <PersonkortEnhet />
-      </Provider>
+      <PersonkortEnhet />
     </QueryClientProvider>
   );
 
 describe("PersonkortEnhet", () => {
   beforeEach(() => {
-    queryClient = new QueryClient();
+    queryClient = queryClientWithAktivBruker();
     apiMockScope = apiMock();
   });
   afterEach(() => {

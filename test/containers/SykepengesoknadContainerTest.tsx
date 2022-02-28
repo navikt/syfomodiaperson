@@ -8,12 +8,13 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import { MemoryRouter, Route } from "react-router-dom";
 import { render, screen } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "react-query";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
 import { tilgangBrukerMock } from "../../mock/data/tilgangtilbrukerMock";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 import { sykepengesoknaderQueryKeys } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { queryClientWithAktivBruker } from "../testQueryClient";
 
 const NAERINGSDRIVENDESOKNAD_ID = "faadf7c1-3aac-4758-8673-e9cee1316a3c";
 const OPPHOLD_UTLAND_ID = "e16ff778-8475-47e1-b5dc-d2ce4ad6b9ee";
@@ -30,14 +31,11 @@ const mockState = {
       kontaktinfo: { skalHaVarsel: false },
     },
   },
-  valgtbruker: {
-    personident: fnr,
-  },
 };
 
 describe("SykepengesoknadContainer", () => {
   beforeEach(() => {
-    queryClient = new QueryClient();
+    queryClient = queryClientWithAktivBruker();
     queryClient.setQueryData(
       tilgangQueryKeys.tilgang(fnr),
       () => tilgangBrukerMock

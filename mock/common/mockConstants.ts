@@ -1,4 +1,5 @@
 import { NarmesteLederRelasjonStatus } from "../../src/data/leder/ledereTypes";
+import { RSContext } from "../../src/data/modiacontext/modiacontextTypes";
 
 export const TODAY = new Date().setHours(0, 0, 0, 0);
 
@@ -11,6 +12,11 @@ export const ARBEIDSTAKER_DEFAULT = {
     etternavn: "Jones",
   },
 };
+
+export const AKTIV_BRUKER_DEFAULT: Partial<RSContext> = {
+  aktivBruker: ARBEIDSTAKER_DEFAULT.personIdent,
+};
+
 export const ARBEIDSTAKER_DEFAULT_FULL_NAME = `${ARBEIDSTAKER_DEFAULT.navn.fornavn} ${ARBEIDSTAKER_DEFAULT.navn.mellomnavn} ${ARBEIDSTAKER_DEFAULT.navn.etternavn}`;
 
 export const ENHET_GRUNERLOKKA = {

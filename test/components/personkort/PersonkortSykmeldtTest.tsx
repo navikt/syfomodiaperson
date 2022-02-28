@@ -3,25 +3,14 @@ import PersonkortSykmeldt from "@/components/personkort/PersonkortSykmeldt";
 import { expect } from "chai";
 import React from "react";
 import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "react-query";
 import { apiMock } from "../../stubs/stubApi";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
-import configureStore from "redux-mock-store";
-import { Provider } from "react-redux";
 import { stubPersonadresseApi } from "../../stubs/stubSyfoperson";
 import { vegadresse } from "../../../mock/data/personAdresseMock";
-import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
+import { queryClientWithAktivBruker } from "../../testQueryClient";
 
 let queryClient;
 let apiMockScope;
-const realState = createStore(rootReducer).getState();
-const store = configureStore([]);
-const mockState = {
-  valgtbruker: {
-    personident: ARBEIDSTAKER_DEFAULT.personIdent,
-  },
-};
 
 const navbruker: Brukerinfo = {
   arbeidssituasjon: "",
@@ -34,15 +23,13 @@ const navbruker: Brukerinfo = {
 const renderPersonkortSykmeldt = () =>
   render(
     <QueryClientProvider client={queryClient}>
-      <Provider store={store({ ...realState, ...mockState })}>
-        <PersonkortSykmeldt navbruker={navbruker} />
-      </Provider>
+      <PersonkortSykmeldt navbruker={navbruker} />
     </QueryClientProvider>
   );
 
 describe("PersonkortSykmeldt", () => {
   beforeEach(() => {
-    queryClient = new QueryClient();
+    queryClient = queryClientWithAktivBruker();
     apiMockScope = apiMock();
   });
 
