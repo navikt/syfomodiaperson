@@ -1,5 +1,4 @@
 import { fastlegerQueryKeys } from "@/data/fastlege/fastlegerQueryHooks";
-import { arbeidstaker } from "../../dialogmote/testData";
 import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
@@ -12,6 +11,7 @@ import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
 import { fastlegerMock } from "../../../mock/fastlegerest/fastlegerMock";
+import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
 
 let queryClient;
 
@@ -21,7 +21,7 @@ const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
 const mockState = {
   valgtbruker: {
-    personident: arbeidstaker.personident,
+    personident: ARBEIDSTAKER_DEFAULT.personIdent,
   },
 };
 
@@ -43,7 +43,7 @@ describe("PersonkortLege", () => {
     const expectedFeilmelding =
       "Det kan hende brukeren ikke har en fastlege. Ta kontakt med brukeren for å få behandlers kontaktopplysninger.";
     queryClient.setQueryData(
-      fastlegerQueryKeys.fastleger(arbeidstaker.personident),
+      fastlegerQueryKeys.fastleger(ARBEIDSTAKER_DEFAULT.personIdent),
       () => []
     );
     renderPersonkortLege();
@@ -53,7 +53,7 @@ describe("PersonkortLege", () => {
 
   it("Skal vise overskrifter for aktiv fastlege og fastlegevikarer", async () => {
     queryClient.setQueryData(
-      fastlegerQueryKeys.fastleger(arbeidstaker.personident),
+      fastlegerQueryKeys.fastleger(ARBEIDSTAKER_DEFAULT.personIdent),
       () => [aktivFastlege, ...fastlegeVikarer]
     );
     renderPersonkortLege();
@@ -65,7 +65,7 @@ describe("PersonkortLege", () => {
 
   it("Skal vise vikarlege", async () => {
     queryClient.setQueryData(
-      fastlegerQueryKeys.fastleger(arbeidstaker.personident),
+      fastlegerQueryKeys.fastleger(ARBEIDSTAKER_DEFAULT.personIdent),
       () => [aktivFastlege, ...fastlegeVikarer]
     );
     renderPersonkortLege();
@@ -76,7 +76,7 @@ describe("PersonkortLege", () => {
 
   it("Skal ikke vise fastlegevikarer dersom det ikke er fastlegevikarer", () => {
     queryClient.setQueryData(
-      fastlegerQueryKeys.fastleger(arbeidstaker.personident),
+      fastlegerQueryKeys.fastleger(ARBEIDSTAKER_DEFAULT.personIdent),
       () => [aktivFastlege]
     );
     renderPersonkortLege();

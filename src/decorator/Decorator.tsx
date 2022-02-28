@@ -3,10 +3,10 @@ import { useDispatch } from "react-redux";
 import NAVSPA from "@navikt/navspa";
 import { DecoratorProps } from "./decoratorProps";
 import decoratorConfig from "./decoratorConfig";
-import { valgtEnhet } from "@/data/valgtenhet/enhet_actions";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { hentNavbruker } from "@/data/navbruker/navbruker_actions";
 import { erGyldigFodselsnummer } from "@/utils/frnValideringUtils";
+import { useValgtEnhet } from "@/context/ValgtEnhetContext";
 
 const InternflateDecorator = NAVSPA.importer<DecoratorProps>(
   "internarbeidsflatefs"
@@ -14,6 +14,7 @@ const InternflateDecorator = NAVSPA.importer<DecoratorProps>(
 
 const Decorator = () => {
   const dispatch = useDispatch();
+  const { setValgtEnhet } = useValgtEnhet();
 
   const fnr = useValgtPersonident();
 
@@ -28,7 +29,7 @@ const Decorator = () => {
   };
 
   const handleChangeEnhet = (nyEnhet: string) => {
-    dispatch(valgtEnhet(nyEnhet));
+    setValgtEnhet(nyEnhet);
   };
 
   const config = useCallback(decoratorConfig, [

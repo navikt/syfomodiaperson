@@ -6,6 +6,7 @@ import MotebookingSkjema from "../skjema/MotebookingSkjema";
 import AppSpinner from "../../AppSpinner";
 import Feilmelding from "../../Feilmelding";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { useValgtEnhet } from "@/context/ValgtEnhetContext";
 
 const texts = {
   skjermetBrukerError: {
@@ -35,10 +36,10 @@ const MotebookingSkjemaContainer = ({
   hentingFeilet,
   opprettMote,
   skjermetBruker,
-  valgtEnhet,
   sender,
   sendingFeilet,
 }) => {
+  const { valgtEnhet } = useValgtEnhet();
   const {
     currentLedere: ledere,
     isLoading: henterLedere,
@@ -96,7 +97,6 @@ MotebookingSkjemaContainer.propTypes = {
   hentingFeilet: PropTypes.bool,
   opprettMote: PropTypes.func,
   skjermetBruker: PropTypes.bool,
-  valgtEnhet: PropTypes.string,
   sender: PropTypes.bool,
   sendingFeilet: PropTypes.bool,
 };
@@ -105,7 +105,6 @@ export function mapStateToProps(state, ownProps) {
   return {
     fnr: ownProps.fnr,
     arbeidstaker: state.navbruker.data,
-    valgtEnhet: state.enhet.valgtEnhet,
     henter: state.navbruker.henter,
     skjermetBruker: state.moter.skjermetBruker,
     antallNyeTidspunkt: state.moter.antallNyeTidspunkt,

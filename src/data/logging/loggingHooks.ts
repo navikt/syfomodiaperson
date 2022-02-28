@@ -1,8 +1,7 @@
 import { useCallback } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../rootState";
 import { trackEvent, UserProperties } from "@/amplitude/amplitude";
 import { useBehandlendeEnhetQuery } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
+import { useValgtEnhet } from "@/context/ValgtEnhetContext";
 
 export const texts = {
   click: "Klikker på:",
@@ -18,10 +17,9 @@ export interface loggingMetadata {
 
 export const useHasLoadedMetaData = (): boolean => {
   const { data } = useBehandlendeEnhetQuery();
+  const { valgtEnhet } = useValgtEnhet();
   const harHentetBehandlendeEnhet = !!data?.enhetId;
-  const harHentetValgtEnhet = useSelector(
-    (state: RootState) => !!state.enhet.valgtEnhet
-  );
+  const harHentetValgtEnhet = !!valgtEnhet;
   return harHentetBehandlendeEnhet && harHentetValgtEnhet;
 };
 
@@ -37,7 +35,7 @@ export const useLoggingMetaData = (): loggingMetadata => {
 };
 
 export const useUserProperties = (): UserProperties => {
-  const valgtEnhet = useSelector((state: RootState) => state.enhet.valgtEnhet);
+  const { valgtEnhet } = useValgtEnhet();
 
   return {
     valgtEnhet: valgtEnhet,

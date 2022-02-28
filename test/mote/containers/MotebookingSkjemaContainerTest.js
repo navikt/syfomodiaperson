@@ -12,9 +12,6 @@ describe("MotebookingSkjemaContainer", () => {
       };
       state = {
         moter: {},
-        enhet: {
-          valgtEnhet: "0021",
-        },
       };
       state.navbruker = {
         data: {

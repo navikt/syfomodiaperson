@@ -6,16 +6,16 @@ import React from "react";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import PersonkortEnhet from "@/components/personkort/PersonkortEnhet";
-import { arbeidstaker } from "../../dialogmote/testData";
 import { stubBehandlendeEnhetApi } from "../../stubs/stubSyfobehandlendeEnhet";
 import { expect } from "chai";
+import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
 
 const store = configureStore([]);
 let queryClient;
 let apiMockScope;
 
 const mockState = {
-  valgtbruker: { personident: arbeidstaker.personident },
+  valgtbruker: { personident: ARBEIDSTAKER_DEFAULT.personIdent },
 };
 const enhet = { enhetId: "1234", navn: "NAV Drammen" };
 

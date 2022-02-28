@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import { GlobalNavigasjon } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import React from "react";
 import configureStore from "redux-mock-store";
-import { arbeidstaker } from "../dialogmote/testData";
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "react-query";
 import * as menypunkter from "@/enums/menypunkter";
@@ -10,8 +9,9 @@ import { expect } from "chai";
 import { MemoryRouter } from "react-router-dom";
 import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
+import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 
-const fnr = arbeidstaker.personident;
+const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 const store = configureStore([]);
 const mockState = {
   valgtbruker: { personident: fnr },

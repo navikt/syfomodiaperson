@@ -7,12 +7,12 @@ import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { arbeidstaker } from "../../dialogmote/testData";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { apiMock } from "../../stubs/stubApi";
 import { stubFastlegerApi } from "../../stubs/stubFastlegeRest";
 import { render, screen } from "@testing-library/react";
 import { fastlegerMock } from "../../../mock/fastlegerest/fastlegerMock";
+import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
 
 let queryClient;
 let apiMockScope;
@@ -25,7 +25,7 @@ describe("PersonkortVisning", () => {
   beforeEach(() => {
     queryClient = new QueryClient();
     apiMockScope = apiMock();
-    stubFastlegerApi(apiMockScope, arbeidstaker.personident);
+    stubFastlegerApi(apiMockScope, ARBEIDSTAKER_DEFAULT.personIdent);
     mockState = {
       navbruker: {
         navn: "Knut",
@@ -34,7 +34,7 @@ describe("PersonkortVisning", () => {
         },
       },
       valgtbruker: {
-        personident: arbeidstaker.personident,
+        personident: ARBEIDSTAKER_DEFAULT.personIdent,
       },
     };
   });
@@ -72,7 +72,9 @@ describe("PersonkortVisning", () => {
   it("Skal vise VisningEnhet, dersom visning for enhet er valgt", async () => {
     const enhetNavn = "NAV Drammen";
     queryClient.setQueryData(
-      behandlendeEnhetQueryKeys.behandlendeEnhet(arbeidstaker.personident),
+      behandlendeEnhetQueryKeys.behandlendeEnhet(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
       () => ({
         navn: enhetNavn,
         enhetId: "1234",

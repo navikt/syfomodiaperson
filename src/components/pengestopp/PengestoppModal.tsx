@@ -13,9 +13,9 @@ import {
   VirksomhetNr,
 } from "@/data/pengestopp/types/FlaggPerson";
 import { AlertStripeInfo } from "nav-frontend-alertstriper";
-import { useNavEnhet } from "@/hooks/useNavEnhet";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useFlaggPerson } from "@/data/pengestopp/useFlaggPerson";
+import { useValgtEnhet } from "@/context/ValgtEnhetContext";
 
 const texts = {
   notStoppedTittel:
@@ -95,7 +95,7 @@ const PengestoppModal = ({
   arbeidsgivere,
   toggle,
 }: IPengestoppModal) => {
-  const navEnhet = useNavEnhet();
+  const { valgtEnhet } = useValgtEnhet();
   const fnr = useValgtPersonident();
   const { isLoading, isError, isSuccess, mutate } = useFlaggPerson();
 
@@ -103,7 +103,7 @@ const PengestoppModal = ({
     sykmeldtFnr: { value: fnr },
     arsakList: [],
     virksomhetNr: [],
-    enhetNr: { value: navEnhet },
+    enhetNr: { value: valgtEnhet },
   };
 
   const [employerError, setEmployerError] = useState<boolean>(false);
@@ -126,7 +126,7 @@ const PengestoppModal = ({
     setStoppAutomatikk({
       ...stoppAutomatikk,
       virksomhetNr: virksomhetNrList,
-      enhetNr: { value: navEnhet },
+      enhetNr: { value: valgtEnhet },
     });
   };
 

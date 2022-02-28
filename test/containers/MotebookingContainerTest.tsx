@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 import { MemoryRouter } from "react-router-dom";
 import { queryClientWithMockData } from "../testQueryClient";
+import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 
 const harIkkeMoterTilgang = {
   harTilgang: false,
@@ -18,6 +19,21 @@ const harIkkeMoterTilgang = {
 const realState = createStore(rootReducer).getState();
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient;
+
+const renderMotebookingContainer = (mockStore) =>
+  render(
+    <QueryClientProvider client={queryClient}>
+      <ValgtEnhetContext.Provider
+        value={{ valgtEnhet: "2221", setValgtEnhet: () => void 0 }}
+      >
+        <Provider store={mockStore}>
+          <MemoryRouter>
+            <MotebookingContainer />
+          </MemoryRouter>
+        </Provider>
+      </ValgtEnhetContext.Provider>
+    </QueryClientProvider>
+  );
 
 describe("MotebookingContainer", () => {
   let store;
@@ -33,29 +49,14 @@ describe("MotebookingContainer", () => {
 
   describe("MotebookingSide", () => {
     it("Skal vise AppSpinner", async () => {
-      render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <MemoryRouter>
-              <MotebookingContainer />
-            </MemoryRouter>
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderMotebookingContainer(store({ ...realState, ...mockState }));
+
       expect(await screen.findByLabelText("Vent litt mens siden laster")).to
         .exist;
     });
     it("Skal hente møter ved init", () => {
       const mockStore = store({ ...realState, ...mockState });
-      render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={mockStore}>
-            <MemoryRouter>
-              <MotebookingContainer />
-            </MemoryRouter>
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderMotebookingContainer(mockStore);
 
       const actions = mockStore.getActions();
       expect(
@@ -72,15 +73,7 @@ describe("MotebookingContainer", () => {
         hentingForsokt: true,
         data: [],
       };
-      render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <MemoryRouter>
-              <MotebookingContainer />
-            </MemoryRouter>
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderMotebookingContainer(store({ ...realState, ...mockState }));
 
       expect(
         screen.getByRole("heading", {
@@ -95,15 +88,7 @@ describe("MotebookingContainer", () => {
         hentingForsokt: true,
         data: [],
       };
-      render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <MemoryRouter>
-              <MotebookingContainer />
-            </MemoryRouter>
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderMotebookingContainer(store({ ...realState, ...mockState }));
 
       expect(
         screen.getByRole("heading", {
@@ -126,15 +111,7 @@ describe("MotebookingContainer", () => {
           },
         ],
       };
-      render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <MemoryRouter>
-              <MotebookingContainer />
-            </MemoryRouter>
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderMotebookingContainer(store({ ...realState, ...mockState }));
 
       expect(
         screen.getByRole("heading", {
@@ -155,15 +132,7 @@ describe("MotebookingContainer", () => {
           },
         ],
       };
-      render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <MemoryRouter>
-              <MotebookingContainer />
-            </MemoryRouter>
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderMotebookingContainer(store({ ...realState, ...mockState }));
 
       expect(
         screen.getByRole("heading", {

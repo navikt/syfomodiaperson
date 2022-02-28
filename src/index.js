@@ -11,6 +11,7 @@ import { getEnvironmentAsString } from "./utils/miljoUtil";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { minutesToMillis } from "@/utils/timeUtils";
+import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 
 const store = setupStore();
 
@@ -32,10 +33,12 @@ const queryClient = new QueryClient({
 
 ReactDOM.render(
   <Provider store={store}>
-    <QueryClientProvider client={queryClient}>
-      <AppRouter />
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <ValgtEnhetProvider>
+      <QueryClientProvider client={queryClient}>
+        <AppRouter />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </ValgtEnhetProvider>
   </Provider>,
   document.getElementById("maincontent")
 );

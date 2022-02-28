@@ -3,7 +3,6 @@ import PersonkortSykmeldt from "@/components/personkort/PersonkortSykmeldt";
 import { expect } from "chai";
 import React from "react";
 import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
-import { arbeidstaker } from "../../dialogmote/testData";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { apiMock } from "../../stubs/stubApi";
 import { createStore } from "redux";
@@ -12,6 +11,7 @@ import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import { stubPersonadresseApi } from "../../stubs/stubSyfoperson";
 import { vegadresse } from "../../../mock/data/personAdresseMock";
+import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
 
 let queryClient;
 let apiMockScope;
@@ -19,7 +19,7 @@ const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
 const mockState = {
   valgtbruker: {
-    personident: arbeidstaker.personident,
+    personident: ARBEIDSTAKER_DEFAULT.personIdent,
   },
 };
 

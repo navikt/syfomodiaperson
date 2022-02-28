@@ -9,6 +9,7 @@ import {
   mockState,
   mote,
   moteTekster,
+  navEnhet,
 } from "../testData";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { expect } from "chai";
@@ -24,6 +25,7 @@ import { changeTextInput, getTextInput } from "../../testUtils";
 import { expectedInnkallingDocuments } from "../testDataDocuments";
 import sinon from "sinon";
 import { queryClientWithMockData } from "../../testQueryClient";
+import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 
 let queryClient;
 const store = configureStore([]);
@@ -157,9 +159,13 @@ const renderDialogmoteInnkallingSkjema = () =>
     <MemoryRouter initialEntries={[dialogmoteRoutePath]}>
       <Route path={dialogmoteRoutePath}>
         <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <DialogmoteInnkallingSkjema pageTitle="Test" />
-          </Provider>
+          <ValgtEnhetContext.Provider
+            value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+          >
+            <Provider store={store({ ...realState, ...mockState })}>
+              <DialogmoteInnkallingSkjema pageTitle="Test" />
+            </Provider>
+          </ValgtEnhetContext.Provider>
         </QueryClientProvider>
       </Route>
     </MemoryRouter>

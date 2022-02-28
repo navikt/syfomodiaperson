@@ -145,9 +145,6 @@ export const mockState = {
       },
     },
   },
-  enhet: {
-    valgtEnhet: navEnhet,
-  },
   valgtbruker: {
     personident: arbeidstaker.personident,
   },

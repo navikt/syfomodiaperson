@@ -34,6 +34,7 @@ import userEvent from "@testing-library/user-event";
 import { expectedInnkallingDocuments } from "../testDataDocuments";
 import sinon from "sinon";
 import { queryClientWithMockData } from "../../testQueryClient";
+import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 
 let queryClient;
 const store = configureStore([]);
@@ -110,7 +111,7 @@ describe("Dialogmoteinnkallingskjema", () => {
 
     const innkallingMutation = queryClient.getMutationCache().getAll()[0];
     const expectedInnkallingDto = {
-      tildeltEnhet: navEnhet,
+      tildeltEnhet: navEnhet.id,
       arbeidsgiver: {
         virksomhetsnummer: arbeidsgiver.orgnr,
         fritekstInnkalling: moteTekster.fritekstTilArbeidsgiver,
@@ -161,9 +162,13 @@ const renderDialogmoteInnkallingSkjema = () => {
     <MemoryRouter initialEntries={[dialogmoteRoutePath]}>
       <Route path={dialogmoteRoutePath}>
         <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <DialogmoteInnkallingSkjema pageTitle="Test" />
-          </Provider>
+          <ValgtEnhetContext.Provider
+            value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+          >
+            <Provider store={store({ ...realState, ...mockState })}>
+              <DialogmoteInnkallingSkjema pageTitle="Test" />
+            </Provider>
+          </ValgtEnhetContext.Provider>
         </QueryClientProvider>
       </Route>
     </MemoryRouter>

@@ -16,7 +16,6 @@ import {
 import { DialogmoteInnkallingDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { genererDato } from "../../mote/utils";
 import { Link, Redirect } from "react-router-dom";
-import { useNavEnhet } from "@/hooks/useNavEnhet";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { FlexRow } from "../../Layout";
 import { SkjemaFeiloppsummering } from "../../SkjemaFeiloppsummering";
@@ -35,6 +34,7 @@ import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/Behandl
 import styled from "styled-components";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useTrackOnClick } from "@/data/logging/loggingHooks";
+import { useValgtEnhet } from "@/context/ValgtEnhetContext";
 
 interface DialogmoteInnkallingSkjemaTekster {
   fritekstArbeidsgiver: string;
@@ -126,7 +126,7 @@ const DialogmoteInnkallingSkjema = ({
 }: DialogmoteInnkallingSkjemaProps) => {
   const initialValues: Partial<DialogmoteInnkallingSkjemaValues> = {};
   const fnr = useValgtPersonident();
-  const navEnhet = useNavEnhet();
+  const { valgtEnhet } = useValgtEnhet();
   const {
     harIkkeUtbedretFeil,
     resetFeilUtbedret,
@@ -190,7 +190,7 @@ const DialogmoteInnkallingSkjema = ({
     const dialogmoteInnkalling = toInnkalling(
       values,
       fnr,
-      navEnhet,
+      valgtEnhet,
       innkallingDocumentGenerator,
       selectedBehandler
     );
