@@ -42,11 +42,7 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
-      },
-      {
-        test: /\.less$/,
+        test: /\.(less|css)$/,
         use: [
           {
             loader: "style-loader",

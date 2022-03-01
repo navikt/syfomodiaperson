@@ -3,7 +3,7 @@ import { Field } from "react-final-form";
 import React from "react";
 import styled from "styled-components";
 import { TrackedKnapp } from "@/components/buttons/TrackedKnapp";
-import { Textarea } from "@navikt/ds-react";
+import Fritekst from "@/components/Fritekst";
 
 const texts = {
   forhandsvisning: "Forhåndsvisning",
@@ -31,12 +31,12 @@ const FritekstSeksjon = ({
       <FlexColumn flex={1}>
         <Field<string> name={fieldName}>
           {({ input, meta }) => (
-            <Textarea
+            <Fritekst
               data-cy={fieldName + "TextArea"}
               size="medium"
               maxLength={maxLength}
               label={label}
-              error={meta.submitFailed && meta.error}
+              feil={meta.submitFailed && meta.error}
               id={fieldName}
               {...input}
             />

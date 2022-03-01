@@ -5,7 +5,7 @@ import { ReferatInfoColumn } from "@/components/dialogmote/referat/ReferatInfoCo
 import { Normaltekst } from "nav-frontend-typografi";
 import styled from "styled-components";
 import { Field } from "react-final-form";
-import { Textarea } from "@navikt/ds-react";
+import Fritekst, { FritekstSize } from "@/components/Fritekst";
 
 export const MAX_LENGTH_SITUASJON = 3500;
 export const MAX_LENGTH_KONKLUSJON = 1000;
@@ -59,11 +59,11 @@ const texts = {
 const Situasjon = (): ReactElement => (
   <FlexRow bottomPadding={PaddingSize.MD}>
     <ReferatTextareaFieldColumn
+      size="ekstra-stor"
       fieldName="situasjon"
       label={texts.situasjon.label}
       placeholder={texts.situasjon.placeholder}
       maxLength={MAX_LENGTH_SITUASJON}
-      minRows={MIN_ROWS_SITUASJON}
     />
     <ReferatInfoColumn>
       <Normaltekst>{texts.situasjon.infoboks.eksempler}</Normaltekst>
@@ -80,11 +80,11 @@ const Situasjon = (): ReactElement => (
 const Konklusjon = (): ReactElement => (
   <FlexRow bottomPadding={PaddingSize.MD}>
     <ReferatTextareaFieldColumn
+      size="stor"
       fieldName="konklusjon"
       label={texts.konklusjon.label}
       placeholder={texts.konklusjon.placeholder}
       maxLength={MAX_LENGTH_KONKLUSJON}
-      minRows={MIN_ROWS_KONKLUSJON}
     />
     <ReferatInfoColumn>
       <Normaltekst>{texts.konklusjon.infoboks}</Normaltekst>
@@ -95,11 +95,11 @@ const Konklusjon = (): ReactElement => (
 const ArbeidstakersOppgave = (): ReactElement => (
   <FlexRow bottomPadding={PaddingSize.MD}>
     <ReferatTextareaFieldColumn
+      size="medium"
       fieldName="arbeidstakersOppgave"
       label={texts.arbeidstaker.label}
       placeholder={texts.arbeidstaker.placeholder}
       maxLength={MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE}
-      minRows={MIN_ROWS_OPPGAVE}
     />
     <ReferatInfoColumn>
       <Normaltekst>{texts.arbeidstaker.infoboks}</Normaltekst>
@@ -110,11 +110,11 @@ const ArbeidstakersOppgave = (): ReactElement => (
 const ArbeidsgiversOppgave = (): ReactElement => (
   <FlexRow bottomPadding={PaddingSize.MD}>
     <ReferatTextareaFieldColumn
+      size="medium"
       fieldName="arbeidsgiversOppgave"
       label={texts.arbeidsgiver.label}
       placeholder={texts.arbeidsgiver.placeholder}
       maxLength={MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE}
-      minRows={MIN_ROWS_OPPGAVE}
     />
     <ReferatInfoColumn />
   </FlexRow>
@@ -123,11 +123,11 @@ const ArbeidsgiversOppgave = (): ReactElement => (
 const BehandlersOppgave = () => (
   <FlexRow bottomPadding={PaddingSize.MD}>
     <ReferatTextareaFieldColumn
+      size="medium"
       fieldName={"behandlersOppgave"}
       label={texts.behandler.label}
       placeholder={texts.behandler.placeholder}
       maxLength={MAX_LENGTH_BEHANDLERS_OPPGAVE}
-      minRows={MIN_ROWS_OPPGAVE}
     />
     <ReferatInfoColumn />
   </FlexRow>
@@ -136,11 +136,11 @@ const BehandlersOppgave = () => (
 const VeiledersOppgave = (): ReactElement => (
   <FlexRow bottomPadding={PaddingSize.LG}>
     <ReferatTextareaFieldColumn
+      size="medium"
       fieldName={"veiledersOppgave"}
       label={texts.veileder.label}
       placeholder={texts.veileder.placeholder}
       maxLength={MAX_LENGTH_VEILEDERS_OPPGAVE}
-      minRows={MIN_ROWS_OPPGAVE}
     />
     <ReferatInfoColumn />
   </FlexRow>
@@ -152,22 +152,24 @@ const TextAreaColumn = styled(FlexColumn)`
 
 interface ReferatTextareaColumnProps {
   fieldName: string;
+  size: FritekstSize;
   label: string;
   placeholder: string;
   maxLength: number;
-  minRows?: number;
 }
 
 const ReferatTextareaFieldColumn = ({
   fieldName,
+  size,
   ...rest
 }: ReferatTextareaColumnProps): ReactElement => (
   <TextAreaColumn flex={1}>
     <Field<string> name={fieldName}>
       {({ input, meta }) => (
-        <Textarea
+        <Fritekst
           data-cy={fieldName + "TextArea"}
-          error={meta.submitFailed && meta.error}
+          size={size}
+          feil={meta.submitFailed && meta.error}
           id={fieldName}
           {...input}
           {...rest}
