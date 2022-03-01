@@ -83,7 +83,7 @@ context("Endre dialogmøte", () => {
 
     cy.get("[id=dato]").clear().type(tommorrowDateAsString());
 
-    cy.contains("Lagre endringer").click();
+    cy.contains("Send").click();
 
     cy.url().should("include", "/sykefravaer/moteoversikt");
   });
@@ -143,7 +143,7 @@ context("Endre dialogmøte med behandler", () => {
 
     cy.get("[id=dato]").clear().type(tommorrowDateAsString());
 
-    cy.contains("Lagre endringer").click();
+    cy.contains("Send").click();
 
     cy.url().should("include", "/sykefravaer/moteoversikt");
   });

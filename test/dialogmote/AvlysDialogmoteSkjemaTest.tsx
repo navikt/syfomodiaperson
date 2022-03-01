@@ -62,7 +62,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
   });
   it("validerer begrunnelser", () => {
     renderAvlysDialogmoteSkjema(dialogmote);
-    clickButton("Send avlysning");
+    clickButton("Send");
 
     expect(screen.getAllByText(valideringsTexts.begrunnelseArbeidstakerMissing))
       .to.not.be.empty;
@@ -78,7 +78,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
   });
   it("validerer begrunnelse til behandler når behandler er med", () => {
     renderAvlysDialogmoteSkjema(dialogmoteMedBehandler);
-    clickButton("Send avlysning");
+    clickButton("Send");
 
     expect(screen.getAllByText(valideringsTexts.begrunnelseBehandlerMissing)).to
       .not.be.empty;
@@ -90,7 +90,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
   });
   it("valideringsmeldinger forsvinner ved utbedring", () => {
     renderAvlysDialogmoteSkjema(dialogmote);
-    clickButton("Send avlysning");
+    clickButton("Send");
     expect(screen.getAllByText(valideringsTexts.begrunnelseArbeidstakerMissing))
       .to.not.be.empty;
     expect(screen.getAllByText(valideringsTexts.begrunnelseArbeidsgiverMissing))
@@ -139,7 +139,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidstakerMissing))
       .to.not.exist;
 
-    clickButton("Send avlysning");
+    clickButton("Send");
     expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidstakerMissing))
       .to.exist;
     expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidstakerMissing))
@@ -163,7 +163,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     changeTextInput(begrunnelseArbeidsgiverInput, tooLongFritekst);
     changeTextInput(begrunnelseBehandlerInput, tooLongFritekst);
 
-    clickButton("Send avlysning");
+    clickButton("Send");
 
     expect(
       screen.getAllByRole("link", { name: maxLengthErrorMsg })
@@ -188,7 +188,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       moteTekster.fritekstTilArbeidsgiver
     );
 
-    clickButton("Send avlysning");
+    clickButton("Send");
 
     const avlysMutation = queryClient.getMutationCache().getAll()[0];
     const expectedAvlysningDto = {
@@ -227,7 +227,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       moteTekster.fritekstTilBehandler
     );
 
-    clickButton("Send avlysning");
+    clickButton("Send");
 
     const avlysMutation = queryClient.getMutationCache().getAll()[0];
     const expectedAvlysningDto = {

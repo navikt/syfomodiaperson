@@ -57,7 +57,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
   it("validerer begrunnelser og dato", () => {
     renderEndreDialogmoteSkjema(dialogmote);
 
-    clickButton("Lagre endringer");
+    clickButton("Send");
 
     expect(screen.getAllByText(valideringsTexts.begrunnelseArbeidstakerMissing))
       .to.not.be.empty;
@@ -80,7 +80,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
   it("validerer begrunnelse til behandler når behandler er med", () => {
     renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
 
-    clickButton("Lagre endringer");
+    clickButton("Send");
 
     expect(screen.getAllByText(valideringsTexts.begrunnelseBehandlerMissing));
     expect(getFeilmeldingLink(valideringsTexts.begrunnelseBehandlerMissing)).to
@@ -89,7 +89,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
   it("valideringsmeldinger forsvinner ved utbedring", () => {
     renderEndreDialogmoteSkjema(dialogmote);
 
-    clickButton("Lagre endringer");
+    clickButton("Send");
 
     expect(screen.getAllByText(valideringsTexts.begrunnelseArbeidstakerMissing))
       .to.not.be.empty;
@@ -147,7 +147,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
     expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidsgiverMissing))
       .to.not.exist;
 
-    clickButton("Lagre endringer");
+    clickButton("Send");
     expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidstakerMissing))
       .to.exist;
     expect(getFeilmeldingLink(valideringsTexts.begrunnelseArbeidsgiverMissing))
@@ -171,7 +171,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
     changeTextInput(begrunnelseArbeidsgiverInput, tooLongFritekst);
     changeTextInput(begrunnelseBehandlerInput, tooLongFritekst);
 
-    clickButton("Lagre endringer");
+    clickButton("Send");
 
     expect(
       screen.getAllByRole("link", { name: maxLengthErrorMsg })
@@ -183,7 +183,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
     renderEndreDialogmoteSkjema(dialogmote);
     passSkjemaInput();
 
-    clickButton("Lagre endringer");
+    clickButton("Send");
 
     const endreMutation = queryClient.getMutationCache().getAll()[0];
     const expectedEndring = {
@@ -212,7 +212,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
       moteTekster.fritekstTilBehandler
     );
 
-    clickButton("Lagre endringer");
+    clickButton("Send");
 
     const endreMutation = queryClient.getMutationCache().getAll()[0];
     const expectedEndring = {

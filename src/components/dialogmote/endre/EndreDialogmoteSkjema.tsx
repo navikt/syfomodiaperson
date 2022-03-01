@@ -31,7 +31,7 @@ import { useEndreTidStedDialogmote } from "@/data/dialogmote/useEndreTidStedDial
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 
 const texts = {
-  send: "Lagre endringer",
+  send: "Send",
   avbryt: "Avbryt",
 };
 

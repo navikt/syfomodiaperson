@@ -29,7 +29,7 @@ export const texts = {
   begrunnelseArbeidstakerLabel: "Begrunnelse til arbeidstakeren",
   begrunnelseArbeidsgiverLabel: "Begrunnelse til nærmeste leder",
   begrunnelseBehandlerLabel: "Begrunnelse til behandler",
-  send: "Send avlysning",
+  send: "Send",
   avbryt: "Avbryt",
   alert:
     "Hvis årsaken til avlysning er at arbeidstakeren ikke møtte opp, bør du vurdere om sykepengene skal stanses.",
