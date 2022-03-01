@@ -34,7 +34,6 @@ import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/Behandl
 import styled from "styled-components";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useTrackOnClick } from "@/data/logging/loggingHooks";
-import { useValgtEnhet } from "@/context/ValgtEnhetContext";
 
 interface DialogmoteInnkallingSkjemaTekster {
   fritekstArbeidsgiver: string;
@@ -76,12 +75,10 @@ const texts = {
 const toInnkalling = (
   values: DialogmoteInnkallingSkjemaValues,
   fnr: string,
-  navEnhet: string,
   innkallingDocumentGenerator: ForhandsvisInnkallingGenerator,
   valgtBehandler: BehandlerDialogmeldingDTO | undefined
 ): DialogmoteInnkallingDTO => {
   const innkalling: DialogmoteInnkallingDTO = {
-    tildeltEnhet: navEnhet,
     arbeidsgiver: {
       virksomhetsnummer: values.arbeidsgiver,
       fritekstInnkalling: values.fritekstArbeidsgiver,
@@ -126,7 +123,6 @@ const DialogmoteInnkallingSkjema = ({
 }: DialogmoteInnkallingSkjemaProps) => {
   const initialValues: Partial<DialogmoteInnkallingSkjemaValues> = {};
   const fnr = useValgtPersonident();
-  const { valgtEnhet } = useValgtEnhet();
   const {
     harIkkeUtbedretFeil,
     resetFeilUtbedret,
@@ -190,7 +186,6 @@ const DialogmoteInnkallingSkjema = ({
     const dialogmoteInnkalling = toInnkalling(
       values,
       fnr,
-      valgtEnhet,
       innkallingDocumentGenerator,
       selectedBehandler
     );

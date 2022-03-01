@@ -111,7 +111,6 @@ describe("Dialogmoteinnkallingskjema", () => {
 
     const innkallingMutation = queryClient.getMutationCache().getAll()[0];
     const expectedInnkallingDto = {
-      tildeltEnhet: navEnhet.id,
       arbeidsgiver: {
         virksomhetsnummer: arbeidsgiver.orgnr,
         fritekstInnkalling: moteTekster.fritekstTilArbeidsgiver,

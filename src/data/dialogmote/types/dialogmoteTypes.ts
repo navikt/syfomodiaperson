@@ -96,7 +96,6 @@ export interface DialogmotedeltakerBehandlerDTO {
 }
 
 export interface DialogmoteInnkallingDTO {
-  tildeltEnhet: string;
   arbeidstaker: {
     personIdent: string;
     fritekstInnkalling?: string;
