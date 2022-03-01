@@ -2,6 +2,7 @@ import { leggTilDagerPaDato } from "../util/dateUtil";
 import {
   ARBEIDSTAKER_DEFAULT,
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
+  TODAY,
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
 
@@ -40,7 +41,7 @@ export const sykmeldingerMock = [
           },
         },
         fom: "2020-07-22",
-        tom: "2021-02-22",
+        tom: TODAY,
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,

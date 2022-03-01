@@ -300,6 +300,7 @@ const isSykmeldingSendtOrBekreftet = (
 
 const isSykmeldingActiveToday = (sykmelding: SykmeldingOldFormat): boolean => {
   const today = new Date();
+  today.setHours(0, 0, 0, 0);
   return (
     tidligsteFom(sykmelding.mulighetForArbeid.perioder) <= today &&
     today <= senesteTom(sykmelding.mulighetForArbeid.perioder)

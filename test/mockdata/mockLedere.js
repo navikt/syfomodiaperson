@@ -1,4 +1,4 @@
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT, TODAY } from "../../mock/common/mockConstants";
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledereTypes";
 
 const VIRKSOMHETSNUMMER_WITH_ACTIVE_SYKMELDING = "123456789";
@@ -6,7 +6,6 @@ const VIRKSOMHETSNUMMER_WITHOUT_ACTIVE_SYKMELDING = "987654321";
 
 const MILLISECONDS_PER_HOUR = 3600000;
 const DAY_IN_MILLISECONDS = MILLISECONDS_PER_HOUR * 24;
-const TODAY = new Date();
 const TOMORROW = new Date(Date.now() + DAY_IN_MILLISECONDS);
 const YESTERDAY = new Date(Date.now() - DAY_IN_MILLISECONDS);
 const TWO_DAYS_AGO = new Date(Date.now() - DAY_IN_MILLISECONDS * 2);

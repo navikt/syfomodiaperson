@@ -1,5 +1,7 @@
 import { NarmesteLederRelasjonStatus } from "../../src/data/leder/ledereTypes";
 
+export const TODAY = new Date().setHours(0, 0, 0, 0);
+
 export const ARBEIDSTAKER_DEFAULT = {
   epost: "samuel@pontypandyfire.gov.uk",
   personIdent: "19026900010",
