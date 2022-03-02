@@ -13,16 +13,41 @@ import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { Redirect } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import Tilbakelenke from "@/components/Tilbakelenke";
 
 const texts = {
   title: "Innkalling til dialogmøte",
-  alert:
+  tilbake: "Tilbake",
+  nyLosningAlert:
     "I denne nye løsningen sender du innkalling, avlysning, endring av tidspunkt og referat. I Arena trenger du bare endre status til ferdig behandlet.",
+  noTilfelleAlert:
+    "Vi kan ikke sende innkalling til dialogmøte til denne arbeidstakeren. Årsaken er at det ikke er registrert noen aktiv sykmelding, eller det er mer enn 16 dager siden siste sykmelding gikk ut.",
 };
 
-const DialogmoteInnkallingWarningAlert = styled(AlertstripeFullbredde)`
+const StyledAlert = styled(AlertstripeFullbredde)`
   margin-bottom: 2.5em;
 `;
+
+const DialogmoteInnkallingSide = (): ReactElement => {
+  const { brukerKanIkkeVarslesDigitalt } = useNavBrukerData();
+  const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+
+  return hasActiveOppfolgingstilfelle ? (
+    <>
+      <StyledAlert type="advarsel">{texts.nyLosningAlert}</StyledAlert>
+      {brukerKanIkkeVarslesDigitalt && (
+        <BrukerKanIkkeVarslesPapirpostAdvarsel />
+      )}
+      <DialogmoteInnkallingSkjema pageTitle={texts.title} />
+    </>
+  ) : (
+    <>
+      <StyledAlert type="feil">{texts.noTilfelleAlert}</StyledAlert>
+      <Tilbakelenke to={moteoversiktRoutePath} tekst={texts.tilbake} />
+    </>
+  );
+};
 
 const DialogmoteInnkallingContainer = (): ReactElement => {
   const {
@@ -30,26 +55,28 @@ const DialogmoteInnkallingContainer = (): ReactElement => {
     isError: hentingLedereFeilet,
   } = useLedereQuery();
   const { triedFetchingToggles, isDm2Enabled } = useDM2FeatureToggles();
-  const { brukerKanIkkeVarslesDigitalt } = useNavBrukerData();
   const { aktivtDialogmote } = useDialogmoterQuery();
+  const {
+    isLoading: henterOppfolgingstilfeller,
+    isError: hentingOppfolgingstilfellerFeilet,
+  } = useOppfolgingstilfellePersonQuery();
 
   if ((triedFetchingToggles && !isDm2Enabled) || aktivtDialogmote) {
     return <Redirect to={moteoversiktRoutePath} />;
   }
 
+  const henter = henterLedere || henterOppfolgingstilfeller;
+  const hentingFeilet =
+    hentingLedereFeilet || hentingOppfolgingstilfellerFeilet;
+
   return (
     <Side tittel={texts.title} aktivtMenypunkt={MOETEPLANLEGGER}>
-      <SideLaster henter={henterLedere} hentingFeilet={hentingLedereFeilet}>
+      <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
         <Sidetopp tittel={texts.title} />
-        <DialogmoteInnkallingWarningAlert type="advarsel">
-          {texts.alert}
-        </DialogmoteInnkallingWarningAlert>
-        {brukerKanIkkeVarslesDigitalt && (
-          <BrukerKanIkkeVarslesPapirpostAdvarsel />
-        )}
-        <DialogmoteInnkallingSkjema pageTitle={texts.title} />
+        <DialogmoteInnkallingSide />
       </SideLaster>
     </Side>
   );
 };
+
 export default DialogmoteInnkallingContainer;

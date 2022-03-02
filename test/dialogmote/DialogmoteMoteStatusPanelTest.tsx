@@ -13,16 +13,11 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { expect } from "chai";
+import { daysFromToday } from "../testUtils";
 
 const queryClient = new QueryClient();
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
-
-const daysFromToday = (days: number): Date => {
-  const nyDato = new Date();
-  nyDato.setDate(nyDato.getDate() + days);
-  return new Date(nyDato);
-};
 
 const renderDialogmoteMoteStatusPanel = (dialogmote: DialogmoteDTO) =>
   render(

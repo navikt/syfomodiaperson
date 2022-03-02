@@ -23,3 +23,9 @@ export const maxLengthErrorMessage = (max: number) =>
   `Maks ${max} tegn tillatt`;
 
 export const getTooLongText = (max: number) => "t".repeat(max + 1);
+
+export const daysFromToday = (days: number): Date => {
+  const nyDato = new Date();
+  nyDato.setDate(nyDato.getDate() + days);
+  return new Date(nyDato);
+};

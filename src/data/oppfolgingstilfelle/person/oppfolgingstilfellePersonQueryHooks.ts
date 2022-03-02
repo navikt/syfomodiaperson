@@ -7,6 +7,9 @@ import {
   OppfolgingstilfellePersonDTO,
 } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { minutesToMillis } from "@/utils/timeUtils";
+import dayjs from "dayjs";
+
+const ARBEIDSGIVERPERIODE_DAYS = 16;
 
 const sortByDescendingStart = (
   oppfolgingstilfelleList: OppfolgingstilfelleDTO[]
@@ -16,7 +19,17 @@ const sortByDescendingStart = (
   });
 };
 
-const oppfolgingstilfellePersonQueryKeys = {
+const isInactive = (oppfolgingstilfelle: OppfolgingstilfelleDTO) => {
+  const today = dayjs(new Date());
+  const tilfelleEnd = dayjs(oppfolgingstilfelle.end);
+
+  return today.isAfter(
+    tilfelleEnd.add(ARBEIDSGIVERPERIODE_DAYS, "days"),
+    "date"
+  );
+};
+
+export const oppfolgingstilfellePersonQueryKeys = {
   oppfolgingstilfelleperson: (personIdent: string) => [
     "oppfolgingstilfelleperson",
     personIdent,
@@ -41,6 +54,8 @@ export const useOppfolgingstilfellePersonQuery = () => {
   return {
     ...query,
     latestOppfolgingstilfelle,
+    hasActiveOppfolgingstilfelle:
+      !!latestOppfolgingstilfelle && !isInactive(latestOppfolgingstilfelle),
   };
 };
 
