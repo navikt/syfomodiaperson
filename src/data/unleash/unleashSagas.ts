@@ -12,12 +12,12 @@ import { ToggleNames, Toggles } from "@/data/unleash/unleash_types";
 //Common saga for all toggles
 function* fetchToggles(action: FetchUnleashTogglesAction) {
   const { valgtEnhet, userId } = action;
-  let dm2Path = `${UNLEASH_ROOT}/dm2?valgtEnhet=${valgtEnhet}`;
+  let path = `${UNLEASH_ROOT}/toggles?valgtEnhet=${valgtEnhet}`;
   if (userId) {
-    dm2Path += `&userId=${userId}`;
+    path += `&userId=${userId}`;
   }
   try {
-    const data: Toggles = yield call(post, dm2Path, {
+    const data: Toggles = yield call(post, path, {
       toggles: Object.values(ToggleNames),
     });
     yield put(fetchUnleashTogglesSuccess(data));

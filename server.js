@@ -45,7 +45,7 @@ const setupServer = async () => {
   server.use("/static", express.static(DIST_DIR));
 
   const unleashRoutes = require("./server/routes/unleashRoutes");
-  server.use("/isenabled", unleashRoutes);
+  server.use("/unleash", unleashRoutes);
 
   server.get(
     [

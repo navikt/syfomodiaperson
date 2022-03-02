@@ -53,7 +53,7 @@ describe(
       cy.intercept(
         {
           method: "POST",
-          url: "/isenabled/dm2*",
+          url: "/unleash/toggles*",
         },
         {
           "syfo.syfomodiaperson.dm2": false,
@@ -70,7 +70,7 @@ describe(
       cy.intercept(
         {
           method: "POST",
-          url: "/isenabled/dm2*",
+          url: "/unleash/toggles*",
         },
         {
           "syfo.syfomodiaperson.dm2": false,
