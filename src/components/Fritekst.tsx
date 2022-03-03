@@ -1,6 +1,5 @@
-import { Textarea, TextareaProps } from "nav-frontend-skjema";
 import React from "react";
-
+import { Textarea, TextareaProps } from "nav-frontend-skjema";
 export type FritekstSize = "medium" | "stor" | "ekstra-stor";
 type FritekstProps = {
   size: FritekstSize;
