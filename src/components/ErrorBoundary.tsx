@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import Alertstripe from "nav-frontend-alertstriper";
 import { Normaltekst } from "nav-frontend-typografi";
 import Lenke from "nav-frontend-lenker";
@@ -32,6 +32,7 @@ const TextWithJiraLink = ({ children }: TextWithJiraLinkProps) => {
 };
 
 interface ErrorBoundaryProps {
+  children: ReactNode;
   apiError?: ApiError | null;
   errorMessage?: string;
 }
