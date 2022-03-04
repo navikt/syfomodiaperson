@@ -3,7 +3,6 @@ import { expect } from "chai";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import Motelandingsside from "../../src/components/mote/components/Motelandingsside";
-import { MemoryRouter } from "react-router-dom";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import { QueryClientProvider } from "react-query";
@@ -23,11 +22,16 @@ import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplan
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { queryClientWithAktivBruker } from "../testQueryClient";
+import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
+import { MemoryRouter } from "react-router-dom";
 
 const realState = createStore(rootReducer).getState();
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient;
 let apiMockScope;
+let store;
+let mockState;
+
 const motebehovData = [
   {
     UUID: "33333333-c987-4b57-a401-a3915ec11411",
@@ -42,11 +46,23 @@ const motebehovData = [
   },
 ];
 
+const renderMotelandingsside = (mockStore) =>
+  render(
+    <QueryClientProvider client={queryClient}>
+      <ValgtEnhetContext.Provider
+        value={{ valgtEnhet: "", setValgtEnhet: () => void 0 }}
+      >
+        <Provider store={mockStore}>
+          <MemoryRouter>
+            <Motelandingsside />
+          </MemoryRouter>
+        </Provider>
+      </ValgtEnhetContext.Provider>
+    </QueryClientProvider>
+  );
+
 describe("MotelandingssideContainer", () => {
   describe("MotelandingssideSide", () => {
-    let store;
-    let mockState;
-
     beforeEach(() => {
       queryClient = queryClientWithAktivBruker();
       queryClient.setQueryData(dialogmoterQueryKeys.dialogmoter(fnr), () => []);
@@ -65,11 +81,6 @@ describe("MotelandingssideContainer", () => {
       apiMockScope = apiMock();
       store = configureStore([]);
       mockState = {
-        unleash: {
-          fetching: false,
-          triedFetchingToggles: true,
-          toggles: {},
-        },
         navbruker: {
           data: {
             kontaktinfo: {
@@ -90,26 +101,14 @@ describe("MotelandingssideContainer", () => {
 
     it("Skal vise AppSpinner når henter data", () => {
       stubTilgangApi(apiMockScope);
-      render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <Motelandingsside />
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderMotelandingsside(store({ ...realState, ...mockState }));
 
       expect(screen.getByLabelText("Vent litt mens siden laster")).to.exist;
     });
 
     it("Skal vise AppSpinner når henter tilgang", async () => {
       stubTilgangApi(apiMockScope);
-      render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <Motelandingsside />
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderMotelandingsside(store({ ...realState, ...mockState }));
 
       expect(await screen.findByLabelText("Vent litt mens siden laster")).to
         .exist;
@@ -117,13 +116,7 @@ describe("MotelandingssideContainer", () => {
 
     it("Skal kjøre actions ved init", () => {
       const mockStore = store({ ...realState, ...mockState });
-      render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={mockStore}>
-            <Motelandingsside />
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderMotelandingsside(mockStore);
 
       const expectedActions = [{ type: "HENT_MOTER_FORESPURT", fnr: fnr }];
       expect(mockStore.getActions()).to.deep.equal(expectedActions);
@@ -134,15 +127,7 @@ describe("MotelandingssideContainer", () => {
         harTilgang: false,
         begrunnelse: "Ikke tilgang",
       });
-      render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <MemoryRouter>
-              <Motelandingsside />
-            </MemoryRouter>
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderMotelandingsside(store({ ...realState, ...mockState }));
 
       expect(
         await screen.findByRole("heading", {
@@ -169,15 +154,7 @@ describe("MotelandingssideContainer", () => {
           },
         ],
       };
-      render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <MemoryRouter>
-              <Motelandingsside />
-            </MemoryRouter>
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderMotelandingsside(store({ ...realState, ...mockState }));
 
       expect(
         screen.getByRole("heading", {
@@ -201,15 +178,7 @@ describe("MotelandingssideContainer", () => {
           },
         ],
       };
-      render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <MemoryRouter>
-              <Motelandingsside />
-            </MemoryRouter>
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderMotelandingsside(store({ ...realState, ...mockState }));
 
       expect(
         screen.getByRole("heading", {
@@ -232,15 +201,7 @@ describe("MotelandingssideContainer", () => {
           },
         ],
       };
-      render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <MemoryRouter>
-              <Motelandingsside />
-            </MemoryRouter>
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderMotelandingsside(store({ ...realState, ...mockState }));
 
       expect(
         screen.getByRole("heading", {
@@ -254,15 +215,7 @@ describe("MotelandingssideContainer", () => {
         tilgangQueryKeys.tilgang(fnr),
         () => tilgangBrukerMock
       );
-      render(
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <MemoryRouter>
-              <Motelandingsside />
-            </MemoryRouter>
-          </Provider>
-        </QueryClientProvider>
-      );
+      renderMotelandingsside(store({ ...realState, ...mockState }));
 
       expect(
         screen.getByRole("heading", {

@@ -6,7 +6,6 @@ import epostinnhold, { EpostInnholdState } from "./mote/epostinnhold";
 import arbeidsgiverEpostinnhold, {
   ArbeidsgiverEpostinnholdState,
 } from "./mote/arbeidsgiverEpostinnhold";
-import unleash, { UnleashState } from "./unleash/unleash";
 
 export interface RootState {
   navbruker: NavbrukerState;
@@ -14,7 +13,6 @@ export interface RootState {
   moter: MoterState;
   epostinnhold: EpostInnholdState;
   arbeidsgiverEpostinnhold: ArbeidsgiverEpostinnholdState;
-  unleash: UnleashState;
 }
 
 export const rootReducer = combineReducers<RootState>({
@@ -23,5 +21,4 @@ export const rootReducer = combineReducers<RootState>({
   moter,
   epostinnhold,
   arbeidsgiverEpostinnhold,
-  unleash,
 });

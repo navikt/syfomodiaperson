@@ -2,9 +2,9 @@ import React from "react";
 import Sidetopp from "../Sidetopp";
 import UtdragFraSykefravaeret from "../utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { Sykmeldingsgrad } from "@/components/sykmeldingsgrad/Sykmeldingsgrad";
-import { useAppSelector } from "@/hooks/hooks";
 import { ToggleNames } from "@/data/unleash/unleash_types";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 
 interface NokkelinformasjonProps {
   aktivePlaner: OppfolgingsplanDTO[];
@@ -15,8 +15,8 @@ interface NokkelinformasjonProps {
 const Nokkelinformasjon = (nokkelinformasjonProps: NokkelinformasjonProps) => {
   const { aktivePlaner, fnr, pageTitle } = nokkelinformasjonProps;
 
-  const { toggles } = useAppSelector((state) => state.unleash);
-  const visSykmeldingsgrad = toggles[ToggleNames.sykmeldingsgrad];
+  const { isFeatureEnabled } = useFeatureToggles();
+  const visSykmeldingsgrad = isFeatureEnabled(ToggleNames.sykmeldingsgrad);
 
   return (
     <div>

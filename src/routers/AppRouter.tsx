@@ -12,17 +12,14 @@ import NokkelinformasjonContainer from "../components/nokkelinformasjon/containe
 import VedtakContainer from "../components/vedtak/container/VedtakContainer";
 import DialogmoteInnkallingContainer from "../components/dialogmote/innkalling/DialogmoteInnkallingContainer";
 import AvlysDialogmoteContainer from "../components/dialogmote/avlys/AvlysDialogmoteContainer";
-import { useDispatch } from "react-redux";
 import AppSpinner from "../components/AppSpinner";
 import DialogmoteReferatContainer from "../components/dialogmote/referat/DialogmoteReferatContainer";
 import { useUserProperties } from "@/data/logging/loggingHooks";
 import { setAmplitudeUserProperties } from "@/amplitude/amplitude";
 import EndreDialogmoteContainer from "../components/dialogmote/endre/EndreDialogmoteContainer";
-import { fetchUnleashToggles } from "@/data/unleash/unleash_actions";
 import { SykepengesoknadSide } from "@/components/speiling/sykepengsoknader/container/SykepengesoknadSide";
 import { OppfoelgingsPlanerOversiktContainer } from "@/components/oppfolgingsplan/container/OppfoelgingsPlanerOversiktContainer";
 import { OppfoelgingsplanContainer } from "@/components/oppfolgingsplan/container/OppfoelgingsplanContainer";
-import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { IngenBrukerSide } from "@/components/IngenBrukerSide";
 import { MotebookingContainer } from "@/components/mote/container/MotebookingContainer";
 import { usePushAktivBruker } from "@/data/modiacontext/usePushAktivBruker";
@@ -144,17 +141,13 @@ const AktivBrukerLoader = () => {
 const AppRouter = () => {
   const fnrFromParam = getFnrFromParams();
   const userProperties = useUserProperties();
-  const { data: veilederinfo } = useVeilederinfoQuery();
-  const veilederIdent = veilederinfo?.ident;
-  const dispatch = useDispatch();
   const { mutate: pushAktivBruker } = usePushAktivBruker(fnrFromParam);
 
   useEffect(() => {
-    if (userProperties.valgtEnhet || veilederIdent) {
-      dispatch(fetchUnleashToggles(userProperties.valgtEnhet, veilederIdent));
+    if (userProperties.valgtEnhet) {
       setAmplitudeUserProperties(userProperties);
     }
-  }, [dispatch, userProperties, veilederIdent]);
+  }, [userProperties]);
 
   useEffect(() => {
     if (erGyldigFodselsnummer(fnrFromParam)) {

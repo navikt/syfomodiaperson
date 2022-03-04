@@ -7,12 +7,13 @@ import SideLaster from "../../SideLaster";
 import styled from "styled-components";
 import { AlertstripeFullbredde } from "../../AlertstripeFullbredde";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/components/dialogmote/BrukerKanIkkeVarslesPapirpostAdvarsel";
-import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { Redirect } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
+import { ToggleNames } from "@/data/unleash/unleash_types";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import Tilbakelenke from "@/components/Tilbakelenke";
 
@@ -54,14 +55,15 @@ const DialogmoteInnkallingContainer = (): ReactElement => {
     isLoading: henterLedere,
     isError: hentingLedereFeilet,
   } = useLedereQuery();
-  const { triedFetchingToggles, isDm2Enabled } = useDM2FeatureToggles();
+  const { isFeatureEnabled, isFetched } = useFeatureToggles();
   const { aktivtDialogmote } = useDialogmoterQuery();
   const {
     isLoading: henterOppfolgingstilfeller,
     isError: hentingOppfolgingstilfellerFeilet,
   } = useOppfolgingstilfellePersonQuery();
+  const manglerTilgang = isFetched && !isFeatureEnabled(ToggleNames.dm2);
 
-  if ((triedFetchingToggles && !isDm2Enabled) || aktivtDialogmote) {
+  if (manglerTilgang || aktivtDialogmote) {
     return <Redirect to={moteoversiktRoutePath} />;
   }
 

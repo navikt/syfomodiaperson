@@ -1,4 +1,6 @@
 import {
+  avlystDialogmote,
+  ferdigstiltDialogmote,
   innkaltDialogmote,
   innkaltDialogmoteMedBehandler,
 } from "../../mock/data/dialogmoterMock";
@@ -8,6 +10,7 @@ export enum MoteState {
   INNKALT_DIALOGMOTE,
   INNKALT_DIALOGMOTE_MED_BEHANDLER,
   INGEN_MOTER,
+  AVLYST_OG_FERDIG_MOTE,
 }
 
 interface TestMoter {
@@ -33,6 +36,12 @@ const getMoter = (state: MoteState): TestMoter => {
       return {
         moter: [],
         dialogmoter: [],
+      };
+    }
+    case MoteState.AVLYST_OG_FERDIG_MOTE: {
+      return {
+        moter: [],
+        dialogmoter: [avlystDialogmote, ferdigstiltDialogmote],
       };
     }
   }

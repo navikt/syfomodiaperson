@@ -8,10 +8,11 @@ import { tilDatoMedUkedagOgManedNavn } from "@/utils/datoUtils";
 import { useAktivtMoteplanleggerMote } from "@/data/mote/moter_hooks";
 import { Moteplanleggeren } from "./Moteplanleggeren";
 import { DialogmoteMoteStatusPanel } from "./DialogmoteMoteStatusPanel";
-import { useDM2FeatureToggles } from "@/data/unleash/unleash_hooks";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/components/dialogmote/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
+import { ToggleNames } from "@/data/unleash/unleash_types";
 
 export const texts = {
   bekreftetMote: "Bekreftet møte",
@@ -43,11 +44,11 @@ interface InnkallingDialogmotePanelProps {
 export const InnkallingDialogmotePanel = ({
   aktivtDialogmote,
 }: InnkallingDialogmotePanelProps): ReactElement => {
-  const { isDm2Enabled } = useDM2FeatureToggles();
+  const { isFeatureEnabled } = useFeatureToggles();
   const aktivtMoteplanleggerMote = useAktivtMoteplanleggerMote();
   const { brukerKanIkkeVarslesDigitalt } = useNavBrukerData();
 
-  if (!isDm2Enabled) {
+  if (!isFeatureEnabled(ToggleNames.dm2)) {
     return <Moteplanleggeren />;
   }
 

@@ -35,16 +35,14 @@ describe(
     });
 
     it("Ser på referat og avlysningsbrev i møtehistorikk", () => {
+      cy.stubMoter(MoteState.AVLYST_OG_FERDIG_MOTE);
+
       cy.dataCy("Avlysningsbrev").click();
-
       cy.dataCy(selectors.forhandsvisningModal).contains("Avlysningsbrev");
-
       cy.dataCy(selectors.forhandsvisningModal).contains("Lukk").click();
 
       cy.dataCy("Referat").click();
-
       cy.dataCy(selectors.forhandsvisningModal).contains("Referat");
-
       cy.contains("Lukk").click();
     });
 

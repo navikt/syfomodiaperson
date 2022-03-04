@@ -41,9 +41,7 @@ describe("MotebookingContainer", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
     store = configureStore([]);
-    mockState = {
-      enhet: { valgtEnhet: "2212" },
-    };
+    mockState = {};
   });
 
   describe("MotebookingSide", () => {
