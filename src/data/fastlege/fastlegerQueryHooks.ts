@@ -12,8 +12,8 @@ export const fastlegerQueryKeys = {
 
 export const useFastlegerQuery = () => {
   const fnr = useValgtPersonident();
-  const path = `${FASTLEGEREST_ROOT}/fastleger?fnr=${fnr}`;
-  const fetchFastleger = () => get<Fastlege[]>(path);
+  const path = `${FASTLEGEREST_ROOT}/fastleger`;
+  const fetchFastleger = () => get<Fastlege[]>(path, fnr);
   const query = useQuery(fastlegerQueryKeys.fastleger(fnr), fetchFastleger, {
     enabled: !!fnr,
     staleTime: minutesToMillis(60 * 12),

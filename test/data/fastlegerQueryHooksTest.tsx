@@ -7,7 +7,6 @@ import { stubFastlegerApi } from "../stubs/stubFastlegeRest";
 import { useFastlegerQuery } from "@/data/fastlege/fastlegerQueryHooks";
 import { fastlegerMock } from "../../mock/fastlegerest/fastlegerMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 
 let queryClient;
 let apiMockScope;
@@ -22,7 +21,7 @@ describe("fastlegerQueryHooks tests", () => {
   });
 
   it("loads fastleger for valgt personident", async () => {
-    stubFastlegerApi(apiMockScope, ARBEIDSTAKER_DEFAULT.personIdent);
+    stubFastlegerApi(apiMockScope);
 
     const wrapper = queryHookWrapper(queryClient);
 

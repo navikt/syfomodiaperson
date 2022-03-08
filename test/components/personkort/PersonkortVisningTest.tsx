@@ -26,7 +26,7 @@ describe("PersonkortVisning", () => {
   beforeEach(() => {
     queryClient = queryClientWithAktivBruker();
     apiMockScope = apiMock();
-    stubFastlegerApi(apiMockScope, ARBEIDSTAKER_DEFAULT.personIdent);
+    stubFastlegerApi(apiMockScope);
     mockState = {
       navbruker: {
         navn: "Knut",
