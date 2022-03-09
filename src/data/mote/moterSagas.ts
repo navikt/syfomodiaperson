@@ -14,7 +14,7 @@ export function* opprettMote(action: any) {
     yield call(post, path, action.data);
     yield put(actions.moteOpprettet(action.data));
     yield put(actions.hentMoter(action.data.fnr));
-    yield put(historikkActions.hentHistorikk(action.data.fnr, "MOTER"));
+    yield put(historikkActions.hentHistorikkMoter(action.data.fnr));
   } catch (e) {
     //TODO: Add error to reducer and errorboundary to components
     yield put(actions.opprettMoteFeilet());
@@ -61,7 +61,7 @@ export function* avbrytMote(action: any) {
   try {
     yield call(post, path, []);
     yield put(actions.moteAvbrutt(action.uuid));
-    yield put(historikkActions.hentHistorikk(action.fnr, "MOTER"));
+    yield put(historikkActions.hentHistorikkMoter(action.fnr));
     window.location.href = `/sykefravaer/moteoversikt`;
   } catch (e) {
     //TODO: Add error to reducer and errorboundary to components
@@ -82,7 +82,7 @@ export function* bekreftMote(action: any) {
         new Date()
       )
     );
-    yield put(historikkActions.hentHistorikk(action.fnr, "MOTER"));
+    yield put(historikkActions.hentHistorikkMoter(action.fnr));
   } catch (e) {
     //TODO: Add error to reducer and errorboundary to components
     yield put(actions.bekreftMoteFeilet());
@@ -95,7 +95,7 @@ export function* opprettFlereAlternativ(action: any) {
   const path = `${SYFOMOTEADMIN_ROOT}/moter/${action.moteUuid}/nyealternativer`;
   try {
     yield call(post, path, action.data);
-    yield put(historikkActions.hentHistorikk(action.fnr, "MOTER"));
+    yield put(historikkActions.hentHistorikkMoter(action.fnr));
     yield put(
       actions.opprettFlereAlternativBekreftet(action.data, action.moteUuid)
     );

@@ -3,6 +3,7 @@ import { SYFOOPPFOLGINGSPLANSERVICE_ROOT } from "@/apiConstants";
 import { oppfolgingsplanMock } from "../../mock/syfooppfolgingsplanservice/oppfolgingsplanMock";
 import { oppfolgingsplanerLPSMock } from "../../mock/syfooppfolgingsplanservice/oppfolgingsplanLPSMock";
 import { dokumentinfoMock } from "../../mock/data/dokumentinfoMock";
+import { historikkoppfolgingsplanMock } from "../../mock/data/historikkoppfolgingsplanMock";
 
 export const stubOppfolgingsplanApi = (scope: nock.Scope, fnr: string) => {
   return scope
@@ -25,4 +26,13 @@ export const stubDokumentinfoApi = (
       `${SYFOOPPFOLGINGSPLANSERVICE_ROOT}/dokument/${oppfolgingsplanId}/dokumentinfo`
     )
     .reply(200, () => dokumentinfoMock);
+};
+
+export const stubOppfolgingsplanHistorikkApi = (
+  scope: nock.Scope,
+  fnr: string
+) => {
+  scope
+    .get(`${SYFOOPPFOLGINGSPLANSERVICE_ROOT}/oppfolgingsplan/${fnr}/historikk`)
+    .reply(200, () => historikkoppfolgingsplanMock);
 };

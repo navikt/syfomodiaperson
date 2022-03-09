@@ -1,4 +1,4 @@
-export type HistorikkKilde = "MOTER" | "MOTEBEHOV" | "OPPFOELGINGSDIALOG";
+export type HistorikkKilde = "MOTER" | "MOTEBEHOV" | "OPPFOLGINGSPLAN";
 
 export interface HistorikkEvent {
   opprettetAv?: string;

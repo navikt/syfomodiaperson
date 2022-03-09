@@ -14,7 +14,7 @@ const hentIkon = (event: HistorikkEvent) => {
     case "MOTEBEHOV": {
       return <MoteIkon />;
     }
-    case "OPPFOELGINGSDIALOG": {
+    case "OPPFOLGINGSPLAN": {
       return <OppfolgingsplanIkon />;
     }
     case "LEDER": {

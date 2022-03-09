@@ -1,53 +1,31 @@
 import { Reducer } from "redux";
-import { HistorikkEvent, HistorikkKilde } from "./types/historikkTypes";
-import { HistorikkActions, HistorikkActionTypes } from "./historikk_actions";
+import { HistorikkEvent } from "./types/historikkTypes";
+import {
+  HistorikkMoterActions,
+  HistorikkMoterActionTypes,
+} from "./historikk_actions";
+import { mapHistorikkEvents } from "./historikkQueryHooks";
 
 export interface HistorikkState {
   moteHistorikk: HistorikkEvent[];
-  motebehovHistorikk: HistorikkEvent[];
-  oppfoelgingsdialogHistorikk: HistorikkEvent[];
   hentingMoterFeilet: boolean;
-  hentingOppfoelgingdialogerFeilet: boolean;
-  hentingMotebehovFeilet: boolean;
   henterMoter: boolean;
   hentetMoter: boolean;
-  henterMotebehov: boolean;
-  hentetMotebehov: boolean;
-  henterOppfoelgingsdialoger: boolean;
-  hentetOppfoelgingsdialoger: boolean;
 }
 
 export const initialState: HistorikkState = {
   moteHistorikk: [],
-  motebehovHistorikk: [],
-  oppfoelgingsdialogHistorikk: [],
   hentingMoterFeilet: false,
-  hentingMotebehovFeilet: false,
-  hentingOppfoelgingdialogerFeilet: false,
   henterMoter: false,
   hentetMoter: false,
-  henterMotebehov: false,
-  hentetMotebehov: false,
-  henterOppfoelgingsdialoger: false,
-  hentetOppfoelgingsdialoger: false,
 };
 
-const mapHistorikkEvents = (
-  events: HistorikkEvent[],
-  kilde: HistorikkKilde
-): HistorikkEvent[] => {
-  return events.map((event) => ({
-    ...event,
-    kilde,
-  }));
-};
-
-const historikk: Reducer<HistorikkState, HistorikkActions> = (
+const historikk: Reducer<HistorikkState, HistorikkMoterActions> = (
   state = initialState,
   action
 ) => {
   switch (action.type) {
-    case HistorikkActionTypes.HISTORIKK_HENTET_MOTER: {
+    case HistorikkMoterActionTypes.HISTORIKK_HENTET_MOTER: {
       return {
         ...state,
         henterMoter: false,
@@ -55,62 +33,17 @@ const historikk: Reducer<HistorikkState, HistorikkActions> = (
         moteHistorikk: mapHistorikkEvents(action.data, "MOTER"),
       };
     }
-    case HistorikkActionTypes.HISTORIKK_HENTET_MOTEBEHOV: {
-      return {
-        ...state,
-        henterMotebehov: false,
-        hentetMotebehov: true,
-        motebehovHistorikk: mapHistorikkEvents(action.data, "MOTEBEHOV"),
-      };
-    }
-    case HistorikkActionTypes.HISTORIKK_HENTET_OPPFOELGINGSDIALOG: {
-      return {
-        ...state,
-        henterOppfoelgingsdialoger: false,
-        hentetOppfoelgingsdialoger: true,
-        oppfoelgingsdialogHistorikk: mapHistorikkEvents(
-          action.data,
-          "OPPFOELGINGSDIALOG"
-        ),
-      };
-    }
-    case HistorikkActionTypes.HENTER_HISTORIKK_MOTER: {
+    case HistorikkMoterActionTypes.HENTER_HISTORIKK_MOTER: {
       return {
         ...state,
         henterMoter: true,
       };
     }
-    case HistorikkActionTypes.HENTER_HISTORIKK_MOTEBEHOV: {
-      return {
-        ...state,
-        henterMotebehov: true,
-      };
-    }
-    case HistorikkActionTypes.HENTER_HISTORIKK_OPPFOELGINGSDIALOG: {
-      return {
-        ...state,
-        henterOppfoelgingsdialoger: true,
-      };
-    }
-    case HistorikkActionTypes.HENT_HISTORIKK_FEILET_MOTER: {
+    case HistorikkMoterActionTypes.HENT_HISTORIKK_FEILET_MOTER: {
       return {
         ...state,
         henterMoter: false,
         hentingMoterFeilet: true,
-      };
-    }
-    case HistorikkActionTypes.HENT_HISTORIKK_FEILET_MOTEBEHOV: {
-      return {
-        ...state,
-        henterMotebehov: false,
-        hentingMotebehovFeilet: true,
-      };
-    }
-    case HistorikkActionTypes.HENT_HISTORIKK_FEILET_OPPFOELGINGSDIALOG: {
-      return {
-        ...state,
-        henterOppfoelgingsdialoger: false,
-        hentingOppfoelgingdialogerFeilet: true,
       };
     }
     default: {

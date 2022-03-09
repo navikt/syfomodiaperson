@@ -5,7 +5,7 @@ import Historikk from "../Historikk";
 import { HISTORIKK } from "@/enums/menypunkter";
 import SideLaster from "../../SideLaster";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { hentHistorikk } from "@/data/historikk/historikk_actions";
+import { hentHistorikkMoter } from "@/data/historikk/historikk_actions";
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import IngenHistorikk from "../IngenHistorikk";
 import { useHistorikk } from "@/data/historikk/historikk_hooks";
@@ -36,14 +36,11 @@ export const HistorikkContainer = (): ReactElement => {
   const dispatch = useDispatch();
   const {
     henterHistorikk,
-    hentetHistorikk,
     hentingHistorikkFeilet,
     skalHenteMoter,
-    skalHenteMotebehov,
-    skalHenteOppfoelgingsdialoger,
     moteHistorikk,
     motebehovHistorikk,
-    oppfoelgingsdialogHistorikk,
+    oppfolgingsplanHistorikk,
   } = useHistorikk();
 
   const {
@@ -70,30 +67,17 @@ export const HistorikkContainer = (): ReactElement => {
 
   useEffect(() => {
     if (skalHenteMoter) {
-      dispatch(hentHistorikk(fnr, "MOTER"));
+      dispatch(hentHistorikkMoter(fnr));
     }
   }, [dispatch, fnr, skalHenteMoter]);
-
-  useEffect(() => {
-    if (skalHenteMotebehov) {
-      dispatch(hentHistorikk(fnr, "MOTEBEHOV"));
-    }
-  }, [dispatch, fnr, skalHenteMotebehov]);
-
-  useEffect(() => {
-    if (skalHenteOppfoelgingsdialoger) {
-      dispatch(hentHistorikk(fnr, "OPPFOELGINGSDIALOG"));
-    }
-  }, [dispatch, fnr, skalHenteOppfoelgingsdialoger]);
 
   const tilfeller = oppfolgingstilfellePerson?.oppfolgingstilfelleList || [];
   const lederHistorikk = createHistorikkEventsFromLedere(allLedere);
   const historikkEvents = motebehovHistorikk
     .concat(moteHistorikk)
-    .concat(oppfoelgingsdialogHistorikk)
+    .concat(oppfolgingsplanHistorikk)
     .concat(lederHistorikk);
-  const ingenHistorikk =
-    tilfeller.length === 0 || (hentetHistorikk && historikkEvents.length === 0);
+  const ingenHistorikk = tilfeller.length === 0 || historikkEvents.length === 0;
 
   return (
     <Side tittel={texts.pageTitle} aktivtMenypunkt={HISTORIKK}>
