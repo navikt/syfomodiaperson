@@ -5,6 +5,7 @@ import Referat, {
   texts as referatSkjemaTexts,
   valideringsTexts as referatSkjemaValideringsTexts,
 } from "../../src/components/dialogmote/referat/Referat";
+import { texts as deltakereSkjemaTexts } from "../../src/components/dialogmote/referat/Deltakere";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
@@ -15,6 +16,7 @@ import { texts as valideringsTexts } from "../../src/utils/valideringUtils";
 import {
   changeTextInput,
   clickButton,
+  getCheckbox,
   getFeilmeldingLink,
   getTextInput,
   getTooLongText,
@@ -47,6 +49,8 @@ import {
   MAX_LENGTH_VEILEDERS_OPPGAVE,
 } from "@/components/dialogmote/referat/ReferatFritekster";
 import { queryClientWithMockData } from "../testQueryClient";
+import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
+import { NewDialogmoteReferatDTO } from "@/data/dialogmote/types/dialogmoteReferatTypes";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -87,41 +91,86 @@ describe("ReferatTest", () => {
     ).to.exist;
   });
 
-  it("viser alle deltakere forhåndsutfylt med nærmeste leder redigerbar og påkrevd", () => {
+  it("viser alle deltakere forhåndsutfylt med 'Fra arbeidsgiver' redigerbar og påkrevd", () => {
     renderReferat(dialogmote);
 
-    const deltakerList = screen.getByRole("list");
-    expect(within(deltakerList).getByText(`Fra NAV: ${veileder.navn}`)).to
-      .exist;
-    expect(within(deltakerList).getByText(`Arbeidstaker: ${arbeidstaker.navn}`))
+    expect(screen.getByRole("heading", { name: `Fra NAV: ${veileder.navn}` }))
       .to.exist;
+    expect(
+      screen.getByRole("heading", {
+        name: `Arbeidstaker: ${arbeidstaker.navn}`,
+      })
+    ).to.exist;
+    expect(
+      screen.getByRole("heading", {
+        name: `Fra arbeidsgiver: ${narmesteLederNavn}`,
+      })
+    ).to.exist;
 
-    const getNaermesteLederInput = () => getTextInput("Nærmeste leder");
+    const getFraArbeidsgiverInput = () => getTextInput("Navn");
 
-    // Sjekk nærmeste leder preutfylt
-    expect(getNaermesteLederInput().getAttribute("value")).to.equal(
-      narmesteLederNavn
-    );
-
-    // Sjekk at nærmeste leder valideres
-    changeTextInput(getNaermesteLederInput(), "");
+    // Sjekk at 'Fra arbeidsgiver' valideres
+    changeTextInput(getFraArbeidsgiverInput(), "");
     clickButton("Lagre og send");
-    expect(screen.getAllByText(valideringsTexts.naermesteLederMissing)).to.not
-      .be.empty;
+    expect(screen.getAllByText(valideringsTexts.arbeidsgiverDeltakerMissing)).to
+      .not.be.empty;
 
-    // Sjekk at nærmeste leder kan endres
-    const endretNaermesteLeder = "Ny Leder";
-    changeTextInput(getNaermesteLederInput(), endretNaermesteLeder);
-    expect(getNaermesteLederInput().getAttribute("value")).to.equal(
-      endretNaermesteLeder
+    // Sjekk at 'Fra arbeidsgiver' kan endres
+    const endretFraArbeidsgiver = "Ny Leder";
+    changeTextInput(getFraArbeidsgiverInput(), endretFraArbeidsgiver);
+    expect(getFraArbeidsgiverInput().getAttribute("value")).to.equal(
+      endretFraArbeidsgiver
     );
   });
 
   it("viser behandler som deltaker når behandler er med", () => {
     renderReferat(dialogmoteMedBehandler);
 
-    const deltakerList = screen.getByRole("list");
-    expect(within(deltakerList).getByText(behandlerDeltakerTekst)).to.exist;
+    expect(screen.getByRole("heading", { name: behandlerDeltakerTekst })).to
+      .exist;
+
+    clickButton(behandlerDeltakerTekst);
+
+    expect(getCheckbox(deltakereSkjemaTexts.behandlerDeltokLabel, true)).to
+      .exist;
+    expect(getCheckbox(deltakereSkjemaTexts.behandlerMottaReferatLabel, true))
+      .to.exist;
+  });
+
+  it("kan endre behandlers deltakelse", () => {
+    stubFerdigstillApi(apiMock(), dialogmoteMedBehandler.uuid);
+    renderReferat(dialogmoteMedBehandler);
+    passSkjemaTekstInput();
+    clickButton(behandlerDeltakerTekst);
+
+    // Fjern avkrysning på deltakelse og motta referat
+    const behandlerDeltokCheckbox = getCheckbox(
+      deltakereSkjemaTexts.behandlerDeltokLabel,
+      true
+    );
+    userEvent.click(behandlerDeltokCheckbox);
+    const behandlerMottaReferatCheckbox = getCheckbox(
+      deltakereSkjemaTexts.behandlerMottaReferatLabel,
+      true
+    );
+    userEvent.click(behandlerMottaReferatCheckbox);
+
+    clickButton("Lagre og send");
+
+    // Sjekk behandlers deltakelse-felter og brev
+    const ferdigstillMutation = queryClient.getMutationCache().getAll()[0];
+    const newReferat: NewDialogmoteReferatDTO =
+      ferdigstillMutation.options.variables;
+    expect(newReferat).to.deep.include({
+      behandlerDeltatt: false,
+      behandlerMottarReferat: false,
+    });
+    const documentDeltakereTexts = newReferat.document.find(
+      (d) => d.title === referatTexts.deltakereTitle
+    )?.texts;
+    expect(documentDeltakereTexts).to.deep.include(
+      `${behandlerDeltakerTekst}, deltok ikke`
+    );
   });
 
   it("validerer alle fritekstfelter unntatt veileders oppgave", () => {
@@ -240,7 +289,9 @@ describe("ReferatTest", () => {
       name: "Pluss ikon Legg til en deltaker",
     });
     userEvent.click(addDeltakerButton);
-    const annenDeltakerNavnInput = getTextInput("Navn");
+    const annenDeltakerNavnInput = screen.getAllByRole("textbox", {
+      name: "Navn",
+    })[1];
     const annenDeltakerFunksjonInput = getTextInput("Funksjon");
     changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
     changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
@@ -254,6 +305,8 @@ describe("ReferatTest", () => {
       konklusjon: moteTekster.konklusjonTekst,
       arbeidsgiverOppgave: moteTekster.arbeidsgiversOppgave,
       arbeidstakerOppgave: moteTekster.arbeidstakersOppgave,
+      behandlerDeltatt: true,
+      behandlerMottarReferat: true,
       behandlerOppgave: moteTekster.behandlersOppgave,
       veilederOppgave: moteTekster.veiledersOppgave,
       document: expectedReferatDocument(),
@@ -274,7 +327,9 @@ describe("ReferatTest", () => {
       name: "Pluss ikon Legg til en deltaker",
     });
     userEvent.click(addDeltakerButton);
-    const annenDeltakerNavnInput = getTextInput("Navn");
+    const annenDeltakerNavnInput = screen.getAllByRole("textbox", {
+      name: "Navn",
+    })[1];
     const annenDeltakerFunksjonInput = getTextInput("Funksjon");
     changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
     changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);

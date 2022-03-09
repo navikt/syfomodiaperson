@@ -156,7 +156,7 @@ const createReferat = (ferdigstilt: boolean): ReferatDTO => {
   };
 };
 
-const behandler = (uuid: string) => {
+const behandler = (uuid: string): DialogmotedeltakerBehandlerDTO => {
   return {
     uuid: uuid + 4,
     personIdent: "01038521470",
@@ -166,6 +166,8 @@ const behandler = (uuid: string) => {
     behandlerType: BehandlerType.FASTLEGE,
     type: "BEHANDLER",
     varselList: [],
+    deltatt: true,
+    mottarReferat: true,
   };
 };
 

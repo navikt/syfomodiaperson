@@ -21,3 +21,11 @@ export const behandlerDeltakerTekst = (
     behandler.behandlerType.toLowerCase()
   )} ${behandler.behandlerNavn}`;
 };
+
+export const behandlerDeltokTekst = (
+  behandler: DialogmotedeltakerBehandlerDTO,
+  deltatt: boolean | undefined
+): string =>
+  `${behandlerDeltakerTekst("Behandler:", behandler)}${
+    deltatt === false ? ", deltok ikke" : ""
+  }`;

@@ -93,6 +93,8 @@ export interface DialogmotedeltakerBehandlerDTO {
   readonly behandlerType: BehandlerType;
   readonly type: string;
   readonly varselList: DialogmotedeltakerBehandlerVarselDTO[];
+  readonly deltatt: boolean;
+  readonly mottarReferat: boolean;
 }
 
 export interface DialogmoteInnkallingDTO {

@@ -77,6 +77,8 @@ export interface ReferatSkjemaValues extends ReferatSkjemaTekster {
   naermesteLeder: string;
   standardtekster: StandardTekst[];
   andreDeltakere: NewDialogmotedeltakerAnnenDTO[];
+  behandlerDeltatt?: boolean;
+  behandlerMottarReferat?: boolean;
 }
 
 const ReferatTittel = styled(Innholdstittel)`
@@ -105,7 +107,11 @@ const toNewReferat = (
   arbeidsgiverOppgave: values.arbeidsgiversOppgave ?? "",
   arbeidstakerOppgave: values.arbeidstakersOppgave ?? "",
   ...(dialogmote.behandler
-    ? { behandlerOppgave: values.behandlersOppgave }
+    ? {
+        behandlerOppgave: values.behandlersOppgave,
+        behandlerDeltatt: values.behandlerDeltatt,
+        behandlerMottarReferat: values.behandlerMottarReferat,
+      }
     : {}),
   veilederOppgave: values.veiledersOppgave,
   document: generateDocument(values),
@@ -221,7 +227,7 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
               {texts.digitalReferat}
             </ReferatWarningAlert>
             <Deltakere behandler={dialogmote.behandler} />
-            <ReferatWarningAlert type="advarsel">
+            <ReferatWarningAlert type="advarsel" form="inline">
               {texts.personvern}
             </ReferatWarningAlert>
             <ReferatFritekster dialogmote={dialogmote} />

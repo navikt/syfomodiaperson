@@ -34,4 +34,6 @@ export interface NewDialogmoteReferatDTO {
   veilederOppgave?: string;
   document: DocumentComponentDto[];
   andreDeltakere: NewDialogmotedeltakerAnnenDTO[];
+  behandlerDeltatt?: boolean;
+  behandlerMottarReferat?: boolean;
 }

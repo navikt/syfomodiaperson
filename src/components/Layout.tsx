@@ -35,9 +35,10 @@ export enum PaddingSize {
   LG = "3em",
 }
 
-interface RowProps {
+export interface RowProps {
   topPadding?: PaddingSize;
   bottomPadding?: PaddingSize;
+  leftPadding?: PaddingSize;
   justifyContent?: JustifyContentType;
 }
 
@@ -48,6 +49,7 @@ export const FlexRow = styled.div<RowProps>`
   width: 100%;
   padding-top: ${(props) => props.topPadding || 0};
   padding-bottom: ${(props) => props.bottomPadding || 0};
+  padding-left: ${(props) => props.leftPadding || 0};
   justify-content: ${(props) =>
     props.justifyContent || JustifyContentType.FLEX_START};
 `;

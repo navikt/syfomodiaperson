@@ -19,7 +19,7 @@ import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
 import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { useForhandsvisningHilsen } from "./useForhandsvisningHilsen";
 import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
-import { behandlerDeltakerTekst } from "@/utils/behandlerUtils";
+import { behandlerDeltokTekst } from "@/utils/behandlerUtils";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 export interface ForhandsvisReferatGenerator {
@@ -90,12 +90,12 @@ const info = (
 ): DocumentComponentDto[] => {
   const deltakereTekst = [
     `Arbeidstaker: ${navbruker.navn}`,
-    `Arbeidsgiver: ${values.naermesteLeder}`,
     `Fra NAV: ${veileder?.navn}`,
+    `Fra arbeidsgiver: ${values.naermesteLeder}`,
   ];
   if (dialogmote.behandler) {
     deltakereTekst.push(
-      behandlerDeltakerTekst("Behandler:", dialogmote.behandler)
+      behandlerDeltokTekst(dialogmote.behandler, values.behandlerDeltatt)
     );
   }
   const andreDeltakereTekst =

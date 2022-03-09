@@ -31,7 +31,7 @@ export const texts = {
   begrunnelseArbeidsgiverMissing:
     "Vennligst angi begrunnelse til nærmeste leder",
   begrunnelseBehandlerMissing: "Vennligst angi begrunnelse til behandler",
-  naermesteLederMissing: "Vennligst angi nærmeste leder",
+  arbeidsgiverDeltakerMissing: "Minst én person må delta fra arbeidsgiver",
   andreDeltakereMissingFunksjon: "Vennligst angi funksjon på deltaker",
   andreDeltakereMissingNavn: "Vennligst angi navn på deltaker",
   invalidVideoLink: "Lenke må begynne med https://video.nav.no",
@@ -164,7 +164,7 @@ export const validerReferatDeltakere = (
   const { naermesteLeder, andreDeltakere } = values;
   const feil: SkjemaFeil = {};
   if (undefinedOrEmpty(naermesteLeder)) {
-    feil.naermesteLeder = texts.naermesteLederMissing;
+    feil.naermesteLeder = texts.arbeidsgiverDeltakerMissing;
   }
   andreDeltakere?.forEach(({ navn, funksjon }, index) => {
     if (undefinedOrEmpty(funksjon)) {

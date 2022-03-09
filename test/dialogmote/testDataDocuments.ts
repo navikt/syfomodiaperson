@@ -653,8 +653,8 @@ export const expectedReferatDocument = (): DocumentComponentDto[] => [
   {
     texts: [
       `Arbeidstaker: ${arbeidstaker.navn}`,
-      `Arbeidsgiver: ${narmesteLederNavn}`,
       `Fra NAV: ${veileder.navn}`,
+      `Fra arbeidsgiver: ${narmesteLederNavn}`,
       behandlerDeltakerTekst,
       `${annenDeltakerFunksjon}: ${annenDeltakerNavn}`,
     ],

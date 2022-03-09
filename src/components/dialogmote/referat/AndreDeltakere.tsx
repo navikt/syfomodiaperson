@@ -56,41 +56,47 @@ const DeltakerField = ({
   </Field>
 );
 
+const AndreDeltakereBoks = styled.div`
+  margin-top: 2em;
+`;
+
 export const AndreDeltakere = () => {
   const { submitFailed, errors } = useFormState();
 
   return (
-    <FieldArray<NewDialogmotedeltakerAnnenDTO> name={"andreDeltakere"}>
-      {({ fields }) => (
-        <>
-          {fields.map((field, index) => (
-            <FlexRow key={field} bottomPadding={PaddingSize.SM}>
-              <FunksjonColumn flex={0.3}>
-                <DeltakerField
-                  fieldName={`${field}.funksjon`}
-                  label={texts.funksjonLabel}
-                  submitFailed={submitFailed}
-                  errors={errors}
-                />
-              </FunksjonColumn>
-              <NavnColumn flex={0.3}>
-                <DeltakerField
-                  fieldName={`${field}.navn`}
-                  label={texts.navnLabel}
-                  submitFailed={submitFailed}
-                  errors={errors}
-                />
-              </NavnColumn>
-              <SlettColumn>
-                <SlettKnapp onClick={() => fields.remove(index)} />
-              </SlettColumn>
-            </FlexRow>
-          ))}
-          <LeggTilKnapp onClick={() => fields.push(initialDeltaker)}>
-            {texts.buttonText}
-          </LeggTilKnapp>
-        </>
-      )}
-    </FieldArray>
+    <AndreDeltakereBoks>
+      <FieldArray<NewDialogmotedeltakerAnnenDTO> name={"andreDeltakere"}>
+        {({ fields }) => (
+          <>
+            {fields.map((field, index) => (
+              <FlexRow key={field} bottomPadding={PaddingSize.SM}>
+                <FunksjonColumn flex={0.3}>
+                  <DeltakerField
+                    fieldName={`${field}.funksjon`}
+                    label={texts.funksjonLabel}
+                    submitFailed={submitFailed}
+                    errors={errors}
+                  />
+                </FunksjonColumn>
+                <NavnColumn flex={0.3}>
+                  <DeltakerField
+                    fieldName={`${field}.navn`}
+                    label={texts.navnLabel}
+                    submitFailed={submitFailed}
+                    errors={errors}
+                  />
+                </NavnColumn>
+                <SlettColumn>
+                  <SlettKnapp onClick={() => fields.remove(index)} />
+                </SlettColumn>
+              </FlexRow>
+            ))}
+            <LeggTilKnapp onClick={() => fields.push(initialDeltaker)}>
+              {texts.buttonText}
+            </LeggTilKnapp>
+          </>
+        )}
+      </FieldArray>
+    </AndreDeltakereBoks>
   );
 };

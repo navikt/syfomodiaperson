@@ -7,15 +7,22 @@ import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { expect } from "chai";
-import { changeTextInput, clickButton, getTextInput } from "../testUtils";
+import {
+  changeTextInput,
+  clickButton,
+  getCheckbox,
+  getTextInput,
+} from "../testUtils";
 import { QueryClientProvider } from "react-query";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import {
   annenDeltakerFunksjon,
   annenDeltakerNavn,
   arbeidstaker,
+  behandlerDeltakerTekst,
   dialogmoteMedBehandler,
   dialogmoteMedReferat,
+  dialogmoteMedReferatBehandlerIkkeDeltatt,
   moteTekster,
   narmesteLederNavn,
   referatStandardTekst,
@@ -27,6 +34,7 @@ import userEvent from "@testing-library/user-event";
 import { stubMellomlagreApi } from "../stubs/stubIsdialogmote";
 import { apiMock } from "../stubs/stubApi";
 import { queryClientWithMockData } from "../testQueryClient";
+import { texts as deltakereSkjemaTexts } from "@/components/dialogmote/referat/Deltakere";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -70,6 +78,8 @@ describe("ReferatMellomlagreTest", () => {
       konklusjon: moteTekster.konklusjonTekst,
       arbeidsgiverOppgave: moteTekster.arbeidsgiversOppgave,
       arbeidstakerOppgave: moteTekster.arbeidstakersOppgave,
+      behandlerDeltatt: true,
+      behandlerMottarReferat: true,
       behandlerOppgave: moteTekster.behandlersOppgave,
       veilederOppgave: moteTekster.veiledersOppgave,
       document: expectedReferatDocument(),
@@ -92,11 +102,19 @@ describe("ReferatMellomlagreTest", () => {
     expect(screen.getByDisplayValue(moteTekster.konklusjonTekst)).to.exist;
     expect(screen.getByDisplayValue(annenDeltakerNavn)).to.exist;
     expect(screen.getByDisplayValue(annenDeltakerFunksjon)).to.exist;
-    const checkedStandardtekst = screen.getByRole("checkbox", {
-      checked: true,
-      name: referatStandardTekst.label,
-    });
+    const checkedStandardtekst = getCheckbox(referatStandardTekst.label, true);
     expect(checkedStandardtekst).to.exist;
+  });
+
+  it("preutfyller referat-skjema behandler-deltakelse fra dialogmote", () => {
+    renderReferat(dialogmoteMedReferatBehandlerIkkeDeltatt);
+
+    clickButton(`${behandlerDeltakerTekst}, deltok ikke`);
+
+    expect(getCheckbox(deltakereSkjemaTexts.behandlerDeltokLabel, false)).to
+      .exist;
+    expect(getCheckbox(deltakereSkjemaTexts.behandlerMottaReferatLabel, false))
+      .to.exist;
   });
 });
 
@@ -127,7 +145,9 @@ const passSkjemaTekstInput = () => {
     name: "Pluss ikon Legg til en deltaker",
   });
   userEvent.click(addDeltakerButton);
-  const annenDeltakerNavnInput = getTextInput("Navn");
+  const annenDeltakerNavnInput = screen.getAllByRole("textbox", {
+    name: "Navn",
+  })[1];
   const annenDeltakerFunksjonInput = getTextInput("Funksjon");
 
   changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);

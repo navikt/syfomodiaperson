@@ -61,6 +61,8 @@ export const behandlerDeltaker: DialogmotedeltakerBehandlerDTO = {
   varselList: [],
   behandlerKontor: "Greendale Legekontor",
   behandlerNavn: "Dean Pelton",
+  deltatt: true,
+  mottarReferat: true,
 };
 
 export const dialogmote: DialogmoteDTO = {
@@ -87,6 +89,14 @@ export const dialogmote: DialogmoteDTO = {
 export const dialogmoteMedBehandler: DialogmoteDTO = {
   ...dialogmote,
   behandler: behandlerDeltaker,
+};
+const dialogmoteMedBehandlerIkkeDeltatt: DialogmoteDTO = {
+  ...dialogmote,
+  behandler: {
+    ...behandlerDeltaker,
+    deltatt: false,
+    mottarReferat: false,
+  },
 };
 
 export const varselArbeidsgiver = (
@@ -215,26 +225,33 @@ export const moteTekster = {
 
 export const referatStandardTekst = referatTexts.standardTekster[3];
 
+const lagretReferat = {
+  uuid: "123abc",
+  situasjon: situasjonTekst,
+  arbeidsgiverOppgave: arbeidsgiversOppgave,
+  arbeidstakerOppgave: arbeidstakersOppgave,
+  narmesteLederNavn: narmesteLederNavn,
+  konklusjon: konklusjonTekst,
+  document: [
+    {
+      key: referatStandardTekst.key,
+      title: referatStandardTekst.label,
+      texts: [referatStandardTekst.text],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+  ],
+  ferdigstilt: false,
+  andreDeltakere: [
+    { navn: annenDeltakerNavn, funksjon: annenDeltakerFunksjon },
+  ],
+};
+
 export const dialogmoteMedReferat: DialogmoteDTO = {
   ...dialogmote,
-  referat: {
-    uuid: "123abc",
-    situasjon: situasjonTekst,
-    arbeidsgiverOppgave: arbeidsgiversOppgave,
-    arbeidstakerOppgave: arbeidstakersOppgave,
-    narmesteLederNavn: narmesteLederNavn,
-    konklusjon: konklusjonTekst,
-    document: [
-      {
-        key: referatStandardTekst.key,
-        title: referatStandardTekst.label,
-        texts: [referatStandardTekst.text],
-        type: DocumentComponentType.PARAGRAPH,
-      },
-    ],
-    ferdigstilt: false,
-    andreDeltakere: [
-      { navn: annenDeltakerNavn, funksjon: annenDeltakerFunksjon },
-    ],
-  },
+  referat: lagretReferat,
+};
+
+export const dialogmoteMedReferatBehandlerIkkeDeltatt: DialogmoteDTO = {
+  ...dialogmoteMedBehandlerIkkeDeltatt,
+  referat: lagretReferat,
 };

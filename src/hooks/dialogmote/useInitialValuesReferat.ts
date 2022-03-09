@@ -11,14 +11,22 @@ export const useInitialValuesReferat = (
   const {
     referat,
     arbeidsgiver: { virksomhetsnummer },
+    behandler,
   } = dialogmote;
   const currentNarmesteLederNavn = getCurrentNarmesteLeder(virksomhetsnummer)
     ?.narmesteLederNavn;
 
   return useMemo(() => {
+    const behandlerInitialValues = behandler
+      ? {
+          behandlerDeltatt: behandler.deltatt,
+          behandlerMottarReferat: behandler.mottarReferat,
+        }
+      : {};
     if (!referat) {
       return {
         naermesteLeder: currentNarmesteLederNavn,
+        ...behandlerInitialValues,
       };
     } else {
       return {
@@ -36,7 +44,8 @@ export const useInitialValuesReferat = (
         standardtekster: referatTexts.standardTekster.filter((standardtekst) =>
           referat.document.some(({ key }) => key === standardtekst.key)
         ),
+        ...behandlerInitialValues,
       };
     }
-  }, [currentNarmesteLederNavn, referat]);
+  }, [currentNarmesteLederNavn, referat, behandler]);
 };
