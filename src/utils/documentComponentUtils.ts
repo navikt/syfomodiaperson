@@ -33,7 +33,12 @@ export const createStandardtekstParagraph = (
   texts: [standardTekst.text],
 });
 
-export const createHeader = (text: string): DocumentComponentDto => ({
-  type: DocumentComponentType.HEADER,
+export const createHeaderH1 = (text: string): DocumentComponentDto => ({
+  type: DocumentComponentType.HEADER_H1,
+  texts: [text],
+});
+
+export const createHeaderH2 = (text: string): DocumentComponentDto => ({
+  type: DocumentComponentType.HEADER_H2,
   texts: [text],
 });

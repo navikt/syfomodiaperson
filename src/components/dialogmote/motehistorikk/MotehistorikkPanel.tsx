@@ -58,7 +58,6 @@ const MoteListElement = ({ children }: MoteListElementProps): ReactElement => {
         <>
           <Forhandsvisning
             title={forhandsVisningTitle}
-            subtitle=""
             contentLabel={forhandsVisningTitle}
             isOpen={modalIsOpen}
             handleClose={() => setModalIsOpen(false)}

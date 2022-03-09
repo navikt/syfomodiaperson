@@ -9,7 +9,8 @@ import {
   tilDatoMedUkedagOgManedNavn,
 } from "@/utils/datoUtils";
 import {
-  createHeader,
+  createHeaderH1,
+  createHeaderH2,
   createParagraph,
   createParagraphWithTitle,
   createStandardtekstParagraph,
@@ -45,10 +46,11 @@ export const useForhandsvisReferat = (
     values: Partial<ReferatSkjemaValues>
   ): DocumentComponentDto[] => {
     const documentComponents = [
+      createHeaderH1("Referat fra dialogmøte"),
       createParagraph(
         `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
       ),
-      createHeader(navbruker?.navn),
+      createHeaderH2(navbruker?.navn),
       ...info(dialogmote, values, navbruker, veilederinfo),
     ];
 
@@ -121,7 +123,7 @@ const fritekster = (
   values: Partial<ReferatSkjemaValues>
 ): DocumentComponentDto[] => {
   const documentComponents = [
-    createHeader(referatTexts.detteSkjeddeHeader),
+    createHeaderH2(referatTexts.detteSkjeddeHeader),
     createParagraphWithTitle(
       referatTexts.konklusjonTitle,
       values.konklusjon || ""
@@ -167,7 +169,7 @@ const standardTekster = (
   const documentComponents: DocumentComponentDto[] = [];
   if (values.standardtekster && values.standardtekster.length > 0) {
     documentComponents.push(
-      createHeader(referatTexts.standardTeksterHeader),
+      createHeaderH2(referatTexts.standardTeksterHeader),
       ...values.standardtekster.map((standardtekst) =>
         createStandardtekstParagraph(standardtekst)
       )

@@ -152,7 +152,6 @@ const AvlysDialogmoteSkjema = ({
             />
             <Forhandsvisning
               title={texts.forhandsvisningArbeidstakerTitle}
-              subtitle={texts.forhandsvisningSubtitle}
               contentLabel={texts.forhandsvisningArbeidstakerContentlabel}
               isOpen={displayAvlysningArbeidstakerPreview}
               handleClose={() => setDisplayAvlysningArbeidstakerPreview(false)}
@@ -170,7 +169,6 @@ const AvlysDialogmoteSkjema = ({
             />
             <Forhandsvisning
               title={texts.forhandsvisningArbeidsgiverTitle}
-              subtitle={texts.forhandsvisningSubtitle}
               contentLabel={texts.forhandsvisningArbeidsgiverContentlabel}
               isOpen={displayAvlysningArbeidsgiverPreview}
               handleClose={() => setDisplayAvlysningArbeidsgiverPreview(false)}
@@ -190,7 +188,6 @@ const AvlysDialogmoteSkjema = ({
                 />
                 <Forhandsvisning
                   title={texts.forhandsvisningBehandlerTitle}
-                  subtitle={texts.forhandsvisningSubtitle}
                   contentLabel={texts.forhandsvisningBehandlerContentlabel}
                   isOpen={displayAvlysningBehandlerPreview}
                   handleClose={() => setDisplayAvlysningBehandlerPreview(false)}

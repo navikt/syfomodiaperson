@@ -1,5 +1,6 @@
 import { EndreTidStedSkjemaValues } from "@/components/dialogmote/endre/EndreDialogmoteSkjema";
 import {
+  createHeaderH1,
   createLink,
   createParagraph,
   createParagraphWithTitle,
@@ -63,6 +64,7 @@ export const useForhandsvisTidSted = (
     values: Partial<EndreTidStedSkjemaValues>
   ) => {
     const documentComponents = [
+      createHeaderH1("Endret dialogmøte"),
       sendtDato,
       introHilsenArbeidsgiver,
       ...fellesInfo(values, tid, getValgtArbeidsgiver()),
@@ -107,6 +109,7 @@ export const useForhandsvisTidSted = (
     values: Partial<EndreTidStedSkjemaValues>
   ) => {
     const documentComponents = [
+      createHeaderH1("Endret dialogmøte"),
       sendtDato,
       introHilsenArbeidstaker,
       ...fellesInfo(values, tid, getValgtArbeidsgiver()),
@@ -147,6 +150,7 @@ export const useForhandsvisTidSted = (
     values: Partial<EndreTidStedSkjemaValues>
   ) => {
     const documentComponents = [
+      createHeaderH1("Endret dialogmøte"),
       sendtDato,
       introHilsenBehandler,
       ...fellesInfo(values, tid, getValgtArbeidsgiver()),

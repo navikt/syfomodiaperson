@@ -54,6 +54,8 @@ export enum SvarType {
 
 export enum DocumentComponentType {
   HEADER = "HEADER",
+  HEADER_H1 = "HEADER_H1",
+  HEADER_H2 = "HEADER_H2",
   PARAGRAPH = "PARAGRAPH",
   LINK = "LINK",
 }

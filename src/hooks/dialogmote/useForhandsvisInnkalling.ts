@@ -10,6 +10,7 @@ import {
   innkallingTexts,
 } from "@/data/dialogmote/dialogmoteTexts";
 import {
+  createHeaderH1,
   createLink,
   createParagraph,
   createParagraphWithTitle,
@@ -122,6 +123,7 @@ const fellesInfo = (
 ): DocumentComponentDto[] => {
   const { dato, klokkeslett, sted, videoLink } = values;
   const components = [
+    createHeaderH1("Innkalling til dialogmøte"),
     createParagraph(
       `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
     ),

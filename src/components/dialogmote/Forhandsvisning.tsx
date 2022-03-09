@@ -10,7 +10,6 @@ import {
   Innholdstittel,
   Normaltekst,
   Sidetittel,
-  Systemtittel,
 } from "nav-frontend-typografi";
 import React, { ReactElement } from "react";
 import {
@@ -39,10 +38,6 @@ const ForhandsvisningModal = styled(ModalWrapper)`
   max-width: 50em;
 `;
 
-const Header = styled(Systemtittel)`
-  margin-top: 0.5em;
-`;
-
 const DocumentComponentLink = (texts: string[], title?: string) => {
   const link = texts.length === 0 ? "" : texts[0];
   return (
@@ -55,9 +50,22 @@ const DocumentComponentLink = (texts: string[], title?: string) => {
   );
 };
 
-const DocumentComponentHeader = (texts: string[]) => {
+const DocumentComponentHeaderH1 = (texts: string[]) => {
   const header = texts.length === 0 ? "" : texts[0];
-  return <Header>{header}</Header>;
+  return (
+    <FlexRow topPadding={PaddingSize.MD} bottomPadding={PaddingSize.MD}>
+      <Innholdstittel>{header}</Innholdstittel>
+    </FlexRow>
+  );
+};
+
+const DocumentComponentHeaderH2 = (texts: string[]) => {
+  const header = texts.length === 0 ? "" : texts[0];
+  return (
+    <FlexRow topPadding={PaddingSize.MD} bottomPadding={PaddingSize.MD}>
+      <Innholdstittel>{header}</Innholdstittel>
+    </FlexRow>
+  );
 };
 
 const DocumentComponentParagraph = (texts: string[], title?: string) => {
@@ -91,7 +99,13 @@ const DocumentComponentVisning = ({
 }: DocumentComponentVisningProps) => {
   switch (type) {
     case DocumentComponentType.HEADER: {
-      return DocumentComponentHeader(texts);
+      return DocumentComponentHeaderH2(texts);
+    }
+    case DocumentComponentType.HEADER_H1: {
+      return DocumentComponentHeaderH1(texts);
+    }
+    case DocumentComponentType.HEADER_H2: {
+      return DocumentComponentHeaderH2(texts);
     }
     case DocumentComponentType.LINK: {
       return DocumentComponentLink(texts, title);
@@ -107,7 +121,6 @@ const DocumentComponentVisning = ({
 
 interface ForhandsvisningProps {
   title?: string;
-  subtitle?: string;
   contentLabel: string;
   isOpen: boolean;
   handleClose: () => void;
@@ -118,7 +131,6 @@ export const Forhandsvisning = ({
   isOpen,
   handleClose,
   title,
-  subtitle,
   contentLabel,
   getDocumentComponents,
 }: ForhandsvisningProps): ReactElement => {
@@ -132,15 +144,10 @@ export const Forhandsvisning = ({
       ariaHideApp={false}
     >
       <ModalContentContainer data-cy="ForhåndsvisningModal">
-        <FlexRow topPadding={PaddingSize.SM} bottomPadding={PaddingSize.MD}>
+        <FlexRow topPadding={PaddingSize.SM}>
           {title ? (
             <FlexRow justifyContent={JustifyContentType.CENTER}>
               <Sidetittel>{title}</Sidetittel>
-            </FlexRow>
-          ) : null}
-          {subtitle ? (
-            <FlexRow topPadding={PaddingSize.MD}>
-              <Innholdstittel>{subtitle}</Innholdstittel>
             </FlexRow>
           ) : null}
         </FlexRow>

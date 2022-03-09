@@ -262,7 +262,6 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
               showSendSpinner={ferdigstillDialogmote.isLoading}
             />
             <Forhandsvisning
-              subtitle={texts.forhandsvisningSubtitle}
               contentLabel={texts.forhandsvisningContentLabel}
               isOpen={displayReferatPreview}
               handleClose={() => setDisplayReferatPreview(false)}

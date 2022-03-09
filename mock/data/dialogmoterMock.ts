@@ -132,7 +132,7 @@ const createReferat = (ferdigstilt: boolean): ReferatDTO => {
     veilederOppgave: "Dette er en beskrivelse av veilederOppgave",
     document: [
       {
-        type: DocumentComponentType.HEADER,
+        type: DocumentComponentType.HEADER_H1,
         title: "Tittel referat",
         texts: [],
       },

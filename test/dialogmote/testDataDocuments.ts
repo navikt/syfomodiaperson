@@ -39,6 +39,10 @@ const expectedArbeidstakerInnkalling = (
   medBehandler = false
 ): DocumentComponentDto[] => [
   {
+    texts: ["Innkalling til dialogmøte"],
+    type: DocumentComponentType.HEADER_H1,
+  },
+  {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -116,6 +120,10 @@ const expectedArbeidstakerInnkalling = (
 const expectedArbeidsgiverInnkalling = (
   medBehandler = false
 ): DocumentComponentDto[] => [
+  {
+    texts: ["Innkalling til dialogmøte"],
+    type: DocumentComponentType.HEADER_H1,
+  },
   {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
@@ -197,6 +205,10 @@ const expectedArbeidsgiverInnkalling = (
 
 const expectedBehandlerInnkalling = (): DocumentComponentDto[] => [
   {
+    texts: ["Innkalling til dialogmøte"],
+    type: DocumentComponentType.HEADER_H1,
+  },
+  {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -257,6 +269,10 @@ const expectedBehandlerInnkalling = (): DocumentComponentDto[] => [
 const expectedArbeidsgiverEndringsdokument = (
   medBehandler = false
 ): DocumentComponentDto[] => [
+  {
+    texts: ["Endret dialogmøte"],
+    type: DocumentComponentType.HEADER_H1,
+  },
   {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
@@ -348,6 +364,10 @@ const expectedArbeidstakerEndringsdokument = (
   medBehandler = false
 ): DocumentComponentDto[] => [
   {
+    texts: ["Endret dialogmøte"],
+    type: DocumentComponentType.HEADER_H1,
+  },
+  {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -432,6 +452,10 @@ const expectedArbeidstakerEndringsdokument = (
 
 const expectedBehandlerEndringsdokument = (): DocumentComponentDto[] => [
   {
+    texts: ["Endret dialogmøte"],
+    type: DocumentComponentType.HEADER_H1,
+  },
+  {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -499,6 +523,10 @@ const expectedBehandlerEndringsdokument = (): DocumentComponentDto[] => [
 
 const expectedAvlysningArbeidsgiver = (): DocumentComponentDto[] => [
   {
+    texts: ["Avlysning av dialogmøte"],
+    type: DocumentComponentType.HEADER_H1,
+  },
+  {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -530,6 +558,10 @@ const expectedAvlysningArbeidsgiver = (): DocumentComponentDto[] => [
 ];
 
 const expectedAvlysningArbeidstaker = (): DocumentComponentDto[] => [
+  {
+    texts: ["Avlysning av dialogmøte"],
+    type: DocumentComponentType.HEADER_H1,
+  },
   {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
@@ -563,6 +595,10 @@ const expectedAvlysningArbeidstaker = (): DocumentComponentDto[] => [
 
 const expectedAvlysningBehandler = (): DocumentComponentDto[] => [
   {
+    texts: ["Avlysning av dialogmøte"],
+    type: DocumentComponentType.HEADER_H1,
+  },
+  {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -595,12 +631,16 @@ const expectedAvlysningBehandler = (): DocumentComponentDto[] => [
 
 export const expectedReferatDocument = (): DocumentComponentDto[] => [
   {
+    texts: ["Referat fra dialogmøte"],
+    type: DocumentComponentType.HEADER_H1,
+  },
+  {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [arbeidstaker.navn],
-    type: DocumentComponentType.HEADER,
+    type: DocumentComponentType.HEADER_H2,
   },
   {
     texts: [`F.nr. ${arbeidstaker.personident}`],
@@ -639,7 +679,7 @@ export const expectedReferatDocument = (): DocumentComponentDto[] => [
   },
   {
     texts: [referatTexts.detteSkjeddeHeader],
-    type: DocumentComponentType.HEADER,
+    type: DocumentComponentType.HEADER_H2,
   },
   {
     texts: [moteTekster.konklusjonTekst],

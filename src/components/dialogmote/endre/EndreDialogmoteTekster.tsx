@@ -61,7 +61,6 @@ const EndreDialogmoteTekster = ({ dialogmote }: Props) => {
       />
       <Forhandsvisning
         title={texts.forhandsvisningArbeidstakerTitle}
-        subtitle={texts.forhandsvisningSubtitle}
         contentLabel={texts.forhandsvisningArbeidstakerContentLabel}
         isOpen={displayEndringArbeidstakerPreview}
         handleClose={() => setDisplayEndringArbeidstakerPreview(false)}
@@ -77,7 +76,6 @@ const EndreDialogmoteTekster = ({ dialogmote }: Props) => {
       />
       <Forhandsvisning
         title={texts.forhandsvisningArbeidsgiverTitle}
-        subtitle={texts.forhandsvisningSubtitle}
         contentLabel={texts.forhandsvisningArbeidsgiverContentLabel}
         isOpen={displayEndringArbeidsgiverPreview}
         handleClose={() => setDisplayEndringArbeidsgiverPreview(false)}
@@ -95,7 +93,6 @@ const EndreDialogmoteTekster = ({ dialogmote }: Props) => {
           />
           <Forhandsvisning
             title={texts.forhandsvisningBehandlerTitle}
-            subtitle={texts.forhandsvisningSubtitle}
             contentLabel={texts.forhandsvisningBehandlerContentLabel}
             isOpen={displayEndringBehandlerPreview}
             handleClose={() => setDisplayEndringBehandlerPreview(false)}

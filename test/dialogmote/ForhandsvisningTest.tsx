@@ -16,7 +16,6 @@ describe("Forhandsvisning", () => {
     render(
       <Forhandsvisning
         title={"Tittel her"}
-        subtitle={"(undertittel)"}
         contentLabel={"Test"}
         isOpen={true}
         handleClose={doNothing}
@@ -24,7 +23,6 @@ describe("Forhandsvisning", () => {
       />
     );
     expect(screen.getByRole("heading", { name: "Tittel her" })).to.exist;
-    expect(screen.getByRole("heading", { name: "(undertittel)" })).to.exist;
     expect(screen.getAllByRole("button", { name: "Lukk" })).to.not.be.empty;
   });
   it("rendrer document components", () => {
@@ -44,14 +42,13 @@ describe("Forhandsvisning", () => {
         texts: ["A paragraph", "Other paragraph"],
       },
       {
-        type: DocumentComponentType.HEADER,
+        type: DocumentComponentType.HEADER_H2,
         texts: ["En overskrift"],
       },
     ];
     render(
       <Forhandsvisning
         title={"Tittel her"}
-        subtitle={"(undertittel)"}
         contentLabel={"Test"}
         isOpen={true}
         handleClose={doNothing}

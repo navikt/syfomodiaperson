@@ -82,7 +82,6 @@ const DialogmoteInnkallingTekster = ({
       />
       <Forhandsvisning
         title={texts.forhandsvisningArbeidstakerTitle}
-        subtitle={texts.forhandsvisningSubtitle}
         contentLabel={texts.forhandsvisningArbeidstakerContentLabel}
         isOpen={displayInnkallingArbeidstakerPreview}
         handleClose={() => setDisplayInnkallingArbeidstakerPreview(false)}
@@ -98,7 +97,6 @@ const DialogmoteInnkallingTekster = ({
       />
       <Forhandsvisning
         title={texts.forhandsvisningArbeidsgiverTitle}
-        subtitle={texts.forhandsvisningSubtitle}
         contentLabel={texts.forhandsvisningArbeidsgiverContentLabel}
         isOpen={displayInnkallingArbeidsgiverPreview}
         handleClose={() => setDisplayInnkallingArbeidsgiverPreview(false)}
@@ -119,7 +117,6 @@ const DialogmoteInnkallingTekster = ({
           />
           <Forhandsvisning
             title={texts.forhandsvisningBehandlerTitle}
-            subtitle={texts.forhandsvisningSubtitle}
             contentLabel={texts.forhandsvisningBehandlerContentLabel}
             isOpen={displayInnkallingBehandlerPreview}
             handleClose={() => setDisplayInnkallingBehandlerPreview(false)}

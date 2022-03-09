@@ -6,6 +6,7 @@ import { AvlysDialogmoteSkjemaValues } from "@/components/dialogmote/avlys/Avlys
 import { avlysningTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
 import {
+  createHeaderH1,
   createParagraph,
   createParagraphWithTitle,
 } from "@/utils/documentComponentUtils";
@@ -57,7 +58,12 @@ export const useForhandsvisAvlysning = (
     introHilsen: DocumentComponentDto,
     begrunnelse?: string
   ) => {
-    const documentComponents = [sendt, introHilsen, introText];
+    const documentComponents = [
+      createHeaderH1("Avlysning av dialogmøte"),
+      sendt,
+      introHilsen,
+      introText,
+    ];
     if (begrunnelse) {
       documentComponents.push(createParagraph(begrunnelse));
     }
