@@ -37,11 +37,11 @@ export const hentTekstFastlegePostadresse = (postadresse: Adresse) => {
     : "";
 };
 
-const fastlegeVikarTekst = (fastlege: Fastlege) => {
-  const vikarlegeNavn = hentTekstFastlegeNavn(fastlege);
+const fastlegeVikarTekst = (fastlegeVikar: Fastlege) => {
+  const vikarlegeNavn = hentTekstFastlegeNavn(fastlegeVikar);
   const periodeTekst = `${restdatoTilLesbarDato(
-    fastlege.pasientforhold.fom
-  )} - ${restdatoTilLesbarDato(fastlege.pasientforhold.tom)}`;
+    fastlegeVikar.gyldighet.fom
+  )} - ${restdatoTilLesbarDato(fastlegeVikar.gyldighet.tom)}`;
   return (
     <>
       <b>{vikarlegeNavn}</b> {periodeTekst}
