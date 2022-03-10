@@ -13,7 +13,6 @@ import {
   mote,
   moteTekster,
   narmesteLederNavn,
-  navEnhet,
   veileder,
 } from "./testData";
 import {
@@ -109,11 +108,7 @@ const expectedArbeidstakerInnkalling = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [commonTexts.hilsen, navEnhet.navn],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [veileder.navn ?? ""],
+    texts: [commonTexts.hilsen, veileder.navn ?? "", "NAV"],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -191,11 +186,7 @@ const expectedArbeidsgiverInnkalling = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [commonTexts.hilsen, navEnhet.navn],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [veileder.navn ?? ""],
+    texts: [commonTexts.hilsen, veileder.navn ?? "", "NAV"],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -258,11 +249,7 @@ const expectedBehandlerInnkalling = (): DocumentComponentDto[] => [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [commonTexts.hilsen, navEnhet.navn],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [veileder.navn ?? ""],
+    texts: [commonTexts.hilsen, veileder.navn ?? "", "NAV"],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -348,11 +335,7 @@ const expectedArbeidsgiverEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Vennlig hilsen", navEnhet.navn],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [veileder.navn ?? ""],
+    texts: [commonTexts.hilsen, veileder.navn ?? "", "NAV"],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -442,11 +425,7 @@ const expectedArbeidstakerEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Vennlig hilsen", navEnhet.navn],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [veileder.navn ?? ""],
+    texts: [commonTexts.hilsen, veileder.navn ?? "", "NAV"],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -513,11 +492,7 @@ const expectedBehandlerEndringsdokument = (): DocumentComponentDto[] => [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Vennlig hilsen", navEnhet.navn],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [veileder.navn ?? ""],
+    texts: [commonTexts.hilsen, veileder.navn ?? "", "NAV"],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -549,11 +524,7 @@ const expectedAvlysningArbeidsgiver = (): DocumentComponentDto[] => [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [commonTexts.hilsen, navEnhet.navn],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [veileder.navn ?? ""],
+    texts: [commonTexts.hilsen, veileder.navn ?? "", "NAV"],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -585,11 +556,7 @@ const expectedAvlysningArbeidstaker = (): DocumentComponentDto[] => [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [commonTexts.hilsen, navEnhet.navn],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [veileder.navn ?? ""],
+    texts: [commonTexts.hilsen, veileder.navn ?? "", "NAV"],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -621,11 +588,7 @@ const expectedAvlysningBehandler = (): DocumentComponentDto[] => [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [commonTexts.hilsen, navEnhet.navn],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [veileder.navn ?? ""],
+    texts: [commonTexts.hilsen, veileder.navn ?? "", "NAV"],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -709,11 +672,7 @@ export const expectedReferatDocument = (): DocumentComponentDto[] => [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [commonTexts.hilsen, navEnhet.navn],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [veileder.navn || ""],
+    texts: [commonTexts.hilsen, veileder.navn ?? "", "NAV"],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
