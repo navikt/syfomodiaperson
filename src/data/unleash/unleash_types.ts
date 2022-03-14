@@ -4,6 +4,5 @@ export type Toggles = {
 
 // See https://unleash.nais.io/#/features (syfomodiaperson)
 export enum ToggleNames {
-  dm2 = "syfo.syfomodiaperson.dm2",
   sykmeldingsgrad = "syfo.syfomodiaperson.sykmeldingsgrad",
 }

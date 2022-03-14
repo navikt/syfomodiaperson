@@ -10,19 +10,14 @@ import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import {
-  ARBEIDSTAKER_DEFAULT,
-  VEILEDER_DEFAULT,
-} from "../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 import {
   OppfolgingstilfelleDTO,
   OppfolgingstilfellePersonDTO,
 } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { expect } from "chai";
 import { daysFromToday } from "../testUtils";
-import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks";
 import { navEnhet } from "./testData";
-import { ToggleNames } from "@/data/unleash/unleash_types";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -70,12 +65,6 @@ const renderDialogmoteInnkallingContainer = () =>
 describe("DialogmoteInnkallingContainer", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
-    queryClient.setQueryData(
-      unleashQueryKeys.toggles(navEnhet.id, VEILEDER_DEFAULT.ident),
-      () => ({
-        [ToggleNames.dm2]: true,
-      })
-    );
   });
 
   it("viser skjema når det er mindre enn 16 dager siden brukers siste oppfolgingstilfelle", () => {

@@ -6,7 +6,6 @@ export const mockUnleash = (server) => {
     res.setHeader("Content-Type", "application/json");
     res.send(
       JSON.stringify({
-        "syfo.syfomodiaperson.dm2": true,
         "syfo.syfomodiaperson.sykmeldingsgrad": true,
       })
     );

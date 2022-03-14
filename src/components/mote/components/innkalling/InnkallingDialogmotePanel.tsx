@@ -6,13 +6,10 @@ import { MoteIkonBlaaImage } from "../../../../../img/ImageComponents";
 import { DialogmotePanel } from "../DialogmotePanel";
 import { tilDatoMedUkedagOgManedNavn } from "@/utils/datoUtils";
 import { useAktivtMoteplanleggerMote } from "@/data/mote/moter_hooks";
-import { Moteplanleggeren } from "./Moteplanleggeren";
 import { DialogmoteMoteStatusPanel } from "./DialogmoteMoteStatusPanel";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/components/dialogmote/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
-import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import { ToggleNames } from "@/data/unleash/unleash_types";
 
 export const texts = {
   bekreftetMote: "Bekreftet møte",
@@ -44,13 +41,8 @@ interface InnkallingDialogmotePanelProps {
 export const InnkallingDialogmotePanel = ({
   aktivtDialogmote,
 }: InnkallingDialogmotePanelProps): ReactElement => {
-  const { isFeatureEnabled } = useFeatureToggles();
   const aktivtMoteplanleggerMote = useAktivtMoteplanleggerMote();
   const { brukerKanIkkeVarslesDigitalt } = useNavBrukerData();
-
-  if (!isFeatureEnabled(ToggleNames.dm2)) {
-    return <Moteplanleggeren />;
-  }
 
   if (aktivtDialogmote) {
     return <DialogmoteMoteStatusPanel dialogmote={aktivtDialogmote} />;

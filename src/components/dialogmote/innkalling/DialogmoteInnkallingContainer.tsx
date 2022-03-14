@@ -12,8 +12,6 @@ import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { Redirect } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
-import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import { ToggleNames } from "@/data/unleash/unleash_types";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import Tilbakelenke from "@/components/Tilbakelenke";
 
@@ -55,15 +53,13 @@ const DialogmoteInnkallingContainer = (): ReactElement => {
     isLoading: henterLedere,
     isError: hentingLedereFeilet,
   } = useLedereQuery();
-  const { isFeatureEnabled, isFetched } = useFeatureToggles();
   const { aktivtDialogmote } = useDialogmoterQuery();
   const {
     isLoading: henterOppfolgingstilfeller,
     isError: hentingOppfolgingstilfellerFeilet,
   } = useOppfolgingstilfellePersonQuery();
-  const manglerTilgang = isFetched && !isFeatureEnabled(ToggleNames.dm2);
 
-  if (manglerTilgang || aktivtDialogmote) {
+  if (aktivtDialogmote) {
     return <Redirect to={moteoversiktRoutePath} />;
   }
 
