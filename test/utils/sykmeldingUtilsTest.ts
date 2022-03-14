@@ -1,41 +1,77 @@
 import { expect } from "chai";
 import {
+  arbeidsgivernavnEllerArbeidssituasjon,
   erArbeidsforEtterPerioden,
   erBedringAvArbeidsevnenInformasjon,
+  erBehandlingsdagerEllerReisetilskudd,
   erEkstraDiagnoseInformasjon,
   erFriskmeldingInformasjon,
   erHensynPaaArbeidsplassenInformasjon,
   erMeldingTilArbeidsgiverInformasjon,
   erMeldingTilNavInformasjon,
   erMulighetForArbeidInformasjon,
-  arbeidsgivernavnEllerArbeidssituasjon,
-  sykmeldingerMedStatusSendt,
-  sykmeldingerInnenforOppfolgingstilfelle,
-  sykmeldingerSortertNyestTilEldst,
-  sykmeldingerGruppertEtterVirksomhet,
-  sykmeldingperioderSortertEldstTilNyest,
-  stringMedAlleGraderingerFraSykmeldingPerioder,
-  erBehandlingsdagerEllerReisetilskudd,
   finnAvventendeSykmeldingTekst,
-  sykmeldingerHasCoronaDiagnose,
   latestSykmeldingForVirksomhet,
+  stringMedAlleGraderingerFraSykmeldingPerioder,
+  sykmeldingerGruppertEtterVirksomhet,
+  sykmeldingerHasCoronaDiagnose,
+  sykmeldingerInnenforOppfolgingstilfelle,
+  sykmeldingerMedStatusSendt,
+  sykmeldingerSortertNyestTilEldst,
+  sykmeldingperioderSortertEldstTilNyest,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { ANTALL_MS_DAG } from "@/utils/datoUtils";
+import {
+  SykmeldingOldFormat,
+  SykmeldingPeriodeDTO,
+  SykmeldingStatus,
+} from "@/data/sykmelding/types/SykmeldingOldFormat";
+import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
+import { SporsmalSvarDTO } from "@/data/sykmelding/types/SporsmalSvarDTO";
+import sinon from "sinon";
+
+const baseSykmelding: SykmeldingOldFormat = {
+  arbeidsevne: {},
+  behandlingsutfall: {
+    ruleHits: [],
+    status: BehandlingsutfallStatusDTO.OK,
+  },
+  bekreftelse: {},
+  diagnose: {},
+  friskmelding: {},
+  id: "",
+  meldingTilNav: {},
+  mottattTidspunkt: new Date(),
+  pasient: {},
+  sendtdato: "",
+  skalViseSkravertFelt: false,
+  sporsmal: {},
+  status: SykmeldingStatus.SENDT,
+  tilbakedatering: {},
+  utdypendeOpplysninger: new Map<string, Map<string, SporsmalSvarDTO>>(),
+  mulighetForArbeid: {
+    perioder: [],
+  },
+};
 
 describe("sykmeldingUtils", () => {
+  let clock;
+  let today = new Date("2017-02-01");
+
   describe("finnAvventendeSykmeldingTekst", () => {
     it("skal returnere teksten fra avventende-feltet i en periode, hvis det finnes", () => {
       const innspillTilArbeidsgiver = "Innspill til arbeidsgiver";
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         mulighetForArbeid: {
           perioder: [
             {
               avventende: innspillTilArbeidsgiver,
-              behandlingsdager: null,
-              fom: "2019-01-01",
+              behandlingsdager: undefined,
+              fom: new Date("2019-01-01"),
               grad: 100,
-              reisetilskudd: null,
-              tom: "2019-01-10",
+              reisetilskudd: undefined,
+              tom: new Date("2019-01-10"),
             },
           ],
         },
@@ -47,16 +83,17 @@ describe("sykmeldingUtils", () => {
     });
 
     it("skal returnere undefined hvis ingen av periodene er avventende", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         mulighetForArbeid: {
           perioder: [
             {
-              avventende: null,
-              behandlingsdager: null,
-              fom: "2019-01-01",
-              grad: null,
-              reisetilskudd: null,
-              tom: "2019-01-10",
+              avventende: undefined,
+              behandlingsdager: undefined,
+              fom: new Date("2019-01-01"),
+              grad: undefined,
+              reisetilskudd: undefined,
+              tom: new Date("2019-01-10"),
             },
           ],
         },
@@ -70,16 +107,17 @@ describe("sykmeldingUtils", () => {
 
   describe("erBehandlingsdagerEllerReisetilskudd", () => {
     it("skal returnere true dersom minst én av sykmeldingperiodene er huket av på behandlingsdager", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         mulighetForArbeid: {
           perioder: [
             {
-              avventende: null,
+              avventende: undefined,
               behandlingsdager: 4,
-              fom: "2019-01-01",
-              grad: null,
-              reisetilskudd: null,
-              tom: "2019-02-01",
+              fom: new Date("2019-01-01"),
+              grad: undefined,
+              reisetilskudd: undefined,
+              tom: new Date("2019-02-01"),
             },
           ],
         },
@@ -91,16 +129,17 @@ describe("sykmeldingUtils", () => {
     });
 
     it("skal returnere true dersom minst én av sykmeldingperiodene er huket av på reisetilskudd", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         mulighetForArbeid: {
           perioder: [
             {
-              avventende: null,
-              behandlingsdager: null,
-              fom: "2019-01-01",
+              avventende: undefined,
+              behandlingsdager: undefined,
+              fom: new Date("2019-01-01"),
               grad: 40,
               reisetilskudd: true,
-              tom: "2019-02-01",
+              tom: new Date("2019-02-01"),
             },
           ],
         },
@@ -112,16 +151,17 @@ describe("sykmeldingUtils", () => {
     });
 
     it("skal returnere false dersom ingen av sykmeldingperiodene er huket av på reisetilskudd eller behandlingsdager", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         mulighetForArbeid: {
           perioder: [
             {
-              avventende: null,
-              behandlingsdager: null,
-              fom: "2019-01-01",
+              avventende: undefined,
+              behandlingsdager: undefined,
+              fom: new Date("2019-01-01"),
               grad: 100,
-              reisetilskudd: null,
-              tom: "2019-02-01",
+              reisetilskudd: undefined,
+              tom: new Date("2019-02-01"),
             },
           ],
         },
@@ -135,7 +175,8 @@ describe("sykmeldingUtils", () => {
 
   describe("erEkstraDiagnoseInformasjon", () => {
     it("skal returnere true dersom sykmeldingen inneholder ekstra informasjon om diagnose", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         diagnose: {
           fravaersgrunnLovfestet: "Lovfestet grunn!",
           svangerskap: false,
@@ -148,9 +189,10 @@ describe("sykmeldingUtils", () => {
       expect(erEkstraInfo).to.equal(true);
     });
     it("skal returnere false dersom sykmeldingen ikke inneholder ekstra informasjon om diagnose", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         diagnose: {
-          fravaersgrunnLovfestet: null,
+          fravaersgrunnLovfestet: undefined,
           svangerskap: false,
           yrkesskade: false,
         },
@@ -164,7 +206,8 @@ describe("sykmeldingUtils", () => {
 
   describe("erMulighetForArbeidInformasjon", () => {
     it("skal returnere true dersom sykmeldingen inneholder informasjon om mulighet for arbeid", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         mulighetForArbeid: {
           aarsakAktivitetIkkeMulig433: "andre årsaker til sykefravær",
           aarsakAktivitetIkkeMulig434: "andre årsaker til sykefravær",
@@ -172,20 +215,20 @@ describe("sykmeldingUtils", () => {
           aktivitetIkkeMulig434: ["Annet"],
           perioder: [
             {
-              avventende: null,
-              behandlingsdager: null,
-              fom: "2018-12-28",
+              avventende: undefined,
+              behandlingsdager: undefined,
+              fom: new Date("2018-12-28"),
               grad: 100,
-              reisetilskudd: null,
-              tom: "2019-01-08",
+              reisetilskudd: undefined,
+              tom: new Date("2019-01-08"),
             },
             {
-              avventende: null,
-              behandlingsdager: null,
-              fom: "2018-01-09",
+              avventende: undefined,
+              behandlingsdager: undefined,
+              fom: new Date("2018-01-09"),
               grad: 21,
-              reisetilskudd: null,
-              tom: "2019-01-15",
+              reisetilskudd: undefined,
+              tom: new Date("2019-01-15"),
             },
           ],
         },
@@ -196,16 +239,17 @@ describe("sykmeldingUtils", () => {
       expect(erEkstraInfo).to.equal(true);
     });
     it("skal returnere false dersom sykmeldingen ikke inneholder informasjon om mulighet for arbeid", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         mulighetForArbeid: {
           perioder: [
             {
-              avventende: null,
-              behandlingsdager: null,
-              fom: "2018-12-28",
+              avventende: undefined,
+              behandlingsdager: undefined,
+              fom: new Date("2018-12-28"),
               grad: 100,
-              reisetilskudd: null,
-              tom: "2019-01-08",
+              reisetilskudd: undefined,
+              tom: new Date("2019-01-08"),
             },
           ],
         },
@@ -219,7 +263,8 @@ describe("sykmeldingUtils", () => {
 
   describe("erFriskmeldingInformasjon", () => {
     it("skal returnere true dersom sykmeldingen inneholder informasjon om friskmelding", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         friskmelding: {
           antarReturAnnenArbeidsgiver: true,
           antarReturSammeArbeidsgiver: true,
@@ -232,7 +277,8 @@ describe("sykmeldingUtils", () => {
       expect(erEkstraInfo).to.equal(true);
     });
     it("skal returnere false dersom sykmeldingen ikke inneholder informasjon om friskmelding", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         friskmelding: {
           antarReturAnnenArbeidsgiver: false,
           antarReturSammeArbeidsgiver: false,
@@ -248,7 +294,8 @@ describe("sykmeldingUtils", () => {
 
   describe("erArbeidsforEtterPerioden", () => {
     it("skal returnere true dersom sykmeldingen inneholder informasjon om den sykmeldte er arbeidsfør etter perioden", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         friskmelding: {
           arbeidsfoerEtterPerioden: true,
         },
@@ -259,7 +306,8 @@ describe("sykmeldingUtils", () => {
       expect(erEkstraInfo).to.equal(true);
     });
     it("skal returnere false dersom sykmeldingen ikke inneholder informasjon om den sykmeldte er arbeidsfør etter perioden", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         friskmelding: {
           arbeidsfoerEtterPerioden: false,
         },
@@ -273,7 +321,8 @@ describe("sykmeldingUtils", () => {
 
   describe("erHensynPaaArbeidsplassenInformasjon", () => {
     it("skal returnere true dersom sykmeldingen inneholder informasjon om hensyn på arbeidsplassen", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         friskmelding: {
           hensynPaaArbeidsplassen: "Må ta det pent",
         },
@@ -284,9 +333,10 @@ describe("sykmeldingUtils", () => {
       expect(erEkstraInfo).to.equal(true);
     });
     it("skal returnere false dersom sykmeldingen ikke inneholder informasjon om hensyn på arbeidsplassen", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         friskmelding: {
-          hensynPaaArbeidsplassen: null,
+          hensynPaaArbeidsplassen: undefined,
         },
       };
 
@@ -298,7 +348,8 @@ describe("sykmeldingUtils", () => {
 
   describe("erBedringAvArbeidsevnenInformasjon", () => {
     it("skal returnere true dersom sykmeldingen inneholder informasjon om bedring av arbeidsevnen", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         arbeidsevne: {
           tilretteleggingArbeidsplass: "Trenger nye sko",
           tiltakAndre: "Pasienten vil ha nye sko!",
@@ -311,11 +362,12 @@ describe("sykmeldingUtils", () => {
       expect(erEkstraInfo).to.equal(true);
     });
     it("skal returnere false dersom sykmeldingen ikke inneholder informasjon om bedring av arbeidsevnen", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         arbeidsevne: {
-          tilretteleggingArbeidsplass: null,
-          tiltakAndre: null,
-          tiltakNAV: null,
+          tilretteleggingArbeidsplass: undefined,
+          tiltakAndre: undefined,
+          tiltakNAV: undefined,
         },
       };
 
@@ -327,7 +379,8 @@ describe("sykmeldingUtils", () => {
 
   describe("erMeldingTilNavInformasjon", () => {
     it("skal returnere true dersom sykmeldingen inneholder informasjon om melding til nav", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         meldingTilNav: {
           navBoerTaTakISaken: true,
         },
@@ -338,7 +391,8 @@ describe("sykmeldingUtils", () => {
       expect(erEkstraInfo).to.equal(true);
     });
     it("skal returnere false dersom sykmeldingen ikke inneholder informasjon om melding til nav", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         meldingTilNav: {
           navBoerTaTakISaken: false,
         },
@@ -352,7 +406,8 @@ describe("sykmeldingUtils", () => {
 
   describe("erMeldingTilArbeidsgiverInformasjon", () => {
     it("skal returnere true dersom sykmeldingen inneholder informasjon om melding til arbeidsgiver", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         innspillTilArbeidsgiver: "Arbeidsgiver må gjøre noe!",
       };
 
@@ -361,8 +416,9 @@ describe("sykmeldingUtils", () => {
       expect(erEkstraInfo).to.equal(true);
     });
     it("skal returnere false dersom sykmeldingen ikke inneholder informasjon om melding til arbeidsgiver", () => {
-      const sykmelding = {
-        innspillTilArbeidsgiver: null,
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
+        innspillTilArbeidsgiver: undefined,
       };
 
       const erIkkeEkstraInfo = erMeldingTilArbeidsgiverInformasjon(sykmelding);
@@ -370,7 +426,7 @@ describe("sykmeldingUtils", () => {
       expect(erIkkeEkstraInfo).to.equal(false);
     });
     it("skal returnere false dersom sykmeldingen ikke inneholder innspillTilArbeidsgiver-felt, er undefined", () => {
-      const sykmelding = {};
+      const sykmelding = baseSykmelding;
 
       const erIkkeEkstraInfo = erMeldingTilArbeidsgiverInformasjon(sykmelding);
 
@@ -380,7 +436,8 @@ describe("sykmeldingUtils", () => {
 
   describe("arbeidsgivernavnEllerArbeidssituasjon", () => {
     it("skal returnere navnet på arbeidsgiveren dersom det er satt", () => {
-      const sykmelding = {
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
         innsendtArbeidsgivernavn: "Test Arbeidsgiver",
       };
 
@@ -391,8 +448,9 @@ describe("sykmeldingUtils", () => {
       expect(innsendtArbeidsgivernavn).to.equal("Test Arbeidsgiver");
     });
     it("Skal returnere arbeidssituasjon dersom innsendt arbeidsgivernavn ikke er satt", () => {
-      const sykmelding = {
-        innsendtArbeidsgivernavn: null,
+      const sykmelding: SykmeldingOldFormat = {
+        ...baseSykmelding,
+        innsendtArbeidsgivernavn: undefined,
         sporsmal: {
           arbeidssituasjon: "NAERINGSDRIVENDE",
         },
@@ -408,15 +466,18 @@ describe("sykmeldingUtils", () => {
 
   describe("sykmeldingerMedStatusSendt", () => {
     it("skal returnere en liste med bare innsendte sykmeldinger", () => {
-      const sykmeldinger = [
+      const sykmeldinger: SykmeldingOldFormat[] = [
         {
-          status: "AVBRUTT",
+          ...baseSykmelding,
+          status: SykmeldingStatus.AVBRUTT,
         },
         {
-          status: "SENDT",
+          ...baseSykmelding,
+          status: SykmeldingStatus.SENDT,
         },
         {
-          status: "AVBRUTT",
+          ...baseSykmelding,
+          status: SykmeldingStatus.AVBRUTT,
         },
       ];
 
@@ -427,6 +488,14 @@ describe("sykmeldingUtils", () => {
   });
 
   describe("sykmeldingerInnenforOppfolgingstilfelle", () => {
+    beforeEach(() => {
+      today = new Date("2017-05-31");
+      clock = sinon.useFakeTimers(today.getTime());
+    });
+    afterEach(() => {
+      clock.restore();
+    });
+
     it("skal returnere en liste med bare sykmeldinger innenfor oppfølgingstilfellet", () => {
       const oppfolgingstilfelle = {
         arbeidstakerAtTilfelleEnd: true,
@@ -435,25 +504,27 @@ describe("sykmeldingUtils", () => {
         virksomhetsnummerList: ["123", "321"],
       };
 
-      const sykmeldinger = [
+      const sykmeldinger: SykmeldingOldFormat[] = [
         {
+          ...baseSykmelding,
           orgnummer: "123",
           mulighetForArbeid: {
             perioder: [
               {
-                fom: "2018-12-28",
-                tom: "2018-12-31",
+                fom: new Date("2018-12-28"),
+                tom: new Date("2018-12-31"),
               },
             ],
           },
         },
         {
+          ...baseSykmelding,
           orgnummer: "321",
           mulighetForArbeid: {
             perioder: [
               {
-                fom: "2017-01-01",
-                tom: "2017-01-04",
+                fom: new Date("2017-01-01"),
+                tom: new Date("2017-01-04"),
               },
             ],
           },
@@ -472,30 +543,35 @@ describe("sykmeldingUtils", () => {
 
   describe("sykmeldingerSortertNyestTilEldst", () => {
     it("skal returnere en liste med sykmeldinger sortert etter utstedelsesdato", () => {
-      const sykmeldinger = [
+      const sykmeldinger: SykmeldingOldFormat[] = [
         {
+          ...baseSykmelding,
           bekreftelse: {
-            utstedelsesdato: "2019-01-05",
+            utstedelsesdato: new Date("2019-01-05"),
           },
         },
         {
+          ...baseSykmelding,
           bekreftelse: {
-            utstedelsesdato: "2019-01-01",
+            utstedelsesdato: new Date("2019-01-01"),
           },
         },
         {
+          ...baseSykmelding,
           bekreftelse: {
-            utstedelsesdato: "2019-01-02",
+            utstedelsesdato: new Date("2019-01-02"),
           },
         },
         {
+          ...baseSykmelding,
           bekreftelse: {
-            utstedelsesdato: "2019-01-04",
+            utstedelsesdato: new Date("2019-01-04"),
           },
         },
         {
+          ...baseSykmelding,
           bekreftelse: {
-            utstedelsesdato: "2019-01-03",
+            utstedelsesdato: new Date("2019-01-03"),
           },
         },
       ];
@@ -506,54 +582,72 @@ describe("sykmeldingUtils", () => {
 
       expect(sykmeldingerSortertPaaUtstedelsesdato.length).to.equal(5);
       expect(
-        sykmeldingerSortertPaaUtstedelsesdato[0].bekreftelse.utstedelsesdato
-      ).to.equal("2019-01-05");
+        sykmeldingerSortertPaaUtstedelsesdato[0].bekreftelse.utstedelsesdato?.getTime()
+      ).to.equal(new Date("2019-01-05").getTime());
       expect(
-        sykmeldingerSortertPaaUtstedelsesdato[1].bekreftelse.utstedelsesdato
-      ).to.equal("2019-01-04");
+        sykmeldingerSortertPaaUtstedelsesdato[1].bekreftelse.utstedelsesdato?.getTime()
+      ).to.equal(new Date("2019-01-04").getTime());
       expect(
-        sykmeldingerSortertPaaUtstedelsesdato[2].bekreftelse.utstedelsesdato
-      ).to.equal("2019-01-03");
+        sykmeldingerSortertPaaUtstedelsesdato[2].bekreftelse.utstedelsesdato?.getTime()
+      ).to.equal(new Date("2019-01-03").getTime());
       expect(
-        sykmeldingerSortertPaaUtstedelsesdato[3].bekreftelse.utstedelsesdato
-      ).to.equal("2019-01-02");
+        sykmeldingerSortertPaaUtstedelsesdato[3].bekreftelse.utstedelsesdato?.getTime()
+      ).to.equal(new Date("2019-01-02").getTime());
       expect(
-        sykmeldingerSortertPaaUtstedelsesdato[4].bekreftelse.utstedelsesdato
-      ).to.equal("2019-01-01");
+        sykmeldingerSortertPaaUtstedelsesdato[4].bekreftelse.utstedelsesdato?.getTime()
+      ).to.equal(new Date("2019-01-01").getTime());
     });
   });
 
   describe("sykmeldingerGruppertEtterVirksomhet", () => {
     it("skal returnere en liste med én liste av sykmeldinger per virksomhet", () => {
-      const sykmeldinger = [
+      const sykmeldinger: SykmeldingOldFormat[] = [
         {
+          ...baseSykmelding,
           mottakendeArbeidsgiver: {
+            navn: "Arbeidsgiver",
             virksomhetsnummer: "1",
+            juridiskOrgnummer: "1",
           },
         },
         {
+          ...baseSykmelding,
           mottakendeArbeidsgiver: {
+            navn: "Arbeidsgiver",
             virksomhetsnummer: "2",
+            juridiskOrgnummer: "2",
           },
         },
         {
+          ...baseSykmelding,
           mottakendeArbeidsgiver: {
+            navn: "Arbeidsgiver",
             virksomhetsnummer: "2",
+            juridiskOrgnummer: "2",
           },
         },
         {
+          ...baseSykmelding,
           mottakendeArbeidsgiver: {
+            navn: "Arbeidsgiver",
             virksomhetsnummer: "3",
+            juridiskOrgnummer: "3",
           },
         },
         {
+          ...baseSykmelding,
           mottakendeArbeidsgiver: {
+            navn: "Arbeidsgiver",
             virksomhetsnummer: "1",
+            juridiskOrgnummer: "1",
           },
         },
         {
+          ...baseSykmelding,
           mottakendeArbeidsgiver: {
+            navn: "Arbeidsgiver",
             virksomhetsnummer: "1",
+            juridiskOrgnummer: "1",
           },
         },
       ];
@@ -579,21 +673,26 @@ describe("sykmeldingUtils", () => {
 
   describe("sykmeldingperioderSortertEldstTilNyest", () => {
     it("skal returnere en liste med perioder sortert etter dato", () => {
-      const sykmeldingperioder = [
+      const sykmeldingperioder: SykmeldingPeriodeDTO[] = [
         {
-          fom: "2019-01-05",
+          fom: new Date("2019-01-05"),
+          tom: new Date(),
         },
         {
-          fom: "2019-01-04",
+          fom: new Date("2019-01-04"),
+          tom: new Date(),
         },
         {
-          fom: "2019-01-01",
+          fom: new Date("2019-01-01"),
+          tom: new Date(),
         },
         {
-          fom: "2019-01-02",
+          fom: new Date("2019-01-02"),
+          tom: new Date(),
         },
         {
-          fom: "2019-01-03",
+          fom: new Date("2019-01-03"),
+          tom: new Date(),
         },
       ];
 
@@ -602,30 +701,50 @@ describe("sykmeldingUtils", () => {
       );
 
       expect(sykmeldingperioderSortertEtterDato.length).to.equal(5);
-      expect(sykmeldingperioderSortertEtterDato[0].fom).to.equal("2019-01-01");
-      expect(sykmeldingperioderSortertEtterDato[1].fom).to.equal("2019-01-02");
-      expect(sykmeldingperioderSortertEtterDato[2].fom).to.equal("2019-01-03");
-      expect(sykmeldingperioderSortertEtterDato[3].fom).to.equal("2019-01-04");
-      expect(sykmeldingperioderSortertEtterDato[4].fom).to.equal("2019-01-05");
+      expect(sykmeldingperioderSortertEtterDato[0].fom.getTime()).to.equal(
+        new Date("2019-01-01").getTime()
+      );
+      expect(sykmeldingperioderSortertEtterDato[1].fom.getTime()).to.equal(
+        new Date("2019-01-02").getTime()
+      );
+      expect(sykmeldingperioderSortertEtterDato[2].fom.getTime()).to.equal(
+        new Date("2019-01-03").getTime()
+      );
+      expect(sykmeldingperioderSortertEtterDato[3].fom.getTime()).to.equal(
+        new Date("2019-01-04").getTime()
+      );
+      expect(sykmeldingperioderSortertEtterDato[4].fom.getTime()).to.equal(
+        new Date("2019-01-05").getTime()
+      );
     });
   });
 
   describe("stringMedAlleGraderingerFraSykmeldingPerioder", () => {
     it("skal returnere en string med alle graderinger fra en sykmelding som ikke er 0/null", () => {
-      const sykmeldingPerioderSortertEtterDato = [
+      const sykmeldingPerioderSortertEtterDato: SykmeldingPeriodeDTO[] = [
         {
+          fom: new Date(Date.now() - 1000),
+          tom: new Date(Date.now() + 1000),
           grad: 20,
         },
         {
+          fom: new Date(Date.now() - 1000),
+          tom: new Date(Date.now() + 1000),
           grad: 100,
         },
         {
+          fom: new Date(Date.now() - 1000),
+          tom: new Date(Date.now() + 1000),
           grad: 0,
         },
         {
-          grad: null,
+          fom: new Date(Date.now() - 1000),
+          tom: new Date(Date.now() + 1000),
+          grad: undefined,
         },
         {
+          fom: new Date(Date.now() - 1000),
+          tom: new Date(Date.now() + 1000),
           grad: 50,
         },
       ];
@@ -638,11 +757,15 @@ describe("sykmeldingUtils", () => {
     });
 
     it("skal returnere en tom string hvis alle perioder har 0/null som grad", () => {
-      const sykmeldingPerioderSortertEtterDato = [
+      const sykmeldingPerioderSortertEtterDato: SykmeldingPeriodeDTO[] = [
         {
-          grad: null,
+          fom: new Date(Date.now() - 1000),
+          tom: new Date(Date.now() + 1000),
+          grad: undefined,
         },
         {
+          fom: new Date(Date.now() - 1000),
+          tom: new Date(Date.now() + 1000),
           grad: 0,
         },
       ];
@@ -657,13 +780,14 @@ describe("sykmeldingUtils", () => {
 
   describe("sykmeldingerHasCoronaDiagnose", () => {
     it("skal returnere true hvis det finnes minst én aktiv sykmelding med harRedusertArbeidsgiverperiode=true", () => {
-      const sykmeldinger = [
+      const sykmeldinger: SykmeldingOldFormat[] = [
         {
-          status: "SENDT",
+          ...baseSykmelding,
+          status: SykmeldingStatus.SENDT,
           mulighetForArbeid: {
             perioder: [
               {
-                fom: new Date(Date.now() - 1000),
+                fom: new Date(Date.now() - 86400000), // yesterday: 24 * 60 * 60 * 1000
                 tom: new Date(Date.now() + 1000),
               },
             ],
@@ -671,6 +795,7 @@ describe("sykmeldingUtils", () => {
           diagnose: {
             hoveddiagnose: {
               diagnosekode: "R991",
+              diagnosesystem: "",
             },
             bidiagnoser: [],
           },
@@ -684,9 +809,10 @@ describe("sykmeldingUtils", () => {
     });
 
     it("skal returnere false hvis sykmelding med korona-diagnose ikke er innsendt eller bekreftet", () => {
-      const sykmeldinger = [
+      const sykmeldinger: SykmeldingOldFormat[] = [
         {
-          status: "NY",
+          ...baseSykmelding,
+          status: SykmeldingStatus.NY,
           mulighetForArbeid: {
             perioder: [
               {
@@ -698,6 +824,7 @@ describe("sykmeldingUtils", () => {
           diagnose: {
             hoveddiagnose: {
               diagnosekode: "R991",
+              diagnosesystem: "",
             },
             bidiagnoser: [],
           },
@@ -711,9 +838,10 @@ describe("sykmeldingUtils", () => {
     });
 
     it("skal returnere false hvis aktiv sykmelding harRedusertArbeidsgiverperiode=false", () => {
-      const sykmeldinger = [
+      const sykmeldinger: SykmeldingOldFormat[] = [
         {
-          status: "SENDT",
+          ...baseSykmelding,
+          status: SykmeldingStatus.SENDT,
           mulighetForArbeid: {
             perioder: [
               {
@@ -725,6 +853,7 @@ describe("sykmeldingUtils", () => {
           diagnose: {
             hoveddiagnose: {
               diagnosekode: "L87",
+              diagnosesystem: "",
             },
             bidiagnoser: [],
           },
@@ -738,9 +867,10 @@ describe("sykmeldingUtils", () => {
     });
 
     it("skal returnere false hvis sykmeldingen ikke er aktiv i dag", () => {
-      const sykmeldinger = [
+      const sykmeldinger: SykmeldingOldFormat[] = [
         {
-          status: "SENDT",
+          ...baseSykmelding,
+          status: SykmeldingStatus.SENDT,
           mulighetForArbeid: {
             perioder: [
               {
@@ -752,6 +882,7 @@ describe("sykmeldingUtils", () => {
           diagnose: {
             hoveddiagnose: {
               diagnosekode: "R991",
+              diagnosesystem: "",
             },
             bidiagnoser: [],
           },
@@ -769,15 +900,18 @@ describe("sykmeldingUtils", () => {
     it("skal returnere sykmeldingen hvis det kun er én, og den hører til riktig virksomhet", () => {
       const wantedVirksomhetsnummer = "11223344";
       const wantedSykmeldingId = "1";
-      const sykmeldinger = [
+      const sykmeldinger: SykmeldingOldFormat[] = [
         {
+          ...baseSykmelding,
           id: wantedSykmeldingId,
-          status: "SENDT",
+          status: SykmeldingStatus.SENDT,
           bekreftelse: {
             utstedelsesdato: new Date(Date.now() - 1000),
           },
           mottakendeArbeidsgiver: {
             virksomhetsnummer: wantedVirksomhetsnummer,
+            navn: "Arbeidsgiver",
+            juridiskOrgnummer: "1",
           },
         },
       ];
@@ -805,15 +939,18 @@ describe("sykmeldingUtils", () => {
     it("skal returnere undefined hvis det ikke finnes en sykmelding fra ønsket virksomhet", () => {
       const wantedVirksomhetsnummer = "11223344";
       const wrongVirksomhetsnummer = "99988877";
-      const sykmeldinger = [
+      const sykmeldinger: SykmeldingOldFormat[] = [
         {
+          ...baseSykmelding,
           id: "1",
-          status: "SENDT",
+          status: SykmeldingStatus.SENDT,
           bekreftelse: {
             utstedelsesdato: new Date(Date.now() - 1000),
           },
           mottakendeArbeidsgiver: {
             virksomhetsnummer: wrongVirksomhetsnummer,
+            juridiskOrgnummer: wrongVirksomhetsnummer,
+            navn: "Arbeidsgiver",
           },
         },
       ];
@@ -831,25 +968,31 @@ describe("sykmeldingUtils", () => {
       const wrongVirksomhetsnummer = "99988877";
       const wantedSykmeldingId = "1";
 
-      const sykmeldinger = [
+      const sykmeldinger: SykmeldingOldFormat[] = [
         {
+          ...baseSykmelding,
           id: wantedSykmeldingId,
-          status: "SENDT",
+          status: SykmeldingStatus.SENDT,
           bekreftelse: {
             utstedelsesdato: new Date(Date.now() - 1000),
           },
           mottakendeArbeidsgiver: {
             virksomhetsnummer: wantedVirksomhetsnummer,
+            navn: "Arbeidsgiver",
+            juridiskOrgnummer: wantedVirksomhetsnummer,
           },
         },
         {
+          ...baseSykmelding,
           id: "2",
-          status: "SENDT",
+          status: SykmeldingStatus.SENDT,
           bekreftelse: {
             utstedelsesdato: new Date(Date.now() - 1000),
           },
           mottakendeArbeidsgiver: {
             virksomhetsnummer: wrongVirksomhetsnummer,
+            juridiskOrgnummer: wrongVirksomhetsnummer,
+            navn: "Arbeidsgiver",
           },
         },
       ];
@@ -868,23 +1011,29 @@ describe("sykmeldingUtils", () => {
       const latestDate = new Date(Date.now() + 1000);
       const earliestDate = new Date(Date.now() - 1000);
 
-      const sykmeldinger = [
+      const sykmeldinger: SykmeldingOldFormat[] = [
         {
+          ...baseSykmelding,
           id: "2",
           bekreftelse: {
             utstedelsesdato: earliestDate,
           },
           mottakendeArbeidsgiver: {
             virksomhetsnummer: wantedVirksomhetsnummer,
+            juridiskOrgnummer: wantedVirksomhetsnummer,
+            navn: "Arbeidsgiver",
           },
         },
         {
+          ...baseSykmelding,
           id: wantedSykmeldingId,
           bekreftelse: {
             utstedelsesdato: latestDate,
           },
           mottakendeArbeidsgiver: {
             virksomhetsnummer: wantedVirksomhetsnummer,
+            juridiskOrgnummer: wantedVirksomhetsnummer,
+            navn: "Arbeidsgiver",
           },
         },
       ];
