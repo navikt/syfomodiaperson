@@ -18,8 +18,6 @@ context("Innkalling dialogmøte", () => {
   it("Går til nytt dialogmøte, fyller inn felter (ingen behandler), sjekker forhåndsvisning og sender inn", () => {
     cy.dataCy(selectors.nyttDM2Mote).click();
 
-    cy.get("button").contains("Ja").click();
-
     cy.url().should("include", "/sykefravaer/dialogmote");
 
     cy.get("[id=arbeidsgiver]").select("BRANN OG BIL AS");
@@ -56,8 +54,6 @@ context("Innkalling dialogmøte", () => {
 
   it("Går til nytt dialogmøte, fyller inn felter og velger behandler, sjekker forhåndsvisning og sender inn", () => {
     cy.dataCy(selectors.nyttDM2Mote).click();
-
-    cy.get("button").contains("Ja").click();
 
     cy.url().should("include", "/sykefravaer/dialogmote");
 

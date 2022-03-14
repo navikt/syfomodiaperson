@@ -14,22 +14,10 @@ describe(
       cy.OAuth2Login();
     });
 
-    it("Oppretter nytt møte uten at man ønsker å prøve ny løsning", () => {
+    it("Sender til ny løsning for Dialogmøte", () => {
       cy.stubMoter(MoteState.INGEN_MOTER);
 
       cy.dataCy(selectors.nyttDM2Mote).click();
-
-      cy.get("button").contains("Nei").click();
-
-      cy.url().should("include", "/sykefravaer/mote");
-    });
-
-    it("Ønsker å prøve ny løsning for Dialogmøte", () => {
-      cy.stubMoter(MoteState.INGEN_MOTER);
-
-      cy.dataCy(selectors.nyttDM2Mote).click();
-
-      cy.get("button").contains("Ja").click();
 
       cy.url().should("include", "/sykefravaer/dialogmote");
     });

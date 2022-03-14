@@ -70,19 +70,12 @@ describe("InnkallingDialogmotePanel", () => {
         screen.getByText(brukerKanIkkeVarslesPapirpostTexts.papirpostDialogmote)
       ).to.exist;
     });
-    it("Nytt dialogmøte-knapp viser modaler når bruker ikke kan varsles", () => {
+    it("viser knapp til Dialogmoteinkalling når bruker ikke kan varsles", () => {
       renderInnkallingDialogmotePanel(brukerKanIkkeVarsles);
 
       const button = screen.getByRole("button", { name: "Nytt dialogmøte" });
       expect(button).to.exist;
-      expect(screen.queryByRole("link", { name: "Nytt dialogmøte" })).to.not
-        .exist;
       userEvent.click(button);
-      expect(
-        screen.getByRole("dialog", {
-          name: "Ny løsning for innkalling til Dialogmøte",
-        })
-      ).to.exist;
     });
 
     it("viser ingen advarsel når bruker kan varsles", () => {
@@ -91,19 +84,12 @@ describe("InnkallingDialogmotePanel", () => {
       expect(screen.queryByRole("img", { name: "advarsel-ikon" })).to.not.exist;
       expect(screen.queryByRole(brukerKanIkkeVarslesTekst)).to.not.exist;
     });
-    it("Nytt dialogmøte-knapp viser modal når bruker kan varsles", () => {
+    it("viser knapp til Dialogmoteinkalling  når bruker kan varsles", () => {
       renderInnkallingDialogmotePanel(brukerKanVarsles);
 
       const button = screen.getByRole("button", { name: "Nytt dialogmøte" });
       expect(button).to.exist;
-      expect(screen.queryByRole("link", { name: "Nytt dialogmøte" })).to.not
-        .exist;
       userEvent.click(button);
-      expect(
-        screen.getByRole("dialog", {
-          name: "Ny løsning for innkalling til Dialogmøte",
-        })
-      ).to.exist;
     });
   });
 });

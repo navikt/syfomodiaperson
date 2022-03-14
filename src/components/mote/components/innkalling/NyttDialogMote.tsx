@@ -1,7 +1,8 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
+import { Link } from "react-router-dom";
 import { FlexRow } from "../../../Layout";
 import { TrackedKnapp } from "../../../buttons/TrackedKnapp";
-import { NyLosningModal } from "@/components/mote/components/innkalling/NyLosningModal";
+import { dialogmoteRoutePath } from "@/routers/AppRouter";
 
 const texts = {
   nyttMote: "Nytt dialogmøte",
@@ -9,26 +10,18 @@ const texts = {
 };
 
 export const NyttDialogMote = (): ReactElement => {
-  const [nyLosningModalIsOpen, setNyLosningModalIsOpen] = useState(false);
-
   return (
     <>
       <FlexRow>
-        <TrackedKnapp
-          data-cy="nyttDM2Mote"
-          context={texts.nyttMoteTrackingContext}
-          onClick={() => {
-            setNyLosningModalIsOpen(true);
-          }}
-        >
-          {texts.nyttMote}
-        </TrackedKnapp>
+        <Link to={dialogmoteRoutePath}>
+          <TrackedKnapp
+            data-cy="nyttDM2Mote"
+            context={texts.nyttMoteTrackingContext}
+          >
+            {texts.nyttMote}
+          </TrackedKnapp>
+        </Link>
       </FlexRow>
-
-      <NyLosningModal
-        isOpen={nyLosningModalIsOpen}
-        setIsOpen={setNyLosningModalIsOpen}
-      />
     </>
   );
 };
