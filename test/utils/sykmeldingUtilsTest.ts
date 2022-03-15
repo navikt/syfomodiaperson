@@ -14,7 +14,6 @@ import {
   latestSykmeldingForVirksomhet,
   stringMedAlleGraderingerFraSykmeldingPerioder,
   sykmeldingerGruppertEtterVirksomhet,
-  sykmeldingerHasCoronaDiagnose,
   sykmeldingerInnenforOppfolgingstilfelle,
   sykmeldingerMedStatusSendt,
   sykmeldingerSortertNyestTilEldst,
@@ -775,124 +774,6 @@ describe("sykmeldingUtils", () => {
       );
 
       expect(stringMedAllegraderinger).to.equal("");
-    });
-  });
-
-  describe("sykmeldingerHasCoronaDiagnose", () => {
-    it("skal returnere true hvis det finnes minst én aktiv sykmelding med harRedusertArbeidsgiverperiode=true", () => {
-      const sykmeldinger: SykmeldingOldFormat[] = [
-        {
-          ...baseSykmelding,
-          status: SykmeldingStatus.SENDT,
-          mulighetForArbeid: {
-            perioder: [
-              {
-                fom: new Date(Date.now() - 86400000), // yesterday: 24 * 60 * 60 * 1000
-                tom: new Date(Date.now() + 1000),
-              },
-            ],
-          },
-          diagnose: {
-            hoveddiagnose: {
-              diagnosekode: "R991",
-              diagnosesystem: "",
-            },
-            bidiagnoser: [],
-          },
-          harRedusertArbeidsgiverperiode: true,
-        },
-      ];
-
-      const hasCorona = sykmeldingerHasCoronaDiagnose(sykmeldinger);
-
-      expect(hasCorona).to.equal(true);
-    });
-
-    it("skal returnere false hvis sykmelding med korona-diagnose ikke er innsendt eller bekreftet", () => {
-      const sykmeldinger: SykmeldingOldFormat[] = [
-        {
-          ...baseSykmelding,
-          status: SykmeldingStatus.NY,
-          mulighetForArbeid: {
-            perioder: [
-              {
-                fom: new Date(Date.now() - 1000),
-                tom: new Date(Date.now() + 1000),
-              },
-            ],
-          },
-          diagnose: {
-            hoveddiagnose: {
-              diagnosekode: "R991",
-              diagnosesystem: "",
-            },
-            bidiagnoser: [],
-          },
-          harRedusertArbeidsgiverperiode: true,
-        },
-      ];
-
-      const hasCorona = sykmeldingerHasCoronaDiagnose(sykmeldinger);
-
-      expect(hasCorona).to.equal(false);
-    });
-
-    it("skal returnere false hvis aktiv sykmelding harRedusertArbeidsgiverperiode=false", () => {
-      const sykmeldinger: SykmeldingOldFormat[] = [
-        {
-          ...baseSykmelding,
-          status: SykmeldingStatus.SENDT,
-          mulighetForArbeid: {
-            perioder: [
-              {
-                fom: new Date(Date.now() - 1000),
-                tom: new Date(Date.now() + 1000),
-              },
-            ],
-          },
-          diagnose: {
-            hoveddiagnose: {
-              diagnosekode: "L87",
-              diagnosesystem: "",
-            },
-            bidiagnoser: [],
-          },
-          harRedusertArbeidsgiverperiode: false,
-        },
-      ];
-
-      const hasCorona = sykmeldingerHasCoronaDiagnose(sykmeldinger);
-
-      expect(hasCorona).to.equal(false);
-    });
-
-    it("skal returnere false hvis sykmeldingen ikke er aktiv i dag", () => {
-      const sykmeldinger: SykmeldingOldFormat[] = [
-        {
-          ...baseSykmelding,
-          status: SykmeldingStatus.SENDT,
-          mulighetForArbeid: {
-            perioder: [
-              {
-                fom: new Date(Date.now() + 1000),
-                tom: new Date(Date.now() + 2000),
-              },
-            ],
-          },
-          diagnose: {
-            hoveddiagnose: {
-              diagnosekode: "R991",
-              diagnosesystem: "",
-            },
-            bidiagnoser: [],
-          },
-          harRedusertArbeidsgiverperiode: true,
-        },
-      ];
-
-      const hasCorona = sykmeldingerHasCoronaDiagnose(sykmeldinger);
-
-      expect(hasCorona).to.equal(false);
     });
   });
 

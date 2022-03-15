@@ -289,40 +289,12 @@ export const stringMedAlleGraderingerFraSykmeldingPerioder = (
   return stringMedAlleGraderinger ? `${stringMedAlleGraderinger}%` : "";
 };
 
-const isSykmeldingSendtOrBekreftet = (
-  sykmelding: SykmeldingOldFormat
-): boolean => {
-  return (
-    sykmelding.status === SykmeldingStatus.SENDT ||
-    sykmelding.status === SykmeldingStatus.BEKREFTET
-  );
-};
-
 const isSykmeldingActiveToday = (sykmelding: SykmeldingOldFormat): boolean => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   return (
     tidligsteFom(sykmelding.mulighetForArbeid.perioder) <= today &&
     today <= senesteTom(sykmelding.mulighetForArbeid.perioder)
-  );
-};
-
-const activeSykmeldinger = (
-  sykmeldinger: SykmeldingOldFormat[]
-): SykmeldingOldFormat[] => {
-  return sykmeldinger.filter(
-    (sykmelding) =>
-      isSykmeldingSendtOrBekreftet(sykmelding) &&
-      isSykmeldingActiveToday(sykmelding)
-  );
-};
-
-export const sykmeldingerHasCoronaDiagnose = (
-  sykmeldinger: SykmeldingOldFormat[]
-): boolean => {
-  const sykmeldingerActiveNow = activeSykmeldinger(sykmeldinger);
-  return sykmeldingerActiveNow.some(
-    (sykmelding) => sykmelding.harRedusertArbeidsgiverperiode
   );
 };
 

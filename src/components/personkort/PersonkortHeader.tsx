@@ -8,7 +8,6 @@ import {
   hentBrukersKjoennFraFnr,
 } from "@/utils/fnrUtils";
 import { KJOENN } from "@/konstanter";
-import { sykmeldingerHasCoronaDiagnose } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import CopyButton from "../kopierknapp/CopyButton";
 import ErrorBoundary from "../ErrorBoundary";
@@ -17,7 +16,6 @@ import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQ
 import { ApiErrorException } from "@/api/errors";
 import { getKvinneImage, getMannImage } from "@/utils/festiveUtils";
 import { useStartOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 
 const texts = {
   copied: "Kopiert!",
@@ -65,13 +63,8 @@ const PersonkortHeader = (personkortHeaderProps: PersonkortHeaderProps) => {
   const { data: isEgenAnsatt } = useEgenansattQuery();
   const { navbruker } = personkortHeaderProps;
   const { error, data: diskresjonskode } = useDiskresjonskodeQuery();
-  const { sykmeldinger } = useSykmeldingerQuery();
-  const hasCoronaDiagnose = sykmeldingerHasCoronaDiagnose(sykmeldinger);
   const visEtiketter =
-    diskresjonskode === "6" ||
-    diskresjonskode === "7" ||
-    isEgenAnsatt ||
-    hasCoronaDiagnose;
+    diskresjonskode === "6" || diskresjonskode === "7" || isEgenAnsatt;
 
   const startDate = useStartOfLatestOppfolgingstilfelle();
 
@@ -115,9 +108,6 @@ const PersonkortHeader = (personkortHeaderProps: PersonkortHeaderProps) => {
               <EtikettBase type="fokus">Kode 7</EtikettBase>
             )}
             {isEgenAnsatt && <EtikettBase type="fokus">Egenansatt</EtikettBase>}
-            {hasCoronaDiagnose && (
-              <EtikettBase type="fokus">Koronasykmeldt</EtikettBase>
-            )}
           </div>
         </ErrorBoundary>
       )}
