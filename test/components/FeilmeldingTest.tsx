@@ -15,7 +15,7 @@ describe("Feilmelding", () => {
   });
 
   it("Skal vise innsendt tittel/melding", () => {
-    const m = { __html: "<p>melding</p>" };
+    const m = "melding";
     render(<Feilmelding tittel="tittel" melding={m} />);
 
     expect(screen.getByRole("heading", { name: "tittel" })).to.exist;

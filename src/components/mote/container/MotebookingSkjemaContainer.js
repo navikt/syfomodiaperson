@@ -11,18 +11,18 @@ import { useValgtEnhet } from "@/context/ValgtEnhetContext";
 const texts = {
   skjermetBrukerError: {
     title: "Ikke mulig å sende møteforespørsel",
-    message: "<p>Brukeren er registrert med skjermingskode 6 eller 7.</p>",
+    message: "Brukeren er registrert med skjermingskode 6 eller 7.",
   },
   noValgtEnhetError: {
     title: "Du må velge Enhet",
     message:
-      "<p>For at du skal kunne opprette et møte må du velge hvilken enhet dette møtet skal knyttes til. Det styres av hvilken enhet du har valgt i toppmenyen. " +
-      "Hvis du får denne og det ser ut som du allerede har valgt riktig enhet, prøv å velg en annen enhet og så tilbake igjen.</p>",
+      "For at du skal kunne opprette et møte må du velge hvilken enhet dette møtet skal knyttes til. Det styres av hvilken enhet du har valgt i toppmenyen. " +
+      "Hvis du får denne og det ser ut som du allerede har valgt riktig enhet, prøv å velg en annen enhet og så tilbake igjen.",
   },
   noLederError: {
     title: "Lederen mangler!",
     message:
-      "<p>Møteplanleggeren kan bare brukes hvis nærmeste leder er registrert. Arbeidsgiveren må gjøre dette i Altinn.</p>",
+      "Møteplanleggeren kan bare brukes hvis nærmeste leder er registrert. Arbeidsgiveren må gjøre dette i Altinn.",
   },
 };
 
@@ -51,7 +51,7 @@ const MotebookingSkjemaContainer = ({
     return (
       <Feilmelding
         tittel={texts.skjermetBrukerError.title}
-        melding={{ __html: texts.skjermetBrukerError.message }}
+        melding={texts.skjermetBrukerError.message}
       />
     );
   } else if (hentingFeilet || henterLedereFeilet) {
@@ -60,14 +60,14 @@ const MotebookingSkjemaContainer = ({
     return (
       <Feilmelding
         tittel={texts.noValgtEnhetError.title}
-        melding={{ __html: texts.noValgtEnhetError.message }}
+        melding={texts.noValgtEnhetError.message}
       />
     );
   } else if (ledere.length === 0) {
     return (
       <Feilmelding
         tittel={texts.noLederError.title}
-        melding={{ __html: texts.noLederError.message }}
+        melding={texts.noLederError.message}
       />
     );
   }

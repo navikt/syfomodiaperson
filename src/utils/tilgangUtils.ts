@@ -1,18 +1,16 @@
 const texts = {
   geografisk:
-    "<p>Du har ikke tilgang til å se denne personen fordi den har geografisk tilhørighet som du ikke har tilgang til.</p>",
+    "Du har ikke tilgang til å se denne personen fordi den har geografisk tilhørighet som du ikke har tilgang til",
   syfo:
-    "<p>Alle veiledere og saksbehandlere som har behov for å se opplysninger om sykefravær og sykefraværsoppfølging bør ha tilgang. Din lokale identansvarlige kan tildele tilgangen som heter «sykefraværsoppfølging».</p>",
-  kode6: "<p>Brukeren er registrert med skjermingskode 6.</p>",
-  kode7: "<p>Brukeren er registrert med skjermingskode 7.</p>",
+    "Alle veiledere og saksbehandlere som har behov for å se opplysninger om sykefravær og sykefraværsoppfølging bør ha tilgang. Din lokale identansvarlige kan tildele tilgangen som heter «sykefraværsoppfølging»",
+  kode6: "Brukeren er registrert med skjermingskode 6.",
+  kode7: "Brukeren er registrert med skjermingskode 7.",
   egenAnsatt:
-    "<p>Du har ikke tilgang til å se personer som er registrert som egenansatt.</p>",
+    "Du har ikke tilgang til å se personer som er registrert som egenansatt.",
   genericError: "Det skjedde en feil",
 };
 
-export const hentBegrunnelseTekst = (
-  begrunnelse: string | null
-): { __html: string } => {
+export const hentBegrunnelseTekst = (begrunnelse: string | null): string => {
   let begrunnelseTekst = texts.genericError;
   if (begrunnelse === "GEOGRAFISK") {
     begrunnelseTekst = texts.geografisk;
@@ -26,5 +24,5 @@ export const hentBegrunnelseTekst = (
     begrunnelseTekst = texts.egenAnsatt;
   }
 
-  return { __html: begrunnelseTekst };
+  return begrunnelseTekst;
 };
