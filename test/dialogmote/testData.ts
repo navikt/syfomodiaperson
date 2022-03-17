@@ -85,6 +85,7 @@ export const dialogmote: DialogmoteDTO = {
   uuid: "123abc",
   tid: "2021-05-10T09:00:00.000",
   sted: "Videomøte",
+  referatList: [],
 };
 export const dialogmoteMedBehandler: DialogmoteDTO = {
   ...dialogmote,
@@ -248,10 +249,10 @@ const lagretReferat = {
 
 export const dialogmoteMedReferat: DialogmoteDTO = {
   ...dialogmote,
-  referat: lagretReferat,
+  referatList: [lagretReferat],
 };
 
 export const dialogmoteMedReferatBehandlerIkkeDeltatt: DialogmoteDTO = {
   ...dialogmoteMedBehandlerIkkeDeltatt,
-  referat: lagretReferat,
+  referatList: [lagretReferat],
 };

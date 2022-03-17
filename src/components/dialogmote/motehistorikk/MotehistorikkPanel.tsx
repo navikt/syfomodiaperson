@@ -12,6 +12,7 @@ import styled from "styled-components";
 import { Forhandsvisning } from "../Forhandsvisning";
 import { Normaltekst } from "nav-frontend-typografi";
 import { TrackedFlatknapp } from "../../buttons/TrackedFlatknapp";
+import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
 
 const texts = {
   header: "Møtehistorikk",
@@ -42,12 +43,13 @@ const MoteListElement = ({ children }: MoteListElementProps): ReactElement => {
     ? texts.avlysningsBrev
     : texts.referat;
   const listElementLabel = isMoteAvlyst ? texts.avlystMote : texts.avholdtMote;
+  const { ferdigstiltReferat } = useDialogmoteReferat(children);
 
   const documentComponents = isMoteAvlyst
     ? children.arbeidstaker.varselList.find(
         (varsel) => varsel.varselType === MotedeltakerVarselType.AVLYST
       )?.document
-    : children.referat?.document;
+    : ferdigstiltReferat?.document;
 
   return (
     <li>

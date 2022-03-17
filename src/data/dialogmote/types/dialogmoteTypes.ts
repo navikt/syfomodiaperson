@@ -169,5 +169,5 @@ export interface DialogmoteDTO {
   readonly sted: string;
   readonly tid: string;
   readonly videoLink?: string;
-  readonly referat?: ReferatDTO;
+  readonly referatList: ReferatDTO[];
 }

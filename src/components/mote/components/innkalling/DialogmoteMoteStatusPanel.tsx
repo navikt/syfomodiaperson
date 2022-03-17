@@ -14,6 +14,7 @@ import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { Normaltekst } from "nav-frontend-typografi";
 import { DeltakereSvarInfo } from "@/components/dialogmote/DeltakereSvarInfo";
 import dayjs from "dayjs";
+import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
 
 const texts = {
   innkallingSendtTrackingContext: "Møtelandingsside: Sendt innkalling",
@@ -58,10 +59,10 @@ interface Props {
 }
 
 export const DialogmoteMoteStatusPanel = ({ dialogmote }: Props) => {
-  const referatKnappText =
-    dialogmote.referat?.ferdigstilt === false
-      ? texts.fortsettReferat
-      : texts.skrivReferat;
+  const { mellomlagretReferat } = useDialogmoteReferat(dialogmote);
+  const referatKnappText = mellomlagretReferat
+    ? texts.fortsettReferat
+    : texts.skrivReferat;
 
   return (
     <DialogmotePanel

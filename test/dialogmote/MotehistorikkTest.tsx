@@ -56,6 +56,7 @@ const dialogmoter: DialogmoteDTO[] = [
     },
     sted: "Sted",
     tid: "2021-01-15T11:52:13.539843",
+    referatList: [],
   },
   {
     uuid: "10",
@@ -97,6 +98,7 @@ const dialogmoter: DialogmoteDTO[] = [
     },
     sted: "Sted",
     tid: "2020-03-22T11:52:13.539843",
+    referatList: [],
   },
 ];
 

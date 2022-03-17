@@ -107,12 +107,13 @@ const createDialogmote = (
       "This is a very lang text that has a lot of characters and describes where the meeting will take place.",
     tid: moteTid,
     videoLink: "https://video.nav.no/xyz",
+    referatList: [],
   };
 
   if (moteStatus === DialogmoteStatus.FERDIGSTILT) {
     return {
       ...dialogMote,
-      referat: createReferat(true),
+      referatList: [createReferat(true)],
     };
   }
 

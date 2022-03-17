@@ -3,16 +3,17 @@ import { ReferatSkjemaValues } from "@/components/dialogmote/referat/Referat";
 import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { useMemo } from "react";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
 
 export const useInitialValuesReferat = (
   dialogmote: DialogmoteDTO
 ): Partial<ReferatSkjemaValues> => {
   const { getCurrentNarmesteLeder } = useLedereQuery();
   const {
-    referat,
     arbeidsgiver: { virksomhetsnummer },
     behandler,
   } = dialogmote;
+  const { mellomlagretReferat } = useDialogmoteReferat(dialogmote);
   const currentNarmesteLederNavn = getCurrentNarmesteLeder(virksomhetsnummer)
     ?.narmesteLederNavn;
 
@@ -23,29 +24,33 @@ export const useInitialValuesReferat = (
           behandlerMottarReferat: behandler.mottarReferat,
         }
       : {};
-    if (!referat) {
+    if (!mellomlagretReferat) {
       return {
         naermesteLeder: currentNarmesteLederNavn,
         ...behandlerInitialValues,
       };
     } else {
       return {
-        naermesteLeder: referat.narmesteLederNavn,
-        konklusjon: referat.konklusjon,
-        situasjon: referat.situasjon,
-        arbeidstakersOppgave: referat.arbeidstakerOppgave,
-        arbeidsgiversOppgave: referat.arbeidsgiverOppgave,
-        veiledersOppgave: referat.veilederOppgave,
-        behandlersOppgave: referat.behandlerOppgave,
-        andreDeltakere: referat.andreDeltakere.map(({ navn, funksjon }) => ({
-          navn,
-          funksjon,
-        })),
+        naermesteLeder: mellomlagretReferat.narmesteLederNavn,
+        konklusjon: mellomlagretReferat.konklusjon,
+        situasjon: mellomlagretReferat.situasjon,
+        arbeidstakersOppgave: mellomlagretReferat.arbeidstakerOppgave,
+        arbeidsgiversOppgave: mellomlagretReferat.arbeidsgiverOppgave,
+        veiledersOppgave: mellomlagretReferat.veilederOppgave,
+        behandlersOppgave: mellomlagretReferat.behandlerOppgave,
+        andreDeltakere: mellomlagretReferat.andreDeltakere.map(
+          ({ navn, funksjon }) => ({
+            navn,
+            funksjon,
+          })
+        ),
         standardtekster: referatTexts.standardTekster.filter((standardtekst) =>
-          referat.document.some(({ key }) => key === standardtekst.key)
+          mellomlagretReferat.document.some(
+            ({ key }) => key === standardtekst.key
+          )
         ),
         ...behandlerInitialValues,
       };
     }
-  }, [currentNarmesteLederNavn, referat, behandler]);
+  }, [currentNarmesteLederNavn, mellomlagretReferat, behandler]);
 };
