@@ -120,42 +120,6 @@ describe("moter", () => {
     clock.restore();
   });
 
-  describe("OPPRETT MØTE", () => {
-    it("Håndterer OPPRETTER_MOTE", () => {
-      const initialState = deepFreeze({
-        data: [],
-      });
-      const action = actions.oppretterMote();
-      const nextState = moter(initialState, action);
-      expect(nextState).to.deep.equal({
-        data: [],
-        sender: true,
-        sendingFeilet: false,
-        henter: false,
-        hentingFeilet: false,
-        avbryter: false,
-        avbrytFeilet: false,
-      });
-    });
-
-    it("Håndterer OPPRETT_MOTE_FEILET", () => {
-      const initialState = deepFreeze({
-        data: [],
-      });
-      const action = actions.opprettMoteFeilet();
-      const nextState = moter(initialState, action);
-      expect(nextState).to.deep.equal({
-        data: [],
-        sender: false,
-        sendingFeilet: true,
-        henter: false,
-        hentingFeilet: false,
-        avbryter: false,
-        avbrytFeilet: false,
-      });
-    });
-  });
-
   describe("HENT MØTER", () => {
     it("Håndterer HENTER_MOTER", () => {
       const initialState = deepFreeze({});

@@ -6,21 +6,6 @@ import { MoteDTO } from "./types/moteTypes";
 import { SYFOMOTEADMIN_ROOT } from "@/apiConstants";
 import { ApiErrorException } from "@/api/errors";
 
-export function* opprettMote(action: any) {
-  yield put(actions.oppretterMote());
-
-  const path = `${SYFOMOTEADMIN_ROOT}/moter`;
-  try {
-    yield call(post, path, action.data);
-    yield put(actions.moteOpprettet(action.data));
-    yield put(actions.hentMoter(action.data.fnr));
-    yield put(historikkActions.hentHistorikkMoter(action.data.fnr));
-  } catch (e) {
-    //TODO: Add error to reducer and errorboundary to components
-    yield put(actions.opprettMoteFeilet());
-  }
-}
-
 export function* hentMoter(action: any) {
   yield put(actions.henterMoter());
   const path = `${SYFOMOTEADMIN_ROOT}/moter?fnr=${action.fnr}&henttpsdata=true&limit=1`;
@@ -110,9 +95,7 @@ export default function* moterSagas() {
     actions.OPPRETT_FLERE_ALTERNATIV_FORESPURT,
     opprettFlereAlternativ
   );
-  yield takeEvery(actions.OPPRETT_MOTE_FORESPURT, opprettMote);
   yield takeEvery(actions.AVBRYT_MOTE_FORESPURT, avbrytMote);
   yield takeEvery(actions.BEKREFT_MOTE_FORESPURT, bekreftMote);
   yield takeEvery(actions.HENT_MOTER_FORESPURT, hentMoterHvisIkkeHentet);
-  yield takeEvery(actions.MOTE_OPPRETTET, hentMoter);
 }

@@ -116,26 +116,5 @@ describe("MotebookingContainer", () => {
         })
       ).to.exist;
     });
-
-    it("Skal vise MotebookingSkjemaContainer hvis det ikke finnes aktivt møte", () => {
-      mockState.moter = {
-        hentingForsokt: true,
-        data: [
-          {
-            moteUuid: "8877",
-            status: "AVBRUTT",
-            deltakere: [],
-            alternativer: [],
-          },
-        ],
-      };
-      renderMotebookingContainer(store({ ...realState, ...mockState }));
-
-      expect(
-        screen.getByRole("heading", {
-          name: "Møteforespørsel",
-        })
-      ).to.exist;
-    });
   });
 });

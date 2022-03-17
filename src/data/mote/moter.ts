@@ -8,8 +8,6 @@ export interface MoterState {
   henter: boolean;
   hentingFeilet: boolean;
   hentingForsokt: boolean;
-  sender: boolean;
-  sendingFeilet: boolean;
   data: MoteDTO[];
   nyeAlternativFeilet: boolean;
   senderNyeAlternativ: boolean;
@@ -22,8 +20,6 @@ const initialState: MoterState = {
   henter: false,
   hentingFeilet: false,
   hentingForsokt: false,
-  sender: false,
-  sendingFeilet: false,
   data: [],
   nyeAlternativFeilet: false,
   senderNyeAlternativ: false,
@@ -36,34 +32,6 @@ const moter: Reducer<MoterState> = (
   action = { type: "" }
 ) => {
   switch (action.type) {
-    case actions.OPPRETTER_MOTE: {
-      return {
-        ...state,
-        henter: false,
-        hentingFeilet: false,
-        sender: true,
-        sendingFeilet: false,
-        avbryter: false,
-        avbrytFeilet: false,
-      };
-    }
-    case actions.MOTE_OPPRETTET: {
-      return {
-        ...state,
-        sender: false,
-      };
-    }
-    case actions.OPPRETT_MOTE_FEILET: {
-      return {
-        ...state,
-        henter: false,
-        hentingFeilet: false,
-        sender: false,
-        sendingFeilet: true,
-        avbryter: false,
-        avbrytFeilet: false,
-      };
-    }
     case actions.HENTER_MOTER: {
       return {
         ...state,
@@ -200,13 +168,6 @@ const moter: Reducer<MoterState> = (
     }
     case actions.FLERE_ALTERNATIV: {
       const antallNyeTidspunkt = state.antallNyeTidspunkt + 1;
-      return {
-        ...state,
-        antallNyeTidspunkt,
-      };
-    }
-    case actions.FJERN_ALTERNATIV: {
-      const antallNyeTidspunkt = state.antallNyeTidspunkt - 1;
       return {
         ...state,
         antallNyeTidspunkt,

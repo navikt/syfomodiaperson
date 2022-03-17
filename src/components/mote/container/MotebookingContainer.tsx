@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Side from "../../../sider/Side";
-import MotebookingSkjemaContainer from "./MotebookingSkjemaContainer";
 import MotestatusContainer from "./MotestatusContainer";
 import Feilmelding from "../../Feilmelding";
 import { MOETEPLANLEGGER } from "@/enums/menypunkter";
@@ -11,6 +10,8 @@ import { hentMoter } from "@/data/mote/moter_actions";
 import { useAppSelector } from "@/hooks/hooks";
 import SideLaster from "@/components/SideLaster";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { Redirect } from "react-router-dom";
+import { moteoversiktRoutePath } from "@/routers/AppRouter";
 
 const texts = {
   pageTitle: "Møteplanlegger",
@@ -53,7 +54,7 @@ export const MotebookingContainer = () => {
               <MotestatusContainer fnr={fnr} moteUuid={aktivtMote.moteUuid} />
             );
           }
-          return <MotebookingSkjemaContainer fnr={fnr} />;
+          return <Redirect to={moteoversiktRoutePath} />;
         })()}
       </SideLaster>
     </Side>

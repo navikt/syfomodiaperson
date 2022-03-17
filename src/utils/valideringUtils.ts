@@ -1,4 +1,3 @@
-import { MAX_LENGTH_STED } from "@/components/mote/skjema/MotebookingSkjema";
 import { isISODateString } from "nav-datovelger";
 import { ReferatSkjemaValues } from "@/components/dialogmote/referat/Referat";
 import { genererDato } from "@/components/mote/utils";
@@ -17,6 +16,8 @@ interface Begrunnelser {
   begrunnelseArbeidsgiver?: string;
   begrunnelseBehandler?: string;
 }
+
+const MAX_LENGTH_STED = 200;
 
 export const texts = {
   dateMissing: "Vennligst angi dato",

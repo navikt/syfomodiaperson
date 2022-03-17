@@ -39,7 +39,7 @@ describe(
 
       cy.visit("/sykefravaer/dialogmote");
 
-      cy.url().should("include", "/sykefravaer/mote");
+      cy.url().should("include", "/sykefravaer/moteoversikt");
     });
 
     it("Har tilgang til DM2 og ikke aktiv dialogmøte-innkalling, kan gå direkte til ny løsning for innkalling", () => {
