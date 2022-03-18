@@ -10,7 +10,7 @@ const texts = {
   genericError: "Det skjedde en feil",
 };
 
-export const hentBegrunnelseTekst = (begrunnelse: string | null): string => {
+export const hentBegrunnelseTekst = (begrunnelse?: string): string => {
   let begrunnelseTekst = texts.genericError;
   if (begrunnelse === "GEOGRAFISK") {
     begrunnelseTekst = texts.geografisk;

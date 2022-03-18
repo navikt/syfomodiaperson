@@ -3,22 +3,19 @@ import AppSpinner from "./AppSpinner";
 import Feilmelding from "./Feilmelding";
 import { hentBegrunnelseTekst } from "@/utils/tilgangUtils";
 import { useTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
+import Decorator from "@/decorator/Decorator";
 
-interface SideLasterProps {
-  henter: boolean;
-  hentingFeilet: boolean;
+interface AktivBrukerTilgangLasterProps {
   children: ReactNode;
 }
 
 const texts = {
-  errorTitle: "Du har ikke tilgang til denne tjenesten",
+  errorTitle: "Du har ikke tilgang til denne brukeren",
 };
 
-const SideLaster = ({
-  henter,
-  hentingFeilet,
+const AktivBrukerTilgangLaster = ({
   children,
-}: SideLasterProps): ReactElement => {
+}: AktivBrukerTilgangLasterProps): ReactElement => {
   const {
     isLoading: henterTilgang,
     isError: hentingTilgangFeilet,
@@ -26,21 +23,27 @@ const SideLaster = ({
   } = useTilgangQuery();
   const harTilgang = tilgang?.harTilgang === true;
 
-  if (henter || henterTilgang) {
-    return <AppSpinner />;
-  }
-  if (!harTilgang) {
-    return (
+  let visning;
+  if (henterTilgang) {
+    visning = <AppSpinner />;
+  } else if (!harTilgang) {
+    visning = (
       <Feilmelding
         tittel={texts.errorTitle}
         melding={hentBegrunnelseTekst(tilgang?.begrunnelse)}
       />
     );
+  } else if (hentingTilgangFeilet) {
+    visning = <Feilmelding />;
+  } else {
+    visning = <>{children}</>;
   }
-  if (hentingFeilet || hentingTilgangFeilet) {
-    return <Feilmelding />;
-  }
-  return <>{children}</>;
+  return (
+    <>
+      <Decorator />
+      {visning}
+    </>
+  );
 };
 
-export default SideLaster;
+export default AktivBrukerTilgangLaster;

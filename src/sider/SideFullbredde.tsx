@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Container, Row, Column } from "nav-frontend-grid";
 import Personkort from "../components/personkort/Personkort";
-import Decorator from "../decorator/Decorator";
 import DocumentTitle from "react-document-title";
 import {
   useHasLoadedMetaData,
@@ -26,23 +25,20 @@ const Side = (sideFullbreddeProps: SideFullbreddeProps) => {
   }, [metaDataLoaded, tittel, aktivtMenypunkt, trackPageLoad]);
 
   return (
-    <>
-      <Decorator />
-      <DocumentTitle
-        title={tittel + (tittel.length > 0 ? " - Sykefravær" : "Sykefravær")}
-      >
-        <Container>
-          <Row>
-            <Column className="col-xs-12">
-              <Personkort />
-            </Column>
-          </Row>
-          <Row>
-            <Column className="col-xs-12 col-sm-12">{children}</Column>
-          </Row>
-        </Container>
-      </DocumentTitle>
-    </>
+    <DocumentTitle
+      title={tittel + (tittel.length > 0 ? " - Sykefravær" : "Sykefravær")}
+    >
+      <Container>
+        <Row>
+          <Column className="col-xs-12">
+            <Personkort />
+          </Column>
+        </Row>
+        <Row>
+          <Column className="col-xs-12 col-sm-12">{children}</Column>
+        </Row>
+      </Container>
+    </DocumentTitle>
   );
 };
 

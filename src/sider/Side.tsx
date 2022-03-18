@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Column, Container, Row } from "nav-frontend-grid";
 import Personkort from "../components/personkort/Personkort";
-import Decorator from "../decorator/Decorator";
 import DocumentTitle from "react-document-title";
 import {
   useHasLoadedMetaData,
@@ -32,26 +31,23 @@ const Side = (sideProps: SideProps) => {
   }, [metaDataLoaded, tittel, aktivtMenypunkt, trackPageLoad]);
 
   return (
-    <>
-      <Decorator />
-      <DocumentTitle
-        title={tittel + (tittel.length > 0 ? " - Sykefravær" : "Sykefravær")}
-      >
-        <StyledContainer fluid>
-          <Row>
-            <Column className="col-xs-12">
-              <Personkort />
-            </Column>
-          </Row>
-          <Row>
-            <nav className="col-xs-12 col-sm-3">
-              <GlobalNavigasjon aktivtMenypunkt={aktivtMenypunkt} />
-            </nav>
-            <Column className="col-xs-12 col-sm-9">{children}</Column>
-          </Row>
-        </StyledContainer>
-      </DocumentTitle>
-    </>
+    <DocumentTitle
+      title={tittel + (tittel.length > 0 ? " - Sykefravær" : "Sykefravær")}
+    >
+      <StyledContainer fluid>
+        <Row>
+          <Column className="col-xs-12">
+            <Personkort />
+          </Column>
+        </Row>
+        <Row>
+          <nav className="col-xs-12 col-sm-3">
+            <GlobalNavigasjon aktivtMenypunkt={aktivtMenypunkt} />
+          </nav>
+          <Column className="col-xs-12 col-sm-9">{children}</Column>
+        </Row>
+      </StyledContainer>
+    </DocumentTitle>
   );
 };
 
