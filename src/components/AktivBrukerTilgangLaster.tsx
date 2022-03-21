@@ -28,10 +28,7 @@ const AktivBrukerTilgangLaster = ({
     visning = <AppSpinner />;
   } else if (!harTilgang) {
     visning = (
-      <Feilmelding
-        tittel={texts.errorTitle}
-        melding={hentBegrunnelseTekst(tilgang?.begrunnelse)}
-      />
+      <Feilmelding tittel={texts.errorTitle} melding={hentBegrunnelseTekst()} />
     );
   } else if (hentingTilgangFeilet) {
     visning = <Feilmelding />;

@@ -125,7 +125,6 @@ describe("MotelandingssideContainer", () => {
     it("Skal vise feilmelding hvis ikke tilgang", async () => {
       stubTilgangApi(apiMockScope, {
         harTilgang: false,
-        begrunnelse: "Ikke tilgang",
       });
       renderMotelandingsside(store({ ...realState, ...mockState }));
 

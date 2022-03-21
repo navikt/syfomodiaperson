@@ -18,7 +18,6 @@ export function* hentMoter(action: any) {
       yield put(
         actions.hentMoterIkkeTilgang({
           harTilgang: false,
-          begrunnelse: e.error.message,
         })
       );
       return;

@@ -31,10 +31,7 @@ const SideLaster = ({
   }
   if (!harTilgang) {
     return (
-      <Feilmelding
-        tittel={texts.errorTitle}
-        melding={hentBegrunnelseTekst(tilgang?.begrunnelse)}
-      />
+      <Feilmelding tittel={texts.errorTitle} melding={hentBegrunnelseTekst()} />
     );
   }
   if (hentingFeilet || hentingTilgangFeilet) {

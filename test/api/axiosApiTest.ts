@@ -8,7 +8,7 @@ import { Tilgang } from "@/data/tilgang/tilgangTypes";
 describe("Axios API tests", () => {
   let stub: MockAdapter;
 
-  const tilgangDenied: Tilgang = { harTilgang: false, begrunnelse: "SYFO" };
+  const tilgangDenied: Tilgang = { harTilgang: false };
   const tilgangDeniedMessage = { message: "Denied!" };
   const happyCaseMessage = "Woop woop";
 
@@ -44,7 +44,6 @@ describe("Axios API tests", () => {
         const { error, code } = e as ApiErrorException;
         expect(code).to.equal(403);
         expect(error.type).to.equal(ErrorType.ACCESS_DENIED);
-        expect(error.message).to.equal(tilgangDenied.begrunnelse);
       }
     });
 
@@ -59,7 +58,6 @@ describe("Axios API tests", () => {
         const { error, code } = e as ApiErrorException;
         expect(code).to.equal(403);
         expect(error.type).to.equal(ErrorType.ACCESS_DENIED);
-        expect(error.message).to.equal(tilgangDeniedMessage.message);
       }
     });
   });

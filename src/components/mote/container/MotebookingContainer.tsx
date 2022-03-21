@@ -45,7 +45,7 @@ export const MotebookingContainer = () => {
             return (
               <Feilmelding
                 tittel={texts.errorTitle}
-                melding={hentBegrunnelseTekst(moter.tilgang.begrunnelse)}
+                melding={hentBegrunnelseTekst()}
               />
             );
           }

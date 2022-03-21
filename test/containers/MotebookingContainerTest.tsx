@@ -11,10 +11,10 @@ import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 import { MemoryRouter } from "react-router-dom";
 import { queryClientWithMockData } from "../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
+import { Tilgang } from "@/data/tilgang/tilgangTypes";
 
-const harIkkeMoterTilgang = {
+const harIkkeMoterTilgang: Tilgang = {
   harTilgang: false,
-  begrunnelse: "KODE7",
 };
 const realState = createStore(rootReducer).getState();
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
@@ -92,8 +92,6 @@ describe("MotebookingContainer", () => {
           name: "Du har ikke tilgang til denne tjenesten",
         })
       ).to.exist;
-      expect(screen.getByText("Brukeren er registrert med skjermingskode 7."))
-        .to.exist;
     });
 
     it("Skal vise MotestatusContainer hvis det finnes aktivt møte", () => {
