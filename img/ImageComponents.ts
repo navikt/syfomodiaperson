@@ -65,6 +65,9 @@ import KalenderPng from "./png/kalender.png";
 import KalenderHoverPng from "./png/kalender--hover.png";
 import PilForrigeBlaaPng from "./png/pilForrige--blaa.png";
 
+// GIF
+import EasterRoll from "./gif/easter_roll.gif";
+
 export {
   ArbeiderKvinneImage,
   ArbeidsgiverImage,
@@ -83,6 +86,7 @@ export {
   CopyImage,
   DoctorImage,
   DoctorHoverImage,
+  EasterRoll,
   EpostImage,
   FabrikkImage,
   FortidenImage,

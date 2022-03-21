@@ -8,6 +8,8 @@ import {
   useTrackPageLoad,
 } from "@/data/logging/loggingHooks";
 import { GlobalNavigasjon } from "@/components/globalnavigasjon/GlobalNavigasjon";
+import { isEaster } from "@/utils/festiveUtils";
+import { Easter } from "@/components/Easter";
 
 const StyledContainer = styled(Container)`
   width: 95%;
@@ -43,6 +45,7 @@ const Side = (sideProps: SideProps) => {
         <Row>
           <nav className="col-xs-12 col-sm-3">
             <GlobalNavigasjon aktivtMenypunkt={aktivtMenypunkt} />
+            {isEaster() && <Easter />}
           </nav>
           <Column className="col-xs-12 col-sm-9">{children}</Column>
         </Row>
