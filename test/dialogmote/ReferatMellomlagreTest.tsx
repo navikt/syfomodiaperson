@@ -20,11 +20,11 @@ import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import {
   annenDeltakerFunksjon,
   annenDeltakerNavn,
-  arbeidstaker,
   behandlerDeltakerTekst,
   dialogmoteMedBehandler,
   dialogmoteMedMellomlagretReferat,
   dialogmoteMedMellomlagretReferatBehandlerIkkeDeltatt,
+  mockState,
   moteTekster,
   narmesteLederNavn,
   referatStandardTekst,
@@ -40,17 +40,6 @@ import { texts as deltakereSkjemaTexts } from "@/components/dialogmote/referat/D
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
-
-const mockState = {
-  navbruker: {
-    data: {
-      navn: arbeidstaker.navn,
-      kontaktinfo: {
-        fnr: arbeidstaker.personident,
-      },
-    },
-  },
-};
 
 let queryClient;
 

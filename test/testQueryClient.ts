@@ -11,13 +11,9 @@ import {
 } from "../mock/common/mockConstants";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
-import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
-import { PeriodetypeDTO } from "@/data/sykmelding/types/PeriodetypeDTO";
-import { mockSykmeldinger } from "./mockdata/sykmeldinger/mockSykmeldinger";
 import { modiacontextQueryKeys } from "@/data/modiacontext/modiacontextQueryHooks";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { oppfolgingstilfellePersonMock } from "../mock/data/oppfolgingstilfellePersonMock";
-import { daysFromToday } from "./testUtils";
 
 export const queryClientWithAktivBruker = (): QueryClient => {
   const queryClient = new QueryClient();
@@ -49,23 +45,6 @@ export const queryClientWithMockData = (): QueryClient => {
     ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
     () => LEDERE_DEFAULT
   );
-  queryClient.setQueryData(
-    sykmeldingerQueryKeys.sykmeldinger(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => [
-      {
-        ...mockSykmeldinger[0],
-        sykmeldingsperioder: [
-          {
-            fom: daysFromToday(-5),
-            tom: daysFromToday(5),
-            type: PeriodetypeDTO.AKTIVITET_IKKE_MULIG,
-            reisetilskudd: false,
-          },
-        ],
-      },
-    ]
-  );
-
   queryClient.setQueryData(
     oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
       ARBEIDSTAKER_DEFAULT.personIdent

@@ -33,6 +33,7 @@ import {
   behandlerDeltakerTekst,
   dialogmote,
   dialogmoteMedBehandler,
+  mockState,
   moteTekster,
   narmesteLederNavn,
   veileder,
@@ -55,17 +56,6 @@ import { NewDialogmoteReferatDTO } from "@/data/dialogmote/types/dialogmoteRefer
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
-
-const mockState = {
-  navbruker: {
-    data: {
-      navn: arbeidstaker.navn,
-      kontaktinfo: {
-        fnr: arbeidstaker.personident,
-      },
-    },
-  },
-};
 
 let queryClient;
 

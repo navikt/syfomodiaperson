@@ -21,8 +21,8 @@ import {
 import { QueryClientProvider } from "react-query";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import {
-  arbeidstaker,
   dialogmoteMedFerdigstiltReferat,
+  mockState,
   moteTekster,
   narmesteLederNavn,
 } from "./testData";
@@ -36,17 +36,6 @@ import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
-
-const mockState = {
-  navbruker: {
-    data: {
-      navn: arbeidstaker.navn,
-      kontaktinfo: {
-        fnr: arbeidstaker.personident,
-      },
-    },
-  },
-};
 
 let queryClient;
 

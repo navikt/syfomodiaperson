@@ -26,9 +26,7 @@ import {
 import { capitalizeWord } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
-import { SykmeldingStatus } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { NarmesteLederRelasjonStatus } from "@/data/leder/ledereTypes";
-import { daysFromToday } from "../testUtils";
+import { RootState } from "@/data/rootState";
 
 export const arbeidstaker = {
   navn: ARBEIDSTAKER_DEFAULT_FULL_NAME,
@@ -150,67 +148,15 @@ export const dialogmoteMedVarsel = (
   },
 });
 
-export const mockState = {
+export const mockState: Partial<RootState> = {
   navbruker: {
     data: {
+      arbeidssituasjon: "",
       navn: arbeidstaker.navn,
       kontaktinfo: {
         fnr: arbeidstaker.personident,
       },
     },
-  },
-  enhet: {
-    valgtEnhet: navEnhet,
-  },
-  valgtbruker: {
-    personident: arbeidstaker.personident,
-  },
-  ledere: {
-    currentLedere: [
-      {
-        uuid: "3",
-        arbeidstakerPersonIdentNumber: ARBEIDSTAKER_DEFAULT.personIdent,
-        virksomhetsnummer: arbeidsgiver.orgnr,
-        virksomhetsnavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
-        narmesteLederPersonIdentNumber: "02690001009",
-        narmesteLederTelefonnummer: "12345666",
-        narmesteLederEpost: "test3@test.no",
-        narmesteLederNavn: narmesteLederNavn,
-        aktivFom: new Date(),
-        aktivTom: null,
-        arbeidsgiverForskutterer: false,
-        timestamp: "2020-02-06T12:00:00+01:00",
-        status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
-      },
-    ],
-  },
-  sykmeldinger: {
-    data: [
-      {
-        status: SykmeldingStatus.SENDT,
-        mottakendeArbeidsgiver: {
-          juridiskOrgnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-          navn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
-          virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-        },
-        mulighetForArbeid: {
-          aarsakAktivitetIkkeMulig433: undefined,
-          aarsakAktivitetIkkeMulig434: undefined,
-          aktivitetIkkeMulig433: undefined,
-          aktivitetIkkeMulig434: undefined,
-          perioder: [
-            {
-              avventende: undefined,
-              behandlingsdager: undefined,
-              fom: daysFromToday(-5),
-              grad: 100,
-              reisetilskudd: undefined,
-              tom: daysFromToday(5),
-            },
-          ],
-        },
-      },
-    ],
   },
 };
 
