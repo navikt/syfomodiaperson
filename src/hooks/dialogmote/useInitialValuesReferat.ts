@@ -13,7 +13,7 @@ export const useInitialValuesReferat = (
     arbeidsgiver: { virksomhetsnummer },
     behandler,
   } = dialogmote;
-  const { mellomlagretReferat } = useDialogmoteReferat(dialogmote);
+  const { latestReferat } = useDialogmoteReferat(dialogmote);
   const currentNarmesteLederNavn = getCurrentNarmesteLeder(virksomhetsnummer)
     ?.narmesteLederNavn;
 
@@ -24,33 +24,31 @@ export const useInitialValuesReferat = (
           behandlerMottarReferat: behandler.mottarReferat,
         }
       : {};
-    if (!mellomlagretReferat) {
+    if (latestReferat) {
       return {
-        naermesteLeder: currentNarmesteLederNavn,
-        ...behandlerInitialValues,
-      };
-    } else {
-      return {
-        naermesteLeder: mellomlagretReferat.narmesteLederNavn,
-        konklusjon: mellomlagretReferat.konklusjon,
-        situasjon: mellomlagretReferat.situasjon,
-        arbeidstakersOppgave: mellomlagretReferat.arbeidstakerOppgave,
-        arbeidsgiversOppgave: mellomlagretReferat.arbeidsgiverOppgave,
-        veiledersOppgave: mellomlagretReferat.veilederOppgave,
-        behandlersOppgave: mellomlagretReferat.behandlerOppgave,
-        andreDeltakere: mellomlagretReferat.andreDeltakere.map(
+        naermesteLeder: latestReferat.narmesteLederNavn,
+        konklusjon: latestReferat.konklusjon,
+        situasjon: latestReferat.situasjon,
+        arbeidstakersOppgave: latestReferat.arbeidstakerOppgave,
+        arbeidsgiversOppgave: latestReferat.arbeidsgiverOppgave,
+        veiledersOppgave: latestReferat.veilederOppgave,
+        behandlersOppgave: latestReferat.behandlerOppgave,
+        andreDeltakere: latestReferat.andreDeltakere.map(
           ({ navn, funksjon }) => ({
             navn,
             funksjon,
           })
         ),
         standardtekster: referatTexts.standardTekster.filter((standardtekst) =>
-          mellomlagretReferat.document.some(
-            ({ key }) => key === standardtekst.key
-          )
+          latestReferat.document.some(({ key }) => key === standardtekst.key)
         ),
         ...behandlerInitialValues,
       };
+    } else {
+      return {
+        naermesteLeder: currentNarmesteLederNavn,
+        ...behandlerInitialValues,
+      };
     }
-  }, [currentNarmesteLederNavn, mellomlagretReferat, behandler]);
+  }, [currentNarmesteLederNavn, latestReferat, behandler]);
 };

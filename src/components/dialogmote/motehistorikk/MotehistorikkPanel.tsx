@@ -43,13 +43,13 @@ const MoteListElement = ({ children }: MoteListElementProps): ReactElement => {
     ? texts.avlysningsBrev
     : texts.referat;
   const listElementLabel = isMoteAvlyst ? texts.avlystMote : texts.avholdtMote;
-  const { ferdigstiltReferat } = useDialogmoteReferat(children);
+  const { ferdigstilteReferat } = useDialogmoteReferat(children);
 
   const documentComponents = isMoteAvlyst
     ? children.arbeidstaker.varselList.find(
         (varsel) => varsel.varselType === MotedeltakerVarselType.AVLYST
       )?.document
-    : ferdigstiltReferat?.document;
+    : ferdigstilteReferat[0]?.document;
 
   return (
     <li>

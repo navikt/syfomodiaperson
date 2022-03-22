@@ -72,8 +72,8 @@ export const DialogmoteMoteStatusPanel = ({ dialogmote }: Props) => {
   );
   const noNarmesteLeder = !narmesteLeder;
 
-  const { mellomlagretReferat } = useDialogmoteReferat(dialogmote);
-  const referatKnappText = mellomlagretReferat
+  const { latestReferat } = useDialogmoteReferat(dialogmote);
+  const referatKnappText = !!latestReferat
     ? texts.fortsettReferat
     : texts.skrivReferat;
 

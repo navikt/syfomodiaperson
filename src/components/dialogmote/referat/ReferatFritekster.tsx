@@ -6,6 +6,7 @@ import { Normaltekst } from "nav-frontend-typografi";
 import styled from "styled-components";
 import { Field } from "react-final-form";
 import Fritekst, { FritekstSize } from "@/components/Fritekst";
+import { ReferatMode } from "@/components/dialogmote/referat/Referat";
 
 export const MAX_LENGTH_SITUASJON = 3500;
 export const MAX_LENGTH_KONKLUSJON = 1000;
@@ -13,6 +14,7 @@ export const MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE = 200;
 export const MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE = 200;
 export const MAX_LENGTH_BEHANDLERS_OPPGAVE = 200;
 export const MAX_LENGTH_VEILEDERS_OPPGAVE = 200;
+export const MAX_LENGTH_BEGRUNNELSE_ENDRING = 500;
 
 const texts = {
   situasjon: {
@@ -51,7 +53,28 @@ const texts = {
     label: "Veilederens oppgave (valgfri):",
     placeholder: "Hva avtalte dere at du skal gjøre?",
   },
+  begrunnelseEndring: {
+    label: "Årsaken til at referatet må endres",
+    placeholder: "Fortell hva som er årsaken til at referatet må endres",
+    infoboks:
+      "Det er viktig å oppgi årsak til endringen slik at alle møtedeltakerne blir informert. Det er også viktig i videre oppfølging.",
+  },
 };
+
+const BegrunnelseEndring = (): ReactElement => (
+  <FlexRow bottomPadding={PaddingSize.MD}>
+    <ReferatTextareaFieldColumn
+      fieldName="begrunnelseEndring"
+      size="stor"
+      label={texts.begrunnelseEndring.label}
+      placeholder={texts.begrunnelseEndring.placeholder}
+      maxLength={MAX_LENGTH_BEGRUNNELSE_ENDRING}
+    />
+    <ReferatInfoColumn>
+      <Normaltekst>{texts.begrunnelseEndring.infoboks}</Normaltekst>
+    </ReferatInfoColumn>
+  </FlexRow>
+);
 
 const Situasjon = (): ReactElement => (
   <FlexRow bottomPadding={PaddingSize.MD}>
@@ -178,10 +201,15 @@ const ReferatTextareaFieldColumn = ({
 
 interface ReferatTeksterProps {
   dialogmote: DialogmoteDTO;
+  mode: ReferatMode;
 }
 
-export const ReferatFritekster = ({ dialogmote }: ReferatTeksterProps) => (
+export const ReferatFritekster = ({
+  dialogmote,
+  mode,
+}: ReferatTeksterProps) => (
   <>
+    {mode === ReferatMode.ENDRET && <BegrunnelseEndring />}
     <Situasjon />
     <Konklusjon />
     <ArbeidstakersOppgave />

@@ -61,4 +61,12 @@ export const mockIsdialogmote = (server) => {
       res.sendStatus(200);
     }
   );
+
+  server.post(
+    `${ISDIALOGMOTE_ROOT}/dialogmote/:moteuuid/endreferdigstilt`,
+    Auth.ensureAuthenticated(),
+    (req, res) => {
+      res.sendStatus(200);
+    }
+  );
 };

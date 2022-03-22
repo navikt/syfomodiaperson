@@ -38,6 +38,7 @@ import { useInitialValuesReferat } from "@/hooks/dialogmote/useInitialValuesRefe
 import {
   MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE,
   MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE,
+  MAX_LENGTH_BEGRUNNELSE_ENDRING,
   MAX_LENGTH_BEHANDLERS_OPPGAVE,
   MAX_LENGTH_KONKLUSJON,
   MAX_LENGTH_SITUASJON,
@@ -45,13 +46,13 @@ import {
   ReferatFritekster,
 } from "@/components/dialogmote/referat/ReferatFritekster";
 import { StandardTekster } from "@/components/dialogmote/referat/StandardTekster";
+import { useEndreReferat } from "@/data/dialogmote/useEndreReferat";
 
 export const texts = {
   digitalReferat:
     "Referatet formidles her på nav.no. Det er bare de arbeidstakerne som har reservert seg mot digital kommunikasjon, som vil få referatet i posten.",
   personvern:
     "Du må aldri skrive sensitive opplysninger om helse, diagnose, behandling, og prognose. Dette gjelder også hvis arbeidstakeren er åpen om helsen og snakket om den i møtet.",
-  forhandsvisningSubtitle: "Referat fra dialogmøte",
   forhandsvisningContentLabel: "Forhåndsvis referat fra dialogmøte",
   preview: "Se forhåndsvisning",
   referatSaved: "Referatet er lagret",
@@ -62,7 +63,14 @@ export const valideringsTexts = {
   konklusjonMissing: "Vennligst angi konklusjon",
   arbeidstakersOppgaveMissing: "Vennligst angi arbeidstakerens oppgave",
   arbeidsgiversOppgaveMissing: "Vennligst angi arbeidsgiverens oppgave",
+  begrunnelseEndringMissing:
+    "Vennligst angi årsaken til at referatet må endres",
 };
+
+export enum ReferatMode {
+  NYTT,
+  ENDRET,
+}
 
 interface ReferatSkjemaTekster {
   situasjon: string;
@@ -71,6 +79,7 @@ interface ReferatSkjemaTekster {
   arbeidsgiversOppgave: string;
   behandlersOppgave?: string;
   veiledersOppgave: string;
+  begrunnelseEndring?: string;
 }
 
 export interface ReferatSkjemaValues extends ReferatSkjemaTekster {
@@ -92,6 +101,7 @@ const ReferatWarningAlert = styled(AlertstripeFullbredde)`
 interface ReferatProps {
   dialogmote: DialogmoteDTO;
   pageTitle: string;
+  mode: ReferatMode;
 }
 
 const toNewReferat = (
@@ -113,15 +123,25 @@ const toNewReferat = (
         behandlerMottarReferat: values.behandlerMottarReferat,
       }
     : {}),
+  ...(values.begrunnelseEndring
+    ? {
+        begrunnelseEndring: values.begrunnelseEndring,
+      }
+    : {}),
   veilederOppgave: values.veiledersOppgave,
   document: generateDocument(values),
   andreDeltakere: values.andreDeltakere || [],
 });
 
-const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
+const Referat = ({
+  dialogmote,
+  pageTitle,
+  mode,
+}: ReferatProps): ReactElement => {
   const fnr = useValgtPersonident();
   const ferdigstillDialogmote = useFerdigstillDialogmote(fnr, dialogmote.uuid);
   const mellomlagreReferat = useMellomlagreReferat(fnr, dialogmote.uuid);
+  const endreReferat = useEndreReferat(fnr, dialogmote.uuid);
   const [uendretSidenMellomlagring, setUendretSidenMellomlagring] = useState<
     boolean | undefined
   >();
@@ -131,13 +151,14 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
 
   const dateAndTimeForMeeting = tilDatoMedManedNavn(dialogmote.tid);
   const header = `${navbruker?.navn}, ${dateAndTimeForMeeting}, ${dialogmote.sted}`;
+  const isEndringAvReferat = mode === ReferatMode.ENDRET;
 
   const {
     harIkkeUtbedretFeil,
     resetFeilUtbedret,
     updateFeilUtbedret,
   } = useFeilUtbedret();
-  const { generateReferatDocument } = useForhandsvisReferat(dialogmote);
+  const { generateReferatDocument } = useForhandsvisReferat(dialogmote, mode);
 
   const validate = (values: Partial<ReferatSkjemaValues>) => {
     const friteksterFeil = validerSkjemaTekster<ReferatSkjemaTekster>({
@@ -173,6 +194,16 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
         value: values.veiledersOppgave || "",
         maxLength: MAX_LENGTH_VEILEDERS_OPPGAVE,
       },
+      ...(isEndringAvReferat
+        ? {
+            begrunnelseEndring: {
+              value: values.begrunnelseEndring || "",
+              maxLength: MAX_LENGTH_BEGRUNNELSE_ENDRING,
+              missingRequiredMessage:
+                valideringsTexts.begrunnelseEndringMissing,
+            },
+          }
+        : {}),
     });
 
     const feilmeldinger = {
@@ -186,9 +217,16 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
   };
 
   const submit = (values: ReferatSkjemaValues) => {
-    ferdigstillDialogmote.mutate(
-      toNewReferat(dialogmote, values, generateReferatDocument)
+    const newDialogmoteReferatDTO = toNewReferat(
+      dialogmote,
+      values,
+      generateReferatDocument
     );
+    if (isEndringAvReferat) {
+      endreReferat.mutate(newDialogmoteReferatDTO);
+    } else {
+      ferdigstillDialogmote.mutate(newDialogmoteReferatDTO);
+    }
   };
 
   const mellomlagre = (values: ReferatSkjemaValues) => {
@@ -200,7 +238,7 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
 
   const initialValues = useInitialValuesReferat(dialogmote);
 
-  if (ferdigstillDialogmote.isSuccess) {
+  if (ferdigstillDialogmote.isSuccess || endreReferat.isSuccess) {
     return <Redirect to={moteoversiktRoutePath} />;
   }
 
@@ -230,7 +268,7 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
             <ReferatWarningAlert type="advarsel" form="inline">
               {texts.personvern}
             </ReferatWarningAlert>
-            <ReferatFritekster dialogmote={dialogmote} />
+            <ReferatFritekster dialogmote={dialogmote} mode={mode} />
             <StandardTekster />
             <FlexRow topPadding={PaddingSize.SM} bottomPadding={PaddingSize.MD}>
               <Knapp
@@ -242,6 +280,9 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
             </FlexRow>
             {ferdigstillDialogmote.isError && (
               <SkjemaInnsendingFeil error={ferdigstillDialogmote.error} />
+            )}
+            {endreReferat.isError && (
+              <SkjemaInnsendingFeil error={endreReferat.error} />
             )}
             {mellomlagreReferat.isError && (
               <SkjemaInnsendingFeil error={mellomlagreReferat.error} />
@@ -259,7 +300,9 @@ const Referat = ({ dialogmote, pageTitle }: ReferatProps): ReactElement => {
               onSaveClick={() => mellomlagre(values)}
               onSendClick={resetFeilUtbedret}
               showSaveSpinner={mellomlagreReferat.isLoading}
-              showSendSpinner={ferdigstillDialogmote.isLoading}
+              showSendSpinner={
+                ferdigstillDialogmote.isLoading || endreReferat.isLoading
+              }
             />
             <Forhandsvisning
               contentLabel={texts.forhandsvisningContentLabel}

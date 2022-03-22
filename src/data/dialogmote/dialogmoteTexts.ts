@@ -211,7 +211,12 @@ const referatStandardTekster: StandardTekst[] = [
 ];
 
 export const referatTexts = {
+  nyttHeader: "Referat fra dialogmøte",
+  endretHeader: "Endret referat fra dialogmøte",
   deltakereTitle: "Deltakere i møtet",
+  endring:
+    "Dette referatet er en endring av et referat du har mottatt tidligere. Dette referatet erstatter det forrige, og det forrige referatet er derfor utdatert.",
+  begrunnelseEndringTitle: "Årsaken til at referatet er endret",
   intro1:
     "Formålet med dialogmøtet var å oppsummere situasjonen, drøfte mulighetene for å arbeide og legge en plan for tiden framover.",
   intro2:

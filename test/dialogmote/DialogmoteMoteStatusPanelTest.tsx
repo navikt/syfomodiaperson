@@ -5,7 +5,7 @@ import {
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { DialogmoteMoteStatusPanel } from "@/components/mote/components/innkalling/DialogmoteMoteStatusPanel";
-import { dialogmote, dialogmoteMedReferat } from "./testData";
+import { dialogmote, dialogmoteMedMellomlagretReferat } from "./testData";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
@@ -39,7 +39,7 @@ describe("DialogmoteMoteStatusPanel", () => {
       .not.exist;
   });
   it("Viser knapp 'Fortsett på referat' når dialogmøte med påbegynt referat", () => {
-    renderDialogmoteMoteStatusPanel(dialogmoteMedReferat);
+    renderDialogmoteMoteStatusPanel(dialogmoteMedMellomlagretReferat);
 
     expect(screen.getByRole("button", { name: "Fortsett på referatet" })).to
       .exist;

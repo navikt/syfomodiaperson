@@ -1,7 +1,6 @@
-import React from "react";
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { DialogmoteSideContainer } from "../DialogmoteSideContainer";
-import Referat from "./Referat";
+import Referat, { ReferatMode } from "./Referat";
 
 const texts = {
   pageTitle: "Referat fra dialogmøte",
@@ -11,7 +10,11 @@ const texts = {
 const DialogmoteReferatContainer = (): ReactElement => (
   <DialogmoteSideContainer title={texts.pageTitle} header={texts.pageHeader}>
     {(dialogmote) => (
-      <Referat dialogmote={dialogmote} pageTitle={texts.pageTitle} />
+      <Referat
+        dialogmote={dialogmote}
+        pageTitle={texts.pageTitle}
+        mode={ReferatMode.NYTT}
+      />
     )}
   </DialogmoteSideContainer>
 );

@@ -113,17 +113,19 @@ const createDialogmote = (
   if (moteStatus === DialogmoteStatus.FERDIGSTILT) {
     return {
       ...dialogMote,
-      referatList: [createReferat(true)],
+      referatList: [createReferat(true, dialogMote.tid)],
     };
   }
 
   return dialogMote;
 };
 
-const createReferat = (ferdigstilt: boolean): ReferatDTO => {
+const createReferat = (ferdigstilt: boolean, tid: string): ReferatDTO => {
   const standardTekst = referatTexts.standardTekster[0];
   return {
     uuid: "520239a6-a973-42f6-a4e7-9fe7d27d2f93",
+    createdAt: tid,
+    updatedAt: tid,
     ferdigstilt,
     narmesteLederNavn: "Tatten Tattover",
     situasjon: "Dette er en beskrivelse av situasjonen",

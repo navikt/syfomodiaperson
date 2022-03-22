@@ -242,6 +242,7 @@ const arbeidsgiversOppgave = "Noe tekst om arbeidsgivers oppgave";
 const arbeidstakersOppgave = "Noe tekst om arbeidstakers oppgave";
 const veiledersOppgave = "Noe tekst om veileders oppgave";
 const behandlersOppgave = "Noe tekst om behandlers oppgave";
+const begrunnelseEndring = "Noe tekst om hvorfor referatet endres";
 
 export const annenDeltakerNavn = "Bodil Bolle";
 export const annenDeltakerFunksjon = "Verneombud";
@@ -278,12 +279,15 @@ export const moteTekster = {
   arbeidstakersOppgave,
   veiledersOppgave,
   behandlersOppgave,
+  begrunnelseEndring,
 };
 
 export const referatStandardTekst = referatTexts.standardTekster[3];
 
-const lagretReferat = {
+export const createMellomlagretReferat = () => ({
   uuid: "123abc",
+  createdAt: "2021-05-10T11:00:00.000",
+  updatedAt: "2021-05-10T11:00:00.000",
   situasjon: situasjonTekst,
   arbeidsgiverOppgave: arbeidsgiversOppgave,
   arbeidstakerOppgave: arbeidstakersOppgave,
@@ -301,14 +305,33 @@ const lagretReferat = {
   andreDeltakere: [
     { navn: annenDeltakerNavn, funksjon: annenDeltakerFunksjon },
   ],
-};
+});
 
-export const dialogmoteMedReferat: DialogmoteDTO = {
+export const createFerdigstiltReferat = (tid: string) => ({
+  uuid: "123abc",
+  createdAt: tid,
+  updatedAt: tid,
+  situasjon: situasjonTekst,
+  arbeidsgiverOppgave: arbeidsgiversOppgave,
+  arbeidstakerOppgave: arbeidstakersOppgave,
+  narmesteLederNavn: narmesteLederNavn,
+  konklusjon: konklusjonTekst,
+  document: [],
+  ferdigstilt: true,
+  andreDeltakere: [],
+});
+
+export const dialogmoteMedMellomlagretReferat: DialogmoteDTO = {
   ...dialogmote,
-  referatList: [lagretReferat],
+  referatList: [createMellomlagretReferat()],
 };
 
-export const dialogmoteMedReferatBehandlerIkkeDeltatt: DialogmoteDTO = {
+export const dialogmoteMedFerdigstiltReferat: DialogmoteDTO = {
+  ...dialogmote,
+  referatList: [createFerdigstiltReferat(dialogmote.tid)],
+};
+
+export const dialogmoteMedMellomlagretReferatBehandlerIkkeDeltatt: DialogmoteDTO = {
   ...dialogmoteMedBehandlerIkkeDeltatt,
-  referatList: [lagretReferat],
+  referatList: [createMellomlagretReferat()],
 };

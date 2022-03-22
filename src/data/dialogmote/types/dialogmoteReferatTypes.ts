@@ -2,6 +2,8 @@ import { DocumentComponentDto } from "./dialogmoteTypes";
 
 export interface ReferatDTO {
   readonly uuid: string;
+  readonly createdAt: string;
+  readonly updatedAt: string;
   readonly ferdigstilt: boolean;
   readonly narmesteLederNavn: string;
   readonly situasjon: string;
@@ -32,6 +34,7 @@ export interface NewDialogmoteReferatDTO {
   arbeidsgiverOppgave: string;
   behandlerOppgave?: string;
   veilederOppgave?: string;
+  begrunnelseEndring?: string;
   document: DocumentComponentDto[];
   andreDeltakere: NewDialogmotedeltakerAnnenDTO[];
   behandlerDeltatt?: boolean;

@@ -2,6 +2,7 @@ import { MemoryRouter, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import React from "react";
 import Referat, {
+  ReferatMode,
   texts as referatSkjemaTexts,
   valideringsTexts as referatSkjemaValideringsTexts,
 } from "../../src/components/dialogmote/referat/Referat";
@@ -342,11 +343,6 @@ describe("ReferatTest", () => {
       name: referatSkjemaTexts.forhandsvisningContentLabel,
     });
 
-    expect(
-      within(forhandsvisningReferat).getByRole("heading", {
-        name: referatSkjemaTexts.forhandsvisningSubtitle,
-      })
-    ).to.exist;
     expectedReferatDocument()
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
@@ -363,7 +359,11 @@ const renderReferat = (dialogmoteDTO: DialogmoteDTO) => {
       <Route path={`${dialogmoteRoutePath}/:dialogmoteUuid/referat`}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
-            <Referat dialogmote={dialogmoteDTO} pageTitle="Test" />
+            <Referat
+              dialogmote={dialogmoteDTO}
+              pageTitle="Test"
+              mode={ReferatMode.NYTT}
+            />
           </Provider>
         </QueryClientProvider>
       </Route>

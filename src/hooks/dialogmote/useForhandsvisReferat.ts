@@ -1,4 +1,7 @@
-import { ReferatSkjemaValues } from "@/components/dialogmote/referat/Referat";
+import {
+  ReferatMode,
+  ReferatSkjemaValues,
+} from "@/components/dialogmote/referat/Referat";
 import {
   DialogmoteDTO,
   DocumentComponentDto,
@@ -30,11 +33,13 @@ export interface ForhandsvisReferatGenerator {
 }
 
 export const useForhandsvisReferat = (
-  dialogmote: DialogmoteDTO
+  dialogmote: DialogmoteDTO,
+  mode: ReferatMode
 ): ForhandsvisReferatGenerator => {
   const navbruker = useNavBrukerData();
   const { data: veilederinfo } = useVeilederinfoQuery();
   const hilsen = useForhandsvisningHilsen();
+  const isEndringAvReferat = mode === ReferatMode.ENDRET;
 
   const { getCurrentNarmesteLeder } = useLedereQuery();
 
@@ -46,13 +51,28 @@ export const useForhandsvisReferat = (
     values: Partial<ReferatSkjemaValues>
   ): DocumentComponentDto[] => {
     const documentComponents = [
-      createHeaderH1("Referat fra dialogmøte"),
+      createHeaderH1(
+        isEndringAvReferat ? referatTexts.endretHeader : referatTexts.nyttHeader
+      ),
       createParagraph(
         `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
       ),
-      createHeaderH2(navbruker?.navn),
-      ...info(dialogmote, values, navbruker, veilederinfo),
     ];
+
+    if (isEndringAvReferat) {
+      documentComponents.push(
+        createParagraph(referatTexts.endring),
+        createParagraphWithTitle(
+          referatTexts.begrunnelseEndringTitle,
+          values.begrunnelseEndring || ""
+        )
+      );
+    }
+
+    documentComponents.push(
+      createHeaderH2(navbruker?.navn),
+      ...info(dialogmote, values, navbruker, veilederinfo)
+    );
 
     const virksomhetsnavn = getValgtArbeidsgiver();
 

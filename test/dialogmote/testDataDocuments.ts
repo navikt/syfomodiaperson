@@ -631,7 +631,7 @@ const expectedAvlysningBehandler = (): DocumentComponentDto[] => [
 
 export const expectedReferatDocument = (): DocumentComponentDto[] => [
   {
-    texts: ["Referat fra dialogmøte"],
+    texts: [referatTexts.nyttHeader],
     type: DocumentComponentType.HEADER_H1,
   },
   {
@@ -699,6 +699,96 @@ export const expectedReferatDocument = (): DocumentComponentDto[] => [
   {
     texts: [moteTekster.behandlersOppgave],
     title: referatTexts.behandlersOppgave,
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [moteTekster.veiledersOppgave],
+    title: referatTexts.navOppgaveTitle,
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [moteTekster.situasjonTekst],
+    title: referatTexts.situasjonTitle,
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [commonTexts.hilsen, veileder.navn ?? "", "NAV"],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+];
+
+export const expectedEndretReferatDocument = (): DocumentComponentDto[] => [
+  {
+    texts: [referatTexts.endretHeader],
+    type: DocumentComponentType.HEADER_H1,
+  },
+  {
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [referatTexts.endring],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [moteTekster.begrunnelseEndring],
+    title: referatTexts.begrunnelseEndringTitle,
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [arbeidstaker.navn],
+    type: DocumentComponentType.HEADER_H2,
+  },
+  {
+    texts: [`F.nr. ${arbeidstaker.personident}`],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [
+      `Dato: ${tilDatoMedUkedagOgManedNavn(dialogmote.tid)}`,
+      `Sted: ${dialogmote.sted}`,
+    ],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [
+      `Arbeidstaker: ${arbeidstaker.navn}`,
+      `Fra NAV: ${veileder.navn}`,
+      `Fra arbeidsgiver: ${narmesteLederNavn}`,
+    ],
+    title: referatTexts.deltakereTitle,
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [mote.arbeidsgivernavn],
+    title: "Arbeidsgiver",
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [referatTexts.intro1],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [referatTexts.intro2],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [referatTexts.detteSkjeddeHeader],
+    type: DocumentComponentType.HEADER_H2,
+  },
+  {
+    texts: [moteTekster.konklusjonTekst],
+    title: referatTexts.konklusjonTitle,
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [moteTekster.arbeidstakersOppgave],
+    title: referatTexts.arbeidstakersOppgaveTitle,
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [moteTekster.arbeidsgiversOppgave],
+    title: referatTexts.arbeidsgiversOppgaveTitle,
     type: DocumentComponentType.PARAGRAPH,
   },
   {

@@ -1,7 +1,9 @@
 import { MemoryRouter, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import React from "react";
-import Referat from "../../src/components/dialogmote/referat/Referat";
+import Referat, {
+  ReferatMode,
+} from "../../src/components/dialogmote/referat/Referat";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import configureStore from "redux-mock-store";
@@ -21,8 +23,8 @@ import {
   arbeidstaker,
   behandlerDeltakerTekst,
   dialogmoteMedBehandler,
-  dialogmoteMedReferat,
-  dialogmoteMedReferatBehandlerIkkeDeltatt,
+  dialogmoteMedMellomlagretReferat,
+  dialogmoteMedMellomlagretReferatBehandlerIkkeDeltatt,
   moteTekster,
   narmesteLederNavn,
   referatStandardTekst,
@@ -93,7 +95,7 @@ describe("ReferatMellomlagreTest", () => {
   });
 
   it("preutfyller referat-skjema fra dialogmote med mellomlagret referat", () => {
-    renderReferat(dialogmoteMedReferat);
+    renderReferat(dialogmoteMedMellomlagretReferat);
 
     expect(screen.getByDisplayValue(narmesteLederNavn)).to.exist;
     expect(screen.getByDisplayValue(moteTekster.situasjonTekst)).to.exist;
@@ -107,7 +109,7 @@ describe("ReferatMellomlagreTest", () => {
   });
 
   it("preutfyller referat-skjema behandler-deltakelse fra dialogmote", () => {
-    renderReferat(dialogmoteMedReferatBehandlerIkkeDeltatt);
+    renderReferat(dialogmoteMedMellomlagretReferatBehandlerIkkeDeltatt);
 
     clickButton(`${behandlerDeltakerTekst}, deltok ikke`);
 
@@ -126,7 +128,11 @@ const renderReferat = (dialogmoteDTO: DialogmoteDTO) => {
       <Route path={`${dialogmoteRoutePath}/:dialogmoteUuid/referat`}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
-            <Referat dialogmote={dialogmoteDTO} pageTitle="Test" />
+            <Referat
+              dialogmote={dialogmoteDTO}
+              pageTitle="Test"
+              mode={ReferatMode.NYTT}
+            />
           </Provider>
         </QueryClientProvider>
       </Route>
