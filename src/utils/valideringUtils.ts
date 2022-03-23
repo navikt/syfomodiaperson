@@ -1,6 +1,7 @@
 import { isISODateString } from "nav-datovelger";
 import { ReferatSkjemaValues } from "@/components/dialogmote/referat/Referat";
 import { genererDato } from "@/components/mote/utils";
+import { containsWhiteSpace } from "@/utils/stringUtils";
 
 export interface SkjemaFeil {
   [key: string]: string | undefined;
@@ -36,6 +37,7 @@ export const texts = {
   andreDeltakereMissingFunksjon: "Vennligst angi funksjon på deltaker",
   andreDeltakereMissingNavn: "Vennligst angi navn på deltaker",
   invalidVideoLink: "Lenke må begynne med https://video.nav.no",
+  whiteSpaceInVideoLink: "Lenke kan ikke inneholde mellomrom",
 };
 
 export const harFeilmeldinger = (errors: SkjemaFeil): boolean =>
@@ -97,9 +99,13 @@ export const validerVideoLink = (videoLink?: string): string | undefined => {
   }
 
   try {
-    const url = new URL(videoLink);
+    const trimmedVideoLink = videoLink.trim();
+    const url = new URL(trimmedVideoLink);
     if (url.origin !== "https://video.nav.no") {
       return texts.invalidVideoLink;
+    }
+    if (containsWhiteSpace(trimmedVideoLink)) {
+      return texts.whiteSpaceInVideoLink;
     }
   } catch (err) {
     return texts.invalidVideoLink;

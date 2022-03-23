@@ -5,3 +5,7 @@ export const firstLetterToUpperCase = (ord: string): string => {
 export const capitalizeWord = (word: string): string => {
   return firstLetterToUpperCase(word.toLowerCase());
 };
+
+export const containsWhiteSpace = (string: string) => {
+  return /\s/g.test(string);
+};
