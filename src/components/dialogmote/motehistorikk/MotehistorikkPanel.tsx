@@ -5,87 +5,111 @@ import React, { ReactElement, useState } from "react";
 import {
   DialogmoteDTO,
   DialogmoteStatus,
+  DocumentComponentDto,
   MotedeltakerVarselType,
 } from "@/data/dialogmote/types/dialogmoteTypes";
-import { tilDatoMedUkedagOgManedNavn } from "@/utils/datoUtils";
-import styled from "styled-components";
+import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { Forhandsvisning } from "../Forhandsvisning";
-import { Normaltekst } from "nav-frontend-typografi";
-import { TrackedFlatknapp } from "../../buttons/TrackedFlatknapp";
 import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
+import { TrackedFlatknapp } from "@/components/buttons/TrackedFlatknapp";
+import styled from "styled-components";
 
 const texts = {
   header: "Møtehistorikk",
   subtitle:
     "Oversikt over tidligere dialogmøter som ble innkalt i Modia (inkluderer ikke historikk fra Arena).",
-  avlystMote: "Avlyst møte",
-  avholdtMote: "Avholdt møte",
+  avlystMote: "Avlysning av møte",
+  avholdtMote: "Referat fra møte",
   referat: "Referat",
   avlysningsBrev: "Avlysningsbrev",
 };
 
-const InlineNormaltekst = styled(Normaltekst)`
-  display: inline;
+const ButtonRow = styled(FlexRow)`
+  padding-bottom: 0.5em;
 `;
 
-const FlatknappWithMargin = styled(TrackedFlatknapp)`
-  margin-left: 1em;
-`;
-
-interface MoteListElementProps {
-  children: DialogmoteDTO;
+interface ForhandsvisDocumentButtonRowProps {
+  document: DocumentComponentDto[];
+  title: string;
+  children: string;
 }
 
-const MoteListElement = ({ children }: MoteListElementProps): ReactElement => {
+const ForhandsvisDocumentButtonRow = ({
+  document,
+  title,
+  children,
+}: ForhandsvisDocumentButtonRowProps): ReactElement => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const isMoteAvlyst = children.status === DialogmoteStatus.AVLYST;
-  const forhandsVisningTitle = isMoteAvlyst
-    ? texts.avlysningsBrev
-    : texts.referat;
-  const listElementLabel = isMoteAvlyst ? texts.avlystMote : texts.avholdtMote;
-  const { ferdigstilteReferat } = useDialogmoteReferat(children);
-
-  const documentComponents = isMoteAvlyst
-    ? children.arbeidstaker.varselList.find(
-        (varsel) => varsel.varselType === MotedeltakerVarselType.AVLYST
-      )?.document
-    : ferdigstilteReferat[0]?.document;
-
   return (
-    <li>
-      <InlineNormaltekst>
-        {listElementLabel} {tilDatoMedUkedagOgManedNavn(children.tid)}
-      </InlineNormaltekst>
-      {documentComponents && (
-        <>
-          <Forhandsvisning
-            title={forhandsVisningTitle}
-            contentLabel={forhandsVisningTitle}
-            isOpen={modalIsOpen}
-            handleClose={() => setModalIsOpen(false)}
-            getDocumentComponents={() => documentComponents}
-          />
-          <FlatknappWithMargin
-            data-cy={forhandsVisningTitle}
-            context={texts.header}
-            mini
-            htmlType="button"
-            onClick={() => {
-              setModalIsOpen(true);
-            }}
-          >
-            {forhandsVisningTitle}
-          </FlatknappWithMargin>
-        </>
-      )}
-    </li>
+    <ButtonRow>
+      <TrackedFlatknapp
+        data-cy={title}
+        context={texts.header}
+        mini
+        kompakt
+        htmlType="button"
+        onClick={() => {
+          setModalIsOpen(true);
+        }}
+      >
+        {children}
+      </TrackedFlatknapp>
+      <Forhandsvisning
+        title={title}
+        contentLabel={title}
+        isOpen={modalIsOpen}
+        handleClose={() => setModalIsOpen(false)}
+        getDocumentComponents={() => document}
+      />
+    </ButtonRow>
   );
 };
 
-const UlWithoutIndentation = styled.ul`
-  padding-left: 1.2em;
-  margin: 0;
-`;
+interface MoteHistorikkProps {
+  mote: DialogmoteDTO;
+}
+
+const MoteHistorikk = ({ mote }: MoteHistorikkProps): ReactElement => {
+  const isMoteAvlyst = mote.status === DialogmoteStatus.AVLYST;
+  const { ferdigstilteReferat } = useDialogmoteReferat(mote);
+  const moteDatoTekst = tilDatoMedManedNavn(mote.tid);
+
+  if (isMoteAvlyst) {
+    const document =
+      mote.arbeidstaker.varselList.find(
+        (varsel) => varsel.varselType === MotedeltakerVarselType.AVLYST
+      )?.document || [];
+
+    return (
+      <ForhandsvisDocumentButtonRow
+        document={document}
+        title={texts.avlysningsBrev}
+      >
+        {`${texts.avlystMote} ${moteDatoTekst}`}
+      </ForhandsvisDocumentButtonRow>
+    );
+  }
+
+  return (
+    <>
+      {ferdigstilteReferat.map((referat, index) => {
+        const suffix = referat.endring
+          ? ` - Endret ${tilDatoMedManedNavn(referat.updatedAt)}`
+          : "";
+
+        return (
+          <ForhandsvisDocumentButtonRow
+            key={index}
+            document={referat.document}
+            title={texts.referat}
+          >
+            {`${texts.avholdtMote} ${moteDatoTekst}${suffix}`}
+          </ForhandsvisDocumentButtonRow>
+        );
+      })}
+    </>
+  );
+};
 
 interface MotehistorikkPanelProps {
   historiskeMoter: DialogmoteDTO[];
@@ -102,13 +126,9 @@ export const MotehistorikkPanel = ({
       header={texts.header}
       subtitle={texts.subtitle}
     >
-      <FlexRow>
-        <UlWithoutIndentation>
-          {historiskeMoter.map((mote, index) => (
-            <MoteListElement key={index}>{mote}</MoteListElement>
-          ))}
-        </UlWithoutIndentation>
-      </FlexRow>
+      {historiskeMoter.map((mote, index) => (
+        <MoteHistorikk key={index} mote={mote} />
+      ))}
     </DialogmotePanel>
   );
 };
