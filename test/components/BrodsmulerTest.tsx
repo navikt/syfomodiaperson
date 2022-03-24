@@ -6,6 +6,7 @@ import Brodsmuler, {
 import { BrowserRouter } from "react-router-dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { getButton } from "../testUtils";
 
 describe("Brodsmuler", () => {
   it("Skal vise Ditt NAV og ingen linker dersom ingen brødsmuler sendes inn", () => {
@@ -77,8 +78,7 @@ describe("Brodsmuler", () => {
         </BrowserRouter>
       );
       expect(screen.getByText("...", { selector: ".js-toggle" })).to.exist;
-      expect(screen.getByRole("button", { name: "Vis hele brødsmulestien" })).to
-        .exist;
+      expect(getButton("Vis hele brødsmulestien")).to.exist;
     });
 
     it("Skal vise de to siste brødsmulene", () => {

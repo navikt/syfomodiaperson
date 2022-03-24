@@ -13,6 +13,8 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useOppfolgingsplanerQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { DialogmoteFerdigstilteReferatPanel } from "@/components/dialogmote/DialogmoteFerdigstilteReferatPanel";
+import { DialogmoteStatus } from "@/data/dialogmote/types/dialogmoteTypes";
 
 const texts = {
   dialogmoter: "Dialogmøter",
@@ -69,7 +71,11 @@ export const Motelandingsside = () => {
       />
 
       <InnkallingDialogmotePanel aktivtDialogmote={aktivtDialogmote} />
-
+      <DialogmoteFerdigstilteReferatPanel
+        ferdigstilteMoter={historiskeDialogmoter.filter(
+          (mote) => mote.status === DialogmoteStatus.FERDIGSTILT
+        )}
+      />
       <UtdragFraSykefravaeretPanel aktivePlaner={aktivePlaner} fnr={fnr} />
 
       <MotehistorikkPanel historiskeMoter={historiskeDialogmoter} />

@@ -12,6 +12,7 @@ export interface ReferatDTO {
   readonly arbeidsgiverOppgave: string;
   readonly veilederOppgave?: string;
   readonly behandlerOppgave?: string;
+  readonly begrunnelseEndring?: string;
   readonly document: DocumentComponentDto[];
   readonly andreDeltakere: DialogmotedeltakerAnnenDTO[];
 }

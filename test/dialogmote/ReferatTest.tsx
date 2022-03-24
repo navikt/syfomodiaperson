@@ -205,10 +205,7 @@ describe("ReferatTest", () => {
   it("validerer navn og funksjon på andre deltakere", () => {
     renderReferat(dialogmote);
 
-    const addDeltakerButton = screen.getByRole("button", {
-      name: "Pluss ikon Legg til en deltaker",
-    });
-    userEvent.click(addDeltakerButton);
+    clickButton("Pluss ikon Legg til en deltaker");
     clickButton("Lagre og send");
 
     // Feilmeldinger i skjema
@@ -224,10 +221,7 @@ describe("ReferatTest", () => {
       .to.exist;
 
     // Slett deltaker og sjekk at feil forsvinner
-    const fjernDeltakerButton = screen.getByRole("button", {
-      name: "Slett ikon",
-    });
-    userEvent.click(fjernDeltakerButton);
+    clickButton("Slett ikon");
     expect(screen.queryAllByText(valideringsTexts.andreDeltakereMissingNavn)).to
       .be.empty;
     expect(
@@ -276,10 +270,7 @@ describe("ReferatTest", () => {
 
     passSkjemaTekstInput();
 
-    const addDeltakerButton = screen.getByRole("button", {
-      name: "Pluss ikon Legg til en deltaker",
-    });
-    userEvent.click(addDeltakerButton);
+    clickButton("Pluss ikon Legg til en deltaker");
     const annenDeltakerNavnInput = screen.getAllByRole("textbox", {
       name: "Navn",
     })[1];
@@ -314,10 +305,7 @@ describe("ReferatTest", () => {
     renderReferat(dialogmoteMedBehandler);
     passSkjemaTekstInput();
 
-    const addDeltakerButton = screen.getByRole("button", {
-      name: "Pluss ikon Legg til en deltaker",
-    });
-    userEvent.click(addDeltakerButton);
+    clickButton("Pluss ikon Legg til en deltaker");
     const annenDeltakerNavnInput = screen.getAllByRole("textbox", {
       name: "Navn",
     })[1];
@@ -325,10 +313,7 @@ describe("ReferatTest", () => {
     changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
     changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
 
-    const previewButton = screen.getByRole("button", {
-      name: "Se forhåndsvisning",
-    });
-    userEvent.click(previewButton);
+    clickButton("Se forhåndsvisning");
     const forhandsvisningReferat = screen.getByRole("dialog", {
       name: referatSkjemaTexts.forhandsvisningContentLabel,
     });

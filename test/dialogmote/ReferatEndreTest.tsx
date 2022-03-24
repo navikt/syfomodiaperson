@@ -22,17 +22,18 @@ import { QueryClientProvider } from "react-query";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import {
   dialogmoteMedFerdigstiltReferat,
+  dialogmoteMedMellomlagretReferat,
   mockState,
   moteTekster,
   narmesteLederNavn,
 } from "./testData";
 import { render, screen, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { expectedEndretReferatDocument } from "./testDataDocuments";
 import sinon from "sinon";
 import { MAX_LENGTH_BEGRUNNELSE_ENDRING } from "@/components/dialogmote/referat/ReferatFritekster";
 import { queryClientWithMockData } from "../testQueryClient";
 import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
+import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -53,7 +54,7 @@ describe("ReferatEndreTest", () => {
   });
 
   it("validerer begrunnelse for endring", () => {
-    renderEndreReferat();
+    renderEndreReferat(dialogmoteMedFerdigstiltReferat);
 
     clickButton("Lagre og send");
 
@@ -78,8 +79,8 @@ describe("ReferatEndreTest", () => {
     expect(screen.getByRole("link", { name: /tegn tillatt/ })).to.exist;
   });
 
-  it("preutfyller endre referat-skjema fra dialogmote med referat", () => {
-    renderEndreReferat();
+  it("preutfyller skjema fra ferdigstilt referat", () => {
+    renderEndreReferat(dialogmoteMedFerdigstiltReferat);
 
     expect(screen.getByDisplayValue(narmesteLederNavn)).to.exist;
     expect(screen.getByDisplayValue(moteTekster.situasjonTekst)).to.exist;
@@ -88,14 +89,17 @@ describe("ReferatEndreTest", () => {
     expect(screen.getByDisplayValue(moteTekster.konklusjonTekst)).to.exist;
   });
 
+  it("preutfyller skjema med begrunnelse for endring fra mellomlagret endret referat", () => {
+    renderEndreReferat(dialogmoteMedMellomlagretReferat);
+
+    expect(screen.getByDisplayValue(moteTekster.begrunnelseEndring)).to.exist;
+  });
+
   it("forhåndsviser endret referat", () => {
-    renderEndreReferat();
+    renderEndreReferat(dialogmoteMedFerdigstiltReferat);
     passSkjemaInput();
 
-    const previewButton = screen.getByRole("button", {
-      name: "Se forhåndsvisning",
-    });
-    userEvent.click(previewButton);
+    clickButton("Se forhåndsvisning");
     const forhandsvisningReferat = screen.getByRole("dialog", {
       name: referatSkjemaTexts.forhandsvisningContentLabel,
     });
@@ -115,7 +119,7 @@ describe("ReferatEndreTest", () => {
   });
 
   it("endrer ferdigstilling av dialogmote ved submit av skjema", () => {
-    renderEndreReferat();
+    renderEndreReferat(dialogmoteMedFerdigstiltReferat);
     passSkjemaInput();
     clickButton("Lagre og send");
 
@@ -139,18 +143,18 @@ describe("ReferatEndreTest", () => {
   });
 });
 
-const renderEndreReferat = () => {
+const renderEndreReferat = (dialogmote: DialogmoteDTO) => {
   return render(
     <MemoryRouter
       initialEntries={[
-        `${dialogmoteRoutePath}/${dialogmoteMedFerdigstiltReferat.uuid}/referat/endre`,
+        `${dialogmoteRoutePath}/${dialogmote.uuid}/referat/endre`,
       ]}
     >
       <Route path={`${dialogmoteRoutePath}/:dialogmoteUuid/referat/endre`}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store({ ...realState, ...mockState })}>
             <Referat
-              dialogmote={dialogmoteMedFerdigstiltReferat}
+              dialogmote={dialogmote}
               pageTitle="Test"
               mode={ReferatMode.ENDRET}
             />

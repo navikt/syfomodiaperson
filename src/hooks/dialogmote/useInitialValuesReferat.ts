@@ -33,6 +33,9 @@ export const useInitialValuesReferat = (
         arbeidsgiversOppgave: latestReferat.arbeidsgiverOppgave,
         veiledersOppgave: latestReferat.veilederOppgave,
         behandlersOppgave: latestReferat.behandlerOppgave,
+        ...(latestReferat.begrunnelseEndring
+          ? { begrunnelseEndring: latestReferat.begrunnelseEndring }
+          : {}),
         andreDeltakere: latestReferat.andreDeltakere.map(
           ({ navn, funksjon }) => ({
             navn,

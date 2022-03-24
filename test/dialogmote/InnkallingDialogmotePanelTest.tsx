@@ -14,6 +14,7 @@ import userEvent from "@testing-library/user-event";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "./testData";
 import { queryClientWithMockData } from "../testQueryClient";
+import { getButton } from "../testUtils";
 
 let queryClient: QueryClient;
 
@@ -73,7 +74,7 @@ describe("InnkallingDialogmotePanel", () => {
     it("viser knapp til Dialogmoteinkalling når bruker ikke kan varsles", () => {
       renderInnkallingDialogmotePanel(brukerKanIkkeVarsles);
 
-      const button = screen.getByRole("button", { name: "Nytt dialogmøte" });
+      const button = getButton("Nytt dialogmøte");
       expect(button).to.exist;
       userEvent.click(button);
     });
@@ -87,7 +88,7 @@ describe("InnkallingDialogmotePanel", () => {
     it("viser knapp til Dialogmoteinkalling  når bruker kan varsles", () => {
       renderInnkallingDialogmotePanel(brukerKanVarsles);
 
-      const button = screen.getByRole("button", { name: "Nytt dialogmøte" });
+      const button = getButton("Nytt dialogmøte");
       expect(button).to.exist;
       userEvent.click(button);
     });

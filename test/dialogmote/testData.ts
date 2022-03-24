@@ -247,6 +247,7 @@ export const createMellomlagretReferat = () => ({
       type: DocumentComponentType.PARAGRAPH,
     },
   ],
+  begrunnelseEndring: begrunnelseEndring,
   ferdigstilt: false,
   andreDeltakere: [
     { navn: annenDeltakerNavn, funksjon: annenDeltakerFunksjon },
