@@ -32,7 +32,6 @@ import {
 import { render, screen } from "@testing-library/react";
 import { expectedReferatDocument } from "./testDataDocuments";
 import sinon from "sinon";
-import userEvent from "@testing-library/user-event";
 import { stubMellomlagreApi } from "../stubs/stubIsdialogmote";
 import { apiMock } from "../stubs/stubApi";
 import { queryClientWithMockData } from "../testQueryClient";
@@ -136,10 +135,8 @@ const passSkjemaTekstInput = () => {
   const arbeidsgiverInput = getTextInput("Arbeidsgiverens oppgave:");
   const behandlerInput = getTextInput("Behandlerens oppgave (valgfri):");
   const veilederInput = getTextInput("Veilederens oppgave (valgfri):");
-  const addDeltakerButton = screen.getByRole("button", {
-    name: "Pluss ikon Legg til en deltaker",
-  });
-  userEvent.click(addDeltakerButton);
+
+  clickButton("Pluss ikon Legg til en deltaker");
   const annenDeltakerNavnInput = screen.getAllByRole("textbox", {
     name: "Navn",
   })[1];

@@ -13,7 +13,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { expect } from "chai";
-import { daysFromToday } from "../testUtils";
+import { daysFromToday, getButton } from "../testUtils";
 
 const queryClient = new QueryClient();
 const realState = createStore(rootReducer).getState();
@@ -34,15 +34,14 @@ describe("DialogmoteMoteStatusPanel", () => {
   it("Viser knapp 'Skriv referat' når dialogmøte uten påbegynt referat", () => {
     renderDialogmoteMoteStatusPanel(dialogmote);
 
-    expect(screen.getByRole("button", { name: "Skriv referat" })).to.exist;
+    expect(getButton("Skriv referat")).to.exist;
     expect(screen.queryByRole("button", { name: "Fortsett på referatet" })).to
       .not.exist;
   });
   it("Viser knapp 'Fortsett på referat' når dialogmøte med påbegynt referat", () => {
     renderDialogmoteMoteStatusPanel(dialogmoteMedMellomlagretReferat);
 
-    expect(screen.getByRole("button", { name: "Fortsett på referatet" })).to
-      .exist;
+    expect(getButton("Fortsett på referatet")).to.exist;
     expect(screen.queryByRole("button", { name: "Skriv referat" })).to.not
       .exist;
   });

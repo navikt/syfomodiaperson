@@ -2,7 +2,10 @@ import userEvent from "@testing-library/user-event";
 import { fireEvent, screen } from "@testing-library/react";
 
 export const clickButton = (buttonText: string) =>
-  userEvent.click(screen.getByRole("button", { name: buttonText }));
+  userEvent.click(getButton(buttonText));
+
+export const getButton = (buttonText: string) =>
+  screen.getByRole("button", { name: buttonText });
 
 export const getFeilmeldingLink = (feilmelding: string) =>
   screen.queryByRole("link", {

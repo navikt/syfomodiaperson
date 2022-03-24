@@ -3,6 +3,7 @@ import React from "react";
 import { Form } from "react-final-form";
 import Datovelger, { validerDatoField } from "../../src/components/Datovelger";
 import { render, screen } from "@testing-library/react";
+import { getButton } from "../testUtils";
 
 describe("Datovelger", () => {
   describe("Datovelger", () => {
@@ -18,7 +19,7 @@ describe("Datovelger", () => {
       );
 
       expect(screen.getByRole("textbox")).to.exist;
-      expect(screen.getByRole("button", { name: "Kalender" })).to.exist;
+      expect(getButton("Kalender")).to.exist;
     });
   });
   describe("validerDatoField", () => {

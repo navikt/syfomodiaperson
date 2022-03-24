@@ -52,3 +52,8 @@ export const networkError = (message: string): ApiError => ({
 
 export const getErrorMessage = (error: unknown): string =>
   error instanceof Error ? error.message : String(error);
+
+export const isClientError = (error: unknown): boolean =>
+  error instanceof ApiErrorException &&
+  !!error.code &&
+  error.code.toString().startsWith("4");
