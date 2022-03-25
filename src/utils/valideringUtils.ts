@@ -36,8 +36,8 @@ export const texts = {
   arbeidsgiverDeltakerMissing: "Minst én person må delta fra arbeidsgiver",
   andreDeltakereMissingFunksjon: "Vennligst angi funksjon på deltaker",
   andreDeltakereMissingNavn: "Vennligst angi navn på deltaker",
-  invalidVideoLink: "Lenke må begynne med https://video.nav.no",
-  whiteSpaceInVideoLink: "Lenke kan ikke inneholde mellomrom",
+  invalidVideoLink: "Lenken må begynne med https://video.nav.no",
+  whiteSpaceInVideoLink: "Lenken kan ikke inneholde mellomrom",
 };
 
 export const harFeilmeldinger = (errors: SkjemaFeil): boolean =>
