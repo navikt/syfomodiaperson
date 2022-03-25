@@ -95,7 +95,7 @@
     "nav-frontend-veileder-style": "3.0.1",
     "nav-frontend-veilederpanel": "2.0.1",
     "nav-frontend-veilederpanel-style": "2.0.1",
-    "openid-client": "4.2.2",
+    "openid-client": "4.7.4",
     "passport": "0.5.2",
     "passport-jwt": "4.0.0",
     "postcss-preset-env": "6.7.0",
