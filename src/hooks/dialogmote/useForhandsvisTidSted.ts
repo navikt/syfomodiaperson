@@ -192,14 +192,14 @@ const fellesInfo = (
     ),
     createParagraph(endreTidStedTexts.intro2),
     createParagraphWithTitle(
-      endreTidStedTexts.moteTidTitle,
+      commonTexts.moteTidTitle,
       dato && klokkeslett
         ? tilDatoMedUkedagOgManedNavnOgKlokkeslett(
             genererDato(dato, klokkeslett)
           )
         : ""
     ),
-    createParagraphWithTitle(endreTidStedTexts.moteStedTitle, sted || ""),
+    createParagraphWithTitle(commonTexts.moteStedTitle, sted || ""),
   ];
 
   if (videoLink) {

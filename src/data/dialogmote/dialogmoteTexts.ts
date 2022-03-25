@@ -1,6 +1,4 @@
 export const innkallingTexts = {
-  moteTidTitle: "Møtetidspunkt",
-  moteStedTitle: "Møtested",
   videoLinkTitle: "Lenke til videomøte",
   arbeidstaker: {
     intro1:
@@ -56,8 +54,6 @@ export const endreTidStedTexts = {
   intro1:
     "Du har tidligere blitt innkalt til et dialogmøte. Møtet skulle vært avholdt",
   intro2: "Møtet må flyttes. Dette tidspunktet og møtestedet gjelder nå:",
-  moteTidTitle: "Møtetidspunkt",
-  moteStedTitle: "Møtested",
   videoLinkTitle: "Lenke til videomøte",
   arbeidsgiver: {
     outro1:
@@ -108,6 +104,8 @@ export const avlysningTexts = {
 };
 
 export const commonTexts = {
+  moteTidTitle: "Møtetidspunkt",
+  moteStedTitle: "Møtested",
   hilsen: "Vennlig hilsen",
   arbeidsgiverTlfLabel: "Arbeidsgivertelefonen",
   arbeidsgiverTlf: "55 55 33 36",

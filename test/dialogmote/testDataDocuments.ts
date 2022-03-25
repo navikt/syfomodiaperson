@@ -24,7 +24,6 @@ import {
 } from "@/data/dialogmote/dialogmoteTexts";
 import {
   tilDatoMedManedNavnOgKlokkeslettWithComma,
-  tilDatoMedUkedagOgManedNavn,
   tilDatoMedUkedagOgManedNavnOgKlokkeslett,
 } from "@/utils/datoUtils";
 import { genererDato } from "@/components/mote/utils";
@@ -52,12 +51,12 @@ const expectedArbeidstakerInnkalling = (
         genererDato(mote.datoAsISODateString, mote.klokkeslett)
       ),
     ],
-    title: innkallingTexts.moteTidTitle,
+    title: commonTexts.moteTidTitle,
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [mote.sted],
-    title: innkallingTexts.moteStedTitle,
+    title: commonTexts.moteStedTitle,
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -134,12 +133,12 @@ const expectedArbeidsgiverInnkalling = (
         genererDato(mote.datoAsISODateString, mote.klokkeslett)
       ),
     ],
-    title: innkallingTexts.moteTidTitle,
+    title: commonTexts.moteTidTitle,
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [mote.sted],
-    title: innkallingTexts.moteStedTitle,
+    title: commonTexts.moteStedTitle,
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -218,12 +217,12 @@ const expectedBehandlerInnkalling = (): DocumentComponentDto[] => [
         genererDato(mote.datoAsISODateString, mote.klokkeslett)
       ),
     ],
-    title: innkallingTexts.moteTidTitle,
+    title: commonTexts.moteTidTitle,
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [mote.sted],
-    title: innkallingTexts.moteStedTitle,
+    title: commonTexts.moteStedTitle,
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -647,10 +646,13 @@ export const expectedReferatDocument = (): DocumentComponentDto[] => [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [
-      `Dato: ${tilDatoMedUkedagOgManedNavn(dialogmote.tid)}`,
-      `Sted: ${dialogmote.sted}`,
-    ],
+    texts: [tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid)],
+    title: commonTexts.moteTidTitle,
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [dialogmote.sted],
+    title: commonTexts.moteStedTitle,
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -744,10 +746,13 @@ export const expectedEndretReferatDocument = (): DocumentComponentDto[] => [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [
-      `Dato: ${tilDatoMedUkedagOgManedNavn(dialogmote.tid)}`,
-      `Sted: ${dialogmote.sted}`,
-    ],
+    texts: [tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid)],
+    title: commonTexts.moteTidTitle,
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [dialogmote.sted],
+    title: commonTexts.moteStedTitle,
     type: DocumentComponentType.PARAGRAPH,
   },
   {

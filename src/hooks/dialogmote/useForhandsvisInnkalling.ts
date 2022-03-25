@@ -128,14 +128,14 @@ const fellesInfo = (
       `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
     ),
     createParagraphWithTitle(
-      innkallingTexts.moteTidTitle,
+      commonTexts.moteTidTitle,
       dato && klokkeslett
         ? tilDatoMedUkedagOgManedNavnOgKlokkeslett(
             genererDato(dato, klokkeslett)
           )
         : ""
     ),
-    createParagraphWithTitle(innkallingTexts.moteStedTitle, sted || ""),
+    createParagraphWithTitle(commonTexts.moteStedTitle, sted || ""),
   ];
   if (videoLink) {
     components.push(createLink(innkallingTexts.videoLinkTitle, videoLink));

@@ -9,7 +9,7 @@ import {
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import {
   tilDatoMedManedNavnOgKlokkeslettWithComma,
-  tilDatoMedUkedagOgManedNavn,
+  tilDatoMedUkedagOgManedNavnOgKlokkeslett,
 } from "@/utils/datoUtils";
 import {
   createHeaderH1,
@@ -20,7 +20,7 @@ import {
 } from "@/utils/documentComponentUtils";
 import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
 import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
-import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
+import { commonTexts, referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { useForhandsvisningHilsen } from "./useForhandsvisningHilsen";
 import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { behandlerDeltokTekst } from "@/utils/behandlerUtils";
@@ -127,10 +127,11 @@ const info = (
 
   return [
     createParagraph(`F.nr. ${navbruker.kontaktinfo.fnr}`),
-    createParagraph(
-      `Dato: ${tilDatoMedUkedagOgManedNavn(dialogmote.tid)}`,
-      `Sted: ${dialogmote.sted}`
+    createParagraphWithTitle(
+      commonTexts.moteTidTitle,
+      tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid)
     ),
+    createParagraphWithTitle(commonTexts.moteStedTitle, dialogmote.sted),
     createParagraphWithTitle(
       referatTexts.deltakereTitle,
       ...deltakereTekst,
