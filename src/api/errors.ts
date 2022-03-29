@@ -55,5 +55,6 @@ export const getErrorMessage = (error: unknown): string =>
 
 export const isClientError = (error: unknown): boolean =>
   error instanceof ApiErrorException &&
+  error.error.type !== ErrorType.LOGIN_REQUIRED &&
   !!error.code &&
   error.code.toString().startsWith("4");
