@@ -77,10 +77,8 @@ describe("PersonkortLege", () => {
       const view = <FastlegeVikar fastlegeVikarer={fastlegeVikarer} />;
       render(view);
 
-      expect(screen.getAllByRole("listitem")).to.have.length(
-        fastlegeVikarer.length
-      );
       expect(screen.getByText(/Vikarlege Vikarsen/)).to.exist;
+      expect(screen.getByText("60%")).to.exist;
       expect(screen.getByText(/Legensvikar Vikarheim/)).to.exist;
     });
   });

@@ -63,6 +63,7 @@ export const fastlegerMock = [
       kodeVerdi: RelasjonKodeVerdi.VIKAR,
       kodeTekst: "Vikar",
     },
+    stillingsprosent: 60,
   },
   {
     ...fastlege,
@@ -80,5 +81,6 @@ export const fastlegerMock = [
       kodeVerdi: RelasjonKodeVerdi.VIKAR,
       kodeTekst: "Vikar",
     },
+    stillingsprosent: null,
   },
 ];

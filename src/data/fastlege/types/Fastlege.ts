@@ -47,4 +47,5 @@ export interface Fastlege {
   pasientforhold: Periode;
   gyldighet: Periode;
   relasjon: Relasjon;
+  stillingsprosent?: number;
 }

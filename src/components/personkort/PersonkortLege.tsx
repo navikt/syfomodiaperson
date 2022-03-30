@@ -7,6 +7,7 @@ import { Column, Row } from "nav-frontend-grid";
 import { Systemtittel, Undertekst } from "nav-frontend-typografi";
 import styled from "styled-components";
 import PersonkortInformasjon from "@/components/personkort/PersonkortInformasjon";
+import { FlexColumn, FlexRow } from "@/components/Layout";
 
 const texts = {
   name: "Legekontor",
@@ -37,14 +38,26 @@ export const hentTekstFastlegePostadresse = (postadresse: Adresse) => {
     : "";
 };
 
+const FastlegeVikarTekst = styled(FlexColumn)`
+  margin-right: 1.5em;
+`;
+
 const fastlegeVikarTekst = (fastlegeVikar: Fastlege) => {
   const vikarlegeNavn = hentTekstFastlegeNavn(fastlegeVikar);
   const periodeTekst = `${restdatoTilLesbarDato(
     fastlegeVikar.gyldighet.fom
   )} - ${restdatoTilLesbarDato(fastlegeVikar.gyldighet.tom)}`;
+  const stillingsprosentTekst =
+    fastlegeVikar.stillingsprosent && `${fastlegeVikar.stillingsprosent}%`;
   return (
     <>
-      <b>{vikarlegeNavn}</b> {periodeTekst}
+      <FastlegeVikarTekst>
+        <b>{vikarlegeNavn}</b>
+      </FastlegeVikarTekst>
+      <FastlegeVikarTekst>{periodeTekst}</FastlegeVikarTekst>
+      {stillingsprosentTekst && (
+        <FastlegeVikarTekst>{stillingsprosentTekst}</FastlegeVikarTekst>
+      )}
     </>
   );
 };
@@ -61,11 +74,11 @@ export const FastlegeVikar = ({
       <Column>
         <Systemtittel>{texts.vikar}</Systemtittel>
       </Column>
-      <ul>
+      <>
         {fastlegeVikarer.map((lege, idx) => {
-          return <li key={idx}>{fastlegeVikarTekst(lege)}</li>;
+          return <FlexRow key={idx}>{fastlegeVikarTekst(lege)}</FlexRow>;
         })}
-      </ul>
+      </>
     </PersonKortLegeRow>
   );
 };
