@@ -11,7 +11,7 @@ export const Easter = () => {
   const [imgSrc, setImgSrc] = useState<string>(EasterRoll);
 
   const replayGif = () => {
-    setImgSrc("");
+    setImgSrc("none");
     setTimeout(() => {
       setImgSrc(EasterRoll);
     }, 0);
