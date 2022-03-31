@@ -10,6 +10,7 @@ import {
   Innholdstittel,
   Normaltekst,
   Sidetittel,
+  Systemtittel,
 } from "nav-frontend-typografi";
 import React, { ReactElement } from "react";
 import {
@@ -62,8 +63,8 @@ const DocumentComponentHeaderH1 = (texts: string[]) => {
 const DocumentComponentHeaderH2 = (texts: string[]) => {
   const header = texts.length === 0 ? "" : texts[0];
   return (
-    <FlexRow topPadding={PaddingSize.MD} bottomPadding={PaddingSize.MD}>
-      <Innholdstittel>{header}</Innholdstittel>
+    <FlexRow topPadding={PaddingSize.SM}>
+      <Systemtittel>{header}</Systemtittel>
     </FlexRow>
   );
 };
