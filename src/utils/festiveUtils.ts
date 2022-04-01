@@ -53,10 +53,10 @@ const isApril = (date: Date) => {
 };
 
 const isEasterDate = (date: Date) => {
-  if (date.getDate() === 7) {
+  if (date.getDate() === 6) {
     return isAfternoon(date);
   }
-  return date.getDate() >= 8 && date.getDate() <= 18;
+  return date.getDate() >= 7 && date.getDate() <= 18;
 };
 
 const isAfternoon = (date: Date) => {
