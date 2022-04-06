@@ -10,7 +10,7 @@ export const createLink = (
 ): DocumentComponentDto => ({
   type: DocumentComponentType.LINK,
   title,
-  texts: [text],
+  texts: [text.trim()],
 });
 export const createParagraphWithTitle = (
   title: string,

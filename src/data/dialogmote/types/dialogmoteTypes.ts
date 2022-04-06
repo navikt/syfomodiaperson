@@ -118,17 +118,10 @@ export interface DialogmoteInnkallingDTO {
     fritekstInnkalling?: string;
     innkalling: DocumentComponentDto[];
   };
-  tidSted: {
-    sted: string;
-    tid: string;
-    videoLink?: string;
-  };
+  tidSted: TidStedDto;
 }
 
-export interface EndreTidStedDialogmoteDTO {
-  sted: string;
-  tid: string;
-  videoLink?: string;
+export interface EndreTidStedDialogmoteDTO extends TidStedDto {
   arbeidstaker: {
     begrunnelse: string;
     endringsdokument: DocumentComponentDto[];
@@ -141,6 +134,12 @@ export interface EndreTidStedDialogmoteDTO {
     begrunnelse: string;
     endringsdokument: DocumentComponentDto[];
   };
+}
+
+export interface TidStedDto {
+  sted: string;
+  tid: string;
+  videoLink?: string;
 }
 
 export interface AvlysDialogmoteDTO {

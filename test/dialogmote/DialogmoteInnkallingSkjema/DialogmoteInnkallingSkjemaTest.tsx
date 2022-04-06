@@ -27,6 +27,10 @@ import sinon from "sinon";
 import { queryClientWithMockData } from "../../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { VIRKSOMHET_UTEN_NARMESTE_LEDER } from "../../../mock/common/mockConstants";
+import {
+  DialogmoteInnkallingDTO,
+  DocumentComponentType,
+} from "@/data/dialogmote/types/dialogmoteTypes";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -160,6 +164,36 @@ describe("DialogmoteInnkallingSkjema", () => {
       .exist;
     expect(screen.queryByLabelText("Nærmeste leder")).to.not.exist;
     expect(screen.queryByLabelText("Epost")).to.not.exist;
+  });
+
+  it("trimmer videolenke i innkallingen som sendes til api", () => {
+    stubInnkallingApi(apiMock());
+    renderDialogmoteInnkallingSkjema();
+    passSkjemaInput();
+
+    const link = "https://video.nav.no/abc";
+    const videoLinkInput = getTextInput("Lenke til videomøte (valgfritt)");
+    const linkWithWhitespace = `   ${link}  `;
+    changeTextInput(videoLinkInput, linkWithWhitespace);
+    clickButton("Send innkallingene");
+
+    const innkallingMutation = queryClient.getMutationCache().getAll()[0];
+    const {
+      tidSted: { videoLink },
+      arbeidsgiver,
+      arbeidstaker,
+    } = innkallingMutation.options.variables as DialogmoteInnkallingDTO;
+
+    const linkDocumentComponents = [
+      ...arbeidsgiver.innkalling,
+      ...arbeidstaker.innkalling,
+    ].filter((d) => d.type === DocumentComponentType.LINK);
+
+    expect(linkDocumentComponents).to.have.length(2);
+    linkDocumentComponents.forEach((documentComponentLink) =>
+      expect(documentComponentLink.texts[0]).to.equal(link)
+    );
+    expect(videoLink).to.equal(link);
   });
 });
 

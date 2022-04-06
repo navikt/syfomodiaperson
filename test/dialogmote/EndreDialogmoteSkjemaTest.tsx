@@ -28,7 +28,11 @@ import {
   mockState,
   moteTekster,
 } from "./testData";
-import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import {
+  DialogmoteDTO,
+  DocumentComponentType,
+  EndreTidStedDialogmoteDTO,
+} from "@/data/dialogmote/types/dialogmoteTypes";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MAX_LENGTH_AVLYS_BEGRUNNELSE } from "@/components/dialogmote/avlys/AvlysDialogmoteSkjema";
@@ -200,6 +204,34 @@ describe("EndreDialogmoteSkjemaTest", () => {
       tid: endretMote.datoTid,
     };
     expect(endreMutation.options.variables).to.deep.equal(expectedEndring);
+  });
+
+  it("trimmer videolenke i endring som sendes til api", () => {
+    stubEndreApi(apiMock(), dialogmote.uuid);
+    renderEndreDialogmoteSkjema(dialogmote);
+    passSkjemaInput();
+
+    const link = "https://video.nav.no/abc";
+    const videoLinkInput = getTextInput("Lenke til videomøte (valgfritt)");
+    const linkWithWhitespace = `   ${link}  `;
+    changeTextInput(videoLinkInput, linkWithWhitespace);
+
+    clickButton("Send");
+
+    const endreMutation = queryClient.getMutationCache().getAll()[0];
+    const { videoLink, arbeidsgiver, arbeidstaker } = endreMutation.options
+      .variables as EndreTidStedDialogmoteDTO;
+
+    const linkDocumentComponents = [
+      ...arbeidsgiver.endringsdokument,
+      ...arbeidstaker.endringsdokument,
+    ].filter((d) => d.type === DocumentComponentType.LINK);
+
+    expect(linkDocumentComponents).to.have.length(2);
+    linkDocumentComponents.forEach((documentComponentLink) =>
+      expect(documentComponentLink.texts[0]).to.equal(link)
+    );
+    expect(videoLink).to.equal(link);
   });
 
   it("endrer møte med behandler ved submit når behandler er med", () => {

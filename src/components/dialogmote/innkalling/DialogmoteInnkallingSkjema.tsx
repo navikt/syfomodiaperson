@@ -13,8 +13,10 @@ import {
   validerTidspunkt,
   validerVideoLink,
 } from "@/utils/valideringUtils";
-import { DialogmoteInnkallingDTO } from "@/data/dialogmote/types/dialogmoteTypes";
-import { genererDato } from "../../mote/utils";
+import {
+  DialogmoteInnkallingDTO,
+  TidStedDto,
+} from "@/data/dialogmote/types/dialogmoteTypes";
 import { Link, Redirect } from "react-router-dom";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { FlexRow } from "../../Layout";
@@ -34,6 +36,8 @@ import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/Behandl
 import styled from "styled-components";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useTrackOnClick } from "@/data/logging/loggingHooks";
+import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
+import { TidStedSkjemaValues } from "@/data/dialogmote/types/skjemaTypes";
 
 interface DialogmoteInnkallingSkjemaTekster {
   fritekstArbeidsgiver: string;
@@ -42,12 +46,9 @@ interface DialogmoteInnkallingSkjemaTekster {
 }
 
 export interface DialogmoteInnkallingSkjemaValues
-  extends DialogmoteInnkallingSkjemaTekster {
+  extends DialogmoteInnkallingSkjemaTekster,
+    TidStedSkjemaValues {
   arbeidsgiver: string;
-  klokkeslett: string;
-  dato: string;
-  sted: string;
-  videoLink?: string;
 }
 
 interface DialogmoteInnkallingSkjemaProps {
@@ -74,6 +75,7 @@ const texts = {
 
 const toInnkalling = (
   values: DialogmoteInnkallingSkjemaValues,
+  tidStedDto: TidStedDto,
   fnr: string,
   innkallingDocumentGenerator: ForhandsvisInnkallingGenerator,
   valgtBehandler: BehandlerDialogmeldingDTO | undefined
@@ -95,11 +97,7 @@ const toInnkalling = (
         valgtBehandler
       ),
     },
-    tidSted: {
-      sted: values.sted,
-      videoLink: values.videoLink,
-      tid: genererDato(values.dato, values.klokkeslett),
-    },
+    tidSted: tidStedDto,
   };
 
   if (valgtBehandler) {
@@ -129,6 +127,7 @@ const DialogmoteInnkallingSkjema = ({
     updateFeilUtbedret,
   } = useFeilUtbedret();
   const innkallingDocumentGenerator = useForhandsvisInnkalling();
+  const { toTidStedDto } = useSkjemaValuesToDto();
   const opprettInnkalling = useOpprettInnkallingDialogmote(fnr);
 
   const validate = (
@@ -185,6 +184,7 @@ const DialogmoteInnkallingSkjema = ({
     trackOnClick(texts.behandler, selectedBehandler?.type || "ingen behandler");
     const dialogmoteInnkalling = toInnkalling(
       values,
+      toTidStedDto(values),
       fnr,
       innkallingDocumentGenerator,
       selectedBehandler

@@ -20,7 +20,6 @@ import EndreDialogmoteTekster, {
   MAX_LENGTH_ENDRE_BEGRUNNELSE,
 } from "./EndreDialogmoteTekster";
 import { SkjemaFeiloppsummering } from "../../SkjemaFeiloppsummering";
-import { genererDato } from "../../mote/utils";
 import { useForhandsvisTidSted } from "@/hooks/dialogmote/useForhandsvisTidSted";
 import {
   DialogmoteDTO,
@@ -29,6 +28,8 @@ import {
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { useEndreTidStedDialogmote } from "@/data/dialogmote/useEndreTidStedDialogmote";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
+import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
+import { TidStedSkjemaValues } from "@/data/dialogmote/types/skjemaTypes";
 
 const texts = {
   send: "Send",
@@ -49,12 +50,9 @@ interface EndreTidStedSkjemaTekster {
   begrunnelseBehandler?: string;
 }
 
-export interface EndreTidStedSkjemaValues extends EndreTidStedSkjemaTekster {
-  klokkeslett: string;
-  dato: string;
-  sted: string;
-  videoLink?: string;
-}
+export interface EndreTidStedSkjemaValues
+  extends EndreTidStedSkjemaTekster,
+    TidStedSkjemaValues {}
 
 type EndreTidStedDialogmoteSkjemaFeil = Partial<
   Pick<
@@ -103,6 +101,7 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
     generateArbeidsgiverTidStedDocument,
     generateBehandlerTidStedDocument,
   } = useForhandsvisTidSted(dialogmote);
+  const { toTidStedDto } = useSkjemaValuesToDto();
 
   const validate = (
     values: Partial<EndreTidStedSkjemaValues>
@@ -131,9 +130,7 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
     values: EndreTidStedSkjemaValues
   ): EndreTidStedDialogmoteDTO => {
     const endreTidStedDto: EndreTidStedDialogmoteDTO = {
-      sted: values.sted,
-      tid: genererDato(values.dato, values.klokkeslett),
-      videoLink: values.videoLink,
+      ...toTidStedDto(values),
       arbeidstaker: {
         begrunnelse: values.begrunnelseArbeidstaker,
         endringsdokument: generateArbeidstakerTidStedDocument(values),
