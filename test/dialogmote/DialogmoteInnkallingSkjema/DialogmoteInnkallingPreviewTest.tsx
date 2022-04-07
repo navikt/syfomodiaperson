@@ -20,12 +20,12 @@ import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { Provider } from "react-redux";
 import DialogmoteInnkallingSkjema from "@/components/dialogmote/innkalling/DialogmoteInnkallingSkjema";
 import React from "react";
-import { behandlereDialogmeldingQueryKeys } from "@/data/behandlerdialogmelding/behandlereDialogmeldingQueryHooks";
 import { changeTextInput, getTextInput } from "../../testUtils";
 import { expectedInnkallingDocuments } from "../testDataDocuments";
 import sinon from "sinon";
 import { queryClientWithMockData } from "../../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
+import { behandlereQueryKeys } from "@/data/behandler/behandlereQueryHooks";
 
 let queryClient;
 const store = configureStore([]);
@@ -110,9 +110,7 @@ describe("Dialogmoteinnkallingskjema", () => {
 
   it("previews innkalling to behandler", () => {
     queryClient.setQueryData(
-      behandlereDialogmeldingQueryKeys.behandleredialogmelding(
-        arbeidstaker.personident
-      ),
+      behandlereQueryKeys.behandlere(arbeidstaker.personident),
       () => [behandler]
     );
     renderDialogmoteInnkallingSkjema();

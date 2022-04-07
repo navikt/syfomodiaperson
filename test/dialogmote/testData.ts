@@ -8,10 +8,6 @@ import {
   MotedeltakerVarselType,
   VarselSvarDTO,
 } from "@/data/dialogmote/types/dialogmoteTypes";
-import {
-  BehandlerDialogmeldingDTO,
-  BehandlerType,
-} from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 import { leggTilDagerPaDato, toDatePrettyPrint } from "@/utils/datoUtils";
 import { InputDateStringToISODateString } from "nav-datovelger/lib/utils/dateFormatUtils";
 import {
@@ -27,6 +23,7 @@ import { capitalizeWord } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { RootState } from "@/data/rootState";
+import { BehandlerDTO, BehandlerType } from "@/data/behandler/BehandlerDTO";
 
 export const arbeidstaker = {
   navn: ARBEIDSTAKER_DEFAULT_FULL_NAME,
@@ -44,7 +41,7 @@ export const veileder = VEILEDER_DEFAULT;
 
 export const narmesteLederNavn = NARMESTE_LEDER_DEFAULT.navn;
 
-export const behandler: BehandlerDialogmeldingDTO = {
+export const behandler: BehandlerDTO = {
   fnr: "01038521470",
   behandlerRef: "behandler-ref-uuid",
   kontor: "Greendale Legekontor",

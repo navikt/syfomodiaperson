@@ -7,7 +7,7 @@ import { DialogmoteInnkallingSkjemaValues } from "./DialogmoteInnkallingSkjema";
 import { useForhandsvisInnkalling } from "@/hooks/dialogmote/useForhandsvisInnkalling";
 import { Forhandsvisning } from "../Forhandsvisning";
 import FritekstSeksjon from "../FritekstSeksjon";
-import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
+import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { AlertstripeFullbredde } from "@/components/AlertstripeFullbredde";
 
@@ -40,7 +40,7 @@ const ReservertAlert = styled(AlertstripeFullbredde)`
 `;
 
 interface DialogmoteInnkallingTeksterProps {
-  selectedBehandler: BehandlerDialogmeldingDTO | undefined;
+  selectedBehandler: BehandlerDTO | undefined;
 }
 
 const DialogmoteInnkallingTekster = ({

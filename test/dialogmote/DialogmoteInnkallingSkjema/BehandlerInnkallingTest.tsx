@@ -18,7 +18,6 @@ import {
   maxLengthErrorMessage,
 } from "../../testUtils";
 import { MAX_LENGTH_INNKALLING_FRITEKST } from "@/components/dialogmote/innkalling/DialogmoteInnkallingTekster";
-import { behandlereDialogmeldingQueryKeys } from "@/data/behandlerdialogmelding/behandlereDialogmeldingQueryHooks";
 import { MemoryRouter, Route } from "react-router-dom";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { Provider } from "react-redux";
@@ -35,6 +34,7 @@ import { expectedInnkallingDocuments } from "../testDataDocuments";
 import sinon from "sinon";
 import { queryClientWithMockData } from "../../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
+import { behandlereQueryKeys } from "@/data/behandler/behandlereQueryHooks";
 
 let queryClient;
 const store = configureStore([]);
@@ -47,9 +47,7 @@ describe("Dialogmoteinnkallingskjema", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
     queryClient.setQueryData(
-      behandlereDialogmeldingQueryKeys.behandleredialogmelding(
-        arbeidstaker.personident
-      ),
+      behandlereQueryKeys.behandlere(arbeidstaker.personident),
       () => [behandler]
     );
 

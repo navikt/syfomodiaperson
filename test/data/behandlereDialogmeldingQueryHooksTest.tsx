@@ -5,13 +5,13 @@ import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook } from "@testing-library/react-hooks";
 import { expect } from "chai";
 import { stubBehandlereDialogmeldingApi } from "../stubs/stubIsdialogmelding";
-import { useBehandlereDialogmeldingQuery } from "@/data/behandlerdialogmelding/behandlereDialogmeldingQueryHooks";
 import { behandlereDialogmeldingMock } from "../../mock/isdialogmelding/behandlereDialogmeldingMock";
+import { useBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
 
 let queryClient;
 let apiMockScope;
 
-describe("behandlereDialogmeldingQueryHooks tests", () => {
+describe("behandlereQueryHooks tests", () => {
   beforeEach(() => {
     queryClient = new QueryClient();
     apiMockScope = apiMock();
@@ -24,12 +24,9 @@ describe("behandlereDialogmeldingQueryHooks tests", () => {
     stubBehandlereDialogmeldingApi(apiMockScope);
     const wrapper = queryHookWrapper(queryClient);
 
-    const { result, waitFor } = renderHook(
-      () => useBehandlereDialogmeldingQuery(),
-      {
-        wrapper,
-      }
-    );
+    const { result, waitFor } = renderHook(() => useBehandlereQuery(), {
+      wrapper,
+    });
 
     await waitFor(() => result.current.isSuccess);
 

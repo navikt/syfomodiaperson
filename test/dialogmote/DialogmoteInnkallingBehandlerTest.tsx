@@ -3,13 +3,8 @@ import React from "react";
 import DialogmoteInnkallingBehandler, {
   texts,
 } from "@/components/dialogmote/innkalling/DialogmoteInnkallingBehandler";
-import {
-  BehandlerDialogmeldingDTO,
-  BehandlerType,
-} from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 import { QueryClientProvider } from "react-query";
 import { arbeidstaker, mockState } from "./testData";
-import { behandlereDialogmeldingQueryKeys } from "@/data/behandlerdialogmelding/behandlereDialogmeldingQueryHooks";
 import { MemoryRouter, Route } from "react-router-dom";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { Provider } from "react-redux";
@@ -18,6 +13,8 @@ import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import { render, screen } from "@testing-library/react";
 import { queryClientWithMockData } from "../testQueryClient";
+import { BehandlerDTO, BehandlerType } from "@/data/behandler/BehandlerDTO";
+import { behandlereQueryKeys } from "@/data/behandler/behandlereQueryHooks";
 
 let queryClient;
 const noOpMethod = () => {
@@ -33,7 +30,7 @@ describe("DialogmoteInnkallingBehandler", () => {
     mellomnavn: "Las",
     etternavn: "Legesen",
   };
-  const behandlere: BehandlerDialogmeldingDTO[] = [fastlege];
+  const behandlere: BehandlerDTO[] = [fastlege];
 
   beforeEach(() => {
     queryClient = queryClientWithMockData();
@@ -41,9 +38,7 @@ describe("DialogmoteInnkallingBehandler", () => {
 
   it("shows a list of behandlere", () => {
     queryClient.setQueryData(
-      behandlereDialogmeldingQueryKeys.behandleredialogmelding(
-        arbeidstaker.personident
-      ),
+      behandlereQueryKeys.behandlere(arbeidstaker.personident),
       () => behandlere
     );
     renderDialogmoteInnkallingBehandler();
@@ -63,9 +58,7 @@ describe("DialogmoteInnkallingBehandler", () => {
 
   it("displays alert message when no behandlere", () => {
     queryClient.setQueryData(
-      behandlereDialogmeldingQueryKeys.behandleredialogmelding(
-        arbeidstaker.personident
-      ),
+      behandlereQueryKeys.behandlere(arbeidstaker.personident),
       () => []
     );
     renderDialogmoteInnkallingBehandler();

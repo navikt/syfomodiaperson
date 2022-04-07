@@ -1,10 +1,10 @@
-import { BehandlerDTO } from "@/data/sykmelding/types/BehandlerDTO";
-import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
+import { SykmeldingBehandlerDTO } from "@/data/sykmelding/types/SykmeldingBehandlerDTO";
+import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { DialogmotedeltakerBehandlerDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { capitalizeWord } from "@/utils/stringUtils";
 
 export const behandlerNavn = (
-  behandler: BehandlerDTO | BehandlerDialogmeldingDTO
+  behandler: SykmeldingBehandlerDTO | BehandlerDTO
 ): string => {
   if (behandler.mellomnavn) {
     return `${behandler.fornavn} ${behandler.mellomnavn} ${behandler.etternavn}`;

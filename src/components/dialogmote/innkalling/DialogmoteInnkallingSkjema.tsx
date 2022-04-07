@@ -32,7 +32,7 @@ import { useOpprettInnkallingDialogmote } from "@/data/dialogmote/useOpprettInnk
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import DialogmoteInnkallingBehandler from "@/components/dialogmote/innkalling/DialogmoteInnkallingBehandler";
-import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
+import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import styled from "styled-components";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useTrackOnClick } from "@/data/logging/loggingHooks";
@@ -78,7 +78,7 @@ const toInnkalling = (
   tidStedDto: TidStedDto,
   fnr: string,
   innkallingDocumentGenerator: ForhandsvisInnkallingGenerator,
-  valgtBehandler: BehandlerDialogmeldingDTO | undefined
+  valgtBehandler: BehandlerDTO | undefined
 ): DialogmoteInnkallingDTO => {
   const innkalling: DialogmoteInnkallingDTO = {
     arbeidsgiver: {
@@ -171,10 +171,7 @@ const DialogmoteInnkallingSkjema = ({
   };
   const trackOnClick = useTrackOnClick();
 
-  const [
-    selectedBehandler,
-    setSelectedBehandler,
-  ] = useState<BehandlerDialogmeldingDTO>();
+  const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
 
   if (opprettInnkalling.isSuccess) {
     return <Redirect to={moteoversiktRoutePath} />;

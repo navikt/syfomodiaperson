@@ -4,7 +4,7 @@ import {
   DocumentComponentType,
   MotedeltakerVarselType,
 } from "../../src/data/dialogmote/types/dialogmoteTypes";
-import { BehandlerType } from "../../src/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
+import { BehandlerType } from "../../src/data/behandler/BehandlerDTO";
 import {
   ARBEIDSTAKER_DEFAULT,
   ENHET_GRUNERLOKKA,

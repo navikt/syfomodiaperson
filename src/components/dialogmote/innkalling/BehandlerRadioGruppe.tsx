@@ -1,10 +1,8 @@
 import React, { ReactElement } from "react";
 import { Radio, RadioGruppe } from "nav-frontend-skjema";
 import styled from "styled-components";
-import {
-  BehandlerDialogmeldingDTO,
-  behandlerOneliner,
-} from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
+import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
+import { capitalizeWord } from "@/utils/stringUtils";
 
 const texts = {
   behandlerLegend: "Behandler som inviteres til dialogmøtet",
@@ -13,13 +11,24 @@ const texts = {
   noBehandler: "Ingen behandler",
 };
 
+const behandlerOneliner = (behandler: BehandlerDTO): string => {
+  const name = [behandler.fornavn, behandler.mellomnavn, behandler.etternavn]
+    .filter(Boolean)
+    .join(" ");
+  const typeAndName = `${capitalizeWord(behandler.type)}: ${name}`;
+  const office = !!behandler.kontor ? capitalizeWord(behandler.kontor) : "";
+  const phone = !!behandler.telefon ? `tlf ${behandler.telefon}` : "";
+
+  return [typeAndName, office, phone].filter(Boolean).join(", ");
+};
+
 export const StyledRadioGruppe = styled(RadioGruppe)`
   margin-bottom: 1em;
 `;
 
 interface BehandlerRadioGruppeProps {
-  behandlere: BehandlerDialogmeldingDTO[];
-  setSelectedBehandler: (behandler?: BehandlerDialogmeldingDTO) => void;
+  behandlere: BehandlerDTO[];
+  setSelectedBehandler: (behandler?: BehandlerDTO) => void;
 }
 
 const BehandlerRadioGruppe = ({

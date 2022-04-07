@@ -16,7 +16,7 @@ import {
   createParagraphWithTitle,
 } from "@/utils/documentComponentUtils";
 import { useForhandsvisningHilsen } from "./useForhandsvisningHilsen";
-import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
+import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { capitalizeWord } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useForhandsvisningIntro } from "@/hooks/dialogmote/useForhandsvisningIntro";
@@ -25,12 +25,12 @@ import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 export interface ForhandsvisInnkallingGenerator {
   generateArbeidstakerInnkallingDocument(
     values: Partial<DialogmoteInnkallingSkjemaValues>,
-    valgtBehandler: BehandlerDialogmeldingDTO | undefined
+    valgtBehandler: BehandlerDTO | undefined
   ): DocumentComponentDto[];
 
   generateArbeidsgiverInnkallingDocument(
     values: Partial<DialogmoteInnkallingSkjemaValues>,
-    valgtBehandler: BehandlerDialogmeldingDTO | undefined
+    valgtBehandler: BehandlerDTO | undefined
   ): DocumentComponentDto[];
 
   generateBehandlerInnkallingDocument(
@@ -55,7 +55,7 @@ export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
 
   const generateArbeidstakerInnkallingDocument = (
     values: Partial<DialogmoteInnkallingSkjemaValues>,
-    valgtBehandler: BehandlerDialogmeldingDTO | undefined
+    valgtBehandler: BehandlerDTO | undefined
   ) => {
     const documentComponents = [
       ...fellesInfo(values, getValgtArbeidsgiver(values)),
@@ -72,7 +72,7 @@ export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
 
   const generateArbeidsgiverInnkallingDocument = (
     values: Partial<DialogmoteInnkallingSkjemaValues>,
-    valgtBehandler: BehandlerDialogmeldingDTO | undefined
+    valgtBehandler: BehandlerDTO | undefined
   ) => {
     const documentComponents = [
       ...fellesInfo(values, getValgtArbeidsgiver(values)),
@@ -149,7 +149,7 @@ const fellesInfo = (
 };
 
 const arbeidstakerIntro = (
-  valgtBehandler: BehandlerDialogmeldingDTO | undefined
+  valgtBehandler: BehandlerDTO | undefined
 ): DocumentComponentDto[] => {
   const introParagraph2 = !!valgtBehandler
     ? createParagraph(innkallingTexts.arbeidstaker.intro2WithBehandler)
@@ -162,7 +162,7 @@ const arbeidstakerIntro = (
 };
 
 const arbeidsgiverIntro = (
-  valgtBehandler: BehandlerDialogmeldingDTO | undefined
+  valgtBehandler: BehandlerDTO | undefined
 ): DocumentComponentDto[] => {
   const introParagraph2 = !!valgtBehandler
     ? createParagraph(innkallingTexts.arbeidsgiver.intro2WithBehandler)
@@ -183,7 +183,7 @@ const behandlerIntro = (): DocumentComponentDto[] => {
 
 const addBehandlerTypeAndName = (
   preText: string,
-  valgtBehandler: BehandlerDialogmeldingDTO
+  valgtBehandler: BehandlerDTO
 ) => {
   return `${preText} ${capitalizeWord(valgtBehandler.type)} ${behandlerNavn(
     valgtBehandler
@@ -191,7 +191,7 @@ const addBehandlerTypeAndName = (
 };
 
 const arbeidstakerOutro = (
-  valgtBehandler: BehandlerDialogmeldingDTO | undefined
+  valgtBehandler: BehandlerDTO | undefined
 ): DocumentComponentDto[] => {
   const outro1 = valgtBehandler
     ? addBehandlerTypeAndName(
@@ -211,7 +211,7 @@ const arbeidstakerOutro = (
 };
 
 const arbeidsgiverOutro = (
-  valgtBehandler: BehandlerDialogmeldingDTO | undefined
+  valgtBehandler: BehandlerDTO | undefined
 ): DocumentComponentDto[] => {
   const outro1 = valgtBehandler
     ? addBehandlerTypeAndName(

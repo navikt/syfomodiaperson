@@ -1,6 +1,6 @@
 import { AdresseDTO } from "./AdresseDTO";
 
-export interface BehandlerDTO {
+export interface SykmeldingBehandlerDTO {
   readonly fornavn: string;
   readonly mellomnavn?: string;
   readonly etternavn: string;

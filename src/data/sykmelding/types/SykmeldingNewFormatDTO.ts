@@ -7,7 +7,7 @@ import { PrognoseDTO } from "./PrognoseDTO";
 import { SporsmalSvarDTO } from "./SporsmalSvarDTO";
 import { MeldingTilNavDTO } from "./MeldingTilNavDTO";
 import { KontaktMedPasientDTO } from "./KontaktMedPasientDTO";
-import { BehandlerDTO } from "./BehandlerDTO";
+import { SykmeldingBehandlerDTO } from "./SykmeldingBehandlerDTO";
 import { MerknadDTO } from "./MerknadDTO";
 
 export interface SykmeldingNewFormatDTO {
@@ -29,7 +29,7 @@ export interface SykmeldingNewFormatDTO {
   readonly meldingTilArbeidsgiver?: string;
   readonly kontaktMedPasient: KontaktMedPasientDTO;
   readonly behandletTidspunkt: string;
-  readonly behandler: BehandlerDTO;
+  readonly behandler: SykmeldingBehandlerDTO;
   readonly syketilfelleStartDato?: string;
   readonly navnFastlege?: string;
   readonly egenmeldt?: boolean;

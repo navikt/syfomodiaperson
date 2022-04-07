@@ -2,11 +2,11 @@ import React, { ReactElement } from "react";
 import styled from "styled-components";
 import { Innholdstittel } from "nav-frontend-typografi";
 import DialogmoteInnkallingSkjemaSeksjon from "@/components/dialogmote/innkalling/DialogmoteInnkallingSkjemaSeksjon";
-import { BehandlerDialogmeldingDTO } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
 import AppSpinner from "@/components/AppSpinner";
 import { AlertstripeFullbredde } from "@/components/AlertstripeFullbredde";
 import BehandlerRadioGruppe from "@/components/dialogmote/innkalling/BehandlerRadioGruppe";
-import { useBehandlereDialogmeldingQuery } from "@/data/behandlerdialogmelding/behandlereDialogmeldingQueryHooks";
+import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
+import { useBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
 
 const BehandlerTittel = styled(Innholdstittel)`
   margin-bottom: 1em;
@@ -21,13 +21,13 @@ export const texts = {
 };
 
 interface DialogmoteInnkallingBehandlerProps {
-  setSelectedBehandler: (behandler?: BehandlerDialogmeldingDTO) => void;
+  setSelectedBehandler: (behandler?: BehandlerDTO) => void;
 }
 
 const DialogmoteInnkallingBehandler = ({
   setSelectedBehandler,
 }: DialogmoteInnkallingBehandlerProps): ReactElement => {
-  const { data: behandlere, isLoading } = useBehandlereDialogmeldingQuery();
+  const { data: behandlere, isLoading } = useBehandlereQuery();
 
   return (
     <DialogmoteInnkallingSkjemaSeksjon>

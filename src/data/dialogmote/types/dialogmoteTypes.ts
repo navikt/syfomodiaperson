@@ -1,5 +1,5 @@
 import { ReferatDTO } from "./dialogmoteReferatTypes";
-import { BehandlerType } from "@/data/behandlerdialogmelding/BehandlerDialogmeldingDTO";
+import { BehandlerType } from "@/data/behandler/BehandlerDTO";
 
 export enum MotedeltakerVarselType {
   AVLYST = "AVLYST",
