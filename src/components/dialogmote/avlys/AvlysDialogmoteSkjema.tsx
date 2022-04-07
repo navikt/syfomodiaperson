@@ -23,7 +23,7 @@ import { useAvlysDialogmote } from "@/data/dialogmote/useAvlysDialogmote";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import FritekstSeksjon from "@/components/dialogmote/FritekstSeksjon";
 
-export const MAX_LENGTH_AVLYS_BEGRUNNELSE = 200;
+export const MAX_LENGTH_AVLYS_BEGRUNNELSE = 500;
 
 export const texts = {
   begrunnelseArbeidstakerLabel: "Begrunnelse til arbeidstakeren",

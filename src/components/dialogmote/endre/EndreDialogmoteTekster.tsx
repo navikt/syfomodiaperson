@@ -8,7 +8,7 @@ import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { narmesteLederForVirksomhet } from "@/utils/ledereUtils";
 
-export const MAX_LENGTH_ENDRE_BEGRUNNELSE = 200;
+export const MAX_LENGTH_ENDRE_BEGRUNNELSE = 500;
 
 export const texts = {
   send: "Lagre endringer",
