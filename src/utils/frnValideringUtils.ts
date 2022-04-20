@@ -1,3 +1,5 @@
+import { erPreProd } from "@/utils/miljoUtil";
+
 const kontrollRekke1 = [3, 7, 6, 1, 8, 9, 4, 5, 2];
 const kontrollRekke2 = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
 
@@ -15,14 +17,35 @@ function erGyldigHNummer(dag: number, maned: number) {
   return dag > 0 && dag <= 32 && maned > 40 && maned <= 52;
 }
 
+const erGyldigDato = (dag: number, maned: number) => {
+  return (
+    erGyldigPnummer(dag, maned) ||
+    erGyldigDNummer(dag, maned) ||
+    erGyldigHNummer(dag, maned)
+  );
+};
+
+const erGyldigNavTestdato = (dag: number, maned: number) => {
+  return erGyldigDato(dag, maned - 40);
+};
+
+const erGyldigSkatteetatenTestdato = (dag: number, maned: number) => {
+  return erGyldigDato(dag, maned - 80);
+};
+
+const erGyldigTestdato = (dag: number, maned: number) => {
+  return (
+    erPreProd() &&
+    (erGyldigNavTestdato(dag, maned) ||
+      erGyldigSkatteetatenTestdato(dag, maned))
+  );
+};
+
 function erGyldigFodselsdato(fodselsnummer: string) {
   const dag = parseInt(fodselsnummer.substring(0, 2), decimalRadix);
-  const maaned = parseInt(fodselsnummer.substring(2, 4), decimalRadix);
-  return (
-    erGyldigPnummer(dag, maaned) ||
-    erGyldigDNummer(dag, maaned) ||
-    erGyldigHNummer(dag, maaned)
-  );
+  const maned = parseInt(fodselsnummer.substring(2, 4), decimalRadix);
+
+  return erGyldigDato(dag, maned) || erGyldigTestdato(dag, maned);
 }
 
 function hentKontrollSiffer(fodselsnummer: any, kontrollrekke: any) {
