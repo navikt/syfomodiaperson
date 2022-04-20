@@ -218,7 +218,7 @@ export const referatTexts = {
   intro1:
     "Formålet med dialogmøtet var å oppsummere situasjonen, drøfte mulighetene for å arbeide og legge en plan for tiden framover.",
   intro2:
-    "Sykdom og diagnose er underlagt taushetsplikt. Derfor er helsen din bare et tema hvis du selv velger å være åpen om den. Av hensyn til personvernet inneholder referatet uansett ikke slike opplysninger.",
+    "Sykdom og diagnose er underlagt taushetsplikt. Derfor er helsen din bare et tema hvis du selv velger å være åpen om den. Av hensyn til personvernet inneholder referatet uansett ikke slike opplysninger. Se artikkel 9, Lov om behandling av personopplysninger.",
   detteSkjeddeHeader: "Dette skjedde i møtet",
   konklusjonTitle: "Konklusjon",
   arbeidstakersOppgaveTitle: "Din oppgave",

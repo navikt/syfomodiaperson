@@ -47,16 +47,22 @@ import {
 } from "@/components/dialogmote/referat/ReferatFritekster";
 import { StandardTekster } from "@/components/dialogmote/referat/StandardTekster";
 import { useEndreReferat } from "@/data/dialogmote/useEndreReferat";
+import Lenke from "nav-frontend-lenker";
 
 export const texts = {
   digitalReferat:
     "Referatet formidles her på nav.no. Det er bare de arbeidstakerne som har reservert seg mot digital kommunikasjon, som vil få referatet i posten.",
   personvern:
-    "Du må aldri skrive sensitive opplysninger om helse, diagnose, behandling, og prognose. Dette gjelder også hvis arbeidstakeren er åpen om helsen og snakket om den i møtet.",
+    "Du må aldri skrive sensitive opplysninger om helse, diagnose, behandling og prognose. Dette gjelder også hvis arbeidstakeren er åpen om helsen og snakket om den i møtet. Se artikkel 9, Lov om behandling av personopplysninger. ",
+  personvernLenketekst:
+    "Du kan også lese mer om dette på Navet (åpnes i ny fane).",
   forhandsvisningContentLabel: "Forhåndsvis referat fra dialogmøte",
   preview: "Se forhåndsvisning",
   referatSaved: "Referatet er lagret",
 };
+
+const personvernUrl =
+  "https://navno.sharepoint.com/sites/fag-og-ytelser-veileder-for-arbeidsrettet-brukeroppfolging/SitePages/Sykmeldt-med-arbeidsgiver-%E2%80%93-avholde-dialogm%C3%B8te.aspx";
 
 export const valideringsTexts = {
   situasjonMissing: "Vennligst angi situasjon og muligheter",
@@ -267,6 +273,13 @@ const Referat = ({
             <Deltakere behandler={dialogmote.behandler} />
             <ReferatWarningAlert type="advarsel" form="inline">
               {texts.personvern}
+              <Lenke
+                target="_blank"
+                rel="noopener noreferrer"
+                href={personvernUrl}
+              >
+                {texts.personvernLenketekst}
+              </Lenke>
             </ReferatWarningAlert>
             <ReferatFritekster dialogmote={dialogmote} mode={mode} />
             <StandardTekster />
