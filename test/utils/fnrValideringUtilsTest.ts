@@ -4,7 +4,7 @@ import { erGyldigFodselsnummer } from "@/utils/frnValideringUtils";
 describe("fnrValideringsUtils", () => {
   describe("erGyldigFodselsnummer in prod", () => {
     describe("valid cases", () => {
-      it("return true if legal fnr", () => {
+      it("return true if valid fnr", () => {
         const fnr = "15046600344";
 
         const isValidFnr = erGyldigFodselsnummer(fnr);
@@ -12,7 +12,7 @@ describe("fnrValideringsUtils", () => {
         expect(isValidFnr).to.be.true;
       });
 
-      it("return true if legal dnr", () => {
+      it("return true if valid dnr", () => {
         const fnr = "57019149104";
 
         const isValidFnr = erGyldigFodselsnummer(fnr);
