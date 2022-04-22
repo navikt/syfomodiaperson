@@ -9,6 +9,7 @@ import {
   NarmesteLederRelasjonDTO,
   NarmesteLederRelasjonStatus,
 } from "@/data/leder/ledereTypes";
+import { capitalizeAllWords } from "@/utils/stringUtils";
 
 const texts = {
   name: "Navn",
@@ -60,7 +61,7 @@ export const PersonKortVirksomhetLederIngressRow = () => {
   return (
     <RowFullWidth>
       <Column className="col-sm-4">
-        <UndertekstUppercase>{texts.name}</UndertekstUppercase>
+        <Undertekst>{capitalizeAllWords(texts.name)}</Undertekst>
       </Column>
       <Column className="col-sm-2">
         <UndertekstUppercase>{texts.email}</UndertekstUppercase>

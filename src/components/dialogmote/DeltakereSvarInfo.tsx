@@ -21,6 +21,7 @@ import { Element, Normaltekst } from "nav-frontend-typografi";
 import Ekspanderbartpanel from "nav-frontend-ekspanderbartpanel";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { capitalizeAllWords } from "@/utils/stringUtils";
 
 const texts = {
   naermesteLeder: "Nærmeste leder:",
@@ -276,7 +277,7 @@ const DeltakerSvarPanel = ({
 
   const title = customTitle
     ? customTitle
-    : `${deltakerNavn}, ${svarTittelTekst}`;
+    : `${capitalizeAllWords(deltakerNavn)}, ${svarTittelTekst}`;
 
   return (
     <EkspanderbartSvarPanel

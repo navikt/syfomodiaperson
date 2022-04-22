@@ -17,6 +17,7 @@ import { PaddingSize } from "../Layout";
 import { ledereUtenMotebehovsvar } from "@/utils/ledereUtils";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
+import { capitalizeAllWords } from "@/utils/stringUtils";
 
 export const arbeidsgiverNavnEllerTomStreng = (lederNavn?: string) => {
   return lederNavn ? `${lederNavn}` : "";
@@ -126,7 +127,7 @@ export const MotebehovKvitteringInnholdArbeidstaker = ({
 
   const arbeidstakerTekst = composePersonSvarText(
     "Den sykmeldte: ",
-    sykmeldt?.navn,
+    sykmeldt?.navn ? capitalizeAllWords(sykmeldt.navn) : sykmeldt?.navn,
     arbeidstakerOnskerMote,
     arbeidstakersMotebehov?.opprettetDato
   );
