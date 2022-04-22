@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { PERSONKORTVISNING_TYPE } from "@/konstanter";
-import OversiktLink from "./OversiktLink";
 import PersonkortHeader from "./PersonkortHeader";
 import PersonkortVisning from "./PersonkortVisning";
 import Utvidbar from "../Utvidbar";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import SnowButton from "@/components/personkort/SnowButton";
-import styled from "styled-components";
 import { isDecember } from "@/utils/festiveUtils";
+import { FlexRow, PaddingSize } from "../Layout";
+import { OversiktLenker } from "@/components/personkort/OversiktLenker";
 
 const texts = {
   buttons: {
@@ -18,11 +18,6 @@ const texts = {
   },
 };
 
-const LinkRow = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
 const Personkort = () => {
   const [visning, setVisning] = useState(PERSONKORTVISNING_TYPE.SYKMELDT);
   const navbruker = useNavBrukerData();
@@ -30,10 +25,10 @@ const Personkort = () => {
 
   return (
     <div className="personkort">
-      <LinkRow>
-        <OversiktLink />
+      <FlexRow topPadding={PaddingSize.SM} bottomPadding={PaddingSize.SM}>
+        <OversiktLenker />
         {showSnowButton && <SnowButton />}
-      </LinkRow>
+      </FlexRow>
       <Utvidbar
         erApen={false}
         tittel={<PersonkortHeader navbruker={navbruker} />}

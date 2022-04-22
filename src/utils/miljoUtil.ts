@@ -18,7 +18,7 @@ export const finnNaisUrlIntern = () => {
   return erPreProd() ? ".dev.intern.nav.no" : ".intern.nav.no";
 };
 
-export const fullNaisUrlIntern = (host: string, path: string) => {
+export const fullNaisUrlIntern = (host: string, path = "") => {
   if (erLokal()) {
     return path;
   }
