@@ -15,7 +15,7 @@ import { useFeilUtbedret } from "@/hooks/useFeilUtbedret";
 import { validerBegrunnelser } from "@/utils/valideringUtils";
 import { TrackedHovedknapp } from "../../buttons/TrackedHovedknapp";
 import { TrackedFlatknapp } from "../../buttons/TrackedFlatknapp";
-import { useForhandsvisAvlysning } from "@/hooks/dialogmote/useForhandsvisAvlysning";
+import { useAvlysningDocument } from "@/hooks/dialogmote/document/useAvlysningDocument";
 import { Forhandsvisning } from "../Forhandsvisning";
 import { AlertstripeFullbredde } from "../../AlertstripeFullbredde";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
@@ -92,10 +92,10 @@ const AvlysDialogmoteSkjema = ({
     setDisplayAvlysningBehandlerPreview,
   ] = useState(false);
   const {
-    generateAvlysningArbeidstakerDocument,
-    generateAvlysningArbeidsgiverDocument,
-    generateAvlysningBehandlerDocument,
-  } = useForhandsvisAvlysning(dialogmote);
+    getAvlysningDocumentArbeidstaker,
+    getAvlysningDocumentArbeidsgiver,
+    getAvlysningDocumentBehandler,
+  } = useAvlysningDocument(dialogmote);
 
   const validate = (
     values: Partial<AvlysDialogmoteSkjemaValues>
@@ -114,18 +114,18 @@ const AvlysDialogmoteSkjema = ({
     const avlysDto: AvlysDialogmoteDTO = {
       arbeidstaker: {
         begrunnelse: values.begrunnelseArbeidstaker,
-        avlysning: generateAvlysningArbeidstakerDocument(values),
+        avlysning: getAvlysningDocumentArbeidstaker(values),
       },
       arbeidsgiver: {
         begrunnelse: values.begrunnelseArbeidsgiver,
-        avlysning: generateAvlysningArbeidsgiverDocument(values),
+        avlysning: getAvlysningDocumentArbeidsgiver(values),
       },
     };
 
     if (dialogmote.behandler) {
       avlysDto.behandler = {
         begrunnelse: values.begrunnelseBehandler || "",
-        avlysning: generateAvlysningBehandlerDocument(values),
+        avlysning: getAvlysningDocumentBehandler(values),
       };
     }
 
@@ -156,7 +156,7 @@ const AvlysDialogmoteSkjema = ({
               isOpen={displayAvlysningArbeidstakerPreview}
               handleClose={() => setDisplayAvlysningArbeidstakerPreview(false)}
               getDocumentComponents={() =>
-                generateAvlysningArbeidstakerDocument(values)
+                getAvlysningDocumentArbeidstaker(values)
               }
             />
             <FritekstSeksjon
@@ -173,7 +173,7 @@ const AvlysDialogmoteSkjema = ({
               isOpen={displayAvlysningArbeidsgiverPreview}
               handleClose={() => setDisplayAvlysningArbeidsgiverPreview(false)}
               getDocumentComponents={() =>
-                generateAvlysningArbeidsgiverDocument(values)
+                getAvlysningDocumentArbeidsgiver(values)
               }
             />
             {dialogmote.behandler && (
@@ -192,7 +192,7 @@ const AvlysDialogmoteSkjema = ({
                   isOpen={displayAvlysningBehandlerPreview}
                   handleClose={() => setDisplayAvlysningBehandlerPreview(false)}
                   getDocumentComponents={() =>
-                    generateAvlysningBehandlerDocument(values)
+                    getAvlysningDocumentBehandler(values)
                   }
                 />
               </>

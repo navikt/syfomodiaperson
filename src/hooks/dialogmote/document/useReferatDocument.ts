@@ -21,33 +21,26 @@ import {
 import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
 import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
 import { commonTexts, referatTexts } from "@/data/dialogmote/dialogmoteTexts";
-import { useForhandsvisningHilsen } from "./useForhandsvisningHilsen";
 import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { behandlerDeltokTekst } from "@/utils/behandlerUtils";
-import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { useDocumentComponents } from "@/hooks/dialogmote/document/useDocumentComponents";
 
-export interface ForhandsvisReferatGenerator {
-  generateReferatDocument(
+export interface IReferatDocument {
+  getReferatDocument(
     values: Partial<ReferatSkjemaValues>
   ): DocumentComponentDto[];
 }
 
-export const useForhandsvisReferat = (
+export const useReferatDocument = (
   dialogmote: DialogmoteDTO,
   mode: ReferatMode
-): ForhandsvisReferatGenerator => {
+): IReferatDocument => {
   const navbruker = useNavBrukerData();
   const { data: veilederinfo } = useVeilederinfoQuery();
-  const hilsen = useForhandsvisningHilsen();
   const isEndringAvReferat = mode === ReferatMode.ENDRET;
+  const { getVirksomhetsnavn, getHilsen } = useDocumentComponents();
 
-  const { getCurrentNarmesteLeder } = useLedereQuery();
-
-  const getValgtArbeidsgiver = () =>
-    getCurrentNarmesteLeder(dialogmote.arbeidsgiver.virksomhetsnummer)
-      ?.virksomhetsnavn;
-
-  const generateReferatDocument = (
+  const getReferatDocument = (
     values: Partial<ReferatSkjemaValues>
   ): DocumentComponentDto[] => {
     const documentComponents = [
@@ -74,26 +67,25 @@ export const useForhandsvisReferat = (
       ...info(dialogmote, values, navbruker, veilederinfo)
     );
 
-    const virksomhetsnavn = getValgtArbeidsgiver();
-
+    const virksomhetsnavn = getVirksomhetsnavn(
+      dialogmote.arbeidsgiver.virksomhetsnummer
+    );
     if (virksomhetsnavn) {
-      documentComponents.push(
-        createParagraphWithTitle("Arbeidsgiver", virksomhetsnavn)
-      );
+      documentComponents.push(virksomhetsnavn);
     }
 
     documentComponents.push(
       ...intro(),
       ...fritekster(values),
       ...standardTekster(values),
-      ...hilsen
+      getHilsen()
     );
 
     return documentComponents;
   };
 
   return {
-    generateReferatDocument,
+    getReferatDocument,
   };
 };
 

@@ -21,7 +21,7 @@ import { useFeilUtbedret } from "@/hooks/useFeilUtbedret";
 import { SkjemaFeiloppsummering } from "../../SkjemaFeiloppsummering";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { Forhandsvisning } from "../Forhandsvisning";
-import { useForhandsvisReferat } from "@/hooks/dialogmote/useForhandsvisReferat";
+import { useReferatDocument } from "@/hooks/dialogmote/document/useReferatDocument";
 import { StandardTekst } from "@/data/dialogmote/dialogmoteTexts";
 import {
   NewDialogmotedeltakerAnnenDTO,
@@ -113,7 +113,7 @@ interface ReferatProps {
 const toNewReferat = (
   dialogmote: DialogmoteDTO,
   values: Partial<ReferatSkjemaValues>,
-  generateDocument: (
+  getReferatDocument: (
     values: Partial<ReferatSkjemaValues>
   ) => DocumentComponentDto[]
 ): NewDialogmoteReferatDTO => ({
@@ -135,7 +135,7 @@ const toNewReferat = (
       }
     : {}),
   veilederOppgave: values.veiledersOppgave,
-  document: generateDocument(values),
+  document: getReferatDocument(values),
   andreDeltakere: values.andreDeltakere || [],
 });
 
@@ -164,7 +164,7 @@ const Referat = ({
     resetFeilUtbedret,
     updateFeilUtbedret,
   } = useFeilUtbedret();
-  const { generateReferatDocument } = useForhandsvisReferat(dialogmote, mode);
+  const { getReferatDocument } = useReferatDocument(dialogmote, mode);
 
   const validate = (values: Partial<ReferatSkjemaValues>) => {
     const friteksterFeil = validerSkjemaTekster<ReferatSkjemaTekster>({
@@ -226,7 +226,7 @@ const Referat = ({
     const newDialogmoteReferatDTO = toNewReferat(
       dialogmote,
       values,
-      generateReferatDocument
+      getReferatDocument
     );
     if (isEndringAvReferat) {
       endreReferat.mutate(newDialogmoteReferatDTO);
@@ -237,7 +237,7 @@ const Referat = ({
 
   const mellomlagre = (values: ReferatSkjemaValues) => {
     mellomlagreReferat.mutate(
-      toNewReferat(dialogmote, values, generateReferatDocument),
+      toNewReferat(dialogmote, values, getReferatDocument),
       { onSuccess: () => setUendretSidenMellomlagring(true) }
     );
   };
@@ -321,7 +321,7 @@ const Referat = ({
               contentLabel={texts.forhandsvisningContentLabel}
               isOpen={displayReferatPreview}
               handleClose={() => setDisplayReferatPreview(false)}
-              getDocumentComponents={() => generateReferatDocument(values)}
+              getDocumentComponents={() => getReferatDocument(values)}
             />
           </form>
         )}

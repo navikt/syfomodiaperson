@@ -20,7 +20,7 @@ import EndreDialogmoteTekster, {
   MAX_LENGTH_ENDRE_BEGRUNNELSE,
 } from "./EndreDialogmoteTekster";
 import { SkjemaFeiloppsummering } from "../../SkjemaFeiloppsummering";
-import { useForhandsvisTidSted } from "@/hooks/dialogmote/useForhandsvisTidSted";
+import { useTidStedDocument } from "@/hooks/dialogmote/document/useTidStedDocument";
 import {
   DialogmoteDTO,
   EndreTidStedDialogmoteDTO,
@@ -97,10 +97,10 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
   } = useFeilUtbedret();
 
   const {
-    generateArbeidstakerTidStedDocument,
-    generateArbeidsgiverTidStedDocument,
-    generateBehandlerTidStedDocument,
-  } = useForhandsvisTidSted(dialogmote);
+    getTidStedDocumentArbeidstaker,
+    getTidStedDocumentArbeidsgiver,
+    getTidStedDocumentBehandler,
+  } = useTidStedDocument(dialogmote);
   const { toTidStedDto } = useSkjemaValuesToDto();
 
   const validate = (
@@ -133,17 +133,17 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
       ...toTidStedDto(values),
       arbeidstaker: {
         begrunnelse: values.begrunnelseArbeidstaker,
-        endringsdokument: generateArbeidstakerTidStedDocument(values),
+        endringsdokument: getTidStedDocumentArbeidstaker(values),
       },
       arbeidsgiver: {
         begrunnelse: values.begrunnelseArbeidsgiver,
-        endringsdokument: generateArbeidsgiverTidStedDocument(values),
+        endringsdokument: getTidStedDocumentArbeidsgiver(values),
       },
     };
     if (dialogmote.behandler) {
       endreTidStedDto.behandler = {
         begrunnelse: values.begrunnelseBehandler || "",
-        endringsdokument: generateBehandlerTidStedDocument(values),
+        endringsdokument: getTidStedDocumentBehandler(values),
       };
     }
 

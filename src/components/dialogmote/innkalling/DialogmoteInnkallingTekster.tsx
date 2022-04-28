@@ -4,7 +4,7 @@ import DialogmoteInnkallingSkjemaSeksjon from "./DialogmoteInnkallingSkjemaSeksj
 import styled from "styled-components";
 import { Innholdstittel } from "nav-frontend-typografi";
 import { DialogmoteInnkallingSkjemaValues } from "./DialogmoteInnkallingSkjema";
-import { useForhandsvisInnkalling } from "@/hooks/dialogmote/useForhandsvisInnkalling";
+import { useInnkallingDocument } from "@/hooks/dialogmote/document/useInnkallingDocument";
 import { Forhandsvisning } from "../Forhandsvisning";
 import FritekstSeksjon from "../FritekstSeksjon";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
@@ -63,10 +63,10 @@ const DialogmoteInnkallingTekster = ({
   ] = useState(false);
 
   const {
-    generateArbeidstakerInnkallingDocument,
-    generateArbeidsgiverInnkallingDocument,
-    generateBehandlerInnkallingDocument,
-  } = useForhandsvisInnkalling();
+    getInnkallingDocumentArbeidstaker,
+    getInnkallingDocumentArbeidsgiver,
+    getInnkallingDocumentBehandler,
+  } = useInnkallingDocument();
 
   return (
     <DialogmoteInnkallingSkjemaSeksjon>
@@ -86,7 +86,7 @@ const DialogmoteInnkallingTekster = ({
         isOpen={displayInnkallingArbeidstakerPreview}
         handleClose={() => setDisplayInnkallingArbeidstakerPreview(false)}
         getDocumentComponents={() =>
-          generateArbeidstakerInnkallingDocument(values, selectedBehandler)
+          getInnkallingDocumentArbeidstaker(values, selectedBehandler)
         }
       />
       <FritekstSeksjon
@@ -101,7 +101,7 @@ const DialogmoteInnkallingTekster = ({
         isOpen={displayInnkallingArbeidsgiverPreview}
         handleClose={() => setDisplayInnkallingArbeidsgiverPreview(false)}
         getDocumentComponents={() =>
-          generateArbeidsgiverInnkallingDocument(values, selectedBehandler)
+          getInnkallingDocumentArbeidsgiver(values, selectedBehandler)
         }
       />
 
@@ -120,9 +120,7 @@ const DialogmoteInnkallingTekster = ({
             contentLabel={texts.forhandsvisningBehandlerContentLabel}
             isOpen={displayInnkallingBehandlerPreview}
             handleClose={() => setDisplayInnkallingBehandlerPreview(false)}
-            getDocumentComponents={() =>
-              generateBehandlerInnkallingDocument(values)
-            }
+            getDocumentComponents={() => getInnkallingDocumentBehandler(values)}
           />
         </>
       )}

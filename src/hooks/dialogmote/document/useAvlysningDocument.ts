@@ -8,52 +8,44 @@ import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
 import {
   createHeaderH1,
   createParagraph,
-  createParagraphWithTitle,
 } from "@/utils/documentComponentUtils";
-import { useForhandsvisningHilsen } from "./useForhandsvisningHilsen";
-import { useForhandsvisningIntro } from "@/hooks/dialogmote/useForhandsvisningIntro";
-import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { useDocumentComponents } from "@/hooks/dialogmote/document/useDocumentComponents";
 
-export interface ForhandsvisAvlysningGenerator {
-  generateAvlysningArbeidstakerDocument(
+export interface IAvlysningDocument {
+  getAvlysningDocumentArbeidstaker(
     values: Partial<AvlysDialogmoteSkjemaValues>
   ): DocumentComponentDto[];
 
-  generateAvlysningArbeidsgiverDocument(
+  getAvlysningDocumentArbeidsgiver(
     values: Partial<AvlysDialogmoteSkjemaValues>
   ): DocumentComponentDto[];
 
-  generateAvlysningBehandlerDocument(
+  getAvlysningDocumentBehandler(
     values: Partial<AvlysDialogmoteSkjemaValues>
   ): DocumentComponentDto[];
 }
 
-export const useForhandsvisAvlysning = (
+export const useAvlysningDocument = (
   dialogmote: DialogmoteDTO
-): ForhandsvisAvlysningGenerator => {
-  const hilsen = useForhandsvisningHilsen();
+): IAvlysningDocument => {
+  const {
+    getHilsen,
+    getIntroHei,
+    getIntroGjelder,
+    getVirksomhetsnavn,
+  } = useDocumentComponents();
 
   const sendt = createParagraph(
     `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
   );
 
-  const {
-    introHilsenArbeidstaker,
-    introHilsenArbeidsgiver,
-    introHilsenBehandler,
-  } = useForhandsvisningIntro();
   const introText = createParagraph(
     `${avlysningTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
       dialogmote.tid
     )}. ${avlysningTexts.intro2}`
   );
 
-  const { getCurrentNarmesteLeder } = useLedereQuery();
-
-  const getValgtArbeidsgiver = (arbeidsgiver) =>
-    getCurrentNarmesteLeder(arbeidsgiver.virksomhetsnummer)?.virksomhetsnavn;
-
-  const generateAvlysningDocument = (
+  const getAvlysningDocument = (
     values: Partial<AvlysDialogmoteSkjemaValues>,
     introHilsen: DocumentComponentDto,
     begrunnelse?: string
@@ -68,41 +60,41 @@ export const useForhandsvisAvlysning = (
       documentComponents.push(createParagraph(begrunnelse));
     }
 
-    const virksomhetsnavn = getValgtArbeidsgiver(dialogmote.arbeidsgiver);
+    const virksomhetsnavn = getVirksomhetsnavn(
+      dialogmote.arbeidsgiver.virksomhetsnummer
+    );
     if (virksomhetsnavn) {
-      documentComponents.push(
-        createParagraphWithTitle("Arbeidsgiver", virksomhetsnavn)
-      );
+      documentComponents.push(virksomhetsnavn);
     }
 
-    documentComponents.push(...hilsen);
+    documentComponents.push(getHilsen());
 
     return documentComponents;
   };
 
   return {
-    generateAvlysningArbeidstakerDocument: (
+    getAvlysningDocumentArbeidstaker: (
       values: Partial<AvlysDialogmoteSkjemaValues>
     ): DocumentComponentDto[] =>
-      generateAvlysningDocument(
+      getAvlysningDocument(
         values,
-        introHilsenArbeidstaker,
+        getIntroHei(),
         values.begrunnelseArbeidstaker
       ),
-    generateAvlysningArbeidsgiverDocument: (
+    getAvlysningDocumentArbeidsgiver: (
       values: Partial<AvlysDialogmoteSkjemaValues>
     ): DocumentComponentDto[] =>
-      generateAvlysningDocument(
+      getAvlysningDocument(
         values,
-        introHilsenArbeidsgiver,
+        getIntroGjelder(),
         values.begrunnelseArbeidsgiver
       ),
-    generateAvlysningBehandlerDocument: (
+    getAvlysningDocumentBehandler: (
       values: Partial<AvlysDialogmoteSkjemaValues>
     ): DocumentComponentDto[] =>
-      generateAvlysningDocument(
+      getAvlysningDocument(
         values,
-        introHilsenBehandler,
+        getIntroGjelder(),
         values.begrunnelseBehandler
       ),
   };

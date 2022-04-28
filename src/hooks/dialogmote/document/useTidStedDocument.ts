@@ -1,73 +1,68 @@
 import { EndreTidStedSkjemaValues } from "@/components/dialogmote/endre/EndreDialogmoteSkjema";
 import {
   createHeaderH1,
-  createLink,
   createParagraph,
   createParagraphWithTitle,
 } from "@/utils/documentComponentUtils";
-import {
-  tilDatoMedManedNavnOgKlokkeslettWithComma,
-  tilDatoMedUkedagOgManedNavnOgKlokkeslett,
-} from "@/utils/datoUtils";
-import { genererDato } from "../../components/mote/utils";
-import { useForhandsvisningHilsen } from "./useForhandsvisningHilsen";
+import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
 import {
   commonTexts,
   endreTidStedTexts,
-  innkallingTexts,
 } from "@/data/dialogmote/dialogmoteTexts";
 import {
   DialogmotedeltakerBehandlerDTO,
   DialogmoteDTO,
   DocumentComponentDto,
 } from "@/data/dialogmote/types/dialogmoteTypes";
-import { useForhandsvisningIntro } from "@/hooks/dialogmote/useForhandsvisningIntro";
 import { behandlerDeltakerTekst } from "@/utils/behandlerUtils";
-import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { useDocumentComponents } from "@/hooks/dialogmote/document/useDocumentComponents";
 
-export interface ForhandsvisTidStedGenerator {
-  generateArbeidsgiverTidStedDocument(
+export interface ITidStedDocument {
+  getTidStedDocumentArbeidsgiver(
     values: Partial<EndreTidStedSkjemaValues>
   ): DocumentComponentDto[];
 
-  generateArbeidstakerTidStedDocument(
+  getTidStedDocumentArbeidstaker(
     values: Partial<EndreTidStedSkjemaValues>
   ): DocumentComponentDto[];
 
-  generateBehandlerTidStedDocument(
+  getTidStedDocumentBehandler(
     values: Partial<EndreTidStedSkjemaValues>
   ): DocumentComponentDto[];
 }
 
-export const useForhandsvisTidSted = (
+export const useTidStedDocument = (
   dialogmote: DialogmoteDTO
-): ForhandsvisTidStedGenerator => {
+): ITidStedDocument => {
   const { tid, arbeidsgiver, behandler } = dialogmote;
-
-  const hilsen = useForhandsvisningHilsen();
   const {
-    introHilsenArbeidstaker,
-    introHilsenArbeidsgiver,
-    introHilsenBehandler,
-  } = useForhandsvisningIntro();
+    getHilsen,
+    getMoteInfo,
+    getIntroHei,
+    getIntroGjelder,
+  } = useDocumentComponents();
 
   const sendtDato = createParagraph(
     `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
   );
+  const introComponents = [
+    createParagraph(
+      `${endreTidStedTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
+        tid
+      )}.`
+    ),
+    createParagraph(endreTidStedTexts.intro2),
+  ];
 
-  const { getCurrentNarmesteLeder } = useLedereQuery();
-
-  const getValgtArbeidsgiver = () =>
-    getCurrentNarmesteLeder(arbeidsgiver.virksomhetsnummer)?.virksomhetsnavn;
-
-  const generateArbeidsgiverTidStedDocument = (
+  const getTidStedDocumentArbeidsgiver = (
     values: Partial<EndreTidStedSkjemaValues>
   ) => {
     const documentComponents = [
       createHeaderH1("Endret dialogmøte"),
       sendtDato,
-      introHilsenArbeidsgiver,
-      ...fellesInfo(values, tid, getValgtArbeidsgiver()),
+      getIntroGjelder(),
+      ...introComponents,
+      ...getMoteInfo(values, arbeidsgiver.virksomhetsnummer),
     ];
 
     if (values.begrunnelseArbeidsgiver) {
@@ -95,7 +90,7 @@ export const useForhandsvisTidSted = (
         endreTidStedTexts.arbeidsgiver.outro3Title,
         outro3
       ),
-      ...hilsen,
+      getHilsen(),
       createParagraph(
         commonTexts.arbeidsgiverTlfLabel,
         commonTexts.arbeidsgiverTlf
@@ -105,14 +100,15 @@ export const useForhandsvisTidSted = (
     return documentComponents;
   };
 
-  const generateArbeidstakerTidStedDocument = (
+  const getTidStedDocumentArbeidstaker = (
     values: Partial<EndreTidStedSkjemaValues>
   ) => {
     const documentComponents = [
       createHeaderH1("Endret dialogmøte"),
       sendtDato,
-      introHilsenArbeidstaker,
-      ...fellesInfo(values, tid, getValgtArbeidsgiver()),
+      getIntroHei(),
+      ...introComponents,
+      ...getMoteInfo(values, arbeidsgiver.virksomhetsnummer),
     ];
 
     if (values.begrunnelseArbeidstaker) {
@@ -140,20 +136,21 @@ export const useForhandsvisTidSted = (
         endreTidStedTexts.arbeidstaker.outro3Title,
         outro3
       ),
-      ...hilsen
+      getHilsen()
     );
 
     return documentComponents;
   };
 
-  const generateBehandlerTidStedDocument = (
+  const getTidStedDocumentBehandler = (
     values: Partial<EndreTidStedSkjemaValues>
   ) => {
     const documentComponents = [
       createHeaderH1("Endret dialogmøte"),
       sendtDato,
-      introHilsenBehandler,
-      ...fellesInfo(values, tid, getValgtArbeidsgiver()),
+      getIntroGjelder(),
+      ...introComponents,
+      ...getMoteInfo(values, arbeidsgiver.virksomhetsnummer),
     ];
 
     if (values.begrunnelseBehandler) {
@@ -164,53 +161,17 @@ export const useForhandsvisTidSted = (
       createParagraph(endreTidStedTexts.behandler.outro1),
       createParagraph(endreTidStedTexts.behandler.outroObligatorisk),
       createParagraph(endreTidStedTexts.behandler.outro2),
-      ...hilsen
+      getHilsen()
     );
 
     return documentComponents;
   };
 
   return {
-    generateArbeidstakerTidStedDocument,
-    generateArbeidsgiverTidStedDocument,
-    generateBehandlerTidStedDocument,
+    getTidStedDocumentArbeidstaker,
+    getTidStedDocumentArbeidsgiver,
+    getTidStedDocumentBehandler,
   };
-};
-
-const fellesInfo = (
-  values: Partial<EndreTidStedSkjemaValues>,
-  opprinneligTid: string,
-  arbeidsgiver?: string
-): DocumentComponentDto[] => {
-  const { dato, klokkeslett, sted, videoLink } = values;
-
-  const components = [
-    createParagraph(
-      `${endreTidStedTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
-        opprinneligTid
-      )}.`
-    ),
-    createParagraph(endreTidStedTexts.intro2),
-    createParagraphWithTitle(
-      commonTexts.moteTidTitle,
-      dato && klokkeslett
-        ? tilDatoMedUkedagOgManedNavnOgKlokkeslett(
-            genererDato(dato, klokkeslett)
-          )
-        : ""
-    ),
-    createParagraphWithTitle(commonTexts.moteStedTitle, sted || ""),
-  ];
-
-  if (videoLink) {
-    components.push(createLink(innkallingTexts.videoLinkTitle, videoLink));
-  }
-
-  if (arbeidsgiver) {
-    components.push(createParagraphWithTitle("Arbeidsgiver", arbeidsgiver));
-  }
-
-  return components;
 };
 
 const addBehandlerTypeAndName = (

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useFormState } from "react-final-form";
 import { Forhandsvisning } from "../Forhandsvisning";
 import { EndreTidStedSkjemaValues } from "./EndreDialogmoteSkjema";
-import { useForhandsvisTidSted } from "@/hooks/dialogmote/useForhandsvisTidSted";
+import { useTidStedDocument } from "@/hooks/dialogmote/document/useTidStedDocument";
 import FritekstSeksjon from "@/components/dialogmote/FritekstSeksjon";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
@@ -60,10 +60,10 @@ const EndreDialogmoteTekster = ({ dialogmote }: Props) => {
     setDisplayEndringBehandlerPreview,
   ] = useState(false);
   const {
-    generateArbeidstakerTidStedDocument,
-    generateArbeidsgiverTidStedDocument,
-    generateBehandlerTidStedDocument,
-  } = useForhandsvisTidSted(dialogmote);
+    getTidStedDocumentArbeidstaker,
+    getTidStedDocumentArbeidsgiver,
+    getTidStedDocumentBehandler,
+  } = useTidStedDocument(dialogmote);
 
   return (
     <>
@@ -78,9 +78,7 @@ const EndreDialogmoteTekster = ({ dialogmote }: Props) => {
         contentLabel={texts.forhandsvisningArbeidstakerContentLabel}
         isOpen={displayEndringArbeidstakerPreview}
         handleClose={() => setDisplayEndringArbeidstakerPreview(false)}
-        getDocumentComponents={() =>
-          generateArbeidstakerTidStedDocument(values)
-        }
+        getDocumentComponents={() => getTidStedDocumentArbeidstaker(values)}
       />
 
       <FritekstSeksjon
@@ -95,9 +93,7 @@ const EndreDialogmoteTekster = ({ dialogmote }: Props) => {
         contentLabel={texts.forhandsvisningArbeidsgiverContentLabel}
         isOpen={displayEndringArbeidsgiverPreview}
         handleClose={() => setDisplayEndringArbeidsgiverPreview(false)}
-        getDocumentComponents={() =>
-          generateArbeidsgiverTidStedDocument(values)
-        }
+        getDocumentComponents={() => getTidStedDocumentArbeidsgiver(values)}
       />
       {behandler && (
         <>
@@ -112,9 +108,7 @@ const EndreDialogmoteTekster = ({ dialogmote }: Props) => {
             contentLabel={texts.forhandsvisningBehandlerContentLabel}
             isOpen={displayEndringBehandlerPreview}
             handleClose={() => setDisplayEndringBehandlerPreview(false)}
-            getDocumentComponents={() =>
-              generateBehandlerTidStedDocument(values)
-            }
+            getDocumentComponents={() => getTidStedDocumentBehandler(values)}
           />
         </>
       )}

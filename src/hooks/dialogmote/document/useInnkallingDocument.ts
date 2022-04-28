@@ -1,82 +1,76 @@
 import { DialogmoteInnkallingSkjemaValues } from "@/components/dialogmote/innkalling/DialogmoteInnkallingSkjema";
 import { DocumentComponentDto } from "@/data/dialogmote/types/dialogmoteTypes";
-import {
-  tilDatoMedManedNavnOgKlokkeslettWithComma,
-  tilDatoMedUkedagOgManedNavnOgKlokkeslett,
-} from "@/utils/datoUtils";
-import { genererDato } from "../../components/mote/utils";
+import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
 import {
   commonTexts,
   innkallingTexts,
 } from "@/data/dialogmote/dialogmoteTexts";
 import {
   createHeaderH1,
-  createLink,
   createParagraph,
   createParagraphWithTitle,
 } from "@/utils/documentComponentUtils";
-import { useForhandsvisningHilsen } from "./useForhandsvisningHilsen";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { capitalizeWord } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
-import { useForhandsvisningIntro } from "@/hooks/dialogmote/useForhandsvisningIntro";
-import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { useDocumentComponents } from "@/hooks/dialogmote/document/useDocumentComponents";
 
-export interface ForhandsvisInnkallingGenerator {
-  generateArbeidstakerInnkallingDocument(
+export interface IInnkallingDocument {
+  getInnkallingDocumentArbeidstaker(
     values: Partial<DialogmoteInnkallingSkjemaValues>,
     valgtBehandler: BehandlerDTO | undefined
   ): DocumentComponentDto[];
 
-  generateArbeidsgiverInnkallingDocument(
+  getInnkallingDocumentArbeidsgiver(
     values: Partial<DialogmoteInnkallingSkjemaValues>,
     valgtBehandler: BehandlerDTO | undefined
   ): DocumentComponentDto[];
 
-  generateBehandlerInnkallingDocument(
+  getInnkallingDocumentBehandler(
     values: Partial<DialogmoteInnkallingSkjemaValues>
   ): DocumentComponentDto[];
 }
 
-export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
-  const hilsen = useForhandsvisningHilsen();
+export const useInnkallingDocument = (): IInnkallingDocument => {
+  const introComponents = [
+    createHeaderH1("Innkalling til dialogmøte"),
+    createParagraph(
+      `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
+    ),
+  ];
   const {
-    introHilsenArbeidstaker,
-    introHilsenArbeidsgiver,
-    introHilsenBehandler,
-  } = useForhandsvisningIntro();
+    getHilsen,
+    getMoteInfo,
+    getIntroHei,
+    getIntroGjelder,
+  } = useDocumentComponents();
 
-  const { getCurrentNarmesteLeder } = useLedereQuery();
-  const getValgtArbeidsgiver = (
-    values: Partial<DialogmoteInnkallingSkjemaValues>
-  ) =>
-    values.arbeidsgiver &&
-    getCurrentNarmesteLeder(values.arbeidsgiver)?.virksomhetsnavn;
-
-  const generateArbeidstakerInnkallingDocument = (
+  const getInnkallingDocumentArbeidstaker = (
     values: Partial<DialogmoteInnkallingSkjemaValues>,
     valgtBehandler: BehandlerDTO | undefined
   ) => {
     const documentComponents = [
-      ...fellesInfo(values, getValgtArbeidsgiver(values)),
-      introHilsenArbeidstaker,
+      ...introComponents,
+      ...getMoteInfo(values, values.arbeidsgiver),
+      getIntroHei(),
       ...arbeidstakerIntro(valgtBehandler),
     ];
     if (values.fritekstArbeidstaker) {
       documentComponents.push(createParagraph(values.fritekstArbeidstaker));
     }
-    documentComponents.push(...arbeidstakerOutro(valgtBehandler), ...hilsen);
+    documentComponents.push(...arbeidstakerOutro(valgtBehandler), getHilsen());
 
     return documentComponents;
   };
 
-  const generateArbeidsgiverInnkallingDocument = (
+  const getInnkallingDocumentArbeidsgiver = (
     values: Partial<DialogmoteInnkallingSkjemaValues>,
     valgtBehandler: BehandlerDTO | undefined
   ) => {
     const documentComponents = [
-      ...fellesInfo(values, getValgtArbeidsgiver(values)),
-      introHilsenArbeidsgiver,
+      ...introComponents,
+      ...getMoteInfo(values, values.arbeidsgiver),
+      getIntroGjelder(),
       ...arbeidsgiverIntro(valgtBehandler),
     ];
     if (values.fritekstArbeidsgiver) {
@@ -84,7 +78,7 @@ export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
     }
     documentComponents.push(
       ...arbeidsgiverOutro(valgtBehandler),
-      ...hilsen,
+      getHilsen(),
       createParagraph(
         commonTexts.arbeidsgiverTlfLabel,
         commonTexts.arbeidsgiverTlf
@@ -94,58 +88,28 @@ export const useForhandsvisInnkalling = (): ForhandsvisInnkallingGenerator => {
     return documentComponents;
   };
 
-  const generateBehandlerInnkallingDocument = (
+  const getInnkallingDocumentBehandler = (
     values: Partial<DialogmoteInnkallingSkjemaValues>
   ) => {
     const documentComponents = [
-      ...fellesInfo(values, getValgtArbeidsgiver(values)),
-      introHilsenBehandler,
+      ...introComponents,
+      ...getMoteInfo(values, values.arbeidsgiver),
+      getIntroGjelder(),
       ...behandlerIntro(),
     ];
     if (values.fritekstBehandler) {
       documentComponents.push(createParagraph(values.fritekstBehandler));
     }
-    documentComponents.push(...behandlerOutro(), ...hilsen);
+    documentComponents.push(...behandlerOutro(), getHilsen());
 
     return documentComponents;
   };
 
   return {
-    generateArbeidstakerInnkallingDocument,
-    generateArbeidsgiverInnkallingDocument,
-    generateBehandlerInnkallingDocument,
+    getInnkallingDocumentArbeidstaker,
+    getInnkallingDocumentArbeidsgiver,
+    getInnkallingDocumentBehandler,
   };
-};
-
-const fellesInfo = (
-  values: Partial<DialogmoteInnkallingSkjemaValues>,
-  arbeidsgiver?: string
-): DocumentComponentDto[] => {
-  const { dato, klokkeslett, sted, videoLink } = values;
-  const components = [
-    createHeaderH1("Innkalling til dialogmøte"),
-    createParagraph(
-      `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
-    ),
-    createParagraphWithTitle(
-      commonTexts.moteTidTitle,
-      dato && klokkeslett
-        ? tilDatoMedUkedagOgManedNavnOgKlokkeslett(
-            genererDato(dato, klokkeslett)
-          )
-        : ""
-    ),
-    createParagraphWithTitle(commonTexts.moteStedTitle, sted || ""),
-  ];
-  if (videoLink) {
-    components.push(createLink(innkallingTexts.videoLinkTitle, videoLink));
-  }
-
-  if (arbeidsgiver) {
-    components.push(createParagraphWithTitle("Arbeidsgiver", arbeidsgiver));
-  }
-
-  return components;
 };
 
 const arbeidstakerIntro = (

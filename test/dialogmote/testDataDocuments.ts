@@ -61,7 +61,7 @@ const expectedArbeidstakerInnkalling = (
   },
   {
     texts: [mote.videolink],
-    title: innkallingTexts.videoLinkTitle,
+    title: commonTexts.videoLinkTitle,
     type: DocumentComponentType.LINK,
   },
   {
@@ -143,7 +143,7 @@ const expectedArbeidsgiverInnkalling = (
   },
   {
     texts: [mote.videolink],
-    title: innkallingTexts.videoLinkTitle,
+    title: commonTexts.videoLinkTitle,
     type: DocumentComponentType.LINK,
   },
   {
@@ -227,7 +227,7 @@ const expectedBehandlerInnkalling = (): DocumentComponentDto[] => [
   },
   {
     texts: [mote.videolink],
-    title: innkallingTexts.videoLinkTitle,
+    title: commonTexts.videoLinkTitle,
     type: DocumentComponentType.LINK,
   },
   {

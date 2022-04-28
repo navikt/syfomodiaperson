@@ -1,5 +1,4 @@
 export const innkallingTexts = {
-  videoLinkTitle: "Lenke til videomøte",
   arbeidstaker: {
     intro1:
       "Velkommen til dialogmøte mellom deg, arbeidsgiveren din og en veileder fra NAV. I møtet skal vi snakke om situasjonen din og bli enige om en plan som kan hjelpe deg videre.",
@@ -54,7 +53,6 @@ export const endreTidStedTexts = {
   intro1:
     "Du har tidligere blitt innkalt til et dialogmøte. Møtet skulle vært avholdt",
   intro2: "Møtet må flyttes. Dette tidspunktet og møtestedet gjelder nå:",
-  videoLinkTitle: "Lenke til videomøte",
   arbeidsgiver: {
     outro1:
       "I møtet vil vi høre både hva du og arbeidstakeren sier om arbeidssituasjonen og mulighetene for å jobbe. Vi blir enige om en plan som kan hjelpe arbeidstakeren videre.",
@@ -104,8 +102,10 @@ export const avlysningTexts = {
 };
 
 export const commonTexts = {
+  arbeidsgiverTitle: "Arbeidsgiver",
   moteTidTitle: "Møtetidspunkt",
   moteStedTitle: "Møtested",
+  videoLinkTitle: "Lenke til videomøte",
   hilsen: "Vennlig hilsen",
   arbeidsgiverTlfLabel: "Arbeidsgivertelefonen",
   arbeidsgiverTlf: "55 55 33 36",

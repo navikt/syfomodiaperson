@@ -25,9 +25,9 @@ import { useFeilUtbedret } from "@/hooks/useFeilUtbedret";
 import { TrackedFlatknapp } from "../../buttons/TrackedFlatknapp";
 import { TrackedHovedknapp } from "../../buttons/TrackedHovedknapp";
 import {
-  ForhandsvisInnkallingGenerator,
-  useForhandsvisInnkalling,
-} from "@/hooks/dialogmote/useForhandsvisInnkalling";
+  IInnkallingDocument,
+  useInnkallingDocument,
+} from "@/hooks/dialogmote/document/useInnkallingDocument";
 import { useOpprettInnkallingDialogmote } from "@/data/dialogmote/useOpprettInnkallingDialogmote";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
@@ -77,14 +77,14 @@ const toInnkalling = (
   values: DialogmoteInnkallingSkjemaValues,
   tidStedDto: TidStedDto,
   fnr: string,
-  innkallingDocumentGenerator: ForhandsvisInnkallingGenerator,
+  innkallingDocument: IInnkallingDocument,
   valgtBehandler: BehandlerDTO | undefined
 ): DialogmoteInnkallingDTO => {
   const innkalling: DialogmoteInnkallingDTO = {
     arbeidsgiver: {
       virksomhetsnummer: values.arbeidsgiver,
       fritekstInnkalling: values.fritekstArbeidsgiver,
-      innkalling: innkallingDocumentGenerator.generateArbeidsgiverInnkallingDocument(
+      innkalling: innkallingDocument.getInnkallingDocumentArbeidsgiver(
         values,
         valgtBehandler
       ),
@@ -92,7 +92,7 @@ const toInnkalling = (
     arbeidstaker: {
       personIdent: fnr,
       fritekstInnkalling: values.fritekstArbeidstaker,
-      innkalling: innkallingDocumentGenerator.generateArbeidstakerInnkallingDocument(
+      innkalling: innkallingDocument.getInnkallingDocumentArbeidstaker(
         values,
         valgtBehandler
       ),
@@ -107,9 +107,7 @@ const toInnkalling = (
       behandlerNavn: behandlerNavn(valgtBehandler),
       behandlerKontor: valgtBehandler.kontor ?? "",
       fritekstInnkalling: values.fritekstBehandler,
-      innkalling: innkallingDocumentGenerator.generateBehandlerInnkallingDocument(
-        values
-      ),
+      innkalling: innkallingDocument.getInnkallingDocumentBehandler(values),
     };
   }
 
@@ -126,7 +124,7 @@ const DialogmoteInnkallingSkjema = ({
     resetFeilUtbedret,
     updateFeilUtbedret,
   } = useFeilUtbedret();
-  const innkallingDocumentGenerator = useForhandsvisInnkalling();
+  const innkallingDocument = useInnkallingDocument();
   const { toTidStedDto } = useSkjemaValuesToDto();
   const opprettInnkalling = useOpprettInnkallingDialogmote(fnr);
 
@@ -183,7 +181,7 @@ const DialogmoteInnkallingSkjema = ({
       values,
       toTidStedDto(values),
       fnr,
-      innkallingDocumentGenerator,
+      innkallingDocument,
       selectedBehandler
     );
     opprettInnkalling.mutate(dialogmoteInnkalling);
