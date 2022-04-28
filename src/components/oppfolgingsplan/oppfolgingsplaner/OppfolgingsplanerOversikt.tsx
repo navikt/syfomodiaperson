@@ -13,8 +13,8 @@ import OppfolgingsplanerOversiktLPS from "../lps/OppfolgingsplanerOversiktLPS";
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
-import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
 
 const texts = {
   titles: {
@@ -68,28 +68,6 @@ interface OppfolgingsplanerOversiktProps {
   fnr: string;
   oppfolgingsplanerLPS: OppfolgingsplanLPS[];
 }
-
-type OppfolgingsplanLPSMedPersonoppgave = OppfolgingsplanLPS & {
-  personoppgave?: PersonOppgave;
-};
-
-const toOppfolgingsplanLPSMedPersonoppgave = (
-  oppfolgingsplanLPS: OppfolgingsplanLPS,
-  personoppgaver: PersonOppgave[]
-): OppfolgingsplanLPSMedPersonoppgave => {
-  const personoppgave = personoppgaver.find(
-    (personoppgave) => personoppgave.referanseUuid === oppfolgingsplanLPS.uuid
-  );
-
-  if (personoppgave) {
-    return {
-      ...oppfolgingsplanLPS,
-      personoppgave,
-    };
-  }
-
-  return oppfolgingsplanLPS;
-};
 
 const OppfolgingsplanerOversikt = (
   oppfolgingsplanerOversiktProps: OppfolgingsplanerOversiktProps

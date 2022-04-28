@@ -9,6 +9,7 @@ import {
 import {
   activeLPSOppfolgingsplaner,
   activeOppfolgingsplaner,
+  toOppfolgingsplanLPSMedPersonoppgave,
 } from "@/utils/oppfolgingsplanerUtils";
 import {
   ARBEIDSTAKER_DEFAULT,
@@ -89,6 +90,10 @@ describe("oppfolgingsplanerUtils", () => {
         virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
         opprettet: new Date(),
       };
+      const planMedPersonoppgaveOne = toOppfolgingsplanLPSMedPersonoppgave(
+        planOne,
+        []
+      );
 
       const planTwo = {
         uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd2",
@@ -96,13 +101,17 @@ describe("oppfolgingsplanerUtils", () => {
         virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
         opprettet: new Date() - 3600000 * 24,
       };
+      const planMedPersonoppgaveTwo = toOppfolgingsplanLPSMedPersonoppgave(
+        planTwo,
+        []
+      );
 
-      const planer = [planOne, planTwo];
+      const planer = [planMedPersonoppgaveOne, planMedPersonoppgaveTwo];
 
       const aktiveLPSPlaner = activeLPSOppfolgingsplaner(planer);
 
       expect(aktiveLPSPlaner.length).to.be.equal(1);
-      expect(aktiveLPSPlaner[0]).to.deep.equal(planOne);
+      expect(aktiveLPSPlaner[0]).to.deep.equal(planMedPersonoppgaveOne);
     });
   });
 });

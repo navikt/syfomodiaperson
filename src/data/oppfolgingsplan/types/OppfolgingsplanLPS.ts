@@ -1,3 +1,5 @@
+import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
+
 export interface OppfolgingsplanLPS {
   uuid: string;
   fnr: string;
@@ -6,3 +8,7 @@ export interface OppfolgingsplanLPS {
   opprettet: Date;
   sistEndret: Date;
 }
+
+export type OppfolgingsplanLPSMedPersonoppgave = OppfolgingsplanLPS & {
+  personoppgave?: PersonOppgave;
+};

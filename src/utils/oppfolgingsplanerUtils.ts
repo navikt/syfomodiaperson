@@ -1,7 +1,30 @@
 import { erIdag } from "./datoUtils";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import {
+  OppfolgingsplanLPS,
+  OppfolgingsplanLPSMedPersonoppgave,
+} from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
+import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 
-const oppfolgingsplanerValidNow = (oppfolgingsplaner: any[]) => {
+export const toOppfolgingsplanLPSMedPersonoppgave = (
+  oppfolgingsplanLPS: OppfolgingsplanLPS,
+  personoppgaver: PersonOppgave[]
+): OppfolgingsplanLPSMedPersonoppgave => {
+  const personoppgave = personoppgaver.find(
+    (personoppgave) => personoppgave.referanseUuid === oppfolgingsplanLPS.uuid
+  );
+
+  if (personoppgave) {
+    return {
+      ...oppfolgingsplanLPS,
+      personoppgave,
+    };
+  }
+
+  return oppfolgingsplanLPS;
+};
+
+const oppfolgingsplanerValidNow = (oppfolgingsplaner: OppfolgingsplanDTO[]) => {
   return oppfolgingsplaner.filter((plan) => {
     return (
       new Date(plan.godkjentPlan.gyldighetstidspunkt.tom) > new Date() &&
@@ -10,7 +33,9 @@ const oppfolgingsplanerValidNow = (oppfolgingsplaner: any[]) => {
   });
 };
 
-const oppfolgingsplanerLPSOpprettetIdag = (oppfolgingsplaner: any[]) => {
+const oppfolgingsplanerLPSOpprettetIdag = (
+  oppfolgingsplaner: OppfolgingsplanLPSMedPersonoppgave[]
+) => {
   return oppfolgingsplaner.filter((plan) => {
     return erIdag(plan.opprettet) && !plan.personoppgave;
   });
@@ -27,7 +52,9 @@ const planerSortedDescendingByDeltMedNAVTidspunkt = (
   });
 };
 
-const virksomheterWithPlan = (oppfolgingsplaner: OppfolgingsplanDTO[]) => {
+const virksomheterWithPlan = (
+  oppfolgingsplaner: OppfolgingsplanDTO[]
+): string[] => {
   const uniqueVirksomheter = new Set(
     oppfolgingsplaner.map((plan) => plan.virksomhet.virksomhetsnummer)
   );
@@ -36,16 +63,14 @@ const virksomheterWithPlan = (oppfolgingsplaner: OppfolgingsplanDTO[]) => {
 };
 
 const firstPlanForEachVirksomhet = (
-  oppfolgingsplaner: any[],
-  virksomheter: any[]
+  oppfolgingsplaner: OppfolgingsplanDTO[],
+  virksomheter: string[]
 ) => {
   const newestPlanPerVirksomhet = [] as any[];
 
   virksomheter.forEach((nummer) => {
     const newestPlanForVirksomhetsnummer = oppfolgingsplaner.find((plan) => {
-      return plan.virksomhet
-        ? plan.virksomhet.virksomhetsnummer === nummer
-        : plan.virksomhetsnummer === nummer;
+      return plan.virksomhet.virksomhetsnummer === nummer;
     });
     newestPlanPerVirksomhet.push(newestPlanForVirksomhetsnummer);
   });
@@ -72,6 +97,8 @@ export const activeOppfolgingsplaner = (
   return oppfolgingsplanerValidNow(newestPlans);
 };
 
-export const activeLPSOppfolgingsplaner = (oppfolgingsplaner: any[]) => {
+export const activeLPSOppfolgingsplaner = (
+  oppfolgingsplaner: OppfolgingsplanLPSMedPersonoppgave[]
+) => {
   return oppfolgingsplanerLPSOpprettetIdag(oppfolgingsplaner);
 };

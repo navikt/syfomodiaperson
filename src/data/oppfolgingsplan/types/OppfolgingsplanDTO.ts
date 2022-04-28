@@ -13,7 +13,10 @@ export interface GodkjentPlanDTO {
   opprettetTidspunkt: Date;
   gyldighetstidspunkt: GodkjentPlanGyldighetTidspunktDTO;
   tvungenGodkjenning: boolean;
+  deltMedNAV: boolean;
   deltMedNAVTidspunkt: Date;
+  deltMedFastlege: boolean;
+  deltMedFastlegeTidspunkt?: Date;
   dokumentUuid: string;
 }
 

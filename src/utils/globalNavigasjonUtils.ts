@@ -9,7 +9,7 @@ import {
   PersonOppgave,
   PersonOppgaveType,
 } from "@/data/personoppgave/types/PersonOppgave";
-import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
+import { OppfolgingsplanLPSMedPersonoppgave } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 
@@ -34,7 +34,7 @@ const numberOfActiveOppfolgingsplaner = (
 };
 
 const numberOfActiveLPSOppfolgingsplaner = (
-  oppfolgingsplanerLps: OppfolgingsplanLPS[]
+  oppfolgingsplanerLps: OppfolgingsplanLPSMedPersonoppgave[]
 ) => {
   return activeLPSOppfolgingsplaner(oppfolgingsplanerLps).length;
 };
@@ -54,7 +54,7 @@ export const numberOfTasks = (
   moterState: MoterState,
   oppfolgingsplaner: OppfolgingsplanDTO[],
   personOppgaver: PersonOppgave[],
-  oppfolgingsplanerlps: OppfolgingsplanLPS[]
+  oppfolgingsplanerlps: OppfolgingsplanLPSMedPersonoppgave[]
 ) => {
   switch (menypunkt) {
     case menypunkter.MOETEPLANLEGGER:

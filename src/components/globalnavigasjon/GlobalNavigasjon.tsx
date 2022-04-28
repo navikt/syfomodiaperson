@@ -14,6 +14,7 @@ import {
   useOppfolgingsplanerQuery,
 } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
+import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
 
 const nokkelinformasjonMenypunkt = {
   navn: "Nøkkelinformasjon",
@@ -81,8 +82,13 @@ export const GlobalNavigasjon = ({
 
   const { data: personoppgaver } = usePersonoppgaverQuery();
   const { data: oppfolgingsplaner } = useOppfolgingsplanerQuery();
-  const { data: oppfolgingsplanerlps } = useOppfolgingsplanerLPSQuery();
+  const { data: oppfolgingsplanerLPS } = useOppfolgingsplanerLPSQuery();
   const { data: motebehov } = useMotebehovQuery();
+
+  const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.map(
+    (oppfolgingsplanLPS) =>
+      toOppfolgingsplanLPSMedPersonoppgave(oppfolgingsplanLPS, personoppgaver)
+  );
 
   useEffect(() => {
     dispatch(hentMoter(fnr));
@@ -134,7 +140,7 @@ export const GlobalNavigasjon = ({
           moter,
           oppfolgingsplaner,
           personoppgaver,
-          oppfolgingsplanerlps
+          oppfolgingsplanerLPSMedPersonOppgave
         );
 
         return (
