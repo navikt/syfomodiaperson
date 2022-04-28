@@ -31,34 +31,36 @@ const getFnrFromParams = (): string => {
   return window.location.pathname.split("/")[2];
 };
 
-export const dialogmoteRoutePath = "/sykefravaer/dialogmote";
-export const moteoversiktRoutePath = "/sykefravaer/moteoversikt";
+export const appRoutePath = "/sykefravaer";
+
+export const dialogmoteRoutePath = `${appRoutePath}/dialogmote`;
+export const moteoversiktRoutePath = `${appRoutePath}/moteoversikt`;
 
 const AktivBrukerRouter = ({ fnr }: { fnr: string }): ReactElement => {
   return (
     <AktivBrukerTilgangLaster>
       <Router>
         <Route exact path="/">
-          <Redirect to="/sykefravaer" />
+          <Redirect to={appRoutePath} />
         </Route>
         <Route
-          path="/sykefravaer"
+          path={appRoutePath}
           exact
           component={NokkelinformasjonContainer}
         />
         <Route
-          path="/sykefravaer/nokkelinformasjon"
+          path={`${appRoutePath}/nokkelinformasjon`}
           exact
           component={NokkelinformasjonContainer}
         />
-        <Route path="/sykefravaer/logg" component={HistorikkContainer} />
+        <Route path={`${appRoutePath}/logg`} component={HistorikkContainer} />
         <Route
           path={moteoversiktRoutePath}
           exact
           component={MotelandingssideContainer}
         />
         <Route
-          path="/sykefravaer/mote"
+          path={`${appRoutePath}/mote`}
           exact
           component={MotebookingContainer}
         />
@@ -88,46 +90,50 @@ const AktivBrukerRouter = ({ fnr }: { fnr: string }): ReactElement => {
           component={EndreDialogmoteContainer}
         />
         <Route
-          path="/sykefravaer/mote/:moteUuid/avbryt"
+          path={`${appRoutePath}/mote/:moteUuid/avbryt`}
           exact
           render={() => <AvbrytMoteContainer fnr={fnr} />}
         />
         <Route
-          path="/sykefravaer/mote/bekreft/:alternativId"
+          path={`${appRoutePath}/mote/bekreft/:alternativId`}
           exact
           render={() => <BekreftMoteContainer fnr={fnr} />}
         />
         <Route
-          path="/sykefravaer/sykmeldinger"
+          path={`${appRoutePath}/sykmeldinger`}
           exact
           component={SykmeldingerContainer}
         />
         <Route
-          path="/sykefravaer/sykepengesoknader"
+          path={`${appRoutePath}/sykepengesoknader`}
           exact
           component={SykepengesoknaderContainer}
         />
         <Route
-          path="/sykefravaer/sykepengesoknader/:sykepengesoknadId"
+          path={`${appRoutePath}/sykepengesoknader/:sykepengesoknadId`}
           exact
           component={SykepengesoknadSide}
         />
         <Route
-          path="/sykefravaer/sykmeldinger/:sykmeldingId"
+          path={`${appRoutePath}/sykmeldinger/:sykmeldingId`}
           exact
           component={DinSykmeldingContainer}
         />
         <Route
-          path="/sykefravaer/oppfoelgingsplaner"
+          path={`${appRoutePath}/oppfoelgingsplaner`}
           exact
           component={OppfoelgingsPlanerOversiktContainer}
         />
         <Route
-          path="/sykefravaer/oppfoelgingsplaner/:oppfoelgingsdialogId"
+          path={`${appRoutePath}/oppfoelgingsplaner/:oppfoelgingsdialogId`}
           exact
           component={OppfoelgingsplanContainer}
         />
-        <Route path="/sykefravaer/vedtak" exact component={VedtakContainer} />
+        <Route
+          path={`${appRoutePath}/vedtak`}
+          exact
+          component={VedtakContainer}
+        />
       </Router>
     </AktivBrukerTilgangLaster>
   );
