@@ -3,16 +3,16 @@ import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldForma
 
 export type TilfellePeriode = { fom: string | Date; tom: string | Date };
 
-export function sorterPerioderEldsteForst(
+export const sorterPerioderEldsteForst = (
   perioder: SykmeldingPeriodeDTO[]
-): SykmeldingPeriodeDTO[] {
+): SykmeldingPeriodeDTO[] => {
   return perioder.sort((a, b) => {
     if (toDate(a.fom)?.getTime() !== toDate(b.fom)?.getTime()) {
       return (toDate(a.fom)?.getTime() ?? 0) - (toDate(b.fom)?.getTime() ?? 0);
     }
     return (toDate(a.tom)?.getTime() ?? 0) - (toDate(b.tom)?.getTime() ?? 0);
   });
-}
+};
 
 export const tidligsteFom = (perioder: TilfellePeriode[]): string | Date => {
   return perioder

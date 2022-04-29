@@ -44,7 +44,7 @@ const unleash = initialize({
   strategies: [new ByEnhetAndEnvironment(), new ByUserId()],
 });
 
-router.post("/toggles", function (req, res) {
+router.post("/toggles", (req, res) => {
   const toggles = req.body.toggles;
   const unleashToggles = toggles.reduce((acc, toggle) => {
     acc[toggle] = unleash.isEnabled(toggle, {

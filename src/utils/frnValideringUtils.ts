@@ -5,17 +5,17 @@ const kontrollRekke2 = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
 
 const decimalRadix = 10;
 
-function erGyldigPnummer(dag: number, maned: number) {
+const erGyldigPnummer = (dag: number, maned: number) => {
   return dag > 0 && dag <= 32 && maned > 0 && maned <= 12;
-}
+};
 
-function erGyldigDNummer(dag: number, maned: number) {
+const erGyldigDNummer = (dag: number, maned: number) => {
   return dag > 40 && dag <= 72 && maned > 0 && maned <= 12;
-}
+};
 
-function erGyldigHNummer(dag: number, maned: number) {
+const erGyldigHNummer = (dag: number, maned: number) => {
   return dag > 0 && dag <= 32 && maned > 40 && maned <= 52;
-}
+};
 
 const erGyldigDato = (dag: number, maned: number) => {
   return (
@@ -41,14 +41,14 @@ const erGyldigTestdato = (dag: number, maned: number) => {
   );
 };
 
-function erGyldigFodselsdato(fodselsnummer: string) {
+const erGyldigFodselsdato = (fodselsnummer: string) => {
   const dag = parseInt(fodselsnummer.substring(0, 2), decimalRadix);
   const maned = parseInt(fodselsnummer.substring(2, 4), decimalRadix);
 
   return erGyldigDato(dag, maned) || erGyldigTestdato(dag, maned);
-}
+};
 
-function hentKontrollSiffer(fodselsnummer: any, kontrollrekke: any) {
+const hentKontrollSiffer = (fodselsnummer: any, kontrollrekke: any) => {
   let sum = 0;
   for (
     let sifferNummer = 0;
@@ -59,9 +59,9 @@ function hentKontrollSiffer(fodselsnummer: any, kontrollrekke: any) {
   }
   const kontrollSiffer = sum % 11;
   return kontrollSiffer !== 0 ? 11 - kontrollSiffer : 0;
-}
+};
 
-export function erGyldigFodselsnummer(fodselsnummer?: string) {
+export const erGyldigFodselsnummer = (fodselsnummer?: string) => {
   if (!fodselsnummer || !fodselsnummer.match(new RegExp("[0-9]{11}"))) {
     return false;
   }
@@ -83,4 +83,4 @@ export function erGyldigFodselsnummer(fodselsnummer?: string) {
     fodselsnummerListe[9] === kontrollSiffer1 &&
     fodselsnummerListe[10] === kontrollSiffer2
   );
-}
+};

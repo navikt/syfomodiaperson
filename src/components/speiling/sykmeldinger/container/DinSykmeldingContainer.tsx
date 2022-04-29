@@ -25,14 +25,14 @@ const pageTitle = (dinSykmelding?: SykmeldingOldFormat) => {
     : texts.pageTitleSykmelding;
 };
 
-export function getSykmelding(
+export const getSykmelding = (
   sykmeldinger: SykmeldingOldFormat[],
   sykmeldingId: string
-): SykmeldingOldFormat | undefined {
+): SykmeldingOldFormat | undefined => {
   return sykmeldinger.find((sykmld) => {
     return `${sykmld.id}` === `${sykmeldingId}`;
   });
-}
+};
 
 const DinSykmeldingSide = (): ReactElement => {
   const sykmeldingId = window.location.pathname.split("/")[3];
