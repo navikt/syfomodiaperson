@@ -48,7 +48,10 @@ const erGyldigFodselsdato = (fodselsnummer: string) => {
   return erGyldigDato(dag, maned) || erGyldigTestdato(dag, maned);
 };
 
-const hentKontrollSiffer = (fodselsnummer: any, kontrollrekke: any) => {
+const hentKontrollSiffer = (
+  fodselsnummer: number[],
+  kontrollrekke: number[]
+) => {
   let sum = 0;
   for (
     let sifferNummer = 0;

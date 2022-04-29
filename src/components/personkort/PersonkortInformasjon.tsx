@@ -1,7 +1,7 @@
 import React from "react";
 
 interface PersonkortInformasjonProps {
-  informasjonNokkelTekster: any;
+  informasjonNokkelTekster: Map<string, string>;
   informasjon: any;
 }
 

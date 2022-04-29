@@ -33,7 +33,7 @@ const getStillingsprosentText = (stillingsprosent?: number) => {
 
 interface DineSykmeldingOpplysningerProps {
   sykmelding: SykmeldingOldFormat;
-  Overskrift?: any;
+  Overskrift?: keyof JSX.IntrinsicElements;
 }
 
 const DineSykmeldingOpplysninger = (

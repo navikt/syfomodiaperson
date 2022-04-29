@@ -12,7 +12,10 @@ export const getTidligsteSendtDato = (soknad: any) => {
   return soknad.sendtTilNAVDato || soknad.sendtTilArbeidsgiverDato;
 };
 
-export const sorterEtterDato = (soknad1: any, soknad2: any) => {
+export const sorterEtterDato = (
+  soknad1: SykepengesoknadDTO,
+  soknad2: SykepengesoknadDTO
+) => {
   const dato1 = new Date(getTidligsteSendtDato(soknad1));
   const dato2 = new Date(getTidligsteSendtDato(soknad2));
 
@@ -25,7 +28,10 @@ export const sorterEtterDato = (soknad1: any, soknad2: any) => {
   return 0;
 };
 
-export const sorterEtterOpprettetDato = (soknad1: any, soknad2: any) => {
+export const sorterEtterOpprettetDato = (
+  soknad1: SykepengesoknadDTO,
+  soknad2: SykepengesoknadDTO
+) => {
   if (
     new Date(soknad1.opprettetDato).getTime() >
     new Date(soknad2.opprettetDato).getTime()
@@ -41,7 +47,10 @@ export const sorterEtterOpprettetDato = (soknad1: any, soknad2: any) => {
   return 0;
 };
 
-export const sorterEtterPerioder = (soknad1: any, soknad2: any) => {
+export const sorterEtterPerioder = (
+  soknad1: SykepengesoknadDTO,
+  soknad2: SykepengesoknadDTO
+) => {
   if (new Date(soknad1.tom).getTime() < new Date(soknad2.tom).getTime()) {
     return 1;
   }

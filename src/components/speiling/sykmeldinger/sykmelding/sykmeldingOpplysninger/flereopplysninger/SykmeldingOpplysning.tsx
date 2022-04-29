@@ -1,9 +1,9 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface SykmeldingOpplysningProps {
   tittel: string;
-  children?: any;
-  Overskrift?: any;
+  children?: ReactNode;
+  Overskrift?: keyof JSX.IntrinsicElements;
   className?: string;
 }
 

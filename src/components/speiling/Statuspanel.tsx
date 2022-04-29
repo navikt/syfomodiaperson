@@ -1,10 +1,10 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import cn from "classnames";
 import SykmeldingNokkelOpplysning from "./sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingNokkelOpplysning";
 
 interface StatusNokkelopplysningProps {
-  children?: any;
-  Overskrift?: any;
+  children?: ReactNode;
+  Overskrift?: keyof JSX.IntrinsicElements;
   tittel: string;
 }
 
@@ -24,7 +24,7 @@ export const StatusNokkelopplysning = (
 };
 
 interface StatusopplysningerProps {
-  children?: any;
+  children?: ReactNode;
 }
 
 export const Statusopplysninger = (
@@ -35,7 +35,7 @@ export const Statusopplysninger = (
 };
 
 interface StatuspanelProps {
-  children?: any;
+  children?: ReactNode;
   enKolonne?: boolean;
 }
 

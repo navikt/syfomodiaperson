@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { ReactNode, useEffect } from "react";
 import { Container, Row, Column } from "nav-frontend-grid";
 import Personkort from "../components/personkort/Personkort";
 import DocumentTitle from "react-document-title";
@@ -10,7 +10,7 @@ import {
 interface SideFullbreddeProps {
   tittel: string;
   aktivtMenypunkt: string;
-  children?: any;
+  children?: ReactNode;
 }
 
 const Side = (sideFullbreddeProps: SideFullbreddeProps) => {

@@ -6,7 +6,7 @@ interface SykmeldingOpplysningForFeltProps {
   felt: string;
   tittel: string;
   opplysning?: string;
-  Overskrift?: string;
+  Overskrift?: keyof JSX.IntrinsicElements;
 }
 
 export const SykmeldingOpplysningForFelt = ({

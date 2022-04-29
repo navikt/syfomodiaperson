@@ -24,7 +24,7 @@ const texts = {
 };
 
 interface HeaderInfoStartDateProps {
-  startDate: any;
+  startDate: Date | undefined;
 }
 
 const HeaderInfoStartDate = (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 import EtikettBase from "nav-frontend-etiketter";
 import { formaterOrgnr } from "@/utils";
@@ -45,7 +45,7 @@ const textForskuttering = (arbeidsgiverForskutterer?: boolean) => {
 };
 
 interface PersonKortVirksomhetHeaderProps {
-  children?: any;
+  children?: ReactNode;
   arbeidsgiverForskutterer?: boolean;
   virksomhetsnavn: string;
   virksomhetsnummer: string;

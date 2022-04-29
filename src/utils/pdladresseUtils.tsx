@@ -121,7 +121,7 @@ const formaterVegadresse = (vegadresse: Vegadresse) => {
       vegadresse.husbokstav || ""
     }`,
     vegadresse.tilleggsnavn || "",
-    vegadresse.postnummer,
+    vegadresse.postnummer || "",
     "",
     ""
   );
@@ -168,11 +168,11 @@ const formaterUkjentBosted = (ukjentBosted: UkjentBosted) => {
 };
 
 const hentAdresseRader = (
-  rad1: any,
-  rad2: any,
-  rad3: any,
-  rad4: any,
-  rad5: any
+  rad1: string,
+  rad2: string,
+  rad3: string,
+  rad4: string,
+  rad5: string
 ) => {
   return (
     <div>

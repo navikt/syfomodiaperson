@@ -19,9 +19,6 @@ const SykmeldingerSide = (): ReactElement => {
   const { isLoading, isError, sykmeldinger } = useSykmeldingerQuery();
   const { navn: brukernavn } = useNavBrukerData();
 
-  const htmlIntro = {
-    __html: `<p>${texts.introduksjonstekst}</p>`,
-  };
   const brodsmuler = [
     {
       tittel: "Ditt sykefravær",
@@ -39,7 +36,10 @@ const SykmeldingerSide = (): ReactElement => {
           <Speilingvarsel brukernavn={brukernavn} />
           <div className="speiling">
             <Brodsmuler brodsmuler={brodsmuler} />
-            <SidetoppSpeilet tittel="Dine sykmeldinger" htmlTekst={htmlIntro} />
+            <SidetoppSpeilet
+              tittel="Dine sykmeldinger"
+              intro={texts.introduksjonstekst}
+            />
             <DineSykmeldinger sykmeldinger={sykmeldinger} />
           </div>
         </div>

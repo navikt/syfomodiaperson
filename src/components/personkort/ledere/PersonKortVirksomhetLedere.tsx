@@ -10,6 +10,7 @@ import {
   NarmesteLederRelasjonStatus,
 } from "@/data/leder/ledereTypes";
 import { capitalizeAllWords } from "@/utils/stringUtils";
+import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
 const texts = {
   name: "Navn",
@@ -134,8 +135,8 @@ export const PersonKortVirksomhetLederRow = (
 };
 
 interface PersonKortVirksomhetLedereProps {
-  sykmeldinger: any[];
-  virksomhetLederMap: any;
+  sykmeldinger: SykmeldingOldFormat[];
+  virksomhetLederMap: Map<string, NarmesteLederRelasjonDTO>;
   virksomhetsnummer: string;
 }
 

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface SykmeldingNokkelOpplysningProps {
   tittel: string;
-  children?: any;
+  children?: ReactNode;
   className?: string;
-  Overskrift?: any;
+  Overskrift?: keyof JSX.IntrinsicElements;
 }
 
 const SykmeldingNokkelOpplysning = (

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { ReactNode, useEffect } from "react";
 import styled from "styled-components";
 import { Column, Container, Row } from "nav-frontend-grid";
 import Personkort from "../components/personkort/Personkort";
@@ -17,7 +17,7 @@ const StyledContainer = styled(Container)`
 
 interface SideProps {
   tittel: string;
-  children?: any;
+  children?: ReactNode;
   aktivtMenypunkt: string;
 }
 

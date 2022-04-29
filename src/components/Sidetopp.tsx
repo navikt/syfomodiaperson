@@ -2,17 +2,17 @@ import React from "react";
 
 interface SidetoppProps {
   tittel: string;
-  htmlTekst?: any;
+  intro?: string;
 }
 
 const Sidetopp = (sidetoppProps: SidetoppProps) => {
-  const { tittel, htmlTekst } = sidetoppProps;
+  const { tittel, intro } = sidetoppProps;
   return (
     <header className="sidetopp js-sidetopp">
       <h1 className="sidetopp__tittel">{tittel}</h1>
-      {htmlTekst && (
+      {intro && (
         <div className="sidetopp__intro js-intro">
-          <p dangerouslySetInnerHTML={htmlTekst} />
+          <p>{intro}</p>
         </div>
       )}
     </header>

@@ -1,6 +1,8 @@
+import { ReactNode } from "react";
+
 interface VisProps {
   hvis?: boolean;
-  children?: any;
+  children?: ReactNode;
   render?: any;
 }
 
