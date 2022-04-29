@@ -1,9 +1,9 @@
 import { oppfolgingsplanMock } from "./oppfolgingsplanMock";
-import { historikkoppfolgingsplanMock } from "../data/historikkoppfolgingsplanMock";
+import { historikkoppfolgingsplanMock } from "./historikkoppfolgingsplanMock";
 import { oppfolgingsplanerLPSMock } from "./oppfolgingsplanLPSMock";
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import { SYFOOPPFOLGINGSPLANSERVICE_ROOT } from "../../src/apiConstants";
-import { dokumentinfoMock } from "../data/dokumentinfoMock";
+import { dokumentinfoMock } from "./dokumentinfoMock";
 
 const path = require("path");
 

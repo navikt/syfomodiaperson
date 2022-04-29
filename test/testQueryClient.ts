@@ -1,6 +1,6 @@
 import { QueryClient } from "react-query";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
-import { tilgangBrukerMock } from "../mock/data/tilgangtilbrukerMock";
+import { tilgangBrukerMock } from "../mock/syfotilgangskontroll/tilgangtilbrukerMock";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import {
   AKTIV_BRUKER_DEFAULT,
@@ -13,7 +13,7 @@ import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHook
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { modiacontextQueryKeys } from "@/data/modiacontext/modiacontextQueryHooks";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { oppfolgingstilfellePersonMock } from "../mock/data/oppfolgingstilfellePersonMock";
+import { oppfolgingstilfellePersonMock } from "../mock/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
 
 export const queryClientWithAktivBruker = (): QueryClient => {
   const queryClient = new QueryClient();

@@ -1,5 +1,5 @@
 import { ISPENGESTOPP_ROOT } from "../../src/apiConstants";
-import { createStatusList } from "../data/pengestoppStatusMock";
+import { createStatusList } from "./pengestoppStatusMock";
 
 const Auth = require("../../server/auth/index.js");
 

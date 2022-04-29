@@ -6,7 +6,7 @@ import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook } from "@testing-library/react-hooks";
 import { expect } from "chai";
 import { usePersonAdresseQuery } from "@/data/personinfo/personAdresseQueryHooks";
-import { personAdresseMock } from "../../mock/data/personAdresseMock";
+import { personAdresseMock } from "../../mock/syfoperson/personAdresseMock";
 
 let queryClient;
 let apiMockScope;

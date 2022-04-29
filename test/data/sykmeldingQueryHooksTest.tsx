@@ -6,7 +6,7 @@ import { renderHook } from "@testing-library/react-hooks";
 import { expect } from "chai";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { stubSykmeldingApi } from "../stubs/stubSyfosmregister";
-import { sykmeldingerMock } from "../../mock/data/sykmeldingerMock";
+import { sykmeldingerMock } from "../../mock/syfosmregister/sykmeldingerMock";
 import { SykmeldingNewFormatDTO } from "@/data/sykmelding/types/SykmeldingNewFormatDTO";
 import {
   newSMFormat2OldFormat,

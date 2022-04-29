@@ -1,6 +1,6 @@
 import nock from "nock";
 import { ISDIALOGMOTE_ROOT } from "@/apiConstants";
-import { dialogmoterMock } from "../../mock/data/dialogmoterMock";
+import { dialogmoterMock } from "../../mock/isdialogmote/dialogmoterMock";
 
 export const stubDialogmoterApi = (scope: nock.Scope) => {
   return scope

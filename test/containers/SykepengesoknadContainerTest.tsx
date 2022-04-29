@@ -10,7 +10,7 @@ import { MemoryRouter, Route } from "react-router-dom";
 import { render, screen } from "@testing-library/react";
 import { QueryClientProvider } from "react-query";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
-import { tilgangBrukerMock } from "../../mock/data/tilgangtilbrukerMock";
+import { tilgangBrukerMock } from "../../mock/syfotilgangskontroll/tilgangtilbrukerMock";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 import { sykepengesoknaderQueryKeys } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";

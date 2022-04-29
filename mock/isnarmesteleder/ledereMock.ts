@@ -1,4 +1,4 @@
-import { NarmesteLederRelasjonStatus } from "../../src/data/leder/ledereTypes";
+import { NarmesteLederRelasjonStatus } from "@/data/leder/ledereTypes";
 import {
   ARBEIDSTAKER_DEFAULT,
   VIRKSOMHET_BRANNOGBIL,

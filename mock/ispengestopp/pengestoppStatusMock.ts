@@ -7,7 +7,7 @@ import {
   Status,
   StoppAutomatikk,
   SykepengestoppArsakType,
-} from "../../src/data/pengestopp/types/FlaggPerson";
+} from "@/data/pengestopp/types/FlaggPerson";
 
 const defaultStoppAutomatikk: StoppAutomatikk = {
   enhetNr: { value: ENHET_GAMLEOSLO.nummer },

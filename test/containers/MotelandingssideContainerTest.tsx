@@ -17,7 +17,7 @@ import { stubTilgangApi } from "../stubs/stubSyfotilgangskontroll";
 import { apiMock } from "../stubs/stubApi";
 import nock from "nock";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
-import { tilgangBrukerMock } from "../../mock/data/tilgangtilbrukerMock";
+import { tilgangBrukerMock } from "../../mock/syfotilgangskontroll/tilgangtilbrukerMock";
 import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";

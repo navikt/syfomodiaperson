@@ -5,7 +5,7 @@ import { renderHook } from "@testing-library/react-hooks";
 import { expect } from "chai";
 import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { stubVeilederinfoApi } from "../stubs/stubSyfoveileder";
-import { veilederMock } from "../../mock/data/veilederMock";
+import { veilederMock } from "../../mock/syfoveileder/veilederMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 
 let queryClient;

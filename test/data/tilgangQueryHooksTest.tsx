@@ -6,7 +6,7 @@ import { expect } from "chai";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { stubTilgangApi } from "../stubs/stubSyfotilgangskontroll";
 import { useTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
-import { tilgangBrukerMock } from "../../mock/data/tilgangtilbrukerMock";
+import { tilgangBrukerMock } from "../../mock/syfotilgangskontroll/tilgangtilbrukerMock";
 
 let queryClient;
 let apiMockScope;

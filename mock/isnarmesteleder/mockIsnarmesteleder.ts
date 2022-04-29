@@ -1,4 +1,4 @@
-import { ledereMock } from "../data/ledereMock";
+import { ledereMock } from "./ledereMock";
 import { ISNARMESTELEDER_ROOT } from "../../src/apiConstants";
 
 const Auth = require("../../server/auth/index.js");

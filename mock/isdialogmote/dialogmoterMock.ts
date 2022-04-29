@@ -3,16 +3,16 @@ import {
   DialogmoteStatus,
   DocumentComponentType,
   MotedeltakerVarselType,
-} from "../../src/data/dialogmote/types/dialogmoteTypes";
-import { BehandlerType } from "../../src/data/behandler/BehandlerDTO";
+} from "@/data/dialogmote/types/dialogmoteTypes";
+import { BehandlerType } from "@/data/behandler/BehandlerDTO";
 import {
   ARBEIDSTAKER_DEFAULT,
   ENHET_GRUNERLOKKA,
   VEILEDER_IDENT_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
-import { ReferatDTO } from "../../src/data/dialogmote/types/dialogmoteReferatTypes";
-import { referatTexts } from "../../src/data/dialogmote/dialogmoteTexts";
+import { ReferatDTO } from "@/data/dialogmote/types/dialogmoteReferatTypes";
+import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 
 const createDialogmote = (
   uuid: string,

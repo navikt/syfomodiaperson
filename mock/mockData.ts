@@ -1,15 +1,15 @@
-import { moterMock } from "./data/moterMock";
-import { motebehovMock } from "./data/motebehovMock";
-import { brukerinfoMock } from "./data/brukerinfoMock";
-import { historikkmotebehovMock } from "./data/historikkmotebehovMock";
-import { historikkmoterMock } from "./data/historikkmoterMock";
-import { historikkoppfolgingsplanMock } from "./data/historikkoppfolgingsplanMock";
-import { ledereMock } from "./data/ledereMock";
-import { dialogmoterMock } from "./data/dialogmoterMock";
-import { soknaderMock } from "./data/soknaderMock";
-import { sykmeldingerMock } from "./data/sykmeldingerMock";
-import { tilgangBrukerMock } from "./data/tilgangtilbrukerMock";
-import { virksomhetMock } from "./data/virksomhetMock";
+import { moterMock } from "./syfomoteadmin/moterMock";
+import { motebehovMock } from "./syfomotebehov/motebehovMock";
+import { brukerinfoMock } from "./syfoperson/brukerinfoMock";
+import { historikkmotebehovMock } from "./syfomotebehov/historikkmotebehovMock";
+import { historikkmoterMock } from "./syfomoteadmin/historikkmoterMock";
+import { historikkoppfolgingsplanMock } from "./syfooppfolgingsplanservice/historikkoppfolgingsplanMock";
+import { ledereMock } from "./isnarmesteleder/ledereMock";
+import { dialogmoterMock } from "./isdialogmote/dialogmoterMock";
+import { soknaderMock } from "./syfosoknad/soknaderMock";
+import { sykmeldingerMock } from "./syfosmregister/sykmeldingerMock";
+import { tilgangBrukerMock } from "./syfotilgangskontroll/tilgangtilbrukerMock";
+import { virksomhetMock } from "./syfomoteadmin/virksomhetMock";
 
 export const mockData = {
   moterMock,
