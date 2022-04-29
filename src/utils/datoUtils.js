@@ -290,14 +290,14 @@ export const toDatePrettyPrint = (dato) => {
   return `${days}.${months}.${years}`;
 };
 
-export function getDuration(from, to) {
+export const getDuration = (from, to) => {
   return (
     Math.round(Math.floor(toDate(to) - toDate(from)) / (1000 * 60 * 60 * 24)) +
     1
   );
-}
+};
 
-export function manederMellomDatoer(d1, d2) {
+export const manederMellomDatoer = (d1, d2) => {
   let months;
   months = (d2.getFullYear() - d1.getFullYear()) * 12;
   months -= d1.getMonth();
@@ -307,4 +307,4 @@ export function manederMellomDatoer(d1, d2) {
     months -= 1;
   }
   return months <= 0 ? 0 : months;
-}
+};

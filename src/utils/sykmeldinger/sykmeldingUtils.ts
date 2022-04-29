@@ -192,10 +192,12 @@ export const sykmeldingperioderSortertEldstTilNyest = (
   });
 };
 
-export function getSykmeldingStartdato(sykmelding: SykmeldingOldFormat): Date {
+export const getSykmeldingStartdato = (
+  sykmelding: SykmeldingOldFormat
+): Date => {
   const perioder = sykmelding.mulighetForArbeid.perioder;
   return new Date(sykmeldingperioderSortertEldstTilNyest(perioder)[0].fom);
-}
+};
 
 export const sykmeldingerInnenforOppfolgingstilfelle = (
   sykmeldinger: SykmeldingOldFormat[],

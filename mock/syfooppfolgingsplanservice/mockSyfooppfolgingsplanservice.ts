@@ -34,7 +34,7 @@ export const mockSyfooppfolgingsplanservice = (server) => {
         __dirname,
         "/oppfolgingsplan/pdf/oppfolgingsplanlps.pdf"
       );
-      res.download(file, function (err) {
+      res.download(file, (err) => {
         if (err) {
           res.status(500).send("Error");
         }

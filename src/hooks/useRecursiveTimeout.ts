@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 
-function useRecursiveTimeout<T>(
+const useRecursiveTimeout = <T>(
   callback: () => Promise<T> | (() => void),
   delay: number | null
-) {
+) => {
   const savedCallback = useRef(callback);
 
   useEffect(() => {
@@ -12,7 +12,7 @@ function useRecursiveTimeout<T>(
 
   useEffect(() => {
     let id: NodeJS.Timeout;
-    function tick() {
+    const tick = () => {
       const ret = savedCallback.current();
 
       if (ret instanceof Promise) {
@@ -26,7 +26,7 @@ function useRecursiveTimeout<T>(
           id = setTimeout(tick, delay);
         }
       }
-    }
+    };
     if (delay !== null) {
       id = setTimeout(tick, delay);
       return () => id && clearTimeout(id);
@@ -34,6 +34,6 @@ function useRecursiveTimeout<T>(
 
     return;
   }, [delay]);
-}
+};
 
 export default useRecursiveTimeout;

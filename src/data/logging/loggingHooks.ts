@@ -46,7 +46,7 @@ export const useTrackEvent = () => {
   const metaData = useLoggingMetaData();
 
   return useCallback(
-    function (eventName: string, eventData?: Record<string, string>) {
+    (eventName: string, eventData?: Record<string, string>) => {
       trackEvent(eventName, Object.assign({}, metaData, eventData));
     },
     [metaData]
@@ -56,7 +56,7 @@ export const useTrackEvent = () => {
 export const useTrackOnClick = () => {
   const trackEvent = useTrackEvent();
 
-  return function (elementName: string, kontekst?: string) {
+  return (elementName: string, kontekst?: string) => {
     const context = kontekst && { kontekst: kontekst };
     trackEvent(`${texts.click} ${elementName}`, {
       pageName: document.title,
@@ -68,7 +68,7 @@ export const useTrackOnClick = () => {
 export const useTrackPageLoad = () => {
   const trackEvent = useTrackEvent();
 
-  return function (pageName: string, aktivtMenyPunkt: string) {
+  return (pageName: string, aktivtMenyPunkt: string) => {
     trackEvent(`${texts.pageLoad}`, {
       aktivtMenyPunkt: aktivtMenyPunkt,
       pageName: pageName,

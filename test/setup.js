@@ -25,7 +25,7 @@ setLogger({
   },
 });
 
-function copyProps(src, target) {
+const copyProps = (src, target) => {
   const props = Object.getOwnPropertyNames(src)
     .filter((prop) => {
       return typeof target[prop] === "undefined";
@@ -34,7 +34,7 @@ function copyProps(src, target) {
       return Object.getOwnPropertyDescriptor(src, prop);
     });
   Object.defineProperties(target, props);
-}
+};
 
 let temp = null;
 const localS = {

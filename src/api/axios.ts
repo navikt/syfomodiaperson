@@ -28,7 +28,7 @@ export const defaultRequestHeaders = (
   return headers;
 };
 
-function handleAxiosError(error: AxiosError) {
+const handleAxiosError = (error: AxiosError) => {
   if (error.response) {
     switch (error.response.status) {
       case 401: {
@@ -56,7 +56,7 @@ function handleAxiosError(error: AxiosError) {
   } else {
     throw new ApiErrorException(generalError(error.message));
   }
-}
+};
 
 export const get = <ResponseData>(
   url: string,
@@ -67,7 +67,7 @@ export const get = <ResponseData>(
       headers: defaultRequestHeaders(personIdent),
     })
     .then((response) => response.data)
-    .catch(function (error) {
+    .catch((error) => {
       if (axios.isAxiosError(error)) {
         handleAxiosError(error);
       } else {
@@ -86,7 +86,7 @@ export const post = <ResponseData>(
       headers: defaultRequestHeaders(personIdent),
     })
     .then((response) => response.data)
-    .catch(function (error) {
+    .catch((error) => {
       if (axios.isAxiosError(error)) {
         handleAxiosError(error);
       } else {

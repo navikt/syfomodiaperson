@@ -28,14 +28,14 @@ describe("Axios API tests", () => {
   });
 
   describe("Happy case", () => {
-    it("returns expected data from http 200", async function () {
+    it("returns expected data from http 200", async () => {
       const result = await get(pathHappyCase);
       expect(result).to.equal(happyCaseMessage);
     });
   });
 
   describe("Access denied tests", () => {
-    it("Throws access denied for http 403, and handles Tilgang-object", async function () {
+    it("Throws access denied for http 403, and handles Tilgang-object", async () => {
       try {
         await get(pathAccessDenied);
       } catch (e) {
@@ -47,7 +47,7 @@ describe("Axios API tests", () => {
       }
     });
 
-    it("Throws access denied for http 403, and handles message", async function () {
+    it("Throws access denied for http 403, and handles message", async () => {
       try {
         await post(pathAccessDeniedMessage, {
           some: "data",
@@ -63,7 +63,7 @@ describe("Axios API tests", () => {
   });
 
   describe("General error tests", () => {
-    it("Throws general error for http 404", async function () {
+    it("Throws general error for http 404", async () => {
       try {
         await post(pathNotFound, { some: "data" });
       } catch (e) {
@@ -75,7 +75,7 @@ describe("Axios API tests", () => {
       }
     });
 
-    it("Throws general error for http 500", async function () {
+    it("Throws general error for http 500", async () => {
       try {
         await get(pathInternalServerError);
       } catch (e) {
