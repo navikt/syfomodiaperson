@@ -3,13 +3,13 @@ import {
   ferdigstiltDialogmote,
   innkaltDialogmote,
   innkaltDialogmoteMedBehandler,
-} from "../../mock/data/dialogmoterMock";
+} from "../../mock/isdialogmote/dialogmoterMock";
 import {
   ISDIALOGMOTE_ROOT,
   ISOPPFOLGINGSTILFELLE_ROOT,
   SYFOMOTEADMIN_ROOT,
 } from "../../src/apiConstants";
-import { oppfolgingstilfellePersonMock } from "../../mock/data/oppfolgingstilfellePersonMock";
+import { oppfolgingstilfellePersonMock } from "../../mock/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
 
 export enum MoteState {
   INNKALT_DIALOGMOTE,

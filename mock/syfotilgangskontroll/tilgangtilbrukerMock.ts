@@ -1,4 +1,4 @@
-import { Tilgang } from "@/data/tilgang/tilgangTypes";
+import { Tilgang } from "../../src/data/tilgang/tilgangTypes";
 
 export const tilgangBrukerMock: Tilgang = {
   harTilgang: true,

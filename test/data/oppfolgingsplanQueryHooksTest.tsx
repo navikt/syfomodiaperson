@@ -16,7 +16,7 @@ import {
   stubOppfolgingsplanLPSApi,
 } from "../stubs/stubSyfooppfolgingsplan";
 import { oppfolgingsplanerLPSMock } from "../../mock/syfooppfolgingsplanservice/oppfolgingsplanLPSMock";
-import { dokumentinfoMock } from "../../mock/data/dokumentinfoMock";
+import { dokumentinfoMock } from "../../mock/syfooppfolgingsplanservice/dokumentinfoMock";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 
 let queryClient;

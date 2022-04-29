@@ -1,4 +1,4 @@
-import { sykmeldingerMock } from "../data/sykmeldingerMock";
+import { sykmeldingerMock } from "./sykmeldingerMock";
 import { SYFOSMREGISTER_ROOT } from "../../src/apiConstants";
 
 const Auth = require("../../server/auth/index.js");

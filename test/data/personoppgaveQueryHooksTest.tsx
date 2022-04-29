@@ -6,7 +6,7 @@ import { expect } from "chai";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { stubPersonoppgaveApi } from "../stubs/stubIspersonoppgave";
-import { personoppgaverMock } from "../../mock/data/personoppgaveMock";
+import { personoppgaverMock } from "../../mock/ispersonoppgave/personoppgaveMock";
 
 let queryClient;
 let apiMockScope;

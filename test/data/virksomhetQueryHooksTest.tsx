@@ -5,7 +5,7 @@ import nock from "nock";
 import { renderHook } from "@testing-library/react-hooks";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { expect } from "chai";
-import { virksomhetMock } from "../../mock/data/virksomhetMock";
+import { virksomhetMock } from "../../mock/syfomoteadmin/virksomhetMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
 

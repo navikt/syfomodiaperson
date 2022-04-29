@@ -1,6 +1,6 @@
 import nock from "nock";
 import { SYFOMOTEBEHOV_ROOT } from "@/apiConstants";
-import { historikkmotebehovMock } from "../../mock/data/historikkmotebehovMock";
+import { historikkmotebehovMock } from "../../mock/syfomotebehov/historikkmotebehovMock";
 
 export const stubMotebehovHistorikkApi = (scope: nock.Scope, fnr: string) => {
   scope

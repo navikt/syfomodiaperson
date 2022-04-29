@@ -5,7 +5,7 @@ import { renderHook } from "@testing-library/react-hooks";
 import { expect } from "chai";
 import { stubBehandlendeEnhetApi } from "../stubs/stubSyfobehandlendeEnhet";
 import { useBehandlendeEnhetQuery } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
-import { behandlendeEnhetMock } from "../../mock/data/behandlendeEnhetMock";
+import { behandlendeEnhetMock } from "../../mock/syfobehandlendeenhet/behandlendeEnhetMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 
 let queryClient;

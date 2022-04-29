@@ -1,4 +1,4 @@
-import { veilederMock } from "../../mock/data/veilederMock";
+import { veilederMock } from "../../mock/syfoveileder/veilederMock";
 import nock from "nock";
 import { SYFOVEILEDER_ROOT } from "@/apiConstants";
 

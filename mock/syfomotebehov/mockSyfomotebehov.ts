@@ -1,6 +1,6 @@
-import { motebehovMock } from "../data/motebehovMock";
+import { motebehovMock } from "./motebehovMock";
 import { SYFOMOTEBEHOV_ROOT } from "../../src/apiConstants";
-import { historikkmotebehovMock } from "../data/historikkmotebehovMock";
+import { historikkmotebehovMock } from "./historikkmotebehovMock";
 import { VEILEDER_IDENT_DEFAULT } from "../common/mockConstants";
 
 const Auth = require("../../server/auth/index.js");

@@ -1,7 +1,7 @@
-import { virksomhetMock } from "../data/virksomhetMock";
-import { moterMock } from "../data/moterMock";
-import { historikkmoterMock } from "../data/historikkmoterMock";
-import { ledereMock } from "../data/ledereMock";
+import { virksomhetMock } from "./virksomhetMock";
+import { moterMock } from "./moterMock";
+import { historikkmoterMock } from "./historikkmoterMock";
+import { ledereMock } from "../isnarmesteleder/ledereMock";
 import { SYFOMOTEADMIN_ROOT } from "../../src/apiConstants";
 import {
   ARBEIDSTAKER_DEFAULT,

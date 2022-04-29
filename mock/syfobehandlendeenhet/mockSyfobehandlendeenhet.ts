@@ -1,6 +1,6 @@
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import { SYFOBEHANDLENDEENHET_ROOT } from "../../src/apiConstants";
-import { behandlendeEnhetMock } from "../data/behandlendeEnhetMock";
+import { behandlendeEnhetMock } from "./behandlendeEnhetMock";
 
 const Auth = require("../../server/auth/index.js");
 

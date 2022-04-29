@@ -2,8 +2,8 @@ import nock from "nock";
 import { SYFOOPPFOLGINGSPLANSERVICE_ROOT } from "@/apiConstants";
 import { oppfolgingsplanMock } from "../../mock/syfooppfolgingsplanservice/oppfolgingsplanMock";
 import { oppfolgingsplanerLPSMock } from "../../mock/syfooppfolgingsplanservice/oppfolgingsplanLPSMock";
-import { dokumentinfoMock } from "../../mock/data/dokumentinfoMock";
-import { historikkoppfolgingsplanMock } from "../../mock/data/historikkoppfolgingsplanMock";
+import { dokumentinfoMock } from "../../mock/syfooppfolgingsplanservice/dokumentinfoMock";
+import { historikkoppfolgingsplanMock } from "../../mock/syfooppfolgingsplanservice/historikkoppfolgingsplanMock";
 
 export const stubOppfolgingsplanApi = (scope: nock.Scope, fnr: string) => {
   return scope

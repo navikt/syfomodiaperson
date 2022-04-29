@@ -5,7 +5,7 @@ import { renderHook } from "@testing-library/react-hooks";
 import { expect } from "chai";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { usePengestoppStatusQuery } from "@/data/pengestopp/pengestoppQueryHooks";
-import { createStatusList } from "../../mock/data/pengestoppStatusMock";
+import { createStatusList } from "../../mock/ispengestopp/pengestoppStatusMock";
 import { stubPengestoppStatusApi } from "../stubs/stubIspengestopp";
 
 let queryClient;

@@ -1,4 +1,4 @@
-import { soknaderMock } from "../data/soknaderMock";
+import { soknaderMock } from "./soknaderMock";
 import { SYFOSOKNAD_ROOT } from "../../src/apiConstants";
 
 const Auth = require("../../server/auth/index.js");

@@ -1,6 +1,6 @@
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
-import { personAdresseMock } from "../data/personAdresseMock";
-import { brukerinfoMock } from "../data/brukerinfoMock";
+import { personAdresseMock } from "./personAdresseMock";
+import { brukerinfoMock } from "./brukerinfoMock";
 import { SYFOPERSON_ROOT } from "../../src/apiConstants";
 
 const Auth = require("../../server/auth/index.js");

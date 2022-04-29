@@ -1,4 +1,4 @@
-import { tilgangBrukerMock } from "../data/tilgangtilbrukerMock";
+import { tilgangBrukerMock } from "./tilgangtilbrukerMock";
 import { SYFOTILGANGSKONTROLL_ROOT } from "../../src/apiConstants";
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 

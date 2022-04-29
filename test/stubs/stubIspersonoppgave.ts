@@ -1,6 +1,6 @@
 import nock from "nock";
 import { ISPERSONOPPGAVE_ROOT } from "@/apiConstants";
-import { personoppgaverMock } from "../../mock/data/personoppgaveMock";
+import { personoppgaverMock } from "../../mock/ispersonoppgave/personoppgaveMock";
 
 export const stubPersonoppgaveApi = (scope: nock.Scope, created: Date) => {
   return scope

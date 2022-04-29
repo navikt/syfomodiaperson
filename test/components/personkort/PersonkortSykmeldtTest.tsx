@@ -6,7 +6,7 @@ import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
 import { QueryClientProvider } from "react-query";
 import { apiMock } from "../../stubs/stubApi";
 import { stubPersonadresseApi } from "../../stubs/stubSyfoperson";
-import { vegadresse } from "../../../mock/data/personAdresseMock";
+import { vegadresse } from "../../../mock/syfoperson/personAdresseMock";
 import { queryClientWithAktivBruker } from "../../testQueryClient";
 
 let queryClient;
