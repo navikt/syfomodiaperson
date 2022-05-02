@@ -34,6 +34,7 @@ const getFnrFromParams = (): string => {
 export const appRoutePath = "/sykefravaer";
 
 export const dialogmoteRoutePath = `${appRoutePath}/dialogmote`;
+export const dialogmoteUnntakRoutePath = `${appRoutePath}/dialogmoteunntak`;
 export const moteoversiktRoutePath = `${appRoutePath}/moteoversikt`;
 
 const AktivBrukerRouter = ({ fnr }: { fnr: string }): ReactElement => {

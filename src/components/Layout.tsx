@@ -29,6 +29,12 @@ export const FlexColumn = styled.div<FlexColumnProps>`
     }};
 `;
 
+export enum FlexGapSize {
+  SM = "1em",
+  MD = "2em",
+  LG = "3em",
+}
+
 export enum PaddingSize {
   SM = "1em",
   MD = "2em",
@@ -36,6 +42,7 @@ export enum PaddingSize {
 }
 
 export interface RowProps {
+  columnGap?: FlexGapSize;
   topPadding?: PaddingSize;
   bottomPadding?: PaddingSize;
   leftPadding?: PaddingSize;
@@ -47,6 +54,7 @@ export const FlexRow = styled.div<RowProps>`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
+  column-gap: ${(props) => props.columnGap || 0};
   padding-top: ${(props) => props.topPadding || 0};
   padding-bottom: ${(props) => props.bottomPadding || 0};
   padding-left: ${(props) => props.leftPadding || 0};

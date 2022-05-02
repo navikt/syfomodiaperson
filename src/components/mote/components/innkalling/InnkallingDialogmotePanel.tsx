@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react";
+import { FlexGapSize, FlexRow } from "@/components/Layout";
 import { MoteDTO } from "@/data/mote/types/moteTypes";
 import { SeMoteStatus } from "./SeMoteStatus";
 import { NyttDialogMote } from "./NyttDialogMote";
@@ -10,16 +11,23 @@ import { DialogmoteMoteStatusPanel } from "./DialogmoteMoteStatusPanel";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/components/dialogmote/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { SettDialogmoteunntakLenke } from "@/components/dialogmoteunntak/SettDialogmoteunntakLenke";
+import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 
 export const texts = {
   bekreftetMote: "Bekreftet møte",
   seMotestatus: "Se møtestatus",
   planleggNyttMote: "Planlegg nytt dialogmøte",
+  kandidatDialogmote: "Kandidat til dialogmøte",
   ingenMoterPlanlagt: "Ingen møter planlagt",
   dialogMote: "Dialogmøte",
   moteforesporselSendt: "Møteforespørsel sendt",
   arenaDialogmoteInnkalling:
     "Dialogmøter med denne innbyggeren må fortsatt kalles inn via Arena.",
+};
+
+const dialogmotePanelHeaderText = (isKandidat: boolean): string => {
+  return isKandidat ? texts.kandidatDialogmote : texts.planleggNyttMote;
 };
 
 const resolveUndertittelForMoteStatus = (mote: MoteDTO) => {
@@ -44,6 +52,8 @@ export const InnkallingDialogmotePanel = ({
   const aktivtMoteplanleggerMote = useAktivtMoteplanleggerMote();
   const { brukerKanIkkeVarslesDigitalt } = useNavBrukerData();
 
+  const { isKandidat } = useDialogmotekandidat();
+
   if (aktivtDialogmote) {
     return <DialogmoteMoteStatusPanel dialogmote={aktivtDialogmote} />;
   } else if (aktivtMoteplanleggerMote) {
@@ -64,13 +74,16 @@ export const InnkallingDialogmotePanel = ({
     return (
       <DialogmotePanel
         icon={MoteIkonBlaaImage}
-        header={texts.planleggNyttMote}
+        header={dialogmotePanelHeaderText(isKandidat)}
         subtitle={texts.ingenMoterPlanlagt}
       >
         {brukerKanIkkeVarslesDigitalt && (
           <BrukerKanIkkeVarslesPapirpostAdvarsel />
         )}
-        <NyttDialogMote />
+        <FlexRow columnGap={FlexGapSize.MD}>
+          <NyttDialogMote />
+          {isKandidat && <SettDialogmoteunntakLenke />}
+        </FlexRow>
       </DialogmotePanel>
     );
   }

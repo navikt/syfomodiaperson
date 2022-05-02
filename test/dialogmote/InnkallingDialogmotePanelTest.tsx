@@ -92,5 +92,12 @@ describe("InnkallingDialogmotePanel", () => {
       expect(button).to.exist;
       userEvent.click(button);
     });
+    it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat", () => {
+      renderInnkallingDialogmotePanel(brukerKanVarsles);
+
+      const button = getButton("Sett unntak");
+      expect(button).to.exist;
+      userEvent.click(button);
+    });
   });
 });

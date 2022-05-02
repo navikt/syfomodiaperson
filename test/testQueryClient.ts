@@ -8,12 +8,15 @@ import {
   BEHANDLENDE_ENHET_DEFAULT,
   LEDERE_DEFAULT,
   VEILEDER_DEFAULT,
+  VEILEDER_IDENT_DEFAULT,
 } from "../mock/common/mockConstants";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { modiacontextQueryKeys } from "@/data/modiacontext/modiacontextQueryHooks";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { oppfolgingstilfellePersonMock } from "../mock/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
+import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks";
+import { unleashMock } from "../mock/unleash/unleashMock";
 
 export const queryClientWithAktivBruker = (): QueryClient => {
   const queryClient = new QueryClient();
@@ -50,6 +53,13 @@ export const queryClientWithMockData = (): QueryClient => {
       ARBEIDSTAKER_DEFAULT.personIdent
     ),
     () => oppfolgingstilfellePersonMock
+  );
+  queryClient.setQueryData(
+    unleashQueryKeys.toggles(
+      BEHANDLENDE_ENHET_DEFAULT.enhetId,
+      VEILEDER_IDENT_DEFAULT
+    ),
+    () => unleashMock
   );
 
   return queryClient;
