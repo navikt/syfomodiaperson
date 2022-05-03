@@ -8,7 +8,7 @@ const texts = {
   settUnntakTrackingContext: "Møtelandingsside: Sett unntak",
 };
 
-export const SettDialogmoteunntakLenke = (): ReactElement => {
+export const DialogmoteunntakSkjemaLenke = (): ReactElement => {
   return (
     <Link to={dialogmoteUnntakRoutePath}>
       <TrackedKnapp

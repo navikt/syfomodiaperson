@@ -7,7 +7,7 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { DialogmotekandidatDTO } from "@/data/dialogmotekandidat/dialogmotekandidatTypes";
 
 export const dialogmotekandidatQueryKeys = {
-  kandidat: (fnr: string) => ["dialogmotekandidat", fnr],
+  kandidat: (personident: string) => ["dialogmotekandidat", personident],
 };
 
 export const useDialogmotekandidat = () => {
@@ -16,14 +16,14 @@ export const useDialogmotekandidat = () => {
     ToggleNames.dialogmotekandidat
   );
 
-  const fnr = useValgtPersonident();
+  const personident = useValgtPersonident();
   const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/kandidat/personident`;
-  const fetchKandidat = () => get<DialogmotekandidatDTO>(path, fnr);
+  const fetchKandidat = () => get<DialogmotekandidatDTO>(path, personident);
   const query = useQuery(
-    dialogmotekandidatQueryKeys.kandidat(fnr),
+    dialogmotekandidatQueryKeys.kandidat(personident),
     fetchKandidat,
     {
-      enabled: !!fnr && visDialogmotekandidat,
+      enabled: !!personident && visDialogmotekandidat,
     }
   );
 

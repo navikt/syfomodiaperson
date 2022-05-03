@@ -26,6 +26,7 @@ import { MotebookingContainer } from "@/components/mote/container/MotebookingCon
 import { usePushAktivBruker } from "@/data/modiacontext/usePushAktivBruker";
 import { useAktivBruker } from "@/data/modiacontext/modiacontextQueryHooks";
 import DialogmoteEndreReferatContainer from "@/components/dialogmote/referat/DialogmoteEndreReferatContainer";
+import DialogmoteunntakSkjemaContainer from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaContainer";
 
 const getFnrFromParams = (): string => {
   return window.location.pathname.split("/")[2];
@@ -89,6 +90,11 @@ const AktivBrukerRouter = ({ fnr }: { fnr: string }): ReactElement => {
           path={`${dialogmoteRoutePath}/:dialogmoteUuid/endre`}
           exact
           component={EndreDialogmoteContainer}
+        />
+        <Route
+          path={dialogmoteUnntakRoutePath}
+          exact
+          component={DialogmoteunntakSkjemaContainer}
         />
         <Route
           path={`${appRoutePath}/mote/:moteUuid/avbryt`}

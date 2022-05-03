@@ -19,4 +19,11 @@ export const mockIsdialogmotekandidat = (server) => {
       }
     }
   );
+  server.post(
+    `${ISDIALOGMOTEKANDIDAT_ROOT}/unntak/personident`,
+    Auth.ensureAuthenticated(),
+    (req, res) => {
+      res.sendStatus(200);
+    }
+  );
 };

@@ -11,7 +11,7 @@ import { DialogmoteMoteStatusPanel } from "./DialogmoteMoteStatusPanel";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/components/dialogmote/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
-import { SettDialogmoteunntakLenke } from "@/components/dialogmoteunntak/SettDialogmoteunntakLenke";
+import { DialogmoteunntakSkjemaLenke } from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaLenke";
 import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 
 export const texts = {
@@ -82,7 +82,7 @@ export const InnkallingDialogmotePanel = ({
         )}
         <FlexRow columnGap={FlexGapSize.MD}>
           <NyttDialogMote />
-          {isKandidat && <SettDialogmoteunntakLenke />}
+          {isKandidat && <DialogmoteunntakSkjemaLenke />}
         </FlexRow>
       </DialogmotePanel>
     );
