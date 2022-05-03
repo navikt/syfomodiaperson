@@ -14,7 +14,10 @@ import userEvent from "@testing-library/user-event";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "./testData";
 import { queryClientWithMockData } from "../testQueryClient";
-import { getButton } from "../testUtils";
+import { getButton, queryButton } from "../testUtils";
+import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
+import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import { dialogmotekandidatMock } from "../../mock/isdialogmotekandidat/dialogmotekandidatMock";
 
 let queryClient: QueryClient;
 
@@ -92,7 +95,17 @@ describe("InnkallingDialogmotePanel", () => {
       expect(button).to.exist;
       userEvent.click(button);
     });
+    it("viser ikke knapp til DialogmoteUnntak når bruker ikke er Dialogmotekandidat", () => {
+      renderInnkallingDialogmotePanel(brukerKanVarsles);
+
+      expect(queryButton("Sett unntak")).to.not.exist;
+    });
     it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat", () => {
+      queryClient.setQueryData(
+        dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => dialogmotekandidatMock
+      );
+
       renderInnkallingDialogmotePanel(brukerKanVarsles);
 
       const button = getButton("Sett unntak");

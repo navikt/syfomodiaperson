@@ -1,5 +1,7 @@
 export const FASTLEGEREST_ROOT = "/fastlegerest/api/v2/fastlege";
 export const ISDIALOGMOTE_ROOT = "/isdialogmote/api/v2";
+export const ISDIALOGMOTEKANDIDAT_ROOT =
+  "/isdialogmotekandidat/api/internad/v1";
 export const ISDIALOGMELDING_ROOT = "/isdialogmelding/api/v1";
 export const ISNARMESTELEDER_ROOT = "/isnarmesteleder/api/v1";
 export const ISOPPFOLGINGSTILFELLE_ROOT =

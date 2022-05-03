@@ -13,6 +13,7 @@ import { mockSyfoperson } from "./syfoperson/mockSyfoperson";
 import { mockSyfosmregister } from "./syfosmregister/mockSyfosmregister";
 import { mockIspengestopp } from "./ispengestopp/mockIspengestopp";
 import { mockIsdialogmote } from "./isdialogmote/mockIsdialogmote";
+import { mockIsdialogmotekandidat } from "./isdialogmotekandidat/mockIsdialogmotekandidat";
 import { mockSyfoveileder } from "./syfoveileder/mockSyfoveileder";
 import { mockUnleash } from "./unleash/mockUnleash";
 import { mockIsdialogmelding } from "./isdialogmelding/mockIsdialogmelding";
@@ -39,6 +40,7 @@ const mockEndepunkter = (server) => {
     mockSyfosmregister,
     mockIspengestopp,
     mockIsdialogmote,
+    mockIsdialogmotekandidat,
     mockIsdialogmelding,
     mockSyfoveileder,
     mockUnleash,

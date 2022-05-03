@@ -7,6 +7,9 @@ export const clickButton = (buttonText: string) =>
 export const getButton = (buttonText: string) =>
   screen.getByRole("button", { name: buttonText });
 
+export const queryButton = (buttonText: string) =>
+  screen.queryByRole("button", { name: buttonText });
+
 export const getFeilmeldingLink = (feilmelding: string) =>
   screen.queryByRole("link", {
     name: feilmelding,
