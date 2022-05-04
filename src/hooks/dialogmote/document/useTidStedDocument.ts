@@ -16,6 +16,8 @@ import {
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { behandlerDeltakerTekst } from "@/utils/behandlerUtils";
 import { useDocumentComponents } from "@/hooks/dialogmote/document/useDocumentComponents";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
+import { ToggleNames } from "@/data/unleash/unleash_types";
 
 export interface ITidStedDocument {
   getTidStedDocumentArbeidsgiver(
@@ -34,6 +36,10 @@ export interface ITidStedDocument {
 export const useTidStedDocument = (
   dialogmote: DialogmoteDTO
 ): ITidStedDocument => {
+  const { isFeatureEnabled } = useFeatureToggles();
+  const visAlternativBehandlertekst = isFeatureEnabled(
+    ToggleNames.behandlertekst
+  );
   const { tid, arbeidsgiver, behandler } = dialogmote;
   const {
     getHilsen,
@@ -145,6 +151,10 @@ export const useTidStedDocument = (
   const getTidStedDocumentBehandler = (
     values: Partial<EndreTidStedSkjemaValues>
   ) => {
+    if (visAlternativBehandlertekst) {
+      return getTidStedDocumentBehandlerAlternativ(values);
+    }
+
     const documentComponents = [
       createHeaderH1("Endret dialogmøte"),
       sendtDato,
@@ -161,6 +171,29 @@ export const useTidStedDocument = (
       createParagraph(endreTidStedTexts.behandler.outro1),
       createParagraph(endreTidStedTexts.behandler.outroObligatorisk),
       createParagraph(endreTidStedTexts.behandler.outro2),
+      getHilsen()
+    );
+
+    return documentComponents;
+  };
+
+  const getTidStedDocumentBehandlerAlternativ = (
+    values: Partial<EndreTidStedSkjemaValues>
+  ): DocumentComponentDto[] => {
+    const documentComponents = [
+      createHeaderH1("Endret dialogmøte, svar ønskes"),
+      createParagraph(endreTidStedTexts.behandler.alternativ.intro),
+      sendtDato,
+      getIntroGjelder(),
+      ...introComponents,
+      ...getMoteInfo(values, arbeidsgiver.virksomhetsnummer),
+    ];
+    if (values.begrunnelseBehandler) {
+      documentComponents.push(createParagraph(values.begrunnelseBehandler));
+    }
+
+    documentComponents.push(
+      createParagraph(endreTidStedTexts.behandler.alternativ.outro),
       getHilsen()
     );
 

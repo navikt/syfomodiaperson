@@ -137,11 +137,7 @@ describe("Dialogmoteinnkallingskjema", () => {
         name: innkallingSkjemaTexts.forhandsvisningBehandlerTitle,
       })
     ).to.exist;
-    expect(
-      within(forhandsvisningInnkallingBehandler).getByRole("heading", {
-        name: innkallingSkjemaTexts.forhandsvisningSubtitle,
-      })
-    ).to.exist;
+
     expectedInnkallingDocuments
       .behandler()
       .flatMap((documentComponent) => documentComponent.texts)

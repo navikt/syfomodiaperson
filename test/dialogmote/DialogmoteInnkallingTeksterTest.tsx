@@ -10,6 +10,8 @@ import DialogmoteInnkallingTekster, {
 import { Form } from "react-final-form";
 import { expect } from "chai";
 import { queryClientWithAktivBruker } from "../testQueryClient";
+import { navEnhet } from "./testData";
+import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 
 const store = configureStore([]);
 const queryClient = queryClientWithAktivBruker();
@@ -28,17 +30,21 @@ const renderDialogmoteInnkallingTekster = (navBrukerKanVarsles: boolean) => {
   render(
     <MemoryRouter>
       <QueryClientProvider client={queryClient}>
-        <Provider store={store(mockState)}>
-          <Form
-            onSubmit={() => {
-              /* Do nothing */
-            }}
-          >
-            {() => (
-              <DialogmoteInnkallingTekster selectedBehandler={undefined} />
-            )}
-          </Form>
-        </Provider>
+        <ValgtEnhetContext.Provider
+          value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+        >
+          <Provider store={store(mockState)}>
+            <Form
+              onSubmit={() => {
+                /* Do nothing */
+              }}
+            >
+              {() => (
+                <DialogmoteInnkallingTekster selectedBehandler={undefined} />
+              )}
+            </Form>
+          </Provider>
+        </ValgtEnhetContext.Provider>
       </QueryClientProvider>
     </MemoryRouter>
   );

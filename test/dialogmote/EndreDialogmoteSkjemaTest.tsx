@@ -27,6 +27,7 @@ import {
   endretMote,
   mockState,
   moteTekster,
+  navEnhet,
 } from "./testData";
 import {
   DialogmoteDTO,
@@ -39,6 +40,7 @@ import { MAX_LENGTH_AVLYS_BEGRUNNELSE } from "@/components/dialogmote/avlys/Avly
 import { expectedEndringDocuments } from "./testDataDocuments";
 import sinon from "sinon";
 import { queryClientWithMockData } from "../testQueryClient";
+import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -354,11 +356,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
         name: endringSkjemaTexts.forhandsvisningBehandlerTitle,
       })
     ).to.exist;
-    expect(
-      within(forhandsvisningEndringBehandler).getByRole("heading", {
-        name: endringSkjemaTexts.forhandsvisningSubtitle,
-      })
-    ).to.exist;
+
     expectedEndringDocuments
       .behandler()
       .flatMap((documentComponent) => documentComponent.texts)
@@ -376,9 +374,13 @@ const renderEndreDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
     >
       <Route path={`${dialogmoteRoutePath}/:dialogmoteUuid/endre`}>
         <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <EndreDialogmoteSkjema dialogmote={dialogmote} pageTitle="test" />
-          </Provider>
+          <ValgtEnhetContext.Provider
+            value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+          >
+            <Provider store={store({ ...realState, ...mockState })}>
+              <EndreDialogmoteSkjema dialogmote={dialogmote} pageTitle="test" />
+            </Provider>
+          </ValgtEnhetContext.Provider>
         </QueryClientProvider>
       </Route>
     </MemoryRouter>

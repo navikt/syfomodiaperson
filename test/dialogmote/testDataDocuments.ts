@@ -204,11 +204,15 @@ const expectedArbeidsgiverInnkalling = (
 
 const expectedBehandlerInnkalling = (): DocumentComponentDto[] => [
   {
-    texts: ["Innkalling til dialogmøte"],
+    texts: ["Innkalling til dialogmøte, svar ønskes"],
     type: DocumentComponentType.HEADER_H1,
   },
   {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [innkallingTexts.behandler.alternativ.intro],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -239,24 +243,13 @@ const expectedBehandlerInnkalling = (): DocumentComponentDto[] => [
     texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
     type: DocumentComponentType.PARAGRAPH,
   },
-  {
-    texts: [innkallingTexts.behandler.intro1],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [innkallingTexts.behandler.intro2],
-    type: DocumentComponentType.PARAGRAPH,
-  },
+
   {
     texts: [moteTekster.fritekstTilBehandler],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [innkallingTexts.behandler.outro1],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [innkallingTexts.behandler.outro2],
+    texts: [innkallingTexts.behandler.alternativ.outro],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -451,8 +444,12 @@ const expectedArbeidstakerEndringsdokument = (
 
 const expectedBehandlerEndringsdokument = (): DocumentComponentDto[] => [
   {
-    texts: ["Endret dialogmøte"],
+    texts: ["Endret dialogmøte, svar ønskes"],
     type: DocumentComponentType.HEADER_H1,
+  },
+  {
+    texts: [endreTidStedTexts.behandler.alternativ.intro],
+    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
@@ -503,15 +500,7 @@ const expectedBehandlerEndringsdokument = (): DocumentComponentDto[] => [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [endreTidStedTexts.behandler.outro1],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [endreTidStedTexts.behandler.outroObligatorisk],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [endreTidStedTexts.behandler.outro2],
+    texts: [endreTidStedTexts.behandler.alternativ.outro],
     type: DocumentComponentType.PARAGRAPH,
   },
   {

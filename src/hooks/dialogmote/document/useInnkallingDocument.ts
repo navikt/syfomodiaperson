@@ -14,6 +14,8 @@ import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { capitalizeWord } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useDocumentComponents } from "@/hooks/dialogmote/document/useDocumentComponents";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
+import { ToggleNames } from "@/data/unleash/unleash_types";
 
 export interface IInnkallingDocument {
   getInnkallingDocumentArbeidstaker(
@@ -32,6 +34,11 @@ export interface IInnkallingDocument {
 }
 
 export const useInnkallingDocument = (): IInnkallingDocument => {
+  const { isFeatureEnabled } = useFeatureToggles();
+  const visAlternativeBehandlertekst = isFeatureEnabled(
+    ToggleNames.behandlertekst
+  );
+
   const introComponents = [
     createHeaderH1("Innkalling til dialogmøte"),
     createParagraph(
@@ -91,6 +98,10 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
   const getInnkallingDocumentBehandler = (
     values: Partial<DialogmoteInnkallingSkjemaValues>
   ) => {
+    if (visAlternativeBehandlertekst) {
+      return getInnkallingDocumentBehandlerAlternativ(values);
+    }
+
     const documentComponents = [
       ...introComponents,
       ...getMoteInfo(values, values.arbeidsgiver),
@@ -101,6 +112,30 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
       documentComponents.push(createParagraph(values.fritekstBehandler));
     }
     documentComponents.push(...behandlerOutro(), getHilsen());
+
+    return documentComponents;
+  };
+
+  const getInnkallingDocumentBehandlerAlternativ = (
+    values: Partial<DialogmoteInnkallingSkjemaValues>
+  ): DocumentComponentDto[] => {
+    const documentComponents = [
+      createHeaderH1("Innkalling til dialogmøte, svar ønskes"),
+      createParagraph(
+        `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
+      ),
+      createParagraph(innkallingTexts.behandler.alternativ.intro),
+      ...getMoteInfo(values, values.arbeidsgiver),
+      getIntroGjelder(),
+    ];
+
+    if (values.fritekstBehandler) {
+      documentComponents.push(createParagraph(values.fritekstBehandler));
+    }
+    documentComponents.push(
+      createParagraph(innkallingTexts.behandler.alternativ.outro),
+      getHilsen()
+    );
 
     return documentComponents;
   };

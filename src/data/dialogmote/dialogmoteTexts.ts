@@ -46,6 +46,12 @@ export const innkallingTexts = {
       "Det er obligatorisk å delta i dialogmøtet. Gi oss svar om tidspunktet passer eller ikke. Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
     outro2:
       "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi sett behov for å invitere deg.",
+    alternativ: {
+      intro:
+        "Det er obligatorisk å delta i dialogmøtet. Gi oss svar om tidspunktet passer eller ikke.",
+      outro:
+        "Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
+    },
   },
 };
 
@@ -93,6 +99,12 @@ export const endreTidStedTexts = {
       "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi sett behov for å invitere deg.",
     outroObligatorisk:
       "Det er obligatorisk å delta i dialogmøtet. Gi oss svar om tidspunktet passer eller ikke. Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
+    alternativ: {
+      intro:
+        "Det er obligatorisk å delta i dialogmøtet. Gi oss svar om tidspunktet passer eller ikke.",
+      outro:
+        "Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
+    },
   },
 };
 
