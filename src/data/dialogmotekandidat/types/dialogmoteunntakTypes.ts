@@ -9,4 +9,5 @@ export enum UnntakArsak {
 export interface CreateUnntakDTO {
   personIdent: string;
   arsak: UnntakArsak;
+  beskrivelse?: string;
 }

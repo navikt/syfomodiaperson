@@ -11,7 +11,13 @@ import { dialogmoteUnntakRoutePath } from "@/routers/AppRouter";
 import { stubFeatureTogglesApi } from "../stubs/stubUnleash";
 import { apiMock } from "../stubs/stubApi";
 import { arbeidstaker, mockState, navEnhet } from "../dialogmote/testData";
-import { clickButton } from "../testUtils";
+import {
+  changeTextInput,
+  clickButton,
+  getTextInput,
+  getTooLongText,
+  maxLengthErrorMessage,
+} from "../testUtils";
 import { queryClientWithMockData } from "../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import DialogmoteunntakSkjema from "@/components/dialogmoteunntak/DialogmoteunntakSkjema";
@@ -23,6 +29,11 @@ import {
 import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 import { dialogmotekandidatMock } from "../../mock/isdialogmotekandidat/dialogmotekandidatMock";
+import {
+  texts as beksrivelseTexts,
+  dialogmoteunntakSkjemaBeskrivelseMaxLength,
+} from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaBeskrivelse";
+import { CreateUnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -48,18 +59,28 @@ describe("DialogmoteunntakSkjema", () => {
     clickButton(submitButtonText);
 
     const arsakErrorText = "Vennligst angi årsak";
-
     expect(screen.getAllByText(arsakErrorText)).to.not.be.empty;
 
-    passSkjemaInput(unntakArsakTexts[0]);
+    const tooLongBeskrivelse = getTooLongText(
+      dialogmoteunntakSkjemaBeskrivelseMaxLength
+    );
+    const beskrivelseInput = getTextInput(beksrivelseTexts.beskrivelseLabel);
+    changeTextInput(beskrivelseInput, tooLongBeskrivelse);
+    const maxLengthErrorMsg = maxLengthErrorMessage(
+      dialogmoteunntakSkjemaBeskrivelseMaxLength
+    );
+    expect(screen.getAllByText(maxLengthErrorMsg)).to.not.be.empty;
+
+    passSkjemaInput(unntakArsakTexts[0], "beskrivelse");
 
     // Feilmeldinger forsvinner
     expect(screen.queryAllByText(arsakErrorText)).to.be.empty;
+    expect(screen.queryAllByText(maxLengthErrorMsg)).to.be.empty;
 
     clickButton(submitButtonText);
   });
 
-  it("sett unntak med verdier fra skjema", () => {
+  it("sett unntak med kun med obligatorisk verdier fra skjema", () => {
     renderDialogmoteunntakSkjema();
 
     expect(screen.getAllByRole("radio")).to.have.length(5);
@@ -71,9 +92,34 @@ describe("DialogmoteunntakSkjema", () => {
     clickButton(submitButtonText);
 
     const unntakMutation = queryClient.getMutationCache().getAll()[0];
-    const expectedCreateUnntakDTO = {
+    const expectedCreateUnntakDTO: CreateUnntakDTO = {
       personIdent: arbeidstaker.personident,
       arsak: unntakArsakText.arsak,
+      beskrivelse: undefined,
+    };
+
+    expect(unntakMutation.options.variables).to.deep.equal(
+      expectedCreateUnntakDTO
+    );
+  });
+
+  it("sett unntak med alle verdier fra skjema", () => {
+    renderDialogmoteunntakSkjema();
+
+    expect(screen.getAllByRole("radio")).to.have.length(5);
+
+    const beskrivelse = "Dette er en begrunnelse";
+    const unntakArsakText = unntakArsakTexts[0];
+
+    passSkjemaInput(unntakArsakText, beskrivelse);
+
+    clickButton(submitButtonText);
+
+    const unntakMutation = queryClient.getMutationCache().getAll()[0];
+    const expectedCreateUnntakDTO: CreateUnntakDTO = {
+      personIdent: arbeidstaker.personident,
+      arsak: unntakArsakText.arsak,
+      beskrivelse,
     };
 
     expect(unntakMutation.options.variables).to.deep.equal(
@@ -100,7 +146,15 @@ const renderDialogmoteunntakSkjema = () => {
   );
 };
 
-const passSkjemaInput = (unntakArsakText: UnntakArsakText) => {
+const passSkjemaInput = (
+  unntakArsakText: UnntakArsakText,
+  beskrivelse?: string
+) => {
   const arsakRadioButton = screen.getByText(unntakArsakText.text);
   fireEvent.click(arsakRadioButton);
+
+  if (beskrivelse) {
+    const beskrivelseInput = getTextInput(beksrivelseTexts.beskrivelseLabel);
+    changeTextInput(beskrivelseInput, beskrivelse);
+  }
 };

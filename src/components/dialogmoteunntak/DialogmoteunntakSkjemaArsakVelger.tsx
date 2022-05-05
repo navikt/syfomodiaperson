@@ -1,5 +1,4 @@
 import React, { ReactElement } from "react";
-import styled from "styled-components";
 import { Field } from "react-final-form";
 import { ValidationErrors } from "final-form";
 import {
@@ -41,10 +40,6 @@ export const unntakArsakTexts: UnntakArsakText[] = [
   },
 ];
 
-export const StyledRadioGruppe = styled(RadioGruppe)`
-  margin-bottom: 1em;
-`;
-
 export const DialogmoteunntakSkjemaArsakVelgerFieldName = "arsak";
 
 interface DialogmoteunntakSkjemaArsakVelgerProps {
@@ -57,7 +52,7 @@ const DialogmoteunntakSkjemaArsakVelger = ({
   errors,
 }: DialogmoteunntakSkjemaArsakVelgerProps): ReactElement => {
   return (
-    <StyledRadioGruppe legend={texts.arsakLegend}>
+    <RadioGruppe legend={texts.arsakLegend}>
       {unntakArsakTexts.map((unntakArsakText, index) => (
         <Field<UnntakArsak>
           key={index}
@@ -79,7 +74,7 @@ const DialogmoteunntakSkjemaArsakVelger = ({
           errors &&
           errors[DialogmoteunntakSkjemaArsakVelgerFieldName]}
       </SkjemaelementFeilmelding>
-    </StyledRadioGruppe>
+    </RadioGruppe>
   );
 };
 export default DialogmoteunntakSkjemaArsakVelger;

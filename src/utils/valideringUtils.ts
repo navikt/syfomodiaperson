@@ -186,7 +186,7 @@ export const validerReferatDeltakere = (
   return feil;
 };
 
-const validerTekst = (tekst: SkjemaTekst): string | undefined => {
+export const validerTekst = (tekst: SkjemaTekst): string | undefined => {
   const { value, maxLength, missingRequiredMessage } = tekst;
   if (missingRequiredMessage && value.trim() === "") {
     return missingRequiredMessage;

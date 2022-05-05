@@ -13,12 +13,17 @@ import {
 import DialogmoteunntakSkjemaArsakVelger, {
   DialogmoteunntakSkjemaArsakVelgerFieldName,
 } from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaArsakVelger";
+import DialogmoteunntakSkjemaBeskrivelse, {
+  dialogmoteunntakSkjemaBeskrivelseFieldName,
+  dialogmoteunntakSkjemaBeskrivelseMaxLength,
+} from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaBeskrivelse";
 import { TrackedHovedknapp } from "@/components/buttons/TrackedHovedknapp";
 import { TrackedFlatknapp } from "@/components/buttons/TrackedFlatknapp";
 import { FlexGapSize, FlexRow } from "@/components/Layout";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useSettDialogmoteunntak } from "@/data/dialogmotekandidat/useSettDialogmoteunntak";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
+import { validerTekst } from "@/utils/valideringUtils";
 
 const texts = {
   noBrev: "Det blir ikke sendt ut brev ved unntak.",
@@ -27,12 +32,16 @@ const texts = {
 };
 
 const StyledPanel = styled(Panel)`
-  margin-bottom: 2em;
   padding: 2em;
+`;
+
+const SkjemaFieldWrapper = styled.div`
+  margin-bottom: 2em;
 `;
 
 interface DialogmoteunntakSkjemaValues {
   arsak: UnntakArsak;
+  beskrivelse?: string;
 }
 
 const DialogmoteunntakSkjema = () => {
@@ -45,18 +54,33 @@ const DialogmoteunntakSkjema = () => {
   }
 
   const validate = (values: Partial<DialogmoteunntakSkjemaValues>) => {
-    return (
-      (!values.arsak && {
+    let feil = {};
+    if (!values.arsak) {
+      feil = {
+        ...feil,
         [DialogmoteunntakSkjemaArsakVelgerFieldName]: "Vennligst angi årsak",
-      }) ||
-      {}
-    );
+      };
+    }
+    if (values.beskrivelse) {
+      const invalidText = validerTekst({
+        value: values.beskrivelse,
+        maxLength: dialogmoteunntakSkjemaBeskrivelseMaxLength,
+      });
+      if (invalidText) {
+        feil = {
+          ...feil,
+          [dialogmoteunntakSkjemaBeskrivelseFieldName]: invalidText,
+        };
+      }
+    }
+    return feil;
   };
 
   const submit = (values: DialogmoteunntakSkjemaValues) => {
     const newUnntak: CreateUnntakDTO = {
       personIdent: personIdent,
       arsak: values.arsak,
+      beskrivelse: values.beskrivelse,
     };
     settDialogmoteunntak.mutate(newUnntak);
   };
@@ -67,10 +91,15 @@ const DialogmoteunntakSkjema = () => {
       <Form onSubmit={submit} validate={validate}>
         {({ handleSubmit, submitFailed, errors }) => (
           <form onSubmit={handleSubmit}>
-            <DialogmoteunntakSkjemaArsakVelger
-              submitFailed={submitFailed}
-              errors={errors}
-            />
+            <SkjemaFieldWrapper>
+              <DialogmoteunntakSkjemaArsakVelger
+                submitFailed={submitFailed}
+                errors={errors}
+              />
+            </SkjemaFieldWrapper>
+            <SkjemaFieldWrapper>
+              <DialogmoteunntakSkjemaBeskrivelse />
+            </SkjemaFieldWrapper>
             {settDialogmoteunntak.isError && (
               <SkjemaInnsendingFeil error={settDialogmoteunntak.error} />
             )}
