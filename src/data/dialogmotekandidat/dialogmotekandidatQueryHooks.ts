@@ -12,7 +12,7 @@ export const dialogmotekandidatQueryKeys = {
 
 export const useDialogmotekandidat = () => {
   const { isFeatureEnabled } = useFeatureToggles();
-  const visDialogmotekandidat = isFeatureEnabled(
+  const visDialogmotekandidat: boolean = isFeatureEnabled(
     ToggleNames.dialogmotekandidat
   );
 
@@ -27,7 +27,8 @@ export const useDialogmotekandidat = () => {
     }
   );
 
-  const isKandidat = (visDialogmotekandidat && query.data?.kandidat) || false;
+  const isKandidat: boolean =
+    (visDialogmotekandidat && query.data?.kandidat) || false;
 
   return {
     ...query,

@@ -13,12 +13,12 @@ const texts = {
   arsakLegend: "Årsak til unntak (obligatorisk)",
 };
 
-interface UnntakArsakText {
+export interface UnntakArsakText {
   arsak: UnntakArsak;
   text: string;
 }
 
-const unntakArsakTexts: UnntakArsakText[] = [
+export const unntakArsakTexts: UnntakArsakText[] = [
   {
     arsak: UnntakArsak.MEDISINSKE_GRUNNER,
     text: "Medisinske grunner",
