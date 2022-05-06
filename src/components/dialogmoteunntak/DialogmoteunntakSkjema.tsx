@@ -25,8 +25,9 @@ import { useSettDialogmoteunntak } from "@/data/dialogmotekandidat/useSettDialog
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { validerTekst } from "@/utils/valideringUtils";
 
-const texts = {
+export const texts = {
   noBrev: "Det blir ikke sendt ut brev ved unntak.",
+  infoKandidatlist: `Når du setter unntak fra dialogmøte vil arbeidstakeren bli fjernet fra kandidatlisten. Dersom du på et senere tidspunkt vurderer at det likevel er nødvendig med et dialogmøte, kan du kalle inn til dialogmøte ved å søke deg frem til denne arbeidstakeren.`,
   send: "Sett unntak",
   avbryt: "Avbryt",
 };
@@ -88,6 +89,7 @@ const DialogmoteunntakSkjema = () => {
   return (
     <StyledPanel>
       <AlertStripeInfo>{texts.noBrev}</AlertStripeInfo>
+      <p>{texts.infoKandidatlist}</p>
       <Form onSubmit={submit} validate={validate}>
         {({ handleSubmit, submitFailed, errors }) => (
           <form onSubmit={handleSubmit}>

@@ -20,7 +20,9 @@ import {
 } from "../testUtils";
 import { queryClientWithMockData } from "../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
-import DialogmoteunntakSkjema from "@/components/dialogmoteunntak/DialogmoteunntakSkjema";
+import DialogmoteunntakSkjema, {
+  texts as unntakSkjemaTexts,
+} from "@/components/dialogmoteunntak/DialogmoteunntakSkjema";
 import { stubVeilederinfoApi } from "../stubs/stubSyfoveileder";
 import {
   UnntakArsakText,
@@ -30,8 +32,8 @@ import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmot
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 import { dialogmotekandidatMock } from "../../mock/isdialogmotekandidat/dialogmotekandidatMock";
 import {
-  texts as beksrivelseTexts,
   dialogmoteunntakSkjemaBeskrivelseMaxLength,
+  texts as beskrivelseTexts,
 } from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaBeskrivelse";
 import { CreateUnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 
@@ -54,6 +56,14 @@ describe("DialogmoteunntakSkjema", () => {
 
   const submitButtonText = "Sett unntak";
 
+  it("viser informasjonstekster", () => {
+    renderDialogmoteunntakSkjema();
+
+    expect(screen.getByText(unntakSkjemaTexts.noBrev)).to.not.be.empty;
+    expect(screen.getByText(unntakSkjemaTexts.infoKandidatlist)).to.not.be
+      .empty;
+  });
+
   it("valideringsmeldinger forsvinner ved utbedring", () => {
     renderDialogmoteunntakSkjema();
     clickButton(submitButtonText);
@@ -64,7 +74,7 @@ describe("DialogmoteunntakSkjema", () => {
     const tooLongBeskrivelse = getTooLongText(
       dialogmoteunntakSkjemaBeskrivelseMaxLength
     );
-    const beskrivelseInput = getTextInput(beksrivelseTexts.beskrivelseLabel);
+    const beskrivelseInput = getTextInput(beskrivelseTexts.beskrivelseLabel);
     changeTextInput(beskrivelseInput, tooLongBeskrivelse);
     const maxLengthErrorMsg = maxLengthErrorMessage(
       dialogmoteunntakSkjemaBeskrivelseMaxLength
@@ -154,7 +164,7 @@ const passSkjemaInput = (
   fireEvent.click(arsakRadioButton);
 
   if (beskrivelse) {
-    const beskrivelseInput = getTextInput(beksrivelseTexts.beskrivelseLabel);
+    const beskrivelseInput = getTextInput(beskrivelseTexts.beskrivelseLabel);
     changeTextInput(beskrivelseInput, beskrivelse);
   }
 };
