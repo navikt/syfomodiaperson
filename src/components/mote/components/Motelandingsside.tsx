@@ -15,6 +15,7 @@ import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { DialogmoteFerdigstilteReferatPanel } from "@/components/dialogmote/DialogmoteFerdigstilteReferatPanel";
 import { DialogmoteStatus } from "@/data/dialogmote/types/dialogmoteTypes";
+import { useDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
 
 const texts = {
   dialogmoter: "Dialogmøter",
@@ -35,6 +36,11 @@ export const Motelandingsside = () => {
     historiskeDialogmoter,
   } = useDialogmoterQuery();
   const {
+    data: dialogmoteunntak,
+    isError: henterDialogmoteunntakFeilet,
+    isLoading: henterDialogmoteunntak,
+  } = useDialogmoteunntakQuery();
+  const {
     data: motebehov,
     isError: henterMotebehovFeilet,
     isLoading: henterMotebehov,
@@ -44,7 +50,6 @@ export const Motelandingsside = () => {
     isLoading: henterLedere,
     isError: henterLedereFeilet,
   } = useLedereQuery();
-
   const { moter, navbruker } = useAppSelector((state) => state);
 
   useEffect(() => {
@@ -54,11 +59,15 @@ export const Motelandingsside = () => {
   const henter =
     !moter.hentingForsokt ||
     henterDialogmoter ||
+    henterDialogmoteunntak ||
     henterOppfolgingsplaner ||
     henterMotebehov ||
     henterLedere;
   const hentingFeilet =
-    henterLedereFeilet || henterMotebehovFeilet || henterDialogmoterFeilet;
+    henterLedereFeilet ||
+    henterMotebehovFeilet ||
+    henterDialogmoterFeilet ||
+    henterDialogmoteunntakFeilet;
 
   return (
     <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
@@ -78,7 +87,10 @@ export const Motelandingsside = () => {
       />
       <UtdragFraSykefravaeretPanel aktivePlaner={aktivePlaner} fnr={fnr} />
 
-      <MotehistorikkPanel historiskeMoter={historiskeDialogmoter} />
+      <MotehistorikkPanel
+        historiskeMoter={historiskeDialogmoter}
+        dialogmoteunntak={dialogmoteunntak}
+      />
     </SideLaster>
   );
 };

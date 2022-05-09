@@ -13,6 +13,8 @@ import { Forhandsvisning } from "../Forhandsvisning";
 import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
 import { TrackedFlatknapp } from "@/components/buttons/TrackedFlatknapp";
 import styled from "styled-components";
+import { UnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
+import { MoteHistorikkUnntak } from "@/components/dialogmote/motehistorikk/MoteHistorikkUnntak";
 
 const texts = {
   header: "Møtehistorikk",
@@ -34,7 +36,7 @@ interface ForhandsvisDocumentButtonRowProps {
   children: string;
 }
 
-const ForhandsvisDocumentButtonRow = ({
+export const ForhandsvisDocumentButtonRow = ({
   document,
   title,
   children,
@@ -112,13 +114,16 @@ const MoteHistorikk = ({ mote }: MoteHistorikkProps): ReactElement => {
 };
 
 interface MotehistorikkPanelProps {
+  dialogmoteunntak: UnntakDTO[];
   historiskeMoter: DialogmoteDTO[];
 }
 
 export const MotehistorikkPanel = ({
+  dialogmoteunntak,
   historiskeMoter,
 }: MotehistorikkPanelProps) => {
-  if (historiskeMoter.length === 0) return <></>;
+  if (historiskeMoter.length === 0 && dialogmoteunntak.length === 0)
+    return <></>;
 
   return (
     <DialogmotePanel
@@ -128,6 +133,9 @@ export const MotehistorikkPanel = ({
     >
       {historiskeMoter.map((mote, index) => (
         <MoteHistorikk key={index} mote={mote} />
+      ))}
+      {dialogmoteunntak.map((unntak, index) => (
+        <MoteHistorikkUnntak key={index} unntak={unntak} />
       ))}
     </DialogmotePanel>
   );

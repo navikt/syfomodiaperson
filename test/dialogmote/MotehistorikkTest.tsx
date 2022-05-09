@@ -14,6 +14,11 @@ import {
 } from "../../mock/common/mockConstants";
 import { render, screen } from "@testing-library/react";
 import { createFerdigstiltReferat } from "./testData";
+import {
+  dialogmoteunntakMedBeskrivelse,
+  dialogmoteunntakUtenBeskrivelse,
+} from "../../mock/isdialogmotekandidat/dialogmoteunntakMock";
+import { unntakLenkeText } from "@/components/dialogmote/motehistorikk/MoteHistorikkUnntak";
 
 let queryClient;
 const ferdigstiltMoteTid = "2021-01-15T11:52:13.539843";
@@ -110,7 +115,10 @@ describe("Historiske dialogmøter", () => {
   it("Fremviser avholdte og avlyste dialogmøter", () => {
     render(
       <QueryClientProvider client={queryClient}>
-        <MotehistorikkPanel historiskeMoter={dialogmoter} />
+        <MotehistorikkPanel
+          dialogmoteunntak={[]}
+          historiskeMoter={dialogmoter}
+        />
       </QueryClientProvider>
     );
 
@@ -129,7 +137,10 @@ describe("Historiske dialogmøter", () => {
     ];
     render(
       <QueryClientProvider client={queryClient}>
-        <MotehistorikkPanel historiskeMoter={historiskeMoter} />
+        <MotehistorikkPanel
+          dialogmoteunntak={[]}
+          historiskeMoter={historiskeMoter}
+        />
       </QueryClientProvider>
     );
 
@@ -139,5 +150,30 @@ describe("Historiske dialogmøter", () => {
       "Referat fra møte 15. januar 2021 - Endret 15. januar 2021"
     );
     expect(buttons[1].textContent).to.equal("Referat fra møte 15. januar 2021");
+  });
+  it("Fremviser dialogmoteunntak", () => {
+    const dialogmoteunntakListe = [
+      {
+        ...dialogmoteunntakMedBeskrivelse,
+        createdAt: new Date("2020-04-20T12:56:26.271381"),
+      },
+      {
+        ...dialogmoteunntakUtenBeskrivelse,
+        createdAt: new Date("2021-05-21T12:56:26.271381"),
+      },
+    ];
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MotehistorikkPanel
+          dialogmoteunntak={dialogmoteunntakListe}
+          historiskeMoter={[]}
+        />
+      </QueryClientProvider>
+    );
+
+    dialogmoteunntakListe.forEach((dialogmoteunntak) => {
+      expect(screen.getByText(unntakLenkeText(dialogmoteunntak.createdAt))).to
+        .exist;
+    });
   });
 });

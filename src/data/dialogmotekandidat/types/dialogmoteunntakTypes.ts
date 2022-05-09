@@ -6,6 +6,15 @@ export enum UnntakArsak {
   ARBEIDSFORHOLD_OPPHORT = "ARBEIDSFORHOLD_OPPHORT",
 }
 
+export interface UnntakDTO {
+  uuid: string;
+  createdAt: Date;
+  createdBy: string;
+  personIdent: string;
+  arsak: UnntakArsak;
+  beskrivelse?: string;
+}
+
 export interface CreateUnntakDTO {
   personIdent: string;
   arsak: UnntakArsak;

@@ -6,10 +6,15 @@ import {
 } from "../../mock/isdialogmote/dialogmoterMock";
 import {
   ISDIALOGMOTE_ROOT,
+  ISDIALOGMOTEKANDIDAT_ROOT,
   ISOPPFOLGINGSTILFELLE_ROOT,
   SYFOMOTEADMIN_ROOT,
+  UNLEASH_ROOT,
 } from "../../src/apiConstants";
 import { oppfolgingstilfellePersonMock } from "../../mock/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
+import { dialogmoteunntakMock } from "../../mock/isdialogmotekandidat/dialogmoteunntakMock";
+import { dialogmotekandidatMock } from "../../mock/isdialogmotekandidat/dialogmotekandidatMock";
+import { unleashMock } from "../../mock/unleash/unleashMock";
 
 export enum MoteState {
   INNKALT_DIALOGMOTE,
@@ -74,5 +79,26 @@ Cypress.Commands.add("stubEndepunkter", (state: MoteState) => {
       url: `${ISOPPFOLGINGSTILFELLE_ROOT}/oppfolgingstilfelle/personident`,
     },
     oppfolgingstilfellePersonMock
+  );
+  cy.intercept(
+    {
+      method: "GET",
+      url: `${ISDIALOGMOTEKANDIDAT_ROOT}/kandidat/personident`,
+    },
+    dialogmotekandidatMock
+  );
+  cy.intercept(
+    {
+      method: "GET",
+      url: `${ISDIALOGMOTEKANDIDAT_ROOT}/unntak/personident`,
+    },
+    dialogmoteunntakMock
+  );
+  cy.intercept(
+    {
+      method: "POST",
+      url: `${UNLEASH_ROOT}/toggles`,
+    },
+    unleashMock
   );
 });
