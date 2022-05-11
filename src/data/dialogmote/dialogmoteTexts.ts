@@ -19,11 +19,7 @@ export const innkallingTexts = {
   },
   arbeidsgiver: {
     intro1:
-      "Velkommen til dialogmøte i regi av NAV. NAV har ansvar for å innkalle til dialogmøte senest når en sykmelding har vart i seks måneder, eventuelt på et annet tidspunkt hvis noen av partene ser behov for det.",
-    intro2:
-      "I møtet vil vi høre både hva du og den ansatte sier om arbeidssituasjonen og mulighetene for å jobbe.",
-    intro2WithBehandler:
-      "I møtet vil vi høre både hva du, den ansatte og behandleren sier om arbeidssituasjonen og mulighetene for å jobbe.",
+      "Velkommen til dialogmøte i regi av NAV. I møtet skal vi snakke om din ansattes arbeidssituasjon og mulighetene for å jobbe. Vi skal bli enige om en plan som kan hjelpe din ansatte videre.",
     outroObligatorisk:
       "Det er obligatorisk å delta i dialogmøtet. Gi oss svar om tidspunktet passer eller ikke. Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
     outro1:
@@ -39,9 +35,7 @@ export const innkallingTexts = {
 
   behandler: {
     intro1:
-      "Velkommen til dialogmøte i regi av NAV. NAV har ansvar for å innkalle til dialogmøte senest når en sykmelding har vart i seks måneder, eventuelt på et annet tidspunkt hvis noen av partene ser behov for det.",
-    intro2:
-      "I møtet vil vi høre både hva du, arbeidsgiveren og den ansatte sier om arbeidssituasjonen og mulighetene for å jobbe.",
+      "Velkommen til dialogmøte mellom deg, arbeidsgiveren, den ansatte og en veileder fra NAV. I møtet skal vi snakke om den ansattes situasjon og bli enige om en plan som kan hjelpe den ansatte videre.",
     outro1:
       "Det er obligatorisk å delta i dialogmøtet. Gi oss svar om tidspunktet passer eller ikke. Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
     outro2:

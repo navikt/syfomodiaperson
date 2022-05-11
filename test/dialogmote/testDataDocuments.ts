@@ -160,14 +160,6 @@ const expectedArbeidsgiverInnkalling = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [
-      medBehandler
-        ? innkallingTexts.arbeidsgiver.intro2WithBehandler
-        : innkallingTexts.arbeidsgiver.intro2,
-    ],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
     texts: [moteTekster.fritekstTilArbeidsgiver],
     type: DocumentComponentType.PARAGRAPH,
   },

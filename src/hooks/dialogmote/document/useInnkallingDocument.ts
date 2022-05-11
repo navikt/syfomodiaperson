@@ -78,7 +78,7 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
       ...introComponents,
       ...getMoteInfo(values, values.arbeidsgiver),
       getIntroGjelder(),
-      ...arbeidsgiverIntro(valgtBehandler),
+      createParagraph(innkallingTexts.arbeidsgiver.intro1),
     ];
     if (values.fritekstArbeidsgiver) {
       documentComponents.push(createParagraph(values.fritekstArbeidsgiver));
@@ -106,7 +106,7 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
       ...introComponents,
       ...getMoteInfo(values, values.arbeidsgiver),
       getIntroGjelder(),
-      ...behandlerIntro(),
+      createParagraph(innkallingTexts.behandler.intro1),
     ];
     if (values.fritekstBehandler) {
       documentComponents.push(createParagraph(values.fritekstBehandler));
@@ -157,26 +157,6 @@ const arbeidstakerIntro = (
   return [
     createParagraph(innkallingTexts.arbeidstaker.intro1),
     introParagraph2,
-  ];
-};
-
-const arbeidsgiverIntro = (
-  valgtBehandler: BehandlerDTO | undefined
-): DocumentComponentDto[] => {
-  const introParagraph2 = !!valgtBehandler
-    ? createParagraph(innkallingTexts.arbeidsgiver.intro2WithBehandler)
-    : createParagraph(innkallingTexts.arbeidsgiver.intro2);
-
-  return [
-    createParagraph(innkallingTexts.arbeidsgiver.intro1),
-    introParagraph2,
-  ];
-};
-
-const behandlerIntro = (): DocumentComponentDto[] => {
-  return [
-    createParagraph(innkallingTexts.behandler.intro1),
-    createParagraph(innkallingTexts.behandler.intro2),
   ];
 };
 
