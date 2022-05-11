@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from "react";
-import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AktivBrukerTilgangLaster from "@/components/AktivBrukerTilgangLaster";
 import AvbrytMoteContainer from "../components/mote/container/AvbrytMoteContainer";
 import BekreftMoteContainer from "../components/mote/container/BekreftMoteContainer";
@@ -41,116 +41,99 @@ export const moteoversiktRoutePath = `${appRoutePath}/moteoversikt`;
 const AktivBrukerRouter = ({ fnr }: { fnr: string }): ReactElement => {
   return (
     <AktivBrukerTilgangLaster>
-      <Router>
-        <Route exact path="/">
-          <Redirect to={appRoutePath} />
-        </Route>
-        <Route
-          path={appRoutePath}
-          exact
-          component={NokkelinformasjonContainer}
-        />
-        <Route
-          path={`${appRoutePath}/nokkelinformasjon`}
-          exact
-          component={NokkelinformasjonContainer}
-        />
-        <Route path={`${appRoutePath}/logg`} component={HistorikkContainer} />
-        <Route
-          path={moteoversiktRoutePath}
-          exact
-          component={MotelandingssideContainer}
-        />
-        <Route
-          path={`${appRoutePath}/mote`}
-          exact
-          component={MotebookingContainer}
-        />
-        <Route
-          path={dialogmoteRoutePath}
-          exact
-          component={DialogmoteInnkallingContainer}
-        />
-        <Route
-          path={`${dialogmoteRoutePath}/:dialogmoteUuid/avlys`}
-          exact
-          component={AvlysDialogmoteContainer}
-        />
-        <Route
-          path={`${dialogmoteRoutePath}/:dialogmoteUuid/referat`}
-          exact
-          component={DialogmoteReferatContainer}
-        />
-        <Route
-          path={`${dialogmoteRoutePath}/:dialogmoteUuid/referat/endre`}
-          exact
-          component={DialogmoteEndreReferatContainer}
-        />
-        <Route
-          path={`${dialogmoteRoutePath}/:dialogmoteUuid/endre`}
-          exact
-          component={EndreDialogmoteContainer}
-        />
-        <Route
-          path={dialogmoteUnntakRoutePath}
-          exact
-          component={DialogmoteunntakSkjemaContainer}
-        />
-        <Route
-          path={`${appRoutePath}/mote/:moteUuid/avbryt`}
-          exact
-          render={() => <AvbrytMoteContainer fnr={fnr} />}
-        />
-        <Route
-          path={`${appRoutePath}/mote/bekreft/:alternativId`}
-          exact
-          render={() => <BekreftMoteContainer fnr={fnr} />}
-        />
-        <Route
-          path={`${appRoutePath}/sykmeldinger`}
-          exact
-          component={SykmeldingerContainer}
-        />
-        <Route
-          path={`${appRoutePath}/sykepengesoknader`}
-          exact
-          component={SykepengesoknaderContainer}
-        />
-        <Route
-          path={`${appRoutePath}/sykepengesoknader/:sykepengesoknadId`}
-          exact
-          component={SykepengesoknadSide}
-        />
-        <Route
-          path={`${appRoutePath}/sykmeldinger/:sykmeldingId`}
-          exact
-          component={DinSykmeldingContainer}
-        />
-        <Route
-          path={`${appRoutePath}/oppfoelgingsplaner`}
-          exact
-          component={OppfoelgingsPlanerOversiktContainer}
-        />
-        <Route
-          path={`${appRoutePath}/oppfoelgingsplaner/:oppfoelgingsdialogId`}
-          exact
-          component={OppfoelgingsplanContainer}
-        />
-        <Route
-          path={`${appRoutePath}/vedtak`}
-          exact
-          component={VedtakContainer}
-        />
-      </Router>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Navigate to={appRoutePath} />} />
+          <Route path={appRoutePath} element={<NokkelinformasjonContainer />} />
+          <Route
+            path={`${appRoutePath}/nokkelinformasjon`}
+            element={<NokkelinformasjonContainer />}
+          />
+          <Route
+            path={`${appRoutePath}/logg`}
+            element={<HistorikkContainer />}
+          />
+          <Route
+            path={moteoversiktRoutePath}
+            element={<MotelandingssideContainer />}
+          />
+          <Route
+            path={`${appRoutePath}/mote`}
+            element={<MotebookingContainer />}
+          />
+          <Route
+            path={dialogmoteRoutePath}
+            element={<DialogmoteInnkallingContainer />}
+          />
+          <Route
+            path={`${dialogmoteRoutePath}/:dialogmoteUuid/avlys`}
+            element={<AvlysDialogmoteContainer />}
+          />
+          <Route
+            path={`${dialogmoteRoutePath}/:dialogmoteUuid/referat`}
+            element={<DialogmoteReferatContainer />}
+          />
+          <Route
+            path={`${dialogmoteRoutePath}/:dialogmoteUuid/referat/endre`}
+            element={<DialogmoteEndreReferatContainer />}
+          />
+          <Route
+            path={`${dialogmoteRoutePath}/:dialogmoteUuid/endre`}
+            element={<EndreDialogmoteContainer />}
+          />
+          <Route
+            path={dialogmoteUnntakRoutePath}
+            element={<DialogmoteunntakSkjemaContainer />}
+          />
+          <Route
+            path={`${appRoutePath}/mote/:moteUuid/avbryt`}
+            element={<AvbrytMoteContainer fnr={fnr} />}
+          />
+          <Route
+            path={`${appRoutePath}/mote/bekreft/:alternativId`}
+            element={<BekreftMoteContainer fnr={fnr} />}
+          />
+          <Route
+            path={`${appRoutePath}/sykmeldinger`}
+            element={<SykmeldingerContainer />}
+          />
+          <Route
+            path={`${appRoutePath}/sykepengesoknader`}
+            element={<SykepengesoknaderContainer />}
+          />
+          <Route
+            path={`${appRoutePath}/sykepengesoknader/:sykepengesoknadId`}
+            element={<SykepengesoknadSide />}
+          />
+          <Route
+            path={`${appRoutePath}/sykmeldinger/:sykmeldingId`}
+            element={<DinSykmeldingContainer />}
+          />
+          <Route
+            path={`${appRoutePath}/oppfoelgingsplaner`}
+            element={<OppfoelgingsPlanerOversiktContainer />}
+          />
+          <Route
+            path={`${appRoutePath}/oppfoelgingsplaner/:oppfoelgingsdialogId`}
+            element={<OppfoelgingsplanContainer />}
+          />
+          <Route
+            path={`${appRoutePath}/vedtak`}
+            element={<VedtakContainer />}
+          />
+        </Routes>
+      </BrowserRouter>
     </AktivBrukerTilgangLaster>
   );
 };
 
 const IngenAktivBrukerRouter = (): ReactElement => {
   return (
-    <Router>
-      <Route path="*" component={IngenBrukerSide} />
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        <Route path="*" element={<IngenBrukerSide />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

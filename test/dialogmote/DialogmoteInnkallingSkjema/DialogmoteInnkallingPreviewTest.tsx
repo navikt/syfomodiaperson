@@ -11,11 +11,10 @@ import {
   moteTekster,
   navEnhet,
 } from "../testData";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, screen, within } from "@testing-library/react";
 import { expect } from "chai";
 import userEvent from "@testing-library/user-event";
 import { texts as innkallingSkjemaTexts } from "@/components/dialogmote/innkalling/DialogmoteInnkallingTekster";
-import { MemoryRouter, Route } from "react-router-dom";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { Provider } from "react-redux";
 import DialogmoteInnkallingSkjema from "@/components/dialogmote/innkalling/DialogmoteInnkallingSkjema";
@@ -26,6 +25,7 @@ import sinon from "sinon";
 import { queryClientWithMockData } from "../../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { behandlereQueryKeys } from "@/data/behandler/behandlereQueryHooks";
+import { renderWithRouter } from "../../testRouterUtils";
 
 let queryClient;
 const store = configureStore([]);
@@ -149,20 +149,18 @@ describe("Dialogmoteinnkallingskjema", () => {
 });
 
 const renderDialogmoteInnkallingSkjema = () =>
-  render(
-    <MemoryRouter initialEntries={[dialogmoteRoutePath]}>
-      <Route path={dialogmoteRoutePath}>
-        <QueryClientProvider client={queryClient}>
-          <ValgtEnhetContext.Provider
-            value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-          >
-            <Provider store={store({ ...realState, ...mockState })}>
-              <DialogmoteInnkallingSkjema pageTitle="Test" />
-            </Provider>
-          </ValgtEnhetContext.Provider>
-        </QueryClientProvider>
-      </Route>
-    </MemoryRouter>
+  renderWithRouter(
+    <QueryClientProvider client={queryClient}>
+      <ValgtEnhetContext.Provider
+        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+      >
+        <Provider store={store({ ...realState, ...mockState })}>
+          <DialogmoteInnkallingSkjema pageTitle="Test" />
+        </Provider>
+      </ValgtEnhetContext.Provider>
+    </QueryClientProvider>,
+    dialogmoteRoutePath,
+    [dialogmoteRoutePath]
   );
 
 const passSkjemaInput = () => {

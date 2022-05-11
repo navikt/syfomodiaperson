@@ -8,7 +8,8 @@ import Side from "../../../sider/Side";
 import AvbrytMote from "../components/AvbrytMote";
 import * as moterActions from "../../../data/mote/moter_actions";
 import * as epostinnholdActions from "../../../data/mote/epostinnhold_actions";
-import { withRouter } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { withRouter } from "@/components/mote/container/withRouter";
 
 export class AvbrytMoteSide extends Component {
   constructor(props) {
@@ -36,7 +37,6 @@ export class AvbrytMoteSide extends Component {
       mote,
       henter,
       arbeidstaker,
-      history,
     } = this.props;
     return (
       <Side tittel="Avbryt møteforespørsel">
@@ -49,9 +49,7 @@ export class AvbrytMoteSide extends Component {
           } else if (mote) {
             return (
               <Lightbox
-                onClose={() => {
-                  history.replace(`/sykefravaer/mote`);
-                }}
+                onClose={() => <Navigate to={`/sykefravaer/mote`} replace />}
               >
                 {(() => {
                   return (
@@ -87,7 +85,6 @@ AvbrytMoteSide.propTypes = {
   hentMoter: PropTypes.func,
   avbrytMote: PropTypes.func,
   avbrytFeilet: PropTypes.bool,
-  history: PropTypes.object,
 };
 
 export function mapStateToProps(state, ownProps) {

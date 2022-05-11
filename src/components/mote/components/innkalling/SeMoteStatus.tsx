@@ -1,7 +1,7 @@
 import React from "react";
-import { useHistory } from "react-router";
 import { FlexRow } from "../../../Layout";
 import { TrackedKnapp } from "../../../buttons/TrackedKnapp";
+import { useNavigate } from "react-router-dom";
 
 const texts = {
   moteStatusTrackingContext: "Møtelandingsside: Se møtestatus",
@@ -9,15 +9,13 @@ const texts = {
 };
 
 export const SeMoteStatus = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <FlexRow>
       <TrackedKnapp
         context={texts.moteStatusTrackingContext}
-        onClick={() => {
-          history.push(`/sykefravaer/mote`);
-        }}
+        onClick={() => navigate("/sykefravaer/mote")}
       >
         {texts.gaTilMotestatus}
       </TrackedKnapp>

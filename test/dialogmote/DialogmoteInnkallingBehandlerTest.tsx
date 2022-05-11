@@ -5,16 +5,16 @@ import DialogmoteInnkallingBehandler, {
 } from "@/components/dialogmote/innkalling/DialogmoteInnkallingBehandler";
 import { QueryClientProvider } from "react-query";
 import { arbeidstaker, mockState } from "./testData";
-import { MemoryRouter, Route } from "react-router-dom";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { queryClientWithMockData } from "../testQueryClient";
 import { BehandlerDTO, BehandlerType } from "@/data/behandler/BehandlerDTO";
 import { behandlereQueryKeys } from "@/data/behandler/behandlereQueryHooks";
+import { renderWithRouter } from "../testRouterUtils";
 
 let queryClient;
 const noOpMethod = () => {
@@ -69,15 +69,13 @@ describe("DialogmoteInnkallingBehandler", () => {
 });
 
 const renderDialogmoteInnkallingBehandler = () => {
-  return render(
-    <MemoryRouter initialEntries={[dialogmoteRoutePath]}>
-      <Route path={dialogmoteRoutePath}>
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <DialogmoteInnkallingBehandler setSelectedBehandler={noOpMethod} />
-          </Provider>
-        </QueryClientProvider>
-      </Route>
-    </MemoryRouter>
+  return renderWithRouter(
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store({ ...realState, ...mockState })}>
+        <DialogmoteInnkallingBehandler setSelectedBehandler={noOpMethod} />
+      </Provider>
+    </QueryClientProvider>,
+    dialogmoteRoutePath,
+    [dialogmoteRoutePath]
   );
 };

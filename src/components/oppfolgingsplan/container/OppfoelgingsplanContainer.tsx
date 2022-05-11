@@ -25,7 +25,9 @@ export const OppfoelgingsplanContainer = () => {
   } = useOppfolgingsplanerQuery();
   const henter = henterOppfolgingsplaner || henterVeilederinfo;
   const oppfolgingsplan = oppfolgingsplaner.find((plan) => {
-    return plan.id === parseInt(oppfoelgingsdialogId, 10);
+    return (
+      oppfoelgingsdialogId && plan.id === parseInt(oppfoelgingsdialogId, 10)
+    );
   });
 
   return (

@@ -1,11 +1,10 @@
 import React from "react";
 import { expect } from "chai";
-import { MemoryRouter, Route } from "react-router-dom";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { QueryClientProvider } from "react-query";
 import configureStore from "redux-mock-store";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import { rootReducer } from "@/data/rootState";
 import { dialogmoteUnntakRoutePath } from "@/routers/AppRouter";
 import { stubFeatureTogglesApi } from "../stubs/stubUnleash";
@@ -36,6 +35,7 @@ import {
   texts as beskrivelseTexts,
 } from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaBeskrivelse";
 import { CreateUnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
+import { renderWithRouter } from "../testRouterUtils";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -139,20 +139,18 @@ describe("DialogmoteunntakSkjema", () => {
 });
 
 const renderDialogmoteunntakSkjema = () => {
-  return render(
-    <MemoryRouter initialEntries={[dialogmoteUnntakRoutePath]}>
-      <Route path={dialogmoteUnntakRoutePath}>
-        <QueryClientProvider client={queryClient}>
-          <ValgtEnhetContext.Provider
-            value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-          >
-            <Provider store={store({ ...realState, ...mockState })}>
-              <DialogmoteunntakSkjema />
-            </Provider>
-          </ValgtEnhetContext.Provider>
-        </QueryClientProvider>
-      </Route>
-    </MemoryRouter>
+  return renderWithRouter(
+    <QueryClientProvider client={queryClient}>
+      <ValgtEnhetContext.Provider
+        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+      >
+        <Provider store={store({ ...realState, ...mockState })}>
+          <DialogmoteunntakSkjema />
+        </Provider>
+      </ValgtEnhetContext.Provider>
+    </QueryClientProvider>,
+    dialogmoteUnntakRoutePath,
+    [dialogmoteUnntakRoutePath]
   );
 };
 

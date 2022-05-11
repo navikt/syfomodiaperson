@@ -1,7 +1,7 @@
 import Panel from "nav-frontend-paneler";
 import React, { ReactElement, useState } from "react";
 import styled from "styled-components";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { FlexRow } from "../../Layout";
 import { Form } from "react-final-form";
@@ -133,7 +133,7 @@ const AvlysDialogmoteSkjema = ({
   };
 
   if (avlysDialogmote.isSuccess) {
-    return <Redirect to={moteoversiktRoutePath} />;
+    return <Navigate to={moteoversiktRoutePath} />;
   }
 
   return (

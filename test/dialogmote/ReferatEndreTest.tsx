@@ -1,4 +1,3 @@
-import { MemoryRouter, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import React from "react";
 import Referat, {
@@ -27,13 +26,14 @@ import {
   moteTekster,
   narmesteLederNavn,
 } from "./testData";
-import { render, screen, within } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { expectedEndretReferatDocument } from "./testDataDocuments";
 import sinon from "sinon";
 import { MAX_LENGTH_BEGRUNNELSE_ENDRING } from "@/components/dialogmote/referat/ReferatFritekster";
 import { queryClientWithMockData } from "../testQueryClient";
 import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { renderWithRouter } from "../testRouterUtils";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -144,24 +144,18 @@ describe("ReferatEndreTest", () => {
 });
 
 const renderEndreReferat = (dialogmote: DialogmoteDTO) => {
-  return render(
-    <MemoryRouter
-      initialEntries={[
-        `${dialogmoteRoutePath}/${dialogmote.uuid}/referat/endre`,
-      ]}
-    >
-      <Route path={`${dialogmoteRoutePath}/:dialogmoteUuid/referat/endre`}>
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store({ ...realState, ...mockState })}>
-            <Referat
-              dialogmote={dialogmote}
-              pageTitle="Test"
-              mode={ReferatMode.ENDRET}
-            />
-          </Provider>
-        </QueryClientProvider>
-      </Route>
-    </MemoryRouter>
+  return renderWithRouter(
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store({ ...realState, ...mockState })}>
+        <Referat
+          dialogmote={dialogmote}
+          pageTitle="Test"
+          mode={ReferatMode.ENDRET}
+        />
+      </Provider>
+    </QueryClientProvider>,
+    `${dialogmoteRoutePath}/:dialogmoteUuid/referat/endre`,
+    [`${dialogmoteRoutePath}/${dialogmote.uuid}/referat/endre`]
   );
 };
 

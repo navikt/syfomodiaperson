@@ -10,8 +10,8 @@ import { hentMoter } from "@/data/mote/moter_actions";
 import { useAppSelector } from "@/hooks/hooks";
 import SideLaster from "@/components/SideLaster";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
-import { Redirect } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
+import { Navigate } from "react-router-dom";
 
 const texts = {
   pageTitle: "Møteplanlegger",
@@ -54,7 +54,7 @@ export const MotebookingContainer = () => {
               <MotestatusContainer fnr={fnr} moteUuid={aktivtMote.moteUuid} />
             );
           }
-          return <Redirect to={moteoversiktRoutePath} />;
+          return <Navigate to={moteoversiktRoutePath} />;
         })()}
       </SideLaster>
     </Side>

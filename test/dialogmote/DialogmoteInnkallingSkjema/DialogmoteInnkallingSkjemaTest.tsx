@@ -1,6 +1,5 @@
 import React from "react";
 import { expect } from "chai";
-import { MemoryRouter, Route } from "react-router-dom";
 import { createStore } from "redux";
 import { rootReducer } from "@/data/rootState";
 import { Provider } from "react-redux";
@@ -20,7 +19,7 @@ import {
   moteTekster,
   navEnhet,
 } from "../testData";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import { changeTextInput, clickButton, getTextInput } from "../../testUtils";
 import { expectedInnkallingDocuments } from "../testDataDocuments";
 import sinon from "sinon";
@@ -31,6 +30,7 @@ import {
   DialogmoteInnkallingDTO,
   DocumentComponentType,
 } from "@/data/dialogmote/types/dialogmoteTypes";
+import { renderWithRouter } from "../../testRouterUtils";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -198,20 +198,18 @@ describe("DialogmoteInnkallingSkjema", () => {
 });
 
 const renderDialogmoteInnkallingSkjema = () => {
-  return render(
-    <MemoryRouter initialEntries={[dialogmoteRoutePath]}>
-      <Route path={dialogmoteRoutePath}>
-        <QueryClientProvider client={queryClient}>
-          <ValgtEnhetContext.Provider
-            value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-          >
-            <Provider store={store({ ...realState, ...mockState })}>
-              <DialogmoteInnkallingSkjema pageTitle="Test" />
-            </Provider>
-          </ValgtEnhetContext.Provider>
-        </QueryClientProvider>
-      </Route>
-    </MemoryRouter>
+  return renderWithRouter(
+    <QueryClientProvider client={queryClient}>
+      <ValgtEnhetContext.Provider
+        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+      >
+        <Provider store={store({ ...realState, ...mockState })}>
+          <DialogmoteInnkallingSkjema pageTitle="Test" />
+        </Provider>
+      </ValgtEnhetContext.Provider>
+    </QueryClientProvider>,
+    dialogmoteRoutePath,
+    [dialogmoteRoutePath]
   );
 };
 

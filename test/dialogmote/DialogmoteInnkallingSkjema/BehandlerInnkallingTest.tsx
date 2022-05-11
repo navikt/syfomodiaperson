@@ -18,7 +18,6 @@ import {
   maxLengthErrorMessage,
 } from "../../testUtils";
 import { MAX_LENGTH_INNKALLING_FRITEKST } from "@/components/dialogmote/innkalling/DialogmoteInnkallingTekster";
-import { MemoryRouter, Route } from "react-router-dom";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { Provider } from "react-redux";
 import DialogmoteInnkallingSkjema from "@/components/dialogmote/innkalling/DialogmoteInnkallingSkjema";
@@ -28,13 +27,14 @@ import { rootReducer } from "@/data/rootState";
 import { stubInnkallingApi } from "../../stubs/stubIsdialogmote";
 import { apiMock } from "../../stubs/stubApi";
 import { behandlerNavn } from "@/utils/behandlerUtils";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expectedInnkallingDocuments } from "../testDataDocuments";
 import sinon from "sinon";
 import { queryClientWithMockData } from "../../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { behandlereQueryKeys } from "@/data/behandler/behandlereQueryHooks";
+import { renderWithRouter } from "../../testRouterUtils";
 
 let queryClient;
 const store = configureStore([]);
@@ -155,20 +155,18 @@ describe("Dialogmoteinnkallingskjema", () => {
 });
 
 const renderDialogmoteInnkallingSkjema = () => {
-  return render(
-    <MemoryRouter initialEntries={[dialogmoteRoutePath]}>
-      <Route path={dialogmoteRoutePath}>
-        <QueryClientProvider client={queryClient}>
-          <ValgtEnhetContext.Provider
-            value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-          >
-            <Provider store={store({ ...realState, ...mockState })}>
-              <DialogmoteInnkallingSkjema pageTitle="Test" />
-            </Provider>
-          </ValgtEnhetContext.Provider>
-        </QueryClientProvider>
-      </Route>
-    </MemoryRouter>
+  return renderWithRouter(
+    <QueryClientProvider client={queryClient}>
+      <ValgtEnhetContext.Provider
+        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+      >
+        <Provider store={store({ ...realState, ...mockState })}>
+          <DialogmoteInnkallingSkjema pageTitle="Test" />
+        </Provider>
+      </ValgtEnhetContext.Provider>
+    </QueryClientProvider>,
+    dialogmoteRoutePath,
+    [dialogmoteRoutePath]
   );
 };
 

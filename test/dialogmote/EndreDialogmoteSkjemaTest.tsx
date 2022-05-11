@@ -1,4 +1,3 @@
-import { MemoryRouter, Route } from "react-router-dom";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
@@ -34,13 +33,14 @@ import {
   DocumentComponentType,
   EndreTidStedDialogmoteDTO,
 } from "@/data/dialogmote/types/dialogmoteTypes";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MAX_LENGTH_AVLYS_BEGRUNNELSE } from "@/components/dialogmote/avlys/AvlysDialogmoteSkjema";
 import { expectedEndringDocuments } from "./testDataDocuments";
 import sinon from "sinon";
 import { queryClientWithMockData } from "../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
+import { renderWithRouter } from "../testRouterUtils";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -368,22 +368,18 @@ describe("EndreDialogmoteSkjemaTest", () => {
 });
 
 const renderEndreDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
-  return render(
-    <MemoryRouter
-      initialEntries={[`${dialogmoteRoutePath}/${dialogmote.uuid}/endre`]}
-    >
-      <Route path={`${dialogmoteRoutePath}/:dialogmoteUuid/endre`}>
-        <QueryClientProvider client={queryClient}>
-          <ValgtEnhetContext.Provider
-            value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-          >
-            <Provider store={store({ ...realState, ...mockState })}>
-              <EndreDialogmoteSkjema dialogmote={dialogmote} pageTitle="test" />
-            </Provider>
-          </ValgtEnhetContext.Provider>
-        </QueryClientProvider>
-      </Route>
-    </MemoryRouter>
+  return renderWithRouter(
+    <QueryClientProvider client={queryClient}>
+      <ValgtEnhetContext.Provider
+        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+      >
+        <Provider store={store({ ...realState, ...mockState })}>
+          <EndreDialogmoteSkjema dialogmote={dialogmote} pageTitle="test" />
+        </Provider>
+      </ValgtEnhetContext.Provider>
+    </QueryClientProvider>,
+    `${dialogmoteRoutePath}/:dialogmoteUuid/endre`,
+    [`${dialogmoteRoutePath}/${dialogmote.uuid}/endre`]
   );
 };
 

@@ -10,8 +10,9 @@ import Feilmelding from "../../Feilmelding";
 import AppSpinner from "../../AppSpinner";
 import * as epostinnholdActions from "../../../data/mote/epostinnhold_actions";
 import { MOETEPLANLEGGER } from "@/enums/menypunkter";
-import { withRouter } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { motePt } from "../moteProptypes";
+import { withRouter } from "@/components/mote/container/withRouter";
 
 export class BekreftMoteSide extends Component {
   constructor(props) {
@@ -52,7 +53,6 @@ export class BekreftMoteSide extends Component {
       bekreftFeilet,
       hentBekreftMoteEpostinnhold,
       arbeidstaker,
-      history,
     } = this.props;
     return (
       <Side tittel="Bekreft møte" aktivtMenypunkt={MOETEPLANLEGGER}>
@@ -66,9 +66,9 @@ export class BekreftMoteSide extends Component {
                   mote.status === "FLERE_TIDSPUNKT") && (
                   <Lightbox
                     scrollOverflowY={this.state.scrollOverflowY}
-                    onClose={() => {
-                      history.replace(`/sykefravaer/mote`);
-                    }}
+                    onClose={() => (
+                      <Navigate to={`/sykefravaer/mote`} replace />
+                    )}
                   >
                     {(() => {
                       return (
@@ -117,7 +117,6 @@ BekreftMoteSide.propTypes = {
   hentMoter: PropTypes.func,
   hentBekreftMoteEpostinnhold: PropTypes.func,
   bekreftMote: PropTypes.func,
-  history: PropTypes.object,
 };
 
 export const getMoteFraAlternativId = (moter, alternativId) => {

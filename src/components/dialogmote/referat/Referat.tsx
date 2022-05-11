@@ -28,7 +28,7 @@ import {
   NewDialogmoteReferatDTO,
 } from "@/data/dialogmote/types/dialogmoteReferatTypes";
 import { useFerdigstillDialogmote } from "@/data/dialogmote/useFerdigstillDialogmote";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useMellomlagreReferat } from "@/data/dialogmote/useMellomlagreReferat";
@@ -245,7 +245,7 @@ const Referat = ({
   const initialValues = useInitialValuesReferat(dialogmote);
 
   if (ferdigstillDialogmote.isSuccess || endreReferat.isSuccess) {
-    return <Redirect to={moteoversiktRoutePath} />;
+    return <Navigate to={moteoversiktRoutePath} />;
   }
 
   return (

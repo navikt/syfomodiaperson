@@ -9,7 +9,7 @@ import { AlertstripeFullbredde } from "../../AlertstripeFullbredde";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/components/dialogmote/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
@@ -60,7 +60,7 @@ const DialogmoteInnkallingContainer = (): ReactElement => {
   } = useOppfolgingstilfellePersonQuery();
 
   if (aktivtDialogmote) {
-    return <Redirect to={moteoversiktRoutePath} />;
+    return <Navigate to={moteoversiktRoutePath} />;
   }
 
   const henter = henterLedere || henterOppfolgingstilfeller;

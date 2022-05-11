@@ -1,6 +1,6 @@
 import React from "react";
 import { Form } from "react-final-form";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import styled from "styled-components";
 import Panel from "nav-frontend-paneler";
 import { AlertStripeInfo } from "nav-frontend-alertstriper";
@@ -51,7 +51,7 @@ const DialogmoteunntakSkjema = () => {
   const settDialogmoteunntak = useSettDialogmoteunntak();
 
   if (!isKandidat || settDialogmoteunntak.isSuccess) {
-    return <Redirect to={moteoversiktRoutePath} />;
+    return <Navigate to={moteoversiktRoutePath} />;
   }
 
   const validate = (values: Partial<DialogmoteunntakSkjemaValues>) => {

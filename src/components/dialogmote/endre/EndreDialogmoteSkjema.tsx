@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { TrackedFlatknapp } from "../../buttons/TrackedFlatknapp";
@@ -156,7 +156,7 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
   };
 
   if (endreTidStedDialogmote.isSuccess) {
-    return <Redirect to={moteoversiktRoutePath} />;
+    return <Navigate to={moteoversiktRoutePath} />;
   }
 
   return (

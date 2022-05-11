@@ -17,7 +17,7 @@ import {
   DialogmoteInnkallingDTO,
   TidStedDto,
 } from "@/data/dialogmote/types/dialogmoteTypes";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { FlexRow } from "../../Layout";
 import { SkjemaFeiloppsummering } from "../../SkjemaFeiloppsummering";
@@ -172,7 +172,7 @@ const DialogmoteInnkallingSkjema = ({
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
 
   if (opprettInnkalling.isSuccess) {
-    return <Redirect to={moteoversiktRoutePath} />;
+    return <Navigate to={moteoversiktRoutePath} />;
   }
 
   const submit = (values: DialogmoteInnkallingSkjemaValues) => {
