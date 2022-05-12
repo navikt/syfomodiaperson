@@ -6,8 +6,12 @@ import { capitalizeWord } from "@/utils/stringUtils";
 
 const texts = {
   behandlerLegend: "Behandler som inviteres til dialogmøtet",
+  behandlerInfoPlural:
+    "Behandleren vil få en dialogmelding med invitasjon. Dersom du ønsker å invitere en annen behandler " +
+    "enn de som står oppgitt her, må du fortsatt sende innkallingen fra Arena.",
   behandlerInfo:
-    "Fastlegen vil få en dialogmelding med invitasjon. Dersom du ønsker å invitere en annen behandler, må du fortsatt sende innkallingen fra Arena.",
+    "Behandleren vil få en dialogmelding med invitasjon. Dersom du ønsker å invitere en annen behandler " +
+    "enn den som står oppgitt her, må du fortsatt sende innkallingen fra Arena.",
   noBehandler: "Ingen behandler",
 };
 
@@ -52,7 +56,11 @@ const BehandlerRadioGruppe = ({
           />
         ))}
       </StyledRadioGruppe>
-      <p>{texts.behandlerInfo}</p>
+      {behandlere.length > 1 ? (
+        <p>{texts.behandlerInfoPlural}</p>
+      ) : (
+        <p>{texts.behandlerInfo}</p>
+      )}
     </>
   );
 };
