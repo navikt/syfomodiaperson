@@ -139,6 +139,16 @@ const auth = {
     }),
     removePathPrefix: true,
   },
+  isdialogmotekandidat: {
+    applicationName: "isdialogmotekandidat",
+    clientId: envVar({
+      name: "ISDIALOGMOTEKANDIDAT_AAD_APP_CLIENT_ID",
+    }),
+    host: envVar({
+      name: "ISDIALOGMOTEKANDIDAT_HOST",
+    }),
+    removePathPrefix: true,
+  },
   isnarmesteleder: {
     applicationName: "isnarmesteleder",
     clientId: envVar({
