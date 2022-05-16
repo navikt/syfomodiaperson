@@ -195,7 +195,7 @@ const setup = (authClient) => {
     proxyOnBehalfOf(req, res, next, authClient, Config.auth.syfosmregister);
   });
 
-  router.use("/api/veileder/soknader", (req, res, next) => {
+  router.use("/sykepengesoknad-backend/*", (req, res, next) => {
     proxyOnBehalfOf(
       req,
       res,
