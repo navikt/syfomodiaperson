@@ -26,7 +26,10 @@ describe("sykepengesoknadQueryHooks", () => {
   });
 
   it("loads sykepengesoknader", async () => {
-    stubSykepengesoknadBackendApi(apiMockScope, ARBEIDSTAKER_DEFAULT.personIdent);
+    stubSykepengesoknadBackendApi(
+      apiMockScope,
+      ARBEIDSTAKER_DEFAULT.personIdent
+    );
     const wrapper = queryHookWrapper(queryClient);
 
     const { result, waitFor } = renderHook(() => useSykepengesoknaderQuery(), {
