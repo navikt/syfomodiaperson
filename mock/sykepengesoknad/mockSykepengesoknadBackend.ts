@@ -1,11 +1,11 @@
 import { soknaderMock } from "./soknaderMock";
-import { SYFOSOKNAD_ROOT } from "../../src/apiConstants";
+import { SYKEPENGESOKNAD_BACKEND_ROOT } from "../../src/apiConstants";
 
 const Auth = require("../../server/auth/index.js");
 
-export const mockSyfosoknad = (server) => {
+export const mockSykepengesoknadBackend = (server) => {
   server.get(
-    `${SYFOSOKNAD_ROOT}/soknader`,
+    `${SYKEPENGESOKNAD_BACKEND_ROOT}/soknader`,
     Auth.ensureAuthenticated(),
     (req, res) => {
       res.setHeader("Content-Type", "application/json");

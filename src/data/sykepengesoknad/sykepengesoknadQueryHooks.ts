@@ -1,4 +1,4 @@
-import { SYFOSOKNAD_ROOT } from "@/apiConstants";
+import { SYKEPENGESOKNAD_BACKEND_ROOT } from "@/apiConstants";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { get } from "@/api/axios";
 import { useQuery } from "react-query";
@@ -15,7 +15,7 @@ export const sykepengesoknaderQueryKeys = {
 
 export const useSykepengesoknaderQuery = () => {
   const fnr = useValgtPersonident();
-  const path = `${SYFOSOKNAD_ROOT}/soknader?fnr=${fnr}`;
+  const path = `${SYKEPENGESOKNAD_BACKEND_ROOT}/soknader?fnr=${fnr}`;
   const fetchSykepengesoknader = () => get<SykepengesoknadDTO[]>(path);
   const query = useQuery(
     sykepengesoknaderQueryKeys.sykepengesoknader(fnr),

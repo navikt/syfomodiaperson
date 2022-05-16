@@ -8,8 +8,8 @@ import {
   parseSoknad,
   useSykepengesoknaderQuery,
 } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
-import { soknaderMock } from "../../mock/syfosoknad/soknaderMock";
-import { stubSyfosoknadApi } from "../stubs/stubSyfosoknad";
+import { soknaderMock } from "../../mock/sykepengesoknad/soknaderMock";
+import { stubSykepengesoknadBackendApi } from "../stubs/stubSykepengesoknadBackend";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 
@@ -26,7 +26,7 @@ describe("sykepengesoknadQueryHooks", () => {
   });
 
   it("loads sykepengesoknader", async () => {
-    stubSyfosoknadApi(apiMockScope, ARBEIDSTAKER_DEFAULT.personIdent);
+    stubSykepengesoknadBackendApi(apiMockScope, ARBEIDSTAKER_DEFAULT.personIdent);
     const wrapper = queryHookWrapper(queryClient);
 
     const { result, waitFor } = renderHook(() => useSykepengesoknaderQuery(), {

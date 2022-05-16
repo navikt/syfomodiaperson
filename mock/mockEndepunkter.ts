@@ -6,7 +6,7 @@ import { mockModiacontextholder } from "./modiacontextholder/mockModiacontexthol
 import { mockSyfomoteadmin } from "./syfomoteadmin/mockSyfomoteadmin";
 import { mockSyfomotebehov } from "./syfomotebehov/mockSyfomotebehov";
 import { mockSyfooppfolgingsplanservice } from "./syfooppfolgingsplanservice/mockSyfooppfolgingsplanservice";
-import { mockSyfosoknad } from "./syfosoknad/mockSyfosoknad";
+import { mockSykepengesoknadBackend } from "./sykepengesoknad/mockSykepengesoknadBackend";
 import { mockSyfotilgangskontroll } from "./syfotilgangskontroll/mockSyfotilgangskontroll";
 import { mockSyfobehandlendeenhet } from "./syfobehandlendeenhet/mockSyfobehandlendeenhet";
 import { mockSyfoperson } from "./syfoperson/mockSyfoperson";
@@ -33,7 +33,7 @@ const mockEndepunkter = (server) => {
     mockSyfomoteadmin,
     mockSyfomotebehov,
     mockSyfooppfolgingsplanservice,
-    mockSyfosoknad,
+    mockSykepengesoknadBackend,
     mockSyfotilgangskontroll,
     mockSyfobehandlendeenhet,
     mockSyfoperson,

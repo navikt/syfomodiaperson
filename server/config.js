@@ -253,13 +253,13 @@ const auth = {
     }),
     removePathPrefix: true,
   },
-  syfosoknad: {
-    applicationName: "syfosoknad",
+  sykepengesoknadBackend: {
+    applicationName: "sykepengesoknad-backend",
     clientId: envVar({
-      name: "SYFOSOKNAD_AAD_APP_CLIENT_ID",
+      name: "SYKEPENGESOKNAD_BACKEND_AAD_APP_CLIENT_ID",
     }),
     host: envVar({
-      name: "SYFOSOKNAD_HOST",
+      name: "SYKEPENGESOKNAD_BACKEND_HOST",
     }),
   },
   syfotilgangskontroll: {

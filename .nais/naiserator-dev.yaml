@@ -116,10 +116,10 @@ spec:
       value: "616d576a-c26e-4987-9b44-e315677552a2"
     - name: SYFOSMREGISTER_HOST
       value: "syfosmregister.dev.intern.nav.no"
-    - name: SYFOSOKNAD_AAD_APP_CLIENT_ID
-      value: "58aaf4c6-7139-455e-ac2b-285ca0ce318f"
-    - name: SYFOSOKNAD_HOST
-      value: "syfosoknad.dev.intern.nav.no"
+    - name: SYKEPENGESOKNAD_BACKEND_AAD_APP_CLIENT_ID
+      value: "dev-gcp.flex.sykepengesoknad-backend"
+    - name: SYKEPENGESOKNAD_BACKEND_HOST
+      value: "flex-intern-gateway.dev.intern.nav.no"
     - name: SYFOTILGANGSKONTROLL_AAD_APP_CLIENT_ID
       value: "dev-fss.teamsykefravr.syfo-tilgangskontroll"
     - name: SYFOTILGANGSKONTROLL_HOST
