@@ -2,7 +2,7 @@ import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import { ISPERSONOPPGAVE_ROOT } from "../../src/apiConstants";
 import { personoppgaverMock } from "./personoppgaveMock";
 
-const Auth = require("../../server/auth/index.js");
+import Auth = require("../../server/auth");
 
 export const mockIspersonoppgave = (server) => {
   server.get(

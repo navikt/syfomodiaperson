@@ -2,7 +2,7 @@ import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import { oppfolgingstilfellePersonMock } from "./oppfolgingstilfellePersonMock";
 import { ISOPPFOLGINGSTILFELLE_ROOT } from "../../src/apiConstants";
 
-const Auth = require("../../server/auth/index.js");
+import Auth = require("../../server/auth");
 
 export const mockIsoppfolgingstilfelle = (server) => {
   server.get(

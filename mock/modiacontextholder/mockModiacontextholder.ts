@@ -6,7 +6,7 @@ import {
   VEILEDER_IDENT_DEFAULT,
 } from "../common/mockConstants";
 
-const Auth = require("../../server/auth/index.js");
+import Auth = require("../../server/auth");
 
 const saksbehandler = {
   ident: VEILEDER_IDENT_DEFAULT,

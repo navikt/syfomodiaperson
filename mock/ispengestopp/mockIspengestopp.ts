@@ -1,7 +1,7 @@
 import { ISPENGESTOPP_ROOT } from "../../src/apiConstants";
 import { createStatusList } from "./pengestoppStatusMock";
 
-const Auth = require("../../server/auth/index.js");
+import Auth = require("../../server/auth");
 
 export const mockIspengestopp = (server) => {
   let STATUSLIST;

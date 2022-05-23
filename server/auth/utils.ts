@@ -1,15 +1,15 @@
-const HttpsProxyAgent = require("https-proxy-agent");
-const OpenIdClient = require("openid-client");
+import HttpsProxyAgent = require("https-proxy-agent");
+import OpenIdClient = require("openid-client");
 
-const Config = require("../config.js");
+import Config = require("../config");
 
 const OBO_TOKEN_EXPIRATION_MARGIN_SECONDS = 60;
 
-const expired = (oboToken) => {
+const expired = (oboToken: any) => {
   return oboToken.expires_in <= OBO_TOKEN_EXPIRATION_MARGIN_SECONDS;
 };
 
-const getTokenSetById = (tokenSets, id) => {
+const getTokenSetById = (tokenSets: any, id: any) => {
   if (!(id in tokenSets)) {
     // Should have been initialized by passport
     return null;
@@ -20,11 +20,11 @@ const getTokenSetById = (tokenSets, id) => {
   return new OpenIdClient.TokenSet(tokenSets[id]);
 };
 
-const getOrRefreshOnBehalfOfToken = async (
-  authClient,
-  tokenSets,
-  tokenSetId,
-  clientId
+export const getOrRefreshOnBehalfOfToken = async (
+  authClient: any,
+  tokenSets: any,
+  tokenSetId: any,
+  clientId: any
 ) => {
   const selfToken = getTokenSetById(tokenSets, "self");
   if (!selfToken) {
@@ -73,9 +73,9 @@ const getOrRefreshOnBehalfOfToken = async (
 };
 
 const getOrRefreshSelfTokenIfExpired = async (
-  authClient,
-  selfToken,
-  tokenSets
+  authClient: any,
+  selfToken: any,
+  tokenSets: any
 ) => {
   if (selfToken.expired()) {
     console.log(
@@ -88,7 +88,7 @@ const getOrRefreshSelfTokenIfExpired = async (
   return selfToken;
 };
 
-const getScope = (tokenSetId, clientId) => {
+const getScope = (tokenSetId: any, clientId: any) => {
   if (tokenSetId === Config.tokenSetIdType.graph) {
     return `${clientId}/.default`;
   }
@@ -96,10 +96,10 @@ const getScope = (tokenSetId, clientId) => {
 };
 
 const requestOnBehalfOfToken = async (
-  authClient,
-  tokenSet,
-  tokenSetId,
-  clientId
+  authClient: any,
+  tokenSet: any,
+  tokenSetId: any,
+  clientId: any
 ) => {
   if (!tokenSet.access_token) {
     throw Error(
@@ -117,10 +117,10 @@ const requestOnBehalfOfToken = async (
   return await authClient.grant(grantBody);
 };
 
-const getOpenIdClient = async (issuerUrl) => {
+export const getOpenIdClient = async (issuerUrl: string) => {
   try {
     if (Config.server.proxy) {
-      const proxyAgent = new HttpsProxyAgent(Config.server.proxy);
+      const proxyAgent = HttpsProxyAgent(Config.server.proxy);
       OpenIdClient.custom.setHttpOptionsDefaults({
         agent: {
           http: proxyAgent,

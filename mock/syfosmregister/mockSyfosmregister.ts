@@ -1,7 +1,7 @@
 import { sykmeldingerMock } from "./sykmeldingerMock";
 import { SYFOSMREGISTER_ROOT } from "../../src/apiConstants";
 
-const Auth = require("../../server/auth/index.js");
+import Auth = require("../../server/auth");
 
 export const mockSyfosmregister = (server) => {
   server.get(

@@ -2,7 +2,7 @@ import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import { SYFOBEHANDLENDEENHET_ROOT } from "../../src/apiConstants";
 import { behandlendeEnhetMock } from "./behandlendeEnhetMock";
 
-const Auth = require("../../server/auth/index.js");
+import Auth = require("../../server/auth");
 
 export const mockSyfobehandlendeenhet = (server) => {
   server.get(

@@ -2,7 +2,7 @@ import { tilgangBrukerMock } from "./tilgangtilbrukerMock";
 import { SYFOTILGANGSKONTROLL_ROOT } from "../../src/apiConstants";
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 
-const Auth = require("../../server/auth/index.js");
+import Auth = require("../../server/auth");
 
 export const mockSyfotilgangskontroll = (server) => {
   server.get(

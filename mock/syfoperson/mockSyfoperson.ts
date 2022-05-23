@@ -3,7 +3,7 @@ import { personAdresseMock } from "./personAdresseMock";
 import { brukerinfoMock } from "./brukerinfoMock";
 import { SYFOPERSON_ROOT } from "../../src/apiConstants";
 
-const Auth = require("../../server/auth/index.js");
+import Auth = require("../../server/auth");
 
 const diskresjonskode = "7";
 const isEgenAnsatt = true;

@@ -7,7 +7,7 @@ import { dokumentinfoMock } from "./dokumentinfoMock";
 
 const path = require("path");
 
-const Auth = require("../../server/auth/index.js");
+import Auth = require("../../server/auth");
 
 export const mockSyfooppfolgingsplanservice = (server) => {
   server.get(

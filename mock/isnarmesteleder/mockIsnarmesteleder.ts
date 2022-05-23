@@ -1,7 +1,7 @@
 import { ledereMock } from "./ledereMock";
 import { ISNARMESTELEDER_ROOT } from "../../src/apiConstants";
 
-const Auth = require("../../server/auth/index.js");
+import Auth = require("../../server/auth");
 
 export const mockIsnarmesteleder = (server) => {
   server.get(

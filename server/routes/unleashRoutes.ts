@@ -1,13 +1,12 @@
-const express = require("express");
-let router = express.Router();
-const { initialize, Strategy } = require("unleash-client");
+import unleshClient = require("unleash-client");
+const { initialize, Strategy } = unleshClient;
 
 class ByEnhetAndEnvironment extends Strategy {
   constructor() {
     super("byEnhetAndEnvironment");
   }
 
-  isEnabled(parameters, context) {
+  isEnabled(parameters: any, context: any) {
     if (process.env.NAIS_CONTEXT === "dev") {
       return true;
     }
@@ -28,7 +27,7 @@ class ByUserId extends Strategy {
     super("byUserId");
   }
 
-  isEnabled(parameters, context) {
+  isEnabled(parameters: any, context: any) {
     if (!context.user) {
       return false;
     }
@@ -37,24 +36,19 @@ class ByUserId extends Strategy {
   }
 }
 
-const unleash = initialize({
+export const unleash = initialize({
   url: "https://unleash.nais.io/api/",
   appName: "syfomodiaperson",
   environment: process.env.NAIS_CONTEXT,
   strategies: [new ByEnhetAndEnvironment(), new ByUserId()],
 });
 
-router.post("/toggles", (req, res) => {
-  const toggles = req.body.toggles;
-  const unleashToggles = toggles.reduce((acc, toggle) => {
+export const unleashToggles = (toggles: any, valgtEnhet: any, userId: any) => {
+  return toggles.reduce((acc: any, toggle: any) => {
     acc[toggle] = unleash.isEnabled(toggle, {
-      valgtEnhet: req.query.valgtEnhet,
-      user: req.query.userId,
+      valgtEnhet: valgtEnhet,
+      user: userId,
     });
     return acc;
   }, {});
-
-  res.status(200).send(unleashToggles);
-});
-
-module.exports = router;
+};

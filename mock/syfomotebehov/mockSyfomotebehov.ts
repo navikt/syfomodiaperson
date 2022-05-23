@@ -3,7 +3,7 @@ import { SYFOMOTEBEHOV_ROOT } from "../../src/apiConstants";
 import { historikkmotebehovMock } from "./historikkmotebehovMock";
 import { VEILEDER_IDENT_DEFAULT } from "../common/mockConstants";
 
-const Auth = require("../../server/auth/index.js");
+import Auth = require("../../server/auth");
 
 export const mockSyfomotebehov = (server) => {
   server.get(

@@ -3,7 +3,7 @@ import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import { dialogmotekandidatMock } from "./dialogmotekandidatMock";
 import { dialogmoteunntakMock } from "./dialogmoteunntakMock";
 
-const Auth = require("../../server/auth/index.js");
+import Auth = require("../../server/auth");
 
 export const mockIsdialogmotekandidat = (server) => {
   server.get(

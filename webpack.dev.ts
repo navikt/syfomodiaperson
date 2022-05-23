@@ -5,7 +5,7 @@ const express = require("express");
 const common = require("./webpack.common.ts");
 const path = require("path");
 
-const Auth = require("./server/auth/index.js");
+import Auth = require("./server/auth");
 
 module.exports = merge(common, {
   mode: "development",

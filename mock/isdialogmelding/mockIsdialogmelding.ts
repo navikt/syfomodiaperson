@@ -1,5 +1,5 @@
 import { ISDIALOGMELDING_ROOT } from "../../src/apiConstants";
-import Auth from "../../server/auth/index.js";
+import Auth = require("../../server/auth");
 import { behandlereDialogmeldingMock } from "./behandlereDialogmeldingMock";
 
 export const mockIsdialogmelding = (server) => {

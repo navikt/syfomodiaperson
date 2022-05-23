@@ -1,11 +1,13 @@
-const express = require("express");
-const helmet = require("helmet");
-const path = require("path");
-const prometheus = require("prom-client");
+import express = require("express");
+import helmet = require("helmet");
+import path = require("path");
+import prometheus = require("prom-client");
 
-const Auth = require("./server/auth/index.js");
+import Auth = require("./server/auth");
 
-const setupProxy = require("./server/proxy.js");
+import proxy = require("./server/proxy");
+
+import unleashRoutes = require("./server/routes/unleashRoutes");
 
 // Prometheus metrics
 const collectDefaultMetrics = prometheus.collectDefaultMetrics;
@@ -27,7 +29,11 @@ server.use(
   })
 );
 
-const nocache = (req, res, next) => {
+const nocache = (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
   res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
   res.header("Expires", "-1");
   res.header("Pragma", "no-cache");
@@ -37,15 +43,23 @@ const nocache = (req, res, next) => {
 const setupServer = async () => {
   const authClient = await Auth.setupAuth(server);
 
-  server.use(setupProxy(authClient));
+  server.use(proxy.setupProxy(authClient));
 
   const DIST_DIR = path.join(__dirname, "dist");
   const HTML_FILE = path.join(DIST_DIR, "index.html");
 
   server.use("/static", express.static(DIST_DIR));
 
-  const unleashRoutes = require("./server/routes/unleashRoutes");
-  server.use("/unleash", unleashRoutes);
+  server.post("/unleash/toggles", (req, res) => {
+    const toggles = req.body.toggles;
+    const unleashToggles = unleashRoutes.unleashToggles(
+      toggles,
+      req.query.valgtEnhet,
+      req.query.userId
+    );
+
+    res.status(200).send(unleashToggles);
+  });
 
   server.get(
     [
@@ -61,18 +75,27 @@ const setupServer = async () => {
     }
   );
 
-  server.get("/actuator/metrics", (req, res) => {
-    res.set("Content-Type", prometheus.register.contentType);
-    res.end(prometheus.register.metrics());
-  });
+  server.get(
+    "/actuator/metrics",
+    (req: express.Request, res: express.Response) => {
+      res.set("Content-Type", prometheus.register.contentType);
+      res.end(prometheus.register.metrics());
+    }
+  );
 
-  server.get("/health/isAlive", (req, res) => {
-    res.sendStatus(200);
-  });
+  server.get(
+    "/health/isAlive",
+    (req: express.Request, res: express.Response) => {
+      res.sendStatus(200);
+    }
+  );
 
-  server.get("/health/isReady", (req, res) => {
-    res.sendStatus(200);
-  });
+  server.get(
+    "/health/isReady",
+    (req: express.Request, res: express.Response) => {
+      res.sendStatus(200);
+    }
+  );
 
   const port = 8080;
 

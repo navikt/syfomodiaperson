@@ -1,7 +1,7 @@
 import { soknaderMock } from "./soknaderMock";
 import { SYKEPENGESOKNAD_BACKEND_ROOT } from "../../src/apiConstants";
 
-const Auth = require("../../server/auth/index.js");
+import Auth = require("../../server/auth");
 
 export const mockSykepengesoknadBackend = (server) => {
   server.get(

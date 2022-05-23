@@ -2,7 +2,7 @@ import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import { dialogmoterMock } from "./dialogmoterMock";
 import { ISDIALOGMOTE_ROOT } from "../../src/apiConstants";
 
-const Auth = require("../../server/auth/index.js");
+import Auth = require("../../server/auth");
 
 export const mockIsdialogmote = (server) => {
   server.post(
