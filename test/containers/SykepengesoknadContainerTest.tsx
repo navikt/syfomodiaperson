@@ -22,7 +22,7 @@ const OPPHOLD_UTLAND_ID = "e16ff778-8475-47e1-b5dc-d2ce4ad6b9ee";
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
-let queryClient;
+let queryClient: any;
 
 const mockState = {
   navbruker: {

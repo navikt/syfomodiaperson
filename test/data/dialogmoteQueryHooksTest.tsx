@@ -8,8 +8,8 @@ import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { dialogmoterMock } from "../../mock/isdialogmote/dialogmoterMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 describe("dialogmoteQueryHooks tests", () => {
   beforeEach(() => {

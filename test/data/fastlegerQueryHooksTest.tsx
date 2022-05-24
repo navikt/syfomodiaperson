@@ -8,8 +8,8 @@ import { useFastlegerQuery } from "@/data/fastlege/fastlegerQueryHooks";
 import { fastlegerMock } from "../../mock/fastlegerest/fastlegerMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 describe("fastlegerQueryHooks tests", () => {
   beforeEach(() => {

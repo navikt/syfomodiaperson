@@ -39,10 +39,10 @@ import { renderWithRouter } from "../testRouterUtils";
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
 
-let queryClient;
+let queryClient: any;
 
 describe("AvlysDialogmoteSkjemaTest", () => {
-  let clock;
+  let clock: any;
   const today = new Date(Date.now());
 
   beforeEach(() => {

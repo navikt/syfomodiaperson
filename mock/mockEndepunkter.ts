@@ -20,7 +20,7 @@ import { mockIsdialogmelding } from "./isdialogmelding/mockIsdialogmelding";
 
 const express = require("express");
 
-const mockEndepunkter = (server) => {
+const mockEndepunkter = (server: any) => {
   server.use(express.json());
   server.use(express.urlencoded());
 

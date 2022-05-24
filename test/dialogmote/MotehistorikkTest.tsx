@@ -20,7 +20,7 @@ import {
 } from "../../mock/isdialogmotekandidat/dialogmoteunntakMock";
 import { unntakLenkeText } from "@/components/dialogmote/motehistorikk/MoteHistorikkUnntak";
 
-let queryClient;
+let queryClient: any;
 const ferdigstiltMoteTid = "2021-01-15T11:52:13.539843";
 const ferdigstiltMote = {
   uuid: "1",

@@ -9,8 +9,8 @@ import { virksomhetMock } from "../../mock/syfomoteadmin/virksomhetMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 const orgnummer = VIRKSOMHET_PONTYPANDY.virksomhetsnummer;
 

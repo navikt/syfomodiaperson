@@ -15,11 +15,11 @@ import { fastlegerMock } from "../../../mock/fastlegerest/fastlegerMock";
 import { queryClientWithAktivBruker } from "../../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 describe("PersonkortVisning", () => {
-  let mockState;
+  let mockState: any;
   const realState = createStore(rootReducer).getState();
   const store = configureStore([]);
 

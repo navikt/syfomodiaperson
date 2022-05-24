@@ -13,8 +13,8 @@ import { stubSykepengesoknadBackendApi } from "../stubs/stubSykepengesoknadBacke
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 describe("sykepengesoknadQueryHooks", () => {
   beforeEach(() => {

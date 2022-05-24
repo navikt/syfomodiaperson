@@ -27,10 +27,10 @@ import { MemoryRouter } from "react-router-dom";
 
 const realState = createStore(rootReducer).getState();
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
-let queryClient;
-let apiMockScope;
-let store;
-let mockState;
+let queryClient: any;
+let apiMockScope: any;
+let store: any;
+let mockState: any;
 
 const motebehovData = [
   {
@@ -46,7 +46,7 @@ const motebehovData = [
   },
 ];
 
-const renderMotelandingsside = (mockStore) =>
+const renderMotelandingsside = (mockStore: any) =>
   render(
     <QueryClientProvider client={queryClient}>
       <ValgtEnhetContext.Provider

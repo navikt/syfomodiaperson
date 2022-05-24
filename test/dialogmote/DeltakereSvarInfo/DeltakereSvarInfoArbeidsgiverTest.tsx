@@ -19,7 +19,7 @@ import {
 import { queryClientWithMockData } from "../../testQueryClient";
 
 const store = configureStore([]);
-let queryClient;
+let queryClient: any;
 
 const ingenDetaljerTekst = "Ingen detaljer er tilgjengelig.";
 

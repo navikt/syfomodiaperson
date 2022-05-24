@@ -10,7 +10,7 @@ export const queryHookWrapper = (client: QueryClient) => {
     modiacontextQueryKeys.aktivbruker,
     () => AKTIV_BRUKER_DEFAULT
   );
-  const wrapper = ({ children }) => (
+  const wrapper = ({ children }: any) => (
     <QueryClientProvider client={client}>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}

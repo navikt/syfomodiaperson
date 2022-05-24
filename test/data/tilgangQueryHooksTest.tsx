@@ -8,8 +8,8 @@ import { stubTilgangApi } from "../stubs/stubSyfotilgangskontroll";
 import { useTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
 import { tilgangBrukerMock } from "../../mock/syfotilgangskontroll/tilgangtilbrukerMock";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 describe("tilgangQueryHooks tests", () => {
   beforeEach(() => {

@@ -22,7 +22,7 @@ const mockState = {
     data: [],
   },
 };
-let queryClient;
+let queryClient: any;
 
 const renderGlobalNavigasjon = () =>
   render(

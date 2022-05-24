@@ -14,8 +14,8 @@ import {
 } from "@/utils/sykmeldinger/sykmeldingParser";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 const sykmeldingerMockData = (sykmeldingerMock as unknown) as SykmeldingNewFormatDTO[];
 

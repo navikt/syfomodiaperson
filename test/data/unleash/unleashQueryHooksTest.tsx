@@ -9,8 +9,8 @@ import { stubFeatureTogglesApi } from "../../stubs/stubUnleash";
 import { stubVeilederinfoApi } from "../../stubs/stubSyfoveileder";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 describe("unleashQuery tests", () => {
   beforeEach(() => {

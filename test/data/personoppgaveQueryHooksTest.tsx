@@ -8,8 +8,8 @@ import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryH
 import { stubPersonoppgaveApi } from "../stubs/stubIspersonoppgave";
 import { personoppgaverMock } from "../../mock/ispersonoppgave/personoppgaveMock";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 const today = new Date();
 

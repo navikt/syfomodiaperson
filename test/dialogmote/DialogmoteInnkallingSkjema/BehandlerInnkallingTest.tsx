@@ -36,12 +36,12 @@ import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { behandlereQueryKeys } from "@/data/behandler/behandlereQueryHooks";
 import { renderWithRouter } from "../../testRouterUtils";
 
-let queryClient;
+let queryClient: any;
 const store = configureStore([]);
 const realState = createStore(rootReducer).getState();
 
 describe("Dialogmoteinnkallingskjema", () => {
-  let clock;
+  let clock: any;
   const today = new Date(Date.now());
 
   beforeEach(() => {

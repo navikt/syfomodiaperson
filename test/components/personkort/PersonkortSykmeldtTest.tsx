@@ -9,8 +9,8 @@ import { stubPersonadresseApi } from "../../stubs/stubSyfoperson";
 import { vegadresse } from "../../../mock/syfoperson/personAdresseMock";
 import { queryClientWithAktivBruker } from "../../testQueryClient";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 const navbruker: Brukerinfo = {
   arbeidssituasjon: "",

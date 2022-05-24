@@ -10,8 +10,8 @@ import { stubFeatureTogglesApi } from "../../stubs/stubUnleash";
 import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { stubVeilederinfoApi } from "../../stubs/stubSyfoveileder";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 describe("dialogmotekandidatQuery tests", () => {
   beforeEach(() => {

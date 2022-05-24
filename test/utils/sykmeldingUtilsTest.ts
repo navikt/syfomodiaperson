@@ -54,7 +54,7 @@ const baseSykmelding: SykmeldingOldFormat = {
 };
 
 describe("sykmeldingUtils", () => {
-  let clock;
+  let clock: any;
   let today = new Date("2017-02-01");
 
   describe("finnAvventendeSykmeldingTekst", () => {
@@ -807,7 +807,7 @@ describe("sykmeldingUtils", () => {
 
     it("skal returnere undefined hvis ingen sykmeldinger i listen", () => {
       const wantedVirksomhetsnummer = "11223344";
-      const sykmeldinger = [];
+      const sykmeldinger: any[] = [];
 
       const actualSykmelding = latestSykmeldingForVirksomhet(
         sykmeldinger,

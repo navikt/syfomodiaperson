@@ -39,7 +39,7 @@ import { renderWithRouter } from "../testRouterUtils";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
-let queryClient;
+let queryClient: any;
 
 describe("DialogmoteunntakSkjema", () => {
   const apiMockScope = apiMock();

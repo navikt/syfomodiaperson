@@ -8,8 +8,8 @@ import { stubBehandlereDialogmeldingApi } from "../stubs/stubIsdialogmelding";
 import { behandlereDialogmeldingMock } from "../../mock/isdialogmelding/behandlereDialogmeldingMock";
 import { useBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 describe("behandlereQueryHooks tests", () => {
   beforeEach(() => {

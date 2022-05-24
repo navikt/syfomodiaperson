@@ -14,8 +14,8 @@ import { stubMotebehovHistorikkApi } from "../stubs/stubSyfomotebehov";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 import { stubOppfolgingsplanHistorikkApi } from "../stubs/stubSyfooppfolgingsplan";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 describe("historikkQueryHooks", () => {
   beforeEach(() => {

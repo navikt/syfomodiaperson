@@ -12,8 +12,8 @@ import { expect } from "chai";
 import { queryClientWithAktivBruker } from "../../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 const navbruker = {
   navn: "Arne Arbeistaker",

@@ -7,8 +7,8 @@ import { queryHookWrapper } from "./queryHookTestUtils";
 import { stubOppfolgingstilfellePersonApi } from "../stubs/stubIsoppfolgingstilfelle";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 describe("oppfolgingstilfellePersonQueryHooks tests", () => {
   beforeEach(() => {

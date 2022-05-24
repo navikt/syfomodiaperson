@@ -32,8 +32,8 @@ const formerLedere = [
 ];
 const ledereData = [...currentLedere, ...formerLedere];
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 describe("ledereQueryHooks tests", () => {
   beforeEach(() => {

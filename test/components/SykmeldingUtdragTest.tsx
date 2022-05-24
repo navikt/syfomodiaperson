@@ -15,7 +15,7 @@ import { QueryClientProvider } from "react-query";
 import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { queryClientWithAktivBruker } from "../testQueryClient";
 
-let queryClient;
+let queryClient: any;
 
 const sykmelding = mockSykmeldinger.find((s) => {
   return s.id === mockSykepengeSoknad.sykmeldingId;

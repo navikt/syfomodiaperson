@@ -1,18 +1,16 @@
+import express = require("express");
 import { tilgangBrukerMock } from "./tilgangtilbrukerMock";
 import { SYFOTILGANGSKONTROLL_ROOT } from "../../src/apiConstants";
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 
 import Auth = require("../../server/auth");
 
-export const mockSyfotilgangskontroll = (server) => {
+export const mockSyfotilgangskontroll = (server: any) => {
   server.get(
     `${SYFOTILGANGSKONTROLL_ROOT}/tilgang/navident/person`,
     Auth.ensureAuthenticated(),
-    (req, res) => {
-      if (
-        req.headers[NAV_PERSONIDENT_HEADER] &&
-        req.headers[NAV_PERSONIDENT_HEADER].length === 11
-      ) {
+    (req: express.Request, res: express.Response) => {
+      if (req.headers[NAV_PERSONIDENT_HEADER]?.length === 11) {
         res.setHeader("Content-Type", "application/json");
         res.send(JSON.stringify(tilgangBrukerMock));
       } else {

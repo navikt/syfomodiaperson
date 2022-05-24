@@ -8,8 +8,8 @@ import { usePengestoppStatusQuery } from "@/data/pengestopp/pengestoppQueryHooks
 import { createStatusList } from "../../mock/ispengestopp/pengestoppStatusMock";
 import { stubPengestoppStatusApi } from "../stubs/stubIspengestopp";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 const today = new Date();
 

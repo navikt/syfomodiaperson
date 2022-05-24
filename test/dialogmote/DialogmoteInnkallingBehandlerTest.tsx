@@ -16,7 +16,7 @@ import { BehandlerDTO, BehandlerType } from "@/data/behandler/BehandlerDTO";
 import { behandlereQueryKeys } from "@/data/behandler/behandlereQueryHooks";
 import { renderWithRouter } from "../testRouterUtils";
 
-let queryClient;
+let queryClient: any;
 const noOpMethod = () => {
   /*not empty*/
 };

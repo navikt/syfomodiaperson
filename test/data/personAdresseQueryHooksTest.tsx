@@ -8,8 +8,8 @@ import { expect } from "chai";
 import { usePersonAdresseQuery } from "@/data/personinfo/personAdresseQueryHooks";
 import { personAdresseMock } from "../../mock/syfoperson/personAdresseMock";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 describe("personAdresseQueryHooks", () => {
   beforeEach(() => {

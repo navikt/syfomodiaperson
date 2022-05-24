@@ -7,8 +7,8 @@ import { expect } from "chai";
 import { stubDiskresjonskodeApi } from "../stubs/stubSyfoperson";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 describe("diskresjonskodeQueryHooks tests", () => {
   beforeEach(() => {

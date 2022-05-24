@@ -7,8 +7,8 @@ import { expect } from "chai";
 import { stubEgenansattApi } from "../stubs/stubSyfoperson";
 import { useEgenansattQuery } from "@/data/egenansatt/egenansattQueryHooks";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 describe("egenansattQueryHooks tests", () => {
   beforeEach(() => {

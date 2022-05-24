@@ -42,7 +42,7 @@ type State = {
 };
 
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, State> {
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.state = { hasError: false };
   }

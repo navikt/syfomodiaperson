@@ -18,14 +18,14 @@ module.exports = merge(common, {
         redirect: false,
       },
     },
-    setupMiddlewares: (middlewares, devServer) => {
+    setupMiddlewares: (middlewares: any, devServer: any) => {
       setupDev(devServer);
       return middlewares;
     },
   },
 });
 
-const setupDev = async (devServer) => {
+const setupDev = async (devServer: any) => {
   const { app, compiler } = devServer;
 
   await Auth.setupAuth(app);
@@ -33,9 +33,9 @@ const setupDev = async (devServer) => {
   mockEndepunkter(app);
   app.use("/static", express.static(path.resolve(__dirname, "dist")));
 
-  app.use("*", (req, res) => {
+  app.use("*", (req: any, res: any) => {
     const filename = path.join(compiler.outputPath, "index.html");
-    compiler.outputFileSystem.readFile(filename, (err, result) => {
+    compiler.outputFileSystem.readFile(filename, (err: any, result: any) => {
       if (err) {
         res.status(404).sendFile(path.resolve(__dirname, "public/error.html"));
         return;

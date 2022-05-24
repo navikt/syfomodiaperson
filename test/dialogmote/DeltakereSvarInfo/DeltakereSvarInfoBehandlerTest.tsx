@@ -20,7 +20,7 @@ import { expect } from "chai";
 import { queryClientWithMockData } from "../../testQueryClient";
 
 const store = configureStore([]);
-let queryClient;
+let queryClient: any;
 
 const dialogmoteBehandlerMedSvar = (
   svarList: Pick<

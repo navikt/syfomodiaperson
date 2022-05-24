@@ -8,8 +8,8 @@ import { stubBehandlendeEnhetApi } from "../../stubs/stubSyfobehandlendeEnhet";
 import { expect } from "chai";
 import { queryClientWithAktivBruker } from "../../testQueryClient";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 const enhet = { enhetId: "1234", navn: "NAV Drammen" };
 

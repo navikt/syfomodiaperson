@@ -38,7 +38,7 @@ const brukerKanIkkeVarsles = {
   },
 };
 
-const renderInnkallingDialogmotePanel = (navbruker) => {
+const renderInnkallingDialogmotePanel = (navbruker: any) => {
   return render(
     <MemoryRouter>
       <QueryClientProvider client={queryClient}>

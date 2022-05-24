@@ -7,7 +7,7 @@ export const TrackedFlatknapp = (props: TrackedButtonProps) => {
   const trackButtonClick = useTrackOnClick();
   const { context, children, onClick, ...rest } = props;
 
-  const modifiedOnClick = (event) => {
+  const modifiedOnClick = (event: any) => {
     trackButtonClick(children, context);
     onClick && onClick(event);
   };

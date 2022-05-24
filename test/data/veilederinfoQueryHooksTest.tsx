@@ -8,8 +8,8 @@ import { stubVeilederinfoApi } from "../stubs/stubSyfoveileder";
 import { veilederMock } from "../../mock/syfoveileder/veilederMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 describe("veilederinfoQueryHooks tests", () => {
   beforeEach(() => {

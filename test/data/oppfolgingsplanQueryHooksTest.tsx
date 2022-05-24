@@ -19,8 +19,8 @@ import { oppfolgingsplanerLPSMock } from "../../mock/syfooppfolgingsplanservice/
 import { dokumentinfoMock } from "../../mock/syfooppfolgingsplanservice/dokumentinfoMock";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 const today = new Date();
 

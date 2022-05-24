@@ -8,8 +8,8 @@ import { useBehandlendeEnhetQuery } from "@/data/behandlendeenhet/behandlendeEnh
 import { behandlendeEnhetMock } from "../../mock/syfobehandlendeenhet/behandlendeEnhetMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 
-let queryClient;
-let apiMockScope;
+let queryClient: any;
+let apiMockScope: any;
 
 describe("behandlendeEnhetQueryHooks tests", () => {
   beforeEach(() => {

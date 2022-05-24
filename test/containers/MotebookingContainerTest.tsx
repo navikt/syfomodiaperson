@@ -18,9 +18,9 @@ const harIkkeMoterTilgang: Tilgang = {
 };
 const realState = createStore(rootReducer).getState();
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
-let queryClient;
+let queryClient: any;
 
-const renderMotebookingContainer = (mockStore) =>
+const renderMotebookingContainer = (mockStore: any) =>
   render(
     <QueryClientProvider client={queryClient}>
       <ValgtEnhetContext.Provider
@@ -36,8 +36,8 @@ const renderMotebookingContainer = (mockStore) =>
   );
 
 describe("MotebookingContainer", () => {
-  let store;
-  let mockState;
+  let store: any;
+  let mockState: any;
   beforeEach(() => {
     queryClient = queryClientWithMockData();
     store = configureStore([]);
@@ -58,7 +58,7 @@ describe("MotebookingContainer", () => {
       const actions = mockStore.getActions();
       expect(
         actions.some(
-          (action) =>
+          (action: any) =>
             action.type === "HENT_MOTER_FORESPURT" && action.fnr === fnr
         )
       ).to.be.true;

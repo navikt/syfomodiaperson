@@ -10,7 +10,7 @@ import { fastlegerMock } from "../../../mock/fastlegerest/fastlegerMock";
 import { queryClientWithAktivBruker } from "../../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
 
-let queryClient;
+let queryClient: any;
 
 const aktivFastlege = fastlegerMock[0];
 const fastlegeVikarer = [fastlegerMock[1], fastlegerMock[2]];
