@@ -8,9 +8,9 @@
     "jsx": "react",
     "moduleResolution": "node",
     "outDir": "/",
-    "baseUrl": "src",
+    "baseUrl": "./",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["src/*"]
     },
     "strict": true,
     //Todo: Endre til true under og legg inn returntyper i sagas
