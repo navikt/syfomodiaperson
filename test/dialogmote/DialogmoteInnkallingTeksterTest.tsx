@@ -40,7 +40,10 @@ const renderDialogmoteInnkallingTekster = (navBrukerKanVarsles: boolean) => {
               }}
             >
               {() => (
-                <DialogmoteInnkallingTekster selectedBehandler={undefined} />
+                <DialogmoteInnkallingTekster
+                  selectedBehandler={undefined}
+                  visAlternativTekst={false}
+                />
               )}
             </Form>
           </Provider>

@@ -35,8 +35,10 @@ import { queryClientWithMockData } from "../../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { behandlereQueryKeys } from "@/data/behandler/behandlereQueryHooks";
 import { renderWithRouter } from "../../testRouterUtils";
+import { stubFeatureTogglesApi } from "../../stubs/stubUnleash";
 
 let queryClient: any;
+let apiMockScope;
 const store = configureStore([]);
 const realState = createStore(rootReducer).getState();
 
@@ -45,6 +47,7 @@ describe("Dialogmoteinnkallingskjema", () => {
   const today = new Date(Date.now());
 
   beforeEach(() => {
+    apiMockScope = apiMock();
     queryClient = queryClientWithMockData();
     queryClient.setQueryData(
       behandlereQueryKeys.behandlere(arbeidstaker.personident),
@@ -101,7 +104,8 @@ describe("Dialogmoteinnkallingskjema", () => {
   });
 
   it("submit creates innkalling with behandler when behandler is selected", () => {
-    stubInnkallingApi(apiMock());
+    stubInnkallingApi(apiMockScope);
+    stubFeatureTogglesApi(apiMockScope);
     renderDialogmoteInnkallingSkjema();
     passSkjemaInput();
 

@@ -1,5 +1,6 @@
-import unleshClient = require("unleash-client");
-const { initialize, Strategy } = unleshClient;
+import unleashClient = require("unleash-client");
+
+const { initialize, Strategy } = unleashClient;
 
 class ByEnhetAndEnvironment extends Strategy {
   constructor() {
@@ -36,19 +37,39 @@ class ByUserId extends Strategy {
   }
 }
 
-export const unleash = initialize({
+const unleash = initialize({
   url: "https://unleash.nais.io/api/",
   appName: "syfomodiaperson",
   environment: process.env.NAIS_CONTEXT,
   strategies: [new ByEnhetAndEnvironment(), new ByUserId()],
 });
 
-export const unleashToggles = (toggles: any, valgtEnhet: any, userId: any) => {
-  return toggles.reduce((acc: any, toggle: any) => {
-    acc[toggle] = unleash.isEnabled(toggle, {
+export const unleashToggles = (
+  toggles: any,
+  valgtEnhet: any,
+  userId: any,
+  behandlerRef: any
+) => {
+  return {
+    "syfo.dialogmote.kandidat": unleash.isEnabled("syfo.dialogmote.kandidat", {
       valgtEnhet: valgtEnhet,
       user: userId,
-    });
-    return acc;
-  }, {});
+    }),
+
+    "syfo.syfomodiaperson.sykmeldingsgrad": unleash.isEnabled(
+      "syfo.syfomodiaperson.sykmeldingsgrad",
+      {
+        valgtEnhet: valgtEnhet,
+        user: userId,
+      }
+    ),
+
+    "syfo.syfomodiaperson.behandlertekst": unleash.isEnabled(
+      "syfo.syfomodiaperson.behandlertekst",
+      {
+        valgtEnhet: valgtEnhet,
+        userId: behandlerRef,
+      }
+    ),
+  };
 };

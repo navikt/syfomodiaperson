@@ -38,14 +38,17 @@ import userEvent from "@testing-library/user-event";
 import { MAX_LENGTH_AVLYS_BEGRUNNELSE } from "@/components/dialogmote/avlys/AvlysDialogmoteSkjema";
 import { expectedEndringDocuments } from "./testDataDocuments";
 import sinon from "sinon";
-import { queryClientWithMockData } from "../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { renderWithRouter } from "../testRouterUtils";
+import { stubFeatureTogglesApi } from "../stubs/stubUnleash";
+import { stubVeilederinfoApi } from "../stubs/stubSyfoveileder";
+import { queryClientWithMockData } from "../testQueryClient";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
 
 let queryClient: any;
+let apiMockScope;
 
 describe("EndreDialogmoteSkjemaTest", () => {
   let clock: any;
@@ -54,6 +57,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
     clock = sinon.useFakeTimers(today.getTime());
+    apiMockScope = apiMock();
   });
 
   afterEach(() => {
@@ -185,7 +189,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
   });
 
   it("endrer møte ved submit", () => {
-    stubEndreApi(apiMock(), dialogmote.uuid);
+    stubEndreApi(apiMockScope, dialogmote.uuid);
     renderEndreDialogmoteSkjema(dialogmote);
     passSkjemaInput();
 
@@ -209,7 +213,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
   });
 
   it("trimmer videolenke i endring som sendes til api", () => {
-    stubEndreApi(apiMock(), dialogmote.uuid);
+    stubEndreApi(apiMockScope, dialogmote.uuid);
     renderEndreDialogmoteSkjema(dialogmote);
     passSkjemaInput();
 
@@ -237,7 +241,8 @@ describe("EndreDialogmoteSkjemaTest", () => {
   });
 
   it("endrer møte med behandler ved submit når behandler er med", () => {
-    stubEndreApi(apiMock(), dialogmote.uuid);
+    stubEndreApi(apiMockScope, dialogmote.uuid);
+    stubFeatureTogglesApi(apiMockScope);
     renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
     passSkjemaInput();
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
@@ -333,6 +338,8 @@ describe("EndreDialogmoteSkjemaTest", () => {
       });
   });
   it("forhåndsviser endret tid og sted til behandler når behandler er med", () => {
+    stubVeilederinfoApi(apiMockScope);
+    stubFeatureTogglesApi(apiMockScope);
     renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
     passSkjemaInput();
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");

@@ -17,6 +17,7 @@ import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/p
 import { oppfolgingstilfellePersonMock } from "../mock/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
 import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks";
 import { unleashMock } from "../mock/unleash/unleashMock";
+import { behandlerDeltaker } from "./dialogmote/testData";
 
 export const queryClientWithAktivBruker = (): QueryClient => {
   const queryClient = new QueryClient();
@@ -58,6 +59,14 @@ export const queryClientWithMockData = (): QueryClient => {
     unleashQueryKeys.toggles(
       BEHANDLENDE_ENHET_DEFAULT.enhetId,
       VEILEDER_IDENT_DEFAULT
+    ),
+    () => unleashMock
+  );
+  queryClient.setQueryData(
+    unleashQueryKeys.toggles(
+      BEHANDLENDE_ENHET_DEFAULT.enhetId,
+      VEILEDER_IDENT_DEFAULT,
+      behandlerDeltaker.behandlerRef
     ),
     () => unleashMock
   );

@@ -36,11 +36,10 @@ export interface ITidStedDocument {
 export const useTidStedDocument = (
   dialogmote: DialogmoteDTO
 ): ITidStedDocument => {
-  const { isFeatureEnabled } = useFeatureToggles();
-  const visAlternativBehandlertekst = isFeatureEnabled(
-    ToggleNames.behandlertekst
-  );
   const { tid, arbeidsgiver, behandler } = dialogmote;
+
+  const { isFeatureEnabled } = useFeatureToggles(behandler?.behandlerRef);
+
   const {
     getHilsen,
     getMoteInfo,
@@ -151,7 +150,8 @@ export const useTidStedDocument = (
   const getTidStedDocumentBehandler = (
     values: Partial<EndreTidStedSkjemaValues>
   ) => {
-    if (visAlternativBehandlertekst) {
+    const visAlternativTekst = isFeatureEnabled(ToggleNames.behandlertekst);
+    if (visAlternativTekst) {
       return getTidStedDocumentBehandlerAlternativ(values);
     }
 

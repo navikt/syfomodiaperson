@@ -14,8 +14,6 @@ import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { capitalizeWord } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useDocumentComponents } from "@/hooks/dialogmote/document/useDocumentComponents";
-import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import { ToggleNames } from "@/data/unleash/unleash_types";
 
 export interface IInnkallingDocument {
   getInnkallingDocumentArbeidstaker(
@@ -33,12 +31,9 @@ export interface IInnkallingDocument {
   ): DocumentComponentDto[];
 }
 
-export const useInnkallingDocument = (): IInnkallingDocument => {
-  const { isFeatureEnabled } = useFeatureToggles();
-  const visAlternativeBehandlertekst = isFeatureEnabled(
-    ToggleNames.behandlertekst
-  );
-
+export const useInnkallingDocument = (
+  visAlternativBehandlertekst: boolean
+): IInnkallingDocument => {
   const introComponents = [
     createHeaderH1("Innkalling til dialogmøte"),
     createParagraph(
@@ -98,7 +93,7 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
   const getInnkallingDocumentBehandler = (
     values: Partial<DialogmoteInnkallingSkjemaValues>
   ) => {
-    if (visAlternativeBehandlertekst) {
+    if (visAlternativBehandlertekst) {
       return getInnkallingDocumentBehandlerAlternativ(values);
     }
 

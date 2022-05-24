@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Panel from "nav-frontend-paneler";
 import DialogmoteInnkallingVelgArbeidsgiver from "./DialogmoteInnkallingVelgArbeidsgiver";
 import DialogmoteTidOgSted from "../DialogmoteTidOgSted";
@@ -38,6 +38,8 @@ import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useTrackOnClick } from "@/data/logging/loggingHooks";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
 import { TidStedSkjemaValues } from "@/data/dialogmote/types/skjemaTypes";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
+import { ToggleNames } from "@/data/unleash/unleash_types";
 
 interface DialogmoteInnkallingSkjemaTekster {
   fritekstArbeidsgiver: string;
@@ -124,7 +126,29 @@ const DialogmoteInnkallingSkjema = ({
     resetFeilUtbedret,
     updateFeilUtbedret,
   } = useFeilUtbedret();
-  const innkallingDocument = useInnkallingDocument();
+
+  const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
+  const { isFeatureEnabled } = useFeatureToggles(
+    selectedBehandler?.behandlerRef
+  );
+  const [
+    visAlternativBehandlertekst,
+    setVisAlternativBehandlertekst,
+  ] = useState<boolean>(false);
+
+  const innkallingDocument = useInnkallingDocument(visAlternativBehandlertekst);
+
+  useEffect(() => {
+    if (
+      selectedBehandler?.behandlerRef &&
+      isFeatureEnabled(ToggleNames.behandlertekst)
+    ) {
+      setVisAlternativBehandlertekst(true);
+    } else {
+      setVisAlternativBehandlertekst(false);
+    }
+  }, [selectedBehandler, isFeatureEnabled]);
+
   const { toTidStedDto } = useSkjemaValuesToDto();
   const opprettInnkalling = useOpprettInnkallingDialogmote(fnr);
 
@@ -169,8 +193,6 @@ const DialogmoteInnkallingSkjema = ({
   };
   const trackOnClick = useTrackOnClick();
 
-  const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
-
   if (opprettInnkalling.isSuccess) {
     return <Navigate to={moteoversiktRoutePath} />;
   }
@@ -199,6 +221,7 @@ const DialogmoteInnkallingSkjema = ({
             <DialogmoteTidOgSted />
             <DialogmoteInnkallingTekster
               selectedBehandler={selectedBehandler}
+              visAlternativTekst={visAlternativBehandlertekst}
             />
             {opprettInnkalling.isError && (
               <SkjemaInnsendingFeil error={opprettInnkalling.error} />

@@ -6,30 +6,27 @@ import { ToggleNames, Toggles } from "@/data/unleash/unleash_types";
 import { useQuery } from "react-query";
 
 export const unleashQueryKeys = {
-  toggles: (valgtEnhet: string, veilederIdent: string) => [
-    "toggles",
-    valgtEnhet,
-    veilederIdent,
-  ],
+  toggles: (
+    valgtEnhet: string,
+    veilederIdent: string,
+    behandlerRef?: string
+  ) => ["toggles", valgtEnhet, veilederIdent, behandlerRef],
 };
 
-export const useFeatureToggles = () => {
+export const useFeatureToggles = (behandlerRef?: string) => {
   const { data: veilederInfo } = useVeilederinfoQuery();
   const { valgtEnhet } = useValgtEnhet();
   const veilederIdent = veilederInfo?.ident || "";
   const path = `${UNLEASH_ROOT}/toggles?valgtEnhet=${valgtEnhet}${
     veilederIdent ? `&userId=${veilederIdent}` : ""
-  }`;
+  }${behandlerRef ? `&behandlerRef=${behandlerRef}` : ""}`;
   const fetchToggles = () =>
     post<Toggles>(path, {
       toggles: Object.values(ToggleNames),
     });
   const query = useQuery(
-    unleashQueryKeys.toggles(valgtEnhet, veilederIdent),
-    fetchToggles,
-    {
-      enabled: !!valgtEnhet,
-    }
+    unleashQueryKeys.toggles(valgtEnhet, veilederIdent, behandlerRef),
+    fetchToggles
   );
   const isFeatureEnabled = (toggle: ToggleNames): boolean => {
     return query.data ? query.data[toggle] : false;
