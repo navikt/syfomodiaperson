@@ -76,9 +76,8 @@ const Pengestopp = ({ sykmeldinger }: IPengestoppProps) => {
       statusEndring.status === Status.STOPP_AUTOMATIKK
   );
 
-  const uniqueArbeidsgivereWithSykmeldingLast3Months = unikeArbeidsgivereMedSykmeldingSiste3Maneder(
-    sykmeldinger
-  );
+  const uniqueArbeidsgivereWithSykmeldingLast3Months =
+    unikeArbeidsgivereMedSykmeldingSiste3Maneder(sykmeldinger);
 
   return (
     <Wrapper>

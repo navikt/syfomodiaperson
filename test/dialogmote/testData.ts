@@ -275,7 +275,8 @@ export const dialogmoteMedFerdigstiltReferat: DialogmoteDTO = {
   referatList: [createFerdigstiltReferat(dialogmote.tid)],
 };
 
-export const dialogmoteMedMellomlagretReferatBehandlerIkkeDeltatt: DialogmoteDTO = {
-  ...dialogmoteMedBehandlerIkkeDeltatt,
-  referatList: [createMellomlagretReferat()],
-};
+export const dialogmoteMedMellomlagretReferatBehandlerIkkeDeltatt: DialogmoteDTO =
+  {
+    ...dialogmoteMedBehandlerIkkeDeltatt,
+    referatList: [createMellomlagretReferat()],
+  };

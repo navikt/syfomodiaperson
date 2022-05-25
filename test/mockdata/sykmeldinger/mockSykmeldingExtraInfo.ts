@@ -101,52 +101,55 @@ export const mockSykmeldingWithMeldingTilNav: SykmeldingNewFormatDTO = {
   },
 };
 
-export const mockSykmeldingWithMottakendeArbeidsgiver: SykmeldingNewFormatDTO = {
-  ...mockSM,
-  sykmeldingStatus: {
-    ...mockSM.sykmeldingStatus,
-    arbeidsgiver: {
-      juridiskOrgnummer: "1234567",
-      orgNavn: "Bedrift",
-      orgnummer: "7654321",
-    },
-  },
-};
-
-export const mockSykmeldingWithoutMottakendeArbeidsgiver: SykmeldingNewFormatDTO = {
-  ...mockSM,
-  sykmeldingStatus: {
-    ...mockSM.sykmeldingStatus,
-    statusEvent: "APEN",
-    timestamp: "2020-01-28T09:38:05.414834Z",
-    arbeidsgiver: undefined,
-  },
-};
-
-export const mockSykmeldingWithPeriodeWithAktivitetIkkeMulig: SykmeldingNewFormatDTO = {
-  ...mockSM,
-  sykmeldingsperioder: [
-    {
-      fom: "2020-01-22",
-      tom: "2020-05-22",
-      gradert: undefined,
-      behandlingsdager: undefined,
-      innspillTilArbeidsgiver: undefined,
-      type: PeriodetypeDTO.AKTIVITET_IKKE_MULIG,
-      reisetilskudd: false,
-      aktivitetIkkeMulig: {
-        medisinskArsak: {
-          beskrivelse: "Beskrivelse",
-          arsak: [MedisinskArsakTypeDTO.TILSTAND_HINDRER_AKTIVITET],
-        },
-        arbeidsrelatertArsak: {
-          beskrivelse: "Beskrivelse2",
-          arsak: [ArbeidsrelatertArsakTypeDTO.MANGLENDE_TILRETTELEGGING],
-        },
+export const mockSykmeldingWithMottakendeArbeidsgiver: SykmeldingNewFormatDTO =
+  {
+    ...mockSM,
+    sykmeldingStatus: {
+      ...mockSM.sykmeldingStatus,
+      arbeidsgiver: {
+        juridiskOrgnummer: "1234567",
+        orgNavn: "Bedrift",
+        orgnummer: "7654321",
       },
     },
-  ],
-};
+  };
+
+export const mockSykmeldingWithoutMottakendeArbeidsgiver: SykmeldingNewFormatDTO =
+  {
+    ...mockSM,
+    sykmeldingStatus: {
+      ...mockSM.sykmeldingStatus,
+      statusEvent: "APEN",
+      timestamp: "2020-01-28T09:38:05.414834Z",
+      arbeidsgiver: undefined,
+    },
+  };
+
+export const mockSykmeldingWithPeriodeWithAktivitetIkkeMulig: SykmeldingNewFormatDTO =
+  {
+    ...mockSM,
+    sykmeldingsperioder: [
+      {
+        fom: "2020-01-22",
+        tom: "2020-05-22",
+        gradert: undefined,
+        behandlingsdager: undefined,
+        innspillTilArbeidsgiver: undefined,
+        type: PeriodetypeDTO.AKTIVITET_IKKE_MULIG,
+        reisetilskudd: false,
+        aktivitetIkkeMulig: {
+          medisinskArsak: {
+            beskrivelse: "Beskrivelse",
+            arsak: [MedisinskArsakTypeDTO.TILSTAND_HINDRER_AKTIVITET],
+          },
+          arbeidsrelatertArsak: {
+            beskrivelse: "Beskrivelse2",
+            arsak: [ArbeidsrelatertArsakTypeDTO.MANGLENDE_TILRETTELEGGING],
+          },
+        },
+      },
+    ],
+  };
 
 export const mockSykmeldingWithPeriodeWithGradert: SykmeldingNewFormatDTO = {
   ...mockSM,
@@ -216,59 +219,60 @@ export const mockSykmeldingWithStatus = (
   };
 };
 
-export const mockSykmeldingWithSporsmalOgSvarListe = (): SykmeldingNewFormatDTO => {
-  return {
-    ...mockSM,
-    sykmeldingStatus: {
-      ...mockSM.sykmeldingStatus,
-      sporsmalOgSvarListe: [
-        {
-          tekst: "Jeg er sykmeldt fra",
-          svar: {
-            svar: "ARBEIDSTAKER",
-            svarType: SvartypeDTO.ARBEIDSSITUASJON,
+export const mockSykmeldingWithSporsmalOgSvarListe =
+  (): SykmeldingNewFormatDTO => {
+    return {
+      ...mockSM,
+      sykmeldingStatus: {
+        ...mockSM.sykmeldingStatus,
+        sporsmalOgSvarListe: [
+          {
+            tekst: "Jeg er sykmeldt fra",
+            svar: {
+              svar: "ARBEIDSTAKER",
+              svarType: SvartypeDTO.ARBEIDSSITUASJON,
+            },
+            shortName: ShortNameDTO.ARBEIDSSITUASJON,
           },
-          shortName: ShortNameDTO.ARBEIDSSITUASJON,
-        },
-        {
-          tekst:
-            "Har du forsikring som gjelder de første 16 dagene av sykefraværet?",
-          svar: {
-            svar: "NEI",
-            svarType: SvartypeDTO.JA_NEI,
+          {
+            tekst:
+              "Har du forsikring som gjelder de første 16 dagene av sykefraværet?",
+            svar: {
+              svar: "NEI",
+              svarType: SvartypeDTO.JA_NEI,
+            },
+            shortName: ShortNameDTO.FORSIKRING,
           },
-          shortName: ShortNameDTO.FORSIKRING,
-        },
-        {
-          tekst:
-            "Brukte du egenmelding eller noen annen sykmelding før datoen denne sykmeldingen gjelder fra?",
-          svar: {
-            svar: "JA",
-            svarType: SvartypeDTO.JA_NEI,
+          {
+            tekst:
+              "Brukte du egenmelding eller noen annen sykmelding før datoen denne sykmeldingen gjelder fra?",
+            svar: {
+              svar: "JA",
+              svarType: SvartypeDTO.JA_NEI,
+            },
+            shortName: ShortNameDTO.FRAVAER,
           },
-          shortName: ShortNameDTO.FRAVAER,
-        },
-        {
-          tekst:
-            "Hvilke dager var du borte fra jobb før datoen sykmeldingen gjelder fra?",
-          shortName: ShortNameDTO.PERIODE,
-          svar: {
-            svarType: SvartypeDTO.PERIODER,
-            svar: '[{"fom":"2020-02-24","tom":"2020-03-22"}]',
+          {
+            tekst:
+              "Hvilke dager var du borte fra jobb før datoen sykmeldingen gjelder fra?",
+            shortName: ShortNameDTO.PERIODE,
+            svar: {
+              svarType: SvartypeDTO.PERIODER,
+              svar: '[{"fom":"2020-02-24","tom":"2020-03-22"}]',
+            },
           },
-        },
-        {
-          tekst: "Ny nærmeste leder?!",
-          svar: {
-            svar: "true",
-            svarType: SvartypeDTO.JA_NEI,
+          {
+            tekst: "Ny nærmeste leder?!",
+            svar: {
+              svar: "true",
+              svarType: SvartypeDTO.JA_NEI,
+            },
+            shortName: ShortNameDTO.NY_NARMESTE_LEDER,
           },
-          shortName: ShortNameDTO.NY_NARMESTE_LEDER,
-        },
-      ],
-    },
+        ],
+      },
+    };
   };
-};
 
 export const mockSykmeldingWithKontaktMedPasient: SykmeldingNewFormatDTO = {
   ...mockSM,
@@ -278,99 +282,103 @@ export const mockSykmeldingWithKontaktMedPasient: SykmeldingNewFormatDTO = {
   },
 };
 
-export const mockSykmeldingerWithUtdypendeOpplysningerPkt62 = (): SykmeldingNewFormatDTO => {
-  const map = new Map<string, SporsmalSvarDTO>();
+export const mockSykmeldingerWithUtdypendeOpplysningerPkt62 =
+  (): SykmeldingNewFormatDTO => {
+    const map = new Map<string, SporsmalSvarDTO>();
 
-  map.set("6.2.1", {
-    sporsmal:
-      "Beskriv kort sykehistorie, symptomer og funn i dagens situasjon.",
-    svar: "Pkt. 6.2.1",
-    restriksjoner: [SvarRestriksjonDTO.SKJERMET_FOR_ARBEIDSGIVER],
-  });
-  map.set("6.2.2", {
-    sporsmal: "Hvordan påvirker sykdommen arbeidsevnen",
-    svar: "Pkt. 6.2.2",
-    restriksjoner: [SvarRestriksjonDTO.SKJERMET_FOR_ARBEIDSGIVER],
-  });
-  map.set("6.2.3", {
-    sporsmal: "Har behandlingen frem til nå bedret arbeidsevnen?",
-    svar: "Pkt. 6.2.3",
-    restriksjoner: [SvarRestriksjonDTO.SKJERMET_FOR_ARBEIDSGIVER],
-  });
-  map.set("6.2.4", {
-    sporsmal:
-      "Beskriv Pågående og planlagt henvisning, utredning og/eller behandling",
-    svar: "Pkt. 6.2.4",
-    restriksjoner: [SvarRestriksjonDTO.SKJERMET_FOR_ARBEIDSGIVER],
-  });
+    map.set("6.2.1", {
+      sporsmal:
+        "Beskriv kort sykehistorie, symptomer og funn i dagens situasjon.",
+      svar: "Pkt. 6.2.1",
+      restriksjoner: [SvarRestriksjonDTO.SKJERMET_FOR_ARBEIDSGIVER],
+    });
+    map.set("6.2.2", {
+      sporsmal: "Hvordan påvirker sykdommen arbeidsevnen",
+      svar: "Pkt. 6.2.2",
+      restriksjoner: [SvarRestriksjonDTO.SKJERMET_FOR_ARBEIDSGIVER],
+    });
+    map.set("6.2.3", {
+      sporsmal: "Har behandlingen frem til nå bedret arbeidsevnen?",
+      svar: "Pkt. 6.2.3",
+      restriksjoner: [SvarRestriksjonDTO.SKJERMET_FOR_ARBEIDSGIVER],
+    });
+    map.set("6.2.4", {
+      sporsmal:
+        "Beskriv Pågående og planlagt henvisning, utredning og/eller behandling",
+      svar: "Pkt. 6.2.4",
+      restriksjoner: [SvarRestriksjonDTO.SKJERMET_FOR_ARBEIDSGIVER],
+    });
 
-  return {
-    ...mockSM,
-    utdypendeOpplysninger: new Map<string, Map<string, SporsmalSvarDTO>>().set(
-      "6.2",
-      map
-    ),
+    return {
+      ...mockSM,
+      utdypendeOpplysninger: new Map<
+        string,
+        Map<string, SporsmalSvarDTO>
+      >().set("6.2", map),
+    };
   };
-};
 
-export const mockSykmeldingerWithUtdypendeOpplysningerPkt63 = (): SykmeldingNewFormatDTO => {
-  const map = new Map<string, SporsmalSvarDTO>();
+export const mockSykmeldingerWithUtdypendeOpplysningerPkt63 =
+  (): SykmeldingNewFormatDTO => {
+    const map = new Map<string, SporsmalSvarDTO>();
 
-  map.set("6.3.1", {
-    sporsmal:
-      "Beskriv kort sykehistorie, symptomer og funn i dagens situasjon.",
-    svar: "Pkt. 6.3.1",
-    restriksjoner: [SvarRestriksjonDTO.SKJERMET_FOR_ARBEIDSGIVER],
-  });
-  map.set("6.3.2", {
-    sporsmal:
-      "Beskriv pågående og planlagt henvisnng, utredning og/eller behandling. Lar dette seg kombinere med delvis arbeid?",
-    svar: "Pkt. 6.3.2",
-    restriksjoner: [SvarRestriksjonDTO.SKJERMET_FOR_ARBEIDSGIVER],
-  });
+    map.set("6.3.1", {
+      sporsmal:
+        "Beskriv kort sykehistorie, symptomer og funn i dagens situasjon.",
+      svar: "Pkt. 6.3.1",
+      restriksjoner: [SvarRestriksjonDTO.SKJERMET_FOR_ARBEIDSGIVER],
+    });
+    map.set("6.3.2", {
+      sporsmal:
+        "Beskriv pågående og planlagt henvisnng, utredning og/eller behandling. Lar dette seg kombinere med delvis arbeid?",
+      svar: "Pkt. 6.3.2",
+      restriksjoner: [SvarRestriksjonDTO.SKJERMET_FOR_ARBEIDSGIVER],
+    });
 
-  return {
-    ...mockSM,
-    utdypendeOpplysninger: new Map<string, Map<string, SporsmalSvarDTO>>().set(
-      "6.3",
-      map
-    ),
+    return {
+      ...mockSM,
+      utdypendeOpplysninger: new Map<
+        string,
+        Map<string, SporsmalSvarDTO>
+      >().set("6.3", map),
+    };
   };
-};
 
-export const mockSykmeldingerWithUtdypendeOpplysningerPkt62SomeFieldsOmitted = (): SykmeldingNewFormatDTO => {
-  const map = new Map<string, SporsmalSvarDTO>();
+export const mockSykmeldingerWithUtdypendeOpplysningerPkt62SomeFieldsOmitted =
+  (): SykmeldingNewFormatDTO => {
+    const map = new Map<string, SporsmalSvarDTO>();
 
-  map.set("6.2.1", {
-    sporsmal:
-      "Beskriv kort sykehistorie, symptomer og funn i dagens situasjon.",
-    svar: "Pkt. 6.2.1",
-    restriksjoner: [SvarRestriksjonDTO.SKJERMET_FOR_ARBEIDSGIVER],
-  });
-  map.set("6.2.2", {
-    sporsmal: "Hvordan påvirker sykdommen arbeidsevnen",
-    svar: "Pkt. 6.2.2",
-    restriksjoner: [SvarRestriksjonDTO.SKJERMET_FOR_ARBEIDSGIVER],
-  });
+    map.set("6.2.1", {
+      sporsmal:
+        "Beskriv kort sykehistorie, symptomer og funn i dagens situasjon.",
+      svar: "Pkt. 6.2.1",
+      restriksjoner: [SvarRestriksjonDTO.SKJERMET_FOR_ARBEIDSGIVER],
+    });
+    map.set("6.2.2", {
+      sporsmal: "Hvordan påvirker sykdommen arbeidsevnen",
+      svar: "Pkt. 6.2.2",
+      restriksjoner: [SvarRestriksjonDTO.SKJERMET_FOR_ARBEIDSGIVER],
+    });
 
-  return {
-    ...mockSM,
-    utdypendeOpplysninger: new Map<string, Map<string, SporsmalSvarDTO>>().set(
-      "6.2",
-      map
-    ),
+    return {
+      ...mockSM,
+      utdypendeOpplysninger: new Map<
+        string,
+        Map<string, SporsmalSvarDTO>
+      >().set("6.2", map),
+    };
   };
-};
 
 export const mockSykmeldingerWithEgenmeldt: SykmeldingNewFormatDTO = {
   ...mockSM,
   egenmeldt: true,
 };
 
-export const mockSykmeldingerWithHarRedusertArbeidsgiverperiode: SykmeldingNewFormatDTO = {
-  ...mockSM,
-  harRedusertArbeidsgiverperiode: true,
-};
+export const mockSykmeldingerWithHarRedusertArbeidsgiverperiode: SykmeldingNewFormatDTO =
+  {
+    ...mockSM,
+    harRedusertArbeidsgiverperiode: true,
+  };
 
 export const mockSykmeldingerWithPapirsykmelding: SykmeldingNewFormatDTO = {
   ...mockSM,

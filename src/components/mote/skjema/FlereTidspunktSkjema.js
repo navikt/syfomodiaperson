@@ -64,10 +64,8 @@ export const FlereTidspunktSkjema = (props) => {
     avbrytFlereAlternativ,
     antallNyeTidspunkt,
   } = props;
-  const [
-    showSameTidspunktErrorMessage,
-    setShowSameTidspunktErrorMessage,
-  ] = useState(false);
+  const [showSameTidspunktErrorMessage, setShowSameTidspunktErrorMessage] =
+    useState(false);
   const submit = (values) => {
     const duplicateTidspunkt = (values.tidspunkter || []).find(
       (newAlternativ) => {

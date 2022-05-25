@@ -25,10 +25,8 @@ export const Motelandingsside = () => {
   const fnr = useValgtPersonident();
   const dispatch = useDispatch();
 
-  const {
-    isLoading: henterOppfolgingsplaner,
-    aktivePlaner,
-  } = useOppfolgingsplanerQuery();
+  const { isLoading: henterOppfolgingsplaner, aktivePlaner } =
+    useOppfolgingsplanerQuery();
   const {
     isLoading: henterDialogmoter,
     isError: henterDialogmoterFeilet,

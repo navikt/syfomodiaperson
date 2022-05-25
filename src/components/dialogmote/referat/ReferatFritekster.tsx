@@ -26,8 +26,7 @@ const texts = {
       tilrettelegging: "Hvordan har tilretteleggingen fungert?",
       mer: "Er det noe mer som kan gjøres?",
       framover: "Hva ser man for seg framover?",
-      husk:
-        "Husk å skrive i du-form, referatet er rettet mot arbeidstakeren selv om det går til flere.",
+      husk: "Husk å skrive i du-form, referatet er rettet mot arbeidstakeren selv om det går til flere.",
     },
   },
   konklusjon: {

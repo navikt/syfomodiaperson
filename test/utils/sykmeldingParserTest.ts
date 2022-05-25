@@ -99,7 +99,8 @@ describe("sykmeldingParser", () => {
 
   describe("bekreftelse", () => {
     it("Returns correct bekreftelse with info", () => {
-      const incomingSykmeldingWithBekreftelseinfo = mockSykmeldingerWithBekreftelse;
+      const incomingSykmeldingWithBekreftelseinfo =
+        mockSykmeldingerWithBekreftelse;
 
       const expectedSykmeldingBekreftelse = {
         sykmelder: "Lego Las Legesen",
@@ -208,7 +209,8 @@ describe("sykmeldingParser", () => {
 
   describe("friskmelding", () => {
     it("Returns correct friskmelding with erIArbeid", () => {
-      const incomingSykmeldingWithPrognoseErIArbeid = mockSykmeldingWithPrognoseErIArbeid;
+      const incomingSykmeldingWithPrognoseErIArbeid =
+        mockSykmeldingWithPrognoseErIArbeid;
 
       const expectedSykmeldingFriskmelding = {
         antarReturAnnenArbeidsgiver: true,
@@ -233,7 +235,8 @@ describe("sykmeldingParser", () => {
     });
 
     it("Returns correct friskmelding with erIkkeIArbeid", () => {
-      const incomingSykmeldingWithPrognoseErIkkeIArbeid = mockSykmeldingWithPrognoseErIkkeIArbeid;
+      const incomingSykmeldingWithPrognoseErIkkeIArbeid =
+        mockSykmeldingWithPrognoseErIkkeIArbeid;
 
       const expectedSykmeldingFriskmelding = {
         antarReturAnnenArbeidsgiver: undefined,
@@ -304,7 +307,8 @@ describe("sykmeldingParser", () => {
 
   describe("innsendtArbeidsgivernavn", () => {
     it("Returns correct innsendtArbeidsgivernavn", () => {
-      const incomingSykmeldingWithMottakendeArbeidsgiver = mockSykmeldingWithMottakendeArbeidsgiver;
+      const incomingSykmeldingWithMottakendeArbeidsgiver =
+        mockSykmeldingWithMottakendeArbeidsgiver;
 
       const expectedInnsendtArbeidsgivernavn = "Bedrift";
 
@@ -363,7 +367,8 @@ describe("sykmeldingParser", () => {
 
   describe("meldingTilNav", () => {
     it("Returns correct meldingTilNav", () => {
-      const incomingSykmeldingWithMeldingTilNav = mockSykmeldingWithMeldingTilNav;
+      const incomingSykmeldingWithMeldingTilNav =
+        mockSykmeldingWithMeldingTilNav;
 
       const expectedmeldingTilNav = {
         navBoerTaTakISaken: true,
@@ -394,7 +399,8 @@ describe("sykmeldingParser", () => {
 
   describe("mottakendeArbeidsgiver", () => {
     it("Returns correct mottakendeArbeidsgiver", () => {
-      const sykmeldingWithMottakendeArbeidsgiver = mockSykmeldingWithMottakendeArbeidsgiver;
+      const sykmeldingWithMottakendeArbeidsgiver =
+        mockSykmeldingWithMottakendeArbeidsgiver;
 
       const expectedMottakendeArbeidsgiver = {
         juridiskOrgnummer: "1234567",
@@ -424,7 +430,8 @@ describe("sykmeldingParser", () => {
 
   describe("mulighetForArbeid", () => {
     it("Returns correct mulighetForArbeid with aktivitetIkkeMulig", () => {
-      const incomingSykmeldingPeriodeWithAktivitetIkkeMulig = mockSykmeldingWithPeriodeWithAktivitetIkkeMulig;
+      const incomingSykmeldingPeriodeWithAktivitetIkkeMulig =
+        mockSykmeldingWithPeriodeWithAktivitetIkkeMulig;
 
       const expectedMulighetForArbeid = {
         aarsakAktivitetIkkeMulig433: "Beskrivelse",
@@ -458,7 +465,8 @@ describe("sykmeldingParser", () => {
     });
 
     it("Returns correct mulighetForArbeid with Gradert", () => {
-      const incomingSykmeldingPeriodeWithGradert = mockSykmeldingWithPeriodeWithGradert;
+      const incomingSykmeldingPeriodeWithGradert =
+        mockSykmeldingWithPeriodeWithGradert;
 
       const expectedMulighetForArbeid = {
         aarsakAktivitetIkkeMulig433: undefined,
@@ -488,7 +496,8 @@ describe("sykmeldingParser", () => {
     });
 
     it("Returns correct mulighetForArbeid with more than one periode", () => {
-      const incomingSykmeldingPeriodeWithGradert = mockSykmeldingWithTwoPerioder;
+      const incomingSykmeldingPeriodeWithGradert =
+        mockSykmeldingWithTwoPerioder;
 
       const expectedMulighetForArbeid = {
         aarsakAktivitetIkkeMulig433: undefined,
@@ -528,7 +537,8 @@ describe("sykmeldingParser", () => {
 
   describe("orgnummer", () => {
     it("Returns correct orgnummer", () => {
-      const sykmeldingWithMottakendeArbeidsgiver = mockSykmeldingWithMottakendeArbeidsgiver;
+      const sykmeldingWithMottakendeArbeidsgiver =
+        mockSykmeldingWithMottakendeArbeidsgiver;
 
       const expectedMottakendeArbeidsgiver = "7654321";
 
@@ -576,7 +586,8 @@ describe("sykmeldingParser", () => {
 
   describe("sporsmal", () => {
     it("Returns correct sporsmal", () => {
-      const sykmeldingWithSporsmalOgSvarListe = mockSykmeldingWithSporsmalOgSvarListe();
+      const sykmeldingWithSporsmalOgSvarListe =
+        mockSykmeldingWithSporsmalOgSvarListe();
 
       const expectedSporsmal = {
         arbeidssituasjon: "ARBEIDSTAKER",
@@ -652,7 +663,8 @@ describe("sykmeldingParser", () => {
 
   describe("tilbakedatering", () => {
     it("Returns correct tilbakedatering", () => {
-      const sykmeldingWithKontaktMedPasient = mockSykmeldingWithKontaktMedPasient;
+      const sykmeldingWithKontaktMedPasient =
+        mockSykmeldingWithKontaktMedPasient;
 
       const expectedTilbakedatering = {
         dokumenterbarPasientkontakt: toDate("2020-02-02T02:02:02.202Z"),
@@ -683,7 +695,8 @@ describe("sykmeldingParser", () => {
 
   describe("utdypendeOpplysninger", () => {
     it("Returns correct utdypendeOpplysninger with utdypende opplysninger pkt. 6.2", () => {
-      const sykmeldingWithUtdypendeOpplysningerPkt62 = mockSykmeldingerWithUtdypendeOpplysningerPkt62();
+      const sykmeldingWithUtdypendeOpplysningerPkt62 =
+        mockSykmeldingerWithUtdypendeOpplysningerPkt62();
 
       const expectedUtdypendeOpplysninger =
         sykmeldingWithUtdypendeOpplysningerPkt62.utdypendeOpplysninger;
@@ -699,7 +712,8 @@ describe("sykmeldingParser", () => {
     });
 
     it("Returns correct utdypendeOpplysninger with utdypende opplysninger pkt. 6.3", () => {
-      const sykmeldingWithUtdypendeOpplysningerPkt63 = mockSykmeldingerWithUtdypendeOpplysningerPkt63();
+      const sykmeldingWithUtdypendeOpplysningerPkt63 =
+        mockSykmeldingerWithUtdypendeOpplysningerPkt63();
 
       const expectedUtdypendeOpplysninger =
         sykmeldingWithUtdypendeOpplysningerPkt63.utdypendeOpplysninger;
@@ -727,10 +741,12 @@ describe("sykmeldingParser", () => {
     });
 
     it("Returns correct utdypendeOpplysninger with only some fields", () => {
-      const sykmeldingWithUtdypendeOpplysningerPkt62 = mockSykmeldingerWithUtdypendeOpplysningerPkt62SomeFieldsOmitted();
+      const sykmeldingWithUtdypendeOpplysningerPkt62 =
+        mockSykmeldingerWithUtdypendeOpplysningerPkt62SomeFieldsOmitted();
 
-      const expectedUtdypendeOpplysninger = mockSykmeldingerWithUtdypendeOpplysningerPkt62SomeFieldsOmitted()
-        .utdypendeOpplysninger;
+      const expectedUtdypendeOpplysninger =
+        mockSykmeldingerWithUtdypendeOpplysningerPkt62SomeFieldsOmitted()
+          .utdypendeOpplysninger;
 
       const outputSM = newSMFormat2OldFormat(
         sykmeldingWithUtdypendeOpplysningerPkt62,
@@ -877,7 +893,8 @@ describe("oldFormatSMForAG", () => {
   });
 
   it("Returns correct AG version with friskmelding when SM has Prognose for erIkkeIArbeid", () => {
-    const sykmeldingWithPrognoseErIkkeIArbeid = mockSykmeldingWithPrognoseErIkkeIArbeid;
+    const sykmeldingWithPrognoseErIkkeIArbeid =
+      mockSykmeldingWithPrognoseErIkkeIArbeid;
 
     const expectedFriskmelding: FriskmeldingDTO = {
       antarReturAnnenArbeidsgiver: undefined,
@@ -913,7 +930,8 @@ describe("oldFormatSMForAG", () => {
   });
 
   it("Returns correct AG version with mulighetForArbeid with aktivitetIkkeMulig", () => {
-    const incomingSykmeldingPeriodeWithAktivitetIkkeMulig = mockSykmeldingWithPeriodeWithAktivitetIkkeMulig;
+    const incomingSykmeldingPeriodeWithAktivitetIkkeMulig =
+      mockSykmeldingWithPeriodeWithAktivitetIkkeMulig;
 
     const expectedMulighetForArbeid = {
       aarsakAktivitetIkkeMulig433: undefined,

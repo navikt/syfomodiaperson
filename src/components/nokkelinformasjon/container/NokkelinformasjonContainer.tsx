@@ -14,15 +14,11 @@ const texts = {
 
 export const NokkelinformasjonSide = () => {
   const fnr = useValgtPersonident();
-  const {
-    aktivePlaner,
-    isLoading: henterOppfolgingsplaner,
-  } = useOppfolgingsplanerQuery();
+  const { aktivePlaner, isLoading: henterOppfolgingsplaner } =
+    useOppfolgingsplanerQuery();
   const { isError: henterSykmeldingerFeilet } = useSykmeldingerQuery();
-  const {
-    isLoading: henterLedere,
-    isError: henterLedereFeilet,
-  } = useLedereQuery();
+  const { isLoading: henterLedere, isError: henterLedereFeilet } =
+    useLedereQuery();
 
   const henter = henterOppfolgingsplaner || henterLedere;
   const hentingFeilet = henterSykmeldingerFeilet || henterLedereFeilet;

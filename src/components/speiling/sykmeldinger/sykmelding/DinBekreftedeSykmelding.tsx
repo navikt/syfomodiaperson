@@ -21,10 +21,8 @@ interface DinBekreftedeSykmeldingProps {
 const DinBekreftedeSykmelding = (
   dinBekreftedeSykmeldingProps: DinBekreftedeSykmeldingProps
 ) => {
-  const {
-    dinSykmelding,
-    arbeidsgiversSykmelding,
-  } = dinBekreftedeSykmeldingProps;
+  const { dinSykmelding, arbeidsgiversSykmelding } =
+    dinBekreftedeSykmeldingProps;
   return (
     <div>
       <BekreftetSykmeldingStatuspanel sykmelding={dinSykmelding} />

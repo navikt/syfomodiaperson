@@ -57,9 +57,8 @@ export const aktiveSykmeldingerFraSiste3Maneder = (
 export const unikeArbeidsgivereMedSykmeldingSiste3Maneder = (
   sykmeldinger: SykmeldingOldFormat[]
 ) => {
-  const sykmeldingerSiste3Maneder = aktiveSykmeldingerFraSiste3Maneder(
-    sykmeldinger
-  );
+  const sykmeldingerSiste3Maneder =
+    aktiveSykmeldingerFraSiste3Maneder(sykmeldinger);
 
   const arbeidsgiverFromSykmeldinger = sykmeldingerToArbeidsgiver(
     sykmeldingerSiste3Maneder

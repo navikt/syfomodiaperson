@@ -14,18 +14,16 @@ export const useFlaggPerson = () => {
   const queryClient = useQueryClient();
   const postFlaggPerson = (stoppAutomatikk: StoppAutomatikk) =>
     post(`${ISPENGESTOPP_ROOT}/person/flagg`, stoppAutomatikk);
-  const pengestoppStatusQueryKey = pengestoppStatusQueryKeys.pengestoppStatus(
-    fnr
-  );
+  const pengestoppStatusQueryKey =
+    pengestoppStatusQueryKeys.pengestoppStatus(fnr);
 
   return useMutation(postFlaggPerson, {
     onSuccess: (_, stoppAutomatikk) => {
       const previousStatusEndring =
         queryClient.getQueryData<StatusEndring[]>(pengestoppStatusQueryKey) ||
         [];
-      const updatedStatusEndring = stoppAutomatikk2StatusEndring(
-        stoppAutomatikk
-      );
+      const updatedStatusEndring =
+        stoppAutomatikk2StatusEndring(stoppAutomatikk);
       queryClient.setQueryData(pengestoppStatusQueryKey, [
         ...updatedStatusEndring,
         ...previousStatusEndring,

@@ -23,11 +23,8 @@ interface DinSykmeldingProps {
 }
 
 const DinSykmelding = (dinSykmeldingProps: DinSykmeldingProps) => {
-  const {
-    sykmelding,
-    visEldreSykmeldingVarsel,
-    eldsteSykmeldingId,
-  } = dinSykmeldingProps;
+  const { sykmelding, visEldreSykmeldingVarsel, eldsteSykmeldingId } =
+    dinSykmeldingProps;
   return (
     <div>
       <Hjelpeboble className="blokk" hvit bildeAlt={texts.bjorn}>

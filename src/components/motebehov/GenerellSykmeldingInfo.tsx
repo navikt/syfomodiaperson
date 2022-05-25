@@ -32,9 +32,10 @@ export const GenerellSykmeldingInfo = ({
   const biDiagnoser = sykmelding.diagnose.bidiagnoser
     ? sykmelding.diagnose.bidiagnoser
     : [];
-  const sykmeldingPerioderSortertEtterDato = sykmeldingperioderSortertEldstTilNyest(
-    sykmelding.mulighetForArbeid.perioder
-  );
+  const sykmeldingPerioderSortertEtterDato =
+    sykmeldingperioderSortertEldstTilNyest(
+      sykmelding.mulighetForArbeid.perioder
+    );
   return (
     <div className="sykmeldingMotebehovVisning__avsnitt">
       <Perioder perioder={sykmeldingPerioderSortertEtterDato} />

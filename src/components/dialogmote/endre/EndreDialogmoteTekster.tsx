@@ -55,10 +55,8 @@ const EndreDialogmoteTekster = ({ dialogmote }: Props) => {
     displayEndringArbeidsgiverPreview,
     setDisplayEndringArbeidsgiverPreview,
   ] = useState(false);
-  const [
-    displayEndringBehandlerPreview,
-    setDisplayEndringBehandlerPreview,
-  ] = useState(false);
+  const [displayEndringBehandlerPreview, setDisplayEndringBehandlerPreview] =
+    useState(false);
   const {
     getTidStedDocumentArbeidstaker,
     getTidStedDocumentArbeidsgiver,

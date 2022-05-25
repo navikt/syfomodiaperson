@@ -8,8 +8,7 @@ import { Normaltekst } from "nav-frontend-typografi";
 
 const texts = {
   pageTitle: "Vedtak",
-  info:
-    "Denne lenken gir deg mer utfyllende og riktig informasjon enn vi tidligere kunne vise her i Modia.",
+  info: "Denne lenken gir deg mer utfyllende og riktig informasjon enn vi tidligere kunne vise her i Modia.",
 };
 
 const VedtakPanel = styled(Panel)`

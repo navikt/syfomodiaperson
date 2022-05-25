@@ -525,8 +525,7 @@ export const sykmeldingerMock = [
         },
         "6.2.2": {
           sporsmal: "Hvordan påvirker sykdommen arbeidsevnen",
-          svar:
-            "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket. Duplikatbuster: 6828077b-bfce-488d-b04b-22afe7f64500",
+          svar: "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket. Duplikatbuster: 6828077b-bfce-488d-b04b-22afe7f64500",
           restriksjoner: ["SKJERMET_FOR_ARBEIDSGIVER"],
         },
         "6.2.3": {
@@ -647,8 +646,7 @@ export const sykmeldingerMock = [
         },
         "6.2.2": {
           sporsmal: "Hvordan påvirker sykdommen arbeidsevnen",
-          svar:
-            "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket. Duplikatbuster: 6828077b-bfce-488d-b04b-22afe7f64500",
+          svar: "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket. Duplikatbuster: 6828077b-bfce-488d-b04b-22afe7f64500",
           restriksjoner: ["SKJERMET_FOR_ARBEIDSGIVER"],
         },
         "6.2.3": {
@@ -770,8 +768,7 @@ export const sykmeldingerMock = [
         },
         "6.2.2": {
           sporsmal: "Hvordan påvirker sykdommen arbeidsevnen",
-          svar:
-            "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket. Duplikatbuster: 6828077b-bfce-488d-b04b-22afe7f64500",
+          svar: "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket. Duplikatbuster: 6828077b-bfce-488d-b04b-22afe7f64500",
           restriksjoner: ["SKJERMET_FOR_ARBEIDSGIVER"],
         },
         "6.2.3": {
@@ -1516,8 +1513,7 @@ export const sykmeldingerMock = [
         },
         "6.2.2": {
           sporsmal: "Hvordan påvirker sykdommen arbeidsevnen",
-          svar:
-            "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket. Duplikatbuster: e8f9991b-b363-40be-b94c-a5f30682bd2d",
+          svar: "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket. Duplikatbuster: e8f9991b-b363-40be-b94c-a5f30682bd2d",
           restriksjoner: ["SKJERMET_FOR_ARBEIDSGIVER"],
         },
         "6.2.3": {

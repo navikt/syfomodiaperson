@@ -38,12 +38,8 @@ const DinSykmeldingSide = (): ReactElement => {
   const sykmeldingId = window.location.pathname.split("/")[3];
 
   const { navn: brukernavn } = useNavBrukerData();
-  const {
-    isLoading,
-    isError,
-    sykmeldinger,
-    arbeidsgiverssykmeldinger,
-  } = useSykmeldingerQuery();
+  const { isLoading, isError, sykmeldinger, arbeidsgiverssykmeldinger } =
+    useSykmeldingerQuery();
 
   const dinSykmelding = getSykmelding(sykmeldinger, sykmeldingId);
   let arbeidsgiversSykmelding = {} as SykmeldingOldFormat | undefined;

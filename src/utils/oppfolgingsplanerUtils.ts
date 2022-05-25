@@ -81,9 +81,8 @@ const firstPlanForEachVirksomhet = (
 const newestPlanForEachVirksomhet = (
   oppfolgingsplaner: OppfolgingsplanDTO[]
 ) => {
-  const sortedPlaner = planerSortedDescendingByDeltMedNAVTidspunkt(
-    oppfolgingsplaner
-  );
+  const sortedPlaner =
+    planerSortedDescendingByDeltMedNAVTidspunkt(oppfolgingsplaner);
 
   const virksomheter = virksomheterWithPlan(sortedPlaner);
 

@@ -39,7 +39,7 @@ describe("sykepengesoknadQueryHooks", () => {
     await waitFor(() => result.current.isSuccess);
 
     expect(result.current.data).to.deep.equal(
-      ((soknaderMock as unknown) as SykepengesoknadDTO[]).map(parseSoknad)
+      (soknaderMock as unknown as SykepengesoknadDTO[]).map(parseSoknad)
     );
   });
 });

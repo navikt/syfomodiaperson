@@ -26,10 +26,8 @@ export const MotebookingContainer = () => {
     dispatch(hentMoter(fnr));
   }, [dispatch, fnr]);
 
-  const {
-    isLoading: henterLedere,
-    isError: henterLedereFeilet,
-  } = useLedereQuery();
+  const { isLoading: henterLedere, isError: henterLedereFeilet } =
+    useLedereQuery();
   const { moter } = useAppSelector((state) => state);
   const henter = !moter.hentingForsokt || henterLedere;
   const hentingFeilet = moter.hentingFeilet || henterLedereFeilet;

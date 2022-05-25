@@ -17,7 +17,8 @@ import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 let queryClient: any;
 let apiMockScope: any;
 
-const sykmeldingerMockData = (sykmeldingerMock as unknown) as SykmeldingNewFormatDTO[];
+const sykmeldingerMockData =
+  sykmeldingerMock as unknown as SykmeldingNewFormatDTO[];
 
 describe("sykmeldingQueryHooks", () => {
   beforeEach(() => {

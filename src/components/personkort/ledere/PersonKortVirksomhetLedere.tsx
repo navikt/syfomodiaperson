@@ -143,11 +143,8 @@ interface PersonKortVirksomhetLedereProps {
 const PersonKortVirksomhetLedere = (
   personKortVirksomhetLedereProps: PersonKortVirksomhetLedereProps
 ) => {
-  const {
-    sykmeldinger,
-    virksomhetLederMap,
-    virksomhetsnummer,
-  } = personKortVirksomhetLedereProps;
+  const { sykmeldinger, virksomhetLederMap, virksomhetsnummer } =
+    personKortVirksomhetLedereProps;
   const currentLeder: NarmesteLederRelasjonDTO =
     virksomhetLederMap[virksomhetsnummer][0];
   return (

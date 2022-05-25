@@ -15,12 +15,8 @@ export const useHistorikk: () => {
 } = () => {
   const motebehovHistorikkQuery = useHistorikkMotebehovQuery();
   const oppfolgingsplanHistorikkQuery = useHistorikkOppfolgingsplan();
-  const {
-    henterMoter,
-    hentetMoter,
-    hentingMoterFeilet,
-    moteHistorikk,
-  } = useAppSelector((state) => state.historikk);
+  const { henterMoter, hentetMoter, hentingMoterFeilet, moteHistorikk } =
+    useAppSelector((state) => state.historikk);
 
   const henterHistorikk =
     oppfolgingsplanHistorikkQuery.isLoading ||

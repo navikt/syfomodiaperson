@@ -49,10 +49,8 @@ const DialogmoteInnkallingSide = (): ReactElement => {
 };
 
 const DialogmoteInnkallingContainer = (): ReactElement => {
-  const {
-    isLoading: henterLedere,
-    isError: hentingLedereFeilet,
-  } = useLedereQuery();
+  const { isLoading: henterLedere, isError: hentingLedereFeilet } =
+    useLedereQuery();
   const { aktivtDialogmote } = useDialogmoterQuery();
   const {
     isLoading: henterOppfolgingstilfeller,

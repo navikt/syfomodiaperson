@@ -14,8 +14,8 @@ export const useInitialValuesReferat = (
     behandler,
   } = dialogmote;
   const { latestReferat } = useDialogmoteReferat(dialogmote);
-  const currentNarmesteLederNavn = getCurrentNarmesteLeder(virksomhetsnummer)
-    ?.narmesteLederNavn;
+  const currentNarmesteLederNavn =
+    getCurrentNarmesteLeder(virksomhetsnummer)?.narmesteLederNavn;
 
   return useMemo(() => {
     const behandlerInitialValues = behandler

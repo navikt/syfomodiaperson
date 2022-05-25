@@ -146,8 +146,8 @@ const mapPerioder = (sykmelding: SykmeldingNewFormatDTO) => {
 };
 
 const mapMulighetForArbeid = (sykmelding: SykmeldingNewFormatDTO) => {
-  const aktivitetIkkeMulig = periodeWithAktivitetIkkeMulig(sykmelding)
-    ?.aktivitetIkkeMulig;
+  const aktivitetIkkeMulig =
+    periodeWithAktivitetIkkeMulig(sykmelding)?.aktivitetIkkeMulig;
 
   return {
     aarsakAktivitetIkkeMulig433:

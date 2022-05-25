@@ -13,12 +13,10 @@ const texts = {
   tilfellerTitle: "Sykefraværstilfeller",
 };
 
-const byTidspunkt: () => (
-  h1: HistorikkEvent,
-  h2: HistorikkEvent
-) => number = () => (h1: HistorikkEvent, h2: HistorikkEvent) => {
-  return new Date(h2.tidspunkt).getTime() - new Date(h1.tidspunkt).getTime();
-};
+const byTidspunkt: () => (h1: HistorikkEvent, h2: HistorikkEvent) => number =
+  () => (h1: HistorikkEvent, h2: HistorikkEvent) => {
+    return new Date(h2.tidspunkt).getTime() - new Date(h1.tidspunkt).getTime();
+  };
 
 const isEventInTilfelle = (
   event: HistorikkEvent,

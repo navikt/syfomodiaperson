@@ -73,11 +73,8 @@ const OppfolgingsplanerOversikt = (
   oppfolgingsplanerOversiktProps: OppfolgingsplanerOversiktProps
 ) => {
   const { data: personoppgaver } = usePersonoppgaverQuery();
-  const {
-    aktivePlaner,
-    inaktivePlaner,
-    oppfolgingsplanerLPS,
-  } = oppfolgingsplanerOversiktProps;
+  const { aktivePlaner, inaktivePlaner, oppfolgingsplanerLPS } =
+    oppfolgingsplanerOversiktProps;
   const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.map(
     (oppfolgingsplanLPS) =>
       toOppfolgingsplanLPSMedPersonoppgave(oppfolgingsplanLPS, personoppgaver)

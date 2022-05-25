@@ -159,11 +159,8 @@ const Referat = ({
   const header = `${navbruker?.navn}, ${dateAndTimeForMeeting}, ${dialogmote.sted}`;
   const isEndringAvReferat = mode === ReferatMode.ENDRET;
 
-  const {
-    harIkkeUtbedretFeil,
-    resetFeilUtbedret,
-    updateFeilUtbedret,
-  } = useFeilUtbedret();
+  const { harIkkeUtbedretFeil, resetFeilUtbedret, updateFeilUtbedret } =
+    useFeilUtbedret();
   const { getReferatDocument } = useReferatDocument(dialogmote, mode);
 
   const validate = (values: Partial<ReferatSkjemaValues>) => {

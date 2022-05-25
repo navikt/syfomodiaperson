@@ -60,10 +60,10 @@ export const HistorikkContainer = (): ReactElement => {
   const hentingFeilet =
     hentingLedereFeilet || hentingHistorikkFeilet || hentingTilfellerFeilet;
 
-  const allLedere = useMemo(() => [...currentLedere, ...formerLedere], [
-    currentLedere,
-    formerLedere,
-  ]);
+  const allLedere = useMemo(
+    () => [...currentLedere, ...formerLedere],
+    [currentLedere, formerLedere]
+  );
 
   useEffect(() => {
     if (skalHenteMoter) {

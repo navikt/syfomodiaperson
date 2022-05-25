@@ -28,10 +28,11 @@ export const Sykmeldingsgrad = () => {
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
   const innsendteSykmeldinger = sykmeldingerMedStatusSendt(sykmeldinger);
-  const sykmeldingerIOppfolgingstilfellet = sykmeldingerInnenforOppfolgingstilfelle(
-    innsendteSykmeldinger,
-    latestOppfolgingstilfelle
-  );
+  const sykmeldingerIOppfolgingstilfellet =
+    sykmeldingerInnenforOppfolgingstilfelle(
+      innsendteSykmeldinger,
+      latestOppfolgingstilfelle
+    );
 
   const DAYS_IN_GRAPH = 55 * 7;
   const sykmeldingsgradPerDay = new Int32Array(DAYS_IN_GRAPH);

@@ -40,12 +40,8 @@ export const useTidStedDocument = (
 
   const { isFeatureEnabled } = useFeatureToggles(behandler?.behandlerRef);
 
-  const {
-    getHilsen,
-    getMoteInfo,
-    getIntroHei,
-    getIntroGjelder,
-  } = useDocumentComponents();
+  const { getHilsen, getMoteInfo, getIntroHei, getIntroGjelder } =
+    useDocumentComponents();
 
   const sendtDato = createParagraph(
     `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`

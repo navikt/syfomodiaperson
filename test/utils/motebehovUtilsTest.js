@@ -42,9 +42,8 @@ describe("motebehovUtils", () => {
         },
       ];
 
-      const filtrertMotebehov = finnNyesteMotebehovsvarFraHverDeltaker(
-        motebehovData
-      );
+      const filtrertMotebehov =
+        finnNyesteMotebehovsvarFraHverDeltaker(motebehovData);
 
       expect(filtrertMotebehov.length).to.equal(2);
       expect(filtrertMotebehov[0].opprettetDato).to.equal(dato2);
@@ -77,9 +76,8 @@ describe("motebehovUtils", () => {
         },
       ];
 
-      const arbeidstakersMotebehov = finnArbeidstakerMotebehovSvar(
-        motebehovData
-      );
+      const arbeidstakersMotebehov =
+        finnArbeidstakerMotebehovSvar(motebehovData);
 
       expect(arbeidstakersMotebehov.opprettetAv).to.equal(arbeidstakerAktorId);
     });
@@ -89,9 +87,8 @@ describe("motebehovUtils", () => {
       const attenUkerMs = ANTALL_MS_DAG * 7 * 18;
       const startOppfolgingsdato = new Date(Date.now() - attenUkerMs);
 
-      const erStartDatoMellom16Og26UkerGammel = erOppfoelgingsdatoPassertMed16UkerOgIkke26Uker(
-        startOppfolgingsdato
-      );
+      const erStartDatoMellom16Og26UkerGammel =
+        erOppfoelgingsdatoPassertMed16UkerOgIkke26Uker(startOppfolgingsdato);
 
       expect(erStartDatoMellom16Og26UkerGammel).to.equal(true);
     });
@@ -99,9 +96,8 @@ describe("motebehovUtils", () => {
       const tiUkerMs = ANTALL_MS_DAG * 7 * 10;
       const startOppfolgingsdato = new Date(Date.now() - tiUkerMs);
 
-      const erStartDatoMellom16Og26UkerGammel = erOppfoelgingsdatoPassertMed16UkerOgIkke26Uker(
-        startOppfolgingsdato
-      );
+      const erStartDatoMellom16Og26UkerGammel =
+        erOppfoelgingsdatoPassertMed16UkerOgIkke26Uker(startOppfolgingsdato);
 
       expect(erStartDatoMellom16Og26UkerGammel).to.equal(false);
     });
@@ -109,9 +105,8 @@ describe("motebehovUtils", () => {
       const trettiUkerMs = ANTALL_MS_DAG * 7 * 30;
       const startOppfolgingsdato = new Date(Date.now() - trettiUkerMs);
 
-      const erStartDatoMellom16Og26UkerGammel = erOppfoelgingsdatoPassertMed16UkerOgIkke26Uker(
-        startOppfolgingsdato
-      );
+      const erStartDatoMellom16Og26UkerGammel =
+        erOppfoelgingsdatoPassertMed16UkerOgIkke26Uker(startOppfolgingsdato);
 
       expect(erStartDatoMellom16Og26UkerGammel).to.equal(false);
     });
@@ -121,18 +116,16 @@ describe("motebehovUtils", () => {
       const toDagerMs = ANTALL_MS_DAG * 2;
       const sluttDato = new Date(Date.now() + toDagerMs);
 
-      const erSluttDatoPassert = erOppfolgingstilfelleSluttDatoPassert(
-        sluttDato
-      );
+      const erSluttDatoPassert =
+        erOppfolgingstilfelleSluttDatoPassert(sluttDato);
 
       expect(erSluttDatoPassert).to.equal(false);
     });
     it("skal returnere false, dersom sluttdatoen på oppfolgingstilfellet i dag", () => {
       const sluttDato = new Date(Date.now());
 
-      const erSluttDatoPassert = erOppfolgingstilfelleSluttDatoPassert(
-        sluttDato
-      );
+      const erSluttDatoPassert =
+        erOppfolgingstilfelleSluttDatoPassert(sluttDato);
 
       expect(erSluttDatoPassert).to.equal(false);
     });
@@ -140,9 +133,8 @@ describe("motebehovUtils", () => {
       const enUkeMs = ANTALL_MS_DAG * 7;
       const sluttDato = new Date(Date.now() - enUkeMs);
 
-      const erSluttDatoPassert = erOppfolgingstilfelleSluttDatoPassert(
-        sluttDato
-      );
+      const erSluttDatoPassert =
+        erOppfolgingstilfelleSluttDatoPassert(sluttDato);
 
       expect(erSluttDatoPassert).to.equal(true);
     });
@@ -168,9 +160,8 @@ describe("motebehovUtils", () => {
         },
       ];
 
-      const harArbeidstakerSvart = harArbeidstakerSvartPaaMotebehov(
-        motebehovData
-      );
+      const harArbeidstakerSvart =
+        harArbeidstakerSvartPaaMotebehov(motebehovData);
 
       expect(harArbeidstakerSvart).to.equal(true);
     });
@@ -189,9 +180,8 @@ describe("motebehovUtils", () => {
         },
       ];
 
-      const harArbeidstakerSvart = harArbeidstakerSvartPaaMotebehov(
-        motebehovData
-      );
+      const harArbeidstakerSvart =
+        harArbeidstakerSvartPaaMotebehov(motebehovData);
 
       expect(harArbeidstakerSvart).to.equal(false);
     });

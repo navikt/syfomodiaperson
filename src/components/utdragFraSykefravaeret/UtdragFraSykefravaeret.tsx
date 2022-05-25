@@ -62,9 +62,10 @@ const UtdragColumn = styled.div`
 
 export const UtvidbarTittel = ({ sykmelding }: UtvidbarTittelProps) => {
   const erViktigInformasjon = erEkstraInformasjonISykmeldingen(sykmelding);
-  const sykmeldingPerioderSortertEtterDato = sykmeldingperioderSortertEldstTilNyest(
-    sykmelding.mulighetForArbeid.perioder
-  );
+  const sykmeldingPerioderSortertEtterDato =
+    sykmeldingperioderSortertEldstTilNyest(
+      sykmelding.mulighetForArbeid.perioder
+    );
   return (
     <div className="utdragFraSykefravaeret__utvidbarTittel">
       <UtdragColumn>
@@ -141,13 +142,13 @@ export const Sykmeldinger = ({
   trackOnClick,
 }: SykmeldingerProps) => {
   const innsendteSykmeldinger = sykmeldingerMedStatusSendt(sykmeldinger);
-  const sykmeldingerIOppfolgingstilfellet = sykmeldingerInnenforOppfolgingstilfelle(
-    innsendteSykmeldinger,
-    latestOppfolgingstilfelle
-  );
-  const sykmeldingerSortertPaaUtstedelsesdato = sykmeldingerSortertNyestTilEldst(
-    sykmeldingerIOppfolgingstilfellet
-  );
+  const sykmeldingerIOppfolgingstilfellet =
+    sykmeldingerInnenforOppfolgingstilfelle(
+      innsendteSykmeldinger,
+      latestOppfolgingstilfelle
+    );
+  const sykmeldingerSortertPaaUtstedelsesdato =
+    sykmeldingerSortertNyestTilEldst(sykmeldingerIOppfolgingstilfellet);
   const sykmeldingerSortertPaaVirksomhet = sykmeldingerGruppertEtterVirksomhet(
     sykmeldingerSortertPaaUtstedelsesdato
   );
@@ -177,10 +178,11 @@ export const SykmeldingerUtenArbeidsgiver = ({
   trackOnClick,
 }: SykmeldingerUtenArbeidsgiverProps) => {
   const innsendteSykmeldinger = sykmeldingerUtenArbeidsgiver(sykmeldinger);
-  const sykmeldingerIOppfolgingstilfellet = sykmeldingerInnenforOppfolgingstilfelle(
-    innsendteSykmeldinger,
-    latestOppfolgingstilfelle
-  );
+  const sykmeldingerIOppfolgingstilfellet =
+    sykmeldingerInnenforOppfolgingstilfelle(
+      innsendteSykmeldinger,
+      latestOppfolgingstilfelle
+    );
   const sykmeldingerSortertPaUtstedelsesdato = sykmeldingerSortertNyestTilEldst(
     sykmeldingerIOppfolgingstilfellet
   );

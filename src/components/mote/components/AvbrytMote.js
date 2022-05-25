@@ -35,14 +35,8 @@ export const InnholdsviserContainer = connect(
 )(Innholdsviser);
 
 const AvbrytMote = (props) => {
-  const {
-    mote,
-    avbrytFeilet,
-    avbryter,
-    avbrytHref,
-    onSubmit,
-    arbeidstaker,
-  } = props;
+  const { mote, avbrytFeilet, avbryter, avbrytHref, onSubmit, arbeidstaker } =
+    props;
 
   return (
     <div className="epostinnhold">

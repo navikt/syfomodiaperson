@@ -77,11 +77,13 @@ const ENDRE_REFERAT_FRIST_DAYS = 30;
 const getEndreReferatFrist = (mote: DialogmoteDTO): Date =>
   dayjs(mote.tid).add(ENDRE_REFERAT_FRIST_DAYS, "days").toDate();
 
-const kanEndreReferat = () => (mote: DialogmoteDTO): boolean => {
-  const endreReferatFrist = getEndreReferatFrist(mote);
-  const now = dayjs();
-  return now.isBefore(endreReferatFrist);
-};
+const kanEndreReferat =
+  () =>
+  (mote: DialogmoteDTO): boolean => {
+    const endreReferatFrist = getEndreReferatFrist(mote);
+    const now = dayjs();
+    return now.isBefore(endreReferatFrist);
+  };
 
 interface DialogmoteReferatPanelProps {
   ferdigstilteMoter: DialogmoteDTO[];

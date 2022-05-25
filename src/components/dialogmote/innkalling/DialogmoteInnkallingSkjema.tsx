@@ -121,20 +121,15 @@ const DialogmoteInnkallingSkjema = ({
 }: DialogmoteInnkallingSkjemaProps) => {
   const initialValues: Partial<DialogmoteInnkallingSkjemaValues> = {};
   const fnr = useValgtPersonident();
-  const {
-    harIkkeUtbedretFeil,
-    resetFeilUtbedret,
-    updateFeilUtbedret,
-  } = useFeilUtbedret();
+  const { harIkkeUtbedretFeil, resetFeilUtbedret, updateFeilUtbedret } =
+    useFeilUtbedret();
 
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
   const { isFeatureEnabled } = useFeatureToggles(
     selectedBehandler?.behandlerRef
   );
-  const [
-    visAlternativBehandlertekst,
-    setVisAlternativBehandlertekst,
-  ] = useState<boolean>(false);
+  const [visAlternativBehandlertekst, setVisAlternativBehandlertekst] =
+    useState<boolean>(false);
 
   const innkallingDocument = useInnkallingDocument(visAlternativBehandlertekst);
 
@@ -155,8 +150,8 @@ const DialogmoteInnkallingSkjema = ({
   const validate = (
     values: Partial<DialogmoteInnkallingSkjemaValues>
   ): DialogmoteInnkallingSkjemaFeil => {
-    const friteksterFeil = validerSkjemaTekster<DialogmoteInnkallingSkjemaTekster>(
-      {
+    const friteksterFeil =
+      validerSkjemaTekster<DialogmoteInnkallingSkjemaTekster>({
         fritekstArbeidsgiver: {
           maxLength: MAX_LENGTH_INNKALLING_FRITEKST,
           value: values.fritekstArbeidsgiver || "",
@@ -173,8 +168,7 @@ const DialogmoteInnkallingSkjema = ({
               },
             }
           : {}),
-      }
-    );
+      });
 
     const feilmeldinger: DialogmoteInnkallingSkjemaFeil = {
       arbeidsgiver: validerArbeidsgiver(values.arbeidsgiver),

@@ -10,8 +10,7 @@ import { Checkbox } from "nav-frontend-skjema";
 const texts = {
   header: "Dette informerte NAV om i møtet",
   subHeader: "Velg bare de alternativene du faktisk informerte om i møtet.",
-  info:
-    "Det blir hentet opp standardtekster i referatet avhengig av hva du velger.",
+  info: "Det blir hentet opp standardtekster i referatet avhengig av hva du velger.",
 };
 
 const StandardTekstCheckbox = styled(Checkbox)`
