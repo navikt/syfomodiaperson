@@ -5,6 +5,7 @@ import {
   PepperkakeMannImage,
 } from "../../img/ImageComponents";
 import Snowflakes from "magic-snowflakes";
+import dayjs from "dayjs";
 
 enum Month {
   DECEMBER = 11,
@@ -66,4 +67,11 @@ const isAfternoon = (date: Date) => {
 export const isEaster = () => {
   const today = new Date(Date.now());
   return isApril(today) && isEasterDate(today);
+};
+
+export const isPride = () => {
+  const prideStart = dayjs("2022-06-18");
+  const prideEnd = dayjs("2022-06-27");
+  const now = dayjs();
+  return now.isAfter(prideStart) && now.isBefore(prideEnd);
 };
