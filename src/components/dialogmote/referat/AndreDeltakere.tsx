@@ -38,13 +38,15 @@ const initialDeltaker: NewDialogmotedeltakerAnnenDTO = {
   funksjon: "",
 };
 
+const identityFunction = (value: any) => value;
+
 const DeltakerField = ({
   fieldName,
   label,
   submitFailed,
   errors,
 }: DeltakerFieldProps) => (
-  <Field<string> name={fieldName}>
+  <Field<string> name={fieldName} parse={identityFunction}>
     {({ input }) => (
       <Input
         {...input}
