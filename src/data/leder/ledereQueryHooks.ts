@@ -8,6 +8,7 @@ import {
   NarmesteLederRelasjonDTO,
   NarmesteLederRelasjonStatus,
 } from "@/data/leder/ledereTypes";
+import { capitalizeAllWords } from "@/utils/stringUtils";
 
 export const ledereQueryKeys = {
   ledere: (fnr: string) => ["ledere", fnr],
@@ -30,7 +31,10 @@ export const useLedereQuery = () => {
         (leder) => leder.status === NarmesteLederRelasjonStatus.INNMELDT_AKTIV
       ) || [],
     [query.data]
-  );
+  ).map((leder) => ({
+    ...leder,
+    narmesteLederNavn: capitalizeAllWords(leder.narmesteLederNavn),
+  }));
   const getCurrentNarmesteLeder = (
     virksomhetsnummer: string
   ): NarmesteLederRelasjonDTO | undefined => {

@@ -9,9 +9,15 @@ export const capitalizeWord = (word: string): string => {
 export const capitalizeAllWords = (word: string): string =>
   word
     .split(/\s/)
-    .map((word) => capitalizeWord(word))
+    .map((word) =>
+      word
+        .split("-")
+        .map((word) => capitalizeWord(word))
+        .join("-")
+    )
     .join(" ")
     .trim();
-export const containsWhiteSpace = (string: string) => {
-  return /\s/g.test(string);
+
+export const containsWhiteSpace = (str: string) => {
+  return /\s/g.test(str);
 };
