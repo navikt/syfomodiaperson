@@ -10,10 +10,10 @@ import { ReferatMode } from "@/components/dialogmote/referat/Referat";
 
 export const MAX_LENGTH_SITUASJON = 3500;
 export const MAX_LENGTH_KONKLUSJON = 1000;
-export const MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE = 200;
-export const MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE = 200;
-export const MAX_LENGTH_BEHANDLERS_OPPGAVE = 200;
-export const MAX_LENGTH_VEILEDERS_OPPGAVE = 200;
+export const MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE = 600;
+export const MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE = 600;
+export const MAX_LENGTH_BEHANDLERS_OPPGAVE = 600;
+export const MAX_LENGTH_VEILEDERS_OPPGAVE = 600;
 export const MAX_LENGTH_BEGRUNNELSE_ENDRING = 500;
 
 const texts = {
