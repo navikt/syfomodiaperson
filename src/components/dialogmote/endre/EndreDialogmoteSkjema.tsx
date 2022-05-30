@@ -90,8 +90,11 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
     dialogmote.uuid
   );
 
-  const { harIkkeUtbedretFeil, resetFeilUtbedret, updateFeilUtbedret } =
-    useFeilUtbedret();
+  const {
+    harIkkeUtbedretFeil,
+    resetFeilUtbedret,
+    updateFeilUtbedret,
+  } = useFeilUtbedret();
 
   const {
     getTidStedDocumentArbeidstaker,

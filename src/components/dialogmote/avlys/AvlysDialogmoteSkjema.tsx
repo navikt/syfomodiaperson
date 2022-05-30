@@ -74,8 +74,11 @@ const AvlysDialogmoteSkjema = ({
 }: AvlysDialogmoteSkjemaProps): ReactElement => {
   const fnr = useValgtPersonident();
   const avlysDialogmote = useAvlysDialogmote(fnr, dialogmote.uuid);
-  const { harIkkeUtbedretFeil, resetFeilUtbedret, updateFeilUtbedret } =
-    useFeilUtbedret();
+  const {
+    harIkkeUtbedretFeil,
+    resetFeilUtbedret,
+    updateFeilUtbedret,
+  } = useFeilUtbedret();
   const [
     displayAvlysningArbeidstakerPreview,
     setDisplayAvlysningArbeidstakerPreview,

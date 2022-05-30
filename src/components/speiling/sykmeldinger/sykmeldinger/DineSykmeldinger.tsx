@@ -47,8 +47,10 @@ const DineSykmeldinger = ({
     return skalVisesSomTidligereSykmelding(sykmld);
   });
   const trackOnClick = useTrackOnClick();
-  const [valgtSortering, setValgtSortering] =
-    useState<SorteringsKriteriumVerdi>("dato");
+  const [
+    valgtSortering,
+    setValgtSortering,
+  ] = useState<SorteringsKriteriumVerdi>("dato");
 
   return (
     <>

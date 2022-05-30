@@ -40,8 +40,12 @@ export const useInnkallingDocument = (
       `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
     ),
   ];
-  const { getHilsen, getMoteInfo, getIntroHei, getIntroGjelder } =
-    useDocumentComponents();
+  const {
+    getHilsen,
+    getMoteInfo,
+    getIntroHei,
+    getIntroGjelder,
+  } = useDocumentComponents();
 
   const getInnkallingDocumentArbeidstaker = (
     values: Partial<DialogmoteInnkallingSkjemaValues>,

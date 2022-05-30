@@ -26,8 +26,12 @@ interface BekreftMoteUtenSvarSkjemaProps {
 const BekreftMoteUtenSvarSkjema = (
   bekreftMoteUtenSvarSkjemaProps: BekreftMoteUtenSvarSkjemaProps
 ) => {
-  const { bekrefter, bekreftFeilet, avbrytHref, bekreftMoteUtenSvar } =
-    bekreftMoteUtenSvarSkjemaProps;
+  const {
+    bekrefter,
+    bekreftFeilet,
+    avbrytHref,
+    bekreftMoteUtenSvar,
+  } = bekreftMoteUtenSvarSkjemaProps;
 
   return (
     <div className="bekreftutensvarinnhold">

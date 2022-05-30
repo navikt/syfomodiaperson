@@ -440,8 +440,9 @@ describe("sykmeldingUtils", () => {
         innsendtArbeidsgivernavn: "Test Arbeidsgiver",
       };
 
-      const innsendtArbeidsgivernavn =
-        arbeidsgivernavnEllerArbeidssituasjon(sykmelding);
+      const innsendtArbeidsgivernavn = arbeidsgivernavnEllerArbeidssituasjon(
+        sykmelding
+      );
 
       expect(innsendtArbeidsgivernavn).to.equal("Test Arbeidsgiver");
     });
@@ -454,8 +455,9 @@ describe("sykmeldingUtils", () => {
         },
       };
 
-      const arbeidssituasjon =
-        arbeidsgivernavnEllerArbeidssituasjon(sykmelding);
+      const arbeidssituasjon = arbeidsgivernavnEllerArbeidssituasjon(
+        sykmelding
+      );
 
       expect(arbeidssituasjon).to.equal("Selvstendig næringsdrivende");
     });
@@ -528,11 +530,10 @@ describe("sykmeldingUtils", () => {
         },
       ];
 
-      const sykmeldingerIOppfolgingstilfellet =
-        sykmeldingerInnenforOppfolgingstilfelle(
-          sykmeldinger,
-          oppfolgingstilfelle
-        );
+      const sykmeldingerIOppfolgingstilfellet = sykmeldingerInnenforOppfolgingstilfelle(
+        sykmeldinger,
+        oppfolgingstilfelle
+      );
 
       expect(sykmeldingerIOppfolgingstilfellet.length).to.equal(1);
       expect(sykmeldingerIOppfolgingstilfellet[0].orgnummer).to.equal("123");
@@ -574,8 +575,9 @@ describe("sykmeldingUtils", () => {
         },
       ];
 
-      const sykmeldingerSortertPaaUtstedelsesdato =
-        sykmeldingerSortertNyestTilEldst(sykmeldinger);
+      const sykmeldingerSortertPaaUtstedelsesdato = sykmeldingerSortertNyestTilEldst(
+        sykmeldinger
+      );
 
       expect(sykmeldingerSortertPaaUtstedelsesdato.length).to.equal(5);
       expect(
@@ -649,8 +651,9 @@ describe("sykmeldingUtils", () => {
         },
       ];
 
-      const sykmeldingerSortertPaaVirksomhetsnummer =
-        sykmeldingerGruppertEtterVirksomhet(sykmeldinger);
+      const sykmeldingerSortertPaaVirksomhetsnummer = sykmeldingerGruppertEtterVirksomhet(
+        sykmeldinger
+      );
 
       expect(
         Object.keys(sykmeldingerSortertPaaVirksomhetsnummer).length
@@ -692,8 +695,9 @@ describe("sykmeldingUtils", () => {
         },
       ];
 
-      const sykmeldingperioderSortertEtterDato =
-        sykmeldingperioderSortertEldstTilNyest(sykmeldingperioder);
+      const sykmeldingperioderSortertEtterDato = sykmeldingperioderSortertEldstTilNyest(
+        sykmeldingperioder
+      );
 
       expect(sykmeldingperioderSortertEtterDato.length).to.equal(5);
       expect(sykmeldingperioderSortertEtterDato[0].fom.getTime()).to.equal(
@@ -744,10 +748,9 @@ describe("sykmeldingUtils", () => {
         },
       ];
 
-      const stringMedAllegraderinger =
-        stringMedAlleGraderingerFraSykmeldingPerioder(
-          sykmeldingPerioderSortertEtterDato
-        );
+      const stringMedAllegraderinger = stringMedAlleGraderingerFraSykmeldingPerioder(
+        sykmeldingPerioderSortertEtterDato
+      );
 
       expect(stringMedAllegraderinger).to.equal("20% - 100% - 50%");
     });
@@ -766,10 +769,9 @@ describe("sykmeldingUtils", () => {
         },
       ];
 
-      const stringMedAllegraderinger =
-        stringMedAlleGraderingerFraSykmeldingPerioder(
-          sykmeldingPerioderSortertEtterDato
-        );
+      const stringMedAllegraderinger = stringMedAlleGraderingerFraSykmeldingPerioder(
+        sykmeldingPerioderSortertEtterDato
+      );
 
       expect(stringMedAllegraderinger).to.equal("");
     });

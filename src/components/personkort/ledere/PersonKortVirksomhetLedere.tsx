@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Row, Column } from "nav-frontend-grid";
+import { Column, Row } from "nav-frontend-grid";
 import { Undertekst } from "nav-frontend-typografi";
 import { restdatoTildato } from "@/utils/datoUtils";
 import PersonKortVirksomhetHeader from "./PersonKortVirksomhetHeader";
@@ -62,7 +62,7 @@ export const PersonKortVirksomhetLederIngressRow = () => {
   return (
     <RowFullWidth>
       <Column className="col-sm-4">
-        <Undertekst>{capitalizeAllWords(texts.name)}</Undertekst>
+        <Undertekst>{texts.name}</Undertekst>
       </Column>
       <Column className="col-sm-2">
         <UndertekstUppercase>{texts.email}</UndertekstUppercase>
@@ -107,7 +107,7 @@ export const PersonKortVirksomhetLederRow = (
     <RowFullWidth>
       <PersonKortVirksomhetLederColumn
         colSize={4}
-        text={leder.narmesteLederNavn}
+        text={capitalizeAllWords(leder.narmesteLederNavn)}
         isActive={isActive}
       />
       <EpostButton epost={leder.narmesteLederEpost} />
@@ -143,8 +143,11 @@ interface PersonKortVirksomhetLedereProps {
 const PersonKortVirksomhetLedere = (
   personKortVirksomhetLedereProps: PersonKortVirksomhetLedereProps
 ) => {
-  const { sykmeldinger, virksomhetLederMap, virksomhetsnummer } =
-    personKortVirksomhetLedereProps;
+  const {
+    sykmeldinger,
+    virksomhetLederMap,
+    virksomhetsnummer,
+  } = personKortVirksomhetLedereProps;
   const currentLeder: NarmesteLederRelasjonDTO =
     virksomhetLederMap[virksomhetsnummer][0];
   return (

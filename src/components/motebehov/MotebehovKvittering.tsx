@@ -228,8 +228,10 @@ const MotebehovKvittering = ({
   ledereData,
   sykmeldt,
 }: MotebehovKvitteringProps) => {
-  const { data: oppfolgingstilfellePerson, latestOppfolgingstilfelle } =
-    useOppfolgingstilfellePersonQuery();
+  const {
+    data: oppfolgingstilfellePerson,
+    latestOppfolgingstilfelle,
+  } = useOppfolgingstilfellePersonQuery();
 
   const aktiveMotebehovSvar = motebehovFromLatestActiveTilfelle(
     motebehovData?.sort(sorterMotebehovDataEtterDato),

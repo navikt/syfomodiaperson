@@ -83,11 +83,10 @@ export const ledereUtenMotebehovsvar = (
         oppfolgingstilfelleList
       );
 
-  const ledereIVirksomhetUtenMotebehovSvarFraLeder =
-    ledereIVirksomheterDerIngenLederHarSvartPaMotebehov(
-      filtrertLederListe,
-      motebehovData
-    );
+  const ledereIVirksomhetUtenMotebehovSvarFraLeder = ledereIVirksomheterDerIngenLederHarSvartPaMotebehov(
+    filtrertLederListe,
+    motebehovData
+  );
 
   return ledereIVirksomhetUtenMotebehovSvarFraLeder.filter((leder) => {
     return leder.status === NarmesteLederRelasjonStatus.INNMELDT_AKTIV;
@@ -98,8 +97,9 @@ export const lederHasActiveSykmelding = (
   lederVirksomhetsnummer: string,
   sykmeldinger: SykmeldingOldFormat[]
 ): boolean => {
-  const activeSykmeldingerWithArbeidsgiver =
-    activeSykmeldingerSentToArbeidsgiver(sykmeldinger);
+  const activeSykmeldingerWithArbeidsgiver = activeSykmeldingerSentToArbeidsgiver(
+    sykmeldinger
+  );
 
   return activeSykmeldingerWithArbeidsgiver.some(
     (sykmelding) =>

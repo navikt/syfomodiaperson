@@ -28,8 +28,12 @@ export interface IAvlysningDocument {
 export const useAvlysningDocument = (
   dialogmote: DialogmoteDTO
 ): IAvlysningDocument => {
-  const { getHilsen, getIntroHei, getIntroGjelder, getVirksomhetsnavn } =
-    useDocumentComponents();
+  const {
+    getHilsen,
+    getIntroHei,
+    getIntroGjelder,
+    getVirksomhetsnavn,
+  } = useDocumentComponents();
 
   const sendt = createParagraph(
     `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`

@@ -50,11 +50,10 @@ describe("ledereUtils", () => {
         },
       ];
 
-      const filtrertLederListe =
-        ledereIVirksomheterMedMotebehovsvarFraArbeidstaker(
-          ledere,
-          motebehovData
-        );
+      const filtrertLederListe = ledereIVirksomheterMedMotebehovsvarFraArbeidstaker(
+        ledere,
+        motebehovData
+      );
 
       expect(filtrertLederListe.length).to.equal(2);
       expect(filtrertLederListe[0].virksomhetsnummer).to.equal("123");
@@ -81,11 +80,10 @@ describe("ledereUtils", () => {
         },
       ];
 
-      const filtrertLederListe =
-        ledereIVirksomheterDerIngenLederHarSvartPaMotebehov(
-          ledere,
-          motebehovData
-        );
+      const filtrertLederListe = ledereIVirksomheterDerIngenLederHarSvartPaMotebehov(
+        ledere,
+        motebehovData
+      );
 
       expect(filtrertLederListe.length).to.equal(1);
       expect(filtrertLederListe[0].virksomhetsnummer).to.equal("321");
@@ -116,11 +114,10 @@ describe("ledereUtils", () => {
         },
       ];
 
-      const filtrertLederListe =
-        ledereIVirksomheterDerIngenLederHarSvartPaMotebehov(
-          ledere,
-          motebehovData
-        );
+      const filtrertLederListe = ledereIVirksomheterDerIngenLederHarSvartPaMotebehov(
+        ledere,
+        motebehovData
+      );
 
       expect(filtrertLederListe.length).to.equal(1);
       expect(filtrertLederListe[0].virksomhetsnummer).to.equal("321");
@@ -146,11 +143,10 @@ describe("ledereUtils", () => {
         },
       ];
 
-      const filtrertLederListe =
-        ledereIVirksomheterDerIngenLederHarSvartPaMotebehov(
-          ledere,
-          motebehovData
-        );
+      const filtrertLederListe = ledereIVirksomheterDerIngenLederHarSvartPaMotebehov(
+        ledere,
+        motebehovData
+      );
 
       expect(filtrertLederListe.length).to.equal(2);
       expect(filtrertLederListe[0].virksomhetsnummer).to.equal("123");
@@ -184,11 +180,10 @@ describe("ledereUtils", () => {
         },
       ];
 
-      const filtrertLederListe =
-        ledereMedOppfolgingstilfelleInnenforMotebehovperioden(
-          ledere,
-          oppfolgingstilfeller
-        );
+      const filtrertLederListe = ledereMedOppfolgingstilfelleInnenforMotebehovperioden(
+        ledere,
+        oppfolgingstilfeller
+      );
 
       expect(filtrertLederListe.length).to.equal(1);
       expect(filtrertLederListe[0].virksomhetsnummer).to.equal("123");

@@ -17,8 +17,9 @@ export const useBehandleMotebehov = () => {
 
   return useMutation(postBehandleMotebehov, {
     onSuccess: () => {
-      const previousMotebehov =
-        queryClient.getQueryData<MotebehovVeilederDTO[]>(motebehovQueryKey);
+      const previousMotebehov = queryClient.getQueryData<
+        MotebehovVeilederDTO[]
+      >(motebehovQueryKey);
       if (previousMotebehov && veilederIdent) {
         queryClient.setQueryData(
           motebehovQueryKey,

@@ -5,6 +5,7 @@ import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import { useQuery } from "react-query";
 import { minutesToMillis } from "@/utils/timeUtils";
 import { sorterMotebehovDataEtterDato } from "@/utils/motebehovUtils";
+import { capitalizeAllWords } from "@/utils/stringUtils";
 
 export const motebehovQueryKeys = {
   motebehov: (fnr: string) => ["motebehov", fnr],
@@ -22,6 +23,14 @@ export const useMotebehovQuery = () => {
 
   return {
     ...query,
-    data: query.data?.sort(sorterMotebehovDataEtterDato) || [],
+    data:
+      query.data
+        ?.sort(sorterMotebehovDataEtterDato)
+        .map((motebehov: MotebehovVeilederDTO) => ({
+          ...motebehov,
+          opprettetAvNavn: motebehov?.opprettetAvNavn
+            ? capitalizeAllWords(motebehov?.opprettetAvNavn)
+            : undefined,
+        })) || [],
   };
 };

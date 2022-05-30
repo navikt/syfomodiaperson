@@ -146,10 +146,11 @@ const PengestoppModal = ({
       setEmployerError(false);
       updateVirksomhetNr([...stoppAutomatikk.virksomhetNr, orgnr]);
     } else {
-      const virksomhetListWithoutSelection =
-        stoppAutomatikk.virksomhetNr.filter((virksomhetNr: VirksomhetNr) => {
+      const virksomhetListWithoutSelection = stoppAutomatikk.virksomhetNr.filter(
+        (virksomhetNr: VirksomhetNr) => {
           return virksomhetNr.value !== orgnr.value;
-        });
+        }
+      );
       updateVirksomhetNr(virksomhetListWithoutSelection);
     }
   };
