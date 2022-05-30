@@ -36,6 +36,13 @@ export const useDialogmoterQuery = () => {
         ),
       [query.data]
     ),
+    ferdigstilteDialogmoter: useMemo(
+      () =>
+        query.data?.filter(
+          (mote) => mote.status === DialogmoteStatus.FERDIGSTILT
+        ) || [],
+      [query.data]
+    ),
     historiskeDialogmoter: useMemo(
       () =>
         query.data?.filter(

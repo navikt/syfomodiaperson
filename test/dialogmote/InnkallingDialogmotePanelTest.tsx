@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import React from "react";
+import dayjs from "dayjs";
 import { InnkallingDialogmotePanel } from "@/components/mote/components/innkalling/InnkallingDialogmotePanel";
 import { texts as brukerKanIkkeVarslesPapirpostTexts } from "../../src/components/dialogmote/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { createStore } from "redux";
@@ -12,12 +13,21 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
-import { navEnhet } from "./testData";
+import { createMellomlagretReferat, navEnhet } from "./testData";
 import { queryClientWithMockData } from "../testQueryClient";
 import { getButton, queryButton } from "../testUtils";
 import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 import { dialogmotekandidatMock } from "../../mock/isdialogmotekandidat/dialogmotekandidatMock";
+import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
+import {
+  DialogmoteStatus,
+  MotedeltakerVarselType,
+} from "@/data/dialogmote/types/dialogmoteTypes";
+import {
+  createDialogmote,
+  createReferat,
+} from "../../mock/isdialogmote/dialogmoterMock";
 
 let queryClient: QueryClient;
 
@@ -100,10 +110,101 @@ describe("InnkallingDialogmotePanel", () => {
 
       expect(queryButton("Sett unntak")).to.not.exist;
     });
-    it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat", () => {
+    it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og ingen ferdigstilte referat ", () => {
       queryClient.setQueryData(
         dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
         () => dialogmotekandidatMock
+      );
+      queryClient.setQueryData(
+        dialogmoterQueryKeys.dialogmoter(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => []
+      );
+
+      renderInnkallingDialogmotePanel(brukerKanVarsles);
+
+      const button = getButton("Sett unntak");
+      expect(button).to.exist;
+      userEvent.click(button);
+    });
+    it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og det er et ferdigstilt referat som er opprettet tidligere enn tidspunkt for Kandidat", () => {
+      queryClient.setQueryData(
+        dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => dialogmotekandidatMock
+      );
+      const createdAt = dayjs(new Date(dialogmotekandidatMock.kandidatAt))
+        .add(-1, "days")
+        .toISOString();
+      const dialogmote = createDialogmote(
+        "1",
+        DialogmoteStatus.FERDIGSTILT,
+        MotedeltakerVarselType.REFERAT,
+        createdAt
+      );
+      const dialogmoteFerdigstiltTidligereEnnKandidat = {
+        ...dialogmote,
+        referatList: [createReferat(true, createdAt)],
+      };
+      queryClient.setQueryData(
+        dialogmoterQueryKeys.dialogmoter(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => [dialogmoteFerdigstiltTidligereEnnKandidat]
+      );
+
+      renderInnkallingDialogmotePanel(brukerKanVarsles);
+
+      const button = getButton("Sett unntak");
+      expect(button).to.exist;
+      userEvent.click(button);
+    });
+    it("viser ikke knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og det er et ferdigstilt referat som er opprettet etter tidspunkt for Kandidat", () => {
+      queryClient.setQueryData(
+        dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => dialogmotekandidatMock
+      );
+      const createdAt = dayjs(new Date(dialogmotekandidatMock.kandidatAt))
+        .add(1, "days")
+        .toISOString();
+      const dialogmote = createDialogmote(
+        "1",
+        DialogmoteStatus.FERDIGSTILT,
+        MotedeltakerVarselType.REFERAT,
+        createdAt
+      );
+      const dialogmoteFerdigstiltEtterKandidat = {
+        ...dialogmote,
+        referatList: [createReferat(true, createdAt)],
+      };
+      queryClient.setQueryData(
+        dialogmoterQueryKeys.dialogmoter(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => [dialogmoteFerdigstiltEtterKandidat]
+      );
+
+      renderInnkallingDialogmotePanel(brukerKanVarsles);
+
+      const button = queryButton("Sett unntak");
+      expect(button).to.not.exist;
+    });
+    it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og det er et mellomlagret referat som er opprettet etter tidspunkt for Kandidat", () => {
+      queryClient.setQueryData(
+        dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => dialogmotekandidatMock
+      );
+      const createdAt = dayjs(new Date(dialogmotekandidatMock.kandidatAt))
+        .add(1, "days")
+        .toISOString();
+      const dialogmote = createDialogmote(
+        "1",
+        DialogmoteStatus.FERDIGSTILT,
+        MotedeltakerVarselType.REFERAT,
+        createdAt
+      );
+
+      const dialogmoteMellomlagreReferatEtterKandidat = {
+        ...dialogmote,
+        referatList: [createMellomlagretReferat(createdAt)],
+      };
+      queryClient.setQueryData(
+        dialogmoterQueryKeys.dialogmoter(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => [dialogmoteMellomlagreReferatEtterKandidat]
       );
 
       renderInnkallingDialogmotePanel(brukerKanVarsles);

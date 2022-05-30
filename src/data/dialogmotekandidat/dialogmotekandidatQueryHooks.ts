@@ -5,9 +5,27 @@ import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { ToggleNames } from "@/data/unleash/unleash_types";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { DialogmotekandidatDTO } from "@/data/dialogmotekandidat/dialogmotekandidatTypes";
+import { useLatestFerdigstiltReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
 
 export const dialogmotekandidatQueryKeys = {
   kandidat: (personident: string) => ["dialogmotekandidat", personident],
+};
+
+export const useIsDialogmoteKandidatWithoutFerdigstiltReferat = (
+  kandidat?: boolean,
+  kandidatAt?: string
+): boolean => {
+  const latestFerdigstiltReferat = useLatestFerdigstiltReferat();
+  if (!kandidatAt || !kandidat) {
+    return false;
+  }
+  if (!latestFerdigstiltReferat) {
+    return true;
+  }
+  return (
+    new Date(kandidatAt)?.getTime() >
+    new Date(latestFerdigstiltReferat.createdAt).getTime()
+  );
 };
 
 export const useDialogmotekandidat = () => {
@@ -27,8 +45,16 @@ export const useDialogmotekandidat = () => {
     }
   );
 
+  const isNoFerdigstiltDialogmoteReferatAfterKandidatAt =
+    useIsDialogmoteKandidatWithoutFerdigstiltReferat(
+      query.data?.kandidat,
+      query.data?.kandidatAt
+    );
+
   const isKandidat: boolean =
-    (visDialogmotekandidat && query.data?.kandidat) || false;
+    (visDialogmotekandidat &&
+      isNoFerdigstiltDialogmoteReferatAfterKandidatAt) ||
+    false;
 
   return {
     ...query,

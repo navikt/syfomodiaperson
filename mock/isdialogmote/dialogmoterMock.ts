@@ -14,7 +14,7 @@ import {
 import { ReferatDTO } from "../../src/data/dialogmote/types/dialogmoteReferatTypes";
 import { referatTexts } from "../../src/data/dialogmote/dialogmoteTexts";
 
-const createDialogmote = (
+export const createDialogmote = (
   uuid: string,
   moteStatus: DialogmoteStatus,
   varselType: MotedeltakerVarselType,
@@ -119,7 +119,10 @@ const createDialogmote = (
   return dialogMote;
 };
 
-const createReferat = (ferdigstilt: boolean, tid: string): ReferatDTO => {
+export const createReferat = (
+  ferdigstilt: boolean,
+  tid: string
+): ReferatDTO => {
   const standardTekst = referatTexts.standardTekster[0];
   return {
     uuid: "520239a6-a973-42f6-a4e7-9fe7d27d2f93",

@@ -36,6 +36,7 @@ import {
 } from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaBeskrivelse";
 import { CreateUnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 import { renderWithRouter } from "../testRouterUtils";
+import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
 
 const realState = createStore(rootReducer).getState();
 const store = configureStore([]);
@@ -49,6 +50,10 @@ describe("DialogmoteunntakSkjema", () => {
     queryClient.setQueryData(
       dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
       () => dialogmotekandidatMock
+    );
+    queryClient.setQueryData(
+      dialogmoterQueryKeys.dialogmoter(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => []
     );
     stubVeilederinfoApi(apiMockScope);
     stubFeatureTogglesApi(apiMockScope);

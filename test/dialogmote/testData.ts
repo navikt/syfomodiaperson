@@ -227,10 +227,10 @@ export const moteTekster = {
 
 export const referatStandardTekst = referatTexts.standardTekster[3];
 
-export const createMellomlagretReferat = () => ({
+export const createMellomlagretReferat = (tid?: string) => ({
   uuid: "123abc",
-  createdAt: "2021-05-10T11:00:00.000",
-  updatedAt: "2021-05-10T11:00:00.000",
+  createdAt: tid || "2021-05-10T11:00:00.000",
+  updatedAt: tid || "2021-05-10T11:00:00.000",
   situasjon: situasjonTekst,
   arbeidsgiverOppgave: arbeidsgiversOppgave,
   arbeidstakerOppgave: arbeidstakersOppgave,
