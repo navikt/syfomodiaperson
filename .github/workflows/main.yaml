@@ -15,7 +15,7 @@ jobs:
       - name: Use Node
         uses: actions/setup-node@v1
         with:
-          node-version: "14"
+          node-version: "18"
       - name: Cache node modules
         uses: actions/cache@v2
         with:
@@ -27,7 +27,7 @@ jobs:
             ${{ runner.os }}-
       - name: Install deps
         run: |
-          npm install
+          npm install --legacy-peer-deps
       - name: Prettier check 💅
         run: |
           npx prettier --check .
