@@ -157,7 +157,7 @@ export const composeArbeidsgiverSvarText = (
 ) => {
   return composePersonSvarText(
     "Nærmeste leder: ",
-    arbeidsgiverNavnEllerTomStreng(lederNavn),
+    arbeidsgiverNavnEllerTomStreng(capitalizeAllWords(lederNavn || "")),
     harMotebehov,
     svarOpprettetDato
   );
