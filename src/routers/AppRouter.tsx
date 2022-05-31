@@ -121,6 +121,7 @@ const AktivBrukerRouter = ({ fnr }: { fnr: string }): ReactElement => {
             path={`${appRoutePath}/vedtak`}
             element={<VedtakContainer />}
           />
+          <Route path="*" element={<Navigate to={appRoutePath} />} />
         </Routes>
       </BrowserRouter>
     </AktivBrukerTilgangLaster>
