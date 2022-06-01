@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
 import Alertstripe from "nav-frontend-alertstriper";
 import Sidetopp from "../../Sidetopp";
 import {
   erIdag,
   erIkkeIdag,
-  leggTilDagerPaDato,
   restdatoTilLesbarDato,
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
@@ -86,10 +86,10 @@ const OppfolgingsplanerOversikt = (
         if (oppfolgingsplanLPS.personoppgave.behandletTidspunkt) {
           return (
             Date.now() <
-            leggTilDagerPaDato(
-              oppfolgingsplanLPS.personoppgave.behandletTidspunkt,
-              1
-            ).getTime()
+            dayjs(oppfolgingsplanLPS.personoppgave.behandletTidspunkt)
+              .add(1, "days")
+              .toDate()
+              .getTime()
           );
         }
         return !oppfolgingsplanLPS.personoppgave.behandletTidspunkt;

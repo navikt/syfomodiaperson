@@ -264,12 +264,6 @@ export const toDateWithoutNullCheck = (dato) => {
   return new Date(dato);
 };
 
-export const leggTilDagerPaDato = (dato, dager) => {
-  const nyDato = new Date(dato);
-  nyDato.setDate(nyDato.getDate() + dager);
-  return new Date(nyDato);
-};
-
 export const toDatePrettyPrint = (dato) => {
   if (typeof dato === "undefined" || dato === null) {
     return undefined;

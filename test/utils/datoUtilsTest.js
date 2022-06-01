@@ -3,7 +3,6 @@ import {
   dagerMellomDatoer,
   erIdag,
   erIkkeIdag,
-  leggTilDagerPaDato,
   manederMellomDatoer,
   restdatoTildato,
   restdatoTilLesbarDato,
@@ -106,26 +105,6 @@ describe("datoUtils", () => {
     it("Skal returnere false om en dato er i dag", () => {
       const dato = new Date();
       expect(erIkkeIdag(dato)).to.equal(false);
-    });
-  });
-
-  describe("leggTilDagerPaDato", () => {
-    it("Skal øke dato med 1 dag", () => {
-      const expected = new Date("2020-10-10");
-      const actual = leggTilDagerPaDato("2020-10-09", 1);
-      expect(actual.toDateString()).to.equal(expected.toDateString());
-    });
-
-    it("Skal øke dato med 23 dager", () => {
-      const expected = new Date("2020-11-01");
-      const actual = leggTilDagerPaDato("2020-10-09", 23);
-      expect(actual.toDateString()).to.equal(expected.toDateString());
-    });
-
-    it("Skal øke dato med -1 dag", () => {
-      const expected = new Date("2020-10-08");
-      const actual = leggTilDagerPaDato("2020-10-09", -1);
-      expect(actual.toDateString()).to.equal(expected.toDateString());
     });
   });
 

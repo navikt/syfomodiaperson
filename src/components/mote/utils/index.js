@@ -58,10 +58,3 @@ export const erMotePassert = (mote) => {
     }).length === antallAlternativer
   );
 };
-
-export const trekkDagerFraDato = (dato, dager) => {
-  return new Date().setTime(dato.getTime() - dager * 86400000);
-};
-export const leggTilDagerPaaDato = (dato, dager) => {
-  return new Date().setTime(dato.getTime() + dager * 86400000);
-};

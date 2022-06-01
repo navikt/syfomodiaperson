@@ -1,7 +1,6 @@
-import { leggTilDagerPaDato } from "../util/dateUtil";
+import dayjs from "dayjs";
 import {
   ARBEIDSTAKER_DEFAULT,
-  ARBEIDSTAKER_DEFAULT_FULL_NAME,
   VIRKSOMHET_BRANNOGBIL,
   TODAY,
   VIRKSOMHET_PONTYPANDY,
@@ -1117,8 +1116,8 @@ export const sykmeldingerMock = [
     },
     sykmeldingsperioder: [
       {
-        fom: leggTilDagerPaDato(new Date(), -10).toJSON(),
-        tom: leggTilDagerPaDato(new Date(), 20).toJSON(),
+        fom: dayjs(new Date()).subtract(10, "days").toJSON(),
+        tom: dayjs(new Date()).add(20, "days").toJSON(),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -1442,8 +1441,8 @@ export const sykmeldingerMock = [
     arbeidsgiver: { navn: "LOMMEN BARNEHAVE", stillingsprosent: 100 },
     sykmeldingsperioder: [
       {
-        fom: leggTilDagerPaDato(new Date(), -10).toJSON(),
-        tom: leggTilDagerPaDato(new Date(), 20).toJSON(),
+        fom: dayjs(new Date()).subtract(10, "days").toJSON(),
+        tom: dayjs(new Date()).add(20, "days").toJSON(),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,

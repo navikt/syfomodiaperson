@@ -2,7 +2,7 @@ import {
   ARBEIDSTAKER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
-import { leggTilDagerPaDato } from "../util/dateUtil";
+import dayjs from "dayjs";
 
 const getDefaultPersonOppgaveUbehandlet = (created: Date) => {
   return {
@@ -13,7 +13,7 @@ const getDefaultPersonOppgaveUbehandlet = (created: Date) => {
     type: "OPPFOLGINGSPLANLPS",
     behandletTidspunkt: null,
     behandletVeilederIdent: null,
-    opprettet: leggTilDagerPaDato(created, -1).toJSON(),
+    opprettet: dayjs(created).subtract(1, "days").toJSON(),
   };
 };
 
@@ -22,9 +22,9 @@ const getPersonOppgaveBehandlet = (created: Date) => {
     ...getDefaultPersonOppgaveUbehandlet,
     uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd2",
     referanseUuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd3",
-    behandletTidspunkt: leggTilDagerPaDato(created, -1).toJSON(),
+    behandletTidspunkt: dayjs(created).subtract(1, "days").toJSON(),
     behandletVeilederIdent: "Z991100",
-    opprettet: leggTilDagerPaDato(created, -10).toJSON(),
+    opprettet: dayjs(created).subtract(10, "days").toJSON(),
   };
 };
 

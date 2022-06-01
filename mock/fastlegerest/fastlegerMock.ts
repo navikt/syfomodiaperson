@@ -1,5 +1,5 @@
+import dayjs from "dayjs";
 import { ARBEIDSTAKER_DEFAULT } from "../common/mockConstants";
-import { leggTilDagerPaDato } from "../util/dateUtil";
 import { RelasjonKodeVerdi } from "./../../src/data/fastlege/types/Fastlege";
 
 const fastlege = {
@@ -56,8 +56,8 @@ export const fastlegerMock = [
     herId: 711,
     helsepersonellregisterId: fastlege.helsepersonellregisterId + 1,
     gyldighet: {
-      fom: leggTilDagerPaDato(new Date(), -300).toISOString(),
-      tom: leggTilDagerPaDato(new Date(), 300).toISOString(),
+      fom: dayjs(new Date()).subtract(300, "days").toISOString(),
+      tom: dayjs(new Date()).add(300, "days").toISOString(),
     },
     relasjon: {
       kodeVerdi: RelasjonKodeVerdi.VIKAR,
@@ -74,8 +74,8 @@ export const fastlegerMock = [
     herId: 711,
     helsepersonellregisterId: fastlege.helsepersonellregisterId + 2,
     gyldighet: {
-      fom: leggTilDagerPaDato(new Date(), -100).toISOString(),
-      tom: leggTilDagerPaDato(new Date(), 400).toISOString(),
+      fom: dayjs(new Date()).subtract(100, "days").toISOString(),
+      tom: dayjs(new Date()).add(400, "days").toISOString(),
     },
     relasjon: {
       kodeVerdi: RelasjonKodeVerdi.VIKAR,

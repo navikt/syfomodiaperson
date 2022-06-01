@@ -1,4 +1,5 @@
-import { dagerMellomDatoer, leggTilDagerPaDato } from "./datoUtils";
+import dayjs from "dayjs";
+import { dagerMellomDatoer } from "./datoUtils";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
@@ -133,7 +134,8 @@ export const motebehovFromLatestActiveTilfelle = (
 ): MotebehovVeilederDTO[] => {
   if (
     latestOppfolgingstilfelle === undefined ||
-    latestOppfolgingstilfelle?.start < leggTilDagerPaDato(new Date(), -16)
+    latestOppfolgingstilfelle?.start <
+      dayjs(new Date()).subtract(16, "days").toDate()
   ) {
     return motebehovUbehandlet(sortertMotebehovListe);
   }

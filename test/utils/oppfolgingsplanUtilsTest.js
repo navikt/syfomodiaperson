@@ -1,5 +1,5 @@
+import dayjs from "dayjs";
 import { expect } from "chai";
-import { leggTilDagerPaDato } from "../../mock/util/dateUtil";
 import { lpsPlanerWithActiveTilfelle } from "@/utils/oppfolgingsplanUtils";
 import {
   ARBEIDSTAKER_DEFAULT,
@@ -13,26 +13,26 @@ describe("oppfolgingsplanUtils", () => {
       uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd2",
       fnr: ARBEIDSTAKER_DEFAULT.personIdent,
       virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-      opprettet: leggTilDagerPaDato(today, -1).toJSON(),
-      sistEndret: leggTilDagerPaDato(today, -1).toJSON(),
+      opprettet: dayjs(today).subtract(1, "days").toJSON(),
+      sistEndret: dayjs(today).subtract(1, "days").toJSON(),
     };
 
     it("should return 1 plan if inside an active tilfelle", () => {
       const planer = [defaultLpsplan];
       const activePlaner = lpsPlanerWithActiveTilfelle(
         planer,
-        leggTilDagerPaDato(today, -10)
+        dayjs(today).subtract(10, "days").toDate()
       );
 
       expect(activePlaner.length).to.be.equal(1);
     });
 
     it("should return an empty list if plan is before active tilfelle", () => {
-      const tilfelleFom = leggTilDagerPaDato(today, -1);
+      const tilfelleFom = dayjs(today).subtract(1, "days");
 
       const lpsPlanWithOpprettetBeforeTilfelleFom = {
         ...defaultLpsplan,
-        opprettet: leggTilDagerPaDato(tilfelleFom, -5),
+        opprettet: dayjs(tilfelleFom).subtract(5, "days"),
       };
 
       const planer = [lpsPlanWithOpprettetBeforeTilfelleFom];
@@ -43,11 +43,11 @@ describe("oppfolgingsplanUtils", () => {
     });
 
     it("should return an empty list if tilfelle is not active, even if plan was sent within that tilfelle", () => {
-      const tilfelleFom = leggTilDagerPaDato(today, -10);
+      const tilfelleFom = dayjs(today).subtract(10, "days");
 
       const lpsPlanWithinOldTilfelle = {
         ...defaultLpsplan,
-        opprettet: leggTilDagerPaDato(tilfelleFom, -5),
+        opprettet: dayjs(tilfelleFom).subtract(5, "days"),
       };
 
       const planer = [lpsPlanWithinOldTilfelle];
@@ -58,12 +58,12 @@ describe("oppfolgingsplanUtils", () => {
     });
 
     it("should return newest plan if more than one is sent in active tilfelle", () => {
-      const tilfelleFom = leggTilDagerPaDato(today, -10);
+      const tilfelleFom = dayjs(today).subtract(10, "days");
 
       const oldestLpsPlan = {
         ...defaultLpsplan,
         uuid: "old",
-        opprettet: leggTilDagerPaDato(tilfelleFom, -9),
+        opprettet: dayjs(tilfelleFom).subtract(9, "days"),
       };
 
       const newestLpsPlan = {
@@ -75,7 +75,7 @@ describe("oppfolgingsplanUtils", () => {
 
       const activePlaner = lpsPlanerWithActiveTilfelle(
         planer,
-        leggTilDagerPaDato(today, -10)
+        dayjs(today).subtract(10, "days").toDate()
       );
 
       expect(activePlaner.length).to.be.equal(1);
@@ -96,7 +96,7 @@ describe("oppfolgingsplanUtils", () => {
 
       const activePlaner = lpsPlanerWithActiveTilfelle(
         planer,
-        leggTilDagerPaDato(today, -10)
+        dayjs(today).subtract(10, "days").toDate()
       );
 
       expect(activePlaner.length).to.be.equal(2);
@@ -115,7 +115,7 @@ describe("oppfolgingsplanUtils", () => {
 
       const activePlaner = lpsPlanerWithActiveTilfelle(
         planer,
-        leggTilDagerPaDato(today, -10)
+        dayjs(today).subtract(10, "days").toDate()
       );
 
       expect(activePlaner.length).to.be.equal(1);

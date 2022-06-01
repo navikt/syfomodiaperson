@@ -13,10 +13,13 @@ import BekreftetMotetidspunkt from "../../../src/components/mote/components/Bekr
 import KontaktInfoAdvarsel from "../../../src/components/mote/components/KontaktInfoAdvarsel";
 import FlereTidspunktSkjema from "../../../src/components/mote/skjema/FlereTidspunktSkjema";
 import Sidetopp from "../../../src/components/Sidetopp";
-import {
-  leggTilDagerPaaDato,
-  trekkDagerFraDato,
-} from "../../../src/components/mote/utils";
+
+const trekkDagerFraDato = (dato, dager) => {
+  return new Date().setTime(dato.getTime() - dager * 86400000);
+};
+const leggTilDagerPaaDato = (dato, dager) => {
+  return new Date().setTime(dato.getTime() + dager * 86400000);
+};
 
 describe("MotebookingStatus", () => {
   let arbeidstaker = {

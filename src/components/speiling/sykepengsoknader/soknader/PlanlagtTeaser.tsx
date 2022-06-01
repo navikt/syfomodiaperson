@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from "react";
+import dayjs from "dayjs";
 import { Knapp } from "nav-frontend-knapper";
 import {
-  leggTilDagerPaDato,
   tilLesbarDatoMedArstall,
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
@@ -62,7 +62,9 @@ const SoknadLightbox = ({ soknad, onClose }: SoknadLightboxProps) => (
   <Lightbox onClose={onClose}>
     <h3 className="panel__tittel">{texts.dato.tittel}</h3>
     <p>
-      {textDatoInfo(tilLesbarDatoMedArstall(leggTilDagerPaDato(soknad.tom, 1)))}
+      {textDatoInfo(
+        tilLesbarDatoMedArstall(dayjs(soknad.tom).add(1, "days").toDate())
+      )}
     </p>
     <div className="knapperad">
       <Knapp onClick={onClose}>Lukk</Knapp>
@@ -96,7 +98,9 @@ const FremtidigSoknadTeaser = ({
             <h3 className="js-title" id={`soknad-header-${soknad.id}`}>
               <small className="inngangspanel__meta js-meta">
                 {textDatoFremtidig(
-                  tilLesbarDatoMedArstall(leggTilDagerPaDato(soknad.tom, 1))
+                  tilLesbarDatoMedArstall(
+                    dayjs(soknad.tom).add(1, "days").toDate()
+                  )
                 )}
               </small>
               <span className="inngangspanel__tittel">{texts.tittel}</span>

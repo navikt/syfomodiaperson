@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { Area, AreaChart, XAxis, YAxis } from "recharts";
 import React, { ReactElement } from "react";
 import { Normaltekst, Systemtittel } from "nav-frontend-typografi";
@@ -9,7 +10,6 @@ import {
 import {
   dagerMellomDatoer,
   getDatoKomponenter,
-  leggTilDagerPaDato,
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
@@ -66,7 +66,7 @@ export const Sykmeldingsgrad = () => {
     if (perioderListSortert == null || perioderListSortert.length < 1)
       return <></>;
     const dayZero = perioderListSortert[0].fom;
-    const currentDate = leggTilDagerPaDato(dayZero, dayCount);
+    const currentDate = dayjs(dayZero).add(dayCount, "days").toDate();
     if (currentDate.getDate() === 1) {
       const pathX = Math.floor(x - payload.offset) + 0.5;
       return <path d={`M${pathX},${y + 8}v${-15}`} stroke="grey" />;

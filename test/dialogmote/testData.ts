@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import {
   DialogmotedeltakerArbeidsgiverVarselDTO,
   DialogmotedeltakerArbeidstakerVarselDTO,
@@ -8,7 +9,7 @@ import {
   MotedeltakerVarselType,
   VarselSvarDTO,
 } from "@/data/dialogmote/types/dialogmoteTypes";
-import { leggTilDagerPaDato, toDatePrettyPrint } from "@/utils/datoUtils";
+import { toDatePrettyPrint } from "@/utils/datoUtils";
 import { InputDateStringToISODateString } from "nav-datovelger/lib/utils/dateFormatUtils";
 import {
   ARBEIDSTAKER_DEFAULT,
@@ -158,7 +159,7 @@ export const mockState: Partial<RootState> = {
 };
 
 const moteSted = "Sted for møtet";
-const moteDato = toDatePrettyPrint(leggTilDagerPaDato(new Date(), 1)) as string;
+const moteDato = toDatePrettyPrint(dayjs(new Date()).add(1, "days")) as string;
 const moteDatoAsISODateString = InputDateStringToISODateString(moteDato);
 const moteKlokkeslett = "08:00";
 const moteDatoTid = `${moteDatoAsISODateString}T${moteKlokkeslett}:00`;
@@ -167,7 +168,7 @@ const arbeidsgivernavn = VIRKSOMHET_PONTYPANDY.virksomhetsnavn;
 
 const endretSted = "Videomøte endret";
 const endretDato = toDatePrettyPrint(
-  leggTilDagerPaDato(new Date(), 2)
+  dayjs(new Date()).add(2, "days")
 ) as string;
 const endretKlokkeslett = "09:00";
 const endretDatoAsISODateString = InputDateStringToISODateString(endretDato);

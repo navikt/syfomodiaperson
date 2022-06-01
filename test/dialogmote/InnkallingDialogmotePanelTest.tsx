@@ -132,7 +132,7 @@ describe("InnkallingDialogmotePanel", () => {
         () => dialogmotekandidatMock
       );
       const createdAt = dayjs(new Date(dialogmotekandidatMock.kandidatAt))
-        .add(-1, "days")
+        .subtract(1, "days")
         .toISOString();
       const dialogmote = createDialogmote(
         "1",
