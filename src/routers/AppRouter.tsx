@@ -23,14 +23,9 @@ import { OppfoelgingsPlanerOversiktContainer } from "@/components/oppfolgingspla
 import { OppfoelgingsplanContainer } from "@/components/oppfolgingsplan/container/OppfoelgingsplanContainer";
 import { IngenBrukerSide } from "@/components/IngenBrukerSide";
 import { MotebookingContainer } from "@/components/mote/container/MotebookingContainer";
-import { usePushAktivBruker } from "@/data/modiacontext/usePushAktivBruker";
 import { useAktivBruker } from "@/data/modiacontext/modiacontextQueryHooks";
 import DialogmoteEndreReferatContainer from "@/components/dialogmote/referat/DialogmoteEndreReferatContainer";
 import DialogmoteunntakSkjemaContainer from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaContainer";
-
-const getFnrFromParams = (): string => {
-  return window.location.pathname.split("/")[2];
-};
 
 export const appRoutePath = "/sykefravaer";
 
@@ -153,21 +148,13 @@ const AktivBrukerLoader = () => {
 };
 
 const AppRouter = () => {
-  const fnrFromParam = getFnrFromParams();
   const userProperties = useUserProperties();
-  const { mutate: pushAktivBruker } = usePushAktivBruker(fnrFromParam);
 
   useEffect(() => {
     if (userProperties.valgtEnhet) {
       setAmplitudeUserProperties(userProperties);
     }
   }, [userProperties]);
-
-  useEffect(() => {
-    if (erGyldigFodselsnummer(fnrFromParam)) {
-      pushAktivBruker();
-    }
-  }, [fnrFromParam, pushAktivBruker, userProperties.valgtEnhet]);
 
   return AktivBrukerLoader();
 };
