@@ -25,7 +25,11 @@ const Decorator = () => {
   }, [dispatch, fnr]);
 
   const handlePersonsokSubmit = () => {
-    window.location.reload();
+    if (window.location.pathname.includes("personsok")) {
+      window.location.href = "/sykefravaer";
+    } else {
+      window.location.reload();
+    }
   };
 
   const handleChangeEnhet = (nyEnhet: string) => {

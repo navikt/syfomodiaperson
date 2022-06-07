@@ -26,6 +26,7 @@ import { MotebookingContainer } from "@/components/mote/container/MotebookingCon
 import { useAktivBruker } from "@/data/modiacontext/modiacontextQueryHooks";
 import DialogmoteEndreReferatContainer from "@/components/dialogmote/referat/DialogmoteEndreReferatContainer";
 import DialogmoteunntakSkjemaContainer from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaContainer";
+import { PersonsokSide } from "@/components/PersonsokSide";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -115,6 +116,10 @@ const AktivBrukerRouter = ({ fnr }: { fnr: string }): ReactElement => {
           <Route
             path={`${appRoutePath}/vedtak`}
             element={<VedtakContainer />}
+          />
+          <Route
+            path={`${appRoutePath}/personsok`}
+            element={<PersonsokSide />}
           />
           <Route path="*" element={<Navigate to={appRoutePath} />} />
         </Routes>
