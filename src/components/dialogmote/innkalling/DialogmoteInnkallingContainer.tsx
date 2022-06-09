@@ -14,14 +14,14 @@ import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import Tilbakelenke from "@/components/Tilbakelenke";
+import { NoTilfelleAlert } from "@/components/dialogmote/NoTilfelleAlert";
 
 const texts = {
   title: "Innkalling til dialogmøte",
   tilbake: "Tilbake",
   nyLosningAlert:
-    "I denne nye løsningen sender du innkalling, avlysning, endring av tidspunkt og referat. I Arena trenger du bare endre status til ferdig behandlet.",
-  noTilfelleAlert:
-    "Vi kan ikke sende innkalling til dialogmøte til denne arbeidstakeren. Årsaken er at det ikke er registrert noen aktiv sykmelding, eller det er mer enn 16 dager siden siste sykmelding gikk ut.",
+    "I denne nye løsningen sender du innkalling, avlysning, endring av tidspunkt og referat. I Arena trenger du bare " +
+    "endre status til ferdig behandlet.",
 };
 
 const StyledAlert = styled(AlertstripeFullbredde)`
@@ -42,7 +42,7 @@ const DialogmoteInnkallingSide = (): ReactElement => {
     </>
   ) : (
     <>
-      <StyledAlert type="feil">{texts.noTilfelleAlert}</StyledAlert>
+      <NoTilfelleAlert />
       <Tilbakelenke to={moteoversiktRoutePath} tekst={texts.tilbake} />
     </>
   );
