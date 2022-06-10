@@ -10,6 +10,7 @@ import { toDatePrettyPrint } from "@/utils/datoUtils";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import { useTrackOnClick } from "@/data/logging/loggingHooks";
 import { useBehandleMotebehov } from "@/data/motebehov/useBehandleMotebehov";
+import Confetti from "@/components/Confetti";
 
 const texts = {
   fjernOppgave: "Jeg har vurdert behovet. Oppgaven kan fjernes fra oversikten.",
@@ -38,16 +39,19 @@ const BehandleMotebehovKnapp = ({
   const erBehandlet = erMotebehovBehandlet(motebehovListe);
   const trackOnClick = useTrackOnClick();
   const behandleMotebehov = useBehandleMotebehov();
+  const [isExploding, setIsExploding] = React.useState(false);
 
   return motebehovListe.length > 0 ? (
     <div className="panel behandleMotebehovKnapp">
       <div className="skjema__input">
+        <Confetti explode={isExploding} />
         <Checkbox
           label={behandleMotebehovKnappLabel(
             erBehandlet,
             sistBehandletMotebehov
           )}
           onClick={() => {
+            setIsExploding(true);
             trackOnClick(texts.fjernOppgave);
             if (harUbehandletMotebehov(motebehovListe)) {
               behandleMotebehov.mutate();

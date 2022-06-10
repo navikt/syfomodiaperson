@@ -27,6 +27,7 @@
     "@navikt/ds-react": "0.16.14",
     "@navikt/fnrvalidator": "1.3.0",
     "@navikt/navspa": "4.1.1",
+    "@reonomy/react-confetti-explosion": "1.0.32",
     "@sentry/react": "6.19.4",
     "@types/amplitude-js": "8.16.0",
     "@types/connect-redis": "0.0.18",
