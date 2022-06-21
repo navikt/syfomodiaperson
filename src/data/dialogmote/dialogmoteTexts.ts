@@ -158,7 +158,7 @@ const referatStandardTekster: StandardTekst[] = [
   {
     key: StandardtekstKey.OPPFOLGINGSTILTAK,
     label: "Oppfølgingstiltak",
-    text: "Du kan få støtte eller veiledning til å finne eller beholde en jobb. Dette kan være en mentor på arbeids- eller studieplassen eller støtte fra en veileder. Du kan også få veiledning når du søker jobber, og ekstra støtte i begynnelsen av en ny jobb.",
+    text: "Du kan få støtte eller veiledning til å finne eller beholde en jobb. Tiltaket skal tilpasses dine behov ut fra mulighetene dine på arbeidsmarkedet.",
   },
   {
     key: StandardtekstKey.ARBEIDSRETTET_REHABILITERING,
