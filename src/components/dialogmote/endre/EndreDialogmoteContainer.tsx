@@ -10,12 +10,7 @@ const texts = {
 const EndreDialogmoteContainer = () => {
   return (
     <DialogmoteSideContainer title={texts.pageTitle} header={texts.pageHeader}>
-      {(dialogmote) => (
-        <EndreDialogmoteSkjema
-          dialogmote={dialogmote}
-          pageTitle={texts.pageTitle}
-        />
-      )}
+      {(dialogmote) => <EndreDialogmoteSkjema dialogmote={dialogmote} />}
     </DialogmoteSideContainer>
   );
 };

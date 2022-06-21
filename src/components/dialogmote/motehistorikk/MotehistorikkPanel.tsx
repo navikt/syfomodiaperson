@@ -11,10 +11,10 @@ import {
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { Forhandsvisning } from "../Forhandsvisning";
 import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
-import { TrackedFlatknapp } from "@/components/buttons/TrackedFlatknapp";
 import styled from "styled-components";
 import { UnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 import { MoteHistorikkUnntak } from "@/components/dialogmote/motehistorikk/MoteHistorikkUnntak";
+import { Flatknapp } from "nav-frontend-knapper";
 
 const texts = {
   header: "Møtehistorikk",
@@ -44,9 +44,8 @@ export const ForhandsvisDocumentButtonRow = ({
   const [modalIsOpen, setModalIsOpen] = useState(false);
   return (
     <ButtonRow>
-      <TrackedFlatknapp
+      <Flatknapp
         data-cy={title}
-        context={texts.header}
         mini
         kompakt
         htmlType="button"
@@ -55,7 +54,7 @@ export const ForhandsvisDocumentButtonRow = ({
         }}
       >
         {children}
-      </TrackedFlatknapp>
+      </Flatknapp>
       <Forhandsvisning
         title={title}
         contentLabel={title}

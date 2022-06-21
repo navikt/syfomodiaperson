@@ -1,11 +1,9 @@
 import React, { ReactElement } from "react";
 import { FlexRow, PaddingSize } from "../../Layout";
 import styled from "styled-components";
-import { TrackedHovedknapp } from "../../buttons/TrackedHovedknapp";
 import { Link } from "react-router-dom";
-import { TrackedFlatknapp } from "../../buttons/TrackedFlatknapp";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
-import { TrackedKnapp } from "@/components/buttons/TrackedKnapp";
+import Knapp, { Flatknapp, Hovedknapp } from "nav-frontend-knapper";
 
 const texts = {
   save: "Lagre",
@@ -21,25 +19,23 @@ interface ReferatButtonsProps {
   showSendSpinner: boolean;
 }
 
-const HovedKnapp = styled(TrackedHovedknapp)`
+const HovedKnapp = styled(Hovedknapp)`
   margin-right: 1em;
   transform: none;
 `;
-const LagreKnapp = styled(TrackedKnapp)`
+const LagreKnapp = styled(Knapp)`
   margin-right: 1em;
 `;
 
 const ReferatButtons = ({
   onSaveClick,
   onSendClick,
-  pageTitle,
   showSaveSpinner,
   showSendSpinner,
 }: ReferatButtonsProps): ReactElement => (
   <>
     <FlexRow topPadding={PaddingSize.LG}>
       <LagreKnapp
-        context={pageTitle}
         htmlType="button"
         onClick={onSaveClick}
         autoDisableVedSpinner
@@ -48,7 +44,6 @@ const ReferatButtons = ({
         {texts.save}
       </LagreKnapp>
       <HovedKnapp
-        context={pageTitle}
         htmlType="submit"
         onClick={onSendClick}
         autoDisableVedSpinner
@@ -57,9 +52,7 @@ const ReferatButtons = ({
         {texts.send}
       </HovedKnapp>
       <Link to={moteoversiktRoutePath}>
-        <TrackedFlatknapp context={pageTitle} htmlType="button">
-          {texts.abort}
-        </TrackedFlatknapp>
+        <Flatknapp htmlType="button">{texts.abort}</Flatknapp>
       </Link>
     </FlexRow>
   </>

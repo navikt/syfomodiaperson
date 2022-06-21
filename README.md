@@ -44,4 +44,3 @@ Redis pod deployes automatisk ved endringer i workflow eller config i master, me
 ## Logger
 
 - Feil-logger: https://sentry.gc.nav.no/nav/syfomodiaperson/
-- Brukeradferds-logger: https://analytics.amplitude.com/nav/space/8uta1w0

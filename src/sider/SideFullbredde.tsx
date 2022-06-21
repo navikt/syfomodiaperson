@@ -1,28 +1,15 @@
-import React, { ReactNode, useEffect } from "react";
-import { Container, Row, Column } from "nav-frontend-grid";
+import React, { ReactNode } from "react";
+import { Column, Container, Row } from "nav-frontend-grid";
 import Personkort from "../components/personkort/Personkort";
 import DocumentTitle from "react-document-title";
-import {
-  useHasLoadedMetaData,
-  useTrackPageLoad,
-} from "@/data/logging/loggingHooks";
 
 interface SideFullbreddeProps {
   tittel: string;
-  aktivtMenypunkt: string;
   children?: ReactNode;
 }
 
 const Side = (sideFullbreddeProps: SideFullbreddeProps) => {
-  const { tittel, aktivtMenypunkt, children } = sideFullbreddeProps;
-  const metaDataLoaded = useHasLoadedMetaData();
-  const trackPageLoad = useTrackPageLoad();
-
-  useEffect(() => {
-    if (metaDataLoaded) {
-      trackPageLoad(tittel, aktivtMenypunkt);
-    }
-  }, [metaDataLoaded, tittel, aktivtMenypunkt, trackPageLoad]);
+  const { tittel, children } = sideFullbreddeProps;
 
   return (
     <DocumentTitle

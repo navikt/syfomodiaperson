@@ -85,12 +85,10 @@ const getHoverIkon = (behandlingsutfallStatus: BehandlingsutfallStatusDTO) => {
 
 interface SykmeldingTeaserProps {
   sykmelding: SykmeldingOldFormat;
-  trackOnClick: () => void;
 }
 
 const SykmeldingTeaser = ({
   sykmelding,
-  trackOnClick,
 }: SykmeldingTeaserProps): ReactElement => {
   const behandlingsutfallStatus = sykmelding.behandlingsutfall.status;
   const [ikon, setIkon] = useState(getIkon(behandlingsutfallStatus));
@@ -112,7 +110,6 @@ const SykmeldingTeaser = ({
         onMouseLeave={() => {
           setIkon(getIkon(behandlingsutfallStatus));
         }}
-        onClick={trackOnClick}
       >
         <span className="inngangspanel__ikon">
           <img alt="" src={ikon} />

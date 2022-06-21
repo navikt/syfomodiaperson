@@ -17,13 +17,12 @@ import DialogmoteunntakSkjemaBeskrivelse, {
   dialogmoteunntakSkjemaBeskrivelseFieldName,
   dialogmoteunntakSkjemaBeskrivelseMaxLength,
 } from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaBeskrivelse";
-import { TrackedHovedknapp } from "@/components/buttons/TrackedHovedknapp";
-import { TrackedFlatknapp } from "@/components/buttons/TrackedFlatknapp";
 import { FlexGapSize, FlexRow } from "@/components/Layout";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useSettDialogmoteunntak } from "@/data/dialogmotekandidat/useSettDialogmoteunntak";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { validerTekst } from "@/utils/valideringUtils";
+import { Flatknapp, Hovedknapp } from "nav-frontend-knapper";
 
 export const texts = {
   noBrev: "Det blir ikke sendt ut brev ved unntak.",
@@ -106,18 +105,15 @@ const DialogmoteunntakSkjema = () => {
               <SkjemaInnsendingFeil error={settDialogmoteunntak.error} />
             )}
             <FlexRow columnGap={FlexGapSize.SM}>
-              <TrackedHovedknapp
-                context={texts.send}
+              <Hovedknapp
                 spinner={settDialogmoteunntak.isLoading}
                 autoDisableVedSpinner
                 htmlType="submit"
               >
                 {texts.send}
-              </TrackedHovedknapp>
+              </Hovedknapp>
               <Link to={moteoversiktRoutePath}>
-                <TrackedFlatknapp context={texts.avbryt}>
-                  {texts.avbryt}
-                </TrackedFlatknapp>
+                <Flatknapp>{texts.avbryt}</Flatknapp>
               </Link>
             </FlexRow>
           </form>

@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { Link } from "react-router-dom";
-import { TrackedKnapp } from "../buttons/TrackedKnapp";
 import { dialogmoteUnntakRoutePath } from "@/routers/AppRouter";
+import Knapp from "nav-frontend-knapper";
 
 const texts = {
   settUnntak: "Sett unntak",
@@ -11,12 +11,7 @@ const texts = {
 export const DialogmoteunntakSkjemaLenke = (): ReactElement => {
   return (
     <Link to={dialogmoteUnntakRoutePath}>
-      <TrackedKnapp
-        data-cy="settUnntakDialogmote"
-        context={texts.settUnntakTrackingContext}
-      >
-        {texts.settUnntak}
-      </TrackedKnapp>
+      <Knapp data-cy="settUnntakDialogmote">{texts.settUnntak}</Knapp>
     </Link>
   );
 };

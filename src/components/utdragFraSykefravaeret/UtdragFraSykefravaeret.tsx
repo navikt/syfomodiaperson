@@ -25,7 +25,6 @@ import {
 } from "../../../img/ImageComponents";
 import { UtdragOppfolgingsplaner } from "./UtdragOppfolgingsplaner";
 import { DialogmotePanel } from "../mote/components/DialogmotePanel";
-import { useTrackOnClick } from "@/data/logging/loggingHooks";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 import { Undertittel } from "nav-frontend-typografi";
 import { SpinnsynLenke } from "@/components/vedtak/SpinnsynLenke";
@@ -101,12 +100,10 @@ export const UtvidbarTittel = ({ sykmelding }: UtvidbarTittelProps) => {
 
 interface SykmeldingerForVirksomhetProps {
   sykmeldinger: SykmeldingOldFormat[];
-  trackOnClick: () => void;
 }
 
 export const SykmeldingerForVirksomhet = ({
   sykmeldinger,
-  trackOnClick,
 }: SykmeldingerForVirksomhetProps) => {
   return (
     <div className="utdragFraSykefravaeret__sykmeldingerForVirksomhet">
@@ -119,7 +116,6 @@ export const SykmeldingerForVirksomhet = ({
             <Utvidbar
               tittel={<UtvidbarTittel sykmelding={sykmelding} />}
               visLukkLenke={false}
-              onExpand={trackOnClick}
             >
               <SykmeldingMotebehovVisning sykmelding={sykmelding} />
             </Utvidbar>
@@ -133,13 +129,11 @@ export const SykmeldingerForVirksomhet = ({
 interface SykmeldingerProps {
   latestOppfolgingstilfelle?: OppfolgingstilfelleDTO;
   sykmeldinger: SykmeldingOldFormat[];
-  trackOnClick: () => void;
 }
 
 export const Sykmeldinger = ({
   latestOppfolgingstilfelle,
   sykmeldinger,
-  trackOnClick,
 }: SykmeldingerProps) => {
   const innsendteSykmeldinger = sykmeldingerMedStatusSendt(sykmeldinger);
   const sykmeldingerIOppfolgingstilfellet =
@@ -159,7 +153,6 @@ export const Sykmeldinger = ({
         <SykmeldingerForVirksomhet
           key={index}
           sykmeldinger={sykmeldingerSortertPaaVirksomhet[key]}
-          trackOnClick={trackOnClick}
         />
       ))}
     </div>
@@ -169,13 +162,11 @@ export const Sykmeldinger = ({
 interface SykmeldingerUtenArbeidsgiverProps {
   latestOppfolgingstilfelle?: OppfolgingstilfelleDTO;
   sykmeldinger: SykmeldingOldFormat[];
-  trackOnClick: () => void;
 }
 
 export const SykmeldingerUtenArbeidsgiver = ({
   latestOppfolgingstilfelle,
   sykmeldinger,
-  trackOnClick,
 }: SykmeldingerUtenArbeidsgiverProps) => {
   const innsendteSykmeldinger = sykmeldingerUtenArbeidsgiver(sykmeldinger);
   const sykmeldingerIOppfolgingstilfellet =
@@ -201,7 +192,6 @@ export const SykmeldingerUtenArbeidsgiver = ({
                   <Utvidbar
                     tittel={<UtvidbarTittel sykmelding={sykmelding} />}
                     visLukkLenke={false}
-                    onExpand={trackOnClick}
                   >
                     <SykmeldingMotebehovVisning sykmelding={sykmelding} />
                   </Utvidbar>
@@ -220,15 +210,13 @@ const SamtalereferatWrapper = styled.div`
 
 interface SamtalereferatProps {
   fnr: string;
-  trackOnClick: () => void;
 }
 
-export const Samtalereferat = ({ fnr, trackOnClick }: SamtalereferatProps) => (
+export const Samtalereferat = ({ fnr }: SamtalereferatProps) => (
   <SamtalereferatWrapper>
     <Undertittel>{tekster.samtalereferat.header}</Undertittel>
     <Lenke
       className="lenke"
-      onClick={trackOnClick}
       href={`https://modapp${finnMiljoStreng()}.adeo.no/modiabrukerdialog/person/${fnr}#!meldinger`}
       target="_blank"
     >
@@ -246,8 +234,6 @@ const UtdragFraSykefravaeret = ({
   aktivePlaner,
   fnr,
 }: UtdragFraSykefravaeretProps) => {
-  const trackOnClick = useTrackOnClick();
-
   const { sykmeldinger } = useSykmeldingerQuery();
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
@@ -259,19 +245,14 @@ const UtdragFraSykefravaeret = ({
         <Sykmeldinger
           latestOppfolgingstilfelle={latestOppfolgingstilfelle}
           sykmeldinger={sykmeldinger}
-          trackOnClick={() => trackOnClick(tekster.apneSykmelding)}
         />
 
         <SykmeldingerUtenArbeidsgiver
           latestOppfolgingstilfelle={latestOppfolgingstilfelle}
           sykmeldinger={sykmeldinger}
-          trackOnClick={() => trackOnClick(tekster.apneSykmelding)}
         />
 
-        <Samtalereferat
-          fnr={fnr}
-          trackOnClick={() => trackOnClick(tekster.samtalereferat.header)}
-        />
+        <Samtalereferat fnr={fnr} />
         <Undertittel>{tekster.vedtak.header}</Undertittel>
         <SpinnsynLenke />
       </div>

@@ -2,9 +2,9 @@ import { FlexColumn, FlexRow, PaddingSize } from "../Layout";
 import { Field } from "react-final-form";
 import React from "react";
 import styled from "styled-components";
-import { TrackedKnapp } from "@/components/buttons/TrackedKnapp";
 import Fritekst from "@/components/Fritekst";
 import { AlertstripeFullbredde } from "@/components/AlertstripeFullbredde";
+import Knapp from "nav-frontend-knapper";
 
 const texts = {
   forhandsvisning: "Forhåndsvisning",
@@ -55,14 +55,13 @@ const FritekstSeksjon = ({
       </FlexRow>
     )}
     <FlexRow>
-      <TrackedKnapp
+      <Knapp
         htmlType="button"
         data-cy={fieldName + "Knapp"}
-        context={label}
         onClick={handlePreviewClick}
       >
         {texts.forhandsvisning}
-      </TrackedKnapp>
+      </Knapp>
     </FlexRow>
   </FritekstWrapper>
 );

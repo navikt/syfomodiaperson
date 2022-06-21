@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
-import { TrackedHovedknapp } from "@/components/buttons/TrackedHovedknapp";
+import { Hovedknapp } from "nav-frontend-knapper";
 
 const texts = {
   nyttMote: "Nytt dialogmøte",
@@ -11,12 +11,7 @@ const texts = {
 export const NyttDialogMote = (): ReactElement => {
   return (
     <Link to={dialogmoteRoutePath}>
-      <TrackedHovedknapp
-        data-cy="nyttDM2Mote"
-        context={texts.nyttMoteTrackingContext}
-      >
-        {texts.nyttMote}
-      </TrackedHovedknapp>
+      <Hovedknapp data-cy="nyttDM2Mote">{texts.nyttMote}</Hovedknapp>
     </Link>
   );
 };

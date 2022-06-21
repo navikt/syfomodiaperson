@@ -1,14 +1,14 @@
 import React from "react";
 import { startSnow, stopAndHideSnow } from "@/utils/festiveUtils";
 import styled from "styled-components";
-import { TrackedKnapp } from "@/components/buttons/TrackedKnapp";
+import Knapp from "nav-frontend-knapper";
 
 const texts = {
   letItSnow: "La det snø",
   snowButtonTrackingContext: "Jul",
 };
 
-const StyledButton = styled(TrackedKnapp)`
+const StyledButton = styled(Knapp)`
   margin-left: auto;
   align-self: center;
   margin-right: 0;
@@ -36,11 +36,7 @@ const SnowButton = () => {
   };
 
   return (
-    <StyledButton
-      onClick={clickButton}
-      context={texts.snowButtonTrackingContext}
-      mini
-    >
+    <StyledButton onClick={clickButton} mini>
       {texts.letItSnow}
     </StyledButton>
   );

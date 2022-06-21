@@ -381,7 +381,7 @@ const renderEndreDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
         <Provider store={store({ ...realState, ...mockState })}>
-          <EndreDialogmoteSkjema dialogmote={dialogmote} pageTitle="test" />
+          <EndreDialogmoteSkjema dialogmote={dialogmote} />
         </Provider>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,

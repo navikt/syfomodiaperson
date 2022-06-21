@@ -1,7 +1,6 @@
 import React, { ReactElement, useState } from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import SykmeldingTeasere from "./SykmeldingTeasere";
-import { useTrackOnClick } from "@/data/logging/loggingHooks";
 import { VelgSykmeldingSorteringDropdown } from "./VelgSykmeldingSorteringDropdown";
 import {
   SorteringKriterium,
@@ -46,7 +45,6 @@ const DineSykmeldinger = ({
   const tidligereSykmeldinger = sykmeldinger.filter((sykmld) => {
     return skalVisesSomTidligereSykmelding(sykmld);
   });
-  const trackOnClick = useTrackOnClick();
   const [valgtSortering, setValgtSortering] =
     useState<SorteringsKriteriumVerdi>("dato");
 
@@ -58,7 +56,6 @@ const DineSykmeldinger = ({
         ingenSykmeldingerMelding={texts.ingenNyeSykmeldinger}
         className="js-nye-sykmeldinger"
         id="sykmelding-liste-nye"
-        trackOnClick={() => trackOnClick(texts.apneSykmelding)}
       />
       {tidligereSykmeldinger.length > 0 && (
         <SykmeldingTeasere
@@ -70,7 +67,6 @@ const DineSykmeldinger = ({
           ingenSykmeldingerMelding={texts.ingenSykmeldinger}
           className="js-tidligere-sykmeldinger"
           id="sykmelding-liste-tidligere"
-          trackOnClick={() => trackOnClick(texts.apneSykmelding)}
         >
           <VelgSykmeldingSorteringDropdown
             sorteringsKriterier={sorteringsKriterier}

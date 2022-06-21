@@ -22,8 +22,6 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { FlexRow } from "../../Layout";
 import { SkjemaFeiloppsummering } from "../../SkjemaFeiloppsummering";
 import { useFeilUtbedret } from "@/hooks/useFeilUtbedret";
-import { TrackedFlatknapp } from "../../buttons/TrackedFlatknapp";
-import { TrackedHovedknapp } from "../../buttons/TrackedHovedknapp";
 import {
   IInnkallingDocument,
   useInnkallingDocument,
@@ -35,11 +33,11 @@ import DialogmoteInnkallingBehandler from "@/components/dialogmote/innkalling/Di
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import styled from "styled-components";
 import { behandlerNavn } from "@/utils/behandlerUtils";
-import { useTrackOnClick } from "@/data/logging/loggingHooks";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
 import { TidStedSkjemaValues } from "@/data/dialogmote/types/skjemaTypes";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { ToggleNames } from "@/data/unleash/unleash_types";
+import { Flatknapp, Hovedknapp } from "nav-frontend-knapper";
 
 interface DialogmoteInnkallingSkjemaTekster {
   fritekstArbeidsgiver: string;
@@ -51,10 +49,6 @@ export interface DialogmoteInnkallingSkjemaValues
   extends DialogmoteInnkallingSkjemaTekster,
     TidStedSkjemaValues {
   arbeidsgiver: string;
-}
-
-interface DialogmoteInnkallingSkjemaProps {
-  pageTitle: string;
 }
 
 const StyledPanel = styled(Panel)`
@@ -116,9 +110,7 @@ const toInnkalling = (
   return innkalling;
 };
 
-const DialogmoteInnkallingSkjema = ({
-  pageTitle,
-}: DialogmoteInnkallingSkjemaProps) => {
+const DialogmoteInnkallingSkjema = () => {
   const initialValues: Partial<DialogmoteInnkallingSkjemaValues> = {};
   const fnr = useValgtPersonident();
   const { harIkkeUtbedretFeil, resetFeilUtbedret, updateFeilUtbedret } =
@@ -185,14 +177,12 @@ const DialogmoteInnkallingSkjema = ({
 
     return feilmeldinger;
   };
-  const trackOnClick = useTrackOnClick();
 
   if (opprettInnkalling.isSuccess) {
     return <Navigate to={moteoversiktRoutePath} />;
   }
 
   const submit = (values: DialogmoteInnkallingSkjemaValues) => {
-    trackOnClick(texts.behandler, selectedBehandler?.type || "ingen behandler");
     const dialogmoteInnkalling = toInnkalling(
       values,
       toTidStedDto(values),
@@ -224,19 +214,16 @@ const DialogmoteInnkallingSkjema = ({
               <SkjemaFeiloppsummering errors={errors} />
             )}
             <FlexRow>
-              <TrackedHovedknapp
-                context={pageTitle}
+              <Hovedknapp
                 onClick={resetFeilUtbedret}
                 spinner={opprettInnkalling.isLoading}
                 autoDisableVedSpinner
                 htmlType="submit"
               >
                 {texts.send}
-              </TrackedHovedknapp>
+              </Hovedknapp>
               <Link to={moteoversiktRoutePath}>
-                <TrackedFlatknapp context={pageTitle} htmlType="button">
-                  {texts.cancel}
-                </TrackedFlatknapp>
+                <Flatknapp htmlType="button">{texts.cancel}</Flatknapp>
               </Link>
             </FlexRow>
           </form>

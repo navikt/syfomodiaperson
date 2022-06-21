@@ -8,8 +8,6 @@ import {
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
-import { TrackedKnapp } from "../../../buttons/TrackedKnapp";
-import { TrackedHovedknapp } from "../../../buttons/TrackedHovedknapp";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { Normaltekst } from "nav-frontend-typografi";
 import { DeltakereSvarInfo } from "@/components/dialogmote/DeltakereSvarInfo";
@@ -18,6 +16,7 @@ import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { narmesteLederForVirksomhet } from "@/utils/ledereUtils";
 import { NoNarmesteLederAlert } from "@/components/mote/NoNarmestLederAlert";
+import Knapp, { Hovedknapp } from "nav-frontend-knapper";
 
 const texts = {
   innkallingSendtTrackingContext: "Møtelandingsside: Sendt innkalling",
@@ -97,28 +96,15 @@ export const DialogmoteMoteStatusPanel = ({ dialogmote }: Props) => {
 
       <FlexRow topPadding={PaddingSize.MD}>
         <Link to={`${dialogmoteRoutePath}/${dialogmote.uuid}/endre`}>
-          <TrackedKnapp
-            data-cy="endreMoteKnapp"
-            context={texts.innkallingSendtTrackingContext}
-          >
-            {texts.endreMote}
-          </TrackedKnapp>
+          <Knapp data-cy="endreMoteKnapp">{texts.endreMote}</Knapp>
         </Link>
         <Link to={`${dialogmoteRoutePath}/${dialogmote.uuid}/avlys`}>
-          <TrackedKnapp
-            data-cy="avlysMoteKnapp"
-            context={texts.innkallingSendtTrackingContext}
-          >
-            {texts.avlysMote}
-          </TrackedKnapp>
+          <Knapp data-cy="avlysMoteKnapp">{texts.avlysMote}</Knapp>
         </Link>
         <Link to={`${dialogmoteRoutePath}/${dialogmote.uuid}/referat`}>
-          <TrackedHovedknapp
-            data-cy="skrivReferatKnapp"
-            context={texts.innkallingSendtTrackingContext}
-          >
+          <Hovedknapp data-cy="skrivReferatKnapp">
             {referatKnappText}
-          </TrackedHovedknapp>
+          </Hovedknapp>
         </Link>
       </FlexRow>
     </DialogmotePanel>

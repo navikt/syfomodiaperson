@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AktivBrukerTilgangLaster from "@/components/AktivBrukerTilgangLaster";
 import AvbrytMoteContainer from "../components/mote/container/AvbrytMoteContainer";
@@ -15,8 +15,6 @@ import DialogmoteInnkallingContainer from "../components/dialogmote/innkalling/D
 import AvlysDialogmoteContainer from "../components/dialogmote/avlys/AvlysDialogmoteContainer";
 import AppSpinner from "../components/AppSpinner";
 import DialogmoteReferatContainer from "../components/dialogmote/referat/DialogmoteReferatContainer";
-import { useUserProperties } from "@/data/logging/loggingHooks";
-import { setAmplitudeUserProperties } from "@/amplitude/amplitude";
 import EndreDialogmoteContainer from "../components/dialogmote/endre/EndreDialogmoteContainer";
 import { SykepengesoknadSide } from "@/components/speiling/sykepengsoknader/container/SykepengesoknadSide";
 import { OppfoelgingsPlanerOversiktContainer } from "@/components/oppfolgingsplan/container/OppfoelgingsPlanerOversiktContainer";
@@ -152,16 +150,6 @@ const AktivBrukerLoader = () => {
   }
 };
 
-const AppRouter = () => {
-  const userProperties = useUserProperties();
-
-  useEffect(() => {
-    if (userProperties.valgtEnhet) {
-      setAmplitudeUserProperties(userProperties);
-    }
-  }, [userProperties]);
-
-  return AktivBrukerLoader();
-};
+const AppRouter = () => AktivBrukerLoader();
 
 export default AppRouter;

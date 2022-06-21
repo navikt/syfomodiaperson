@@ -9,7 +9,6 @@ interface SykmeldingTeasereProps {
   ingenSykmeldingerMelding: string;
   id: string;
   children?: ReactElement;
-  trackOnClick: () => void;
 }
 
 const SykmeldingTeasere = ({
@@ -19,7 +18,6 @@ const SykmeldingTeasere = ({
   ingenSykmeldingerMelding,
   id,
   children,
-  trackOnClick,
 }: SykmeldingTeasereProps): ReactElement => {
   return (
     <div className="blokk--l">
@@ -30,11 +28,7 @@ const SykmeldingTeasere = ({
       <div id={id} className={className || "js-content"}>
         {sykmeldinger.length ? (
           sykmeldinger.map((sykmelding, idx) => (
-            <SykmeldingTeaser
-              key={idx}
-              sykmelding={sykmelding}
-              trackOnClick={trackOnClick}
-            />
+            <SykmeldingTeaser key={idx} sykmelding={sykmelding} />
           ))
         ) : (
           <p className="panel typo-infotekst">{ingenSykmeldingerMelding}</p>

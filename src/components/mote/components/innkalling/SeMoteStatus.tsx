@@ -1,7 +1,7 @@
 import React from "react";
 import { FlexRow } from "../../../Layout";
-import { TrackedKnapp } from "../../../buttons/TrackedKnapp";
 import { useNavigate } from "react-router-dom";
+import Knapp from "nav-frontend-knapper";
 
 const texts = {
   moteStatusTrackingContext: "Møtelandingsside: Se møtestatus",
@@ -13,12 +13,9 @@ export const SeMoteStatus = () => {
 
   return (
     <FlexRow>
-      <TrackedKnapp
-        context={texts.moteStatusTrackingContext}
-        onClick={() => navigate("/sykefravaer/mote")}
-      >
+      <Knapp onClick={() => navigate("/sykefravaer/mote")}>
         {texts.gaTilMotestatus}
-      </TrackedKnapp>
+      </Knapp>
     </FlexRow>
   );
 };

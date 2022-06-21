@@ -1,7 +1,6 @@
 import React from "react";
 import SideFullbredde from "../../../sider/SideFullbredde";
 import Oppfolgingsplan from "../oppfolgingsplaner/Oppfolgingsplan";
-import { OPPFOELGINGSPLANER } from "@/enums/menypunkter";
 import SideLaster from "../../SideLaster";
 import { useParams } from "react-router-dom";
 import Feilmelding from "@/components/Feilmelding";
@@ -31,7 +30,7 @@ export const OppfoelgingsplanContainer = () => {
   });
 
   return (
-    <SideFullbredde tittel={texts.tittel} aktivtMenypunkt={OPPFOELGINGSPLANER}>
+    <SideFullbredde tittel={texts.tittel}>
       <SideLaster
         henter={henter}
         hentingFeilet={oppfolgingsplanerHentingFeilet}

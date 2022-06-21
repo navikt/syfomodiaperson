@@ -2,10 +2,8 @@ import React from "react";
 import { Link, Navigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { TrackedFlatknapp } from "../../buttons/TrackedFlatknapp";
 import Panel from "nav-frontend-paneler";
 import { FlexRow } from "../../Layout";
-import { TrackedHovedknapp } from "../../buttons/TrackedHovedknapp";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { Form } from "react-final-form";
 import {
@@ -30,6 +28,7 @@ import { useEndreTidStedDialogmote } from "@/data/dialogmote/useEndreTidStedDial
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
 import { TidStedSkjemaValues } from "@/data/dialogmote/types/skjemaTypes";
+import { Flatknapp, Hovedknapp } from "nav-frontend-knapper";
 
 const texts = {
   send: "Send",
@@ -40,7 +39,7 @@ const EndrePanel = styled(Panel)`
   padding: 1.75rem;
 `;
 
-const SendButton = styled(TrackedHovedknapp)`
+const SendButton = styled(Hovedknapp)`
   margin-right: 0.5rem;
 `;
 
@@ -69,10 +68,9 @@ type EndreTidStedDialogmoteSkjemaFeil = Partial<
 
 interface Props {
   dialogmote: DialogmoteDTO;
-  pageTitle: string;
 }
 
-const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
+const EndreDialogmoteSkjema = ({ dialogmote }: Props) => {
   const fnr = useValgtPersonident();
 
   const dato = dialogmote.tid.split("T")[0];
@@ -172,7 +170,6 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
             <FlexRow>
               <SendButton
                 data-cy="sendEndringKnapp"
-                context={pageTitle}
                 onClick={resetFeilUtbedret}
                 htmlType="submit"
                 spinner={endreTidStedDialogmote.isLoading}
@@ -181,9 +178,7 @@ const EndreDialogmoteSkjema = ({ dialogmote, pageTitle }: Props) => {
                 {texts.send}
               </SendButton>
               <Link to={moteoversiktRoutePath}>
-                <TrackedFlatknapp context={pageTitle} htmlType="button">
-                  {texts.avbryt}
-                </TrackedFlatknapp>
+                <Flatknapp htmlType="button">{texts.avbryt}</Flatknapp>
               </Link>
             </FlexRow>
           </form>

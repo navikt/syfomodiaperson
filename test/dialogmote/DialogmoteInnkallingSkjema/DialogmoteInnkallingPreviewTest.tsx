@@ -160,7 +160,7 @@ const renderDialogmoteInnkallingSkjema = () =>
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
         <Provider store={store({ ...realState, ...mockState })}>
-          <DialogmoteInnkallingSkjema pageTitle="Test" />
+          <DialogmoteInnkallingSkjema />
         </Provider>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,

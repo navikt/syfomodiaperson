@@ -1,12 +1,8 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { Column, Container, Row } from "nav-frontend-grid";
 import Personkort from "../components/personkort/Personkort";
 import DocumentTitle from "react-document-title";
-import {
-  useHasLoadedMetaData,
-  useTrackPageLoad,
-} from "@/data/logging/loggingHooks";
 import { GlobalNavigasjon } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { isEaster } from "@/utils/festiveUtils";
 import { Easter } from "@/components/Easter";
@@ -23,14 +19,6 @@ interface SideProps {
 
 const Side = (sideProps: SideProps) => {
   const { tittel, children, aktivtMenypunkt } = sideProps;
-  const metaDataLoaded = useHasLoadedMetaData();
-  const trackPageLoad = useTrackPageLoad();
-
-  useEffect(() => {
-    if (metaDataLoaded) {
-      trackPageLoad(tittel, aktivtMenypunkt);
-    }
-  }, [metaDataLoaded, tittel, aktivtMenypunkt, trackPageLoad]);
 
   return (
     <DocumentTitle

@@ -8,7 +8,6 @@ import {
 } from "@/utils/motebehovUtils";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
-import { useTrackOnClick } from "@/data/logging/loggingHooks";
 import { useBehandleMotebehov } from "@/data/motebehov/useBehandleMotebehov";
 import Confetti from "@/components/Confetti";
 
@@ -37,7 +36,6 @@ const BehandleMotebehovKnapp = ({
   const motebehovListe = motebehovlisteMedKunJaSvar(motebehovData);
   const sistBehandletMotebehov = hentSistBehandletMotebehov(motebehovListe);
   const erBehandlet = erMotebehovBehandlet(motebehovListe);
-  const trackOnClick = useTrackOnClick();
   const behandleMotebehov = useBehandleMotebehov();
   const [isExploding, setIsExploding] = React.useState(false);
 
@@ -52,7 +50,6 @@ const BehandleMotebehovKnapp = ({
           )}
           onClick={() => {
             setIsExploding(true);
-            trackOnClick(texts.fjernOppgave);
             if (harUbehandletMotebehov(motebehovListe)) {
               behandleMotebehov.mutate();
             }

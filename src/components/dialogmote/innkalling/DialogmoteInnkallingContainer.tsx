@@ -38,7 +38,7 @@ const DialogmoteInnkallingSide = (): ReactElement => {
       {brukerKanIkkeVarslesDigitalt && (
         <BrukerKanIkkeVarslesPapirpostAdvarsel />
       )}
-      <DialogmoteInnkallingSkjema pageTitle={texts.title} />
+      <DialogmoteInnkallingSkjema />
     </>
   ) : (
     <>
