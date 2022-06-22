@@ -8,7 +8,6 @@ import DinSendteSykmelding from "./DinSendteSykmelding";
 import DinBekreftedeSykmelding from "./DinBekreftedeSykmelding";
 import DinAvbrutteSykmelding from "./DinAvbrutteSykmelding";
 import DinUtgaatteSykmelding from "./DinUtgaatteSykmelding";
-import LenkeTilDineSykmeldinger from "./LenkeTilDineSykmeldinger";
 import Feilmelding from "../../../Feilmelding";
 import AvvistSykmelding from "./avvisteSykmeldinger/AvvistSykmelding";
 import KoronaSykmeldingBekreftet from "./koronasykmeldinger/KoronaSykmelding-Bekreftet";
@@ -36,7 +35,6 @@ const SykmeldingSide = ({
       return (
         <div>
           <AvvistSykmelding sykmelding={dinSykmelding} />
-          <LenkeTilDineSykmeldinger />
         </div>
       );
     }
@@ -46,7 +44,6 @@ const SykmeldingSide = ({
           return (
             <div>
               <KoronaSykmeldingBekreftet dinSykmelding={dinSykmelding} />
-              <LenkeTilDineSykmeldinger />
             </div>
           );
         }
@@ -54,7 +51,6 @@ const SykmeldingSide = ({
           return (
             <>
               <KoronaSykmeldingNy sykmelding={dinSykmelding} />
-              <LenkeTilDineSykmeldinger />
             </>
           );
         }
@@ -62,7 +58,6 @@ const SykmeldingSide = ({
           return (
             <div>
               <KoronaSykmeldingAvbrutt sykmelding={dinSykmelding} />
-              <LenkeTilDineSykmeldinger />
             </div>
           );
         }
@@ -80,7 +75,6 @@ const SykmeldingSide = ({
             dinSykmelding={dinSykmelding}
             arbeidsgiversSykmelding={arbeidsgiversSykmelding}
           />
-          <LenkeTilDineSykmeldinger />
         </div>
       );
     } else if (
@@ -93,28 +87,24 @@ const SykmeldingSide = ({
             dinSykmelding={dinSykmelding}
             arbeidsgiversSykmelding={arbeidsgiversSykmelding}
           />
-          <LenkeTilDineSykmeldinger />
         </div>
       );
     } else if (dinSykmelding.status === SykmeldingStatus.UTGAATT) {
       return (
         <div>
           <DinUtgaatteSykmelding sykmelding={dinSykmelding} />
-          <LenkeTilDineSykmeldinger />
         </div>
       );
     } else if (dinSykmelding.status === SykmeldingStatus.NY) {
       return (
         <div>
           <DinSykmelding sykmelding={dinSykmelding} />
-          <LenkeTilDineSykmeldinger />
         </div>
       );
     } else if (dinSykmelding.status === SykmeldingStatus.AVBRUTT) {
       return (
         <div>
           <DinAvbrutteSykmelding sykmelding={dinSykmelding} />
-          <LenkeTilDineSykmeldinger />
         </div>
       );
     }

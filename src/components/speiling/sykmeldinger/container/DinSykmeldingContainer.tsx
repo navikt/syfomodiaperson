@@ -13,6 +13,8 @@ import { SYKMELDINGER } from "@/enums/menypunkter";
 import SideLaster from "../../../SideLaster";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
+import LenkeTilDineSykmeldinger from "@/components/speiling/sykmeldinger/sykmelding/LenkeTilDineSykmeldinger";
+import EndreSykmelding from "@/components/endresykmelding/EndreSykmelding";
 
 const texts = {
   pageTitleSykmelding: "Sykmelding",
@@ -81,6 +83,8 @@ const DinSykmeldingSide = (): ReactElement => {
               dinSykmelding={dinSykmelding}
               arbeidsgiversSykmelding={arbeidsgiversSykmelding}
             />
+            {dinSykmelding?.papirsykmelding && <EndreSykmelding />}
+            <LenkeTilDineSykmeldinger />
           </div>
         </div>
       </SideLaster>
