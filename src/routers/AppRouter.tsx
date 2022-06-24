@@ -1,8 +1,6 @@
 import React, { ReactElement } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AktivBrukerTilgangLaster from "@/components/AktivBrukerTilgangLaster";
-import AvbrytMoteContainer from "../components/mote/container/AvbrytMoteContainer";
-import BekreftMoteContainer from "../components/mote/container/BekreftMoteContainer";
 import SykmeldingerContainer from "../components/speiling/sykmeldinger/container/SykmeldingerContainer";
 import SykepengesoknaderContainer from "../components/speiling/sykepengsoknader/container/SykepengesoknaderSide";
 import DinSykmeldingContainer from "../components/speiling/sykmeldinger/container/DinSykmeldingContainer";
@@ -20,7 +18,6 @@ import { SykepengesoknadSide } from "@/components/speiling/sykepengsoknader/cont
 import { OppfoelgingsPlanerOversiktContainer } from "@/components/oppfolgingsplan/container/OppfoelgingsPlanerOversiktContainer";
 import { OppfoelgingsplanContainer } from "@/components/oppfolgingsplan/container/OppfoelgingsplanContainer";
 import { IngenBrukerSide } from "@/components/IngenBrukerSide";
-import { MotebookingContainer } from "@/components/mote/container/MotebookingContainer";
 import { useAktivBruker } from "@/data/modiacontext/modiacontextQueryHooks";
 import DialogmoteEndreReferatContainer from "@/components/dialogmote/referat/DialogmoteEndreReferatContainer";
 import DialogmoteunntakSkjemaContainer from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaContainer";
@@ -32,7 +29,7 @@ export const dialogmoteRoutePath = `${appRoutePath}/dialogmote`;
 export const dialogmoteUnntakRoutePath = `${appRoutePath}/dialogmoteunntak`;
 export const moteoversiktRoutePath = `${appRoutePath}/moteoversikt`;
 
-const AktivBrukerRouter = ({ fnr }: { fnr: string }): ReactElement => {
+const AktivBrukerRouter = (): ReactElement => {
   return (
     <AktivBrukerTilgangLaster>
       <BrowserRouter>
@@ -50,10 +47,6 @@ const AktivBrukerRouter = ({ fnr }: { fnr: string }): ReactElement => {
           <Route
             path={moteoversiktRoutePath}
             element={<MotelandingssideContainer />}
-          />
-          <Route
-            path={`${appRoutePath}/mote`}
-            element={<MotebookingContainer />}
           />
           <Route
             path={dialogmoteRoutePath}
@@ -78,14 +71,6 @@ const AktivBrukerRouter = ({ fnr }: { fnr: string }): ReactElement => {
           <Route
             path={dialogmoteUnntakRoutePath}
             element={<DialogmoteunntakSkjemaContainer />}
-          />
-          <Route
-            path={`${appRoutePath}/mote/:moteUuid/avbryt`}
-            element={<AvbrytMoteContainer fnr={fnr} />}
-          />
-          <Route
-            path={`${appRoutePath}/mote/bekreft/:alternativId`}
-            element={<BekreftMoteContainer fnr={fnr} />}
           />
           <Route
             path={`${appRoutePath}/sykmeldinger`}
@@ -146,7 +131,7 @@ const AktivBrukerLoader = () => {
   if (!data || !erGyldigFodselsnummer(data.aktivBruker)) {
     return <IngenAktivBrukerRouter />;
   } else {
-    return <AktivBrukerRouter fnr={data.aktivBruker} />;
+    return <AktivBrukerRouter />;
   }
 };
 

@@ -21,6 +21,5 @@ export const selectors = {
   fritekstArbeidstakerKnapp: "fritekstArbeidstakerKnapp",
   fritekstBehandlerKnapp: "fritekstBehandlerKnapp",
   forhandsvisningModal: "ForhåndsvisningModal",
-  nyttMoteplanleggerMote: "nyttMoteplanleggerMote",
   nyttDM2Mote: "nyttDM2Mote",
 };

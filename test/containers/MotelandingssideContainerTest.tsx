@@ -88,10 +88,6 @@ describe("MotelandingssideContainer", () => {
             },
           },
         },
-        moter: {
-          hentingForsokt: true,
-          data: [],
-        },
       };
     });
 
@@ -114,14 +110,6 @@ describe("MotelandingssideContainer", () => {
         .exist;
     });
 
-    it("Skal kjøre actions ved init", () => {
-      const mockStore = store({ ...realState, ...mockState });
-      renderMotelandingsside(mockStore);
-
-      const expectedActions = [{ type: "HENT_MOTER_FORESPURT", fnr: fnr }];
-      expect(mockStore.getActions()).to.deep.equal(expectedActions);
-    });
-
     it("Skal vise feilmelding hvis ikke tilgang", async () => {
       stubTilgangApi(apiMockScope, {
         harTilgang: false,
@@ -131,80 +119,6 @@ describe("MotelandingssideContainer", () => {
       expect(
         await screen.findByRole("heading", {
           name: "Du har ikke tilgang til denne tjenesten",
-        })
-      ).to.exist;
-    });
-
-    it("Skal vise Se møtestatus når møte opprettet", () => {
-      queryClient.setQueryData(
-        tilgangQueryKeys.tilgang(fnr),
-        () => tilgangBrukerMock
-      );
-      mockState.moter = {
-        hentingForsokt: true,
-        data: [
-          {
-            id: 1,
-            status: "OPPRETTET",
-            bekreftetAlternativ: {
-              tid: "2019-11-08T00:00:00.000Z",
-            },
-            opprettetTidspunkt: "2019-11-08T00:00:00.000Z",
-          },
-        ],
-      };
-      renderMotelandingsside(store({ ...realState, ...mockState }));
-
-      expect(
-        screen.getByRole("heading", {
-          name: "Se møtestatus",
-        })
-      ).to.exist;
-    });
-
-    it("Skal vise Bekreftet møte når møte bekreftet", () => {
-      queryClient.setQueryData(
-        tilgangQueryKeys.tilgang(fnr),
-        () => tilgangBrukerMock
-      );
-      mockState.moter = {
-        ...mockState.moter,
-        data: [
-          {
-            id: 1,
-            status: "BEKREFTET",
-            opprettetTidspunkt: "2019-11-08T00:00:00.000Z",
-          },
-        ],
-      };
-      renderMotelandingsside(store({ ...realState, ...mockState }));
-
-      expect(
-        screen.getByRole("heading", {
-          name: "Bekreftet møte",
-        })
-      ).to.exist;
-    });
-
-    it("Skal vise Planlegg nytt dialogmøte når møte avbrutt", () => {
-      queryClient.setQueryData(
-        tilgangQueryKeys.tilgang(fnr),
-        () => tilgangBrukerMock
-      );
-      mockState.moter = {
-        ...mockState.moter,
-        data: [
-          {
-            id: 1,
-            status: "AVBRUTT",
-          },
-        ],
-      };
-      renderMotelandingsside(store({ ...realState, ...mockState }));
-
-      expect(
-        screen.getByRole("heading", {
-          name: "Planlegg nytt dialogmøte",
         })
       ).to.exist;
     });

@@ -1,11 +1,8 @@
-import React, { ReactElement, useEffect, useMemo } from "react";
-import { useDispatch } from "react-redux";
+import React, { ReactElement, useMemo } from "react";
 import Side from "../../../sider/Side";
 import Historikk from "../Historikk";
 import { HISTORIKK } from "@/enums/menypunkter";
 import SideLaster from "../../SideLaster";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { hentHistorikkMoter } from "@/data/historikk/historikk_actions";
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import IngenHistorikk from "../IngenHistorikk";
 import { useHistorikk } from "@/data/historikk/historikk_hooks";
@@ -32,13 +29,9 @@ const createHistorikkEventsFromLedere = (
 };
 
 export const HistorikkContainer = (): ReactElement => {
-  const fnr = useValgtPersonident();
-  const dispatch = useDispatch();
   const {
     henterHistorikk,
     hentingHistorikkFeilet,
-    skalHenteMoter,
-    moteHistorikk,
     motebehovHistorikk,
     oppfolgingsplanHistorikk,
   } = useHistorikk();
@@ -65,16 +58,9 @@ export const HistorikkContainer = (): ReactElement => {
     [currentLedere, formerLedere]
   );
 
-  useEffect(() => {
-    if (skalHenteMoter) {
-      dispatch(hentHistorikkMoter(fnr));
-    }
-  }, [dispatch, fnr, skalHenteMoter]);
-
   const tilfeller = oppfolgingstilfellePerson?.oppfolgingstilfelleList || [];
   const lederHistorikk = createHistorikkEventsFromLedere(allLedere);
   const historikkEvents = motebehovHistorikk
-    .concat(moteHistorikk)
     .concat(oppfolgingsplanHistorikk)
     .concat(lederHistorikk);
   const ingenHistorikk = tilfeller.length === 0 || historikkEvents.length === 0;

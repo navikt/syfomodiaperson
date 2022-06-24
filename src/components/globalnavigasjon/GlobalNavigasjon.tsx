@@ -1,11 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import * as menypunkter from "../../enums/menypunkter";
 import cn from "classnames";
 import UnfinishedTasks from "./UnfinishedTasks";
-import { useDispatch } from "react-redux";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { hentMoter } from "@/data/mote/moter_actions";
-import { useAppSelector } from "@/hooks/hooks";
 import { Link } from "react-router-dom";
 import { numberOfTasks } from "@/utils/globalNavigasjonUtils";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
@@ -75,8 +71,6 @@ interface GlobalNavigasjonProps {
 export const GlobalNavigasjon = ({
   aktivtMenypunkt,
 }: GlobalNavigasjonProps) => {
-  const fnr = useValgtPersonident();
-  const dispatch = useDispatch();
   const [focusIndex, setFocusIndex] = useState(-1);
   const refs = useRef<HTMLAnchorElement[]>([]);
 
@@ -89,12 +83,6 @@ export const GlobalNavigasjon = ({
     (oppfolgingsplanLPS) =>
       toOppfolgingsplanLPSMedPersonoppgave(oppfolgingsplanLPS, personoppgaver)
   );
-
-  useEffect(() => {
-    dispatch(hentMoter(fnr));
-  }, [dispatch, fnr]);
-
-  const { moter } = useAppSelector((state) => state);
 
   const setFocus = (index: number) => {
     refs.current[index].focus();
@@ -137,7 +125,6 @@ export const GlobalNavigasjon = ({
         const tasks = numberOfTasks(
           menypunkt,
           motebehov,
-          moter,
           oppfolgingsplaner,
           personoppgaver,
           oppfolgingsplanerLPSMedPersonOppgave

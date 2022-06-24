@@ -4,7 +4,6 @@ import {
   activeLPSOppfolgingsplaner,
   activeOppfolgingsplaner,
 } from "./oppfolgingsplanerUtils";
-import { MoterState } from "@/data/mote/moter";
 import {
   PersonOppgave,
   PersonOppgaveType,
@@ -13,18 +12,8 @@ import { OppfolgingsplanLPSMedPersonoppgave } from "@/data/oppfolgingsplan/types
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 
-export const isUnfinishedMoterTask = (moterState: MoterState) => {
-  return moterState?.data?.[0]?.trengerBehandling;
-};
-
-const moteplanleggerTasks = (
-  motebehov: MotebehovVeilederDTO[],
-  moterState: MoterState
-) => {
-  const motebehovPrikker = harUbehandletMotebehov(motebehov) ? 1 : 0;
-  const moterPrikker = isUnfinishedMoterTask(moterState) ? 1 : 0;
-
-  return motebehovPrikker + moterPrikker;
+const moteTasks = (motebehov: MotebehovVeilederDTO[]) => {
+  return harUbehandletMotebehov(motebehov) ? 1 : 0;
 };
 
 const numberOfActiveOppfolgingsplaner = (
@@ -51,14 +40,13 @@ const numberOfUnprocessedPersonOppgaver = (
 export const numberOfTasks = (
   menypunkt: string,
   motebehov: MotebehovVeilederDTO[],
-  moterState: MoterState,
   oppfolgingsplaner: OppfolgingsplanDTO[],
   personOppgaver: PersonOppgave[],
   oppfolgingsplanerlps: OppfolgingsplanLPSMedPersonoppgave[]
 ) => {
   switch (menypunkt) {
     case menypunkter.MOETEPLANLEGGER:
-      return moteplanleggerTasks(motebehov, moterState);
+      return moteTasks(motebehov);
     case menypunkter.OPPFOELGINGSPLANER:
       return (
         numberOfActiveOppfolgingsplaner(oppfolgingsplaner) +

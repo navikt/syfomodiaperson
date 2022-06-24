@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Sidetopp from "../../Sidetopp";
-import { useDispatch } from "react-redux";
-import { hentMoter } from "@/data/mote/moter_actions";
 import { useAppSelector } from "@/hooks/hooks";
 import UtdragFraSykefravaeretPanel from "../../utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { InnkallingDialogmotePanel } from "./innkalling/InnkallingDialogmotePanel";
@@ -23,7 +21,6 @@ const texts = {
 
 export const Motelandingsside = () => {
   const fnr = useValgtPersonident();
-  const dispatch = useDispatch();
 
   const { isLoading: henterOppfolgingsplaner, aktivePlaner } =
     useOppfolgingsplanerQuery();
@@ -48,14 +45,9 @@ export const Motelandingsside = () => {
     isLoading: henterLedere,
     isError: henterLedereFeilet,
   } = useLedereQuery();
-  const { moter, navbruker } = useAppSelector((state) => state);
-
-  useEffect(() => {
-    dispatch(hentMoter(fnr));
-  }, [dispatch, fnr]);
+  const { navbruker } = useAppSelector((state) => state);
 
   const henter =
-    !moter.hentingForsokt ||
     henterDialogmoter ||
     henterDialogmoteunntak ||
     henterOppfolgingsplaner ||
