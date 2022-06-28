@@ -1,13 +1,9 @@
-import { Provider } from "react-redux";
 import React from "react";
 import Referat, {
   ReferatMode,
   texts as referatSkjemaTexts,
   valideringsTexts as referatSkjemaValideringsTexts,
 } from "../../src/components/dialogmote/referat/Referat";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
-import configureStore from "redux-mock-store";
 import { expect } from "chai";
 import { texts as skjemaFeilOppsummeringTexts } from "../../src/components/SkjemaFeiloppsummering";
 import {
@@ -22,7 +18,6 @@ import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import {
   dialogmoteMedFerdigstiltReferat,
   dialogmoteMedMellomlagretReferat,
-  mockState,
   moteTekster,
   narmesteLederNavn,
 } from "./testData";
@@ -34,9 +29,6 @@ import { queryClientWithMockData } from "../testQueryClient";
 import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { renderWithRouter } from "../testRouterUtils";
-
-const realState = createStore(rootReducer).getState();
-const store = configureStore([]);
 
 let queryClient: any;
 
@@ -146,13 +138,11 @@ describe("ReferatEndreTest", () => {
 const renderEndreReferat = (dialogmote: DialogmoteDTO) => {
   return renderWithRouter(
     <QueryClientProvider client={queryClient}>
-      <Provider store={store({ ...realState, ...mockState })}>
-        <Referat
-          dialogmote={dialogmote}
-          pageTitle="Test"
-          mode={ReferatMode.ENDRET}
-        />
-      </Provider>
+      <Referat
+        dialogmote={dialogmote}
+        pageTitle="Test"
+        mode={ReferatMode.ENDRET}
+      />
     </QueryClientProvider>,
     `${dialogmoteRoutePath}/:dialogmoteUuid/referat/endre`,
     [`${dialogmoteRoutePath}/${dialogmote.uuid}/referat/endre`]

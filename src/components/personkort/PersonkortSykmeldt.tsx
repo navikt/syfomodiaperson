@@ -1,5 +1,4 @@
 import React from "react";
-import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
 import PersonkortElement from "./PersonkortElement";
 import PersonkortInformasjon from "./PersonkortInformasjon";
 import { formaterFnr } from "@/utils/fnrUtils";
@@ -10,6 +9,8 @@ import {
 } from "@/utils/pdladresseUtils";
 import { PersonImage } from "../../../img/ImageComponents";
 import { usePersonAdresseQuery } from "@/data/personinfo/personAdresseQueryHooks";
+import { useValgtPersonident } from "@/hooks/useValgtBruker";
+import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 
 const texts = {
   fnr: "F.nummer",
@@ -20,12 +21,9 @@ const texts = {
   oppholdsadresse: "Oppholdsadresse",
 };
 
-interface PersonkortSykmeldtProps {
-  navbruker: Brukerinfo;
-}
-
-const PersonkortSykmeldt = ({ navbruker }: PersonkortSykmeldtProps) => {
+const PersonkortSykmeldt = () => {
   const { data: personadresse } = usePersonAdresseQuery();
+  const navbruker = useNavBrukerData();
   const informasjonNokkelTekster = new Map([
     ["fnr", texts.fnr],
     ["tlf", texts.phone],
@@ -45,13 +43,12 @@ const PersonkortSykmeldt = ({ navbruker }: PersonkortSykmeldtProps) => {
     kontaktadresse: formaterKontaktadresse(personadresse?.kontaktadresse),
     oppholdsadresse: formaterOppholdsadresse(personadresse?.oppholdsadresse),
   });
-  const valgteElementerKontaktinfo = (({ tlf, epost, fnr }) => {
-    return {
-      tlf,
-      epost,
-      fnr: formaterFnr(fnr),
-    };
-  })(navbruker.kontaktinfo);
+  const fnr = useValgtPersonident();
+  const valgteElementerKontaktinfo = {
+    tlf: navbruker.kontaktinfo?.tlf,
+    epost: navbruker.kontaktinfo?.epost,
+    fnr: formaterFnr(fnr),
+  };
   const valgteElementer = Object.assign(
     {},
     valgteElementerKontaktinfo,

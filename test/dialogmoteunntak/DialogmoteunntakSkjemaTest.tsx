@@ -1,15 +1,11 @@
 import React from "react";
 import { expect } from "chai";
-import { createStore } from "redux";
-import { Provider } from "react-redux";
 import { QueryClientProvider } from "react-query";
-import configureStore from "redux-mock-store";
 import { fireEvent, screen } from "@testing-library/react";
-import { rootReducer } from "@/data/rootState";
 import { dialogmoteUnntakRoutePath } from "@/routers/AppRouter";
 import { stubFeatureTogglesApi } from "../stubs/stubUnleash";
 import { apiMock } from "../stubs/stubApi";
-import { arbeidstaker, mockState, navEnhet } from "../dialogmote/testData";
+import { arbeidstaker, navEnhet } from "../dialogmote/testData";
 import {
   changeTextInput,
   clickButton,
@@ -38,8 +34,6 @@ import { CreateUnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunnta
 import { renderWithRouter } from "../testRouterUtils";
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
 
-const realState = createStore(rootReducer).getState();
-const store = configureStore([]);
 let queryClient: any;
 
 describe("DialogmoteunntakSkjema", () => {
@@ -149,9 +143,7 @@ const renderDialogmoteunntakSkjema = () => {
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <Provider store={store({ ...realState, ...mockState })}>
-          <DialogmoteunntakSkjema />
-        </Provider>
+        <DialogmoteunntakSkjema />
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     dialogmoteUnntakRoutePath,

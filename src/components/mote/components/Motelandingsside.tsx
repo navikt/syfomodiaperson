@@ -1,6 +1,5 @@
 import React from "react";
 import Sidetopp from "../../Sidetopp";
-import { useAppSelector } from "@/hooks/hooks";
 import UtdragFraSykefravaeretPanel from "../../utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { InnkallingDialogmotePanel } from "./innkalling/InnkallingDialogmotePanel";
 import SideLaster from "../../SideLaster";
@@ -14,6 +13,7 @@ import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { DialogmoteFerdigstilteReferatPanel } from "@/components/dialogmote/DialogmoteFerdigstilteReferatPanel";
 import { DialogmoteStatus } from "@/data/dialogmote/types/dialogmoteTypes";
 import { useDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
+import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 
 const texts = {
   dialogmoter: "Dialogmøter",
@@ -45,7 +45,7 @@ export const Motelandingsside = () => {
     isLoading: henterLedere,
     isError: henterLedereFeilet,
   } = useLedereQuery();
-  const { navbruker } = useAppSelector((state) => state);
+  const navbruker = useNavBrukerData();
 
   const henter =
     henterDialogmoter ||
@@ -66,7 +66,7 @@ export const Motelandingsside = () => {
       <DialogmoteOnskePanel
         motebehovData={motebehov}
         ledereData={currentLedere}
-        sykmeldt={navbruker.data}
+        sykmeldt={navbruker}
       />
 
       <InnkallingDialogmotePanel aktivtDialogmote={aktivtDialogmote} />

@@ -6,7 +6,7 @@ import {
 } from "@/utils/motebehovUtils";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
-import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
+import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import {
   MotebehovIkkeSvartImage,
   MotebehovKanIkkeImage,
@@ -113,7 +113,7 @@ export const MotebehovKvitteringInnhold = ({
 
 interface MotebehovKvitteringInnholdArbeidstakerProps {
   arbeidstakersMotebehov?: MotebehovVeilederDTO;
-  sykmeldt?: Brukerinfo;
+  sykmeldt?: BrukerinfoDTO;
 }
 
 export const MotebehovKvitteringInnholdArbeidstaker = ({
@@ -218,7 +218,7 @@ export const MotebehovKvitteringInnholdArbeidsgiverUtenMotebehov = ({
 interface MotebehovKvitteringProps {
   motebehovData: MotebehovVeilederDTO[];
   ledereData: NarmesteLederRelasjonDTO[];
-  sykmeldt?: Brukerinfo;
+  sykmeldt?: BrukerinfoDTO;
 }
 
 const MotebehovKvittering = ({

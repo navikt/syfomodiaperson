@@ -18,6 +18,8 @@ import { oppfolgingstilfellePersonMock } from "../mock/isoppfolgingstilfelle/opp
 import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks";
 import { unleashMock } from "../mock/unleash/unleashMock";
 import { behandlerDeltaker } from "./dialogmote/testData";
+import { brukerinfoMock } from "../mock/syfoperson/brukerinfoMock";
+import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 
 export const queryClientWithAktivBruker = (): QueryClient => {
   const queryClient = new QueryClient();
@@ -31,6 +33,10 @@ export const queryClientWithAktivBruker = (): QueryClient => {
 
 export const queryClientWithMockData = (): QueryClient => {
   const queryClient = queryClientWithAktivBruker();
+  queryClient.setQueryData(
+    brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => brukerinfoMock
+  );
   queryClient.setQueryData(
     veilederinfoQueryKeys.veilederinfo,
     () => VEILEDER_DEFAULT

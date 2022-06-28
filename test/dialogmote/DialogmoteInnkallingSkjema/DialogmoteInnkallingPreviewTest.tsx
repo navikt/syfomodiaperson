@@ -1,12 +1,8 @@
-import configureStore from "redux-mock-store";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
 import { QueryClientProvider } from "react-query";
 import {
   arbeidsgiver,
   arbeidstaker,
   behandler,
-  mockState,
   mote,
   moteTekster,
   navEnhet,
@@ -16,7 +12,6 @@ import { expect } from "chai";
 import userEvent from "@testing-library/user-event";
 import { texts as innkallingSkjemaTexts } from "@/components/dialogmote/innkalling/DialogmoteInnkallingTekster";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
-import { Provider } from "react-redux";
 import DialogmoteInnkallingSkjema from "@/components/dialogmote/innkalling/DialogmoteInnkallingSkjema";
 import React from "react";
 import { changeTextInput, getTextInput } from "../../testUtils";
@@ -31,8 +26,6 @@ import { apiMock } from "../../stubs/stubApi";
 
 let queryClient: any;
 let mockApiScope;
-const store = configureStore([]);
-const realState = createStore(rootReducer).getState();
 
 describe("Dialogmoteinnkallingskjema", () => {
   let clock: any;
@@ -159,9 +152,7 @@ const renderDialogmoteInnkallingSkjema = () =>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <Provider store={store({ ...realState, ...mockState })}>
-          <DialogmoteInnkallingSkjema />
-        </Provider>
+        <DialogmoteInnkallingSkjema />
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     dialogmoteRoutePath,

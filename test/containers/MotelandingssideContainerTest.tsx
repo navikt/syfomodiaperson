@@ -1,10 +1,6 @@
 import React from "react";
 import { expect } from "chai";
-import configureStore from "redux-mock-store";
-import { Provider } from "react-redux";
 import Motelandingsside from "../../src/components/mote/components/Motelandingsside";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
 import { QueryClientProvider } from "react-query";
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
 import {
@@ -24,13 +20,12 @@ import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { queryClientWithAktivBruker } from "../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { MemoryRouter } from "react-router-dom";
+import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { brukerinfoMock } from "../../mock/syfoperson/brukerinfoMock";
 
-const realState = createStore(rootReducer).getState();
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: any;
 let apiMockScope: any;
-let store: any;
-let mockState: any;
 
 const motebehovData = [
   {
@@ -46,17 +41,15 @@ const motebehovData = [
   },
 ];
 
-const renderMotelandingsside = (mockStore: any) =>
+const renderMotelandingsside = () =>
   render(
     <QueryClientProvider client={queryClient}>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: "", setValgtEnhet: () => void 0 }}
       >
-        <Provider store={mockStore}>
-          <MemoryRouter>
-            <Motelandingsside />
-          </MemoryRouter>
-        </Provider>
+        <MemoryRouter>
+          <Motelandingsside />
+        </MemoryRouter>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>
   );
@@ -65,6 +58,10 @@ describe("MotelandingssideContainer", () => {
   describe("MotelandingssideSide", () => {
     beforeEach(() => {
       queryClient = queryClientWithAktivBruker();
+      queryClient.setQueryData(
+        brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => brukerinfoMock
+      );
       queryClient.setQueryData(dialogmoterQueryKeys.dialogmoter(fnr), () => []);
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplaner(fnr),
@@ -79,16 +76,6 @@ describe("MotelandingssideContainer", () => {
         () => LEDERE_DEFAULT
       );
       apiMockScope = apiMock();
-      store = configureStore([]);
-      mockState = {
-        navbruker: {
-          data: {
-            kontaktinfo: {
-              fnr: fnr,
-            },
-          },
-        },
-      };
     });
 
     afterEach(() => {
@@ -97,14 +84,14 @@ describe("MotelandingssideContainer", () => {
 
     it("Skal vise AppSpinner når henter data", () => {
       stubTilgangApi(apiMockScope);
-      renderMotelandingsside(store({ ...realState, ...mockState }));
+      renderMotelandingsside();
 
       expect(screen.getByLabelText("Vent litt mens siden laster")).to.exist;
     });
 
     it("Skal vise AppSpinner når henter tilgang", async () => {
       stubTilgangApi(apiMockScope);
-      renderMotelandingsside(store({ ...realState, ...mockState }));
+      renderMotelandingsside();
 
       expect(await screen.findByLabelText("Vent litt mens siden laster")).to
         .exist;
@@ -114,7 +101,7 @@ describe("MotelandingssideContainer", () => {
       stubTilgangApi(apiMockScope, {
         harTilgang: false,
       });
-      renderMotelandingsside(store({ ...realState, ...mockState }));
+      renderMotelandingsside();
 
       expect(
         await screen.findByRole("heading", {
@@ -128,7 +115,7 @@ describe("MotelandingssideContainer", () => {
         tilgangQueryKeys.tilgang(fnr),
         () => tilgangBrukerMock
       );
-      renderMotelandingsside(store({ ...realState, ...mockState }));
+      renderMotelandingsside();
 
       expect(
         screen.getByRole("heading", {

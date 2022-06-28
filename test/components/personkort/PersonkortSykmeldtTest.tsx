@@ -2,34 +2,32 @@ import { render, screen } from "@testing-library/react";
 import PersonkortSykmeldt from "@/components/personkort/PersonkortSykmeldt";
 import { expect } from "chai";
 import React from "react";
-import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
 import { QueryClientProvider } from "react-query";
 import { apiMock } from "../../stubs/stubApi";
 import { stubPersonadresseApi } from "../../stubs/stubSyfoperson";
 import { vegadresse } from "../../../mock/syfoperson/personAdresseMock";
 import { queryClientWithAktivBruker } from "../../testQueryClient";
+import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
+import { brukerinfoMock } from "../../../mock/syfoperson/brukerinfoMock";
 
 let queryClient: any;
 let apiMockScope: any;
 
-const navbruker: Brukerinfo = {
-  arbeidssituasjon: "",
-  navn: "Knut",
-  kontaktinfo: {
-    fnr: "1234",
-  },
-};
-
 const renderPersonkortSykmeldt = () =>
   render(
     <QueryClientProvider client={queryClient}>
-      <PersonkortSykmeldt navbruker={navbruker} />
+      <PersonkortSykmeldt />
     </QueryClientProvider>
   );
 
 describe("PersonkortSykmeldt", () => {
   beforeEach(() => {
     queryClient = queryClientWithAktivBruker();
+    queryClient.setQueryData(
+      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => brukerinfoMock
+    );
     apiMockScope = apiMock();
   });
 

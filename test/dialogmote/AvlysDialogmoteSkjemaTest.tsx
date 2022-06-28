@@ -1,8 +1,4 @@
 import React from "react";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
 import { expect } from "chai";
 import AvlysDialogmoteSkjema, {
   MAX_LENGTH_AVLYS_BEGRUNNELSE,
@@ -22,12 +18,7 @@ import { QueryClientProvider } from "react-query";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubAvlysApi } from "../stubs/stubIsdialogmote";
 import { apiMock } from "../stubs/stubApi";
-import {
-  dialogmote,
-  dialogmoteMedBehandler,
-  mockState,
-  moteTekster,
-} from "./testData";
+import { dialogmote, dialogmoteMedBehandler, moteTekster } from "./testData";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -35,9 +26,6 @@ import { expectedAvlysningDocuments } from "./testDataDocuments";
 import sinon from "sinon";
 import { queryClientWithMockData } from "../testQueryClient";
 import { renderWithRouter } from "../testRouterUtils";
-
-const realState = createStore(rootReducer).getState();
-const store = configureStore([]);
 
 let queryClient: any;
 
@@ -391,9 +379,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
 const renderAvlysDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
   return renderWithRouter(
     <QueryClientProvider client={queryClient}>
-      <Provider store={store({ ...realState, ...mockState })}>
-        <AvlysDialogmoteSkjema dialogmote={dialogmote} pageTitle="test" />
-      </Provider>
+      <AvlysDialogmoteSkjema dialogmote={dialogmote} pageTitle="test" />
     </QueryClientProvider>,
     `${dialogmoteRoutePath}/:dialogmoteUuid/avlys`,
     [`${dialogmoteRoutePath}/123abc/avlys`]

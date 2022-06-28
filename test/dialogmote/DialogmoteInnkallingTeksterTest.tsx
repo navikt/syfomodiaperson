@@ -1,8 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import configureStore from "redux-mock-store";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClientProvider } from "react-query";
-import { Provider } from "react-redux";
 import React from "react";
 import DialogmoteInnkallingTekster, {
   texts,
@@ -12,20 +10,42 @@ import { expect } from "chai";
 import { queryClientWithAktivBruker } from "../testQueryClient";
 import { navEnhet } from "./testData";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
+import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import { brukerinfoMock } from "../../mock/syfoperson/brukerinfoMock";
 
-const store = configureStore([]);
 const queryClient = queryClientWithAktivBruker();
 
 const renderDialogmoteInnkallingTekster = (navBrukerKanVarsles: boolean) => {
-  const mockState = {
-    navbruker: {
-      data: {
-        kontaktinfo: {
-          skalHaVarsel: navBrukerKanVarsles,
-        },
+  const kanVarsel = {
+    ...brukerinfoMock,
+    kontaktinfo: {
+      ...brukerinfoMock.kontaktinfo,
+      reservasjon: {
+        skalHaVarsel: true,
       },
     },
   };
+  const kanIkkeVarsel = {
+    ...brukerinfoMock,
+    kontaktinfo: {
+      ...brukerinfoMock.kontaktinfo,
+      reservasjon: {
+        skalHaVarsel: false,
+      },
+    },
+  };
+  if (navBrukerKanVarsles) {
+    queryClient.setQueryData(
+      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => kanVarsel
+    );
+  } else {
+    queryClient.setQueryData(
+      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => kanIkkeVarsel
+    );
+  }
 
   render(
     <MemoryRouter>
@@ -33,20 +53,18 @@ const renderDialogmoteInnkallingTekster = (navBrukerKanVarsles: boolean) => {
         <ValgtEnhetContext.Provider
           value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
         >
-          <Provider store={store(mockState)}>
-            <Form
-              onSubmit={() => {
-                /* Do nothing */
-              }}
-            >
-              {() => (
-                <DialogmoteInnkallingTekster
-                  selectedBehandler={undefined}
-                  visAlternativTekst={false}
-                />
-              )}
-            </Form>
-          </Provider>
+          <Form
+            onSubmit={() => {
+              /* Do nothing */
+            }}
+          >
+            {() => (
+              <DialogmoteInnkallingTekster
+                selectedBehandler={undefined}
+                visAlternativTekst={false}
+              />
+            )}
+          </Form>
         </ValgtEnhetContext.Provider>
       </QueryClientProvider>
     </MemoryRouter>

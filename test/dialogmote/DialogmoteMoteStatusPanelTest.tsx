@@ -6,26 +6,18 @@ import { render, screen } from "@testing-library/react";
 import React from "react";
 import { DialogmoteMoteStatusPanel } from "@/components/mote/components/innkalling/DialogmoteMoteStatusPanel";
 import { dialogmote, dialogmoteMedMellomlagretReferat } from "./testData";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
-import configureStore from "redux-mock-store";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
-import { Provider } from "react-redux";
 import { expect } from "chai";
 import { daysFromToday, getButton } from "../testUtils";
 
 const queryClient = new QueryClient();
-const realState = createStore(rootReducer).getState();
-const store = configureStore([]);
 
 const renderDialogmoteMoteStatusPanel = (dialogmote: DialogmoteDTO) =>
   render(
     <MemoryRouter>
       <QueryClientProvider client={queryClient}>
-        <Provider store={store({ ...realState })}>
-          <DialogmoteMoteStatusPanel dialogmote={dialogmote} />
-        </Provider>
+        <DialogmoteMoteStatusPanel dialogmote={dialogmote} />
       </QueryClientProvider>
     </MemoryRouter>
   );

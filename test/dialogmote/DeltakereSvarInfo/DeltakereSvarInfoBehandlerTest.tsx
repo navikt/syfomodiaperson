@@ -1,5 +1,4 @@
 import { QueryClient, QueryClientProvider } from "react-query";
-import configureStore from "redux-mock-store";
 import {
   DialogmotedeltakerBehandlerVarselSvarDTO,
   DialogmoteDTO,
@@ -10,16 +9,13 @@ import {
   behandlerDeltaker,
   dialogmote,
   dialogmoteMedBehandler,
-  mockState,
 } from "../testData";
 import { render, screen, within } from "@testing-library/react";
-import { Provider } from "react-redux";
 import { DeltakereSvarInfo } from "@/components/dialogmote/DeltakereSvarInfo";
 import React from "react";
 import { expect } from "chai";
 import { queryClientWithMockData } from "../../testQueryClient";
 
-const store = configureStore([]);
 let queryClient: any;
 
 const dialogmoteBehandlerMedSvar = (
@@ -59,9 +55,7 @@ const getBehandlerExpanded = () =>
 const renderDeltakereSvarInfo = (dialogmote: DialogmoteDTO) =>
   render(
     <QueryClientProvider client={queryClient}>
-      <Provider store={store(mockState)}>
-        <DeltakereSvarInfo dialogmote={dialogmote} />
-      </Provider>
+      <DeltakereSvarInfo dialogmote={dialogmote} />
     </QueryClientProvider>
   );
 

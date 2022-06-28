@@ -1,13 +1,9 @@
 import { expect } from "chai";
 import { MemoryRouter } from "react-router-dom";
-import { Provider } from "react-redux";
 import React from "react";
 import dayjs from "dayjs";
 import { InnkallingDialogmotePanel } from "@/components/mote/components/innkalling/InnkallingDialogmotePanel";
 import { texts as brukerKanIkkeVarslesPapirpostTexts } from "../../src/components/dialogmote/BrukerKanIkkeVarslesPapirpostAdvarsel";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
-import configureStore from "redux-mock-store";
 import { brukerKanIkkeVarslesTekst } from "@/components/BrukerKanIkkeVarslesText";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { render, screen } from "@testing-library/react";
@@ -28,41 +24,42 @@ import {
   createDialogmote,
   createReferat,
 } from "../../mock/isdialogmote/dialogmoterMock";
+import { brukerinfoMock } from "../../mock/syfoperson/brukerinfoMock";
+import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 
 let queryClient: QueryClient;
 
-const realState = createStore(rootReducer).getState();
-const store = configureStore([]);
 const brukerKanVarsles = {
-  data: {
-    kontaktinfo: {
+  ...brukerinfoMock,
+  kontaktinfo: {
+    ...brukerinfoMock.kontaktinfo,
+    reservasjon: {
       skalHaVarsel: true,
     },
   },
 };
 const brukerKanIkkeVarsles = {
-  data: {
-    kontaktinfo: {
+  ...brukerinfoMock,
+  kontaktinfo: {
+    ...brukerinfoMock.kontaktinfo,
+    reservasjon: {
       skalHaVarsel: false,
     },
   },
 };
 
 const renderInnkallingDialogmotePanel = (navbruker: any) => {
+  queryClient.setQueryData(
+    brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => navbruker
+  );
   return render(
     <MemoryRouter>
       <QueryClientProvider client={queryClient}>
         <ValgtEnhetContext.Provider
           value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
         >
-          <Provider
-            store={store({
-              ...realState,
-              navbruker: navbruker,
-            })}
-          >
-            <InnkallingDialogmotePanel aktivtDialogmote={undefined} />
-          </Provider>
+          <InnkallingDialogmotePanel aktivtDialogmote={undefined} />
         </ValgtEnhetContext.Provider>
       </QueryClientProvider>
     </MemoryRouter>

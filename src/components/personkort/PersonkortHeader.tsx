@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import EtikettBase from "nav-frontend-etiketter";
-import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
 import {
   formaterFnr,
   hentBrukersAlderFraFnr,
@@ -16,6 +15,8 @@ import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQ
 import { ApiErrorException } from "@/api/errors";
 import { getKvinneImage, getMannImage } from "@/utils/festiveUtils";
 import { useStartOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { useValgtPersonident } from "@/hooks/useValgtBruker";
+import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 
 const texts = {
   copied: "Kopiert!",
@@ -55,40 +56,36 @@ const StyledFnr = styled.div`
   }
 `;
 
-interface PersonkortHeaderProps {
-  navbruker: Brukerinfo;
-}
-
-const PersonkortHeader = (personkortHeaderProps: PersonkortHeaderProps) => {
+const PersonkortHeader = () => {
   const { data: isEgenAnsatt } = useEgenansattQuery();
-  const { navbruker } = personkortHeaderProps;
+  const navbruker = useNavBrukerData();
   const { error, data: diskresjonskode } = useDiskresjonskodeQuery();
+
   const visEtiketter =
     diskresjonskode === "6" || diskresjonskode === "7" || isEgenAnsatt;
 
   const startDate = useStartOfLatestOppfolgingstilfelle();
+
+  const personident = useValgtPersonident();
 
   return (
     <div className="personkortHeader">
       <div className="personkortHeader__info">
         <img
           src={
-            hentBrukersKjoennFraFnr(navbruker.kontaktinfo.fnr) === KJOENN.KVINNE
+            hentBrukersKjoennFraFnr(personident) === KJOENN.KVINNE
               ? getKvinneImage()
               : getMannImage()
           }
           alt="person"
         />
         <div>
-          <h3>{`${
-            navbruker.navn ? navbruker.navn : ""
-          } (${hentBrukersAlderFraFnr(navbruker.kontaktinfo.fnr)} år)`}</h3>
+          <h3>{`${navbruker.navn} (${hentBrukersAlderFraFnr(
+            personident
+          )} år)`}</h3>
           <StyledFnr>
-            {formaterFnr(navbruker.kontaktinfo.fnr)}
-            <CopyButton
-              message={texts.copied}
-              value={navbruker.kontaktinfo.fnr}
-            />
+            {formaterFnr(personident)}
+            <CopyButton message={texts.copied} value={personident} />
           </StyledFnr>
           <HeaderInfoStartDate startDate={startDate} />
         </div>

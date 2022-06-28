@@ -1,11 +1,7 @@
-import { Provider } from "react-redux";
 import React from "react";
 import Referat, {
   ReferatMode,
 } from "../../src/components/dialogmote/referat/Referat";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
-import configureStore from "redux-mock-store";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { expect } from "chai";
 import {
@@ -23,7 +19,6 @@ import {
   dialogmoteMedBehandler,
   dialogmoteMedMellomlagretReferat,
   dialogmoteMedMellomlagretReferatBehandlerIkkeDeltatt,
-  mockState,
   moteTekster,
   narmesteLederNavn,
   referatStandardTekst,
@@ -36,9 +31,6 @@ import { apiMock } from "../stubs/stubApi";
 import { queryClientWithMockData } from "../testQueryClient";
 import { texts as deltakereSkjemaTexts } from "@/components/dialogmote/referat/Deltakere";
 import { renderWithRouter } from "../testRouterUtils";
-
-const realState = createStore(rootReducer).getState();
-const store = configureStore([]);
 
 let queryClient: any;
 
@@ -111,13 +103,11 @@ describe("ReferatMellomlagreTest", () => {
 const renderReferat = (dialogmoteDTO: DialogmoteDTO) => {
   return renderWithRouter(
     <QueryClientProvider client={queryClient}>
-      <Provider store={store({ ...realState, ...mockState })}>
-        <Referat
-          dialogmote={dialogmoteDTO}
-          pageTitle="Test"
-          mode={ReferatMode.NYTT}
-        />
-      </Provider>
+      <Referat
+        dialogmote={dialogmoteDTO}
+        pageTitle="Test"
+        mode={ReferatMode.NYTT}
+      />
     </QueryClientProvider>,
     `${dialogmoteRoutePath}/:dialogmoteUuid/referat`,
     [`${dialogmoteRoutePath}/${dialogmoteDTO.uuid}/referat`]

@@ -11,6 +11,7 @@ import { TidStedSkjemaValues } from "@/data/dialogmote/types/skjemaTypes";
 import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { genererDato } from "@/components/mote/utils";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
+import { useValgtPersonident } from "@/hooks/useValgtBruker";
 
 export const useDocumentComponents = () => {
   const navBruker = useNavBrukerData();
@@ -59,6 +60,8 @@ export const useDocumentComponents = () => {
     return components;
   };
 
+  const personident = useValgtPersonident();
+
   return {
     getHilsen: () =>
       createParagraph(commonTexts.hilsen, veilederinfo?.navn || "", "NAV"),
@@ -66,8 +69,6 @@ export const useDocumentComponents = () => {
     getMoteInfo,
     getIntroHei: () => createParagraph(`Hei, ${navBruker.navn}`),
     getIntroGjelder: () =>
-      createParagraph(
-        `Gjelder ${navBruker.navn}, f.nr. ${navBruker.kontaktinfo.fnr}`
-      ),
+      createParagraph(`Gjelder ${navBruker.navn}, f.nr. ${personident}`),
   };
 };

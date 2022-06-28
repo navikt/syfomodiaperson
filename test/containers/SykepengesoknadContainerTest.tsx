@@ -2,10 +2,6 @@ import React from "react";
 import { expect } from "chai";
 import SykepengesoknadContainer from "../../src/components/speiling/sykepengsoknader/container/SykepengesoknadContainer";
 import mockSoknader from "../mockdata/mockSoknader";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import { screen } from "@testing-library/react";
 import { QueryClientProvider } from "react-query";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
@@ -15,27 +11,22 @@ import { sykepengesoknaderQueryKeys } from "@/data/sykepengesoknad/sykepengesokn
 import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { queryClientWithAktivBruker } from "../testQueryClient";
 import { renderWithRouter } from "../testRouterUtils";
+import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { brukerinfoMock } from "../../mock/syfoperson/brukerinfoMock";
 
 const NAERINGSDRIVENDESOKNAD_ID = "faadf7c1-3aac-4758-8673-e9cee1316a3c";
 const OPPHOLD_UTLAND_ID = "e16ff778-8475-47e1-b5dc-d2ce4ad6b9ee";
 
-const realState = createStore(rootReducer).getState();
-const store = configureStore([]);
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: any;
-
-const mockState = {
-  navbruker: {
-    data: {
-      navn: "Ola Nordmann",
-      kontaktinfo: { skalHaVarsel: false },
-    },
-  },
-};
 
 describe("SykepengesoknadContainer", () => {
   beforeEach(() => {
     queryClient = queryClientWithAktivBruker();
+    queryClient.setQueryData(
+      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => brukerinfoMock
+    );
     queryClient.setQueryData(
       tilgangQueryKeys.tilgang(fnr),
       () => tilgangBrukerMock
@@ -51,14 +42,7 @@ describe("SykepengesoknadContainer", () => {
       );
       renderWithRouter(
         <QueryClientProvider client={queryClient}>
-          <Provider
-            store={store({
-              ...realState,
-              ...mockState,
-            })}
-          >
-            <SykepengesoknadContainer />
-          </Provider>
+          <SykepengesoknadContainer />
         </QueryClientProvider>,
         "/sykefravaer/sykepengesoknader/:sykepengesoknadId",
         [`/sykefravaer/sykepengesoknader/${OPPHOLD_UTLAND_ID}`]
@@ -81,14 +65,7 @@ describe("SykepengesoknadContainer", () => {
 
       renderWithRouter(
         <QueryClientProvider client={queryClient}>
-          <Provider
-            store={store({
-              ...realState,
-              ...mockState,
-            })}
-          >
-            <SykepengesoknadContainer />
-          </Provider>
+          <SykepengesoknadContainer />
         </QueryClientProvider>,
         "/sykefravaer/sykepengesoknader/:sykepengesoknadId",
         [`/sykefravaer/sykepengesoknader/${NAERINGSDRIVENDESOKNAD_ID}`]

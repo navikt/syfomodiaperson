@@ -1,4 +1,3 @@
-import { Provider } from "react-redux";
 import React from "react";
 import Referat, {
   ReferatMode,
@@ -6,9 +5,6 @@ import Referat, {
   valideringsTexts as referatSkjemaValideringsTexts,
 } from "../../src/components/dialogmote/referat/Referat";
 import { texts as deltakereSkjemaTexts } from "../../src/components/dialogmote/referat/Deltakere";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
-import configureStore from "redux-mock-store";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { expect } from "chai";
 import { texts as skjemaFeilOppsummeringTexts } from "../../src/components/SkjemaFeiloppsummering";
@@ -32,7 +28,6 @@ import {
   behandlerDeltakerTekst,
   dialogmote,
   dialogmoteMedBehandler,
-  mockState,
   moteTekster,
   narmesteLederNavn,
   veileder,
@@ -53,9 +48,6 @@ import { queryClientWithMockData } from "../testQueryClient";
 import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { NewDialogmoteReferatDTO } from "@/data/dialogmote/types/dialogmoteReferatTypes";
 import { renderWithRouter } from "../testRouterUtils";
-
-const realState = createStore(rootReducer).getState();
-const store = configureStore([]);
 
 let queryClient: any;
 
@@ -329,13 +321,11 @@ describe("ReferatTest", () => {
 const renderReferat = (dialogmoteDTO: DialogmoteDTO) => {
   return renderWithRouter(
     <QueryClientProvider client={queryClient}>
-      <Provider store={store({ ...realState, ...mockState })}>
-        <Referat
-          dialogmote={dialogmoteDTO}
-          pageTitle="Test"
-          mode={ReferatMode.NYTT}
-        />
-      </Provider>
+      <Referat
+        dialogmote={dialogmoteDTO}
+        pageTitle="Test"
+        mode={ReferatMode.NYTT}
+      />
     </QueryClientProvider>,
     `${dialogmoteRoutePath}/:dialogmoteUuid/referat`,
     [`${dialogmoteRoutePath}/${dialogmoteDTO.uuid}/referat`]

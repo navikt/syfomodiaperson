@@ -4,12 +4,8 @@ import DialogmoteInnkallingBehandler, {
   texts,
 } from "@/components/dialogmote/innkalling/DialogmoteInnkallingBehandler";
 import { QueryClientProvider } from "react-query";
-import { arbeidstaker, mockState } from "./testData";
+import { arbeidstaker } from "./testData";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
 import { screen } from "@testing-library/react";
 import { queryClientWithMockData } from "../testQueryClient";
 import { BehandlerDTO, BehandlerType } from "@/data/behandler/BehandlerDTO";
@@ -20,8 +16,6 @@ let queryClient: any;
 const noOpMethod = () => {
   /*not empty*/
 };
-const store = configureStore([]);
-const realState = createStore(rootReducer).getState();
 describe("DialogmoteInnkallingBehandler", () => {
   const fastlege = {
     type: BehandlerType.FASTLEGE,
@@ -71,9 +65,7 @@ describe("DialogmoteInnkallingBehandler", () => {
 const renderDialogmoteInnkallingBehandler = () => {
   return renderWithRouter(
     <QueryClientProvider client={queryClient}>
-      <Provider store={store({ ...realState, ...mockState })}>
-        <DialogmoteInnkallingBehandler setSelectedBehandler={noOpMethod} />
-      </Provider>
+      <DialogmoteInnkallingBehandler setSelectedBehandler={noOpMethod} />
     </QueryClientProvider>,
     dialogmoteRoutePath,
     [dialogmoteRoutePath]

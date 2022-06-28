@@ -1,32 +1,14 @@
 import { render, screen } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { Provider } from "react-redux";
+import { QueryClientProvider } from "react-query";
 import { expect } from "chai";
 import { MemoryRouter } from "react-router-dom";
 import React from "react";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
-import configureStore from "redux-mock-store";
 import VedtakContainer from "@/components/vedtak/container/VedtakContainer";
-import {
-  ARBEIDSTAKER_DEFAULT,
-  ARBEIDSTAKER_DEFAULT_FULL_NAME,
-} from "../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT_FULL_NAME } from "../../mock/common/mockConstants";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
+import { queryClientWithMockData } from "../testQueryClient";
 
-const realState = createStore(rootReducer).getState();
-const store = configureStore([]);
-const queryClient = new QueryClient();
-const mockState = {
-  navbruker: {
-    data: {
-      navn: ARBEIDSTAKER_DEFAULT_FULL_NAME,
-      kontaktinfo: {
-        fnr: ARBEIDSTAKER_DEFAULT.personIdent,
-      },
-    },
-  },
-};
+const queryClient = queryClientWithMockData();
 
 describe("VedtakContainer", () => {
   it("viser spinnsyn-lenke til vedtak", () => {
@@ -35,11 +17,9 @@ describe("VedtakContainer", () => {
         <ValgtEnhetContext.Provider
           value={{ valgtEnhet: "", setValgtEnhet: () => void 0 }}
         >
-          <Provider store={store({ ...realState, ...mockState })}>
-            <MemoryRouter>
-              <VedtakContainer />
-            </MemoryRouter>
-          </Provider>
+          <MemoryRouter>
+            <VedtakContainer />
+          </MemoryRouter>
         </ValgtEnhetContext.Provider>
       </QueryClientProvider>
     );

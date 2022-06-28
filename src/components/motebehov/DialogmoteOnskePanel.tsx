@@ -5,7 +5,7 @@ import BehandleMotebehovKnapp from "./BehandleMotebehovKnapp";
 import { DialogmotePanel } from "../mote/components/DialogmotePanel";
 import React from "react";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
-import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
+import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 
 const texts = {
@@ -15,7 +15,7 @@ const texts = {
 interface Props {
   motebehovData: MotebehovVeilederDTO[];
   ledereData: NarmesteLederRelasjonDTO[];
-  sykmeldt?: Brukerinfo;
+  sykmeldt?: BrukerinfoDTO;
 }
 
 export const DialogmoteOnskePanel = ({

@@ -3,7 +3,6 @@ import { PERSONKORTVISNING_TYPE } from "@/konstanter";
 import PersonkortHeader from "./PersonkortHeader";
 import PersonkortVisning from "./PersonkortVisning";
 import Utvidbar from "../Utvidbar";
-import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import SnowButton from "@/components/personkort/SnowButton";
 import { isDecember, isPride } from "@/utils/festiveUtils";
 import { FlexRow, PaddingSize } from "../Layout";
@@ -38,7 +37,6 @@ const PrideFlexRow = styled(FlexRow)`
 
 const Personkort = () => {
   const [visning, setVisning] = useState(PERSONKORTVISNING_TYPE.SYKMELDT);
-  const navbruker = useNavBrukerData();
   const showSnowButton = isDecember();
 
   return (
@@ -48,10 +46,7 @@ const Personkort = () => {
         {showSnowButton && <SnowButton />}
       </FlexRow>
       {isPride() && <PrideFlexRow>&nbsp;</PrideFlexRow>}
-      <Utvidbar
-        erApen={false}
-        tittel={<PersonkortHeader navbruker={navbruker} />}
-      >
+      <Utvidbar erApen={false} tittel={<PersonkortHeader />}>
         <div>
           <ul>
             <li>
@@ -113,7 +108,7 @@ const Personkort = () => {
           </ul>
 
           <div aria-live="polite">
-            <PersonkortVisning navbruker={navbruker} visning={visning} />
+            <PersonkortVisning visning={visning} />
           </div>
         </div>
       </Utvidbar>

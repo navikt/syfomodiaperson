@@ -1,6 +1,7 @@
 import nock from "nock";
 import { SYFOPERSON_ROOT } from "@/apiConstants";
 import { personAdresseMock } from "../../mock/syfoperson/personAdresseMock";
+import { brukerinfoMock } from "../../mock/syfoperson/brukerinfoMock";
 
 export const stubEgenansattApi = (scope: nock.Scope, isEgenansatt: boolean) =>
   scope
@@ -19,3 +20,9 @@ export const stubPersonadresseApi = (scope: nock.Scope) =>
   scope
     .get(`${SYFOPERSON_ROOT}/person/adresse`)
     .reply(200, () => personAdresseMock);
+
+export const stubPersoninfoApi = (scope: nock.Scope) => {
+  scope
+    .get(`${SYFOPERSON_ROOT}/person/brukerinfo`)
+    .reply(200, () => brukerinfoMock);
+};

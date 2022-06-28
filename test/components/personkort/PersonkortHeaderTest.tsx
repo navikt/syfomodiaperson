@@ -11,26 +11,26 @@ import PersonkortHeader from "@/components/personkort/PersonkortHeader";
 import { expect } from "chai";
 import { queryClientWithAktivBruker } from "../../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
+import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { brukerinfoMock } from "../../../mock/syfoperson/brukerinfoMock";
 
 let queryClient: any;
 let apiMockScope: any;
 
-const navbruker = {
-  navn: "Arne Arbeistaker",
-  kontaktinfo: { fnr: ARBEIDSTAKER_DEFAULT.personIdent },
-  arbeidssituasjon: "ARBEIDSTAKER",
-};
-
 const renderPersonkortHeader = () =>
   render(
     <QueryClientProvider client={queryClient}>
-      <PersonkortHeader navbruker={navbruker} />
+      <PersonkortHeader />
     </QueryClientProvider>
   );
 
 describe("PersonkortHeader", () => {
   beforeEach(() => {
     queryClient = queryClientWithAktivBruker();
+    queryClient.setQueryData(
+      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => brukerinfoMock
+    );
     apiMockScope = apiMock();
   });
   afterEach(() => {

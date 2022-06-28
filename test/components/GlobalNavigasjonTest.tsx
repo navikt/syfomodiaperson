@@ -1,8 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { GlobalNavigasjon } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import React from "react";
-import configureStore from "redux-mock-store";
-import { Provider } from "react-redux";
 import { QueryClientProvider } from "react-query";
 import * as menypunkter from "@/enums/menypunkter";
 import { expect } from "chai";
@@ -13,25 +11,14 @@ import { queryClientWithAktivBruker } from "../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
-const store = configureStore([]);
-const mockState = {
-  moter: {
-    data: [],
-  },
-  motebehov: {
-    data: [],
-  },
-};
 let queryClient: any;
 
 const renderGlobalNavigasjon = () =>
   render(
     <QueryClientProvider client={queryClient}>
-      <Provider store={store(mockState)}>
-        <MemoryRouter>
-          <GlobalNavigasjon aktivtMenypunkt={menypunkter.NOKKELINFORMASJON} />
-        </MemoryRouter>
-      </Provider>
+      <MemoryRouter>
+        <GlobalNavigasjon aktivtMenypunkt={menypunkter.NOKKELINFORMASJON} />
+      </MemoryRouter>
     </QueryClientProvider>
   );
 

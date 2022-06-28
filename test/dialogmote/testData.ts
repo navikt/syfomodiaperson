@@ -23,7 +23,6 @@ import {
 import { capitalizeWord } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
-import { RootState } from "@/data/rootState";
 import { BehandlerDTO, BehandlerType } from "@/data/behandler/BehandlerDTO";
 
 export const arbeidstaker = {
@@ -145,18 +144,6 @@ export const dialogmoteMedVarsel = (
     varselList: varselArbeidstaker,
   },
 });
-
-export const mockState: Partial<RootState> = {
-  navbruker: {
-    data: {
-      arbeidssituasjon: "",
-      navn: arbeidstaker.navn,
-      kontaktinfo: {
-        fnr: arbeidstaker.personident,
-      },
-    },
-  },
-};
 
 const moteSted = "Sted for møtet";
 const moteDato = toDatePrettyPrint(dayjs(new Date()).add(1, "days")) as string;

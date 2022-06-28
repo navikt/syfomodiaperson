@@ -1,12 +1,8 @@
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { QueryClientProvider } from "react-query";
-import { Provider } from "react-redux";
 import React from "react";
 import { texts as valideringsTexts } from "@/utils/valideringUtils";
 import EndreDialogmoteSkjema from "@/components/dialogmote/endre/EndreDialogmoteSkjema";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
-import configureStore from "redux-mock-store";
 import {
   changeTextInput,
   clickButton,
@@ -24,7 +20,6 @@ import {
   dialogmote,
   dialogmoteMedBehandler,
   endretMote,
-  mockState,
   moteTekster,
   navEnhet,
 } from "./testData";
@@ -43,9 +38,6 @@ import { renderWithRouter } from "../testRouterUtils";
 import { stubFeatureTogglesApi } from "../stubs/stubUnleash";
 import { stubVeilederinfoApi } from "../stubs/stubSyfoveileder";
 import { queryClientWithMockData } from "../testQueryClient";
-
-const realState = createStore(rootReducer).getState();
-const store = configureStore([]);
 
 let queryClient: any;
 let apiMockScope;
@@ -380,9 +372,7 @@ const renderEndreDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <Provider store={store({ ...realState, ...mockState })}>
-          <EndreDialogmoteSkjema dialogmote={dialogmote} />
-        </Provider>
+        <EndreDialogmoteSkjema dialogmote={dialogmote} />
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     `${dialogmoteRoutePath}/:dialogmoteUuid/endre`,

@@ -18,12 +18,13 @@ import {
   createParagraphWithTitle,
   createStandardtekstParagraph,
 } from "@/utils/documentComponentUtils";
-import { Brukerinfo } from "@/data/navbruker/types/Brukerinfo";
+import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
 import { commonTexts, referatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { behandlerDeltokTekst } from "@/utils/behandlerUtils";
 import { useDocumentComponents } from "@/hooks/dialogmote/document/useDocumentComponents";
+import { useValgtPersonident } from "@/hooks/useValgtBruker";
 
 export interface IReferatDocument {
   getReferatDocument(
@@ -39,6 +40,8 @@ export const useReferatDocument = (
   const { data: veilederinfo } = useVeilederinfoQuery();
   const isEndringAvReferat = mode === ReferatMode.ENDRET;
   const { getVirksomhetsnavn, getHilsen } = useDocumentComponents();
+
+  const personident = useValgtPersonident();
 
   const getReferatDocument = (
     values: Partial<ReferatSkjemaValues>
@@ -64,7 +67,7 @@ export const useReferatDocument = (
 
     documentComponents.push(
       createHeaderH2(navbruker?.navn),
-      ...info(dialogmote, values, navbruker, veilederinfo)
+      ...info(dialogmote, values, navbruker, personident, veilederinfo)
     );
 
     const virksomhetsnavn = getVirksomhetsnavn(
@@ -99,7 +102,8 @@ const intro = (): DocumentComponentDto[] => {
 const info = (
   dialogmote: DialogmoteDTO,
   values: Partial<ReferatSkjemaValues>,
-  navbruker: Brukerinfo,
+  navbruker: BrukerinfoDTO,
+  personident: string,
   veileder?: VeilederinfoDTO
 ): DocumentComponentDto[] => {
   const deltakereTekst = [
@@ -118,7 +122,7 @@ const info = (
     ) || [];
 
   return [
-    createParagraph(`F.nr. ${navbruker.kontaktinfo.fnr}`),
+    createParagraph(`F.nr. ${personident}`),
     createParagraphWithTitle(
       commonTexts.moteTidTitle,
       tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid)

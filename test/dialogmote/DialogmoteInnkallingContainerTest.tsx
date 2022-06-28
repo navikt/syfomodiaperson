@@ -2,11 +2,7 @@ import { render, screen } from "@testing-library/react";
 import DialogmoteInnkallingContainer from "@/components/dialogmote/innkalling/DialogmoteInnkallingContainer";
 import React from "react";
 import { queryClientWithMockData } from "../testQueryClient";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
-import configureStore from "redux-mock-store";
 import { MemoryRouter } from "react-router-dom";
-import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
@@ -22,8 +18,6 @@ import { expect } from "chai";
 import { daysFromToday } from "../testUtils";
 import { navEnhet } from "./testData";
 
-const realState = createStore(rootReducer).getState();
-const store = configureStore([]);
 let queryClient: QueryClient;
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
@@ -57,9 +51,7 @@ const renderDialogmoteInnkallingContainer = () =>
         <ValgtEnhetContext.Provider
           value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
         >
-          <Provider store={store({ ...realState })}>
-            <DialogmoteInnkallingContainer />
-          </Provider>
+          <DialogmoteInnkallingContainer />
         </ValgtEnhetContext.Provider>
       </QueryClientProvider>
     </MemoryRouter>

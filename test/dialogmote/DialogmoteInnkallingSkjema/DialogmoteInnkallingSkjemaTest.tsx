@@ -1,9 +1,5 @@
 import React from "react";
 import { expect } from "chai";
-import { createStore } from "redux";
-import { rootReducer } from "@/data/rootState";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import DialogmoteInnkallingSkjema from "@/components/dialogmote/innkalling/DialogmoteInnkallingSkjema";
 import { texts as skjemaFeilOppsummeringTexts } from "@/components/SkjemaFeiloppsummering";
 import { texts as valideringsTexts } from "@/utils/valideringUtils";
@@ -14,7 +10,6 @@ import { apiMock } from "../../stubs/stubApi";
 import {
   arbeidsgiver,
   arbeidstaker,
-  mockState,
   mote,
   moteTekster,
   navEnhet,
@@ -32,8 +27,6 @@ import {
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { renderWithRouter } from "../../testRouterUtils";
 
-const realState = createStore(rootReducer).getState();
-const store = configureStore([]);
 let queryClient: any;
 
 describe("DialogmoteInnkallingSkjema", () => {
@@ -203,9 +196,7 @@ const renderDialogmoteInnkallingSkjema = () => {
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <Provider store={store({ ...realState, ...mockState })}>
-          <DialogmoteInnkallingSkjema />
-        </Provider>
+        <DialogmoteInnkallingSkjema />
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     dialogmoteRoutePath,

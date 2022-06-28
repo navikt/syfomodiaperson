@@ -1,15 +1,16 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../rootState";
-import { Brukerinfo } from "./types/Brukerinfo";
+import { BrukerinfoDTO } from "./types/BrukerinfoDTO";
+import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 
-export const useNavBrukerData = (): Brukerinfo & {
+export const useNavBrukerData = (): BrukerinfoDTO & {
   brukerKanIkkeVarslesDigitalt: boolean;
   brukerKanVarslesDigitalt: boolean;
 } => {
-  const brukerinfo = useSelector((state: RootState) => state.navbruker.data);
+  const brukerinfo: BrukerinfoDTO = useBrukerinfoQuery().brukerinfo;
   return {
-    brukerKanIkkeVarslesDigitalt: brukerinfo.kontaktinfo.skalHaVarsel === false,
-    brukerKanVarslesDigitalt: brukerinfo.kontaktinfo.skalHaVarsel === true,
+    brukerKanIkkeVarslesDigitalt:
+      brukerinfo?.kontaktinfo?.reservasjon?.skalHaVarsel === false,
+    brukerKanVarslesDigitalt:
+      brukerinfo.kontaktinfo?.reservasjon?.skalHaVarsel === true,
     ...brukerinfo,
   };
 };

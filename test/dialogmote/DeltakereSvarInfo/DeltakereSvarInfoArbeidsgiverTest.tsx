@@ -1,15 +1,12 @@
 import {
   dialogmoteMedVarsel,
-  mockState,
   narmesteLederNavn,
   varselArbeidsgiver,
 } from "../testData";
 import { render, screen } from "@testing-library/react";
 import { expect } from "chai";
 import { QueryClientProvider } from "react-query";
-import { Provider } from "react-redux";
 import React from "react";
-import configureStore from "redux-mock-store";
 import { DeltakereSvarInfo } from "@/components/dialogmote/DeltakereSvarInfo";
 import {
   DialogmoteDTO,
@@ -18,7 +15,6 @@ import {
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { queryClientWithMockData } from "../../testQueryClient";
 
-const store = configureStore([]);
 let queryClient: any;
 
 const ingenDetaljerTekst = "Ingen detaljer er tilgjengelig.";
@@ -26,9 +22,7 @@ const ingenDetaljerTekst = "Ingen detaljer er tilgjengelig.";
 const renderDeltakereSvarInfo = (dialogmote: DialogmoteDTO) =>
   render(
     <QueryClientProvider client={queryClient}>
-      <Provider store={store(mockState)}>
-        <DeltakereSvarInfo dialogmote={dialogmote} />
-      </Provider>
+      <DeltakereSvarInfo dialogmote={dialogmote} />
     </QueryClientProvider>
   );
 
