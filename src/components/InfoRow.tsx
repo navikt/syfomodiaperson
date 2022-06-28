@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FlexColumn, FlexRow, PaddingSize } from "./Layout";
+import { PaddingSize } from "./Layout";
 import React, { ReactElement } from "react";
 
 interface Props {
@@ -7,7 +7,6 @@ interface Props {
   iconAltText?: string;
   title: ReactElement;
   subtitle?: string;
-  topPadding?: PaddingSize;
 }
 
 const Icon = styled.img`
@@ -15,26 +14,38 @@ const Icon = styled.img`
   width: 1.5em;
 `;
 
+const InfoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  padding-top: ${PaddingSize.SM};
+`;
+
+const InfoColumn = styled.div`
+  display: flex
+  flex-direction: column;
+`;
+
+const InfoTextRow = styled.div`
+  display: flex;
+`;
+
 export const InfoRow = ({
   icon,
   iconAltText = "Ikon",
   title,
   subtitle,
-  topPadding,
 }: Props) => {
   return (
-    <FlexRow topPadding={topPadding}>
-      <FlexColumn>
-        <Icon src={icon} alt={iconAltText} />
-      </FlexColumn>
-      <FlexColumn>
+    <InfoContainer>
+      <Icon src={icon} alt={iconAltText} />
+      <InfoColumn>
         {title}
         {subtitle && (
-          <FlexRow>
+          <InfoTextRow>
             <i>{subtitle}</i>
-          </FlexRow>
+          </InfoTextRow>
         )}
-      </FlexColumn>
-    </FlexRow>
+      </InfoColumn>
+    </InfoContainer>
   );
 };

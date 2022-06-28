@@ -12,12 +12,12 @@ import {
   MotebehovKanIkkeImage,
   MotebehovKanImage,
 } from "../../../img/ImageComponents";
-import { InfoRow } from "../InfoRow";
 import { PaddingSize } from "../Layout";
 import { ledereUtenMotebehovsvar } from "@/utils/ledereUtils";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 import { capitalizeAllWords } from "@/utils/stringUtils";
+import { InfoRow } from "@/components/InfoRow";
 
 export const arbeidsgiverNavnEllerTomStreng = (lederNavn?: string) => {
   return lederNavn ? `${lederNavn}` : "";
@@ -100,7 +100,6 @@ export const MotebehovKvitteringInnhold = ({
   ikonAltTekst,
   motebehov,
   tekst,
-  topPadding,
 }: MotebehovKvitteringInnholdProps) => {
   return (
     <InfoRow
@@ -108,7 +107,6 @@ export const MotebehovKvitteringInnhold = ({
       iconAltText={ikonAltTekst}
       title={tekst}
       subtitle={motebehov?.motebehovSvar?.forklaring}
-      topPadding={topPadding}
     />
   );
 };
