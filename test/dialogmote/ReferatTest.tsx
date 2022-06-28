@@ -90,6 +90,9 @@ describe("ReferatTest", () => {
       })
     ).to.exist;
 
+    screen
+      .getByRole("button", { name: "Fra arbeidsgiver: Tatten Tattover" })
+      .click();
     const getFraArbeidsgiverInput = () => getTextInput("Navn");
 
     // Sjekk at 'Fra arbeidsgiver' valideres
@@ -263,9 +266,7 @@ describe("ReferatTest", () => {
     passSkjemaTekstInput();
 
     clickButton("Pluss ikon Legg til en deltaker");
-    const annenDeltakerNavnInput = screen.getAllByRole("textbox", {
-      name: "Navn",
-    })[1];
+    const annenDeltakerNavnInput = getTextInput("Navn");
     const annenDeltakerFunksjonInput = getTextInput("Funksjon");
     changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
     changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
@@ -298,9 +299,7 @@ describe("ReferatTest", () => {
     passSkjemaTekstInput();
 
     clickButton("Pluss ikon Legg til en deltaker");
-    const annenDeltakerNavnInput = screen.getAllByRole("textbox", {
-      name: "Navn",
-    })[1];
+    const annenDeltakerNavnInput = getTextInput("Navn");
     const annenDeltakerFunksjonInput = getTextInput("Funksjon");
     changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
     changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);

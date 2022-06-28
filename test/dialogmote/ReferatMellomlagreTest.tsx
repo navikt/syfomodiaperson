@@ -122,10 +122,11 @@ const passSkjemaTekstInput = () => {
   const behandlerInput = getTextInput("Behandlerens oppgave (valgfri):");
   const veilederInput = getTextInput("Veilederens oppgave (valgfri):");
 
-  clickButton("Pluss ikon Legg til en deltaker");
-  const annenDeltakerNavnInput = screen.getAllByRole("textbox", {
-    name: "Navn",
-  })[1];
+  screen
+    .getByRole("button", { name: "Pluss ikon Legg til en deltaker" })
+    .click();
+
+  const annenDeltakerNavnInput = getTextInput("Navn");
   const annenDeltakerFunksjonInput = getTextInput("Funksjon");
 
   changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
