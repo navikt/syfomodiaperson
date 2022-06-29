@@ -1,10 +1,6 @@
-import Enzyme from "enzyme";
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import path from "path";
 import MutationObserver from "@sheerun/mutationobserver-shim";
 import { setLogger } from "react-query";
-
-Enzyme.configure({ adapter: new Adapter() });
 
 const dotEnvPath = path.resolve(".env");
 
