@@ -31,6 +31,8 @@ export const DialogmoteSideContainer = ({
   const { isLoading, isError, data: dialogmoter } = useDialogmoterQuery();
   const { brukerKanIkkeVarslesDigitalt } = useBrukerinfoQuery();
 
+  console.log("bruker kan ikke varsles", brukerKanIkkeVarslesDigitalt);
+
   const dialogmote = dialogmoter.find(
     (dialogmote) => dialogmote.uuid === dialogmoteUuid
   );

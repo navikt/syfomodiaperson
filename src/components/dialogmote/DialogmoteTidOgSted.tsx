@@ -10,6 +10,7 @@ import { Innholdstittel } from "nav-frontend-typografi";
 import { AlertstripeFullbredde } from "@/components/AlertstripeFullbredde";
 import { useVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
+import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 
 const texts = {
   title: "Tid og sted",
@@ -52,8 +53,14 @@ const DialogmoteTidOgSted = ({
 
   const ABTestHit = Number(veilederinfo?.ident.slice(-1)) >= 5;
   const { brukerKanVarslesDigitalt } = useNavBrukerData();
+  const { brukerinfo } = useBrukerinfoQuery();
+  console.log("brukerinfo ", brukerinfo);
   const showFuturisticWarning =
     !!isFuturisticMeeting && ABTestHit && brukerKanVarslesDigitalt;
+  console.log("ident: ", veilederinfo?.ident);
+  console.log("abtesthit: ", ABTestHit);
+  console.log("Bruker kan varsles ", brukerKanVarslesDigitalt);
+  console.log("in future: ", isFuturisticMeeting);
 
   return (
     <DialogmoteInnkallingSkjemaSeksjon>
