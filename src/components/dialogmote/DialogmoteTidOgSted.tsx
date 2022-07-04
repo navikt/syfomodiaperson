@@ -60,10 +60,6 @@ const DialogmoteTidOgSted = ({
   console.log("abtesthit: ", ABTestHit);
   console.log("Bruker kan varsles ", brukerKanVarslesDigitalt);
   console.log("in future: ", isFuturisticMeeting);
-  console.log(
-    "brukerinfo.kontaktinfo.skalHaVarsel: ",
-    brukerinfo.kontaktinfo?.reservasjon?.skalHaVarsel
-  );
 
   return (
     <DialogmoteInnkallingSkjemaSeksjon>
