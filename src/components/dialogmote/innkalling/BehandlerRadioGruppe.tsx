@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { capitalizeWord } from "@/utils/stringUtils";
 import { erLokal, erPreProd } from "@/utils/miljoUtil";
+import BehandlerSearch from "@/components/dialogmote/innkalling/BehandlerSearch";
 
 const texts = {
   behandlerLegend: "Velg behandler som inviteres til dialogmøtet",
@@ -52,9 +53,12 @@ const BehandlerRadioGruppe = ({
           />
         ))}
         {(erPreProd() || erLokal()) && (
-          <Radio label="Lege Legesen" name="behandler" key="10" />
+          <Radio label="Annen behandler" name="behandler" key="-1" />
         )}
       </StyledRadioGruppe>
+      {(erPreProd() || erLokal()) && (
+        <BehandlerSearch /> // TODO: Vis denne bare hvis behandler er valgt
+      )}
       <p>{texts.behandlerInfo}</p>
     </>
   );
