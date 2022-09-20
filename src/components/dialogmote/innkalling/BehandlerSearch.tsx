@@ -12,7 +12,6 @@ const BehandlerSearch = (): ReactElement => {
       setSearchTextFancyName("");
     }
   };
-  console.log(searchTextFancyName);
   return (
     <>
       <Search
