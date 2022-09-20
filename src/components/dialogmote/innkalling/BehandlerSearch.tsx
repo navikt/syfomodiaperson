@@ -1,4 +1,5 @@
 import React, { ReactElement, useRef, useState } from "react";
+import "@navikt/ds-css";
 import { Search } from "@navikt/ds-react";
 import BehandlerSearchResult from "@/components/dialogmote/innkalling/BehandlerSearchResult";
 
@@ -13,7 +14,7 @@ const BehandlerSearch = (): ReactElement => {
     }
   };
   return (
-    <>
+    <form className="relative">
       <Search
         label="Legg til en behandler"
         ref={searchRef}
@@ -26,7 +27,7 @@ const BehandlerSearch = (): ReactElement => {
         searchRef={searchRef}
         searchText={searchTextFancyName}
       />
-    </>
+    </form>
   );
 };
 
