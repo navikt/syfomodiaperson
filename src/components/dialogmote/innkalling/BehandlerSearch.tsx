@@ -5,12 +5,12 @@ import BehandlerSearchResult from "@/components/dialogmote/innkalling/BehandlerS
 
 const BehandlerSearch = (): ReactElement => {
   const searchRef = useRef(null);
-  const [searchTextFancyName, setSearchTextFancyName] = useState("");
+  const [searchvalue, setSearchvalue] = useState("");
   const setSearchText = (text) => {
     if (text.length > 3) {
-      setSearchTextFancyName(text); // TODO: Oppdater state når under 3 tegn også, men ikke søk
-    } else if (searchTextFancyName.length > 3 && text.length <= 3) {
-      setSearchTextFancyName("");
+      setSearchvalue(text);
+    } else if (searchvalue.length > 3 && text.length <= 3) {
+      setSearchvalue("");
     }
   };
   return (
@@ -23,10 +23,7 @@ const BehandlerSearch = (): ReactElement => {
         onChange={(searchText) => setSearchText(searchText)}
         clearButton={false}
       />
-      <BehandlerSearchResult
-        searchRef={searchRef}
-        searchText={searchTextFancyName}
-      />
+      <BehandlerSearchResult searchRef={searchRef} searchText={searchvalue} />
     </form>
   );
 };

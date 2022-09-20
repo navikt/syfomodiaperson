@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { Radio, RadioGruppe } from "nav-frontend-skjema";
 import styled from "styled-components";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
@@ -11,6 +11,7 @@ const texts = {
   behandlerLegend: "Velg behandler som inviteres til dialogmøtet",
   behandlerInfo: "Behandleren vil få en dialogmelding med invitasjon.",
   noBehandler: "Ingen behandler",
+  annenBehandler: "Annen behandler",
 };
 
 const behandlerOneliner = (behandler: BehandlerDTO): string => {
@@ -39,6 +40,12 @@ const BehandlerRadioGruppe = ({
 }: BehandlerRadioGruppeProps): ReactElement => {
   const { isFeatureEnabled } = useFeatureToggles();
   const visBehandlerSok = isFeatureEnabled(ToggleNames.behandlersok);
+  const [selectedRadio, setSelectedRadio] = useState<string>("");
+
+  const updateBehandler = (selectedRadio: string, behandler?: BehandlerDTO) => {
+    setSelectedRadio(selectedRadio);
+    setSelectedBehandler(behandler);
+  };
 
   return (
     <>
@@ -46,22 +53,30 @@ const BehandlerRadioGruppe = ({
         <Radio
           label={texts.noBehandler}
           name="behandler"
-          onChange={() => setSelectedBehandler(undefined)}
+          onChange={() => updateBehandler(texts.noBehandler, undefined)}
         />
-        {behandlere.map((behandler, index) => (
-          <Radio
-            label={behandlerOneliner(behandler)}
-            name="behandler"
-            key={index}
-            onChange={() => setSelectedBehandler(behandler)}
-          />
-        ))}
+        {behandlere.map((behandler, index) => {
+          const label = behandlerOneliner(behandler);
+          return (
+            <Radio
+              label={label}
+              name="behandler"
+              key={index}
+              onChange={() => updateBehandler(label, behandler)}
+            />
+          );
+        })}
         {visBehandlerSok && (
-          <Radio label="Annen behandler" name="behandler" key="-1" />
+          <Radio
+            label={texts.annenBehandler}
+            name="behandler"
+            key="-1"
+            onChange={() => updateBehandler(texts.annenBehandler)}
+          />
         )}
       </StyledRadioGruppe>
-      {visBehandlerSok && (
-        <BehandlerSearch /> // TODO: Vis denne bare hvis behandler er valgt
+      {visBehandlerSok && selectedRadio === texts.annenBehandler && (
+        <BehandlerSearch />
       )}
       <p>{texts.behandlerInfo}</p>
     </>
