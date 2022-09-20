@@ -8,7 +8,7 @@ const BehandlerSearch = (): ReactElement => {
   const setSearchText = (text) => {
     if (text.length > 3) {
       setSearchTextFancyName(text); // TODO: Oppdater state når under 3 tegn også, men ikke søk
-    } else {
+    } else if (searchTextFancyName.length > 3 && text.length <= 3) {
       setSearchTextFancyName("");
     }
   };
