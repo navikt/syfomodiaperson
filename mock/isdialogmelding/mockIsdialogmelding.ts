@@ -16,7 +16,7 @@ export const mockIsdialogmelding = (server: any) => {
     }
   );
   server.get(
-    `${ISDIALOGMELDING_ROOT}/search`,
+    `${ISDIALOGMELDING_ROOT}/behandler/search`,
     Auth.ensureAuthenticated(),
     (req: express.Request, res: express.Response) => {
       res.setHeader("Content-Type", "application/json");

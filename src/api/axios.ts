@@ -29,8 +29,7 @@ export const defaultRequestHeaders = (
 
   if (addHeader) {
     Object.keys(addHeader).forEach(
-      (headerKeyName, headerKeyIndex) =>
-        (headers[headerKeyName] = addHeader[headerKeyIndex])
+      (headerKeyName) => (headers[headerKeyName] = addHeader[headerKeyName])
     );
   }
 
