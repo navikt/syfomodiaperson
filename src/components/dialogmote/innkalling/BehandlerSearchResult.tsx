@@ -12,7 +12,6 @@ const BehandlerSearchResult = ({
   searchText,
 }: BehandlerSearchResultProps): ReactElement => {
   const { data: behandlere, isLoading } = useSokBehandlereQuery(searchText);
-  console.log(behandlere);
 
   return (
     <>
