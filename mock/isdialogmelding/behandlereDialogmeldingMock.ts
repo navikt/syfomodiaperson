@@ -1,3 +1,5 @@
+import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
+
 export const behandlereDialogmeldingMock = [
   {
     type: "FASTLEGE",
@@ -14,7 +16,7 @@ export const behandlereDialogmeldingMock = [
   },
 ];
 
-export const behandlerSokDialogmeldingMock = [
+export const behandlerSokDialogmeldingMock: BehandlerDTO[] = [
   {
     type: null,
     behandlerRef: "behandler-ref-uuid",

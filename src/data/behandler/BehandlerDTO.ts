@@ -1,5 +1,5 @@
 export interface BehandlerDTO {
-  type: BehandlerType;
+  type: BehandlerType | null;
   behandlerRef: string;
   fnr?: string;
   fornavn: string;
@@ -15,4 +15,5 @@ export interface BehandlerDTO {
 
 export enum BehandlerType {
   FASTLEGE = "FASTLEGE",
+  SYKMELDER = "SYKMELDER",
 }
