@@ -84,7 +84,9 @@ const BehandlerRadioGruppe = ({
           )}
         </RadioWrapper>
       </StyledRadioGruppe>
-      {isBehandlerSearchEnabled && showBehandlerSearch && <BehandlerSearch />}
+      {isBehandlerSearchEnabled && showBehandlerSearch && (
+        <BehandlerSearch setSelectedBehandler={setSelectedBehandler} />
+      )}
     </>
   );
 };
