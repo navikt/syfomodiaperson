@@ -11,6 +11,10 @@ const StyledButton = styled(Button)`
   color: #262626;
 `;
 
+const PopoverContent = styled(Popover.Content)`
+  padding: 0;
+`;
+
 interface BehandlerSearchResultProps {
   searchRef: React.MutableRefObject<any>;
   searchText: string;
@@ -46,21 +50,19 @@ const BehandlerSearchResult = ({
         offset={8}
         tabIndex={0}
       >
-        <div>
-          {behandlere.map((behandler, index) => {
-            const behandlerInfo = `${behandler.etternavn}, ${behandler.fornavn}: ${behandler.kontor}`;
-            return (
-              <Popover.Content key={index} style={{ padding: 0 }}>
-                <StyledButton
-                  variant={"tertiary"}
-                  onClick={() => updateSearch(behandler, behandlerInfo)}
-                >
-                  {behandlerInfo}
-                </StyledButton>
-              </Popover.Content>
-            );
-          })}
-        </div>
+        {behandlere.map((behandler, index) => {
+          const behandlerInfo = `${behandler.etternavn}, ${behandler.fornavn}: ${behandler.kontor}`;
+          return (
+            <PopoverContent key={index}>
+              <StyledButton
+                variant={"tertiary"}
+                onClick={() => updateSearch(behandler, behandlerInfo)}
+              >
+                {behandlerInfo}
+              </StyledButton>
+            </PopoverContent>
+          );
+        })}
       </Popover>
     </>
   );
