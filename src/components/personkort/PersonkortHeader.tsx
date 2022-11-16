@@ -17,11 +17,17 @@ import { getKvinneImage, getMannImage } from "@/utils/festiveUtils";
 import { useStartOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
+import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
+import {
+  sykmeldingerMedStatusSendt,
+  sykmeldingerSortertNyestTilEldst,
+} from "@/utils/sykmeldinger/sykmeldingUtils";
 
 const texts = {
   copied: "Kopiert!",
   startDate: "Sykmeldt f.o.m.: ",
   fetchDiskresjonskodeFailed: "Klarte ikke hente diskresjonskode for brukeren.",
+  diagnosekode: "Nyeste diagnosekode",
 };
 
 interface HeaderInfoStartDateProps {
@@ -56,10 +62,19 @@ const StyledFnr = styled.div`
   }
 `;
 
+const Diagnosekode = styled.div`
+  align-self: end;
+  margin-left: 1em;
+`;
+
 const PersonkortHeader = () => {
   const { data: isEgenAnsatt } = useEgenansattQuery();
   const navbruker = useNavBrukerData();
   const { error, data: diskresjonskode } = useDiskresjonskodeQuery();
+  const { sykmeldinger } = useSykmeldingerQuery();
+  const sentSykmeldinger = sykmeldingerMedStatusSendt(sykmeldinger);
+  const sortedSykmeldinger = sykmeldingerSortertNyestTilEldst(sentSykmeldinger);
+  const latestSykmelding = sortedSykmeldinger[0];
 
   const visEtiketter =
     diskresjonskode === "6" || diskresjonskode === "7" || isEgenAnsatt;
@@ -89,6 +104,9 @@ const PersonkortHeader = () => {
           </StyledFnr>
           <HeaderInfoStartDate startDate={startDate} />
         </div>
+        <Diagnosekode>
+          <span>{`${texts.diagnosekode}: ${latestSykmelding?.diagnose?.hoveddiagnose?.diagnosekode}`}</span>
+        </Diagnosekode>
       </div>
       {visEtiketter && (
         <ErrorBoundary
