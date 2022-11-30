@@ -134,15 +134,11 @@ export const GlobalNavigasjon = ({
         const isVedtakMenypunkt = menypunkt === Menypunkter.VEDTAK;
 
         return (
-          <>
+          <React.Fragment key={index}>
             {isVedtakMenypunkt ? (
               <VedtakMenypunkt index={index} navn={navn} />
             ) : (
-              <li
-                key={index}
-                className="navigasjon__element"
-                aria-current={isAktiv}
-              >
+              <li className="navigasjon__element" aria-current={isAktiv}>
                 <Link
                   ref={(instance) => {
                     if (instance) {
@@ -168,7 +164,7 @@ export const GlobalNavigasjon = ({
                 </Link>
               </li>
             )}
-          </>
+          </React.Fragment>
         );
       })}
     </ul>
