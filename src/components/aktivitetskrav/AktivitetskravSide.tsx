@@ -14,7 +14,8 @@ import {
 import { NoOppfolgingstilfelleAktivitetskravAlert } from "@/components/aktivitetskrav/NoOppfolgingstilfelleAktivitetskravAlert";
 
 export const AktivitetskravSide = () => {
-  const { tilfellerDescendingStart } = useOppfolgingstilfellePersonQuery();
+  const { tilfellerDescendingStart, hasActiveOppfolgingstilfelle } =
+    useOppfolgingstilfellePersonQuery();
   const { data } = useAktivitetskravQuery();
 
   const aktivitetskravTilVurdering = data.find(
@@ -36,7 +37,9 @@ export const AktivitetskravSide = () => {
 
   return (
     <>
-      {!oppfolgingstilfelle && <NoOppfolgingstilfelleAktivitetskravAlert />}
+      {!hasActiveOppfolgingstilfelle && (
+        <NoOppfolgingstilfelleAktivitetskravAlert />
+      )}
       {sisteVurdering && (
         <AktivitetskravVurderingAlert vurdering={sisteVurdering} />
       )}
