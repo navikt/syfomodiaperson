@@ -9,9 +9,6 @@ export const spinnsynUrl = function () {
   if (erLokal()) {
     return path;
   }
-  if (erPreProd()) {
-    `https://spinnsyn-frontend-interne.intern.dev.nav.no${path}`;
-  }
   return fullNaisUrlIntern("spinnsyn-frontend-interne", path);
 };
 
