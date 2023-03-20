@@ -46,7 +46,6 @@ spec:
   webproxy: true
   ingresses:
     - "https://syfomodiaperson.dev.intern.nav.no"
-    - "https://syfomodiaperson.intern.dev.nav.no"
   env:
     - name: NAIS_CONTEXT
       value: 'dev'
@@ -55,7 +54,7 @@ spec:
     - name: REDIS_HOST
       value: "syfomodiaperson-redis"
     - name: AUTH_REDIRECT_URI
-      value: "https://syfomodiaperson.intern.dev.nav.no/oauth2/callback"
+      value: "https://syfomodiaperson.dev.intern.nav.no/oauth2/callback"
     - name: FASTLEGEREST_AAD_APP_CLIENT_ID
       value: "dev-gcp.teamsykefravr.fastlegerest"
     - name: FASTLEGEREST_HOST
@@ -131,7 +130,7 @@ spec:
     - name: SYFOTILGANGSKONTROLL_AAD_APP_CLIENT_ID
       value: "dev-fss.teamsykefravr.syfo-tilgangskontroll"
     - name: SYFOTILGANGSKONTROLL_HOST
-      value: "syfo-tilgangskontroll.intern.dev.nav.no"
+      value: "syfo-tilgangskontroll.dev.intern.nav.no"
     - name: SYFOVEILEDER_AAD_APP_CLIENT_ID
       value: "dev-gcp.teamsykefravr.syfoveileder"
     - name: SYFOVEILEDER_HOST
