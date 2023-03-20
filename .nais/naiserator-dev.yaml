@@ -123,7 +123,7 @@ spec:
     - name: SYFOSMREGISTER_AAD_APP_CLIENT_ID
       value: "dev-gcp.teamsykmelding.syfosmregister"
     - name: SYFOSMREGISTER_HOST
-      value: "smregister.intern.dev.nav.no"
+      value: "smregister.dev.intern.nav.no"
     - name: SYKEPENGESOKNAD_BACKEND_AAD_APP_CLIENT_ID
       value: "dev-gcp.flex.sykepengesoknad-backend"
     - name: SYKEPENGESOKNAD_BACKEND_HOST
