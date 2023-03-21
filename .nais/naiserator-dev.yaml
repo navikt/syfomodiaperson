@@ -118,7 +118,7 @@ spec:
     - name: SYFOPERSON_AAD_APP_CLIENT_ID
       value: "dev-gcp.teamsykefravr.syfoperson"
     - name: SYFOPERSON_HOST
-      value: "syfoperson.intern.dev.nav.no"
+      value: "syfoperson.dev.intern.nav.no"
     - name: SYFOSMREGISTER_AAD_APP_CLIENT_ID
       value: "dev-gcp.teamsykmelding.syfosmregister"
     - name: SYFOSMREGISTER_HOST
