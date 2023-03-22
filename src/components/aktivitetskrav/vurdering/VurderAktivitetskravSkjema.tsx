@@ -7,6 +7,7 @@ import { VurderAktivitetskravSkjemaButtons } from "@/components/aktivitetskrav/v
 import { Form } from "react-final-form";
 import { useVurderAktivitetskrav } from "@/data/aktivitetskrav/useVurderAktivitetskrav";
 import { ValidationErrors } from "final-form";
+import styled from "styled-components";
 
 export interface VurderAktivitetskravSkjemaProps {
   setModalOpen: (modalOpen: boolean) => void;
@@ -22,6 +23,16 @@ interface Props<SkjemaValues> extends VurderAktivitetskravSkjemaProps {
 
   validate?: (values: Partial<SkjemaValues>) => ValidationErrors;
 }
+
+const ChildrenContainer = styled.div`
+  > * {
+    padding-bottom: ${PaddingSize.SM};
+
+    &:last-child {
+      padding-bottom: ${PaddingSize.MD};
+    }
+  }
+`;
 
 export const VurderAktivitetskravSkjema = <SkjemaValues extends object>({
   title,
@@ -52,17 +63,7 @@ export const VurderAktivitetskravSkjema = <SkjemaValues extends object>({
           {subtitle && (
             <FlexRow bottomPadding={PaddingSize.MD}>{subtitle}</FlexRow>
           )}
-          {children?.map((child, index) => {
-            const isLastChild = index === children.length - 1;
-            return (
-              <FlexRow
-                key={index}
-                bottomPadding={isLastChild ? PaddingSize.MD : PaddingSize.SM}
-              >
-                {child}
-              </FlexRow>
-            );
-          })}
+          <ChildrenContainer>{children}</ChildrenContainer>
           {vurderAktivitetskrav.isError && (
             <SkjemaInnsendingFeil error={vurderAktivitetskrav.error} />
           )}
