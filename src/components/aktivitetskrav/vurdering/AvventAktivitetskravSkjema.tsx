@@ -65,7 +65,7 @@ export const AvventAktivitetskravSkjema = (
     >
       <AvventArsakerCheckboxGruppe />
       <VurderAktivitetskravBeskrivelse label={texts.beskrivelseLabel} />
-      {visFristFelt ? <AvventFristDato /> : <></>}
+      {visFristFelt && <AvventFristDato />}
     </VurderAktivitetskravSkjema>
   );
 };
