@@ -16,8 +16,7 @@ export interface VurderAktivitetskravSkjemaProps {
 interface Props<SkjemaValues> extends VurderAktivitetskravSkjemaProps {
   title: string;
   subtitle?: ReactElement;
-  beskrivelse?: ReactElement;
-  arsakVelger?: ReactElement;
+  children?: ReactElement[];
 
   toDto(values: SkjemaValues): CreateAktivitetskravVurderingDTO;
 
@@ -27,8 +26,7 @@ interface Props<SkjemaValues> extends VurderAktivitetskravSkjemaProps {
 export const VurderAktivitetskravSkjema = <SkjemaValues extends object>({
   title,
   subtitle,
-  beskrivelse,
-  arsakVelger,
+  children,
   setModalOpen,
   aktivitetskravUuid,
   toDto,
@@ -54,10 +52,17 @@ export const VurderAktivitetskravSkjema = <SkjemaValues extends object>({
           {subtitle && (
             <FlexRow bottomPadding={PaddingSize.MD}>{subtitle}</FlexRow>
           )}
-          <FlexRow bottomPadding={PaddingSize.SM}>{arsakVelger}</FlexRow>
-          {beskrivelse && (
-            <FlexRow bottomPadding={PaddingSize.MD}>{beskrivelse}</FlexRow>
-          )}
+          {children?.map((child, index) => {
+            const isLastChild = index === children.length - 1;
+            return (
+              <FlexRow
+                key={index}
+                bottomPadding={isLastChild ? PaddingSize.MD : PaddingSize.SM}
+              >
+                {child}
+              </FlexRow>
+            );
+          })}
           {vurderAktivitetskrav.isError && (
             <SkjemaInnsendingFeil error={vurderAktivitetskrav.error} />
           )}
