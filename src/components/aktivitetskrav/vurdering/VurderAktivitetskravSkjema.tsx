@@ -1,5 +1,5 @@
 import { FlexRow, PaddingSize } from "@/components/Layout";
-import React, { ReactElement } from "react";
+import React, { ReactElement, ReactNode } from "react";
 import { CreateAktivitetskravVurderingDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { Innholdstittel } from "nav-frontend-typografi";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
@@ -17,7 +17,7 @@ export interface VurderAktivitetskravSkjemaProps {
 interface Props<SkjemaValues> extends VurderAktivitetskravSkjemaProps {
   title: string;
   subtitle?: ReactElement;
-  children?: ReactElement[];
+  children?: ReactNode;
 
   toDto(values: SkjemaValues): CreateAktivitetskravVurderingDTO;
 
