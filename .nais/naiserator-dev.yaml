@@ -45,6 +45,7 @@ spec:
     outbound:
       external:
         - host: "login.microsoftonline.com"
+        - host: "unleash.nais.io"
         - host: "internarbeidsflatedecorator-q1.dev-fss-pub.nais.io"
         - host: "modiacontextholder-q1.dev-fss-pub.nais.io"
         - host: "ereg-services-q1.dev-fss-pub.nais.io"
