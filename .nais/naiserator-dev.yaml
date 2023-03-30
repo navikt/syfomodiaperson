@@ -6,7 +6,7 @@ metadata:
   labels:
     team: teamsykefravr
 spec:
-  image: europe-north1-docker.pkg.dev/nais-management-233d/teamsykefravr/syfomodiaperson:2023.03.30-07.49-99fe504
+  image: {{ image }}
   replicas:
     min: 2
     max: 4
