@@ -272,6 +272,7 @@ export const auth = {
     host: envVar({
       name: "SYKEPENGESOKNAD_BACKEND_HOST",
     }),
+    removePathPrefix: true,
   },
   syfotilgangskontroll: {
     applicationName: "syfo-tilgangskontroll",

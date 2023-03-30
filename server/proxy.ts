@@ -390,7 +390,6 @@ export const setupProxy = (authClient: any) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      console.log("Proxy to sykepengesoknad-backend *************** ");
       proxyOnBehalfOf(
         req,
         res,
