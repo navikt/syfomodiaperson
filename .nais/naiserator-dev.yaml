@@ -6,7 +6,7 @@ metadata:
   labels:
     team: teamsykefravr
 spec:
-  image: {{ image }}
+  image: europe-north1-docker.pkg.dev/nais-management-233d/teamsykefravr/syfomodiaperson:2023.03.30-07.49-99fe504
   replicas:
     min: 2
     max: 4
@@ -66,7 +66,7 @@ spec:
         - application: syfobehandlendeenhet
         - application: syfoperson
         - application: syfoveileder
-        - application: smregister
+        - application: syfosmregister
           namespace: teamsykmelding
         - application: sykepengesoknad-backend
           namespace: flex
@@ -151,7 +151,7 @@ spec:
     - name: SYFOSMREGISTER_AAD_APP_CLIENT_ID
       value: "dev-gcp.teamsykmelding.syfosmregister"
     - name: SYFOSMREGISTER_HOST
-      value: "http://smregister.teamsykmelding"
+      value: "http://syfosmregister.teamsykmelding"
     - name: SYKEPENGESOKNAD_BACKEND_AAD_APP_CLIENT_ID
       value: "dev-gcp.flex.sykepengesoknad-backend"
     - name: SYKEPENGESOKNAD_BACKEND_HOST
