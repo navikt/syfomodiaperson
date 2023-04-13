@@ -11,7 +11,7 @@ import { Normaltekst } from "nav-frontend-typografi";
 const texts = {
   title: "Ikke aktuell",
   subtitle1:
-    "Personen skal ikke vurderes for aktivitetsplikten. Ved å lagre fjerner du hendelsen fra oversikten.",
+    "Aktivitetskravet skal ikke vurderes for denne personen. Ved å lagre fjerner du hendelsen fra oversikten.",
 };
 
 export const IkkeAktuellAktivitetskravSkjema = (

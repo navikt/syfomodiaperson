@@ -289,7 +289,9 @@ describe("VurderAktivitetskrav", () => {
       ).to.exist;
 
       expect(
-        screen.getByText(/Personen skal ikke vurderes for aktivitetsplikten/)
+        screen.getByText(
+          /Aktivitetskravet skal ikke vurderes for denne personen/
+        )
       ).to.exist;
       clickButton("Lagre");
 
