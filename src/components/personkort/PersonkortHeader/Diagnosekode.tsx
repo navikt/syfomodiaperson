@@ -11,7 +11,6 @@ const texts = {
 
 const DiagnosekodeWrapper = styled.div`
   align-self: end;
-  margin-left: 1em;
 `;
 
 const KodeSpan = styled.span`
