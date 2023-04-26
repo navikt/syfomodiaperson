@@ -21,17 +21,20 @@ export const Diagnosekode = () => {
   const { sykmeldinger } = useSykmeldingerQuery();
   const sortedSykmeldinger = sykmeldingerSortertNyestTilEldst(sykmeldinger);
   const latestSykmelding = sortedSykmeldinger[0];
+  const diagnosekode = latestSykmelding?.diagnose?.hoveddiagnose?.diagnosekode;
 
   return (
-    <DiagnosekodeWrapper>
-      <Tooltip content={texts.tooltip}>
-        <div>
-          <HealthCase />
-          <KodeSpan>
-            {latestSykmelding?.diagnose?.hoveddiagnose?.diagnosekode}
-          </KodeSpan>
-        </div>
-      </Tooltip>
-    </DiagnosekodeWrapper>
+    <>
+      {diagnosekode && (
+        <DiagnosekodeWrapper>
+          <Tooltip content={texts.tooltip}>
+            <div>
+              <HealthCase />
+              <KodeSpan>{diagnosekode}</KodeSpan>
+            </div>
+          </Tooltip>
+        </DiagnosekodeWrapper>
+      )}
+    </>
   );
 };
