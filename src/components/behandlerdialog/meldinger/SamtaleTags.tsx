@@ -20,9 +20,9 @@ interface SamtaleTagsProps {
 }
 
 export const SamtaleTags = ({ meldinger }: SamtaleTagsProps) => {
-  const { data: personoppgaver } = usePersonoppgaverQuery();
+  const { data: oppgaver } = usePersonoppgaverQuery();
   const ubehandledeBehandlerDialogSvarOppgaver = ubehandledePersonOppgaver(
-    personoppgaver,
+    oppgaver,
     PersonOppgaveType.BEHANDLERDIALOG_SVAR
   );
   const hasMeldingMedUbehandletOppgave = meldinger.some((melding) =>

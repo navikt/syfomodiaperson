@@ -31,7 +31,7 @@ export const SamtaleAccordion = ({ meldinger }: SamtalerAccordionListProps) => {
           <FlexRow>
             <StyledImage
               src={StetoskopIkon}
-              alt="Stetoskop ikon for behandler"
+              alt="Stetoskopikon for behandler"
             />
             {`${behandlerNavn} ${dateAndTimeForNewestMelding}`}
             <SamtaleTags meldinger={meldinger} />
