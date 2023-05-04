@@ -301,4 +301,38 @@ describe("Meldinger panel", () => {
       expect(vedleggTekst).to.exist;
     });
   });
+
+  it("Viser ubehandlet personoppgave for behandlerdialog svar", () => {
+    const innkommendeMeldingUuid = "456uio";
+    queryClient.setQueryData(
+      personoppgaverQueryKeys.personoppgaver(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => [
+        {
+          ...personOppgaveUbehandletBehandlerdialogSvar,
+          referanseUuid: innkommendeMeldingUuid,
+        },
+      ]
+    );
+
+    renderMeldinger();
+    const checkboxTekst =
+      "Marker nye meldinger som lest. Oppgaven vil da fjernes fra oversikten.";
+    expect(screen.getByText(checkboxTekst)).to.exist;
+  });
+
+  it("Viser behandlet personoppgave for behandlerdialog svar", () => {
+    const innkommendeMeldingUuid = "456uio";
+    queryClient.setQueryData(
+      personoppgaverQueryKeys.personoppgaver(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => [
+        {
+          ...personOppgaveBehandletBehandlerdialogSvar,
+          referanseUuid: innkommendeMeldingUuid,
+        },
+      ]
+    );
+    renderMeldinger();
+
+    expect(screen.getByText("Ferdigbehandlet", { exact: false })).to.exist;
+  });
 });

@@ -38,7 +38,7 @@ const BehandleMotebehovKnapp = ({
   const behandleMotebehov = useBehandleMotebehov();
 
   return motebehovListe.length > 0 ? (
-    <div className="panel vurderBehovKnapp">
+    <div className="panel checkboxKnappWrapper">
       <div className="skjema__input">
         <Checkbox
           label={behandleMotebehovKnappLabel(
