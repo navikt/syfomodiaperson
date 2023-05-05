@@ -20,6 +20,7 @@ import {
   personOppgaveBehandletBehandlerdialogSvar,
   personOppgaveUbehandletBehandlerdialogSvar,
 } from "../../mock/ispersonoppgave/personoppgaveMock";
+import dayjs from "dayjs";
 
 let queryClient: QueryClient;
 
@@ -311,6 +312,7 @@ describe("Meldinger panel", () => {
           ...personOppgaveUbehandletBehandlerdialogSvar,
           referanseUuid: innkommendeMeldingUuid,
         },
+        personOppgaveBehandletBehandlerdialogSvar,
       ]
     );
 
@@ -334,5 +336,39 @@ describe("Meldinger panel", () => {
     renderMeldinger();
 
     expect(screen.getByText("Ferdigbehandlet", { exact: false })).to.exist;
+  });
+
+  it("Viser siste ferdigbehandlede personoppgave for behandlerdialog svar når alle oppgaver behandlet", () => {
+    const twoDaysAgo = dayjs(new Date()).subtract(2, "days");
+    const threeDaysAgo = dayjs(new Date()).subtract(3, "days");
+    queryClient.setQueryData(
+      personoppgaverQueryKeys.personoppgaver(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => [
+        {
+          ...personOppgaveBehandletBehandlerdialogSvar,
+          behandletTidspunkt: twoDaysAgo.toDate(),
+        },
+        {
+          ...personOppgaveBehandletBehandlerdialogSvar,
+          behandletTidspunkt: threeDaysAgo.toDate(),
+        },
+      ]
+    );
+    renderMeldinger();
+
+    const expectedFerdigbehandledText = `Ferdigbehandlet av Z991100 ${twoDaysAgo.format(
+      "DD.MM.YYYY"
+    )}`;
+    expect(screen.getByText(expectedFerdigbehandledText)).to.exist;
+  });
+
+  it("Viser ingen oppgave når ingen behandlerdialog-oppgaver", () => {
+    renderMeldinger();
+
+    expect(screen.queryByText("Ferdigbehandlet", { exact: false })).to.not
+      .exist;
+    expect(
+      screen.queryByText("Marker nye meldinger som lest", { exact: false })
+    ).to.not.exist;
   });
 });
