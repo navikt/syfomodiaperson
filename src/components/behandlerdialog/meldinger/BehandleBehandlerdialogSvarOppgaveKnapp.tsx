@@ -56,13 +56,11 @@ const BehandleBehandlerdialogSvarOppgaveKnapp = () => {
         <BehandlePersonOppgaveKnapp
           personOppgave={sisteBehandledeOppgave}
           isBehandlet={isBehandlet}
-          behandlePersonOppgaveMutation={() =>
+          handleBehandleOppgave={() =>
             behandleAllPersonoppgaver.mutate(behandlePersonOppgaveRequestDTO)
           }
-          behandlePersonOppgaveMutationIsLoading={
-            behandleAllPersonoppgaver.isLoading
-          }
-          behandlePersonOppgaveText={texts.fjernOppgave}
+          isBehandleOppgaveLoading={behandleAllPersonoppgaver.isLoading}
+          behandleOppgaveText={texts.fjernOppgave}
         />
       )}
     </FlexRow>

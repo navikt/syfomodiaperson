@@ -23,11 +23,11 @@ const VurderOppgaveForDialogmotesvarKnapp = ({
     <BehandlePersonOppgaveKnapp
       personOppgave={personOppgave}
       isBehandlet={isBehandlet}
-      behandlePersonOppgaveMutation={() =>
+      handleBehandleOppgave={() =>
         behandlePersonOppgave.mutate(personOppgave.uuid)
       }
-      behandlePersonOppgaveMutationIsLoading={behandlePersonOppgave.isLoading}
-      behandlePersonOppgaveText={texts.fjernOppgave}
+      isBehandleOppgaveLoading={behandlePersonOppgave.isLoading}
+      behandleOppgaveText={texts.fjernOppgave}
     />
   );
 };

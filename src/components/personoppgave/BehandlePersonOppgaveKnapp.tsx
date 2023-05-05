@@ -5,18 +5,6 @@ import { Checkbox, Panel } from "@navikt/ds-react";
 import styled from "styled-components";
 import navFarger from "nav-frontend-core";
 
-const getBehandlePersonOppgaveKnappLabel = (
-  isBehandlet: boolean,
-  personOppgave: PersonOppgave,
-  behandlePersonOppgaveText: string
-): string => {
-  return isBehandlet
-    ? `Ferdigbehandlet av ${
-        personOppgave.behandletVeilederIdent
-      } ${toDatePrettyPrint(personOppgave.behandletTidspunkt)}`
-    : behandlePersonOppgaveText;
-};
-
 const CheckboxPanel = styled(Panel)`
   border: 1px solid ${navFarger.navGra20};
 `;
@@ -24,31 +12,36 @@ const CheckboxPanel = styled(Panel)`
 interface BehandlePersonoppgaveKnappProps {
   personOppgave: PersonOppgave;
   isBehandlet: boolean;
-  behandlePersonOppgaveMutation: () => void;
-  behandlePersonOppgaveMutationIsLoading: boolean;
-  behandlePersonOppgaveText: string;
+  handleBehandleOppgave: () => void;
+  isBehandleOppgaveLoading: boolean;
+  behandleOppgaveText: string;
 }
+
+const ferdigbehandletText = (personOppgave: PersonOppgave) =>
+  `Ferdigbehandlet av ${
+    personOppgave.behandletVeilederIdent
+  } ${toDatePrettyPrint(personOppgave.behandletTidspunkt)}`;
 
 const BehandlePersonOppgaveKnapp = ({
   personOppgave,
   isBehandlet,
-  behandlePersonOppgaveMutation,
-  behandlePersonOppgaveMutationIsLoading,
-  behandlePersonOppgaveText,
+  handleBehandleOppgave,
+  isBehandleOppgaveLoading,
+  behandleOppgaveText,
 }: BehandlePersonoppgaveKnappProps) => {
+  const oppgaveKnappText = isBehandlet
+    ? ferdigbehandletText(personOppgave)
+    : behandleOppgaveText;
+
   return (
     <CheckboxPanel>
       <Checkbox
-        onClick={behandlePersonOppgaveMutation}
-        disabled={isBehandlet || behandlePersonOppgaveMutationIsLoading}
+        onClick={handleBehandleOppgave}
+        disabled={isBehandlet || isBehandleOppgaveLoading}
         defaultChecked={isBehandlet}
         size="small"
       >
-        {getBehandlePersonOppgaveKnappLabel(
-          isBehandlet,
-          personOppgave,
-          behandlePersonOppgaveText
-        )}
+        {oppgaveKnappText}
       </Checkbox>
     </CheckboxPanel>
   );
