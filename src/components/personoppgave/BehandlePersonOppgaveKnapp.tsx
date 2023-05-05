@@ -1,7 +1,9 @@
 import React from "react";
 import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
-import { Checkbox } from "@navikt/ds-react";
+import { Checkbox, Panel } from "@navikt/ds-react";
+import styled from "styled-components";
+import navFarger from "nav-frontend-core";
 
 const getBehandlePersonOppgaveKnappLabel = (
   isBehandlet: boolean,
@@ -14,6 +16,10 @@ const getBehandlePersonOppgaveKnappLabel = (
       } ${toDatePrettyPrint(personOppgave.behandletTidspunkt)}`
     : behandlePersonOppgaveText;
 };
+
+const CheckboxPanel = styled(Panel)`
+  border: 1px solid ${navFarger.navGra20};
+`;
 
 interface BehandlePersonoppgaveKnappProps {
   personOppgave: PersonOppgave;
@@ -30,24 +36,21 @@ const BehandlePersonOppgaveKnapp = ({
   behandlePersonOppgaveMutationIsLoading,
   behandlePersonOppgaveText,
 }: BehandlePersonoppgaveKnappProps) => {
-  // TODO: Skrive oss bort fra less-styling
   return (
-    <div className="panel checkboxKnappWrapper">
-      <div className="skjema__input">
-        <Checkbox
-          onClick={behandlePersonOppgaveMutation}
-          disabled={isBehandlet || behandlePersonOppgaveMutationIsLoading}
-          defaultChecked={isBehandlet}
-          size="small"
-        >
-          {getBehandlePersonOppgaveKnappLabel(
-            isBehandlet,
-            personOppgave,
-            behandlePersonOppgaveText
-          )}
-        </Checkbox>
-      </div>
-    </div>
+    <CheckboxPanel>
+      <Checkbox
+        onClick={behandlePersonOppgaveMutation}
+        disabled={isBehandlet || behandlePersonOppgaveMutationIsLoading}
+        defaultChecked={isBehandlet}
+        size="small"
+      >
+        {getBehandlePersonOppgaveKnappLabel(
+          isBehandlet,
+          personOppgave,
+          behandlePersonOppgaveText
+        )}
+      </Checkbox>
+    </CheckboxPanel>
   );
 };
 
