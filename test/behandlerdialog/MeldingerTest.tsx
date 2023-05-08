@@ -304,13 +304,11 @@ describe("Meldinger panel", () => {
   });
 
   it("Viser ubehandlet personoppgave for behandlerdialog svar", () => {
-    const innkommendeMeldingUuid = "456uio";
     queryClient.setQueryData(
       personoppgaverQueryKeys.personoppgaver(ARBEIDSTAKER_DEFAULT.personIdent),
       () => [
         {
           ...personOppgaveUbehandletBehandlerdialogSvar,
-          referanseUuid: innkommendeMeldingUuid,
         },
         personOppgaveBehandletBehandlerdialogSvar,
       ]
@@ -323,13 +321,11 @@ describe("Meldinger panel", () => {
   });
 
   it("Viser behandlet personoppgave for behandlerdialog svar", () => {
-    const innkommendeMeldingUuid = "456uio";
     queryClient.setQueryData(
       personoppgaverQueryKeys.personoppgaver(ARBEIDSTAKER_DEFAULT.personIdent),
       () => [
         {
           ...personOppgaveBehandletBehandlerdialogSvar,
-          referanseUuid: innkommendeMeldingUuid,
         },
       ]
     );
@@ -363,6 +359,11 @@ describe("Meldinger panel", () => {
   });
 
   it("Viser ingen oppgave når ingen behandlerdialog-oppgaver", () => {
+    queryClient.setQueryData(
+      personoppgaverQueryKeys.personoppgaver(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => []
+    );
+
     renderMeldinger();
 
     expect(screen.queryByText("Ferdigbehandlet", { exact: false })).to.not

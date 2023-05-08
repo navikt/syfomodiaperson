@@ -9,18 +9,18 @@ const CheckboxPanel = styled(Panel)`
   border: 1px solid ${navFarger.navGra20};
 `;
 
+const ferdigbehandletText = (personOppgave: PersonOppgave) =>
+  `Ferdigbehandlet av ${
+    personOppgave.behandletVeilederIdent
+  } ${toDatePrettyPrint(personOppgave.behandletTidspunkt)}`;
+
 interface BehandlePersonoppgaveKnappProps {
-  personOppgave: PersonOppgave;
+  personOppgave: PersonOppgave | undefined;
   isBehandlet: boolean;
   handleBehandleOppgave: () => void;
   isBehandleOppgaveLoading: boolean;
   behandleOppgaveText: string;
 }
-
-const ferdigbehandletText = (personOppgave: PersonOppgave) =>
-  `Ferdigbehandlet av ${
-    personOppgave.behandletVeilederIdent
-  } ${toDatePrettyPrint(personOppgave.behandletTidspunkt)}`;
 
 const BehandlePersonOppgaveKnapp = ({
   personOppgave,
@@ -29,9 +29,10 @@ const BehandlePersonOppgaveKnapp = ({
   isBehandleOppgaveLoading,
   behandleOppgaveText,
 }: BehandlePersonoppgaveKnappProps) => {
-  const oppgaveKnappText = isBehandlet
-    ? ferdigbehandletText(personOppgave)
-    : behandleOppgaveText;
+  const oppgaveKnappText =
+    isBehandlet && personOppgave
+      ? ferdigbehandletText(personOppgave)
+      : behandleOppgaveText;
 
   return (
     <CheckboxPanel>

@@ -26,7 +26,7 @@ const sortDateByTidspunkt = (d1: Date | null, d2: Date | null) => {
 };
 const getSisteBehandledeBehandlerdialogSvarOppgave = (
   personOppgaver: PersonOppgave[]
-): PersonOppgave => {
+): PersonOppgave | undefined => {
   return getAllBehandledePersonOppgaver(
     personOppgaver,
     PersonOppgaveType.BEHANDLERDIALOG_SVAR
