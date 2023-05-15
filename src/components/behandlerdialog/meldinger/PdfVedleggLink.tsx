@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "@navikt/ds-react";
+import { Link, Loader } from "@navikt/ds-react";
 import { useBehandlerdialogVedleggQuery } from "@/data/behandlerdialog/behandlerdialogQueryHooks";
-import AppSpinner from "@/components/AppSpinner";
+import styled from "styled-components";
 
 const createPdfBlob = (data: ArrayBuffer | undefined) => {
   return !!data
@@ -10,6 +10,10 @@ const createPdfBlob = (data: ArrayBuffer | undefined) => {
       })
     : new Blob();
 };
+
+const StyledLink = styled(Link)`
+  padding-right: 0.25em;
+`;
 
 interface PdfVedleggProps {
   meldingUuid: string;
@@ -34,11 +38,11 @@ const PdfVedleggLink = ({
   return (
     <>
       {isFetching ? (
-        <AppSpinner size={"small"} />
+        <Loader size="small" />
       ) : (
-        <Link href={pdfUrl} target="_blank" rel="noreferrer">
+        <StyledLink href={pdfUrl} target="_blank" rel="noreferrer">
           Vedlegg {oneIndexedVedleggNumber}
-        </Link>
+        </StyledLink>
       )}
     </>
   );

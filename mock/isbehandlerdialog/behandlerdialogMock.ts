@@ -104,7 +104,7 @@ export const behandlerdialogMockEmpty = {
 };
 
 function base64ToArrayBuffer(base64: string) {
-  const binaryString = atob(base64);
+  const binaryString = Buffer.from(base64, "base64").toString("utf8");
   const bytes = new Uint8Array(binaryString.length);
   return bytes.map((byte, i) => binaryString.charCodeAt(i));
 }
