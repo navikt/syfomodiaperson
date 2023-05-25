@@ -1,0 +1,46 @@
+import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import React from "react";
+import SykmeldingNokkelOpplysning from "@/components/speiling/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingNokkelOpplysning";
+import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+
+const texts = {
+  title: "Egenmeldingsdager (lagt til av deg)",
+  daySingle: "dag",
+  dayMultiple: "dager",
+};
+
+interface EgenmeldingsdagerSummaryProps {
+  egenmeldingsdager: string[];
+}
+
+const EgenmeldingsdagerSummary = ({
+  egenmeldingsdager,
+}: EgenmeldingsdagerSummaryProps) => {
+  const antallDager = egenmeldingsdager.length;
+  const dayText = antallDager === 1 ? texts.daySingle : texts.dayMultiple;
+  return (
+    <>
+      {egenmeldingsdager.map((dag, index) => (
+        <p key={index}>{tilLesbarDatoMedArstall(dag)}</p>
+      ))}
+      <p>{`(${antallDager} ${dayText})`}</p>
+    </>
+  );
+};
+
+interface EgenmeldingsdagerProps {
+  sykmelding: SykmeldingOldFormat;
+}
+
+export const Egenmeldingsdager = ({ sykmelding }: EgenmeldingsdagerProps) => {
+  return sykmelding.sporsmal.egenmeldingsdager &&
+    sykmelding.sporsmal.egenmeldingsdager.length > 0 ? (
+    <SykmeldingNokkelOpplysning tittel={texts.title}>
+      <EgenmeldingsdagerSummary
+        egenmeldingsdager={sykmelding.sporsmal.egenmeldingsdager}
+      />
+    </SykmeldingNokkelOpplysning>
+  ) : (
+    <></>
+  );
+};
