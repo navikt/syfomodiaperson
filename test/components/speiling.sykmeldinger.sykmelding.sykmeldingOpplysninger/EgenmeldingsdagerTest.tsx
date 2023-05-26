@@ -32,8 +32,10 @@ describe("Egenmeldingsdager", () => {
     render(<Egenmeldingsdager sykmelding={sykmelding} />);
 
     expect(screen.getByRole("heading", { name: headerText })).to.exist;
-    expect(screen.getByText("1. januar 2020")).to.exist;
-    expect(screen.getByText("2. januar 2020")).to.exist;
+    const egenmeldingsdatoer = screen.getAllByText(/januar 2020/);
+    expect(egenmeldingsdatoer).to.have.length(2);
+    expect(egenmeldingsdatoer[0].textContent).to.equal("1. januar 2020");
+    expect(egenmeldingsdatoer[1].textContent).to.equal("2. januar 2020");
     expect(screen.getByText("(2 dager)")).to.exist;
   });
   it("renders (1 dag) when 1 egenmeldingsdag", () => {
