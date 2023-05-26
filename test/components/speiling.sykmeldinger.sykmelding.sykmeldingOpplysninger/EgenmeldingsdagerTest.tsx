@@ -23,10 +23,10 @@ describe("Egenmeldingsdager", () => {
 
     expect(screen.queryByRole("heading", { name: headerText })).to.not.exist;
   });
-  it("renders egenmeldingsdager og antall dager", () => {
+  it("renders egenmeldingsdager (sortert) og antall dager", () => {
     const sykmelding = mockSykmelding({
       sporsmal: {
-        egenmeldingsdager: ["2020-01-01", "2020-01-02"],
+        egenmeldingsdager: ["2020-01-02", "2020-01-01"],
       },
     });
     render(<Egenmeldingsdager sykmelding={sykmelding} />);
