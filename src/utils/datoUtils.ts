@@ -98,45 +98,6 @@ export const showTimeIncludingSeconds = (d) => {
   return `${hour}:${minute}:${second}`;
 };
 
-export const lagJsDate = (dato) => {
-  if (dato) {
-    return new Date(dato);
-  }
-  return dato;
-};
-
-export const konverterTid = (mote) => {
-  return Object.assign({}, mote, {
-    opprettetTidspunkt: lagJsDate(mote.opprettetTidspunkt),
-    bekreftetAlternativ: mote.bekreftetAlternativ
-      ? Object.assign({}, mote.bekreftetAlternativ, {
-          tid: lagJsDate(mote.bekreftetAlternativ.tid),
-          created: lagJsDate(mote.bekreftetAlternativ.created),
-        })
-      : null,
-    bekreftetTidspunkt: mote.bekreftetTidspunkt
-      ? lagJsDate(mote.bekreftetTidspunkt)
-      : null,
-    deltakere: mote.deltakere.map((deltaker) => {
-      return Object.assign({}, deltaker, {
-        svartidspunkt: lagJsDate(deltaker.svartidspunkt),
-        svar: deltaker.svar.map((s) => {
-          return Object.assign({}, s, {
-            tid: lagJsDate(s.tid),
-            created: lagJsDate(s.created),
-          });
-        }),
-      });
-    }),
-    alternativer: mote.alternativer.map((alt) => {
-      return Object.assign({}, alt, {
-        tid: lagJsDate(alt.tid),
-        created: lagJsDate(alt.created),
-      });
-    }),
-  });
-};
-
 export const restdatoTildato = (restdato) => {
   const dato = restdato.split("T")[0];
   return dato.split("-").reverse().join(".");
@@ -267,7 +228,7 @@ export const toDate = (dato) => {
   if (typeof dato === "undefined" || dato === null) {
     return undefined;
   } else if (
-    typeof date === "string" &&
+    typeof dato === "string" &&
     dato.includes("T") &&
     !dato.includes("Z")
   ) {
@@ -276,20 +237,18 @@ export const toDate = (dato) => {
   return new Date(dato);
 };
 
-//TODO: Convert this util file to typescript
 export const toDateWithoutNullCheck = (dato) => {
-  if (typeof date === "string" && dato.includes("T") && !dato.includes("Z")) {
+  if (typeof dato === "string" && dato.includes("T") && !dato.includes("Z")) {
     return new Date(`${dato}Z`);
   }
   return new Date(dato);
 };
 
 export const toDatePrettyPrint = (dato) => {
-  if (typeof dato === "undefined" || dato === null) {
+  const _dato = toDate(dato);
+  if (typeof _dato === "undefined" || _dato === null) {
     return undefined;
   }
-
-  const _dato = toDate(dato);
 
   const days =
     _dato.getUTCDate() < 10
@@ -304,10 +263,15 @@ export const toDatePrettyPrint = (dato) => {
   return `${days}.${months}.${years}`;
 };
 
-export const getDuration = (from, to) => {
+export const getDuration = (from: Date, to: Date) => {
   return (
-    Math.round(Math.floor(toDate(to) - toDate(from)) / (1000 * 60 * 60 * 24)) +
-    1
+    Math.round(
+      Math.floor(
+        toDateWithoutNullCheck(to).getTime() -
+          toDateWithoutNullCheck(from).getTime()
+      ) /
+        (1000 * 60 * 60 * 24)
+    ) + 1
   );
 };
 
@@ -331,11 +295,6 @@ const ONE_WEEK_MILLIS = 7 * 24 * 60 * 60 * 1000;
 
 export const getEarliestDate = (date1, date2) => {
   return new Date(date1) < new Date(date2) ? new Date(date1) : new Date(date2);
-};
-
-export const getWeeksSinceDate = (date) => {
-  const now = new Date();
-  return getWeeksBetween(new Date(date), now);
 };
 
 export const getWeeksBetween = (date1, date2) => {
