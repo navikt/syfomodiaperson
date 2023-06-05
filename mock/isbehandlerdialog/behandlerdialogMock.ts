@@ -21,7 +21,7 @@ const meldingtilBehandlerDocument = [
   },
   {
     texts: [
-      `Gjelder pasient: ${ARBEIDSTAKER_DEFAULT_FULL_NAME}, ${ARBEIDSTAKER_DEFAULT.personIdent}`,
+      `Gjelder pasient: ${ARBEIDSTAKER_DEFAULT_FULL_NAME}, ${ARBEIDSTAKER_DEFAULT.personIdent}.`,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
