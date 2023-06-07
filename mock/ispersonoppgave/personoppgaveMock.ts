@@ -43,7 +43,7 @@ export const personOppgaveUbehandletBehandlerdialogUbesvartMelding = {
   ...personOppgaveUbehandletBehandlerdialogSvar,
   uuid: "5f1e2629-062b-442d-ae1f-3b08e9234cd4",
   referanseUuid: "5f1e2639-032c-443d-ac1f-3b08e9574cd5",
-  type: "BEHANDLERDIALOG_UBESVART_MELDING",
+  type: "BEHANDLERDIALOG_MELDING_UBESVART",
 };
 
 export const personOppgaveBehandletBehandlerdialogUbesvartMelding = {

@@ -27,7 +27,7 @@ export const PaminnelseMelding = ({ melding }: PaminnelseMeldingProps) => {
   const { data: oppgaver } = usePersonoppgaverQuery();
   const ubehandledeUbesvartMeldingOppgaver = getAllUbehandledePersonOppgaver(
     oppgaver,
-    PersonOppgaveType.BEHANDLERDIALOG_UBESVART_MELDING
+    PersonOppgaveType.BEHANDLERDIALOG_MELDING_UBESVART
   );
   const hasUbesvartMeldingOppgave = ubehandledeUbesvartMeldingOppgaver.some(
     (oppgave) => oppgave.referanseUuid === melding.uuid
