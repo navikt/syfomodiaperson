@@ -14,6 +14,7 @@ import { DialogmoteStatus } from "@/data/dialogmote/types/dialogmoteTypes";
 import { useDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { FlexPanel } from "@/components/Layout";
+import { useHotJarMotebehovTrigger } from "@/hooks/hotJarTriggers";
 
 const texts = {
   dialogmoter: "Dialogmøter",
@@ -44,6 +45,7 @@ export const Motelandingsside = () => {
     isError: henterLedereFeilet,
   } = useLedereQuery();
   const navbruker = useNavBrukerData();
+  useHotJarMotebehovTrigger();
 
   const henter =
     henterDialogmoter ||
