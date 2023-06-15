@@ -30,7 +30,7 @@ const ModalContent = styled(Modal.Content)`
 `;
 
 const VisOgSendPaminnelse = ({ melding }: PaminnelseMeldingProps) => {
-  const [visPaminnelse, setVisPaminnelse] = useState(false);
+  const [visPaminnelseModal, setVisPaminnelseModal] = useState(false);
 
   const { getPaminnelseDocument } = useMeldingTilBehandlerDocument();
   const paminnelseTilBehandler = usePaminnelseTilBehandler(melding.uuid);
@@ -42,7 +42,7 @@ const VisOgSendPaminnelse = ({ melding }: PaminnelseMeldingProps) => {
       document: paminnelseDocument,
     };
     paminnelseTilBehandler.mutate(paminnelseDTO, {
-      onSuccess: () => setVisPaminnelse(false),
+      onSuccess: () => setVisPaminnelseModal(false),
     });
   };
 
@@ -51,15 +51,15 @@ const VisOgSendPaminnelse = ({ melding }: PaminnelseMeldingProps) => {
       <StyledButton
         icon={<BellIcon aria-hidden />}
         onClick={() => {
-          setVisPaminnelse(true);
+          setVisPaminnelseModal(true);
           paminnelseTilBehandler.reset();
         }}
       >
         {texts.button}
       </StyledButton>
       <Modal
-        open={visPaminnelse}
-        onClose={() => setVisPaminnelse(false)}
+        open={visPaminnelseModal}
+        onClose={() => setVisPaminnelseModal(false)}
         aria-labelledby="modal-heading"
       >
         <ModalContent>
@@ -82,7 +82,7 @@ const VisOgSendPaminnelse = ({ melding }: PaminnelseMeldingProps) => {
             <Button
               variant="tertiary"
               disabled={paminnelseTilBehandler.isLoading}
-              onClick={() => setVisPaminnelse(false)}
+              onClick={() => setVisPaminnelseModal(false)}
             >
               {texts.cancel}
             </Button>
