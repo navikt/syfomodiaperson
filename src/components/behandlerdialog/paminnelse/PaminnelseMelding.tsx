@@ -54,7 +54,6 @@ const VisOgSendPaminnelse = ({
       document: paminnelseDocument,
     };
     paminnelseTilBehandler.mutate(paminnelseDTO, {
-      // Denne kjøres etter mutation sin onSuccess slik at UI er oppdatert når modal lukkes
       onSuccess: () => setVisPaminnelseModal(false),
     });
   };
