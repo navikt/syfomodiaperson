@@ -7,7 +7,7 @@
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "outDir": "/",
+    "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
@@ -21,10 +21,12 @@
   "exclude": [
     "node_modules",
     "build",
+    "cypress",
+    "mock",
     "scripts",
     "acceptance-tests",
     "jest",
-    "src/setupTests.ts"
+    "test"
   ],
   "types": ["typePatches"]
 }
