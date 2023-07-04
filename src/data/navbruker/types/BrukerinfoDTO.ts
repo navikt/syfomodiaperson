@@ -9,7 +9,7 @@ export interface BrukerinfoDTO {
   kontaktinfo?: KontaktinfoDTO;
   arbeidssituasjon: string;
   dodsdato: string | null;
-  tilrettelagtKommunikasjon: TilrettelagtKommunikasjon;
+  tilrettelagtKommunikasjon: TilrettelagtKommunikasjon | null;
 }
 
 interface TilrettelagtKommunikasjon {

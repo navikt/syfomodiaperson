@@ -28,10 +28,16 @@ export const PersonkortHeaderTags = () => {
   const isKode6 = diskresjonskode === "6";
   const isKode7 = diskresjonskode === "7";
   const isTalesprakTolkBehov =
-    !!navbruker.tilrettelagtKommunikasjon.talesprakTolk?.value;
+    !!navbruker.tilrettelagtKommunikasjon?.talesprakTolk?.value;
   const isTegnsprakTolkBehov =
-    !!navbruker.tilrettelagtKommunikasjon.tegnsprakTolk?.value;
-  const visEtiketter = isKode6 || isKode7 || isEgenAnsatt || isDead;
+    !!navbruker.tilrettelagtKommunikasjon?.tegnsprakTolk?.value;
+  const visEtiketter =
+    isKode6 ||
+    isKode7 ||
+    isEgenAnsatt ||
+    isDead ||
+    isTalesprakTolkBehov ||
+    isTegnsprakTolkBehov;
 
   return (
     <>
