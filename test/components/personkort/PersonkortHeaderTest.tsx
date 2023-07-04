@@ -77,6 +77,24 @@ describe("PersonkortHeader", () => {
     expect(screen.queryByText("Kode")).not.to.exist;
   });
 
+  it("viser ikke tegnspråktolk når denne tegnspråktolk er tom fra API", async () => {
+    stubEgenansattApi(apiMockScope, true);
+    stubDiskresjonskodeApi(apiMockScope);
+    renderPersonkortHeader();
+    await screen.findByText("Egenansatt");
+
+    expect(screen.queryByText("Kode")).not.to.exist;
+  });
+
+  it("viser tegnspråktolk når denne tegnspråktolk har verdi fra API", async () => {
+    stubEgenansattApi(apiMockScope, true);
+    stubDiskresjonskodeApi(apiMockScope);
+    renderPersonkortHeader();
+    await screen.findByText("Egenansatt");
+
+    expect(screen.queryByText("Kode")).not.to.exist;
+  });
+
   it("viser dødsdato når dato finnes i brukerinfo", async () => {
     stubPersoninfoApi(apiMockScope, "2023-02-01");
     renderPersonkortHeader();
