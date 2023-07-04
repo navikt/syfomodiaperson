@@ -14,8 +14,8 @@ const texts = {
   kode6: "Kode 6",
   kode7: "Kode 7",
   egenansatt: "Egenansatt",
-  talesprakTolk: "Behov for talespråktolk",
-  tegnsprakTolk: "Behov for tegnspråktolk",
+  talesprakTolk: "Talespråktolk",
+  tegnsprakTolk: "Tegnspråktolk",
 };
 
 export const PersonkortHeaderTags = () => {
