@@ -1,11 +1,10 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import { Link } from "react-router-dom";
 import SykmeldingPeriodeInfo from "./SykmeldingPeriodeInfo";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
 import {
   ReportProblemTriangleImage,
-  SykmeldingerHoverBlaaImage,
   SykmeldingerImage,
 } from "../../../../../img/ImageComponents";
 import {
@@ -77,12 +76,6 @@ const getIkon = (behandlingsutfallStatus: BehandlingsutfallStatusDTO) => {
     : SykmeldingerImage;
 };
 
-const getHoverIkon = (behandlingsutfallStatus: BehandlingsutfallStatusDTO) => {
-  return behandlingsutfallStatus === BehandlingsutfallStatusDTO.INVALID
-    ? ReportProblemTriangleImage
-    : SykmeldingerHoverBlaaImage;
-};
-
 interface SykmeldingTeaserProps {
   sykmelding: SykmeldingOldFormat;
 }
@@ -91,7 +84,6 @@ const SykmeldingTeaser = ({
   sykmelding,
 }: SykmeldingTeaserProps): ReactElement => {
   const behandlingsutfallStatus = sykmelding.behandlingsutfall.status;
-  const [ikon, setIkon] = useState(getIkon(behandlingsutfallStatus));
 
   const antallPerioder = sykmelding.mulighetForArbeid.perioder.length;
   const visStatus =
@@ -104,15 +96,9 @@ const SykmeldingTeaser = ({
       <Link
         className="inngangspanel inngangspanel--sykmelding"
         to={`/sykefravaer/sykmeldinger/${sykmelding.id}`}
-        onMouseEnter={() => {
-          setIkon(getHoverIkon(behandlingsutfallStatus));
-        }}
-        onMouseLeave={() => {
-          setIkon(getIkon(behandlingsutfallStatus));
-        }}
       >
         <span className="inngangspanel__ikon">
-          <img alt="" src={ikon} />
+          <img alt="" src={getIkon(behandlingsutfallStatus)} />
         </span>
         <div className="inngangspanel__innhold">
           <header className="inngangspanel__header">
