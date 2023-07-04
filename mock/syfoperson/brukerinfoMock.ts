@@ -13,4 +13,8 @@ export const brukerinfoMock = {
   },
   arbeidssituasjon: "ARBEIDSTAKER",
   dodsdato: null,
+  tilrettelagtKommunikasjon: {
+    talesprakTolk: { value: "NO" },
+    tegnsprakTolk: null,
+  },
 };
