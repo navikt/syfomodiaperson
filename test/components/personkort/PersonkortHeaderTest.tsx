@@ -92,7 +92,7 @@ describe("PersonkortHeader", () => {
     await stubPersoninfoApi(apiMockScope, "", tilrettelagtKommunikasjon);
     renderPersonkortHeader();
 
-    expect(await screen.findByText("Talespråktolk")).to.exist;
+    expect(await screen.findByText("Talespråktolk: NO")).to.exist;
     expect(screen.queryByText("Tegnspråktolk")).to.not.exist;
   });
 
@@ -108,8 +108,8 @@ describe("PersonkortHeader", () => {
     stubPersoninfoApi(apiMockScope, "", tilrettelagtKommunikasjon);
     renderPersonkortHeader();
 
-    expect(await screen.findByText("Talespråktolk")).to.exist;
-    expect(await screen.findByText("Tegnspråktolk")).to.exist;
+    expect(await screen.findByText("Talespråktolk: NO")).to.exist;
+    expect(await screen.findByText("Tegnspråktolk: EN")).to.exist;
   });
 
   it("viser dødsdato når dato finnes i brukerinfo", async () => {
