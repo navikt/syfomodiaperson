@@ -27,17 +27,17 @@ export const PersonkortHeaderTags = () => {
   const dateOfDeath = tilLesbarDatoMedArUtenManedNavn(navbruker.dodsdato);
   const isKode6 = diskresjonskode === "6";
   const isKode7 = diskresjonskode === "7";
-  const isTalesprakTolkBehov =
+  const hasTalesprakTolkBehov =
     !!navbruker.tilrettelagtKommunikasjon?.talesprakTolk?.value;
-  const isTegnsprakTolkBehov =
+  const hasTegnsprakTolkBehov =
     !!navbruker.tilrettelagtKommunikasjon?.tegnsprakTolk?.value;
   const visEtiketter =
     isKode6 ||
     isKode7 ||
     isEgenAnsatt ||
     isDead ||
-    isTalesprakTolkBehov ||
-    isTegnsprakTolkBehov;
+    hasTalesprakTolkBehov ||
+    hasTegnsprakTolkBehov;
 
   return (
     <>
@@ -64,12 +64,12 @@ export const PersonkortHeaderTags = () => {
                 {texts.egenansatt}
               </Tag>
             )}
-            {isTalesprakTolkBehov && (
+            {hasTalesprakTolkBehov && (
               <Tag variant="warning" size="small">
                 {texts.talesprakTolk}
               </Tag>
             )}
-            {isTegnsprakTolkBehov && (
+            {hasTegnsprakTolkBehov && (
               <Tag variant="warning" size="small">
                 {texts.tegnsprakTolk}
               </Tag>
