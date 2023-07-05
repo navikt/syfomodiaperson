@@ -6,7 +6,7 @@ import {
 import { apiMock } from "../../stubs/stubApi";
 import { QueryClientProvider } from "@tanstack/react-query";
 import nock from "nock";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import React from "react";
 import PersonkortHeader from "@/components/personkort/PersonkortHeader/PersonkortHeader";
 import { expect } from "chai";
@@ -75,11 +75,11 @@ describe("PersonkortHeader", () => {
       talesprakTolk: null,
       tegnsprakTolk: null,
     };
-    stubPersoninfoApi(apiMockScope, "", tilrettelagtKommunikasjon);
+    await stubPersoninfoApi(apiMockScope, "", tilrettelagtKommunikasjon);
     renderPersonkortHeader();
 
-    expect(screen.queryByText("Talespråktolk")).not.to.exist;
-    expect(screen.queryByText("Tegnspråktolk")).not.to.exist;
+    expect(screen.queryByText("Talespråktolk")).to.not.exist;
+    expect(screen.queryByText("Tegnspråktolk")).to.not.exist;
   });
 
   it("viser talespråktolk, men ikke tegnspråktolk", async () => {
@@ -89,10 +89,10 @@ describe("PersonkortHeader", () => {
       },
       tegnsprakTolk: null,
     };
-    stubPersoninfoApi(apiMockScope, "", tilrettelagtKommunikasjon);
+    await stubPersoninfoApi(apiMockScope, "", tilrettelagtKommunikasjon);
     renderPersonkortHeader();
 
-    await waitFor(() => expect(screen.queryByText("Talespråktolk")).to.exist);
+    expect(await screen.findByText("Talespråktolk")).to.exist;
     expect(screen.queryByText("Tegnspråktolk")).to.not.exist;
   });
 
@@ -108,8 +108,8 @@ describe("PersonkortHeader", () => {
     stubPersoninfoApi(apiMockScope, "", tilrettelagtKommunikasjon);
     renderPersonkortHeader();
 
-    await waitFor(() => expect(screen.queryByText("Talespråktolk")).to.exist);
-    await waitFor(() => expect(screen.queryByText("Tegnspråktolk")).to.exist);
+    expect(await screen.findByText("Talespråktolk")).to.exist;
+    expect(await screen.findByText("Tegnspråktolk")).to.exist;
   });
 
   it("viser dødsdato når dato finnes i brukerinfo", async () => {
