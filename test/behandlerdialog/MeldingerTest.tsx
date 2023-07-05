@@ -7,7 +7,11 @@ import { queryClientWithMockData } from "../testQueryClient";
 import { expect } from "chai";
 import { Meldinger } from "@/components/behandlerdialog/meldinger/Meldinger";
 import { behandlerdialogQueryKeys } from "@/data/behandlerdialog/behandlerdialogQueryHooks";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  VEILEDER_DEFAULT,
+  VEILEDER_IDENT_DEFAULT,
+} from "../../mock/common/mockConstants";
 import { behandlerdialogMockEmpty } from "../../mock/isbehandlerdialog/behandlerdialogMock";
 import { MeldingResponseDTO } from "@/data/behandlerdialog/behandlerdialogTypes";
 import userEvent from "@testing-library/user-event";
@@ -299,9 +303,9 @@ describe("Meldinger panel", () => {
       );
       renderMeldinger();
 
-      const expectedFerdigbehandledText = `Siste svar lest av Z991100 ${twoDaysAgo.format(
-        "DD.MM.YYYY"
-      )}`;
+      const expectedFerdigbehandledText = `Siste svar lest av ${
+        VEILEDER_DEFAULT.navn
+      } (${VEILEDER_IDENT_DEFAULT}) ${twoDaysAgo.format("DD.MM.YYYY")}`;
       expect(screen.getByText(expectedFerdigbehandledText)).to.exist;
     });
 
