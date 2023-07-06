@@ -10,7 +10,6 @@ import { behandlerdialogQueryKeys } from "@/data/behandlerdialog/behandlerdialog
 import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
-  VEILEDER_IDENT_DEFAULT,
 } from "../../mock/common/mockConstants";
 import { behandlerdialogMockEmpty } from "../../mock/isbehandlerdialog/behandlerdialogMock";
 import { MeldingResponseDTO } from "@/data/behandlerdialog/behandlerdialogTypes";
@@ -305,7 +304,7 @@ describe("Meldinger panel", () => {
 
       const expectedFerdigbehandledText = `Siste svar lest av ${
         VEILEDER_DEFAULT.navn
-      } (${VEILEDER_IDENT_DEFAULT}) ${twoDaysAgo.format("DD.MM.YYYY")}`;
+      } ${twoDaysAgo.format("DD.MM.YYYY")}`;
       expect(screen.getByText(expectedFerdigbehandledText)).to.exist;
     });
 

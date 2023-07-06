@@ -32,7 +32,6 @@ const getFerdigbehandletText = (
   return `
     ${ferdigbehandletPrefixText} 
     ${veilederNavn} 
-    (${personOppgave.behandletVeilederIdent}) 
     ${toDatePrettyPrint(personOppgave.behandletTidspunkt)}
   `;
 };
