@@ -30,6 +30,7 @@ import { behandlerNavn } from "@/utils/behandlerUtils";
 import { SelectMeldingType } from "@/components/behandlerdialog/meldingtilbehandler/SelectMeldingType";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { ToggleNames } from "@/data/unleash/unleash_types";
+import { MeldingsTypeInfo } from "@/components/behandlerdialog/meldingtilbehandler/MeldingsTypeInfo";
 
 const texts = {
   sendKnapp: "Send til behandler",
@@ -143,6 +144,11 @@ export const MeldingTilBehandlerSkjema = () => {
                 selectedMeldingType={selectedMeldingType}
                 onSelect={setSelectedMeldingType}
               />
+            )}
+            {selectedMeldingType ? (
+              <MeldingsTypeInfo meldingType={selectedMeldingType} />
+            ) : (
+              <></>
             )}
             <VelgBehandler
               selectedBehandler={selectedBehandler}
