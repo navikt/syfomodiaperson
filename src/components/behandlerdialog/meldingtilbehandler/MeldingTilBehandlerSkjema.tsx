@@ -6,6 +6,7 @@ import { Form } from "react-final-form";
 import { VelgBehandler } from "@/components/behandlerdialog/meldingtilbehandler/VelgBehandler";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import styled from "styled-components";
+import { BlueDocumentImage } from "../../../../img/ImageComponents";
 import {
   MeldingTekstfelt,
   meldingTekstField,
@@ -26,6 +27,9 @@ import { FormApi } from "final-form";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document/useMeldingTilBehandlerDocument";
 import { behandlerNavn } from "@/utils/behandlerUtils";
+import { SelectMeldingType } from "@/components/behandlerdialog/meldingtilbehandler/SelectMeldingType";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
+import { ToggleNames } from "@/data/unleash/unleash_types";
 
 const texts = {
   sendKnapp: "Send til behandler",
@@ -69,10 +73,16 @@ export const MAX_LENGTH_BEHANDLER_MELDING = 2000; // TODO: må bli enige om noe 
 export const MeldingTilBehandlerSkjema = () => {
   const [displayPreview, setDisplayPreview] = useState(false);
   const { getMeldingTilBehandlerDocument } = useMeldingTilBehandlerDocument();
+  const [selectedMeldingType, setSelectedMeldingType] = useState<MeldingType>();
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
   const { harIkkeUtbedretFeil, resetFeilUtbedret, updateFeilUtbedret } =
     useFeilUtbedret();
   const meldingTilBehandler = useMeldingTilBehandler();
+  const { isFeatureEnabled } = useFeatureToggles();
+  const isBehandlerdialogLegeerklaringEnabled = isFeatureEnabled(
+    ToggleNames.behandlerdialogLegeerklaring
+  );
+
   const now = new Date();
 
   const validate = (
@@ -127,6 +137,12 @@ export const MeldingTilBehandlerSkjema = () => {
               <Alert variant="success" size="small">
                 {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(now)}`}
               </Alert>
+            )}
+            {isBehandlerdialogLegeerklaringEnabled && (
+              <SelectMeldingType
+                selectedMeldingType={selectedMeldingType}
+                onSelect={setSelectedMeldingType}
+              />
             )}
             <VelgBehandler
               selectedBehandler={selectedBehandler}
