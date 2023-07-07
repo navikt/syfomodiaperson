@@ -49,6 +49,43 @@ describe("MeldingTilBehandler", () => {
     ).to.exist;
   });
   describe("MeldingTilBehandlerSkjema", () => {
+    it("Viser select komponent for valg av meldingstype", () => {
+      renderMeldingTilBehandler();
+
+      expect(screen.getByLabelText("Velg meldingstype")).to.exist;
+      fireEvent.change(screen.getByLabelText("Velg meldingstype"), {
+        target: { value: MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER },
+      });
+      const selectElement: HTMLSelectElement =
+        screen.getByLabelText("Velg meldingstype");
+      expect(selectElement.value).to.equal(
+        MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER
+      );
+      expect(selectElement.value).to.not.equal(
+        MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING
+      );
+
+      fireEvent.change(screen.getByLabelText("Velg meldingstype"), {
+        target: { value: MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING },
+      });
+      expect(selectElement.value).to.equal(
+        MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING
+      );
+      expect(selectElement.value).to.not.equal(
+        MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER
+      );
+    });
+    it("Viser informasjon om meldingstype legeerklaring hvis valgt", () => {
+      renderMeldingTilBehandler();
+      expect(screen.queryByText("Legeerklæring vedørende pasienten.")).to.not
+        .exist;
+
+      fireEvent.change(screen.getByLabelText("Velg meldingstype"), {
+        target: { value: MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING },
+      });
+
+      expect(screen.getByText("Legeerklæring vedørende pasienten.")).to.exist;
+    });
     it("Viser radiobuttons med behandlervalg, der det ikke er mulig å velge 'Ingen behandler'", () => {
       renderMeldingTilBehandler();
 
