@@ -1,7 +1,10 @@
 import { MeldingType } from "@/data/behandlerdialog/behandlerdialogTypes";
 import styled from "styled-components";
 import React from "react";
-import { BlueDocumentImage } from "../../../../img/ImageComponents";
+import {
+  BlueDocumentImage,
+  BlyantImage,
+} from "../../../../img/ImageComponents";
 
 const text = {
   tilleggsopplysinger: {
@@ -32,7 +35,7 @@ export const MeldingsTypeInfo = ({ meldingType }: MeldingsTypeInfoProps) => {
   const Ikon = () => {
     switch (meldingType) {
       case MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER:
-        return <Icon src={BlueDocumentImage} />;
+        return <Icon src={BlyantImage} />;
       case MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING:
         return <Icon src={BlueDocumentImage} />;
       case MeldingType.FORESPORSEL_PASIENT_PAMINNELSE:
