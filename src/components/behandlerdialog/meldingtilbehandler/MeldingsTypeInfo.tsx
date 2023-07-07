@@ -32,6 +32,7 @@ interface MeldingsTypeInfoProps {
 }
 
 export const MeldingsTypeInfo = ({ meldingType }: MeldingsTypeInfoProps) => {
+  console.log(meldingType);
   const Ikon = () => {
     switch (meldingType) {
       case MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER:

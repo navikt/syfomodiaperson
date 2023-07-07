@@ -1,6 +1,7 @@
 import React from "react";
-import { Select } from "nav-frontend-skjema";
+import { Select, SkjemaelementFeilmelding } from "nav-frontend-skjema";
 import { MeldingType } from "@/data/behandlerdialog/behandlerdialogTypes";
+import { Field } from "react-final-form";
 
 const text = {
   tilleggsopplysinger: "Tilleggsopplysninger L8",
@@ -9,25 +10,34 @@ const text = {
   defaultOption: "---",
 };
 
-interface SelectMeldingTypeProps {
-  selectedMeldingType?: MeldingType;
-  onSelect: (MeldingType) => void;
-}
-
-export const SelectMeldingType = ({
-  selectedMeldingType,
-  onSelect,
-}: SelectMeldingTypeProps) => {
-  console.log(selectedMeldingType);
+const field = "type";
+export const SelectMeldingType = () => {
   return (
-    <Select label={text.label} onChange={(e) => onSelect(e.target.value)}>
-      <option value="">{text.defaultOption}</option>
-      <option value={MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER}>
-        {text.tilleggsopplysinger}
-      </option>
-      <option value={MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING}>
-        {text.legeerklaring}
-      </option>
-    </Select>
+    <Field<string> name={field}>
+      {({ input, meta }) => {
+        return (
+          <>
+            <Select
+              id={field}
+              label={text.label}
+              onChange={(e) => input.onChange(e.target.value)}
+            >
+              <option value="">{text.defaultOption}</option>
+              <option
+                value={MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER}
+              >
+                {text.tilleggsopplysinger}
+              </option>
+              <option value={MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING}>
+                {text.legeerklaring}
+              </option>
+            </Select>
+            <SkjemaelementFeilmelding>
+              {meta.submitFailed && meta.error}
+            </SkjemaelementFeilmelding>
+          </>
+        );
+      }}
+    </Field>
   );
 };

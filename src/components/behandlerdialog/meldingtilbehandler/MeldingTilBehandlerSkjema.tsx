@@ -6,7 +6,6 @@ import { Form } from "react-final-form";
 import { VelgBehandler } from "@/components/behandlerdialog/meldingtilbehandler/VelgBehandler";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import styled from "styled-components";
-import { BlueDocumentImage } from "../../../../img/ImageComponents";
 import {
   MeldingTekstfelt,
   meldingTekstField,
@@ -74,7 +73,6 @@ export const MAX_LENGTH_BEHANDLER_MELDING = 2000; // TODO: må bli enige om noe 
 export const MeldingTilBehandlerSkjema = () => {
   const [displayPreview, setDisplayPreview] = useState(false);
   const { getMeldingTilBehandlerDocument } = useMeldingTilBehandlerDocument();
-  const [selectedMeldingType, setSelectedMeldingType] = useState<MeldingType>();
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
   const { harIkkeUtbedretFeil, resetFeilUtbedret, updateFeilUtbedret } =
     useFeilUtbedret();
@@ -95,8 +93,8 @@ export const MeldingTilBehandlerSkjema = () => {
       missingRequiredMessage: texts.validation.missingMeldingTekst,
     };
     const feilmeldinger: MeldingTilBehandlerSkjemaFeil = {
-      behandlerRef: behandlerRefValidationErrors(values.behandlerRef, false),
       type: values.type ? undefined : texts.validation.missingTypeTekst,
+      behandlerRef: behandlerRefValidationErrors(values.behandlerRef, false),
       [meldingTekstField]: validerTekst(meldingTilBehandlerSkjemaTekst),
     };
 
@@ -122,14 +120,15 @@ export const MeldingTilBehandlerSkjema = () => {
       onSuccess: () => form.reset(), // TODO: Reset for radiogruppe fungerer ikke
     });
   };
-
   return (
     <MeldingTilBehandlerFormWrapper>
       <Form
         onSubmit={submit}
         validate={validate}
         initialValues={{
-          type: MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER, //TODO: Fjernes for veiledere som kan velge meldingstype
+          type: isBehandlerdialogLegeerklaringEnabled
+            ? undefined
+            : MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER,
         }}
       >
         {({ handleSubmit, submitFailed, errors, values }) => (
@@ -139,17 +138,8 @@ export const MeldingTilBehandlerSkjema = () => {
                 {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(now)}`}
               </Alert>
             )}
-            {isBehandlerdialogLegeerklaringEnabled && (
-              <SelectMeldingType
-                selectedMeldingType={selectedMeldingType}
-                onSelect={setSelectedMeldingType}
-              />
-            )}
-            {selectedMeldingType ? (
-              <MeldingsTypeInfo meldingType={selectedMeldingType} />
-            ) : (
-              <></>
-            )}
+            {isBehandlerdialogLegeerklaringEnabled && <SelectMeldingType />}
+            {values.type && <MeldingsTypeInfo meldingType={values.type} />}
             <VelgBehandler
               selectedBehandler={selectedBehandler}
               setSelectedBehandler={
