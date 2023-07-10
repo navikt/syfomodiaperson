@@ -5,16 +5,13 @@ import {
   BlueDocumentImage,
   BlyantImage,
 } from "../../../../img/ImageComponents";
+import Body from "@navikt/ds-react/esm/table/Body";
 
 const text = {
-  tilleggsopplysinger: {
-    info: "Tilleggsopplysninger vedørende pasienten.",
-    takst: "Behandleren honoreres med takst L8.",
-  },
-  legeerklaring: {
-    info: "Legeerklæring vedørende pasienten.",
-    takst: "Behandleren honoreres med takst L46.",
-  },
+  tilleggsopplysinger:
+    "Tilleggsopplysninger vedørende pasienten. Behandleren honoreres med takst L8.",
+  legeerklaring:
+    "Legeerklæring vedørende pasienten. Behandleren honoreres med takst L46.",
 };
 
 const Icon = styled.img`
@@ -27,46 +24,34 @@ const InfoPanel = styled.div`
   flex-direction: row;
 `;
 
-interface MeldingsTypeInfoProps {
+interface Props {
   meldingType: MeldingType;
 }
 
-export const MeldingsTypeInfo = ({ meldingType }: MeldingsTypeInfoProps) => {
-  console.log(meldingType);
-  const Ikon = () => {
+export const MeldingsTypeInfo = ({ meldingType }: Props) => {
+  const Info = () => {
     switch (meldingType) {
       case MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER:
-        return <Icon src={BlyantImage} />;
+        return (
+          <>
+            <Icon src={BlyantImage} />
+            <Body>{text.tilleggsopplysinger}</Body>
+          </>
+        );
       case MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING:
-        return <Icon src={BlueDocumentImage} />;
+        return (
+          <>
+            <Icon src={BlueDocumentImage} />
+            <Body>{text.legeerklaring}</Body>
+          </>
+        );
       case MeldingType.FORESPORSEL_PASIENT_PAMINNELSE:
-        return null; // Not supported
+        return <></>; // Not supported
     }
-  };
-
-  const Info = () => {
-    function infoText() {
-      switch (meldingType) {
-        case MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER:
-          return text.tilleggsopplysinger;
-        case MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING:
-          return text.legeerklaring;
-        case MeldingType.FORESPORSEL_PASIENT_PAMINNELSE:
-          return null; // Not supported
-      }
-    }
-
-    return (
-      <div>
-        <div>{infoText()?.info}</div>
-        <div>{infoText()?.takst}</div>
-      </div>
-    );
   };
 
   return (
     <InfoPanel>
-      <Ikon />
       <Info />
     </InfoPanel>
   );

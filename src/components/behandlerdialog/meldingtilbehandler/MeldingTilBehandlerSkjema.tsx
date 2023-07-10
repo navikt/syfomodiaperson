@@ -27,8 +27,6 @@ import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document/useMeldingTilBehandlerDocument";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { SelectMeldingType } from "@/components/behandlerdialog/meldingtilbehandler/SelectMeldingType";
-import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import { ToggleNames } from "@/data/unleash/unleash_types";
 import { MeldingsTypeInfo } from "@/components/behandlerdialog/meldingtilbehandler/MeldingsTypeInfo";
 
 const texts = {
@@ -42,11 +40,17 @@ const texts = {
   },
 };
 
-const MeldingTilBehandlerFormWrapper = styled.div`
-  margin-top: 1.5em;
+const StyledForm = styled.form`
+  > * {
+    &:not(:last-child) {
+      margin-bottom: 1.5em;
+    }
+  }
 `;
 
-const StyledForm = styled.form`
+const MeldingsType = styled.div`
+  width: 22em;
+
   > * {
     &:not(:last-child) {
       margin-bottom: 1.5em;
@@ -70,17 +74,19 @@ type MeldingTilBehandlerSkjemaFeil = {
 
 export const MAX_LENGTH_BEHANDLER_MELDING = 2000; // TODO: må bli enige om noe her
 
-export const MeldingTilBehandlerSkjema = () => {
+interface Props {
+  isBehandlerdialogLegeerklaringEnabled: boolean;
+}
+
+export const MeldingTilBehandlerSkjema = ({
+  isBehandlerdialogLegeerklaringEnabled,
+}: Props) => {
   const [displayPreview, setDisplayPreview] = useState(false);
   const { getMeldingTilBehandlerDocument } = useMeldingTilBehandlerDocument();
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
   const { harIkkeUtbedretFeil, resetFeilUtbedret, updateFeilUtbedret } =
     useFeilUtbedret();
   const meldingTilBehandler = useMeldingTilBehandler();
-  const { isFeatureEnabled } = useFeatureToggles();
-  const isBehandlerdialogLegeerklaringEnabled = isFeatureEnabled(
-    ToggleNames.behandlerdialogLegeerklaring
-  );
 
   const now = new Date();
 
@@ -120,70 +126,79 @@ export const MeldingTilBehandlerSkjema = () => {
       onSuccess: () => form.reset(), // TODO: Reset for radiogruppe fungerer ikke
     });
   };
+
+  const SendButton = () => (
+    <Button
+      variant="primary"
+      onClick={resetFeilUtbedret}
+      loading={meldingTilBehandler.isLoading}
+      type="submit"
+    >
+      {texts.sendKnapp}
+    </Button>
+  );
+
+  const PreviewButton = () => (
+    <Button
+      variant="secondary"
+      type="button"
+      onClick={() => setDisplayPreview(true)}
+    >
+      {texts.previewKnapp}
+    </Button>
+  );
+
   return (
-    <MeldingTilBehandlerFormWrapper>
-      <Form
-        onSubmit={submit}
-        validate={validate}
-        initialValues={{
-          type: isBehandlerdialogLegeerklaringEnabled
-            ? undefined
-            : MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER,
-        }}
-      >
-        {({ handleSubmit, submitFailed, errors, values }) => (
-          <StyledForm onSubmit={handleSubmit}>
-            {meldingTilBehandler.isSuccess && (
-              <Alert variant="success" size="small">
-                {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(now)}`}
-              </Alert>
-            )}
-            {isBehandlerdialogLegeerklaringEnabled && <SelectMeldingType />}
-            {values.type && <MeldingsTypeInfo meldingType={values.type} />}
-            <VelgBehandler
-              selectedBehandler={selectedBehandler}
-              setSelectedBehandler={
-                setSelectedBehandler
-              } /* TODO: Skrive oss bort fra state her, bruke values fra form i stedet*/
+    <Form
+      onSubmit={submit}
+      validate={validate}
+      initialValues={{
+        type: isBehandlerdialogLegeerklaringEnabled
+          ? undefined
+          : MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER,
+      }}
+    >
+      {({ handleSubmit, submitFailed, errors, values }) => (
+        <StyledForm onSubmit={handleSubmit}>
+          {meldingTilBehandler.isSuccess && (
+            <Alert variant="success" size="small">
+              {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(now)}`}
+            </Alert>
+          )}
+          {isBehandlerdialogLegeerklaringEnabled && (
+            <MeldingsType>
+              <SelectMeldingType />
+              {values.type && <MeldingsTypeInfo meldingType={values.type} />}
+            </MeldingsType>
+          )}
+          <VelgBehandler
+            selectedBehandler={selectedBehandler}
+            setSelectedBehandler={
+              setSelectedBehandler
+            } /* TODO: Skrive oss bort fra state her, bruke values fra form i stedet*/
+          />
+          <MeldingTekstfelt />
+          <Forhandsvisning
+            contentLabel={texts.previewContentLabel}
+            isOpen={displayPreview}
+            handleClose={() => setDisplayPreview(false)}
+            getDocumentComponents={() => getMeldingTilBehandlerDocument(values)}
+          />
+          {meldingTilBehandler.isError && (
+            <SkjemaInnsendingFeil
+              error={meldingTilBehandler.error}
+              bottomPadding={null}
             />
-            <MeldingTekstfelt />
-            <Forhandsvisning
-              contentLabel={texts.previewContentLabel}
-              isOpen={displayPreview}
-              handleClose={() => setDisplayPreview(false)}
-              getDocumentComponents={() =>
-                getMeldingTilBehandlerDocument(values)
-              }
-            />
-            {meldingTilBehandler.isError && (
-              <SkjemaInnsendingFeil
-                error={meldingTilBehandler.error}
-                bottomPadding={null}
-              />
-            )}
-            {submitFailed && harIkkeUtbedretFeil && (
-              <SkjemaFeiloppsummering errors={errors} />
-            )}
-            <ButtonRow>
-              <Button
-                variant="primary"
-                onClick={resetFeilUtbedret}
-                loading={meldingTilBehandler.isLoading}
-                type="submit"
-              >
-                {texts.sendKnapp}
-              </Button>
-              <Button
-                variant="secondary"
-                type="button"
-                onClick={() => setDisplayPreview(true)}
-              >
-                {texts.previewKnapp}
-              </Button>
-            </ButtonRow>
-          </StyledForm>
-        )}
-      </Form>
-    </MeldingTilBehandlerFormWrapper>
+          )}
+          {submitFailed && harIkkeUtbedretFeil && (
+            <SkjemaFeiloppsummering errors={errors} />
+          )}
+          <ButtonRow>
+            <SendButton />
+            <PreviewButton />
+          </ButtonRow>
+        </StyledForm>
+      )}
+    </Form>
   );
 };
