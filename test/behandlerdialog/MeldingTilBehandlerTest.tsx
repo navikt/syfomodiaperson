@@ -109,6 +109,10 @@ describe("MeldingTilBehandler", () => {
     it("Forhåndsviser melding til behandler ved klikk på Forhåndsvisning-knapp", () => {
       renderMeldingTilBehandler();
 
+      fireEvent.change(screen.getByLabelText(selectLabel), {
+        target: { value: MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER },
+      });
+
       const meldingInput = getTextInput("Skriv inn tekst");
       changeTextInput(meldingInput, enMeldingTekst);
 
@@ -169,6 +173,10 @@ describe("MeldingTilBehandler", () => {
         exact: false,
       })[0];
       fireEvent.click(velgBehandlerRadioButton);
+
+      fireEvent.change(screen.getByLabelText(selectLabel), {
+        target: { value: MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER },
+      });
 
       const meldingInput = getTextInput("Skriv inn tekst");
       changeTextInput(meldingInput, expectedMeldingTilBehandlerDTO.tekst);
