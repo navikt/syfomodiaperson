@@ -6,6 +6,7 @@ import {
   BlyantImage,
 } from "../../../../img/ImageComponents";
 import Body from "@navikt/ds-react/esm/table/Body";
+import { BodyShort } from "@navikt/ds-react";
 
 const text = {
   tilleggsopplysinger:
@@ -35,14 +36,14 @@ export const MeldingsTypeInfo = ({ meldingType }: Props) => {
         return (
           <>
             <Icon src={BlyantImage} />
-            <Body>{text.tilleggsopplysinger}</Body>
+            <BodyShort size={"small"}>{text.tilleggsopplysinger}</BodyShort>
           </>
         );
       case MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING:
         return (
           <>
             <Icon src={BlueDocumentImage} />
-            <Body>{text.legeerklaring}</Body>
+            <BodyShort size={"small"}>{text.legeerklaring}</BodyShort>
           </>
         );
       case MeldingType.FORESPORSEL_PASIENT_PAMINNELSE:
