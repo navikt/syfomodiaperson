@@ -48,16 +48,18 @@ describe("MeldingTilBehandler", () => {
       )
     ).to.exist;
   });
+
+  const selectLabel = "Hvilken meldingstype ønsker du å sende";
   describe("MeldingTilBehandlerSkjema", () => {
     it("Viser select komponent for valg av meldingstype", () => {
       renderMeldingTilBehandler();
 
-      expect(screen.getByLabelText("Velg meldingstype")).to.exist;
-      fireEvent.change(screen.getByLabelText("Velg meldingstype"), {
+      expect(screen.getByLabelText(selectLabel)).to.exist;
+      fireEvent.change(screen.getByLabelText(selectLabel), {
         target: { value: MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER },
       });
       const selectElement: HTMLSelectElement =
-        screen.getByLabelText("Velg meldingstype");
+        screen.getByLabelText(selectLabel);
       expect(selectElement.value).to.equal(
         MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER
       );
@@ -65,7 +67,7 @@ describe("MeldingTilBehandler", () => {
         MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING
       );
 
-      fireEvent.change(screen.getByLabelText("Velg meldingstype"), {
+      fireEvent.change(screen.getByLabelText(selectLabel), {
         target: { value: MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING },
       });
       expect(selectElement.value).to.equal(
@@ -80,7 +82,7 @@ describe("MeldingTilBehandler", () => {
       expect(screen.queryByText("Legeerklæring vedørende pasienten.")).to.not
         .exist;
 
-      fireEvent.change(screen.getByLabelText("Velg meldingstype"), {
+      fireEvent.change(screen.getByLabelText(selectLabel), {
         target: { value: MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING },
       });
 
