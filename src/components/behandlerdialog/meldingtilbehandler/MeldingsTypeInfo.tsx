@@ -5,7 +5,6 @@ import {
   BlueDocumentImage,
   BlyantImage,
 } from "../../../../img/ImageComponents";
-import Body from "@navikt/ds-react/esm/table/Body";
 import { BodyShort } from "@navikt/ds-react";
 
 const text = {
