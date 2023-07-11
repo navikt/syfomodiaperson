@@ -7,7 +7,7 @@ import hentStatustekst from "../../../../utils/soknad-felles/hentSoknadStatustek
 import hentSykepengetekst from "../../../../utils/soknad-felles/hentSykepengetekst";
 import { VerktoyKnapp, Verktoylinje } from "../../Verktoylinje";
 import {
-  SoknadstatusDTO,
+  Soknadstatus,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { erOpprettetSisteAar } from "@/utils/sykepengesoknadUtils";
@@ -46,7 +46,7 @@ const SykepengesoknadStatuspanel = ({
   soknad,
 }: SykepengesoknadStatuspanelProps): ReactElement => {
   const visEndreknapp =
-    erOpprettetSisteAar(soknad) && soknad.status === SoknadstatusDTO.SENDT;
+    erOpprettetSisteAar(soknad) && soknad.status === Soknadstatus.SENDT;
 
   return (
     <Statuspanel enKolonne>

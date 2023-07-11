@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import Hjelpetekst from "nav-frontend-hjelpetekst";
 import {
-  SoknadstatusDTO,
+  Soknadstatus,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
@@ -19,7 +19,7 @@ const texts = {
   status: "Status",
 };
 
-const { SENDT, TIL_SENDING } = SoknadstatusDTO;
+const { SENDT, TIL_SENDING } = Soknadstatus;
 
 const getStatusTekst = (soknad: SykepengesoknadDTO) => {
   switch (soknad.status) {
