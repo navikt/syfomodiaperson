@@ -14,6 +14,12 @@ import {
 import { behandlereDialogmeldingMock } from "../../mock/isdialogmelding/behandlereDialogmeldingMock";
 import userEvent from "@testing-library/user-event";
 import { expectedTilleggsopplysningerDocument } from "./testDataDocuments";
+import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks";
+import {
+  BEHANDLENDE_ENHET_DEFAULT,
+  VEILEDER_IDENT_DEFAULT,
+} from "../../mock/common/mockConstants";
+import { unleashMock } from "../../mock/unleash/unleashMock";
 
 let queryClient: QueryClient;
 
@@ -36,7 +42,20 @@ describe("MeldingTilBehandler", () => {
     queryClient = queryClientWithMockData();
   });
 
-  it("Viser overskrift og warning-alert", () => {
+  it("Viser overskrift og warning-alert hvis toggle for legeerklæring er av", () => {
+    queryClient.setQueryData(
+      unleashQueryKeys.toggles(
+        BEHANDLENDE_ENHET_DEFAULT.enhetId,
+        VEILEDER_IDENT_DEFAULT
+      ),
+      () => {
+        return {
+          ...unleashMock,
+          "syfo.behandlerdialog.legeerklaring": false,
+        };
+      }
+    );
+
     renderMeldingTilBehandler();
 
     expect(screen.getByRole("heading", { name: "Skriv til behandler" })).to
@@ -50,6 +69,7 @@ describe("MeldingTilBehandler", () => {
   });
 
   const selectLabel = "Hvilken meldingstype ønsker du å sende";
+
   describe("MeldingTilBehandlerSkjema", () => {
     it("Viser select komponent for valg av meldingstype", () => {
       renderMeldingTilBehandler();
@@ -79,14 +99,16 @@ describe("MeldingTilBehandler", () => {
     });
     it("Viser informasjon om meldingstype legeerklaring hvis valgt", () => {
       renderMeldingTilBehandler();
-      expect(screen.queryByText("Legeerklæring vedørende pasienten.")).to.not
-        .exist;
+
+      const legeerklaringText =
+        "Legeerklæring vedørende pasienten. Behandleren honoreres med takst L46.";
+      expect(screen.queryByText(legeerklaringText)).to.not.exist;
 
       fireEvent.change(screen.getByLabelText(selectLabel), {
         target: { value: MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING },
       });
 
-      expect(screen.getByText("Legeerklæring vedørende pasienten.")).to.exist;
+      expect(screen.getByText(legeerklaringText)).to.exist;
     });
     it("Viser radiobuttons med behandlervalg, der det ikke er mulig å velge 'Ingen behandler'", () => {
       renderMeldingTilBehandler();
