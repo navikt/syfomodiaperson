@@ -127,27 +127,6 @@ export const MeldingTilBehandlerSkjema = ({
     });
   };
 
-  const SendButton = () => (
-    <Button
-      variant="primary"
-      onClick={resetFeilUtbedret}
-      loading={meldingTilBehandler.isLoading}
-      type="submit"
-    >
-      {texts.sendKnapp}
-    </Button>
-  );
-
-  const PreviewButton = () => (
-    <Button
-      variant="secondary"
-      type="button"
-      onClick={() => setDisplayPreview(true)}
-    >
-      {texts.previewKnapp}
-    </Button>
-  );
-
   return (
     <Form
       onSubmit={submit}
@@ -167,7 +146,7 @@ export const MeldingTilBehandlerSkjema = ({
           )}
           {isBehandlerdialogLegeerklaringEnabled && (
             <MeldingsType>
-              <SelectMeldingType />
+              <SelectMeldingType values={values} />
               {values.type && <MeldingsTypeInfo meldingType={values.type} />}
             </MeldingsType>
           )}
@@ -194,8 +173,21 @@ export const MeldingTilBehandlerSkjema = ({
             <SkjemaFeiloppsummering errors={errors} />
           )}
           <ButtonRow>
-            <SendButton />
-            <PreviewButton />
+            <Button
+              variant="primary"
+              onClick={resetFeilUtbedret}
+              loading={meldingTilBehandler.isLoading}
+              type="submit"
+            >
+              {texts.sendKnapp}
+            </Button>
+            <Button
+              variant="secondary"
+              type="button"
+              onClick={() => setDisplayPreview(true)}
+            >
+              {texts.previewKnapp}
+            </Button>
           </ButtonRow>
         </StyledForm>
       )}
