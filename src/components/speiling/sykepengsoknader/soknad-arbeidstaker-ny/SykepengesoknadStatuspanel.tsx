@@ -3,14 +3,14 @@ import Statuspanel, {
   StatusNokkelopplysning,
   Statusopplysninger,
 } from "../../Statuspanel";
-import hentStatustekst from "../../../../utils/soknad-felles/hentSoknadStatustekst";
-import hentSykepengetekst from "../../../../utils/soknad-felles/hentSykepengetekst";
+import Sykepengetekst from "../../../../utils/soknad-felles/Sykepengetekst";
 import { VerktoyKnapp, Verktoylinje } from "../../Verktoylinje";
 import {
   Soknadstatus,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { erOpprettetSisteAar } from "@/utils/sykepengesoknadUtils";
+import SoknadStatustekst from "@/utils/soknad-felles/SoknadStatustekst";
 
 const texts = {
   status: "Status",
@@ -29,10 +29,10 @@ const StatusOgSykepengeopplysninger = (
   return (
     <Statusopplysninger>
       <StatusNokkelopplysning tittel={texts.status}>
-        <p>{hentStatustekst(soknad)}</p>
+        <SoknadStatustekst soknad={soknad} />
       </StatusNokkelopplysning>
       <StatusNokkelopplysning tittel={texts.tittel}>
-        <p dangerouslySetInnerHTML={hentSykepengetekst(soknad)} />
+        <Sykepengetekst soknad={soknad} />
       </StatusNokkelopplysning>
     </Statusopplysninger>
   );
