@@ -20,15 +20,14 @@ const SoknadStatustekst = ({ soknad }: SoknadStatustekstProps) => {
   const isSoknadSentToArbeidsgiver = !!soknad.sendtTilArbeidsgiverDato;
 
   const arbeidsgiver = soknad.arbeidsgiver?.navn;
-  const orgnr = soknad.arbeidsgiver?.orgnummer
-    ? formaterOrgnr(soknad.arbeidsgiver.orgnummer)
-    : null;
-  const sendtTilArbeidsgiverDato = isSoknadSentToArbeidsgiver
-    ? tilLesbarDatoMedArstall(soknad.sendtTilArbeidsgiverDato)
-    : null;
-  const sendtTilNavDato = isSoknadSentToNav
-    ? tilLesbarDatoMedArstall(soknad.sendtTilNAVDato)
-    : null;
+  const orgnr =
+    soknad.arbeidsgiver?.orgnummer &&
+    formaterOrgnr(soknad.arbeidsgiver.orgnummer);
+  const sendtTilArbeidsgiverDato =
+    soknad.sendtTilArbeidsgiverDato &&
+    tilLesbarDatoMedArstall(soknad.sendtTilArbeidsgiverDato);
+  const sendtTilNavDato =
+    soknad.sendtTilNAVDato && tilLesbarDatoMedArstall(soknad.sendtTilNAVDato);
 
   if (soknad.status === Soknadstatus.KORRIGERT) {
     return <BodyShort size="small">{texts.korrigert}</BodyShort>;
