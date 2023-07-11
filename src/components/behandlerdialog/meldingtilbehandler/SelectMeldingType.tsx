@@ -6,7 +6,7 @@ import { Field } from "react-final-form";
 const text = {
   tilleggsopplysinger: "Tilleggsopplysninger L8",
   legeerklaring: "Legeerklæring L46",
-  label: "Hvilken meldingstype ønsker du å sende",
+  label: "Hvilken meldingstype ønsker du å sende?",
   defaultOption: "Velg meldingstype",
 };
 

@@ -68,18 +68,21 @@ describe("MeldingTilBehandler", () => {
     ).to.exist;
   });
 
-  const selectLabel = "Hvilken meldingstype ønsker du å sende";
+  const selectLabel = "Hvilken meldingstype ønsker du å sende?";
 
   describe("MeldingTilBehandlerSkjema", () => {
     it("Viser select komponent for valg av meldingstype", () => {
       renderMeldingTilBehandler();
 
       expect(screen.getByLabelText(selectLabel)).to.exist;
+
       fireEvent.change(screen.getByLabelText(selectLabel), {
         target: { value: MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER },
       });
+
       const selectElement: HTMLSelectElement =
         screen.getByLabelText(selectLabel);
+
       expect(selectElement.value).to.equal(
         MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER
       );
@@ -90,6 +93,7 @@ describe("MeldingTilBehandler", () => {
       fireEvent.change(screen.getByLabelText(selectLabel), {
         target: { value: MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING },
       });
+
       expect(selectElement.value).to.equal(
         MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING
       );
@@ -101,7 +105,7 @@ describe("MeldingTilBehandler", () => {
       renderMeldingTilBehandler();
 
       const legeerklaringText =
-        "Legeerklæring vedørende pasienten. Behandleren honoreres med takst L46.";
+        "Legeerklæring vedrørende pasienten. Behandleren honoreres med takst L46.";
       expect(screen.queryByText(legeerklaringText)).to.not.exist;
 
       fireEvent.change(screen.getByLabelText(selectLabel), {

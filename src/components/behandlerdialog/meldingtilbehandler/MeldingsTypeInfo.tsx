@@ -9,9 +9,9 @@ import { BodyShort } from "@navikt/ds-react";
 
 const text = {
   tilleggsopplysinger:
-    "Tilleggsopplysninger vedørende pasienten. Behandleren honoreres med takst L8.",
+    "Tilleggsopplysninger vedrørende pasienten. Behandleren honoreres med takst L8.",
   legeerklaring:
-    "Legeerklæring vedørende pasienten. Behandleren honoreres med takst L46.",
+    "Legeerklæring vedrørende pasienten. Behandleren honoreres med takst L46.",
 };
 
 const Icon = styled.img`
