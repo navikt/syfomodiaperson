@@ -43,7 +43,7 @@ const SendtDato = (sendtDatoProps: SendtDatoProps) => {
   const { soknad } = sendtDatoProps;
   return (
     <StatusNokkelopplysning tittel={texts.dato}>
-      <p>{tilLesbarDatoMedArstall(soknad.innsendtDato)}</p>
+      <p>{tilLesbarDatoMedArstall(soknad.sendtTilNAVDato)}</p>
     </StatusNokkelopplysning>
   );
 };

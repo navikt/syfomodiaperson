@@ -37,7 +37,7 @@ const SendtSoknadSelvstendigStatuspanel = ({
           <p>{texts.sendtTilNav}</p>
         </StatusNokkelopplysning>
         <StatusNokkelopplysning tittel={texts.innsendt}>
-          <p>{tilLesbarDatoMedArstall(soknad.innsendtDato)}</p>
+          <p>{tilLesbarDatoMedArstall(soknad.sendtTilNAVDato)}</p>
         </StatusNokkelopplysning>
         <SykmeldingNokkelOpplysning className="sist" tittel={texts.tittel}>
           <p dangerouslySetInnerHTML={texts.tilNav} />
