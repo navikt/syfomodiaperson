@@ -4,6 +4,7 @@ import { Alert, Heading } from "@navikt/ds-react";
 import styled from "styled-components";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { ToggleNames } from "@/data/unleash/unleash_types";
+import AppSpinner from "@/components/AppSpinner";
 
 export const texts = {
   header: "Skriv til behandler",
@@ -18,7 +19,7 @@ const MeldingTilBehandlerAlert = styled(Alert)`
 `;
 
 export const MeldingTilBehandler = () => {
-  const { isFeatureEnabled } = useFeatureToggles();
+  const { isFeatureEnabled, isLoading } = useFeatureToggles();
   const isBehandlerdialogLegeerklaringEnabled = isFeatureEnabled(
     ToggleNames.behandlerdialogLegeerklaring
   );
@@ -28,16 +29,22 @@ export const MeldingTilBehandler = () => {
       <Heading level="1" size="large" spacing>
         {texts.header}
       </Heading>
-      {!isBehandlerdialogLegeerklaringEnabled && (
-        <MeldingTilBehandlerAlert variant="warning" size="small">
-          {texts.alert}
-        </MeldingTilBehandlerAlert>
+      {isLoading ? (
+        <AppSpinner />
+      ) : (
+        <>
+          {!isBehandlerdialogLegeerklaringEnabled && (
+            <MeldingTilBehandlerAlert variant="warning" size="small">
+              {texts.alert}
+            </MeldingTilBehandlerAlert>
+          )}
+          <MeldingTilBehandlerSkjema
+            isBehandlerdialogLegeerklaringEnabled={
+              isBehandlerdialogLegeerklaringEnabled
+            }
+          />
+        </>
       )}
-      <MeldingTilBehandlerSkjema
-        isBehandlerdialogLegeerklaringEnabled={
-          isBehandlerdialogLegeerklaringEnabled
-        }
-      />
     </>
   );
 };
