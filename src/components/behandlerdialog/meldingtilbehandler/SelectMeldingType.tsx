@@ -2,6 +2,7 @@ import React from "react";
 import { Select, SkjemaelementFeilmelding } from "nav-frontend-skjema";
 import { MeldingType } from "@/data/behandlerdialog/behandlerdialogTypes";
 import { Field } from "react-final-form";
+import { MeldingTilBehandlerSkjemaValues } from "@/components/behandlerdialog/meldingtilbehandler/MeldingTilBehandlerSkjema";
 
 const text = {
   tilleggsopplysinger: "Tilleggsopplysninger L8",
@@ -10,8 +11,12 @@ const text = {
   defaultOption: "Velg meldingstype",
 };
 
+interface SelectMeldingTypeProps {
+  values: MeldingTilBehandlerSkjemaValues;
+}
+
 const field = "type";
-export const SelectMeldingType = () => {
+export const SelectMeldingType = ({ values }: SelectMeldingTypeProps) => {
   return (
     <Field<string> name={field}>
       {({ input, meta }) => {
@@ -22,7 +27,9 @@ export const SelectMeldingType = () => {
               label={text.label}
               onChange={(e) => input.onChange(e.target.value)}
             >
-              <option value="">{text.defaultOption}</option>
+              <option value="" selected={values.type === undefined}>
+                {text.defaultOption}
+              </option>
               <option
                 value={MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER}
               >
