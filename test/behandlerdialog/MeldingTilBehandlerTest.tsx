@@ -105,7 +105,7 @@ describe("MeldingTilBehandler", () => {
       renderMeldingTilBehandler();
 
       const legeerklaringText =
-        "Legeerklæring vedrørende pasienten. Behandleren honoreres med takst L46.";
+        "Legeerklæring vedrørende pasienten. Behandleren honoreres med takst L40.";
       expect(screen.queryByText(legeerklaringText)).to.not.exist;
 
       fireEvent.change(screen.getByLabelText(selectLabel), {
