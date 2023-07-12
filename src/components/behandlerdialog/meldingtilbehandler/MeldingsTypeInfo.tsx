@@ -11,7 +11,7 @@ const text = {
   tilleggsopplysinger:
     "Tilleggsopplysninger vedrørende pasienten. Behandleren honoreres med takst L8.",
   legeerklaring:
-    "Legeerklæring vedrørende pasienten. Behandleren honoreres med takst L46.",
+    "Legeerklæring vedørende pasienten. Behandleren honoreres med takst L40.",
 };
 
 const Icon = styled.img`
