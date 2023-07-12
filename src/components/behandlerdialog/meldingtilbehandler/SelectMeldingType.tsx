@@ -7,7 +7,7 @@ import { MeldingTilBehandlerSkjemaValues } from "@/components/behandlerdialog/me
 const text = {
   tilleggsopplysinger: "Tilleggsopplysninger L8",
   legeerklaring: "Legeerklæring L40",
-  label: "Hvilken meldingstype ønsker du å sende.",
+  label: "Hvilken meldingstype ønsker du å sende",
   defaultOption: "Velg meldingstype",
 };
 
