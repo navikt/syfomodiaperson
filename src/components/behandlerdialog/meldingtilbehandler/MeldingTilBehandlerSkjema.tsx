@@ -49,7 +49,7 @@ const StyledForm = styled.form`
 `;
 
 const MeldingsType = styled.div`
-  width: 22em;
+  width: 23em;
 
   > * {
     &:not(:last-child) {
