@@ -15,6 +15,7 @@ import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
+import { Heading } from "@navikt/ds-react";
 
 const texts = {
   titles: {
@@ -125,13 +126,21 @@ const OppfolgingsplanerOversikt = (
     );
   });
 
+  const SectionHeading = ({ children }: { children: string }) => {
+    return (
+      <Heading spacing level="2" size="medium">
+        {children}
+      </Heading>
+    );
+  };
+
   return (
     <div>
       <Sidetopp tittel="Oppfølgingsplaner" />
       <div className="blokk--l">
-        <h2 className="typo-systemtittel blokk--xs">
+        <SectionHeading>
           {texts.titles.relevantOppfolgingsplaner}
-        </h2>
+        </SectionHeading>
         {aktivePlaner.length === 0 &&
           oppfolgingsplanerLPSUnprocessed.length === 0 && (
             <Alertstripe type="info">
@@ -166,10 +175,7 @@ const OppfolgingsplanerOversikt = (
           );
         })}
       </div>
-
-      <h2 className="typo-systemtittel blokk--xs">
-        {texts.titles.inactiveOppfolgingsplaner}
-      </h2>
+      <SectionHeading>{texts.titles.inactiveOppfolgingsplaner}</SectionHeading>
       {inaktivePlaner.length === 0 &&
         oppfolgingsplanerLPSProcessed.length === 0 && (
           <Alertstripe type="info">
