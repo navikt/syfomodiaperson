@@ -1,9 +1,11 @@
 import React, { ReactElement } from "react";
 import HistorikkEventItem from "./HistorikkEventItem";
-import UtvidbarHistorikk from "./UtvidbarHistorikk";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import { EkspanderbartpanelBaseProps } from "nav-frontend-ekspanderbartpanel/lib/ekspanderbartpanel-base";
+import Ekspanderbartpanel from "nav-frontend-ekspanderbartpanel";
+import styled from "styled-components";
 
 const texts = {
   errorMessage:
@@ -43,24 +45,6 @@ interface UtenforTilfelleHendelserProps {
   eventUtenforTilfelleList: HistorikkEvent[];
 }
 
-const UtenforTilfelleHendelser = ({
-  eventUtenforTilfelleList,
-}: UtenforTilfelleHendelserProps) => {
-  return (
-    <>
-      {eventUtenforTilfelleList.length > 0 && (
-        <UtvidbarHistorikk tittel={texts.utenforTilfelleHendelserUtvidbarTitle}>
-          <ol className="historikkeventliste">
-            {eventUtenforTilfelleList.sort(byTidspunkt()).map((event, idx) => {
-              return <HistorikkEventItem key={idx} event={event} />;
-            })}
-          </ol>
-        </UtvidbarHistorikk>
-      )}
-    </>
-  );
-};
-
 const hentEventUtenforTilfelleList = (
   tilfelleliste: OppfolgingstilfelleDTO[],
   historikkEvents: HistorikkEvent[]
@@ -86,6 +70,37 @@ const Historikk = ({
     tilfeller,
     historikkEvents
   );
+
+  const UtvidbarHistorikk = (
+    props: EkspanderbartpanelBaseProps
+  ): JSX.Element => {
+    const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
+      margin-bottom: 1.25em;
+    `;
+    return <StyledEkspanderbartpanel {...props} />;
+  };
+
+  const UtenforTilfelleHendelser = ({
+    eventUtenforTilfelleList,
+  }: UtenforTilfelleHendelserProps) => {
+    return (
+      <>
+        {eventUtenforTilfelleList.length > 0 && (
+          <UtvidbarHistorikk
+            tittel={texts.utenforTilfelleHendelserUtvidbarTitle}
+          >
+            <ol className="historikkeventliste">
+              {eventUtenforTilfelleList
+                .sort(byTidspunkt())
+                .map((event, idx) => {
+                  return <HistorikkEventItem key={idx} event={event} />;
+                })}
+            </ol>
+          </UtvidbarHistorikk>
+        )}
+      </>
+    );
+  };
 
   return (
     <>
