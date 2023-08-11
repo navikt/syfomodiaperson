@@ -10,7 +10,7 @@ import { ToggleNames } from "@/data/unleash/unleash_types";
 
 const texts = {
   behandleOppgaveText:
-    "Jeg har registrert at meldingen ikke ble sendt og funnet andre måter å kontakte behandleren på.",
+    "Jeg har forstått at meldingen ikke ble levert. Oppgaven kan fjernes.",
 };
 
 interface AvvistMeldingProps {
