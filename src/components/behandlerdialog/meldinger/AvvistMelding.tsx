@@ -2,7 +2,6 @@ import React from "react";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { isBehandletOppgave } from "@/utils/personOppgaveUtils";
 import { PersonOppgaveType } from "@/data/personoppgave/types/PersonOppgave";
-import { Alert } from "@navikt/ds-react";
 import BehandlePersonOppgaveKnapp from "@/components/personoppgave/BehandlePersonOppgaveKnapp";
 import { useBehandlePersonoppgave } from "@/data/personoppgave/useBehandlePersonoppgave";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
@@ -14,14 +13,10 @@ const texts = {
 };
 
 interface AvvistMeldingProps {
-  avvistMeldingStatusTekst: string | null;
   meldingUuid: string;
 }
 
-export const AvvistMelding = ({
-  avvistMeldingStatusTekst,
-  meldingUuid,
-}: AvvistMeldingProps) => {
+export const AvvistMelding = ({ meldingUuid }: AvvistMeldingProps) => {
   const { isFeatureEnabled } = useFeatureToggles();
   const isAvvistMeldingOppgaveEnabled = isFeatureEnabled(
     ToggleNames.avvistMeldingOppgave
@@ -37,9 +32,6 @@ export const AvvistMelding = ({
 
   return (
     <>
-      {avvistMeldingStatusTekst && (
-        <Alert variant="error">{avvistMeldingStatusTekst}</Alert>
-      )}
       {isAvvistMeldingOppgaveEnabled && avvistOppgave && (
         <BehandlePersonOppgaveKnapp
           personOppgave={avvistOppgave}
