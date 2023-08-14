@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import Alertstripe from "nav-frontend-alertstriper";
@@ -126,7 +126,7 @@ const OppfolgingsplanerOversikt = (
     );
   });
 
-  const SectionHeading = ({ children }: { children: string }) => {
+  const SectionHeading = ({ children }: { children: ReactNode }) => {
     return (
       <Heading spacing level="2" size="medium">
         {children}

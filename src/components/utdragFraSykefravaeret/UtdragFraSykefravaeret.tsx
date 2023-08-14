@@ -57,7 +57,7 @@ const UtdragColumn = styled.div`
   justify-content: flex-start;
 `;
 
-const DivStyled = styled.div`
+const StyledDiv = styled.div`
   margin-bottom: 2.5em;
 `;
 
@@ -145,7 +145,7 @@ export const Sykmeldinger = ({
   );
 
   return (
-    <DivStyled>
+    <StyledDiv>
       <Heading size="small" level="3">
         {tekster.sykmeldinger.header}
       </Heading>
@@ -155,7 +155,7 @@ export const Sykmeldinger = ({
           sykmeldinger={sykmeldingerSortertPaaVirksomhet[key]}
         />
       ))}
-    </DivStyled>
+    </StyledDiv>
   );
 };
 
@@ -180,7 +180,7 @@ export const SykmeldingerUtenArbeidsgiver = ({
   return (
     <>
       {sykmeldingerSortertPaUtstedelsesdato?.length > 0 && (
-        <DivStyled>
+        <StyledDiv>
           <Heading size="small" level="3">
             {tekster.sykmeldinger.headerUtenArbeidsgiver}
           </Heading>
@@ -199,7 +199,7 @@ export const SykmeldingerUtenArbeidsgiver = ({
                 </div>
               );
             })}
-        </DivStyled>
+        </StyledDiv>
       )}
     </>
   );

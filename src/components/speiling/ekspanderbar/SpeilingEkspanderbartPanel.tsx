@@ -45,7 +45,7 @@ interface SpeilingEkspanderbartPanelProps
   extends StyledEkspanderbartpanelProps {
   children: ReactElement;
   tittel: ReactNode;
-  visLukkLenke?: boolean;
+  showCloseButton?: boolean;
   defaultOpen?: boolean;
 }
 
@@ -53,7 +53,7 @@ export const SpeilingEkspanderbartPanel = ({
   children,
   variant,
   tittel,
-  visLukkLenke = true,
+  showCloseButton = true,
   defaultOpen = false,
 }: SpeilingEkspanderbartPanelProps) => {
   const [open, setOpen] = useState(defaultOpen);
@@ -74,7 +74,7 @@ export const SpeilingEkspanderbartPanel = ({
       onClick={() => setOpen(!open)}
     >
       {children}
-      {visLukkLenke && (
+      {showCloseButton && (
         <FlexRow
           topPadding={PaddingSize.SM}
           justifyContent={JustifyContentType.CENTER}

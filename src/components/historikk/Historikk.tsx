@@ -3,7 +3,6 @@ import HistorikkEventItem from "./HistorikkEventItem";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { EkspanderbartpanelBaseProps } from "nav-frontend-ekspanderbartpanel/lib/ekspanderbartpanel-base";
 import Ekspanderbartpanel from "nav-frontend-ekspanderbartpanel";
 import styled from "styled-components";
 
@@ -71,14 +70,9 @@ const Historikk = ({
     historikkEvents
   );
 
-  const UtvidbarHistorikk = (
-    props: EkspanderbartpanelBaseProps
-  ): JSX.Element => {
-    const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
-      margin-bottom: 1.25em;
-    `;
-    return <StyledEkspanderbartpanel {...props} />;
-  };
+  const UtvidbarHistorikk = styled(Ekspanderbartpanel)`
+    margin-bottom: 1.25em;
+  `;
 
   const UtenforTilfelleHendelser = ({
     eventUtenforTilfelleList,

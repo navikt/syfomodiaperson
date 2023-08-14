@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import OppsummeringSporsmal from "./OppsummeringSporsmal";
 import {
   SvarTypeDTO,
@@ -13,12 +13,10 @@ interface OppsummeringsvisningProps {
   soknad: SykepengesoknadDTO;
 }
 
-const Oppsummeringsvisning: ({
-  soknad: { sporsmal },
-}: OppsummeringsvisningProps) => ReactElement = ({
+const Oppsummeringsvisning = ({
   soknad: { sporsmal },
 }: OppsummeringsvisningProps) => {
-  const SummarySection = styled.div`
+  const OppsummeringsSeksjon = styled.div`
     border-bottom: 1px solid;
     margin-bottom: 2em;
     padding-bottom: 2em;
@@ -41,9 +39,9 @@ const Oppsummeringsvisning: ({
             sporsmal.svartype === SvarTypeDTO.IKKE_RELEVANT
         )
         .map((sporsmal) => (
-          <SummarySection key={getKey(sporsmal.tag, sporsmal.id)}>
+          <OppsummeringsSeksjon key={getKey(sporsmal.tag, sporsmal.id)}>
             <OppsummeringSporsmal {...sporsmal} />
-          </SummarySection>
+          </OppsummeringsSeksjon>
         ))}
     </>
   );
