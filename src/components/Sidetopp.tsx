@@ -6,16 +6,15 @@ interface SidetoppProps {
   tittel: string;
 }
 
+const StyledHeading = styled(Heading)`
+  text-align: center;
+`;
 const Sidetopp = ({ tittel }: SidetoppProps) => {
-  const HeadingStyled = styled(Heading)`
-    text-align: center;
-  `;
-
   return (
     <header>
-      <HeadingStyled spacing size="xlarge">
+      <StyledHeading spacing size="xlarge">
         {tittel}
-      </HeadingStyled>
+      </StyledHeading>
     </header>
   );
 };

@@ -25,6 +25,15 @@ const texts = {
   yAxis: "Y-akse: sykmeldingsgrad",
 };
 
+const StyledPanel = styled(Panel)`
+  margin-bottom: 2em;
+`;
+
+const ChartAndTilfeller = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 export const Sykmeldingsgrad = () => {
   const { sykmeldinger } = useSykmeldingerQuery();
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
@@ -84,15 +93,6 @@ export const Sykmeldingsgrad = () => {
     }
     return <></>;
   };
-
-  const StyledPanel = styled(Panel)`
-    margin-bottom: 2em;
-  `;
-
-  const ChartAndTilfeller = styled.div`
-    display: flex;
-    flex-direction: row;
-  `;
 
   return (
     <StyledPanel>
