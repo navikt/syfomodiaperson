@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import Alertstripe from "nav-frontend-alertstriper";
 import Sidetopp from "../../Sidetopp";
@@ -15,7 +14,7 @@ import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
-import { Heading } from "@navikt/ds-react";
+import { Heading, LinkPanel } from "@navikt/ds-react";
 
 const texts = {
   titles: {
@@ -134,6 +133,24 @@ const OppfolgingsplanerOversikt = (
     );
   };
 
+  interface LintToOppfolgningsplanProps {
+    dialog: OppfolgingsplanDTO;
+  }
+
+  const LintToOppfolgningsplan = ({ dialog }: LintToOppfolgningsplanProps) => {
+    return (
+      <LinkPanel href={`/sykefravaer/oppfoelgingsplaner/${dialog.id}`}>
+        <LinkPanel.Title>
+          <OppfolgingsplanVirksomhetTittel plan={dialog} />
+        </LinkPanel.Title>
+        <LinkPanel.Description>
+          <p>{durationText(dialog)}</p>
+          <p>{deltMedNavText(dialog)}</p>
+        </LinkPanel.Description>
+      </LinkPanel>
+    );
+  };
+
   return (
     <div>
       <Sidetopp tittel="Oppfølgingsplaner" />
@@ -156,23 +173,7 @@ const OppfolgingsplanerOversikt = (
           );
         })}
         {aktivePlaner.map((dialog, index) => {
-          return (
-            <Link
-              key={index}
-              className="navigasjonspanel navigasjonspanel--stor"
-              to={`/sykefravaer/oppfoelgingsplaner/${dialog.id}`}
-            >
-              <div className="navigasjonselement">
-                <OppfolgingsplanVirksomhetTittel plan={dialog} />
-                <p className="navigasjonselement__undertittel">
-                  {durationText(dialog)}
-                </p>
-                <p className="navigasjonselement__undertekst">
-                  {deltMedNavText(dialog)}
-                </p>
-              </div>
-            </Link>
-          );
+          return <LintToOppfolgningsplan key={index} dialog={dialog} />;
         })}
       </div>
       <SectionHeading>{texts.titles.inactiveOppfolgingsplaner}</SectionHeading>
@@ -184,21 +185,18 @@ const OppfolgingsplanerOversikt = (
         )}
       {inaktivePlaner.map((dialog, index) => {
         return (
-          <Link
+          <LinkPanel
             key={index}
-            className="navigasjonspanel navigasjonspanel--stor"
-            to={`/sykefravaer/oppfoelgingsplaner/${dialog.id}`}
+            href={`/sykefravaer/oppfoelgingsplaner/${dialog.id}`}
           >
-            <div className="navigasjonselement">
+            <LinkPanel.Title>
               <OppfolgingsplanVirksomhetTittel plan={dialog} />
-              <p className="navigasjonselement__undertittel">
-                {durationText(dialog)}
-              </p>
-              <p className="navigasjonselement__undertekst">
-                {deltMedNavText(dialog)}
-              </p>
-            </div>
-          </Link>
+            </LinkPanel.Title>
+            <LinkPanel.Description>
+              <p>{durationText(dialog)}</p>
+              <p>{deltMedNavText(dialog)}</p>
+            </LinkPanel.Description>
+          </LinkPanel>
         );
       })}
       {oppfolgingsplanerLPSProcessed.map((planLPS, index) => {
