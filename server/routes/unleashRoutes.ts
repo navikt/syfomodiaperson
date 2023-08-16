@@ -91,6 +91,13 @@ export const unleashToggles = (toggles: any, valgtEnhet: any, userId: any) => {
         user: userId,
       }
     ),
+    "syfo.behandlerdialog.returlegeeklaring": unleash.isEnabled(
+      "syfo.behandlerdialog.returlegeeklaring",
+      {
+        valgtEnhet: valgtEnhet,
+        user: userId,
+      }
+    ),
     "syfo.motebehov.tilbakemelding": unleash.isEnabled(
       "syfo.motebehov.tilbakemelding",
       {
