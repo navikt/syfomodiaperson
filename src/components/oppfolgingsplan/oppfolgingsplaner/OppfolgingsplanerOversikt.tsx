@@ -133,11 +133,11 @@ const OppfolgingsplanerOversikt = (
     );
   };
 
-  interface LintToOppfolgningsplanProps {
+  interface LinkToOppfolgningsplanProps {
     dialog: OppfolgingsplanDTO;
   }
 
-  const LintToOppfolgningsplan = ({ dialog }: LintToOppfolgningsplanProps) => {
+  const LinkToOppfolgningsplan = ({ dialog }: LinkToOppfolgningsplanProps) => {
     return (
       <LinkPanel href={`/sykefravaer/oppfoelgingsplaner/${dialog.id}`}>
         <LinkPanel.Title>
@@ -173,7 +173,7 @@ const OppfolgingsplanerOversikt = (
           );
         })}
         {aktivePlaner.map((dialog, index) => {
-          return <LintToOppfolgningsplan key={index} dialog={dialog} />;
+          return <LinkToOppfolgningsplan key={index} dialog={dialog} />;
         })}
       </div>
       <SectionHeading>{texts.titles.inactiveOppfolgingsplaner}</SectionHeading>

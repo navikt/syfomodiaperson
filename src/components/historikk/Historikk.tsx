@@ -60,6 +60,10 @@ interface HistorikkProps {
   tilfeller: OppfolgingstilfelleDTO[];
 }
 
+const UtvidbarHistorikk = styled(Ekspanderbartpanel)`
+  margin-bottom: 1.25em;
+`;
+
 const Historikk = ({
   historikkEvents,
   tilfeller,
@@ -69,10 +73,6 @@ const Historikk = ({
     tilfeller,
     historikkEvents
   );
-
-  const UtvidbarHistorikk = styled(Ekspanderbartpanel)`
-    margin-bottom: 1.25em;
-  `;
 
   const UtenforTilfelleHendelser = ({
     eventUtenforTilfelleList,

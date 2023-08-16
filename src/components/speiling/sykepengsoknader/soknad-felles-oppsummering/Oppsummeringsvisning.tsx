@@ -13,22 +13,22 @@ interface OppsummeringsvisningProps {
   soknad: SykepengesoknadDTO;
 }
 
+const OppsummeringsSeksjon = styled.div`
+  border-bottom: 1px solid;
+  margin-bottom: 2em;
+  padding-bottom: 2em;
+  line-height: 1.3;
+
+  :last-child {
+    border-bottom-width: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+`;
+
 const Oppsummeringsvisning = ({
   soknad: { sporsmal },
 }: OppsummeringsvisningProps) => {
-  const OppsummeringsSeksjon = styled.div`
-    border-bottom: 1px solid;
-    margin-bottom: 2em;
-    padding-bottom: 2em;
-    line-height: 1.3;
-
-    :last-child {
-      border-bottom-width: 0;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-  `;
-
   return (
     <>
       {sporsmal
