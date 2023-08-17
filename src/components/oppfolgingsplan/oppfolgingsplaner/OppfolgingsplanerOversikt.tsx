@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import dayjs from "dayjs";
 import Alertstripe from "nav-frontend-alertstriper";
 import Sidetopp from "../../Sidetopp";
@@ -14,7 +14,7 @@ import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
-import { Heading, LinkPanel } from "@navikt/ds-react";
+import { Heading, HeadingProps, LinkPanel } from "@navikt/ds-react";
 
 const texts = {
   titles: {
@@ -125,7 +125,7 @@ const OppfolgingsplanerOversikt = (
     );
   });
 
-  const SectionHeading = ({ children }: { children: ReactNode }) => {
+  const SectionHeading = ({ children }: Pick<HeadingProps, "children">) => {
     return (
       <Heading spacing level="2" size="medium">
         {children}
