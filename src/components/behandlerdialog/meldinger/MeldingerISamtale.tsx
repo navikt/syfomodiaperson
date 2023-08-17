@@ -55,7 +55,7 @@ interface MeldingInnholdProps {
 const MeldingFraBehandler = ({ melding }: MeldingInnholdProps) => {
   const { isFeatureEnabled } = useFeatureToggles();
   const isReturLegeerklaringEnabled = isFeatureEnabled(
-    ToggleNames.behandlerdialogReturLegeeklaring
+    ToggleNames.behandlerdialogReturLegeerklaring
   );
   const isLegeerklaring =
     melding.type === MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING;

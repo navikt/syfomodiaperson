@@ -91,8 +91,8 @@ export const unleashToggles = (toggles: any, valgtEnhet: any, userId: any) => {
         user: userId,
       }
     ),
-    "syfo.behandlerdialog.returlegeeklaring": unleash.isEnabled(
-      "syfo.behandlerdialog.returlegeeklaring",
+    "syfo.behandlerdialog.returlegeerklaring": unleash.isEnabled(
+      "syfo.behandlerdialog.returlegeerklaring",
       {
         valgtEnhet: valgtEnhet,
         user: userId,
