@@ -149,3 +149,54 @@ export const expectedLegeerklaringDocument = (
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
+
+export const expectedReturLegeerklaringDocument = (
+  begrunnelse = "(Obligatorisk begrunnelse)"
+): DocumentComponentDto[] => [
+  {
+    texts: ["Anmodning om ny Legeerklæring ved arbeidsuførhet"],
+    type: DocumentComponentType.HEADER_H1,
+  },
+  {
+    texts: [
+      `Gjelder ${ARBEIDSTAKER_DEFAULT_FULL_NAME}, f.nr. ${ARBEIDSTAKER_DEFAULT.personIdent}.`,
+    ],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [
+      "Vi viser til mottatt Legeerklæring ved arbeidsuførhet (Blankett NAV 08-07.08) for ovennevnte pasient.",
+    ],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [
+      "Etter vår oppfatning gir erklæringen ikke tilstrekkelige opplysninger til bruk i den videre behandling og avgjørelse av saken.",
+    ],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [begrunnelse || ""],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: ["Erklæringen kan på denne bakgrunn ikke honoreres."],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [
+      "Vi ber om at ny legeerklæring fylles ut og sendes oss snarest av hensyn til den videre framdrift i saken. Dersom du er i tvil om utfyllingen, henvises det til 'Orientering til legen om bruk og utfylling av Legeerklæring ved arbeidsuførhet' (se nav.no).",
+    ],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [
+      "Dersom du allerede har sendt inn regning for den mangelfulle erklæringen, forutsetter vi at det ikke blir sendt regning for ny utfylt Legeerklæring ved arbeidsuførhet.",
+    ],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: ["Vennlig hilsen", VEILEDER_DEFAULT.navn, "NAV"],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+];

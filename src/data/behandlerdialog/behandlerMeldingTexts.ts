@@ -40,3 +40,20 @@ export const legeerklaringTexts = {
   klage2:
     "Klageadgangen gjelder kun lovligheten i pålegget. Fristen for å klage er tre dager etter at pålegget er mottatt. Klagen kan fremsettes muntlig eller skriftlig.",
 };
+
+export const returLegeerklaringTexts = {
+  header: "Anmodning om ny Legeerklæring ved arbeidsuførhet",
+  intro: {
+    part1:
+      "Vi viser til mottatt Legeerklæring ved arbeidsuførhet (Blankett NAV 08-07.08) for ovennevnte pasient.",
+    part2:
+      "Etter vår oppfatning gir erklæringen ikke tilstrekkelige opplysninger til bruk i den videre behandling og avgjørelse av saken.",
+  },
+  outro: {
+    part1: "Erklæringen kan på denne bakgrunn ikke honoreres.",
+    part2:
+      "Vi ber om at ny legeerklæring fylles ut og sendes oss snarest av hensyn til den videre framdrift i saken. Dersom du er i tvil om utfyllingen, henvises det til 'Orientering til legen om bruk og utfylling av Legeerklæring ved arbeidsuførhet' (se nav.no).",
+    part3:
+      "Dersom du allerede har sendt inn regning for den mangelfulle erklæringen, forutsetter vi at det ikke blir sendt regning for ny utfylt Legeerklæring ved arbeidsuførhet.",
+  },
+};
