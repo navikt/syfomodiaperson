@@ -42,18 +42,17 @@ export const legeerklaringTexts = {
 };
 
 export const returLegeerklaringTexts = {
-  header: "Anmodning om ny Legeerklæring ved arbeidsuførhet",
+  header: "Retur av Legeerklæring ved arbeidsuførhet",
   intro: {
     part1:
-      "Vi viser til mottatt Legeerklæring ved arbeidsuførhet (Blankett NAV 08-07.08) for ovennevnte pasient.",
+      "Vi har mottatt Legeerklæring ved arbeidsuførhet (NAV 08-07.08). Vi ber om at du sender oss en ny legeerklæring snarest mulig.",
     part2:
-      "Etter vår oppfatning gir erklæringen ikke tilstrekkelige opplysninger til bruk i den videre behandling og avgjørelse av saken.",
+      "Erklæringen kan ikke honoreres fordi den ikke inneholder tilstrekkelige opplysninger til bruk i den videre behandlingen av saken.",
   },
   outro: {
-    part1: "Erklæringen kan på denne bakgrunn ikke honoreres.",
+    part1:
+      'Hvis du har spørsmål til utfyllingen, henvises det til "Orientering til legen om bruk og utfylling av Legeerklæring ved arbeidsuførhet" (se nav.no).',
     part2:
-      "Vi ber om at ny legeerklæring fylles ut og sendes oss snarest av hensyn til den videre framdrift i saken. Dersom du er i tvil om utfyllingen, henvises det til 'Orientering til legen om bruk og utfylling av Legeerklæring ved arbeidsuførhet' (se nav.no).",
-    part3:
       "Dersom du allerede har sendt inn regning for den mangelfulle erklæringen, forutsetter vi at det ikke blir sendt regning for ny utfylt Legeerklæring ved arbeidsuførhet.",
   },
 };

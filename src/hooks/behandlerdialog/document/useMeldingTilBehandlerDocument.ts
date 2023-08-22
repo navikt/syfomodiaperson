@@ -95,13 +95,12 @@ export const useMeldingTilBehandlerDocument = (): {
   const getReturLegeerklaringDocument = (begrunnelse: string | undefined) => {
     return [
       createHeaderH1(returLegeerklaringTexts.header),
-      createParagraph(`Gjelder ${navBruker.navn}, f.nr. ${personident}.`),
+      createParagraph(`Gjelder ${navBruker.navn}, ${personident}.`),
       createParagraph(returLegeerklaringTexts.intro.part1),
       createParagraph(returLegeerklaringTexts.intro.part2),
       createParagraph(begrunnelse || "(Obligatorisk begrunnelse)"),
       createParagraph(returLegeerklaringTexts.outro.part1),
       createParagraph(returLegeerklaringTexts.outro.part2),
-      createParagraph(returLegeerklaringTexts.outro.part3),
       getHilsen(),
     ];
   };
