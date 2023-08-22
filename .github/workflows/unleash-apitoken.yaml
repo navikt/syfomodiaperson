@@ -1,5 +1,12 @@
 name: Deploy unleash api-tokens
-on: [push]
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/unleash-apitokens.yaml'
+      - '.nais/unleash/unleash-apitoken-dev.yaml'
+      - '.nais/unleash/unleash-apitoken-prod.yaml'
 jobs:
   apply-apitoken-unleash:
     name: Apply ApiToken for Unleash to cluster

@@ -79,6 +79,7 @@ spec:
   envFrom:
     - secret: syfomodiaperson-session-key
     - secret: syfomodiaperson-redis-password
+    - secret: syfomodiaperson-unleash-api-token
   ingresses:
     - "https://syfomodiaperson.intern.nav.no"
   env:
