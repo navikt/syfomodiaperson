@@ -2,10 +2,15 @@ export type Toggles = {
   [key in ToggleNames]: boolean;
 };
 
-// See https://unleash.nais.io/#/features (syfomodiaperson)
+// See toggles: https://teamsykefravr-unleash-web.nav.cloud.nais.io/features
 export enum ToggleNames {
-  virksomhetinput = "syfo.dialogmote.virksomhetinput",
-  behandlerdialogLegeerklaring = "syfo.behandlerdialog.legeerklaring",
-  behandlerdialogReturLegeerklaring = "syfo.behandlerdialog.returlegeerklaring",
-  vurderMotebehovTilbakemelding = "syfo.motebehov.tilbakemelding",
+  isVirksomhetsinputEnabled = "isVirksomhetsinputEnabled",
+  isReturLegeerklaringEnabled = "isReturLegeerklaringEnabled",
+  isMotebehovTilbakemeldingEnabled = "isMotebehovTilbakemeldingEnabled",
 }
+
+export const defaultToggles: Toggles = {
+  isVirksomhetsinputEnabled: false,
+  isReturLegeerklaringEnabled: false,
+  isMotebehovTilbakemeldingEnabled: false,
+};

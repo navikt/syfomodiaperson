@@ -13,7 +13,6 @@ import {
 import { PaminnelseMelding } from "@/components/behandlerdialog/paminnelse/PaminnelseMelding";
 import { AvvistMelding } from "@/components/behandlerdialog/meldinger/AvvistMelding";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import { ToggleNames } from "@/data/unleash/unleash_types";
 import { ReturLegeerklaring } from "@/components/behandlerdialog/legeeklaring/ReturLegeerklaring";
 
 const StyledWrapper = styled.div`
@@ -53,10 +52,7 @@ interface MeldingInnholdProps {
 }
 
 const MeldingFraBehandler = ({ melding }: MeldingInnholdProps) => {
-  const { isFeatureEnabled } = useFeatureToggles();
-  const isReturLegeerklaringEnabled = isFeatureEnabled(
-    ToggleNames.behandlerdialogReturLegeerklaring
-  );
+  const { toggles } = useFeatureToggles();
   const isLegeerklaring =
     melding.type === MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING;
 
@@ -67,7 +63,7 @@ const MeldingFraBehandler = ({ melding }: MeldingInnholdProps) => {
       </StyledImageWrapper>
       <StyledInnhold>
         <MeldingInnholdPanel melding={melding} />
-        {isReturLegeerklaringEnabled && isLegeerklaring && (
+        {toggles.isReturLegeerklaringEnabled && isLegeerklaring && (
           <ReturLegeerklaring melding={melding} />
         )}
       </StyledInnhold>

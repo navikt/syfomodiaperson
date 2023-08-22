@@ -24,3 +24,4 @@ export const SYKEPENGESOKNAD_BACKEND_ROOT = "/sykepengesoknad-backend/api";
 export const SYFOTILGANGSKONTROLL_ROOT = "/syfo-tilgangskontroll/api";
 export const SYFOVEILEDER_ROOT = "/syfoveileder/api/v2";
 export const UNLEASH_ROOT = "/unleash";
+export const UNLEASH_NEXT_ROOT = "/unleash-next";

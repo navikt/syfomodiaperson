@@ -1,6 +1,20 @@
 import unleashClient = require("unleash-client");
+import { Context } from "unleash-client";
+import Config = require("../config");
+import * as process from "process";
 
 const { initialize, Strategy } = unleashClient;
+
+export type Toggles = {
+  [key in ToggleNames]: boolean;
+};
+
+// See toggles: https://teamsykefravr-unleash-web.nav.cloud.nais.io/features
+export enum ToggleNames {
+  isVirksomhetsinputEnabled = "isVirksomhetsinputEnabled",
+  isReturLegeerklaringEnabled = "isReturLegeerklaringEnabled",
+  isMotebehovTilbakemeldingEnabled = "isMotebehovTilbakemeldingEnabled",
+}
 
 class ByDevEnhet extends Strategy {
   constructor() {
@@ -63,47 +77,72 @@ class ByEnvironmentToggle extends Strategy {
   }
 }
 
-const unleash = initialize({
-  url: "https://unleash.nais.io/api/",
+// const unleash = initialize({
+//   url: "https://unleash.nais.io/api/",
+//   appName: "syfomodiaperson",
+//   environment: process.env.NAIS_CONTEXT,
+//   strategies: [
+//     new ByDevEnhet(),
+//     new ByUserId(),
+//     new ByProdEnhet(),
+//     new ByEnvironmentToggle(),
+//   ],
+// });
+
+export const unleash = initialize({
+  url: "https://teamsykefravr-unleash-api.nav.cloud.nais.io",
   appName: "syfomodiaperson",
-  environment: process.env.NAIS_CONTEXT,
-  strategies: [
-    new ByDevEnhet(),
-    new ByUserId(),
-    new ByProdEnhet(),
-    new ByEnvironmentToggle(),
-  ],
+  customHeaders: {
+    Authorization: "*:development.fe45f8b56cf48ef952592c9f4796a3f6ee",
+  },
 });
 
-export const unleashToggles = (toggles: any, valgtEnhet: any, userId: any) => {
+export const unleashNextToggles = (unleashContext: Context): Toggles => {
   return {
-    "syfo.dialogmote.virksomhetinput": unleash.isEnabled(
-      "syfo.dialogmote.virksomhetinput",
-      {
-        valgtEnhet: valgtEnhet,
-        user: userId,
-      }
+    isVirksomhetsinputEnabled: unleash.isEnabled(
+      "isVirksomhetsinputEnabled",
+      unleashContext
     ),
-    "syfo.behandlerdialog.legeerklaring": unleash.isEnabled(
-      "syfo.behandlerdialog.legeerklaring",
-      {
-        valgtEnhet: valgtEnhet,
-        user: userId,
-      }
+    isReturLegeerklaringEnabled: unleash.isEnabled(
+      "isReturLegeerklaringEnabled",
+      unleashContext
     ),
-    "syfo.behandlerdialog.returlegeerklaring": unleash.isEnabled(
-      "syfo.behandlerdialog.returlegeerklaring",
-      {
-        valgtEnhet: valgtEnhet,
-        user: userId,
-      }
-    ),
-    "syfo.motebehov.tilbakemelding": unleash.isEnabled(
-      "syfo.motebehov.tilbakemelding",
-      {
-        valgtEnhet: valgtEnhet,
-        user: userId,
-      }
+    isMotebehovTilbakemeldingEnabled: unleash.isEnabled(
+      "isMotebehovTilbakemeldingEnabled",
+      unleashContext
     ),
   };
 };
+
+// export const unleashToggles = (toggles: any, valgtEnhet: any, userId: any) => {
+//   return {
+//     "syfo.dialogmote.virksomhetinput": unleash.isEnabled(
+//       "syfo.dialogmote.virksomhetinput",
+//       {
+//         valgtEnhet: valgtEnhet,
+//         user: userId,
+//       }
+//     ),
+//     "syfo.behandlerdialog.legeerklaring": unleash.isEnabled(
+//       "syfo.behandlerdialog.legeerklaring",
+//       {
+//         valgtEnhet: valgtEnhet,
+//         user: userId,
+//       }
+//     ),
+//     "syfo.behandlerdialog.returlegeerklaring": unleash.isEnabled(
+//       "syfo.behandlerdialog.returlegeerklaring",
+//       {
+//         valgtEnhet: valgtEnhet,
+//         user: userId,
+//       }
+//     ),
+//     "syfo.motebehov.tilbakemelding": unleash.isEnabled(
+//       "syfo.motebehov.tilbakemelding",
+//       {
+//         valgtEnhet: valgtEnhet,
+//         user: userId,
+//       }
+//     ),
+//   };
+// };

@@ -1,9 +1,9 @@
 import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { useValgtEnhet } from "@/context/ValgtEnhetContext";
-import { post } from "@/api/axios";
-import { UNLEASH_ROOT } from "@/apiConstants";
-import { ToggleNames, Toggles } from "@/data/unleash/unleash_types";
+import { get } from "@/api/axios";
+import { defaultToggles, Toggles } from "@/data/unleash/unleash_types";
 import { useQuery } from "@tanstack/react-query";
+import { UNLEASH_NEXT_ROOT } from "@/apiConstants";
 
 export const unleashQueryKeys = {
   toggles: (valgtEnhet: string, veilederIdent: string) => [
@@ -17,24 +17,24 @@ export const useFeatureToggles = () => {
   const { data: veilederInfo } = useAktivVeilederinfoQuery();
   const { valgtEnhet } = useValgtEnhet();
   const veilederIdent = veilederInfo?.ident || "";
-  const path = `${UNLEASH_ROOT}/toggles?valgtEnhet=${valgtEnhet}${
+  const path = `${UNLEASH_NEXT_ROOT}/toggles?valgtEnhet=${valgtEnhet}${
     veilederIdent ? `&userId=${veilederIdent}` : ""
   }`;
-  const fetchToggles = () =>
-    post<Toggles>(path, {
-      toggles: Object.values(ToggleNames),
-    });
-  const query = useQuery({
+  const fetchToggles = () => get<Toggles>(path);
+  const {
+    data: toggles,
+    refetch: refreshToggles,
+    isLoading: isLoading,
+  } = useQuery({
     queryKey: unleashQueryKeys.toggles(valgtEnhet, veilederIdent),
     queryFn: fetchToggles,
+    initialData: defaultToggles,
     enabled: !!valgtEnhet || !!veilederIdent,
   });
-  const isFeatureEnabled = (toggle: ToggleNames): boolean => {
-    return query.data ? query.data[toggle] : false;
-  };
 
   return {
-    ...query,
-    isFeatureEnabled,
+    toggles,
+    refreshToggles,
+    isLoading,
   };
 };

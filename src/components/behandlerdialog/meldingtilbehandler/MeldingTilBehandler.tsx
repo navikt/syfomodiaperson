@@ -3,7 +3,6 @@ import { MeldingTilBehandlerSkjema } from "@/components/behandlerdialog/meldingt
 import { Alert, Heading } from "@navikt/ds-react";
 import styled from "styled-components";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import { ToggleNames } from "@/data/unleash/unleash_types";
 import AppSpinner from "@/components/AppSpinner";
 
 const texts = {
@@ -23,10 +22,7 @@ const MeldingTilBehandlerAlert = styled(Alert)`
 `;
 
 export const MeldingTilBehandler = () => {
-  const { isFeatureEnabled, isLoading } = useFeatureToggles();
-  const isBehandlerdialogLegeerklaringEnabled = isFeatureEnabled(
-    ToggleNames.behandlerdialogLegeerklaring
-  );
+  const { toggles, isLoading } = useFeatureToggles();
 
   return (
     <>
@@ -38,13 +34,13 @@ export const MeldingTilBehandler = () => {
       ) : (
         <>
           <MeldingTilBehandlerAlert variant="warning" size="small">
-            {isBehandlerdialogLegeerklaringEnabled
+            {toggles.isReturLegeerklaringEnabled
               ? texts.meldingVisesTilBruker
               : texts.tilleggsopplysningerInfo}
           </MeldingTilBehandlerAlert>
           <MeldingTilBehandlerSkjema
             isBehandlerdialogLegeerklaringEnabled={
-              isBehandlerdialogLegeerklaringEnabled
+              toggles.isReturLegeerklaringEnabled
             }
           />
         </>
