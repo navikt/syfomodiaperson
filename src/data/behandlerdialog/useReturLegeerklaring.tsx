@@ -19,7 +19,6 @@ export const useReturLegeerklaring = (legeerklaringUuid: string) => {
   return useMutation({
     mutationFn: postReturLegeerklaring,
     onSuccess: () => {
-      // Returnerer Promise her slik at mutation er 'loading' til disse queryene er invalidert
       return queryClient.invalidateQueries(
         behandlerdialogQueryKeys.behandlerdialog(personident)
       );
