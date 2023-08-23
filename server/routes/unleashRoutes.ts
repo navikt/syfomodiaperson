@@ -1,7 +1,6 @@
 import unleashClient = require("unleash-client");
-import * as process from "process";
 
-const { initialize, Strategy } = unleashClient;
+const { initialize } = unleashClient;
 
 export type Toggles = {
   [key in ToggleNames]: boolean;
