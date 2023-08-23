@@ -1,6 +1,4 @@
 import unleashClient = require("unleash-client");
-import { Context } from "unleash-client";
-import Config = require("../config");
 import * as process from "process";
 
 const { initialize, Strategy } = unleashClient;
@@ -16,67 +14,6 @@ export enum ToggleNames {
   isMotebehovTilbakemeldingEnabled = "isMotebehovTilbakemeldingEnabled",
 }
 
-class ByDevEnhet extends Strategy {
-  constructor() {
-    super("byDevEnhet");
-  }
-
-  isEnabled(parameters: any, context: any) {
-    if (!context.valgtEnhet) {
-      return false;
-    }
-
-    const valgtEnhetMatches =
-      parameters.enheter.indexOf(context.valgtEnhet) !== -1;
-
-    return valgtEnhetMatches && process.env.NAIS_CONTEXT === "dev";
-  }
-}
-
-class ByProdEnhet extends Strategy {
-  constructor() {
-    super("byProdEnhet");
-  }
-
-  isEnabled(parameters: any, context: any) {
-    if (!context.valgtEnhet) {
-      return false;
-    }
-
-    const valgtEnhetMatches =
-      parameters.enheter.indexOf(context.valgtEnhet) !== -1;
-
-    return valgtEnhetMatches && process.env.NAIS_CONTEXT === "prod";
-  }
-}
-
-class ByUserId extends Strategy {
-  constructor() {
-    super("byUserId");
-  }
-
-  isEnabled(parameters: any, context: any) {
-    if (!context.user) {
-      return false;
-    }
-
-    return parameters.user.indexOf(context.user) !== -1;
-  }
-}
-
-class ByEnvironmentToggle extends Strategy {
-  constructor() {
-    super("byEnvironmentToggle");
-  }
-
-  isEnabled(parameters: any) {
-    return (
-      (parameters.dev === "true" && process.env.NAIS_CONTEXT === "dev") ||
-      (parameters.prod === "true" && process.env.NAIS_CONTEXT === "prod")
-    );
-  }
-}
-
 // const unleash = initialize({
 //   url: "https://unleash.nais.io/api/",
 //   appName: "syfomodiaperson",
@@ -90,26 +27,22 @@ class ByEnvironmentToggle extends Strategy {
 // });
 
 export const unleash = initialize({
-  url: "https://teamsykefravr-unleash-api.nav.cloud.nais.io",
+  url: "https://teamsykefravr-unleash-api.nav.cloud.nais.io/api",
   appName: "syfomodiaperson",
   customHeaders: {
-    Authorization: "*:development.fe45f8b56cf48ef952592c9f4796a3f6ee",
+    Authorization:
+      "*:development.fe45f8b56cf48ef952592c9f4796a3f6ee61504d15d98c697277f510",
   },
 });
 
-export const unleashNextToggles = (unleashContext: Context): Toggles => {
+export const unleashNextToggles = (): Toggles => {
   return {
-    isVirksomhetsinputEnabled: unleash.isEnabled(
-      "isVirksomhetsinputEnabled",
-      unleashContext
-    ),
+    isVirksomhetsinputEnabled: unleash.isEnabled("isVirksomhetsinputEnabled"),
     isReturLegeerklaringEnabled: unleash.isEnabled(
-      "isReturLegeerklaringEnabled",
-      unleashContext
+      "isReturLegeerklaringEnabled"
     ),
     isMotebehovTilbakemeldingEnabled: unleash.isEnabled(
-      "isMotebehovTilbakemeldingEnabled",
-      unleashContext
+      "isMotebehovTilbakemeldingEnabled"
     ),
   };
 };

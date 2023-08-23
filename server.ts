@@ -8,7 +8,6 @@ import { setupProxy } from "./server/proxy";
 import { setupSession } from "./server/session";
 
 import { Toggles, unleashNextToggles } from "./server/routes/unleashRoutes";
-import { Context } from "unleash-client";
 
 // Prometheus metrics
 const collectDefaultMetrics = prometheus.collectDefaultMetrics;
@@ -80,16 +79,17 @@ const setupServer = async () => {
   //   }
   // );
 
-  server.post(
+  server.get(
     "/unleash-next/toggles",
     redirectIfUnauthorized,
     (req: express.Request, res: express.Response<Toggles>) => {
-      const userId =
-        typeof req.query.userId == "string" ? req.query.userId : undefined;
-      const unleashContext: Context = {
-        userId: userId,
-      };
-      res.status(200).send(unleashNextToggles(unleashContext));
+      // const userId =
+      //   typeof req.query.userId == "string" ? req.query.userId : undefined;
+      // const unleashContext: Context = {
+      //   appName: "syfomodiaperson",
+      //   environment: "development",
+      // };
+      res.status(200).send(unleashNextToggles());
     }
   );
 

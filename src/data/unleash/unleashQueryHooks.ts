@@ -17,9 +17,10 @@ export const useFeatureToggles = () => {
   const { data: veilederInfo } = useAktivVeilederinfoQuery();
   const { valgtEnhet } = useValgtEnhet();
   const veilederIdent = veilederInfo?.ident || "";
-  const path = `${UNLEASH_NEXT_ROOT}/toggles?valgtEnhet=${valgtEnhet}${
-    veilederIdent ? `&userId=${veilederIdent}` : ""
-  }`;
+  const path = `${UNLEASH_NEXT_ROOT}/toggles`;
+  //   ?valgtEnhet=${valgtEnhet}${
+  //   veilederIdent ? `&userId=${veilederIdent}` : ""
+  // }`;
   const fetchToggles = () => get<Toggles>(path);
   const {
     data: toggles,
