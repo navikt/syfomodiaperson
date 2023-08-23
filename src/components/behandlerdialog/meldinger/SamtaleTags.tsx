@@ -13,12 +13,14 @@ import {
   PersonOppgaveType,
 } from "@/data/personoppgave/types/PersonOppgave";
 import { PaminnelseWarningIcon } from "@/components/behandlerdialog/paminnelse/PaminnelseWarningIcon";
+import { ReturLegeerklaringWarningIcon } from "@/components/behandlerdialog/legeerklaring/ReturLegeerklaringWarningIcon";
 
 const texts = {
   nyttSvar: "Nytt svar",
   venterSvar: "Venter på svar",
   avvist: "Melding ikke levert",
   paminnelseSendt: "Påminnelse sendt",
+  returSendt: "Retur sendt",
   vurderPaminnelse: "Vurder påminnelse",
 };
 
@@ -27,15 +29,19 @@ const StyledWrapper = styled.div`
   margin-left: 1em;
 `;
 
+const StyledTag = styled(Tag)`
+  gap: 0.2em;
+`;
+
 interface SamtaleTagsProps {
   meldinger: MeldingDTO[];
 }
 
 const SamtaleTag = (props: ComponentProps<typeof Tag>) => (
   <StyledWrapper>
-    <Tag {...props} size="small">
+    <StyledTag {...props} size="small">
       {props.children}
-    </Tag>
+    </StyledTag>
   </StyledWrapper>
 );
 
@@ -43,6 +49,7 @@ type SamtaleTagStatus =
   | "NYTT_SVAR"
   | "AVVIST"
   | "PAMINNELSE_SENDT"
+  | "RETUR_SENDT"
   | "VURDER_PAMINNELSE"
   | "VENTER_SVAR"
   | "INGEN";
@@ -78,14 +85,27 @@ const getSamtaleTagStatus = (
     )
   );
 
-  const harAvvistMelding = meldinger.some(
-    (melding) => melding.status?.type === MeldingStatusType.AVVIST
-  );
-  const manglerSvarFraBehandler = !meldinger.some(
+  const innkommendeMeldinger = meldinger.filter(
     (melding) => melding.innkommende
   );
+  const antallReturLegeerklaringMeldinger = meldinger.filter(
+    (melding) => melding.type === MeldingType.HENVENDELSE_RETUR_LEGEERKLARING
+  ).length;
+  const antallInnkommendeLegeerklaringer = innkommendeMeldinger.filter(
+    (melding) => melding.type === MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING
+  ).length;
+
+  const harReturLegeerklaringMelding = antallReturLegeerklaringMeldinger > 0;
+  const manglerSvarPaaRetur =
+    harReturLegeerklaringMelding &&
+    antallReturLegeerklaringMeldinger >= antallInnkommendeLegeerklaringer;
+  const manglerSvarFraBehandler =
+    innkommendeMeldinger.length === 0 || manglerSvarPaaRetur;
   const harPaminnelseMelding = meldinger.some(
     (melding) => melding.type === MeldingType.FORESPORSEL_PASIENT_PAMINNELSE
+  );
+  const harAvvistMelding = meldinger.some(
+    (melding) => melding.status?.type === MeldingStatusType.AVVIST
   );
 
   if (harAvvistMelding) {
@@ -96,6 +116,8 @@ const getSamtaleTagStatus = (
     return "VURDER_PAMINNELSE";
   } else if (manglerSvarFraBehandler && harPaminnelseMelding) {
     return "PAMINNELSE_SENDT";
+  } else if (manglerSvarPaaRetur && harReturLegeerklaringMelding) {
+    return "RETUR_SENDT";
   } else if (manglerSvarFraBehandler && harIngenMeldingMedPaminnelseOppgave) {
     return "VENTER_SVAR";
   } else {
@@ -103,7 +125,9 @@ const getSamtaleTagStatus = (
   }
 };
 
-export const SamtaleTags = ({ meldinger }: SamtaleTagsProps) => {
+export const SamtaleTags = ({
+  meldinger,
+}: SamtaleTagsProps): React.ReactElement => {
   const { data: oppgaver } = usePersonoppgaverQuery();
   const samtaleTagStatus = getSamtaleTagStatus(meldinger, oppgaver);
 
@@ -115,13 +139,21 @@ export const SamtaleTags = ({ meldinger }: SamtaleTagsProps) => {
       return <SamtaleTag variant="error">{texts.avvist}</SamtaleTag>;
     }
     case "VURDER_PAMINNELSE": {
-      return <SamtaleTag variant={"info"}>{texts.vurderPaminnelse}</SamtaleTag>;
+      return <SamtaleTag variant="info">{texts.vurderPaminnelse}</SamtaleTag>;
     }
     case "PAMINNELSE_SENDT": {
       return (
         <SamtaleTag variant="warning">
           <PaminnelseWarningIcon />
           {texts.paminnelseSendt}
+        </SamtaleTag>
+      );
+    }
+    case "RETUR_SENDT": {
+      return (
+        <SamtaleTag variant="warning">
+          <ReturLegeerklaringWarningIcon />
+          {texts.returSendt}
         </SamtaleTag>
       );
     }
