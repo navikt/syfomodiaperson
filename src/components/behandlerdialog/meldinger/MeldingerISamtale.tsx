@@ -13,7 +13,7 @@ import {
 import { PaminnelseMelding } from "@/components/behandlerdialog/paminnelse/PaminnelseMelding";
 import { AvvistMelding } from "@/components/behandlerdialog/meldinger/AvvistMelding";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import { ReturLegeerklaring } from "@/components/behandlerdialog/legeeklaring/ReturLegeerklaring";
+import { ReturLegeerklaring } from "@/components/behandlerdialog/legeerklaring/ReturLegeerklaring";
 
 const StyledWrapper = styled.div`
   margin: 1em 0;
@@ -55,6 +55,7 @@ const MeldingFraBehandler = ({ melding }: MeldingInnholdProps) => {
   const { toggles } = useFeatureToggles();
   const isLegeerklaring =
     melding.type === MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING;
+  // TODO: Sjekk allerede sendt retur for melding
 
   return (
     <StyledMelding innkommende>
