@@ -14,6 +14,10 @@ import {
 } from "@/data/personoppgave/types/PersonOppgave";
 import { PaminnelseWarningIcon } from "@/components/behandlerdialog/paminnelse/PaminnelseWarningIcon";
 import { ReturLegeerklaringWarningIcon } from "@/components/behandlerdialog/legeerklaring/ReturLegeerklaringWarningIcon";
+import {
+  antallOfType,
+  hasMeldingOfType,
+} from "../../../../test/utils/behandlerdialogUtils";
 
 const texts = {
   nyttSvar: "Nytt svar",
@@ -85,24 +89,25 @@ const getSamtaleTagStatus = (
     )
   );
 
-  const innkommendeMeldinger = meldinger.filter(
-    (melding) => melding.innkommende
+  const innkommende = meldinger.filter((melding) => melding.innkommende);
+  const antallReturLegeerklaring = antallOfType(
+    meldinger,
+    MeldingType.HENVENDELSE_RETUR_LEGEERKLARING
   );
-  const antallReturLegeerklaringMeldinger = meldinger.filter(
-    (melding) => melding.type === MeldingType.HENVENDELSE_RETUR_LEGEERKLARING
-  ).length;
-  const antallInnkommendeLegeerklaringer = innkommendeMeldinger.filter(
-    (melding) => melding.type === MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING
-  ).length;
+  const antallInnkommendeLegeerklaringer = antallOfType(
+    innkommende,
+    MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING
+  );
 
-  const harReturLegeerklaringMelding = antallReturLegeerklaringMeldinger > 0;
+  const harReturLegeerklaringMelding = antallReturLegeerklaring > 0;
   const manglerSvarPaaRetur =
     harReturLegeerklaringMelding &&
-    antallReturLegeerklaringMeldinger >= antallInnkommendeLegeerklaringer;
+    antallReturLegeerklaring >= antallInnkommendeLegeerklaringer;
   const manglerSvarFraBehandler =
-    innkommendeMeldinger.length === 0 || manglerSvarPaaRetur;
-  const harPaminnelseMelding = meldinger.some(
-    (melding) => melding.type === MeldingType.FORESPORSEL_PASIENT_PAMINNELSE
+    innkommende.length === 0 || manglerSvarPaaRetur;
+  const harPaminnelseMelding = hasMeldingOfType(
+    meldinger,
+    MeldingType.FORESPORSEL_PASIENT_PAMINNELSE
   );
   const harAvvistMelding = meldinger.some(
     (melding) => melding.status?.type === MeldingStatusType.AVVIST
