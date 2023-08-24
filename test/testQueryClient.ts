@@ -124,13 +124,6 @@ export const queryClientWithMockData = (): QueryClient => {
     ),
     () => unleashMock
   );
-  queryClient.setQueryData(
-    unleashQueryKeys.toggles(
-      BEHANDLENDE_ENHET_DEFAULT.enhetId,
-      VEILEDER_IDENT_DEFAULT
-    ),
-    () => unleashMock
-  );
 
   queryClient.setQueryData(
     behandlereQueryKeys.behandlere(ARBEIDSTAKER_DEFAULT.personIdent),

@@ -21,7 +21,7 @@ import { mockIsaktivitetskrav } from "./isaktivitetskrav/mockIsaktivitetskrav";
 import { mockIsbehandlerdialog } from "./isbehandlerdialog/mockIsbehandlerdialog";
 import { mockEsyfovarsel } from "./esyfovarsel/mockEsyfovarsel";
 
-const express = require("express");
+import express from "express";
 
 const mockEndepunkter = (server: any) => {
   server.use(express.json());

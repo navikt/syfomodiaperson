@@ -64,23 +64,8 @@ const setupServer = async () => {
 
   server.use("/static", express.static(DIST_DIR));
 
-  // server.post(
-  //   "/unleash/toggles",
-  //   redirectIfUnauthorized,
-  //   (req: express.Request, res: express.Response) => {
-  //     const toggles = req.body.toggles;
-  //     const unleashToggles = unleashRoutes.unleashToggles(
-  //       toggles,
-  //       req.query.valgtEnhet,
-  //       req.query.userId
-  //     );
-  //
-  //     res.status(200).send(unleashToggles);
-  //   }
-  // );
-
   server.get(
-    "/unleash-next/toggles",
+    "/unleash/toggles",
     redirectIfUnauthorized,
     (req: express.Request, res: express.Response<Toggles>) => {
       // const userId =
