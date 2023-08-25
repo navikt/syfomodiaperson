@@ -314,7 +314,7 @@ export const redis = {
   }),
 };
 
-export const unleash = {
+export const unleash: { serverApiUrl: string; serverApiToken: string } = {
   serverApiUrl: envVar({ name: "UNLEASH_SERVER_API_URL" }),
   serverApiToken: envVar({ name: "UNLEASH_SERVER_API_TOKEN" }),
 };

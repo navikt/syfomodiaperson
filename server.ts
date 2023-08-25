@@ -7,7 +7,7 @@ import { getOpenIdClient, getOpenIdIssuer } from "./server/authUtils";
 import { setupProxy } from "./server/proxy";
 import { setupSession } from "./server/session";
 
-import { Toggles, unleashNextToggles } from "./server/unleash";
+import unleash = require("./server/unleash");
 
 // Prometheus metrics
 const collectDefaultMetrics = prometheus.collectDefaultMetrics;
@@ -67,14 +67,17 @@ const setupServer = async () => {
   server.get(
     "/unleash/toggles",
     redirectIfUnauthorized,
-    (req: express.Request, res: express.Response<Toggles>) => {
-      // const userId =
-      //   typeof req.query.userId == "string" ? req.query.userId : undefined;
-      // const unleashContext: Context = {
-      //   appName: "syfomodiaperson",
-      //   environment: "development",
-      // };
-      res.status(200).send(unleashNextToggles());
+    (req: express.Request, res: express.Response<unleash.Toggles>) => {
+      const veilederId =
+        typeof req.query.veilederId == "string"
+          ? req.query.veilederId
+          : undefined;
+      const enhetId =
+        typeof req.query.valgtEnhet == "string"
+          ? req.query.valgtEnhet
+          : undefined;
+
+      res.status(200).send(unleash.toggles(veilederId, enhetId));
     }
   );
 

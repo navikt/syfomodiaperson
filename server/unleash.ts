@@ -1,5 +1,4 @@
 import unleashClient = require("unleash-client");
-import Config = require("./config");
 
 const { initialize } = unleashClient;
 
@@ -15,19 +14,31 @@ export enum ToggleNames {
 }
 
 export const unleash = initialize({
-  url: Config.unleash.serverApiUrl,
+  url: "https://teamsykefravr-unleash-api.nav.cloud.nais.io/api",
   appName: "syfomodiaperson",
-  customHeaders: { Authorization: Config.unleash.serverApiToken },
+  customHeaders: {
+    Authorization:
+      "*:development.fe45f8b56cf48ef952592c9f4796a3f6ee61504d15d98c697277f510",
+  },
 });
 
-export const unleashNextToggles = (): Toggles => {
+export const toggles = (veilederId, enhetId) => {
+  const context = {
+    veilederId: veilederId,
+    enhetId: enhetId,
+  };
   return {
-    isVirksomhetsinputEnabled: unleash.isEnabled("isVirksomhetsinputEnabled"),
+    isVirksomhetsinputEnabled: unleash.isEnabled(
+      "isVirksomhetsinputEnabled",
+      context
+    ),
     isReturLegeerklaringEnabled: unleash.isEnabled(
-      "isReturLegeerklaringEnabled"
+      "isReturLegeerklaringEnabled",
+      context
     ),
     isMotebehovTilbakemeldingEnabled: unleash.isEnabled(
-      "isMotebehovTilbakemeldingEnabled"
+      "isMotebehovTilbakemeldingEnabled",
+      context
     ),
   };
 };

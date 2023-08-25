@@ -21,7 +21,6 @@ export const useFeatureToggles = () => {
   const queryParameters = `?enhetId=${valgtEnhet}${
     veilederIdent ? `&veilederId=${veilederIdent}` : ""
   }`;
-
   const fetchToggles = () => get<Toggles>(path + queryParameters);
   const {
     data: togglesResponse,
