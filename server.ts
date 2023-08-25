@@ -7,7 +7,7 @@ import { getOpenIdClient, getOpenIdIssuer } from "./server/authUtils";
 import { setupProxy } from "./server/proxy";
 import { setupSession } from "./server/session";
 
-import { Toggles, unleashNextToggles } from "./server/routes/unleashRoutes";
+import { Toggles, unleashNextToggles } from "./server/unleash";
 
 // Prometheus metrics
 const collectDefaultMetrics = prometheus.collectDefaultMetrics;

@@ -18,7 +18,7 @@ export const useFeatureToggles = () => {
   const { valgtEnhet } = useValgtEnhet();
   const veilederIdent = veilederInfo?.ident || "";
   const path = `${UNLEASH_ROOT}/toggles`;
-  const queryParameters = `?valgtEnhet=${valgtEnhet}${
+  const queryParameters = `?enhetId=${valgtEnhet}${
     veilederIdent ? `&veilederId=${veilederIdent}` : ""
   }`;
 
@@ -27,6 +27,7 @@ export const useFeatureToggles = () => {
     data: togglesResponse,
     refetch: refreshToggles,
     isLoading: isLoading,
+    isSuccess: isSuccess,
   } = useQuery({
     queryKey: unleashQueryKeys.toggles(valgtEnhet, veilederIdent),
     queryFn: fetchToggles,
@@ -38,5 +39,6 @@ export const useFeatureToggles = () => {
     toggles,
     refreshToggles,
     isLoading,
+    isSuccess,
   };
 };
