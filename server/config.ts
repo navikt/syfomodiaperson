@@ -314,10 +314,10 @@ export const redis = {
   }),
 };
 
-// export const unleash = {
-//   serverApiUrl: envVar({ name: "UNLEASH_SERVER_API_URL" }),
-//   serverApiToken: envVar({ name: "UNLEASH_SERVER_API_TOKEN" }),
-// };
+export const unleash = {
+  serverApiUrl: envVar({ name: "UNLEASH_SERVER_API_URL" }),
+  serverApiToken: envVar({ name: "UNLEASH_SERVER_API_TOKEN" }),
+};
 
 module.exports = {
   auth: auth,
