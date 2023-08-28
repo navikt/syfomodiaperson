@@ -42,12 +42,13 @@ describe("MeldingTilBehandler", () => {
   it("Viser overskrift og warning-alert for kopi til bruker hvis toggle for legeerklæring er på", () => {
     renderMeldingTilBehandler();
 
-    const meldingenVisesText = "Meldingen vises til innbyggeren på Min side.";
+    const alertText =
+      "Dialogmeldingen skal bare benyttes i sykefraværsoppfølgingen. Meldingen vises til innbyggeren på Min side.";
 
     expect(screen.getByRole("heading", { name: "Skriv til behandler" })).to
       .exist;
     expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
-    expect(screen.getByText(meldingenVisesText)).to.exist;
+    expect(screen.getByText(alertText)).to.exist;
   });
 
   const selectLabel = "Hvilken meldingstype ønsker du å sende?";

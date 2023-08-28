@@ -5,7 +5,8 @@ import styled from "styled-components";
 
 const texts = {
   header: "Skriv til behandler",
-  meldingVisesTilBruker: "Meldingen vises til innbyggeren på Min side.",
+  alertInfo:
+    "Dialogmeldingen skal bare benyttes i sykefraværsoppfølgingen. Meldingen vises til innbyggeren på Min side.",
 };
 
 const MeldingTilBehandlerAlert = styled(Alert)`
@@ -25,7 +26,7 @@ export const MeldingTilBehandler = () => {
       </Heading>
       <>
         <MeldingTilBehandlerAlert variant="warning" size="small">
-          {texts.meldingVisesTilBruker}
+          {texts.alertInfo}
         </MeldingTilBehandlerAlert>
         <MeldingTilBehandlerSkjema />
       </>
