@@ -1,4 +1,6 @@
 import unleashClient = require("unleash-client");
+import Config = require("./config");
+import { Strategy } from "unleash-client";
 
 const { initialize } = unleashClient;
 
@@ -13,13 +15,33 @@ export enum ToggleNames {
   isMotebehovTilbakemeldingEnabled = "isMotebehovTilbakemeldingEnabled",
 }
 
+class ActiveForVeilederId extends Strategy {
+  constructor() {
+    super("ActiveForVeilederId");
+  }
+
+  isEnabled(parameters, context) {
+    return parameters.veilederIds.indexOf(context.veilederIds) !== -1;
+  }
+}
+
+class ActiveForEnhetId extends Strategy {
+  constructor() {
+    super("ActiveForEnhetId");
+  }
+
+  isEnabled(parameters, context) {
+    return parameters.enhetId.indexOf(context.enhetId) !== -1;
+  }
+}
+
 export const unleash = initialize({
-  url: "https://teamsykefravr-unleash-api.nav.cloud.nais.io/api",
+  url: Config.unleash.serverApiUrl,
   appName: "syfomodiaperson",
   customHeaders: {
-    Authorization:
-      "*:development.fe45f8b56cf48ef952592c9f4796a3f6ee61504d15d98c697277f510",
+    Authorization: Config.unleash.serverApiToken,
   },
+  strategies: [new ActiveForVeilederId(), new ActiveForEnhetId()],
 });
 
 export const toggles = (veilederId, enhetId) => {

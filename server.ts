@@ -73,9 +73,7 @@ const setupServer = async () => {
           ? req.query.veilederId
           : undefined;
       const enhetId =
-        typeof req.query.valgtEnhet == "string"
-          ? req.query.valgtEnhet
-          : undefined;
+        typeof req.query.enhetId == "string" ? req.query.enhetId : undefined;
 
       res.status(200).send(unleash.toggles(veilederId, enhetId));
     }
