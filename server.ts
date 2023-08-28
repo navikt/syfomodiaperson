@@ -68,14 +68,16 @@ const setupServer = async () => {
     "/unleash/toggles",
     redirectIfUnauthorized,
     (req: express.Request, res: express.Response<unleash.Toggles>) => {
-      const veilederId =
-        typeof req.query.veilederId == "string"
-          ? req.query.veilederId
-          : undefined;
-      const enhetId =
-        typeof req.query.enhetId == "string" ? req.query.enhetId : undefined;
+      console.log(`Query:\n ${JSON.stringify(req.query)}`);
 
-      res.status(200).send(unleash.toggles(veilederId, enhetId));
+      const togglesResponse = unleash.toggles(
+        req.query.veilederId,
+        req.query.enhetId
+      );
+
+      console.log(`Response:\n ${JSON.stringify(togglesResponse)}`);
+
+      res.status(200).send(togglesResponse);
     }
   );
 
