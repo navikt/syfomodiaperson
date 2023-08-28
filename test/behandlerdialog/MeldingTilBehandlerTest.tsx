@@ -52,7 +52,10 @@ describe("MeldingTilBehandler", () => {
         VEILEDER_IDENT_DEFAULT
       ),
       () => {
-        return { ...mockUnleashResponse, isReturLegeerklaringEnabled: false };
+        return {
+          ...mockUnleashResponse,
+          isBehandlerDialogLegeerklaringEnabled: false,
+        };
       }
     );
 

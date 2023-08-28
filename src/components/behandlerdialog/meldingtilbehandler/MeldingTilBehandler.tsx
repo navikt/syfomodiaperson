@@ -34,13 +34,13 @@ export const MeldingTilBehandler = () => {
       ) : (
         <>
           <MeldingTilBehandlerAlert variant="warning" size="small">
-            {toggles.isReturLegeerklaringEnabled
+            {toggles.isBehandlerDialogLegeerklaringEnabled
               ? texts.meldingVisesTilBruker
               : texts.tilleggsopplysningerInfo}
           </MeldingTilBehandlerAlert>
           <MeldingTilBehandlerSkjema
             isBehandlerdialogLegeerklaringEnabled={
-              toggles.isReturLegeerklaringEnabled
+              toggles.isBehandlerDialogLegeerklaringEnabled
             }
           />
         </>

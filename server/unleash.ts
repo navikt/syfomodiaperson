@@ -52,6 +52,10 @@ export const getToggles = (veilederId, enhetId) => {
       "isVirksomhetsinputEnabled",
       context
     ),
+    isBehandlerDialogLegeerklaringEnabled: unleash.isEnabled(
+      "isBehandlerDialogLegeerklaringEnabled",
+      context
+    ),
     isReturLegeerklaringEnabled: unleash.isEnabled(
       "isReturLegeerklaringEnabled",
       context

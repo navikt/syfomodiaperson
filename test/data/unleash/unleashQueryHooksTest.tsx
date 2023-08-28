@@ -31,11 +31,7 @@ describe("unleashQuery tests", () => {
       wrapper,
     });
 
-    await waitFor(() => {
-      console.log(`RESULT ${JSON.stringify(result.current)}`);
-      expect(result.current.isSuccess).to.be.true;
-    });
-    console.log(`UNLEASH MOCK: ${mockUnleashResponse}`);
+    await waitFor(() => expect(result.current.isSuccess).to.be.true);
     expect(result.current.toggles).to.deep.equal(mockUnleashResponse);
   });
 });
