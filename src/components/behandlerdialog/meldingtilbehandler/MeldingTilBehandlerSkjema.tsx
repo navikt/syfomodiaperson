@@ -121,6 +121,31 @@ export const MeldingTilBehandlerSkjema = () => {
     });
   };
 
+  const SendButton = () => {
+    return (
+      <Button
+        variant="primary"
+        onClick={resetFeilUtbedret}
+        loading={meldingTilBehandler.isLoading}
+        type="submit"
+      >
+        {texts.sendKnapp}
+      </Button>
+    );
+  };
+
+  const PreviewButton = () => {
+    return (
+      <Button
+        variant="secondary"
+        type="button"
+        onClick={() => setDisplayPreview(true)}
+      >
+        {texts.previewKnapp}
+      </Button>
+    );
+  };
+
   return (
     <Form
       onSubmit={submit}
@@ -163,21 +188,8 @@ export const MeldingTilBehandlerSkjema = () => {
             <SkjemaFeiloppsummering errors={errors} />
           )}
           <ButtonRow>
-            <Button
-              variant="primary"
-              onClick={resetFeilUtbedret}
-              loading={meldingTilBehandler.isLoading}
-              type="submit"
-            >
-              {texts.sendKnapp}
-            </Button>
-            <Button
-              variant="secondary"
-              type="button"
-              onClick={() => setDisplayPreview(true)}
-            >
-              {texts.previewKnapp}
-            </Button>
+            <SendButton />
+            <PreviewButton />
           </ButtonRow>
         </StyledForm>
       )}

@@ -1,5 +1,6 @@
 import React from "react";
-import { Select, SkjemaelementFeilmelding } from "nav-frontend-skjema";
+import { SkjemaelementFeilmelding } from "nav-frontend-skjema";
+import { Select } from "@navikt/ds-react";
 import { MeldingType } from "@/data/behandlerdialog/behandlerdialogTypes";
 import { Field } from "react-final-form";
 import { meldingTypeTexts } from "@/data/behandlerdialog/behandlerdialogTexts";
@@ -32,6 +33,7 @@ export const SelectMeldingType = () => (
           <MeldingTypeOption
             type={MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING}
           />
+          <MeldingTypeOption type={MeldingType.MELDING_FRA_NAV} />
         </Select>
         <SkjemaelementFeilmelding>
           {meta.submitFailed && meta.error}
