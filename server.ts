@@ -6,7 +6,7 @@ import prometheus = require("prom-client");
 import { getOpenIdClient, getOpenIdIssuer } from "./server/authUtils";
 import { setupProxy } from "./server/proxy";
 import { setupSession } from "./server/session";
-
+import Config = require("./server/config");
 import unleash = require("./server/unleash");
 
 // Prometheus metrics
@@ -68,15 +68,10 @@ const setupServer = async () => {
     "/unleash/toggles",
     redirectIfUnauthorized,
     (req: express.Request, res: express.Response<unleash.Toggles>) => {
-      console.log(`Query:\n ${JSON.stringify(req.query)}`);
-
-      const togglesResponse = unleash.toggles(
+      const togglesResponse = unleash.getToggles(
         req.query.veilederId,
         req.query.enhetId
       );
-
-      console.log(`Response:\n ${JSON.stringify(togglesResponse)}`);
-
       res.status(200).send(togglesResponse);
     }
   );

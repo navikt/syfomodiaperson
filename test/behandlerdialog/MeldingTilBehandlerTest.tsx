@@ -22,7 +22,7 @@ import {
   BEHANDLENDE_ENHET_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
 } from "../../mock/common/mockConstants";
-import { unleashMock } from "../../mock/unleash/unleashMock";
+import { mockUnleashResponse } from "../../mock/unleashMocks";
 
 let queryClient: QueryClient;
 
@@ -52,7 +52,7 @@ describe("MeldingTilBehandler", () => {
         VEILEDER_IDENT_DEFAULT
       ),
       () => {
-        return { ...unleashMock, isReturLegeerklaringEnabled: false };
+        return { ...mockUnleashResponse, isReturLegeerklaringEnabled: false };
       }
     );
 

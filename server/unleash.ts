@@ -1,5 +1,6 @@
 import unleashClient = require("unleash-client");
 import { Strategy } from "unleash-client";
+import Config = require("./config");
 
 const { initialize } = unleashClient;
 
@@ -35,16 +36,13 @@ class EnhetIds extends Strategy {
 }
 
 export const unleash = initialize({
-  url: "https://teamsykefravr-unleash-api.nav.cloud.nais.io/api",
+  url: Config.unleash.serverApiUrl + "/api",
   appName: "syfomodiaperson",
-  customHeaders: {
-    Authorization:
-      "*:development.fe45f8b56cf48ef952592c9f4796a3f6ee61504d15d98c697277f510",
-  },
+  customHeaders: { Authorization: Config.unleash.serverApiToken },
   strategies: [new VeilederIds(), new EnhetIds()],
 });
 
-export const toggles = (veilederId, enhetId) => {
+export const getToggles = (veilederId, enhetId) => {
   const context = {
     veilederId: veilederId,
     enhetId: enhetId,
