@@ -91,5 +91,12 @@ export const unleashToggles = (toggles: any, valgtEnhet: any, userId: any) => {
         user: userId,
       }
     ),
+    "syfo.behandlerdialog.meldingfranav": unleash.isEnabled(
+      "syfo.behandlerdialog.meldingfranav",
+      {
+        valgtEnhet: valgtEnhet,
+        user: userId,
+      }
+    ),
   };
 };
