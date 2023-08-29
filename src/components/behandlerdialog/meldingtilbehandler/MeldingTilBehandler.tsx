@@ -2,14 +2,13 @@ import React from "react";
 import { MeldingTilBehandlerSkjema } from "@/components/behandlerdialog/meldingtilbehandler/MeldingTilBehandlerSkjema";
 import { Alert, Heading } from "@navikt/ds-react";
 import styled from "styled-components";
-import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import AppSpinner from "@/components/AppSpinner";
 
 const texts = {
   header: "Skriv til behandler",
   tilleggsopplysningerInfo:
     "Her kan du kun be om tilleggsopplysninger med takst L8. Dialogmeldingen skal bare benyttes i sykefraværsoppfølgingen. Meldingen vises også til innbyggeren på Min side.",
-  meldingVisesTilBruker: "Meldingen vises til innbyggeren på Min side.",
+  alertInfo:
+    "Dialogmeldingen skal bare benyttes i sykefraværsoppfølgingen. Meldingen vises til innbyggeren på Min side.",
 };
 
 const MeldingTilBehandlerAlert = styled(Alert)`
@@ -22,29 +21,15 @@ const MeldingTilBehandlerAlert = styled(Alert)`
 `;
 
 export const MeldingTilBehandler = () => {
-  const { toggles, isLoading } = useFeatureToggles();
-
   return (
     <>
       <Heading level="1" size="large" spacing>
         {texts.header}
       </Heading>
-      {isLoading ? (
-        <AppSpinner />
-      ) : (
-        <>
-          <MeldingTilBehandlerAlert variant="warning" size="small">
-            {toggles.isBehandlerDialogLegeerklaringEnabled
-              ? texts.meldingVisesTilBruker
-              : texts.tilleggsopplysningerInfo}
-          </MeldingTilBehandlerAlert>
-          <MeldingTilBehandlerSkjema
-            isBehandlerdialogLegeerklaringEnabled={
-              toggles.isBehandlerDialogLegeerklaringEnabled
-            }
-          />
-        </>
-      )}
+      <MeldingTilBehandlerAlert variant="warning" size="small">
+        {texts.alertInfo}
+      </MeldingTilBehandlerAlert>
+      <MeldingTilBehandlerSkjema />
     </>
   );
 };

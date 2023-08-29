@@ -5,14 +5,12 @@ export type Toggles = {
 // See toggles: https://teamsykefravr-unleash-web.nav.cloud.nais.io/features
 export enum ToggleNames {
   isVirksomhetsinputEnabled = "isVirksomhetsinputEnabled",
-  isBehandlerDialogLegeerklaringEnabled = "isBehandlerDialogLegeerklaringEnabled",
-  isReturLegeerklaringEnabled = "isReturLegeerklaringEnabled",
+  isMeldingsTypeMeldingFraNAVEnabled = "isMeldingsTypeMeldingFraNAVEnabled",
   isMotebehovTilbakemeldingEnabled = "isMotebehovTilbakemeldingEnabled",
 }
 
 export const defaultToggles: Toggles = {
   isVirksomhetsinputEnabled: false,
-  isBehandlerDialogLegeerklaringEnabled: false,
-  isReturLegeerklaringEnabled: false,
+  isMeldingsTypeMeldingFraNAVEnabled: false,
   isMotebehovTilbakemeldingEnabled: false,
 };

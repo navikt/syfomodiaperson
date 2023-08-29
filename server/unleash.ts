@@ -11,7 +11,7 @@ export type Toggles = {
 // See toggles: https://teamsykefravr-unleash-web.nav.cloud.nais.io/features
 export enum ToggleNames {
   isVirksomhetsinputEnabled = "isVirksomhetsinputEnabled",
-  isReturLegeerklaringEnabled = "isReturLegeerklaringEnabled",
+  isMeldingsTypeMeldingFraNAVEnabled = "isMeldingsTypeMeldingFraNAVEnabled",
   isMotebehovTilbakemeldingEnabled = "isMotebehovTilbakemeldingEnabled",
 }
 
@@ -52,12 +52,8 @@ export const getToggles = (veilederId, enhetId) => {
       "isVirksomhetsinputEnabled",
       context
     ),
-    isBehandlerDialogLegeerklaringEnabled: unleash.isEnabled(
-      "isBehandlerDialogLegeerklaringEnabled",
-      context
-    ),
-    isReturLegeerklaringEnabled: unleash.isEnabled(
-      "isReturLegeerklaringEnabled",
+    isMeldingsTypeMeldingFraNAVEnabled: unleash.isEnabled(
+      "isMeldingsTypeMeldingFraNAVEnabled",
       context
     ),
     isMotebehovTilbakemeldingEnabled: unleash.isEnabled(

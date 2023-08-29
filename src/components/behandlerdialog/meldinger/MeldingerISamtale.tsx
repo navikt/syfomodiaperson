@@ -12,7 +12,6 @@ import {
 } from "../../../../img/ImageComponents";
 import { PaminnelseMelding } from "@/components/behandlerdialog/paminnelse/PaminnelseMelding";
 import { AvvistMelding } from "@/components/behandlerdialog/meldinger/AvvistMelding";
-import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { ReturLegeerklaring } from "@/components/behandlerdialog/legeerklaring/ReturLegeerklaring";
 
 const StyledWrapper = styled.div`
@@ -59,7 +58,6 @@ const MeldingFraBehandler = ({
   meldinger,
   melding,
 }: MeldingFraBehandlerProps) => {
-  const { toggles } = useFeatureToggles();
   const isLegeerklaring =
     melding.type === MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING;
   const sentReturForLegeerklaring = meldinger.some(
@@ -67,10 +65,7 @@ const MeldingFraBehandler = ({
       m.type === MeldingType.HENVENDELSE_RETUR_LEGEERKLARING &&
       m.parentRef === melding.uuid
   );
-  const showReturLegeerklaring =
-    toggles.isReturLegeerklaringEnabled &&
-    isLegeerklaring &&
-    !sentReturForLegeerklaring;
+  const showReturLegeerklaring = isLegeerklaring && !sentReturForLegeerklaring;
 
   return (
     <StyledMelding innkommende>
