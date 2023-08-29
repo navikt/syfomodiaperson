@@ -5,8 +5,6 @@ import styled from "styled-components";
 
 const texts = {
   header: "Skriv til behandler",
-  tilleggsopplysningerInfo:
-    "Her kan du kun be om tilleggsopplysninger med takst L8. Dialogmeldingen skal bare benyttes i sykefraværsoppfølgingen. Meldingen vises også til innbyggeren på Min side.",
   alertInfo:
     "Dialogmeldingen skal bare benyttes i sykefraværsoppfølgingen. Meldingen vises til innbyggeren på Min side.",
 };
