@@ -122,13 +122,7 @@ export const MeldingTilBehandlerSkjema = () => {
   };
 
   return (
-    <Form
-      onSubmit={submit}
-      validate={validate}
-      initialValues={{
-        type: undefined,
-      }}
-    >
+    <Form onSubmit={submit} validate={validate}>
       {({ handleSubmit, submitFailed, errors, values }) => (
         <StyledForm onSubmit={handleSubmit}>
           {meldingTilBehandler.isSuccess && (
