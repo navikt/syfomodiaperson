@@ -3,7 +3,10 @@ import {
   defaultMelding,
   defaultMeldingInnkommende,
   defaultMeldingInnkommendeLegeerklaring,
+  defaultMeldingInnkommendeLegeerklaringMedTreVedlegg,
+  defaultMeldingInnkommendeLegeerklaringNy,
   defaultMeldingLegeerklaring,
+  defaultReturLegeerklaring,
   paminnelseMelding,
 } from "../../mock/isbehandlerdialog/behandlerdialogMock";
 import {
@@ -25,6 +28,10 @@ export const meldingTilOgFraBehandler = (
           uuid: meldingFraBehandlerUuid,
           innkommende: true,
           antallVedlegg: 1,
+          conversationRef: "conversationRef000",
+          parentRef: withPaminnelse
+            ? paminnelseMelding.uuid
+            : defaultMelding.uuid,
         },
       ],
     },
@@ -45,6 +52,8 @@ export const meldingFraBehandlerUtenBehandlernavn = {
         ...defaultMelding,
         innkommende: true,
         tidspunkt: new Date(),
+        conversationRef: "conversationRef000",
+        parentRef: defaultMelding.uuid,
       },
     ],
   },
@@ -63,6 +72,7 @@ export const meldingTilBehandlerMedMeldingStatus = (
             type: status,
             tekst: tekst,
           },
+          conversationRef: "conversationRef123",
         },
       ],
     },
@@ -77,11 +87,15 @@ export const meldingResponseMedVedlegg = {
         ...defaultMelding,
         innkommende: true,
         antallVedlegg: 2,
+        conversationRef: "conversationRef123",
+        parentRef: defaultMelding.uuid,
       },
       {
         ...defaultMelding,
         innkommende: true,
         antallVedlegg: 5,
+        conversationRef: "conversationRef123",
+        parentRef: defaultMelding.uuid,
       },
     ],
     ["conversationRef000"]: [
@@ -90,6 +104,8 @@ export const meldingResponseMedVedlegg = {
         ...defaultMelding,
         innkommende: true,
         antallVedlegg: 1,
+        conversationRef: "conversationRef000",
+        parentRef: defaultMelding.uuid,
       },
     ],
   },
@@ -110,6 +126,15 @@ export const meldingResponseLegeerklaring = {
   },
 };
 
+export const meldingResponseLegeerklaringMedTreVedlegg = {
+  conversations: {
+    ["conversationRef567"]: [
+      defaultMeldingLegeerklaring,
+      defaultMeldingInnkommendeLegeerklaringMedTreVedlegg,
+    ],
+  },
+};
+
 export const foresporselPasientToBehandler: MeldingDTO = {
   ...defaultMelding,
   tidspunkt: new Date(),
@@ -117,6 +142,8 @@ export const foresporselPasientToBehandler: MeldingDTO = {
 
 export const foresporselPasientFraBehandler: MeldingDTO = {
   ...defaultMeldingInnkommende,
+  conversationRef: foresporselPasientToBehandler.conversationRef,
+  parentRef: foresporselPasientToBehandler.uuid,
   tidspunkt: new Date(),
 };
 
@@ -124,7 +151,49 @@ export const foresporselLegeerklaringTilBehandler: MeldingDTO = {
   ...defaultMeldingLegeerklaring,
   tidspunkt: new Date(),
 };
+
 export const foresporselLegeerklaringFraBehandler: MeldingDTO = {
   ...defaultMeldingInnkommendeLegeerklaring,
+  conversationRef: foresporselLegeerklaringTilBehandler.conversationRef,
+  parentRef: foresporselLegeerklaringTilBehandler.uuid,
   tidspunkt: new Date(),
+};
+
+export const returLegeerklaring: MeldingDTO = {
+  ...defaultReturLegeerklaring,
+  tidspunkt: new Date(),
+  conversationRef: foresporselLegeerklaringFraBehandler.conversationRef,
+  parentRef: foresporselLegeerklaringFraBehandler.uuid,
+};
+
+export const meldingResponseLegeerklaringMedRetur = {
+  conversations: {
+    ["conversationRef567"]: [
+      defaultMeldingLegeerklaring,
+      defaultMeldingInnkommendeLegeerklaring,
+      returLegeerklaring,
+    ],
+  },
+};
+
+export const meldingResponseLegeerklaringMedReturOgPaminnelse = {
+  conversations: {
+    ["conversationRef567"]: [
+      defaultMeldingLegeerklaring,
+      defaultMeldingInnkommendeLegeerklaring,
+      returLegeerklaring,
+      paminnelseMelding,
+    ],
+  },
+};
+
+export const meldingResponseLegeerklaringMedReturOgNyLegeerklaring = {
+  conversations: {
+    ["conversationRef567"]: [
+      defaultMeldingLegeerklaring,
+      defaultMeldingInnkommendeLegeerklaring,
+      returLegeerklaring,
+      defaultMeldingInnkommendeLegeerklaringNy,
+    ],
+  },
 };

@@ -14,6 +14,7 @@ import { PaminnelseWarningIcon } from "@/components/behandlerdialog/paminnelse/P
 import { getHeaderText } from "@/utils/documentComponentUtils";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { meldingTypeTexts } from "@/data/behandlerdialog/behandlerdialogTexts";
+import { ReturLegeerklaringWarningIcon } from "@/components/behandlerdialog/legeerklaring/ReturLegeerklaringWarningIcon";
 
 const MeldingTekstWrapper = styled(BodyLong)`
   white-space: pre-wrap;
@@ -66,6 +67,8 @@ const MeldingTekst = ({ melding }: MeldingTekstProps): ReactElement => {
   const { tekst, type, innkommende, document } = melding;
   const isPaminnelseTilBehandler =
     type === MeldingType.FORESPORSEL_PASIENT_PAMINNELSE && !innkommende;
+  const isReturLegeerklaring =
+    type === MeldingType.HENVENDELSE_RETUR_LEGEERKLARING;
 
   if (isPaminnelseTilBehandler) {
     const headerText = getHeaderText(document, DocumentComponentType.HEADER_H1);
@@ -76,7 +79,12 @@ const MeldingTekst = ({ melding }: MeldingTekstProps): ReactElement => {
       </>
     );
   } else {
-    return <MeldingTekstWrapper>{tekst}</MeldingTekstWrapper>;
+    return (
+      <>
+        <MeldingTekstWrapper>{tekst}</MeldingTekstWrapper>
+        {isReturLegeerklaring && <ReturLegeerklaringWarningIcon />}
+      </>
+    );
   }
 };
 
@@ -110,7 +118,7 @@ export const MeldingInnholdPanel = ({ melding }: MeldingInnholdPanelProps) => {
           <PaperclipIcon title="Binders-ikon for vedlegg" fontSize="1.25em" />
           {[...Array(melding.antallVedlegg)].map((_, index) => (
             <PdfVedleggLink
-              meldingUuid={melding.uuid}
+              melding={melding}
               vedleggNumber={index}
               key={index}
             />
