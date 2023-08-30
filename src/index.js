@@ -10,6 +10,7 @@ import { minutesToMillis } from "@/utils/timeUtils";
 import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 import { isClientError } from "@/api/errors";
 import { Modal } from "@navikt/ds-react";
+import amplitude from "amplitude-js";
 
 Sentry.init({
   dsn: "https://8ea71ab742104cd5ad7d9d488023f28d@sentry.gc.nav.no/84",
@@ -35,6 +36,23 @@ const queryClient = new QueryClient({
       },
     },
   },
+});
+
+const getApiKey = () => {
+  // if (window.location.href.includes("www.example.org")) {
+  //   return "API_KEY_PROD"; // prod
+  // }
+  // return "API_KEY_DEV"; // dev
+  return "c7bcaaf5d0fddda592412234dd3da1ba";
+};
+
+export const loggInstance = amplitude.getInstance();
+loggInstance.init(getApiKey(), "", {
+  apiEndpoint: "amplitude.nav.no/collect",
+  saveEvents: false,
+  includeUtm: true,
+  batchEvents: false,
+  includeReferrer: true,
 });
 
 const container =
