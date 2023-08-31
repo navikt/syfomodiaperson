@@ -8,6 +8,7 @@ import {
 } from "@/utils/documentComponentUtils";
 import {
   legeerklaringTexts,
+  meldingFraNAVTexts,
   paminnelseTexts,
   returLegeerklaringTexts,
   tilleggsOpplysningerPasientTexts,
@@ -46,7 +47,7 @@ export const useMeldingTilBehandlerDocument = (): {
       case MeldingType.HENVENDELSE_RETUR_LEGEERKLARING:
         throw new Error("use getReturLegeerklaringDocument");
       case MeldingType.MELDING_FRA_NAV:
-        throw new Error("");
+        return meldingFraNavDocument(values);
       case undefined:
         return [];
     }
@@ -132,6 +133,21 @@ export const useMeldingTilBehandlerDocument = (): {
       createParagraph(legeerklaringTexts.klage2),
       getHilsen()
     );
+
+    return documentComponents;
+  };
+
+  const meldingFraNavDocument = (
+    values: Partial<MeldingTilBehandlerSkjemaValues>
+  ) => {
+    const documentComponents = [
+      createHeaderH1(meldingFraNAVTexts.header),
+      createParagraph(`Gjelder pasient: ${navBruker.navn}, ${personident}.`),
+    ];
+    if (values.meldingTekst) {
+      documentComponents.push(createParagraph(values.meldingTekst));
+    }
+    documentComponents.push(getHilsen());
 
     return documentComponents;
   };
