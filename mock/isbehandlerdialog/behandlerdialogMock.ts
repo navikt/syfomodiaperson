@@ -224,6 +224,19 @@ export const defaultReturLegeerklaring = {
   parentRef: defaultMeldingInnkommendeLegeerklaring.uuid,
 };
 
+export const meldingFraNav = {
+  ...defaultMelding,
+  type: MeldingType.MELDING_FRA_NAV,
+  tekst: "Dette er en melding fra NAV til behandler der veileder lurer på noe.",
+};
+
+export const svarPaMeldingFraNAV = {
+  ...defaultMelding,
+  innkommende: true,
+  type: MeldingType.MELDING_FRA_NAV,
+  tekst: "Melding fra behandler som svarer på melding fra NAV",
+};
+
 export const defaultMeldingInnkommendeLegeerklaringNy = {
   ...defaultMeldingInnkommendeLegeerklaring,
   uuid: meldingUuids.legeerklaringInnkommendeNy,
@@ -283,6 +296,7 @@ export const behandlerdialogMock = {
     "conversationRef-456": meldinger.slice(0, 2),
     "conversationRef-789": meldinger,
     "conversationRef-981": [defaultMelding, paminnelseMelding],
+    "conversationRef-999": [meldingFraNav, svarPaMeldingFraNAV],
   },
 };
 
