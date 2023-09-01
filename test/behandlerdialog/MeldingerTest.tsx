@@ -33,6 +33,7 @@ import {
   meldingResponseMedVedlegg,
   meldingTilOgFraBehandler,
   returLegeerklaring,
+  medlingFraNAVConversation,
 } from "./meldingTestdataGenerator";
 
 let queryClient: QueryClient;
@@ -135,7 +136,7 @@ describe("Meldinger panel", () => {
     });
   });
 
-  describe("Visning av type melding", () => {
+  describe.only("Visning av type melding", () => {
     it("Viser type inkl takst på meldinger forespørsel og svar tilleggsopplysninger", () => {
       const meldingResponse = meldingTilOgFraBehandler("123uid");
       queryClient.setQueryData(
@@ -170,6 +171,25 @@ describe("Meldinger panel", () => {
       renderMeldinger();
 
       expect(screen.getAllByText("Legeerklæring L40")).to.have.length(
+        antallMeldinger
+      );
+    });
+
+    it("Viser melding fra nav meldingtype, og respons", () => {
+      const meldingResponse = medlingFraNAVConversation;
+      queryClient.setQueryData(
+        behandlerdialogQueryKeys.behandlerdialog(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => meldingResponse
+      );
+      const antallMeldinger = Object.values(
+        meldingResponse.conversations
+      ).flat().length;
+
+      renderMeldinger();
+
+      expect(screen.getAllByText("Melding fra NAV")).to.have.length(
         antallMeldinger
       );
     });

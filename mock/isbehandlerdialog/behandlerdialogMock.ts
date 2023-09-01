@@ -230,7 +230,7 @@ export const meldingFraNav = {
   tekst: "Dette er en melding fra NAV til behandler der veileder lurer på noe.",
 };
 
-export const svarPaMeldingFraNAV = {
+export const responsPaMeldingFraNAV = {
   ...defaultMelding,
   innkommende: true,
   type: MeldingType.MELDING_FRA_NAV,
@@ -296,7 +296,7 @@ export const behandlerdialogMock = {
     "conversationRef-456": meldinger.slice(0, 2),
     "conversationRef-789": meldinger,
     "conversationRef-981": [defaultMelding, paminnelseMelding],
-    "conversationRef-999": [meldingFraNav, svarPaMeldingFraNAV],
+    "conversationRef-999": [meldingFraNav, responsPaMeldingFraNAV],
   },
 };
 
