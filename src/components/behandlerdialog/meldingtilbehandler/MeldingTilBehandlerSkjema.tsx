@@ -28,6 +28,7 @@ import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { SelectMeldingType } from "@/components/behandlerdialog/meldingtilbehandler/SelectMeldingType";
 import { MeldingsTypeInfo } from "@/components/behandlerdialog/meldingtilbehandler/MeldingsTypeInfo";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 
 const texts = {
   sendKnapp: "Send til behandler",
@@ -75,6 +76,7 @@ type MeldingTilBehandlerSkjemaFeil = {
 export const MAX_LENGTH_BEHANDLER_MELDING = 2000; // TODO: må bli enige om noe her
 
 export const MeldingTilBehandlerSkjema = () => {
+  const { toggles } = useFeatureToggles();
   const [displayPreview, setDisplayPreview] = useState(false);
   const { getMeldingTilBehandlerDocument } = useMeldingTilBehandlerDocument();
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
@@ -156,7 +158,7 @@ export const MeldingTilBehandlerSkjema = () => {
             </Alert>
           )}
           <MeldingsType>
-            <SelectMeldingType />
+            <SelectMeldingType toggles={toggles} />
             {values.type && <MeldingsTypeInfo meldingType={values.type} />}
           </MeldingsType>
           <VelgBehandler

@@ -226,14 +226,14 @@ export const defaultReturLegeerklaring = {
 
 export const meldingFraNav = {
   ...defaultMelding,
-  type: MeldingType.MELDING_FRA_NAV,
+  type: MeldingType.HENVENDELSE_MELDING_FRA_NAV,
   tekst: "Dette er en melding fra NAV til behandler der veileder lurer på noe.",
 };
 
 export const responsPaMeldingFraNAV = {
   ...defaultMelding,
   innkommende: true,
-  type: MeldingType.MELDING_FRA_NAV,
+  type: MeldingType.HENVENDELSE_MELDING_FRA_NAV,
   tekst: "Melding fra behandler som svarer på melding fra NAV",
 };
 

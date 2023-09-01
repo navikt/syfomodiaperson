@@ -46,7 +46,7 @@ export const useMeldingTilBehandlerDocument = (): {
         throw new Error("use getPaminnelseDocument");
       case MeldingType.HENVENDELSE_RETUR_LEGEERKLARING:
         throw new Error("use getReturLegeerklaringDocument");
-      case MeldingType.MELDING_FRA_NAV:
+      case MeldingType.HENVENDELSE_MELDING_FRA_NAV:
         return meldingFraNavDocument(values);
       case undefined:
         return [];

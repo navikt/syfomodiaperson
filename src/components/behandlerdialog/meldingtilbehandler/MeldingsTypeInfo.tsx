@@ -46,7 +46,7 @@ export const MeldingsTypeInfo = ({ meldingType }: Props): ReactElement => {
             <BodyShort size={"small"}>{texts.legeerklaring}</BodyShort>
           </>
         );
-      case MeldingType.MELDING_FRA_NAV:
+      case MeldingType.HENVENDELSE_MELDING_FRA_NAV:
         return (
           <>
             <Icon src={BlyantImage} />
