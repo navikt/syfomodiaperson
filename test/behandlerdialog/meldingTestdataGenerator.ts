@@ -200,7 +200,7 @@ export const meldingResponseLegeerklaringMedReturOgNyLegeerklaring = {
   },
 };
 
-export const medlingFraNAVConversation = {
+export const meldingFraNAVConversation = {
   conversations: {
     ["conversationRef567"]: [meldingFraNav, responsPaMeldingFraNAV],
   },
