@@ -123,19 +123,6 @@ export const MeldingTilBehandlerSkjema = () => {
     });
   };
 
-  const SendButton = () => {
-    return (
-      <Button
-        variant="primary"
-        onClick={resetFeilUtbedret}
-        loading={meldingTilBehandler.isLoading}
-        type="submit"
-      >
-        {texts.sendKnapp}
-      </Button>
-    );
-  };
-
   const PreviewButton = () => {
     return (
       <Button
@@ -184,7 +171,14 @@ export const MeldingTilBehandlerSkjema = () => {
             <SkjemaFeiloppsummering errors={errors} />
           )}
           <ButtonRow>
-            <SendButton />
+            <Button
+              variant="primary"
+              onClick={resetFeilUtbedret}
+              loading={meldingTilBehandler.isLoading}
+              type="submit"
+            >
+              {texts.sendKnapp}
+            </Button>
             <PreviewButton />
           </ButtonRow>
         </StyledForm>

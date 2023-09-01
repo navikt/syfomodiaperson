@@ -136,7 +136,7 @@ describe("Meldinger panel", () => {
     });
   });
 
-  describe.only("Visning av type melding", () => {
+  describe("Visning av type melding", () => {
     it("Viser type inkl takst på meldinger forespørsel og svar tilleggsopplysninger", () => {
       const meldingResponse = meldingTilOgFraBehandler("123uid");
       queryClient.setQueryData(
