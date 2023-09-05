@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import styled from "styled-components";
 import { Column, Container, Row } from "nav-frontend-grid";
 import Personkort from "../components/personkort/Personkort";
@@ -20,7 +20,10 @@ interface SideProps {
 }
 
 const Side = (sideProps: SideProps) => {
-  Amplitude.logPageVisit(window.location.href, sideProps.tittel);
+  useEffect(() => {
+    Amplitude.logPageVisit(window.location.href, sideProps.tittel);
+  }, [sideProps.tittel]);
+
   const { tittel, children, aktivtMenypunkt } = sideProps;
 
   return (
