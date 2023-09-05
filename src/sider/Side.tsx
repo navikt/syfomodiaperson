@@ -7,6 +7,7 @@ import { GlobalNavigasjon } from "@/components/globalnavigasjon/GlobalNavigasjon
 import { isEaster } from "@/utils/festiveUtils";
 import { Easter } from "@/components/Easter";
 import { Menypunkter } from "@/navigation/menypunkterTypes";
+import * as Amplitude from "@/utils/amplitude";
 
 const StyledContainer = styled(Container)`
   width: 95%;
@@ -19,6 +20,7 @@ interface SideProps {
 }
 
 const Side = (sideProps: SideProps) => {
+  Amplitude.logPageVisit(window.location.href, sideProps.tittel);
   const { tittel, children, aktivtMenypunkt } = sideProps;
 
   return (

@@ -6,14 +6,12 @@ import { useOppfolgingsplanerQuery } from "@/data/oppfolgingsplan/oppfolgingspla
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { Menypunkter } from "@/navigation/menypunkterTypes";
-import { logEvent } from "@/utils/amplitude";
 
 const texts = {
   pageTitle: "Nøkkelinformasjon",
 };
 
 export const NokkelinformasjonSide = () => {
-  logEvent();
   const { isInitialLoading: henterOppfolgingsplaner } =
     useOppfolgingsplanerQuery();
   const { isError: henterSykmeldingerFeilet } = useSykmeldingerQuery();
