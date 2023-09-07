@@ -6,17 +6,25 @@ import styled from "styled-components";
 const texts = {
   oversikt: "Min oversikt",
   moter: "Mine møter",
+  enhetensOversikt: "Enhetens oversikt",
 };
 
-const MinOversiktLenke = styled(Lenke)`
-  margin-right: 2em;
+const StyledLenkeRad = styled.div`
+  > * {
+    &:not(:last-child) {
+      margin-right: 2em;
+    }
+  }
 `;
 
 export const OversiktLenker = (): ReactElement => (
-  <>
-    <MinOversiktLenke href={fullNaisUrlIntern("syfooversikt", "/minoversikt")}>
+  <StyledLenkeRad>
+    <Lenke href={fullNaisUrlIntern("syfooversikt", "/minoversikt")}>
       {texts.oversikt}
-    </MinOversiktLenke>
+    </Lenke>
+    <Lenke href={fullNaisUrlIntern("syfooversikt", "/enhet")}>
+      {texts.enhetensOversikt}
+    </Lenke>
     <Lenke href={fullNaisUrlIntern("syfomoteoversikt")}>{texts.moter}</Lenke>
-  </>
+  </StyledLenkeRad>
 );
