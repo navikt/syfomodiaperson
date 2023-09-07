@@ -1,7 +1,7 @@
 import { fullNaisUrlIntern } from "@/utils/miljoUtil";
-import Lenke from "nav-frontend-lenker";
 import React, { ReactElement } from "react";
 import styled from "styled-components";
+import { Link } from "@navikt/ds-react";
 
 const texts = {
   oversikt: "Min oversikt",
@@ -19,12 +19,12 @@ const StyledLenkeRad = styled.div`
 
 export const OversiktLenker = (): ReactElement => (
   <StyledLenkeRad>
-    <Lenke href={fullNaisUrlIntern("syfooversikt", "/minoversikt")}>
+    <Link href={fullNaisUrlIntern("syfooversikt", "/minoversikt")}>
       {texts.oversikt}
-    </Lenke>
-    <Lenke href={fullNaisUrlIntern("syfooversikt", "/enhet")}>
+    </Link>
+    <Link href={fullNaisUrlIntern("syfooversikt", "/enhet")}>
       {texts.enhetensOversikt}
-    </Lenke>
-    <Lenke href={fullNaisUrlIntern("syfomoteoversikt")}>{texts.moter}</Lenke>
+    </Link>
+    <Link href={fullNaisUrlIntern("syfomoteoversikt")}>{texts.moter}</Link>
   </StyledLenkeRad>
 );
