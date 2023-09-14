@@ -5,14 +5,15 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 
 export const useDocumentComponents = () => {
   const navBruker = useNavBrukerData();
-  const personident = useValgtPersonident();
+  const valgtPersonident = useValgtPersonident();
   const { data: veilederinfo } = useAktivVeilederinfoQuery();
 
   return {
     getHilsen: () =>
       createParagraph("Vennlig hilsen", veilederinfo?.navn || "", "NAV"),
-    getIntroHei: () => createParagraph(`Hei, ${navBruker.navn}`),
+    getIntroHei: (personident?: string) =>
+      createParagraph(`Hei, ${navBruker.navn}`, personident ? personident : ""),
     getIntroGjelder: () =>
-      createParagraph(`Gjelder ${navBruker.navn}, f.nr. ${personident}`),
+      createParagraph(`Gjelder ${navBruker.navn}, f.nr. ${valgtPersonident}`),
   };
 };
