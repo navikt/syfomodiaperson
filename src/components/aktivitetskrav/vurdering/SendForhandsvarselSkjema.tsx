@@ -1,5 +1,8 @@
 import React from "react";
-import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
+import {
+  AktivitetskravStatus,
+  SendForhandsvarselDTO,
+} from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { VurderAktivitetskravSkjemaProps } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravSkjema";
 import { useAktivitetskravVurderingSkjema } from "@/hooks/aktivitetskrav/useAktivitetskravVurderingSkjema";
 import {
@@ -14,6 +17,8 @@ import { FlexRow, PaddingSize } from "@/components/Layout";
 import { Heading, Label } from "@navikt/ds-react";
 import { VurderAktivitetskravSkjemaButtons } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravSkjemaButtons";
 import styled from "styled-components";
+import { useSendForhandsvarsel } from "@/data/aktivitetskrav/useSendForhandsvarsel";
+import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -50,6 +55,7 @@ interface SendForhandsvarselSkjemaValues {
 export const SendForhandsvarselSkjema = (
   props: VurderAktivitetskravSkjemaProps
 ) => {
+  const sendForhandsvarsel = useSendForhandsvarsel(props.aktivitetskravUuid);
   const { validateBeskrivelseField } = useAktivitetskravVurderingSkjema(
     AktivitetskravStatus.FORHANDSVARSEL
   );
@@ -61,7 +67,15 @@ export const SendForhandsvarselSkjema = (
   });
 
   const submit = (values: SendForhandsvarselSkjemaValues) => {
-    // TODO: Implement post-call
+    const forhandsvarselDTO: SendForhandsvarselDTO = {
+      fritekst: values.beskrivelse,
+      document: getForhandsvarselDocument(values.beskrivelse, frist),
+    };
+    if (props.aktivitetskravUuid) {
+      sendForhandsvarsel.mutate(forhandsvarselDTO, {
+        onSettled: () => props.setModalOpen(false),
+      });
+    }
   };
 
   return (
@@ -87,12 +101,12 @@ export const SendForhandsvarselSkjema = (
               )}
             </StyledForhandsvisning>
           </VarselbrevContent>
-          {/*{vurderAktivitetskrav.isError && (*/}
-          {/*  <SkjemaInnsendingFeil error={vurderAktivitetskrav.error} />*/}
-          {/*)}*/}
+          {sendForhandsvarsel.isError && (
+            <SkjemaInnsendingFeil error={sendForhandsvarsel.error} />
+          )}
           <VurderAktivitetskravSkjemaButtons
             onAvbrytClick={() => props.setModalOpen(false)}
-            showLagreSpinner={false} // TODO: Use isLoading from post-call
+            showLagreSpinner={sendForhandsvarsel.isLoading}
           />
         </StyledForm>
       )}

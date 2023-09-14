@@ -1,3 +1,5 @@
+import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
+
 export enum AktivitetskravStatus {
   NY = "NY",
   AVVENT = "AVVENT",
@@ -56,4 +58,9 @@ export interface CreateAktivitetskravVurderingDTO {
   beskrivelse?: string;
   arsaker: VurderingArsak[];
   frist?: string;
+}
+
+export interface SendForhandsvarselDTO {
+  fritekst: string;
+  document: DocumentComponentDto[];
 }
