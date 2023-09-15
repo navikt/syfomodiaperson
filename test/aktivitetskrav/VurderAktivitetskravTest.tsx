@@ -24,6 +24,7 @@ import {
   AvventVurderingArsak,
   CreateAktivitetskravVurderingDTO,
   OppfyltVurderingArsak,
+  SendForhandsvarselDTO,
   UnntakVurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { expect } from "chai";
@@ -32,6 +33,7 @@ import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import dayjs from "dayjs";
 import { Modal } from "@navikt/ds-react";
+import { getSendForhandsvarselDocument } from "./varselDocuments";
 
 let queryClient: QueryClient;
 
@@ -52,6 +54,7 @@ export const buttonTexts = {
   [AktivitetskravStatus.OPPFYLT]: "Er i aktivitet",
   [AktivitetskravStatus.IKKE_OPPFYLT]: "Ikke oppfylt",
   [AktivitetskravStatus.IKKE_AKTUELL]: "Ikke aktuell",
+  [AktivitetskravStatus.FORHANDSVARSEL]: "Send forhåndsvarsel",
 };
 
 const enBeskrivelse = "Her er en beskrivelse";
@@ -275,6 +278,46 @@ describe("VurderAktivitetskrav", () => {
       expect(vurderIkkeOppfyltMutation.options.variables).to.deep.equal(
         expectedVurdering
       );
+    });
+  });
+  describe("Send forhåndsvarsel", () => {
+    it("Send forhåndsvarsel with beskrivelse filled in", () => {
+      renderVurderAktivitetskrav(aktivitetskrav, oppfolgingstilfelle);
+      const beskrivelseLabel = "Beskrivelse (obligatorisk)";
+
+      clickButton(buttonTexts["FORHANDSVARSEL"]);
+
+      expect(
+        screen.getByRole("heading", {
+          name: "Send forhåndsvarsel",
+        })
+      ).to.exist;
+
+      expect(screen.getByRole("textbox", { name: beskrivelseLabel })).to.exist;
+      expect(screen.getByText("Forhåndsvisning")).to.exist;
+
+      const beskrivelseInput = getTextInput(beskrivelseLabel);
+      changeTextInput(beskrivelseInput, enBeskrivelse);
+
+      clickButton("Lagre");
+
+      const sendForhandsvarselMutation = queryClient
+        .getMutationCache()
+        .getAll()[0];
+      const expectedVurdering: SendForhandsvarselDTO = {
+        fritekst: enBeskrivelse,
+        document: getSendForhandsvarselDocument(enBeskrivelse),
+      };
+      expect(sendForhandsvarselMutation.options.variables).to.deep.equal(
+        expectedVurdering
+      );
+    });
+    it("Fails to send forhåndsvarsel when no beskrivelse is filled in", () => {
+      renderVurderAktivitetskrav(aktivitetskrav, oppfolgingstilfelle);
+      clickButton(buttonTexts["FORHANDSVARSEL"]);
+      clickButton("Lagre");
+
+      expect(screen.queryByText("Vennligst angi beskrivelse")).to.exist;
     });
   });
   describe("Ikke aktuell", () => {
