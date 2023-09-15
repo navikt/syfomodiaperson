@@ -52,9 +52,9 @@ export const buttonTexts = {
   [AktivitetskravStatus.AVVENT]: "Avventer",
   [AktivitetskravStatus.UNNTAK]: "Sett unntak",
   [AktivitetskravStatus.OPPFYLT]: "Er i aktivitet",
+  [AktivitetskravStatus.FORHANDSVARSEL]: "Send forhåndsvarsel",
   [AktivitetskravStatus.IKKE_OPPFYLT]: "Ikke oppfylt",
   [AktivitetskravStatus.IKKE_AKTUELL]: "Ikke aktuell",
-  [AktivitetskravStatus.FORHANDSVARSEL]: "Send forhåndsvarsel",
 };
 
 const enBeskrivelse = "Her er en beskrivelse";
@@ -100,6 +100,14 @@ describe("VurderAktivitetskrav", () => {
 
     const tooltip = screen.getByRole("button", { name: /hjelp/ });
     expect(tooltip).to.exist;
+
+    const buttonTexts = [
+      "Avventer",
+      "Sett unntak",
+      "Er i aktivitet",
+      "Ikke oppfylt",
+      "Ikke aktuell",
+    ];
     const buttonTextsJoined = Object.values(buttonTexts).join(", ");
     expect(screen.getByText(buttonTextsJoined, { exact: false })).to.exist;
   });
