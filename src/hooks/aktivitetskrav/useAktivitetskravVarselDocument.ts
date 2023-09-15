@@ -4,7 +4,6 @@ import {
   createHeaderH2,
   createParagraph,
 } from "@/utils/documentComponentUtils";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { sendForhandsvarselTexts } from "@/data/aktivitetskrav/aktivitetskravTexts";
 
 export const useAktivitetskravVarselDocument = (): {
@@ -13,15 +12,14 @@ export const useAktivitetskravVarselDocument = (): {
     fristDato: Date
   ): DocumentComponentDto[];
 } => {
-  const personident = useValgtPersonident();
-  const { getHilsen, getIntroHei } = useDocumentComponents();
+  const { getHilsen, getIntroHeiWithPersonIdent } = useDocumentComponents();
 
   const getForhandsvarselDocument = (
     begrunnelse: string | undefined,
     fristDato: Date
   ) => {
     const documentComponents = [
-      getIntroHei(personident),
+      getIntroHeiWithPersonIdent(),
       createHeaderH2(sendForhandsvarselTexts.varselInfo.header),
       createParagraph(
         sendForhandsvarselTexts.varselInfo.introWithFristDate(fristDato)

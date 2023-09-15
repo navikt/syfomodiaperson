@@ -11,10 +11,9 @@ export const useDocumentComponents = () => {
   return {
     getHilsen: () =>
       createParagraph("Vennlig hilsen", veilederinfo?.navn || "", "NAV"),
-    getIntroHei: (personident?: string) =>
-      createParagraph(
-        `Hei, ${navBruker.navn}${personident ? `, ${personident}` : ""}`
-      ),
+    getIntroHei: () => createParagraph(`Hei, ${navBruker.navn}`),
+    getIntroHeiWithPersonIdent: () =>
+      createParagraph(`Hei, ${navBruker.navn}, ${valgtPersonident}`),
     getIntroGjelder: () =>
       createParagraph(`Gjelder ${navBruker.navn}, f.nr. ${valgtPersonident}`),
   };
