@@ -68,7 +68,7 @@ export const SendForhandsvarselSkjema = (
     };
     if (props.aktivitetskravUuid) {
       sendForhandsvarsel.mutate(forhandsvarselDTO, {
-        onSettled: () => props.setModalOpen(false),
+        onSuccess: () => props.setModalOpen(false),
       });
     }
   };
