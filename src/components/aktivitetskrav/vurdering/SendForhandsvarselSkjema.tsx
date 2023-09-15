@@ -14,7 +14,7 @@ import { useAktivitetskravVarselDocument } from "@/hooks/aktivitetskrav/useAktiv
 import { addWeeks } from "@/utils/datoUtils";
 import { Form } from "react-final-form";
 import { FlexRow, PaddingSize } from "@/components/Layout";
-import { Heading, Label } from "@navikt/ds-react";
+import { Heading, Label, Panel } from "@navikt/ds-react";
 import { VurderAktivitetskravSkjemaButtons } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravSkjemaButtons";
 import styled from "styled-components";
 import { useSendForhandsvarsel } from "@/data/aktivitetskrav/useSendForhandsvarsel";
@@ -23,6 +23,7 @@ import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 const texts = {
   title: "Send forhåndsvarsel",
   beskrivelseLabel: "Beskrivelse (obligatorisk)",
+  forhandsvisning: "Forhåndsvisning",
 };
 
 const VarselbrevContent = styled.div`
@@ -38,13 +39,7 @@ const VarselbrevContent = styled.div`
 const StyledForm = styled.form`
   max-width: 50em;
 `;
-
-const StyledForhandsvisning = styled.div`
-  border: 1px solid black;
-  padding: 1em;
-`;
-
-const getFristForForhandsvarsel = (isFysiskUtsending = true) => {
+export const getFristForForhandsvarsel = (isFysiskUtsending = true) => {
   return isFysiskUtsending ? addWeeks(new Date(), 3) : addWeeks(new Date(), 2);
 };
 
@@ -89,8 +84,8 @@ export const SendForhandsvarselSkjema = (
           </FlexRow>
           <VarselbrevContent>
             <VurderAktivitetskravBeskrivelse label={texts.beskrivelseLabel} />
-            <Label>Forhåndsvisning</Label>
-            <StyledForhandsvisning>
+            <Label size="small">{texts.forhandsvisning}</Label>
+            <Panel border>
               {getForhandsvarselDocument(values.beskrivelse, frist).map(
                 (component, index) => (
                   <DocumentComponentVisning
@@ -99,7 +94,7 @@ export const SendForhandsvarselSkjema = (
                   />
                 )
               )}
-            </StyledForhandsvisning>
+            </Panel>
           </VarselbrevContent>
           {sendForhandsvarsel.isError && (
             <SkjemaInnsendingFeil error={sendForhandsvarsel.error} />
