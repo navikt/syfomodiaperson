@@ -4,6 +4,7 @@ import {
   dagerMellomDatoer,
   erIdag,
   erIkkeIdag,
+  getWeeksBetween,
   manederMellomDatoer,
   restdatoTildato,
   restdatoTilLesbarDato,
@@ -175,6 +176,24 @@ describe("datoUtils", () => {
 
       const dateWithAddedWeeks = addWeeks(date1, 26);
       expect(dateWithAddedWeeks.getDate()).to.equal(date2.getDate());
+    });
+  });
+
+  describe("Uker mellom datoer", () => {
+    it("Runder opp når det er 7 uker og 6 dager mellom to datoer", () => {
+      const date1 = new Date("2023-07-31");
+      const date2 = new Date("2023-09-24");
+
+      const weeks = getWeeksBetween(date1, date2);
+      expect(weeks).to.equal(8);
+    });
+
+    it("Runder ned når det er 7 uker og 2 dager mellom to datoer", () => {
+      const date1 = new Date("2023-07-31");
+      const date2 = new Date("2023-09-20");
+
+      const weeks = getWeeksBetween(date1, date2);
+      expect(weeks).to.equal(7);
     });
   });
 });
