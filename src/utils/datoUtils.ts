@@ -271,7 +271,7 @@ export const getEarliestDate = (date1, date2): Date => {
 };
 
 export const getWeeksBetween = (date1, date2): number => {
-  return Math.round(
+  return Math.floor(
     Math.abs(new Date(date1).getTime() - new Date(date2).getTime()) /
       ONE_WEEK_MILLIS
   );
