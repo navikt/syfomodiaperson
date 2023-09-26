@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Modal, Textarea } from "@navikt/ds-react";
 import styled from "styled-components";
 import { Systemtittel } from "nav-frontend-typografi";
+import { useGetHuskelappQuery } from "@/data/huskelapp/useGetHuskelappQuery";
+import { useOppdatertHuskelappQuery } from "@/data/huskelapp/useOppdaterHuskelappQuery";
+import { HuskelappDto } from "@/data/huskelapp/huskelappTypes";
 
 const texts = {
   header: "Huskelapp",
@@ -34,8 +37,18 @@ const RightAlignedButtons = styled.div`
 `;
 
 export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
-  //const {lagretTekst} = useHuskelapp()
-  const lagretTekst = "jeg har lagret!";
+  const { huskelapp } = useGetHuskelappQuery();
+  const [tekst, setTekst] = useState<string>("");
+  const oppdaterHuskelappQuery = useOppdatertHuskelappQuery();
+
+  const oppdaterTekst = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTekst(e.target.value);
+  };
+
+  const oppdaterHuskelapp = () => {
+    const huskelappDto: HuskelappDto = { tekst: tekst };
+    oppdaterHuskelappQuery.mutate(huskelappDto);
+  };
 
   return (
     <StyledModal
@@ -48,13 +61,14 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
         <Textarea
           label={texts.textAreaLabel}
           hideLabel
-          defaultValue={lagretTekst}
+          defaultValue={huskelapp?.tekst}
+          onChange={oppdaterTekst}
         />
         <RightAlignedButtons>
           <Button variant="secondary" onClick={() => toggleOpen(false)}>
             {texts.close}
           </Button>
-          <Button variant="primary" onClick={() => alert("lagre")}>
+          <Button variant="primary" onClick={oppdaterHuskelapp}>
             {texts.save}
           </Button>
         </RightAlignedButtons>
