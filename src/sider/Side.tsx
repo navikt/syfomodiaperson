@@ -4,10 +4,15 @@ import { Column, Container, Row } from "nav-frontend-grid";
 import Personkort from "../components/personkort/Personkort";
 import DocumentTitle from "react-document-title";
 import { GlobalNavigasjon } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { isEaster } from "@/utils/festiveUtils";
+import { isDecember, isEaster } from "@/utils/festiveUtils";
 import { Easter } from "@/components/Easter";
 import { Menypunkter } from "@/navigation/menypunkterTypes";
 import * as Amplitude from "@/utils/amplitude";
+import { OpenHuskelappModalButton } from "@/components/huskelapp/OpenHuskelappModalButton";
+import { FlexRow, PaddingSize } from "@/components/Layout";
+import { OversiktLenker } from "@/components/personkort/OversiktLenker";
+import SnowButton from "@/components/personkort/SnowButton";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 
 const StyledContainer = styled(Container)`
   width: 95%;
@@ -23,6 +28,7 @@ const Side = (sideProps: SideProps) => {
   useEffect(() => {
     Amplitude.logPageVisit(window.location.href, sideProps.tittel);
   }, [sideProps.tittel]);
+  const { toggles } = useFeatureToggles();
 
   const { tittel, children, aktivtMenypunkt } = sideProps;
 
@@ -34,6 +40,7 @@ const Side = (sideProps: SideProps) => {
         <Row>
           <Column className="col-xs-12">
             <Personkort />
+            {toggles.isHuskelappEnabled && <OpenHuskelappModalButton />}
           </Column>
         </Row>
         <Row>
