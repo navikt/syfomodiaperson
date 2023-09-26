@@ -4,14 +4,11 @@ import { Column, Container, Row } from "nav-frontend-grid";
 import Personkort from "../components/personkort/Personkort";
 import DocumentTitle from "react-document-title";
 import { GlobalNavigasjon } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { isDecember, isEaster } from "@/utils/festiveUtils";
+import { isEaster } from "@/utils/festiveUtils";
 import { Easter } from "@/components/Easter";
 import { Menypunkter } from "@/navigation/menypunkterTypes";
 import * as Amplitude from "@/utils/amplitude";
-import { OpenHuskelappModalButton } from "@/components/huskelapp/OpenHuskelappModalButton";
-import { FlexRow, PaddingSize } from "@/components/Layout";
-import { OversiktLenker } from "@/components/personkort/OversiktLenker";
-import SnowButton from "@/components/personkort/SnowButton";
+import { Huskelapp } from "@/components/huskelapp/Huskelapp";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 
 const StyledContainer = styled(Container)`
@@ -40,7 +37,7 @@ const Side = (sideProps: SideProps) => {
         <Row>
           <Column className="col-xs-12">
             <Personkort />
-            {toggles.isHuskelappEnabled && <OpenHuskelappModalButton />}
+            {toggles.isHuskelappEnabled && <Huskelapp />}
           </Column>
         </Row>
         <Row>
