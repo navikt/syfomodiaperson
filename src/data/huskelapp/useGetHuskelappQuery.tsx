@@ -2,7 +2,7 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { ISHUSKELAPP_ROOT } from "@/apiConstants";
 import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
-import { HuskelappDto } from "@/data/huskelapp/huskelappTypes";
+import { HuskelappDTO } from "@/data/huskelapp/huskelappTypes";
 
 export const queryKeys = {
   huskelapp: (personident: string) => ["huskelapp", personident],
@@ -11,9 +11,13 @@ export const queryKeys = {
 export const useGetHuskelappQuery = () => {
   const personident = useValgtPersonident();
   const path = `${ISHUSKELAPP_ROOT}/huskelapp`;
-  const getHuskelapp = () => get<HuskelappDto>(path, personident);
+  const getHuskelapp = () => get<HuskelappDTO>(path, personident);
 
-  const { data: huskelapp } = useQuery({
+  const {
+    data: huskelapp,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: queryKeys.huskelapp(personident),
     queryFn: getHuskelapp,
     enabled: !!personident,
@@ -21,5 +25,7 @@ export const useGetHuskelappQuery = () => {
 
   return {
     huskelapp,
+    isLoading,
+    isError,
   };
 };

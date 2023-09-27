@@ -11,7 +11,7 @@ const StyledButton = styled(Button)`
   margin-bottom: 0.5em;
 `;
 
-export const Huskelapp = () => {
+export const OpenHuskelappModalButton = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   return (

@@ -8,7 +8,7 @@ import { isEaster } from "@/utils/festiveUtils";
 import { Easter } from "@/components/Easter";
 import { Menypunkter } from "@/navigation/menypunkterTypes";
 import * as Amplitude from "@/utils/amplitude";
-import { Huskelapp } from "@/components/huskelapp/Huskelapp";
+import { OpenHuskelappModalButton } from "@/components/huskelapp/OpenHuskelappModalButton";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 
 const StyledContainer = styled(Container)`
@@ -37,7 +37,7 @@ const Side = (sideProps: SideProps) => {
         <Row>
           <Column className="col-xs-12">
             <Personkort />
-            {toggles.isHuskelappEnabled && <Huskelapp />}
+            {toggles.isHuskelappEnabled && <OpenHuskelappModalButton />}
           </Column>
         </Row>
         <Row>

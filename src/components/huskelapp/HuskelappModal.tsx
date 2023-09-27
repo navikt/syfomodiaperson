@@ -3,8 +3,8 @@ import { Button, Modal, Textarea } from "@navikt/ds-react";
 import styled from "styled-components";
 import { Systemtittel } from "nav-frontend-typografi";
 import { useGetHuskelappQuery } from "@/data/huskelapp/useGetHuskelappQuery";
-import { useOppdatertHuskelappQuery } from "@/data/huskelapp/useOppdaterHuskelappQuery";
-import { HuskelappDto } from "@/data/huskelapp/huskelappTypes";
+import { useOppdaterHuskelapp } from "@/data/huskelapp/useOppdaterHuskelapp";
+import { HuskelappDTO } from "@/data/huskelapp/huskelappTypes";
 
 const texts = {
   header: "Huskelapp",
@@ -39,14 +39,14 @@ const RightAlignedButtons = styled.div`
 export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
   const { huskelapp } = useGetHuskelappQuery();
   const [tekst, setTekst] = useState<string>("");
-  const oppdaterHuskelappQuery = useOppdatertHuskelappQuery();
+  const oppdaterHuskelappQuery = useOppdaterHuskelapp();
 
   const oppdaterTekst = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTekst(e.target.value);
   };
 
   const oppdaterHuskelapp = () => {
-    const huskelappDto: HuskelappDto = { tekst: tekst };
+    const huskelappDto: HuskelappDTO = { tekst: tekst };
     oppdaterHuskelappQuery.mutate(huskelappDto);
   };
 
@@ -68,7 +68,11 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
           <Button variant="secondary" onClick={() => toggleOpen(false)}>
             {texts.close}
           </Button>
-          <Button variant="primary" onClick={oppdaterHuskelapp}>
+          <Button
+            variant="primary"
+            onClick={oppdaterHuskelapp}
+            loading={oppdaterHuskelappQuery.isLoading}
+          >
             {texts.save}
           </Button>
         </RightAlignedButtons>

@@ -1,18 +1,18 @@
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { ISHUSKELAPP_ROOT } from "@/apiConstants";
 import { post } from "@/api/axios";
-import { HuskelappDto } from "@/data/huskelapp/huskelappTypes";
+import { HuskelappDTO } from "@/data/huskelapp/huskelappTypes";
 import { useMutation } from "@tanstack/react-query";
 
 export const queryKeys = {
   huskelapp: (personident: string) => ["huskelapp", personident],
 };
 
-export const useOppdatertHuskelappQuery = () => {
+export const useOppdaterHuskelapp = () => {
   const personident = useValgtPersonident();
   const path = `${ISHUSKELAPP_ROOT}/huskelapp`;
-  const postHuskelapp = (nyHuskelapp: HuskelappDto) =>
-    post<HuskelappDto>(path, nyHuskelapp, personident);
+  const postHuskelapp = (nyHuskelapp: HuskelappDTO) =>
+    post<HuskelappDTO>(path, nyHuskelapp, personident);
 
   return useMutation({
     mutationFn: postHuskelapp,

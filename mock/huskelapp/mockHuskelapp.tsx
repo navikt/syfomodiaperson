@@ -1,9 +1,9 @@
 import { ISHUSKELAPP_ROOT } from "../../src/apiConstants";
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import express from "express";
-import { HuskelappDto } from "@/data/huskelapp/huskelappTypes";
+import { HuskelappDTO } from "@/data/huskelapp/huskelappTypes";
 
-const huskelappMock: HuskelappDto = {
+const huskelappMock: HuskelappDTO = {
   tekst: "Dette er en veldig fin tekst",
 };
 export const mockIshuskelapp = (server: any) => {

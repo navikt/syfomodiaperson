@@ -1,3 +1,3 @@
-export interface HuskelappDto {
+export interface HuskelappDTO {
   tekst: string;
 }
