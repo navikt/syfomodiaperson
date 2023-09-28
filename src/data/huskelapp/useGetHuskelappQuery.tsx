@@ -17,6 +17,7 @@ export const useGetHuskelappQuery = () => {
     data: huskelapp,
     isLoading,
     isError,
+    isSuccess,
   } = useQuery({
     queryKey: queryKeys.huskelapp(personident),
     queryFn: getHuskelapp,
@@ -25,6 +26,7 @@ export const useGetHuskelappQuery = () => {
 
   return {
     huskelapp,
+    isSuccess,
     isLoading,
     isError,
   };

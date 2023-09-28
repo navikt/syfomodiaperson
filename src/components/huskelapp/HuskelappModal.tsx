@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Modal, Textarea } from "@navikt/ds-react";
+import { Button, Modal, Skeleton, Textarea } from "@navikt/ds-react";
 import styled from "styled-components";
 import { Systemtittel } from "nav-frontend-typografi";
 import { useGetHuskelappQuery } from "@/data/huskelapp/useGetHuskelappQuery";
@@ -37,7 +37,7 @@ const RightAlignedButtons = styled.div`
 `;
 
 export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
-  const { huskelapp } = useGetHuskelappQuery();
+  const { huskelapp, isLoading, isSuccess } = useGetHuskelappQuery();
   const [tekst, setTekst] = useState<string>("");
   const oppdaterHuskelappQuery = useOppdaterHuskelapp();
 
@@ -47,7 +47,9 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
 
   const oppdaterHuskelapp = () => {
     const huskelappDto: HuskelappDTO = { tekst: tekst };
-    oppdaterHuskelappQuery.mutate(huskelappDto);
+    oppdaterHuskelappQuery.mutate(huskelappDto, {
+      onSuccess: () => toggleOpen(false),
+    });
   };
 
   return (
@@ -57,26 +59,29 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
       onClose={() => toggleOpen(!isOpen)}
     >
       <Systemtittel>{texts.header}</Systemtittel>
-      <ModalContent>
-        <Textarea
-          label={texts.textAreaLabel}
-          hideLabel
-          defaultValue={huskelapp?.tekst}
-          onChange={oppdaterTekst}
-        />
-        <RightAlignedButtons>
-          <Button variant="secondary" onClick={() => toggleOpen(false)}>
-            {texts.close}
-          </Button>
-          <Button
-            variant="primary"
-            onClick={oppdaterHuskelapp}
-            loading={oppdaterHuskelappQuery.isLoading}
-          >
-            {texts.save}
-          </Button>
-        </RightAlignedButtons>
-      </ModalContent>
+      {isLoading && <Skeleton height={140} variant="rounded" />}
+      {isSuccess && (
+        <ModalContent>
+          <Textarea
+            label={texts.textAreaLabel}
+            hideLabel
+            defaultValue={huskelapp?.tekst}
+            onChange={oppdaterTekst}
+          />
+          <RightAlignedButtons>
+            <Button variant="secondary" onClick={() => toggleOpen(false)}>
+              {texts.close}
+            </Button>
+            <Button
+              variant="primary"
+              onClick={oppdaterHuskelapp}
+              loading={oppdaterHuskelappQuery.isLoading}
+            >
+              {texts.save}
+            </Button>
+          </RightAlignedButtons>
+        </ModalContent>
+      )}
     </StyledModal>
   );
 };
