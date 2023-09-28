@@ -4,10 +4,6 @@ import { post } from "@/api/axios";
 import { HuskelappDTO } from "@/data/huskelapp/huskelappTypes";
 import { useMutation } from "@tanstack/react-query";
 
-export const queryKeys = {
-  huskelapp: (personident: string) => ["huskelapp", personident],
-};
-
 export const useOppdaterHuskelapp = () => {
   const personident = useValgtPersonident();
   const path = `${ISHUSKELAPP_ROOT}/huskelapp`;
