@@ -5,8 +5,9 @@ import { erProd } from "@/utils/miljoUtil";
  See documentation for naming guidelines: https://github.com/navikt/analytics-taxonomy
  Other documentation on Aksel: https://aksel.nav.no/god-praksis/artikler/mal-brukeratferd-med-amplitude
  */
-enum EventType {
+export enum EventType {
   PageView = "besøk",
+  ButtonClick = "knapp trykket",
 }
 
 const getApiKey = () => {
@@ -17,6 +18,19 @@ const getApiKey = () => {
 
 export const logPageVisit = (url: string, sideTittel: string) => {
   client.logEvent(EventType.PageView, { url: url, sidetittel: sideTittel });
+};
+
+export const logEvent = (eventType: EventType, data: any) => {
+  switch (eventType) {
+    case EventType.ButtonClick:
+      client.logEvent(EventType.ButtonClick, { tekst: data.tekst });
+      break;
+    case EventType.PageView:
+      client.logEvent(EventType.PageView, {
+        url: data.url,
+        sidetittel: data.sideTittel,
+      });
+  }
 };
 
 const client = amplitude.getInstance();

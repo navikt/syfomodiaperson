@@ -28,6 +28,8 @@ import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { SelectMeldingType } from "@/components/behandlerdialog/meldingtilbehandler/SelectMeldingType";
 import { MeldingsTypeInfo } from "@/components/behandlerdialog/meldingtilbehandler/MeldingsTypeInfo";
+import * as Amplitude from "@/utils/amplitude";
+import { EventType } from "@/utils/amplitude";
 
 const texts = {
   sendKnapp: "Send til behandler",
@@ -84,6 +86,11 @@ export const MeldingTilBehandlerSkjema = () => {
 
   const now = new Date();
 
+  const handlePreviewButtonClick = () => {
+    setDisplayPreview(true);
+    Amplitude.logEvent(EventType.ButtonClick, { tekst: texts.previewKnapp });
+  };
+
   const validate = (
     values: Partial<MeldingTilBehandlerSkjemaValues>
   ): MeldingTilBehandlerSkjemaFeil => {
@@ -126,7 +133,7 @@ export const MeldingTilBehandlerSkjema = () => {
       <Button
         variant="secondary"
         type="button"
-        onClick={() => setDisplayPreview(true)}
+        onClick={handlePreviewButtonClick}
       >
         {texts.previewKnapp}
       </Button>
