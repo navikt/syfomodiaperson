@@ -4,6 +4,10 @@ import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
 import { HuskelappDTO } from "@/data/huskelapp/huskelappTypes";
 
+export const huskelappQueryKeys = {
+  huskelapp: (personident: string) => ["huskelapp", personident],
+};
+
 export const useGetHuskelappQuery = () => {
   const personident = useValgtPersonident();
   const path = `${ISHUSKELAPP_ROOT}/huskelapp`;
@@ -15,6 +19,7 @@ export const useGetHuskelappQuery = () => {
     isError,
     isSuccess,
   } = useQuery({
+    queryKey: huskelappQueryKeys.huskelapp(personident),
     queryFn: getHuskelapp,
     enabled: !!personident,
   });

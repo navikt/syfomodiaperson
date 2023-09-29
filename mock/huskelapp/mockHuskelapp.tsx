@@ -3,9 +3,10 @@ import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import express from "express";
 import { HuskelappDTO } from "@/data/huskelapp/huskelappTypes";
 
-const huskelappMock: HuskelappDTO = {
+let huskelappMock: HuskelappDTO = {
   tekst: "Dette er en veldig fin tekst",
 };
+
 export const mockIshuskelapp = (server: any) => {
   server.get(
     `${ISHUSKELAPP_ROOT}/huskelapp`,
@@ -20,6 +21,10 @@ export const mockIshuskelapp = (server: any) => {
   server.post(
     `${ISHUSKELAPP_ROOT}/huskelapp`,
     (req: express.Request, res: express.Response) => {
+      const body = req.body as HuskelappDTO;
+      huskelappMock = {
+        tekst: body.tekst,
+      };
       res.sendStatus(200);
     }
   );
