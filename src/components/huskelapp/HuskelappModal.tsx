@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Button, Modal, Skeleton, Textarea } from "@navikt/ds-react";
+import { Button, Heading, Modal, Skeleton, Textarea } from "@navikt/ds-react";
 import styled from "styled-components";
-import { Systemtittel } from "nav-frontend-typografi";
 import { useGetHuskelappQuery } from "@/data/huskelapp/useGetHuskelappQuery";
 import { useOppdaterHuskelapp } from "@/data/huskelapp/useOppdaterHuskelapp";
 import { HuskelappDTO } from "@/data/huskelapp/huskelappTypes";
@@ -31,9 +30,13 @@ const ModalContent = styled(Modal.Content)`
 
 const RightAlignedButtons = styled.div`
   display: flex;
-  align-self: flex-end;
+  justify-content: end;
   margin-top: 1em;
   gap: 1em;
+`;
+
+const StyledSkeleton = styled(Skeleton)`
+  margin: 1em;
 `;
 
 export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
@@ -58,8 +61,10 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
       open={isOpen}
       onClose={() => toggleOpen(!isOpen)}
     >
-      <Systemtittel>{texts.header}</Systemtittel>
-      {isLoading && <Skeleton height={140} variant="rounded" />}
+      <Heading size="medium" as="h2">
+        {texts.header}
+      </Heading>
+      {isLoading && <StyledSkeleton height={90} variant="rounded" />}
       {isSuccess && (
         <ModalContent>
           <Textarea
@@ -68,20 +73,20 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
             defaultValue={huskelapp?.tekst}
             onChange={oppdaterTekst}
           />
-          <RightAlignedButtons>
-            <Button variant="secondary" onClick={() => toggleOpen(false)}>
-              {texts.close}
-            </Button>
-            <Button
-              variant="primary"
-              onClick={oppdaterHuskelapp}
-              loading={oppdaterHuskelappQuery.isLoading}
-            >
-              {texts.save}
-            </Button>
-          </RightAlignedButtons>
         </ModalContent>
       )}
+      <RightAlignedButtons>
+        <Button variant="secondary" onClick={() => toggleOpen(false)}>
+          {texts.close}
+        </Button>
+        <Button
+          variant="primary"
+          onClick={oppdaterHuskelapp}
+          loading={oppdaterHuskelappQuery.isLoading}
+        >
+          {texts.save}
+        </Button>
+      </RightAlignedButtons>
     </StyledModal>
   );
 };
