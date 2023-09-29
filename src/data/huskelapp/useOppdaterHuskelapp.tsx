@@ -15,9 +15,7 @@ export const useOppdaterHuskelapp = () => {
   return useMutation({
     mutationFn: postHuskelapp,
     onSuccess: () => {
-      return queryClient.invalidateQueries(
-        huskelappQueryKeys.huskelapp(personident)
-      );
+      queryClient.invalidateQueries(huskelappQueryKeys.huskelapp(personident));
     },
   });
 };
