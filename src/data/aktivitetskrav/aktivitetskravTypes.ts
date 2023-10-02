@@ -47,6 +47,13 @@ export interface AktivitetskravVurderingDTO {
   beskrivelse: string | undefined;
   arsaker: VurderingArsak[];
   frist: Date | undefined;
+  varsel: AktivitetskravVarselDTO | undefined;
+}
+
+export interface AktivitetskravVarselDTO {
+  uuid: string;
+  createdAt: Date;
+  svarFrist: Date;
 }
 
 export type VurderingArsak =
