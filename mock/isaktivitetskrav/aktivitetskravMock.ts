@@ -110,7 +110,7 @@ const aktivitetskravForhandsvarsel: AktivitetskravDTO = {
       varsel: {
         uuid: generateUUID(),
         createdAt: daysFromToday(-2),
-        svarFrist: daysFromToday(19),
+        svarfrist: daysFromToday(19),
       },
     },
   ],

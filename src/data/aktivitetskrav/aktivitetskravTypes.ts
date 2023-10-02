@@ -53,7 +53,7 @@ export interface AktivitetskravVurderingDTO {
 export interface AktivitetskravVarselDTO {
   uuid: string;
   createdAt: Date;
-  svarFrist: Date;
+  svarfrist: Date;
 }
 
 export type VurderingArsak =
