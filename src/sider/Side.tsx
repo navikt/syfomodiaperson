@@ -5,9 +5,11 @@ import Personkort from "../components/personkort/Personkort";
 import DocumentTitle from "react-document-title";
 import { GlobalNavigasjon } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { isEaster } from "@/utils/festiveUtils";
-import { Easter } from "@/components/Easter";
+import { Easter } from "@/components/festive/Easter";
 import { Menypunkter } from "@/navigation/menypunkterTypes";
 import * as Amplitude from "@/utils/amplitude";
+import { OpenHuskelappModalButton } from "@/components/huskelapp/OpenHuskelappModalButton";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { EventType } from "@/utils/amplitude";
 
 const StyledContainer = styled(Container)`
@@ -27,6 +29,7 @@ const Side = (sideProps: SideProps) => {
       data: { url: window.location.href, sideTittel: sideProps.tittel },
     });
   }, [sideProps.tittel]);
+  const { toggles } = useFeatureToggles();
 
   const { tittel, children, aktivtMenypunkt } = sideProps;
 
@@ -38,6 +41,7 @@ const Side = (sideProps: SideProps) => {
         <Row>
           <Column className="col-xs-12">
             <Personkort />
+            {toggles.isHuskelappEnabled && <OpenHuskelappModalButton />}
           </Column>
         </Row>
         <Row>

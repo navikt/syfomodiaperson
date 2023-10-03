@@ -3,7 +3,6 @@ import {
   AktivitetskravStatus,
   SendForhandsvarselDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { VurderAktivitetskravSkjemaProps } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravSkjema";
 import { useAktivitetskravVurderingSkjema } from "@/hooks/aktivitetskrav/useAktivitetskravVurderingSkjema";
 import {
   VurderAktivitetskravBeskrivelse,
@@ -13,12 +12,12 @@ import { DocumentComponentVisning } from "@/components/DocumentComponentVisning"
 import { useAktivitetskravVarselDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVarselDocument";
 import { addWeeks } from "@/utils/datoUtils";
 import { Form } from "react-final-form";
-import { FlexRow, PaddingSize } from "@/components/Layout";
-import { Alert, Heading, Label, Panel } from "@navikt/ds-react";
-import { VurderAktivitetskravSkjemaButtons } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravSkjemaButtons";
+import { ButtonRow, FlexRow, PaddingSize } from "@/components/Layout";
+import { Alert, Button, Heading, Label, Panel } from "@navikt/ds-react";
 import styled from "styled-components";
 import { useSendForhandsvarsel } from "@/data/aktivitetskrav/useSendForhandsvarsel";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
+import { VurderAktivitetskravSkjemaProps } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravSkjema";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -26,6 +25,8 @@ const texts = {
   forhandsvisning: "Forhåndsvisning",
   warning:
     "Husk å utrede saken tilstrekkelig før du sender forhåndsvarsel om stans av sykepengene.",
+  sendVarselButtonText: "Send",
+  avbrytButtonText: "Avbryt",
 };
 
 const VarselbrevContent = styled.div`
@@ -48,11 +49,11 @@ export const getFristForForhandsvarsel = (isFysiskUtsending = true) => {
 interface SendForhandsvarselSkjemaValues {
   [vurderAktivitetskravBeskrivelseFieldName]: string;
 }
-
-export const SendForhandsvarselSkjema = (
-  props: VurderAktivitetskravSkjemaProps
-) => {
-  const sendForhandsvarsel = useSendForhandsvarsel(props.aktivitetskravUuid);
+export const SendForhandsvarselSkjema = ({
+  aktivitetskravUuid,
+  setModalOpen,
+}: VurderAktivitetskravSkjemaProps) => {
+  const sendForhandsvarsel = useSendForhandsvarsel(aktivitetskravUuid);
   const { validateBeskrivelseField } = useAktivitetskravVurderingSkjema(
     AktivitetskravStatus.FORHANDSVARSEL
   );
@@ -68,9 +69,9 @@ export const SendForhandsvarselSkjema = (
       fritekst: values.beskrivelse,
       document: getForhandsvarselDocument(values.beskrivelse, frist),
     };
-    if (props.aktivitetskravUuid) {
+    if (aktivitetskravUuid) {
       sendForhandsvarsel.mutate(forhandsvarselDTO, {
-        onSuccess: () => props.setModalOpen(false),
+        onSuccess: () => setModalOpen(false),
       });
     }
   };
@@ -102,10 +103,14 @@ export const SendForhandsvarselSkjema = (
           {sendForhandsvarsel.isError && (
             <SkjemaInnsendingFeil error={sendForhandsvarsel.error} />
           )}
-          <VurderAktivitetskravSkjemaButtons
-            onAvbrytClick={() => props.setModalOpen(false)}
-            showLagreSpinner={sendForhandsvarsel.isLoading}
-          />
+          <ButtonRow>
+            <Button loading={sendForhandsvarsel.isLoading} type="submit">
+              {texts.sendVarselButtonText}
+            </Button>
+            <Button variant="tertiary" onClick={() => setModalOpen(false)}>
+              {texts.avbrytButtonText}
+            </Button>
+          </ButtonRow>
         </StyledForm>
       )}
     </Form>
