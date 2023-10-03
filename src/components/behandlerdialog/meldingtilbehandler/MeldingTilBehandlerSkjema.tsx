@@ -88,7 +88,10 @@ export const MeldingTilBehandlerSkjema = () => {
 
   const handlePreviewButtonClick = () => {
     setDisplayPreview(true);
-    Amplitude.logEvent(EventType.ButtonClick, { tekst: texts.previewKnapp });
+    Amplitude.logEvent({
+      type: EventType.ButtonClick,
+      data: { tekst: texts.previewKnapp, url: window.location.href },
+    });
   };
 
   const validate = (

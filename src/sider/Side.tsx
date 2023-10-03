@@ -8,6 +8,7 @@ import { isEaster } from "@/utils/festiveUtils";
 import { Easter } from "@/components/Easter";
 import { Menypunkter } from "@/navigation/menypunkterTypes";
 import * as Amplitude from "@/utils/amplitude";
+import { EventType } from "@/utils/amplitude";
 
 const StyledContainer = styled(Container)`
   width: 95%;
@@ -21,7 +22,10 @@ interface SideProps {
 
 const Side = (sideProps: SideProps) => {
   useEffect(() => {
-    Amplitude.logPageVisit(window.location.href, sideProps.tittel);
+    Amplitude.logEvent({
+      type: EventType.PageView,
+      data: { url: window.location.href, sideTittel: sideProps.tittel },
+    });
   }, [sideProps.tittel]);
 
   const { tittel, children, aktivtMenypunkt } = sideProps;
