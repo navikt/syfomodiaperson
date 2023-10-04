@@ -83,6 +83,7 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
           variant="primary"
           onClick={oppdaterHuskelapp}
           loading={oppdaterHuskelappQuery.isLoading}
+          disabled={isLoading}
         >
           {texts.save}
         </Button>
