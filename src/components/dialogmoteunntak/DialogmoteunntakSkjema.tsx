@@ -1,6 +1,5 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import styled from "styled-components";
 import Panel from "nav-frontend-paneler";
 import { AlertStripeInfo } from "nav-frontend-alertstriper";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
@@ -9,14 +8,13 @@ import {
   CreateUnntakDTO,
   UnntakArsak,
 } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
-import { UnntakArsakText } from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaArsakVelger";
-import { dialogmoteunntakSkjemaBeskrivelseMaxLength } from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaBeskrivelse";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useSettDialogmoteunntak } from "@/data/dialogmotekandidat/useSettDialogmoteunntak";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { validerTekst } from "@/utils/valideringUtils";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button, Radio, RadioGroup, Textarea } from "@navikt/ds-react";
+import DialogmoteunntakSkjemaStatistikk from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaStatistikk";
 
 export const texts = {
   noBrev: "Det blir ikke sendt ut brev ved unntak.",
@@ -28,6 +26,10 @@ export const texts = {
   avbryt: "Avbryt",
 };
 
+export interface UnntakArsakText {
+  arsak: UnntakArsak;
+  text: string;
+}
 export const unntakArsakTexts: UnntakArsakText[] = [
   {
     arsak: UnntakArsak.MEDISINSKE_GRUNNER,
@@ -55,6 +57,8 @@ export const unntakArsakTexts: UnntakArsakText[] = [
   },
 ];
 
+export const dialogmoteunntakSkjemaBeskrivelseMaxLength = 2000;
+
 const style = {
   panel: {
     padding: "2em",
@@ -80,12 +84,16 @@ const DialogmoteunntakSkjema = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<DialogmoteunntakSkjemaValues>();
 
   if (!isKandidat || settDialogmoteunntak.isSuccess) {
     return <Navigate to={moteoversiktRoutePath} />;
   }
+
+  const isArsakStatistikkVisible =
+    watch("arsak") === UnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER;
 
   const validateBeskrivelse = (value) => {
     return validerTekst({
@@ -129,6 +137,7 @@ const DialogmoteunntakSkjema = () => {
       <p>{texts.infoKandidatlist}</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <ArsakRadioGroup />
+        {isArsakStatistikkVisible && <DialogmoteunntakSkjemaStatistikk />}
         <Textarea
           label={texts.beskrivelseLabel}
           maxLength={dialogmoteunntakSkjemaBeskrivelseMaxLength}

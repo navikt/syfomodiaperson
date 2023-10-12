@@ -6,11 +6,13 @@ import { DialogmotePanel } from "../DialogmotePanel";
 import { DialogmoteMoteStatusPanel } from "./DialogmoteMoteStatusPanel";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/components/dialogmote/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
-import { DialogmoteunntakSkjemaLenke } from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaLenke";
 import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { ArbeidstakerHarIkkeAktivSykmeldingAdvarsel } from "@/components/dialogmote/ArbeidstakerHarIkkeAktivSykmelding";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { Button } from "@navikt/ds-react";
+import { dialogmoteUnntakRoutePath } from "@/routers/AppRouter";
+import { Link } from "react-router-dom";
 
 export const texts = {
   bekreftetMote: "Bekreftet møte",
@@ -20,6 +22,7 @@ export const texts = {
   ingenMoterPlanlagt: "Ingen møter planlagt",
   dialogMote: "Dialogmøte",
   moteforesporselSendt: "Møteforespørsel sendt",
+  settUnntakButton: "Sett unntak",
 };
 
 const dialogmotePanelHeaderText = (isKandidat: boolean): string => {
@@ -36,6 +39,16 @@ export const InnkallingDialogmotePanel = ({
   const { brukerKanIkkeVarslesDigitalt } = useBrukerinfoQuery();
   const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const { isKandidat } = useDialogmotekandidat();
+
+  const DialogmoteunntakSkjemaLenke = () => {
+    return (
+      <Link to={dialogmoteUnntakRoutePath}>
+        <Button as="a" variant="secondary" href={dialogmoteUnntakRoutePath}>
+          {texts.settUnntakButton}
+        </Button>
+      </Link>
+    );
+  };
 
   if (aktivtDialogmote) {
     return <DialogmoteMoteStatusPanel dialogmote={aktivtDialogmote} />;
