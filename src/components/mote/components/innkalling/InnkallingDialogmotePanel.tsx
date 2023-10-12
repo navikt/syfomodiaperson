@@ -43,9 +43,7 @@ export const InnkallingDialogmotePanel = ({
   const DialogmoteunntakSkjemaLenke = () => {
     return (
       <Link to={dialogmoteUnntakRoutePath}>
-        <Button as="a" variant="secondary" href={dialogmoteUnntakRoutePath}>
-          {texts.settUnntakButton}
-        </Button>
+        <Button variant="secondary">{texts.settUnntakButton}</Button>
       </Link>
     );
   };

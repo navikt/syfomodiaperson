@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Panel from "nav-frontend-paneler";
 import { AlertStripeInfo } from "nav-frontend-alertstriper";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
@@ -11,7 +11,6 @@ import {
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useSettDialogmoteunntak } from "@/data/dialogmotekandidat/useSettDialogmoteunntak";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import { validerTekst } from "@/utils/valideringUtils";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button, Radio, RadioGroup, Textarea } from "@navikt/ds-react";
 import DialogmoteunntakSkjemaStatistikk from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaStatistikk";
@@ -20,7 +19,7 @@ export const texts = {
   noBrev: "Det blir ikke sendt ut brev ved unntak.",
   infoKandidatlist: `Når du setter unntak fra dialogmøte vil arbeidstakeren bli fjernet fra kandidatlisten. Dersom du på et senere tidspunkt vurderer at det likevel er nødvendig med et dialogmøte, kan du kalle inn til dialogmøte ved å søke deg frem til denne arbeidstakeren.`,
   arsakLegend: "Årsak til unntak (obligatorisk)",
-  arsakErrorMessage: "Vennligst angi årsak",
+  arsakErrorMessage: "Vennligst angi årsak.",
   beskrivelseLabel: "Beskrivelse (valgfri)",
   send: "Sett unntak",
   avbryt: "Avbryt",
@@ -74,7 +73,6 @@ const style = {
 export interface DialogmoteunntakSkjemaValues {
   arsak: UnntakArsak;
   beskrivelse?: string;
-  weather: string;
 }
 
 const DialogmoteunntakSkjema = () => {
@@ -95,12 +93,6 @@ const DialogmoteunntakSkjema = () => {
   const isArsakStatistikkVisible =
     watch("arsak") === UnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER;
 
-  const validateBeskrivelse = (value) => {
-    return validerTekst({
-      value: value,
-      maxLength: dialogmoteunntakSkjemaBeskrivelseMaxLength,
-    });
-  };
   const onSubmit: SubmitHandler<DialogmoteunntakSkjemaValues> = (values) => {
     const newUnntak: CreateUnntakDTO = {
       personIdent: personIdent,
@@ -110,40 +102,36 @@ const DialogmoteunntakSkjema = () => {
     settDialogmoteunntak.mutate(newUnntak);
   };
 
-  const ArsakRadioGroup = () => {
-    return (
-      <RadioGroup
-        legend={texts.arsakLegend}
-        error={errors.arsak && texts.arsakErrorMessage}
-        name={"arsak"}
-        style={style.formField}
-      >
-        {unntakArsakTexts.map((unntakArsakText, index) => (
-          <Radio
-            key={index}
-            value={unntakArsakText.arsak}
-            {...register("arsak", { required: true })}
-          >
-            {unntakArsakText.text}
-          </Radio>
-        ))}
-      </RadioGroup>
-    );
-  };
-
   return (
     <Panel style={style.panel}>
       <AlertStripeInfo>{texts.noBrev}</AlertStripeInfo>
       <p>{texts.infoKandidatlist}</p>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <ArsakRadioGroup />
+        <RadioGroup
+          legend={texts.arsakLegend}
+          name="arsak"
+          error={errors.arsak && "Vennligst angi årsak."}
+          style={style.formField}
+        >
+          {unntakArsakTexts.map((unntakArsakText, index) => (
+            <Radio
+              key={index}
+              value={unntakArsakText.arsak}
+              {...register("arsak", { required: true })}
+            >
+              {unntakArsakText.text}
+            </Radio>
+          ))}
+        </RadioGroup>
+
         {isArsakStatistikkVisible && <DialogmoteunntakSkjemaStatistikk />}
         <Textarea
           label={texts.beskrivelseLabel}
-          maxLength={dialogmoteunntakSkjemaBeskrivelseMaxLength}
+          value={watch("beskrivelse")}
           {...register("beskrivelse", {
-            validate: (value) => validateBeskrivelse(value),
+            maxLength: dialogmoteunntakSkjemaBeskrivelseMaxLength,
           })}
+          maxLength={dialogmoteunntakSkjemaBeskrivelseMaxLength}
           style={style.formField}
         />
 
@@ -155,9 +143,9 @@ const DialogmoteunntakSkjema = () => {
         >
           {texts.send}
         </Button>
-        <Button as="a" variant="secondary" href={"moteoversiktRoutePath"}>
-          {texts.avbryt}
-        </Button>
+        <Link to={moteoversiktRoutePath}>
+          <Button variant="secondary">{texts.avbryt}</Button>
+        </Link>
         {settDialogmoteunntak.isError && (
           <SkjemaInnsendingFeil error={settDialogmoteunntak.error} />
         )}
