@@ -22,7 +22,7 @@ const texts = {
   save: "Lagre",
   close: "Avbryt",
   remove: "Fjern",
-  removeTooltip: "Fjerner huskelappen og personen fra oversikten",
+  removeTooltip: "Fjerner huskelappen og oppgaven fra oversikten",
 };
 
 interface HuskelappModalProps {
