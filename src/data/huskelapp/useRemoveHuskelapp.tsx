@@ -1,19 +1,19 @@
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { ISHUSKELAPP_ROOT } from "@/apiConstants";
-import { post } from "@/api/axios";
+import { deleteRequest } from "@/api/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { huskelappQueryKeys } from "@/data/huskelapp/useGetHuskelappQuery";
-import { HuskelappRequestDTO } from "@/data/huskelapp/huskelappTypes";
 
-export const useOppdaterHuskelapp = () => {
+export const useRemoveHuskelapp = () => {
   const personident = useValgtPersonident();
   const queryClient = useQueryClient();
-  const path = `${ISHUSKELAPP_ROOT}/huskelapp`;
-  const postHuskelapp = (nyHuskelapp: HuskelappRequestDTO) =>
-    post<HuskelappRequestDTO>(path, nyHuskelapp, personident);
+  const deleteHuskelapp = (huskelappUuid: string) => {
+    const path = `${ISHUSKELAPP_ROOT}/huskelapp/${huskelappUuid}`;
+    return deleteRequest(path, personident);
+  };
 
   return useMutation({
-    mutationFn: postHuskelapp,
+    mutationFn: deleteHuskelapp,
     onSuccess: () => {
       queryClient.invalidateQueries(huskelappQueryKeys.huskelapp(personident));
     },
