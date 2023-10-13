@@ -1,6 +1,5 @@
 import React, { ReactElement } from "react";
 import { FlexGapSize, FlexRow } from "@/components/Layout";
-import { NyttDialogMote } from "./NyttDialogMote";
 import { MoteIkonBlaaImage } from "../../../../../img/ImageComponents";
 import { DialogmotePanel } from "../DialogmotePanel";
 import { DialogmoteMoteStatusPanel } from "./DialogmoteMoteStatusPanel";
@@ -11,7 +10,10 @@ import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { ArbeidstakerHarIkkeAktivSykmeldingAdvarsel } from "@/components/dialogmote/ArbeidstakerHarIkkeAktivSykmelding";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { Button } from "@navikt/ds-react";
-import { dialogmoteUnntakRoutePath } from "@/routers/AppRouter";
+import {
+  dialogmoteRoutePath,
+  dialogmoteUnntakRoutePath,
+} from "@/routers/AppRouter";
 import { Link } from "react-router-dom";
 
 export const texts = {
@@ -23,6 +25,7 @@ export const texts = {
   dialogMote: "Dialogmøte",
   moteforesporselSendt: "Møteforespørsel sendt",
   settUnntakButton: "Sett unntak",
+  nyttMote: "Nytt dialogmøte",
 };
 
 const dialogmotePanelHeaderText = (isKandidat: boolean): string => {
@@ -40,7 +43,15 @@ export const InnkallingDialogmotePanel = ({
   const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const { isKandidat } = useDialogmotekandidat();
 
-  const DialogmoteunntakSkjemaLenke = () => {
+  const NyttDialogmoteButton = () => {
+    return (
+      <Link to={dialogmoteRoutePath}>
+        <Button variant={"primary"}>{texts.nyttMote}</Button>
+      </Link>
+    );
+  };
+
+  const SettUnntakButton = () => {
     return (
       <Link to={dialogmoteUnntakRoutePath}>
         <Button variant="secondary">{texts.settUnntakButton}</Button>
@@ -65,8 +76,8 @@ export const InnkallingDialogmotePanel = ({
         )}
 
         <FlexRow columnGap={FlexGapSize.MD}>
-          <NyttDialogMote />
-          {isKandidat && <DialogmoteunntakSkjemaLenke />}
+          <NyttDialogmoteButton />
+          {isKandidat && <SettUnntakButton />}
         </FlexRow>
       </DialogmotePanel>
     );
