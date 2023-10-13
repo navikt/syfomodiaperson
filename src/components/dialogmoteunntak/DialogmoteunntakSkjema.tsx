@@ -111,6 +111,7 @@ const DialogmoteunntakSkjema = () => {
           <RadioGroup
             legend={texts.arsakLegend}
             name="arsak"
+            size="small"
             error={errors.arsak && texts.arsakErrorMessage}
           >
             {unntakArsakTexts.map((unntakArsakText, index) => (
