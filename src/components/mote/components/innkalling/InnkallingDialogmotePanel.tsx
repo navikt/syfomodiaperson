@@ -45,17 +45,17 @@ export const InnkallingDialogmotePanel = ({
 
   const NyttDialogmoteButton = () => {
     return (
-      <Link to={dialogmoteRoutePath}>
-        <Button variant={"primary"}>{texts.nyttMote}</Button>
-      </Link>
+      <Button as={Link} to={dialogmoteRoutePath} variant={"primary"}>
+        {texts.nyttMote}
+      </Button>
     );
   };
 
   const SettUnntakButton = () => {
     return (
-      <Link to={dialogmoteUnntakRoutePath}>
-        <Button variant="secondary">{texts.settUnntakButton}</Button>
-      </Link>
+      <Button as={Link} to={dialogmoteUnntakRoutePath} variant="secondary">
+        {texts.settUnntakButton}
+      </Button>
     );
   };
 

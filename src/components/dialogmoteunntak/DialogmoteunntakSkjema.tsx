@@ -147,9 +147,10 @@ const DialogmoteunntakSkjema = () => {
           {texts.send}
         </SubmitButton>
 
-        <Link to={moteoversiktRoutePath}>
-          <Button variant="secondary">{texts.avbryt}</Button>
-        </Link>
+        <Button as={Link} to={moteoversiktRoutePath} variant="secondary">
+          {texts.avbryt}
+        </Button>
+
         {settDialogmoteunntak.isError && (
           <SkjemaInnsendingFeil error={settDialogmoteunntak.error} />
         )}
