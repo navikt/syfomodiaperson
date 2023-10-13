@@ -115,7 +115,7 @@ describe("InnkallingDialogmotePanel", () => {
 
       renderInnkallingDialogmotePanel(brukerKanVarsles);
 
-      const button = screen.getByText("Sett unntak");
+      const button = getButton("Sett unntak");
       expect(button).to.exist;
       userEvent.click(button);
     });

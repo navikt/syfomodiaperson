@@ -14,6 +14,7 @@ import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button, Radio, RadioGroup, Textarea } from "@navikt/ds-react";
 import DialogmoteunntakSkjemaStatistikk from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaStatistikk";
+import styled from "styled-components";
 
 export const texts = {
   noBrev: "Det blir ikke sendt ut brev ved unntak.",
@@ -58,17 +59,16 @@ export const unntakArsakTexts: UnntakArsakText[] = [
 
 export const dialogmoteunntakSkjemaBeskrivelseMaxLength = 2000;
 
-const style = {
-  panel: {
-    padding: "2em",
-  },
-  formField: {
-    marginBottom: "2em",
-  },
-  buttonRow: {
-    marginRight: "1em",
-  },
-};
+const StyledPanel = styled(Panel)`
+  padding: 2em;
+`;
+const FormInput = styled.div`
+  margin-bottom: 1em;
+`;
+
+const SubmitButton = styled(Button)`
+  margin-right: 1em;
+`;
 
 export interface DialogmoteunntakSkjemaValues {
   arsak: UnntakArsak;
@@ -103,46 +103,49 @@ const DialogmoteunntakSkjema = () => {
   };
 
   return (
-    <Panel style={style.panel}>
+    <StyledPanel>
       <AlertStripeInfo>{texts.noBrev}</AlertStripeInfo>
       <p>{texts.infoKandidatlist}</p>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <RadioGroup
-          legend={texts.arsakLegend}
-          name="arsak"
-          error={errors.arsak && "Vennligst angi årsak."}
-          style={style.formField}
-        >
-          {unntakArsakTexts.map((unntakArsakText, index) => (
-            <Radio
-              key={index}
-              value={unntakArsakText.arsak}
-              {...register("arsak", { required: true })}
-            >
-              {unntakArsakText.text}
-            </Radio>
-          ))}
-        </RadioGroup>
+        <FormInput>
+          <RadioGroup
+            legend={texts.arsakLegend}
+            name="arsak"
+            error={errors.arsak && texts.arsakErrorMessage}
+          >
+            {unntakArsakTexts.map((unntakArsakText, index) => (
+              <Radio
+                key={index}
+                value={unntakArsakText.arsak}
+                {...register("arsak", { required: true })}
+              >
+                {unntakArsakText.text}
+              </Radio>
+            ))}
+          </RadioGroup>
+        </FormInput>
 
         {isArsakStatistikkVisible && <DialogmoteunntakSkjemaStatistikk />}
-        <Textarea
-          label={texts.beskrivelseLabel}
-          value={watch("beskrivelse")}
-          {...register("beskrivelse", {
-            maxLength: dialogmoteunntakSkjemaBeskrivelseMaxLength,
-          })}
-          maxLength={dialogmoteunntakSkjemaBeskrivelseMaxLength}
-          style={style.formField}
-        />
 
-        <Button
+        <FormInput>
+          <Textarea
+            label={texts.beskrivelseLabel}
+            value={watch("beskrivelse")}
+            {...register("beskrivelse", {
+              maxLength: dialogmoteunntakSkjemaBeskrivelseMaxLength,
+            })}
+            maxLength={dialogmoteunntakSkjemaBeskrivelseMaxLength}
+          />
+        </FormInput>
+
+        <SubmitButton
           type="submit"
           variant="primary"
           loading={settDialogmoteunntak.isLoading}
-          style={style.buttonRow}
         >
           {texts.send}
-        </Button>
+        </SubmitButton>
+
         <Link to={moteoversiktRoutePath}>
           <Button variant="secondary">{texts.avbryt}</Button>
         </Link>
@@ -150,7 +153,7 @@ const DialogmoteunntakSkjema = () => {
           <SkjemaInnsendingFeil error={settDialogmoteunntak.error} />
         )}
       </form>
-    </Panel>
+    </StyledPanel>
   );
 };
 
