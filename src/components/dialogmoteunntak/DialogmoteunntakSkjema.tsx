@@ -107,6 +107,9 @@ const DialogmoteunntakSkjema = () => {
       <AlertStripeInfo>{texts.noBrev}</AlertStripeInfo>
       <p>{texts.infoKandidatlist}</p>
       <form onSubmit={handleSubmit(onSubmit)}>
+        {settDialogmoteunntak.isError && (
+          <SkjemaInnsendingFeil error={settDialogmoteunntak.error} />
+        )}
         <FormInput>
           <RadioGroup
             legend={texts.arsakLegend}
@@ -150,10 +153,6 @@ const DialogmoteunntakSkjema = () => {
         <Button as={Link} to={moteoversiktRoutePath} variant="secondary">
           {texts.avbryt}
         </Button>
-
-        {settDialogmoteunntak.isError && (
-          <SkjemaInnsendingFeil error={settDialogmoteunntak.error} />
-        )}
       </form>
     </StyledPanel>
   );

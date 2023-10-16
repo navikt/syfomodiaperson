@@ -61,10 +61,8 @@ describe("DialogmoteunntakSkjema", () => {
     renderDialogmoteunntakSkjema();
     clickButton(submitButtonText);
 
-    await waitFor(() => {
-      expect(screen.getByText(unntakSkjemaTexts.arsakErrorMessage)).to.not.be
-        .empty;
-    });
+    expect(await screen.findByText(unntakSkjemaTexts.arsakErrorMessage)).to.not
+      .be.empty;
 
     const tooLongBeskrivelse = getTooLongText(
       dialogmoteunntakSkjemaBeskrivelseMaxLength
