@@ -46,8 +46,8 @@ export const SamtaleAccordionItem = ({
               <BehandlerNavn behandlerRef={behandlerRef} />
             ) : (
               firstMelding.behandlerNavn
-            )}{" "}
-            {dateAndTimeForNewestMelding}
+            )}
+            {` ${dateAndTimeForNewestMelding}`}
           </>
           <SamtaleTags meldinger={meldinger} />
         </FlexRow>
