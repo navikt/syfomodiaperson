@@ -286,6 +286,19 @@ describe("VurderAktivitetskrav", () => {
     });
   });
   describe("Send forhåndsvarsel", () => {
+    it("Does not show AVVENT choice when forhandsvarsel is sent", () => {
+      renderVurderAktivitetskrav(
+        forhandsvarselAktivitetskrav,
+        oppfolgingstilfelle
+      );
+
+      expect(screen.queryByRole("button", { name: "Sett unntak" })).to.exist;
+      expect(screen.queryByRole("button", { name: "Er i aktivitet" })).to.exist;
+      expect(screen.queryByRole("button", { name: "Ikke aktuell" })).to.exist;
+      expect(screen.queryByRole("button", { name: "Ikke oppfylt" })).to.exist;
+      expect(screen.queryByRole("button", { name: "Avvent" })).to.not.exist;
+    });
+
     it("Send forhåndsvarsel with beskrivelse filled in", () => {
       renderVurderAktivitetskrav(aktivitetskrav, oppfolgingstilfelle);
       const beskrivelseLabel = "Beskrivelse (obligatorisk)";

@@ -2,7 +2,10 @@ import React from "react";
 import { ModalType } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravModal";
 import { Button } from "@navikt/ds-react";
 import { ButtonRow, PaddingSize } from "@/components/Layout";
-import { AktivitetskravDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
+import {
+  AktivitetskravDTO,
+  AktivitetskravStatus,
+} from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { hasUbehandletPersonoppgave } from "@/utils/personOppgaveUtils";
 import { PersonOppgaveType } from "@/data/personoppgave/types/PersonOppgave";
@@ -38,9 +41,11 @@ export const VurderAktivitetskravButtons = ({
 
   return (
     <ButtonRow topPadding={PaddingSize.MD}>
-      <Button variant="secondary" onClick={() => onButtonClick("AVVENT")}>
-        {texts.avventer}
-      </Button>
+      {aktivitetskrav?.status !== AktivitetskravStatus.FORHANDSVARSEL && (
+        <Button variant="secondary" onClick={() => onButtonClick("AVVENT")}>
+          {texts.avventer}
+        </Button>
+      )}
       <Button variant="secondary" onClick={() => onButtonClick("UNNTAK")}>
         {texts.unntak}
       </Button>
