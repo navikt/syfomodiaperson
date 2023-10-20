@@ -4,6 +4,9 @@ import { Button } from "@navikt/ds-react";
 import { ButtonRow, PaddingSize } from "@/components/Layout";
 import { AktivitetskravDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
+import { hasUbehandletPersonoppgave } from "@/utils/personOppgaveUtils";
+import { PersonOppgaveType } from "@/data/personoppgave/types/PersonOppgave";
+import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 
 const texts = {
   avventer: "Avventer",
@@ -24,6 +27,12 @@ export const VurderAktivitetskravButtons = ({
   aktivitetskrav,
 }: VurderAktivitetskravButtonsProps) => {
   const { toggles } = useFeatureToggles();
+  const { data: oppgaver } = usePersonoppgaverQuery();
+  const hasUbehandletVurderStansOppgave = hasUbehandletPersonoppgave(
+    oppgaver,
+    PersonOppgaveType.AKTIVITETSKRAV_VURDER_STANS
+  );
+
   return (
     <ButtonRow topPadding={PaddingSize.MD}>
       <Button variant="secondary" onClick={() => onButtonClick("AVVENT")}>
@@ -43,7 +52,7 @@ export const VurderAktivitetskravButtons = ({
           {texts.forhandsvarsel}
         </Button>
       )}
-      {aktivitetskrav?.status == "FORHANDSVARSEL" &&
+      {hasUbehandletVurderStansOppgave &&
         toggles.isSendingAvForhandsvarselEnabled && (
           <Button
             variant="secondary"
