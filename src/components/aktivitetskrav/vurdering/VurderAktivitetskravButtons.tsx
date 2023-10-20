@@ -7,6 +7,9 @@ import {
   AktivitetskravStatus,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
+import { hasUbehandletPersonoppgave } from "@/utils/personOppgaveUtils";
+import { PersonOppgaveType } from "@/data/personoppgave/types/PersonOppgave";
+import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 
 const texts = {
   avventer: "Avventer",
@@ -27,6 +30,15 @@ export const VurderAktivitetskravButtons = ({
   aktivitetskrav,
 }: VurderAktivitetskravButtonsProps) => {
   const { toggles } = useFeatureToggles();
+  const { data: oppgaver } = usePersonoppgaverQuery();
+  const hasUbehandletVurderStansOppgave = hasUbehandletPersonoppgave(
+    oppgaver,
+    PersonOppgaveType.AKTIVITETSKRAV_VURDER_STANS
+  );
+  const isIkkeOppfyltButtonVisible =
+    hasUbehandletVurderStansOppgave ||
+    !toggles.isSendingAvForhandsvarselEnabled;
+
   return (
     <ButtonRow topPadding={PaddingSize.MD}>
       {aktivitetskrav?.status !== AktivitetskravStatus.FORHANDSVARSEL && (
@@ -48,9 +60,14 @@ export const VurderAktivitetskravButtons = ({
           {texts.forhandsvarsel}
         </Button>
       )}
-      <Button variant="secondary" onClick={() => onButtonClick("IKKE_OPPFYLT")}>
-        {texts.ikkeOppfylt}
-      </Button>
+      {isIkkeOppfyltButtonVisible && (
+        <Button
+          variant="secondary"
+          onClick={() => onButtonClick("IKKE_OPPFYLT")}
+        >
+          {texts.ikkeOppfylt}
+        </Button>
+      )}
       <Button
         variant="secondary-neutral"
         onClick={() => onButtonClick("IKKE_AKTUELL")}
