@@ -19,14 +19,14 @@ const personOppgaveUbehandletOppfolgingsplanLPS = {
   opprettet: new Date().toDateString(),
 };
 
-export const personOppgaveUbehandletHackathon = {
+export const personOppgaveUbehandletBehandlerBerOmBistand = {
   ...personOppgaveUbehandletOppfolgingsplanLPS,
   type: "BEHANDLER_BER_OM_BISTAND",
   uuid: "5f1e2625-061b-443d-ae1f-3c18e9574cd1",
   referanseUuid: "5555a750-7f39-4974-9a06-fa1775f987c9",
 };
 
-export const personOppgaveUbehandletHackathonTo = {
+export const personOppgaveUbehandletBehandlerBerOmBistand2 = {
   ...personOppgaveUbehandletOppfolgingsplanLPS,
   type: "BEHANDLER_BER_OM_BISTAND",
   uuid: "5f1e2625-061b-443d-ae1f-3c18e9574cd2",
@@ -143,7 +143,7 @@ export const personoppgaverMock = () => {
     personOppgaveUbehandletBehandlerdialogAvvistMelding,
     personOppgaveBehandletBehandlerdialogAvvistMelding,
     personOppgaveUbehandletVurderStans,
-    personOppgaveUbehandletHackathon,
-    personOppgaveUbehandletHackathonTo,
+    personOppgaveUbehandletBehandlerBerOmBistand,
+    personOppgaveUbehandletBehandlerBerOmBistand2,
   ];
 };

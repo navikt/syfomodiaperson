@@ -14,7 +14,6 @@ import { EventType } from "@/utils/amplitude";
 
 const StyledContainer = styled(Container)`
   width: 95%;
-  background-color: pink; // TODO: Remove
 `;
 
 interface SideProps {

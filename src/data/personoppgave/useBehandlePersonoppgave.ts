@@ -19,9 +19,16 @@ export const useBehandlePersonoppgave = () => {
   });
 };
 
-export const useBehandlePersonoppgaveWithoutInvalidate = () => {
+export const useBehandlePersonoppgaveWithoutRefetch = () => {
+  const fnr = useValgtPersonident();
+  const queryClient = useQueryClient();
+  const personOppgaverQueryKey = personoppgaverQueryKeys.personoppgaver(fnr);
   return useMutation({
     mutationFn: postBehandlePersonoppgave,
+    onSuccess: () =>
+      queryClient.invalidateQueries(personOppgaverQueryKey, {
+        refetchType: "none",
+      }),
   });
 };
 

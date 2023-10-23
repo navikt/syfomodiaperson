@@ -5,7 +5,14 @@ import Pengestopp from "../../../pengestopp/Pengestopp";
 import SideLaster from "../../../SideLaster";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { Menypunkter } from "@/navigation/menypunkterTypes";
-import { HackathonOppgave } from "@/components/speiling/sykmeldinger/HackathonOppgave";
+import { BistandsbehovOppgaver } from "@/components/speiling/sykmeldinger/VurderBistandsbehov";
+import { Heading } from "@navikt/ds-react";
+import styled from "styled-components";
+
+const StyledHeading = styled(Heading)`
+  text-align: center;
+  margin: 1em 0 0.5em 0;
+`;
 
 const SykmeldingerSide = (): ReactElement => {
   const { isInitialLoading, isError, sykmeldinger } = useSykmeldingerQuery();
@@ -15,7 +22,8 @@ const SykmeldingerSide = (): ReactElement => {
       <SideLaster henter={isInitialLoading} hentingFeilet={isError}>
         <div>
           <Pengestopp sykmeldinger={sykmeldinger} />
-          <HackathonOppgave />
+          <BistandsbehovOppgaver />
+          <StyledHeading size="xlarge">Sykmeldinger</StyledHeading>
           <DineSykmeldinger sykmeldinger={sykmeldinger} />
         </div>
       </SideLaster>
