@@ -14,7 +14,6 @@ import { getAllUbehandledePersonOppgaver } from "@/utils/personOppgaveUtils";
 const texts = {
   header: "Vurder bistandsbehovet fra behandler:",
   helptext: "Informasjonen er hentet fra felt 8 i sykmeldingen.",
-  meldingTilNAV: "Melding til NAV",
   link: "Gå til sykmeldingen",
   behandleOppgaveText: "Jeg har vurdert bistandsbehovet, fjern oppgaven.",
 };
