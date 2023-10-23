@@ -19,6 +19,13 @@ const personOppgaveUbehandletOppfolgingsplanLPS = {
   opprettet: new Date().toDateString(),
 };
 
+export const personOppgaveUbehandletHackathon = {
+  ...personOppgaveUbehandletOppfolgingsplanLPS,
+  type: "HACKATHON",
+  uuid: "5f1e2625-061b-443d-ae1f-3c18e9574cd1",
+  referanseUuid: "5555a750-7f39-4974-9a06-fa1775f987c9",
+};
+
 export const personOppgaveUbehandletVurderStans = {
   ...personOppgaveUbehandletOppfolgingsplanLPS,
   uuid: "5f1e2625-061b-443d-ae1f-3b08e9574cd1",
@@ -129,5 +136,6 @@ export const personoppgaverMock = () => {
     personOppgaveUbehandletBehandlerdialogAvvistMelding,
     personOppgaveBehandletBehandlerdialogAvvistMelding,
     personOppgaveUbehandletVurderStans,
+    personOppgaveUbehandletHackathon,
   ];
 };
