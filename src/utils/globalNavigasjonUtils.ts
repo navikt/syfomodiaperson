@@ -94,6 +94,16 @@ const getNumberOfBehandlerDialogOppgaver = (
   );
 };
 
+const getNumberOfAktiveSykmeldingOppgaver = (
+  personoppgaver: PersonOppgave[]
+): number => {
+  return personoppgaver.filter(
+    (oppgave) =>
+      oppgave.type === PersonOppgaveType.BEHANDLER_BER_OM_BISTAND &&
+      !oppgave.behandletTidspunkt
+  ).length;
+};
+
 export const numberOfTasks = (
   menypunkt: Menypunkter,
   motebehov: MotebehovVeilederDTO[],
@@ -118,9 +128,10 @@ export const numberOfTasks = (
       return getNumberOfAktivitetskravOppgaver(aktivitetskrav, personOppgaver);
     case Menypunkter.BEHANDLERDIALOG:
       return getNumberOfBehandlerDialogOppgaver(personOppgaver);
+    case Menypunkter.SYKMELDINGER:
+      return getNumberOfAktiveSykmeldingOppgaver(personOppgaver);
     case Menypunkter.NOKKELINFORMASJON:
     case Menypunkter.SYKEPENGESOKNADER:
-    case Menypunkter.SYKMELDINGER:
     case Menypunkter.VEDTAK:
     case Menypunkter.HISTORIKK: {
       return 0;

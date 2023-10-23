@@ -19,6 +19,12 @@ export const useBehandlePersonoppgave = () => {
   });
 };
 
+export const useBehandlePersonoppgaveWithoutInvalidate = () => {
+  return useMutation({
+    mutationFn: postBehandlePersonoppgave,
+  });
+};
+
 export const useBehandleAllPersonoppgaver = () => {
   const fnr = useValgtPersonident();
   const queryClient = useQueryClient();
