@@ -10,12 +10,13 @@ import styled from "styled-components";
 import { useBehandlePersonoppgaveWithoutRefetch } from "@/data/personoppgave/useBehandlePersonoppgave";
 import { StatusKanImage } from "../../../../img/ImageComponents";
 import { getAllUbehandledePersonOppgaver } from "@/utils/personOppgaveUtils";
+import { Link as RouterLink } from "react-router-dom";
 
 const texts = {
   header: "Vurder bistandsbehovet fra behandler:",
   helptext: "Informasjonen er hentet fra felt 8 i sykmeldingen.",
   link: "Gå til sykmeldingen",
-  behandleOppgaveText: "Jeg har vurdert bistandsbehovet, fjern oppgaven.",
+  behandleOppgaveText: "Jeg har vurdert behovet, fjern oppgaven.",
 };
 
 const StyledPanel = styled(Panel)`
@@ -66,16 +67,17 @@ const VurderBistandsbehov = ({ oppgave }: VurderBistandsbehovProps) => {
             {sykmelding?.meldingTilNav.navBoerTaTakISakenBegrunnelse}
           </blockquote>
           <StyledRow>
-            <Link href={`/sykefravaer/sykmeldinger/${sykmelding.id}`}>
+            <Link
+              as={RouterLink}
+              to={`/sykefravaer/sykmeldinger/${sykmelding.id}`}
+            >
               {texts.link}
             </Link>
             {!behandleOppgave.isSuccess ? (
               <Button
                 variant="secondary"
                 size="small"
-                onClick={() => {
-                  behandleOppgave.mutate(oppgave.uuid);
-                }}
+                onClick={() => behandleOppgave.mutate(oppgave.uuid)}
                 loading={behandleOppgave.isLoading}
               >
                 {texts.behandleOppgaveText}

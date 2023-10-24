@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import { queryClientWithMockData } from "../testQueryClient";
@@ -11,18 +11,22 @@ import { personOppgaveUbehandletBehandlerBerOmBistand } from "../../mock/isperso
 import { BistandsbehovOppgaver } from "@/components/speiling/sykmeldinger/VurderBistandsbehov";
 import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { sykmeldingerMock } from "../../mock/syfosmregister/sykmeldingerMock";
+import { renderWithRouter } from "../testRouterUtils";
+import { clickButton } from "../testUtils";
 
 let queryClient: QueryClient;
 
 const renderBistandsbehovOppgaver = () => {
-  render(
+  renderWithRouter(
     <QueryClientProvider client={queryClient}>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
         <BistandsbehovOppgaver />
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
+    "/sykefravaer/sykmeldinger/:sykmeldingId",
+    [`/sykefravaer/sykmeldinger/123`]
   );
 };
 
@@ -40,7 +44,7 @@ describe("VurderBistandsbehov", () => {
   });
 
   const behandlePersonoppgaveKnappText =
-    "Jeg har vurdert bistandsbehovet, fjern oppgaven.";
+    "Jeg har vurdert behovet, fjern oppgaven.";
 
   it("Viser VurderBistandsbehov panel", () => {
     renderBistandsbehovOppgaver();
@@ -55,5 +59,22 @@ describe("VurderBistandsbehov", () => {
         name: behandlePersonoppgaveKnappText,
       })
     ).to.exist;
+    expect(
+      screen.getByRole("link", {
+        name: "Gå til sykmeldingen",
+      })
+    ).to.exist;
+  });
+
+  it("Behandler ber-om-bistand oppgaven med riktig uuid for personoppgaven", () => {
+    renderBistandsbehovOppgaver();
+
+    clickButton(behandlePersonoppgaveKnappText);
+
+    const behandleMutation = queryClient.getMutationCache().getAll()[0];
+
+    expect(behandleMutation.options.variables).to.deep.equal(
+      personOppgaveUbehandletBehandlerBerOmBistand.uuid
+    );
   });
 });

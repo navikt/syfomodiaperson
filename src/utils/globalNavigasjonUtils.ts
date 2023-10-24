@@ -11,6 +11,7 @@ import { OppfolgingsplanLPSMedPersonoppgave } from "@/data/oppfolgingsplan/types
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import {
+  getAllUbehandledePersonOppgaver,
   hasUbehandletPersonoppgave,
   numberOfUbehandledePersonOppgaver,
 } from "@/utils/personOppgaveUtils";
@@ -94,13 +95,12 @@ const getNumberOfBehandlerDialogOppgaver = (
   );
 };
 
-const getNumberOfAktiveSykmeldingOppgaver = (
+const getNumberOfBehandlerBerOmBistandOppgaver = (
   personoppgaver: PersonOppgave[]
 ): number => {
-  return personoppgaver.filter(
-    (oppgave) =>
-      oppgave.type === PersonOppgaveType.BEHANDLER_BER_OM_BISTAND &&
-      !oppgave.behandletTidspunkt
+  return getAllUbehandledePersonOppgaver(
+    personoppgaver,
+    PersonOppgaveType.BEHANDLER_BER_OM_BISTAND
   ).length;
 };
 
@@ -129,7 +129,7 @@ export const numberOfTasks = (
     case Menypunkter.BEHANDLERDIALOG:
       return getNumberOfBehandlerDialogOppgaver(personOppgaver);
     case Menypunkter.SYKMELDINGER:
-      return getNumberOfAktiveSykmeldingOppgaver(personOppgaver);
+      return getNumberOfBehandlerBerOmBistandOppgaver(personOppgaver);
     case Menypunkter.NOKKELINFORMASJON:
     case Menypunkter.SYKEPENGESOKNADER:
     case Menypunkter.VEDTAK:
