@@ -18,12 +18,12 @@ import {
   AvventFristDato,
 } from "@/components/aktivitetskrav/vurdering/AvventFristDato";
 import { Form } from "react-final-form";
-import { VurderAktivitetskravSkjemaHeading } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravSkjemaHeading";
+import { SkjemaHeading } from "@/components/aktivitetskrav/vurdering/SkjemaHeading";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import { VurderAktivitetskravSkjemaButtons } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravSkjemaButtons";
+import { LagreAvbrytButtonRow } from "@/components/aktivitetskrav/vurdering/LagreAvbrytButtonRow";
 import { useVurderAktivitetskrav } from "@/data/aktivitetskrav/useVurderAktivitetskrav";
 import { VurderAktivitetskravSkjemaProps } from "@/components/aktivitetskrav/vurdering/vurderAktivitetskravSkjemaTypes";
-import { VurderAktivitetskravSkjemaFieldContainer } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravSkjemaFieldContainer";
+import { SkjemaFieldContainer } from "@/components/aktivitetskrav/vurdering/SkjemaFieldContainer";
 
 const texts = {
   title: "Avventer",
@@ -67,19 +67,19 @@ export const AvventAktivitetskravSkjema = ({
     <Form onSubmit={submit} validate={validate}>
       {({ handleSubmit }) => (
         <form onSubmit={handleSubmit}>
-          <VurderAktivitetskravSkjemaHeading
+          <SkjemaHeading
             title={texts.title}
             subtitles={[texts.subtitle1, texts.subtitle2]}
           />
-          <VurderAktivitetskravSkjemaFieldContainer>
+          <SkjemaFieldContainer>
             <AvventArsakerCheckboxGruppe />
             <VurderAktivitetskravBeskrivelse label={texts.beskrivelseLabel} />
             <AvventFristDato />
-          </VurderAktivitetskravSkjemaFieldContainer>
+          </SkjemaFieldContainer>
           {vurderAktivitetskrav.isError && (
             <SkjemaInnsendingFeil error={vurderAktivitetskrav.error} />
           )}
-          <VurderAktivitetskravSkjemaButtons
+          <LagreAvbrytButtonRow
             isSubmitting={vurderAktivitetskrav.isLoading}
             handleClose={() => setModalOpen(false)}
           />

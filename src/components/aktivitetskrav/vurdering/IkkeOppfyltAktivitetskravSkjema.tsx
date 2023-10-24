@@ -4,7 +4,7 @@ import {
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import React from "react";
 import { useVurderAktivitetskrav } from "@/data/aktivitetskrav/useVurderAktivitetskrav";
-import { VurderAktivitetskravSkjemaHeading } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravSkjemaHeading";
+import { SkjemaHeading } from "@/components/aktivitetskrav/vurdering/SkjemaHeading";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { VurderAktivitetskravSkjemaProps } from "@/components/aktivitetskrav/vurdering/vurderAktivitetskravSkjemaTypes";
 import { Button } from "@navikt/ds-react";
@@ -35,10 +35,7 @@ export const IkkeOppfyltAktivitetskravSkjema = ({
 
   return (
     <>
-      <VurderAktivitetskravSkjemaHeading
-        title={texts.title}
-        subtitles={[texts.subtitle1]}
-      />
+      <SkjemaHeading title={texts.title} subtitles={[texts.subtitle1]} />
       {vurderAktivitetskrav.isError && (
         <SkjemaInnsendingFeil error={vurderAktivitetskrav.error} />
       )}

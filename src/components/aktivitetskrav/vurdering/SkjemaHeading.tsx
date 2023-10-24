@@ -7,7 +7,7 @@ interface VurderAktivitetskravSkjemaHeadingProps {
   subtitles?: string[];
 }
 
-export const VurderAktivitetskravSkjemaHeading = ({
+export const SkjemaHeading = ({
   title,
   subtitles,
 }: VurderAktivitetskravSkjemaHeadingProps) => (

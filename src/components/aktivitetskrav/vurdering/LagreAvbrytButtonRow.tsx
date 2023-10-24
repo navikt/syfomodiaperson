@@ -12,7 +12,7 @@ interface VurderAktivitetskravSkjemaButtonsProps {
   handleClose: () => void;
 }
 
-export const VurderAktivitetskravSkjemaButtons = ({
+export const LagreAvbrytButtonRow = ({
   isSubmitting,
   handleClose,
 }: VurderAktivitetskravSkjemaButtonsProps) => {
