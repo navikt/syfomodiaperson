@@ -135,7 +135,7 @@ describe("VurderAktivitetskrav", () => {
       clickButton("Lagre");
 
       expect(await screen.findByText("Vennligst angi årsak")).to.exist;
-      expect(screen.getByText("1 tegn for mye")).to.exist;
+      expect(await screen.findByText("1 tegn for mye")).to.exist;
     });
     it("Lagre vurdering med verdier fra skjema", async () => {
       renderVurderAktivitetskrav(aktivitetskrav, oppfolgingstilfelle);
@@ -178,7 +178,7 @@ describe("VurderAktivitetskrav", () => {
       clickButton("Lagre");
 
       expect(await screen.findByText("Vennligst angi årsak")).to.exist;
-      expect(screen.getByText("1 tegn for mye")).to.exist;
+      expect(await screen.findByText("1 tegn for mye")).to.exist;
     });
     it("Lagre vurdering med verdier fra skjema", async () => {
       renderVurderAktivitetskrav(aktivitetskrav, oppfolgingstilfelle);
