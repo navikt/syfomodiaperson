@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  AktivitetskravStatus,
-  SendForhandsvarselDTO,
-} from "@/data/aktivitetskrav/aktivitetskravTypes";
+import { SendForhandsvarselDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { useAktivitetskravVurderingSkjema } from "@/hooks/aktivitetskrav/useAktivitetskravVurderingSkjema";
 import {
   VurderAktivitetskravBeskrivelse,
@@ -17,11 +14,11 @@ import { Alert, Button, Heading, Label, Panel } from "@navikt/ds-react";
 import styled from "styled-components";
 import { useSendForhandsvarsel } from "@/data/aktivitetskrav/useSendForhandsvarsel";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import { VurderAktivitetskravSkjemaProps } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravSkjema";
+import { VurderAktivitetskravSkjemaProps } from "@/components/aktivitetskrav/vurdering/vurderAktivitetskravSkjemaTypes";
 
 const texts = {
   title: "Send forhåndsvarsel",
-  beskrivelseLabel: "Beskrivelse (obligatorisk)",
+  beskrivelseLabel: "Begrunnelse (obligatorisk)",
   forhandsvisning: "Forhåndsvisning",
   warning:
     "Husk å utrede saken tilstrekkelig før du sender forhåndsvarsel om stans av sykepengene.",
@@ -54,9 +51,7 @@ export const SendForhandsvarselSkjema = ({
   setModalOpen,
 }: VurderAktivitetskravSkjemaProps) => {
   const sendForhandsvarsel = useSendForhandsvarsel(aktivitetskravUuid);
-  const { validateBeskrivelseField } = useAktivitetskravVurderingSkjema(
-    AktivitetskravStatus.FORHANDSVARSEL
-  );
+  const { validateBeskrivelseField } = useAktivitetskravVurderingSkjema();
   const { getForhandsvarselDocument } = useAktivitetskravVarselDocument();
   const frist = getFristForForhandsvarsel();
 
