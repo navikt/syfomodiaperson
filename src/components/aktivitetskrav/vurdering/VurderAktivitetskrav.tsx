@@ -1,18 +1,28 @@
 import React, { useState } from "react";
 import { VurderAktivitetskravButtons } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravButtons";
-import { AktivitetskravPanel } from "@/components/aktivitetskrav/AktivitetskravPanel";
-import { FlexColumn, FlexRow, JustifyContentType } from "@/components/Layout";
+import {
+  ButtonRow,
+  FlexColumn,
+  FlexRow,
+  JustifyContentType,
+} from "@/components/Layout";
 import {
   ModalType,
   VurderAktivitetskravModal,
 } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravModal";
-import { AktivitetskravDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
+import {
+  AktivitetskravDTO,
+  AktivitetskravStatus,
+} from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
-import { BodyShort, Heading, HelpText } from "@navikt/ds-react";
+import { BodyShort, Button, Heading, HelpText, Panel } from "@navikt/ds-react";
+import { HourglassTopFilledIcon, XMarkIcon } from "@navikt/aksel-icons";
 
 export const texts = {
   header: "Vurdere aktivitetskravet",
+  avventer: "Avventer",
+  ikkeAktuell: "Ikke aktuell",
   helptext:
     "Vurderingen (Avventer, sett unntak, er i aktivitet, ikke oppfylt, ikke aktuell) gjøres i to trinn. Ved klikk legger du inn informasjon rundt vurderingen.",
 };
@@ -35,7 +45,27 @@ export const VurderAktivitetskrav = ({
   };
 
   return (
-    <AktivitetskravPanel>
+    <Panel className="mb-4 flex flex-col pt-4 pr-4 pb-8 pl-8">
+      <ButtonRow className="ml-auto">
+        {aktivitetskrav?.status !== AktivitetskravStatus.FORHANDSVARSEL && (
+          <Button
+            icon={<HourglassTopFilledIcon aria-hidden />}
+            variant="secondary"
+            size="small"
+            onClick={() => visVurderingAktivitetskravModalForType("AVVENT")}
+          >
+            {texts.avventer}
+          </Button>
+        )}
+        <Button
+          icon={<XMarkIcon aria-hidden />}
+          variant="secondary"
+          size="small"
+          onClick={() => visVurderingAktivitetskravModalForType("IKKE_AKTUELL")}
+        >
+          {texts.ikkeAktuell}
+        </Button>
+      </ButtonRow>
       <FlexRow>
         <Heading level="2" size="large">
           {texts.header}
@@ -64,6 +94,6 @@ export const VurderAktivitetskrav = ({
         modalType={modalType}
         aktivitetskravUuid={aktivitetskrav?.uuid}
       />
-    </AktivitetskravPanel>
+    </Panel>
   );
 };
