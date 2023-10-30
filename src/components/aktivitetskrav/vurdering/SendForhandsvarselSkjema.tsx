@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import BegrunnelseTextarea, {
   begrunnelseMaxLength,
 } from "@/components/aktivitetskrav/vurdering/BegrunnelseTextarea";
+import { SkjemaHeading } from "@/components/aktivitetskrav/vurdering/SkjemaHeading";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -46,7 +47,6 @@ const forhandsvarselFrist = addWeeks(new Date(), 3);
 
 export const SendForhandsvarselSkjema = ({
   aktivitetskravUuid,
-  setModalOpen,
 }: VurderAktivitetskravSkjemaProps) => {
   const sendForhandsvarsel = useSendForhandsvarsel(aktivitetskravUuid);
   const {
@@ -66,19 +66,13 @@ export const SendForhandsvarselSkjema = ({
       ),
     };
     if (aktivitetskravUuid) {
-      sendForhandsvarsel.mutate(forhandsvarselDTO, {
-        onSuccess: () => setModalOpen(false),
-      });
+      sendForhandsvarsel.mutate(forhandsvarselDTO);
     }
   };
 
   return (
     <StyledForm onSubmit={handleSubmit(submit)}>
-      <FlexRow bottomPadding={PaddingSize.MD}>
-        <Heading level="2" size="large">
-          {texts.title}
-        </Heading>
-      </FlexRow>
+      <SkjemaHeading title={texts.title} />
       <VarselbrevContent>
         <Alert variant={"warning"}>{texts.warning}</Alert>
         <BegrunnelseTextarea
@@ -109,9 +103,6 @@ export const SendForhandsvarselSkjema = ({
       <ButtonRow>
         <Button loading={sendForhandsvarsel.isLoading} type="submit">
           {texts.sendVarselButtonText}
-        </Button>
-        <Button variant="tertiary" onClick={() => setModalOpen(false)}>
-          {texts.avbrytButtonText}
         </Button>
       </ButtonRow>
     </StyledForm>

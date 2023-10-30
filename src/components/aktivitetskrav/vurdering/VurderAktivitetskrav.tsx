@@ -1,23 +1,12 @@
 import React, { useState } from "react";
-import { VurderAktivitetskravButtons } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravButtons";
-import {
-  ButtonRow,
-  FlexColumn,
-  FlexRow,
-  JustifyContentType,
-} from "@/components/Layout";
-import {
-  ModalType,
-  VurderAktivitetskravModal,
-} from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravModal";
-import {
-  AktivitetskravDTO,
-  AktivitetskravStatus,
-} from "@/data/aktivitetskrav/aktivitetskravTypes";
+import { ButtonRow, FlexRow } from "@/components/Layout";
+import { AktivitetskravDTO, AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
-import { BodyShort, Button, Heading, HelpText, Panel } from "@navikt/ds-react";
+import { VurderAktivitetskravTabs } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravTabs";
+import { BodyShort, Button, Heading, Panel } from "@navikt/ds-react";
 import { HourglassTopFilledIcon, XMarkIcon } from "@navikt/aksel-icons";
+import { ModalType, VurderAktivitetskravModal } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravModal";
 
 export const texts = {
   header: "Vurdere aktivitetskravet",
@@ -43,7 +32,6 @@ export const VurderAktivitetskrav = ({
     setModalType(modalType);
     setVisVurderAktivitetskravModal(true);
   };
-
   return (
     <Panel className="mb-4 flex flex-col pt-4 pr-4 pb-8 pl-8">
       <ButtonRow className="ml-auto">
@@ -70,11 +58,6 @@ export const VurderAktivitetskrav = ({
         <Heading level="2" size="large">
           {texts.header}
         </Heading>
-        <FlexColumn className="ml-2" justifyContent={JustifyContentType.CENTER}>
-          <HelpText placement="right">
-            <BodyShort size="small">{texts.helptext}</BodyShort>
-          </HelpText>
-        </FlexColumn>
       </FlexRow>
       {oppfolgingstilfelle && (
         <FlexRow>
@@ -84,10 +67,7 @@ export const VurderAktivitetskrav = ({
           )}`}</BodyShort>
         </FlexRow>
       )}
-      <VurderAktivitetskravButtons
-        onButtonClick={visVurderingAktivitetskravModalForType}
-        aktivitetskrav={aktivitetskrav}
-      />
+      <VurderAktivitetskravTabs aktivitetskrav={aktivitetskrav} />
       <VurderAktivitetskravModal
         isOpen={visVurderAktivitetskravModal}
         setModalOpen={setVisVurderAktivitetskravModal}
