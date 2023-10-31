@@ -21,10 +21,10 @@ import { HourglassTopFilledIcon, XMarkIcon } from "@navikt/aksel-icons";
 
 export const texts = {
   header: "Vurdere aktivitetskravet",
-  avventer: "Avventer",
+  avvent: "Avvent",
   ikkeAktuell: "Ikke aktuell",
   helptext:
-    "Vurderingen (Avventer, sett unntak, er i aktivitet, ikke oppfylt, ikke aktuell) gjøres i to trinn. Ved klikk legger du inn informasjon rundt vurderingen.",
+    "Vurderingen (Avvent, sett unntak, er i aktivitet, ikke oppfylt, ikke aktuell) gjøres i to trinn. Ved klikk legger du inn informasjon rundt vurderingen.",
 };
 
 interface VurderAktivitetskravProps {
@@ -54,7 +54,7 @@ export const VurderAktivitetskrav = ({
             size="small"
             onClick={() => visVurderingAktivitetskravModalForType("AVVENT")}
           >
-            {texts.avventer}
+            {texts.avvent}
           </Button>
         )}
         <Button
