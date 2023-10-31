@@ -9,6 +9,7 @@ import { UnntakAktivitetskravSkjema } from "@/components/aktivitetskrav/vurderin
 import { OppfyltAktivitetskravSkjema } from "@/components/aktivitetskrav/vurdering/OppfyltAktivitetskravSkjema";
 import { SendForhandsvarselSkjema } from "@/components/aktivitetskrav/vurdering/SendForhandsvarselSkjema";
 import { IkkeOppfyltAktivitetskravSkjema } from "@/components/aktivitetskrav/vurdering/IkkeOppfyltAktivitetskravSkjema";
+import styled from "styled-components";
 
 const texts = {
   unntak: "Sett unntak",
@@ -16,6 +17,15 @@ const texts = {
   forhandsvarsel: "Send forhåndsvarsel",
   ikkeOppfylt: "Ikke oppfylt",
 };
+
+const StyledTabs = styled(Tabs)`
+  margin-top: 1rem;
+  width: 100%;
+
+  .navds-tabs__tablist-wrapper {
+    width: max-content;
+  }
+`;
 
 enum TabValue {
   UNNTAK = "UNNTAK",
@@ -44,7 +54,7 @@ export const VurderAktivitetskravTabs = ({
   const aktivitetskravUuid = aktivitetskrav?.uuid;
 
   return (
-    <Tabs defaultValue={TabValue.UNNTAK} className={"mt-4 w-max"}>
+    <StyledTabs defaultValue={TabValue.UNNTAK}>
       <Tabs.List>
         <Tabs.Tab value={TabValue.UNNTAK} label={texts.unntak} />
         <Tabs.Tab value={TabValue.OPPFYLT} label={texts.oppfylt} />
@@ -72,6 +82,6 @@ export const VurderAktivitetskravTabs = ({
           aktivitetskravUuid={aktivitetskravUuid}
         />
       </Tabs.Panel>
-    </Tabs>
+    </StyledTabs>
   );
 };

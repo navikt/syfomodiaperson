@@ -38,10 +38,15 @@ export interface AvventAktivitetskravSkjemaValues
   fristDato?: string;
 }
 
+interface AvventAktivitetskravSkjemaProps
+  extends VurderAktivitetskravSkjemaProps {
+  setModalOpen: (isOpen: boolean) => void;
+}
+
 export const AvventAktivitetskravSkjema = ({
   aktivitetskravUuid,
   setModalOpen,
-}: VurderAktivitetskravSkjemaProps) => {
+}: AvventAktivitetskravSkjemaProps) => {
   const vurderAktivitetskrav = useVurderAktivitetskrav(aktivitetskravUuid);
   const methods = useForm<AvventAktivitetskravSkjemaValues>();
   const {
