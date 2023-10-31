@@ -77,11 +77,13 @@ export const VurderAktivitetskravTabs = ({
       <Tabs.Panel value={TabValue.FORHANDSVARSEL}>
         <SendForhandsvarselSkjema aktivitetskravUuid={aktivitetskravUuid} />
       </Tabs.Panel>
-      <Tabs.Panel value={TabValue.IKKE_OPPFYLT}>
-        <IkkeOppfyltAktivitetskravSkjema
-          aktivitetskravUuid={aktivitetskravUuid}
-        />
-      </Tabs.Panel>
+      {isIkkeOppfyltTabVisible && (
+        <Tabs.Panel value={TabValue.IKKE_OPPFYLT}>
+          <IkkeOppfyltAktivitetskravSkjema
+            aktivitetskravUuid={aktivitetskravUuid}
+          />
+        </Tabs.Panel>
+      )}
     </StyledTabs>
   );
 };
