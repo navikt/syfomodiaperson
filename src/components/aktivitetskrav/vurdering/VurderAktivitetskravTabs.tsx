@@ -27,7 +27,7 @@ const StyledTabs = styled(Tabs)`
   }
 `;
 
-enum TabValue {
+enum Tab {
   UNNTAK = "UNNTAK",
   OPPFYLT = "OPPFYLT",
   FORHANDSVARSEL = "FORHANDSVARSEL",
@@ -54,31 +54,28 @@ export const VurderAktivitetskravTabs = ({
   const aktivitetskravUuid = aktivitetskrav?.uuid;
 
   return (
-    <StyledTabs defaultValue={TabValue.UNNTAK}>
+    <StyledTabs defaultValue={Tab.UNNTAK}>
       <Tabs.List>
-        <Tabs.Tab value={TabValue.UNNTAK} label={texts.unntak} />
-        <Tabs.Tab value={TabValue.OPPFYLT} label={texts.oppfylt} />
+        <Tabs.Tab value={Tab.UNNTAK} label={texts.unntak} />
+        <Tabs.Tab value={Tab.OPPFYLT} label={texts.oppfylt} />
         {aktivitetskrav && toggles.isSendingAvForhandsvarselEnabled && (
-          <Tabs.Tab
-            value={TabValue.FORHANDSVARSEL}
-            label={texts.forhandsvarsel}
-          />
+          <Tabs.Tab value={Tab.FORHANDSVARSEL} label={texts.forhandsvarsel} />
         )}
         {isIkkeOppfyltTabVisible && (
-          <Tabs.Tab value={TabValue.IKKE_OPPFYLT} label={texts.ikkeOppfylt} />
+          <Tabs.Tab value={Tab.IKKE_OPPFYLT} label={texts.ikkeOppfylt} />
         )}
       </Tabs.List>
-      <Tabs.Panel value={TabValue.UNNTAK}>
+      <Tabs.Panel value={Tab.UNNTAK}>
         <UnntakAktivitetskravSkjema aktivitetskravUuid={aktivitetskravUuid} />
       </Tabs.Panel>
-      <Tabs.Panel value={TabValue.OPPFYLT}>
+      <Tabs.Panel value={Tab.OPPFYLT}>
         <OppfyltAktivitetskravSkjema aktivitetskravUuid={aktivitetskravUuid} />
       </Tabs.Panel>
-      <Tabs.Panel value={TabValue.FORHANDSVARSEL}>
+      <Tabs.Panel value={Tab.FORHANDSVARSEL}>
         <SendForhandsvarselSkjema aktivitetskravUuid={aktivitetskravUuid} />
       </Tabs.Panel>
       {isIkkeOppfyltTabVisible && (
-        <Tabs.Panel value={TabValue.IKKE_OPPFYLT}>
+        <Tabs.Panel value={Tab.IKKE_OPPFYLT}>
           <IkkeOppfyltAktivitetskravSkjema
             aktivitetskravUuid={aktivitetskravUuid}
           />

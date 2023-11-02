@@ -5,7 +5,7 @@ import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
 import { VurderAktivitetskravTabs } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravTabs";
 import { BodyShort, Heading, Panel } from "@navikt/ds-react";
-import { StatusKnapperad } from "@/components/aktivitetskrav/vurdering/StatusKnapperad";
+import { VurderAktivitetskravButtons } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskravButtons";
 
 export const texts = {
   header: "Vurdere aktivitetskravet",
@@ -22,7 +22,7 @@ export const VurderAktivitetskrav = ({
 }: VurderAktivitetskravProps) => {
   return (
     <Panel className="mb-4 flex flex-col pt-4 pr-4 pb-8 pl-8">
-      <StatusKnapperad aktivitetskrav={aktivitetskrav} />
+      <VurderAktivitetskravButtons aktivitetskrav={aktivitetskrav} />
       <Heading level="2" size="large">
         {texts.header}
       </Heading>

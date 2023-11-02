@@ -224,8 +224,11 @@ describe("VurderAktivitetskrav", () => {
       renderVurderAktivitetskrav(aktivitetskrav, oppfolgingstilfelle);
 
       clickButton(buttonTexts["AVVENT"]);
-      const lagreButtons = screen.getAllByRole("button", { name: "Lagre" });
-      lagreButtons[1].click();
+      const lagreButton = within(screen.getByRole("dialog")).getByRole(
+        "button",
+        { name: "Lagre" }
+      );
+      fireEvent.click(lagreButton);
 
       expect(await screen.findByText("Vennligst angi begrunnelse")).to.exist;
       expect(await screen.findByText("Vennligst angi årsak")).to.exist;
@@ -265,8 +268,11 @@ describe("VurderAktivitetskrav", () => {
       const datoInput = getTextInput("Avventer til");
       changeTextInput(datoInput, today.format("DD.MM.YYYY"));
 
-      const lagreButtons = screen.getAllByRole("button", { name: "Lagre" });
-      lagreButtons[1].click();
+      const lagreButton = within(screen.getByRole("dialog")).getByRole(
+        "button",
+        { name: "Lagre" }
+      );
+      fireEvent.click(lagreButton);
 
       await waitFor(() => {
         const vurderAvventMutation = queryClient.getMutationCache().getAll()[0];
@@ -412,8 +418,11 @@ describe("VurderAktivitetskrav", () => {
         )
       ).to.exist;
 
-      const lagreButtons = screen.getAllByRole("button", { name: "Lagre" });
-      lagreButtons[1].click();
+      const lagreButton = within(screen.getByRole("dialog")).getByRole(
+        "button",
+        { name: "Lagre" }
+      );
+      fireEvent.click(lagreButton);
 
       const vurderIkkeAktuellMutation = queryClient
         .getMutationCache()

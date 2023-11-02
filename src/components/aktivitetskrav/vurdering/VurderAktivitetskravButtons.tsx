@@ -20,7 +20,9 @@ interface StatusKnapperadProps {
   aktivitetskrav: AktivitetskravDTO | undefined;
 }
 
-export const StatusKnapperad = ({ aktivitetskrav }: StatusKnapperadProps) => {
+export const VurderAktivitetskravButtons = ({
+  aktivitetskrav,
+}: StatusKnapperadProps) => {
   const [visVurderAktivitetskravModal, setVisVurderAktivitetskravModal] =
     useState(false);
   const [modalType, setModalType] = useState<ModalType>();
