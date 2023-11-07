@@ -45,6 +45,7 @@ const OppsummeringSporsmal = (
       return <OppsummeringFritekst {...props} />;
     }
     case SvarTypeDTO.IKKE_RELEVANT:
+    case SvarTypeDTO.GRUPPE_AV_UNDERSPORSMAL:
     case SvarTypeDTO.INFO_BEHANDLINGSDAGER: {
       return <OppsummeringUndertekst {...props} />;
     }
