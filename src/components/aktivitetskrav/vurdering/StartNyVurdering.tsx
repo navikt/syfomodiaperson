@@ -1,7 +1,7 @@
 import React from "react";
 import { BodyShort, Button, Heading, Panel } from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { useStartNyVurdering } from "@/data/aktivitetskrav/useStartNyVurdering";
+import { useCreateAktivitetskrav } from "@/data/aktivitetskrav/useCreateAktivitetskrav";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { GjelderOppfolgingstilfelle } from "@/components/aktivitetskrav/GjelderOppfolgingstilfelle";
 
@@ -15,9 +15,9 @@ export const texts = {
 export const StartNyVurdering = () => {
   const { hasActiveOppfolgingstilfelle, latestOppfolgingstilfelle } =
     useOppfolgingstilfellePersonQuery();
-  const startNyVurdering = useStartNyVurdering();
+  const createAktivitetskrav = useCreateAktivitetskrav();
   const handleStartNyVurdering = () => {
-    startNyVurdering.mutate();
+    createAktivitetskrav.mutate();
   };
 
   return (
@@ -31,13 +31,13 @@ export const StartNyVurdering = () => {
         />
       )}
       <BodyShort className="mb-4">{texts.noAktivitetskrav}</BodyShort>
-      {startNyVurdering.isError && (
-        <SkjemaInnsendingFeil error={startNyVurdering.error} />
+      {createAktivitetskrav.isError && (
+        <SkjemaInnsendingFeil error={createAktivitetskrav.error} />
       )}
       <Button
         variant="secondary"
         className="mr-auto"
-        loading={startNyVurdering.isLoading}
+        loading={createAktivitetskrav.isLoading}
         onClick={handleStartNyVurdering}
       >
         {texts.button}
