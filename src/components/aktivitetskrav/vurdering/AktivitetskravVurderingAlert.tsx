@@ -35,7 +35,7 @@ type SuccessAktivitetskravStatus =
 
 export const AktivitetskravVurderingAlert = ({
   vurdering,
-}: AktivitetskravVurderingAlertProps): ReactElement => {
+}: AktivitetskravVurderingAlertProps): ReactElement | null => {
   const { navn: brukersNavn } = useNavBrukerData();
   const { data: oppgaver } = usePersonoppgaverQuery();
   const hasUbehandletVurderStansOppgave = hasUbehandletPersonoppgave(
@@ -113,7 +113,7 @@ export const AktivitetskravVurderingAlert = ({
     case AktivitetskravStatus.AUTOMATISK_OPPFYLT:
     case AktivitetskravStatus.NY: {
       // Finnes ikke vurderinger med disse statusene
-      return <></>;
+      return null;
     }
   }
 };
