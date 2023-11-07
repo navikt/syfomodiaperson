@@ -1,20 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ISAKTIVITETSKRAV_ROOT } from "@/apiConstants";
-import { CreateAktivitetskravVurderingDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { post } from "@/api/axios";
 import { aktivitetskravQueryKeys } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 
-export const useVurderAktivitetskrav = (aktivitetskravUuid: string) => {
+export const useStartNyVurdering = () => {
   const personident = useValgtPersonident();
   const queryClient = useQueryClient();
-  const path = `${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/${aktivitetskravUuid}/vurder`;
-  const postVurderAktivitetskrav = (
-    vurdering: CreateAktivitetskravVurderingDTO
-  ) => post(path, vurdering, personident);
+  const path = `${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/ny-vurdering`; // TODO: Align med nytt api
+  const postNyVurdering = () => post(path, {}, personident);
 
   return useMutation({
-    mutationFn: postVurderAktivitetskrav,
+    mutationFn: postNyVurdering,
     onSuccess: () => {
       return queryClient.invalidateQueries(
         aktivitetskravQueryKeys.aktivitetskrav(personident)
