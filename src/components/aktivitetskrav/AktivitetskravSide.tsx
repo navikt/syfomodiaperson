@@ -52,12 +52,13 @@ export const AktivitetskravSide = () => {
       {sisteVurdering && (
         <AktivitetskravVurderingAlert vurdering={sisteVurdering} />
       )}
-      {!aktivitetskravTilVurdering && <StartNyVurdering />}
-      {aktivitetskravTilVurdering && (
+      {aktivitetskravTilVurdering ? (
         <VurderAktivitetskrav
           aktivitetskrav={aktivitetskravTilVurdering}
           oppfolgingstilfelle={oppfolgingstilfelle}
         />
+      ) : (
+        <StartNyVurdering />
       )}
       <Panel className="mb-4 flex flex-col p-8">
         <UtdragFraSykefravaeret />
