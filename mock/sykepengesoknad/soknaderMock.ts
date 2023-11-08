@@ -1672,7 +1672,7 @@ export const soknaderMock = [
         id: "a524c85e-a379-3f63-9061-ad7cc11471aa",
         tag: "MEDLEMSKAP_OPPHOLD_UTENFOR_NORGE",
         sporsmalstekst:
-            "Har du oppholdt deg i utlandet i løpet av de siste 12 månedene før du ble syk?",
+          "Har du oppholdt deg i utlandet i løpet av de siste 12 månedene før du ble syk?",
         undertekst: null,
         svartype: "JA_NEI",
         min: null,
@@ -1697,7 +1697,7 @@ export const soknaderMock = [
                 id: "6aa44317-986e-3bd6-bb0a-437922b9bed8",
                 tag: "MEDLEMSKAP_OPPHOLD_UTENFOR_NORGE_HVOR_0",
                 sporsmalstekst:
-                    "I hvilket land utenfor Norge har du oppholdt deg?",
+                  "I hvilket land utenfor Norge har du oppholdt deg?",
                 undertekst: null,
                 svartype: "COMBOBOX_SINGLE",
                 min: null,
@@ -1772,7 +1772,7 @@ export const soknaderMock = [
                     id: "328ed179-2b26-3a53-b61d-13bc21871ca5",
                     tag: "MEDLEMSKAP_OPPHOLD_UTENFOR_NORGE_BEGRUNNELSE_EKTEFELLE_0",
                     sporsmalstekst:
-                        "Jeg var med ektefelle/samboer som jobbet der",
+                      "Jeg var med ektefelle/samboer som jobbet der",
                     undertekst: null,
                     svartype: "RADIO",
                     min: null,
@@ -1815,7 +1815,7 @@ export const soknaderMock = [
                 id: "53e82b5c-a663-3dfb-ab93-856dc25882c4",
                 tag: "MEDLEMSKAP_OPPHOLD_UTENFOR_NORGE_NAAR_0",
                 sporsmalstekst:
-                    "I hvilken periode oppholdt du deg i dette landet?",
+                  "I hvilken periode oppholdt du deg i dette landet?",
                 undertekst: null,
                 svartype: "PERIODE",
                 min: "2021-01-07",
@@ -1848,7 +1848,7 @@ export const soknaderMock = [
                 id: "37b3598f-4585-37da-afa5-fa627d2cd7c3",
                 tag: "MEDLEMSKAP_OPPHOLD_UTENFOR_NORGE_HVOR_1",
                 sporsmalstekst:
-                    "I hvilket land utenfor Norge har du oppholdt deg?",
+                  "I hvilket land utenfor Norge har du oppholdt deg?",
                 undertekst: null,
                 svartype: "COMBOBOX_SINGLE",
                 min: null,
@@ -1923,7 +1923,7 @@ export const soknaderMock = [
                     id: "ae9b4b08-bf42-374b-841c-4ae7db855795",
                     tag: "MEDLEMSKAP_OPPHOLD_UTENFOR_NORGE_BEGRUNNELSE_EKTEFELLE_1",
                     sporsmalstekst:
-                        "Jeg var med ektefelle/samboer som jobbet der",
+                      "Jeg var med ektefelle/samboer som jobbet der",
                     undertekst: null,
                     svartype: "RADIO",
                     min: null,
@@ -1966,7 +1966,7 @@ export const soknaderMock = [
                 id: "cc0fbece-0f8a-3df4-825c-0d39c80260b9",
                 tag: "MEDLEMSKAP_OPPHOLD_UTENFOR_NORGE_NAAR_1",
                 sporsmalstekst:
-                    "I hvilken periode oppholdt du deg i dette landet?",
+                  "I hvilken periode oppholdt du deg i dette landet?",
                 undertekst: null,
                 svartype: "PERIODE",
                 min: "2021-01-07",
