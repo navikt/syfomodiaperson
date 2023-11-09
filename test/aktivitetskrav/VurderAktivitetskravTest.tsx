@@ -188,7 +188,9 @@ describe("VurderAktivitetskrav", () => {
         );
       });
 
-      expect(screen.queryByText(enBeskrivelse)).to.not.exist;
+      await waitFor(
+        () => expect(screen.queryByText(enBeskrivelse)).to.not.exist
+      );
     });
   });
   describe("Unntak", () => {
@@ -234,7 +236,9 @@ describe("VurderAktivitetskrav", () => {
         );
       });
 
-      expect(screen.queryByText(enBeskrivelse)).to.not.exist;
+      await waitFor(
+        () => expect(screen.queryByText(enBeskrivelse)).to.not.exist
+      );
     });
   });
   describe("Avvent", () => {
@@ -310,7 +314,9 @@ describe("VurderAktivitetskrav", () => {
         );
       });
 
-      expect(screen.queryByText(enBeskrivelse)).to.not.exist;
+      await waitFor(
+        () => expect(screen.queryByText(enBeskrivelse)).to.not.exist
+      );
     });
   });
   describe("Ikke oppfylt", () => {
@@ -370,7 +376,9 @@ describe("VurderAktivitetskrav", () => {
         );
       });
 
-      expect(screen.queryByText(enBeskrivelse)).to.not.exist;
+      await waitFor(
+        () => expect(screen.queryByText(enBeskrivelse)).to.not.exist
+      );
     });
     it("IKKE_OPPFYLT is present when status is forhandsvarsel and it is expired", () => {
       queryClient.setQueryData(
