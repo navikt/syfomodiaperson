@@ -322,7 +322,7 @@ describe("VurderAktivitetskrav", () => {
     });
   });
   describe("Send forhåndsvarsel", () => {
-    it("Does not show AVVENT choice when forhandsvarsel is sent", () => {
+    it("Does not show AVVENT or FORHANDSVARSEL choice when forhandsvarsel is sent", () => {
       renderVurderAktivitetskrav(
         forhandsvarselAktivitetskrav,
         oppfolgingstilfelle
@@ -330,7 +330,7 @@ describe("VurderAktivitetskrav", () => {
 
       expect(screen.queryByRole("tab", { name: "Sett unntak" })).to.exist;
       expect(screen.queryByRole("tab", { name: "Er i aktivitet" })).to.exist;
-      expect(screen.queryByRole("tab", { name: "Send forhåndsvarsel" })).to
+      expect(screen.queryByRole("tab", { name: "Send forhåndsvarsel" })).to.not
         .exist;
       expect(screen.queryByRole("tab", { name: "Ikke oppfylt" })).to.not.exist;
       expect(screen.queryByRole("button", { name: "Avvent" })).to.not.exist;
