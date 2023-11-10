@@ -24,7 +24,7 @@ export const AvvistMelding = ({ meldingUuid }: AvvistMeldingProps) => {
     )
     .find((oppgave) => oppgave.referanseUuid === meldingUuid);
 
-  return avvistOppgave !== undefined ? (
+  return !!avvistOppgave ? (
     <BehandlePersonOppgaveKnapp
       personOppgave={avvistOppgave}
       behandleOppgaveText={texts.behandleOppgaveText}
