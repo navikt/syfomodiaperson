@@ -1,7 +1,6 @@
 import React from "react";
 import { Checkbox } from "nav-frontend-skjema";
 import { tilDatoMedUkedagOgManedNavn } from "@/utils/datoUtils";
-import { SykmeldingDiagnose } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
 const tekster = {
   ekstraDiagnoseInformasjon: {
@@ -73,8 +72,6 @@ const Yrkesskade = ({ dato }: YrkesskadeProps) => (
 
 interface EkstraDiagnoseInformasjonProps {
   diagnose: {
-    hoveddiagnose?: SykmeldingDiagnose;
-    bidiagnoser?: SykmeldingDiagnose[];
     fravaersgrunnLovfestet?: string;
     fravaerBeskrivelse?: string;
     svangerskap?: boolean;
