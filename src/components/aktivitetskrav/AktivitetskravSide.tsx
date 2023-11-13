@@ -34,7 +34,10 @@ export const AktivitetskravSide = () => {
         <AktivitetskravVurderingAlert vurdering={sisteVurdering} />
       )}
       {sisteVurdering?.varsel && (
-        <ForhandsvarselOppsummering aktivitetskravVurdering={sisteVurdering} />
+        <ForhandsvarselOppsummering
+          varsel={sisteVurdering.varsel}
+          beskrivelse={sisteVurdering.beskrivelse}
+        />
       )}
       {showStartNyVurdering ? (
         <StartNyVurdering aktivitetskrav={aktivitetskrav} />

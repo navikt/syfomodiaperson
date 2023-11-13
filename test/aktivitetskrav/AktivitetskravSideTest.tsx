@@ -446,7 +446,7 @@ describe("AktivitetskravSide", () => {
 
       expect(
         screen.getByRole("heading", {
-          name: "Oppsummering fra forhåndsvarselet",
+          name: "Oppsummering av forhåndsvarselet",
         })
       ).to.exist;
       expect(screen.getByText("Frist: ", { exact: false })).to.exist;
@@ -465,7 +465,7 @@ describe("AktivitetskravSide", () => {
 
       expect(
         screen.queryByRole("heading", {
-          name: "Oppsummering fra forhåndsvarselet",
+          name: "Oppsummering av forhåndsvarselet",
         })
       ).to.not.exist;
       expect(screen.queryByText("Frist: ", { exact: false })).to.not.exist;
