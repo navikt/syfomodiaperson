@@ -18,6 +18,7 @@ interface BehandlerNavnProps {
 
 const BehandlerNavn = ({ behandlerRef }: BehandlerNavnProps) => {
   const navn = useBehandlerNavn(behandlerRef);
+  // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{navn}</>;
 };
 
