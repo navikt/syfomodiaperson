@@ -6,13 +6,11 @@ export type Toggles = {
 export enum ToggleNames {
   isVirksomhetsinputEnabled = "isVirksomhetsinputEnabled",
   isMotebehovTilbakemeldingEnabled = "isMotebehovTilbakemeldingEnabled",
-  isSendingAvForhandsvarselEnabled = "isSendingAvForhandsvarselEnabled",
   isHuskelappEnabled = "isHuskelappEnabled",
 }
 
 export const defaultToggles: Toggles = {
   isVirksomhetsinputEnabled: false,
   isMotebehovTilbakemeldingEnabled: false,
-  isSendingAvForhandsvarselEnabled: false,
   isHuskelappEnabled: false,
 };
