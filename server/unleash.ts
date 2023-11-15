@@ -41,10 +41,6 @@ export const getToggles = (veilederId, enhetId) => {
       "isVirksomhetsinputEnabled",
       context
     ),
-    isMotebehovTilbakemeldingEnabled: unleash.isEnabled(
-      "isMotebehovTilbakemeldingEnabled",
-      context
-    ),
     isHuskelappEnabled: unleash.isEnabled("isHuskelappEnabled", context),
   };
 };
