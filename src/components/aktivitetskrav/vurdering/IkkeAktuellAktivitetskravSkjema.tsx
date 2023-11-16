@@ -51,29 +51,27 @@ export const IkkeAktuellAktivitetskravSkjema = ({
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <SkjemaHeading title={texts.title} subtitles={[texts.subtitle1]} />
-        <BegrunnelseTextarea
-          className={"mb-4"}
-          {...register("begrunnelse", {
-            maxLength: begrunnelseMaxLength,
-          })}
-          value={watch("begrunnelse")}
-          label={texts.begrunnelseLabel}
-        />
-        {vurderAktivitetskrav.isError && (
-          <SkjemaInnsendingFeil error={vurderAktivitetskrav.error} />
-        )}
-        <ButtonRow>
-          <Button loading={vurderAktivitetskrav.isLoading} type="submit">
-            {texts.lagre}
-          </Button>
-          <Button variant="tertiary" onClick={() => setModalOpen(false)}>
-            {texts.avbryt}
-          </Button>
-        </ButtonRow>
-      </form>
-    </>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <SkjemaHeading title={texts.title} subtitles={[texts.subtitle1]} />
+      <BegrunnelseTextarea
+        className={"mb-4"}
+        {...register("begrunnelse", {
+          maxLength: begrunnelseMaxLength,
+        })}
+        value={watch("begrunnelse")}
+        label={texts.begrunnelseLabel}
+      />
+      {vurderAktivitetskrav.isError && (
+        <SkjemaInnsendingFeil error={vurderAktivitetskrav.error} />
+      )}
+      <ButtonRow>
+        <Button loading={vurderAktivitetskrav.isLoading} type="submit">
+          {texts.lagre}
+        </Button>
+        <Button variant="tertiary" onClick={() => setModalOpen(false)}>
+          {texts.avbryt}
+        </Button>
+      </ButtonRow>
+    </form>
   );
 };
