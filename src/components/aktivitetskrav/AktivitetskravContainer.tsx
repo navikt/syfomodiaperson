@@ -7,6 +7,8 @@ import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/pe
 import SideLaster from "@/components/SideLaster";
 import { AktivitetskravSide } from "@/components/aktivitetskrav/AktivitetskravSide";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
+import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
+import { TredeltSide } from "@/sider/TredeltSide";
 
 const texts = {
   title: "Aktivitetskrav",
@@ -29,11 +31,14 @@ export const AktivitetskravContainer = (): ReactElement => {
 
   return (
     <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.AKTIVITETSKRAV}>
-      <Sidetopp tittel={texts.title} />
       <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
-        <NotificationProvider>
-          <AktivitetskravSide />
-        </NotificationProvider>
+        <Sidetopp tittel={texts.title} />
+        <TredeltSide>
+          <NotificationProvider>
+            <AktivitetskravSide />
+          </NotificationProvider>
+          <UtdragFraSykefravaeret />
+        </TredeltSide>
       </SideLaster>
     </Side>
   );
