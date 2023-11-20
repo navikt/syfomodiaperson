@@ -107,7 +107,11 @@ const DeltakerBehandler = ({ behandler }: DeltakerBehandlerProps) => {
     <DeltakerEkspanderbartPanel
       tittel={
         <FlexRow>
-          <img src={MedisinskrinImage} alt="" {...deltakerIconProps} />
+          <img
+            src={MedisinskrinImage}
+            alt="Medisinskrin-ikon"
+            {...deltakerIconProps}
+          />
           <DeltakerTekst>
             {behandlerDeltokTekst(behandler, behandlerDeltatt)}
           </DeltakerTekst>
