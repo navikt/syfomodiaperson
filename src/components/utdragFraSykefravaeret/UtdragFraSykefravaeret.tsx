@@ -56,8 +56,9 @@ interface UtvidbarTittelProps {
   sykmelding: SykmeldingOldFormat;
 }
 
-export const UtvidbarTittel = ({ sykmelding }: UtvidbarTittelProps) => {
-  const erViktigInformasjon = erEkstraInformasjonISykmeldingen(sykmelding);
+export const SykmeldingTittelbeskrivelse = ({
+  sykmelding,
+}: UtvidbarTittelProps) => {
   const sykmeldingPerioderSortertEtterDato =
     sykmeldingperioderSortertEldstTilNyest(
       sykmelding.mulighetForArbeid.perioder
@@ -79,7 +80,6 @@ export const UtvidbarTittel = ({ sykmelding }: UtvidbarTittelProps) => {
           {periode}
           {graderinger}
         </div>
-        {erViktigInformasjon && <img alt="Mer" src={MerInformasjonImage} />}
       </div>
       {sykmelding.diagnose.hoveddiagnose && (
         <div className="text-gray-500">{diagnose}</div>
@@ -96,14 +96,18 @@ interface UtvidbarSykmeldingProps {
 
 const UtvidbarSykmelding = ({ sykmelding, label }: UtvidbarSykmeldingProps) => {
   const title = label ? label : "Sykmelding uten arbeidsgiver";
+  const erViktigInformasjon = erEkstraInformasjonISykmeldingen(sykmelding);
   return (
     <ExpansionCard aria-label={title}>
       <StyledExpantionCardHeader className="w-full">
-        <ExpansionCard.Title as="h4" size="small" className="m-0 text-base">
-          {title}
+        <ExpansionCard.Title as="div" className="flex justify-between">
+          <Heading as="h4" size="xsmall">
+            {title}
+          </Heading>
+          {erViktigInformasjon && <img alt="Mer" src={MerInformasjonImage} />}
         </ExpansionCard.Title>
         <ExpansionCard.Description className="w-full text-base">
-          <UtvidbarTittel sykmelding={sykmelding} />
+          <SykmeldingTittelbeskrivelse sykmelding={sykmelding} />
         </ExpansionCard.Description>
       </StyledExpantionCardHeader>
       <ExpansionCard.Content>

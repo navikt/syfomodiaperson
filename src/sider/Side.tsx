@@ -52,7 +52,7 @@ const Side = ({ tittel, aktivtMenypunkt, children }: SideProps) => {
           <Personkort />
         </div>
         <AdaptableRow>
-          <nav className="min-w-[17rem] mr-4">
+          <nav className="min-w-[15rem] mr-4">
             <GlobalNavigasjon aktivtMenypunkt={aktivtMenypunkt} />
             {isEaster() && <Easter />}
             {toggles.isHuskelappEnabled && <OpenHuskelappModalButton />}
