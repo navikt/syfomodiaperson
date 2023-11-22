@@ -20,13 +20,14 @@ import { apiMock } from "../stubs/stubApi";
 import nock from "nock";
 import { stubHuskelappApi } from "../stubs/stubIshuskelapp";
 import userEvent from "@testing-library/user-event";
+import { Oppfolgingsgrunn } from "@/data/huskelapp/Oppfolgingsgrunn";
 
 let queryClient: QueryClient;
 let apiMockScope: any;
 
-const huskelappTekst = "Note to self";
+const huskelappOppfolgingsgrunn = Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE;
 const huskelapp: HuskelappResponseDTO = {
-  tekst: huskelappTekst,
+  oppfolgingsgrunn: huskelappOppfolgingsgrunn,
   createdBy: VEILEDER_IDENT_DEFAULT,
   uuid: generateUUID(),
 };
@@ -55,7 +56,7 @@ describe("HuskelappModal", () => {
       renderHuskelappModal();
 
       const huskelappInput = await screen.findByRole("textbox");
-      expect(huskelappInput.textContent).to.equal(huskelappTekst);
+      expect(huskelappInput.textContent).to.equal(huskelappOppfolgingsgrunn);
       expect(getButton("Lagre")).to.exist;
       expect(getButton("Avbryt")).to.exist;
       expect(getButton("Fjern")).to.exist;
@@ -70,7 +71,7 @@ describe("HuskelappModal", () => {
 
       const lagreHuskelappMutation = queryClient.getMutationCache().getAll()[0];
       const expectedHuskelapp: HuskelappRequestDTO = {
-        tekst: "New note to self",
+        oppfolgingsgrunn: Oppfolgingsgrunn.TA_KONTAKT,
       };
       expect(lagreHuskelappMutation.options.variables).to.deep.equal(
         expectedHuskelapp

@@ -3,8 +3,9 @@ import {
   Button,
   Heading,
   Modal,
+  Radio,
+  RadioGroup,
   Skeleton,
-  Textarea,
   Tooltip,
 } from "@navikt/ds-react";
 import { TrashIcon } from "@navikt/aksel-icons";
@@ -15,14 +16,25 @@ import { SkeletonShadowbox } from "@/components/SkeletonShadowbox";
 import { HuskelappRequestDTO } from "@/data/huskelapp/huskelappTypes";
 import { ButtonRow, PaddingSize } from "@/components/Layout";
 import { useRemoveHuskelapp } from "@/data/huskelapp/useRemoveHuskelapp";
+import { Oppfolgingsgrunn } from "@/data/huskelapp/Oppfolgingsgrunn";
 
 const texts = {
   header: "Huskelapp",
-  textAreaLabel: "Huskelapp",
   save: "Lagre",
   close: "Avbryt",
   remove: "Fjern",
   removeTooltip: "Fjerner huskelappen og oppgaven fra oversikten",
+  missingOppfolgingsgrunn: "Vennligst angi oppfolgingsgrunn.",
+  oppfolgingsgrunn: {
+    label: "Velg oppfølgingsgrunn",
+    avventDialogmote: "Avvent dialogmøte 2",
+    vurderDialogmoteSenere: "Vurder dialogmøte på et senere tidspunkt",
+    folgOppFraLege: "Følge opp informasjon fra lege",
+    folgOppFraArbeidsgiver: "Følge opp informasjon fra arbeidsgiver (?)",
+    taKontakt: "Ta kontakt med den sykmeldte",
+    vurderTiltakBehov: "Vurder behov for tiltak",
+    annenOppfolgning: "Annen oppfølging",
+  },
 };
 
 interface HuskelappModalProps {
@@ -46,39 +58,35 @@ const ModalContent = styled(Modal.Content)`
   }
 `;
 
-const StyledSkeletonWrapper = styled(SkeletonShadowbox)`
-  margin: 1em;
-  height: 5em;
-`;
-
-const RemoveButton = styled(Button)`
-  margin-left: auto;
-`;
-
 const HuskelappSkeleton = () => {
   return (
-    <StyledSkeletonWrapper>
+    <SkeletonShadowbox className={"m-4 h-20"}>
       <Skeleton variant="text" width="80%" />
       <Skeleton variant="text" width="30%" />
-    </StyledSkeletonWrapper>
+    </SkeletonShadowbox>
   );
 };
 
 export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
   const { huskelapp, isLoading, isSuccess } = useGetHuskelappQuery();
-  const [tekst, setTekst] = useState<string>(huskelapp?.tekst ?? "");
+  const [oppfolgingsgrunn, setOppfolgingsgrunn] = useState<Oppfolgingsgrunn>();
+  const [isFormError, setIsFormError] = useState<boolean>(false);
   const oppdaterHuskelapp = useOppdaterHuskelapp();
   const removeHuskelapp = useRemoveHuskelapp();
 
-  const oppdaterTekst = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTekst(e.target.value);
-  };
-
-  const handleOppdaterHuskelapp = () => {
-    const huskelappDto: HuskelappRequestDTO = { tekst: tekst };
-    oppdaterHuskelapp.mutate(huskelappDto, {
-      onSuccess: () => toggleOpen(false),
-    });
+  const handleOnSubmit = (e: any) => {
+    e.preventDefault();
+    if (oppfolgingsgrunn !== undefined) {
+      const huskelappDto: HuskelappRequestDTO = {
+        oppfolgingsgrunn: oppfolgingsgrunn,
+      };
+      oppdaterHuskelapp.mutate(huskelappDto, {
+        onSuccess: () => toggleOpen(false),
+      });
+    } else {
+      setIsFormError(true);
+      return undefined;
+    }
   };
 
   const handleRemoveHuskelapp = (uuid: string) => {
@@ -97,40 +105,65 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
         <Heading level="2" size="large">
           {texts.header}
         </Heading>
-        {isLoading && <HuskelappSkeleton />}
-        {isSuccess && (
-          <Textarea
-            label={texts.textAreaLabel}
-            hideLabel
-            defaultValue={huskelapp?.tekst}
-            onChange={oppdaterTekst}
-          />
-        )}
-        <ButtonRow topPadding={PaddingSize.SM}>
-          <Button
-            variant="primary"
-            onClick={handleOppdaterHuskelapp}
-            loading={oppdaterHuskelapp.isLoading}
-            disabled={isLoading}
-          >
-            {texts.save}
-          </Button>
-          <Button variant="secondary" onClick={() => toggleOpen(false)}>
-            {texts.close}
-          </Button>
-          {huskelapp && (
-            <Tooltip content={texts.removeTooltip}>
-              <RemoveButton
-                icon={<TrashIcon aria-hidden />}
-                variant="danger"
-                onClick={() => handleRemoveHuskelapp(huskelapp.uuid)}
-                loading={removeHuskelapp.isLoading}
-              >
-                {texts.remove}
-              </RemoveButton>
-            </Tooltip>
+        <form onSubmit={handleOnSubmit}>
+          {isLoading && <HuskelappSkeleton />}
+          {isSuccess && (
+            <RadioGroup
+              legend={texts.oppfolgingsgrunn.label}
+              onChange={(val: Oppfolgingsgrunn) => setOppfolgingsgrunn(val)}
+              size="small"
+              error={isFormError && texts.missingOppfolgingsgrunn}
+            >
+              <Radio value={Oppfolgingsgrunn.AVVENT_DIALOGMOTE}>
+                {texts.oppfolgingsgrunn.avventDialogmote}
+              </Radio>
+              <Radio value={Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE}>
+                {texts.oppfolgingsgrunn.vurderDialogmoteSenere}
+              </Radio>
+              <Radio value={Oppfolgingsgrunn.FOLG_OPP_FRA_LEGE}>
+                {texts.oppfolgingsgrunn.folgOppFraLege}
+              </Radio>
+              <Radio value={Oppfolgingsgrunn.FOLG_OPP_FRA_ARBEIDSGIVER}>
+                {texts.oppfolgingsgrunn.folgOppFraArbeidsgiver}
+              </Radio>
+              <Radio value={Oppfolgingsgrunn.TA_KONTAKT}>
+                {texts.oppfolgingsgrunn.taKontakt}
+              </Radio>
+              <Radio value={Oppfolgingsgrunn.VURDER_TILTAK_BEHOV}>
+                {texts.oppfolgingsgrunn.vurderTiltakBehov}
+              </Radio>
+              <Radio value={Oppfolgingsgrunn.ANNEN_OPPFOLGNING}>
+                {texts.oppfolgingsgrunn.annenOppfolgning}
+              </Radio>
+            </RadioGroup>
           )}
-        </ButtonRow>
+          <ButtonRow topPadding={PaddingSize.SM}>
+            <Button
+              type={"submit"}
+              variant="primary"
+              loading={oppdaterHuskelapp.isLoading}
+              disabled={isLoading}
+            >
+              {texts.save}
+            </Button>
+            <Button variant="secondary" onClick={() => toggleOpen(false)}>
+              {texts.close}
+            </Button>
+            {huskelapp && (
+              <Tooltip content={texts.removeTooltip}>
+                <Button
+                  icon={<TrashIcon aria-hidden />}
+                  variant="danger"
+                  onClick={() => handleRemoveHuskelapp(huskelapp.uuid)}
+                  loading={removeHuskelapp.isLoading}
+                  className={"ml-auto"}
+                >
+                  {texts.remove}
+                </Button>
+              </Tooltip>
+            )}
+          </ButtonRow>
+        </form>
       </ModalContent>
     </StyledModal>
   );

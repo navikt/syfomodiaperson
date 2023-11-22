@@ -1,9 +1,11 @@
+import { Oppfolgingsgrunn } from "@/data/huskelapp/Oppfolgingsgrunn";
+
 export interface HuskelappRequestDTO {
-  tekst: string;
+  oppfolgingsgrunn: Oppfolgingsgrunn;
 }
 
 export interface HuskelappResponseDTO {
   uuid: string;
   createdBy: string;
-  tekst: string;
+  oppfolgingsgrunn: Oppfolgingsgrunn;
 }

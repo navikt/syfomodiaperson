@@ -7,11 +7,12 @@ import {
 } from "../../src/data/huskelapp/huskelappTypes";
 import { generateUUID } from "../../src/utils/uuidUtils";
 import { VEILEDER_IDENT_DEFAULT } from "../common/mockConstants";
+import { Oppfolgingsgrunn } from "../../src/data/huskelapp/Oppfolgingsgrunn";
 
 let huskelappMock: HuskelappResponseDTO = {
   uuid: generateUUID(),
   createdBy: VEILEDER_IDENT_DEFAULT,
-  tekst: "Dette er en veldig fin tekst",
+  oppfolgingsgrunn: Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE,
 };
 
 export const mockIshuskelapp = (server: any) => {
@@ -31,7 +32,7 @@ export const mockIshuskelapp = (server: any) => {
       const body = req.body as HuskelappRequestDTO;
       huskelappMock = {
         ...huskelappMock,
-        tekst: body.tekst,
+        oppfolgingsgrunn: body.oppfolgingsgrunn,
       };
       res.sendStatus(200);
     }
