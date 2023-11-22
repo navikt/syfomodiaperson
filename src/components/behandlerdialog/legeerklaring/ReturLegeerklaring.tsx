@@ -6,13 +6,14 @@ import {
 import { ArrowUndoIcon } from "@navikt/aksel-icons";
 import { MeldingActionButton } from "@/components/behandlerdialog/MeldingActionButton";
 import { Button, Modal, Textarea } from "@navikt/ds-react";
-import { DocumentComponentVisning } from "@/components/DocumentComponentVisning";
+import { DocumentComponentVisning } from "@/components/document/DocumentComponentVisning";
 import { ButtonRow, PaddingSize } from "@/components/Layout";
 import { CloseButton } from "@/components/CloseButton";
 import { useReturLegeerklaring } from "@/data/behandlerdialog/useReturLegeerklaring";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document/useMeldingTilBehandlerDocument";
 import { useForm } from "react-hook-form";
+import { DocumentComponentHeaderH1 } from "@/components/document/DocumentComponentHeaderH1";
 
 const texts = {
   button: "Vurder retur av legeerklæring",
@@ -43,9 +44,12 @@ export const ReturLegeerklaring = ({ melding }: ReturLegeerklaringProps) => {
     reset,
   } = useForm<ReturLegeerklaringSkjemaValues>();
 
+  const { documentHeader, documentBody, document } =
+    getReturLegeerklaringDocument(watch("begrunnelse"));
+
   const submit = (values: ReturLegeerklaringSkjemaValues) => {
     const returLegeerklaringDTO: ReturLegeerklaringDTO = {
-      document: getReturLegeerklaringDocument(values.begrunnelse),
+      document,
       tekst: values.begrunnelse,
     };
     returLegeerklaring.mutate(returLegeerklaringDTO, {
@@ -74,18 +78,18 @@ export const ReturLegeerklaring = ({ melding }: ReturLegeerklaringProps) => {
         open={visReturModal}
         onClose={handleClose}
         aria-labelledby="modal-heading"
-        header={{ heading: "" }}
       >
+        <Modal.Header>
+          <DocumentComponentHeaderH1 text={documentHeader} />
+        </Modal.Header>
         <Modal.Body className="p-8">
           <form onSubmit={handleSubmit(submit)}>
-            {getReturLegeerklaringDocument(watch("begrunnelse")).map(
-              (component, index) => (
-                <DocumentComponentVisning
-                  documentComponent={component}
-                  key={index}
-                />
-              )
-            )}
+            {documentBody.map((component, index) => (
+              <DocumentComponentVisning
+                documentComponent={component}
+                key={index}
+              />
+            ))}
             <Textarea
               className="pt-4 w-4/5"
               label={texts.begrunnelseLabel}
