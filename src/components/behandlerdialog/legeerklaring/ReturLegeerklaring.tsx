@@ -7,7 +7,6 @@ import { ArrowUndoIcon } from "@navikt/aksel-icons";
 import { MeldingActionButton } from "@/components/behandlerdialog/MeldingActionButton";
 import { Button, Modal, Textarea } from "@navikt/ds-react";
 import { DocumentComponentVisning } from "@/components/document/DocumentComponentVisning";
-import { ButtonRow, PaddingSize } from "@/components/Layout";
 import { CloseButton } from "@/components/CloseButton";
 import { useReturLegeerklaring } from "@/data/behandlerdialog/useReturLegeerklaring";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
@@ -73,17 +72,17 @@ export const ReturLegeerklaring = ({ melding }: ReturLegeerklaringProps) => {
       >
         {texts.button}
       </MeldingActionButton>
-      <Modal
-        closeOnBackdropClick
-        open={visReturModal}
-        onClose={handleClose}
-        aria-labelledby="modal-heading"
-      >
-        <Modal.Header>
-          <DocumentComponentHeaderH1 text={documentHeader} />
-        </Modal.Header>
-        <Modal.Body className="p-8">
-          <form onSubmit={handleSubmit(submit)}>
+      <form onSubmit={handleSubmit(submit)}>
+        <Modal
+          closeOnBackdropClick
+          open={visReturModal}
+          onClose={handleClose}
+          aria-labelledby="modal-heading"
+        >
+          <Modal.Header>
+            <DocumentComponentHeaderH1 text={documentHeader} />
+          </Modal.Header>
+          <Modal.Body className="p-8">
             {documentBody.map((component, index) => (
               <DocumentComponentVisning
                 documentComponent={component}
@@ -103,24 +102,21 @@ export const ReturLegeerklaring = ({ melding }: ReturLegeerklaringProps) => {
               minRows={4}
               maxLength={MAX_LENGTH_BERGUNNELSE}
             />
+          </Modal.Body>
+          <Modal.Footer>
             {returLegeerklaring.isError && (
               <SkjemaInnsendingFeil error={returLegeerklaring.error} />
             )}
-            <ButtonRow
-              topPadding={PaddingSize.MD}
-              bottomPadding={PaddingSize.SM}
-            >
-              <Button type="submit" loading={returLegeerklaring.isLoading}>
-                {texts.send}
-              </Button>
-              <CloseButton
-                onClick={handleClose}
-                disabled={returLegeerklaring.isLoading}
-              />
-            </ButtonRow>
-          </form>
-        </Modal.Body>
-      </Modal>
+            <Button type="submit" loading={returLegeerklaring.isLoading}>
+              {texts.send}
+            </Button>
+            <CloseButton
+              onClick={handleClose}
+              disabled={returLegeerklaring.isLoading}
+            />
+          </Modal.Footer>
+        </Modal>
+      </form>
     </>
   );
 };

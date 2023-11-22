@@ -12,7 +12,6 @@ import {
 import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document/useMeldingTilBehandlerDocument";
 import { DocumentComponentVisning } from "@/components/document/DocumentComponentVisning";
-import { ButtonRow, PaddingSize } from "@/components/Layout";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { MeldingActionButton } from "@/components/behandlerdialog/MeldingActionButton";
 import { CloseButton } from "@/components/CloseButton";
@@ -72,7 +71,7 @@ export const PaminnelseMelding = ({
         {texts.button}
       </MeldingActionButton>
       <Modal
-        width="30%"
+        width="25%"
         closeOnBackdropClick
         open={visPaminnelseModal}
         onClose={handleClose}
@@ -88,35 +87,35 @@ export const PaminnelseMelding = ({
               key={index}
             />
           ))}
+        </Modal.Body>
+        <Modal.Footer>
           {(paminnelseTilBehandler.isError || behandleOppgave.isError) && (
             <SkjemaInnsendingFeil
               error={paminnelseTilBehandler.error || behandleOppgave.error}
             />
           )}
-          <ButtonRow topPadding={PaddingSize.SM} bottomPadding={PaddingSize.SM}>
-            <Button
-              disabled={behandleOppgave.isLoading}
-              loading={paminnelseTilBehandler.isLoading}
-              onClick={handleSendPaminnelseClick}
-            >
-              {texts.send}
-            </Button>
-            <Button
-              variant="secondary"
-              disabled={paminnelseTilBehandler.isLoading}
-              loading={behandleOppgave.isLoading}
-              onClick={handleFjernOppgaveClick}
-            >
-              {texts.fjernOppgave}
-            </Button>
-            <CloseButton
-              onClick={handleClose}
-              disabled={
-                paminnelseTilBehandler.isLoading || behandleOppgave.isLoading
-              }
-            />
-          </ButtonRow>
-        </Modal.Body>
+          <Button
+            disabled={behandleOppgave.isLoading}
+            loading={paminnelseTilBehandler.isLoading}
+            onClick={handleSendPaminnelseClick}
+          >
+            {texts.send}
+          </Button>
+          <Button
+            variant="secondary"
+            disabled={paminnelseTilBehandler.isLoading}
+            loading={behandleOppgave.isLoading}
+            onClick={handleFjernOppgaveClick}
+          >
+            {texts.fjernOppgave}
+          </Button>
+          <CloseButton
+            onClick={handleClose}
+            disabled={
+              paminnelseTilBehandler.isLoading || behandleOppgave.isLoading
+            }
+          />
+        </Modal.Footer>
       </Modal>
     </>
   );
