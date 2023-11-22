@@ -16,17 +16,13 @@ import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
 import styled from "styled-components";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import {
-  GultDokumentImage,
-  MerInformasjonImage,
-} from "../../../img/ImageComponents";
+import { MerInformasjonImage } from "../../../img/ImageComponents";
 import { UtdragOppfolgingsplaner } from "./UtdragOppfolgingsplaner";
 import { SpinnsynLenke } from "@/components/vedtak/SpinnsynLenke";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { IconHeader } from "@/components/IconHeader";
 import { PapirsykmeldingTag } from "@/components/PapirsykmeldingTag";
 import { ExpansionCard, Heading, Link, Panel } from "@navikt/ds-react";
 
@@ -219,11 +215,9 @@ const UtdragFraSykefravaeret = () => {
 
   return (
     <Panel className="mb-4">
-      <IconHeader
-        icon={GultDokumentImage}
-        altIcon="Gult dokument"
-        header={tekster.header}
-      />
+      <Heading level="2" size="medium" className="mb-4">
+        {tekster.header}
+      </Heading>
       <UtdragOppfolgingsplaner />
 
       <SykmeldingerForVirksomhet
