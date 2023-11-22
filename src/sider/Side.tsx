@@ -57,7 +57,7 @@ const Side = ({ tittel, aktivtMenypunkt, children }: SideProps) => {
             {isEaster() && <Easter />}
             {toggles.isHuskelappEnabled && <OpenHuskelappModalButton />}
           </nav>
-          <div className="w-full flex">{children}</div>
+          <div className="w-full flex flex-col">{children}</div>
         </AdaptableRow>
       </div>
     </DocumentTitle>

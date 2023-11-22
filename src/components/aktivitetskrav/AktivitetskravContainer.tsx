@@ -31,8 +31,8 @@ export const AktivitetskravContainer = (): ReactElement => {
 
   return (
     <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.AKTIVITETSKRAV}>
+      <Sidetopp tittel={texts.title} />
       <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
-        <Sidetopp tittel={texts.title} />
         <TredeltSide>
           <NotificationProvider>
             <AktivitetskravSide />
