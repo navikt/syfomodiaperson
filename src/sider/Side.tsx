@@ -43,7 +43,7 @@ const Side = ({ tittel, aktivtMenypunkt, children }: SideProps) => {
       title={tittel + (tittel.length > 0 ? " - Sykefravær" : "Sykefravær")}
     >
       <div className="mx-6">
-        <div className="flex flex-col">
+        <div className="flex flex-col" id="modia-header">
           <div className="flex flex-row mt-4 mb-2 w-full">
             <OversiktLenker />
             {isDecember() && <SnowButton />}

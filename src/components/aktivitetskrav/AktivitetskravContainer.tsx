@@ -9,6 +9,9 @@ import { AktivitetskravSide } from "@/components/aktivitetskrav/AktivitetskravSi
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { TredeltSide } from "@/sider/TredeltSide";
+import { Tredjekolonne } from "@/sider/Tredjekolonne";
+import { usePageHeight } from "@/hooks/tredeling/usePageHeight";
+import { useScreenWidth } from "@/hooks/tredeling/useScreenWidth";
 
 const texts = {
   title: "Aktivitetskrav",
@@ -29,15 +32,32 @@ export const AktivitetskravContainer = (): ReactElement => {
   const hentingFeilet =
     hentAktivitetskravFeilet || hentOppfolgingstilfellerFeilet;
 
+  const { heightStyling } = usePageHeight(!henter);
+  const screenWidth = useScreenWidth();
+
   return (
     <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.AKTIVITETSKRAV}>
       <Sidetopp tittel={texts.title} />
       <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
-        <TredeltSide>
+        <TredeltSide
+          style={screenWidth < 1300 ? { height: heightStyling } : {}}
+        >
           <NotificationProvider>
-            <AktivitetskravSide />
+            <AktivitetskravSide
+              heightStyling={heightStyling}
+              screenWidth={screenWidth}
+            />
           </NotificationProvider>
-          <UtdragFraSykefravaeret />
+          {screenWidth < 1300 ? (
+            <UtdragFraSykefravaeret />
+          ) : (
+            <Tredjekolonne
+              heightStyling={heightStyling}
+              screenWidth={screenWidth}
+            >
+              <UtdragFraSykefravaeret />
+            </Tredjekolonne>
+          )}
         </TredeltSide>
       </SideLaster>
     </Side>

@@ -11,7 +11,15 @@ const texts = {
     "Vi finner ingen aktiv sykmelding på denne personen. Du kan likevel vurdere aktivitetskravet hvis det er behov for det.",
 };
 
-export const AktivitetskravSide = () => {
+interface AktivitetskravSideProps {
+  heightStyling: string;
+  screenWidth: number;
+}
+
+export const AktivitetskravSide = ({
+  heightStyling,
+  screenWidth,
+}: AktivitetskravSideProps) => {
   const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const { data } = useAktivitetskravQuery();
 
@@ -19,7 +27,17 @@ export const AktivitetskravSide = () => {
   const showStartNyVurdering = !aktivitetskrav || aktivitetskrav.inFinalState;
 
   return (
-    <div className="w-full">
+    <div
+      className="w-full"
+      style={
+        screenWidth > 1300
+          ? {
+              height: heightStyling,
+              overflowY: "scroll",
+            }
+          : { overflowY: "unset" }
+      }
+    >
       {!hasActiveOppfolgingstilfelle && (
         <AktivitetskravAlertstripe variant="warning" size="small">
           {texts.noTilfelle}

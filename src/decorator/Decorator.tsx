@@ -32,7 +32,11 @@ const Decorator = () => {
     handleChangeEnhet,
   ])(fnr, handlePersonsokSubmit, handleChangeEnhet);
 
-  return <InternflateDecorator {...config} />;
+  return (
+    <div id="internflatedecorator">
+      <InternflateDecorator {...config} />
+    </div>
+  );
 };
 
 export default Decorator;

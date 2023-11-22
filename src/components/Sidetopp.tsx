@@ -12,7 +12,7 @@ const StyledHeading = styled(Heading)`
 const Sidetopp = ({ tittel }: SidetoppProps) => {
   return (
     <header>
-      <StyledHeading spacing size="xlarge">
+      <StyledHeading spacing size="xlarge" id="sideoverskrift">
         {tittel}
       </StyledHeading>
     </header>
