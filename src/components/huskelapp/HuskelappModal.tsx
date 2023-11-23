@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Button,
-  Heading,
   Modal,
   Radio,
   RadioGroup,
@@ -14,7 +13,7 @@ import { useGetHuskelappQuery } from "@/data/huskelapp/useGetHuskelappQuery";
 import { useOppdaterHuskelapp } from "@/data/huskelapp/useOppdaterHuskelapp";
 import { SkeletonShadowbox } from "@/components/SkeletonShadowbox";
 import { HuskelappRequestDTO } from "@/data/huskelapp/huskelappTypes";
-import { ButtonRow, PaddingSize } from "@/components/Layout";
+import { PaddingSize } from "@/components/Layout";
 import { useRemoveHuskelapp } from "@/data/huskelapp/useRemoveHuskelapp";
 import { Oppfolgingsgrunn } from "@/data/huskelapp/Oppfolgingsgrunn";
 
@@ -42,13 +41,7 @@ interface HuskelappModalProps {
   toggleOpen: (value: boolean) => void;
 }
 
-const StyledModal = styled(Modal)`
-  padding: 1em 1.5em;
-  max-width: 50em;
-  width: 100%;
-`;
-
-const ModalContent = styled(Modal.Content)`
+const ModalContent = styled(Modal.Body)`
   display: flex;
   flex-direction: column;
   > * {
@@ -116,21 +109,21 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
   const isSavedHuskelapp = huskelapp !== undefined;
 
   return (
-    <StyledModal
-      aria-label={"huskelapp"}
-      open={isOpen}
-      onClose={() => toggleOpen(!isOpen)}
-    >
-      <ModalContent>
-        <Heading level="2" size="large">
-          {texts.header}
-        </Heading>
-        {isSavedHuskelapp ? (
-          <div>{huskelapp?.oppfolgingsgrunn}</div>
-        ) : (
-          <form onSubmit={handleOnSubmit}>
-            {isLoading && <HuskelappSkeleton />}
-            {isSuccess && (
+    <form onSubmit={handleOnSubmit}>
+      <Modal
+        closeOnBackdropClick
+        className="px-6 py-4 w-full max-w-[50rem]"
+        aria-label={"huskelapp"}
+        open={isOpen}
+        onClose={() => toggleOpen(false)}
+        header={{ heading: texts.header }}
+      >
+        <ModalContent>
+          {isLoading && <HuskelappSkeleton />}
+          {isSuccess &&
+            (isSavedHuskelapp ? (
+              <div>{huskelapp?.oppfolgingsgrunn}</div>
+            ) : (
               <RadioGroup
                 legend={texts.oppfolgingsgrunn.label}
                 onChange={(val: Oppfolgingsgrunn) => setOppfolgingsgrunn(val)}
@@ -159,36 +152,35 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
                   {texts.oppfolgingsgrunn.annenOppfolgning}
                 </Radio>
               </RadioGroup>
-            )}
-            <ButtonRow topPadding={PaddingSize.SM}>
+            ))}
+        </ModalContent>
+        <Modal.Footer>
+          <Button
+            type="submit"
+            variant="primary"
+            loading={oppdaterHuskelapp.isLoading}
+            disabled={isLoading}
+          >
+            {texts.save}
+          </Button>
+          <Button variant="secondary" onClick={() => toggleOpen(false)}>
+            {texts.close}
+          </Button>
+          {huskelapp && (
+            <Tooltip content={texts.removeTooltip}>
               <Button
-                type={"submit"}
-                variant="primary"
-                loading={oppdaterHuskelapp.isLoading}
-                disabled={isLoading}
+                icon={<TrashIcon aria-hidden />}
+                variant="danger"
+                onClick={() => handleRemoveHuskelapp(huskelapp.uuid)}
+                loading={removeHuskelapp.isLoading}
+                className={"ml-auto"}
               >
-                {texts.save}
+                {texts.remove}
               </Button>
-              <Button variant="secondary" onClick={() => toggleOpen(false)}>
-                {texts.close}
-              </Button>
-              {huskelapp && (
-                <Tooltip content={texts.removeTooltip}>
-                  <Button
-                    icon={<TrashIcon aria-hidden />}
-                    variant="danger"
-                    onClick={() => handleRemoveHuskelapp(huskelapp.uuid)}
-                    loading={removeHuskelapp.isLoading}
-                    className={"ml-auto"}
-                  >
-                    {texts.remove}
-                  </Button>
-                </Tooltip>
-              )}
-            </ButtonRow>
-          </form>
-        )}
-      </ModalContent>
-    </StyledModal>
+            </Tooltip>
+          )}
+        </Modal.Footer>
+      </Modal>
+    </form>
   );
 };
