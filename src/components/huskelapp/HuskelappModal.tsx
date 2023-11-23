@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  BodyShort,
   Button,
   Modal,
   Radio,
@@ -68,7 +69,7 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
   const removeHuskelapp = useRemoveHuskelapp();
 
   const oppfolgingsgrunnToText = () => {
-    switch (oppfolgingsgrunn) {
+    switch (huskelapp?.oppfolgingsgrunn) {
       case Oppfolgingsgrunn.AVVENT_DIALOGMOTE:
         return texts.oppfolgingsgrunn.avventDialogmote;
       case Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE:
@@ -106,7 +107,7 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
       onSuccess: () => toggleOpen(false),
     });
   };
-  const isSavedHuskelapp = huskelapp !== undefined;
+  const isSavedHuskelapp = !!huskelapp;
 
   return (
     <form onSubmit={handleOnSubmit}>
@@ -122,7 +123,7 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
           {isLoading && <HuskelappSkeleton />}
           {isSuccess &&
             (isSavedHuskelapp ? (
-              <div>{huskelapp?.oppfolgingsgrunn}</div>
+              <BodyShort>{oppfolgingsgrunnToText()}</BodyShort>
             ) : (
               <RadioGroup
                 legend={texts.oppfolgingsgrunn.label}
@@ -155,18 +156,10 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
             ))}
         </ModalContent>
         <Modal.Footer>
-          <Button
-            type="submit"
-            variant="primary"
-            loading={oppdaterHuskelapp.isLoading}
-            disabled={isLoading}
-          >
-            {texts.save}
-          </Button>
           <Button variant="secondary" onClick={() => toggleOpen(false)}>
             {texts.close}
           </Button>
-          {huskelapp && (
+          {!!huskelapp ? (
             <Tooltip content={texts.removeTooltip}>
               <Button
                 icon={<TrashIcon aria-hidden />}
@@ -178,6 +171,15 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
                 {texts.remove}
               </Button>
             </Tooltip>
+          ) : (
+            <Button
+              type="submit"
+              variant="primary"
+              loading={oppdaterHuskelapp.isLoading}
+              disabled={isLoading}
+            >
+              {texts.save}
+            </Button>
           )}
         </Modal.Footer>
       </Modal>
