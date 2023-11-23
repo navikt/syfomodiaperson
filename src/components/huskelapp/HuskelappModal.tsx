@@ -102,6 +102,11 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
     }
   };
 
+  const handleOppfolgingsgrunnChange = (oppfolgingsgrunn: Oppfolgingsgrunn) => {
+    setOppfolgingsgrunn(oppfolgingsgrunn);
+    setIsFormError(false);
+  };
+
   const handleRemoveHuskelapp = (uuid: string) => {
     removeHuskelapp.mutate(uuid, {
       onSuccess: () => toggleOpen(false),
@@ -127,7 +132,7 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
             ) : (
               <RadioGroup
                 legend={texts.oppfolgingsgrunn.label}
-                onChange={(val: Oppfolgingsgrunn) => setOppfolgingsgrunn(val)}
+                onChange={handleOppfolgingsgrunnChange}
                 size="small"
                 error={isFormError && texts.missingOppfolgingsgrunn}
               >
@@ -156,7 +161,11 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
             ))}
         </ModalContent>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => toggleOpen(false)}>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => toggleOpen(false)}
+          >
             {texts.close}
           </Button>
           {!!huskelapp ? (
