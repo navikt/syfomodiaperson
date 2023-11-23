@@ -5,6 +5,7 @@ import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQuer
 import { AktivitetskravHistorikk } from "@/components/aktivitetskrav/historikk/AktivitetskravHistorikk";
 import { StartNyVurdering } from "./vurdering/StartNyVurdering";
 import { AktivitetskravAlertstripe } from "@/components/aktivitetskrav/AktivitetskravAlertstripe";
+import { TREDELING_BREAKING_POINT } from "@/sider/TredeltSide";
 
 const texts = {
   noTilfelle:
@@ -30,7 +31,7 @@ export const AktivitetskravSide = ({
     <div
       className="w-full"
       style={
-        screenWidth > 1300
+        screenWidth > TREDELING_BREAKING_POINT
           ? {
               height: heightStyling,
               overflowY: "scroll",

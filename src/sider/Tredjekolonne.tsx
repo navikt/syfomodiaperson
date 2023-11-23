@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react";
+import { TREDELING_BREAKING_POINT } from "@/sider/TredeltSide";
 
 interface TredjekolonneProps {
   heightStyling: string;
@@ -14,7 +15,7 @@ export const Tredjekolonne = ({
   return (
     <div
       style={
-        screenWidth > 1300
+        screenWidth > TREDELING_BREAKING_POINT
           ? {
               height: heightStyling,
               overflowY: "scroll",

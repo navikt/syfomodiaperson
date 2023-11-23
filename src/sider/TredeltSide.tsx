@@ -28,3 +28,5 @@ export const TredeltSide = styled.div`
     }
   }
 `;
+
+export const TREDELING_BREAKING_POINT = 1300;

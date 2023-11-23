@@ -1,4 +1,7 @@
 import { useMemo } from "react";
+import { MODIA_HEADER_ID } from "@/sider/Side";
+import { SIDETOPP_ID } from "@/components/Sidetopp";
+import { INTERNFLATEDECORATOR_ID } from "@/decorator/Decorator";
 
 export const usePageHeight = (
   hasLoaded: boolean
@@ -8,11 +11,11 @@ export const usePageHeight = (
       return 0;
     }
     const sidetoppHeight =
-      document.getElementById("modia-header")?.clientHeight || 0;
+      document.getElementById(MODIA_HEADER_ID)?.clientHeight || 0;
     const sideoverskriftHeight =
-      document.getElementById("sideoverskrift")?.clientHeight || 0;
+      document.getElementById(SIDETOPP_ID)?.clientHeight || 0;
     const decoratorHeight =
-      document.getElementById("internflatedecorator")?.clientHeight || 0;
+      document.getElementById(INTERNFLATEDECORATOR_ID)?.clientHeight || 0;
 
     return sidetoppHeight + sideoverskriftHeight + decoratorHeight;
   }, [hasLoaded]);

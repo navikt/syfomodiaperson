@@ -5,6 +5,8 @@ import decoratorConfig from "./decoratorConfig";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useValgtEnhet } from "@/context/ValgtEnhetContext";
 
+export const INTERNFLATEDECORATOR_ID = "internflatedecorator";
+
 const InternflateDecorator = NAVSPA.importer<DecoratorProps>(
   "internarbeidsflatefs"
 );
@@ -33,7 +35,7 @@ const Decorator = () => {
   ])(fnr, handlePersonsokSubmit, handleChangeEnhet);
 
   return (
-    <div id="internflatedecorator">
+    <div id={INTERNFLATEDECORATOR_ID}>
       <InternflateDecorator {...config} />
     </div>
   );
