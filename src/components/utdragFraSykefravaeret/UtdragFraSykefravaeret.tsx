@@ -214,7 +214,7 @@ const UtdragFraSykefravaeret = () => {
   );
 
   return (
-    <Panel className="mb-4">
+    <Panel className="mb-4 h-min">
       <Heading level="2" size="medium" className="mb-4">
         {tekster.header}
       </Heading>
