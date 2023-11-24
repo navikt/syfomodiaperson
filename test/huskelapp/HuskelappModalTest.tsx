@@ -1,6 +1,6 @@
 import { queryClientWithMockData } from "../testQueryClient";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import { HuskelappModal } from "@/components/huskelapp/HuskelappModal";
 import { VEILEDER_IDENT_DEFAULT } from "../../mock/common/mockConstants";
@@ -17,7 +17,7 @@ import nock from "nock";
 import { apiMock } from "../stubs/stubApi";
 
 let queryClient: QueryClient;
-let apiMockScope: any;
+let apiMockScope: nock.Scope;
 
 const huskelappOppfolgingsgrunn = Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE;
 const huskelappOppfogingsgrunnText = "Vurder dialogmøte på et senere tidspunkt";
@@ -53,8 +53,8 @@ describe("HuskelappModal", () => {
       expect(await screen.findByText(huskelappOppfogingsgrunnText)).to.exist;
       expect(screen.getByRole("button", { hidden: true, name: "Avbryt" })).to
         .exist;
-      expect(screen.getByRole("button", { hidden: true, name: "Fjern" })).to
-        .exist;
+      expect(await screen.findByRole("button", { hidden: true, name: "Fjern" }))
+        .to.exist;
     });
     it("remove deletes huskelapp", async () => {
       renderHuskelappModal();
@@ -86,27 +86,28 @@ describe("HuskelappModal", () => {
       expect(screen.queryByRole("button", { hidden: true, name: "Fjern" })).to
         .not.exist;
     });
-    it("save posts huskelapp with expected text", async () => {
+    it("save huskelapp with oppfolgingsgrunn", async () => {
       renderHuskelappModal();
 
-      const oppfolgingsgrunnRadioButton = await waitFor(() => {
-        return screen.getByText("Vurder dialogmøte på et senere tidspunkt");
-      });
-      fireEvent.click(oppfolgingsgrunnRadioButton);
-
+      const oppfolgingsgrunnRadioButton = await screen.findByText(
+        "Vurder dialogmøte på et senere tidspunkt"
+      );
+      userEvent.click(oppfolgingsgrunnRadioButton);
       const lagreButton = screen.getByRole("button", {
         hidden: true,
         name: "Lagre",
       });
       userEvent.click(lagreButton);
 
-      const lagreHuskelappMutation = queryClient.getMutationCache().getAll()[0];
-      const expectedHuskelapp: HuskelappRequestDTO = {
-        oppfolgingsgrunn: Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE,
-      };
-      expect(lagreHuskelappMutation.options.variables).to.deep.equal(
-        expectedHuskelapp
-      );
+      await waitFor(() => {
+        const lagreHuskelappMutation = queryClient.getMutationCache().getAll();
+        const expectedHuskelapp: HuskelappRequestDTO = {
+          oppfolgingsgrunn: Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE,
+        };
+        expect(lagreHuskelappMutation[0].options.variables).to.deep.equal(
+          expectedHuskelapp
+        );
+      });
     });
   });
 });

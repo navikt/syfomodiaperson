@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import React from "react";
 import {
   BodyShort,
   Button,
@@ -19,6 +19,7 @@ import {
 } from "@/data/huskelapp/huskelappTypes";
 import { PaddingSize } from "@/components/Layout";
 import { useRemoveHuskelapp } from "@/data/huskelapp/useRemoveHuskelapp";
+import { useForm } from "react-hook-form";
 
 const texts = {
   header: "Huskelapp",
@@ -29,15 +30,20 @@ const texts = {
   missingOppfolgingsgrunn: "Vennligst angi oppfolgingsgrunn.",
   oppfolgingsgrunn: {
     label: "Velg oppfølgingsgrunn",
-    avventDialogmote: "Avvent dialogmøte 2",
+    taKontaktSykmeldt: "Ta kontakt med den sykmeldte",
+    taKontaktArbeidsgiver: "Ta kontakt med arbeidsgiver",
+    taKontaktBehandler: "Ta kontakt med behandler",
     vurderDialogmoteSenere: "Vurder dialogmøte på et senere tidspunkt",
-    folgOppFraLege: "Følge opp informasjon fra lege",
-    folgOppFraArbeidsgiver: "Følge opp informasjon fra arbeidsgiver (?)",
-    taKontakt: "Ta kontakt med den sykmeldte",
+    folgOppEtterNesteSykmelding: "Følg opp etter neste sykmelding",
     vurderTiltakBehov: "Vurder behov for tiltak",
-    annenOppfolgning: "Annen oppfølging",
+    annet:
+      "Annet (Gi tilbakemelding i Pilotgruppa på Teams hvilken avhukingsvalg du savner)",
   },
 };
+
+interface FormValues {
+  oppfolgingsgrunn: Oppfolgingsgrunn;
+}
 
 interface HuskelappModalProps {
   isOpen: boolean;
@@ -64,49 +70,45 @@ const HuskelappSkeleton = () => {
 };
 
 export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
-  const { huskelapp, isLoading } = useGetHuskelappQuery();
-  const [oppfolgingsgrunn, setOppfolgingsgrunn] = useState<Oppfolgingsgrunn>();
-  const [isFormError, setIsFormError] = useState<boolean>(false);
+  const { huskelapp, isLoading, isSuccess } = useGetHuskelappQuery();
   const oppdaterHuskelapp = useOppdaterHuskelapp();
   const removeHuskelapp = useRemoveHuskelapp();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<FormValues>();
 
-  const oppfolgingsgrunnToText = () => {
-    switch (huskelapp?.oppfolgingsgrunn) {
-      case Oppfolgingsgrunn.AVVENT_DIALOGMOTE:
-        return texts.oppfolgingsgrunn.avventDialogmote;
+  const oppfolgingsgrunnToText = (oppfolgingsgrunn?: Oppfolgingsgrunn) => {
+    switch (oppfolgingsgrunn) {
+      case Oppfolgingsgrunn.TA_KONTAKT_SYKEMELDT:
+        return texts.oppfolgingsgrunn.taKontaktSykmeldt;
+      case Oppfolgingsgrunn.TA_KONTAKT_ARBEIDSGIVER:
+        return texts.oppfolgingsgrunn.taKontaktArbeidsgiver;
+      case Oppfolgingsgrunn.TA_KONTAKT_BEHANDLER:
+        return texts.oppfolgingsgrunn.taKontaktBehandler;
       case Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE:
         return texts.oppfolgingsgrunn.vurderDialogmoteSenere;
-      case Oppfolgingsgrunn.FOLG_OPP_FRA_LEGE:
-        return texts.oppfolgingsgrunn.folgOppFraLege;
-      case Oppfolgingsgrunn.FOLG_OPP_FRA_ARBEIDSGIVER:
-        return texts.oppfolgingsgrunn.folgOppFraArbeidsgiver;
-      case Oppfolgingsgrunn.TA_KONTAKT:
-        return texts.oppfolgingsgrunn.taKontakt;
+      case Oppfolgingsgrunn.FOLG_OPP_ETTER_NESTE_SYKMELDING:
+        return texts.oppfolgingsgrunn.folgOppEtterNesteSykmelding;
       case Oppfolgingsgrunn.VURDER_TILTAK_BEHOV:
         return texts.oppfolgingsgrunn.vurderTiltakBehov;
-      case Oppfolgingsgrunn.ANNEN_OPPFOLGNING:
-        return texts.oppfolgingsgrunn.annenOppfolgning;
+      case Oppfolgingsgrunn.ANNET:
+        return texts.oppfolgingsgrunn.annet;
     }
   };
 
-  const handleOnSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (oppfolgingsgrunn !== undefined) {
-      const huskelappDto: HuskelappRequestDTO = {
-        oppfolgingsgrunn: oppfolgingsgrunn,
-      };
-      oppdaterHuskelapp.mutate(huskelappDto, {
-        onSuccess: () => toggleOpen(false),
-      });
-    } else {
-      setIsFormError(true);
-      return undefined;
-    }
-  };
+  const allOppfolgingsgrunner = Object.values(
+    Oppfolgingsgrunn
+  ) as Oppfolgingsgrunn[];
 
-  const handleOppfolgingsgrunnChange = (oppfolgingsgrunn: Oppfolgingsgrunn) => {
-    setOppfolgingsgrunn(oppfolgingsgrunn);
-    setIsFormError(false);
+  const submit = (values: FormValues) => {
+    const huskelappDto: HuskelappRequestDTO = {
+      oppfolgingsgrunn: values.oppfolgingsgrunn,
+    };
+    oppdaterHuskelapp.mutate(huskelappDto, {
+      onSuccess: () => toggleOpen(false),
+    });
   };
 
   const handleRemoveHuskelapp = (uuid: string) => {
@@ -115,9 +117,12 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
     });
   };
   const hasHuskelapp = !!huskelapp;
+  const existingHuskelappText = !!huskelapp?.tekst
+    ? huskelapp.tekst
+    : oppfolgingsgrunnToText(huskelapp?.oppfolgingsgrunn);
 
   return (
-    <form onSubmit={handleOnSubmit}>
+    <form onSubmit={handleSubmit(submit)}>
       <Modal
         closeOnBackdropClick
         className="px-6 py-4 w-full max-w-[50rem]"
@@ -128,38 +133,27 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
       >
         <ModalContent>
           {isLoading && <HuskelappSkeleton />}
-          {hasHuskelapp ? (
-            <BodyShort>{oppfolgingsgrunnToText()}</BodyShort>
-          ) : (
-            <RadioGroup
-              legend={texts.oppfolgingsgrunn.label}
-              onChange={handleOppfolgingsgrunnChange}
-              size="small"
-              error={isFormError && texts.missingOppfolgingsgrunn}
-            >
-              <Radio value={Oppfolgingsgrunn.AVVENT_DIALOGMOTE}>
-                {texts.oppfolgingsgrunn.avventDialogmote}
-              </Radio>
-              <Radio value={Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE}>
-                {texts.oppfolgingsgrunn.vurderDialogmoteSenere}
-              </Radio>
-              <Radio value={Oppfolgingsgrunn.FOLG_OPP_FRA_LEGE}>
-                {texts.oppfolgingsgrunn.folgOppFraLege}
-              </Radio>
-              <Radio value={Oppfolgingsgrunn.FOLG_OPP_FRA_ARBEIDSGIVER}>
-                {texts.oppfolgingsgrunn.folgOppFraArbeidsgiver}
-              </Radio>
-              <Radio value={Oppfolgingsgrunn.TA_KONTAKT}>
-                {texts.oppfolgingsgrunn.taKontakt}
-              </Radio>
-              <Radio value={Oppfolgingsgrunn.VURDER_TILTAK_BEHOV}>
-                {texts.oppfolgingsgrunn.vurderTiltakBehov}
-              </Radio>
-              <Radio value={Oppfolgingsgrunn.ANNEN_OPPFOLGNING}>
-                {texts.oppfolgingsgrunn.annenOppfolgning}
-              </Radio>
-            </RadioGroup>
-          )}
+          {isSuccess &&
+            (hasHuskelapp ? (
+              <BodyShort>{existingHuskelappText}</BodyShort>
+            ) : (
+              <RadioGroup
+                legend={texts.oppfolgingsgrunn.label}
+                name="oppfolgingsgrunn"
+                size="small"
+                error={errors.oppfolgingsgrunn && texts.missingOppfolgingsgrunn}
+              >
+                {allOppfolgingsgrunner.map((oppfolgingsgrunn, index) => (
+                  <Radio
+                    key={index}
+                    {...register("oppfolgingsgrunn", { required: true })}
+                    value={oppfolgingsgrunn}
+                  >
+                    {oppfolgingsgrunnToText(oppfolgingsgrunn)}
+                  </Radio>
+                ))}
+              </RadioGroup>
+            ))}
         </ModalContent>
         <Modal.Footer>
           <Button
@@ -172,6 +166,7 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
           {hasHuskelapp ? (
             <Tooltip content={texts.removeTooltip}>
               <Button
+                type="button"
                 icon={<TrashIcon aria-hidden />}
                 variant="danger"
                 onClick={() => handleRemoveHuskelapp(huskelapp.uuid)}
