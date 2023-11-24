@@ -1,17 +1,20 @@
 import { queryClientWithMockData } from "../testQueryClient";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import { HuskelappModal } from "@/components/huskelapp/HuskelappModal";
 import { VEILEDER_IDENT_DEFAULT } from "../../mock/common/mockConstants";
-import { HuskelappResponseDTO } from "@/data/huskelapp/huskelappTypes";
+import {
+  HuskelappRequestDTO,
+  HuskelappResponseDTO,
+  Oppfolgingsgrunn,
+} from "@/data/huskelapp/huskelappTypes";
 import { generateUUID } from "@/utils/uuidUtils";
 import { expect } from "chai";
 import userEvent from "@testing-library/user-event";
 import { stubHuskelappApi } from "../stubs/stubIshuskelapp";
 import nock from "nock";
 import { apiMock } from "../stubs/stubApi";
-import { Oppfolgingsgrunn } from "@/data/huskelapp/Oppfolgingsgrunn";
 
 let queryClient: QueryClient;
 let apiMockScope: any;
@@ -82,6 +85,28 @@ describe("HuskelappModal", () => {
         .exist;
       expect(screen.queryByRole("button", { hidden: true, name: "Fjern" })).to
         .not.exist;
+    });
+    it("save posts huskelapp with expected text", async () => {
+      renderHuskelappModal();
+
+      const oppfolgingsgrunnRadioButton = await waitFor(() => {
+        return screen.getByText("Vurder dialogmøte på et senere tidspunkt");
+      });
+      fireEvent.click(oppfolgingsgrunnRadioButton);
+
+      const lagreButton = screen.getByRole("button", {
+        hidden: true,
+        name: "Lagre",
+      });
+      userEvent.click(lagreButton);
+
+      const lagreHuskelappMutation = queryClient.getMutationCache().getAll()[0];
+      const expectedHuskelapp: HuskelappRequestDTO = {
+        oppfolgingsgrunn: Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE,
+      };
+      expect(lagreHuskelappMutation.options.variables).to.deep.equal(
+        expectedHuskelapp
+      );
     });
   });
 });

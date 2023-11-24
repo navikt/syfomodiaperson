@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import {
   BodyShort,
   Button,
@@ -13,10 +13,12 @@ import styled from "styled-components";
 import { useGetHuskelappQuery } from "@/data/huskelapp/useGetHuskelappQuery";
 import { useOppdaterHuskelapp } from "@/data/huskelapp/useOppdaterHuskelapp";
 import { SkeletonShadowbox } from "@/components/SkeletonShadowbox";
-import { HuskelappRequestDTO } from "@/data/huskelapp/huskelappTypes";
+import {
+  HuskelappRequestDTO,
+  Oppfolgingsgrunn,
+} from "@/data/huskelapp/huskelappTypes";
 import { PaddingSize } from "@/components/Layout";
 import { useRemoveHuskelapp } from "@/data/huskelapp/useRemoveHuskelapp";
-import { Oppfolgingsgrunn } from "@/data/huskelapp/Oppfolgingsgrunn";
 
 const texts = {
   header: "Huskelapp",
@@ -62,7 +64,7 @@ const HuskelappSkeleton = () => {
 };
 
 export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
-  const { huskelapp, isLoading, isSuccess } = useGetHuskelappQuery();
+  const { huskelapp, isLoading } = useGetHuskelappQuery();
   const [oppfolgingsgrunn, setOppfolgingsgrunn] = useState<Oppfolgingsgrunn>();
   const [isFormError, setIsFormError] = useState<boolean>(false);
   const oppdaterHuskelapp = useOppdaterHuskelapp();
@@ -87,7 +89,7 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
     }
   };
 
-  const handleOnSubmit = (e: any) => {
+  const handleOnSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (oppfolgingsgrunn !== undefined) {
       const huskelappDto: HuskelappRequestDTO = {
@@ -112,7 +114,7 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
       onSuccess: () => toggleOpen(false),
     });
   };
-  const isSavedHuskelapp = !!huskelapp;
+  const hasHuskelapp = !!huskelapp;
 
   return (
     <form onSubmit={handleOnSubmit}>
@@ -126,39 +128,38 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
       >
         <ModalContent>
           {isLoading && <HuskelappSkeleton />}
-          {isSuccess &&
-            (isSavedHuskelapp ? (
-              <BodyShort>{oppfolgingsgrunnToText()}</BodyShort>
-            ) : (
-              <RadioGroup
-                legend={texts.oppfolgingsgrunn.label}
-                onChange={handleOppfolgingsgrunnChange}
-                size="small"
-                error={isFormError && texts.missingOppfolgingsgrunn}
-              >
-                <Radio value={Oppfolgingsgrunn.AVVENT_DIALOGMOTE}>
-                  {texts.oppfolgingsgrunn.avventDialogmote}
-                </Radio>
-                <Radio value={Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE}>
-                  {texts.oppfolgingsgrunn.vurderDialogmoteSenere}
-                </Radio>
-                <Radio value={Oppfolgingsgrunn.FOLG_OPP_FRA_LEGE}>
-                  {texts.oppfolgingsgrunn.folgOppFraLege}
-                </Radio>
-                <Radio value={Oppfolgingsgrunn.FOLG_OPP_FRA_ARBEIDSGIVER}>
-                  {texts.oppfolgingsgrunn.folgOppFraArbeidsgiver}
-                </Radio>
-                <Radio value={Oppfolgingsgrunn.TA_KONTAKT}>
-                  {texts.oppfolgingsgrunn.taKontakt}
-                </Radio>
-                <Radio value={Oppfolgingsgrunn.VURDER_TILTAK_BEHOV}>
-                  {texts.oppfolgingsgrunn.vurderTiltakBehov}
-                </Radio>
-                <Radio value={Oppfolgingsgrunn.ANNEN_OPPFOLGNING}>
-                  {texts.oppfolgingsgrunn.annenOppfolgning}
-                </Radio>
-              </RadioGroup>
-            ))}
+          {hasHuskelapp ? (
+            <BodyShort>{oppfolgingsgrunnToText()}</BodyShort>
+          ) : (
+            <RadioGroup
+              legend={texts.oppfolgingsgrunn.label}
+              onChange={handleOppfolgingsgrunnChange}
+              size="small"
+              error={isFormError && texts.missingOppfolgingsgrunn}
+            >
+              <Radio value={Oppfolgingsgrunn.AVVENT_DIALOGMOTE}>
+                {texts.oppfolgingsgrunn.avventDialogmote}
+              </Radio>
+              <Radio value={Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE}>
+                {texts.oppfolgingsgrunn.vurderDialogmoteSenere}
+              </Radio>
+              <Radio value={Oppfolgingsgrunn.FOLG_OPP_FRA_LEGE}>
+                {texts.oppfolgingsgrunn.folgOppFraLege}
+              </Radio>
+              <Radio value={Oppfolgingsgrunn.FOLG_OPP_FRA_ARBEIDSGIVER}>
+                {texts.oppfolgingsgrunn.folgOppFraArbeidsgiver}
+              </Radio>
+              <Radio value={Oppfolgingsgrunn.TA_KONTAKT}>
+                {texts.oppfolgingsgrunn.taKontakt}
+              </Radio>
+              <Radio value={Oppfolgingsgrunn.VURDER_TILTAK_BEHOV}>
+                {texts.oppfolgingsgrunn.vurderTiltakBehov}
+              </Radio>
+              <Radio value={Oppfolgingsgrunn.ANNEN_OPPFOLGNING}>
+                {texts.oppfolgingsgrunn.annenOppfolgning}
+              </Radio>
+            </RadioGroup>
+          )}
         </ModalContent>
         <Modal.Footer>
           <Button
@@ -168,7 +169,7 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
           >
             {texts.close}
           </Button>
-          {!!huskelapp ? (
+          {hasHuskelapp ? (
             <Tooltip content={texts.removeTooltip}>
               <Button
                 icon={<TrashIcon aria-hidden />}
