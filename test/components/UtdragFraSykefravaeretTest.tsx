@@ -16,7 +16,7 @@ const renderUtdragFraSykefravaeret = () => {
   );
 };
 
-describe.only("UtdragFraSykefravaeret", () => {
+describe("UtdragFraSykefravaeret", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
   });
