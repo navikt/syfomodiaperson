@@ -13,6 +13,16 @@ import { OversiktLenker } from "@/components/personkort/OversiktLenker";
 import SnowButton from "@/components/festive/SnowButton";
 import { Pride } from "@/components/festive/Pride";
 import styled from "styled-components";
+import { useGetHuskelappQuery } from "@/data/huskelapp/useGetHuskelappQuery";
+import {
+  HuskelappResponseDTO,
+  oppfolgingsgrunnToText,
+} from "@/data/huskelapp/huskelappTypes";
+import { BodyShort, Box, Button, Skeleton, Tooltip } from "@navikt/ds-react";
+import { TrashIcon } from "@navikt/aksel-icons";
+import { SkeletonShadowbox } from "@/components/SkeletonShadowbox";
+import { useRemoveHuskelapp } from "@/data/huskelapp/useRemoveHuskelapp";
+import { Huskelapp } from "@/components/huskelapp/Huskelapp";
 
 const AdaptableRow = styled.div`
   display: flex;
@@ -39,6 +49,8 @@ const Side = ({ tittel, aktivtMenypunkt, children }: SideProps) => {
     });
   }, [tittel]);
   const { toggles } = useFeatureToggles();
+  const { huskelapp } = useGetHuskelappQuery();
+  const isExistingHuskelapp = !!huskelapp;
 
   return (
     <DocumentTitle
@@ -57,7 +69,12 @@ const Side = ({ tittel, aktivtMenypunkt, children }: SideProps) => {
           <nav className="min-w-[15rem] mr-4">
             <GlobalNavigasjon aktivtMenypunkt={aktivtMenypunkt} />
             {isEaster() && <Easter />}
-            {toggles.isHuskelappEnabled && <OpenHuskelappModalButton />}
+            {toggles.isHuskelappEnabled &&
+              (isExistingHuskelapp ? (
+                <Huskelapp huskelapp={huskelapp} />
+              ) : (
+                <OpenHuskelappModalButton />
+              ))}
           </nav>
           <div className="w-full flex flex-col">{children}</div>
         </AdaptableRow>
