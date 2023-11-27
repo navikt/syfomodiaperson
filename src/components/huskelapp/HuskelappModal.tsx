@@ -41,6 +41,22 @@ const texts = {
   },
 };
 
+const oppfolgingsgrunnToText = {
+  [Oppfolgingsgrunn.TA_KONTAKT_SYKEMELDT]:
+    texts.oppfolgingsgrunn.taKontaktSykmeldt,
+  [Oppfolgingsgrunn.TA_KONTAKT_ARBEIDSGIVER]:
+    texts.oppfolgingsgrunn.taKontaktArbeidsgiver,
+  [Oppfolgingsgrunn.TA_KONTAKT_BEHANDLER]:
+    texts.oppfolgingsgrunn.taKontaktBehandler,
+  [Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE]:
+    texts.oppfolgingsgrunn.vurderDialogmoteSenere,
+  [Oppfolgingsgrunn.FOLG_OPP_ETTER_NESTE_SYKMELDING]:
+    texts.oppfolgingsgrunn.folgOppEtterNesteSykmelding,
+  [Oppfolgingsgrunn.VURDER_TILTAK_BEHOV]:
+    texts.oppfolgingsgrunn.vurderTiltakBehov,
+  [Oppfolgingsgrunn.ANNET]: texts.oppfolgingsgrunn.annet,
+};
+
 interface FormValues {
   oppfolgingsgrunn: Oppfolgingsgrunn;
 }
@@ -79,29 +95,6 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
     handleSubmit,
   } = useForm<FormValues>();
 
-  const oppfolgingsgrunnToText = (oppfolgingsgrunn?: Oppfolgingsgrunn) => {
-    switch (oppfolgingsgrunn) {
-      case Oppfolgingsgrunn.TA_KONTAKT_SYKEMELDT:
-        return texts.oppfolgingsgrunn.taKontaktSykmeldt;
-      case Oppfolgingsgrunn.TA_KONTAKT_ARBEIDSGIVER:
-        return texts.oppfolgingsgrunn.taKontaktArbeidsgiver;
-      case Oppfolgingsgrunn.TA_KONTAKT_BEHANDLER:
-        return texts.oppfolgingsgrunn.taKontaktBehandler;
-      case Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE:
-        return texts.oppfolgingsgrunn.vurderDialogmoteSenere;
-      case Oppfolgingsgrunn.FOLG_OPP_ETTER_NESTE_SYKMELDING:
-        return texts.oppfolgingsgrunn.folgOppEtterNesteSykmelding;
-      case Oppfolgingsgrunn.VURDER_TILTAK_BEHOV:
-        return texts.oppfolgingsgrunn.vurderTiltakBehov;
-      case Oppfolgingsgrunn.ANNET:
-        return texts.oppfolgingsgrunn.annet;
-    }
-  };
-
-  const allOppfolgingsgrunner = Object.values(
-    Oppfolgingsgrunn
-  ) as Oppfolgingsgrunn[];
-
   const submit = (values: FormValues) => {
     const huskelappDto: HuskelappRequestDTO = {
       oppfolgingsgrunn: values.oppfolgingsgrunn,
@@ -119,7 +112,9 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
   const hasHuskelapp = !!huskelapp;
   const existingHuskelappText = !!huskelapp?.tekst
     ? huskelapp.tekst
-    : oppfolgingsgrunnToText(huskelapp?.oppfolgingsgrunn);
+    : !!huskelapp?.oppfolgingsgrunn
+    ? oppfolgingsgrunnToText[huskelapp.oppfolgingsgrunn]
+    : null;
 
   return (
     <form onSubmit={handleSubmit(submit)}>
@@ -143,15 +138,17 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
                 size="small"
                 error={errors.oppfolgingsgrunn && texts.missingOppfolgingsgrunn}
               >
-                {allOppfolgingsgrunner.map((oppfolgingsgrunn, index) => (
-                  <Radio
-                    key={index}
-                    {...register("oppfolgingsgrunn", { required: true })}
-                    value={oppfolgingsgrunn}
-                  >
-                    {oppfolgingsgrunnToText(oppfolgingsgrunn)}
-                  </Radio>
-                ))}
+                {Object.values(Oppfolgingsgrunn).map(
+                  (oppfolgingsgrunn, index) => (
+                    <Radio
+                      key={index}
+                      {...register("oppfolgingsgrunn", { required: true })}
+                      value={oppfolgingsgrunn}
+                    >
+                      {oppfolgingsgrunnToText[oppfolgingsgrunn]}
+                    </Radio>
+                  )
+                )}
               </RadioGroup>
             ))}
         </ModalContent>
