@@ -2,18 +2,25 @@ import React from "react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { VurderAktivitetskrav } from "@/components/aktivitetskrav/vurdering/VurderAktivitetskrav";
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
-import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { AktivitetskravHistorikk } from "@/components/aktivitetskrav/historikk/AktivitetskravHistorikk";
-import { Panel } from "@navikt/ds-react";
 import { StartNyVurdering } from "./vurdering/StartNyVurdering";
 import { AktivitetskravAlertstripe } from "@/components/aktivitetskrav/AktivitetskravAlertstripe";
+import { TREDELING_BREAKING_POINT } from "@/sider/TredeltSide";
 
 const texts = {
   noTilfelle:
     "Vi finner ingen aktiv sykmelding på denne personen. Du kan likevel vurdere aktivitetskravet hvis det er behov for det.",
 };
 
-export const AktivitetskravSide = () => {
+interface AktivitetskravSideProps {
+  heightStyling: string;
+  screenWidth: number;
+}
+
+export const AktivitetskravSide = ({
+  heightStyling,
+  screenWidth,
+}: AktivitetskravSideProps) => {
   const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const { data } = useAktivitetskravQuery();
 
@@ -21,7 +28,17 @@ export const AktivitetskravSide = () => {
   const showStartNyVurdering = !aktivitetskrav || aktivitetskrav.inFinalState;
 
   return (
-    <>
+    <div
+      className="w-full"
+      style={
+        screenWidth > TREDELING_BREAKING_POINT
+          ? {
+              height: heightStyling,
+              overflowY: "scroll",
+            }
+          : { overflowY: "unset" }
+      }
+    >
       {!hasActiveOppfolgingstilfelle && (
         <AktivitetskravAlertstripe variant="warning" size="small">
           {texts.noTilfelle}
@@ -32,10 +49,7 @@ export const AktivitetskravSide = () => {
       ) : (
         <VurderAktivitetskrav aktivitetskrav={aktivitetskrav} />
       )}
-      <Panel className="mb-4 flex flex-col p-8">
-        <UtdragFraSykefravaeret />
-      </Panel>
       <AktivitetskravHistorikk />
-    </>
+    </div>
   );
 };

@@ -7,6 +7,11 @@ import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/pe
 import SideLaster from "@/components/SideLaster";
 import { AktivitetskravSide } from "@/components/aktivitetskrav/AktivitetskravSide";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
+import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
+import { TREDELING_BREAKING_POINT, TredeltSide } from "@/sider/TredeltSide";
+import { Tredjekolonne } from "@/sider/Tredjekolonne";
+import { usePageHeight } from "@/hooks/tredeling/usePageHeight";
+import { useScreenWidth } from "@/hooks/tredeling/useScreenWidth";
 
 const texts = {
   title: "Aktivitetskrav",
@@ -27,13 +32,37 @@ export const AktivitetskravContainer = (): ReactElement => {
   const hentingFeilet =
     hentAktivitetskravFeilet || hentOppfolgingstilfellerFeilet;
 
+  const { heightStyling } = usePageHeight(!henter);
+  const screenWidth = useScreenWidth();
+
   return (
     <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.AKTIVITETSKRAV}>
       <Sidetopp tittel={texts.title} />
       <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
-        <NotificationProvider>
-          <AktivitetskravSide />
-        </NotificationProvider>
+        <TredeltSide
+          style={
+            screenWidth < TREDELING_BREAKING_POINT
+              ? { height: heightStyling }
+              : {}
+          }
+        >
+          <NotificationProvider>
+            <AktivitetskravSide
+              heightStyling={heightStyling}
+              screenWidth={screenWidth}
+            />
+          </NotificationProvider>
+          {screenWidth < TREDELING_BREAKING_POINT ? (
+            <UtdragFraSykefravaeret />
+          ) : (
+            <Tredjekolonne
+              heightStyling={heightStyling}
+              screenWidth={screenWidth}
+            >
+              <UtdragFraSykefravaeret />
+            </Tredjekolonne>
+          )}
+        </TredeltSide>
       </SideLaster>
     </Side>
   );

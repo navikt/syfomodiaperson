@@ -64,7 +64,7 @@ const renderAktivitetskravSide = () => {
         <NotificationContext.Provider
           value={{ notification: undefined, setNotification: () => void 0 }}
         >
-          <AktivitetskravSide />
+          <AktivitetskravSide heightStyling={"100vh"} screenWidth={2000} />
         </NotificationContext.Provider>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>
@@ -76,12 +76,6 @@ describe("AktivitetskravSide", () => {
     queryClient = queryClientWithMockData();
   });
 
-  it("Viser utdrag fra sykefraværet", () => {
-    renderAktivitetskravSide();
-
-    expect(screen.getByRole("heading", { name: "Utdrag fra sykefraværet" })).to
-      .exist;
-  });
   describe("Start ny vurdering", () => {
     it("Vises når person ikke har aktivitetskrav", () => {
       mockAktivitetskrav([]);
