@@ -31,8 +31,8 @@ export const Huskelapp = ({ huskelapp }: ExistingHuskelappProps) => {
     : null;
 
   return (
-    <Box background={"surface-default"} padding="4">
-      <Heading className={"mb-2"} size="small">
+    <Box background={"surface-default"} padding="4" className={"flex-1"}>
+      <Heading className={"mb-2"} size="xsmall">
         {texts.title}
       </Heading>
       <BodyShort className={"mb-4"}>{existingHuskelappText}</BodyShort>
@@ -40,7 +40,7 @@ export const Huskelapp = ({ huskelapp }: ExistingHuskelappProps) => {
         <Button
           type="button"
           icon={<TrashIcon aria-hidden />}
-          variant="danger"
+          variant={"primary-neutral"}
           onClick={() => handleRemoveHuskelapp(huskelapp.uuid)}
           loading={removeHuskelapp.isLoading}
           className={"ml-auto"}
