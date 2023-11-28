@@ -42,7 +42,7 @@ export const Huskelapp = ({ huskelapp }: ExistingHuskelappProps) => {
           icon={<TrashIcon aria-hidden />}
           variant={"primary-neutral"}
           onClick={() => handleRemoveHuskelapp(huskelapp.uuid)}
-          loading={removeHuskelapp.isLoading}
+          loading={removeHuskelapp.isPending}
           className={"ml-auto"}
           size={"small"}
         >

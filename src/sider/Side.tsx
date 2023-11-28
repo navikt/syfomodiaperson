@@ -48,7 +48,7 @@ const Side = ({ tittel, aktivtMenypunkt, children }: SideProps) => {
           <Personkort />
         </div>
         <div className={"flex max-[700px]:flex-wrap"}>
-          <nav className="max-[700px]:w-full min-w-[15rem] min-[700px]:mr-4">
+          <nav className="max-[700px]:w-full min-w-[15rem] min-[700px]:mr-2">
             <GlobalNavigasjon aktivtMenypunkt={aktivtMenypunkt} />
             {isEaster() && <Easter />}
             {toggles.isHuskelappEnabled &&

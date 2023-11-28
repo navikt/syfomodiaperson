@@ -19,12 +19,10 @@ const texts = {
 };
 
 export const AktivitetskravContainer = (): ReactElement => {
+  const { isLoading: henterAktivitetskrav, isError: hentAktivitetskravFeilet } =
+    useAktivitetskravQuery();
   const {
-    isInitialLoading: henterAktivitetskrav,
-    isError: hentAktivitetskravFeilet,
-  } = useAktivitetskravQuery();
-  const {
-    isInitialLoading: henterOppfolgingstilfeller,
+    isLoading: henterOppfolgingstilfeller,
     isError: hentOppfolgingstilfellerFeilet,
   } = useOppfolgingstilfellePersonQuery();
 
@@ -39,13 +37,7 @@ export const AktivitetskravContainer = (): ReactElement => {
     <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.AKTIVITETSKRAV}>
       <Sidetopp tittel={texts.title} />
       <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
-        <TredeltSide
-          style={
-            screenWidth < TREDELING_BREAKING_POINT
-              ? { height: heightStyling }
-              : {}
-          }
-        >
+        <TredeltSide>
           <NotificationProvider>
             <AktivitetskravSide
               heightStyling={heightStyling}

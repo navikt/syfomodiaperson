@@ -93,7 +93,7 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
           <Button
             type="submit"
             variant="primary"
-            loading={oppdaterHuskelapp.isLoading}
+            loading={oppdaterHuskelapp.isPending}
           >
             {texts.save}
           </Button>
