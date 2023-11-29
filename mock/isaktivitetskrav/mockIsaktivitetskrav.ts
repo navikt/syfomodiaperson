@@ -4,6 +4,7 @@ import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import { aktivitetskravMock } from "./aktivitetskravMock";
 import {
   AktivitetskravDTO,
+  AktivitetskravHistorikkDTO,
   AktivitetskravStatus,
   AktivitetskravVurderingDTO,
   CreateAktivitetskravVurderingDTO,
@@ -14,6 +15,33 @@ import { generateUUID } from "../../src/utils/uuidUtils";
 import { VEILEDER_DEFAULT } from "../common/mockConstants";
 
 let mockAktivitetskrav: AktivitetskravDTO[] = aktivitetskravMock;
+const historikk: AktivitetskravHistorikkDTO[] = [
+  {
+    tidspunkt: daysFromToday(-30),
+    status: AktivitetskravStatus.NY,
+    vurdertAv: null,
+  },
+  {
+    tidspunkt: daysFromToday(-22),
+    status: AktivitetskravStatus.UNNTAK,
+    vurdertAv: VEILEDER_DEFAULT.ident,
+  },
+  {
+    tidspunkt: daysFromToday(-21),
+    status: AktivitetskravStatus.NY_VURDERING,
+    vurdertAv: VEILEDER_DEFAULT.ident,
+  },
+  {
+    tidspunkt: daysFromToday(-21),
+    status: AktivitetskravStatus.FORHANDSVARSEL,
+    vurdertAv: VEILEDER_DEFAULT.ident,
+  },
+  {
+    tidspunkt: daysFromToday(-1),
+    status: AktivitetskravStatus.OPPFYLT,
+    vurdertAv: VEILEDER_DEFAULT.ident,
+  },
+];
 
 export const mockIsaktivitetskrav = (server: any) => {
   server.get(
@@ -21,6 +49,16 @@ export const mockIsaktivitetskrav = (server: any) => {
     (req: express.Request, res: express.Response) => {
       if (req.headers[NAV_PERSONIDENT_HEADER]?.length === 11) {
         res.send(JSON.stringify(mockAktivitetskrav));
+      } else {
+        res.status(400).send("Did not find PersonIdent in headers");
+      }
+    }
+  );
+  server.get(
+    `${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/historikk`,
+    (req: express.Request, res: express.Response) => {
+      if (req.headers[NAV_PERSONIDENT_HEADER]?.length === 11) {
+        res.send(JSON.stringify(historikk));
       } else {
         res.status(400).send("Did not find PersonIdent in headers");
       }
