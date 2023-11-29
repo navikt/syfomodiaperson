@@ -13,35 +13,11 @@ import {
 import { daysFromToday } from "../../test/testUtils";
 import { generateUUID } from "../../src/utils/uuidUtils";
 import { VEILEDER_DEFAULT } from "../common/mockConstants";
+import { aktivitetskravHistorikkMock } from "./aktivitetskravHistorikkMock";
 
 let mockAktivitetskrav: AktivitetskravDTO[] = aktivitetskravMock;
-const historikk: AktivitetskravHistorikkDTO[] = [
-  {
-    tidspunkt: daysFromToday(-30),
-    status: AktivitetskravStatus.NY,
-    vurdertAv: null,
-  },
-  {
-    tidspunkt: daysFromToday(-22),
-    status: AktivitetskravStatus.UNNTAK,
-    vurdertAv: VEILEDER_DEFAULT.ident,
-  },
-  {
-    tidspunkt: daysFromToday(-21),
-    status: AktivitetskravStatus.NY_VURDERING,
-    vurdertAv: VEILEDER_DEFAULT.ident,
-  },
-  {
-    tidspunkt: daysFromToday(-21),
-    status: AktivitetskravStatus.FORHANDSVARSEL,
-    vurdertAv: VEILEDER_DEFAULT.ident,
-  },
-  {
-    tidspunkt: daysFromToday(-1),
-    status: AktivitetskravStatus.OPPFYLT,
-    vurdertAv: VEILEDER_DEFAULT.ident,
-  },
-];
+let aktivitetskravHistorikk: AktivitetskravHistorikkDTO[] =
+  aktivitetskravHistorikkMock;
 
 export const mockIsaktivitetskrav = (server: any) => {
   server.get(
@@ -58,7 +34,7 @@ export const mockIsaktivitetskrav = (server: any) => {
     `${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/historikk`,
     (req: express.Request, res: express.Response) => {
       if (req.headers[NAV_PERSONIDENT_HEADER]?.length === 11) {
-        res.send(JSON.stringify(historikk));
+        res.send(JSON.stringify(aktivitetskravHistorikk));
       } else {
         res.status(400).send("Did not find PersonIdent in headers");
       }
@@ -90,6 +66,14 @@ export const mockIsaktivitetskrav = (server: any) => {
         vurderinger: [newVurdering, ...firstAktivitetskrav.vurderinger],
       };
       mockAktivitetskrav = [firstAktivitetskrav, ...mockAktivitetskrav];
+      aktivitetskravHistorikk = [
+        {
+          tidspunkt: new Date(),
+          status: body.status,
+          vurdertAv: VEILEDER_DEFAULT.ident,
+        },
+        ...aktivitetskravHistorikk,
+      ];
       res.sendStatus(200);
     }
   );
@@ -122,6 +106,14 @@ export const mockIsaktivitetskrav = (server: any) => {
         ],
       };
       mockAktivitetskrav = [firstAktivitetskrav, ...mockAktivitetskrav];
+      aktivitetskravHistorikk = [
+        {
+          tidspunkt: new Date(),
+          status: newForhandsvarselVurdering.status,
+          vurdertAv: VEILEDER_DEFAULT.ident,
+        },
+        ...aktivitetskravHistorikk,
+      ];
       res.sendStatus(201);
     }
   );
