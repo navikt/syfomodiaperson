@@ -7,7 +7,7 @@ const texts = {
     folgOppEtterNesteSykmelding: "Følg opp etter neste sykmelding",
     vurderTiltakBehov: "Vurder behov for tiltak",
     annet:
-      "Annet (Gi tilbakemelding i Pilotgruppa på Teams hvilken avhukingsvalg du savner)",
+      "Annet (Gi tilbakemelding i Pilotgruppa på Teams hvilket avhukingsvalg du savner)",
   },
 };
 

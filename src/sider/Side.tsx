@@ -7,12 +7,10 @@ import { Easter } from "@/components/festive/Easter";
 import { Menypunkter } from "@/navigation/menypunkterTypes";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
-import { OpenHuskelappModalButton } from "@/components/huskelapp/OpenHuskelappModalButton";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { OversiktLenker } from "@/components/personkort/OversiktLenker";
 import SnowButton from "@/components/festive/SnowButton";
 import { Pride } from "@/components/festive/Pride";
-import { useGetHuskelappQuery } from "@/data/huskelapp/useGetHuskelappQuery";
 import { Huskelapp } from "@/components/huskelapp/Huskelapp";
 
 export const MODIA_HEADER_ID = "modia-header";
@@ -31,8 +29,6 @@ const Side = ({ tittel, aktivtMenypunkt, children }: SideProps) => {
     });
   }, [tittel]);
   const { toggles } = useFeatureToggles();
-  const { huskelapp } = useGetHuskelappQuery();
-  const isExistingHuskelapp = !!huskelapp;
 
   return (
     <DocumentTitle
@@ -51,12 +47,7 @@ const Side = ({ tittel, aktivtMenypunkt, children }: SideProps) => {
           <nav className="max-[700px]:w-full min-w-[15rem] min-[700px]:mr-2">
             <GlobalNavigasjon aktivtMenypunkt={aktivtMenypunkt} />
             {isEaster() && <Easter />}
-            {toggles.isHuskelappEnabled &&
-              (isExistingHuskelapp ? (
-                <Huskelapp huskelapp={huskelapp} />
-              ) : (
-                <OpenHuskelappModalButton />
-              ))}
+            {toggles.isHuskelappEnabled && <Huskelapp />}
           </nav>
           <div className="w-full flex flex-col">{children}</div>
         </div>
