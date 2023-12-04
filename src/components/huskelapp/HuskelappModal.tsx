@@ -9,14 +9,12 @@ import {
   RadioGroup,
   useDatepicker,
 } from "@navikt/ds-react";
-import styled from "styled-components";
 import { useOppdaterHuskelapp } from "@/data/huskelapp/useOppdaterHuskelapp";
 import {
   HuskelappRequestDTO,
   Oppfolgingsgrunn,
   oppfolgingsgrunnToText,
 } from "@/data/huskelapp/huskelappTypes";
-import { PaddingSize } from "@/components/Layout";
 import { useForm } from "react-hook-form";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
@@ -43,17 +41,6 @@ interface HuskelappModalProps {
   isOpen: boolean;
   toggleOpen: (value: boolean) => void;
 }
-
-const ModalContent = styled(Modal.Body)`
-  display: flex;
-  flex-direction: column;
-
-  > * {
-    &:not(:last-child) {
-      padding-bottom: ${PaddingSize.SM};
-    }
-  }
-`;
 
 export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
   const oppdaterHuskelapp = useOppdaterHuskelapp();
@@ -109,12 +96,16 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
             >
               {texts.header}
             </Heading>
-            <HelpText title={texts.huskelappTooltip} className={"self-center"}>
+            <HelpText
+              title={texts.huskelappTooltip}
+              placement="right"
+              className={"self-center"}
+            >
               {texts.huskelappHelpText}
             </HelpText>
           </div>
         </Modal.Header>
-        <ModalContent>
+        <Modal.Body className={"flex flex-col gap-4"}>
           <RadioGroup
             legend={texts.oppfolgingsgrunnLabel}
             name="oppfolgingsgrunn"
@@ -138,7 +129,7 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
               size="small"
             />
           </DatePicker>
-        </ModalContent>
+        </Modal.Body>
         <Modal.Footer>
           <Button
             type="button"
