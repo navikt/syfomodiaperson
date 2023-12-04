@@ -114,8 +114,11 @@ export const VelgBehandler = ({
           behandlerRefField.onChange(event);
         }}
       >
-        <div className="flex flex-row">
-          {texts.behandlersokTekst}
+        {texts.behandlersokTekst}
+      </Radio>
+      {showBehandlerSearch && (
+        <div className="flex flex-row items-center">
+          <BehandlerSearch setSelectedBehandler={setSelectedBehandler} />
           <HelpText
             title={texts.sokEtterBehandlerHelpTextTitle}
             className="ml-1"
@@ -123,9 +126,6 @@ export const VelgBehandler = ({
             {texts.sokEtterBehandlerHelpText}
           </HelpText>
         </div>
-      </Radio>
-      {showBehandlerSearch && (
-        <BehandlerSearch setSelectedBehandler={setSelectedBehandler} />
       )}
     </RadioGroup>
   );
