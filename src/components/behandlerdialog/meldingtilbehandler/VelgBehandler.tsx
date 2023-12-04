@@ -114,11 +114,11 @@ export const VelgBehandler = ({
           behandlerRefField.onChange(event);
         }}
       >
-        <div className={"flex flex-row"}>
+        <div className="flex flex-row">
           {texts.behandlersokTekst}
           <HelpText
             title={texts.sokEtterBehandlerHelpTextTitle}
-            className={"ml-1"}
+            className="ml-1"
           >
             {texts.sokEtterBehandlerHelpText}
           </HelpText>

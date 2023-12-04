@@ -3,14 +3,6 @@ import "@navikt/ds-css";
 import { Search } from "@navikt/ds-react";
 import BehandlerSearchResult from "@/components/behandler/BehandlerSearchResult";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
-import styled from "styled-components";
-
-const SearchWrapper = styled.div`
-  display: flex;
-  > * {
-    width: 30em;
-  }
-`;
 
 interface BehandlerSearchProps {
   setSelectedBehandler: (behandler?: BehandlerDTO) => void;
@@ -36,7 +28,7 @@ const BehandlerSearch = ({
     setPopoverIsOpen(true);
   };
   return (
-    <SearchWrapper>
+    <div className="w-[30rem]">
       <Search
         label={label}
         ref={searchRef}
@@ -56,7 +48,7 @@ const BehandlerSearch = ({
           setSelectedSearchResult={setselectedSearchResult}
         />
       )}
-    </SearchWrapper>
+    </div>
   );
 };
 
