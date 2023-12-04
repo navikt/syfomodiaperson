@@ -2,6 +2,8 @@ import React from "react";
 import {
   Button,
   DatePicker,
+  Heading,
+  HelpText,
   Modal,
   Radio,
   RadioGroup,
@@ -27,6 +29,9 @@ const texts = {
   missingOppfolgingsgrunn: "Vennligst angi oppfolgingsgrunn.",
   oppfolgingsgrunnLabel: "Velg oppfølgingsgrunn",
   datepickerLabel: "Frist",
+  huskelappHelpText:
+    "Her kan du opprette en oppfølgingsoppgave hvis du har behov for å følge opp den sykmeldte utenom de hendelsene Modia lager automatisk. Oppfølgingsbehovet må være hjemlet i folketrygdloven kapittel 8 og den sykmeldte kan kreve innsyn i disse oppgavene.",
+  huskelappTooltip: "Hva er huskelapp?",
 };
 
 interface FormValues {
@@ -93,8 +98,22 @@ export const HuskelappModal = ({ isOpen, toggleOpen }: HuskelappModalProps) => {
         aria-label={"huskelapp"}
         open={isOpen}
         onClose={() => toggleOpen(false)}
-        header={{ heading: texts.header }}
       >
+        <Modal.Header>
+          <div className={"flex items-center"}>
+            <Heading
+              level="1"
+              size="medium"
+              id="modal-heading"
+              className={"mr-2"}
+            >
+              {texts.header}
+            </Heading>
+            <HelpText title={texts.huskelappTooltip} className={"self-center"}>
+              {texts.huskelappHelpText}
+            </HelpText>
+          </div>
+        </Modal.Header>
         <ModalContent>
           <RadioGroup
             legend={texts.oppfolgingsgrunnLabel}
