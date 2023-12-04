@@ -114,7 +114,7 @@ function logAccordionOpened(isOpen: boolean) {
     Amplitude.logEvent({
       type: EventType.AccordionOpen,
       data: {
-        tekst: `Aktivitetskrav: Åpne sykmeldinger accordion`,
+        tekst: `Åpne sykmeldinger accordion`,
         url: window.location.href,
       },
     });
