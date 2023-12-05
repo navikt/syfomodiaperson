@@ -44,11 +44,6 @@ const AvventendeSykmelding = ({
   </div>
 );
 
-const StyledSuccessFilled = styled(CheckmarkCircleFillIcon)`
-  margin-right: 0.5em;
-  font-size: 1.5rem;
-`;
-
 const StyledSuccessStroke = styled(CheckmarkIcon)`
   margin-right: 0.2em;
   font-size: 1.5rem;
@@ -71,14 +66,18 @@ const Icon = ({ ikkeMuligGrunn }: { ikkeMuligGrunn: IkkeMuligGrunn }) => {
     case IkkeMuligGrunn.MedisinskeArsaker:
       return (
         <FirstAidKitIcon
-          title="a11y-title"
+          title="forstehjelpsutstyr-ikon"
           fontSize="1.5rem"
           className="mr-2"
         />
       );
     case IkkeMuligGrunn.ForholdPaArbeidsplassen:
       return (
-        <BriefcaseIcon title="a11y-title" fontSize="1.5rem" className="mr-2" />
+        <BriefcaseIcon
+          title="stresskoffert-ikon"
+          fontSize="1.5rem"
+          className="mr-2"
+        />
       );
   }
 };
