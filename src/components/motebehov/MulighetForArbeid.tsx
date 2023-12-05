@@ -8,7 +8,6 @@ import { BodyShort, Heading } from "@navikt/ds-react";
 import styled from "styled-components";
 import {
   BriefcaseIcon,
-  CheckmarkCircleFillIcon,
   CheckmarkIcon,
   FirstAidKitIcon,
 } from "@navikt/aksel-icons";
@@ -104,7 +103,7 @@ const AktivitetIkkeMulig = ({
     })}
     {beskrivelse && (
       <div className="ml-8">
-        <BodyShort size="small" className="">
+        <BodyShort size="small" className="!font-bold">
           {tekster.mulighetForArbeid.beskrivelse}
         </BodyShort>
         <BodyShort>{beskrivelse}</BodyShort>
