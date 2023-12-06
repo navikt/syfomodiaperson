@@ -41,7 +41,7 @@ const createOppfolgingstilfelle = (end: Date): OppfolgingstilfelleDTO => {
     arbeidstakerAtTilfelleEnd: true,
     end,
     start: daysFromToday(-10),
-    varighet: 1,
+    varighetUker: 1,
   };
 };
 

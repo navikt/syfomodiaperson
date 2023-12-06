@@ -25,7 +25,7 @@ export const generateOppfolgingstilfelle = (
     arbeidstakerAtTilfelleEnd: true,
     end: end,
     start: start,
-    varighet: 1,
+    varighetUker: 1,
   };
 };
 
