@@ -85,6 +85,7 @@ export const SendForhandsvarselSkjema = ({
     Amplitude.logEvent({
       type: EventType.OptionSelected,
       data: {
+        url: window.location.href,
         select: "Aktivitetskrav forhåndsvarsel brevmal",
         option: e.target.value,
       },

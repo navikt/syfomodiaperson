@@ -73,6 +73,7 @@ type ViewPortAndScreenResolution = {
 type OptionSelected = {
   type: EventType.OptionSelected;
   data: {
+    url: string;
     select: string;
     option: string;
   };
