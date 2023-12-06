@@ -51,6 +51,7 @@ import {
 import nock from "nock";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { NotificationContext } from "@/context/notification/NotificationContext";
+import { Brevmal } from "@/data/aktivitetskrav/forhandsvarselTexts";
 
 let queryClient: QueryClient;
 let apiMockScope: any;
@@ -439,7 +440,7 @@ describe("VurderAktivitetskrav", () => {
           fritekst: enBeskrivelse,
           document: getSendForhandsvarselDocument(
             enBeskrivelse,
-            "UTEN_ARBEIDSGIVER"
+            Brevmal.UTEN_ARBEIDSGIVER
           ),
         };
         expect(sendForhandsvarselMutation.state.variables).to.deep.equal(

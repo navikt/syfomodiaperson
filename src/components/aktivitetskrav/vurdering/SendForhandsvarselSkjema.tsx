@@ -1,8 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-import {
-  Brevmal,
-  SendForhandsvarselDTO,
-} from "@/data/aktivitetskrav/aktivitetskravTypes";
+import { SendForhandsvarselDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { useAktivitetskravVarselDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVarselDocument";
 import { addWeeks } from "@/utils/datoUtils";
 import { ButtonRow } from "@/components/Layout";
@@ -21,6 +18,7 @@ import { SkjemaHeading } from "@/components/aktivitetskrav/vurdering/SkjemaHeadi
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
+import { Brevmal } from "@/data/aktivitetskrav/forhandsvarselTexts";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -32,8 +30,13 @@ const texts = {
   avbrytButtonText: "Avbryt",
   malLabel: "Velg mal?",
   malDescription: "Noe om forskjellig tekst i brevet?",
-  malMedArbeidsgiver: "Med arbeidsgiver",
-  malUtenArbeidsgiver: "Uten arbeidsgiver",
+};
+
+const brevMalTexts: {
+  [key in Brevmal]: string;
+} = {
+  [Brevmal.MED_ARBEIDSGIVER]: "Med arbeidsgiver",
+  [Brevmal.UTEN_ARBEIDSGIVER]: "Uten arbeidsgiver",
 };
 
 const forhandsvarselFrist = addWeeks(new Date(), 3);
@@ -43,7 +46,7 @@ export const SendForhandsvarselSkjema = ({
   aktivitetskravUuid,
 }: VurderAktivitetskravSkjemaProps) => {
   const sendForhandsvarsel = useSendForhandsvarsel(aktivitetskravUuid);
-  const [brevmal, setBrevmal] = useState<Brevmal>("MED_ARBEIDSGIVER");
+  const [brevmal, setBrevmal] = useState<Brevmal>(Brevmal.MED_ARBEIDSGIVER);
   const {
     register,
     watch,
@@ -102,8 +105,11 @@ export const SendForhandsvarselSkjema = ({
         description={texts.malDescription}
         onChange={handleBrevmalChanged}
       >
-        <option value="MED_ARBEIDSGIVER">{texts.malMedArbeidsgiver}</option>
-        <option value="UTEN_ARBEIDSGIVER">{texts.malUtenArbeidsgiver}</option>
+        {Object.keys(brevMalTexts).map((key, index) => (
+          <option key={index} value={key as Brevmal}>
+            {brevMalTexts[key]}
+          </option>
+        ))}
       </Select>
       <BegrunnelseTextarea
         className="mb-8"

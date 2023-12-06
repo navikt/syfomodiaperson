@@ -9,7 +9,10 @@ import { generateUUID } from "../../src/utils/uuidUtils";
 import { VEILEDER_DEFAULT } from "../common/mockConstants";
 import { daysFromToday } from "../../test/testUtils";
 import { DocumentComponentType } from "../../src/data/documentcomponent/documentComponentTypes";
-import { getForhandsvarselTexts } from "../../src/data/aktivitetskrav/forhandsvarselTexts";
+import {
+  Brevmal,
+  getForhandsvarselTexts,
+} from "../../src/data/aktivitetskrav/forhandsvarselTexts";
 
 const aktivitetskravNy: AktivitetskravDTO = {
   uuid: generateUUID(),
@@ -90,7 +93,7 @@ const getForhandsvarselDocument = (
 ) => {
   const sendForhandsvarselTexts = getForhandsvarselTexts({
     frist,
-    mal: "MED_ARBEIDSGIVER",
+    mal: Brevmal.MED_ARBEIDSGIVER,
   });
   const documentComponents = [
     {

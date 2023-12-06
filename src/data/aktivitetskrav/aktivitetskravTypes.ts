@@ -87,5 +87,3 @@ export interface SendForhandsvarselDTO {
 export interface NewAktivitetskravDTO {
   previousAktivitetskravUuid: string;
 }
-
-export type Brevmal = "MED_ARBEIDSGIVER" | "UTEN_ARBEIDSGIVER";

@@ -6,8 +6,10 @@ import {
   createHeaderH3,
   createParagraph,
 } from "@/utils/documentComponentUtils";
-import { Brevmal } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { getForhandsvarselTexts } from "@/data/aktivitetskrav/forhandsvarselTexts";
+import {
+  Brevmal,
+  getForhandsvarselTexts,
+} from "@/data/aktivitetskrav/forhandsvarselTexts";
 
 type ForhandsvarselDocumentValues = {
   begrunnelse: string;

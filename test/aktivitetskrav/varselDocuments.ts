@@ -4,14 +4,16 @@ import {
 } from "@/data/documentcomponent/documentComponentTypes";
 import { VEILEDER_DEFAULT } from "../../mock/common/mockConstants";
 import { addWeeks } from "@/utils/datoUtils";
-import { getForhandsvarselTexts } from "@/data/aktivitetskrav/forhandsvarselTexts";
-import { Brevmal } from "@/data/aktivitetskrav/aktivitetskravTypes";
+import {
+  Brevmal,
+  getForhandsvarselTexts,
+} from "@/data/aktivitetskrav/forhandsvarselTexts";
 
 const expectedFristDate = addWeeks(new Date(), 3);
 
 export const getSendForhandsvarselDocument = (
   beskrivelse: string,
-  mal: Brevmal = "MED_ARBEIDSGIVER"
+  mal: Brevmal = Brevmal.MED_ARBEIDSGIVER
 ): DocumentComponentDto[] => {
   const sendForhandsvarselTexts = getForhandsvarselTexts({
     frist: expectedFristDate,

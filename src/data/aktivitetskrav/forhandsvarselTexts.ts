@@ -1,5 +1,9 @@
 import { tilDatoMedManedNavn } from "../../utils/datoUtils";
-import { Brevmal } from "@/data/aktivitetskrav/aktivitetskravTypes";
+
+export enum Brevmal {
+  MED_ARBEIDSGIVER = "MED_ARBEIDSGIVER",
+  UTEN_ARBEIDSGIVER = "UTEN_ARBEIDSGIVER",
+}
 
 type ForhandsvarselTextsOptions = {
   mal: Brevmal;
@@ -45,9 +49,9 @@ export const getForhandsvarselTexts = ({
 
 const tiltak3Text = (mal: Brevmal): string => {
   switch (mal) {
-    case "MED_ARBEIDSGIVER":
+    case Brevmal.MED_ARBEIDSGIVER:
       return "Du kan få unntak fra aktivitetsplikten dersom arbeidsgiveren din gir en skriftlig begrunnelse for at det ikke er mulig å legge til rette for at du kan jobbe, eller dersom din lege dokumenterer at medisinske grunner klart er til hinder for arbeidsrelatert aktivitet.";
-    case "UTEN_ARBEIDSGIVER":
+    case Brevmal.UTEN_ARBEIDSGIVER:
       return "Du kan få unntak fra aktivitetsplikten dersom din lege dokumenterer at medisinske grunner klart er til hinder for arbeidsrelatert aktivitet.";
   }
 };
