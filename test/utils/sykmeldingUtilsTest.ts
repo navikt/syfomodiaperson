@@ -475,6 +475,7 @@ describe("sykmeldingUtils", () => {
         arbeidstakerAtTilfelleEnd: true,
         start: startDate,
         end: endDate,
+        varighetUker: 16,
         virksomhetsnummerList: ["123", "321", "999"],
       };
 
