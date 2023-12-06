@@ -74,7 +74,7 @@ type OptionSelected = {
   type: EventType.OptionSelected;
   data: {
     url: string;
-    select: string;
+    tekst: string;
     option: string;
   };
 };

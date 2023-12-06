@@ -86,7 +86,7 @@ export const SendForhandsvarselSkjema = ({
       type: EventType.OptionSelected,
       data: {
         url: window.location.href,
-        select: "Aktivitetskrav forhåndsvarsel brevmal",
+        tekst: "Aktivitetskrav forhåndsvarsel brevmal",
         option: e.target.value,
       },
     });
