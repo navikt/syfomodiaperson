@@ -351,6 +351,21 @@ describe("VurderAktivitetskrav", () => {
       expect(screen.queryByRole("button", { name: "Avvent" })).to.not.exist;
     });
 
+    it("Viser select for valg av mal med 'Med arbeidsgiver' forhåndsvalgt", () => {
+      renderVurderAktivitetskrav(aktivitetskrav);
+      clickTab(tabTexts["FORHANDSVARSEL"]);
+
+      const velgMalSelect = screen.getByRole("combobox");
+      expect(
+        within(velgMalSelect).getByRole("option", { name: "Med arbeidsgiver" })
+      ).to.exist;
+      expect(
+        within(velgMalSelect).getByRole("option", { name: "Uten arbeidsgiver" })
+      ).to.exist;
+      expect(screen.getByDisplayValue("Med arbeidsgiver")).to.exist;
+      expect(screen.queryByDisplayValue("Uten arbeidsgiver")).to.not.exist;
+    });
+
     it("Send forhåndsvarsel with beskrivelse filled in, and reset form after submit", async () => {
       renderVurderAktivitetskrav(aktivitetskrav);
       stubVurderAktivitetskravForhandsvarselApi(apiMockScope);
@@ -389,6 +404,54 @@ describe("VurderAktivitetskrav", () => {
         () => expect(screen.queryByText(enBeskrivelse)).to.not.exist
       );
     });
+
+    it("Send forhåndsvarsel with mal 'Uten arbeidsgiver'", async () => {
+      renderVurderAktivitetskrav(aktivitetskrav);
+      stubVurderAktivitetskravForhandsvarselApi(apiMockScope);
+      const beskrivelseLabel = "Begrunnelse (obligatorisk)";
+
+      clickTab(tabTexts["FORHANDSVARSEL"]);
+
+      expect(
+        screen.getByRole("heading", {
+          name: "Send forhåndsvarsel",
+        })
+      ).to.exist;
+
+      expect(screen.getByRole("textbox", { name: beskrivelseLabel })).to.exist;
+      expect(screen.getByText("Forhåndsvisning")).to.exist;
+
+      const beskrivelseInput = getTextInput(beskrivelseLabel);
+      changeTextInput(beskrivelseInput, enBeskrivelse);
+
+      const velgMalSelect = screen.getByRole("combobox");
+      fireEvent.change(velgMalSelect, {
+        target: { value: "UTEN_ARBEIDSGIVER" },
+      });
+
+      clickButton("Send");
+
+      await waitFor(() => {
+        const sendForhandsvarselMutation = queryClient
+          .getMutationCache()
+          .getAll()[0];
+        const expectedVurdering: SendForhandsvarselDTO = {
+          fritekst: enBeskrivelse,
+          document: getSendForhandsvarselDocument(
+            enBeskrivelse,
+            "UTEN_ARBEIDSGIVER"
+          ),
+        };
+        expect(sendForhandsvarselMutation.state.variables).to.deep.equal(
+          expectedVurdering
+        );
+      });
+
+      await waitFor(
+        () => expect(screen.queryByText(enBeskrivelse)).to.not.exist
+      );
+    });
+
     it("IKKE_OPPFYLT is present when status is forhandsvarsel and it is expired", () => {
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(

@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import { SendForhandsvarselDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
+import React, { ChangeEvent, useState } from "react";
+import {
+  Brevmal,
+  SendForhandsvarselDTO,
+} from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { useAktivitetskravVarselDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVarselDocument";
 import { addWeeks } from "@/utils/datoUtils";
 import { ButtonRow } from "@/components/Layout";
-import { Button } from "@navikt/ds-react";
+import { Button, Select } from "@navikt/ds-react";
 import { useSendForhandsvarsel } from "@/data/aktivitetskrav/useSendForhandsvarsel";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import {
@@ -27,6 +30,10 @@ const texts = {
   missingBeskrivelse: "Vennligst angi begrunnelse",
   sendVarselButtonText: "Send",
   avbrytButtonText: "Avbryt",
+  malLabel: "Velg mal?",
+  malDescription: "Noe om forskjellig tekst i brevet?",
+  malMedArbeidsgiver: "Med arbeidsgiver",
+  malUtenArbeidsgiver: "Uten arbeidsgiver",
 };
 
 const forhandsvarselFrist = addWeeks(new Date(), 3);
@@ -36,6 +43,7 @@ export const SendForhandsvarselSkjema = ({
   aktivitetskravUuid,
 }: VurderAktivitetskravSkjemaProps) => {
   const sendForhandsvarsel = useSendForhandsvarsel(aktivitetskravUuid);
+  const [brevmal, setBrevmal] = useState<Brevmal>("MED_ARBEIDSGIVER");
   const {
     register,
     watch,
@@ -49,10 +57,11 @@ export const SendForhandsvarselSkjema = ({
   const submit = (values: AktivitetskravSkjemaValues) => {
     const forhandsvarselDTO: SendForhandsvarselDTO = {
       fritekst: values.begrunnelse,
-      document: getForhandsvarselDocument(
-        values.begrunnelse,
-        forhandsvarselFrist
-      ),
+      document: getForhandsvarselDocument({
+        mal: brevmal,
+        begrunnelse: values.begrunnelse,
+        frist: forhandsvarselFrist,
+      }),
     };
     if (aktivitetskravUuid) {
       sendForhandsvarsel.mutate(forhandsvarselDTO, {
@@ -69,9 +78,32 @@ export const SendForhandsvarselSkjema = ({
     });
   };
 
+  const handleBrevmalChanged = (
+    e: ChangeEvent<HTMLSelectElement> & { target: { value: Brevmal } }
+  ) => {
+    setBrevmal(e.target.value);
+    Amplitude.logEvent({
+      type: EventType.OptionSelected,
+      data: {
+        select: "Aktivitetskrav forhåndsvarsel brevmal",
+        option: e.target.value,
+      },
+    });
+  };
+
   return (
     <form onSubmit={handleSubmit(submit)}>
       <SkjemaHeading title={texts.title} />
+      <Select
+        size="small"
+        className="w-fit mb-4"
+        label={texts.malLabel}
+        description={texts.malDescription}
+        onChange={handleBrevmalChanged}
+      >
+        <option value="MED_ARBEIDSGIVER">{texts.malMedArbeidsgiver}</option>
+        <option value="UTEN_ARBEIDSGIVER">{texts.malUtenArbeidsgiver}</option>
+      </Select>
       <BegrunnelseTextarea
         className="mb-8"
         {...register("begrunnelse", {
@@ -102,7 +134,11 @@ export const SendForhandsvarselSkjema = ({
         isOpen={showForhandsvisning}
         handleClose={() => setShowForhandsvisning(false)}
         getDocumentComponents={() =>
-          getForhandsvarselDocument(watch("begrunnelse"), forhandsvarselFrist)
+          getForhandsvarselDocument({
+            mal: brevmal,
+            begrunnelse: watch("begrunnelse"),
+            frist: forhandsvarselFrist,
+          })
         }
       />
     </form>

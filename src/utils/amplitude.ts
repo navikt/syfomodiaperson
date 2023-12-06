@@ -13,6 +13,7 @@ export enum EventType {
   AccordionOpen = "accordion åpnet",
   OppfolgingsgrunnSendt = "oppfolgingsgrunn sendt",
   ViewPortAndScreenResolution = "viewport og skjermstørrelse",
+  OptionSelected = "alternativ valgt",
 }
 
 type EventPageView = {
@@ -69,13 +70,23 @@ type ViewPortAndScreenResolution = {
   };
 };
 
+type OptionSelected = {
+  type: EventType.OptionSelected;
+  data: {
+    select: string;
+    option: string;
+  };
+};
+
 type Event =
   | EventPageView
   | EventButtonClick
   | Navigation
   | EventAccordionOpen
   | OppfolgingsgrunnSendt
-  | ViewPortAndScreenResolution;
+  | ViewPortAndScreenResolution
+  | OppfolgingsgrunnSendt
+  | OptionSelected;
 
 export const logEvent = (event: Event) =>
   client.logEvent(event.type, { ...event.data });
