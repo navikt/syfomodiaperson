@@ -84,7 +84,6 @@ type Event =
   | EventButtonClick
   | Navigation
   | EventAccordionOpen
-  | OppfolgingsgrunnSendt
   | ViewPortAndScreenResolution
   | OppfolgingsgrunnSendt
   | OptionSelected;

@@ -36,8 +36,8 @@ const texts = {
 const brevMalTexts: {
   [key in Brevmal]: string;
 } = {
-  [Brevmal.MED_ARBEIDSGIVER]: "Med arbeidsgiver",
-  [Brevmal.UTEN_ARBEIDSGIVER]: "Uten arbeidsgiver",
+  [Brevmal.MED_ARBEIDSGIVER]: "Har arbeidsgiver",
+  [Brevmal.UTEN_ARBEIDSGIVER]: "Har ikke arbeidsgiver",
 };
 
 const forhandsvarselFrist = addWeeks(new Date(), 3);

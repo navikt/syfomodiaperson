@@ -358,13 +358,15 @@ describe("VurderAktivitetskrav", () => {
 
       const velgMalSelect = screen.getByRole("combobox");
       expect(
-        within(velgMalSelect).getByRole("option", { name: "Med arbeidsgiver" })
+        within(velgMalSelect).getByRole("option", { name: "Har arbeidsgiver" })
       ).to.exist;
       expect(
-        within(velgMalSelect).getByRole("option", { name: "Uten arbeidsgiver" })
+        within(velgMalSelect).getByRole("option", {
+          name: "Har ikke arbeidsgiver",
+        })
       ).to.exist;
-      expect(screen.getByDisplayValue("Med arbeidsgiver")).to.exist;
-      expect(screen.queryByDisplayValue("Uten arbeidsgiver")).to.not.exist;
+      expect(screen.getByDisplayValue("Har arbeidsgiver")).to.exist;
+      expect(screen.queryByDisplayValue("Har ikke arbeidsgiver")).to.not.exist;
     });
 
     it("Send forhåndsvarsel with beskrivelse filled in, and reset form after submit", async () => {
