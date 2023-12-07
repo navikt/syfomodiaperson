@@ -81,7 +81,7 @@ export const logEvent = (event: Event) =>
   client.logEvent(event.type, { ...event.data });
 
 export function logViewportAndScreenSize() {
-  client.logEvent(EventType.OppfolgingsgrunnSendt, {
+  client.logEvent(EventType.ViewPortAndScreenResolution, {
     viewport: {
       width: window.innerWidth,
       height: window.innerHeight,
