@@ -50,7 +50,7 @@ export const getForhandsvarselTexts = ({
 const tiltak3Text = (mal: Brevmal): string => {
   switch (mal) {
     case Brevmal.MED_ARBEIDSGIVER:
-      return "Du kan få unntak fra aktivitetsplikten dersom arbeidsgiveren din gir en skriftlig begrunnelse for at det ikke er mulig å legge til rette for at du kan jobbe, eller dersom din lege dokumenterer at medisinske grunner klart er til hinder for arbeidsrelatert aktivitet.";
+      return "Du kan få unntak fra aktivitetsplikten dersom arbeidsgiveren din gir en skriftlig begrunnelse for hvorfor det ikke er mulig å legge til rette for at du kan jobbe, eller dersom din lege dokumenterer at medisinske grunner klart er til hinder for arbeidsrelatert aktivitet.";
     case Brevmal.UTEN_ARBEIDSGIVER:
       return "Du kan få unntak fra aktivitetsplikten dersom din lege dokumenterer at medisinske grunner klart er til hinder for arbeidsrelatert aktivitet.";
   }
