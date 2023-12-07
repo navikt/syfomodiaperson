@@ -3,7 +3,7 @@ import { SendForhandsvarselDTO } from "@/data/aktivitetskrav/aktivitetskravTypes
 import { useAktivitetskravVarselDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVarselDocument";
 import { addWeeks } from "@/utils/datoUtils";
 import { ButtonRow } from "@/components/Layout";
-import { Button, Select } from "@navikt/ds-react";
+import { Button, HelpText, Label, Select } from "@navikt/ds-react";
 import { useSendForhandsvarsel } from "@/data/aktivitetskrav/useSendForhandsvarsel";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import {
@@ -28,8 +28,9 @@ const texts = {
   missingBeskrivelse: "Vennligst angi begrunnelse",
   sendVarselButtonText: "Send",
   avbrytButtonText: "Avbryt",
-  malLabel: "Velg mal?",
-  malDescription: "Noe om forskjellig tekst i brevet?",
+  malLabel: "Velg arbeidssituasjon",
+  malHelptext:
+    "Her kan du velge mellom ulike brevmaler som er tilpasset den sykmeldtes arbeidssituasjon",
 };
 
 const brevMalTexts: {
@@ -101,8 +102,12 @@ export const SendForhandsvarselSkjema = ({
       <Select
         size="small"
         className="w-fit mb-4"
-        label={texts.malLabel}
-        description={texts.malDescription}
+        label={
+          <div className="flex gap-1 items-center">
+            <Label size="small">{texts.malLabel}</Label>
+            <HelpText placement="right">{texts.malHelptext}</HelpText>
+          </div>
+        }
         onChange={handleBrevmalChanged}
       >
         {Object.keys(brevMalTexts).map((key, index) => (
