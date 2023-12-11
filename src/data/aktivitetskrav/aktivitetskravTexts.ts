@@ -4,6 +4,7 @@ import {
   UnntakVurderingArsak,
   VurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
+import { IkkeAktuellArsak } from "@/components/aktivitetskrav/vurdering/IkkeAktuellAktivitetskravSkjema";
 
 export type VurderingArsakTexts = {
   [key in VurderingArsak]?: string;
@@ -32,8 +33,16 @@ export const avventVurderingArsakTexts: VurderingArsakTexts = {
   [AvventVurderingArsak.ANNET]: "Annet",
 };
 
+export const ikkeAktuellVurderingArsakTexts: VurderingArsakTexts = {
+  [IkkeAktuellArsak.INNVILGET_VTA]: "Innbygger er innvilget VTA",
+  [IkkeAktuellArsak.MOTTAR_AAP]: "Innbygger mottar AAP",
+  [IkkeAktuellArsak.ER_DOD]: "Innbygger er død",
+  [IkkeAktuellArsak.ANNET]: "Annet",
+};
+
 export const vurderingArsakTexts: VurderingArsakTexts = {
   ...oppfyltVurderingArsakTexts,
   ...unntakVurderingArsakTexts,
   ...avventVurderingArsakTexts,
+  ...ikkeAktuellVurderingArsakTexts,
 };

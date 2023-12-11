@@ -52,6 +52,7 @@ import nock from "nock";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { NotificationContext } from "@/context/notification/NotificationContext";
 import { Brevmal } from "@/data/aktivitetskrav/forhandsvarselTexts";
+import { IkkeAktuellArsak } from "@/components/aktivitetskrav/vurdering/IkkeAktuellAktivitetskravSkjema";
 
 let queryClient: QueryClient;
 let apiMockScope: any;
@@ -519,6 +520,9 @@ describe("VurderAktivitetskrav", () => {
         )
       ).to.exist;
 
+      const arsakRadioButton = screen.getByText("Innbygger er innvilget VTA");
+      fireEvent.click(arsakRadioButton);
+
       const beskrivelseInputs = screen.getByRole("textbox", {
         name: "Begrunnelse",
         hidden: true,
@@ -537,7 +541,7 @@ describe("VurderAktivitetskrav", () => {
         const expectedVurdering: CreateAktivitetskravVurderingDTO = {
           status: AktivitetskravStatus.IKKE_AKTUELL,
           beskrivelse: enBeskrivelse,
-          arsaker: [],
+          arsaker: [IkkeAktuellArsak.INNVILGET_VTA],
         };
         expect(vurderIkkeAktuellMutation.state.variables).to.deep.equal(
           expectedVurdering
