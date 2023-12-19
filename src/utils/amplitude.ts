@@ -1,7 +1,7 @@
 import amplitude from "amplitude-js";
 import { erProd } from "@/utils/miljoUtil";
 import { Oppfolgingsgrunn } from "@/data/huskelapp/huskelappTypes";
-import { IkkeAktuellArsak } from "@/components/aktivitetskrav/vurdering/IkkeAktuellAktivitetskravSkjema";
+import { IkkeAktuellArsak } from "@/data/aktivitetskrav/aktivitetskravTypes";
 
 /**
  See documentation for naming guidelines: https://github.com/navikt/analytics-taxonomy
