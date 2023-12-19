@@ -1,6 +1,7 @@
 import {
   AktivitetskravStatus,
   CreateAktivitetskravVurderingDTO,
+  IkkeAktuellArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import React from "react";
 import { useVurderAktivitetskrav } from "@/data/aktivitetskrav/useVurderAktivitetskrav";
@@ -36,13 +37,6 @@ interface IkkeAktuellAktivitetskravSkjemaProps
 interface SkjemaValues {
   arsak: IkkeAktuellArsak;
   begrunnelse?: string;
-}
-
-export enum IkkeAktuellArsak {
-  INNVILGET_VTA = "INNVILGET_VTA",
-  MOTTAR_AAP = "MOTTAR_AAP",
-  ER_DOD = "ER_DOD",
-  ANNET = "ANNET",
 }
 
 function logArsakToAmplitude(arsak: IkkeAktuellArsak) {

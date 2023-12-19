@@ -1,10 +1,10 @@
 import {
   AvventVurderingArsak,
+  IkkeAktuellArsak,
   OppfyltVurderingArsak,
   UnntakVurderingArsak,
   VurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { IkkeAktuellArsak } from "@/components/aktivitetskrav/vurdering/IkkeAktuellAktivitetskravSkjema";
 
 export type VurderingArsakTexts = {
   [key in VurderingArsak]?: string;

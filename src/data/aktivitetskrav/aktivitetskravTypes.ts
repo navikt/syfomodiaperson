@@ -1,5 +1,4 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
-import { IkkeAktuellArsak } from "@/components/aktivitetskrav/vurdering/IkkeAktuellAktivitetskravSkjema";
 
 export enum AktivitetskravStatus {
   NY = "NY",
@@ -33,6 +32,13 @@ export enum OppfyltVurderingArsak {
   FRISKMELDT = "FRISKMELDT",
   GRADERT = "GRADERT",
   TILTAK = "TILTAK",
+}
+
+export enum IkkeAktuellArsak {
+  INNVILGET_VTA = "INNVILGET_VTA",
+  MOTTAR_AAP = "MOTTAR_AAP",
+  ER_DOD = "ER_DOD",
+  ANNET = "ANNET",
 }
 
 export interface AktivitetskravDTO {
