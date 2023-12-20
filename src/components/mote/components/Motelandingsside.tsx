@@ -14,7 +14,6 @@ import { DialogmoteStatus } from "@/data/dialogmote/types/dialogmoteTypes";
 import { useDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { TREDELING_BREAKING_POINT, TredeltSide } from "@/sider/TredeltSide";
-import UtdragFraSykefravaeret from "../../utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { useScreenWidth } from "@/hooks/tredeling/useScreenWidth";
 
 const texts = {
