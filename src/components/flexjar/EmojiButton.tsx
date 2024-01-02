@@ -1,32 +1,32 @@
 import React from "react";
-import { Emoji, emojiProps } from "./FeedbackEmojis";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
 import { Label } from "@navikt/ds-react";
+import { emojis, EmojiType } from "@/components/flexjar/feedbackEmojis";
 
 interface EmojiButtonProps {
-  emojiType: Emoji;
-  selectedEmoji: Emoji | undefined;
-  setSelectedEmoji: (emoji: Emoji | undefined) => void;
+  emojiType: EmojiType;
+  selectedEmojiType: EmojiType | undefined;
+  setSelectedEmojiType: (emoji: EmojiType | undefined) => void;
 }
 
 export const EmojiButton = ({
   emojiType,
-  selectedEmoji,
-  setSelectedEmoji,
+  selectedEmojiType,
+  setSelectedEmojiType,
 }: EmojiButtonProps) => {
-  const emojiProp = emojiProps[emojiType];
-  const isActive = selectedEmoji === emojiType;
+  const emoji = emojis[emojiType];
+  const isActive = selectedEmojiType === emojiType;
 
   const handleOnClick = () => {
     if (isActive) {
-      setSelectedEmoji(undefined);
+      setSelectedEmojiType(undefined);
     } else {
-      setSelectedEmoji(emojiType);
+      setSelectedEmojiType(emojiType);
       Amplitude.logEvent({
         type: EventType.ButtonClick,
         data: {
-          tekst: `${emojiProp.score}`,
+          tekst: `${emoji.score}`,
           url: window.location.href,
         },
       });
@@ -40,11 +40,8 @@ export const EmojiButton = ({
       onClick={handleOnClick}
       className="border-0 flex flex-col items-center cursor-pointer bg-inherit"
     >
-      <emojiProp.figure
-        width="40"
-        fill={isActive ? emojiProp.color : undefined}
-      />
-      <Label className="text-sm">{emojiProp.label}</Label>
+      <emoji.figure width="40" fill={isActive ? emoji.color : undefined} />
+      <Label className="text-sm">{emoji.label}</Label>
     </button>
   );
 };

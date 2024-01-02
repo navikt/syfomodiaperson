@@ -12,10 +12,10 @@ import {
   FlexjarFeedbackDTO,
   useFlexjarFeedback,
 } from "@/data/flexjar/useFlexjarFeedback";
-import { Emoji, emojiProps } from "@/components/flexjar/FeedbackEmojis";
 import { EmojiButton } from "@/components/flexjar/EmojiButton";
 import { ChevronDownIcon, ChevronUpIcon } from "@navikt/aksel-icons";
 import { defaultErrorTexts } from "@/api/errors";
+import { emojis, EmojiType } from "@/components/flexjar/feedbackEmojis";
 
 const texts = {
   apneKnapp: "Gi oss tilbakemelding",
@@ -37,17 +37,17 @@ export const Flexjar = ({ side }: FlexjarProps) => {
   const [apen, setApen] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>();
   const [feedback, setFeedback] = useState<string>();
-  const [emoji, setEmoji] = useState<Emoji>();
+  const [emojiType, setEmojiType] = useState<EmojiType>();
   const sendFeedback = useFlexjarFeedback();
 
   useEffect(() => {
-    if (!!emoji) {
+    if (!!emojiType) {
       setIsValid(true);
     }
-  }, [emoji]);
+  }, [emojiType]);
 
   const handleSubmit = () => {
-    const svar = emoji && `${emojiProps[emoji].score}`;
+    const svar = emojiType && `${emojis[emojiType].score}`;
     if (svar) {
       const body: FlexjarFeedbackDTO = {
         feedbackId: side,
@@ -97,16 +97,16 @@ export const Flexjar = ({ side }: FlexjarProps) => {
                 background={"surface-default"}
                 className="flex flex-row gap-2"
               >
-                {Object.keys(emojiProps).map((emojiKey, index) => (
+                {Object.keys(emojis).map((emojiKey, index) => (
                   <EmojiButton
-                    emojiType={emojiKey as Emoji}
-                    selectedEmoji={emoji}
-                    setSelectedEmoji={setEmoji}
+                    emojiType={emojiKey as EmojiType}
+                    selectedEmojiType={emojiType}
+                    setSelectedEmojiType={setEmojiType}
                     key={index}
                   />
                 ))}
               </Box>
-              {emoji && (
+              {emojiType && (
                 <Textarea
                   maxLength={500}
                   minRows={3}
