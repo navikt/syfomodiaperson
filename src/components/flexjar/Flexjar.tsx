@@ -20,7 +20,6 @@ import { emojis, EmojiType } from "@/components/flexjar/feedbackEmojis";
 const texts = {
   apneKnapp: "Gi oss tilbakemelding",
   anonym: "Anonym tilbakemelding",
-  sporsmal: "Hvordan opplever du denne siden?",
   alert:
     "Ikke skriv inn navn eller andre personopplysninger. Tilbakemeldingen blir brukt til å forbedre tjenesten. Ønsker du å melde feil må det meldes inn i Porten.",
   feedbackLabel: "Fortell oss om din opplevelse (valgfritt)",
@@ -84,7 +83,7 @@ export const Flexjar = ({ side }: FlexjarProps) => {
           className="flex flex-col gap-4 w-[25rem]"
         >
           <Box className="flex flex-col">
-            <Label>{texts.sporsmal}</Label>
+            <Label>{`Hvordan opplever du ${side}-siden?`}</Label>
             <BodyShort size="small">{texts.anonym}</BodyShort>
           </Box>
           {sendFeedback.isSuccess ? (

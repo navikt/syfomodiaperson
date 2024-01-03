@@ -46,7 +46,7 @@ describe("Flexjar", () => {
     renderFlexjar();
     clickButton("Gi oss tilbakemelding");
 
-    expect(screen.getByText("Hvordan opplever du denne siden?")).to.exist;
+    expect(screen.getByText("Hvordan opplever du Test-siden?")).to.exist;
     const buttons = screen.getAllByRole("button");
     expect(buttons).to.have.length(7);
     expect(buttons[1].textContent).to.equal("Horribel");
