@@ -1,90 +1,71 @@
-import React, { useState } from "react";
-import { PERSONKORTVISNING_TYPE } from "@/konstanter";
+import React, { ReactElement } from "react";
 import PersonkortHeader from "./PersonkortHeader/PersonkortHeader";
-import PersonkortVisning from "./PersonkortVisning";
 import Ekspanderbartpanel from "nav-frontend-ekspanderbartpanel";
+import { Tabs } from "@navikt/ds-react";
+import PersonkortSykmeldt from "@/components/personkort/PersonkortSykmeldt";
+import PersonkortLedere from "@/components/personkort/ledere/PersonkortLedere";
+import PersonkortLege from "@/components/personkort/PersonkortLege";
+import PersonkortEnhet from "@/components/personkort/PersonkortEnhet";
 
-const texts = {
-  buttons: {
-    sykmeldt: "Kontaktinformasjon",
-    leder: "Nærmeste leder",
-    fastlege: "Fastlege",
-    enhet: "Behandlende enhet",
+enum TabType {
+  SYKMELDT = "SYKMELDT",
+  LEDER = "LEDER",
+  LEGE = "LEGE",
+  ENHET = "ENHET",
+}
+
+interface Tab {
+  label: string;
+}
+
+const tabs: Record<TabType, Tab> = {
+  SYKMELDT: {
+    label: "Kontaktinformasjon",
+  },
+  LEDER: {
+    label: "Nærmeste leder",
+  },
+  LEGE: {
+    label: "Fastlege",
+  },
+  ENHET: {
+    label: "Behandlende enhet",
   },
 };
 
+interface PersonkortVisningProps {
+  tab: TabType;
+}
+
+const PersonkortVisning = ({ tab }: PersonkortVisningProps): ReactElement => {
+  switch (tab) {
+    case TabType.SYKMELDT:
+      return <PersonkortSykmeldt />;
+    case TabType.ENHET:
+      return <PersonkortEnhet />;
+    case TabType.LEDER:
+      return <PersonkortLedere />;
+    case TabType.LEGE:
+      return <PersonkortLege />;
+  }
+};
+
 const Personkort = () => {
-  const [visning, setVisning] = useState(PERSONKORTVISNING_TYPE.SYKMELDT);
-
   return (
-    <div className="personkort">
-      <Ekspanderbartpanel tittel={<PersonkortHeader />}>
-        <div>
-          <ul>
-            <li>
-              <button
-                className={`${
-                  visning === PERSONKORTVISNING_TYPE.SYKMELDT &&
-                  "personkort__knapp--aktiv"
-                }`}
-                aria-pressed={visning === PERSONKORTVISNING_TYPE.SYKMELDT}
-                onClick={() => {
-                  setVisning(PERSONKORTVISNING_TYPE.SYKMELDT);
-                }}
-              >
-                {texts.buttons.sykmeldt}
-              </button>
-            </li>
-            <li>
-              <button
-                className={`${
-                  visning === PERSONKORTVISNING_TYPE.LEDER &&
-                  "personkort__knapp--aktiv"
-                }`}
-                aria-pressed={visning === PERSONKORTVISNING_TYPE.LEDER}
-                onClick={() => {
-                  setVisning(PERSONKORTVISNING_TYPE.LEDER);
-                }}
-              >
-                {texts.buttons.leder}
-              </button>
-            </li>
-            <li>
-              <button
-                className={`${
-                  visning === PERSONKORTVISNING_TYPE.LEGE &&
-                  "personkort__knapp--aktiv"
-                }`}
-                aria-pressed={visning === PERSONKORTVISNING_TYPE.LEGE}
-                onClick={() => {
-                  setVisning(PERSONKORTVISNING_TYPE.LEGE);
-                }}
-              >
-                {texts.buttons.fastlege}
-              </button>
-            </li>
-            <li>
-              <button
-                className={`${
-                  visning === PERSONKORTVISNING_TYPE.ENHET &&
-                  "personkort__knapp--aktiv"
-                }`}
-                aria-pressed={visning === PERSONKORTVISNING_TYPE.ENHET}
-                onClick={() => {
-                  setVisning(PERSONKORTVISNING_TYPE.ENHET);
-                }}
-              >
-                {texts.buttons.enhet}
-              </button>
-            </li>
-          </ul>
-
-          <div aria-live="polite">
-            <PersonkortVisning visning={visning} />
-          </div>
-        </div>
-      </Ekspanderbartpanel>
-    </div>
+    <Ekspanderbartpanel tittel={<PersonkortHeader />} className="mb-2">
+      <Tabs size="small" defaultValue={TabType.SYKMELDT}>
+        <Tabs.List className="mt-4">
+          {Object.entries(tabs).map(([tab, { label }], index) => (
+            <Tabs.Tab value={tab} label={label} key={index} />
+          ))}
+        </Tabs.List>
+        {Object.keys(tabs).map((value, index) => (
+          <Tabs.Panel key={index} value={value} className="mt-8">
+            <PersonkortVisning tab={value as TabType} />
+          </Tabs.Panel>
+        ))}
+      </Tabs>
+    </Ekspanderbartpanel>
   );
 };
 
