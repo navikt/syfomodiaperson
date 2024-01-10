@@ -10,6 +10,7 @@ export interface BrukerinfoDTO {
   arbeidssituasjon: string;
   dodsdato: string | null;
   tilrettelagtKommunikasjon: TilrettelagtKommunikasjon | null;
+  sikkerhetstiltak: Sikkerhetstiltak[];
 }
 
 interface TilrettelagtKommunikasjon {
@@ -19,4 +20,11 @@ interface TilrettelagtKommunikasjon {
 
 interface Sprak {
   value: string | null;
+}
+
+interface Sikkerhetstiltak {
+  type: string;
+  beskrivelse: string;
+  gyldigFom: Date;
+  gyldigTom: Date;
 }
