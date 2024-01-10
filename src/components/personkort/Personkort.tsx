@@ -7,18 +7,18 @@ import PersonkortLedere from "@/components/personkort/ledere/PersonkortLedere";
 import PersonkortLege from "@/components/personkort/PersonkortLege";
 import PersonkortEnhet from "@/components/personkort/PersonkortEnhet";
 
-enum TabType {
+enum Tab {
   SYKMELDT = "SYKMELDT",
   LEDER = "LEDER",
   LEGE = "LEGE",
   ENHET = "ENHET",
 }
 
-interface Tab {
+interface TabProps {
   label: string;
 }
 
-const tabs: Record<TabType, Tab> = {
+const tabs: Record<Tab, TabProps> = {
   SYKMELDT: {
     label: "Kontaktinformasjon",
   },
@@ -34,18 +34,18 @@ const tabs: Record<TabType, Tab> = {
 };
 
 interface PersonkortVisningProps {
-  tab: TabType;
+  tab: Tab;
 }
 
 const PersonkortVisning = ({ tab }: PersonkortVisningProps): ReactElement => {
   switch (tab) {
-    case TabType.SYKMELDT:
+    case Tab.SYKMELDT:
       return <PersonkortSykmeldt />;
-    case TabType.ENHET:
+    case Tab.ENHET:
       return <PersonkortEnhet />;
-    case TabType.LEDER:
+    case Tab.LEDER:
       return <PersonkortLedere />;
-    case TabType.LEGE:
+    case Tab.LEGE:
       return <PersonkortLege />;
   }
 };
@@ -53,7 +53,7 @@ const PersonkortVisning = ({ tab }: PersonkortVisningProps): ReactElement => {
 const Personkort = () => {
   return (
     <Ekspanderbartpanel tittel={<PersonkortHeader />} className="mb-2">
-      <Tabs size="small" defaultValue={TabType.SYKMELDT}>
+      <Tabs size="small" defaultValue={Tab.SYKMELDT}>
         <Tabs.List className="mt-4">
           {Object.entries(tabs).map(([tab, { label }], index) => (
             <Tabs.Tab value={tab} label={label} key={index} />
@@ -61,7 +61,7 @@ const Personkort = () => {
         </Tabs.List>
         {Object.keys(tabs).map((value, index) => (
           <Tabs.Panel key={index} value={value} className="mt-8">
-            <PersonkortVisning tab={value as TabType} />
+            <PersonkortVisning tab={value as Tab} />
           </Tabs.Panel>
         ))}
       </Tabs>
