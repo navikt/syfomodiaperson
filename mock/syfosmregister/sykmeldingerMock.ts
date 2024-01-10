@@ -1463,7 +1463,7 @@ export const sykmeldingerMock = [
     legekontorOrgnummer: "223456789",
     arbeidsgiver: {
       navn: "LOMMEN BARNEHAVE",
-      yrkesbetegnelse: "Barnehage assistent",
+      yrkesbetegnelse: "Barnehageassistent",
       stillingsprosent: 100,
     },
     sykmeldingsperioder: [
