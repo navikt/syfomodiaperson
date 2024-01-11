@@ -100,7 +100,10 @@ export const SykmeldingTittelbeskrivelse = ({
       {sykmelder && <Info label={"Sykmelder: "} text={sykmelder} />}
       {arbeidsgiver && <Info label={"Arbeidsgiver: "} text={arbeidsgiver} />}
       {sykmelding.yrkesbetegnelse && (
-        <Info label={"Stilling: "} text={sykmelding.yrkesbetegnelse} />
+        <Info
+          label={"Stilling fra sykmelding: "}
+          text={sykmelding.yrkesbetegnelse}
+        />
       )}
       {sykmelding.papirsykmelding && <PapirsykmeldingTag />}
     </div>
