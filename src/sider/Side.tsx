@@ -11,7 +11,7 @@ import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { OversiktLenker } from "@/components/personkort/OversiktLenker";
 import SnowButton from "@/components/festive/SnowButton";
 import { Pride } from "@/components/festive/Pride";
-import { Huskelapp } from "@/components/huskelapp/Huskelapp";
+import { Oppfolgingsoppgave } from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
 import { Flexjar } from "@/components/flexjar/Flexjar";
 
 export const MODIA_HEADER_ID = "modia-header";
@@ -50,7 +50,7 @@ const Side = ({ tittel, aktivtMenypunkt, children }: SideProps) => {
           <nav className="-md:w-full min-w-[15rem] w-[15rem] md:mr-2">
             <GlobalNavigasjon aktivtMenypunkt={aktivtMenypunkt} />
             {isEaster() && <Easter />}
-            {toggles.isHuskelappEnabled && <Huskelapp />}
+            {toggles.isHuskelappEnabled && <Oppfolgingsoppgave />}
           </nav>
           <div className="w-full flex flex-col">{children}</div>
         </div>

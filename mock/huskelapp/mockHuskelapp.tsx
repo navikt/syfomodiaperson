@@ -2,13 +2,13 @@ import { ISHUSKELAPP_ROOT } from "../../src/apiConstants";
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import express from "express";
 import {
-  HuskelappRequestDTO,
-  HuskelappResponseDTO,
-} from "../../src/data/huskelapp/huskelappTypes";
+  OppfolgingsoppgaveRequestDTO,
+  OppfolgingsoppgaveResponseDTO,
+} from "@/data/oppfolgingsoppgave/types";
 import { generateUUID } from "../../src/utils/uuidUtils";
 import { VEILEDER_IDENT_DEFAULT } from "../common/mockConstants";
 
-let huskelappMock: HuskelappResponseDTO | undefined = undefined;
+let huskelappMock: OppfolgingsoppgaveResponseDTO | undefined = undefined;
 const huskelappUuid = generateUUID();
 export const mockIshuskelapp = (server: any) => {
   server.get(
@@ -26,7 +26,7 @@ export const mockIshuskelapp = (server: any) => {
   server.post(
     `${ISHUSKELAPP_ROOT}/huskelapp`,
     (req: express.Request, res: express.Response) => {
-      const body = req.body as HuskelappRequestDTO;
+      const body = req.body as OppfolgingsoppgaveRequestDTO;
       huskelappMock = {
         uuid: huskelappUuid,
         createdBy: VEILEDER_IDENT_DEFAULT,

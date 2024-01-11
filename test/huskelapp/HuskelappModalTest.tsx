@@ -7,17 +7,17 @@ import {
   VEILEDER_IDENT_DEFAULT,
 } from "../../mock/common/mockConstants";
 import {
-  HuskelappRequestDTO,
-  HuskelappResponseDTO,
+  OppfolgingsoppgaveRequestDTO,
+  OppfolgingsoppgaveResponseDTO,
   Oppfolgingsgrunn,
-} from "@/data/huskelapp/huskelappTypes";
+} from "@/data/oppfolgingsoppgave/types";
 import { generateUUID } from "@/utils/uuidUtils";
 import { expect } from "chai";
 import userEvent from "@testing-library/user-event";
 import { stubHuskelappApi } from "../stubs/stubIshuskelapp";
 import nock from "nock";
 import { apiMock } from "../stubs/stubApi";
-import { Huskelapp } from "@/components/huskelapp/Huskelapp";
+import { Oppfolgingsoppgave } from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
 import { changeTextInput } from "../testUtils";
 import dayjs from "dayjs";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
@@ -27,7 +27,7 @@ let apiMockScope: nock.Scope;
 
 const huskelappOppfolgingsgrunn = Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE;
 const huskelappOppfogingsgrunnText = "Vurder behov for dialogmøte";
-const huskelapp: HuskelappResponseDTO = {
+const huskelapp: OppfolgingsoppgaveResponseDTO = {
   createdBy: VEILEDER_IDENT_DEFAULT,
   uuid: generateUUID(),
   oppfolgingsgrunn: huskelappOppfolgingsgrunn,
@@ -40,7 +40,7 @@ const openOppfolgingsoppgaveButtonText = "Oppfølgingsoppgave";
 const renderHuskelapp = () =>
   render(
     <QueryClientProvider client={queryClient}>
-      <Huskelapp />
+      <Oppfolgingsoppgave />
     </QueryClientProvider>
   );
 
@@ -135,7 +135,7 @@ describe("Huskelapp", () => {
 
       await waitFor(() => {
         const lagreHuskelappMutation = queryClient.getMutationCache().getAll();
-        const expectedHuskelapp: HuskelappRequestDTO = {
+        const expectedHuskelapp: OppfolgingsoppgaveRequestDTO = {
           oppfolgingsgrunn: Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE,
           frist: fristDate.format("YYYY-MM-DD"),
         };
