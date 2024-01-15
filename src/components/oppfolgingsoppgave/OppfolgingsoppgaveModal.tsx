@@ -26,7 +26,7 @@ const texts = {
   save: "Lagre",
   close: "Avbryt",
   missingOppfolgingsgrunn: "Vennligst angi oppfølgingsgrunn.",
-  oppfolgingsgrunnLabel: "Velg oppfølgingsgrunn",
+  oppfolgingsgrunnLabel: "Velg oppfølgingsgrunn (obligatorisk)",
   beskrivelseLabel: "Beskrivelse",
   beskrivelseDescription: "Husk å ikke skriv sensitive opplysninger",
   errorTooLongBeskrivelse: "Beskrivelsen er for lang.",

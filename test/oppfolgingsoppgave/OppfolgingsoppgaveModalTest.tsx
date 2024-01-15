@@ -32,6 +32,7 @@ const oppfolgingsoppgave: OppfolgingsoppgaveResponseDTO = {
   createdBy: VEILEDER_IDENT_DEFAULT,
   uuid: generateUUID(),
   oppfolgingsgrunn: oppfolgingsoppgaveOppfolgingsgrunn,
+  tekst: "Dette var en veldig god grunn for å lage oppfolgingsoppgave.",
   updatedAt: new Date(),
   createdAt: new Date(),
   frist: "2030-01-01",
@@ -104,7 +105,8 @@ describe("Oppfolgingsoppgave", () => {
       });
       userEvent.click(openModalButton);
 
-      expect(await screen.findByText("Velg oppfølgingsgrunn")).to.exist;
+      expect(await screen.findByText("Velg oppfølgingsgrunn (obligatorisk)")).to
+        .exist;
       expect(screen.getByRole("textbox", { hidden: true, name: "Frist" })).to
         .exist;
       expect(screen.getByRole("button", { hidden: true, name: "Lagre" })).to
@@ -125,6 +127,12 @@ describe("Oppfolgingsoppgave", () => {
         "Vurder behov for dialogmøte"
       );
       userEvent.click(oppfolgingsgrunnRadioButton);
+      const beskrivelseInput = screen.getByLabelText("Beskrivelse");
+      changeTextInput(
+        beskrivelseInput,
+        "Dette var en veldig god grunn for å lage oppfolgingsoppgave."
+      );
+
       const fristDateInput = screen.getByRole("textbox", {
         hidden: true,
         name: "Frist",
@@ -143,6 +151,7 @@ describe("Oppfolgingsoppgave", () => {
           .getAll();
         const expectedOppfolgingsoppgave: OppfolgingsoppgaveRequestDTO = {
           oppfolgingsgrunn: Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE,
+          tekst: "Dette var en veldig god grunn for å lage oppfolgingsoppgave.",
           frist: fristDate.format("YYYY-MM-DD"),
         };
         expect(
