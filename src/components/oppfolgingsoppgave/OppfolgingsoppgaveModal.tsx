@@ -7,6 +7,7 @@ import {
   Modal,
   Radio,
   RadioGroup,
+  Textarea,
   useDatepicker,
 } from "@navikt/ds-react";
 import { useOppdaterOppfolgingsoppgave } from "@/data/oppfolgingsoppgave/useOppdaterOppfolgingsoppgave";
@@ -26,6 +27,9 @@ const texts = {
   close: "Avbryt",
   missingOppfolgingsgrunn: "Vennligst angi oppfølgingsgrunn.",
   oppfolgingsgrunnLabel: "Velg oppfølgingsgrunn",
+  beskrivelseLabel: "Beskrivelse",
+  beskrivelseDescription: "Husk å ikke skriv sensitive opplysninger",
+  errorTooLongBeskrivelse: "Beskrivelsen er for lang.",
   datepickerLabel: "Frist",
   oppfolgingsoppgaveHelpText:
     "Her kan du opprette en oppfølgingsoppgave hvis du har behov for å følge opp den sykmeldte utenom de hendelsene Modia lager automatisk. Oppfølgingsbehovet må være hjemlet i folketrygdloven kapittel 8 og den sykmeldte kan kreve innsyn i disse oppgavene.",
@@ -34,12 +38,25 @@ const texts = {
 
 interface FormValues {
   oppfolgingsgrunn: Oppfolgingsgrunn;
+  beskrivelse?: string;
   frist: string | null;
 }
 
 interface Props {
   isOpen: boolean;
   toggleOpen: (value: boolean) => void;
+}
+
+const MAX_LENGTH_BESKRIVELSE = 100;
+
+function logOppfolgingsgrunnSendt(oppfolgingsgrunn: Oppfolgingsgrunn) {
+  Amplitude.logEvent({
+    type: EventType.OppfolgingsgrunnSendt,
+    data: {
+      url: window.location.href,
+      oppfolgingsgrunn: oppfolgingsgrunn,
+    },
+  });
 }
 
 export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
@@ -49,22 +66,18 @@ export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
     formState: { errors },
     handleSubmit,
     setValue,
+    watch,
   } = useForm<FormValues>();
 
   const submit = (values: FormValues) => {
     const oppfolgingsoppgaveDto: OppfolgingsoppgaveRequestDTO = {
       oppfolgingsgrunn: values.oppfolgingsgrunn,
+      tekst: values.beskrivelse,
       frist: values.frist,
     };
     oppdaterOppfolgingsoppgave.mutate(oppfolgingsoppgaveDto, {
       onSuccess: () => {
-        Amplitude.logEvent({
-          type: EventType.OppfolgingsgrunnSendt,
-          data: {
-            url: window.location.href,
-            oppfolgingsgrunn: values.oppfolgingsgrunn,
-          },
-        });
+        logOppfolgingsgrunnSendt(values.oppfolgingsgrunn);
         toggleOpen(false);
       },
     });
@@ -76,6 +89,9 @@ export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
     },
     fromDate: new Date(),
   });
+
+  const isBeskrivelseInputVisible =
+    watch("oppfolgingsgrunn") !== Oppfolgingsgrunn.ANNET;
 
   return (
     <form onSubmit={handleSubmit(submit)}>
@@ -105,6 +121,7 @@ export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
             </HelpText>
           </div>
         </Modal.Header>
+
         <Modal.Body className={"flex flex-col gap-4"}>
           <RadioGroup
             legend={texts.oppfolgingsgrunnLabel}
@@ -122,6 +139,19 @@ export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
               </Radio>
             ))}
           </RadioGroup>
+          {isBeskrivelseInputVisible && (
+            <Textarea
+              label={texts.beskrivelseLabel}
+              description={texts.beskrivelseDescription}
+              size="small"
+              value={watch("beskrivelse")}
+              maxLength={MAX_LENGTH_BESKRIVELSE}
+              error={errors.beskrivelse && texts.errorTooLongBeskrivelse}
+              {...register("beskrivelse", {
+                maxLength: MAX_LENGTH_BESKRIVELSE,
+              })}
+            ></Textarea>
+          )}
           <DatePicker {...datepickerProps} strategy="fixed">
             <DatePicker.Input
               {...inputProps}
@@ -130,6 +160,7 @@ export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
             />
           </DatePicker>
         </Modal.Body>
+
         <Modal.Footer>
           <Button
             type="button"
