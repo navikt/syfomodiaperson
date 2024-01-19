@@ -24,7 +24,8 @@ const texts = {
   save: "Lagre",
   close: "Avbryt",
   missingOppfolgingsgrunn: "Vennligst angi oppfølgingsgrunn.",
-  oppfolgingsgrunnLabel: "Hvilken oppfølgingsgrunn?",
+  oppfolgingsgrunnLabel: "Hvilken oppfølgingsgrunn har du?",
+  oppfolgingsgrunnDefaultOption: "Velg oppfølgingsgrunn",
   datepickerLabel: "Frist",
   oppfolgingsoppgaveHelpText:
     "Her kan du opprette en oppfølgingsoppgave hvis du har behov for å følge opp den sykmeldte utenom de hendelsene Modia lager automatisk. Oppfølgingsbehovet må være hjemlet i folketrygdloven kapittel 8 og den sykmeldte kan kreve innsyn i disse oppgavene.",
@@ -107,12 +108,11 @@ export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
         <Modal.Body className={"flex flex-col gap-4"}>
           <Select
             label={texts.oppfolgingsgrunnLabel}
-            size={"small"}
-            className="w-60"
+            className="w-72"
             {...register("oppfolgingsgrunn", { required: true })}
             error={errors.oppfolgingsgrunn && texts.missingOppfolgingsgrunn}
           >
-            <option value="">Velg oppfølgingsgrunn</option>
+            <option value="">{texts.oppfolgingsgrunnDefaultOption}</option>
             {Object.values(Oppfolgingsgrunn).map((oppfolgingsgrunn, index) => (
               <option key={index} value={oppfolgingsgrunn}>
                 {oppfolgingsgrunnToText[oppfolgingsgrunn]}
@@ -120,11 +120,7 @@ export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
             ))}
           </Select>
           <DatePicker {...datepickerProps} strategy="fixed">
-            <DatePicker.Input
-              {...inputProps}
-              label={texts.datepickerLabel}
-              size="small"
-            />
+            <DatePicker.Input {...inputProps} label={texts.datepickerLabel} />
           </DatePicker>
         </Modal.Body>
         <Modal.Footer>
