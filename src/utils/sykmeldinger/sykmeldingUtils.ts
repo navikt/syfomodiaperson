@@ -236,24 +236,6 @@ export const sykmeldingerInnenforOppfolgingstilfelle = (
   });
 };
 
-export const sykmeldingerSortertNyestTilEldst = (
-  sykmeldinger: SykmeldingOldFormat[]
-): SykmeldingOldFormat[] => {
-  return sykmeldinger.sort((sykmelding1, sykmelding2) => {
-    if (
-      sykmelding1.bekreftelse.utstedelsesdato &&
-      sykmelding2.bekreftelse.utstedelsesdato
-    ) {
-      const dato1 = new Date(sykmelding1.bekreftelse.utstedelsesdato);
-      const dato2 = new Date(sykmelding2.bekreftelse.utstedelsesdato);
-
-      return dato1 > dato2 ? -1 : 1;
-    }
-
-    return 0;
-  });
-};
-
 export function sykmeldingerSortertNyestTilEldstPeriode(
   sykmeldinger: SykmeldingOldFormat[]
 ): SykmeldingOldFormat[] {
