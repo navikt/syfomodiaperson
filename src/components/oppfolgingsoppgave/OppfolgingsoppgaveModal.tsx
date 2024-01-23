@@ -5,8 +5,7 @@ import {
   Heading,
   HelpText,
   Modal,
-  Radio,
-  RadioGroup,
+  Select,
   Textarea,
   useDatepicker,
 } from "@navikt/ds-react";
@@ -26,7 +25,8 @@ const texts = {
   save: "Lagre",
   close: "Avbryt",
   missingOppfolgingsgrunn: "Vennligst angi oppfølgingsgrunn.",
-  oppfolgingsgrunnLabel: "Velg oppfølgingsgrunn (obligatorisk)",
+  oppfolgingsgrunnLabel: "Hvilken oppfølgingsgrunn har du? (obligatorisk)",
+  oppfolgingsgrunnDefaultOption: "Velg oppfølgingsgrunn",
   beskrivelseLabel: "Beskrivelse",
   beskrivelseDescription: "Husk å ikke skriv sensitive opplysninger",
   errorTooLongBeskrivelse: "Beskrivelsen er for lang.",
@@ -123,22 +123,19 @@ export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
         </Modal.Header>
 
         <Modal.Body className={"flex flex-col gap-4"}>
-          <RadioGroup
-            legend={texts.oppfolgingsgrunnLabel}
-            name="oppfolgingsgrunn"
-            size="small"
+          <Select
+            label={texts.oppfolgingsgrunnLabel}
+            className="w-72"
+            {...register("oppfolgingsgrunn", { required: true })}
             error={errors.oppfolgingsgrunn && texts.missingOppfolgingsgrunn}
           >
+            <option value="">{texts.oppfolgingsgrunnDefaultOption}</option>
             {Object.values(Oppfolgingsgrunn).map((oppfolgingsgrunn, index) => (
-              <Radio
-                key={index}
-                {...register("oppfolgingsgrunn", { required: true })}
-                value={oppfolgingsgrunn}
-              >
+              <option key={index} value={oppfolgingsgrunn}>
                 {oppfolgingsgrunnToText[oppfolgingsgrunn]}
-              </Radio>
+              </option>
             ))}
-          </RadioGroup>
+          </Select>
           {isBeskrivelseInputVisible && (
             <Textarea
               label={texts.beskrivelseLabel}
@@ -153,11 +150,7 @@ export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
             ></Textarea>
           )}
           <DatePicker {...datepickerProps} strategy="fixed">
-            <DatePicker.Input
-              {...inputProps}
-              label={texts.datepickerLabel}
-              size="small"
-            />
+            <DatePicker.Input {...inputProps} label={texts.datepickerLabel} />
           </DatePicker>
         </Modal.Body>
 

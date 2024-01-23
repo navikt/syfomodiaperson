@@ -1,8 +1,8 @@
-import React, { ReactElement, useState } from "react";
-import { AlertstripeFullbredde } from "@/components/AlertstripeFullbredde";
+import React, { ReactElement, ReactNode, useState } from "react";
 import { VirksomhetInput } from "@/components/dialogmote/innkalling/virksomhet/VirksomhetInput";
 import { VirksomhetRadioGruppe } from "@/components/dialogmote/innkalling/virksomhet/VirksomhetRadioGruppe";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
+import { Alert } from "@navikt/ds-react";
 
 const texts = {
   chooseArbeidsgiver: "Velg arbeidsgiver",
@@ -18,6 +18,7 @@ interface VirksomhetRadioGruppeProps {
   id: string;
   label: string;
   name: string;
+  error: ReactNode;
 }
 
 export const VirksomhetChooser = ({
@@ -26,12 +27,13 @@ export const VirksomhetChooser = ({
   id,
   label,
   name,
+  error,
 }: VirksomhetRadioGruppeProps): ReactElement => {
   const { toggles } = useFeatureToggles();
   const [showInput, setShowInput] = useState<boolean>(false);
 
   return (
-    <>
+    <div className="mb-8">
       <VirksomhetRadioGruppe
         velgVirksomhet={velgVirksomhet}
         setShowInput={setShowInput}
@@ -39,19 +41,20 @@ export const VirksomhetChooser = ({
         id={id}
         label={label}
         name={name}
+        error={error}
       />
 
       {showInput && <VirksomhetInput velgVirksomhet={velgVirksomhet} />}
 
       {virksomheter.length === 0 && !toggles.isVirksomhetsinputEnabled && (
-        <AlertstripeFullbredde type="advarsel" marginbottom="2em">
+        <Alert variant="warning" size="small" className="[&>*]:max-w-fit">
           {texts.noArbeidsgiver}
           <ul>
             <li>{texts.unemployed}</li>
             <li>{texts.report_error}</li>
           </ul>
-        </AlertstripeFullbredde>
+        </Alert>
       )}
-    </>
+    </div>
   );
 };
