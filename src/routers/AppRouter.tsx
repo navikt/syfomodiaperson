@@ -1,9 +1,9 @@
 import React, { ReactElement } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AktivBrukerTilgangLaster from "@/components/AktivBrukerTilgangLaster";
-import SykmeldingerContainer from "../components/speiling/sykmeldinger/container/SykmeldingerContainer";
-import SykepengesoknaderContainer from "../components/speiling/sykepengsoknader/container/SykepengesoknaderSide";
-import DinSykmeldingContainer from "../components/speiling/sykmeldinger/container/DinSykmeldingContainer";
+import SykmeldingerContainer from "@/sider/sykmeldinger/container/SykmeldingerContainer";
+import SykepengesoknaderContainer from "@/sider/sykepengsoknader/container/SykepengesoknaderSide";
+import DinSykmeldingContainer from "@/sider/sykmeldinger/container/DinSykmeldingContainer";
 import HistorikkContainer from "@/sider/historikk/container/HistorikkContainer";
 import { erGyldigFodselsnummer } from "@/utils/frnValideringUtils";
 import MotelandingssideContainer from "@/sider/mote/container/MotelandingssideContainer";
@@ -13,9 +13,9 @@ import AvlysDialogmoteContainer from "../components/dialogmote/avlys/AvlysDialog
 import AppSpinner from "../components/AppSpinner";
 import DialogmoteReferatContainer from "../components/dialogmote/referat/DialogmoteReferatContainer";
 import EndreDialogmoteContainer from "../components/dialogmote/endre/EndreDialogmoteContainer";
-import { SykepengesoknadSide } from "@/components/speiling/sykepengsoknader/container/SykepengesoknadSide";
-import { OppfoelgingsPlanerOversiktContainer } from "@/components/oppfolgingsplan/container/OppfoelgingsPlanerOversiktContainer";
-import { OppfoelgingsplanContainer } from "@/components/oppfolgingsplan/container/OppfoelgingsplanContainer";
+import { SykepengesoknadSide } from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
+import { OppfoelgingsPlanerOversiktContainer } from "@/sider/oppfolgingsplan/container/OppfoelgingsPlanerOversiktContainer";
+import { OppfoelgingsplanContainer } from "@/sider/oppfolgingsplan/container/OppfoelgingsplanContainer";
 import { IngenBrukerSide } from "@/components/IngenBrukerSide";
 import { useAktivBruker } from "@/data/modiacontext/modiacontextQueryHooks";
 import DialogmoteEndreReferatContainer from "@/components/dialogmote/referat/DialogmoteEndreReferatContainer";
