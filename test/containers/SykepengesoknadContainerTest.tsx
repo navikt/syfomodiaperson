@@ -1,6 +1,6 @@
 import React from "react";
 import { expect } from "chai";
-import SykepengesoknadContainer from "@/sider/sykepengsoknader/container/SykepengesoknadContainer";
+import SykepengesoknadSide from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
 import mockSoknader from "../mockdata/mockSoknader";
 import { screen } from "@testing-library/react";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -42,7 +42,7 @@ describe("SykepengesoknadContainer", () => {
       );
       renderWithRouter(
         <QueryClientProvider client={queryClient}>
-          <SykepengesoknadContainer />
+          <SykepengesoknadSide />
         </QueryClientProvider>,
         "/sykefravaer/sykepengesoknader/:sykepengesoknadId",
         [`/sykefravaer/sykepengesoknader/${OPPHOLD_UTLAND_ID}`]
@@ -65,7 +65,7 @@ describe("SykepengesoknadContainer", () => {
 
       renderWithRouter(
         <QueryClientProvider client={queryClient}>
-          <SykepengesoknadContainer />
+          <SykepengesoknadSide />
         </QueryClientProvider>,
         "/sykefravaer/sykepengesoknader/:sykepengesoknadId",
         [`/sykefravaer/sykepengesoknader/${NAERINGSDRIVENDESOKNAD_ID}`]

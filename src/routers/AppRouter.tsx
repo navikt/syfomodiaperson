@@ -12,7 +12,6 @@ import AvlysDialogmoteContainer from "@/sider/mote/components/avlys/AvlysDialogm
 import AppSpinner from "../components/AppSpinner";
 import DialogmoteReferatContainer from "../components/dialogmote/referat/DialogmoteReferatContainer";
 import EndreDialogmoteContainer from "@/sider/mote/components/endre/EndreDialogmoteContainer";
-import { SykepengesoknadSide } from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
 import { OppfoelgingsPlanerOversiktContainer } from "@/sider/oppfolgingsplan/container/OppfoelgingsPlanerOversiktContainer";
 import { OppfoelgingsplanContainer } from "@/sider/oppfolgingsplan/container/OppfoelgingsplanContainer";
 import { IngenBrukerSide } from "@/components/IngenBrukerSide";
@@ -24,6 +23,7 @@ import { AktivitetskravContainer } from "@/sider/aktivitetskrav/AktivitetskravCo
 import { BehandlerdialogContainer } from "@/sider/behandlerdialog/BehandlerdialogContainer";
 import * as Amplitude from "@/utils/amplitude";
 import Motelandingsside from "@/sider/mote/Motelandingsside";
+import SykepengesoknadSide from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
 
 export const appRoutePath = "/sykefravaer";
 
