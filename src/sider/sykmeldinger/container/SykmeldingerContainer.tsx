@@ -20,7 +20,7 @@ const SykmeldingerSide = (): ReactElement => {
           <Heading size="xlarge" className="text-center mt-4 mb-2">
             Sykmeldinger
           </Heading>
-          <DineSykmeldinger />
+          <DineSykmeldinger sykmeldinger={sykmeldinger} />
         </div>
       </SideLaster>
     </Side>
