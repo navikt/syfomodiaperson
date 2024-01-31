@@ -29,6 +29,7 @@ import {
   DocumentComponentDto,
   DocumentComponentType,
 } from "@/data/documentcomponent/documentComponentTypes";
+import { Malform } from "@/context/malform/MalformContext";
 
 const behandlerTypeNavnText = `${capitalizeWord(
   behandler.type.toLowerCase()
@@ -51,12 +52,12 @@ const expectedArbeidstakerInnkalling = (
         genererDato(mote.datoAsISODateString, mote.klokkeslett)
       ),
     ],
-    title: commonTexts.moteTidTitle,
+    title: commonTexts.moteTidTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [mote.sted],
-    title: commonTexts.moteStedTitle,
+    title: commonTexts.moteStedTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -74,14 +75,14 @@ const expectedArbeidstakerInnkalling = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [innkallingTexts.arbeidstaker.intro1],
+    texts: [innkallingTexts.arbeidstaker.intro1[Malform.BOKMAL]],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [
       medBehandler
-        ? innkallingTexts.arbeidstaker.intro2WithBehandler
-        : innkallingTexts.arbeidstaker.intro2,
+        ? innkallingTexts.arbeidstaker.intro2WithBehandler[Malform.BOKMAL]
+        : innkallingTexts.arbeidstaker.intro2[Malform.BOKMAL],
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -90,24 +91,26 @@ const expectedArbeidstakerInnkalling = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [innkallingTexts.arbeidstaker.outroObligatorisk],
+    texts: [innkallingTexts.arbeidstaker.outroObligatorisk[Malform.BOKMAL]],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [
       medBehandler
-        ? `${innkallingTexts.arbeidstaker.outro1WithBehandler} ${behandlerTypeNavnText}.`
-        : innkallingTexts.arbeidstaker.outro1,
+        ? `${
+            innkallingTexts.arbeidstaker.outro1WithBehandler[Malform.BOKMAL]
+          } ${behandlerTypeNavnText}.`
+        : innkallingTexts.arbeidstaker.outro1[Malform.BOKMAL],
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [
       medBehandler
-        ? innkallingTexts.arbeidstaker.outro2WithBehandler
-        : innkallingTexts.arbeidstaker.outro2,
+        ? innkallingTexts.arbeidstaker.outro2WithBehandler[Malform.BOKMAL]
+        : innkallingTexts.arbeidstaker.outro2[Malform.BOKMAL],
     ],
-    title: innkallingTexts.arbeidstaker.outro2Title,
+    title: innkallingTexts.arbeidstaker.outro2Title[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -133,12 +136,12 @@ const expectedArbeidsgiverInnkalling = (
         genererDato(mote.datoAsISODateString, mote.klokkeslett)
       ),
     ],
-    title: commonTexts.moteTidTitle,
+    title: commonTexts.moteTidTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [mote.sted],
-    title: commonTexts.moteStedTitle,
+    title: commonTexts.moteStedTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -213,12 +216,12 @@ const expectedBehandlerInnkalling = (): DocumentComponentDto[] => [
         genererDato(mote.datoAsISODateString, mote.klokkeslett)
       ),
     ],
-    title: commonTexts.moteTidTitle,
+    title: commonTexts.moteTidTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [mote.sted],
-    title: commonTexts.moteStedTitle,
+    title: commonTexts.moteStedTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -628,12 +631,12 @@ export const expectedReferatDocument = (): DocumentComponentDto[] => [
   },
   {
     texts: [tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid)],
-    title: commonTexts.moteTidTitle,
+    title: commonTexts.moteTidTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [dialogmote.sted],
-    title: commonTexts.moteStedTitle,
+    title: commonTexts.moteStedTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -728,12 +731,12 @@ export const expectedEndretReferatDocument = (): DocumentComponentDto[] => [
   },
   {
     texts: [tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid)],
-    title: commonTexts.moteTidTitle,
+    title: commonTexts.moteTidTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [dialogmote.sted],
-    title: commonTexts.moteStedTitle,
+    title: commonTexts.moteStedTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {

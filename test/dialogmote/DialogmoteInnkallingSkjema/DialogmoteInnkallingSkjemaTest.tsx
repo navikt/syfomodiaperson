@@ -30,6 +30,7 @@ import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/p
 import { OppfolgingstilfellePersonDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { DocumentComponentType } from "@/data/documentcomponent/documentComponentTypes";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
+import { MalformProvider } from "@/context/malform/MalformContext";
 
 let queryClient: QueryClient;
 
@@ -263,7 +264,9 @@ const renderDialogmoteInnkallingSkjema = () => {
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <DialogmoteInnkallingSkjema />
+        <MalformProvider>
+          <DialogmoteInnkallingSkjema />
+        </MalformProvider>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     dialogmoteRoutePath,

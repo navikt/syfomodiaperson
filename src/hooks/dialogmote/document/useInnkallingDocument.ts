@@ -14,6 +14,8 @@ import { capitalizeWord } from "@/utils/stringUtils";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useDialogmoteDocumentComponents } from "@/hooks/dialogmote/document/useDialogmoteDocumentComponents";
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
+import { Malform, useMalform } from "@/context/malform/MalformContext";
+import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
 export interface IInnkallingDocument {
   getInnkallingDocumentArbeidstaker(
@@ -38,8 +40,15 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
       `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
     ),
   ];
-  const { getHilsen, getMoteInfo, getIntroHei, getIntroGjelder } =
+  const { getMoteInfo, getIntroHei, getIntroGjelder } =
     useDialogmoteDocumentComponents();
+  const { malform } = useMalform();
+  const { data: veilederinfo } = useAktivVeilederinfoQuery();
+  const hilsenParagraph = createParagraph(
+    innkallingTexts.hilsen[malform],
+    veilederinfo?.navn || "",
+    `NAV`
+  );
 
   const getInnkallingDocumentArbeidstaker = (
     values: Partial<DialogmoteInnkallingSkjemaValues>,
@@ -47,14 +56,17 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
   ) => {
     const documentComponents = [
       ...introComponents,
-      ...getMoteInfo(values, values.arbeidsgiver),
+      ...getMoteInfo(values, values.arbeidsgiver, malform),
       getIntroHei(),
-      ...arbeidstakerIntro(valgtBehandler),
+      ...arbeidstakerIntro(valgtBehandler, malform),
     ];
     if (values.fritekstArbeidstaker) {
       documentComponents.push(createParagraph(values.fritekstArbeidstaker));
     }
-    documentComponents.push(...arbeidstakerOutro(valgtBehandler), getHilsen());
+    documentComponents.push(
+      ...arbeidstakerOutro(valgtBehandler, malform),
+      hilsenParagraph
+    );
 
     return documentComponents;
   };
@@ -65,7 +77,7 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
   ) => {
     const documentComponents = [
       ...introComponents,
-      ...getMoteInfo(values, values.arbeidsgiver),
+      ...getMoteInfo(values, values.arbeidsgiver, malform),
       getIntroGjelder(),
       createParagraph(innkallingTexts.arbeidsgiver.intro1),
     ];
@@ -74,7 +86,7 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
     }
     documentComponents.push(
       ...arbeidsgiverOutro(valgtBehandler),
-      getHilsen(),
+      hilsenParagraph,
       createParagraph(
         commonTexts.arbeidsgiverTlfLabel,
         commonTexts.arbeidsgiverTlf
@@ -93,7 +105,7 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
         `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
       ),
       createParagraph(innkallingTexts.behandler.intro),
-      ...getMoteInfo(values, values.arbeidsgiver),
+      ...getMoteInfo(values, values.arbeidsgiver, malform),
       getIntroGjelder(),
     ];
 
@@ -102,7 +114,7 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
     }
     documentComponents.push(
       createParagraph(innkallingTexts.behandler.outro),
-      getHilsen()
+      hilsenParagraph
     );
 
     return documentComponents;
@@ -116,14 +128,15 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
 };
 
 const arbeidstakerIntro = (
-  valgtBehandler: BehandlerDTO | undefined
+  valgtBehandler: BehandlerDTO | undefined,
+  malform: Malform
 ): DocumentComponentDto[] => {
   const introParagraph2 = !!valgtBehandler
-    ? createParagraph(innkallingTexts.arbeidstaker.intro2WithBehandler)
-    : createParagraph(innkallingTexts.arbeidstaker.intro2);
+    ? createParagraph(innkallingTexts.arbeidstaker.intro2WithBehandler[malform])
+    : createParagraph(innkallingTexts.arbeidstaker.intro2[malform]);
 
   return [
-    createParagraph(innkallingTexts.arbeidstaker.intro1),
+    createParagraph(innkallingTexts.arbeidstaker.intro1[malform]),
     introParagraph2,
   ];
 };
@@ -138,22 +151,26 @@ const addBehandlerTypeAndName = (
 };
 
 const arbeidstakerOutro = (
-  valgtBehandler: BehandlerDTO | undefined
+  valgtBehandler: BehandlerDTO | undefined,
+  malform: Malform
 ): DocumentComponentDto[] => {
   const outro1 = valgtBehandler
     ? addBehandlerTypeAndName(
-        innkallingTexts.arbeidstaker.outro1WithBehandler,
+        innkallingTexts.arbeidstaker.outro1WithBehandler[malform],
         valgtBehandler
       )
-    : innkallingTexts.arbeidstaker.outro1;
+    : innkallingTexts.arbeidstaker.outro1[malform];
   const outro2 = valgtBehandler
-    ? innkallingTexts.arbeidstaker.outro2WithBehandler
-    : innkallingTexts.arbeidstaker.outro2;
+    ? innkallingTexts.arbeidstaker.outro2WithBehandler[malform]
+    : innkallingTexts.arbeidstaker.outro2[malform];
 
   return [
-    createParagraph(innkallingTexts.arbeidstaker.outroObligatorisk),
+    createParagraph(innkallingTexts.arbeidstaker.outroObligatorisk[malform]),
     createParagraph(outro1),
-    createParagraphWithTitle(innkallingTexts.arbeidstaker.outro2Title, outro2),
+    createParagraphWithTitle(
+      innkallingTexts.arbeidstaker.outro2Title[malform],
+      outro2
+    ),
   ];
 };
 

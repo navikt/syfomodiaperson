@@ -1,21 +1,57 @@
+import { Malform } from "../../context/malform/MalformContext";
+
 export const innkallingTexts = {
   arbeidstaker: {
-    intro1:
-      "Velkommen til dialogmøte mellom deg, arbeidsgiveren din og en veileder fra NAV. I møtet skal vi snakke om situasjonen din og bli enige om en plan som kan hjelpe deg videre.",
-    intro2:
-      "I møtet vil vi høre både hva du og arbeidsgiveren sier om arbeidssituasjonen og mulighetene for å jobbe.",
-    intro2WithBehandler:
-      "I møtet vil vi høre både hva du, arbeidsgiveren og behandleren sier om arbeidssituasjonen og mulighetene for å jobbe.",
-    outroObligatorisk: "Det er obligatorisk å delta i dialogmøtet.",
-    outro1:
-      "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi ikke sett behov for det.",
-    outro1WithBehandler:
-      "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi sett behov for å innkalle",
-    outro2Title: "Før møtet",
-    outro2:
-      "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
-    outro2WithBehandler:
-      "Det er viktig at du og arbeidsgiveren din fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+    intro1: {
+      [Malform.BOKMAL]:
+        "Velkommen til dialogmøte mellom deg, arbeidsgiveren din og en veileder fra NAV. I møtet skal vi snakke om situasjonen din og bli enige om en plan som kan hjelpe deg videre.",
+      [Malform.NYNORSK]:
+        "Velkomen til dialogmøte mellom deg, arbeidsgivaren din og ein rettleiar frå NAV. I møtet kjem vi til å snakke om situasjonen din og bli samde om ein plan som kan hjelpe deg vidare.",
+    },
+    intro2: {
+      [Malform.BOKMAL]:
+        "I møtet vil vi høre både hva du og arbeidsgiveren sier om arbeidssituasjonen og mulighetene for å jobbe.",
+      [Malform.NYNORSK]:
+        "Vi ønskjer å høyre kva du og arbeidsgivaren seier om arbeidssituasjonen og moglegheitene for å jobbe.",
+    },
+    intro2WithBehandler: {
+      [Malform.BOKMAL]:
+        "I møtet vil vi høre både hva du, arbeidsgiveren og behandleren sier om arbeidssituasjonen og mulighetene for å jobbe.",
+      [Malform.NYNORSK]:
+        "Vi ønskjer å høyre kva du, arbeidsgivaren og behandlarane seier om arbeidssituasjonen og moglegheitene for å jobbe.", // TODO: behandlarane -> behandlaren?
+    },
+    outroObligatorisk: {
+      [Malform.BOKMAL]: "Det er obligatorisk å delta i dialogmøtet.",
+      [Malform.NYNORSK]: "Det er obligatorisk å delta i dialogmøtet.",
+    },
+    outro1: {
+      [Malform.BOKMAL]:
+        "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi ikke sett behov for det.",
+      [Malform.NYNORSK]:
+        "Fastlegen eller ein annan behandlar kan bli invitert til å delta i dialogmøtet. Til dette møtet har vi ikkje sett behov for det.",
+    },
+    outro1WithBehandler: {
+      [Malform.BOKMAL]:
+        "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi sett behov for å innkalle",
+      [Malform.NYNORSK]:
+        "Fastlegen eller ein annan behandlar kan bli invitert til å delta i dialogmøtet. Til dette møtet har vi sett behov for å kalle inn sjukmeldar ",
+    },
+    outro2Title: {
+      [Malform.BOKMAL]: "Før møtet",
+      [Malform.NYNORSK]: "Før møtet",
+    },
+    outro2: {
+      [Malform.BOKMAL]:
+        "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+      [Malform.NYNORSK]:
+        "Det er viktig at de fyller ut oppfølgingsplanen saman og deler han med NAV. Denne gir oss eit godt utgangspunkt for å snakke om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
+    },
+    outro2WithBehandler: {
+      [Malform.BOKMAL]:
+        "Det er viktig at du og arbeidsgiveren din fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+      [Malform.NYNORSK]:
+        "Det er viktig at du og arbeidsgivaren din fyller ut oppfølgingsplanen saman og deler han med NAV. Denne gir oss eit godt utgangspunkt for å snakke saman om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
+    },
   },
   arbeidsgiver: {
     intro1:
@@ -38,6 +74,11 @@ export const innkallingTexts = {
       "Vi ønsker svar fra deg om du kan stille til møtet. Det er i utgangspunktet obligatorisk å delta i dialogmøtet, men tidspunktet kan endres eller møtet kan avlyses ved behov.",
     outro:
       "Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
+  },
+
+  hilsen: {
+    [Malform.BOKMAL]: "Med vennlig hilsen",
+    [Malform.NYNORSK]: "Vennleg helsing",
   },
 };
 
@@ -92,9 +133,18 @@ export const avlysningTexts = {
 };
 
 export const commonTexts = {
-  arbeidsgiverTitle: "Arbeidsgiver",
-  moteTidTitle: "Møtetidspunkt",
-  moteStedTitle: "Møtested",
+  arbeidsgiverTitle: {
+    [Malform.BOKMAL]: "Arbeidsgiver",
+    [Malform.NYNORSK]: "Arbeidsgivar",
+  },
+  moteTidTitle: {
+    [Malform.BOKMAL]: "Møtetidspunkt",
+    [Malform.NYNORSK]: "Møtetidspunkt",
+  },
+  moteStedTitle: {
+    [Malform.BOKMAL]: "Møtested",
+    [Malform.NYNORSK]: "Møtestad",
+  },
   videoLinkTitle: "Lenke til videomøte",
   arbeidsgiverTlfLabel: "Arbeidsgivertelefonen",
   arbeidsgiverTlf: "55 55 33 36",
