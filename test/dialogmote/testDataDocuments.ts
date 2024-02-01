@@ -13,7 +13,7 @@ import {
 } from "./testData";
 import {
   avlysningTexts,
-  commonTexts,
+  commonTextsBokmal,
   endreTidStedTexts,
   innkallingTexts,
   referatTexts,
@@ -52,17 +52,17 @@ const expectedArbeidstakerInnkalling = (
         genererDato(mote.datoAsISODateString, mote.klokkeslett)
       ),
     ],
-    title: commonTexts.moteTidTitle[Malform.BOKMAL],
+    title: commonTextsBokmal.moteTidTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [mote.sted],
-    title: commonTexts.moteStedTitle[Malform.BOKMAL],
+    title: commonTextsBokmal.moteStedTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [mote.videolink],
-    title: commonTexts.videoLinkTitle,
+    title: commonTextsBokmal.videoLinkTitle,
     type: DocumentComponentType.LINK,
   },
   {
@@ -136,17 +136,17 @@ const expectedArbeidsgiverInnkalling = (
         genererDato(mote.datoAsISODateString, mote.klokkeslett)
       ),
     ],
-    title: commonTexts.moteTidTitle[Malform.BOKMAL],
+    title: commonTextsBokmal.moteTidTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [mote.sted],
-    title: commonTexts.moteStedTitle[Malform.BOKMAL],
+    title: commonTextsBokmal.moteStedTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [mote.videolink],
-    title: commonTexts.videoLinkTitle,
+    title: commonTextsBokmal.videoLinkTitle,
     type: DocumentComponentType.LINK,
   },
   {
@@ -192,7 +192,10 @@ const expectedArbeidsgiverInnkalling = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [commonTexts.arbeidsgiverTlfLabel, commonTexts.arbeidsgiverTlf],
+    texts: [
+      commonTextsBokmal.arbeidsgiverTlfLabel,
+      commonTextsBokmal.arbeidsgiverTlf,
+    ],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -216,17 +219,17 @@ const expectedBehandlerInnkalling = (): DocumentComponentDto[] => [
         genererDato(mote.datoAsISODateString, mote.klokkeslett)
       ),
     ],
-    title: commonTexts.moteTidTitle[Malform.BOKMAL],
+    title: commonTextsBokmal.moteTidTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [mote.sted],
-    title: commonTexts.moteStedTitle[Malform.BOKMAL],
+    title: commonTextsBokmal.moteStedTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [mote.videolink],
-    title: commonTexts.videoLinkTitle,
+    title: commonTextsBokmal.videoLinkTitle,
     type: DocumentComponentType.LINK,
   },
   {
@@ -631,12 +634,12 @@ export const expectedReferatDocument = (): DocumentComponentDto[] => [
   },
   {
     texts: [tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid)],
-    title: commonTexts.moteTidTitle[Malform.BOKMAL],
+    title: commonTextsBokmal.moteTidTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [dialogmote.sted],
-    title: commonTexts.moteStedTitle[Malform.BOKMAL],
+    title: commonTextsBokmal.moteStedTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -731,12 +734,12 @@ export const expectedEndretReferatDocument = (): DocumentComponentDto[] => [
   },
   {
     texts: [tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid)],
-    title: commonTexts.moteTidTitle[Malform.BOKMAL],
+    title: commonTextsBokmal.moteTidTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [dialogmote.sted],
-    title: commonTexts.moteStedTitle[Malform.BOKMAL],
+    title: commonTextsBokmal.moteStedTitle[Malform.BOKMAL],
     type: DocumentComponentType.PARAGRAPH,
   },
   {

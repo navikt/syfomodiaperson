@@ -16,7 +16,10 @@ import {
 } from "@/utils/documentComponentUtils";
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
-import { commonTexts, referatTexts } from "@/data/dialogmote/dialogmoteTexts";
+import {
+  commonTextsBokmal,
+  referatTexts,
+} from "@/data/dialogmote/dialogmoteTexts";
 import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { behandlerDeltokTekst } from "@/utils/behandlerUtils";
 import { useDialogmoteDocumentComponents } from "@/hooks/dialogmote/document/useDialogmoteDocumentComponents";
@@ -125,11 +128,11 @@ const info = (
   return [
     createParagraph(`F.nr. ${personident}`),
     createParagraphWithTitle(
-      commonTexts.moteTidTitle[Malform.BOKMAL],
+      commonTextsBokmal.moteTidTitle[Malform.BOKMAL],
       tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid)
     ),
     createParagraphWithTitle(
-      commonTexts.moteStedTitle[Malform.BOKMAL],
+      commonTextsBokmal.moteStedTitle[Malform.BOKMAL],
       dialogmote.sted
     ),
     createParagraphWithTitle(

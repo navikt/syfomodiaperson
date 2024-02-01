@@ -2,7 +2,7 @@ import {
   createLink,
   createParagraphWithTitle,
 } from "@/utils/documentComponentUtils";
-import { commonTexts } from "@/data/dialogmote/dialogmoteTexts";
+import { getCommonTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { TidStedSkjemaValues } from "@/data/dialogmote/types/skjemaTypes";
 import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
@@ -23,11 +23,10 @@ export const useDialogmoteDocumentComponents = () => {
       virksomhetsnummer &&
       getCurrentNarmesteLeder(virksomhetsnummer)?.virksomhetsnavn;
 
+    const commonTexts = getCommonTexts(malform ? malform : Malform.BOKMAL);
+
     return arbeidsgiver
-      ? createParagraphWithTitle(
-          commonTexts.arbeidsgiverTitle[malform ? malform : Malform.BOKMAL],
-          arbeidsgiver
-        )
+      ? createParagraphWithTitle(commonTexts.arbeidsgiverTitle, arbeidsgiver)
       : undefined;
   };
 
@@ -37,6 +36,7 @@ export const useDialogmoteDocumentComponents = () => {
     malform?: Malform
   ) => {
     const { dato, klokkeslett, sted, videoLink } = values;
+    const commonTexts = getCommonTexts(malform ? malform : Malform.BOKMAL);
     const tidStedTekst =
       dato && klokkeslett
         ? tilDatoMedUkedagOgManedNavnOgKlokkeslett(
@@ -46,16 +46,10 @@ export const useDialogmoteDocumentComponents = () => {
         : "";
     const components: DocumentComponentDto[] = [];
     components.push(
-      createParagraphWithTitle(
-        commonTexts.moteTidTitle[malform ? malform : Malform.BOKMAL],
-        tidStedTekst
-      )
+      createParagraphWithTitle(commonTexts.moteTidTitle, tidStedTekst)
     );
     components.push(
-      createParagraphWithTitle(
-        commonTexts.moteStedTitle[malform ? malform : Malform.BOKMAL],
-        sted || ""
-      )
+      createParagraphWithTitle(commonTexts.moteStedTitle, sted || "")
     );
     if (videoLink) {
       components.push(createLink(commonTexts.videoLinkTitle, videoLink));
