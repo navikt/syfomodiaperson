@@ -1,5 +1,7 @@
 import React from "react";
 import {
+  Alert,
+  BodyLong,
   Button,
   DatePicker,
   Heading,
@@ -22,13 +24,14 @@ import dayjs from "dayjs";
 
 const texts = {
   header: "Oppfølgingsoppgave",
+  guidelines:
+    "Denne oppgaven skal kun brukes etter formålet, altså ikke til andre oppgaver enn det oppfølgingsgrunnen tilsier. Innbyggeren kan få innsyn i det du skriver her.",
   save: "Lagre",
   close: "Avbryt",
   missingOppfolgingsgrunn: "Vennligst angi oppfølgingsgrunn.",
   oppfolgingsgrunnLabel: "Hvilken oppfølgingsgrunn har du? (obligatorisk)",
   oppfolgingsgrunnDefaultOption: "Velg oppfølgingsgrunn",
   beskrivelseLabel: "Beskrivelse",
-  beskrivelseDescription: "Husk å ikke skriv sensitive opplysninger",
   errorTooLongBeskrivelse: "Beskrivelsen er for lang.",
   datepickerLabel: "Frist",
   oppfolgingsoppgaveHelpText:
@@ -102,8 +105,8 @@ export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
         open={isOpen}
         onClose={() => toggleOpen(false)}
       >
-        <Modal.Header>
-          <div className={"flex items-center"}>
+        <Modal.Header className="mb-4">
+          <div className={"flex items-center mb-4"}>
             <Heading
               level="1"
               size="medium"
@@ -120,12 +123,18 @@ export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
               {texts.oppfolgingsoppgaveHelpText}
             </HelpText>
           </div>
+          <Alert inline variant="warning">
+            <BodyLong textColor="subtle" size="small">
+              {texts.guidelines}
+            </BodyLong>
+          </Alert>
         </Modal.Header>
 
         <Modal.Body className={"flex flex-col gap-4"}>
           <Select
             label={texts.oppfolgingsgrunnLabel}
-            className="w-72"
+            size="small"
+            className="w-[22rem]"
             {...register("oppfolgingsgrunn", { required: true })}
             error={errors.oppfolgingsgrunn && texts.missingOppfolgingsgrunn}
           >
@@ -139,7 +148,6 @@ export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
           {isBeskrivelseInputVisible && (
             <Textarea
               label={texts.beskrivelseLabel}
-              description={texts.beskrivelseDescription}
               size="small"
               value={watch("beskrivelse")}
               maxLength={MAX_LENGTH_BESKRIVELSE}
