@@ -96,7 +96,27 @@ describe("Oppfolgingsoppgave", () => {
     beforeEach(() => {
       stubOppfolgingsoppgaveApi(apiMockScope, undefined);
     });
-    it("renders oppfolgingsoppgave input with radio group, datepicker and save and cancel buttons", async () => {
+    it("renders oppfolgingsoppgave without beskrivelse textarea when annet is oppfolgingsgrunn", async () => {
+      renderOppfolgingsoppgave();
+
+      const openModalButton = await screen.findByRole("button", {
+        hidden: true,
+        name: openOppfolgingsoppgaveButtonText,
+      });
+      userEvent.click(openModalButton);
+
+      const selectOppfolgingsgrunn = await screen.findByLabelText(
+        "Hvilken oppfølgingsgrunn har du? (obligatorisk)"
+      );
+      fireEvent.change(selectOppfolgingsgrunn, {
+        target: { value: Oppfolgingsgrunn.ANNET },
+      });
+
+      await waitFor(
+        () => expect(screen.queryByLabelText("Beskrivelse")).to.not.exist
+      );
+    });
+    it("renders oppfolgingsoppgave input with radio group, textarea, datepicker and save and cancel buttons", async () => {
       renderOppfolgingsoppgave();
 
       const openModalButton = await screen.findByRole("button", {
@@ -110,6 +130,8 @@ describe("Oppfolgingsoppgave", () => {
           "Hvilken oppfølgingsgrunn har du? (obligatorisk)"
         )
       ).to.exist;
+      expect(screen.getByRole("textbox", { hidden: true, name: "Beskrivelse" }))
+        .to.exist;
       expect(screen.getByRole("textbox", { hidden: true, name: "Frist" })).to
         .exist;
       expect(screen.getByRole("button", { hidden: true, name: "Lagre" })).to
@@ -126,10 +148,10 @@ describe("Oppfolgingsoppgave", () => {
       });
       userEvent.click(openModalButton);
 
-      const selectOppfolgingsoppgave = await screen.findByLabelText(
+      const selectOppfolgingsgrunn = await screen.findByLabelText(
         "Hvilken oppfølgingsgrunn har du? (obligatorisk)"
       );
-      fireEvent.change(selectOppfolgingsoppgave, {
+      fireEvent.change(selectOppfolgingsgrunn, {
         target: { value: Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE },
       });
       const beskrivelseInput = screen.getByLabelText("Beskrivelse");

@@ -13,9 +13,9 @@ import {
 } from "@navikt/ds-react";
 import { useOppdaterOppfolgingsoppgave } from "@/data/oppfolgingsoppgave/useOppdaterOppfolgingsoppgave";
 import {
-  OppfolgingsoppgaveRequestDTO,
   Oppfolgingsgrunn,
   oppfolgingsgrunnToText,
+  OppfolgingsoppgaveRequestDTO,
 } from "@/data/oppfolgingsoppgave/types";
 import { useForm } from "react-hook-form";
 import * as Amplitude from "@/utils/amplitude";
@@ -32,7 +32,6 @@ const texts = {
   oppfolgingsgrunnLabel: "Hvilken oppfølgingsgrunn har du? (obligatorisk)",
   oppfolgingsgrunnDefaultOption: "Velg oppfølgingsgrunn",
   beskrivelseLabel: "Beskrivelse",
-  errorTooLongBeskrivelse: "Beskrivelsen er for lang.",
   datepickerLabel: "Frist",
   oppfolgingsoppgaveHelpText:
     "Her kan du opprette en oppfølgingsoppgave hvis du har behov for å følge opp den sykmeldte utenom de hendelsene Modia lager automatisk. Oppfølgingsbehovet må være hjemlet i folketrygdloven kapittel 8 og den sykmeldte kan kreve innsyn i disse oppgavene.",
@@ -75,7 +74,10 @@ export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
   const submit = (values: FormValues) => {
     const oppfolgingsoppgaveDto: OppfolgingsoppgaveRequestDTO = {
       oppfolgingsgrunn: values.oppfolgingsgrunn,
-      tekst: values.beskrivelse,
+      tekst:
+        values.oppfolgingsgrunn == Oppfolgingsgrunn.ANNET
+          ? undefined
+          : values.beskrivelse,
       frist: values.frist,
     };
     oppdaterOppfolgingsoppgave.mutate(oppfolgingsoppgaveDto, {
@@ -151,7 +153,6 @@ export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
               size="small"
               value={watch("beskrivelse")}
               maxLength={MAX_LENGTH_BESKRIVELSE}
-              error={errors.beskrivelse && texts.errorTooLongBeskrivelse}
               {...register("beskrivelse", {
                 maxLength: MAX_LENGTH_BESKRIVELSE,
               })}
