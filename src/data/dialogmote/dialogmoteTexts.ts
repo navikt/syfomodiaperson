@@ -54,7 +54,7 @@ const innkallingTextsNynorsk = {
     intro2:
       "Vi ønskjer å høyre kva du og arbeidsgivaren seier om arbeidssituasjonen og moglegheitene for å jobbe.",
     intro2WithBehandler:
-      "Vi ønskjer å høyre kva du, arbeidsgivaren og behandlarane seier om arbeidssituasjonen og moglegheitene for å jobbe.", // TODO: behandlarane -> behandlaren?
+      "Vi ønskjer å høyre kva du, arbeidsgivaren og behandlaren seier om arbeidssituasjonen og moglegheitene for å jobbe.",
     outroObligatorisk: "Det er obligatorisk å delta i dialogmøtet.",
     outro1:
       "Fastlegen eller ein annan behandlar kan bli invitert til å delta i dialogmøtet. Til dette møtet har vi ikkje sett behov for det.",

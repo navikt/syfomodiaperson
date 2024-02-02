@@ -35,7 +35,7 @@ import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
 import { TidStedSkjemaValues } from "@/data/dialogmote/types/skjemaTypes";
 import DialogmoteInnkallingSkjemaSeksjon from "@/components/dialogmote/innkalling/DialogmoteInnkallingSkjemaSeksjon";
 import { Box, Button } from "@navikt/ds-react";
-import { ChooseMalform } from "@/components/ChooseMalform";
+import { MalformRadioGroup } from "@/components/MalformRadioGroup";
 
 interface DialogmoteInnkallingSkjemaTekster {
   fritekstArbeidsgiver: string;
@@ -179,7 +179,7 @@ const DialogmoteInnkallingSkjema = () => {
 
   return (
     <Box background="surface-default" padding="6" className="mb-2">
-      <ChooseMalform />
+      <MalformRadioGroup />
       <Form initialValues={initialValues} onSubmit={submit} validate={validate}>
         {({ handleSubmit, submitFailed, errors }) => (
           <form onSubmit={handleSubmit}>

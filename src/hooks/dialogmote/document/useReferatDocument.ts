@@ -28,7 +28,6 @@ import {
   DocumentComponentDto,
   DocumentComponentType,
 } from "@/data/documentcomponent/documentComponentTypes";
-import { Malform } from "@/context/malform/MalformContext";
 
 export interface IReferatDocument {
   getReferatDocument(
@@ -128,13 +127,10 @@ const info = (
   return [
     createParagraph(`F.nr. ${personident}`),
     createParagraphWithTitle(
-      commonTextsBokmal.moteTidTitle[Malform.BOKMAL],
+      commonTextsBokmal.moteTidTitle,
       tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid)
     ),
-    createParagraphWithTitle(
-      commonTextsBokmal.moteStedTitle[Malform.BOKMAL],
-      dialogmote.sted
-    ),
+    createParagraphWithTitle(commonTextsBokmal.moteStedTitle, dialogmote.sted),
     createParagraphWithTitle(
       referatTexts.deltakereTitle,
       ...deltakereTekst,
