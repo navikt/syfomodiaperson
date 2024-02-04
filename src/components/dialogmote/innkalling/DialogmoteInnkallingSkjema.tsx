@@ -36,6 +36,9 @@ import { TidStedSkjemaValues } from "@/data/dialogmote/types/skjemaTypes";
 import DialogmoteInnkallingSkjemaSeksjon from "@/components/dialogmote/innkalling/DialogmoteInnkallingSkjemaSeksjon";
 import { Box, Button } from "@navikt/ds-react";
 import { MalformRadioGroup } from "@/components/MalformRadioGroup";
+import * as Amplitude from "@/utils/amplitude";
+import { EventType } from "@/utils/amplitude";
+import { useMalform } from "@/context/malform/MalformContext";
 
 interface DialogmoteInnkallingSkjemaTekster {
   fritekstArbeidsgiver: string;
@@ -121,6 +124,7 @@ const DialogmoteInnkallingSkjema = () => {
 
   const { toTidStedDto } = useSkjemaValuesToDto();
   const opprettInnkalling = useOpprettInnkallingDialogmote(fnr);
+  const { malform } = useMalform();
 
   const validate = (
     values: Partial<DialogmoteInnkallingSkjemaValues>
@@ -175,6 +179,14 @@ const DialogmoteInnkallingSkjema = () => {
       selectedBehandler
     );
     opprettInnkalling.mutate(dialogmoteInnkalling);
+    Amplitude.logEvent({
+      type: EventType.OptionSelected,
+      data: {
+        url: window.location.href,
+        tekst: "Målform valgt",
+        option: malform,
+      },
+    });
   };
 
   return (
