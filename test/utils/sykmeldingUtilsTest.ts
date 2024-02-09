@@ -16,7 +16,7 @@ import {
   stringMedAlleGraderingerFraSykmeldingPerioder,
   sykmeldingerGruppertEtterVirksomhet,
   sykmeldingerInnenforOppfolgingstilfelle,
-  sykmeldingerMedStatusSendt,
+  getSendteOrNyeSykmeldinger,
   sykmeldingerSortertNyestTilEldstPeriode,
   sykmeldingperioderSortertEldstTilNyest,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
@@ -436,9 +436,9 @@ describe("sykmeldingUtils", () => {
     });
   });
 
-  describe("sykmeldingerMedStatusSendt", () => {
-    it("skal returnere en liste med bare innsendte sykmeldinger", () => {
-      const sykmeldinger: SykmeldingOldFormat[] = [
+  describe("sykmeldingerMedStatusSendtOgNy", () => {
+    it("skal returnere en liste med bare innsendte og nye sykmeldinger", () => {
+      const allSykmeldinger: SykmeldingOldFormat[] = [
         {
           ...baseSykmelding,
           status: SykmeldingStatus.AVBRUTT,
@@ -451,11 +451,15 @@ describe("sykmeldingUtils", () => {
           ...baseSykmelding,
           status: SykmeldingStatus.AVBRUTT,
         },
+        {
+          ...baseSykmelding,
+          status: SykmeldingStatus.NY,
+        },
       ];
 
-      const sendteSykmeldinger = sykmeldingerMedStatusSendt(sykmeldinger);
+      const sykmeldinger = getSendteOrNyeSykmeldinger(allSykmeldinger);
 
-      expect(sendteSykmeldinger.length).to.equal(1);
+      expect(sykmeldinger.length).to.equal(2);
     });
   });
 
