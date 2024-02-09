@@ -322,6 +322,26 @@ describe("ReferatTest", () => {
         expect(within(forhandsvisningReferat).getByText(text)).to.exist;
       });
   });
+
+  it("forhåndsviser referat med nynorsktekster hvis dette er valgt", () => {
+    renderReferat(dialogmoteMedBehandler);
+    passSkjemaTekstInput();
+
+    const malformRadioNynorsk = screen.getByRole("radio", {
+      name: "Nynorsk",
+    });
+    userEvent.click(malformRadioNynorsk);
+
+    clickButton("Se forhåndsvisning");
+
+    expect(screen.getByText(getReferatTexts(Malform.NYNORSK).intro2)).to.exist;
+
+    // Cleanup global state for other tests
+    const malformRadioBokmal = screen.getByRole("radio", {
+      name: "Bokmål",
+    });
+    userEvent.click(malformRadioBokmal);
+  });
 });
 
 const renderReferat = (dialogmoteDTO: DialogmoteDTO) => {
