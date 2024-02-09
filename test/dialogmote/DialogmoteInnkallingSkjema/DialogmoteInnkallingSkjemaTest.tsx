@@ -331,10 +331,10 @@ describe("DialogmoteInnkallingSkjema", () => {
   it("velger nynorske brev og endrer tekstene", () => {
     renderDialogmoteInnkallingSkjema();
 
-    const malformRadio = screen.getByRole("radio", {
+    const malformRadioNynorsk = screen.getByRole("radio", {
       name: "Nynorsk",
     });
-    userEvent.click(malformRadio);
+    userEvent.click(malformRadioNynorsk);
 
     const forhandsvisningButton = screen.getAllByRole("button", {
       name: "Forhåndsvisning",
@@ -344,6 +344,12 @@ describe("DialogmoteInnkallingSkjema", () => {
     expect(
       screen.getByText(getInnkallingTexts(Malform.NYNORSK).arbeidstaker.intro2)
     ).to.exist;
+
+    // Cleanup global state for other tests
+    const malformRadioBokmal = screen.getByRole("radio", {
+      name: "Bokmål",
+    });
+    userEvent.click(malformRadioBokmal);
   });
 });
 

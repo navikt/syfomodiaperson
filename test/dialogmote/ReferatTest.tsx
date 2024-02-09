@@ -43,15 +43,17 @@ import {
   MAX_LENGTH_VEILEDERS_OPPGAVE,
 } from "@/components/dialogmote/referat/ReferatFritekster";
 import { queryClientWithMockData } from "../testQueryClient";
-import { referatTexts } from "@/data/dialogmote/dialogmoteTexts";
+import { getReferatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { NewDialogmoteReferatDTO } from "@/data/dialogmote/types/dialogmoteReferatTypes";
 import { renderWithRouter } from "../testRouterUtils";
+import { Malform, MalformProvider } from "@/context/malform/MalformContext";
 
 let queryClient: QueryClient;
 
 describe("ReferatTest", () => {
   let clock: any;
   const today = new Date(Date.now());
+  const referatTexts = getReferatTexts(Malform.BOKMAL);
 
   beforeEach(() => {
     queryClient = queryClientWithMockData();
@@ -325,11 +327,13 @@ describe("ReferatTest", () => {
 const renderReferat = (dialogmoteDTO: DialogmoteDTO) => {
   return renderWithRouter(
     <QueryClientProvider client={queryClient}>
-      <Referat
-        dialogmote={dialogmoteDTO}
-        pageTitle="Test"
-        mode={ReferatMode.NYTT}
-      />
+      <MalformProvider>
+        <Referat
+          dialogmote={dialogmoteDTO}
+          pageTitle="Test"
+          mode={ReferatMode.NYTT}
+        />
+      </MalformProvider>
     </QueryClientProvider>,
     `${dialogmoteRoutePath}/:dialogmoteUuid/referat`,
     [`${dialogmoteRoutePath}/${dialogmoteDTO.uuid}/referat`]
