@@ -16,7 +16,7 @@ import { ReferatDTO } from "../../src/data/dialogmote/types/dialogmoteReferatTyp
 import { getReferatTexts } from "../../src/data/dialogmote/dialogmoteTexts";
 import dayjs from "dayjs";
 import { DocumentComponentType } from "../../src/data/documentcomponent/documentComponentTypes";
-import { Malform } from "@/context/malform/MalformContext";
+import { Malform } from "../../src/context/malform/MalformContext";
 
 export const createDialogmote = (
   uuid: string,
