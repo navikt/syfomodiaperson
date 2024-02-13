@@ -166,16 +166,6 @@ export const arbeidsgivernavnEllerArbeidssituasjon = (
   }
 };
 
-export const getSendteOrNyeSykmeldinger = (
-  sykmeldinger: SykmeldingOldFormat[]
-): SykmeldingOldFormat[] => {
-  return sykmeldinger.filter(
-    (sykmelding) =>
-      sykmelding.status === SykmeldingStatus.SENDT ||
-      sykmelding.status === SykmeldingStatus.NY
-  );
-};
-
 export const sykmeldingerUtenArbeidsgiver = (
   sykmeldinger: SykmeldingOldFormat[]
 ): SykmeldingOldFormat[] => {

@@ -3,7 +3,6 @@ import SykmeldingUtdragFraSykefravaretVisning from "../motebehov/SykmeldingUtdra
 import {
   arbeidsgivernavnEllerArbeidssituasjon,
   erEkstraInformasjonISykmeldingen,
-  getSendteOrNyeSykmeldinger,
   stringMedAlleGraderingerFraSykmeldingPerioder,
   sykmeldingerGruppertEtterVirksomhet,
   sykmeldingerInnenforOppfolgingstilfelle,
@@ -22,7 +21,6 @@ import {
 import { MerInformasjonImage } from "../../../img/ImageComponents";
 import { UtdragOppfolgingsplaner } from "./UtdragOppfolgingsplaner";
 import { SpinnsynLenke } from "@/components/vedtak/SpinnsynLenke";
-import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
@@ -162,16 +160,14 @@ const UtvidbarSykmelding = ({ sykmelding, label }: UtvidbarSykmeldingProps) => {
   );
 };
 
-interface SykmeldingerForVirksomhetProps {
-  latestOppfolgingstilfelle?: OppfolgingstilfelleDTO;
-  sykmeldinger: SykmeldingOldFormat[];
-}
-
-export const SykmeldingerForVirksomhet = ({
-  latestOppfolgingstilfelle,
-  sykmeldinger,
-}: SykmeldingerForVirksomhetProps) => {
-  const aktuelleSykmeldinger = getSendteOrNyeSykmeldinger(sykmeldinger);
+export const SykmeldingerForVirksomhet = () => {
+  const { sykmeldinger } = useSykmeldingerQuery();
+  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+  const aktuelleSykmeldinger = sykmeldinger.filter(
+    (sykmelding) =>
+      sykmelding.status === SykmeldingStatus.SENDT ||
+      sykmelding.status === SykmeldingStatus.NY
+  );
   const sykmeldingerIOppfolgingstilfellet =
     sykmeldingerInnenforOppfolgingstilfelle(
       aktuelleSykmeldinger,
@@ -267,12 +263,7 @@ const UtdragFraSykefravaeret = () => {
         {texts.header}
       </Heading>
       <UtdragOppfolgingsplaner />
-
-      <SykmeldingerForVirksomhet
-        latestOppfolgingstilfelle={latestOppfolgingstilfelle}
-        sykmeldinger={sykmeldinger}
-      />
-
+      <SykmeldingerForVirksomhet />
       {sykmeldingerSortertPaSykmeldingsperiode?.length > 0 && (
         <SykmeldingerUtenArbeidsgiver
           sykmeldingerSortertPaUtstedelsesdato={
@@ -280,7 +271,6 @@ const UtdragFraSykefravaeret = () => {
           }
         />
       )}
-
       <Samtalereferat />
       <Heading size="small" level="3">
         {texts.vedtak.header}
