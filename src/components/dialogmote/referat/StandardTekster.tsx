@@ -6,7 +6,7 @@ import {
 } from "@/data/dialogmote/dialogmoteTexts";
 import { ReferatInfoColumn } from "./ReferatInfoColumn";
 import { BodyShort, Checkbox, Label } from "@navikt/ds-react";
-import { Malform } from "@/context/malform/MalformContext";
+import { Malform, useMalform } from "@/context/malform/MalformContext";
 
 const texts = {
   header: "Dette informerte NAV om i møtet",
@@ -15,7 +15,9 @@ const texts = {
 };
 
 export const StandardTekster = (): ReactElement => {
-  const referatTexts = getReferatTexts(Malform.BOKMAL);
+  const { malform } = useMalform();
+  const referatTexts = getReferatTexts(malform);
+  const referatTextsForVisning = getReferatTexts(Malform.BOKMAL);
   return (
     <div className="flex mb-8">
       <div className="flex-1">
@@ -34,7 +36,7 @@ export const StandardTekster = (): ReactElement => {
           >
             {({ input }) => (
               <Checkbox size="small" {...input} value={standardtekst.text}>
-                {standardtekst.label}
+                {referatTextsForVisning.standardTekster[index].label}
               </Checkbox>
             )}
           </Field>

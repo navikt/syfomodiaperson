@@ -269,17 +269,17 @@ const referatStandardTeksterNynorsk: StandardTekst[] = [
   {
     key: StandardtekstKey.AVKLARING_ARBEIDSEVNE,
     label: "Avklaring av arbeidsevne",
-    text: "Du kan få kartlagt eller prøvd ut arbeidsevnen din. Avklaringen kan skje der du jobber eller på en annen arbeidsplass. Da undersøker vi om du kan utføre jobben med noen tilpasninger, om du kan få påfyll av kompetanse, eller om det er muligheter i et annet yrke. Avklaringen varer som regel i fire uker, men kan forlenges med inntil åtte uker ved behov.",
+    text: "Du kan få kartlagt eller prøvd ut arbeidsevna di. Avklaringa kan skje der du jobbar, eller på ein annan arbeidsplass. Vi undersøkjer då om du kan utføre jobben med enkelte tilpassingar, om du kan få påfyll av kompetanse, eller om eit anna yrke kan vere aktuelt. Avklaringa varer som regel i fire veker, men kan forlengast med inntil åtte veker ved behov.",
   },
   {
     key: StandardtekstKey.OPPFOLGINGSTILTAK,
     label: "Oppfølgingstiltak",
-    text: "Du kan få støtte eller veiledning til å finne eller beholde en jobb. Tiltaket skal tilpasses dine behov ut fra mulighetene dine på arbeidsmarkedet.",
+    text: "Du kan få støtte eller rettleiing til å behalde jobben din eller finne ein ny. Tiltaket skal tilpassast behova dine ut frå moglegheitene du har på arbeidsmarknaden.",
   },
   {
     key: StandardtekstKey.ARBEIDSRETTET_REHABILITERING,
-    label: "Arbeidsrettet rehabilitering",
-    text: "Du kan få kartlagt eller prøvd ut arbeidsevna di. Avklaringa kan skje der du jobbar, eller på ein annan arbeidsplass. Vi undersøkjer då om du kan utføre jobben med enkelte tilpassingar, om du kan få påfyll av kompetanse, eller om eit anna yrke kan vere aktuelt. Avklaringa varer som regel i fire veker, men kan forlengast med inntil åtte veker ved behov.",
+    label: "Arbeidsretta rehabilitering",
+    text: "Du kan få individuell rettleiing tilpassa behovet ditt (t.d. hjelp til å kartleggje helse, arbeidsplass og funksjon). Dette aukar sjansane dine til å kome i jobb att.",
   },
   {
     key: StandardtekstKey.OPPLAERING_UTDANNING,

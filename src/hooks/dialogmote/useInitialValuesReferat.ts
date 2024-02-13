@@ -4,12 +4,13 @@ import { getReferatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { useMemo } from "react";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
-import { Malform } from "@/context/malform/MalformContext";
+import { useMalform } from "@/context/malform/MalformContext";
 
 export const useInitialValuesReferat = (
   dialogmote: DialogmoteDTO
 ): Partial<ReferatSkjemaValues> => {
   const { getCurrentNarmesteLeder } = useLedereQuery();
+  const { malform } = useMalform();
   const {
     arbeidsgiver: { virksomhetsnummer },
     behandler,
@@ -43,7 +44,7 @@ export const useInitialValuesReferat = (
             funksjon,
           })
         ),
-        standardtekster: getReferatTexts(Malform.BOKMAL).standardTekster.filter(
+        standardtekster: getReferatTexts(malform).standardTekster.filter(
           (standardtekst) =>
             latestReferat.document.some(({ key }) => key === standardtekst.key)
         ),
