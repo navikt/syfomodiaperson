@@ -47,6 +47,7 @@ import { getReferatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { NewDialogmoteReferatDTO } from "@/data/dialogmote/types/dialogmoteReferatTypes";
 import { renderWithRouter } from "../testRouterUtils";
 import { Malform, MalformProvider } from "@/context/malform/MalformContext";
+import { StoreKey } from "@/hooks/useLocalStorageState";
 
 let queryClient: QueryClient;
 
@@ -62,6 +63,7 @@ describe("ReferatTest", () => {
 
   afterEach(() => {
     clock.restore();
+    localStorage.setItem(StoreKey.MALFORM, Malform.BOKMAL);
   });
 
   it("viser arbeidstaker, dato og sted i tittel", () => {
@@ -335,12 +337,6 @@ describe("ReferatTest", () => {
     clickButton("Se forhåndsvisning");
 
     expect(screen.getByText(getReferatTexts(Malform.NYNORSK).intro2)).to.exist;
-
-    // Cleanup global state for other tests
-    const malformRadioBokmal = screen.getByRole("radio", {
-      name: "Bokmål",
-    });
-    userEvent.click(malformRadioBokmal);
   });
 });
 

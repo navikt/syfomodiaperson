@@ -39,6 +39,7 @@ import {
 } from "@/components/dialogmote/innkalling/DialogmoteInnkallingSkjema";
 import { behandlereQueryKeys } from "@/data/behandler/behandlereQueryHooks";
 import { BehandlerDTO, BehandlerType } from "@/data/behandler/BehandlerDTO";
+import { StoreKey } from "@/hooks/useLocalStorageState";
 
 let queryClient: QueryClient;
 
@@ -70,6 +71,10 @@ const renderDialogmoteInnkallingSkjema = () => {
 describe("DialogmoteInnkallingSkjema", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
+  });
+
+  afterEach(() => {
+    localStorage.setItem(StoreKey.MALFORM, Malform.BOKMAL);
   });
 
   it("shows a list of behandlere and possibility to add behandler", () => {
@@ -344,12 +349,6 @@ describe("DialogmoteInnkallingSkjema", () => {
     expect(
       screen.getByText(getInnkallingTexts(Malform.NYNORSK).arbeidstaker.intro2)
     ).to.exist;
-
-    // Cleanup global state for other tests
-    const malformRadioBokmal = screen.getByRole("radio", {
-      name: "Bokmål",
-    });
-    userEvent.click(malformRadioBokmal);
   });
 });
 

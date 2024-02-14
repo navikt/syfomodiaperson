@@ -359,8 +359,8 @@ const referatTextsNynorsk = {
     deltakelse: "deltok ikkje",
   },
   endring:
-    "Dette referatet er en endring av et referat du har mottatt tidligere. Dette referatet erstatter det forrige, og det forrige referatet er derfor utdatert.", // TODO: Mangler oversetting
-  begrunnelseEndringTitle: "Årsaken til at referatet er endret", // TODO: Mangler oversetting
+    "Dette referatet er ein endra versjon av eit referat du har motteke tidlegare. Dette referatet erstattar det førre, og det førre referatet er difor utdatert.",
+  begrunnelseEndringTitle: "Årsaka til at referatet er endra",
   intro1:
     "Målet med dialogmøtet var å oppsummere situasjonen din, drøfte moglegheitene dine for å jobbe, og leggje ein plan for tida framover.",
   intro2:
@@ -371,7 +371,7 @@ const referatTextsNynorsk = {
   arbeidsgiversOppgaveTitle: "Oppgåva til arbeidsgivar",
   navOppgaveTitle: "Oppgåva til NAV",
   behandlersOppgave: "Oppgåva til behandlar",
-  situasjonTitle: "Situasjon og moglegheiter", // TODO: Denne manglet, så jeg freestylet
+  situasjonTitle: "Situasjon og moglegheiter",
   standardTeksterHeader: "Dette informerte NAV om i møtet",
   standardTekster: referatStandardTeksterNynorsk,
 };

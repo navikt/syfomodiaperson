@@ -56,5 +56,5 @@ export const useInitialValuesReferat = (
         ...behandlerInitialValues,
       };
     }
-  }, [currentNarmesteLederNavn, latestReferat, behandler]);
+  }, [behandler, latestReferat, malform, currentNarmesteLederNavn]);
 };
