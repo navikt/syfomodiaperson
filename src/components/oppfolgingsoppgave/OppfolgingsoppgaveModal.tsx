@@ -77,7 +77,7 @@ export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
     const oppfolgingsoppgaveDto: OppfolgingsoppgaveRequestDTO = {
       oppfolgingsgrunn: values.oppfolgingsgrunn,
       tekst:
-        values.oppfolgingsgrunn == Oppfolgingsgrunn.ANNET
+        values.oppfolgingsgrunn === Oppfolgingsgrunn.ANNET
           ? undefined
           : values.beskrivelse,
       frist: values.frist,
@@ -98,7 +98,7 @@ export const OppfolgingsoppgaveModal = ({ isOpen, toggleOpen }: Props) => {
   });
 
   const isOppfolgingsgrunnAnnet =
-    watch("oppfolgingsgrunn") == Oppfolgingsgrunn.ANNET;
+    watch("oppfolgingsgrunn") === Oppfolgingsgrunn.ANNET;
 
   return (
     <form onSubmit={handleSubmit(submit)}>
