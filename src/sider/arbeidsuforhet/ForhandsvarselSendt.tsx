@@ -2,7 +2,9 @@ import React from "react";
 import { useArbeidsuforhetVurderingQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { ForhandsvarselBeforeDeadline } from "@/sider/arbeidsuforhet/ForhandsvarselBeforeDeadline";
 import { ForhandsvarselAfterDeadline } from "@/sider/arbeidsuforhet/ForhandsvarseAfterDeadline";
+import { Box } from "@navikt/ds-react";
 import dayjs from "dayjs";
+import { VurderArbeidsuforhetTabs } from "@/sider/arbeidsuforhet/VurderArbeidsuforhetTabs";
 
 export const ForhandsvarselSendt = () => {
   const { data } = useArbeidsuforhetVurderingQuery();
@@ -17,6 +19,9 @@ export const ForhandsvarselSendt = () => {
       ) : (
         <ForhandsvarselAfterDeadline />
       )}
+      <Box background="surface-default" padding="3" className="mb-2">
+        <VurderArbeidsuforhetTabs />
+      </Box>
     </div>
   );
 };

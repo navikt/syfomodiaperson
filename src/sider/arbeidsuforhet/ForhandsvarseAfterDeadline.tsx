@@ -1,7 +1,6 @@
 import React from "react";
 import { useArbeidsuforhetVurderingQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
-import { Alert, Box, Button, Heading } from "@navikt/ds-react";
-import { ButtonRow } from "@/components/Layout";
+import { Alert, Box, Heading } from "@navikt/ds-react";
 import { VisBrev } from "@/components/VisBrev";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { BellIcon } from "@navikt/aksel-icons";
@@ -38,11 +37,7 @@ export const ForhandsvarselAfterDeadline = () => {
           <BellIcon title="bjelleikon" fontSize="2em" />
         </div>
         <p>{texts.passertInfo}</p>
-        <ButtonRow>
-          <Button variant="primary">{texts.avslag}</Button>
-          <Button variant="secondary">{texts.oppfylt}</Button>
-          <VisBrev document={forhandsvarsel.document} />
-        </ButtonRow>
+        <VisBrev document={forhandsvarsel.document} />
       </Box>
     </div>
   );

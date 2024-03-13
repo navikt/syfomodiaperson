@@ -7,8 +7,8 @@ export const stubAktivitetskravApi = (scope: nock.Scope) => {
     .reply(200, () => undefined);
 };
 
-export const stubArbeidsuforhetForhandsvarselApi = (scope: nock.Scope) => {
+export const stubArbeidsuforhetVurderingApi = (scope: nock.Scope) => {
   return scope
-    .post(new RegExp(`${ISARBEIDSUFORHET_ROOT}/arbeidsuforhet/forhandsvarsel`))
+    .post(new RegExp(`${ISARBEIDSUFORHET_ROOT}/arbeidsuforhet/vurderinger`))
     .reply(201);
 };

@@ -3,6 +3,7 @@ import { ISARBEIDSUFORHET_ROOT } from "../../src/apiConstants";
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import { mockArbeidsuforhetvurdering } from "./arbeidsuforhetMock";
 import {
+  VarselDTO,
   VurderingRequestDTO,
   VurderingResponseDTO,
 } from "../../src/data/arbeidsuforhet/arbeidsuforhetTypes";
@@ -31,6 +32,14 @@ export const mockIsarbeidsuforhet = (server: any) => {
     (req: express.Request, res: express.Response) => {
       const body: VurderingRequestDTO = req.body;
       const personident = req.headers[NAV_PERSONIDENT_HEADER];
+      const varsel: VarselDTO | undefined =
+        body.type === "FORHANDSVARSEL"
+          ? {
+              uuid: generateUUID(),
+              svarfrist: new Date(),
+              createdAt: new Date(),
+            }
+          : undefined;
       const sentVurdering: VurderingResponseDTO = {
         uuid: generateUUID(),
         personident:
@@ -40,7 +49,7 @@ export const mockIsarbeidsuforhet = (server: any) => {
         type: body.type,
         begrunnelse: body.begrunnelse,
         document: body.document,
-        varsel: undefined,
+        varsel,
       };
       arbeidsuforhetVurderinger = [sentVurdering, ...arbeidsuforhetVurderinger];
       res.status(201).send(JSON.stringify(sentVurdering));

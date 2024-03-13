@@ -6,7 +6,7 @@ import { expect } from "chai";
 import nock from "nock";
 import { NotificationContext } from "@/context/notification/NotificationContext";
 import { SendForhandsvarselSkjema } from "@/sider/arbeidsuforhet/SendForhandsvarselSkjema";
-import { stubArbeidsuforhetForhandsvarselApi } from "../stubs/stubIsarbeidsuforhet";
+import { stubArbeidsuforhetVurderingApi } from "../stubs/stubIsarbeidsuforhet";
 import {
   VurderingRequestDTO,
   VurderingType,
@@ -66,7 +66,7 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
     it("Send forhåndsvarsel with begrunnelse filled in, without reseting the form", async () => {
       const begrunnelse = "Dette er en begrunnelse!";
       renderForhandsvarselSkjema();
-      stubArbeidsuforhetForhandsvarselApi(apiMockScope);
+      stubArbeidsuforhetVurderingApi(apiMockScope);
       const begrunnelseLabel = "Begrunnelse (obligatorisk)";
 
       expect(
@@ -103,7 +103,7 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
     it("Forhåndsvis brev with begrunnelse", async () => {
       const begrunnelse = "Dette er en begrunnelse!";
       renderForhandsvarselSkjema();
-      stubArbeidsuforhetForhandsvarselApi(apiMockScope);
+      stubArbeidsuforhetVurderingApi(apiMockScope);
       const begrunnelseLabel = "Begrunnelse (obligatorisk)";
 
       const begrunnelseInput = getTextInput(begrunnelseLabel);

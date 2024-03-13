@@ -85,12 +85,9 @@ describe("ForhandsvarselSendt", () => {
         )
       ).to.exist;
       expect(screen.getByRole("img", { name: "klokkeikon" })).to.exist;
-      expect(screen.getByRole("button", { name: "Avslag" })).to.have.property(
-        "disabled",
-        true
-      );
-      expect(screen.getByRole("button", { name: "Oppfylt" })).to.exist;
       expect(screen.getByRole("button", { name: "Se hele brevet" })).to.exist;
+      expect(screen.queryByRole("tab", { name: "Oppfylt" })).to.exist;
+      expect(screen.queryByRole("tab", { name: "Avslag" })).to.not.exist;
     });
 
     it("show ForhandsvarselAfterDeadline when svarfrist is today (expired)", () => {
@@ -129,12 +126,9 @@ describe("ForhandsvarselSendt", () => {
           "Tiden har gått ut og du kan nå gå videre med å sende avslag."
         )
       ).to.exist;
-      expect(screen.getByRole("button", { name: "Avslag" })).to.have.property(
-        "disabled",
-        false
-      );
-      expect(screen.getByRole("button", { name: "Oppfylt" })).to.exist;
       expect(screen.getByRole("button", { name: "Se hele brevet" })).to.exist;
+      expect(screen.queryByRole("tab", { name: "Oppfylt" })).to.exist;
+      expect(screen.queryByRole("tab", { name: "Avslag" })).to.exist;
     });
   });
 });
