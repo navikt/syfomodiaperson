@@ -70,14 +70,22 @@ function logOppfolgingsgrunnSendt(oppfolgingsgrunn: Oppfolgingsgrunn) {
 
 function logOppfolgingsoppgaveEditert(
   oppfolgingsgrunn: Oppfolgingsgrunn,
-  x: EditOppfolgingsoppgaveRequestDTO
+  existingOppfolgingsoppgave: OppfolgingsoppgaveResponseDTO,
+  editedOppfolgingsoppgave: EditOppfolgingsoppgaveRequestDTO
 ) {
+  const editedFields: string[] = [];
+  if (editedOppfolgingsoppgave.frist !== existingOppfolgingsoppgave.frist) {
+    editedFields.push("frist");
+  }
+  if (editedOppfolgingsoppgave.tekst !== existingOppfolgingsoppgave.tekst) {
+    editedFields.push("tekst");
+  }
   Amplitude.logEvent({
     type: EventType.OppfolgingsoppgaveEdited,
     data: {
       url: window.location.href,
       oppfolgingsgrunn: oppfolgingsgrunn,
-      edited: [],
+      edited: editedFields,
     },
   });
 }
@@ -111,6 +119,7 @@ export const OppfolgingsoppgaveModal = ({
         onSuccess: () => {
           logOppfolgingsoppgaveEditert(
             values.oppfolgingsgrunn,
+            existingOppfolgingsoppgave,
             oppfolgingsoppgaveDto
           );
           toggleOpen(false);
@@ -119,10 +128,7 @@ export const OppfolgingsoppgaveModal = ({
     } else {
       const oppfolgingsoppgaveDto: OppfolgingsoppgaveRequestDTO = {
         oppfolgingsgrunn: values.oppfolgingsgrunn,
-        tekst:
-          values.oppfolgingsgrunn === Oppfolgingsgrunn.ANNET
-            ? undefined
-            : values.beskrivelse,
+        tekst: values.beskrivelse,
         frist: values.frist,
       };
       createOppfolgingsoppgave.mutate(oppfolgingsoppgaveDto, {
@@ -239,7 +245,10 @@ export const OppfolgingsoppgaveModal = ({
           <Button
             type="submit"
             variant="primary"
-            loading={createOppfolgingsoppgave.isPending}
+            loading={
+              createOppfolgingsoppgave.isPending ||
+              editOppfolgingsoppgave.isPending
+            }
           >
             {texts.save}
           </Button>

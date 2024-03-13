@@ -1,12 +1,9 @@
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import {
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query/build/modern";
 import { ISHUSKELAPP_ROOT } from "@/apiConstants";
 import { EditOppfolgingsoppgaveRequestDTO } from "@/data/oppfolgingsoppgave/types";
 import { post } from "@/api/axios";
 import { oppfolgingsoppgaveQueryKeys } from "@/data/oppfolgingsoppgave/useGetOppfolgingsoppgave";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useEditOppfolgingsoppgave(
   existingOppfolgingsoppgaveUuid?: string
