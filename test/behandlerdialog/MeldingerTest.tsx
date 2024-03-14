@@ -517,8 +517,9 @@ describe("Meldinger panel", () => {
       );
       renderMeldinger();
 
-      const expectedFerdigbehandledText = `Siste melding lest av ${VEILEDER_DEFAULT.fulltNavn()} 
-        ${twoDaysAgo.format("DD.MM.YYYY")}`;
+      const expectedFerdigbehandledText = `Siste melding lest av ${VEILEDER_DEFAULT.fulltNavn()} ${twoDaysAgo.format(
+        "DD.MM.YYYY"
+      )}`;
       expect(screen.getByText(expectedFerdigbehandledText)).to.exist;
     });
 
