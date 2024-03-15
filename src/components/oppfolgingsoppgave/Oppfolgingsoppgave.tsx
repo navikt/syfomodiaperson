@@ -7,7 +7,6 @@ import {
   Tag,
   Tooltip,
 } from "@navikt/ds-react";
-import { DocPencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import React, { useState } from "react";
 import { OpenOppfolgingsoppgaveModalButton } from "@/components/oppfolgingsoppgave/OpenOppfolgingsoppgaveModalButton";
 import { useGetOppfolgingsoppgave } from "@/data/oppfolgingsoppgave/useGetOppfolgingsoppgave";
@@ -77,7 +76,6 @@ export const Oppfolgingsoppgave = () => {
       )}
       <Button
         type="button"
-        icon={<DocPencilIcon aria-hidden />}
         variant={"primary-neutral"}
         onClick={() => setIsModalOpen(true)}
         className={"ml-auto mr-4"}
@@ -88,7 +86,6 @@ export const Oppfolgingsoppgave = () => {
       <Tooltip content={texts.removeTooltip}>
         <Button
           type="button"
-          icon={<TrashIcon aria-hidden />}
           variant={"secondary-neutral"}
           onClick={() =>
             handleRemoveOppfolgingsoppgave(oppfolgingsoppgave.uuid)
