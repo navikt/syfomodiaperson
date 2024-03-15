@@ -23,7 +23,6 @@ import { useForm } from "react-hook-form";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
 import dayjs from "dayjs";
-import { fromStringToDate } from "@/utils/datoUtils";
 import { useEditOppfolgingsoppgave } from "@/data/oppfolgingsoppgave/useEditOppfolgingsoppgave";
 
 const texts = {
@@ -68,7 +67,7 @@ function logOppfolgingsgrunnSendt(oppfolgingsgrunn: Oppfolgingsgrunn) {
   });
 }
 
-function logOppfolgingsoppgaveEditert(
+function logOppfolgingsoppgaveEdited(
   oppfolgingsgrunn: Oppfolgingsgrunn,
   existingOppfolgingsoppgave: OppfolgingsoppgaveResponseDTO,
   editedOppfolgingsoppgave: EditOppfolgingsoppgaveRequestDTO
@@ -85,7 +84,7 @@ function logOppfolgingsoppgaveEditert(
     data: {
       url: window.location.href,
       oppfolgingsgrunn: oppfolgingsgrunn,
-      edited: editedFields,
+      fieldsEdited: editedFields,
     },
   });
 }
@@ -117,7 +116,7 @@ export const OppfolgingsoppgaveModal = ({
       };
       editOppfolgingsoppgave.mutate(oppfolgingsoppgaveDto, {
         onSuccess: () => {
-          logOppfolgingsoppgaveEditert(
+          logOppfolgingsoppgaveEdited(
             values.oppfolgingsgrunn,
             existingOppfolgingsoppgave,
             oppfolgingsoppgaveDto
@@ -142,7 +141,7 @@ export const OppfolgingsoppgaveModal = ({
 
   const defaultSelectedDate =
     isEditMode && !!existingOppfolgingsoppgave.frist
-      ? fromStringToDate(existingOppfolgingsoppgave.frist)
+      ? dayjs(existingOppfolgingsoppgave.frist).toDate()
       : undefined;
   const { datepickerProps, inputProps } = useDatepicker({
     onDateChange: (date: Date | undefined) => {

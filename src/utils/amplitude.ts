@@ -13,7 +13,7 @@ export enum EventType {
   Navigation = "navigere",
   AccordionOpen = "accordion åpnet",
   OppfolgingsgrunnSendt = "oppfolgingsgrunn sendt",
-  OppfolgingsoppgaveEdited = "oppfolgingsoppgave editert",
+  OppfolgingsoppgaveEdited = "oppfolgingsoppgave endret",
   IkkeAktuellVurderingArsak = "Ikke aktuell vurdering arsak",
   ViewPortAndScreenResolution = "viewport og skjermstørrelse",
   OptionSelected = "alternativ valgt",
@@ -64,7 +64,7 @@ type OppfolgingsoppgaveEdited = {
   data: {
     url: string;
     oppfolgingsgrunn: Oppfolgingsgrunn;
-    edited: string[];
+    fieldsEdited: string[];
   };
 };
 

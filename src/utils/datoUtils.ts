@@ -293,11 +293,3 @@ export const addWeeks = (date: Date, numberOfWeeks: number): Date => {
 export const getWeeksBetween = (date1, date2): number => {
   return Math.abs(dayjs(date1).diff(date2, "week"));
 };
-
-export function fromStringToDate(str: string): Date {
-  const parts = str.split("-");
-  const year = parseInt(parts[0]);
-  const month = parseInt(parts[1]) - 1;
-  const day = parseInt(parts[2]);
-  return new Date(year, month, day);
-}
