@@ -12,17 +12,17 @@ import { OpenOppfolgingsoppgaveModalButton } from "@/components/oppfolgingsoppga
 import { useGetOppfolgingsoppgave } from "@/data/oppfolgingsoppgave/useGetOppfolgingsoppgave";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
-import { VeilederinfoDTO } from "@/data/veilederinfo/types/VeilederinfoDTO";
 import { oppfolgingsgrunnToText } from "@/data/oppfolgingsoppgave/types";
 import { OppfolgingsoppgaveModal } from "@/components/oppfolgingsoppgave/OppfolgingsoppgaveModal";
+import { Veileder } from "@/data/veilederinfo/types/Veileder";
 
 const texts = {
   title: "Oppfølgingsoppgave",
   edit: "Endre",
   remove: "Fjern",
   removeTooltip: "Fjerner oppfølgingsoppgaven fra oversikten",
-  createdBy: (veileder: VeilederinfoDTO, createdAt: Date) =>
-    `Opprettet av: ${veileder.navn} (${
+  createdBy: (veileder: Veileder, createdAt: Date) =>
+    `Opprettet av: ${veileder.fulltNavn()} (${
       veileder.ident
     }), ${tilLesbarDatoMedArUtenManedNavn(createdAt)}`,
 };

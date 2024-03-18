@@ -62,7 +62,7 @@ describe("Oppfolgingsoppgave", () => {
     nock.cleanAll();
   });
 
-  describe.only("oppfolgingsoppgave exists", () => {
+  describe("oppfolgingsoppgave exists", () => {
     beforeEach(() => {
       stubOppfolgingsoppgaveApi(apiMockScope, oppfolgingsoppgave);
     });
@@ -78,7 +78,7 @@ describe("Oppfolgingsoppgave", () => {
         .to.exist;
       expect(
         await screen.findByText(
-          `Opprettet av: ${VEILEDER_DEFAULT.navn} (${
+          `Opprettet av: ${VEILEDER_DEFAULT.fulltNavn()} (${
             VEILEDER_DEFAULT.ident
           }), ${tilLesbarDatoMedArUtenManedNavn(new Date())}`
         )
@@ -132,8 +132,6 @@ describe("Oppfolgingsoppgave", () => {
       });
       const fristDate = dayjs();
       changeTextInput(fristDateInput, fristDate.format("DD-MM-YY"));
-
-      console.log(`FRISTDATE: ${fristDate.format("DD-MM-YY")}`);
 
       const lagreButton = screen.getByRole("button", {
         hidden: true,
