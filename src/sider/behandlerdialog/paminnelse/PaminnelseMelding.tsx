@@ -50,26 +50,34 @@ export const PaminnelseMelding = ({
       onSuccess: () => setVisPaminnelseModal(false),
     });
   };
+
   const handleFjernOppgaveClick = () => {
-    behandleOppgave.mutate(oppgave.uuid, {
-      onSuccess: () => setVisPaminnelseModal(false),
-    });
+    behandleOppgave.mutate(oppgave.uuid);
   };
+
   const handleClose = () => setVisPaminnelseModal(false);
 
   return (
     <>
-      <Button
-        className="self-start"
-        icon={<BellIcon aria-hidden />}
-        onClick={() => {
-          setVisPaminnelseModal(true);
-          paminnelseTilBehandler.reset();
-          behandleOppgave.reset();
-        }}
-      >
-        {texts.button}
-      </Button>
+      <div className="flex gap-4">
+        <Button
+          icon={<BellIcon aria-hidden />}
+          onClick={() => {
+            setVisPaminnelseModal(true);
+            paminnelseTilBehandler.reset();
+            behandleOppgave.reset();
+          }}
+        >
+          {texts.button}
+        </Button>
+        <Button
+          variant="secondary"
+          loading={behandleOppgave.isPending}
+          onClick={handleFjernOppgaveClick}
+        >
+          {texts.fjernOppgave}
+        </Button>
+      </div>
       <Modal
         width="medium"
         closeOnBackdropClick
@@ -100,14 +108,6 @@ export const PaminnelseMelding = ({
             onClick={handleSendPaminnelseClick}
           >
             {texts.send}
-          </Button>
-          <Button
-            variant="secondary"
-            disabled={paminnelseTilBehandler.isPending}
-            loading={behandleOppgave.isPending}
-            onClick={handleFjernOppgaveClick}
-          >
-            {texts.fjernOppgave}
           </Button>
           <CloseButton
             onClick={handleClose}
