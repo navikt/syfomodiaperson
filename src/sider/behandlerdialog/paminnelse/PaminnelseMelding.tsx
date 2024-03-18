@@ -13,7 +13,6 @@ import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document/useMeldingTilBehandlerDocument";
 import { DocumentComponentVisning } from "@/components/document/DocumentComponentVisning";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import { MeldingActionButton } from "@/sider/behandlerdialog/MeldingActionButton";
 import { CloseButton } from "@/components/CloseButton";
 import { DocumentComponentHeaderH1 } from "@/components/document/DocumentComponentHeaderH1";
 
@@ -60,7 +59,8 @@ export const PaminnelseMelding = ({
 
   return (
     <>
-      <MeldingActionButton
+      <Button
+        className="self-start"
         icon={<BellIcon aria-hidden />}
         onClick={() => {
           setVisPaminnelseModal(true);
@@ -69,7 +69,7 @@ export const PaminnelseMelding = ({
         }}
       >
         {texts.button}
-      </MeldingActionButton>
+      </Button>
       <Modal
         width="medium"
         closeOnBackdropClick
