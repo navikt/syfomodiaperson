@@ -174,9 +174,7 @@ describe("Oppfolgingsoppgave", () => {
       expect(lagreButton).to.exist;
       userEvent.click(lagreButton);
 
-      await screen.findByText(
-        "Oppfølgingsoppgaven må endres for at du kan lagre."
-      );
+      await screen.findByText("Du må gjøre en endring før du kan lagre.");
     });
   });
   describe("OppfolgingsoppgaveModal: no oppfolgingsoppgave exists", () => {

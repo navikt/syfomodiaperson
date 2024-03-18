@@ -32,7 +32,7 @@ const texts = {
     "Denne oppgaven skal kun brukes etter formålet, altså ikke til andre oppgaver enn det oppfølgingsgrunnen tilsier. Innbyggeren kan få innsyn i det du skriver her.",
   annetChosenAlert:
     "Denne oppgaven skal kun brukes til sykefraværsoppfølging, altså ikke oppgaver knyttet til andre ytelser eller formål. Innbyggeren kan få innsyn i det du skriver her.",
-  formNeedsChangeToEdit: "Oppfølgingsoppgaven må endres for at du kan lagre.",
+  formNeedsChangeToSave: "Du må gjøre en endring før du kan lagre.",
   save: "Lagre",
   close: "Avbryt",
   missingOppfolgingsgrunn: "Vennligst angi oppfølgingsgrunn.",
@@ -277,7 +277,7 @@ export const OppfolgingsoppgaveModal = ({
             {texts.save}
           </Button>
           {isGeneralFormError && (
-            <ErrorMessage>{texts.formNeedsChangeToEdit}</ErrorMessage>
+            <ErrorMessage>{texts.formNeedsChangeToSave}</ErrorMessage>
           )}
         </Modal.Footer>
       </Modal>
