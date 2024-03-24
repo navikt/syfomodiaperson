@@ -191,7 +191,9 @@ export const OppfolgingsoppgaveModal = ({
     : undefined;
   const { datepickerProps, inputProps } = useDatepicker({
     onDateChange: (date: Date | undefined) => {
-      setValue("frist", dayjs(date).format("YYYY-MM-DD") ?? null);
+      date
+        ? setValue("frist", dayjs(date).format("YYYY-MM-DD"))
+        : setValue("frist", null);
       setIsFristTouched(true);
     },
     defaultSelected: defaultSelectedDate,
