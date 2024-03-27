@@ -13,7 +13,13 @@ import {
   PersonSuitIcon,
 } from "@navikt/aksel-icons";
 import { MedisinskrinImage } from "../../../../img/ImageComponents";
-import { Checkbox, ExpansionCard, Heading, TextField } from "@navikt/ds-react";
+import {
+  BodyLong,
+  Checkbox,
+  ExpansionCard,
+  Heading,
+  TextField,
+} from "@navikt/ds-react";
 
 export const texts = {
   title: "Deltakere i møtet",
@@ -104,7 +110,7 @@ const DeltakerBehandler = ({ behandler }: DeltakerBehandlerProps) => {
       }
     >
       <div className="flex flex-col gap-4 mt-4 mb-4">
-        <p>{texts.behandlerTekst}</p>
+        <BodyLong size="small">{texts.behandlerTekst}</BodyLong>
         <Field name="behandlerDeltatt" type="checkbox">
           {({ input }) => (
             <Checkbox size="small" {...input}>
@@ -119,7 +125,7 @@ const DeltakerBehandler = ({ behandler }: DeltakerBehandlerProps) => {
             </Checkbox>
           )}
         </Field>
-        <p>{texts.behandlerReferatSamtykke}</p>
+        <BodyLong size="small">{texts.behandlerReferatSamtykke}</BodyLong>
       </div>
     </DeltakerEkspanderbartPanel>
   );
@@ -158,7 +164,7 @@ const DeltakerArbeidsgiver = () => {
                 type="text"
                 size="small"
               />
-              <p>{texts.arbeidsgiverTekst}</p>
+              <BodyLong size="small">{texts.arbeidsgiverTekst}</BodyLong>
             </div>
           </DeltakerEkspanderbartPanel>
         );
