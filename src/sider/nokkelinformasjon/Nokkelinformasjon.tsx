@@ -39,5 +39,3 @@ export const Nokkelinformasjon = () => {
     </Side>
   );
 };
-
-export default Nokkelinformasjon;
