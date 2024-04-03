@@ -76,7 +76,7 @@ export const getSendForhandsvarselDocument = (
   ];
 };
 
-export const getSendVurderingDocument = (
+export const getOppfyltVurderingDocument = (
   begrunnelse: string
 ): DocumentComponentDto[] => {
   return [
