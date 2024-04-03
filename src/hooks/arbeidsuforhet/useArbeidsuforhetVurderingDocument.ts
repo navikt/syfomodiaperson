@@ -6,7 +6,7 @@ import {
   createParagraph,
 } from "@/utils/documentComponentUtils";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
-import { getForhandsvarselArbeidsuforhetTexts } from "@/data/arbeidsuforhet/forhandsvarselArbeidsuforhetTexts";
+import { getForhandsvarselArbeidsuforhetTexts } from "@/data/arbeidsuforhet/arbeidsuforhetDocumentTexts";
 
 type ForhandsvarselDocumentValues = {
   begrunnelse: string;
