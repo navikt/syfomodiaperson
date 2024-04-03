@@ -184,6 +184,7 @@ describe("GlobalNavigasjon", () => {
 
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Arbeidsuførhet 1" })).to.exist;
+    expect(screen.getByRole("link", { name: "Forhåndsvarsel §8-4 1" })).to
+      .exist;
   });
 });

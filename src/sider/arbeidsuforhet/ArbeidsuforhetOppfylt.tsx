@@ -8,7 +8,7 @@ const texts = {
   success:
     "Vurderingen om at bruker oppfyller § 8-4 er lagret i historikken og blir journalført automatisk.",
   error:
-    "Trykk på 'Arbeidsuførhet'-menypunktet for å komme til skjema for forhåndsvarsel.",
+    "Trykk på 'Forhåndsvarsel §8-4'-menypunktet for å komme til skjema for forhåndsvarsel.",
 };
 
 export const ArbeidsuforhetOppfylt = (): ReactElement => {

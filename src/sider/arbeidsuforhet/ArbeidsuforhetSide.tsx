@@ -10,7 +10,7 @@ import { VurderingHistorikk } from "@/sider/arbeidsuforhet/historikk/VurderingHi
 import { Arbeidsuforhet } from "@/sider/arbeidsuforhet/Arbeidsuforhet";
 
 const texts = {
-  title: "Arbeidsuførhet",
+  title: "Forhåndsvarsel §8-4",
 };
 
 export const ArbeidsuforhetSide = (): ReactElement => {

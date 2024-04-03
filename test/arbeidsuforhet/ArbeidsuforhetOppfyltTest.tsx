@@ -114,7 +114,7 @@ describe("OppfyltSide", () => {
 
       expect(
         screen.getByText(
-          "Trykk på 'Arbeidsuførhet'-menypunktet for å komme til skjema for forhåndsvarsel."
+          "Trykk på 'Forhåndsvarsel §8-4'-menypunktet for å komme til skjema for forhåndsvarsel."
         )
       ).to.exist;
     });
