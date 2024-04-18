@@ -34,12 +34,13 @@ export const VedtakDatoer = ({
         onFraDatoChanged(date);
       }
     },
+    fromDate: new Date(),
   });
   const tilDatoDatePicker = useDatepicker();
 
   return (
     <>
-      <DatePicker {...fraDatoDatePicker.datepickerProps} strategy="fixed">
+      <DatePicker {...fraDatoDatePicker.datepickerProps}>
         <DatePicker.Input
           {...fraDatoDatePicker.inputProps}
           label={texts.fraDatoLabel}
