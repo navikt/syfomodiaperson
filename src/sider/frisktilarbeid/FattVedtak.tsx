@@ -17,6 +17,7 @@ import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { VedtakRequestDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import dayjs from "dayjs";
 import { behandlerNavn } from "@/utils/behandlerUtils";
+import { createHeaderH1 } from "@/utils/documentComponentUtils";
 
 const begrunnelseMaxLength = 5000;
 
@@ -56,7 +57,7 @@ export const FattVedtak = () => {
       fom: dayjs(values.fraDato).format("YYYY-MM-DD"),
       tom: dayjs(tilDato).format("YYYY-MM-DD"),
       begrunnelse: values.begrunnelse,
-      document: [],
+      document: [createHeaderH1("Vedtak")],
       behandlerRef: values.behandlerRef,
       behandlerNavn: selectedBehandler ? behandlerNavn(selectedBehandler) : "",
       behandlerDocument: [],

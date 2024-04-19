@@ -17,6 +17,7 @@ import dayjs from "dayjs";
 import { VedtakRequestDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { behandlereDialogmeldingMock } from "../../mock/isdialogmelding/behandlereDialogmeldingMock";
 import { addWeeks } from "@/utils/datoUtils";
+import { createHeaderH1 } from "@/utils/documentComponentUtils";
 
 let queryClient: QueryClient;
 
@@ -100,7 +101,7 @@ describe("FattVedtak", () => {
       fom: today.format("YYYY-MM-DD"),
       tom: inTwelveWeeks.format("YYYY-MM-DD"),
       begrunnelse: "En begrunnelse",
-      document: [],
+      document: [createHeaderH1("Vedtak")],
       behandlerDocument: [],
       behandlerNavn: `${mockBehandler.fornavn} ${mockBehandler.mellomnavn} ${mockBehandler.etternavn}`,
       behandlerRef: mockBehandler.behandlerRef,
