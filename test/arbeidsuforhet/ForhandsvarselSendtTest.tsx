@@ -98,7 +98,7 @@ describe("ForhandsvarselSendt", () => {
         screen.getByText(
           `Fristen for forhåndsvarselet som ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
             createdAt
-          )} er gått ut. Trykk på Avslag-knappen hvis vilkårene i § 8-4 ikke er oppfylt og rett til videre sykepenger skal avslås.`
+          )} er gått ut. Trykk på Innstilling om avslag-knappen hvis vilkårene i § 8-4 ikke er oppfylt og rett til videre sykepenger skal avslås.`
         )
       ).to.exist;
       expect(screen.getByRole("button", { name: "Innstilling om avslag" })).to
