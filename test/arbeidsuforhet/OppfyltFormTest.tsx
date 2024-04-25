@@ -1,9 +1,7 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import React from "react";
 import { queryClientWithMockData } from "../testQueryClient";
 import { screen, waitFor, within } from "@testing-library/react";
-import { navEnhet } from "../dialogmote/testData";
-import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { expect } from "chai";
 import {
   VurderingRequestDTO,
@@ -17,20 +15,15 @@ import {
 } from "../testUtils";
 import { OppfyltForm } from "@/sider/arbeidsuforhet/OppfyltForm";
 import { getOppfyltVurderingDocument } from "./documents";
-import { renderWithRouter } from "../testRouterUtils";
 import { arbeidsuforhetOppfyltPath } from "@/routers/AppRouter";
+import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
 
 let queryClient: QueryClient;
 
 const renderOppfyltForm = () => {
-  renderWithRouter(
-    <QueryClientProvider client={queryClient}>
-      <ValgtEnhetContext.Provider
-        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-      >
-        <OppfyltForm forhandsvarselSendtDato={daysFromToday(-40)} />
-      </ValgtEnhetContext.Provider>
-    </QueryClientProvider>,
+  renderArbeidsuforhetSide(
+    queryClient,
+    <OppfyltForm forhandsvarselSendtDato={daysFromToday(-40)} />,
     arbeidsuforhetOppfyltPath,
     [arbeidsuforhetOppfyltPath]
   );
