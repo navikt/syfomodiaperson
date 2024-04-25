@@ -51,7 +51,7 @@ export const FriskmeldingTilArbeidsformidling = (): ReactElement => {
             <Stepper.Step
               key={index}
               href="#"
-              completed={activeStep > Number(step)}
+              completed={activeStep > parseInt(step)}
             >
               {steps[step]}
             </Stepper.Step>

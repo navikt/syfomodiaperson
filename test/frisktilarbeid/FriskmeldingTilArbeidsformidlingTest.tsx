@@ -52,6 +52,8 @@ describe("FriskmeldingTilArbeidsformidling", () => {
       assertStep("Venter på dato", false);
       assertStep("Avslutt oppgave", false);
 
+      expect(screen.queryByLabelText("Fullført")).to.not.exist;
+
       expect(screen.getByRole("heading", { name: "Forberedelser" })).to.exist;
       expect(getButton("Vurder vedtak")).to.exist;
       expect(
@@ -70,6 +72,8 @@ describe("FriskmeldingTilArbeidsformidling", () => {
       assertStep("Fatt vedtak", true);
       assertStep("Venter på dato", false);
       assertStep("Avslutt oppgave", false);
+
+      expect(screen.getAllByLabelText("Fullført")).to.have.length(1);
 
       expect(screen.getByRole("heading", { name: "Forberedelser" })).to.exist;
 
@@ -96,6 +100,8 @@ describe("FriskmeldingTilArbeidsformidling", () => {
       assertStep("Venter på dato", true);
       assertStep("Avslutt oppgave", false);
 
+      expect(screen.getAllByLabelText("Fullført")).to.have.length(2);
+
       expect(screen.getByRole("img", { name: "Suksess" })).to.exist;
       expect(
         screen.getByText(
@@ -119,6 +125,8 @@ describe("FriskmeldingTilArbeidsformidling", () => {
       assertStep("Fatt vedtak", false);
       assertStep("Venter på dato", false);
       assertStep("Avslutt oppgave", true);
+
+      expect(screen.getAllByLabelText("Fullført")).to.have.length(3);
 
       expect(screen.getByRole("heading", { name: "Avslutt oppgave" })).to.exist;
       expect(getButton("Avslutt oppgave")).to.exist;
