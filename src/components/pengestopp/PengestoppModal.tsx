@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import {
   Arbeidsgiver,
   StoppAutomatikk,
@@ -125,39 +125,14 @@ const PengestoppModal = ({
     });
   };
 
-  const handleChangeVirksomhet = (e: ChangeEvent<HTMLInputElement>) => {
-    const orgnr: VirksomhetNr = {
-      value: e.target.name,
-    };
-
-    if (e.target.checked) {
-      setEmployerError(false);
-      updateVirksomhetNr([...stoppAutomatikk.virksomhetNr, orgnr]);
-    } else {
-      const virksomhetListWithoutSelection =
-        stoppAutomatikk.virksomhetNr.filter((virksomhetNr: VirksomhetNr) => {
-          return virksomhetNr.value !== orgnr.value;
-        });
-      updateVirksomhetNr(virksomhetListWithoutSelection);
-    }
+  const handleChangeVirksomheter = (values: string[]) => {
+    setEmployerError(values.length === 0);
+    updateVirksomhetNr(values.map((value) => ({ value })));
   };
 
-  const handleChangeArsak = (e: ChangeEvent<HTMLInputElement>) => {
-    const newArsakType: SykepengestoppArsakType =
-      SykepengestoppArsakType[e.target.name];
-    const newArsak = { type: newArsakType };
-
-    if (e.target.checked) {
-      setAarsakError(false);
-      updateAarsakList([...stoppAutomatikk.arsakList, newArsak]);
-    } else {
-      const aarsakListWithoutSelection = stoppAutomatikk.arsakList.filter(
-        (arsak: SykepengestoppArsak) => {
-          return newArsak.type !== arsak.type;
-        }
-      );
-      updateAarsakList(aarsakListWithoutSelection);
-    }
+  const handleChangeArsaker = (values: SykepengestoppArsakType[]) => {
+    setAarsakError(values.length === 0);
+    updateAarsakList(values.map((value) => ({ type: value })));
   };
 
   const handleCloseModal = () => {
@@ -185,15 +160,12 @@ const PengestoppModal = ({
             <CheckboxGroup
               className="my-4"
               legend={texts.arbeidsgiver}
+              onChange={handleChangeVirksomheter}
               error={employerError && texts.submitError}
             >
               {arbeidsgivere.map(
                 (arbeidsgiver: Arbeidsgiver, index: number) => (
-                  <Checkbox
-                    key={index}
-                    onChange={handleChangeVirksomhet}
-                    name={arbeidsgiver.orgnummer}
-                  >
+                  <Checkbox key={index} value={arbeidsgiver.orgnummer}>
                     {arbeidsgiver.navn}
                   </Checkbox>
                 )
@@ -202,14 +174,11 @@ const PengestoppModal = ({
             <CheckboxGroup
               className="my-4"
               legend={texts.arsak.title}
+              onChange={handleChangeArsaker}
               error={aarsakError && texts.arsak.submitError}
             >
               {sykepengestoppArsakTekstListe.map((arsak, index: number) => (
-                <Checkbox
-                  key={index}
-                  onChange={handleChangeArsak}
-                  name={arsak.type}
-                >
+                <Checkbox key={index} value={arsak.type}>
                   {arsak.text}
                 </Checkbox>
               ))}
