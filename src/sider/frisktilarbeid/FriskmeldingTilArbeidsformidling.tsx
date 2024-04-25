@@ -46,16 +46,24 @@ export const FriskmeldingTilArbeidsformidling = (): ReactElement => {
   return (
     <div className="flex flex-col gap-4">
       <Box background="surface-default" padding="6">
-        <Stepper activeStep={activeStep} orientation="horizontal">
-          {Object.keys(steps).map((step, index) => (
-            <Stepper.Step
-              key={index}
-              href="#"
-              completed={activeStep > parseInt(step)}
-            >
-              {steps[step]}
-            </Stepper.Step>
-          ))}
+        <Stepper
+          activeStep={activeStep}
+          orientation="horizontal"
+          interactive={false}
+        >
+          {Object.keys(steps).map((step, index) => {
+            const label = steps[step];
+            return (
+              <Stepper.Step
+                aria-label={label}
+                key={index}
+                href="#"
+                completed={activeStep > parseInt(step)}
+              >
+                {label}
+              </Stepper.Step>
+            );
+          })}
         </Stepper>
       </Box>
       {(() => {

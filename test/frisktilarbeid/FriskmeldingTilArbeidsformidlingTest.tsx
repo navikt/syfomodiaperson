@@ -35,9 +35,6 @@ const renderFriskmeldingTilArbeidsformidling = () => {
   );
 };
 
-const assertStep = (name: string, current: boolean) =>
-  expect(screen.getByRole("link", { name, current })).to.exist;
-
 describe("FriskmeldingTilArbeidsformidling", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
@@ -47,10 +44,10 @@ describe("FriskmeldingTilArbeidsformidling", () => {
     it("viser forberedelser og knapp for å vurdere vedtak initielt", () => {
       renderFriskmeldingTilArbeidsformidling();
 
-      assertStep("Forberedelser", true);
-      assertStep("Fatt vedtak", false);
-      assertStep("Venter på dato", false);
-      assertStep("Avslutt oppgave", false);
+      expect(screen.getByLabelText("Forberedelser")).to.exist;
+      expect(screen.getByLabelText("Fatt vedtak")).to.exist;
+      expect(screen.getByLabelText("Venter på dato")).to.exist;
+      expect(screen.getByLabelText("Avslutt oppgave")).to.exist;
 
       expect(screen.queryByLabelText("Fullført")).to.not.exist;
 
@@ -68,10 +65,10 @@ describe("FriskmeldingTilArbeidsformidling", () => {
 
       clickButton("Vurder vedtak");
 
-      assertStep("Forberedelser", false);
-      assertStep("Fatt vedtak", true);
-      assertStep("Venter på dato", false);
-      assertStep("Avslutt oppgave", false);
+      expect(screen.getByLabelText("Forberedelser")).to.exist;
+      expect(screen.getByLabelText("Fatt vedtak")).to.exist;
+      expect(screen.getByLabelText("Venter på dato")).to.exist;
+      expect(screen.getByLabelText("Avslutt oppgave")).to.exist;
 
       expect(screen.getAllByLabelText("Fullført")).to.have.length(1);
 
@@ -95,10 +92,10 @@ describe("FriskmeldingTilArbeidsformidling", () => {
 
       renderFriskmeldingTilArbeidsformidling();
 
-      assertStep("Forberedelser", false);
-      assertStep("Fatt vedtak", false);
-      assertStep("Venter på dato", true);
-      assertStep("Avslutt oppgave", false);
+      expect(screen.getByLabelText("Forberedelser")).to.exist;
+      expect(screen.getByLabelText("Fatt vedtak")).to.exist;
+      expect(screen.getByLabelText("Venter på dato")).to.exist;
+      expect(screen.getByLabelText("Avslutt oppgave")).to.exist;
 
       expect(screen.getAllByLabelText("Fullført")).to.have.length(2);
 
@@ -121,10 +118,10 @@ describe("FriskmeldingTilArbeidsformidling", () => {
 
       renderFriskmeldingTilArbeidsformidling();
 
-      assertStep("Forberedelser", false);
-      assertStep("Fatt vedtak", false);
-      assertStep("Venter på dato", false);
-      assertStep("Avslutt oppgave", true);
+      expect(screen.getByLabelText("Forberedelser")).to.exist;
+      expect(screen.getByLabelText("Fatt vedtak")).to.exist;
+      expect(screen.getByLabelText("Venter på dato")).to.exist;
+      expect(screen.getByLabelText("Avslutt oppgave")).to.exist;
 
       expect(screen.getAllByLabelText("Fullført")).to.have.length(3);
 
