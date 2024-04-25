@@ -38,6 +38,10 @@ const texts = {
   avbrytButton: "Avbryt",
 };
 
+interface Props {
+  forhandsvarselSendtDato: Date;
+}
+
 const defaultValues = { begrunnelse: "" };
 const begrunnelseMaxLength = 1000;
 
@@ -45,7 +49,7 @@ interface SkjemaValues {
   begrunnelse: string;
 }
 
-export const OppfyltForm = () => {
+export const OppfyltForm = ({ forhandsvarselSendtDato }: Props) => {
   const sendVurdering = useSendVurderingArbeidsuforhet();
   const { getOppfyltDocument } = useArbeidsuforhetVurderingDocument();
   const {
@@ -55,10 +59,14 @@ export const OppfyltForm = () => {
     handleSubmit,
   } = useForm<SkjemaValues>({ defaultValues });
   const submit = (values: SkjemaValues) => {
+    const oppfyltDocumentProps = {
+      begrunnelse: values.begrunnelse,
+      forhandsvarselSendtDato: forhandsvarselSendtDato,
+    };
     const vurderingRequestDTO: VurderingRequestDTO = {
       type: VurderingType.OPPFYLT,
       begrunnelse: values.begrunnelse,
-      document: getOppfyltDocument(values.begrunnelse),
+      document: getOppfyltDocument(oppfyltDocumentProps),
     };
     sendVurdering.mutate(vurderingRequestDTO);
   };
@@ -97,7 +105,10 @@ export const OppfyltForm = () => {
           <Forhandsvisning
             contentLabel={texts.forhandsvisningLabel}
             getDocumentComponents={() =>
-              getOppfyltDocument(watch("begrunnelse"))
+              getOppfyltDocument({
+                begrunnelse: watch("begrunnelse"),
+                forhandsvarselSendtDato: forhandsvarselSendtDato,
+              })
             }
           />
           <Button as={Link} to={arbeidsuforhetPath} variant="secondary">

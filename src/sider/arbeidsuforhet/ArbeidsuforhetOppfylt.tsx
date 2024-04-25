@@ -18,10 +18,13 @@ export const ArbeidsuforhetOppfylt = (): ReactElement => {
     sisteVurdering?.type === VurderingType.FORHANDSVARSEL;
   const isOppfylt = sisteVurdering?.type === VurderingType.OPPFYLT;
   const isAvslag = sisteVurdering?.type === VurderingType.AVSLAG;
+  const forhandsvarselSendtDato = sisteVurdering?.varsel?.createdAt;
 
   return (
     <div>
-      {isForhandsvarsel && <OppfyltForm />}
+      {isForhandsvarsel && forhandsvarselSendtDato && (
+        <OppfyltForm forhandsvarselSendtDato={forhandsvarselSendtDato} />
+      )}
       {isOppfylt && (
         <Alert variant="success" className="mb-2">
           {texts.success}

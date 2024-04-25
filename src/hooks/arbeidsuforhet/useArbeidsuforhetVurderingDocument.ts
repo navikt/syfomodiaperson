@@ -16,6 +16,11 @@ type ForhandsvarselDocumentValues = {
   frist: Date;
 };
 
+type OppfyltDocumentValues = {
+  begrunnelse: string;
+  forhandsvarselSendtDato: Date;
+};
+
 type AvslagDocumentValues = {
   begrunnelse: string;
   fom: Date | undefined;
@@ -25,7 +30,7 @@ export const useArbeidsuforhetVurderingDocument = (): {
   getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
   ): DocumentComponentDto[];
-  getOppfyltDocument(begrunnelse: string): DocumentComponentDto[];
+  getOppfyltDocument(values: OppfyltDocumentValues): DocumentComponentDto[];
   getAvslagDocument(values: AvslagDocumentValues): DocumentComponentDto[];
 } => {
   const { getHilsen, getIntroGjelder, getVurdertAv, getVeiledernavn } =
@@ -88,7 +93,10 @@ export const useArbeidsuforhetVurderingDocument = (): {
     return documentComponents;
   };
 
-  const getOppfyltDocument = (begrunnelse: string) => {
+  const getOppfyltDocument = ({
+    begrunnelse,
+    forhandsvarselSendtDato,
+  }: OppfyltDocumentValues) => {
     const oppfyltArbeidsuforhetTexts = getOppfyltArbeidsuforhetTexts(
       new Date(),
       begrunnelse
@@ -96,15 +104,16 @@ export const useArbeidsuforhetVurderingDocument = (): {
     const documentComponents = [
       createHeaderH1(oppfyltArbeidsuforhetTexts.header),
       getIntroGjelder(),
-      createParagraph(oppfyltArbeidsuforhetTexts.vurdert),
+      createParagraph(
+        oppfyltArbeidsuforhetTexts.previousForhandsvarsel(
+          forhandsvarselSendtDato
+        )
+      ),
+      createParagraph(oppfyltArbeidsuforhetTexts.harNaVurdert),
+      createParagraph(oppfyltArbeidsuforhetTexts.forAFaSykepenger),
+      createParagraph(`Begrunnelse: ${begrunnelse}`),
+      createParagraph(oppfyltArbeidsuforhetTexts.viHarBruktLoven),
     ];
-
-    if (begrunnelse) {
-      documentComponents.push(
-        createParagraph(oppfyltArbeidsuforhetTexts.begrunnelse)
-      );
-    }
-
     documentComponents.push(getVurdertAv());
 
     return documentComponents;

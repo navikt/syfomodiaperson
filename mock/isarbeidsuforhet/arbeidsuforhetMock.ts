@@ -91,7 +91,17 @@ const getOppfyltDocument = (begrunnelse: string): DocumentComponentDto[] => {
       type: DocumentComponentType.HEADER_H1,
     },
     {
-      texts: [oppfyltArbeidsuforhetTexts.vurdert],
+      texts: [
+        oppfyltArbeidsuforhetTexts.previousForhandsvarsel(daysFromToday(-40)),
+      ],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [oppfyltArbeidsuforhetTexts.harNaVurdert],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [oppfyltArbeidsuforhetTexts.forAFaSykepenger],
       type: DocumentComponentType.PARAGRAPH,
     },
     {
