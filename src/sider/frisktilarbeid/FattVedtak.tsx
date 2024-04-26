@@ -38,8 +38,8 @@ const VedtakForberedelser = () => (
   </div>
 );
 
-export const VurderFattVedtak = (): ReactElement => {
-  const [vurderVedtakStarted, setVurderVedtakStarted] = useState(false);
+export const FattVedtak = (): ReactElement => {
+  const [fattVedtakStarted, setFattVedtakStarted] = useState(false);
 
   return (
     <div className="flex flex-col gap-4">
@@ -49,16 +49,16 @@ export const VurderFattVedtak = (): ReactElement => {
         className="flex flex-col gap-4"
       >
         <VedtakForberedelser />
-        {!vurderVedtakStarted && (
+        {!fattVedtakStarted && (
           <Button
             className="mt-4 w-fit"
-            onClick={() => setVurderVedtakStarted(true)}
+            onClick={() => setFattVedtakStarted(true)}
           >
             {texts.button}
           </Button>
         )}
       </Box>
-      {vurderVedtakStarted && <FattVedtakSkjema />}
+      {fattVedtakStarted && <FattVedtakSkjema />}
     </div>
   );
 };
