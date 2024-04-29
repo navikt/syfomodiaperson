@@ -7,8 +7,8 @@ import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { FriskmeldingTilArbeidsformidling } from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidling";
 import { VedtakHistorikk } from "@/sider/frisktilarbeid/VedtakHistorikk";
-import { Box, Link } from "@navikt/ds-react";
-import { ExternalLinkIcon } from "@navikt/aksel-icons";
+import { Box } from "@navikt/ds-react";
+import { EksternLenke } from "@/components/EksternLenke";
 
 const texts = {
   title: "Friskmelding til arbeidsformidling",
@@ -33,14 +33,9 @@ export const FriskmeldingTilArbeidsformidlingSide = (): ReactElement => {
             <div className="flex flex-col gap-4">
               <VedtakHistorikk />
               <Box background="surface-default" padding="2">
-                <Link
-                  href={serviceRutineLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <EksternLenke href={serviceRutineLink}>
                   {texts.link}
-                  <ExternalLinkIcon title="Ekstern lenke" fontSize="1.5em" />
-                </Link>
+                </EksternLenke>
               </Box>
             </div>
           </Tredelt.SecondColumn>
