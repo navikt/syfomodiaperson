@@ -1,120 +1,64 @@
-import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  DatePicker,
-  Textarea,
-  useDatepicker,
-} from "@navikt/ds-react";
-import { Forhandsvisning } from "@/components/Forhandsvisning";
-import { FormProvider, useForm } from "react-hook-form";
-import { VedtakFraDato } from "@/sider/frisktilarbeid/VedtakFraDato";
-import { addWeeks } from "@/utils/datoUtils";
-import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
-import { VelgBehandler } from "@/components/behandler/VelgBehandler";
-import { useFattVedtak } from "@/data/frisktilarbeid/useFattVedtak";
-import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import { VedtakRequestDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
-import dayjs from "dayjs";
-import { behandlerNavn } from "@/utils/behandlerUtils";
-import { createHeaderH1 } from "@/utils/documentComponentUtils";
-
-const begrunnelseMaxLength = 5000;
+import React, { ReactElement, useState } from "react";
+import { BodyShort, Box, Button, Heading, List } from "@navikt/ds-react";
+import { FattVedtakSkjema } from "@/sider/frisktilarbeid/FattVedtakSkjema";
 
 const texts = {
-  begrunnelseMissing: "Vennligst angi begrunnelse",
-  begrunnelseLabel: "Begrunnelse",
-  begrunnelseDescription: "Åpne forhåndsvisning for å se hele vedtaket",
-  previewContentLabel: "Forhåndsvis vedtaket",
-  primaryButton: "Fatt vedtak",
-  velgBehandlerLegend: "Velg behandler",
-  tilDatoLabel: "Til dato (automatisk justert 12 uker frem)",
-  tilDatoDescription: "Dette er datoen vedtaket slutter",
+  forberedelser: {
+    title: "Forberedelser",
+    intro:
+      "Her er noen punkter som må være på plass før du fatter vedtak og ordningen starter:",
+    preparations: [
+      "Forsikre deg om at utbetaling av sykepenger er igangsatt",
+      "Er bruker frisk nok til å bytte arbeid?",
+      "Bruker må være informert om ordningen og medfølgende plikter",
+      "Har du fått bekreftelse på oppsigelse?",
+      "Har du fått bekreftelse på fritak fra oppsigelsestiden?",
+      "Du må fatte et § 14a-vedtak i Arena",
+    ],
+    disclaimer:
+      "Vedtak om friskmelding til arbeidsformidling kan ikke fattes med tilbakevirkende kraft. Du trenger ikke å sjekke infotrygd når du fatter vedtak herfra.",
+  },
+  button: "Vurder vedtak",
 };
 
-export interface FattVedtakSkjemaValues {
-  fraDato: Date;
-  begrunnelse: string;
-  behandlerRef: string;
-}
+const VedtakForberedelser = () => (
+  <div>
+    <Heading level="3" size="small">
+      {texts.forberedelser.title}
+    </Heading>
+    <BodyShort size="small">{texts.forberedelser.intro}</BodyShort>
+    <List as="ul" size="small">
+      {texts.forberedelser.preparations.map((text, index) => (
+        <List.Item key={index}>{text}</List.Item>
+      ))}
+    </List>
+    <BodyShort className="mt-6" size="small">
+      {texts.forberedelser.disclaimer}
+    </BodyShort>
+  </div>
+);
 
-export const FattVedtak = () => {
-  const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
-  const fattVedtak = useFattVedtak();
-  const methods = useForm<FattVedtakSkjemaValues>();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = methods;
-
-  const fraDato = watch("fraDato");
-  const tilDato = fraDato ? addWeeks(fraDato, 12) : undefined;
-
-  const submit = (values: FattVedtakSkjemaValues) => {
-    const vedtakRequestDTO: VedtakRequestDTO = {
-      fom: dayjs(values.fraDato).format("YYYY-MM-DD"),
-      tom: dayjs(tilDato).format("YYYY-MM-DD"),
-      begrunnelse: values.begrunnelse,
-      document: [createHeaderH1("Vedtak")],
-      behandlerRef: values.behandlerRef,
-      behandlerNavn: selectedBehandler ? behandlerNavn(selectedBehandler) : "",
-      behandlerDocument: [],
-    };
-    fattVedtak.mutate(vedtakRequestDTO);
-  };
-
-  const tilDatoDatePicker = useDatepicker();
+export const FattVedtak = (): ReactElement => {
+  const [fattVedtakStarted, setFattVedtakStarted] = useState(false);
 
   return (
-    <Box background="surface-default" padding="6">
-      <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-8">
-          <div className="flex flex-col gap-6">
-            <VedtakFraDato />
-            <DatePicker {...tilDatoDatePicker.datepickerProps}>
-              <DatePicker.Input
-                value={tilDato ? dayjs(tilDato).format("DD.MM.YYYY") : ""}
-                label={texts.tilDatoLabel}
-                description={texts.tilDatoDescription}
-                readOnly
-              />
-            </DatePicker>
-            <VelgBehandler
-              legend={texts.velgBehandlerLegend}
-              onBehandlerSelected={setSelectedBehandler}
-            />
-            <Textarea
-              {...register("begrunnelse", {
-                required: texts.begrunnelseMissing,
-                maxLength: begrunnelseMaxLength,
-              })}
-              minRows={6}
-              maxLength={begrunnelseMaxLength}
-              description={texts.begrunnelseDescription}
-              label={texts.begrunnelseLabel}
-              error={errors.begrunnelse?.message}
-            />
-          </div>
-          {fattVedtak.isError && (
-            <SkjemaInnsendingFeil error={fattVedtak.error} />
-          )}
-          <div className="flex gap-4">
-            <Button
-              variant="primary"
-              loading={fattVedtak.isPending}
-              type="submit"
-            >
-              {texts.primaryButton}
-            </Button>
-            <Forhandsvisning
-              contentLabel={texts.previewContentLabel}
-              getDocumentComponents={() => []}
-            />
-          </div>
-        </form>
-      </FormProvider>
-    </Box>
+    <div className="flex flex-col gap-4">
+      <Box
+        background="surface-default"
+        padding="6"
+        className="flex flex-col gap-4"
+      >
+        <VedtakForberedelser />
+        {!fattVedtakStarted && (
+          <Button
+            className="mt-4 w-fit"
+            onClick={() => setFattVedtakStarted(true)}
+          >
+            {texts.button}
+          </Button>
+        )}
+      </Box>
+      {fattVedtakStarted && <FattVedtakSkjema />}
+    </div>
   );
 };
