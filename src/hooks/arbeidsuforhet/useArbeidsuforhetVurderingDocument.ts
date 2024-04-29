@@ -8,7 +8,7 @@ import {
 import {
   getAvslagArbeidsuforhetTexts,
   getForhandsvarselArbeidsuforhetTexts,
-  getOppfyltArbeidsuforhetTexts,
+  arbeidsuforhetTexts,
 } from "@/data/arbeidsuforhet/arbeidsuforhetDocumentTexts";
 
 type ForhandsvarselDocumentValues = {
@@ -97,22 +97,15 @@ export const useArbeidsuforhetVurderingDocument = (): {
     begrunnelse,
     forhandsvarselSendtDato,
   }: OppfyltDocumentValues) => {
-    const oppfyltArbeidsuforhetTexts = getOppfyltArbeidsuforhetTexts(
-      new Date(),
-      begrunnelse
-    );
     const documentComponents = [
-      createHeaderH1(oppfyltArbeidsuforhetTexts.header),
+      createHeaderH1(arbeidsuforhetTexts.header),
       getIntroGjelder(),
       createParagraph(
-        oppfyltArbeidsuforhetTexts.previousForhandsvarsel(
-          forhandsvarselSendtDato
-        )
+        arbeidsuforhetTexts.previousForhandsvarsel(forhandsvarselSendtDato)
       ),
-      createParagraph(oppfyltArbeidsuforhetTexts.harNaVurdert),
-      createParagraph(oppfyltArbeidsuforhetTexts.forAFaSykepenger),
-      createParagraph(`Begrunnelse: ${begrunnelse}`),
-      createParagraph(oppfyltArbeidsuforhetTexts.viHarBruktLoven),
+      createParagraph(arbeidsuforhetTexts.forAFaSykepenger),
+      createParagraph(begrunnelse),
+      createParagraph(arbeidsuforhetTexts.viHarBruktLoven),
     ];
     documentComponents.push(getVurdertAv());
 

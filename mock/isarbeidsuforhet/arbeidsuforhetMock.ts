@@ -13,8 +13,8 @@ import {
   VurderingType,
 } from "../../src/data/arbeidsuforhet/arbeidsuforhetTypes";
 import {
+  arbeidsuforhetTexts,
   getForhandsvarselArbeidsuforhetTexts,
-  getOppfyltArbeidsuforhetTexts,
 } from "../../src/data/arbeidsuforhet/arbeidsuforhetDocumentTexts";
 
 const defaultOppfyltBegrunnelse = "Du har rett på sykepenger";
@@ -80,32 +80,27 @@ const getSendForhandsvarselDocument = (
   ];
 };
 
-const getOppfyltDocument = (begrunnelse: string): DocumentComponentDto[] => {
-  const oppfyltArbeidsuforhetTexts = getOppfyltArbeidsuforhetTexts(
-    daysFromToday(-40),
-    begrunnelse
-  );
+const getOppfyltDocument = (
+  begrunnelse: string,
+  forhandsvarselSendtDato: Date
+): DocumentComponentDto[] => {
   return [
     {
-      texts: [oppfyltArbeidsuforhetTexts.header],
+      texts: [arbeidsuforhetTexts.header],
       type: DocumentComponentType.HEADER_H1,
     },
     {
       texts: [
-        oppfyltArbeidsuforhetTexts.previousForhandsvarsel(daysFromToday(-40)),
+        arbeidsuforhetTexts.previousForhandsvarsel(forhandsvarselSendtDato),
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
     {
-      texts: [oppfyltArbeidsuforhetTexts.harNaVurdert],
+      texts: [arbeidsuforhetTexts.forAFaSykepenger],
       type: DocumentComponentType.PARAGRAPH,
     },
     {
-      texts: [oppfyltArbeidsuforhetTexts.forAFaSykepenger],
-      type: DocumentComponentType.PARAGRAPH,
-    },
-    {
-      texts: [oppfyltArbeidsuforhetTexts.begrunnelse],
+      texts: [begrunnelse],
       type: DocumentComponentType.PARAGRAPH,
     },
   ];
@@ -126,7 +121,7 @@ export const mockArbeidsuforhetvurdering: VurderingResponseDTO[] = [
     veilederident: VEILEDER_DEFAULT.ident,
     type: VurderingType.OPPFYLT,
     begrunnelse: defaultOppfyltBegrunnelse,
-    document: getOppfyltDocument(defaultOppfyltBegrunnelse),
+    document: getOppfyltDocument(defaultOppfyltBegrunnelse, daysFromToday(-40)),
     varsel: undefined,
   },
   {
