@@ -95,13 +95,7 @@ export const getOppfyltVurderingDocument = (
       texts: [
         `I forhåndsvarsel av ${tilDatoMedManedNavn(
           daysFromToday(-40)
-        )} ble du informert om at NAV vurderte å avslå dine sykepenger.`,
-      ],
-      type: DocumentComponentType.PARAGRAPH,
-    },
-    {
-      texts: [
-        `Vi har nå vurdert at vilkåret om arbeidsuførhet er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
+        )} ble du informert om at NAV vurderte å avslå dine sykepenger. Vi har nå vurdert at vilkåret om arbeidsuførhet er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
@@ -112,7 +106,7 @@ export const getOppfyltVurderingDocument = (
       type: DocumentComponentType.PARAGRAPH,
     },
     {
-      texts: [`Begrunnelse: ${begrunnelse}`],
+      texts: [begrunnelse],
       type: DocumentComponentType.PARAGRAPH,
     },
     {
