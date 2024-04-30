@@ -1,19 +1,11 @@
 import React from "react";
 import { startSnow, stopAndHideSnow } from "@/utils/festiveUtils";
-import styled from "styled-components";
-import Knapp from "nav-frontend-knapper";
+import { Button } from "@navikt/ds-react";
 
 const texts = {
   letItSnow: "La det snø",
   snowButtonTrackingContext: "Jul",
 };
-
-const StyledButton = styled(Knapp)`
-  margin-left: auto;
-  align-self: center;
-  margin-right: 0;
-  padding: 0 0.5em;
-`;
 
 const SnowButton = () => {
   // Bruker require her, siden testene får ikke kjørt hvis vi importerer i starten av filen
@@ -36,9 +28,14 @@ const SnowButton = () => {
   };
 
   return (
-    <StyledButton onClick={clickButton} mini>
+    <Button
+      size="small"
+      onClick={clickButton}
+      variant="secondary"
+      className="ml-auto self-center"
+    >
       {texts.letItSnow}
-    </StyledButton>
+    </Button>
   );
 };
 
