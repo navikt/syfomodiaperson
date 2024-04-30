@@ -13,12 +13,12 @@ import dayjs from "dayjs";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
 import OppfolgingsplanerOversikt from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanerOversikt";
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
-import { v4 as uuidv4 } from "uuid";
 import {
   PersonOppgave,
   PersonOppgaveType,
 } from "@/data/personoppgave/types/PersonOppgave";
 import { restdatoTilLesbarDato } from "@/utils/datoUtils";
+import { generateUUID } from "@/utils/uuidUtils";
 
 let queryClient: QueryClient;
 
@@ -98,7 +98,7 @@ const createOppfolgingsplanLps = (
   behandlet: boolean
 ): OppfolgingsplanLPS => {
   const oppfolgingsplanLPS = {
-    uuid: uuidv4(),
+    uuid: generateUUID(),
     fnr: ARBEIDSTAKER_DEFAULT.personIdent,
     virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
     opprettet: dayjs().subtract(daysSinceOpprettet, "days").toJSON(),
@@ -125,7 +125,7 @@ const createOppfolgingsplanLpsPersonoppgave = (
   behandlet: boolean
 ): PersonOppgave => {
   return {
-    uuid: uuidv4,
+    uuid: generateUUID(),
     referanseUuid: referanseUuid,
     fnr: ARBEIDSTAKER_DEFAULT.personIdent,
     virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
