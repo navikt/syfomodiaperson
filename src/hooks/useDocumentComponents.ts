@@ -18,7 +18,7 @@ export const useDocumentComponents = () => {
     getIntroHei: () => createParagraph(`Hei, ${navBruker.navn}`),
     getIntroGjelder: () =>
       createParagraph(`Gjelder ${navBruker.navn}, f.nr. ${valgtPersonident}`),
-    getBrukernNavnFnr: () =>
+    getBrukerNavnFnr: () =>
       createParagraph(`${navBruker.navn}, ${valgtPersonident}`),
     getVurdertAv: () =>
       createParagraph(`Vurdert av ${veilederinfo?.fulltNavn()}`),

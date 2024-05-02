@@ -22,7 +22,7 @@ export const useFriskmeldingTilArbeidsformidlingDocument = (): {
   ): DocumentComponentDto[];
   getVedtakDocument(values: VedtakDocumentValues): DocumentComponentDto[];
 } => {
-  const { getHilsen, getIntroGjelder, getBrukernNavnFnr } =
+  const { getHilsen, getIntroGjelder, getBrukerNavnFnr } =
     useDocumentComponents();
 
   const getBehandlermeldingDocument = (
@@ -45,7 +45,7 @@ export const useFriskmeldingTilArbeidsformidlingDocument = (): {
     const vedtakTexts = getVedtakTexts(values);
     const documentComponentDtos = [
       createHeaderH1(vedtakTexts.header),
-      getBrukernNavnFnr(),
+      getBrukerNavnFnr(),
       createParagraph(vedtakTexts.intro),
       createParagraph(vedtakTexts.periode),
       createParagraph(
