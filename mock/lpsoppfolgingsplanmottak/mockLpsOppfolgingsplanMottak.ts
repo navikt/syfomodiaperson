@@ -1,6 +1,6 @@
 import express = require("express");
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
-import { LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT } from "@/apiConstants";
+import { LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT } from "../../src/apiConstants";
 import { oppfolgingsplanerLPSMock } from "../lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
 
 const path = require("path");
