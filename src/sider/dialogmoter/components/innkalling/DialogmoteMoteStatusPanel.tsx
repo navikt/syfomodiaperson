@@ -22,6 +22,7 @@ import {
   isPersonoppgaveCompletedAfterLastMoteEndring,
 } from "@/utils/dialogmoteUtils";
 import { BodyShort, Button } from "@navikt/ds-react";
+import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
 const texts = {
   innkallingSendtTrackingContext: "Møtelandingsside: Sendt innkalling",
@@ -34,15 +35,20 @@ const texts = {
   fortsettReferat: "Fortsett på referatet",
   moteTid: "Møtetidspunkt",
   moteSted: "Sted",
+  veileder: "Veileder",
 };
 
 const Subtitle = (dialogmote: DialogmoteDTO): ReactNode => {
   const moteDatoTid = tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid);
+  const { data: veileder } = useVeilederInfoQuery(dialogmote.opprettetAv);
 
   return (
     <>
       <BodyShort size="small">{`${texts.moteTid}: ${moteDatoTid}`}</BodyShort>
       <BodyShort size="small">{`${texts.moteSted}: ${dialogmote.sted}`}</BodyShort>
+      <BodyShort size="small">{`${
+        texts.veileder
+      }: ${veileder?.fulltNavn()}`}</BodyShort>
     </>
   );
 };

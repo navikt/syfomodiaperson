@@ -10,9 +10,10 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
 import { expect } from "chai";
 import { daysFromToday, getButton } from "../testUtils";
-import { testQueryClient } from "../testQueryClient";
+import { queryClientWithMockData } from "../testQueryClient";
+import { VEILEDER_DEFAULT } from "../../mock/common/mockConstants";
 
-const queryClient = testQueryClient();
+const queryClient = queryClientWithMockData();
 
 const renderDialogmoteMoteStatusPanel = (dialogmote: DialogmoteDTO) =>
   render(
@@ -99,6 +100,28 @@ describe("DialogmoteMoteStatusPanel", () => {
     renderDialogmoteMoteStatusPanel(endretDialogmote);
 
     expect(screen.getByRole("heading", { name: "Endringen er sendt" })).to
+      .exist;
+  });
+  it("Viser navn på veileder for innkalt dialogmøte", () => {
+    const innkaltDialogmote: DialogmoteDTO = {
+      ...dialogmote,
+      tid: new Date().toISOString(),
+      opprettetAv: VEILEDER_DEFAULT.ident,
+    };
+    renderDialogmoteMoteStatusPanel(innkaltDialogmote);
+
+    expect(screen.getByText(`Veileder: ${VEILEDER_DEFAULT.fulltNavn()}`)).to
+      .exist;
+  });
+  it("Viser navn på veileder for endret dialogmøte", () => {
+    const endretDialogmote: DialogmoteDTO = {
+      ...dialogmote,
+      status: DialogmoteStatus.NYTT_TID_STED,
+      opprettetAv: VEILEDER_DEFAULT.ident,
+    };
+    renderDialogmoteMoteStatusPanel(endretDialogmote);
+
+    expect(screen.getByText(`Veileder: ${VEILEDER_DEFAULT.fulltNavn()}`)).to
       .exist;
   });
 });
