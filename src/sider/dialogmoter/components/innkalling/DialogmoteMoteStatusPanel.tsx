@@ -35,20 +35,33 @@ const texts = {
   fortsettReferat: "Fortsett på referatet",
   moteTid: "Møtetidspunkt",
   moteSted: "Sted",
-  veileder: "Veileder",
+  veilederInnkalt: "Innkalt av",
+  veilederTildelt: "Tildelt",
 };
 
 const Subtitle = (dialogmote: DialogmoteDTO): ReactNode => {
   const moteDatoTid = tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid);
-  const { data: veileder } = useVeilederInfoQuery(dialogmote.opprettetAv);
+  const { data: innkaltVeileder } = useVeilederInfoQuery(
+    dialogmote.opprettetAv
+  );
+  const { data: tildeltVeileder } = useVeilederInfoQuery(
+    dialogmote.tildeltVeilederIdent
+  );
+
+  const veilederTekst = () => {
+    const innkaltNavn = innkaltVeileder?.fulltNavn();
+    const tildeltNavn = tildeltVeileder?.fulltNavn();
+
+    return innkaltNavn === tildeltNavn
+      ? `${texts.veilederInnkalt}: ${innkaltNavn}`
+      : `${texts.veilederInnkalt}: ${innkaltNavn} (${texts.veilederTildelt}: ${tildeltNavn})`;
+  };
 
   return (
     <>
       <BodyShort size="small">{`${texts.moteTid}: ${moteDatoTid}`}</BodyShort>
       <BodyShort size="small">{`${texts.moteSted}: ${dialogmote.sted}`}</BodyShort>
-      <BodyShort size="small">{`${
-        texts.veileder
-      }: ${veileder?.fulltNavn()}`}</BodyShort>
+      <BodyShort size="small">{veilederTekst()}</BodyShort>
     </>
   );
 };
