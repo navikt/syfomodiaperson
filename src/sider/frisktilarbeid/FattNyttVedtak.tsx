@@ -38,7 +38,7 @@ const VedtakForberedelser = () => (
   </div>
 );
 
-export const FattVedtak = (): ReactElement => {
+export const FattNyttVedtak = (): ReactElement => {
   const [fattVedtakStarted, setFattVedtakStarted] = useState(false);
 
   return (

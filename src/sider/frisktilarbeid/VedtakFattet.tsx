@@ -3,6 +3,7 @@ import React, { ReactElement } from "react";
 import { Alert, BodyShort, Box, Button, Heading, List } from "@navikt/ds-react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import dayjs from "dayjs";
+import { useFerdigbehandleVedtak } from "@/data/frisktilarbeid/useFerdigbehandleVedtak";
 
 const texts = {
   alert:
@@ -23,6 +24,7 @@ interface VedtakFattetProps {
 }
 
 export const VedtakFattet = ({ vedtak }: VedtakFattetProps): ReactElement => {
+  const ferdigbehandleVedtak = useFerdigbehandleVedtak(vedtak.uuid);
   const vedtakStartedOrStartingTomorrow = !dayjs().isBefore(
     dayjs(vedtak.fom).subtract(1, "days")
   );
@@ -48,7 +50,13 @@ export const VedtakFattet = ({ vedtak }: VedtakFattetProps): ReactElement => {
         {vedtakStartedOrStartingTomorrow && (
           <>
             <BodyShort>{texts.avslutt}</BodyShort>
-            <Button className="w-fit">{texts.button}</Button>
+            <Button
+              className="w-fit"
+              loading={ferdigbehandleVedtak.isPending}
+              onClick={() => ferdigbehandleVedtak.mutate()}
+            >
+              {texts.button}
+            </Button>
           </>
         )}
       </Box>
