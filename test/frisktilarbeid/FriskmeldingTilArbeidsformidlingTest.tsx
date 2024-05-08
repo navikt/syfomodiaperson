@@ -6,7 +6,7 @@ import { navEnhet } from "../dialogmote/testData";
 import React from "react";
 import { FriskmeldingTilArbeidsformidling } from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidling";
 import { expect } from "chai";
-import { clickButton, getButton, getTextInput } from "../testUtils";
+import { getButton, getTextInput } from "../testUtils";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
@@ -41,28 +41,13 @@ describe("FriskmeldingTilArbeidsformidling", () => {
   });
 
   describe("uten vedtak", () => {
-    it("viser forberedelser og knapp for å vurdere vedtak initielt", () => {
+    it("viser forberedelser og skjema for å fatte vedtak", () => {
       renderFriskmeldingTilArbeidsformidling();
-
-      expect(screen.getByRole("heading", { name: "Forberedelser" })).to.exist;
-      expect(getButton("Vurder vedtak")).to.exist;
-      expect(
-        screen.queryByRole("textbox", { name: "Friskmeldingen gjelder fra" })
-      ).to.not.exist;
-      expect(screen.queryByRole("button", { name: "Fatt vedtak" })).to.not
-        .exist;
-    });
-
-    it("viser forberedelser og skjema for å fatte vedtak etter å ha trykket på knapp for å vurdere vedtak", () => {
-      renderFriskmeldingTilArbeidsformidling();
-
-      clickButton("Vurder vedtak");
 
       expect(screen.getByRole("heading", { name: "Forberedelser" })).to.exist;
 
       expect(getTextInput("Friskmeldingen gjelder fra")).to.exist;
-      expect(getTextInput("Til dato (automatisk justert 12 uker frem)")).to
-        .exist;
+      expect(screen.getByRole("textbox", { name: /Til dato/ })).to.exist;
       expect(screen.getByRole("group", { name: "Velg behandler" })).to.exist;
       expect(getTextInput("Begrunnelse")).to.exist;
       expect(screen.getByRole("button", { name: "Fatt vedtak" })).to.exist;

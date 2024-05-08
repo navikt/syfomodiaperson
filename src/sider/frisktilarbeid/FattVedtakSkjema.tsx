@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import {
+  Alert,
   Box,
   Button,
   DatePicker,
+  HelpText,
   Textarea,
   useDatepicker,
 } from "@navikt/ds-react";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { FormProvider, useForm } from "react-hook-form";
 import { VedtakFraDato } from "@/sider/frisktilarbeid/VedtakFraDato";
-import { addWeeks } from "@/utils/datoUtils";
+import { addDays, addWeeks } from "@/utils/datoUtils";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { VelgBehandler } from "@/components/behandler/VelgBehandler";
 import { useFattVedtak } from "@/data/frisktilarbeid/useFattVedtak";
@@ -18,6 +20,7 @@ import { VedtakRequestDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import dayjs from "dayjs";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useFriskmeldingTilArbeidsformidlingDocument } from "@/hooks/frisktilarbeid/useFriskmeldingTilArbeidsformidlingDocument";
+import { useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
 
 const begrunnelseMaxLength = 5000;
 
@@ -28,9 +31,37 @@ const texts = {
   previewContentLabel: "Forhåndsvis vedtaket",
   primaryButton: "Fatt vedtak",
   velgBehandlerLegend: "Velg behandler",
-  tilDatoLabel: "Til dato (automatisk justert 12 uker frem)",
-  tilDatoDescription: "Dette er datoen vedtaket slutter",
+  tilDatoLabel: "Til dato",
+  tilDatoDescription: (tilDatoIsMaxDato: boolean) =>
+    tilDatoIsMaxDato
+      ? "Automatisk justert til maksdato"
+      : "Automatisk justert 12 uker frem",
+  tilDatoHelpText: "Dette er datoen vedtaket slutter",
+  maksdatoWarning: (dato: string) =>
+    `Foreløpig beregnet maksdato er tidligere enn 12 uker frem: ${dato}`,
 };
+
+function calculateTomDate(fomDato: Date, maksDato: Date | undefined): Date {
+  // Ettersom det er til-og-med dato, trekker vi fra en dag
+  const twelveWeeksFromFomDato = addWeeks(fomDato, 12);
+  const tomDato = addDays(twelveWeeksFromFomDato, -1);
+  if (!maksDato || dayjs(tomDato).isBefore(dayjs(maksDato))) {
+    return tomDato;
+  } else {
+    return maksDato;
+  }
+}
+
+function DatepickerLabel(): ReactNode {
+  return (
+    <>
+      {texts.tilDatoLabel}
+      <HelpText className="ml-2" placement="right">
+        {texts.tilDatoHelpText}
+      </HelpText>
+    </>
+  );
+}
 
 export interface FattVedtakSkjemaValues {
   fraDato: Date;
@@ -43,6 +74,7 @@ export const FattVedtakSkjema = () => {
   const fattVedtak = useFattVedtak();
   const { getBehandlermeldingDocument, getVedtakDocument } =
     useFriskmeldingTilArbeidsformidlingDocument();
+  const { data: maksDato } = useMaksdatoQuery();
   const methods = useForm<FattVedtakSkjemaValues>();
   const {
     register,
@@ -52,7 +84,13 @@ export const FattVedtakSkjema = () => {
   } = methods;
 
   const fraDato: Date | undefined = watch("fraDato");
-  const tilDato = fraDato ? addWeeks(fraDato, 12) : undefined;
+  const tilDato = fraDato
+    ? calculateTomDate(fraDato, maksDato?.maxDate?.forelopig_beregnet_slutt)
+    : undefined;
+
+  const tilDatoIsMaxDato =
+    !!tilDato &&
+    dayjs(tilDato).isSame(dayjs(maksDato?.maxDate?.forelopig_beregnet_slutt));
 
   const submit = (values: FattVedtakSkjemaValues) => {
     const vedtakRequestDTO: VedtakRequestDTO = {
@@ -82,14 +120,21 @@ export const FattVedtakSkjema = () => {
         <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-8">
           <div className="flex flex-col gap-6">
             <VedtakFraDato />
-            <DatePicker {...tilDatoDatePicker.datepickerProps}>
-              <DatePicker.Input
-                value={tilDato ? dayjs(tilDato).format("DD.MM.YYYY") : ""}
-                label={texts.tilDatoLabel}
-                description={texts.tilDatoDescription}
-                readOnly
-              />
-            </DatePicker>
+            <div>
+              {tilDatoIsMaxDato && (
+                <Alert variant="warning" size="small" className="w-fit mb-2">
+                  {texts.maksdatoWarning(dayjs(tilDato).format("DD.MM.YYYY"))}
+                </Alert>
+              )}
+              <DatePicker {...tilDatoDatePicker.datepickerProps}>
+                <DatePicker.Input
+                  value={tilDato ? dayjs(tilDato).format("DD.MM.YYYY") : ""}
+                  label={<DatepickerLabel />}
+                  description={texts.tilDatoDescription(tilDatoIsMaxDato)}
+                  readOnly
+                />
+              </DatePicker>
+            </div>
             <VelgBehandler
               legend={texts.velgBehandlerLegend}
               onBehandlerSelected={setSelectedBehandler}
