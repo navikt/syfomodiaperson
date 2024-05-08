@@ -52,6 +52,7 @@ export const useFriskmeldingTilArbeidsformidlingDocument = (): {
       createParagraph(vedtakTexts.nyttigInfo.part2),
       createParagraph(vedtakTexts.nyttigInfo.part3),
       createParagraph(vedtakTexts.nyttigInfo.part4),
+      createParagraph(vedtakTexts.behandler),
       createParagraphWithTitle(
         vedtakTexts.sporsmal.header,
         vedtakTexts.sporsmal.body

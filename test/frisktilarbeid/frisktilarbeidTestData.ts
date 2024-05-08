@@ -101,6 +101,12 @@ export const getExpectedVedtakDocument = (
       type: DocumentComponentType.PARAGRAPH,
     },
     {
+      texts: [
+        "NAV har ikke delt informasjon med legen din om at du er innvilget ordningen friskmeldt til arbeidsformidling. Du må gjerne selv informere legen din om dette. Legen din trenger ikke å skrive ut sykmelding i perioden vedtaket gjelder.",
+      ],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
       title: "Spørsmål eller endringer",
       texts: [
         "Hvis det skjer en endring i din situasjon, kan det påvirke din rett til utbetaling av sykepenger. Mangelfulle eller feilaktige opplysninger kan medføre krav om tilbakebetaling av sykepenger. Se nav.no/endringer.",
