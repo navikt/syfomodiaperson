@@ -6,8 +6,6 @@ import {
   createParagraphWithTitle,
 } from "@/utils/documentComponentUtils";
 import {
-  BehandlermeldingTextsValues,
-  getBehandlermeldingTexts,
   getVedtakTexts,
   VedtakTextsValues,
 } from "@/data/frisktilarbeid/frisktilarbeidDocumentTexts";
@@ -17,28 +15,9 @@ type VedtakDocumentValues = VedtakTextsValues & {
 };
 
 export const useFriskmeldingTilArbeidsformidlingDocument = (): {
-  getBehandlermeldingDocument(
-    values: BehandlermeldingTextsValues
-  ): DocumentComponentDto[];
   getVedtakDocument(values: VedtakDocumentValues): DocumentComponentDto[];
 } => {
-  const { getHilsen, getIntroGjelder, getBrukerNavnFnr } =
-    useDocumentComponents();
-
-  const getBehandlermeldingDocument = (
-    values: BehandlermeldingTextsValues
-  ): DocumentComponentDto[] => {
-    const behandlermeldingTexts = getBehandlermeldingTexts(values);
-    return [
-      createHeaderH1(behandlermeldingTexts.header),
-      getIntroGjelder(),
-      createParagraph(behandlermeldingTexts.periode),
-      createParagraph(behandlermeldingTexts.vedtak),
-      createParagraph(behandlermeldingTexts.hjemmel),
-      createParagraph(behandlermeldingTexts.noSykmelding),
-      getHilsen(),
-    ];
-  };
+  const { getHilsen, getBrukerNavnFnr } = useDocumentComponents();
 
   const getVedtakDocument = (
     values: VedtakDocumentValues
@@ -93,7 +72,6 @@ export const useFriskmeldingTilArbeidsformidlingDocument = (): {
   };
 
   return {
-    getBehandlermeldingDocument,
     getVedtakDocument,
   };
 };
