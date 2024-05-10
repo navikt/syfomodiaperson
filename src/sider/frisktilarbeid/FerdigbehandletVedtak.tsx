@@ -1,15 +1,14 @@
 import React, { ReactElement, useState } from "react";
-import { BodyLong, Box, Button, Heading } from "@navikt/ds-react";
+import { Alert, BodyLong, Box, Button, Heading } from "@navikt/ds-react";
 import dayjs from "dayjs";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { FattNyttVedtak } from "@/sider/frisktilarbeid/FattNyttVedtak";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 
 const texts = {
-  heading: "Start ny vurdering av nytt vedtak",
-  vedtakBleFattet: (forrigeVedtakDate: string) =>
-    `Oppgaven er avsluttet og fjernet fra oversikten. Det forrige vedtaket ble gjort ${forrigeVedtakDate}`,
+  heading: "Start nytt vedtak",
   forrigeVedtakInfo: (
+    vedtakFattetDato: string,
     hasVedtakStarted: boolean,
     hasVedtakEnded: boolean,
     vedtakStartDate: string,
@@ -21,9 +20,11 @@ const texts = {
     const vedtakEndText = hasVedtakEnded
       ? `ble avsluttet: ${vedtakEndDate}`
       : `avsluttes: ${vedtakEndDate}`;
-    return `Forrige friskmelding til arbeidsformidling på denne brukeren ${vedtakStartText} og ${vedtakEndText}.`;
+    return `Forrige vedtak på denne personen ble fattet ${vedtakFattetDato}. Perioden for friskmelding til arbeidsformidling ${vedtakStartText} og ${vedtakEndText}.`;
   },
   nyttVedtak: "Nytt vedtak",
+  vedtatFerdigbehandletAlert:
+    "Oppgaven om vedtak er ferdigbehandlet, og er fjernet fra oversikten.",
 };
 
 interface Props {
@@ -31,7 +32,7 @@ interface Props {
 }
 
 export function FerdigbehandletVedtak({ vedtak }: Props): ReactElement {
-  const [isNyVurderingStarted, setIsNyVurderingStarted] = useState(false);
+  const [isNyVurderingStarted, setStartNyVurdering] = useState(false);
   const hasVedtakStarted = dayjs(vedtak.fom).isBefore(dayjs());
   const hasVedtakEnded = dayjs(vedtak.tom).isBefore(dayjs());
   const vedtakStartDato = tilDatoMedManedNavn(vedtak.fom);
@@ -41,28 +42,33 @@ export function FerdigbehandletVedtak({ vedtak }: Props): ReactElement {
   return isNyVurderingStarted ? (
     <FattNyttVedtak />
   ) : (
-    <div className="flex flex-col gap-4">
-      <Box
-        background="surface-default"
-        padding="6"
-        className="flex flex-col gap-4"
-      >
-        <Heading level="2" size="medium">
-          {texts.heading}
-        </Heading>
-        <BodyLong>{texts.vedtakBleFattet(vedtakFattetDato)}</BodyLong>
-        <BodyLong>
-          {texts.forrigeVedtakInfo(
-            hasVedtakStarted,
-            hasVedtakEnded,
-            vedtakStartDato,
-            vedtakAvsluttetDato
-          )}
-        </BodyLong>
-        <Button className="w-fit" onClick={() => setIsNyVurderingStarted(true)}>
-          {texts.nyttVedtak}
-        </Button>
-      </Box>
-    </div>
+    <>
+      <Alert variant={"success"} className="mb-4">
+        {texts.vedtatFerdigbehandletAlert}
+      </Alert>
+      <div className="flex flex-col gap-4">
+        <Box
+          background="surface-default"
+          padding="6"
+          className="flex flex-col gap-4"
+        >
+          <Heading level="2" size="medium">
+            {texts.heading}
+          </Heading>
+          <BodyLong>
+            {texts.forrigeVedtakInfo(
+              vedtakFattetDato,
+              hasVedtakStarted,
+              hasVedtakEnded,
+              vedtakStartDato,
+              vedtakAvsluttetDato
+            )}
+          </BodyLong>
+          <Button className="w-fit" onClick={() => setStartNyVurdering(true)}>
+            {texts.nyttVedtak}
+          </Button>
+        </Box>
+      </div>
+    </>
   );
 }

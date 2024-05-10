@@ -117,5 +117,17 @@ describe("FriskmeldingTilArbeidsformidling", () => {
 
       expect(getButton("Avslutt oppgave")).to.exist;
     });
+
+    it("viser ferdigbehandlet vedtak når det finnes", () => {
+      const vedtak = createVedtak(
+        dayjs().subtract(1, "days").toDate(),
+        dayjs().toDate()
+      );
+      mockVedtak([vedtak]);
+
+      renderFriskmeldingTilArbeidsformidling();
+
+      expect(screen.getByText("Start nytt vedtak")).to.exist;
+    });
   });
 });
