@@ -1,25 +1,16 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import { Alert, BodyLong, Box, Button, Heading } from "@navikt/ds-react";
 import dayjs from "dayjs";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
-import { FattNyttVedtak } from "@/sider/frisktilarbeid/FattNyttVedtak";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 
 const texts = {
   heading: "Start nytt vedtak",
   forrigeVedtakInfo: (
     vedtakFattetDato: string,
-    hasVedtakStarted: boolean,
-    hasVedtakEnded: boolean,
-    vedtakStartDate: string,
-    vedtakEndDate: string
+    vedtakStartText: string,
+    vedtakEndText: string
   ) => {
-    const vedtakStartText = hasVedtakStarted
-      ? `ble startet: ${vedtakStartDate}`
-      : `starter: ${vedtakStartDate}`;
-    const vedtakEndText = hasVedtakEnded
-      ? `ble avsluttet: ${vedtakEndDate}`
-      : `avsluttes: ${vedtakEndDate}`;
     return `Forrige vedtak på denne personen ble fattet ${vedtakFattetDato}. Perioden for friskmelding til arbeidsformidling ${vedtakStartText} og ${vedtakEndText}.`;
   },
   nyttVedtak: "Nytt vedtak",
@@ -29,19 +20,26 @@ const texts = {
 
 interface Props {
   vedtak: VedtakResponseDTO;
+  setStartNyVurdering: (value: boolean) => void;
 }
 
-export function FerdigbehandletVedtak({ vedtak }: Props): ReactElement {
-  const [isNyVurderingStarted, setStartNyVurdering] = useState(false);
+export function FerdigbehandletVedtak({
+  vedtak,
+  setStartNyVurdering,
+}: Props): ReactElement {
   const hasVedtakStarted = dayjs(vedtak.fom).isBefore(dayjs());
   const hasVedtakEnded = dayjs(vedtak.tom).isBefore(dayjs());
   const vedtakStartDato = tilDatoMedManedNavn(vedtak.fom);
   const vedtakAvsluttetDato = tilDatoMedManedNavn(vedtak.tom);
   const vedtakFattetDato = tilDatoMedManedNavn(vedtak.createdAt);
+  const vedtakStartText = hasVedtakStarted
+    ? `ble startet: ${vedtakStartDato}`
+    : `starter: ${vedtakStartDato}`;
+  const vedtakEndText = hasVedtakEnded
+    ? `ble avsluttet: ${vedtakAvsluttetDato}`
+    : `avsluttes: ${vedtakAvsluttetDato}`;
 
-  return isNyVurderingStarted ? (
-    <FattNyttVedtak />
-  ) : (
+  return (
     <>
       <Alert variant={"success"} className="mb-4">
         {texts.vedtatFerdigbehandletAlert}
@@ -58,10 +56,8 @@ export function FerdigbehandletVedtak({ vedtak }: Props): ReactElement {
           <BodyLong>
             {texts.forrigeVedtakInfo(
               vedtakFattetDato,
-              hasVedtakStarted,
-              hasVedtakEnded,
-              vedtakStartDato,
-              vedtakAvsluttetDato
+              vedtakStartText,
+              vedtakEndText
             )}
           </BodyLong>
           <Button className="w-fit" onClick={() => setStartNyVurdering(true)}>
