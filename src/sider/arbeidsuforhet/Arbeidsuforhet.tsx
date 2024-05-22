@@ -1,23 +1,24 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { useArbeidsuforhetVurderingQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { VurderingType } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
-import { ForhandsvarselSendt } from "@/sider/arbeidsuforhet/ForhandsvarselSendt";
-import { SendForhandsvarselSkjema } from "@/sider/arbeidsuforhet/SendForhandsvarselSkjema";
-import { AvslagSent } from "@/sider/arbeidsuforhet/AvslagSent";
+import { NyVurdering } from "@/sider/arbeidsuforhet/NyVurdering";
+import { StartetVurdering } from "@/sider/arbeidsuforhet/StartetVurdering";
 
 export const Arbeidsuforhet = (): ReactElement => {
   const { data } = useArbeidsuforhetVurderingQuery();
   const sisteVurdering = data[0];
   const isForhandsvarsel =
     sisteVurdering?.type === VurderingType.FORHANDSVARSEL;
-  const isOppfylt = sisteVurdering?.type === VurderingType.OPPFYLT;
-  const isAvslag = sisteVurdering?.type === VurderingType.AVSLAG;
+  const [showStartetVurdering, setShowStartetVurdering] =
+    useState<boolean>(false);
 
   return (
-    <div>
-      {(!sisteVurdering || isOppfylt) && <SendForhandsvarselSkjema />}
-      {isForhandsvarsel && <ForhandsvarselSendt />}
-      {isAvslag && <AvslagSent />}
+    <div className="mb-4">
+      {showStartetVurdering || isForhandsvarsel ? (
+        <StartetVurdering />
+      ) : (
+        <NyVurdering handleClick={() => setShowStartetVurdering(true)} />
+      )}
     </div>
   );
 };

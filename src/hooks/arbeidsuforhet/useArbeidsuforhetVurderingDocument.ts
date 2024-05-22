@@ -5,31 +5,40 @@ import {
   createHeaderH3,
   createParagraph,
 } from "@/utils/documentComponentUtils";
-import { getForhandsvarsel84Texts } from "@/data/arbeidsuforhet/forhandsvarsel84Texts";
-import { VurderingType } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import {
+  getAvslagArbeidsuforhetTexts,
+  getForhandsvarselArbeidsuforhetTexts,
+  arbeidsuforhetTexts,
+} from "@/data/arbeidsuforhet/arbeidsuforhetDocumentTexts";
 
 type ForhandsvarselDocumentValues = {
   begrunnelse: string;
   frist: Date;
 };
 
-type VurderingDocumentValues = {
+type OppfyltDocumentValues = {
   begrunnelse: string;
-  type: VurderingType;
+  forhandsvarselSendtDato: Date;
+};
+
+type AvslagDocumentValues = {
+  begrunnelse: string;
+  fom: Date | undefined;
 };
 
 export const useArbeidsuforhetVurderingDocument = (): {
   getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
   ): DocumentComponentDto[];
-  getVurderingDocument(values: VurderingDocumentValues): DocumentComponentDto[];
+  getOppfyltDocument(values: OppfyltDocumentValues): DocumentComponentDto[];
+  getAvslagDocument(values: AvslagDocumentValues): DocumentComponentDto[];
 } => {
-  const { getHilsen, getIntroGjelder, getVurdertAv } = useDocumentComponents();
+  const { getHilsen, getIntroGjelder, getVurdertAv, getVeiledernavn } =
+    useDocumentComponents();
 
   const getForhandsvarselDocument = (values: ForhandsvarselDocumentValues) => {
     const { begrunnelse, frist } = values;
-    const sendForhandsvarselTexts = getForhandsvarsel84Texts({
+    const sendForhandsvarselTexts = getForhandsvarselArbeidsuforhetTexts({
       frist,
     });
 
@@ -49,6 +58,7 @@ export const useArbeidsuforhetVurderingDocument = (): {
         sendForhandsvarselTexts.duKanUttaleDeg.tilbakemeldingWithFristDate
       ),
       createParagraph(sendForhandsvarselTexts.duKanUttaleDeg.etterFrist),
+      createParagraph(sendForhandsvarselTexts.duKanUttaleDeg.friskmeldt),
       createParagraph(sendForhandsvarselTexts.duKanUttaleDeg.kontaktOss),
 
       createHeaderH3(sendForhandsvarselTexts.lovhjemmel.header),
@@ -61,23 +71,42 @@ export const useArbeidsuforhetVurderingDocument = (): {
     return documentComponents;
   };
 
-  const getVurderingDocument = (values: VurderingDocumentValues) => {
-    const { type, begrunnelse } = values;
-
-    if (type === VurderingType.FORHANDSVARSEL) {
-      throw new Error("use getForhandsvarselDocument");
-    }
+  const getAvslagDocument = (values: AvslagDocumentValues) => {
+    const { begrunnelse, fom } = values;
+    const avslagArbeidsuforhetTexts = getAvslagArbeidsuforhetTexts(fom);
 
     const documentComponents = [
-      createHeaderH1("Vurdering av arbeidsuførhet"),
-      getIntroGjelder(),
-      createParagraph(getVurderingText(type)),
+      createHeaderH1(avslagArbeidsuforhetTexts.header),
+      createParagraph(avslagArbeidsuforhetTexts.fom),
+      createParagraph(avslagArbeidsuforhetTexts.intro),
     ];
 
     if (begrunnelse) {
-      documentComponents.push(createParagraph(`Begrunnelse: ${begrunnelse}`));
+      documentComponents.push(createParagraph(begrunnelse));
     }
 
+    documentComponents.push(
+      createParagraph(avslagArbeidsuforhetTexts.hjemmel),
+      getVeiledernavn()
+    );
+
+    return documentComponents;
+  };
+
+  const getOppfyltDocument = ({
+    begrunnelse,
+    forhandsvarselSendtDato,
+  }: OppfyltDocumentValues) => {
+    const documentComponents = [
+      createHeaderH1(arbeidsuforhetTexts.header),
+      getIntroGjelder(),
+      createParagraph(
+        arbeidsuforhetTexts.previousForhandsvarsel(forhandsvarselSendtDato)
+      ),
+      createParagraph(arbeidsuforhetTexts.forAFaSykepenger),
+      createParagraph(begrunnelse),
+      createParagraph(arbeidsuforhetTexts.viHarBruktLoven),
+    ];
     documentComponents.push(getVurdertAv());
 
     return documentComponents;
@@ -85,20 +114,7 @@ export const useArbeidsuforhetVurderingDocument = (): {
 
   return {
     getForhandsvarselDocument,
-    getVurderingDocument,
+    getOppfyltDocument,
+    getAvslagDocument,
   };
-};
-
-const getVurderingText = (
-  type: VurderingType.OPPFYLT | VurderingType.AVSLAG
-) => {
-  const vurdertDato = tilDatoMedManedNavn(new Date());
-  switch (type) {
-    case VurderingType.OPPFYLT: {
-      return `Det ble vurdert oppfylt den ${vurdertDato}`;
-    }
-    case VurderingType.AVSLAG: {
-      return `Det ble vurdert avslag den ${vurdertDato}.`;
-    }
-  }
 };

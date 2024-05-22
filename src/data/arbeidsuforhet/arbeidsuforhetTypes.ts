@@ -4,6 +4,7 @@ export interface VurderingRequestDTO {
   type: VurderingType;
   begrunnelse: string;
   document: DocumentComponentDto[];
+  gjelderFom?: string;
 }
 
 export enum VurderingType {
@@ -12,10 +13,11 @@ export enum VurderingType {
   AVSLAG = "AVSLAG",
 }
 
-interface VarselDTO {
+export interface VarselDTO {
   uuid: string;
   createdAt: Date;
   svarfrist: Date;
+  isExpired: boolean;
 }
 
 export interface VurderingResponseDTO {

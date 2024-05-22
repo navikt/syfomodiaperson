@@ -1,17 +1,22 @@
 import React, { ReactElement } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+} from "react-router-dom";
 import AktivBrukerTilgangLaster from "@/components/AktivBrukerTilgangLaster";
 import SykmeldingerContainer from "@/sider/sykmeldinger/container/SykmeldingerContainer";
 import SykepengesoknaderSide from "@/sider/sykepengsoknader/SykepengesoknaderSide";
 import DinSykmeldingContainer from "@/sider/sykmeldinger/container/DinSykmeldingContainer";
 import HistorikkContainer from "@/sider/historikk/container/HistorikkContainer";
 import { erGyldigFodselsnummer } from "@/utils/frnValideringUtils";
-import NokkelinformasjonContainer from "@/sider/nokkelinformasjon/container/NokkelinformasjonContainer";
 import DialogmoteInnkallingContainer from "../components/dialogmote/innkalling/DialogmoteInnkallingContainer";
-import AvlysDialogmoteContainer from "@/sider/mote/components/avlys/AvlysDialogmoteContainer";
+import AvlysDialogmoteContainer from "@/sider/dialogmoter/components/avlys/AvlysDialogmoteContainer";
 import AppSpinner from "../components/AppSpinner";
 import DialogmoteReferatContainer from "../components/dialogmote/referat/DialogmoteReferatContainer";
-import EndreDialogmoteContainer from "@/sider/mote/components/endre/EndreDialogmoteContainer";
+import EndreDialogmoteContainer from "@/sider/dialogmoter/components/endre/EndreDialogmoteContainer";
 import { OppfoelgingsPlanerOversiktContainer } from "@/sider/oppfolgingsplan/container/OppfoelgingsPlanerOversiktContainer";
 import { OppfoelgingsplanContainer } from "@/sider/oppfolgingsplan/container/OppfoelgingsplanContainer";
 import { IngenBrukerSide } from "@/components/IngenBrukerSide";
@@ -22,10 +27,14 @@ import { PersonsokSide } from "@/components/PersonsokSide";
 import { AktivitetskravContainer } from "@/sider/aktivitetskrav/AktivitetskravContainer";
 import { BehandlerdialogContainer } from "@/sider/behandlerdialog/BehandlerdialogContainer";
 import * as Amplitude from "@/utils/amplitude";
-import Motelandingsside from "@/sider/mote/Motelandingsside";
+import Motelandingsside from "@/sider/dialogmoter/Motelandingsside";
 import { SykepengesoknadSide } from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
 import { ArbeidsuforhetSide } from "@/sider/arbeidsuforhet/ArbeidsuforhetSide";
 import { ArbeidsuforhetOppfyltSide } from "@/sider/arbeidsuforhet/ArbeidsuforhetOppfyltSide";
+import { Nokkelinformasjon } from "@/sider/nokkelinformasjon/Nokkelinformasjon";
+import { ArbeidsuforhetAvslagSide } from "@/sider/arbeidsuforhet/avslag/ArbeidsuforhetAvslagSide";
+import { FriskmeldingTilArbeidsformidlingSide } from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidlingSide";
+import { NotificationProvider } from "@/context/notification/NotificationContext";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -33,6 +42,9 @@ export const dialogmoteRoutePath = `${appRoutePath}/dialogmote`;
 export const dialogmoteUnntakRoutePath = `${appRoutePath}/dialogmoteunntak`;
 export const moteoversiktRoutePath = `${appRoutePath}/moteoversikt`;
 export const arbeidsuforhetOppfyltPath = `${appRoutePath}/arbeidsuforhet/oppfylt`;
+export const arbeidsuforhetAvslagPath = `${appRoutePath}/arbeidsuforhet/avslag`;
+export const arbeidsuforhetPath = `${appRoutePath}/arbeidsuforhet`;
+export const frisktilarbeidPath = `${appRoutePath}/frisktilarbeid`;
 
 const AktivBrukerRouter = (): ReactElement => {
   Amplitude.logViewportAndScreenSize();
@@ -42,10 +54,10 @@ const AktivBrukerRouter = (): ReactElement => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to={appRoutePath} />} />
-          <Route path={appRoutePath} element={<NokkelinformasjonContainer />} />
+          <Route path={appRoutePath} element={<Nokkelinformasjon />} />
           <Route
             path={`${appRoutePath}/nokkelinformasjon`}
-            element={<NokkelinformasjonContainer />}
+            element={<Nokkelinformasjon />}
           />
           <Route
             path={`${appRoutePath}/aktivitetskrav`}
@@ -93,12 +105,26 @@ const AktivBrukerRouter = (): ReactElement => {
             element={<SykepengesoknaderSide />}
           />
           <Route
-            path={`${appRoutePath}/arbeidsuforhet`}
-            element={<ArbeidsuforhetSide />}
-          />
+            path={arbeidsuforhetPath}
+            element={
+              <NotificationProvider>
+                <Outlet />
+              </NotificationProvider>
+            }
+          >
+            <Route path={arbeidsuforhetPath} element={<ArbeidsuforhetSide />} />
+            <Route
+              path={arbeidsuforhetOppfyltPath}
+              element={<ArbeidsuforhetOppfyltSide />}
+            />
+            <Route
+              path={arbeidsuforhetAvslagPath}
+              element={<ArbeidsuforhetAvslagSide />}
+            />
+          </Route>
           <Route
-            path={arbeidsuforhetOppfyltPath}
-            element={<ArbeidsuforhetOppfyltSide />}
+            path={frisktilarbeidPath}
+            element={<FriskmeldingTilArbeidsformidlingSide />}
           />
           <Route
             path={`${appRoutePath}/sykepengesoknader/:sykepengesoknadId`}

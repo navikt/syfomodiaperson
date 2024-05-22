@@ -37,11 +37,12 @@ const brevMalTexts: {
 } = {
   [Brevmal.MED_ARBEIDSGIVER]: "Har arbeidsgiver",
   [Brevmal.UTEN_ARBEIDSGIVER]: "Har ikke arbeidsgiver",
+  [Brevmal.UTLAND]: "Bosatt i utlandet",
 };
 
 const forhandsvarselFrist = addWeeks(new Date(), 3);
 const defaultValues = { begrunnelse: "", arsak: undefined };
-const begrunnelseMaxLength = 1000;
+const begrunnelseMaxLength = 5000;
 
 export const SendForhandsvarselSkjema = ({
   aktivitetskravUuid,

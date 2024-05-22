@@ -287,7 +287,11 @@ export const manederMellomDatoer = (d1, d2): number => {
 };
 
 export const addWeeks = (date: Date, numberOfWeeks: number): Date => {
-  return dayjs(date, { utc: true }).add(numberOfWeeks, "weeks").toDate();
+  return dayjs(date).add(numberOfWeeks, "weeks").toDate();
+};
+
+export const addDays = (date: Date, numberOfDays: number): Date => {
+  return dayjs(date).add(numberOfDays, "days").toDate();
 };
 
 export const getWeeksBetween = (date1, date2): number => {

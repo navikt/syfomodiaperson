@@ -34,82 +34,59 @@ export enum Menypunkter {
   HISTORIKK = "HISTORIKK",
   VEDTAK = "VEDTAK",
   ARBEIDSUFORHET = "ARBEIDSUFORHET",
+  FRISKTILARBEID = "FRISKTILARBEID",
 }
 
-export type Menypunkt = { navn: string; sti: string; menypunkt: Menypunkter };
+export type Menypunkt = { navn: string; sti: string };
 
-const nokkelinformasjonMenypunkt = {
-  navn: "Nøkkelinformasjon",
-  sti: "nokkelinformasjon",
-  menypunkt: Menypunkter.NOKKELINFORMASJON,
+const allMenypunkter: {
+  [key in Menypunkter]: Menypunkt;
+} = {
+  [Menypunkter.NOKKELINFORMASJON]: {
+    navn: "Nøkkelinformasjon",
+    sti: "nokkelinformasjon",
+  },
+  [Menypunkter.AKTIVITETSKRAV]: {
+    navn: "Aktivitetskrav",
+    sti: "aktivitetskrav",
+  },
+  [Menypunkter.BEHANDLERDIALOG]: {
+    navn: "Dialog med behandler",
+    sti: "behandlerdialog",
+  },
+  [Menypunkter.HISTORIKK]: {
+    navn: "Logg",
+    sti: "logg",
+  },
+  [Menypunkter.SYKMELDINGER]: {
+    navn: "Sykmeldinger",
+    sti: "sykmeldinger",
+  },
+  [Menypunkter.SYKEPENGESOKNADER]: {
+    navn: "Søknader om sykepenger",
+    sti: "sykepengesoknader",
+  },
+  [Menypunkter.OPPFOELGINGSPLANER]: {
+    navn: "Oppfølgingsplaner",
+    sti: "oppfoelgingsplaner",
+  },
+  [Menypunkter.DIALOGMOTE]: {
+    navn: "Dialogmøter",
+    sti: "moteoversikt",
+  },
+  [Menypunkter.ARBEIDSUFORHET]: {
+    navn: "Arbeidsuførhet",
+    sti: "arbeidsuforhet",
+  },
+  [Menypunkter.FRISKTILARBEID]: {
+    navn: "Friskmelding til arbeidsformidling",
+    sti: "frisktilarbeid",
+  },
+  [Menypunkter.VEDTAK]: {
+    navn: "Vedtak",
+    sti: "vedtak",
+  },
 };
-
-const aktivitetskravMenypunkt = {
-  navn: "Aktivitetskrav",
-  sti: "aktivitetskrav",
-  menypunkt: Menypunkter.AKTIVITETSKRAV,
-};
-
-const behandlerdialogMenypunkt = {
-  navn: "Dialog med behandler",
-  sti: "behandlerdialog",
-  menypunkt: Menypunkter.BEHANDLERDIALOG,
-};
-
-const historikkMenypunkt = {
-  navn: "Logg",
-  sti: "logg",
-  menypunkt: Menypunkter.HISTORIKK,
-};
-
-const motemodulMenypunkt = {
-  navn: "Dialogmøter",
-  sti: "moteoversikt",
-  menypunkt: Menypunkter.DIALOGMOTE,
-};
-
-const sykmeldingerMenypunkt = {
-  navn: "Sykmeldinger",
-  sti: "sykmeldinger",
-  menypunkt: Menypunkter.SYKMELDINGER,
-};
-
-const sykepengesoknadMenypunkt = {
-  navn: "Søknader om sykepenger",
-  sti: "sykepengesoknader",
-  menypunkt: Menypunkter.SYKEPENGESOKNADER,
-};
-
-const oppfoelgingsplanMenypunkt = {
-  navn: "Oppfølgingsplaner",
-  sti: "oppfoelgingsplaner",
-  menypunkt: Menypunkter.OPPFOELGINGSPLANER,
-};
-
-const vedtakMenypunkt = {
-  navn: "Vedtak",
-  sti: "vedtak",
-  menypunkt: Menypunkter.VEDTAK,
-};
-
-const arbeidsuforhetMenypunkt = {
-  navn: "Forhåndsvarsel §8-4",
-  sti: "arbeidsuforhet",
-  menypunkt: Menypunkter.ARBEIDSUFORHET,
-};
-
-const allMenypunkter: Menypunkt[] = [
-  nokkelinformasjonMenypunkt,
-  aktivitetskravMenypunkt,
-  behandlerdialogMenypunkt,
-  historikkMenypunkt,
-  sykmeldingerMenypunkt,
-  sykepengesoknadMenypunkt,
-  oppfoelgingsplanMenypunkt,
-  motemodulMenypunkt,
-  arbeidsuforhetMenypunkt,
-  vedtakMenypunkt,
-];
 
 interface GlobalNavigasjonProps {
   aktivtMenypunkt: Menypunkter;
@@ -132,6 +109,9 @@ export const GlobalNavigasjon = ({
     (oppfolgingsplanLPS) =>
       toOppfolgingsplanLPSMedPersonoppgave(oppfolgingsplanLPS, personoppgaver)
   );
+  const allMenypunktEntries: [Menypunkter, Menypunkt][] = Object.entries(
+    allMenypunkter
+  ).map((value) => value as [Menypunkter, Menypunkt]);
 
   const setFocus = (index: number) => {
     refs.current[index].focus();
@@ -142,7 +122,7 @@ export const GlobalNavigasjon = ({
       case "ArrowDown": {
         e.preventDefault();
         const newFocusIndex = focusIndex + 1;
-        if (newFocusIndex === allMenypunkter.length) {
+        if (newFocusIndex === allMenypunktEntries.length) {
           return;
         }
         setFocusIndex(newFocusIndex);
@@ -176,10 +156,10 @@ export const GlobalNavigasjon = ({
 
   return (
     <ul aria-label="Navigasjon" className="navigasjon">
-      {allMenypunkter.map(({ navn, sti, menypunkt }, index) => {
+      {allMenypunktEntries.map(([menypunkt, { navn, sti }], index) => {
         if (
-          !toggles.isArbeidsuforhetEnabled &&
-          menypunkt === Menypunkter.ARBEIDSUFORHET
+          !toggles.isFrisktilarbeidEnabled &&
+          menypunkt === Menypunkter.FRISKTILARBEID
         ) {
           return null;
         }

@@ -199,6 +199,7 @@ const DeltakerBehandlerSvarPanel = ({
       icon={<DeltakerSvarIcon svarType={latestSvar?.svarType} />}
       deltaker={texts.behandler}
       tittel={`${behandler.behandlerNavn}, ${svarTittelTekst}`}
+      defaultOpen={!!latestSvar}
     >
       <DeltakerBehandlerSvarDetaljer svarList={svarList} />
     </EkspanderbartSvarPanel>
@@ -210,6 +211,7 @@ interface EkspanderbartSvarPanelProps {
   tittel: string;
   icon: ReactElement;
   children: ReactElement;
+  defaultOpen: boolean;
 }
 
 const EkspanderbartSvarPanel = ({
@@ -217,8 +219,9 @@ const EkspanderbartSvarPanel = ({
   deltaker,
   tittel,
   children,
+  defaultOpen,
 }: EkspanderbartSvarPanelProps) => (
-  <ExpansionCard size="small" aria-label={tittel} className="mb-4">
+  <ExpansionCard size="small" aria-label={tittel} defaultOpen={defaultOpen}>
     <ExpansionCard.Header>
       <ExpansionCard.Title size="small">
         <div className="flex gap-1 items-center">
@@ -259,6 +262,7 @@ const DeltakerSvarPanel = ({
       icon={<DeltakerSvarIcon svarType={svar?.svarType} />}
       deltaker={deltakerLabel}
       tittel={title}
+      defaultOpen={!!svar}
     >
       {svar?.svarTekst ? (
         <SvarDetaljerTekst
@@ -287,7 +291,7 @@ export const DeltakereSvarInfo = ({ dialogmote }: DeltakereSvarInfoProps) => {
   const customTitle = noNarmesteLeder ? texts.noNarmesteleder : undefined;
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full gap-4">
       <DeltakerSvarPanel
         deltakerLabel={texts.naermesteLeder}
         deltakerNavn={narmesteLederNavn ?? ""}

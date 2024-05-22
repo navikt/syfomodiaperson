@@ -1,10 +1,8 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import React from "react";
 import { queryClientWithMockData } from "../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 import { screen } from "@testing-library/react";
-import { navEnhet } from "../dialogmote/testData";
-import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { expect } from "chai";
 import {
   VurderingResponseDTO,
@@ -17,8 +15,9 @@ import {
   createVurdering,
 } from "./arbeidsuforhetTestData";
 import { Arbeidsuforhet } from "@/sider/arbeidsuforhet/Arbeidsuforhet";
-import { renderWithRouter } from "../testRouterUtils";
-import { appRoutePath } from "@/routers/AppRouter";
+import { arbeidsuforhetPath } from "@/routers/AppRouter";
+import { clickButton } from "../testUtils";
+import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
 
 let queryClient: QueryClient;
 
@@ -29,89 +28,183 @@ const mockArbeidsuforhetVurderinger = (vurderinger: VurderingResponseDTO[]) => {
   );
 };
 
-const renderArbeidsuforhetSide = () => {
-  renderWithRouter(
-    <QueryClientProvider client={queryClient}>
-      <ValgtEnhetContext.Provider
-        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-      >
-        <Arbeidsuforhet />
-      </ValgtEnhetContext.Provider>
-    </QueryClientProvider>,
-    `${appRoutePath}/arbeidsuforhet`,
-    [`${appRoutePath}/arbeidsuforhet`]
-  );
-};
-
 describe("ArbeidsuforhetSide", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
   });
 
   describe("Show correct info", () => {
-    it("show forhandsvarsel form if no there are no existing vurderinger", () => {
-      const vurderinger = [];
-      mockArbeidsuforhetVurderinger(vurderinger);
+    const nyVurderingButtonText = "Start ny vurdering";
 
-      renderArbeidsuforhetSide();
+    describe("Show ny vurdering button", () => {
+      it("if there are no vurderinger", () => {
+        const vurderinger = [];
+        mockArbeidsuforhetVurderinger(vurderinger);
 
-      expect(screen.getByText("Send forhåndsvarsel")).to.exist;
-      expect(screen.getByRole("button", { name: "Send" })).to.exist;
+        renderArbeidsuforhetSide(
+          queryClient,
+          <Arbeidsuforhet />,
+          arbeidsuforhetPath,
+          [arbeidsuforhetPath]
+        );
+
+        expect(screen.getByText("Siste vurdering")).to.exist;
+        expect(screen.getByRole("button", { name: nyVurderingButtonText })).to
+          .exist;
+      });
+
+      it("if latest arbeidsuforhet status is oppfylt", () => {
+        const oppfyltVurdering = createVurdering({
+          type: VurderingType.OPPFYLT,
+          begrunnelse: "begrunnelse",
+          createdAt: new Date(),
+        });
+        const vurderinger = [oppfyltVurdering];
+        mockArbeidsuforhetVurderinger(vurderinger);
+
+        renderArbeidsuforhetSide(
+          queryClient,
+          <Arbeidsuforhet />,
+          arbeidsuforhetPath,
+          [arbeidsuforhetPath]
+        );
+
+        expect(screen.getByText("Siste vurdering")).to.exist;
+        expect(screen.getByRole("button", { name: nyVurderingButtonText })).to
+          .exist;
+      });
+
+      it("if status is avslag", () => {
+        const avslag = createVurdering({
+          type: VurderingType.AVSLAG,
+          begrunnelse: "",
+          createdAt: new Date(),
+        });
+        const vurderinger = [avslag];
+        mockArbeidsuforhetVurderinger(vurderinger);
+
+        renderArbeidsuforhetSide(
+          queryClient,
+          <Arbeidsuforhet />,
+          arbeidsuforhetPath,
+          [arbeidsuforhetPath]
+        );
+
+        expect(screen.getByText("Siste vurdering")).to.exist;
+        expect(screen.getByText("Start ny vurdering")).to.exist;
+      });
     });
 
-    it("show forhandsvarsel form if latest arbeidsuforhet status is oppfylt", () => {
-      const oppfyltVurdering = createVurdering({
-        type: VurderingType.OPPFYLT,
-        begrunnelse: "begrunnelse",
-        createdAt: new Date(),
+    describe("Show send forhandsvarsel form", () => {
+      const assertOnlyFormIsShowing = () => {
+        expect(screen.queryByRole("button", { name: nyVurderingButtonText })).to
+          .not.exist;
+        expect(screen.getByText("Send forhåndsvarsel")).to.exist;
+        expect(screen.getByRole("button", { name: "Send" })).to.exist;
+        expect(screen.queryByText("Venter på svar fra bruker")).to.not.exist;
+        expect(screen.queryByText("Fristen er gått ut")).to.not.exist;
+      };
+
+      it("after clicking ny vurdering if no there are no existing vurderinger", () => {
+        const vurderinger = [];
+        mockArbeidsuforhetVurderinger(vurderinger);
+
+        renderArbeidsuforhetSide(
+          queryClient,
+          <Arbeidsuforhet />,
+          arbeidsuforhetPath,
+          [arbeidsuforhetPath]
+        );
+        clickButton(nyVurderingButtonText);
+
+        assertOnlyFormIsShowing();
       });
-      const vurderinger = [oppfyltVurdering];
-      mockArbeidsuforhetVurderinger(vurderinger);
 
-      renderArbeidsuforhetSide();
+      it("after clicking ny vurdering if latest arbeidsuforhet status is oppfylt", () => {
+        const oppfyltVurdering = createVurdering({
+          type: VurderingType.OPPFYLT,
+          begrunnelse: "begrunnelse",
+          createdAt: new Date(),
+        });
+        const vurderinger = [oppfyltVurdering];
+        mockArbeidsuforhetVurderinger(vurderinger);
 
-      expect(screen.getByText("Send forhåndsvarsel")).to.exist;
-      expect(screen.getByRole("button", { name: "Send" })).to.exist;
+        renderArbeidsuforhetSide(
+          queryClient,
+          <Arbeidsuforhet />,
+          arbeidsuforhetPath,
+          [arbeidsuforhetPath]
+        );
+        clickButton(nyVurderingButtonText);
+
+        assertOnlyFormIsShowing();
+      });
+
+      it("after clicking ny vurdering if latest arbeidsuforhet status is avslag", () => {
+        const oppfyltVurdering = createVurdering({
+          type: VurderingType.AVSLAG,
+          begrunnelse: "",
+          createdAt: new Date(),
+        });
+        const vurderinger = [oppfyltVurdering];
+        mockArbeidsuforhetVurderinger(vurderinger);
+
+        renderArbeidsuforhetSide(
+          queryClient,
+          <Arbeidsuforhet />,
+          arbeidsuforhetPath,
+          [arbeidsuforhetPath]
+        );
+        clickButton(nyVurderingButtonText);
+
+        assertOnlyFormIsShowing();
+      });
     });
 
-    it("show sent forhandsvarsel page if status is forhandsvarsel and frist is not utgatt", () => {
-      const forhandsvarselBeforeFrist = createForhandsvarsel({
-        createdAt: new Date(),
-        svarfrist: addWeeks(new Date(), 3),
+    describe("Show sent forhandsvarsel page", () => {
+      it("if status is forhandsvarsel and frist is not utgatt", () => {
+        const forhandsvarselBeforeFrist = createForhandsvarsel({
+          createdAt: new Date(),
+          svarfrist: addWeeks(new Date(), 3),
+        });
+        const vurderinger = [forhandsvarselBeforeFrist];
+        mockArbeidsuforhetVurderinger(vurderinger);
+
+        renderArbeidsuforhetSide(
+          queryClient,
+          <Arbeidsuforhet />,
+          arbeidsuforhetPath,
+          [arbeidsuforhetPath]
+        );
+
+        expect(screen.queryByRole("button", { name: nyVurderingButtonText })).to
+          .not.exist;
+        expect(screen.queryByText("Send forhåndsvarsel")).to.not.exist;
+        expect(screen.getByText("Venter på svar fra bruker")).to.exist;
+        expect(screen.queryByText("Fristen er gått ut")).to.not.exist;
       });
-      const vurderinger = [forhandsvarselBeforeFrist];
-      mockArbeidsuforhetVurderinger(vurderinger);
 
-      renderArbeidsuforhetSide();
+      it("show sent forhandsvarsel page if status is forhandsvarsel and frist is utgatt", () => {
+        const forhandsvarselBeforeFrist = createForhandsvarsel({
+          createdAt: new Date(),
+          svarfrist: addWeeks(new Date(), -3),
+        });
+        const vurderinger = [forhandsvarselBeforeFrist];
+        mockArbeidsuforhetVurderinger(vurderinger);
 
-      expect(screen.getByText("Venter på svar fra bruker")).to.exist;
-    });
+        renderArbeidsuforhetSide(
+          queryClient,
+          <Arbeidsuforhet />,
+          arbeidsuforhetPath,
+          [arbeidsuforhetPath]
+        );
 
-    it("show sent forhandsvarsel page if status is forhandsvarsel and frist is utgatt", () => {
-      const forhandsvarselBeforeFrist = createForhandsvarsel({
-        createdAt: new Date(),
-        svarfrist: addWeeks(new Date(), -3),
+        expect(screen.queryByRole("button", { name: nyVurderingButtonText })).to
+          .not.exist;
+        expect(screen.queryByText("Send forhåndsvarsel")).to.not.exist;
+        expect(screen.queryByText("Venter på svar fra bruker")).to.not.exist;
+        expect(screen.getByText("Fristen er gått ut")).to.exist;
       });
-      const vurderinger = [forhandsvarselBeforeFrist];
-      mockArbeidsuforhetVurderinger(vurderinger);
-
-      renderArbeidsuforhetSide();
-
-      expect(screen.getByText("Fristen er utgått!")).to.exist;
-    });
-
-    it("show avslag page if status is avslag", () => {
-      const avslag = createVurdering({
-        type: VurderingType.AVSLAG,
-        begrunnelse: "begrunnelse",
-        createdAt: new Date(),
-      });
-      const vurderinger = [avslag];
-      mockArbeidsuforhetVurderinger(vurderinger);
-
-      renderArbeidsuforhetSide();
-
-      expect(screen.getByText("Husk å opprette oppgave i Gosys")).to.exist;
     });
   });
 });
