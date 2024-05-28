@@ -94,14 +94,6 @@ export const Oppfolgingsoppgave = () => {
         </Button>
       </Tooltip>
       <div className="mt-2">
-        {veilederinfo && (
-          <Detail
-            textColor="subtle"
-            className="text-xs"
-          >{`Opprettet av: ${veilederinfo.fulltNavn()} (${
-            veilederinfo.ident
-          })`}</Detail>
-        )}
         <Detail textColor="subtle" className="text-xs">
           {`Opprettet: ${tilLesbarDatoMedArUtenManedNavn(
             oppfolgingsoppgave.createdAt
@@ -112,6 +104,14 @@ export const Oppfolgingsoppgave = () => {
             oppfolgingsoppgave.updatedAt
           )}`}
         </Detail>
+        {veilederinfo && (
+          <Detail
+            textColor="subtle"
+            className="text-xs"
+          >{`Sist oppdatert av: ${veilederinfo.fulltNavn()} (${
+            veilederinfo.ident
+          })`}</Detail>
+        )}
       </div>
       {isModalOpen && (
         <OppfolgingsoppgaveModal

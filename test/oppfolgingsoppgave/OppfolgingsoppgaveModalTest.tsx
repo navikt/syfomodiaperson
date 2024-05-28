@@ -82,19 +82,19 @@ describe("Oppfolgingsoppgave", () => {
 
       expect(
         await screen.findByText(
-          `Opprettet av: ${VEILEDER_DEFAULT.fulltNavn()} (${
-            VEILEDER_DEFAULT.ident
-          })`
-        )
-      ).to.exist;
-      expect(
-        await screen.findByText(
           `Opprettet: ${tilLesbarDatoMedArUtenManedNavn(new Date())}`
         )
       ).to.exist;
       expect(
         await screen.findByText(
           `Sist oppdatert: ${tilLesbarDatoMedArUtenManedNavn(new Date())}`
+        )
+      ).to.exist;
+      expect(
+        await screen.findByText(
+          `Sist oppdatert av: ${VEILEDER_DEFAULT.fulltNavn()} (${
+            VEILEDER_DEFAULT.ident
+          })`
         )
       ).to.exist;
     });
