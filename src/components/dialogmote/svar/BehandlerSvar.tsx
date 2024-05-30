@@ -15,64 +15,25 @@ const texts = {
   begrunnelseMottattHeader: "Begrunnelse mottatt",
 };
 
-interface DeltakerBehandlerSvarDetaljerProps {
-  svarList: DialogmotedeltakerBehandlerVarselSvarDTO[];
-}
+const begrunnelseHeaderTekst = (
+  svar: DialogmotedeltakerBehandlerVarselSvarDTO
+) =>
+  `${texts.begrunnelseMottattHeader} ${tilLesbarDatoMedArUtenManedNavn(
+    svar.createdAt
+  )}`;
 
-const DeltakerBehandlerSvarDetaljer = ({
-  svarList,
-}: DeltakerBehandlerSvarDetaljerProps) => {
-  const begrunnelseHeaderTekst = (
-    svar: DialogmotedeltakerBehandlerVarselSvarDTO
-  ) =>
-    `${texts.begrunnelseMottattHeader} ${tilLesbarDatoMedArUtenManedNavn(
-      svar.createdAt
-    )}`;
-
-  if (svarList.length > 1) {
-    return (
-      <>
-        {svarList
-          .filter((svar) => svar.tekst)
-          .map((svar, idx) => (
-            <SvarDetaljer
-              key={idx}
-              label={begrunnelseHeaderTekst(svar)}
-              svarTekst={svar.tekst}
-            />
-          ))}
-      </>
-    );
-  }
-
-  const svar = svarList[0];
-
-  return (
-    <SvarDetaljer
-      label={svar && begrunnelseHeaderTekst(svar)}
-      svarTekst={svar?.tekst}
-    />
-  );
-};
-
-interface BehandlerSvarProps {
+interface Props {
   varsel: DialogmotedeltakerBehandlerVarselDTO;
   behandlerNavn: string;
 }
 
-export const BehandlerSvar = ({
-  varsel,
-  behandlerNavn,
-}: BehandlerSvarProps) => {
+export const BehandlerSvar = ({ varsel, behandlerNavn }: Props) => {
+  const svarList = varsel.svar;
   const latestSvar: DialogmotedeltakerBehandlerVarselSvarDTO | undefined =
-    varsel.svar[0];
+    svarList[0];
   const svarTittelTekst = !latestSvar
     ? texts.svarIkkeMottatt
-    : getSvarTekst(
-        latestSvar.createdAt,
-        latestSvar.svarType,
-        varsel.svar.length
-      );
+    : getSvarTekst(latestSvar.createdAt, latestSvar.svarType, svarList.length);
 
   return (
     <EkspanderbartSvarPanel
@@ -83,7 +44,24 @@ export const BehandlerSvar = ({
       }}
       defaultOpen={!!latestSvar}
     >
-      <DeltakerBehandlerSvarDetaljer svarList={varsel.svar} />
+      {svarList.length > 1 ? (
+        <>
+          {svarList
+            .filter((svar) => svar.tekst)
+            .map((svar, idx) => (
+              <SvarDetaljer
+                key={idx}
+                label={begrunnelseHeaderTekst(svar)}
+                svarTekst={svar.tekst}
+              />
+            ))}
+        </>
+      ) : (
+        <SvarDetaljer
+          label={latestSvar && begrunnelseHeaderTekst(latestSvar)}
+          svarTekst={latestSvar?.tekst}
+        />
+      )}
     </EkspanderbartSvarPanel>
   );
 };

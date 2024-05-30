@@ -11,11 +11,11 @@ const texts = {
   label: "Arbeidstakeren:",
 };
 
-interface ArbeidstakerSvarProps {
+interface Props {
   varsel: DialogmotedeltakerArbeidstakerVarselDTO;
 }
 
-export const ArbeidstakerSvar = ({ varsel }: ArbeidstakerSvarProps) => {
+export const ArbeidstakerSvar = ({ varsel }: Props) => {
   const bruker = useNavBrukerData();
 
   const svar = varsel?.svar;

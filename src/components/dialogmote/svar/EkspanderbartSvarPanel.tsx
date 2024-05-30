@@ -1,7 +1,7 @@
 import { BodyShort, ExpansionCard, Label } from "@navikt/ds-react";
 import React, { ReactElement } from "react";
 
-interface EkspanderbartSvarPanelProps {
+interface Props {
   title: {
     icon: React.ReactElement;
     label: string;
@@ -15,7 +15,7 @@ export const EkspanderbartSvarPanel = ({
   title: { icon, label, body },
   defaultOpen,
   children,
-}: EkspanderbartSvarPanelProps) => (
+}: Props) => (
   <ExpansionCard size="small" aria-label={body} defaultOpen={defaultOpen}>
     <ExpansionCard.Header>
       <ExpansionCard.Title size="small">

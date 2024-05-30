@@ -8,13 +8,11 @@ const texts = {
   veilederTildelt: "Tildelt",
 };
 
-interface DialogmoteVeilederInfoProps {
+interface Props {
   dialogmote: DialogmoteDTO;
 }
 
-export const DialogmoteVeilederInfo = ({
-  dialogmote,
-}: DialogmoteVeilederInfoProps) => {
+export const DialogmoteVeilederInfo = ({ dialogmote }: Props) => {
   const { data: innkaltVeileder } = useVeilederInfoQuery(
     dialogmote.opprettetAv
   );

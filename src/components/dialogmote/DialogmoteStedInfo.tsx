@@ -6,10 +6,10 @@ const texts = {
   moteSted: "Sted",
 };
 
-interface DialomoteStedInfoProps {
+interface Props {
   dialogmote: DialogmoteDTO;
 }
 
-export const DialogmoteStedInfo = ({ dialogmote }: DialomoteStedInfoProps) => (
+export const DialogmoteStedInfo = ({ dialogmote }: Props) => (
   <BodyShort size="small">{`${texts.moteSted}: ${dialogmote.sted}`}</BodyShort>
 );

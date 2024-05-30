@@ -11,15 +11,12 @@ const texts = {
   label: "Nærmeste leder:",
 };
 
-interface ArbeidsgiverSvarProps {
+interface Props {
   varsel: DialogmotedeltakerArbeidsgiverVarselDTO;
   virksomhetsnummer: string;
 }
 
-export const ArbeidsgiverSvar = ({
-  varsel,
-  virksomhetsnummer,
-}: ArbeidsgiverSvarProps) => {
+export const ArbeidsgiverSvar = ({ varsel, virksomhetsnummer }: Props) => {
   const { getCurrentNarmesteLeder } = useLedereQuery();
   const narmesteLederNavn =
     getCurrentNarmesteLeder(virksomhetsnummer)?.narmesteLederNavn || "";

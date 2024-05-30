@@ -6,15 +6,12 @@ const texts = {
   harIkkeBegrunnelse: "Ingen detaljer er tilgjengelig.",
 };
 
-interface SvarDetaljerProps {
+interface Props {
   label?: string;
   svarTekst: string | undefined;
 }
 
-export const SvarDetaljer = ({
-  label = texts.label,
-  svarTekst,
-}: SvarDetaljerProps) => {
+export const SvarDetaljer = ({ label = texts.label, svarTekst }: Props) => {
   return svarTekst ? (
     <>
       <Label size="small">{label}</Label>

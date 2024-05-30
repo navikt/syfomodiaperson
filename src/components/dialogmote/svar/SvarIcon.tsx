@@ -7,11 +7,11 @@ import {
   XMarkOctagonFillIcon,
 } from "@navikt/aksel-icons";
 
-interface SvarIconProps {
+interface Props {
   svarType: SvarType | undefined;
 }
 
-export const SvarIcon = ({ svarType }: SvarIconProps): ReactElement => {
+export const SvarIcon = ({ svarType }: Props): ReactElement => {
   switch (svarType) {
     case SvarType.KOMMER:
       return (
