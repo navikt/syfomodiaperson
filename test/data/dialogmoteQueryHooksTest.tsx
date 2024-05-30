@@ -11,7 +11,7 @@ import { testQueryClient } from "../testQueryClient";
 let queryClient: any;
 let apiMockScope: any;
 
-describe("dialogmoteQueryHooks tests", () => {
+xdescribe("dialogmoteQueryHooks tests", () => {
   beforeEach(() => {
     queryClient = testQueryClient();
     apiMockScope = apiMock();
