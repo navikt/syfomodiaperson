@@ -1,5 +1,6 @@
 import {
   DialogmoteDTO,
+  DialogmoteStatus,
   MotedeltakerVarselType,
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { FortidenImage } from "../../../../img/ImageComponents";
@@ -61,6 +62,18 @@ const InnkallingSvar = ({ dialogmote }: Props) => {
   );
 };
 
+const getHeaderText = (mote: DialogmoteDTO): string => {
+  const moteDato = tilDatoMedManedNavn(mote.tid);
+  switch (mote.status) {
+    case DialogmoteStatus.AVLYST:
+      return `Avlyst møte ${moteDato}`;
+    case DialogmoteStatus.FERDIGSTILT:
+      return `Møte ${moteDato}`;
+    default:
+      return "";
+  }
+};
+
 interface MoteSvarHistorikkProps {
   historiskeMoter: DialogmoteDTO[];
 }
@@ -81,9 +94,7 @@ export const MoteSvarHistorikk = ({
     <Accordion>
       {historiskeMoter.map((mote, index) => (
         <Accordion.Item key={index}>
-          <Accordion.Header>{`Møte ${tilDatoMedManedNavn(
-            mote.tid
-          )}`}</Accordion.Header>
+          <Accordion.Header>{getHeaderText(mote)}</Accordion.Header>
           <Accordion.Content>
             <DialogmoteStedInfo dialogmote={mote} />
             <DialogmoteVeilederInfo dialogmote={mote} />
