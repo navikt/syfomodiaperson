@@ -41,9 +41,9 @@ const createVarsel = ({
         uuid: uuid + 2,
         createdAt: "2021-05-26T12:56:26.271381",
         varselType: varselType,
-        lestDato: undefined,
+        lestDato: "2021-05-26T12:56:26.271381",
         fritekst: "Ipsum lorum",
-        svar,
+        ...(svar ? { svar } : {}),
         document: [
           {
             type: DocumentComponentType.PARAGRAPH,
@@ -75,9 +75,9 @@ const createVarsel = ({
         uuid: uuid + 4,
         createdAt: "2021-05-26T12:56:26.271381",
         varselType: varselType,
-        lestDato: undefined,
+        lestDato: "2021-05-26T12:56:26.271381",
         fritekst: "Ipsum lorum",
-        svar,
+        ...(svar ? { svar } : {}),
         document: [
           {
             type: DocumentComponentType.PARAGRAPH,
