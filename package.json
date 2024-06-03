@@ -118,7 +118,7 @@
     "@testing-library/user-event": "13.5.0",
     "@types/chai": "4.3.14",
     "@types/mocha": "10.0.6",
-    "@types/node": "17.0.45",
+    "@types/node": "20.14.0",
     "@types/react-document-title": "2.0.9",
     "@types/react-router-dom": "5.3.3",
     "@types/webpack": "5.28.5",
