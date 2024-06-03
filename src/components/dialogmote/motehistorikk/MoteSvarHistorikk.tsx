@@ -5,24 +5,53 @@ import {
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { FortidenImage } from "../../../../img/ImageComponents";
 import { Accordion, BodyLong, Box, Heading, Label } from "@navikt/ds-react";
-import React from "react";
+import React, { useState } from "react";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { DialogmoteVeilederInfo } from "@/components/dialogmote/DialogmoteVeilederInfo";
 import { DialogmoteStedInfo } from "@/components/dialogmote/DialogmoteStedInfo";
 import { ArbeidsgiverSvar } from "@/components/dialogmote/svar/ArbeidsgiverSvar";
 import { ArbeidstakerSvar } from "@/components/dialogmote/svar/ArbeidstakerSvar";
 import { BehandlerSvar } from "@/components/dialogmote/svar/BehandlerSvar";
+import * as Amplitude from "@/utils/amplitude";
+import { EventType } from "@/utils/amplitude";
 
 const texts = {
   header: "Møtesvarhistorikk",
   subtitle: "Oversikt over svar på tidligere innkallinger til dialogmøter",
 };
 
-interface Props {
+const getHeaderText = (mote: DialogmoteDTO): string => {
+  const moteDato = tilDatoMedManedNavn(mote.tid);
+  switch (mote.status) {
+    case DialogmoteStatus.AVLYST:
+      return `Avlyst møte ${moteDato}`;
+    case DialogmoteStatus.FERDIGSTILT:
+      return `Møte ${moteDato}`;
+    default:
+      return "";
+  }
+};
+
+interface MoteSvarHistorikkItemProps {
   dialogmote: DialogmoteDTO;
 }
 
-const InnkallingSvar = ({ dialogmote }: Props) => {
+const MoteSvarHistorikkItem = ({ dialogmote }: MoteSvarHistorikkItemProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleAccordionClick = () => {
+    if (!isOpen) {
+      Amplitude.logEvent({
+        type: EventType.AccordionOpen,
+        data: {
+          tekst: `Åpne møtesvar-historikk accordion`,
+          url: window.location.href,
+        },
+      });
+    }
+    setIsOpen(!isOpen);
+  };
+
   const innkallingArbeidstaker = dialogmote.arbeidstaker.varselList.find(
     ({ varselType }) => varselType === MotedeltakerVarselType.INNKALT
   );
@@ -36,42 +65,39 @@ const InnkallingSvar = ({ dialogmote }: Props) => {
     );
 
   return (
-    <div className="mt-4">
-      <Label size="small">{`Innkalling sendt ${tilDatoMedManedNavn(
-        dialogmote.createdAt
-      )} - svar:`}</Label>
-      <div className="flex flex-col gap-4">
-        {innkallingArbeidsgiver && (
-          <ArbeidsgiverSvar
-            varsel={innkallingArbeidsgiver}
-            virksomhetsnummer={dialogmote.arbeidsgiver.virksomhetsnummer}
-            defaultClosed
-          />
-        )}
-        {innkallingArbeidstaker && (
-          <ArbeidstakerSvar varsel={innkallingArbeidstaker} defaultClosed />
-        )}
-        {innkallingBehandler && (
-          <BehandlerSvar
-            varsel={innkallingBehandler}
-            behandlerNavn={dialogmote.behandler.behandlerNavn}
-          />
-        )}
-      </div>
-    </div>
+    <Accordion.Item open={isOpen}>
+      <Accordion.Header onClick={handleAccordionClick}>
+        {getHeaderText(dialogmote)}
+      </Accordion.Header>
+      <Accordion.Content>
+        <DialogmoteStedInfo dialogmote={dialogmote} />
+        <DialogmoteVeilederInfo dialogmote={dialogmote} />
+        <div className="mt-4">
+          <Label size="small">{`Innkalling sendt ${tilDatoMedManedNavn(
+            dialogmote.createdAt
+          )} - svar:`}</Label>
+          <div className="flex flex-col gap-4">
+            {innkallingArbeidsgiver && (
+              <ArbeidsgiverSvar
+                varsel={innkallingArbeidsgiver}
+                virksomhetsnummer={dialogmote.arbeidsgiver.virksomhetsnummer}
+                defaultClosed
+              />
+            )}
+            {innkallingArbeidstaker && (
+              <ArbeidstakerSvar varsel={innkallingArbeidstaker} defaultClosed />
+            )}
+            {innkallingBehandler && (
+              <BehandlerSvar
+                varsel={innkallingBehandler}
+                behandlerNavn={dialogmote.behandler.behandlerNavn}
+              />
+            )}
+          </div>
+        </div>
+      </Accordion.Content>
+    </Accordion.Item>
   );
-};
-
-const getHeaderText = (mote: DialogmoteDTO): string => {
-  const moteDato = tilDatoMedManedNavn(mote.tid);
-  switch (mote.status) {
-    case DialogmoteStatus.AVLYST:
-      return `Avlyst møte ${moteDato}`;
-    case DialogmoteStatus.FERDIGSTILT:
-      return `Møte ${moteDato}`;
-    default:
-      return "";
-  }
 };
 
 interface MoteSvarHistorikkProps {
@@ -93,14 +119,7 @@ export const MoteSvarHistorikk = ({
     </div>
     <Accordion>
       {historiskeMoter.map((mote, index) => (
-        <Accordion.Item key={index}>
-          <Accordion.Header>{getHeaderText(mote)}</Accordion.Header>
-          <Accordion.Content>
-            <DialogmoteStedInfo dialogmote={mote} />
-            <DialogmoteVeilederInfo dialogmote={mote} />
-            <InnkallingSvar dialogmote={mote} />
-          </Accordion.Content>
-        </Accordion.Item>
+        <MoteSvarHistorikkItem dialogmote={mote} key={index} />
       ))}
     </Accordion>
   </Box>
