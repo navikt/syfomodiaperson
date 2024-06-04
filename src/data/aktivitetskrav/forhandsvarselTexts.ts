@@ -16,7 +16,7 @@ export const getForhandsvarselTexts = ({
   mal,
 }: ForhandsvarselTextsOptions) => ({
   varselInfo: {
-    header: "Varsel om stans av sykepenger",
+    header: "Varsel om mulig stans av sykepenger",
     intro: introText(mal),
     stans1: `Basert på opplysningene NAV har i saken er du ikke i arbeidsrelatert aktivitet, og det er heller ikke dokumentert at du oppfyller vilkårene for unntak fra aktivitetsplikten. Vi vurderer derfor å stanse sykepengene dine fra og med ${tilDatoMedManedNavn(
       frist
