@@ -15,7 +15,7 @@ const texts = {
 };
 
 const DialogmoteunntakSkjemaContainer = () => {
-  const { aktivtDialogmote, historiskeDialogmoter } = useDialogmoterQuery();
+  const { historiskeDialogmoter } = useDialogmoterQuery();
   const { data: dialogmoteunntak } = useDialogmoteunntakQuery();
 
   return (
