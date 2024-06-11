@@ -20,7 +20,7 @@ import {
 } from "@navikt/ds-react";
 
 export const texts = {
-  noBrev: "Det blir ikke sendt ut brev.",
+  noBrev: "Det blir ikke sendt ut varsel eller brev til den sykmeldte.",
   infoKandidatlist: `Når du setter ikke aktuell vil arbeidstakeren bli fjernet fra kandidatlisten. Dersom du på et senere tidspunkt vurderer at det likevel er nødvendig med et dialogmøte, kan du kalle inn til dialogmøte ved å søke deg frem til denne arbeidstakeren.`,
   arsakLegend: "Årsak til ikke aktuell (obligatorisk)",
   arsakErrorMessage: "Vennligst angi årsak.",
@@ -82,11 +82,11 @@ const DialogmoteikkeaktuellSkjema = () => {
   };
 
   return (
-    <Box background="surface-default" padding="8">
+    <Box background="surface-default" padding="6">
       <Alert variant="info" size="small" className="p-4 mb-4">
         {texts.noBrev}
       </Alert>
-      <p>{texts.infoKandidatlist}</p>
+      <BodyShort size="small">{texts.infoKandidatlist}</BodyShort>
       <form onSubmit={handleSubmit(onSubmit)}>
         {settDialogmoteikkeaktuell.isError && (
           <SkjemaInnsendingFeil error={settDialogmoteikkeaktuell.error} />
@@ -111,6 +111,7 @@ const DialogmoteikkeaktuellSkjema = () => {
 
         <Textarea
           className="mb-4"
+          size="small"
           label={texts.beskrivelseLabel}
           value={watch("beskrivelse")}
           {...register("beskrivelse", {
