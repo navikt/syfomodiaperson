@@ -12,7 +12,6 @@ import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   Alert,
-  BodyShort,
   Box,
   Button,
   Radio,
@@ -101,7 +100,7 @@ const DialogmoteunntakSkjema = () => {
       <Alert variant="info" size="small" className="p-4 mb-4">
         {texts.noBrev}
       </Alert>
-      <BodyShort size="small">{texts.infoKandidatlist}</BodyShort>
+      <p>{texts.infoKandidatlist}</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         {settDialogmoteunntak.isError && (
           <SkjemaInnsendingFeil error={settDialogmoteunntak.error} />
