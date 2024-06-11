@@ -1,5 +1,5 @@
 import React from "react";
-import { expect } from "chai";
+import { expect, describe, it, beforeEach } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { dialogmoteIkkeAktuellRoutePath } from "@/routers/AppRouter";
@@ -59,7 +59,7 @@ describe("DialogmoteikkeaktuellSkjema", () => {
 
   it("valideringsmeldinger forsvinner ved utbedring", async () => {
     renderDialogmoteikkeaktuellSkjema();
-    clickButton(submitButtonText);
+    await clickButton(submitButtonText);
 
     expect(await screen.findByText(ikkeaktuellSkjemaTexts.arsakErrorMessage)).to
       .not.be.empty;
@@ -85,7 +85,7 @@ describe("DialogmoteikkeaktuellSkjema", () => {
       expect(screen.queryAllByText(maxLengthErrorMsg)).to.be.empty;
     });
 
-    clickButton(submitButtonText);
+    await clickButton(submitButtonText);
   });
 
   it("sett ikke aktuell med kun med obligatorisk verdier fra skjema", async () => {
@@ -96,7 +96,7 @@ describe("DialogmoteikkeaktuellSkjema", () => {
     const ikkeaktuellArsakText = ikkeaktuellArsakTexts[0];
     passSkjemaInput(ikkeaktuellArsakText);
 
-    clickButton(submitButtonText);
+    await clickButton(submitButtonText);
     await waitFor(() => {
       const ikkeaktuellMutation = queryClient.getMutationCache().getAll()[0];
       const expectedCreateIkkeAktuellDTO: CreateIkkeAktuellDTO = {
@@ -121,7 +121,7 @@ describe("DialogmoteikkeaktuellSkjema", () => {
 
     passSkjemaInput(ikkeaktuellArsakText, beskrivelse);
 
-    clickButton(submitButtonText);
+    await clickButton(submitButtonText);
 
     await waitFor(() => {
       const ikkeaktuellMutation = queryClient.getMutationCache().getAll()[0];
