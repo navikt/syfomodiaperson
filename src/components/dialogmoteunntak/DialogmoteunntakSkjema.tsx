@@ -12,6 +12,7 @@ import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   Alert,
+  BodyShort,
   Box,
   Button,
   Radio,
