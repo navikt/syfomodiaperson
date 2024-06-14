@@ -13,12 +13,7 @@ import {
   queryClientWithAktivBruker,
   queryClientWithMockData,
 } from "../testQueryClient";
-import {
-  ARBEIDSTAKER_DEFAULT,
-  BEHANDLENDE_ENHET_DEFAULT,
-  VEILEDER_DEFAULT,
-  VEILEDER_IDENT_DEFAULT,
-} from "../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 import { navEnhet } from "../dialogmote/testData";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import {
@@ -27,9 +22,6 @@ import {
   personOppgaveUbehandletBehandlerdialogSvar,
   personOppgaveUbehandletBehandlerdialogUbesvartMelding,
 } from "../../mock/ispersonoppgave/personoppgaveMock";
-import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks";
-import { mockUnleashResponse } from "../../mock/unleashMocks";
-import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: any;
@@ -167,24 +159,33 @@ describe("GlobalNavigasjon", () => {
     expect(screen.getByRole("link", { name: "Aktivitetskrav 1" })).to.exist;
   });
 
-  it("viser rød prikk for menypunkt Arbeidsuforhet når arbeidsuforhet er skrudd på og ubehandlet oppgave for 'vurder avslag'", () => {
-    queryClient.setQueryData(personoppgaverQueryKeys.personoppgaver(fnr), () =>
-      personoppgaverMock()
-    );
-    queryClient.setQueryData(
-      unleashQueryKeys.toggles(
-        BEHANDLENDE_ENHET_DEFAULT.enhetId,
-        VEILEDER_IDENT_DEFAULT
-      ),
-      () => mockUnleashResponse
-    );
-    queryClient.setQueryData(
-      veilederinfoQueryKeys.veilederinfo,
-      () => VEILEDER_DEFAULT
-    );
-
+  it("viser rød prikk for menypunkt Arbeidsuforhet når siste vurdering er utløpt forhåndsvarsel", () => {
     renderGlobalNavigasjon();
 
     expect(screen.getByRole("link", { name: "Arbeidsuførhet 1" })).to.exist;
+  });
+
+  it("viser ikke rød prikk for menypunkt Arbeidsuforhet når siste vurdering er ikke-utløpt forhåndsvarsel", () => {
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("link", { name: "Arbeidsuførhet" })).to.exist;
+  });
+
+  it("viser ikke rød prikk for menypunkt Arbeidsuforhet når siste vurdering er oppfylt", () => {
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("link", { name: "Arbeidsuførhet" })).to.exist;
+  });
+
+  it("viser ikke rød prikk for menypunkt Arbeidsuforhet når siste vurdering er avslag", () => {
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("link", { name: "Arbeidsuførhet" })).to.exist;
+  });
+
+  it("viser ikke rød prikk for menypunkt Arbeidsuforhet når ingen vurdering", () => {
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("link", { name: "Arbeidsuførhet" })).to.exist;
   });
 });
