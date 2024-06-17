@@ -4,7 +4,7 @@ import {
   Menypunkter,
 } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import React from "react";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { expect, describe, it, beforeEach } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
@@ -22,9 +22,16 @@ import {
   personOppgaveUbehandletBehandlerdialogSvar,
   personOppgaveUbehandletBehandlerdialogUbesvartMelding,
 } from "../../mock/ispersonoppgave/personoppgaveMock";
+import { arbeidsuforhetQueryKeys } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import {
+  createForhandsvarsel,
+  createVurdering,
+} from "../arbeidsuforhet/arbeidsuforhetTestData";
+import { addWeeks } from "@/utils/datoUtils";
+import { VurderingType } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
-let queryClient: any;
+let queryClient: QueryClient;
 
 const renderGlobalNavigasjon = () =>
   render(
@@ -160,30 +167,68 @@ describe("GlobalNavigasjon", () => {
   });
 
   it("viser rød prikk for menypunkt Arbeidsuforhet når siste vurdering er utløpt forhåndsvarsel", () => {
+    const expiredForhandsvarsel = createForhandsvarsel({
+      createdAt: new Date(),
+      svarfrist: addWeeks(new Date(), -3),
+    });
+    queryClient.setQueryData(
+      arbeidsuforhetQueryKeys.arbeidsuforhet(fnr),
+      () => [expiredForhandsvarsel]
+    );
     renderGlobalNavigasjon();
 
     expect(screen.getByRole("link", { name: "Arbeidsuførhet 1" })).to.exist;
   });
 
   it("viser ikke rød prikk for menypunkt Arbeidsuforhet når siste vurdering er ikke-utløpt forhåndsvarsel", () => {
+    const notExpiredForhandsvarsel = createForhandsvarsel({
+      createdAt: new Date(),
+      svarfrist: addWeeks(new Date(), 5),
+    });
+    queryClient.setQueryData(
+      arbeidsuforhetQueryKeys.arbeidsuforhet(fnr),
+      () => [notExpiredForhandsvarsel]
+    );
     renderGlobalNavigasjon();
 
     expect(screen.getByRole("link", { name: "Arbeidsuførhet" })).to.exist;
   });
 
   it("viser ikke rød prikk for menypunkt Arbeidsuforhet når siste vurdering er oppfylt", () => {
+    const oppfyltVurdering = createVurdering({
+      type: VurderingType.OPPFYLT,
+      begrunnelse: "begrunnelse",
+      createdAt: new Date(),
+    });
+    queryClient.setQueryData(
+      arbeidsuforhetQueryKeys.arbeidsuforhet(fnr),
+      () => [oppfyltVurdering]
+    );
     renderGlobalNavigasjon();
 
     expect(screen.getByRole("link", { name: "Arbeidsuførhet" })).to.exist;
   });
 
   it("viser ikke rød prikk for menypunkt Arbeidsuforhet når siste vurdering er avslag", () => {
+    const avslagVurdering = createVurdering({
+      type: VurderingType.AVSLAG,
+      begrunnelse: "begrunnelse",
+      createdAt: new Date(),
+    });
+    queryClient.setQueryData(
+      arbeidsuforhetQueryKeys.arbeidsuforhet(fnr),
+      () => [avslagVurdering]
+    );
     renderGlobalNavigasjon();
 
     expect(screen.getByRole("link", { name: "Arbeidsuførhet" })).to.exist;
   });
 
   it("viser ikke rød prikk for menypunkt Arbeidsuforhet når ingen vurdering", () => {
+    queryClient.setQueryData(
+      arbeidsuforhetQueryKeys.arbeidsuforhet(fnr),
+      () => []
+    );
     renderGlobalNavigasjon();
 
     expect(screen.getByRole("link", { name: "Arbeidsuførhet" })).to.exist;
