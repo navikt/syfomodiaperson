@@ -253,6 +253,7 @@ export enum StandardtekstKey {
   MIDLERTIDIG_LONNSTILSKUDD = "MIDLERTIDIG_LONNSTILSKUDD",
   OKONOMISK_STOTTE = "OKONOMISK_STOTTE",
   INGEN_RETTIGHETER = "INGEN_RETTIGHETER",
+  EKSPERTBISTAND = "EKSPERTBISTAND",
 }
 
 export interface StandardTekst {
@@ -311,6 +312,11 @@ const referatStandardTekster: StandardTekst[] = [
     key: StandardtekstKey.MIDLERTIDIG_LONNSTILSKUDD,
     label: "Midlertidig lønnstilskudd",
     text: "Arbeidsgiveren din kan få et tilskudd til lønnen hvis det er fare for at du ikke kommer tilbake etter tolv måneder med full eller gradert sykmelding. Med lønnstilskudd skal du utføre vanlige oppgaver, men du trenger ikke gjøre dem med full intensitet.",
+  },
+  {
+    key: StandardtekstKey.EKSPERTBISTAND,
+    label: "Ekspertbistand",
+    text: "Dette tiltaket kan være aktuelt når du har en arbeidsgiver, men har utfordringer med å være i jobben. Målet er at du skal komme tilbake til jobb, eller annet arbeid hos samme eller en annen arbeidsgiver. Eksperten skal bidra til å kartlegge og avklare utfordringene på arbeidsplassen som fører til sykefravær, og foreslå tiltak som gjør deg i stand til å utføre arbeidet ditt. Det er arbeidsgiveren din som søker om tilskuddet.",
   },
   {
     key: StandardtekstKey.OKONOMISK_STOTTE,
@@ -374,6 +380,11 @@ const referatStandardTeksterNynorsk: StandardTekst[] = [
     key: StandardtekstKey.MIDLERTIDIG_LONNSTILSKUDD,
     label: "Mellombels lønstilskot",
     text: "Arbeidsgivaren din kan få tilskot til løna dersom det er fare for at du ikkje kjem tilbake etter tolv månader med full eller gradert sjukmelding. Med lønstilskot skal du utføre vanlege oppgåver, men du treng ikkje gjere dei med full intensitet.",
+  },
+  {
+    key: StandardtekstKey.EKSPERTBISTAND,
+    label: "Ekspertbistand",
+    text: "Dette tiltaket kan være aktuelt når du har en arbeidsgiver, men har utfordringer med å være i jobben. Målet er at du skal komme tilbake til jobb, eller annet arbeid hos samme eller en annen arbeidsgiver. Eksperten skal bidra til å kartlegge og avklare utfordringene på arbeidsplassen som fører til sykefravær, og foreslå tiltak som gjør deg i stand til å utføre arbeidet ditt. Det er arbeidsgiveren din som søker om tilskuddet.",
   },
   {
     key: StandardtekstKey.OKONOMISK_STOTTE,
