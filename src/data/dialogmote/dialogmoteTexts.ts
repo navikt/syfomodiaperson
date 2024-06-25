@@ -315,7 +315,7 @@ const referatStandardTekster: StandardTekst[] = [
   },
   {
     key: StandardtekstKey.EKSPERTBISTAND,
-    label: "Ekspertbistand",
+    label: "Tilskudd til ekspertbistand",
     text: "Dette tiltaket kan være aktuelt når du har en arbeidsgiver, men har utfordringer med å være i jobben. Målet er at du skal komme tilbake til jobb, eller annet arbeid hos samme eller en annen arbeidsgiver. Eksperten skal bidra til å kartlegge og avklare utfordringene på arbeidsplassen som fører til sykefravær, og foreslå tiltak som gjør deg i stand til å utføre arbeidet ditt. Det er arbeidsgiveren din som søker om tilskuddet.",
   },
   {
@@ -383,8 +383,8 @@ const referatStandardTeksterNynorsk: StandardTekst[] = [
   },
   {
     key: StandardtekstKey.EKSPERTBISTAND,
-    label: "Ekspertbistand",
-    text: "Dette tiltaket kan være aktuelt når du har en arbeidsgiver, men har utfordringer med å være i jobben. Målet er at du skal komme tilbake til jobb, eller annet arbeid hos samme eller en annen arbeidsgiver. Eksperten skal bidra til å kartlegge og avklare utfordringene på arbeidsplassen som fører til sykefravær, og foreslå tiltak som gjør deg i stand til å utføre arbeidet ditt. Det er arbeidsgiveren din som søker om tilskuddet.",
+    label: "Tilskot til ekspertbistand",
+    text: "Dette tiltaket kan vere aktuelt når du har ein arbeidsgivar, men har utfordringar med å vere i arbeid. Målet er at du skal kome tilbake til det same arbeidet, eller anna arbeid hos same eller ein annan arbeidsgivar. Eksperten skal bidra til å kartleggje og avklare utfordringane på arbeidsplassen som fører til sjukefråvær, og foreslå tiltak som gjer deg i stand til å utføre arbeidet ditt. Det er arbeidsgivaren din som søker om tilskot.",
   },
   {
     key: StandardtekstKey.OKONOMISK_STOTTE,
