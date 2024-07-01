@@ -142,6 +142,7 @@ export const numberOfTasks = (
     case Menypunkter.ARBEIDSUFORHET:
       return getNumberOfArbeidsuforhetOppgaver(arbeidsuforhetVurderinger);
     case Menypunkter.FRISKTILARBEID:
+    case Menypunkter.SENOPPFOLGING:
     case Menypunkter.NOKKELINFORMASJON:
     case Menypunkter.SYKEPENGESOKNADER:
     case Menypunkter.VEDTAK:

@@ -7,10 +7,12 @@ export enum ToggleNames {
   isVirksomhetsinputEnabled = "isVirksomhetsinputEnabled",
   isFlexjarEnabled = "isFlexjarEnabled",
   isFrisktilarbeidEnabled = "isFrisktilarbeidEnabled",
+  isOppfolgingISenFaseEnabled = "isOppfolgingISenFaseEnabled",
 }
 
 export const defaultToggles: Toggles = {
   isVirksomhetsinputEnabled: false,
   isFlexjarEnabled: false,
   isFrisktilarbeidEnabled: false,
+  isOppfolgingISenFaseEnabled: false,
 };
