@@ -604,6 +604,24 @@ export const setupProxy = (
   );
 
   router.use(
+    "/meroppfolging-backend/*",
+    (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) => {
+      proxyOnBehalfOf(
+        req,
+        res,
+        next,
+        authClient,
+        issuer,
+        Config.auth.meroppfolgingBackend
+      );
+    }
+  );
+
+  router.use(
     "/flexjar-backend/*",
     (
       req: express.Request,
