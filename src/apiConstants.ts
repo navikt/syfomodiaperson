@@ -1,6 +1,7 @@
 export const EREG_ROOT = "/ereg/api/v1";
 export const ESYFOVARSEL_ROOT = "/esyfovarsel/api/azure/v2";
-export const SYKEPENGEDAGER_INFORMASJON_ROOT = "/sykepengedager-informasjon/api/azure/v2";
+export const SYKEPENGEDAGER_INFORMASJON_ROOT =
+  "/sykepengedager-informasjon/api/azure/v2";
 export const FASTLEGEREST_ROOT = "/fastlegerest/api/v2/fastlege";
 export const FLEXJAR_ROOT = "/flexjar-backend/api/v1";
 export const ISAKTIVITETSKRAV_ROOT = "/isaktivitetskrav/api/internad/v1";
