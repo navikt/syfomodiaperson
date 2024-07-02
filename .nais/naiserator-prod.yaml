@@ -85,6 +85,8 @@ spec:
           namespace: team-esyfo
         - application: lps-oppfolgingsplan-mottak
           namespace: team-esyfo
+        - application: meroppfolging-backend
+          namespace: team-esyfo
   envFrom:
     - secret: syfomodiaperson-session-key
     - secret: syfomodiaperson-redis-password
@@ -208,3 +210,7 @@ spec:
       value: "prod-gcp.flex.flexjar-backend"
     - name: FLEXJAR_HOST
       value: "http://flexjar-backend.flex"
+    - name: MEROPPFOLGING_BACKEND_AAD_APP_CLIENT_ID
+      value: "prod-gcp.team-esyfo.meroppfolging-backend"
+    - name: MEROPPFOLGING_BACKEND_HOST
+      value: "http://meroppfolging-backend.team-esyfo"

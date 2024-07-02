@@ -353,6 +353,16 @@ export const auth = {
     }),
     removePathPrefix: true,
   },
+  meroppfolgingBackend: {
+    applicationName: "meroppfolging-backend",
+    clientId: envVar({
+      name: "MEROPPFOLGING_BACKEND_AAD_APP_CLIENT_ID",
+    }),
+    host: envVar({
+      name: "MEROPPFOLGING_BACKEND_HOST",
+    }),
+    removePathPrefix: true,
+  },
   flexjar: {
     applicationName: "flexjar-backend",
     clientId: envVar({
