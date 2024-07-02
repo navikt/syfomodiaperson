@@ -287,6 +287,24 @@ export const setupProxy = (
   );
 
   router.use(
+    "/ismeroppfolging/*",
+    (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) => {
+      proxyOnBehalfOf(
+        req,
+        res,
+        next,
+        authClient,
+        issuer,
+        Config.auth.ismeroppfolging
+      );
+    }
+  );
+
+  router.use(
     "/isnarmesteleder/*",
     (
       req: express.Request,

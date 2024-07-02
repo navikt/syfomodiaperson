@@ -192,6 +192,16 @@ export const auth = {
     }),
     removePathPrefix: true,
   },
+  ismeroppfolging: {
+    applicationName: "ismeroppfolging",
+    clientId: envVar({
+      name: "ISMEROPPFOLGING_AAD_APP_CLIENT_ID",
+    }),
+    host: envVar({
+      name: "ISMEROPPFOLGING_HOST",
+    }),
+    removePathPrefix: true,
+  },
   isnarmesteleder: {
     applicationName: "isnarmesteleder",
     clientId: envVar({

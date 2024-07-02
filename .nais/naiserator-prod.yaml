@@ -142,6 +142,10 @@ spec:
       value: "prod-gcp.teamsykefravr.ishuskelapp"
     - name: ISHUSKELAPP_HOST
       value: "http://ishuskelapp"
+    - name: ISMEROPPFOLGING_AAD_APP_CLIENT_ID
+      value: "prod-gcp.teamsykefravr.ismeroppfolging"
+    - name: ISMEROPPFOLGING_HOST
+      value: "http://ismeroppfolging"
     - name: ISNARMESTELEDER_AAD_APP_CLIENT_ID
       value: "prod-gcp.teamsykefravr.isnarmesteleder"
     - name: ISNARMESTELEDER_HOST
