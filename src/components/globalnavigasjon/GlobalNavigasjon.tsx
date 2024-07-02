@@ -36,6 +36,7 @@ export enum Menypunkter {
   VEDTAK = "VEDTAK",
   ARBEIDSUFORHET = "ARBEIDSUFORHET",
   FRISKTILARBEID = "FRISKTILARBEID",
+  SENOPPFOLGING = "SENOPPFOLGING",
 }
 
 export type Menypunkt = { navn: string; sti: string };
@@ -82,6 +83,10 @@ const allMenypunkter: {
   [Menypunkter.FRISKTILARBEID]: {
     navn: "Friskmelding til arbeidsformidling",
     sti: "frisktilarbeid",
+  },
+  [Menypunkter.SENOPPFOLGING]: {
+    navn: "Oppfølging i sen fase",
+    sti: "senoppfolging",
   },
   [Menypunkter.VEDTAK]: {
     navn: "Vedtak",
@@ -160,8 +165,10 @@ export const GlobalNavigasjon = ({
     <ul aria-label="Navigasjon" className="navigasjon">
       {allMenypunktEntries.map(([menypunkt, { navn, sti }], index) => {
         if (
-          !toggles.isFrisktilarbeidEnabled &&
-          menypunkt === Menypunkter.FRISKTILARBEID
+          (!toggles.isFrisktilarbeidEnabled &&
+            menypunkt === Menypunkter.FRISKTILARBEID) ||
+          (!toggles.isOppfolgingISenFaseEnabled &&
+            menypunkt === Menypunkter.SENOPPFOLGING)
         ) {
           return null;
         }

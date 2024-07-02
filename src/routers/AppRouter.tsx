@@ -38,6 +38,7 @@ import { NotificationProvider } from "@/context/notification/NotificationContext
 import DialogmoteEndreReferatContainer from "@/sider/dialogmoter/components/referat/DialogmoteEndreReferatContainer";
 import { Arbeidsuforhet } from "@/sider/arbeidsuforhet/Arbeidsuforhet";
 import { ArbeidsuforhetIkkeAktuellSide } from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuellSide";
+import { SenOppfolgingSide } from "@/sider/senoppfolging/SenOppfolgingSide";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -50,6 +51,7 @@ export const arbeidsuforhetAvslagPath = `${appRoutePath}/arbeidsuforhet/avslag`;
 export const arbeidsuforhetIkkeAktuellPath = `${appRoutePath}/arbeidsuforhet/ikkeaktuell`;
 export const arbeidsuforhetPath = `${appRoutePath}/arbeidsuforhet`;
 export const frisktilarbeidPath = `${appRoutePath}/frisktilarbeid`;
+export const senOppfolgingPath = `${appRoutePath}/senoppfolging`;
 
 const AktivBrukerRouter = (): ReactElement => {
   Amplitude.logViewportAndScreenSize();
@@ -146,6 +148,7 @@ const AktivBrukerRouter = (): ReactElement => {
             path={frisktilarbeidPath}
             element={<FriskmeldingTilArbeidsformidlingSide />}
           />
+          <Route path={senOppfolgingPath} element={<SenOppfolgingSide />} />
           <Route
             path={`${appRoutePath}/sykepengesoknader/:sykepengesoknadId`}
             element={<SykepengesoknadSide />}
