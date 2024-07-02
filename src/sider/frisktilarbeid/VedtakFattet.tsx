@@ -8,8 +8,8 @@ import { useFerdigbehandleVedtak } from "@/data/frisktilarbeid/useFerdigbehandle
 const texts = {
   alert:
     "Vedtaket om friskmelding til arbeidsformidling er nå fattet og sendt til bruker. Ny oppgave er lagt til i oversikten din.",
-  heading: (startText: string) =>
-    `Friskmelding til arbeidsformidling ${startText}:`,
+  heading: (startDate: string, endDate: string) =>
+    `Fattet vedtak varer fra ${startDate} til ${endDate}`,
   husk: "Dagen før vedtaket starter må du huske å gjøre følgende:",
   steps: [
     "Gå inn i Arena og avslutt sykefraværet fra oppgaven 'Oppfølging for sykmeldt arbeidstaker'",
@@ -29,9 +29,8 @@ export const VedtakFattet = ({ vedtak }: VedtakFattetProps): ReactElement => {
   const vedtakStartedOrStartingTomorrow = !dayjs().isBefore(
     dayjs(vedtak.fom).subtract(1, "days")
   );
-  const hasVedtakStarted = dayjs(vedtak.fom).isBefore(dayjs());
-  const startText = hasVedtakStarted ? "startet" : "starter";
-
+  const vedtakStartDateText = tilLesbarDatoMedArUtenManedNavn(vedtak.fom);
+  const vedtakEndDateText = tilLesbarDatoMedArUtenManedNavn(vedtak.tom);
   return (
     <div className="flex flex-col gap-4">
       {!vedtakStartedOrStartingTomorrow && (
@@ -43,9 +42,7 @@ export const VedtakFattet = ({ vedtak }: VedtakFattetProps): ReactElement => {
         className="flex flex-col gap-4"
       >
         <Heading level="2" size="medium">
-          {`${texts.heading(startText)} ${tilLesbarDatoMedArUtenManedNavn(
-            vedtak.fom
-          )}`}
+          {`${texts.heading(vedtakStartDateText, vedtakEndDateText)} `}
         </Heading>
         <List as="ol" title={texts.husk}>
           {texts.steps.map((text, index) => (
