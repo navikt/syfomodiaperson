@@ -81,6 +81,8 @@ spec:
         - application: syfomodiaperson-redis
         - application: esyfovarsel
           namespace: team-esyfo
+        - application: sykepengedager-informasjon
+          namespace: team-esyfo
         - application: syfomotebehov
           namespace: team-esyfo
         - application: lps-oppfolgingsplan-mottak
