@@ -5,7 +5,7 @@ import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import React from "react";
 import { FriskmeldingTilArbeidsformidling } from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidling";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { clickButton, getButton, getTextInput } from "../testUtils";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
@@ -58,6 +58,8 @@ describe("FriskmeldingTilArbeidsformidling", () => {
     it("viser alert og heading med vedtak-fom når vedtak starter etter i morgen", () => {
       const vedtakFom = addWeeks(new Date(), 1);
       const vedtak = createVedtak(vedtakFom);
+      const vedtakStartDateText = tilLesbarDatoMedArUtenManedNavn(vedtak.fom);
+      const vedtakEndDateText = tilLesbarDatoMedArUtenManedNavn(vedtak.tom);
       mockVedtak([vedtak]);
 
       renderFriskmeldingTilArbeidsformidling();
@@ -70,9 +72,7 @@ describe("FriskmeldingTilArbeidsformidling", () => {
       ).to.exist;
       expect(
         screen.getByRole("heading", {
-          name: `Friskmelding til arbeidsformidling starter: ${tilLesbarDatoMedArUtenManedNavn(
-            vedtakFom
-          )}`,
+          name: `Fattet vedtak varer fra ${vedtakStartDateText} til ${vedtakEndDateText}`,
         })
       ).to.exist;
       expect(screen.queryByRole("button", { name: "Avslutt oppgave" })).to.not
