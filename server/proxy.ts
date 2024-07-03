@@ -604,6 +604,24 @@ export const setupProxy = (
   );
 
   router.use(
+    "/sykepengedager-informasjon/*",
+    (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) => {
+      proxyOnBehalfOf(
+        req,
+        res,
+        next,
+        authClient,
+        issuer,
+        Config.auth.sykepengedagerinformasjon
+      );
+    }
+  );
+
+  router.use(
     "/flexjar-backend/*",
     (
       req: express.Request,

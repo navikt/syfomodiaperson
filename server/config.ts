@@ -353,6 +353,16 @@ export const auth = {
     }),
     removePathPrefix: true,
   },
+  sykepengedagerinformasjon: {
+    applicationName: "sykepengedager-informasjon",
+    clientId: envVar({
+      name: "SYKEPENGEDAGER_INFORMASJON_AAD_APP_CLIENT_ID",
+    }),
+    host: envVar({
+      name: "SYKEPENGEDAGER_INFORMASJON_HOST",
+    }),
+    removePathPrefix: true,
+  },
   flexjar: {
     applicationName: "flexjar-backend",
     clientId: envVar({

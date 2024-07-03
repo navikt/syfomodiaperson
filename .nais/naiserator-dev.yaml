@@ -210,4 +210,8 @@ spec:
       value: "dev-gcp.flex.flexjar-backend"
     - name: FLEXJAR_HOST
       value: "http://flexjar-backend.flex"
+    - name: SYKEPENGEDAGER_INFORMASJON_AAD_APP_CLIENT_ID
+      value: "dev-gcp.team-esyfo.sykepengedager-informasjon"
+    - name: SYKEPENGEDAGER_INFORMASJON_HOST
+      value: "http://sykepengedager-informasjon.team-esyfo"
 
