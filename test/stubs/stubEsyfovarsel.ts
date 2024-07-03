@@ -1,5 +1,5 @@
 import nock from "nock";
-import { ESYFOVARSEL_ROOT } from "@/apiConstants";
+import { SYKEPENGEDAGER_INFORMASJON_ROOT } from "@/apiConstants";
 import { maksdatoMock } from "../../mock/syfoperson/persondataMock";
 
 export const stubMaxdateApi = (scope: nock.Scope, maxDate: string) => {
@@ -10,6 +10,6 @@ export const stubMaxdateApi = (scope: nock.Scope, maxDate: string) => {
     },
   };
   return scope
-    .get(`${ESYFOVARSEL_ROOT}/sykepenger/maxdate`)
+    .get(`${SYKEPENGEDAGER_INFORMASJON_ROOT}/sykepenger/maxdate`)
     .reply(200, () => maksdato);
 };
