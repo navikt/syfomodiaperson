@@ -7,11 +7,12 @@ import {
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
-import { UnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 import { MoteHistorikkUnntak } from "@/sider/dialogmoter/components/motehistorikk/MoteHistorikkUnntak";
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
 import { Accordion, BodyLong, Box, Heading } from "@navikt/ds-react";
 import { DocumentComponentVisning } from "@/components/document/DocumentComponentVisning";
+import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
+import { useDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
 
 const texts = {
   header: "Møtehistorikk",
@@ -86,15 +87,9 @@ const MoteHistorikk = ({ mote }: MoteHistorikkProps): ReactElement => {
   );
 };
 
-interface MotehistorikkPanelProps {
-  dialogmoteunntak: UnntakDTO[];
-  historiskeMoter: DialogmoteDTO[];
-}
-
-export const MotehistorikkPanel = ({
-  dialogmoteunntak,
-  historiskeMoter,
-}: MotehistorikkPanelProps) => {
+export const MotehistorikkPanel = () => {
+  const { historiskeDialogmoter } = useDialogmoterQuery();
+  const { data: dialogmoteunntak } = useDialogmoteunntakQuery();
   return (
     <Box background="surface-default" className="p-8">
       <div className="flex flex-row mb-4">
@@ -107,7 +102,7 @@ export const MotehistorikkPanel = ({
         </div>
       </div>
       <Accordion>
-        {historiskeMoter.map((mote, index) => (
+        {historiskeDialogmoter.map((mote, index) => (
           <MoteHistorikk key={index} mote={mote} />
         ))}
         {dialogmoteunntak.map((unntak, index) => (

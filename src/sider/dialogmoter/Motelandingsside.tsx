@@ -88,10 +88,7 @@ export const Motelandingsside = () => {
           <Tredelt.SecondColumn>
             {hasMotehistorikk && (
               <div className="flex flex-col gap-4">
-                <MotehistorikkPanel
-                  historiskeMoter={historiskeDialogmoter}
-                  dialogmoteunntak={dialogmoteunntak}
-                />
+                <MotehistorikkPanel />
                 <MoteSvarHistorikk historiskeMoter={historiskeDialogmoter} />
               </div>
             )}

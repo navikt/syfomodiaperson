@@ -6,8 +6,6 @@ import * as Tredelt from "@/sider/TredeltSide";
 import { MotehistorikkPanel } from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
 import DialogmoteIkkeAktuellSkjema from "@/sider/dialogmoter/components/ikkeaktuell/DialogmoteIkkeAktuellSkjema";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
-import { useDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
 import { MalformProvider } from "@/context/malform/MalformContext";
 
 const texts = {
@@ -15,9 +13,6 @@ const texts = {
 };
 
 const DialogmoteikkeaktuellSkjemaContainer = () => {
-  const { historiskeDialogmoter } = useDialogmoterQuery();
-  const { data: dialogmoteunntak } = useDialogmoteunntakQuery();
-
   return (
     <Side tittel={texts.pageTitle} aktivtMenypunkt={Menypunkter.DIALOGMOTE}>
       <SideLaster henter={false} hentingFeilet={false}>
@@ -29,10 +24,7 @@ const DialogmoteikkeaktuellSkjemaContainer = () => {
             </MalformProvider>
           </Tredelt.FirstColumn>
           <Tredelt.SecondColumn>
-            <MotehistorikkPanel
-              historiskeMoter={historiskeDialogmoter}
-              dialogmoteunntak={dialogmoteunntak}
-            />
+            <MotehistorikkPanel />
           </Tredelt.SecondColumn>
         </Tredelt.Container>
       </SideLaster>

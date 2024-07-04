@@ -12,7 +12,6 @@ import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { ArbeidstakerHarIkkeAktivSykmeldingAdvarsel } from "@/sider/dialogmoter/components/ArbeidstakerHarIkkeAktivSykmelding";
 import * as Tredelt from "@/sider/TredeltSide";
 import { MotehistorikkPanel } from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
-import { useDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { MalformProvider } from "@/context/malform/MalformContext";
 import { DialogmoteInnkallingSkjema } from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
@@ -43,8 +42,7 @@ export const DialogmoteInnkallingSide = (): ReactElement => {
 const DialogmoteInnkallingContainer = (): ReactElement => {
   const { isLoading: henterLedere, isError: hentingLedereFeilet } =
     useLedereQuery();
-  const { aktivtDialogmote, historiskeDialogmoter } = useDialogmoterQuery();
-  const { data: dialogmoteunntak } = useDialogmoteunntakQuery();
+  const { aktivtDialogmote } = useDialogmoterQuery();
   const {
     isLoading: henterOppfolgingstilfeller,
     isError: hentingOppfolgingstilfellerFeilet,
@@ -69,10 +67,7 @@ const DialogmoteInnkallingContainer = (): ReactElement => {
             </MalformProvider>
           </Tredelt.FirstColumn>
           <Tredelt.SecondColumn>
-            <MotehistorikkPanel
-              historiskeMoter={historiskeDialogmoter}
-              dialogmoteunntak={dialogmoteunntak}
-            />
+            <MotehistorikkPanel />
           </Tredelt.SecondColumn>
         </Tredelt.Container>
       </SideLaster>
