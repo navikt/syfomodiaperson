@@ -85,7 +85,7 @@ const allMenypunkter: {
     sti: "frisktilarbeid",
   },
   [Menypunkter.SENOPPFOLGING]: {
-    navn: "Oppfølging i sen fase",
+    navn: "Snart slutt på sykepengene",
     sti: "senoppfolging",
   },
   [Menypunkter.VEDTAK]: {
