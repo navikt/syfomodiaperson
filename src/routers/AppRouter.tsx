@@ -38,7 +38,7 @@ import { NotificationProvider } from "@/context/notification/NotificationContext
 import DialogmoteEndreReferatContainer from "@/sider/dialogmoter/components/referat/DialogmoteEndreReferatContainer";
 import { Arbeidsuforhet } from "@/sider/arbeidsuforhet/Arbeidsuforhet";
 import { ArbeidsuforhetIkkeAktuellSide } from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuellSide";
-import { SenOppfolgingSide } from "@/sider/senoppfolging/SenOppfolgingSide";
+import SenOppfolgingSide from "@/sider/senoppfolging/SenOppfolgingSide";
 
 export const appRoutePath = "/sykefravaer";
 
