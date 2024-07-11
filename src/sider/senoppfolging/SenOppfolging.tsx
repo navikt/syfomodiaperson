@@ -2,6 +2,8 @@ import React, { ReactElement } from "react";
 import { BodyShort, Box, Heading, Label, List } from "@navikt/ds-react";
 import { useSenOppfolgingSvarQuery } from "@/data/senoppfolging/useSenoppfolgingSvarQuery";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenoppfolgingKandidatQuery";
+import { VurderSenOppfolging } from "@/sider/senoppfolging/VurderSenOppfolging";
 
 const texts = {
   heading: "Sykmeldtes svar",
@@ -27,6 +29,8 @@ const texts = {
 export default function SenOppfolging(): ReactElement {
   const { data: svar } = useSenOppfolgingSvarQuery();
   const svardato = svar && tilLesbarDatoMedArUtenManedNavn(svar.createdAt);
+  const { data: kandidater } = useSenOppfolgingKandidatQuery();
+  const kandidat = kandidater[0];
 
   return svar ? (
     <>
@@ -56,6 +60,7 @@ export default function SenOppfolging(): ReactElement {
             <List.Item key={index}>{text}</List.Item>
           ))}
         </List>
+        {kandidat && <VurderSenOppfolging kandidat={kandidat} />}
       </Box>
     </>
   ) : (
