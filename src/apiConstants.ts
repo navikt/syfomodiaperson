@@ -36,4 +36,4 @@ export const SYKEPENGESOKNAD_BACKEND_ROOT = "/sykepengesoknad-backend/api";
 export const ISTILGANGSKONTROLL_ROOT = "/istilgangskontroll/api";
 export const SYFOVEILEDER_ROOT = "/syfoveileder/api/v3";
 export const UNLEASH_ROOT = "/unleash";
-export const VEILARBOPPFOLGING_ROOT = "/veilarboppfolging/api/v2/";
+export const VEILARBOPPFOLGING_ROOT = "/veilarboppfolging/api/v2";

@@ -391,7 +391,6 @@ export const auth = {
     host: envVar({
       name: "VEILARBOPPFOLGING_HOST",
     }),
-    removePathPrefix: true,
   },
 };
 

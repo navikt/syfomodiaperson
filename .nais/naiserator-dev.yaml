@@ -222,4 +222,4 @@ spec:
     - name: VEILARBOPPFOLGING_AAD_APP_CLIENT_ID
       value: "dev-fss.pto.veilarboppfolging"
     - name: VEILARBOPPFOLGING_HOST
-      value: "https://veilarboppfolging.dev.intern.nav.no"
+      value: "https://veilarboppfolging.dev-fss-pub.nais.io"
