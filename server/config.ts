@@ -383,6 +383,16 @@ export const auth = {
     }),
     removePathPrefix: true,
   },
+  veilarboppfolging: {
+    applicationName: "veilarboppfolging",
+    clientId: envVar({
+      name: "VEILARBOPPFOLGING_AAD_APP_CLIENT_ID",
+    }),
+    host: envVar({
+      name: "VEILARBOPPFOLGING_HOST",
+    }),
+    removePathPrefix: true,
+  },
 };
 
 export const redis = {

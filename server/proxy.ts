@@ -651,6 +651,24 @@ export const setupProxy = (
   );
 
   router.use(
+    "/veilarboppfolging/*",
+    (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) => {
+      proxyOnBehalfOf(
+        req,
+        res,
+        next,
+        authClient,
+        issuer,
+        Config.auth.veilarboppfolging
+      );
+    }
+  );
+
+  router.use(
     "/internarbeidsflatedecorator",
     proxy(Config.auth.internarbeidsflatedecoratorHost, {
       https: true,
