@@ -3,7 +3,7 @@ import { MEROPPFOLGING_BACKEND_ROOT } from "@/apiConstants";
 import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/timeUtils";
-import { SenOppfolgingFormResponseDTOV2 } from "@/data/senoppfolging/SenOppfolgingTypes";
+import { SenOppfolgingFormResponseDTOV2 } from "@/data/senoppfolging/senOppfolgingTypes";
 
 export const senOppfolgingSvarQueryKeys = {
   senOppfolgingSvar: (fnr: string) => ["senOppfolgingSvar", fnr],

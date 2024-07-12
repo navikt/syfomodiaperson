@@ -1,6 +1,6 @@
 import express = require("express");
 import { MEROPPFOLGING_BACKEND_ROOT } from "../../src/apiConstants";
-import { SenOppfolgingFormResponseDTOV2 } from "../../src/data/senoppfolging/SenOppfolgingTypes";
+import { SenOppfolgingFormResponseDTOV2 } from "../../src/data/senoppfolging/senOppfolgingTypes";
 import { ARBEIDSTAKER_DEFAULT } from "../common/mockConstants";
 
 export const mockMerOppfolging = (server: any) => {
@@ -8,12 +8,12 @@ export const mockMerOppfolging = (server: any) => {
     `${MEROPPFOLGING_BACKEND_ROOT}/senoppfolging/formresponse`,
     (req: express.Request, res: express.Response) => {
       res.setHeader("Content-Type", "application/json");
-      res.send(JSON.stringify(senOppfolgingMock));
+      res.send(JSON.stringify(merOppfolgingMock));
     }
   );
 };
 
-export const senOppfolgingMock: SenOppfolgingFormResponseDTOV2 = {
+export const merOppfolgingMock: SenOppfolgingFormResponseDTOV2 = {
   uuid: "123",
   personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
   createdAt: new Date(),

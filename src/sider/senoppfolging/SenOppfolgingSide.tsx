@@ -5,13 +5,21 @@ import Sidetopp from "@/components/Sidetopp";
 import SenOppfolging from "@/sider/senoppfolging/SenOppfolging";
 import SideLaster from "@/components/SideLaster";
 import { useSenOppfolgingSvarQuery } from "@/data/senoppfolging/useSenoppfolgingSvarQuery";
+import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenoppfolgingKandidatQuery";
 
 const texts = {
   title: "Snart slutt på sykepengene",
 };
 
 export default function SenOppfolgingSide(): ReactElement {
-  const { isError, isPending } = useSenOppfolgingSvarQuery();
+  const { isError: hentSvarFeilet, isPending: henterSvar } =
+    useSenOppfolgingSvarQuery();
+  const { isError: hentKandidatFeilet, isPending: henterKandidat } =
+    useSenOppfolgingKandidatQuery();
+
+  const isPending = henterKandidat || henterSvar;
+  const isError = hentKandidatFeilet || hentSvarFeilet;
+
   return (
     <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.SENOPPFOLGING}>
       <Sidetopp tittel={texts.title} />
