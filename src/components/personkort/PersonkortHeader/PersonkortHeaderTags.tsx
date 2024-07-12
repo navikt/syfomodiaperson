@@ -19,6 +19,7 @@ const texts = {
   talesprakTolk: "Talespråktolk",
   tegnsprakTolk: "Tegnspråktolk",
   sikkerhetstiltak: "Sikkerhetstiltak",
+  ao: "Under arbeidsrettet oppfølging",
 };
 
 export const PersonkortHeaderTags = () => {
@@ -60,11 +61,11 @@ export const PersonkortHeaderTags = () => {
             {texts.egenansatt}
           </Tag>
         )}
-        <Tag variant="warning" size="small">
-          {arbeidsrettetOppfolging?.underOppfolging
-            ? "Er under arbeidsrettet oppfølging"
-            : "Er ikke under arbeidsrettet oppfølging"}
-        </Tag>
+        {arbeidsrettetOppfolging?.underOppfolging && (
+          <Tag variant="warning" size="small">
+            {texts.ao}
+          </Tag>
+        )}
         {talesprakTolkSprakkode && (
           <Tag variant="warning" size="small">
             {texts.talesprakTolk}: {talesprakTolkSprakkode}

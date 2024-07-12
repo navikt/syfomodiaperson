@@ -11,7 +11,7 @@ export const mockVeilarboppfolging = (server: any) => {
   );
 };
 
-const underArbeidsrettetOppfolgingMock: UnderArbeidsrettetOppfolgingResponseDTO =
+export const underArbeidsrettetOppfolgingMock: UnderArbeidsrettetOppfolgingResponseDTO =
   {
     underOppfolging: true,
     erManuell: false,
