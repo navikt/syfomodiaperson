@@ -9,6 +9,8 @@ import { BodyShort, Button } from "@navikt/ds-react";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
 import { CheckmarkCircleFillIcon } from "@navikt/aksel-icons";
+import { useVurderSenOppfolgingKandidat } from "@/data/senoppfolging/useVurderSenOppfolgingKandidat";
+import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 
 const texts = {
   button: "Fullfør vurdering",
@@ -44,6 +46,7 @@ const VurdertKandidat = ({
 };
 
 export const VurderSenOppfolging = ({ kandidat }: Props) => {
+  const vurderKandidat = useVurderSenOppfolgingKandidat(kandidat.uuid);
   const isFerdigbehandlet =
     kandidat.status === SenOppfolgingStatus.FERDIGBEHANDLET;
   const ferdigbehandletVurdering = kandidat.vurderinger.find(
@@ -54,10 +57,23 @@ export const VurderSenOppfolging = ({ kandidat }: Props) => {
     <VurdertKandidat vurdering={ferdigbehandletVurdering} />
   ) : (
     <>
+      {vurderKandidat.isError && (
+        <SkjemaInnsendingFeil error={vurderKandidat.error} />
+      )}
       <BodyShort size="small" textColor="subtle">
         {texts.description}
       </BodyShort>
-      <Button className="w-max">{texts.button}</Button>
+      <Button
+        className="w-max"
+        loading={vurderKandidat.isPending}
+        onClick={() =>
+          vurderKandidat.mutate({
+            type: SenOppfolgingVurderingType.FERDIGBEHANDLET,
+          })
+        }
+      >
+        {texts.button}
+      </Button>
     </>
   );
 };

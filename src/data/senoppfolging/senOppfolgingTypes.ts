@@ -36,3 +36,7 @@ export enum SenOppfolgingStatus {
 export enum SenOppfolgingVurderingType {
   FERDIGBEHANDLET = "FERDIGBEHANDLET",
 }
+
+export interface SenOppfolgingVurderingRequestDTO {
+  type: SenOppfolgingVurderingType;
+}
