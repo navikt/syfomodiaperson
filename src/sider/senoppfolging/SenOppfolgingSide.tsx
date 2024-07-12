@@ -4,8 +4,8 @@ import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Sidetopp from "@/components/Sidetopp";
 import SenOppfolging from "@/sider/senoppfolging/SenOppfolging";
 import SideLaster from "@/components/SideLaster";
-import { useSenOppfolgingSvarQuery } from "@/data/senoppfolging/useSenoppfolgingSvarQuery";
-import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenoppfolgingKandidatQuery";
+import { useSenOppfolgingSvarQuery } from "@/data/senoppfolging/useSenOppfolgingSvarQuery";
+import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 
 const texts = {
   title: "Snart slutt på sykepengene",

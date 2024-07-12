@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react";
 import { BodyShort, Box, Heading, Label, List } from "@navikt/ds-react";
-import { useSenOppfolgingSvarQuery } from "@/data/senoppfolging/useSenoppfolgingSvarQuery";
+import { useSenOppfolgingSvarQuery } from "@/data/senoppfolging/useSenOppfolgingSvarQuery";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
-import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenoppfolgingKandidatQuery";
+import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { VurderSenOppfolging } from "@/sider/senoppfolging/VurderSenOppfolging";
 
 const texts = {

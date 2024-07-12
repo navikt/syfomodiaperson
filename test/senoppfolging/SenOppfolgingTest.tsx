@@ -10,14 +10,19 @@ import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
 } from "../../mock/common/mockConstants";
-import { senOppfolgingSvarQueryKeys } from "@/data/senoppfolging/useSenoppfolgingSvarQuery";
+import { senOppfolgingSvarQueryKeys } from "@/data/senoppfolging/useSenOppfolgingSvarQuery";
 import { merOppfolgingMock } from "../../mock/meroppfolging-backend/merOppfolgingMock";
-import { senOppfolgingKandidatQueryKeys } from "@/data/senoppfolging/useSenoppfolgingKandidatQuery";
+import { senOppfolgingKandidatQueryKeys } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import {
   ferdigbehandletKandidatMock,
   senOppfolgingKandidatMock,
 } from "../../mock/ismeroppfolging/mockIsmeroppfolging";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
+import {
+  SenOppfolgingKandidatResponseDTO,
+  SenOppfolgingVurderingType,
+} from "@/data/senoppfolging/senOppfolgingTypes";
+import { clickButton } from "../testUtils";
 
 let queryClient: QueryClient;
 
@@ -33,6 +38,25 @@ const renderSenOppfolging = () =>
   );
 
 const vurderingButtonText = "Fullfør vurdering";
+
+const mockSenOppfolgingSvar = () => {
+  queryClient.setQueryData(
+    senOppfolgingSvarQueryKeys.senOppfolgingSvar(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => merOppfolgingMock
+  );
+};
+const mockSenOppfolgingKandidat = (
+  kandidat: SenOppfolgingKandidatResponseDTO
+) => {
+  queryClient.setQueryData(
+    senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => [kandidat]
+  );
+};
 
 describe("Sen oppfolging", () => {
   beforeEach(() => {
@@ -54,12 +78,7 @@ describe("Sen oppfolging", () => {
   });
 
   it("Viser side for oppfølging i sen fase med svar fra bruker", () => {
-    queryClient.setQueryData(
-      senOppfolgingSvarQueryKeys.senOppfolgingSvar(
-        ARBEIDSTAKER_DEFAULT.personIdent
-      ),
-      () => merOppfolgingMock
-    );
+    mockSenOppfolgingSvar();
     renderSenOppfolging();
 
     merOppfolgingMock.questionResponses.map((questionResponse) => {
@@ -69,12 +88,7 @@ describe("Sen oppfolging", () => {
   });
 
   it("Viser ingen knapp eller tekst for vurdering når bruker ikke er kandidat til sen oppfølging", () => {
-    queryClient.setQueryData(
-      senOppfolgingSvarQueryKeys.senOppfolgingSvar(
-        ARBEIDSTAKER_DEFAULT.personIdent
-      ),
-      () => merOppfolgingMock
-    );
+    mockSenOppfolgingSvar();
     renderSenOppfolging();
 
     expect(screen.queryByRole("button", { name: vurderingButtonText })).to.not
@@ -83,18 +97,8 @@ describe("Sen oppfolging", () => {
   });
 
   it("Viser knapp for å fullføre vurdering når bruker er kandidat til sen oppfølging", () => {
-    queryClient.setQueryData(
-      senOppfolgingSvarQueryKeys.senOppfolgingSvar(
-        ARBEIDSTAKER_DEFAULT.personIdent
-      ),
-      () => merOppfolgingMock
-    );
-    queryClient.setQueryData(
-      senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
-        ARBEIDSTAKER_DEFAULT.personIdent
-      ),
-      () => [senOppfolgingKandidatMock]
-    );
+    mockSenOppfolgingSvar();
+    mockSenOppfolgingKandidat(senOppfolgingKandidatMock);
     renderSenOppfolging();
 
     expect(screen.getByRole("button", { name: vurderingButtonText })).to.exist;
@@ -103,18 +107,8 @@ describe("Sen oppfolging", () => {
 
   it("Viser ferdigbehandlet vurdering når bruker er ferdigbehandlet kandidat til sen oppfølging", () => {
     const vurdertDato = ferdigbehandletKandidatMock.vurderinger[0].createdAt;
-    queryClient.setQueryData(
-      senOppfolgingSvarQueryKeys.senOppfolgingSvar(
-        ARBEIDSTAKER_DEFAULT.personIdent
-      ),
-      () => merOppfolgingMock
-    );
-    queryClient.setQueryData(
-      senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
-        ARBEIDSTAKER_DEFAULT.personIdent
-      ),
-      () => [ferdigbehandletKandidatMock]
-    );
+    mockSenOppfolgingSvar();
+    mockSenOppfolgingKandidat(ferdigbehandletKandidatMock);
 
     renderSenOppfolging();
     expect(screen.queryByRole("button", { name: vurderingButtonText })).to.not
@@ -126,5 +120,18 @@ describe("Sen oppfolging", () => {
         )}`
       )
     ).to.exist;
+  });
+
+  it("Trykk på fullfør vurdering ferdigbehandler kandidat", async () => {
+    mockSenOppfolgingSvar();
+    mockSenOppfolgingKandidat(senOppfolgingKandidatMock);
+    renderSenOppfolging();
+
+    await clickButton(vurderingButtonText);
+
+    const vurderingMutation = queryClient.getMutationCache().getAll()[0];
+    expect(vurderingMutation.state.variables).to.deep.equal({
+      type: SenOppfolgingVurderingType.FERDIGBEHANDLET,
+    });
   });
 });

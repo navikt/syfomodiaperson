@@ -20,6 +20,12 @@ export const mockIsmeroppfolging = (server: any) => {
       res.send(JSON.stringify([senOppfolgingKandidatMock]));
     }
   );
+  server.post(
+    `${ISMEROPPFOLGING_ROOT}/senoppfolging/kandidater/:kandidatUUID/vurderinger`,
+    (req: express.Request, res: express.Response) => {
+      res.send(JSON.stringify(ferdigbehandletKandidatMock));
+    }
+  );
 };
 
 export const senOppfolgingKandidatMock: SenOppfolgingKandidatResponseDTO = {
