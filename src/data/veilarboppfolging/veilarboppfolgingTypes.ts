@@ -4,5 +4,4 @@ export interface UnderArbeidsrettetOppfolgingRequestDTO {
 
 export interface UnderArbeidsrettetOppfolgingResponseDTO {
   underOppfolging: boolean;
-  erManuell: boolean;
 }

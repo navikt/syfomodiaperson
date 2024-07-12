@@ -219,7 +219,6 @@ describe("PersonkortHeader", () => {
     const underArbeidsrettetOppfolging: UnderArbeidsrettetOppfolgingResponseDTO =
       {
         underOppfolging: true,
-        erManuell: false,
       };
     queryClient.setQueryData(
       underArbeidsrettetOppfolgingQueryKeys.underArbeidsrettetOppfolging(
