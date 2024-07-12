@@ -8,6 +8,7 @@ import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { TildeltVeileder } from "@/components/personkort/PersonkortHeader/TildeltVeileder";
+import { useUnderArbeidsrettetOppfolgingQuery } from "@/data/veilarboppfolging/useUnderArbeidsrettetOppfolgingQuery";
 
 const texts = {
   fetchDiskresjonskodeFailed: "Klarte ikke hente diskresjonskode for brukeren.",
@@ -18,6 +19,7 @@ const texts = {
   talesprakTolk: "Talespråktolk",
   tegnsprakTolk: "Tegnspråktolk",
   sikkerhetstiltak: "Sikkerhetstiltak",
+  ao: "Under arbeidsrettet oppfølging",
 };
 
 export const PersonkortHeaderTags = () => {
@@ -25,6 +27,8 @@ export const PersonkortHeaderTags = () => {
   const { dodsdato, hasSikkerhetstiltak, tilrettelagtKommunikasjon } =
     useNavBrukerData();
   const { error, data: diskresjonskode } = useDiskresjonskodeQuery();
+  const { data: arbeidsrettetOppfolging } =
+    useUnderArbeidsrettetOppfolgingQuery();
 
   const isDead = !!dodsdato;
   const dateOfDeath = tilLesbarDatoMedArUtenManedNavn(dodsdato);
@@ -55,6 +59,11 @@ export const PersonkortHeaderTags = () => {
         {isEgenAnsatt && (
           <Tag variant="warning" size="small">
             {texts.egenansatt}
+          </Tag>
+        )}
+        {arbeidsrettetOppfolging?.underOppfolging && (
+          <Tag variant="warning" size="small">
+            {texts.ao}
           </Tag>
         )}
         {talesprakTolkSprakkode && (

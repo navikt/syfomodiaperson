@@ -52,6 +52,7 @@ spec:
         - host: "modiacontextholder.prod-fss-pub.nais.io"
         - host: "ereg-services.prod-fss-pub.nais.io"
         - host: "syfooppfolgingsplanservice.prod-fss-pub.nais.io"
+        - host: "veilarboppfolging.prod-fss-pub.nais.io"
       rules:
         - application: fastlegerest
         - application: isaktivitetskrav
@@ -218,3 +219,7 @@ spec:
       value: "prod-gcp.team-esyfo.meroppfolging-backend"
     - name: MEROPPFOLGING_BACKEND_HOST
       value: "http://meroppfolging-backend.team-esyfo"
+    - name: VEILARBOPPFOLGING_AAD_APP_CLIENT_ID
+      value: "prod-fss.pto.veilarboppfolging"
+    - name: VEILARBOPPFOLGING_HOST
+      value: "https://veilarboppfolging.prod-fss-pub.nais.io"

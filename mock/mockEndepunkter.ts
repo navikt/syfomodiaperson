@@ -30,6 +30,7 @@ import { mockIsfrisktilarbeid } from "./isfrisktilarbeid/mockIsfrisktilarbeid";
 import { mockSyfooversiktsrv } from "./syfooversiktsrv/mockSyfooversiktsrv";
 import { mockMerOppfolging } from "./meroppfolging-backend/merOppfolgingMock";
 import { mockIsmeroppfolging } from "./ismeroppfolging/mockIsmeroppfolging";
+import { mockVeilarboppfolging } from "./veilarboppfolging/mockVeilarboppfolging";
 
 const mockEndepunkter = (server: any) => {
   server.use(express.json());
@@ -66,6 +67,7 @@ const mockEndepunkter = (server: any) => {
     mockSyfoveileder,
     mockMerOppfolging,
     mockUnleashEndpoint,
+    mockVeilarboppfolging,
   ].forEach((func) => {
     func(server);
   });

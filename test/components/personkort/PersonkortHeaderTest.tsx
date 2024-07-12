@@ -29,6 +29,8 @@ import { useGetVeilederBrukerKnytning } from "@/components/personkort/hooks/useG
 import { apiMock } from "../../stubs/stubApi";
 import { stubSyfooversiktsrvPersontildelingNoContent } from "../../stubs/stubSyfooversiktsrv";
 import { queryHookWrapper } from "../../data/queryHookTestUtils";
+import { underArbeidsrettetOppfolgingQueryKeys } from "@/data/veilarboppfolging/useUnderArbeidsrettetOppfolgingQuery";
+import { UnderArbeidsrettetOppfolgingResponseDTO } from "@/data/veilarboppfolging/veilarboppfolgingTypes";
 
 let queryClient: any;
 let apiMockScope: any;
@@ -211,6 +213,22 @@ describe("PersonkortHeader", () => {
     renderPersonkortHeader();
 
     expect(screen.getByText("Sikkerhetstiltak")).to.exist;
+  });
+
+  it("viser under-arbeidsrettet-oppfølging tag når under arbeidsrettet oppfølging", () => {
+    const underArbeidsrettetOppfolging: UnderArbeidsrettetOppfolgingResponseDTO =
+      {
+        underOppfolging: true,
+      };
+    queryClient.setQueryData(
+      underArbeidsrettetOppfolgingQueryKeys.underArbeidsrettetOppfolging(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
+      () => underArbeidsrettetOppfolging
+    );
+    renderPersonkortHeader();
+
+    expect(screen.getByText("Under arbeidsrettet oppfølging")).to.exist;
   });
 
   describe("TildeltVeileder", () => {
