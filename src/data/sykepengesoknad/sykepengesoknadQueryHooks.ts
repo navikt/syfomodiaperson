@@ -1,6 +1,5 @@
 import { SYKEPENGESOKNAD_BACKEND_ROOT } from "@/apiConstants";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/timeUtils";
 import {
@@ -8,6 +7,8 @@ import {
   SvarTypeDTO,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import { post } from "@/api/axios";
+import { HentVeilederSoknaderRequest } from "@/data/sykepengesoknad/hentVeilederSoknaderRequest";
 
 export const sykepengesoknaderQueryKeys = {
   sykepengesoknader: (fnr: string) => ["sykepengesoknader", fnr],
@@ -16,7 +17,9 @@ export const sykepengesoknaderQueryKeys = {
 export const useSykepengesoknaderQuery = () => {
   const fnr = useValgtPersonident();
   const path = `${SYKEPENGESOKNAD_BACKEND_ROOT}/veileder/soknader`;
-  const fetchSykepengesoknader = () => get<SykepengesoknadDTO[]>(path, fnr);
+  const requestBody: HentVeilederSoknaderRequest = { fnr: fnr };
+  const fetchSykepengesoknader = () =>
+    post<SykepengesoknadDTO[]>(path, requestBody);
   const query = useQuery({
     queryKey: sykepengesoknaderQueryKeys.sykepengesoknader(fnr),
     queryFn: fetchSykepengesoknader,
