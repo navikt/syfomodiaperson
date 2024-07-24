@@ -92,6 +92,8 @@ spec:
           namespace: team-esyfo
         - application: meroppfolging-backend
           namespace: team-esyfo
+        - application: modiacontextholder
+          namespace: personoversikt
   envFrom:
     - secret: syfomodiaperson-session-key
     - secret: syfomodiaperson-redis-password
@@ -102,7 +104,7 @@ spec:
     - name: NAIS_CONTEXT
       value: 'dev'
     - name: NODE_ENV
-      value: "production"
+      value: "development"
     - name: REDIS_HOST
       value: "syfomodiaperson-redis"
     - name: AUTH_REDIRECT_URI
@@ -166,9 +168,9 @@ spec:
     - name: ISPERSONOPPGAVE_HOST
       value: "http://ispersonoppgave"
     - name: MODIACONTEXTHOLDER_AAD_APP_CLIENT_ID
-      value: "dev-fss.personoversikt.modiacontextholder-q1"
+      value: "dev-gcp.personoversikt.modiacontextholder"
     - name: MODIACONTEXTHOLDER_HOST
-      value: "https://modiacontextholder-q1.dev-fss-pub.nais.io"
+      value: "http://modiacontextholder.personoversikt"
     - name: SYFOBEHANDLENDEENHET_AAD_APP_CLIENT_ID
       value: "dev-gcp.teamsykefravr.syfobehandlendeenhet"
     - name: SYFOBEHANDLENDEENHET_HOST

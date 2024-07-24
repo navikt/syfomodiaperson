@@ -250,6 +250,7 @@ export const auth = {
     host: envVar({
       name: "MODIACONTEXTHOLDER_HOST",
     }),
+    removePathPrefix: true,
   },
   syfobehandlendeenhet: {
     applicationName: "syfobehandlendeenhet",
