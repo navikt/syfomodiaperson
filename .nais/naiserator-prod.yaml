@@ -53,7 +53,6 @@ spec:
         - host: "login.microsoftonline.com"
         - host: "teamsykefravr-unleash-api.nav.cloud.nais.io"
         - host: "internarbeidsflatedecorator.prod-fss-pub.nais.io"
-        - host: "modiacontextholder.prod-fss-pub.nais.io"
         - host: "ereg-services.prod-fss-pub.nais.io"
         - host: "syfooppfolgingsplanservice.prod-fss-pub.nais.io"
         - host: "veilarboppfolging.prod-fss-pub.nais.io"
@@ -92,6 +91,8 @@ spec:
           namespace: team-esyfo
         - application: meroppfolging-backend
           namespace: team-esyfo
+        - application: modiacontextholder
+          namespace: personoversikt
   envFrom:
     - secret: syfomodiaperson-session-key
     - secret: syfomodiaperson-redis-password
@@ -168,9 +169,9 @@ spec:
     - name: ISPERSONOPPGAVE_HOST
       value: "http://ispersonoppgave"
     - name: MODIACONTEXTHOLDER_AAD_APP_CLIENT_ID
-      value: "prod-fss.personoversikt.modiacontextholder"
+      value: "prod-gcp.personoversikt.modiacontextholder"
     - name: MODIACONTEXTHOLDER_HOST
-      value: "https://modiacontextholder.prod-fss-pub.nais.io"
+      value: "http://modiacontextholder.personoversikt"
     - name: SYFOBEHANDLENDEENHET_AAD_APP_CLIENT_ID
       value: "prod-gcp.teamsykefravr.syfobehandlendeenhet"
     - name: SYFOBEHANDLENDEENHET_HOST
