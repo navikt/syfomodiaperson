@@ -1,13 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  formaterFnr,
-  hentBrukersAlderFraFnr,
-  hentBrukersKjoennFraFnr,
-} from "@/utils/fnrUtils";
-import { KJOENN } from "@/konstanter";
+import { formaterFnr, hentBrukersAlderFraFnr } from "@/utils/fnrUtils";
 import CopyButton from "../../kopierknapp/CopyButton";
-import { getKvinneImage, getMannImage } from "@/utils/festiveUtils";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { SyketilfelleSummary } from "@/components/personkort/PersonkortHeader/SyketilfelleSummary";
@@ -15,6 +9,7 @@ import { Tooltip } from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { PersonkortHeaderTags } from "@/components/personkort/PersonkortHeader/PersonkortHeaderTags";
 import { ArrowsCirclepathIcon } from "@navikt/aksel-icons";
+import { KjonnIkon } from "@/components/personkort/PersonkortHeader/KjonnIkon";
 
 const texts = {
   copied: "Kopiert!",
@@ -36,17 +31,9 @@ const PersonkortHeader = () => {
   const { hasGjentakendeSykefravar } = useOppfolgingstilfellePersonQuery();
 
   return (
-    <div className="personkortHeader">
-      <div className="personkortHeader__info">
-        <img
-          className="mr-4"
-          src={
-            hentBrukersKjoennFraFnr(personident) === KJOENN.KVINNE
-              ? getKvinneImage()
-              : getMannImage()
-          }
-          alt="person"
-        />
+    <>
+      <div className="flex personkortHeader__info">
+        <KjonnIkon personident={personident} />
         <div>
           <h3 className="flex items-center">
             {`${navbruker.navn} (${hentBrukersAlderFraFnr(personident)} år)`}
@@ -65,7 +52,7 @@ const PersonkortHeader = () => {
         </div>
       </div>
       <PersonkortHeaderTags />
-    </div>
+    </>
   );
 };
 

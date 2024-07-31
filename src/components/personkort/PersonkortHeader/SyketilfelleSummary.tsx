@@ -15,7 +15,7 @@ export const SyketilfelleSummaryElement = ({
   value,
 }: SyketilfelleSummaryElementProps) => {
   return (
-    <div className={"font-normal"}>
+    <div className="font-normal">
       <span>{keyword}</span>
       <b>{value}</b>
     </div>
@@ -26,7 +26,7 @@ export const SyketilfelleSummary = () => {
   const { data: maksDato } = useMaksdatoQuery();
   return (
     <>
-      <div className={"flex flex-row gap-3 items-center"}>
+      <div className="flex flex-row gap-3 items-center">
         <TilfellePeriod />
         <Varighet />
         <Diagnosekode />

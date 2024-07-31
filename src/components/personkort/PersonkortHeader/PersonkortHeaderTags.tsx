@@ -1,7 +1,6 @@
 import React from "react";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { ApiErrorException } from "@/api/errors";
-import { FlexGapSize, FlexRow } from "@/components/Layout";
 import { Tag } from "@navikt/ds-react";
 import { useEgenansattQuery } from "@/data/egenansatt/egenansattQueryHooks";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
@@ -44,7 +43,7 @@ export const PersonkortHeaderTags = () => {
       apiError={error instanceof ApiErrorException ? error.error : undefined}
       errorMessage={texts.fetchDiskresjonskodeFailed}
     >
-      <FlexRow columnGap={FlexGapSize.SM}>
+      <div className="flex flex-1 gap-2 h-fit flex-wrap justify-end mr-4">
         <TildeltVeileder />
         {isKode6 && (
           <Tag variant="warning" size="small">
@@ -87,7 +86,7 @@ export const PersonkortHeaderTags = () => {
             {texts.sikkerhetstiltak}
           </Tag>
         )}
-      </FlexRow>
+      </div>
     </ErrorBoundary>
   );
 };
