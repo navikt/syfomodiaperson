@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { PERSONKORTVISNING_TYPE } from "@/konstanter";
-import PersonkortHeader from "./PersonkortHeader/PersonkortHeader";
 import PersonkortVisning from "./PersonkortVisning";
-import Ekspanderbartpanel from "nav-frontend-ekspanderbartpanel";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
+import PersonkortHeader from "@/components/personkort/PersonkortHeader/PersonkortHeader";
+import Ekspanderbartpanel from "nav-frontend-ekspanderbartpanel";
 
 const texts = {
   buttons: {
