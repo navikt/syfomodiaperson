@@ -99,6 +99,7 @@ spec:
     - secret: syfomodiaperson-unleash-api-token
   ingresses:
     - "https://syfomodiaperson.intern.dev.nav.no"
+    - "https://syfomodiaperson.ansatt.dev.nav.no"
   env:
     - name: NAIS_CONTEXT
       value: 'dev'
