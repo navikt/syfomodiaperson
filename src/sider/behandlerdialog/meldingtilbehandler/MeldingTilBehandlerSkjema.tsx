@@ -10,17 +10,15 @@ import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document/useMeldingTilBehandlerDocument";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { MeldingsTypeInfo } from "@/sider/behandlerdialog/meldingtilbehandler/MeldingsTypeInfo";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
 import { FormProvider, useForm } from "react-hook-form";
 import { meldingTypeTexts } from "@/data/behandlerdialog/behandlerdialogTexts";
 import { ButtonRow } from "@/components/Layout";
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
 import { VelgBehandler } from "@/components/behandler/VelgBehandler";
+import { PreviewButton } from "@/sider/behandlerdialog/meldingtilbehandler/PreviewButton";
 
 const texts = {
   sendKnapp: "Send til behandler",
-  previewKnapp: "Forhåndsvisning",
   previewContentLabel: "Forhåndsvis melding til behandler",
   meldingsType: {
     label: "Hvilken meldingstype ønsker du å sende?",
@@ -28,7 +26,7 @@ const texts = {
     missing: "Vennligst velg type melding",
   },
   meldingsTekstLabel: "Skriv inn meldingstekst",
-  meldingsTekstErrorMessage: "Vennligst angi meldingstekst",
+  meldingsTekstMissing: "Vennligst angi meldingstekst",
   velgBehandlerLegend: "Velg behandler som skal motta meldingen",
 };
 
@@ -56,14 +54,10 @@ export const MeldingTilBehandlerSkjema = () => {
   } = formMethods;
 
   const now = new Date();
-
-  const handlePreviewButtonClick = () => {
-    setDisplayPreview(true);
-    Amplitude.logEvent({
-      type: EventType.ButtonClick,
-      data: { tekst: texts.previewKnapp, url: window.location.href },
-    });
-  };
+  const meldingTekstErrorMessage =
+    errors.meldingTekst &&
+    getValues("meldingTekst") === "" &&
+    texts.meldingsTekstMissing;
 
   const submit = (values: MeldingTilBehandlerSkjemaValues) => {
     const meldingTilBehandlerDTO: MeldingTilBehandlerDTO = {
@@ -79,18 +73,6 @@ export const MeldingTilBehandlerSkjema = () => {
     meldingTilBehandler.mutate(meldingTilBehandlerDTO, {
       onSuccess: () => reset(),
     });
-  };
-
-  const PreviewButton = () => {
-    return (
-      <Button
-        variant="secondary"
-        type="button"
-        onClick={handlePreviewButtonClick}
-      >
-        {texts.previewKnapp}
-      </Button>
-    );
   };
 
   const MeldingTypeOption = ({ type }: { type: MeldingType }) => (
@@ -137,7 +119,8 @@ export const MeldingTilBehandlerSkjema = () => {
             required: true,
             maxLength: MAX_LENGTH_BEHANDLER_MELDING,
           })}
-          error={errors.meldingTekst && texts.meldingsTekstErrorMessage}
+          maxLength={MAX_LENGTH_BEHANDLER_MELDING}
+          error={meldingTekstErrorMessage}
         />
         <ForhandsvisningModal
           contentLabel={texts.previewContentLabel}
@@ -156,7 +139,7 @@ export const MeldingTilBehandlerSkjema = () => {
           >
             {texts.sendKnapp}
           </Button>
-          <PreviewButton />
+          <PreviewButton onClick={setDisplayPreview} />
         </ButtonRow>
       </form>
     </FormProvider>
