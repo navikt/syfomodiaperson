@@ -1461,11 +1461,6 @@ export const sykmeldingerMock = [
       ],
     },
     legekontorOrgnummer: "223456789",
-    arbeidsgiver: {
-      navn: "LOMMEN BARNEHAVE",
-      yrkesbetegnelse: "Barnehageassistent",
-      stillingsprosent: 100,
-    },
     sykmeldingsperioder: [
       {
         fom: dayjs(new Date()).subtract(10, "days").toJSON(),

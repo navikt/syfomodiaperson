@@ -3,8 +3,13 @@ import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFr
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { expect, describe, it, vi, beforeAll, afterAll } from "vitest";
-import { ARBEIDSTAKER_DEFAULT_FULL_NAME } from "../../mock/common/mockConstants";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  ARBEIDSTAKER_DEFAULT_FULL_NAME,
+} from "../../mock/common/mockConstants";
 import { queryClientWithMockData } from "../testQueryClient";
+import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { sykmeldingerMock } from "mock/syfosmregister/sykmeldingerMock";
 
 let queryClient: QueryClient;
 
@@ -59,5 +64,24 @@ describe("UtdragFraSykefravaeret", () => {
 
     expect(within(sykmeldingExpansionCards[1]).getByText("Ikke tatt i bruk")).to
       .exist;
+  });
+
+  it("Viser sykmelding uten arbeidsgiver tag", () => {
+    queryClient.setQueryData(
+      sykmeldingerQueryKeys.sykmeldinger(ARBEIDSTAKER_DEFAULT.personIdent),
+      () =>
+        sykmeldingerMock.filter(
+          (sykmelding) =>
+            sykmelding.id === "8361e922-2c92-4aa8-811d-e53ca958dc6a"
+        )
+    );
+
+    renderUtdragFraSykefravaeret();
+
+    const sykmeldingExpansionCards = screen.getAllByRole("region");
+    expect(sykmeldingExpansionCards.length).to.equal(1);
+
+    expect(within(sykmeldingExpansionCards[0]).getByText("Uten arbeidsgiver"))
+      .to.exist;
   });
 });
