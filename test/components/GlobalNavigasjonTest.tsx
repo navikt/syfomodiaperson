@@ -5,7 +5,7 @@ import {
 } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
@@ -29,6 +29,13 @@ import {
 } from "../arbeidsuforhet/arbeidsuforhetTestData";
 import { addWeeks } from "@/utils/datoUtils";
 import { VurderingType } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+import { senOppfolgingKandidatQueryKeys } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
+import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks";
+import { mockUnleashResponse } from "../../mock/unleashMocks";
+import {
+  ferdigbehandletKandidatMock,
+  senOppfolgingKandidatMock,
+} from "../../mock/ismeroppfolging/mockIsmeroppfolging";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: QueryClient;
@@ -232,5 +239,35 @@ describe("GlobalNavigasjon", () => {
     renderGlobalNavigasjon();
 
     expect(screen.getByRole("link", { name: "Arbeidsuførhet" })).to.exist;
+  });
+
+  it('viser en rød prikk for menypunkt "Snart slutt på sykepengene" når aktiv kandidat', () => {
+    queryClient.setQueryData(
+      senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(fnr),
+      () => [senOppfolgingKandidatMock]
+    );
+    queryClient.setQueryData(
+      unleashQueryKeys.toggles(navEnhet.id, ""),
+      () => mockUnleashResponse
+    );
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("link", { name: "Snart slutt på sykepengene 1" }))
+      .to.exist;
+  });
+
+  it('viser ikke en rød prikk for menypunkt "Snart slutt på sykepengene" når kandidat er ferdigbehandlet', () => {
+    queryClient.setQueryData(
+      senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(fnr),
+      () => [ferdigbehandletKandidatMock]
+    );
+    queryClient.setQueryData(
+      unleashQueryKeys.toggles(navEnhet.id, ""),
+      () => mockUnleashResponse
+    );
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("link", { name: "Snart slutt på sykepengene" })).to
+      .exist;
   });
 });

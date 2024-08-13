@@ -1,6 +1,6 @@
 import { UNLEASH_ROOT } from "../src/apiConstants";
-import { ToggleNames } from "../src/data/unleash/unleash_types";
 import express from "express";
+import { ToggleNames } from "@/data/unleash/unleash_types";
 
 export const mockUnleashEndpoint = (server: any) => {
   server.get(
