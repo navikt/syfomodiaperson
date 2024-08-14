@@ -13,16 +13,10 @@ import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerU
 import { VedtakMenypunkt } from "@/components/globalnavigasjon/VedtakMenypunkt";
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { BodyShort } from "@navikt/ds-react";
-import styled from "styled-components";
 import { EventType, logEvent } from "@/utils/amplitude";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { useArbeidsuforhetVurderingQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
-
-const StyledLink = styled(Link)`
-  display: flex;
-  justify-content: space-between;
-  text-decoration: none;
-`;
+import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 
 export enum Menypunkter {
   AKTIVITETSKRAV = "AKTIVITETSKRAV",
@@ -110,6 +104,7 @@ export const GlobalNavigasjon = ({
   const { data: motebehov } = useMotebehovQuery();
   const { data: aktivitetskrav } = useAktivitetskravQuery();
   const { data: arbeidsuforhetVurderinger } = useArbeidsuforhetVurderingQuery();
+  const { data: senOppfolgingKandidat } = useSenOppfolgingKandidatQuery();
   const { toggles } = useFeatureToggles();
 
   const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.map(
@@ -184,7 +179,8 @@ export const GlobalNavigasjon = ({
           personoppgaver,
           oppfolgingsplanerLPSMedPersonOppgave,
           aktivitetskrav,
-          arbeidsuforhetVurderinger
+          arbeidsuforhetVurderinger,
+          senOppfolgingKandidat
         );
 
         const isVedtakMenypunkt = menypunkt === Menypunkter.VEDTAK;
@@ -195,13 +191,13 @@ export const GlobalNavigasjon = ({
               <VedtakMenypunkt index={index} navn={navn} />
             ) : (
               <li aria-current={isAktiv} className="flex">
-                <StyledLink
+                <Link
                   ref={(instance) => {
                     if (instance) {
                       refs.current[index] = instance;
                     }
                   }}
-                  className={className}
+                  className={`flex justify-between ${className}`}
                   to={`/sykefravaer/${sti}`}
                   onFocus={() => {
                     setFocusIndex(index);
@@ -215,7 +211,7 @@ export const GlobalNavigasjon = ({
                   {tasks > 0 && (
                     <UnfinishedTasks tasks={tasks} menypunkt={menypunkt} />
                   )}
-                </StyledLink>
+                </Link>
               </li>
             )}
           </React.Fragment>

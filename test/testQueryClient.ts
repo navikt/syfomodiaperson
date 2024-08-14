@@ -41,6 +41,8 @@ import { personAdresseMock } from "../mock/syfoperson/personAdresseMock";
 import { maksdatoQueryKeys } from "@/data/maksdato/useMaksdatoQuery";
 import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { sykmeldingerMock } from "../mock/syfosmregister/sykmeldingerMock";
+import { senOppfolgingKandidatQueryKeys } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
+import { senOppfolgingKandidatMock } from "../mock/ismeroppfolging/mockIsmeroppfolging";
 
 export const testQueryClient = (): QueryClient => {
   return new QueryClient();
@@ -143,6 +145,13 @@ export const queryClientWithMockData = (): QueryClient => {
   queryClient.setQueryData(
     sykmeldingerQueryKeys.sykmeldinger(ARBEIDSTAKER_DEFAULT.personIdent),
     () => sykmeldingerMock.slice(0, 2)
+  );
+
+  queryClient.setQueryData(
+    senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => senOppfolgingKandidatMock
   );
 
   return queryClient;
