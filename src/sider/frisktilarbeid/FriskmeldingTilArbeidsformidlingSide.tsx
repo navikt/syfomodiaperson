@@ -6,16 +6,12 @@ import * as Tredelt from "@/sider/TredeltSide";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { FriskmeldingTilArbeidsformidling } from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidling";
-import { Box } from "@navikt/ds-react";
-import { EksternLenke } from "@/components/EksternLenke";
+import { VeiledningBox } from "@/sider/frisktilarbeid/VeiledningBox";
+import { NotificationProvider } from "@/context/notification/NotificationContext";
 
 const texts = {
   title: "Friskmelding til arbeidsformidling",
-  link: "Servicerutinen på Navet",
 };
-
-const serviceRutineLink =
-  "https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Sykefrav%C3%A6rsomr%C3%A5det-Virkemidler.aspx";
 
 export const FriskmeldingTilArbeidsformidlingSide = (): ReactElement => {
   const { isLoading, isError } = useVedtakQuery();
@@ -25,17 +21,13 @@ export const FriskmeldingTilArbeidsformidlingSide = (): ReactElement => {
       <Sidetopp tittel={texts.title} />
       <SideLaster henter={isLoading} hentingFeilet={isError}>
         <Tredelt.Container>
-          <Tredelt.FirstColumn>
-            <FriskmeldingTilArbeidsformidling />
+          <Tredelt.FirstColumn className="-xl:mb-2">
+            <NotificationProvider>
+              <FriskmeldingTilArbeidsformidling />
+            </NotificationProvider>
           </Tredelt.FirstColumn>
           <Tredelt.SecondColumn>
-            <div className="flex flex-col gap-4">
-              <Box background="surface-default" padding="2">
-                <EksternLenke href={serviceRutineLink}>
-                  {texts.link}
-                </EksternLenke>
-              </Box>
-            </div>
+            <VeiledningBox />
           </Tredelt.SecondColumn>
         </Tredelt.Container>
       </SideLaster>

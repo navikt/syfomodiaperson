@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   DatePicker,
+  Heading,
   HelpText,
   Textarea,
   useDatepicker,
@@ -18,10 +19,12 @@ import { VedtakRequestDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import dayjs from "dayjs";
 import { useFriskmeldingTilArbeidsformidlingDocument } from "@/hooks/frisktilarbeid/useFriskmeldingTilArbeidsformidlingDocument";
 import { useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
+import { useNotification } from "@/context/notification/NotificationContext";
 
 const begrunnelseMaxLength = 5000;
 
 const texts = {
+  header: "Fatt vedtak",
   begrunnelseMissing: "Vennligst angi begrunnelse",
   begrunnelseLabel: "Begrunnelse",
   begrunnelseDescription: "Åpne forhåndsvisning for å se hele vedtaket",
@@ -35,6 +38,8 @@ const texts = {
   tilDatoHelpText: "Dette er datoen vedtaket slutter",
   maksdatoWarning: (dato: string) =>
     `Foreløpig beregnet maksdato er tidligere enn 12 uker frem: ${dato}`,
+  submittedAlert:
+    "Vedtaket om friskmelding til arbeidsformidling fattet og sendt til bruker. Ny oppgave er lagt til i oversikten din.",
 };
 
 function calculateTomDate(fomDato: Date, maksDato: Date | undefined): Date {
@@ -59,16 +64,17 @@ function DatepickerLabel(): ReactNode {
   );
 }
 
-export interface FattVedtakSkjemaValues {
+export interface FormValues {
   fraDato: Date;
   begrunnelse: string;
 }
 
-export const FattVedtakSkjema = () => {
+export function FattVedtakSkjema() {
   const fattVedtak = useFattVedtak();
   const { getVedtakDocument } = useFriskmeldingTilArbeidsformidlingDocument();
   const { data: maksDato } = useMaksdatoQuery();
-  const methods = useForm<FattVedtakSkjemaValues>();
+  const { setNotification } = useNotification();
+  const methods = useForm<FormValues>();
   const {
     register,
     handleSubmit,
@@ -85,7 +91,7 @@ export const FattVedtakSkjema = () => {
     !!tilDato &&
     dayjs(tilDato).isSame(dayjs(maksDato?.maxDate?.forelopig_beregnet_slutt));
 
-  const submit = (values: FattVedtakSkjemaValues) => {
+  const submit = (values: FormValues) => {
     const vedtakRequestDTO: VedtakRequestDTO = {
       fom: dayjs(values.fraDato).format("YYYY-MM-DD"),
       tom: dayjs(tilDato).format("YYYY-MM-DD"),
@@ -97,13 +103,26 @@ export const FattVedtakSkjema = () => {
         tilDatoIsMaxDato,
       }),
     };
-    fattVedtak.mutate(vedtakRequestDTO);
+
+    fattVedtak.mutate(vedtakRequestDTO, {
+      onSuccess: () =>
+        setNotification({
+          message: texts.submittedAlert,
+        }),
+    });
   };
 
   const tilDatoDatePicker = useDatepicker();
 
   return (
-    <Box background="surface-default" padding="6">
+    <Box
+      background="surface-default"
+      padding="6"
+      className="flex flex-col [&>*]:mb-4"
+    >
+      <Heading level="2" size="medium" className="mb-1">
+        {texts.header}
+      </Heading>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-8">
           <div className="flex flex-col gap-6">
@@ -162,4 +181,4 @@ export const FattVedtakSkjema = () => {
       </FormProvider>
     </Box>
   );
-};
+}

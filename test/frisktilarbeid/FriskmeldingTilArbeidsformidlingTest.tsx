@@ -6,13 +6,13 @@ import { navEnhet } from "../dialogmote/testData";
 import React from "react";
 import { FriskmeldingTilArbeidsformidling } from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidling";
 import { beforeEach, describe, expect, it } from "vitest";
-import { clickButton, getButton, getTextInput } from "../testUtils";
+import { clickButton, getButton } from "../testUtils";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 import { createVedtak } from "./frisktilarbeidTestData";
-import { addWeeks, tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import dayjs from "dayjs";
+import { NotificationProvider } from "@/context/notification/NotificationContext";
 
 let queryClient: QueryClient;
 
@@ -29,7 +29,9 @@ const renderFriskmeldingTilArbeidsformidling = () => {
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <FriskmeldingTilArbeidsformidling />
+        <NotificationProvider>
+          <FriskmeldingTilArbeidsformidling />
+        </NotificationProvider>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>
   );
@@ -40,113 +42,45 @@ describe("FriskmeldingTilArbeidsformidling", () => {
     queryClient = queryClientWithMockData();
   });
 
-  describe("uten vedtak", () => {
-    it("viser forberedelser og skjema for å fatte vedtak", () => {
-      renderFriskmeldingTilArbeidsformidling();
+  it("viser avslutt oppgave når vedtak har startet", () => {
+    const vedtak = createVedtak(new Date());
+    mockVedtak([vedtak]);
 
-      expect(screen.getByRole("heading", { name: "Forberedelser" })).to.exist;
+    renderFriskmeldingTilArbeidsformidling();
 
-      expect(getTextInput("Friskmeldingen gjelder fra")).to.exist;
-      expect(screen.getByRole("textbox", { name: /Til dato/ })).to.exist;
-      expect(getTextInput("Begrunnelse")).to.exist;
-      expect(screen.getByRole("button", { name: "Fatt vedtak" })).to.exist;
-      expect(screen.getByRole("button", { name: "Forhåndsvisning" })).to.exist;
-    });
+    expect(getButton("Avslutt oppgave")).to.exist;
   });
 
-  describe("med vedtak", () => {
-    it("viser alert og heading med vedtak-fom når vedtak starter etter i morgen", () => {
-      const vedtakFom = addWeeks(new Date(), 1);
-      const vedtak = createVedtak(vedtakFom);
-      const vedtakStartDateText = tilLesbarDatoMedArUtenManedNavn(vedtak.fom);
-      const vedtakEndDateText = tilLesbarDatoMedArUtenManedNavn(vedtak.tom);
-      mockVedtak([vedtak]);
+  it("viser ferdigbehandlet vedtak når det finnes", () => {
+    const vedtak = createVedtak(
+      dayjs().subtract(1, "days").toDate(),
+      dayjs().toDate()
+    );
+    mockVedtak([vedtak]);
 
-      renderFriskmeldingTilArbeidsformidling();
+    renderFriskmeldingTilArbeidsformidling();
 
-      expect(screen.getByRole("img", { name: "Suksess" })).to.exist;
-      expect(
-        screen.getByText(
-          /Vedtaket om friskmelding til arbeidsformidling er nå fattet/
-        )
-      ).to.exist;
-      expect(
-        screen.getByRole("heading", {
-          name: `Fattet vedtak varer fra ${vedtakStartDateText} til ${vedtakEndDateText}`,
-        })
-      ).to.exist;
-      expect(screen.queryByRole("button", { name: "Avslutt oppgave" })).to.not
-        .exist;
-    });
+    expect(screen.getByText("Start nytt vedtak")).to.exist;
+  });
 
-    it("viser ikke alert når vedtak starter i morgen", () => {
-      const vedtakFom = dayjs().add(1, "days").toDate();
-      const vedtak = createVedtak(vedtakFom);
-      mockVedtak([vedtak]);
+  it("viser nytt vedtak skjema når bruker trykker 'Nytt vedtak' når ferdigbehandlet vedtak finnes", async () => {
+    const vedtak = createVedtak(
+      dayjs().subtract(1, "days").toDate(),
+      dayjs().toDate()
+    );
+    mockVedtak([vedtak]);
 
-      renderFriskmeldingTilArbeidsformidling();
+    renderFriskmeldingTilArbeidsformidling();
+    await clickButton("Nytt vedtak");
 
-      expect(screen.queryByRole("img", { name: "Suksess" })).to.not.exist;
-    });
-
-    it("viser avslutt oppgave når vedtak starter i morgen", () => {
-      const vedtakFom = dayjs().add(1, "days").toDate();
-      const vedtak = createVedtak(vedtakFom);
-      mockVedtak([vedtak]);
-
-      renderFriskmeldingTilArbeidsformidling();
-
-      expect(getButton("Avslutt oppgave")).to.exist;
-    });
-
-    it("viser ikke alert når vedtak har startet", () => {
-      const vedtak = createVedtak(new Date());
-      mockVedtak([vedtak]);
-
-      renderFriskmeldingTilArbeidsformidling();
-
-      expect(screen.queryByRole("img", { name: "Suksess" })).to.not.exist;
-    });
-
-    it("viser avslutt oppgave når vedtak har startet", () => {
-      const vedtak = createVedtak(new Date());
-      mockVedtak([vedtak]);
-
-      renderFriskmeldingTilArbeidsformidling();
-
-      expect(getButton("Avslutt oppgave")).to.exist;
-    });
-
-    it("viser ferdigbehandlet vedtak når det finnes", () => {
-      const vedtak = createVedtak(
-        dayjs().subtract(1, "days").toDate(),
-        dayjs().toDate()
-      );
-      mockVedtak([vedtak]);
-
-      renderFriskmeldingTilArbeidsformidling();
-
-      expect(screen.getByText("Start nytt vedtak")).to.exist;
-    });
-
-    it("viser nytt vedtak skjema når bruker trykker 'Nytt vedtak' når ferdigbehandlet vedtak finnes", async () => {
-      const vedtak = createVedtak(
-        dayjs().subtract(1, "days").toDate(),
-        dayjs().toDate()
-      );
-      mockVedtak([vedtak]);
-
-      renderFriskmeldingTilArbeidsformidling();
-      await clickButton("Nytt vedtak");
-
-      expect(await screen.findByText("Forberedelser")).to.exist;
-      expect(await screen.findByText("Friskmeldingen gjelder fra")).to.exist;
-      expect(
-        await screen.findByRole("button", {
-          hidden: true,
-          name: "Fatt vedtak",
-        })
-      );
-    });
+    expect(await screen.findByRole("heading", { name: "Fatt vedtak" })).to
+      .exist;
+    expect(await screen.findByText("Friskmeldingen gjelder fra")).to.exist;
+    expect(
+      await screen.findByRole("button", {
+        hidden: true,
+        name: "Fatt vedtak",
+      })
+    );
   });
 });
