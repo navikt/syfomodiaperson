@@ -25,6 +25,7 @@ const inTwelveWeeksMinusOneDay = dayjs(
 const inTenWeeks = dayjs(addWeeks(new Date(), 10));
 const threeWeeksAgo = dayjs(addWeeks(today.toDate(), -3));
 const enBegrunnelse = "En begrunnelse";
+const setIsFormSubmitted = () => void 0;
 
 const renderFattVedtakSkjema = () =>
   render(

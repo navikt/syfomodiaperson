@@ -26,7 +26,7 @@ export function FriskmeldingTilArbeidsformidling() {
         return <FattVedtakSkjema />;
       }
     } else {
-      return <VedtakFattet vedtak={vedtak} />;
+      return <VedtakFattet vedtak={vedtak} />
     }
   } else {
     return <FattVedtakSkjema />;
