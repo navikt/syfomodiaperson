@@ -111,7 +111,7 @@ export const getExpectedVedtakDocument = ({
     },
     {
       texts: [
-        "Utbetalingen stanser når du får ny jobb, eller hvis du velger å takke nei til et tilbud om en jobb.",
+        "Utbetalingen stanser når du får ny jobb, eller hvis du velger å takke nei til et aktuelt tilbud om en jobb.",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },

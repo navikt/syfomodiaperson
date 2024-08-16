@@ -25,9 +25,13 @@ const begrunnelseMaxLength = 5000;
 
 const texts = {
   header: "Fatt vedtak",
-  begrunnelseMissing: "Vennligst angi begrunnelse",
-  begrunnelseLabel: "Begrunnelse",
-  begrunnelseDescription: "Åpne forhåndsvisning for å se hele vedtaket",
+  begrunnelse: {
+    missing: "Vennligst angi begrunnelse",
+    label: "Begrunnelse",
+    description: "Åpne forhåndsvisning for å se hele vedtaket",
+    defaultValue:
+      "Du er for tiden sykmeldt og alle muligheter er prøvd for at du kan komme tilbake til arbeidsplassen din. Du har valgt å avslutte denne jobben for å benytte deg av ordningen friskmelding til arbeidsformidling.\n\n",
+  },
   previewContentLabel: "Forhåndsvis vedtaket",
   primaryButton: "Fatt vedtak",
   tilDatoLabel: "Til dato",
@@ -74,13 +78,18 @@ export function FattVedtakSkjema() {
   const { getVedtakDocument } = useFriskmeldingTilArbeidsformidlingDocument();
   const { data: maksDato } = useMaksdatoQuery();
   const { setNotification } = useNotification();
-  const methods = useForm<FormValues>();
+  const methods = useForm<FormValues>({
+    defaultValues: { begrunnelse: texts.begrunnelse.defaultValue },
+  });
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    getValues,
   } = methods;
+
+  console.log("Default values", getValues("begrunnelse"));
 
   const fraDato: Date | undefined = watch("fraDato");
   const tilDato = fraDato
@@ -144,13 +153,13 @@ export function FattVedtakSkjema() {
             </div>
             <Textarea
               {...register("begrunnelse", {
-                required: texts.begrunnelseMissing,
+                required: texts.begrunnelse.missing,
                 maxLength: begrunnelseMaxLength,
               })}
               minRows={6}
               maxLength={begrunnelseMaxLength}
-              description={texts.begrunnelseDescription}
-              label={texts.begrunnelseLabel}
+              description={texts.begrunnelse.description}
+              label={texts.begrunnelse.label}
               error={errors.begrunnelse?.message}
             />
           </div>

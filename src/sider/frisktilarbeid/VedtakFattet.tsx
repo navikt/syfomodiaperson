@@ -19,7 +19,6 @@ const texts = {
 
 interface Props {
   vedtak: VedtakResponseDTO;
-  setOppgaveAvsluttetNow: () => void;
 }
 
 export function VedtakFattet({ vedtak }: Props) {

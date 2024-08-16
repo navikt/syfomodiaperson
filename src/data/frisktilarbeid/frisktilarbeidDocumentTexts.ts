@@ -8,7 +8,7 @@ export type VedtakTextsValues = {
 export const getVedtakTexts = ({ fom, tom }: VedtakTextsValues) => ({
   header: "Vedtak om friskmelding til arbeidsformidling",
   intro:
-    "Vi har vurdert at du oppfyller vilkårene for rett til friskmelding til arbeidsformidling. Dette betyr at du får utbetalt sykepenger i en periode på opptil 12 uker mens du søker ny jobb.",
+    "Vi har vurdert at du oppfyller vilkårene for rett til friskmelding til arbeidsformidling. Dette betyr at du får utbetalt sykepenger i en periode mens du søker ny jobb.",
   periode: `For deg gjelder dette perioden ${toReadableDateOrEmpty(
     fom
   )} til ${toReadableDateOrEmpty(tom)}.`,
@@ -16,9 +16,7 @@ export const getVedtakTexts = ({ fom, tom }: VedtakTextsValues) => ({
     tom
   )}, vil du ikke få sykepenger etter denne datoen.`,
   arbeidssoker: {
-    part1: `Et vilkår for å motta sykepenger i denne perioden er at du har registrert deg som arbeidssøker hos NAV. For at dette vedtaket skal være gyldig må du derfor gjøre dette før ${toReadableDateOrEmpty(
-      fom
-    )}.`,
+    part1: `Et vilkår for å motta sykepenger i denne perioden er at du har registrert deg som arbeidssøker hos NAV.`,
     part2: "For å registrere deg går du inn på nav.no/arbeid/registrering.",
   },
   hjemmel: "Dette vedtaket er gjort etter folketrygdloven paragraf 8-5.",
@@ -27,16 +25,22 @@ export const getVedtakTexts = ({ fom, tom }: VedtakTextsValues) => ({
   begrunnelse: {
     header: "Begrunnelse",
     part1:
-      "Du er for tiden sykmeldt og alle muligheter er prøvd for at du kan komme tilbake til arbeidsplassen din. Du har valgt å avslutte denne jobben for å benytte deg av ordningen friskmelding til arbeidsformidling.",
-    part2:
       "For at du skal ha rett til sykepenger, er det vanligvis et krav at du er for syk til å jobbe. I utgangspunktet har du ikke rett til sykepenger hvis du kan utføre en annen jobb enn den du er sykmeldt fra. Ordningen friskmelding til arbeidsformidling gjør at du likevel kan få sykepenger i opptil 12 uker mens du søker ny jobb.",
   },
   nyttigInfo: {
     header: "Nyttig informasjon",
     part1:
       "Sykepengene blir utbetalt etter at du har sendt meldekort. Du sender meldekort til NAV hver 14.dag.",
+    meldekortInfo: {
+      header: "På meldekortet må du føre opp",
+      bulletPoint1: "Alle timer du har arbeidet",
+      bulletPoint2:
+        "Antall dager du har deltatt på tiltak, kurs eller har vært under utdanning",
+      bulletPoint3:
+        "Antall dager du har vært syk, og derfor ute av stand til å arbeide eller delta på tiltak",
+    },
     part2:
-      "Utbetalingen stanser når du får ny jobb, eller hvis du velger å takke nei til et tilbud om en jobb.",
+      "Utbetalingen stanser når du får ny jobb, eller hvis du velger å takke nei til et aktuelt tilbud om en jobb.",
     part3:
       "Hvis du ikke har fått ny jobb innen perioden din med sykepenger er over, kan det være aktuelt for deg å søke om dagpenger. Du må i så fall huske å sende en søknad om dagpenger før perioden med sykepenger er over.",
     part4: "Les mer på nav.no/arbeidsledig.",
