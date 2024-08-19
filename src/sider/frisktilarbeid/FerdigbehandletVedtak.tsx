@@ -3,6 +3,7 @@ import { Alert, BodyLong, Box, Button, Heading } from "@navikt/ds-react";
 import dayjs from "dayjs";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
+import { useNotification } from "@/context/notification/NotificationContext";
 
 const texts = {
   heading: "Start nytt vedtak",
@@ -14,8 +15,6 @@ const texts = {
     return `Forrige vedtak på denne personen ble fattet ${vedtakFattetDato}. Perioden for friskmelding til arbeidsformidling ${vedtakStartText} og ${vedtakEndText}.`;
   },
   nyttVedtak: "Nytt vedtak",
-  vedtatFerdigbehandletAlert:
-    "Oppgaven om vedtak er ferdigbehandlet, og er fjernet fra oversikten.",
 };
 
 interface Props {
@@ -27,6 +26,7 @@ export function FerdigbehandletVedtak({
   vedtak,
   setStartNyVurdering,
 }: Props): ReactElement {
+  const { notification } = useNotification();
   const hasVedtakStarted = dayjs(vedtak.fom).isBefore(dayjs());
   const hasVedtakEnded = dayjs(vedtak.tom).isBefore(dayjs());
   const vedtakStartDato = tilDatoMedManedNavn(vedtak.fom);
@@ -41,9 +41,11 @@ export function FerdigbehandletVedtak({
 
   return (
     <>
-      <Alert variant={"success"} className="mb-4">
-        {texts.vedtatFerdigbehandletAlert}
-      </Alert>
+      {notification && (
+        <Alert variant={"success"} className="mb-4">
+          {notification.message}
+        </Alert>
+      )}
       <div className="flex flex-col gap-4">
         <Box
           background="surface-default"

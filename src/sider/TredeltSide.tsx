@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
+  className?: string;
 }
 
 /**
@@ -26,9 +27,13 @@ export function Container({ children }: Props) {
   );
 }
 
-export function FirstColumn({ children }: Props) {
+export function FirstColumn({ children, className }: Props) {
   return (
-    <div className="xl:flex-grow-[3] xl:flex-shrink-1 xl:basis-0 xl:mr-2">
+    <div
+      className={
+        "xl:flex-grow-[3] xl:flex-shrink-1 xl:basis-0 xl:mr-2 " + className
+      }
+    >
       {children}
     </div>
   );

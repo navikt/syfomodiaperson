@@ -5,7 +5,7 @@ import { navEnhet } from "../dialogmote/testData";
 import React from "react";
 import { FattVedtakSkjema } from "@/sider/frisktilarbeid/FattVedtakSkjema";
 import { queryClientWithMockData } from "../testQueryClient";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
 import dayjs from "dayjs";
 import { VedtakRequestDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
@@ -14,6 +14,7 @@ import { maksdatoQueryKeys } from "@/data/maksdato/useMaksdatoQuery";
 import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 import { maksdatoMock } from "../../mock/syfoperson/persondataMock";
 import { getExpectedVedtakDocument } from "./frisktilarbeidTestData";
+import { NotificationProvider } from "@/context/notification/NotificationContext";
 
 let queryClient: QueryClient;
 
@@ -31,7 +32,9 @@ const renderFattVedtakSkjema = () =>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <FattVedtakSkjema />
+        <NotificationProvider>
+          <FattVedtakSkjema />
+        </NotificationProvider>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>
   );
