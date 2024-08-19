@@ -3496,59 +3496,14 @@ export const soknaderMock = [
       {
         id: "3f12942a-17ea-3e48-b3e9-c4db4ce99c1b",
         tag: "TIL_SLUTT",
-        sporsmalstekst: "Viktig å være klar over:",
+        sporsmalstekst: null,
         undertekst: null,
-        svartype: "BEKREFTELSESPUNKTER",
+        svartype: "OPPSUMMERING",
         min: null,
         max: null,
         pavirkerAndreSporsmal: false,
         kriterieForVisningAvUndersporsmal: null,
-        svar: [
-          {
-            id: "28fc81a2-97d3-4f40-97a1-5d5706cb2bd1",
-            verdi:
-              "Du kan bare få sykepenger hvis det er din egen sykdom eller skade som hindrer deg i å jobbe. Sosiale eller økonomiske problemer gir ikke rett til sykepenger.",
-          },
-          {
-            id: "f15fa56c-62ff-4e85-ba0f-a10f9ec2f28b",
-            verdi:
-              "Du kan miste retten til sykepenger hvis du nekter å opplyse om din egen arbeidsevne, eller hvis du ikke tar imot behandling eller tilrettelegging.",
-          },
-          {
-            id: "3b393d2b-cd98-4e27-91bb-cb51879a3e36",
-            verdi:
-              "Retten til sykepenger gjelder bare inntekt du har mottatt som lønn og betalt skatt av på sykmeldingstidspunktet.",
-          },
-          {
-            id: "f3a210aa-a024-48b7-8666-f2c0faaf662b",
-            verdi:
-              "NAV kan innhente opplysninger som er nødvendige for å behandle søknaden.",
-          },
-          {
-            id: "2a52a22a-a3b0-450c-ad15-05f9b4d42584",
-            verdi: "Fristen for å søke sykepenger er som hovedregel 3 måneder",
-          },
-          {
-            id: "49cc5bc0-949e-40c6-8a7f-0741f5dc63d7",
-            verdi:
-              "Du kan endre svarene i denne søknaden opp til 12 måneder etter du sendte den inn første gangen.",
-          },
-          {
-            id: "94da81f5-b799-4da0-93d5-a6b135bc63d6",
-            verdi:
-              'Du må melde fra til NAV hvis du satt i varetekt, sonet straff eller var under forvaring i sykmeldingsperioden.<a href="https://www.nav.no/skriv-til-oss" target="_blank">Meld fra til NAV her.</a>',
-          },
-          {
-            id: "efdf1a05-7f4e-4df8-a816-a7e0a69a69e5",
-            verdi:
-              'Du må melde fra om studier som er påbegynt etter at du ble sykmeldt, og som ikke er avklart med NAV. Det samme gjelder hvis du begynner å studere mer enn du gjorde før du ble sykmeldt. <a href="https://www.nav.no/skriv-til-oss" target="_blank">Meld fra til NAV her.</a>',
-          },
-          {
-            id: "fa0fac20-0ee7-4bb9-a068-48e26b291e24",
-            verdi:
-              'Du kan lese mer om rettigheter og plikter på <a href="https://www.nav.no/sykepenger" target="_blank">nav.no/sykepenger</a>.',
-          },
-        ],
+        svar: [],
         undersporsmal: [
           {
             id: "a8c7cd1c-f71b-3ca1-9551-acf7729ce879",
