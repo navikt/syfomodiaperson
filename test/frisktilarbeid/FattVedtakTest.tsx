@@ -119,6 +119,9 @@ describe("FattVedtakSkjema", () => {
   it("validerer fra-dato og begrunnelse", async () => {
     renderFattVedtakSkjema();
 
+    const begrunnelseInput = getTextInput("Begrunnelse");
+    changeTextInput(begrunnelseInput, "");
+
     await clickButton("Fatt vedtak");
 
     expect(await screen.findByText("Vennligst angi begrunnelse")).to.exist;

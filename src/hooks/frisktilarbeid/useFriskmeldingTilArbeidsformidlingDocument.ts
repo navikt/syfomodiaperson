@@ -44,16 +44,9 @@ export const useFriskmeldingTilArbeidsformidlingDocument = (): {
       createParagraph(vedtakTexts.hjemmel),
       createParagraphWithTitle(
         vedtakTexts.begrunnelse.header,
-        values.begrunnelse ? values.begrunnelse + "\n" : "",
-        vedtakTexts.begrunnelse.part1
+        values.begrunnelse ? values.begrunnelse : ""
       )
     );
-
-    if (values.begrunnelse) {
-      createParagraph(values.begrunnelse);
-    } else {
-      createParagraph("");
-    }
 
     documentComponentDtos.push(
       createParagraph(vedtakTexts.begrunnelse.part1),

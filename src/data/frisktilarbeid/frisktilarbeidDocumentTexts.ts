@@ -32,7 +32,7 @@ export const getVedtakTexts = ({ fom, tom }: VedtakTextsValues) => ({
     part1:
       "Sykepengene blir utbetalt etter at du har sendt meldekort. Du sender meldekort til NAV hver 14.dag.",
     meldekortInfo: {
-      header: "På meldekortet må du føre opp",
+      header: "På meldekortet må du føre opp:",
       bulletPoint1: "Alle timer du har arbeidet",
       bulletPoint2:
         "Antall dager du har deltatt på tiltak, kurs eller har vært under utdanning",

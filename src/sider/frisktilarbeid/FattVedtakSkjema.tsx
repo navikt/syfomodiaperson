@@ -30,7 +30,7 @@ const texts = {
     label: "Begrunnelse",
     description: "Åpne forhåndsvisning for å se hele vedtaket",
     defaultValue:
-      "Du er for tiden sykmeldt og alle muligheter er prøvd for at du kan komme tilbake til arbeidsplassen din. Du har valgt å avslutte denne jobben for å benytte deg av ordningen friskmelding til arbeidsformidling.\n\n",
+      "Du er for tiden sykmeldt og alle muligheter er prøvd for at du kan komme tilbake til arbeidsplassen din. Du har valgt å avslutte denne jobben for å benytte deg av ordningen friskmelding til arbeidsformidling.",
   },
   previewContentLabel: "Forhåndsvis vedtaket",
   primaryButton: "Fatt vedtak",
@@ -88,8 +88,6 @@ export function FattVedtakSkjema() {
     watch,
     getValues,
   } = methods;
-
-  console.log("Default values", getValues("begrunnelse"));
 
   const fraDato: Date | undefined = watch("fraDato");
   const tilDato = fraDato
@@ -156,6 +154,7 @@ export function FattVedtakSkjema() {
                 required: texts.begrunnelse.missing,
                 maxLength: begrunnelseMaxLength,
               })}
+              value={watch("begrunnelse")}
               minRows={6}
               maxLength={begrunnelseMaxLength}
               description={texts.begrunnelse.description}
@@ -180,7 +179,7 @@ export function FattVedtakSkjema() {
                 getVedtakDocument({
                   fom: fraDato,
                   tom: tilDato,
-                  begrunnelse: watch("begrunnelse"),
+                  begrunnelse: getValues("begrunnelse"),
                   tilDatoIsMaxDato,
                 })
               }

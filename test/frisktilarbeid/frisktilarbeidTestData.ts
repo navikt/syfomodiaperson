@@ -51,7 +51,7 @@ export const getExpectedVedtakDocument = ({
     },
     {
       texts: [
-        "Vi har vurdert at du oppfyller vilkårene for rett til friskmelding til arbeidsformidling. Dette betyr at du får utbetalt sykepenger i en periode på opptil 12 uker mens du søker ny jobb.",
+        "Vi har vurdert at du oppfyller vilkårene for rett til friskmelding til arbeidsformidling. Dette betyr at du får utbetalt sykepenger i en periode mens du søker ny jobb.",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
@@ -77,9 +77,7 @@ export const getExpectedVedtakDocument = ({
       : []),
     {
       texts: [
-        `Et vilkår for å motta sykepenger i denne perioden er at du har registrert deg som arbeidssøker hos NAV. For at dette vedtaket skal være gyldig må du derfor gjøre dette før ${tilLesbarDatoMedArUtenManedNavn(
-          fom
-        )}.`,
+        `Et vilkår for å motta sykepenger i denne perioden er at du har registrert deg som arbeidssøker hos NAV.`,
         "For å registrere deg går du inn på nav.no/arbeid/registrering.",
       ],
       type: DocumentComponentType.PARAGRAPH,
@@ -89,13 +87,10 @@ export const getExpectedVedtakDocument = ({
       type: DocumentComponentType.PARAGRAPH,
     },
     {
-      title: "Begrunnelse",
-      texts: [
-        "Du er for tiden sykmeldt og alle muligheter er prøvd for at du kan komme tilbake til arbeidsplassen din. Du har valgt å avslutte denne jobben for å benytte deg av ordningen friskmelding til arbeidsformidling.",
-      ],
+      texts: [begrunnelse],
       type: DocumentComponentType.PARAGRAPH,
+      title: "Begrunnelse",
     },
-    { texts: [begrunnelse], type: DocumentComponentType.PARAGRAPH },
     {
       texts: [
         "For at du skal ha rett til sykepenger, er det vanligvis et krav at du er for syk til å jobbe. I utgangspunktet har du ikke rett til sykepenger hvis du kan utføre en annen jobb enn den du er sykmeldt fra. Ordningen friskmelding til arbeidsformidling gjør at du likevel kan få sykepenger i opptil 12 uker mens du søker ny jobb.",
@@ -108,6 +103,18 @@ export const getExpectedVedtakDocument = ({
         "Sykepengene blir utbetalt etter at du har sendt meldekort. Du sender meldekort til NAV hver 14.dag.",
       ],
       type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: ["På meldekortet må du føre opp:"],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      type: DocumentComponentType.BULLET_POINTS,
+      texts: [
+        "Alle timer du har arbeidet",
+        "Antall dager du har deltatt på tiltak, kurs eller har vært under utdanning",
+        "Antall dager du har vært syk, og derfor ute av stand til å arbeide eller delta på tiltak",
+      ],
     },
     {
       texts: [

@@ -20,13 +20,11 @@ const texts = {
 interface Props {
   vedtak: VedtakResponseDTO;
   setStartNyVurdering: (value: boolean) => void;
-  isOppgaveAvsluttetNow?: boolean;
 }
 
 export function FerdigbehandletVedtak({
   vedtak,
   setStartNyVurdering,
-  isOppgaveAvsluttetNow,
 }: Props): ReactElement {
   const { notification } = useNotification();
   const hasVedtakStarted = dayjs(vedtak.fom).isBefore(dayjs());
