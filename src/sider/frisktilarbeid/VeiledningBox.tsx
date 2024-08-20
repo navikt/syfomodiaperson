@@ -32,7 +32,7 @@ const texts = {
       ],
     },
     sendVedtak:
-      "Send vedtak om Friskmelding til arbeidsformidling i Modia syfo",
+      "Send vedtak om Friskmelding til arbeidsformidling, med tilpasset begrunnelse",
     sendGosysOppgave: "Send Gosys-oppgave til NAY",
   },
   infoTitle: "Tilleggsinformasjon",

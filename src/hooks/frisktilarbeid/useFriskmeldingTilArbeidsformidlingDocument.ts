@@ -1,6 +1,7 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
 import { useDocumentComponents } from "@/hooks/useDocumentComponents";
 import {
+  createBulletPoints,
   createHeaderH1,
   createParagraph,
   createParagraphWithTitle,
@@ -43,19 +44,21 @@ export const useFriskmeldingTilArbeidsformidlingDocument = (): {
       createParagraph(vedtakTexts.hjemmel),
       createParagraphWithTitle(
         vedtakTexts.begrunnelse.header,
-        vedtakTexts.begrunnelse.part1
+        values.begrunnelse ? values.begrunnelse : ""
       )
     );
 
-    if (values.begrunnelse) {
-      documentComponentDtos.push(createParagraph(values.begrunnelse));
-    }
-
     documentComponentDtos.push(
-      createParagraph(vedtakTexts.begrunnelse.part2),
+      createParagraph(vedtakTexts.begrunnelse.part1),
       createParagraphWithTitle(
         vedtakTexts.nyttigInfo.header,
         vedtakTexts.nyttigInfo.part1
+      ),
+      createParagraph(vedtakTexts.nyttigInfo.meldekortInfo.header),
+      createBulletPoints(
+        vedtakTexts.nyttigInfo.meldekortInfo.bulletPoint1,
+        vedtakTexts.nyttigInfo.meldekortInfo.bulletPoint2,
+        vedtakTexts.nyttigInfo.meldekortInfo.bulletPoint3
       ),
       createParagraph(vedtakTexts.nyttigInfo.part2),
       createParagraph(vedtakTexts.nyttigInfo.part3),
