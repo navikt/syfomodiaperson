@@ -36,6 +36,8 @@ import {
   ferdigbehandletKandidatMock,
   senOppfolgingKandidatMock,
 } from "../../mock/ismeroppfolging/mockIsmeroppfolging";
+import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
+import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: QueryClient;
@@ -269,5 +271,60 @@ describe("GlobalNavigasjon", () => {
 
     expect(screen.getByRole("link", { name: "Snart slutt på sykepengene" })).to
       .exist;
+  });
+
+  it('viser en rød prikk for menypunkt "Friskmelding til arbeidsformidling" når ikke ferdigbehandlet', () => {
+    const vedtak: VedtakResponseDTO[] = [
+      {
+        uuid: "123",
+        createdAt: new Date(),
+        veilederident: "Z999999",
+        begrunnelse: "En begrunnelse",
+        fom: new Date(),
+        tom: addWeeks(new Date(), 12),
+        document: [],
+        ferdigbehandletAt: undefined,
+        ferdigbehandletBy: undefined,
+      },
+    ];
+    queryClient.setQueryData(vedtakQueryKeys.vedtak(fnr), () => vedtak);
+    queryClient.setQueryData(
+      unleashQueryKeys.toggles(navEnhet.id, ""),
+      () => mockUnleashResponse
+    );
+    renderGlobalNavigasjon();
+
+    expect(
+      screen.getByRole("link", { name: "Friskmelding til arbeidsformidling 1" })
+    ).to.exist;
+  });
+
+  it('viser ikke en rød prikk for menypunkt "Friskmelding til arbeidsformidling" når ferdigbehandlet', () => {
+    const ferdigbehandletVedtak: VedtakResponseDTO[] = [
+      {
+        uuid: "123",
+        createdAt: new Date(),
+        veilederident: "Z999999",
+        begrunnelse: "En begrunnelse",
+        fom: new Date(),
+        tom: addWeeks(new Date(), 12),
+        document: [],
+        ferdigbehandletAt: new Date(),
+        ferdigbehandletBy: "Z999999",
+      },
+    ];
+    queryClient.setQueryData(
+      vedtakQueryKeys.vedtak(fnr),
+      () => ferdigbehandletVedtak
+    );
+    queryClient.setQueryData(
+      unleashQueryKeys.toggles(navEnhet.id, ""),
+      () => mockUnleashResponse
+    );
+    renderGlobalNavigasjon();
+
+    expect(
+      screen.getByRole("link", { name: "Friskmelding til arbeidsformidling" })
+    ).to.exist;
   });
 });

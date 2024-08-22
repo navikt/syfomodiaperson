@@ -25,6 +25,7 @@ import {
   SenOppfolgingKandidatResponseDTO,
   SenOppfolgingStatus,
 } from "@/data/senoppfolging/senOppfolgingTypes";
+import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 
 const getNumberOfMoteOppgaver = (
   motebehov: MotebehovVeilederDTO[],
@@ -124,6 +125,17 @@ function getNumberOfActiveSenOppfolgingOppgaver(
     : 0;
 }
 
+function getNumberOfFriskmeldingTilArbeidsformidlingOppgaver(
+  friskmeldingTilArbeidsformidlingVedtak: VedtakResponseDTO[]
+): number {
+  const sisteVedtak = friskmeldingTilArbeidsformidlingVedtak[0];
+  return !!sisteVedtak &&
+    !sisteVedtak.ferdigbehandletAt &&
+    !sisteVedtak.ferdigbehandletAt
+    ? 1
+    : 0;
+}
+
 export const numberOfTasks = (
   menypunkt: Menypunkter,
   motebehov: MotebehovVeilederDTO[],
@@ -132,7 +144,8 @@ export const numberOfTasks = (
   oppfolgingsplanerlps: OppfolgingsplanLPSMedPersonoppgave[],
   aktivitetskrav: AktivitetskravDTO[],
   arbeidsuforhetVurderinger: VurderingResponseDTO[],
-  senOppfolgingKandidatOppgaver: SenOppfolgingKandidatResponseDTO[]
+  senOppfolgingKandidatOppgaver: SenOppfolgingKandidatResponseDTO[],
+  friskmeldingTilArbeidsformidlingVedtak: VedtakResponseDTO[]
 ): number => {
   switch (menypunkt) {
     case Menypunkter.DIALOGMOTE:
@@ -159,6 +172,9 @@ export const numberOfTasks = (
         senOppfolgingKandidatOppgaver
       );
     case Menypunkter.FRISKTILARBEID:
+      return getNumberOfFriskmeldingTilArbeidsformidlingOppgaver(
+        friskmeldingTilArbeidsformidlingVedtak
+      );
     case Menypunkter.NOKKELINFORMASJON:
     case Menypunkter.SYKEPENGESOKNADER:
     case Menypunkter.VEDTAK:
