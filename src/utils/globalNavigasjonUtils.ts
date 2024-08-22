@@ -131,7 +131,7 @@ function getNumberOfFriskmeldingTilArbeidsformidlingOppgaver(
   const sisteVedtak = friskmeldingTilArbeidsformidlingVedtak[0];
   return !!sisteVedtak &&
     !sisteVedtak.ferdigbehandletAt &&
-    !sisteVedtak.ferdigbehandletAt
+    !sisteVedtak.ferdigbehandletBy
     ? 1
     : 0;
 }

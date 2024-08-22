@@ -38,6 +38,7 @@ import {
 } from "../../mock/ismeroppfolging/mockIsmeroppfolging";
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
+import { defaultVedtak } from "../../mock/isfrisktilarbeid/mockIsfrisktilarbeid";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: QueryClient;
@@ -274,20 +275,9 @@ describe("GlobalNavigasjon", () => {
   });
 
   it('viser en rød prikk for menypunkt "Friskmelding til arbeidsformidling" når ikke ferdigbehandlet', () => {
-    const vedtak: VedtakResponseDTO[] = [
-      {
-        uuid: "123",
-        createdAt: new Date(),
-        veilederident: "Z999999",
-        begrunnelse: "En begrunnelse",
-        fom: new Date(),
-        tom: addWeeks(new Date(), 12),
-        document: [],
-        ferdigbehandletAt: undefined,
-        ferdigbehandletBy: undefined,
-      },
-    ];
-    queryClient.setQueryData(vedtakQueryKeys.vedtak(fnr), () => vedtak);
+    queryClient.setQueryData(vedtakQueryKeys.vedtak(fnr), () => [
+      defaultVedtak,
+    ]);
     queryClient.setQueryData(
       unleashQueryKeys.toggles(navEnhet.id, ""),
       () => mockUnleashResponse
@@ -300,23 +290,46 @@ describe("GlobalNavigasjon", () => {
   });
 
   it('viser ikke en rød prikk for menypunkt "Friskmelding til arbeidsformidling" når ferdigbehandlet', () => {
-    const ferdigbehandletVedtak: VedtakResponseDTO[] = [
-      {
-        uuid: "123",
-        createdAt: new Date(),
-        veilederident: "Z999999",
-        begrunnelse: "En begrunnelse",
-        fom: new Date(),
-        tom: addWeeks(new Date(), 12),
-        document: [],
-        ferdigbehandletAt: new Date(),
-        ferdigbehandletBy: "Z999999",
-      },
-    ];
+    const ferdigbehandletVedtak: VedtakResponseDTO = {
+      ...defaultVedtak,
+      ferdigbehandletAt: new Date(),
+      ferdigbehandletBy: "Z999999",
+    };
+    queryClient.setQueryData(vedtakQueryKeys.vedtak(fnr), () => [
+      ferdigbehandletVedtak,
+    ]);
     queryClient.setQueryData(
-      vedtakQueryKeys.vedtak(fnr),
-      () => ferdigbehandletVedtak
+      unleashQueryKeys.toggles(navEnhet.id, ""),
+      () => mockUnleashResponse
     );
+    renderGlobalNavigasjon();
+
+    expect(
+      screen.getByRole("link", { name: "Friskmelding til arbeidsformidling" })
+    ).to.exist;
+  });
+
+  it('viser ikke en rød prikk for menypunkt "Friskmelding til arbeidsformidling" når bare ett av ferdigbehandletfeltene finnes', () => {
+    const ferdigbehandletVedtak: VedtakResponseDTO = {
+      ...defaultVedtak,
+      ferdigbehandletAt: new Date(),
+    };
+    queryClient.setQueryData(vedtakQueryKeys.vedtak(fnr), () => [
+      ferdigbehandletVedtak,
+    ]);
+    queryClient.setQueryData(
+      unleashQueryKeys.toggles(navEnhet.id, ""),
+      () => mockUnleashResponse
+    );
+    renderGlobalNavigasjon();
+
+    expect(
+      screen.getByRole("link", { name: "Friskmelding til arbeidsformidling" })
+    ).to.exist;
+  });
+
+  it('viser ikke en rød prikk for menypunkt "Friskmelding til arbeidsformidling" når ingen vedtak', () => {
+    queryClient.setQueryData(vedtakQueryKeys.vedtak(fnr), () => []);
     queryClient.setQueryData(
       unleashQueryKeys.toggles(navEnhet.id, ""),
       () => mockUnleashResponse
