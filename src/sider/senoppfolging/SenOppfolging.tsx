@@ -10,10 +10,11 @@ const texts = {
   oppfolging: "Vurder videre oppfølging",
   vurderFolgende: "Basert på svarene kan du vurdere følgende",
   rutine: [
-    "14a-vedtak: Hvis den sykmeldte har svart at han eller hun trenger oppfølging, skal det gjøres et 14a-vedtak i Arena",
+    "§ 14a-vedtak: Hvis den sykmeldte har svart at han eller hun trenger oppfølging, skal det gjøres et § 14a-vedtak i Arena",
     "Dialogmøte: Vurder om det burde kalles inn til et dialogmøte",
     "Kontakt bruker: Ta kontakt med den sykmeldte for å avklare behov for videre oppfølging",
-    "Kontakt behandler: Ta kontakt med behandler for å innhente legeerklæring",
+    "Kontakt arbeidsgiver: Ta kontakt med arbeidsgiver for å avklare muligheter for tilrettelegging",
+    "Kontakt behandler: Ta kontakt med behandler for å innhente medisinske opplysninger",
     "AAP: Vurder om den sykmeldte bør søke om AAP",
   ],
   ikkeVarslet: {
