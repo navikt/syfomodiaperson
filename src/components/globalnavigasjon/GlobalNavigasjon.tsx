@@ -17,6 +17,7 @@ import { EventType, logEvent } from "@/utils/amplitude";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { useArbeidsuforhetVurderingQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
+import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 
 export enum Menypunkter {
   AKTIVITETSKRAV = "AKTIVITETSKRAV",
@@ -105,6 +106,7 @@ export const GlobalNavigasjon = ({
   const { data: aktivitetskrav } = useAktivitetskravQuery();
   const { data: arbeidsuforhetVurderinger } = useArbeidsuforhetVurderingQuery();
   const { data: senOppfolgingKandidat } = useSenOppfolgingKandidatQuery();
+  const { data: friskmeldingTilArbeidsformidlingVedtak } = useVedtakQuery();
   const { toggles } = useFeatureToggles();
 
   const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.map(
@@ -180,7 +182,8 @@ export const GlobalNavigasjon = ({
           oppfolgingsplanerLPSMedPersonOppgave,
           aktivitetskrav,
           arbeidsuforhetVurderinger,
-          senOppfolgingKandidat
+          senOppfolgingKandidat,
+          friskmeldingTilArbeidsformidlingVedtak
         );
 
         const isVedtakMenypunkt = menypunkt === Menypunkter.VEDTAK;
