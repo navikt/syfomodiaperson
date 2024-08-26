@@ -1,4 +1,7 @@
-import { AktivitetskravDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
+import {
+  AktivitetskravDTO,
+  AktivitetskravVurderingDTO,
+} from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 export const oppfolgingstilfelleForAktivitetskrav = (
@@ -18,4 +21,14 @@ export const gjelderOppfolgingstilfelle = (
     aktivitetskrav.stoppunktAt > oppfolgingstilfelle.start &&
     aktivitetskrav.stoppunktAt <= oppfolgingstilfelle.end
   );
+};
+
+export const isExpiredForhandsvarsel = (
+  vurdering: AktivitetskravVurderingDTO
+): boolean => {
+  if (vurdering.varsel?.svarfrist) {
+    return new Date(vurdering.varsel.svarfrist) <= new Date();
+  }
+
+  return false;
 };

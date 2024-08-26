@@ -26,6 +26,7 @@ import {
   SenOppfolgingStatus,
 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
+import { isExpiredForhandsvarsel } from "@/utils/aktivitetskravUtils";
 
 const getNumberOfMoteOppgaver = (
   motebehov: MotebehovVeilederDTO[],
@@ -56,18 +57,16 @@ const numberOfActiveLPSOppfolgingsplaner = (
 };
 
 const getNumberOfAktivitetskravOppgaver = (
-  aktivitetskrav: AktivitetskravDTO[],
-  personOppgaver: PersonOppgave[]
+  aktivitetskrav: AktivitetskravDTO[]
 ) => {
   const newAktivitetskrav = aktivitetskrav.find((krav) => {
     return krav.status === AktivitetskravStatus.NY;
   });
-  const hasUbehandletOppgaveVurderStans = hasUbehandletPersonoppgave(
-    personOppgaver,
-    PersonOppgaveType.AKTIVITETSKRAV_VURDER_STANS
-  );
+  const latestVurdering = aktivitetskrav[0]?.vurderinger[0];
+  const latestVurderingIsExpiredForhandsvarsel =
+    latestVurdering && isExpiredForhandsvarsel(latestVurdering);
 
-  return newAktivitetskrav || hasUbehandletOppgaveVurderStans ? 1 : 0;
+  return newAktivitetskrav || latestVurderingIsExpiredForhandsvarsel ? 1 : 0;
 };
 
 const getNumberOfBehandlerDialogOppgaver = (
@@ -160,7 +159,7 @@ export const numberOfTasks = (
         )
       );
     case Menypunkter.AKTIVITETSKRAV:
-      return getNumberOfAktivitetskravOppgaver(aktivitetskrav, personOppgaver);
+      return getNumberOfAktivitetskravOppgaver(aktivitetskrav);
     case Menypunkter.BEHANDLERDIALOG:
       return getNumberOfBehandlerDialogOppgaver(personOppgaver);
     case Menypunkter.SYKMELDINGER:

@@ -1,5 +1,6 @@
 import {
   createAktivitetskrav,
+  expiredForhandsvarselVurdering,
   forhandsvarselVurdering,
   generateOppfolgingstilfelle,
 } from "../../testDataUtils";
@@ -15,6 +16,12 @@ export const forhandsvarselAktivitetskrav = createAktivitetskrav(
   AktivitetskravStatus.FORHANDSVARSEL,
   [forhandsvarselVurdering]
 );
+export const expiredForhandsvarselAktivitetskrav = createAktivitetskrav(
+  daysFromToday(5),
+  AktivitetskravStatus.FORHANDSVARSEL,
+  [expiredForhandsvarselVurdering]
+);
+
 export const tilfelleStart = daysFromToday(-50);
 export const tilfelleEnd = daysFromToday(50);
 export const oppfolgingstilfelle = generateOppfolgingstilfelle(

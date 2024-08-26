@@ -41,8 +41,6 @@ import {
   getOppfyltDocument,
   getUnntakDocument,
 } from "../varselDocuments";
-import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
-import { personOppgaveUbehandletVurderStans } from "../../../mock/ispersonoppgave/personoppgaveMock";
 import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
 import { apiMock } from "../../stubs/stubApi";
 import { stubVurderAktivitetskravApi } from "../../stubs/stubIsaktivitetskrav";
@@ -54,6 +52,7 @@ import {
   buttonTexts,
   enKortBeskrivelse,
   enLangBeskrivelse,
+  expiredForhandsvarselAktivitetskrav,
   forhandsvarselAktivitetskrav,
   oppfolgingstilfelle,
   tabTexts,
@@ -105,17 +104,13 @@ describe("VurderAktivitetskrav", () => {
     expect(screen.queryByRole("tab", { name: "Ikke oppfylt" })).to.not.exist;
   });
 
-  it("renders ikke-oppfylt when ubehandlet vurder-stans oppgave", () => {
-    queryClient.setQueryData(
-      personoppgaverQueryKeys.personoppgaver(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [personOppgaveUbehandletVurderStans]
-    );
-
-    renderVurderAktivitetskrav(aktivitetskrav);
+  it("renders ikke-oppfylt when expired forhåndsvarsel", () => {
+    renderVurderAktivitetskrav(expiredForhandsvarselAktivitetskrav);
 
     expect(screen.queryByRole("tab", { name: "Sett unntak" })).to.exist;
     expect(screen.queryByRole("tab", { name: "Er i aktivitet" })).to.exist;
-    expect(screen.queryByRole("tab", { name: "Send forhåndsvarsel" })).to.exist;
+    expect(screen.queryByRole("tab", { name: "Send forhåndsvarsel" })).to.not
+      .exist;
     expect(screen.queryByRole("tab", { name: "Ikke oppfylt" })).to.exist;
   });
 

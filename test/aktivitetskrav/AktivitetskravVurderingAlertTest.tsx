@@ -2,6 +2,7 @@ import {
   avventVurdering,
   avventVurderingUtenFrist,
   createAktivitetskravVurdering,
+  expiredForhandsvarselVurdering,
   forhandsvarselVurdering,
 } from "../testDataUtils";
 import {
@@ -21,13 +22,8 @@ import { navEnhet } from "../dialogmote/testData";
 import React from "react";
 import { AktivitetskravVurderingAlert } from "@/sider/aktivitetskrav/vurdering/AktivitetskravVurderingAlert";
 import { queryClientWithMockData } from "../testQueryClient";
-import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
-import { personOppgaveUbehandletVurderStans } from "../../mock/ispersonoppgave/personoppgaveMock";
 
 let queryClient: QueryClient;
-
-const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 
 const renderAktivitetskravVurderingAlert = (
   vurdering: AktivitetskravVurderingDTO
@@ -81,7 +77,7 @@ describe("AktivitetskravVurderingAlert", () => {
     expect(screen.getByText("Har bedt om mer informasjon fra behandler")).to
       .exist;
   });
-  it("viser info når siste aktivitetskrav-vurdering er FORHANDSVARSEL uten vurder stans-oppgave", () => {
+  it("viser info når siste aktivitetskrav-vurdering er ikke-utløpt FORHANDSVARSEL", () => {
     renderAktivitetskravVurderingAlert(forhandsvarselVurdering);
 
     expect(screen.getByRole("img", { name: "Informasjon" })).to.exist;
@@ -93,12 +89,8 @@ describe("AktivitetskravVurderingAlert", () => {
       )
     );
   });
-  it("viser warning når siste aktivitetskrav-vurdering er FORHANDSVARSEL og det ubehandlet vurder stans-oppgave", () => {
-    queryClient.setQueryData(
-      personoppgaverQueryKeys.personoppgaver(fnr),
-      () => [personOppgaveUbehandletVurderStans]
-    );
-    renderAktivitetskravVurderingAlert(forhandsvarselVurdering);
+  it("viser warning når siste aktivitetskrav-vurdering er utløpt FORHANDSVARSEL", () => {
+    renderAktivitetskravVurderingAlert(expiredForhandsvarselVurdering);
 
     expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
     expect(screen.getByText("Aktivitetskravet må vurderes"));

@@ -39,6 +39,12 @@ import {
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { defaultVedtak } from "../../mock/isfrisktilarbeid/mockIsfrisktilarbeid";
+import { aktivitetskravQueryKeys } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
+import {
+  aktivitetskrav,
+  expiredForhandsvarselAktivitetskrav,
+  forhandsvarselAktivitetskrav,
+} from "../aktivitetskrav/vurdering/vurderingTestUtils";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: QueryClient;
@@ -166,14 +172,34 @@ describe("GlobalNavigasjon", () => {
       .exist;
   });
 
-  it("viser rød prikk for menypunkt Aktivitetskrav når ubehandlet oppgave vurder stans", () => {
-    queryClient.setQueryData(personoppgaverQueryKeys.personoppgaver(fnr), () =>
-      personoppgaverMock()
-    );
+  it("viser rød prikk for menypunkt Aktivitetskrav når nytt aktivitetskrav", () => {
+    queryClient.setQueryData(aktivitetskravQueryKeys.aktivitetskrav(fnr), [
+      aktivitetskrav,
+    ]);
 
     renderGlobalNavigasjon();
 
     expect(screen.getByRole("link", { name: "Aktivitetskrav 1" })).to.exist;
+  });
+
+  it("viser rød prikk for menypunkt Aktivitetskrav når utløpt forhåndsvarsel", () => {
+    queryClient.setQueryData(aktivitetskravQueryKeys.aktivitetskrav(fnr), [
+      expiredForhandsvarselAktivitetskrav,
+    ]);
+
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("link", { name: "Aktivitetskrav 1" })).to.exist;
+  });
+
+  it("viser ikke rød prikk for menypunkt Aktivitetskrav når ikke-utløpt forhåndsvarsel", () => {
+    queryClient.setQueryData(aktivitetskravQueryKeys.aktivitetskrav(fnr), [
+      forhandsvarselAktivitetskrav,
+    ]);
+
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("link", { name: "Aktivitetskrav" })).to.exist;
   });
 
   it("viser rød prikk for menypunkt Arbeidsuforhet når siste vurdering er utløpt forhåndsvarsel", () => {

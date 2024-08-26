@@ -26,9 +26,6 @@ import {
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { expect, describe, it, beforeEach, afterEach } from "vitest";
 import { getSendForhandsvarselDocument } from "../varselDocuments";
-import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
-import { personOppgaveUbehandletVurderStans } from "../../../mock/ispersonoppgave/personoppgaveMock";
-import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
 import { apiMock } from "../../stubs/stubApi";
 import { stubVurderAktivitetskravForhandsvarselApi } from "../../stubs/stubIsaktivitetskrav";
 import nock from "nock";
@@ -37,6 +34,7 @@ import { Brevmal } from "@/data/aktivitetskrav/forhandsvarselTexts";
 import {
   aktivitetskrav,
   enLangBeskrivelse,
+  expiredForhandsvarselAktivitetskrav,
   forhandsvarselAktivitetskrav,
   tabTexts,
 } from "./vurderingTestUtils";
@@ -229,13 +227,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
     });
 
     it("IKKE_OPPFYLT is present when status is forhandsvarsel and it is expired", async () => {
-      queryClient.setQueryData(
-        personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
-        ),
-        () => [personOppgaveUbehandletVurderStans]
-      );
-      renderVurderAktivitetskrav(forhandsvarselAktivitetskrav);
+      renderVurderAktivitetskrav(expiredForhandsvarselAktivitetskrav);
 
       await clickTab(tabTexts["IKKE_OPPFYLT"]);
 

@@ -6,7 +6,6 @@ import {
 import dayjs from "dayjs";
 import { PersonOppgaveType } from "../../src/data/personoppgave/types/PersonOppgave";
 import { meldingUuids } from "../isbehandlerdialog/behandlerdialogMock";
-import { varselUuid } from "../isaktivitetskrav/aktivitetskravMock";
 
 const personOppgaveUbehandletOppfolgingsplanLPS = {
   uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd0",
@@ -31,13 +30,6 @@ export const personOppgaveUbehandletBehandlerBerOmBistand2 = {
   type: "BEHANDLER_BER_OM_BISTAND",
   uuid: "5f1e2625-061b-443d-ae1f-3c18e9574cd2",
   referanseUuid: "222248ba-4c3c-4b3f-b7a3-385b7e7c927d",
-};
-
-export const personOppgaveUbehandletVurderStans = {
-  ...personOppgaveUbehandletOppfolgingsplanLPS,
-  uuid: "5f1e2625-061b-443d-ae1f-3b08e9574cd1",
-  referanseUuid: varselUuid,
-  type: "AKTIVITETSKRAV_VURDER_STANS",
 };
 
 const personOppgaveUbehandletDialogmotesvar = {
@@ -142,7 +134,6 @@ export const personoppgaverMock = () => {
     personOppgaveBehandletBehandlerdialogUbesvartMelding,
     personOppgaveUbehandletBehandlerdialogAvvistMelding,
     personOppgaveBehandletBehandlerdialogAvvistMelding,
-    personOppgaveUbehandletVurderStans,
     personOppgaveUbehandletBehandlerBerOmBistand,
     personOppgaveUbehandletBehandlerBerOmBistand2,
   ];
