@@ -10,9 +10,7 @@ import React, { ReactElement } from "react";
 import { avventVurderingArsakTexts } from "@/data/aktivitetskrav/aktivitetskravTexts";
 import { AktivitetskravAlertstripe } from "@/sider/aktivitetskrav/AktivitetskravAlertstripe";
 import { BodyLong, BodyShort, Label } from "@navikt/ds-react";
-import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
-import { hasUbehandletPersonoppgave } from "@/utils/personOppgaveUtils";
-import { PersonOppgaveType } from "@/data/personoppgave/types/PersonOppgave";
+import { isExpiredForhandsvarsel } from "@/utils/aktivitetskravUtils";
 
 const texts = {
   forhandsvarselInfoBody:
@@ -29,17 +27,12 @@ interface AktivitetskravVurderingAlertProps {
 export const AktivitetskravVurderingAlert = ({
   vurdering,
 }: AktivitetskravVurderingAlertProps): ReactElement | null => {
-  const { data: oppgaver } = usePersonoppgaverQuery();
-  const hasUbehandletVurderStansOppgave = hasUbehandletPersonoppgave(
-    oppgaver,
-    PersonOppgaveType.AKTIVITETSKRAV_VURDER_STANS
-  );
   const { status, beskrivelse, arsaker, frist, createdAt } = vurdering;
   const vurderingDato = tilLesbarDatoMedArUtenManedNavn(createdAt);
 
   switch (status) {
     case AktivitetskravStatus.FORHANDSVARSEL: {
-      return hasUbehandletVurderStansOppgave ? (
+      return isExpiredForhandsvarsel(vurdering) ? (
         <AktivitetskravAlertstripe variant="warning">
           <Label size="small">{texts.forhandsvarselWarningLabel}</Label>
           <BodyShort size="small">{`Det ble sendt ut et forhåndsvarsel ${vurderingDato}.`}</BodyShort>

@@ -10,7 +10,6 @@ import {
   AktivitetskravVurderingDTO,
   AvventVurderingArsak,
   OppfyltVurderingArsak,
-  UnntakVurderingArsak,
   VurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { generateUUID } from "@/utils/uuidUtils";
@@ -93,18 +92,6 @@ export const oppfyltVurdering = createAktivitetskravVurdering(
   AktivitetskravStatus.OPPFYLT,
   [OppfyltVurderingArsak.FRISKMELDT]
 );
-export const unntakVurdering = createAktivitetskravVurdering(
-  AktivitetskravStatus.UNNTAK,
-  [UnntakVurderingArsak.SJOMENN_UTENRIKS]
-);
-export const ikkeOppfyltVurdering = createAktivitetskravVurdering(
-  AktivitetskravStatus.IKKE_OPPFYLT,
-  []
-);
-export const ikkeAktuellVurdering = createAktivitetskravVurdering(
-  AktivitetskravStatus.IKKE_AKTUELL,
-  []
-);
 export const forhandsvarselVurdering = createAktivitetskravVurdering(
   AktivitetskravStatus.FORHANDSVARSEL,
   [],
@@ -115,6 +102,20 @@ export const forhandsvarselVurdering = createAktivitetskravVurdering(
     uuid: generateUUID(),
     createdAt: new Date(),
     svarfrist: daysFromToday(21),
+    document: [],
+  }
+);
+
+export const expiredForhandsvarselVurdering = createAktivitetskravVurdering(
+  AktivitetskravStatus.FORHANDSVARSEL,
+  [],
+  "Begrunnelse for forhåndsvarsel",
+  new Date(),
+  undefined,
+  {
+    uuid: generateUUID(),
+    createdAt: new Date(),
+    svarfrist: daysFromToday(-1),
     document: [],
   }
 );

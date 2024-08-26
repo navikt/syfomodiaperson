@@ -1,7 +1,4 @@
 import React from "react";
-import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
-import { hasUbehandletPersonoppgave } from "@/utils/personOppgaveUtils";
-import { PersonOppgaveType } from "@/data/personoppgave/types/PersonOppgave";
 import {
   AktivitetskravDTO,
   AktivitetskravStatus,
@@ -12,6 +9,7 @@ import { OppfyltAktivitetskravSkjema } from "@/sider/aktivitetskrav/vurdering/Op
 import { SendForhandsvarselSkjema } from "@/sider/aktivitetskrav/vurdering/SendForhandsvarselSkjema";
 import { IkkeOppfyltAktivitetskravSkjema } from "@/sider/aktivitetskrav/vurdering/IkkeOppfyltAktivitetskravSkjema";
 import styled from "styled-components";
+import { isExpiredForhandsvarsel } from "@/utils/aktivitetskravUtils";
 
 const texts = {
   unntak: "Sett unntak",
@@ -53,11 +51,9 @@ interface VurderAktivitetskravTabsProps {
 export const VurderAktivitetskravTabs = ({
   aktivitetskrav,
 }: VurderAktivitetskravTabsProps) => {
-  const { data: oppgaver } = usePersonoppgaverQuery();
-  const isIkkeOppfyltTabVisible = hasUbehandletPersonoppgave(
-    oppgaver,
-    PersonOppgaveType.AKTIVITETSKRAV_VURDER_STANS
-  );
+  const latestVurdering = aktivitetskrav.vurderinger[0];
+  const isIkkeOppfyltTabVisible =
+    latestVurdering && isExpiredForhandsvarsel(latestVurdering);
   const isForhandsvarselTabVisible = isValidStateForForhandsvarsel(
     aktivitetskrav.status
   );
