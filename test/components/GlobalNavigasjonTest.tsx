@@ -36,6 +36,9 @@ import {
   ferdigbehandletKandidatMock,
   senOppfolgingKandidatMock,
 } from "../../mock/ismeroppfolging/mockIsmeroppfolging";
+import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
+import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
+import { defaultVedtak } from "../../mock/isfrisktilarbeid/mockIsfrisktilarbeid";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: QueryClient;
@@ -269,5 +272,72 @@ describe("GlobalNavigasjon", () => {
 
     expect(screen.getByRole("link", { name: "Snart slutt på sykepengene" })).to
       .exist;
+  });
+
+  it('viser en rød prikk for menypunkt "Friskmelding til arbeidsformidling" når ikke ferdigbehandlet', () => {
+    queryClient.setQueryData(vedtakQueryKeys.vedtak(fnr), () => [
+      defaultVedtak,
+    ]);
+    queryClient.setQueryData(
+      unleashQueryKeys.toggles(navEnhet.id, ""),
+      () => mockUnleashResponse
+    );
+    renderGlobalNavigasjon();
+
+    expect(
+      screen.getByRole("link", { name: "Friskmelding til arbeidsformidling 1" })
+    ).to.exist;
+  });
+
+  it('viser ikke en rød prikk for menypunkt "Friskmelding til arbeidsformidling" når ferdigbehandlet', () => {
+    const ferdigbehandletVedtak: VedtakResponseDTO = {
+      ...defaultVedtak,
+      ferdigbehandletAt: new Date(),
+      ferdigbehandletBy: "Z999999",
+    };
+    queryClient.setQueryData(vedtakQueryKeys.vedtak(fnr), () => [
+      ferdigbehandletVedtak,
+    ]);
+    queryClient.setQueryData(
+      unleashQueryKeys.toggles(navEnhet.id, ""),
+      () => mockUnleashResponse
+    );
+    renderGlobalNavigasjon();
+
+    expect(
+      screen.getByRole("link", { name: "Friskmelding til arbeidsformidling" })
+    ).to.exist;
+  });
+
+  it('viser ikke en rød prikk for menypunkt "Friskmelding til arbeidsformidling" når bare ett av ferdigbehandletfeltene finnes', () => {
+    const ferdigbehandletVedtak: VedtakResponseDTO = {
+      ...defaultVedtak,
+      ferdigbehandletAt: new Date(),
+    };
+    queryClient.setQueryData(vedtakQueryKeys.vedtak(fnr), () => [
+      ferdigbehandletVedtak,
+    ]);
+    queryClient.setQueryData(
+      unleashQueryKeys.toggles(navEnhet.id, ""),
+      () => mockUnleashResponse
+    );
+    renderGlobalNavigasjon();
+
+    expect(
+      screen.getByRole("link", { name: "Friskmelding til arbeidsformidling" })
+    ).to.exist;
+  });
+
+  it('viser ikke en rød prikk for menypunkt "Friskmelding til arbeidsformidling" når ingen vedtak', () => {
+    queryClient.setQueryData(vedtakQueryKeys.vedtak(fnr), () => []);
+    queryClient.setQueryData(
+      unleashQueryKeys.toggles(navEnhet.id, ""),
+      () => mockUnleashResponse
+    );
+    renderGlobalNavigasjon();
+
+    expect(
+      screen.getByRole("link", { name: "Friskmelding til arbeidsformidling" })
+    ).to.exist;
   });
 });

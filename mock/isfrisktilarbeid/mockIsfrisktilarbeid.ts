@@ -8,6 +8,7 @@ import {
   VedtakResponseDTO,
 } from "../../src/data/frisktilarbeid/frisktilarbeidTypes";
 import dayjs from "dayjs";
+import { addWeeks } from "@/utils/datoUtils";
 
 let vedtak: VedtakResponseDTO[] = [];
 
@@ -64,4 +65,16 @@ export const mockIsfrisktilarbeid = (server: any) => {
             );
     }
   );
+};
+
+export const defaultVedtak: VedtakResponseDTO = {
+  uuid: "123",
+  createdAt: new Date(),
+  veilederident: "Z999999",
+  begrunnelse: "En begrunnelse",
+  fom: new Date(),
+  tom: addWeeks(new Date(), 12),
+  document: [],
+  ferdigbehandletAt: undefined,
+  ferdigbehandletBy: undefined,
 };
