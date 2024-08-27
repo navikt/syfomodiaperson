@@ -12,6 +12,8 @@ const texts = {
   missingBegrunnelse: "Du må skrive en begrunnelse",
   button: "Fullfør vurdering",
   description: "Når du fullfører vurderingen fjernes hendelsen fra oversikten.",
+  begrunnelseDescription:
+    "Det er valgfritt å skrive begrunnelse. Begrunnelsen vil være synlig i Modia, men vises ikke for den sykmeldte. Begrunnelsen blir ikke journalført.",
 };
 
 interface Props {
@@ -44,6 +46,11 @@ export function NewVurderingForm({ kandidat }: Props) {
       <Heading size="medium">{texts.heading}</Heading>
       <Textarea
         label="Begrunnelse"
+        description={
+          <BodyShort size="small" textColor="subtle">
+            {texts.begrunnelseDescription}
+          </BodyShort>
+        }
         onChange={handleBegrunnelseOnChange}
         maxLength={1000}
       />
