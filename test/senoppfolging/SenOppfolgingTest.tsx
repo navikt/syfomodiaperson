@@ -22,7 +22,7 @@ import {
   SenOppfolgingKandidatResponseDTO,
   SenOppfolgingVurderingType,
 } from "@/data/senoppfolging/senOppfolgingTypes";
-import { clickButton } from "../testUtils";
+import { changeTextInput, clickButton, getTextInput } from "../testUtils";
 
 let queryClient: QueryClient;
 
@@ -79,6 +79,7 @@ describe("Sen oppfolging", () => {
 
   it("Viser side for oppfølging i sen fase med svar fra bruker", () => {
     mockSenOppfolgingSvar();
+    mockSenOppfolgingKandidat(senOppfolgingKandidatMock);
     renderSenOppfolging();
 
     merOppfolgingMock.questionResponses.map((questionResponse) => {
@@ -132,6 +133,23 @@ describe("Sen oppfolging", () => {
     const vurderingMutation = queryClient.getMutationCache().getAll()[0];
     expect(vurderingMutation.state.variables).to.deep.equal({
       type: SenOppfolgingVurderingType.FERDIGBEHANDLET,
+      begrunnelse: undefined,
+    });
+  });
+
+  it("Fyll ut begrunnelse og trykk på fullfør vurdering ferdigbehandler kandidat", async () => {
+    mockSenOppfolgingSvar();
+    mockSenOppfolgingKandidat(senOppfolgingKandidatMock);
+    renderSenOppfolging();
+
+    const begrunnelseInput = getTextInput("Begrunnelse");
+    await changeTextInput(begrunnelseInput, "En flott begrunnelse");
+    await clickButton(vurderingButtonText);
+
+    const vurderingMutation = queryClient.getMutationCache().getAll()[0];
+    expect(vurderingMutation.state.variables).to.deep.equal({
+      type: SenOppfolgingVurderingType.FERDIGBEHANDLET,
+      begrunnelse: "En flott begrunnelse",
     });
   });
 });

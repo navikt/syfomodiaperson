@@ -3,6 +3,7 @@ import express from "express";
 import {
   SenOppfolgingKandidatResponseDTO,
   SenOppfolgingStatus,
+  SenOppfolgingVurderingRequestDTO,
   SenOppfolgingVurderingType,
 } from "../../src/data/senoppfolging/senOppfolgingTypes";
 import { generateUUID } from "../../src/utils/uuidUtils";
@@ -23,7 +24,22 @@ export const mockIsmeroppfolging = (server: any) => {
   server.post(
     `${ISMEROPPFOLGING_ROOT}/senoppfolging/kandidater/:kandidatUUID/vurderinger`,
     (req: express.Request, res: express.Response) => {
-      res.send(JSON.stringify(ferdigbehandletKandidatMock));
+      const body: SenOppfolgingVurderingRequestDTO = req.body;
+      const vurdering: SenOppfolgingKandidatResponseDTO = {
+        ...senOppfolgingKandidatMock,
+        createdAt: addWeeks(new Date(), -60),
+        status: SenOppfolgingStatus.FERDIGBEHANDLET,
+        vurderinger: [
+          {
+            uuid: generateUUID(),
+            createdAt: addWeeks(new Date(), -50),
+            type: SenOppfolgingVurderingType.FERDIGBEHANDLET,
+            veilederident: VEILEDER_IDENT_DEFAULT,
+            begrunnelse: body.begrunnelse,
+          },
+        ],
+      };
+      res.send(JSON.stringify(vurdering));
     }
   );
 };

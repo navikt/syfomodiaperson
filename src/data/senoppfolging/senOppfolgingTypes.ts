@@ -26,6 +26,7 @@ export interface SenOppfolgingVurderingResponseDTO {
   createdAt: Date;
   veilederident: string;
   type: SenOppfolgingVurderingType;
+  begrunnelse?: string;
 }
 
 export enum SenOppfolgingStatus {
@@ -39,4 +40,5 @@ export enum SenOppfolgingVurderingType {
 
 export interface SenOppfolgingVurderingRequestDTO {
   type: SenOppfolgingVurderingType;
+  begrunnelse?: string;
 }
