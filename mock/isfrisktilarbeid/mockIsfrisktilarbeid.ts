@@ -8,7 +8,7 @@ import {
   VedtakResponseDTO,
 } from "../../src/data/frisktilarbeid/frisktilarbeidTypes";
 import dayjs from "dayjs";
-import { addWeeks } from "@/utils/datoUtils";
+import { addWeeks } from "../../src/utils/datoUtils";
 
 let vedtak: VedtakResponseDTO[] = [];
 
