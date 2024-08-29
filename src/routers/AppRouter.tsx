@@ -39,6 +39,7 @@ import DialogmoteEndreReferatContainer from "@/sider/dialogmoter/components/refe
 import { Arbeidsuforhet } from "@/sider/arbeidsuforhet/Arbeidsuforhet";
 import { ArbeidsuforhetIkkeAktuellSide } from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuellSide";
 import SenOppfolgingSide from "@/sider/senoppfolging/SenOppfolgingSide";
+import ManglendeMedvirkningSide from "@/sider/manglendemedvirkning/ManglendeMedvirkningSide";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -52,6 +53,7 @@ export const arbeidsuforhetIkkeAktuellPath = `${appRoutePath}/arbeidsuforhet/ikk
 export const arbeidsuforhetPath = `${appRoutePath}/arbeidsuforhet`;
 export const frisktilarbeidPath = `${appRoutePath}/frisktilarbeid`;
 export const senOppfolgingPath = `${appRoutePath}/senoppfolging`;
+export const manglendeMedvirkningPath = `${appRoutePath}/manglendemedvirkning`;
 
 const AktivBrukerRouter = (): ReactElement => {
   Amplitude.logViewportAndScreenSize();
@@ -149,6 +151,10 @@ const AktivBrukerRouter = (): ReactElement => {
             element={<FriskmeldingTilArbeidsformidlingSide />}
           />
           <Route path={senOppfolgingPath} element={<SenOppfolgingSide />} />
+          <Route
+            path={manglendeMedvirkningPath}
+            element={<ManglendeMedvirkningSide />}
+          />
           <Route
             path={`${appRoutePath}/sykepengesoknader/:sykepengesoknadId`}
             element={<SykepengesoknadSide />}

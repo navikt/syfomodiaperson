@@ -175,6 +175,7 @@ export const numberOfTasks = (
         friskmeldingTilArbeidsformidlingVedtak
       );
     case Menypunkter.NOKKELINFORMASJON:
+    case Menypunkter.MANGLENDE_MEDVIRKNING:
     case Menypunkter.SYKEPENGESOKNADER:
     case Menypunkter.VEDTAK:
     case Menypunkter.HISTORIKK: {

@@ -32,6 +32,7 @@ export enum Menypunkter {
   ARBEIDSUFORHET = "ARBEIDSUFORHET",
   FRISKTILARBEID = "FRISKTILARBEID",
   SENOPPFOLGING = "SENOPPFOLGING",
+  MANGLENDE_MEDVIRKNING = "MANGLENDE_MEDVIRKNING",
 }
 
 export type Menypunkt = { navn: string; sti: string };
@@ -82,6 +83,10 @@ const allMenypunkter: {
   [Menypunkter.SENOPPFOLGING]: {
     navn: "Snart slutt på sykepengene",
     sti: "senoppfolging",
+  },
+  [Menypunkter.MANGLENDE_MEDVIRKNING]: {
+    navn: "Manglende medvirkning",
+    sti: "manglendemedvirkning",
   },
   [Menypunkter.VEDTAK]: {
     navn: "Vedtak",
@@ -165,7 +170,9 @@ export const GlobalNavigasjon = ({
           (!toggles.isFrisktilarbeidEnabled &&
             menypunkt === Menypunkter.FRISKTILARBEID) ||
           (!toggles.isOppfolgingISenFaseEnabled &&
-            menypunkt === Menypunkter.SENOPPFOLGING)
+            menypunkt === Menypunkter.SENOPPFOLGING) ||
+          (!toggles.isManglendeMedvirkningEnabled &&
+            menypunkt === Menypunkter.MANGLENDE_MEDVIRKNING)
         ) {
           return null;
         }
