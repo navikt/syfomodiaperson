@@ -16,6 +16,7 @@ import { Flexjar } from "@/components/flexjar/Flexjar";
 import { Oppfolgingsoppgave } from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
+import { TildeltVeileder } from "@/components/TildeltVeileder";
 
 export const MODIA_HEADER_ID = "modia-header";
 
@@ -55,6 +56,7 @@ const Side = ({ tittel, aktivtMenypunkt, children }: SideProps) => {
         <div className="flex flex-col" id={MODIA_HEADER_ID}>
           <div className="flex flex-row mt-4 mb-2 w-full">
             <OversiktLenker />
+            <TildeltVeileder />
           </div>
           {isPride() && <Pride>&nbsp;</Pride>}
           <Personkort />

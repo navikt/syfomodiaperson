@@ -6,7 +6,6 @@ import { useEgenansattQuery } from "@/data/egenansatt/egenansattQueryHooks";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
-import { TildeltVeileder } from "@/components/personkort/PersonkortHeader/TildeltVeileder";
 import { useUnderArbeidsrettetOppfolgingQuery } from "@/data/veilarboppfolging/useUnderArbeidsrettetOppfolgingQuery";
 
 const texts = {
@@ -44,7 +43,6 @@ export const PersonkortHeaderTags = () => {
       errorMessage={texts.fetchDiskresjonskodeFailed}
     >
       <div className="flex flex-1 gap-2 h-fit flex-wrap justify-end mr-4">
-        <TildeltVeileder />
         {isKode6 && (
           <Tag variant="warning" size="small">
             {texts.kode6}

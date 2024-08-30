@@ -10,9 +10,12 @@ import {
   stubAktivVeilederinfoApi,
   stubVeilederinfoApi,
 } from "../stubs/stubSyfoveileder";
-import { veilederMock } from "../../mock/syfoveileder/veilederMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { testQueryClient } from "../testQueryClient";
+import {
+  VEILEDER_DEFAULT,
+  VEILEDER_IDENT_DEFAULT,
+} from "../../mock/common/mockConstants";
 
 let queryClient: any;
 let apiMockScope: any;
@@ -37,7 +40,7 @@ describe("veilederinfoQueryHooks tests", () => {
 
     await waitFor(() => expect(result.current.isSuccess).to.be.true);
 
-    expect(result.current.data).to.deep.equal(veilederMock);
+    expect(result.current.data).to.deep.equal(VEILEDER_DEFAULT);
   });
 
   it("loads veilederinfo for ident", async () => {
@@ -46,7 +49,7 @@ describe("veilederinfoQueryHooks tests", () => {
     const wrapper = queryHookWrapper(queryClient);
 
     const { result } = renderHook(
-      () => useVeilederInfoQuery(veilederMock.ident),
+      () => useVeilederInfoQuery(VEILEDER_IDENT_DEFAULT),
       {
         wrapper,
       }
@@ -54,6 +57,6 @@ describe("veilederinfoQueryHooks tests", () => {
 
     await waitFor(() => expect(result.current.isSuccess).to.be.true);
 
-    expect(result.current.data).to.deep.equal(veilederMock);
+    expect(result.current.data).to.deep.equal(VEILEDER_DEFAULT);
   });
 });
