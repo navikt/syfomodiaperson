@@ -47,7 +47,7 @@ export const getToggles = (veilederId, enhetId) => {
       "isOppfolgingISenFaseEnabled",
       context
     ),
-    isManglendeMedvirkingEnabled: unleash.isEnabled(
+    isManglendeMedvirkningEnabled: unleash.isEnabled(
       "isManglendeMedvirkningEnabled",
       context
     ),
