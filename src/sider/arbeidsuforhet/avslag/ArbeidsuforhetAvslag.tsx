@@ -7,7 +7,7 @@ import { AvslagForm } from "@/sider/arbeidsuforhet/avslag/AvslagForm";
 export const ArbeidsuforhetAvslag = (): ReactElement => {
   const { data } = useArbeidsuforhetVurderingQuery();
   const sisteVurdering = data[0];
-  const isForhandsvarselExpired = sisteVurdering.varsel?.isExpired;
+  const isForhandsvarselExpired = sisteVurdering?.varsel?.isExpired;
 
   return !isForhandsvarselExpired ? (
     <Navigate to={arbeidsuforhetPath} />
