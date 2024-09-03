@@ -1,6 +1,5 @@
 import { fullNaisUrlIntern } from "@/utils/miljoUtil";
 import React, { ReactElement } from "react";
-import styled from "styled-components";
 import { Link } from "@navikt/ds-react";
 
 const texts = {
@@ -9,16 +8,8 @@ const texts = {
   enhetensOversikt: "Enhetens oversikt",
 };
 
-const StyledLenkeRad = styled.div`
-  > * {
-    &:not(:last-child) {
-      margin-right: 2em;
-    }
-  }
-`;
-
 export const OversiktLenker = (): ReactElement => (
-  <StyledLenkeRad>
+  <div className="flex gap-8">
     <Link href={fullNaisUrlIntern("syfooversikt", "/minoversikt")}>
       {texts.oversikt}
     </Link>
@@ -26,5 +17,5 @@ export const OversiktLenker = (): ReactElement => (
       {texts.enhetensOversikt}
     </Link>
     <Link href={fullNaisUrlIntern("syfomoteoversikt")}>{texts.moter}</Link>
-  </StyledLenkeRad>
+  </div>
 );

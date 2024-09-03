@@ -1,6 +1,7 @@
 import { NarmesteLederRelasjonStatus } from "../../src/data/leder/ledereTypes";
 import { RSContext } from "../../src/data/modiacontext/modiacontextTypes";
 import { Veileder } from "../../src/data/veilederinfo/types/Veileder";
+import { VeilederBrukerKnytningDTO } from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
 
 export const TODAY = new Date().setHours(0, 0, 0, 0);
 
@@ -55,7 +56,7 @@ export const ANNEN_VEILEDER_IDENT = "Z970000";
 export const ANNEN_VEILEDER = new Veileder(
   ANNEN_VEILEDER_IDENT,
   "Valdemar",
-  "Veileder",
+  "Vaileder",
   "valdemar.veileder@nav.no",
   "12345678"
 );
@@ -106,3 +107,9 @@ export const LEDERE_DEFAULT = [
     status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
   },
 ];
+
+export const VEILEDER_BRUKER_KNYTNING_DEFAULT: VeilederBrukerKnytningDTO = {
+  personident: ARBEIDSTAKER_DEFAULT.personIdent,
+  tildeltVeilederident: VEILEDER_IDENT_DEFAULT,
+  tildeltEnhet: ENHET_GRUNERLOKKA.nummer,
+};

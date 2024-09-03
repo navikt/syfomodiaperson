@@ -2,12 +2,17 @@ import { SYFOVEILEDER_ROOT } from "@/apiConstants";
 import { get } from "@/api/axios";
 import { Veileder } from "@/data/veilederinfo/types/Veileder";
 import { useQuery } from "@tanstack/react-query";
+import { useValgtEnhet } from "@/context/ValgtEnhetContext";
 
 export const veilederinfoQueryKeys = {
   veilederinfo: ["veilederinfo"],
   veilederinfoByIdent: (ident: string) => [
     ...veilederinfoQueryKeys.veilederinfo,
     ident,
+  ],
+  veiledereByEnhet: (enhetId: string) => [
+    ...veilederinfoQueryKeys.veilederinfo,
+    enhetId,
   ],
 };
 
@@ -43,5 +48,16 @@ export const useVeilederInfoQuery = (ident: string) => {
         data.epost,
         data.telefonnummer
       ),
+  });
+};
+
+export const useVeiledereForValgtEnhetQuery = () => {
+  const { valgtEnhet } = useValgtEnhet();
+  const fetchVeiledereByEnhet = () =>
+    get<Veileder[]>(`${SYFOVEILEDER_ROOT}/veiledere?enhetNr=${valgtEnhet}`);
+  return useQuery({
+    queryKey: veilederinfoQueryKeys.veiledereByEnhet(valgtEnhet),
+    queryFn: fetchVeiledereByEnhet,
+    enabled: !!valgtEnhet,
   });
 };

@@ -51,5 +51,9 @@ export const getToggles = (veilederId, enhetId) => {
       "isManglendeMedvirkningEnabled",
       context
     ),
+    isTildelVeilederEnabled: unleash.isEnabled(
+      "isTildelVeilederEnabled",
+      context
+    ),
   };
 };
