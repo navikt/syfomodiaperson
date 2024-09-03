@@ -31,6 +31,7 @@ import { mockSyfooversiktsrv } from "./syfooversiktsrv/mockSyfooversiktsrv";
 import { mockMerOppfolging } from "./meroppfolging-backend/merOppfolgingMock";
 import { mockIsmeroppfolging } from "./ismeroppfolging/mockIsmeroppfolging";
 import { mockVeilarboppfolging } from "./veilarboppfolging/mockVeilarboppfolging";
+import { mockIsmanglendemedvirkning } from "./ismanglendemedvirkning/mockIsmanglendemedvirkning";
 
 const mockEndepunkter = (server: any) => {
   server.use(express.json());
@@ -63,6 +64,7 @@ const mockEndepunkter = (server: any) => {
     mockIsdialogmote,
     mockIsdialogmotekandidat,
     mockIsdialogmelding,
+    mockIsmanglendemedvirkning,
     mockIsmeroppfolging,
     mockSyfoveileder,
     mockMerOppfolging,
