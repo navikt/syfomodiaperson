@@ -9,6 +9,7 @@ import {
 } from "@navikt/ds-react";
 import { useGetVeilederBrukerKnytning } from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
 import {
+  useAktivVeilederinfoQuery,
   useVeiledereForValgtEnhetQuery,
   useVeilederInfoQuery,
 } from "@/data/veilederinfo/veilederinfoQueryHooks";
@@ -46,10 +47,10 @@ interface VeilederNavnProps {
 }
 
 function VeilederNavn({ tildeltVeilederident }: VeilederNavnProps) {
-  const veilederInfoQuery = useVeilederInfoQuery(tildeltVeilederident);
-  const veilederInfo = veilederInfoQuery.data;
+  const { isLoading, data: veilederInfo } =
+    useVeilederInfoQuery(tildeltVeilederident);
 
-  return veilederInfoQuery.isSuccess ? (
+  return !isLoading ? (
     <span>
       {veilederInfo
         ? `${veilederInfo?.fulltNavn()} (${tildeltVeilederident})`
@@ -65,7 +66,12 @@ interface ChangeTildeltVeilederModalProps {
   handleClose: () => void;
 }
 
-const toVeilederOptions = (veiledere: Veileder[]) => {
+const toVeilederOption = (veileder: Veileder) => ({
+  value: veileder.ident,
+  label: `${veileder.etternavn}, ${veileder.fornavn}`,
+});
+
+const toVeilederOptions = (veiledere: Veileder[], aktivVeileder: Veileder) => {
   const sortedVeiledere = veiledere.sort((veilederA, veilederB) => {
     const etternavn1 = veilederA.etternavn.toLowerCase();
     const etternavn2 = veilederB.etternavn.toLowerCase();
@@ -77,10 +83,12 @@ const toVeilederOptions = (veiledere: Veileder[]) => {
       : etternavn1.localeCompare(etternavn2);
   });
 
-  return sortedVeiledere.map((veileder) => ({
-    value: veileder.ident,
-    label: `${veileder.etternavn}, ${veileder.fornavn}`,
-  }));
+  return [
+    toVeilederOption(aktivVeileder),
+    ...sortedVeiledere
+      .filter((veileder) => veileder.ident !== aktivVeileder.ident)
+      .map(toVeilederOption),
+  ];
 };
 
 const StyledCombobox = styled(UNSAFE_Combobox)`
@@ -95,6 +103,8 @@ function ChangeTildeltVeilederModal({
 }: ChangeTildeltVeilederModalProps) {
   const [isError, setIsError] = useState(false);
   const { valgtEnhet } = useValgtEnhet();
+  const { data: aktivVeileder, isLoading: henterAktivVeileder } =
+    useAktivVeilederinfoQuery();
   const tildelVeileder = useTildelVeileder();
   const [selectedVeilederIdent, setSelectedVeilederIdent] = useState<
     string | undefined
@@ -105,7 +115,11 @@ function ChangeTildeltVeilederModal({
     data: veiledere,
   } = useVeiledereForValgtEnhetQuery();
 
-  const options = toVeilederOptions(veiledere || []);
+  const henterVeilederData = henterAktivVeileder || henterVeiledere;
+  const harVeiledere = !!veiledere && !!aktivVeileder;
+  const options = harVeiledere
+    ? toVeilederOptions(veiledere, aktivVeileder)
+    : [];
 
   const selectedOptions = () => {
     const selectedOption = options.find(
@@ -160,7 +174,7 @@ function ChangeTildeltVeilederModal({
         </Alert>
         <StyledCombobox
           shouldAutocomplete
-          isLoading={henterVeiledere}
+          isLoading={henterVeilederData}
           label={`${texts.modal.combobox.label} ${valgtEnhet}`}
           description={
             <>

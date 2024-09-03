@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useValgtEnhet } from "@/context/ValgtEnhetContext";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { SYFOOVERSIKTSRV_PERSONTILDELING_ROOT } from "@/apiConstants";
 import { post } from "@/api/axios";
@@ -7,20 +6,16 @@ import { veilederBrukerKnytningQueryKeys } from "@/data/veilederbrukerknytning/u
 
 export const useTildelVeileder = () => {
   const personident = useValgtPersonident();
-  const { valgtEnhet } = useValgtEnhet();
   const queryClient = useQueryClient();
 
-  const path = `${SYFOOVERSIKTSRV_PERSONTILDELING_ROOT}/registrer`;
+  const path = `${SYFOOVERSIKTSRV_PERSONTILDELING_ROOT}/personer/single`;
   const postTildelVeileder = (veilederIdent: string) => {
     const veilederBrukerKnytning: VeilederBrukerKnytning = {
       veilederIdent: veilederIdent,
       fnr: personident,
-      enhet: valgtEnhet,
     };
 
-    return post(path, {
-      tilknytninger: [veilederBrukerKnytning],
-    });
+    return post(path, veilederBrukerKnytning);
   };
 
   return useMutation({
@@ -37,5 +32,4 @@ export const useTildelVeileder = () => {
 interface VeilederBrukerKnytning {
   veilederIdent: string;
   fnr: string;
-  enhet: string;
 }
