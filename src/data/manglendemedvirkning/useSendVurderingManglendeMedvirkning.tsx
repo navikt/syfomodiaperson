@@ -12,11 +12,11 @@ export function useSendVurderingManglendeMedvirkning() {
   const personident = useValgtPersonident();
   const queryClient = useQueryClient();
   const path = `${ISMANGLENDEMEDVIRKNING_ROOT}/manglende-medvirkning/vurderinger`;
-  const postForhandsvarsel = (forhandsvarsel: NewVurderingRequestDTO) =>
-    post<VurderingResponseDTO>(path, forhandsvarsel);
+  const postVurdering = (vurdering: NewVurderingRequestDTO) =>
+    post<VurderingResponseDTO>(path, vurdering);
 
   return useMutation({
-    mutationFn: postForhandsvarsel,
+    mutationFn: postVurdering,
     onSuccess: (data: VurderingResponseDTO) => {
       queryClient.setQueryData(
         manglendeMedvirkningQueryKeys.manglendeMedvirkning(personident),

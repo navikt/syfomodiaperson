@@ -12,7 +12,7 @@ export const ISDIALOGMELDING_ROOT = "/isdialogmelding/api/v1";
 export const ISFRISKTILARBEID_ROOT = "/isfrisktilarbeid/api/internad/v1";
 export const ISHUSKELAPP_ROOT = "/ishuskelapp/api/internad/v1";
 export const ISMANGLENDEMEDVIRKNING_ROOT =
-  "ismanglendemedvirkning/api/internad/v1";
+  "/ismanglendemedvirkning/api/internad/v1";
 export const ISMEROPPFOLGING_ROOT = "/ismeroppfolging/api/internad/v1";
 export const ISNARMESTELEDER_ROOT = "/isnarmesteleder/api/v1";
 export const ISOPPFOLGINGSTILFELLE_ROOT =
