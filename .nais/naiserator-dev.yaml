@@ -66,6 +66,7 @@ spec:
         - application: isdialogmotekandidat
         - application: ishuskelapp
         - application: isfrisktilarbeid
+        - application: ismanglendemedvirkning
         - application: ismeroppfolging
         - application: isnarmesteleder
         - application: isoppfolgingstilfelle
@@ -229,3 +230,7 @@ spec:
       value: "dev-fss.pto.veilarboppfolging"
     - name: VEILARBOPPFOLGING_HOST
       value: "https://veilarboppfolging.dev-fss-pub.nais.io"
+    - name: ISMANGLENDEMEDVIRKNING_AAD_APP_CLIENT_ID
+      value: "dev-gcp.teamsykefravr.ismanglendemedvirkning"
+    - name: ISMANGLENDEMEDVIRKNING_HOST
+      value: "http://ismanglendemedvirkning"
