@@ -19,10 +19,9 @@ export const mockSyfooversiktsrv = (server: any) => {
   );
 
   server.post(
-    `${SYFOOVERSIKTSRV_PERSONTILDELING_ROOT}/registrer`,
+    `${SYFOOVERSIKTSRV_PERSONTILDELING_ROOT}/personer/single`,
     (req: express.Request, res: express.Response) => {
-      const body = req.body;
-      const { veilederIdent } = body.tilknytninger[0];
+      const { veilederIdent } = req.body;
       veilederBrukerKnytningMock = {
         ...veilederBrukerKnytningMock,
         tildeltVeilederident: veilederIdent,
