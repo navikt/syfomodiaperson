@@ -47,10 +47,10 @@ interface VeilederNavnProps {
 }
 
 function VeilederNavn({ tildeltVeilederident }: VeilederNavnProps) {
-  const veilederInfoQuery = useVeilederInfoQuery(tildeltVeilederident);
-  const veilederInfo = veilederInfoQuery.data;
+  const { isLoading, data: veilederInfo } =
+    useVeilederInfoQuery(tildeltVeilederident);
 
-  return veilederInfoQuery.isSuccess ? (
+  return !isLoading ? (
     <span>
       {veilederInfo
         ? `${veilederInfo?.fulltNavn()} (${tildeltVeilederident})`
