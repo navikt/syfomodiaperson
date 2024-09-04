@@ -392,6 +392,15 @@ export const auth = {
       name: "VEILARBOPPFOLGING_HOST",
     }),
   },
+  ismanglendemedvirkning: {
+    applicationName: "ismanglendemedvirkning",
+    clientId: envVar({
+      name: "ISMANGLENDEMEDVIRKNING_AAD_APP_CLIENT_ID",
+    }),
+    host: envVar({
+      name: "ISMANGLENDEMEDVIRKNING_HOST",
+    }),
+  },
 };
 
 export const redis = {

@@ -669,6 +669,24 @@ export const setupProxy = (
   );
 
   router.use(
+    "/ismanglendemedvirkning/*",
+    (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) => {
+      proxyOnBehalfOf(
+        req,
+        res,
+        next,
+        authClient,
+        issuer,
+        Config.auth.ismanglendemedvirkning
+      );
+    }
+  );
+
+  router.use(
     "/internarbeidsflatedecorator",
     proxy(Config.auth.internarbeidsflatedecoratorHost, {
       https: true,
