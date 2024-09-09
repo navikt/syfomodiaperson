@@ -3,6 +3,7 @@ import {
   AktivitetskravVurderingDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import dayjs from "dayjs";
 
 export const oppfolgingstilfelleForAktivitetskrav = (
   aktivitetskrav: AktivitetskravDTO,
@@ -27,7 +28,9 @@ export const isExpiredForhandsvarsel = (
   vurdering: AktivitetskravVurderingDTO
 ): boolean => {
   if (vurdering.varsel?.svarfrist) {
-    return new Date(vurdering.varsel.svarfrist) <= new Date();
+    const svarfrist = dayjs(vurdering.varsel.svarfrist);
+    const today = dayjs(new Date());
+    return svarfrist.isBefore(today, "date");
   }
 
   return false;
