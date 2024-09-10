@@ -400,6 +400,7 @@ export const auth = {
     host: envVar({
       name: "ISMANGLENDEMEDVIRKNING_HOST",
     }),
+    removePathPrefix: true,
   },
 };
 
