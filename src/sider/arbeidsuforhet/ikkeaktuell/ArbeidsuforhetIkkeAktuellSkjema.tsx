@@ -67,7 +67,7 @@ export const ArbeidsuforhetIkkeAktuellSkjema = () => {
   };
 
   return (
-    <Box background="surface-default" padding="4" className="mb-2">
+    <Box background="surface-default" padding="6" className="mb-2">
       <form onSubmit={handleSubmit(submit)} className="[&>*]:mb-4">
         <Heading level="2" size="medium">
           {texts.title}
