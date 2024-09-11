@@ -86,6 +86,10 @@ const toVeilederOptions = (veiledere: Veileder[], aktivVeileder: Veileder) => {
   return [
     toVeilederOption(aktivVeileder),
     ...sortedVeiledere
+      .filter(
+        (veileder) =>
+          veileder.fornavn.length > 0 && veileder.etternavn.length > 0
+      )
       .filter((veileder) => veileder.ident !== aktivVeileder.ident)
       .map(toVeilederOption),
   ];
@@ -101,6 +105,7 @@ function ChangeTildeltVeilederModal({
   open,
   handleClose,
 }: ChangeTildeltVeilederModalProps) {
+  const [searchText, setSearchText] = useState("");
   const [isError, setIsError] = useState(false);
   const { valgtEnhet } = useValgtEnhet();
   const { data: aktivVeileder, isLoading: henterAktivVeileder } =
@@ -120,6 +125,9 @@ function ChangeTildeltVeilederModal({
   const options = harVeiledere
     ? toVeilederOptions(veiledere, aktivVeileder)
     : [];
+  const filteredOptions = options.filter((option) =>
+    option.label.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   const selectedOptions = () => {
     const selectedOption = options.find(
@@ -173,7 +181,8 @@ function ChangeTildeltVeilederModal({
           {texts.modal.alert}
         </Alert>
         <StyledCombobox
-          shouldAutocomplete
+          onChange={(event) => setSearchText(event?.target.value || "")}
+          filteredOptions={filteredOptions}
           isLoading={henterVeilederData}
           label={`${texts.modal.combobox.label} ${valgtEnhet}`}
           description={
