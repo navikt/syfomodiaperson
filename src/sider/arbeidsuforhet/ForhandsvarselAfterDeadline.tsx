@@ -1,6 +1,6 @@
 import React from "react";
 import { useArbeidsuforhetVurderingQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
-import { BodyShort, Box, Detail, Heading } from "@navikt/ds-react";
+import { BodyShort, Box, Heading, HStack } from "@navikt/ds-react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { BellIcon } from "@navikt/aksel-icons";
 import { ArbeidsuforhetButtons } from "@/sider/arbeidsuforhet/ArbeidsuforhetButtons";
@@ -11,25 +11,35 @@ const texts = {
     `Fristen for forhåndsvarselet som ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
       sentDate
     )} er gått ut. Trykk på Innstilling om avslag-knappen hvis vilkårene i § 8-4 ikke er oppfylt og rett til videre sykepenger skal avslås.`,
+  ikkeAktuell:
+    "Velg Ikke aktuell-knappen hvis personen har blitt friskmeldt eller fått vedtak om § 8-5 Friskmelding til arbeidsformidling etter at forhåndsvarselet ble sendt ut.",
+  frist: "Fristen var: ",
   seSendtVarsel: "Se sendt varsel",
 };
 
 export const ForhandsvarselAfterDeadline = () => {
   const { data } = useArbeidsuforhetVurderingQuery();
   const forhandsvarsel = data[0];
+  const frist = forhandsvarsel?.varsel?.svarfrist;
 
   return (
-    <Box background="surface-default" padding="4" className="mb-2 [&>*]:mb-4">
-      <div className="flex items-center">
+    <Box
+      background="surface-default"
+      padding="6"
+      className="flex flex-col gap-4"
+    >
+      <HStack align="center">
         <Heading level="2" size="medium">
           {texts.title}
         </Heading>
-        <Detail weight="semibold" className="ml-auto mr-4 text-lg">
-          {tilLesbarDatoMedArUtenManedNavn(forhandsvarsel.varsel?.svarfrist)}
-        </Detail>
+        <Box className="flex ml-auto mr-2 gap-1">
+          <BodyShort weight="semibold">{texts.frist}</BodyShort>
+          <BodyShort>{tilLesbarDatoMedArUtenManedNavn(frist)}</BodyShort>
+        </Box>
         <BellIcon title="bjelleikon" fontSize="2em" />
-      </div>
+      </HStack>
       <BodyShort>{texts.passertAlert(forhandsvarsel.createdAt)}</BodyShort>
+      <BodyShort>{texts.ikkeAktuell}</BodyShort>
       <ArbeidsuforhetButtons isBeforeForhandsvarselDeadline={false} />
     </Box>
   );

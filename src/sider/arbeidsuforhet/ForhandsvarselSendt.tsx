@@ -1,7 +1,7 @@
 import React from "react";
 import { useArbeidsuforhetVurderingQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { ForhandsvarselBeforeDeadline } from "@/sider/arbeidsuforhet/ForhandsvarselBeforeDeadline";
-import { ForhandsvarselAfterDeadline } from "@/sider/arbeidsuforhet/ForhandsvarseAfterDeadline";
+import { ForhandsvarselAfterDeadline } from "@/sider/arbeidsuforhet/ForhandsvarselAfterDeadline";
 
 export const ForhandsvarselSendt = () => {
   const { data } = useArbeidsuforhetVurderingQuery();

@@ -64,9 +64,16 @@ describe("ForhandsvarselSendt", () => {
       expect(screen.getByText("Fristen går ut:")).to.exist;
       expect(
         screen.getByText(
-          "Dersom du har mottatt nye opplysninger og vurdert at bruker likevel oppfyller § 8-4, klikker du på Oppfylt-knappen. Du kan ikke avslå før fristen er gått ut."
+          "Velg Ikke aktuell-knappen hvis personen har blitt friskmeldt eller fått vedtak om § 8-5 Friskmelding til arbeidsformidling etter at forhåndsvarselet ble sendt ut."
         )
       ).to.exist;
+      expect(
+        screen.getByText(
+          "Dersom du har mottatt nye opplysninger og vurdert at bruker likevel oppfyller § 8-4, klikker du på Oppfylt-knappen."
+        )
+      ).to.exist;
+      expect(screen.getByText("Du kan ikke avslå før fristen er gått ut.")).to
+        .exist;
       expect(screen.getByRole("img", { name: "klokkeikon" })).to.exist;
       expect(
         screen.getByRole("button", { name: "Innstilling om avslag" })
@@ -77,16 +84,22 @@ describe("ForhandsvarselSendt", () => {
 
     it("show ForhandsvarselAfterDeadline when svarfrist is today (expired)", () => {
       const createdAt = addWeeks(new Date(), -3);
-      const forhandsvarselBeforeFrist = createForhandsvarsel({
+      const forhandsvarselAfterFrist = createForhandsvarsel({
         createdAt: createdAt,
         svarfrist: new Date(),
       });
-      const vurderinger = [forhandsvarselBeforeFrist];
+      const vurderinger = [forhandsvarselAfterFrist];
       mockArbeidsuforhetVurderinger(vurderinger);
 
       renderForhandsvarselSendt();
 
       expect(screen.getByText("Fristen er gått ut")).to.exist;
+      expect(screen.getByText("Fristen var:")).to.exist;
+      expect(
+        screen.getByText(
+          "Velg Ikke aktuell-knappen hvis personen har blitt friskmeldt eller fått vedtak om § 8-5 Friskmelding til arbeidsformidling etter at forhåndsvarselet ble sendt ut."
+        )
+      ).to.exist;
       expect(screen.getByText(tilLesbarDatoMedArUtenManedNavn(new Date()))).to
         .exist;
       expect(screen.getByRole("img", { name: "bjelleikon" })).to.exist;
