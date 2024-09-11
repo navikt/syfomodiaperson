@@ -3,14 +3,43 @@ import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Sidetopp from "@/components/Sidetopp";
 import Side from "@/sider/Side";
 import SideLaster from "@/components/SideLaster";
-import ForhandsvarselSide from "@/sider/manglendemedvirkning/ForhandsvarselSide";
 import { useManglendeMedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 
 const texts = {
   title: "Manglende medvirkning",
 };
 
-export default function ManglendeMedvirkningSide(): ReactElement {
+export function ManglendeMedvirkningOppfyltSide() {
+  return (
+    <ManglendeMedvirkningSide>
+      <div>Oppfylt</div>
+    </ManglendeMedvirkningSide>
+  );
+}
+
+export function ManglendeMedvirkningStansSide() {
+  return (
+    <ManglendeMedvirkningSide>
+      <div>Stans</div>
+    </ManglendeMedvirkningSide>
+  );
+}
+
+export function ManglendeMedvirkningIkkeAktuellSide() {
+  return (
+    <ManglendeMedvirkningSide>
+      <div>Ikke Aktuell</div>
+    </ManglendeMedvirkningSide>
+  );
+}
+
+interface Props {
+  children: ReactElement;
+}
+
+export default function ManglendeMedvirkningSide({
+  children,
+}: Props): ReactElement {
   const { isLoading, isError } = useManglendeMedvirkningVurderingQuery();
   return (
     <Side
@@ -19,7 +48,7 @@ export default function ManglendeMedvirkningSide(): ReactElement {
     >
       <Sidetopp tittel={texts.title} />
       <SideLaster henter={isLoading} hentingFeilet={isError}>
-        <ForhandsvarselSide />
+        {children}
       </SideLaster>
     </Side>
   );
