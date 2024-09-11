@@ -39,7 +39,12 @@ import DialogmoteEndreReferatContainer from "@/sider/dialogmoter/components/refe
 import { Arbeidsuforhet } from "@/sider/arbeidsuforhet/Arbeidsuforhet";
 import { ArbeidsuforhetIkkeAktuellSide } from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuellSide";
 import SenOppfolgingSide from "@/sider/senoppfolging/SenOppfolgingSide";
-import ManglendeMedvirkningSide from "@/sider/manglendemedvirkning/ManglendeMedvirkningSide";
+import ManglendeMedvirkningSide, {
+  ManglendeMedvirkningIkkeAktuellSide,
+  ManglendeMedvirkningOppfyltSide,
+  ManglendeMedvirkningStansSide,
+} from "@/sider/manglendemedvirkning/ManglendeMedvirkningSide";
+import ManglendeMedvirkning from "@/sider/manglendemedvirkning/ManglendeMedvirkning";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -54,6 +59,9 @@ export const arbeidsuforhetPath = `${appRoutePath}/arbeidsuforhet`;
 export const frisktilarbeidPath = `${appRoutePath}/frisktilarbeid`;
 export const senOppfolgingPath = `${appRoutePath}/senoppfolging`;
 export const manglendeMedvirkningPath = `${appRoutePath}/manglendemedvirkning`;
+export const manglendeMedvirkningOppfyltPath = `${appRoutePath}/manglendemedvirkning/oppfylt`;
+export const manglendeMedvirkningStansPath = `${appRoutePath}/manglendemedvirkning/stans`;
+export const manglendeMedvirkningIkkeAktuellPath = `${appRoutePath}/manglendemedvirkning/ikkeaktuell`;
 
 const AktivBrukerRouter = (): ReactElement => {
   Amplitude.logViewportAndScreenSize();
@@ -153,7 +161,23 @@ const AktivBrukerRouter = (): ReactElement => {
           <Route path={senOppfolgingPath} element={<SenOppfolgingSide />} />
           <Route
             path={manglendeMedvirkningPath}
-            element={<ManglendeMedvirkningSide />}
+            element={
+              <ManglendeMedvirkningSide>
+                <ManglendeMedvirkning />
+              </ManglendeMedvirkningSide>
+            }
+          />
+          <Route
+            path={manglendeMedvirkningOppfyltPath}
+            element={<ManglendeMedvirkningOppfyltSide />}
+          />
+          <Route
+            path={manglendeMedvirkningStansPath}
+            element={<ManglendeMedvirkningStansSide />}
+          />
+          <Route
+            path={manglendeMedvirkningIkkeAktuellPath}
+            element={<ManglendeMedvirkningIkkeAktuellSide />}
           />
           <Route
             path={`${appRoutePath}/sykepengesoknader/:sykepengesoknadId`}

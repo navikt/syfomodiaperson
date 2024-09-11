@@ -3,14 +3,10 @@ import { ISMANGLENDEMEDVIRKNING_ROOT } from "../../src/apiConstants";
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 
 import { generateUUID } from "../../src/utils/uuidUtils";
-import {
-  ARBEIDSTAKER_DEFAULT,
-  VEILEDER_DEFAULT,
-} from "../common/mockConstants";
+import { VEILEDER_DEFAULT } from "../common/mockConstants";
 import {
   NewVurderingRequestDTO,
   VurderingResponseDTO,
-  VurderingType,
 } from "../../src/data/manglendemedvirkning/manglendeMedvirkningTypes";
 
 let manglendeMedvirkningVurderinger: VurderingResponseDTO[] = [];
@@ -56,18 +52,4 @@ export const mockIsmanglendemedvirkning = (server: any) => {
       res.status(201).send(JSON.stringify(sentVurdering));
     }
   );
-};
-
-const mockVurdering = {
-  uuid: generateUUID(),
-  personident: ARBEIDSTAKER_DEFAULT.personIdent,
-  createdAt: new Date(),
-  type: VurderingType.FORHANDSVARSEL,
-  begrunnelse: "Dette er en begrunnelse",
-  document: [],
-  varsel: {
-    uuid: generateUUID(),
-    createdAt: new Date(),
-    svarfrist: new Date(),
-  },
 };

@@ -37,7 +37,7 @@ interface SkjemaValues {
   begrunnelse: string;
 }
 
-export default function ForhandsvarselSide() {
+export default function ForhandsvarselSkjema() {
   const personident = useValgtPersonident();
   const sendForhandsvarsel = useSendVurderingManglendeMedvirkning();
   const {
