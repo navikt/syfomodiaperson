@@ -5,21 +5,30 @@ import {
   createParagraphWithTitle,
 } from "@/utils/documentComponentUtils";
 import { useDocumentComponents } from "@/hooks/useDocumentComponents";
-import { getForhandsvarselManglendeMedvirkningTexts } from "@/data/manglendemedvirkning/manglendeMedvirkningDocumentTexts";
+import {
+  getForhandsvarselManglendeMedvirkningTexts,
+  getOppfyltManglendeMedvirkningTexts,
+} from "@/data/manglendemedvirkning/manglendeMedvirkningDocumentTexts";
 
 type ForhandsvarselDocumentValues = {
   begrunnelse: string;
   frist: Date;
 };
 
+type OppfyltDocumentValues = {
+  begrunnelse: string;
+  forhandsvarselSendtDato: Date;
+};
+
 interface Documents {
   getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
   ): DocumentComponentDto[];
+  getOppfyltDocument(values: OppfyltDocumentValues): DocumentComponentDto[];
 }
 
 export function useManglendeMedvirkningVurderingDocument(): Documents {
-  const { getHilsen } = useDocumentComponents();
+  const { getHilsen, getVurdertAv, getIntroGjelder } = useDocumentComponents();
 
   function getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
@@ -58,7 +67,26 @@ export function useManglendeMedvirkningVurderingDocument(): Documents {
     return documentComponents;
   }
 
+  function getOppfyltDocument({
+    begrunnelse,
+    forhandsvarselSendtDato,
+  }: OppfyltDocumentValues): DocumentComponentDto[] {
+    const oppfyltTexts = getOppfyltManglendeMedvirkningTexts(
+      forhandsvarselSendtDato
+    );
+    return [
+      createHeaderH1(oppfyltTexts.title),
+      getIntroGjelder(),
+      createParagraph(oppfyltTexts.previousForhandsvarsel),
+      createParagraph(oppfyltTexts.forAFaSykepenger),
+      createParagraph(begrunnelse),
+      createParagraph(oppfyltTexts.viHarBruktLoven),
+      getVurdertAv(),
+    ];
+  }
+
   return {
     getForhandsvarselDocument,
+    getOppfyltDocument,
   };
 }

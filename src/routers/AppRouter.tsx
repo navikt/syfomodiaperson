@@ -162,23 +162,32 @@ const AktivBrukerRouter = (): ReactElement => {
           <Route
             path={manglendeMedvirkningPath}
             element={
-              <ManglendeMedvirkningSide>
-                <ManglendeMedvirkning />
-              </ManglendeMedvirkningSide>
+              <NotificationProvider>
+                <Outlet />
+              </NotificationProvider>
             }
-          />
-          <Route
-            path={manglendeMedvirkningOppfyltPath}
-            element={<ManglendeMedvirkningOppfyltSide />}
-          />
-          <Route
-            path={manglendeMedvirkningStansPath}
-            element={<ManglendeMedvirkningStansSide />}
-          />
-          <Route
-            path={manglendeMedvirkningIkkeAktuellPath}
-            element={<ManglendeMedvirkningIkkeAktuellSide />}
-          />
+          >
+            <Route
+              path={manglendeMedvirkningPath}
+              element={
+                <ManglendeMedvirkningSide>
+                  <ManglendeMedvirkning />
+                </ManglendeMedvirkningSide>
+              }
+            />
+            <Route
+              path={manglendeMedvirkningOppfyltPath}
+              element={<ManglendeMedvirkningOppfyltSide />}
+            />
+            <Route
+              path={manglendeMedvirkningStansPath}
+              element={<ManglendeMedvirkningStansSide />}
+            />
+            <Route
+              path={manglendeMedvirkningIkkeAktuellPath}
+              element={<ManglendeMedvirkningIkkeAktuellSide />}
+            />
+          </Route>
           <Route
             path={`${appRoutePath}/sykepengesoknader/:sykepengesoknadId`}
             element={<SykepengesoknadSide />}

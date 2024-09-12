@@ -2,8 +2,8 @@ import React from "react";
 import { Alert, BodyShort, Box, Heading, HStack } from "@navikt/ds-react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { ClockIcon } from "@navikt/aksel-icons";
-import { useManglendeMedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import { ManglendeMedvirkningButtons } from "@/sider/manglendemedvirkning/ManglendeMedvirkningButtons";
+import { VurderingResponseDTO } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 
 const texts = {
   title: "Venter på svar fra bruker",
@@ -22,10 +22,14 @@ const texts = {
   seSendtVarsel: "Se sendt varsel",
 };
 
-export default function ForhandsvarselBeforeDeadline() {
-  const { data } = useManglendeMedvirkningVurderingQuery();
-  const forhandsvarsel = data[0];
-  const frist = forhandsvarsel?.varsel?.svarfrist;
+interface Props {
+  forhandsvarsel: VurderingResponseDTO;
+}
+
+export default function ForhandsvarselBeforeDeadline({
+  forhandsvarsel,
+}: Props) {
+  const frist = forhandsvarsel.varsel?.svarfrist;
 
   return (
     <Box>

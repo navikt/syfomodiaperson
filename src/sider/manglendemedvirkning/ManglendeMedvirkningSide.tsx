@@ -4,6 +4,7 @@ import Sidetopp from "@/components/Sidetopp";
 import Side from "@/sider/Side";
 import SideLaster from "@/components/SideLaster";
 import { useManglendeMedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
+import OppfyltSide from "@/sider/manglendemedvirkning/oppfylt/OppfyltSide";
 
 const texts = {
   title: "Manglende medvirkning",
@@ -12,7 +13,7 @@ const texts = {
 export function ManglendeMedvirkningOppfyltSide() {
   return (
     <ManglendeMedvirkningSide>
-      <div>Oppfylt</div>
+      <OppfyltSide />
     </ManglendeMedvirkningSide>
   );
 }
