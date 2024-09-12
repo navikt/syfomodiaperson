@@ -5,7 +5,7 @@ export interface NewVurderingRequestDTO {
   vurderingType: VurderingType;
   begrunnelse: string;
   document: DocumentComponentDto[];
-  varselSvarfrist: Date;
+  varselSvarfrist?: Date;
 }
 
 export interface VurderingResponseDTO {

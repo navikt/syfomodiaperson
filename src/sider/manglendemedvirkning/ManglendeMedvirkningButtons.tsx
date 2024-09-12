@@ -8,7 +8,7 @@ import {
 import React from "react";
 
 const texts = {
-  avslag: "Innstilling om stans",
+  stans: "Innstilling om stans",
   oppfylt: "Oppfylt",
   ikkeAktuell: "Ikke aktuell",
 };
@@ -23,11 +23,11 @@ export const ManglendeMedvirkningButtons = ({
   <HStack gap="4">
     {isBeforeForhandsvarselDeadline ? (
       <Button variant="primary" disabled>
-        {texts.avslag}
+        {texts.stans}
       </Button>
     ) : (
       <Button as={Link} to={manglendeMedvirkningStansPath} variant="primary">
-        {texts.avslag}
+        {texts.stans}
       </Button>
     )}
     <Button as={Link} to={manglendeMedvirkningOppfyltPath} variant="secondary">

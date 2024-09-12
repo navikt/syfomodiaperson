@@ -31,3 +31,9 @@ export function getForhandsvarselManglendeMedvirkningTexts(frist: Date) {
     },
   };
 }
+
+export function getStansTexts() {
+  return {
+    header: "NAV har stanset sykepengene dine",
+  };
+}

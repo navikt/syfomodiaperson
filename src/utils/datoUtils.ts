@@ -297,3 +297,15 @@ export const addDays = (date: Date, numberOfDays: number): Date => {
 export const getWeeksBetween = (date1, date2): number => {
   return Math.abs(dayjs(date1).diff(date2, "week"));
 };
+
+export const isExpiredForhandsvarsel = (
+  svarfrist: Date | undefined
+): boolean => {
+  if (svarfrist) {
+    const frist = dayjs(svarfrist);
+    const today = dayjs(new Date());
+    return frist.isBefore(today, "date");
+  }
+
+  return false;
+};

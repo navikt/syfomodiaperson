@@ -5,7 +5,11 @@ import {
   createParagraphWithTitle,
 } from "@/utils/documentComponentUtils";
 import { useDocumentComponents } from "@/hooks/useDocumentComponents";
-import { getForhandsvarselManglendeMedvirkningTexts } from "@/data/manglendemedvirkning/manglendeMedvirkningDocumentTexts";
+import {
+  getForhandsvarselManglendeMedvirkningTexts,
+  getStansTexts,
+} from "@/data/manglendemedvirkning/manglendeMedvirkningDocumentTexts";
+import { StansSkjemaValues } from "@/sider/manglendemedvirkning/stans/StansSkjema";
 
 type ForhandsvarselDocumentValues = {
   begrunnelse: string;
@@ -16,6 +20,8 @@ interface Documents {
   getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
   ): DocumentComponentDto[];
+
+  getStansDocument(values: StansSkjemaValues): DocumentComponentDto[];
 }
 
 export function useManglendeMedvirkningVurderingDocument(): Documents {
@@ -58,7 +64,16 @@ export function useManglendeMedvirkningVurderingDocument(): Documents {
     return documentComponents;
   }
 
+  function getStansDocument(values: StansSkjemaValues): DocumentComponentDto[] {
+    const stansTexts = getStansTexts();
+    return [
+      createHeaderH1(stansTexts.header),
+      createParagraph(values.begrunnelse),
+    ];
+  }
+
   return {
     getForhandsvarselDocument,
+    getStansDocument,
   };
 }
