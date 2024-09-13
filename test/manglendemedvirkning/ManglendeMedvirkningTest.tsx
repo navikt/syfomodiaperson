@@ -1,8 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  ARBEIDSTAKER_DEFAULT,
-  VEILEDER_DEFAULT,
-} from "../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
 import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithMockData } from "../testQueryClient";
 import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
@@ -12,7 +9,7 @@ import { navEnhet } from "../dialogmote/testData";
 import React, { ReactNode } from "react";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
 import {
-  NewVurderingRequestDTO,
+  NewForhandsvarselVurderingRequestDTO,
   VurderingResponseDTO,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
@@ -27,6 +24,7 @@ import { manglendeMedvirkningPath } from "@/routers/AppRouter";
 import { getSendForhandsvarselDocument } from "./vurderingDocuments";
 import ManglendeMedvirkning from "@/sider/manglendemedvirkning/ManglendeMedvirkning";
 import { generateUUID } from "@/utils/uuidUtils";
+import { defaultForhandsvarselVurdering } from "./manglendeMedvirkningTestData";
 
 let queryClient: QueryClient;
 
@@ -52,21 +50,6 @@ function mockVurdering(vurdering?: VurderingResponseDTO) {
     () => (vurdering ? [vurdering] : [])
   );
 }
-
-const defaultVurdering: VurderingResponseDTO = {
-  uuid: generateUUID(),
-  personident: ARBEIDSTAKER_DEFAULT.personIdent,
-  createdAt: new Date(),
-  veilederident: VEILEDER_DEFAULT.ident,
-  vurderingType: VurderingType.FORHANDSVARSEL,
-  begrunnelse: "Dette er en begrunnelse",
-  document: [],
-  varsel: {
-    uuid: generateUUID(),
-    createdAt: new Date(),
-    svarfrist: addWeeks(new Date(), 3),
-  },
-};
 
 describe("Manglendemedvirkning", () => {
   beforeEach(() => {
@@ -117,7 +100,7 @@ describe("Manglendemedvirkning", () => {
 
       await clickButton("Send");
 
-      const expectedRequestBody: NewVurderingRequestDTO = {
+      const expectedRequestBody: NewForhandsvarselVurderingRequestDTO = {
         personident: ARBEIDSTAKER_DEFAULT.personIdent,
         vurderingType: VurderingType.FORHANDSVARSEL,
         begrunnelse: begrunnelse,
@@ -141,7 +124,7 @@ describe("Manglendemedvirkning", () => {
 
   describe("ForhandsvarselSendt", () => {
     it("viser ForhandsvarselBeforeDeadline når svarfrist ikke utgått", () => {
-      mockVurdering(defaultVurdering);
+      mockVurdering(defaultForhandsvarselVurdering);
 
       renderManglendeMedvirkning(
         <ManglendeMedvirkning />,
@@ -181,7 +164,7 @@ describe("Manglendemedvirkning", () => {
       const createdAt = addWeeks(new Date(), -3);
       const svarfrist = addDays(new Date(), -1);
       const forhandsvarselAfterFrist: VurderingResponseDTO = {
-        ...defaultVurdering,
+        ...defaultForhandsvarselVurdering,
         createdAt: createdAt,
         varsel: {
           uuid: generateUUID(),

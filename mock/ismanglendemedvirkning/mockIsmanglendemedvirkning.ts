@@ -5,8 +5,8 @@ import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import { generateUUID } from "../../src/utils/uuidUtils";
 import { VEILEDER_DEFAULT } from "../common/mockConstants";
 import {
-  NewVurderingRequestDTO,
   VurderingResponseDTO,
+  NewVurderingRequestDTO,
 } from "../../src/data/manglendemedvirkning/manglendeMedvirkningTypes";
 
 let manglendeMedvirkningVurderinger: VurderingResponseDTO[] = [];

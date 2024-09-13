@@ -26,5 +26,6 @@ export const useManglendeMedvirkningVurderingQuery = () => {
   return {
     ...query,
     data: query.data || [],
+    sisteVurdering: query.data?.[0],
   };
 };
