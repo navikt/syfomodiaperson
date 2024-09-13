@@ -9,7 +9,7 @@ import { navEnhet } from "../dialogmote/testData";
 import React, { ReactNode } from "react";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
 import {
-  NewVurderingRequestDTO,
+  NewForhandsvarselVurderingRequestDTO,
   VurderingResponseDTO,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
@@ -100,7 +100,7 @@ describe("Manglendemedvirkning", () => {
 
       await clickButton("Send");
 
-      const expectedRequestBody: NewVurderingRequestDTO = {
+      const expectedRequestBody: NewForhandsvarselVurderingRequestDTO = {
         personident: ARBEIDSTAKER_DEFAULT.personIdent,
         vurderingType: VurderingType.FORHANDSVARSEL,
         begrunnelse: begrunnelse,

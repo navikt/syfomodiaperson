@@ -3,16 +3,19 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ISMANGLENDEMEDVIRKNING_ROOT } from "@/apiConstants";
 import { post } from "@/api/axios";
 import {
-  NewVurderingRequestDTO,
+  NewForhandsvarselVurderingRequestDTO,
+  NewFinalVurderingRequestDTO,
   VurderingResponseDTO,
+  NewVurderingRequestDTO,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 
-export function useSendVurderingManglendeMedvirkning() {
+function useSendVurdering<T extends NewVurderingRequestDTO>() {
   const personident = useValgtPersonident();
   const queryClient = useQueryClient();
   const path = `${ISMANGLENDEMEDVIRKNING_ROOT}/manglende-medvirkning/vurderinger`;
-  const postVurdering = (vurdering: NewVurderingRequestDTO) =>
+
+  const postVurdering = (vurdering: T) =>
     post<VurderingResponseDTO>(path, vurdering);
 
   return useMutation({
@@ -24,4 +27,12 @@ export function useSendVurderingManglendeMedvirkning() {
       );
     },
   });
+}
+
+export function useSendVurderingManglendeMedvirkning() {
+  return useSendVurdering<NewFinalVurderingRequestDTO>();
+}
+
+export function useSendForhandsvarselManglendeMedvirkning() {
+  return useSendVurdering<NewForhandsvarselVurderingRequestDTO>();
 }

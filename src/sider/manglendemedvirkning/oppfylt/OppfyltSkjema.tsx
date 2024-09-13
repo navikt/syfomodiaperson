@@ -1,6 +1,12 @@
-import { BodyShort, Box, Button, Heading, Textarea } from "@navikt/ds-react";
+import {
+  BodyShort,
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Textarea,
+} from "@navikt/ds-react";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import { ButtonRow } from "@/components/Layout";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { Link } from "react-router-dom";
 import { manglendeMedvirkningPath } from "@/routers/AppRouter";
@@ -8,7 +14,7 @@ import React from "react";
 import { useSendVurderingManglendeMedvirkning } from "@/data/manglendemedvirkning/useSendVurderingManglendeMedvirkning";
 import { useForm } from "react-hook-form";
 import {
-  NewVurderingRequestDTO,
+  NewFinalVurderingRequestDTO,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
@@ -62,9 +68,9 @@ export default function OppfyltSkjema({ forhandsvarselSendtDato }: Props) {
       begrunnelse: values.begrunnelse,
       forhandsvarselSendtDato: forhandsvarselSendtDato,
     };
-    const vurderingRequestDTO: NewVurderingRequestDTO = {
-      personident,
+    const vurderingRequestDTO: NewFinalVurderingRequestDTO = {
       vurderingType: VurderingType.OPPFYLT,
+      personident,
       begrunnelse: values.begrunnelse,
       document: getOppfyltDocument(oppfyltDocumentProps),
     };
@@ -101,7 +107,7 @@ export default function OppfyltSkjema({ forhandsvarselSendtDato }: Props) {
           <SkjemaInnsendingFeil error={sendVurdering.error} />
         )}
         <BodyShort>{texts.bruker}</BodyShort>
-        <ButtonRow>
+        <HStack gap="4">
           <Button loading={sendVurdering.isPending} type="submit">
             {texts.buttons.save}
           </Button>
@@ -117,7 +123,7 @@ export default function OppfyltSkjema({ forhandsvarselSendtDato }: Props) {
           <Button as={Link} to={manglendeMedvirkningPath} variant="secondary">
             {texts.buttons.cancel}
           </Button>
-        </ButtonRow>
+        </HStack>
       </form>
     </Box>
   );

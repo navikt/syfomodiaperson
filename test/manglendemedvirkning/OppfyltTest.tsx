@@ -9,7 +9,7 @@ import React from "react";
 import OppfyltSide from "@/sider/manglendemedvirkning/oppfylt/OppfyltSide";
 import { manglendeMedvirkningOppfyltPath } from "@/routers/AppRouter";
 import {
-  NewVurderingRequestDTO,
+  NewFinalVurderingRequestDTO,
   VurderingResponseDTO,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
@@ -121,7 +121,7 @@ describe("Manglendemedvirkning Oppfylt", () => {
 
       await clickButton("Lagre");
 
-      const expectedRequestBody: NewVurderingRequestDTO = {
+      const expectedRequestBody: NewFinalVurderingRequestDTO = {
         personident: ARBEIDSTAKER_DEFAULT.personIdent,
         vurderingType: VurderingType.OPPFYLT,
         begrunnelse: enBegrunnelse,
