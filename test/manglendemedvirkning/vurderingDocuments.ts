@@ -110,3 +110,34 @@ export const getOppfyltDocument = (
     },
   ];
 };
+
+export const getIkkeAktuellDocument = (
+  begrunnelse: string
+): DocumentComponentDto[] => {
+  return [
+    {
+      texts: ["Vurdering av § 8-8 manglende medvirkning"],
+      type: DocumentComponentType.HEADER_H1,
+    },
+    {
+      texts: [
+        `Gjelder ${ARBEIDSTAKER_DEFAULT_FULL_NAME}, f.nr. ${ARBEIDSTAKER_DEFAULT.personIdent}`,
+      ],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [
+        "Det er vurdert at folketrygdloven § 8-8 første og tredje ledd ikke kommer til anvendelse i dette tilfellet.",
+      ],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [begrunnelse],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [`Vurdert av ${VEILEDER_DEFAULT.fulltNavn()}`],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+  ];
+};

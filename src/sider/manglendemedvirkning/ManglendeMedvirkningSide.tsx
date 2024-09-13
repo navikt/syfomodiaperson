@@ -5,6 +5,7 @@ import Side from "@/sider/Side";
 import SideLaster from "@/components/SideLaster";
 import { useManglendeMedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import OppfyltSide from "@/sider/manglendemedvirkning/oppfylt/OppfyltSide";
+import IkkeAktuellSide from "@/sider/manglendemedvirkning/ikkeaktuell/IkkeAktuellSide";
 
 const texts = {
   title: "Manglende medvirkning",
@@ -29,7 +30,7 @@ export function ManglendeMedvirkningStansSide() {
 export function ManglendeMedvirkningIkkeAktuellSide() {
   return (
     <ManglendeMedvirkningSide>
-      <div>Ikke Aktuell</div>
+      <IkkeAktuellSide />
     </ManglendeMedvirkningSide>
   );
 }
