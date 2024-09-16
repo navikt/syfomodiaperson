@@ -7,6 +7,7 @@ import {
 import { useDocumentComponents } from "@/hooks/useDocumentComponents";
 import {
   getForhandsvarselManglendeMedvirkningTexts,
+  getUnntakManglendeMedvirkningTexts,
   getIkkeAktuellManglendeMedvirkningTexts,
   getOppfyltManglendeMedvirkningTexts,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningDocumentTexts";
@@ -21,6 +22,11 @@ type OppfyltDocumentValues = {
   forhandsvarselSendtDato: Date;
 };
 
+type UnntakDocumentValues = {
+  begrunnelse: string;
+  forhandsvarselSendtDato: Date;
+};
+
 type IkkeAktuellDocumentValues = {
   begrunnelse: string;
 };
@@ -29,6 +35,9 @@ interface Documents {
   getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
   ): DocumentComponentDto[];
+
+  getUnntakDocument(values: UnntakDocumentValues): DocumentComponentDto[];
+
   getOppfyltDocument(values: OppfyltDocumentValues): DocumentComponentDto[];
   getIkkeAktuellDocument(
     values: IkkeAktuellDocumentValues
@@ -93,6 +102,23 @@ export function useManglendeMedvirkningVurderingDocument(): Documents {
     ];
   }
 
+  function getUnntakDocument(
+    values: UnntakDocumentValues
+  ): DocumentComponentDto[] {
+    const unntakTexts = getUnntakManglendeMedvirkningTexts(
+      values.forhandsvarselSendtDato
+    );
+    return [
+      createHeaderH1(unntakTexts.title),
+      getIntroGjelder(),
+      createParagraph(unntakTexts.info.p1),
+      createParagraph(unntakTexts.info.p2),
+      createParagraph(values.begrunnelse),
+      createParagraph(unntakTexts.loven),
+      getVurdertAv(),
+    ];
+  }
+
   const getIkkeAktuellDocument = ({
     begrunnelse,
   }: IkkeAktuellDocumentValues) => {
@@ -108,6 +134,7 @@ export function useManglendeMedvirkningVurderingDocument(): Documents {
 
   return {
     getForhandsvarselDocument,
+    getUnntakDocument,
     getOppfyltDocument,
     getIkkeAktuellDocument,
   };
