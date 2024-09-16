@@ -72,10 +72,12 @@ describe("Oppfolgingsoppgave", () => {
       expect(await screen.findByText(oppfolgingsoppgaveOppfogingsgrunnText)).to
         .exist;
       expect(await screen.findByText("Frist: 01.01.2030")).to.exist;
-      expect(await screen.findByRole("button", { hidden: true, name: "Endre" }))
-        .to.exist;
-      expect(await screen.findByRole("button", { hidden: true, name: "Fjern" }))
-        .to.exist;
+      expect(await screen.findByRole("button", { name: "Endre" })).to.exist;
+      expect(
+        await screen.findByRole("button", {
+          name: "Fjerner oppfølgingsoppgaven fra oversikten",
+        })
+      ).to.exist;
     });
     it("renders oppfolgingsoppgave-info", async () => {
       renderOppfolgingsoppgave();
@@ -102,8 +104,7 @@ describe("Oppfolgingsoppgave", () => {
       renderOppfolgingsoppgave();
 
       const removeButton = await screen.findByRole("button", {
-        hidden: true,
-        name: "Fjern",
+        name: "Fjerner oppfølgingsoppgaven fra oversikten",
       });
       await userEvent.click(removeButton);
 
