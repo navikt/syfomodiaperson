@@ -1,5 +1,5 @@
 import React from "react";
-import { erPreProd } from "@/utils/miljoUtil";
+import { erDev } from "@/utils/miljoUtil";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
 
 const texts = {
@@ -10,7 +10,7 @@ const texts = {
 };
 
 const EndreSykmelding = () => {
-  const env = erPreProd() ? "intern.dev" : "intern";
+  const env = erDev() ? "intern.dev" : "intern";
   const sykmeldingId = window.location.pathname.split("/")[3];
   const smregistrering = `https://sykmelding-redirect.${env}.nav.no/smr/?sykmeldingid=${sykmeldingId}`;
 

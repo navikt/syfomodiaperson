@@ -686,32 +686,6 @@ export const setupProxy = (
     }
   );
 
-  router.use(
-    "/internarbeidsflatedecorator",
-    proxy(Config.auth.internarbeidsflatedecoratorHost, {
-      https: true,
-      proxyReqPathResolver: (req: express.Request) => {
-        return `/internarbeidsflatedecorator${req.url}`;
-      },
-      proxyErrorHandler: (
-        err: any,
-        res: express.Response,
-        next: express.NextFunction
-      ) => {
-        console.log(
-          `Error in proxy for internarbeidsflatedecorator ${err.message}, ${err.code}`
-        );
-        if (err && err.code === "ECONNREFUSED") {
-          console.log("proxyErrorHandler: Got ECONNREFUSED");
-          return res
-            .status(503)
-            .send({ message: `Could not contact internarbeidsflatedecorator` });
-        }
-        next(err);
-      },
-    })
-  );
-
   return router;
 };
 

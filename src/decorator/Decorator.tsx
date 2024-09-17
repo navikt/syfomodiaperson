@@ -8,7 +8,7 @@ import { useValgtEnhet } from "@/context/ValgtEnhetContext";
 export const INTERNFLATEDECORATOR_ID = "internflatedecorator";
 
 const InternflateDecorator = NAVSPA.importer<DecoratorProps>(
-  "internarbeidsflatefs"
+  "internarbeidsflate-decorator-v3"
 );
 
 const Decorator = () => {
