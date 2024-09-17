@@ -46,3 +46,11 @@ export function getOppfyltManglendeMedvirkningTexts(
       "Vi har brukt folketrygdloven § 8-8 første og tredje ledd når vi har behandlet saken din.",
   };
 }
+
+export function getIkkeAktuellManglendeMedvirkningTexts() {
+  return {
+    title: "Vurdering av § 8-8 manglende medvirkning",
+    intro:
+      "Det er vurdert at folketrygdloven § 8-8 første og tredje ledd ikke kommer til anvendelse i dette tilfellet.",
+  };
+}
