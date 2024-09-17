@@ -1,4 +1,4 @@
-import { erPreProd } from "@/utils/miljoUtil";
+import { erDev } from "@/utils/miljoUtil";
 
 const kontrollRekke1 = [3, 7, 6, 1, 8, 9, 4, 5, 2];
 const kontrollRekke2 = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
@@ -35,7 +35,7 @@ const erGyldigSkatteetatenTestdato = (dag: number, maned: number) => {
 
 const erGyldigTestdato = (dag: number, maned: number) => {
   return (
-    erPreProd() &&
+    erDev() &&
     (erGyldigNavTestdato(dag, maned) ||
       erGyldigSkatteetatenTestdato(dag, maned))
   );

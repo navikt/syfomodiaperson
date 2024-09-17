@@ -99,10 +99,6 @@ export const auth = {
   responseMode: "query",
   tokenEndpointAuthSigningAlg: "RS256",
 
-  internarbeidsflatedecoratorHost: envVar({
-    name: "INTERNARBEIDSFLATEDECORATOR_HOST",
-  }),
-
   fastlegerest: {
     applicationName: "fastlegerest",
     clientId: envVar({
@@ -250,6 +246,7 @@ export const auth = {
     host: envVar({
       name: "MODIACONTEXTHOLDER_HOST",
     }),
+    removePathPrefix: true,
   },
   syfobehandlendeenhet: {
     applicationName: "syfobehandlendeenhet",

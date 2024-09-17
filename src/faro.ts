@@ -1,11 +1,11 @@
 import { getWebInstrumentations, initializeFaro } from "@grafana/faro-react";
 import { TracingInstrumentation } from "@grafana/faro-web-tracing";
-import { erLokal, erPreProd } from "@/utils/miljoUtil";
+import { erLokal, erDev } from "@/utils/miljoUtil";
 
 const getUrl = () => {
   if (erLokal()) {
     return "/collect";
-  } else if (erPreProd()) {
+  } else if (erDev()) {
     return "https://telemetry.ekstern.dev.nav.no/collect";
   } else {
     return "https://telemetry.nav.no/collect";

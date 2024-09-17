@@ -52,7 +52,6 @@ spec:
       external:
         - host: "login.microsoftonline.com"
         - host: "teamsykefravr-unleash-api.nav.cloud.nais.io"
-        - host: "internarbeidsflatedecorator.prod-fss-pub.nais.io"
         - host: "ereg-services.prod-fss-pub.nais.io"
         - host: "syfooppfolgingsplanservice.prod-fss-pub.nais.io"
         - host: "veilarboppfolging.prod-fss-pub.nais.io"
@@ -115,8 +114,6 @@ spec:
       value: "prod-gcp.teamsykefravr.fastlegerest"
     - name: FASTLEGEREST_HOST
       value: "http://fastlegerest"
-    - name: INTERNARBEIDSFLATEDECORATOR_HOST
-      value: "https://internarbeidsflatedecorator.prod-fss-pub.nais.io"
     - name: ISAKTIVITETSKRAV_AAD_APP_CLIENT_ID
       value: "prod-gcp.teamsykefravr.isaktivitetskrav"
     - name: ISAKTIVITETSKRAV_HOST
