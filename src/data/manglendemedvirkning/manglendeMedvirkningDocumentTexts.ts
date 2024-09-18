@@ -32,8 +32,15 @@ export function getForhandsvarselManglendeMedvirkningTexts(frist: Date) {
   };
 }
 
-export function getStansTexts() {
+export function getStansTexts(fom: Date | undefined) {
   return {
     header: "NAV har stanset sykepengene dine",
+    fom: `NAV har stanset sykepengene dine fra og med ${
+      !!fom ? tilDatoMedManedNavn(fom) : ""
+    }.`,
+    intro:
+      "For å få sykepenger har du et selvstendig ansvar for å bidra til raskest mulig å komme tilbake i arbeid, kalt medvirkningsplikten.",
+    hjemmel:
+      "Vi har brukt folketrygdloven § 8-8 første og tredje ledd når vi har behandlet saken din.",
   };
 }

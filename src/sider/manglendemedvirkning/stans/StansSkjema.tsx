@@ -7,18 +7,19 @@ import {
   Button,
   Heading,
   HStack,
-  Link,
   List,
   Textarea,
 } from "@navikt/ds-react";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import { useManglendeMedvirkningVurderingDocument } from "@/hooks/manglendemedvirkning/useManglendeMedvirkningVurderingDocument";
 import {
   NewVurderingRequestDTO,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
+import { useManglendeMedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 
 const texts = {
   heading: "Skriv innstilling til NAY",
@@ -42,6 +43,7 @@ const begrunnelseMaxLength = 5000;
 
 export interface StansSkjemaValues {
   begrunnelse: string;
+  fom: Date | undefined;
 }
 
 export default function StansSkjema() {
@@ -66,6 +68,10 @@ export default function StansSkjema() {
     };
     sendVurdering.mutate(stansVurdering);
   };
+
+  const { data } = useManglendeMedvirkningVurderingQuery();
+  const forhandsvarsel = data[0];
+  const frist = forhandsvarsel?.varsel?.svarfrist;
 
   return (
     <Box background="surface-default" padding="6">
@@ -108,6 +114,7 @@ export default function StansSkjema() {
               getDocumentComponents={() =>
                 getStansDocument({
                   begrunnelse: watch("begrunnelse"),
+                  fom: frist,
                 })
               }
             />

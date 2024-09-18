@@ -25,7 +25,7 @@ interface Documents {
 }
 
 export function useManglendeMedvirkningVurderingDocument(): Documents {
-  const { getHilsen } = useDocumentComponents();
+  const { getHilsen, getVeiledernavn } = useDocumentComponents();
 
   function getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
@@ -65,10 +65,14 @@ export function useManglendeMedvirkningVurderingDocument(): Documents {
   }
 
   function getStansDocument(values: StansSkjemaValues): DocumentComponentDto[] {
-    const stansTexts = getStansTexts();
+    const stansTexts = getStansTexts(values.fom);
     return [
       createHeaderH1(stansTexts.header),
+      createParagraph(stansTexts.fom),
+      createParagraph(stansTexts.intro),
       createParagraph(values.begrunnelse),
+      createParagraph(stansTexts.hjemmel),
+      getVeiledernavn(),
     ];
   }
 

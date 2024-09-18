@@ -13,7 +13,7 @@ export default function ForhandsvarselSendt({ sisteVurdering }: Props) {
     sisteVurdering?.varsel?.svarfrist
   ).isBefore(dayjs(new Date()), "date");
 
-  return true ? (
+  return isForhandsvarselExpired ? (
     <ForhandsvarselAfterDeadline />
   ) : (
     <ForhandsvarselBeforeDeadline />
