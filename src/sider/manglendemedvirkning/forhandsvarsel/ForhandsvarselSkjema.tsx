@@ -5,9 +5,9 @@ import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { ButtonRow } from "@/components/Layout";
 import { addWeeks } from "@/utils/datoUtils";
 import { useManglendeMedvirkningVurderingDocument } from "@/hooks/manglendemedvirkning/useManglendeMedvirkningVurderingDocument";
-import { useSendVurderingManglendeMedvirkning } from "@/data/manglendemedvirkning/useSendVurderingManglendeMedvirkning";
+import { useSendForhandsvarselManglendeMedvirkning } from "@/data/manglendemedvirkning/useSendVurderingManglendeMedvirkning";
 import {
-  NewVurderingRequestDTO,
+  NewForhandsvarselVurderingRequestDTO,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
@@ -39,7 +39,7 @@ interface SkjemaValues {
 
 export default function ForhandsvarselSkjema() {
   const personident = useValgtPersonident();
-  const sendForhandsvarsel = useSendVurderingManglendeMedvirkning();
+  const sendForhandsvarsel = useSendForhandsvarselManglendeMedvirkning();
   const {
     register,
     watch,
@@ -51,9 +51,9 @@ export default function ForhandsvarselSkjema() {
     useManglendeMedvirkningVurderingDocument();
 
   const submit = (values: SkjemaValues) => {
-    const forhandsvarselRequestDTO: NewVurderingRequestDTO = {
-      personident: personident,
+    const forhandsvarselRequestDTO: NewForhandsvarselVurderingRequestDTO = {
       vurderingType: VurderingType.FORHANDSVARSEL,
+      personident: personident,
       begrunnelse: values.begrunnelse,
       document: getForhandsvarselDocument({
         begrunnelse: values.begrunnelse,

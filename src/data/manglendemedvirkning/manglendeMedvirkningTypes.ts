@@ -1,12 +1,27 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
 
-export interface NewVurderingRequestDTO {
+interface VurderingRequestDTO {
   personident: string;
-  vurderingType: VurderingType;
   begrunnelse: string;
   document: DocumentComponentDto[];
-  varselSvarfrist?: Date;
 }
+
+export interface NewForhandsvarselVurderingRequestDTO
+  extends VurderingRequestDTO {
+  vurderingType: VurderingType.FORHANDSVARSEL;
+  varselSvarfrist: Date;
+}
+
+export interface NewFinalVurderingRequestDTO extends VurderingRequestDTO {
+  vurderingType:
+    | VurderingType.OPPFYLT
+    | VurderingType.STANS
+    | VurderingType.IKKE_AKTUELL;
+}
+
+export type NewVurderingRequestDTO =
+  | NewForhandsvarselVurderingRequestDTO
+  | NewFinalVurderingRequestDTO;
 
 export interface VurderingResponseDTO {
   uuid: string;

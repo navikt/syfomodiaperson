@@ -32,6 +32,29 @@ export function getForhandsvarselManglendeMedvirkningTexts(frist: Date) {
   };
 }
 
+export function getOppfyltManglendeMedvirkningTexts(
+  forhandsvarselSendtDato: Date
+) {
+  return {
+    title: "Du har rett til videre utbetaling av sykepenger",
+    previousForhandsvarsel: `I forhåndsvarsel av ${tilDatoMedManedNavn(
+      forhandsvarselSendtDato
+    )} ble du informert om at NAV vurderte å stanse dine sykepenger. Vi har nå vurdert at plikten til å medvirke er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
+    forAFaSykepenger:
+      "For å få sykepenger er det et vilkår at du medvirker i egen sak.",
+    viHarBruktLoven:
+      "Vi har brukt folketrygdloven § 8-8 første og tredje ledd når vi har behandlet saken din.",
+  };
+}
+
+export function getIkkeAktuellManglendeMedvirkningTexts() {
+  return {
+    title: "Vurdering av § 8-8 manglende medvirkning",
+    intro:
+      "Det er vurdert at folketrygdloven § 8-8 første og tredje ledd ikke kommer til anvendelse i dette tilfellet.",
+  };
+}
+
 export function getStansTexts(fom: Date | undefined) {
   return {
     header: "NAV har stanset sykepengene dine",

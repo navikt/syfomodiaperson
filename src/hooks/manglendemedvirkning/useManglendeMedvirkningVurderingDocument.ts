@@ -7,6 +7,8 @@ import {
 import { useDocumentComponents } from "@/hooks/useDocumentComponents";
 import {
   getForhandsvarselManglendeMedvirkningTexts,
+  getIkkeAktuellManglendeMedvirkningTexts,
+  getOppfyltManglendeMedvirkningTexts,
   getStansTexts,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningDocumentTexts";
 import { StansSkjemaValues } from "@/sider/manglendemedvirkning/stans/StansSkjema";
@@ -16,16 +18,29 @@ type ForhandsvarselDocumentValues = {
   frist: Date;
 };
 
+type OppfyltDocumentValues = {
+  begrunnelse: string;
+  forhandsvarselSendtDato: Date;
+};
+
+type IkkeAktuellDocumentValues = {
+  begrunnelse: string;
+};
+
 interface Documents {
   getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
   ): DocumentComponentDto[];
-
+  getOppfyltDocument(values: OppfyltDocumentValues): DocumentComponentDto[];
+  getIkkeAktuellDocument(
+    values: IkkeAktuellDocumentValues
+  ): DocumentComponentDto[];
   getStansDocument(values: StansSkjemaValues): DocumentComponentDto[];
 }
 
 export function useManglendeMedvirkningVurderingDocument(): Documents {
-  const { getHilsen, getVeiledernavn } = useDocumentComponents();
+  const { getHilsen, getVurdertAv, getIntroGjelder, getVeiledernavn } =
+    useDocumentComponents();
 
   function getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
@@ -64,6 +79,37 @@ export function useManglendeMedvirkningVurderingDocument(): Documents {
     return documentComponents;
   }
 
+  function getOppfyltDocument({
+    begrunnelse,
+    forhandsvarselSendtDato,
+  }: OppfyltDocumentValues): DocumentComponentDto[] {
+    const oppfyltTexts = getOppfyltManglendeMedvirkningTexts(
+      forhandsvarselSendtDato
+    );
+    return [
+      createHeaderH1(oppfyltTexts.title),
+      getIntroGjelder(),
+      createParagraph(oppfyltTexts.previousForhandsvarsel),
+      createParagraph(oppfyltTexts.forAFaSykepenger),
+      createParagraph(begrunnelse),
+      createParagraph(oppfyltTexts.viHarBruktLoven),
+      getVurdertAv(),
+    ];
+  }
+
+  const getIkkeAktuellDocument = ({
+    begrunnelse,
+  }: IkkeAktuellDocumentValues) => {
+    const ikkeAktuellTexts = getIkkeAktuellManglendeMedvirkningTexts();
+    return [
+      createHeaderH1(ikkeAktuellTexts.title),
+      getIntroGjelder(),
+      createParagraph(ikkeAktuellTexts.intro),
+      createParagraph(begrunnelse),
+      getVurdertAv(),
+    ];
+  };
+
   function getStansDocument(values: StansSkjemaValues): DocumentComponentDto[] {
     const stansTexts = getStansTexts(values.fom);
     return [
@@ -78,6 +124,8 @@ export function useManglendeMedvirkningVurderingDocument(): Documents {
 
   return {
     getForhandsvarselDocument,
+    getOppfyltDocument,
+    getIkkeAktuellDocument,
     getStansDocument,
   };
 }

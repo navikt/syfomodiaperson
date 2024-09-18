@@ -5,17 +5,17 @@ import ForhandsvarselBeforeDeadline from "@/sider/manglendemedvirkning/forhandsv
 import ForhandsvarselAfterDeadline from "@/sider/manglendemedvirkning/forhandsvarsel/ForhandsvarselAfterDeadline";
 
 interface Props {
-  sisteVurdering: VurderingResponseDTO;
+  forhandsvarsel: VurderingResponseDTO;
 }
 
-export default function ForhandsvarselSendt({ sisteVurdering }: Props) {
+export default function ForhandsvarselSendt({ forhandsvarsel }: Props) {
   const isForhandsvarselExpired = dayjs(
-    sisteVurdering?.varsel?.svarfrist
+    forhandsvarsel?.varsel?.svarfrist
   ).isBefore(dayjs(new Date()), "date");
 
   return isForhandsvarselExpired ? (
-    <ForhandsvarselAfterDeadline />
+    <ForhandsvarselAfterDeadline forhandsvarsel={forhandsvarsel} />
   ) : (
-    <ForhandsvarselBeforeDeadline />
+    <ForhandsvarselBeforeDeadline forhandsvarsel={forhandsvarsel} />
   );
 }

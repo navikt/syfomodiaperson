@@ -4,6 +4,8 @@ import Sidetopp from "@/components/Sidetopp";
 import Side from "@/sider/Side";
 import SideLaster from "@/components/SideLaster";
 import { useManglendeMedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
+import OppfyltSide from "@/sider/manglendemedvirkning/oppfylt/OppfyltSide";
+import IkkeAktuellSide from "@/sider/manglendemedvirkning/ikkeaktuell/IkkeAktuellSide";
 import StansSide from "./stans/StansSide";
 
 const texts = {
@@ -13,7 +15,7 @@ const texts = {
 export function ManglendeMedvirkningOppfyltSide() {
   return (
     <ManglendeMedvirkningSide>
-      <div>Oppfylt</div>
+      <OppfyltSide />
     </ManglendeMedvirkningSide>
   );
 }
@@ -29,7 +31,7 @@ export function ManglendeMedvirkningStansSide() {
 export function ManglendeMedvirkningIkkeAktuellSide() {
   return (
     <ManglendeMedvirkningSide>
-      <div>Ikke Aktuell</div>
+      <IkkeAktuellSide />
     </ManglendeMedvirkningSide>
   );
 }
