@@ -18,6 +18,7 @@ import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { useArbeidsuforhetVurderingQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
+import { useManglendeMedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 
 export enum Menypunkter {
   AKTIVITETSKRAV = "AKTIVITETSKRAV",
@@ -112,6 +113,8 @@ export const GlobalNavigasjon = ({
   const { data: arbeidsuforhetVurderinger } = useArbeidsuforhetVurderingQuery();
   const { data: senOppfolgingKandidat } = useSenOppfolgingKandidatQuery();
   const { data: friskmeldingTilArbeidsformidlingVedtak } = useVedtakQuery();
+  const { sisteVurdering: manglendeMedvirkningVurdering } =
+    useManglendeMedvirkningVurderingQuery();
   const { toggles } = useFeatureToggles();
 
   const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.map(
@@ -190,7 +193,8 @@ export const GlobalNavigasjon = ({
           aktivitetskrav,
           arbeidsuforhetVurderinger,
           senOppfolgingKandidat,
-          friskmeldingTilArbeidsformidlingVedtak
+          friskmeldingTilArbeidsformidlingVedtak,
+          manglendeMedvirkningVurdering
         );
 
         const isVedtakMenypunkt = menypunkt === Menypunkter.VEDTAK;

@@ -45,6 +45,11 @@ import {
   expiredForhandsvarselAktivitetskrav,
   forhandsvarselAktivitetskrav,
 } from "../aktivitetskrav/vurdering/vurderingTestUtils";
+import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
+import {
+  defaultForhandsvarselVurdering,
+  defaultForhandsvarselVurderingAfterDeadline,
+} from "../manglendemedvirkning/manglendeMedvirkningTestData";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: QueryClient;
@@ -365,5 +370,35 @@ describe("GlobalNavigasjon", () => {
     expect(
       screen.getByRole("link", { name: "Friskmelding til arbeidsformidling" })
     ).to.exist;
+  });
+
+  it('viser en rød prikk for menypunkt "Manglende Medvirkning" når forhåndsvarselet er utgått', () => {
+    queryClient.setQueryData(
+      manglendeMedvirkningQueryKeys.manglendeMedvirkning(fnr),
+      () => [defaultForhandsvarselVurderingAfterDeadline]
+    );
+    queryClient.setQueryData(
+      unleashQueryKeys.toggles(navEnhet.id, ""),
+      () => mockUnleashResponse
+    );
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("link", { name: "Manglende medvirkning 1" })).to
+      .exist;
+  });
+
+  it('viser ikke en rød prikk for menypunkt "Manglende Medvirkning" når forhåndsvarselet ikke er utgått', () => {
+    queryClient.setQueryData(
+      manglendeMedvirkningQueryKeys.manglendeMedvirkning(fnr),
+      () => [defaultForhandsvarselVurdering]
+    );
+    queryClient.setQueryData(
+      unleashQueryKeys.toggles(navEnhet.id, ""),
+      () => mockUnleashResponse
+    );
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("link", { name: "Manglende medvirkning" })).to
+      .exist;
   });
 });

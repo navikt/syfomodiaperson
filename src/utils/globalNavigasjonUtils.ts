@@ -27,6 +27,8 @@ import {
 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { isExpiredForhandsvarsel } from "@/utils/aktivitetskravUtils";
+import { VurderingResponseDTO as ManglendeMedvirkningVurderingResponseDTO } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
+import { isExpiredForhandsvarsel as isExpired } from "@/utils/datoUtils";
 
 const getNumberOfMoteOppgaver = (
   motebehov: MotebehovVeilederDTO[],
@@ -135,6 +137,14 @@ function getNumberOfFriskmeldingTilArbeidsformidlingOppgaver(
     : 0;
 }
 
+function getNumberOfManglendeMedvirkningOppgaver(
+  manglendeMedvirkningVurdering:
+    | ManglendeMedvirkningVurderingResponseDTO
+    | undefined
+): number {
+  return isExpired(manglendeMedvirkningVurdering?.varsel?.svarfrist) ? 1 : 0;
+}
+
 export const numberOfTasks = (
   menypunkt: Menypunkter,
   motebehov: MotebehovVeilederDTO[],
@@ -144,7 +154,10 @@ export const numberOfTasks = (
   aktivitetskrav: AktivitetskravDTO[],
   arbeidsuforhetVurderinger: VurderingResponseDTO[],
   senOppfolgingKandidatOppgaver: SenOppfolgingKandidatResponseDTO[],
-  friskmeldingTilArbeidsformidlingVedtak: VedtakResponseDTO[]
+  friskmeldingTilArbeidsformidlingVedtak: VedtakResponseDTO[],
+  manglendeMedvirkningVurdering:
+    | ManglendeMedvirkningVurderingResponseDTO
+    | undefined
 ): number => {
   switch (menypunkt) {
     case Menypunkter.DIALOGMOTE:
@@ -174,8 +187,11 @@ export const numberOfTasks = (
       return getNumberOfFriskmeldingTilArbeidsformidlingOppgaver(
         friskmeldingTilArbeidsformidlingVedtak
       );
-    case Menypunkter.NOKKELINFORMASJON:
     case Menypunkter.MANGLENDE_MEDVIRKNING:
+      return getNumberOfManglendeMedvirkningOppgaver(
+        manglendeMedvirkningVurdering
+      );
+    case Menypunkter.NOKKELINFORMASJON:
     case Menypunkter.SYKEPENGESOKNADER:
     case Menypunkter.VEDTAK:
     case Menypunkter.HISTORIKK: {
