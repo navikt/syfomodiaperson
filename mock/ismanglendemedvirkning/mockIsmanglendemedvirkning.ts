@@ -8,6 +8,7 @@ import {
   VurderingResponseDTO,
   NewVurderingRequestDTO,
 } from "../../src/data/manglendemedvirkning/manglendeMedvirkningTypes";
+import { addDays } from "../../src/utils/datoUtils";
 
 let manglendeMedvirkningVurderinger: VurderingResponseDTO[] = [];
 
@@ -31,8 +32,8 @@ export const mockIsmanglendemedvirkning = (server: any) => {
         body.vurderingType === "FORHANDSVARSEL"
           ? {
               uuid: generateUUID(),
-              createdAt: new Date(),
-              svarfrist: new Date(),
+              createdAt: addDays(new Date(), -1),
+              svarfrist: addDays(new Date(), -1),
             }
           : null;
       const sentVurdering: VurderingResponseDTO = {

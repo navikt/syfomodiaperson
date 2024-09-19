@@ -189,3 +189,43 @@ export const getIkkeAktuellDocument = (
     },
   ];
 };
+
+export const getStansDocument = (
+  begrunnelse: string,
+  varselSvarfrist: Date
+): DocumentComponentDto[] => {
+  return [
+    {
+      texts: ["NAV har stanset sykepengene dine"],
+      type: DocumentComponentType.HEADER_H1,
+    },
+    {
+      texts: [
+        `NAV har stanset sykepengene dine fra og med ${tilDatoMedManedNavn(
+          varselSvarfrist
+        )}.`,
+      ],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [
+        "For å få sykepenger har du et selvstendig ansvar for å bidra til raskest mulig å komme tilbake i arbeid, kalt medvirkningsplikten.",
+      ],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [begrunnelse],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [
+        "Vi har brukt folketrygdloven § 8-8 første og tredje ledd når vi har behandlet saken din.",
+      ],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [VEILEDER_DEFAULT.fulltNavn()],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+  ];
+};

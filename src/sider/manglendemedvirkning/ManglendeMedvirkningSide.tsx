@@ -7,6 +7,7 @@ import { useManglendeMedvirkningVurderingQuery } from "@/data/manglendemedvirkni
 import UnntakSide from "@/sider/manglendemedvirkning/unntak/UnntakSide";
 import OppfyltSide from "@/sider/manglendemedvirkning/oppfylt/OppfyltSide";
 import IkkeAktuellSide from "@/sider/manglendemedvirkning/ikkeaktuell/IkkeAktuellSide";
+import StansSide from "./stans/StansSide";
 
 const texts = {
   title: "Manglende medvirkning",
@@ -23,7 +24,7 @@ export function ManglendeMedvirkningOppfyltSide() {
 export function ManglendeMedvirkningStansSide() {
   return (
     <ManglendeMedvirkningSide>
-      <div>Stans</div>
+      <StansSide />
     </ManglendeMedvirkningSide>
   );
 }

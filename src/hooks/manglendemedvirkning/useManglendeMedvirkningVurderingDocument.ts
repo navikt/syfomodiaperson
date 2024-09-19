@@ -10,6 +10,7 @@ import {
   getUnntakManglendeMedvirkningTexts,
   getIkkeAktuellManglendeMedvirkningTexts,
   getOppfyltManglendeMedvirkningTexts,
+  getStansTexts,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningDocumentTexts";
 
 type ForhandsvarselDocumentValues = {
@@ -31,6 +32,11 @@ type IkkeAktuellDocumentValues = {
   begrunnelse: string;
 };
 
+type StansDocumentValues = {
+  begrunnelse: string;
+  varselSvarfrist: Date;
+};
+
 interface Documents {
   getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
@@ -39,13 +45,17 @@ interface Documents {
   getUnntakDocument(values: UnntakDocumentValues): DocumentComponentDto[];
 
   getOppfyltDocument(values: OppfyltDocumentValues): DocumentComponentDto[];
+
   getIkkeAktuellDocument(
     values: IkkeAktuellDocumentValues
   ): DocumentComponentDto[];
+
+  getStansDocument(values: StansDocumentValues): DocumentComponentDto[];
 }
 
 export function useManglendeMedvirkningVurderingDocument(): Documents {
-  const { getHilsen, getVurdertAv, getIntroGjelder } = useDocumentComponents();
+  const { getHilsen, getVurdertAv, getIntroGjelder, getVeiledernavn } =
+    useDocumentComponents();
 
   function getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
@@ -132,10 +142,25 @@ export function useManglendeMedvirkningVurderingDocument(): Documents {
     ];
   };
 
+  function getStansDocument(
+    values: StansDocumentValues
+  ): DocumentComponentDto[] {
+    const stansTexts = getStansTexts(values.varselSvarfrist);
+    return [
+      createHeaderH1(stansTexts.header),
+      createParagraph(stansTexts.fom),
+      createParagraph(stansTexts.intro),
+      createParagraph(values.begrunnelse),
+      createParagraph(stansTexts.hjemmel),
+      getVeiledernavn(),
+    ];
+  }
+
   return {
     getForhandsvarselDocument,
     getUnntakDocument,
     getOppfyltDocument,
     getIkkeAktuellDocument,
+    getStansDocument,
   };
 }

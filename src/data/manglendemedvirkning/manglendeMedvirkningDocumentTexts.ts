@@ -70,3 +70,16 @@ export function getIkkeAktuellManglendeMedvirkningTexts() {
       "Det er vurdert at folketrygdloven § 8-8 første og tredje ledd ikke kommer til anvendelse i dette tilfellet.",
   };
 }
+
+export function getStansTexts(varselSvarfrist: Date) {
+  return {
+    header: "NAV har stanset sykepengene dine",
+    fom: `NAV har stanset sykepengene dine fra og med ${tilDatoMedManedNavn(
+      varselSvarfrist
+    )}.`,
+    intro:
+      "For å få sykepenger har du et selvstendig ansvar for å bidra til raskest mulig å komme tilbake i arbeid, kalt medvirkningsplikten.",
+    hjemmel:
+      "Vi har brukt folketrygdloven § 8-8 første og tredje ledd når vi har behandlet saken din.",
+  };
+}

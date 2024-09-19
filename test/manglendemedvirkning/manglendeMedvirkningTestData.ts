@@ -7,7 +7,7 @@ import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
 } from "../../mock/common/mockConstants";
-import { addWeeks } from "@/utils/datoUtils";
+import { addWeeks, addDays } from "@/utils/datoUtils";
 
 export const defaultForhandsvarselVurdering: VurderingResponseDTO = {
   uuid: generateUUID(),
@@ -23,3 +23,19 @@ export const defaultForhandsvarselVurdering: VurderingResponseDTO = {
     svarfrist: addWeeks(new Date(), 3),
   },
 };
+
+export const defaultForhandsvarselVurderingAfterDeadline: VurderingResponseDTO =
+  {
+    uuid: generateUUID(),
+    personident: ARBEIDSTAKER_DEFAULT.personIdent,
+    createdAt: new Date(),
+    veilederident: VEILEDER_DEFAULT.ident,
+    vurderingType: VurderingType.FORHANDSVARSEL,
+    begrunnelse: "Dette er en begrunnelse",
+    document: [],
+    varsel: {
+      uuid: generateUUID(),
+      createdAt: addDays(new Date(), -1),
+      svarfrist: addDays(new Date(), -1),
+    },
+  };
