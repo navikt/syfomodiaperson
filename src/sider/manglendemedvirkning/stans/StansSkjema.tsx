@@ -11,15 +11,15 @@ import {
   Textarea,
 } from "@navikt/ds-react";
 import React from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useManglendeMedvirkningVurderingDocument } from "@/hooks/manglendemedvirkning/useManglendeMedvirkningVurderingDocument";
 import {
-  NewVurderingRequestDTO,
+  NewFinalVurderingRequestDTO,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { useManglendeMedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
+import { useNotification } from "@/context/notification/NotificationContext";
 
 const texts = {
   heading: "Skriv innstilling til NAY",
@@ -27,7 +27,13 @@ const texts = {
   begrunnelseLabel: "Innstilling om stans (obligatorisk)",
   afterSendInfo: {
     title: "Videre må du huske å:",
-    gosysoppgave: "Sende oppgave til NAY i Gosys.",
+    gosysoppgave: "Sende oppgave til NAY i Gosys:",
+    gosysoppgaveListe: {
+      tema: "Tema: Sykepenger",
+      gjelder: "Gjelder: Behandle vedtak",
+      oppgavetype: "Oppgavetype: Vurder konsekvens for ytelse",
+      prioritet: "Prioritet: Høy",
+    },
     stoppknapp:
       "Gi beskjed om stans til ny saksbehandlingsløsning via Stoppknappen under fanen Sykmeldinger i Modia.",
   },
@@ -37,16 +43,21 @@ const texts = {
   missingBegrunnelse: "Vennligst angi begrunnelse",
   sendVarselButtonText: "Stans",
   avbrytButton: "Avbryt",
+  success:
+    "Innstillingen om stans av sykepenger i forbindelse med medvirkningsplikten § 8-8 er lagret i historikken og blir journalført automatisk.",
 };
 
 const begrunnelseMaxLength = 5000;
 
 export interface StansSkjemaValues {
   begrunnelse: string;
-  fom: Date | undefined;
 }
 
-export default function StansSkjema() {
+interface Props {
+  varselSvarfrist: Date;
+}
+
+export default function StansSkjema({ varselSvarfrist }: Props) {
   const personident = useValgtPersonident();
   const sendVurdering = useSendVurderingManglendeMedvirkning();
   const formMethods = useForm<StansSkjemaValues>();
@@ -59,68 +70,86 @@ export default function StansSkjema() {
 
   const { getStansDocument } = useManglendeMedvirkningVurderingDocument();
 
+  const { setNotification } = useNotification();
+
   const submit = (values: StansSkjemaValues) => {
-    const stansVurdering: NewVurderingRequestDTO = {
+    const stansVurdering: NewFinalVurderingRequestDTO = {
       personident: personident,
       vurderingType: VurderingType.STANS,
       begrunnelse: values.begrunnelse,
-      document: getStansDocument(values),
+      document: getStansDocument({
+        begrunnelse: values.begrunnelse,
+        varselSvarfrist: varselSvarfrist,
+      }),
     };
-    sendVurdering.mutate(stansVurdering);
-  };
 
-  const { data } = useManglendeMedvirkningVurderingQuery();
-  const forhandsvarsel = data[0];
-  const frist = forhandsvarsel?.varsel?.svarfrist;
+    sendVurdering.mutate(stansVurdering, {
+      onSuccess: () => {
+        setNotification({
+          message: texts.success,
+        });
+      },
+    });
+  };
 
   return (
     <Box background="surface-default" padding="6">
-      <FormProvider {...formMethods}>
-        <form onSubmit={handleSubmit(submit)} className="[&>*]:mb-4">
-          <Heading level="2" size="medium">
-            {texts.heading}
-          </Heading>
-          <BodyShort>{texts.p1}</BodyShort>
-          <Textarea
-            {...register("begrunnelse", {
-              maxLength: begrunnelseMaxLength,
-              required: texts.missingBegrunnelse,
-            })}
-            value={watch("begrunnelse")}
-            label={texts.begrunnelseLabel}
-            error={errors.begrunnelse?.message}
-            size="small"
-            minRows={6}
-            maxLength={begrunnelseMaxLength}
+      <form onSubmit={handleSubmit(submit)} className="[&>*]:mb-4">
+        <Heading level="2" size="medium">
+          {texts.heading}
+        </Heading>
+        <BodyShort>{texts.p1}</BodyShort>
+        <Textarea
+          {...register("begrunnelse", {
+            maxLength: begrunnelseMaxLength,
+            required: texts.missingBegrunnelse,
+          })}
+          value={watch("begrunnelse")}
+          label={texts.begrunnelseLabel}
+          error={errors.begrunnelse?.message}
+          size="small"
+          minRows={6}
+          maxLength={begrunnelseMaxLength}
+        />
+        <List as="ul" title={texts.afterSendInfo.title}>
+          <List.Item>
+            {texts.afterSendInfo.gosysoppgave}
+            <List as="ul" className="ml-1">
+              <List.Item>
+                {texts.afterSendInfo.gosysoppgaveListe.tema}
+              </List.Item>
+              <List.Item>
+                {texts.afterSendInfo.gosysoppgaveListe.gjelder}
+              </List.Item>
+              <List.Item>
+                {texts.afterSendInfo.gosysoppgaveListe.oppgavetype}
+              </List.Item>
+              <List.Item>
+                {texts.afterSendInfo.gosysoppgaveListe.prioritet}
+              </List.Item>
+            </List>
+          </List.Item>
+          <List.Item>{texts.afterSendInfo.stoppknapp}</List.Item>
+        </List>
+        <BodyShort>{texts.buttonDescription}</BodyShort>
+        <HStack gap="4">
+          <Button loading={sendVurdering.isPending} type="submit">
+            {texts.sendVarselButtonText}
+          </Button>
+          <Button as={Link} to={manglendeMedvirkningPath} variant="secondary">
+            {texts.avbrytButton}
+          </Button>
+          <Forhandsvisning
+            contentLabel={texts.forhandsvisningLabel}
+            getDocumentComponents={() =>
+              getStansDocument({
+                begrunnelse: watch("begrunnelse"),
+                varselSvarfrist: varselSvarfrist,
+              })
+            }
           />
-          <List as="ul" title={texts.afterSendInfo.title}>
-            <List.Item className="ml-8">
-              {texts.afterSendInfo.gosysoppgave}
-            </List.Item>
-            <List.Item className="ml-8">
-              {texts.afterSendInfo.stoppknapp}
-            </List.Item>
-          </List>
-          <BodyShort>{texts.buttonDescription}</BodyShort>
-          <HStack gap="4">
-            <Button loading={sendVurdering.isPending} type="submit">
-              {texts.sendVarselButtonText}
-            </Button>
-            <Button as={Link} to={manglendeMedvirkningPath} variant="secondary">
-              {texts.avbrytButton}
-            </Button>
-            <Forhandsvisning
-              contentLabel={texts.forhandsvisningLabel}
-              getDocumentComponents={() =>
-                getStansDocument({
-                  begrunnelse: watch("begrunnelse"),
-                  fom: frist,
-                })
-              }
-            />
-          </HStack>
-        </form>
-      </FormProvider>
+        </HStack>
+      </form>
     </Box>
   );
 }

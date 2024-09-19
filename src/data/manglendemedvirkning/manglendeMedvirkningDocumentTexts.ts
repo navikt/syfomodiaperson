@@ -55,12 +55,12 @@ export function getIkkeAktuellManglendeMedvirkningTexts() {
   };
 }
 
-export function getStansTexts(fom: Date | undefined) {
+export function getStansTexts(varselSvarfrist: Date) {
   return {
     header: "NAV har stanset sykepengene dine",
-    fom: `NAV har stanset sykepengene dine fra og med ${
-      !!fom ? tilDatoMedManedNavn(fom) : ""
-    }.`,
+    fom: `NAV har stanset sykepengene dine fra og med ${tilDatoMedManedNavn(
+      varselSvarfrist
+    )}.`,
     intro:
       "For å få sykepenger har du et selvstendig ansvar for å bidra til raskest mulig å komme tilbake i arbeid, kalt medvirkningsplikten.",
     hjemmel:

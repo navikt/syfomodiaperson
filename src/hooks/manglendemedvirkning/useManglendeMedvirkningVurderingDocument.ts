@@ -11,7 +11,6 @@ import {
   getOppfyltManglendeMedvirkningTexts,
   getStansTexts,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningDocumentTexts";
-import { StansSkjemaValues } from "@/sider/manglendemedvirkning/stans/StansSkjema";
 
 type ForhandsvarselDocumentValues = {
   begrunnelse: string;
@@ -27,15 +26,23 @@ type IkkeAktuellDocumentValues = {
   begrunnelse: string;
 };
 
+type StansDocumentValues = {
+  begrunnelse: string;
+  varselSvarfrist: Date;
+};
+
 interface Documents {
   getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
   ): DocumentComponentDto[];
+
   getOppfyltDocument(values: OppfyltDocumentValues): DocumentComponentDto[];
+
   getIkkeAktuellDocument(
     values: IkkeAktuellDocumentValues
   ): DocumentComponentDto[];
-  getStansDocument(values: StansSkjemaValues): DocumentComponentDto[];
+
+  getStansDocument(values: StansDocumentValues): DocumentComponentDto[];
 }
 
 export function useManglendeMedvirkningVurderingDocument(): Documents {
@@ -110,8 +117,10 @@ export function useManglendeMedvirkningVurderingDocument(): Documents {
     ];
   };
 
-  function getStansDocument(values: StansSkjemaValues): DocumentComponentDto[] {
-    const stansTexts = getStansTexts(values.fom);
+  function getStansDocument(
+    values: StansDocumentValues
+  ): DocumentComponentDto[] {
+    const stansTexts = getStansTexts(values.varselSvarfrist);
     return [
       createHeaderH1(stansTexts.header),
       createParagraph(stansTexts.fom),

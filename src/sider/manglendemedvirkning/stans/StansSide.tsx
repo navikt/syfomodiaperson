@@ -6,13 +6,12 @@ import { Navigate } from "react-router-dom";
 import StansSkjema from "./StansSkjema";
 
 export default function StansSide() {
-  const { data } = useManglendeMedvirkningVurderingQuery();
-  const sisteVurdering = data[0];
+  const { sisteVurdering } = useManglendeMedvirkningVurderingQuery();
   const isForhandsvarselExpired = isExpiredForhandsvarsel(
     sisteVurdering?.varsel?.svarfrist
   );
-  return isForhandsvarselExpired ? (
-    <StansSkjema />
+  return isForhandsvarselExpired && sisteVurdering?.varsel?.svarfrist ? (
+    <StansSkjema varselSvarfrist={sisteVurdering.varsel.svarfrist} />
   ) : (
     <Navigate to={manglendeMedvirkningPath} />
   );
