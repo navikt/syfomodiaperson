@@ -9,7 +9,7 @@ import { OppfyltAktivitetskravSkjema } from "@/sider/aktivitetskrav/vurdering/Op
 import { SendForhandsvarselSkjema } from "@/sider/aktivitetskrav/vurdering/SendForhandsvarselSkjema";
 import { IkkeOppfyltAktivitetskravSkjema } from "@/sider/aktivitetskrav/vurdering/IkkeOppfyltAktivitetskravSkjema";
 import styled from "styled-components";
-import { isExpiredForhandsvarsel } from "@/utils/aktivitetskravUtils";
+import { isExpiredForhandsvarsel } from "@/utils/datoUtils";
 
 const texts = {
   unntak: "Sett unntak",
@@ -53,7 +53,8 @@ export const VurderAktivitetskravTabs = ({
 }: VurderAktivitetskravTabsProps) => {
   const latestVurdering = aktivitetskrav.vurderinger[0];
   const isIkkeOppfyltTabVisible =
-    latestVurdering && isExpiredForhandsvarsel(latestVurdering);
+    latestVurdering &&
+    isExpiredForhandsvarsel(latestVurdering.varsel?.svarfrist);
   const isForhandsvarselTabVisible = isValidStateForForhandsvarsel(
     aktivitetskrav.status
   );
