@@ -92,7 +92,7 @@ describe("Manglendemedvirkning", () => {
         <ManglendeMedvirkning />,
         manglendeMedvirkningPath
       );
-      const varselSvarfrist = addWeeks(new Date(), 3);
+      const varselSvarfrist = addDays(new Date(), 1);
       const begrunnelse = "En begrunnelse";
 
       const begrunnelseInput = getTextInput("Begrunnelse (obligatorisk)");
