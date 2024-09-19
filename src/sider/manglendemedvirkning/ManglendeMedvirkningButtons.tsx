@@ -4,12 +4,14 @@ import {
   manglendeMedvirkningIkkeAktuellPath,
   manglendeMedvirkningOppfyltPath,
   manglendeMedvirkningStansPath,
+  manglendeMedvirkningUnntakPath,
 } from "@/routers/AppRouter";
 import React from "react";
 
 const texts = {
   stans: "Innstilling om stans",
   oppfylt: "Oppfylt",
+  unntak: "Unntak",
   ikkeAktuell: "Ikke aktuell",
 };
 
@@ -32,6 +34,9 @@ export const ManglendeMedvirkningButtons = ({
     )}
     <Button as={Link} to={manglendeMedvirkningOppfyltPath} variant="secondary">
       {texts.oppfylt}
+    </Button>
+    <Button as={Link} to={manglendeMedvirkningUnntakPath} variant="secondary">
+      {texts.unntak}
     </Button>
     <Button
       as={Link}

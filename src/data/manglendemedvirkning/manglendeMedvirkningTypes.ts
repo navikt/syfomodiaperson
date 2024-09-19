@@ -16,6 +16,7 @@ export interface NewFinalVurderingRequestDTO extends VurderingRequestDTO {
   vurderingType:
     | VurderingType.OPPFYLT
     | VurderingType.STANS
+    | VurderingType.UNNTAK
     | VurderingType.IKKE_AKTUELL;
 }
 
@@ -44,5 +45,6 @@ export enum VurderingType {
   FORHANDSVARSEL = "FORHANDSVARSEL",
   OPPFYLT = "OPPFYLT",
   STANS = "STANS",
+  UNNTAK = "UNNTAK",
   IKKE_AKTUELL = "IKKE_AKTUELL",
 }

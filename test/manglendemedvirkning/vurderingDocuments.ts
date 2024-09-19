@@ -3,11 +3,14 @@ import {
   DocumentComponentType,
 } from "@/data/documentcomponent/documentComponentTypes";
 import {
+  getForhandsvarselManglendeMedvirkningTexts,
+  getUnntakManglendeMedvirkningTexts,
+} from "@/data/manglendemedvirkning/manglendeMedvirkningDocumentTexts";
+import {
   ARBEIDSTAKER_DEFAULT,
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
   VEILEDER_DEFAULT,
 } from "../../mock/common/mockConstants";
-import { getForhandsvarselManglendeMedvirkningTexts } from "@/data/manglendemedvirkning/manglendeMedvirkningDocumentTexts";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 
 export const getSendForhandsvarselDocument = (
@@ -102,6 +105,51 @@ export const getOppfyltDocument = (
       texts: [
         `Vi har brukt folketrygdloven § 8-8 første og tredje ledd når vi har behandlet saken din.`,
       ],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [`Vurdert av ${VEILEDER_DEFAULT.fulltNavn()}`],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+  ];
+};
+
+export const getSettUnntakDocument = (
+  begrunnelse: string,
+  forhandsvarselSendtDato: Date
+): DocumentComponentDto[] => {
+  const unntakTexts = getUnntakManglendeMedvirkningTexts(
+    forhandsvarselSendtDato
+  );
+  return [
+    {
+      texts: [unntakTexts.title],
+      type: DocumentComponentType.HEADER_H1,
+    },
+    {
+      texts: [
+        `Gjelder ${ARBEIDSTAKER_DEFAULT_FULL_NAME}, f.nr. ${ARBEIDSTAKER_DEFAULT.personIdent}`,
+      ],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [
+        `I forhåndsvarsel av ${tilDatoMedManedNavn(
+          forhandsvarselSendtDato
+        )} ble du informert om at NAV vurderte å stanse utbetaling av sykepengene dine. Vi har nå vurdert at du har rimelig grunn til ikke å medvirke i egen sak.`,
+      ],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [unntakTexts.info.p2],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [begrunnelse],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [unntakTexts.loven],
       type: DocumentComponentType.PARAGRAPH,
     },
     {

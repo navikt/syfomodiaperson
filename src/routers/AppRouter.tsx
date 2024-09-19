@@ -43,6 +43,7 @@ import ManglendeMedvirkningSide, {
   ManglendeMedvirkningIkkeAktuellSide,
   ManglendeMedvirkningOppfyltSide,
   ManglendeMedvirkningStansSide,
+  ManglendeMedvirkningUnntakSide,
 } from "@/sider/manglendemedvirkning/ManglendeMedvirkningSide";
 import ManglendeMedvirkning from "@/sider/manglendemedvirkning/ManglendeMedvirkning";
 
@@ -61,6 +62,7 @@ export const senOppfolgingPath = `${appRoutePath}/senoppfolging`;
 export const manglendeMedvirkningPath = `${appRoutePath}/manglendemedvirkning`;
 export const manglendeMedvirkningOppfyltPath = `${appRoutePath}/manglendemedvirkning/oppfylt`;
 export const manglendeMedvirkningStansPath = `${appRoutePath}/manglendemedvirkning/stans`;
+export const manglendeMedvirkningUnntakPath = `${appRoutePath}/manglendemedvirkning/unntak`;
 export const manglendeMedvirkningIkkeAktuellPath = `${appRoutePath}/manglendemedvirkning/ikkeaktuell`;
 
 const AktivBrukerRouter = (): ReactElement => {
@@ -182,6 +184,10 @@ const AktivBrukerRouter = (): ReactElement => {
             <Route
               path={manglendeMedvirkningStansPath}
               element={<ManglendeMedvirkningStansSide />}
+            />
+            <Route
+              path={manglendeMedvirkningUnntakPath}
+              element={<ManglendeMedvirkningUnntakSide />}
             />
             <Route
               path={manglendeMedvirkningIkkeAktuellPath}
