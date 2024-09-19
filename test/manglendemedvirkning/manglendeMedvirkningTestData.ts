@@ -39,3 +39,16 @@ export const defaultForhandsvarselVurderingAfterDeadline: VurderingResponseDTO =
       svarfrist: addDays(new Date(), -1),
     },
   };
+
+export const createManglendeMedvirkningVurdering = (
+  type: VurderingType
+): VurderingResponseDTO => ({
+  personident: ARBEIDSTAKER_DEFAULT.personIdent,
+  createdAt: new Date(),
+  vurderingType: type,
+  begrunnelse: "",
+  document: [],
+  uuid: generateUUID(),
+  varsel: null,
+  veilederident: VEILEDER_DEFAULT.ident,
+});
