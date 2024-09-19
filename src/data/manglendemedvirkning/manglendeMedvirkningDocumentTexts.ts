@@ -47,6 +47,22 @@ export function getOppfyltManglendeMedvirkningTexts(
   };
 }
 
+export function getUnntakManglendeMedvirkningTexts(
+  forhandsvarselSendtDato: Date
+) {
+  return {
+    title: "Vurdering av unntak fra medvirkelsesplikten",
+    info: {
+      p1: `I forhåndsvarsel av ${tilDatoMedManedNavn(
+        forhandsvarselSendtDato
+      )} ble du informert om at NAV vurderte å stanse utbetaling av sykepengene dine. Vi har nå vurdert at du har rimelig grunn til ikke å medvirke i egen sak.`,
+      p2: "Du har rett til videre utbetaling av sykepenger.",
+    },
+    loven:
+      "Vi har brukt folketrygdloven § 8-8 første og tredje ledd når vi har behandlet saken din.",
+  };
+}
+
 export function getIkkeAktuellManglendeMedvirkningTexts() {
   return {
     title: "Vurdering av § 8-8 manglende medvirkning",
