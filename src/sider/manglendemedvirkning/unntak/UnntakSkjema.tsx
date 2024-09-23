@@ -22,8 +22,8 @@ import { useManglendeMedvirkningVurderingDocument } from "@/hooks/manglendemedvi
 import { useNotification } from "@/context/notification/NotificationContext";
 
 const texts = {
-  title: "Unntak fra medvirkelsesplikten",
-  info: "Skriv en kort begrunnelse for hvorfor bruker kan få unntak fra vilkårene i § 8-8, og hvilke opplysninger som ligger til grunn for vurderingen.",
+  title: "Unntak fra medvirkningsplikten",
+  info: "Skriv en kort begrunnelse for hvorfor bruker er unntatt medvirkningsplikten i § 8-8 første og tredje ledd, og hvilke opplysninger som ligger til grunn for vurderingen.",
   begrunnelseLabel: "Begrunnelse (obligatorisk)",
   begrunnelseDescription:
     "Åpne forhåndsvisning for å se vurderingen. Når du trykker Lagre journalføres vurderingen automatisk.",

@@ -58,7 +58,7 @@ describe("Manglendemedvirkning Unntak", () => {
 
       renderUnntakSide();
 
-      expect(screen.getByText("Unntak fra medvirkelsesplikten")).to.exist;
+      expect(screen.getByText("Unntak fra medvirkningsplikten")).to.exist;
       expect(
         screen.getByRole("textbox", {
           name: "Begrunnelse (obligatorisk)",

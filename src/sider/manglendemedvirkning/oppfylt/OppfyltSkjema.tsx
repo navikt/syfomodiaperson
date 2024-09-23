@@ -22,10 +22,9 @@ import { useNotification } from "@/context/notification/NotificationContext";
 import { useManglendeMedvirkningVurderingDocument } from "@/hooks/manglendemedvirkning/useManglendeMedvirkningVurderingDocument";
 
 const texts = {
-  title: "Skriv innstilling om oppfylt vilkår",
+  title: "Medvirkningsplikten er oppfylt",
   info: "Skriv en kort begrunnelse for hvorfor bruker likevel oppfyller vilkårene i § 8-8, og hvilke opplysninger som ligger til grunn for vurderingen.",
-  bruker:
-    "Før du går videre bør du informere bruker om utfallet av vurderingen.",
+  bruker: "Husk å informere bruker om utfallet av vurderingen.",
   begrunnelse: {
     label: "Begrunnelse (obligatorisk)",
     description:
