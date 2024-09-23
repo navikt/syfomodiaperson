@@ -26,9 +26,8 @@ import {
   SenOppfolgingStatus,
 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
-import { isExpiredForhandsvarsel } from "@/utils/aktivitetskravUtils";
 import { VurderingResponseDTO as ManglendeMedvirkningVurderingResponseDTO } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
-import { isExpiredForhandsvarsel as isExpired } from "@/utils/datoUtils";
+import { isExpiredForhandsvarsel } from "@/utils/datoUtils";
 
 const getNumberOfMoteOppgaver = (
   motebehov: MotebehovVeilederDTO[],
@@ -66,7 +65,8 @@ const getNumberOfAktivitetskravOppgaver = (
   });
   const latestVurdering = aktivitetskrav[0]?.vurderinger[0];
   const latestVurderingIsExpiredForhandsvarsel =
-    latestVurdering && isExpiredForhandsvarsel(latestVurdering);
+    latestVurdering &&
+    isExpiredForhandsvarsel(latestVurdering.varsel?.svarfrist);
 
   return newAktivitetskrav || latestVurderingIsExpiredForhandsvarsel ? 1 : 0;
 };
@@ -142,7 +142,11 @@ function getNumberOfManglendeMedvirkningOppgaver(
     | ManglendeMedvirkningVurderingResponseDTO
     | undefined
 ): number {
-  return isExpired(manglendeMedvirkningVurdering?.varsel?.svarfrist) ? 1 : 0;
+  return isExpiredForhandsvarsel(
+    manglendeMedvirkningVurdering?.varsel?.svarfrist
+  )
+    ? 1
+    : 0;
 }
 
 export const numberOfTasks = (

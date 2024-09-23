@@ -3,6 +3,7 @@ import {
   AktivitetskravVurderingDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import {
+  isExpiredForhandsvarsel,
   tilDatoMedManedNavn,
   tilLesbarDatoMedArUtenManedNavn,
 } from "@/utils/datoUtils";
@@ -10,7 +11,6 @@ import React, { ReactElement } from "react";
 import { avventVurderingArsakTexts } from "@/data/aktivitetskrav/aktivitetskravTexts";
 import { AktivitetskravAlertstripe } from "@/sider/aktivitetskrav/AktivitetskravAlertstripe";
 import { BodyLong, BodyShort, Label } from "@navikt/ds-react";
-import { isExpiredForhandsvarsel } from "@/utils/aktivitetskravUtils";
 
 const texts = {
   forhandsvarselInfoBody:
@@ -32,7 +32,7 @@ export const AktivitetskravVurderingAlert = ({
 
   switch (status) {
     case AktivitetskravStatus.FORHANDSVARSEL: {
-      return isExpiredForhandsvarsel(vurdering) ? (
+      return isExpiredForhandsvarsel(vurdering.varsel?.svarfrist) ? (
         <AktivitetskravAlertstripe variant="warning">
           <Label size="small">{texts.forhandsvarselWarningLabel}</Label>
           <BodyShort size="small">{`Det ble sendt ut et forhåndsvarsel ${vurderingDato}.`}</BodyShort>
