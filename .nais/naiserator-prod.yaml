@@ -54,7 +54,6 @@ spec:
         - host: "teamsykefravr-unleash-api.nav.cloud.nais.io"
         - host: "ereg-services.prod-fss-pub.nais.io"
         - host: "syfooppfolgingsplanservice.prod-fss-pub.nais.io"
-        - host: "veilarboppfolging.prod-fss-pub.nais.io"
       rules:
         - application: fastlegerest
         - application: isaktivitetskrav
@@ -93,6 +92,8 @@ spec:
           namespace: team-esyfo
         - application: modiacontextholder
           namespace: personoversikt
+        - application: veilarboppfolging
+          namespace: poao
   envFrom:
     - secret: syfomodiaperson-session-key
     - secret: syfomodiaperson-redis-password
@@ -223,9 +224,9 @@ spec:
     - name: MEROPPFOLGING_BACKEND_HOST
       value: "http://meroppfolging-backend.team-esyfo"
     - name: VEILARBOPPFOLGING_AAD_APP_CLIENT_ID
-      value: "prod-fss.pto.veilarboppfolging"
+      value: "prod-gcp.poao.veilarboppfolging"
     - name: VEILARBOPPFOLGING_HOST
-      value: "https://veilarboppfolging.prod-fss-pub.nais.io"
+      value: "http://veilarboppfolging.poao"
     - name: ISMANGLENDEMEDVIRKNING_AAD_APP_CLIENT_ID
       value: "prod-gcp.teamsykefravr.ismanglendemedvirkning"
     - name: ISMANGLENDEMEDVIRKNING_HOST
