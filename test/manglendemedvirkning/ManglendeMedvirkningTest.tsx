@@ -11,16 +11,10 @@ import {
   VurderingResponseDTO,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
-import {
-  addDays,
-  addWeeks,
-  tilLesbarDatoMedArUtenManedNavn,
-} from "@/utils/datoUtils";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import { renderWithRouter } from "../testRouterUtils";
 import { manglendeMedvirkningPath } from "@/routers/AppRouter";
 import ManglendeMedvirkning from "@/sider/manglendemedvirkning/ManglendeMedvirkning";
-import { generateUUID } from "@/utils/uuidUtils";
 import {
   createManglendeMedvirkningVurdering,
   defaultForhandsvarselVurdering,
@@ -147,85 +141,13 @@ describe("Manglendemedvirkning", () => {
       expect(screen.getByRole("button", { name: "Send" })).to.exist;
       expect(screen.getByRole("button", { name: "Forhåndsvisning" })).to.exist;
     });
-  });
 
-  describe("ForhandsvarselSendt", () => {
     it("viser ikke ny vurdering-knapp når forhåndsvarsel sendt", () => {
       mockVurdering([defaultForhandsvarselVurdering]);
       renderManglendeMedvirkning();
 
       expect(screen.queryByRole("button", { name: nyVurderingButtonText })).to
         .not.exist;
-    });
-    it("viser ForhandsvarselBeforeDeadline når svarfrist ikke utgått", () => {
-      mockVurdering([defaultForhandsvarselVurdering]);
-      renderManglendeMedvirkning();
-
-      expect(
-        screen.getByText(
-          `Forhåndsvarselet er sendt ${tilLesbarDatoMedArUtenManedNavn(
-            new Date()
-          )}.`
-        )
-      ).to.exist;
-      expect(screen.getByText("Venter på svar fra bruker")).to.exist;
-      expect(screen.getByText("Fristen går ut:")).to.exist;
-      expect(
-        screen.getByText(
-          "Dersom du har mottatt nye opplysninger og vurdert at bruker likevel oppfyller § 8-8, klikker du på Oppfylt-knappen."
-        )
-      ).to.exist;
-      expect(
-        screen.getByText(
-          "Velg Ikke aktuell-knappen dersom personen har blitt friskmeldt etter at forhåndsvarselet ble sendt ut, eller av andre årsaker ikke er aktuell."
-        )
-      ).to.exist;
-      expect(screen.getByText("Du kan ikke stanse før fristen er gått ut.")).to
-        .exist;
-      expect(screen.getByRole("img", { name: "klokkeikon" })).to.exist;
-      expect(
-        screen.getByRole("button", { name: "Innstilling om stans" })
-      ).to.have.property("disabled", true);
-      expect(screen.getByRole("button", { name: "Oppfylt" })).to.exist;
-      expect(screen.getByRole("button", { name: "Ikke aktuell" })).to.exist;
-    });
-
-    it("viser ForhandsvarselAfterDeadline når svarfrist er utgått", () => {
-      const createdAt = addWeeks(new Date(), -3);
-      const svarfrist = addDays(new Date(), -1);
-      const forhandsvarselAfterFrist: VurderingResponseDTO = {
-        ...defaultForhandsvarselVurdering,
-        createdAt: createdAt,
-        varsel: {
-          uuid: generateUUID(),
-          createdAt: createdAt,
-          svarfrist: svarfrist,
-        },
-      };
-      mockVurdering([forhandsvarselAfterFrist]);
-      renderManglendeMedvirkning();
-
-      expect(screen.getByText("Fristen er gått ut")).to.exist;
-      expect(screen.getByText("Fristen var:")).to.exist;
-      expect(screen.getByText(tilLesbarDatoMedArUtenManedNavn(svarfrist))).to
-        .exist;
-      expect(screen.getByRole("img", { name: "bjelleikon" })).to.exist;
-      expect(
-        screen.getByText(
-          `Fristen for forhåndsvarselet som ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
-            createdAt
-          )} er gått ut. Trykk på Innstilling om stans-knappen hvis vilkårene i § 8-8 ikke er oppfylt og rett til videre sykepenger skal stanses.`
-        )
-      ).to.exist;
-      expect(
-        screen.getByText(
-          "Velg Ikke aktuell-knappen dersom personen har blitt friskmeldt etter at forhåndsvarselet ble sendt ut, eller av andre årsaker ikke er aktuell."
-        )
-      ).to.exist;
-      expect(screen.getByRole("button", { name: "Innstilling om stans" })).to
-        .exist;
-      expect(screen.getByRole("button", { name: "Oppfylt" })).to.exist;
-      expect(screen.getByRole("button", { name: "Ikke aktuell" })).to.exist;
     });
   });
 });

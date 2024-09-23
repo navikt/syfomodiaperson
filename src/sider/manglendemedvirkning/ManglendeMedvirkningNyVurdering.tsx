@@ -30,7 +30,7 @@ const lastVurderingText = (vurderinger: VurderingResponseDTO[]) => {
 
   return `Forrige forhåndsvarsel på § 8-8 ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
     lastForhandsvarsel?.createdAt
-  )} og ${lastVurderingType} ${tilLesbarDatoMedArUtenManedNavn(
+  )} og det ble vurdert ${lastVurderingType} ${tilLesbarDatoMedArUtenManedNavn(
     lastVurdering?.createdAt
   )}.`;
 };
