@@ -48,3 +48,13 @@ export enum VurderingType {
   UNNTAK = "UNNTAK",
   IKKE_AKTUELL = "IKKE_AKTUELL",
 }
+
+export const typeTexts: {
+  [key in VurderingType]: string;
+} = {
+  [VurderingType.FORHANDSVARSEL]: "Forhåndsvarsel",
+  [VurderingType.OPPFYLT]: "Oppfylt",
+  [VurderingType.STANS]: "Stans",
+  [VurderingType.IKKE_AKTUELL]: "Ikke aktuell",
+  [VurderingType.UNNTAK]: "Unntak",
+};
