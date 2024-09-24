@@ -21,8 +21,8 @@ import { useNotification } from "@/context/notification/NotificationContext";
 import { useManglendeMedvirkningVurderingDocument } from "@/hooks/manglendemedvirkning/useManglendeMedvirkningVurderingDocument";
 
 const texts = {
-  title: "Vurdering av § 8-8 er ikke lenger aktuelt",
-  info: "Skriv en kort begrunnelse for hvorfor det ikke lenger er aktuelt å vurdere vilkårene i § 8-8.",
+  title: "Vurdering av medvirkningsplikten er ikke lenger aktuell",
+  info: "Skriv en kort begrunnelse for hvorfor det ikke lenger er aktuelt å vurdere vilkårene i § 8-8 første og tredje ledd.",
   begrunnelse: {
     label: "Begrunnelse (obligatorisk)",
     description:

@@ -26,7 +26,7 @@ const texts = {
   p1: "Skriv kort hvilke opplysninger som ligger til grunn for stans, samt din vurdering av hvorfor vilkåret ikke er oppfylt og vurdering av eventuelle nye opplysninger.",
   begrunnelseLabel: "Innstilling om stans (obligatorisk)",
   afterSendInfo: {
-    title: "Videre må du huske å:",
+    title: "Før du trykker Stans må du huske å:",
     gosysoppgave: "Sende oppgave til NAY i Gosys:",
     gosysoppgaveListe: {
       tema: "Tema: Sykepenger",
@@ -136,9 +136,6 @@ export default function StansSkjema({ varselSvarfrist }: Props) {
           <Button loading={sendVurdering.isPending} type="submit">
             {texts.sendVarselButtonText}
           </Button>
-          <Button as={Link} to={manglendeMedvirkningPath} variant="secondary">
-            {texts.avbrytButton}
-          </Button>
           <Forhandsvisning
             contentLabel={texts.forhandsvisningLabel}
             getDocumentComponents={() =>
@@ -148,6 +145,9 @@ export default function StansSkjema({ varselSvarfrist }: Props) {
               })
             }
           />
+          <Button as={Link} to={manglendeMedvirkningPath} variant="secondary">
+            {texts.avbrytButton}
+          </Button>
         </HStack>
       </form>
     </Box>

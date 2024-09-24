@@ -23,7 +23,7 @@ export function getForhandsvarselManglendeMedvirkningTexts(frist: Date) {
     lovhjemmel: {
       header: "Lovhjemmel",
       intro:
-        "Krav til medvirkning i egen sak er beskrevet i folketrygdloven § 8-8 første ledd og tredje ledd.",
+        "Krav til medvirkning i egen sak er beskrevet i folketrygdloven § 8-8 første og tredje ledd.",
       pliktInfo1:
         "«Medlemmet har plikt til å gi opplysninger til arbeidsgiveren og Arbeids- og velferdsetaten om egen funksjonsevne og bidra til at hensiktsmessige tiltak for å tilrettelegge arbeidet og utprøving av funksjonsevnen blir utredet og iverksatt, se også § 21-3. Medlemmet plikter også å medvirke ved utarbeiding og gjennomføring av oppfølgingsplaner og delta i dialogmøter som nevnt i arbeidsmiljøloven § 4-6 og folketrygdloven § 8-7 a. (…)",
       pliktInfo2:
@@ -51,7 +51,7 @@ export function getUnntakManglendeMedvirkningTexts(
   forhandsvarselSendtDato: Date
 ) {
   return {
-    title: "Vurdering av unntak fra medvirkelsesplikten",
+    title: "Vurdering av unntak fra medvirkningsplikten",
     info: {
       p1: `I forhåndsvarsel av ${tilDatoMedManedNavn(
         forhandsvarselSendtDato

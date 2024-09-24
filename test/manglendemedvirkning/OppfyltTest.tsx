@@ -53,7 +53,7 @@ const renderOppfyltSide = () => {
 };
 
 describe("Manglendemedvirkning Oppfylt", () => {
-  const oppfyltHeader = "Skriv innstilling om oppfylt vilkår";
+  const oppfyltHeader = "Medvirkningsplikten er oppfylt";
   const begrunnelseLabel = "Begrunnelse (obligatorisk)";
   const enBegrunnelse = "Dette er en begrunnelse!";
 

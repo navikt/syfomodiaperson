@@ -53,7 +53,8 @@ const renderIkkeAktuellSide = () => {
 };
 
 describe("Manglendemedvirkning Ikke aktuell", () => {
-  const ikkeAktuellHeader = "Vurdering av § 8-8 er ikke lenger aktuelt";
+  const ikkeAktuellHeader =
+    "Vurdering av medvirkningsplikten er ikke lenger aktuell";
   const begrunnelseLabel = "Begrunnelse (obligatorisk)";
   const enBegrunnelse = "Dette er en begrunnelse!";
 
