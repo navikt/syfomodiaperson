@@ -8,6 +8,7 @@ import UnntakSide from "@/sider/manglendemedvirkning/unntak/UnntakSide";
 import OppfyltSide from "@/sider/manglendemedvirkning/oppfylt/OppfyltSide";
 import IkkeAktuellSide from "@/sider/manglendemedvirkning/ikkeaktuell/IkkeAktuellSide";
 import StansSide from "./stans/StansSide";
+import ManglendeMedvirkningHistorikk from "@/sider/manglendemedvirkning/ManglendeMedvirkningHistorikk";
 
 const texts = {
   title: "Manglende medvirkning",
@@ -59,8 +60,13 @@ export default function ManglendeMedvirkningSide({
       aktivtMenypunkt={Menypunkter.MANGLENDE_MEDVIRKNING}
     >
       <Sidetopp tittel={texts.title} />
-      <SideLaster henter={isLoading} hentingFeilet={isError}>
+      <SideLaster
+        henter={isLoading}
+        hentingFeilet={isError}
+        className="flex flex-col gap-2"
+      >
         {children}
+        <ManglendeMedvirkningHistorikk />
       </SideLaster>
     </Side>
   );

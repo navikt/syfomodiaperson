@@ -8,6 +8,7 @@ interface SideLasterProps {
   henter: boolean;
   hentingFeilet: boolean;
   children: ReactNode;
+  className?: string;
 }
 
 const texts = {
@@ -18,6 +19,7 @@ const SideLaster = ({
   henter,
   hentingFeilet,
   children,
+  className,
 }: SideLasterProps): ReactElement => {
   const {
     isLoading: henterTilgang,
@@ -37,7 +39,9 @@ const SideLaster = ({
   if (hentingFeilet || hentingTilgangFeilet) {
     return <Feilmelding />;
   }
-  return <div className="w-full">{children}</div>;
+  return (
+    <div className={`w-full ${className ? className : ""}`}>{children}</div>
+  );
 };
 
 export default SideLaster;
