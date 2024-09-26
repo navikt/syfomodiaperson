@@ -22,8 +22,8 @@ import DialogmoteIkkeAktuellSkjema, {
 } from "@/sider/dialogmoter/components/ikkeaktuell/DialogmoteIkkeAktuellSkjema";
 import { stubAktivVeilederinfoApi } from "../stubs/stubSyfoveileder";
 import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
-import { dialogmotekandidatMock } from "../../mock/isdialogmotekandidat/dialogmotekandidatMock";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
+import { dialogmotekandidatMock } from "@/mocks/isdialogmotekandidat/dialogmotekandidatMock";
 import { CreateIkkeAktuellDTO } from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
 import { renderWithRouter } from "../testRouterUtils";
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";

@@ -1,6 +1,6 @@
 import nock from "nock";
 import { SYFOSMREGISTER_ROOT } from "@/apiConstants";
-import { sykmeldingerMock } from "../../mock/syfosmregister/sykmeldingerMock";
+import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 
 export const stubSykmeldingApi = (scope: nock.Scope) =>
   scope

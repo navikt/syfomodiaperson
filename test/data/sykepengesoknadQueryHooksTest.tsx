@@ -7,7 +7,7 @@ import {
   parseSoknad,
   useSykepengesoknaderQuery,
 } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
-import { soknaderMock } from "../../mock/sykepengesoknad/soknaderMock";
+import { soknaderMock } from "@/mocks/sykepengesoknad/soknaderMock";
 import { stubSykepengesoknadBackendApi } from "../stubs/stubSykepengesoknadBackend";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { testQueryClient } from "../testQueryClient";

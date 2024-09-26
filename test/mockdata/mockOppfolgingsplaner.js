@@ -1,4 +1,4 @@
-import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
+import { VIRKSOMHET_PONTYPANDY } from "@/mocks/common/mockConstants";
 
 const MILLISECONDS_PER_HOUR = 3600000;
 const DAY_IN_MILLISECONDS = MILLISECONDS_PER_HOUR * 24;

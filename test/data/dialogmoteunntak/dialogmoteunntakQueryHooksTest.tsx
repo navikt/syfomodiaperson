@@ -3,7 +3,7 @@ import { expect, describe, it, beforeEach, afterEach } from "vitest";
 import { renderHook, waitFor } from "@testing-library/react";
 import { apiMock } from "../../stubs/stubApi";
 import { queryHookWrapper } from "../queryHookTestUtils";
-import { dialogmotekandidatMock } from "../../../mock/isdialogmotekandidat/dialogmotekandidatMock";
+import { dialogmotekandidatMock } from "@/mocks/isdialogmotekandidat/dialogmotekandidatMock";
 import { stubDialogmoteKandidatApi } from "../../stubs/stubIsdialogmotekandidat";
 import { stubFeatureTogglesApi } from "../../stubs/stubUnleash";
 import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";

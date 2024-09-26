@@ -8,15 +8,15 @@ import {
   useOppfolgingsplanerLPSQuery,
   useOppfolgingsplanerQuery,
 } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
-import { oppfolgingsplanMock } from "../../mock/syfooppfolgingsplanservice/oppfolgingsplanMock";
+import { oppfolgingsplanMock } from "@/mocks/syfooppfolgingsplanservice/oppfolgingsplanMock";
 import {
   stubDokumentinfoApi,
   stubOppfolgingsplanApi,
   stubOppfolgingsplanLPSApi,
 } from "../stubs/stubSyfooppfolgingsplan";
-import { dokumentinfoMock } from "../../mock/syfooppfolgingsplanservice/dokumentinfoMock";
+import { dokumentinfoMock } from "@/mocks/syfooppfolgingsplanservice/dokumentinfoMock";
 import { testQueryClient } from "../testQueryClient";
-import { oppfolgingsplanerLPSMock } from "../../mock/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
+import { oppfolgingsplanerLPSMock } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
 
 let queryClient: any;
 let apiMockScope: any;

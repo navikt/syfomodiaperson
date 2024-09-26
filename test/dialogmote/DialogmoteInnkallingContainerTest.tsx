@@ -9,7 +9,7 @@ import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/p
 import {
   ARBEIDSTAKER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import {
   OppfolgingstilfelleDTO,
   OppfolgingstilfellePersonDTO,

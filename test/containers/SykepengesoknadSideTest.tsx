@@ -4,14 +4,14 @@ import mockSoknader from "../mockdata/mockSoknader";
 import { screen } from "@testing-library/react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
-import { tilgangBrukerMock } from "../../mock/istilgangskontroll/tilgangtilbrukerMock";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import { tilgangBrukerMock } from "@/mocks/istilgangskontroll/tilgangtilbrukerMock";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { sykepengesoknaderQueryKeys } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { queryClientWithAktivBruker } from "../testQueryClient";
 import { renderWithRouter } from "../testRouterUtils";
 import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
-import { brukerinfoMock } from "../../mock/syfoperson/persondataMock";
+import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
 import { SykepengesoknadSideContent } from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
 
 const NAERINGSDRIVENDESOKNAD_ID = "faadf7c1-3aac-4758-8673-e9cee1316a3c";

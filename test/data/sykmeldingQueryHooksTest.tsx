@@ -5,13 +5,13 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { expect, describe, it, beforeEach, afterEach } from "vitest";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { stubSykmeldingApi } from "../stubs/stubSyfosmregister";
-import { sykmeldingerMock } from "../../mock/syfosmregister/sykmeldingerMock";
+import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 import { SykmeldingNewFormatDTO } from "@/data/sykmelding/types/SykmeldingNewFormatDTO";
 import {
   newSMFormat2OldFormat,
   oldFormatSMForAG,
 } from "@/utils/sykmeldinger/sykmeldingParser";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { testQueryClient } from "../testQueryClient";
 
 let queryClient: any;

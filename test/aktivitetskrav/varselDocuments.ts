@@ -6,7 +6,7 @@ import {
   ARBEIDSTAKER_DEFAULT,
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
   VEILEDER_DEFAULT,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import { addWeeks, tilDatoMedManedNavn } from "@/utils/datoUtils";
 import {
   Brevmal,

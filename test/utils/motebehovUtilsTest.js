@@ -10,7 +10,7 @@ import {
   motebehovFromLatestActiveTilfelle,
 } from "@/utils/motebehovUtils";
 import { ANTALL_MS_DAG } from "@/utils/datoUtils";
-import { VEILEDER_IDENT_DEFAULT } from "../../mock/common/mockConstants";
+import { VEILEDER_IDENT_DEFAULT } from "@/mocks/common/mockConstants";
 
 describe("motebehovUtils", () => {
   describe("finnNyesteMotebehovsvarFraHverDeltaker", () => {

@@ -41,7 +41,7 @@ import {
   getOppfyltDocument,
   getUnntakDocument,
 } from "../varselDocuments";
-import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { apiMock } from "../../stubs/stubApi";
 import { stubVurderAktivitetskravApi } from "../../stubs/stubIsaktivitetskrav";
 import nock from "nock";

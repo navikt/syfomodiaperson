@@ -6,7 +6,7 @@ import { expect, describe, it, beforeEach, afterEach } from "vitest";
 import { testQueryClient } from "../testQueryClient";
 import { stubMaxdateApi } from "../stubs/stubEsyfovarsel";
 import { useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
-import { maksdato, maksdatoMock } from "../../mock/syfoperson/persondataMock";
+import { maksdato, maksdatoMock } from "@/mocks/syfoperson/persondataMock";
 
 let queryClient: any;
 let apiMockScope: any;

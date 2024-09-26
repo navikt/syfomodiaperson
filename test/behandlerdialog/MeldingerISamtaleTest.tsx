@@ -8,11 +8,11 @@ import React from "react";
 import { queryClientWithMockData } from "../testQueryClient";
 import { expect, describe, it, beforeEach } from "vitest";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import {
   personOppgaveBehandletBehandlerdialogUbesvartMelding,
   personOppgaveUbehandletBehandlerdialogUbesvartMelding,
-} from "../../mock/ispersonoppgave/personoppgaveMock";
+} from "@/mocks/ispersonoppgave/personoppgaveMock";
 import { getButton } from "../testUtils";
 import {
   foresporselLegeerklaringFraBehandler,

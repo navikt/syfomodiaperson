@@ -10,8 +10,8 @@ import { behandlerdialogQueryKeys } from "@/data/behandlerdialog/behandlerdialog
 import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
-} from "../../mock/common/mockConstants";
-import { behandlerdialogMockEmpty } from "../../mock/isbehandlerdialog/behandlerdialogMock";
+} from "@/mocks/common/mockConstants";
+import { behandlerdialogMockEmpty } from "@/mocks/isbehandlerdialog/behandlerdialogMock";
 import {
   MeldingResponseDTO,
   MeldingType,
@@ -22,7 +22,7 @@ import {
   personOppgaveBehandletBehandlerdialogSvar,
   personOppgaveBehandletDialogmotesvar,
   personOppgaveUbehandletBehandlerdialogSvar,
-} from "../../mock/ispersonoppgave/personoppgaveMock";
+} from "@/mocks/ispersonoppgave/personoppgaveMock";
 import dayjs from "dayjs";
 import {
   meldingFraBehandlerUtenBehandlernavn,

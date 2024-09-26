@@ -4,10 +4,10 @@ import {
   SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT,
   SYFOOPPFOLGINGSPLANSERVICE_V3_ROOT,
 } from "@/apiConstants";
-import { oppfolgingsplanMock } from "../../mock/syfooppfolgingsplanservice/oppfolgingsplanMock";
-import { dokumentinfoMock } from "../../mock/syfooppfolgingsplanservice/dokumentinfoMock";
-import { historikkoppfolgingsplanMock } from "../../mock/syfooppfolgingsplanservice/historikkoppfolgingsplanMock";
-import { oppfolgingsplanerLPSMock } from "../../mock/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
+import { oppfolgingsplanMock } from "@/mocks/syfooppfolgingsplanservice/oppfolgingsplanMock";
+import { dokumentinfoMock } from "@/mocks/syfooppfolgingsplanservice/dokumentinfoMock";
+import { historikkoppfolgingsplanMock } from "@/mocks/syfooppfolgingsplanservice/historikkoppfolgingsplanMock";
+import { oppfolgingsplanerLPSMock } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
 
 export const stubOppfolgingsplanApi = (scope: nock.Scope) => {
   return scope

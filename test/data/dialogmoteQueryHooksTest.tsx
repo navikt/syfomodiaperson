@@ -4,7 +4,7 @@ import { stubDialogmoterApi } from "../stubs/stubIsdialogmote";
 import { renderHook, waitFor } from "@testing-library/react";
 import { expect, describe, it, beforeEach, afterEach } from "vitest";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
-import { dialogmoterMock } from "../../mock/isdialogmote/dialogmoterMock";
+import { dialogmoterMock } from "@/mocks/isdialogmote/dialogmoterMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { testQueryClient } from "../testQueryClient";
 

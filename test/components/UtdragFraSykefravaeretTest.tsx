@@ -6,10 +6,10 @@ import { expect, describe, it, vi, beforeAll, afterAll } from "vitest";
 import {
   ARBEIDSTAKER_DEFAULT,
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import { queryClientWithMockData } from "../testQueryClient";
 import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
-import { sykmeldingerMock } from "mock/syfosmregister/sykmeldingerMock";
+import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 
 let queryClient: QueryClient;
 

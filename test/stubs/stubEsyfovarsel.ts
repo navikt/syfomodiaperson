@@ -1,6 +1,6 @@
 import nock from "nock";
 import { ESYFOVARSEL_ROOT } from "@/apiConstants";
-import { maksdatoMock } from "../../mock/syfoperson/persondataMock";
+import { maksdatoMock } from "@/mocks/syfoperson/persondataMock";
 
 export const stubMaxdateApi = (scope: nock.Scope, maxDate: string) => {
   const maksdato = {

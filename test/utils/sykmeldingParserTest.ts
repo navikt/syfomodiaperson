@@ -39,7 +39,7 @@ import {
 import { FriskmeldingDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { medisinskArsakTypeTekster } from "@/data/sykmelding/types/MedisinskArsakTypeDTO";
 import { arbeidsrelatertArsakTypetekster } from "@/data/sykmelding/types/ArbeidsrelatertArsakTypeDTO";
-import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
+import { VIRKSOMHET_PONTYPANDY } from "@/mocks/common/mockConstants";
 
 const sykmeldtFnr = "99887766554";
 

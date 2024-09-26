@@ -9,11 +9,8 @@ import {
 } from "../../testQueryClient";
 import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 import { egenansattQueryKeys } from "@/data/egenansatt/egenansattQueryHooks";
-import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
-import {
-  brukerinfoMock,
-  maksdato,
-} from "../../../mock/syfoperson/persondataMock";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
+import { brukerinfoMock, maksdato } from "@/mocks/syfoperson/persondataMock";
 import { diskresjonskodeQueryKeys } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { daysFromToday } from "../../testUtils";

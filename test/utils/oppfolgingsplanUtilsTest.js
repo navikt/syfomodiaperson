@@ -4,7 +4,7 @@ import { lpsPlanerWithActiveTilfelle } from "@/utils/oppfolgingsplanUtils";
 import {
   ARBEIDSTAKER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 
 describe("oppfolgingsplanUtils", () => {
   describe("lpsPlanerWithActiveTilfelle", () => {

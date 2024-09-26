@@ -15,7 +15,7 @@ import { testQueryClient } from "../testQueryClient";
 import {
   VEILEDER_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 
 let queryClient: any;
 let apiMockScope: any;

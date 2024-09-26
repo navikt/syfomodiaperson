@@ -8,7 +8,7 @@ import {
   VurderingResponseDTO,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { getSettUnntakDocument } from "./vurderingDocuments";
 import React from "react";
 import { renderWithRouter } from "../testRouterUtils";

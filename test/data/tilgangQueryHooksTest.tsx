@@ -5,7 +5,7 @@ import { expect, describe, it, beforeEach, afterEach } from "vitest";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { stubTilgangApi } from "../stubs/stubIstilgangskontroll";
 import { useTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
-import { tilgangBrukerMock } from "../../mock/istilgangskontroll/tilgangtilbrukerMock";
+import { tilgangBrukerMock } from "@/mocks/istilgangskontroll/tilgangtilbrukerMock";
 import { testQueryClient } from "../testQueryClient";
 
 let queryClient: any;

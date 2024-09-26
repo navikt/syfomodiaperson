@@ -1,4 +1,4 @@
-import { ARBEIDSTAKER_DEFAULT, TODAY } from "../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT, TODAY } from "@/mocks/common/mockConstants";
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledereTypes";
 
 const VIRKSOMHETSNUMMER_WITH_ACTIVE_SYKMELDING = "123456789";

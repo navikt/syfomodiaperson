@@ -1,9 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { queryClientWithMockData } from "../testQueryClient";
-import {
-  ARBEIDSTAKER_DEFAULT,
-  VEILEDER_DEFAULT,
-} from "../../mock/common/mockConstants";
 import { render, screen, within } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
@@ -22,6 +18,10 @@ import {
   createManglendeMedvirkningVurdering,
   defaultForhandsvarselVurdering,
 } from "./manglendeMedvirkningTestData";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  VEILEDER_DEFAULT,
+} from "@/mocks/common/mockConstants";
 
 let queryClient: QueryClient;
 

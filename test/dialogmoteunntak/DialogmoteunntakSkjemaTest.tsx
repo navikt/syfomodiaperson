@@ -22,8 +22,8 @@ import DialogmoteunntakSkjema, {
 } from "../../src/components/dialogmoteunntak/DialogmoteunntakSkjema";
 import { stubAktivVeilederinfoApi } from "../stubs/stubSyfoveileder";
 import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
-import { dialogmotekandidatMock } from "../../mock/isdialogmotekandidat/dialogmotekandidatMock";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
+import { dialogmotekandidatMock } from "@/mocks/isdialogmotekandidat/dialogmotekandidatMock";
 import { CreateUnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 import { renderWithRouter } from "../testRouterUtils";
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";

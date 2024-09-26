@@ -10,7 +10,7 @@ import {
   meldingFraNav,
   paminnelseMelding,
   responsPaMeldingFraNAV,
-} from "../../mock/isbehandlerdialog/behandlerdialogMock";
+} from "@/mocks/isbehandlerdialog/behandlerdialogMock";
 import {
   MeldingDTO,
   MeldingStatusType,

@@ -7,8 +7,8 @@ import {
 import { apiMock } from "../stubs/stubApi";
 import nock from "nock";
 import { expect, describe, it, beforeEach, afterEach } from "vitest";
-import { historikkmotebehovMock } from "../../mock/syfomotebehov/historikkmotebehovMock";
-import { historikkoppfolgingsplanMock } from "../../mock/syfooppfolgingsplanservice/historikkoppfolgingsplanMock";
+import { historikkmotebehovMock } from "@/mocks/syfomotebehov/historikkmotebehovMock";
+import { historikkoppfolgingsplanMock } from "@/mocks/syfooppfolgingsplanservice/historikkoppfolgingsplanMock";
 import { stubMotebehovHistorikkApi } from "../stubs/stubSyfomotebehov";
 import { stubOppfolgingsplanHistorikkApi } from "../stubs/stubSyfooppfolgingsplan";
 import { testQueryClient } from "../testQueryClient";

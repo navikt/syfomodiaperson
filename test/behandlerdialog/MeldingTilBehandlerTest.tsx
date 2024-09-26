@@ -17,7 +17,7 @@ import {
   MeldingTilBehandlerDTO,
   MeldingType,
 } from "@/data/behandlerdialog/behandlerdialogTypes";
-import { behandlereDialogmeldingMock } from "../../mock/isdialogmelding/behandlereDialogmeldingMock";
+import { behandlereDialogmeldingMock } from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
 import userEvent from "@testing-library/user-event";
 import {
   expectedLegeerklaringDocument,

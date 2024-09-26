@@ -12,13 +12,13 @@ import {
   VEILEDER_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import { render, screen } from "@testing-library/react";
 import { createFerdigstiltReferat } from "./testData";
 import {
   dialogmoteunntakMedBeskrivelse,
   dialogmoteunntakUtenBeskrivelse,
-} from "../../mock/isdialogmotekandidat/dialogmoteunntakMock";
+} from "@/mocks/isdialogmotekandidat/dialogmoteunntakMock";
 import { unntakLenkeText } from "@/sider/dialogmoter/components/motehistorikk/MoteHistorikkUnntak";
 import { testQueryClient } from "../testQueryClient";
 import { UnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";

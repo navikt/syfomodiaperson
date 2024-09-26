@@ -1,7 +1,5 @@
 import { merge } from "webpack-merge";
-import mockEndepunkter from "./mock/mockEndepunkter";
 
-const express = require("express");
 const common = require("./webpack.common.ts");
 const path = require("path");
 
@@ -12,12 +10,7 @@ module.exports = merge(common, {
   devtool: "eval-source-map",
   devServer: {
     port: 8080,
-    static: {
-      directory: path.join(__dirname, "dist"),
-      staticOptions: {
-        redirect: false,
-      },
-    },
+    static: "./public",
     setupMiddlewares: (middlewares: any, devServer: any) => {
       setupDev(devServer);
       return middlewares;
@@ -29,9 +22,6 @@ const setupDev = async (devServer: any) => {
   const { app, compiler } = devServer;
 
   await Session.setupSession(app);
-
-  mockEndepunkter(app);
-  app.use("/static", express.static(path.resolve(__dirname, "dist")));
 
   app.use("*", (req: any, res: any) => {
     const filename = path.join(compiler.outputPath, "index.html");

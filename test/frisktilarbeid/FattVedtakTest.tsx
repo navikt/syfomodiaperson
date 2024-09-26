@@ -11,8 +11,8 @@ import dayjs from "dayjs";
 import { VedtakRequestDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { addDays, addWeeks } from "@/utils/datoUtils";
 import { maksdatoQueryKeys } from "@/data/maksdato/useMaksdatoQuery";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
-import { maksdatoMock } from "../../mock/syfoperson/persondataMock";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
+import { maksdatoMock } from "@/mocks/syfoperson/persondataMock";
 import { getExpectedVedtakDocument } from "./frisktilarbeidTestData";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 

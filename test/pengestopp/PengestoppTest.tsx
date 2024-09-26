@@ -11,7 +11,7 @@ import {
   ENHET_GAMLEOSLO,
   VEILEDER_IDENT_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import {
   Status,
   StatusEndring,

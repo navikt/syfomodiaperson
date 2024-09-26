@@ -4,7 +4,7 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { expect, describe, it, beforeEach, afterEach } from "vitest";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { usePengestoppStatusQuery } from "@/data/pengestopp/pengestoppQueryHooks";
-import { createStatusList } from "../../mock/ispengestopp/pengestoppStatusMock";
+import { createStatusList } from "@/mocks/ispengestopp/pengestoppStatusMock";
 import { stubPengestoppStatusApi } from "../stubs/stubIspengestopp";
 import { testQueryClient } from "../testQueryClient";
 

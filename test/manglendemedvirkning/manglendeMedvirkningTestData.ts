@@ -6,7 +6,7 @@ import { generateUUID } from "@/utils/uuidUtils";
 import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import { addWeeks, addDays } from "@/utils/datoUtils";
 import { getSendForhandsvarselDocument } from "./vurderingDocuments";
 

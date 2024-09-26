@@ -8,7 +8,7 @@ import { daysFromToday } from "../testUtils";
 import { THREE_YEARS_AGO_IN_MONTHS } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import dayjs from "dayjs";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { VIRKSOMHET_BRANNOGBIL } from "../../mock/common/mockConstants";
+import { VIRKSOMHET_BRANNOGBIL } from "@/mocks/common/mockConstants";
 
 describe("OppfolgingstilfelleUtils", () => {
   describe("isGjentakendeSykefravar", () => {

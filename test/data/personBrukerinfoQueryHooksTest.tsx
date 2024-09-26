@@ -6,7 +6,7 @@ import { queryHookWrapper } from "./queryHookTestUtils";
 import { stubPersoninfoApi } from "../stubs/stubSyfoperson";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { testQueryClient } from "../testQueryClient";
-import { brukerinfoMock } from "../../mock/syfoperson/persondataMock";
+import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
 
 let queryClient: any;
 let apiMockScope: any;

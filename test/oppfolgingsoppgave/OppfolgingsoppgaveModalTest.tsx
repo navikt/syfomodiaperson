@@ -11,7 +11,7 @@ import React from "react";
 import {
   VEILEDER_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import {
   OppfolgingsoppgaveRequestDTO,
   OppfolgingsoppgaveResponseDTO,
