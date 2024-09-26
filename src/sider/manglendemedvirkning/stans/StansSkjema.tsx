@@ -30,7 +30,7 @@ const texts = {
     gosysoppgave: "Sende oppgave til NAY i Gosys:",
     gosysoppgaveListe: {
       tema: "Tema: Sykepenger",
-      gjelder: "Gjelder: Behandle vedtak",
+      gjelder: "Gjelder: Aktivitetskrav",
       oppgavetype: "Oppgavetype: Vurder konsekvens for ytelse",
       prioritet: "Prioritet: Høy",
     },
