@@ -72,7 +72,7 @@ describe("Manglendemedvirkning Stans", () => {
       expect(screen.getByText("Før du trykker Stans må du huske å:")).to.exist;
       expect(screen.getByText("Sende oppgave til NAY i Gosys:")).to.exist;
       expect(screen.getByText("Tema: Sykepenger")).to.exist;
-      expect(screen.getByText("Gjelder: Behandle vedtak")).to.exist;
+      expect(screen.getByText("Gjelder: Aktivitetskrav")).to.exist;
       expect(screen.getByText("Oppgavetype: Vurder konsekvens for ytelse")).to
         .exist;
       expect(screen.getByText("Prioritet: Høy")).to.exist;
