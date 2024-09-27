@@ -1,5 +1,5 @@
 import React from "react";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import Motelandingsside from "@/sider/dialogmoter/Motelandingsside";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
@@ -10,8 +10,6 @@ import {
 } from "@/mocks/common/mockConstants";
 import { render, screen } from "@testing-library/react";
 import { stubTilgangApi } from "../stubs/stubIstilgangskontroll";
-import { apiMock } from "../stubs/stubApi";
-import nock from "nock";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
 import { tilgangBrukerMock } from "@/mocks/istilgangskontroll/tilgangtilbrukerMock";
 import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
@@ -26,7 +24,6 @@ import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: any;
-let apiMockScope: any;
 
 const motebehovData = [
   {
@@ -73,22 +70,17 @@ describe("MotelandingssideSide", () => {
     );
     queryClient.setQueryData(ledereQueryKeys.ledere(fnr), () => LEDERE_DEFAULT);
     queryClient.setQueryData(dialogmoteunntakQueryKeys.unntak(fnr), () => []);
-    apiMockScope = apiMock();
-  });
-
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   it("Skal vise AppSpinner når henter data", () => {
-    stubTilgangApi(apiMockScope);
+    stubTilgangApi();
     renderMotelandingsside();
 
     expect(screen.getByLabelText("Vent litt mens siden laster")).to.exist;
   });
 
   it("Skal vise AppSpinner når henter tilgang", async () => {
-    stubTilgangApi(apiMockScope);
+    stubTilgangApi();
     renderMotelandingsside();
 
     expect(await screen.findByLabelText("Vent litt mens siden laster")).to
@@ -96,7 +88,7 @@ describe("MotelandingssideSide", () => {
   });
 
   it("Skal vise feilmelding hvis ikke tilgang", async () => {
-    stubTilgangApi(apiMockScope, {
+    stubTilgangApi({
       erGodkjent: false,
       erAvslatt: true,
     });

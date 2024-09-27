@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import React, { useState } from "react";
 import { VelgBehandler } from "@/components/behandler/VelgBehandler";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
@@ -15,13 +15,12 @@ import {
   behandlerRefLegoLasLegesen,
   behandlerSokDialogmeldingMock,
 } from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
-import { apiMock } from "../stubs/stubApi";
-import nock from "nock";
 import { ISDIALOGMELDING_ROOT } from "@/apiConstants";
 import userEvent from "@testing-library/user-event";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
 
 let queryClient: QueryClient;
-let apiMockScope: nock.Scope;
 const mockBehandler = behandlereDialogmeldingMock[0];
 
 const renderVelgBehandler = () =>
@@ -41,10 +40,6 @@ const searchBehandlerOptionText = "Søk etter behandler";
 describe("VelgBehandler", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   it("Viser radiobuttons med behandlervalg", async () => {
@@ -98,9 +93,11 @@ describe("VelgBehandler", () => {
   });
 
   it("kan velge behandler fra søk", async () => {
-    apiMockScope
-      .get(`${ISDIALOGMELDING_ROOT}/behandler/search`)
-      .reply(200, () => behandlerSokDialogmeldingMock);
+    mockServer.use(
+      http.get(`*${ISDIALOGMELDING_ROOT}/behandler/search`, () =>
+        HttpResponse.json(behandlerSokDialogmeldingMock)
+      )
+    );
     renderVelgBehandler();
     const behandlerSearchResultMock = behandlerSokDialogmeldingMock[1];
 

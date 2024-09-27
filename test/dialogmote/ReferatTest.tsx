@@ -22,7 +22,6 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubFerdigstillApi } from "../stubs/stubIsdialogmote";
-import { apiMock } from "../stubs/stubApi";
 import {
   annenDeltakerFunksjon,
   annenDeltakerNavn,
@@ -129,7 +128,7 @@ describe("ReferatTest", () => {
   });
 
   it("kan endre behandlers deltakelse", async () => {
-    stubFerdigstillApi(apiMock(), dialogmoteMedBehandler.uuid);
+    stubFerdigstillApi(dialogmoteMedBehandler.uuid);
     renderReferat(dialogmoteMedBehandler);
     passSkjemaTekstInput();
 
@@ -234,7 +233,7 @@ describe("ReferatTest", () => {
   });
 
   it("ferdigstiller dialogmote ved submit av skjema", async () => {
-    stubFerdigstillApi(apiMock(), dialogmoteMedBehandler.uuid);
+    stubFerdigstillApi(dialogmoteMedBehandler.uuid);
     renderReferat(dialogmoteMedBehandler);
 
     passSkjemaTekstInput();

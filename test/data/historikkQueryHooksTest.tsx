@@ -4,9 +4,7 @@ import {
   useHistorikkMotebehovQuery,
   useHistorikkOppfolgingsplan,
 } from "@/data/historikk/historikkQueryHooks";
-import { apiMock } from "../stubs/stubApi";
-import nock from "nock";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import { historikkmotebehovMock } from "@/mocks/syfomotebehov/historikkmotebehovMock";
 import { historikkoppfolgingsplanMock } from "@/mocks/syfooppfolgingsplanservice/historikkoppfolgingsplanMock";
 import { stubMotebehovHistorikkApi } from "../stubs/stubSyfomotebehov";
@@ -14,19 +12,14 @@ import { stubOppfolgingsplanHistorikkApi } from "../stubs/stubSyfooppfolgingspla
 import { testQueryClient } from "../testQueryClient";
 
 let queryClient: any;
-let apiMockScope: any;
 
 describe("historikkQueryHooks", () => {
   beforeEach(() => {
     queryClient = testQueryClient();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   it("loads motebehov-historikk for valgt personident", async () => {
-    stubMotebehovHistorikkApi(apiMockScope);
+    stubMotebehovHistorikkApi();
     const wrapper = queryHookWrapper(queryClient);
 
     const { result } = renderHook(() => useHistorikkMotebehovQuery(), {
@@ -45,7 +38,7 @@ describe("historikkQueryHooks", () => {
     expect(result.current.data).to.deep.equal(expectedHistorikkEvents);
   });
   it("loads oppfolgingsplan-historikk for valgt personident", async () => {
-    stubOppfolgingsplanHistorikkApi(apiMockScope);
+    stubOppfolgingsplanHistorikkApi();
     const wrapper = queryHookWrapper(queryClient);
 
     const { result } = renderHook(() => useHistorikkOppfolgingsplan(), {

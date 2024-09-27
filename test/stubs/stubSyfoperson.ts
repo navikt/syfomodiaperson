@@ -1,25 +1,29 @@
-import nock from "nock";
 import { SYFOPERSON_ROOT } from "@/apiConstants";
 import { personAdresseMock } from "@/mocks/syfoperson/personAdresseMock";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
 
-export const stubEgenansattApi = (scope: nock.Scope, isEgenansatt: boolean) =>
-  scope
-    .get(`${SYFOPERSON_ROOT}/person/egenansatt`)
-    .reply(200, () => isEgenansatt);
+export const stubEgenansattApi = (isEgenansatt: boolean) =>
+  mockServer.use(
+    http.get(`*${SYFOPERSON_ROOT}/person/egenansatt`, () =>
+      HttpResponse.json(isEgenansatt)
+    )
+  );
 
-export const stubDiskresjonskodeApi = (
-  scope: nock.Scope,
-  diskresjonskode = ""
-) =>
-  scope
-    .get(`${SYFOPERSON_ROOT}/person/diskresjonskode`)
-    .reply(200, () => diskresjonskode);
+export const stubDiskresjonskodeApi = (diskresjonskode = "") =>
+  mockServer.use(
+    http.get(`*${SYFOPERSON_ROOT}/person/diskresjonskode`, () =>
+      HttpResponse.json(diskresjonskode)
+    )
+  );
 
-export const stubPersonadresseApi = (scope: nock.Scope) =>
-  scope
-    .get(`${SYFOPERSON_ROOT}/person/adresse`)
-    .reply(200, () => personAdresseMock);
+export const stubPersonadresseApi = () =>
+  mockServer.use(
+    http.get(`*${SYFOPERSON_ROOT}/person/adresse`, () =>
+      HttpResponse.json(personAdresseMock)
+    )
+  );
 
 interface TilrettelagtKommunikasjon {
   talesprakTolk: { value: string | null } | null;
@@ -27,7 +31,6 @@ interface TilrettelagtKommunikasjon {
 }
 
 export const stubPersoninfoApi = (
-  scope: nock.Scope,
   dodsdato?: string,
   tilrettelagtKommunikasjon?: TilrettelagtKommunikasjon
 ) => {
@@ -36,7 +39,9 @@ export const stubPersoninfoApi = (
     dodsdato: dodsdato || null,
     tilrettelagtKommunikasjon: tilrettelagtKommunikasjon || null,
   };
-  scope
-    .get(`${SYFOPERSON_ROOT}/person/brukerinfo`)
-    .reply(200, () => brukerinfo);
+  mockServer.use(
+    http.get(`*${SYFOPERSON_ROOT}/person/brukerinfo`, () =>
+      HttpResponse.json(brukerinfo)
+    )
+  );
 };

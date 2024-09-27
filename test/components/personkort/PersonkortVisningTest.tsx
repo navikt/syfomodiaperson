@@ -4,7 +4,6 @@ import PersonkortVisning from "../../../src/components/personkort/PersonkortVisn
 import { PERSONKORTVISNING_TYPE } from "@/konstanter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
-import { apiMock } from "../../stubs/stubApi";
 import { stubFastlegerApi } from "../../stubs/stubFastlegeRest";
 import { render, screen } from "@testing-library/react";
 import { fastlegerMock } from "@/mocks/fastlegerest/fastlegerMock";
@@ -16,7 +15,6 @@ import { daysFromToday } from "../../testUtils";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
 
 let queryClient: any;
-let apiMockScope: any;
 
 describe("PersonkortVisning", () => {
   beforeEach(() => {
@@ -25,8 +23,7 @@ describe("PersonkortVisning", () => {
       brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => brukerinfoMock
     );
-    apiMockScope = apiMock();
-    stubFastlegerApi(apiMockScope);
+    stubFastlegerApi();
   });
 
   it("Skal vise PersonkortSykmeldt, som initielt valg", () => {

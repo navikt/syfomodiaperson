@@ -1,7 +1,6 @@
 import React from "react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { apiMock } from "../../stubs/stubApi";
 import { stubFastlegerApi } from "../../stubs/stubFastlegeRest";
 import { render, screen } from "@testing-library/react";
 import { queryClientWithAktivBruker } from "../../testQueryClient";
@@ -13,7 +12,6 @@ import { daysFromToday, getButton } from "../../testUtils";
 import userEvent from "@testing-library/user-event";
 
 let queryClient: QueryClient;
-let apiMockScope: any;
 
 const renderAndExpandPersonkort = async () => {
   render(
@@ -32,8 +30,7 @@ describe("Personkort", () => {
       brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => brukerinfoMock
     );
-    apiMockScope = apiMock();
-    stubFastlegerApi(apiMockScope);
+    stubFastlegerApi();
   });
 
   it("Skal vise Sikkerhetstiltak-button-tab hvis bruker har sikkerhetstiltak", async () => {

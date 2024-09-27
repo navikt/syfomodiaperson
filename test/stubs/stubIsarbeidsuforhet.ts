@@ -1,14 +1,11 @@
-import nock from "nock";
 import { ISARBEIDSUFORHET_ROOT } from "@/apiConstants";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
 
-export const stubAktivitetskravApi = (scope: nock.Scope) => {
-  return scope
-    .get(`${ISARBEIDSUFORHET_ROOT}/arbeidsuforhet/vurdering`)
-    .reply(200, () => undefined);
-};
-
-export const stubArbeidsuforhetForhandsvarselApi = (scope: nock.Scope) => {
-  return scope
-    .post(new RegExp(`${ISARBEIDSUFORHET_ROOT}/arbeidsuforhet/forhandsvarsel`))
-    .reply(201);
-};
+export const stubArbeidsuforhetForhandsvarselApi = () =>
+  mockServer.use(
+    http.post(
+      `*${ISARBEIDSUFORHET_ROOT}/arbeidsuforhet/forhandsvarsel`,
+      () => new HttpResponse(null, { status: 201 })
+    )
+  );

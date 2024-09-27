@@ -19,10 +19,8 @@ import {
   EditOppfolgingsoppgaveRequestDTO,
 } from "@/data/oppfolgingsoppgave/types";
 import { generateUUID } from "@/utils/uuidUtils";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import userEvent from "@testing-library/user-event";
-import nock from "nock";
-import { apiMock } from "../stubs/stubApi";
 import { Oppfolgingsoppgave } from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
 import { changeTextInput } from "../testUtils";
 import dayjs from "dayjs";
@@ -30,7 +28,6 @@ import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { stubOppfolgingsoppgaveApi } from "../stubs/stubIshuskelapp";
 
 let queryClient: QueryClient;
-let apiMockScope: nock.Scope;
 
 const oppfolgingsoppgaveOppfolgingsgrunn =
   Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE;
@@ -56,15 +53,11 @@ const renderOppfolgingsoppgave = () =>
 describe("Oppfolgingsoppgave", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   describe("oppfolgingsoppgave exists", () => {
     beforeEach(() => {
-      stubOppfolgingsoppgaveApi(apiMockScope, oppfolgingsoppgave);
+      stubOppfolgingsoppgaveApi(oppfolgingsoppgave);
     });
     it("renders oppfolgingsoppgave-tekst with save, cancel and remove buttons", async () => {
       renderOppfolgingsoppgave();
@@ -194,7 +187,7 @@ describe("Oppfolgingsoppgave", () => {
   });
   describe("OppfolgingsoppgaveModal: no oppfolgingsoppgave exists", () => {
     beforeEach(() => {
-      stubOppfolgingsoppgaveApi(apiMockScope, undefined);
+      stubOppfolgingsoppgaveApi(undefined);
     });
 
     it("renders oppfolgingsoppgave input with radio group, textarea, datepicker and save and cancel buttons", async () => {

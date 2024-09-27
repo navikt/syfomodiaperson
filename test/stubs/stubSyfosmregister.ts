@@ -1,8 +1,11 @@
-import nock from "nock";
 import { SYFOSMREGISTER_ROOT } from "@/apiConstants";
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
+import { http, HttpResponse } from "msw";
+import { mockServer } from "../setup";
 
-export const stubSykmeldingApi = (scope: nock.Scope) =>
-  scope
-    .get(`${SYFOSMREGISTER_ROOT}/internal/sykmeldinger`)
-    .reply(200, () => sykmeldingerMock);
+export const stubSykmeldingApi = () =>
+  mockServer.use(
+    http.get(`*${SYFOSMREGISTER_ROOT}/internal/sykmeldinger`, () =>
+      HttpResponse.json(sykmeldingerMock)
+    )
+  );

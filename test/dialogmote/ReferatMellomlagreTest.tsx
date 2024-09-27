@@ -20,7 +20,6 @@ import {
 import { screen } from "@testing-library/react";
 import { expectedReferatDocument } from "./testDataDocuments";
 import { stubMellomlagreApi } from "../stubs/stubIsdialogmote";
-import { apiMock } from "../stubs/stubApi";
 import { queryClientWithMockData } from "../testQueryClient";
 import { texts as deltakereSkjemaTexts } from "@/sider/dialogmoter/components/referat/Deltakere";
 import { renderWithRouter } from "../testRouterUtils";
@@ -34,7 +33,7 @@ describe("ReferatMellomlagreTest", () => {
   });
 
   it("lagrer referat med verdier fra skjema", async () => {
-    stubMellomlagreApi(apiMock(), dialogmoteMedBehandler.uuid);
+    stubMellomlagreApi(dialogmoteMedBehandler.uuid);
     renderReferat(dialogmoteMedBehandler);
     await passSkjemaTekstInput();
     await clickButton("Lagre");

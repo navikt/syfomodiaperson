@@ -1,8 +1,6 @@
-import { apiMock } from "../stubs/stubApi";
-import nock from "nock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { stubSykmeldingApi } from "../stubs/stubSyfosmregister";
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
@@ -15,7 +13,6 @@ import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { testQueryClient } from "../testQueryClient";
 
 let queryClient: any;
-let apiMockScope: any;
 
 const sykmeldingerMockData =
   sykmeldingerMock as unknown as SykmeldingNewFormatDTO[];
@@ -23,14 +20,10 @@ const sykmeldingerMockData =
 describe("sykmeldingQueryHooks", () => {
   beforeEach(() => {
     queryClient = testQueryClient();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   it("loads sykmeldinger og arbeidsgivers sykmeldinger", async () => {
-    stubSykmeldingApi(apiMockScope);
+    stubSykmeldingApi();
     const wrapper = queryHookWrapper(queryClient);
 
     const { result } = renderHook(() => useSykmeldingerQuery(), {

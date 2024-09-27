@@ -1,8 +1,6 @@
-import { apiMock } from "../stubs/stubApi";
-import nock from "nock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { aktivitetskravMock } from "@/mocks/isaktivitetskrav/aktivitetskravMock";
 import { stubAktivitetskravApi } from "../stubs/stubIsaktivitetskrav";
@@ -10,20 +8,15 @@ import { stubFeatureTogglesApi } from "../stubs/stubUnleash";
 import { testQueryClient } from "../testQueryClient";
 
 let queryClient;
-let apiMockScope;
 
 describe("aktivitetskravqueryHook tests", () => {
   beforeEach(() => {
     queryClient = testQueryClient();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   it("loads aktivitetskrav for valgt personident", async () => {
-    stubFeatureTogglesApi(apiMockScope);
-    stubAktivitetskravApi(apiMockScope);
+    stubFeatureTogglesApi();
+    stubAktivitetskravApi();
 
     const wrapper = queryHookWrapper(queryClient);
 

@@ -1,9 +1,11 @@
-import nock from "nock";
 import { ISDIALOGMELDING_ROOT } from "@/apiConstants";
 import { behandlereDialogmeldingMock } from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
 
-export const stubBehandlereDialogmeldingApi = (scope: nock.Scope) => {
-  return scope
-    .get(`${ISDIALOGMELDING_ROOT}/behandler/personident`)
-    .reply(200, () => behandlereDialogmeldingMock);
-};
+export const stubBehandlereDialogmeldingApi = () =>
+  mockServer.use(
+    http.get(`*${ISDIALOGMELDING_ROOT}/behandler/personident`, () =>
+      HttpResponse.json(behandlereDialogmeldingMock)
+    )
+  );
