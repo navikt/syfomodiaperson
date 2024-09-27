@@ -1,5 +1,5 @@
 import nock from "nock";
-import { virksomhetMock } from "../../mock/ereg/virksomhetMock";
+import { virksomhetMock } from "@/mocks/ereg/virksomhetMock";
 import { EREG_ROOT } from "@/apiConstants";
 
 export const stubVirksomhetApi = (scope: nock.Scope, orgnummer: string) =>

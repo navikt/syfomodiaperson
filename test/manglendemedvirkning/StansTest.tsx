@@ -3,7 +3,7 @@ import { manglendeMedvirkningStansPath } from "@/routers/AppRouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { navEnhet } from "../dialogmote/testData";
 import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import { renderWithRouter } from "../testRouterUtils";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";

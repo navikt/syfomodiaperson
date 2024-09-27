@@ -4,9 +4,9 @@ import nock from "nock";
 import { renderHook, waitFor } from "@testing-library/react";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { expect, describe, it, beforeEach, afterEach } from "vitest";
-import { virksomhetMock } from "../../mock/ereg/virksomhetMock";
+import { virksomhetMock } from "@/mocks/ereg/virksomhetMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
-import { VIRKSOMHET_PONTYPANDY } from "../../mock/common/mockConstants";
+import { VIRKSOMHET_PONTYPANDY } from "@/mocks/common/mockConstants";
 import { testQueryClient } from "../testQueryClient";
 
 let queryClient: any;

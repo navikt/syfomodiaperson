@@ -9,7 +9,7 @@ import {
 import { arbeidsuforhetQueryKeys } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { addWeeks } from "@/utils/datoUtils";
 import { ArbeidsuforhetAvslag } from "@/sider/arbeidsuforhet/avslag/ArbeidsuforhetAvslag";
-import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { queryClientWithMockData } from "../../testQueryClient";
 import {
   createForhandsvarsel,

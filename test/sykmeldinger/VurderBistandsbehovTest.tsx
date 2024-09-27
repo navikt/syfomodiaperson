@@ -6,11 +6,11 @@ import { queryClientWithMockData } from "../testQueryClient";
 import { expect, describe, it, beforeEach } from "vitest";
 import React from "react";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
-import { personOppgaveUbehandletBehandlerBerOmBistand } from "../../mock/ispersonoppgave/personoppgaveMock";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
+import { personOppgaveUbehandletBehandlerBerOmBistand } from "@/mocks/ispersonoppgave/personoppgaveMock";
 import { BistandsbehovOppgaver } from "@/sider/sykmeldinger/VurderBistandsbehov";
 import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
-import { sykmeldingerMock } from "../../mock/syfosmregister/sykmeldingerMock";
+import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 import { renderWithRouter } from "../testRouterUtils";
 import { clickButton } from "../testUtils";
 

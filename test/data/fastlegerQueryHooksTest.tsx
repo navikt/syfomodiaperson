@@ -4,7 +4,7 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { expect, describe, it, beforeEach, afterEach } from "vitest";
 import { stubFastlegerApi } from "../stubs/stubFastlegeRest";
 import { useFastlegerQuery } from "@/data/fastlege/fastlegerQueryHooks";
-import { fastlegerMock } from "../../mock/fastlegerest/fastlegerMock";
+import { fastlegerMock } from "@/mocks/fastlegerest/fastlegerMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { testQueryClient } from "../testQueryClient";
 

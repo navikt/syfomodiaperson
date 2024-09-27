@@ -17,20 +17,20 @@ import {
   returLegeerklaring,
 } from "./meldingTestdataGenerator";
 import { behandlerdialogQueryKeys } from "@/data/behandlerdialog/behandlerdialogQueryHooks";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
 import {
   personOppgaveBehandletBehandlerdialogSvar,
   personOppgaveBehandletBehandlerdialogUbesvartMelding,
   personOppgaveUbehandletBehandlerdialogSvar,
   personOppgaveUbehandletBehandlerdialogUbesvartMelding,
-} from "../../mock/ispersonoppgave/personoppgaveMock";
+} from "@/mocks/ispersonoppgave/personoppgaveMock";
 import { expect, describe, it, beforeEach } from "vitest";
 import { MeldingStatusType } from "@/data/behandlerdialog/behandlerdialogTypes";
 import {
   defaultMelding,
   defaultMeldingInnkommendeLegeerklaringNy,
-} from "../../mock/isbehandlerdialog/behandlerdialogMock";
+} from "@/mocks/isbehandlerdialog/behandlerdialogMock";
 
 let queryClient: QueryClient;
 

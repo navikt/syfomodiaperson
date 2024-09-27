@@ -4,7 +4,7 @@ import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
 import { expect, describe, it, beforeEach, afterEach } from "vitest";
 import { stubBehandlereDialogmeldingApi } from "../stubs/stubIsdialogmelding";
-import { behandlereDialogmeldingMock } from "../../mock/isdialogmelding/behandlereDialogmeldingMock";
+import { behandlereDialogmeldingMock } from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
 import { useBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
 import { testQueryClient } from "../testQueryClient";
 

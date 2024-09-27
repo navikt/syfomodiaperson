@@ -9,7 +9,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { clickButton, getButton } from "../testUtils";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { createVedtak } from "./frisktilarbeidTestData";
 import dayjs from "dayjs";
 import { NotificationProvider } from "@/context/notification/NotificationContext";

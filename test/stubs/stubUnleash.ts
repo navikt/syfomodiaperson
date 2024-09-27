@@ -1,6 +1,6 @@
 import nock from "nock";
 import { UNLEASH_ROOT } from "@/apiConstants";
-import { mockUnleashResponse } from "../../mock/unleashMocks";
+import { mockUnleashResponse } from "@/mocks/unleashMocks";
 
 export const stubFeatureTogglesApi = (scope: nock.Scope) =>
   scope

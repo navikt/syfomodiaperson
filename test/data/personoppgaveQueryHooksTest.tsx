@@ -5,7 +5,7 @@ import { expect, describe, it, beforeEach, afterEach } from "vitest";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { stubPersonoppgaveApi } from "../stubs/stubIspersonoppgave";
-import { personoppgaverMock } from "../../mock/ispersonoppgave/personoppgaveMock";
+import { personoppgaverMock } from "@/mocks/ispersonoppgave/personoppgaveMock";
 import { testQueryClient } from "../testQueryClient";
 
 let queryClient: any;

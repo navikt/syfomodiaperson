@@ -21,7 +21,7 @@ import {
   ARBEIDSTAKER_DEFAULT,
   LEDERE_DEFAULT,
   VIRKSOMHET_UTEN_NARMESTE_LEDER,
-} from "../../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import { DialogmoteInnkallingDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { renderWithRouter } from "../../testRouterUtils";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
@@ -31,7 +31,7 @@ import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { Malform, MalformProvider } from "@/context/malform/MalformContext";
 import userEvent from "@testing-library/user-event";
 import { getInnkallingTexts } from "@/data/dialogmote/dialogmoteTexts";
-import { brukerinfoMock } from "../../../mock/syfoperson/persondataMock";
+import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
 import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import {
   DialogmoteInnkallingSkjema,

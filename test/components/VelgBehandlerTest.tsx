@@ -14,7 +14,7 @@ import {
   behandlereDialogmeldingMock,
   behandlerRefLegoLasLegesen,
   behandlerSokDialogmeldingMock,
-} from "../../mock/isdialogmelding/behandlereDialogmeldingMock";
+} from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
 import { apiMock } from "../stubs/stubApi";
 import nock from "nock";
 import { ISDIALOGMELDING_ROOT } from "@/apiConstants";

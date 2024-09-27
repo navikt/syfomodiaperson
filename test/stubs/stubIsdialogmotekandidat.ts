@@ -1,6 +1,6 @@
 import nock from "nock";
 import { ISDIALOGMOTEKANDIDAT_ROOT } from "@/apiConstants";
-import { dialogmotekandidatMock } from "../../mock/isdialogmotekandidat/dialogmotekandidatMock";
+import { dialogmotekandidatMock } from "@/mocks/isdialogmotekandidat/dialogmotekandidatMock";
 
 export const stubDialogmoteKandidatApi = (scope: nock.Scope) => {
   return scope

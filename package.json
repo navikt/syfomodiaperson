@@ -2,7 +2,7 @@
   "name": "syfomodiaperson",
   "version": "0.0.1",
   "description": "Digitalisering av sykefraværsoppfølging",
-  "main": "index.js",
+  "main": "index.tsx",
   "test": "npm run test",
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,scss,md,less,html}": [
@@ -137,6 +137,7 @@
     "less": "4.2.0",
     "less-loader": "11.1.0",
     "lint-staged": "13.2.1",
+    "msw": "2.4.9",
     "nock": "13.5.4",
     "postcss-loader": "7.2.4",
     "prettier": "2.8.3",
@@ -151,5 +152,10 @@
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "4.11.1",
     "webpack-merge": "5.10.0"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

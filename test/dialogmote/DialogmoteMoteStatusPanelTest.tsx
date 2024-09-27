@@ -15,7 +15,7 @@ import {
   ANNEN_VEILEDER,
   ANNEN_VEILEDER_IDENT,
   VEILEDER_DEFAULT,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 
 const queryClient = queryClientWithMockData();
 

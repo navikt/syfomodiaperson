@@ -13,7 +13,7 @@ import {
   queryClientWithAktivBruker,
   queryClientWithMockData,
 } from "../testQueryClient";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { navEnhet } from "../dialogmote/testData";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import {
@@ -21,7 +21,7 @@ import {
   personOppgaveUbehandletBehandlerdialogAvvistMelding,
   personOppgaveUbehandletBehandlerdialogSvar,
   personOppgaveUbehandletBehandlerdialogUbesvartMelding,
-} from "../../mock/ispersonoppgave/personoppgaveMock";
+} from "@/mocks/ispersonoppgave/personoppgaveMock";
 import { arbeidsuforhetQueryKeys } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import {
   createForhandsvarsel,
@@ -31,14 +31,14 @@ import { addWeeks } from "@/utils/datoUtils";
 import { VurderingType } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
 import { senOppfolgingKandidatQueryKeys } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks";
-import { mockUnleashResponse } from "../../mock/unleashMocks";
+import { mockUnleashResponse } from "@/mocks/unleashMocks";
 import {
   ferdigbehandletKandidatMock,
   senOppfolgingKandidatMock,
-} from "../../mock/ismeroppfolging/mockIsmeroppfolging";
+} from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
-import { defaultVedtak } from "../../mock/isfrisktilarbeid/mockIsfrisktilarbeid";
+import { defaultVedtak } from "@/mocks/isfrisktilarbeid/mockIsfrisktilarbeid";
 import { aktivitetskravQueryKeys } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import {
   aktivitetskrav,

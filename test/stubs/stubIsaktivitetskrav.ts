@@ -1,6 +1,6 @@
 import nock from "nock";
 import { ISAKTIVITETSKRAV_ROOT } from "@/apiConstants";
-import { aktivitetskravMock } from "../../mock/isaktivitetskrav/aktivitetskravMock";
+import { aktivitetskravMock } from "@/mocks/isaktivitetskrav/aktivitetskravMock";
 
 export const stubAktivitetskravApi = (scope: nock.Scope) => {
   return scope

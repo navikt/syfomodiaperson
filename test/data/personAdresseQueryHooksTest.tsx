@@ -5,7 +5,7 @@ import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
 import { expect, describe, it, beforeEach, afterEach } from "vitest";
 import { usePersonAdresseQuery } from "@/data/personinfo/personAdresseQueryHooks";
-import { personAdresseMock } from "../../mock/syfoperson/personAdresseMock";
+import { personAdresseMock } from "@/mocks/syfoperson/personAdresseMock";
 import { testQueryClient } from "../testQueryClient";
 
 let queryClient: any;

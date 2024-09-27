@@ -7,11 +7,11 @@ import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEn
 import { apiMock } from "../../stubs/stubApi";
 import { stubFastlegerApi } from "../../stubs/stubFastlegeRest";
 import { render, screen } from "@testing-library/react";
-import { fastlegerMock } from "../../../mock/fastlegerest/fastlegerMock";
+import { fastlegerMock } from "@/mocks/fastlegerest/fastlegerMock";
 import { queryClientWithAktivBruker } from "../../testQueryClient";
-import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
-import { brukerinfoMock } from "../../../mock/syfoperson/persondataMock";
+import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
 import { daysFromToday } from "../../testUtils";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
 

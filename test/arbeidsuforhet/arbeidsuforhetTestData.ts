@@ -6,7 +6,7 @@ import {
 import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import { getSendForhandsvarselDocument } from "./documents";
 
 type CreateForhandsvarselOptions = {

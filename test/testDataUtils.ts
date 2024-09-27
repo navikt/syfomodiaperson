@@ -2,7 +2,7 @@ import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/
 import {
   VEILEDER_IDENT_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
-} from "../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import {
   AktivitetskravDTO,
   AktivitetskravStatus,

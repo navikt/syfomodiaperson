@@ -3,7 +3,7 @@ import { SYFOVEILEDER_ROOT } from "@/apiConstants";
 import {
   VEILEDER_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 
 export const stubAktivVeilederinfoApi = (scope: nock.Scope) =>
   scope

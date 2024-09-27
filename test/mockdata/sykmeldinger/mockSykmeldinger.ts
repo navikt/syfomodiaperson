@@ -13,7 +13,7 @@ import {
   Soknadstype,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { VIRKSOMHET_PONTYPANDY } from "../../../mock/common/mockConstants";
+import { VIRKSOMHET_PONTYPANDY } from "@/mocks/common/mockConstants";
 import { NyeSykmeldingStatuser } from "@/utils/sykmeldinger/sykmeldingstatuser";
 
 export const mockSykmeldingId = "test-id";

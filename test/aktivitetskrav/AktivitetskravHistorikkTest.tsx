@@ -21,7 +21,7 @@ import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { aktivitetskravQueryKeys } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import {

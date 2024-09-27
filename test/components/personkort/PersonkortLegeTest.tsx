@@ -6,9 +6,9 @@ import PersonkortLege, {
 } from "@/components/personkort/PersonkortLege";
 import { expect, describe, it, beforeEach } from "vitest";
 import React from "react";
-import { fastlegerMock } from "../../../mock/fastlegerest/fastlegerMock";
+import { fastlegerMock } from "@/mocks/fastlegerest/fastlegerMock";
 import { queryClientWithAktivBruker } from "../../testQueryClient";
-import { ARBEIDSTAKER_DEFAULT } from "../../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 
 let queryClient: any;
 

@@ -1,6 +1,6 @@
 import nock from "nock";
 import { SYKEPENGESOKNAD_BACKEND_ROOT } from "@/apiConstants";
-import { soknaderMock } from "../../mock/sykepengesoknad/soknaderMock";
+import { soknaderMock } from "@/mocks/sykepengesoknad/soknaderMock";
 
 export const stubSykepengesoknadBackendApi = (scope: nock.Scope) =>
   scope

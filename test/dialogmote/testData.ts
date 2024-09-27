@@ -17,7 +17,7 @@ import {
   NARMESTE_LEDER_DEFAULT,
   VEILEDER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { getReferatTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { BehandlerDTO, BehandlerType } from "@/data/behandler/BehandlerDTO";

@@ -9,14 +9,14 @@ import SenOppfolging from "@/sider/senoppfolging/SenOppfolging";
 import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import { senOppfolgingSvarQueryKeys } from "@/data/senoppfolging/useSenOppfolgingSvarQuery";
-import { merOppfolgingMock } from "../../mock/meroppfolging-backend/merOppfolgingMock";
+import { merOppfolgingMock } from "@/mocks/meroppfolging-backend/merOppfolgingMock";
 import { senOppfolgingKandidatQueryKeys } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import {
   ferdigbehandletKandidatMock,
   senOppfolgingKandidatMock,
-} from "../../mock/ismeroppfolging/mockIsmeroppfolging";
+} from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
 import {
   SenOppfolgingKandidatResponseDTO,

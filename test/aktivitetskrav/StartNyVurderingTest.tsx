@@ -10,7 +10,7 @@ import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/p
 import {
   ARBEIDSTAKER_DEFAULT,
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import {
   createAktivitetskrav,
   createAktivitetskravVurdering,

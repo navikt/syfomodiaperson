@@ -8,11 +8,11 @@ import { MeldingStatusType } from "@/data/behandlerdialog/behandlerdialogTypes";
 import { queryClientWithMockData } from "../testQueryClient";
 import { AvvistMelding } from "@/sider/behandlerdialog/meldinger/AvvistMelding";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import {
   personOppgaveBehandletBehandlerdialogAvvistMelding,
   personOppgaveUbehandletBehandlerdialogAvvistMelding,
-} from "../../mock/ispersonoppgave/personoppgaveMock";
+} from "@/mocks/ispersonoppgave/personoppgaveMock";
 import { foresporselPasientToBehandler } from "./meldingTestdataGenerator";
 
 let queryClient: QueryClient;

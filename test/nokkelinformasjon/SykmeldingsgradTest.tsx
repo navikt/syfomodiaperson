@@ -5,10 +5,10 @@ import { render, screen } from "@testing-library/react";
 import { Sykmeldingsgrad } from "@/sider/nokkelinformasjon/sykmeldingsgrad/Sykmeldingsgrad";
 import { expect, describe, it, beforeEach } from "vitest";
 import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
-import { sykmeldingerMock } from "../../mock/syfosmregister/sykmeldingerMock";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
+import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { oppfolgingstilfellePersonMock } from "../../mock/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
+import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
 import { addDays } from "@/utils/datoUtils";
 import { PeriodetypeDTO } from "@/data/sykmelding/types/PeriodetypeDTO";
 

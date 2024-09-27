@@ -4,7 +4,7 @@ import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
 import { expect, describe, it, beforeEach, afterEach } from "vitest";
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
-import { aktivitetskravMock } from "../../mock/isaktivitetskrav/aktivitetskravMock";
+import { aktivitetskravMock } from "@/mocks/isaktivitetskrav/aktivitetskravMock";
 import { stubAktivitetskravApi } from "../stubs/stubIsaktivitetskrav";
 import { stubFeatureTogglesApi } from "../stubs/stubUnleash";
 import { testQueryClient } from "../testQueryClient";

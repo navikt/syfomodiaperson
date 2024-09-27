@@ -8,7 +8,7 @@ const extensions = [".tsx", ".jsx", ".js", ".ts", ".json"];
 
 module.exports = {
   entry: {
-    main: ["@babel/polyfill", "./src/index.js"],
+    main: ["./src/index.tsx"],
   },
   output: {
     filename: "[name].bundle.js",

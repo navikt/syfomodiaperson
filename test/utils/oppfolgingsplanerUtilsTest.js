@@ -13,7 +13,7 @@ import {
 import {
   ARBEIDSTAKER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 
 describe("oppfolgingsplanerUtils", () => {
   describe("activeOppfolgingsplaner", () => {

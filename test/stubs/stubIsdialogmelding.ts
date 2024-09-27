@@ -1,6 +1,6 @@
 import nock from "nock";
 import { ISDIALOGMELDING_ROOT } from "@/apiConstants";
-import { behandlereDialogmeldingMock } from "../../mock/isdialogmelding/behandlereDialogmeldingMock";
+import { behandlereDialogmeldingMock } from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
 
 export const stubBehandlereDialogmeldingApi = (scope: nock.Scope) => {
   return scope

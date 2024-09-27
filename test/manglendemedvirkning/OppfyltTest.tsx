@@ -14,7 +14,7 @@ import {
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { defaultForhandsvarselVurdering } from "./manglendeMedvirkningTestData";
 import {
   changeTextInput,

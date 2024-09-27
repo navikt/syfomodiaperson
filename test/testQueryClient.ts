@@ -1,6 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
-import { tilgangBrukerMock } from "../mock/istilgangskontroll/tilgangtilbrukerMock";
+import { tilgangBrukerMock } from "@/mocks/istilgangskontroll/tilgangtilbrukerMock";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import {
   AKTIV_BRUKER_DEFAULT,
@@ -11,38 +11,38 @@ import {
   LEDERE_DEFAULT,
   VEILEDER_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
-} from "../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { modiacontextQueryKeys } from "@/data/modiacontext/modiacontextQueryHooks";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { oppfolgingstilfellePersonMock } from "../mock/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
+import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
 import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks";
-import { mockUnleashResponse } from "../mock/unleashMocks";
+import { mockUnleashResponse } from "@/mocks/unleashMocks";
 import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { behandlereQueryKeys } from "@/data/behandler/behandlereQueryHooks";
 import {
   behandlerByBehandlerRefMock,
   behandlereDialogmeldingMock,
   behandlerRefDoktorLegesen,
-} from "../mock/isdialogmelding/behandlereDialogmeldingMock";
+} from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
 import { behandlerdialogQueryKeys } from "@/data/behandlerdialog/behandlerdialogQueryHooks";
-import { behandlerdialogMock } from "../mock/isbehandlerdialog/behandlerdialogMock";
+import { behandlerdialogMock } from "@/mocks/isbehandlerdialog/behandlerdialogMock";
 import {
   brukerinfoMock,
   diskresjonskodeMock,
   isEgenansattMock,
   maksdatoMock,
-} from "../mock/syfoperson/persondataMock";
+} from "@/mocks/syfoperson/persondataMock";
 import { diskresjonskodeQueryKeys } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { egenansattQueryKeys } from "@/data/egenansatt/egenansattQueryHooks";
 import { personinfoQueryKeys } from "@/data/personinfo/personAdresseQueryHooks";
-import { personAdresseMock } from "../mock/syfoperson/personAdresseMock";
+import { personAdresseMock } from "@/mocks/syfoperson/personAdresseMock";
 import { maksdatoQueryKeys } from "@/data/maksdato/useMaksdatoQuery";
 import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
-import { sykmeldingerMock } from "../mock/syfosmregister/sykmeldingerMock";
+import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 import { senOppfolgingKandidatQueryKeys } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
-import { senOppfolgingKandidatMock } from "../mock/ismeroppfolging/mockIsmeroppfolging";
+import { senOppfolgingKandidatMock } from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
 
 export const testQueryClient = (): QueryClient => {
   return new QueryClient();

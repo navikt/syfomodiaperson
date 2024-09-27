@@ -7,13 +7,13 @@ import {
   ARBEIDSTAKER_DEFAULT,
   LEDERE_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import { render, screen } from "@testing-library/react";
 import { stubTilgangApi } from "../stubs/stubIstilgangskontroll";
 import { apiMock } from "../stubs/stubApi";
 import nock from "nock";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
-import { tilgangBrukerMock } from "../../mock/istilgangskontroll/tilgangtilbrukerMock";
+import { tilgangBrukerMock } from "@/mocks/istilgangskontroll/tilgangtilbrukerMock";
 import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
@@ -22,7 +22,7 @@ import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { MemoryRouter } from "react-router-dom";
 import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { dialogmoteunntakQueryKeys } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
-import { brukerinfoMock } from "../../mock/syfoperson/persondataMock";
+import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: any;

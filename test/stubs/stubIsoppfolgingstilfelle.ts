@@ -1,6 +1,6 @@
 import nock from "nock";
 import { ISOPPFOLGINGSTILFELLE_ROOT } from "@/apiConstants";
-import { oppfolgingstilfellePersonMock } from "../../mock/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
+import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
 
 export const stubOppfolgingstilfellePersonApi = (scope: nock.Scope) => {
   return scope

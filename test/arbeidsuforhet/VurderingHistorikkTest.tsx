@@ -4,7 +4,7 @@ import { arbeidsuforhetQueryKeys } from "@/data/arbeidsuforhet/arbeidsuforhetQue
 import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
-} from "../../mock/common/mockConstants";
+} from "@/mocks/common/mockConstants";
 import { render, screen } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";

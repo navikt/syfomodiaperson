@@ -1,6 +1,6 @@
 import nock from "nock";
 import { ISTILGANGSKONTROLL_ROOT } from "@/apiConstants";
-import { tilgangBrukerMock } from "../../mock/istilgangskontroll/tilgangtilbrukerMock";
+import { tilgangBrukerMock } from "@/mocks/istilgangskontroll/tilgangtilbrukerMock";
 
 export const stubTilgangApi = (
   scope: nock.Scope,

@@ -12,16 +12,16 @@ import { createMellomlagretReferat, navEnhet } from "./testData";
 import { queryClientWithMockData } from "../testQueryClient";
 import { queryButton } from "../testUtils";
 import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
-import { ARBEIDSTAKER_DEFAULT } from "../../mock/common/mockConstants";
-import { dialogmotekandidatMock } from "../../mock/isdialogmotekandidat/dialogmotekandidatMock";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
+import { dialogmotekandidatMock } from "@/mocks/isdialogmotekandidat/dialogmotekandidatMock";
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { DialogmoteStatus } from "@/data/dialogmote/types/dialogmoteTypes";
 import {
   createDialogmote,
   createReferat,
-} from "../../mock/isdialogmote/dialogmoterMock";
+} from "@/mocks/isdialogmote/dialogmoterMock";
 import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
-import { brukerinfoMock } from "../../mock/syfoperson/persondataMock";
+import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
 
 let queryClient: QueryClient;
 
