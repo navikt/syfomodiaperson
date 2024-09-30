@@ -21,7 +21,7 @@ import {
   getButton,
   getTextInput,
 } from "../testUtils";
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import { getIkkeAktuellDocument } from "./vurderingDocuments";
 import IkkeAktuellSide from "@/sider/manglendemedvirkning/ikkeaktuell/IkkeAktuellSide";
 
@@ -93,6 +93,24 @@ describe("Manglendemedvirkning Ikke aktuell", () => {
       await clickButton("Lagre");
 
       expect(await screen.findByText("Vennligst angi begrunnelse")).to.exist;
+    });
+
+    it("forhåndsviser vurdering med begrunnelse", async () => {
+      renderIkkeAktuellSide();
+
+      const begrunnelseInput = getTextInput(begrunnelseLabel);
+
+      changeTextInput(begrunnelseInput, enBegrunnelse);
+      await clickButton("Forhåndsvisning");
+
+      const forhandsvisningVurdering = screen.getAllByRole("dialog", {
+        hidden: true,
+      })[0];
+      getIkkeAktuellDocument(enBegrunnelse)
+        .flatMap((documentComponent) => documentComponent.texts)
+        .forEach((text) => {
+          expect(within(forhandsvisningVurdering).getByText(text)).to.exist;
+        });
     });
 
     it("sender Ikke aktuell med riktige verdier", async () => {
