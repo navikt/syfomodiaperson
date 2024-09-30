@@ -24,11 +24,9 @@ import {
   CreateAktivitetskravVurderingDTO,
   SendForhandsvarselDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import { getSendForhandsvarselDocument } from "../varselDocuments";
-import { apiMock } from "../../stubs/stubApi";
 import { stubVurderAktivitetskravForhandsvarselApi } from "../../stubs/stubIsaktivitetskrav";
-import nock from "nock";
 import { NotificationContext } from "@/context/notification/NotificationContext";
 import { Brevmal } from "@/data/aktivitetskrav/forhandsvarselTexts";
 import {
@@ -40,7 +38,6 @@ import {
 } from "./vurderingTestUtils";
 
 let queryClient: QueryClient;
-let apiMockScope: any;
 
 const renderVurderAktivitetskrav = (aktivitetskravDto: AktivitetskravDTO) =>
   render(
@@ -59,10 +56,6 @@ const renderVurderAktivitetskrav = (aktivitetskravDto: AktivitetskravDTO) =>
 describe("VurderAktivitetskrav forhåndsvarsel", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
   describe("Send forhåndsvarsel", () => {
     it("Does not show AVVENT or FORHANDSVARSEL choice when forhandsvarsel is sent", () => {
@@ -95,7 +88,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
 
     it("Send forhåndsvarsel with beskrivelse filled in, and reset form after submit", async () => {
       renderVurderAktivitetskrav(aktivitetskrav);
-      stubVurderAktivitetskravForhandsvarselApi(apiMockScope);
+      stubVurderAktivitetskravForhandsvarselApi(aktivitetskrav.uuid);
       const beskrivelseLabel = "Begrunnelse (obligatorisk)";
 
       await clickTab(tabTexts["FORHANDSVARSEL"]);
@@ -134,7 +127,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
 
     it("Send forhåndsvarsel with mal 'Uten arbeidsgiver'", async () => {
       renderVurderAktivitetskrav(aktivitetskrav);
-      stubVurderAktivitetskravForhandsvarselApi(apiMockScope);
+      stubVurderAktivitetskravForhandsvarselApi(aktivitetskrav.uuid);
       const beskrivelseLabel = "Begrunnelse (obligatorisk)";
 
       await clickTab(tabTexts["FORHANDSVARSEL"]);
@@ -181,7 +174,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
 
     it("Send forhåndsvarsel with mal 'Bosatt i Norge'", async () => {
       renderVurderAktivitetskrav(aktivitetskrav);
-      stubVurderAktivitetskravForhandsvarselApi(apiMockScope);
+      stubVurderAktivitetskravForhandsvarselApi(aktivitetskrav.uuid);
       const beskrivelseLabel = "Begrunnelse (obligatorisk)";
 
       await clickTab(tabTexts["FORHANDSVARSEL"]);

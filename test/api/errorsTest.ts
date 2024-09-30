@@ -1,27 +1,21 @@
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
-import { expect, describe, it, beforeAll } from "vitest";
+import { expect, describe, it } from "vitest";
 import { get, post } from "@/api/axios";
 import { isClientError } from "@/api/errors";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
 
 describe("errors test", () => {
-  let stub: MockAdapter;
-
   const pathBadRequest = "/400";
   const pathAccessDenied = "/403";
   const pathNotFound = "/404";
   const pathInternalServerError = "/500";
 
-  beforeAll(() => {
-    stub = new MockAdapter(axios);
-    stub.onPost(pathBadRequest).replyOnce(400);
-    stub.onGet(pathAccessDenied).replyOnce(403, { message: "Denied!" });
-    stub.onGet(pathNotFound).replyOnce(404);
-    stub.onPost(pathInternalServerError).replyOnce(500);
-  });
-
   describe("isClientError", () => {
     it("returns true from http 400", async () => {
+      mockServer.use(
+        http.post(pathBadRequest, () => new HttpResponse(null, { status: 400 }))
+      );
+
       try {
         await post(pathBadRequest, {});
       } catch (e) {
@@ -29,6 +23,12 @@ describe("errors test", () => {
       }
     });
     it("returns true from http 403", async () => {
+      mockServer.use(
+        http.get(pathAccessDenied, () =>
+          HttpResponse.json({ message: "Denied!" }, { status: 403 })
+        )
+      );
+
       try {
         await get(pathAccessDenied);
       } catch (e) {
@@ -36,6 +36,12 @@ describe("errors test", () => {
       }
     });
     it("returns true from http 404", async () => {
+      mockServer.use(
+        http.get(pathNotFound, () =>
+          HttpResponse.text("Not found", { status: 404 })
+        )
+      );
+
       try {
         await get(pathNotFound);
       } catch (e) {
@@ -43,6 +49,12 @@ describe("errors test", () => {
       }
     });
     it("returns false from http 500", async () => {
+      mockServer.use(
+        http.post(pathInternalServerError, () =>
+          HttpResponse.text("Internal server error", { status: 500 })
+        )
+      );
+
       try {
         await post(pathInternalServerError, {});
       } catch (e) {

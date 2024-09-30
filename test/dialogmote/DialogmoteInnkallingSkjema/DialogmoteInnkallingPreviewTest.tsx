@@ -19,7 +19,6 @@ import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { behandlereQueryKeys } from "@/data/behandler/behandlereQueryHooks";
 import { renderWithRouter } from "../../testRouterUtils";
 import { stubFeatureTogglesApi } from "../../stubs/stubUnleash";
-import { apiMock } from "../../stubs/stubApi";
 import { MalformProvider } from "@/context/malform/MalformContext";
 import {
   DialogmoteInnkallingSkjema,
@@ -27,12 +26,10 @@ import {
 } from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
 
 let queryClient: any;
-let mockApiScope;
 
 describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
-    mockApiScope = apiMock();
   });
 
   it("previews innkalling to arbeidstaker", async () => {
@@ -110,7 +107,7 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
   });
 
   it("previews innkalling to behandler", async () => {
-    stubFeatureTogglesApi(mockApiScope);
+    stubFeatureTogglesApi();
     queryClient.setQueryData(
       behandlereQueryKeys.behandlere(arbeidstaker.personident),
       () => [behandler]

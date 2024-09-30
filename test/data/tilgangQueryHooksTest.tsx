@@ -1,7 +1,5 @@
-import { apiMock } from "../stubs/stubApi";
-import nock from "nock";
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { stubTilgangApi } from "../stubs/stubIstilgangskontroll";
 import { useTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
@@ -9,19 +7,14 @@ import { tilgangBrukerMock } from "@/mocks/istilgangskontroll/tilgangtilbrukerMo
 import { testQueryClient } from "../testQueryClient";
 
 let queryClient: any;
-let apiMockScope: any;
 
 describe("tilgangQueryHooks tests", () => {
   beforeEach(() => {
     queryClient = testQueryClient();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   it("loads tilgang for valgt personident", async () => {
-    stubTilgangApi(apiMockScope, tilgangBrukerMock);
+    stubTilgangApi(tilgangBrukerMock);
 
     const wrapper = queryHookWrapper(queryClient);
 

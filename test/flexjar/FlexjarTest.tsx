@@ -1,10 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import nock from "nock";
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { Flexjar } from "@/components/flexjar/Flexjar";
 import { queryClientWithMockData } from "../testQueryClient";
-import { apiMock } from "../stubs/stubApi";
 import { navEnhet } from "../dialogmote/testData";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { expect, describe, it, beforeEach, afterEach } from "vitest";
@@ -15,7 +13,6 @@ import { FlexjarFeedbackDTO } from "@/data/flexjar/useFlexjarFeedback";
 import { StoreKey } from "@/hooks/useLocalStorageState";
 
 let queryClient: QueryClient;
-let apiMockScope: nock.Scope;
 
 const renderFlexjar = () =>
   render(
@@ -31,10 +28,8 @@ const renderFlexjar = () =>
 describe("Flexjar", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
-    apiMockScope = apiMock();
   });
   afterEach(() => {
-    nock.cleanAll();
     localStorage.setItem(StoreKey.FLEXJAR_ARBEIDSUFORHET_FEEDBACK_DATE, "");
   });
 
@@ -69,7 +64,7 @@ describe("Flexjar", () => {
 
   it("sends tilbakemelding when emoji selected", async () => {
     renderFlexjar();
-    stubFlexjarApiOk(apiMockScope);
+    stubFlexjarApiOk();
     await clickButton("Gi oss tilbakemelding");
     await clickButton("Horribel");
 
@@ -81,7 +76,7 @@ describe("Flexjar", () => {
 
   it("does not send tilbakemelding when error", async () => {
     renderFlexjar();
-    stubFlexjarApiError(apiMockScope);
+    stubFlexjarApiError();
     await clickButton("Gi oss tilbakemelding");
     await clickButton("Horribel");
 

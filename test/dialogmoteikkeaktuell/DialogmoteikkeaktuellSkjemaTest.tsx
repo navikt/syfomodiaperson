@@ -4,7 +4,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { dialogmoteIkkeAktuellRoutePath } from "@/routers/AppRouter";
 import { stubFeatureTogglesApi } from "../stubs/stubUnleash";
-import { apiMock } from "../stubs/stubApi";
 import { arbeidstaker, navEnhet } from "../dialogmote/testData";
 import {
   changeTextInput,
@@ -20,7 +19,6 @@ import DialogmoteIkkeAktuellSkjema, {
   IkkeAktuellArsakText,
   ikkeaktuellArsakTexts,
 } from "@/sider/dialogmoter/components/ikkeaktuell/DialogmoteIkkeAktuellSkjema";
-import { stubAktivVeilederinfoApi } from "../stubs/stubSyfoveileder";
 import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { dialogmotekandidatMock } from "@/mocks/isdialogmotekandidat/dialogmotekandidatMock";
@@ -31,8 +29,6 @@ import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
 let queryClient: QueryClient;
 
 describe("DialogmoteikkeaktuellSkjema", () => {
-  const apiMockScope = apiMock();
-
   beforeEach(() => {
     queryClient = queryClientWithMockData();
     queryClient.setQueryData(
@@ -43,8 +39,7 @@ describe("DialogmoteikkeaktuellSkjema", () => {
       dialogmoterQueryKeys.dialogmoter(ARBEIDSTAKER_DEFAULT.personIdent),
       () => []
     );
-    stubAktivVeilederinfoApi(apiMockScope);
-    stubFeatureTogglesApi(apiMockScope);
+    stubFeatureTogglesApi();
   });
 
   const submitButtonText = "Sett ikke aktuell";

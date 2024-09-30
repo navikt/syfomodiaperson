@@ -9,7 +9,6 @@ import {
   getTooLongText,
 } from "../testUtils";
 import { expect, describe, it, beforeEach, afterEach } from "vitest";
-import { apiMock } from "../stubs/stubApi";
 import { stubEndreApi } from "../stubs/stubIsdialogmote";
 import { texts } from "@/sider/dialogmoter/components/endre/EndreDialogmoteSkjema";
 import {
@@ -30,7 +29,6 @@ import { expectedEndringDocuments } from "./testDataDocuments";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { renderWithRouter } from "../testRouterUtils";
 import { stubFeatureTogglesApi } from "../stubs/stubUnleash";
-import { stubAktivVeilederinfoApi } from "../stubs/stubSyfoveileder";
 import { queryClientWithMockData } from "../testQueryClient";
 import { DocumentComponentType } from "@/data/documentcomponent/documentComponentTypes";
 import { Malform, MalformProvider } from "@/context/malform/MalformContext";
@@ -38,12 +36,10 @@ import { getEndreTidStedTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { StoreKey } from "@/hooks/useLocalStorageState";
 
 let queryClient: QueryClient;
-let apiMockScope;
 
 describe("EndreDialogmoteSkjemaTest", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
-    apiMockScope = apiMock();
   });
 
   afterEach(() => {
@@ -145,7 +141,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
   });
 
   it("endrer møte ved submit", async () => {
-    stubEndreApi(apiMockScope, dialogmote.uuid);
+    stubEndreApi(dialogmote.uuid);
     renderEndreDialogmoteSkjema(dialogmote);
     passSkjemaInput();
 
@@ -171,7 +167,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
   });
 
   it("trimmer videolenke i endring som sendes til api", async () => {
-    stubEndreApi(apiMockScope, dialogmote.uuid);
+    stubEndreApi(dialogmote.uuid);
     renderEndreDialogmoteSkjema(dialogmote);
     passSkjemaInput();
 
@@ -204,8 +200,8 @@ describe("EndreDialogmoteSkjemaTest", () => {
   });
 
   it("endrer møte med behandler ved submit når behandler er med", async () => {
-    stubEndreApi(apiMockScope, dialogmote.uuid);
-    stubFeatureTogglesApi(apiMockScope);
+    stubEndreApi(dialogmote.uuid);
+    stubFeatureTogglesApi();
     renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
     passSkjemaInput();
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
@@ -307,8 +303,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
       });
   });
   it("forhåndsviser endret tid og sted til behandler når behandler er med", async () => {
-    stubAktivVeilederinfoApi(apiMockScope);
-    stubFeatureTogglesApi(apiMockScope);
+    stubFeatureTogglesApi();
     renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
     passSkjemaInput();
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");

@@ -1,26 +1,19 @@
-import { apiMock } from "../stubs/stubApi";
-import nock from "nock";
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { stubOppfolgingstilfellePersonApi } from "../stubs/stubIsoppfolgingstilfelle";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { testQueryClient } from "../testQueryClient";
 
 let queryClient: any;
-let apiMockScope: any;
 
 describe("oppfolgingstilfellePersonQueryHooks tests", () => {
   beforeEach(() => {
     queryClient = testQueryClient();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   it("loads oppfolgingstilfeller for valgt personident", async () => {
-    stubOppfolgingstilfellePersonApi(apiMockScope);
+    stubOppfolgingstilfellePersonApi();
 
     const wrapper = queryHookWrapper(queryClient);
 

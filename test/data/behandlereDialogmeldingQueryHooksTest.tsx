@@ -1,27 +1,20 @@
-import { apiMock } from "../stubs/stubApi";
-import nock from "nock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import { stubBehandlereDialogmeldingApi } from "../stubs/stubIsdialogmelding";
 import { behandlereDialogmeldingMock } from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
 import { useBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
 import { testQueryClient } from "../testQueryClient";
 
 let queryClient: any;
-let apiMockScope: any;
 
 describe("behandlereQueryHooks tests", () => {
   beforeEach(() => {
     queryClient = testQueryClient();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   it("loads behandlere for valgt personident", async () => {
-    stubBehandlereDialogmeldingApi(apiMockScope);
+    stubBehandlereDialogmeldingApi();
     const wrapper = queryHookWrapper(queryClient);
 
     const { result } = renderHook(() => useBehandlereQuery(), {

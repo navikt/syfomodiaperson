@@ -2,8 +2,7 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import React from "react";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
-import nock from "nock";
+import { expect, describe, it, beforeEach } from "vitest";
 import { SendForhandsvarselSkjema } from "@/sider/arbeidsuforhet/SendForhandsvarselSkjema";
 import { stubArbeidsuforhetForhandsvarselApi } from "../stubs/stubIsarbeidsuforhet";
 import {
@@ -13,11 +12,9 @@ import {
 import { getSendForhandsvarselDocument } from "./documents";
 import { navEnhet } from "../dialogmote/testData";
 import { queryClientWithMockData } from "../testQueryClient";
-import { apiMock } from "../stubs/stubApi";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
 
 let queryClient: QueryClient;
-let apiMockScope: any;
 
 const renderForhandsvarselSkjema = () =>
   render(
@@ -32,10 +29,6 @@ const renderForhandsvarselSkjema = () =>
 describe("Forhandsvarselskjema arbeidsuforhet", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   describe("Send forhåndsvarsel", () => {
@@ -61,7 +54,7 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
     it("Send forhåndsvarsel with begrunnelse filled in, without reseting the form", async () => {
       const begrunnelse = "Dette er en begrunnelse!";
       renderForhandsvarselSkjema();
-      stubArbeidsuforhetForhandsvarselApi(apiMockScope);
+      stubArbeidsuforhetForhandsvarselApi();
       const begrunnelseLabel = "Begrunnelse (obligatorisk)";
 
       expect(
@@ -98,7 +91,7 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
     it("Forhåndsvis brev with begrunnelse", async () => {
       const begrunnelse = "Dette er en begrunnelse!";
       renderForhandsvarselSkjema();
-      stubArbeidsuforhetForhandsvarselApi(apiMockScope);
+      stubArbeidsuforhetForhandsvarselApi();
       const begrunnelseLabel = "Begrunnelse (obligatorisk)";
 
       const begrunnelseInput = getTextInput(begrunnelseLabel);

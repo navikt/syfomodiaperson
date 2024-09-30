@@ -1,8 +1,6 @@
-import { apiMock } from "../stubs/stubApi";
-import nock from "nock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
   parseSoknad,
   useSykepengesoknaderQuery,
@@ -13,19 +11,14 @@ import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/Sykepengesoknad
 import { testQueryClient } from "../testQueryClient";
 
 let queryClient: any;
-let apiMockScope: any;
 
 describe("sykepengesoknadQueryHooks", () => {
   beforeEach(() => {
     queryClient = testQueryClient();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   it("loads sykepengesoknader", async () => {
-    stubSykepengesoknadBackendApi(apiMockScope);
+    stubSykepengesoknadBackendApi();
     const wrapper = queryHookWrapper(queryClient);
 
     const { result } = renderHook(() => useSykepengesoknaderQuery(), {

@@ -1,25 +1,29 @@
-import nock from "nock";
 import { ISAKTIVITETSKRAV_ROOT } from "@/apiConstants";
 import { aktivitetskravMock } from "@/mocks/isaktivitetskrav/aktivitetskravMock";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
 
-export const stubAktivitetskravApi = (scope: nock.Scope) => {
-  return scope
-    .get(`${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/personident`)
-    .reply(200, () => aktivitetskravMock);
-};
+export const stubAktivitetskravApi = () =>
+  mockServer.use(
+    http.get(`*${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/personident`, () =>
+      HttpResponse.json(aktivitetskravMock)
+    )
+  );
 
-export const stubVurderAktivitetskravApi = (scope: nock.Scope) => {
-  return scope
-    .post(new RegExp(`${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/.*/vurder`))
-    .reply(200);
-};
+export const stubVurderAktivitetskravApi = (aktivitetskravUuid: string) =>
+  mockServer.use(
+    http.post(
+      `*${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/${aktivitetskravUuid}/vurder`,
+      () => new HttpResponse(null, { status: 200 })
+    )
+  );
 
 export const stubVurderAktivitetskravForhandsvarselApi = (
-  scope: nock.Scope
-) => {
-  return scope
-    .post(
-      new RegExp(`${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/.*/forhandsvarsel`)
+  aktivitetskravUuid: string
+) =>
+  mockServer.use(
+    http.post(
+      `*${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/${aktivitetskravUuid}/forhandsvarsel`,
+      () => new HttpResponse(null, { status: 200 })
     )
-    .reply(200);
-};
+  );

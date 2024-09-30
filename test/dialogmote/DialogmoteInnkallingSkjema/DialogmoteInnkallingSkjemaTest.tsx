@@ -4,7 +4,6 @@ import { texts as valideringsTexts } from "@/utils/valideringUtils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubInnkallingApi } from "../../stubs/stubIsdialogmote";
-import { apiMock } from "../../stubs/stubApi";
 import {
   arbeidsgiver,
   arbeidstaker,
@@ -181,7 +180,7 @@ describe("DialogmoteInnkallingSkjema", () => {
   });
 
   it("oppretter innkalling med verdier fra skjema", async () => {
-    stubInnkallingApi(apiMock());
+    stubInnkallingApi();
     renderDialogmoteInnkallingSkjema();
     passSkjemaInput();
 
@@ -219,7 +218,7 @@ describe("DialogmoteInnkallingSkjema", () => {
   });
 
   it("viser alertstripe hvis valgt arbeidsgiver ikke har registrert nærmeste leder", () => {
-    stubInnkallingApi(apiMock());
+    stubInnkallingApi();
     renderDialogmoteInnkallingSkjema();
     passSkjemaInput();
     const virksomhetRadio = screen.getByRole("radio", {
@@ -248,7 +247,7 @@ describe("DialogmoteInnkallingSkjema", () => {
       ledereQueryKeys.ledere(arbeidstaker.personident),
       () => []
     );
-    stubInnkallingApi(apiMock());
+    stubInnkallingApi();
     renderDialogmoteInnkallingSkjema();
     const virksomhetRadio = screen.getByRole("radio", {
       name: "Oppgi virksomhetsnummer",
@@ -279,7 +278,7 @@ describe("DialogmoteInnkallingSkjema", () => {
       ledereQueryKeys.ledere(arbeidstaker.personident),
       () => [LEDERE_DEFAULT[0]]
     );
-    stubInnkallingApi(apiMock());
+    stubInnkallingApi();
 
     renderDialogmoteInnkallingSkjema();
     const virksomhetSelect = screen.getByRole("radio", {
@@ -298,7 +297,7 @@ describe("DialogmoteInnkallingSkjema", () => {
   });
 
   it("trimmer videolenke i innkallingen som sendes til api", async () => {
-    stubInnkallingApi(apiMock());
+    stubInnkallingApi();
     renderDialogmoteInnkallingSkjema();
     passSkjemaInput();
 

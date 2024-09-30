@@ -1,10 +1,19 @@
-import nock from "nock";
 import { FLEXJAR_ROOT } from "@/apiConstants";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
 
-export const stubFlexjarApiOk = (scope: nock.Scope) => {
-  return scope.post(new RegExp(`${FLEXJAR_ROOT}/feedback/azure`)).reply(200);
-};
+export const stubFlexjarApiOk = () =>
+  mockServer.use(
+    http.post(
+      `*${FLEXJAR_ROOT}/feedback/azure`,
+      () => new HttpResponse(null, { status: 200 })
+    )
+  );
 
-export const stubFlexjarApiError = (scope: nock.Scope) => {
-  return scope.post(new RegExp(`${FLEXJAR_ROOT}/feedback/azure`)).reply(500);
-};
+export const stubFlexjarApiError = () =>
+  mockServer.use(
+    http.post(
+      `*${FLEXJAR_ROOT}/feedback/azure`,
+      () => new HttpResponse(null, { status: 500 })
+    )
+  );

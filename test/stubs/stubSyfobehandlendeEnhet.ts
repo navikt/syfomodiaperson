@@ -1,15 +1,21 @@
-import nock from "nock";
 import { SYFOBEHANDLENDEENHET_ROOT } from "@/apiConstants";
 import {
   BehandlendeEnhet,
   PersonDTO,
 } from "@/data/behandlendeenhet/types/BehandlendeEnhet";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
 
-export const stubBehandlendeEnhetApi = (
-  scope: nock.Scope,
-  enhet?: BehandlendeEnhet
-) =>
-  scope.get(`${SYFOBEHANDLENDEENHET_ROOT}/personident`).reply(200, () => enhet);
+export const stubBehandlendeEnhetApi = (enhet?: BehandlendeEnhet) =>
+  mockServer.use(
+    http.get(`*${SYFOBEHANDLENDEENHET_ROOT}/personident`, () =>
+      HttpResponse.json(enhet)
+    )
+  );
 
-export const stubChangeEnhetApi = (scope: nock.Scope, person?: PersonDTO) =>
-  scope.post(`${SYFOBEHANDLENDEENHET_ROOT}/person`).reply(200, () => person);
+export const stubChangeEnhetApi = (person?: PersonDTO) =>
+  mockServer.use(
+    http.post(`*${SYFOBEHANDLENDEENHET_ROOT}/person`, () =>
+      HttpResponse.json(person)
+    )
+  );

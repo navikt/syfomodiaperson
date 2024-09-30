@@ -13,7 +13,6 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubAvlysApi } from "../stubs/stubIsdialogmote";
-import { apiMock } from "../stubs/stubApi";
 import { dialogmote, dialogmoteMedBehandler, moteTekster } from "./testData";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { screen, waitFor, within } from "@testing-library/react";
@@ -144,7 +143,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     expect(await screen.findAllByText("1 tegn for mye")).to.not.be.empty;
   });
   it("avlyser møte ved submit", async () => {
-    stubAvlysApi(apiMock(), dialogmote.uuid);
+    stubAvlysApi(dialogmote.uuid);
     renderAvlysDialogmoteSkjema(dialogmote);
 
     const begrunnelseArbeidstakerInput = getTextInput(
@@ -180,7 +179,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     });
   });
   it("avlyser med behandler ved submit når behandler er med", async () => {
-    stubAvlysApi(apiMock(), dialogmote.uuid);
+    stubAvlysApi(dialogmote.uuid);
     renderAvlysDialogmoteSkjema(dialogmoteMedBehandler);
 
     const begrunnelseArbeidstakerInput = getTextInput(

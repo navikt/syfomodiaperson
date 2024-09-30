@@ -1,29 +1,20 @@
-import nock from "nock";
-import { apiMock } from "../../stubs/stubApi";
 import { testQueryClient } from "../../testQueryClient";
-import { stubAktivVeilederinfoApi } from "../../stubs/stubSyfoveileder";
 import { stubFeatureTogglesApi } from "../../stubs/stubUnleash";
 import { queryHookWrapper } from "../queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import { mockUnleashResponse } from "@/mocks/unleashMocks";
 
 let queryClient: any;
-let apiMockScope: any;
 
 describe("unleashQuery tests", () => {
   beforeEach(() => {
     queryClient = testQueryClient();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   it("loads unleash toggles", async () => {
-    stubAktivVeilederinfoApi(apiMockScope);
-    stubFeatureTogglesApi(apiMockScope);
+    stubFeatureTogglesApi();
 
     const wrapper = queryHookWrapper(queryClient);
 

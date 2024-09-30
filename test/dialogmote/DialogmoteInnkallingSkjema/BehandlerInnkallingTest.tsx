@@ -17,7 +17,6 @@ import {
 } from "../../testUtils";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { stubInnkallingApi } from "../../stubs/stubIsdialogmote";
-import { apiMock } from "../../stubs/stubApi";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -34,11 +33,9 @@ import {
 } from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
 
 let queryClient: QueryClient;
-let apiMockScope;
 
 describe("Dialogmoteinnkallingskjema med behandler", () => {
   beforeEach(() => {
-    apiMockScope = apiMock();
     queryClient = queryClientWithMockData();
     queryClient.setQueryData(
       behandlereQueryKeys.behandlere(arbeidstaker.personident),
@@ -85,8 +82,8 @@ describe("Dialogmoteinnkallingskjema med behandler", () => {
   });
 
   it("submit creates innkalling with behandler when behandler is selected", async () => {
-    stubInnkallingApi(apiMockScope);
-    stubFeatureTogglesApi(apiMockScope);
+    stubInnkallingApi();
+    stubFeatureTogglesApi();
     renderDialogmoteInnkallingSkjema();
     await passSkjemaInput();
 
