@@ -55,6 +55,7 @@ export default function IkkeAktuellSkjema() {
     watch,
     formState: { errors },
     handleSubmit,
+    getValues,
   } = useForm<SkjemaValues>();
 
   const submit = (values: SkjemaValues) => {
@@ -104,7 +105,7 @@ export default function IkkeAktuellSkjema() {
             contentLabel={texts.buttons.previewContentLabel}
             getDocumentComponents={() =>
               getIkkeAktuellDocument({
-                begrunnelse: watch("begrunnelse"),
+                begrunnelse: getValues("begrunnelse"),
               })
             }
           />
