@@ -4,6 +4,7 @@ import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { ClockIcon } from "@navikt/aksel-icons";
 import { ManglendeMedvirkningButtons } from "@/sider/manglendemedvirkning/ManglendeMedvirkningButtons";
 import { VurderingResponseDTO } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
+import SupportingTextList from "@/sider/manglendemedvirkning/forhandsvarsel/SupportingTextList";
 
 const texts = {
   title: "Venter på svar fra bruker",
@@ -13,11 +14,7 @@ const texts = {
     oversikten:
       "Personen ligger nå i oversikten og kan finnes under filteret for § 8-8 manglende medvirkning.",
   },
-  sendtInfo:
-    "Dersom du har mottatt nye opplysninger og vurdert at bruker likevel oppfyller § 8-8, klikker du på Oppfylt-knappen.",
-  ikkeAktuell:
-    "Velg Ikke aktuell-knappen dersom personen har blitt friskmeldt etter at forhåndsvarselet ble sendt ut, eller av andre årsaker ikke er aktuell.",
-  ikkeStans: "Du kan ikke stanse før fristen er gått ut.",
+  ikkeStans: "Du kan ikke stanse før fristen i forhåndsvarselet er gått ut.",
   frist: "Fristen går ut: ",
   seSendtVarsel: "Se sendt varsel",
 };
@@ -54,9 +51,8 @@ export default function ForhandsvarselBeforeDeadline({
           </Box>
           <ClockIcon title="klokkeikon" fontSize="2em" />
         </HStack>
-        <BodyShort>{texts.sendtInfo}</BodyShort>
-        <BodyShort>{texts.ikkeAktuell}</BodyShort>
         <BodyShort>{texts.ikkeStans}</BodyShort>
+        <SupportingTextList isBeforeForhandsvarselDeadline={true} />
         <ManglendeMedvirkningButtons isBeforeForhandsvarselDeadline={true} />
       </Box>
     </Box>

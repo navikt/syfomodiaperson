@@ -4,15 +4,10 @@ import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { BellIcon } from "@navikt/aksel-icons";
 import { ManglendeMedvirkningButtons } from "@/sider/manglendemedvirkning/ManglendeMedvirkningButtons";
 import { VurderingResponseDTO } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
+import SupportingTextList from "@/sider/manglendemedvirkning/forhandsvarsel/SupportingTextList";
 
 const texts = {
   title: "Fristen er gått ut",
-  passertAlert: (sentDate: Date) =>
-    `Fristen for forhåndsvarselet som ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
-      sentDate
-    )} er gått ut. Trykk på Innstilling om stans-knappen hvis vilkårene i § 8-8 ikke er oppfylt og rett til videre sykepenger skal stanses.`,
-  ikkeAktuell:
-    "Velg Ikke aktuell-knappen dersom personen har blitt friskmeldt etter at forhåndsvarselet ble sendt ut, eller av andre årsaker ikke er aktuell.",
   frist: "Fristen var: ",
   seSendtVarsel: "Se sendt varsel",
 };
@@ -40,8 +35,7 @@ export default function ForhandsvarselAfterDeadline({ forhandsvarsel }: Props) {
         </Box>
         <BellIcon title="bjelleikon" fontSize="2em" />
       </HStack>
-      <BodyShort>{texts.passertAlert(forhandsvarsel.createdAt)}</BodyShort>
-      <BodyShort>{texts.ikkeAktuell}</BodyShort>
+      <SupportingTextList isBeforeForhandsvarselDeadline={false} />
       <ManglendeMedvirkningButtons isBeforeForhandsvarselDeadline={false} />
     </Box>
   );
