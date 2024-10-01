@@ -82,6 +82,9 @@ describe("Manglendemedvirkning Oppfylt", () => {
       renderOppfyltSide();
 
       expect(screen.getByRole("textbox", { name: begrunnelseLabel })).to.exist;
+      expect(
+        screen.getByText("Husk å informere bruker om utfallet av vurderingen.")
+      );
       expect(getButton("Lagre")).to.exist;
       expect(getButton("Avbryt")).to.exist;
       expect(getButton("Forhåndsvisning")).to.exist;

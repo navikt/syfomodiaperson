@@ -29,6 +29,7 @@ const texts = {
     "Åpne forhåndsvisning for å se vurderingen. Når du trykker Lagre journalføres vurderingen automatisk.",
   forhandsvisningLabel: "Forhåndsvis vurderingen",
   missingBegrunnelse: "Vennligst angi begrunnelse",
+  informUser: "Husk å informere bruker om utfallet av vurderingen.",
   sendVarselButtonText: "Sett unntak",
   avbrytButton: "Avbryt",
   success:
@@ -99,6 +100,7 @@ export default function UnntakSkjema({ forhandsvarselSendtDato }: Props) {
         {sendVurdering.isError && (
           <SkjemaInnsendingFeil error={sendVurdering.error} />
         )}
+        <BodyShort>{texts.informUser}</BodyShort>
         <HStack gap="4">
           <Button loading={sendVurdering.isPending} type="submit">
             {texts.sendVarselButtonText}

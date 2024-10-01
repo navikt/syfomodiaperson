@@ -24,7 +24,7 @@ import { useManglendeMedvirkningVurderingDocument } from "@/hooks/manglendemedvi
 const texts = {
   title: "Medvirkningsplikten er oppfylt",
   info: "Skriv en kort begrunnelse for hvorfor bruker likevel oppfyller vilkårene i § 8-8, og hvilke opplysninger som ligger til grunn for vurderingen.",
-  bruker: "Husk å informere bruker om utfallet av vurderingen.",
+  informUser: "Husk å informere bruker om utfallet av vurderingen.",
   begrunnelse: {
     label: "Begrunnelse (obligatorisk)",
     description:
@@ -105,7 +105,7 @@ export default function OppfyltSkjema({ forhandsvarselSendtDato }: Props) {
         {sendVurdering.isError && (
           <SkjemaInnsendingFeil error={sendVurdering.error} />
         )}
-        <BodyShort>{texts.bruker}</BodyShort>
+        <BodyShort>{texts.informUser}</BodyShort>
         <HStack gap="4">
           <Button loading={sendVurdering.isPending} type="submit">
             {texts.buttons.save}
