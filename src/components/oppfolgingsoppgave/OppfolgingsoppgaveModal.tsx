@@ -6,7 +6,6 @@ import {
   DatePicker,
   ErrorMessage,
   Heading,
-  HelpText,
   Modal,
   Select,
   Textarea,
@@ -28,8 +27,8 @@ import { useEditOppfolgingsoppgave } from "@/data/oppfolgingsoppgave/useEditOppf
 
 const texts = {
   header: "Oppfølgingsoppgave",
-  guidelines:
-    "Denne oppgaven skal kun brukes etter formålet, altså ikke til andre oppgaver enn det oppfølgingsgrunnen tilsier. Innbyggeren kan få innsyn i det du skriver her.",
+  description:
+    "Du kan lage en oppfølgingsoppgave hvis du har behov for å følge opp den sykmeldte utenom de hendelsene Modia lager automatisk. Oppfølgingsbehovet må være hjemlet i folketrygdloven kapittel 8. Den sykmeldte kan kreve innsyn i oppfølgingsoppgavene.",
   annetChosenAlert:
     "Denne oppgaven skal kun brukes til sykefraværsoppfølging, altså ikke oppgaver knyttet til andre ytelser eller formål. Innbyggeren kan få innsyn i det du skriver her.",
   formNeedsChangeToSave: "Du må gjøre en endring før du kan lagre.",
@@ -37,12 +36,13 @@ const texts = {
   close: "Avbryt",
   missingOppfolgingsgrunn: "Vennligst angi oppfølgingsgrunn.",
   oppfolgingsgrunnLabel: "Hvilken oppfølgingsgrunn har du? (obligatorisk)",
+  oppfolgingsgrunnDesc:
+    "Velg den oppfølgingsgrunnen som passer med formålet for oppfølgingen.",
   oppfolgingsgrunnDefaultOption: "Velg oppfølgingsgrunn",
   beskrivelseLabel: "Beskrivelse",
   datepickerLabel: "Frist",
-  oppfolgingsoppgaveHelpText:
-    "Her kan du opprette en oppfølgingsoppgave hvis du har behov for å følge opp den sykmeldte utenom de hendelsene Modia lager automatisk. Oppfølgingsbehovet må være hjemlet i folketrygdloven kapittel 8 og den sykmeldte kan kreve innsyn i disse oppgavene.",
-  oppfolgingsoppgaveTooltip: "Hva er oppfølgingsoppgave?",
+  lengthBeskrivelseAlert:
+    "Husk at opplysninger som har betydning for saken skal journalføres i eget notat i Gosys.",
 };
 
 interface FormValues {
@@ -57,7 +57,8 @@ interface Props {
   existingOppfolgingsoppgave?: OppfolgingsoppgaveResponseDTO;
 }
 
-const MAX_LENGTH_BESKRIVELSE = 200;
+const MAX_LENGTH_BESKRIVELSE = 300;
+const ALERT_LENGTH_BESKRIVELSE = 200;
 
 function logOppfolgingsgrunnSendt(oppfolgingsgrunn: Oppfolgingsgrunn) {
   Amplitude.logEvent({
@@ -203,6 +204,9 @@ export const OppfolgingsoppgaveModal = ({
   const isOppfolgingsgrunnAnnet =
     watch("oppfolgingsgrunn") === Oppfolgingsgrunn.ANNET;
 
+  const textareaValue = watch("beskrivelse");
+  const textareaCount = textareaValue ? textareaValue.length : 0;
+
   return (
     <form onSubmit={handleSubmit(submit)}>
       <Modal
@@ -222,24 +226,14 @@ export const OppfolgingsoppgaveModal = ({
             >
               {texts.header}
             </Heading>
-            <HelpText
-              title={texts.oppfolgingsoppgaveTooltip}
-              placement="right"
-              className={"self-center"}
-            >
-              {texts.oppfolgingsoppgaveHelpText}
-            </HelpText>
           </div>
-          <Alert inline variant="warning">
-            <BodyLong textColor="subtle" size="small">
-              {texts.guidelines}
-            </BodyLong>
-          </Alert>
+          <BodyLong size="small">{texts.description}</BodyLong>
         </Modal.Header>
 
         <Modal.Body className={"flex flex-col gap-4"}>
           <Select
             label={texts.oppfolgingsgrunnLabel}
+            description={texts.oppfolgingsgrunnDesc}
             size="small"
             className="w-[24rem]"
             {...register("oppfolgingsgrunn", { required: true })}
@@ -272,6 +266,14 @@ export const OppfolgingsoppgaveModal = ({
               maxLength: MAX_LENGTH_BESKRIVELSE,
             })}
           ></Textarea>
+
+          {textareaCount >= ALERT_LENGTH_BESKRIVELSE && (
+            <Alert inline variant="warning">
+              <BodyLong textColor="subtle" size="small">
+                {texts.lengthBeskrivelseAlert}
+              </BodyLong>
+            </Alert>
+          )}
 
           <DatePicker {...datepickerProps} strategy="fixed">
             <DatePicker.Input {...inputProps} label={texts.datepickerLabel} />

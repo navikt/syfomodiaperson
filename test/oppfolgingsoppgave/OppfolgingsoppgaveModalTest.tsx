@@ -199,9 +199,17 @@ describe("Oppfolgingsoppgave", () => {
       });
       await userEvent.click(openModalButton);
 
+      expect(screen.getByRole("heading", { name: "Oppfølgingsoppgave" })).to
+        .exist;
       expect(
         await screen.findByText(
-          "Hvilken oppfølgingsgrunn har du? (obligatorisk)"
+          "Du kan lage en oppfølgingsoppgave hvis du har behov for å følge opp den sykmeldte utenom de hendelsene Modia lager automatisk. Oppfølgingsbehovet må være hjemlet i folketrygdloven kapittel 8. Den sykmeldte kan kreve innsyn i oppfølgingsoppgavene."
+        )
+      ).to.exist;
+
+      expect(
+        await screen.findByText(
+          "Velg den oppfølgingsgrunnen som passer med formålet for oppfølgingen."
         )
       ).to.exist;
       expect(screen.getByRole("textbox", { hidden: true, name: "Beskrivelse" }))
@@ -301,6 +309,26 @@ describe("Oppfolgingsoppgave", () => {
           "Denne oppgaven skal kun brukes til sykefraværsoppfølging, altså ikke oppgaver knyttet til andre ytelser eller formål. Innbyggeren kan få innsyn i det du skriver her."
         )
       ).to.not.exist;
+    });
+    it("show an alert if oppfolgingsoppgavebeskrivelsen becomes more than 200 characters", async () => {
+      renderOppfolgingsoppgave();
+
+      const openModalButton = await screen.findByRole("button", {
+        hidden: true,
+        name: openOppfolgingsoppgaveButtonText,
+      });
+      await userEvent.click(openModalButton);
+
+      const lengthBeskrivelseAlert =
+        "Husk at opplysninger som har betydning for saken skal journalføres i eget notat i Gosys.";
+      expect(screen.queryByText(lengthBeskrivelseAlert)).to.not.exist;
+
+      const beskrivelseInput = screen.getByLabelText("Beskrivelse");
+      changeTextInput(
+        beskrivelseInput,
+        "Dette var en veldig god grunn for å lage oppfølgingsoppgave. Faktisk så god grunn at jeg ønsker å skrive så mye som 200 tegn for å sjekke om det kommer opp et varsel med beskrivelse hvis jeg skriver så mange tegn."
+      );
+      expect(screen.queryByText(lengthBeskrivelseAlert)).to.exist;
     });
   });
 });
