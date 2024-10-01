@@ -33,7 +33,7 @@ import {
   OppfyltVurderingArsak,
   UnntakVurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
 import dayjs from "dayjs";
 import {
@@ -42,9 +42,7 @@ import {
   getUnntakDocument,
 } from "../varselDocuments";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
-import { apiMock } from "../../stubs/stubApi";
 import { stubVurderAktivitetskravApi } from "../../stubs/stubIsaktivitetskrav";
-import nock from "nock";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { NotificationContext } from "@/context/notification/NotificationContext";
 import {
@@ -61,7 +59,6 @@ import {
 } from "./vurderingTestUtils";
 
 let queryClient: QueryClient;
-let apiMockScope: any;
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 
@@ -82,10 +79,6 @@ const renderVurderAktivitetskrav = (aktivitetskravDto: AktivitetskravDTO) =>
 describe("VurderAktivitetskrav", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   it("renders buttons for vurdering av aktivitetskravet", () => {
@@ -146,7 +139,7 @@ describe("VurderAktivitetskrav", () => {
     });
     it("Lagre vurdering med verdier fra skjema, og reset skjema etter innsending", async () => {
       renderVurderAktivitetskrav(aktivitetskrav);
-      stubVurderAktivitetskravApi(apiMockScope);
+      stubVurderAktivitetskravApi(aktivitetskrav.uuid);
 
       await clickTab(tabTexts["OPPFYLT"]);
 
@@ -194,7 +187,7 @@ describe("VurderAktivitetskrav", () => {
     });
     it("Lagre vurdering med verdier fra skjema, og reset skjema etter innsending", async () => {
       renderVurderAktivitetskrav(aktivitetskrav);
-      stubVurderAktivitetskravApi(apiMockScope);
+      stubVurderAktivitetskravApi(aktivitetskrav.uuid);
 
       await clickTab(tabTexts["UNNTAK"]);
 
@@ -265,7 +258,7 @@ describe("VurderAktivitetskrav", () => {
     });
     it("Lagre vurdering med verdier fra skjema, og reset skjema etter innsending", async () => {
       renderVurderAktivitetskrav(aktivitetskrav);
-      stubVurderAktivitetskravApi(apiMockScope);
+      stubVurderAktivitetskravApi(aktivitetskrav.uuid);
 
       await clickButton(buttonTexts["AVVENT"]);
 

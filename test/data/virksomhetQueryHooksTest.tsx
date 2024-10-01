@@ -1,30 +1,23 @@
 import { stubVirksomhetApi } from "../stubs/stubEreg";
-import { apiMock } from "../stubs/stubApi";
-import nock from "nock";
 import { renderHook, waitFor } from "@testing-library/react";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import { virksomhetMock } from "@/mocks/ereg/virksomhetMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { VIRKSOMHET_PONTYPANDY } from "@/mocks/common/mockConstants";
 import { testQueryClient } from "../testQueryClient";
 
 let queryClient: any;
-let apiMockScope: any;
 
 const orgnummer = VIRKSOMHET_PONTYPANDY.virksomhetsnummer;
 
 describe("virksomhetQueryHooks tests", () => {
   beforeEach(() => {
     queryClient = testQueryClient();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   it("loads virksomhet for orgnummer", async () => {
-    stubVirksomhetApi(apiMockScope, orgnummer);
+    stubVirksomhetApi(orgnummer);
 
     const wrapper = queryHookWrapper(queryClient);
 

@@ -1,9 +1,11 @@
-import nock from "nock";
 import { SYFOMOTEBEHOV_ROOT } from "@/apiConstants";
 import { historikkmotebehovMock } from "@/mocks/syfomotebehov/historikkmotebehovMock";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
 
-export const stubMotebehovHistorikkApi = (scope: nock.Scope) => {
-  scope
-    .get(`${SYFOMOTEBEHOV_ROOT}/historikk`)
-    .reply(200, () => historikkmotebehovMock);
-};
+export const stubMotebehovHistorikkApi = () =>
+  mockServer.use(
+    http.get(`*${SYFOMOTEBEHOV_ROOT}/historikk`, () =>
+      HttpResponse.json(historikkmotebehovMock)
+    )
+  );

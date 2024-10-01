@@ -1,9 +1,7 @@
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledereTypes";
-import { apiMock } from "../stubs/stubApi";
-import nock from "nock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import { stubNarmestelederApi } from "../stubs/stubIsnarmesteleder";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { testQueryClient } from "../testQueryClient";
@@ -33,19 +31,14 @@ const formerLedere = [
 const ledereData = [...currentLedere, ...formerLedere];
 
 let queryClient: any;
-let apiMockScope: any;
 
 describe("ledereQueryHooks tests", () => {
   beforeEach(() => {
     queryClient = testQueryClient();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   it("loads ledere for valgt personident", async () => {
-    stubNarmestelederApi(apiMockScope, ledereData);
+    stubNarmestelederApi(ledereData);
 
     const wrapper = queryHookWrapper(queryClient);
 

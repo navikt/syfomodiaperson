@@ -1,11 +1,12 @@
 import { ISNARMESTELEDER_ROOT } from "@/apiConstants";
 import { ISNARMESTELEDER_NARMESTELEDERRELASJON_PERSONIDENT_PATH } from "@/data/leder/ledereQueryHooks";
-import nock from "nock";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
 
-export const stubNarmestelederApi = (scope: nock.Scope, ledere: any) => {
-  return scope
-    .get(
-      `${ISNARMESTELEDER_ROOT}${ISNARMESTELEDER_NARMESTELEDERRELASJON_PERSONIDENT_PATH}`
+export const stubNarmestelederApi = (ledere: any) =>
+  mockServer.use(
+    http.get(
+      `*${ISNARMESTELEDER_ROOT}${ISNARMESTELEDER_NARMESTELEDERRELASJON_PERSONIDENT_PATH}`,
+      () => HttpResponse.json(ledere)
     )
-    .reply(200, () => ledere);
-};
+  );

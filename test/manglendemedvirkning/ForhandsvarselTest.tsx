@@ -122,16 +122,26 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
       expect(screen.getByText("Fristen går ut:")).to.exist;
       expect(
         screen.getByText(
-          "Dersom du har mottatt nye opplysninger og vurdert at bruker likevel oppfyller § 8-8, klikker du på Oppfylt-knappen."
+          "Du kan ikke stanse før fristen i forhåndsvarselet er gått ut."
+        )
+      ).to.exist;
+      expect(screen.getByText("Følgende alternativer er tilgjengelig:")).to
+        .exist;
+      expect(
+        screen.getByText(
+          "dersom bruker har startet å medvirke, og oppfyller medvirkningsplikten."
         )
       ).to.exist;
       expect(
         screen.getByText(
-          "Velg Ikke aktuell-knappen dersom personen har blitt friskmeldt etter at forhåndsvarselet ble sendt ut, eller av andre årsaker ikke er aktuell."
+          "dersom bruker har rimelig grunn til ikke å medvirke, og dermed er unntatt medvirkningsplikten."
         )
       ).to.exist;
-      expect(screen.getByText("Du kan ikke stanse før fristen er gått ut.")).to
-        .exist;
+      expect(
+        screen.getByText(
+          "dersom det ikke lenger er aktuelt å vurdere medvirkningsplikten, for eksempel ved friskmelding."
+        )
+      ).to.exist;
       expect(screen.getByRole("img", { name: "klokkeikon" })).to.exist;
       expect(
         screen.getByRole("button", { name: "Innstilling om stans" })
@@ -159,16 +169,26 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
       expect(screen.getByText(tilLesbarDatoMedArUtenManedNavn(svarfrist))).to
         .exist;
       expect(screen.getByRole("img", { name: "bjelleikon" })).to.exist;
+      expect(screen.getByText("Følgende alternativer er tilgjengelig:")).to
+        .exist;
       expect(
         screen.getByText(
-          `Fristen for forhåndsvarselet som ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
-            createdAt
-          )} er gått ut. Trykk på Innstilling om stans-knappen hvis vilkårene i § 8-8 ikke er oppfylt og rett til videre sykepenger skal stanses.`
+          "dersom vilkårene i § 8-8 ikke er oppfylt og rett til videre sykepenger skal stanses."
         )
       ).to.exist;
       expect(
         screen.getByText(
-          "Velg Ikke aktuell-knappen dersom personen har blitt friskmeldt etter at forhåndsvarselet ble sendt ut, eller av andre årsaker ikke er aktuell."
+          "dersom bruker har startet å medvirke, og oppfyller medvirkningsplikten."
+        )
+      ).to.exist;
+      expect(
+        screen.getByText(
+          "dersom bruker har rimelig grunn til ikke å medvirke, og dermed er unntatt medvirkningsplikten."
+        )
+      ).to.exist;
+      expect(
+        screen.getByText(
+          "dersom det ikke lenger er aktuelt å vurdere medvirkningsplikten, for eksempel ved friskmelding."
         )
       ).to.exist;
       expect(screen.getByRole("button", { name: "Innstilling om stans" })).to

@@ -1,7 +1,5 @@
-import { apiMock } from "../stubs/stubApi";
-import nock from "nock";
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import {
   useDokumentinfoQuery,
@@ -19,21 +17,16 @@ import { testQueryClient } from "../testQueryClient";
 import { oppfolgingsplanerLPSMock } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
 
 let queryClient: any;
-let apiMockScope: any;
 
 const today = new Date();
 
 describe("oppfolgingsplanQueryHooks tests", () => {
   beforeEach(() => {
     queryClient = testQueryClient();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   it("loads oppfolgingsplaner for valgt personident", async () => {
-    stubOppfolgingsplanApi(apiMockScope);
+    stubOppfolgingsplanApi();
 
     const wrapper = queryHookWrapper(queryClient);
 
@@ -47,7 +40,7 @@ describe("oppfolgingsplanQueryHooks tests", () => {
   });
 
   it("loads oppfolgingsplaner lps for valgt personident", async () => {
-    stubOppfolgingsplanLPSApi(apiMockScope, today);
+    stubOppfolgingsplanLPSApi(today);
 
     const wrapper = queryHookWrapper(queryClient);
 
@@ -62,7 +55,7 @@ describe("oppfolgingsplanQueryHooks tests", () => {
 
   it("loads dokumentinfo for oppfolgingsplan", async () => {
     const oppfolgingsplanId = 10;
-    stubDokumentinfoApi(apiMockScope, oppfolgingsplanId);
+    stubDokumentinfoApi(oppfolgingsplanId);
 
     const wrapper = queryHookWrapper(queryClient);
 

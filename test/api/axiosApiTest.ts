@@ -1,13 +1,11 @@
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
-import { expect, describe, it, beforeAll } from "vitest";
+import { expect, describe, it } from "vitest";
 import { get, post } from "@/api/axios";
 import { ApiErrorException, ErrorType } from "@/api/errors";
 import { Tilgang } from "@/data/tilgang/tilgangTypes";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
 
 describe("Axios API tests", () => {
-  let stub: MockAdapter;
-
   const tilgangDenied: Tilgang = { erGodkjent: false, erAvslatt: true };
   const tilgangDeniedMessage = { message: "Denied!" };
   const happyCaseMessage = "Woop woop";
@@ -18,17 +16,14 @@ describe("Axios API tests", () => {
   const pathInternalServerError = "/500";
   const pathHappyCase = "/200";
 
-  beforeAll(() => {
-    stub = new MockAdapter(axios);
-    stub.onGet(pathAccessDenied).replyOnce(403, tilgangDenied);
-    stub.onPost(pathAccessDeniedMessage).replyOnce(403, tilgangDeniedMessage);
-    stub.onPost(pathNotFound).replyOnce(404);
-    stub.onGet(pathInternalServerError).replyOnce(500);
-    stub.onGet(pathHappyCase).replyOnce(200, happyCaseMessage);
-  });
-
   describe("Happy case", () => {
     it("returns expected data from http 200", async () => {
+      mockServer.use(
+        http.get(pathHappyCase, () =>
+          HttpResponse.text(happyCaseMessage, { status: 200 })
+        )
+      );
+
       const result = await get(pathHappyCase);
       expect(result).to.equal(happyCaseMessage);
     });
@@ -36,6 +31,12 @@ describe("Axios API tests", () => {
 
   describe("Access denied tests", () => {
     it("Throws access denied for http 403, and handles Tilgang-object", async () => {
+      mockServer.use(
+        http.get(pathAccessDenied, () =>
+          HttpResponse.json(tilgangDenied, { status: 403 })
+        )
+      );
+
       try {
         await get(pathAccessDenied);
       } catch (e) {
@@ -48,6 +49,12 @@ describe("Axios API tests", () => {
     });
 
     it("Throws access denied for http 403, and handles message", async () => {
+      mockServer.use(
+        http.post(pathAccessDeniedMessage, () =>
+          HttpResponse.json(tilgangDeniedMessage, { status: 403 })
+        )
+      );
+
       try {
         await post(pathAccessDeniedMessage, {
           some: "data",
@@ -64,6 +71,12 @@ describe("Axios API tests", () => {
 
   describe("General error tests", () => {
     it("Throws general error for http 404", async () => {
+      mockServer.use(
+        http.post(pathNotFound, () =>
+          HttpResponse.text("Not found", { status: 404 })
+        )
+      );
+
       try {
         await post(pathNotFound, { some: "data" });
       } catch (e) {
@@ -76,6 +89,12 @@ describe("Axios API tests", () => {
     });
 
     it("Throws general error for http 500", async () => {
+      mockServer.use(
+        http.get(pathInternalServerError, () =>
+          HttpResponse.text("Internal server error", { status: 500 })
+        )
+      );
+
       try {
         await get(pathInternalServerError);
       } catch (e) {

@@ -1,4 +1,3 @@
-import nock from "nock";
 import {
   LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT,
   SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT,
@@ -8,32 +7,35 @@ import { oppfolgingsplanMock } from "@/mocks/syfooppfolgingsplanservice/oppfolgi
 import { dokumentinfoMock } from "@/mocks/syfooppfolgingsplanservice/dokumentinfoMock";
 import { historikkoppfolgingsplanMock } from "@/mocks/syfooppfolgingsplanservice/historikkoppfolgingsplanMock";
 import { oppfolgingsplanerLPSMock } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
 
-export const stubOppfolgingsplanApi = (scope: nock.Scope) => {
-  return scope
-    .get(`${SYFOOPPFOLGINGSPLANSERVICE_V3_ROOT}/oppfolgingsplan`)
-    .reply(200, () => oppfolgingsplanMock);
-};
-
-export const stubOppfolgingsplanLPSApi = (scope: nock.Scope, created: Date) => {
-  return scope
-    .get(`${LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT}/oppfolgingsplan/lps`)
-    .reply(200, () => oppfolgingsplanerLPSMock(created));
-};
-
-export const stubDokumentinfoApi = (
-  scope: nock.Scope,
-  oppfolgingsplanId: number
-) => {
-  return scope
-    .get(
-      `${SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT}/dokument/${oppfolgingsplanId}/dokumentinfo`
+export const stubOppfolgingsplanApi = () =>
+  mockServer.use(
+    http.get(`*${SYFOOPPFOLGINGSPLANSERVICE_V3_ROOT}/oppfolgingsplan`, () =>
+      HttpResponse.json(oppfolgingsplanMock)
     )
-    .reply(200, () => dokumentinfoMock);
-};
+  );
 
-export const stubOppfolgingsplanHistorikkApi = (scope: nock.Scope) => {
-  scope
-    .get(`${SYFOOPPFOLGINGSPLANSERVICE_V3_ROOT}/oppfolgingsplan/historikk`)
-    .reply(200, () => historikkoppfolgingsplanMock);
-};
+export const stubOppfolgingsplanLPSApi = (created: Date) =>
+  mockServer.use(
+    http.get(`*${LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT}/oppfolgingsplan/lps`, () =>
+      HttpResponse.json(oppfolgingsplanerLPSMock(created))
+    )
+  );
+
+export const stubDokumentinfoApi = (oppfolgingsplanId: number) =>
+  mockServer.use(
+    http.get(
+      `*${SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT}/dokument/${oppfolgingsplanId}/dokumentinfo`,
+      () => HttpResponse.json(dokumentinfoMock)
+    )
+  );
+
+export const stubOppfolgingsplanHistorikkApi = () =>
+  mockServer.use(
+    http.get(
+      `*${SYFOOPPFOLGINGSPLANSERVICE_V3_ROOT}/oppfolgingsplan/historikk`,
+      () => HttpResponse.json(historikkoppfolgingsplanMock)
+    )
+  );

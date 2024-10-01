@@ -19,7 +19,6 @@ import {
   veilederBrukerKnytningQueryKeys,
 } from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
 import { queryClientWithMockData } from "../testQueryClient";
-import { apiMock } from "../stubs/stubApi";
 import { TildeltVeileder } from "@/components/TildeltVeileder";
 import React from "react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
@@ -28,7 +27,6 @@ import { clickButton } from "../testUtils";
 import userEvent from "@testing-library/user-event";
 
 let queryClient: QueryClient;
-let apiMockScope: any;
 
 const renderTildelVeileder = () =>
   render(
@@ -44,7 +42,6 @@ const renderTildelVeileder = () =>
 describe("TildeltVeileder", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
-    apiMockScope = apiMock();
   });
   describe("Visning av tildel veileder", () => {
     it("viser 'Tildelt veileder' når kall for å hente knytning er success", () => {
@@ -69,7 +66,7 @@ describe("TildeltVeileder", () => {
     });
 
     it("viser 'Tildelt veileder: ufordelt' når kall for å hente knytning ikke finner noen knytning", async () => {
-      stubSyfooversiktsrvPersontildelingNoContent(apiMockScope);
+      stubSyfooversiktsrvPersontildelingNoContent();
       const wrapper = queryHookWrapper(queryClient);
 
       const { result } = renderHook(() => useGetVeilederBrukerKnytning(), {
@@ -121,7 +118,7 @@ describe("TildeltVeileder", () => {
       expect(await screen.findByText("Vennligst velg veileder")).to.exist;
     });
     it("tildeler til valgt veileder", async () => {
-      stubSyfooversiktsrvPersontildelingRegistrerOK(apiMockScope);
+      stubSyfooversiktsrvPersontildelingRegistrerOK();
       renderTildelVeileder();
       await clickButton("Endre");
 

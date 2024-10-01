@@ -19,6 +19,7 @@ import {
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useNotification } from "@/context/notification/NotificationContext";
 import { useManglendeMedvirkningVurderingDocument } from "@/hooks/manglendemedvirkning/useManglendeMedvirkningVurderingDocument";
+import { Forhandsvisning } from "@/components/Forhandsvisning";
 
 const texts = {
   title: "Vurdering av medvirkningsplikten er ikke lenger aktuell",
@@ -31,6 +32,7 @@ const texts = {
   },
   buttons: {
     save: "Lagre",
+    previewContentLabel: "Forhåndsvis vurderingen",
     cancel: "Avbryt",
   },
   success:
@@ -53,6 +55,7 @@ export default function IkkeAktuellSkjema() {
     watch,
     formState: { errors },
     handleSubmit,
+    getValues,
   } = useForm<SkjemaValues>();
 
   const submit = (values: SkjemaValues) => {
@@ -98,6 +101,14 @@ export default function IkkeAktuellSkjema() {
           <Button loading={sendVurdering.isPending} type="submit">
             {texts.buttons.save}
           </Button>
+          <Forhandsvisning
+            contentLabel={texts.buttons.previewContentLabel}
+            getDocumentComponents={() =>
+              getIkkeAktuellDocument({
+                begrunnelse: getValues("begrunnelse"),
+              })
+            }
+          />
           <Button as={Link} to={manglendeMedvirkningPath} variant="secondary">
             {texts.buttons.cancel}
           </Button>

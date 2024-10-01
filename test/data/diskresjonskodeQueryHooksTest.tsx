@@ -1,26 +1,19 @@
-import { apiMock } from "../stubs/stubApi";
-import nock from "nock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import { stubDiskresjonskodeApi } from "../stubs/stubSyfoperson";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { testQueryClient } from "../testQueryClient";
 
 let queryClient: any;
-let apiMockScope: any;
 
 describe("diskresjonskodeQueryHooks tests", () => {
   beforeEach(() => {
     queryClient = testQueryClient();
-    apiMockScope = apiMock();
-  });
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   it("loads diskresjonskode for valgt personident", async () => {
-    stubDiskresjonskodeApi(apiMockScope, "7");
+    stubDiskresjonskodeApi("7");
     const wrapper = queryHookWrapper(queryClient);
 
     const { result } = renderHook(() => useDiskresjonskodeQuery(), {
