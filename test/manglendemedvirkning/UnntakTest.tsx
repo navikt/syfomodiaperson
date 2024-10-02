@@ -64,6 +64,9 @@ describe("Manglendemedvirkning Unntak", () => {
           name: "Begrunnelse (obligatorisk)",
         })
       ).to.exist;
+      expect(
+        screen.getByText("Husk å informere bruker om utfallet av vurderingen.")
+      );
       expect(screen.getByRole("button", { name: "Sett unntak" })).to.exist;
       expect(screen.getByRole("button", { name: "Forhåndsvisning" })).to.exist;
       expect(screen.getByRole("button", { name: "Avbryt" })).to.exist;
