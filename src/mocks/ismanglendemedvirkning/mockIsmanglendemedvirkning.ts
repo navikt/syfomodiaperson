@@ -31,6 +31,8 @@ export const mockIsmanglendemedvirkning = [
               svarfrist: addDays(new Date(), -1),
             }
           : null;
+      const stansdato =
+        body.vurderingType === "STANS" ? body.stansdato : undefined;
       const sentVurdering: VurderingResponseDTO = {
         uuid: generateUUID(),
         createdAt: new Date(),
@@ -39,6 +41,7 @@ export const mockIsmanglendemedvirkning = [
         veilederident: VEILEDER_DEFAULT.ident,
         begrunnelse: body.begrunnelse,
         document: body.document,
+        stansdato: stansdato,
         varsel: varsel,
       };
       manglendeMedvirkningVurderinger = [

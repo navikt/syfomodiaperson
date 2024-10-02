@@ -192,7 +192,7 @@ export const getIkkeAktuellDocument = (
 
 export const getStansDocument = (
   begrunnelse: string,
-  varselSvarfrist: Date
+  stansdato: Date
 ): DocumentComponentDto[] => {
   return [
     {
@@ -202,7 +202,7 @@ export const getStansDocument = (
     {
       texts: [
         `NAV har stanset sykepengene dine fra og med ${tilDatoMedManedNavn(
-          varselSvarfrist
+          stansdato
         )}.`,
       ],
       type: DocumentComponentType.PARAGRAPH,

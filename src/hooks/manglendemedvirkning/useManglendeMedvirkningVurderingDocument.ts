@@ -7,10 +7,10 @@ import {
 import { useDocumentComponents } from "@/hooks/useDocumentComponents";
 import {
   getForhandsvarselManglendeMedvirkningTexts,
-  getUnntakManglendeMedvirkningTexts,
   getIkkeAktuellManglendeMedvirkningTexts,
   getOppfyltManglendeMedvirkningTexts,
   getStansTexts,
+  getUnntakManglendeMedvirkningTexts,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningDocumentTexts";
 
 type ForhandsvarselDocumentValues = {
@@ -34,7 +34,7 @@ type IkkeAktuellDocumentValues = {
 
 type StansDocumentValues = {
   begrunnelse: string;
-  varselSvarfrist: Date;
+  stansdato: Date;
 };
 
 interface Documents {
@@ -145,7 +145,7 @@ export function useManglendeMedvirkningVurderingDocument(): Documents {
   function getStansDocument(
     values: StansDocumentValues
   ): DocumentComponentDto[] {
-    const stansTexts = getStansTexts(values.varselSvarfrist);
+    const stansTexts = getStansTexts(values.stansdato);
     return [
       createHeaderH1(stansTexts.header),
       createParagraph(stansTexts.fom),

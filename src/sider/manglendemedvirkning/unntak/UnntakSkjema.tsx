@@ -12,11 +12,11 @@ import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { Link } from "react-router-dom";
 import { manglendeMedvirkningPath } from "@/routers/AppRouter";
 import {
-  NewFinalVurderingRequestDTO,
+  UnntakVurdering,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { useSendVurderingManglendeMedvirkning } from "@/data/manglendemedvirkning/useSendVurderingManglendeMedvirkning";
+import { useSendVurdering } from "@/data/manglendemedvirkning/useSendVurderingManglendeMedvirkning";
 import { useForm } from "react-hook-form";
 import { useManglendeMedvirkningVurderingDocument } from "@/hooks/manglendemedvirkning/useManglendeMedvirkningVurderingDocument";
 import { useNotification } from "@/context/notification/NotificationContext";
@@ -49,7 +49,7 @@ interface Props {
 export default function UnntakSkjema({ forhandsvarselSendtDato }: Props) {
   const personident = useValgtPersonident();
   const { setNotification } = useNotification();
-  const sendVurdering = useSendVurderingManglendeMedvirkning();
+  const sendVurdering = useSendVurdering<UnntakVurdering>();
   const {
     register,
     watch,
@@ -59,7 +59,7 @@ export default function UnntakSkjema({ forhandsvarselSendtDato }: Props) {
   const { getUnntakDocument } = useManglendeMedvirkningVurderingDocument();
 
   const submit = (values: UnntakSkjemaValues) => {
-    const requestBody: NewFinalVurderingRequestDTO = {
+    const requestBody: UnntakVurdering = {
       personident: personident,
       vurderingType: VurderingType.UNNTAK,
       begrunnelse: values.begrunnelse,

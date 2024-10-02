@@ -11,10 +11,10 @@ import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { Link } from "react-router-dom";
 import { manglendeMedvirkningPath } from "@/routers/AppRouter";
 import React from "react";
-import { useSendVurderingManglendeMedvirkning } from "@/data/manglendemedvirkning/useSendVurderingManglendeMedvirkning";
+import { useSendVurdering } from "@/data/manglendemedvirkning/useSendVurderingManglendeMedvirkning";
 import { useForm } from "react-hook-form";
 import {
-  NewFinalVurderingRequestDTO,
+  OppfyltVurdering,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
@@ -54,7 +54,7 @@ export default function OppfyltSkjema({ forhandsvarselSendtDato }: Props) {
   const { setNotification } = useNotification();
   const { getOppfyltDocument } = useManglendeMedvirkningVurderingDocument();
   const personident = useValgtPersonident();
-  const sendVurdering = useSendVurderingManglendeMedvirkning();
+  const sendVurdering = useSendVurdering<OppfyltVurdering>();
   const {
     register,
     watch,
@@ -67,7 +67,7 @@ export default function OppfyltSkjema({ forhandsvarselSendtDato }: Props) {
       begrunnelse: values.begrunnelse,
       forhandsvarselSendtDato: forhandsvarselSendtDato,
     };
-    const vurderingRequestDTO: NewFinalVurderingRequestDTO = {
+    const vurderingRequestDTO: OppfyltVurdering = {
       vurderingType: VurderingType.OPPFYLT,
       personident,
       begrunnelse: values.begrunnelse,

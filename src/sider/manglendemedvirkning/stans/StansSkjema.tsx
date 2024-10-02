@@ -1,5 +1,4 @@
 import { Forhandsvisning } from "@/components/Forhandsvisning";
-import { useSendVurderingManglendeMedvirkning } from "@/data/manglendemedvirkning/useSendVurderingManglendeMedvirkning";
 import { manglendeMedvirkningPath } from "@/routers/AppRouter";
 import {
   BodyShort,
@@ -11,15 +10,17 @@ import {
   Textarea,
 } from "@navikt/ds-react";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useManglendeMedvirkningVurderingDocument } from "@/hooks/manglendemedvirkning/useManglendeMedvirkningVurderingDocument";
 import {
-  NewFinalVurderingRequestDTO,
+  StansVurdering,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useNotification } from "@/context/notification/NotificationContext";
+import { useSendVurdering } from "@/data/manglendemedvirkning/useSendVurderingManglendeMedvirkning";
+import { StansdatoDatePicker } from "@/sider/manglendemedvirkning/stans/StansdatoDatePicker";
 
 const texts = {
   heading: "Skriv innstilling til NAY",
@@ -51,6 +52,7 @@ const begrunnelseMaxLength = 5000;
 
 export interface StansSkjemaValues {
   begrunnelse: string;
+  stansdato: Date;
 }
 
 interface Props {
@@ -59,27 +61,28 @@ interface Props {
 
 export default function StansSkjema({ varselSvarfrist }: Props) {
   const personident = useValgtPersonident();
-  const sendVurdering = useSendVurderingManglendeMedvirkning();
+  const sendVurdering = useSendVurdering<StansVurdering>();
   const formMethods = useForm<StansSkjemaValues>();
   const {
     register,
     watch,
+    getValues,
     formState: { errors },
     handleSubmit,
   } = formMethods;
 
   const { getStansDocument } = useManglendeMedvirkningVurderingDocument();
-
   const { setNotification } = useNotification();
 
-  const submit = (values: StansSkjemaValues) => {
-    const stansVurdering: NewFinalVurderingRequestDTO = {
+  function submit(values: StansSkjemaValues) {
+    const stansVurdering: StansVurdering = {
       personident: personident,
       vurderingType: VurderingType.STANS,
       begrunnelse: values.begrunnelse,
+      stansdato: values.stansdato,
       document: getStansDocument({
         begrunnelse: values.begrunnelse,
-        varselSvarfrist: varselSvarfrist,
+        stansdato: values.stansdato,
       }),
     };
 
@@ -90,66 +93,69 @@ export default function StansSkjema({ varselSvarfrist }: Props) {
         });
       },
     });
-  };
+  }
 
   return (
     <Box background="surface-default" padding="6">
-      <form onSubmit={handleSubmit(submit)} className="[&>*]:mb-4">
-        <Heading level="2" size="medium">
-          {texts.heading}
-        </Heading>
-        <BodyShort>{texts.p1}</BodyShort>
-        <Textarea
-          {...register("begrunnelse", {
-            maxLength: begrunnelseMaxLength,
-            required: texts.missingBegrunnelse,
-          })}
-          value={watch("begrunnelse")}
-          label={texts.begrunnelseLabel}
-          error={errors.begrunnelse?.message}
-          size="small"
-          minRows={6}
-          maxLength={begrunnelseMaxLength}
-        />
-        <List as="ul" title={texts.afterSendInfo.title}>
-          <List.Item>
-            {texts.afterSendInfo.gosysoppgave}
-            <List as="ul" className="ml-1">
-              <List.Item>
-                {texts.afterSendInfo.gosysoppgaveListe.tema}
-              </List.Item>
-              <List.Item>
-                {texts.afterSendInfo.gosysoppgaveListe.gjelder}
-              </List.Item>
-              <List.Item>
-                {texts.afterSendInfo.gosysoppgaveListe.oppgavetype}
-              </List.Item>
-              <List.Item>
-                {texts.afterSendInfo.gosysoppgaveListe.prioritet}
-              </List.Item>
-            </List>
-          </List.Item>
-          <List.Item>{texts.afterSendInfo.stoppknapp}</List.Item>
-        </List>
-        <BodyShort>{texts.buttonDescription}</BodyShort>
-        <HStack gap="4">
-          <Button loading={sendVurdering.isPending} type="submit">
-            {texts.sendVarselButtonText}
-          </Button>
-          <Forhandsvisning
-            contentLabel={texts.forhandsvisningLabel}
-            getDocumentComponents={() =>
-              getStansDocument({
-                begrunnelse: watch("begrunnelse"),
-                varselSvarfrist: varselSvarfrist,
-              })
-            }
+      <FormProvider {...formMethods}>
+        <form onSubmit={handleSubmit(submit)} className="[&>*]:mb-4">
+          <Heading level="2" size="medium">
+            {texts.heading}
+          </Heading>
+          <StansdatoDatePicker varselSvarfrist={varselSvarfrist} />
+          <Textarea
+            {...register("begrunnelse", {
+              maxLength: begrunnelseMaxLength,
+              required: texts.missingBegrunnelse,
+            })}
+            value={watch("begrunnelse")}
+            label={texts.begrunnelseLabel}
+            description={texts.p1}
+            error={errors.begrunnelse?.message}
+            size="small"
+            minRows={6}
+            maxLength={begrunnelseMaxLength}
           />
-          <Button as={Link} to={manglendeMedvirkningPath} variant="secondary">
-            {texts.avbrytButton}
-          </Button>
-        </HStack>
-      </form>
+          <List as="ul" title={texts.afterSendInfo.title}>
+            <List.Item>
+              {texts.afterSendInfo.gosysoppgave}
+              <List as="ul" className="ml-1">
+                <List.Item>
+                  {texts.afterSendInfo.gosysoppgaveListe.tema}
+                </List.Item>
+                <List.Item>
+                  {texts.afterSendInfo.gosysoppgaveListe.gjelder}
+                </List.Item>
+                <List.Item>
+                  {texts.afterSendInfo.gosysoppgaveListe.oppgavetype}
+                </List.Item>
+                <List.Item>
+                  {texts.afterSendInfo.gosysoppgaveListe.prioritet}
+                </List.Item>
+              </List>
+            </List.Item>
+            <List.Item>{texts.afterSendInfo.stoppknapp}</List.Item>
+          </List>
+          <BodyShort>{texts.buttonDescription}</BodyShort>
+          <HStack gap="4">
+            <Button loading={sendVurdering.isPending} type="submit">
+              {texts.sendVarselButtonText}
+            </Button>
+            <Forhandsvisning
+              contentLabel={texts.forhandsvisningLabel}
+              getDocumentComponents={() =>
+                getStansDocument({
+                  begrunnelse: getValues("begrunnelse"),
+                  stansdato: getValues("stansdato"),
+                })
+              }
+            />
+            <Button as={Link} to={manglendeMedvirkningPath} variant="secondary">
+              {texts.avbrytButton}
+            </Button>
+          </HStack>
+        </form>
+      </FormProvider>
     </Box>
   );
 }

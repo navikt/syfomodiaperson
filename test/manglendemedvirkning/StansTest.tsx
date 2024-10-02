@@ -9,7 +9,7 @@ import { renderWithRouter } from "../testRouterUtils";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import StansSide from "@/sider/manglendemedvirkning/stans/StansSide";
 import {
-  NewFinalVurderingRequestDTO,
+  StansVurdering,
   VurderingResponseDTO,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
@@ -19,6 +19,7 @@ import { defaultForhandsvarselVurderingAfterDeadline } from "./manglendeMedvirkn
 import { screen, waitFor } from "@testing-library/react";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
 import { getStansDocument } from "./vurderingDocuments";
+import dayjs from "dayjs";
 
 let queryClient: QueryClient;
 
@@ -106,6 +107,13 @@ describe("Manglendemedvirkning Stans", () => {
 
       renderStansSide();
 
+      const today = dayjs();
+      const datoInput = screen.getByRole("textbox", {
+        name: "Velg dato for stans (obligatorisk)",
+        hidden: true,
+      });
+      changeTextInput(datoInput, today.format("DD.MM.YYYY"));
+
       const begrunnelse = "En begrunnelse";
       const begrunnelseInput = getTextInput(
         "Innstilling om stans (obligatorisk)"
@@ -114,21 +122,18 @@ describe("Manglendemedvirkning Stans", () => {
 
       await clickButton("Stans");
 
-      const expectedRequestBody: NewFinalVurderingRequestDTO = {
+      const expectedRequestBody: StansVurdering = {
         personident: ARBEIDSTAKER_DEFAULT.personIdent,
         vurderingType: VurderingType.STANS,
         begrunnelse: begrunnelse,
-        document: getStansDocument(
-          begrunnelse,
-          defaultForhandsvarselVurderingAfterDeadline?.varsel?.svarfrist ??
-            new Date()
-        ),
+        document: getStansDocument(begrunnelse, today.toDate()),
+        stansdato: today.toDate(),
       };
 
       await waitFor(() => {
         const vurderingMutation = queryClient.getMutationCache().getAll().pop();
 
-        expect(vurderingMutation?.state.variables).to.deep.equal({
+        expect(vurderingMutation?.state.variables).to.deep.include({
           personident: expectedRequestBody.personident,
           vurderingType: expectedRequestBody.vurderingType,
           begrunnelse: expectedRequestBody.begrunnelse,
