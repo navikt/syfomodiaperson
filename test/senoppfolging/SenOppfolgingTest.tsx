@@ -152,4 +152,27 @@ describe("Sen oppfolging", () => {
       begrunnelse: "En flott begrunnelse",
     });
   });
+
+  it("Viser link til ovingsside for snart slutt pa sykepengene", () => {
+    mockSenOppfolgingSvar();
+    mockSenOppfolgingKandidat(senOppfolgingKandidatMock);
+    renderSenOppfolging();
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Øvingsside for Snart slutt på sykepengene",
+      })
+    ).to.exist;
+    expect(
+      screen.getByText(
+        "Bruker kan ha svart på en tidligere versjon av svarskjemaet."
+      )
+    ).to.exist;
+    const link = screen.getByRole("link", {
+      name: "Se nyeste versjon av svarskjemaet her Ekstern lenke",
+    });
+    expect(link.getAttribute("href")).to.contain(
+      "https://demo.ekstern.dev.nav.no/syk/meroppfolging/snart-slutt-pa-sykepengene"
+    );
+  });
 });
