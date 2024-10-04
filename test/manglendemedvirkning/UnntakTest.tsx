@@ -4,7 +4,7 @@ import { manglendeMedvirkningUnntakPath } from "@/routers/AppRouter";
 import { screen, waitFor } from "@testing-library/react";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
 import {
-  NewFinalVurderingRequestDTO,
+  UnntakVurdering,
   VurderingResponseDTO,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
@@ -93,7 +93,7 @@ describe("Manglendemedvirkning Unntak", () => {
 
       await clickButton("Sett unntak");
 
-      const expectedRequestBody: NewFinalVurderingRequestDTO = {
+      const expectedRequestBody: UnntakVurdering = {
         personident: ARBEIDSTAKER_DEFAULT.personIdent,
         vurderingType: VurderingType.UNNTAK,
         begrunnelse: begrunnelse,

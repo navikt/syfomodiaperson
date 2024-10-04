@@ -6,23 +6,34 @@ interface VurderingRequestDTO {
   document: DocumentComponentDto[];
 }
 
-export interface NewForhandsvarselVurderingRequestDTO
-  extends VurderingRequestDTO {
+export interface ForhandsvarselVurdering extends VurderingRequestDTO {
   vurderingType: VurderingType.FORHANDSVARSEL;
   varselSvarfrist: Date;
 }
 
-export interface NewFinalVurderingRequestDTO extends VurderingRequestDTO {
-  vurderingType:
-    | VurderingType.OPPFYLT
-    | VurderingType.STANS
-    | VurderingType.UNNTAK
-    | VurderingType.IKKE_AKTUELL;
+export interface StansVurdering extends VurderingRequestDTO {
+  vurderingType: VurderingType.STANS;
+  stansdato: Date;
+}
+
+export interface OppfyltVurdering extends VurderingRequestDTO {
+  vurderingType: VurderingType.OPPFYLT;
+}
+
+export interface UnntakVurdering extends VurderingRequestDTO {
+  vurderingType: VurderingType.UNNTAK;
+}
+
+export interface IkkeAktuellVurdering extends VurderingRequestDTO {
+  vurderingType: VurderingType.IKKE_AKTUELL;
 }
 
 export type NewVurderingRequestDTO =
-  | NewForhandsvarselVurderingRequestDTO
-  | NewFinalVurderingRequestDTO;
+  | ForhandsvarselVurdering
+  | StansVurdering
+  | OppfyltVurdering
+  | UnntakVurdering
+  | IkkeAktuellVurdering;
 
 export interface VurderingResponseDTO {
   uuid: string;
@@ -31,6 +42,7 @@ export interface VurderingResponseDTO {
   vurderingType: VurderingType;
   veilederident: string;
   begrunnelse: string;
+  stansdato?: Date;
   document: DocumentComponentDto[];
   varsel: Varsel | null;
 }

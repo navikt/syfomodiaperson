@@ -8,7 +8,7 @@ import {
   tilLesbarDatoMedArUtenManedNavn,
 } from "@/utils/datoUtils";
 import {
-  NewForhandsvarselVurderingRequestDTO,
+  ForhandsvarselVurdering,
   VurderingResponseDTO,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
@@ -85,7 +85,7 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
 
       await clickButton("Send");
 
-      const expectedRequestBody: NewForhandsvarselVurderingRequestDTO = {
+      const expectedRequestBody: ForhandsvarselVurdering = {
         personident: ARBEIDSTAKER_DEFAULT.personIdent,
         vurderingType: VurderingType.FORHANDSVARSEL,
         begrunnelse: begrunnelse,
