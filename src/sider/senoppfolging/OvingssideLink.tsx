@@ -1,12 +1,12 @@
-import { Box, Heading, HelpText } from "@navikt/ds-react";
+import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import React from "react";
 import { EksternLenke } from "@/components/EksternLenke";
 
 const texts = {
-  heading: "Øvingsside for Snart slutt på sykepengene",
+  heading: "Sykmeldtes svarskjema",
   link: "Se nyeste versjon av svarskjemaet her",
-  helpTextTitle: "Hvorfor kan øvingssiden avvike fra den sykmeldtes svar?",
-  helpText: "Bruker kan ha svart på en tidligere versjon av svarskjemaet.",
+  linkDesc:
+    "Lenken tar deg til en øvingsside der du trygt kan klikke deg rundt i skjemaet som den sykmeldte svarer på.",
 };
 
 const demoUrl =
@@ -19,13 +19,15 @@ export default function OvingssideLink() {
       padding="6"
       className="flex flex-col gap-4 mb-2"
     >
-      <div className="flex items-center gap-2">
-        <Heading level="2" size="medium">
-          {texts.heading}
-        </Heading>
-        <HelpText title={texts.helpTextTitle}>{texts.helpText}</HelpText>
+      <Heading level="2" size="medium">
+        {texts.heading}
+      </Heading>
+      <div>
+        <EksternLenke href={demoUrl}>{texts.link}</EksternLenke>
+        <BodyShort size="small" className="my-2">
+          {texts.linkDesc}
+        </BodyShort>
       </div>
-      <EksternLenke href={demoUrl}>{texts.link}</EksternLenke>
     </Box>
   );
 }

@@ -160,13 +160,8 @@ describe("Sen oppfolging", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: "Øvingsside for Snart slutt på sykepengene",
+        name: "Sykmeldtes svarskjema",
       })
-    ).to.exist;
-    expect(
-      screen.getByText(
-        "Bruker kan ha svart på en tidligere versjon av svarskjemaet."
-      )
     ).to.exist;
     const link = screen.getByRole("link", {
       name: "Se nyeste versjon av svarskjemaet her Ekstern lenke",
@@ -174,5 +169,10 @@ describe("Sen oppfolging", () => {
     expect(link.getAttribute("href")).to.contain(
       "https://demo.ekstern.dev.nav.no/syk/meroppfolging/snart-slutt-pa-sykepengene"
     );
+    expect(
+      screen.getByText(
+        "Lenken tar deg til en øvingsside der du trygt kan klikke deg rundt i skjemaet som den sykmeldte svarer på."
+      )
+    ).to.exist;
   });
 });
