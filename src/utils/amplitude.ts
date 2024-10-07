@@ -17,6 +17,7 @@ export enum EventType {
   IkkeAktuellVurderingArsak = "Ikke aktuell vurdering arsak",
   ViewPortAndScreenResolution = "viewport og skjermstørrelse",
   OptionSelected = "alternativ valgt",
+  LinkClick = "lenke klikket",
 }
 
 type EventPageView = {
@@ -98,6 +99,14 @@ type OptionSelected = {
   };
 };
 
+type LinkClick = {
+  type: EventType.LinkClick;
+  data: {
+    sideUrl: string;
+    destinasjonUrl: string;
+  };
+};
+
 type Event =
   | EventPageView
   | EventButtonClick
@@ -107,7 +116,8 @@ type Event =
   | OppfolgingsgrunnSendt
   | OppfolgingsoppgaveEdited
   | IkkeAktuellVurderingArsak
-  | OptionSelected;
+  | OptionSelected
+  | LinkClick;
 
 export const logEvent = (event: Event) =>
   amplitude.track(event.type, { ...event.data });
