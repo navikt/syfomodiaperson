@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import {
   newAndActivatedSykmeldinger,
   sykmeldingerInnenforOppfolgingstilfelle,
@@ -10,7 +10,6 @@ import {
   getDatoKomponenter,
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
-import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { SyketilfelleList } from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleList";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
@@ -19,17 +18,27 @@ import { BodyShort, Box, Heading } from "@navikt/ds-react";
 const texts = {
   title: "Sykmeldingsgrad",
   subtitle: "Endringer i sykmeldingsgrad",
-  tilfelleVarighet: "Valgt tilfelle sin varighet: ",
   xAxis: "X-akse: måned i tilfellet",
   yAxis: "Y-akse: sykmeldingsgrad",
 };
 
-export const Sykmeldingsgrad = () => {
-  const { sykmeldinger } = useSykmeldingerQuery();
-  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+function tilfelleVarighetText(start: Date, end: Date, varighet: number) {
+  return `Valgt tilfelle sin varighet: ${tilLesbarPeriodeMedArstall(start, end)}
+           (${varighet} uker)`;
+}
 
-  const [selectedOppfolgingstilfelle, setSelectedOppfolgingstilfelle] =
-    useState<OppfolgingstilfelleDTO | undefined>(latestOppfolgingstilfelle);
+interface Props {
+  selectedOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined;
+  setSelectedOppfolgingstilfelle: (
+    oppfolgingstilfelle: OppfolgingstilfelleDTO
+  ) => void;
+}
+
+export const Sykmeldingsgrad = ({
+  selectedOppfolgingstilfelle,
+  setSelectedOppfolgingstilfelle,
+}: Props) => {
+  const { sykmeldinger } = useSykmeldingerQuery();
 
   const newAndUsedSykmeldinger = newAndActivatedSykmeldinger(sykmeldinger);
   const sykmeldingerIOppfolgingstilfellet =
@@ -103,10 +112,10 @@ export const Sykmeldingsgrad = () => {
       <BodyShort size="small">{texts.subtitle}</BodyShort>
       {selectedOppfolgingstilfelle && perioderListSortert.length > 0 && (
         <BodyShort size="small">
-          {texts.tilfelleVarighet}
-          {tilLesbarPeriodeMedArstall(
+          {tilfelleVarighetText(
             selectedOppfolgingstilfelle.start,
-            selectedOppfolgingstilfelle.end
+            selectedOppfolgingstilfelle.end,
+            selectedOppfolgingstilfelle.varighetUker
           )}
         </BodyShort>
       )}

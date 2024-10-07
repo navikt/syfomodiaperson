@@ -4,49 +4,30 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { Sykmeldingsgrad } from "@/sider/nokkelinformasjon/sykmeldingsgrad/Sykmeldingsgrad";
 import { expect, describe, it, beforeEach } from "vitest";
-import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
-import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
-import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
-import { addDays } from "@/utils/datoUtils";
+import { addDays, tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
 import { PeriodetypeDTO } from "@/data/sykmelding/types/PeriodetypeDTO";
+import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import {
+  createOppfolgingstilfelleFromSykmelding,
+  setSykmeldingDataFromOppfolgingstilfelle,
+} from "../utils/oppfolgingstilfelleUtils";
 
 let queryClient: QueryClient;
 
-const renderSykmeldingsgrad = () =>
+const renderSykmeldingsgrad = (
+  oppfolgingstilfelle: OppfolgingstilfelleDTO | undefined
+) =>
   render(
     <QueryClientProvider client={queryClient}>
-      <Sykmeldingsgrad />
+      <Sykmeldingsgrad
+        selectedOppfolgingstilfelle={oppfolgingstilfelle}
+        setSelectedOppfolgingstilfelle={(oppfolgingstilfelle) =>
+          oppfolgingstilfelle
+        }
+      />
     </QueryClientProvider>
   );
-
-function setSykmeldingData(sykmelding: any[]) {
-  queryClient.setQueryData(
-    sykmeldingerQueryKeys.sykmeldinger(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => sykmelding
-  );
-
-  const oppfolgingstilfelle = sykmelding.length
-    ? {
-        ...oppfolgingstilfellePersonMock,
-        oppfolgingstilfelleList: [
-          {
-            ...oppfolgingstilfellePersonMock.oppfolgingstilfelleList[0],
-            start: sykmelding[0].sykmeldingsperioder[0].fom,
-            end: sykmelding[0].sykmeldingsperioder[0].tom,
-          },
-        ],
-      }
-    : { ...oppfolgingstilfellePersonMock, oppfolgingstilfelleList: [] };
-
-  queryClient.setQueryData(
-    oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-      ARBEIDSTAKER_DEFAULT.personIdent
-    ),
-    () => oppfolgingstilfelle
-  );
-}
 
 describe("Sykmeldingsgrad", () => {
   beforeEach(() => {
@@ -82,18 +63,42 @@ describe("Sykmeldingsgrad", () => {
   ];
 
   it("should render Sykmeldingsgrad when active tilfelle", () => {
-    setSykmeldingData(sykmeldingNow);
-    renderSykmeldingsgrad();
+    const oppfolgingstilfeller =
+      createOppfolgingstilfelleFromSykmelding(sykmeldingNow);
+    setSykmeldingDataFromOppfolgingstilfelle(
+      sykmeldingNow,
+      oppfolgingstilfeller,
+      queryClient
+    );
+    renderSykmeldingsgrad(oppfolgingstilfeller[0]);
 
     expect(screen.getByText("Sykmeldingsgrad")).to.exist;
     expect(screen.getByText("Siste sykefravær")).to.exist;
     expect(screen.getByText("Valgt tilfelle sin varighet:", { exact: false }))
       .to.exist;
+    expect(
+      screen.getByText(
+        `${tilLesbarPeriodeMedArUtenManednavn(
+          oppfolgingstilfeller[0].start,
+          oppfolgingstilfeller[0].end
+        )}`
+      )
+    ).to.exist;
+    expect(screen.getByText(`(${oppfolgingstilfeller[0].varighetUker} uker)`))
+      .to.exist;
+    expect(
+      screen.getByText(sykmeldingNow[0].medisinskVurdering.hovedDiagnose.kode)
+    ).to.exist;
   });
 
   it("should render Sykmeldingsgrad when no sykmelding", () => {
-    setSykmeldingData([]);
-    renderSykmeldingsgrad();
+    const oppfolgingstilfeller = createOppfolgingstilfelleFromSykmelding();
+    setSykmeldingDataFromOppfolgingstilfelle(
+      [],
+      oppfolgingstilfeller,
+      queryClient
+    );
+    renderSykmeldingsgrad(undefined);
 
     expect(screen.getByText("Sykmeldingsgrad")).to.exist;
     expect(screen.getByText("Siste sykefravær")).to.exist;
@@ -102,12 +107,31 @@ describe("Sykmeldingsgrad", () => {
   });
 
   it("should render Sykmeldingsgrad when old tilfelle and sykmelding", () => {
-    setSykmeldingData(sykmeldingEarlier);
-    renderSykmeldingsgrad();
+    const oppfolgingstilfeller =
+      createOppfolgingstilfelleFromSykmelding(sykmeldingEarlier);
+    setSykmeldingDataFromOppfolgingstilfelle(
+      sykmeldingEarlier,
+      oppfolgingstilfeller,
+      queryClient
+    );
+    renderSykmeldingsgrad(oppfolgingstilfeller[0]);
 
     expect(screen.getByText("Sykmeldingsgrad")).to.exist;
     expect(screen.getByText("Siste sykefravær")).to.exist;
     expect(screen.getByText("Valgt tilfelle sin varighet:", { exact: false }))
       .to.exist;
+    expect(
+      screen.getByText(
+        `${tilLesbarPeriodeMedArUtenManednavn(
+          oppfolgingstilfeller[0].start,
+          oppfolgingstilfeller[0].end
+        )}`
+      )
+    ).to.exist;
+    expect(screen.getByText(`(${oppfolgingstilfeller[0].varighetUker} uker)`))
+      .to.exist;
+    expect(
+      screen.getByText(sykmeldingNow[0].medisinskVurdering.hovedDiagnose.kode)
+    ).to.exist;
   });
 });

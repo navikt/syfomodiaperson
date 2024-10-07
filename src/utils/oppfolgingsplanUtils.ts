@@ -1,4 +1,5 @@
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
+import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 const newestLpsPlanPerVirksomhet = (lpsplaner: OppfolgingsplanLPS[]) => {
   return lpsplaner.filter((plan) => {
@@ -16,25 +17,23 @@ const newestLpsPlanPerVirksomhet = (lpsplaner: OppfolgingsplanLPS[]) => {
 
 const lpsPlanerWithinActiveTilfelle = (
   lpsplaner: OppfolgingsplanLPS[],
-  startDateNewestActiveTilfelle?: Date
+  oppfolgingstilfelle: OppfolgingstilfelleDTO
 ) => {
-  if (startDateNewestActiveTilfelle === undefined) {
-    return [];
-  }
-
   return lpsplaner.filter((plan) => {
-    return new Date(plan.opprettet) > new Date(startDateNewestActiveTilfelle);
+    return (
+      new Date(plan.opprettet) >= new Date(oppfolgingstilfelle.start) &&
+      new Date(plan.opprettet) <= new Date(oppfolgingstilfelle.end)
+    );
   });
 };
 
 export const lpsPlanerWithActiveTilfelle = (
   lpsplaner: OppfolgingsplanLPS[],
-  startDateNewestActiveTilfelle?: Date
-) => {
-  const newestPlanPerVirksomhet = newestLpsPlanPerVirksomhet(lpsplaner);
+  oppfolgingstilfelle: OppfolgingstilfelleDTO | undefined
+): OppfolgingsplanLPS[] => {
+  const aktivePlanerForOppfolgingstilfelle = oppfolgingstilfelle
+    ? lpsPlanerWithinActiveTilfelle(lpsplaner, oppfolgingstilfelle)
+    : [];
 
-  return lpsPlanerWithinActiveTilfelle(
-    newestPlanPerVirksomhet,
-    startDateNewestActiveTilfelle
-  );
+  return newestLpsPlanPerVirksomhet(aktivePlanerForOppfolgingstilfelle);
 };

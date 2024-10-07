@@ -1,9 +1,9 @@
-import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import {
   SykmeldingOldFormat,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
 import {
   arbeidsgivernavnEllerArbeidssituasjon,
@@ -17,12 +17,12 @@ import {
 import { ExpansionCard, Heading, Tag } from "@navikt/ds-react";
 import React from "react";
 import SykmeldingUtdragFraSykefravaretVisning from "../motebehov/SykmeldingUtdragFraSykefravaretVisning";
-import * as Amplitude from "@/utils/amplitude";
 import styled from "styled-components";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
-import { tidligsteFom, senesteTom } from "@/utils/periodeUtils";
+import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
 import { MerInformasjonImage } from "img/ImageComponents";
 import { PapirsykmeldingTag } from "../PapirsykmeldingTag";
+import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 const texts = {
   header: "Sykmeldinger",
@@ -153,9 +153,12 @@ const SykmeldingTittelbeskrivelse = ({ sykmelding }: UtvidbarTittelProps) => {
   );
 };
 
-export default function Sykmeldinger() {
+interface Props {
+  selectedOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined;
+}
+
+export default function Sykmeldinger({ selectedOppfolgingstilfelle }: Props) {
   const { sykmeldinger } = useSykmeldingerQuery();
-  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
   const aktuelleSykmeldinger = sykmeldinger.filter(
     (sykmelding) =>
@@ -166,13 +169,13 @@ export default function Sykmeldinger() {
   const sykmeldingerIOppfolgingstilfellet =
     sykmeldingerInnenforOppfolgingstilfelle(
       aktuelleSykmeldinger,
-      latestOppfolgingstilfelle
+      selectedOppfolgingstilfelle
     );
   const sykmeldingerSortertPaaStartDato =
     sykmeldingerSortertNyestTilEldstPeriode(sykmeldingerIOppfolgingstilfellet);
 
   return (
-    <div className="mb-10 [&>*]:mb-2">
+    <div className="[&>*]:mb-2">
       <Heading size="small" level="3">
         {texts.header}
       </Heading>

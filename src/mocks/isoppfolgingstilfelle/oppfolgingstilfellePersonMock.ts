@@ -26,14 +26,14 @@ export const oppfolgingstilfellePersonMock: OppfolgingstilfellePersonDTO = {
     },
     {
       arbeidstakerAtTilfelleEnd: true,
-      start: new Date("2020-02-21"),
-      end: new Date("2030-12-10"),
+      start: new Date("2024-02-21"),
+      end: new Date("2024-12-10"),
       virksomhetsnummerList: [
         VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
         VIRKSOMHET_BRANNOGBIL.virksomhetsnummer,
         VIRKSOMHET_UTEN_NARMESTE_LEDER.virksomhetsnummer,
       ],
-      antallSykedager: 3946,
+      antallSykedager: 294,
       varighetUker: 48,
     },
   ],

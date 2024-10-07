@@ -15,7 +15,7 @@ import {
 } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 import { Undertittel } from "nav-frontend-typografi";
-import { useStartOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 const texts = {
   header: "Oppfølgingsplan",
@@ -33,10 +33,6 @@ const AktivPlan = styled.div`
   a {
     text-transform: capitalize;
   }
-`;
-
-const Gyldighetsperiode = styled.span`
-  margin-left: 2em;
 `;
 
 interface AktivPlanLenkeProps {
@@ -66,12 +62,12 @@ const AktivePlaner = ({ aktivePlaner }: AktivePlanerProps) => (
     {aktivePlaner.map((plan, index) => (
       <AktivPlan key={index}>
         <AktivPlanLenke aktivPlan={plan} />
-        <Gyldighetsperiode>
+        <span className="ml-8">
           {tilLesbarPeriodeMedArstall(
             plan.godkjentPlan.gyldighetstidspunkt.fom,
             plan.godkjentPlan.gyldighetstidspunkt.tom
           )}
-        </Gyldighetsperiode>
+        </span>
       </AktivPlan>
     ))}
   </>
@@ -131,26 +127,26 @@ const Oppfolgingsplaner = ({
   );
 };
 
-const UtdragOppfolgingsplanerWrapper = styled.div`
-  margin-bottom: 2.5em;
-`;
+interface Props {
+  selectedOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined;
+}
 
-export const UtdragOppfolgingsplaner = () => {
+export const UtdragOppfolgingsplaner = ({
+  selectedOppfolgingstilfelle,
+}: Props) => {
   const { aktivePlaner } = useOppfolgingsplanerQuery();
   const { data: oppfolgingsplanerLPS } = useOppfolgingsplanerLPSQuery();
 
-  const startDateNewestActiveTilfelle = useStartOfLatestOppfolgingstilfelle();
-
   const activeLpsPlaner = lpsPlanerWithActiveTilfelle(
     oppfolgingsplanerLPS,
-    startDateNewestActiveTilfelle
+    selectedOppfolgingstilfelle
   );
 
   const anyActivePlaner =
     aktivePlaner?.length > 0 || activeLpsPlaner.length > 0;
 
   return (
-    <UtdragOppfolgingsplanerWrapper>
+    <div>
       <Undertittel tag={"h3"}>{texts.header}</Undertittel>
       {anyActivePlaner ? (
         <Oppfolgingsplaner
@@ -160,6 +156,6 @@ export const UtdragOppfolgingsplaner = () => {
       ) : (
         <p>{texts.ingenPlanerDelt}</p>
       )}
-    </UtdragOppfolgingsplanerWrapper>
+    </div>
   );
 };
