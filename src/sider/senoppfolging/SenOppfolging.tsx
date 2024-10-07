@@ -11,6 +11,7 @@ import {
 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { VeiledningRutine } from "@/sider/senoppfolging/VeiledningRutine";
 import { NewVurderingForm } from "@/sider/senoppfolging/NewVurderingForm";
+import OvingssideLink from "@/sider/senoppfolging/OvingssideLink";
 
 const texts = {
   ikkeVarslet: {
@@ -45,6 +46,7 @@ export default function SenOppfolging(): ReactElement {
       </Tredelt.FirstColumn>
       <Tredelt.SecondColumn>
         <VeiledningRutine />
+        <OvingssideLink />
       </Tredelt.SecondColumn>
     </Tredelt.Container>
   ) : (
