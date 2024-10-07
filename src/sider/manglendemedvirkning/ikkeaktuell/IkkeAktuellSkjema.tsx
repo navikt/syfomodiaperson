@@ -10,10 +10,10 @@ import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { Link } from "react-router-dom";
 import { manglendeMedvirkningPath } from "@/routers/AppRouter";
 import React from "react";
-import { useSendVurderingManglendeMedvirkning } from "@/data/manglendemedvirkning/useSendVurderingManglendeMedvirkning";
+import { useSendVurdering } from "@/data/manglendemedvirkning/useSendVurderingManglendeMedvirkning";
 import { useForm } from "react-hook-form";
 import {
-  NewFinalVurderingRequestDTO,
+  IkkeAktuellVurdering,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
@@ -49,7 +49,7 @@ export default function IkkeAktuellSkjema() {
   const { setNotification } = useNotification();
   const { getIkkeAktuellDocument } = useManglendeMedvirkningVurderingDocument();
   const personident = useValgtPersonident();
-  const sendVurdering = useSendVurderingManglendeMedvirkning();
+  const sendVurdering = useSendVurdering<IkkeAktuellVurdering>();
   const {
     register,
     watch,
@@ -59,7 +59,7 @@ export default function IkkeAktuellSkjema() {
   } = useForm<SkjemaValues>();
 
   const submit = (values: SkjemaValues) => {
-    const vurderingRequestDTO: NewFinalVurderingRequestDTO = {
+    const vurderingRequestDTO: IkkeAktuellVurdering = {
       personident,
       vurderingType: VurderingType.IKKE_AKTUELL,
       begrunnelse: values.begrunnelse,

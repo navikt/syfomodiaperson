@@ -8,7 +8,7 @@ import { NotificationProvider } from "@/context/notification/NotificationContext
 import React from "react";
 import { manglendeMedvirkningIkkeAktuellPath } from "@/routers/AppRouter";
 import {
-  NewFinalVurderingRequestDTO,
+  IkkeAktuellVurdering,
   VurderingResponseDTO,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
@@ -121,7 +121,7 @@ describe("Manglendemedvirkning Ikke aktuell", () => {
 
       await clickButton("Lagre");
 
-      const expectedRequestBody: NewFinalVurderingRequestDTO = {
+      const expectedRequestBody: IkkeAktuellVurdering = {
         personident: ARBEIDSTAKER_DEFAULT.personIdent,
         vurderingType: VurderingType.IKKE_AKTUELL,
         begrunnelse: enBegrunnelse,
