@@ -1,4 +1,7 @@
-import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
+import {
+  InfotrygdStatus,
+  VedtakResponseDTO,
+} from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import {
   ARBEIDSTAKER_DEFAULT,
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
@@ -21,6 +24,7 @@ export const createVedtak = (
   tom: addWeeks(fom, 12),
   begrunnelse: "begrunnelse",
   document: [],
+  infotrygdStatus: InfotrygdStatus.KVITTERING_OK,
   ferdigbehandletAt: ferdigbehandletAt,
   ferdigbehandletBy: ferdigbehandletAt && VEILEDER_DEFAULT.ident,
 });

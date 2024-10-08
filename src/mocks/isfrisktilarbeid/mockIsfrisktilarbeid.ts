@@ -3,6 +3,7 @@ import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import { generateUUID } from "@/utils/uuidUtils";
 import { VEILEDER_DEFAULT } from "../common/mockConstants";
 import {
+  InfotrygdStatus,
   VedtakRequestDTO,
   VedtakResponseDTO,
 } from "@/data/frisktilarbeid/frisktilarbeidTypes";
@@ -29,6 +30,7 @@ export const mockIsfrisktilarbeid = [
         document: body.document,
         fom: new Date(body.fom),
         tom: new Date(body.tom),
+        infotrygdStatus: InfotrygdStatus.KVITTERING_OK,
         ferdigbehandletAt: undefined,
         ferdigbehandletBy: undefined,
       };
@@ -64,6 +66,7 @@ export const defaultVedtak: VedtakResponseDTO = {
   fom: new Date(),
   tom: addWeeks(new Date(), 12),
   document: [],
+  infotrygdStatus: InfotrygdStatus.KVITTERING_OK,
   ferdigbehandletAt: undefined,
   ferdigbehandletBy: undefined,
 };
