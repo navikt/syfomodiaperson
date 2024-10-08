@@ -1,7 +1,7 @@
 import React from "react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { Maksdato } from "@/data/maksdato/useMaksdatoQuery";
-import { SyketilfelleSummaryElement } from "@/components/personkort/PersonkortHeader/SyketilfelleSummary";
+import { SyketilfelleSummaryElement } from "@/components/personkort/PersonkortHeader/SyketilfelleSummaryElement";
 
 const texts = {
   maksdato: "Maksdato: ",
@@ -11,7 +11,8 @@ const texts = {
 interface MaksdatoSummaryProps {
   maxDate: Maksdato;
 }
-export const MaksdatoSummary = ({ maxDate }: MaksdatoSummaryProps) => {
+
+export function MaksdatoSummary({ maxDate }: MaksdatoSummaryProps) {
   return (
     <div className={"flex flex-row gap-3 items-center"}>
       <SyketilfelleSummaryElement
@@ -26,4 +27,4 @@ export const MaksdatoSummary = ({ maxDate }: MaksdatoSummaryProps) => {
       />
     </div>
   );
-};
+}

@@ -1,7 +1,6 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import PersonkortHeader from "@/components/personkort/PersonkortHeader/PersonkortHeader";
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   queryClientWithAktivBruker,
@@ -17,6 +16,7 @@ import { daysFromToday } from "../../testUtils";
 import dayjs from "dayjs";
 import { underArbeidsrettetOppfolgingQueryKeys } from "@/data/veilarboppfolging/useUnderArbeidsrettetOppfolgingQuery";
 import { UnderArbeidsrettetOppfolgingResponseDTO } from "@/data/veilarboppfolging/veilarboppfolgingTypes";
+import { PersonkortHeader } from "@/components/personkort/PersonkortHeader/PersonkortHeader";
 
 let queryClient: any;
 
