@@ -2,7 +2,7 @@ import React from "react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
-import { Radio, RadioGroup, Tooltip } from "@navikt/ds-react";
+import { BodyShort, Radio, RadioGroup, Tooltip } from "@navikt/ds-react";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import {
   getDiagnoseFromLatestSykmelding,
@@ -59,13 +59,14 @@ export const SyketilfelleList = ({
           (tilfelle: OppfolgingstilfelleDTO, index: number) => {
             const diagnose = getDiagnose(tilfelle);
             return (
-              <div className="flex items-center" key={index}>
+              <div className="flex items-center gap-2" key={index}>
                 <Radio key={index} value={tilfelle}>
                   {tilfelleText(tilfelle)}
                 </Radio>
+                <BodyShort size="small">{`(${tilfelle.varighetUker} uker)`}</BodyShort>
                 {diagnose?.diagnosekode && (
                   <Tooltip content={diagnose.diagnose ?? "Ukjent diagnosenavn"}>
-                    <div className="ml-2">
+                    <div className="flex">
                       <img src={MedisinskrinImage} alt="Medisinskrin" />
                       <span className="ml-1">{diagnose.diagnosekode}</span>
                     </div>

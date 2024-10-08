@@ -5,6 +5,8 @@ import {
   ARBEIDSTAKER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
 } from "@/mocks/common/mockConstants";
+import { createOppfolgingstilfellePersonDTO } from "./oppfolgingstilfelleUtils";
+import { addDays } from "@/utils/datoUtils";
 
 describe("oppfolgingsplanUtils", () => {
   describe("lpsPlanerWithActiveTilfelle", () => {
@@ -17,11 +19,16 @@ describe("oppfolgingsplanUtils", () => {
       sistEndret: dayjs(today).subtract(1, "days").toJSON(),
     };
 
+    const defaultOppfolgingstilfelle = createOppfolgingstilfellePersonDTO(
+      addDays(today, -2),
+      addDays(today, 2)
+    ).oppfolgingstilfelleList[0];
+
     it("should return 1 plan if inside an active tilfelle", () => {
       const planer = [defaultLpsplan];
       const activePlaner = lpsPlanerWithActiveTilfelle(
         planer,
-        dayjs(today).subtract(10, "days").toDate()
+        defaultOppfolgingstilfelle
       );
 
       expect(activePlaner.length).to.be.equal(1);
@@ -58,12 +65,15 @@ describe("oppfolgingsplanUtils", () => {
     });
 
     it("should return newest plan if more than one is sent in active tilfelle", () => {
-      const tilfelleFom = dayjs(today).subtract(10, "days");
+      const oppfolgingstilfelle = createOppfolgingstilfellePersonDTO(
+        addDays(today, -10),
+        addDays(today, 2)
+      ).oppfolgingstilfelleList[0];
 
       const oldestLpsPlan = {
         ...defaultLpsplan,
         uuid: "old",
-        opprettet: dayjs(tilfelleFom).subtract(9, "days"),
+        opprettet: addDays(today, -9),
       };
 
       const newestLpsPlan = {
@@ -75,7 +85,7 @@ describe("oppfolgingsplanUtils", () => {
 
       const activePlaner = lpsPlanerWithActiveTilfelle(
         planer,
-        dayjs(today).subtract(10, "days").toDate()
+        oppfolgingstilfelle
       );
 
       expect(activePlaner.length).to.be.equal(1);
@@ -96,7 +106,7 @@ describe("oppfolgingsplanUtils", () => {
 
       const activePlaner = lpsPlanerWithActiveTilfelle(
         planer,
-        dayjs(today).subtract(10, "days").toDate()
+        defaultOppfolgingstilfelle
       );
 
       expect(activePlaner.length).to.be.equal(2);
@@ -115,7 +125,7 @@ describe("oppfolgingsplanUtils", () => {
 
       const activePlaner = lpsPlanerWithActiveTilfelle(
         planer,
-        dayjs(today).subtract(10, "days").toDate()
+        defaultOppfolgingstilfelle
       );
 
       expect(activePlaner.length).to.be.equal(1);

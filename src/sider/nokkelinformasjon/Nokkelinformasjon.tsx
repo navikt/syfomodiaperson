@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import UtdragFraSykefravaeret from "../../components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { Sykmeldingsgrad } from "@/sider/nokkelinformasjon/sykmeldingsgrad/Sykmeldingsgrad";
 import { useOppfolgingsplanerQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
@@ -8,6 +8,8 @@ import Side from "@/sider/Side";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import SideLaster from "@/components/SideLaster";
 import { Heading } from "@navikt/ds-react";
+import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 const texts = {
   pageTitle: "Nøkkelinformasjon",
@@ -18,6 +20,11 @@ export const Nokkelinformasjon = () => {
   const { isError: henterSykmeldingerFeilet } = useSykmeldingerQuery();
   const { isLoading: henterLedere, isError: henterLedereFeilet } =
     useLedereQuery();
+
+  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+
+  const [selectedOppfolgingstilfelle, setSelectedOppfolgingstilfelle] =
+    useState<OppfolgingstilfelleDTO | undefined>();
 
   const henter = henterOppfolgingsplaner || henterLedere;
   const hentingFeilet = henterSykmeldingerFeilet || henterLedereFeilet;
@@ -33,8 +40,17 @@ export const Nokkelinformasjon = () => {
             {texts.pageTitle}
           </Heading>
         </header>
-        <Sykmeldingsgrad />
-        <UtdragFraSykefravaeret />
+        <Sykmeldingsgrad
+          selectedOppfolgingstilfelle={
+            selectedOppfolgingstilfelle || latestOppfolgingstilfelle
+          }
+          setSelectedOppfolgingstilfelle={setSelectedOppfolgingstilfelle}
+        />
+        <UtdragFraSykefravaeret
+          selectedOppfolgingstilfelle={
+            selectedOppfolgingstilfelle || latestOppfolgingstilfelle
+          }
+        />
       </SideLaster>
     </Side>
   );

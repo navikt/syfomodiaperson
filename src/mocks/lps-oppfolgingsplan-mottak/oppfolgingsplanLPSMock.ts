@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import {
   ARBEIDSTAKER_DEFAULT,
+  VIRKSOMHET_BRANNOGBIL,
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
@@ -23,14 +24,22 @@ export const oppfolgingsplanerLPSMock = (
     {
       ...getDefaultOppfolgingsplanLPS(created),
       uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd3",
+      virksomhetsnummer: VIRKSOMHET_BRANNOGBIL.virksomhetsnummer,
       opprettet: dayjs(created).subtract(10, "days").toJSON(),
       sistEndret: dayjs(created).subtract(10, "days").toJSON(),
     },
     {
       ...getDefaultOppfolgingsplanLPS(created),
+      uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd9",
+      virksomhetsnummer: VIRKSOMHET_BRANNOGBIL.virksomhetsnummer,
+      opprettet: dayjs(created).subtract(11, "days").toJSON(),
+      sistEndret: dayjs(created).subtract(11, "days").toJSON(),
+    },
+    {
+      ...getDefaultOppfolgingsplanLPS(created),
       uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd4",
-      opprettet: created.toJSON(),
-      sistEndret: created.toJSON(),
+      opprettet: dayjs(new Date("2020-06-06")).toJSON(),
+      sistEndret: dayjs(new Date("2020-06-06")).toJSON(),
     },
   ];
 };
