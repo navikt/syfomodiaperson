@@ -51,13 +51,28 @@ describe("VurderBistandsbehov", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: "Vurder bistandsbehovet fra behandler:",
+        name: "Vurder bistandsbehovet eller forslag til tiltak fra behandler:",
       })
     ).to.exist;
     expect(
-      screen.getByRole("button", {
-        name: behandlePersonoppgaveKnappText,
+      screen.getByRole("heading", {
+        name: "Vurder bistandsbehovet eller forslag til tiltak fra behandler:",
       })
+    ).to.exist;
+    expect(
+      screen.getByText(
+        "Felt 7.2 (Forslag til tiltak i regi fra NAV): Vedlikehold av holodeck"
+      )
+    ).to.exist;
+    expect(
+      screen.getByText(
+        "Felt 7.3 (Andre innspill til NAV): Mer vedlikehold av holodeck"
+      )
+    ).to.exist;
+    expect(
+      screen.getByText(
+        "Felt 8.2 (Melding til NAV): Nav kan vise til egen forskning på faren med phaser blasts"
+      )
     ).to.exist;
     expect(
       screen.getByRole("link", {

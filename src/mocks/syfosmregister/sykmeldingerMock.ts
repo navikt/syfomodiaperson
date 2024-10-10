@@ -546,7 +546,7 @@ export const sykmeldingerMock = [
     tiltakArbeidsplassen: "Fortsett som sist.",
     tiltakNAV:
       "Sende George på kostskole, han har plaget Pontypandy lenge nok nå",
-    andreTiltak: null,
+    andreTiltak: "Kan også forsøke disse tiltakene",
     meldingTilNAV: {
       bistandUmiddelbart: false,
       beskrivBistand: "Mye røykskader pga jobben",
@@ -981,7 +981,7 @@ export const sykmeldingerMock = [
     },
     tiltakArbeidsplassen: "Sette phasers til stun.",
     tiltakNAV: "Vedlikehold av holodeck",
-    andreTiltak: null,
+    andreTiltak: "Mer vedlikehold av holodeck",
     meldingTilNAV: {
       bistandUmiddelbart: true,
       beskrivBistand:
