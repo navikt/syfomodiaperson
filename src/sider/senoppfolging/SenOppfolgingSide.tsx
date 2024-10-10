@@ -4,7 +4,6 @@ import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Sidetopp from "@/components/Sidetopp";
 import SenOppfolging from "@/sider/senoppfolging/SenOppfolging";
 import SideLaster from "@/components/SideLaster";
-import { useSenOppfolgingSvarQuery } from "@/data/senoppfolging/useSenOppfolgingSvarQuery";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 
 const texts = {
@@ -12,13 +11,7 @@ const texts = {
 };
 
 export default function SenOppfolgingSide(): ReactElement {
-  const { isError: hentSvarFeilet, isPending: henterSvar } =
-    useSenOppfolgingSvarQuery();
-  const { isError: hentKandidatFeilet, isPending: henterKandidat } =
-    useSenOppfolgingKandidatQuery();
-
-  const isPending = henterKandidat || henterSvar;
-  const isError = hentKandidatFeilet || hentSvarFeilet;
+  const { isError, isPending } = useSenOppfolgingKandidatQuery();
 
   return (
     <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.SENOPPFOLGING}>

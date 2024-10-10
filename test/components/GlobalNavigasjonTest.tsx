@@ -54,6 +54,13 @@ import {
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: QueryClient;
 
+const mockUnleashWithFeatureToggles = () => {
+  queryClient.setQueryData(
+    unleashQueryKeys.toggles(navEnhet.id, ""),
+    () => mockUnleashResponse
+  );
+};
+
 const renderGlobalNavigasjon = () =>
   render(
     <QueryClientProvider client={queryClient}>
@@ -275,14 +282,11 @@ describe("GlobalNavigasjon", () => {
     expect(screen.getByRole("link", { name: "Arbeidsuførhet" })).to.exist;
   });
 
-  it('viser en rød prikk for menypunkt "Snart slutt på sykepengene" når aktiv kandidat', () => {
+  it('viser en rød prikk for menypunkt "Snart slutt på sykepengene" når kandidat med svar', () => {
+    mockUnleashWithFeatureToggles();
     queryClient.setQueryData(
       senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(fnr),
       () => [senOppfolgingKandidatMock]
-    );
-    queryClient.setQueryData(
-      unleashQueryKeys.toggles(navEnhet.id, ""),
-      () => mockUnleashResponse
     );
     renderGlobalNavigasjon();
 
@@ -291,13 +295,27 @@ describe("GlobalNavigasjon", () => {
   });
 
   it('viser ikke en rød prikk for menypunkt "Snart slutt på sykepengene" når kandidat er ferdigbehandlet', () => {
+    mockUnleashWithFeatureToggles();
     queryClient.setQueryData(
       senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(fnr),
       () => [ferdigbehandletKandidatMock]
     );
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("link", { name: "Snart slutt på sykepengene" })).to
+      .exist;
+  });
+
+  it("viser ikke en rød prikk for menypunkt Snart slutt på sykepengene når kandidat uten svar", () => {
+    mockUnleashWithFeatureToggles();
     queryClient.setQueryData(
-      unleashQueryKeys.toggles(navEnhet.id, ""),
-      () => mockUnleashResponse
+      senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(fnr),
+      () => [
+        {
+          ...senOppfolgingKandidatMock,
+          svar: undefined,
+        },
+      ]
     );
     renderGlobalNavigasjon();
 
@@ -306,13 +324,10 @@ describe("GlobalNavigasjon", () => {
   });
 
   it('viser en rød prikk for menypunkt "Friskmelding til arbeidsformidling" når ikke ferdigbehandlet', () => {
+    mockUnleashWithFeatureToggles();
     queryClient.setQueryData(vedtakQueryKeys.vedtak(fnr), () => [
       defaultVedtak,
     ]);
-    queryClient.setQueryData(
-      unleashQueryKeys.toggles(navEnhet.id, ""),
-      () => mockUnleashResponse
-    );
     renderGlobalNavigasjon();
 
     expect(
@@ -321,6 +336,7 @@ describe("GlobalNavigasjon", () => {
   });
 
   it('viser ikke en rød prikk for menypunkt "Friskmelding til arbeidsformidling" når ferdigbehandlet', () => {
+    mockUnleashWithFeatureToggles();
     const ferdigbehandletVedtak: VedtakResponseDTO = {
       ...defaultVedtak,
       ferdigbehandletAt: new Date(),
@@ -329,10 +345,6 @@ describe("GlobalNavigasjon", () => {
     queryClient.setQueryData(vedtakQueryKeys.vedtak(fnr), () => [
       ferdigbehandletVedtak,
     ]);
-    queryClient.setQueryData(
-      unleashQueryKeys.toggles(navEnhet.id, ""),
-      () => mockUnleashResponse
-    );
     renderGlobalNavigasjon();
 
     expect(
@@ -341,6 +353,7 @@ describe("GlobalNavigasjon", () => {
   });
 
   it('viser ikke en rød prikk for menypunkt "Friskmelding til arbeidsformidling" når bare ett av ferdigbehandletfeltene finnes', () => {
+    mockUnleashWithFeatureToggles();
     const ferdigbehandletVedtak: VedtakResponseDTO = {
       ...defaultVedtak,
       ferdigbehandletAt: new Date(),
@@ -348,10 +361,6 @@ describe("GlobalNavigasjon", () => {
     queryClient.setQueryData(vedtakQueryKeys.vedtak(fnr), () => [
       ferdigbehandletVedtak,
     ]);
-    queryClient.setQueryData(
-      unleashQueryKeys.toggles(navEnhet.id, ""),
-      () => mockUnleashResponse
-    );
     renderGlobalNavigasjon();
 
     expect(
@@ -360,11 +369,8 @@ describe("GlobalNavigasjon", () => {
   });
 
   it('viser ikke en rød prikk for menypunkt "Friskmelding til arbeidsformidling" når ingen vedtak', () => {
+    mockUnleashWithFeatureToggles();
     queryClient.setQueryData(vedtakQueryKeys.vedtak(fnr), () => []);
-    queryClient.setQueryData(
-      unleashQueryKeys.toggles(navEnhet.id, ""),
-      () => mockUnleashResponse
-    );
     renderGlobalNavigasjon();
 
     expect(
@@ -373,13 +379,10 @@ describe("GlobalNavigasjon", () => {
   });
 
   it('viser en rød prikk for menypunkt "Manglende Medvirkning" når forhåndsvarselet er utgått', () => {
+    mockUnleashWithFeatureToggles();
     queryClient.setQueryData(
       manglendeMedvirkningQueryKeys.manglendeMedvirkning(fnr),
       () => [defaultForhandsvarselVurderingAfterDeadline]
-    );
-    queryClient.setQueryData(
-      unleashQueryKeys.toggles(navEnhet.id, ""),
-      () => mockUnleashResponse
     );
     renderGlobalNavigasjon();
 
@@ -388,13 +391,10 @@ describe("GlobalNavigasjon", () => {
   });
 
   it('viser ikke en rød prikk for menypunkt "Manglende Medvirkning" når forhåndsvarselet ikke er utgått', () => {
+    mockUnleashWithFeatureToggles();
     queryClient.setQueryData(
       manglendeMedvirkningQueryKeys.manglendeMedvirkning(fnr),
       () => [defaultForhandsvarselVurdering]
-    );
-    queryClient.setQueryData(
-      unleashQueryKeys.toggles(navEnhet.id, ""),
-      () => mockUnleashResponse
     );
     renderGlobalNavigasjon();
 

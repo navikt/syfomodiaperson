@@ -17,8 +17,20 @@ export interface SenOppfolgingKandidatResponseDTO {
   uuid: string;
   personident: string;
   createdAt: Date;
+  varselAt: Date | undefined;
+  svar: SvarResponseDTO | undefined;
   status: SenOppfolgingStatus;
   vurderinger: SenOppfolgingVurderingResponseDTO[];
+}
+
+export interface SvarResponseDTO {
+  svarAt: Date;
+  onskerOppfolging: OnskerOppfolging;
+}
+
+export enum OnskerOppfolging {
+  JA = "JA",
+  NEI = "NEI",
 }
 
 export interface SenOppfolgingVurderingResponseDTO {

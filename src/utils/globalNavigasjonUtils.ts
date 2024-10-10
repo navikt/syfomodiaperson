@@ -119,11 +119,15 @@ const getNumberOfArbeidsuforhetOppgaver = (
 };
 
 function getNumberOfActiveSenOppfolgingOppgaver(
-  senOppfolgingKandidat: SenOppfolgingKandidatResponseDTO[]
+  senOppfolgingKandidatResponseDTO: SenOppfolgingKandidatResponseDTO[]
 ) {
-  return senOppfolgingKandidat[0]?.status === SenOppfolgingStatus.KANDIDAT
-    ? 1
-    : 0;
+  const senOppfolgingKandidat: SenOppfolgingKandidatResponseDTO | undefined =
+    senOppfolgingKandidatResponseDTO[0];
+  const isActiveSenOppfolgingOppgave =
+    senOppfolgingKandidat?.status === SenOppfolgingStatus.KANDIDAT &&
+    !!senOppfolgingKandidat.svar;
+
+  return isActiveSenOppfolgingOppgave ? 1 : 0;
 }
 
 function getNumberOfFriskmeldingTilArbeidsformidlingOppgaver(
