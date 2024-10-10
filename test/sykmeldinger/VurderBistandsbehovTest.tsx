@@ -55,8 +55,8 @@ describe("VurderBistandsbehov", () => {
       })
     ).to.exist;
     expect(
-      screen.getByRole("heading", {
-        name: "Vurder bistandsbehovet eller forslag til tiltak fra behandler:",
+      screen.getByRole("button", {
+        name: behandlePersonoppgaveKnappText,
       })
     ).to.exist;
     expect(
