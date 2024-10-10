@@ -1,5 +1,6 @@
 import { ISMEROPPFOLGING_ROOT } from "@/apiConstants";
 import {
+  OnskerOppfolging,
   SenOppfolgingKandidatResponseDTO,
   SenOppfolgingStatus,
   SenOppfolgingVurderingRequestDTO,
@@ -46,6 +47,11 @@ export const senOppfolgingKandidatMock: SenOppfolgingKandidatResponseDTO = {
   createdAt: new Date(),
   personident: ARBEIDSTAKER_DEFAULT.personIdent,
   status: SenOppfolgingStatus.KANDIDAT,
+  varselAt: new Date(),
+  svar: {
+    svarAt: new Date(),
+    onskerOppfolging: OnskerOppfolging.JA,
+  },
   vurderinger: [],
 };
 
