@@ -4,8 +4,8 @@ import { VurderAktivitetskrav } from "@/sider/aktivitetskrav/vurdering/VurderAkt
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { AktivitetskravHistorikk } from "@/sider/aktivitetskrav/historikk/AktivitetskravHistorikk";
 import { StartNyVurdering } from "./vurdering/StartNyVurdering";
-import { AktivitetskravAlertstripe } from "@/sider/aktivitetskrav/AktivitetskravAlertstripe";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
+import { Alert } from "@navikt/ds-react";
 
 const texts = {
   noTilfelle:
@@ -26,9 +26,14 @@ export const AktivitetskravSide = () => {
   return (
     <div className="w-full">
       {!hasActiveOppfolgingstilfelle && (
-        <AktivitetskravAlertstripe variant="warning" size="small">
+        <Alert
+          contentMaxWidth={false}
+          variant="warning"
+          size="small"
+          className="mb-4"
+        >
           {texts.noTilfelle}
-        </AktivitetskravAlertstripe>
+        </Alert>
       )}
       {showStartNyVurdering ? (
         <StartNyVurdering aktivitetskrav={aktivitetskrav} />
