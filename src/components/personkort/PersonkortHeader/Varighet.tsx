@@ -3,7 +3,7 @@ import {
   useCurrentVarighetOppfolgingstilfelle,
   useStartOfLatestOppfolgingstilfelle,
 } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { SyketilfelleSummaryElement } from "@/components/personkort/PersonkortHeader/SyketilfelleSummary";
+import { SyketilfelleSummaryElement } from "@/components/personkort/PersonkortHeader/SyketilfelleSummaryElement";
 
 const texts = {
   varighet: "Varighet: ",
