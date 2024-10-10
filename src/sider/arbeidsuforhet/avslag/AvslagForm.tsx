@@ -48,12 +48,16 @@ const texts = {
 
 const begrunnelseMaxLength = 5000;
 
+export interface Props {
+  varselSvarfrist: Date;
+}
+
 export interface ArbeidsuforhetAvslagSkjemaValues {
   begrunnelse: string;
   fom: Date;
 }
 
-export const AvslagForm = () => {
+export function AvslagForm({ varselSvarfrist }: Props) {
   const sendVurdering = useSendVurderingArbeidsuforhet();
   const { getAvslagDocument } = useArbeidsuforhetVurderingDocument();
   const { setNotification } = useNotification();
@@ -91,7 +95,7 @@ export const AvslagForm = () => {
           <Heading level="2" size="medium">
             {texts.title}
           </Heading>
-          <AvslagDatePicker />
+          <AvslagDatePicker varselSvarfrist={varselSvarfrist} />
           <BodyShort>{texts.info1}</BodyShort>
           <BodyShort>{texts.info2}</BodyShort>
           <Textarea
@@ -139,4 +143,4 @@ export const AvslagForm = () => {
       </FormProvider>
     </Box>
   );
-};
+}

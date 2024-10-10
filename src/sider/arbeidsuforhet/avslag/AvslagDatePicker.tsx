@@ -8,7 +8,11 @@ const texts = {
   missingDate: "Vennligst angi dato",
 };
 
-export const AvslagDatePicker = () => {
+interface Props {
+  varselSvarfrist: Date;
+}
+
+export function AvslagDatePicker({ varselSvarfrist }: Props) {
   const { field, fieldState } = useController<
     ArbeidsuforhetAvslagSkjemaValues,
     "fom"
@@ -19,6 +23,7 @@ export const AvslagDatePicker = () => {
     },
   });
   const { datepickerProps, inputProps } = useDatepicker({
+    fromDate: varselSvarfrist,
     onDateChange: (date: Date | undefined) => {
       field.onChange(date);
     },
@@ -34,4 +39,4 @@ export const AvslagDatePicker = () => {
       />
     </DatePicker>
   );
-};
+}
