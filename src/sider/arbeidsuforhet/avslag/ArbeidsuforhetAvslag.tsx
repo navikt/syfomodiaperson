@@ -4,14 +4,14 @@ import { Navigate } from "react-router-dom";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { AvslagForm } from "@/sider/arbeidsuforhet/avslag/AvslagForm";
 
-export const ArbeidsuforhetAvslag = (): ReactElement => {
+export function ArbeidsuforhetAvslag(): ReactElement {
   const { data } = useArbeidsuforhetVurderingQuery();
   const sisteVurdering = data[0];
-  const isForhandsvarselExpired = sisteVurdering?.varsel?.isExpired;
+  const isForhandsvarselExpired = sisteVurdering.varsel?.isExpired;
 
-  return !isForhandsvarselExpired ? (
-    <Navigate to={arbeidsuforhetPath} />
+  return sisteVurdering.varsel && isForhandsvarselExpired ? (
+    <AvslagForm varselSvarfrist={sisteVurdering.varsel.svarfrist} />
   ) : (
-    <AvslagForm />
+    <Navigate to={arbeidsuforhetPath} />
   );
-};
+}
