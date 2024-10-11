@@ -53,19 +53,19 @@ const VurderBistandsbehov = ({ oppgave }: VurderBistandsbehovProps) => {
         </HelpText>
       </div>
       <blockquote>
-        <BodyShort>
-          {tiltakNAV
-            ? `Felt 7.2 (Forslag til tiltak i regi fra NAV): ${tiltakNAV}`
-            : ""}
-        </BodyShort>
-        <BodyShort>
-          {tiltakAndre
-            ? `Felt 7.3 (Andre innspill til NAV): ${tiltakAndre}`
-            : ""}
-        </BodyShort>
-        <BodyShort>
-          {bistandsbehov ? `Felt 8.2 (Melding til NAV): ${bistandsbehov}` : ""}
-        </BodyShort>
+        {tiltakNAV && (
+          <BodyShort>
+            Felt 7.2 (Forslag til tiltak i regi fra NAV): {tiltakNAV}
+          </BodyShort>
+        )}
+        {tiltakAndre && (
+          <BodyShort>
+            Felt 7.3 (Andre innspill til NAV): {tiltakAndre}
+          </BodyShort>
+        )}
+        {bistandsbehov && (
+          <BodyShort>Felt 8.2 (Melding til NAV): {bistandsbehov}</BodyShort>
+        )}
       </blockquote>
       <div className={"flex flex-row justify-between"}>
         <Link as={RouterLink} to={`/sykefravaer/sykmeldinger/${sykmelding.id}`}>
