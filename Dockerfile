@@ -10,7 +10,7 @@ COPY dist ./dist
 RUN npm install -g typescript @types/node
 RUN tsc --build
 
-FROM gcr.io/distroless/nodejs18-debian11
+FROM gcr.io/distroless/nodejs18-debian12
 WORKDIR /syfomodiaperson
 
 COPY --from=builder /syfomodiaperson/package.json ./
