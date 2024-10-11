@@ -5,12 +5,14 @@ import { KandidatSvar } from "@/sider/senoppfolging/KandidatSvar";
 import { VurdertKandidat } from "@/sider/senoppfolging/VurdertKandidat";
 import * as Tredelt from "@/sider/TredeltSide";
 import {
+  SenOppfolgingKandidatResponseDTO,
   SenOppfolgingStatus,
   SenOppfolgingVurderingType,
 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { VeiledningRutine } from "@/sider/senoppfolging/VeiledningRutine";
 import { NewVurderingForm } from "@/sider/senoppfolging/NewVurderingForm";
 import OvingssideLink from "@/sider/senoppfolging/OvingssideLink";
+import { KandidatVarsel } from "@/sider/senoppfolging/KandidatVarsel";
 
 const texts = {
   ikkeVarslet: {
@@ -25,22 +27,24 @@ const texts = {
 
 export default function SenOppfolging(): ReactElement {
   const { data: kandidater } = useSenOppfolgingKandidatQuery();
-  const kandidat = kandidater[0];
+  const kandidat: SenOppfolgingKandidatResponseDTO | undefined = kandidater[0];
   const svar = kandidat?.svar;
+  const varselAt = kandidat?.varselAt;
   const isFerdigbehandlet =
     kandidat?.status === SenOppfolgingStatus.FERDIGBEHANDLET;
   const ferdigbehandletVurdering = kandidat?.vurderinger.find(
     (vurdering) => vurdering.type === SenOppfolgingVurderingType.FERDIGBEHANDLET
   );
 
-  return svar ? (
+  return kandidat ? (
     <Tredelt.Container>
       <Tredelt.FirstColumn>
-        <KandidatSvar svar={svar} />
+        {svar && <KandidatSvar svar={svar} />}
+        {!svar && varselAt && <KandidatVarsel varselAt={varselAt} />}
         {isFerdigbehandlet && ferdigbehandletVurdering ? (
           <VurdertKandidat vurdering={ferdigbehandletVurdering} />
         ) : (
-          <NewVurderingForm kandidat={kandidat} />
+          svar && <NewVurderingForm kandidat={kandidat} />
         )}
       </Tredelt.FirstColumn>
       <Tredelt.SecondColumn>
