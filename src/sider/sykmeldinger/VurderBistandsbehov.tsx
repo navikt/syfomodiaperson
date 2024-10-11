@@ -1,7 +1,14 @@
 import React from "react";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
-import { Button, Heading, HelpText, Link, Panel } from "@navikt/ds-react";
+import {
+  BodyShort,
+  Button,
+  Heading,
+  HelpText,
+  Link,
+  Panel,
+} from "@navikt/ds-react";
 import {
   PersonOppgave,
   PersonOppgaveType,
@@ -12,8 +19,8 @@ import { getAllUbehandledePersonOppgaver } from "@/utils/personOppgaveUtils";
 import { Link as RouterLink } from "react-router-dom";
 
 const texts = {
-  header: "Vurder bistandsbehovet fra behandler:",
-  helptext: "Informasjonen er hentet fra felt 8 i sykmeldingen.",
+  header: "Vurder bistandsbehovet eller forslag til tiltak fra behandler:",
+  helptext: "Informasjon fra felter i sykmeldingen fra behandler.",
   link: "Gå til sykmeldingen",
   behandleOppgaveText: "Jeg har vurdert behovet, fjern oppgaven.",
 };
@@ -29,6 +36,9 @@ const VurderBistandsbehov = ({ oppgave }: VurderBistandsbehovProps) => {
   const sykmelding = sykmeldinger.find(
     (sykmelding) => sykmelding.id === oppgave.referanseUuid
   );
+  const tiltakNAV = sykmelding?.arbeidsevne.tiltakNAV;
+  const tiltakAndre = sykmelding?.arbeidsevne.tiltakAndre;
+  const bistandsbehov = sykmelding?.meldingTilNav.navBoerTaTakISakenBegrunnelse;
   return !!sykmelding ? (
     <Panel className={"mb-4"}>
       <div className={"flex flex-row justify-between"}>
@@ -36,14 +46,26 @@ const VurderBistandsbehov = ({ oppgave }: VurderBistandsbehovProps) => {
           {texts.header}
         </Heading>
         <HelpText
-          title="Informasjon fra felt 8 i sykmeldingen"
+          title="Informasjon fra felter i sykmeldingen fra behandler"
           placement="left"
         >
           {texts.helptext}
         </HelpText>
       </div>
       <blockquote>
-        {sykmelding?.meldingTilNav.navBoerTaTakISakenBegrunnelse}
+        {tiltakNAV && (
+          <BodyShort>
+            Felt 7.2 (Forslag til tiltak i regi fra NAV): {tiltakNAV}
+          </BodyShort>
+        )}
+        {tiltakAndre && (
+          <BodyShort>
+            Felt 7.3 (Andre innspill til NAV): {tiltakAndre}
+          </BodyShort>
+        )}
+        {bistandsbehov && (
+          <BodyShort>Felt 8.2 (Melding til NAV): {bistandsbehov}</BodyShort>
+        )}
       </blockquote>
       <div className={"flex flex-row justify-between"}>
         <Link as={RouterLink} to={`/sykefravaer/sykmeldinger/${sykmelding.id}`}>
