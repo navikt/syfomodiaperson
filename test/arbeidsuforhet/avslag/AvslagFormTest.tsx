@@ -1,7 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 import React from "react";
 import { screen, waitFor, within } from "@testing-library/react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
   VurderingRequestDTO,
   VurderingType,
@@ -13,13 +13,14 @@ import { changeTextInput, clickButton, getTextInput } from "../../testUtils";
 import { getAvslagVurderingDocument } from "../documents";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
 import { renderArbeidsuforhetSide } from "../arbeidsuforhetTestUtils";
+import dayjs from "dayjs";
 
 let queryClient: QueryClient;
 
 const renderAvslagForm = () => {
   renderArbeidsuforhetSide(
     queryClient,
-    <AvslagForm />,
+    <AvslagForm varselSvarfrist={new Date(Date.now())} />,
     arbeidsuforhetOppfyltPath,
     [arbeidsuforhetOppfyltPath]
   );
@@ -72,13 +73,12 @@ describe("AvslagForm", () => {
       renderAvslagForm();
       const begrunnelse = "Dette er en begrunnelse!";
       const begrunnelseLabel = "Innstilling om avslag (obligatorisk)";
-      const dateAsString = "2024-01-01";
-      const date = new Date(dateAsString);
+      const fristDate = new Date(Date.now());
       const dateLabel = "Avslaget gjelder fra";
       const dateInput = getTextInput(dateLabel);
       const begrunnelseInput = getTextInput(begrunnelseLabel);
 
-      changeTextInput(dateInput, toDatePrettyPrint(date) as string);
+      changeTextInput(dateInput, toDatePrettyPrint(fristDate) as string);
       changeTextInput(begrunnelseInput, begrunnelse);
       await clickButton("Gi avslag");
 
@@ -89,8 +89,8 @@ describe("AvslagForm", () => {
         const expectedVurdering: VurderingRequestDTO = {
           type: VurderingType.AVSLAG,
           begrunnelse: begrunnelse,
-          document: getAvslagVurderingDocument(begrunnelse, date),
-          gjelderFom: dateAsString,
+          document: getAvslagVurderingDocument(begrunnelse, fristDate),
+          gjelderFom: dayjs(fristDate).format("YYYY-MM-DD"),
         };
         expect(useSendVurderingArbeidsuforhet.state.variables).to.deep.equal(
           expectedVurdering
@@ -102,13 +102,12 @@ describe("AvslagForm", () => {
       renderAvslagForm();
       const begrunnelse = "Dette er en begrunnelse!";
       const begrunnelseLabel = "Innstilling om avslag (obligatorisk)";
-      const dateAsString = "2024-01-01";
-      const date = new Date(dateAsString);
+      const fristDate = new Date(Date.now());
       const dateLabel = "Avslaget gjelder fra";
       const dateInput = getTextInput(dateLabel);
       const begrunnelseInput = getTextInput(begrunnelseLabel);
 
-      changeTextInput(dateInput, toDatePrettyPrint(date) as string);
+      changeTextInput(dateInput, toDatePrettyPrint(fristDate) as string);
       changeTextInput(begrunnelseInput, begrunnelse);
 
       await clickButton("Forhåndsvisning");
@@ -122,7 +121,7 @@ describe("AvslagForm", () => {
           hidden: true,
         })
       ).to.exist;
-      getAvslagVurderingDocument(begrunnelse, date)
+      getAvslagVurderingDocument(begrunnelse, fristDate)
         .flatMap((documentComponent) => documentComponent.texts)
         .forEach((text) => {
           expect(within(forhandsvisningVurdering).getByText(text)).to.exist;
