@@ -1,6 +1,5 @@
 import React, { ReactElement } from "react";
 import { BodyShort, Box } from "@navikt/ds-react";
-import { useSenOppfolgingSvarQuery } from "@/data/senoppfolging/useSenOppfolgingSvarQuery";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { KandidatSvar } from "@/sider/senoppfolging/KandidatSvar";
 import { VurdertKandidat } from "@/sider/senoppfolging/VurdertKandidat";
@@ -25,16 +24,16 @@ const texts = {
 };
 
 export default function SenOppfolging(): ReactElement {
-  const { data: svar } = useSenOppfolgingSvarQuery();
   const { data: kandidater } = useSenOppfolgingKandidatQuery();
   const kandidat = kandidater[0];
+  const svar = kandidat?.svar;
   const isFerdigbehandlet =
     kandidat?.status === SenOppfolgingStatus.FERDIGBEHANDLET;
   const ferdigbehandletVurdering = kandidat?.vurderinger.find(
     (vurdering) => vurdering.type === SenOppfolgingVurderingType.FERDIGBEHANDLET
   );
 
-  return svar && kandidat ? (
+  return svar ? (
     <Tredelt.Container>
       <Tredelt.FirstColumn>
         <KandidatSvar svar={svar} />

@@ -88,6 +88,18 @@ describe("Sen oppfolging", () => {
     });
   });
 
+  it("Viser ingen knapp eller tekst for vurdering når bruker er kandidat til sen oppfølging uten å ha svart", () => {
+    mockSenOppfolgingKandidat({
+      ...senOppfolgingKandidatMock,
+      svar: undefined,
+    });
+    renderSenOppfolging();
+
+    expect(screen.queryByRole("button", { name: vurderingButtonText })).to.not
+      .exist;
+    expect(screen.queryByText(/Vurdert av/)).to.not.exist;
+  });
+
   it("Viser ingen knapp eller tekst for vurdering når bruker ikke er kandidat til sen oppfølging", () => {
     mockSenOppfolgingSvar();
     renderSenOppfolging();

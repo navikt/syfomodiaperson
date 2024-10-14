@@ -1,18 +1,20 @@
-import { SenOppfolgingFormResponseDTOV2 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
-import { BodyShort, Box, Heading, Label } from "@navikt/ds-react";
+import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import React from "react";
+import { SvarResponseDTO } from "@/data/senoppfolging/senOppfolgingTypes";
+import { KandidatFormResponse } from "@/sider/senoppfolging/KandidatFormResponse";
 
 const texts = {
   heading: "Sykmeldtes svar",
 };
 
 interface KandidatSvarProps {
-  svar: SenOppfolgingFormResponseDTOV2;
+  svar: SvarResponseDTO;
 }
 
 export function KandidatSvar({ svar }: KandidatSvarProps) {
-  const svardato = svar && tilLesbarDatoMedArUtenManedNavn(svar.createdAt);
+  const svardato = svar && tilLesbarDatoMedArUtenManedNavn(svar.svarAt);
+
   return (
     <Box
       background="surface-default"
@@ -21,13 +23,7 @@ export function KandidatSvar({ svar }: KandidatSvarProps) {
     >
       <Heading size="medium">{texts.heading}</Heading>
       <BodyShort size="small">Den sykmeldte svarte {svardato}.</BodyShort>
-      {svar &&
-        svar?.questionResponses.map((response, index) => (
-          <div key={index}>
-            <Label size="small">{response.questionText}</Label>
-            <BodyShort size="small">{response.answerText}</BodyShort>
-          </div>
-        ))}
+      <KandidatFormResponse />
     </Box>
   );
 }

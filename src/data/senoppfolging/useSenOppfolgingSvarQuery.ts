@@ -13,7 +13,7 @@ export const useSenOppfolgingSvarQuery = () => {
   const fnr = useValgtPersonident();
   const path = `${MEROPPFOLGING_BACKEND_ROOT}/senoppfolging/formresponse`;
   const getSenOppfolgingSvar = () =>
-    get<SenOppfolgingFormResponseDTOV2>(path, fnr);
+    get<SenOppfolgingFormResponseDTOV2 | undefined>(path, fnr);
 
   return useQuery({
     queryKey: senOppfolgingSvarQueryKeys.senOppfolgingSvar(fnr),
