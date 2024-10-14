@@ -1,46 +1,12 @@
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
-import {
-  Alert,
-  BodyShort,
-  Box,
-  Heading,
-  Label,
-  Loader,
-} from "@navikt/ds-react";
+import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import React from "react";
-import { useSenOppfolgingSvarQuery } from "@/data/senoppfolging/useSenOppfolgingSvarQuery";
 import { SvarResponseDTO } from "@/data/senoppfolging/senOppfolgingTypes";
+import { KandidatFormResponse } from "@/sider/senoppfolging/KandidatFormResponse";
 
 const texts = {
   heading: "Sykmeldtes svar",
-  formResponse: {
-    pending: "Henter spørsmål og svar...",
-    error:
-      "Noe gikk galt ved henting av spørsmål og svar. Vennligst prøv igjen senere.",
-  },
 };
-
-function KandidatFormResponse() {
-  const { data, isPending, isError } = useSenOppfolgingSvarQuery();
-
-  if (isPending) {
-    return <Loader size="xlarge" title={texts.formResponse.pending} />;
-  }
-  if (isError || !data) {
-    return (
-      <Alert size="small" inline variant="error">
-        {texts.formResponse.error}
-      </Alert>
-    );
-  }
-
-  return data.questionResponses.map((response, index) => (
-    <div key={index}>
-      <Label size="small">{response.questionText}</Label>
-      <BodyShort size="small">{response.answerText}</BodyShort>
-    </div>
-  ));
-}
 
 interface KandidatSvarProps {
   svar: SvarResponseDTO;
@@ -48,6 +14,7 @@ interface KandidatSvarProps {
 
 export function KandidatSvar({ svar }: KandidatSvarProps) {
   const svardato = svar && tilLesbarDatoMedArUtenManedNavn(svar.svarAt);
+
   return (
     <Box
       background="surface-default"
