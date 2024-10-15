@@ -319,6 +319,7 @@ describe("GlobalNavigasjon", () => {
       () => [
         {
           ...senOppfolgingKandidatMock,
+          varselAt: new Date(),
           svar: undefined,
         },
       ]

@@ -12,7 +12,7 @@ import {
 import { VeiledningRutine } from "@/sider/senoppfolging/VeiledningRutine";
 import { NewVurderingForm } from "@/sider/senoppfolging/NewVurderingForm";
 import OvingssideLink from "@/sider/senoppfolging/OvingssideLink";
-import { KandidatVarsel } from "@/sider/senoppfolging/KandidatVarsel";
+import { KandidatIkkeSvart } from "@/sider/senoppfolging/KandidatIkkeSvart";
 
 const texts = {
   ikkeVarslet: {
@@ -40,7 +40,7 @@ export default function SenOppfolging(): ReactElement {
     <Tredelt.Container>
       <Tredelt.FirstColumn>
         {svar && <KandidatSvar svar={svar} />}
-        {!svar && varselAt && <KandidatVarsel varselAt={varselAt} />}
+        {!svar && varselAt && <KandidatIkkeSvart varselAt={varselAt} />}
         {isFerdigbehandlet && ferdigbehandletVurdering ? (
           <VurdertKandidat vurdering={ferdigbehandletVurdering} />
         ) : (

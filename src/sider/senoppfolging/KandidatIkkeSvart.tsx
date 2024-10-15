@@ -10,7 +10,7 @@ interface Props {
   varselAt: Date;
 }
 
-export function KandidatVarsel({ varselAt }: Props) {
+export function KandidatIkkeSvart({ varselAt }: Props) {
   return (
     <Box
       background="surface-default"
