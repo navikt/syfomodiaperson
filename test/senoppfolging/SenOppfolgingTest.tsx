@@ -77,6 +77,17 @@ describe("Sen oppfolging", () => {
     });
   });
 
+  it("Viser infotekst om varsel når bruker har fått varsel og ikke svart", () => {
+    mockSenOppfolgingKandidat({
+      ...senOppfolgingKandidatMock,
+      svar: undefined,
+    });
+    renderSenOppfolging();
+
+    expect(screen.getByText("Den sykmeldte har ikke svart")).to.exist;
+    expect(screen.getByText(/Den sykmeldte fikk varsel/)).to.exist;
+  });
+
   it("Viser side for oppfølging i sen fase med svar fra bruker", () => {
     mockSenOppfolgingSvar();
     mockSenOppfolgingKandidat(senOppfolgingKandidatMock);

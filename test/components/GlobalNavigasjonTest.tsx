@@ -27,7 +27,7 @@ import {
   createForhandsvarsel,
   createVurdering,
 } from "../arbeidsuforhet/arbeidsuforhetTestData";
-import { addWeeks } from "@/utils/datoUtils";
+import { addDays, addWeeks } from "@/utils/datoUtils";
 import { VurderingType } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
 import { senOppfolgingKandidatQueryKeys } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks";
@@ -292,6 +292,42 @@ describe("GlobalNavigasjon", () => {
 
     expect(screen.getByRole("link", { name: "Snart slutt på sykepengene 1" }))
       .to.exist;
+  });
+
+  it('viser en rød prikk for menypunkt "Snart slutt på sykepengene" når kandidat varslet for minst ti dager siden uten svar', () => {
+    mockUnleashWithFeatureToggles();
+    queryClient.setQueryData(
+      senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(fnr),
+      () => [
+        {
+          ...senOppfolgingKandidatMock,
+          varselAt: addDays(new Date(), -10),
+          svar: undefined,
+        },
+      ]
+    );
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("link", { name: "Snart slutt på sykepengene 1" }))
+      .to.exist;
+  });
+
+  it('viser ikke en rød prikk for menypunkt "Snart slutt på sykepengene" når kandidat varslet i dag uten svar', () => {
+    mockUnleashWithFeatureToggles();
+    queryClient.setQueryData(
+      senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(fnr),
+      () => [
+        {
+          ...senOppfolgingKandidatMock,
+          varselAt: new Date(),
+          svar: undefined,
+        },
+      ]
+    );
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("link", { name: "Snart slutt på sykepengene" })).to
+      .exist;
   });
 
   it('viser ikke en rød prikk for menypunkt "Snart slutt på sykepengene" når kandidat er ferdigbehandlet', () => {
