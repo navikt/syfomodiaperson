@@ -1,9 +1,9 @@
 import { SenOppfolgingKandidatResponseDTO } from "@/data/senoppfolging/senOppfolgingTypes";
 import { addDays, dagerMellomDatoerUtenAbs } from "@/utils/datoUtils";
 
-export const isVarselUbesvart = (
+export function isVarselUbesvart(
   kandidat: SenOppfolgingKandidatResponseDTO
-): boolean => {
+): boolean {
   const { svar, varselAt } = kandidat;
   if (!svar && !!varselAt) {
     return (
@@ -12,6 +12,8 @@ export const isVarselUbesvart = (
   } else {
     return false;
   }
-};
+}
 
-export const getVarselSvarfrist = (varselAt: Date) => addDays(varselAt, 10);
+export function getVarselSvarfrist(varselAt: Date) {
+  return addDays(varselAt, 10);
+}
