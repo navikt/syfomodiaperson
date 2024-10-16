@@ -173,9 +173,7 @@ export const GlobalNavigasjon = ({
           (!toggles.isFrisktilarbeidEnabled &&
             menypunkt === Menypunkter.FRISKTILARBEID) ||
           (!toggles.isOppfolgingISenFaseEnabled &&
-            menypunkt === Menypunkter.SENOPPFOLGING) ||
-          (!toggles.isManglendeMedvirkningEnabled &&
-            menypunkt === Menypunkter.MANGLENDE_MEDVIRKNING)
+            menypunkt === Menypunkter.SENOPPFOLGING)
         ) {
           return null;
         }

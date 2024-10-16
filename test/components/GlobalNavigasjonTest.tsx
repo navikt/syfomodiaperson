@@ -102,6 +102,7 @@ describe("GlobalNavigasjon", () => {
       "Oppfølgingsplaner",
       "Dialogmøter",
       "Arbeidsuførhet",
+      "Manglende medvirkning",
       "Vedtak",
     ];
 
