@@ -1,6 +1,6 @@
 import unleashClient = require("unleash-client");
-import { Strategy } from "unleash-client";
 import Config = require("./config");
+import { Strategy } from "unleash-client";
 
 const { initialize } = unleashClient;
 
@@ -45,10 +45,6 @@ export const getToggles = (veilederId, enhetId) => {
     isFrisktilarbeidEnabled: unleash.isEnabled("isFrisktilarbeid", context),
     isOppfolgingISenFaseEnabled: unleash.isEnabled(
       "isOppfolgingISenFaseEnabled",
-      context
-    ),
-    isManglendeMedvirkningEnabled: unleash.isEnabled(
-      "isManglendeMedvirkningEnabled",
       context
     ),
     isTildelVeilederEnabled: unleash.isEnabled(
