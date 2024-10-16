@@ -17,7 +17,12 @@ import {
   ferdigbehandletKandidatMock,
   senOppfolgingKandidatMock,
 } from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
-import { toDatePrettyPrint } from "@/utils/datoUtils";
+import {
+  addDays,
+  addWeeks,
+  tilLesbarDatoMedArUtenManedNavn,
+  toDatePrettyPrint,
+} from "@/utils/datoUtils";
 import {
   SenOppfolgingKandidatResponseDTO,
   SenOppfolgingVurderingType,
@@ -78,14 +83,27 @@ describe("Sen oppfolging", () => {
   });
 
   it("Viser infotekst om varsel når bruker har fått varsel og ikke svart", () => {
+    const varselDato = addWeeks(new Date(), -1);
+    const varselSvarFrist = addDays(varselDato, 10);
     mockSenOppfolgingKandidat({
       ...senOppfolgingKandidatMock,
       svar: undefined,
+      varselAt: varselDato,
     });
     renderSenOppfolging();
 
     expect(screen.getByText("Den sykmeldte har ikke svart")).to.exist;
     expect(screen.getByText(/Den sykmeldte fikk varsel/)).to.exist;
+    expect(
+      screen.getByText(tilLesbarDatoMedArUtenManedNavn(varselDato), {
+        exact: false,
+      })
+    );
+    expect(
+      screen.getByText(tilLesbarDatoMedArUtenManedNavn(varselSvarFrist), {
+        exact: false,
+      })
+    );
   });
 
   it("Viser side for oppfølging i sen fase med svar fra bruker", () => {

@@ -309,7 +309,3 @@ export const isExpiredForhandsvarsel = (
 
   return false;
 };
-
-export const isMinstTiDagerSiden = (dato: Date | undefined): boolean => {
-  return !!dato && dagerMellomDatoer(dato, new Date()) >= 10;
-};
