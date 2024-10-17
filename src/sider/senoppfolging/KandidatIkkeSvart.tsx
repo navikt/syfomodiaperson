@@ -1,6 +1,7 @@
 import React from "react";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { getVarselSvarfrist } from "@/utils/senOppfolgingUtils";
 
 const texts = {
   ikkeSvartHeading: "Den sykmeldte har ikke svart",
@@ -11,6 +12,8 @@ interface Props {
 }
 
 export function KandidatIkkeSvart({ varselAt }: Props) {
+  const svarFrist = getVarselSvarfrist(varselAt);
+
   return (
     <Box
       background="surface-default"
@@ -20,7 +23,10 @@ export function KandidatIkkeSvart({ varselAt }: Props) {
       <Heading size="medium">{texts.ikkeSvartHeading}</Heading>
       <BodyShort size="small">{`Den sykmeldte fikk varsel ${tilLesbarDatoMedArUtenManedNavn(
         varselAt
-      )}`}</BodyShort>
+      )} om at det er snart slutt på sykepengene og kan nå svare på spørsmål rundt sin situasjon på innloggede sider.`}</BodyShort>
+      <BodyShort size="small">{`Når spørsmålene er besvart eller hvis den sykmeldte ikke svarer innen ${tilLesbarDatoMedArUtenManedNavn(
+        svarFrist
+      )}, vil du få en oppgave i oversikten om å vurdere videre oppfølging.`}</BodyShort>
     </Box>
   );
 }

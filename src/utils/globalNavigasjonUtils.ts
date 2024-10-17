@@ -27,10 +27,8 @@ import {
 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { VurderingResponseDTO as ManglendeMedvirkningVurderingResponseDTO } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
-import {
-  isExpiredForhandsvarsel,
-  isMinstTiDagerSiden,
-} from "@/utils/datoUtils";
+import { isExpiredForhandsvarsel } from "@/utils/datoUtils";
+import { isVarselUbesvart } from "@/utils/senOppfolgingUtils";
 
 const getNumberOfMoteOppgaver = (
   motebehov: MotebehovVeilederDTO[],
@@ -130,7 +128,7 @@ function getNumberOfActiveSenOppfolgingOppgaver(
     return 0;
   }
   const isActiveSenOppfolgingOppgave =
-    kandidat.svar || isMinstTiDagerSiden(kandidat.varselAt);
+    kandidat.svar || isVarselUbesvart(kandidat);
 
   return isActiveSenOppfolgingOppgave ? 1 : 0;
 }
