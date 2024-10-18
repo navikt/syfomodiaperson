@@ -5,7 +5,6 @@ import { InnkallingDialogmotePanel } from "./components/innkalling/InnkallingDia
 import SideLaster from "../../components/SideLaster";
 import { DialogmoteOnskePanel } from "./components/DialogmoteOnskePanel";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
-import { useOppfolgingsplanerQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { DialogmoteFerdigstilteReferatPanel } from "@/sider/dialogmoter/components/DialogmoteFerdigstilteReferatPanel";
@@ -24,7 +23,6 @@ const texts = {
 };
 
 export const Motelandingsside = () => {
-  const { isLoading: henterOppfolgingsplaner } = useOppfolgingsplanerQuery();
   const {
     isLoading: henterDialogmoter,
     isError: henterDialogmoterFeilet,
@@ -51,7 +49,6 @@ export const Motelandingsside = () => {
   const henter =
     henterDialogmoter ||
     henterDialogmoteunntak ||
-    henterOppfolgingsplaner ||
     henterMotebehov ||
     henterLedere;
   const hentingFeilet =

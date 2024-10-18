@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import Lenke from "nav-frontend-lenker";
 import { lpsPlanerWithActiveTilfelle } from "@/utils/oppfolgingsplanUtils";
 import {
   tilLesbarDatoMedArstall,
@@ -14,12 +13,15 @@ import {
   useOppfolgingsplanerQuery,
 } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
-import { Undertittel } from "nav-frontend-typografi";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import { Alert, Heading, Link, Loader } from "@navikt/ds-react";
 
 const texts = {
   header: "Oppfølgingsplan",
   ingenPlanerDelt: "Ingen planer er delt med NAV",
+  pending: "Henter oppfølgingsplaner...",
+  error:
+    "Noe gikk galt ved henting av oppfølgingsplaner. Vennligst prøv igjen senere.",
 };
 
 interface AktivePlanerProps {
@@ -45,14 +47,11 @@ const AktivPlanLenke = ({ aktivPlan }: AktivPlanLenkeProps) => {
   );
   return (
     <span>
-      <Lenke
-        className="lenke"
-        href={`/sykefravaer/oppfoelgingsplaner/${aktivPlan.id}`}
-      >
+      <Link href={`/sykefravaer/oppfoelgingsplaner/${aktivPlan.id}`}>
         {virksomhetsnavn && virksomhetsnavn.length > 0
           ? virksomhetsnavn.toLowerCase()
           : aktivPlan.virksomhet.virksomhetsnummer}
-      </Lenke>
+      </Link>
     </span>
   );
 };
@@ -119,11 +118,15 @@ const Oppfolgingsplaner = ({
   aktivePlaner,
   lpsPlaner,
 }: OppfolgingsplanerProps) => {
-  return (
+  const anyActivePlaner = aktivePlaner.length > 0 || lpsPlaner.length > 0;
+
+  return anyActivePlaner ? (
     <div>
       <AktivePlaner aktivePlaner={aktivePlaner} />
       <LpsPlaner lpsPlaner={lpsPlaner} />
     </div>
+  ) : (
+    <p>{texts.ingenPlanerDelt}</p>
   );
 };
 
@@ -134,27 +137,41 @@ interface Props {
 export const UtdragOppfolgingsplaner = ({
   selectedOppfolgingstilfelle,
 }: Props) => {
-  const { aktivePlaner } = useOppfolgingsplanerQuery();
-  const { data: oppfolgingsplanerLPS } = useOppfolgingsplanerLPSQuery();
+  const {
+    aktivePlaner,
+    isPending: henterOppfolgingsplaner,
+    isError: henterOppfolgingsplanerFeilet,
+  } = useOppfolgingsplanerQuery();
+  const {
+    data: oppfolgingsplanerLPS,
+    isPending: henterOppfolgingsplanerLPS,
+    isError: henterOppfolgingsplanerLPSFeilet,
+  } = useOppfolgingsplanerLPSQuery();
 
   const activeLpsPlaner = lpsPlanerWithActiveTilfelle(
     oppfolgingsplanerLPS,
     selectedOppfolgingstilfelle
   );
-
-  const anyActivePlaner =
-    aktivePlaner?.length > 0 || activeLpsPlaner.length > 0;
+  const showLoader = henterOppfolgingsplaner && henterOppfolgingsplanerLPS;
+  const showError =
+    henterOppfolgingsplanerFeilet && henterOppfolgingsplanerLPSFeilet;
 
   return (
     <div>
-      <Undertittel tag={"h3"}>{texts.header}</Undertittel>
-      {anyActivePlaner ? (
+      <Heading size="small" level="3">
+        {texts.header}
+      </Heading>
+      {showLoader ? (
+        <Loader size="large" title={texts.pending} />
+      ) : showError ? (
+        <Alert size="small" inline variant="error">
+          {texts.error}
+        </Alert>
+      ) : (
         <Oppfolgingsplaner
           aktivePlaner={aktivePlaner}
           lpsPlaner={activeLpsPlaner}
         />
-      ) : (
-        <p>{texts.ingenPlanerDelt}</p>
       )}
     </div>
   );
