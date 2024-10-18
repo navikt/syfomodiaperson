@@ -47,9 +47,5 @@ export const getToggles = (veilederId, enhetId) => {
       "isOppfolgingISenFaseEnabled",
       context
     ),
-    isTildelVeilederEnabled: unleash.isEnabled(
-      "isTildelVeilederEnabled",
-      context
-    ),
   };
 };

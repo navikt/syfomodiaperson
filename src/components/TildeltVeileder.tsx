@@ -13,7 +13,6 @@ import {
   useVeiledereForValgtEnhetQuery,
   useVeilederInfoQuery,
 } from "@/data/veilederinfo/veilederinfoQueryHooks";
-import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { useValgtEnhet } from "@/context/ValgtEnhetContext";
 import { useTildelVeileder } from "@/data/veilederbrukerknytning/useTildelVeileder";
 import { Veileder } from "@/data/veilederinfo/types/Veileder";
@@ -229,7 +228,6 @@ function ChangeTildeltVeileder() {
 }
 
 export function TildeltVeileder() {
-  const { toggles } = useFeatureToggles();
   const veilederBrukerKnytningQuery = useGetVeilederBrukerKnytning();
   const veilederIdent = veilederBrukerKnytningQuery.data?.tildeltVeilederident;
   return veilederBrukerKnytningQuery.isSuccess ? (
@@ -242,7 +240,7 @@ export function TildeltVeileder() {
           {texts.ufordelt}
         </Tag>
       )}
-      {toggles.isTildelVeilederEnabled && <ChangeTildeltVeileder />}
+      <ChangeTildeltVeileder />
     </div>
   ) : (
     <span />
