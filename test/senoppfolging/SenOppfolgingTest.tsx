@@ -117,7 +117,7 @@ describe("Sen oppfolging", () => {
     });
   });
 
-  it("Viser ingen knapp eller tekst for vurdering når bruker er kandidat til sen oppfølging uten å ha svart", () => {
+  it("Viser ingen knapp eller tekst for vurdering når bruker er kandidat til sen oppfølging uten å ha svart og varsel ikke utløpt", () => {
     mockSenOppfolgingKandidat({
       ...senOppfolgingKandidatMock,
       svar: undefined,
@@ -138,7 +138,21 @@ describe("Sen oppfolging", () => {
     expect(screen.queryByText(/Vurdert av/)).to.not.exist;
   });
 
-  it("Viser knapp for å fullføre vurdering når bruker er kandidat til sen oppfølging", () => {
+  it("Viser knapp for å fullføre vurdering når bruker er kandidat til sen oppfølging uten å ha svart og varsel utløpt", () => {
+    const varselDato = addDays(new Date(), -10);
+    mockSenOppfolgingKandidat({
+      ...senOppfolgingKandidatMock,
+      svar: undefined,
+      varselAt: varselDato,
+    });
+    renderSenOppfolging();
+
+    expect(screen.getByText(/Den sykmeldte har fått en påminnelse/)).to.exist;
+    expect(screen.getByText(/Du kan nå gjøre en vurdering/)).to.exist;
+    expect(screen.getByRole("button", { name: vurderingButtonText })).to.exist;
+  });
+
+  it("Viser knapp for å fullføre vurdering når bruker er kandidat til sen oppfølging med svar", () => {
     mockSenOppfolgingSvar();
     mockSenOppfolgingKandidat(senOppfolgingKandidatMock);
     renderSenOppfolging();
