@@ -1,6 +1,6 @@
 import React from "react";
 import { Accordion, BodyShort, Box, Heading } from "@navikt/ds-react";
-import { useArbeidsuforhetVurderingQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import {
   arsakTexts,
   typeTexts,
@@ -73,7 +73,7 @@ const VurderingHistorikkItem = ({ vurdering }: VurderingHistorikkItemProps) => {
 };
 
 export const VurderingHistorikk = () => {
-  const { data } = useArbeidsuforhetVurderingQuery();
+  const { data } = useGetArbeidsuforhetVurderingerQuery();
   const subheader =
     data.length > 0 ? texts.tidligereVurderinger : texts.noVurderinger;
 

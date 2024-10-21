@@ -15,7 +15,7 @@ import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQuer
 import { BodyShort } from "@navikt/ds-react";
 import { EventType, logEvent } from "@/utils/amplitude";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import { useArbeidsuforhetVurderingQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { useManglendeMedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
@@ -110,7 +110,8 @@ export const GlobalNavigasjon = ({
   const { data: oppfolgingsplanerLPS } = useOppfolgingsplanerLPSQuery();
   const { data: motebehov } = useMotebehovQuery();
   const { data: aktivitetskrav } = useAktivitetskravQuery();
-  const { data: arbeidsuforhetVurderinger } = useArbeidsuforhetVurderingQuery();
+  const { data: arbeidsuforhetVurderinger } =
+    useGetArbeidsuforhetVurderingerQuery();
   const { data: senOppfolgingKandidat } = useSenOppfolgingKandidatQuery();
   const { data: friskmeldingTilArbeidsformidlingVedtak } = useVedtakQuery();
   const { sisteVurdering: manglendeMedvirkningVurdering } =

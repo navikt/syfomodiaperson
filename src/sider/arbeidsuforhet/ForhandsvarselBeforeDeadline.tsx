@@ -1,5 +1,5 @@
 import React from "react";
-import { useArbeidsuforhetVurderingQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import {
   Alert,
   BodyLong,
@@ -30,7 +30,7 @@ const texts = {
 };
 
 export const ForhandsvarselBeforeDeadline = () => {
-  const { data } = useArbeidsuforhetVurderingQuery();
+  const { data } = useGetArbeidsuforhetVurderingerQuery();
   const forhandsvarsel = data[0];
   const frist = forhandsvarsel.varsel?.svarfrist;
 

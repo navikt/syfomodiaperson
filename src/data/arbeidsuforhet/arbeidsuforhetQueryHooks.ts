@@ -8,7 +8,7 @@ export const arbeidsuforhetQueryKeys = {
   arbeidsuforhet: (personident: string) => ["arbeidsuforhet", personident],
 };
 
-export const useArbeidsuforhetVurderingQuery = () => {
+export function useGetArbeidsuforhetVurderingerQuery() {
   const personident = useValgtPersonident();
   const path = `${ISARBEIDSUFORHET_ROOT}/arbeidsuforhet/vurderinger`;
   const fetchArbeidsuforhet = () =>
@@ -24,4 +24,4 @@ export const useArbeidsuforhetVurderingQuery = () => {
     ...query,
     data: query.data || [],
   };
-};
+}

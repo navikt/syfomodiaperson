@@ -1,6 +1,6 @@
 import React from "react";
 import { Column, Container, Row } from "nav-frontend-grid";
-import Infomelding from "./Infomelding";
+import { Infomelding } from "./Infomelding";
 import styled from "styled-components";
 
 const texts = {

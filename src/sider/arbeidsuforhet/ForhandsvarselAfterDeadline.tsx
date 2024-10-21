@@ -1,5 +1,5 @@
 import React from "react";
-import { useArbeidsuforhetVurderingQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { BodyShort, Box, Heading, HStack } from "@navikt/ds-react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { BellIcon } from "@navikt/aksel-icons";
@@ -18,7 +18,7 @@ const texts = {
 };
 
 export const ForhandsvarselAfterDeadline = () => {
-  const { data } = useArbeidsuforhetVurderingQuery();
+  const { data } = useGetArbeidsuforhetVurderingerQuery();
   const forhandsvarsel = data[0];
   const frist = forhandsvarsel?.varsel?.svarfrist;
 

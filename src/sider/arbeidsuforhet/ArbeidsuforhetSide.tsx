@@ -5,7 +5,7 @@ import SideLaster from "@/components/SideLaster";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import * as Tredelt from "@/sider/TredeltSide";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { useArbeidsuforhetVurderingQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { VurderingHistorikk } from "@/sider/arbeidsuforhet/historikk/VurderingHistorikk";
 
 const texts = {
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const ArbeidsuforhetSide = ({ children }: Props): ReactElement => {
-  const { isLoading, isError } = useArbeidsuforhetVurderingQuery();
+  const { isLoading, isError } = useGetArbeidsuforhetVurderingerQuery();
 
   return (
     <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.ARBEIDSUFORHET}>
