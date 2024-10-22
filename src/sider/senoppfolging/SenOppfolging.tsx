@@ -20,7 +20,7 @@ const texts = {
     info1:
       "Den sykmeldte har ikke mottatt varsel om at det snart er slutt på sykepengene enda.",
     info2:
-      "Når den sykmeldte har mindre enn 90 dager igjen av sykepengene, vil han eller hun få et varsel om å svare på spørsmål rundt sin situasjon på innloggede sider.",
+      "Når den sykmeldte har 90 dager eller mindre igjen av sykepengene, vil han eller hun få et varsel om å svare på spørsmål rundt sin situasjon på innloggede sider.",
     info3:
       "Når spørsmålene er besvart, vil du få en oppgave i oversikten din om å vurdere videre oppfølging. Svarene fra den sykmeldte dukker opp på denne siden.",
   },
