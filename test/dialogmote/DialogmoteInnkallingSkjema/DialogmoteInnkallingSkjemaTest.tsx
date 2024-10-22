@@ -184,6 +184,7 @@ describe("DialogmoteInnkallingSkjema", () => {
     renderDialogmoteInnkallingSkjema();
     passSkjemaInput();
 
+    const expectedSendtDato = new Date();
     await clickButton("Send innkallingene");
 
     await waitFor(() => {
@@ -192,12 +193,18 @@ describe("DialogmoteInnkallingSkjema", () => {
         arbeidsgiver: {
           virksomhetsnummer: arbeidsgiver.orgnr,
           fritekstInnkalling: moteTekster.fritekstTilArbeidsgiver,
-          innkalling: expectedInnkallingDocuments.arbeidsgiver(),
+          innkalling: expectedInnkallingDocuments.arbeidsgiver(
+            false,
+            expectedSendtDato
+          ),
         },
         arbeidstaker: {
           personIdent: arbeidstaker.personident,
           fritekstInnkalling: moteTekster.fritekstTilArbeidstaker,
-          innkalling: expectedInnkallingDocuments.arbeidstaker(),
+          innkalling: expectedInnkallingDocuments.arbeidstaker(
+            false,
+            expectedSendtDato
+          ),
         },
         tidSted: {
           sted: mote.sted,

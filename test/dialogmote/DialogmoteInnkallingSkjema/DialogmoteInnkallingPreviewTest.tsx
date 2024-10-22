@@ -40,6 +40,7 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
       name: "Forhåndsvisning",
     });
     expect(previewButtons).to.have.length(2);
+    const expectedSendtDato = new Date();
     await userEvent.click(previewButtons[0]);
     const forhandsvisningInnkallingArbeidstaker = screen.getAllByRole(
       "dialog",
@@ -61,7 +62,7 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
       })
     ).to.exist;
     expectedInnkallingDocuments
-      .arbeidstaker()
+      .arbeidstaker(false, expectedSendtDato)
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningInnkallingArbeidstaker).getByText(text)).to
@@ -77,6 +78,7 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
       name: "Forhåndsvisning",
     });
     expect(previewButtons).to.have.length(2);
+    const expectedSendtDato = new Date();
     await userEvent.click(previewButtons[1]);
     const forhandsvisningInnkallingArbeidsgiver = screen.getAllByRole(
       "dialog",
@@ -98,7 +100,7 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
       })
     ).to.exist;
     expectedInnkallingDocuments
-      .arbeidsgiver()
+      .arbeidsgiver(false, expectedSendtDato)
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningInnkallingArbeidsgiver).getByText(text)).to
@@ -126,6 +128,7 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
       name: "Forhåndsvisning",
     });
     expect(previewButtons).to.have.length(3);
+    const expectedSendtDato = new Date();
     await userEvent.click(previewButtons[2]);
     const forhandsvisningInnkallingBehandler = screen.getAllByRole("dialog", {
       hidden: true,
@@ -139,7 +142,7 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
     ).to.exist;
 
     expectedInnkallingDocuments
-      .behandler()
+      .behandler(expectedSendtDato)
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningInnkallingBehandler).getByText(text)).to

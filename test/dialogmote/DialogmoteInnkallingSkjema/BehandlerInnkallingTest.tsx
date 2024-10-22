@@ -87,6 +87,7 @@ describe("Dialogmoteinnkallingskjema med behandler", () => {
     renderDialogmoteInnkallingSkjema();
     await passSkjemaInput();
 
+    const expectedSendtDato = new Date();
     await clickButton("Send innkallingene");
 
     await waitFor(() => {
@@ -95,12 +96,18 @@ describe("Dialogmoteinnkallingskjema med behandler", () => {
         arbeidsgiver: {
           virksomhetsnummer: arbeidsgiver.orgnr,
           fritekstInnkalling: moteTekster.fritekstTilArbeidsgiver,
-          innkalling: expectedInnkallingDocuments.arbeidsgiver(true),
+          innkalling: expectedInnkallingDocuments.arbeidsgiver(
+            true,
+            expectedSendtDato
+          ),
         },
         arbeidstaker: {
           personIdent: arbeidstaker.personident,
           fritekstInnkalling: moteTekster.fritekstTilArbeidstaker,
-          innkalling: expectedInnkallingDocuments.arbeidstaker(true),
+          innkalling: expectedInnkallingDocuments.arbeidstaker(
+            true,
+            expectedSendtDato
+          ),
         },
         behandler: {
           personIdent: behandler.fnr,
@@ -108,7 +115,7 @@ describe("Dialogmoteinnkallingskjema med behandler", () => {
           behandlerNavn: behandlerNavn(behandler),
           behandlerKontor: behandler.kontor,
           fritekstInnkalling: moteTekster.fritekstTilBehandler,
-          innkalling: expectedInnkallingDocuments.behandler(),
+          innkalling: expectedInnkallingDocuments.behandler(expectedSendtDato),
         },
         tidSted: {
           sted: mote.sted,

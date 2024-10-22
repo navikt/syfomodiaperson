@@ -161,17 +161,18 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       moteTekster.fritekstTilArbeidsgiver
     );
 
+    const expectedSendtDato = new Date();
     await clickButton("Send");
 
     await waitFor(() => {
       const avlysMutation = queryClient.getMutationCache().getAll()[0];
       const expectedAvlysningDto = {
         arbeidsgiver: {
-          avlysning: expectedAvlysningDocuments.arbeidsgiver(),
+          avlysning: expectedAvlysningDocuments.arbeidsgiver(expectedSendtDato),
           begrunnelse: moteTekster.fritekstTilArbeidsgiver,
         },
         arbeidstaker: {
-          avlysning: expectedAvlysningDocuments.arbeidstaker(),
+          avlysning: expectedAvlysningDocuments.arbeidstaker(expectedSendtDato),
           begrunnelse: moteTekster.fritekstTilArbeidstaker,
         },
       };
@@ -202,21 +203,22 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       moteTekster.fritekstTilBehandler
     );
 
+    const expectedSendtDato = new Date();
     await clickButton("Send");
 
     await waitFor(() => {
       const avlysMutation = queryClient.getMutationCache().getAll()[0];
       const expectedAvlysningDto = {
         arbeidsgiver: {
-          avlysning: expectedAvlysningDocuments.arbeidsgiver(),
+          avlysning: expectedAvlysningDocuments.arbeidsgiver(expectedSendtDato),
           begrunnelse: moteTekster.fritekstTilArbeidsgiver,
         },
         arbeidstaker: {
-          avlysning: expectedAvlysningDocuments.arbeidstaker(),
+          avlysning: expectedAvlysningDocuments.arbeidstaker(expectedSendtDato),
           begrunnelse: moteTekster.fritekstTilArbeidstaker,
         },
         behandler: {
-          avlysning: expectedAvlysningDocuments.behandler(),
+          avlysning: expectedAvlysningDocuments.behandler(expectedSendtDato),
           begrunnelse: moteTekster.fritekstTilBehandler,
         },
       };
@@ -245,6 +247,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       name: "Forhåndsvisning",
     });
     expect(previewButtons).to.have.length(2);
+    const expectedSendtDato = new Date();
     await userEvent.click(previewButtons[0]);
 
     const forhandsvisningAvlysningArbeidstaker = screen.getAllByRole("dialog", {
@@ -264,7 +267,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       })
     ).to.exist;
     expectedAvlysningDocuments
-      .arbeidstaker()
+      .arbeidstaker(expectedSendtDato)
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningAvlysningArbeidstaker).getByText(text)).to
@@ -293,6 +296,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       name: "Forhåndsvisning",
     });
     expect(previewButtons).to.have.length(2);
+    const expectedSendtDato = new Date();
     await userEvent.click(previewButtons[1]);
 
     const forhandsvisningAvlysningArbeidsgiver = screen.getAllByRole("dialog", {
@@ -311,7 +315,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       })
     ).to.exist;
     expectedAvlysningDocuments
-      .arbeidsgiver()
+      .arbeidsgiver(expectedSendtDato)
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningAvlysningArbeidsgiver).getByText(text)).to
@@ -345,6 +349,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       name: "Forhåndsvisning",
     });
     expect(previewButtons).to.have.length(3);
+    const expectedSendtDato = new Date();
     await userEvent.click(previewButtons[2]);
 
     const forhandsvisningAvlysningBehandler = screen.getAllByRole("dialog", {
@@ -363,7 +368,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       })
     ).to.exist;
     expectedAvlysningDocuments
-      .behandler()
+      .behandler(expectedSendtDato)
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningAvlysningBehandler).getByText(text)).to

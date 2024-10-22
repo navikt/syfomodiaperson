@@ -100,6 +100,7 @@ describe("ReferatEndreTest", () => {
   it("endrer ferdigstilling av dialogmote ved submit av skjema", async () => {
     renderEndreReferat(dialogmoteMedFerdigstiltReferat);
     passSkjemaInput();
+    const expectedSendtDato = new Date();
     await clickButton("Lagre og send");
 
     const endringFerdigstillMutation = queryClient
@@ -114,7 +115,7 @@ describe("ReferatEndreTest", () => {
       arbeidstakerOppgave: moteTekster.arbeidstakersOppgave,
       begrunnelseEndring: moteTekster.begrunnelseEndring,
       veilederOppgave: moteTekster.veiledersOppgave,
-      document: expectedEndretReferatDocument(),
+      document: expectedEndretReferatDocument(expectedSendtDato),
       andreDeltakere: [],
     };
     expect(endringFerdigstillMutation?.state.variables).to.deep.equal(

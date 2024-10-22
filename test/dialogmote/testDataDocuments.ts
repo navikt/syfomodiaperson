@@ -37,14 +37,15 @@ const endreTidStedTextsBokmal = getEndreTidStedTexts(Malform.BOKMAL);
 const avlysningTextsBokmal = getAvlysningTexts(Malform.BOKMAL);
 
 const expectedArbeidstakerInnkalling = (
-  medBehandler = false
+  medBehandler = false,
+  sendtDato: Date
 ): DocumentComponentDto[] => [
   {
     texts: ["Innkalling til dialogmøte"],
     type: DocumentComponentType.HEADER_H1,
   },
   {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -122,14 +123,15 @@ const expectedArbeidstakerInnkalling = (
 ];
 
 const expectedArbeidsgiverInnkalling = (
-  medBehandler = false
+  medBehandler = false,
+  sendtDato: Date
 ): DocumentComponentDto[] => [
   {
     texts: ["Innkalling til dialogmøte"],
     type: DocumentComponentType.HEADER_H1,
   },
   {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -205,13 +207,15 @@ const expectedArbeidsgiverInnkalling = (
   },
 ];
 
-const expectedBehandlerInnkalling = (): DocumentComponentDto[] => [
+const expectedBehandlerInnkalling = (
+  sendtDato: Date
+): DocumentComponentDto[] => [
   {
     texts: ["Innkalling til dialogmøte, svar ønskes"],
     type: DocumentComponentType.HEADER_H1,
   },
   {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -262,14 +266,15 @@ const expectedBehandlerInnkalling = (): DocumentComponentDto[] => [
 ];
 
 const expectedArbeidsgiverEndringsdokument = (
-  medBehandler = false
+  medBehandler = false,
+  sendtDato: Date
 ): DocumentComponentDto[] => [
   {
     texts: ["Endret dialogmøte"],
     type: DocumentComponentType.HEADER_H1,
   },
   {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -358,14 +363,15 @@ const expectedArbeidsgiverEndringsdokument = (
 ];
 
 const expectedArbeidstakerEndringsdokument = (
-  medBehandler = false
+  medBehandler = false,
+  sendtDato: Date
 ): DocumentComponentDto[] => [
   {
     texts: ["Endret dialogmøte"],
     type: DocumentComponentType.HEADER_H1,
   },
   {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -449,7 +455,9 @@ const expectedArbeidstakerEndringsdokument = (
   },
 ];
 
-const expectedBehandlerEndringsdokument = (): DocumentComponentDto[] => [
+const expectedBehandlerEndringsdokument = (
+  sendtDato: Date
+): DocumentComponentDto[] => [
   {
     texts: ["Endret dialogmøte, svar ønskes"],
     type: DocumentComponentType.HEADER_H1,
@@ -459,7 +467,7 @@ const expectedBehandlerEndringsdokument = (): DocumentComponentDto[] => [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -516,13 +524,15 @@ const expectedBehandlerEndringsdokument = (): DocumentComponentDto[] => [
   },
 ];
 
-const expectedAvlysningArbeidsgiver = (): DocumentComponentDto[] => [
+const expectedAvlysningArbeidsgiver = (
+  sendtDato: Date
+): DocumentComponentDto[] => [
   {
     texts: ["Avlysning av dialogmøte"],
     type: DocumentComponentType.HEADER_H1,
   },
   {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -554,13 +564,15 @@ const expectedAvlysningArbeidsgiver = (): DocumentComponentDto[] => [
   },
 ];
 
-const expectedAvlysningArbeidstaker = (): DocumentComponentDto[] => [
+const expectedAvlysningArbeidstaker = (
+  sendtDato: Date
+): DocumentComponentDto[] => [
   {
     texts: ["Avlysning av dialogmøte"],
     type: DocumentComponentType.HEADER_H1,
   },
   {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -592,13 +604,15 @@ const expectedAvlysningArbeidstaker = (): DocumentComponentDto[] => [
   },
 ];
 
-const expectedAvlysningBehandler = (): DocumentComponentDto[] => [
+const expectedAvlysningBehandler = (
+  sendtDato: Date
+): DocumentComponentDto[] => [
   {
     texts: ["Avlysning av dialogmøte"],
     type: DocumentComponentType.HEADER_H1,
   },
   {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -630,13 +644,15 @@ const expectedAvlysningBehandler = (): DocumentComponentDto[] => [
   },
 ];
 
-export const expectedReferatDocument = (): DocumentComponentDto[] => [
+export const expectedReferatDocument = (
+  sendtDato: Date
+): DocumentComponentDto[] => [
   {
     texts: [referatTextsBokmal.nyttHeader],
     type: DocumentComponentType.HEADER_H1,
   },
   {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -721,13 +737,15 @@ export const expectedReferatDocument = (): DocumentComponentDto[] => [
   },
 ];
 
-export const expectedEndretReferatDocument = (): DocumentComponentDto[] => [
+export const expectedEndretReferatDocument = (
+  sendtDato: Date
+): DocumentComponentDto[] => [
   {
     texts: [referatTextsBokmal.endretHeader],
     type: DocumentComponentType.HEADER_H1,
   },
   {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`],
+    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -815,18 +833,18 @@ export const expectedEndretReferatDocument = (): DocumentComponentDto[] => [
 ];
 
 export const expectedInnkallingDocuments = {
-  arbeidsgiver: (medBehandler = false) =>
-    expectedArbeidsgiverInnkalling(medBehandler),
-  arbeidstaker: (medBehandler = false) =>
-    expectedArbeidstakerInnkalling(medBehandler),
+  arbeidsgiver: (medBehandler = false, sendtDato: Date) =>
+    expectedArbeidsgiverInnkalling(medBehandler, sendtDato),
+  arbeidstaker: (medBehandler = false, sendtDato: Date) =>
+    expectedArbeidstakerInnkalling(medBehandler, sendtDato),
   behandler: expectedBehandlerInnkalling,
 };
 
 export const expectedEndringDocuments = {
-  arbeidsgiver: (medBehandler = false) =>
-    expectedArbeidsgiverEndringsdokument(medBehandler),
-  arbeidstaker: (medBehandler = false) =>
-    expectedArbeidstakerEndringsdokument(medBehandler),
+  arbeidsgiver: (medBehandler = false, sendtDato: Date) =>
+    expectedArbeidsgiverEndringsdokument(medBehandler, sendtDato),
+  arbeidstaker: (medBehandler = false, sendtDato: Date) =>
+    expectedArbeidstakerEndringsdokument(medBehandler, sendtDato),
   behandler: expectedBehandlerEndringsdokument,
 };
 

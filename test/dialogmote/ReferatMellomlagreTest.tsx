@@ -36,6 +36,7 @@ describe("ReferatMellomlagreTest", () => {
     stubMellomlagreApi(dialogmoteMedBehandler.uuid);
     renderReferat(dialogmoteMedBehandler);
     await passSkjemaTekstInput();
+    const expectedSendtDato = new Date();
     await clickButton("Lagre");
 
     const mellomlagreMutation = queryClient.getMutationCache().getAll().pop();
@@ -49,7 +50,7 @@ describe("ReferatMellomlagreTest", () => {
       behandlerMottarReferat: true,
       behandlerOppgave: moteTekster.behandlersOppgave,
       veilederOppgave: moteTekster.veiledersOppgave,
-      document: expectedReferatDocument(),
+      document: expectedReferatDocument(expectedSendtDato),
       andreDeltakere: [
         { funksjon: annenDeltakerFunksjon, navn: annenDeltakerNavn },
       ],
