@@ -145,6 +145,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
     renderEndreDialogmoteSkjema(dialogmote);
     passSkjemaInput();
 
+    const expectedSendtDato = new Date();
     await clickButton("Send");
 
     await waitFor(() => {
@@ -152,11 +153,17 @@ describe("EndreDialogmoteSkjemaTest", () => {
       const expectedEndring = {
         arbeidsgiver: {
           begrunnelse: moteTekster.fritekstTilArbeidsgiver,
-          endringsdokument: expectedEndringDocuments.arbeidsgiver(),
+          endringsdokument: expectedEndringDocuments.arbeidsgiver(
+            false,
+            expectedSendtDato
+          ),
         },
         arbeidstaker: {
           begrunnelse: moteTekster.fritekstTilArbeidstaker,
-          endringsdokument: expectedEndringDocuments.arbeidstaker(),
+          endringsdokument: expectedEndringDocuments.arbeidstaker(
+            false,
+            expectedSendtDato
+          ),
         },
         videoLink: endretMote.videolink,
         sted: endretMote.sted,
@@ -210,6 +217,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
       moteTekster.fritekstTilBehandler
     );
 
+    const expectedSendtDato = new Date();
     await clickButton("Send");
 
     await waitFor(() => {
@@ -217,15 +225,22 @@ describe("EndreDialogmoteSkjemaTest", () => {
       const expectedEndring = {
         arbeidsgiver: {
           begrunnelse: moteTekster.fritekstTilArbeidsgiver,
-          endringsdokument: expectedEndringDocuments.arbeidsgiver(true),
+          endringsdokument: expectedEndringDocuments.arbeidsgiver(
+            true,
+            expectedSendtDato
+          ),
         },
         arbeidstaker: {
           begrunnelse: moteTekster.fritekstTilArbeidstaker,
-          endringsdokument: expectedEndringDocuments.arbeidstaker(true),
+          endringsdokument: expectedEndringDocuments.arbeidstaker(
+            true,
+            expectedSendtDato
+          ),
         },
         behandler: {
           begrunnelse: moteTekster.fritekstTilBehandler,
-          endringsdokument: expectedEndringDocuments.behandler(),
+          endringsdokument:
+            expectedEndringDocuments.behandler(expectedSendtDato),
         },
         videoLink: endretMote.videolink,
         sted: endretMote.sted,
@@ -242,6 +257,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
       name: "Forhåndsvisning",
     });
     expect(previewButtons).to.have.length(2);
+    const expectedSendtDato = new Date();
     await userEvent.click(previewButtons[0]);
 
     const forhandsvisningEndringArbeidstaker = screen.getAllByRole("dialog", {
@@ -261,7 +277,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
       })
     ).to.exist;
     expectedEndringDocuments
-      .arbeidstaker()
+      .arbeidstaker(false, expectedSendtDato)
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningEndringArbeidstaker).getByText(text)).to
@@ -276,6 +292,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
       name: "Forhåndsvisning",
     });
     expect(previewButtons).to.have.length(2);
+    const expectedSendtDato = new Date();
     await userEvent.click(previewButtons[1]);
 
     const forhandsvisningEndringArbeidsgiver = screen.getAllByRole("dialog", {
@@ -295,7 +312,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
       })
     ).to.exist;
     expectedEndringDocuments
-      .arbeidsgiver()
+      .arbeidsgiver(false, expectedSendtDato)
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningEndringArbeidsgiver).getByText(text)).to
@@ -316,6 +333,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
       name: "Forhåndsvisning",
     });
     expect(previewButtons).to.have.length(3);
+    const expectedSendtDato = new Date();
     await userEvent.click(previewButtons[2]);
 
     const forhandsvisningEndringBehandler = screen.getAllByRole("dialog", {
@@ -330,7 +348,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
     ).to.exist;
 
     expectedEndringDocuments
-      .behandler()
+      .behandler(expectedSendtDato)
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningEndringBehandler).getByText(text)).to

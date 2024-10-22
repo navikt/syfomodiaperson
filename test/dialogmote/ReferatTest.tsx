@@ -244,6 +244,7 @@ describe("ReferatTest", () => {
     changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
     changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
 
+    const expectedSendtDato = new Date();
     await clickButton("Lagre og send");
 
     const ferdigstillMutation = queryClient.getMutationCache().getAll().pop();
@@ -257,7 +258,7 @@ describe("ReferatTest", () => {
       behandlerMottarReferat: true,
       behandlerOppgave: moteTekster.behandlersOppgave,
       veilederOppgave: moteTekster.veiledersOppgave,
-      document: expectedReferatDocument(),
+      document: expectedReferatDocument(expectedSendtDato),
       andreDeltakere: [
         { funksjon: annenDeltakerFunksjon, navn: annenDeltakerNavn },
       ],
@@ -277,12 +278,13 @@ describe("ReferatTest", () => {
     changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
     changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
 
+    const expectedSendtDato = new Date();
     await clickButton("Forhåndsvisning");
     const forhandsvisningReferat = screen.getByRole("dialog", {
       hidden: true,
     });
 
-    expectedReferatDocument()
+    expectedReferatDocument(expectedSendtDato)
       .flatMap((documentComponent) => documentComponent.texts)
       .forEach((text) => {
         expect(within(forhandsvisningReferat).getByText(text)).to.exist;
