@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { Alert, BodyShort, Box, Button, Heading } from "@navikt/ds-react";
-import { useArbeidsuforhetVurderingQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import {
   typeTexts,
   VurderingResponseDTO,
@@ -40,7 +40,7 @@ interface NyVurderingProps {
 export const NyVurdering = ({
   handleClick,
 }: NyVurderingProps): ReactElement => {
-  const { data: vurderinger } = useArbeidsuforhetVurderingQuery();
+  const { data: vurderinger } = useGetArbeidsuforhetVurderingerQuery();
   const { notification } = useNotification();
 
   return (

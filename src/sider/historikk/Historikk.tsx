@@ -8,40 +8,35 @@ import {
   HistorikkEventType,
 } from "@/data/historikk/types/historikkTypes";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { Panel, Select, Table, Tag } from "@navikt/ds-react";
+import { Box, Select, Table, Tag } from "@navikt/ds-react";
 
 const byTidspunkt: () => (h1: HistorikkEvent, h2: HistorikkEvent) => number =
   () => (h1: HistorikkEvent, h2: HistorikkEvent) => {
     return new Date(h2.tidspunkt).getTime() - new Date(h1.tidspunkt).getTime();
   };
 
-const isEventInTilfelle = (
+function isEventInTilfelle(
   event: HistorikkEvent,
   tilfelle: OppfolgingstilfelleDTO
-): boolean => {
+): boolean {
   return (
     new Date(tilfelle.start) < new Date(event.tidspunkt) &&
     new Date(event.tidspunkt) < new Date(tilfelle.end)
   );
-};
+}
 
-const hentEventUtenforTilfelleList = (
+function hentEventUtenforTilfelleList(
   tilfelleliste: OppfolgingstilfelleDTO[],
   historikkEvents: HistorikkEvent[]
-): HistorikkEvent[] => {
+): HistorikkEvent[] {
   return historikkEvents.filter((event) => {
     return !tilfelleliste.some((tilfelle) =>
       isEventInTilfelle(event, tilfelle)
     );
   });
-};
-
-interface HistorikkProps {
-  historikkEvents: HistorikkEvent[];
-  tilfeller: OppfolgingstilfelleDTO[];
 }
 
-const tagFromKilde = (kilde: HistorikkEventType): ReactElement => {
+function tagFromKilde(kilde: HistorikkEventType): ReactElement {
   switch (kilde) {
     case "OPPFOLGINGSPLAN":
       return <Tag variant="alt3">Oppfølgingsplan</Tag>;
@@ -49,23 +44,27 @@ const tagFromKilde = (kilde: HistorikkEventType): ReactElement => {
       return <Tag variant="alt2">Leder</Tag>;
     case "AKTIVITETSKRAV":
       return <Tag variant="alt1">Aktivitetskrav</Tag>;
+    case "ARBEIDSUFORHET":
+      return <Tag variant="warning">Arbeidsuførhet</Tag>;
     case "MOTEBEHOV":
     case "MOTER":
       return <Tag variant="warning">Dialogmøte</Tag>;
   }
-};
+}
 
-const Historikk = ({
-  historikkEvents,
-  tilfeller,
-}: HistorikkProps): ReactElement => {
+interface Props {
+  historikkEvents: HistorikkEvent[];
+  tilfeller: OppfolgingstilfelleDTO[];
+}
+
+export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
   const [selectedTilfelleIndex, setSelectedTilfelleIndex] = useState<number>(0);
   const eventUtenforTilfelleList = hentEventUtenforTilfelleList(
     tilfeller,
     historikkEvents
   );
 
-  const filteredEvents = () => {
+  function filteredEvents() {
     if (selectedTilfelleIndex === -1) {
       return eventUtenforTilfelleList;
     } else {
@@ -73,7 +72,7 @@ const Historikk = ({
         isEventInTilfelle(event, tilfeller[selectedTilfelleIndex])
       );
     }
-  };
+  }
 
   return (
     <div className="p-4">
@@ -93,7 +92,7 @@ const Historikk = ({
           <option value={-1}>Utenfor sykefraværstilfelle</option>
         )}
       </Select>
-      <Panel>
+      <Box background="surface-default" padding="4">
         <Table>
           <Table.Header>
             <Table.Row>
@@ -118,9 +117,7 @@ const Historikk = ({
               })}
           </Table.Body>
         </Table>
-      </Panel>
+      </Box>
     </div>
   );
-};
-
-export default Historikk;
+}

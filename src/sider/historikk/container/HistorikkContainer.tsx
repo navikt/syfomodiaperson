@@ -1,6 +1,5 @@
 import React, { ReactElement, useMemo } from "react";
 import Side from "../../Side";
-import Historikk from "../Historikk";
 import SideLaster from "../../../components/SideLaster";
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { useHistorikk } from "@/data/historikk/historikk_hooks";
@@ -15,8 +14,14 @@ import {
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { useAktivitetskravHistorikkQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
-import Infomelding from "@/components/Infomelding";
+import { Infomelding } from "@/components/Infomelding";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
+import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import {
+  VurderingResponseDTO,
+  VurderingType,
+} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+import { Historikk } from "@/sider/historikk/Historikk";
 
 const texts = {
   topp: "Logg",
@@ -85,6 +90,35 @@ const createHistorikkEventsFromAktivitetskrav = (
     });
 };
 
+function arbeidsuforhetText(
+  veilederident: string,
+  vurderingType: VurderingType
+): string {
+  switch (vurderingType) {
+    case VurderingType.FORHANDSVARSEL:
+      return veilederident + " sendte forhåndsvarsel";
+    case VurderingType.OPPFYLT:
+      return veilederident + " vurderte oppfylt";
+    case VurderingType.AVSLAG:
+      return veilederident + " vurderte avslag";
+    case VurderingType.IKKE_AKTUELL:
+      return veilederident + " vurderte ikke aktuell";
+  }
+}
+
+function createHistorikkEventsFromArbeidsuforhet(
+  arbeidsuforhetVurderinger: VurderingResponseDTO[]
+): HistorikkEvent[] {
+  return arbeidsuforhetVurderinger.map((vurdering: VurderingResponseDTO) => {
+    return {
+      opprettetAv: vurdering.veilederident,
+      tekst: arbeidsuforhetText(vurdering.veilederident, vurdering.type),
+      tidspunkt: vurdering.createdAt,
+      kilde: "ARBEIDSUFORHET",
+    };
+  });
+}
+
 export const HistorikkContainer = (): ReactElement => {
   const { brukerinfo: person } = useBrukerinfoQuery();
   const {
@@ -113,16 +147,24 @@ export const HistorikkContainer = (): ReactElement => {
     isError: hentingAktivitetskravHistorikkFeilet,
   } = useAktivitetskravHistorikkQuery();
 
+  const {
+    data: arbeidsuforhetVurderinger,
+    isLoading: isArbeidsuforhetLoading,
+    isError: isArbeidsuforhetError,
+  } = useGetArbeidsuforhetVurderingerQuery();
+
   const henter =
     henterLedere ||
     henterHistorikk ||
     henterTilfeller ||
-    henterAktivitetskravHistorikk;
+    henterAktivitetskravHistorikk ||
+    isArbeidsuforhetLoading;
   const hentingFeilet =
     hentingLedereFeilet ||
     hentingHistorikkFeilet ||
     hentingTilfellerFeilet ||
-    hentingAktivitetskravHistorikkFeilet;
+    hentingAktivitetskravHistorikkFeilet ||
+    isArbeidsuforhetError;
 
   const allLedere = useMemo(
     () => [...currentLedere, ...formerLedere],
@@ -135,10 +177,14 @@ export const HistorikkContainer = (): ReactElement => {
     aktivitetskravHistorikk || [],
     person
   );
+  const arbeidsuforhetHistorikk = createHistorikkEventsFromArbeidsuforhet(
+    arbeidsuforhetVurderinger
+  );
   const historikkEvents = motebehovHistorikk
     .concat(oppfolgingsplanHistorikk)
     .concat(lederHistorikk)
-    .concat(aktivitetskravHistorikkEvents);
+    .concat(aktivitetskravHistorikkEvents)
+    .concat(arbeidsuforhetHistorikk);
   const ingenHistorikk = tilfeller.length === 0 || historikkEvents.length === 0;
 
   return (

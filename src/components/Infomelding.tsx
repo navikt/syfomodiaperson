@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, Heading } from "@navikt/ds-react";
 
-interface InfomeldingProps {
+interface Props {
   tittel: string;
   melding: string;
 }
 
-const Infomelding = (infomeldingProps: InfomeldingProps) => {
+export function Infomelding(infomeldingProps: Props) {
   const { tittel, melding } = infomeldingProps;
   return (
     <Box background="surface-default" className="text-center" padding="6">
@@ -17,6 +17,4 @@ const Infomelding = (infomeldingProps: InfomeldingProps) => {
       <p>{melding}</p>
     </Box>
   );
-};
-
-export default Infomelding;
+}
