@@ -154,12 +154,15 @@ export const useReferatDocument = (
     if (values.standardtekster && values.standardtekster.length > 0) {
       documentComponents.push(
         createHeaderH2(referatTexts.standardTeksterHeader),
-        ...values.standardtekster.map((standardtekst) => ({
-          type: DocumentComponentType.PARAGRAPH,
-          key: standardtekst.key,
-          title: standardtekst.label,
-          texts: [standardtekst.text],
-        }))
+        ...values.standardtekster.map((key) => {
+          const standardTekst = referatTexts.standardTekster[key];
+          return {
+            type: DocumentComponentType.PARAGRAPH,
+            key: key,
+            title: standardTekst.label,
+            texts: [standardTekst.text],
+          };
+        })
       );
     }
     return documentComponents;

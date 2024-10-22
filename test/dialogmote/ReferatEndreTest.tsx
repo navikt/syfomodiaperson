@@ -54,7 +54,7 @@ describe("ReferatEndreTest", () => {
     );
     await clickButton("Lagre og send");
 
-    expect(screen.getByText(/tegn tillatt/)).to.exist;
+    expect(await screen.findByText("1 tegn for mye")).to.exist;
   });
 
   it("preutfyller skjema fra ferdigstilt referat", () => {

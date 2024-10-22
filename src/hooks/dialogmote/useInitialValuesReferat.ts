@@ -1,6 +1,9 @@
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { ReferatSkjemaValues } from "@/sider/dialogmoter/components/referat/Referat";
-import { getReferatTexts } from "@/data/dialogmote/dialogmoteTexts";
+import {
+  getReferatTexts,
+  StandardtekstKey,
+} from "@/data/dialogmote/dialogmoteTexts";
 import { useMemo } from "react";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
@@ -44,10 +47,11 @@ export const useInitialValuesReferat = (
             funksjon,
           })
         ),
-        standardtekster: getReferatTexts(malform).standardTekster.filter(
-          (standardtekst) =>
-            latestReferat.document.some(({ key }) => key === standardtekst.key)
-        ),
+        standardtekster: Object.keys(
+          getReferatTexts(malform).standardTekster
+        ).filter((key) =>
+          latestReferat.document.some((value) => value.key === key)
+        ) as StandardtekstKey[],
         ...behandlerInitialValues,
       };
     } else {

@@ -9,10 +9,9 @@ import Referat, {
   ReferatMode,
   valideringsTexts as referatSkjemaValideringsTexts,
 } from "../../src/sider/dialogmoter/components/referat/Referat";
-import { texts as deltakereSkjemaTexts } from "../../src/sider/dialogmoter/components/referat/Deltakere";
+import { texts as referatSkjemaTexts } from "../../src/sider/dialogmoter/components/referat/Referat";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { expect, describe, it, beforeEach, afterEach } from "vitest";
-import { texts as valideringsTexts } from "../../src/utils/valideringUtils";
 import {
   changeTextInput,
   clickButton,
@@ -94,15 +93,20 @@ describe("ReferatTest", () => {
     // Sjekk at 'Fra arbeidsgiver' valideres
     changeTextInput(getFraArbeidsgiverInput(), "");
     await clickButton("Lagre og send");
-    expect(screen.getAllByText(valideringsTexts.arbeidsgiverDeltakerMissing)).to
-      .not.be.empty;
+    expect(
+      screen.getAllByText(
+        referatSkjemaTexts.deltakere.arbeidsgiverDeltakerMissing
+      )
+    ).to.not.be.empty;
 
     // Sjekk at 'Fra arbeidsgiver' kan endres
     const endretFraArbeidsgiver = "Ny Leder";
     changeTextInput(getFraArbeidsgiverInput(), endretFraArbeidsgiver);
-    expect(getFraArbeidsgiverInput().getAttribute("value")).to.equal(
-      endretFraArbeidsgiver
-    );
+    expect(
+      await screen.findByRole("heading", {
+        name: `Fra arbeidsgiver: Ny Leder`,
+      })
+    ).to.exist;
   });
 
   it("viser behandler som deltaker når behandler er med", () => {
@@ -118,11 +122,11 @@ describe("ReferatTest", () => {
     ).to.exist;
 
     const behandlerDeltokInput: HTMLInputElement = screen.getByLabelText(
-      deltakereSkjemaTexts.behandlerDeltokLabel
+      referatSkjemaTexts.deltakere.behandlerDeltokLabel
     );
     expect(behandlerDeltokInput.checked).to.be.true;
     const behandlerMottarReferatInput: HTMLInputElement = screen.getByLabelText(
-      deltakereSkjemaTexts.behandlerMottaReferatLabel
+      referatSkjemaTexts.deltakere.behandlerMottaReferatLabel
     );
     expect(behandlerMottarReferatInput.checked).to.be.true;
   });
@@ -134,11 +138,13 @@ describe("ReferatTest", () => {
 
     // Fjern avkrysning på deltakelse og motta referat
     const behandlerDeltokCheckbox: HTMLInputElement = screen.getByLabelText(
-      deltakereSkjemaTexts.behandlerDeltokLabel
+      referatSkjemaTexts.deltakere.behandlerDeltokLabel
     );
     await userEvent.click(behandlerDeltokCheckbox);
     const behandlerMottaReferatCheckbox: HTMLInputElement =
-      screen.getByLabelText(deltakereSkjemaTexts.behandlerMottaReferatLabel);
+      screen.getByLabelText(
+        referatSkjemaTexts.deltakere.behandlerMottaReferatLabel
+      );
     await userEvent.click(behandlerMottaReferatCheckbox);
 
     await clickButton("Lagre og send");
@@ -187,17 +193,28 @@ describe("ReferatTest", () => {
     await clickButton("Lagre og send");
 
     // Feilmeldinger i skjema
-    expect(screen.getAllByText(valideringsTexts.andreDeltakereMissingNavn)).to
-      .not.be.empty;
-    expect(screen.getAllByText(valideringsTexts.andreDeltakereMissingFunksjon))
-      .to.not.be.empty;
+    expect(
+      screen.getAllByText(
+        referatSkjemaTexts.deltakere.andreDeltakereMissingNavn
+      )
+    ).to.not.be.empty;
+    expect(
+      screen.getAllByText(
+        referatSkjemaTexts.deltakere.andreDeltakereMissingFunksjon
+      )
+    ).to.not.be.empty;
 
     // Slett deltaker og sjekk at feil forsvinner
     await clickButton("Slett ikon");
-    expect(screen.queryAllByText(valideringsTexts.andreDeltakereMissingNavn)).to
-      .be.empty;
     expect(
-      screen.queryAllByText(valideringsTexts.andreDeltakereMissingFunksjon)
+      screen.queryAllByText(
+        referatSkjemaTexts.deltakere.andreDeltakereMissingNavn
+      )
+    ).to.be.empty;
+    expect(
+      screen.queryAllByText(
+        referatSkjemaTexts.deltakere.andreDeltakereMissingFunksjon
+      )
     ).to.be.empty;
   });
 

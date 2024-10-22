@@ -1,6 +1,5 @@
 import { SykmeldingBehandlerDTO } from "@/data/sykmelding/types/SykmeldingBehandlerDTO";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
-import { DialogmotedeltakerBehandlerDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { capitalizeWord } from "@/utils/stringUtils";
 
 export const behandlerNavn = (
@@ -10,14 +9,6 @@ export const behandlerNavn = (
     .filter(Boolean)
     .join(" ");
 };
-
-export const behandlerDeltokTekst = (
-  behandler: DialogmotedeltakerBehandlerDTO,
-  deltatt: boolean | undefined
-): string =>
-  `Behandler: ${behandler.behandlerNavn}${
-    deltatt === false ? ", deltok ikke" : ""
-  }`;
 
 export const behandlerDisplayText = (behandler: BehandlerDTO): string => {
   const name = behandlerNavn(behandler);

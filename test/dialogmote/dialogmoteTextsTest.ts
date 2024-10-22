@@ -33,11 +33,9 @@ describe("dialogmoteTexts", () => {
     [Malform.BOKMAL, Malform.NYNORSK].forEach((malform) => {
       expectedStandardtekstKeys.forEach((key) => {
         expect(
-          getReferatTexts(malform).standardTekster.some(
-            (standardTekst) => standardTekst.key === key
-          ),
+          getReferatTexts(malform).standardTekster[key],
           `mangler ${malform} standardtekst for nøkkel ${key}`
-        ).to.be.true;
+        ).to.exist;
       });
     });
   });

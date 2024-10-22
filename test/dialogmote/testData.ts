@@ -19,7 +19,10 @@ import {
   VIRKSOMHET_PONTYPANDY,
 } from "@/mocks/common/mockConstants";
 import { behandlerNavn } from "@/utils/behandlerUtils";
-import { getReferatTexts } from "@/data/dialogmote/dialogmoteTexts";
+import {
+  getReferatTexts,
+  StandardtekstKey,
+} from "@/data/dialogmote/dialogmoteTexts";
 import { BehandlerDTO, BehandlerType } from "@/data/behandler/BehandlerDTO";
 import { DocumentComponentType } from "@/data/documentcomponent/documentComponentTypes";
 import { Malform } from "@/context/malform/MalformContext";
@@ -215,7 +218,7 @@ export const moteTekster = {
 };
 
 export const referatStandardTekst = getReferatTexts(Malform.BOKMAL)
-  .standardTekster[3];
+  .standardTekster.OPPFOLGINGSTILTAK;
 
 export const createMellomlagretReferat = (tid?: string) => ({
   uuid: "123abc",
@@ -228,7 +231,7 @@ export const createMellomlagretReferat = (tid?: string) => ({
   konklusjon: konklusjonTekst,
   document: [
     {
-      key: referatStandardTekst.key,
+      key: StandardtekstKey.OPPFOLGINGSTILTAK,
       title: referatStandardTekst.label,
       texts: [referatStandardTekst.text],
       type: DocumentComponentType.PARAGRAPH,
