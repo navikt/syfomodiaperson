@@ -11,7 +11,7 @@ export const manglendeMedvirkningQueryKeys = {
   ],
 };
 
-export const useManglendeMedvirkningVurderingQuery = () => {
+export const useManglendemedvirkningVurderingQuery = () => {
   const personident = useValgtPersonident();
   const path = `${ISMANGLENDEMEDVIRKNING_ROOT}/manglende-medvirkning/vurderinger`;
   const fetchManglendeMedvirkning = () =>

@@ -1,5 +1,4 @@
-import React from "react";
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { useNotification } from "@/context/notification/NotificationContext";
 import { Alert, BodyShort, Box, Button, Heading } from "@navikt/ds-react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
@@ -8,7 +7,7 @@ import {
   VurderingResponseDTO,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
-import { useManglendeMedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
+import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 
 const texts = {
   title: "Arbeidsuførhet",
@@ -42,7 +41,7 @@ interface Props {
 export const ManglendeMedvirkningNyVurdering = ({
   handleClick,
 }: Props): ReactElement => {
-  const { data } = useManglendeMedvirkningVurderingQuery();
+  const { data } = useManglendemedvirkningVurderingQuery();
   const { notification } = useNotification();
 
   return (

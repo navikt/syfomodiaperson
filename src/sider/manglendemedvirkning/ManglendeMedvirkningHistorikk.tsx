@@ -4,7 +4,7 @@ import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks
 import { Paragraph } from "@/components/Paragraph";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { VisBrev } from "@/components/VisBrev";
-import { useManglendeMedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
+import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import {
   typeTexts,
   VurderingResponseDTO,
@@ -75,7 +75,7 @@ function HistorikkItem({ vurdering }: VurderingHistorikkItemProps) {
 }
 
 export default function ManglendeMedvirkningHistorikk() {
-  const { data } = useManglendeMedvirkningVurderingQuery();
+  const { data } = useManglendemedvirkningVurderingQuery();
   const subheader =
     data.length > 0 ? texts.tidligereVurderinger : texts.noVurderinger;
 
