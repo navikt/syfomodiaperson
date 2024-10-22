@@ -13,6 +13,7 @@ import { VeiledningRutine } from "@/sider/senoppfolging/VeiledningRutine";
 import { NewVurderingForm } from "@/sider/senoppfolging/NewVurderingForm";
 import OvingssideLink from "@/sider/senoppfolging/OvingssideLink";
 import { KandidatIkkeSvart } from "@/sider/senoppfolging/KandidatIkkeSvart";
+import { isVarselUbesvart } from "@/utils/senOppfolgingUtils";
 
 const texts = {
   ikkeVarslet: {
@@ -35,7 +36,6 @@ export default function SenOppfolging(): ReactElement {
   const ferdigbehandletVurdering = kandidat?.vurderinger.find(
     (vurdering) => vurdering.type === SenOppfolgingVurderingType.FERDIGBEHANDLET
   );
-
   return kandidat ? (
     <Tredelt.Container>
       <Tredelt.FirstColumn>
@@ -44,7 +44,9 @@ export default function SenOppfolging(): ReactElement {
         {isFerdigbehandlet && ferdigbehandletVurdering ? (
           <VurdertKandidat vurdering={ferdigbehandletVurdering} />
         ) : (
-          svar && <NewVurderingForm kandidat={kandidat} />
+          (svar || isVarselUbesvart(kandidat)) && (
+            <NewVurderingForm kandidat={kandidat} />
+          )
         )}
       </Tredelt.FirstColumn>
       <Tredelt.SecondColumn>
