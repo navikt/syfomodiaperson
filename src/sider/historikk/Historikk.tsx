@@ -46,6 +46,8 @@ function tagFromKilde(kilde: HistorikkEventType): ReactElement {
       return <Tag variant="alt1">Aktivitetskrav</Tag>;
     case "ARBEIDSUFORHET":
       return <Tag variant="warning">Arbeidsuførhet</Tag>;
+    case "MANGLENDE_MEDVIRKNING":
+      return <Tag variant="warning">Manglende medvirkning</Tag>;
     case "MOTEBEHOV":
     case "MOTER":
       return <Tag variant="warning">Dialogmøte</Tag>;

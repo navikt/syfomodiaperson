@@ -3,7 +3,7 @@ import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Sidetopp from "@/components/Sidetopp";
 import Side from "@/sider/Side";
 import SideLaster from "@/components/SideLaster";
-import { useManglendeMedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
+import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import UnntakSide from "@/sider/manglendemedvirkning/unntak/UnntakSide";
 import OppfyltSide from "@/sider/manglendemedvirkning/oppfylt/OppfyltSide";
 import IkkeAktuellSide from "@/sider/manglendemedvirkning/ikkeaktuell/IkkeAktuellSide";
@@ -53,7 +53,7 @@ interface Props {
 export default function ManglendeMedvirkningSide({
   children,
 }: Props): ReactElement {
-  const { isLoading, isError } = useManglendeMedvirkningVurderingQuery();
+  const { isLoading, isError } = useManglendemedvirkningVurderingQuery();
   return (
     <Side
       tittel={texts.title}

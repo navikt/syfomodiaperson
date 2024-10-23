@@ -14,14 +14,19 @@ import {
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { useAktivitetskravHistorikkQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
-import { Infomelding } from "@/components/Infomelding";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import {
-  VurderingResponseDTO,
-  VurderingType,
+  VurderingResponseDTO as ArbeidsuforhetVurderinger,
+  VurderingType as ArbeidsuforhetVurderingType,
 } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
 import { Historikk } from "@/sider/historikk/Historikk";
+import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
+import {
+  VurderingResponseDTO as ManglendemedvirkningVurdering,
+  VurderingType as ManglendemedvirkningVurderingType,
+} from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
+import { Infomelding } from "@/components/Infomelding";
 
 const texts = {
   topp: "Logg",
@@ -92,31 +97,69 @@ const createHistorikkEventsFromAktivitetskrav = (
 
 function arbeidsuforhetText(
   veilederident: string,
-  vurderingType: VurderingType
+  vurderingType: ArbeidsuforhetVurderingType
 ): string {
   switch (vurderingType) {
-    case VurderingType.FORHANDSVARSEL:
+    case ArbeidsuforhetVurderingType.FORHANDSVARSEL:
       return veilederident + " sendte forhåndsvarsel";
-    case VurderingType.OPPFYLT:
+    case ArbeidsuforhetVurderingType.OPPFYLT:
       return veilederident + " vurderte oppfylt";
-    case VurderingType.AVSLAG:
+    case ArbeidsuforhetVurderingType.AVSLAG:
       return veilederident + " vurderte avslag";
-    case VurderingType.IKKE_AKTUELL:
+    case ArbeidsuforhetVurderingType.IKKE_AKTUELL:
       return veilederident + " vurderte ikke aktuell";
   }
 }
 
 function createHistorikkEventsFromArbeidsuforhet(
-  arbeidsuforhetVurderinger: VurderingResponseDTO[]
+  arbeidsuforhetVurderinger: ArbeidsuforhetVurderinger[]
 ): HistorikkEvent[] {
-  return arbeidsuforhetVurderinger.map((vurdering: VurderingResponseDTO) => {
-    return {
-      opprettetAv: vurdering.veilederident,
-      tekst: arbeidsuforhetText(vurdering.veilederident, vurdering.type),
-      tidspunkt: vurdering.createdAt,
-      kilde: "ARBEIDSUFORHET",
-    };
-  });
+  return arbeidsuforhetVurderinger.map(
+    (vurdering: ArbeidsuforhetVurderinger) => {
+      return {
+        opprettetAv: vurdering.veilederident,
+        tekst: arbeidsuforhetText(vurdering.veilederident, vurdering.type),
+        tidspunkt: vurdering.createdAt,
+        kilde: "ARBEIDSUFORHET",
+      };
+    }
+  );
+}
+
+function manglendemedvirkningText(
+  veilederident: string,
+  vurderingType: ManglendemedvirkningVurderingType
+): string {
+  switch (vurderingType) {
+    case ManglendemedvirkningVurderingType.FORHANDSVARSEL:
+      return veilederident + " sendte forhåndsvarsel";
+    case ManglendemedvirkningVurderingType.OPPFYLT:
+      return veilederident + " vurderte oppfylt";
+    case ManglendemedvirkningVurderingType.STANS:
+      return veilederident + " vurderte stans";
+    case ManglendemedvirkningVurderingType.UNNTAK:
+      return veilederident + " vurderte unntak";
+    case ManglendemedvirkningVurderingType.IKKE_AKTUELL:
+      return veilederident + " vurderte ikke aktuell";
+  }
+}
+
+function createHistorikkEventsFromManglendemedvirkning(
+  manglendemedvirkningVurderinger: ManglendemedvirkningVurdering[]
+): HistorikkEvent[] {
+  return manglendemedvirkningVurderinger.map(
+    (vurdering: ManglendemedvirkningVurdering) => {
+      return {
+        opprettetAv: vurdering.veilederident,
+        tekst: manglendemedvirkningText(
+          vurdering.veilederident,
+          vurdering.vurderingType
+        ),
+        tidspunkt: vurdering.createdAt,
+        kilde: "MANGLENDE_MEDVIRKNING",
+      };
+    }
+  );
 }
 
 export const HistorikkContainer = (): ReactElement => {
@@ -153,18 +196,26 @@ export const HistorikkContainer = (): ReactElement => {
     isError: isArbeidsuforhetError,
   } = useGetArbeidsuforhetVurderingerQuery();
 
+  const {
+    data: manglendemedvirkningVurderinger,
+    isLoading: isManglendemedvirkningLoading,
+    isError: isManglendemedvirkningError,
+  } = useManglendemedvirkningVurderingQuery();
+
   const henter =
     henterLedere ||
     henterHistorikk ||
     henterTilfeller ||
     henterAktivitetskravHistorikk ||
-    isArbeidsuforhetLoading;
+    isArbeidsuforhetLoading ||
+    isManglendemedvirkningLoading;
   const hentingFeilet =
     hentingLedereFeilet ||
     hentingHistorikkFeilet ||
     hentingTilfellerFeilet ||
     hentingAktivitetskravHistorikkFeilet ||
-    isArbeidsuforhetError;
+    isArbeidsuforhetError ||
+    isManglendemedvirkningError;
 
   const allLedere = useMemo(
     () => [...currentLedere, ...formerLedere],
@@ -180,11 +231,16 @@ export const HistorikkContainer = (): ReactElement => {
   const arbeidsuforhetHistorikk = createHistorikkEventsFromArbeidsuforhet(
     arbeidsuforhetVurderinger
   );
+  const manglendemedvirkningHistorikk =
+    createHistorikkEventsFromManglendemedvirkning(
+      manglendemedvirkningVurderinger
+    );
   const historikkEvents = motebehovHistorikk
     .concat(oppfolgingsplanHistorikk)
     .concat(lederHistorikk)
     .concat(aktivitetskravHistorikkEvents)
-    .concat(arbeidsuforhetHistorikk);
+    .concat(arbeidsuforhetHistorikk)
+    .concat(manglendemedvirkningHistorikk);
   const ingenHistorikk = tilfeller.length === 0 || historikkEvents.length === 0;
 
   return (

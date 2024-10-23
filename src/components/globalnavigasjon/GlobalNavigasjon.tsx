@@ -18,7 +18,7 @@ import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
-import { useManglendeMedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
+import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 
 export enum Menypunkter {
   AKTIVITETSKRAV = "AKTIVITETSKRAV",
@@ -115,7 +115,7 @@ export const GlobalNavigasjon = ({
   const { data: senOppfolgingKandidat } = useSenOppfolgingKandidatQuery();
   const { data: friskmeldingTilArbeidsformidlingVedtak } = useVedtakQuery();
   const { sisteVurdering: manglendeMedvirkningVurdering } =
-    useManglendeMedvirkningVurderingQuery();
+    useManglendemedvirkningVurderingQuery();
   const { toggles } = useFeatureToggles();
 
   const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.map(
