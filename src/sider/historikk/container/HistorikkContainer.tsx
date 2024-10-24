@@ -22,6 +22,7 @@ import {
   VurderingType,
 } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
 import { Historikk } from "@/sider/historikk/Historikk";
+import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 
 const texts = {
   topp: "Logg",
@@ -119,6 +120,19 @@ function createHistorikkEventsFromArbeidsuforhet(
   });
 }
 
+/*function createHistorikkEventsFromFriskTilArbeid(
+  friskTilArbeidVedtak: VedtakResponseDTO[]
+): HistorikkEvent[] {
+  return friskTilArbeidVedtak.map((vedtak: VedtakResponseDTO) => {
+    return {
+      opprettetAv: vedtak.veilederident,
+      tekst: arbeidsuforhetText(vedtak.veilederident, vedtak.type),
+      tidspunkt: vedtak.createdAt,
+      kilde: "ARBEIDSUFORHET",
+    };
+  });
+}*/
+
 export const HistorikkContainer = (): ReactElement => {
   const { brukerinfo: person } = useBrukerinfoQuery();
   const {
@@ -180,11 +194,14 @@ export const HistorikkContainer = (): ReactElement => {
   const arbeidsuforhetHistorikk = createHistorikkEventsFromArbeidsuforhet(
     arbeidsuforhetVurderinger
   );
+  //const frisktilarbeidHistorikk =
   const historikkEvents = motebehovHistorikk
     .concat(oppfolgingsplanHistorikk)
     .concat(lederHistorikk)
     .concat(aktivitetskravHistorikkEvents)
     .concat(arbeidsuforhetHistorikk);
+  //.concat(frisktilarbeidHistorikk);
+
   const ingenHistorikk = tilfeller.length === 0 || historikkEvents.length === 0;
 
   return (
