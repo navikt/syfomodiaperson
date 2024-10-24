@@ -4,7 +4,8 @@ export type HistorikkEventType =
   | "LEDER"
   | "AKTIVITETSKRAV"
   | "ARBEIDSUFORHET"
-  | "MANGLENDE_MEDVIRKNING";
+  | "MANGLENDE_MEDVIRKNING"
+  | "FRISKMELDING_TIL_ARBEIDSFORMIDLING";
 
 export interface HistorikkEvent {
   opprettetAv?: string;
