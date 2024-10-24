@@ -7,6 +7,11 @@ import { useLatestFerdigstiltReferat } from "@/hooks/dialogmote/useDialogmoteRef
 
 export const dialogmotekandidatQueryKeys = {
   kandidat: (personident: string) => ["dialogmotekandidat", personident],
+  historikk: (personident: string) => [
+    "historikk",
+    "dialogmotekandidat",
+    personident,
+  ],
   unntaksstatistikk: () => ["unntaksstatistikk"],
 };
 
@@ -50,4 +55,15 @@ export const useDialogmotekandidat = () => {
     ...query,
     isKandidat,
   };
+};
+
+export const useDialogmotekandidatHistorikk = () => {
+  const personident = useValgtPersonident();
+  const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/kandidat/historikk`;
+  const fetchHistorikk = () => get<any>(path, personident);
+  return useQuery({
+    queryKey: dialogmotekandidatQueryKeys.historikk(personident),
+    queryFn: fetchHistorikk,
+    enabled: !!personident,
+  });
 };

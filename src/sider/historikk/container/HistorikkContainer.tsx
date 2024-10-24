@@ -27,6 +27,7 @@ import {
   VurderingType as ManglendemedvirkningVurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { Infomelding } from "@/components/Infomelding";
+import { useDialogmotekandidatHistorikk } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 
 const texts = {
   topp: "Logg",
@@ -201,6 +202,10 @@ export const HistorikkContainer = (): ReactElement => {
     isLoading: isManglendemedvirkningLoading,
     isError: isManglendemedvirkningError,
   } = useManglendemedvirkningVurderingQuery();
+
+  const { data: dialogmotekandidatHistorikk } =
+    useDialogmotekandidatHistorikk();
+  console.log(dialogmotekandidatHistorikk);
 
   const henter =
     henterLedere ||
