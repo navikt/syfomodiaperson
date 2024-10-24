@@ -257,146 +257,119 @@ export enum StandardtekstKey {
 }
 
 export interface StandardTekst {
-  key: StandardtekstKey;
   label: string;
   text: string;
 }
 
-const referatStandardTekster: StandardTekst[] = [
-  {
-    key: StandardtekstKey.IKKE_BEHOV,
+export const referatStandardTekster: Record<StandardtekstKey, StandardTekst> = {
+  [StandardtekstKey.IKKE_BEHOV]: {
     label: "Ikke behov for bistand fra NAV nå",
     text: "Slik situasjonen er nå, er det ikke behov for noen spesiell bistand fra NAV. Dere kan likevel be om nytt dialogmøte når dere har behov for det.",
   },
-  {
-    key: StandardtekstKey.FRISKMELDING_ARBEIDSFORMIDLING,
+  [StandardtekstKey.FRISKMELDING_ARBEIDSFORMIDLING]: {
     label: "Friskmelding til arbeidsformidling",
     text: "Denne ordningen er aktuell hvis helsen din er slik at du kan komme tilbake i arbeid, men ikke til den jobben du er sykmeldt fra. Hvis alle muligheter for å komme tilbake til arbeidsplassen din er forsøkt, kan du få sykepenger i inntil 12 uker mens du søker ny jobb. Maksimal periode med sykepenger er 52 uker, inkludert ukene med friskmelding til arbeidsformidling.",
   },
-  {
-    key: StandardtekstKey.AVKLARING_ARBEIDSEVNE,
+  [StandardtekstKey.AVKLARING_ARBEIDSEVNE]: {
     label: "Avklaring av arbeidsevnen",
     text: "Du kan få kartlagt eller prøvd ut arbeidsevnen din. Avklaringen kan skje der du jobber eller på en annen arbeidsplass. Da undersøker vi om du kan utføre jobben med noen tilpasninger, om du kan få påfyll av kompetanse, eller om det er muligheter i et annet yrke. Avklaringen varer som regel i fire uker, men kan forlenges med inntil åtte uker ved behov.",
   },
-  {
-    key: StandardtekstKey.OPPFOLGINGSTILTAK,
+  [StandardtekstKey.OPPFOLGINGSTILTAK]: {
     label: "Oppfølgingstiltak",
     text: "Du kan få støtte eller veiledning til å finne eller beholde en jobb. Tiltaket skal tilpasses dine behov ut fra mulighetene dine på arbeidsmarkedet.",
   },
-  {
-    key: StandardtekstKey.ARBEIDSRETTET_REHABILITERING,
+  [StandardtekstKey.ARBEIDSRETTET_REHABILITERING]: {
     label: "Arbeidsrettet rehabilitering",
     text: "Du kan få individuell veiledning tilpasset behovet ditt, for eksempel hjelp til å kartelegge helse, arbeidsplass og funksjon. Slik kan mulighetene dine til å komme i jobb igjen bli styrket.",
   },
-  {
-    key: StandardtekstKey.OPPLAERING_UTDANNING,
+  [StandardtekstKey.OPPLAERING_UTDANNING]: {
     label: "Opplæring og utdanning",
     text: "Har du vært lenge syk, kan kurs eller utdanning ha ekstra stor betydning for å komme i jobb igjen. Kanskje kan det være aktuelt med noen kurs (arbeidsmarkedsopplæring - AMO), opplæring på videregående nivå, fagskole eller høyere utdanning.",
   },
-  {
-    key: StandardtekstKey.UNNTAK_ARBEIDSGIVERPERIODE,
+  [StandardtekstKey.UNNTAK_ARBEIDSGIVERPERIODE]: {
     label: "Unntak fra arbeidsgiverperioden - langvarig eller kronisk sykdom",
     text: "De første 16 dagene av sykefraværet er det arbeidsgiveren som dekker sykepengene. Har du en kronisk eller langvarig sykdom  som gjør at du har mye fravær, kan NAV dekke sykepengene også i arbeidsgiverperioden.",
   },
-  {
-    key: StandardtekstKey.REISETILSKUDD,
+  [StandardtekstKey.REISETILSKUDD]: {
     label: "Reisetilskudd",
     text: "Du kan få reisetilskudd i stedet for sykepenger hvis det gjør at du kan være i arbeid helt eller delvis. Reisetilskuddet dekker nødvendige ekstra reiseutgifter til og fra jobben mens du er syk, altså transportutgifter utover det du har til vanlig.",
   },
-  {
-    key: StandardtekstKey.HJELPEMIDLER_TILRETTELEGGING,
+  [StandardtekstKey.HJELPEMIDLER_TILRETTELEGGING]: {
     label: "Hjelpemidler og tilrettelegging",
     text: "Hjelpemiddelsentralene i NAV kan bidra med både veiledning og hjelpemidler på arbeidsplassen. De finner løsninger på problemer med syn, hørsel, hukommelse, konsentrasjon, lesing, skriving eller muligheter for å bruke dataløsninger. NAV-kontoret kan sette dere i kontakt med den nærmeste hjelpemiddelsentralen.",
   },
-  {
-    key: StandardtekstKey.MIDLERTIDIG_LONNSTILSKUDD,
+  [StandardtekstKey.MIDLERTIDIG_LONNSTILSKUDD]: {
     label: "Midlertidig lønnstilskudd",
     text: "Arbeidsgiveren din kan få et tilskudd til lønnen hvis det er fare for at du ikke kommer tilbake etter tolv måneder med full eller gradert sykmelding. Med lønnstilskudd skal du utføre vanlige oppgaver, men du trenger ikke gjøre dem med full intensitet.",
   },
-  {
-    key: StandardtekstKey.EKSPERTBISTAND,
+  [StandardtekstKey.EKSPERTBISTAND]: {
     label: "Tilskudd til ekspertbistand",
     text: "Dette tiltaket kan være aktuelt når du har en arbeidsgiver, men har utfordringer med å være i jobben. Målet er at du skal komme tilbake til jobb, eller annet arbeid hos samme eller en annen arbeidsgiver. Eksperten skal bidra til å kartlegge og avklare utfordringene på arbeidsplassen som fører til sykefravær, og foreslå tiltak som gjør deg i stand til å utføre arbeidet ditt. Det er arbeidsgiveren din som søker om tilskuddet.",
   },
-  {
-    key: StandardtekstKey.OKONOMISK_STOTTE,
+  [StandardtekstKey.OKONOMISK_STOTTE]: {
     label: "Hjelp til å søke om annen økonomisk støtte",
     text: "Klarer du ikke å komme tilbake i arbeid før den siste dagen du har rett til sykepenger, trenger vi et nytt dialogmøte. Da vil vi snakke sammen om hvordan du eventuelt kan søke om annen økonomisk støtte fra NAV.",
   },
-  {
-    key: StandardtekstKey.INGEN_RETTIGHETER,
+  [StandardtekstKey.INGEN_RETTIGHETER]: {
     label: "Ingen videre rettigheter",
     text: "Slik situasjonen er nå, har du ikke krav på noen utbetalinger fra NAV. Det betyr at du må gå tilbake til arbeidet eller søke ny jobb. Du er velkommen til å se etter stillinger på arbeidsplassen.nav.no",
   },
-];
+};
 
-const referatStandardTeksterNynorsk: StandardTekst[] = [
-  {
-    key: StandardtekstKey.IKKE_BEHOV,
+const referatStandardTeksterNynorsk: Record<StandardtekstKey, StandardTekst> = {
+  [StandardtekstKey.IKKE_BEHOV]: {
     label: "Ikkje behov for bistand frå NAV no",
     text: "Slik situasjonen er no, er det ikkje behov for spesiell bistand frå NAV. De kan likevel be om nytt dialogmøte når de treng det.",
   },
-  {
-    key: StandardtekstKey.FRISKMELDING_ARBEIDSFORMIDLING,
+  [StandardtekstKey.FRISKMELDING_ARBEIDSFORMIDLING]: {
     label: "Friskmelding til arbeidsformidling",
     text: "Denne ordninga er aktuell dersom helsa di er slik at du kan kome tilbake i arbeid, men ikkje til den jobben du er sjukmeld frå. Dersom alle moglegheiter for å kome tilbake til arbeidsplassen din er forsøkt, kan du få sjukepengar i inntil 12 veker medan du søkjer ny jobb. Maksimal periode med sjukepengar er 52 veker, inkludert vekene med friskmelding til arbeidsformidling.",
   },
-  {
-    key: StandardtekstKey.AVKLARING_ARBEIDSEVNE,
+  [StandardtekstKey.AVKLARING_ARBEIDSEVNE]: {
     label: "Avklaring av arbeidsevne",
     text: "Du kan få kartlagt eller prøvd ut arbeidsevna di. Avklaringa kan skje der du jobbar, eller på ein annan arbeidsplass. Vi undersøkjer då om du kan utføre jobben med enkelte tilpassingar, om du kan få påfyll av kompetanse, eller om eit anna yrke kan vere aktuelt. Avklaringa varer som regel i fire veker, men kan forlengast med inntil åtte veker ved behov.",
   },
-  {
-    key: StandardtekstKey.OPPFOLGINGSTILTAK,
+  [StandardtekstKey.OPPFOLGINGSTILTAK]: {
     label: "Oppfølgingstiltak",
     text: "Du kan få støtte eller rettleiing til å behalde jobben din eller finne ein ny. Tiltaket skal tilpassast behova dine ut frå moglegheitene du har på arbeidsmarknaden.",
   },
-  {
-    key: StandardtekstKey.ARBEIDSRETTET_REHABILITERING,
+  [StandardtekstKey.ARBEIDSRETTET_REHABILITERING]: {
     label: "Arbeidsretta rehabilitering",
     text: "Du kan få individuell rettleiing tilpassa behovet ditt (t.d. hjelp til å kartleggje helse, arbeidsplass og funksjon). Dette aukar sjansane dine til å kome i jobb att.",
   },
-  {
-    key: StandardtekstKey.OPPLAERING_UTDANNING,
+  [StandardtekstKey.OPPLAERING_UTDANNING]: {
     label: "Opplæring og utdanning",
     text: "Dersom du har vore sjuk lenge, kan kurs eller utdanning ha ekstra stor betydning for å kome i jobb att. Kanskje kan det vere aktuelt med kurs (arbeidsmarknadsopplæring – AMO), opplæring på vidaregåande nivå, fagskule eller høgare utdanning.",
   },
-  {
-    key: StandardtekstKey.UNNTAK_ARBEIDSGIVERPERIODE,
+  [StandardtekstKey.UNNTAK_ARBEIDSGIVERPERIODE]: {
     label: "Unntak frå arbeidsgivarperiode – langvarig eller kronisk sjukdom",
     text: "Dei første 16 dagane av sjukefråværet er det arbeidsgivaren som dekkjer sjukepengane. Dersom du har mykje fråvær grunna kronisk eller langvarig sjukdom, kan NAV dekke sjukepengane i arbeidsgivarperioden.",
   },
-  {
-    key: StandardtekstKey.REISETILSKUDD,
+  [StandardtekstKey.REISETILSKUDD]: {
     label: "Reisetilskot",
     text: "Du kan få reisetilskot i staden for sjukepengar viss det gjer at du kan vere heilt eller delvis i arbeid. Reisetilskotet dekkjer nødvendige ekstra reiseutgifter til og frå jobben medan du er sjuk, altså transportutgifter utover dei du har til vanleg.",
   },
-  {
-    key: StandardtekstKey.HJELPEMIDLER_TILRETTELEGGING,
+  [StandardtekstKey.HJELPEMIDLER_TILRETTELEGGING]: {
     label: "Hjelpemiddel og tilrettelegging",
     text: "Hjelpemiddelsentralane i NAV kan bidra med både rettleiing og hjelpemiddel på arbeidsplassen. Dei finn løysingar på problem med syn, høyrsel, hugs, konsentrasjon, lesing, skriving eller moglegheiter for å bruke dataløysingar. NAV-kontoret kan setje dykk i kontakt med nærmaste hjelpemiddelsentral.",
   },
-  {
-    key: StandardtekstKey.MIDLERTIDIG_LONNSTILSKUDD,
+  [StandardtekstKey.MIDLERTIDIG_LONNSTILSKUDD]: {
     label: "Mellombels lønstilskot",
     text: "Arbeidsgivaren din kan få tilskot til løna dersom det er fare for at du ikkje kjem tilbake etter tolv månader med full eller gradert sjukmelding. Med lønstilskot skal du utføre vanlege oppgåver, men du treng ikkje gjere dei med full intensitet.",
   },
-  {
-    key: StandardtekstKey.EKSPERTBISTAND,
+  [StandardtekstKey.EKSPERTBISTAND]: {
     label: "Tilskot til ekspertbistand",
     text: "Dette tiltaket kan vere aktuelt når du har ein arbeidsgivar, men har utfordringar med å vere i arbeid. Målet er at du skal kome tilbake til det same arbeidet, eller anna arbeid hos same eller ein annan arbeidsgivar. Eksperten skal bidra til å kartleggje og avklare utfordringane på arbeidsplassen som fører til sjukefråvær, og foreslå tiltak som gjer deg i stand til å utføre arbeidet ditt. Det er arbeidsgivaren din som søker om tilskot.",
   },
-  {
-    key: StandardtekstKey.OKONOMISK_STOTTE,
+  [StandardtekstKey.OKONOMISK_STOTTE]: {
     label: "Hjelp til å søkje om anna økonomisk støtte",
     text: "Viss du ikkje klarer å kome tilbake i arbeid før den siste dagen du har rett til sjukepengar, må det avtalast eit nytt dialogmøte. Vi tek då ein prat saman om korleis du eventuelt kan søkje om anna økonomisk støtte frå NAV.",
   },
-  {
-    key: StandardtekstKey.INGEN_RETTIGHETER,
+  [StandardtekstKey.INGEN_RETTIGHETER]: {
     label: "Ingen vidare rettar",
     text: "Slik situasjonen din er no, har du ikkje krav på utbetalingar frå NAV. Det betyr at du må gå tilbake til jobben eller søkje ny jobb. Ta gjerne ein kik på ledige stillingar på arbeidsplassen.nav.no.",
   },
-];
+};
 
 const referatTextsBokmal = {
   nyttHeader: "Referat fra dialogmøte",

@@ -21,7 +21,7 @@ import { screen } from "@testing-library/react";
 import { expectedReferatDocument } from "./testDataDocuments";
 import { stubMellomlagreApi } from "../stubs/stubIsdialogmote";
 import { queryClientWithMockData } from "../testQueryClient";
-import { texts as deltakereSkjemaTexts } from "@/sider/dialogmoter/components/referat/Deltakere";
+import { texts as referatTexts } from "@/sider/dialogmoter/components/referat/Referat";
 import { renderWithRouter } from "../testRouterUtils";
 import { MalformProvider } from "@/context/malform/MalformContext";
 
@@ -79,11 +79,11 @@ describe("ReferatMellomlagreTest", () => {
     renderReferat(dialogmoteMedMellomlagretReferatBehandlerIkkeDeltatt);
 
     const behandlerDeltokInput: HTMLInputElement = screen.getByLabelText(
-      deltakereSkjemaTexts.behandlerDeltokLabel
+      referatTexts.deltakere.behandlerDeltokLabel
     );
     expect(behandlerDeltokInput.checked).to.be.false;
     const behandlerMottarReferatInput: HTMLInputElement = screen.getByLabelText(
-      deltakereSkjemaTexts.behandlerMottaReferatLabel
+      referatTexts.deltakere.behandlerMottaReferatLabel
     );
     expect(behandlerMottarReferatInput.checked).to.be.false;
   });

@@ -1,43 +1,26 @@
-import React, { ReactNode } from "react";
-import { Box, Textarea, TextareaProps } from "@navikt/ds-react";
-import { Field } from "react-final-form";
+import React, { ForwardedRef, ReactNode } from "react";
+import { Textarea, TextareaProps } from "@navikt/ds-react";
+import { ReferatInfoBox } from "@/sider/dialogmoter/components/referat/ReferatInfoBox";
 
 interface ReferatTextAreaProps extends TextareaProps {
-  field: string;
   infoBox?: ReactNode;
 }
 
-export const ReferatTextArea = ({
-  field,
-  infoBox,
-  ...rest
-}: ReferatTextAreaProps) => (
-  <div className="flex gap-8">
-    <div className="flex-1">
-      <Field<string> name={field}>
-        {({ input, meta }) => (
-          <Textarea
-            size="small"
-            error={meta.submitFailed && meta.error}
-            id={field}
-            {...input}
-            {...rest}
-          />
-        )}
-      </Field>
+const ReferatTextArea = (
+  props: ReferatTextAreaProps,
+  ref: ForwardedRef<HTMLTextAreaElement>
+) => {
+  const { infoBox, ...rest } = props;
+  return (
+    <div className="flex gap-8">
+      <div className="flex-1">
+        <Textarea size="small" ref={ref} {...rest} />
+      </div>
+      <div className="flex-[0.5] mt-12">
+        {infoBox && <ReferatInfoBox>{infoBox}</ReferatInfoBox>}
+      </div>
     </div>
-    <div className="flex-[0.5] mt-12">
-      {infoBox ? (
-        <Box
-          borderRadius="medium"
-          background="surface-subtle"
-          borderColor="border-default"
-          padding="4"
-          borderWidth="1"
-        >
-          {infoBox}
-        </Box>
-      ) : null}
-    </div>
-  </div>
-);
+  );
+};
+
+export default React.forwardRef(ReferatTextArea);

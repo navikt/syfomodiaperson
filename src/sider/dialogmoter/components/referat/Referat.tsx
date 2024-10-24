@@ -1,44 +1,62 @@
-import React, { ReactElement, useState } from "react";
-import { Form, FormSpy } from "react-final-form";
-import arrayMutators from "final-form-arrays";
-import Deltakere from "./Deltakere";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
-import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import {
-  validerReferatDeltakere,
-  validerSkjemaTekster,
-} from "@/utils/valideringUtils";
+  DialogmotedeltakerBehandlerDTO,
+  DialogmoteDTO,
+} from "@/data/dialogmote/types/dialogmoteTypes";
 import { useReferatDocument } from "@/hooks/dialogmote/document/useReferatDocument";
-import { StandardTekst } from "@/data/dialogmote/dialogmoteTexts";
+import {
+  getReferatTexts,
+  StandardtekstKey,
+} from "@/data/dialogmote/dialogmoteTexts";
 import {
   NewDialogmotedeltakerAnnenDTO,
   NewDialogmoteReferatDTO,
 } from "@/data/dialogmote/types/dialogmoteReferatTypes";
 import { useFerdigstillDialogmote } from "@/data/dialogmote/useFerdigstillDialogmote";
-import { Navigate } from "react-router-dom";
+import { Link as RouterLink, Navigate } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useMellomlagreReferat } from "@/data/dialogmote/useMellomlagreReferat";
 import { useInitialValuesReferat } from "@/hooks/dialogmote/useInitialValuesReferat";
-import { StandardTekster } from "@/sider/dialogmoter/components/referat/StandardTekster";
 import { useEndreReferat } from "@/data/dialogmote/useEndreReferat";
 import dayjs, { Dayjs } from "dayjs";
 import { useDebouncedCallback } from "use-debounce";
-import { FormState } from "final-form";
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
-import { Alert, BodyShort, Box, Button, Heading, Link } from "@navikt/ds-react";
-import { Link as RouterLink } from "react-router-dom";
+import {
+  Alert,
+  BodyLong,
+  BodyShort,
+  Box,
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  Heading,
+  HStack,
+  Link,
+  TextField,
+  VStack,
+} from "@navikt/ds-react";
 import { MalformRadioGroup } from "@/components/MalformRadioGroup";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
-import { useMalform } from "@/context/malform/MalformContext";
+import { Malform, useMalform } from "@/context/malform/MalformContext";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
-import { ReferatTextArea } from "@/sider/dialogmoter/components/referat/ReferatTextArea";
 import {
   showTimeIncludingSeconds,
   tilDatoMedManedNavn,
 } from "@/utils/datoUtils";
 import { SaveFile } from "../../../../../img/ImageComponents";
+import { FormProvider, useFieldArray, useForm } from "react-hook-form";
+import ReferatTextArea from "@/sider/dialogmoter/components/referat/ReferatTextArea";
+import { ReferatInfoBox } from "@/sider/dialogmoter/components/referat/ReferatInfoBox";
+import { DeltakerArbeidstakerHeading } from "@/sider/dialogmoter/components/referat/DeltakerArbeidstakerHeading";
+import { DeltakerNavHeading } from "@/sider/dialogmoter/components/referat/DeltakerNavHeading";
+import { DeltakerBehandlerHeading } from "@/sider/dialogmoter/components/referat/DeltakerBehandlerHeading";
+import { DeltakerArbeidsgiverHeading } from "@/sider/dialogmoter/components/referat/DeltakerArbeidsgiverHeading";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { ExpansionCardFormField } from "@/components/ExpansionCardFormField";
+import { PlusIcon, TrashIcon } from "@navikt/aksel-icons";
 
 export const MAX_LENGTH_SITUASJON = 6500;
 export const MAX_LENGTH_KONKLUSJON = 1500;
@@ -103,6 +121,27 @@ export const texts = {
       description: "Hva avtalte dere at behandleren skal gjøre?",
     },
   },
+  standardtekster: {
+    label: "Dette informerte NAV om i møtet",
+    description: "Velg bare de alternativene du faktisk informerte om i møtet.",
+    info: "Det blir hentet opp standardtekster i referatet avhengig av hva du velger.",
+  },
+  deltakere: {
+    title: "Deltakere i møtet",
+    buttonText: "Legg til en deltaker",
+    andreDeltakereMissingFunksjon: "Vennligst angi funksjon på deltaker",
+    andreDeltakereMissingNavn: "Vennligst angi navn på deltaker",
+    arbeidsgiverLabel: "Navn",
+    arbeidsgiverTekst:
+      "Referatet sendes alltid ut til personen som er registrert som nærmeste leder i Altinn, uavhengig av hvem som deltok i møtet.",
+    arbeidsgiverDeltakerMissing: "Minst én person må delta fra arbeidsgiver",
+    behandlerTekst:
+      "Behandler var innkalt til dette møtet, men hvis behandler likevel ikke møtte opp bør det nevnes i referatet slik at deltakerlisten blir riktig.",
+    behandlerDeltokLabel: "Behandleren deltok i møtet",
+    behandlerMottaReferatLabel: "Behandleren skal motta referatet",
+    behandlerReferatSamtykke:
+      "Dersom behandleren ikke deltok i møtet, men likevel ønsker å motta referat, krever det et samtykke fra arbeidstakeren.",
+  },
 };
 
 const personvernUrl =
@@ -122,7 +161,7 @@ export enum ReferatMode {
   ENDRET,
 }
 
-interface ReferatSkjemaTekster {
+export interface ReferatSkjemaValues {
   situasjon: string;
   konklusjon: string;
   arbeidstakersOppgave: string;
@@ -130,11 +169,8 @@ interface ReferatSkjemaTekster {
   behandlersOppgave?: string;
   veiledersOppgave: string;
   begrunnelseEndring?: string;
-}
-
-export interface ReferatSkjemaValues extends ReferatSkjemaTekster {
   naermesteLeder: string;
-  standardtekster: StandardTekst[];
+  standardtekster: StandardtekstKey[];
   andreDeltakere: NewDialogmotedeltakerAnnenDTO[];
   behandlerDeltatt?: boolean;
   behandlerMottarReferat?: boolean;
@@ -186,67 +222,45 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
     boolean | undefined
   >();
 
-  const dateAndTimeForMeeting = tilDatoMedManedNavn(dialogmote.tid);
-  const header = `${navbruker?.navn}, ${dateAndTimeForMeeting}, ${dialogmote.sted}`;
   const isEndringAvReferat = mode === ReferatMode.ENDRET;
 
   const { getReferatDocument } = useReferatDocument(dialogmote, mode);
+  const initialValues = useInitialValuesReferat(dialogmote);
+  const { getCurrentNarmesteLeder } = useLedereQuery();
+  const currentNarmesteLederNavn =
+    getCurrentNarmesteLeder(dialogmote.arbeidsgiver.virksomhetsnummer)
+      ?.narmesteLederNavn || "";
   const { malform } = useMalform();
+  const { standardTekster: standardTeksterForVisning } = getReferatTexts(
+    Malform.BOKMAL
+  );
+  const formMethods = useForm<ReferatSkjemaValues>({
+    defaultValues: initialValues,
+  });
+  const {
+    control,
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+    watch,
+    reset,
+  } = formMethods;
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "andreDeltakere",
+  });
+
+  useEffect(() => {
+    if (currentNarmesteLederNavn) {
+      reset({
+        naermesteLeder: currentNarmesteLederNavn,
+      });
+    }
+  }, [reset, currentNarmesteLederNavn]);
 
   const isSendingReferat = () => {
     return ferdigstillDialogmote.isPending || endreReferat.isPending;
-  };
-
-  const validate = (values: Partial<ReferatSkjemaValues>) => {
-    const friteksterFeil = validerSkjemaTekster<ReferatSkjemaTekster>({
-      situasjon: {
-        value: values.situasjon || "",
-        maxLength: MAX_LENGTH_SITUASJON,
-        missingRequiredMessage: valideringsTexts.situasjonMissing,
-      },
-      konklusjon: {
-        value: values.konklusjon || "",
-        maxLength: MAX_LENGTH_KONKLUSJON,
-        missingRequiredMessage: valideringsTexts.konklusjonMissing,
-      },
-      arbeidstakersOppgave: {
-        value: values.arbeidstakersOppgave || "",
-        maxLength: MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE,
-        missingRequiredMessage: valideringsTexts.arbeidstakersOppgaveMissing,
-      },
-      arbeidsgiversOppgave: {
-        value: values.arbeidsgiversOppgave || "",
-        maxLength: MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE,
-        missingRequiredMessage: valideringsTexts.arbeidsgiversOppgaveMissing,
-      },
-      ...(dialogmote.behandler
-        ? {
-            behandlersOppgave: {
-              value: values.behandlersOppgave || "",
-              maxLength: MAX_LENGTH_BEHANDLERS_OPPGAVE,
-            },
-          }
-        : {}),
-      veiledersOppgave: {
-        value: values.veiledersOppgave || "",
-        maxLength: MAX_LENGTH_VEILEDERS_OPPGAVE,
-      },
-      ...(isEndringAvReferat
-        ? {
-            begrunnelseEndring: {
-              value: values.begrunnelseEndring || "",
-              maxLength: MAX_LENGTH_BEGRUNNELSE_ENDRING,
-              missingRequiredMessage:
-                valideringsTexts.begrunnelseEndringMissing,
-            },
-          }
-        : {}),
-    });
-
-    return {
-      ...validerReferatDeltakere(values),
-      ...friteksterFeil,
-    };
   };
 
   const submit = (values: ReferatSkjemaValues) => {
@@ -310,183 +324,350 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
     5000,
     { maxWait: 20000 }
   );
-
   const handleLagreClick = (values: ReferatSkjemaValues) => {
     debouncedAutoSave.cancel();
     mellomlagre(values);
   };
-
   const savedReferatText = (savedDate: Date) => {
     return `${texts.referatSaved} ${showTimeIncludingSeconds(savedDate)}`;
   };
-
-  const initialValues = useInitialValuesReferat(dialogmote);
 
   if (ferdigstillDialogmote.isSuccess || endreReferat.isSuccess) {
     return <Navigate to={moteoversiktRoutePath} />;
   }
 
+  const header = `${navbruker?.navn}, ${tilDatoMedManedNavn(dialogmote.tid)}, ${
+    dialogmote.sted
+  }`;
+  const arbeidsgiverDeltakerHeading = `Fra arbeidsgiver: ${
+    watch("naermesteLeder") || ""
+  }`;
+  const behandlerDeltakerHeading = (
+    behandler: DialogmotedeltakerBehandlerDTO,
+    deltatt: boolean | undefined
+  ): string =>
+    `Behandler: ${behandler.behandlerNavn}${
+      deltatt === false ? ", deltok ikke" : ""
+    }`;
+
   return (
     <Box background="surface-default" padding="4">
-      <Form
-        onSubmit={submit}
-        validate={validate}
-        initialValues={initialValues}
-        mutators={{ ...arrayMutators }}
-      >
-        {({ handleSubmit, values }) => (
-          <form onSubmit={handleSubmit}>
-            <FormSpy
-              subscription={{ values: true }}
-              onChange={(formState: FormState<ReferatSkjemaValues>) => {
-                setUendretSidenMellomlagring(false);
-                debouncedAutoSave(formState.values);
-              }}
-            />
-            <Heading size="large" className="mb-8">
-              {header}
-            </Heading>
-            <Alert variant="info" size="small" className="mb-8 [&>*]:max-w-fit">
-              {texts.digitalReferat}
-            </Alert>
-            <Deltakere behandler={dialogmote.behandler} />
-            <Alert
-              variant="warning"
-              size="small"
-              inline
-              className="mb-8 [&>*]:max-w-fit"
+      <FormProvider {...formMethods}>
+        <form
+          onSubmit={handleSubmit(submit)}
+          onChange={() => {
+            setUendretSidenMellomlagring(false);
+            debouncedAutoSave(getValues());
+          }}
+        >
+          <Heading size="large" className="mb-8">
+            {header}
+          </Heading>
+          <Alert variant="info" size="small" className="mb-8 [&>*]:max-w-fit">
+            {texts.digitalReferat}
+          </Alert>
+          <VStack gap="4">
+            <Heading size="medium">{texts.deltakere.title}</Heading>
+            <DeltakerArbeidstakerHeading />
+            <DeltakerNavHeading />
+            <ExpansionCardFormField
+              ariaLabel={arbeidsgiverDeltakerHeading}
+              hasError={!!errors.naermesteLeder}
+              heading={
+                <DeltakerArbeidsgiverHeading>
+                  {arbeidsgiverDeltakerHeading}
+                </DeltakerArbeidsgiverHeading>
+              }
             >
-              {texts.personvern}
-              <Link
-                target="_blank"
-                rel="noopener noreferrer"
-                href={personvernUrl}
-              >
-                {texts.personvernLenketekst}
-              </Link>
-            </Alert>
-            <MalformRadioGroup />
-            {showToast && (
-              <div className="mb-4 font-bold flex gap-2">
-                <img src={SaveFile} alt="saved" />
-                <span>{savedReferatText(lastSavedTime.toDate())}</span>
-              </div>
-            )}
-            <div className="flex flex-col gap-8 mb-8">
-              {mode === ReferatMode.ENDRET && (
-                <ReferatTextArea
-                  field="begrunnelseEndring"
-                  label={texts.fritekster.begrunnelseEndring.label}
-                  description={texts.fritekster.begrunnelseEndring.description}
-                  maxLength={MAX_LENGTH_BEGRUNNELSE_ENDRING}
-                  minRows={8}
-                  infoBox={texts.fritekster.begrunnelseEndring.infoboks}
+              <VStack gap="4">
+                <TextField
+                  className="w-2/4"
+                  {...register("naermesteLeder", {
+                    required: texts.deltakere.arbeidsgiverDeltakerMissing,
+                  })}
+                  error={errors.naermesteLeder?.message}
+                  label={texts.deltakere.arbeidsgiverLabel}
+                  type="text"
+                  size="small"
                 />
-              )}
-              <ReferatTextArea
-                field="situasjon"
-                label={texts.fritekster.situasjon.label}
-                description={texts.fritekster.situasjon.description}
-                maxLength={MAX_LENGTH_SITUASJON}
-                minRows={12}
-                infoBox={Object.values(texts.fritekster.situasjon.infoboks).map(
-                  (text, index) => (
-                    <BodyShort key={index} size="small">
-                      {text}
-                    </BodyShort>
-                  )
+                <BodyLong size="small">
+                  {texts.deltakere.arbeidsgiverTekst}
+                </BodyLong>
+              </VStack>
+            </ExpansionCardFormField>
+            {dialogmote.behandler && (
+              <ExpansionCardFormField
+                ariaLabel={behandlerDeltakerHeading(
+                  dialogmote.behandler,
+                  watch("behandlerDeltatt")
                 )}
-              />
-              <ReferatTextArea
-                field="konklusjon"
-                label={texts.fritekster.konklusjon.label}
-                description={texts.fritekster.konklusjon.description}
-                maxLength={MAX_LENGTH_KONKLUSJON}
-                minRows={8}
-                infoBox={texts.fritekster.konklusjon.infoboks}
-              />
-              <ReferatTextArea
-                field="arbeidstakersOppgave"
-                label={texts.fritekster.arbeidstaker.label}
-                description={texts.fritekster.arbeidstaker.description}
-                maxLength={MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE}
-                minRows={4}
-                infoBox={texts.fritekster.arbeidstaker.infoboks}
-              />
-              <ReferatTextArea
-                field="arbeidsgiversOppgave"
-                label={texts.fritekster.arbeidsgiver.label}
-                description={texts.fritekster.arbeidsgiver.description}
-                maxLength={MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE}
-                minRows={4}
-              />
-              {dialogmote.behandler && (
-                <ReferatTextArea
-                  field="behandlersOppgave"
-                  label={texts.fritekster.behandler.label}
-                  description={texts.fritekster.behandler.description}
-                  maxLength={MAX_LENGTH_BEHANDLERS_OPPGAVE}
-                  minRows={4}
-                />
-              )}
-              <ReferatTextArea
-                field="veiledersOppgave"
-                label={texts.fritekster.veileder.label}
-                description={texts.fritekster.veileder.description}
-                maxLength={MAX_LENGTH_VEILEDERS_OPPGAVE}
-                minRows={4}
-              />
-            </div>
-            <StandardTekster />
-            <div className="mb-8">
-              <Forhandsvisning
-                contentLabel={texts.forhandsvisningContentLabel}
-                getDocumentComponents={() => getReferatDocument(values)}
-              />
-            </div>
-            {ferdigstillDialogmote.isError && (
-              <SkjemaInnsendingFeil error={ferdigstillDialogmote.error} />
+                heading={
+                  <DeltakerBehandlerHeading>
+                    {behandlerDeltakerHeading(
+                      dialogmote.behandler,
+                      watch("behandlerDeltatt")
+                    )}
+                  </DeltakerBehandlerHeading>
+                }
+              >
+                <VStack gap="4">
+                  <BodyLong size="small">
+                    {texts.deltakere.behandlerTekst}
+                  </BodyLong>
+                  <Checkbox size="small" {...register("behandlerDeltatt")}>
+                    {texts.deltakere.behandlerDeltokLabel}
+                  </Checkbox>
+                  <Checkbox
+                    size="small"
+                    {...register("behandlerMottarReferat")}
+                  >
+                    {texts.deltakere.behandlerMottaReferatLabel}
+                  </Checkbox>
+                  <BodyLong size="small">
+                    {texts.deltakere.behandlerReferatSamtykke}
+                  </BodyLong>
+                </VStack>
+              </ExpansionCardFormField>
             )}
-            {endreReferat.isError && (
-              <SkjemaInnsendingFeil error={endreReferat.error} />
-            )}
-            {mellomlagreReferat.isError && (
-              <SkjemaInnsendingFeil error={mellomlagreReferat.error} />
-            )}
-            {mellomlagreReferat.isSuccess && uendretSidenMellomlagring && (
-              <Alert variant="success" size="small">
-                {savedReferatText(lastSavedTime.toDate())}
-              </Alert>
-            )}
-            <div className="flex gap-4 pt-12">
+            <VStack gap="4" align="start">
+              {fields.map((field, index) => (
+                <div key={field.id} className="flex w-full gap-2">
+                  <TextField
+                    className="flex-[0.3]"
+                    {...register(`andreDeltakere.${index}.funksjon`, {
+                      required: texts.deltakere.andreDeltakereMissingFunksjon,
+                    })}
+                    error={errors.andreDeltakere?.[index]?.funksjon?.message}
+                    label="Funksjon"
+                    type="text"
+                    size="small"
+                  />
+                  <TextField
+                    className="flex-[0.3]"
+                    {...register(`andreDeltakere.${index}.navn`, {
+                      required: texts.deltakere.andreDeltakereMissingNavn,
+                    })}
+                    error={errors.andreDeltakere?.[index]?.navn?.message}
+                    label="Navn"
+                    type="text"
+                    size="small"
+                  />
+                  <Button
+                    className="mt-7 self-start"
+                    type="button"
+                    variant="tertiary"
+                    size="small"
+                    icon={<TrashIcon title="Slett ikon" />}
+                    onClick={() => remove(index)}
+                  />
+                </div>
+              ))}
               <Button
                 type="button"
                 variant="secondary"
-                loading={mellomlagreReferat.isPending}
-                onClick={() => handleLagreClick(values)}
+                icon={<PlusIcon title="Pluss ikon" />}
+                onClick={() => append({ funksjon: "", navn: "" })}
               >
-                {texts.save}
+                {texts.deltakere.buttonText}
               </Button>
-              <Button
-                type="submit"
-                variant="primary"
-                loading={isSendingReferat()}
-                onClick={() => debouncedAutoSave.cancel()}
-              >
-                {texts.send}
-              </Button>
-              <Button
-                as={RouterLink}
-                type="button"
-                variant="tertiary"
-                to={moteoversiktRoutePath}
-              >
-                {texts.abort}
-              </Button>
+            </VStack>
+          </VStack>
+          <Alert
+            variant="warning"
+            size="small"
+            inline
+            className="mt-16 mb-8 [&>*]:max-w-fit"
+          >
+            {texts.personvern}
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              href={personvernUrl}
+            >
+              {texts.personvernLenketekst}
+            </Link>
+          </Alert>
+          <MalformRadioGroup />
+          {showToast && (
+            <div className="mb-4 font-bold flex gap-2">
+              <img src={SaveFile} alt="saved" />
+              <span>{savedReferatText(lastSavedTime.toDate())}</span>
             </div>
-          </form>
-        )}
-      </Form>
+          )}
+          <VStack gap="8">
+            {mode === ReferatMode.ENDRET && (
+              <ReferatTextArea
+                {...register("begrunnelseEndring", {
+                  maxLength: MAX_LENGTH_BEGRUNNELSE_ENDRING,
+                  required: valideringsTexts.begrunnelseEndringMissing,
+                })}
+                label={texts.fritekster.begrunnelseEndring.label}
+                description={texts.fritekster.begrunnelseEndring.description}
+                maxLength={MAX_LENGTH_BEGRUNNELSE_ENDRING}
+                minRows={8}
+                infoBox={texts.fritekster.begrunnelseEndring.infoboks}
+                value={watch("begrunnelseEndring")}
+                error={errors.begrunnelseEndring?.message}
+              />
+            )}
+            <ReferatTextArea
+              {...register("situasjon", {
+                maxLength: MAX_LENGTH_SITUASJON,
+                required: valideringsTexts.situasjonMissing,
+              })}
+              label={texts.fritekster.situasjon.label}
+              description={texts.fritekster.situasjon.description}
+              maxLength={MAX_LENGTH_SITUASJON}
+              minRows={12}
+              value={watch("situasjon")}
+              error={errors.situasjon?.message}
+              infoBox={Object.values(texts.fritekster.situasjon.infoboks).map(
+                (text, index) => (
+                  <BodyShort key={index} size="small">
+                    {text}
+                  </BodyShort>
+                )
+              )}
+            />
+            <ReferatTextArea
+              {...register("konklusjon", {
+                maxLength: MAX_LENGTH_KONKLUSJON,
+                required: valideringsTexts.konklusjonMissing,
+              })}
+              label={texts.fritekster.konklusjon.label}
+              description={texts.fritekster.konklusjon.description}
+              maxLength={MAX_LENGTH_KONKLUSJON}
+              minRows={8}
+              infoBox={texts.fritekster.konklusjon.infoboks}
+              value={watch("konklusjon")}
+              error={errors.konklusjon?.message}
+            />
+            <ReferatTextArea
+              {...register("arbeidstakersOppgave", {
+                maxLength: MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE,
+                required: valideringsTexts.arbeidstakersOppgaveMissing,
+              })}
+              label={texts.fritekster.arbeidstaker.label}
+              description={texts.fritekster.arbeidstaker.description}
+              maxLength={MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE}
+              minRows={4}
+              infoBox={texts.fritekster.arbeidstaker.infoboks}
+              value={watch("arbeidstakersOppgave")}
+              error={errors.arbeidstakersOppgave?.message}
+            />
+            <ReferatTextArea
+              {...register("arbeidsgiversOppgave", {
+                maxLength: MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE,
+                required: valideringsTexts.arbeidsgiversOppgaveMissing,
+              })}
+              label={texts.fritekster.arbeidsgiver.label}
+              description={texts.fritekster.arbeidsgiver.description}
+              maxLength={MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE}
+              minRows={4}
+              value={watch("arbeidsgiversOppgave")}
+              error={errors.arbeidsgiversOppgave?.message}
+            />
+            {dialogmote.behandler && (
+              <ReferatTextArea
+                {...register("behandlersOppgave", {
+                  maxLength: MAX_LENGTH_BEHANDLERS_OPPGAVE,
+                })}
+                label={texts.fritekster.behandler.label}
+                description={texts.fritekster.behandler.description}
+                maxLength={MAX_LENGTH_BEHANDLERS_OPPGAVE}
+                minRows={4}
+                value={watch("behandlersOppgave")}
+                error={errors.behandlersOppgave?.message}
+              />
+            )}
+            <ReferatTextArea
+              {...register("veiledersOppgave", {
+                maxLength: MAX_LENGTH_VEILEDERS_OPPGAVE,
+              })}
+              label={texts.fritekster.veileder.label}
+              description={texts.fritekster.veileder.description}
+              maxLength={MAX_LENGTH_VEILEDERS_OPPGAVE}
+              minRows={4}
+              value={watch("veiledersOppgave")}
+              error={errors.veiledersOppgave?.message}
+            />
+            <div className="flex">
+              <div className="flex-1">
+                <CheckboxGroup
+                  size="small"
+                  legend={texts.standardtekster.label}
+                  description={texts.standardtekster.description}
+                >
+                  {Object.entries(standardTeksterForVisning).map(
+                    ([key, standardtekst], index) => (
+                      <Checkbox
+                        key={index}
+                        size="small"
+                        value={key}
+                        defaultChecked={initialValues.standardtekster?.includes(
+                          key as StandardtekstKey
+                        )}
+                        {...register("standardtekster")}
+                      >
+                        {standardtekst.label}
+                      </Checkbox>
+                    )
+                  )}
+                </CheckboxGroup>
+              </div>
+              <div className="flex-[0.5]">
+                <ReferatInfoBox>{texts.standardtekster.info}</ReferatInfoBox>
+              </div>
+            </div>
+          </VStack>
+          <div className="my-8">
+            <Forhandsvisning
+              contentLabel={texts.forhandsvisningContentLabel}
+              getDocumentComponents={() => getReferatDocument(getValues())}
+            />
+          </div>
+          {ferdigstillDialogmote.isError && (
+            <SkjemaInnsendingFeil error={ferdigstillDialogmote.error} />
+          )}
+          {endreReferat.isError && (
+            <SkjemaInnsendingFeil error={endreReferat.error} />
+          )}
+          {mellomlagreReferat.isError && (
+            <SkjemaInnsendingFeil error={mellomlagreReferat.error} />
+          )}
+          {mellomlagreReferat.isSuccess && uendretSidenMellomlagring && (
+            <Alert variant="success" size="small">
+              {savedReferatText(lastSavedTime.toDate())}
+            </Alert>
+          )}
+          <HStack gap="4" className="mt-8">
+            <Button
+              type="button"
+              variant="secondary"
+              loading={mellomlagreReferat.isPending}
+              onClick={() => handleLagreClick(getValues())}
+            >
+              {texts.save}
+            </Button>
+            <Button
+              type="submit"
+              variant="primary"
+              loading={isSendingReferat()}
+              onClick={() => debouncedAutoSave.cancel()}
+            >
+              {texts.send}
+            </Button>
+            <Button
+              as={RouterLink}
+              type="button"
+              variant="tertiary"
+              to={moteoversiktRoutePath}
+            >
+              {texts.abort}
+            </Button>
+          </HStack>
+        </form>
+      </FormProvider>
     </Box>
   );
 };
