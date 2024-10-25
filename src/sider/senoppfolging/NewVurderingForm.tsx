@@ -13,7 +13,7 @@ const texts = {
   button: "Fullfør vurdering",
   description: "Når du fullfører vurderingen fjernes hendelsen fra oversikten.",
   begrunnelseDescription:
-    "Det er valgfritt å skrive begrunnelse. Begrunnelsen vil være synlig i Modia, men vises ikke for den sykmeldte på innloggede sider. Innbyggeren kan kreve innsyn i det du skriver her. Begrunnelsen blir ikke journalført.",
+    "Begrunnelsen vil være synlig i Modia, men vises ikke for den sykmeldte på innloggede sider. Innbyggeren kan kreve innsyn i det du skriver her. Begrunnelsen blir ikke journalført.",
 };
 
 interface Props {
