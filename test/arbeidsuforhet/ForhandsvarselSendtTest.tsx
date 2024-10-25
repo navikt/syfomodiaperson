@@ -1,14 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import { queryClientWithMockData } from "../testQueryClient";
-import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { screen } from "@testing-library/react";
 import { navEnhet } from "../dialogmote/testData";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { expect, describe, it, beforeEach } from "vitest";
 import { ForhandsvarselSendt } from "@/sider/arbeidsuforhet/ForhandsvarselSendt";
 import { VurderingResponseDTO } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
-import { arbeidsuforhetQueryKeys } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { addWeeks, tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { createForhandsvarsel } from "./arbeidsuforhetTestData";
 import { renderWithRouter } from "../testRouterUtils";
@@ -16,20 +14,13 @@ import { arbeidsuforhetPath } from "@/routers/AppRouter";
 
 let queryClient: QueryClient;
 
-const mockArbeidsuforhetVurderinger = (vurderinger: VurderingResponseDTO[]) => {
-  queryClient.setQueryData(
-    arbeidsuforhetQueryKeys.arbeidsuforhet(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => vurderinger
-  );
-};
-
-const renderForhandsvarselSendt = () => {
+const renderForhandsvarselSendt = (forhandsvarsel: VurderingResponseDTO) => {
   renderWithRouter(
     <QueryClientProvider client={queryClient}>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <ForhandsvarselSendt />
+        <ForhandsvarselSendt forhandsvarsel={forhandsvarsel} />
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     arbeidsuforhetPath,
@@ -48,10 +39,8 @@ describe("ForhandsvarselSendt", () => {
         createdAt: new Date(),
         svarfrist: addWeeks(new Date(), 3),
       });
-      const vurderinger = [forhandsvarselBeforeFrist];
-      mockArbeidsuforhetVurderinger(vurderinger);
 
-      renderForhandsvarselSendt();
+      renderForhandsvarselSendt(forhandsvarselBeforeFrist);
 
       expect(
         screen.getByText(
@@ -88,10 +77,8 @@ describe("ForhandsvarselSendt", () => {
         createdAt: createdAt,
         svarfrist: new Date(),
       });
-      const vurderinger = [forhandsvarselAfterFrist];
-      mockArbeidsuforhetVurderinger(vurderinger);
 
-      renderForhandsvarselSendt();
+      renderForhandsvarselSendt(forhandsvarselAfterFrist);
 
       expect(screen.getByText("Fristen er gått ut")).to.exist;
       expect(screen.getByText("Fristen var:")).to.exist;

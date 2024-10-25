@@ -127,7 +127,9 @@ export const GlobalNavigasjon = ({
   ).map((value) => value as [Menypunkter, Menypunkt]);
 
   const setFocus = (index: number) => {
-    refs.current[index].focus();
+    if (refs.current[index]) {
+      refs.current[index].focus();
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLAnchorElement>) => {

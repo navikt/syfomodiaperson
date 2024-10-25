@@ -1,9 +1,9 @@
 import React from "react";
-import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { BodyShort, Box, Heading, HStack } from "@navikt/ds-react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { BellIcon } from "@navikt/aksel-icons";
 import { ArbeidsuforhetButtons } from "@/sider/arbeidsuforhet/ArbeidsuforhetButtons";
+import { VurderingResponseDTO } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
 
 const texts = {
   title: "Fristen er gått ut",
@@ -17,10 +17,12 @@ const texts = {
   seSendtVarsel: "Se sendt varsel",
 };
 
-export const ForhandsvarselAfterDeadline = () => {
-  const { data } = useGetArbeidsuforhetVurderingerQuery();
-  const forhandsvarsel = data[0];
-  const frist = forhandsvarsel?.varsel?.svarfrist;
+interface Props {
+  forhandsvarsel: VurderingResponseDTO;
+}
+
+export const ForhandsvarselAfterDeadline = ({ forhandsvarsel }: Props) => {
+  const frist = forhandsvarsel.varsel?.svarfrist;
 
   return (
     <Box

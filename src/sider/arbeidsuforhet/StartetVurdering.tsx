@@ -11,7 +11,7 @@ export const StartetVurdering = () => {
     sisteVurdering?.type === VurderingType.FORHANDSVARSEL;
 
   return isForhandsvarsel ? (
-    <ForhandsvarselSendt />
+    <ForhandsvarselSendt forhandsvarsel={sisteVurdering} />
   ) : (
     <SendForhandsvarselSkjema />
   );
