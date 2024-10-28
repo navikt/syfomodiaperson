@@ -1,5 +1,4 @@
 import React from "react";
-import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import {
   Alert,
   BodyLong,
@@ -11,6 +10,7 @@ import {
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { ClockIcon } from "@navikt/aksel-icons";
 import { ArbeidsuforhetButtons } from "@/sider/arbeidsuforhet/ArbeidsuforhetButtons";
+import { VurderingResponseDTO } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
 
 const texts = {
   title: "Venter på svar fra bruker",
@@ -29,9 +29,11 @@ const texts = {
   seSendtVarsel: "Se sendt varsel",
 };
 
-export const ForhandsvarselBeforeDeadline = () => {
-  const { data } = useGetArbeidsuforhetVurderingerQuery();
-  const forhandsvarsel = data[0];
+interface Props {
+  forhandsvarsel: VurderingResponseDTO;
+}
+
+export const ForhandsvarselBeforeDeadline = ({ forhandsvarsel }: Props) => {
   const frist = forhandsvarsel.varsel?.svarfrist;
 
   return (
