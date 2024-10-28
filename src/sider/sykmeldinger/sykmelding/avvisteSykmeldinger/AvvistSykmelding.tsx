@@ -6,7 +6,7 @@ import {
 import AvvistSykmeldingStatuspanel from "./AvvistSykmeldingStatuspanel";
 import { AvvistSykmeldingPanel } from "./AvvistSykmeldingPanel";
 import BekreftAvvistSykmelding from "./BekreftAvvistSykmelding";
-import DineSykmeldingOpplysninger from "../sykmeldingOpplysninger/DineSykmeldingOpplysninger";
+import { DineSykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/DineSykmeldingOpplysninger";
 
 interface AvvistSykmeldingProps {
   sykmelding: SykmeldingOldFormat;

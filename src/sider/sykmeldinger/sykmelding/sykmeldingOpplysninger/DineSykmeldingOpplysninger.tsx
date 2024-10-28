@@ -12,7 +12,7 @@ import { SpeilingEkspanderbartPanelTittel } from "@/components/speiling/ekspande
 import { Egenmeldingsdager } from "./Egenmeldingsdager";
 
 const texts = {
-  dinSykmeldingTittel: "Sykmelding\n",
+  dinSykmeldingTittel: "Sykmelding",
   dinSykmeldingDiagnoseTittel: "Diagnose\n",
   dinSykmeldingBidiagnoseTittel: "Bidiagnose\n",
   yrkesskadeTittel: "Sykdommen kan skyldes en skade/yrkessykdom\n",
@@ -29,14 +29,14 @@ const getStillingsprosentText = (stillingsprosent?: number) => {
   return `${stillingsprosent} % stilling`;
 };
 
-interface DineSykmeldingOpplysningerProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
   Overskrift?: keyof JSX.IntrinsicElements;
 }
 
-const DineSykmeldingOpplysninger = (
-  dineSykmeldingOpplysningerProps: DineSykmeldingOpplysningerProps
-) => {
+export function DineSykmeldingOpplysninger(
+  dineSykmeldingOpplysningerProps: Props
+) {
   const { sykmelding, Overskrift = "h2" } = dineSykmeldingOpplysningerProps;
   return (
     <div className="dine-opplysninger">
@@ -211,6 +211,4 @@ const DineSykmeldingOpplysninger = (
       </SpeilingEkspanderbartPanel>
     </div>
   );
-};
-
-export default DineSykmeldingOpplysninger;
+}

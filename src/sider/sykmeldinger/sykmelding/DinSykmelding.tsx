@@ -2,11 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Alertstripe from "nav-frontend-alertstriper";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import DineSykmeldingOpplysninger from "./sykmeldingOpplysninger/DineSykmeldingOpplysninger";
-import {
-  PersonHighContrastImage,
-  PersonImage,
-} from "../../../../img/ImageComponents";
+import { DineSykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/DineSykmeldingOpplysninger";
 
 const texts = {
   eldreSykmeldinger: "Du har eldre sykmeldinger som du bør behandle før denne.",
@@ -15,17 +11,17 @@ const texts = {
     "Hei, her sjekker du opplysningene fra den som sykmeldte deg. Stemmer det med det dere ble enige om? Du velger selv om du vil bruke sykmeldingen.",
 };
 
-interface DinSykmeldingProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
   visEldreSykmeldingVarsel?: boolean;
   eldsteSykmeldingId?: string;
 }
 
-const DinSykmelding = (dinSykmeldingProps: DinSykmeldingProps) => {
+export function DinSykmelding(dinSykmeldingProps: Props) {
   const { sykmelding, visEldreSykmeldingVarsel, eldsteSykmeldingId } =
     dinSykmeldingProps;
   return (
-    <div>
+    <>
       {visEldreSykmeldingVarsel && (
         <Alertstripe type="info">
           <p className="sist side-innhold">
@@ -36,19 +32,7 @@ const DinSykmelding = (dinSykmeldingProps: DinSykmeldingProps) => {
           </p>
         </Alertstripe>
       )}
-      <header className="panelHeader panelHeader--lysebla">
-        <img className="panelHeader__ikon" src={PersonImage} alt="Du" />
-        <img
-          className="panelHeader__ikon panelHeader__ikon--hoykontrast"
-          src={PersonHighContrastImage}
-          alt="Du"
-        />
-      </header>
-      <div className="panel blokk">
-        <DineSykmeldingOpplysninger sykmelding={sykmelding} />
-      </div>
-    </div>
+      <DineSykmeldingOpplysninger sykmelding={sykmelding} />
+    </>
   );
-};
-
-export default DinSykmelding;
+}

@@ -1,28 +1,20 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import {
   ArbeidssituasjonType,
   SykmeldingOldFormat,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import Side from "../../Side";
-import SidetoppSpeilet from "../../../components/SidetoppSpeilet";
-import SykmeldingSide from "../sykmelding/SykmeldingSide";
 import SideLaster from "../../../components/SideLaster";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import LenkeTilDineSykmeldinger from "@/sider/sykmeldinger/sykmelding/LenkeTilDineSykmeldinger";
 import EndreSykmelding from "@/components/endresykmelding/EndreSykmelding";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { Panel } from "@navikt/ds-react";
+import { SykmeldingSide } from "@/sider/sykmeldinger/sykmelding/SykmeldingSide";
 
 const texts = {
   pageTitleSykmelding: "Sykmelding",
-  pageTitleEgenmelding: "Egenmelding",
-};
-
-const pageTitle = (dinSykmelding?: SykmeldingOldFormat) => {
-  return dinSykmelding?.egenmeldt
-    ? texts.pageTitleEgenmelding
-    : texts.pageTitleSykmelding;
 };
 
 export const getSykmelding = (
@@ -34,7 +26,7 @@ export const getSykmelding = (
   });
 };
 
-const DinSykmeldingSide = (): ReactElement => {
+export function DinSykmeldingSide() {
   const sykmeldingId = window.location.pathname.split("/")[3];
 
   const { isLoading, isError, sykmeldinger, arbeidsgiverssykmeldinger } =
@@ -63,7 +55,6 @@ const DinSykmeldingSide = (): ReactElement => {
     >
       <SideLaster henter={isLoading} hentingFeilet={isError}>
         <Panel>
-          <SidetoppSpeilet tittel={pageTitle(dinSykmelding)} />
           <SykmeldingSide
             dinSykmelding={dinSykmelding}
             arbeidsgiversSykmelding={arbeidsgiversSykmelding}
@@ -74,6 +65,4 @@ const DinSykmeldingSide = (): ReactElement => {
       </SideLaster>
     </Side>
   );
-};
-
-export default DinSykmeldingSide;
+}
