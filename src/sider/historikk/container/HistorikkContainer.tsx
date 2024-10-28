@@ -30,6 +30,12 @@ import { Infomelding } from "@/components/Infomelding";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
+import {
+  DialogmoteDTO,
+  DialogmoteStatus,
+} from "@/data/dialogmote/types/dialogmoteTypes";
+import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 
 const texts = {
   topp: "Logg",
@@ -184,6 +190,45 @@ function createHistorikkEventsFromFriskTilArbeid(
   });
 }
 
+function dialogmoteText(dialogmote: DialogmoteDTO): string {
+  switch (dialogmote.status) {
+    case DialogmoteStatus.INNKALT:
+      return `Det ble innkalt til dialogmøte ${tilDatoMedManedNavnOgKlokkeslett(
+        dialogmote.tid
+      )} av ${dialogmote.opprettetAv}`;
+    case DialogmoteStatus.AVLYST:
+      return `Dialogmøtet den ${tilDatoMedManedNavnOgKlokkeslett(
+        dialogmote.tid
+      )} ble avlyst av ${dialogmote.opprettetAv}`;
+    case DialogmoteStatus.FERDIGSTILT:
+      return `Det ble skrevet referat for dialogmøtet avholdt ${tilDatoMedManedNavnOgKlokkeslett(
+        dialogmote.tid
+      )} av ${dialogmote.opprettetAv}`;
+    case DialogmoteStatus.NYTT_TID_STED:
+      return `Dialogmøtet ble endret til nytt tid eller sted av ${dialogmote.opprettetAv}`;
+    case DialogmoteStatus.LUKKET:
+      return `Dialogmøtet den ${tilDatoMedManedNavnOgKlokkeslett(
+        dialogmote.tid
+      )} ble manuelt lukket av systemet`;
+  }
+}
+
+function createHistorikkEventsFromDialogmote(
+  dialogmoter: DialogmoteDTO[]
+): HistorikkEvent[] {
+  return dialogmoter.map((dialogmote: DialogmoteDTO) => {
+    return {
+      opprettetAv: dialogmote.opprettetAv,
+      tekst: dialogmoteText(dialogmote),
+      tidspunkt:
+        dialogmote.status === DialogmoteStatus.FERDIGSTILT
+          ? new Date(dialogmote.referatList[0].createdAt)
+          : new Date(dialogmote.createdAt),
+      kilde: "MOTER",
+    };
+  });
+}
+
 export const HistorikkContainer = (): ReactElement => {
   const { brukerinfo: person } = useBrukerinfoQuery();
   const {
@@ -230,6 +275,12 @@ export const HistorikkContainer = (): ReactElement => {
     isError: isVedtakError,
   } = useVedtakQuery();
 
+  const {
+    data: dialogmoter,
+    isLoading: isDialogmoterLoading,
+    isError: isDialogmoterError,
+  } = useDialogmoterQuery();
+
   const henter =
     henterLedere ||
     henterHistorikk ||
@@ -237,7 +288,8 @@ export const HistorikkContainer = (): ReactElement => {
     henterAktivitetskravHistorikk ||
     isArbeidsuforhetLoading ||
     isManglendemedvirkningLoading ||
-    isVedtakLoading;
+    isVedtakLoading ||
+    isDialogmoterLoading;
   const hentingFeilet =
     hentingLedereFeilet ||
     hentingHistorikkFeilet ||
@@ -245,7 +297,8 @@ export const HistorikkContainer = (): ReactElement => {
     hentingAktivitetskravHistorikkFeilet ||
     isArbeidsuforhetError ||
     isManglendemedvirkningError ||
-    isVedtakError;
+    isVedtakError ||
+    isDialogmoterError;
 
   const allLedere = useMemo(
     () => [...currentLedere, ...formerLedere],
@@ -267,14 +320,15 @@ export const HistorikkContainer = (): ReactElement => {
     );
   const frisktilarbeidHistorikk =
     createHistorikkEventsFromFriskTilArbeid(vedtak);
+  const dialogmoteHistorikk = createHistorikkEventsFromDialogmote(dialogmoter);
   const historikkEvents = motebehovHistorikk
     .concat(oppfolgingsplanHistorikk)
     .concat(lederHistorikk)
     .concat(aktivitetskravHistorikkEvents)
     .concat(arbeidsuforhetHistorikk)
     .concat(manglendemedvirkningHistorikk)
-    .concat(frisktilarbeidHistorikk);
-
+    .concat(frisktilarbeidHistorikk)
+    .concat(dialogmoteHistorikk);
   const ingenHistorikk = tilfeller.length === 0 || historikkEvents.length === 0;
 
   return (
