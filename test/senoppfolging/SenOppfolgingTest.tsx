@@ -197,7 +197,7 @@ describe("Sen oppfolging", () => {
     mockSenOppfolgingKandidat(senOppfolgingKandidatMock);
     renderSenOppfolging();
 
-    const begrunnelseInput = getTextInput("Begrunnelse");
+    const begrunnelseInput = getTextInput("Begrunnelse (valgfritt)");
     await changeTextInput(begrunnelseInput, "En flott begrunnelse");
     await clickButton(vurderingButtonText);
 
