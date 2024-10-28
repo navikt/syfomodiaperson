@@ -9,7 +9,11 @@ import { useQuery } from "@tanstack/react-query";
 
 export const aktivitetskravQueryKeys = {
   aktivitetskrav: (personident: string) => ["aktivitetskrav", personident],
-  historikk: (personident: string) => ["historikk", personident],
+  historikk: (personident: string) => [
+    "historikk",
+    "aktivitetskrav",
+    personident,
+  ],
 };
 
 export const useAktivitetskravQuery = () => {

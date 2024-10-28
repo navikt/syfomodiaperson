@@ -5,7 +5,8 @@ export type HistorikkEventType =
   | "AKTIVITETSKRAV"
   | "ARBEIDSUFORHET"
   | "MANGLENDE_MEDVIRKNING"
-  | "FRISKMELDING_TIL_ARBEIDSFORMIDLING";
+  | "FRISKMELDING_TIL_ARBEIDSFORMIDLING"
+  | "DIALOGMOTEKANDIDAT";
 
 export interface HistorikkEvent {
   opprettetAv?: string;
