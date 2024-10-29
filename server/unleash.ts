@@ -47,5 +47,9 @@ export const getToggles = (veilederId, enhetId) => {
       "isOppfolgingISenFaseEnabled",
       context
     ),
+    isSenFaseFlexjarEnabled: unleash.isEnabled(
+      "isSenFaseFlexjarEnabled",
+      context
+    ),
   };
 };

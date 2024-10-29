@@ -31,11 +31,11 @@ const texts = {
   success: "Takk for din tilbakemelding!",
 };
 
-interface FlexjarProps {
+interface Props {
   side: string;
 }
 
-export const Flexjar = ({ side }: FlexjarProps) => {
+export function EmojiRatingFlexjar({ side }: Props) {
   const [isApen, setIsApen] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>();
   const [feedback, setFeedback] = useState<string>();
@@ -175,4 +175,4 @@ export const Flexjar = ({ side }: FlexjarProps) => {
       )}
     </div>
   );
-};
+}

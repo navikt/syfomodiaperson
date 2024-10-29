@@ -12,7 +12,7 @@ import { EventType } from "@/utils/amplitude";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { OversiktLenker } from "@/components/personkort/OversiktLenker";
 import { Pride } from "@/components/festive/Pride";
-import { Flexjar } from "@/components/flexjar/Flexjar";
+import { EmojiRatingFlexjar } from "@/components/flexjar/EmojiRatingFlexjar";
 import { Oppfolgingsoppgave } from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
@@ -69,7 +69,7 @@ const Side = ({ tittel, aktivtMenypunkt, children }: SideProps) => {
           </nav>
           <div className="w-full flex flex-col">{children}</div>
         </div>
-        {showFlexjar && <Flexjar side={tittel} />}
+        {showFlexjar && <EmojiRatingFlexjar side={tittel} />}
       </div>
     </DocumentTitle>
   );

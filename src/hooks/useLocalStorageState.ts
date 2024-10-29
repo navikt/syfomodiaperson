@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export enum StoreKey {
-  FLEXJAR_AKTIVITETSKRAV_FEEDBACK_DATE = "flexjarAktivitetskravFeedbackDate",
+  FLEXJAR_SEN_FASE_FEEDBACK_DATE = "flexjarSenFaseFeedbackDate",
   FLEXJAR_ARBEIDSUFORHET_FEEDBACK_DATE = "flexjarArbeidsuforhetFeedbackDate",
   MALFORM = "malform",
 }
