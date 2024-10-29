@@ -1,19 +1,24 @@
 import React from "react";
-import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { ForhandsvarselBeforeDeadline } from "@/sider/arbeidsuforhet/ForhandsvarselBeforeDeadline";
 import { ForhandsvarselAfterDeadline } from "@/sider/arbeidsuforhet/ForhandsvarselAfterDeadline";
+import { VurderingResponseDTO } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
 
-export const ForhandsvarselSendt = () => {
-  const { data } = useGetArbeidsuforhetVurderingerQuery();
-  const forhandsvarsel = data[0];
-  const isForhandsvarselExpired = forhandsvarsel.varsel?.isExpired;
+interface ForhandsvarselSendtProps {
+  forhandsvarsel: VurderingResponseDTO;
+}
+
+export const ForhandsvarselSendt = ({
+  forhandsvarsel,
+}: ForhandsvarselSendtProps) => {
+  const isForhandsvarselExpired =
+    forhandsvarsel && forhandsvarsel?.varsel?.isExpired;
 
   return (
     <div>
       {isForhandsvarselExpired ? (
-        <ForhandsvarselAfterDeadline />
+        <ForhandsvarselAfterDeadline forhandsvarsel={forhandsvarsel} />
       ) : (
-        <ForhandsvarselBeforeDeadline />
+        <ForhandsvarselBeforeDeadline forhandsvarsel={forhandsvarsel} />
       )}
     </div>
   );

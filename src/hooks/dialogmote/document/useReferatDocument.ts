@@ -152,9 +152,12 @@ export const useReferatDocument = (
   ): DocumentComponentDto[] => {
     const documentComponents: DocumentComponentDto[] = [];
     if (values.standardtekster && values.standardtekster.length > 0) {
+      const standardtekstKeys = Array.isArray(values.standardtekster)
+        ? values.standardtekster
+        : [values.standardtekster];
       documentComponents.push(
         createHeaderH2(referatTexts.standardTeksterHeader),
-        ...values.standardtekster.map((key) => {
+        ...standardtekstKeys.map((key) => {
           const standardTekst = referatTexts.standardTekster[key];
           return {
             type: DocumentComponentType.PARAGRAPH,

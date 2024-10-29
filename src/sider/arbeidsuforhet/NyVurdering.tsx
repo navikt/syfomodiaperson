@@ -16,11 +16,10 @@ const texts = {
 };
 
 const lastVurderingText = (vurderinger: VurderingResponseDTO[]) => {
-  if (vurderinger.length === 0) {
+  const lastVurdering = vurderinger[0];
+  if (!lastVurdering) {
     return "Ingen vurderinger har blitt gjort, trykk på 'Start ny vurdering' for å sende forhåndsvarsel";
   }
-
-  const lastVurdering = vurderinger[0];
   const lastForhandsvarsel = vurderinger.find(
     (vurdering) => vurdering.type === VurderingType.FORHANDSVARSEL
   );
