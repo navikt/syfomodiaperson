@@ -95,7 +95,7 @@ function getDialogmotekandidatHistorikkText(
     case HistorikkType.IKKE_AKTUELL:
       return `${vurdertAv} vurderte dialogmøte ikke aktuelt`;
     case HistorikkType.LUKKET:
-      return `Kandidat til dialogmøte ble lukket av systemet`;
+      return `Kandidat til dialogmøte ble maskinelt lukket`;
   }
 }
 
