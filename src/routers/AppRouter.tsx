@@ -9,7 +9,6 @@ import {
 import AktivBrukerTilgangLaster from "@/components/AktivBrukerTilgangLaster";
 import SykmeldingerContainer from "@/sider/sykmeldinger/container/SykmeldingerContainer";
 import SykepengesoknaderSide from "@/sider/sykepengsoknader/SykepengesoknaderSide";
-import DinSykmeldingContainer from "@/sider/sykmeldinger/container/DinSykmeldingContainer";
 import HistorikkContainer from "@/sider/historikk/container/HistorikkContainer";
 import { erGyldigFodselsnummer } from "@/utils/frnValideringUtils";
 import DialogmoteInnkallingContainer from "../sider/dialogmoter/components/innkalling/DialogmoteInnkallingContainer";
@@ -46,6 +45,7 @@ import ManglendeMedvirkningSide, {
   ManglendeMedvirkningUnntakSide,
 } from "@/sider/manglendemedvirkning/ManglendeMedvirkningSide";
 import ManglendeMedvirkning from "@/sider/manglendemedvirkning/ManglendeMedvirkning";
+import { DinSykmeldingSide } from "@/sider/sykmeldinger/container/DinSykmeldingSide";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -200,7 +200,7 @@ const AktivBrukerRouter = (): ReactElement => {
           />
           <Route
             path={`${appRoutePath}/sykmeldinger/:sykmeldingId`}
-            element={<DinSykmeldingContainer />}
+            element={<DinSykmeldingSide />}
           />
           <Route
             path={`${appRoutePath}/oppfoelgingsplaner`}
