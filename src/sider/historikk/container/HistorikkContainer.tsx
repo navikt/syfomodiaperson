@@ -27,6 +27,9 @@ import {
   VurderingType as ManglendemedvirkningVurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { Infomelding } from "@/components/Infomelding";
+import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
+import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
+import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 
 const texts = {
   topp: "Logg",
@@ -144,6 +147,12 @@ function manglendemedvirkningText(
   }
 }
 
+function friskTilArbeidText(vedtak: VedtakResponseDTO): string {
+  const fom = tilLesbarDatoMedArUtenManedNavn(vedtak.fom);
+  const tom = tilLesbarDatoMedArUtenManedNavn(vedtak.tom);
+  return `${vedtak.veilederident} fattet vedtak. Periode: ${fom} - ${tom}`;
+}
+
 function createHistorikkEventsFromManglendemedvirkning(
   manglendemedvirkningVurderinger: ManglendemedvirkningVurdering[]
 ): HistorikkEvent[] {
@@ -160,6 +169,19 @@ function createHistorikkEventsFromManglendemedvirkning(
       };
     }
   );
+}
+
+function createHistorikkEventsFromFriskTilArbeid(
+  vedtakList: VedtakResponseDTO[]
+): HistorikkEvent[] {
+  return vedtakList.map((vedtak: VedtakResponseDTO) => {
+    return {
+      opprettetAv: vedtak.veilederident,
+      tekst: friskTilArbeidText(vedtak),
+      tidspunkt: vedtak.createdAt,
+      kilde: "FRISKMELDING_TIL_ARBEIDSFORMIDLING",
+    };
+  });
 }
 
 export const HistorikkContainer = (): ReactElement => {
@@ -202,20 +224,28 @@ export const HistorikkContainer = (): ReactElement => {
     isError: isManglendemedvirkningError,
   } = useManglendemedvirkningVurderingQuery();
 
+  const {
+    data: vedtak,
+    isLoading: isVedtakLoading,
+    isError: isVedtakError,
+  } = useVedtakQuery();
+
   const henter =
     henterLedere ||
     henterHistorikk ||
     henterTilfeller ||
     henterAktivitetskravHistorikk ||
     isArbeidsuforhetLoading ||
-    isManglendemedvirkningLoading;
+    isManglendemedvirkningLoading ||
+    isVedtakLoading;
   const hentingFeilet =
     hentingLedereFeilet ||
     hentingHistorikkFeilet ||
     hentingTilfellerFeilet ||
     hentingAktivitetskravHistorikkFeilet ||
     isArbeidsuforhetError ||
-    isManglendemedvirkningError;
+    isManglendemedvirkningError ||
+    isVedtakError;
 
   const allLedere = useMemo(
     () => [...currentLedere, ...formerLedere],
@@ -235,12 +265,16 @@ export const HistorikkContainer = (): ReactElement => {
     createHistorikkEventsFromManglendemedvirkning(
       manglendemedvirkningVurderinger
     );
+  const frisktilarbeidHistorikk =
+    createHistorikkEventsFromFriskTilArbeid(vedtak);
   const historikkEvents = motebehovHistorikk
     .concat(oppfolgingsplanHistorikk)
     .concat(lederHistorikk)
     .concat(aktivitetskravHistorikkEvents)
     .concat(arbeidsuforhetHistorikk)
-    .concat(manglendemedvirkningHistorikk);
+    .concat(manglendemedvirkningHistorikk)
+    .concat(frisktilarbeidHistorikk);
+
   const ingenHistorikk = tilfeller.length === 0 || historikkEvents.length === 0;
 
   return (
