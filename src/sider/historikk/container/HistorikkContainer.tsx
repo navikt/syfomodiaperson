@@ -30,6 +30,11 @@ import { Infomelding } from "@/components/Infomelding";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { useDialogmotekandidatHistorikk } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
+import {
+  DialogmotekandidatHistorikkDTO,
+  HistorikkType,
+} from "@/data/dialogmotekandidat/dialogmotekandidatTypes";
 
 const texts = {
   topp: "Logg",
@@ -77,6 +82,34 @@ const getTextForHistorikk = (
       throw new Error("Not supported");
   }
 };
+
+function getDialogmotekandidatHistorikkText(
+  { type, vurdertAv }: DialogmotekandidatHistorikkDTO,
+  person: BrukerinfoDTO
+) {
+  switch (type) {
+    case HistorikkType.KANDIDAT:
+      return `${person.navn} ble kandidat til dialogmøte`;
+    case HistorikkType.UNNTAK:
+      return `${vurdertAv} vurderte unntak fra dialogmøte`;
+    case HistorikkType.IKKE_AKTUELL:
+      return `${vurdertAv} vurderte dialogmøte ikke aktuelt`;
+    case HistorikkType.LUKKET:
+      return `Kandidat til dialogmøte ble maskinelt lukket`;
+  }
+}
+
+function createHistorikkEventsFromDialogmotekandidatHistorikk(
+  dialogmotekandidatHistorikk: DialogmotekandidatHistorikkDTO[],
+  person: BrukerinfoDTO
+): HistorikkEvent[] {
+  return dialogmotekandidatHistorikk.map((value) => ({
+    opprettetAv: value.vurdertAv ?? undefined,
+    tekst: getDialogmotekandidatHistorikkText(value, person),
+    tidspunkt: value.tidspunkt,
+    kilde: "DIALOGMOTEKANDIDAT",
+  }));
+}
 
 const createHistorikkEventsFromAktivitetskrav = (
   aktivitietskravHistorikkDTO: AktivitetskravHistorikkDTO[],
@@ -230,6 +263,12 @@ export const HistorikkContainer = (): ReactElement => {
     isError: isVedtakError,
   } = useVedtakQuery();
 
+  const {
+    data: dialogmotekandidatHistorikk,
+    isLoading: henterDialogmotekandidatHistorikk,
+    isError: hentingDialogmotekandidatHistorikkFeilet,
+  } = useDialogmotekandidatHistorikk();
+
   const henter =
     henterLedere ||
     henterHistorikk ||
@@ -237,7 +276,8 @@ export const HistorikkContainer = (): ReactElement => {
     henterAktivitetskravHistorikk ||
     isArbeidsuforhetLoading ||
     isManglendemedvirkningLoading ||
-    isVedtakLoading;
+    isVedtakLoading ||
+    henterDialogmotekandidatHistorikk;
   const hentingFeilet =
     hentingLedereFeilet ||
     hentingHistorikkFeilet ||
@@ -245,7 +285,8 @@ export const HistorikkContainer = (): ReactElement => {
     hentingAktivitetskravHistorikkFeilet ||
     isArbeidsuforhetError ||
     isManglendemedvirkningError ||
-    isVedtakError;
+    isVedtakError ||
+    hentingDialogmotekandidatHistorikkFeilet;
 
   const allLedere = useMemo(
     () => [...currentLedere, ...formerLedere],
@@ -267,14 +308,19 @@ export const HistorikkContainer = (): ReactElement => {
     );
   const frisktilarbeidHistorikk =
     createHistorikkEventsFromFriskTilArbeid(vedtak);
+  const dialogmotekandidatHistorikkEvents =
+    createHistorikkEventsFromDialogmotekandidatHistorikk(
+      dialogmotekandidatHistorikk || [],
+      person
+    );
   const historikkEvents = motebehovHistorikk
     .concat(oppfolgingsplanHistorikk)
     .concat(lederHistorikk)
     .concat(aktivitetskravHistorikkEvents)
     .concat(arbeidsuforhetHistorikk)
     .concat(manglendemedvirkningHistorikk)
-    .concat(frisktilarbeidHistorikk);
-
+    .concat(frisktilarbeidHistorikk)
+    .concat(dialogmotekandidatHistorikkEvents);
   const ingenHistorikk = tilfeller.length === 0 || historikkEvents.length === 0;
 
   return (

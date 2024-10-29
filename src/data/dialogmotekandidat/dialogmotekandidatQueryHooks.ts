@@ -2,11 +2,19 @@ import { useQuery } from "@tanstack/react-query";
 import { get } from "@/api/axios";
 import { ISDIALOGMOTEKANDIDAT_ROOT } from "@/apiConstants";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { DialogmotekandidatDTO } from "@/data/dialogmotekandidat/dialogmotekandidatTypes";
+import {
+  DialogmotekandidatDTO,
+  DialogmotekandidatHistorikkDTO,
+} from "@/data/dialogmotekandidat/dialogmotekandidatTypes";
 import { useLatestFerdigstiltReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
 
 export const dialogmotekandidatQueryKeys = {
   kandidat: (personident: string) => ["dialogmotekandidat", personident],
+  historikk: (personident: string) => [
+    "historikk",
+    "dialogmotekandidat",
+    personident,
+  ],
   unntaksstatistikk: () => ["unntaksstatistikk"],
 };
 
@@ -50,4 +58,16 @@ export const useDialogmotekandidat = () => {
     ...query,
     isKandidat,
   };
+};
+
+export const useDialogmotekandidatHistorikk = () => {
+  const personident = useValgtPersonident();
+  const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/kandidat/historikk`;
+  const fetchHistorikk = () =>
+    get<DialogmotekandidatHistorikkDTO[]>(path, personident);
+  return useQuery({
+    queryKey: dialogmotekandidatQueryKeys.historikk(personident),
+    queryFn: fetchHistorikk,
+    enabled: !!personident,
+  });
 };
