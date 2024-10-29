@@ -53,7 +53,7 @@ function tagFromKilde(kilde: HistorikkEventType): ReactElement {
     case "MOTEBEHOV":
     case "MOTER":
     case "DIALOGMOTEKANDIDAT":
-      return <Tag variant="warning">Dialogmøte</Tag>;
+      return <Tag variant="success">Dialogmøte</Tag>;
   }
 }
 
