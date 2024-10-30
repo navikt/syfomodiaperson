@@ -15,7 +15,7 @@ const texts = {
   ingenHistorikk: {
     tittel: "Denne personen har ingen oppfølgingshistorikk",
     melding:
-      "Når en sykmeldt blir fulgt opp så vil oppfølgingen bli loggført her slik at du får oversikt over hva som har skjedd og hvem som har vært involvert i oppfølgingen.",
+      "Når en sykmeldt blir fulgt opp vil oppfølgingen bli loggført her slik at du får oversikt over hva som har skjedd og hvem som har vært involvert i oppfølgingen.",
   },
 };
 
