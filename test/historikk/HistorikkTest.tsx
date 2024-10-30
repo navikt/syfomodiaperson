@@ -38,7 +38,7 @@ const renderHistorikk = () =>
     [historikkPath]
   );
 
-function setupTestdataHistorikk(queryClient: QueryClient) {
+function setupTestdataHistorikk() {
   queryClient.setQueryData(
     oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
       ARBEIDSTAKER_DEFAULT.personIdent
@@ -84,7 +84,7 @@ function setupTestdataHistorikk(queryClient: QueryClient) {
 describe("Historikk", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
-    setupTestdataHistorikk(queryClient);
+    setupTestdataHistorikk();
   });
 
   it("viser tilbakemelding når ingen historikk", async () => {

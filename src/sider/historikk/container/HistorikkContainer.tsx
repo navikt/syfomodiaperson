@@ -6,7 +6,7 @@ import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/pe
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { Historikk } from "@/sider/historikk/Historikk";
 import { Infomelding } from "@/components/Infomelding";
-import { useHistorikk } from "@/data/historikk/useHistorikk";
+import { useHistorikk } from "@/hooks/historikk/useHistorikk";
 
 const texts = {
   topp: "Logg",

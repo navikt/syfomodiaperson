@@ -60,7 +60,7 @@ export const useDialogmotekandidat = () => {
   };
 };
 
-export const useDialogmotekandidatHistorikk = () => {
+export const useDialogmotekandidatHistorikkQuery = () => {
   const personident = useValgtPersonident();
   const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/kandidat/historikk`;
   const fetchHistorikk = () =>
