@@ -22,6 +22,7 @@ import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmot
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
+import { veilederBrukerKnytningQueryKeys } from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
 
 let queryClient: QueryClient;
 
@@ -77,6 +78,10 @@ function setupTestdataHistorikk() {
   );
   queryClient.setQueryData(
     ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
+  );
+  queryClient.setQueryData(
+    veilederBrukerKnytningQueryKeys.historikk(ARBEIDSTAKER_DEFAULT.personIdent),
     () => []
   );
 }
