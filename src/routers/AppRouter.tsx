@@ -64,6 +64,7 @@ export const manglendeMedvirkningOppfyltPath = `${appRoutePath}/manglendemedvirk
 export const manglendeMedvirkningStansPath = `${appRoutePath}/manglendemedvirkning/stans`;
 export const manglendeMedvirkningUnntakPath = `${appRoutePath}/manglendemedvirkning/unntak`;
 export const manglendeMedvirkningIkkeAktuellPath = `${appRoutePath}/manglendemedvirkning/ikkeaktuell`;
+export const historikkPath = `${appRoutePath}/logg`;
 
 const AktivBrukerRouter = (): ReactElement => {
   Amplitude.logViewportAndScreenSize();
@@ -86,10 +87,7 @@ const AktivBrukerRouter = (): ReactElement => {
             path={`${appRoutePath}/behandlerdialog`}
             element={<BehandlerdialogContainer />}
           />
-          <Route
-            path={`${appRoutePath}/logg`}
-            element={<HistorikkContainer />}
-          />
+          <Route path={historikkPath} element={<HistorikkContainer />} />
           <Route path={moteoversiktRoutePath} element={<Motelandingsside />} />
           <Route
             path={dialogmoteRoutePath}
