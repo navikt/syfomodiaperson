@@ -7,7 +7,7 @@ import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 
 function createHistorikkEventsFromVeilederHistorikk(
-  veilederHistorikkDTO: VeilederHistorikkDTO,
+  veilederHistorikkDTO: VeilederHistorikkDTO[],
   person: BrukerinfoDTO
 ): HistorikkEvent[] {
   return veilederHistorikkDTO.map((value) => ({
