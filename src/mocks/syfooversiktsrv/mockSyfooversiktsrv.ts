@@ -20,4 +20,20 @@ export const mockSyfooversiktsrv = [
       return new HttpResponse(null, { status: 200 });
     }
   ),
+  http.get(`${SYFOOVERSIKTSRV_PERSONTILDELING_ROOT}/historikk`, () => {
+    return HttpResponse.json([
+      {
+        tildeltDato: "2024-10-15",
+        tildeltAv: "A123456",
+        tildeltVeileder: "B123456",
+        tildeltEnhet: "0315",
+      },
+      {
+        tildeltDato: "2024-04-15",
+        tildeltAv: "B123456",
+        tildeltVeileder: "A123456",
+        tildeltEnhet: "0315",
+      },
+    ]);
+  }),
 ];

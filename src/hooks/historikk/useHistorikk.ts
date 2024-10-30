@@ -8,6 +8,7 @@ import { useAktivitetskravHistorikk } from "@/hooks/historikk/useAktivitetskravH
 import { useArbeidsuforhetHistorikk } from "@/hooks/historikk/useArbeidsuforhetHistorikk";
 import { useManglendeMedvirkningHistorikk } from "@/hooks/historikk/useManglendeMedvirkningHistorikk";
 import { useVedtakHistorikk } from "@/hooks/historikk/useFriskmeldingTilArbeidsformidligVedtakHistorikk";
+import { useVeilederBrukerHistorikk } from "@/hooks/historikk/useVeilederHistorikk";
 import { useDialogmotekandidatHistorikk } from "@/hooks/historikk/useDialogmotekandidatHistorikk";
 
 interface HistorikkHook {
@@ -54,6 +55,12 @@ export function useHistorikk(): HistorikkHook {
     useVedtakHistorikk();
 
   const {
+    veilederHistorikk,
+    isVeilederHistorikkLoading,
+    isVeilederHistorikkError,
+  } = useVeilederBrukerHistorikk();
+
+  const {
     dialogmotekandidatHistorikk,
     isDialogmotekandidatHistorikkLoading,
     isDialogmotekandidatHistorikkError,
@@ -66,6 +73,7 @@ export function useHistorikk(): HistorikkHook {
     .concat(arbeidsuforhetHistorikk)
     .concat(manglendeMedvirkningHistorikk)
     .concat(vedtakHistorikk)
+    .concat(veilederHistorikk)
     .concat(dialogmotekandidatHistorikk);
 
   const isHistorikkLoading =
@@ -76,6 +84,7 @@ export function useHistorikk(): HistorikkHook {
     isArbeidsuforhetHistorikkLoading ||
     isManglendeMedvirkningHistorikkLoading ||
     isVedtakHistorikkLoading ||
+    isVeilederHistorikkLoading ||
     isDialogmotekandidatHistorikkLoading;
 
   const isHistorikkError =
@@ -86,6 +95,7 @@ export function useHistorikk(): HistorikkHook {
     isArbeidsuforhetHistorikkError ||
     isManglendeMedvirkningHistorikkError ||
     isVedtakHistorikkError ||
+    isVeilederHistorikkError ||
     isDialogmotekandidatHistorikkError;
 
   return {

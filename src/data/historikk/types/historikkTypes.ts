@@ -6,6 +6,7 @@ export type HistorikkEventType =
   | "ARBEIDSUFORHET"
   | "MANGLENDE_MEDVIRKNING"
   | "FRISKMELDING_TIL_ARBEIDSFORMIDLING"
+  | "VEILEDER"
   | "DIALOGMOTEKANDIDAT";
 
 export interface HistorikkEvent {
