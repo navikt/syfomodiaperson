@@ -28,7 +28,7 @@ describe("fnrValideringsUtils", () => {
         expect(isValidFnr).to.be.true;
       });
 
-      it("return true if valid NAV synthetic fnr in prod (Dette skjer fordi NAV-syntetisk blir likt som et H-nummer)", () => {
+      it("return true if valid Nav synthetic fnr in prod (Dette skjer fordi Nav-syntetisk blir likt som et H-nummer)", () => {
         const fnr = "15507600333";
 
         const isValidFnr = erGyldigFodselsnummer(fnr);
@@ -114,7 +114,7 @@ describe("fnrValideringsUtils", () => {
       vi.restoreAllMocks();
     });
 
-    it("return true if valid NAV synthetic fnr (add 40 to month)", () => {
+    it("return true if valid Nav synthetic fnr (add 40 to month)", () => {
       const fnr = "15507600333";
 
       const isValidFnr = erGyldigFodselsnummer(fnr);
@@ -122,7 +122,7 @@ describe("fnrValideringsUtils", () => {
       expect(isValidFnr).to.be.true;
     });
 
-    it("return true if valid NAV synthetic dnr (add 40 to month)", () => {
+    it("return true if valid Nav synthetic dnr (add 40 to month)", () => {
       const fnr = "55507608360";
 
       const isValidFnr = erGyldigFodselsnummer(fnr);

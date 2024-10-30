@@ -5,7 +5,7 @@ import { Box, Heading } from "@navikt/ds-react";
 const texts = {
   title: "Søknaden er ikke sendt ennå",
   content:
-    "Når brukeren har fullført søknaden og sendt den inn til arbeidsgiver og/eller NAV vil du kunne se statusen på søknaden her.",
+    "Når brukeren har fullført søknaden og sendt den inn til arbeidsgiver og/eller Nav vil du kunne se statusen på søknaden her.",
 };
 
 const IkkeInnsendtSoknad = (): ReactElement => (

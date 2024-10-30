@@ -8,7 +8,7 @@ import {
 } from "@/utils/documentComponentUtils";
 import {
   legeerklaringTexts,
-  meldingFraNAVTexts,
+  meldingFraNavTexts,
   paminnelseTexts,
   returLegeerklaringTexts,
   tilleggsOpplysningerPasientTexts,
@@ -163,7 +163,7 @@ export const useMeldingTilBehandlerDocument = (): {
     values: Partial<MeldingTilBehandlerSkjemaValues>
   ) => {
     const documentComponents = [
-      createHeaderH1(meldingFraNAVTexts.header),
+      createHeaderH1(meldingFraNavTexts.header),
       createParagraph(`Gjelder pasient: ${navBruker.navn}, ${personident}.`),
     ];
     if (values.meldingTekst) {

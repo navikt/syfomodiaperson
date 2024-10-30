@@ -5,8 +5,8 @@ import { SykmeldingOpplysningForFelt } from "./SykmeldingOpplysningForFelt";
 const texts = {
   arbeidsevne: "Hva skal til for å bedre arbeidsevnen?",
   tilrettelegging: "Tilrettelegging/hensyn som bør tas på arbeidsplassen",
-  tiltakNAV: "Tiltak i regi av NAV",
-  tiltakAndre: "Eventuelle andre innspill til NAV",
+  tiltakNAV: "Tiltak i regi av Nav",
+  tiltakAndre: "Eventuelle andre innspill til Nav",
 };
 
 interface BedreArbeidsevneProps {

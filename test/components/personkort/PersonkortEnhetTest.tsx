@@ -13,7 +13,7 @@ import { DEFAULT_GODKJENT_FNR } from "@/mocks/util/requestUtil";
 
 let queryClient: any;
 
-const enhet = { enhetId: "1234", navn: "NAV Drammen" };
+const enhet = { enhetId: "1234", navn: "Nav Drammen" };
 const person: PersonDTO = {
   personident: DEFAULT_GODKJENT_FNR,
   isNavUtland: false,
@@ -35,7 +35,7 @@ describe("PersonkortEnhet", () => {
     stubBehandlendeEnhetApi(enhet);
     renderPersonkortEnhet();
 
-    expect(await screen.findByText("NAV Drammen")).to.exist;
+    expect(await screen.findByText("Nav Drammen")).to.exist;
     expect(await screen.findByText("1234")).to.exist;
   });
 
@@ -50,17 +50,17 @@ describe("PersonkortEnhet", () => {
     ).to.exist;
   });
 
-  it("viser endre enhet til NAV utland", async () => {
+  it("viser endre enhet til Nav utland", async () => {
     stubBehandlendeEnhetApi(enhet);
     stubChangeEnhetApi(person);
     renderPersonkortEnhet();
 
-    expect(await screen.findByRole("button", { name: "Endre til NAV utland" }))
+    expect(await screen.findByRole("button", { name: "Endre til Nav utland" }))
       .to.exist;
   });
 
-  it("viser endre enhet til geografisk enhet hvis allerede NAV utland", async () => {
-    const utlandEnhet = { enhetId: "0393", navn: "NAV Utland" };
+  it("viser endre enhet til geografisk enhet hvis allerede Nav utland", async () => {
+    const utlandEnhet = { enhetId: "0393", navn: "Nav Utland" };
     stubBehandlendeEnhetApi(utlandEnhet);
     stubChangeEnhetApi(person);
     renderPersonkortEnhet();

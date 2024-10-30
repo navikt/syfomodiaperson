@@ -68,7 +68,7 @@ const createVarsel = ({
           },
           {
             type: DocumentComponentType.PARAGRAPH,
-            texts: ["Med vennlig hilsen", "NAV Staden", "Kari Saksbehandler"],
+            texts: ["Med vennlig hilsen", "Nav Staden", "Kari Saksbehandler"],
           },
         ],
       };
@@ -102,7 +102,7 @@ const createVarsel = ({
           },
           {
             type: DocumentComponentType.PARAGRAPH,
-            texts: ["Med vennlig hilsen", "NAV Staden", "Kari Saksbehandler"],
+            texts: ["Med vennlig hilsen", "Nav Staden", "Kari Saksbehandler"],
           },
         ],
       };

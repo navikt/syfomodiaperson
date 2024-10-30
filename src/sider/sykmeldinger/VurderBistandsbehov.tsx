@@ -36,7 +36,7 @@ const VurderBistandsbehov = ({ oppgave }: VurderBistandsbehovProps) => {
   const sykmelding = sykmeldinger.find(
     (sykmelding) => sykmelding.id === oppgave.referanseUuid
   );
-  const tiltakNAV = sykmelding?.arbeidsevne.tiltakNAV;
+  const tiltakNav = sykmelding?.arbeidsevne.tiltakNAV;
   const tiltakAndre = sykmelding?.arbeidsevne.tiltakAndre;
   const bistandsbehov = sykmelding?.meldingTilNav.navBoerTaTakISakenBegrunnelse;
   return !!sykmelding ? (
@@ -53,18 +53,18 @@ const VurderBistandsbehov = ({ oppgave }: VurderBistandsbehovProps) => {
         </HelpText>
       </div>
       <blockquote>
-        {tiltakNAV && (
+        {tiltakNav && (
           <BodyShort>
-            Felt 7.2 (Forslag til tiltak i regi fra NAV): {tiltakNAV}
+            Felt 7.2 (Forslag til tiltak i regi fra Nav): {tiltakNav}
           </BodyShort>
         )}
         {tiltakAndre && (
           <BodyShort>
-            Felt 7.3 (Andre innspill til NAV): {tiltakAndre}
+            Felt 7.3 (Andre innspill til Nav): {tiltakAndre}
           </BodyShort>
         )}
         {bistandsbehov && (
-          <BodyShort>Felt 8.2 (Melding til NAV): {bistandsbehov}</BodyShort>
+          <BodyShort>Felt 8.2 (Melding til Nav): {bistandsbehov}</BodyShort>
         )}
       </blockquote>
       <div className={"flex flex-row justify-between"}>

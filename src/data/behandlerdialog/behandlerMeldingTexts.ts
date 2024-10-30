@@ -1,11 +1,11 @@
 export const tilleggsOpplysningerPasientTexts = {
   header: "Spørsmål om tilleggsopplysninger vedrørende pasient",
   intro:
-    "NAV trenger opplysninger fra deg vedrørende din pasient. Du kan utelate opplysninger som etter din vurdering faller utenfor formålet.",
+    "Nav trenger opplysninger fra deg vedrørende din pasient. Du kan utelate opplysninger som etter din vurdering faller utenfor formålet.",
   takst: "Spørsmålene besvares i fritekst, og honoreres med takst L8.",
   lovhjemmel: {
     title: "Lovhjemmel",
-    text: "Folketrygdloven § 21-4 andre ledd gir NAV rett til å innhente nødvendige opplysninger. Dette gjelder selv om opplysningene er taushetsbelagte, jf. § 21-4 sjette ledd.",
+    text: "Folketrygdloven § 21-4 andre ledd gir Nav rett til å innhente nødvendige opplysninger. Dette gjelder selv om opplysningene er taushetsbelagte, jf. § 21-4 sjette ledd.",
   },
   klage1:
     "Pålegget om utlevering av opplysninger kan påklages etter forvaltningsloven § 14.",
@@ -28,12 +28,12 @@ export const paminnelseTexts = {
 export const legeerklaringTexts = {
   header: "Forespørsel om legeerklæring ved arbeidsuførhet",
   opplysninger:
-    "NAV trenger opplysninger fra deg vedrørende din pasient. Du kan utelate opplysninger som etter din vurdering faller utenfor formålet.",
+    "Nav trenger opplysninger fra deg vedrørende din pasient. Du kan utelate opplysninger som etter din vurdering faller utenfor formålet.",
   takst:
-    "«Legeerklæring ved arbeidsuførhet» leveres på blankett NAV 08-07.08, og honoreres med takst L40.",
+    "«Legeerklæring ved arbeidsuførhet» leveres på blankett Nav 08-07.08, og honoreres med takst L40.",
   lovhjemmel: {
     title: "Lovhjemmel",
-    text: "Folketrygdloven § 21-4 andre ledd gir NAV rett til å innhente nødvendige opplysninger. Dette gjelder selv om opplysningene er taushetsbelagte, jf. § 21-4 sjette ledd.",
+    text: "Folketrygdloven § 21-4 andre ledd gir Nav rett til å innhente nødvendige opplysninger. Dette gjelder selv om opplysningene er taushetsbelagte, jf. § 21-4 sjette ledd.",
   },
   klage1:
     "Pålegget om utlevering av opplysninger kan påklages etter forvaltningsloven § 14.",
@@ -45,7 +45,7 @@ export const returLegeerklaringTexts = {
   header: "Retur av Legeerklæring ved arbeidsuførhet",
   intro: {
     part1:
-      "Vi har mottatt Legeerklæring ved arbeidsuførhet (NAV 08-07.08). Vi ber om at du sender oss en ny legeerklæring snarest mulig.",
+      "Vi har mottatt Legeerklæring ved arbeidsuførhet (Nav 08-07.08). Vi ber om at du sender oss en ny legeerklæring snarest mulig.",
     part2:
       "Erklæringen kan ikke honoreres fordi den ikke inneholder tilstrekkelige opplysninger til bruk i den videre behandlingen av saken.",
   },
@@ -57,6 +57,6 @@ export const returLegeerklaringTexts = {
   },
 };
 
-export const meldingFraNAVTexts = {
-  header: "Melding fra NAV",
+export const meldingFraNavTexts = {
+  header: "Melding fra Nav",
 };

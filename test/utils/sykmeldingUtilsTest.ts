@@ -1,4 +1,4 @@
-import { expect, describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
   arbeidsgivernavnEllerArbeidssituasjon,
   erArbeidsforEtterPerioden,
@@ -348,7 +348,7 @@ describe("sykmeldingUtils", () => {
         arbeidsevne: {
           tilretteleggingArbeidsplass: "Trenger nye sko",
           tiltakAndre: "Pasienten vil ha nye sko!",
-          tiltakNAV: "NAV må gi pasienten skosåler til de nye skoene",
+          tiltakNAV: "Nav må gi pasienten skosåler til de nye skoene",
         },
       };
 

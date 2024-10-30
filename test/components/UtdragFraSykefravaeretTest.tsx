@@ -181,7 +181,7 @@ describe("UtdragFraSykefravaeret", () => {
     ]);
     renderUtdragFraSykefravaeret(oppfolgingstilfeller[0]);
 
-    expect(screen.getByText("Ingen planer er delt med NAV")).to.exist;
+    expect(screen.getByText("Ingen planer er delt med Nav")).to.exist;
     expect(screen.queryByText("110110110 (pdf)")).to.not.exist;
     expect(
       screen.queryByText(

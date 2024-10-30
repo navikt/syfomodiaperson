@@ -108,7 +108,7 @@ describe("Samtaletags", () => {
       expect(screen.queryByText(paminnelseSendtTagText)).to.not.exist;
     });
 
-    it("Viser ikke venter svar-tag på samtale hvis det mangler melding fra behandler, men er en 'melding fra NAV' som ikke nødvendigvis forventer svar", () => {
+    it("Viser ikke venter svar-tag på samtale hvis det mangler melding fra behandler, men er en 'melding fra Nav' som ikke nødvendigvis forventer svar", () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
           ARBEIDSTAKER_DEFAULT.personIdent

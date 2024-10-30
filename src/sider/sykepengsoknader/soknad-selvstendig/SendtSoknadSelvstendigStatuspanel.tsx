@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import Statuspanel, {
-  Statusopplysninger,
   StatusNokkelopplysning,
+  Statusopplysninger,
 } from "../../../components/speiling/Statuspanel";
 import {
   VerktoyKnapp,
@@ -15,20 +15,18 @@ import SykepengerOgSaksbehandlingstiderLink from "@/utils/soknad-felles/Sykepeng
 
 const texts = {
   status: "Status",
-  sendtTilNav: "Sendt til NAV",
+  sendtTilNav: "Sendt til Nav",
   innsendt: "Dato sendt",
   tittel: "Utbetaling av sykepenger",
   endre: "Endre søknad",
-  tilNav: "Sykepenger utbetales etter at NAV har innvilget søknaden.",
+  tilNav: "Sykepenger utbetales etter at Nav har innvilget søknaden.",
 };
 
-interface SendtSoknadSelvstendigStatuspanelProps {
+interface Props {
   soknad: SykepengesoknadDTO;
 }
 
-const SendtSoknadSelvstendigStatuspanel = ({
-  soknad,
-}: SendtSoknadSelvstendigStatuspanelProps): ReactElement => {
+const SendtSoknadSelvstendigStatuspanel = ({ soknad }: Props): ReactElement => {
   const visEndreknapp = erOpprettetSisteAar(soknad);
 
   return (

@@ -9,7 +9,7 @@ export const DeltakerNavHeading = () => {
   return (
     <HStack gap="2" className="pl-4">
       <PersonPencilIcon role="img" focusable={false} width={24} height={24} />
-      <Heading size="small">{`Fra NAV: ${veilederinfo?.fulltNavn()}`}</Heading>
+      <Heading size="small">{`Fra Nav: ${veilederinfo?.fulltNavn()}`}</Heading>
     </HStack>
   );
 };

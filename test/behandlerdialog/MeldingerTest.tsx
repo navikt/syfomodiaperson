@@ -182,7 +182,7 @@ describe("Meldinger panel", () => {
       );
     });
 
-    it("Viser at antall melding som finnes av meldingtype 'melding fra NAV', rendres", () => {
+    it("Viser at antall melding som finnes av meldingtype 'melding fra Nav', rendres", () => {
       const meldingResponse = meldingFraNAVConversationMedSvar;
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
@@ -196,7 +196,7 @@ describe("Meldinger panel", () => {
 
       renderMeldinger();
 
-      expect(screen.getAllByText("Melding fra NAV")).to.have.length(
+      expect(screen.getAllByText("Melding fra Nav")).to.have.length(
         antallMeldinger
       );
     });

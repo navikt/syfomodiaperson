@@ -28,7 +28,7 @@ const texts = {
     noLPSOppfolgingsplaner: "Det er ingen oppfølgingsplaner med bistandsbehov",
   },
   duration: "Varighet",
-  shared: "Delt med NAV",
+  shared: "Delt med Nav",
 };
 
 const durationText = (plan: OppfolgingsplanDTO) => {

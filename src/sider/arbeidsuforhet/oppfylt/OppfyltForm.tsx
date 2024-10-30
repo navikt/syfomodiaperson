@@ -35,7 +35,7 @@ const texts = {
     head: "Før du går videre bør du gjøre følgende:",
     step1: "Informere bruker om utfallet av vurderingen.",
     step2:
-      "Besvare Gosys-oppgaven dersom NAV Arbeid og ytelser ba om vurderingen.",
+      "Besvare Gosys-oppgaven dersom Nav Arbeid og ytelser ba om vurderingen.",
   },
   forhandsvisningLabel: "Forhåndsvis vurderingen",
   missingBegrunnelse: "Vennligst angi begrunnelse",

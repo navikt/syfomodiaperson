@@ -57,7 +57,7 @@ describe("OppfyltForm", () => {
         .to.exist;
       expect(
         screen.getByText(
-          "Besvare Gosys-oppgaven dersom NAV Arbeid og ytelser ba om vurderingen."
+          "Besvare Gosys-oppgaven dersom Nav Arbeid og ytelser ba om vurderingen."
         )
       ).to.exist;
       expect(screen.getByRole("button", { name: "Lagre" })).to.exist;

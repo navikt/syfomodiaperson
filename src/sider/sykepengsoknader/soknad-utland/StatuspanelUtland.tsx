@@ -11,8 +11,8 @@ import Statuspanel, {
 } from "../../../components/speiling/Statuspanel";
 
 const texts = {
-  sendt: "Sendt til NAV",
-  sender: "Sender til NAV",
+  sendt: "Sendt til Nav",
+  sender: "Sender til Nav",
   hjelpetekst:
     "Du har gjort det riktig! Det kan bare ta noen minutter før den er kommet fram til mottakeren. Du trenger ikke gjøre noe mer.",
   dato: "Dato",

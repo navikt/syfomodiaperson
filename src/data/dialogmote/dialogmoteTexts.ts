@@ -3,7 +3,7 @@ import { Malform } from "../../context/malform/MalformContext";
 const innkallingTextsBokmal = {
   arbeidstaker: {
     intro1:
-      "Velkommen til dialogmøte mellom deg, arbeidsgiveren din og en veileder fra NAV. I møtet skal vi snakke om situasjonen din og bli enige om en plan som kan hjelpe deg videre.",
+      "Velkommen til dialogmøte mellom deg, arbeidsgiveren din og en veileder fra Nav. I møtet skal vi snakke om situasjonen din og bli enige om en plan som kan hjelpe deg videre.",
     intro2:
       "I møtet vil vi høre både hva du og arbeidsgiveren sier om arbeidssituasjonen og mulighetene for å jobbe.",
     intro2WithBehandler:
@@ -15,13 +15,13 @@ const innkallingTextsBokmal = {
       "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi sett behov for å innkalle",
     outro2Title: "Før møtet",
     outro2:
-      "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+      "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med Nav. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
     outro2WithBehandler:
-      "Det er viktig at du og arbeidsgiveren din fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+      "Det er viktig at du og arbeidsgiveren din fyller ut oppfølgingsplanen sammen og deler den med Nav. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
   },
   arbeidsgiver: {
     intro1:
-      "Velkommen til dialogmøte mellom deg, arbeidstakeren din og en veileder fra NAV. I møtet skal vi snakke om din ansattes arbeidssituasjon og mulighetene for å jobbe. Vi skal bli enige om en plan som kan hjelpe din ansatte videre.",
+      "Velkommen til dialogmøte mellom deg, arbeidstakeren din og en veileder fra Nav. I møtet skal vi snakke om din ansattes arbeidssituasjon og mulighetene for å jobbe. Vi skal bli enige om en plan som kan hjelpe din ansatte videre.",
     outroObligatorisk:
       "Det er obligatorisk å delta i dialogmøtet. Gi oss svar om tidspunktet passer eller ikke. Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
     outro1:
@@ -30,9 +30,9 @@ const innkallingTextsBokmal = {
       "Fastlegen eller en annen behandler kan bli invitert til å delta i dialogmøte. Til dette møtet har vi sett behov for å innkalle",
     outro2Title: "Før møtet",
     outro2:
-      "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med NAV senest én uke før møtet. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+      "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med Nav senest én uke før møtet. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
     outro2WithBehandler:
-      "Det er viktig at du og arbeidstakeren fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+      "Det er viktig at du og arbeidstakeren fyller ut oppfølgingsplanen sammen og deler den med Nav. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
   },
 
   behandler: {
@@ -47,7 +47,7 @@ const innkallingTextsBokmal = {
 const innkallingTextsNynorsk = {
   arbeidstaker: {
     intro1:
-      "Velkomen til dialogmøte mellom deg, arbeidsgivaren din og ein rettleiar frå NAV. I møtet kjem vi til å snakke om situasjonen din og bli samde om ein plan som kan hjelpe deg vidare.",
+      "Velkomen til dialogmøte mellom deg, arbeidsgivaren din og ein rettleiar frå Nav. I møtet kjem vi til å snakke om situasjonen din og bli samde om ein plan som kan hjelpe deg vidare.",
     intro2:
       "Vi ønskjer å høyre kva du og arbeidsgivaren seier om arbeidssituasjonen og moglegheitene for å jobbe.",
     intro2WithBehandler:
@@ -59,13 +59,13 @@ const innkallingTextsNynorsk = {
       "Fastlegen eller ein annan behandlar kan bli invitert til å delta i dialogmøtet. Til dette møtet har vi sett behov for å kalle inn",
     outro2Title: "Før møtet",
     outro2:
-      "Det er viktig at de fyller ut oppfølgingsplanen saman og deler han med NAV. Denne gir oss eit godt utgangspunkt for å snakke om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
+      "Det er viktig at de fyller ut oppfølgingsplanen saman og deler han med Nav. Denne gir oss eit godt utgangspunkt for å snakke om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
     outro2WithBehandler:
-      "Det er viktig at du og arbeidsgivaren din fyller ut oppfølgingsplanen saman og deler han med NAV. Denne gir oss eit godt utgangspunkt for å snakke saman om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
+      "Det er viktig at du og arbeidsgivaren din fyller ut oppfølgingsplanen saman og deler han med Nav. Denne gir oss eit godt utgangspunkt for å snakke saman om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
   },
   arbeidsgiver: {
     intro1:
-      "Velkomen til dialogmøte mellom deg, arbeidstakaren din og ein rettleiar frå NAV. I møtet kjem vi til å snakke om arbeidssituasjonen til arbeidstakaren din og moglegheitene vedkomande har til å jobbe. Målet er å bli samde om ein plan som kan hjelpe arbeidstakaren din vidare.",
+      "Velkomen til dialogmøte mellom deg, arbeidstakaren din og ein rettleiar frå Nav. I møtet kjem vi til å snakke om arbeidssituasjonen til arbeidstakaren din og moglegheitene vedkomande har til å jobbe. Målet er å bli samde om ein plan som kan hjelpe arbeidstakaren din vidare.",
     outroObligatorisk:
       "Det er obligatorisk å delta i dialogmøtet. Gi oss svar om tidspunktet passar eller ikkje. Vi minner om at sensitive personopplysningar ikkje skal sendast på e-post eller SMS.",
     outro1:
@@ -74,9 +74,9 @@ const innkallingTextsNynorsk = {
       "Fastlege eller annan behandlar kan bli invitert til å delta i dialogmøtet. Til dette møtet har vi sett behov for å kalle inn",
     outro2Title: "Før møtet",
     outro2:
-      "Det er viktig at de fyller ut oppfølgingsplanen saman og deler han med NAV seinast éi veke før møtet. Denne gir oss eit godt utgangspunkt for å snakke om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
+      "Det er viktig at de fyller ut oppfølgingsplanen saman og deler han med Nav seinast éi veke før møtet. Denne gir oss eit godt utgangspunkt for å snakke om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
     outro2WithBehandler:
-      "Det er viktig at du og arbeidstakaren din fyller ut oppfølgingsplanen saman og deler han med NAV. Denne gir oss eit godt utgangspunkt for å snakke om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
+      "Det er viktig at du og arbeidstakaren din fyller ut oppfølgingsplanen saman og deler han med Nav. Denne gir oss eit godt utgangspunkt for å snakke om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
   },
 
   behandler: {
@@ -112,9 +112,9 @@ const endreTidStedTextsBokmal = {
       "Det er obligatorisk å delta i dialogmøtet. Gi oss svar om tidspunktet passer eller ikke. Vi minner om at det ikke må sendes sensitive personopplysninger over e-post eller SMS.",
     outro3Title: "Før møtet",
     outro3:
-      "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+      "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med Nav. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
     outro3WithBehandler:
-      "Det er viktig at du og arbeidstakeren fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+      "Det er viktig at du og arbeidstakeren fyller ut oppfølgingsplanen sammen og deler den med Nav. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
   },
   arbeidstaker: {
     outro1:
@@ -128,9 +128,9 @@ const endreTidStedTextsBokmal = {
     outroObligatorisk: "Det er obligatorisk å delta i dialogmøtet.",
     outro3Title: "Før møtet",
     outro3:
-      "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+      "Det er viktig at dere fyller ut oppfølgingsplanen sammen og deler den med Nav. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
     outro3WithBehandler:
-      "Det er viktig at du og arbeidsgiveren din fyller ut oppfølgingsplanen sammen og deler den med NAV. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
+      "Det er viktig at du og arbeidsgiveren din fyller ut oppfølgingsplanen sammen og deler den med Nav. Den gir oss et godt utgangspunkt for å snakke om hva som fungerer, hva som har blitt forsøkt, og hvilke muligheter som finnes framover.",
   },
   behandler: {
     intro:
@@ -159,9 +159,9 @@ const endreTidStedTextsNynorsk = {
       "Det er obligatorisk å delta i dialogmøtet. Gi oss svar om tidspunktet passar eller ikkje. Vi minner om at sensitive personopplysningar ikkje skal sendast på e-post eller SMS.",
     outro3Title: "Før møtet",
     outro3:
-      "Det er viktig at de fyller ut oppfølgingsplanen saman og deler han med NAV. Denne gir oss eit godt utgangspunkt for å snakke om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
+      "Det er viktig at de fyller ut oppfølgingsplanen saman og deler han med Nav. Denne gir oss eit godt utgangspunkt for å snakke om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
     outro3WithBehandler:
-      "Det er viktig at du og arbeidstakaren din fyller ut oppfølgingsplanen saman og deler han med NAV. Denne gir oss eit godt utgangspunkt for å snakke om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
+      "Det er viktig at du og arbeidstakaren din fyller ut oppfølgingsplanen saman og deler han med Nav. Denne gir oss eit godt utgangspunkt for å snakke om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
   },
   arbeidstaker: {
     outro1:
@@ -175,9 +175,9 @@ const endreTidStedTextsNynorsk = {
     outroObligatorisk: "Det er obligatorisk å delta i dialogmøtet.",
     outro3Title: "Før møtet",
     outro3:
-      "Det er viktig at de fyller ut oppfølgingsplanen saman og deler han med NAV. Denne gir oss eit godt utgangspunkt for å snakke om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
+      "Det er viktig at de fyller ut oppfølgingsplanen saman og deler han med Nav. Denne gir oss eit godt utgangspunkt for å snakke om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
     outro3WithBehandler:
-      "Det er viktig at du og arbeidsgivaren din fyller ut oppfølgingsplanen saman og deler han med NAV. Denne gir oss eit godt utgangspunkt for å snakke om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
+      "Det er viktig at du og arbeidsgivaren din fyller ut oppfølgingsplanen saman og deler han med Nav. Denne gir oss eit godt utgangspunkt for å snakke om kva som fungerer, kva som har blitt forsøkt, og kva moglegheiter som finst framover.",
   },
   behandler: {
     intro:
@@ -196,14 +196,14 @@ export const getEndreTidStedTexts = (malform: Malform) => {
 
 const avlysningTextsBokmal = {
   header: "Avlysning av dialogmøte",
-  intro1: "NAV har tidligere innkalt til dialogmøtet som skulle vært avholdt",
+  intro1: "Nav har tidligere innkalt til dialogmøtet som skulle vært avholdt",
   intro2: "Dette møtet er avlyst.",
 };
 
 const avlysningTextsNynorsk = {
   header: "Avlysing dialogmøte",
   intro1:
-    "NAV har tidlegare kalla inn til eit dialogmøte som etter planen skulle vere",
+    "Nav har tidlegare kalla inn til eit dialogmøte som etter planen skulle vere",
   intro2: "Dette møtet er avlyst.",
 };
 
@@ -263,8 +263,8 @@ export interface StandardTekst {
 
 export const referatStandardTekster: Record<StandardtekstKey, StandardTekst> = {
   [StandardtekstKey.IKKE_BEHOV]: {
-    label: "Ikke behov for bistand fra NAV nå",
-    text: "Slik situasjonen er nå, er det ikke behov for noen spesiell bistand fra NAV. Dere kan likevel be om nytt dialogmøte når dere har behov for det.",
+    label: "Ikke behov for bistand fra Nav nå",
+    text: "Slik situasjonen er nå, er det ikke behov for noen spesiell bistand fra Nav. Dere kan likevel be om nytt dialogmøte når dere har behov for det.",
   },
   [StandardtekstKey.FRISKMELDING_ARBEIDSFORMIDLING]: {
     label: "Friskmelding til arbeidsformidling",
@@ -288,7 +288,7 @@ export const referatStandardTekster: Record<StandardtekstKey, StandardTekst> = {
   },
   [StandardtekstKey.UNNTAK_ARBEIDSGIVERPERIODE]: {
     label: "Unntak fra arbeidsgiverperioden - langvarig eller kronisk sykdom",
-    text: "De første 16 dagene av sykefraværet er det arbeidsgiveren som dekker sykepengene. Har du en kronisk eller langvarig sykdom  som gjør at du har mye fravær, kan NAV dekke sykepengene også i arbeidsgiverperioden.",
+    text: "De første 16 dagene av sykefraværet er det arbeidsgiveren som dekker sykepengene. Har du en kronisk eller langvarig sykdom  som gjør at du har mye fravær, kan Nav dekke sykepengene også i arbeidsgiverperioden.",
   },
   [StandardtekstKey.REISETILSKUDD]: {
     label: "Reisetilskudd",
@@ -296,7 +296,7 @@ export const referatStandardTekster: Record<StandardtekstKey, StandardTekst> = {
   },
   [StandardtekstKey.HJELPEMIDLER_TILRETTELEGGING]: {
     label: "Hjelpemidler og tilrettelegging",
-    text: "Hjelpemiddelsentralene i NAV kan bidra med både veiledning og hjelpemidler på arbeidsplassen. De finner løsninger på problemer med syn, hørsel, hukommelse, konsentrasjon, lesing, skriving eller muligheter for å bruke dataløsninger. NAV-kontoret kan sette dere i kontakt med den nærmeste hjelpemiddelsentralen.",
+    text: "Hjelpemiddelsentralene i Nav kan bidra med både veiledning og hjelpemidler på arbeidsplassen. De finner løsninger på problemer med syn, hørsel, hukommelse, konsentrasjon, lesing, skriving eller muligheter for å bruke dataløsninger. Nav-kontoret kan sette dere i kontakt med den nærmeste hjelpemiddelsentralen.",
   },
   [StandardtekstKey.MIDLERTIDIG_LONNSTILSKUDD]: {
     label: "Midlertidig lønnstilskudd",
@@ -308,18 +308,18 @@ export const referatStandardTekster: Record<StandardtekstKey, StandardTekst> = {
   },
   [StandardtekstKey.OKONOMISK_STOTTE]: {
     label: "Hjelp til å søke om annen økonomisk støtte",
-    text: "Klarer du ikke å komme tilbake i arbeid før den siste dagen du har rett til sykepenger, trenger vi et nytt dialogmøte. Da vil vi snakke sammen om hvordan du eventuelt kan søke om annen økonomisk støtte fra NAV.",
+    text: "Klarer du ikke å komme tilbake i arbeid før den siste dagen du har rett til sykepenger, trenger vi et nytt dialogmøte. Da vil vi snakke sammen om hvordan du eventuelt kan søke om annen økonomisk støtte fra Nav.",
   },
   [StandardtekstKey.INGEN_RETTIGHETER]: {
     label: "Ingen videre rettigheter",
-    text: "Slik situasjonen er nå, har du ikke krav på noen utbetalinger fra NAV. Det betyr at du må gå tilbake til arbeidet eller søke ny jobb. Du er velkommen til å se etter stillinger på arbeidsplassen.nav.no",
+    text: "Slik situasjonen er nå, har du ikke krav på noen utbetalinger fra Nav. Det betyr at du må gå tilbake til arbeidet eller søke ny jobb. Du er velkommen til å se etter stillinger på arbeidsplassen.nav.no",
   },
 };
 
 const referatStandardTeksterNynorsk: Record<StandardtekstKey, StandardTekst> = {
   [StandardtekstKey.IKKE_BEHOV]: {
-    label: "Ikkje behov for bistand frå NAV no",
-    text: "Slik situasjonen er no, er det ikkje behov for spesiell bistand frå NAV. De kan likevel be om nytt dialogmøte når de treng det.",
+    label: "Ikkje behov for bistand frå Nav no",
+    text: "Slik situasjonen er no, er det ikkje behov for spesiell bistand frå Nav. De kan likevel be om nytt dialogmøte når de treng det.",
   },
   [StandardtekstKey.FRISKMELDING_ARBEIDSFORMIDLING]: {
     label: "Friskmelding til arbeidsformidling",
@@ -343,7 +343,7 @@ const referatStandardTeksterNynorsk: Record<StandardtekstKey, StandardTekst> = {
   },
   [StandardtekstKey.UNNTAK_ARBEIDSGIVERPERIODE]: {
     label: "Unntak frå arbeidsgivarperiode – langvarig eller kronisk sjukdom",
-    text: "Dei første 16 dagane av sjukefråværet er det arbeidsgivaren som dekkjer sjukepengane. Dersom du har mykje fråvær grunna kronisk eller langvarig sjukdom, kan NAV dekke sjukepengane i arbeidsgivarperioden.",
+    text: "Dei første 16 dagane av sjukefråværet er det arbeidsgivaren som dekkjer sjukepengane. Dersom du har mykje fråvær grunna kronisk eller langvarig sjukdom, kan Nav dekke sjukepengane i arbeidsgivarperioden.",
   },
   [StandardtekstKey.REISETILSKUDD]: {
     label: "Reisetilskot",
@@ -351,7 +351,7 @@ const referatStandardTeksterNynorsk: Record<StandardtekstKey, StandardTekst> = {
   },
   [StandardtekstKey.HJELPEMIDLER_TILRETTELEGGING]: {
     label: "Hjelpemiddel og tilrettelegging",
-    text: "Hjelpemiddelsentralane i NAV kan bidra med både rettleiing og hjelpemiddel på arbeidsplassen. Dei finn løysingar på problem med syn, høyrsel, hugs, konsentrasjon, lesing, skriving eller moglegheiter for å bruke dataløysingar. NAV-kontoret kan setje dykk i kontakt med nærmaste hjelpemiddelsentral.",
+    text: "Hjelpemiddelsentralane i Nav kan bidra med både rettleiing og hjelpemiddel på arbeidsplassen. Dei finn løysingar på problem med syn, høyrsel, hugs, konsentrasjon, lesing, skriving eller moglegheiter for å bruke dataløysingar. Nav-kontoret kan setje dykk i kontakt med nærmaste hjelpemiddelsentral.",
   },
   [StandardtekstKey.MIDLERTIDIG_LONNSTILSKUDD]: {
     label: "Mellombels lønstilskot",
@@ -363,11 +363,11 @@ const referatStandardTeksterNynorsk: Record<StandardtekstKey, StandardTekst> = {
   },
   [StandardtekstKey.OKONOMISK_STOTTE]: {
     label: "Hjelp til å søkje om anna økonomisk støtte",
-    text: "Viss du ikkje klarer å kome tilbake i arbeid før den siste dagen du har rett til sjukepengar, må det avtalast eit nytt dialogmøte. Vi tek då ein prat saman om korleis du eventuelt kan søkje om anna økonomisk støtte frå NAV.",
+    text: "Viss du ikkje klarer å kome tilbake i arbeid før den siste dagen du har rett til sjukepengar, må det avtalast eit nytt dialogmøte. Vi tek då ein prat saman om korleis du eventuelt kan søkje om anna økonomisk støtte frå Nav.",
   },
   [StandardtekstKey.INGEN_RETTIGHETER]: {
     label: "Ingen vidare rettar",
-    text: "Slik situasjonen din er no, har du ikkje krav på utbetalingar frå NAV. Det betyr at du må gå tilbake til jobben eller søkje ny jobb. Ta gjerne ein kik på ledige stillingar på arbeidsplassen.nav.no.",
+    text: "Slik situasjonen din er no, har du ikkje krav på utbetalingar frå Nav. Det betyr at du må gå tilbake til jobben eller søkje ny jobb. Ta gjerne ein kik på ledige stillingar på arbeidsplassen.nav.no.",
   },
 };
 
@@ -378,7 +378,7 @@ const referatTextsBokmal = {
   deltakere: {
     arbeidsgiver: "Fra arbeidsgiver",
     arbeidstaker: "Arbeidstaker",
-    nav: "Fra NAV",
+    nav: "Fra Nav",
     behandler: "Behandler",
     deltakelse: "deltok ikke",
   },
@@ -393,10 +393,10 @@ const referatTextsBokmal = {
   konklusjonTitle: "Konklusjon",
   arbeidstakersOppgaveTitle: "Din oppgave",
   arbeidsgiversOppgaveTitle: "Arbeidsgiverens oppgave",
-  navOppgaveTitle: "NAVs oppgave",
+  navOppgaveTitle: "Navs oppgave",
   behandlersOppgave: "Behandlerens oppgave",
   situasjonTitle: "Situasjon og muligheter",
-  standardTeksterHeader: "Dette informerte NAV om i møtet",
+  standardTeksterHeader: "Dette informerte Nav om i møtet",
   standardTekster: referatStandardTekster,
 };
 
@@ -407,7 +407,7 @@ const referatTextsNynorsk = {
   deltakere: {
     arbeidsgiver: "Frå arbeidsgivar",
     arbeidstaker: "Arbeidstakar",
-    nav: "Frå NAV",
+    nav: "Frå Nav",
     behandler: "Behandlar",
     deltakelse: "deltok ikkje",
   },
@@ -422,10 +422,10 @@ const referatTextsNynorsk = {
   konklusjonTitle: "Konklusjon",
   arbeidstakersOppgaveTitle: "Di oppgåve",
   arbeidsgiversOppgaveTitle: "Oppgåva til arbeidsgivar",
-  navOppgaveTitle: "Oppgåva til NAV",
+  navOppgaveTitle: "Oppgåva til Nav",
   behandlersOppgave: "Oppgåva til behandlar",
   situasjonTitle: "Situasjon og moglegheiter",
-  standardTeksterHeader: "Dette informerte NAV om i møtet",
+  standardTeksterHeader: "Dette informerte Nav om i møtet",
   standardTekster: referatStandardTeksterNynorsk,
 };
 

@@ -7,11 +7,11 @@ import Referat, {
   MAX_LENGTH_SITUASJON,
   MAX_LENGTH_VEILEDERS_OPPGAVE,
   ReferatMode,
+  texts as referatSkjemaTexts,
   valideringsTexts as referatSkjemaValideringsTexts,
 } from "../../src/sider/dialogmoter/components/referat/Referat";
-import { texts as referatSkjemaTexts } from "../../src/sider/dialogmoter/components/referat/Referat";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   changeTextInput,
   clickButton,
@@ -69,7 +69,7 @@ describe("ReferatTest", () => {
     renderReferat(dialogmote);
 
     expect(
-      screen.getByRole("heading", { name: `Fra NAV: ${veileder.fulltNavn()}` })
+      screen.getByRole("heading", { name: `Fra Nav: ${veileder.fulltNavn()}` })
     ).to.exist;
     expect(
       screen.getByRole("heading", {

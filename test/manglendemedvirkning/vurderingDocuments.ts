@@ -63,7 +63,7 @@ export const getSendForhandsvarselDocument = (
       type: DocumentComponentType.PARAGRAPH,
     },
     {
-      texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "NAV"],
+      texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "Nav"],
       type: DocumentComponentType.PARAGRAPH,
     },
   ];
@@ -87,7 +87,7 @@ export const getOppfyltDocument = (
       texts: [
         `I forhåndsvarsel av ${tilDatoMedManedNavn(
           new Date()
-        )} ble du informert om at NAV vurderte å stanse dine sykepenger. Vi har nå vurdert at plikten til å medvirke er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
+        )} ble du informert om at Nav vurderte å stanse dine sykepenger. Vi har nå vurdert at plikten til å medvirke er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
@@ -136,7 +136,7 @@ export const getSettUnntakDocument = (
       texts: [
         `I forhåndsvarsel av ${tilDatoMedManedNavn(
           forhandsvarselSendtDato
-        )} ble du informert om at NAV vurderte å stanse utbetaling av sykepengene dine. Vi har nå vurdert at du har rimelig grunn til ikke å medvirke i egen sak.`,
+        )} ble du informert om at Nav vurderte å stanse utbetaling av sykepengene dine. Vi har nå vurdert at du har rimelig grunn til ikke å medvirke i egen sak.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
@@ -196,12 +196,12 @@ export const getStansDocument = (
 ): DocumentComponentDto[] => {
   return [
     {
-      texts: ["NAV har stanset sykepengene dine"],
+      texts: ["Nav har stanset sykepengene dine"],
       type: DocumentComponentType.HEADER_H1,
     },
     {
       texts: [
-        `NAV har stanset sykepengene dine fra og med ${tilDatoMedManedNavn(
+        `Nav har stanset sykepengene dine fra og med ${tilDatoMedManedNavn(
           stansdato
         )}.`,
       ],

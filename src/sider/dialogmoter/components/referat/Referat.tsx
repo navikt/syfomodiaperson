@@ -122,7 +122,7 @@ export const texts = {
     },
   },
   standardtekster: {
-    label: "Dette informerte NAV om i møtet",
+    label: "Dette informerte Nav om i møtet",
     description: "Velg bare de alternativene du faktisk informerte om i møtet.",
     info: "Det blir hentet opp standardtekster i referatet avhengig av hva du velger.",
   },

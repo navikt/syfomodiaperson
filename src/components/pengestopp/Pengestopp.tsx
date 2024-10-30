@@ -15,7 +15,7 @@ import { Alert, BodyShort, Box, Button } from "@navikt/ds-react";
 export const texts = {
   stansSykepenger: "Stanse sykepenger?",
   explanation:
-    "Her sender du beskjed til NAV Arbeid og ytelser om stans av sykepenger. Foreløpig må du også lage notat i Gosys med begrunnelse",
+    "Her sender du beskjed til Nav Arbeid og ytelser om stans av sykepenger. Foreløpig må du også lage notat i Gosys med begrunnelse",
   hentingFeiletMessage:
     "Vi har problemer med baksystemene. Du kan sende beskjeden, men det vil ikke bli synlig her før vi er tilbake i normal drift",
   sykmeldtNotEligibleError:

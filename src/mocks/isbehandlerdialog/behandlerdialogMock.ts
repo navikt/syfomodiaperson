@@ -59,7 +59,7 @@ const meldingtilBehandlerDocument = [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "NAV"],
+    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "Nav"],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -89,7 +89,7 @@ const paminnelseDocument = [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "NAV"],
+    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "Nav"],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -125,7 +125,7 @@ const returLegeerklaringDocument = [
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "NAV"],
+    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "Nav"],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -230,7 +230,7 @@ export const defaultReturLegeerklaring = {
 export const meldingFraNav = {
   ...defaultMelding,
   type: MeldingType.HENVENDELSE_MELDING_FRA_NAV,
-  tekst: "Dette er en melding fra NAV til behandler der veileder lurer på noe.",
+  tekst: "Dette er en melding fra Nav til behandler der veileder lurer på noe.",
   tidspunkt: "2023-01-07T12:00:00.000+01:00",
 };
 
@@ -239,15 +239,15 @@ export const meldingTilNav = {
   parentRef: null,
   behandlerRef: null,
   type: MeldingType.HENVENDELSE_MELDING_TIL_NAV,
-  tekst: "Melding fra behandler til NAV der behandler lurer på noe.",
+  tekst: "Melding fra behandler til Nav der behandler lurer på noe.",
   tidspunkt: "2023-01-17T12:00:00.000+01:00",
 };
 
-export const responsPaMeldingFraNAV = {
+export const responsPaMeldingFraNav = {
   ...defaultMelding,
   innkommende: true,
   type: MeldingType.HENVENDELSE_MELDING_FRA_NAV,
-  tekst: "Melding fra behandler som svarer på melding fra NAV",
+  tekst: "Melding fra behandler som svarer på melding fra Nav",
   tidspunkt: "2023-01-07T12:00:00.000+01:00",
 };
 
@@ -310,7 +310,7 @@ export const behandlerdialogMock = {
     "conversationRef-456": meldinger.slice(0, 2),
     "conversationRef-789": meldinger,
     "conversationRef-981": [defaultMelding, paminnelseMelding],
-    "conversationRef-999": [meldingFraNav, responsPaMeldingFraNAV],
+    "conversationRef-999": [meldingFraNav, responsPaMeldingFraNav],
     "conversationRef-819": [
       defaultMeldingLegeerklaring,
       defaultMeldingInnkommendeLegeerklaring,

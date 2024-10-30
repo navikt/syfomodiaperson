@@ -16,7 +16,7 @@ interface Props {
 
 function getOppgaveText(varselAt: Date): string {
   if (isVarselSvarfristUtlopt(varselAt)) {
-    return "Den sykmeldte har fått en påminnelse om å svare og fortsatt ikke svart. Du kan nå gjøre en vurdering om den sykmeldte trenger oppfølging fra NAV i sen fase av sykefraværet. Hvis den sykmeldte svarer på et senere tidspunkt vil du få en ny oppgave.";
+    return "Den sykmeldte har fått en påminnelse om å svare og fortsatt ikke svart. Du kan nå gjøre en vurdering om den sykmeldte trenger oppfølging fra Nav i sen fase av sykefraværet. Hvis den sykmeldte svarer på et senere tidspunkt vil du få en ny oppgave.";
   } else {
     return `Når spørsmålene er besvart eller hvis den sykmeldte ikke svarer innen ${tilLesbarDatoMedArUtenManedNavn(
       getVarselSvarfrist(varselAt)

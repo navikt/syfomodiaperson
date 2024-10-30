@@ -17,7 +17,7 @@ const AvvistSykmeldingStatuspanel = ({
     <div className="statuspanel blokk--xl statuspanel--treKol">
       <Statusopplysninger>
         <StatusNokkelopplysning tittel="Status">
-          <p>Avvist av NAV</p>
+          <p>Avvist av Nav</p>
         </StatusNokkelopplysning>
         <StatusNokkelopplysning tittel="Dato avvist">
           <p>{tilLesbarDatoMedArstall(sykmelding.mottattTidspunkt)}</p>

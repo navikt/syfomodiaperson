@@ -44,7 +44,7 @@ export const useTidStedDocument = (
   const hilsenParagraph = createParagraph(
     commonTexts.hilsen,
     veilederinfo?.fulltNavn() || "",
-    `NAV`
+    `Nav`
   );
 
   const { getMoteInfo, getIntroHei } = useDialogmoteDocumentComponents();

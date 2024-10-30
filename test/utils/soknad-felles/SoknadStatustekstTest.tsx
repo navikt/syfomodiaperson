@@ -1,5 +1,5 @@
 import React from "react";
-import { expect, describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import SoknadStatustekst from "@/utils/soknad-felles/SoknadStatustekst";
@@ -11,7 +11,7 @@ const renderSoknadStatustekst = (soknad: SykepengesoknadDTO) => {
 };
 
 describe("SoknadStatustekst", () => {
-  it("Return correct statustekst when soknad is only sent to NAV, regardless of whether missing values are null or undefined", () => {
+  it("Return correct statustekst when soknad is only sent to Nav, regardless of whether missing values are null or undefined", () => {
     const sendtTilNavDato = new Date("2022-01-01");
     const readableDate = tilLesbarDatoMedArstall(sendtTilNavDato);
     const soknad: SykepengesoknadDTO = {
@@ -23,7 +23,7 @@ describe("SoknadStatustekst", () => {
 
     renderSoknadStatustekst(soknad);
 
-    expect(screen.getByText(`Sendt til NAV: ${readableDate}`)).to.exist;
+    expect(screen.getByText(`Sendt til Nav: ${readableDate}`)).to.exist;
   });
 
   it("Return correct statustekst when soknad is only sent to arbeidsgiver", () => {
@@ -51,7 +51,7 @@ describe("SoknadStatustekst", () => {
     ).to.exist;
   });
 
-  it("Return correct statustekst when soknad is sent to both NAV and arbeidsgiver", () => {
+  it("Return correct statustekst when soknad is sent to both Nav and arbeidsgiver", () => {
     const sendtTilNAVDato = new Date("2022-01-01");
     const readableNAVDate = tilLesbarDatoMedArstall(sendtTilNAVDato);
     const sendtTilArbeidsgiverDato = new Date("2023-02-02");
@@ -71,7 +71,7 @@ describe("SoknadStatustekst", () => {
     const orgnr = soknad.arbeidsgiver?.orgnummer;
 
     expect(
-      `Sendt til NAV og ${arbeidsgiverNavn} (org. nr. ${orgnr}): ${readableNAVDate}`
+      `Sendt til Nav og ${arbeidsgiverNavn} (org. nr. ${orgnr}): ${readableNAVDate}`
     ).to.exist;
   });
 });

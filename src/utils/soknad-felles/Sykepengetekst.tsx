@@ -12,7 +12,7 @@ const Sykepengetekst = ({ soknad }: SykepengetekstProps) => {
     return <SykepengerOgSaksbehandlingstiderLink />;
   } else if (soknad.sendtTilNAVDato) {
     return (
-      <SykepengerOgSaksbehandlingstiderLink tittel="Sykepenger utbetales etter at NAV har innvilget søknaden." />
+      <SykepengerOgSaksbehandlingstiderLink tittel="Sykepenger utbetales etter at Nav har innvilget søknaden." />
     );
   } else {
     return (

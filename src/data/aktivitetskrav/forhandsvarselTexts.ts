@@ -18,7 +18,7 @@ export const getForhandsvarselTexts = ({
   varselInfo: {
     header: "Varsel om mulig stans av sykepenger",
     intro: introText(mal),
-    stans1: `Basert på opplysningene NAV har i saken er du ikke i arbeidsrelatert aktivitet, og det er heller ikke dokumentert at du oppfyller vilkårene for unntak fra aktivitetsplikten. Vi vurderer derfor å stanse sykepengene dine fra og med ${tilDatoMedManedNavn(
+    stans1: `Basert på opplysningene Nav har i saken er du ikke i arbeidsrelatert aktivitet, og det er heller ikke dokumentert at du oppfyller vilkårene for unntak fra aktivitetsplikten. Vi vurderer derfor å stanse sykepengene dine fra og med ${tilDatoMedManedNavn(
       frist
     )}.`,
     stans2:
@@ -29,7 +29,7 @@ export const getForhandsvarselTexts = ({
     tiltak1:
       "Tilbake i arbeid: Kommer du helt eller delvis tilbake i arbeid, oppfyller du aktivitetsplikten og kan fortsatt få sykepenger. Aktivitet kan dokumenteres med gradert sykmelding eller i søknaden om sykepenger.",
     tiltak2:
-      "Arbeidsrettet tiltak: Aktivitetsplikten vil også være oppfylt hvis du deltar i et arbeidsrettet tiltak i regi av NAV. Ta kontakt med NAV hvis du tenker at dette er aktuelt for deg.",
+      "Arbeidsrettet tiltak: Aktivitetsplikten vil også være oppfylt hvis du deltar i et arbeidsrettet tiltak i regi av Nav. Ta kontakt med Nav hvis du tenker at dette er aktuelt for deg.",
     tiltak3: tiltak3Text(mal),
   },
   giOssTilbakemelding: {
@@ -91,10 +91,10 @@ const tilbakemeldingText = (mal: Brevmal, frist: Date): string => {
     case Brevmal.UTLAND:
       return `Vi ber om tilbakemelding fra deg, arbeidsgiveren din eller den som har sykmeldt deg innen ${tilDatoMedManedNavn(
         frist
-      )}. Etter denne datoen vil NAV vurdere å stanse sykepengene dine.`;
+      )}. Etter denne datoen vil Nav vurdere å stanse sykepengene dine.`;
     case Brevmal.UTEN_ARBEIDSGIVER:
       return `Vi ber om tilbakemelding fra deg eller den som har sykmeldt deg innen ${tilDatoMedManedNavn(
         frist
-      )}. Etter denne datoen vil NAV vurdere å stanse sykepengene dine.`;
+      )}. Etter denne datoen vil Nav vurdere å stanse sykepengene dine.`;
   }
 };

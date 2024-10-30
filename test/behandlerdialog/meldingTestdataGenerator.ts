@@ -9,7 +9,7 @@ import {
   defaultReturLegeerklaring,
   meldingFraNav,
   paminnelseMelding,
-  responsPaMeldingFraNAV,
+  responsPaMeldingFraNav,
 } from "@/mocks/isbehandlerdialog/behandlerdialogMock";
 import {
   MeldingDTO,
@@ -208,6 +208,6 @@ export const meldingFraNAVConversation = {
 
 export const meldingFraNAVConversationMedSvar = {
   conversations: {
-    ["conversationRef567"]: [meldingFraNav, responsPaMeldingFraNAV],
+    ["conversationRef567"]: [meldingFraNav, responsPaMeldingFraNav],
   },
 };

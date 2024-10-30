@@ -22,10 +22,10 @@ import {
 
 const texts = {
   notStoppedTittel:
-    "Send beskjed til NAV Arbeid og ytelser om mulig stans av sykepenger",
+    "Send beskjed til Nav Arbeid og ytelser om mulig stans av sykepenger",
   stoppedTittel: "Beskjeden din er sendt",
   stoppedInfo:
-    "Nå har du sendt beskjed til NAV Arbeid og ytelser. Du må også lage et notat i Gosys hvor du begrunner hvorfor du mener sykepengene bør stanses.",
+    "Nå har du sendt beskjed til Nav Arbeid og ytelser. Du må også lage et notat i Gosys hvor du begrunner hvorfor du mener sykepengene bør stanses.",
   seServicerutinen: "Se servicerutinen hvis du er i tvil.",
   arbeidsgiver: "Velg arbeidsgiver",
   stansSykepenger: "Stans sykepenger",
@@ -40,9 +40,10 @@ const texts = {
   },
 };
 
-interface IPengestoppModal {
+interface Props {
   isOpen: boolean;
   arbeidsgivere: Arbeidsgiver[];
+
   onModalClose(): void;
 }
 
@@ -84,11 +85,7 @@ const tittel = (stopped: boolean) => {
   return stopped ? texts.stoppedTittel : texts.notStoppedTittel;
 };
 
-const PengestoppModal = ({
-  isOpen,
-  arbeidsgivere,
-  onModalClose,
-}: IPengestoppModal) => {
+const PengestoppModal = ({ isOpen, arbeidsgivere, onModalClose }: Props) => {
   const { valgtEnhet } = useValgtEnhet();
   const fnr = useValgtPersonident();
   const { isPending, isError, isSuccess, mutate } = useFlaggPerson();
