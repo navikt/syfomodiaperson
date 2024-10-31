@@ -23,7 +23,7 @@ export const mockSyfooversiktsrv = [
   http.get(`${SYFOOVERSIKTSRV_PERSONTILDELING_ROOT}/historikk`, () => {
     return HttpResponse.json([
       {
-        tildeltDato: "2024-10-15",
+        tildeltDato: "2024-12-10",
         tildeltAv: "A123456",
         tildeltVeileder: "B123456",
         tildeltEnhet: "0315",

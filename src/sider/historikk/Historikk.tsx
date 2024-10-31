@@ -21,7 +21,7 @@ function isEventInTilfelle(
 ): boolean {
   return (
     new Date(tilfelle.start) <= new Date(event.tidspunkt) &&
-    new Date(event.tidspunkt) < new Date(tilfelle.end)
+    new Date(event.tidspunkt) <= new Date(tilfelle.end)
   );
 }
 
