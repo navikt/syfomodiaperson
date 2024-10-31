@@ -34,11 +34,11 @@ const SoknadStatustekst = ({ soknad }: SoknadStatustekstProps) => {
   } else if (isSoknadSentToNav && isSoknadSentToArbeidsgiver) {
     return (
       <BodyShort size="small">
-        Sendt til NAV og {arbeidsgiver} (org. nr. {orgnr}): {sendtTilNavDato}
+        Sendt til Nav og {arbeidsgiver} (org. nr. {orgnr}): {sendtTilNavDato}
       </BodyShort>
     );
   } else if (isSoknadSentToNav && !isSoknadSentToArbeidsgiver) {
-    return <BodyShort size="small">Sendt til NAV: {sendtTilNavDato}</BodyShort>;
+    return <BodyShort size="small">Sendt til Nav: {sendtTilNavDato}</BodyShort>;
   } else {
     return (
       <BodyShort size="small">

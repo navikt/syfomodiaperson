@@ -18,7 +18,7 @@ import { Alert, Heading, Link, Loader } from "@navikt/ds-react";
 
 const texts = {
   header: "Oppfølgingsplan",
-  ingenPlanerDelt: "Ingen planer er delt med NAV",
+  ingenPlanerDelt: "Ingen planer er delt med Nav",
   pending: "Henter oppfølgingsplaner...",
   error:
     "Noe gikk galt ved henting av oppfølgingsplaner. Vennligst prøv igjen senere.",

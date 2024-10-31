@@ -16,12 +16,12 @@ export const getVedtakTexts = ({ fom, tom }: VedtakTextsValues) => ({
     tom
   )}, vil du ikke få sykepenger etter denne datoen.`,
   arbeidssoker: {
-    part1: `Et vilkår for å motta sykepenger i denne perioden er at du har registrert deg som arbeidssøker hos NAV.`,
+    part1: `Et vilkår for å motta sykepenger i denne perioden er at du har registrert deg som arbeidssøker hos Nav.`,
     part2: "For å registrere deg går du inn på nav.no/arbeid/registrering.",
   },
   hjemmel: "Dette vedtaket er gjort etter folketrygdloven paragraf 8-5.",
   behandler:
-    "NAV har ikke delt informasjon med legen din om at du er innvilget ordningen friskmeldt til arbeidsformidling. Du må gjerne selv informere legen din om dette. Legen din trenger ikke å skrive ut sykmelding i perioden vedtaket gjelder.",
+    "Nav har ikke delt informasjon med legen din om at du er innvilget ordningen friskmeldt til arbeidsformidling. Du må gjerne selv informere legen din om dette. Legen din trenger ikke å skrive ut sykmelding i perioden vedtaket gjelder.",
   begrunnelse: {
     header: "Begrunnelse",
     part1:
@@ -30,7 +30,7 @@ export const getVedtakTexts = ({ fom, tom }: VedtakTextsValues) => ({
   nyttigInfo: {
     header: "Nyttig informasjon",
     part1:
-      "Sykepengene blir utbetalt etter at du har sendt meldekort. Du sender meldekort til NAV hver 14.dag.",
+      "Sykepengene blir utbetalt etter at du har sendt meldekort. Du sender meldekort til Nav hver 14.dag.",
     meldekortInfo: {
       header: "På meldekortet må du føre opp:",
       bulletPoint1: "Alle timer du har arbeidet",

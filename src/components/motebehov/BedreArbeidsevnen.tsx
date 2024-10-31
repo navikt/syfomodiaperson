@@ -6,8 +6,8 @@ const tekster = {
     header: "Hva skal til for å bedre arbeidsevnen?",
     tilretteleggingTittel:
       "Tilrettelegging/hensyn som bør tas på arbeidsplassen. Beskriv",
-    tiltakNavTittel: "Tiltak i regi av NAV. Beskriv",
-    tiltakAndreTittel: "Eventuelle andre innspill til NAV. Beskriv",
+    tiltakNavTittel: "Tiltak i regi av Nav. Beskriv",
+    tiltakAndreTittel: "Eventuelle andre innspill til Nav. Beskriv",
   },
 };
 

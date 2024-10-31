@@ -184,7 +184,7 @@ describe("MeldingTilBehandler", () => {
       });
     });
 
-    it("Forhåndsviser melding fra NAV-melding ved klikk på Forhåndsvisning-knapp", async () => {
+    it("Forhåndsviser melding fra Nav-melding ved klikk på Forhåndsvisning-knapp", async () => {
       renderMeldingTilBehandler();
       fireEvent.change(screen.getByLabelText(selectLabel), {
         target: { value: MeldingType.HENVENDELSE_MELDING_FRA_NAV },

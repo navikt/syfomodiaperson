@@ -5,25 +5,24 @@ import { erMeldingTilNavInformasjon } from "@/utils/sykmeldinger/sykmeldingUtils
 
 const texts = {
   begrunnelse: "Begrunn nærmere",
-  bistandNAV: "Ønskes bistand fra NAV nå?",
-  meldingTilNAV: "Melding til NAV",
+  bistandNav: "Ønskes bistand fra Nav nå?",
+  meldingTilNav: "Melding til Nav",
 };
 
-interface MeldingTilNAVProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-const MeldingTilNAV = (meldingTilNAVProps: MeldingTilNAVProps) => {
-  const { sykmelding } = meldingTilNAVProps;
+export default function MeldingTilNav({ sykmelding }: Props) {
   if (!erMeldingTilNavInformasjon(sykmelding)) {
     return <span />;
   }
   return (
     <div className="sykmeldingSeksjon">
-      <h4 className="sykmeldingSeksjon__tittel">{texts.meldingTilNAV}</h4>
+      <h4 className="sykmeldingSeksjon__tittel">{texts.meldingTilNav}</h4>
       {!sykmelding.meldingTilNav.navBoerTaTakISaken ? null : (
         <SykmeldingCheckboxSelvstendig
-          tekst={texts.bistandNAV}
+          tekst={texts.bistandNav}
           jsClassName="navBoerTaTakISaken"
         />
       )}
@@ -37,6 +36,4 @@ const MeldingTilNAV = (meldingTilNAVProps: MeldingTilNAVProps) => {
       )}
     </div>
   );
-};
-
-export default MeldingTilNAV;
+}

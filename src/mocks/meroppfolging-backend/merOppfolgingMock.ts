@@ -25,9 +25,9 @@ export const merOppfolgingMock: SenOppfolgingFormResponseDTOV2 = {
     },
     {
       questionType: "BEHOV_FOR_OPPFOLGING",
-      questionText: "Har du behov for hjelp fra oss i NAV?",
+      questionText: "Har du behov for hjelp fra oss i Nav?",
       answerType: "JA",
-      answerText: "Ja, jeg vil snakke med en veileder i NAV",
+      answerText: "Ja, jeg vil snakke med en veileder i Nav",
     },
   ],
 };

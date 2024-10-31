@@ -3,7 +3,7 @@ import {
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { erMeldingTilNavInformasjon } from "@/utils/sykmeldinger/sykmeldingUtils";
-import { expect, describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
 import { SporsmalSvarDTO } from "@/data/sykmelding/types/SporsmalSvarDTO";
 
@@ -32,7 +32,7 @@ const baseSykmelding: SykmeldingOldFormat = {
 };
 describe("sykmeldingUtils - Section 8 of sykmelding: Melding Til Nav", () => {
   describe("erMeldingTilNavInformasjon", () => {
-    it("return true if Sykmelder has checked box 'Ønskes bistand fra NAV nå?'", () => {
+    it("return true if Sykmelder has checked box 'Ønskes bistand fra Nav nå?'", () => {
       const sykmelding: SykmeldingOldFormat = {
         ...baseSykmelding,
         meldingTilNav: {

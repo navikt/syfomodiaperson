@@ -81,7 +81,7 @@ export const getExpectedVedtakDocument = ({
       : []),
     {
       texts: [
-        `Et vilkår for å motta sykepenger i denne perioden er at du har registrert deg som arbeidssøker hos NAV.`,
+        `Et vilkår for å motta sykepenger i denne perioden er at du har registrert deg som arbeidssøker hos Nav.`,
         "For å registrere deg går du inn på nav.no/arbeid/registrering.",
       ],
       type: DocumentComponentType.PARAGRAPH,
@@ -104,7 +104,7 @@ export const getExpectedVedtakDocument = ({
     {
       title: "Nyttig informasjon",
       texts: [
-        "Sykepengene blir utbetalt etter at du har sendt meldekort. Du sender meldekort til NAV hver 14.dag.",
+        "Sykepengene blir utbetalt etter at du har sendt meldekort. Du sender meldekort til Nav hver 14.dag.",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
@@ -138,7 +138,7 @@ export const getExpectedVedtakDocument = ({
     },
     {
       texts: [
-        "NAV har ikke delt informasjon med legen din om at du er innvilget ordningen friskmeldt til arbeidsformidling. Du må gjerne selv informere legen din om dette. Legen din trenger ikke å skrive ut sykmelding i perioden vedtaket gjelder.",
+        "Nav har ikke delt informasjon med legen din om at du er innvilget ordningen friskmeldt til arbeidsformidling. Du må gjerne selv informere legen din om dette. Legen din trenger ikke å skrive ut sykmelding i perioden vedtaket gjelder.",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
@@ -170,7 +170,7 @@ export const getExpectedVedtakDocument = ({
       type: DocumentComponentType.PARAGRAPH,
     },
     {
-      texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "NAV"],
+      texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "Nav"],
       type: DocumentComponentType.PARAGRAPH,
     },
   ];

@@ -49,7 +49,7 @@ export const useReferatDocument = (
   const hilsenParagraph = createParagraph(
     commonTexts.hilsen,
     veilederinfo?.fulltNavn() || "",
-    `NAV`
+    `Nav`
   );
   const personident = useValgtPersonident();
 

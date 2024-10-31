@@ -4,8 +4,8 @@ export function getForhandsvarselManglendeMedvirkningTexts(frist: Date) {
   return {
     title: "Varsel om mulig stans av sykepenger",
     intro: {
-      p1: "For å få sykepenger er det et vilkår at du medvirker i egen sak. Dette betyr at du blant annet har en plikt til å gi opplysninger til NAV, delta i dialogmøter og ta imot tilbud om tilrettelegging.",
-      p2: `Basert på opplysningene NAV har i saken har du ikke oppfylt plikten din til å medvirke, og det er heller ikke dokumentert at du hadde en rimelig grunn til å ikke medvirke. Vi vurderer derfor å stanse sykepengene dine fra og med ${tilDatoMedManedNavn(
+      p1: "For å få sykepenger er det et vilkår at du medvirker i egen sak. Dette betyr at du blant annet har en plikt til å gi opplysninger til Nav, delta i dialogmøter og ta imot tilbud om tilrettelegging.",
+      p2: `Basert på opplysningene Nav har i saken har du ikke oppfylt plikten din til å medvirke, og det er heller ikke dokumentert at du hadde en rimelig grunn til å ikke medvirke. Vi vurderer derfor å stanse sykepengene dine fra og med ${tilDatoMedManedNavn(
         frist
       )}.`,
       p3: "Vi har ikke tatt en endelig avgjørelse om å stanse dine sykepenger.",
@@ -14,7 +14,7 @@ export function getForhandsvarselManglendeMedvirkningTexts(frist: Date) {
       header: "Gi oss tilbakemelding",
       info: `Vi ber om tilbakemelding fra deg innen ${tilDatoMedManedNavn(
         frist
-      )}. Etter denne datoen vil NAV vurdere å stanse sykepengene dine.`,
+      )}. Etter denne datoen vil Nav vurdere å stanse sykepengene dine.`,
     },
     kontaktinfo: {
       header: "Kontaktinformasjon",
@@ -39,7 +39,7 @@ export function getOppfyltManglendeMedvirkningTexts(
     title: "Du har rett til videre utbetaling av sykepenger",
     previousForhandsvarsel: `I forhåndsvarsel av ${tilDatoMedManedNavn(
       forhandsvarselSendtDato
-    )} ble du informert om at NAV vurderte å stanse dine sykepenger. Vi har nå vurdert at plikten til å medvirke er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
+    )} ble du informert om at Nav vurderte å stanse dine sykepenger. Vi har nå vurdert at plikten til å medvirke er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
     forAFaSykepenger:
       "For å få sykepenger er det et vilkår at du medvirker i egen sak.",
     viHarBruktLoven:
@@ -55,7 +55,7 @@ export function getUnntakManglendeMedvirkningTexts(
     info: {
       p1: `I forhåndsvarsel av ${tilDatoMedManedNavn(
         forhandsvarselSendtDato
-      )} ble du informert om at NAV vurderte å stanse utbetaling av sykepengene dine. Vi har nå vurdert at du har rimelig grunn til ikke å medvirke i egen sak.`,
+      )} ble du informert om at Nav vurderte å stanse utbetaling av sykepengene dine. Vi har nå vurdert at du har rimelig grunn til ikke å medvirke i egen sak.`,
       p2: "Du har rett til videre utbetaling av sykepenger.",
     },
     loven:
@@ -73,8 +73,8 @@ export function getIkkeAktuellManglendeMedvirkningTexts() {
 
 export function getStansTexts(varselSvarfrist: Date) {
   return {
-    header: "NAV har stanset sykepengene dine",
-    fom: `NAV har stanset sykepengene dine fra og med ${tilDatoMedManedNavn(
+    header: "Nav har stanset sykepengene dine",
+    fom: `Nav har stanset sykepengene dine fra og med ${tilDatoMedManedNavn(
       varselSvarfrist
     )}.`,
     intro:

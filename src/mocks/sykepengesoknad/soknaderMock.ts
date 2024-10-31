@@ -433,7 +433,7 @@ export const soknaderMock = [
             id: "24",
             tag: "HVILKE_ANDRE_INNTEKTSKILDER",
             sporsmalstekst: "Hvilke andre inntektskilder har du?",
-            undertekst: "Du trenger ikke oppgi penger fra NAV",
+            undertekst: "Du trenger ikke oppgi penger fra Nav",
             svartype: "CHECKBOX_GRUPPE",
             min: null,
             max: null,
@@ -639,7 +639,7 @@ export const soknaderMock = [
         tag: "VAER_KLAR_OVER_AT",
         sporsmalstekst: "Viktig å være klar over:",
         undertekst:
-          '<ul><li>Du kan bare få sykepenger hvis det er din egen sykdom eller skade som hindrer deg i å jobbe. Sosiale eller økonomiske problemer gir ikke rett til sykepenger.</li><li>Du kan miste retten til sykepenger hvis du nekter å opplyse om din egen arbeidsevne, eller hvis du ikke tar imot behandling eller tilrettelegging.</li><li>Retten til sykepenger gjelder bare inntekt du har mottatt som lønn og betalt skatt av på sykmeldingstidspunktet.</li><li>NAV kan innhente opplysninger som er nødvendige for å behandle søknaden.</li><li>Du må melde fra til NAV hvis du satt i varetekt, sonet straff eller var under forvaring i sykmeldingsperioden.</li><li>Fristen for å søke sykepenger er som hovedregel 3 måneder</li></ul><p>Du kan lese mer om rettigheter og plikter på <a href="https://www.nav.no/sykepenger" target="_blank">nav.no/sykepenger</a>.</p>',
+          '<ul><li>Du kan bare få sykepenger hvis det er din egen sykdom eller skade som hindrer deg i å jobbe. Sosiale eller økonomiske problemer gir ikke rett til sykepenger.</li><li>Du kan miste retten til sykepenger hvis du nekter å opplyse om din egen arbeidsevne, eller hvis du ikke tar imot behandling eller tilrettelegging.</li><li>Retten til sykepenger gjelder bare inntekt du har mottatt som lønn og betalt skatt av på sykmeldingstidspunktet.</li><li>Nav kan innhente opplysninger som er nødvendige for å behandle søknaden.</li><li>Du må melde fra til Nav hvis du satt i varetekt, sonet straff eller var under forvaring i sykmeldingsperioden.</li><li>Fristen for å søke sykepenger er som hovedregel 3 måneder</li></ul><p>Du kan lese mer om rettigheter og plikter på <a href="https://www.nav.no/sykepenger" target="_blank">nav.no/sykepenger</a>.</p>',
         svartype: "IKKE_RELEVANT",
         min: null,
         max: null,
@@ -694,7 +694,7 @@ export const soknaderMock = [
         id: "40",
         tag: "ANSVARSERKLARING",
         sporsmalstekst:
-          "Jeg vet at jeg kan miste retten til sykepenger hvis opplysningene jeg gir ikke er riktige eller fullstendige. Jeg vet også at NAV kan holde igjen eller kreve tilbake penger, og at å gi feil opplysninger kan være straffbart.",
+          "Jeg vet at jeg kan miste retten til sykepenger hvis opplysningene jeg gir ikke er riktige eller fullstendige. Jeg vet også at Nav kan holde igjen eller kreve tilbake penger, og at å gi feil opplysninger kan være straffbart.",
         undertekst: null,
         svartype: "CHECKBOX_PANEL",
         min: null,
@@ -791,7 +791,7 @@ export const soknaderMock = [
         id: "42",
         tag: "ANDRE_INNTEKTSKILDER",
         sporsmalstekst:
-          "Har du hatt inntekt mens du har vært sykmeldt i perioden 12. - 22. januar 2020? Du trenger ikke oppgi penger fra NAV.",
+          "Har du hatt inntekt mens du har vært sykmeldt i perioden 12. - 22. januar 2020? Du trenger ikke oppgi penger fra Nav.",
         undertekst: null,
         svartype: "JA_NEI",
         min: null,
@@ -1190,7 +1190,7 @@ export const soknaderMock = [
         id: "32143",
         tag: "ANSVARSERKLARING",
         sporsmalstekst:
-          "Jeg vet at jeg kan miste retten til sykepenger hvis opplysningene jeg gir ikke er riktige eller fullstendige. Jeg vet også at NAV kan holde igjen eller kreve tilbake penger, og at å gi feil opplysninger kan være straffbart.",
+          "Jeg vet at jeg kan miste retten til sykepenger hvis opplysningene jeg gir ikke er riktige eller fullstendige. Jeg vet også at Nav kan holde igjen eller kreve tilbake penger, og at å gi feil opplysninger kan være straffbart.",
         undertekst: null,
         svartype: "CHECKBOX_PANEL",
         min: null,
@@ -1329,7 +1329,7 @@ export const soknaderMock = [
         id: "74662",
         tag: "ANDRE_INNTEKTSKILDER",
         sporsmalstekst:
-          "Har du hatt inntekt mens du har vært sykmeldt i perioden 25. februar - 25. mars 2020? Du trenger ikke oppgi penger fra NAV.",
+          "Har du hatt inntekt mens du har vært sykmeldt i perioden 25. februar - 25. mars 2020? Du trenger ikke oppgi penger fra Nav.",
         undertekst: null,
         svartype: "JA_NEI",
         min: null,
@@ -1641,7 +1641,7 @@ export const soknaderMock = [
                 tag: "IKKE_SOKT_UTENLANDSOPPHOLD_INFORMASJON",
                 sporsmalstekst: null,
                 undertekst:
-                  '<p>I utgangspunktet kan du bare få sykepenger mens du er i et land innenfor EØS. Du kan likevel <a target="_blank" href="https://tjenester.nav.no/sykefravaer/sykepengesoknad-utland">søke NAV om å få reise ut av EØS</a> og beholde sykepengene i en begrenset periode.</p>',
+                  '<p>I utgangspunktet kan du bare få sykepenger mens du er i et land innenfor EØS. Du kan likevel <a target="_blank" href="https://tjenester.nav.no/sykefravaer/sykepengesoknad-utland">søke Nav om å få reise ut av EØS</a> og beholde sykepengene i en begrenset periode.</p>',
                 svartype: "IKKE_RELEVANT",
                 min: null,
                 max: null,
@@ -1990,7 +1990,7 @@ export const soknaderMock = [
         tag: "VAER_KLAR_OVER_AT",
         sporsmalstekst: "Viktig å være klar over:",
         undertekst:
-          '<ul><li>Du kan bare få sykepenger hvis det er din egen sykdom eller skade som hindrer deg i å jobbe. Sosiale eller økonomiske problemer gir ikke rett til sykepenger.</li><li>Du kan miste retten til sykepenger hvis du nekter å opplyse om din egen arbeidsevne, eller hvis du ikke tar imot behandling eller tilrettelegging.</li><li>Retten til sykepenger gjelder bare inntekt du har mottatt som lønn og betalt skatt av på sykmeldingstidspunktet.</li><li>NAV kan innhente opplysninger som er nødvendige for å behandle søknaden.</li><li>Du må melde fra til NAV hvis du satt i varetekt, sonet straff eller var under forvaring i sykmeldingsperioden.</li><li>Fristen for å søke sykepenger er som hovedregel 3 måneder</li></ul><p>Du kan lese mer om rettigheter og plikter på <a href="https://www.nav.no/sykepenger" target="_blank">nav.no/sykepenger</a>.</p>',
+          '<ul><li>Du kan bare få sykepenger hvis det er din egen sykdom eller skade som hindrer deg i å jobbe. Sosiale eller økonomiske problemer gir ikke rett til sykepenger.</li><li>Du kan miste retten til sykepenger hvis du nekter å opplyse om din egen arbeidsevne, eller hvis du ikke tar imot behandling eller tilrettelegging.</li><li>Retten til sykepenger gjelder bare inntekt du har mottatt som lønn og betalt skatt av på sykmeldingstidspunktet.</li><li>Nav kan innhente opplysninger som er nødvendige for å behandle søknaden.</li><li>Du må melde fra til Nav hvis du satt i varetekt, sonet straff eller var under forvaring i sykmeldingsperioden.</li><li>Fristen for å søke sykepenger er som hovedregel 3 måneder</li></ul><p>Du kan lese mer om rettigheter og plikter på <a href="https://www.nav.no/sykepenger" target="_blank">nav.no/sykepenger</a>.</p>',
         svartype: "IKKE_RELEVANT",
         min: null,
         max: null,
@@ -2045,7 +2045,7 @@ export const soknaderMock = [
         id: "68",
         tag: "ANSVARSERKLARING",
         sporsmalstekst:
-          "Jeg vet at jeg kan miste retten til sykepenger hvis opplysningene jeg gir ikke er riktige eller fullstendige. Jeg vet også at NAV kan holde igjen eller kreve tilbake penger, og at å gi feil opplysninger kan være straffbart.",
+          "Jeg vet at jeg kan miste retten til sykepenger hvis opplysningene jeg gir ikke er riktige eller fullstendige. Jeg vet også at Nav kan holde igjen eller kreve tilbake penger, og at å gi feil opplysninger kan være straffbart.",
         undertekst: null,
         svartype: "CHECKBOX_PANEL",
         min: null,
@@ -2257,7 +2257,7 @@ export const soknaderMock = [
             id: "75",
             tag: "HVILKE_ANDRE_INNTEKTSKILDER",
             sporsmalstekst: "Hvilke inntektskilder har du?",
-            undertekst: "Du trenger ikke oppgi penger fra NAV",
+            undertekst: "Du trenger ikke oppgi penger fra Nav",
             svartype: "CHECKBOX_GRUPPE",
             min: null,
             max: null,
@@ -2407,7 +2407,7 @@ export const soknaderMock = [
                 tag: "IKKE_SOKT_UTENLANDSOPPHOLD_INFORMASJON",
                 sporsmalstekst: null,
                 undertekst:
-                  '<p>I utgangspunktet kan du bare få sykepenger mens du er i et land innenfor EØS. Du kan likevel <a target="_blank" href="https://tjenester.nav.no/sykefravaer/sykepengesoknad-utland">søke NAV om å få reise ut av EØS</a> og beholde sykepengene i en begrenset periode.</p>',
+                  '<p>I utgangspunktet kan du bare få sykepenger mens du er i et land innenfor EØS. Du kan likevel <a target="_blank" href="https://tjenester.nav.no/sykefravaer/sykepengesoknad-utland">søke Nav om å få reise ut av EØS</a> og beholde sykepengene i en begrenset periode.</p>',
                 svartype: "IKKE_RELEVANT",
                 min: null,
                 max: null,
@@ -2494,7 +2494,7 @@ export const soknaderMock = [
         tag: "VAER_KLAR_OVER_AT",
         sporsmalstekst: "Viktig å være klar over:",
         undertekst:
-          '<ul><li>Du kan bare få sykepenger hvis det er din egen sykdom eller skade som hindrer deg i å jobbe. Sosiale eller økonomiske problemer gir ikke rett til sykepenger.</li><li>Du kan miste retten til sykepenger hvis du nekter å opplyse om din egen arbeidsevne, eller hvis du ikke tar imot behandling eller tilrettelegging.</li><li>Retten til sykepenger gjelder bare inntekt du har mottatt som lønn og betalt skatt av på sykmeldingstidspunktet.</li><li>NAV kan innhente opplysninger som er nødvendige for å behandle søknaden.</li><li>Du må melde fra til NAV hvis du satt i varetekt, sonet straff eller var under forvaring i sykmeldingsperioden.</li><li>Fristen for å søke sykepenger er som hovedregel 3 måneder</li></ul><p>Du kan lese mer om rettigheter og plikter på <a href="https://www.nav.no/sykepenger" target="_blank">nav.no/sykepenger</a>.</p>',
+          '<ul><li>Du kan bare få sykepenger hvis det er din egen sykdom eller skade som hindrer deg i å jobbe. Sosiale eller økonomiske problemer gir ikke rett til sykepenger.</li><li>Du kan miste retten til sykepenger hvis du nekter å opplyse om din egen arbeidsevne, eller hvis du ikke tar imot behandling eller tilrettelegging.</li><li>Retten til sykepenger gjelder bare inntekt du har mottatt som lønn og betalt skatt av på sykmeldingstidspunktet.</li><li>Nav kan innhente opplysninger som er nødvendige for å behandle søknaden.</li><li>Du må melde fra til Nav hvis du satt i varetekt, sonet straff eller var under forvaring i sykmeldingsperioden.</li><li>Fristen for å søke sykepenger er som hovedregel 3 måneder</li></ul><p>Du kan lese mer om rettigheter og plikter på <a href="https://www.nav.no/sykepenger" target="_blank">nav.no/sykepenger</a>.</p>',
         svartype: "IKKE_RELEVANT",
         min: null,
         max: null,
@@ -2538,7 +2538,7 @@ export const soknaderMock = [
         id: "92",
         tag: "ANSVARSERKLARING",
         sporsmalstekst:
-          "Jeg vet at jeg kan miste retten til sykepenger hvis opplysningene jeg gir ikke er riktige eller fullstendige. Jeg vet også at NAV kan holde igjen eller kreve tilbake penger, og at å gi feil opplysninger kan være straffbart.",
+          "Jeg vet at jeg kan miste retten til sykepenger hvis opplysningene jeg gir ikke er riktige eller fullstendige. Jeg vet også at Nav kan holde igjen eller kreve tilbake penger, og at å gi feil opplysninger kan være straffbart.",
         undertekst: null,
         svartype: "CHECKBOX_PANEL",
         min: null,
@@ -2646,7 +2646,7 @@ export const soknaderMock = [
             id: "107",
             tag: "HVILKE_ANDRE_INNTEKTSKILDER",
             sporsmalstekst: "Hvilke andre inntektskilder har du?",
-            undertekst: "Du trenger ikke oppgi penger fra NAV",
+            undertekst: "Du trenger ikke oppgi penger fra Nav",
             svartype: "CHECKBOX_GRUPPE",
             min: null,
             max: null,
@@ -2811,7 +2811,7 @@ export const soknaderMock = [
         tag: "VAER_KLAR_OVER_AT",
         sporsmalstekst: "Viktig å være klar over:",
         undertekst:
-          '<ul><li>Denne søknaden gjelder hvis selve behandlingen har en slik virkning på deg at du ikke kan jobbe resten av dagen. Grunnen er altså behandlingens effekt, og ikke at du for eksempel måtte bruke arbeidstid.</li><li>NAV kan innhente opplysninger som er nødvendige for å behandle søknaden.</li><li>Fristen for å søke sykepenger er som hovedregel 3 måneder</li></ul><p>Du kan lese mer om rettigheter og plikter på <a href="https://www.nav.no/sykepenger" target="_blank">nav.no/sykepenger</a>.</p>',
+          '<ul><li>Denne søknaden gjelder hvis selve behandlingen har en slik virkning på deg at du ikke kan jobbe resten av dagen. Grunnen er altså behandlingens effekt, og ikke at du for eksempel måtte bruke arbeidstid.</li><li>Nav kan innhente opplysninger som er nødvendige for å behandle søknaden.</li><li>Fristen for å søke sykepenger er som hovedregel 3 måneder</li></ul><p>Du kan lese mer om rettigheter og plikter på <a href="https://www.nav.no/sykepenger" target="_blank">nav.no/sykepenger</a>.</p>',
         svartype: "IKKE_RELEVANT",
         min: null,
         max: null,
@@ -2927,7 +2927,7 @@ export const soknaderMock = [
         tag: "BEKREFT_OPPLYSNINGER_UTLAND_INFO",
         sporsmalstekst: "Før du reiser ber vi deg bekrefte:",
         undertekst:
-          "<ul>\n    <li>Jeg har avklart med legen at reisen ikke vil forlenge sykefraværet</li>\n    <li>Reisen hindrer ikke planlagt behandling eller avtaler med NAV</li>\n</ul>",
+          "<ul>\n    <li>Jeg har avklart med legen at reisen ikke vil forlenge sykefraværet</li>\n    <li>Reisen hindrer ikke planlagt behandling eller avtaler med Nav</li>\n</ul>",
         svartype: "IKKE_RELEVANT",
         min: null,
         max: null,
@@ -2985,7 +2985,7 @@ export const soknaderMock = [
         id: "0c742e78-fcce-3f8f-996a-a697d5d7318f",
         tag: "ANSVARSERKLARING",
         sporsmalstekst:
-          "Jeg vet at jeg kan miste retten til sykepenger hvis opplysningene jeg gir ikke er riktige eller fullstendige. Jeg vet også at NAV kan holde igjen eller kreve tilbake penger, og at å gi feil opplysninger kan være straffbart.",
+          "Jeg vet at jeg kan miste retten til sykepenger hvis opplysningene jeg gir ikke er riktige eller fullstendige. Jeg vet også at Nav kan holde igjen eller kreve tilbake penger, og at å gi feil opplysninger kan være straffbart.",
         undertekst: null,
         svartype: "CHECKBOX_PANEL",
         min: null,

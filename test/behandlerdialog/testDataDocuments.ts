@@ -25,7 +25,7 @@ export const expectedTilleggsopplysningerDocument = (
   },
   {
     texts: [
-      "NAV trenger opplysninger fra deg vedrørende din pasient. Du kan utelate opplysninger som etter din vurdering faller utenfor formålet.",
+      "Nav trenger opplysninger fra deg vedrørende din pasient. Du kan utelate opplysninger som etter din vurdering faller utenfor formålet.",
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -40,7 +40,7 @@ export const expectedTilleggsopplysningerDocument = (
   {
     title: "Lovhjemmel",
     texts: [
-      "Folketrygdloven § 21-4 andre ledd gir NAV rett til å innhente nødvendige opplysninger. Dette gjelder selv om opplysningene er taushetsbelagte, jf. § 21-4 sjette ledd.",
+      "Folketrygdloven § 21-4 andre ledd gir Nav rett til å innhente nødvendige opplysninger. Dette gjelder selv om opplysningene er taushetsbelagte, jf. § 21-4 sjette ledd.",
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -52,7 +52,7 @@ export const expectedTilleggsopplysningerDocument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "NAV"],
+    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "Nav"],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -91,7 +91,7 @@ export const expectedPaminnelseDocument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "NAV"],
+    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "Nav"],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -111,13 +111,13 @@ export const expectedLegeerklaringDocument = (
   },
   {
     texts: [
-      "NAV trenger opplysninger fra deg vedrørende din pasient. Du kan utelate opplysninger som etter din vurdering faller utenfor formålet.",
+      "Nav trenger opplysninger fra deg vedrørende din pasient. Du kan utelate opplysninger som etter din vurdering faller utenfor formålet.",
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [
-      "«Legeerklæring ved arbeidsuførhet» leveres på blankett NAV 08-07.08, og honoreres med takst L40.",
+      "«Legeerklæring ved arbeidsuførhet» leveres på blankett Nav 08-07.08, og honoreres med takst L40.",
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -128,7 +128,7 @@ export const expectedLegeerklaringDocument = (
   {
     title: "Lovhjemmel",
     texts: [
-      "Folketrygdloven § 21-4 andre ledd gir NAV rett til å innhente nødvendige opplysninger. Dette gjelder selv om opplysningene er taushetsbelagte, jf. § 21-4 sjette ledd.",
+      "Folketrygdloven § 21-4 andre ledd gir Nav rett til å innhente nødvendige opplysninger. Dette gjelder selv om opplysningene er taushetsbelagte, jf. § 21-4 sjette ledd.",
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -145,7 +145,7 @@ export const expectedLegeerklaringDocument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "NAV"],
+    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "Nav"],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -165,7 +165,7 @@ export const expectedReturLegeerklaringDocument = (
   },
   {
     texts: [
-      "Vi har mottatt Legeerklæring ved arbeidsuførhet (NAV 08-07.08). Vi ber om at du sender oss en ny legeerklæring snarest mulig.",
+      "Vi har mottatt Legeerklæring ved arbeidsuførhet (Nav 08-07.08). Vi ber om at du sender oss en ny legeerklæring snarest mulig.",
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
@@ -192,7 +192,7 @@ export const expectedReturLegeerklaringDocument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "NAV"],
+    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "Nav"],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -201,7 +201,7 @@ export const expectedMeldingFraNAVDocument = (
   meldingTekst: string
 ): DocumentComponentDto[] => [
   {
-    texts: ["Melding fra NAV"],
+    texts: ["Melding fra Nav"],
     type: DocumentComponentType.HEADER_H1,
   },
   {
@@ -215,7 +215,7 @@ export const expectedMeldingFraNAVDocument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "NAV"],
+    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "Nav"],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];

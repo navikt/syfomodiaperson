@@ -40,7 +40,7 @@ const textSendtTilArbeidsgiver = (dato?: string, arbeidsgiver?: string) => {
 };
 
 const textSendtTilNav = (dato?: string) => {
-  return `${texts.sendt} NAV ${dato}`;
+  return `${texts.sendt} Nav ${dato}`;
 };
 
 const textAvbrutt = (dato?: string) => {
@@ -93,15 +93,15 @@ const textSoknadTeaserStatus = (
     case "soknad.teaser.status.TIL_SENDING":
       return "Sender...";
     case "soknad.teaser.status.TIL_SENDING.til-arbeidsgiver-og-nav":
-      return `Sender til ${arbeidsgiver} og NAV...`;
+      return `Sender til ${arbeidsgiver} og Nav...`;
     case "soknad.teaser.status.SENDT":
       return `Sendt ${dato}`;
     case "soknad.teaser.status.SENDT.til-nav":
-      return `Sendt til NAV ${dato}`;
+      return `Sendt til Nav ${dato}`;
     case "soknad.teaser.status.SENDT.til-arbeidsgiver":
       return `Sendt til ${arbeidsgiver} ${dato}`;
     case "soknad.teaser.status.SENDT.til-arbeidsgiver-og-nav":
-      return `Sendt til ${arbeidsgiver} og NAV ${dato}`;
+      return `Sendt til ${arbeidsgiver} og Nav ${dato}`;
     case "soknad.teaser.status.UTKAST_TIL_KORRIGERING":
       return "Utkast til endring";
     case "soknad.teaser.status.UTGAATT":

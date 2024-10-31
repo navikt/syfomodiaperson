@@ -9,15 +9,15 @@ const texts = {
   endre: "Endre til",
   toUtland: {
     contentModal1:
-      "Hvis du ikke har tilgang til NAV utland, vil du miste tilgangen til denne personen når enheten endres.",
+      "Hvis du ikke har tilgang til Nav utland, vil du miste tilgangen til denne personen når enheten endres.",
     contentModal2:
-      "Veiledere med tilgang til NAV utland kan senere flytte personen tilbake til geografisk enhet.",
+      "Veiledere med tilgang til Nav utland kan senere flytte personen tilbake til geografisk enhet.",
   },
   toGeografisk: {
     contentModal1:
       "Hvis du ikke har tilgang til den geografiske enheten, vil du miste tilgangen til denne personen når enheten endres.",
     contentModal2:
-      "Veiledere med tilgang til geografisk enhet kan senere flytte personen tilbake til NAV Utland.",
+      "Veiledere med tilgang til geografisk enhet kan senere flytte personen tilbake til Nav Utland.",
   },
 };
 
@@ -42,7 +42,7 @@ const PersonkortChangeEnhet = ({
 
   const isCurrentlyNavUtland = behandlendeEnhet.enhetId === NAV_UTLAND;
   const heading = `${texts.endre} ${
-    isCurrentlyNavUtland ? "geografisk enhet" : "NAV utland"
+    isCurrentlyNavUtland ? "geografisk enhet" : "Nav utland"
   }`;
 
   const modalText1 = isCurrentlyNavUtland

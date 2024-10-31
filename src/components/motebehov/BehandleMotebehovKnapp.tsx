@@ -32,7 +32,7 @@ const texts = {
   tilbakemeldingHeader:
     "Vi sender en automatisk tilbakemelding til innmelder. Klikk her om du vil se hele teksten.",
   tilbakemelding:
-    "Vi har mottatt ditt ønske om dialogmøte med NAV. Vi vurderer at det på nåværende tidspunkt ikke er aktuelt at NAV kaller inn til et dialogmøte. Du kan når som helst melde inn et nytt behov i sykefraværsperioden.",
+    "Vi har mottatt ditt ønske om dialogmøte med Nav. Vi vurderer at det på nåværende tidspunkt ikke er aktuelt at Nav kaller inn til et dialogmøte. Du kan når som helst melde inn et nytt behov i sykefraværsperioden.",
 };
 
 const behandleMotebehovKnappLabel = (

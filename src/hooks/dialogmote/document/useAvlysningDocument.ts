@@ -54,7 +54,7 @@ export const useAvlysningDocument = (
   const hilsenParagraph = createParagraph(
     commonTexts.hilsen,
     veilederinfo?.fulltNavn() || "",
-    `NAV`
+    `Nav`
   );
 
   const introText = createParagraph(

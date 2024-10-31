@@ -32,7 +32,7 @@ const texts = {
   tilSending: "Sender...",
   avbrutt: "Avbrutt av deg\n",
   bekreftet: "Bekreftet av deg\n",
-  avvist: "Avvist av NAV\n",
+  avvist: "Avvist av Nav\n",
   papirLabelText: "Papir",
 };
 

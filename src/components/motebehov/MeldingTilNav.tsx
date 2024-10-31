@@ -3,9 +3,9 @@ import { Checkbox } from "nav-frontend-skjema";
 
 const tekster = {
   meldingTilNav: {
-    header: "Melding til NAV",
+    header: "Melding til Nav",
     navBoerTaTakISaken: {
-      tittel: "Ønskes bistand fra NAV nå?",
+      tittel: "Ønskes bistand fra Nav nå?",
       begrunnelseTittel: "Begrunn nærmere",
     },
   },

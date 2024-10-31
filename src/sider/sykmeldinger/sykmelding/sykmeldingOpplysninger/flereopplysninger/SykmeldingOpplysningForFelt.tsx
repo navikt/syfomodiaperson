@@ -1,7 +1,7 @@
 import React from "react";
 import SykmeldingOpplysning from "./SykmeldingOpplysning";
 
-interface SykmeldingOpplysningForFeltProps {
+interface Props {
   sykmeldingBolk: { [key: string]: any };
   felt: string;
   tittel: string;
@@ -15,7 +15,7 @@ export const SykmeldingOpplysningForFelt = ({
   tittel,
   opplysning,
   Overskrift = "h5",
-}: SykmeldingOpplysningForFeltProps) =>
+}: Props) =>
   sykmeldingBolk[felt] ? (
     <SykmeldingOpplysning tittel={tittel} Overskrift={Overskrift}>
       <p className={`opplysning__verdi js-${felt}`}>

@@ -11,7 +11,7 @@ const texts = {
     "Tilleggsopplysninger vedrørende pasienten. Behandleren honoreres med takst L8.",
   legeerklaring:
     "Legeerklæring vedrørende pasienten. Behandleren honoreres med takst L40.",
-  meldingFraNAV: "Melding fra NAV til behandler som ikke utløser takst.",
+  meldingFraNav: "Melding fra Nav til behandler som ikke utløser takst.",
 };
 
 interface InfoElementProps {
@@ -46,7 +46,7 @@ export const MeldingsTypeInfo = ({
           <InfoElement icon={BlueDocumentImage} text={texts.legeerklaring} />
         );
       case MeldingType.HENVENDELSE_MELDING_FRA_NAV:
-        return <InfoElement icon={BlyantImage} text={texts.meldingFraNAV} />;
+        return <InfoElement icon={BlyantImage} text={texts.meldingFraNav} />;
       case MeldingType.FORESPORSEL_PASIENT_PAMINNELSE:
       case MeldingType.HENVENDELSE_RETUR_LEGEERKLARING:
       case MeldingType.HENVENDELSE_MELDING_TIL_NAV:

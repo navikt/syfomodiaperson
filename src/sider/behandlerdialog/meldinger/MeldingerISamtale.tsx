@@ -108,7 +108,7 @@ export const MeldingTilBehandler = ({ melding }: MeldingInnholdProps) => {
         )}
       </StyledInnhold>
       <StyledImageWrapper>
-        <img src={NavLogoRod} alt="Rød NAV-logo" />
+        <img src={NavLogoRod} alt="Rød Nav-logo" />
       </StyledImageWrapper>
     </StyledMelding>
   );

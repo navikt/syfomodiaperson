@@ -75,7 +75,7 @@ export const getSendForhandsvarselDocument = (
       type: DocumentComponentType.PARAGRAPH,
     },
     {
-      texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "NAV"],
+      texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "Nav"],
       type: DocumentComponentType.PARAGRAPH,
     },
   ];
@@ -99,7 +99,7 @@ export const getOppfyltVurderingDocument = (
       texts: [
         `I forhåndsvarsel av ${tilDatoMedManedNavn(
           daysFromToday(-40)
-        )} ble du informert om at NAV vurderte å avslå dine sykepenger. Vi har nå vurdert at vilkåret om arbeidsuførhet er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
+        )} ble du informert om at Nav vurderte å avslå dine sykepenger. Vi har nå vurdert at vilkåret om arbeidsuførhet er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
@@ -132,12 +132,12 @@ export const getAvslagVurderingDocument = (
 ): DocumentComponentDto[] => {
   return [
     {
-      texts: ["NAV har avslått sykepengene dine"],
+      texts: ["Nav har avslått sykepengene dine"],
       type: DocumentComponentType.HEADER_H1,
     },
     {
       texts: [
-        `NAV har avslått din søknad om sykepenger fra og med ${
+        `Nav har avslått din søknad om sykepenger fra og med ${
           !!fom ? tilDatoMedManedNavn(fom) : ""
         }.`,
       ],

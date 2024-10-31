@@ -8,8 +8,8 @@ export const getForhandsvarselArbeidsuforhetTexts = ({
   frist,
 }: ForhandsvarselArbeidsuforhetTextsOptions) => ({
   varselInfo: {
-    header: "NAV vurderer å avslå sykepengene dine",
-    introWithFristDate: `NAV vurderer å avslå sykepengene dine fra og med ${tilDatoMedManedNavn(
+    header: "Nav vurderer å avslå sykepengene dine",
+    introWithFristDate: `Nav vurderer å avslå sykepengene dine fra og med ${tilDatoMedManedNavn(
       frist
     )}.`,
   },
@@ -22,7 +22,7 @@ export const getForhandsvarselArbeidsuforhetTexts = ({
     tilbakemeldingWithFristDate: `Vi sender deg dette brevet for at du skal ha mulighet til å uttale deg før vi avgjør saken din. Du må sende inn opplysninger eller kontakte oss innen ${tilDatoMedManedNavn(
       frist
     )}.`,
-    etterFrist: "Etter denne datoen vil NAV vurdere å avslå sykepengene dine.",
+    etterFrist: "Etter denne datoen vil Nav vurdere å avslå sykepengene dine.",
     friskmeldt: `Dersom du blir friskmeldt før ${tilDatoMedManedNavn(
       frist
     )} kan du se bort fra dette brevet.`,
@@ -39,8 +39,8 @@ export const getForhandsvarselArbeidsuforhetTexts = ({
 });
 
 export const getAvslagArbeidsuforhetTexts = (fom: Date | undefined) => ({
-  header: "NAV har avslått sykepengene dine",
-  fom: `NAV har avslått din søknad om sykepenger fra og med ${
+  header: "Nav har avslått sykepengene dine",
+  fom: `Nav har avslått din søknad om sykepenger fra og med ${
     !!fom ? tilDatoMedManedNavn(fom) : ""
   }.`,
   intro:
@@ -54,7 +54,7 @@ export const arbeidsuforhetTexts = {
   previousForhandsvarsel: (forhandsvarselSendtDato: Date) =>
     `I forhåndsvarsel av ${tilDatoMedManedNavn(
       forhandsvarselSendtDato
-    )} ble du informert om at NAV vurderte å avslå dine sykepenger. Vi har nå vurdert at vilkåret om arbeidsuførhet er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
+    )} ble du informert om at Nav vurderte å avslå dine sykepenger. Vi har nå vurdert at vilkåret om arbeidsuførhet er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
   forAFaSykepenger: `For å få sykepenger må du ha en sykdom eller skade som gjør at du ikke klarer å være i arbeid, eller at du bare klarer å gjøre deler av arbeidet ditt.`,
   viHarBruktLoven: `Vi har brukt folketrygdloven § 8-4 første ledd når vi har behandlet saken din.`,
 };

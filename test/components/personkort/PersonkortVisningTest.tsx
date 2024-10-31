@@ -50,7 +50,7 @@ describe("PersonkortVisning", () => {
   });
 
   it("Skal vise VisningEnhet, dersom visning for enhet er valgt", async () => {
-    const enhetNavn = "NAV Drammen";
+    const enhetNavn = "Nav Drammen";
     queryClient.setQueryData(
       behandlendeEnhetQueryKeys.behandlendeEnhet(
         ARBEIDSTAKER_DEFAULT.personIdent

@@ -61,17 +61,17 @@ describe("VurderBistandsbehov", () => {
     ).to.exist;
     expect(
       screen.getByText(
-        "Felt 7.2 (Forslag til tiltak i regi fra NAV): Vedlikehold av holodeck"
+        "Felt 7.2 (Forslag til tiltak i regi fra Nav): Vedlikehold av holodeck"
       )
     ).to.exist;
     expect(
       screen.getByText(
-        "Felt 7.3 (Andre innspill til NAV): Mer vedlikehold av holodeck"
+        "Felt 7.3 (Andre innspill til Nav): Mer vedlikehold av holodeck"
       )
     ).to.exist;
     expect(
       screen.getByText(
-        "Felt 8.2 (Melding til NAV): Nav kan vise til egen forskning på faren med phaser blasts"
+        "Felt 8.2 (Melding til Nav): Nav kan vise til egen forskning på faren med phaser blasts"
       )
     ).to.exist;
     expect(
