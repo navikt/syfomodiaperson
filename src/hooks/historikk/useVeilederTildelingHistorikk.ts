@@ -17,7 +17,10 @@ function createHistorikkEventsFromVeilederTildelingHistorikk(
 }
 
 function getHistorikkTekst(value: VeilederTildelingHistorikkDTO): string {
-  if (value.tildeltAv == "X000000") {
+  if (
+    value.tildeltAv == "X000000" ||
+    value.tildeltAv == value.tildeltVeileder
+  ) {
     return `${value.tildeltVeileder} på enhet ${value.tildeltEnhet} ble satt som veileder`;
   } else {
     return `${value.tildeltAv} satt ${value.tildeltVeileder} på enhet ${value.tildeltEnhet} som veileder`;
