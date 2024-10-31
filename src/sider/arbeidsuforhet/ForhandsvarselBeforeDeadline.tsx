@@ -37,8 +37,8 @@ export const ForhandsvarselBeforeDeadline = ({ forhandsvarsel }: Props) => {
   const frist = forhandsvarsel.varsel?.svarfrist;
 
   return (
-    <Box>
-      <Alert variant="success" className="mb-2">
+    <>
+      <Alert variant="success">
         <BodyShort className="mb-0">
           {texts.sentAlert.isSent(forhandsvarsel.createdAt)}
         </BodyShort>
@@ -64,6 +64,6 @@ export const ForhandsvarselBeforeDeadline = ({ forhandsvarsel }: Props) => {
         <BodyShort>{texts.avslag}</BodyShort>
         <ArbeidsuforhetButtons isBeforeForhandsvarselDeadline={true} />
       </Box>
-    </Box>
+    </>
   );
 };

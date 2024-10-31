@@ -10,16 +10,11 @@ interface ForhandsvarselSendtProps {
 export const ForhandsvarselSendt = ({
   forhandsvarsel,
 }: ForhandsvarselSendtProps) => {
-  const isForhandsvarselExpired =
-    forhandsvarsel && forhandsvarsel?.varsel?.isExpired;
+  const isForhandsvarselExpired = forhandsvarsel.varsel?.isExpired;
 
-  return (
-    <div>
-      {isForhandsvarselExpired ? (
-        <ForhandsvarselAfterDeadline forhandsvarsel={forhandsvarsel} />
-      ) : (
-        <ForhandsvarselBeforeDeadline forhandsvarsel={forhandsvarsel} />
-      )}
-    </div>
+  return isForhandsvarselExpired ? (
+    <ForhandsvarselAfterDeadline forhandsvarsel={forhandsvarsel} />
+  ) : (
+    <ForhandsvarselBeforeDeadline forhandsvarsel={forhandsvarsel} />
   );
 };

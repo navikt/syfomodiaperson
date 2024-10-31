@@ -9,7 +9,6 @@ import {
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
 import { getForhandsvarselArbeidsuforhetTexts } from "@/data/arbeidsuforhet/arbeidsuforhetDocumentTexts";
-import { daysFromToday } from "../testUtils";
 import {
   arsakTexts,
   VurderingArsak,
@@ -82,9 +81,10 @@ export const getSendForhandsvarselDocument = (
 };
 
 export const getOppfyltVurderingDocument = (
-  begrunnelse: string
+  begrunnelse: string,
+  forhandsvarselDato: Date | undefined
 ): DocumentComponentDto[] => {
-  return [
+  const documentComponents = [
     {
       texts: ["Du har rett til videre utbetaling av sykepenger"],
       type: DocumentComponentType.HEADER_H1,
@@ -95,14 +95,21 @@ export const getOppfyltVurderingDocument = (
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
-    {
+  ];
+
+  if (forhandsvarselDato) {
+    documentComponents.push({
       texts: [
         `I forhåndsvarsel av ${tilDatoMedManedNavn(
-          daysFromToday(-40)
+          forhandsvarselDato
         )} ble du informert om at Nav vurderte å avslå dine sykepenger. Vi har nå vurdert at vilkåret om arbeidsuførhet er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
-    },
+    });
+  }
+
+  return [
+    ...documentComponents,
     {
       texts: [
         `For å få sykepenger må du ha en sykdom eller skade som gjør at du ikke klarer å være i arbeid, eller at du bare klarer å gjøre deler av arbeidet ditt.`,

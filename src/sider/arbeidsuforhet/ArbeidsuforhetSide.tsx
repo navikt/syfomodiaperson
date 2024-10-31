@@ -7,6 +7,7 @@ import * as Tredelt from "@/sider/TredeltSide";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { VurderingHistorikk } from "@/sider/arbeidsuforhet/historikk/VurderingHistorikk";
+import { VStack } from "@navikt/ds-react";
 
 const texts = {
   title: "Arbeidsuførhet",
@@ -25,8 +26,10 @@ export const ArbeidsuforhetSide = ({ children }: Props): ReactElement => {
       <SideLaster henter={isLoading} hentingFeilet={isError}>
         <Tredelt.Container>
           <Tredelt.FirstColumn>
-            {children}
-            <VurderingHistorikk />
+            <VStack gap="2">
+              {children}
+              <VurderingHistorikk />
+            </VStack>
           </Tredelt.FirstColumn>
           <Tredelt.SecondColumn>
             <UtdragFraSykefravaeret />

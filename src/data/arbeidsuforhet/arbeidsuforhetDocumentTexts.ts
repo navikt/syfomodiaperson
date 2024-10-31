@@ -50,7 +50,7 @@ export const getAvslagArbeidsuforhetTexts = (fom: Date | undefined) => ({
 });
 
 export const arbeidsuforhetTexts = {
-  header: "Du har rett til videre utbetaling av sykepenger",
+  header: "Du har rett til videre utbetaling av sykepenger", // TODO: Stemmer dette?
   previousForhandsvarsel: (forhandsvarselSendtDato: Date) =>
     `I forhåndsvarsel av ${tilDatoMedManedNavn(
       forhandsvarselSendtDato

@@ -38,7 +38,10 @@ export const useArbeidsuforhetVurderingDocument = (): {
   getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
   ): DocumentComponentDto[];
-  getOppfyltDocument(values: OppfyltDocumentValues): DocumentComponentDto[];
+  getOppfyltDocument(values: {
+    begrunnelse: string;
+    forhandsvarselSendtDato: Date | undefined;
+  }): DocumentComponentDto[];
   getAvslagDocument(values: AvslagDocumentValues): DocumentComponentDto[];
   getIkkeAktuellDocument(
     values: IkkeAktuellDocumentValues
@@ -111,13 +114,22 @@ export const useArbeidsuforhetVurderingDocument = (): {
     const documentComponents = [
       createHeaderH1(arbeidsuforhetTexts.header),
       getIntroGjelder(),
-      createParagraph(
-        arbeidsuforhetTexts.previousForhandsvarsel(forhandsvarselSendtDato)
-      ),
+    ];
+
+    if (forhandsvarselSendtDato) {
+      documentComponents.push(
+        createParagraph(
+          arbeidsuforhetTexts.previousForhandsvarsel(forhandsvarselSendtDato)
+        )
+      );
+    }
+
+    documentComponents.push(
       createParagraph(arbeidsuforhetTexts.forAFaSykepenger),
       createParagraph(begrunnelse),
-      createParagraph(arbeidsuforhetTexts.viHarBruktLoven),
-    ];
+      createParagraph(arbeidsuforhetTexts.viHarBruktLoven)
+    );
+
     documentComponents.push(getVurdertAv());
 
     return documentComponents;

@@ -41,75 +41,73 @@ describe("OppfyltSide", () => {
     queryClient = queryClientWithMockData();
   });
 
-  describe("Show correct info", () => {
-    it("show form if latest arbeidsuforhet status is forhandsvarsel and frist is utgatt", () => {
-      const forhandsvarselAfterFrist = createForhandsvarsel({
-        createdAt: new Date(),
-        svarfrist: addWeeks(new Date(), -3),
-      });
-      const vurderinger = [forhandsvarselAfterFrist];
-      mockArbeidsuforhetVurderinger(vurderinger);
-
-      renderArbeidsuforhetOppfyltSide();
-
-      expect(
-        screen.getByText(
-          "Skriv en kort begrunnelse for hvorfor bruker likevel oppfyller vilkårene i § 8-4, og hvilke opplysninger som ligger til grunn for vurderingen."
-        )
-      ).to.exist;
+  it("show form if latest arbeidsuforhet status is forhandsvarsel and frist is utgatt", () => {
+    const forhandsvarselAfterFrist = createForhandsvarsel({
+      createdAt: new Date(),
+      svarfrist: addWeeks(new Date(), -3),
     });
+    const vurderinger = [forhandsvarselAfterFrist];
+    mockArbeidsuforhetVurderinger(vurderinger);
 
-    it("show form if latest arbeidsuforhet status is forhandsvarsel and frist is not utgatt", () => {
-      const forhandsvarselBeforeFrist = createForhandsvarsel({
-        createdAt: new Date(),
-        svarfrist: addWeeks(new Date(), 3),
-      });
-      const vurderinger = [forhandsvarselBeforeFrist];
-      mockArbeidsuforhetVurderinger(vurderinger);
+    renderArbeidsuforhetOppfyltSide();
 
-      renderArbeidsuforhetOppfyltSide();
+    expect(
+      screen.getByRole("heading", {
+        name: "Skriv innstilling om oppfylt vilkår",
+      })
+    ).to.exist;
+  });
 
-      expect(
-        screen.getByText(
-          "Skriv en kort begrunnelse for hvorfor bruker likevel oppfyller vilkårene i § 8-4, og hvilke opplysninger som ligger til grunn for vurderingen."
-        )
-      ).to.exist;
+  it("show form if latest arbeidsuforhet status is forhandsvarsel and frist is not utgatt", () => {
+    const forhandsvarselBeforeFrist = createForhandsvarsel({
+      createdAt: new Date(),
+      svarfrist: addWeeks(new Date(), 3),
     });
+    const vurderinger = [forhandsvarselBeforeFrist];
+    mockArbeidsuforhetVurderinger(vurderinger);
 
-    it("redirect arbeidsuforhet page if latest arbeidsuforhet status is Oppfylt", () => {
-      const oppfylt = createVurdering({
-        type: VurderingType.OPPFYLT,
-        begrunnelse: "begrunnelse",
-        createdAt: new Date(),
-      });
-      const vurderinger = [oppfylt];
-      mockArbeidsuforhetVurderinger(vurderinger);
+    renderArbeidsuforhetOppfyltSide();
 
-      renderArbeidsuforhetOppfyltSide();
+    expect(
+      screen.getByRole("heading", {
+        name: "Skriv innstilling om oppfylt vilkår",
+      })
+    ).to.exist;
+  });
 
-      expect(
-        screen.queryByText(
-          "Skriv en kort begrunnelse for hvorfor bruker oppfyller vilkårene i § 8-4."
-        )
-      ).to.not.exist;
+  it("show form if latest arbeidsuforhet status is Oppfylt", () => {
+    const oppfylt = createVurdering({
+      type: VurderingType.OPPFYLT,
+      begrunnelse: "begrunnelse",
+      createdAt: new Date(),
     });
+    const vurderinger = [oppfylt];
+    mockArbeidsuforhetVurderinger(vurderinger);
 
-    it("redirect arbeidsuforhet page if latest arbeidsuforhet status is Avslag", () => {
-      const avslag = createVurdering({
-        type: VurderingType.AVSLAG,
-        begrunnelse: "begrunnelse",
-        createdAt: new Date(),
-      });
-      const vurderinger = [avslag];
-      mockArbeidsuforhetVurderinger(vurderinger);
+    renderArbeidsuforhetOppfyltSide();
 
-      renderArbeidsuforhetOppfyltSide();
+    expect(
+      screen.getByRole("heading", {
+        name: "Skriv innstilling om oppfylt vilkår",
+      })
+    ).to.exist;
+  });
 
-      expect(
-        screen.queryByText(
-          "Skriv en kort begrunnelse for hvorfor bruker oppfyller vilkårene i § 8-4."
-        )
-      ).to.not.exist;
+  it("show form if latest arbeidsuforhet status is Avslag", () => {
+    const avslag = createVurdering({
+      type: VurderingType.AVSLAG,
+      begrunnelse: "begrunnelse",
+      createdAt: new Date(),
     });
+    const vurderinger = [avslag];
+    mockArbeidsuforhetVurderinger(vurderinger);
+
+    renderArbeidsuforhetOppfyltSide();
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Skriv innstilling om oppfylt vilkår",
+      })
+    ).to.exist;
   });
 });

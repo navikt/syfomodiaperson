@@ -1,64 +1,78 @@
 import React, { ReactElement } from "react";
-import { Alert, BodyShort, Box, Button, Heading } from "@navikt/ds-react";
+import {
+  Alert,
+  BodyShort,
+  Box,
+  Button,
+  Heading,
+  HStack,
+  VStack,
+} from "@navikt/ds-react";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import {
   typeTexts,
   VurderingResponseDTO,
-  VurderingType,
 } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { useNotification } from "@/context/notification/NotificationContext";
+import { Link } from "react-router-dom";
+import {
+  arbeidsuforhetForhandsvarselPath,
+  arbeidsuforhetOppfyltPath,
+} from "@/routers/AppRouter";
 
 const texts = {
   title: "Arbeidsuførhet",
   siste: "Siste vurdering",
-  button: "Start ny vurdering",
+  forhandsvarselButton: "Send forhåndsvarsel",
+  oppfyltButton: "Oppfylt",
+  noVurderinger:
+    "Ingen vurderinger har blitt gjort. Trykk på knappene under for å sende forhåndsvarsel eller skrive innstilling om oppfylt vilkår", // TODO: Avklar tekst
 };
 
 const lastVurderingText = (vurderinger: VurderingResponseDTO[]) => {
   const lastVurdering = vurderinger[0];
   if (!lastVurdering) {
-    return "Ingen vurderinger har blitt gjort, trykk på 'Start ny vurdering' for å sende forhåndsvarsel";
+    return texts.noVurderinger;
   }
-  const lastForhandsvarsel = vurderinger.find(
-    (vurdering) => vurdering.type === VurderingType.FORHANDSVARSEL
-  );
-  const lastVurderingType = typeTexts[lastVurdering.type].toLowerCase();
+  const lastVurderingType = typeTexts[lastVurdering.type];
 
-  return `Forrige forhåndsvarsel på 8-4 ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
-    lastForhandsvarsel?.createdAt
-  )} og ${lastVurderingType} ${tilLesbarDatoMedArUtenManedNavn(
+  // TODO: Avklar tekst
+  return `Forrige vurdering av §8-4: ${lastVurderingType} den ${tilLesbarDatoMedArUtenManedNavn(
     lastVurdering?.createdAt
   )}`;
 };
 
-interface NyVurderingProps {
-  handleClick: () => void;
-}
-
-export const NyVurdering = ({
-  handleClick,
-}: NyVurderingProps): ReactElement => {
+export const NyVurdering = (): ReactElement => {
   const { data: vurderinger } = useGetArbeidsuforhetVurderingerQuery();
   const { notification } = useNotification();
 
   return (
     <>
-      {notification && (
-        <Alert variant="success" className="mb-2">
-          {notification.message}
-        </Alert>
-      )}
+      {notification && <Alert variant="success">{notification.message}</Alert>}
       <Box background="surface-default" padding="6">
-        <Heading className="mb-4" level="2" size="medium">
-          {texts.siste}
-        </Heading>
-        <BodyShort className="mb-4">{`${lastVurderingText(
-          vurderinger
-        )}`}</BodyShort>
-        <Button onClick={handleClick} variant="secondary">
-          {texts.button}
-        </Button>
+        <VStack gap="4">
+          <Heading level="2" size="medium">
+            {texts.siste}
+          </Heading>
+          <BodyShort>{`${lastVurderingText(vurderinger)}`}</BodyShort>
+          <HStack gap="4">
+            <Button
+              as={Link}
+              to={arbeidsuforhetForhandsvarselPath}
+              variant="primary"
+            >
+              {texts.forhandsvarselButton}
+            </Button>
+            <Button
+              as={Link}
+              to={arbeidsuforhetOppfyltPath}
+              variant="secondary"
+            >
+              {texts.oppfyltButton}
+            </Button>
+          </HStack>
+        </VStack>
       </Box>
     </>
   );

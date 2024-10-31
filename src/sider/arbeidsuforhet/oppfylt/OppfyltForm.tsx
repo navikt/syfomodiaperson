@@ -16,7 +16,7 @@ import {
 } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
 import { useArbeidsuforhetVurderingDocument } from "@/hooks/arbeidsuforhet/useArbeidsuforhetVurderingDocument";
 import { useSendVurderingArbeidsuforhet } from "@/data/arbeidsuforhet/useSendVurderingArbeidsuforhet";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { ButtonRow } from "@/components/Layout";
 import { useNotification } from "@/context/notification/NotificationContext";
@@ -24,7 +24,7 @@ import { useNotification } from "@/context/notification/NotificationContext";
 const texts = {
   title: "Skriv innstilling om oppfylt vilkår",
   veiledning: {
-    info: "Skriv en kort begrunnelse for hvorfor bruker likevel oppfyller vilkårene i § 8-4, og hvilke opplysninger som ligger til grunn for vurderingen.",
+    info: "Skriv en kort begrunnelse for hvorfor bruker oppfyller vilkårene i § 8-4, og hvilke opplysninger som ligger til grunn for vurderingen.", // TODO: Avklar fjernet likevel
     hvisFriskmeldingTilArbeidsformidling:
       "Hvis du har vurdert ordningen friskmelding til arbeidsformidling, skriv hvorfor ordningen eventuelt er aktuell og legg inn henvisning til §8-5.",
   },
@@ -33,7 +33,7 @@ const texts = {
     "Åpne forhåndsvisning for å se vurderingen. Når du trykker Lagre journalføres vurderingen automatisk.",
   forDuGarVidere: {
     head: "Før du går videre bør du gjøre følgende:",
-    step1: "Informere bruker om utfallet av vurderingen.",
+    step1: "Informere bruker om utfallet av vurderingen.", // TODO: Skal det gjøres når det ikke er sendt forhåndsvarsel først?
     step2:
       "Besvare Gosys-oppgaven dersom Nav Arbeid og ytelser ba om vurderingen.",
   },
@@ -46,7 +46,7 @@ const texts = {
 };
 
 interface Props {
-  forhandsvarselSendtDato: Date;
+  forhandsvarselSendtDato: Date | undefined;
 }
 
 const defaultValues = { begrunnelse: "" };
@@ -67,14 +67,13 @@ export const OppfyltForm = ({ forhandsvarselSendtDato }: Props) => {
     handleSubmit,
   } = useForm<SkjemaValues>({ defaultValues });
   const submit = (values: SkjemaValues) => {
-    const oppfyltDocumentProps = {
-      begrunnelse: values.begrunnelse,
-      forhandsvarselSendtDato: forhandsvarselSendtDato,
-    };
     const vurderingRequestDTO: VurderingRequestDTO = {
       type: VurderingType.OPPFYLT,
       begrunnelse: values.begrunnelse,
-      document: getOppfyltDocument(oppfyltDocumentProps),
+      document: getOppfyltDocument({
+        begrunnelse: values.begrunnelse,
+        forhandsvarselSendtDato: forhandsvarselSendtDato,
+      }),
     };
     sendVurdering.mutate(vurderingRequestDTO, {
       onSuccess: () => {
@@ -85,8 +84,12 @@ export const OppfyltForm = ({ forhandsvarselSendtDato }: Props) => {
     });
   };
 
+  if (sendVurdering.isSuccess) {
+    return <Navigate to={arbeidsuforhetPath} />;
+  }
+
   return (
-    <Box background="surface-default" padding="6" className="mb-2">
+    <Box background="surface-default" padding="6">
       <form onSubmit={handleSubmit(submit)} className="[&>*]:mb-4">
         <Heading level="2" size="medium">
           {texts.title}

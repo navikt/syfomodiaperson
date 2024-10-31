@@ -11,6 +11,8 @@ import {
   VurderingType,
 } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
 import { useSendVurderingArbeidsuforhet } from "@/data/arbeidsuforhet/useSendVurderingArbeidsuforhet";
+import { Link } from "react-router-dom";
+import { arbeidsuforhetPath } from "@/routers/AppRouter";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -27,6 +29,7 @@ const texts = {
   forhandsvisningLabel: "Forhåndsvis forhåndsvarselet",
   missingBeskrivelse: "Vennligst angi begrunnelse",
   sendVarselButtonText: "Send",
+  avbrytButton: "Avbryt",
 };
 
 const forhandsvarselFrist = addWeeks(new Date(), 3);
@@ -104,6 +107,9 @@ export const SendForhandsvarselSkjema = () => {
               })
             }
           />
+          <Button as={Link} to={arbeidsuforhetPath} variant="secondary">
+            {texts.avbrytButton}
+          </Button>
         </ButtonRow>
       </form>
     </Box>

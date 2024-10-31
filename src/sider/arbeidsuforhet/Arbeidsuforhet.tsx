@@ -1,24 +1,19 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { VurderingType } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+import { Navigate } from "react-router-dom";
+import { arbeidsuforhetForhandsvarselPath } from "@/routers/AppRouter";
 import { NyVurdering } from "@/sider/arbeidsuforhet/NyVurdering";
-import { StartetVurdering } from "@/sider/arbeidsuforhet/StartetVurdering";
 
 export const Arbeidsuforhet = (): ReactElement => {
   const { data } = useGetArbeidsuforhetVurderingerQuery();
   const sisteVurdering = data[0];
   const isForhandsvarsel =
     sisteVurdering?.type === VurderingType.FORHANDSVARSEL;
-  const [showStartetVurdering, setShowStartetVurdering] =
-    useState<boolean>(false);
 
-  return (
-    <div className="mb-2">
-      {showStartetVurdering || isForhandsvarsel ? (
-        <StartetVurdering />
-      ) : (
-        <NyVurdering handleClick={() => setShowStartetVurdering(true)} />
-      )}
-    </div>
+  return isForhandsvarsel ? (
+    <Navigate to={arbeidsuforhetForhandsvarselPath} />
+  ) : (
+    <NyVurdering />
   );
 };

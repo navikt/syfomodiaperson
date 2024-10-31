@@ -20,10 +20,13 @@ import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
 
 let queryClient: QueryClient;
 
-const renderOppfyltForm = () => {
+const forhandsvarselDato = daysFromToday(-40);
+const enBegrunnelse = "Dette er en begrunnelse!";
+
+const renderOppfyltForm = (forhandsvarselSendtDato?: Date) => {
   renderArbeidsuforhetSide(
     queryClient,
-    <OppfyltForm forhandsvarselSendtDato={daysFromToday(-40)} />,
+    <OppfyltForm forhandsvarselSendtDato={forhandsvarselSendtDato} />,
     arbeidsuforhetOppfyltPath,
     [arbeidsuforhetOppfyltPath]
   );
@@ -38,7 +41,7 @@ describe("OppfyltForm", () => {
     it("shows textarea and buttons", () => {
       const begrunnelseLabel = "Begrunnelse (obligatorisk)";
 
-      renderOppfyltForm();
+      renderOppfyltForm(forhandsvarselDato);
 
       expect(screen.getByText(begrunnelseLabel)).to.exist;
       expect(
@@ -65,9 +68,9 @@ describe("OppfyltForm", () => {
     });
   });
 
-  describe("Send vurdering", () => {
+  describe("Send vurdering (etter forhåndsvarsel)", () => {
     it("Gives error when trying to send vurdering without begrunnelse", async () => {
-      renderOppfyltForm();
+      renderOppfyltForm(forhandsvarselDato);
 
       await clickButton("Lagre");
 
@@ -75,12 +78,11 @@ describe("OppfyltForm", () => {
     });
 
     it("Send vurdering with begrunnelse filled in, without reseting the form", async () => {
-      const begrunnelse = "Dette er en begrunnelse!";
-      renderOppfyltForm();
+      renderOppfyltForm(forhandsvarselDato);
       const begrunnelseLabel = "Begrunnelse (obligatorisk)";
       const berunnelseInput = getTextInput(begrunnelseLabel);
 
-      changeTextInput(berunnelseInput, begrunnelse);
+      changeTextInput(berunnelseInput, enBegrunnelse);
       await clickButton("Lagre");
 
       await waitFor(() => {
@@ -89,23 +91,25 @@ describe("OppfyltForm", () => {
           .getAll()[0];
         const expectedVurdering: VurderingRequestDTO = {
           type: VurderingType.OPPFYLT,
-          begrunnelse: begrunnelse,
-          document: getOppfyltVurderingDocument(begrunnelse),
+          begrunnelse: enBegrunnelse,
+          document: getOppfyltVurderingDocument(
+            enBegrunnelse,
+            forhandsvarselDato
+          ),
         };
         expect(useSendVurderingArbeidsuforhet.state.variables).to.deep.equal(
           expectedVurdering
         );
       });
-      expect(screen.queryByText(begrunnelse)).to.exist;
+      expect(screen.queryByText(enBegrunnelse)).to.exist;
     });
 
     it("Forhåndsvis brev with begrunnelse", async () => {
-      const begrunnelse = "Dette er en begrunnelse!";
-      renderOppfyltForm();
+      renderOppfyltForm(forhandsvarselDato);
       const begrunnelseLabel = "Begrunnelse (obligatorisk)";
       const begrunnelseInput = getTextInput(begrunnelseLabel);
 
-      changeTextInput(begrunnelseInput, begrunnelse);
+      changeTextInput(begrunnelseInput, enBegrunnelse);
       await clickButton("Forhåndsvisning");
 
       const forhandsvisningVurdering = screen.getAllByRole("dialog", {
@@ -117,11 +121,36 @@ describe("OppfyltForm", () => {
           hidden: true,
         })
       ).to.exist;
-      getOppfyltVurderingDocument(begrunnelse)
+      getOppfyltVurderingDocument(enBegrunnelse, forhandsvarselDato)
         .flatMap((documentComponent) => documentComponent.texts)
         .forEach((text) => {
           expect(within(forhandsvisningVurdering).getByText(text)).to.exist;
         });
+    });
+  });
+
+  describe("Send vurdering (uten forhåndsvarsel)", () => {
+    it("Sends vurdering with expected document", async () => {
+      renderOppfyltForm();
+      const begrunnelseLabel = "Begrunnelse (obligatorisk)";
+      const berunnelseInput = getTextInput(begrunnelseLabel);
+
+      changeTextInput(berunnelseInput, enBegrunnelse);
+      await clickButton("Lagre");
+
+      await waitFor(() => {
+        const useSendVurderingArbeidsuforhet = queryClient
+          .getMutationCache()
+          .getAll()[0];
+        const expectedVurdering: VurderingRequestDTO = {
+          type: VurderingType.OPPFYLT,
+          begrunnelse: enBegrunnelse,
+          document: getOppfyltVurderingDocument(enBegrunnelse, undefined),
+        };
+        expect(useSendVurderingArbeidsuforhet.state.variables).to.deep.equal(
+          expectedVurdering
+        );
+      });
     });
   });
 });

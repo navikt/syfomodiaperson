@@ -1,4 +1,4 @@
-import { Button } from "@navikt/ds-react";
+import { Button, HStack } from "@navikt/ds-react";
 import { Link } from "react-router-dom";
 import {
   arbeidsuforhetAvslagPath,
@@ -26,7 +26,7 @@ const AvslagButton = (props: React.ComponentPropsWithoutRef<typeof Button>) => (
 export const ArbeidsuforhetButtons = ({
   isBeforeForhandsvarselDeadline,
 }: Props) => (
-  <div className="flex gap-4">
+  <HStack gap="4">
     {isBeforeForhandsvarselDeadline ? (
       <AvslagButton disabled />
     ) : (
@@ -38,5 +38,5 @@ export const ArbeidsuforhetButtons = ({
     <Button as={Link} to={arbeidsuforhetIkkeAktuellPath} variant="secondary">
       {texts.ikkeAktuell}
     </Button>
-  </div>
+  </HStack>
 );

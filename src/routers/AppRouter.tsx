@@ -46,6 +46,7 @@ import ManglendeMedvirkningSide, {
 } from "@/sider/manglendemedvirkning/ManglendeMedvirkningSide";
 import ManglendeMedvirkning from "@/sider/manglendemedvirkning/ManglendeMedvirkning";
 import { DinSykmeldingSide } from "@/sider/sykmeldinger/container/DinSykmeldingSide";
+import { ArbeidsuforhetForhandsvarselSide } from "@/sider/arbeidsuforhet/forhandsvarsel/ArbeidsuforhetForhandsvarselSide";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -53,6 +54,7 @@ export const dialogmoteRoutePath = `${appRoutePath}/dialogmote`;
 export const dialogmoteUnntakRoutePath = `${appRoutePath}/dialogmoteunntak`;
 export const dialogmoteIkkeAktuellRoutePath = `${appRoutePath}/dialogmoteikkeaktuell`;
 export const moteoversiktRoutePath = `${appRoutePath}/moteoversikt`;
+export const arbeidsuforhetForhandsvarselPath = `${appRoutePath}/arbeidsuforhet/forhandsvarsel`;
 export const arbeidsuforhetOppfyltPath = `${appRoutePath}/arbeidsuforhet/oppfylt`;
 export const arbeidsuforhetAvslagPath = `${appRoutePath}/arbeidsuforhet/avslag`;
 export const arbeidsuforhetIkkeAktuellPath = `${appRoutePath}/arbeidsuforhet/ikkeaktuell`;
@@ -140,6 +142,10 @@ const AktivBrukerRouter = (): ReactElement => {
                   <Arbeidsuforhet />
                 </ArbeidsuforhetSide>
               }
+            />
+            <Route
+              path={arbeidsuforhetForhandsvarselPath}
+              element={<ArbeidsuforhetForhandsvarselSide />}
             />
             <Route
               path={arbeidsuforhetOppfyltPath}

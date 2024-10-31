@@ -81,7 +81,7 @@ export const VurderingHistorikk = () => {
     <Box
       padding="6"
       background="surface-default"
-      className="flex flex-col gap-8 mb-2"
+      className="flex flex-col gap-8"
     >
       <div>
         <Heading level="2" size="medium">
