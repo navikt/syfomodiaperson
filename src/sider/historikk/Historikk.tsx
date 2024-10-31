@@ -20,7 +20,7 @@ function isEventInTilfelle(
   tilfelle: OppfolgingstilfelleDTO
 ): boolean {
   return (
-    new Date(tilfelle.start) < new Date(event.tidspunkt) &&
+    new Date(tilfelle.start) <= new Date(event.tidspunkt) &&
     new Date(event.tidspunkt) < new Date(tilfelle.end)
   );
 }
