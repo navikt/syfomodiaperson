@@ -3,7 +3,6 @@ import {
   useVeilederTildelingHistorikkData,
   VeilederTildelingHistorikkDTO,
 } from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
-import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 
 function createHistorikkEventsFromVeilederTildelingHistorikk(
   veilederTildelingHistorikkDTO: VeilederTildelingHistorikkDTO[]
