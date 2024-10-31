@@ -8,7 +8,11 @@ export const veilederBrukerKnytningQueryKeys = {
     "veilederBrukerKnytning",
     personident,
   ],
-  historikk: (personident: string) => ["historikk", personident],
+  historikk: (personident: string) => [
+    "historikk",
+    "veilederBrukerKnytning",
+    personident,
+  ],
 };
 
 export function useGetVeilederBrukerKnytning() {
@@ -25,10 +29,11 @@ export function useGetVeilederBrukerKnytning() {
   });
 }
 
-export const useVeilederHistorikk = () => {
+export const useVeilederTildelingHistorikkData = () => {
   const personident = useValgtPersonident();
   const path = `${SYFOOVERSIKTSRV_PERSONTILDELING_ROOT}/historikk`;
-  const fetchHistorikk = () => get<[VeilederHistorikkDTO]>(path, personident);
+  const fetchHistorikk = () =>
+    get<[VeilederTildelingHistorikkDTO]>(path, personident);
   return useQuery({
     queryKey: veilederBrukerKnytningQueryKeys.historikk(personident),
     queryFn: fetchHistorikk,
@@ -42,7 +47,7 @@ export interface VeilederBrukerKnytningDTO {
   tildeltEnhet?: string;
 }
 
-export interface VeilederHistorikkDTO {
+export interface VeilederTildelingHistorikkDTO {
   tildeltDato: Date;
   tildeltVeileder: string;
   tildeltEnhet: string;

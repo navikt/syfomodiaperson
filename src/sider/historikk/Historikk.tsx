@@ -42,7 +42,7 @@ function tagFromKilde(kilde: HistorikkEventType): ReactElement {
       return <Tag variant="alt3">Oppfølgingsplan</Tag>;
     case "LEDER":
       return <Tag variant="alt2">Leder</Tag>;
-    case "VEILEDER":
+    case "VEILEDER_TILDELING":
       return <Tag variant="alt2">Veileder</Tag>;
     case "AKTIVITETSKRAV":
       return <Tag variant="alt1">Aktivitetskrav</Tag>;

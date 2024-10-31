@@ -30,7 +30,7 @@ export const mockSyfooversiktsrv = [
       },
       {
         tildeltDato: "2024-04-15",
-        tildeltAv: "B123456",
+        tildeltAv: "X000000",
         tildeltVeileder: "A123456",
         tildeltEnhet: "0315",
       },

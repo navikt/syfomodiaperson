@@ -8,7 +8,7 @@ import { useAktivitetskravHistorikk } from "@/hooks/historikk/useAktivitetskravH
 import { useArbeidsuforhetHistorikk } from "@/hooks/historikk/useArbeidsuforhetHistorikk";
 import { useManglendeMedvirkningHistorikk } from "@/hooks/historikk/useManglendeMedvirkningHistorikk";
 import { useVedtakHistorikk } from "@/hooks/historikk/useFriskmeldingTilArbeidsformidligVedtakHistorikk";
-import { useVeilederBrukerHistorikk } from "@/hooks/historikk/useVeilederHistorikk";
+import { useVeilederTildelingHistorikk } from "@/hooks/historikk/useVeilederTildelingHistorikk";
 import { useDialogmotekandidatHistorikk } from "@/hooks/historikk/useDialogmotekandidatHistorikk";
 
 interface HistorikkHook {
@@ -54,11 +54,7 @@ export function useHistorikk(): HistorikkHook {
   const { vedtakHistorikk, isVedtakHistorikkLoading, isVedtakHistorikkError } =
     useVedtakHistorikk();
 
-  const {
-    veilederHistorikk,
-    isVeilederHistorikkLoading,
-    isVeilederHistorikkError,
-  } = useVeilederBrukerHistorikk();
+  const veilederTildelingHistorikk = useVeilederTildelingHistorikk();
 
   const {
     dialogmotekandidatHistorikk,
@@ -73,7 +69,7 @@ export function useHistorikk(): HistorikkHook {
     .concat(arbeidsuforhetHistorikk)
     .concat(manglendeMedvirkningHistorikk)
     .concat(vedtakHistorikk)
-    .concat(veilederHistorikk)
+    .concat(veilederTildelingHistorikk.events)
     .concat(dialogmotekandidatHistorikk);
 
   const isHistorikkLoading =
@@ -84,7 +80,7 @@ export function useHistorikk(): HistorikkHook {
     isArbeidsuforhetHistorikkLoading ||
     isManglendeMedvirkningHistorikkLoading ||
     isVedtakHistorikkLoading ||
-    isVeilederHistorikkLoading ||
+    veilederTildelingHistorikk.isLoading ||
     isDialogmotekandidatHistorikkLoading;
 
   const isHistorikkError =
@@ -95,7 +91,7 @@ export function useHistorikk(): HistorikkHook {
     isArbeidsuforhetHistorikkError ||
     isManglendeMedvirkningHistorikkError ||
     isVedtakHistorikkError ||
-    isVeilederHistorikkError ||
+    veilederTildelingHistorikk.isError ||
     isDialogmotekandidatHistorikkError;
 
   return {
