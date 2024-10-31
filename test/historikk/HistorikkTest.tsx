@@ -11,6 +11,8 @@ import {
   ARBEIDSTAKER_DEFAULT,
   LEDERE_DEFAULT,
   VEILEDER_TILDELING_HISTORIKK_DEFAULT,
+  VEILEDER_TILDELING_HISTORIKK_ANNEN,
+  VEILEDER_TILDELING_HISTORIKK_SYSTEM,
 } from "@/mocks/common/mockConstants";
 import { historikkQueryKeys } from "@/data/historikk/historikkQueryHooks";
 import { historikkmotebehovMock } from "@/mocks/syfomotebehov/historikkmotebehovMock";
@@ -145,6 +147,32 @@ describe("Historikk", () => {
         ARBEIDSTAKER_DEFAULT.personIdent
       ),
       () => VEILEDER_TILDELING_HISTORIKK_DEFAULT
+    );
+    renderHistorikk();
+
+    expect(await screen.findAllByText("Logg")).to.exist;
+    expect(screen.getByText("Z990000 på enhet 0315 ble satt som veileder")).to
+      .exist;
+  });
+  it("viser veiledertilordninghistorikk satt av annen", async () => {
+    queryClient.setQueryData(
+      veilederBrukerKnytningQueryKeys.historikk(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
+      () => VEILEDER_TILDELING_HISTORIKK_ANNEN
+    );
+    renderHistorikk();
+
+    expect(await screen.findAllByText("Logg")).to.exist;
+    expect(screen.getByText("Z970000 satt Z990000 på enhet 0315 som veileder"))
+      .to.exist;
+  });
+  it("viser veiledertilordninghistorikk satt av systemet", async () => {
+    queryClient.setQueryData(
+      veilederBrukerKnytningQueryKeys.historikk(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
+      () => VEILEDER_TILDELING_HISTORIKK_SYSTEM
     );
     renderHistorikk();
 

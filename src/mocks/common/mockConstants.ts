@@ -120,9 +120,29 @@ export const VEILEDER_BRUKER_KNYTNING_DEFAULT: VeilederBrukerKnytningDTO = {
 export const VEILEDER_TILDELING_HISTORIKK_DEFAULT: VeilederTildelingHistorikkDTO[] =
   [
     {
-      tildeltDato: new Date("2024-10-03"),
+      tildeltDato: new Date("2024-10-15"),
       tildeltVeileder: VEILEDER_IDENT_DEFAULT,
       tildeltEnhet: ENHET_GRUNERLOKKA.nummer,
       tildeltAv: VEILEDER_IDENT_DEFAULT,
+    },
+  ];
+
+export const VEILEDER_TILDELING_HISTORIKK_ANNEN: VeilederTildelingHistorikkDTO[] =
+  [
+    {
+      tildeltDato: new Date("2024-10-15"),
+      tildeltVeileder: VEILEDER_IDENT_DEFAULT,
+      tildeltEnhet: ENHET_GRUNERLOKKA.nummer,
+      tildeltAv: ANNEN_VEILEDER_IDENT,
+    },
+  ];
+
+export const VEILEDER_TILDELING_HISTORIKK_SYSTEM: VeilederTildelingHistorikkDTO[] =
+  [
+    {
+      tildeltDato: new Date("2024-10-15"),
+      tildeltVeileder: VEILEDER_IDENT_DEFAULT,
+      tildeltEnhet: ENHET_GRUNERLOKKA.nummer,
+      tildeltAv: "X000000",
     },
   ];
