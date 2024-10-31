@@ -120,7 +120,7 @@ export const VEILEDER_BRUKER_KNYTNING_DEFAULT: VeilederBrukerKnytningDTO = {
 export const VEILEDER_TILDELING_HISTORIKK_DEFAULT: VeilederTildelingHistorikkDTO[] =
   [
     {
-      tildeltDato: "2024-10-03",
+      tildeltDato: new Date("2024-10-03"),
       tildeltVeileder: VEILEDER_IDENT_DEFAULT,
       tildeltEnhet: ENHET_GRUNERLOKKA.nummer,
       tildeltAv: VEILEDER_IDENT_DEFAULT,
