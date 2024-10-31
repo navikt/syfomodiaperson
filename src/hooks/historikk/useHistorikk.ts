@@ -10,6 +10,7 @@ import { useManglendeMedvirkningHistorikk } from "@/hooks/historikk/useManglende
 import { useVedtakHistorikk } from "@/hooks/historikk/useFriskmeldingTilArbeidsformidligVedtakHistorikk";
 import { useVeilederTildelingHistorikk } from "@/hooks/historikk/useVeilederTildelingHistorikk";
 import { useDialogmotekandidatHistorikk } from "@/hooks/historikk/useDialogmotekandidatHistorikk";
+import { useDialogMedBehandlerHistorikk } from "@/hooks/historikk/useDialogMedBehandlerHistorikk";
 
 interface HistorikkHook {
   isHistorikkLoading: boolean;
@@ -62,6 +63,12 @@ export function useHistorikk(): HistorikkHook {
     isDialogmotekandidatHistorikkError,
   } = useDialogmotekandidatHistorikk();
 
+  const {
+    dialogMedBehandlerHistorikk,
+    isDialogMedBehandlerHistorikkLoading,
+    isDialogMedBehandlerHistorikkError,
+  } = useDialogMedBehandlerHistorikk();
+
   const historikkEvents = motebehovHistorikk
     .concat(oppfolgingsplanHistorikk)
     .concat(lederHistorikk)
@@ -70,6 +77,7 @@ export function useHistorikk(): HistorikkHook {
     .concat(manglendeMedvirkningHistorikk)
     .concat(vedtakHistorikk)
     .concat(veilederTildelingHistorikk.events)
+    .concat(dialogMedBehandlerHistorikk)
     .concat(dialogmotekandidatHistorikk);
 
   const isHistorikkLoading =
@@ -81,6 +89,7 @@ export function useHistorikk(): HistorikkHook {
     isManglendeMedvirkningHistorikkLoading ||
     isVedtakHistorikkLoading ||
     veilederTildelingHistorikk.isLoading ||
+    isDialogMedBehandlerHistorikkLoading ||
     isDialogmotekandidatHistorikkLoading;
 
   const isHistorikkError =
@@ -92,6 +101,7 @@ export function useHistorikk(): HistorikkHook {
     isManglendeMedvirkningHistorikkError ||
     isVedtakHistorikkError ||
     veilederTildelingHistorikk.isError ||
+    isDialogMedBehandlerHistorikkError ||
     isDialogmotekandidatHistorikkError;
 
   return {
