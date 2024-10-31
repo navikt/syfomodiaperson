@@ -12,7 +12,7 @@ interface DialogMedBehandlerHistorikk {
   dialogMedBehandlerHistorikk: HistorikkEvent[];
 }
 
-function beregnAvsender(dialogmelding: MeldingDTO): string {
+function avsenderText(dialogmelding: MeldingDTO): string {
   return dialogmelding.innkommende
     ? dialogmelding.behandlerNavn ?? "Mangler navn på behandler"
     : dialogmelding.veilederIdent ?? "Mangler navn på veileder";
@@ -22,7 +22,7 @@ function createHistorikkEventsFromDialogMedBehandler(
   dialogmeldinger: MeldingDTO[]
 ): HistorikkEvent[] {
   return dialogmeldinger.map((melding) => {
-    const avsender = beregnAvsender(melding);
+    const avsender = avsenderText(melding);
     return {
       opprettetAv: melding.veilederIdent ?? undefined,
       tekst: `Avsender: ${avsender} - ${meldingTypeTexts[melding.type]}`,
