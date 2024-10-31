@@ -251,7 +251,7 @@ describe("Historikk", () => {
       expect(await screen.findAllByText("Logg")).to.exist;
       expect(
         screen.getByText(
-          "Avsender: Mangler navn på veileder - Tilleggsopplysninger L8"
+          "Avsender: Mangler ident på veileder - Tilleggsopplysninger L8"
         )
       ).to.exist;
     });

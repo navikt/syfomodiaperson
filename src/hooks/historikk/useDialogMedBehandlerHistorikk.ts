@@ -15,7 +15,7 @@ interface DialogMedBehandlerHistorikk {
 function avsenderText(dialogmelding: MeldingDTO): string {
   return dialogmelding.innkommende
     ? dialogmelding.behandlerNavn ?? "Mangler navn på behandler"
-    : dialogmelding.veilederIdent ?? "Mangler navn på veileder";
+    : dialogmelding.veilederIdent ?? "Mangler ident på veileder";
 }
 
 function createHistorikkEventsFromDialogMedBehandler(
