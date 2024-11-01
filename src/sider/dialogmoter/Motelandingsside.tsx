@@ -22,7 +22,7 @@ const texts = {
   dialogmoter: "Dialogmøter",
 };
 
-export const Motelandingsside = () => {
+export function Motelandingsside() {
   const {
     isLoading: henterDialogmoter,
     isError: henterDialogmoterFeilet,
@@ -57,9 +57,6 @@ export const Motelandingsside = () => {
     henterDialogmoterFeilet ||
     henterDialogmoteunntakFeilet;
 
-  const hasMotehistorikk =
-    historiskeDialogmoter.length > 0 || dialogmoteunntak.length > 0;
-
   return (
     <Side tittel={texts.pageTitle} aktivtMenypunkt={Menypunkter.DIALOGMOTE}>
       <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
@@ -83,20 +80,18 @@ export const Motelandingsside = () => {
           </Tredelt.FirstColumn>
 
           <Tredelt.SecondColumn>
-            {hasMotehistorikk && (
-              <div className="flex flex-col gap-4">
-                <MotehistorikkPanel
-                  historiskeMoter={historiskeDialogmoter}
-                  dialogmoteunntak={dialogmoteunntak}
-                />
-                <MoteSvarHistorikk historiskeMoter={historiskeDialogmoter} />
-              </div>
-            )}
+            <div className="flex flex-col gap-4">
+              <MotehistorikkPanel
+                historiskeMoter={historiskeDialogmoter}
+                dialogmoteunntak={dialogmoteunntak}
+              />
+              <MoteSvarHistorikk historiskeMoter={historiskeDialogmoter} />
+            </div>
           </Tredelt.SecondColumn>
         </Tredelt.Container>
       </SideLaster>
     </Side>
   );
-};
+}
 
 export default Motelandingsside;

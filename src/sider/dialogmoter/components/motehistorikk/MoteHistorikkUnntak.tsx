@@ -1,7 +1,6 @@
 import React, { ReactElement } from "react";
 import { UnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
-import { ForhandsvisDocumentAccordionItem } from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
 
 import {
   DocumentComponentDto,
@@ -9,24 +8,24 @@ import {
 } from "@/data/documentcomponent/documentComponentTypes";
 import { unntakArsakTexts } from "@/components/dialogmoteunntak/DialogmoteunntakSkjema";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { ForhandsvisDocumentAccordionItem } from "@/sider/dialogmoter/components/motehistorikk/ForhandsvisDocumentAccordionItem";
 
 const texts = {
-  unntakTitle: "Unntak fra dialogmøte",
   unntakLenke: "Unntak fra dialogmøte",
   arsakLabel: "Årsak til unntak",
   beskrivelseLabel: "Beskrivelse",
   vurdertAvLabel: "Vurdert av",
 };
 
-export const unntakLenkeText = (unntakCreatedAt: Date) => {
+export function unntakLenkeText(unntakCreatedAt: Date) {
   const unntakDatoTekst = tilDatoMedManedNavn(unntakCreatedAt);
   return `${texts.unntakLenke} ${unntakDatoTekst}`;
-};
+}
 
-const createUnntakDocument = (
+function createUnntakDocument(
   unntak: UnntakDTO,
   veilederNavn: string | undefined
-): DocumentComponentDto[] => {
+): DocumentComponentDto[] {
   const arsakText: string =
     unntakArsakTexts.find(
       (unntakArsakText) => unntakArsakText.arsak == unntak.arsak
@@ -54,15 +53,13 @@ const createUnntakDocument = (
     });
   }
   return componentList;
-};
+}
 
-interface MoteHistorikkUnntakProps {
+interface Props {
   unntak: UnntakDTO;
 }
 
-export const MoteHistorikkUnntak = ({
-  unntak,
-}: MoteHistorikkUnntakProps): ReactElement => {
+export function MoteHistorikkUnntak({ unntak }: Props): ReactElement {
   const { data: veilederinfo } = useVeilederInfoQuery(unntak.createdBy);
   const unntakDocument = createUnntakDocument(
     unntak,
@@ -73,4 +70,4 @@ export const MoteHistorikkUnntak = ({
       {unntakLenkeText(unntak.createdAt)}
     </ForhandsvisDocumentAccordionItem>
   );
-};
+}
