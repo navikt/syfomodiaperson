@@ -1,7 +1,10 @@
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledereTypes";
 import { RSContext } from "@/data/modiacontext/modiacontextTypes";
 import { Veileder } from "@/data/veilederinfo/types/Veileder";
-import { VeilederBrukerKnytningDTO } from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
+import {
+  VeilederBrukerKnytningDTO,
+  VeilederTildelingHistorikkDTO,
+} from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
 
 export const TODAY = new Date().setHours(0, 0, 0, 0);
 
@@ -113,3 +116,33 @@ export const VEILEDER_BRUKER_KNYTNING_DEFAULT: VeilederBrukerKnytningDTO = {
   tildeltVeilederident: VEILEDER_IDENT_DEFAULT,
   tildeltEnhet: ENHET_GRUNERLOKKA.nummer,
 };
+
+export const VEILEDER_TILDELING_HISTORIKK_DEFAULT: VeilederTildelingHistorikkDTO[] =
+  [
+    {
+      tildeltDato: new Date("2024-10-15"),
+      tildeltVeileder: VEILEDER_IDENT_DEFAULT,
+      tildeltEnhet: ENHET_GRUNERLOKKA.nummer,
+      tildeltAv: VEILEDER_IDENT_DEFAULT,
+    },
+  ];
+
+export const VEILEDER_TILDELING_HISTORIKK_ANNEN: VeilederTildelingHistorikkDTO[] =
+  [
+    {
+      tildeltDato: new Date("2024-10-15"),
+      tildeltVeileder: VEILEDER_IDENT_DEFAULT,
+      tildeltEnhet: ENHET_GRUNERLOKKA.nummer,
+      tildeltAv: ANNEN_VEILEDER_IDENT,
+    },
+  ];
+
+export const VEILEDER_TILDELING_HISTORIKK_SYSTEM: VeilederTildelingHistorikkDTO[] =
+  [
+    {
+      tildeltDato: new Date("2024-10-15"),
+      tildeltVeileder: VEILEDER_IDENT_DEFAULT,
+      tildeltEnhet: ENHET_GRUNERLOKKA.nummer,
+      tildeltAv: "X000000",
+    },
+  ];

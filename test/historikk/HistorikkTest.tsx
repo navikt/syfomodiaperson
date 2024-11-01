@@ -10,6 +10,9 @@ import { renderWithRouter } from "../testRouterUtils";
 import {
   ARBEIDSTAKER_DEFAULT,
   LEDERE_DEFAULT,
+  VEILEDER_TILDELING_HISTORIKK_DEFAULT,
+  VEILEDER_TILDELING_HISTORIKK_ANNEN,
+  VEILEDER_TILDELING_HISTORIKK_SYSTEM,
 } from "@/mocks/common/mockConstants";
 import { historikkQueryKeys } from "@/data/historikk/historikkQueryHooks";
 import { historikkmotebehovMock } from "@/mocks/syfomotebehov/historikkmotebehovMock";
@@ -22,6 +25,7 @@ import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmot
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
+import { veilederBrukerKnytningQueryKeys } from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
 
 let queryClient: QueryClient;
 
@@ -79,6 +83,10 @@ function setupTestdataHistorikk() {
     ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
     () => []
   );
+  queryClient.setQueryData(
+    veilederBrukerKnytningQueryKeys.historikk(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
+  );
 }
 
 describe("Historikk", () => {
@@ -131,5 +139,45 @@ describe("Historikk", () => {
     ).to.exist;
     expect(screen.getByRole("option", { name: "Utenfor sykefraværstilfelle" }))
       .to.exist;
+  });
+
+  it("viser veiledertilordninghistorikk", async () => {
+    queryClient.setQueryData(
+      veilederBrukerKnytningQueryKeys.historikk(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
+      () => VEILEDER_TILDELING_HISTORIKK_DEFAULT
+    );
+    renderHistorikk();
+
+    expect(await screen.findAllByText("Logg")).to.exist;
+    expect(screen.getByText("Z990000 på enhet 0315 ble satt som veileder")).to
+      .exist;
+  });
+  it("viser veiledertilordninghistorikk satt av annen", async () => {
+    queryClient.setQueryData(
+      veilederBrukerKnytningQueryKeys.historikk(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
+      () => VEILEDER_TILDELING_HISTORIKK_ANNEN
+    );
+    renderHistorikk();
+
+    expect(await screen.findAllByText("Logg")).to.exist;
+    expect(screen.getByText("Z970000 satt Z990000 på enhet 0315 som veileder"))
+      .to.exist;
+  });
+  it("viser veiledertilordninghistorikk satt av systemet", async () => {
+    queryClient.setQueryData(
+      veilederBrukerKnytningQueryKeys.historikk(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
+      () => VEILEDER_TILDELING_HISTORIKK_SYSTEM
+    );
+    renderHistorikk();
+
+    expect(await screen.findAllByText("Logg")).to.exist;
+    expect(screen.getByText("Z990000 på enhet 0315 ble satt som veileder")).to
+      .exist;
   });
 });
