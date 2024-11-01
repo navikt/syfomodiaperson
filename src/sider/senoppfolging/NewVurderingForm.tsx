@@ -19,23 +19,21 @@ const texts = {
 
 interface Props {
   kandidat: SenOppfolgingKandidatResponseDTO;
+  setIsSubmitted: (isSubmitted: boolean) => void;
 }
 
-export function NewVurderingForm({ kandidat }: Props) {
+export function NewVurderingForm({ kandidat, setIsSubmitted }: Props) {
   const vurderKandidat = useVurderSenOppfolgingKandidat(kandidat.uuid);
   const [begrunnelse, setBegrunnelse] = useState<string>();
 
-  function handleBegrunnelseOnChange(
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) {
-    setBegrunnelse(e.target.value);
-  }
-
   function handleOnSubmit() {
-    vurderKandidat.mutate({
-      type: SenOppfolgingVurderingType.FERDIGBEHANDLET,
-      begrunnelse: begrunnelse,
-    });
+    vurderKandidat.mutate(
+      {
+        type: SenOppfolgingVurderingType.FERDIGBEHANDLET,
+        begrunnelse: begrunnelse,
+      },
+      { onSuccess: () => setIsSubmitted(true) }
+    );
   }
 
   return (
@@ -52,7 +50,7 @@ export function NewVurderingForm({ kandidat }: Props) {
             {texts.begrunnelseDescription}
           </BodyShort>
         }
-        onChange={handleBegrunnelseOnChange}
+        onChange={(e) => setBegrunnelse(e.target.value)}
         maxLength={1000}
       />
       <BodyShort size="small" textColor="subtle">

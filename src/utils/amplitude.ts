@@ -18,6 +18,7 @@ export enum EventType {
   ViewPortAndScreenResolution = "viewport og skjermstørrelse",
   OptionSelected = "alternativ valgt",
   LinkClick = "lenke klikket",
+  SenFaseFlexjarSubmitted = "flexjar sen fase sendt",
 }
 
 type EventPageView = {
@@ -107,6 +108,16 @@ type LinkClick = {
   };
 };
 
+type SenFaseFlexjarSubmitted = {
+  type: EventType.SenFaseFlexjarSubmitted;
+  data: {
+    url: string;
+    optionSelected: string;
+    hasFirstFeedbackValue: boolean;
+    hasSecondFeedbackValue: boolean;
+  };
+};
+
 type Event =
   | EventPageView
   | EventButtonClick
@@ -117,7 +128,8 @@ type Event =
   | OppfolgingsoppgaveEdited
   | IkkeAktuellVurderingArsak
   | OptionSelected
-  | LinkClick;
+  | LinkClick
+  | SenFaseFlexjarSubmitted;
 
 export const logEvent = (event: Event) =>
   amplitude.track(event.type, { ...event.data });

@@ -1,11 +1,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { Flexjar } from "@/components/flexjar/Flexjar";
+import { EmojiRatingFlexjar } from "@/components/flexjar/EmojiRatingFlexjar";
 import { queryClientWithMockData } from "../testQueryClient";
 import { navEnhet } from "../dialogmote/testData";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { changeTextInput, clickButton } from "../testUtils";
 import { stubFlexjarApiError, stubFlexjarApiOk } from "../stubs/stubFlexjar";
 import { defaultErrorTexts } from "@/api/errors";
@@ -20,7 +20,7 @@ const renderFlexjar = () =>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <Flexjar side={"Test"} />
+        <EmojiRatingFlexjar side={"Test"} />
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>
   );
