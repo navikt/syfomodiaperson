@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Box, Button, Label, Radio, RadioGroup } from "@navikt/ds-react";
 import {
   FlexjarFeedbackDTO,
@@ -9,6 +9,8 @@ import { defaultErrorTexts } from "@/api/errors";
 import AndreTilbakemeldingerTextArea from "@/components/flexjar/senfase/AndreTilbakemeldingerTextArea";
 import HvordanBrukerDuArenaTextArea from "@/components/flexjar/senfase/HvordanBrukerDuArenaTextArea";
 import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
+import * as Amplitude from "@/utils/amplitude";
+import { EventType } from "@/utils/amplitude";
 
 const texts = {
   apneKnapp: "Vi ønsker å lære av deg",
@@ -24,6 +26,40 @@ enum RadioOption {
   NEI = "Nei",
 }
 
+function logPageView(side: string) {
+  Amplitude.logEvent({
+    type: EventType.PageView,
+    data: { url: window.location.href, sidetittel: side + " - med Flexjar" },
+  });
+}
+
+function logOptionSelected(value: RadioOption) {
+  Amplitude.logEvent({
+    type: EventType.OptionSelected,
+    data: {
+      option: value.toString(),
+      tekst: "Radioknapp Flexjar sen fase",
+      url: window.location.href,
+    },
+  });
+}
+
+function logFeedbackSubmitted(
+  radioOptionValue: RadioOption,
+  hasFirstFeedbackValue: boolean,
+  hasSecondFeedbackValue: boolean
+) {
+  Amplitude.logEvent({
+    type: EventType.SenFaseFlexjarSubmitted,
+    data: {
+      url: window.location.href,
+      optionSelected: radioOptionValue.toString(),
+      hasFirstFeedbackValue: hasFirstFeedbackValue,
+      hasSecondFeedbackValue: hasSecondFeedbackValue,
+    },
+  });
+}
+
 export default function SenFaseFlexjar() {
   const [isApen, setIsApen] = useState<boolean>(true);
   const [arenaBrukText, setArenaBrukText] = useState<string>();
@@ -34,6 +70,9 @@ export default function SenFaseFlexjar() {
   const { setStoredValue: setFeedbackDate } = useLocalStorageState<Date | null>(
     StoreKey.FLEXJAR_SEN_FASE_FEEDBACK_DATE
   );
+  useEffect(() => {
+    logPageView("SenFase");
+  }, []);
 
   function toggleApen() {
     if (isApen) {
@@ -51,7 +90,12 @@ export default function SenFaseFlexjar() {
     return `${arenaBrukTextFeedback}[Har du noen tilbakemeldinger om denne siden: ${andreTilbakemeldingerText}]`;
   }
 
-  const handleSubmit = () => {
+  function handleRadioOnChange(value: RadioOption) {
+    setRadioValue(value);
+    logOptionSelected(value);
+  }
+
+  function handleSubmit() {
     if (radioValue) {
       const feedbackString = buildFeedbackString();
       const body: FlexjarFeedbackDTO = {
@@ -63,10 +107,15 @@ export default function SenFaseFlexjar() {
       sendFeedback.mutate(body, {
         onSuccess: () => {
           setFeedbackDate(new Date());
+          logFeedbackSubmitted(
+            radioValue,
+            !!arenaBrukText,
+            !!andreTilbakemeldingerText
+          );
         },
       });
     }
-  };
+  }
 
   return (
     <div className="flex flex-col sticky bottom-0 self-end items-end z-[100]">
@@ -100,7 +149,7 @@ export default function SenFaseFlexjar() {
             <>
               <RadioGroup
                 legend={<Label>{texts.sporsmal}</Label>}
-                onChange={(e) => setRadioValue(e)}
+                onChange={handleRadioOnChange}
                 description={texts.anonym}
                 size="small"
               >
