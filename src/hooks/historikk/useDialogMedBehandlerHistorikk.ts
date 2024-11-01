@@ -7,9 +7,9 @@ import {
 import { meldingTypeTexts } from "@/data/behandlerdialog/behandlerdialogTexts";
 
 interface DialogMedBehandlerHistorikk {
-  isDialogMedBehandlerHistorikkLoading: boolean;
-  isDialogMedBehandlerHistorikkError: boolean;
-  dialogMedBehandlerHistorikk: HistorikkEvent[];
+  isLoading: boolean;
+  isError: boolean;
+  events: HistorikkEvent[];
 }
 
 function avsenderText(dialogmelding: MeldingDTO): string {
@@ -18,7 +18,7 @@ function avsenderText(dialogmelding: MeldingDTO): string {
     : dialogmelding.veilederIdent ?? "Mangler ident på veileder";
 }
 
-function createHistorikkEventsFromDialogMedBehandler(
+function createHistorikkEvents(
   dialogmeldinger: MeldingDTO[]
 ): HistorikkEvent[] {
   return dialogmeldinger.map((melding) => {
@@ -41,19 +41,18 @@ function flattenDialogmeldinger(
 
 export function useDialogMedBehandlerHistorikk(): DialogMedBehandlerHistorikk {
   const {
-    data: dialogMedBehandlerHistorikk,
-    isLoading: isDialogMedBehandlerHistorikkLoading,
-    isError: isDialogMedBehandlerHistorikkError,
+    data: behandlerdialoger,
+    isLoading: isBehandlerdialogLoading,
+    isError: isBehandlerdialogError,
   } = useBehandlerdialogQuery();
 
-  const dialogMedBehandlerHistorikkEvents =
-    createHistorikkEventsFromDialogMedBehandler(
-      flattenDialogmeldinger(dialogMedBehandlerHistorikk)
-    );
+  const historikkEvents = createHistorikkEvents(
+    flattenDialogmeldinger(behandlerdialoger)
+  );
 
   return {
-    isDialogMedBehandlerHistorikkLoading,
-    isDialogMedBehandlerHistorikkError,
-    dialogMedBehandlerHistorikk: dialogMedBehandlerHistorikkEvents,
+    isLoading: isBehandlerdialogLoading,
+    isError: isBehandlerdialogError,
+    events: historikkEvents,
   };
 }
