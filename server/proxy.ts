@@ -604,24 +604,6 @@ export const setupProxy = (
   );
 
   router.use(
-    "/esyfovarsel/*",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.esyfovarsel
-      );
-    }
-  );
-
-  router.use(
     "/meroppfolging-backend/*",
     (
       req: express.Request,
@@ -635,6 +617,24 @@ export const setupProxy = (
         authClient,
         issuer,
         Config.auth.meroppfolgingBackend
+      );
+    }
+  );
+
+  router.use(
+    "/sykepengedager-informasjon/*",
+    (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) => {
+      proxyOnBehalfOf(
+        req,
+        res,
+        next,
+        authClient,
+        issuer,
+        Config.auth.sykepengedagerinformasjon
       );
     }
   );

@@ -82,7 +82,7 @@ spec:
         - application: flexjar-backend
           namespace: flex
         - application: syfomodiaperson-redis
-        - application: esyfovarsel
+        - application: sykepengedager-informasjon
           namespace: team-esyfo
         - application: syfomotebehov
           namespace: team-esyfo
@@ -211,10 +211,6 @@ spec:
       value: "prod-gcp.teamsykefravr.syfoveileder"
     - name: SYFOVEILEDER_HOST
       value: "http://syfoveileder"
-    - name: ESYFOVARSEL_AAD_APP_CLIENT_ID
-      value: "prod-gcp.team-esyfo.esyfovarsel"
-    - name: ESYFOVARSEL_HOST
-      value: "http://esyfovarsel.team-esyfo"
     - name: FLEXJAR_AAD_APP_CLIENT_ID
       value: "prod-gcp.flex.flexjar-backend"
     - name: FLEXJAR_HOST
@@ -231,3 +227,7 @@ spec:
       value: "prod-gcp.teamsykefravr.ismanglendemedvirkning"
     - name: ISMANGLENDEMEDVIRKNING_HOST
       value: "http://ismanglendemedvirkning"
+    - name: SYKEPENGEDAGER_INFORMASJON_AAD_APP_CLIENT_ID
+      value: "prod-gcp.team-esyfo.sykepengedager-informasjon"
+    - name: SYKEPENGEDAGER_INFORMASJON_HOST
+      value: "http://sykepengedager-informasjon.team-esyfo"
