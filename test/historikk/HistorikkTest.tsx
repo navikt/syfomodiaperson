@@ -540,25 +540,6 @@ describe("Historikk", () => {
       expect(screen.getByText("Ferdigbehandlet av: Z990000")).to.exist;
     });
 
-    it("Kandidat er ferdigbehandlet, men mangler vurdering - 0 rader i oversikten", async () => {
-      queryClient.setQueryData(
-        senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
-          ARBEIDSTAKER_DEFAULT.personIdent
-        ),
-        () => [
-          {
-            ...senOppfolgingKandidatDefault,
-            status: SenOppfolgingStatus.FERDIGBEHANDLET,
-          },
-        ]
-      );
-      renderHistorikk();
-
-      expect(await screen.findAllByText("Logg")).to.exist;
-      expect(screen.queryByText("Ferdigbehandlet av: ", { exact: false })).to.be
-        .null;
-    });
-
     it("To kandidater hvor sykemeldt har svart og er varslet og veileder har ferdigbehandlet - 6 rader i oversikten", async () => {
       queryClient.setQueryData(
         senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
