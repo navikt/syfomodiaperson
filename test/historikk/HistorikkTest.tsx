@@ -511,8 +511,8 @@ describe("Historikk", () => {
       renderHistorikk();
 
       expect(await screen.findAllByText("Logg")).to.exist;
-      expect(screen.queryByText("Svar mottatt fra den sykemeldte")).to.be.null;
-      expect(screen.queryByText("Varsel sendt ut til den sykemeldte")).to.be
+      expect(screen.queryByText("Svar mottatt fra den sykmeldte")).to.be.null;
+      expect(screen.queryByText("Varsel sendt ut til den sykmeldte")).to.be
         .null;
       expect(screen.queryByText("Ferdigbehandlet av: ", { exact: false })).to.be
         .null;
@@ -535,8 +535,8 @@ describe("Historikk", () => {
       renderHistorikk();
 
       expect(await screen.findAllByText("Logg")).to.exist;
-      expect(screen.getByText("Svar mottatt fra den sykemeldte")).to.exist;
-      expect(screen.getByText("Varsel sendt ut til den sykemeldte")).to.exist;
+      expect(screen.getByText("Svar mottatt fra den sykmeldte")).to.exist;
+      expect(screen.getByText("Varsel sendt ut til den sykmeldte")).to.exist;
       expect(screen.getByText("Ferdigbehandlet av: Z990000")).to.exist;
     });
 
@@ -582,10 +582,10 @@ describe("Historikk", () => {
 
       renderHistorikk();
       expect(
-        screen.queryAllByText("Svar mottatt fra den sykemeldte").length
+        screen.queryAllByText("Svar mottatt fra den sykmeldte").length
       ).toBe(2);
       expect(
-        screen.queryAllByText("Varsel sendt ut til den sykemeldte").length
+        screen.queryAllByText("Varsel sendt ut til den sykmeldte").length
       ).toBe(2);
       expect(screen.queryAllByText("Ferdigbehandlet av: Z990000").length).toBe(
         2

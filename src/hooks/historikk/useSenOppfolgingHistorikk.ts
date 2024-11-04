@@ -23,7 +23,7 @@ function createHistorikkEvents(
     if (kandidat.svar) {
       const svarHistorikkEvent: HistorikkEvent = {
         opprettetAv: kandidat.personident,
-        tekst: "Svar mottatt fra den sykemeldte",
+        tekst: "Svar mottatt fra den sykmeldte",
         tidspunkt: kandidat.createdAt,
         kilde: "SEN_OPPFOLGING",
       };
@@ -33,7 +33,7 @@ function createHistorikkEvents(
     if (kandidat.varselAt) {
       const varselHistorikkEvent: HistorikkEvent = {
         opprettetAv: OPPRETTET_AV_SYSTEM_DEFAULT,
-        tekst: "Varsel sendt ut til den sykemeldte",
+        tekst: "Varsel sendt ut til den sykmeldte",
         tidspunkt: kandidat.createdAt,
         kilde: "SEN_OPPFOLGING",
       };
