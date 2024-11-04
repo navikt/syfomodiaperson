@@ -26,6 +26,12 @@ import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
 import { veilederBrukerKnytningQueryKeys } from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
+import { behandlerdialogQueryKeys } from "@/data/behandlerdialog/behandlerdialogQueryHooks";
+import {
+  MeldingDTO,
+  MeldingResponseDTO,
+} from "@/data/behandlerdialog/behandlerdialogTypes";
+import { defaultMelding } from "@/mocks/isbehandlerdialog/behandlerdialogMock";
 
 let queryClient: QueryClient;
 
@@ -85,6 +91,10 @@ function setupTestdataHistorikk() {
   );
   queryClient.setQueryData(
     veilederBrukerKnytningQueryKeys.historikk(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
+  );
+  queryClient.setQueryData(
+    behandlerdialogQueryKeys.behandlerdialog(ARBEIDSTAKER_DEFAULT.personIdent),
     () => []
   );
 }
@@ -179,5 +189,264 @@ describe("Historikk", () => {
     expect(await screen.findAllByText("Logg")).to.exist;
     expect(screen.getByText("Z990000 på enhet 0315 ble satt som veileder")).to
       .exist;
+  });
+
+  describe("Dialog med behandler", () => {
+    const defaultMeldingIPeriode: MeldingDTO = {
+      ...defaultMelding,
+      tidspunkt: new Date("2024-06-20"),
+    };
+
+    it("Innkommende false - Veileder som avsender", async () => {
+      const meldingResponseDTO: MeldingResponseDTO = {
+        conversations: {
+          ["conversationRef123"]: [
+            {
+              ...defaultMeldingIPeriode,
+              innkommende: false,
+              behandlerNavn: null,
+              veilederIdent: "Z10000",
+            },
+          ],
+        },
+      };
+
+      queryClient.setQueryData(
+        behandlerdialogQueryKeys.behandlerdialog(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => meldingResponseDTO
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(screen.getByText("Avsender: Z10000 - Tilleggsopplysninger L8")).to
+        .exist;
+    });
+
+    it("Innkommende false, veilederIdent mangler - Info om navn på veileder mangler", async () => {
+      queryClient.setQueryData(
+        behandlerdialogQueryKeys.behandlerdialog(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => {
+          return {
+            conversations: {
+              ["conversationRef123"]: [
+                {
+                  ...defaultMeldingIPeriode,
+                  innkommende: false,
+                  behandlerNavn: null,
+                  veilederIdent: null,
+                },
+              ],
+            },
+          };
+        }
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(
+        screen.getByText(
+          "Avsender: Mangler ident på veileder - Tilleggsopplysninger L8"
+        )
+      ).to.exist;
+    });
+
+    it("Innkommende false, både veilederIdent og behandlerNavn satt - Veileder som avsender", async () => {
+      queryClient.setQueryData(
+        behandlerdialogQueryKeys.behandlerdialog(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => {
+          return {
+            conversations: {
+              ["conversationRef123"]: [
+                {
+                  ...defaultMeldingIPeriode,
+                  innkommende: false,
+                  behandlerNavn: "Ola Nordmann",
+                  veilederIdent: "Z10000",
+                },
+              ],
+            },
+          };
+        }
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(screen.getByText("Avsender: Z10000 - Tilleggsopplysninger L8")).to
+        .exist;
+    });
+
+    it("Innkommende true - Behandler som avsender", async () => {
+      queryClient.setQueryData(
+        behandlerdialogQueryKeys.behandlerdialog(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => {
+          return {
+            conversations: {
+              ["conversationRef123"]: [
+                {
+                  ...defaultMeldingIPeriode,
+                  innkommende: true,
+                  behandlerNavn: "Ola Nordmann",
+                  veilederIdent: null,
+                },
+              ],
+            },
+          };
+        }
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(
+        screen.getByText("Avsender: Ola Nordmann - Tilleggsopplysninger L8")
+      ).to.exist;
+    });
+
+    it("Innkommende true, behandlerNavn mangler - Info om navn på behandler mangler", async () => {
+      queryClient.setQueryData(
+        behandlerdialogQueryKeys.behandlerdialog(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => {
+          return {
+            conversations: {
+              ["conversationRef123"]: [
+                {
+                  ...defaultMeldingIPeriode,
+                  innkommende: true,
+                  behandlerNavn: null,
+                  veilederIdent: null,
+                },
+              ],
+            },
+          };
+        }
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(
+        screen.getByText(
+          "Avsender: Mangler navn på behandler - Tilleggsopplysninger L8"
+        )
+      ).to.exist;
+    });
+
+    it("Innkommende true, både veilederIdent og behandlerNavn satt - Behandler som avsender", async () => {
+      queryClient.setQueryData(
+        behandlerdialogQueryKeys.behandlerdialog(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => {
+          return {
+            conversations: {
+              ["conversationRef123"]: [
+                {
+                  ...defaultMeldingIPeriode,
+                  innkommende: true,
+                  behandlerNavn: "Ola Nordmann",
+                  veilederIdent: "Z10000",
+                },
+              ],
+            },
+          };
+        }
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(
+        screen.getByText("Avsender: Ola Nordmann - Tilleggsopplysninger L8")
+      ).to.exist;
+    });
+
+    it("To samtaler - Antall meldinger 3", async () => {
+      queryClient.setQueryData(
+        behandlerdialogQueryKeys.behandlerdialog(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => {
+          return {
+            conversations: {
+              ["conversationRef123"]: [
+                {
+                  ...defaultMeldingIPeriode,
+                  uuid: "1",
+                  conversationRef: "conversationRef123",
+                },
+              ],
+              ["conversationRef567"]: [
+                {
+                  ...defaultMeldingIPeriode,
+                  uuid: "2",
+                  conversationRef: "conversationRef567",
+                },
+                {
+                  ...defaultMeldingIPeriode,
+                  uuid: "3",
+                  conversationRef: "conversationRef567",
+                },
+              ],
+            },
+          };
+        }
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(screen.queryAllByText("Avsender:", { exact: false }).length).toBe(
+        3
+      );
+    });
+
+    it("Ingen samtaler - Antall meldinger 0", async () => {
+      queryClient.setQueryData(
+        behandlerdialogQueryKeys.behandlerdialog(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => {
+          return {
+            conversations: {},
+          };
+        }
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(screen.queryAllByText("Avsender:", { exact: false }).length).toBe(
+        0
+      );
+    });
+
+    it("MeldingResponseDTO undefined - Antall meldinger 0", async () => {
+      queryClient.setQueryData(
+        behandlerdialogQueryKeys.behandlerdialog(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        undefined
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(screen.queryAllByText("Avsender:", { exact: false }).length).toBe(
+        0
+      );
+    });
   });
 });
