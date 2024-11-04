@@ -55,7 +55,7 @@ function tagFromKilde(kilde: HistorikkEventType): ReactElement {
     case "DIALOG_MED_BEHANDLER":
       return <Tag variant="neutral">Dialog med behandler</Tag>;
     case "SEN_OPPFOLGING":
-      return <Tag variant="alt2">Sen oppfølging</Tag>;
+      return <Tag variant="alt2">Snart slutt på sykepengene</Tag>;
     case "MOTEBEHOV":
     case "MOTER":
     case "DIALOGMOTEKANDIDAT":
