@@ -62,9 +62,9 @@ function logFeedbackSubmitted(
 
 export default function SenFaseFlexjar() {
   const [isApen, setIsApen] = useState<boolean>(true);
-  const [arenaBrukText, setArenaBrukText] = useState<string>();
+  const [arenaBrukText, setArenaBrukText] = useState<string>("");
   const [andreTilbakemeldingerText, setAndreTilbakemeldingerText] =
-    useState<string>();
+    useState<string>("");
   const [radioValue, setRadioValue] = useState<RadioOption | null>(null);
   const sendFeedback = useFlexjarFeedback();
   const { setStoredValue: setFeedbackDate } = useLocalStorageState<Date | null>(
@@ -77,6 +77,7 @@ export default function SenFaseFlexjar() {
   function toggleApen() {
     if (isApen) {
       setRadioValue(null);
+      setArenaBrukText("");
       setAndreTilbakemeldingerText("");
     }
     setIsApen(!isApen);
