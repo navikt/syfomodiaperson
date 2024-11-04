@@ -41,6 +41,8 @@ import {
   SenOppfolgingVurderingType,
 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { generateUUID } from "@/utils/uuidUtils";
+import { dialogmoteStatusEndringMock } from "@/mocks/isdialogmote/dialogmoterMock";
+import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
 
 let queryClient: QueryClient;
 
@@ -112,6 +114,12 @@ function setupTestdataHistorikk() {
     ),
     () => []
   );
+  queryClient.setQueryData(
+    dialogmoterQueryKeys.statusendringHistorikk(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => []
+  );
 }
 
 describe("Historikk", () => {
@@ -166,44 +174,47 @@ describe("Historikk", () => {
       .to.exist;
   });
 
-  it("viser veiledertilordninghistorikk", async () => {
-    queryClient.setQueryData(
-      veilederBrukerKnytningQueryKeys.historikk(
-        ARBEIDSTAKER_DEFAULT.personIdent
-      ),
-      () => VEILEDER_TILDELING_HISTORIKK_DEFAULT
-    );
-    renderHistorikk();
+  describe("Veiledertilknytning", () => {
+    it("viser veiledertilordninghistorikk", async () => {
+      queryClient.setQueryData(
+        veilederBrukerKnytningQueryKeys.historikk(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => VEILEDER_TILDELING_HISTORIKK_DEFAULT
+      );
+      renderHistorikk();
 
-    expect(await screen.findAllByText("Logg")).to.exist;
-    expect(screen.getByText("Z990000 på enhet 0315 ble satt som veileder")).to
-      .exist;
-  });
-  it("viser veiledertilordninghistorikk satt av annen", async () => {
-    queryClient.setQueryData(
-      veilederBrukerKnytningQueryKeys.historikk(
-        ARBEIDSTAKER_DEFAULT.personIdent
-      ),
-      () => VEILEDER_TILDELING_HISTORIKK_ANNEN
-    );
-    renderHistorikk();
+      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(screen.getByText("Z990000 på enhet 0315 ble satt som veileder")).to
+        .exist;
+    });
+    it("viser veiledertilordninghistorikk satt av annen", async () => {
+      queryClient.setQueryData(
+        veilederBrukerKnytningQueryKeys.historikk(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => VEILEDER_TILDELING_HISTORIKK_ANNEN
+      );
+      renderHistorikk();
 
-    expect(await screen.findAllByText("Logg")).to.exist;
-    expect(screen.getByText("Z970000 satt Z990000 på enhet 0315 som veileder"))
-      .to.exist;
-  });
-  it("viser veiledertilordninghistorikk satt av systemet", async () => {
-    queryClient.setQueryData(
-      veilederBrukerKnytningQueryKeys.historikk(
-        ARBEIDSTAKER_DEFAULT.personIdent
-      ),
-      () => VEILEDER_TILDELING_HISTORIKK_SYSTEM
-    );
-    renderHistorikk();
+      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(
+        screen.getByText("Z970000 satt Z990000 på enhet 0315 som veileder")
+      ).to.exist;
+    });
+    it("viser veiledertilordninghistorikk satt av systemet", async () => {
+      queryClient.setQueryData(
+        veilederBrukerKnytningQueryKeys.historikk(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => VEILEDER_TILDELING_HISTORIKK_SYSTEM
+      );
+      renderHistorikk();
 
-    expect(await screen.findAllByText("Logg")).to.exist;
-    expect(screen.getByText("Z990000 på enhet 0315 ble satt som veileder")).to
-      .exist;
+      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(screen.getByText("Z990000 på enhet 0315 ble satt som veileder")).to
+        .exist;
+    });
   });
 
   describe("Dialog med behandler", () => {
@@ -571,6 +582,42 @@ describe("Historikk", () => {
       expect(screen.queryAllByText("Ferdigbehandlet av: Z990000").length).toBe(
         2
       );
+    });
+  });
+
+  describe("DialogmoteStatusEndring", () => {
+    it("viser dialogmoteStatusEndringer", async () => {
+      queryClient.setQueryData(
+        dialogmoterQueryKeys.statusendringHistorikk(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => dialogmoteStatusEndringMock
+      );
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(
+        screen.getAllByText("Z970000 kalte inn til et dialogmøte")
+      ).to.have.length(2);
+      expect(
+        screen.getByText(
+          "Z990000 endret tid eller sted for dialogmøtet opprettet av Z990000"
+        )
+      ).to.exist;
+      expect(
+        screen.getByText("Z970000 avlyste dialogmøtet opprettet av Z990000")
+      ).to.exist;
+      expect(screen.getByText("Z990000 kalte inn til et dialogmøte")).to.exist;
+      expect(
+        screen.getByText(
+          "Z990000 skrev referat fra dialogmøtet opprettet av Z970000"
+        )
+      ).to.exist;
+      expect(
+        screen.getByText(
+          "Dialogmøtet innkalt av Z970000 ble lukket av systemet"
+        )
+      ).to.exist;
     });
   });
 });

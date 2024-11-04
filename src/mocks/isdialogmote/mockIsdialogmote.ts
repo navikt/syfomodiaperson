@@ -2,6 +2,7 @@ import {
   createDialogmote,
   createReferat,
   dialogmoterMock,
+  dialogmoteStatusEndringMock,
 } from "./dialogmoterMock";
 import { ISDIALOGMOTE_ROOT } from "@/apiConstants";
 import {
@@ -25,9 +26,17 @@ export const mockIsdialogmote = [
     ];
     return new HttpResponse(null, { status: 200 });
   }),
+
   http.get(`${ISDIALOGMOTE_ROOT}/dialogmote/personident`, () => {
     return HttpResponse.json(mockedDialogmoter);
   }),
+
+  http.get(
+    `${ISDIALOGMOTE_ROOT}/dialogmote/personident/motestatusendringer`,
+    () => {
+      return HttpResponse.json(dialogmoteStatusEndringMock);
+    }
+  ),
 
   http.post<{ moteuuid: string }>(
     `${ISDIALOGMOTE_ROOT}/dialogmote/:moteuuid/avlys`,

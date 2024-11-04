@@ -12,6 +12,7 @@ import { useVeilederTildelingHistorikk } from "@/hooks/historikk/useVeilederTild
 import { useDialogmotekandidatHistorikk } from "@/hooks/historikk/useDialogmotekandidatHistorikk";
 import { useDialogMedBehandlerHistorikk } from "@/hooks/historikk/useDialogMedBehandlerHistorikk";
 import { useSenOppfolgingHistorikk } from "@/hooks/historikk/useSenOppfolgingHistorikk";
+import { useDialogmoteStatusEndringHistorikk } from "@/hooks/historikk/useDialogmoteStatusEndringHistorikk";
 
 interface HistorikkHook {
   isHistorikkLoading: boolean;
@@ -68,6 +69,9 @@ export function useHistorikk(): HistorikkHook {
 
   const senOppfolgingHistorikk = useSenOppfolgingHistorikk();
 
+  const dialogmoteStatusEndringHistorikk =
+    useDialogmoteStatusEndringHistorikk();
+
   const historikkEvents = motebehovHistorikk
     .concat(oppfolgingsplanHistorikk)
     .concat(lederHistorikk)
@@ -78,7 +82,8 @@ export function useHistorikk(): HistorikkHook {
     .concat(veilederTildelingHistorikk.events)
     .concat(dialogMedBehandlerHistorikk.events)
     .concat(senOppfolgingHistorikk.events)
-    .concat(dialogmotekandidatHistorikk);
+    .concat(dialogmotekandidatHistorikk)
+    .concat(dialogmoteStatusEndringHistorikk.events);
 
   const isHistorikkLoading =
     isOppfolgingsplanLoading ||
@@ -91,7 +96,8 @@ export function useHistorikk(): HistorikkHook {
     veilederTildelingHistorikk.isLoading ||
     dialogMedBehandlerHistorikk.isLoading ||
     senOppfolgingHistorikk.isLoading ||
-    isDialogmotekandidatHistorikkLoading;
+    isDialogmotekandidatHistorikkLoading ||
+    dialogmoteStatusEndringHistorikk.isLoading;
 
   const isHistorikkError =
     isMotebehovError ||
@@ -104,7 +110,8 @@ export function useHistorikk(): HistorikkHook {
     veilederTildelingHistorikk.isError ||
     dialogMedBehandlerHistorikk.isError ||
     senOppfolgingHistorikk.isError ||
-    isDialogmotekandidatHistorikkError;
+    isDialogmotekandidatHistorikkError ||
+    dialogmoteStatusEndringHistorikk.isError;
 
   return {
     historikkEvents,

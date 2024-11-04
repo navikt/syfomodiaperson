@@ -12,6 +12,7 @@ import {
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { BehandlerType } from "@/data/behandler/BehandlerDTO";
 import {
+  ANNEN_VEILEDER_IDENT,
   ARBEIDSTAKER_DEFAULT,
   ENHET_GRUNERLOKKA,
   VEILEDER_IDENT_DEFAULT,
@@ -26,6 +27,7 @@ import dayjs from "dayjs";
 import { DocumentComponentType } from "@/data/documentcomponent/documentComponentTypes";
 import { Malform } from "@/context/malform/MalformContext";
 import { addDays } from "@/utils/datoUtils";
+import { DialogmoteStatusEndringDTO } from "@/data/dialogmote/types/dialogmoteStatusEndringTypes";
 
 type VarselOpts = {
   varselType: MotedeltakerVarselType.INNKALT | MotedeltakerVarselType.AVLYST;
@@ -326,4 +328,63 @@ export const dialogmoterMock = [
   avlystDialogmote,
   ferdigstiltDialogmote,
   innkaltDialogmoteMedBehandler,
+];
+
+export const dialogmoteStatusEndringMock: DialogmoteStatusEndringDTO[] = [
+  {
+    uuid: "0",
+    createdAt: addDays(new Date(), -10),
+    dialogmoteId: 1,
+    dialogmoteOpprettetAv: VEILEDER_IDENT_DEFAULT,
+    status: DialogmoteStatus.INNKALT,
+    statusEndringOpprettetAv: VEILEDER_IDENT_DEFAULT,
+  },
+  {
+    uuid: "1",
+    createdAt: addDays(new Date(), -7),
+    dialogmoteId: 1,
+    dialogmoteOpprettetAv: VEILEDER_IDENT_DEFAULT,
+    status: DialogmoteStatus.NYTT_TID_STED,
+    statusEndringOpprettetAv: VEILEDER_IDENT_DEFAULT,
+  },
+  {
+    uuid: "2",
+    createdAt: addDays(new Date(), -5),
+    dialogmoteId: 1,
+    dialogmoteOpprettetAv: VEILEDER_IDENT_DEFAULT,
+    status: DialogmoteStatus.AVLYST,
+    statusEndringOpprettetAv: ANNEN_VEILEDER_IDENT,
+  },
+  {
+    uuid: "3",
+    createdAt: addDays(new Date(), -4),
+    dialogmoteId: 2,
+    dialogmoteOpprettetAv: ANNEN_VEILEDER_IDENT,
+    status: DialogmoteStatus.INNKALT,
+    statusEndringOpprettetAv: ANNEN_VEILEDER_IDENT,
+  },
+  {
+    uuid: "4",
+    createdAt: addDays(new Date(), -1),
+    dialogmoteId: 2,
+    dialogmoteOpprettetAv: ANNEN_VEILEDER_IDENT,
+    status: DialogmoteStatus.FERDIGSTILT,
+    statusEndringOpprettetAv: VEILEDER_IDENT_DEFAULT,
+  },
+  {
+    uuid: "5",
+    createdAt: addDays(new Date(), 1),
+    dialogmoteId: 3,
+    dialogmoteOpprettetAv: ANNEN_VEILEDER_IDENT,
+    status: DialogmoteStatus.INNKALT,
+    statusEndringOpprettetAv: ANNEN_VEILEDER_IDENT,
+  },
+  {
+    uuid: "5",
+    createdAt: addDays(new Date(), 3),
+    dialogmoteId: 3,
+    dialogmoteOpprettetAv: ANNEN_VEILEDER_IDENT,
+    status: DialogmoteStatus.LUKKET,
+    statusEndringOpprettetAv: ANNEN_VEILEDER_IDENT,
+  },
 ];
