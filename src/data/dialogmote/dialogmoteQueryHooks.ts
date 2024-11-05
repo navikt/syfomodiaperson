@@ -11,6 +11,11 @@ import { isAktivtDialogmote } from "@/utils/dialogmoteUtils";
 
 export const dialogmoterQueryKeys = {
   dialogmoter: (fnr: string) => ["dialogmoter", fnr],
+  statusendringHistorikk: (fnr: string) => [
+    "dialogmoter",
+    fnr,
+    "statusendringHistorikk",
+  ],
 };
 
 export const useDialogmoterQuery = () => {
