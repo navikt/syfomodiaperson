@@ -2,9 +2,9 @@ import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
 import { expect, describe, it, beforeEach } from "vitest";
 import { testQueryClient } from "../testQueryClient";
-import { stubMaxdateApi } from "../stubs/stubEsyfovarsel";
 import { useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
 import { maksdato, maksdatoMock } from "@/mocks/syfoperson/persondataMock";
+import { stubMaxdateApi } from "../stubs/stubSykepengerdagerInformasjon";
 
 let queryClient: any;
 

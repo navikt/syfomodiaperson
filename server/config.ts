@@ -350,16 +350,6 @@ export const auth = {
       name: "SYFOVEILEDER_HOST",
     }),
   },
-  esyfovarsel: {
-    applicationName: "esyfovarsel",
-    clientId: envVar({
-      name: "ESYFOVARSEL_AAD_APP_CLIENT_ID",
-    }),
-    host: envVar({
-      name: "ESYFOVARSEL_HOST",
-    }),
-    removePathPrefix: true,
-  },
   meroppfolgingBackend: {
     applicationName: "meroppfolging-backend",
     clientId: envVar({
@@ -367,6 +357,16 @@ export const auth = {
     }),
     host: envVar({
       name: "MEROPPFOLGING_BACKEND_HOST",
+    }),
+    removePathPrefix: true,
+  },
+  sykepengedagerinformasjon: {
+    applicationName: "sykepengedager-informasjon",
+    clientId: envVar({
+      name: "SYKEPENGEDAGER_INFORMASJON_AAD_APP_CLIENT_ID",
+    }),
+    host: envVar({
+      name: "SYKEPENGEDAGER_INFORMASJON_HOST",
     }),
     removePathPrefix: true,
   },
