@@ -1,5 +1,6 @@
 import { Box, Heading, List } from "@navikt/ds-react";
 import React from "react";
+import { EksternLenke } from "@/components/EksternLenke";
 
 const texts = {
   heading: "Veiledning",
@@ -12,7 +13,11 @@ const texts = {
     "Kontakt behandler: Ta kontakt med behandler for å innhente medisinske opplysninger",
     "AAP: Vurder om den sykmeldte bør søke om AAP",
   ],
+  link: "Behovsvurdering og § 14 a for sykmeldte",
 };
+
+const rutineUrl =
+  "https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Behovsvurdering-og-sykmeldte.aspx?csf=1&web=1&e=94CQ0a&CID=72bd178d-9242-4247-a5ba-c3c758b06a99";
 
 export function VeiledningRutine() {
   return (
@@ -27,6 +32,7 @@ export function VeiledningRutine() {
           <List.Item key={index}>{text}</List.Item>
         ))}
       </List>
+      <EksternLenke href={rutineUrl}>{texts.link}</EksternLenke>
     </Box>
   );
 }
