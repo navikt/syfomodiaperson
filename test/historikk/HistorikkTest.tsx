@@ -10,6 +10,7 @@ import { renderWithRouter } from "../testRouterUtils";
 import {
   ARBEIDSTAKER_DEFAULT,
   LEDERE_DEFAULT,
+  VEILEDER_IDENT_DEFAULT,
   VEILEDER_TILDELING_HISTORIKK_DEFAULT,
   VEILEDER_TILDELING_HISTORIKK_ANNEN,
   VEILEDER_TILDELING_HISTORIKK_SYSTEM,
@@ -32,6 +33,14 @@ import {
   MeldingResponseDTO,
 } from "@/data/behandlerdialog/behandlerdialogTypes";
 import { defaultMelding } from "@/mocks/isbehandlerdialog/behandlerdialogMock";
+import { senOppfolgingKandidatQueryKeys } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
+import {
+  OnskerOppfolging,
+  SenOppfolgingKandidatResponseDTO,
+  SenOppfolgingStatus,
+  SenOppfolgingVurderingType,
+} from "@/data/senoppfolging/senOppfolgingTypes";
+import { generateUUID } from "@/utils/uuidUtils";
 
 let queryClient: QueryClient;
 
@@ -95,6 +104,12 @@ function setupTestdataHistorikk() {
   );
   queryClient.setQueryData(
     behandlerdialogQueryKeys.behandlerdialog(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
+  );
+  queryClient.setQueryData(
+    senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
     () => []
   );
 }
@@ -446,6 +461,115 @@ describe("Historikk", () => {
       expect(await screen.findAllByText("Logg")).to.exist;
       expect(screen.queryAllByText("Avsender:", { exact: false }).length).toBe(
         0
+      );
+    });
+  });
+
+  describe("Sen oppfølging", () => {
+    const DATO_INNENFOR_OPPFOLGING = new Date("2024-06-20");
+
+    const senOppfolgingKandidatDefault: SenOppfolgingKandidatResponseDTO = {
+      uuid: generateUUID(),
+      createdAt: DATO_INNENFOR_OPPFOLGING,
+      personident: ARBEIDSTAKER_DEFAULT.personIdent,
+      status: SenOppfolgingStatus.KANDIDAT,
+      varselAt: undefined,
+      svar: undefined,
+      vurderinger: [],
+    };
+
+    const svar = {
+      svar: {
+        svarAt: DATO_INNENFOR_OPPFOLGING,
+        onskerOppfolging: OnskerOppfolging.JA,
+      },
+    };
+
+    const varsel = {
+      varselAt: DATO_INNENFOR_OPPFOLGING,
+    };
+
+    const ferdigbehandlet = {
+      status: SenOppfolgingStatus.FERDIGBEHANDLET,
+      vurderinger: [
+        {
+          uuid: generateUUID(),
+          createdAt: DATO_INNENFOR_OPPFOLGING,
+          type: SenOppfolgingVurderingType.FERDIGBEHANDLET,
+          veilederident: VEILEDER_IDENT_DEFAULT,
+        },
+      ],
+    };
+
+    it("Ingen kandidater - 0 rader i oversikten", async () => {
+      queryClient.setQueryData(
+        senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => []
+      );
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(screen.queryByText("Svar mottatt fra den sykmeldte")).to.be.null;
+      expect(screen.queryByText("Varsel sendt ut til den sykmeldte")).to.be
+        .null;
+      expect(screen.queryByText("Ferdigbehandlet av: ", { exact: false })).to.be
+        .null;
+    });
+
+    it("Sykemeldt har svart og er varslet og veileder har ferdigbehandlet - 3 rader i oversikten", async () => {
+      queryClient.setQueryData(
+        senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [
+          {
+            ...senOppfolgingKandidatDefault,
+            ...svar,
+            ...varsel,
+            ...ferdigbehandlet,
+          },
+        ]
+      );
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(screen.getByText("Svar mottatt fra den sykmeldte")).to.exist;
+      expect(screen.getByText("Varsel sendt ut til den sykmeldte")).to.exist;
+      expect(screen.getByText("Ferdigbehandlet av: Z990000")).to.exist;
+    });
+
+    it("To kandidater hvor sykemeldt har svart og er varslet og veileder har ferdigbehandlet - 6 rader i oversikten", async () => {
+      queryClient.setQueryData(
+        senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [
+          {
+            ...senOppfolgingKandidatDefault,
+            ...svar,
+            ...varsel,
+            ...ferdigbehandlet,
+          },
+          {
+            ...senOppfolgingKandidatDefault,
+            ...svar,
+            ...varsel,
+            ...ferdigbehandlet,
+          },
+        ]
+      );
+
+      renderHistorikk();
+      expect(
+        screen.queryAllByText("Svar mottatt fra den sykmeldte").length
+      ).toBe(2);
+      expect(
+        screen.queryAllByText("Varsel sendt ut til den sykmeldte").length
+      ).toBe(2);
+      expect(screen.queryAllByText("Ferdigbehandlet av: Z990000").length).toBe(
+        2
       );
     });
   });
