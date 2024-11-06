@@ -4,7 +4,7 @@ import Feilmelding from "./Feilmelding";
 import { hentBegrunnelseTekst } from "@/utils/tilgangUtils";
 import { useTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
 
-interface SideLasterProps {
+interface Props {
   henter: boolean;
   hentingFeilet: boolean;
   children: ReactNode;
@@ -15,12 +15,12 @@ const texts = {
   errorTitle: "Du har ikke tilgang til denne tjenesten",
 };
 
-const SideLaster = ({
+export default function SideLaster({
   henter,
   hentingFeilet,
   children,
   className,
-}: SideLasterProps): ReactElement => {
+}: Props): ReactElement {
   const {
     isLoading: henterTilgang,
     isError: hentingTilgangFeilet,
@@ -42,6 +42,4 @@ const SideLaster = ({
   return (
     <div className={`w-full ${className ? className : ""}`}>{children}</div>
   );
-};
-
-export default SideLaster;
+}

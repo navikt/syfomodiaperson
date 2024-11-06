@@ -19,6 +19,7 @@ export enum EventType {
   OptionSelected = "alternativ valgt",
   LinkClick = "lenke klikket",
   SenFaseFlexjarSubmitted = "flexjar sen fase sendt",
+  HistorikkFlexjarSubmitted = "flexjar historikk sendt",
 }
 
 type EventPageView = {
@@ -118,6 +119,15 @@ type SenFaseFlexjarSubmitted = {
   };
 };
 
+type HistorikkFlexjarSubmitted = {
+  type: EventType.HistorikkFlexjarSubmitted;
+  data: {
+    url: string;
+    optionSelected: string;
+    hasFeedbackValue: boolean;
+  };
+};
+
 type Event =
   | EventPageView
   | EventButtonClick
@@ -129,7 +139,8 @@ type Event =
   | IkkeAktuellVurderingArsak
   | OptionSelected
   | LinkClick
-  | SenFaseFlexjarSubmitted;
+  | SenFaseFlexjarSubmitted
+  | HistorikkFlexjarSubmitted;
 
 export const logEvent = (event: Event) =>
   amplitude.track(event.type, { ...event.data });
