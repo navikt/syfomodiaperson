@@ -131,7 +131,7 @@ describe("Historikk", () => {
   it("viser tilbakemelding når ingen historikk", async () => {
     renderHistorikk();
 
-    expect(await screen.findAllByText("Logg")).to.exist;
+    expect(await screen.findAllByText("Historikk")).to.exist;
     expect(screen.getByText("Denne personen har ingen oppfølgingshistorikk")).to
       .exist;
     expect(
@@ -148,7 +148,7 @@ describe("Historikk", () => {
     );
     renderHistorikk();
 
-    expect(await screen.findAllByText("Logg")).to.exist;
+    expect(await screen.findAllByText("Historikk")).to.exist;
     expect(screen.getByLabelText("Sykefraværstilfelle")).to.exist;
     expect(screen.getByText("Sykefraværstilfelle")).to.exist;
     expect(
@@ -166,7 +166,7 @@ describe("Historikk", () => {
     );
     renderHistorikk();
 
-    expect(await screen.findAllByText("Logg")).to.exist;
+    expect(await screen.findAllByText("Historikk")).to.exist;
     expect(
       screen.getByRole("option", { name: "21. februar – 10. desember 2024" })
     ).to.exist;
@@ -184,7 +184,7 @@ describe("Historikk", () => {
       );
       renderHistorikk();
 
-      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(screen.getByText("Z990000 på enhet 0315 ble satt som veileder")).to
         .exist;
     });
@@ -197,7 +197,7 @@ describe("Historikk", () => {
       );
       renderHistorikk();
 
-      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
         screen.getByText("Z970000 satt Z990000 på enhet 0315 som veileder")
       ).to.exist;
@@ -211,7 +211,7 @@ describe("Historikk", () => {
       );
       renderHistorikk();
 
-      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(screen.getByText("Z990000 på enhet 0315 ble satt som veileder")).to
         .exist;
     });
@@ -246,7 +246,7 @@ describe("Historikk", () => {
 
       renderHistorikk();
 
-      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(screen.getByText("Avsender: Z10000 - Tilleggsopplysninger L8")).to
         .exist;
     });
@@ -274,7 +274,7 @@ describe("Historikk", () => {
 
       renderHistorikk();
 
-      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
         screen.getByText(
           "Avsender: Mangler ident på veileder - Tilleggsopplysninger L8"
@@ -305,7 +305,7 @@ describe("Historikk", () => {
 
       renderHistorikk();
 
-      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(screen.getByText("Avsender: Z10000 - Tilleggsopplysninger L8")).to
         .exist;
     });
@@ -333,7 +333,7 @@ describe("Historikk", () => {
 
       renderHistorikk();
 
-      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
         screen.getByText("Avsender: Ola Nordmann - Tilleggsopplysninger L8")
       ).to.exist;
@@ -362,7 +362,7 @@ describe("Historikk", () => {
 
       renderHistorikk();
 
-      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
         screen.getByText(
           "Avsender: Mangler navn på behandler - Tilleggsopplysninger L8"
@@ -393,7 +393,7 @@ describe("Historikk", () => {
 
       renderHistorikk();
 
-      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
         screen.getByText("Avsender: Ola Nordmann - Tilleggsopplysninger L8")
       ).to.exist;
@@ -433,7 +433,7 @@ describe("Historikk", () => {
 
       renderHistorikk();
 
-      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(screen.queryAllByText("Avsender:", { exact: false }).length).toBe(
         3
       );
@@ -453,7 +453,7 @@ describe("Historikk", () => {
 
       renderHistorikk();
 
-      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(screen.queryAllByText("Avsender:", { exact: false }).length).toBe(
         0
       );
@@ -469,7 +469,7 @@ describe("Historikk", () => {
 
       renderHistorikk();
 
-      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(screen.queryAllByText("Avsender:", { exact: false }).length).toBe(
         0
       );
@@ -521,7 +521,7 @@ describe("Historikk", () => {
       );
       renderHistorikk();
 
-      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(screen.queryByText("Svar mottatt fra den sykmeldte")).to.be.null;
       expect(screen.queryByText("Varsel sendt ut til den sykmeldte")).to.be
         .null;
@@ -545,7 +545,7 @@ describe("Historikk", () => {
       );
       renderHistorikk();
 
-      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(screen.getByText("Svar mottatt fra den sykmeldte")).to.exist;
       expect(screen.getByText("Varsel sendt ut til den sykmeldte")).to.exist;
       expect(screen.getByText("Ferdigbehandlet av: Z990000")).to.exist;
@@ -595,7 +595,7 @@ describe("Historikk", () => {
       );
       renderHistorikk();
 
-      expect(await screen.findAllByText("Logg")).to.exist;
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
         screen.getAllByText("Z970000 kalte inn til et dialogmøte")
       ).to.have.length(2);

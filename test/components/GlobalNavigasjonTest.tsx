@@ -96,7 +96,7 @@ describe("GlobalNavigasjon", () => {
       "Nøkkelinformasjon",
       "Aktivitetskrav",
       "Dialog med behandler",
-      "Logg",
+      "HistorikkNy",
       "Sykmeldinger",
       "Søknader om sykepenger",
       "Oppfølgingsplaner",

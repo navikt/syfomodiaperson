@@ -64,7 +64,7 @@ export const manglendeMedvirkningOppfyltPath = `${appRoutePath}/manglendemedvirk
 export const manglendeMedvirkningStansPath = `${appRoutePath}/manglendemedvirkning/stans`;
 export const manglendeMedvirkningUnntakPath = `${appRoutePath}/manglendemedvirkning/unntak`;
 export const manglendeMedvirkningIkkeAktuellPath = `${appRoutePath}/manglendemedvirkning/ikkeaktuell`;
-export const historikkPath = `${appRoutePath}/logg`;
+export const historikkPath = `${appRoutePath}/historikk`;
 
 const AktivBrukerRouter = (): ReactElement => {
   Amplitude.logViewportAndScreenSize();
