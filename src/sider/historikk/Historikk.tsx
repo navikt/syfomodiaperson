@@ -86,7 +86,7 @@ export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
   }
 
   return (
-    <div className="p-4">
+    <div className="pt-4">
       <Select
         className="w-fit mb-4"
         label={"Sykefraværstilfelle"}

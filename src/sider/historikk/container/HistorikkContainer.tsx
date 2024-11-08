@@ -7,6 +7,10 @@ import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { Historikk } from "@/sider/historikk/Historikk";
 import { Infomelding } from "@/components/Infomelding";
 import { useHistorikk } from "@/hooks/historikk/useHistorikk";
+import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
+import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
+import HistorikkFlexjar from "@/sider/historikk/flexjar/HistorikkFlexjar";
 
 const texts = {
   topp: "Logg",
@@ -19,15 +23,26 @@ const texts = {
   },
 };
 
-export const HistorikkContainer = (): ReactElement => {
+export default function HistorikkContainer(): ReactElement {
   const { historikkEvents, isHistorikkLoading, isHistorikkError } =
     useHistorikk();
-
   const {
     tilfellerDescendingStart,
     isLoading: isTilfellerLoading,
     isError: isTilfellerError,
   } = useOppfolgingstilfellePersonQuery();
+  const { toggles } = useFeatureToggles();
+
+  const { storedValue: flexjarFeedbackDate } = useLocalStorageState<Date>(
+    StoreKey.FLEXJAR_HISTORIKK_DATE
+  );
+  const hasGivenFeedback = !!flexjarFeedbackDate;
+  const { data: diskresjonskode } = useDiskresjonskodeQuery();
+  const showFlexjar =
+    toggles.isHistorikkFlexjarEnabled &&
+    !hasGivenFeedback &&
+    diskresjonskode !== "6" &&
+    diskresjonskode !== "7";
 
   const tilfeller = tilfellerDescendingStart || [];
   const ingenHistorikk = tilfeller.length === 0 || historikkEvents.length === 0;
@@ -37,6 +52,7 @@ export const HistorikkContainer = (): ReactElement => {
       <SideLaster
         henter={isHistorikkLoading || isTilfellerLoading}
         hentingFeilet={isHistorikkError || isTilfellerError}
+        className="flex flex-col"
       >
         <Sidetopp tittel={texts.topp} />
         {ingenHistorikk ? (
@@ -47,9 +63,8 @@ export const HistorikkContainer = (): ReactElement => {
         ) : (
           <Historikk historikkEvents={historikkEvents} tilfeller={tilfeller} />
         )}
+        {showFlexjar && !ingenHistorikk && <HistorikkFlexjar />}
       </SideLaster>
     </Side>
   );
-};
-
-export default HistorikkContainer;
+}

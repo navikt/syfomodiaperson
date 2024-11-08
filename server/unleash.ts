@@ -51,5 +51,9 @@ export const getToggles = (veilederId, enhetId) => {
       "isSenFaseFlexjarEnabled",
       context
     ),
+    isHistorikkFlexjarEnabled: unleash.isEnabled(
+      "isHistorikkFlexjarEnabled",
+      context
+    ),
   };
 };
