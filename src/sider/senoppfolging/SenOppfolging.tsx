@@ -1,5 +1,4 @@
 import React, { ReactElement, useState } from "react";
-import { BodyShort, Box } from "@navikt/ds-react";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { KandidatSvar } from "@/sider/senoppfolging/KandidatSvar";
 import { VurdertKandidat } from "@/sider/senoppfolging/VurdertKandidat";
@@ -14,24 +13,25 @@ import { NewVurderingForm } from "@/sider/senoppfolging/NewVurderingForm";
 import OvingssideLink from "@/sider/senoppfolging/OvingssideLink";
 import { KandidatIkkeSvart } from "@/sider/senoppfolging/KandidatIkkeSvart";
 import { isVarselUbesvart } from "@/utils/senOppfolgingUtils";
-import SenFaseFlexjar from "@/components/flexjar/senfase/SenFaseFlexjar";
+import SenFaseFlexjar from "@/sider/senoppfolging/flexjar/SenFaseFlexjar";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
-import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
+import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
+import Sidetopp from "@/components/Sidetopp";
+import Side from "@/sider/Side";
+import SideLaster from "@/components/SideLaster";
+import IkkeKandidatInfo from "@/sider/senoppfolging/IkkeKandidatInfo";
 
 const texts = {
-  ikkeVarslet: {
-    info1:
-      "Den sykmeldte har ikke mottatt varsel om at det snart er slutt på sykepengene enda.",
-    info2:
-      "Når den sykmeldte har 90 dager eller mindre igjen av sykepengene, vil han eller hun få et varsel om å svare på spørsmål rundt sin situasjon på innloggede sider.",
-    info3:
-      "Når spørsmålene er besvart, vil du få en oppgave i oversikten din om å vurdere videre oppfølging. Svarene fra den sykmeldte dukker opp på denne siden.",
-  },
+  title: "Snart slutt på sykepengene",
 };
 
 export default function SenOppfolging(): ReactElement {
-  const { data: kandidater } = useSenOppfolgingKandidatQuery();
+  const {
+    data: kandidater,
+    isError,
+    isPending,
+  } = useSenOppfolgingKandidatQuery();
   const [isVurderingSubmitted, setIsVurderingSubmitted] =
     useState<boolean>(false);
   const kandidat: SenOppfolgingKandidatResponseDTO | undefined = kandidater[0];
@@ -42,53 +42,49 @@ export default function SenOppfolging(): ReactElement {
   const ferdigbehandletVurdering = kandidat?.vurderinger.find(
     (vurdering) => vurdering.type === SenOppfolgingVurderingType.FERDIGBEHANDLET
   );
+
   const { storedValue: flexjarFeedbackDate } = useLocalStorageState<Date>(
     StoreKey.FLEXJAR_SEN_FASE_FEEDBACK_DATE
   );
   const hasGivenFeedback = !!flexjarFeedbackDate;
-
-  const { data: diskresjonskode } = useDiskresjonskodeQuery();
-
   const { toggles } = useFeatureToggles();
-  const showFlexjar =
-    toggles.isSenFaseFlexjarEnabled &&
-    !hasGivenFeedback &&
-    diskresjonskode !== "6" &&
-    diskresjonskode !== "7";
+  const showFlexjar = toggles.isSenFaseFlexjarEnabled && !hasGivenFeedback;
 
-  return kandidat ? (
-    <div className="flex flex-col">
-      <Tredelt.Container>
-        <Tredelt.FirstColumn>
-          {svar && <KandidatSvar svar={svar} />}
-          {!svar && varselAt && <KandidatIkkeSvart varselAt={varselAt} />}
-          {isFerdigbehandlet && ferdigbehandletVurdering ? (
-            <VurdertKandidat vurdering={ferdigbehandletVurdering} />
-          ) : (
-            (svar || isVarselUbesvart(kandidat)) && (
-              <NewVurderingForm
-                kandidat={kandidat}
-                setIsSubmitted={setIsVurderingSubmitted}
-              />
-            )
-          )}
-        </Tredelt.FirstColumn>
-        <Tredelt.SecondColumn>
-          <VeiledningRutine />
-          <OvingssideLink />
-        </Tredelt.SecondColumn>
-      </Tredelt.Container>
-      {isVurderingSubmitted && showFlexjar && <SenFaseFlexjar />}
-    </div>
-  ) : (
-    <Box
-      background="surface-default"
-      padding="6"
-      className="flex flex-col gap-4"
+  return (
+    <Side
+      tittel={texts.title}
+      aktivtMenypunkt={Menypunkter.SENOPPFOLGING}
+      flexjar={isVurderingSubmitted && showFlexjar && <SenFaseFlexjar />}
     >
-      <BodyShort size="small">{texts.ikkeVarslet.info1}</BodyShort>
-      <BodyShort size="small">{texts.ikkeVarslet.info2}</BodyShort>
-      <BodyShort size="small">{texts.ikkeVarslet.info3}</BodyShort>
-    </Box>
+      <Sidetopp tittel={texts.title} />
+      <SideLaster henter={isPending} hentingFeilet={isError}>
+        {kandidat ? (
+          <div className="flex flex-col">
+            <Tredelt.Container>
+              <Tredelt.FirstColumn>
+                {svar && <KandidatSvar svar={svar} />}
+                {!svar && varselAt && <KandidatIkkeSvart varselAt={varselAt} />}
+                {isFerdigbehandlet && ferdigbehandletVurdering ? (
+                  <VurdertKandidat vurdering={ferdigbehandletVurdering} />
+                ) : (
+                  (svar || isVarselUbesvart(kandidat)) && (
+                    <NewVurderingForm
+                      kandidat={kandidat}
+                      setIsSubmitted={setIsVurderingSubmitted}
+                    />
+                  )
+                )}
+              </Tredelt.FirstColumn>
+              <Tredelt.SecondColumn>
+                <VeiledningRutine />
+                <OvingssideLink />
+              </Tredelt.SecondColumn>
+            </Tredelt.Container>
+          </div>
+        ) : (
+          <IkkeKandidatInfo />
+        )}
+      </SideLaster>
+    </Side>
   );
 }

@@ -7,7 +7,7 @@ import {
 import { ChevronDownIcon, ChevronUpIcon } from "@navikt/aksel-icons";
 import { defaultErrorTexts } from "@/api/errors";
 import AndreTilbakemeldingerTextArea from "@/components/flexjar/AndreTilbakemeldingerTextArea";
-import HvordanBrukerDuArenaTextArea from "@/components/flexjar/senfase/HvordanBrukerDuArenaTextArea";
+import HvordanBrukerDuArenaTextArea from "@/sider/senoppfolging/flexjar/HvordanBrukerDuArenaTextArea";
 import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
