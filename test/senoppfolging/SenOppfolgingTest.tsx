@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -28,18 +28,22 @@ import {
   SenOppfolgingVurderingType,
 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
+import { renderWithRouter } from "../testRouterUtils";
+import { senOppfolgingPath } from "@/routers/AppRouter";
 
 let queryClient: QueryClient;
 
 const renderSenOppfolging = () =>
-  render(
+  renderWithRouter(
     <QueryClientProvider client={queryClient}>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
         <SenOppfolging />
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
+    senOppfolgingPath,
+    [senOppfolgingPath]
   );
 
 const vurderingButtonText = "Fullfør vurdering";

@@ -8,7 +8,6 @@ import { Historikk } from "@/sider/historikk/Historikk";
 import { Infomelding } from "@/components/Infomelding";
 import { useHistorikk } from "@/hooks/historikk/useHistorikk";
 import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
-import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import HistorikkFlexjar from "@/sider/historikk/flexjar/HistorikkFlexjar";
 
@@ -37,18 +36,18 @@ export default function HistorikkContainer(): ReactElement {
     StoreKey.FLEXJAR_HISTORIKK_DATE
   );
   const hasGivenFeedback = !!flexjarFeedbackDate;
-  const { data: diskresjonskode } = useDiskresjonskodeQuery();
-  const showFlexjar =
-    toggles.isHistorikkFlexjarEnabled &&
-    !hasGivenFeedback &&
-    diskresjonskode !== "6" &&
-    diskresjonskode !== "7";
+  const isFlexjarVisible =
+    toggles.isHistorikkFlexjarEnabled && !hasGivenFeedback;
 
   const tilfeller = tilfellerDescendingStart || [];
   const ingenHistorikk = tilfeller.length === 0 || historikkEvents.length === 0;
 
   return (
-    <Side tittel={texts.pageTitle} aktivtMenypunkt={Menypunkter.HISTORIKK}>
+    <Side
+      tittel={texts.pageTitle}
+      aktivtMenypunkt={Menypunkter.HISTORIKK}
+      flexjar={isFlexjarVisible && !ingenHistorikk && <HistorikkFlexjar />}
+    >
       <SideLaster
         henter={isHistorikkLoading || isTilfellerLoading}
         hentingFeilet={isHistorikkError || isTilfellerError}
@@ -63,7 +62,6 @@ export default function HistorikkContainer(): ReactElement {
         ) : (
           <Historikk historikkEvents={historikkEvents} tilfeller={tilfeller} />
         )}
-        {showFlexjar && !ingenHistorikk && <HistorikkFlexjar />}
       </SideLaster>
     </Side>
   );
