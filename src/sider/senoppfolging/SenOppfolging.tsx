@@ -4,7 +4,6 @@ import { KandidatSvar } from "@/sider/senoppfolging/KandidatSvar";
 import { VurdertKandidat } from "@/sider/senoppfolging/VurdertKandidat";
 import * as Tredelt from "@/sider/TredeltSide";
 import {
-  SenOppfolgingKandidatResponseDTO,
   SenOppfolgingStatus,
   SenOppfolgingVurderingType,
 } from "@/data/senoppfolging/senOppfolgingTypes";
@@ -21,6 +20,7 @@ import Sidetopp from "@/components/Sidetopp";
 import Side from "@/sider/Side";
 import SideLaster from "@/components/SideLaster";
 import IkkeKandidatInfo from "@/sider/senoppfolging/IkkeKandidatInfo";
+import { SenOppfolgingHistorikk } from "@/sider/senoppfolging/historikk/SenOppfolgingHistorikk";
 
 const texts = {
   title: "Snart slutt på sykepengene",
@@ -34,7 +34,7 @@ export default function SenOppfolging(): ReactElement {
   } = useSenOppfolgingKandidatQuery();
   const [isVurderingSubmitted, setIsVurderingSubmitted] =
     useState<boolean>(false);
-  const kandidat: SenOppfolgingKandidatResponseDTO | undefined = kandidater[0];
+  const [kandidat, ...tidligereKandidater] = kandidater;
   const svar = kandidat?.svar;
   const varselAt = kandidat?.varselAt;
   const isFerdigbehandlet =
@@ -74,6 +74,7 @@ export default function SenOppfolging(): ReactElement {
                     />
                   )
                 )}
+                <SenOppfolgingHistorikk historikk={tidligereKandidater} />
               </Tredelt.FirstColumn>
               <Tredelt.SecondColumn>
                 <VeiledningRutine />

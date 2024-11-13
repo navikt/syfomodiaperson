@@ -11,12 +11,15 @@ import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
 } from "../common/mockConstants";
-import { addWeeks } from "@/utils/datoUtils";
+import { addDays, addWeeks } from "@/utils/datoUtils";
 import { http, HttpResponse } from "msw";
 
 export const mockIsmeroppfolging = [
   http.get(`${ISMEROPPFOLGING_ROOT}/senoppfolging/kandidater`, () => {
-    return HttpResponse.json([senOppfolgingKandidatMock]);
+    return HttpResponse.json([
+      senOppfolgingKandidatMock,
+      ferdigbehandletKandidatMock,
+    ]);
   }),
   http.post<object, SenOppfolgingVurderingRequestDTO>(
     `${ISMEROPPFOLGING_ROOT}/senoppfolging/kandidater/:kandidatUUID/vurderinger`,
@@ -49,7 +52,7 @@ export const senOppfolgingKandidatMock: SenOppfolgingKandidatResponseDTO = {
   status: SenOppfolgingStatus.KANDIDAT,
   varselAt: new Date(),
   svar: {
-    svarAt: new Date(),
+    svarAt: addDays(new Date(), 3),
     onskerOppfolging: OnskerOppfolging.JA,
   },
   vurderinger: [],
@@ -58,11 +61,16 @@ export const senOppfolgingKandidatMock: SenOppfolgingKandidatResponseDTO = {
 export const ferdigbehandletKandidatMock: SenOppfolgingKandidatResponseDTO = {
   ...senOppfolgingKandidatMock,
   createdAt: addWeeks(new Date(), -60),
+  varselAt: addWeeks(new Date(), -60),
+  svar: {
+    svarAt: addWeeks(new Date(), -59),
+    onskerOppfolging: OnskerOppfolging.JA,
+  },
   status: SenOppfolgingStatus.FERDIGBEHANDLET,
   vurderinger: [
     {
       uuid: generateUUID(),
-      createdAt: addWeeks(new Date(), -50),
+      createdAt: addWeeks(new Date(), -58),
       type: SenOppfolgingVurderingType.FERDIGBEHANDLET,
       veilederident: VEILEDER_IDENT_DEFAULT,
     },
