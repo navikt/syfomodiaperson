@@ -9,7 +9,12 @@ import {
 } from "@/data/historikk/types/historikkTypes";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { Box, Select, Table, Tag } from "@navikt/ds-react";
+import * as Amplitude from "@/utils/amplitude";
+import { EventType } from "@/utils/amplitude";
 
+const texts = {
+  sykefravaerstilfelleLabel: "Sykefraværstilfelle",
+};
 const byTidspunkt: () => (h1: HistorikkEvent, h2: HistorikkEvent) => number =
   () => (h1: HistorikkEvent, h2: HistorikkEvent) => {
     return new Date(h2.tidspunkt).getTime() - new Date(h1.tidspunkt).getTime();
@@ -63,6 +68,19 @@ function tagFromKilde(kilde: HistorikkEventType): ReactElement {
   }
 }
 
+function logSykefravaerstilfelleChanged(isUtenforTilfelle: boolean) {
+  Amplitude.logEvent({
+    type: EventType.OptionSelected,
+    data: {
+      url: window.location.href,
+      tekst: "Sykefraværstilfelle valgt",
+      option: isUtenforTilfelle
+        ? "Utenfor sykefraværstilfelle"
+        : "Innenfor et sykefraværstilfelle",
+    },
+  });
+}
+
 interface Props {
   historikkEvents: HistorikkEvent[];
   tilfeller: OppfolgingstilfelleDTO[];
@@ -85,14 +103,20 @@ export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
     }
   }
 
+  function sykefravaerstilfelleOnChange(
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) {
+    setSelectedTilfelleIndex(Number(event.target.value));
+    const isUtenforTilfelle = event.target.value === "-1";
+    logSykefravaerstilfelleChanged(isUtenforTilfelle);
+  }
+
   return (
     <Box background="surface-default" padding="4">
       <Select
         className="w-fit mb-4"
-        label={"Sykefraværstilfelle"}
-        onChange={(event) =>
-          setSelectedTilfelleIndex(Number(event.target.value))
-        }
+        label={texts.sykefravaerstilfelleLabel}
+        onChange={sykefravaerstilfelleOnChange}
       >
         {tilfeller.map((tilfelle, index) => (
           <option key={index} value={index}>
