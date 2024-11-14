@@ -53,10 +53,6 @@ const allMenypunkter: {
     navn: "Dialog med behandler",
     sti: "behandlerdialog",
   },
-  [Menypunkter.HISTORIKK]: {
-    navn: "Historikk",
-    sti: "historikk",
-  },
   [Menypunkter.SYKMELDINGER]: {
     navn: "Sykmeldinger",
     sti: "sykmeldinger",
@@ -88,6 +84,10 @@ const allMenypunkter: {
   [Menypunkter.MANGLENDE_MEDVIRKNING]: {
     navn: "Manglende medvirkning",
     sti: "manglendemedvirkning",
+  },
+  [Menypunkter.HISTORIKK]: {
+    navn: "Historikk",
+    sti: "historikk",
   },
   [Menypunkter.VEDTAK]: {
     navn: "Vedtak",
