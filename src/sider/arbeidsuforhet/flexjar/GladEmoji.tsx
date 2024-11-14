@@ -1,5 +1,5 @@
 import React from "react";
-import { EmojiProps } from "@/components/flexjar/feedbackEmojis";
+import { EmojiProps } from "@/sider/arbeidsuforhet/flexjar/feedbackEmojis";
 
 export const GladEmoji = (props: EmojiProps) => (
   <svg

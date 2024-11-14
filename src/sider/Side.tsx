@@ -9,30 +9,28 @@ import { isEaster, isPride } from "@/utils/festiveUtils";
 import { Easter } from "@/components/festive/Easter";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
-import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { OversiktLenker } from "@/components/personkort/OversiktLenker";
 import { Pride } from "@/components/festive/Pride";
-import { EmojiRatingFlexjar } from "@/components/flexjar/EmojiRatingFlexjar";
 import { Oppfolgingsoppgave } from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
-import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
 import { TildeltVeileder } from "@/components/TildeltVeileder";
 
 export const MODIA_HEADER_ID = "modia-header";
 
-interface SideProps {
+interface Props {
   tittel: string;
   aktivtMenypunkt: Menypunkter;
-  children?: ReactNode;
+  flexjar?: ReactNode;
+  children: ReactNode;
 }
 
-const Side = ({ tittel, aktivtMenypunkt, children }: SideProps) => {
+export default function Side({
+  tittel,
+  aktivtMenypunkt,
+  flexjar,
+  children,
+}: Props) {
   const { data: diskresjonskode } = useDiskresjonskodeQuery();
-  const { storedValue: flexjarFeedbackDate } = useLocalStorageState<Date>(
-    StoreKey.FLEXJAR_ARBEIDSUFORHET_FEEDBACK_DATE
-  );
-
-  const hasGivenFeedback = !!flexjarFeedbackDate;
 
   useEffect(() => {
     Amplitude.logEvent({
@@ -40,19 +38,13 @@ const Side = ({ tittel, aktivtMenypunkt, children }: SideProps) => {
       data: { url: window.location.href, sidetittel: tittel },
     });
   }, [tittel]);
-  const { toggles } = useFeatureToggles();
-  const showFlexjar =
-    toggles.isFlexjarEnabled &&
-    aktivtMenypunkt === Menypunkter.ARBEIDSUFORHET &&
-    diskresjonskode !== "6" &&
-    diskresjonskode !== "7" &&
-    !hasGivenFeedback;
+  const isFlexjarVisible = diskresjonskode !== "6" && diskresjonskode !== "7";
 
   return (
     <DocumentTitle
       title={tittel + (tittel.length > 0 ? " - Sykefravær" : "Sykefravær")}
     >
-      <div className="mx-6">
+      <div className="mx-6 flex flex-col">
         <div className="flex flex-col" id={MODIA_HEADER_ID}>
           <div className="flex flex-row mt-4 mb-2 w-full">
             <OversiktLenker />
@@ -67,12 +59,10 @@ const Side = ({ tittel, aktivtMenypunkt, children }: SideProps) => {
             <Oppfolgingsoppgave />
             {isEaster() && <Easter />}
           </nav>
-          <div className="w-full flex flex-col">{children}</div>
+          <div className="w-full">{children}</div>
         </div>
-        {showFlexjar && <EmojiRatingFlexjar side={tittel} />}
+        {isFlexjarVisible && flexjar}
       </div>
     </DocumentTitle>
   );
-};
-
-export default Side;
+}

@@ -1,6 +1,9 @@
 import React from "react";
 import { Label } from "@navikt/ds-react";
-import { emojis, EmojiType } from "@/components/flexjar/feedbackEmojis";
+import {
+  emojis,
+  EmojiType,
+} from "@/sider/arbeidsuforhet/flexjar/feedbackEmojis";
 
 interface EmojiButtonProps {
   emojiType: EmojiType;

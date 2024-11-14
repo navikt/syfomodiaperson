@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { EmojiRatingFlexjar } from "@/components/flexjar/EmojiRatingFlexjar";
+import { EmojiRatingFlexjar } from "@/sider/arbeidsuforhet/flexjar/EmojiRatingFlexjar";
 import { queryClientWithMockData } from "../testQueryClient";
 import { navEnhet } from "../dialogmote/testData";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
@@ -20,7 +20,7 @@ const renderFlexjar = () =>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <EmojiRatingFlexjar side={"Test"} />
+        <EmojiRatingFlexjar />
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>
   );
@@ -43,7 +43,8 @@ describe("Flexjar", () => {
     renderFlexjar();
     await clickButton("Gi oss tilbakemelding");
 
-    expect(screen.getByText("Hvordan opplever du Test-siden?")).to.exist;
+    expect(screen.getByText("Hvordan opplever du arbeidsuførhet-siden?")).to
+      .exist;
     const buttons = screen.getAllByRole("button");
     expect(buttons).to.have.length(7);
     expect(buttons[1].textContent).to.equal("Horribel");
@@ -103,7 +104,7 @@ describe("Flexjar", () => {
     await clickButton("Send tilbakemelding");
 
     const expectedFlexjarDTO: FlexjarFeedbackDTO = {
-      feedbackId: "Test",
+      feedbackId: "Arbeidsuførhet",
       app: "syfomodiaperson",
       svar: "1",
       feedback: undefined,
@@ -125,7 +126,7 @@ describe("Flexjar", () => {
     await clickButton("Send tilbakemelding");
 
     const expectedFlexjarDTO: FlexjarFeedbackDTO = {
-      feedbackId: "Test",
+      feedbackId: "Arbeidsuførhet",
       app: "syfomodiaperson",
       svar: "1",
       feedback: feedbackText,

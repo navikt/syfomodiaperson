@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -28,18 +28,22 @@ import {
   SenOppfolgingVurderingType,
 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
+import { renderWithRouter } from "../testRouterUtils";
+import { senOppfolgingPath } from "@/routers/AppRouter";
 
 let queryClient: QueryClient;
 
 const renderSenOppfolging = () =>
-  render(
+  renderWithRouter(
     <QueryClientProvider client={queryClient}>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
         <SenOppfolging />
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
+    senOppfolgingPath,
+    [senOppfolgingPath]
   );
 
 const vurderingButtonText = "Fullfør vurdering";
@@ -53,13 +57,13 @@ const mockSenOppfolgingSvar = () => {
   );
 };
 const mockSenOppfolgingKandidat = (
-  kandidat: SenOppfolgingKandidatResponseDTO
+  kandidater: SenOppfolgingKandidatResponseDTO[]
 ) => {
   queryClient.setQueryData(
     senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
       ARBEIDSTAKER_DEFAULT.personIdent
     ),
-    () => [kandidat]
+    () => kandidater
   );
 };
 
@@ -69,6 +73,7 @@ describe("Sen oppfolging", () => {
   });
 
   it("Viser infotekst når bruker ikke har fått varsel eller svart", () => {
+    mockSenOppfolgingKandidat([]);
     renderSenOppfolging();
 
     expect(
@@ -85,11 +90,13 @@ describe("Sen oppfolging", () => {
   it("Viser infotekst om varsel når bruker har fått varsel og ikke svart", () => {
     const varselDato = addWeeks(new Date(), -1);
     const varselSvarFrist = addDays(varselDato, 10);
-    mockSenOppfolgingKandidat({
-      ...senOppfolgingKandidatMock,
-      svar: undefined,
-      varselAt: varselDato,
-    });
+    mockSenOppfolgingKandidat([
+      {
+        ...senOppfolgingKandidatMock,
+        svar: undefined,
+        varselAt: varselDato,
+      },
+    ]);
     renderSenOppfolging();
 
     expect(screen.getByText("Den sykmeldte har ikke svart")).to.exist;
@@ -108,7 +115,7 @@ describe("Sen oppfolging", () => {
 
   it("Viser side for oppfølging i sen fase med svar fra bruker", () => {
     mockSenOppfolgingSvar();
-    mockSenOppfolgingKandidat(senOppfolgingKandidatMock);
+    mockSenOppfolgingKandidat([senOppfolgingKandidatMock]);
     renderSenOppfolging();
 
     merOppfolgingMock.questionResponses.map((questionResponse) => {
@@ -118,10 +125,12 @@ describe("Sen oppfolging", () => {
   });
 
   it("Viser ingen knapp eller tekst for vurdering når bruker er kandidat til sen oppfølging uten å ha svart og varsel ikke utløpt", () => {
-    mockSenOppfolgingKandidat({
-      ...senOppfolgingKandidatMock,
-      svar: undefined,
-    });
+    mockSenOppfolgingKandidat([
+      {
+        ...senOppfolgingKandidatMock,
+        svar: undefined,
+      },
+    ]);
     renderSenOppfolging();
 
     expect(screen.queryByRole("button", { name: vurderingButtonText })).to.not
@@ -130,6 +139,7 @@ describe("Sen oppfolging", () => {
   });
 
   it("Viser ingen knapp eller tekst for vurdering når bruker ikke er kandidat til sen oppfølging", () => {
+    mockSenOppfolgingKandidat([]);
     mockSenOppfolgingSvar();
     renderSenOppfolging();
 
@@ -140,11 +150,13 @@ describe("Sen oppfolging", () => {
 
   it("Viser knapp for å fullføre vurdering når bruker er kandidat til sen oppfølging uten å ha svart og varsel utløpt", () => {
     const varselDato = addDays(new Date(), -10);
-    mockSenOppfolgingKandidat({
-      ...senOppfolgingKandidatMock,
-      svar: undefined,
-      varselAt: varselDato,
-    });
+    mockSenOppfolgingKandidat([
+      {
+        ...senOppfolgingKandidatMock,
+        svar: undefined,
+        varselAt: varselDato,
+      },
+    ]);
     renderSenOppfolging();
 
     expect(screen.getByText(/Den sykmeldte har fått en påminnelse/)).to.exist;
@@ -154,7 +166,7 @@ describe("Sen oppfolging", () => {
 
   it("Viser knapp for å fullføre vurdering når bruker er kandidat til sen oppfølging med svar", () => {
     mockSenOppfolgingSvar();
-    mockSenOppfolgingKandidat(senOppfolgingKandidatMock);
+    mockSenOppfolgingKandidat([senOppfolgingKandidatMock]);
     renderSenOppfolging();
 
     expect(screen.getByRole("button", { name: vurderingButtonText })).to.exist;
@@ -164,7 +176,7 @@ describe("Sen oppfolging", () => {
   it("Viser ferdigbehandlet vurdering når bruker er ferdigbehandlet kandidat til sen oppfølging", () => {
     const vurdertDato = ferdigbehandletKandidatMock.vurderinger[0].createdAt;
     mockSenOppfolgingSvar();
-    mockSenOppfolgingKandidat(ferdigbehandletKandidatMock);
+    mockSenOppfolgingKandidat([ferdigbehandletKandidatMock]);
 
     renderSenOppfolging();
     expect(screen.queryByRole("button", { name: vurderingButtonText })).to.not
@@ -180,7 +192,7 @@ describe("Sen oppfolging", () => {
 
   it("Trykk på fullfør vurdering ferdigbehandler kandidat", async () => {
     mockSenOppfolgingSvar();
-    mockSenOppfolgingKandidat(senOppfolgingKandidatMock);
+    mockSenOppfolgingKandidat([senOppfolgingKandidatMock]);
     renderSenOppfolging();
 
     await clickButton(vurderingButtonText);
@@ -194,7 +206,7 @@ describe("Sen oppfolging", () => {
 
   it("Fyll ut begrunnelse og trykk på fullfør vurdering ferdigbehandler kandidat", async () => {
     mockSenOppfolgingSvar();
-    mockSenOppfolgingKandidat(senOppfolgingKandidatMock);
+    mockSenOppfolgingKandidat([senOppfolgingKandidatMock]);
     renderSenOppfolging();
 
     const begrunnelseInput = getTextInput("Begrunnelse (valgfritt)");
@@ -210,7 +222,7 @@ describe("Sen oppfolging", () => {
 
   it("Viser link til ovingsside for snart slutt pa sykepengene", () => {
     mockSenOppfolgingSvar();
-    mockSenOppfolgingKandidat(senOppfolgingKandidatMock);
+    mockSenOppfolgingKandidat([senOppfolgingKandidatMock]);
     renderSenOppfolging();
 
     expect(
@@ -229,5 +241,38 @@ describe("Sen oppfolging", () => {
         "Lenken tar deg til en øvingsside der du trygt kan klikke deg rundt i skjemaet som den sykmeldte svarer på."
       )
     ).to.exist;
+  });
+
+  it("viser ingen historikk når person bare er kandidat nå", () => {
+    mockSenOppfolgingKandidat([senOppfolgingKandidatMock]);
+    renderSenOppfolging();
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Historikk",
+      })
+    );
+    expect(
+      screen.getByText(
+        "Det finnes ingen tidligere oppfølging av snart slutt på sykepengene."
+      )
+    );
+  });
+
+  it("viser historikk når person har vært kandidat tidligere", () => {
+    mockSenOppfolgingKandidat([
+      senOppfolgingKandidatMock,
+      ferdigbehandletKandidatMock,
+    ]);
+    renderSenOppfolging();
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Historikk",
+      })
+    );
+    expect(
+      screen.getByText("Tidligere oppfølging av snart slutt på sykepengene")
+    );
   });
 });

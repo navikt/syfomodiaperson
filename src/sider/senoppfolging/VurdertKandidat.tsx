@@ -1,9 +1,8 @@
 import { SenOppfolgingVurderingResponseDTO } from "@/data/senoppfolging/senOppfolgingTypes";
-import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { CheckmarkCircleFillIcon } from "@navikt/aksel-icons";
-import { BodyLong, BodyShort, Box, Heading } from "@navikt/ds-react";
-import { toDatePrettyPrint } from "@/utils/datoUtils";
+import { BodyLong, Box, Heading } from "@navikt/ds-react";
 import React from "react";
+import VurdertAv from "@/sider/senoppfolging/VurdertAv";
 
 const texts = {
   heading: "Forrige vurdering",
@@ -16,8 +15,6 @@ interface Props {
 }
 
 export function VurdertKandidat({ vurdering }: Props) {
-  const veilederIdent = vurdering.veilederident;
-  const { data: veileder } = useVeilederInfoQuery(veilederIdent);
   const vurderingText = vurdering.begrunnelse
     ? vurdering.begrunnelse
     : texts.missingBegrunnelse;
@@ -38,11 +35,7 @@ export function VurdertKandidat({ vurdering }: Props) {
           color="var(--a-icon-success)"
           title="suksess-ikon"
         />
-        <BodyShort size="small">
-          {`Vurdert av ${
-            veileder?.fulltNavn() ?? veilederIdent
-          } ${toDatePrettyPrint(vurdering.createdAt)}`}
-        </BodyShort>
+        <VurdertAv vurdering={vurdering} />
       </div>
     </Box>
   );

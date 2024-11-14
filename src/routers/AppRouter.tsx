@@ -37,7 +37,6 @@ import { NotificationProvider } from "@/context/notification/NotificationContext
 import DialogmoteEndreReferatContainer from "@/sider/dialogmoter/components/referat/DialogmoteEndreReferatContainer";
 import { Arbeidsuforhet } from "@/sider/arbeidsuforhet/Arbeidsuforhet";
 import { ArbeidsuforhetIkkeAktuellSide } from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuellSide";
-import SenOppfolgingSide from "@/sider/senoppfolging/SenOppfolgingSide";
 import ManglendeMedvirkningSide, {
   ManglendeMedvirkningIkkeAktuellSide,
   ManglendeMedvirkningOppfyltSide,
@@ -46,6 +45,7 @@ import ManglendeMedvirkningSide, {
 } from "@/sider/manglendemedvirkning/ManglendeMedvirkningSide";
 import ManglendeMedvirkning from "@/sider/manglendemedvirkning/ManglendeMedvirkning";
 import { DinSykmeldingSide } from "@/sider/sykmeldinger/container/DinSykmeldingSide";
+import SenOppfolging from "@/sider/senoppfolging/SenOppfolging";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -158,7 +158,7 @@ const AktivBrukerRouter = (): ReactElement => {
             path={frisktilarbeidPath}
             element={<FriskmeldingTilArbeidsformidlingSide />}
           />
-          <Route path={senOppfolgingPath} element={<SenOppfolgingSide />} />
+          <Route path={senOppfolgingPath} element={<SenOppfolging />} />
           <Route
             path={manglendeMedvirkningPath}
             element={

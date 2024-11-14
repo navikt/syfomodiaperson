@@ -1,8 +1,8 @@
-import { SinnaEmoji } from "@/components/flexjar/SinnaEmoji";
-import { LeiEmoji } from "@/components/flexjar/LeiEmoji";
-import { NoytralEmoji } from "@/components/flexjar/NoytralEmoji";
-import { GladEmoji } from "@/components/flexjar/GladEmoji";
-import { VeldigGladEmoji } from "@/components/flexjar/VeldigGladEmoji";
+import { SinnaEmoji } from "@/sider/arbeidsuforhet/flexjar/SinnaEmoji";
+import { LeiEmoji } from "@/sider/arbeidsuforhet/flexjar/LeiEmoji";
+import { NoytralEmoji } from "@/sider/arbeidsuforhet/flexjar/NoytralEmoji";
+import { GladEmoji } from "@/sider/arbeidsuforhet/flexjar/GladEmoji";
+import { VeldigGladEmoji } from "@/sider/arbeidsuforhet/flexjar/VeldigGladEmoji";
 
 export type EmojiType = "HORRIBEL" | "DARLIG" | "NOYTRAL" | "BRA" | "SUPER";
 

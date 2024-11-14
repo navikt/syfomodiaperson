@@ -12,10 +12,13 @@ import {
   FlexjarFeedbackDTO,
   useFlexjarFeedback,
 } from "@/data/flexjar/useFlexjarFeedback";
-import { EmojiButton } from "@/components/flexjar/EmojiButton";
+import { EmojiButton } from "@/sider/arbeidsuforhet/flexjar/EmojiButton";
 import { ChevronDownIcon, ChevronUpIcon } from "@navikt/aksel-icons";
 import { defaultErrorTexts } from "@/api/errors";
-import { emojis, EmojiType } from "@/components/flexjar/feedbackEmojis";
+import {
+  emojis,
+  EmojiType,
+} from "@/sider/arbeidsuforhet/flexjar/feedbackEmojis";
 import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
@@ -31,11 +34,7 @@ const texts = {
   success: "Takk for din tilbakemelding!",
 };
 
-interface Props {
-  side: string;
-}
-
-export function EmojiRatingFlexjar({ side }: Props) {
+export function EmojiRatingFlexjar() {
   const [isApen, setIsApen] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>();
   const [feedback, setFeedback] = useState<string>();
@@ -68,7 +67,7 @@ export function EmojiRatingFlexjar({ side }: Props) {
     const svar = emojiType && `${emojis[emojiType].score}`;
     if (svar) {
       const body: FlexjarFeedbackDTO = {
-        feedbackId: side,
+        feedbackId: "Arbeidsuførhet",
         feedback: feedback,
         svar: svar,
         app: "syfomodiaperson",
@@ -113,7 +112,7 @@ export function EmojiRatingFlexjar({ side }: Props) {
           className="flex flex-col gap-4 w-[25rem]"
         >
           <Box className="flex flex-col">
-            <Label>{`Hvordan opplever du ${side}-siden?`}</Label>
+            <Label>{`Hvordan opplever du arbeidsuførhet-siden?`}</Label>
             <BodyShort size="small">{texts.anonym}</BodyShort>
           </Box>
           {sendFeedback.isSuccess ? (
