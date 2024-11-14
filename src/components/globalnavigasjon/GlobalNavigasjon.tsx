@@ -12,7 +12,7 @@ import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
 import { VedtakMenypunkt } from "@/components/globalnavigasjon/VedtakMenypunkt";
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
-import { BodyShort } from "@navikt/ds-react";
+import { BodyShort, Tag } from "@navikt/ds-react";
 import { EventType, logEvent } from "@/utils/amplitude";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
@@ -53,10 +53,6 @@ const allMenypunkter: {
     navn: "Dialog med behandler",
     sti: "behandlerdialog",
   },
-  [Menypunkter.HISTORIKK]: {
-    navn: "Logg",
-    sti: "logg",
-  },
   [Menypunkter.SYKMELDINGER]: {
     navn: "Sykmeldinger",
     sti: "sykmeldinger",
@@ -88,6 +84,10 @@ const allMenypunkter: {
   [Menypunkter.MANGLENDE_MEDVIRKNING]: {
     navn: "Manglende medvirkning",
     sti: "manglendemedvirkning",
+  },
+  [Menypunkter.HISTORIKK]: {
+    navn: "Historikk",
+    sti: "historikk",
   },
   [Menypunkter.VEDTAK]: {
     navn: "Vedtak",
@@ -223,6 +223,11 @@ export const GlobalNavigasjon = ({
                   }}
                 >
                   <BodyShort size="small">{navn}</BodyShort>
+                  {menypunkt === Menypunkter.HISTORIKK && (
+                    <Tag variant="info" size="xsmall">
+                      Ny
+                    </Tag>
+                  )}
                   {tasks > 0 && (
                     <UnfinishedTasks tasks={tasks} menypunkt={menypunkt} />
                   )}

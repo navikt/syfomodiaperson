@@ -12,7 +12,7 @@ import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import HistorikkFlexjar from "@/sider/historikk/flexjar/HistorikkFlexjar";
 
 const texts = {
-  topp: "Logg",
+  topp: "Historikk",
   pageTitle: "Historikk",
   errorTitle: "Du har ikke tilgang til denne tjenesten",
   ingenHistorikk: {

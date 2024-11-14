@@ -96,13 +96,13 @@ describe("GlobalNavigasjon", () => {
       "Nøkkelinformasjon",
       "Aktivitetskrav",
       "Dialog med behandler",
-      "Logg",
       "Sykmeldinger",
       "Søknader om sykepenger",
       "Oppfølgingsplaner",
       "Dialogmøter",
       "Arbeidsuførhet",
       "Manglende medvirkning",
+      "HistorikkNy",
       "Vedtak",
     ];
 

@@ -86,7 +86,7 @@ export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
   }
 
   return (
-    <div className="pt-4">
+    <Box background="surface-default" padding="4">
       <Select
         className="w-fit mb-4"
         label={"Sykefraværstilfelle"}
@@ -103,7 +103,7 @@ export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
           <option value={-1}>Utenfor sykefraværstilfelle</option>
         )}
       </Select>
-      <Box background="surface-default" padding="4">
+      <Box>
         <Table>
           <Table.Header>
             <Table.Row>
@@ -129,6 +129,6 @@ export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
           </Table.Body>
         </Table>
       </Box>
-    </div>
+    </Box>
   );
 }
