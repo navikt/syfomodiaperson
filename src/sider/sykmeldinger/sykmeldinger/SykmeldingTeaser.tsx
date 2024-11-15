@@ -23,6 +23,7 @@ import {
   FlexRow,
   JustifyContentType,
 } from "@/components/Layout";
+import { UtenlandskSykmeldingTag } from "@/components/UtenlandskSykmeldingTag";
 
 const texts = {
   teaserTekst: "Sykmelding\n",
@@ -116,7 +117,7 @@ const SykmeldingTeaser = ({
     sykmelding.status !== SykmeldingStatus.NY ||
     behandlingsutfallStatus === BehandlingsutfallStatusDTO.INVALID;
   const showPapirLabel = !!sykmelding.papirsykmelding;
-
+  const showUtenlandskLabel = sykmelding.utenlandskSykmelding != null;
   return (
     <StyledLinkPanel
       forwardedAs={Link}
@@ -146,6 +147,7 @@ const SykmeldingTeaser = ({
               ? texts.egenmeldtTeaserTekst
               : texts.teaserTekst}
             {showPapirLabel && <PapirsykmeldingTag />}
+            {showUtenlandskLabel && <UtenlandskSykmeldingTag />}
           </Heading>
           <PeriodeListe
             perioder={sykmelding.mulighetForArbeid.perioder}

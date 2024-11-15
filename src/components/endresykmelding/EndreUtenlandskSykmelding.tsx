@@ -5,14 +5,14 @@ import { BodyShort, Box, Heading } from "@navikt/ds-react";
 const texts = {
   title: "Feilregistrerte opplysninger?",
   content:
-    "Har du oppdaget feilregistrerte opplysninger fra papirsykmeldingen kan du endre det her.",
+    "Har du oppdaget feilregistrerte opplysninger fra den utenlandske sykmeldingen kan du endre det her.",
   buttonLabel: "Korriger sykmeldingen",
 };
 
-const EndreSykmelding = () => {
+const EndreUtenlandskSykmelding = () => {
   const env = erDev() ? "intern.dev" : "intern";
   const sykmeldingId = window.location.pathname.split("/")[3];
-  const smregistrering = `https://syk-dig.${env}.nav.no/nasjonal/ferdigstilt/${sykmeldingId}`;
+  const smregistrering = `https://syk-dig.${env}.nav.no/sykmelding/${sykmeldingId}`;
 
   return (
     <Box background="surface-default" padding="4" className="mb-4">
@@ -29,4 +29,4 @@ const EndreSykmelding = () => {
   );
 };
 
-export default EndreSykmelding;
+export default EndreUtenlandskSykmelding;

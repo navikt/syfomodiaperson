@@ -12,6 +12,7 @@ import EndreSykmelding from "@/components/endresykmelding/EndreSykmelding";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { Panel } from "@navikt/ds-react";
 import { SykmeldingSide } from "@/sider/sykmeldinger/sykmelding/SykmeldingSide";
+import EndreUtenlandskSykmelding from "@/components/endresykmelding/EndreUtenlandskSykmelding";
 
 const texts = {
   pageTitleSykmelding: "Sykmelding",
@@ -60,6 +61,7 @@ export function DinSykmeldingSide() {
             arbeidsgiversSykmelding={arbeidsgiversSykmelding}
           />
           {dinSykmelding?.papirsykmelding && <EndreSykmelding />}
+          {dinSykmelding?.utenlandskSykmelding && <EndreUtenlandskSykmelding />}
           <LenkeTilDineSykmeldinger />
         </Panel>
       </SideLaster>

@@ -310,6 +310,7 @@ export const newSMFormat2OldFormat = (
     egenmeldt: sykmelding.egenmeldt,
     papirsykmelding: sykmelding.papirsykmelding,
     harRedusertArbeidsgiverperiode: sykmelding.harRedusertArbeidsgiverperiode,
+    utenlandskSykmelding: sykmelding.utenlandskSykmelding,
   };
 };
 
