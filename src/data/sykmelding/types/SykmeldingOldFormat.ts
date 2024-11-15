@@ -66,6 +66,9 @@ export interface FriskmeldingDTO {
   utenArbeidsgiverAntarTilbakeIArbeidDato?: Date;
   utenArbeidsgiverTilbakemelding?: Date;
 }
+export interface UtenlandskSykmeldingDTO {
+  land: string;
+}
 
 export interface SykmeldingOldFormat {
   id: string;
@@ -141,4 +144,5 @@ export interface SykmeldingOldFormat {
   egenmeldt?: boolean;
   papirsykmelding?: boolean;
   harRedusertArbeidsgiverperiode?: boolean;
+  utenlandskSykmelding?: UtenlandskSykmeldingDTO;
 }

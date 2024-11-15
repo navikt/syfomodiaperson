@@ -23,6 +23,7 @@ import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
 import { MerInformasjonImage } from "img/ImageComponents";
 import { PapirsykmeldingTag } from "../PapirsykmeldingTag";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import { UtenlandskSykmeldingTag } from "@/components/UtenlandskSykmeldingTag";
 
 const texts = {
   header: "Sykmeldinger",
@@ -149,6 +150,7 @@ const SykmeldingTittelbeskrivelse = ({ sykmelding }: UtvidbarTittelProps) => {
         />
       )}
       {sykmelding.papirsykmelding && <PapirsykmeldingTag />}
+      {sykmelding.utenlandskSykmelding && <UtenlandskSykmeldingTag />}
     </div>
   );
 };

@@ -9,6 +9,7 @@ import { MeldingTilNavDTO } from "./MeldingTilNavDTO";
 import { KontaktMedPasientDTO } from "./KontaktMedPasientDTO";
 import { SykmeldingBehandlerDTO } from "./SykmeldingBehandlerDTO";
 import { MerknadDTO } from "./MerknadDTO";
+import { UtenlandskSykmeldingDTO } from "@/data/sykmelding/types/UtenlandskSykmeldingDTO";
 
 export interface SykmeldingNewFormatDTO {
   readonly id: string;
@@ -36,4 +37,5 @@ export interface SykmeldingNewFormatDTO {
   readonly papirsykmelding?: boolean;
   readonly harRedusertArbeidsgiverperiode?: boolean;
   readonly merknader?: MerknadDTO[];
+  readonly utenlandskSykmelding?: UtenlandskSykmeldingDTO;
 }
