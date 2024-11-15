@@ -9,7 +9,8 @@ export type HistorikkEventType =
   | "VEILEDER_TILDELING"
   | "DIALOG_MED_BEHANDLER"
   | "SEN_OPPFOLGING"
-  | "DIALOGMOTEKANDIDAT";
+  | "DIALOGMOTEKANDIDAT"
+  | "OPPFOLGINGSPLAN_LPS";
 
 export interface HistorikkEvent {
   opprettetAv?: string;
