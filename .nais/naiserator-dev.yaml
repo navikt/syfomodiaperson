@@ -47,6 +47,9 @@ spec:
       claims:
         extra:
           - "NAVident"
+  redis:
+    - instance: cache
+      access: readwrite
   accessPolicy:
     outbound:
       external:
@@ -81,7 +84,6 @@ spec:
           namespace: flex
         - application: flexjar-backend
           namespace: flex
-        - application: syfomodiaperson-redis
         - application: sykepengedager-informasjon
           namespace: team-esyfo
         - application: syfomotebehov
@@ -96,7 +98,6 @@ spec:
           namespace: poao
   envFrom:
     - secret: syfomodiaperson-session-key
-    - secret: syfomodiaperson-redis-password
     - secret: syfomodiaperson-unleash-api-token
   ingresses:
     - "https://syfomodiaperson.intern.dev.nav.no"
@@ -106,8 +107,6 @@ spec:
       value: 'dev'
     - name: NODE_ENV
       value: "production"
-    - name: REDIS_HOST
-      value: "syfomodiaperson-redis"
     - name: AUTH_REDIRECT_URI
       value: "https://syfomodiaperson.intern.dev.nav.no/oauth2/callback"
     - name: FASTLEGEREST_AAD_APP_CLIENT_ID
