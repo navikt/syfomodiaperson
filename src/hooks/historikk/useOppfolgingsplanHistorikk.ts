@@ -14,7 +14,7 @@ function toHistorikkEvents(
 ): HistorikkEvent[] {
   return oppfolgingsplanerLPS.map(({ opprettet, virksomhetsnummer }) => ({
     kilde: "OPPFOLGINGSPLAN_LPS",
-    tekst: `Oppfølgingsplanen ble delt med NAV av ${virksomhetsnummer}.`,
+    tekst: `Oppfølgingsplanen ble delt med Nav av ${virksomhetsnummer}.`,
     tidspunkt: new Date(opprettet),
   }));
 }

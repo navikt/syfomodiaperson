@@ -632,7 +632,7 @@ describe("Historikk", () => {
   describe("Oppfølgingsplaner", () => {
     it("viser mottatte oppfølgingsplaner", () => {
       const oppfolgingsplanHistorikkMock = {
-        tekst: "Oppfølgingsplanen ble delt med NAV av TEST.",
+        tekst: "Oppfølgingsplanen ble delt med Nav av TEST.",
         tidspunkt: new Date().toJSON(),
       };
       queryClient.setQueryData(
@@ -650,11 +650,11 @@ describe("Historikk", () => {
       );
       renderHistorikk();
 
-      expect(screen.getByText("Oppfølgingsplanen ble delt med NAV av TEST.")).to
+      expect(screen.getByText("Oppfølgingsplanen ble delt med Nav av TEST.")).to
         .exist;
       expect(
         screen.getByText(
-          `Oppfølgingsplanen ble delt med NAV av ${defaultOppfolgingsplanLPS.virksomhetsnummer}.`
+          `Oppfølgingsplanen ble delt med Nav av ${defaultOppfolgingsplanLPS.virksomhetsnummer}.`
         )
       ).to.exist;
       expect(screen.getByText("Oppfølgingsplan")).to.exist;

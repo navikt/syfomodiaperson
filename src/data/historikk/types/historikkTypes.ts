@@ -1,6 +1,7 @@
-export type HistorikkKilde = "MOTER" | "MOTEBEHOV" | "OPPFOLGINGSPLAN";
 export type HistorikkEventType =
-  | HistorikkKilde
+  | "MOTER"
+  | "MOTEBEHOV"
+  | "OPPFOLGINGSPLAN"
   | "LEDER"
   | "AKTIVITETSKRAV"
   | "ARBEIDSUFORHET"
