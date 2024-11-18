@@ -43,6 +43,8 @@ import {
 import { generateUUID } from "@/utils/uuidUtils";
 import { dialogmoteStatusEndringMock } from "@/mocks/isdialogmote/dialogmoterMock";
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
+import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { getDefaultOppfolgingsplanLPS } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
 
 let queryClient: QueryClient;
 
@@ -72,6 +74,12 @@ function setupTestdataHistorikk() {
   );
   queryClient.setQueryData(
     historikkQueryKeys.oppfolgingsplan(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
+  );
+  queryClient.setQueryData(
+    oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
     () => []
   );
   queryClient.setQueryData(
@@ -618,6 +626,39 @@ describe("Historikk", () => {
           "Dialogmøtet innkalt av Z970000 ble lukket av systemet"
         )
       ).to.exist;
+    });
+  });
+
+  describe("Oppfølgingsplaner", () => {
+    it("viser mottatte oppfølgingsplaner", () => {
+      const oppfolgingsplanHistorikkMock = {
+        tekst: "Oppfølgingsplanen ble delt med Nav av TEST.",
+        tidspunkt: new Date().toJSON(),
+      };
+      queryClient.setQueryData(
+        historikkQueryKeys.oppfolgingsplan(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => [oppfolgingsplanHistorikkMock]
+      );
+      const defaultOppfolgingsplanLPS = getDefaultOppfolgingsplanLPS(
+        new Date()
+      );
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [defaultOppfolgingsplanLPS]
+      );
+      renderHistorikk();
+
+      expect(screen.getByText("Oppfølgingsplanen ble delt med Nav av TEST.")).to
+        .exist;
+      expect(
+        screen.getByText(
+          `Oppfølgingsplanen ble delt med Nav av ${defaultOppfolgingsplanLPS.virksomhetsnummer}.`
+        )
+      ).to.exist;
+      expect(screen.getByText("Oppfølgingsplan")).to.exist;
+      expect(screen.getByText("Oppfølgingsplan LPS")).to.exist;
     });
   });
 });

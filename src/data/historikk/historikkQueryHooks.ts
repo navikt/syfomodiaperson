@@ -5,7 +5,7 @@ import {
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   HistorikkEvent,
-  HistorikkKilde,
+  HistorikkEventType,
 } from "@/data/historikk/types/historikkTypes";
 import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
@@ -52,7 +52,7 @@ export const useHistorikkOppfolgingsplan = () => {
 
 export const mapHistorikkEvents = (
   events: HistorikkEvent[],
-  kilde: HistorikkKilde
+  kilde: HistorikkEventType
 ): HistorikkEvent[] =>
   events.map((event) => ({
     ...event,
