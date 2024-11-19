@@ -157,13 +157,13 @@ describe("MoteSvarHistorikk", () => {
     expect(accordions[0].textContent).to.contain("Møte 15. januar 2021");
     expect(accordions[1].textContent).to.contain("Avlyst møte 22. mars 2020");
   });
-  it("viser sted og veileder for møte", () => {
+  it("viser sted og veileder for møte", async () => {
     renderMoteSvarHistorikk([ferdigstiltMote]);
 
     const accordion = screen.getByRole("button", {
       name: "Møte 15. januar 2021",
     });
-    userEvent.click(accordion);
+    await userEvent.click(accordion);
 
     expect(screen.getByText("Sted: Sted")).to.exist;
     expect(screen.getByText(`Innkalt av: ${VEILEDER_DEFAULT.fulltNavn()}`)).to

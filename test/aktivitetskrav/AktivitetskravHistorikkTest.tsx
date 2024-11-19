@@ -139,11 +139,11 @@ describe("AktivitetskravHistorikk", () => {
       `Unntak - ${tilDatoMedManedNavn(dayInThePast)}`
     );
   });
-  it("klikk på overskrift viser årsak med tittel, beskrivelse med tittel og veileder-navn", () => {
+  it("klikk på overskrift viser årsak med tittel, beskrivelse med tittel og veileder-navn", async () => {
     renderAktivitetskravHistorikk([oppfyltVurdering]);
 
     const vurderingButton = screen.getByRole("button");
-    userEvent.click(vurderingButton);
+    await userEvent.click(vurderingButton);
 
     expect(screen.getByText(arsakTitle)).to.exist;
     expect(screen.getByText(friskmeldtArsak)).to.exist;
@@ -152,11 +152,11 @@ describe("AktivitetskravHistorikk", () => {
     expect(screen.getByText(vurdertAvTitle)).to.exist;
     expect(screen.getByText(VEILEDER_DEFAULT.fulltNavn())).to.exist;
   });
-  it("klikk på overskrift viser årsak med tittel og veileder-navn, uten beskrivelse og tittel hvis beskrivelse mangler", () => {
+  it("klikk på overskrift viser årsak med tittel og veileder-navn, uten beskrivelse og tittel hvis beskrivelse mangler", async () => {
     renderAktivitetskravHistorikk([oppfyltVurderingWithoutBeskrivelse]);
 
     const vurderingButton = screen.getByRole("button");
-    userEvent.click(vurderingButton);
+    await userEvent.click(vurderingButton);
 
     expect(screen.getByText(arsakTitle)).to.exist;
     expect(screen.getByText(friskmeldtArsak)).to.exist;
@@ -165,11 +165,11 @@ describe("AktivitetskravHistorikk", () => {
     expect(screen.getByText(vurdertAvTitle)).to.exist;
     expect(screen.getByText(VEILEDER_DEFAULT.fulltNavn())).to.exist;
   });
-  it("klikk på overskrift viser kun veiledernavn hvis årsak og beskrivelse mangler", () => {
+  it("klikk på overskrift viser kun veiledernavn hvis årsak og beskrivelse mangler", async () => {
     renderAktivitetskravHistorikk([ikkeOppfyltVurdering]);
 
     const vurderingButton = screen.getByRole("button");
-    userEvent.click(vurderingButton);
+    await userEvent.click(vurderingButton);
 
     expect(screen.queryByText(arsakTitle)).to.not.exist;
     expect(screen.queryByText(friskmeldtArsak)).to.not.exist;
@@ -189,7 +189,7 @@ describe("AktivitetskravHistorikk", () => {
 
     expect(getButton(`Ikke oppfylt - ${tilDatoMedManedNavn(today)}`)).to.exist;
   });
-  it("viser årsaker og beskrivelse for AVVENT-vurdering", () => {
+  it("viser årsaker og beskrivelse for AVVENT-vurdering", async () => {
     const avventVurdering = createAktivitetskravVurdering(
       AktivitetskravStatus.AVVENT,
       [
@@ -201,7 +201,7 @@ describe("AktivitetskravHistorikk", () => {
     renderAktivitetskravHistorikk([avventVurdering]);
 
     const vurderingButton = screen.getByRole("button");
-    userEvent.click(vurderingButton);
+    await userEvent.click(vurderingButton);
 
     expect(screen.getByText(arsakTitle)).to.exist;
     expect(

@@ -77,12 +77,12 @@ describe("InnkallingDialogmotePanel", () => {
         screen.getByText(brukerKanIkkeVarslesPapirpostTexts.papirpostDialogmote)
       ).to.exist;
     });
-    it("viser knapp til Dialogmoteinkalling når bruker ikke kan varsles", () => {
+    it("viser knapp til Dialogmoteinkalling når bruker ikke kan varsles", async () => {
       renderInnkallingDialogmotePanel(brukerKanIkkeVarsles);
 
       const button = screen.getByRole("button", { name: "Nytt dialogmøte" });
       expect(button).to.exist;
-      userEvent.click(button);
+      await userEvent.click(button);
     });
 
     it("viser ingen advarsel når bruker kan varsles", () => {
@@ -95,19 +95,19 @@ describe("InnkallingDialogmotePanel", () => {
         )
       ).to.not.exist;
     });
-    it("viser knapp til Dialogmoteinkalling  når bruker kan varsles", () => {
+    it("viser knapp til Dialogmoteinkalling  når bruker kan varsles", async () => {
       renderInnkallingDialogmotePanel(brukerKanVarsles);
 
       const button = screen.getByRole("button", { name: "Nytt dialogmøte" });
       expect(button).to.exist;
-      userEvent.click(button);
+      await userEvent.click(button);
     });
     it("viser ikke knapp til DialogmoteUnntak når bruker ikke er Dialogmotekandidat", () => {
       renderInnkallingDialogmotePanel(brukerKanVarsles);
 
       expect(queryButton("Sett unntak")).to.not.exist;
     });
-    it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og ingen ferdigstilte referat ", () => {
+    it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og ingen ferdigstilte referat ", async () => {
       queryClient.setQueryData(
         dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
         () => dialogmotekandidatMock
@@ -121,9 +121,9 @@ describe("InnkallingDialogmotePanel", () => {
 
       const button = screen.getByRole("button", { name: "Sett unntak" });
       expect(button).to.exist;
-      userEvent.click(button);
+      await userEvent.click(button);
     });
-    it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og det er et ferdigstilt referat som er opprettet tidligere enn tidspunkt for Kandidat", () => {
+    it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og det er et ferdigstilt referat som er opprettet tidligere enn tidspunkt for Kandidat", async () => {
       queryClient.setQueryData(
         dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
         () => dialogmotekandidatMock
@@ -149,7 +149,7 @@ describe("InnkallingDialogmotePanel", () => {
 
       const button = screen.getByText("Sett unntak");
       expect(button).to.exist;
-      userEvent.click(button);
+      await userEvent.click(button);
     });
     it("viser ikke knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og det er et ferdigstilt referat som er opprettet etter tidspunkt for Kandidat", () => {
       queryClient.setQueryData(
@@ -179,7 +179,7 @@ describe("InnkallingDialogmotePanel", () => {
       const button = queryButton("Sett unntak");
       expect(button).to.not.exist;
     });
-    it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og det er et mellomlagret referat som er opprettet etter tidspunkt for Kandidat", () => {
+    it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og det er et mellomlagret referat som er opprettet etter tidspunkt for Kandidat", async () => {
       queryClient.setQueryData(
         dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
         () => dialogmotekandidatMock
@@ -207,7 +207,7 @@ describe("InnkallingDialogmotePanel", () => {
 
       const button = screen.getByText("Sett unntak");
       expect(button).to.exist;
-      userEvent.click(button);
+      await userEvent.click(button);
     });
   });
 });
