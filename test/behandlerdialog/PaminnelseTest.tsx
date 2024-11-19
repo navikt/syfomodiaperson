@@ -80,7 +80,7 @@ describe("PåminnelseMelding", () => {
       })
     ).to.not.be.empty;
   });
-  it("click cancel in preview closes preview", () => {
+  it("click cancel in preview closes preview", async () => {
     renderPaminnelseMelding(meldingTilBehandler);
 
     clickButton(paminnelseButtonText);
@@ -92,7 +92,7 @@ describe("PåminnelseMelding", () => {
       name: cancelButtonText,
       hidden: true,
     })[0];
-    userEvent.click(closeButton);
+    await userEvent.click(closeButton);
 
     expect(screen.queryByRole("dialog")).to.not.exist;
     expect(screen.queryByRole("button", { name: sendButtonText })).to.not.exist;
