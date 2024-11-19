@@ -6,7 +6,9 @@ import {
 } from "../common/mockConstants";
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
 
-const getDefaultOppfolgingsplanLPS = (created: Date): OppfolgingsplanLPS => {
+export const getDefaultOppfolgingsplanLPS = (
+  created: Date
+): OppfolgingsplanLPS => {
   return {
     uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd2",
     fnr: ARBEIDSTAKER_DEFAULT.personIdent,

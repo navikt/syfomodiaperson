@@ -45,6 +45,8 @@ function tagFromKilde(kilde: HistorikkEventType): ReactElement {
   switch (kilde) {
     case "OPPFOLGINGSPLAN":
       return <Tag variant="alt3">Oppfølgingsplan</Tag>;
+    case "OPPFOLGINGSPLAN_LPS":
+      return <Tag variant="alt3">Oppfølgingsplan LPS</Tag>;
     case "LEDER":
       return <Tag variant="alt2">Leder</Tag>;
     case "VEILEDER_TILDELING":
