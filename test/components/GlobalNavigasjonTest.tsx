@@ -94,14 +94,14 @@ describe("GlobalNavigasjon", () => {
     renderGlobalNavigasjon();
     const navnMenypunkter = [
       "Nøkkelinformasjon",
-      "Aktivitetskrav",
-      "Dialog med behandler",
       "Sykmeldinger",
       "Søknader om sykepenger",
+      "Dialog med behandler",
       "Oppfølgingsplaner",
       "Dialogmøter",
-      "Arbeidsuførhet",
+      "Aktivitetskrav",
       "Manglende medvirkning",
+      "Arbeidsuførhet",
       "HistorikkNy",
       "Vedtak",
     ];

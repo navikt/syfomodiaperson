@@ -50,7 +50,7 @@ const allMenypunkter: {
     sti: "sykmeldinger",
   },
   [Menypunkter.SYKEPENGESOKNADER]: {
-    navn: "Søknader om sykepenger", //Skal vi bytte til søknad?
+    navn: "Søknader om sykepenger",
     sti: "sykepengesoknader",
   },
   [Menypunkter.BEHANDLERDIALOG]: {
@@ -58,7 +58,7 @@ const allMenypunkter: {
     sti: "behandlerdialog",
   },
   [Menypunkter.OPPFOELGINGSPLANER]: {
-    navn: "Oppfølgingsplaner", //Flertall eller entall?
+    navn: "Oppfølgingsplaner",
     sti: "oppfoelgingsplaner",
   },
   [Menypunkter.DIALOGMOTE]: {
@@ -66,7 +66,7 @@ const allMenypunkter: {
     sti: "moteoversikt",
   },
   [Menypunkter.AKTIVITETSKRAV]: {
-    navn: "Aktivitetskrav", //Aktivitetskrav eller aktivitetsplikt?
+    navn: "Aktivitetskrav",
     sti: "aktivitetskrav",
   },
   [Menypunkter.MANGLENDE_MEDVIRKNING]: {
