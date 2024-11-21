@@ -8,6 +8,7 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../../dialogmote/testData";
+import { getForhandsvarselFrist } from "@/utils/datoUtils";
 import React from "react";
 import { VurderAktivitetskrav } from "@/sider/aktivitetskrav/vurdering/VurderAktivitetskrav";
 import { queryClientWithMockData } from "../../testQueryClient";
@@ -53,6 +54,9 @@ const renderVurderAktivitetskrav = (aktivitetskravDto: AktivitetskravDTO) =>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>
   );
+
+const expectedFrist = getForhandsvarselFrist();
+
 describe("VurderAktivitetskrav forhåndsvarsel", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
@@ -107,18 +111,23 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
 
       await clickButton("Send");
 
+      let sendForhandsvarselMutation;
       await waitFor(() => {
-        const sendForhandsvarselMutation = queryClient
-          .getMutationCache()
-          .getAll()[0];
-        const expectedVurdering: SendForhandsvarselDTO = {
-          fritekst: enLangBeskrivelse,
-          document: getSendForhandsvarselDocument(enLangBeskrivelse),
-        };
-        expect(sendForhandsvarselMutation.state.variables).to.deep.equal(
-          expectedVurdering
-        );
+        sendForhandsvarselMutation = queryClient.getMutationCache().getAll()[0];
+        expect(sendForhandsvarselMutation).to.exist;
       });
+      const vurdering = sendForhandsvarselMutation.state
+        .variables as unknown as SendForhandsvarselDTO;
+      const expectedVurdering: SendForhandsvarselDTO = {
+        fritekst: enLangBeskrivelse,
+        document: getSendForhandsvarselDocument(enLangBeskrivelse),
+        frist: expectedFrist,
+      };
+      expect(vurdering.fritekst).to.deep.equal(expectedVurdering.fritekst);
+      expect(vurdering.document).to.deep.equal(expectedVurdering.document);
+      expect(vurdering.frist.toDateString()).to.deep.equal(
+        expectedVurdering.frist.toDateString()
+      );
 
       await waitFor(
         () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist
@@ -151,21 +160,26 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
 
       await clickButton("Send");
 
+      let sendForhandsvarselMutation;
       await waitFor(() => {
-        const sendForhandsvarselMutation = queryClient
-          .getMutationCache()
-          .getAll()[0];
-        const expectedVurdering: SendForhandsvarselDTO = {
-          fritekst: enLangBeskrivelse,
-          document: getSendForhandsvarselDocument(
-            enLangBeskrivelse,
-            Brevmal.UTEN_ARBEIDSGIVER
-          ),
-        };
-        expect(sendForhandsvarselMutation.state.variables).to.deep.equal(
-          expectedVurdering
-        );
+        sendForhandsvarselMutation = queryClient.getMutationCache().getAll()[0];
+        expect(sendForhandsvarselMutation).to.exist;
       });
+      const vurdering = sendForhandsvarselMutation.state
+        .variables as unknown as SendForhandsvarselDTO;
+      const expectedVurdering: SendForhandsvarselDTO = {
+        fritekst: enLangBeskrivelse,
+        document: getSendForhandsvarselDocument(
+          enLangBeskrivelse,
+          Brevmal.UTEN_ARBEIDSGIVER
+        ),
+        frist: expectedFrist,
+      };
+      expect(vurdering.fritekst).to.deep.equal(expectedVurdering.fritekst);
+      expect(vurdering.document).to.deep.equal(expectedVurdering.document);
+      expect(vurdering.frist.toDateString()).to.deep.equal(
+        expectedVurdering.frist.toDateString()
+      );
 
       await waitFor(
         () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist
@@ -198,21 +212,26 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
 
       await clickButton("Send");
 
+      let sendForhandsvarselMutation;
       await waitFor(() => {
-        const sendForhandsvarselMutation = queryClient
-          .getMutationCache()
-          .getAll()[0];
-        const expectedVurdering: SendForhandsvarselDTO = {
-          fritekst: enLangBeskrivelse,
-          document: getSendForhandsvarselDocument(
-            enLangBeskrivelse,
-            Brevmal.UTLAND
-          ),
-        };
-        expect(sendForhandsvarselMutation.state.variables).to.deep.equal(
-          expectedVurdering
-        );
+        sendForhandsvarselMutation = queryClient.getMutationCache().getAll()[0];
+        expect(sendForhandsvarselMutation).to.exist;
       });
+      const vurdering = sendForhandsvarselMutation.state
+        .variables as unknown as SendForhandsvarselDTO;
+      const expectedVurdering: SendForhandsvarselDTO = {
+        fritekst: enLangBeskrivelse,
+        document: getSendForhandsvarselDocument(
+          enLangBeskrivelse,
+          Brevmal.UTLAND
+        ),
+        frist: expectedFrist,
+      };
+      expect(vurdering.fritekst).to.deep.equal(expectedVurdering.fritekst);
+      expect(vurdering.document).to.deep.equal(expectedVurdering.document);
+      expect(vurdering.frist.toDateString()).to.deep.equal(
+        expectedVurdering.frist.toDateString()
+      );
 
       await waitFor(
         () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist
