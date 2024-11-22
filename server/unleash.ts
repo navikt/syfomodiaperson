@@ -41,11 +41,6 @@ export const getToggles = (veilederId, enhetId) => {
       "isVirksomhetsinputEnabled",
       context
     ),
-    isFrisktilarbeidEnabled: unleash.isEnabled("isFrisktilarbeid", context),
-    isOppfolgingISenFaseEnabled: unleash.isEnabled(
-      "isOppfolgingISenFaseEnabled",
-      context
-    ),
     isSenFaseFlexjarEnabled: unleash.isEnabled(
       "isSenFaseFlexjarEnabled",
       context
