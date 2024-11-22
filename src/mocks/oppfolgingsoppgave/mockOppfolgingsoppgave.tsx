@@ -19,8 +19,8 @@ const oppfolgingsoppgaveUuid = generateUUID();
 export const mockIshuskelapp = [
   http.get(`${ISHUSKELAPP_ROOT}/huskelapp?filter=all`, () => {
     return HttpResponse.json([
-      historikkOppfolgingsoppgaveFjernetMock,
       historikkOppfolgingsoppgaveAktivMock,
+      historikkOppfolgingsoppgaveFjernetMock,
     ]);
   }),
   http.get(`${ISHUSKELAPP_ROOT}/huskelapp`, () => {
