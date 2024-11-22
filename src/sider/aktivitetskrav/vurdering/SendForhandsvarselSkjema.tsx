@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { SendForhandsvarselDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { useAktivitetskravVarselDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVarselDocument";
-import { addWeeks } from "@/utils/datoUtils";
+import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 import { ButtonRow } from "@/components/Layout";
 import { Button, HelpText, Label, Select, Textarea } from "@navikt/ds-react";
 import { useSendForhandsvarsel } from "@/data/aktivitetskrav/useSendForhandsvarsel";
@@ -40,7 +40,6 @@ const brevMalTexts: {
   [Brevmal.UTLAND]: "Bosatt i utlandet",
 };
 
-const forhandsvarselFrist = addWeeks(new Date(), 3);
 const defaultValues = { begrunnelse: "", arsak: undefined };
 const begrunnelseMaxLength = 5000;
 
@@ -60,6 +59,7 @@ export const SendForhandsvarselSkjema = ({
   const [showForhandsvisning, setShowForhandsvisning] = useState(false);
 
   const submit = (values: AktivitetskravSkjemaValues) => {
+    const forhandsvarselFrist = getForhandsvarselFrist();
     const forhandsvarselDTO: SendForhandsvarselDTO = {
       fritekst: values.begrunnelse,
       document: getForhandsvarselDocument({
@@ -67,6 +67,7 @@ export const SendForhandsvarselSkjema = ({
         begrunnelse: values.begrunnelse,
         frist: forhandsvarselFrist,
       }),
+      frist: forhandsvarselFrist,
     };
     if (aktivitetskravUuid) {
       sendForhandsvarsel.mutate(forhandsvarselDTO, {
@@ -154,7 +155,7 @@ export const SendForhandsvarselSkjema = ({
           getForhandsvarselDocument({
             mal: brevmal,
             begrunnelse: watch("begrunnelse"),
-            frist: forhandsvarselFrist,
+            frist: getForhandsvarselFrist(),
           })
         }
       />

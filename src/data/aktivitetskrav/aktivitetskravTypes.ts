@@ -99,6 +99,7 @@ export interface CreateAktivitetskravVurderingDTO {
 export interface SendForhandsvarselDTO {
   fritekst: string;
   document: DocumentComponentDto[];
+  frist: Date;
 }
 
 export interface NewAktivitetskravDTO {
