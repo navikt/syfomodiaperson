@@ -45,14 +45,6 @@ const allMenypunkter: {
     navn: "Nøkkelinformasjon",
     sti: "nokkelinformasjon",
   },
-  [Menypunkter.AKTIVITETSKRAV]: {
-    navn: "Aktivitetskrav",
-    sti: "aktivitetskrav",
-  },
-  [Menypunkter.BEHANDLERDIALOG]: {
-    navn: "Dialog med behandler",
-    sti: "behandlerdialog",
-  },
   [Menypunkter.SYKMELDINGER]: {
     navn: "Sykmeldinger",
     sti: "sykmeldinger",
@@ -61,6 +53,10 @@ const allMenypunkter: {
     navn: "Søknader om sykepenger",
     sti: "sykepengesoknader",
   },
+  [Menypunkter.BEHANDLERDIALOG]: {
+    navn: "Dialog med behandler",
+    sti: "behandlerdialog",
+  },
   [Menypunkter.OPPFOELGINGSPLANER]: {
     navn: "Oppfølgingsplaner",
     sti: "oppfoelgingsplaner",
@@ -68,6 +64,14 @@ const allMenypunkter: {
   [Menypunkter.DIALOGMOTE]: {
     navn: "Dialogmøter",
     sti: "moteoversikt",
+  },
+  [Menypunkter.AKTIVITETSKRAV]: {
+    navn: "Aktivitetskrav",
+    sti: "aktivitetskrav",
+  },
+  [Menypunkter.MANGLENDE_MEDVIRKNING]: {
+    navn: "Manglende medvirkning",
+    sti: "manglendemedvirkning",
   },
   [Menypunkter.ARBEIDSUFORHET]: {
     navn: "Arbeidsuførhet",
@@ -80,10 +84,6 @@ const allMenypunkter: {
   [Menypunkter.SENOPPFOLGING]: {
     navn: "Snart slutt på sykepengene",
     sti: "senoppfolging",
-  },
-  [Menypunkter.MANGLENDE_MEDVIRKNING]: {
-    navn: "Manglende medvirkning",
-    sti: "manglendemedvirkning",
   },
   [Menypunkter.HISTORIKK]: {
     navn: "Historikk",
