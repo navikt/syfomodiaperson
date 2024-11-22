@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { SendForhandsvarselDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { useAktivitetskravVarselDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVarselDocument";
-import { getForhandsvarselFrist } from "@/utils/datoUtils";
+import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 import { ButtonRow } from "@/components/Layout";
 import { Button, HelpText, Label, Select, Textarea } from "@navikt/ds-react";
 import { useSendForhandsvarsel } from "@/data/aktivitetskrav/useSendForhandsvarsel";
