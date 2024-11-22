@@ -7,12 +7,22 @@ import {
 import { generateUUID } from "@/utils/uuidUtils";
 import { VEILEDER_IDENT_DEFAULT } from "../common/mockConstants";
 import { http, HttpResponse } from "msw";
+import {
+  historikkOppfolgingsoppgaveAktivMock,
+  historikkOppfolgingsoppgaveFjernetMock,
+} from "@/mocks/oppfolgingsoppgave/historikkOppfolgingsoppgaveMock";
 
 let oppfolgingsoppgaveMock: OppfolgingsoppgaveResponseDTO | undefined =
   undefined;
 const oppfolgingsoppgaveUuid = generateUUID();
 
 export const mockIshuskelapp = [
+  http.get(`${ISHUSKELAPP_ROOT}/huskelapp?filter=all`, () => {
+    return HttpResponse.json([
+      historikkOppfolgingsoppgaveFjernetMock,
+      historikkOppfolgingsoppgaveAktivMock,
+    ]);
+  }),
   http.get(`${ISHUSKELAPP_ROOT}/huskelapp`, () => {
     return !!oppfolgingsoppgaveMock
       ? HttpResponse.json(oppfolgingsoppgaveMock)

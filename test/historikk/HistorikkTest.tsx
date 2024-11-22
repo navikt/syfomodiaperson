@@ -45,6 +45,11 @@ import { dialogmoteStatusEndringMock } from "@/mocks/isdialogmote/dialogmoterMoc
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { getDefaultOppfolgingsplanLPS } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
+import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useGetOppfolgingsoppgaver";
+import {
+  historikkOppfolgingsoppgaveAktivMock,
+  historikkOppfolgingsoppgaveFjernetMock,
+} from "@/mocks/oppfolgingsoppgave/historikkOppfolgingsoppgaveMock";
 
 let queryClient: QueryClient;
 
@@ -124,6 +129,12 @@ function setupTestdataHistorikk() {
   );
   queryClient.setQueryData(
     dialogmoterQueryKeys.statusendringHistorikk(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => []
+  );
+  queryClient.setQueryData(
+    oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(
       ARBEIDSTAKER_DEFAULT.personIdent
     ),
     () => []
@@ -581,6 +592,8 @@ describe("Historikk", () => {
       );
 
       renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
         screen.queryAllByText("Svar mottatt fra den sykmeldte").length
       ).toBe(2);
@@ -659,6 +672,75 @@ describe("Historikk", () => {
       ).to.exist;
       expect(screen.getByText("Oppfølgingsplan")).to.exist;
       expect(screen.getByText("Oppfølgingsplan LPS")).to.exist;
+    });
+  });
+
+  describe("Oppfølgingsoppgave", () => {
+    it("Ingen oppfølgingsoppgaver", async () => {
+      queryClient.setQueryData(
+        oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => []
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(
+        screen.queryAllByText("opprettet oppfølgingsoppgave", { exact: false })
+      ).to.be.empty;
+    });
+
+    it("Opprettet oppfølgingsoppgave med endring", async () => {
+      queryClient.setQueryData(
+        oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [historikkOppfolgingsoppgaveAktivMock]
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(
+        screen.getByText(
+          "Z990000 opprettet oppfølgingsoppgave (Vurder annen ytelse)"
+        )
+      ).to.exist;
+      expect(
+        screen.getByText(
+          "Z990000 endret oppfølgingsoppgave (Vurder annen ytelse)"
+        )
+      ).to.exist;
+    });
+
+    it("Fjernet oppfølginsoppgave inkluder endring", async () => {
+      queryClient.setQueryData(
+        oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [historikkOppfolgingsoppgaveFjernetMock]
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(
+        screen.getByText(
+          "Z990000 opprettet oppfølgingsoppgave (Ta kontakt med arbeidsgiver)"
+        )
+      ).to.exist;
+      expect(
+        screen.queryAllByText(
+          "Z990000 endret oppfølgingsoppgave (Ta kontakt med arbeidsgiver)"
+        ).length
+      ).toBe(3);
+      expect(
+        screen.getByText(
+          "Z990000 fjernet oppfølgingsoppgaven (Ta kontakt med arbeidsgiver)"
+        )
+      ).to.exist;
     });
   });
 });
