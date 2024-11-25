@@ -90,8 +90,8 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
         expectedVurdering.begrunnelse
       );
       expect(vurdering.document).to.deep.equal(expectedVurdering.document);
-      expect(vurdering.frist.toDateString()).to.deep.equal(
-        expectedVurdering.frist.toDateString()
+      expect(vurdering.frist?.toDateString()).to.deep.equal(
+        expectedVurdering.frist?.toDateString()
       );
 
       expect(screen.queryByText(begrunnelse)).to.exist;
