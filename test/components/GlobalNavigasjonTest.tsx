@@ -104,7 +104,7 @@ describe("GlobalNavigasjon", () => {
       "Arbeidsuførhet",
       "Friskmelding til arbeidsformidling",
       "Snart slutt på sykepengene",
-      "HistorikkNy",
+      "Historikk",
       "Vedtak",
     ];
 

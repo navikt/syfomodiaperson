@@ -12,7 +12,7 @@ import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
 import { VedtakMenypunkt } from "@/components/globalnavigasjon/VedtakMenypunkt";
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
-import { BodyShort, Tag } from "@navikt/ds-react";
+import { BodyShort } from "@navikt/ds-react";
 import { EventType, logEvent } from "@/utils/amplitude";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
@@ -212,11 +212,6 @@ export const GlobalNavigasjon = ({
                   }}
                 >
                   <BodyShort size="small">{navn}</BodyShort>
-                  {menypunkt === Menypunkter.HISTORIKK && (
-                    <Tag variant="info" size="xsmall">
-                      Ny
-                    </Tag>
-                  )}
                   {tasks > 0 && (
                     <UnfinishedTasks tasks={tasks} menypunkt={menypunkt} />
                   )}
