@@ -19,10 +19,5 @@ export interface HistorikkEvent {
   tekst: string;
   tidspunkt: Date;
   kilde: HistorikkEventType;
-  expandable?: Expandable;
-}
-
-interface Expandable {
-  isExpandable: boolean;
-  content: string;
+  expandableContent?: string;
 }

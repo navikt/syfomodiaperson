@@ -28,10 +28,7 @@ function createHistorikkEvents(
           tekst: `${createdBy} opprettet oppfølgingsoppgave (${oppfolgingsgrunnText})`,
           tidspunkt: createdAt,
           kilde: "OPPFOLGINGSOPPGAVE",
-          expandable: {
-            isExpandable: true,
-            content: tekst ?? "",
-          },
+          expandableContent: tekst ?? "",
         };
         historikkEvents.push(opprettetOppfolgingsoppgave);
       } else {
@@ -40,10 +37,7 @@ function createHistorikkEvents(
           tekst: `${createdBy} endret oppfølgingsoppgave (${oppfolgingsgrunnText})`,
           tidspunkt: createdAt,
           kilde: "OPPFOLGINGSOPPGAVE",
-          expandable: {
-            isExpandable: true,
-            content: tekst ?? "",
-          },
+          expandableContent: tekst ?? "",
         };
         historikkEvents.push(endretOppfolgingsoppgave);
       }

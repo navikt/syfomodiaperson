@@ -144,9 +144,9 @@ export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
           <Table.Body>
             {filteredEvents()
               .sort(byTidspunkt())
-              .map(({ expandable, kilde, tekst, tidspunkt }, i) => {
-                return expandable?.isExpandable ? (
-                  <Table.ExpandableRow key={i} content={expandable.content}>
+              .map(({ expandableContent, kilde, tekst, tidspunkt }, i) => {
+                return expandableContent ? (
+                  <Table.ExpandableRow key={i} content={expandableContent}>
                     <Table.DataCell>
                       {tilLesbarDatoMedArstall(tidspunkt)}
                     </Table.DataCell>
