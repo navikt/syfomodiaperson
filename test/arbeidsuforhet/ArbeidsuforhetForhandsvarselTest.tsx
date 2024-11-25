@@ -13,6 +13,7 @@ import { getSendForhandsvarselDocument } from "./documents";
 import { navEnhet } from "../dialogmote/testData";
 import { queryClientWithMockData } from "../testQueryClient";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
+import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 
 let queryClient: QueryClient;
 
@@ -71,19 +72,27 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
 
       await clickButton("Send");
 
+      let sendForhandsvarselMutation;
       await waitFor(() => {
-        const sendForhandsvarselMutation = queryClient
-          .getMutationCache()
-          .getAll()[0];
-        const expectedVurdering: VurderingRequestDTO = {
-          type: VurderingType.FORHANDSVARSEL,
-          begrunnelse: begrunnelse,
-          document: getSendForhandsvarselDocument(begrunnelse),
-        };
-        expect(sendForhandsvarselMutation.state.variables).to.deep.equal(
-          expectedVurdering
-        );
+        sendForhandsvarselMutation = queryClient.getMutationCache().getAll()[0];
+        expect(sendForhandsvarselMutation).to.exist;
       });
+      const vurdering = sendForhandsvarselMutation.state
+        .variables as unknown as VurderingRequestDTO;
+      const expectedVurdering: VurderingRequestDTO = {
+        type: VurderingType.FORHANDSVARSEL,
+        begrunnelse: begrunnelse,
+        document: getSendForhandsvarselDocument(begrunnelse),
+        frist: getForhandsvarselFrist(),
+      };
+      expect(vurdering.type).to.deep.equal(expectedVurdering.type);
+      expect(vurdering.begrunnelse).to.deep.equal(
+        expectedVurdering.begrunnelse
+      );
+      expect(vurdering.document).to.deep.equal(expectedVurdering.document);
+      expect(vurdering.frist.toDateString()).to.deep.equal(
+        expectedVurdering.frist.toDateString()
+      );
 
       expect(screen.queryByText(begrunnelse)).to.exist;
     });
