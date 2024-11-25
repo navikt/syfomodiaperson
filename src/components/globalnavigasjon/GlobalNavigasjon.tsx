@@ -14,7 +14,6 @@ import { VedtakMenypunkt } from "@/components/globalnavigasjon/VedtakMenypunkt";
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { BodyShort, Tag } from "@navikt/ds-react";
 import { EventType, logEvent } from "@/utils/amplitude";
-import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
@@ -116,7 +115,6 @@ export const GlobalNavigasjon = ({
   const { data: friskmeldingTilArbeidsformidlingVedtak } = useVedtakQuery();
   const { sisteVurdering: manglendeMedvirkningVurdering } =
     useManglendemedvirkningVurderingQuery();
-  const { toggles } = useFeatureToggles();
 
   const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.map(
     (oppfolgingsplanLPS) =>
@@ -172,15 +170,6 @@ export const GlobalNavigasjon = ({
   return (
     <ul aria-label="Navigasjon" className="navigasjon">
       {allMenypunktEntries.map(([menypunkt, { navn, sti }], index) => {
-        if (
-          (!toggles.isFrisktilarbeidEnabled &&
-            menypunkt === Menypunkter.FRISKTILARBEID) ||
-          (!toggles.isOppfolgingISenFaseEnabled &&
-            menypunkt === Menypunkter.SENOPPFOLGING)
-        ) {
-          return null;
-        }
-
         const isAktiv = menypunkt === aktivtMenypunkt;
         const className = cn("navigasjonspanel", {
           "navigasjonspanel--aktiv": isAktiv,
