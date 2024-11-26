@@ -3,7 +3,7 @@ import { Box, Button, Heading, List, Textarea } from "@navikt/ds-react";
 import { useForm } from "react-hook-form";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { ButtonRow } from "@/components/Layout";
-import { addDays, addWeeks } from "@/utils/datoUtils";
+import { addDays } from "@/utils/datoUtils";
 import { useManglendeMedvirkningVurderingDocument } from "@/hooks/manglendemedvirkning/useManglendeMedvirkningVurderingDocument";
 import { useSendVurdering } from "@/data/manglendemedvirkning/useSendVurderingManglendeMedvirkning";
 import {
@@ -13,6 +13,7 @@ import {
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { erProd } from "@/utils/miljoUtil";
+import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -33,7 +34,7 @@ const texts = {
 
 const begrunnelseMaxLength = 5000;
 const forhandsvarselFrist = erProd()
-  ? addWeeks(new Date(), 3)
+  ? getForhandsvarselFrist()
   : addDays(new Date(), 1);
 
 interface SkjemaValues {
