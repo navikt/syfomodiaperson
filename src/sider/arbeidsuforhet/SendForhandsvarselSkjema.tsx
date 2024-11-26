@@ -1,5 +1,4 @@
 import React from "react";
-import { addWeeks } from "@/utils/datoUtils";
 import { ButtonRow } from "@/components/Layout";
 import { Box, Button, Heading, List, Textarea } from "@navikt/ds-react";
 import { useForm } from "react-hook-form";
@@ -11,6 +10,7 @@ import {
   VurderingType,
 } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
 import { useSendVurderingArbeidsuforhet } from "@/data/arbeidsuforhet/useSendVurderingArbeidsuforhet";
+import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -29,7 +29,7 @@ const texts = {
   sendVarselButtonText: "Send",
 };
 
-const forhandsvarselFrist = addWeeks(new Date(), 3);
+const forhandsvarselFrist = getForhandsvarselFrist();
 const defaultValues = { begrunnelse: texts.defaultTextareaValue };
 const begrunnelseMaxLength = 5000;
 
@@ -55,6 +55,7 @@ export const SendForhandsvarselSkjema = () => {
         begrunnelse: values.begrunnelse,
         frist: forhandsvarselFrist,
       }),
+      frist: forhandsvarselFrist,
     };
     sendForhandsvarsel.mutate(forhandsvarselRequestDTO);
   };

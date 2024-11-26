@@ -6,6 +6,7 @@ export interface VurderingRequestDTO {
   begrunnelse: string;
   document: DocumentComponentDto[];
   gjelderFom?: string;
+  frist?: Date;
 }
 
 export enum VurderingType {

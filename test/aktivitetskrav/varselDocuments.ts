@@ -7,7 +7,7 @@ import {
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
-import { addWeeks, tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import {
   Brevmal,
   getForhandsvarselTexts,
@@ -22,8 +22,9 @@ import {
   oppfyltVurderingArsakTexts,
   unntakVurderingArsakTexts,
 } from "@/data/aktivitetskrav/aktivitetskravTexts";
+import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 
-const expectedFristDate = addWeeks(new Date(), 3);
+const expectedFristDate = getForhandsvarselFrist();
 
 export const getUnntakDocument = (
   begrunnelse: string,
