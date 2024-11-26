@@ -2,7 +2,7 @@ import {
   DocumentComponentDto,
   DocumentComponentType,
 } from "@/data/documentcomponent/documentComponentTypes";
-import { addWeeks, tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import {
   ARBEIDSTAKER_DEFAULT,
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
@@ -14,8 +14,9 @@ import {
   arsakTexts,
   VurderingArsak,
 } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 
-const expectedFristDate = addWeeks(new Date(), 3);
+const expectedFristDate = getForhandsvarselFrist();
 
 export const getSendForhandsvarselDocument = (
   begrunnelse: string
