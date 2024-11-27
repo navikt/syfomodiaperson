@@ -22,7 +22,7 @@ function createHistorikkEvents(
       oppfolgingsgrunn && oppfolgingsgrunnToText[oppfolgingsgrunn];
 
     versjoner.forEach(({ createdAt, createdBy, tekst }, index) => {
-      if (index == 0) {
+      if (index == versjoner.length - 1) {
         const opprettetOppfolgingsoppgave: HistorikkEvent = {
           opprettetAv: createdBy,
           tekst: `${createdBy} opprettet oppfølgingsoppgave (${oppfolgingsgrunnText})`,

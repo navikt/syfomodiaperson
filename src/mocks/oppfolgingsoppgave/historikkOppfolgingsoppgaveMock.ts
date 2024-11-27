@@ -15,19 +15,19 @@ export const historikkOppfolgingsoppgaveAktivMock = {
   versjoner: [
     {
       uuid: generateUUID(),
-      createdAt: DATO_INNENFOR_OPPFOLGINGSTILFELLE,
-      createdBy: VEILEDER_IDENT_DEFAULT,
-      tekst: "Oppfølgingsoppgavetekst",
-      oppfolgingsgrunn: Oppfolgingsgrunn.VURDER_ANNEN_YTELSE,
-      frist: addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 2),
-    },
-    {
-      uuid: generateUUID(),
       createdAt: addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 1),
       createdBy: VEILEDER_IDENT_DEFAULT,
       tekst: "Oppfølgingsoppgavetekst ver 2",
       oppfolgingsgrunn: Oppfolgingsgrunn.VURDER_ANNEN_YTELSE,
       frist: addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 5),
+    },
+    {
+      uuid: generateUUID(),
+      createdAt: DATO_INNENFOR_OPPFOLGINGSTILFELLE,
+      createdBy: VEILEDER_IDENT_DEFAULT,
+      tekst: "Oppfølgingsoppgavetekst",
+      oppfolgingsgrunn: Oppfolgingsgrunn.VURDER_ANNEN_YTELSE,
+      frist: addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 2),
     },
   ],
 };
@@ -42,17 +42,9 @@ export const historikkOppfolgingsoppgaveFjernetMock = {
   versjoner: [
     {
       uuid: generateUUID(),
-      createdAt: addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -5),
+      createdAt: addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -2),
       createdBy: VEILEDER_IDENT_DEFAULT,
-      tekst: "Oppfølgingsoppgavetekst",
-      oppfolgingsgrunn: Oppfolgingsgrunn.TA_KONTAKT_ARBEIDSGIVER,
-      frist: DATO_INNENFOR_OPPFOLGINGSTILFELLE,
-    },
-    {
-      uuid: generateUUID(),
-      createdAt: addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -4),
-      createdBy: VEILEDER_IDENT_DEFAULT,
-      tekst: "Oppfølgingsoppgavetekst ver 2",
+      tekst: "Oppfølgingsoppgavetekst ver 4",
       oppfolgingsgrunn: Oppfolgingsgrunn.TA_KONTAKT_ARBEIDSGIVER,
       frist: DATO_INNENFOR_OPPFOLGINGSTILFELLE,
     },
@@ -66,9 +58,17 @@ export const historikkOppfolgingsoppgaveFjernetMock = {
     },
     {
       uuid: generateUUID(),
-      createdAt: addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -2),
+      createdAt: addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -4),
       createdBy: VEILEDER_IDENT_DEFAULT,
-      tekst: "Oppfølgingsoppgavetekst ver 4",
+      tekst: "Oppfølgingsoppgavetekst ver 2",
+      oppfolgingsgrunn: Oppfolgingsgrunn.TA_KONTAKT_ARBEIDSGIVER,
+      frist: DATO_INNENFOR_OPPFOLGINGSTILFELLE,
+    },
+    {
+      uuid: generateUUID(),
+      createdAt: addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -5),
+      createdBy: VEILEDER_IDENT_DEFAULT,
+      tekst: "Oppfølgingsoppgavetekst",
       oppfolgingsgrunn: Oppfolgingsgrunn.TA_KONTAKT_ARBEIDSGIVER,
       frist: DATO_INNENFOR_OPPFOLGINGSTILFELLE,
     },
