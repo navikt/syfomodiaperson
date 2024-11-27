@@ -69,10 +69,11 @@ const OppsummeringSporsmal = (
     case SvarTypeDTO.KVITTERING: {
       return <OppsummeringKvittering {...props} />;
     }
-    case SvarTypeDTO.OPPSUMMERING:
     case SvarTypeDTO.BEKREFTELSESPUNKTER: {
       return <OppsummeringBekreftelsespunkter {...props} />;
     }
+    case SvarTypeDTO.OPPSUMMERING:
+      return null;
     default: {
       return null;
     }
