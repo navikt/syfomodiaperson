@@ -11,6 +11,7 @@ import { useDialogMedBehandlerHistorikk } from "@/hooks/historikk/useDialogMedBe
 import { useSenOppfolgingHistorikk } from "@/hooks/historikk/useSenOppfolgingHistorikk";
 import { useDialogmoteStatusEndringHistorikk } from "@/hooks/historikk/useDialogmoteStatusEndringHistorikk";
 import { useOppfolgingsplanHistorikk } from "@/hooks/historikk/useOppfolgingsplanHistorikk";
+import { useOppfolgingsoppgaveHistorikk } from "@/hooks/historikk/useOppfolgingsoppgaveHistorikk";
 
 interface HistorikkHook {
   isHistorikkLoading: boolean;
@@ -66,6 +67,8 @@ export function useHistorikk(): HistorikkHook {
   const dialogmoteStatusEndringHistorikk =
     useDialogmoteStatusEndringHistorikk();
 
+  const oppfolgingsoppgaveHistorikk = useOppfolgingsoppgaveHistorikk();
+
   const historikkEvents = motebehovHistorikk
     .concat(oppfolgingsplanHistorikk.events)
     .concat(lederHistorikk)
@@ -77,6 +80,7 @@ export function useHistorikk(): HistorikkHook {
     .concat(dialogMedBehandlerHistorikk.events)
     .concat(senOppfolgingHistorikk.events)
     .concat(dialogmotekandidatHistorikk)
+    .concat(oppfolgingsoppgaveHistorikk.events)
     .concat(dialogmoteStatusEndringHistorikk.events);
 
   const isHistorikkLoading =
@@ -91,6 +95,7 @@ export function useHistorikk(): HistorikkHook {
     dialogMedBehandlerHistorikk.isLoading ||
     senOppfolgingHistorikk.isLoading ||
     isDialogmotekandidatHistorikkLoading ||
+    oppfolgingsoppgaveHistorikk.isLoading ||
     dialogmoteStatusEndringHistorikk.isLoading;
 
   const isHistorikkError =
@@ -105,6 +110,7 @@ export function useHistorikk(): HistorikkHook {
     dialogMedBehandlerHistorikk.isError ||
     senOppfolgingHistorikk.isError ||
     isDialogmotekandidatHistorikkError ||
+    oppfolgingsoppgaveHistorikk.isError ||
     dialogmoteStatusEndringHistorikk.isError;
 
   return {

@@ -36,6 +36,25 @@ export interface OppfolgingsoppgaveResponseDTO {
   frist: string | null;
 }
 
+export interface OppfolgingsoppgaveNewResponseDTO {
+  uuid: string;
+  createdBy: string;
+  updatedAt: Date;
+  isActive: boolean;
+  createdAt: Date;
+  removedBy: string | null;
+  versjoner: OppfolgingsoppgaveVersjonResponseDTO[];
+}
+
+export interface OppfolgingsoppgaveVersjonResponseDTO {
+  uuid: string;
+  createdAt: Date;
+  createdBy: string;
+  tekst: string | null;
+  oppfolgingsgrunn: Oppfolgingsgrunn;
+  frist: string | null;
+}
+
 export enum Oppfolgingsgrunn {
   TA_KONTAKT_SYKEMELDT = "TA_KONTAKT_SYKEMELDT",
   TA_KONTAKT_ARBEIDSGIVER = "TA_KONTAKT_ARBEIDSGIVER",

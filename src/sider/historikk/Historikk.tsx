@@ -63,6 +63,8 @@ function tagFromKilde(kilde: HistorikkEventType): ReactElement {
       return <Tag variant="neutral">Dialog med behandler</Tag>;
     case "SEN_OPPFOLGING":
       return <Tag variant="alt2">Snart slutt på sykepengene</Tag>;
+    case "OPPFOLGINGSOPPGAVE":
+      return <Tag variant="info">Oppfølgingsoppgave</Tag>;
     case "MOTEBEHOV":
     case "MOTER":
     case "DIALOGMOTEKANDIDAT":
@@ -133,6 +135,7 @@ export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
         <Table>
           <Table.Header>
             <Table.Row>
+              <Table.ColumnHeader scope="col"></Table.ColumnHeader>
               <Table.ColumnHeader scope="col">Dato</Table.ColumnHeader>
               <Table.ColumnHeader scope="col">Beskrivelse</Table.ColumnHeader>
               <Table.ColumnHeader scope="col">Type</Table.ColumnHeader>
@@ -141,14 +144,23 @@ export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
           <Table.Body>
             {filteredEvents()
               .sort(byTidspunkt())
-              .map((event, i) => {
-                return (
-                  <Table.Row key={i}>
+              .map(({ expandableContent, kilde, tekst, tidspunkt }, i) => {
+                return expandableContent ? (
+                  <Table.ExpandableRow key={i} content={expandableContent}>
                     <Table.DataCell>
-                      {tilLesbarDatoMedArstall(event.tidspunkt)}
+                      {tilLesbarDatoMedArstall(tidspunkt)}
                     </Table.DataCell>
-                    <Table.DataCell>{event.tekst}</Table.DataCell>
-                    <Table.DataCell>{tagFromKilde(event.kilde)}</Table.DataCell>
+                    <Table.DataCell>{tekst}</Table.DataCell>
+                    <Table.DataCell>{tagFromKilde(kilde)}</Table.DataCell>
+                  </Table.ExpandableRow>
+                ) : (
+                  <Table.Row key={i}>
+                    <Table.DataCell></Table.DataCell>
+                    <Table.DataCell>
+                      {tilLesbarDatoMedArstall(tidspunkt)}
+                    </Table.DataCell>
+                    <Table.DataCell>{tekst}</Table.DataCell>
+                    <Table.DataCell>{tagFromKilde(kilde)}</Table.DataCell>
                   </Table.Row>
                 );
               })}

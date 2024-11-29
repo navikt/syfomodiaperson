@@ -11,6 +11,7 @@ export type HistorikkEventType =
   | "DIALOG_MED_BEHANDLER"
   | "SEN_OPPFOLGING"
   | "DIALOGMOTEKANDIDAT"
+  | "OPPFOLGINGSOPPGAVE"
   | "OPPFOLGINGSPLAN_LPS";
 
 export interface HistorikkEvent {
@@ -18,4 +19,5 @@ export interface HistorikkEvent {
   tekst: string;
   tidspunkt: Date;
   kilde: HistorikkEventType;
+  expandableContent?: string;
 }

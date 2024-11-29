@@ -45,6 +45,11 @@ import { dialogmoteStatusEndringMock } from "@/mocks/isdialogmote/dialogmoterMoc
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { getDefaultOppfolgingsplanLPS } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
+import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useGetOppfolgingsoppgaver";
+import {
+  historikkOppfolgingsoppgaveAktivMock,
+  historikkOppfolgingsoppgaveFjernetMock,
+} from "@/mocks/oppfolgingsoppgave/historikkOppfolgingsoppgaveMock";
 
 let queryClient: QueryClient;
 
@@ -124,6 +129,12 @@ function setupTestdataHistorikk() {
   );
   queryClient.setQueryData(
     dialogmoterQueryKeys.statusendringHistorikk(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => []
+  );
+  queryClient.setQueryData(
+    oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(
       ARBEIDSTAKER_DEFAULT.personIdent
     ),
     () => []
@@ -581,6 +592,8 @@ describe("Historikk", () => {
       );
 
       renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
         screen.queryAllByText("Svar mottatt fra den sykmeldte").length
       ).toBe(2);
@@ -659,6 +672,107 @@ describe("Historikk", () => {
       ).to.exist;
       expect(screen.getByText("Oppfølgingsplan")).to.exist;
       expect(screen.getByText("Oppfølgingsplan LPS")).to.exist;
+    });
+  });
+
+  describe("Oppfølgingsoppgave", () => {
+    const expandableToggleText = "Vis mer";
+
+    it("Ingen oppfølgingsoppgaver", async () => {
+      queryClient.setQueryData(
+        oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => []
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(
+        screen.queryAllByRole("row", { name: RegExp("Oppfølgingsoppgave") })
+      ).to.be.empty;
+    });
+
+    it("Opprettet oppfølgingsoppgave med endring", async () => {
+      queryClient.setQueryData(
+        oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [historikkOppfolgingsoppgaveAktivMock]
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(
+        screen.getByRole("row", {
+          name: new RegExp(
+            expandableToggleText +
+              " 21. juni 2024 Z990000 endret oppfølgingsoppgave \\(Vurder annen ytelse\\)"
+          ),
+        })
+      ).to.exist;
+      expect(
+        screen.getByRole("row", {
+          name: new RegExp(
+            expandableToggleText +
+              " 20. juni 2024 Z990000 opprettet oppfølgingsoppgave \\(Vurder annen ytelse\\)"
+          ),
+        })
+      ).to.exist;
+    });
+
+    it("Fjernet oppfølginsoppgave inkludert endring", async () => {
+      queryClient.setQueryData(
+        oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [historikkOppfolgingsoppgaveFjernetMock]
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(
+        screen.getByRole("row", {
+          name: new RegExp(
+            "19. juni 2024 Z990000 fjernet oppfølgingsoppgaven \\(Ta kontakt med arbeidsgiver\\)"
+          ),
+        })
+      ).to.exist;
+      expect(
+        screen.getByRole("row", {
+          name: new RegExp(
+            expandableToggleText +
+              " 18. juni 2024 Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)"
+          ),
+        })
+      ).to.exist;
+      expect(
+        screen.getByRole("row", {
+          name: new RegExp(
+            expandableToggleText +
+              " 17. juni 2024 Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)"
+          ),
+        })
+      ).to.exist;
+      expect(
+        screen.getByRole("row", {
+          name: new RegExp(
+            expandableToggleText +
+              " 16. juni 2024 Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)"
+          ),
+        })
+      ).to.exist;
+      expect(
+        screen.getByRole("row", {
+          name: new RegExp(
+            expandableToggleText +
+              " 15. juni 2024 Z990000 opprettet oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)"
+          ),
+        })
+      ).to.exist;
     });
   });
 });
