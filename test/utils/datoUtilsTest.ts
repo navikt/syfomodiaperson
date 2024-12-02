@@ -5,6 +5,7 @@ import {
   erIdag,
   erIkkeIdag,
   getWeeksBetween,
+  isDateBefore,
   manederMellomDatoer,
   restdatoTildato,
   restdatoTilLesbarDato,
@@ -186,6 +187,23 @@ describe("datoUtils", () => {
 
       const weeks = getWeeksBetween(date1, date2);
       expect(weeks).to.equal(7);
+    });
+  });
+
+  describe("isDateBefore", () => {
+    it("Sjekker om datoen er før target date", () => {
+      const beforeDate = new Date("2024-11-05");
+      const afterDate = new Date("2024-12-01");
+
+      const isBefore = isDateBefore(beforeDate, afterDate);
+      expect(isBefore).to.equal(true);
+    });
+
+    it("returnerer false om begge datoene er på samme dag", () => {
+      const date = new Date("2024-11-05");
+
+      const isSameDate = isDateBefore(date, date);
+      expect(isSameDate).to.equal(false);
     });
   });
 });
