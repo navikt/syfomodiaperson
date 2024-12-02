@@ -13,13 +13,14 @@ import {
   VEILEDER_IDENT_DEFAULT,
 } from "@/mocks/common/mockConstants";
 import {
+  EditOppfolgingsoppgaveRequestDTO,
+  Oppfolgingsgrunn,
   OppfolgingsoppgaveRequestDTO,
   OppfolgingsoppgaveResponseDTO,
-  Oppfolgingsgrunn,
-  EditOppfolgingsoppgaveRequestDTO,
+  OppfolgingsoppgaveVersjonResponseDTO,
 } from "@/data/oppfolgingsoppgave/types";
 import { generateUUID } from "@/utils/uuidUtils";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { Oppfolgingsoppgave } from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
 import { changeTextInput } from "../testUtils";
@@ -35,11 +36,17 @@ const oppfolgingsoppgaveOppfogingsgrunnText = "Vurder behov for dialogmøte";
 const oppfolgingsoppgave: OppfolgingsoppgaveResponseDTO = {
   createdBy: VEILEDER_IDENT_DEFAULT,
   uuid: generateUUID(),
-  oppfolgingsgrunn: oppfolgingsoppgaveOppfolgingsgrunn,
-  tekst: "Dette var en veldig god grunn for å lage oppfolgingsoppgave.",
   updatedAt: new Date(),
   createdAt: new Date(),
-  frist: "2030-01-01",
+  isActive: true,
+  removedBy: null,
+  versjoner: [
+    {
+      oppfolgingsgrunn: oppfolgingsoppgaveOppfolgingsgrunn,
+      tekst: "Dette var en veldig god grunn for å lage oppfolgingsoppgave.",
+      frist: "2030-01-01",
+    } as OppfolgingsoppgaveVersjonResponseDTO,
+  ],
 };
 const openOppfolgingsoppgaveButtonText = "Oppfølgingsoppgave";
 

@@ -2,7 +2,7 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { ISHUSKELAPP_ROOT } from "@/apiConstants";
 import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
-import { OppfolgingsoppgaveNewResponseDTO } from "@/data/oppfolgingsoppgave/types";
+import { OppfolgingsoppgaveResponseDTO } from "@/data/oppfolgingsoppgave/types";
 
 export const oppfolgingsoppgaverQueryKeys = {
   oppfolgingsoppgaver: (personident: string) => [
@@ -11,11 +11,11 @@ export const oppfolgingsoppgaverQueryKeys = {
   ],
 };
 
-export const useGetOppfolgingsoppgaver = () => {
+export const useOppfolgingsoppgaver = () => {
   const personident = useValgtPersonident();
   const path = `${ISHUSKELAPP_ROOT}/huskelapp?filter=all`;
   const getOppfolgingsoppgaver = () =>
-    get<OppfolgingsoppgaveNewResponseDTO[]>(path, personident);
+    get<OppfolgingsoppgaveResponseDTO[]>(path, personident);
 
   const {
     data: oppfolgingsoppgaver,

@@ -2,7 +2,8 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { ISHUSKELAPP_ROOT } from "@/apiConstants";
 import { EditOppfolgingsoppgaveRequestDTO } from "@/data/oppfolgingsoppgave/types";
 import { post } from "@/api/axios";
-import { oppfolgingsoppgaveQueryKeys } from "@/data/oppfolgingsoppgave/useGetOppfolgingsoppgave";
+import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useOppfolgingsoppgaver";
+import { aktivOppfolgingsoppgaveQueryKeys } from "@/data/oppfolgingsoppgave/useAktivOppfolgingsoppgave";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useEditOppfolgingsoppgave(
@@ -22,10 +23,18 @@ export function useEditOppfolgingsoppgave(
 
   return useMutation({
     mutationFn: editOppfolgingsoppgave,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: oppfolgingsoppgaveQueryKeys.oppfolgingsoppgave(personident),
-      });
-    },
+    onSuccess: () =>
+      Promise.all([
+        queryClient.invalidateQueries({
+          queryKey:
+            aktivOppfolgingsoppgaveQueryKeys.aktivOppfolgingsoppgave(
+              personident
+            ),
+        }),
+        queryClient.invalidateQueries({
+          queryKey:
+            oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(personident),
+        }),
+      ]),
   });
 }
