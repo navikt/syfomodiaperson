@@ -17,11 +17,14 @@ function getTextForHistorikk(
     case AktivitetskravStatus.NY_VURDERING:
       return `Det ble startet ny vurdering av aktivitetskravet`;
     case AktivitetskravStatus.UNNTAK:
+      return `${historikk.vurdertAv} vurderte unntak fra aktivitetskravet`;
     case AktivitetskravStatus.OPPFYLT:
+      return `${historikk.vurdertAv} vurderte at aktivitetskravet var oppfylt`;
     case AktivitetskravStatus.STANS:
-    case AktivitetskravStatus.IKKE_AKTUELL:
     case AktivitetskravStatus.IKKE_OPPFYLT:
-      return `${historikk.vurdertAv} vurderte ${historikk.status} for aktivitetskravet`;
+      return `${historikk.vurdertAv} vurderte at aktivitetskravet ikke var oppfylt`;
+    case AktivitetskravStatus.IKKE_AKTUELL:
+      return `${historikk.vurdertAv} vurderte at aktivitetskravet ikke var aktuelt`;
     case AktivitetskravStatus.FORHANDSVARSEL:
       return `Det ble sendt et forhåndsvarsel for aktivitetskravet av ${historikk.vurdertAv}`;
     case AktivitetskravStatus.LUKKET:
