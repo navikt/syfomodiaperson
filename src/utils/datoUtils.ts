@@ -309,3 +309,8 @@ export const isExpiredForhandsvarsel = (
 
   return false;
 };
+
+export function isDateBefore(date?: Date, targetDate?: Date): boolean {
+  const hasValues = !!date && !!targetDate;
+  return hasValues && targetDate < date;
+}

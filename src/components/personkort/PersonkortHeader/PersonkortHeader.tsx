@@ -13,6 +13,9 @@ import { Diagnosekode } from "@/components/personkort/PersonkortHeader/Diagnosek
 import { useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
 import { NavnHeader } from "@/components/personkort/PersonkortHeader/NavnHeader";
 import { MaksdatoSummary } from "@/components/personkort/PersonkortHeader/MaksdatoSummary";
+import { useStartOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import UtdatertUtbetalingsinfoAlert from "@/components/personkort/PersonkortHeader/UtdatertUtbetalingsinfoAlert";
+import { isDateBefore } from "@/utils/datoUtils";
 
 const texts = {
   ikkeUtbetalt: "Sykepenger ikke utbetalt",
@@ -32,7 +35,12 @@ const StyledFnr = styled.div`
 export function PersonkortHeader() {
   const navbruker = useNavBrukerData();
   const personident = useValgtPersonident();
+  const startDate = useStartOfLatestOppfolgingstilfelle();
   const { data: maksDato, isSuccess } = useMaksdatoQuery();
+  const isUtbetalingsinfoFromBeforeOppfolgingstilfelleStart = isDateBefore(
+    maksDato?.maxDate?.opprettet,
+    startDate
+  );
 
   return (
     <>
@@ -54,7 +62,12 @@ export function PersonkortHeader() {
 
           {isSuccess ? (
             maksDato?.maxDate ? (
-              <MaksdatoSummary maxDate={maksDato.maxDate} />
+              <>
+                <MaksdatoSummary maxDate={maksDato.maxDate} />
+                {isUtbetalingsinfoFromBeforeOppfolgingstilfelleStart && (
+                  <UtdatertUtbetalingsinfoAlert />
+                )}
+              </>
             ) : (
               <Tag variant="warning" size="small" className="mt-1">
                 {texts.ikkeUtbetalt}
