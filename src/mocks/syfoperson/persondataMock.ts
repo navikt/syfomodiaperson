@@ -31,6 +31,6 @@ export const maksdatoMock = {
     forelopig_beregnet_slutt: maksdato,
     utbetalt_tom: "2024-07-01",
     gjenstaende_sykedager: "70",
-    opprettet: "2023-01-01T12:00:00.000000",
+    opprettet: Date.now().toString(),
   },
 };
