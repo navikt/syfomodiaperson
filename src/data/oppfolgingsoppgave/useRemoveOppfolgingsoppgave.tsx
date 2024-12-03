@@ -15,18 +15,14 @@ export const useRemoveOppfolgingsoppgave = () => {
 
   return useMutation({
     mutationFn: deleteOppfolgingsoppgave,
-    onSuccess: () =>
-      Promise.all([
-        queryClient.invalidateQueries({
-          queryKey:
-            aktivOppfolgingsoppgaveQueryKeys.aktivOppfolgingsoppgave(
-              personident
-            ),
-        }),
-        queryClient.invalidateQueries({
-          queryKey:
-            oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(personident),
-        }),
-      ]),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey:
+          aktivOppfolgingsoppgaveQueryKeys.aktivOppfolgingsoppgave(personident),
+      });
+      queryClient.invalidateQueries({
+        queryKey: oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(personident),
+      });
+    },
   });
 };

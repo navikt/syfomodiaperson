@@ -23,18 +23,14 @@ export function useEditOppfolgingsoppgave(
 
   return useMutation({
     mutationFn: editOppfolgingsoppgave,
-    onSuccess: () =>
-      Promise.all([
-        queryClient.invalidateQueries({
-          queryKey:
-            aktivOppfolgingsoppgaveQueryKeys.aktivOppfolgingsoppgave(
-              personident
-            ),
-        }),
-        queryClient.invalidateQueries({
-          queryKey:
-            oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(personident),
-        }),
-      ]),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey:
+          aktivOppfolgingsoppgaveQueryKeys.aktivOppfolgingsoppgave(personident),
+      });
+      queryClient.invalidateQueries({
+        queryKey: oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(personident),
+      });
+    },
   });
 }

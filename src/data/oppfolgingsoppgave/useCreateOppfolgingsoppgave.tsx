@@ -17,18 +17,14 @@ export const useCreateOppfolgingsoppgave = () => {
 
   return useMutation({
     mutationFn: postOppfolgingsoppgave,
-    onSuccess: () =>
-      Promise.all([
-        queryClient.invalidateQueries({
-          queryKey:
-            aktivOppfolgingsoppgaveQueryKeys.aktivOppfolgingsoppgave(
-              personident
-            ),
-        }),
-        queryClient.invalidateQueries({
-          queryKey:
-            oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(personident),
-        }),
-      ]),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey:
+          aktivOppfolgingsoppgaveQueryKeys.aktivOppfolgingsoppgave(personident),
+      });
+      queryClient.invalidateQueries({
+        queryKey: oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(personident),
+      });
+    },
   });
 };
