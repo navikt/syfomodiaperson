@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import SykmeldingTeaser from "./SykmeldingTeaser";
+import SykmeldingLinkPanel from "./SykmeldingLinkPanel";
+import { Heading } from "@navikt/ds-react";
 
 interface SykmeldingTeasereProps {
   sykmeldinger: SykmeldingOldFormat[];
@@ -11,24 +12,26 @@ interface SykmeldingTeasereProps {
   children?: ReactElement;
 }
 
-const SykmeldingTeasere = ({
+function Sykmeldinger({
   sykmeldinger,
   className,
   tittel = "",
   ingenSykmeldingerMelding,
   id,
   children,
-}: SykmeldingTeasereProps): ReactElement => {
+}: SykmeldingTeasereProps): ReactElement {
   return (
     <div className="mb-4">
       <header className="inngangspanelerHeader">
-        <h2 className="inngangspanelerHeader__tittel">{tittel}</h2>
+        <Heading size="xsmall" level="5" className="flex flex-1 self-center">
+          {tittel}
+        </Heading>
         {children}
       </header>
       <div id={id} className={className || "js-content"}>
         {sykmeldinger.length ? (
           sykmeldinger.map((sykmelding, idx) => (
-            <SykmeldingTeaser key={idx} sykmelding={sykmelding} />
+            <SykmeldingLinkPanel key={idx} sykmelding={sykmelding} />
           ))
         ) : (
           <p className="typo-infotekst">{ingenSykmeldingerMelding}</p>
@@ -36,6 +39,6 @@ const SykmeldingTeasere = ({
       </div>
     </div>
   );
-};
+}
 
-export default SykmeldingTeasere;
+export default Sykmeldinger;

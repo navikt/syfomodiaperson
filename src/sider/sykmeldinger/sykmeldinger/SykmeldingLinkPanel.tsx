@@ -92,24 +92,19 @@ const getHoverIkon = (behandlingsutfallStatus: BehandlingsutfallStatusDTO) => {
     : SykmeldingerHoverBlaaImage;
 };
 
-interface SykmeldingTeaserProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-const StyledImg = styled.img`
-  margin-left: 1em;
-`;
-
 const StyledLinkPanel = styled(LinkPanel)`
   margin-bottom: 0.1em;
+
   .navds-link-panel__content {
     width: 100%;
   }
 `;
 
-const SykmeldingTeaser = ({
-  sykmelding,
-}: SykmeldingTeaserProps): ReactElement => {
+const SykmeldingLinkPanel = ({ sykmelding }: Props): ReactElement => {
   const behandlingsutfallStatus = sykmelding.behandlingsutfall.status;
   const [ikon, setIkon] = useState(getIkon(behandlingsutfallStatus));
 
@@ -135,7 +130,7 @@ const SykmeldingTeaser = ({
         justifyContent={JustifyContentType.SPACE_BETWEEN}
       >
         <FlexColumn flex={0}>
-          <StyledImg src={ikon} alt="Plaster-ikon" />
+          <img src={ikon} alt="Plaster-ikon" className="ml-4" />
         </FlexColumn>
         <FlexColumn flex={1}>
           {tilLesbarPeriodeMedArstall(
@@ -164,4 +159,4 @@ const SykmeldingTeaser = ({
   );
 };
 
-export default SykmeldingTeaser;
+export default SykmeldingLinkPanel;

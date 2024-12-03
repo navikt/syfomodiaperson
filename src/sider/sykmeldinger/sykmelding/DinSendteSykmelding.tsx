@@ -1,7 +1,7 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import ArbeidsgiversSykmelding from "./ArbeidsgiversSykmelding";
-import { DineSykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/DineSykmeldingOpplysninger";
+import { SykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingOpplysninger";
 import SykmeldingStatuspanel from "../sykmeldingstatuspanel/SykmeldingStatuspanel";
 import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
 import { SpeilingEkspanderbartPanelTittel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanelTittel";
@@ -31,7 +31,7 @@ export function DinSendteSykmelding({
           </SpeilingEkspanderbartPanelTittel>
         }
       >
-        <DineSykmeldingOpplysninger sykmelding={dinSykmelding} />
+        <SykmeldingOpplysninger sykmelding={dinSykmelding} />
       </SpeilingEkspanderbartPanel>
       <div className="blokk--l">
         <ArbeidsgiversSykmelding sykmelding={arbeidsgiversSykmelding} />

@@ -1,6 +1,6 @@
 import React from "react";
 import SykmeldingStatuspanel from "../sykmeldingstatuspanel/SykmeldingStatuspanel";
-import { DineSykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/DineSykmeldingOpplysninger";
+import { SykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingOpplysninger";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
 import { SpeilingEkspanderbartPanelTittel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanelTittel";
@@ -26,7 +26,7 @@ const DinUtgatteSykmelding = ({ sykmelding }: DinUtgaatteSykmeldingProps) => {
           </SpeilingEkspanderbartPanelTittel>
         }
       >
-        <DineSykmeldingOpplysninger sykmelding={sykmelding} />
+        <SykmeldingOpplysninger sykmelding={sykmelding} />
       </SpeilingEkspanderbartPanel>
     </div>
   );

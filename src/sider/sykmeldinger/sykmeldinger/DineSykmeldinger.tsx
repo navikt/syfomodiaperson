@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import SykmeldingTeasere from "./SykmeldingTeasere";
+import Sykmeldinger from "./Sykmeldinger";
 import { VelgSykmeldingSorteringDropdown } from "./VelgSykmeldingSorteringDropdown";
 import {
   SorteringKriterium,
@@ -50,7 +50,7 @@ const DineSykmeldinger = ({
 
   return (
     <>
-      <SykmeldingTeasere
+      <Sykmeldinger
         sykmeldinger={sorterSykmeldinger(nyeSykmeldinger)}
         tittel={texts.nyeSykmeldinger}
         ingenSykmeldingerMelding={texts.ingenNyeSykmeldinger}
@@ -58,7 +58,7 @@ const DineSykmeldinger = ({
         id="sykmelding-liste-nye"
       />
       {tidligereSykmeldinger.length > 0 && (
-        <SykmeldingTeasere
+        <Sykmeldinger
           sykmeldinger={sorterSykmeldinger(
             tidligereSykmeldinger,
             valgtSortering
@@ -72,7 +72,7 @@ const DineSykmeldinger = ({
             sorteringsKriterier={sorteringsKriterier}
             onSorteringChanged={(e) => setValgtSortering(e.target.value)}
           />
-        </SykmeldingTeasere>
+        </Sykmeldinger>
       )}
     </>
   );
