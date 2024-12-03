@@ -4,7 +4,7 @@ import ArbeidsgiversSykmelding from "./ArbeidsgiversSykmelding";
 import BekreftetSykmeldingStatuspanel from "../sykmeldingstatuspanel/BekreftetSykmeldingStatuspanel";
 import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
 import { SpeilingEkspanderbartPanelTittel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanelTittel";
-import { DineSykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/DineSykmeldingOpplysninger";
+import { SykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingOpplysninger";
 
 const texts = {
   tittel: "Dine opplysinger",
@@ -31,7 +31,7 @@ const DinBekreftedeSykmelding = ({
           </SpeilingEkspanderbartPanelTittel>
         }
       >
-        <DineSykmeldingOpplysninger sykmelding={dinSykmelding} />
+        <SykmeldingOpplysninger sykmelding={dinSykmelding} />
       </SpeilingEkspanderbartPanel>
       {dinSykmelding.valgtArbeidssituasjon === "ARBEIDSTAKER" && (
         <div className="blokk">

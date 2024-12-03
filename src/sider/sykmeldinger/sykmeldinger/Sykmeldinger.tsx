@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import SykmeldingLinkPanel from "./SykmeldingLinkPanel";
+import { Heading } from "@navikt/ds-react";
 
 interface SykmeldingTeasereProps {
   sykmeldinger: SykmeldingOldFormat[];
@@ -18,7 +19,9 @@ export default function Sykmeldinger({
   return (
     <div className="mb-4">
       <header className="inngangspanelerHeader">
-        <h2 className="inngangspanelerHeader__tittel">{tittel}</h2>
+        <Heading size="xsmall" level="5" className="flex flex-1 self-center">
+          {tittel}
+        </Heading>
         {children}
       </header>
       <div>

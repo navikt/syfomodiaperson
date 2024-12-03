@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import cn from "classnames";
 import SykmeldingNokkelOpplysning from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingNokkelOpplysning";
 
 interface StatusNokkelopplysningProps {
@@ -41,11 +40,12 @@ interface StatuspanelProps {
 
 const Statuspanel = (statuspanelProps: StatuspanelProps) => {
   const { children, enKolonne = false } = statuspanelProps;
-  const classNames = cn("blokk statuspanel", {
-    "statuspanel--toKol": !enKolonne,
-    "statuspanel--enKol": enKolonne,
-  });
-  return <div className={classNames}>{children}</div>;
+  const kolonneStyle = enKolonne ? "statuspanel--enKol" : "statuspanel--toKol";
+  return (
+    <div className={`empty:hidden blokk statuspanel ${kolonneStyle}`}>
+      {children}
+    </div>
+  );
 };
 
 export default Statuspanel;
