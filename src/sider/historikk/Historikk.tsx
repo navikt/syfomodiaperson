@@ -58,11 +58,23 @@ function tagFromKilde(kilde: HistorikkEventType): ReactElement {
     case "MANGLENDE_MEDVIRKNING":
       return <Tag variant="warning">Manglende medvirkning</Tag>;
     case "FRISKMELDING_TIL_ARBEIDSFORMIDLING":
-      return <Tag variant="info">Friskmelding til arbeidsformidling</Tag>;
+      return (
+        <Tag className="w-max" variant="info">
+          Friskmelding til arbeidsformidling
+        </Tag>
+      );
     case "DIALOG_MED_BEHANDLER":
-      return <Tag variant="neutral">Dialog med behandler</Tag>;
+      return (
+        <Tag className="w-max" variant="neutral">
+          Dialog med behandler
+        </Tag>
+      );
     case "SEN_OPPFOLGING":
-      return <Tag variant="alt2">Snart slutt på sykepengene</Tag>;
+      return (
+        <Tag className="w-max" variant="alt2">
+          Snart slutt på sykepengene
+        </Tag>
+      );
     case "OPPFOLGINGSOPPGAVE":
       return <Tag variant="info">Oppfølgingsoppgave</Tag>;
     case "MOTEBEHOV":

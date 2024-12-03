@@ -50,6 +50,7 @@ import {
   historikkOppfolgingsoppgaveAktivMock,
   historikkOppfolgingsoppgaveFjernetMock,
 } from "@/mocks/oppfolgingsoppgave/historikkOppfolgingsoppgaveMock";
+import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
 
 let queryClient: QueryClient;
 
@@ -772,6 +773,39 @@ describe("Historikk", () => {
               " 15. juni 2024 Z990000 opprettet oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)"
           ),
         })
+      ).to.exist;
+    });
+  });
+
+  describe("Aktivitetskrav", () => {
+    it("viser aktivitetskrav", async () => {
+      queryClient.setQueryData(
+        aktivitetskravQueryKeys.historikk(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => [
+          {
+            tidspunkt: new Date(),
+            status: AktivitetskravStatus.NY,
+            vurdertAv: null,
+          },
+          {
+            tidspunkt: new Date(),
+            status: AktivitetskravStatus.OPPFYLT,
+            vurdertAv: VEILEDER_IDENT_DEFAULT,
+          },
+        ]
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(screen.getAllByText("Aktivitetskrav")).to.have.length(3); // To tags og menypunktet
+      expect(
+        screen.getByText("Samuel Sam Jones ble kandidat til aktivitetskravet")
+      ).to.exist;
+      expect(
+        screen.getByText(
+          `${VEILEDER_IDENT_DEFAULT} vurderte at aktivitetskravet var oppfylt`
+        )
       ).to.exist;
     });
   });

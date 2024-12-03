@@ -29,7 +29,8 @@ const isRelevantForHistorikk = (vurdering: AktivitetskravVurderingDTO) =>
   vurdering.status === AktivitetskravStatus.STANS ||
   vurdering.status === AktivitetskravStatus.IKKE_OPPFYLT ||
   vurdering.status === AktivitetskravStatus.FORHANDSVARSEL ||
-  vurdering.status === AktivitetskravStatus.AVVENT;
+  vurdering.status === AktivitetskravStatus.AVVENT ||
+  vurdering.status === AktivitetskravStatus.IKKE_AKTUELL;
 
 const byCreatedAt = (
   v1: AktivitetskravVurderingDTO,
@@ -81,11 +82,13 @@ const headerPrefix = (status: AktivitetskravStatus): string => {
     case AktivitetskravStatus.AVVENT: {
       return "Avventer";
     }
+    case AktivitetskravStatus.IKKE_AKTUELL: {
+      return "Ikke aktuell";
+    }
     case AktivitetskravStatus.NY:
     case AktivitetskravStatus.NY_VURDERING:
     case AktivitetskravStatus.AUTOMATISK_OPPFYLT:
-    case AktivitetskravStatus.LUKKET:
-    case AktivitetskravStatus.IKKE_AKTUELL: {
+    case AktivitetskravStatus.LUKKET: {
       // Ikke relevant for historikk
       return "";
     }
