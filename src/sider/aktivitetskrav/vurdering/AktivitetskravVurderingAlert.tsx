@@ -3,7 +3,6 @@ import {
   AktivitetskravVurderingDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import {
-  addWeeks,
   isExpiredForhandsvarsel,
   tilDatoMedManedNavn,
   tilLesbarDatoMedArUtenManedNavn,
@@ -11,13 +10,10 @@ import {
 import React, { ReactElement } from "react";
 import { avventVurderingArsakTexts } from "@/data/aktivitetskrav/aktivitetskravTexts";
 import { Alert, BodyLong, BodyShort, Label } from "@navikt/ds-react";
-import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 
 const texts = {
   forhandsvarselInfoBody:
     "Når fristen er passert vil det dukke opp en hendelse i oversikten.",
-  forhandsvarselInfoBodyLang:
-    "Fristen i brevet er flyttet fra 3 til 6 uker i forbindelse med jul og røde dager. Du vil få en oppgave i Modia syfo etter 6 uker. Etter nyttår endrer vi fristen tilbake til 3 uker.",
   forhandsvarselWarningLabel: "Aktivitetskravet må vurderes",
   forhandsvarselWarningBody:
     "Fristen er gått ut og aktivitetskravet må vurderes.",
@@ -44,11 +40,7 @@ export const AktivitetskravVurderingAlert = ({
       ) : (
         <Alert variant="info" className="mb-4">
           <Label size="small">{`Forhåndsvarsel er sendt ${vurderingDato}`}</Label>
-          <BodyShort size="small">
-            {getForhandsvarselFrist() > addWeeks(new Date(), 4)
-              ? texts.forhandsvarselInfoBodyLang
-              : texts.forhandsvarselInfoBody}
-          </BodyShort>
+          <BodyShort size="small">{texts.forhandsvarselInfoBody}</BodyShort>
         </Alert>
       );
     }
