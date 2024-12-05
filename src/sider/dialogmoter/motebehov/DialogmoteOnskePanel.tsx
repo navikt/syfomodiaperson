@@ -1,6 +1,5 @@
 import { UtropstegnImage } from "../../../../img/ImageComponents";
 import MotebehovKvittering from "./MotebehovKvittering";
-import { FlexRow, PaddingSize } from "../../../components/Layout";
 import BehandleMotebehovKnapp from "../../../components/motebehov/BehandleMotebehovKnapp";
 import { DialogmotePanel } from "@/sider/dialogmoter/components/DialogmotePanel";
 import React from "react";
@@ -31,9 +30,7 @@ export const DialogmoteOnskePanel = ({
         sykmeldt={sykmeldt}
       />
 
-      <FlexRow topPadding={PaddingSize.MD}>
-        <BehandleMotebehovKnapp motebehovData={motebehovData} />
-      </FlexRow>
+      <BehandleMotebehovKnapp motebehovData={motebehovData} />
     </DialogmotePanel>
   );
 };
