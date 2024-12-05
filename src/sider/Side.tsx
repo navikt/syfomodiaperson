@@ -5,7 +5,7 @@ import {
   GlobalNavigasjon,
   Menypunkter,
 } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { isEaster, isPride } from "@/utils/festiveUtils";
+import { isDecember, isEaster, isPride } from "@/utils/festiveUtils";
 import { Easter } from "@/components/festive/Easter";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
@@ -14,6 +14,7 @@ import { Pride } from "@/components/festive/Pride";
 import { Oppfolgingsoppgave } from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { TildeltVeileder } from "@/components/TildeltVeileder";
+import { Santa } from "@/components/Santa";
 
 export const MODIA_HEADER_ID = "modia-header";
 
@@ -48,6 +49,7 @@ export default function Side({
         <div className="flex flex-col" id={MODIA_HEADER_ID}>
           <div className="flex flex-row mt-4 mb-2 w-full">
             <OversiktLenker />
+            {isDecember() && <Santa />}
             <TildeltVeileder />
           </div>
           {isPride() && <Pride>&nbsp;</Pride>}

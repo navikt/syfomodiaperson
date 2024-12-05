@@ -12,7 +12,7 @@ enum Month {
   DECEMBER = 11,
 }
 
-const isDecember = () => {
+export const isDecember = () => {
   const currentMonth = new Date().getMonth();
 
   return currentMonth === Month.DECEMBER;
