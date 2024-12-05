@@ -69,6 +69,7 @@ import CheckboxPng from "./png/check-box-1.png";
 import KalenderPng from "./png/kalender.png";
 import KalenderHoverPng from "./png/kalender--hover.png";
 import PilForrigeBlaaPng from "./png/pilForrige--blaa.png";
+import SantaTransparent from "./png/santa_transparent.png";
 
 // GIF
 import EasterRoll from "./gif/easter_roll.gif";
@@ -143,4 +144,5 @@ export {
   Unntaksstatistikk,
   UtropstegnImage,
   SaveFile,
+  SantaTransparent,
 };
