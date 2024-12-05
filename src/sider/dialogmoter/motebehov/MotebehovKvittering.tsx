@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import {
   finnArbeidstakerMotebehovSvar,
   motebehovFromLatestActiveTilfelle,
@@ -7,34 +7,14 @@ import {
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
-import {
-  MotebehovIkkeSvartImage,
-  MotebehovKanIkkeImage,
-  MotebehovKanImage,
-} from "../../../../img/ImageComponents";
-import { PaddingSize } from "@/components/Layout";
 import { ledereUtenMotebehovsvar } from "@/utils/ledereUtils";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 import { capitalizeAllWords } from "@/utils/stringUtils";
-import { InfoRow } from "@/components/InfoRow";
+import MotebehovKvitteringInnhold from "@/sider/dialogmoter/motebehov/MotebehovKvitteringInnhold";
 
-export const arbeidsgiverNavnEllerTomStreng = (lederNavn?: string) => {
+export const arbeidsgiverNavnEllerTomStreng = (lederNavn: string | null) => {
   return lederNavn ? `${lederNavn}` : "";
-};
-
-export const setSvarIkon = (deltakerOnskerMote?: boolean): string => {
-  switch (deltakerOnskerMote) {
-    case true: {
-      return MotebehovKanImage;
-    }
-    case false: {
-      return MotebehovKanIkkeImage;
-    }
-    default: {
-      return MotebehovIkkeSvartImage;
-    }
-  }
 };
 
 export const setSvarTekst = (deltakerOnskerMote?: boolean) => {
@@ -87,30 +67,6 @@ const composePersonSvarText = (
   );
 };
 
-interface MotebehovKvitteringInnholdProps {
-  deltakerOnskerMote?: boolean;
-  ikonAltTekst: string;
-  motebehov?: MotebehovVeilederDTO;
-  tekst: ReactElement;
-  topPadding?: PaddingSize;
-}
-
-export const MotebehovKvitteringInnhold = ({
-  deltakerOnskerMote,
-  ikonAltTekst,
-  motebehov,
-  tekst,
-}: MotebehovKvitteringInnholdProps) => {
-  return (
-    <InfoRow
-      icon={setSvarIkon(deltakerOnskerMote)}
-      iconAltText={ikonAltTekst}
-      title={tekst}
-      subtitle={motebehov?.motebehovSvar?.forklaring}
-    />
-  );
-};
-
 interface MotebehovKvitteringInnholdArbeidstakerProps {
   arbeidstakersMotebehov?: MotebehovVeilederDTO;
   sykmeldt?: BrukerinfoDTO;
@@ -149,7 +105,7 @@ interface MotebehovKvitteringInnholdArbeidsgiverProps {
 }
 
 export const composeArbeidsgiverSvarText = (
-  lederNavn?: string,
+  lederNavn: string | null,
   harMotebehov?: boolean,
   svarOpprettetDato?: Date
 ) => {
@@ -182,7 +138,6 @@ export const MotebehovKvitteringInnholdArbeidsgiver = ({
             arbeidsgiverOnskerMote,
             motebehov.opprettetDato
           )}
-          topPadding={PaddingSize.SM}
         />
       );
     })}
@@ -207,7 +162,6 @@ export const MotebehovKvitteringInnholdArbeidsgiverUtenMotebehov = ({
             key={index}
             ikonAltTekst={ikonAltTekst}
             tekst={composeArbeidsgiverSvarText(leder.narmesteLederNavn)}
-            topPadding={PaddingSize.SM}
           />
         );
       }
