@@ -76,10 +76,16 @@ function logOppfolgingsoppgaveEdited(
   editedOppfolgingsoppgave: EditOppfolgingsoppgaveRequestDTO
 ) {
   const editedFields: string[] = [];
-  if (editedOppfolgingsoppgave.frist !== existingOppfolgingsoppgave.frist) {
+  const existingOppfolgingsoppgaveVersjon =
+    existingOppfolgingsoppgave.versjoner[0];
+  if (
+    editedOppfolgingsoppgave.frist !== existingOppfolgingsoppgaveVersjon?.frist
+  ) {
     editedFields.push("frist");
   }
-  if (editedOppfolgingsoppgave.tekst !== existingOppfolgingsoppgave.tekst) {
+  if (
+    editedOppfolgingsoppgave.tekst !== existingOppfolgingsoppgaveVersjon?.tekst
+  ) {
     editedFields.push("tekst");
   }
   Amplitude.logEvent({
@@ -103,6 +109,8 @@ export const OppfolgingsoppgaveModal = ({
   const editOppfolgingsoppgave = useEditOppfolgingsoppgave(
     existingOppfolgingsoppgave?.uuid
   );
+  const existingOppfolgingsoppgaveVersjon =
+    existingOppfolgingsoppgave?.versjoner?.[0];
   const {
     register,
     formState: { errors, isDirty },
@@ -111,19 +119,21 @@ export const OppfolgingsoppgaveModal = ({
     watch,
   } = useForm<FormValues>({
     defaultValues: {
-      beskrivelse: existingOppfolgingsoppgave?.tekst ?? "",
-      frist: existingOppfolgingsoppgave?.frist ?? null,
+      beskrivelse: existingOppfolgingsoppgaveVersjon?.tekst ?? "",
+      frist: existingOppfolgingsoppgaveVersjon?.frist ?? null,
     },
   });
   const watchedValues = watch();
   const isEditMode = !!existingOppfolgingsoppgave;
 
   const isFormEdited = useCallback(
-    (existingOppfolgingsoppgave) => {
+    (existingOppfolgingsoppgave: OppfolgingsoppgaveResponseDTO | undefined) => {
+      const existingOppfolgingsoppgaveVersjon =
+        existingOppfolgingsoppgave?.versjoner[0];
       const isFristEdited =
-        watchedValues.frist !== existingOppfolgingsoppgave?.frist;
+        watchedValues.frist !== existingOppfolgingsoppgaveVersjon?.frist;
       const isBeskrivelseEdited =
-        watchedValues.beskrivelse !== existingOppfolgingsoppgave?.tekst;
+        watchedValues.beskrivelse !== existingOppfolgingsoppgaveVersjon?.tekst;
       return isFristEdited || isBeskrivelseEdited;
     },
     [watchedValues]
@@ -187,8 +197,8 @@ export const OppfolgingsoppgaveModal = ({
     });
   }
 
-  const defaultSelectedDate = !!existingOppfolgingsoppgave?.frist
-    ? dayjs(existingOppfolgingsoppgave.frist).toDate()
+  const defaultSelectedDate = existingOppfolgingsoppgaveVersjon?.frist
+    ? dayjs(existingOppfolgingsoppgaveVersjon.frist).toDate()
     : undefined;
   const { datepickerProps, inputProps } = useDatepicker({
     onDateChange: (date: Date | undefined) => {
@@ -239,7 +249,7 @@ export const OppfolgingsoppgaveModal = ({
             {...register("oppfolgingsgrunn", { required: true })}
             error={errors.oppfolgingsgrunn && texts.missingOppfolgingsgrunn}
             readOnly={isEditMode}
-            value={existingOppfolgingsoppgave?.oppfolgingsgrunn}
+            value={existingOppfolgingsoppgaveVersjon?.oppfolgingsgrunn}
           >
             <option value="">{texts.oppfolgingsgrunnDefaultOption}</option>
             {Object.values(Oppfolgingsgrunn).map((oppfolgingsgrunn, index) => (

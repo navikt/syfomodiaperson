@@ -4,32 +4,33 @@ import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
 import { OppfolgingsoppgaveResponseDTO } from "@/data/oppfolgingsoppgave/types";
 
-export const oppfolgingsoppgaveQueryKeys = {
-  oppfolgingsoppgave: (personident: string) => [
-    "oppfolgingsoppgave",
+export const aktivOppfolgingsoppgaveQueryKeys = {
+  aktivOppfolgingsoppgave: (personident: string) => [
+    "aktivOppfolgingsoppgave",
     personident,
   ],
 };
 
-export const useGetOppfolgingsoppgave = () => {
+export const useAktivOppfolgingsoppgave = () => {
   const personident = useValgtPersonident();
-  const path = `${ISHUSKELAPP_ROOT}/huskelapp`;
+  const path = `${ISHUSKELAPP_ROOT}/huskelapp?isActive=true`;
   const getOppfolgingsoppgave = () =>
     get<OppfolgingsoppgaveResponseDTO>(path, personident);
 
   const {
-    data: oppfolgingsoppgave,
+    data: aktivOppfolgingsoppgave,
     isLoading,
     isError,
     isSuccess,
   } = useQuery({
-    queryKey: oppfolgingsoppgaveQueryKeys.oppfolgingsoppgave(personident),
+    queryKey:
+      aktivOppfolgingsoppgaveQueryKeys.aktivOppfolgingsoppgave(personident),
     queryFn: getOppfolgingsoppgave,
     enabled: !!personident,
   });
 
   return {
-    oppfolgingsoppgave: oppfolgingsoppgave,
+    aktivOppfolgingsoppgave: aktivOppfolgingsoppgave,
     isSuccess,
     isLoading,
     isError,

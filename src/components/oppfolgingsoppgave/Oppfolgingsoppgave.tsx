@@ -10,7 +10,7 @@ import {
 } from "@navikt/ds-react";
 import React, { useState } from "react";
 import { OpenOppfolgingsoppgaveModalButton } from "@/components/oppfolgingsoppgave/OpenOppfolgingsoppgaveModalButton";
-import { useGetOppfolgingsoppgave } from "@/data/oppfolgingsoppgave/useGetOppfolgingsoppgave";
+import { useAktivOppfolgingsoppgave } from "@/data/oppfolgingsoppgave/useAktivOppfolgingsoppgave";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { oppfolgingsgrunnToText } from "@/data/oppfolgingsoppgave/types";
@@ -26,25 +26,26 @@ const texts = {
 export const Oppfolgingsoppgave = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const removeOppfolgingsoppgave = useRemoveOppfolgingsoppgave();
-  const { oppfolgingsoppgave } = useGetOppfolgingsoppgave();
+  const { aktivOppfolgingsoppgave } = useAktivOppfolgingsoppgave();
+  const aktivOppfolgingsoppgaveVersjon =
+    aktivOppfolgingsoppgave?.versjoner?.[0];
+
   const { data: veilederinfo } = useVeilederInfoQuery(
-    oppfolgingsoppgave?.createdBy ?? ""
+    aktivOppfolgingsoppgave?.createdBy ?? ""
   );
-  const isExistingOppfolgingsoppgave = !!oppfolgingsoppgave;
+  const isExistingOppfolgingsoppgave = !!aktivOppfolgingsoppgave;
   const handleRemoveOppfolgingsoppgave = (uuid: string) => {
     removeOppfolgingsoppgave.mutate(uuid);
   };
 
-  const oppfolgingsgrunn = oppfolgingsoppgave?.oppfolgingsgrunn
-    ? oppfolgingsgrunnToText[oppfolgingsoppgave.oppfolgingsgrunn]
+  const oppfolgingsgrunn = aktivOppfolgingsoppgaveVersjon?.oppfolgingsgrunn
+    ? oppfolgingsgrunnToText[aktivOppfolgingsoppgaveVersjon.oppfolgingsgrunn]
     : null;
 
-  const beskrivelse = oppfolgingsoppgave?.tekst
-    ? oppfolgingsoppgave.tekst
-    : null;
+  const beskrivelse = aktivOppfolgingsoppgaveVersjon?.tekst ?? null;
 
-  const frist = oppfolgingsoppgave?.frist
-    ? tilLesbarDatoMedArUtenManedNavn(oppfolgingsoppgave?.frist)
+  const frist = aktivOppfolgingsoppgaveVersjon?.frist
+    ? tilLesbarDatoMedArUtenManedNavn(aktivOppfolgingsoppgaveVersjon?.frist)
     : undefined;
 
   return isExistingOppfolgingsoppgave ? (
@@ -84,7 +85,7 @@ export const Oppfolgingsoppgave = () => {
           type="button"
           variant={"secondary-neutral"}
           onClick={() =>
-            handleRemoveOppfolgingsoppgave(oppfolgingsoppgave.uuid)
+            handleRemoveOppfolgingsoppgave(aktivOppfolgingsoppgave.uuid)
           }
           loading={removeOppfolgingsoppgave.isPending}
           className={"ml-auto"}
@@ -96,12 +97,12 @@ export const Oppfolgingsoppgave = () => {
       <div className="mt-2">
         <Detail textColor="subtle" className="text-xs">
           {`Opprettet: ${tilLesbarDatoMedArUtenManedNavn(
-            oppfolgingsoppgave.createdAt
+            aktivOppfolgingsoppgave.createdAt
           )}`}
         </Detail>
         <Detail textColor="subtle" className="text-xs">
           {`Sist oppdatert: ${tilLesbarDatoMedArUtenManedNavn(
-            oppfolgingsoppgave.updatedAt
+            aktivOppfolgingsoppgave.updatedAt
           )}`}
         </Detail>
         {veilederinfo && (
@@ -117,7 +118,7 @@ export const Oppfolgingsoppgave = () => {
         <OppfolgingsoppgaveModal
           isOpen={isModalOpen}
           toggleOpen={setIsModalOpen}
-          existingOppfolgingsoppgave={oppfolgingsoppgave}
+          existingOppfolgingsoppgave={aktivOppfolgingsoppgave}
         />
       )}
     </Box>

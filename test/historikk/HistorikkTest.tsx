@@ -45,7 +45,7 @@ import { dialogmoteStatusEndringMock } from "@/mocks/isdialogmote/dialogmoterMoc
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { getDefaultOppfolgingsplanLPS } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
-import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useGetOppfolgingsoppgaver";
+import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useOppfolgingsoppgaver";
 import {
   historikkOppfolgingsoppgaveAktivMock,
   historikkOppfolgingsoppgaveFjernetMock,

@@ -7,7 +7,9 @@ export const stubOppfolgingsoppgaveApi = (
   oppfolgingsoppgave: OppfolgingsoppgaveResponseDTO | undefined
 ) =>
   mockServer.use(
-    http.get(`*${ISHUSKELAPP_ROOT}/huskelapp`, () =>
-      HttpResponse.json(oppfolgingsoppgave)
+    http.get(`*${ISHUSKELAPP_ROOT}/huskelapp`, ({ request }) =>
+      request.url.includes("?isActive=true")
+        ? HttpResponse.json(oppfolgingsoppgave)
+        : HttpResponse.json(null)
     )
   );

@@ -30,16 +30,6 @@ export interface OppfolgingsoppgaveResponseDTO {
   uuid: string;
   createdBy: string;
   updatedAt: Date;
-  createdAt: Date;
-  tekst?: string;
-  oppfolgingsgrunn?: Oppfolgingsgrunn;
-  frist: string | null;
-}
-
-export interface OppfolgingsoppgaveNewResponseDTO {
-  uuid: string;
-  createdBy: string;
-  updatedAt: Date;
   isActive: boolean;
   createdAt: Date;
   removedBy: string | null;

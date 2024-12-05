@@ -1,9 +1,9 @@
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import {
   oppfolgingsgrunnToText,
-  OppfolgingsoppgaveNewResponseDTO,
+  OppfolgingsoppgaveResponseDTO,
 } from "@/data/oppfolgingsoppgave/types";
-import { useGetOppfolgingsoppgaver } from "@/data/oppfolgingsoppgave/useGetOppfolgingsoppgaver";
+import { useOppfolgingsoppgaver } from "@/data/oppfolgingsoppgave/useOppfolgingsoppgaver";
 
 interface OppfolgingsoppgaveHistorikk {
   isLoading: boolean;
@@ -12,7 +12,7 @@ interface OppfolgingsoppgaveHistorikk {
 }
 
 function createHistorikkEvents(
-  oppfolgingsoppgaver: OppfolgingsoppgaveNewResponseDTO[]
+  oppfolgingsoppgaver: OppfolgingsoppgaveResponseDTO[]
 ): HistorikkEvent[] {
   const historikkEvents: HistorikkEvent[] = [];
 
@@ -62,7 +62,7 @@ export function useOppfolgingsoppgaveHistorikk(): OppfolgingsoppgaveHistorikk {
     oppfolgingsoppgaver: oppfolgingsoppgaver,
     isLoading: isOppfolgingsoppgaverLoading,
     isError: isOppfolgingsoppgaverError,
-  } = useGetOppfolgingsoppgaver();
+  } = useOppfolgingsoppgaver();
 
   const historikkEvents = createHistorikkEvents(oppfolgingsoppgaver || []);
 
