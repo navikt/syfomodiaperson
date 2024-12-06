@@ -19,7 +19,7 @@ export const mockSyfomotebehov = [
 
   http.post(`${SYFOMOTEBEHOV_ROOT}/motebehov/:fnr/behandle`, () => {
     const oppdaterteMotebehov = motebehovMock.map((motebehov) => {
-      motebehov.behandletTidspunkt = new Date().toDateString();
+      motebehov.behandletTidspunkt = new Date();
       motebehov.behandletVeilederIdent = VEILEDER_IDENT_DEFAULT;
     });
 
