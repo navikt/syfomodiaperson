@@ -10,6 +10,7 @@ import { SykmeldingCheckboxForFelt } from "./SykmeldingCheckboxForFelt";
 import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
 import { SpeilingEkspanderbartPanelTittel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanelTittel";
 import { Egenmeldingsdager } from "./Egenmeldingsdager";
+import { Heading } from "@navikt/ds-react";
 
 const texts = {
   dinSykmeldingTittel: "Sykmelding",
@@ -31,22 +32,18 @@ const getStillingsprosentText = (stillingsprosent?: number) => {
 
 interface Props {
   sykmelding: SykmeldingOldFormat;
-  Overskrift?: keyof JSX.IntrinsicElements;
 }
 
-export function DineSykmeldingOpplysninger(
-  dineSykmeldingOpplysningerProps: Props
-) {
-  const { sykmelding, Overskrift = "h2" } = dineSykmeldingOpplysningerProps;
+export function SykmeldingOpplysninger({ sykmelding }: Props) {
   return (
     <div className="dine-opplysninger">
-      <Overskrift className="js-din-sykmelding-tittel typo-innholdstittel blokk-l">
+      <Heading level="2" size="large">
         {sykmelding.mulighetForArbeid.perioder.some((periode) => {
           return !!periode.avventende;
         })
           ? "Avventende sykmelding"
           : texts.dinSykmeldingTittel}
-      </Overskrift>
+      </Heading>
       <div className="blokk-l side-innhold">
         <SykmeldingPerioder perioder={sykmelding.mulighetForArbeid.perioder} />
         {sykmelding.sporsmal.egenmeldingsdager &&
