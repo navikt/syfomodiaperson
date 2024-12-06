@@ -11,6 +11,7 @@ import {
 } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
 import { useSendVurderingArbeidsuforhet } from "@/data/arbeidsuforhet/useSendVurderingArbeidsuforhet";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
+import { InfoUtsattFristJuletid } from "@/components/InfoUtsattFristJuletid";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -92,6 +93,7 @@ export const SendForhandsvarselSkjema = () => {
         {sendForhandsvarsel.isError && (
           <SkjemaInnsendingFeil error={sendForhandsvarsel.error} />
         )}
+        <InfoUtsattFristJuletid />
         <ButtonRow>
           <Button loading={sendForhandsvarsel.isPending} type="submit">
             {texts.sendVarselButtonText}

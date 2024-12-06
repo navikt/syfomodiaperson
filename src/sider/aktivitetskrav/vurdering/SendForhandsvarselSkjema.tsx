@@ -16,6 +16,7 @@ import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
 import { Brevmal } from "@/data/aktivitetskrav/forhandsvarselTexts";
+import { InfoUtsattFristJuletid } from "@/components/InfoUtsattFristJuletid";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -135,6 +136,7 @@ export const SendForhandsvarselSkjema = ({
       {sendForhandsvarsel.isError && (
         <SkjemaInnsendingFeil error={sendForhandsvarsel.error} />
       )}
+      <InfoUtsattFristJuletid />
       <ButtonRow>
         <Button loading={sendForhandsvarsel.isPending} type="submit">
           {texts.sendVarselButtonText}

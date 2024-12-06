@@ -14,6 +14,7 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { erProd } from "@/utils/miljoUtil";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
+import { InfoUtsattFristJuletid } from "@/components/InfoUtsattFristJuletid";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -98,6 +99,7 @@ export default function ForhandsvarselSkjema() {
         {sendForhandsvarsel.isError && (
           <SkjemaInnsendingFeil error={sendForhandsvarsel.error} />
         )}
+        <InfoUtsattFristJuletid />
         <ButtonRow>
           <Button loading={sendForhandsvarsel.isPending} type="submit">
             {texts.sendVarselButtonText}
