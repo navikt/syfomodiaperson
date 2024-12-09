@@ -4,28 +4,24 @@ import SykmeldingLinkPanel from "./SykmeldingLinkPanel";
 
 interface SykmeldingTeasereProps {
   sykmeldinger: SykmeldingOldFormat[];
-  className: string;
   tittel: string;
   ingenSykmeldingerMelding: string;
-  id: string;
   children?: ReactElement;
 }
 
-const SykmeldingTeasere = ({
+export default function Sykmeldinger({
   sykmeldinger,
-  className,
-  tittel = "",
+  tittel,
   ingenSykmeldingerMelding,
-  id,
   children,
-}: SykmeldingTeasereProps): ReactElement => {
+}: SykmeldingTeasereProps): ReactElement {
   return (
     <div className="mb-4">
       <header className="inngangspanelerHeader">
         <h2 className="inngangspanelerHeader__tittel">{tittel}</h2>
         {children}
       </header>
-      <div id={id} className={className || "js-content"}>
+      <div>
         {sykmeldinger.length ? (
           sykmeldinger.map((sykmelding, idx) => (
             <SykmeldingLinkPanel key={idx} sykmelding={sykmelding} />
@@ -36,6 +32,4 @@ const SykmeldingTeasere = ({
       </div>
     </div>
   );
-};
-
-export default SykmeldingTeasere;
+}

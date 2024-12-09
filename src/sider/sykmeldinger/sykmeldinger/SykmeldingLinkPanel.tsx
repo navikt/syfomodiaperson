@@ -13,13 +13,13 @@ import {
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
-import { Heading, LinkPanel } from "@navikt/ds-react";
+import { Heading, LinkPanel, List } from "@navikt/ds-react";
 import styled from "styled-components";
 import { PapirsykmeldingTag } from "@/components/PapirsykmeldingTag";
-import { UtenlandskSykmeldingTag } from "@/components/UtenlandskSykmeldingTag";
 import { erEkstraInformasjonISykmeldingen } from "@/utils/sykmeldinger/sykmeldingUtils";
 import ImportantInformationIcon from "@/components/ImportantInformationIcon";
-import SykmeldingPeriodeInfo from "@/sider/sykmeldinger/sykmeldinger/SykmeldingPeriodeInfo";
+import { sykmeldingPeriodeTekst } from "@/sider/sykmeldinger/sykmeldinger/SykmeldingPeriodeInfo";
+import { UtenlandskSykmeldingTag } from "@/components/UtenlandskSykmeldingTag";
 
 const texts = {
   teaserTekst: "Sykmelding\n",
@@ -61,20 +61,17 @@ interface PeriodeListeProps {
   arbeidsgiver?: string;
 }
 
-const PeriodeListe = ({ perioder, arbeidsgiver }: PeriodeListeProps) => {
+export function PeriodeListe({ perioder, arbeidsgiver }: PeriodeListeProps) {
   return (
-    <ul className="teaser-punktliste js-perioder">
+    <List as="ul" size="small">
       {perioder.map((periode, index) => (
-        <SykmeldingPeriodeInfo
-          key={index}
-          periode={periode}
-          arbeidsgiver={arbeidsgiver}
-          Element="li"
-        />
+        <List.Item key={index}>
+          {sykmeldingPeriodeTekst(periode, arbeidsgiver)}
+        </List.Item>
       ))}
-    </ul>
+    </List>
   );
-};
+}
 
 const getIkon = (behandlingsutfallStatus: BehandlingsutfallStatusDTO) => {
   return behandlingsutfallStatus === BehandlingsutfallStatusDTO.INVALID
@@ -88,10 +85,6 @@ const getHoverIkon = (behandlingsutfallStatus: BehandlingsutfallStatusDTO) => {
     : SykmeldingerHoverBlaaImage;
 };
 
-interface Props {
-  sykmelding: SykmeldingOldFormat;
-}
-
 const StyledLinkPanel = styled(LinkPanel)`
   margin-bottom: 0.1em;
 
@@ -99,6 +92,10 @@ const StyledLinkPanel = styled(LinkPanel)`
     width: 100%;
   }
 `;
+
+interface Props {
+  sykmelding: SykmeldingOldFormat;
+}
 
 export default function SykmeldingLinkPanel({
   sykmelding,
@@ -143,7 +140,7 @@ export default function SykmeldingLinkPanel({
             </div>
           </div>
           <div className="flex">
-            <Heading size="small" className="flex">
+            <Heading size="small" className="flex mr-2">
               {sykmelding.egenmeldt
                 ? texts.egenmeldtTeaserTekst
                 : texts.teaserTekst}
