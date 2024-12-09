@@ -5,6 +5,7 @@ import {
   VIRKSOMHET_UTEN_NARMESTE_LEDER,
 } from "../common/mockConstants";
 import { OppfolgingstilfellePersonDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import { addWeeks } from "@/utils/datoUtils";
 
 export const oppfolgingstilfellePersonMock: OppfolgingstilfellePersonDTO = {
   oppfolgingstilfelleList: [
@@ -26,8 +27,8 @@ export const oppfolgingstilfellePersonMock: OppfolgingstilfellePersonDTO = {
     },
     {
       arbeidstakerAtTilfelleEnd: true,
-      start: new Date("2024-02-21"),
-      end: new Date("2024-12-10"),
+      start: addWeeks(new Date(), -40),
+      end: addWeeks(new Date(), 20),
       virksomhetsnummerList: [
         VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
         VIRKSOMHET_BRANNOGBIL.virksomhetsnummer,
