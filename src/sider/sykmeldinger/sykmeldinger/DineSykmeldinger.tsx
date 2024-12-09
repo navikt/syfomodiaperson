@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import SykmeldingTeasere from "./SykmeldingTeasere";
+import Sykmeldinger from "./Sykmeldinger";
 import { VelgSykmeldingSorteringDropdown } from "./VelgSykmeldingSorteringDropdown";
 import {
   SorteringKriterium,
@@ -13,8 +13,9 @@ import {
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 
 const texts = {
-  ingenSykmeldinger: "Tidligere sykmeldinger",
+  tidligereSykmeldinger: "Tidligere sykmeldinger",
   ingenNyeSykmeldinger: "Du har ingen nye sykmeldinger",
+  ingenTidligereSykmeldinger: "Du har ingen tidligere sykmeldinger",
   nyeSykmeldinger: "Nye sykmeldinger",
   apneSykmelding: "Åpne sykmelding",
   sorteringDato: "Dato",
@@ -32,13 +33,13 @@ const sorteringsKriterier: SorteringKriterium[] = [
   },
 ];
 
-interface DineSykmeldingerProps {
+interface Props {
   sykmeldinger: SykmeldingOldFormat[];
 }
 
-const DineSykmeldinger = ({
+export default function DineSykmeldinger({
   sykmeldinger = [],
-}: DineSykmeldingerProps): ReactElement => {
+}: Props): ReactElement {
   const nyeSykmeldinger = sykmeldinger.filter((sykmld) => {
     return skalVisesSomAktivSykmelding(sykmld);
   });
@@ -50,32 +51,26 @@ const DineSykmeldinger = ({
 
   return (
     <>
-      <SykmeldingTeasere
+      <Sykmeldinger
         sykmeldinger={sorterSykmeldinger(nyeSykmeldinger)}
         tittel={texts.nyeSykmeldinger}
         ingenSykmeldingerMelding={texts.ingenNyeSykmeldinger}
-        className="js-nye-sykmeldinger"
-        id="sykmelding-liste-nye"
       />
       {tidligereSykmeldinger.length > 0 && (
-        <SykmeldingTeasere
+        <Sykmeldinger
           sykmeldinger={sorterSykmeldinger(
             tidligereSykmeldinger,
             valgtSortering
           )}
-          tittel={texts.ingenSykmeldinger}
-          ingenSykmeldingerMelding={texts.ingenSykmeldinger}
-          className="js-tidligere-sykmeldinger"
-          id="sykmelding-liste-tidligere"
+          tittel={texts.tidligereSykmeldinger}
+          ingenSykmeldingerMelding={texts.ingenTidligereSykmeldinger}
         >
           <VelgSykmeldingSorteringDropdown
             sorteringsKriterier={sorteringsKriterier}
             onSorteringChanged={(e) => setValgtSortering(e.target.value)}
           />
-        </SykmeldingTeasere>
+        </Sykmeldinger>
       )}
     </>
   );
-};
-
-export default DineSykmeldinger;
+}

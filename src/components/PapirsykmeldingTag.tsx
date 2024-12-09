@@ -6,7 +6,7 @@ const texts = {
 };
 
 export const PapirsykmeldingTag = () => (
-  <Tag className="w-max" variant="neutral">
+  <Tag className="w-max" variant="neutral" size="small">
     {texts.tag}
   </Tag>
 );
