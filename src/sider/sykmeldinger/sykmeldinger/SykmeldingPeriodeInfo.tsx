@@ -1,4 +1,3 @@
-import React, { ReactElement } from "react";
 import { getDuration } from "@/utils/datoUtils";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { firstLetterToUpperCase } from "@/utils/stringUtils";
@@ -58,16 +57,10 @@ const textDefault = (dager: number, arbeidsgiver?: string, grad?: number) => {
   return grad ? `${grad} %${text}` : `${firstLetterToUpperCase(text.trim())}`;
 };
 
-interface SykmeldingPeriodeInfoProps {
-  periode: SykmeldingPeriodeDTO;
-  arbeidsgiver?: string;
-  Element?: keyof JSX.IntrinsicElements;
-}
-
-const sykmeldingPeriodeTekst = (
+export function sykmeldingPeriodeTekst(
   periode: SykmeldingPeriodeDTO,
   arbeidsgiver?: string
-): string => {
+): string {
   const antallDager = getDuration(periode.fom, periode.tom);
   const sykmeldtEnDag = antallDager === 1;
   const sykmeldtEnDagIngenGrad = sykmeldtEnDag && periode.grad === undefined;
@@ -99,16 +92,4 @@ const sykmeldingPeriodeTekst = (
   } else {
     return textDefault(antallDager, arbeidsgiver, periode.grad);
   }
-};
-
-const SykmeldingPeriodeInfo = ({
-  periode,
-  arbeidsgiver,
-  Element = "p",
-}: SykmeldingPeriodeInfoProps): ReactElement => {
-  const text = sykmeldingPeriodeTekst(periode, arbeidsgiver);
-
-  return <Element>{text}</Element>;
-};
-
-export default SykmeldingPeriodeInfo;
+}

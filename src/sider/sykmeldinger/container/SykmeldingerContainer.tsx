@@ -8,7 +8,7 @@ import { BistandsbehovOppgaver } from "@/sider/sykmeldinger/VurderBistandsbehov"
 import { Heading } from "@navikt/ds-react";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 
-const SykmeldingerSide = (): ReactElement => {
+export default function SykmeldingerSide(): ReactElement {
   const { isLoading, isError, sykmeldinger } = useSykmeldingerQuery();
 
   return (
@@ -25,6 +25,4 @@ const SykmeldingerSide = (): ReactElement => {
       </SideLaster>
     </Side>
   );
-};
-
-export default SykmeldingerSide;
+}
