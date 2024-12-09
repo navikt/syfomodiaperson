@@ -3,25 +3,25 @@ import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat
 import SykmeldingNokkelOpplysning from "./SykmeldingNokkelOpplysning";
 import SykmeldingPerioder from "./SykmeldingPerioder";
 import { Egenmeldingsdager } from "./Egenmeldingsdager";
+import { Heading } from "@navikt/ds-react";
 
 const texts = {
   diagnose: "Diagnose",
   diagnosekode: "Diagnosekode",
 };
 
-interface DineKoronaSykmeldingOpplysningerProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
-const DineKoronaSykmeldingOpplysninger = (
-  dineKoronaSykmeldingOpplysningerProps: DineKoronaSykmeldingOpplysningerProps
-) => {
-  const { sykmelding } = dineKoronaSykmeldingOpplysningerProps;
 
+export default function DineKoronaSykmeldingOpplysninger({
+  sykmelding,
+}: Props) {
   return (
     <div className="dine-opplysninger">
-      <h2 className="js-din-sykmelding-tittel typo-innholdstittel blokk-l">
-        Dine opplysninger
-      </h2>
+      <Heading size="medium" className="mb-6">
+        Opplysninger
+      </Heading>
       <div className="blokk-l side-innhold fjern-margin-bottom">
         <SykmeldingPerioder perioder={sykmelding.mulighetForArbeid.perioder} />
         {sykmelding.sporsmal.egenmeldingsdager &&
@@ -65,6 +65,4 @@ const DineKoronaSykmeldingOpplysninger = (
       </div>
     </div>
   );
-};
-
-export default DineKoronaSykmeldingOpplysninger;
+}
