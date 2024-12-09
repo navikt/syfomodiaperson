@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import SykmeldingTeaser from "./SykmeldingTeaser";
+import SykmeldingLinkPanel from "./SykmeldingLinkPanel";
 
 interface SykmeldingTeasereProps {
   sykmeldinger: SykmeldingOldFormat[];
@@ -28,7 +28,7 @@ const SykmeldingTeasere = ({
       <div id={id} className={className || "js-content"}>
         {sykmeldinger.length ? (
           sykmeldinger.map((sykmelding, idx) => (
-            <SykmeldingTeaser key={idx} sykmelding={sykmelding} />
+            <SykmeldingLinkPanel key={idx} sykmelding={sykmelding} />
           ))
         ) : (
           <p className="typo-infotekst">{ingenSykmeldingerMelding}</p>
