@@ -20,10 +20,10 @@ import SykmeldingUtdragFraSykefravaretVisning from "../motebehov/SykmeldingUtdra
 import styled from "styled-components";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
-import { MerInformasjonImage } from "img/ImageComponents";
 import { PapirsykmeldingTag } from "../PapirsykmeldingTag";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { UtenlandskSykmeldingTag } from "@/components/UtenlandskSykmeldingTag";
+import ImportantInformationIcon from "@/components/ImportantInformationIcon";
 
 const texts = {
   header: "Sykmeldinger",
@@ -127,15 +127,7 @@ const SykmeldingTittelbeskrivelse = ({ sykmelding }: UtvidbarTittelProps) => {
               {texts.utenArbeidsgiver}
             </Tag>
           )}
-          {erViktigInformasjon && (
-            <img
-              height={18}
-              width={18}
-              alt="Viktig informasjon"
-              src={MerInformasjonImage}
-              className="max-w-[18px]"
-            />
-          )}
+          {erViktigInformasjon && <ImportantInformationIcon />}
         </div>
       </div>
       {sykmelding.diagnose.hoveddiagnose && (
