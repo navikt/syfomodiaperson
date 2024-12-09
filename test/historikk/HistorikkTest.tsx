@@ -51,6 +51,7 @@ import {
   historikkOppfolgingsoppgaveFjernetMock,
 } from "@/mocks/oppfolgingsoppgave/historikkOppfolgingsoppgaveMock";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
+import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 
 let queryClient: QueryClient;
 
@@ -168,12 +169,19 @@ describe("Historikk", () => {
     );
     renderHistorikk();
 
+    const lastOppfolgingstilfelle =
+      oppfolgingstilfellePersonMock.oppfolgingstilfelleList[
+        oppfolgingstilfellePersonMock.oppfolgingstilfelleList.length - 1
+      ];
+    const dropdownOptionText = tilLesbarPeriodeMedArstall(
+      lastOppfolgingstilfelle.start,
+      lastOppfolgingstilfelle.end
+    );
+
     expect(await screen.findAllByText("Historikk")).to.exist;
     expect(screen.getByLabelText("Sykefraværstilfelle")).to.exist;
     expect(screen.getByText("Sykefraværstilfelle")).to.exist;
-    expect(
-      screen.getByRole("option", { name: "21. februar – 10. desember 2024" })
-    ).to.exist;
+    expect(screen.getByRole("option", { name: dropdownOptionText })).to.exist;
     expect(
       screen.queryByRole("option", { name: "Utenfor sykefraværstilfelle" })
     ).to.not.exist;
@@ -186,10 +194,17 @@ describe("Historikk", () => {
     );
     renderHistorikk();
 
+    const lastOppfolgingstilfelle =
+      oppfolgingstilfellePersonMock.oppfolgingstilfelleList[
+        oppfolgingstilfellePersonMock.oppfolgingstilfelleList.length - 1
+      ];
+    const dropdownOptionText = tilLesbarPeriodeMedArstall(
+      lastOppfolgingstilfelle.start,
+      lastOppfolgingstilfelle.end
+    );
+
     expect(await screen.findAllByText("Historikk")).to.exist;
-    expect(
-      screen.getByRole("option", { name: "21. februar – 10. desember 2024" })
-    ).to.exist;
+    expect(screen.getByRole("option", { name: dropdownOptionText })).to.exist;
     expect(screen.getByRole("option", { name: "Utenfor sykefraværstilfelle" }))
       .to.exist;
   });
