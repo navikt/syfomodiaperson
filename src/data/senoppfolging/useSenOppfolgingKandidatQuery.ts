@@ -20,6 +20,7 @@ export const useSenOppfolgingKandidatQuery = () => {
     queryFn: getSenOppfolgingKandidat,
     enabled: !!fnr,
     staleTime: minutesToMillis(60 * 12),
+    refetchOnWindowFocus: "always",
   });
 
   return {
