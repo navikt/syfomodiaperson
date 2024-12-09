@@ -18,8 +18,8 @@ import {
   Radio,
   RadioGroup,
   ReadMore,
+  VStack,
 } from "@navikt/ds-react";
-import { FlexRow, PaddingSize } from "@/components/Layout";
 import { useBehandleMotebehovAndSendTilbakemelding } from "@/data/motebehov/useBehandleMotebehovAndSendTilbakemelding";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 
@@ -71,7 +71,7 @@ const BehandleMotebehovKnapp = ({
   if (!erBehandlet) {
     return (
       <>
-        <FlexRow bottomPadding={PaddingSize.SM}>
+        <VStack>
           <RadioGroup
             defaultValue={false}
             size="small"
@@ -81,15 +81,13 @@ const BehandleMotebehovKnapp = ({
             <Radio value={false}>{texts.vurdertUtenTilbakemelding}</Radio>
             <Radio value={true}>{texts.vurdertMedTilbakemelding}</Radio>
           </RadioGroup>
-        </FlexRow>
-        {isTilbakemelding && (
-          <FlexRow bottomPadding={PaddingSize.SM}>
+          {isTilbakemelding && (
             <ReadMore size="small" header={texts.tilbakemeldingHeader}>
               {texts.tilbakemelding}
             </ReadMore>
-          </FlexRow>
-        )}
-        <FlexRow>
+          )}
+        </VStack>
+        <div>
           {(behandleMotebehov.isError ||
             behandleMotebehovAndSendTilbakemelding.isError) && (
             <SkjemaInnsendingFeil
@@ -114,7 +112,7 @@ const BehandleMotebehovKnapp = ({
           >
             Send
           </Button>
-        </FlexRow>
+        </div>
       </>
     );
   }

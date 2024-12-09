@@ -3,7 +3,7 @@ import Sidetopp from "../../components/Sidetopp";
 import UtdragFraSykefravaeretPanel from "../../components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { InnkallingDialogmotePanel } from "./components/innkalling/InnkallingDialogmotePanel";
 import SideLaster from "../../components/SideLaster";
-import { DialogmoteOnskePanel } from "./components/DialogmoteOnskePanel";
+import { DialogmoteOnskePanel } from "./motebehov/DialogmoteOnskePanel";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
