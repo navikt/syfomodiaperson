@@ -22,8 +22,8 @@ import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
 import { PapirsykmeldingTag } from "../PapirsykmeldingTag";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { UtenlandskSykmeldingTag } from "@/components/UtenlandskSykmeldingTag";
 import ImportantInformationIcon from "@/components/ImportantInformationIcon";
+import { UtenlandskSykmeldingTag } from "@/components/UtenlandskSykmeldingTag";
 
 const texts = {
   header: "Sykmeldinger",
