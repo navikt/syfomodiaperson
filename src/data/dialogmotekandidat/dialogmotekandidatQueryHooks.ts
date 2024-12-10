@@ -7,6 +7,7 @@ import {
   DialogmotekandidatHistorikkDTO,
 } from "@/data/dialogmotekandidat/dialogmotekandidatTypes";
 import { useLatestFerdigstiltReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
+import { minutesToMillis } from "@/utils/timeUtils";
 
 export const dialogmotekandidatQueryKeys = {
   kandidat: (personident: string) => ["dialogmotekandidat", personident],
@@ -43,6 +44,8 @@ export const useDialogmotekandidat = () => {
     queryKey: dialogmotekandidatQueryKeys.kandidat(personident),
     queryFn: fetchKandidat,
     enabled: !!personident,
+    refetchOnWindowFocus: true,
+    staleTime: minutesToMillis(5),
   });
 
   const isNoFerdigstiltDialogmoteReferatAfterKandidatAt =

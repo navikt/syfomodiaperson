@@ -6,6 +6,7 @@ import {
   AktivitetskravHistorikkDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { useQuery } from "@tanstack/react-query";
+import { minutesToMillis } from "@/utils/timeUtils";
 
 export const aktivitetskravQueryKeys = {
   aktivitetskrav: (personident: string) => ["aktivitetskrav", personident],
@@ -25,6 +26,8 @@ export const useAktivitetskravQuery = () => {
     queryKey: aktivitetskravQueryKeys.aktivitetskrav(personident),
     queryFn: fetchAktivitetskrav,
     enabled: !!personident,
+    refetchOnWindowFocus: true,
+    staleTime: minutesToMillis(5),
   });
 
   return {
