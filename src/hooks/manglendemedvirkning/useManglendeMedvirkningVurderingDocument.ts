@@ -34,7 +34,7 @@ type IkkeAktuellDocumentValues = {
 
 type StansDocumentValues = {
   begrunnelse: string;
-  stansdato: Date;
+  stansdato: Date | undefined;
 };
 
 interface Documents {
