@@ -4,7 +4,7 @@ import { formaterFnr } from "@/utils/fnrUtils";
 import CopyButton from "../../kopierknapp/CopyButton";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
-import { HStack, Tag } from "@navikt/ds-react";
+import { HStack } from "@navikt/ds-react";
 import { PersonkortHeaderTags } from "@/components/personkort/PersonkortHeader/PersonkortHeaderTags";
 import { KjonnIkon } from "@/components/personkort/PersonkortHeader/KjonnIkon";
 import { TilfellePeriod } from "@/components/personkort/PersonkortHeader/TilfellePeriod";
@@ -12,10 +12,9 @@ import { Varighet } from "@/components/personkort/PersonkortHeader/Varighet";
 import { Diagnosekode } from "@/components/personkort/PersonkortHeader/Diagnosekode";
 import { useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
 import { NavnHeader } from "@/components/personkort/PersonkortHeader/NavnHeader";
-import { MaksdatoSummary } from "@/components/personkort/PersonkortHeader/MaksdatoSummary";
+import Utbetalingsinfo from "@/components/personkort/PersonkortHeader/Utbetalingsinfo";
 
 const texts = {
-  ikkeUtbetalt: "Sykepenger ikke utbetalt",
   copied: "Kopiert!",
 };
 
@@ -32,7 +31,8 @@ const StyledFnr = styled.div`
 export function PersonkortHeader() {
   const navbruker = useNavBrukerData();
   const personident = useValgtPersonident();
-  const { data: maksDato, isSuccess } = useMaksdatoQuery();
+  const getMaksdato = useMaksdatoQuery();
+  const maksdato = getMaksdato.data?.maxDate;
 
   return (
     <>
@@ -52,15 +52,7 @@ export function PersonkortHeader() {
             <Diagnosekode />
           </HStack>
 
-          {isSuccess ? (
-            maksDato?.maxDate ? (
-              <MaksdatoSummary maxDate={maksDato.maxDate} />
-            ) : (
-              <Tag variant="warning" size="small" className="mt-1">
-                {texts.ikkeUtbetalt}
-              </Tag>
-            )
-          ) : null}
+          {getMaksdato.isSuccess && <Utbetalingsinfo maksdato={maksdato} />}
         </div>
       </div>
       <PersonkortHeaderTags />

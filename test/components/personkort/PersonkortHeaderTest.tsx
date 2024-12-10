@@ -9,7 +9,11 @@ import {
 import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 import { egenansattQueryKeys } from "@/data/egenansatt/egenansattQueryHooks";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
-import { brukerinfoMock, maksdato } from "@/mocks/syfoperson/persondataMock";
+import {
+  brukerinfoMock,
+  maksdato,
+  maksdatoMock,
+} from "@/mocks/syfoperson/persondataMock";
 import { diskresjonskodeQueryKeys } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { daysFromToday } from "../../testUtils";
@@ -17,6 +21,10 @@ import dayjs from "dayjs";
 import { underArbeidsrettetOppfolgingQueryKeys } from "@/data/veilarboppfolging/useUnderArbeidsrettetOppfolgingQuery";
 import { UnderArbeidsrettetOppfolgingResponseDTO } from "@/data/veilarboppfolging/veilarboppfolgingTypes";
 import { PersonkortHeader } from "@/components/personkort/PersonkortHeader/PersonkortHeader";
+import { maksdatoQueryKeys } from "@/data/maksdato/useMaksdatoQuery";
+import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
+import { addDays } from "@/utils/datoUtils";
 
 let queryClient: any;
 
@@ -164,6 +172,76 @@ describe("PersonkortHeader", () => {
     expect(screen.getByText(dayjs(maksdato).format("DD.MM.YYYY"))).to.exist;
     expect(screen.getByText("Utbetalt tom:")).to.exist;
     expect(screen.getByText("01.07.2024")).to.exist;
+  });
+
+  describe("Utbetalingsinfo warning", () => {
+    const startDate = addDays(new Date(), -10);
+    const endDate = addDays(new Date(), 10);
+
+    const oppfolgingstilfelle = {
+      ...oppfolgingstilfellePersonMock,
+      oppfolgingstilfelleList: [
+        oppfolgingstilfellePersonMock.oppfolgingstilfelleList[0],
+        oppfolgingstilfellePersonMock.oppfolgingstilfelleList[1],
+        {
+          ...oppfolgingstilfellePersonMock.oppfolgingstilfelleList[2],
+          start: startDate,
+          end: endDate,
+        },
+      ],
+    };
+
+    const utebetalingsinfo = (opprettet: Date) => ({
+      ...maksdatoMock,
+      maxDate: {
+        ...maksdatoMock.maxDate,
+        opprettet: opprettet,
+      },
+    });
+
+    it("viser en infoboks hvis maksdato gjelder et annet oppfølgingstilfelle", () => {
+      const opprettet = addDays(new Date(), -20);
+
+      queryClient.setQueryData(
+        maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => utebetalingsinfo(opprettet)
+      );
+      queryClient.setQueryData(
+        oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => oppfolgingstilfelle
+      );
+      renderPersonkortHeader();
+
+      expect(
+        screen.getByText(
+          "Maksdatoen kan gjelde et tidligere oppfølgingstilfelle."
+        )
+      ).to.exist;
+    });
+
+    it("viser ikke en infoboks hvis maksdato gjelder nåværende oppfølgingstilfelle", () => {
+      const opprettet = new Date();
+
+      queryClient.setQueryData(
+        maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => utebetalingsinfo(opprettet)
+      );
+      queryClient.setQueryData(
+        oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => oppfolgingstilfelle
+      );
+      renderPersonkortHeader();
+
+      expect(
+        screen.queryByText(
+          "Maksdatoen kan gjelde et tidligere oppfølgingstilfelle."
+        )
+      ).to.not.exist;
+    });
   });
 
   it("viser ikke sikkerhetstiltak-tag når bruker mangler sikkerhetstiltak", () => {

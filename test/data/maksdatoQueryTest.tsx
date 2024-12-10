@@ -23,6 +23,25 @@ describe("maksdatoQuery", () => {
 
     await waitFor(() => expect(result.current.isSuccess).to.be.true);
 
-    expect(result.current.data).to.deep.equal(maksdatoMock);
+    expect(result.current.data?.maxDate?.id).to.deep.equal(
+      maksdatoMock.maxDate.id
+    );
+    expect(result.current.data?.maxDate?.fnr).to.deep.equal(
+      maksdatoMock.maxDate.fnr
+    );
+    expect(result.current.data?.maxDate?.opprettet).to.deep.equal(
+      maksdatoMock.maxDate.opprettet
+    );
+    expect(result.current.data?.maxDate?.utbetalt_tom).to.deep.equal(
+      maksdatoMock.maxDate.utbetalt_tom
+    );
+    expect(result.current.data?.maxDate?.gjenstaende_sykedager).to.deep.equal(
+      maksdatoMock.maxDate.gjenstaende_sykedager
+    );
+    expect(
+      result.current.data?.maxDate?.forelopig_beregnet_slutt
+    ).to.deep.equal(
+      maksdatoMock.maxDate.forelopig_beregnet_slutt.toISOString()
+    );
   });
 });
