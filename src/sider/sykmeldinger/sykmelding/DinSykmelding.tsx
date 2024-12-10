@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Alertstripe from "nav-frontend-alertstriper";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { DineSykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/DineSykmeldingOpplysninger";
+import { SykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingOpplysninger";
 
 const texts = {
   eldreSykmeldinger: "Du har eldre sykmeldinger som du bør behandle før denne.",
@@ -32,7 +32,7 @@ export function DinSykmelding(dinSykmeldingProps: Props) {
           </p>
         </Alertstripe>
       )}
-      <DineSykmeldingOpplysninger sykmelding={sykmelding} />
+      <SykmeldingOpplysninger sykmelding={sykmelding} />
     </>
   );
 }

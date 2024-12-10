@@ -1,9 +1,9 @@
 import React, { ReactElement } from "react";
 import {
-  Sykmeldingstatus,
-  SendtDato,
   Arbeidsgiver,
   Orgnummer,
+  SendtDato,
+  Sykmeldingstatus,
 } from "./SykmeldingStatuspanelOpplysning";
 import Statuspanel, {
   Statusopplysninger,

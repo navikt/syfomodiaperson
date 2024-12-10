@@ -3,7 +3,7 @@ import SykmeldingStatuspanel from "../sykmeldingstatuspanel/SykmeldingStatuspane
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { SpeilingEkspanderbartPanelTittel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanelTittel";
 import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
-import { DineSykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/DineSykmeldingOpplysninger";
+import { SykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingOpplysninger";
 
 const texts = {
   dineOpplysninger: "Dine opplysninger",
@@ -26,7 +26,7 @@ const DinAvbrutteSykmelding = ({ sykmelding }: DinAvbrutteSykmeldingProps) => {
           </SpeilingEkspanderbartPanelTittel>
         }
       >
-        <DineSykmeldingOpplysninger sykmelding={sykmelding} />
+        <SykmeldingOpplysninger sykmelding={sykmelding} />
       </SpeilingEkspanderbartPanel>
     </div>
   );

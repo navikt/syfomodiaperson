@@ -6,7 +6,7 @@ import {
 import AvvistSykmeldingStatuspanel from "./AvvistSykmeldingStatuspanel";
 import { AvvistSykmeldingPanel } from "./AvvistSykmeldingPanel";
 import BekreftAvvistSykmelding from "./BekreftAvvistSykmelding";
-import { DineSykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/DineSykmeldingOpplysninger";
+import { SykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingOpplysninger";
 
 interface AvvistSykmeldingProps {
   sykmelding: SykmeldingOldFormat;
@@ -22,7 +22,7 @@ const AvvistSykmelding = ({
       )}
       <AvvistSykmeldingPanel sykmelding={sykmelding} />
       <div className="blokk">
-        <DineSykmeldingOpplysninger sykmelding={sykmelding} />
+        <SykmeldingOpplysninger sykmelding={sykmelding} />
       </div>
       {sykmelding.status === SykmeldingStatus.NY && <BekreftAvvistSykmelding />}
     </>
