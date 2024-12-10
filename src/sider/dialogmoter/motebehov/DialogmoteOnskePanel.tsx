@@ -4,7 +4,6 @@ import BehandleMotebehovKnapp from "../../../components/motebehov/BehandleMotebe
 import { DialogmotePanel } from "@/sider/dialogmoter/components/DialogmotePanel";
 import React from "react";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
-import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 
 const texts = {
@@ -14,20 +13,14 @@ const texts = {
 interface Props {
   motebehovData: MotebehovVeilederDTO[];
   ledereData: NarmesteLederRelasjonDTO[];
-  sykmeldt?: BrukerinfoDTO;
 }
 
-export const DialogmoteOnskePanel = ({
-  motebehovData,
-  ledereData,
-  sykmeldt,
-}: Props) => {
+export const DialogmoteOnskePanel = ({ motebehovData, ledereData }: Props) => {
   return (
     <DialogmotePanel icon={UtropstegnImage} header={texts.onskerOmDialogmote}>
       <MotebehovKvittering
         motebehovData={motebehovData}
         ledereData={ledereData}
-        sykmeldt={sykmeldt}
       />
 
       <BehandleMotebehovKnapp motebehovData={motebehovData} />

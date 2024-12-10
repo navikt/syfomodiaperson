@@ -6,12 +6,12 @@ import {
 } from "@/utils/motebehovUtils";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
-import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { ledereUtenMotebehovsvar } from "@/utils/ledereUtils";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 import { capitalizeAllWords } from "@/utils/stringUtils";
 import MotebehovKvitteringInnhold from "@/sider/dialogmoter/motebehov/MotebehovKvitteringInnhold";
+import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 
 export const arbeidsgiverNavnEllerTomStreng = (lederNavn: string | null) => {
   return lederNavn ? `${lederNavn}` : "";
@@ -69,13 +69,12 @@ const composePersonSvarText = (
 
 interface MotebehovKvitteringInnholdArbeidstakerProps {
   arbeidstakersMotebehov?: MotebehovVeilederDTO;
-  sykmeldt?: BrukerinfoDTO;
 }
 
 export const MotebehovKvitteringInnholdArbeidstaker = ({
   arbeidstakersMotebehov,
-  sykmeldt,
 }: MotebehovKvitteringInnholdArbeidstakerProps) => {
+  const sykmeldt = useNavBrukerData();
   const arbeidstakerOnskerMote =
     arbeidstakersMotebehov?.motebehovSvar?.harMotebehov;
 
@@ -172,13 +171,11 @@ export const MotebehovKvitteringInnholdArbeidsgiverUtenMotebehov = ({
 interface MotebehovKvitteringProps {
   motebehovData: MotebehovVeilederDTO[];
   ledereData: NarmesteLederRelasjonDTO[];
-  sykmeldt?: BrukerinfoDTO;
 }
 
 const MotebehovKvittering = ({
   motebehovData,
   ledereData,
-  sykmeldt,
 }: MotebehovKvitteringProps) => {
   const { tilfellerDescendingStart, latestOppfolgingstilfelle } =
     useOppfolgingstilfellePersonQuery();
@@ -200,7 +197,6 @@ const MotebehovKvittering = ({
         arbeidstakersMotebehov={finnArbeidstakerMotebehovSvar(
           aktiveMotebehovSvar
         )}
-        sykmeldt={sykmeldt}
       />
       <MotebehovKvitteringInnholdArbeidsgiver
         motebehovListeMedBareArbeidsgiversMotebehov={aktiveMotebehovSvar.filter(
