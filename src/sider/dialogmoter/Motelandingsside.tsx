@@ -10,7 +10,6 @@ import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { DialogmoteFerdigstilteReferatPanel } from "@/sider/dialogmoter/components/DialogmoteFerdigstilteReferatPanel";
 import { DialogmoteStatus } from "@/data/dialogmote/types/dialogmoteTypes";
 import { useDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
-import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import * as Tredelt from "@/sider/TredeltSide";
 import Side from "@/sider/Side";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
@@ -44,7 +43,6 @@ export function Motelandingsside() {
     isLoading: henterLedere,
     isError: henterLedereFeilet,
   } = useLedereQuery();
-  const navbruker = useNavBrukerData();
 
   const henter =
     henterDialogmoter ||
@@ -67,7 +65,6 @@ export function Motelandingsside() {
             <DialogmoteOnskePanel
               motebehovData={motebehov}
               ledereData={currentLedere}
-              sykmeldt={navbruker}
             />
 
             <InnkallingDialogmotePanel aktivtDialogmote={aktivtDialogmote} />
