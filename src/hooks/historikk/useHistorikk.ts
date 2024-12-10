@@ -12,6 +12,7 @@ import { useSenOppfolgingHistorikk } from "@/hooks/historikk/useSenOppfolgingHis
 import { useDialogmoteStatusEndringHistorikk } from "@/hooks/historikk/useDialogmoteStatusEndringHistorikk";
 import { useOppfolgingsplanHistorikk } from "@/hooks/historikk/useOppfolgingsplanHistorikk";
 import { useOppfolgingsoppgaveHistorikk } from "@/hooks/historikk/useOppfolgingsoppgaveHistorikk";
+import { useMotebehovHistorikk } from "@/hooks/historikk/useMotebehovHistorikk";
 
 interface HistorikkHook {
   isHistorikkLoading: boolean;
@@ -25,6 +26,8 @@ export function useHistorikk(): HistorikkHook {
     isLoading: isMotebehovLoading,
     isError: isMotebehovError,
   } = useHistorikkMotebehovQuery();
+
+  const motebehovNyHistorikk = useMotebehovHistorikk();
 
   const oppfolgingsplanHistorikk = useOppfolgingsplanHistorikk();
 
@@ -70,6 +73,7 @@ export function useHistorikk(): HistorikkHook {
   const oppfolgingsoppgaveHistorikk = useOppfolgingsoppgaveHistorikk();
 
   const historikkEvents = motebehovHistorikk
+    .concat(motebehovNyHistorikk.events)
     .concat(oppfolgingsplanHistorikk.events)
     .concat(lederHistorikk)
     .concat(aktivitetskravHistorikk)
@@ -86,6 +90,7 @@ export function useHistorikk(): HistorikkHook {
   const isHistorikkLoading =
     oppfolgingsplanHistorikk.isLoading ||
     isMotebehovLoading ||
+    motebehovNyHistorikk.isLoading ||
     isLedereHistorikkLoading ||
     isAktivitetskravHistorikkLoading ||
     isArbeidsuforhetHistorikkLoading ||
@@ -100,6 +105,7 @@ export function useHistorikk(): HistorikkHook {
 
   const isHistorikkError =
     isMotebehovError ||
+    motebehovNyHistorikk.isError ||
     oppfolgingsplanHistorikk.isError ||
     isLedereHistorikkError ||
     isAktivitetskravHistorikkError ||

@@ -52,6 +52,8 @@ import {
 } from "@/mocks/oppfolgingsoppgave/historikkOppfolgingsoppgaveMock";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
+import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
+import { motebehovMock } from "@/mocks/syfomotebehov/motebehovMock";
 
 let queryClient: QueryClient;
 
@@ -77,6 +79,10 @@ function setupTestdataHistorikk() {
   );
   queryClient.setQueryData(
     historikkQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
+  );
+  queryClient.setQueryData(
+    motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
     () => []
   );
   queryClient.setQueryData(
@@ -822,6 +828,36 @@ describe("Historikk", () => {
           `${VEILEDER_IDENT_DEFAULT} vurderte at aktivitetskravet var oppfylt`
         )
       ).to.exist;
+    });
+  });
+
+  describe("Møtebehov", () => {
+    it("viser meldte møtebehov", async () => {
+      queryClient.setQueryData(
+        motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => motebehovMock
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(screen.getAllByText("Dialogmøte")).to.have.length(4); // Tre behov, og én behandling
+      expect(
+        screen.getByText(
+          "Den sykmeldte svarte ja på ønske om dialogmøte. Svaret var: Jeg svarer på møtebehov ved 17 uker"
+        )
+      ).to.exist;
+      expect(
+        screen.getByText(
+          "Are Arbeidsgiver (Arbeidsgiver) svarte nei på ønske om dialogmøte. Svaret var: Jeg liker ikke møte!!"
+        )
+      ).to.exist;
+      expect(
+        screen.getByText(
+          "Den sykmeldte meldte behov for dialogmøte. Begrunnelse: Møter er bra!"
+        )
+      ).to.exist;
+      expect(screen.getByText("Møtebehovet ble behandlet av Z990000")).to.exist;
     });
   });
 });
