@@ -1,6 +1,5 @@
 import React, { ReactElement, useState } from "react";
 import { Link } from "react-router-dom";
-import SykmeldingPeriodeInfo from "./SykmeldingPeriodeInfo";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
 import {
@@ -14,16 +13,13 @@ import {
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
-import { PapirsykmeldingTag } from "@/components/PapirsykmeldingTag";
 import { Heading, LinkPanel } from "@navikt/ds-react";
 import styled from "styled-components";
-import {
-  FlexColumn,
-  FlexGapSize,
-  FlexRow,
-  JustifyContentType,
-} from "@/components/Layout";
+import { PapirsykmeldingTag } from "@/components/PapirsykmeldingTag";
 import { UtenlandskSykmeldingTag } from "@/components/UtenlandskSykmeldingTag";
+import { erEkstraInformasjonISykmeldingen } from "@/utils/sykmeldinger/sykmeldingUtils";
+import ImportantInformationIcon from "@/components/ImportantInformationIcon";
+import SykmeldingPeriodeInfo from "@/sider/sykmeldinger/sykmeldinger/SykmeldingPeriodeInfo";
 
 const texts = {
   teaserTekst: "Sykmelding\n",
@@ -92,24 +88,21 @@ const getHoverIkon = (behandlingsutfallStatus: BehandlingsutfallStatusDTO) => {
     : SykmeldingerHoverBlaaImage;
 };
 
-interface SykmeldingTeaserProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-const StyledImg = styled.img`
-  margin-left: 1em;
-`;
-
 const StyledLinkPanel = styled(LinkPanel)`
   margin-bottom: 0.1em;
+
   .navds-link-panel__content {
     width: 100%;
   }
 `;
 
-const SykmeldingTeaser = ({
+export default function SykmeldingLinkPanel({
   sykmelding,
-}: SykmeldingTeaserProps): ReactElement => {
+}: Props): ReactElement {
   const behandlingsutfallStatus = sykmelding.behandlingsutfall.status;
   const [ikon, setIkon] = useState(getIkon(behandlingsutfallStatus));
 
@@ -118,6 +111,8 @@ const SykmeldingTeaser = ({
     behandlingsutfallStatus === BehandlingsutfallStatusDTO.INVALID;
   const showPapirLabel = !!sykmelding.papirsykmelding;
   const showUtenlandskLabel = sykmelding.utenlandskSykmelding != null;
+  const erViktigInformasjon = erEkstraInformasjonISykmeldingen(sykmelding);
+
   return (
     <StyledLinkPanel
       forwardedAs={Link}
@@ -130,38 +125,38 @@ const SykmeldingTeaser = ({
         setIkon(getIkon(behandlingsutfallStatus));
       }}
     >
-      <FlexRow
-        columnGap={FlexGapSize.SM}
-        justifyContent={JustifyContentType.SPACE_BETWEEN}
-      >
-        <FlexColumn flex={0}>
-          <StyledImg src={ikon} alt="Plaster-ikon" />
-        </FlexColumn>
-        <FlexColumn flex={1}>
-          {tilLesbarPeriodeMedArstall(
-            tidligsteFom(sykmelding.mulighetForArbeid.perioder),
-            senesteTom(sykmelding.mulighetForArbeid.perioder)
-          )}
-          <Heading size="small">
-            {sykmelding.egenmeldt
-              ? texts.egenmeldtTeaserTekst
-              : texts.teaserTekst}
+      <div className="flex gap-4">
+        <img src={ikon} alt="Plaster-ikon" className="self-start" />
+        <div className="w-full">
+          <div className="flex justify-between">
+            {tilLesbarPeriodeMedArstall(
+              tidligsteFom(sykmelding.mulighetForArbeid.perioder),
+              senesteTom(sykmelding.mulighetForArbeid.perioder)
+            )}
+            <div className="flex gap-2 items-center">
+              {visStatus && (
+                <text>
+                  {textStatus(sykmelding.status, behandlingsutfallStatus)}
+                </text>
+              )}
+              {erViktigInformasjon && <ImportantInformationIcon />}
+            </div>
+          </div>
+          <div className="flex">
+            <Heading size="small" className="flex">
+              {sykmelding.egenmeldt
+                ? texts.egenmeldtTeaserTekst
+                : texts.teaserTekst}
+            </Heading>
             {showPapirLabel && <PapirsykmeldingTag />}
             {showUtenlandskLabel && <UtenlandskSykmeldingTag />}
-          </Heading>
+          </div>
           <PeriodeListe
             perioder={sykmelding.mulighetForArbeid.perioder}
             arbeidsgiver={sykmelding.innsendtArbeidsgivernavn}
           />
-        </FlexColumn>
-        {visStatus && (
-          <FlexColumn flex={0}>
-            {textStatus(sykmelding.status, behandlingsutfallStatus)}
-          </FlexColumn>
-        )}
-      </FlexRow>
+        </div>
+      </div>
     </StyledLinkPanel>
   );
-};
-
-export default SykmeldingTeaser;
+}
