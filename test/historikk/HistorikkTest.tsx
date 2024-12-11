@@ -16,7 +16,6 @@ import {
   VEILEDER_TILDELING_HISTORIKK_SYSTEM,
 } from "@/mocks/common/mockConstants";
 import { historikkQueryKeys } from "@/data/historikk/historikkQueryHooks";
-import { historikkmotebehovMock } from "@/mocks/syfomotebehov/historikkmotebehovMock";
 import { aktivitetskravQueryKeys } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { arbeidsuforhetQueryKeys } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
@@ -51,7 +50,7 @@ import {
   historikkOppfolgingsoppgaveFjernetMock,
 } from "@/mocks/oppfolgingsoppgave/historikkOppfolgingsoppgaveMock";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
+import { addWeeks, tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { motebehovMock } from "@/mocks/syfomotebehov/motebehovMock";
 
@@ -195,8 +194,19 @@ describe("Historikk", () => {
 
   it("viser select/dropdown med valg om hendelser utenfor oppfolgingstilfelle", async () => {
     queryClient.setQueryData(
-      historikkQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [historikkmotebehovMock]
+      aktivitetskravQueryKeys.historikk(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => [
+        {
+          tidspunkt: new Date(),
+          status: AktivitetskravStatus.NY,
+          vurdertAv: null,
+        },
+        {
+          tidspunkt: addWeeks(new Date(), -100),
+          status: AktivitetskravStatus.OPPFYLT,
+          vurdertAv: VEILEDER_IDENT_DEFAULT,
+        },
+      ]
     );
     renderHistorikk();
 
