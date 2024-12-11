@@ -35,6 +35,10 @@ const StyledExpantionCardHeader = styled(ExpansionCard.Header)`
   .navds-expansioncard__header-content {
     width: 100%;
   }
+
+  .navds-expansioncard__header-button::after {
+    pointer-events: none;
+  }
 `;
 
 function logAccordionOpened(isOpen: boolean) {
@@ -70,7 +74,7 @@ const UtvidbarSykmelding = ({ sykmelding }: UtvidbarSykmeldingProps) => {
     : "Sykmelding uten arbeidsgiver";
   return (
     <ExpansionCard aria-label={title} onToggle={logAccordionOpened}>
-      <StyledExpantionCardHeader className="w-full">
+      <StyledExpantionCardHeader>
         <ExpansionCard.Title
           as="div"
           className="flex justify-between m-0 text-base"
