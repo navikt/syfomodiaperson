@@ -16,7 +16,7 @@ export const sykmeldingerQueryKeys = {
 
 export const useSykmeldingerQuery = () => {
   const fnr = useValgtPersonident();
-  const path = `${SYFOSMREGISTER_ROOT}/internal/sykmeldinger`;
+  const path = `${SYFOSMREGISTER_ROOT}/sykmeldinger`;
   const fetchSykmeldinger = () => get<SykmeldingNewFormatDTO[]>(path, fnr);
   const query = useQuery({
     queryKey: sykmeldingerQueryKeys.sykmeldinger(fnr),

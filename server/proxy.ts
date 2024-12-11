@@ -52,7 +52,8 @@ const proxyDirectly = (
 const proxyExternalHost = (
   { applicationName, host, removePathPrefix }: any,
   accessToken: any,
-  parseReqBody: any
+  parseReqBody: any,
+  rewritePath?: (path: string) => string
 ) =>
   proxy(host, {
     https: false,
@@ -86,9 +87,11 @@ const proxyExternalHost = (
 
       if (removePathPrefix) {
         const newPathWithoutPrefix = newPath.replace(`${applicationName}/`, "");
-        return newPathWithoutPrefix;
+        return rewritePath != null
+          ? rewritePath(newPathWithoutPrefix)
+          : newPathWithoutPrefix;
       }
-      return newPath;
+      return rewritePath != null ? rewritePath(newPath) : newPath;
     },
     proxyErrorHandler: (err, res, next) => {
       console.log(`Error in proxy for ${host} ${err.message}, ${err.code}`);
@@ -106,7 +109,8 @@ const proxyOnBehalfOf = (
   next: any,
   authClient: any,
   issuer: OpenIdClient.Issuer<any>,
-  externalAppConfig: Config.ExternalAppConfig
+  externalAppConfig: Config.ExternalAppConfig,
+  rewritePath?: (path: string) => string
 ) => {
   AuthUtils.getOrRefreshOnBehalfOfToken(
     authClient,
@@ -125,7 +129,8 @@ const proxyOnBehalfOf = (
       return proxyExternalHost(
         externalAppConfig,
         onBehalfOfToken.accessToken,
-        req.method === "POST"
+        req.method === "POST",
+        rewritePath
       )(req, res, next);
     })
     .catch((error) => {
@@ -544,7 +549,8 @@ export const setupProxy = (
         next,
         authClient,
         issuer,
-        Config.auth.syfosmregister
+        Config.auth.syfosmregister,
+        (path) => path.replace("/sykmeldinger", "/internal/sykmeldinger")
       );
     }
   );

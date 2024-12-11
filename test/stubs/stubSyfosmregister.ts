@@ -5,7 +5,7 @@ import { mockServer } from "../setup";
 
 export const stubSykmeldingApi = () =>
   mockServer.use(
-    http.get(`*${SYFOSMREGISTER_ROOT}/internal/sykmeldinger`, () =>
+    http.get(`*${SYFOSMREGISTER_ROOT}/sykmeldinger`, () =>
       HttpResponse.json(sykmeldingerMock)
     )
   );
