@@ -1,6 +1,12 @@
 import dayjs from "dayjs";
 import { dagerMellomDatoer } from "./datoUtils";
-import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
+import {
+  MeldtMotebehov,
+  MotebehovInnmelder,
+  MotebehovSkjemaType,
+  MotebehovVeilederDTO,
+  SvarMotebehov,
+} from "@/data/motebehov/types/motebehovTypes";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { MotebehovTilbakemeldingDTO } from "@/data/motebehov/useBehandleMotebehovAndSendTilbakemelding";
 
@@ -179,6 +185,60 @@ export const toMotebehovTilbakemeldingDTO = (
   };
 };
 
-export function isSykmeldtSvar(motebehov) {
+export function isArbeidstakerMotebehov(motebehov: MotebehovVeilederDTO) {
   return motebehov.opprettetAv === motebehov.aktorId;
+}
+
+export function mapMotebehovToMeldtMotebehovFormat(
+  motebehov: MotebehovVeilederDTO[]
+): MeldtMotebehov[] {
+  return motebehov
+    .filter(
+      (motebehov) => motebehov.skjemaType === MotebehovSkjemaType.MELD_BEHOV
+    )
+    .map((motebehov) => {
+      return {
+        id: motebehov.id,
+        opprettetDato: motebehov.opprettetDato,
+        opprettetAv: motebehov.opprettetAv,
+        opprettetAvNavn: motebehov.opprettetAvNavn,
+        innmelder: isArbeidstakerMotebehov(motebehov)
+          ? MotebehovInnmelder.ARBEIDSTAKER
+          : MotebehovInnmelder.ARBEIDSGIVER,
+        arbeidstakerFnr: motebehov.arbeidstakerFnr,
+        virksomhetsnummer: motebehov.virksomhetsnummer,
+        begrunnelse: motebehov.motebehovSvar.forklaring,
+        tildeltEnhet: motebehov.tildeltEnhet,
+        behandletTidspunkt: motebehov.behandletTidspunkt,
+        behandletVeilederIdent: motebehov.behandletVeilederIdent,
+        skjemaType: MotebehovSkjemaType.MELD_BEHOV,
+      };
+    });
+}
+
+export function mapMotebehovToSvarMotebehovFormat(
+  motebehov: MotebehovVeilederDTO[]
+): SvarMotebehov[] {
+  return motebehov
+    .filter(
+      (motebehov) => motebehov.skjemaType === MotebehovSkjemaType.SVAR_BEHOV
+    )
+    .map((motebehov) => {
+      return {
+        id: motebehov.id,
+        opprettetDato: motebehov.opprettetDato,
+        opprettetAv: motebehov.opprettetAv,
+        opprettetAvNavn: motebehov.opprettetAvNavn,
+        innmelder: isArbeidstakerMotebehov(motebehov)
+          ? MotebehovInnmelder.ARBEIDSTAKER
+          : MotebehovInnmelder.ARBEIDSGIVER,
+        arbeidstakerFnr: motebehov.arbeidstakerFnr,
+        virksomhetsnummer: motebehov.virksomhetsnummer,
+        motebehovSvar: motebehov.motebehovSvar,
+        tildeltEnhet: motebehov.tildeltEnhet,
+        behandletTidspunkt: motebehov.behandletTidspunkt,
+        behandletVeilederIdent: motebehov.behandletVeilederIdent,
+        skjemaType: MotebehovSkjemaType.SVAR_BEHOV,
+      };
+    });
 }
