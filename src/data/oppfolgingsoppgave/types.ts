@@ -28,7 +28,6 @@ export interface EditOppfolgingsoppgaveRequestDTO {
 
 export interface OppfolgingsoppgaveResponseDTO {
   uuid: string;
-  createdBy: string;
   updatedAt: Date;
   isActive: boolean;
   createdAt: Date;

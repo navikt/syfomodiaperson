@@ -68,7 +68,6 @@ export const mockIshuskelapp = [
       oppfolgingsoppgaverMock = oppfolgingsoppgaverMock = [
         {
           uuid: oppfolgingsoppgaveUuid,
-          createdBy: VEILEDER_IDENT_DEFAULT,
           updatedAt: new Date(),
           createdAt: new Date(),
           isActive: true,

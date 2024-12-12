@@ -8,10 +8,7 @@ import {
   within,
 } from "@testing-library/react";
 import React from "react";
-import {
-  VEILEDER_DEFAULT,
-  VEILEDER_IDENT_DEFAULT,
-} from "@/mocks/common/mockConstants";
+import { VEILEDER_DEFAULT } from "@/mocks/common/mockConstants";
 import {
   EditOppfolgingsoppgaveRequestDTO,
   Oppfolgingsgrunn,
@@ -34,7 +31,6 @@ const oppfolgingsoppgaveOppfolgingsgrunn =
   Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE;
 const oppfolgingsoppgaveOppfogingsgrunnText = "Vurder behov for dialogmøte";
 const oppfolgingsoppgave: OppfolgingsoppgaveResponseDTO = {
-  createdBy: VEILEDER_IDENT_DEFAULT,
   uuid: generateUUID(),
   updatedAt: new Date(),
   createdAt: new Date(),
@@ -45,6 +41,7 @@ const oppfolgingsoppgave: OppfolgingsoppgaveResponseDTO = {
       oppfolgingsgrunn: oppfolgingsoppgaveOppfolgingsgrunn,
       tekst: "Dette var en veldig god grunn for å lage oppfolgingsoppgave.",
       frist: "2030-01-01",
+      createdBy: VEILEDER_DEFAULT.ident,
     } as OppfolgingsoppgaveVersjonResponseDTO,
   ],
 };

@@ -31,7 +31,7 @@ export const Oppfolgingsoppgave = () => {
     aktivOppfolgingsoppgave?.versjoner?.[0];
 
   const { data: veilederinfo } = useVeilederInfoQuery(
-    aktivOppfolgingsoppgave?.createdBy ?? ""
+    aktivOppfolgingsoppgaveVersjon?.createdBy ?? ""
   );
   const isExistingOppfolgingsoppgave = !!aktivOppfolgingsoppgave;
   const handleRemoveOppfolgingsoppgave = (uuid: string) => {
