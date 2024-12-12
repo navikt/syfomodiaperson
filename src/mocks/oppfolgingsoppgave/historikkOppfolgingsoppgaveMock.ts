@@ -11,7 +11,6 @@ const DATO_INNENFOR_OPPFOLGINGSTILFELLE = new Date("2024-06-20");
 export const historikkOppfolgingsoppgaveAktivMock: OppfolgingsoppgaveResponseDTO =
   {
     uuid: generateUUID(),
-    createdBy: VEILEDER_IDENT_DEFAULT,
     updatedAt: addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 1),
     isActive: true,
     createdAt: DATO_INNENFOR_OPPFOLGINGSTILFELLE,
@@ -39,7 +38,6 @@ export const historikkOppfolgingsoppgaveAktivMock: OppfolgingsoppgaveResponseDTO
 export const historikkOppfolgingsoppgaveFjernetMock: OppfolgingsoppgaveResponseDTO =
   {
     uuid: generateUUID(),
-    createdBy: VEILEDER_IDENT_DEFAULT,
     updatedAt: addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -1),
     isActive: false,
     createdAt: addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -5),
