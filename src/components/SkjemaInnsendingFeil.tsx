@@ -13,7 +13,7 @@ export const SkjemaInnsendingFeil = ({
   bottomPadding = PaddingSize.MD,
 }: SkjemaInnsendingFeilProps) => (
   <FlexRow bottomPadding={bottomPadding ? bottomPadding : undefined}>
-    <Alert variant="error" size="small">
+    <Alert variant="error" size="small" contentMaxWidth={false}>
       {error instanceof ApiErrorException
         ? error.error.defaultErrorMsg
         : defaultErrorTexts.generalError}

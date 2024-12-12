@@ -2,6 +2,7 @@ import axios, { AxiosError } from "axios";
 import {
   accessDeniedError,
   ApiErrorException,
+  conflictError,
   generalError,
   loginRequiredError,
   networkError,
@@ -49,6 +50,12 @@ const handleAxiosError = (error: AxiosError) => {
       case 403: {
         throw new ApiErrorException(
           accessDeniedError(error.message),
+          error.response.status
+        );
+      }
+      case 409: {
+        throw new ApiErrorException(
+          conflictError(error.message),
           error.response.status
         );
       }
