@@ -21,9 +21,3 @@ export interface CreateUnntakDTO {
   arsak: UnntakArsak;
   beskrivelse?: string;
 }
-
-export interface UnntaksstatistikkDTO {
-  unntakDato: Date;
-  tilfelleStart: Date;
-  tilfelleEnd: Date;
-}

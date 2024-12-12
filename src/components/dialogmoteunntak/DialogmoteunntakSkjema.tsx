@@ -18,7 +18,6 @@ import {
   RadioGroup,
   Textarea,
 } from "@navikt/ds-react";
-import DialogmoteunntakSkjemaStatistikk from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaStatistikk";
 
 export const texts = {
   noBrev: "Det blir ikke sendt ut varsel eller brev til den sykmeldte.",
@@ -83,9 +82,6 @@ const DialogmoteunntakSkjema = () => {
     return <Navigate to={moteoversiktRoutePath} />;
   }
 
-  const isArsakStatistikkVisible =
-    watch("arsak") === UnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER;
-
   const onSubmit: SubmitHandler<DialogmoteunntakSkjemaValues> = (values) => {
     const newUnntak: CreateUnntakDTO = {
       personIdent: personIdent,
@@ -122,9 +118,6 @@ const DialogmoteunntakSkjema = () => {
             </Radio>
           ))}
         </RadioGroup>
-
-        {isArsakStatistikkVisible && <DialogmoteunntakSkjemaStatistikk />}
-
         <Textarea
           className="mb-4"
           label={texts.beskrivelseLabel}

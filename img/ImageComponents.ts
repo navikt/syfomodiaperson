@@ -60,7 +60,6 @@ import StetoskopIkon from "./svg/stetoskop_ikon.svg";
 import StetoskopIkonBakgrunn from "./svg/stetoskop_ikon_bakgrunn.svg";
 import SykmeldingerImage from "./svg/sykmeldinger.svg";
 import SykmeldingerHoverBlaaImage from "./svg/sykmeldinger_hover-blue.svg";
-import Unntaksstatistikk from "./svg/unntaksstatistikk.svg";
 import UtropstegnImage from "./svg/utropstegn.svg";
 import SaveFile from "./svg/save-file.svg";
 
@@ -140,7 +139,6 @@ export {
   KalenderPng,
   KalenderHoverPng,
   PilForrigeBlaaPng,
-  Unntaksstatistikk,
   UtropstegnImage,
   SaveFile,
 };
