@@ -44,7 +44,6 @@ export const useDialogmotekandidat = () => {
     queryKey: dialogmotekandidatQueryKeys.kandidat(personident),
     queryFn: fetchKandidat,
     enabled: !!personident,
-    refetchOnWindowFocus: true,
     staleTime: minutesToMillis(5),
   });
 

@@ -26,7 +26,6 @@ export const useAktivitetskravQuery = () => {
     queryKey: aktivitetskravQueryKeys.aktivitetskrav(personident),
     queryFn: fetchAktivitetskrav,
     enabled: !!personident,
-    refetchOnWindowFocus: true,
     staleTime: minutesToMillis(5),
   });
 

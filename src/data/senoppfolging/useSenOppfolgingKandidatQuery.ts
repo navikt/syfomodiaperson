@@ -19,7 +19,6 @@ export const useSenOppfolgingKandidatQuery = () => {
     queryKey: senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(fnr),
     queryFn: getSenOppfolgingKandidat,
     enabled: !!fnr,
-    refetchOnWindowFocus: true,
     staleTime: minutesToMillis(5),
   });
 
