@@ -3,6 +3,8 @@ export const defaultErrorTexts = {
   generalError: "Det skjedde en uventet feil. Vennligst prøv igjen senere.",
   networkError: "Vi har problemer med nettet, prøv igjen senere.",
   loginRequired: "Handlingen krever at du logger på.",
+  conflictError:
+    "Det skjedde en uventet feil. Det kan hende en annen veileder har oppdatert siden. Last inn siden på nytt og prøv igjen.",
 };
 
 export enum ErrorType {
@@ -10,6 +12,7 @@ export enum ErrorType {
   GENERAL_ERROR = "GENERAL_ERROR",
   NETWORK_ERROR = "NETWORK_ERROR",
   LOGIN_REQUIRED = "LOGIN_REQUIRED",
+  CONFLICT_ERROR = "CONFLICT_ERROR",
 }
 
 export class ApiErrorException extends Error {
@@ -44,14 +47,19 @@ export const accessDeniedError = (message: string): ApiError => {
   };
 };
 
+export const conflictError = (message: string): ApiError => {
+  return {
+    type: ErrorType.CONFLICT_ERROR,
+    message,
+    defaultErrorMsg: defaultErrorTexts.conflictError,
+  };
+};
+
 export const networkError = (message: string): ApiError => ({
   type: ErrorType.NETWORK_ERROR,
   message,
   defaultErrorMsg: defaultErrorTexts.networkError,
 });
-
-export const getErrorMessage = (error: unknown): string =>
-  error instanceof Error ? error.message : String(error);
 
 export const isClientError = (error: unknown): boolean =>
   error instanceof ApiErrorException &&
