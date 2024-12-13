@@ -7,6 +7,7 @@ import * as Tredelt from "@/sider/TredeltSide";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { VurderingHistorikk } from "@/sider/arbeidsuforhet/historikk/VurderingHistorikk";
+import RundskrivLenke from "@/sider/arbeidsuforhet/RundskrivLenke";
 
 const texts = {
   title: "Arbeidsuførhet",
@@ -30,6 +31,7 @@ export function ArbeidsuforhetSide({ children }: Props): ReactElement {
           </Tredelt.FirstColumn>
           <Tredelt.SecondColumn>
             <UtdragFraSykefravaeret />
+            <RundskrivLenke />
           </Tredelt.SecondColumn>
         </Tredelt.Container>
       </SideLaster>

@@ -54,7 +54,7 @@ const UtdragFraSykefravaeret = ({ selectedOppfolgingstilfelle }: Props) => {
     <Box
       padding="4"
       background="surface-default"
-      className="mb-4 h-min flex flex-col gap-6"
+      className="mb-2 h-min flex flex-col gap-6"
     >
       <div>
         <Heading level="2" size="medium">
