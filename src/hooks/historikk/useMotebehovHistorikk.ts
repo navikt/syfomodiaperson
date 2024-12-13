@@ -43,7 +43,7 @@ function createHistorikkEventsFromMeldtMotebehov(
     if (motebehov.behandletVeilederIdent && motebehov.behandletTidspunkt) {
       meldteMotebehovEvents.push({
         opprettetAv: motebehov.behandletVeilederIdent,
-        tekst: `Møtebehovet ble behandlet av ${motebehov.behandletVeilederIdent}`,
+        tekst: `${motebehov.behandletVeilederIdent} vurderte behovet for dialogmøte`,
         tidspunkt: motebehov.behandletTidspunkt,
         kilde: "MOTEBEHOV",
       });
@@ -89,7 +89,7 @@ function createHistorikkEventsFromSvarMotebehov(
     if (motebehov.behandletVeilederIdent && motebehov.behandletTidspunkt) {
       svarMotebehovEvents.push({
         opprettetAv: motebehov.behandletVeilederIdent,
-        tekst: `Møtebehovet ble behandlet av ${motebehov.behandletVeilederIdent}`,
+        tekst: `${motebehov.behandletVeilederIdent} vurderte svaret på behovet for dialogmøte`,
         tidspunkt: motebehov.behandletTidspunkt,
         kilde: "MOTEBEHOV",
       });

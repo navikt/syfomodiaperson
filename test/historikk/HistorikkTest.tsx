@@ -867,7 +867,8 @@ describe("Historikk", () => {
           "Den sykmeldte meldte behov for dialogmøte. Begrunnelse: Møter er bra!"
         )
       ).to.exist;
-      expect(screen.getByText("Møtebehovet ble behandlet av Z990000")).to.exist;
+      expect(screen.getByText("Z990000 vurderte behovet for dialogmøte")).to
+        .exist;
     });
   });
 });
