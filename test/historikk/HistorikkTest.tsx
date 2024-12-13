@@ -16,7 +16,6 @@ import {
   VEILEDER_TILDELING_HISTORIKK_SYSTEM,
 } from "@/mocks/common/mockConstants";
 import { historikkQueryKeys } from "@/data/historikk/historikkQueryHooks";
-import { historikkmotebehovMock } from "@/mocks/syfomotebehov/historikkmotebehovMock";
 import { aktivitetskravQueryKeys } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { arbeidsuforhetQueryKeys } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
@@ -51,7 +50,9 @@ import {
   historikkOppfolgingsoppgaveFjernetMock,
 } from "@/mocks/oppfolgingsoppgave/historikkOppfolgingsoppgaveMock";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
+import { addWeeks, tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
+import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
+import { motebehovMock } from "@/mocks/syfomotebehov/motebehovMock";
 
 let queryClient: QueryClient;
 
@@ -77,6 +78,10 @@ function setupTestdataHistorikk() {
   );
   queryClient.setQueryData(
     historikkQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
+  );
+  queryClient.setQueryData(
+    motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
     () => []
   );
   queryClient.setQueryData(
@@ -189,8 +194,19 @@ describe("Historikk", () => {
 
   it("viser select/dropdown med valg om hendelser utenfor oppfolgingstilfelle", async () => {
     queryClient.setQueryData(
-      historikkQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [historikkmotebehovMock]
+      aktivitetskravQueryKeys.historikk(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => [
+        {
+          tidspunkt: new Date(),
+          status: AktivitetskravStatus.NY,
+          vurdertAv: null,
+        },
+        {
+          tidspunkt: addWeeks(new Date(), -100),
+          status: AktivitetskravStatus.OPPFYLT,
+          vurdertAv: VEILEDER_IDENT_DEFAULT,
+        },
+      ]
     );
     renderHistorikk();
 
@@ -822,6 +838,37 @@ describe("Historikk", () => {
           `${VEILEDER_IDENT_DEFAULT} vurderte at aktivitetskravet var oppfylt`
         )
       ).to.exist;
+    });
+  });
+
+  describe("Møtebehov", () => {
+    it("viser meldte møtebehov", async () => {
+      queryClient.setQueryData(
+        motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => motebehovMock
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(screen.getAllByText("Dialogmøte")).to.have.length(4); // Tre behov, og én behandling
+      expect(
+        screen.getByText(
+          "Den sykmeldte svarte ja på ønske om dialogmøte. Svaret var: Jeg svarer på møtebehov ved 17 uker"
+        )
+      ).to.exist;
+      expect(
+        screen.getByText(
+          "Are Arbeidsgiver (Arbeidsgiver) svarte nei på ønske om dialogmøte. Svaret var: Jeg liker ikke møte!!"
+        )
+      ).to.exist;
+      expect(
+        screen.getByText(
+          "Den sykmeldte meldte behov for dialogmøte. Begrunnelse: Møter er bra!"
+        )
+      ).to.exist;
+      expect(screen.getByText("Z990000 vurderte behovet for dialogmøte")).to
+        .exist;
     });
   });
 });

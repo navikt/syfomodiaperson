@@ -1,5 +1,4 @@
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
-import { useHistorikkMotebehovQuery } from "@/data/historikk/historikkQueryHooks";
 import { useLedereHistorikk } from "@/hooks/historikk/useLedereHistorikk";
 import { useAktivitetskravHistorikk } from "@/hooks/historikk/useAktivitetskravHistorikk";
 import { useArbeidsuforhetHistorikk } from "@/hooks/historikk/useArbeidsuforhetHistorikk";
@@ -12,6 +11,7 @@ import { useSenOppfolgingHistorikk } from "@/hooks/historikk/useSenOppfolgingHis
 import { useDialogmoteStatusEndringHistorikk } from "@/hooks/historikk/useDialogmoteStatusEndringHistorikk";
 import { useOppfolgingsplanHistorikk } from "@/hooks/historikk/useOppfolgingsplanHistorikk";
 import { useOppfolgingsoppgaveHistorikk } from "@/hooks/historikk/useOppfolgingsoppgaveHistorikk";
+import { useMotebehovHistorikk } from "@/hooks/historikk/useMotebehovHistorikk";
 
 interface HistorikkHook {
   isHistorikkLoading: boolean;
@@ -20,11 +20,7 @@ interface HistorikkHook {
 }
 
 export function useHistorikk(): HistorikkHook {
-  const {
-    data: motebehovHistorikk,
-    isLoading: isMotebehovLoading,
-    isError: isMotebehovError,
-  } = useHistorikkMotebehovQuery();
+  const motebehovHistorikk = useMotebehovHistorikk();
 
   const oppfolgingsplanHistorikk = useOppfolgingsplanHistorikk();
 
@@ -69,7 +65,7 @@ export function useHistorikk(): HistorikkHook {
 
   const oppfolgingsoppgaveHistorikk = useOppfolgingsoppgaveHistorikk();
 
-  const historikkEvents = motebehovHistorikk
+  const historikkEvents = motebehovHistorikk.events
     .concat(oppfolgingsplanHistorikk.events)
     .concat(lederHistorikk)
     .concat(aktivitetskravHistorikk)
@@ -85,7 +81,7 @@ export function useHistorikk(): HistorikkHook {
 
   const isHistorikkLoading =
     oppfolgingsplanHistorikk.isLoading ||
-    isMotebehovLoading ||
+    motebehovHistorikk.isLoading ||
     isLedereHistorikkLoading ||
     isAktivitetskravHistorikkLoading ||
     isArbeidsuforhetHistorikkLoading ||
@@ -99,7 +95,7 @@ export function useHistorikk(): HistorikkHook {
     dialogmoteStatusEndringHistorikk.isLoading;
 
   const isHistorikkError =
-    isMotebehovError ||
+    motebehovHistorikk.isError ||
     oppfolgingsplanHistorikk.isError ||
     isLedereHistorikkError ||
     isAktivitetskravHistorikkError ||
