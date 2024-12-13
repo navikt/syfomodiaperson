@@ -1,7 +1,6 @@
 import React from "react";
 import { finnMiljoStreng } from "@/utils/miljoUtil";
 import { UtdragOppfolgingsplaner } from "./UtdragOppfolgingsplaner";
-import { SpinnsynLenke } from "@/components/vedtak/SpinnsynLenke";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { BodyShort, Box, Heading, Link } from "@navikt/ds-react";
 import Sykmeldinger from "./Sykmeldinger";
@@ -75,7 +74,6 @@ const UtdragFraSykefravaeret = ({ selectedOppfolgingstilfelle }: Props) => {
       />
       <Sykmeldinger selectedOppfolgingstilfelle={oppfolgingstilfelle} />
       <Samtalereferat />
-      <SpinnsynLenke />
     </Box>
   );
 };

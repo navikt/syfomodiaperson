@@ -204,7 +204,6 @@ export const numberOfTasks = (
       );
     case Menypunkter.NOKKELINFORMASJON:
     case Menypunkter.SYKEPENGESOKNADER:
-    case Menypunkter.VEDTAK:
     case Menypunkter.HISTORIKK: {
       return 0;
     }
