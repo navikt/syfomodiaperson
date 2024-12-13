@@ -77,10 +77,6 @@ function setupTestdataHistorikk() {
     () => oppfolgingstilfellePersonMock
   );
   queryClient.setQueryData(
-    historikkQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => []
-  );
-  queryClient.setQueryData(
     motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
     () => []
   );
