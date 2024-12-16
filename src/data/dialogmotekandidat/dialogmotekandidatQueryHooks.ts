@@ -16,7 +16,6 @@ export const dialogmotekandidatQueryKeys = {
     "dialogmotekandidat",
     personident,
   ],
-  unntaksstatistikk: () => ["unntaksstatistikk"],
 };
 
 export const useIsDialogmoteKandidatWithoutFerdigstiltReferat = (
