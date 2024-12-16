@@ -1,7 +1,4 @@
-import {
-  SYFOMOTEBEHOV_ROOT,
-  SYFOOPPFOLGINGSPLANSERVICE_V3_ROOT,
-} from "@/apiConstants";
+import { SYFOOPPFOLGINGSPLANSERVICE_V3_ROOT } from "@/apiConstants";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   HistorikkEvent,
@@ -12,25 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/timeUtils";
 
 export const historikkQueryKeys = {
-  motebehov: (fnr: string) => ["historikk", "motebehov", fnr],
   oppfolgingsplan: (fnr: string) => ["historikk", "oppfolgingsplan", fnr],
-};
-
-export const useHistorikkMotebehovQuery = () => {
-  const fnr = useValgtPersonident();
-  const path = `${SYFOMOTEBEHOV_ROOT}/historikk`;
-  const fetchHistorikkMotebehov = () => get<HistorikkEvent[]>(path, fnr);
-  const query = useQuery({
-    queryKey: historikkQueryKeys.motebehov(fnr),
-    queryFn: fetchHistorikkMotebehov,
-    enabled: !!fnr,
-    staleTime: minutesToMillis(60 * 12),
-  });
-
-  return {
-    ...query,
-    data: mapHistorikkEvents(query.data || [], "MOTEBEHOV"),
-  };
 };
 
 export const useHistorikkOppfolgingsplan = () => {
