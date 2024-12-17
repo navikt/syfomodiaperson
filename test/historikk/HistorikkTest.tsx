@@ -163,6 +163,19 @@ describe("Historikk", () => {
     ).to.exist;
   });
 
+  it("viser lenke til tiltakshistorikk", async () => {
+    queryClient.setQueryData(
+      ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => LEDERE_DEFAULT
+    );
+    renderHistorikk();
+
+    expect(await screen.findAllByText("Historikk")).to.exist;
+    expect(
+      screen.getByRole("link", { name: "Åpne tiltakshistorikk Ekstern lenke" })
+    ).to.exist;
+  });
+
   it("viser select/dropdown med oppfolgingstilfeller når person har hendelser", async () => {
     queryClient.setQueryData(
       ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
