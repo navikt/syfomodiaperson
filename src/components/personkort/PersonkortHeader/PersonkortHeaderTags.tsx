@@ -7,6 +7,7 @@ import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { useUnderArbeidsrettetOppfolgingQuery } from "@/data/veilarboppfolging/useUnderArbeidsrettetOppfolgingQuery";
+import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 
 const texts = {
   fetchDiskresjonskodeFailed: "Klarte ikke hente diskresjonskode for brukeren.",
@@ -18,6 +19,7 @@ const texts = {
   tegnsprakTolk: "Tegnspråktolk",
   sikkerhetstiltak: "Sikkerhetstiltak",
   ao: "Under arbeidsrettet oppfølging",
+  friskmeldingTilArbeidsformidling: "Har vedtak om § 8-5",
 };
 
 export const PersonkortHeaderTags = () => {
@@ -27,6 +29,7 @@ export const PersonkortHeaderTags = () => {
   const { error, data: diskresjonskode } = useDiskresjonskodeQuery();
   const { data: arbeidsrettetOppfolging } =
     useUnderArbeidsrettetOppfolgingQuery();
+  const { data: vedtakFriskTilArbeid } = useVedtakQuery();
 
   const isDead = !!dodsdato;
   const dateOfDeath = tilLesbarDatoMedArUtenManedNavn(dodsdato);
@@ -36,6 +39,9 @@ export const PersonkortHeaderTags = () => {
     tilrettelagtKommunikasjon?.talesprakTolk?.value;
   const tegnsprakTolkSprakkode =
     tilrettelagtKommunikasjon?.tegnsprakTolk?.value;
+  const hasActiveFriskmeldingVedtak =
+    vedtakFriskTilArbeid[0] &&
+    new Date(vedtakFriskTilArbeid[0].tom).getTime() >= new Date().getTime();
 
   return (
     <ErrorBoundary
@@ -61,6 +67,11 @@ export const PersonkortHeaderTags = () => {
         {arbeidsrettetOppfolging?.underOppfolging && (
           <Tag variant="warning" size="small">
             {texts.ao}
+          </Tag>
+        )}
+        {hasActiveFriskmeldingVedtak && (
+          <Tag variant="info" size="small">
+            {texts.friskmeldingTilArbeidsformidling}
           </Tag>
         )}
         {talesprakTolkSprakkode && (

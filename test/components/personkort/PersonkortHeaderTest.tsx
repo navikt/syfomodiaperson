@@ -25,6 +25,8 @@ import { maksdatoQueryKeys } from "@/data/maksdato/useMaksdatoQuery";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
 import { addDays } from "@/utils/datoUtils";
+import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
+import { defaultVedtak } from "@/mocks/isfrisktilarbeid/mockIsfrisktilarbeid";
 
 let queryClient: any;
 
@@ -291,5 +293,15 @@ describe("PersonkortHeader", () => {
     renderPersonkortHeader();
 
     expect(screen.getByText("Under arbeidsrettet oppfølging")).to.exist;
+  });
+
+  it("viser 8-5 tag når under aktiv fom-tom periode", () => {
+    queryClient.setQueryData(
+      vedtakQueryKeys.vedtak(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => [defaultVedtak]
+    );
+    renderPersonkortHeader();
+
+    expect(screen.getByText("Har vedtak om § 8-5")).to.exist;
   });
 });
