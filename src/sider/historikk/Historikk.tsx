@@ -8,12 +8,15 @@ import {
   HistorikkEventType,
 } from "@/data/historikk/types/historikkTypes";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { Box, Select, Table, Tag } from "@navikt/ds-react";
+import { Box, HStack, Select, Table, Tag } from "@navikt/ds-react";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
+import { fullNaisUrlIntern } from "@/utils/miljoUtil";
+import { EksternLenke } from "@/components/EksternLenke";
 
 const texts = {
   sykefravaerstilfelleLabel: "Sykefraværstilfelle",
+  linkTiltak: "Åpne tiltakshistorikk",
 };
 const byTidspunkt: () => (h1: HistorikkEvent, h2: HistorikkEvent) => number =
   () => (h1: HistorikkEvent, h2: HistorikkEvent) => {
@@ -129,20 +132,31 @@ export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
 
   return (
     <Box background="surface-default" padding="4">
-      <Select
-        className="w-fit mb-4"
-        label={texts.sykefravaerstilfelleLabel}
-        onChange={sykefravaerstilfelleOnChange}
-      >
-        {tilfeller.map((tilfelle, index) => (
-          <option key={index} value={index}>
-            {tilLesbarPeriodeMedArstall(tilfelle.start, tilfelle.end)}
-          </option>
-        ))}
-        {eventUtenforTilfelleList.length > 0 && (
-          <option value={-1}>Utenfor sykefraværstilfelle</option>
-        )}
-      </Select>
+      <HStack justify="space-between" align="start">
+        <Select
+          className="w-fit mb-4"
+          label={texts.sykefravaerstilfelleLabel}
+          onChange={sykefravaerstilfelleOnChange}
+        >
+          {tilfeller.map((tilfelle, index) => (
+            <option key={index} value={index}>
+              {tilLesbarPeriodeMedArstall(tilfelle.start, tilfelle.end)}
+            </option>
+          ))}
+          {eventUtenforTilfelleList.length > 0 && (
+            <option value={-1}>Utenfor sykefraværstilfelle</option>
+          )}
+        </Select>
+        <EksternLenke
+          href={fullNaisUrlIntern(
+            "veilarbpersonflate",
+            "/arbeidsmarkedstiltak"
+          )}
+          className="mr-4"
+        >
+          {texts.linkTiltak}
+        </EksternLenke>
+      </HStack>
       <Box>
         <Table>
           <Table.Header>
