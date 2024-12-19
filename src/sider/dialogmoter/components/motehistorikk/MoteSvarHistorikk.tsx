@@ -6,7 +6,7 @@ import MoteSvarHistorikkEvent from "@/sider/dialogmoter/components/motehistorikk
 
 const texts = {
   header: "Møtesvarhistorikk",
-  subtitle: "Oversikt over svar på tidligere innkallinger til dialogmøter",
+  subtitle: "Oversikt over svar på tidligere dialogmøter",
   ingenSvarHistorikk: "Ingen tidligere møtesvar",
 };
 
