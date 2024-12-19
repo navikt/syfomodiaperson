@@ -1,18 +1,16 @@
 import {
   DialogmoteDTO,
   DialogmoteStatus,
-  MotedeltakerVarselType,
 } from "@/data/dialogmote/types/dialogmoteTypes";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import React, { useState } from "react";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
-import { Accordion, Label } from "@navikt/ds-react";
+import { Accordion, HStack } from "@navikt/ds-react";
 import { DialogmoteStedInfo } from "@/sider/dialogmoter/components/DialogmoteStedInfo";
 import { DialogmoteVeilederInfo } from "@/sider/dialogmoter/components/DialogmoteVeilederInfo";
-import { ArbeidsgiverSvar } from "@/sider/dialogmoter/components/svar/ArbeidsgiverSvar";
-import { ArbeidstakerSvar } from "@/sider/dialogmoter/components/svar/ArbeidstakerSvar";
-import { BehandlerSvar } from "@/sider/dialogmoter/components/svar/BehandlerSvar";
+import { MoteSvarHistorikkInnkalling } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkInnkalling";
+import { MoteSvarHistorikkEndringer } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkEndringer";
 
 const getHeaderText = (mote: DialogmoteDTO): string => {
   const moteDato = tilDatoMedManedNavn(mote.tid);
@@ -46,49 +44,20 @@ export default function MoteSvarHistorikkEvent({ dialogmote }: Props) {
     setIsOpen(!isOpen);
   };
 
-  const innkallingArbeidstaker = dialogmote.arbeidstaker.varselList.find(
-    ({ varselType }) => varselType === MotedeltakerVarselType.INNKALT
-  );
-  const innkallingArbeidsgiver = dialogmote.arbeidsgiver.varselList.find(
-    ({ varselType }) => varselType === MotedeltakerVarselType.INNKALT
-  );
-  const innkallingBehandler =
-    dialogmote.behandler &&
-    dialogmote.behandler.varselList.find(
-      ({ varselType }) => varselType === MotedeltakerVarselType.INNKALT
-    );
-
   return (
     <Accordion.Item open={isOpen}>
       <Accordion.Header onClick={handleAccordionClick}>
         {getHeaderText(dialogmote)}
       </Accordion.Header>
       <Accordion.Content>
-        <DialogmoteStedInfo dialogmote={dialogmote} />
-        <DialogmoteVeilederInfo dialogmote={dialogmote} />
-        <div className="mt-4">
-          <Label size="small">{`Innkalling sendt ${tilDatoMedManedNavn(
-            dialogmote.createdAt
-          )} - svar:`}</Label>
-          <div className="flex flex-col gap-4">
-            {innkallingArbeidsgiver && (
-              <ArbeidsgiverSvar
-                varsel={innkallingArbeidsgiver}
-                virksomhetsnummer={dialogmote.arbeidsgiver.virksomhetsnummer}
-                defaultClosed
-              />
-            )}
-            {innkallingArbeidstaker && (
-              <ArbeidstakerSvar varsel={innkallingArbeidstaker} defaultClosed />
-            )}
-            {innkallingBehandler && (
-              <BehandlerSvar
-                varsel={innkallingBehandler}
-                behandlerNavn={dialogmote.behandler.behandlerNavn}
-              />
-            )}
+        <HStack gap="4">
+          <div>
+            <DialogmoteStedInfo dialogmote={dialogmote} />
+            <DialogmoteVeilederInfo dialogmote={dialogmote} />
           </div>
-        </div>
+          <MoteSvarHistorikkInnkalling dialogmote={dialogmote} />
+          <MoteSvarHistorikkEndringer dialogmote={dialogmote} />
+        </HStack>
       </Accordion.Content>
     </Accordion.Item>
   );
