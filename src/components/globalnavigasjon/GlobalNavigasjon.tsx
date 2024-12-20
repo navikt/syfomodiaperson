@@ -10,7 +10,6 @@ import {
 } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
-import { VedtakMenypunkt } from "@/components/globalnavigasjon/VedtakMenypunkt";
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { BodyShort } from "@navikt/ds-react";
 import { EventType, logEvent } from "@/utils/amplitude";
@@ -28,7 +27,6 @@ export enum Menypunkter {
   SYKEPENGESOKNADER = "SYKEPENGESOKNADER",
   OPPFOELGINGSPLANER = "OPPFOELGINGSPLANER",
   HISTORIKK = "HISTORIKK",
-  VEDTAK = "VEDTAK",
   ARBEIDSUFORHET = "ARBEIDSUFORHET",
   FRISKTILARBEID = "FRISKTILARBEID",
   SENOPPFOLGING = "SENOPPFOLGING",
@@ -87,10 +85,6 @@ const allMenypunkter: {
   [Menypunkter.HISTORIKK]: {
     navn: "Historikk",
     sti: "historikk",
-  },
-  [Menypunkter.VEDTAK]: {
-    navn: "Vedtak",
-    sti: "vedtak",
   },
 };
 
@@ -187,37 +181,31 @@ export const GlobalNavigasjon = ({
           manglendeMedvirkningVurdering
         );
 
-        const isVedtakMenypunkt = menypunkt === Menypunkter.VEDTAK;
-
         return (
           <React.Fragment key={index}>
-            {isVedtakMenypunkt ? (
-              <VedtakMenypunkt index={index} navn={navn} />
-            ) : (
-              <li aria-current={isAktiv} className="flex">
-                <Link
-                  ref={(instance) => {
-                    if (instance) {
-                      refs.current[index] = instance;
-                    }
-                  }}
-                  className={`flex justify-between ${className}`}
-                  to={`/sykefravaer/${sti}`}
-                  onFocus={() => {
-                    setFocusIndex(index);
-                  }}
-                  onClick={() => handleOnClick(navn, sti)}
-                  onKeyDown={(e) => {
-                    handleKeyDown(e);
-                  }}
-                >
-                  <BodyShort size="small">{navn}</BodyShort>
-                  {tasks > 0 && (
-                    <UnfinishedTasks tasks={tasks} menypunkt={menypunkt} />
-                  )}
-                </Link>
-              </li>
-            )}
+            <li aria-current={isAktiv} className="flex">
+              <Link
+                ref={(instance) => {
+                  if (instance) {
+                    refs.current[index] = instance;
+                  }
+                }}
+                className={`flex justify-between ${className}`}
+                to={`/sykefravaer/${sti}`}
+                onFocus={() => {
+                  setFocusIndex(index);
+                }}
+                onClick={() => handleOnClick(navn, sti)}
+                onKeyDown={(e) => {
+                  handleKeyDown(e);
+                }}
+              >
+                <BodyShort size="small">{navn}</BodyShort>
+                {tasks > 0 && (
+                  <UnfinishedTasks tasks={tasks} menypunkt={menypunkt} />
+                )}
+              </Link>
+            </li>
           </React.Fragment>
         );
       })}
