@@ -27,12 +27,13 @@ import userEvent from "@testing-library/user-event";
 let queryClient: QueryClient;
 
 type InnkallingSvar = Pick<VarselSvarDTO, "svarType" | "svarTekst">;
-const innkallingAT = (
-  svar: InnkallingSvar
+const varselAT = (
+  svar: InnkallingSvar,
+  varselType: MotedeltakerVarselType
 ): DialogmotedeltakerArbeidstakerVarselDTO => ({
   uuid: "123",
   createdAt: "2021-05-26T12:56:26.271381",
-  varselType: MotedeltakerVarselType.INNKALT,
+  varselType,
   digitalt: true,
   lestDato: "2021-05-26T12:56:26.271381",
   fritekst: "Ipsum lorum arbeidstaker",
@@ -42,12 +43,13 @@ const innkallingAT = (
     svarTidspunkt: "2021-05-26T12:56:26.271381",
   },
 });
-const innkallingAG = (
-  svar: InnkallingSvar
+const varselAG = (
+  svar: InnkallingSvar,
+  varselType: MotedeltakerVarselType
 ): DialogmotedeltakerArbeidsgiverVarselDTO => ({
   uuid: "456",
   createdAt: "2021-05-26T12:56:26.282386",
-  varselType: MotedeltakerVarselType.INNKALT,
+  varselType,
   lestDato: "2021-05-26T12:56:26.271381",
   fritekst: "Ipsum lorum arbeidsgiver",
   document: [],
@@ -69,18 +71,36 @@ const ferdigstiltMote: DialogmoteDTO = {
     personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
     type: "ARBEIDSTAKER",
     varselList: [
-      innkallingAT({
-        svarType: SvarType.KOMMER,
-      }),
+      varselAT(
+        {
+          svarType: SvarType.KOMMER,
+        },
+        MotedeltakerVarselType.INNKALT
+      ),
+      varselAT(
+        {
+          svarType: SvarType.KOMMER,
+        },
+        MotedeltakerVarselType.NYTT_TID_STED
+      ),
     ],
   },
   arbeidsgiver: {
     virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
     type: "ARBEIDSGIVER",
     varselList: [
-      innkallingAG({
-        svarType: SvarType.KOMMER,
-      }),
+      varselAG(
+        {
+          svarType: SvarType.NYTT_TID_STED,
+        },
+        MotedeltakerVarselType.INNKALT
+      ),
+      varselAG(
+        {
+          svarType: SvarType.KOMMER,
+        },
+        MotedeltakerVarselType.NYTT_TID_STED
+      ),
     ],
   },
   sted: "Sted",
@@ -99,10 +119,13 @@ const avlystMote: DialogmoteDTO = {
     personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
     type: "ARBEIDSTAKER",
     varselList: [
-      innkallingAT({
-        svarType: SvarType.KOMMER_IKKE,
-        svarTekst: "Syk",
-      }),
+      varselAT(
+        {
+          svarType: SvarType.KOMMER_IKKE,
+          svarTekst: "Syk",
+        },
+        MotedeltakerVarselType.INNKALT
+      ),
       {
         uuid: "abc",
         createdAt: "2021-05-26T12:56:26.271381",
@@ -118,9 +141,12 @@ const avlystMote: DialogmoteDTO = {
     virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
     type: "ARBEIDSGIVER",
     varselList: [
-      innkallingAG({
-        svarType: SvarType.KOMMER,
-      }),
+      varselAG(
+        {
+          svarType: SvarType.KOMMER,
+        },
+        MotedeltakerVarselType.INNKALT
+      ),
       {
         uuid: "def",
         createdAt: "2021-05-26T12:56:26.282386",
@@ -169,17 +195,25 @@ describe("MoteSvarHistorikk", () => {
     expect(screen.getByText(`Innkalt av: ${VEILEDER_DEFAULT.fulltNavn()}`)).to
       .exist;
   });
-  it("viser innkalling med svar for ferdigstilt møte", async () => {
+  it("viser innkalling og endring med svar for ferdigstilt møte", async () => {
     renderMoteSvarHistorikk([ferdigstiltMote]);
 
     const accordion = screen.getByRole("button");
     await userEvent.click(accordion);
 
+    expect(screen.getByText("Innkalling sendt 26. mai 2021 - svar:")).to.exist;
+    expect(screen.getByText("Endret tid/sted sendt 26. mai 2021 - svar:")).to
+      .exist;
+
     assertExpandableWithHeader(
-      `${ARBEIDSTAKER_DEFAULT_FULL_NAME}, kommer - Svar mottatt 26.05.2021`
+      `${ARBEIDSTAKER_DEFAULT_FULL_NAME}, kommer - Svar mottatt 26.05.2021`,
+      2
     );
     assertExpandableWithHeader(
       `${NARMESTE_LEDER_DEFAULT.navn}, kommer - Svar mottatt 26.05.2021`
+    );
+    assertExpandableWithHeader(
+      `${NARMESTE_LEDER_DEFAULT.navn}, ønsker å endre tidspunkt eller sted - Svar mottatt 26.05.2021`
     );
   });
   it("viser innkalling med svar for avlyst møte", async () => {
@@ -199,6 +233,6 @@ describe("MoteSvarHistorikk", () => {
   });
 });
 
-const assertExpandableWithHeader = (header: string) => {
-  expect(screen.getByRole("region", { name: header })).to.exist;
+const assertExpandableWithHeader = (header: string, count = 1) => {
+  expect(screen.getAllByRole("region", { name: header })).to.have.length(count);
 };
