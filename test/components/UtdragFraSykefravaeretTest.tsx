@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import {
   ARBEIDSTAKER_DEFAULT,
+  ARBEIDSTAKER_DEFAULT_FULL_NAME,
   VIRKSOMHET_BRANNOGBIL,
 } from "@/mocks/common/mockConstants";
 import { queryClientWithMockData } from "../testQueryClient";
@@ -72,6 +73,17 @@ describe("UtdragFraSykefravaeret", () => {
   });
   afterAll(() => {
     vi.restoreAllMocks();
+  });
+
+  it("viser spinnsyn-lenke til vedtak", () => {
+    renderUtdragFraSykefravaeret();
+
+    expect(screen.getByRole("heading", { name: "Vedtak" })).to.exist;
+    const link = screen.getByRole("link", {
+      name: `Se vedtakene slik ${ARBEIDSTAKER_DEFAULT_FULL_NAME} ser dem på nav.no Ekstern lenke`,
+    });
+    expect(link.getAttribute("href")).to.contain("spinnsyn-frontend-interne");
+    expect(link.getAttribute("href")).to.contain("/syk/sykepenger");
   });
 
   it("Viser sykmeldinger med sykmelder og arbeidsgiver", () => {
