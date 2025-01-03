@@ -15,7 +15,7 @@ const texts = {
   },
 };
 
-const Personkort = () => {
+export default function Personkort() {
   const [visning, setVisning] = useState(PERSONKORTVISNING_TYPE.SYKMELDT);
   const { hasSikkerhetstiltak } = useNavBrukerData();
 
@@ -106,6 +106,4 @@ const Personkort = () => {
       </Ekspanderbartpanel>
     </div>
   );
-};
-
-export default Personkort;
+}
