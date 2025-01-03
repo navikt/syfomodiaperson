@@ -4,7 +4,7 @@ import { SYFOPERSON_ROOT } from "@/apiConstants";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { erGyldigFodselsnummer } from "@/utils/frnValideringUtils";
-import { minutesToMillis } from "@/utils/timeUtils";
+import { minutesToMillis } from "@/utils/utils";
 
 export const brukerinfoQueryKeys = {
   brukerinfo: (personident: string) => ["brukerinfo", personident],

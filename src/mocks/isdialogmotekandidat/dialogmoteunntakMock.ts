@@ -1,4 +1,4 @@
-import { generateUUID } from "@/utils/uuidUtils";
+import { generateUUID } from "@/utils/utils";
 import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,

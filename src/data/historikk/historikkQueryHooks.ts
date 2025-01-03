@@ -6,7 +6,7 @@ import {
 } from "@/data/historikk/types/historikkTypes";
 import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
-import { minutesToMillis } from "@/utils/timeUtils";
+import { minutesToMillis } from "@/utils/utils";
 
 export const historikkQueryKeys = {
   oppfolgingsplan: (fnr: string) => ["historikk", "oppfolgingsplan", fnr],

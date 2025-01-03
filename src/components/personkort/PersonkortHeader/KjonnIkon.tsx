@@ -1,7 +1,14 @@
-import { hentBrukersKjoennFraFnr } from "@/utils/fnrUtils";
 import { KJOENN } from "@/konstanter";
 import { getKvinneImage, getMannImage } from "@/utils/festiveUtils";
 import React from "react";
+
+export function hentBrukersKjoennFraFnr(fnr: string) {
+  const kjonnSiffer = Number(fnr.substring(8, 9));
+  if (kjonnSiffer % 2 === 0) {
+    return KJOENN.KVINNE;
+  }
+  return KJOENN.MANN;
+}
 
 export function KjonnIkon({ personident }: { personident: string }) {
   return (

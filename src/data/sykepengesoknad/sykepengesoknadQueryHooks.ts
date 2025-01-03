@@ -1,7 +1,7 @@
 import { SYKEPENGESOKNAD_BACKEND_ROOT } from "@/apiConstants";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useQuery } from "@tanstack/react-query";
-import { minutesToMillis } from "@/utils/timeUtils";
+import { minutesToMillis } from "@/utils/utils";
 import {
   SporsmalDTO,
   SvarTypeDTO,

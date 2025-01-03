@@ -1,11 +1,8 @@
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { KJOENN } from "@/konstanter";
-import {
-  hentBrukersFoedseldatoFraFnr,
-  hentBrukersAlderFraFnr,
-  hentBrukersKjoennFraFnr,
-  formaterFnr,
-} from "@/utils/fnrUtils";
+import { hentBrukersKjoennFraFnr } from "@/components/personkort/PersonkortHeader/KjonnIkon";
+import { hentBrukersAlderFraFnr } from "@/components/personkort/PersonkortHeader/NavnHeader";
+import { formaterFnr, hentBrukersFoedseldatoFraFnr } from "@/utils/fnrUtils";
 
 describe("fnrUtils", () => {
   describe("hentBrukersFoedseldatoFraFnr", () => {
@@ -143,8 +140,7 @@ describe("fnrUtils", () => {
 
   describe("formaterFnr", () => {
     it("Skal formatere fnr", () => {
-      const s = formaterFnr("12121233333");
-      expect(s).to.equal("121212 33333");
+      expect(formaterFnr("12121233333")).to.equal("121212 33333");
     });
   });
 });

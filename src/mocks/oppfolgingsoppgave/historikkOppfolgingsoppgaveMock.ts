@@ -1,4 +1,4 @@
-import { generateUUID } from "@/utils/uuidUtils";
+import { generateUUID } from "@/utils/utils";
 import { VEILEDER_IDENT_DEFAULT } from "@/mocks/common/mockConstants";
 import {
   Oppfolgingsgrunn,

@@ -5,7 +5,7 @@ import "./styles/styles.less";
 import "./styles/style.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { minutesToMillis } from "@/utils/timeUtils";
+import { minutesToMillis } from "@/utils/utils";
 import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 import { isClientError } from "@/api/errors";
 import { initFaro } from "@/faro";

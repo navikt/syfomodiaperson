@@ -1,6 +1,6 @@
 import { ISFRISKTILARBEID_ROOT } from "@/apiConstants";
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
-import { generateUUID } from "@/utils/uuidUtils";
+import { generateUUID } from "@/utils/utils";
 import { VEILEDER_DEFAULT } from "../common/mockConstants";
 import {
   InfotrygdStatus,

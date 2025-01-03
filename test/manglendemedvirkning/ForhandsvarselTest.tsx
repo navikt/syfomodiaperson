@@ -23,7 +23,7 @@ import { NotificationProvider } from "@/context/notification/NotificationContext
 import ForhandsvarselSkjema from "@/sider/manglendemedvirkning/forhandsvarsel/ForhandsvarselSkjema";
 import { queryClientWithMockData } from "../testQueryClient";
 import { defaultForhandsvarselVurdering } from "./manglendeMedvirkningTestData";
-import { generateUUID } from "@/utils/uuidUtils";
+import { generateUUID } from "@/utils/utils";
 import ForhandsvarselSendt from "@/sider/manglendemedvirkning/forhandsvarsel/ForhandsvarselSendt";
 
 let queryClient: QueryClient;

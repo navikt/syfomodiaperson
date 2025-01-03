@@ -16,7 +16,7 @@ import {
   OppfolgingsoppgaveResponseDTO,
   OppfolgingsoppgaveVersjonResponseDTO,
 } from "@/data/oppfolgingsoppgave/types";
-import { generateUUID } from "@/utils/uuidUtils";
+import { generateUUID } from "@/utils/utils";
 import { beforeEach, describe, expect, it } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { Oppfolgingsoppgave } from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";

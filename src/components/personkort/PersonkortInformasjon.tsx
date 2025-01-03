@@ -1,14 +1,14 @@
 import React from "react";
 
-interface PersonkortInformasjonProps {
+interface Props {
   informasjonNokkelTekster: Map<string, string>;
   informasjon: any;
 }
 
-const PersonkortInformasjon = (
-  personkortInformasjonProps: PersonkortInformasjonProps
-) => {
-  const { informasjonNokkelTekster, informasjon } = personkortInformasjonProps;
+export default function PersonkortInformasjon({
+  informasjonNokkelTekster,
+  informasjon,
+}: Props) {
   return (
     <>
       {Object.keys(informasjon).map((nokkel, idx) => {
@@ -24,6 +24,4 @@ const PersonkortInformasjon = (
       })}
     </>
   );
-};
-
-export default PersonkortInformasjon;
+}

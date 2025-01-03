@@ -1,8 +1,33 @@
 import {
-  periodeOverlapperMedPeriode,
   senesteTom,
   tidligsteFom,
+  TilfellePeriode,
 } from "@/utils/periodeUtils";
+import { describe, expect, it } from "vitest";
+
+function periodeOverlapperMedPeriode(
+  periodeA_: TilfellePeriode,
+  periodeB_: TilfellePeriode
+): boolean {
+  const periodeA = periodeA_;
+  const periodeB = periodeB_;
+  try {
+    const forstePeriode =
+      new Date(periodeA.fom).getTime() < new Date(periodeB.fom).getTime()
+        ? periodeA
+        : periodeB;
+    const andrePeriode =
+      new Date(periodeA.fom).getTime() < new Date(periodeB.fom).getTime()
+        ? periodeB
+        : periodeA;
+    return (
+      new Date(forstePeriode.tom).getTime() >=
+      new Date(andrePeriode.fom).getTime()
+    );
+  } catch (e) {
+    return false;
+  }
+}
 
 describe("periodeUtils", () => {
   describe("tidligsteFom", () => {

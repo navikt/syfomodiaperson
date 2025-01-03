@@ -2,7 +2,7 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { VEILARBOPPFOLGING_ROOT } from "@/apiConstants";
 import { post } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
-import { minutesToMillis } from "@/utils/timeUtils";
+import { minutesToMillis } from "@/utils/utils";
 import {
   UnderArbeidsrettetOppfolgingRequestDTO,
   UnderArbeidsrettetOppfolgingResponseDTO,

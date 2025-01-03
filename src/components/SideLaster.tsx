@@ -1,7 +1,6 @@
 import React, { ReactElement, ReactNode } from "react";
 import AppSpinner from "./AppSpinner";
 import Feilmelding from "./Feilmelding";
-import { hentBegrunnelseTekst } from "@/utils/tilgangUtils";
 import { useTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
 
 interface Props {
@@ -14,6 +13,13 @@ interface Props {
 const texts = {
   errorTitle: "Du har ikke tilgang til denne tjenesten",
 };
+
+export const ikkeTilgangBegrunnelseTekst = `
+    Du har ikke tilgang til å se denne personen.
+    Det kan være fordi du ikke har tilgang til «sykefraværsoppfølging»,
+    personen har en geografisk tilhørighet som du ikke har tilgang til
+    eller at det kreves særskilt tilgang for å se informasjon om denne personen. 
+  `;
 
 export default function SideLaster({
   henter,
@@ -33,7 +39,10 @@ export default function SideLaster({
   }
   if (!harTilgang) {
     return (
-      <Feilmelding tittel={texts.errorTitle} melding={hentBegrunnelseTekst()} />
+      <Feilmelding
+        tittel={texts.errorTitle}
+        melding={ikkeTilgangBegrunnelseTekst}
+      />
     );
   }
   if (hentingFeilet || hentingTilgangFeilet) {

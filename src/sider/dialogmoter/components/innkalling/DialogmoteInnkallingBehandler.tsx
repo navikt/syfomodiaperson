@@ -7,13 +7,13 @@ import { behandlerDisplayText } from "@/utils/behandlerUtils";
 import BehandlerSearch from "@/components/behandler/BehandlerSearch";
 import { useController } from "react-hook-form";
 import { DialogmoteInnkallingSkjemaValues } from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
-import { behandlerRefValidationErrors } from "@/utils/valideringUtils";
 
 export const texts = {
   title: "Behandler",
   legekontor: "Legekontor",
   tlf: "Telefonnummer",
   noBehandler: "Ingen behandler",
+  behandlerMissing: "Vennligst velg behandler",
 };
 
 const behandlerRadioGruppeTexts = {
@@ -25,6 +25,16 @@ const behandlerRadioGruppeTexts = {
 interface DialogmoteInnkallingBehandlerProps {
   setSelectedBehandler: (behandler?: BehandlerDTO) => void;
   selectedbehandler?: BehandlerDTO;
+}
+
+function behandlerRefValidationErrors(
+  behandlerRef: string | undefined,
+  allowNoBehandler: boolean
+) {
+  if ((!allowNoBehandler && behandlerRef === "NONE") || !behandlerRef) {
+    return texts.behandlerMissing;
+  }
+  return undefined;
 }
 
 const DialogmoteInnkallingBehandler = ({

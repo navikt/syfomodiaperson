@@ -1,9 +1,9 @@
 import React, { ReactElement, ReactNode } from "react";
 import AppSpinner from "./AppSpinner";
 import Feilmelding from "./Feilmelding";
-import { hentBegrunnelseTekst } from "@/utils/tilgangUtils";
 import { useTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
 import Decorator from "@/decorator/Decorator";
+import { ikkeTilgangBegrunnelseTekst } from "@/components/SideLaster";
 
 interface AktivBrukerTilgangLasterProps {
   children: ReactNode;
@@ -28,7 +28,10 @@ const AktivBrukerTilgangLaster = ({
     visning = <AppSpinner />;
   } else if (!harTilgang) {
     visning = (
-      <Feilmelding tittel={texts.errorTitle} melding={hentBegrunnelseTekst()} />
+      <Feilmelding
+        tittel={texts.errorTitle}
+        melding={ikkeTilgangBegrunnelseTekst}
+      />
     );
   } else if (hentingTilgangFeilet) {
     visning = <Feilmelding />;

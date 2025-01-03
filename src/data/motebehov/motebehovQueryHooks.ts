@@ -3,7 +3,7 @@ import { SYFOMOTEBEHOV_ROOT } from "@/apiConstants";
 import { get } from "@/api/axios";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import { useQuery } from "@tanstack/react-query";
-import { minutesToMillis } from "@/utils/timeUtils";
+import { minutesToMillis } from "@/utils/utils";
 import { sorterMotebehovDataEtterDato } from "@/utils/motebehovUtils";
 
 export const motebehovQueryKeys = {

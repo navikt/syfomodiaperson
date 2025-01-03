@@ -3,7 +3,7 @@ import { SYFOPERSON_ROOT } from "@/apiConstants";
 import { PersonAdresse } from "@/data/personinfo/types/PersonAdresse";
 import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
-import { minutesToMillis } from "@/utils/timeUtils";
+import { minutesToMillis } from "@/utils/utils";
 
 export const personinfoQueryKeys = {
   personadresse: (fnr: string) => ["personadresse", fnr],

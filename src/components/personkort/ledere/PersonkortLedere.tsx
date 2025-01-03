@@ -4,7 +4,6 @@ import {
   SykmeldingLeder,
   virksomheterWithoutLeder,
 } from "@/utils/ledereUtils";
-import { groupArrayByKey } from "@/utils/sortUtils";
 import PersonkortFeilmelding from "../PersonkortFeilmelding";
 import PersonKortVirksomhetLedere from "./PersonKortVirksomhetLedere";
 import PersonKortVirksomhetHeader from "./PersonKortVirksomhetHeader";
@@ -24,6 +23,13 @@ export const sortLeaderListNewestFomDatoFirst = (
     return new Date(l2.aktivFom).getTime() - new Date(l1.aktivFom).getTime();
   });
 };
+
+function groupArrayByKey(array: any, key: any) {
+  return array.reduce((rv: any, x: any) => {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+}
 
 const PersonkortLedere = () => {
   const { allLedere } = useLedereQuery();

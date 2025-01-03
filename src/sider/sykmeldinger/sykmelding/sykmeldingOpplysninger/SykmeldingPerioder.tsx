@@ -1,15 +1,24 @@
 import React from "react";
 import SykmeldingPeriode from "./SykmeldingPeriode";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { getDuration } from "@/utils/datoUtils";
-import { sorterPerioderEldsteForst } from "@/utils/periodeUtils";
+import { getDuration, toDate } from "@/utils/datoUtils";
 
-interface SykmeldingPerioderProps {
+interface Props {
   perioder: SykmeldingPeriodeDTO[];
 }
-const SykmeldingPerioder = (
-  sykmeldingPerioderProps: SykmeldingPerioderProps
-) => {
+
+function sorterPerioderEldsteForst(
+  perioder: SykmeldingPeriodeDTO[]
+): SykmeldingPeriodeDTO[] {
+  return perioder.sort((a, b) => {
+    if (toDate(a.fom)?.getTime() !== toDate(b.fom)?.getTime()) {
+      return (toDate(a.fom)?.getTime() ?? 0) - (toDate(b.fom)?.getTime() ?? 0);
+    }
+    return (toDate(a.tom)?.getTime() ?? 0) - (toDate(b.tom)?.getTime() ?? 0);
+  });
+}
+
+export default function SykmeldingPerioder(sykmeldingPerioderProps: Props) {
   const { perioder = [] } = sykmeldingPerioderProps;
   return (
     <div
@@ -28,6 +37,4 @@ const SykmeldingPerioder = (
       })}
     </div>
   );
-};
-
-export default SykmeldingPerioder;
+}

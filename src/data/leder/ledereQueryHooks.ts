@@ -2,7 +2,7 @@ import { ISNARMESTELEDER_ROOT } from "@/apiConstants";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
-import { minutesToMillis } from "@/utils/timeUtils";
+import { minutesToMillis } from "@/utils/utils";
 import { useMemo } from "react";
 import {
   NarmesteLederRelasjonDTO,
