@@ -10,7 +10,7 @@ import {
   NarmesteLederRelasjonStatus,
 } from "@/data/leder/ledereTypes";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { capitalizeAllWords } from "@/utils/stringUtils";
+import { capitalizeAllWords, formatPhonenumber } from "@/utils/stringUtils";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 
 const texts = {
@@ -114,7 +114,7 @@ export const PersonKortVirksomhetLederRow = (
       <EpostButton epost={leder.narmesteLederEpost} />
       <PersonKortVirksomhetLederColumn
         colSize={2}
-        text={leder.narmesteLederTelefonnummer}
+        text={formatPhonenumber(leder.narmesteLederTelefonnummer)}
         isActive={isActive}
       />
       {leder.aktivFom && (

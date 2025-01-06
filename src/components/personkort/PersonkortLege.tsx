@@ -8,6 +8,7 @@ import styled from "styled-components";
 import PersonkortInformasjon from "@/components/personkort/PersonkortInformasjon";
 import { FlexColumn, FlexRow } from "@/components/Layout";
 import { Detail, Heading } from "@navikt/ds-react";
+import { formatPhonenumber } from "@/utils/stringUtils";
 
 const texts = {
   name: "Legekontor",
@@ -86,9 +87,11 @@ export const FastlegeVikar = ({
 const PersonKortLegeRow = styled(Row)`
   margin-left: 0;
   margin-right: 0;
+
   &:not(:last-child) {
     margin-bottom: 1em;
   }
+
   ul li {
     display: block;
   }
@@ -140,7 +143,8 @@ const PersonkortLege = () => {
   const valgteElementerKontor =
     fastlege?.fastlegekontor &&
     (({ navn, telefon }) => {
-      return { navn, telefon };
+      const tlf = telefon ? formatPhonenumber(telefon) : telefon;
+      return { navn, tlf };
     })(fastlege.fastlegekontor);
 
   const valgteElementer = {
