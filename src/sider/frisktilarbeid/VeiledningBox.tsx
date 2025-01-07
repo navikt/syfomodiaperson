@@ -1,6 +1,5 @@
 import { BodyShort, Box, Heading, List } from "@navikt/ds-react";
 import React from "react";
-import { EksternLenke } from "@/components/EksternLenke";
 
 const texts = {
   title: "Forberedelser",
@@ -40,11 +39,7 @@ const texts = {
     "Du trenger ikke å sjekke Infotrygd når du fatter vedtak i Modia.",
     "Av juridiske grunner skal ikke behandler få tilsendt kopi av vedtaket.",
   ],
-  link: "Servicerutinen på Navet",
 };
-
-const serviceRutineLink =
-  "https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Sykefrav%C3%A6rsomr%C3%A5det-Virkemidler.aspx";
 
 function Forberedelser() {
   return (
@@ -111,9 +106,6 @@ export function VeiledningBox() {
       <Forberedelser />
       <StegForSteg />
       <Tilleggsinformasjon />
-      <EksternLenke href={serviceRutineLink} className="mt-2">
-        {texts.link}
-      </EksternLenke>
     </Box>
   );
 }
