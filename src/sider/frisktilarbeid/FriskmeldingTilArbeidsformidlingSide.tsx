@@ -8,6 +8,7 @@ import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { FriskmeldingTilArbeidsformidling } from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidling";
 import { VeiledningBox } from "@/sider/frisktilarbeid/VeiledningBox";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
+import RundskrivLenke from "@/sider/frisktilarbeid/RundskrivLenke";
 
 const texts = {
   title: "Friskmelding til arbeidsformidling",
@@ -28,6 +29,7 @@ export const FriskmeldingTilArbeidsformidlingSide = (): ReactElement => {
           </Tredelt.FirstColumn>
           <Tredelt.SecondColumn>
             <VeiledningBox />
+            <RundskrivLenke />
           </Tredelt.SecondColumn>
         </Tredelt.Container>
       </SideLaster>

@@ -107,7 +107,7 @@ function Tilleggsinformasjon() {
 
 export function VeiledningBox() {
   return (
-    <Box background="surface-default" padding="6">
+    <Box background="surface-default" padding="6" className="mb-2">
       <Forberedelser />
       <StegForSteg />
       <Tilleggsinformasjon />
