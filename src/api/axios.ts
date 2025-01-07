@@ -7,7 +7,7 @@ import {
   loginRequiredError,
   networkError,
 } from "@/api/errors";
-import { generateUUID } from "@/utils/uuidUtils";
+import { generateUUID } from "@/utils/utils";
 
 export const NAV_CALL_ID_HEADER = "Nav-Call-Id";
 export const NAV_CONSUMER_ID_HEADER = "Nav-Consumer-Id";

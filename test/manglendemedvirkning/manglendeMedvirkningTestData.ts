@@ -2,12 +2,12 @@ import {
   VurderingResponseDTO,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
-import { generateUUID } from "@/utils/uuidUtils";
+import { generateUUID } from "@/utils/utils";
 import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
-import { addWeeks, addDays } from "@/utils/datoUtils";
+import { addDays, addWeeks } from "@/utils/datoUtils";
 import { getSendForhandsvarselDocument } from "./vurderingDocuments";
 
 export const defaultForhandsvarselVurdering: VurderingResponseDTO = {

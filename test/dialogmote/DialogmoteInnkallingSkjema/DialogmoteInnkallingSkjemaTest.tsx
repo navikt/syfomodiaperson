@@ -1,5 +1,5 @@
 import React from "react";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { texts as valideringsTexts } from "@/utils/valideringUtils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
@@ -140,7 +140,7 @@ describe("DialogmoteInnkallingSkjema", () => {
     renderDialogmoteInnkallingSkjema();
     await clickButton("Send innkallingene");
 
-    expect(await screen.findByText(valideringsTexts.orgMissing)).to.exist;
+    expect(await screen.findByText("Vennligst velg arbeidsgiver")).to.exist;
     expect(await screen.findByText(/Vennligst angi en gyldig dato/)).to.exist;
     expect(await screen.findByText(valideringsTexts.timeMissing)).to.exist;
     expect(await screen.findByText(texts.stedMissing)).to.exist;
@@ -150,7 +150,7 @@ describe("DialogmoteInnkallingSkjema", () => {
     renderDialogmoteInnkallingSkjema();
     await clickButton("Send innkallingene");
 
-    expect(await screen.findByText(valideringsTexts.orgMissing)).to.exist;
+    expect(await screen.findByText("Vennligst velg arbeidsgiver")).to.exist;
     expect(await screen.findByText(/Vennligst angi en gyldig dato/)).to.exist;
     expect(await screen.findByText(valideringsTexts.timeMissing)).to.exist;
     expect(await screen.findByText(texts.stedMissing)).to.exist;
@@ -159,7 +159,7 @@ describe("DialogmoteInnkallingSkjema", () => {
 
     // Feilmeldinger forsvinner
     await waitFor(() => {
-      expect(screen.queryByText(valideringsTexts.orgMissing)).to.not.exist;
+      expect(screen.queryByText("Vennligst velg arbeidsgiver")).to.not.exist;
     });
     await waitFor(() => {
       expect(screen.queryByText(/Vennligst angi en gyldig dato/)).to.not.exist;

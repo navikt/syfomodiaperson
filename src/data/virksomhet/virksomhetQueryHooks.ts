@@ -5,7 +5,7 @@ import {
   getVirksomhetsnavn,
 } from "@/data/virksomhet/types/EregOrganisasjonResponseDTO";
 import { useQuery } from "@tanstack/react-query";
-import { minutesToMillis } from "@/utils/timeUtils";
+import { minutesToMillis } from "@/utils/utils";
 
 const virksomhetQueryKeys = {
   virksomhet: (virksomhetsnummer: string) => ["virksomhet", virksomhetsnummer],

@@ -2,7 +2,7 @@ import { MODIACONTEXTHOLDER_ROOT } from "@/apiConstants";
 import { get } from "@/api/axios";
 import { RSContext } from "@/data/modiacontext/modiacontextTypes";
 import { useQuery } from "@tanstack/react-query";
-import { minutesToMillis } from "@/utils/timeUtils";
+import { minutesToMillis } from "@/utils/utils";
 
 export const modiacontextQueryKeys = {
   aktivbruker: ["aktivbruker"],

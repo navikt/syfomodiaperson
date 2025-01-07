@@ -6,7 +6,7 @@ import {
   OppfolgingstilfelleDTO,
   OppfolgingstilfellePersonDTO,
 } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { minutesToMillis } from "@/utils/timeUtils";
+import { minutesToMillis } from "@/utils/utils";
 import dayjs from "dayjs";
 import {
   isGjentakendeSykefravar,

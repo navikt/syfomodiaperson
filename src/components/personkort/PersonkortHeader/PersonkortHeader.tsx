@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { formaterFnr } from "@/utils/fnrUtils";
 import CopyButton from "../../kopierknapp/CopyButton";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
@@ -13,6 +12,7 @@ import { Diagnosekode } from "@/components/personkort/PersonkortHeader/Diagnosek
 import { useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
 import { NavnHeader } from "@/components/personkort/PersonkortHeader/NavnHeader";
 import Utbetalingsinfo from "@/components/personkort/PersonkortHeader/Utbetalingsinfo";
+import { formaterFnr } from "@/utils/fnrUtils";
 
 const texts = {
   copied: "Kopiert!",

@@ -11,8 +11,8 @@ import {
   ARBEIDSTAKER_DEFAULT,
   LEDERE_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
-  VEILEDER_TILDELING_HISTORIKK_DEFAULT,
   VEILEDER_TILDELING_HISTORIKK_ANNEN,
+  VEILEDER_TILDELING_HISTORIKK_DEFAULT,
   VEILEDER_TILDELING_HISTORIKK_SYSTEM,
 } from "@/mocks/common/mockConstants";
 import { historikkQueryKeys } from "@/data/historikk/historikkQueryHooks";
@@ -39,7 +39,7 @@ import {
   SenOppfolgingStatus,
   SenOppfolgingVurderingType,
 } from "@/data/senoppfolging/senOppfolgingTypes";
-import { generateUUID } from "@/utils/uuidUtils";
+import { generateUUID } from "@/utils/utils";
 import { dialogmoteStatusEndringMock } from "@/mocks/isdialogmote/dialogmoterMock";
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";

@@ -9,7 +9,7 @@ import {
   SendForhandsvarselDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { daysFromToday } from "../../../test/testUtils";
-import { generateUUID } from "@/utils/uuidUtils";
+import { generateUUID } from "@/utils/utils";
 import { VEILEDER_DEFAULT } from "../common/mockConstants";
 import { aktivitetskravHistorikkMock } from "./aktivitetskravHistorikkMock";
 import { http, HttpResponse } from "msw";

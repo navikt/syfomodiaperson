@@ -7,7 +7,7 @@ import {
   DialogmotekandidatHistorikkDTO,
 } from "@/data/dialogmotekandidat/dialogmotekandidatTypes";
 import { useLatestFerdigstiltReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
-import { minutesToMillis } from "@/utils/timeUtils";
+import { minutesToMillis } from "@/utils/utils";
 
 export const dialogmotekandidatQueryKeys = {
   kandidat: (personident: string) => ["dialogmotekandidat", personident],

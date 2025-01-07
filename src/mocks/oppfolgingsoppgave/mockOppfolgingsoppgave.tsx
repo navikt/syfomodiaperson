@@ -5,7 +5,7 @@ import {
   OppfolgingsoppgaveResponseDTO,
   OppfolgingsoppgaveVersjonResponseDTO,
 } from "@/data/oppfolgingsoppgave/types";
-import { generateUUID } from "@/utils/uuidUtils";
+import { generateUUID } from "@/utils/utils";
 import { VEILEDER_IDENT_DEFAULT } from "../common/mockConstants";
 import { http, HttpResponse } from "msw";
 import {

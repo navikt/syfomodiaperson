@@ -4,7 +4,7 @@ import { render, screen, within } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import React from "react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
   ARBEIDSTAKER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
@@ -18,7 +18,7 @@ import {
   PersonOppgaveType,
 } from "@/data/personoppgave/types/PersonOppgave";
 import { restdatoTilLesbarDato } from "@/utils/datoUtils";
-import { generateUUID } from "@/utils/uuidUtils";
+import { generateUUID } from "@/utils/utils";
 
 let queryClient: QueryClient;
 

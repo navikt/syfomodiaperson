@@ -7,10 +7,10 @@ import {
 import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
-import { minutesToMillis } from "@/utils/timeUtils";
 import { DokumentinfoDTO } from "@/data/oppfolgingsplan/types/DokumentinfoDTO";
 import { useMemo } from "react";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import { minutesToMillis } from "@/utils/utils";
 
 export const oppfolgingsplanQueryKeys = {
   oppfolgingsplaner: (fnr: string) => ["oppfolgingsplaner", fnr],

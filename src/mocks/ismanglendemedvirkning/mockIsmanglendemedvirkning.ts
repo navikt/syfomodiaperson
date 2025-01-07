@@ -1,6 +1,5 @@
 import { ISMANGLENDEMEDVIRKNING_ROOT } from "@/apiConstants";
 
-import { generateUUID } from "@/utils/uuidUtils";
 import { VEILEDER_DEFAULT } from "../common/mockConstants";
 import {
   NewVurderingRequestDTO,
@@ -8,6 +7,7 @@ import {
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { addDays } from "@/utils/datoUtils";
 import { http, HttpResponse } from "msw";
+import { generateUUID } from "@/utils/utils";
 
 let manglendeMedvirkningVurderinger: VurderingResponseDTO[] = [];
 

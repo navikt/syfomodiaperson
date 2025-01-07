@@ -12,7 +12,7 @@ import {
   OppfyltVurderingArsak,
   VurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { generateUUID } from "@/utils/uuidUtils";
+import { generateUUID } from "@/utils/utils";
 import { daysFromToday } from "./testUtils";
 import { dagerMellomDatoer } from "@/utils/datoUtils";
 

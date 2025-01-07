@@ -3,7 +3,7 @@ import { get } from "@/api/axios";
 import { BehandlendeEnhet } from "@/data/behandlendeenhet/types/BehandlendeEnhet";
 import { useQuery } from "@tanstack/react-query";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { minutesToMillis } from "@/utils/timeUtils";
+import { minutesToMillis } from "@/utils/utils";
 
 export const behandlendeEnhetQueryKeys = {
   behandlendeEnhet: (fnr: string) => ["behandlendeenhet", fnr],

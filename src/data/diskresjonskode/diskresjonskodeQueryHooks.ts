@@ -2,7 +2,7 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { SYFOPERSON_ROOT } from "@/apiConstants";
 import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
-import { minutesToMillis } from "@/utils/timeUtils";
+import { minutesToMillis } from "@/utils/utils";
 
 export const diskresjonskodeQueryKeys = {
   diskresjonskode: (fnr: string) => ["diskresjonskode", fnr],

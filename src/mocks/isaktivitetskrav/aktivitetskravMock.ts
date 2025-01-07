@@ -5,7 +5,7 @@ import {
   OppfyltVurderingArsak,
   UnntakVurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { generateUUID } from "@/utils/uuidUtils";
+import { generateUUID } from "@/utils/utils";
 import { VEILEDER_DEFAULT } from "../common/mockConstants";
 import { daysFromToday } from "../../../test/testUtils";
 import { DocumentComponentType } from "@/data/documentcomponent/documentComponentTypes";

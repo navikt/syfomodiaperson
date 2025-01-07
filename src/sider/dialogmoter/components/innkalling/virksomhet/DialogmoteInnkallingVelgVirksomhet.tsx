@@ -7,14 +7,25 @@ import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/pe
 import { BodyShort, Label } from "@navikt/ds-react";
 import { useController } from "react-hook-form";
 import { DialogmoteInnkallingSkjemaValues } from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
-import { validerArbeidsgiver } from "@/utils/valideringUtils";
 
 const texts = {
   title: "Arbeidsgiver",
   selectLabel: "Arbeidsgiver",
   navnLabel: "Nærmeste leder",
   epostLabel: "Epost",
+  orgMissing: "Vennligst velg arbeidsgiver",
+  orgInvalid: "Vennligst fyll inn et gyldig virksomhetsnummer",
 };
+
+function validerArbeidsgiver(orgNummer?: string): string | undefined {
+  if (!orgNummer || orgNummer === "VELG") {
+    return texts.orgMissing;
+  }
+  if (orgNummer.length !== 9) {
+    return texts.orgInvalid;
+  }
+  return undefined;
+}
 
 const DialogmoteInnkallingVelgVirksomhet = () => {
   const { currentLedere } = useLedereQuery();

@@ -6,7 +6,7 @@ import {
   SenOppfolgingVurderingRequestDTO,
   SenOppfolgingVurderingType,
 } from "@/data/senoppfolging/senOppfolgingTypes";
-import { generateUUID } from "@/utils/uuidUtils";
+import { generateUUID } from "@/utils/utils";
 import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_IDENT_DEFAULT,

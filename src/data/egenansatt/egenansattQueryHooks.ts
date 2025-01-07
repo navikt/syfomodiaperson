@@ -2,7 +2,7 @@ import { get } from "@/api/axios";
 import { SYFOPERSON_ROOT } from "@/apiConstants";
 import { useQuery } from "@tanstack/react-query";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { minutesToMillis } from "@/utils/timeUtils";
+import { minutesToMillis } from "@/utils/utils";
 
 export const egenansattQueryKeys = {
   egenansatt: (fnr: string) => ["egenansatt", fnr],
