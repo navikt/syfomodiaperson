@@ -9,6 +9,7 @@ import { NotificationProvider } from "@/context/notification/NotificationContext
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import * as Tredelt from "@/sider/TredeltSide";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
+import NyttigeLenkerBox from "@/sider/aktivitetskrav/NyttigeLenkerBox";
 
 const texts = {
   title: "Aktivitetskrav",
@@ -39,6 +40,7 @@ export const AktivitetskravContainer = (): ReactElement => {
           </Tredelt.FirstColumn>
           <Tredelt.SecondColumn>
             <UtdragFraSykefravaeret />
+            <NyttigeLenkerBox />
           </Tredelt.SecondColumn>
         </Tredelt.Container>
       </SideLaster>
