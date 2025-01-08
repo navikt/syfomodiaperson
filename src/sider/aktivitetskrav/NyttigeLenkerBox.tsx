@@ -1,6 +1,7 @@
 import { Box, Heading } from "@navikt/ds-react";
 import React from "react";
 import { EksternLenke } from "@/components/EksternLenke";
+import KunnskapsbankTrygdemedisinLenke from "@/components/KunnskapsbankTrygdemedisinLenke";
 
 const texts = {
   heading: "Nyttige lenker",
@@ -21,6 +22,7 @@ export default function NyttigeLenkerBox() {
         {texts.heading}
       </Heading>
       <EksternLenke href={rundskrivUrl}>{texts.rundskrivLink}</EksternLenke>
+      <KunnskapsbankTrygdemedisinLenke />
     </Box>
   );
 }
