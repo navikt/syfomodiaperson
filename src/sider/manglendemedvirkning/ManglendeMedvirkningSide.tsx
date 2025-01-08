@@ -9,6 +9,7 @@ import OppfyltSide from "@/sider/manglendemedvirkning/oppfylt/OppfyltSide";
 import IkkeAktuellSide from "@/sider/manglendemedvirkning/ikkeaktuell/IkkeAktuellSide";
 import StansSide from "./stans/StansSide";
 import ManglendeMedvirkningHistorikk from "@/sider/manglendemedvirkning/ManglendeMedvirkningHistorikk";
+import NyttigeLenkerBox from "@/sider/manglendemedvirkning/NyttigeLenkerBox";
 
 const texts = {
   title: "Manglende medvirkning",
@@ -67,6 +68,7 @@ export default function ManglendeMedvirkningSide({
       >
         {children}
         <ManglendeMedvirkningHistorikk />
+        <NyttigeLenkerBox />
       </SideLaster>
     </Side>
   );
