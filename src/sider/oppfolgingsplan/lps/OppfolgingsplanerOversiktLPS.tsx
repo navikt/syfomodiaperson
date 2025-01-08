@@ -10,11 +10,11 @@ const texts = {
   buttonOpenPlan: "Åpne oppfølgingsplanen(pdf)",
 };
 
-interface ButtonOpenPlanProps {
+interface OpenPlanButtonProps {
   oppfolgingsplanLPS: OppfolgingsplanLPS;
 }
 
-export const ButtonOpenPlan = (buttonOpenPlanProps: ButtonOpenPlanProps) => {
+function OpenPlanButton(buttonOpenPlanProps: OpenPlanButtonProps) {
   return (
     <a
       className="lenke"
@@ -25,15 +25,15 @@ export const ButtonOpenPlan = (buttonOpenPlanProps: ButtonOpenPlanProps) => {
       {texts.buttonOpenPlan}
     </a>
   );
-};
+}
 
-interface BehandleOppfolgingsplanLPSProps {
+interface Props {
   oppfolgingsplanLPSBistandsbehov: OppfolgingsplanLPS;
 }
 
-const OppfolgingsplanerOversiktLPS = ({
+export default function OppfolgingsplanerOversiktLPS({
   oppfolgingsplanLPSBistandsbehov,
-}: BehandleOppfolgingsplanLPSProps) => {
+}: Props) {
   const { virksomhetsnavn } = useVirksomhetQuery(
     oppfolgingsplanLPSBistandsbehov.virksomhetsnummer
   );
@@ -54,13 +54,11 @@ const OppfolgingsplanerOversiktLPS = ({
         LPS
       </Tag>
       <div className="mb-4">
-        <ButtonOpenPlan oppfolgingsplanLPS={oppfolgingsplanLPSBistandsbehov} />
+        <OpenPlanButton oppfolgingsplanLPS={oppfolgingsplanLPSBistandsbehov} />
       </div>
       <BehandleOppfolgingsplanLPS
         oppfolgingsplanLPS={oppfolgingsplanLPSBistandsbehov}
       />
     </Box>
   );
-};
-
-export default OppfolgingsplanerOversiktLPS;
+}

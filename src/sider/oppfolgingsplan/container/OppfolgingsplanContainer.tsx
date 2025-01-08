@@ -12,7 +12,7 @@ const texts = {
   notFound: "Fant ikke oppfølgingsplan",
 };
 
-export const OppfoelgingsplanContainer = () => {
+export default function OppfolgingsplanContainer() {
   const { oppfoelgingsdialogId } = useParams<{
     oppfoelgingsdialogId: string;
   }>();
@@ -43,4 +43,4 @@ export const OppfoelgingsplanContainer = () => {
       </SideLaster>
     </SideFullbredde>
   );
-};
+}

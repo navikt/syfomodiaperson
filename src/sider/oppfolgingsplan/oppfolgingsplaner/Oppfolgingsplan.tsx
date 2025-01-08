@@ -1,19 +1,32 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Knapp from "nav-frontend-knapper";
-import { DokumentinfoDTO } from "@/data/oppfolgingsplan/types/DokumentinfoDTO";
 import Feilmelding from "../../../components/Feilmelding";
 import AppSpinner from "../../../components/AppSpinner";
 import { SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT } from "@/apiConstants";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 import { useDokumentinfoQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 
-interface PlanVisningProps {
-  dokumentinfo?: DokumentinfoDTO;
+function TilbakeTilOppfolgingsplaner() {
+  return (
+    <div className="blokk">
+      <Link to={`/sykefravaer/oppfoelgingsplaner`} className="tilbakelenke">
+        Til oppfølgingsplaner
+      </Link>
+    </div>
+  );
+}
+
+interface Props {
   oppfolgingsplan: OppfolgingsplanDTO;
 }
 
-const PlanVisning = ({ dokumentinfo, oppfolgingsplan }: PlanVisningProps) => {
+export default function Oppfolgingsplan({ oppfolgingsplan }: Props) {
+  const {
+    data: dokumentinfo,
+    isLoading,
+    isError,
+  } = useDokumentinfoQuery(oppfolgingsplan.id);
   const bildeUrler: string[] = [];
   if (dokumentinfo) {
     for (let i = 1; i <= dokumentinfo.antallSider; i += 1) {
@@ -23,16 +36,12 @@ const PlanVisning = ({ dokumentinfo, oppfolgingsplan }: PlanVisningProps) => {
     }
   }
 
-  const TilbakeTilOppfolgingsplaner = () => {
-    return (
-      <div className="blokk">
-        <Link to={`/sykefravaer/oppfoelgingsplaner`} className="tilbakelenke">
-          Til oppfølgingsplaner
-        </Link>
-      </div>
-    );
-  };
-
+  if (isLoading) {
+    return <AppSpinner />;
+  }
+  if (isError) {
+    return <Feilmelding />;
+  }
   return (
     <div className="blokk--l">
       <TilbakeTilOppfolgingsplaner />
@@ -68,26 +77,4 @@ const PlanVisning = ({ dokumentinfo, oppfolgingsplan }: PlanVisningProps) => {
       </div>
     </div>
   );
-};
-
-interface OppfolgingsplanProps {
-  oppfolgingsplan: OppfolgingsplanDTO;
 }
-
-const Oppfolgingsplan = ({ oppfolgingsplan }: OppfolgingsplanProps) => {
-  const { data, isLoading, isError } = useDokumentinfoQuery(oppfolgingsplan.id);
-
-  return (() => {
-    if (isLoading) {
-      return <AppSpinner />;
-    }
-    if (isError) {
-      return <Feilmelding />;
-    }
-    return (
-      <PlanVisning oppfolgingsplan={oppfolgingsplan} dokumentinfo={data} />
-    );
-  })();
-};
-
-export default Oppfolgingsplan;

@@ -6,17 +6,17 @@ import { toDatePrettyPrint } from "@/utils/datoUtils";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
 
-interface BehandleOppfolgingsplanLPSProps {
-  oppfolgingsplanLPS: OppfolgingsplanLPS;
-}
-
 const texts = {
   marker: "Marker som behandlet",
 };
 
-const BehandleOppfolgingsplanLPS = ({
+interface Props {
+  oppfolgingsplanLPS: OppfolgingsplanLPS;
+}
+
+export default function BehandleOppfolgingsplanLPS({
   oppfolgingsplanLPS,
-}: BehandleOppfolgingsplanLPSProps) => {
+}: Props) {
   const { data: personoppgaver } = usePersonoppgaverQuery();
   const personoppgave = personoppgaver.find(
     (personoppgave) => personoppgave.referanseUuid === oppfolgingsplanLPS.uuid
@@ -48,6 +48,4 @@ const BehandleOppfolgingsplanLPS = ({
       )}
     </>
   );
-};
-
-export default BehandleOppfolgingsplanLPS;
+}

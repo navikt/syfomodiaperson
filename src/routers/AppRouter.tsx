@@ -17,7 +17,6 @@ import AppSpinner from "../components/AppSpinner";
 import DialogmoteReferatContainer from "../sider/dialogmoter/components/referat/DialogmoteReferatContainer";
 import EndreDialogmoteContainer from "@/sider/dialogmoter/components/endre/EndreDialogmoteContainer";
 import { OppfoelgingsPlanerOversiktContainer } from "@/sider/oppfolgingsplan/container/OppfoelgingsPlanerOversiktContainer";
-import { OppfoelgingsplanContainer } from "@/sider/oppfolgingsplan/container/OppfoelgingsplanContainer";
 import { IngenBrukerSide } from "@/components/IngenBrukerSide";
 import { useAktivBruker } from "@/data/modiacontext/modiacontextQueryHooks";
 import DialogmoteunntakSkjemaContainer from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaContainer";
@@ -46,6 +45,7 @@ import ManglendeMedvirkningSide, {
 import ManglendeMedvirkning from "@/sider/manglendemedvirkning/ManglendeMedvirkning";
 import { DinSykmeldingSide } from "@/sider/sykmeldinger/container/DinSykmeldingSide";
 import SenOppfolging from "@/sider/senoppfolging/SenOppfolging";
+import OppfolgingsplanContainer from "@/sider/oppfolgingsplan/container/OppfolgingsplanContainer";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -206,7 +206,7 @@ const AktivBrukerRouter = (): ReactElement => {
           />
           <Route
             path={`${appRoutePath}/oppfoelgingsplaner/:oppfoelgingsdialogId`}
-            element={<OppfoelgingsplanContainer />}
+            element={<OppfolgingsplanContainer />}
           />
           <Route
             path={`${appRoutePath}/personsok`}
