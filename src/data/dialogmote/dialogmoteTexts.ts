@@ -1,4 +1,4 @@
-import { Malform } from "../../context/malform/MalformContext";
+import { Malform } from "@/context/malform/MalformContext";
 
 const innkallingTextsBokmal = {
   arbeidstaker: {
@@ -213,11 +213,24 @@ export const getAvlysningTexts = (malform: Malform) => {
     : avlysningTextsBokmal;
 };
 
+type CommmonTexts = {
+  arbeidsgiverTitle: string;
+  moteTidTitle: string;
+  moteStedTitle: string;
+  videoLinkTitle: string;
+  videoMoteInfo: string;
+  arbeidsgiverTlfLabel: string;
+  arbeidsgiverTlf: string;
+  hilsen: string;
+  gjelder: string;
+};
+
 const commonTextsBokmal = {
   arbeidsgiverTitle: "Arbeidsgiver",
   moteTidTitle: "Møtetidspunkt",
   moteStedTitle: "Møtested",
   videoLinkTitle: "Lenke til videomøte",
+  videoMoteInfo: "Les mer om videomøte med Nav på nav.no/videomote-med-nav.",
   arbeidsgiverTlfLabel: "Arbeidsgivertelefonen",
   arbeidsgiverTlf: "55 55 33 36",
   hilsen: "Med vennlig hilsen",
@@ -229,13 +242,14 @@ const commonTextsNynorsk = {
   moteTidTitle: "Møtetidspunkt",
   moteStedTitle: "Møtestad",
   videoLinkTitle: "Lenke til videomøte",
+  videoMoteInfo: "Les mer om videomøte med Nav på nav.no/videomote-med-nav.",
   arbeidsgiverTlfLabel: "Arbeidsgivartelefonen",
   arbeidsgiverTlf: "55 55 33 36",
   hilsen: "Vennleg helsing",
   gjelder: "Gjeld",
 };
 
-export const getCommonTexts = (malform: Malform) => {
+export const getCommonTexts = (malform: Malform): CommmonTexts => {
   return malform === Malform.NYNORSK ? commonTextsNynorsk : commonTextsBokmal;
 };
 

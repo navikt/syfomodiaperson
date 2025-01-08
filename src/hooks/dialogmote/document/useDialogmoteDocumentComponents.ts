@@ -1,5 +1,6 @@
 import {
   createLink,
+  createParagraph,
   createParagraphWithTitle,
 } from "@/utils/documentComponentUtils";
 import { getCommonTexts } from "@/data/dialogmote/dialogmoteTexts";
@@ -50,6 +51,7 @@ export const useDialogmoteDocumentComponents = () => {
     );
     if (videoLink) {
       components.push(createLink(commonTexts.videoLinkTitle, videoLink));
+      components.push(createParagraph(commonTexts.videoMoteInfo));
     }
 
     const virksomhetsnavn = getVirksomhetsnavn(virksomhetsnummer);
