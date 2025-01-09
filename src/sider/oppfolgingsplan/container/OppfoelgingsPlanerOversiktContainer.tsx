@@ -33,6 +33,10 @@ export const OppfoelgingsPlanerOversiktContainer = () => {
   const inaktivePlaner = oppfolgingsplaner.filter(
     (plan) => !aktivePlaner.includes(plan)
   );
+  const hasNoPlans =
+    aktivePlaner.length === 0 &&
+    inaktivePlaner.length === 0 &&
+    oppfolgingsplanerLPS.length === 0;
 
   return (
     <Side
@@ -41,21 +45,18 @@ export const OppfoelgingsPlanerOversiktContainer = () => {
     >
       <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
         {(() => {
-          if (
-            aktivePlaner.length === 0 &&
-            inaktivePlaner.length === 0 &&
-            oppfolgingsplanerLPS.length === 0
-          ) {
+          if (hasNoPlans) {
             return <IngenPlaner />;
+          } else {
+            return (
+              <OppfolgingsplanerOversikt
+                aktivePlaner={aktivePlaner}
+                inaktivePlaner={inaktivePlaner}
+                oppfolgingsplanerLPS={oppfolgingsplanerLPS}
+                fnr={fnr}
+              />
+            );
           }
-          return (
-            <OppfolgingsplanerOversikt
-              aktivePlaner={aktivePlaner}
-              inaktivePlaner={inaktivePlaner}
-              oppfolgingsplanerLPS={oppfolgingsplanerLPS}
-              fnr={fnr}
-            />
-          );
         })()}
       </SideLaster>
     </Side>

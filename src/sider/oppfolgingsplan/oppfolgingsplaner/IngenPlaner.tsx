@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Infomelding } from "../../../components/Infomelding";
 
-const IngenPlaner = () => {
+export default function IngenPlaner() {
   return (
     <div>
       <h2 style={{ margin: 0 }}>Oppfølgingsplaner</h2>
@@ -11,6 +11,4 @@ const IngenPlaner = () => {
       />
     </div>
   );
-};
-
-export default IngenPlaner;
+}
