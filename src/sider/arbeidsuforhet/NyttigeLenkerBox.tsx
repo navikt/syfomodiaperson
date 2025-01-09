@@ -1,16 +1,17 @@
 import { Box, Heading } from "@navikt/ds-react";
 import React from "react";
 import { EksternLenke } from "@/components/EksternLenke";
+import KunnskapsbankTrygdemedisinLenke from "@/components/KunnskapsbankTrygdemedisinLenke";
 
 const texts = {
   heading: "Nyttige lenker",
-  link: "Rundskriv til § 8-4 arbeidsuførhet",
+  rundskrivLink: "Rundskriv til § 8-4 arbeidsuførhet",
 };
 
 const rundskrivUrl =
   "https://lovdata.no/pro/#document/NAV/rundskriv/r08-00?from=NL/lov/1997-02-28-19/%C2%A78-4";
 
-export default function RundskrivLenke() {
+export default function NyttigeLenkerBox() {
   return (
     <Box
       background="surface-default"
@@ -20,7 +21,8 @@ export default function RundskrivLenke() {
       <Heading level="2" size="medium">
         {texts.heading}
       </Heading>
-      <EksternLenke href={rundskrivUrl}>{texts.link}</EksternLenke>
+      <EksternLenke href={rundskrivUrl}>{texts.rundskrivLink}</EksternLenke>
+      <KunnskapsbankTrygdemedisinLenke />
     </Box>
   );
 }
