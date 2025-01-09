@@ -68,6 +68,10 @@ const expectedArbeidstakerInnkalling = (
     type: DocumentComponentType.LINK,
   },
   {
+    texts: [commonTextsBokmal.videoMoteInfo],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [mote.arbeidsgivernavn],
     title: "Arbeidsgiver",
     type: DocumentComponentType.PARAGRAPH,
@@ -152,6 +156,10 @@ const expectedArbeidsgiverInnkalling = (
     texts: [mote.videolink],
     title: commonTextsBokmal.videoLinkTitle,
     type: DocumentComponentType.LINK,
+  },
+  {
+    texts: [commonTextsBokmal.videoMoteInfo],
+    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [mote.arbeidsgivernavn],
@@ -242,6 +250,10 @@ const expectedBehandlerInnkalling = (
     type: DocumentComponentType.LINK,
   },
   {
+    texts: [commonTextsBokmal.videoMoteInfo],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [mote.arbeidsgivernavn],
     title: "Arbeidsgiver",
     type: DocumentComponentType.PARAGRAPH,
@@ -311,6 +323,10 @@ const expectedArbeidsgiverEndringsdokument = (
     texts: [endretMote.videolink],
     title: "Lenke til videomøte",
     type: DocumentComponentType.LINK,
+  },
+  {
+    texts: [commonTextsBokmal.videoMoteInfo],
+    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [mote.arbeidsgivernavn],
@@ -410,6 +426,10 @@ const expectedArbeidstakerEndringsdokument = (
     type: DocumentComponentType.LINK,
   },
   {
+    texts: [commonTextsBokmal.videoMoteInfo],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [mote.arbeidsgivernavn],
     title: "Arbeidsgiver",
     type: DocumentComponentType.PARAGRAPH,
@@ -504,6 +524,10 @@ const expectedBehandlerEndringsdokument = (
     texts: [endretMote.videolink],
     title: "Lenke til videomøte",
     type: DocumentComponentType.LINK,
+  },
+  {
+    texts: [commonTextsBokmal.videoMoteInfo],
+    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [mote.arbeidsgivernavn],
