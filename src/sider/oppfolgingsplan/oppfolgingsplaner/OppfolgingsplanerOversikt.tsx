@@ -10,6 +10,9 @@ import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/Oppfolgingsplan
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
 import { Heading } from "@navikt/ds-react";
 import OppfolgingsplanLink from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanLink";
+import OppfolgingsplanForesporsel from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanForesporsel";
+import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 const texts = {
   titles: {
@@ -33,6 +36,9 @@ interface Props {
 
 export default function OppfolgingsplanerOversikt(props: Props) {
   const { data: personoppgaver } = usePersonoppgaverQuery();
+  const { data: aktivVeileder } = useAktivVeilederinfoQuery();
+  const { currentLedere } = useLedereQuery();
+
   const { aktivePlaner, inaktivePlaner, oppfolgingsplanerLPS } = props;
   const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.map(
     (oppfolgingsplanLPS) =>
@@ -89,9 +95,19 @@ export default function OppfolgingsplanerOversikt(props: Props) {
   const hasNoInactivePlans =
     inaktivePlaner.length === 0 && oppfolgingsplanerLPSProcessed.length === 0;
 
+  //TODO: Kan man ha flere narmeste ledere som bytter på ansvaret? Eller har man alltid en?
+  //TODO: Hvor ofte skal man kunne be om oppfølgingsplan? Hvordan fungerer dette i arena i dag?
+  const isSingleCurrentNarmesteLeader =
+    currentLedere.map((leder) => leder.status === "INNMELDT_AKTIV").length ===
+    1;
+
   return (
     <div>
       <Sidetopp tittel="Oppfølgingsplaner" />
+      {!!aktivVeileder && isSingleCurrentNarmesteLeader && (
+        <OppfolgingsplanForesporsel aktivVeileder={aktivVeileder} />
+      )}
+
       <div className="mb-8">
         <Heading spacing level="2" size="medium">
           {texts.titles.relevantOppfolgingsplaner}
