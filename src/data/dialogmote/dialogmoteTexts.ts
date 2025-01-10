@@ -223,6 +223,7 @@ type CommmonTexts = {
   arbeidsgiverTlf: string;
   hilsen: string;
   gjelder: string;
+  brevSendt: string;
 };
 
 const commonTextsBokmal = {
@@ -235,6 +236,7 @@ const commonTextsBokmal = {
   arbeidsgiverTlf: "55 55 33 36",
   hilsen: "Med vennlig hilsen",
   gjelder: "Gjelder",
+  brevSendt: "Dette brevet ble sendt",
 };
 
 const commonTextsNynorsk = {
@@ -247,6 +249,7 @@ const commonTextsNynorsk = {
   arbeidsgiverTlf: "55 55 33 36",
   hilsen: "Vennleg helsing",
   gjelder: "Gjeld",
+  brevSendt: "Dette brevet vart sendt",
 };
 
 export const getCommonTexts = (malform: Malform): CommmonTexts => {

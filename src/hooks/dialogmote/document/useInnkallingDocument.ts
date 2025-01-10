@@ -1,5 +1,4 @@
 import { DialogmoteInnkallingSkjemaValues } from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
-import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
 import {
   getCommonTexts,
   getInnkallingTexts,
@@ -35,13 +34,9 @@ export interface IInnkallingDocument {
 }
 
 export const useInnkallingDocument = (): IInnkallingDocument => {
-  const introComponents = [
-    createHeaderH1("Innkalling til dialogmøte"),
-    createParagraph(
-      `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
-    ),
-  ];
-  const { getMoteInfo, getIntroHei } = useDialogmoteDocumentComponents();
+  const introComponents = [createHeaderH1("Innkalling til dialogmøte")];
+  const { getMoteInfo, getIntroHei, getHilsenMedSendtDato } =
+    useDialogmoteDocumentComponents();
   const { malform } = useMalform();
   const { data: veilederinfo } = useAktivVeilederinfoQuery();
   const navBruker = useNavBrukerData();
@@ -50,11 +45,7 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
   const commonTexts = getCommonTexts(malform);
   const valgtPersonident = useValgtPersonident();
 
-  const hilsenParagraph = createParagraph(
-    commonTexts.hilsen,
-    veilederinfo?.fulltNavn() || "",
-    `Nav`
-  );
+  const hilsenParagraph = getHilsenMedSendtDato(veilederinfo);
   const gjelderParagraph = createParagraph(
     `${commonTexts.gjelder} ${navBruker.navn}, f.nr. ${valgtPersonident}`
   );
@@ -110,9 +101,6 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
   ) => {
     const documentComponents = [
       createHeaderH1(innkallingTexts.behandler.header),
-      createParagraph(
-        `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
-      ),
       createParagraph(innkallingTexts.behandler.intro),
       ...getMoteInfo(values, values.arbeidsgiver),
       gjelderParagraph,

@@ -41,11 +41,8 @@ export const useTidStedDocument = (
   const commonTexts = getCommonTexts(malform);
   const valgtPersonident = useValgtPersonident();
   const navBruker = useNavBrukerData();
-  const hilsenParagraph = createParagraph(
-    commonTexts.hilsen,
-    veilederinfo?.fulltNavn() || "",
-    `Nav`
-  );
+  const { getHilsenMedSendtDato } = useDialogmoteDocumentComponents();
+  const hilsenParagraph = getHilsenMedSendtDato(veilederinfo);
 
   const { getMoteInfo, getIntroHei } = useDialogmoteDocumentComponents();
 
@@ -53,9 +50,6 @@ export const useTidStedDocument = (
     `${commonTexts.gjelder} ${navBruker.navn}, f.nr. ${valgtPersonident}`
   );
 
-  const sendtDato = createParagraph(
-    `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
-  );
   const introComponents = [
     createParagraph(
       `${endreTidStedTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
@@ -70,7 +64,6 @@ export const useTidStedDocument = (
   ) => {
     const documentComponents = [
       createHeaderH1(endreTidStedTexts.header),
-      sendtDato,
       gjelderParagraph,
       ...introComponents,
       ...getMoteInfo(values, arbeidsgiver.virksomhetsnummer),
@@ -113,7 +106,6 @@ export const useTidStedDocument = (
   ) => {
     const documentComponents = [
       createHeaderH1(endreTidStedTexts.header),
-      sendtDato,
       getIntroHei(),
       ...introComponents,
       ...getMoteInfo(values, arbeidsgiver.virksomhetsnummer),
@@ -153,7 +145,6 @@ export const useTidStedDocument = (
     const documentComponents = [
       createHeaderH1(endreTidStedTexts.behandler.endring),
       createParagraph(endreTidStedTexts.behandler.intro),
-      sendtDato,
       gjelderParagraph,
       ...introComponents,
       ...getMoteInfo(values, arbeidsgiver.virksomhetsnummer),

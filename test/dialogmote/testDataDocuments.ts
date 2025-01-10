@@ -45,10 +45,6 @@ const expectedArbeidstakerInnkalling = (
     type: DocumentComponentType.HEADER_H1,
   },
   {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
     texts: [
       tilDatoMedUkedagOgManedNavnOgKlokkeslett(
         genererDato(mote.datoAsISODateString, mote.klokkeslett)
@@ -121,7 +117,15 @@ const expectedArbeidstakerInnkalling = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", veileder.fulltNavn(), "Nav"],
+    texts: [
+      commonTextsBokmal.hilsen,
+      veileder.fulltNavn(),
+      "Nav",
+      "---",
+      `${
+        commonTextsBokmal.brevSendt
+      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+    ],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -133,10 +137,6 @@ const expectedArbeidsgiverInnkalling = (
   {
     texts: ["Innkalling til dialogmøte"],
     type: DocumentComponentType.HEADER_H1,
-  },
-  {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
-    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [
@@ -203,7 +203,15 @@ const expectedArbeidsgiverInnkalling = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", veileder.fulltNavn(), "Nav"],
+    texts: [
+      commonTextsBokmal.hilsen,
+      veileder.fulltNavn(),
+      "Nav",
+      "---",
+      `${
+        commonTextsBokmal.brevSendt
+      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+    ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -221,10 +229,6 @@ const expectedBehandlerInnkalling = (
   {
     texts: ["Innkalling til dialogmøte, svar ønskes"],
     type: DocumentComponentType.HEADER_H1,
-  },
-  {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
-    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [innkallingTextsBokmal.behandler.intro],
@@ -272,7 +276,15 @@ const expectedBehandlerInnkalling = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", veileder.fulltNavn(), "Nav"],
+    texts: [
+      commonTextsBokmal.hilsen,
+      veileder.fulltNavn(),
+      "Nav",
+      "---",
+      `${
+        commonTextsBokmal.brevSendt
+      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+    ],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -284,10 +296,6 @@ const expectedArbeidsgiverEndringsdokument = (
   {
     texts: ["Endret dialogmøte"],
     type: DocumentComponentType.HEADER_H1,
-  },
-  {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
-    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
@@ -369,7 +377,15 @@ const expectedArbeidsgiverEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", veileder.fulltNavn(), "Nav"],
+    texts: [
+      commonTextsBokmal.hilsen,
+      veileder.fulltNavn(),
+      "Nav",
+      "---",
+      `${
+        commonTextsBokmal.brevSendt
+      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+    ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -385,10 +401,6 @@ const expectedArbeidstakerEndringsdokument = (
   {
     texts: ["Endret dialogmøte"],
     type: DocumentComponentType.HEADER_H1,
-  },
-  {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
-    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [`Hei, ${arbeidstaker.navn}`],
@@ -470,7 +482,15 @@ const expectedArbeidstakerEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", veileder.fulltNavn(), "Nav"],
+    texts: [
+      commonTextsBokmal.hilsen,
+      veileder.fulltNavn(),
+      "Nav",
+      "---",
+      `${
+        commonTextsBokmal.brevSendt
+      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+    ],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -484,10 +504,6 @@ const expectedBehandlerEndringsdokument = (
   },
   {
     texts: [endreTidStedTextsBokmal.behandler.intro],
-    type: DocumentComponentType.PARAGRAPH,
-  },
-  {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -543,7 +559,15 @@ const expectedBehandlerEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", veileder.fulltNavn(), "Nav"],
+    texts: [
+      commonTextsBokmal.hilsen,
+      veileder.fulltNavn(),
+      "Nav",
+      "---",
+      `${
+        commonTextsBokmal.brevSendt
+      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+    ],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -554,10 +578,6 @@ const expectedAvlysningArbeidsgiver = (
   {
     texts: ["Avlysning av dialogmøte"],
     type: DocumentComponentType.HEADER_H1,
-  },
-  {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
-    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
@@ -583,7 +603,15 @@ const expectedAvlysningArbeidsgiver = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", veileder.fulltNavn(), "Nav"],
+    texts: [
+      commonTextsBokmal.hilsen,
+      veileder.fulltNavn(),
+      "Nav",
+      "---",
+      `${
+        commonTextsBokmal.brevSendt
+      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+    ],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -594,10 +622,6 @@ const expectedAvlysningArbeidstaker = (
   {
     texts: ["Avlysning av dialogmøte"],
     type: DocumentComponentType.HEADER_H1,
-  },
-  {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
-    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [`Hei, ${arbeidstaker.navn}`],
@@ -623,7 +647,15 @@ const expectedAvlysningArbeidstaker = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", veileder.fulltNavn(), "Nav"],
+    texts: [
+      commonTextsBokmal.hilsen,
+      veileder.fulltNavn(),
+      "Nav",
+      "---",
+      `${
+        commonTextsBokmal.brevSendt
+      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+    ],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -634,10 +666,6 @@ const expectedAvlysningBehandler = (
   {
     texts: ["Avlysning av dialogmøte"],
     type: DocumentComponentType.HEADER_H1,
-  },
-  {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
-    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
@@ -663,7 +691,15 @@ const expectedAvlysningBehandler = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: ["Med vennlig hilsen", veileder.fulltNavn(), "Nav"],
+    texts: [
+      commonTextsBokmal.hilsen,
+      veileder.fulltNavn(),
+      "Nav",
+      "---",
+      `${
+        commonTextsBokmal.brevSendt
+      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+    ],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -674,10 +710,6 @@ export const expectedReferatDocument = (
   {
     texts: [referatTextsBokmal.nyttHeader],
     type: DocumentComponentType.HEADER_H1,
-  },
-  {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
-    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [arbeidstaker.navn],
@@ -756,7 +788,15 @@ export const expectedReferatDocument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [commonTextsBokmal.hilsen, veileder.fulltNavn(), "Nav"],
+    texts: [
+      commonTextsBokmal.hilsen,
+      veileder.fulltNavn(),
+      "Nav",
+      "---",
+      `${
+        commonTextsBokmal.brevSendt
+      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+    ],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
@@ -767,10 +807,6 @@ export const expectedEndretReferatDocument = (
   {
     texts: [referatTextsBokmal.endretHeader],
     type: DocumentComponentType.HEADER_H1,
-  },
-  {
-    texts: [`Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`],
-    type: DocumentComponentType.PARAGRAPH,
   },
   {
     texts: [referatTextsBokmal.endring],
@@ -851,7 +887,15 @@ export const expectedEndretReferatDocument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [commonTextsBokmal.hilsen, veileder.fulltNavn(), "Nav"],
+    texts: [
+      commonTextsBokmal.hilsen,
+      veileder.fulltNavn(),
+      "Nav",
+      "---",
+      `${
+        commonTextsBokmal.brevSendt
+      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(sendtDato)}`,
+    ],
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
