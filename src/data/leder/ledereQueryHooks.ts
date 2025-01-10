@@ -27,7 +27,7 @@ export const useLedereQuery = () => {
     enabled: !!fnr,
     staleTime: minutesToMillis(60 * 12),
   });
-  const currentLedere = useMemo(
+  const currentLedere: NarmesteLederRelasjonDTO[] = useMemo(
     () =>
       query.data?.filter(
         (leder) => leder.status === NarmesteLederRelasjonStatus.INNMELDT_AKTIV

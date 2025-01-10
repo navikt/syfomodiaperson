@@ -10,6 +10,12 @@ import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/Oppfolgingsplan
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
 import { Heading } from "@navikt/ds-react";
 import OppfolgingsplanLink from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanLink";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
+import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
+import BeOmOppfolgingsplan from "@/sider/oppfolgingsplan/oppfolgingsplaner/BeOmOppfolgingsplan";
 
 const texts = {
   titles: {
@@ -24,6 +30,19 @@ const texts = {
   },
 };
 
+function activeNarmesteLederForCurrentOppfolgingstilfelle(
+  ledere: NarmesteLederRelasjonDTO[],
+  oppfolgingsTilfelle: OppfolgingstilfelleDTO
+): NarmesteLederRelasjonDTO[] {
+  return ledere.filter(
+    (leder) =>
+      leder.status === "INNMELDT_AKTIV" &&
+      oppfolgingsTilfelle.virksomhetsnummerList.includes(
+        leder.virksomhetsnummer
+      )
+  );
+}
+
 interface Props {
   aktivePlaner: OppfolgingsplanDTO[];
   inaktivePlaner: OppfolgingsplanDTO[];
@@ -32,7 +51,12 @@ interface Props {
 }
 
 export default function OppfolgingsplanerOversikt(props: Props) {
+  const { toggles } = useFeatureToggles();
   const { data: personoppgaver } = usePersonoppgaverQuery();
+  const { currentLedere } = useLedereQuery();
+  const { latestOppfolgingstilfelle, hasActiveOppfolgingstilfelle } =
+    useOppfolgingstilfellePersonQuery();
+
   const { aktivePlaner, inaktivePlaner, oppfolgingsplanerLPS } = props;
   const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.map(
     (oppfolgingsplanLPS) =>
@@ -89,9 +113,30 @@ export default function OppfolgingsplanerOversikt(props: Props) {
   const hasNoInactivePlans =
     inaktivePlaner.length === 0 && oppfolgingsplanerLPSProcessed.length === 0;
 
+  const activeNarmesteLedere = !!latestOppfolgingstilfelle
+    ? activeNarmesteLederForCurrentOppfolgingstilfelle(
+        currentLedere,
+        latestOppfolgingstilfelle
+      )
+    : [];
+  const activeNarmesteLederIfSingle =
+    activeNarmesteLedere.length === 1 ? activeNarmesteLedere[0] : undefined;
+  const isBeOmOppfolgingsplanEnabled =
+    toggles.isBeOmOppfolgingsplanEnabled &&
+    !!activeNarmesteLederIfSingle &&
+    hasActiveOppfolgingstilfelle &&
+    !!latestOppfolgingstilfelle;
+
   return (
     <div>
       <Sidetopp tittel="Oppfølgingsplaner" />
+      {isBeOmOppfolgingsplanEnabled && (
+        <BeOmOppfolgingsplan
+          aktivNarmesteLeder={activeNarmesteLederIfSingle}
+          latestOppfolgingstilfelle={latestOppfolgingstilfelle}
+        />
+      )}
+
       <div className="mb-8">
         <Heading spacing level="2" size="medium">
           {texts.titles.relevantOppfolgingsplaner}

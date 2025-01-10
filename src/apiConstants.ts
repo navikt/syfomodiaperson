@@ -30,6 +30,7 @@ export const SYFOOPPFOLGINGSPLANSERVICE_V3_ROOT =
   "/syfooppfolgingsplanservice/api/internad/v3";
 export const LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT =
   "/lps-oppfolgingsplan-mottak/api/internad/v1";
+export const ISOPPFOLGINGSPLAN_ROOT = "/isoppfolgingsplan/api/internad/v1";
 export const MEROPPFOLGING_BACKEND_ROOT =
   "/meroppfolging-backend/api/v2/internad";
 export const SYFOPERSON_ROOT = "/syfoperson/api/v2";
