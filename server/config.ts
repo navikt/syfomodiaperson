@@ -218,6 +218,16 @@ export const auth = {
     }),
     removePathPrefix: true,
   },
+  isoppfolgingsplan: {
+    applicationName: "isoppfolgingsplan",
+    clientId: envVar({
+      name: "ISOPPFOLGINGSPLAN_AAD_APP_CLIENT_ID",
+    }),
+    host: envVar({
+      name: "ISOPPFOLGINGSPLAN_HOST",
+    }),
+    removePathPrefix: true,
+  },
   ispengestopp: {
     applicationName: "ispengestopp",
     clientId: envVar({

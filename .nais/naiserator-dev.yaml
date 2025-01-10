@@ -71,6 +71,7 @@ spec:
         - application: ismeroppfolging
         - application: isnarmesteleder
         - application: isoppfolgingstilfelle
+        - application: isoppfolgingsplan
         - application: ispengestopp
         - application: ispersonoppgave
         - application: istilgangskontroll
@@ -157,6 +158,10 @@ spec:
       value: "dev-gcp.teamsykefravr.isoppfolgingstilfelle"
     - name: ISOPPFOLGINGSTILFELLE_HOST
       value: "http://isoppfolgingstilfelle"
+    - name: ISOPPFOLGINGSPLAN_AAD_APP_CLIENT_ID
+      value: "dev-gcp.teamsykefravr.isoppfolgingsplan"
+    - name: ISOPPFOLGINGSPLAN_HOST
+      value: "http://isoppfolgingsplan"
     - name: ISPENGESTOPP_AAD_APP_CLIENT_ID
       value: "dev-gcp.teamsykefravr.ispengestopp"
     - name: ISPENGESTOPP_HOST

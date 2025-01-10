@@ -13,9 +13,16 @@ import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/Oppfolgingsplan
 import { minutesToMillis } from "@/utils/utils";
 
 export const oppfolgingsplanQueryKeys = {
-  oppfolgingsplaner: (fnr: string) => ["oppfolgingsplaner", fnr],
-  oppfolgingsplanerLPS: (fnr: string) => ["oppfolgingsplanerLPS", fnr],
+  oppfolgingsplaner: (personident: string) => [
+    "oppfolgingsplaner",
+    personident,
+  ],
+  oppfolgingsplanerLPS: (personident: string) => [
+    "oppfolgingsplanerLPS",
+    personident,
+  ],
   dokumentinfo: (id: number) => ["dokumentinfo", id],
+  foresporsel: (personident: string) => ["foresporsel", personident],
 };
 
 export const useOppfolgingsplanerQuery = () => {
