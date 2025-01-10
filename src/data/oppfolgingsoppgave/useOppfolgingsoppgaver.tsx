@@ -13,7 +13,7 @@ export const oppfolgingsoppgaverQueryKeys = {
 
 export const useOppfolgingsoppgaver = () => {
   const personident = useValgtPersonident();
-  const path = `${ISHUSKELAPP_ROOT}/huskelapp?filter=all`;
+  const path = `${ISHUSKELAPP_ROOT}/huskelapp`;
   const getOppfolgingsoppgaver = () =>
     get<OppfolgingsoppgaveResponseDTO[]>(path, personident);
 

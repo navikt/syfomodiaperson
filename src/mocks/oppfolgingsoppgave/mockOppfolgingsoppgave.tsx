@@ -27,10 +27,8 @@ export const mockIshuskelapp = [
       } else {
         return new HttpResponse(null, { status: 204 });
       }
-    } else if (request.url.includes("?filter=all")) {
-      return HttpResponse.json(oppfolgingsoppgaverMock);
     } else {
-      return new HttpResponse(null, { status: 500 });
+      return HttpResponse.json(oppfolgingsoppgaverMock);
     }
   }),
   http.post<object, EditOppfolgingsoppgaveRequestDTO>(
