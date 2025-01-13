@@ -12,6 +12,8 @@ import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 import { capitalizeAllWords } from "@/utils/stringUtils";
 import MotebehovKvitteringInnhold from "@/sider/dialogmoter/motebehov/MotebehovKvitteringInnhold";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
+import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 
 export const arbeidsgiverNavnEllerTomStreng = (lederNavn: string | null) => {
   return lederNavn ? `${lederNavn}` : "";
@@ -68,7 +70,7 @@ const composePersonSvarText = (
 };
 
 interface MotebehovKvitteringInnholdArbeidstakerProps {
-  arbeidstakersMotebehov?: MotebehovVeilederDTO;
+  arbeidstakersMotebehov: MotebehovVeilederDTO | undefined;
 }
 
 export const MotebehovKvitteringInnholdArbeidstaker = ({
@@ -99,10 +101,6 @@ export const MotebehovKvitteringInnholdArbeidstaker = ({
   );
 };
 
-interface MotebehovKvitteringInnholdArbeidsgiverProps {
-  motebehovListeMedBareArbeidsgiversMotebehov: MotebehovVeilederDTO[];
-}
-
 export const composeArbeidsgiverSvarText = (
   lederNavn: string | null,
   harMotebehov?: boolean,
@@ -116,32 +114,29 @@ export const composeArbeidsgiverSvarText = (
   );
 };
 
-export const MotebehovKvitteringInnholdArbeidsgiver = ({
-  motebehovListeMedBareArbeidsgiversMotebehov,
-}: MotebehovKvitteringInnholdArbeidsgiverProps) => (
-  <>
-    {motebehovListeMedBareArbeidsgiversMotebehov.map((motebehov, index) => {
-      const arbeidsgiverOnskerMote = motebehov.motebehovSvar?.harMotebehov;
-      const ikonAltTekst = `Arbeidsgiver ${arbeidsgiverNavnEllerTomStreng(
-        motebehov.opprettetAvNavn
-      )} ${ikonAlternativTekst(arbeidsgiverOnskerMote)}`;
+export function MotebehovArbeidsgiverKvittering({
+  motebehov,
+}: {
+  motebehov: MotebehovVeilederDTO;
+}) {
+  const arbeidsgiverOnskerMote = motebehov.motebehovSvar?.harMotebehov;
+  const ikonAltTekst = `Arbeidsgiver ${arbeidsgiverNavnEllerTomStreng(
+    motebehov.opprettetAvNavn
+  )} ${ikonAlternativTekst(arbeidsgiverOnskerMote)}`;
 
-      return (
-        <MotebehovKvitteringInnhold
-          key={index}
-          deltakerOnskerMote={arbeidsgiverOnskerMote}
-          ikonAltTekst={ikonAltTekst}
-          motebehov={motebehov}
-          tekst={composeArbeidsgiverSvarText(
-            motebehov.opprettetAvNavn,
-            arbeidsgiverOnskerMote,
-            motebehov.opprettetDato
-          )}
-        />
-      );
-    })}
-  </>
-);
+  return (
+    <MotebehovKvitteringInnhold
+      deltakerOnskerMote={arbeidsgiverOnskerMote}
+      ikonAltTekst={ikonAltTekst}
+      motebehov={motebehov}
+      tekst={composeArbeidsgiverSvarText(
+        motebehov.opprettetAvNavn,
+        arbeidsgiverOnskerMote,
+        motebehov.opprettetDato
+      )}
+    />
+  );
+}
 
 interface MotebehovKvitteringInnholdArbeidsgiverUtenMotebehovProps {
   ledereUtenInnsendtMotebehov: NarmesteLederRelasjonDTO[];
@@ -168,26 +163,21 @@ export const MotebehovKvitteringInnholdArbeidsgiverUtenMotebehov = ({
   </>
 );
 
-interface MotebehovKvitteringProps {
-  motebehovData: MotebehovVeilederDTO[];
-  ledereData: NarmesteLederRelasjonDTO[];
-}
+export default function MotebehovKvittering() {
+  const { data: motebehov } = useMotebehovQuery();
+  const { currentLedere } = useLedereQuery();
 
-const MotebehovKvittering = ({
-  motebehovData,
-  ledereData,
-}: MotebehovKvitteringProps) => {
   const { tilfellerDescendingStart, latestOppfolgingstilfelle } =
     useOppfolgingstilfellePersonQuery();
 
   const aktiveMotebehovSvar = motebehovFromLatestActiveTilfelle(
-    motebehovData?.sort(sorterMotebehovDataEtterDato),
+    motebehov?.sort(sorterMotebehovDataEtterDato),
     latestOppfolgingstilfelle
   );
 
   const ledereUtenInnsendtMotebehov = ledereUtenMotebehovsvar(
-    ledereData,
-    motebehovData,
+    currentLedere,
+    motebehov,
     tilfellerDescendingStart || []
   );
 
@@ -198,16 +188,14 @@ const MotebehovKvittering = ({
           aktiveMotebehovSvar
         )}
       />
-      <MotebehovKvitteringInnholdArbeidsgiver
-        motebehovListeMedBareArbeidsgiversMotebehov={aktiveMotebehovSvar.filter(
-          bareArbeidsgiversMotebehov
-        )}
-      />
+      {aktiveMotebehovSvar
+        .filter(bareArbeidsgiversMotebehov)
+        .map((motebehov, index) => (
+          <MotebehovArbeidsgiverKvittering motebehov={motebehov} key={index} />
+        ))}
       <MotebehovKvitteringInnholdArbeidsgiverUtenMotebehov
         ledereUtenInnsendtMotebehov={ledereUtenInnsendtMotebehov}
       />
     </div>
   );
-};
-
-export default MotebehovKvittering;
+}

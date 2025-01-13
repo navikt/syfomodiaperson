@@ -16,6 +16,7 @@ import { useDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteun
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { MalformProvider } from "@/context/malform/MalformContext";
 import { DialogmoteInnkallingSkjema } from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
+import MotebehovHistorikk from "@/sider/dialogmoter/components/motehistorikk/MotebehovHistorikk";
 
 const texts = {
   title: "Innkalling til dialogmøte",
@@ -68,11 +69,12 @@ const DialogmoteInnkallingContainer = (): ReactElement => {
               <DialogmoteInnkallingSide />
             </MalformProvider>
           </Tredelt.FirstColumn>
-          <Tredelt.SecondColumn>
+          <Tredelt.SecondColumn className="flex flex-col gap-4">
             <MotehistorikkPanel
               historiskeMoter={historiskeDialogmoter}
               dialogmoteunntak={dialogmoteunntak}
             />
+            <MotebehovHistorikk />
           </Tredelt.SecondColumn>
         </Tredelt.Container>
       </SideLaster>

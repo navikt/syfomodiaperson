@@ -29,7 +29,7 @@ const motebehovArbeidstakerUbehandletMock: MotebehovVeilederDTO = {
   skjemaType: MotebehovSkjemaType.SVAR_BEHOV,
 };
 
-const motebehovArbeidstakerBehandletMock: MotebehovVeilederDTO = {
+export const motebehovArbeidstakerBehandletMock: MotebehovVeilederDTO = {
   id: "33333333-ee10-44b6-bddf-54d049ef25f2",
   opprettetDato: addDays(new Date(), -10),
   aktorId: "1",
@@ -47,7 +47,7 @@ const motebehovArbeidstakerBehandletMock: MotebehovVeilederDTO = {
   skjemaType: MotebehovSkjemaType.MELD_BEHOV,
 };
 
-const motebehovArbeidsgiverMock: MotebehovVeilederDTO = {
+export const motebehovArbeidsgiverMock: MotebehovVeilederDTO = {
   id: "22222222-9e9b-40b0-bd1c-d1c39dc5f481",
   opprettetDato: addDays(new Date(), -5),
   aktorId: "1",
