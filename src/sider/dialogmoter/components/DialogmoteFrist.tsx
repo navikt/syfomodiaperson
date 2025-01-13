@@ -1,4 +1,4 @@
-import { addWeeks, visDato } from "@/utils/datoUtils";
+import { addWeeks, tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import React from "react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
@@ -17,7 +17,7 @@ export const DialogmoteFrist = () => {
     isKandidat && hasActiveOppfolgingstilfelle && latestOppfolgingstilfelle;
 
   return showFrist ? (
-    <p>{`Frist dialogmøte 2: ${visDato(
+    <p>{`Frist for dialogmøte 2: ${tilLesbarDatoMedArUtenManedNavn(
       getFrist(latestOppfolgingstilfelle.start)
     )}`}</p>
   ) : null;
