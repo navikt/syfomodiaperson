@@ -68,7 +68,7 @@ export const Oppfolgingsoppgave = () => {
           <Heading className="mb-2" size="xsmall">
             {"Beskrivelse"}
           </Heading>
-          <BodyShort className="mb-4 preserve-whitespace">
+          <BodyShort className="mb-4 whitespace-pre-wrap">
             {beskrivelse}
           </BodyShort>
         </>

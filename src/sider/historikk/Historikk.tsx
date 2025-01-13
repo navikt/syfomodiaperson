@@ -175,7 +175,7 @@ export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
                   <Table.ExpandableRow
                     key={i}
                     content={
-                      <span className={`preserve-whitespace`}>
+                      <span className="whitespace-pre-wrap">
                         {expandableContent}
                       </span>
                     }
