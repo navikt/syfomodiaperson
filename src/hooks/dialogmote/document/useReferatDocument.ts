@@ -1,9 +1,6 @@
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
-import {
-  tilDatoMedManedNavnOgKlokkeslettWithComma,
-  tilDatoMedUkedagOgManedNavnOgKlokkeslett,
-} from "@/utils/datoUtils";
+import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import {
   createHeaderH1,
   createHeaderH2,
@@ -42,15 +39,12 @@ export const useReferatDocument = (
   const navbruker = useNavBrukerData();
   const { data: veilederinfo } = useAktivVeilederinfoQuery();
   const isEndringAvReferat = mode === ReferatMode.ENDRET;
-  const { getVirksomhetsnavn } = useDialogmoteDocumentComponents();
+  const { getVirksomhetsnavn, getHilsenMedSendtDato } =
+    useDialogmoteDocumentComponents();
   const { malform } = useMalform();
   const referatTexts = getReferatTexts(malform);
   const commonTexts = getCommonTexts(malform);
-  const hilsenParagraph = createParagraph(
-    commonTexts.hilsen,
-    veilederinfo?.fulltNavn() || "",
-    `Nav`
-  );
+  const hilsenParagraph = getHilsenMedSendtDato(veilederinfo);
   const personident = useValgtPersonident();
 
   const intro = (): DocumentComponentDto[] => {
@@ -177,9 +171,6 @@ export const useReferatDocument = (
     const documentComponents = [
       createHeaderH1(
         isEndringAvReferat ? referatTexts.endretHeader : referatTexts.nyttHeader
-      ),
-      createParagraph(
-        `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
       ),
     ];
 

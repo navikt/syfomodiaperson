@@ -6,11 +6,15 @@ import {
 import { getCommonTexts } from "@/data/dialogmote/dialogmoteTexts";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { TidStedSkjemaValues } from "@/data/dialogmote/types/skjemaTypes";
-import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
+import {
+  tilDatoMedManedNavnOgKlokkeslettWithComma,
+  tilDatoMedUkedagOgManedNavnOgKlokkeslett,
+} from "@/utils/datoUtils";
 import { genererDato } from "@/sider/dialogmoter/utils";
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
 import { useDocumentComponents } from "@/hooks/useDocumentComponents";
 import { useMalform } from "@/context/malform/MalformContext";
+import { Veileder } from "@/data/veilederinfo/types/Veileder";
 
 export const useDialogmoteDocumentComponents = () => {
   const { getHilsen, getIntroGjelder, getIntroHei } = useDocumentComponents();
@@ -62,11 +66,23 @@ export const useDialogmoteDocumentComponents = () => {
     return components;
   };
 
+  const getHilsenMedSendtDato = (veilederinfo: Veileder | undefined) =>
+    createParagraph(
+      commonTexts.hilsen,
+      veilederinfo?.fulltNavn() || "",
+      `Nav`,
+      "---",
+      `${commonTexts.brevSendt} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
+        new Date()
+      )}`
+    );
+
   return {
     getHilsen,
     getVirksomhetsnavn,
     getMoteInfo,
     getIntroHei,
     getIntroGjelder,
+    getHilsenMedSendtDato,
   };
 };

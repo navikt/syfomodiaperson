@@ -40,22 +40,15 @@ export const useAvlysningDocument = (
   const valgtPersonident = useValgtPersonident();
   const { data: veilederinfo } = useAktivVeilederinfoQuery();
 
-  const { getIntroHei, getVirksomhetsnavn } = useDialogmoteDocumentComponents();
-
-  const sendt = createParagraph(
-    `Sendt ${tilDatoMedManedNavnOgKlokkeslettWithComma(new Date())}`
-  );
+  const { getIntroHei, getVirksomhetsnavn, getHilsenMedSendtDato } =
+    useDialogmoteDocumentComponents();
 
   // TODO: Alle disse gjelder-paragraphene kan byttes ut når aktivitetskravet også er på nynorsk. Da kan vi lage en felles gjelder-intro igjen basert på målform
   const gjelderParagraph = createParagraph(
     `${commonTexts.gjelder} ${navBruker.navn}, f.nr. ${valgtPersonident}`
   );
   // TODO: Samme her
-  const hilsenParagraph = createParagraph(
-    commonTexts.hilsen,
-    veilederinfo?.fulltNavn() || "",
-    `Nav`
-  );
+  const hilsenParagraph = getHilsenMedSendtDato(veilederinfo);
 
   const introText = createParagraph(
     `${avlysningTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
@@ -69,7 +62,6 @@ export const useAvlysningDocument = (
   ) => {
     const documentComponents = [
       createHeaderH1(avlysningTexts.header),
-      sendt,
       introHilsen,
       introText,
     ];
