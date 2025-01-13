@@ -172,7 +172,14 @@ export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
               .sort(byTidspunkt())
               .map(({ expandableContent, kilde, tekst, tidspunkt }, i) => {
                 return expandableContent ? (
-                  <Table.ExpandableRow key={i} content={expandableContent}>
+                  <Table.ExpandableRow
+                    key={i}
+                    content={
+                      <span className={`preserve-whitespace`}>
+                        {expandableContent}
+                      </span>
+                    }
+                  >
                     <Table.DataCell>
                       {tilLesbarDatoMedArstall(tidspunkt)}
                     </Table.DataCell>
