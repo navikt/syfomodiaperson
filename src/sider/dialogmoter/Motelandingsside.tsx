@@ -15,6 +15,7 @@ import Side from "@/sider/Side";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { MotehistorikkPanel } from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
 import { MoteSvarHistorikk } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikk";
+import MotebehovHistorikk from "@/sider/dialogmoter/components/motehistorikk/MotebehovHistorikk";
 
 const texts = {
   pageTitle: "Møtelandingsside",
@@ -33,16 +34,10 @@ export function Motelandingsside() {
     isError: henterDialogmoteunntakFeilet,
     isLoading: henterDialogmoteunntak,
   } = useDialogmoteunntakQuery();
-  const {
-    data: motebehov,
-    isError: henterMotebehovFeilet,
-    isLoading: henterMotebehov,
-  } = useMotebehovQuery();
-  const {
-    currentLedere,
-    isLoading: henterLedere,
-    isError: henterLedereFeilet,
-  } = useLedereQuery();
+  const { isError: henterMotebehovFeilet, isLoading: henterMotebehov } =
+    useMotebehovQuery();
+  const { isLoading: henterLedere, isError: henterLedereFeilet } =
+    useLedereQuery();
 
   const henter =
     henterDialogmoter ||
@@ -62,11 +57,7 @@ export function Motelandingsside() {
 
         <Tredelt.Container>
           <Tredelt.FirstColumn>
-            <DialogmoteOnskePanel
-              motebehovData={motebehov}
-              ledereData={currentLedere}
-            />
-
+            <DialogmoteOnskePanel />
             <InnkallingDialogmotePanel aktivtDialogmote={aktivtDialogmote} />
             <DialogmoteFerdigstilteReferatPanel
               ferdigstilteMoter={historiskeDialogmoter.filter(
@@ -76,14 +67,13 @@ export function Motelandingsside() {
             <UtdragFraSykefravaeretPanel />
           </Tredelt.FirstColumn>
 
-          <Tredelt.SecondColumn>
-            <div className="flex flex-col gap-4">
-              <MotehistorikkPanel
-                historiskeMoter={historiskeDialogmoter}
-                dialogmoteunntak={dialogmoteunntak}
-              />
-              <MoteSvarHistorikk historiskeMoter={historiskeDialogmoter} />
-            </div>
+          <Tredelt.SecondColumn className="flex flex-col gap-4">
+            <MotehistorikkPanel
+              historiskeMoter={historiskeDialogmoter}
+              dialogmoteunntak={dialogmoteunntak}
+            />
+            <MoteSvarHistorikk historiskeMoter={historiskeDialogmoter} />
+            <MotebehovHistorikk />
           </Tredelt.SecondColumn>
         </Tredelt.Container>
       </SideLaster>

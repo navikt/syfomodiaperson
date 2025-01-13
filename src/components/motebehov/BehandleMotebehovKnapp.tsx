@@ -22,6 +22,7 @@ import {
 } from "@navikt/ds-react";
 import { useBehandleMotebehovAndSendTilbakemelding } from "@/data/motebehov/useBehandleMotebehovAndSendTilbakemelding";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
+import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 
 const texts = {
   fjernOppgave: "Jeg har vurdert behovet. Oppgaven kan fjernes fra oversikten.",
@@ -46,13 +47,8 @@ const behandleMotebehovKnappLabel = (
     : texts.fjernOppgave;
 };
 
-interface BehandleMotebehovKnappProps {
-  motebehovData: MotebehovVeilederDTO[];
-}
-
-const BehandleMotebehovKnapp = ({
-  motebehovData,
-}: BehandleMotebehovKnappProps) => {
+export default function BehandleMotebehovKnapp() {
+  const { data: motebehovData } = useMotebehovQuery();
   const motebehovListe = motebehovlisteMedKunJaSvar(motebehovData);
   const sistBehandletMotebehov = hentSistBehandletMotebehov(motebehovListe);
   const ubehandledeMotebehov = fjernBehandledeMotebehov(motebehovListe);
@@ -133,6 +129,4 @@ const BehandleMotebehovKnapp = ({
       </Checkbox>
     </Box>
   ) : null;
-};
-
-export default BehandleMotebehovKnapp;
+}

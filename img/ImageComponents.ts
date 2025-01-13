@@ -19,7 +19,6 @@ import DoctorImage from "./svg/doctor-2.svg";
 import DoctorHoverImage from "./svg/doctor-2_hover.svg";
 import EpostImage from "./svg/epost.svg";
 import FabrikkImage from "./svg/fabrikk.svg";
-import FortidenImage from "./svg/fortiden.svg";
 import GlobeImage from "./svg/globe.svg";
 import GlobeHoverImage from "./svg/globe-hover.svg";
 import InfoSymbolImage from "./svg/info_symbol.svg";
@@ -94,7 +93,6 @@ export {
   EasterRoll,
   EpostImage,
   FabrikkImage,
-  FortidenImage,
   GlobeImage,
   GlobeHoverImage,
   InfoSymbolImage,
