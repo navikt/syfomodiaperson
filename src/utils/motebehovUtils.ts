@@ -189,56 +189,64 @@ export function isArbeidstakerMotebehov(motebehov: MotebehovVeilederDTO) {
   return motebehov.opprettetAv === motebehov.aktorId;
 }
 
-export function mapMotebehovToMeldtMotebehovFormat(
+export function mapAllMotebehovToMeldtMotebehovFormat(
   motebehov: MotebehovVeilederDTO[]
 ): MeldtMotebehov[] {
   return motebehov
     .filter(
       (motebehov) => motebehov.skjemaType === MotebehovSkjemaType.MELD_BEHOV
     )
-    .map((motebehov) => {
-      return {
-        id: motebehov.id,
-        opprettetDato: motebehov.opprettetDato,
-        opprettetAv: motebehov.opprettetAv,
-        opprettetAvNavn: motebehov.opprettetAvNavn,
-        innmelder: isArbeidstakerMotebehov(motebehov)
-          ? MotebehovInnmelder.ARBEIDSTAKER
-          : MotebehovInnmelder.ARBEIDSGIVER,
-        arbeidstakerFnr: motebehov.arbeidstakerFnr,
-        virksomhetsnummer: motebehov.virksomhetsnummer,
-        begrunnelse: motebehov.motebehovSvar.forklaring,
-        tildeltEnhet: motebehov.tildeltEnhet,
-        behandletTidspunkt: motebehov.behandletTidspunkt,
-        behandletVeilederIdent: motebehov.behandletVeilederIdent,
-        skjemaType: MotebehovSkjemaType.MELD_BEHOV,
-      };
-    });
+    .map((motebehov) => mapMoteBehovToMeldtMotebehovFormat(motebehov));
 }
 
-export function mapMotebehovToSvarMotebehovFormat(
+export function mapMoteBehovToMeldtMotebehovFormat(
+  motebehov: MotebehovVeilederDTO
+): MeldtMotebehov {
+  return {
+    id: motebehov.id,
+    opprettetDato: motebehov.opprettetDato,
+    opprettetAv: motebehov.opprettetAv,
+    opprettetAvNavn: motebehov.opprettetAvNavn,
+    innmelder: isArbeidstakerMotebehov(motebehov)
+      ? MotebehovInnmelder.ARBEIDSTAKER
+      : MotebehovInnmelder.ARBEIDSGIVER,
+    arbeidstakerFnr: motebehov.arbeidstakerFnr,
+    virksomhetsnummer: motebehov.virksomhetsnummer,
+    begrunnelse: motebehov.motebehovSvar.forklaring,
+    tildeltEnhet: motebehov.tildeltEnhet,
+    behandletTidspunkt: motebehov.behandletTidspunkt,
+    behandletVeilederIdent: motebehov.behandletVeilederIdent,
+    skjemaType: MotebehovSkjemaType.MELD_BEHOV,
+  };
+}
+
+export function mapAllMotebehovToSvarMotebehovFormat(
   motebehov: MotebehovVeilederDTO[]
 ): SvarMotebehov[] {
   return motebehov
     .filter(
       (motebehov) => motebehov.skjemaType === MotebehovSkjemaType.SVAR_BEHOV
     )
-    .map((motebehov) => {
-      return {
-        id: motebehov.id,
-        opprettetDato: motebehov.opprettetDato,
-        opprettetAv: motebehov.opprettetAv,
-        opprettetAvNavn: motebehov.opprettetAvNavn,
-        innmelder: isArbeidstakerMotebehov(motebehov)
-          ? MotebehovInnmelder.ARBEIDSTAKER
-          : MotebehovInnmelder.ARBEIDSGIVER,
-        arbeidstakerFnr: motebehov.arbeidstakerFnr,
-        virksomhetsnummer: motebehov.virksomhetsnummer,
-        motebehovSvar: motebehov.motebehovSvar,
-        tildeltEnhet: motebehov.tildeltEnhet,
-        behandletTidspunkt: motebehov.behandletTidspunkt,
-        behandletVeilederIdent: motebehov.behandletVeilederIdent,
-        skjemaType: MotebehovSkjemaType.SVAR_BEHOV,
-      };
-    });
+    .map((motebehov) => mapMotebehovToSvarMotebehovFormat(motebehov));
+}
+
+export function mapMotebehovToSvarMotebehovFormat(
+  motebehov: MotebehovVeilederDTO
+): SvarMotebehov {
+  return {
+    id: motebehov.id,
+    opprettetDato: motebehov.opprettetDato,
+    opprettetAv: motebehov.opprettetAv,
+    opprettetAvNavn: motebehov.opprettetAvNavn,
+    innmelder: isArbeidstakerMotebehov(motebehov)
+      ? MotebehovInnmelder.ARBEIDSTAKER
+      : MotebehovInnmelder.ARBEIDSGIVER,
+    arbeidstakerFnr: motebehov.arbeidstakerFnr,
+    virksomhetsnummer: motebehov.virksomhetsnummer,
+    motebehovSvar: motebehov.motebehovSvar,
+    tildeltEnhet: motebehov.tildeltEnhet,
+    behandletTidspunkt: motebehov.behandletTidspunkt,
+    behandletVeilederIdent: motebehov.behandletVeilederIdent,
+    skjemaType: MotebehovSkjemaType.SVAR_BEHOV,
+  };
 }

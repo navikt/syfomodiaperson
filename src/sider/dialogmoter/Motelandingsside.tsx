@@ -15,6 +15,7 @@ import Side from "@/sider/Side";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { MotehistorikkPanel } from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
 import { MoteSvarHistorikk } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikk";
+import MotebehovHistorikk from "@/sider/dialogmoter/components/motehistorikk/MotebehovHistorikk";
 
 const texts = {
   pageTitle: "Møtelandingsside",
@@ -83,6 +84,7 @@ export function Motelandingsside() {
                 dialogmoteunntak={dialogmoteunntak}
               />
               <MoteSvarHistorikk historiskeMoter={historiskeDialogmoter} />
+              <MotebehovHistorikk />
             </div>
           </Tredelt.SecondColumn>
         </Tredelt.Container>

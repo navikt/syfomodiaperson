@@ -1,8 +1,8 @@
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import {
-  mapMotebehovToMeldtMotebehovFormat,
-  mapMotebehovToSvarMotebehovFormat,
+  mapAllMotebehovToMeldtMotebehovFormat,
+  mapAllMotebehovToSvarMotebehovFormat,
 } from "@/utils/motebehovUtils";
 import {
   MeldtMotebehov,
@@ -107,8 +107,8 @@ interface MotebehovHistorikk {
 
 export function useMotebehovHistorikk(): MotebehovHistorikk {
   const motebehov = useMotebehovQuery();
-  const meldtMotebehov = mapMotebehovToMeldtMotebehovFormat(motebehov.data);
-  const svarMotebehov = mapMotebehovToSvarMotebehovFormat(motebehov.data);
+  const meldtMotebehov = mapAllMotebehovToMeldtMotebehovFormat(motebehov.data);
+  const svarMotebehov = mapAllMotebehovToSvarMotebehovFormat(motebehov.data);
 
   const meldtMotebehovEvents =
     createHistorikkEventsFromMeldtMotebehov(meldtMotebehov);
