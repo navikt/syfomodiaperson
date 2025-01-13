@@ -9,13 +9,14 @@ import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandi
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { ArbeidstakerHarIkkeAktivSykmeldingAdvarsel } from "@/sider/dialogmoter/components/ArbeidstakerHarIkkeAktivSykmelding";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { Button } from "@navikt/ds-react";
+import { BodyShort, Button } from "@navikt/ds-react";
 import {
   dialogmoteRoutePath,
   dialogmoteUnntakRoutePath,
   dialogmoteIkkeAktuellRoutePath,
 } from "@/routers/AppRouter";
 import { Link } from "react-router-dom";
+import { DialogmoteFrist } from "@/sider/dialogmoter/components/DialogmoteFrist";
 
 export const texts = {
   bekreftetMote: "Bekreftet møte",
@@ -68,6 +69,15 @@ export const InnkallingDialogmotePanel = ({
     );
   };
 
+  const Subtitle = () => {
+    return (
+      <>
+        <BodyShort size="small">{texts.ingenMoterPlanlagt}</BodyShort>
+        <DialogmoteFrist />
+      </>
+    );
+  };
+
   if (aktivtDialogmote) {
     return <DialogmoteMoteStatusPanel dialogmote={aktivtDialogmote} />;
   } else {
@@ -75,7 +85,7 @@ export const InnkallingDialogmotePanel = ({
       <DialogmotePanel
         icon={MoteIkonBlaaImage}
         header={dialogmotePanelHeaderText(isKandidat)}
-        subtitle={texts.ingenMoterPlanlagt}
+        subtitle={<Subtitle />}
       >
         {brukerKanIkkeVarslesDigitalt && (
           <BrukerKanIkkeVarslesPapirpostAdvarsel />
