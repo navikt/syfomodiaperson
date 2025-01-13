@@ -24,6 +24,7 @@ import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
 import dayjs from "dayjs";
 import { useEditOppfolgingsoppgave } from "@/data/oppfolgingsoppgave/useEditOppfolgingsoppgave";
+import { useDeleteAndCreateOppfolgingsoppgave } from "@/data/oppfolgingsoppgave/useDeleteAndCreateOppfolgingsoppgave";
 
 const texts = {
   header: "Oppfølgingsoppgave",
@@ -70,6 +71,16 @@ function logOppfolgingsgrunnSendt(oppfolgingsgrunn: Oppfolgingsgrunn) {
   });
 }
 
+function logOppfolgingsgrunnEdited(oppfolgingsgrunn: Oppfolgingsgrunn) {
+  Amplitude.logEvent({
+    type: EventType.OppfolgingsgrunnEdited,
+    data: {
+      url: window.location.href,
+      oppfolgingsgrunn: oppfolgingsgrunn,
+    },
+  });
+}
+
 function logOppfolgingsoppgaveEdited(
   oppfolgingsgrunn: Oppfolgingsgrunn,
   existingOppfolgingsoppgave: OppfolgingsoppgaveResponseDTO,
@@ -106,6 +117,8 @@ export const OppfolgingsoppgaveModal = ({
   const [isFormError, setIsFormError] = useState(false);
   const [isFristTouched, setIsFristTouched] = useState(false);
   const createOppfolgingsoppgave = useCreateOppfolgingsoppgave();
+  const deleteAndCreateOppfolgingsoppgave =
+    useDeleteAndCreateOppfolgingsoppgave();
   const editOppfolgingsoppgave = useEditOppfolgingsoppgave(
     existingOppfolgingsoppgave?.uuid
   );
@@ -118,23 +131,26 @@ export const OppfolgingsoppgaveModal = ({
     setValue,
     watch,
   } = useForm<FormValues>({
-    defaultValues: {
-      beskrivelse: existingOppfolgingsoppgaveVersjon?.tekst ?? "",
-      frist: existingOppfolgingsoppgaveVersjon?.frist ?? null,
+    defaultValues: existingOppfolgingsoppgaveVersjon && {
+      beskrivelse: existingOppfolgingsoppgaveVersjon.tekst ?? "",
+      frist: existingOppfolgingsoppgaveVersjon.frist,
+      oppfolgingsgrunn: existingOppfolgingsoppgaveVersjon.oppfolgingsgrunn,
     },
   });
   const watchedValues = watch();
   const isEditMode = !!existingOppfolgingsoppgave;
-
   const isFormEdited = useCallback(
     (existingOppfolgingsoppgave: OppfolgingsoppgaveResponseDTO | undefined) => {
       const existingOppfolgingsoppgaveVersjon =
         existingOppfolgingsoppgave?.versjoner[0];
+      const isOppfolgingsgrunnEdited =
+        watchedValues.oppfolgingsgrunn !==
+        existingOppfolgingsoppgaveVersjon?.oppfolgingsgrunn;
       const isFristEdited =
         watchedValues.frist !== existingOppfolgingsoppgaveVersjon?.frist;
       const isBeskrivelseEdited =
         watchedValues.beskrivelse !== existingOppfolgingsoppgaveVersjon?.tekst;
-      return isFristEdited || isBeskrivelseEdited;
+      return isFristEdited || isBeskrivelseEdited || isOppfolgingsgrunnEdited;
     },
     [watchedValues]
   );
@@ -167,20 +183,17 @@ export const OppfolgingsoppgaveModal = ({
     values: FormValues,
     existingOppfolgingsoppgave: OppfolgingsoppgaveResponseDTO
   ) {
-    const oppfolgingsoppgaveDto: EditOppfolgingsoppgaveRequestDTO = {
-      tekst: values.beskrivelse,
-      frist: values.frist,
-    };
-    editOppfolgingsoppgave.mutate(oppfolgingsoppgaveDto, {
-      onSuccess: () => {
-        logOppfolgingsoppgaveEdited(
-          values.oppfolgingsgrunn,
-          existingOppfolgingsoppgave,
-          oppfolgingsoppgaveDto
-        );
-        toggleOpen(false);
-      },
-    });
+    const isOppfolgingsgrunnEdited =
+      values.oppfolgingsgrunn !==
+      existingOppfolgingsoppgaveVersjon?.oppfolgingsgrunn;
+    if (isOppfolgingsgrunnEdited) {
+      handleDeleteAndCreateOppfolgingsoppgave(
+        values,
+        existingOppfolgingsoppgave
+      );
+    } else {
+      handleEditOppfolgingsoppgave(values, existingOppfolgingsoppgave);
+    }
   }
 
   function submitNewOppfolgingsoppgave(values: FormValues) {
@@ -195,6 +208,49 @@ export const OppfolgingsoppgaveModal = ({
         toggleOpen(false);
       },
     });
+  }
+
+  function handleEditOppfolgingsoppgave(
+    { beskrivelse, frist, oppfolgingsgrunn }: FormValues,
+    existingOppfolgingsoppgave: OppfolgingsoppgaveResponseDTO
+  ) {
+    const oppfolgingsoppgaveDto: EditOppfolgingsoppgaveRequestDTO = {
+      tekst: beskrivelse,
+      frist: frist,
+    };
+    editOppfolgingsoppgave.mutate(oppfolgingsoppgaveDto, {
+      onSuccess: () => {
+        logOppfolgingsoppgaveEdited(
+          oppfolgingsgrunn,
+          existingOppfolgingsoppgave,
+          oppfolgingsoppgaveDto
+        );
+        toggleOpen(false);
+      },
+    });
+  }
+
+  function handleDeleteAndCreateOppfolgingsoppgave(
+    { beskrivelse, frist, oppfolgingsgrunn }: FormValues,
+    existingOppfolgingsoppgave: OppfolgingsoppgaveResponseDTO
+  ) {
+    const oppfolgingsoppgaveDto: OppfolgingsoppgaveRequestDTO = {
+      oppfolgingsgrunn,
+      tekst: beskrivelse,
+      frist,
+    };
+    deleteAndCreateOppfolgingsoppgave.mutate(
+      {
+        existingOppfolgingsoppgaveUuid: existingOppfolgingsoppgave.uuid,
+        nyOppfolgingsoppgave: oppfolgingsoppgaveDto,
+      },
+      {
+        onSuccess: () => {
+          logOppfolgingsgrunnEdited(oppfolgingsgrunn);
+          toggleOpen(false);
+        },
+      }
+    );
   }
 
   const defaultSelectedDate = existingOppfolgingsoppgaveVersjon?.frist
@@ -248,8 +304,7 @@ export const OppfolgingsoppgaveModal = ({
             className="w-[24rem]"
             {...register("oppfolgingsgrunn", { required: true })}
             error={errors.oppfolgingsgrunn && texts.missingOppfolgingsgrunn}
-            readOnly={isEditMode}
-            value={existingOppfolgingsoppgaveVersjon?.oppfolgingsgrunn}
+            value={watch("oppfolgingsgrunn")}
           >
             <option value="">{texts.oppfolgingsgrunnDefaultOption}</option>
             {Object.values(Oppfolgingsgrunn).map((oppfolgingsgrunn, index) => (
@@ -303,7 +358,8 @@ export const OppfolgingsoppgaveModal = ({
             variant="primary"
             loading={
               createOppfolgingsoppgave.isPending ||
-              editOppfolgingsoppgave.isPending
+              editOppfolgingsoppgave.isPending ||
+              deleteAndCreateOppfolgingsoppgave.isPending
             }
           >
             {texts.save}

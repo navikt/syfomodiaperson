@@ -6,17 +6,22 @@ import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useOppfo
 import { aktivOppfolgingsoppgaveQueryKeys } from "@/data/oppfolgingsoppgave/useAktivOppfolgingsoppgave";
 import { OppfolgingsoppgaveRequestDTO } from "@/data/oppfolgingsoppgave/types";
 
+export const postOppfolgingsoppgave = (
+  personident: string,
+  nyOppfolgingsoppgave: OppfolgingsoppgaveRequestDTO
+) =>
+  post<OppfolgingsoppgaveRequestDTO>(
+    `${ISHUSKELAPP_ROOT}/huskelapp`,
+    nyOppfolgingsoppgave,
+    personident
+  );
+
 export const useCreateOppfolgingsoppgave = () => {
   const personident = useValgtPersonident();
   const queryClient = useQueryClient();
-  const path = `${ISHUSKELAPP_ROOT}/huskelapp`;
-  const postOppfolgingsoppgave = (
-    nyOppfolgingsoppgave: OppfolgingsoppgaveRequestDTO
-  ) =>
-    post<OppfolgingsoppgaveRequestDTO>(path, nyOppfolgingsoppgave, personident);
-
   return useMutation({
-    mutationFn: postOppfolgingsoppgave,
+    mutationFn: (nyOppfolgingsoppgave: OppfolgingsoppgaveRequestDTO) =>
+      postOppfolgingsoppgave(personident, nyOppfolgingsoppgave),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey:

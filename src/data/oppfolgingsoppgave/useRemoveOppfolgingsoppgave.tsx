@@ -5,16 +5,21 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useOppfolgingsoppgaver";
 import { aktivOppfolgingsoppgaveQueryKeys } from "@/data/oppfolgingsoppgave/useAktivOppfolgingsoppgave";
 
+export const deleteOppfolgingsoppgave = (
+  personident: string,
+  oppfolgingsoppgaveUuid: string
+) =>
+  deleteRequest(
+    `${ISHUSKELAPP_ROOT}/huskelapp/${oppfolgingsoppgaveUuid}`,
+    personident
+  );
+
 export const useRemoveOppfolgingsoppgave = () => {
   const personident = useValgtPersonident();
   const queryClient = useQueryClient();
-  const deleteOppfolgingsoppgave = (oppfolgingsoppgaveUuid: string) => {
-    const path = `${ISHUSKELAPP_ROOT}/huskelapp/${oppfolgingsoppgaveUuid}`;
-    return deleteRequest(path, personident);
-  };
-
   return useMutation({
-    mutationFn: deleteOppfolgingsoppgave,
+    mutationFn: (oppfolgingsoppgaveUuid: string) =>
+      deleteOppfolgingsoppgave(personident, oppfolgingsoppgaveUuid),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey:
