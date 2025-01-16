@@ -68,7 +68,9 @@ export const Oppfolgingsoppgave = () => {
           <Heading className="mb-2" size="xsmall">
             {"Beskrivelse"}
           </Heading>
-          <BodyShort className="mb-4">{beskrivelse}</BodyShort>
+          <BodyShort className="mb-4 whitespace-pre-wrap">
+            {beskrivelse}
+          </BodyShort>
         </>
       )}
       <Button
