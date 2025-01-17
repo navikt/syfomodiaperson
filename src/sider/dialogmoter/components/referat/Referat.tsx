@@ -54,7 +54,6 @@ import { DeltakerArbeidstakerHeading } from "@/sider/dialogmoter/components/refe
 import { DeltakerNavHeading } from "@/sider/dialogmoter/components/referat/DeltakerNavHeading";
 import { DeltakerBehandlerHeading } from "@/sider/dialogmoter/components/referat/DeltakerBehandlerHeading";
 import { DeltakerArbeidsgiverHeading } from "@/sider/dialogmoter/components/referat/DeltakerArbeidsgiverHeading";
-import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { ExpansionCardFormField } from "@/components/ExpansionCardFormField";
 import { PlusIcon, TrashIcon } from "@navikt/aksel-icons";
 
@@ -226,10 +225,6 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
 
   const { getReferatDocument } = useReferatDocument(dialogmote, mode);
   const initialValues = useInitialValuesReferat(dialogmote);
-  const { getCurrentNarmesteLeder } = useLedereQuery();
-  const currentNarmesteLederNavn =
-    getCurrentNarmesteLeder(dialogmote.arbeidsgiver.virksomhetsnummer)
-      ?.narmesteLederNavn || "";
   const { malform } = useMalform();
   const { standardTekster: standardTeksterForVisning } = getReferatTexts(
     Malform.BOKMAL
@@ -252,12 +247,10 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
   });
 
   useEffect(() => {
-    if (currentNarmesteLederNavn) {
-      reset({
-        naermesteLeder: currentNarmesteLederNavn,
-      });
-    }
-  }, [reset, currentNarmesteLederNavn]);
+    reset({
+      naermesteLeder: initialValues.naermesteLeder,
+    });
+  }, [reset, initialValues.naermesteLeder]);
 
   const isSendingReferat = () => {
     return ferdigstillDialogmote.isPending || endreReferat.isPending;
