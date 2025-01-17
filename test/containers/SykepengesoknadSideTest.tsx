@@ -10,7 +10,7 @@ import { sykepengesoknaderQueryKeys } from "@/data/sykepengesoknad/sykepengesokn
 import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { queryClientWithAktivBruker } from "../testQueryClient";
 import { renderWithRouter } from "../testRouterUtils";
-import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
 import { SykepengesoknadSideContent } from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
 
@@ -24,7 +24,7 @@ describe("SykepengesoknadSide", () => {
   beforeEach(() => {
     queryClient = queryClientWithAktivBruker();
     queryClient.setQueryData(
-      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => brukerinfoMock
     );
     queryClient.setQueryData(

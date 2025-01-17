@@ -19,7 +19,7 @@ import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/p
 import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
 import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks";
 import { mockUnleashResponse } from "@/mocks/unleashMocks";
-import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { behandlereQueryKeys } from "@/data/behandler/behandlereQueryHooks";
 import {
   behandlerByBehandlerRefMock,
@@ -62,7 +62,7 @@ export const setQueryDataWithPersonkortdata = (
   existingClient: QueryClient
 ): void => {
   existingClient.setQueryData(
-    brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+    brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
     () => brukerinfoMock
   );
   existingClient.setQueryData(

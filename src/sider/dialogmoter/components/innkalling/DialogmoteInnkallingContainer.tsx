@@ -8,7 +8,7 @@ import { Navigate } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
+import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { ArbeidstakerHarIkkeAktivSykmeldingAdvarsel } from "@/sider/dialogmoter/components/ArbeidstakerHarIkkeAktivSykmelding";
 import * as Tredelt from "@/sider/TredeltSide";
 import { MotehistorikkPanel } from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
@@ -23,7 +23,7 @@ const texts = {
 };
 
 export const DialogmoteInnkallingSide = (): ReactElement => {
-  const { brukerKanIkkeVarslesDigitalt } = useBrukerinfoQuery();
+  const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
   const { hasActiveOppfolgingstilfelle, hasOppfolgingstilfelle } =
     useOppfolgingstilfellePersonQuery();
 

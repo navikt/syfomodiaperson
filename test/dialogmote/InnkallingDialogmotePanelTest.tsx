@@ -20,30 +20,25 @@ import {
   createDialogmote,
   createReferat,
 } from "@/mocks/isdialogmote/dialogmoterMock";
-import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
-import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
+import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { kontaktinformasjonMock } from "@/mocks/syfoperson/persondataMock";
+import { KontaktinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 
 let queryClient: QueryClient;
 
 const brukerKanVarsles = {
-  ...brukerinfoMock,
-  kontaktinfo: {
-    ...brukerinfoMock.kontaktinfo,
-    skalHaVarsel: true,
-  },
+  ...kontaktinformasjonMock,
+  skalHaVarsel: true,
 };
 const brukerKanIkkeVarsles = {
-  ...brukerinfoMock,
-  kontaktinfo: {
-    ...brukerinfoMock.kontaktinfo,
-    skalHaVarsel: false,
-  },
+  ...kontaktinformasjonMock,
+  skalHaVarsel: false,
 };
 
-const renderInnkallingDialogmotePanel = (navbruker: any) => {
+const renderInnkallingDialogmotePanel = (kontaktinfo: KontaktinfoDTO) => {
   queryClient.setQueryData(
-    brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => navbruker
+    brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => kontaktinfo
   );
   return render(
     <MemoryRouter>

@@ -9,9 +9,9 @@ import {
 import { PersonImage } from "../../../img/ImageComponents";
 import { usePersonAdresseQuery } from "@/data/personinfo/personAdresseQueryHooks";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { formaterFnr } from "@/utils/fnrUtils";
 import { formatPhonenumber } from "@/utils/stringUtils";
+import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 
 const texts = {
   fnr: "F.nummer",
@@ -24,7 +24,7 @@ const texts = {
 
 export default function PersonkortSykmeldt() {
   const { data: personadresse } = usePersonAdresseQuery();
-  const navbruker = useNavBrukerData();
+  const { data: kontaktinfo } = useKontaktinfoQuery();
   const informasjonNokkelTekster = new Map([
     ["fnr", texts.fnr],
     ["tlf", texts.phone],
@@ -45,12 +45,12 @@ export default function PersonkortSykmeldt() {
     oppholdsadresse: formaterOppholdsadresse(personadresse?.oppholdsadresse),
   });
   const fnr = useValgtPersonident();
-  const formattedPhonenumber = navbruker.kontaktinfo?.tlf
-    ? formatPhonenumber(navbruker.kontaktinfo.tlf)
-    : navbruker.kontaktinfo?.tlf;
+  const formattedPhonenumber = kontaktinfo?.tlf
+    ? formatPhonenumber(kontaktinfo.tlf)
+    : kontaktinfo?.tlf;
   const valgteElementerKontaktinfo = {
     tlf: formattedPhonenumber,
-    epost: navbruker.kontaktinfo?.epost,
+    epost: kontaktinfo?.epost,
     fnr: formaterFnr(fnr),
   };
   const valgteElementer = Object.assign(

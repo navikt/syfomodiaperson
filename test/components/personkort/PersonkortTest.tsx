@@ -5,7 +5,7 @@ import { stubFastlegerApi } from "../../stubs/stubFastlegeRest";
 import { render, screen } from "@testing-library/react";
 import { queryClientWithAktivBruker } from "../../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
-import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
 import Personkort from "@/components/personkort/Personkort";
 import { daysFromToday, getButton } from "../../testUtils";
@@ -27,7 +27,7 @@ describe("Personkort", () => {
   beforeEach(() => {
     queryClient = queryClientWithAktivBruker();
     queryClient.setQueryData(
-      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => brukerinfoMock
     );
     stubFastlegerApi();
@@ -35,7 +35,7 @@ describe("Personkort", () => {
 
   it("Skal vise Sikkerhetstiltak-button-tab hvis bruker har sikkerhetstiltak", async () => {
     queryClient.setQueryData(
-      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => ({
         ...brukerinfoMock,
         sikkerhetstiltak: [
@@ -56,7 +56,7 @@ describe("Personkort", () => {
 
   it("Skal ikke vise Sikkerhetstiltak-button-tab hvis bruker mangler sikkerhetstiltak", async () => {
     queryClient.setQueryData(
-      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => brukerinfoMock
     );
 

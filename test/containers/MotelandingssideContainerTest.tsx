@@ -18,7 +18,7 @@ import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { queryClientWithAktivBruker } from "../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { MemoryRouter } from "react-router-dom";
-import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { dialogmoteunntakQueryKeys } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
 
@@ -56,7 +56,7 @@ describe("MotelandingssideSide", () => {
   beforeEach(() => {
     queryClient = queryClientWithAktivBruker();
     queryClient.setQueryData(
-      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => brukerinfoMock
     );
     queryClient.setQueryData(dialogmoterQueryKeys.dialogmoter(fnr), () => []);

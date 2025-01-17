@@ -15,7 +15,7 @@ import {
   maksdatoMock,
 } from "@/mocks/syfoperson/persondataMock";
 import { diskresjonskodeQueryKeys } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
-import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { daysFromToday } from "../../testUtils";
 import dayjs from "dayjs";
 import { underArbeidsrettetOppfolgingQueryKeys } from "@/data/veilarboppfolging/useUnderArbeidsrettetOppfolgingQuery";
@@ -106,7 +106,7 @@ describe("PersonkortHeader", () => {
       tegnsprakTolk: null,
     };
     queryClient.setQueryData(
-      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => {
         return {
           ...brukerinfoMock,
@@ -131,7 +131,7 @@ describe("PersonkortHeader", () => {
       },
     };
     queryClient.setQueryData(
-      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => {
         return {
           ...brukerinfoMock,
@@ -148,7 +148,7 @@ describe("PersonkortHeader", () => {
 
   it("viser dødsdato når dato finnes i brukerinfo", () => {
     queryClient.setQueryData(
-      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => {
         return {
           ...brukerinfoMock,
@@ -248,7 +248,7 @@ describe("PersonkortHeader", () => {
 
   it("viser ikke sikkerhetstiltak-tag når bruker mangler sikkerhetstiltak", () => {
     queryClient.setQueryData(
-      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => ({
         ...brukerinfoMock,
         sikkerhetstiltak: [],
@@ -261,7 +261,7 @@ describe("PersonkortHeader", () => {
 
   it("viser sikkerhetstiltak-tag når bruker har sikkerhetstiltak", () => {
     queryClient.setQueryData(
-      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => ({
         ...brukerinfoMock,
         sikkerhetstiltak: [

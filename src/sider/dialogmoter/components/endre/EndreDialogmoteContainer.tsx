@@ -2,7 +2,7 @@ import React from "react";
 import EndreDialogmoteSkjema from "./EndreDialogmoteSkjema";
 import { useParams } from "react-router-dom";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
-import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
+import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import Side from "@/sider/Side";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import SideLaster from "@/components/SideLaster";
@@ -28,7 +28,7 @@ const EndreDialogmoteContainer = () => {
     dialogmoteUuid: string;
   }>();
   const { isLoading, isError, data: dialogmoter } = useDialogmoterQuery();
-  const { brukerKanIkkeVarslesDigitalt } = useBrukerinfoQuery();
+  const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
 
   const dialogmote = dialogmoter.find(
     (dialogmote) => dialogmote.uuid === dialogmoteUuid

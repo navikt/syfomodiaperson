@@ -5,13 +5,14 @@ import {
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { weeksFromToday } from "../../../test/testUtils";
 
+export const kontaktinformasjonMock = {
+  epost: ARBEIDSTAKER_DEFAULT.epost,
+  tlf: "99887766",
+  skalHaVarsel: true,
+};
+
 export const brukerinfoMock: BrukerinfoDTO = {
   navn: ARBEIDSTAKER_DEFAULT_FULL_NAME,
-  kontaktinfo: {
-    epost: ARBEIDSTAKER_DEFAULT.epost,
-    tlf: "99887766",
-    skalHaVarsel: true,
-  },
   arbeidssituasjon: "ARBEIDSTAKER",
   dodsdato: null,
   tilrettelagtKommunikasjon: null,
