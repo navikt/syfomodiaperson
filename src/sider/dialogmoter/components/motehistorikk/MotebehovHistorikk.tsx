@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { isArbeidstakerMotebehov } from "@/utils/motebehovUtils";
 import { Accordion, BodyShort, Box } from "@navikt/ds-react";
@@ -9,6 +9,8 @@ import {
   MotebehovArbeidsgiverKvittering,
   MotebehovKvitteringInnholdArbeidstaker,
 } from "@/sider/dialogmoter/motebehov/MotebehovKvittering";
+import * as Amplitude from "@/utils/amplitude";
+import { EventType } from "@/utils/amplitude";
 
 const texts = {
   title: "Møtebehovhistorikk",
@@ -21,15 +23,33 @@ function MotebehovHistorikkEvent({
 }: {
   motebehov: MotebehovVeilederDTO;
 }) {
+  const [isOpen, setIsOpen] = useState(false);
   const isArbeidstaker = isArbeidstakerMotebehov(motebehov);
   const headerText = `Møtebehov fra ${
     isArbeidstaker ? "den sykmeldte" : "nærmeste leder"
   } ${tilLesbarDatoMedArstall(motebehov.opprettetDato)}`;
   const isBehandlet =
     motebehov.behandletTidspunkt && motebehov.behandletVeilederIdent;
+
+  const handleAccordionClick = () => {
+    if (!isOpen) {
+      // Vil bare logge klikk som åpner accordion
+      Amplitude.logEvent({
+        type: EventType.AccordionOpen,
+        data: {
+          tekst: `Åpne accordion møtebehovhistorikk: ${headerText}`,
+          url: window.location.href,
+        },
+      });
+    }
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <Accordion.Item>
-      <Accordion.Header>{headerText}</Accordion.Header>
+    <Accordion.Item open={isOpen}>
+      <Accordion.Header onClick={handleAccordionClick}>
+        {headerText}
+      </Accordion.Header>
       <Accordion.Content>
         {isArbeidstaker ? (
           <MotebehovKvitteringInnholdArbeidstaker
