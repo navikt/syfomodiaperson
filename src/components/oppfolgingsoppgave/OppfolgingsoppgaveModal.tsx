@@ -69,33 +69,47 @@ function logOppfolgingsgrunnSendt(oppfolgingsgrunn: Oppfolgingsgrunn) {
     },
   });
 }
-
 function logOppfolgingsoppgaveEdited(
   oppfolgingsgrunn: Oppfolgingsgrunn,
   existingOppfolgingsoppgave: OppfolgingsoppgaveResponseDTO,
   editedOppfolgingsoppgave: EditOppfolgingsoppgaveRequestDTO
 ) {
-  const editedFields: string[] = [];
   const existingOppfolgingsoppgaveVersjon =
     existingOppfolgingsoppgave.versjoner[0];
-  if (
-    editedOppfolgingsoppgave.frist !== existingOppfolgingsoppgaveVersjon?.frist
-  ) {
-    editedFields.push("frist");
+  const existingOppfolgingsgrunn =
+    existingOppfolgingsoppgaveVersjon?.oppfolgingsgrunn;
+  if (oppfolgingsgrunn !== existingOppfolgingsgrunn) {
+    Amplitude.logEvent({
+      type: EventType.OppfolgingsgrunnEdited,
+      data: {
+        url: window.location.href,
+        oldOppfolgingsgrunn: existingOppfolgingsgrunn,
+        newOppfolgingsgrunn: oppfolgingsgrunn,
+      },
+    });
+  } else {
+    const editedFields: string[] = [];
+    if (
+      editedOppfolgingsoppgave.frist !==
+      existingOppfolgingsoppgaveVersjon?.frist
+    ) {
+      editedFields.push("frist");
+    }
+    if (
+      editedOppfolgingsoppgave.tekst !==
+      existingOppfolgingsoppgaveVersjon?.tekst
+    ) {
+      editedFields.push("tekst");
+    }
+    Amplitude.logEvent({
+      type: EventType.OppfolgingsoppgaveEdited,
+      data: {
+        url: window.location.href,
+        oppfolgingsgrunn: oppfolgingsgrunn,
+        fieldsEdited: editedFields,
+      },
+    });
   }
-  if (
-    editedOppfolgingsoppgave.tekst !== existingOppfolgingsoppgaveVersjon?.tekst
-  ) {
-    editedFields.push("tekst");
-  }
-  Amplitude.logEvent({
-    type: EventType.OppfolgingsoppgaveEdited,
-    data: {
-      url: window.location.href,
-      oppfolgingsgrunn: oppfolgingsgrunn,
-      fieldsEdited: editedFields,
-    },
-  });
 }
 
 export const OppfolgingsoppgaveModal = ({
@@ -118,23 +132,26 @@ export const OppfolgingsoppgaveModal = ({
     setValue,
     watch,
   } = useForm<FormValues>({
-    defaultValues: {
-      beskrivelse: existingOppfolgingsoppgaveVersjon?.tekst ?? "",
-      frist: existingOppfolgingsoppgaveVersjon?.frist ?? null,
+    defaultValues: existingOppfolgingsoppgaveVersjon && {
+      beskrivelse: existingOppfolgingsoppgaveVersjon.tekst ?? "",
+      frist: existingOppfolgingsoppgaveVersjon.frist,
+      oppfolgingsgrunn: existingOppfolgingsoppgaveVersjon.oppfolgingsgrunn,
     },
   });
   const watchedValues = watch();
   const isEditMode = !!existingOppfolgingsoppgave;
-
   const isFormEdited = useCallback(
     (existingOppfolgingsoppgave: OppfolgingsoppgaveResponseDTO | undefined) => {
       const existingOppfolgingsoppgaveVersjon =
         existingOppfolgingsoppgave?.versjoner[0];
+      const isOppfolgingsgrunnEdited =
+        watchedValues.oppfolgingsgrunn !==
+        existingOppfolgingsoppgaveVersjon?.oppfolgingsgrunn;
       const isFristEdited =
         watchedValues.frist !== existingOppfolgingsoppgaveVersjon?.frist;
       const isBeskrivelseEdited =
         watchedValues.beskrivelse !== existingOppfolgingsoppgaveVersjon?.tekst;
-      return isFristEdited || isBeskrivelseEdited;
+      return isFristEdited || isBeskrivelseEdited || isOppfolgingsgrunnEdited;
     },
     [watchedValues]
   );
@@ -167,14 +184,16 @@ export const OppfolgingsoppgaveModal = ({
     values: FormValues,
     existingOppfolgingsoppgave: OppfolgingsoppgaveResponseDTO
   ) {
+    const { beskrivelse, frist, oppfolgingsgrunn } = values;
     const oppfolgingsoppgaveDto: EditOppfolgingsoppgaveRequestDTO = {
-      tekst: values.beskrivelse,
-      frist: values.frist,
+      oppfolgingsgrunn: oppfolgingsgrunn,
+      tekst: beskrivelse,
+      frist: frist,
     };
     editOppfolgingsoppgave.mutate(oppfolgingsoppgaveDto, {
       onSuccess: () => {
         logOppfolgingsoppgaveEdited(
-          values.oppfolgingsgrunn,
+          oppfolgingsgrunn,
           existingOppfolgingsoppgave,
           oppfolgingsoppgaveDto
         );
@@ -248,8 +267,7 @@ export const OppfolgingsoppgaveModal = ({
             className="w-[24rem]"
             {...register("oppfolgingsgrunn", { required: true })}
             error={errors.oppfolgingsgrunn && texts.missingOppfolgingsgrunn}
-            readOnly={isEditMode}
-            value={existingOppfolgingsoppgaveVersjon?.oppfolgingsgrunn}
+            value={watch("oppfolgingsgrunn")}
           >
             <option value="">{texts.oppfolgingsgrunnDefaultOption}</option>
             {Object.values(Oppfolgingsgrunn).map((oppfolgingsgrunn, index) => (

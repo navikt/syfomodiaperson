@@ -23,6 +23,7 @@ export interface OppfolgingsoppgaveRequestDTO {
 }
 
 export interface EditOppfolgingsoppgaveRequestDTO {
+  oppfolgingsgrunn: Oppfolgingsgrunn;
   tekst?: string;
   frist: string | null;
 }

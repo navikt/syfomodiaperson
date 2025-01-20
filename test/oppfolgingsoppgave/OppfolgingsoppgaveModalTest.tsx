@@ -30,6 +30,8 @@ let queryClient: QueryClient;
 const oppfolgingsoppgaveOppfolgingsgrunn =
   Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE;
 const oppfolgingsoppgaveOppfogingsgrunnText = "Vurder behov for dialogmøte";
+const oppfolgingsoppgaveTekst =
+  "Dette var en veldig god grunn for å lage oppfolgingsoppgave.";
 const oppfolgingsoppgave: OppfolgingsoppgaveResponseDTO = {
   uuid: generateUUID(),
   updatedAt: new Date(),
@@ -39,7 +41,7 @@ const oppfolgingsoppgave: OppfolgingsoppgaveResponseDTO = {
   versjoner: [
     {
       oppfolgingsgrunn: oppfolgingsoppgaveOppfolgingsgrunn,
-      tekst: "Dette var en veldig god grunn for å lage oppfolgingsoppgave.",
+      tekst: oppfolgingsoppgaveTekst,
       frist: "2030-01-01",
       createdBy: VEILEDER_DEFAULT.ident,
     } as OppfolgingsoppgaveVersjonResponseDTO,
@@ -53,6 +55,14 @@ const renderOppfolgingsoppgave = () =>
       <Oppfolgingsoppgave />
     </QueryClientProvider>
   );
+
+async function clickEditButton() {
+  const editButton = await screen.findByRole("button", {
+    hidden: true,
+    name: "Endre",
+  });
+  await userEvent.click(editButton);
+}
 
 describe("Oppfolgingsoppgave", () => {
   beforeEach(() => {
@@ -115,11 +125,7 @@ describe("Oppfolgingsoppgave", () => {
     it("edit opens oppfolgingsoppgavemodal", async () => {
       renderOppfolgingsoppgave();
 
-      const editButton = await screen.findByRole("button", {
-        hidden: true,
-        name: "Endre",
-      });
-      await userEvent.click(editButton);
+      await clickEditButton();
 
       const dialogs = await screen.findAllByRole("dialog", {
         hidden: true,
@@ -129,14 +135,80 @@ describe("Oppfolgingsoppgave", () => {
       expect(within(oppfolgingsoppgaveModal).getByText("Lagre")).to.exist;
       expect(within(oppfolgingsoppgaveModal).getByText("Avbryt")).to.exist;
     });
-    it("edit date of existing oppfolgingsoppgavemodal", async () => {
+    it("edit oppfolgingsgrunn edits existing oppfolgingsoppgave", async () => {
       renderOppfolgingsoppgave();
 
-      const editButton = await screen.findByRole("button", {
-        hidden: true,
-        name: "Endre",
+      await clickEditButton();
+
+      const selectOppfolgingsgrunn = await screen.findByLabelText(
+        "Hvilken oppfølgingsgrunn har du? (obligatorisk)"
+      );
+      fireEvent.change(selectOppfolgingsgrunn, {
+        target: { value: Oppfolgingsgrunn.TA_KONTAKT_SYKEMELDT },
       });
-      await userEvent.click(editButton);
+
+      const lagreButton = screen.getByRole("button", {
+        hidden: true,
+        name: "Lagre",
+      });
+      await userEvent.click(lagreButton);
+
+      await waitFor(() => {
+        const endreOppfolgingsoppgaveMutation = queryClient
+          .getMutationCache()
+          .getAll();
+        const expectedOppfolgingsoppgave: EditOppfolgingsoppgaveRequestDTO = {
+          tekst: oppfolgingsoppgaveTekst,
+          frist: "2030-01-01",
+          oppfolgingsgrunn: Oppfolgingsgrunn.TA_KONTAKT_SYKEMELDT,
+        };
+        expect(
+          endreOppfolgingsoppgaveMutation[0].state.variables
+        ).to.deep.equal(expectedOppfolgingsoppgave);
+      });
+    });
+    it("edit oppfolgingsgrunn and date edits existing oppfolgingsoppgave", async () => {
+      renderOppfolgingsoppgave();
+
+      await clickEditButton();
+
+      const selectOppfolgingsgrunn = await screen.findByLabelText(
+        "Hvilken oppfølgingsgrunn har du? (obligatorisk)"
+      );
+      fireEvent.change(selectOppfolgingsgrunn, {
+        target: { value: Oppfolgingsgrunn.TA_KONTAKT_SYKEMELDT },
+      });
+      const fristDateInput = screen.getByRole("textbox", {
+        hidden: true,
+        name: "Frist",
+      });
+      const fristDate = dayjs();
+      changeTextInput(fristDateInput, fristDate.format("DD-MM-YY"));
+
+      const lagreButton = screen.getByRole("button", {
+        hidden: true,
+        name: "Lagre",
+      });
+      await userEvent.click(lagreButton);
+
+      await waitFor(() => {
+        const endreOppfolgingsoppgaveMutation = queryClient
+          .getMutationCache()
+          .getAll();
+        const expectedOppfolgingsoppgave: EditOppfolgingsoppgaveRequestDTO = {
+          tekst: oppfolgingsoppgaveTekst,
+          frist: fristDate.format("YYYY-MM-DD"),
+          oppfolgingsgrunn: Oppfolgingsgrunn.TA_KONTAKT_SYKEMELDT,
+        };
+        expect(
+          endreOppfolgingsoppgaveMutation[0].state.variables
+        ).to.deep.equal(expectedOppfolgingsoppgave);
+      });
+    });
+    it("edit date of existing oppfolgingsoppgavemodal edits existing oppfolgingsoppgave", async () => {
+      renderOppfolgingsoppgave();
+
+      await clickEditButton();
 
       const fristDateInput = screen.getByRole("textbox", {
         hidden: true,
@@ -156,8 +228,9 @@ describe("Oppfolgingsoppgave", () => {
           .getMutationCache()
           .getAll();
         const expectedOppfolgingsoppgave: EditOppfolgingsoppgaveRequestDTO = {
-          tekst: "Dette var en veldig god grunn for å lage oppfolgingsoppgave.",
+          tekst: oppfolgingsoppgaveTekst,
           frist: fristDate.format("YYYY-MM-DD"),
+          oppfolgingsgrunn: oppfolgingsoppgaveOppfolgingsgrunn,
         };
         expect(
           endreOppfolgingsoppgaveMutation[0].state.variables
@@ -166,11 +239,8 @@ describe("Oppfolgingsoppgave", () => {
     });
     it("fails if date is not edited on existing oppfolgingsoppgavemodal", async () => {
       renderOppfolgingsoppgave();
-      const editButton = await screen.findByRole("button", {
-        hidden: true,
-        name: "Endre",
-      });
-      await userEvent.click(editButton);
+
+      await clickEditButton();
 
       expect(
         screen.getByRole("textbox", {
@@ -241,10 +311,7 @@ describe("Oppfolgingsoppgave", () => {
         target: { value: Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE },
       });
       const beskrivelseInput = screen.getByLabelText("Beskrivelse");
-      changeTextInput(
-        beskrivelseInput,
-        "Dette var en veldig god grunn for å lage oppfolgingsoppgave."
-      );
+      changeTextInput(beskrivelseInput, oppfolgingsoppgaveTekst);
 
       const fristDateInput = screen.getByRole("textbox", {
         hidden: true,
@@ -264,7 +331,7 @@ describe("Oppfolgingsoppgave", () => {
           .getAll();
         const expectedOppfolgingsoppgave: OppfolgingsoppgaveRequestDTO = {
           oppfolgingsgrunn: Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE,
-          tekst: "Dette var en veldig god grunn for å lage oppfolgingsoppgave.",
+          tekst: oppfolgingsoppgaveTekst,
           frist: fristDate.format("YYYY-MM-DD"),
         };
         expect(
