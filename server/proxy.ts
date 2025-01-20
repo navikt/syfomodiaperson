@@ -692,6 +692,24 @@ export const setupProxy = (
     }
   );
 
+  router.use(
+    "/isoppfolgingsplan/*",
+    (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) => {
+      proxyOnBehalfOf(
+        req,
+        res,
+        next,
+        authClient,
+        issuer,
+        Config.auth.isoppfolgingsplan
+      );
+    }
+  );
+
   return router;
 };
 

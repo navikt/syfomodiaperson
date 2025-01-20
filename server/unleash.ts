@@ -49,5 +49,9 @@ export const getToggles = (veilederId, enhetId) => {
       "isHistorikkFlexjarEnabled",
       context
     ),
+    isBeOmOppfolgingsplanEnabled: unleash.isEnabled(
+      "isBeOmOppfolgingsplanEnabled",
+      context
+    ),
   };
 };
