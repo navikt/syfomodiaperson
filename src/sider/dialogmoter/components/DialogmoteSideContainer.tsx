@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/sider/dialogmoter/components/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
-import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
+import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Side from "@/sider/Side";
 import SideLaster from "@/components/SideLaster";
@@ -29,7 +29,7 @@ export const DialogmoteSideContainer = ({
     dialogmoteUuid: string;
   }>();
   const { isLoading, isError, data: dialogmoter } = useDialogmoterQuery();
-  const { brukerKanIkkeVarslesDigitalt } = useBrukerinfoQuery();
+  const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
 
   const dialogmote = dialogmoter.find(
     (dialogmote) => dialogmote.uuid === dialogmoteUuid

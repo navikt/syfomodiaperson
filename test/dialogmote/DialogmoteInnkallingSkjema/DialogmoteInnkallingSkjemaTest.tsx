@@ -30,8 +30,8 @@ import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { Malform, MalformProvider } from "@/context/malform/MalformContext";
 import userEvent from "@testing-library/user-event";
 import { getInnkallingTexts } from "@/data/dialogmote/dialogmoteTexts";
-import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
-import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { kontaktinformasjonMock } from "@/mocks/syfoperson/persondataMock";
+import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import {
   DialogmoteInnkallingSkjema,
   texts,
@@ -103,14 +103,11 @@ describe("DialogmoteInnkallingSkjema", () => {
 
   it("viser advarsel om papirpost når bruker ikke kan varsles digitalt", () => {
     const kanIkkeVarsles = {
-      ...brukerinfoMock,
-      kontaktinfo: {
-        ...brukerinfoMock.kontaktinfo,
-        skalHaVarsel: false,
-      },
+      ...kontaktinformasjonMock,
+      skalHaVarsel: false,
     };
     queryClient.setQueryData(
-      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => kanIkkeVarsles
     );
     renderDialogmoteInnkallingSkjema();
@@ -120,14 +117,11 @@ describe("DialogmoteInnkallingSkjema", () => {
   });
   it("viser ikke advarsel om papirpost når bruker kan varsles digitalt", () => {
     const kanVarsles = {
-      ...brukerinfoMock,
-      kontaktinfo: {
-        ...brukerinfoMock.kontaktinfo,
-        skalHaVarsel: true,
-      },
+      ...kontaktinformasjonMock,
+      skalHaVarsel: true,
     };
     queryClient.setQueryData(
-      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => kanVarsles
     );
     renderDialogmoteInnkallingSkjema();

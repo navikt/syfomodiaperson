@@ -24,7 +24,7 @@ import { MalformRadioGroup } from "@/components/MalformRadioGroup";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
 import { useMalform } from "@/context/malform/MalformContext";
-import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
+import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { DialogmoteDato } from "@/sider/dialogmoter/components/DialogmoteDato";
 import DialogmoteKlokkeslett from "@/sider/dialogmoter/components/DialogmoteKlokkeslett";
 import DialogmoteSted, {
@@ -111,7 +111,7 @@ const toInnkalling = (
 
 export const DialogmoteInnkallingSkjema = () => {
   const fnr = useValgtPersonident();
-  const { brukerKanIkkeVarslesDigitalt } = useBrukerinfoQuery();
+  const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
   const innkallingDocument = useInnkallingDocument();
   const { toTidStedDto } = useSkjemaValuesToDto();

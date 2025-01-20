@@ -9,7 +9,7 @@ import { render, screen } from "@testing-library/react";
 import { fastlegerMock } from "@/mocks/fastlegerest/fastlegerMock";
 import { queryClientWithAktivBruker } from "../../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
-import { brukerinfoQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
 import { daysFromToday } from "../../testUtils";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
@@ -20,7 +20,7 @@ describe("PersonkortVisning", () => {
   beforeEach(() => {
     queryClient = queryClientWithAktivBruker();
     queryClient.setQueryData(
-      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => brukerinfoMock
     );
     stubFastlegerApi();
@@ -78,7 +78,7 @@ describe("PersonkortVisning", () => {
     )}`;
 
     queryClient.setQueryData(
-      brukerinfoQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => ({
         ...brukerinfoMock,
         sikkerhetstiltak: [

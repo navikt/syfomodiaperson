@@ -21,4 +21,8 @@ export const mockSyfoperson = [
   http.get(`${SYFOPERSON_ROOT}/person/brukerinfo`, () => {
     return HttpResponse.json(brukerinfoMock);
   }),
+
+  http.get(`${SYFOPERSON_ROOT}/person/kontaktinformasjon`, () => {
+    return HttpResponse.json(brukerinfoMock);
+  }),
 ];
