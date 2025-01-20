@@ -39,9 +39,14 @@ export function FirstColumn({ children, className }: Props) {
   );
 }
 
-export function SecondColumn({ children }: Props) {
+export function SecondColumn({ children, className }: Props) {
   return (
-    <div className="xl:flex-grow-[2] xl:flex-shrink-1 xl:basis-0 xl:h-screen xl:sticky xl:top-2 xl:overflow-y-scroll">
+    <div
+      className={
+        "xl:flex-grow-[2] xl:flex-shrink-1 xl:basis-0 xl:h-screen xl:sticky xl:top-2 xl:overflow-y-scroll " +
+        className
+      }
+    >
       {children}
     </div>
   );
