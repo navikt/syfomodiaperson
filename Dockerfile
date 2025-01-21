@@ -1,4 +1,4 @@
-FROM node:18-alpine AS builder
+FROM node:22-alpine AS builder
 WORKDIR /syfomodiaperson
 
 COPY server.ts package.json tsconfig.json ./
@@ -10,7 +10,7 @@ COPY dist ./dist
 RUN npm install -g typescript @types/node
 RUN tsc --build
 
-FROM gcr.io/distroless/nodejs18-debian12
+FROM gcr.io/distroless/nodejs22-debian12
 WORKDIR /syfomodiaperson
 
 COPY --from=builder /syfomodiaperson/package.json ./

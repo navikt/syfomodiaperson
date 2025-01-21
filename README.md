@@ -11,7 +11,7 @@ Node-app som kjører på Naiserator, og bygges med GitHub Actions
 
 Applikasjonen har en mock som kan brukes lokalt. Her mockes diverse endepunkter, dog ikke alle.
 
-Du må ha Node v18 og npm v9 installert.
+Du må ha Node v22 og npm v10 installert.
 
 - For å kjøre koden lokalt:
   - `$ npm install`

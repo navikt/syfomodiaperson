@@ -10,6 +10,6 @@ jobs:
     with:
       dev-cluster: dev-gcp
       prod-cluster: prod-gcp
-      node-version: 18
+      node-version: 22
       distroless: true
     secrets: inherit
