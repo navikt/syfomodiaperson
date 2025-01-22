@@ -1,22 +1,20 @@
 import { TextField, TextFieldProps } from "@navikt/ds-react";
-import React, { ForwardedRef } from "react";
+import React from "react";
 
 const texts = {
   label: "Klokkeslett",
 };
 
 const DialogmoteKlokkeslett = (
-  props: Omit<TextFieldProps, "label" | "size">,
-  ref: ForwardedRef<HTMLInputElement>
+  props: Omit<TextFieldProps, "label" | "size">
 ) => (
   <TextField
     type="time"
     autoComplete="off"
     size="small"
     label={texts.label}
-    ref={ref}
     {...props}
   />
 );
 
-export default React.forwardRef(DialogmoteKlokkeslett);
+export default DialogmoteKlokkeslett;

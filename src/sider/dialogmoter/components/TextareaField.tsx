@@ -1,11 +1,8 @@
 import { Textarea, TextareaProps } from "@navikt/ds-react";
-import React, { ForwardedRef } from "react";
+import React from "react";
 
-const TextareaField = (
-  props: TextareaProps,
-  ref: ForwardedRef<HTMLTextAreaElement>
-) => (
-  <Textarea className="mb-4" size="small" minRows={4} ref={ref} {...props} />
+const TextareaField = (props: TextareaProps) => (
+  <Textarea className="mb-4" size="small" minRows={4} {...props} />
 );
 
-export default React.forwardRef(TextareaField);
+export default TextareaField;
