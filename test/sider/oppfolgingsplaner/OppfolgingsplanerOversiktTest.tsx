@@ -1,12 +1,16 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { queryClientWithAktivBruker } from "../testQueryClient";
+import {
+  queryClientWithAktivBruker,
+  queryClientWithMockData,
+} from "../../testQueryClient";
 import { render, screen, within } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
-import { navEnhet } from "../dialogmote/testData";
+import { navEnhet } from "../../dialogmote/testData";
 import React from "react";
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   ARBEIDSTAKER_DEFAULT,
+  LEDERE_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
 } from "@/mocks/common/mockConstants";
 import dayjs from "dayjs";
@@ -19,6 +23,10 @@ import {
 } from "@/data/personoppgave/types/PersonOppgave";
 import { restdatoTilLesbarDato } from "@/utils/datoUtils";
 import { generateUUID } from "@/utils/utils";
+import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { generateOppfolgingstilfelle } from "../../testDataUtils";
+import { daysFromToday } from "../../testUtils";
+import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 
 let queryClient: QueryClient;
 
@@ -90,6 +98,56 @@ describe("Oppfølgingsplaner visning", () => {
     expect(oppfolgingsplanerLPS[1].textContent).to.contain(olderDate);
     expect(within(oppfolgingsplanerLPS[1]).queryByText("Marker som behandlet"))
       .to.be.null;
+  });
+
+  describe("Be om oppfølgingsplan", () => {
+    beforeEach(() => {
+      queryClient = queryClientWithMockData();
+    });
+
+    it("Viser ikke be om oppfølgingsplan funksjonalitet om sykmeldt ikke har aktivt oppfølgingstilfelle", () => {
+      queryClient.setQueryData(
+        oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => ({
+          personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
+          oppfolgingstilfelleList: [
+            generateOppfolgingstilfelle(daysFromToday(-30), daysFromToday(-20)),
+          ],
+        })
+      );
+      renderOppfolgingsplanerOversikt([]);
+
+      expect(screen.queryByText("Be om oppfølgingsplan fra arbeidsgiver")).to
+        .not.exist;
+      expect(screen.queryByRole("button", { name: "Be om oppfølgingsplan" })).to
+        .not.exist;
+    });
+    it("Viser ikke be om oppfølgingsplan funksjonalitet om sykmeldt har flere arbeidsgivere", () => {
+      queryClient.setQueryData(
+        ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => LEDERE_DEFAULT.concat(LEDERE_DEFAULT)
+      );
+      renderOppfolgingsplanerOversikt([]);
+
+      expect(screen.getByText("Det er ingen aktive oppfølgingsplaner.")).to
+        .exist;
+      expect(screen.queryByText("Be om oppfølgingsplan fra arbeidsgiver")).to
+        .not.exist;
+      expect(screen.queryByRole("button", { name: "Be om oppfølgingsplan" })).to
+        .not.exist;
+    });
+    it("Viser be om oppfølgingsplan funksjonalitet om det ikke finnes en aktiv oppfølgingsplan", () => {
+      renderOppfolgingsplanerOversikt([]);
+
+      expect(screen.getByText("Det er ingen aktive oppfølgingsplaner.")).to
+        .exist;
+      expect(screen.getByText("Be om oppfølgingsplan fra arbeidsgiver")).to
+        .exist;
+      expect(screen.getByRole("button", { name: "Be om oppfølgingsplan" })).to
+        .exist;
+    });
   });
 });
 
