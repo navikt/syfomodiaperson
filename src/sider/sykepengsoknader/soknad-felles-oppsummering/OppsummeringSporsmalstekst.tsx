@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { JSX, ReactElement } from "react";
 
 interface OppsummeringSporsmalstekstProps {
   overskriftsnivaa?: number;
