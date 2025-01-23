@@ -1,23 +1,11 @@
-import {
-  Alert,
-  BodyLong,
-  BodyShort,
-  Box,
-  Button,
-  Heading,
-} from "@navikt/ds-react";
+import { BodyLong, BodyShort, Box, Button, Heading } from "@navikt/ds-react";
 import React from "react";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
-import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
-import {
-  NewOppfolgingsplanForesporselDTO,
-  useGetOppfolgingsplanForesporselQuery,
-  usePostOppfolgingsplanForesporsel,
-} from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
+import { NewOppfolgingsplanForesporselDTO } from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
+import { UseMutationResult } from "@tanstack/react-query";
 
 const texts = {
   header: "Be om oppfølgingsplan fra arbeidsgiver",
@@ -25,8 +13,6 @@ const texts = {
     "Her kan du be om oppfølgingsplan fra arbeidsgiver eller purre om det mangler.",
   virksomhet: "Virksomhet:",
   narmesteLeder: "Nærmeste leder:",
-  aktivForesporsel:
-    "Obs! Det ble bedt om oppfølgingsplan fra denne arbeidsgiveren",
   button: "Be om oppfølgingsplan",
 };
 
@@ -42,17 +28,19 @@ function logOppfolgingsplanForesporselEvent() {
 
 interface Props {
   aktivNarmesteLeder: NarmesteLederRelasjonDTO;
-  currentOppfolgingstilfelle: OppfolgingstilfelleDTO;
+  postOppfolgingsplanForesporsel: UseMutationResult<
+    NewOppfolgingsplanForesporselDTO,
+    Error,
+    NewOppfolgingsplanForesporselDTO,
+    unknown
+  >;
 }
 
 export default function BeOmOppfolgingsplan({
   aktivNarmesteLeder,
-  currentOppfolgingstilfelle,
+  postOppfolgingsplanForesporsel,
 }: Props) {
   const personident = useValgtPersonident();
-  const getOppfolgingsplanForesporsel = useGetOppfolgingsplanForesporselQuery();
-
-  const postOppfolgingsplanForesporsel = usePostOppfolgingsplanForesporsel();
 
   function onClick() {
     const foresporsel: NewOppfolgingsplanForesporselDTO = {
@@ -67,47 +55,26 @@ export default function BeOmOppfolgingsplan({
     });
   }
 
-  const lastForesporselCreatedAt =
-    getOppfolgingsplanForesporsel.data?.[0]?.createdAt;
-
-  const isAktivForesporsel = !!lastForesporselCreatedAt
-    ? currentOppfolgingstilfelle.start <= lastForesporselCreatedAt &&
-      lastForesporselCreatedAt <= currentOppfolgingstilfelle.end
-    : false;
-  const aktivForesporselTekst = `${
-    texts.aktivForesporsel
-  } ${tilLesbarDatoMedArUtenManedNavn(lastForesporselCreatedAt)}`;
-
   return (
-    <>
-      {postOppfolgingsplanForesporsel.isSuccess && (
-        <Alert variant="success" className="mb-2" size="small">
-          Forespørsel om oppfølgingsplan ble sendt
-        </Alert>
-      )}
-      <Box background="surface-default" className="mb-4 flex flex-col p-4">
-        <Heading size="medium">{texts.header}</Heading>
-        <BodyLong className="mb-2">{texts.description}</BodyLong>
-        <BodyShort>
-          {texts.virksomhet} {aktivNarmesteLeder.virksomhetsnavn}
-        </BodyShort>
-        <BodyShort className="mb-2">
-          {texts.narmesteLeder} {aktivNarmesteLeder.narmesteLederNavn}
-        </BodyShort>
-        {isAktivForesporsel && !!lastForesporselCreatedAt && (
-          <Alert inline variant="warning" className="mb-2">
-            {aktivForesporselTekst}
-          </Alert>
-        )}
-        <Button
-          className="w-fit mb-2"
-          size="small"
-          onClick={onClick}
-          loading={postOppfolgingsplanForesporsel.isPending}
-        >
-          {texts.button}
-        </Button>
-      </Box>
-    </>
+    <Box background="surface-default" className="mb-4 flex flex-col p-4">
+      <Heading size="small" level="3">
+        {texts.header}
+      </Heading>
+      <BodyLong className="mb-2">{texts.description}</BodyLong>
+      <BodyShort>
+        {texts.virksomhet} {aktivNarmesteLeder.virksomhetsnavn}
+      </BodyShort>
+      <BodyShort className="mb-2">
+        {texts.narmesteLeder} {aktivNarmesteLeder.narmesteLederNavn}
+      </BodyShort>
+      <Button
+        className="w-fit mb-2"
+        size="small"
+        onClick={onClick}
+        loading={postOppfolgingsplanForesporsel.isPending}
+      >
+        {texts.button}
+      </Button>
+    </Box>
   );
 }

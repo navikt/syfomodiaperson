@@ -131,7 +131,7 @@ describe("Oppfølgingsplaner visning", () => {
       );
       renderOppfolgingsplanerOversikt([]);
 
-      expect(screen.getByText("Det er ingen aktive oppfølgingsplaner.")).to
+      expect(screen.getByText("Det er ingen aktive oppfølgingsplaner")).to
         .exist;
       expect(screen.queryByText("Be om oppfølgingsplan fra arbeidsgiver")).to
         .not.exist;
@@ -141,7 +141,7 @@ describe("Oppfølgingsplaner visning", () => {
     it("Viser be om oppfølgingsplan funksjonalitet om det ikke finnes en aktiv oppfølgingsplan", () => {
       renderOppfolgingsplanerOversikt([]);
 
-      expect(screen.getByText("Det er ingen aktive oppfølgingsplaner.")).to
+      expect(screen.getByText("Det er ingen aktive oppfølgingsplaner")).to
         .exist;
       expect(screen.getByText("Be om oppfølgingsplan fra arbeidsgiver")).to
         .exist;
