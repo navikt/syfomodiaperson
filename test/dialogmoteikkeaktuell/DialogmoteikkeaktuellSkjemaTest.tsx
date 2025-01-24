@@ -1,5 +1,5 @@
 import React from "react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { dialogmoteIkkeAktuellRoutePath } from "@/routers/AppRouter";
@@ -16,13 +16,15 @@ import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import DialogmoteIkkeAktuellSkjema, {
   skjemaBeskrivelseMaxLength,
   texts as ikkeaktuellSkjemaTexts,
-  IkkeAktuellArsakText,
-  ikkeaktuellArsakTexts,
 } from "@/sider/dialogmoter/components/ikkeaktuell/DialogmoteIkkeAktuellSkjema";
 import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { dialogmotekandidatMock } from "@/mocks/isdialogmotekandidat/dialogmotekandidatMock";
-import { CreateIkkeAktuellDTO } from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
+import {
+  CreateIkkeAktuellDTO,
+  IkkeAktuellArsak,
+  ikkeAktuellArsakTexts,
+} from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
 import { renderWithRouter } from "../testRouterUtils";
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
 
@@ -67,7 +69,7 @@ describe("DialogmoteikkeaktuellSkjema", () => {
     const maxLengthErrorMsg = "1 tegn for mye";
     expect(screen.getAllByText(maxLengthErrorMsg)).to.not.be.empty;
 
-    passSkjemaInput(ikkeaktuellArsakTexts[0], "beskrivelse");
+    passSkjemaInput(IkkeAktuellArsak.DIALOGMOTE_AVHOLDT, "beskrivelse");
 
     // Feilmeldinger forsvinner
     await waitFor(() => {
@@ -84,17 +86,16 @@ describe("DialogmoteikkeaktuellSkjema", () => {
   it("sett ikke aktuell med kun med obligatorisk verdier fra skjema", async () => {
     renderDialogmoteikkeaktuellSkjema();
 
-    expect(screen.getAllByRole("radio")).to.have.length(3);
+    expect(screen.getAllByRole("radio")).to.have.length(5);
 
-    const ikkeaktuellArsakText = ikkeaktuellArsakTexts[0];
-    passSkjemaInput(ikkeaktuellArsakText);
+    passSkjemaInput(IkkeAktuellArsak.DIALOGMOTE_AVHOLDT);
 
     await clickButton(submitButtonText);
     await waitFor(() => {
       const ikkeaktuellMutation = queryClient.getMutationCache().getAll()[0];
       const expectedCreateIkkeAktuellDTO: CreateIkkeAktuellDTO = {
         personIdent: arbeidstaker.personident,
-        arsak: ikkeaktuellArsakText.arsak,
+        arsak: IkkeAktuellArsak.DIALOGMOTE_AVHOLDT,
         beskrivelse: "",
       };
 
@@ -107,12 +108,11 @@ describe("DialogmoteikkeaktuellSkjema", () => {
   it("sett ikke aktuell med alle verdier fra skjema", async () => {
     renderDialogmoteikkeaktuellSkjema();
 
-    expect(screen.getAllByRole("radio")).to.have.length(3);
+    expect(screen.getAllByRole("radio")).to.have.length(5);
 
     const beskrivelse = "Dette er en begrunnelse";
-    const ikkeaktuellArsakText = ikkeaktuellArsakTexts[0];
 
-    passSkjemaInput(ikkeaktuellArsakText, beskrivelse);
+    passSkjemaInput(IkkeAktuellArsak.DIALOGMOTE_AVHOLDT, beskrivelse);
 
     await clickButton(submitButtonText);
 
@@ -120,7 +120,7 @@ describe("DialogmoteikkeaktuellSkjema", () => {
       const ikkeaktuellMutation = queryClient.getMutationCache().getAll()[0];
       const expectedCreateIkkeAktuellDTO: CreateIkkeAktuellDTO = {
         personIdent: arbeidstaker.personident,
-        arsak: ikkeaktuellArsakText.arsak,
+        arsak: IkkeAktuellArsak.DIALOGMOTE_AVHOLDT,
         beskrivelse,
       };
 
@@ -146,10 +146,12 @@ const renderDialogmoteikkeaktuellSkjema = () => {
 };
 
 const passSkjemaInput = (
-  ikkeaktuellArsakText: IkkeAktuellArsakText,
+  ikkeaktuellArsak: IkkeAktuellArsak,
   beskrivelse?: string
 ) => {
-  const arsakRadioButton = screen.getByText(ikkeaktuellArsakText.text);
+  const arsakRadioButton = screen.getByText(
+    ikkeAktuellArsakTexts[ikkeaktuellArsak]
+  );
   fireEvent.click(arsakRadioButton);
 
   if (beskrivelse) {
