@@ -3,7 +3,7 @@ import {
   queryClientWithAktivBruker,
   queryClientWithMockData,
 } from "../../testQueryClient";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../../dialogmote/testData";
 import React from "react";
@@ -25,8 +25,10 @@ import { restdatoTilLesbarDato } from "@/utils/datoUtils";
 import { generateUUID } from "@/utils/utils";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { generateOppfolgingstilfelle } from "../../testDataUtils";
-import { daysFromToday } from "../../testUtils";
+import { clickButton, daysFromToday } from "../../testUtils";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
+import { NewOppfolgingsplanForesporselDTO } from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
+import { getExpectedForesporselDocument } from "./oppfolgingsplanTestdata";
 
 let queryClient: QueryClient;
 
@@ -147,6 +149,32 @@ describe("Oppfølgingsplaner visning", () => {
         .exist;
       expect(screen.getByRole("button", { name: "Be om oppfølgingsplan" })).to
         .exist;
+    });
+    it("Sender forespørsel om oppfølgingsplan med document", async () => {
+      renderOppfolgingsplanerOversikt([]);
+
+      await clickButton("Be om oppfølgingsplan");
+
+      const expectedForesporselRequest: NewOppfolgingsplanForesporselDTO = {
+        arbeidstakerPersonident: ARBEIDSTAKER_DEFAULT.personIdent,
+        virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+        narmestelederPersonident:
+          LEDERE_DEFAULT[0].narmesteLederPersonIdentNumber,
+        document: getExpectedForesporselDocument({
+          narmesteLeder: LEDERE_DEFAULT[0].narmesteLederNavn,
+          virksomhetNavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
+        }),
+      };
+
+      await waitFor(() => {
+        const foresporselMutation = queryClient
+          .getMutationCache()
+          .getAll()
+          .pop();
+        expect(foresporselMutation?.state.variables).to.deep.equal(
+          expectedForesporselRequest
+        );
+      });
     });
   });
 });
