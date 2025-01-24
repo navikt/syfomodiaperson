@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import Popover from "nav-frontend-popover";
 import { CopyImage } from "../../../img/ImageComponents";
+import { Popover } from "@navikt/ds-react";
 
 interface CopyButtonProps {
   message: string;
@@ -18,31 +18,9 @@ const StyledButton = styled.button`
   }
 `;
 
-const StyledP = styled.p`
-  padding: 0.5em;
-`;
-
 const CopyButton = ({ message, value }: CopyButtonProps) => {
-  const [popoverAnker, setPopoverAnker] = useState<HTMLElement>();
-  const [show, setShow] = useState<boolean>(false);
-
+  const [showPopover, setShowPopover] = useState<boolean>(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
-
-  const togglePopover = () => {
-    if (popoverAnker) {
-      setPopoverAnker(undefined);
-    } else if (buttonRef.current) {
-      setPopoverAnker(buttonRef.current);
-
-      if (!show) {
-        setShow(true);
-      }
-
-      if (value) {
-        navigator.clipboard.writeText(value);
-      }
-    }
-  };
 
   return (
     <div>
@@ -50,16 +28,20 @@ const CopyButton = ({ message, value }: CopyButtonProps) => {
         ref={buttonRef}
         onClick={(event) => {
           event.stopPropagation();
-          togglePopover();
+          setShowPopover(!showPopover);
+          if (value) {
+            navigator.clipboard.writeText(value);
+          }
         }}
       >
         <img alt="kopier" src={CopyImage} />
       </StyledButton>
       <Popover
-        ankerEl={popoverAnker}
-        onRequestClose={() => setPopoverAnker(undefined)}
+        open={showPopover}
+        onClose={() => setShowPopover(false)}
+        anchorEl={buttonRef.current}
       >
-        <StyledP>{message}</StyledP>
+        <Popover.Content>{message}</Popover.Content>
       </Popover>
     </div>
   );
