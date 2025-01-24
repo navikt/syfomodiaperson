@@ -66,7 +66,7 @@ export const VelgBehandler = ({
         </Radio>
       ))}
       <Radio
-        value={undefined}
+        value=""
         onChange={(event) => {
           setShowBehandlerSearch(true);
           field.onChange(event);

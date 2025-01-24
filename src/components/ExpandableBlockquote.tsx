@@ -17,7 +17,7 @@ export const ExpandableBlockquote = ({
   children,
 }: ExpandableBlockquoteProps) => {
   const [viewAll, setViewAll] = React.useState<boolean>(false);
-  const ref = React.useRef() as RefObject<any>;
+  const ref = React.useRef(null) as RefObject<any>;
   const isOverflow = useIsOverflow(ref, () => {
     /*noop*/
   });

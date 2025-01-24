@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { JSX, ReactNode } from "react";
 
 interface SykmeldingNokkelOpplysningProps {
   tittel: string;

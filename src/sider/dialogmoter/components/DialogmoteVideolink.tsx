@@ -1,21 +1,12 @@
 import { TextField, TextFieldProps } from "@navikt/ds-react";
-import React, { ForwardedRef } from "react";
+import React from "react";
 
 const texts = {
   label: "Lenke til videomøte (valgfritt)",
 };
 
-const DialogmoteVideolink = (
-  props: Omit<TextFieldProps, "label" | "size">,
-  ref: ForwardedRef<HTMLInputElement>
-) => (
-  <TextField
-    type="text"
-    size="small"
-    label={texts.label}
-    ref={ref}
-    {...props}
-  />
+const DialogmoteVideolink = (props: Omit<TextFieldProps, "label" | "size">) => (
+  <TextField type="text" size="small" label={texts.label} {...props} />
 );
 
-export default React.forwardRef(DialogmoteVideolink);
+export default DialogmoteVideolink;

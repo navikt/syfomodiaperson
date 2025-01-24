@@ -1,5 +1,5 @@
 import { TextField, TextFieldProps } from "@navikt/ds-react";
-import React, { ForwardedRef } from "react";
+import React from "react";
 
 export const MAX_LENGTH_STED = 200;
 
@@ -9,13 +9,11 @@ const texts = {
 };
 
 const DialogmoteSted = (
-  props: Omit<TextFieldProps, "label" | "description" | "maxLength" | "size">,
-  ref: ForwardedRef<HTMLInputElement>
+  props: Omit<TextFieldProps, "label" | "description" | "maxLength" | "size">
 ) => (
   <TextField
     type="text"
     size="small"
-    ref={ref}
     maxLength={MAX_LENGTH_STED}
     label={texts.label}
     description={texts.description}
@@ -23,4 +21,4 @@ const DialogmoteSted = (
   />
 );
 
-export default React.forwardRef(DialogmoteSted);
+export default DialogmoteSted;
