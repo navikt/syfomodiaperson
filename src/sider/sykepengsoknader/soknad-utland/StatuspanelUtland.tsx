@@ -1,5 +1,4 @@
 import React, { ReactElement } from "react";
-import Hjelpetekst from "nav-frontend-hjelpetekst";
 import {
   Soknadstatus,
   SykepengesoknadDTO,
@@ -13,8 +12,6 @@ import Statuspanel, {
 const texts = {
   sendt: "Sendt til Nav",
   sender: "Sender til Nav",
-  hjelpetekst:
-    "Du har gjort det riktig! Det kan bare ta noen minutter før den er kommet fram til mottakeren. Du trenger ikke gjøre noe mer.",
   dato: "Dato",
   status: "Status",
 };
@@ -64,7 +61,6 @@ const StatuspanelUtland = (
           {soknad.status === TIL_SENDING ? (
             <div>
               <span>{tekst}</span>
-              <Hjelpetekst>{texts.hjelpetekst}</Hjelpetekst>
             </div>
           ) : (
             <p>{tekst}</p>

@@ -1,5 +1,4 @@
 import React, { ReactElement } from "react";
-import Hjelpetekst from "nav-frontend-hjelpetekst";
 import {
   SykmeldingOldFormat,
   SykmeldingStatus,
@@ -9,12 +8,10 @@ import {
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
 import { Vis } from "@/utils";
-import { StatusNokkelopplysning } from "../../../components/speiling/Statuspanel";
+import { StatusNokkelopplysning } from "@/components/speiling/Statuspanel";
 import SykmeldingNokkelOpplysning from "../sykmelding/sykmeldingOpplysninger/SykmeldingNokkelOpplysning";
 
 const texts = {
-  hjelpetekst:
-    "Du har gjort det riktig! Det kan bare ta noen minutter før den er kommet fram til mottakeren. Du trenger ikke gjøre noe mer.",
   status: {
     tittel: "Status",
     sender: "Sender...",
@@ -66,7 +63,6 @@ export const Sykmeldingstatus = (
       {sykmelding.status === TIL_SENDING ? (
         <div className="medHjelpetekst">
           <span>{textStatus(sykmelding.status)}</span>
-          <Hjelpetekst>{texts.hjelpetekst}</Hjelpetekst>
         </div>
       ) : (
         <p className="js-status">{textStatus(sykmelding.status)}</p>
