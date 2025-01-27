@@ -8,6 +8,7 @@ import {
   HelpText,
   Link,
   Panel,
+  Tag,
 } from "@navikt/ds-react";
 import {
   PersonOppgave,
@@ -21,7 +22,10 @@ import { Link as RouterLink } from "react-router-dom";
 const texts = {
   header: "Vurder bistandsbehovet eller forslag til tiltak fra behandler:",
   helptext: "Informasjon fra felter i sykmeldingen fra behandler.",
+  helptextDuplicate:
+    "Sykmeldingen har duplikate felter fra en tidligere sykmelding.",
   link: "Gå til sykmeldingen",
+  linkDuplicate: "Gå til tidligere sykmelding med duplikate felter",
   behandleOppgaveText: "Jeg har vurdert behovet, fjern oppgaven.",
 };
 
@@ -36,22 +40,40 @@ const VurderBistandsbehov = ({ oppgave }: VurderBistandsbehovProps) => {
   const sykmelding = sykmeldinger.find(
     (sykmelding) => sykmelding.id === oppgave.referanseUuid
   );
+  const sykmeldingDuplikat = sykmeldinger.find(
+    (sykmelding) => sykmelding.id === oppgave.duplikatReferanseUuid
+  );
   const tiltakNav = sykmelding?.arbeidsevne.tiltakNAV;
   const tiltakAndre = sykmelding?.arbeidsevne.tiltakAndre;
   const bistandsbehov = sykmelding?.meldingTilNav.navBoerTaTakISakenBegrunnelse;
   return !!sykmelding ? (
     <Panel className={"mb-4"}>
-      <div className={"flex flex-row justify-between"}>
-        <Heading size="medium" level="2">
-          {texts.header}
-        </Heading>
-        <HelpText
-          title="Informasjon fra felter i sykmeldingen fra behandler"
-          placement="left"
-        >
-          {texts.helptext}
-        </HelpText>
-      </div>
+      {!!oppgave.duplikatReferanseUuid ? (
+        <div className={"flex flex-row justify-between"}>
+          <Heading size="medium" level="2">
+            {texts.header}
+          </Heading>
+          <Tag variant="warning-moderate">Mulig duplikat</Tag>
+          <HelpText
+            placement="left"
+            title="Informasjon fra felter i sykmeldingen fra behandler"
+          >
+            {texts.helptextDuplicate}
+          </HelpText>
+        </div>
+      ) : (
+        <div className={"flex flex-row justify-between"}>
+          <Heading size="medium" level="2">
+            {texts.header}
+          </Heading>
+          <HelpText
+            title="Informasjon fra felter i sykmeldingen fra behandler"
+            placement="left"
+          >
+            {texts.helptext}
+          </HelpText>
+        </div>
+      )}
       <blockquote>
         {tiltakNav && (
           <BodyShort>
@@ -71,6 +93,14 @@ const VurderBistandsbehov = ({ oppgave }: VurderBistandsbehovProps) => {
         <Link as={RouterLink} to={`/sykefravaer/sykmeldinger/${sykmelding.id}`}>
           {texts.link}
         </Link>
+        {sykmeldingDuplikat && (
+          <Link
+            as={RouterLink}
+            to={`/sykefravaer/sykmeldinger/${sykmeldingDuplikat.id}`}
+          >
+            {texts.linkDuplicate}
+          </Link>
+        )}
         {!behandleOppgave.isSuccess ? (
           <Button
             variant="secondary"

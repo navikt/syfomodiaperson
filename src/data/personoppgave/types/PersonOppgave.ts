@@ -7,6 +7,7 @@ export interface PersonOppgave {
   behandletTidspunkt: Date | null;
   behandletVeilederIdent: string | null;
   opprettet: Date;
+  duplikatReferanseUuid: string | null;
 }
 
 export enum PersonOppgaveType {
