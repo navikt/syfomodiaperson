@@ -48,32 +48,24 @@ const VurderBistandsbehov = ({ oppgave }: VurderBistandsbehovProps) => {
   const bistandsbehov = sykmelding?.meldingTilNav.navBoerTaTakISakenBegrunnelse;
   return !!sykmelding ? (
     <Panel className={"mb-4"}>
-      {!!oppgave.duplikatReferanseUuid ? (
-        <div className={"flex flex-row justify-between"}>
-          <Heading size="medium" level="2">
-            {texts.header}
-          </Heading>
-          <Tag variant="warning-moderate">Mulig duplikat</Tag>
+      <div className={"flex flex-row justify-between"}>
+        <Heading size="medium" level="2">
+          {texts.header}
+        </Heading>
+        <div className="flex gap-2 items-center">
+          {!!oppgave.duplikatReferanseUuid && (
+            <Tag variant="warning-moderate">Mulig duplikat</Tag>
+          )}
           <HelpText
-            placement="left"
-            title="Informasjon fra felter i sykmeldingen fra behandler"
+            placement="bottom"
+            title="Se mer informasjon om bistandsbehovet"
           >
-            {texts.helptextDuplicate}
+            {!!oppgave.duplikatReferanseUuid
+              ? texts.helptextDuplicate
+              : texts.helptext}
           </HelpText>
         </div>
-      ) : (
-        <div className={"flex flex-row justify-between"}>
-          <Heading size="medium" level="2">
-            {texts.header}
-          </Heading>
-          <HelpText
-            title="Informasjon fra felter i sykmeldingen fra behandler"
-            placement="left"
-          >
-            {texts.helptext}
-          </HelpText>
-        </div>
-      )}
+      </div>
       <blockquote>
         {tiltakNav && (
           <BodyShort>
