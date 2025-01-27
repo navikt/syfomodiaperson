@@ -3,9 +3,9 @@ import { Link, Navigate } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import {
-  CreateUnntakArsak,
   createUnntakArsakTexts,
   CreateUnntakDTO,
+  ValidUnntakArsak,
 } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useSettDialogmoteunntak } from "@/data/dialogmotekandidat/useSettDialogmoteunntak";
@@ -33,7 +33,7 @@ export const texts = {
 export const dialogmoteunntakSkjemaBeskrivelseMaxLength = 2000;
 
 export interface DialogmoteunntakSkjemaValues {
-  arsak: CreateUnntakArsak;
+  arsak: ValidUnntakArsak;
   beskrivelse?: string;
 }
 

@@ -1,32 +1,30 @@
-export enum UnntakArsak {
+export enum ValidUnntakArsak {
   MEDISINSKE_GRUNNER = "MEDISINSKE_GRUNNER",
   INNLEGGELSE_INSTITUSJON = "INNLEGGELSE_INSTITUSJON",
-  FRISKMELDT = "FRISKMELDT",
   FORVENTET_FRISKMELDING_INNEN_28UKER = "FORVENTET_FRISKMELDING_INNEN_28UKER",
   DOKUMENTERT_TILTAK_FRISKMELDING = "DOKUMENTERT_TILTAK_FRISKMELDING",
+}
+
+export enum DeprecatedUnntakArsak {
+  FRISKMELDT = "FRISKMELDT",
   ARBEIDSFORHOLD_OPPHORT = "ARBEIDSFORHOLD_OPPHORT",
 }
 
-export enum CreateUnntakArsak {
-  MEDISINSKE_GRUNNER = "MEDISINSKE_GRUNNER",
-  INNLEGGELSE_INSTITUSJON = "INNLEGGELSE_INSTITUSJON",
-  FORVENTET_FRISKMELDING_INNEN_28UKER = "FORVENTET_FRISKMELDING_INNEN_28UKER",
-  DOKUMENTERT_TILTAK_FRISKMELDING = "DOKUMENTERT_TILTAK_FRISKMELDING",
-}
+export type UnntakArsak = ValidUnntakArsak | DeprecatedUnntakArsak;
 
-export const createUnntakArsakTexts: Record<CreateUnntakArsak, string> = {
-  [UnntakArsak.MEDISINSKE_GRUNNER]: "Medisinske grunner",
-  [UnntakArsak.INNLEGGELSE_INSTITUSJON]: "Innleggelse i helseinstitusjon",
-  [UnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER]:
+export const createUnntakArsakTexts: Record<ValidUnntakArsak, string> = {
+  [ValidUnntakArsak.MEDISINSKE_GRUNNER]: "Medisinske grunner",
+  [ValidUnntakArsak.INNLEGGELSE_INSTITUSJON]: "Innleggelse i helseinstitusjon",
+  [ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER]:
     "Forventet friskmelding innen 28 ukers sykmelding",
-  [UnntakArsak.DOKUMENTERT_TILTAK_FRISKMELDING]:
+  [ValidUnntakArsak.DOKUMENTERT_TILTAK_FRISKMELDING]:
     "Tiltak som sannsynligvis vil føre til en friskmelding",
 };
 
 export const unntakArsakTexts: Record<UnntakArsak, string> = {
   ...createUnntakArsakTexts,
-  [UnntakArsak.FRISKMELDT]: "Friskmeldt",
-  [UnntakArsak.ARBEIDSFORHOLD_OPPHORT]: "Arbeidsforholdet er opphørt",
+  [DeprecatedUnntakArsak.FRISKMELDT]: "Friskmeldt",
+  [DeprecatedUnntakArsak.ARBEIDSFORHOLD_OPPHORT]: "Arbeidsforholdet er opphørt",
 };
 
 export interface UnntakDTO {
@@ -40,6 +38,6 @@ export interface UnntakDTO {
 
 export interface CreateUnntakDTO {
   personIdent: string;
-  arsak: CreateUnntakArsak;
+  arsak: ValidUnntakArsak;
   beskrivelse?: string;
 }

@@ -21,9 +21,9 @@ import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmot
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { dialogmotekandidatMock } from "@/mocks/isdialogmotekandidat/dialogmotekandidatMock";
 import {
-  CreateUnntakArsak,
   createUnntakArsakTexts,
   CreateUnntakDTO,
+  ValidUnntakArsak,
 } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 import { renderWithRouter } from "../testRouterUtils";
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
@@ -70,7 +70,7 @@ describe("DialogmoteunntakSkjema", () => {
     expect(screen.getAllByText(maxLengthErrorMsg)).to.not.be.empty;
 
     passSkjemaInput(
-      CreateUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
+      ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
       "beskrivelse"
     );
 
@@ -91,14 +91,14 @@ describe("DialogmoteunntakSkjema", () => {
 
     expect(screen.getAllByRole("radio")).to.have.length(4);
 
-    passSkjemaInput(CreateUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER);
+    passSkjemaInput(ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER);
 
     await clickButton(submitButtonText);
     await waitFor(() => {
       const unntakMutation = queryClient.getMutationCache().getAll()[0];
       const expectedCreateUnntakDTO: CreateUnntakDTO = {
         personIdent: arbeidstaker.personident,
-        arsak: CreateUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
+        arsak: ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
         beskrivelse: "",
       };
 
@@ -116,7 +116,7 @@ describe("DialogmoteunntakSkjema", () => {
     const beskrivelse = "Dette er en begrunnelse";
 
     passSkjemaInput(
-      CreateUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
+      ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
       beskrivelse
     );
 
@@ -126,7 +126,7 @@ describe("DialogmoteunntakSkjema", () => {
       const unntakMutation = queryClient.getMutationCache().getAll()[0];
       const expectedCreateUnntakDTO: CreateUnntakDTO = {
         personIdent: arbeidstaker.personident,
-        arsak: CreateUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
+        arsak: ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
         beskrivelse,
       };
 
@@ -151,7 +151,7 @@ const renderDialogmoteunntakSkjema = () => {
   );
 };
 
-const passSkjemaInput = (arsak: CreateUnntakArsak, beskrivelse?: string) => {
+const passSkjemaInput = (arsak: ValidUnntakArsak, beskrivelse?: string) => {
   const arsakRadioButton = screen.getByText(createUnntakArsakTexts[arsak]);
   fireEvent.click(arsakRadioButton);
 
