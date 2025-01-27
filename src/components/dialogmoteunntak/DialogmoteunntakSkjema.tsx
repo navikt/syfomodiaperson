@@ -3,8 +3,9 @@ import { Link, Navigate } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import {
+  createUnntakArsakTexts,
   CreateUnntakDTO,
-  UnntakArsak,
+  ValidUnntakArsak,
 } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useSettDialogmoteunntak } from "@/data/dialogmotekandidat/useSettDialogmoteunntak";
@@ -29,41 +30,10 @@ export const texts = {
   avbryt: "Avbryt",
 };
 
-export interface UnntakArsakText {
-  arsak: UnntakArsak;
-  text: string;
-}
-export const unntakArsakTexts: UnntakArsakText[] = [
-  {
-    arsak: UnntakArsak.MEDISINSKE_GRUNNER,
-    text: "Medisinske grunner",
-  },
-  {
-    arsak: UnntakArsak.INNLEGGELSE_INSTITUSJON,
-    text: "Innleggelse i helseinstitusjon",
-  },
-  {
-    arsak: UnntakArsak.FRISKMELDT,
-    text: "Friskmeldt",
-  },
-  {
-    arsak: UnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
-    text: "Forventet friskmelding innen 28 ukers sykmelding",
-  },
-  {
-    arsak: UnntakArsak.DOKUMENTERT_TILTAK_FRISKMELDING,
-    text: "Tiltak som sannsynligvis vil føre til en friskmelding",
-  },
-  {
-    arsak: UnntakArsak.ARBEIDSFORHOLD_OPPHORT,
-    text: "Arbeidsforholdet er opphørt",
-  },
-];
-
 export const dialogmoteunntakSkjemaBeskrivelseMaxLength = 2000;
 
 export interface DialogmoteunntakSkjemaValues {
-  arsak: UnntakArsak;
+  arsak: ValidUnntakArsak;
   beskrivelse?: string;
 }
 
@@ -108,13 +78,13 @@ const DialogmoteunntakSkjema = () => {
           size="small"
           error={errors.arsak && texts.arsakErrorMessage}
         >
-          {unntakArsakTexts.map((unntakArsakText, index) => (
+          {Object.entries(createUnntakArsakTexts).map(([key, tekst], index) => (
             <Radio
               key={index}
-              value={unntakArsakText.arsak}
+              value={key}
               {...register("arsak", { required: true })}
             >
-              {unntakArsakText.text}
+              {tekst}
             </Radio>
           ))}
         </RadioGroup>

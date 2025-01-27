@@ -1,5 +1,5 @@
 import React from "react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { dialogmoteUnntakRoutePath } from "@/routers/AppRouter";
@@ -16,13 +16,15 @@ import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import DialogmoteunntakSkjema, {
   dialogmoteunntakSkjemaBeskrivelseMaxLength,
   texts as unntakSkjemaTexts,
-  UnntakArsakText,
-  unntakArsakTexts,
 } from "../../src/components/dialogmoteunntak/DialogmoteunntakSkjema";
 import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { dialogmotekandidatMock } from "@/mocks/isdialogmotekandidat/dialogmotekandidatMock";
-import { CreateUnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
+import {
+  createUnntakArsakTexts,
+  CreateUnntakDTO,
+  ValidUnntakArsak,
+} from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 import { renderWithRouter } from "../testRouterUtils";
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
 
@@ -67,7 +69,10 @@ describe("DialogmoteunntakSkjema", () => {
     const maxLengthErrorMsg = "1 tegn for mye";
     expect(screen.getAllByText(maxLengthErrorMsg)).to.not.be.empty;
 
-    passSkjemaInput(unntakArsakTexts[0], "beskrivelse");
+    passSkjemaInput(
+      ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
+      "beskrivelse"
+    );
 
     // Feilmeldinger forsvinner
     await waitFor(() => {
@@ -84,17 +89,16 @@ describe("DialogmoteunntakSkjema", () => {
   it("sett unntak med kun med obligatorisk verdier fra skjema", async () => {
     renderDialogmoteunntakSkjema();
 
-    expect(screen.getAllByRole("radio")).to.have.length(6);
+    expect(screen.getAllByRole("radio")).to.have.length(4);
 
-    const unntakArsakText = unntakArsakTexts[0];
-    passSkjemaInput(unntakArsakText);
+    passSkjemaInput(ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER);
 
     await clickButton(submitButtonText);
     await waitFor(() => {
       const unntakMutation = queryClient.getMutationCache().getAll()[0];
       const expectedCreateUnntakDTO: CreateUnntakDTO = {
         personIdent: arbeidstaker.personident,
-        arsak: unntakArsakText.arsak,
+        arsak: ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
         beskrivelse: "",
       };
 
@@ -107,12 +111,14 @@ describe("DialogmoteunntakSkjema", () => {
   it("sett unntak med alle verdier fra skjema", async () => {
     renderDialogmoteunntakSkjema();
 
-    expect(screen.getAllByRole("radio")).to.have.length(6);
+    expect(screen.getAllByRole("radio")).to.have.length(4);
 
     const beskrivelse = "Dette er en begrunnelse";
-    const unntakArsakText = unntakArsakTexts[0];
 
-    passSkjemaInput(unntakArsakText, beskrivelse);
+    passSkjemaInput(
+      ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
+      beskrivelse
+    );
 
     await clickButton(submitButtonText);
 
@@ -120,7 +126,7 @@ describe("DialogmoteunntakSkjema", () => {
       const unntakMutation = queryClient.getMutationCache().getAll()[0];
       const expectedCreateUnntakDTO: CreateUnntakDTO = {
         personIdent: arbeidstaker.personident,
-        arsak: unntakArsakText.arsak,
+        arsak: ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
         beskrivelse,
       };
 
@@ -145,11 +151,8 @@ const renderDialogmoteunntakSkjema = () => {
   );
 };
 
-const passSkjemaInput = (
-  unntakArsakText: UnntakArsakText,
-  beskrivelse?: string
-) => {
-  const arsakRadioButton = screen.getByText(unntakArsakText.text);
+const passSkjemaInput = (arsak: ValidUnntakArsak, beskrivelse?: string) => {
+  const arsakRadioButton = screen.getByText(createUnntakArsakTexts[arsak]);
   fireEvent.click(arsakRadioButton);
 
   if (beskrivelse) {

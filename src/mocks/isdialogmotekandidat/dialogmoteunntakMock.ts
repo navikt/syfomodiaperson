@@ -3,7 +3,11 @@ import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
 } from "../common/mockConstants";
-import { UnntakArsak } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
+import {
+  DeprecatedUnntakArsak,
+  UnntakArsak,
+  ValidUnntakArsak,
+} from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 
 const createDialogmoteunntak = (arsak: UnntakArsak, beskrivelse?: string) => {
   return {
@@ -17,11 +21,11 @@ const createDialogmoteunntak = (arsak: UnntakArsak, beskrivelse?: string) => {
 };
 
 export const dialogmoteunntakMedBeskrivelse = createDialogmoteunntak(
-  UnntakArsak.ARBEIDSFORHOLD_OPPHORT,
+  DeprecatedUnntakArsak.ARBEIDSFORHOLD_OPPHORT,
   "Arbeidstaker jobber ikke lenger hos arbeidsgiver."
 );
 export const dialogmoteunntakUtenBeskrivelse = createDialogmoteunntak(
-  UnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
+  ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
   undefined
 );
 

@@ -5,6 +5,7 @@ import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandi
 import {
   CreateIkkeAktuellDTO,
   IkkeAktuellArsak,
+  ikkeAktuellArsakTexts,
 } from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useSettDialogmoteIkkeAktuell } from "@/data/dialogmotekandidat/useSettDialogmoteIkkeAktuell";
@@ -28,25 +29,6 @@ export const texts = {
   send: "Sett ikke aktuell",
   avbryt: "Avbryt",
 };
-
-export interface IkkeAktuellArsakText {
-  arsak: IkkeAktuellArsak;
-  text: string;
-}
-export const ikkeaktuellArsakTexts: IkkeAktuellArsakText[] = [
-  {
-    arsak: IkkeAktuellArsak.ARBEIDSTAKER_AAP,
-    text: "Innbygger mottar AAP",
-  },
-  {
-    arsak: IkkeAktuellArsak.ARBEIDSTAKER_DOD,
-    text: "Innbygger er død",
-  },
-  {
-    arsak: IkkeAktuellArsak.DIALOGMOTE_AVHOLDT,
-    text: "Dialogmøte avholdt",
-  },
-];
 
 export const skjemaBeskrivelseMaxLength = 2000;
 
@@ -96,13 +78,13 @@ const DialogmoteIkkeAktuellSkjema = () => {
           size="small"
           error={errors.arsak && texts.arsakErrorMessage}
         >
-          {ikkeaktuellArsakTexts.map((ikkeaktuellArsakText, index) => (
+          {Object.entries(ikkeAktuellArsakTexts).map(([key, tekst], index) => (
             <Radio
               key={index}
-              value={ikkeaktuellArsakText.arsak}
+              value={key}
               {...register("arsak", { required: true })}
             >
-              {ikkeaktuellArsakText.text}
+              {tekst}
             </Radio>
           ))}
         </RadioGroup>

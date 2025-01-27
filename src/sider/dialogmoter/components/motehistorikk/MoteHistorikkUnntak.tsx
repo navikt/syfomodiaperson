@@ -1,12 +1,14 @@
 import React, { ReactElement } from "react";
-import { UnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
+import {
+  unntakArsakTexts,
+  UnntakDTO,
+} from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 
 import {
   DocumentComponentDto,
   DocumentComponentType,
 } from "@/data/documentcomponent/documentComponentTypes";
-import { unntakArsakTexts } from "@/components/dialogmoteunntak/DialogmoteunntakSkjema";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { ForhandsvisDocumentAccordionItem } from "@/sider/dialogmoter/components/motehistorikk/ForhandsvisDocumentAccordionItem";
 
@@ -26,10 +28,7 @@ function createUnntakDocument(
   unntak: UnntakDTO,
   veilederNavn: string | undefined
 ): DocumentComponentDto[] {
-  const arsakText: string =
-    unntakArsakTexts.find(
-      (unntakArsakText) => unntakArsakText.arsak == unntak.arsak
-    )?.text || unntak.arsak;
+  const arsakText: string = unntakArsakTexts[unntak.arsak] || unntak.arsak;
   const componentList: DocumentComponentDto[] = [
     {
       type: DocumentComponentType.PARAGRAPH,
