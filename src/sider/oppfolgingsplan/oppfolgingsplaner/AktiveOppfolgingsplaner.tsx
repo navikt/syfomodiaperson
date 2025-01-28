@@ -1,28 +1,21 @@
-import { Alert, Heading } from "@navikt/ds-react";
-import BeOmOppfolgingsplan from "@/sider/oppfolgingsplan/oppfolgingsplaner/BeOmOppfolgingsplan";
-import OppfolgingsplanerOversiktLPS from "@/sider/oppfolgingsplan/lps/OppfolgingsplanerOversiktLPS";
-import OppfolgingsplanLink from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanLink";
+import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import React from "react";
-import { erIdag, tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { erIdag } from "@/utils/datoUtils";
 import dayjs from "dayjs";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
-import {
-  useGetOppfolgingsplanForesporselQuery,
-  usePostOppfolgingsplanForesporsel,
-} from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { OppfolgingsplanLPSMedPersonoppgave } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import OppfolgingsplanerOversiktLPS from "@/sider/oppfolgingsplan/lps/OppfolgingsplanerOversiktLPS";
+import OppfolgingsplanLink from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanLink";
+import BeOmOppfolgingsplan from "@/sider/oppfolgingsplan/oppfolgingsplaner/BeOmOppfolgingsplan";
 
 const texts = {
   aktiveOppfolgingsplaner: "Aktive oppfølgingsplaner",
   ingenAktiveOppfolgingsplaner: "Det er ingen aktive oppfølgingsplaner",
-  foresporselSendt: "Forespørsel om oppfølgingsplan ble sendt",
-  aktivForesporsel:
-    "Obs! Det ble bedt om oppfølgingsplan fra denne arbeidsgiveren",
 };
 
 function activeNarmesteLederForCurrentOppfolgingstilfelle(
@@ -49,8 +42,7 @@ export default function AktiveOppfolgingsplaner({
 }: Props) {
   const { toggles } = useFeatureToggles();
   const { currentLedere } = useLedereQuery();
-  const getOppfolgingsplanForesporsel = useGetOppfolgingsplanForesporselQuery();
-  const postOppfolgingsplanForesporsel = usePostOppfolgingsplanForesporsel();
+
   const { latestOppfolgingstilfelle, hasActiveOppfolgingstilfelle } =
     useOppfolgingstilfellePersonQuery();
   const currentOppfolgingstilfelle = hasActiveOppfolgingstilfelle
@@ -90,64 +82,41 @@ export default function AktiveOppfolgingsplaner({
     activeNarmesteLedere.length === 1 ? activeNarmesteLedere[0] : undefined;
   const isBeOmOppfolgingsplanVisible =
     toggles.isBeOmOppfolgingsplanEnabled &&
-    !hasActivePlan &&
     !!currentOppfolgingstilfelle &&
-    !!activeNarmesteLederIfSingle &&
-    !postOppfolgingsplanForesporsel.isSuccess;
-
-  const lastForesporselCreatedAt =
-    getOppfolgingsplanForesporsel.data?.[0]?.createdAt;
-
-  const isAktivForesporsel =
-    !!lastForesporselCreatedAt &&
-    !!currentOppfolgingstilfelle &&
-    !postOppfolgingsplanForesporsel.isSuccess
-      ? currentOppfolgingstilfelle.start <= lastForesporselCreatedAt &&
-        lastForesporselCreatedAt <= currentOppfolgingstilfelle.end
-      : false;
-  const aktivForesporselTekst = `${
-    texts.aktivForesporsel
-  } ${tilLesbarDatoMedArUtenManedNavn(lastForesporselCreatedAt)}`;
+    !!activeNarmesteLederIfSingle;
 
   return (
     <div className="mb-8">
       <Heading spacing level="2" size="medium">
         {texts.aktiveOppfolgingsplaner}
       </Heading>
-      {!hasActivePlan &&
-        !postOppfolgingsplanForesporsel.isSuccess &&
-        !isAktivForesporsel && (
-          <Alert variant="info" className="mb-4">
-            <p>{texts.ingenAktiveOppfolgingsplaner}</p>
-          </Alert>
-        )}
-      {isAktivForesporsel && (
-        <Alert variant="warning" className="mb-2">
-          {aktivForesporselTekst}
-        </Alert>
+      {hasActivePlan ? (
+        <>
+          {oppfolgingsplanerLPSUnprocessed.map((planLPS, index) => {
+            return (
+              <OppfolgingsplanerOversiktLPS
+                key={index}
+                oppfolgingsplanLPSBistandsbehov={planLPS}
+              />
+            );
+          })}
+          {aktivePlaner.map((dialog, index) => {
+            return <OppfolgingsplanLink key={index} dialog={dialog} />;
+          })}
+        </>
+      ) : (
+        <>
+          <Box background="surface-default" className="p-4 mb-2">
+            <BodyShort>{texts.ingenAktiveOppfolgingsplaner}</BodyShort>
+          </Box>
+          {isBeOmOppfolgingsplanVisible && (
+            <BeOmOppfolgingsplan
+              aktivNarmesteLeder={activeNarmesteLederIfSingle}
+              currentOppfolgingstilfelle={currentOppfolgingstilfelle}
+            />
+          )}
+        </>
       )}
-      {postOppfolgingsplanForesporsel.isSuccess && (
-        <Alert variant="success" className="mb-4">
-          {texts.foresporselSendt}
-        </Alert>
-      )}
-      {isBeOmOppfolgingsplanVisible && (
-        <BeOmOppfolgingsplan
-          aktivNarmesteLeder={activeNarmesteLederIfSingle}
-          postOppfolgingsplanForesporsel={postOppfolgingsplanForesporsel}
-        />
-      )}
-      {oppfolgingsplanerLPSUnprocessed.map((planLPS, index) => {
-        return (
-          <OppfolgingsplanerOversiktLPS
-            key={index}
-            oppfolgingsplanLPSBistandsbehov={planLPS}
-          />
-        );
-      })}
-      {aktivePlaner.map((dialog, index) => {
-        return <OppfolgingsplanLink key={index} dialog={dialog} />;
-      })}
     </div>
   );
 }
