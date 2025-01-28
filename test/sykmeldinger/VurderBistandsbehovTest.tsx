@@ -7,7 +7,10 @@ import { expect, describe, it, beforeEach } from "vitest";
 import React from "react";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
-import { personOppgaveUbehandletBehandlerBerOmBistand } from "@/mocks/ispersonoppgave/personoppgaveMock";
+import {
+  personOppgaveUbehandletBehandlerBerOmBistand,
+  personOppgaveUbehandletBehandlerBerOmBistand2,
+} from "@/mocks/ispersonoppgave/personoppgaveMock";
 import { BistandsbehovOppgaver } from "@/sider/sykmeldinger/VurderBistandsbehov";
 import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
@@ -79,6 +82,39 @@ describe("VurderBistandsbehov", () => {
         name: "Gå til sykmeldingen",
       })
     ).to.exist;
+  });
+
+  it("Viser VurderBistandsbehov panel for duplikat oppgave", () => {
+    queryClient.setQueryData(
+      personoppgaverQueryKeys.personoppgaver(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => [
+        personOppgaveUbehandletBehandlerBerOmBistand,
+        personOppgaveUbehandletBehandlerBerOmBistand2,
+      ]
+    );
+    renderBistandsbehovOppgaver();
+
+    expect(
+      screen.getAllByRole("heading", {
+        name: "Vurder bistandsbehovet eller forslag til tiltak fra behandler:",
+      })
+    ).to.have.length(2);
+    expect(
+      screen.getAllByRole("button", {
+        name: behandlePersonoppgaveKnappText,
+      })
+    ).to.have.length(2);
+    expect(
+      screen.getAllByRole("link", {
+        name: "Gå til sykmeldingen",
+      })
+    ).to.have.length(2);
+    expect(
+      screen.getByRole("link", {
+        name: "Gå til tidligere sykmelding med duplikate felter",
+      })
+    ).to.exist;
+    expect(screen.getByText("Mulig duplikat")).to.exist;
   });
 
   it("Behandler ber-om-bistand oppgaven med riktig uuid for personoppgaven", async () => {
