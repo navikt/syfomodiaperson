@@ -193,5 +193,6 @@ const createOppfolgingsplanLpsPersonoppgave = (
       : null,
     behandletVeilederIdent: behandlet ? "Veilederident" : null,
     opprettet: new Date(),
+    duplikatReferanseUuid: null,
   };
 };
