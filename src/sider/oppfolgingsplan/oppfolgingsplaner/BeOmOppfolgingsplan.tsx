@@ -18,6 +18,7 @@ import {
   useGetOppfolgingsplanForesporselQuery,
   usePostOppfolgingsplanForesporsel,
 } from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
+import { useOppfolgingsplanForesporselDocument } from "@/hooks/oppfolgingsplan/useOppfolgingsplanForesporselDocument";
 
 const texts = {
   header: "Be om oppfølgingsplan fra arbeidsgiver",
@@ -51,8 +52,8 @@ export default function BeOmOppfolgingsplan({
 }: Props) {
   const personident = useValgtPersonident();
   const getOppfolgingsplanForesporsel = useGetOppfolgingsplanForesporselQuery();
-
   const postOppfolgingsplanForesporsel = usePostOppfolgingsplanForesporsel();
+  const { getForesporselDocument } = useOppfolgingsplanForesporselDocument();
 
   function onClick() {
     const foresporsel: NewOppfolgingsplanForesporselDTO = {
@@ -60,7 +61,10 @@ export default function BeOmOppfolgingsplan({
       virksomhetsnummer: aktivNarmesteLeder.virksomhetsnummer,
       narmestelederPersonident:
         aktivNarmesteLeder.narmesteLederPersonIdentNumber,
-      document: [],
+      document: getForesporselDocument({
+        narmesteLeder: aktivNarmesteLeder.narmesteLederNavn,
+        virksomhetNavn: aktivNarmesteLeder.virksomhetsnavn,
+      }),
     };
     postOppfolgingsplanForesporsel.mutate(foresporsel, {
       onSuccess: () => logOppfolgingsplanForesporselEvent(),
