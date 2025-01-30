@@ -6,13 +6,9 @@ import {
   OppfolgingsplanForesporselResponse,
 } from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
 
-export const mockisoppfolgingsplan = [
+export const mockisoppfolgingsplanForesporsel = [
   http.get(`${ISOPPFOLGINGSPLAN_ROOT}/oppfolgingsplan/foresporsler`, () => {
-    if (existingOppfolgingsplanMock.length == 0) {
-      return HttpResponse.json({ error: "Not found" }, { status: 404 });
-    } else {
-      return HttpResponse.json(existingOppfolgingsplanMock, { status: 200 });
-    }
+    return HttpResponse.json(existingOppfolgingsplanMock, { status: 200 });
   }),
   http.post<object, NewOppfolgingsplanForesporselDTO>(
     `${ISOPPFOLGINGSPLAN_ROOT}/oppfolgingsplan/foresporsler`,

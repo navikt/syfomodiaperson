@@ -28,7 +28,7 @@ const texts = {
   virksomhet: "Virksomhet:",
   narmesteLeder: "Nærmeste leder:",
   button: "Be om oppfølgingsplan",
-  foresporselSendt: "Forespørsel om oppfølgingsplan ble sendt",
+  foresporselSendt: "Forespørsel om oppfølgingsplan sendt",
   foresporselFeilet: "Det skjedde en uventet feil. Vennligst prøv igjen senere",
 };
 

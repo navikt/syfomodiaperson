@@ -3,7 +3,7 @@ import {
   queryClientWithAktivBruker,
   queryClientWithMockData,
 } from "../../testQueryClient";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../../dialogmote/testData";
 import React from "react";
@@ -11,6 +11,8 @@ import { beforeEach, describe, expect, it } from "vitest";
 import {
   ARBEIDSTAKER_DEFAULT,
   LEDERE_DEFAULT,
+  NARMESTE_LEDER_DEFAULT,
+  VEILEDER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
 } from "@/mocks/common/mockConstants";
 import dayjs from "dayjs";
@@ -21,12 +23,23 @@ import {
   PersonOppgave,
   PersonOppgaveType,
 } from "@/data/personoppgave/types/PersonOppgave";
-import { restdatoTilLesbarDato } from "@/utils/datoUtils";
+import {
+  restdatoTilLesbarDato,
+  tilLesbarDatoMedArUtenManedNavn,
+} from "@/utils/datoUtils";
 import { generateUUID } from "@/utils/utils";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { generateOppfolgingstilfelle } from "../../testDataUtils";
-import { daysFromToday } from "../../testUtils";
+import { clickButton, daysFromToday } from "../../testUtils";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
+import userEvent from "@testing-library/user-event";
+import {
+  oppfolgingsplanForesporselQueryKeys,
+  OppfolgingsplanForesporselResponse,
+} from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
+import { mockServer } from "../../setup";
+import { http, HttpResponse } from "msw";
+import { ISOPPFOLGINGSPLAN_ROOT } from "@/apiConstants";
 
 let queryClient: QueryClient;
 
@@ -105,6 +118,15 @@ describe("Oppfølgingsplaner visning", () => {
       queryClient = queryClientWithMockData();
     });
 
+    const existingForesporsel: OppfolgingsplanForesporselResponse = {
+      uuid: generateUUID(),
+      createdAt: new Date(),
+      arbeidstakerPersonident: ARBEIDSTAKER_DEFAULT.personIdent,
+      veilederident: VEILEDER_DEFAULT.ident,
+      virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+      narmestelederPersonident: NARMESTE_LEDER_DEFAULT.personident,
+    };
+
     it("Viser ikke be om oppfølgingsplan funksjonalitet om sykmeldt ikke har aktivt oppfølgingstilfelle", () => {
       queryClient.setQueryData(
         oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
@@ -145,6 +167,94 @@ describe("Oppfølgingsplaner visning", () => {
         .exist;
       expect(screen.getByText("Be om oppfølgingsplan fra arbeidsgiver")).to
         .exist;
+      expect(screen.getByRole("button", { name: "Be om oppfølgingsplan" })).to
+        .exist;
+    });
+    it("Viser bekreftelse når bruker sender forespørsel om oppfølgingsplan", async () => {
+      queryClient.setQueryData(
+        oppfolgingsplanForesporselQueryKeys.foresporsel(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => []
+      );
+      renderOppfolgingsplanerOversikt([]);
+      mockServer.use(
+        http.post(
+          `*${ISOPPFOLGINGSPLAN_ROOT}/oppfolgingsplan/foresporsler`,
+          () => new HttpResponse(null, { status: 200 })
+        )
+      );
+
+      await clickButton("Be om oppfølgingsplan");
+
+      await waitFor(() => {
+        const oppfolgingspolanForesporselMutation = queryClient
+          .getMutationCache()
+          .getAll()[0];
+        expect(
+          oppfolgingspolanForesporselMutation.state.variables
+        ).to.deep.equal({
+          arbeidstakerPersonident: "19026900010",
+          virksomhetsnummer: "110110110",
+          narmestelederPersonident: "02690001009",
+          document: [],
+        });
+      });
+      await waitFor(() => {
+        expect(screen.getByText("Forespørsel om oppfølgingsplan sendt")).to
+          .exist;
+      });
+    });
+    it("Viser feilmelding når forespørsel om oppfølgingsplan feiler", async () => {
+      mockServer.use(
+        http.post(
+          `${ISOPPFOLGINGSPLAN_ROOT}/oppfolgingsplan/foresporsler`,
+          () => {
+            HttpResponse.json(
+              { error: "Internal server error" },
+              { status: 500 }
+            );
+          }
+        )
+      );
+      renderOppfolgingsplanerOversikt([]);
+      expect(screen.getByRole("button", { name: "Be om oppfølgingsplan" })).to
+        .exist;
+      const beOmOppfolgingsplanButton = screen.getByRole("button", {
+        name: "Be om oppfølgingsplan",
+      });
+
+      await userEvent.click(beOmOppfolgingsplanButton);
+
+      await waitFor(() => {
+        expect(
+          screen.getByText(
+            "Det skjedde en uventet feil. Vennligst prøv igjen senere"
+          )
+        ).to.exist;
+      });
+    });
+    it("Viser bekreftelse på at det er forespurt om oppfølgingsplan tidligere i oppfølgingstilfellet", async () => {
+      queryClient.setQueryData(
+        oppfolgingsplanForesporselQueryKeys.foresporsel(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [existingForesporsel]
+      );
+      renderOppfolgingsplanerOversikt([]);
+
+      expect(screen.getByText("Det er ingen aktive oppfølgingsplaner")).to
+        .exist;
+      expect(
+        screen.getByText(
+          `Obs! Det ble bedt om oppfølgingsplan fra denne arbeidsgiveren ${tilLesbarDatoMedArUtenManedNavn(
+            existingForesporsel.createdAt
+          )}`
+        )
+      ).to.exist;
+      expect(screen.getByText("Be om oppfølgingsplan fra arbeidsgiver")).to
+        .exist;
+
       expect(screen.getByRole("button", { name: "Be om oppfølgingsplan" })).to
         .exist;
     });
