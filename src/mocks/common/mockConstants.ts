@@ -51,6 +51,7 @@ export const VEILEDER_DEFAULT = new Veileder(
   "Vetle",
   "Veileder",
   "vetle.veileder@nav.no",
+  true,
   "12345678"
 );
 
@@ -61,6 +62,18 @@ export const ANNEN_VEILEDER = new Veileder(
   "Valdemar",
   "Vaileder",
   "valdemar.veileder@nav.no",
+  true,
+  "12345678"
+);
+
+export const INAKTIV_VEILEDER_IDENT = "Z980000";
+
+export const INAKTIV_VEILEDER = new Veileder(
+  INAKTIV_VEILEDER_IDENT,
+  "Viktor",
+  "Villeder",
+  "viktor.villeder@nav.no",
+  false,
   "12345678"
 );
 

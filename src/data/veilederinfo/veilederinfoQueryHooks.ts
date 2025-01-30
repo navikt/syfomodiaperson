@@ -28,6 +28,7 @@ export const useAktivVeilederinfoQuery = () => {
         data.fornavn,
         data.etternavn,
         data.epost,
+        data.enabled,
         data.telefonnummer
       ),
   });
@@ -46,6 +47,7 @@ export const useVeilederInfoQuery = (ident: string) => {
         data.fornavn,
         data.etternavn,
         data.epost,
+        data.enabled,
         data.telefonnummer
       ),
   });

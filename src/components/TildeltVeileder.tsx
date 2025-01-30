@@ -87,7 +87,9 @@ const toVeilederOptions = (veiledere: Veileder[], aktivVeileder: Veileder) => {
     ...sortedVeiledere
       .filter(
         (veileder) =>
-          veileder.fornavn.length > 0 && veileder.etternavn.length > 0
+          veileder.enabled &&
+          veileder.fornavn.length > 0 &&
+          veileder.etternavn.length > 0
       )
       .filter((veileder) => veileder.ident !== aktivVeileder.ident)
       .map(toVeilederOption),

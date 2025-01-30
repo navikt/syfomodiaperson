@@ -4,6 +4,7 @@ export interface Veileder {
   etternavn: string;
   epost: string;
   telefonnummer?: string;
+  enabled: boolean | null;
 }
 
 export class Veileder {
@@ -12,12 +13,14 @@ export class Veileder {
   etternavn: string;
   epost: string;
   telefonnummer?: string;
+  enabled: boolean | null;
 
   constructor(
     ident: string,
     fornavn: string,
     etternavn: string,
     epost: string,
+    enabled: boolean | null,
     telefonnummer?: string
   ) {
     this.ident = ident;
@@ -25,6 +28,7 @@ export class Veileder {
     this.etternavn = etternavn;
     this.epost = epost;
     this.telefonnummer = telefonnummer;
+    this.enabled = enabled;
   }
 
   fulltNavn(): string {
