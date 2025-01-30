@@ -2,6 +2,8 @@ import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import SykmeldingOpplysning from "./SykmeldingOpplysning";
 import { SporsmalSvarDTO } from "@/data/sykmelding/types/SporsmalSvarDTO";
+import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
+import { OpplysningListItem } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/OpplysningListItem";
 
 const texts = {
   title: "Utdypende opplysninger",
@@ -16,7 +18,7 @@ const OpplysningsGruppe = (opplysningsGruppeProps: OpplysningsGruppeProps) => {
   const sporsmal = Object.entries(opplysningGruppe).map(
     ([key, sporsmalSvar]) => (
       <SykmeldingOpplysning key={key} tittel={sporsmalSvar.sporsmal}>
-        <p className="opplysning__verdi">{sporsmalSvar.svar}</p>
+        <OpplysningListItem>{sporsmalSvar.svar}</OpplysningListItem>
       </SykmeldingOpplysning>
     )
   );
@@ -34,15 +36,13 @@ const UtdypendeOpplysninger = (
   const utdypendeOpplysninger = sykmelding.utdypendeOpplysninger;
   return (
     utdypendeOpplysninger && (
-      <div className="sykmeldingSeksjon">
-        <h4 className="sykmeldingSeksjon__tittel">{texts.title}</h4>
-
+      <SykmeldingSeksjon tittel={texts.title}>
         {Object.entries(utdypendeOpplysninger).map(
           ([key, opplysningGruppe]) => (
             <OpplysningsGruppe key={key} opplysningGruppe={opplysningGruppe} />
           )
         )}
-      </div>
+      </SykmeldingSeksjon>
     )
   );
 };

@@ -2,15 +2,14 @@ import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { tidligsteFom } from "@/utils/periodeUtils";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
-import SykmeldingNokkelOpplysning from "./SykmeldingNokkelOpplysning";
 import SykmeldingPerioder from "./SykmeldingPerioder";
 import { SykmeldingCheckbox } from "./SykmeldingCheckbox";
 import FlereOpplysninger from "./flereopplysninger/FlereOpplysninger";
 import { SykmeldingCheckboxForFelt } from "./SykmeldingCheckboxForFelt";
-import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
-import { SpeilingEkspanderbartPanelTittel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanelTittel";
 import { Egenmeldingsdager } from "./Egenmeldingsdager";
 import { Heading } from "@navikt/ds-react";
+import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
+import { RadContainer } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/RadContainer";
 
 const texts = {
   dinSykmeldingTittel: "Sykmelding",
@@ -20,7 +19,6 @@ const texts = {
   diagnoseMeta: "Diagnosen vises ikke til arbeidsgiveren",
   arbeidsforTittel: "Pasienten er 100 % arbeidsfør etter perioden\n",
   avsenderTittel: "Lege / sykmelder\n",
-  flereOpplysningerTittel: "Flere opplysninger fra den som har sykmeldt deg",
   arbeidsgiverTittel: "Arbeidsgiver som legen har skrevet inn",
   hensynTittel: "Beskriv eventuelle hensyn som må tas på arbeidsplassen\n",
   svangerskapTittel: "Sykdommen er svangerskapsrelatert\n\n",
@@ -37,14 +35,14 @@ interface Props {
 export function SykmeldingOpplysninger({ sykmelding }: Props) {
   return (
     <div className="dine-opplysninger">
-      <Heading level="2" size="large">
+      <Heading level="2" size="large" className="mb-3">
         {sykmelding.mulighetForArbeid.perioder.some((periode) => {
           return !!periode.avventende;
         })
           ? "Avventende sykmelding"
           : texts.dinSykmeldingTittel}
       </Heading>
-      <div className="blokk-l side-innhold">
+      <div className="side-innhold">
         <SykmeldingPerioder perioder={sykmelding.mulighetForArbeid.perioder} />
         {sykmelding.sporsmal.egenmeldingsdager &&
           sykmelding.sporsmal.egenmeldingsdager.length > 0 && (
@@ -53,89 +51,52 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
             />
           )}
         {sykmelding.diagnose.hoveddiagnose ? (
-          <div className="hoveddiagnose">
-            <div className="rad-container">
-              <SykmeldingNokkelOpplysning
-                className="nokkelopplysning--hoveddiagnose"
-                tittel={texts.dinSykmeldingDiagnoseTittel}
-              >
-                <div>
-                  <p className="js-hoveddiagnose">
-                    {sykmelding.diagnose.hoveddiagnose.diagnose}
-                  </p>
-                  <p className="js-diagnose-meta nokkelopplysning__meta nokkelopplysning__meta--mobil">
-                    {texts.diagnoseMeta}
-                  </p>
-                </div>
-              </SykmeldingNokkelOpplysning>
-              <div className="nokkelopplysning nokkelopplysning--hoveddiagnose js-hoveddiagnose-kode-container">
-                <div className="medHjelpetekst">
-                  <h3 className="nokkelopplysning__tittel">
-                    {texts.dinSykmeldingDiagnoseTittel}
-                  </h3>
-                </div>
-                <p>
-                  <span className="js-hoveddiagnose-kode">
-                    {sykmelding.diagnose.hoveddiagnose.diagnosekode}
-                  </span>
-                  &nbsp;
-                  <span className="js-hoveddiagnose-system">
-                    {sykmelding.diagnose.hoveddiagnose.diagnosesystem}
-                  </span>
-                </p>
-              </div>
-            </div>
-            <p className="js-diagnose-meta nokkelopplysning__meta nokkelopplysning__meta--desktop">
-              {texts.diagnoseMeta}
-            </p>
-          </div>
+          <RadContainer>
+            <Nokkelopplysning
+              label={texts.dinSykmeldingDiagnoseTittel}
+              className={"mb-0"}
+            >
+              <p>{sykmelding.diagnose.hoveddiagnose.diagnose}</p>
+              <p>{texts.diagnoseMeta}</p>
+            </Nokkelopplysning>
+            <Nokkelopplysning
+              label={texts.dinSykmeldingDiagnoseTittel}
+              className={"mb-0"}
+            >
+              <p>
+                <span>{sykmelding.diagnose.hoveddiagnose.diagnosekode}</span>
+                &nbsp;
+                <span>{sykmelding.diagnose.hoveddiagnose.diagnosesystem}</span>
+              </p>
+            </Nokkelopplysning>
+          </RadContainer>
         ) : null}
         {sykmelding.diagnose.bidiagnoser &&
           sykmelding.diagnose.bidiagnoser.map((bidiagnose, index) => {
             return (
-              <div
-                className="rad-container bidiagnose"
-                key={`${sykmelding.id}-bidiagnose-${index}`}
-              >
-                <SykmeldingNokkelOpplysning
-                  tittel={texts.dinSykmeldingBidiagnoseTittel}
-                >
-                  <p className="js-bidiagnose">{bidiagnose.diagnose}</p>
-                  <p className="js-bidiagnose-meta nokkelopplysning__meta nokkelopplysning__meta--mobil">
-                    {texts.diagnoseMeta}
-                  </p>
-                  <p className="js-bidiagnose-meta nokkelopplysning__meta nokkelopplysning__meta--desktop">
-                    {texts.diagnoseMeta}
-                  </p>
-                </SykmeldingNokkelOpplysning>
-                <SykmeldingNokkelOpplysning
-                  tittel={texts.dinSykmeldingDiagnoseTittel}
-                >
+              <RadContainer key={`${sykmelding.id}-bidiagnose-${index}`}>
+                <Nokkelopplysning label={texts.dinSykmeldingBidiagnoseTittel}>
+                  <p>{bidiagnose.diagnose}</p>
+                  <p>{texts.diagnoseMeta}</p>
+                </Nokkelopplysning>
+                <Nokkelopplysning label={texts.dinSykmeldingDiagnoseTittel}>
                   <p>
-                    <span className="js-bidiagnose-kode">
-                      {bidiagnose.diagnosekode}
-                    </span>
-                    <span className="js-bidiagnose-system">
-                      {bidiagnose.diagnosesystem}
-                    </span>
+                    <span>{bidiagnose.diagnosekode}</span>
+                    <span>{bidiagnose.diagnosesystem}</span>
                   </p>
-                </SykmeldingNokkelOpplysning>
-              </div>
+                </Nokkelopplysning>
+              </RadContainer>
             );
           })}
         {sykmelding.diagnose.fravaersgrunnLovfestet ? (
-          <SykmeldingNokkelOpplysning tittel="Lovfestet fraværsgrunn">
-            <p className="js-fravaersgrunnLovfestet">
-              {sykmelding.diagnose.fravaersgrunnLovfestet}
-            </p>
-          </SykmeldingNokkelOpplysning>
+          <Nokkelopplysning label={"Lovfestet fraværsgrunn"}>
+            <p>{sykmelding.diagnose.fravaersgrunnLovfestet}</p>
+          </Nokkelopplysning>
         ) : null}
         {sykmelding.diagnose.fravaerBeskrivelse ? (
-          <SykmeldingNokkelOpplysning tittel="Beskriv fraværet">
-            <p className="js-fravaerBeskrivelse">
-              {sykmelding.diagnose.fravaerBeskrivelse}
-            </p>
-          </SykmeldingNokkelOpplysning>
+          <Nokkelopplysning label={"Beskriv fraværet"}>
+            <p>{sykmelding.diagnose.fravaerBeskrivelse}</p>
+          </Nokkelopplysning>
         ) : null}
         <SykmeldingCheckboxForFelt
           sykmeldingBolk={sykmelding.diagnose}
@@ -144,20 +105,12 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
           className="blokk"
         />
         {!sykmelding.diagnose.yrkesskadeDato ? null : (
-          <SykmeldingCheckbox
-            tekst={texts.yrkesskadeTittel}
-            jsClassName="yrkesskade"
-          />
+          <SykmeldingCheckbox tekst={texts.yrkesskadeTittel} />
         )}
         {!sykmelding.diagnose.yrkesskadeDato ? null : (
-          <SykmeldingNokkelOpplysning
-            tittel="Skadedato"
-            className="subopplysning"
-          >
-            <p className=" js-yrkesskadeDato">
-              {tilLesbarDatoMedArstall(sykmelding.diagnose.yrkesskadeDato)}
-            </p>
-          </SykmeldingNokkelOpplysning>
+          <Nokkelopplysning label={"Skadedato"} isSubopplysning={true}>
+            <p>{tilLesbarDatoMedArstall(sykmelding.diagnose.yrkesskadeDato)}</p>
+          </Nokkelopplysning>
         )}
         <SykmeldingCheckboxForFelt
           sykmeldingBolk={sykmelding.friskmelding}
@@ -166,46 +119,30 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
           className="blokk"
         />
         {!sykmelding.friskmelding.hensynPaaArbeidsplassen ? null : (
-          <SykmeldingNokkelOpplysning tittel={texts.hensynTittel}>
-            <p className="js-hensynPaaArbeidsplassen">
-              {sykmelding.friskmelding.hensynPaaArbeidsplassen}
-            </p>
-          </SykmeldingNokkelOpplysning>
+          <Nokkelopplysning label={texts.hensynTittel}>
+            <p>{sykmelding.friskmelding.hensynPaaArbeidsplassen}</p>
+          </Nokkelopplysning>
         )}
         {sykmelding.arbeidsgiver ? (
-          <SykmeldingNokkelOpplysning tittel={texts.arbeidsgiverTittel}>
-            <div>
-              <p className="js-arbeidsgiver">{sykmelding.arbeidsgiver}</p>
-              {
-                // periode-sjekken kan fjernes etter 1.august 2018 (Når sykmeldinger med fom før 26.april uansett ikke vises)
-                sykmelding.stillingsprosent &&
-                tidligsteFom(sykmelding.mulighetForArbeid.perioder) >=
-                  new Date("2018-04-26") ? (
-                  <p className="js-stillingsprosent">
-                    {getStillingsprosentText(sykmelding.stillingsprosent)}
-                  </p>
-                ) : null
-              }
-            </div>
-          </SykmeldingNokkelOpplysning>
+          <Nokkelopplysning label={texts.arbeidsgiverTittel}>
+            <p>{sykmelding.arbeidsgiver}</p>
+            {
+              // periode-sjekken kan fjernes etter 1.august 2018 (Når sykmeldinger med fom før 26.april uansett ikke vises)
+              sykmelding.stillingsprosent &&
+              tidligsteFom(sykmelding.mulighetForArbeid.perioder) >=
+                new Date("2018-04-26") ? (
+                <p>{getStillingsprosentText(sykmelding.stillingsprosent)}</p>
+              ) : null
+            }
+          </Nokkelopplysning>
         ) : null}
         {sykmelding.bekreftelse.sykmelder ? (
-          <SykmeldingNokkelOpplysning tittel={texts.avsenderTittel}>
-            <p className="js-avsender">{sykmelding.bekreftelse.sykmelder}</p>
-          </SykmeldingNokkelOpplysning>
+          <Nokkelopplysning label={texts.avsenderTittel}>
+            <p>{sykmelding.bekreftelse.sykmelder}</p>
+          </Nokkelopplysning>
         ) : null}
       </div>
-      <SpeilingEkspanderbartPanel
-        tittel={
-          <SpeilingEkspanderbartPanelTittel icon="lege">
-            {texts.flereOpplysningerTittel}
-          </SpeilingEkspanderbartPanelTittel>
-        }
-      >
-        <div className="sykmeldingSeksjoner">
-          <FlereOpplysninger sykmelding={sykmelding} />
-        </div>
-      </SpeilingEkspanderbartPanel>
+      <FlereOpplysninger sykmelding={sykmelding} />
     </div>
   );
 }

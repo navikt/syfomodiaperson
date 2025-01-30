@@ -1,32 +1,25 @@
-import React, { JSX, ReactNode } from "react";
+import React, { ReactNode } from "react";
+import "@navikt/ds-css";
+import { FieldReadOnly } from "@/components/FieldReadOnly";
 
 interface SykmeldingOpplysningProps {
   tittel: string;
   children?: ReactNode;
-  Overskrift?: keyof JSX.IntrinsicElements;
-  className?: string;
+  isSubopplysning?: boolean;
 }
 
-const SykmeldingOpplysning = (
+export default function SykmeldingOpplysning(
   sykmeldingOpplysningProps: SykmeldingOpplysningProps
-) => {
+) {
   const {
     tittel,
     children,
-    Overskrift = "h5",
-    className = "",
+    isSubopplysning = false,
   } = sykmeldingOpplysningProps;
-  return (
-    <div className={`opplysning ${className}`}>
-      {tittel ? (
-        <Overskrift
-          className="opplysning__tittel"
-          dangerouslySetInnerHTML={{ __html: tittel }}
-        />
-      ) : null}
-      {children}
-    </div>
-  );
-};
 
-export default SykmeldingOpplysning;
+  return (
+    <FieldReadOnly label={tittel} className={`${isSubopplysning && "ml-6"}`}>
+      {children}
+    </FieldReadOnly>
+  );
+}

@@ -1,7 +1,9 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { SykmeldingCheckboxSelvstendig } from "../SykmeldingCheckbox";
+import { SykmeldingCheckbox } from "../SykmeldingCheckbox";
 import { erMeldingTilNavInformasjon } from "@/utils/sykmeldinger/sykmeldingUtils";
+import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
+import { SykmeldingOpplysningForFelt } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/SykmeldingOpplysningForFelt";
 
 const texts = {
   begrunnelse: "Begrunn nærmere",
@@ -18,22 +20,18 @@ export default function MeldingTilNav({ sykmelding }: Props) {
     return <span />;
   }
   return (
-    <div className="sykmeldingSeksjon">
-      <h4 className="sykmeldingSeksjon__tittel">{texts.meldingTilNav}</h4>
+    <SykmeldingSeksjon tittel={texts.meldingTilNav}>
       {!sykmelding.meldingTilNav.navBoerTaTakISaken ? null : (
-        <SykmeldingCheckboxSelvstendig
-          tekst={texts.bistandNav}
-          jsClassName="navBoerTaTakISaken"
-        />
+        <SykmeldingCheckbox tekst={texts.bistandNav} />
       )}
       {!sykmelding.meldingTilNav.navBoerTaTakISakenBegrunnelse ? null : (
-        <div className="opplysning subopplysning">
-          <h6 className="opplysning__tittel">{texts.begrunnelse}</h6>
-          <p className="opplysning__verdi js-navBoerTaTakISakenBegrunnelse">
-            {sykmelding.meldingTilNav.navBoerTaTakISakenBegrunnelse}
-          </p>
-        </div>
+        <SykmeldingOpplysningForFelt
+          sykmeldingBolk={sykmelding.meldingTilNav}
+          felt={"navBoerTaTakISakenBegrunnelse"}
+          tittel={texts.begrunnelse}
+          isSubopplysning={true}
+        />
       )}
-    </div>
+    </SykmeldingSeksjon>
   );
 }

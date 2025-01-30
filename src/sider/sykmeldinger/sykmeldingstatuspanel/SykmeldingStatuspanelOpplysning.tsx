@@ -9,7 +9,7 @@ import {
 } from "@/utils/datoUtils";
 import { Vis } from "@/utils";
 import { StatusNokkelopplysning } from "@/components/speiling/Statuspanel";
-import SykmeldingNokkelOpplysning from "../sykmelding/sykmeldingOpplysninger/SykmeldingNokkelOpplysning";
+import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 
 const texts = {
   status: {
@@ -65,7 +65,7 @@ export const Sykmeldingstatus = (
           <span>{textStatus(sykmelding.status)}</span>
         </div>
       ) : (
-        <p className="js-status">{textStatus(sykmelding.status)}</p>
+        <p>{textStatus(sykmelding.status)}</p>
       )}
     </StatusNokkelopplysning>
   );
@@ -85,7 +85,7 @@ export const SendtDato = (sendtDatoProps: SendtDatoProps): ReactElement => {
       : texts.dato.sendt;
   return (
     <StatusNokkelopplysning tittel={tittel}>
-      <p className="js-dato">{tilLesbarDatoMedArstall(sykmelding.sendtdato)}</p>
+      <p>{tilLesbarDatoMedArstall(sykmelding.sendtdato)}</p>
     </StatusNokkelopplysning>
   );
 };
@@ -100,7 +100,7 @@ export const Arbeidsgiver = (
   const { sykmelding } = arbeidsgiverProps;
   return (
     <StatusNokkelopplysning tittel={texts.arbeidsgiver}>
-      <p className="js-arbeidsgiver">{sykmelding.innsendtArbeidsgivernavn}</p>
+      <p>{sykmelding.innsendtArbeidsgivernavn}</p>
     </StatusNokkelopplysning>
   );
 };
@@ -116,7 +116,7 @@ export const Orgnummer = (orgnummerProps: OrgnummerProps): ReactElement => {
     : null;
   return (
     <StatusNokkelopplysning tittel={texts.orgnr}>
-      <p className="js-organisasjonsnummer">{orgnummer}</p>
+      <p>{orgnummer}</p>
     </StatusNokkelopplysning>
   );
 };
@@ -131,13 +131,10 @@ export const SykmeldingopplysningFravaersperioder = (
 ): ReactElement => {
   const { sykmelding, className } = sykmeldingopplysningFravaersperioderProps;
   return (
-    <SykmeldingNokkelOpplysning
-      className={className}
-      tittel={texts.egenmeldingPapir}
-    >
+    <Nokkelopplysning label={texts.egenmeldingPapir} className={className}>
       {sykmelding.sporsmal.fravaersperioder &&
       sykmelding.sporsmal.fravaersperioder.length > 0 ? (
-        <ul className="nokkelopplysning__liste">
+        <ul className={"m-0 pl-6"}>
           {sykmelding.sporsmal.fravaersperioder?.map((p, index) => {
             return (
               <li key={index}>{tilLesbarPeriodeMedArstall(p.fom, p.tom)}</li>
@@ -147,7 +144,7 @@ export const SykmeldingopplysningFravaersperioder = (
       ) : (
         <p>{texts.egenmeldingPapirNei}</p>
       )}
-    </SykmeldingNokkelOpplysning>
+    </Nokkelopplysning>
   );
 };
 
@@ -162,9 +159,9 @@ export const SykmeldingopplysningForsikring = (
   const { sykmelding, className } = sykmeldingopplysningForsikringProps;
   const text = sykmelding.sporsmal.harForsikring ? texts.ja : texts.nei;
   return (
-    <SykmeldingNokkelOpplysning className={className} tittel={texts.forsikring}>
+    <Nokkelopplysning label={texts.forsikring} className={className}>
       <p>{text}</p>
-    </SykmeldingNokkelOpplysning>
+    </Nokkelopplysning>
   );
 };
 

@@ -91,13 +91,13 @@ const BekreftetSykmeldingStatuspanel = (
     <Statuspanel>
       <Statusopplysninger>
         <StatusNokkelopplysning tittel={texts.status.tittel}>
-          <p className="js-status">
+          <p>
             {textStatus(sykmelding.status)} –{" "}
             {tilLesbarDatoMedArstall(sykmelding.sendtdato)}
           </p>
         </StatusNokkelopplysning>
         <StatusNokkelopplysning tittel={texts.tittel}>
-          <p className="js-arbeidssituasjon">
+          <p>
             {tilStorForbokstav(
               textArbeidssituasjon(
                 `${sykmelding.valgtArbeidssituasjon?.toLowerCase()}.2`

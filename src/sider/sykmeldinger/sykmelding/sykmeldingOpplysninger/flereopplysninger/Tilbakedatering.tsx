@@ -2,6 +2,7 @@ import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { SykmeldingOpplysningForFelt } from "./SykmeldingOpplysningForFelt";
+import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 
 const texts = {
   begrunnelse: "Pasienten har ikke kunne ivareta egne interesser. Begrunn",
@@ -23,8 +24,7 @@ const Tilbakedatering = (tilbakedateringProps: TilbakedateringProps) => {
     return <span />;
   }
   return (
-    <div className="sykmeldingSeksjon">
-      <h4 className="sykmeldingSeksjon__tittel">{texts.title}</h4>
+    <SykmeldingSeksjon tittel={texts.title}>
       <SykmeldingOpplysningForFelt
         sykmeldingBolk={sykmelding.tilbakedatering}
         felt="dokumenterbarPasientkontakt"
@@ -38,7 +38,7 @@ const Tilbakedatering = (tilbakedateringProps: TilbakedateringProps) => {
         felt="tilbakedatertBegrunnelse"
         tittel={texts.begrunnelse}
       />
-    </div>
+    </SykmeldingSeksjon>
   );
 };
 

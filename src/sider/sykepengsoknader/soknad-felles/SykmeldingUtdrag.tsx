@@ -38,9 +38,7 @@ const SykmeldingUtdrag = ({
             perioder={sykmelding.mulighetForArbeid.perioder}
           />
           <SykmeldingNokkelOpplysning tittel={texts.arbeidsgiver}>
-            <p className="js-arbeidsgiver">
-              {sykmelding.mottakendeArbeidsgiver?.navn}
-            </p>
+            <p>{sykmelding.mottakendeArbeidsgiver?.navn}</p>
           </SykmeldingNokkelOpplysning>
           <SykmeldingNokkelOpplysning tittel={texts.utdrag}>
             <p className="js-utstedelsesdato">

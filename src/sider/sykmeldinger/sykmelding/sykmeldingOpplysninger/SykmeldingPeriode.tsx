@@ -1,6 +1,7 @@
 import React from "react";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
+import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 
 const texts = {
   title: "Periode",
@@ -21,15 +22,18 @@ interface SykmeldingPeriodeProps {
 const SykmeldingPeriode = (sykmeldingPeriodeProps: SykmeldingPeriodeProps) => {
   const { periode, antallDager = 1 } = sykmeldingPeriodeProps;
   const dayText = antallDager === 1 ? texts.daySingle : texts.dayMultiple;
+
   return (
-    <div className="nokkelopplysning">
-      <h3 className="nokkelopplysning__tittel">{texts.title}</h3>
-      <p className="js-periode blokk-xxs">
+    <Nokkelopplysning
+      label={texts.title}
+      className={`pb-4 mb-4 border-solid border-0 border-b border-nav-gray-400`}
+    >
+      <p className="blokk-xxs">
         <strong>{tilLesbarPeriodeMedArstall(periode.fom, periode.tom)}</strong>{" "}
         &bull; {antallDager}&nbsp;{dayText}
       </p>
       {periode.grad ? (
-        <p className="js-grad">
+        <p>
           {periode.grad} % sykmeldt
           {periode.reisetilskudd && periode.grad > 0 && periode.grad < 100
             ? ` ${texts.reisetilskudd}`
@@ -39,23 +43,19 @@ const SykmeldingPeriode = (sykmeldingPeriodeProps: SykmeldingPeriodeProps) => {
         ""
       )}
       {periode.behandlingsdager ? (
-        <p className="js-behandlingsdager">
+        <p>
           {periode.behandlingsdager} {texts.behandlingsdager}
         </p>
       ) : null}
       {periode.reisetilskudd && periode.grad === null ? (
-        <p className="js-reisetilskudd">{texts.reisetilskuddTitle}</p>
+        <p>{texts.reisetilskuddTitle}</p>
       ) : null}
       {periode.avventende ? (
-        <div className="blokk">
-          <p className="js-avventende">{texts.avventende}</p>
-        </div>
+        <Nokkelopplysning label={texts.avventendeInspill}>
+          {periode.avventende}
+        </Nokkelopplysning>
       ) : null}
-      {periode.avventende ? (
-        <h4 className="nokkelopplysning__tittel">{texts.avventendeInspill}</h4>
-      ) : null}
-      {periode.avventende ? <p>{periode.avventende}</p> : ""}
-    </div>
+    </Nokkelopplysning>
   );
 };
 

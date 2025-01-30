@@ -23,17 +23,14 @@ const FlereOpplysninger = (flereOpplysningerProps: FlereOpplysningerProps) => {
   const { sykmelding } = flereOpplysningerProps;
   return (
     <div>
-      <div className="sykmeldingSeksjon">
-        <SykmeldingOpplysningForFelt
-          sykmeldingBolk={sykmelding.bekreftelse}
-          felt={"utstedelsesdato"}
-          tittel={texts.utstedelsesdato}
-          opplysning={tilLesbarDatoMedArstall(
-            sykmelding.bekreftelse.utstedelsesdato
-          )}
-          Overskrift={"h4"}
-        />
-      </div>
+      <SykmeldingOpplysningForFelt
+        sykmeldingBolk={sykmelding.bekreftelse}
+        felt={"utstedelsesdato"}
+        tittel={texts.utstedelsesdato}
+        opplysning={tilLesbarDatoMedArstall(
+          sykmelding.bekreftelse.utstedelsesdato
+        )}
+      />
       <MulighetForArbeid sykmelding={sykmelding} />
       <Friskmelding sykmelding={sykmelding} />
       <UtdypendeOpplysninger sykmelding={sykmelding} />

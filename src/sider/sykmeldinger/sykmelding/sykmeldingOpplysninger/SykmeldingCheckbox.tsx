@@ -3,39 +3,30 @@ import { CheckboxPng } from "../../../../../img/ImageComponents";
 
 interface SykmeldingCheckboxProps {
   tekst: string;
-  jsClassName?: string;
   className?: string;
+  isSubopplysning?: boolean;
 }
 
 export const SykmeldingCheckbox = (
   sykmeldingCheckboxProps: SykmeldingCheckboxProps
 ) => {
-  const { tekst, jsClassName, className = "" } = sykmeldingCheckboxProps;
+  const {
+    tekst,
+    className = "",
+    isSubopplysning = false,
+  } = sykmeldingCheckboxProps;
   return (
-    <p className={`checkboxOpplysning ${className} js-${jsClassName}`}>
-      <img src={CheckboxPng} className="ikon" alt="Huket av" />
-      <span
-        className="checkboxOpplysning__label"
-        dangerouslySetInnerHTML={{ __html: tekst }}
+    <p
+      className={`mb-1 flex break-after-avoid ${className} ${
+        isSubopplysning && "ml-6"
+      }`}
+    >
+      <img
+        src={CheckboxPng}
+        className="ikon self-start inline-block w-4 h-auto mr-1 mt-0.5 align-top"
+        alt="Huket av"
       />
+      <span className={"flex-1"}>{tekst}</span>
     </p>
-  );
-};
-
-interface SykmeldingCheckboxSelvstendigProps {
-  tekst: string;
-  jsClassName: string;
-}
-
-export const SykmeldingCheckboxSelvstendig = (
-  sykmeldingCheckboxSelvstendigProps: SykmeldingCheckboxSelvstendigProps
-) => {
-  const { tekst, jsClassName } = sykmeldingCheckboxSelvstendigProps;
-  return (
-    <SykmeldingCheckbox
-      tekst={tekst}
-      jsClassName={jsClassName}
-      className="typo-element blokk-m"
-    />
   );
 };

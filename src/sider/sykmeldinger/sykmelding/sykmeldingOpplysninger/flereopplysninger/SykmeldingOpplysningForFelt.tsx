@@ -1,5 +1,6 @@
 import React, { JSX } from "react";
 import SykmeldingOpplysning from "./SykmeldingOpplysning";
+import { OpplysningListItem } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/OpplysningListItem";
 
 interface Props {
   sykmeldingBolk: { [key: string]: any };
@@ -7,6 +8,7 @@ interface Props {
   tittel: string;
   opplysning?: string;
   Overskrift?: keyof JSX.IntrinsicElements;
+  isSubopplysning?: boolean;
 }
 
 export const SykmeldingOpplysningForFelt = ({
@@ -14,12 +16,12 @@ export const SykmeldingOpplysningForFelt = ({
   felt,
   tittel,
   opplysning,
-  Overskrift = "h5",
+  isSubopplysning = false,
 }: Props) =>
   sykmeldingBolk[felt] ? (
-    <SykmeldingOpplysning tittel={tittel} Overskrift={Overskrift}>
-      <p className={`opplysning__verdi js-${felt}`}>
+    <SykmeldingOpplysning tittel={tittel} isSubopplysning={isSubopplysning}>
+      <OpplysningListItem>
         {opplysning || sykmeldingBolk[felt]}
-      </p>
+      </OpplysningListItem>
     </SykmeldingOpplysning>
   ) : null;

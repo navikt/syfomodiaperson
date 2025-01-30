@@ -1,6 +1,7 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { SykmeldingOpplysningForFelt } from "./SykmeldingOpplysningForFelt";
+import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 
 const texts = {
   arbeidsevne: "Hva skal til for å bedre arbeidsevnen?",
@@ -23,8 +24,7 @@ const BedreArbeidsevne = (bedreArbeidsevneProps: BedreArbeidsevneProps) => {
     return <span />;
   }
   return (
-    <div className="sykmeldingSeksjon">
-      <h4 className="sykmeldingSeksjon__tittel">{texts.arbeidsevne}</h4>
+    <SykmeldingSeksjon tittel={texts.arbeidsevne}>
       <SykmeldingOpplysningForFelt
         sykmeldingBolk={sykmelding.arbeidsevne}
         felt={"tilretteleggingArbeidsplass"}
@@ -40,7 +40,7 @@ const BedreArbeidsevne = (bedreArbeidsevneProps: BedreArbeidsevneProps) => {
         felt={"tiltakAndre"}
         tittel={texts.tiltakAndre}
       />
-    </div>
+    </SykmeldingSeksjon>
   );
 };
 

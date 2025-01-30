@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "nav-gray-400": "rgba(170, 176, 186, 1)",
+      },
+    },
     screens: {
       md: "768px",
       "-md": { max: "767px" },
