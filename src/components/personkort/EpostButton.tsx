@@ -1,6 +1,6 @@
 import React from "react";
-import { CopyButton as CopyButtonAksel } from "@navikt/ds-react";
-import { CheckmarkIcon, EnvelopeClosedIcon } from "@navikt/aksel-icons";
+import { BodyShort, CopyButton as CopyButtonAksel } from "@navikt/ds-react";
+import { CheckmarkIcon } from "@navikt/aksel-icons";
 
 const textEpostCopied = (epost?: string) => {
   return `${epost} er kopiert!`;
@@ -8,15 +8,22 @@ const textEpostCopied = (epost?: string) => {
 
 interface EpostButtonProps {
   epost: string;
+  isActive: boolean;
 }
 
-const EpostButton = ({ epost }: EpostButtonProps) => {
+const EpostButton = ({ epost, isActive }: EpostButtonProps) => {
   return (
-    <div className="float-left relative w-1/6 px-2">
+    <div className="flex px-2 col-sm-3 items-center">
+      <BodyShort
+        weight={`${isActive ? "semibold" : "regular"}`}
+        size="small"
+        className={`${isActive ? "strong" : ""}`}
+      >
+        {epost}
+      </BodyShort>
       <CopyButtonAksel
         size="small"
         copyText={epost}
-        icon={<EnvelopeClosedIcon title="Kopier epost" />}
         activeIcon={<CheckmarkIcon title={textEpostCopied(epost)} />}
       />
     </div>
