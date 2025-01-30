@@ -15,6 +15,7 @@ export interface OppfolgingsplanForesporselResponse {
   veilederident: string;
   virksomhetsnummer: string;
   narmestelederPersonident: string;
+  document: DocumentComponentDto[];
 }
 
 export function useGetOppfolgingsplanForesporselQuery() {
@@ -50,7 +51,6 @@ export function usePostOppfolgingsplanForesporsel() {
   return useMutation({
     mutationFn: postOppfolgingsplanForesporsel,
     onSuccess: (createdForesporsel: OppfolgingsplanForesporselResponse) => {
-      console.log(oppfolgingsplanForesporselQueryKeys.foresporsel(personident));
       queryClient.setQueryData(
         oppfolgingsplanForesporselQueryKeys.foresporsel(personident),
         (oldData: OppfolgingsplanForesporselResponse[]) => [

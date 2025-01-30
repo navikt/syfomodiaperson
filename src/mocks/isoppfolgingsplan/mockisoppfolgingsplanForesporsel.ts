@@ -21,6 +21,7 @@ export const mockisoppfolgingsplanForesporsel = [
         veilederident: VEILEDER_DEFAULT.ident,
         virksomhetsnummer: body.virksomhetsnummer,
         narmestelederPersonident: body.narmestelederPersonident,
+        document: body.document,
       };
       existingOppfolgingsplanMock.push(createdForesporsel);
       return HttpResponse.json(createdForesporsel, { status: 201 });

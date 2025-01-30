@@ -12,7 +12,7 @@ import {
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { vurderingArsakTexts } from "@/data/aktivitetskrav/aktivitetskravTexts";
 import { useAktivitetskravNotificationAlert } from "@/sider/aktivitetskrav/useAktivitetskravNotificationAlert";
-import { gjelderOppfolgingstilfelle } from "@/utils/aktivitetskravUtils";
+import { isDateInOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 export const texts = {
   header: "Start ny aktivitetskrav-vurdering",
@@ -84,7 +84,10 @@ export const StartNyVurdering = ({ aktivitetskrav }: StartNyVurderingProps) => {
   const aktivitetskravGjelderActiveOppfolgingstilfelle =
     !!aktivitetskrav &&
     !!latestOppfolgingstilfelle &&
-    gjelderOppfolgingstilfelle(aktivitetskrav, latestOppfolgingstilfelle);
+    isDateInOppfolgingstilfelle(
+      aktivitetskrav.stoppunktAt,
+      latestOppfolgingstilfelle
+    );
 
   const handleStartNyVurdering = () => {
     const newAktivitetskrav = aktivitetskravGjelderActiveOppfolgingstilfelle

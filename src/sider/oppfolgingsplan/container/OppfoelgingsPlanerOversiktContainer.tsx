@@ -3,15 +3,13 @@ import Side from "../../Side";
 import OppfolgingsplanerOversikt from "../oppfolgingsplaner/OppfolgingsplanerOversikt";
 import { activeOppfolgingsplaner } from "@/utils/oppfolgingsplanerUtils";
 import SideLaster from "../../../components/SideLaster";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   useOppfolgingsplanerLPSQuery,
   useOppfolgingsplanerQuery,
 } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 
-export const OppfoelgingsPlanerOversiktContainer = () => {
-  const fnr = useValgtPersonident();
+export default function OppfoelgingsPlanerOversiktContainer() {
   const {
     data: oppfolgingsplaner,
     isError: oppfolgingsplanerHentingFeilet,
@@ -43,9 +41,8 @@ export const OppfoelgingsPlanerOversiktContainer = () => {
           aktivePlaner={aktivePlaner}
           inaktivePlaner={inaktivePlaner}
           oppfolgingsplanerLPS={oppfolgingsplanerLPS}
-          fnr={fnr}
         />
       </SideLaster>
     </Side>
   );
-};
+}

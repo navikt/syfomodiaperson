@@ -69,7 +69,7 @@ const brannOgBilLedere = [
     aktivTom: null,
     arbeidsgiverForskutterer: true,
     timestamp: "2019-03-10T12:00:00+01:00",
-    status: NarmesteLederRelasjonStatus.DEAKTIVERT_LEDER,
+    status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
   },
 ];
 
@@ -102,7 +102,7 @@ const enterpriseLedere = [
     aktivTom: null,
     arbeidsgiverForskutterer: null,
     timestamp: "2019-02-04T12:00:00+01:00",
-    status: NarmesteLederRelasjonStatus.DEAKTIVERT_LEDER,
+    status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
   },
 ];
 

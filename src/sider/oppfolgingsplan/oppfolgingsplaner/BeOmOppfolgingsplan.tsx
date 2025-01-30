@@ -17,7 +17,12 @@ import {
   usePostOppfolgingsplanForesporsel,
 } from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
-import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import {
+  isDateInOppfolgingstilfelle,
+  OppfolgingstilfelleDTO,
+} from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import { useOppfolgingsplanForesporselDocument } from "@/hooks/oppfolgingsplan/useOppfolgingsplanForesporselDocument";
+import { oppfolgingstilfelle } from "../../../../test/aktivitetskrav/vurdering/vurderingTestUtils";
 
 const texts = {
   aktivForesporsel:
@@ -54,6 +59,7 @@ export default function BeOmOppfolgingsplan({
   const personident = useValgtPersonident();
   const getOppfolgingsplanForesporsel = useGetOppfolgingsplanForesporselQuery();
   const postOppfolgingsplanForesporsel = usePostOppfolgingsplanForesporsel();
+  const { getForesporselDocument } = useOppfolgingsplanForesporselDocument();
 
   const lastForesporselCreatedAt =
     getOppfolgingsplanForesporsel.data?.[0]?.createdAt;
@@ -61,8 +67,10 @@ export default function BeOmOppfolgingsplan({
     !!lastForesporselCreatedAt &&
     !!currentOppfolgingstilfelle &&
     !postOppfolgingsplanForesporsel.isSuccess
-      ? currentOppfolgingstilfelle.start <= lastForesporselCreatedAt &&
-        lastForesporselCreatedAt <= currentOppfolgingstilfelle.end
+      ? isDateInOppfolgingstilfelle(
+          lastForesporselCreatedAt,
+          oppfolgingstilfelle
+        )
       : false;
   const aktivForesporselTekst = `${
     texts.aktivForesporsel
@@ -74,7 +82,10 @@ export default function BeOmOppfolgingsplan({
       virksomhetsnummer: aktivNarmesteLeder.virksomhetsnummer,
       narmestelederPersonident:
         aktivNarmesteLeder.narmesteLederPersonIdentNumber,
-      document: [],
+      document: getForesporselDocument({
+        narmesteLeder: aktivNarmesteLeder.narmesteLederNavn,
+        virksomhetNavn: aktivNarmesteLeder.virksomhetsnavn,
+      }),
     };
     postOppfolgingsplanForesporsel.mutate(foresporsel, {
       onSuccess: () => logOppfolgingsplanForesporselEvent(),
@@ -99,7 +110,11 @@ export default function BeOmOppfolgingsplan({
         <BodyShort className="mb-2">
           {texts.narmesteLeder} {aktivNarmesteLeder.narmesteLederNavn}
         </BodyShort>
-        {!postOppfolgingsplanForesporsel.isSuccess && (
+        {postOppfolgingsplanForesporsel.isSuccess ? (
+          <Alert inline variant="success">
+            {texts.foresporselSendt}
+          </Alert>
+        ) : (
           <Button
             className="w-fit mb-2"
             size="small"
@@ -108,11 +123,6 @@ export default function BeOmOppfolgingsplan({
           >
             {texts.button}
           </Button>
-        )}
-        {postOppfolgingsplanForesporsel.isSuccess && (
-          <Alert inline variant="success">
-            {texts.foresporselSendt}
-          </Alert>
         )}
         {postOppfolgingsplanForesporsel.isError && (
           <Alert inline variant="error">

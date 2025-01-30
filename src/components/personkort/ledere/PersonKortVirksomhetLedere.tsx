@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { Column, Row } from "nav-frontend-grid";
 import { Undertekst } from "nav-frontend-typografi";
@@ -50,22 +50,21 @@ const getNarmesteLederRelasjonStatusText = (
   }
 };
 
-const RowFullWidth = styled(Row)`
-  width: 100%;
-  margin-bottom: 0.5em;
-`;
-
 const UndertekstUppercase = styled(Undertekst)`
   text-transform: uppercase;
 `;
 
+const RowFullWidth = ({ children }: { children: ReactNode }) => {
+  return <Row className="w-full mb-2 flex items-center">{children}</Row>;
+};
+
 export const PersonKortVirksomhetLederIngressRow = () => {
   return (
     <RowFullWidth>
-      <Column className="col-sm-4">
+      <Column className="col-sm-3">
         <Undertekst>{texts.name}</Undertekst>
       </Column>
-      <Column className="col-sm-2">
+      <Column className="col-sm-3">
         <UndertekstUppercase>{texts.email}</UndertekstUppercase>
       </Column>
       <Column className="col-sm-2">
@@ -107,11 +106,11 @@ export const PersonKortVirksomhetLederRow = (
   return (
     <RowFullWidth>
       <PersonKortVirksomhetLederColumn
-        colSize={4}
+        colSize={3}
         text={capitalizeAllWords(leder.narmesteLederNavn)}
         isActive={isActive}
       />
-      <EpostButton epost={leder.narmesteLederEpost} />
+      <EpostButton epost={leder.narmesteLederEpost} isActive={isActive} />
       <PersonKortVirksomhetLederColumn
         colSize={2}
         text={formatPhonenumber(leder.narmesteLederTelefonnummer)}

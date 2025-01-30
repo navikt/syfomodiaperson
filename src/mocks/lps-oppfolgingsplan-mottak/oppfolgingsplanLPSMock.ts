@@ -22,6 +22,14 @@ export const oppfolgingsplanerLPSMock = (
   created: Date
 ): OppfolgingsplanLPS[] => {
   return [
+    getDefaultOppfolgingsplanLPS(created),
+    {
+      ...getDefaultOppfolgingsplanLPS(created),
+      uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd3",
+      virksomhetsnummer: VIRKSOMHET_BRANNOGBIL.virksomhetsnummer,
+      opprettet: dayjs(created).subtract(10, "days").toJSON(),
+      sistEndret: dayjs(created).subtract(10, "days").toJSON(),
+    },
     {
       ...getDefaultOppfolgingsplanLPS(created),
       uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd9",

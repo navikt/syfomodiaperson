@@ -24,7 +24,6 @@ const texts = {
 interface Props {
   aktivePlaner: OppfolgingsplanDTO[];
   inaktivePlaner: OppfolgingsplanDTO[];
-  fnr: string;
   oppfolgingsplanerLPS: OppfolgingsplanLPS[];
 }
 

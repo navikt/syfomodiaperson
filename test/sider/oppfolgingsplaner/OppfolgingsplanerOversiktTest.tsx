@@ -32,11 +32,13 @@ import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/p
 import { generateOppfolgingstilfelle } from "../../testDataUtils";
 import { clickButton, daysFromToday } from "../../testUtils";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
-import userEvent from "@testing-library/user-event";
 import {
+  NewOppfolgingsplanForesporselDTO,
   oppfolgingsplanForesporselQueryKeys,
   OppfolgingsplanForesporselResponse,
 } from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
+import { getExpectedForesporselDocument } from "./oppfolgingsplanTestdata";
+import userEvent from "@testing-library/user-event";
 import { mockServer } from "../../setup";
 import { http, HttpResponse } from "msw";
 import { ISOPPFOLGINGSPLAN_ROOT } from "@/apiConstants";
@@ -54,7 +56,6 @@ const renderOppfolgingsplanerOversikt = (
         <OppfolgingsplanerOversikt
           aktivePlaner={[]}
           inaktivePlaner={[]}
-          fnr={ARBEIDSTAKER_DEFAULT.personIdent}
           oppfolgingsplanerLPS={oppfolgingsplanerLPS}
         />
       </ValgtEnhetContext.Provider>
@@ -118,6 +119,11 @@ describe("Oppfølgingsplaner visning", () => {
       queryClient = queryClientWithMockData();
     });
 
+    const foresporselDocument = getExpectedForesporselDocument({
+      narmesteLeder: LEDERE_DEFAULT[0].narmesteLederNavn,
+      virksomhetNavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
+    });
+
     const existingForesporsel: OppfolgingsplanForesporselResponse = {
       uuid: generateUUID(),
       createdAt: new Date(),
@@ -125,6 +131,7 @@ describe("Oppfølgingsplaner visning", () => {
       veilederident: VEILEDER_DEFAULT.ident,
       virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
       narmestelederPersonident: NARMESTE_LEDER_DEFAULT.personident,
+      document: foresporselDocument,
     };
 
     it("Viser ikke be om oppfølgingsplan funksjonalitet om sykmeldt ikke har aktivt oppfølgingstilfelle", () => {
@@ -197,13 +204,11 @@ describe("Oppfølgingsplaner visning", () => {
           arbeidstakerPersonident: "19026900010",
           virksomhetsnummer: "110110110",
           narmestelederPersonident: "02690001009",
-          document: [],
+          document: foresporselDocument,
         });
       });
-      await waitFor(() => {
-        expect(screen.getByText("Forespørsel om oppfølgingsplan sendt")).to
-          .exist;
-      });
+      expect(screen.getByText("Forespørsel om oppfølgingsplan sendt")).to.exist;
+      expect(screen.queryByText("Be om oppfølgingsplan")).to.not.exist;
     });
     it("Viser feilmelding når forespørsel om oppfølgingsplan feiler", async () => {
       mockServer.use(
@@ -257,6 +262,32 @@ describe("Oppfølgingsplaner visning", () => {
 
       expect(screen.getByRole("button", { name: "Be om oppfølgingsplan" })).to
         .exist;
+    });
+    it("Sender forespørsel om oppfølgingsplan med document", async () => {
+      renderOppfolgingsplanerOversikt([]);
+
+      await clickButton("Be om oppfølgingsplan");
+
+      const expectedForesporselRequest: NewOppfolgingsplanForesporselDTO = {
+        arbeidstakerPersonident: ARBEIDSTAKER_DEFAULT.personIdent,
+        virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+        narmestelederPersonident:
+          LEDERE_DEFAULT[0].narmesteLederPersonIdentNumber,
+        document: getExpectedForesporselDocument({
+          narmesteLeder: LEDERE_DEFAULT[0].narmesteLederNavn,
+          virksomhetNavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
+        }),
+      };
+
+      await waitFor(() => {
+        const foresporselMutation = queryClient
+          .getMutationCache()
+          .getAll()
+          .pop();
+        expect(foresporselMutation?.state.variables).to.deep.equal(
+          expectedForesporselRequest
+        );
+      });
     });
   });
 });
