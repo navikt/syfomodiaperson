@@ -1,20 +1,18 @@
 import React, { ReactNode } from "react";
 
-interface FieldReadOnlyProps {
+interface Props {
   label: string;
   children: ReactNode;
   className?: string;
   classNameLabel?: string;
 }
 
-export function FieldReadOnly(fieldReadOnlyProps: FieldReadOnlyProps) {
-  const {
-    label,
-    className = "",
-    classNameLabel = "",
-    children,
-  } = fieldReadOnlyProps;
-
+export function FieldReadOnly({
+  label,
+  className = "",
+  classNameLabel = "",
+  children,
+}: Props) {
   return (
     <div
       className={`navds-body-short--small inline-table w-full mb-5 ${className}`}

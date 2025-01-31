@@ -28,8 +28,7 @@ interface AarsakerProps {
   aarsaker: string[];
 }
 
-const Aarsaker = (aarsakerProps: AarsakerProps) => {
-  const { aarsaker } = aarsakerProps;
+const Aarsaker = ({ aarsaker }: AarsakerProps) => {
   return (
     <>
       {fjernAnnet(aarsaker).map((aarsak: string, key: number) => {

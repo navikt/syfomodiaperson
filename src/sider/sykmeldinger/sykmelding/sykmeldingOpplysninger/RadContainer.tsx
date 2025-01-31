@@ -1,11 +1,10 @@
 import React, { ReactNode } from "react";
 
-interface RadContainerProps {
-  children?: ReactNode;
+interface Props {
+  children: ReactNode;
 }
 
-export function RadContainer(radContainerProps: RadContainerProps) {
-  const { children } = radContainerProps;
+export function RadContainer({ children }: Props) {
   return (
     <div
       className={

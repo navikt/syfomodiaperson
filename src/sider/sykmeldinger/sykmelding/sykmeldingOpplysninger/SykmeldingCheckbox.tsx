@@ -1,20 +1,17 @@
 import React from "react";
 import { CheckboxPng } from "../../../../../img/ImageComponents";
 
-interface SykmeldingCheckboxProps {
+interface Props {
   tekst: string;
   className?: string;
   isSubopplysning?: boolean;
 }
 
-export const SykmeldingCheckbox = (
-  sykmeldingCheckboxProps: SykmeldingCheckboxProps
-) => {
-  const {
-    tekst,
-    className = "",
-    isSubopplysning = false,
-  } = sykmeldingCheckboxProps;
+export const SykmeldingCheckbox = ({
+  tekst,
+  className = "",
+  isSubopplysning = false,
+}: Props) => {
   return (
     <p
       className={`mb-1 flex break-after-avoid ${className} ${

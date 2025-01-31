@@ -1,20 +1,19 @@
 import React, { ReactNode } from "react";
 import { FieldReadOnly } from "@/components/FieldReadOnly";
 
-interface NokkelopplysningProps {
+interface Props {
   label: string;
-  children?: ReactNode;
+  children: ReactNode;
   className?: string;
   isSubopplysning?: boolean;
 }
 
-export function Nokkelopplysning(nokkelopplysningProps: NokkelopplysningProps) {
-  const {
-    label,
-    children,
-    className = "",
-    isSubopplysning = false,
-  } = nokkelopplysningProps;
+export function Nokkelopplysning({
+  label,
+  children,
+  className = "",
+  isSubopplysning = false,
+}: Props) {
   return (
     <FieldReadOnly
       label={label}

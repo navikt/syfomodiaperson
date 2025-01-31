@@ -2,21 +2,17 @@ import React, { ReactNode } from "react";
 import "@navikt/ds-css";
 import { FieldReadOnly } from "@/components/FieldReadOnly";
 
-interface SykmeldingOpplysningProps {
+interface Props {
   tittel: string;
   children?: ReactNode;
   isSubopplysning?: boolean;
 }
 
-export default function SykmeldingOpplysning(
-  sykmeldingOpplysningProps: SykmeldingOpplysningProps
-) {
-  const {
-    tittel,
-    children,
-    isSubopplysning = false,
-  } = sykmeldingOpplysningProps;
-
+export default function SykmeldingOpplysning({
+  tittel,
+  children,
+  isSubopplysning = false,
+}: Props) {
   return (
     <FieldReadOnly
       label={tittel}

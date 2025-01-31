@@ -1,14 +1,10 @@
 import React, { ReactNode } from "react";
 
-interface OpplysningListItemProps {
-  children?: ReactNode;
+interface Props {
+  children: ReactNode;
 }
 
-export function OpplysningListItem(
-  opplysningListItemProps: OpplysningListItemProps
-) {
-  const { children } = opplysningListItemProps;
-
+export function OpplysningListItem({ children }: Props) {
   return (
     <p className={`before:content-['–'] before:mr-1 before:inline-block`}>
       {children}
