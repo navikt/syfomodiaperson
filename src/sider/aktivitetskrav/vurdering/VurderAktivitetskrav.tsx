@@ -7,14 +7,26 @@ import { VurderAktivitetskravTabs } from "@/sider/aktivitetskrav/vurdering/Vurde
 import { Box, Heading } from "@navikt/ds-react";
 import { VurderAktivitetskravButtons } from "@/sider/aktivitetskrav/vurdering/VurderAktivitetskravButtons";
 import { GjelderOppfolgingstilfelle } from "@/sider/aktivitetskrav/GjelderOppfolgingstilfelle";
-import { oppfolgingstilfelleForAktivitetskrav } from "@/utils/aktivitetskravUtils";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { AktivitetskravVurderingAlert } from "@/sider/aktivitetskrav/vurdering/AktivitetskravVurderingAlert";
 import { ForhandsvarselOppsummering } from "@/sider/aktivitetskrav/vurdering/ForhandsvarselOppsummering";
+import {
+  isDateInOppfolgingstilfelle,
+  OppfolgingstilfelleDTO,
+} from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 export const texts = {
   header: "Vurdere aktivitetskravet",
 };
+
+export function oppfolgingstilfelleForAktivitetskrav(
+  aktivitetskrav: AktivitetskravDTO,
+  oppfolgingstilfeller: OppfolgingstilfelleDTO[]
+): OppfolgingstilfelleDTO | undefined {
+  return oppfolgingstilfeller.find((tilfelle) =>
+    isDateInOppfolgingstilfelle(aktivitetskrav.stoppunktAt, tilfelle)
+  );
+}
 
 interface VurderAktivitetskravProps {
   aktivitetskrav: AktivitetskravDTO;

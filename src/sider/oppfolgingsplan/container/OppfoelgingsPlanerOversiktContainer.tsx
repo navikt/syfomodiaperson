@@ -1,18 +1,15 @@
 import React from "react";
 import Side from "../../Side";
 import OppfolgingsplanerOversikt from "../oppfolgingsplaner/OppfolgingsplanerOversikt";
-import IngenPlaner from "../oppfolgingsplaner/IngenPlaner";
 import { activeOppfolgingsplaner } from "@/utils/oppfolgingsplanerUtils";
 import SideLaster from "../../../components/SideLaster";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   useOppfolgingsplanerLPSQuery,
   useOppfolgingsplanerQuery,
 } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 
-export const OppfoelgingsPlanerOversiktContainer = () => {
-  const fnr = useValgtPersonident();
+export default function OppfoelgingsPlanerOversiktContainer() {
   const {
     data: oppfolgingsplaner,
     isError: oppfolgingsplanerHentingFeilet,
@@ -33,10 +30,6 @@ export const OppfoelgingsPlanerOversiktContainer = () => {
   const inaktivePlaner = oppfolgingsplaner.filter(
     (plan) => !aktivePlaner.includes(plan)
   );
-  const hasNoPlans =
-    aktivePlaner.length === 0 &&
-    inaktivePlaner.length === 0 &&
-    oppfolgingsplanerLPS.length === 0;
 
   return (
     <Side
@@ -44,21 +37,12 @@ export const OppfoelgingsPlanerOversiktContainer = () => {
       aktivtMenypunkt={Menypunkter.OPPFOELGINGSPLANER}
     >
       <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
-        {(() => {
-          if (hasNoPlans) {
-            return <IngenPlaner />;
-          } else {
-            return (
-              <OppfolgingsplanerOversikt
-                aktivePlaner={aktivePlaner}
-                inaktivePlaner={inaktivePlaner}
-                oppfolgingsplanerLPS={oppfolgingsplanerLPS}
-                fnr={fnr}
-              />
-            );
-          }
-        })()}
+        <OppfolgingsplanerOversikt
+          aktivePlaner={aktivePlaner}
+          inaktivePlaner={inaktivePlaner}
+          oppfolgingsplanerLPS={oppfolgingsplanerLPS}
+        />
       </SideLaster>
     </Side>
   );
-};
+}

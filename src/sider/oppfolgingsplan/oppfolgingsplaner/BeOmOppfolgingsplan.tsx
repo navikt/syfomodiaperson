@@ -9,8 +9,6 @@ import {
 import React from "react";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
-import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
 import {
@@ -18,17 +16,25 @@ import {
   useGetOppfolgingsplanForesporselQuery,
   usePostOppfolgingsplanForesporsel,
 } from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
+import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import {
+  isDateInOppfolgingstilfelle,
+  OppfolgingstilfelleDTO,
+} from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { useOppfolgingsplanForesporselDocument } from "@/hooks/oppfolgingsplan/useOppfolgingsplanForesporselDocument";
+import { oppfolgingstilfelle } from "../../../../test/aktivitetskrav/vurdering/vurderingTestUtils";
 
 const texts = {
+  aktivForesporsel:
+    "Obs! Det ble bedt om oppfølgingsplan fra denne arbeidsgiveren",
   header: "Be om oppfølgingsplan fra arbeidsgiver",
   description:
     "Her kan du be om oppfølgingsplan fra arbeidsgiver eller purre om det mangler.",
   virksomhet: "Virksomhet:",
   narmesteLeder: "Nærmeste leder:",
-  aktivForesporsel:
-    "Obs! Det ble bedt om oppfølgingsplan fra denne arbeidsgiveren",
   button: "Be om oppfølgingsplan",
+  foresporselSendt: "Forespørsel om oppfølgingsplan sendt",
+  foresporselFeilet: "Det skjedde en uventet feil. Vennligst prøv igjen senere",
 };
 
 function logOppfolgingsplanForesporselEvent() {
@@ -55,6 +61,21 @@ export default function BeOmOppfolgingsplan({
   const postOppfolgingsplanForesporsel = usePostOppfolgingsplanForesporsel();
   const { getForesporselDocument } = useOppfolgingsplanForesporselDocument();
 
+  const lastForesporselCreatedAt =
+    getOppfolgingsplanForesporsel.data?.[0]?.createdAt;
+  const isAktivForesporsel =
+    !!lastForesporselCreatedAt &&
+    !!currentOppfolgingstilfelle &&
+    !postOppfolgingsplanForesporsel.isSuccess
+      ? isDateInOppfolgingstilfelle(
+          lastForesporselCreatedAt,
+          oppfolgingstilfelle
+        )
+      : false;
+  const aktivForesporselTekst = `${
+    texts.aktivForesporsel
+  } ${tilLesbarDatoMedArUtenManedNavn(lastForesporselCreatedAt)}`;
+
   function onClick() {
     const foresporsel: NewOppfolgingsplanForesporselDTO = {
       arbeidstakerPersonident: personident,
@@ -71,26 +92,17 @@ export default function BeOmOppfolgingsplan({
     });
   }
 
-  const lastForesporselCreatedAt =
-    getOppfolgingsplanForesporsel.data?.[0]?.createdAt;
-
-  const isAktivForesporsel = !!lastForesporselCreatedAt
-    ? currentOppfolgingstilfelle.start <= lastForesporselCreatedAt &&
-      lastForesporselCreatedAt <= currentOppfolgingstilfelle.end
-    : false;
-  const aktivForesporselTekst = `${
-    texts.aktivForesporsel
-  } ${tilLesbarDatoMedArUtenManedNavn(lastForesporselCreatedAt)}`;
-
   return (
     <>
-      {postOppfolgingsplanForesporsel.isSuccess && (
-        <Alert variant="success" className="mb-2" size="small">
-          Forespørsel om oppfølgingsplan ble sendt
+      {isAktivForesporsel && (
+        <Alert variant="warning" className="mb-2">
+          {aktivForesporselTekst}
         </Alert>
       )}
       <Box background="surface-default" className="mb-4 flex flex-col p-4">
-        <Heading size="medium">{texts.header}</Heading>
+        <Heading size="small" level="3">
+          {texts.header}
+        </Heading>
         <BodyLong className="mb-2">{texts.description}</BodyLong>
         <BodyShort>
           {texts.virksomhet} {aktivNarmesteLeder.virksomhetsnavn}
@@ -98,19 +110,25 @@ export default function BeOmOppfolgingsplan({
         <BodyShort className="mb-2">
           {texts.narmesteLeder} {aktivNarmesteLeder.narmesteLederNavn}
         </BodyShort>
-        {isAktivForesporsel && !!lastForesporselCreatedAt && (
-          <Alert inline variant="warning" className="mb-2">
-            {aktivForesporselTekst}
+        {postOppfolgingsplanForesporsel.isSuccess ? (
+          <Alert inline variant="success">
+            {texts.foresporselSendt}
+          </Alert>
+        ) : (
+          <Button
+            className="w-fit mb-2"
+            size="small"
+            onClick={onClick}
+            loading={postOppfolgingsplanForesporsel.isPending}
+          >
+            {texts.button}
+          </Button>
+        )}
+        {postOppfolgingsplanForesporsel.isError && (
+          <Alert inline variant="error">
+            {texts.foresporselFeilet}
           </Alert>
         )}
-        <Button
-          className="w-fit mb-2"
-          size="small"
-          onClick={onClick}
-          loading={postOppfolgingsplanForesporsel.isPending}
-        >
-          {texts.button}
-        </Button>
       </Box>
     </>
   );

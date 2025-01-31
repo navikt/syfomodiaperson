@@ -91,6 +91,7 @@ export const VIRKSOMHET_KONKURS = {
 
 export const NARMESTE_LEDER_DEFAULT = {
   navn: "Tatten Tattover",
+  personident: "02690001009",
 };
 
 export const LEDERE_DEFAULT = [

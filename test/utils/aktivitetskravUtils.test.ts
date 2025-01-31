@@ -1,11 +1,11 @@
-import { oppfolgingstilfelleForAktivitetskrav } from "@/utils/aktivitetskravUtils";
 import {
   createAktivitetskrav,
   generateOppfolgingstilfelle,
 } from "../testDataUtils";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { daysFromToday } from "../testUtils";
-import { expect, describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
+import { oppfolgingstilfelleForAktivitetskrav } from "@/sider/aktivitetskrav/vurdering/VurderAktivitetskrav";
 
 describe("aktivitetskravUtils", () => {
   describe("oppfolgingstilfelleForAktivitetskrav", () => {

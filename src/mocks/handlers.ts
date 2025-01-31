@@ -31,7 +31,7 @@ import { mockSyfomotebehov } from "@/mocks/syfomotebehov/mockSyfomotebehov";
 import { mockSyfobehandlendeenhet } from "@/mocks/syfobehandlendeenhet/mockSyfobehandlendeenhet";
 import { mockIshuskelapp } from "@/mocks/oppfolgingsoppgave/mockOppfolgingsoppgave";
 import { http, HttpResponse } from "msw";
-import { mockisoppfolgingsplan } from "@/mocks/isoppfolgingsplan/mockisoppfolgingsplan";
+import { mockisoppfolgingsplanForesporsel } from "@/mocks/isoppfolgingsplan/mockisoppfolgingsplanForesporsel";
 
 const handlers = [
   http.post("https://amplitude.nav.no/collect", () => {
@@ -52,7 +52,7 @@ const handlers = [
   ...mockIsmanglendemedvirkning,
   ...mockIsmeroppfolging,
   mockIsnarmesteleder,
-  ...mockisoppfolgingsplan,
+  ...mockisoppfolgingsplanForesporsel,
   mockIsoppfolgingstilfelle,
   ...mockIspengestopp,
   ...mockIspersonoppgave,

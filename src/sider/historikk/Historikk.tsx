@@ -7,7 +7,10 @@ import {
   HistorikkEvent,
   HistorikkEventType,
 } from "@/data/historikk/types/historikkTypes";
-import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import {
+  isDateInOppfolgingstilfelle,
+  OppfolgingstilfelleDTO,
+} from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { Box, HStack, Select, Table, Tag } from "@navikt/ds-react";
 import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
@@ -23,23 +26,13 @@ const byTidspunkt: () => (h1: HistorikkEvent, h2: HistorikkEvent) => number =
     return new Date(h2.tidspunkt).getTime() - new Date(h1.tidspunkt).getTime();
   };
 
-function isEventInTilfelle(
-  event: HistorikkEvent,
-  tilfelle: OppfolgingstilfelleDTO
-): boolean {
-  return (
-    new Date(tilfelle.start) <= new Date(event.tidspunkt) &&
-    new Date(event.tidspunkt) <= new Date(tilfelle.end)
-  );
-}
-
 function hentEventUtenforTilfelleList(
   tilfelleliste: OppfolgingstilfelleDTO[],
   historikkEvents: HistorikkEvent[]
 ): HistorikkEvent[] {
   return historikkEvents.filter((event) => {
     return !tilfelleliste.some((tilfelle) =>
-      isEventInTilfelle(event, tilfelle)
+      isDateInOppfolgingstilfelle(event.tidspunkt, tilfelle)
     );
   });
 }
@@ -117,7 +110,10 @@ export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
       return eventUtenforTilfelleList;
     } else {
       return historikkEvents.filter((event) =>
-        isEventInTilfelle(event, tilfeller[selectedTilfelleIndex])
+        isDateInOppfolgingstilfelle(
+          event.tidspunkt,
+          tilfeller[selectedTilfelleIndex]
+        )
       );
     }
   }
