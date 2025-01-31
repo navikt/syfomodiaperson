@@ -18,7 +18,7 @@ export function Nokkelopplysning(nokkelopplysningProps: NokkelopplysningProps) {
   return (
     <FieldReadOnly
       label={label}
-      className={`${className} ${isSubopplysning && "ml-6"}`}
+      className={`${className} ${isSubopplysning ? "ml-6" : ""}`}
       classNameLabel={"nokkelopplysning__tittel"}
     >
       {children}

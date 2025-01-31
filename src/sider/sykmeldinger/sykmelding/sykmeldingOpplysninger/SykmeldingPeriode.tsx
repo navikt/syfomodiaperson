@@ -28,12 +28,12 @@ const SykmeldingPeriode = (sykmeldingPeriodeProps: SykmeldingPeriodeProps) => {
       label={texts.title}
       className={`pb-4 mb-4 border-solid border-0 border-b border-nav-gray-400`}
     >
-      <p className="blokk-xxs">
+      <p className="mb-0">
         <strong>{tilLesbarPeriodeMedArstall(periode.fom, periode.tom)}</strong>{" "}
         &bull; {antallDager}&nbsp;{dayText}
       </p>
       {periode.grad ? (
-        <p>
+        <p className="mb-0">
           {periode.grad} % sykmeldt
           {periode.reisetilskudd && periode.grad > 0 && periode.grad < 100
             ? ` ${texts.reisetilskudd}`
@@ -51,7 +51,10 @@ const SykmeldingPeriode = (sykmeldingPeriodeProps: SykmeldingPeriodeProps) => {
         <p>{texts.reisetilskuddTitle}</p>
       ) : null}
       {periode.avventende ? (
-        <Nokkelopplysning label={texts.avventendeInspill}>
+        <Nokkelopplysning
+          label={texts.avventendeInspill}
+          className={"[&]:mb-0"}
+        >
           {periode.avventende}
         </Nokkelopplysning>
       ) : null}

@@ -48,7 +48,7 @@ const ArbeidsgiversNokkelopplysninger = (
       )}
       {!sykmelding.arbeidsgiver ? null : (
         <Nokkelopplysning label={texts.arbeidsgiver}>
-          <p>{sykmelding.arbeidsgiver}</p>
+          <p className={"mb-0"}>{sykmelding.arbeidsgiver}</p>
           {
             // periode-sjekken kan fjernes etter 1.august 2018 (Når sykmeldinger med fom før 26.april uansett ikke vises)
             sykmelding.stillingsprosent &&

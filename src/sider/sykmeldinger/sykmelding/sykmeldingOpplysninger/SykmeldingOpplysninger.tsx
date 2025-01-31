@@ -125,7 +125,7 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
         )}
         {sykmelding.arbeidsgiver ? (
           <Nokkelopplysning label={texts.arbeidsgiverTittel}>
-            <p>{sykmelding.arbeidsgiver}</p>
+            <p className={"mb-0"}>{sykmelding.arbeidsgiver}</p>
             {
               // periode-sjekken kan fjernes etter 1.august 2018 (Når sykmeldinger med fom før 26.april uansett ikke vises)
               sykmelding.stillingsprosent &&

@@ -18,7 +18,10 @@ export default function SykmeldingOpplysning(
   } = sykmeldingOpplysningProps;
 
   return (
-    <FieldReadOnly label={tittel} className={`${isSubopplysning && "ml-6"}`}>
+    <FieldReadOnly
+      label={tittel}
+      className={`${isSubopplysning ? "ml-6" : ""}`}
+    >
       {children}
     </FieldReadOnly>
   );

@@ -18,7 +18,7 @@ export const SykmeldingCheckbox = (
   return (
     <p
       className={`mb-1 flex break-after-avoid ${className} ${
-        isSubopplysning && "ml-6"
+        isSubopplysning ? "ml-6" : ""
       }`}
     >
       <img
