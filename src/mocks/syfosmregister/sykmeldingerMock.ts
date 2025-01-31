@@ -188,7 +188,6 @@ const SYKMELDING_MYE_INFO = {
 };
 
 export const sykmeldingerMock = [
-  SYKMELDING_MYE_INFO,
   {
     id: "1111a750-7f39-4974-9a06-fa1775f987d1",
     mottattTidspunkt: "2020-08-10T23:00:00Z",
@@ -1875,4 +1874,5 @@ export const sykmeldingerMock = [
       land: "NO",
     },
   },
+  SYKMELDING_MYE_INFO,
 ];
