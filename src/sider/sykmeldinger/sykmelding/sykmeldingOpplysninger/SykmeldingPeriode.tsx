@@ -26,7 +26,7 @@ const SykmeldingPeriode = (sykmeldingPeriodeProps: SykmeldingPeriodeProps) => {
   return (
     <Nokkelopplysning
       label={texts.title}
-      className={`[&:not(:only-child)]:pb-4 mb-4 border-solid border-0 [&:not(:only-child)]:border-b border-nav-gray-400`}
+      className={`[&:not(:only-child)]:pb-4 mb-4 border-solid border-0 [&:not(:only-child)]:border-b border-gray-400`}
     >
       <p className="mb-0">
         <strong>{tilLesbarPeriodeMedArstall(periode.fom, periode.tom)}</strong>{" "}

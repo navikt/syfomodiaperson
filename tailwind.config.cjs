@@ -1,12 +1,8 @@
 /** @type {import("tailwindcss").Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  presets: [require("@navikt/ds-tailwind")],
   theme: {
-    extend: {
-      colors: {
-        "nav-gray-400": "rgba(170, 176, 186, 1)",
-      },
-    },
     screens: {
       md: "768px",
       "-md": { max: "767px" },
