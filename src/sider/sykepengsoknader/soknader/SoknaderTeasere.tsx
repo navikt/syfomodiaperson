@@ -1,8 +1,8 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import SoknadTeaser from "./SoknadTeaser";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 
-interface SoknaderTeasereProps {
+interface Props {
   sykepengesoknader: SykepengesoknadDTO[];
   id: string;
   tomListeTekst: string;
@@ -10,27 +10,27 @@ interface SoknaderTeasereProps {
   className?: string;
 }
 
-const SoknaderTeasere = ({
+export default function SoknaderTeasere({
   sykepengesoknader,
   className,
   tittel = "",
   tomListeTekst,
   id,
-}: SoknaderTeasereProps): ReactElement => (
-  <div className="mb-4">
-    <header className="inngangspanelerHeader">
-      <h2 className="inngangspanelerHeader__tittel">{tittel}</h2>
-    </header>
-    <div id={id} className={className || "js-content"}>
-      {sykepengesoknader.length > 0 ? (
-        sykepengesoknader.map((soknad, idx) => (
-          <SoknadTeaser key={idx} soknad={soknad} />
-        ))
-      ) : (
-        <p className="panel typo-infotekst">{tomListeTekst}</p>
-      )}
+}: Props) {
+  return (
+    <div className="mb-4">
+      <header className="inngangspanelerHeader">
+        <h2 className="inngangspanelerHeader__tittel">{tittel}</h2>
+      </header>
+      <div id={id} className={className || "js-content"}>
+        {sykepengesoknader.length > 0 ? (
+          sykepengesoknader.map((soknad, idx) => (
+            <SoknadTeaser key={idx} soknad={soknad} />
+          ))
+        ) : (
+          <p className="panel typo-infotekst">{tomListeTekst}</p>
+        )}
+      </div>
     </div>
-  </div>
-);
-
-export default SoknaderTeasere;
+  );
+}

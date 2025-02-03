@@ -30,13 +30,13 @@ const OppsummeringUtvidbar = ({ soknad }: OppsummeringUtvidbarProps) => {
   );
 };
 
-interface SendtSoknadArbeidstakerNyProps {
+interface Props {
   soknad: SykepengesoknadDTO;
 }
 
-const SendtSoknadArbeidstakerNy = ({
+export default function SendtSoknadArbeidstakerNy({
   soknad,
-}: SendtSoknadArbeidstakerNyProps): ReactElement => {
+}: Props): ReactElement {
   return (
     <div>
       <Heading level="1" size="large">
@@ -69,6 +69,4 @@ const SendtSoknadArbeidstakerNy = ({
       <TilbakeTilSoknader />
     </div>
   );
-};
-
-export default SendtSoknadArbeidstakerNy;
+}
