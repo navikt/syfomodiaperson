@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   ANNEN_VEILEDER,
   ARBEIDSTAKER_DEFAULT,
+  INAKTIV_VEILEDER,
   VEILEDER_BRUKER_KNYTNING_DEFAULT,
   VEILEDER_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
@@ -89,7 +90,7 @@ describe("TildeltVeileder", () => {
       );
       queryClient.setQueryData(
         veilederinfoQueryKeys.veiledereByEnhet(navEnhet.id),
-        () => [VEILEDER_DEFAULT, ANNEN_VEILEDER]
+        () => [VEILEDER_DEFAULT, ANNEN_VEILEDER, INAKTIV_VEILEDER]
       );
     });
     it("viser modal for endring av tildelt veileder", async () => {
@@ -109,6 +110,16 @@ describe("TildeltVeileder", () => {
           name: "Tildel veileder",
         })
       ).to.exist;
+    });
+    it("viser ikke inaktiv veileder i modal for endring av tildelt veileder", async () => {
+      renderTildelVeileder();
+      await clickButton("Endre");
+
+      expect(screen.getAllByRole("option")).to.have.length(2);
+      const inaktivVeilederOption = screen.queryByRole("option", {
+        name: `${INAKTIV_VEILEDER.etternavn}, ${INAKTIV_VEILEDER.fornavn}`,
+      });
+      expect(inaktivVeilederOption).to.not.exist;
     });
     it("validerer valgt veileder", async () => {
       renderTildelVeileder();
