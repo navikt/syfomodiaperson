@@ -30,14 +30,6 @@ const texts = {
 };
 
 export function SykepengesoknadSide() {
-  return (
-    <Side tittel={texts.tittel} aktivtMenypunkt={Menypunkter.SYKEPENGESOKNADER}>
-      <SykepengesoknadSideContent />
-    </Side>
-  );
-}
-
-export function SykepengesoknadSideContent() {
   const { sykepengesoknadId } = useParams<{
     sykepengesoknadId: string;
   }>();
@@ -61,64 +53,66 @@ export function SykepengesoknadSideContent() {
   );
 
   return (
-    <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
-      {(() => {
-        switch (soknad?.soknadstype) {
-          case Soknadstype.SELVSTENDIGE_OG_FRILANSERE:
-          case Soknadstype.ARBEIDSLEDIG:
-          case Soknadstype.ANNET_ARBEIDSFORHOLD: {
-            return (
-              <SykepengesoknadSelvstendig
-                sykmelding={sykmelding}
-                soknad={soknad}
-              />
-            );
-          }
-          case Soknadstype.OPPHOLD_UTLAND: {
-            return <SykepengesoknadUtland soknad={soknad} />;
-          }
-          case Soknadstype.ARBEIDSTAKERE: {
-            switch (soknad.status) {
-              case Soknadstatus.SENDT:
-              case Soknadstatus.KORRIGERT: {
-                return <SendtSoknadArbeidstakerNy soknad={soknad} />;
-              }
-              case Soknadstatus.AVBRUTT: {
-                return <AvbruttSoknadArbeidtakerNy soknad={soknad} />;
-              }
-              default: {
-                return <IkkeInnsendtSoknad />;
+    <Side tittel={texts.tittel} aktivtMenypunkt={Menypunkter.SYKEPENGESOKNADER}>
+      <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
+        {(() => {
+          switch (soknad?.soknadstype) {
+            case Soknadstype.SELVSTENDIGE_OG_FRILANSERE:
+            case Soknadstype.ARBEIDSLEDIG:
+            case Soknadstype.ANNET_ARBEIDSFORHOLD: {
+              return (
+                <SykepengesoknadSelvstendig
+                  sykmelding={sykmelding}
+                  soknad={soknad}
+                />
+              );
+            }
+            case Soknadstype.OPPHOLD_UTLAND: {
+              return <SykepengesoknadUtland soknad={soknad} />;
+            }
+            case Soknadstype.ARBEIDSTAKERE: {
+              switch (soknad.status) {
+                case Soknadstatus.SENDT:
+                case Soknadstatus.KORRIGERT: {
+                  return <SendtSoknadArbeidstakerNy soknad={soknad} />;
+                }
+                case Soknadstatus.AVBRUTT: {
+                  return <AvbruttSoknadArbeidtakerNy soknad={soknad} />;
+                }
+                default: {
+                  return <IkkeInnsendtSoknad />;
+                }
               }
             }
-          }
-          case Soknadstype.BEHANDLINGSDAGER: {
-            return (
-              <div>
-                <Heading level="1" size="large">
-                  {texts.behandlingsdager.sideTittel}
-                </Heading>
-                <StatuspanelBehandlingsdager soknad={soknad} />
-                <Box
-                  background="surface-default"
-                  padding={"4"}
-                  className={"mb-4"}
-                >
-                  <Heading spacing size="small">
-                    {texts.behandlingsdager.oppsummering}
+            case Soknadstype.BEHANDLINGSDAGER: {
+              return (
+                <div>
+                  <Heading level="1" size="large">
+                    {texts.behandlingsdager.sideTittel}
                   </Heading>
-                  <Oppsummeringsvisning soknad={soknad} />
-                </Box>
-                <TilbakeTilSoknader />
-              </div>
-            );
+                  <StatuspanelBehandlingsdager soknad={soknad} />
+                  <Box
+                    background="surface-default"
+                    padding={"4"}
+                    className={"mb-4"}
+                  >
+                    <Heading spacing size="small">
+                      {texts.behandlingsdager.oppsummering}
+                    </Heading>
+                    <Oppsummeringsvisning soknad={soknad} />
+                  </Box>
+                  <TilbakeTilSoknader />
+                </div>
+              );
+            }
+            case Soknadstype.REISETILSKUDD: {
+              return <SykepengesoknadReisetilskudd soknad={soknad} />;
+            }
           }
-          case Soknadstype.REISETILSKUDD: {
-            return <SykepengesoknadReisetilskudd soknad={soknad} />;
-          }
-        }
 
-        return <Feilmelding />;
-      })()}
-    </SideLaster>
+          return <Feilmelding />;
+        })()}
+      </SideLaster>
+    </Side>
   );
 }

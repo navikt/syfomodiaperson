@@ -30,12 +30,12 @@ const {
   AVBRUTT,
 } = Soknadstatus;
 
-interface SoknaderProps {
+interface Props {
   fnr: string;
   soknader: SykepengesoknadDTO[];
 }
 
-const Soknader = (soknaderProps: SoknaderProps): ReactElement => {
+export default function Soknader(soknaderProps: Props): ReactElement {
   const { soknader = [] } = soknaderProps;
   const alleSoknader = [...soknader];
 
@@ -67,7 +67,7 @@ const Soknader = (soknaderProps: SoknaderProps): ReactElement => {
     .reverse();
 
   return (
-    <React.Fragment>
+    <>
       <Sidetopp tittel={texts.sidetittel} />
       <SoknadTeasere
         sykepengesoknader={nyeSoknader}
@@ -93,8 +93,6 @@ const Soknader = (soknaderProps: SoknaderProps): ReactElement => {
           id="soknader-sendt"
         />
       )}
-    </React.Fragment>
+    </>
   );
-};
-
-export default Soknader;
+}

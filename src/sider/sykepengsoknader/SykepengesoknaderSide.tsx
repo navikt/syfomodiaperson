@@ -12,7 +12,7 @@ const errorMessageText = (name: string) => {
   return `Beklager – vi kunne ikke hente alle sykepengesøknadene til ${name}`;
 };
 
-const SykepengesoknaderSide = (): ReactElement => {
+export default function SykepengesoknaderSide(): ReactElement {
   const fnr = useValgtPersonident();
   const {
     data: sykepengesoknader,
@@ -38,6 +38,4 @@ const SykepengesoknaderSide = (): ReactElement => {
       </SideLaster>
     </Side>
   );
-};
-
-export default SykepengesoknaderSide;
+}

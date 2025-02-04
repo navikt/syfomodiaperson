@@ -25,7 +25,6 @@ import { AktivitetskravContainer } from "@/sider/aktivitetskrav/AktivitetskravCo
 import { BehandlerdialogContainer } from "@/sider/behandlerdialog/BehandlerdialogContainer";
 import * as Amplitude from "@/utils/amplitude";
 import Motelandingsside from "@/sider/dialogmoter/Motelandingsside";
-import { SykepengesoknadSide } from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
 import { ArbeidsuforhetSide } from "@/sider/arbeidsuforhet/ArbeidsuforhetSide";
 import { ArbeidsuforhetOppfyltSide } from "@/sider/arbeidsuforhet/oppfylt/ArbeidsuforhetOppfyltSide";
 import { Nokkelinformasjon } from "@/sider/nokkelinformasjon/Nokkelinformasjon";
@@ -46,6 +45,7 @@ import { DinSykmeldingSide } from "@/sider/sykmeldinger/container/DinSykmeldingS
 import SenOppfolging from "@/sider/senoppfolging/SenOppfolging";
 import OppfolgingsplanContainer from "@/sider/oppfolgingsplan/container/OppfolgingsplanContainer";
 import OppfoelgingsPlanerOversiktContainer from "@/sider/oppfolgingsplan/container/OppfoelgingsPlanerOversiktContainer";
+import { SykepengesoknadSide } from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
 
 export const appRoutePath = "/sykefravaer";
 

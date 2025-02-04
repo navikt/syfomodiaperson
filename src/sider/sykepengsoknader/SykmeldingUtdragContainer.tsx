@@ -6,13 +6,13 @@ import {
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 
-interface SykmeldingUtdragContainerProps {
+interface Props {
   soknad: SykepengesoknadDTO;
 }
 
 export const SykmeldingUtdragContainer = ({
   soknad,
-}: SykmeldingUtdragContainerProps): ReactElement | null => {
+}: Props): ReactElement | null => {
   const { sykmeldinger } = useSykmeldingerQuery();
   const sykmelding = sykmeldinger.find((s) => {
     return s.id === soknad.sykmeldingId;
