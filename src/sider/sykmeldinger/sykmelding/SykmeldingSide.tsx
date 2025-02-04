@@ -38,22 +38,12 @@ export function SykmeldingSide({
     dinSykmelding.status === SykmeldingStatus.SENDT &&
     arbeidsgiversSykmelding
   ) {
-    return (
-      <DinSendteSykmelding
-        dinSykmelding={dinSykmelding}
-        arbeidsgiversSykmelding={arbeidsgiversSykmelding}
-      />
-    );
+    return <DinSendteSykmelding sykmelding={dinSykmelding} />;
   } else if (
     arbeidsgiversSykmelding &&
     dinSykmelding.status === SykmeldingStatus.BEKREFTET
   ) {
-    return (
-      <DinBekreftedeSykmelding
-        dinSykmelding={dinSykmelding}
-        arbeidsgiversSykmelding={arbeidsgiversSykmelding}
-      />
-    );
+    return <DinBekreftedeSykmelding sykmelding={dinSykmelding} />;
   } else if (dinSykmelding.status === SykmeldingStatus.UTGAATT) {
     return <DinUtgaatteSykmelding sykmelding={dinSykmelding} />;
   } else if (dinSykmelding.status === SykmeldingStatus.NY) {
