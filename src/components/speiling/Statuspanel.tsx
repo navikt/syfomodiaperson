@@ -1,5 +1,5 @@
 import React, { JSX, ReactNode } from "react";
-import SykmeldingNokkelOpplysning from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingNokkelOpplysning";
+import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 
 interface StatusNokkelopplysningProps {
   children?: ReactNode;
@@ -10,15 +10,14 @@ interface StatusNokkelopplysningProps {
 export const StatusNokkelopplysning = (
   statusNokkelopplysningProps: StatusNokkelopplysningProps
 ) => {
-  const { children, Overskrift = "h2", tittel } = statusNokkelopplysningProps;
+  const { children, tittel } = statusNokkelopplysningProps;
   return (
-    <SykmeldingNokkelOpplysning
-      className="nokkelopplysning--statusopplysning"
-      Overskrift={Overskrift}
-      tittel={tittel}
+    <Nokkelopplysning
+      label={tittel}
+      className={"nokkelopplysning--statusopplysning"}
     >
       {children}
-    </SykmeldingNokkelOpplysning>
+    </Nokkelopplysning>
   );
 };
 

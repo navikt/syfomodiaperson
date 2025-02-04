@@ -4,6 +4,7 @@ import SykmeldingOpplysning from "./SykmeldingOpplysning";
 import { SykmeldingCheckbox } from "../SykmeldingCheckbox";
 import { SykmeldingOpplysningForFelt } from "./SykmeldingOpplysningForFelt";
 import { SykmeldingCheckboxForFelt } from "../SykmeldingCheckboxForFelt";
+import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 
 const texts = {
   mulighetForArbeid: "Mulighet for arbeid",
@@ -12,7 +13,7 @@ const texts = {
   arsak: "Angi hva som er årsaken",
   arbeidsplassForhold:
     "Forhold på arbeidsplassen vanskeliggjør arbeidsrelatert aktivitet",
-  erIkkeIArbeid: "Pasienten kan ikke være i arbeid (100&nbsp;% sykmeldt)",
+  erIkkeIArbeid: "Pasienten kan ikke være i arbeid (100 % sykmeldt)",
   medisinskAarsakBeskriv: "Beskriv nærmere",
 };
 
@@ -25,23 +26,22 @@ const fjernAnnet = (array: string[]): string[] => {
 
 interface AarsakerProps {
   aarsaker: string[];
-  containerClassName: string;
 }
 
-const Aarsaker = (aarsakerProps: AarsakerProps) => {
-  const { aarsaker, containerClassName } = aarsakerProps;
+const Aarsaker = ({ aarsaker }: AarsakerProps) => {
   return (
-    <div className={containerClassName}>
+    <>
       {fjernAnnet(aarsaker).map((aarsak: string, key: number) => {
         return (
           <SykmeldingCheckbox
             tekst={aarsak}
             key={key}
-            className="subopplysning"
+            className={"mb-2 last:mb-0"}
+            isSubopplysning={true}
           />
         );
       })}
-    </div>
+    </>
   );
 };
 
@@ -61,23 +61,21 @@ const MulighetForArbeid = (mulighetForArbeidProps: MulighetForArbeidProps) => {
   if (!visSeksjon) {
     return <span />;
   }
+
   return (
-    <div className="sykmeldingSeksjon">
-      <h4 className="sykmeldingSeksjon__tittel">{texts.mulighetForArbeid}</h4>
+    <SykmeldingSeksjon tittel={texts.mulighetForArbeid}>
       {sykmelding.mulighetForArbeid.aktivitetIkkeMulig433 &&
       sykmelding.mulighetForArbeid.aktivitetIkkeMulig433.length > 0 ? (
         <SykmeldingOpplysning tittel={texts.erIkkeIArbeid}>
-          <div>
-            <SykmeldingCheckboxForFelt
-              sykmeldingBolk={sykmelding.mulighetForArbeid}
-              felt="aktivitetIkkeMulig433"
-              tekst={texts.medisinskAarsak}
-            />
-            <Aarsaker
-              aarsaker={sykmelding.mulighetForArbeid.aktivitetIkkeMulig433}
-              containerClassName="js-aktivitetIkkeMulig433hvisJa"
-            />
-          </div>
+          <SykmeldingCheckboxForFelt
+            sykmeldingBolk={sykmelding.mulighetForArbeid}
+            felt="aktivitetIkkeMulig433"
+            tekst={texts.medisinskAarsak}
+            className={"mb-2 last:mb-0"}
+          />
+          <Aarsaker
+            aarsaker={sykmelding.mulighetForArbeid.aktivitetIkkeMulig433}
+          />
         </SykmeldingOpplysning>
       ) : null}
       {(() => (
@@ -90,17 +88,15 @@ const MulighetForArbeid = (mulighetForArbeidProps: MulighetForArbeidProps) => {
       {sykmelding.mulighetForArbeid.aktivitetIkkeMulig434 &&
       sykmelding.mulighetForArbeid.aktivitetIkkeMulig434.length > 0 ? (
         <SykmeldingOpplysning tittel={texts.erIkkeIArbeid}>
-          <div>
-            <SykmeldingCheckboxForFelt
-              sykmeldingBolk={sykmelding.mulighetForArbeid}
-              felt="aktivitetIkkeMulig434"
-              tekst={texts.arbeidsplassForhold}
-            />
-            <Aarsaker
-              aarsaker={sykmelding.mulighetForArbeid.aktivitetIkkeMulig434}
-              containerClassName="js-aktivitetIkkeMulig434hvisJa"
-            />
-          </div>
+          <SykmeldingCheckboxForFelt
+            sykmeldingBolk={sykmelding.mulighetForArbeid}
+            felt="aktivitetIkkeMulig434"
+            tekst={texts.arbeidsplassForhold}
+            className={"mb-2 last:mb-0"}
+          />
+          <Aarsaker
+            aarsaker={sykmelding.mulighetForArbeid.aktivitetIkkeMulig434}
+          />
         </SykmeldingOpplysning>
       ) : null}
       <SykmeldingOpplysningForFelt
@@ -108,7 +104,7 @@ const MulighetForArbeid = (mulighetForArbeidProps: MulighetForArbeidProps) => {
         felt="aarsakAktivitetIkkeMulig434"
         tittel={texts.arsak}
       />
-    </div>
+    </SykmeldingSeksjon>
   );
 };
 export default MulighetForArbeid;

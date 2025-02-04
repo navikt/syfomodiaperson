@@ -26,7 +26,7 @@ export default function EgenmeldtKoronaSykmelding({ sykmelding }: Props) {
   const isNy = sykmelding.status === SykmeldingStatus.NY;
   return isNy || isBekreftet || isAvbrutt ? (
     <>
-      <Heading size="small" level="2">
+      <Heading size="large" level="2" className={"mb-3"}>
         {texts.pageSubtitle}
       </Heading>
       {isBekreftet && (

@@ -15,9 +15,5 @@ export const SykmeldingCheckboxForFelt = ({
   className,
 }: SykmeldingCheckboxForFeltProps) =>
   sykmeldingBolk[felt] ? (
-    <SykmeldingCheckbox
-      tekst={tekst}
-      jsClassName={felt}
-      className={className}
-    />
+    <SykmeldingCheckbox tekst={tekst} className={className} />
   ) : null;

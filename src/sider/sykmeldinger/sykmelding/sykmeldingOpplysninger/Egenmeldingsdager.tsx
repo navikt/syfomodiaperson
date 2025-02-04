@@ -1,7 +1,7 @@
 import React from "react";
-import SykmeldingNokkelOpplysning from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingNokkelOpplysning";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import dayjs from "dayjs";
+import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 
 const texts = {
   title: "Egenmeldingsdager (lagt til av deg)",
@@ -39,8 +39,8 @@ export const Egenmeldingsdager = ({
   egenmeldingsdager,
 }: EgenmeldingsdagerProps) => {
   return (
-    <SykmeldingNokkelOpplysning tittel={texts.title}>
+    <Nokkelopplysning label={texts.title}>
       <EgenmeldingsdagerSummary egenmeldingsdager={egenmeldingsdager} />
-    </SykmeldingNokkelOpplysning>
+    </Nokkelopplysning>
   );
 };

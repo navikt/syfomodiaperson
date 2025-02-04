@@ -1,10 +1,9 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { tidligsteFom } from "@/utils/periodeUtils";
-import SykmeldingNokkelOpplysning from "./sykmeldingOpplysninger/SykmeldingNokkelOpplysning";
 import SykmeldingPerioder from "./sykmeldingOpplysninger/SykmeldingPerioder";
 import { SykmeldingCheckboxForFelt } from "./sykmeldingOpplysninger/SykmeldingCheckboxForFelt";
 import { SladdImage } from "../../../../img/ImageComponents";
+import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 
 const texts = {
   arbeidsgiver: "Arbeidsgiver som legen har skrevet inn",
@@ -31,13 +30,9 @@ const ArbeidsgiversNokkelopplysninger = (
     <div className="arbeidsgiversSykmelding__nokkelopplysninger">
       <SykmeldingPerioder perioder={sykmelding.mulighetForArbeid.perioder} />
       {!sykmelding.skalViseSkravertFelt ? null : (
-        <SykmeldingNokkelOpplysning tittel={texts.diagnose} Overskrift="h4">
-          <img
-            src={SladdImage}
-            className="js-diagnose"
-            alt={texts.diagnoseSkjult}
-          />
-        </SykmeldingNokkelOpplysning>
+        <Nokkelopplysning label={texts.diagnose}>
+          <img src={SladdImage} alt={texts.diagnoseSkjult} />
+        </Nokkelopplysning>
       )}
       <SykmeldingCheckboxForFelt
         sykmeldingBolk={sykmelding.friskmelding}
@@ -46,34 +41,22 @@ const ArbeidsgiversNokkelopplysninger = (
         className="blokk"
       />
       {!sykmelding.friskmelding.hensynPaaArbeidsplassen ? null : (
-        <SykmeldingNokkelOpplysning tittel={texts.hensynTittel} Overskrift="h4">
-          <p className="js-hensynPaaArbeidsplassen">
-            {sykmelding.friskmelding.hensynPaaArbeidsplassen}
-          </p>
-        </SykmeldingNokkelOpplysning>
+        <Nokkelopplysning label={texts.hensynTittel}>
+          <p>{sykmelding.friskmelding.hensynPaaArbeidsplassen}</p>
+        </Nokkelopplysning>
       )}
       {!sykmelding.arbeidsgiver ? null : (
-        <SykmeldingNokkelOpplysning tittel={texts.arbeidsgiver} Overskrift="h4">
-          <p className="js-arbeidsgiver">{sykmelding.arbeidsgiver}</p>
-          {
-            // periode-sjekken kan fjernes etter 1.august 2018 (Når sykmeldinger med fom før 26.april uansett ikke vises)
-            sykmelding.stillingsprosent &&
-            tidligsteFom(sykmelding.mulighetForArbeid.perioder) >=
-              new Date("2018-04-26") ? (
-              <p className="js-stillingsprosent">
-                {getStillingsprosentText(sykmelding.stillingsprosent)}
-              </p>
-            ) : null
-          }
-        </SykmeldingNokkelOpplysning>
+        <Nokkelopplysning label={texts.arbeidsgiver}>
+          <p className={"mb-0"}>{sykmelding.arbeidsgiver}</p>
+          {sykmelding.stillingsprosent ? (
+            <p>{getStillingsprosentText(sykmelding.stillingsprosent)}</p>
+          ) : null}
+        </Nokkelopplysning>
       )}
       {!sykmelding.bekreftelse.sykmelder ? null : (
-        <SykmeldingNokkelOpplysning
-          tittel={texts.avsenderTittel}
-          Overskrift="h4"
-        >
-          <p className="js-sykmelder">{sykmelding.bekreftelse.sykmelder}</p>
-        </SykmeldingNokkelOpplysning>
+        <Nokkelopplysning label={texts.avsenderTittel}>
+          <p>{sykmelding.bekreftelse.sykmelder}</p>
+        </Nokkelopplysning>
       )}
     </div>
   );

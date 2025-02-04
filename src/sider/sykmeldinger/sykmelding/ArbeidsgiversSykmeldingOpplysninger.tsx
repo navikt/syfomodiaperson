@@ -18,7 +18,7 @@ const ArbeidsgiversSykmeldingOpplysninger = (
           {sykmelding.pasient.fornavn} {sykmelding.pasient.mellomnavn}{" "}
           {sykmelding.pasient.etternavn}
         </h3>
-        <p className="js-fnr arbeidsgiversSykmelding__fodselsnummer">
+        <p className="arbeidsgiversSykmelding__fodselsnummer">
           {sykmelding.pasient.fnr}
         </p>
       </header>

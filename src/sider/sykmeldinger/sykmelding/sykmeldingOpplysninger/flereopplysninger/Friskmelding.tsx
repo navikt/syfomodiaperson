@@ -1,8 +1,9 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
-import SykmeldingOpplysning from "./SykmeldingOpplysning";
 import { SykmeldingCheckboxForFelt } from "../SykmeldingCheckboxForFelt";
+import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
+import { SykmeldingOpplysningForFelt } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/SykmeldingOpplysningForFelt";
 
 const texts = {
   title: "Friskmelding/prognose",
@@ -43,91 +44,83 @@ const Friskmelding = (friskmeldingProps: FriskmeldingProps) => {
     return <div />;
   }
   return (
-    <div className="sykmeldingSeksjon">
-      <h4 className="sykmeldingSeksjon__tittel">{texts.title}</h4>
+    <SykmeldingSeksjon tittel={texts.title}>
       <SykmeldingCheckboxForFelt
         sykmeldingBolk={sykmelding.friskmelding}
         felt="antarReturSammeArbeidsgiver"
         tekst={texts.returArbeidsgiver}
-        className="typo-element blokk-s"
       />
       {!sykmelding.friskmelding.antattDatoReturSammeArbeidsgiver ? null : (
-        <SykmeldingOpplysning
-          Overskrift="h5"
-          className="subopplysning"
+        <SykmeldingOpplysningForFelt
+          sykmeldingBolk={sykmelding.friskmelding}
+          felt={"antattDatoReturSammeArbeidsgiver"}
           tittel={texts.returArbeidsgiverDato}
-        >
-          <p className="opplysning__verdi js-antattDatoReturSammeArbeidsgiver">
-            {tilLesbarDatoMedArstall(
-              sykmelding.friskmelding.antattDatoReturSammeArbeidsgiver
-            )}
-          </p>
-        </SykmeldingOpplysning>
+          opplysning={tilLesbarDatoMedArstall(
+            sykmelding.friskmelding.antattDatoReturSammeArbeidsgiver
+          )}
+          isSubopplysning={true}
+        />
       )}
       <SykmeldingCheckboxForFelt
         sykmeldingBolk={sykmelding.friskmelding}
         felt="antarReturAnnenArbeidsgiver"
         tekst={texts.returArbeidsgiverAnnen}
-        className="typo-element blokk-s"
+        className="blokk-s"
       />
       <SykmeldingCheckboxForFelt
         sykmeldingBolk={sykmelding.friskmelding}
         felt="tilbakemeldingReturArbeid"
         tekst={texts.returUsikker}
-        className="typo-element blokk-s"
       />
       {!sykmelding.friskmelding.tilbakemeldingReturArbeid ? null : (
-        <SykmeldingOpplysning
-          className="subopplysning"
+        <SykmeldingOpplysningForFelt
+          sykmeldingBolk={sykmelding.friskmelding}
+          felt={"tilbakemeldingReturArbeid"}
           tittel={texts.returUsikkerDato}
-        >
-          <p className="opplysning__verdi js-tilbakemeldingReturArbeidDato">
-            {tilLesbarDatoMedArstall(
-              sykmelding.friskmelding.tilbakemeldingReturArbeid
-            )}
-          </p>
-        </SykmeldingOpplysning>
+          opplysning={tilLesbarDatoMedArstall(
+            sykmelding.friskmelding.tilbakemeldingReturArbeid
+          )}
+          isSubopplysning={true}
+        />
       )}
       <SykmeldingCheckboxForFelt
         sykmeldingBolk={sykmelding.friskmelding}
         felt="utenArbeidsgiverAntarTilbakeIArbeid"
         tekst={texts.returUtenArbeidsgiver}
-        className="typo-element blokk-s"
+        className="blokk-s"
       />
       {!(
         sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeid &&
         sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeidDato
       ) ? null : (
-        <SykmeldingOpplysning
-          className="subopplysning"
+        <SykmeldingOpplysningForFelt
+          sykmeldingBolk={sykmelding.friskmelding}
+          felt={"utenArbeidsgiverAntarTilbakeIArbeid"}
           tittel={texts.returUtenArbeidsgiverDato}
-        >
-          <p className="opplysning__verdi js-utenArbeidsgiverAntarTilbakeIArbeidDato">
-            {tilLesbarDatoMedArstall(
-              sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeidDato
-            )}
-          </p>
-        </SykmeldingOpplysning>
+          opplysning={tilLesbarDatoMedArstall(
+            sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeidDato
+          )}
+          isSubopplysning={true}
+        />
       )}
       <SykmeldingCheckboxForFelt
         sykmeldingBolk={sykmelding.friskmelding}
         felt="utenArbeidsgiverTilbakemelding"
         tekst={texts.returUtenArbeidsgiverUsikker}
-        className="typo-element blokk-s"
+        className="blokk-s"
       />
       {!sykmelding.friskmelding.utenArbeidsgiverTilbakemelding ? null : (
-        <SykmeldingOpplysning
-          className="subopplysning"
+        <SykmeldingOpplysningForFelt
+          sykmeldingBolk={sykmelding.friskmelding}
+          felt={"utenArbeidsgiverTilbakemelding"}
           tittel={texts.returUtenArbeidsgiverUsikkerDato}
-        >
-          <p className="js-utenArbeidsgiverTilbakemeldingDato">
-            {tilLesbarDatoMedArstall(
-              sykmelding.friskmelding.utenArbeidsgiverTilbakemelding
-            )}
-          </p>
-        </SykmeldingOpplysning>
+          opplysning={tilLesbarDatoMedArstall(
+            sykmelding.friskmelding.utenArbeidsgiverTilbakemelding
+          )}
+          isSubopplysning={true}
+        />
       )}
-    </div>
+    </SykmeldingSeksjon>
   );
 };
 

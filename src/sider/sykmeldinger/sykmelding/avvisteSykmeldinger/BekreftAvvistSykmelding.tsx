@@ -13,7 +13,7 @@ const BekreftAvvistSykmelding = (): ReactElement => {
     <>
       <div>
         <Checkbox
-          className="bekreftLestAvvistSykmelding bekreftCheckboksPanel"
+          className="bekreftCheckboksPanel max-w-md mr-auto ml-auto"
           label={texts.confirmCheckboxLabel}
           disabled
         />

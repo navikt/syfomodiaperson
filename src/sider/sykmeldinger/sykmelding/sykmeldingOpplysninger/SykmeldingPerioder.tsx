@@ -21,11 +21,7 @@ function sorterPerioderEldsteForst(
 export default function SykmeldingPerioder(sykmeldingPerioderProps: Props) {
   const { perioder = [] } = sykmeldingPerioderProps;
   return (
-    <div
-      className={`sykmeldingPerioder ${
-        perioder.length > 1 ? "sykmeldingPerioder--flere" : ""
-      }`}
-    >
+    <div className={`${perioder.length > 1 ? "margin-bottom: 1rem;" : ""}`}>
       {sorterPerioderEldsteForst(perioder).map((periode, index) => {
         return (
           <SykmeldingPeriode
