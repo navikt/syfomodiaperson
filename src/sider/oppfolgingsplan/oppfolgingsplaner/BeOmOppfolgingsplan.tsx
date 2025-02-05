@@ -5,7 +5,9 @@ import {
   Box,
   Button,
   Heading,
+  ReadMore,
 } from "@navikt/ds-react";
+import { PaperplaneIcon } from "@navikt/aksel-icons";
 import React from "react";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
@@ -23,18 +25,24 @@ import {
 } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { useOppfolgingsplanForesporselDocument } from "@/hooks/oppfolgingsplan/useOppfolgingsplanForesporselDocument";
 import { oppfolgingstilfelle } from "../../../../test/aktivitetskrav/vurdering/vurderingTestUtils";
+import LabelAndText from "@/components/LabelAndText";
 
 const texts = {
   aktivForesporsel:
     "Obs! Det ble bedt om oppfølgingsplan fra denne arbeidsgiveren",
-  header: "Be om oppfølgingsplan fra arbeidsgiver",
-  description:
-    "Her kan du be om oppfølgingsplan fra arbeidsgiver eller purre om det mangler.",
+  header: "Be om oppfølgingsplan",
+  description: {
+    info1: "Her kan du be om oppfølgingsplan fra arbeidsgiver.",
+    info2:
+      "Forespørselen blir journalført og vil være tilgjengelig for den sykmeldte på innloggede sider.",
+    info3: "Nærmeste leder vil motta et varsel på e-post.",
+  },
   virksomhet: "Virksomhet:",
   narmesteLeder: "Nærmeste leder:",
-  button: "Be om oppfølgingsplan",
+  button: "Send forespørsel",
   foresporselSendt: "Forespørsel om oppfølgingsplan sendt",
   foresporselFeilet: "Det skjedde en uventet feil. Vennligst prøv igjen senere",
+  readMoreText: "Dette får nærmeste leder tilsendt i e-posten fra Nav",
 };
 
 function logOppfolgingsplanForesporselEvent() {
@@ -45,6 +53,20 @@ function logOppfolgingsplanForesporselEvent() {
       tekst: "Be om oppfølgingsplan",
     },
   });
+}
+
+function ReadMoreContent() {
+  return (
+    <BodyShort className="whitespace-pre-line">
+      {`Hei, \n
+      Nav ber om at du sender inn oppfølgingsplan for en av dine ansatte som er sykmeldt.
+      Logg inn på "Min side - arbeidsgiver". Klikk på varselet i "bjella" for å se hvem det gjelder. \n
+      Har du spørsmål, kan du kontakte oss på 55 55 33 36. \n
+      Vennlig hilsen Nav. \n
+      Du kan ikke svare på denne meldingen.
+      `}
+    </BodyShort>
+  );
 }
 
 interface Props {
@@ -99,27 +121,43 @@ export default function BeOmOppfolgingsplan({
           {aktivForesporselTekst}
         </Alert>
       )}
-      <Box background="surface-default" className="mb-4 flex flex-col p-4">
+      <Box
+        background="surface-default"
+        className="mb-4 flex flex-col p-4 gap-4"
+      >
         <Heading size="small" level="3">
           {texts.header}
         </Heading>
-        <BodyLong className="mb-2">{texts.description}</BodyLong>
-        <BodyShort>
-          {texts.virksomhet} {aktivNarmesteLeder.virksomhetsnavn}
-        </BodyShort>
-        <BodyShort className="mb-2">
-          {texts.narmesteLeder} {aktivNarmesteLeder.narmesteLederNavn}
-        </BodyShort>
+        <div>
+          <BodyLong>{texts.description.info1}</BodyLong>
+          <BodyLong>{texts.description.info2}</BodyLong>
+        </div>
+        <div>
+          <LabelAndText
+            label={texts.virksomhet}
+            text={aktivNarmesteLeder.virksomhetsnavn}
+          />
+          <LabelAndText
+            label={texts.narmesteLeder}
+            text={aktivNarmesteLeder.narmesteLederNavn}
+          />
+        </div>
+        <div>
+          <BodyLong>{texts.description.info3}</BodyLong>
+          <ReadMore header={texts.readMoreText}>
+            <ReadMoreContent />
+          </ReadMore>
+        </div>
         {postOppfolgingsplanForesporsel.isSuccess ? (
           <Alert inline variant="success">
             {texts.foresporselSendt}
           </Alert>
         ) : (
           <Button
-            className="w-fit mb-2"
-            size="small"
+            className="w-fit"
             onClick={onClick}
             loading={postOppfolgingsplanForesporsel.isPending}
+            icon={<PaperplaneIcon />}
           >
             {texts.button}
           </Button>

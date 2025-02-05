@@ -148,10 +148,9 @@ describe("Oppfølgingsplaner visning", () => {
       );
       renderOppfolgingsplanerOversikt([]);
 
-      expect(screen.queryByText("Be om oppfølgingsplan fra arbeidsgiver")).to
-        .not.exist;
-      expect(screen.queryByRole("button", { name: "Be om oppfølgingsplan" })).to
-        .not.exist;
+      expect(screen.queryByText("Be om oppfølgingsplan")).to.not.exist;
+      expect(screen.queryByRole("button", { name: "Send forespørsel" })).to.not
+        .exist;
     });
     it("Viser ikke be om oppfølgingsplan funksjonalitet om sykmeldt har flere arbeidsgivere", () => {
       queryClient.setQueryData(
@@ -162,20 +161,24 @@ describe("Oppfølgingsplaner visning", () => {
 
       expect(screen.getByText("Det er ingen aktive oppfølgingsplaner")).to
         .exist;
-      expect(screen.queryByText("Be om oppfølgingsplan fra arbeidsgiver")).to
-        .not.exist;
-      expect(screen.queryByRole("button", { name: "Be om oppfølgingsplan" })).to
-        .not.exist;
+      expect(screen.queryByText("Be om oppfølgingsplan")).to.not.exist;
+      expect(screen.queryByRole("button", { name: "Send forespørsel" })).to.not
+        .exist;
     });
     it("Viser be om oppfølgingsplan funksjonalitet om det ikke finnes en aktiv oppfølgingsplan", () => {
       renderOppfolgingsplanerOversikt([]);
 
       expect(screen.getByText("Det er ingen aktive oppfølgingsplaner")).to
         .exist;
-      expect(screen.getByText("Be om oppfølgingsplan fra arbeidsgiver")).to
-        .exist;
-      expect(screen.getByRole("button", { name: "Be om oppfølgingsplan" })).to
-        .exist;
+      expect(screen.getByText("Be om oppfølgingsplan")).to.exist;
+      expect(screen.getByText("Nærmeste leder vil motta et varsel på e-post."))
+        .to.exist;
+      expect(
+        screen.queryByRole("button", {
+          name: "Dette får nærmeste leder tilsendt i e-posten fra Nav",
+        })
+      ).to.exist;
+      expect(screen.getByRole("button", { name: "Send forespørsel" })).to.exist;
     });
     it("Viser bekreftelse når bruker sender forespørsel om oppfølgingsplan", async () => {
       queryClient.setQueryData(
@@ -192,7 +195,7 @@ describe("Oppfølgingsplaner visning", () => {
         )
       );
 
-      await clickButton("Be om oppfølgingsplan");
+      await clickButton("Send forespørsel");
 
       await waitFor(() => {
         const oppfolgingspolanForesporselMutation = queryClient
@@ -208,7 +211,7 @@ describe("Oppfølgingsplaner visning", () => {
         });
       });
       expect(screen.getByText("Forespørsel om oppfølgingsplan sendt")).to.exist;
-      expect(screen.queryByText("Be om oppfølgingsplan")).to.not.exist;
+      expect(screen.queryByText("Send forespørsel")).to.not.exist;
     });
     it("Viser feilmelding når forespørsel om oppfølgingsplan feiler", async () => {
       mockServer.use(
@@ -223,10 +226,9 @@ describe("Oppfølgingsplaner visning", () => {
         )
       );
       renderOppfolgingsplanerOversikt([]);
-      expect(screen.getByRole("button", { name: "Be om oppfølgingsplan" })).to
-        .exist;
+      expect(screen.getByRole("button", { name: "Send forespørsel" })).to.exist;
       const beOmOppfolgingsplanButton = screen.getByRole("button", {
-        name: "Be om oppfølgingsplan",
+        name: "Send forespørsel",
       });
 
       await userEvent.click(beOmOppfolgingsplanButton);
@@ -257,16 +259,14 @@ describe("Oppfølgingsplaner visning", () => {
           )}`
         )
       ).to.exist;
-      expect(screen.getByText("Be om oppfølgingsplan fra arbeidsgiver")).to
-        .exist;
+      expect(screen.getByText("Be om oppfølgingsplan")).to.exist;
 
-      expect(screen.getByRole("button", { name: "Be om oppfølgingsplan" })).to
-        .exist;
+      expect(screen.getByRole("button", { name: "Send forespørsel" })).to.exist;
     });
     it("Sender forespørsel om oppfølgingsplan med document", async () => {
       renderOppfolgingsplanerOversikt([]);
 
-      await clickButton("Be om oppfølgingsplan");
+      await clickButton("Send forespørsel");
 
       const expectedForesporselRequest: NewOppfolgingsplanForesporselDTO = {
         arbeidstakerPersonident: ARBEIDSTAKER_DEFAULT.personIdent,
