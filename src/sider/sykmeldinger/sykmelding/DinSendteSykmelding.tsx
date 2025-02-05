@@ -1,6 +1,5 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import ArbeidsgiversSykmelding from "./ArbeidsgiversSykmelding";
 import { SykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingOpplysninger";
 import SykmeldingStatuspanel from "../sykmeldingstatuspanel/SykmeldingStatuspanel";
 import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
@@ -11,17 +10,13 @@ const texts = {
 };
 
 interface Props {
-  dinSykmelding: SykmeldingOldFormat;
-  arbeidsgiversSykmelding: SykmeldingOldFormat;
+  sykmelding: SykmeldingOldFormat;
 }
 
-export function DinSendteSykmelding({
-  dinSykmelding,
-  arbeidsgiversSykmelding,
-}: Props) {
+export function DinSendteSykmelding({ sykmelding }: Props) {
   return (
     <div>
-      <SykmeldingStatuspanel sykmelding={dinSykmelding} />
+      <SykmeldingStatuspanel sykmelding={sykmelding} />
       <SpeilingEkspanderbartPanel
         defaultOpen
         variant="lysebla"
@@ -31,11 +26,8 @@ export function DinSendteSykmelding({
           </SpeilingEkspanderbartPanelTittel>
         }
       >
-        <SykmeldingOpplysninger sykmelding={dinSykmelding} />
+        <SykmeldingOpplysninger sykmelding={sykmelding} />
       </SpeilingEkspanderbartPanel>
-      <div className="blokk--l">
-        <ArbeidsgiversSykmelding sykmelding={arbeidsgiversSykmelding} />
-      </div>
     </div>
   );
 }

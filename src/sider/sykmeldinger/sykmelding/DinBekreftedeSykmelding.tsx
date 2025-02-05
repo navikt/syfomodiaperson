@@ -1,6 +1,5 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import ArbeidsgiversSykmelding from "./ArbeidsgiversSykmelding";
 import BekreftetSykmeldingStatuspanel from "../sykmeldingstatuspanel/BekreftetSykmeldingStatuspanel";
 import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
 import { SpeilingEkspanderbartPanelTittel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanelTittel";
@@ -10,18 +9,14 @@ const texts = {
   tittel: "Dine opplysinger",
 };
 
-interface DinBekreftedeSykmeldingProps {
-  dinSykmelding: SykmeldingOldFormat;
-  arbeidsgiversSykmelding: SykmeldingOldFormat;
+interface Props {
+  sykmelding: SykmeldingOldFormat;
 }
 
-const DinBekreftedeSykmelding = ({
-  dinSykmelding,
-  arbeidsgiversSykmelding,
-}: DinBekreftedeSykmeldingProps) => {
+export default function DinBekreftedeSykmelding({ sykmelding }: Props) {
   return (
     <div>
-      <BekreftetSykmeldingStatuspanel sykmelding={dinSykmelding} />
+      <BekreftetSykmeldingStatuspanel sykmelding={sykmelding} />
       <SpeilingEkspanderbartPanel
         variant="lyselilla"
         defaultOpen
@@ -31,15 +26,8 @@ const DinBekreftedeSykmelding = ({
           </SpeilingEkspanderbartPanelTittel>
         }
       >
-        <SykmeldingOpplysninger sykmelding={dinSykmelding} />
+        <SykmeldingOpplysninger sykmelding={sykmelding} />
       </SpeilingEkspanderbartPanel>
-      {dinSykmelding.valgtArbeidssituasjon === "ARBEIDSTAKER" && (
-        <div className="blokk">
-          <ArbeidsgiversSykmelding sykmelding={arbeidsgiversSykmelding} />
-        </div>
-      )}
     </div>
   );
-};
-
-export default DinBekreftedeSykmelding;
+}
