@@ -48,6 +48,8 @@ export default function MotebehovKvitteringInnhold({
             <i>{motebehov?.motebehovSvar?.forklaring}</i>
           </VStack>
         )}
+        {motebehov?.behandletTidspunkt &&
+          "Behandlet: " + motebehov?.behandletTidspunkt}
       </VStack>
     </div>
   );

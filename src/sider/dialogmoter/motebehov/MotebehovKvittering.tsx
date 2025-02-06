@@ -1,12 +1,15 @@
 import React from "react";
 import {
-  finnArbeidstakerMotebehovSvar,
-  motebehovFromLatestActiveTilfelle,
+  isArbeidstakerMotebehov,
+  getUbehandletSvarOgMeldtBehov,
   sorterMotebehovDataEtterDato,
+  getMotebehovInActiveTilfelle,
 } from "@/utils/motebehovUtils";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
-import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
-import { ledereUtenMotebehovsvar } from "@/utils/ledereUtils";
+import {
+  MotebehovSkjemaType,
+  MotebehovVeilederDTO,
+} from "@/data/motebehov/types/motebehovTypes";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 import { capitalizeAllWords } from "@/utils/stringUtils";
@@ -14,21 +17,31 @@ import MotebehovKvitteringInnhold from "@/sider/dialogmoter/motebehov/MotebehovK
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import { activeNarmesteLederForCurrentOppfolgingstilfelle } from "@/sider/oppfolgingsplan/oppfolgingsplaner/AktiveOppfolgingsplaner";
+import { BodyShort } from "@navikt/ds-react";
 
 export const arbeidsgiverNavnEllerTomStreng = (lederNavn: string | null) => {
   return lederNavn ? `${lederNavn}` : "";
 };
 
-export const setSvarTekst = (deltakerOnskerMote?: boolean) => {
+export const setSvarTekst = (
+  skjemaType: MotebehovSkjemaType | null,
+  deltakerOnskerMote?: boolean
+) => {
   switch (deltakerOnskerMote) {
     case true: {
-      return " har svart JA";
+      return skjemaType === MotebehovSkjemaType.SVAR_BEHOV
+        ? " har svart JA"
+        : " har meldt behov";
     }
     case false: {
       return " har svart NEI";
     }
     default: {
-      return " har ikke svart";
+      return skjemaType === MotebehovSkjemaType.SVAR_BEHOV
+        ? " har ikke svart"
+        : " har ikke meldt behov";
     }
   }
 };
@@ -47,17 +60,14 @@ const ikonAlternativTekst = (deltakerOnskerMote?: boolean) => {
   }
 };
 
-export const bareArbeidsgiversMotebehov = (motebehov: MotebehovVeilederDTO) => {
-  return motebehov.opprettetAv !== motebehov.aktorId;
-};
-
 const composePersonSvarText = (
   personIngress: string,
+  skjemaType: MotebehovSkjemaType | null,
   personNavn?: string,
   harMotebehov?: boolean,
   svarOpprettetDato?: Date
 ) => {
-  const svarResultat = setSvarTekst(harMotebehov);
+  const svarResultat = setSvarTekst(skjemaType, harMotebehov);
   const opprettetDato = svarOpprettetDato
     ? " - " + tilLesbarDatoMedArUtenManedNavn(svarOpprettetDato)
     : undefined;
@@ -71,10 +81,12 @@ const composePersonSvarText = (
 
 interface MotebehovKvitteringInnholdArbeidstakerProps {
   arbeidstakersMotebehov: MotebehovVeilederDTO | undefined;
+  skjemaType?: MotebehovSkjemaType | null;
 }
 
 export const MotebehovKvitteringInnholdArbeidstaker = ({
   arbeidstakersMotebehov,
+  skjemaType,
 }: MotebehovKvitteringInnholdArbeidstakerProps) => {
   const sykmeldt = useNavBrukerData();
   const arbeidstakerOnskerMote =
@@ -82,6 +94,7 @@ export const MotebehovKvitteringInnholdArbeidstaker = ({
 
   const arbeidstakerTekst = composePersonSvarText(
     "Den sykmeldte: ",
+    skjemaType ?? arbeidstakersMotebehov?.skjemaType ?? null,
     sykmeldt?.navn ? capitalizeAllWords(sykmeldt.navn) : sykmeldt?.navn,
     arbeidstakerOnskerMote,
     arbeidstakersMotebehov?.opprettetDato
@@ -103,11 +116,13 @@ export const MotebehovKvitteringInnholdArbeidstaker = ({
 
 export const composeArbeidsgiverSvarText = (
   lederNavn: string | null,
+  skjemaType: MotebehovSkjemaType | null,
   harMotebehov?: boolean,
   svarOpprettetDato?: Date
 ) => {
   return composePersonSvarText(
     "Nærmeste leder: ",
+    skjemaType,
     arbeidsgiverNavnEllerTomStreng(capitalizeAllWords(lederNavn || "")),
     harMotebehov,
     svarOpprettetDato
@@ -116,12 +131,14 @@ export const composeArbeidsgiverSvarText = (
 
 export function MotebehovArbeidsgiverKvittering({
   motebehov,
+  skjemaType,
 }: {
-  motebehov: MotebehovVeilederDTO;
+  motebehov: MotebehovVeilederDTO | undefined;
+  skjemaType?: MotebehovSkjemaType | null;
 }) {
-  const arbeidsgiverOnskerMote = motebehov.motebehovSvar?.harMotebehov;
+  const arbeidsgiverOnskerMote = motebehov?.motebehovSvar?.harMotebehov;
   const ikonAltTekst = `Arbeidsgiver ${arbeidsgiverNavnEllerTomStreng(
-    motebehov.opprettetAvNavn
+    motebehov?.opprettetAvNavn ?? null
   )} ${ikonAlternativTekst(arbeidsgiverOnskerMote)}`;
 
   return (
@@ -130,9 +147,10 @@ export function MotebehovArbeidsgiverKvittering({
       ikonAltTekst={ikonAltTekst}
       motebehov={motebehov}
       tekst={composeArbeidsgiverSvarText(
-        motebehov.opprettetAvNavn,
+        motebehov?.opprettetAvNavn ?? null,
+        skjemaType ?? motebehov?.skjemaType ?? null,
         arbeidsgiverOnskerMote,
-        motebehov.opprettetDato
+        motebehov?.opprettetDato
       )}
     />
   );
@@ -140,10 +158,12 @@ export function MotebehovArbeidsgiverKvittering({
 
 interface MotebehovKvitteringInnholdArbeidsgiverUtenMotebehovProps {
   ledereUtenInnsendtMotebehov: NarmesteLederRelasjonDTO[];
+  skjemaType: MotebehovSkjemaType | null;
 }
 
 export const MotebehovKvitteringInnholdArbeidsgiverUtenMotebehov = ({
   ledereUtenInnsendtMotebehov,
+  skjemaType,
 }: MotebehovKvitteringInnholdArbeidsgiverUtenMotebehovProps) => (
   <>
     {ledereUtenInnsendtMotebehov.map(
@@ -155,7 +175,10 @@ export const MotebehovKvitteringInnholdArbeidsgiverUtenMotebehov = ({
           <MotebehovKvitteringInnhold
             key={index}
             ikonAltTekst={ikonAltTekst}
-            tekst={composeArbeidsgiverSvarText(leder.narmesteLederNavn)}
+            tekst={composeArbeidsgiverSvarText(
+              leder.narmesteLederNavn,
+              skjemaType
+            )}
           />
         );
       }
@@ -163,39 +186,131 @@ export const MotebehovKvitteringInnholdArbeidsgiverUtenMotebehov = ({
   </>
 );
 
-export default function MotebehovKvittering() {
-  const { data: motebehov } = useMotebehovQuery();
-  const { currentLedere } = useLedereQuery();
-
-  const { tilfellerDescendingStart, latestOppfolgingstilfelle } =
-    useOppfolgingstilfellePersonQuery();
-
-  const aktiveMotebehovSvar = motebehovFromLatestActiveTilfelle(
-    motebehov?.sort(sorterMotebehovDataEtterDato),
-    latestOppfolgingstilfelle
+function MotebehovInCurrentTilfelle({
+  motebehovInTilfelle,
+  oppfolgingstilfelle,
+}: {
+  motebehovInTilfelle: MotebehovVeilederDTO[];
+  oppfolgingstilfelle: OppfolgingstilfelleDTO;
+}) {
+  const motebehovArbeidstaker = motebehovInTilfelle.find(
+    isArbeidstakerMotebehov
+  );
+  const motebehovArbeidsgiver = motebehovInTilfelle.find(
+    (motebehov) => !isArbeidstakerMotebehov(motebehov)
   );
 
-  const ledereUtenInnsendtMotebehov = ledereUtenMotebehovsvar(
-    currentLedere,
-    motebehov,
-    tilfellerDescendingStart || []
-  );
+  function findSkjemaType(motebehov: MotebehovVeilederDTO | undefined) {
+    if (motebehovArbeidstaker && motebehovArbeidsgiver) {
+      return motebehov?.skjemaType;
+    } else if (motebehovArbeidstaker && !motebehovArbeidsgiver) {
+      return motebehovArbeidstaker?.skjemaType;
+    } else if (motebehovArbeidsgiver && !motebehovArbeidstaker) {
+      return motebehovArbeidsgiver?.skjemaType;
+    } else {
+      return undefined;
+    }
+  }
 
   return (
     <div>
       <MotebehovKvitteringInnholdArbeidstaker
-        arbeidstakersMotebehov={finnArbeidstakerMotebehovSvar(
-          aktiveMotebehovSvar
-        )}
+        arbeidstakersMotebehov={motebehovArbeidstaker}
+        skjemaType={findSkjemaType(motebehovArbeidstaker) ?? null}
       />
-      {aktiveMotebehovSvar
-        .filter(bareArbeidsgiversMotebehov)
-        .map((motebehov, index) => (
-          <MotebehovArbeidsgiverKvittering motebehov={motebehov} key={index} />
-        ))}
-      <MotebehovKvitteringInnholdArbeidsgiverUtenMotebehov
-        ledereUtenInnsendtMotebehov={ledereUtenInnsendtMotebehov}
+      <MotebehovArbeidsgiverInCurrentTilfelle
+        motebehov={motebehovArbeidsgiver}
+        oppfolgingstilfelle={oppfolgingstilfelle}
+        skjemaType={findSkjemaType(motebehovArbeidstaker) ?? null}
       />
     </div>
+  );
+}
+
+function MotebehovArbeidsgiverInCurrentTilfelle({
+  motebehov,
+  oppfolgingstilfelle,
+  skjemaType,
+}: {
+  motebehov: MotebehovVeilederDTO | undefined;
+  oppfolgingstilfelle: OppfolgingstilfelleDTO;
+  skjemaType: MotebehovSkjemaType | null;
+}) {
+  const { currentLedere } = useLedereQuery();
+  const ledereInCurrentTilfelle =
+    activeNarmesteLederForCurrentOppfolgingstilfelle(
+      currentLedere,
+      oppfolgingstilfelle
+    );
+
+  return motebehov ? (
+    <MotebehovArbeidsgiverKvittering
+      motebehov={motebehov}
+      skjemaType={motebehov?.skjemaType ?? null}
+    />
+  ) : (
+    <MotebehovKvitteringInnholdArbeidsgiverUtenMotebehov
+      ledereUtenInnsendtMotebehov={ledereInCurrentTilfelle}
+      skjemaType={skjemaType}
+    />
+  );
+}
+
+function UbehandledeMotebehovUtenforTilfelle({
+  sorterteMotebehov,
+}: {
+  sorterteMotebehov: MotebehovVeilederDTO[];
+}) {
+  const ubehandledeEldreMotebehov =
+    getUbehandletSvarOgMeldtBehov(sorterteMotebehov);
+  const motebehovArbeidstaker = ubehandledeEldreMotebehov.find(
+    isArbeidstakerMotebehov
+  );
+  const motebehovArbeidsgiver = ubehandledeEldreMotebehov.find(
+    (motebehov) => !isArbeidstakerMotebehov(motebehov)
+  );
+
+  return (
+    <div>
+      {(motebehovArbeidstaker || motebehovArbeidsgiver) && (
+        <BodyShort>
+          Ubehandlede møtebehov fra tidligere oppfølgingstilfelle
+        </BodyShort>
+      )}
+      {motebehovArbeidstaker && (
+        <MotebehovKvitteringInnholdArbeidstaker
+          arbeidstakersMotebehov={motebehovArbeidstaker}
+          skjemaType={motebehovArbeidstaker?.skjemaType ?? null}
+        />
+      )}
+      {motebehovArbeidsgiver && (
+        <MotebehovArbeidsgiverKvittering
+          motebehov={motebehovArbeidsgiver}
+          skjemaType={motebehovArbeidsgiver?.skjemaType ?? null}
+        />
+      )}
+    </div>
+  );
+}
+
+export default function MotebehovKvittering() {
+  const { data: motebehov } = useMotebehovQuery();
+
+  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+
+  const sortertMotebehov = motebehov.sort(sorterMotebehovDataEtterDato);
+
+  const motebehovInActiveTilfelle = getMotebehovInActiveTilfelle(
+    sortertMotebehov,
+    latestOppfolgingstilfelle
+  );
+
+  return motebehovInActiveTilfelle.length > 0 && latestOppfolgingstilfelle ? (
+    <MotebehovInCurrentTilfelle
+      motebehovInTilfelle={motebehovInActiveTilfelle}
+      oppfolgingstilfelle={latestOppfolgingstilfelle}
+    />
+  ) : (
+    <UbehandledeMotebehovUtenforTilfelle sorterteMotebehov={sortertMotebehov} />
   );
 }
