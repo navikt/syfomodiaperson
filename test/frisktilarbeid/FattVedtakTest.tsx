@@ -128,6 +128,32 @@ describe("FattVedtakSkjema", () => {
     expect(await screen.findByText("Vennligst angi dato")).to.exist;
   });
 
+  it("validerer fra-dato kan ikke være etter til-dato", async () => {
+    const maksdato = {
+      maxDate: {
+        ...maksdatoMock.maxDate,
+        forelopig_beregnet_slutt: threeWeeksAgo.toDate(),
+      },
+    };
+
+    queryClient.setQueryData(
+      maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => maksdato
+    );
+    renderFattVedtakSkjema();
+
+    const begrunnelseInput = getTextInput("Begrunnelse");
+    changeTextInput(begrunnelseInput, enBegrunnelse);
+
+    const fraDato = getTextInput("Friskmeldingen gjelder fra");
+    changeTextInput(fraDato, today.format("DD.MM.YYYY"));
+
+    await clickButton("Fatt vedtak");
+
+    expect(await screen.findByText("Dato kan ikke være etter til-dato")).to
+      .exist;
+  });
+
   it("fatter vedtak med verdier fra skjema", async () => {
     renderFattVedtakSkjema();
 
