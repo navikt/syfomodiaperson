@@ -8,6 +8,7 @@ import {
   HelpText,
   Textarea,
   useDatepicker,
+  VStack,
 } from "@navikt/ds-react";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { FormProvider, useForm } from "react-hook-form";
@@ -133,13 +134,8 @@ export function FattVedtakSkjema() {
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-8">
           <div className="flex flex-col gap-6">
-            <VedtakFraDato />
-            <div>
-              {tilDatoIsMaxDato && (
-                <Alert variant="warning" size="small" className="w-fit mb-2">
-                  {texts.maksdatoWarning(dayjs(tilDato).format("DD.MM.YYYY"))}
-                </Alert>
-              )}
+            <VedtakFraDato tilDato={tilDato} />
+            <VStack gap="2">
               <DatePicker {...tilDatoDatePicker.datepickerProps}>
                 <DatePicker.Input
                   value={tilDato ? dayjs(tilDato).format("DD.MM.YYYY") : ""}
@@ -148,7 +144,12 @@ export function FattVedtakSkjema() {
                   readOnly
                 />
               </DatePicker>
-            </div>
+              {tilDatoIsMaxDato && (
+                <Alert variant="warning" size="small" className="w-fit">
+                  {texts.maksdatoWarning(dayjs(tilDato).format("DD.MM.YYYY"))}
+                </Alert>
+              )}
+            </VStack>
             <Textarea
               {...register("begrunnelse", {
                 required: texts.begrunnelse.missing,
