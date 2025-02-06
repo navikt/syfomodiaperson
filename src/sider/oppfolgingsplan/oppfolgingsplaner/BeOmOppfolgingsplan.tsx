@@ -55,6 +55,18 @@ function logOppfolgingsplanForesporselEvent() {
   });
 }
 
+function logReadMoreClick(isOpened: boolean) {
+  if (isOpened) {
+    Amplitude.logEvent({
+      type: Amplitude.EventType.ButtonClick,
+      data: {
+        url: window.location.href,
+        tekst: "Åpne ReadMore for innhold epost",
+      },
+    });
+  }
+}
+
 function ReadMoreContent() {
   return (
     <BodyShort className="whitespace-pre-line">
@@ -144,7 +156,7 @@ export default function BeOmOppfolgingsplan({
         </div>
         <div>
           <BodyLong>{texts.description.info3}</BodyLong>
-          <ReadMore header={texts.readMoreText}>
+          <ReadMore header={texts.readMoreText} onOpenChange={logReadMoreClick}>
             <ReadMoreContent />
           </ReadMore>
         </div>
