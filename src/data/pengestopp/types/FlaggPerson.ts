@@ -35,6 +35,7 @@ export interface EnhetNr {
   value: string;
 }
 
+/* Skal ikke lenger kunne velges (fra april 24). Oppgavene er overført fra NAV-kontor til NAY. */
 export enum DeprecatedSykepengestoppArsakType {
   BESTRIDELSE_SYKMELDING = "BESTRIDELSE_SYKMELDING",
   TILBAKEDATERT_SYKMELDING = "TILBAKEDATERT_SYKMELDING",
