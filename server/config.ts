@@ -411,10 +411,13 @@ export const auth = {
   },
 };
 
-export const redis = {
-  uri: envVar({ name: "REDIS_URI_CACHE", defaultValue: "" }),
-  username: envVar({ name: "REDIS_USERNAME_CACHE", defaultValue: "" }),
-  password: envVar({ name: "REDIS_PASSWORD_CACHE", defaultValue: "" }),
+export const valkey = {
+  uri: envVar({ name: "VALKEY_URI_CACHE", defaultValue: "" }).replace(
+    "valkeys",
+    "rediss"
+  ),
+  username: envVar({ name: "VALKEY_USERNAME_CACHE", defaultValue: "" }),
+  password: envVar({ name: "VALKEY_PASSWORD_CACHE", defaultValue: "" }),
   database: 18,
 };
 

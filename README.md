@@ -29,9 +29,9 @@ $ cp .env.template .env # for å sette opp lokale miljøvariabler
 $ npm install # installerer avhengigheter
 ```
 
-## Redis Cache
+## Valkey Cache
 
-Bruker teamsykefravr sin felles Redis-cache på Aiven for å cache bruker-sessions.
+Bruker teamsykefravr sin felles Valkey-cache på Aiven for å cache bruker-sessions.
 
 ## Event tracking
 
