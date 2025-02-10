@@ -430,7 +430,7 @@ module.exports = {
   auth: auth,
   isDev: isDev,
   isProd: isProd,
-  redis: redis,
+  valkey: valkey,
   unleash: unleash,
   server: server,
 };
