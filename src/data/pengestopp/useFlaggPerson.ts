@@ -8,23 +8,45 @@ import {
   StoppAutomatikk,
 } from "@/data/pengestopp/types/FlaggPerson";
 import { pengestoppStatusQueryKeys } from "@/data/pengestopp/pengestoppQueryHooks";
+import { PengestoppFormValues } from "@/components/pengestopp/PengestoppModal";
+import { useValgtEnhet } from "@/context/ValgtEnhetContext";
+
+function toStoppAutomatikk(
+  fnr: string,
+  { arsaker, orgnummer }: PengestoppFormValues,
+  valgtEnhet: string
+): StoppAutomatikk {
+  const orgNummerlist = Array.isArray(orgnummer) ? orgnummer : [orgnummer];
+  return {
+    sykmeldtFnr: { value: fnr },
+    arsakList: arsaker.map((arsak) => ({ type: arsak })),
+    virksomhetNr: orgNummerlist.map((orgnummer) => ({
+      value: orgnummer,
+    })),
+    enhetNr: { value: valgtEnhet },
+  };
+}
 
 export const useFlaggPerson = () => {
+  const { valgtEnhet } = useValgtEnhet();
   const fnr = useValgtPersonident();
   const queryClient = useQueryClient();
-  const postFlaggPerson = (stoppAutomatikk: StoppAutomatikk) =>
-    post(`${ISPENGESTOPP_ROOT}/person/flagg`, stoppAutomatikk);
+  const postFlaggPerson = (values: PengestoppFormValues) => {
+    const stoppAutomatikk = toStoppAutomatikk(fnr, values, valgtEnhet);
+    return post(`${ISPENGESTOPP_ROOT}/person/flagg`, stoppAutomatikk);
+  };
   const pengestoppStatusQueryKey =
     pengestoppStatusQueryKeys.pengestoppStatus(fnr);
 
   return useMutation({
     mutationFn: postFlaggPerson,
-    onSuccess: (_, stoppAutomatikk) => {
+    onSuccess: (_, values) => {
       const previousStatusEndring =
         queryClient.getQueryData<StatusEndring[]>(pengestoppStatusQueryKey) ||
         [];
-      const updatedStatusEndring =
-        stoppAutomatikk2StatusEndring(stoppAutomatikk);
+      const updatedStatusEndring = stoppAutomatikk2StatusEndring(
+        toStoppAutomatikk(fnr, values, valgtEnhet)
+      );
       queryClient.setQueryData(pengestoppStatusQueryKey, [
         ...updatedStatusEndring,
         ...previousStatusEndring,

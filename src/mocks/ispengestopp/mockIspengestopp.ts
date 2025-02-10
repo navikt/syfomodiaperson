@@ -17,13 +17,6 @@ export const mockIspengestopp = [
       const body = await request.json();
       STATUSLIST = createStatusList(new Date(), body);
 
-      const stoppAutomatikk =
-        body.sykmeldtFnr && body.virksomhetNr && body.enhetNr;
-      console.error(stoppAutomatikk, {
-        stoppAutomatikk,
-        errorMsg: "invalid stoppAutomatikk object",
-      });
-      console.log("StoppAutomatikk: 201 CREATED");
       return new HttpResponse(null, { status: 201 });
     }
   ),

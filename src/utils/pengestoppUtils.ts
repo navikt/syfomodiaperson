@@ -1,15 +1,9 @@
-import {
-  Arbeidsgiver,
-  Status,
-  StatusEndring,
-  SykepengestoppArsak,
-} from "@/data/pengestopp/types/FlaggPerson";
+import { Arbeidsgiver } from "@/data/pengestopp/types/FlaggPerson";
 import { senesteTom } from "./periodeUtils";
 import {
   SykmeldingOldFormat,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { sykepengestoppArsakTekstListe } from "@/components/pengestopp/PengestoppModal";
 
 export const sykmeldingerToArbeidsgiver = (
   sykmeldinger: SykmeldingOldFormat[]
@@ -33,15 +27,6 @@ export const uniqueArbeidsgivere = (
     );
   });
 };
-
-export const allStoppAutomatikkStatusEndringer = (
-  statusEndringer: StatusEndring[]
-) => {
-  return statusEndringer.filter((statusEndring) => {
-    return statusEndring.status === Status.STOPP_AUTOMATIKK;
-  });
-};
-
 export const aktiveSykmeldingerFraSiste3Maneder = (
   sykmeldinger: SykmeldingOldFormat[]
 ) => {
@@ -65,23 +50,4 @@ export const unikeArbeidsgivereMedSykmeldingSiste3Maneder = (
   );
 
   return uniqueArbeidsgivere(arbeidsgiverFromSykmeldinger);
-};
-
-export const displayArsakText = (arsakList: SykepengestoppArsak[]) => {
-  return `Årsak: ${arsakList
-    .map((arsak) => {
-      return sykepengestoppArsakTekstListe.find((arsakTekst) => {
-        return arsakTekst.type === arsak.type;
-      })?.text;
-    })
-    .join(", ")}.`;
-};
-
-export const displayArbeidsgiverNavn = (
-  allArbeidsgivere: Arbeidsgiver[],
-  statusEndring: StatusEndring
-) => {
-  return allArbeidsgivere.find(
-    (ag: Arbeidsgiver) => ag.orgnummer === statusEndring.virksomhetNr.value
-  )?.navn;
 };

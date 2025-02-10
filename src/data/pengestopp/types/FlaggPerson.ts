@@ -35,13 +35,43 @@ export interface EnhetNr {
   value: string;
 }
 
-export enum SykepengestoppArsakType {
+export enum DeprecatedSykepengestoppArsakType {
   BESTRIDELSE_SYKMELDING = "BESTRIDELSE_SYKMELDING",
+  TILBAKEDATERT_SYKMELDING = "TILBAKEDATERT_SYKMELDING",
+}
+
+export enum ValidSykepengestoppArsakType {
   MEDISINSK_VILKAR = "MEDISINSK_VILKAR",
   AKTIVITETSKRAV = "AKTIVITETSKRAV",
-  TILBAKEDATERT_SYKMELDING = "TILBAKEDATERT_SYKMELDING",
   MANGLENDE_MEDVIRKING = "MANGLENDE_MEDVIRKING",
 }
+
+export type SykepengestoppArsakType =
+  | DeprecatedSykepengestoppArsakType
+  | ValidSykepengestoppArsakType;
+
+export const validSykepengestoppArsakTekster: Record<
+  ValidSykepengestoppArsakType,
+  string
+> = {
+  [ValidSykepengestoppArsakType.MEDISINSK_VILKAR]:
+    "Medisinsk vilkår (§ 8-4 første ledd)",
+  [ValidSykepengestoppArsakType.MANGLENDE_MEDVIRKING]:
+    "Manglende medvirkning (§ 8-8 første ledd)",
+  [ValidSykepengestoppArsakType.AKTIVITETSKRAV]:
+    "Aktivitetskravet (§ 8-8 andre ledd)",
+};
+
+export const sykepengestoppArsakTekster: Record<
+  SykepengestoppArsakType,
+  string
+> = {
+  ...validSykepengestoppArsakTekster,
+  [DeprecatedSykepengestoppArsakType.BESTRIDELSE_SYKMELDING]:
+    "Bestridelse av sykmelding (§ 8-4 første ledd)",
+  [DeprecatedSykepengestoppArsakType.TILBAKEDATERT_SYKMELDING]:
+    "Tilbakedatert sykmelding (§ 8-7)",
+};
 
 export interface SykepengestoppArsak {
   type: SykepengestoppArsakType;
