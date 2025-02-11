@@ -38,7 +38,7 @@ export const tabTexts = {
   [AktivitetskravStatus.UNNTAK]: "Sett unntak",
   [AktivitetskravStatus.OPPFYLT]: "Er i aktivitet",
   [AktivitetskravStatus.FORHANDSVARSEL]: "Send forhåndsvarsel",
-  [AktivitetskravStatus.IKKE_OPPFYLT]: "Ikke oppfylt",
+  [AktivitetskravStatus.INNSTILLING_OM_STANS]: "Innstilling om stans",
 };
 
 export const enLangBeskrivelse = "Her er en beskrivelse" + "t".repeat(900);

@@ -19,13 +19,13 @@ const texts = {
     "Fristen er gått ut og aktivitetskravet må vurderes.",
 };
 
-interface AktivitetskravVurderingAlertProps {
+interface Props {
   vurdering: AktivitetskravVurderingDTO;
 }
 
-export const AktivitetskravVurderingAlert = ({
+export function AktivitetskravVurderingAlert({
   vurdering,
-}: AktivitetskravVurderingAlertProps): ReactElement | null => {
+}: Props): ReactElement | null {
   const { status, beskrivelse, arsaker, frist, createdAt } = vurdering;
   const vurderingDato = tilLesbarDatoMedArUtenManedNavn(createdAt);
 
@@ -68,4 +68,4 @@ export const AktivitetskravVurderingAlert = ({
       throw new Error(`Not supported`);
     }
   }
-};
+}

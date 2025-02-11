@@ -30,6 +30,7 @@ import {
   AvventVurderingArsak,
   CreateAktivitetskravVurderingDTO,
   IkkeAktuellArsak,
+  InnstillingOmStansVurderingDTO,
   OppfyltVurderingArsak,
   UnntakVurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
@@ -40,7 +41,8 @@ import {
   getIkkeAktuellDocument,
   getOppfyltDocument,
   getUnntakDocument,
-} from "../varselDocuments";
+  innstillingOmStansDocument,
+} from "../vurderingDocumentsTestUtils";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { stubVurderAktivitetskravApi } from "../../stubs/stubIsaktivitetskrav";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
@@ -104,7 +106,8 @@ describe("VurderAktivitetskrav", () => {
     expect(screen.queryByRole("tab", { name: "Er i aktivitet" })).to.exist;
     expect(screen.queryByRole("tab", { name: "Send forhåndsvarsel" })).to.not
       .exist;
-    expect(screen.queryByRole("tab", { name: "Ikke oppfylt" })).to.exist;
+    expect(screen.queryByRole("tab", { name: "Innstilling om stans" })).to
+      .exist;
   });
 
   it("renders periode for oppfølgingstilfelle", () => {
@@ -406,6 +409,58 @@ describe("VurderAktivitetskrav", () => {
       });
     });
   });
+
+  describe("Innstilling om stans", () => {
+    it("får valideringersfeil uten stansdato og begrunnelse", async () => {
+      renderVurderAktivitetskrav(expiredForhandsvarselAktivitetskrav);
+      stubVurderAktivitetskravApi(expiredForhandsvarselAktivitetskrav.uuid);
+
+      await clickTab("Innstilling om stans");
+
+      await clickButton("Send innstilling");
+
+      expect(await screen.findByText("Vennligst angi dato for stans")).to.exist;
+      expect(await screen.findByText("Vennligst angi begrunnelse")).to.exist;
+    });
+    it("sender vurdering med verdier fra skjema", async () => {
+      renderVurderAktivitetskrav(expiredForhandsvarselAktivitetskrav);
+      stubVurderAktivitetskravApi(expiredForhandsvarselAktivitetskrav.uuid);
+
+      await clickTab("Innstilling om stans");
+
+      expect(screen.getByRole("heading", { name: "Innstilling om stans" })).to
+        .exist;
+
+      const today = dayjs();
+      const datoInput = screen.getByRole("textbox", {
+        name: "Velg dato for stans (obligatorisk)",
+        hidden: true,
+      });
+      changeTextInput(datoInput, today.format("DD.MM.YYYY"));
+
+      const beskrivelseInput = getTextInput("Begrunnelse (obligatorisk)");
+      const beskrivelse = "Flott beskrivelse";
+      changeTextInput(beskrivelseInput, beskrivelse);
+
+      await clickButton("Send innstilling");
+
+      const innstillingOmStansMutation = queryClient
+        .getMutationCache()
+        .getAll()[0];
+      const expectedVurdering: InnstillingOmStansVurderingDTO = {
+        status: AktivitetskravStatus.INNSTILLING_OM_STANS,
+        stansFom: today.toDate(),
+        beskrivelse: beskrivelse,
+        document: innstillingOmStansDocument(beskrivelse),
+      };
+      expect(innstillingOmStansMutation.state.variables).to.deep.include({
+        status: expectedVurdering.status,
+        beskrivelse: expectedVurdering.beskrivelse,
+        document: expectedVurdering.document,
+      });
+    });
+  });
+
   describe("Vurdering alert", () => {
     it("viser alert for aktivitetskrav med siste vurdering AVVENT", () => {
       const aktivitetskravAvvent = createAktivitetskrav(
