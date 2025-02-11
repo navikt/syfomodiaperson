@@ -1,8 +1,10 @@
 import * as React from "react";
-import { StatusEndring } from "@/data/pengestopp/types/FlaggPerson";
 import {
-  displayArbeidsgiverNavn,
-  displayArsakText,
+  Arbeidsgiver,
+  StatusEndring,
+  sykepengestoppArsakTekster,
+} from "@/data/pengestopp/types/FlaggPerson";
+import {
   sykmeldingerToArbeidsgiver,
   uniqueArbeidsgivere,
 } from "@/utils/pengestoppUtils";
@@ -10,18 +12,27 @@ import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat
 import { texts } from "./Pengestopp";
 import { Box, Heading, Label } from "@navikt/ds-react";
 
-interface IPengestoppDropdown {
+interface Props {
   statusEndringList: StatusEndring[];
   sykmeldinger: SykmeldingOldFormat[];
 }
 
-const PengestoppHistorikk = ({
-  statusEndringList,
-  sykmeldinger,
-}: IPengestoppDropdown) => {
+const PengestoppHistorikk = ({ statusEndringList, sykmeldinger }: Props) => {
   const allArbeidsgivere = uniqueArbeidsgivere(
     sykmeldingerToArbeidsgiver(sykmeldinger)
   );
+
+  function getArbeidsgiverNavn(statusEndring: StatusEndring) {
+    return allArbeidsgivere.find(
+      (ag: Arbeidsgiver) => ag.orgnummer === statusEndring.virksomhetNr.value
+    )?.navn;
+  }
+
+  function getArsakText(statusEndring: StatusEndring) {
+    return `Årsak: ${statusEndring.arsakList
+      .map((arsak) => sykepengestoppArsakTekster[arsak.type])
+      .join(", ")}.`;
+  }
 
   return (
     <>
@@ -41,11 +52,11 @@ const PengestoppHistorikk = ({
               opprettet.getMonth() + 1
             }.${opprettet.getFullYear()} · Gjelder for:
             
-            ${displayArbeidsgiverNavn(allArbeidsgivere, statusEndring)}
+            ${getArbeidsgiverNavn(statusEndring)}
            `}</Label>
             <p>
               {statusEndring.arsakList?.length > 0 &&
-                displayArsakText(statusEndring.arsakList)}
+                getArsakText(statusEndring)}
             </p>
           </Box>
         );

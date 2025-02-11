@@ -13,9 +13,10 @@ import {
   VIRKSOMHET_PONTYPANDY,
 } from "@/mocks/common/mockConstants";
 import {
+  DeprecatedSykepengestoppArsakType,
   Status,
   StatusEndring,
-  SykepengestoppArsakType,
+  ValidSykepengestoppArsakType,
 } from "@/data/pengestopp/types/FlaggPerson";
 import { expect, describe, it, beforeEach } from "vitest";
 
@@ -29,18 +30,22 @@ const defaultStatusEndring = {
     value: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
   },
   sykmeldtFnr: { value: ARBEIDSTAKER_DEFAULT.personIdent },
-  arsakList: [{ type: SykepengestoppArsakType.BESTRIDELSE_SYKMELDING }],
+  arsakList: [
+    { type: DeprecatedSykepengestoppArsakType.BESTRIDELSE_SYKMELDING },
+  ],
   status: Status.STOPP_AUTOMATIKK,
 };
 const pengestoppHistorikk: StatusEndring[] = [
   defaultStatusEndring,
   {
     ...defaultStatusEndring,
-    arsakList: [{ type: SykepengestoppArsakType.TILBAKEDATERT_SYKMELDING }],
+    arsakList: [
+      { type: DeprecatedSykepengestoppArsakType.TILBAKEDATERT_SYKMELDING },
+    ],
   },
   {
     ...defaultStatusEndring,
-    arsakList: [{ type: SykepengestoppArsakType.MEDISINSK_VILKAR }],
+    arsakList: [{ type: ValidSykepengestoppArsakType.MEDISINSK_VILKAR }],
   },
 ];
 

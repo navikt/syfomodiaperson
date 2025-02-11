@@ -1,15 +1,10 @@
 import * as React from "react";
-import { useState } from "react";
 import {
   Arbeidsgiver,
-  StoppAutomatikk,
-  SykepengestoppArsak,
   SykepengestoppArsakType,
-  VirksomhetNr,
+  validSykepengestoppArsakTekster,
 } from "@/data/pengestopp/types/FlaggPerson";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useFlaggPerson } from "@/data/pengestopp/useFlaggPerson";
-import { useValgtEnhet } from "@/context/ValgtEnhetContext";
 import {
   Alert,
   Button,
@@ -19,6 +14,7 @@ import {
   Heading,
   Modal,
 } from "@navikt/ds-react";
+import { useForm } from "react-hook-form";
 
 const texts = {
   notStoppedTittel:
@@ -47,167 +43,104 @@ interface Props {
   onModalClose(): void;
 }
 
-interface SykepengestoppArsakTekst {
-  type: SykepengestoppArsakType;
-  text: string;
-  selectable: boolean;
+export interface PengestoppFormValues {
+  arsaker: SykepengestoppArsakType[];
+  orgnummer: string[];
 }
 
-export const sykepengestoppArsakTekstListe: SykepengestoppArsakTekst[] = [
-  {
-    type: SykepengestoppArsakType.BESTRIDELSE_SYKMELDING,
-    text: "Bestridelse av sykmelding (§ 8-4 første ledd)",
-    selectable: false,
-  },
-  {
-    type: SykepengestoppArsakType.MEDISINSK_VILKAR,
-    text: "Medisinsk vilkår (§ 8-4 første ledd)",
-    selectable: true,
-  },
-  {
-    type: SykepengestoppArsakType.TILBAKEDATERT_SYKMELDING,
-    text: "Tilbakedatert sykmelding (§ 8-7)",
-    selectable: false,
-  },
-  {
-    type: SykepengestoppArsakType.MANGLENDE_MEDVIRKING,
-    text: "Manglende medvirkning (§ 8-8 første ledd)",
-    selectable: true,
-  },
-  {
-    type: SykepengestoppArsakType.AKTIVITETSKRAV,
-    text: "Aktivitetskravet (§ 8-8 andre ledd)",
-    selectable: true,
-  },
-];
-
-const tittel = (stopped: boolean) => {
-  return stopped ? texts.stoppedTittel : texts.notStoppedTittel;
-};
-
 const PengestoppModal = ({ isOpen, arbeidsgivere, onModalClose }: Props) => {
-  const { valgtEnhet } = useValgtEnhet();
-  const fnr = useValgtPersonident();
   const { isPending, isError, isSuccess, mutate } = useFlaggPerson();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm<PengestoppFormValues>();
 
-  const stoppAutomatikkInitialState = {
-    sykmeldtFnr: { value: fnr },
-    arsakList: [],
-    virksomhetNr: [],
-    enhetNr: { value: valgtEnhet },
+  const submit = (values: PengestoppFormValues) => {
+    mutate(values);
   };
-
-  const [employerError, setEmployerError] = useState<boolean>(false);
-  const [aarsakError, setAarsakError] = useState<boolean>(false);
-  const [stoppAutomatikk, setStoppAutomatikk] = useState<StoppAutomatikk>({
-    ...stoppAutomatikkInitialState,
-  });
-
-  const submit = () => {
-    if (stoppAutomatikk.virksomhetNr.length <= 0) {
-      setEmployerError(true);
-    } else if (stoppAutomatikk.arsakList.length <= 0) {
-      setAarsakError(true);
-    } else {
-      mutate(stoppAutomatikk);
-    }
-  };
-
-  const updateVirksomhetNr = (virksomhetNrList: VirksomhetNr[]) => {
-    setStoppAutomatikk({
-      ...stoppAutomatikk,
-      virksomhetNr: virksomhetNrList,
-      enhetNr: { value: valgtEnhet },
-    });
-  };
-
-  const updateAarsakList = (arsakList: SykepengestoppArsak[]) => {
-    setStoppAutomatikk({
-      ...stoppAutomatikk,
-      arsakList: arsakList,
-    });
-  };
-
-  const handleChangeVirksomheter = (values: string[]) => {
-    setEmployerError(values.length === 0);
-    updateVirksomhetNr(values.map((value) => ({ value })));
-  };
-
-  const handleChangeArsaker = (values: SykepengestoppArsakType[]) => {
-    setAarsakError(values.length === 0);
-    updateAarsakList(values.map((value) => ({ type: value })));
-  };
-
   const handleCloseModal = () => {
-    setStoppAutomatikk({ ...stoppAutomatikkInitialState });
-    setEmployerError(false);
-    setAarsakError(false);
-
     onModalClose();
+    reset();
   };
+
+  const tittel = isSuccess ? texts.stoppedTittel : texts.notStoppedTittel;
 
   return (
-    <Modal
-      closeOnBackdropClick
-      className="p-8 max-w-4xl w-full"
-      aria-label={texts.stansSykepenger}
-      open={isOpen}
-      onClose={handleCloseModal}
-    >
-      <Modal.Header>
-        <Heading size="medium">{tittel(isSuccess)}</Heading>
-      </Modal.Header>
-      <Modal.Body>
-        {!isSuccess ? (
-          <>
-            <CheckboxGroup
-              className="my-4"
-              legend={texts.arbeidsgiver}
-              onChange={handleChangeVirksomheter}
-              error={employerError && texts.submitError}
-            >
-              {arbeidsgivere.map(
-                (arbeidsgiver: Arbeidsgiver, index: number) => (
-                  <Checkbox key={index} value={arbeidsgiver.orgnummer}>
-                    {arbeidsgiver.navn}
-                  </Checkbox>
-                )
-              )}
-            </CheckboxGroup>
-            <CheckboxGroup
-              className="my-4"
-              legend={texts.arsak.title}
-              onChange={handleChangeArsaker}
-              error={aarsakError && texts.arsak.submitError}
-            >
-              {sykepengestoppArsakTekstListe
-                .filter(({ selectable }) => selectable)
-                .map((arsak, index: number) => (
-                  <Checkbox key={index} value={arsak.type}>
-                    {arsak.text}
-                  </Checkbox>
-                ))}
-            </CheckboxGroup>
-            <div className="flex gap-4">
-              <Button variant="secondary" onClick={handleCloseModal}>
-                {texts.avbryt}
-              </Button>
-              <Button variant="primary" onClick={submit} loading={isPending}>
-                {texts.send}
-              </Button>
-            </div>
-          </>
-        ) : (
-          <Alert variant="info" className="my-4">
-            <p>{texts.stoppedInfo}</p>
-            <p>{texts.seServicerutinen}</p>
-          </Alert>
-        )}
-        {isError && (
-          <ErrorMessage className="mt-4">{texts.serverError}</ErrorMessage>
-        )}
-      </Modal.Body>
-    </Modal>
+    <form onSubmit={handleSubmit(submit)}>
+      <Modal
+        closeOnBackdropClick
+        className="p-8 max-w-4xl w-full"
+        aria-label={texts.stansSykepenger}
+        open={isOpen}
+        onClose={handleCloseModal}
+      >
+        <Modal.Header>
+          <Heading size="medium">{tittel}</Heading>
+        </Modal.Header>
+        <Modal.Body>
+          {!isSuccess ? (
+            <>
+              <CheckboxGroup
+                className="my-4"
+                legend={texts.arbeidsgiver}
+                error={errors.orgnummer?.message}
+              >
+                {arbeidsgivere.map(
+                  ({ navn, orgnummer }: Arbeidsgiver, index: number) => (
+                    <Checkbox
+                      key={index}
+                      value={orgnummer}
+                      {...register("orgnummer", {
+                        required: texts.submitError,
+                      })}
+                    >
+                      {navn}
+                    </Checkbox>
+                  )
+                )}
+              </CheckboxGroup>
+              <CheckboxGroup
+                className="my-4"
+                legend={texts.arsak.title}
+                error={errors.arsaker?.message}
+              >
+                {Object.entries(validSykepengestoppArsakTekster).map(
+                  ([type, text], index: number) => (
+                    <Checkbox
+                      key={index}
+                      value={type}
+                      {...register("arsaker", {
+                        required: texts.arsak.submitError,
+                      })}
+                    >
+                      {text}
+                    </Checkbox>
+                  )
+                )}
+              </CheckboxGroup>
+              <div className="flex gap-4">
+                <Button variant="secondary" onClick={handleCloseModal}>
+                  {texts.avbryt}
+                </Button>
+                <Button type="submit" variant="primary" loading={isPending}>
+                  {texts.send}
+                </Button>
+              </div>
+            </>
+          ) : (
+            <Alert variant="info" className="my-4">
+              <p>{texts.stoppedInfo}</p>
+              <p>{texts.seServicerutinen}</p>
+            </Alert>
+          )}
+          {isError && (
+            <ErrorMessage className="mt-4">{texts.serverError}</ErrorMessage>
+          )}
+        </Modal.Body>
+      </Modal>
+    </form>
   );
 };
 
