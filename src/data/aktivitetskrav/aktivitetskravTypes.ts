@@ -8,8 +8,8 @@ export enum AktivitetskravStatus {
   OPPFYLT = "OPPFYLT",
   AUTOMATISK_OPPFYLT = "AUTOMATISK_OPPFYLT",
   FORHANDSVARSEL = "FORHANDSVARSEL",
-  STANS = "STANS",
   IKKE_OPPFYLT = "IKKE_OPPFYLT",
+  INNSTILLING_OM_STANS = "INNSTILLING_OM_STANS",
   IKKE_AKTUELL = "IKKE_AKTUELL",
   LUKKET = "LUKKET",
 }
@@ -47,6 +47,7 @@ export enum VarselType {
   UNNTAK = "UNNTAK",
   OPPFYLT = "OPPFYLT",
   IKKE_AKTUELL = "IKKE_AKTUELL",
+  INNSTILLING_OM_STANS = "INNSTILLING_OM_STANS",
 }
 
 export interface AktivitetskravDTO {
@@ -71,6 +72,7 @@ export interface AktivitetskravVurderingDTO {
   status: AktivitetskravStatus;
   beskrivelse: string | undefined;
   arsaker: VurderingArsak[];
+  stansFom: Date | undefined;
   frist: Date | undefined;
   varsel: AktivitetskravVarselDTO | undefined;
 }
@@ -88,8 +90,11 @@ export type VurderingArsak =
   | OppfyltVurderingArsak
   | IkkeAktuellArsak;
 
-export interface CreateAktivitetskravVurderingDTO {
+export interface NewVurderingDTO {
   status: AktivitetskravStatus;
+}
+
+export interface CreateAktivitetskravVurderingDTO extends NewVurderingDTO {
   beskrivelse?: string;
   arsaker: VurderingArsak[];
   document?: DocumentComponentDto[];
@@ -100,6 +105,13 @@ export interface SendForhandsvarselDTO {
   fritekst: string;
   document: DocumentComponentDto[];
   frist: Date;
+}
+
+export interface InnstillingOmStansVurderingDTO extends NewVurderingDTO {
+  status: AktivitetskravStatus.INNSTILLING_OM_STANS;
+  stansFom: Date;
+  beskrivelse: string;
+  document: DocumentComponentDto[];
 }
 
 export interface NewAktivitetskravDTO {

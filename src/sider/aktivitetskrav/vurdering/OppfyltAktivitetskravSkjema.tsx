@@ -17,7 +17,7 @@ import { SkjemaFieldContainer } from "@/sider/aktivitetskrav/vurdering/SkjemaFie
 import { useForm } from "react-hook-form";
 import { Button, Radio, RadioGroup, Textarea } from "@navikt/ds-react";
 import { useAktivitetskravNotificationAlert } from "@/sider/aktivitetskrav/useAktivitetskravNotificationAlert";
-import { useAktivitetskravVarselDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVarselDocument";
+import { useAktivitetskravVurderingDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVurderingDocument";
 
 const texts = {
   title: "Er i aktivitet",
@@ -50,7 +50,7 @@ export const OppfyltAktivitetskravSkjema = ({
     defaultValues,
   });
   const vurderAktivitetskrav = useVurderAktivitetskrav(aktivitetskravUuid);
-  const { getVurderingDocument } = useAktivitetskravVarselDocument();
+  const { getVurderingDocument } = useAktivitetskravVurderingDocument();
   const { displayNotification } = useAktivitetskravNotificationAlert();
 
   const submit = (values: OppfyltAktivitetskravSkjemaValues) => {

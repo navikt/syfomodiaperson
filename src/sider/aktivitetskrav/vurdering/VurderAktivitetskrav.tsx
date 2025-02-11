@@ -9,7 +9,7 @@ import { VurderAktivitetskravButtons } from "@/sider/aktivitetskrav/vurdering/Vu
 import { GjelderOppfolgingstilfelle } from "@/sider/aktivitetskrav/GjelderOppfolgingstilfelle";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { AktivitetskravVurderingAlert } from "@/sider/aktivitetskrav/vurdering/AktivitetskravVurderingAlert";
-import { ForhandsvarselOppsummering } from "@/sider/aktivitetskrav/vurdering/ForhandsvarselOppsummering";
+import ForhandsvarselOppsummering from "@/sider/aktivitetskrav/vurdering/ForhandsvarselOppsummering";
 import {
   isDateInOppfolgingstilfelle,
   OppfolgingstilfelleDTO,

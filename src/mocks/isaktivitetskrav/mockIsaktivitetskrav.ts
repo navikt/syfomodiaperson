@@ -6,6 +6,8 @@ import {
   AktivitetskravStatus,
   AktivitetskravVurderingDTO,
   CreateAktivitetskravVurderingDTO,
+  InnstillingOmStansVurderingDTO,
+  NewVurderingDTO,
   SendForhandsvarselDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { daysFromToday } from "../../../test/testUtils";
@@ -25,20 +27,12 @@ export const mockIsaktivitetskrav = [
   http.get(`${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/historikk`, () => {
     return HttpResponse.json(aktivitetskravHistorikk);
   }),
-  http.post<object, CreateAktivitetskravVurderingDTO>(
+  http.post<object, NewVurderingDTO>(
     `${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/:aktivitetskravUuid/vurder`,
     async ({ request }) => {
       const body = await request.json();
-      const newVurdering: AktivitetskravVurderingDTO = {
-        uuid: generateUUID(),
-        status: body.status,
-        arsaker: [...body.arsaker],
-        beskrivelse: body.beskrivelse,
-        createdAt: new Date(),
-        createdBy: VEILEDER_DEFAULT.ident,
-        frist: undefined,
-        varsel: undefined,
-      };
+      const newVurdering: AktivitetskravVurderingDTO =
+        toAktivitetskravVurderingDTO(body);
       let firstAktivitetskrav = mockAktivitetskrav.shift() as AktivitetskravDTO;
       firstAktivitetskrav = {
         ...firstAktivitetskrav,
@@ -79,6 +73,7 @@ export const mockIsaktivitetskrav = [
         beskrivelse: body.fritekst,
         createdAt: new Date(),
         createdBy: VEILEDER_DEFAULT.ident,
+        stansFom: undefined,
         frist: daysFromToday(21),
         varsel: forhandsvarsel,
       };
@@ -103,3 +98,37 @@ export const mockIsaktivitetskrav = [
     }
   ),
 ];
+
+export function toAktivitetskravVurderingDTO(
+  newVurdering: NewVurderingDTO
+): AktivitetskravVurderingDTO {
+  switch (newVurdering.status) {
+    case AktivitetskravStatus.INNSTILLING_OM_STANS:
+      const newInnstillingOmStansVurdering =
+        newVurdering as InnstillingOmStansVurderingDTO;
+      return {
+        uuid: generateUUID(),
+        status: newInnstillingOmStansVurdering.status,
+        arsaker: [],
+        beskrivelse: newInnstillingOmStansVurdering.beskrivelse,
+        createdAt: new Date(),
+        createdBy: VEILEDER_DEFAULT.ident,
+        stansFom: newInnstillingOmStansVurdering.stansFom,
+        frist: undefined,
+        varsel: undefined,
+      };
+    default:
+      const newVurderingDTO = newVurdering as CreateAktivitetskravVurderingDTO;
+      return {
+        uuid: generateUUID(),
+        status: newVurderingDTO.status,
+        arsaker: [...newVurderingDTO.arsaker],
+        beskrivelse: newVurderingDTO.beskrivelse,
+        createdAt: new Date(),
+        createdBy: VEILEDER_DEFAULT.ident,
+        stansFom: undefined,
+        frist: undefined,
+        varsel: undefined,
+      };
+  }
+}

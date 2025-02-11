@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from "react";
 import { SendForhandsvarselDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { useAktivitetskravVarselDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVarselDocument";
+import { useAktivitetskravVurderingDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVurderingDocument";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 import { ButtonRow } from "@/components/Layout";
 import { Button, HelpText, Label, Select, Textarea } from "@navikt/ds-react";
@@ -56,7 +56,7 @@ export const SendForhandsvarselSkjema = ({
     handleSubmit,
     reset,
   } = useForm<AktivitetskravSkjemaValues>({ defaultValues });
-  const { getForhandsvarselDocument } = useAktivitetskravVarselDocument();
+  const { getForhandsvarselDocument } = useAktivitetskravVurderingDocument();
   const [showForhandsvisning, setShowForhandsvisning] = useState(false);
 
   const submit = (values: AktivitetskravSkjemaValues) => {
