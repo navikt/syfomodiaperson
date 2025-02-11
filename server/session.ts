@@ -9,21 +9,21 @@ const SESSION_MAX_AGE_MILLIS = 12 * 60 * 60 * 1000;
 
 const SESSION_MAX_AGE_SECONDS = SESSION_MAX_AGE_MILLIS / 1000;
 
-const getRedisClient = () => {
-  const redisClient = redis.createClient({
-    url: Config.redis.uri,
+const getValkeyClient = () => {
+  const valkeyClient = redis.createClient({
+    url: Config.valkey.uri,
     no_ready_check: true,
   });
-  redisClient.auth(Config.redis.password, Config.redis.username);
-  redisClient.select(Config.redis.database);
-  return redisClient;
+  valkeyClient.auth(Config.valkey.password, Config.valkey.username);
+  valkeyClient.select(Config.valkey.database);
+  return valkeyClient;
 };
 
-const getRedisStore = () => {
+const getValkeyStore = () => {
   if (Config.isDev) return undefined;
   const RedisStore = connectRedis(session);
   return new RedisStore({
-    client: getRedisClient(),
+    client: getValkeyClient(),
     ttl: SESSION_MAX_AGE_SECONDS,
     disableTouch: true,
   });
@@ -45,7 +45,7 @@ export const setupSession = (app: express.Application) => {
       resave: true,
       saveUninitialized: false,
       unset: "destroy",
-      store: getRedisStore(),
+      store: getValkeyStore(),
       rolling: true,
     })
   );
