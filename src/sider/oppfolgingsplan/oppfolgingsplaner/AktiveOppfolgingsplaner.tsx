@@ -78,12 +78,10 @@ export default function AktiveOppfolgingsplaner({
         currentOppfolgingstilfelle
       )
     : [];
-  const activeNarmesteLederIfSingle =
-    activeNarmesteLedere.length === 1 ? activeNarmesteLedere[0] : undefined;
   const isBeOmOppfolgingsplanVisible =
     toggles.isBeOmOppfolgingsplanEnabled &&
     !!currentOppfolgingstilfelle &&
-    !!activeNarmesteLederIfSingle;
+    activeNarmesteLedere.length > 0;
 
   return (
     <div className="mb-8">
@@ -111,7 +109,7 @@ export default function AktiveOppfolgingsplaner({
           </Box>
           {isBeOmOppfolgingsplanVisible && (
             <BeOmOppfolgingsplan
-              aktivNarmesteLeder={activeNarmesteLederIfSingle}
+              activeNarmesteLedere={activeNarmesteLedere}
               currentOppfolgingstilfelle={currentOppfolgingstilfelle}
             />
           )}

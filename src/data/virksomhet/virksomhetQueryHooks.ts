@@ -7,7 +7,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/utils";
 
-const virksomhetQueryKeys = {
+export const virksomhetQueryKeys = {
   virksomhet: (virksomhetsnummer: string) => ["virksomhet", virksomhetsnummer],
 };
 

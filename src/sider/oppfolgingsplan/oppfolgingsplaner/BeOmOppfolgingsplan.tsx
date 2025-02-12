@@ -5,6 +5,8 @@ import {
   Box,
   Button,
   Heading,
+  Radio,
+  RadioGroup,
   ReadMore,
 } from "@navikt/ds-react";
 import { PaperplaneIcon } from "@navikt/aksel-icons";
@@ -26,10 +28,11 @@ import {
 import { useOppfolgingsplanForesporselDocument } from "@/hooks/oppfolgingsplan/useOppfolgingsplanForesporselDocument";
 import { oppfolgingstilfelle } from "../../../../test/aktivitetskrav/vurdering/vurderingTestUtils";
 import LabelAndText from "@/components/LabelAndText";
+import { Controller, useForm } from "react-hook-form";
+import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 
 const texts = {
-  aktivForesporsel:
-    "Obs! Det ble bedt om oppfølgingsplan fra denne arbeidsgiveren",
+  aktivForesporsel: "Obs! Det ble bedt om oppfølgingsplan fra",
   header: "Be om oppfølgingsplan",
   description: {
     info1: "Her kan du be om oppfølgingsplan fra arbeidsgiver.",
@@ -38,6 +41,7 @@ const texts = {
     info3: "Nærmeste leder vil motta et varsel på e-post.",
   },
   virksomhet: "Virksomhet:",
+  missingVirksomhet: "Vennligst velg arbeidsgiver",
   narmesteLeder: "Nærmeste leder:",
   button: "Send forespørsel",
   foresporselSendt: "Forespørsel om oppfølgingsplan sendt",
@@ -82,21 +86,34 @@ function ReadMoreContent() {
 }
 
 interface Props {
-  aktivNarmesteLeder: NarmesteLederRelasjonDTO;
+  activeNarmesteLedere: NarmesteLederRelasjonDTO[];
   currentOppfolgingstilfelle: OppfolgingstilfelleDTO;
 }
 
+interface FormValues {
+  narmesteLeder: NarmesteLederRelasjonDTO;
+}
+
 export default function BeOmOppfolgingsplan({
-  aktivNarmesteLeder,
+  activeNarmesteLedere,
   currentOppfolgingstilfelle,
 }: Props) {
   const personident = useValgtPersonident();
-  const getOppfolgingsplanForesporsel = useGetOppfolgingsplanForesporselQuery();
+  const { data } = useGetOppfolgingsplanForesporselQuery();
+  const lastForesporsel = data?.[0];
+  const { virksomhetsnavn: lastForesporselVirksomhetsnavn } =
+    useVirksomhetQuery(lastForesporsel?.virksomhetsnummer ?? "");
   const postOppfolgingsplanForesporsel = usePostOppfolgingsplanForesporsel();
   const { getForesporselDocument } = useOppfolgingsplanForesporselDocument();
-
-  const lastForesporselCreatedAt =
-    getOppfolgingsplanForesporsel.data?.[0]?.createdAt;
+  const defaultNarmesteLeder =
+    activeNarmesteLedere.length === 1 ? activeNarmesteLedere[0] : undefined;
+  const { control, watch, handleSubmit } = useForm<FormValues>({
+    defaultValues: {
+      narmesteLeder: defaultNarmesteLeder,
+    },
+  });
+  const narmesteLeder = watch("narmesteLeder");
+  const lastForesporselCreatedAt = lastForesporsel?.createdAt;
   const isAktivForesporsel =
     !!lastForesporselCreatedAt &&
     !!currentOppfolgingstilfelle &&
@@ -106,19 +123,20 @@ export default function BeOmOppfolgingsplan({
           oppfolgingstilfelle
         )
       : false;
-  const aktivForesporselTekst = `${
-    texts.aktivForesporsel
+
+  const aktivForesporselTekst = `${texts.aktivForesporsel} ${
+    lastForesporselVirksomhetsnavn ?? lastForesporsel?.virksomhetsnummer
   } ${tilLesbarDatoMedArUtenManedNavn(lastForesporselCreatedAt)}`;
 
-  function onClick() {
+  function submit(values: FormValues) {
     const foresporsel: NewOppfolgingsplanForesporselDTO = {
       arbeidstakerPersonident: personident,
-      virksomhetsnummer: aktivNarmesteLeder.virksomhetsnummer,
+      virksomhetsnummer: values.narmesteLeder.virksomhetsnummer,
       narmestelederPersonident:
-        aktivNarmesteLeder.narmesteLederPersonIdentNumber,
+        values.narmesteLeder.narmesteLederPersonIdentNumber,
       document: getForesporselDocument({
-        narmesteLeder: aktivNarmesteLeder.narmesteLederNavn,
-        virksomhetNavn: aktivNarmesteLeder.virksomhetsnavn,
+        narmesteLeder: values.narmesteLeder.narmesteLederNavn,
+        virksomhetNavn: values.narmesteLeder.virksomhetsnavn,
       }),
     };
     postOppfolgingsplanForesporsel.mutate(foresporsel, {
@@ -127,7 +145,7 @@ export default function BeOmOppfolgingsplan({
   }
 
   return (
-    <>
+    <form onSubmit={handleSubmit(submit)}>
       {isAktivForesporsel && (
         <Alert variant="warning" className="mb-2">
           {aktivForesporselTekst}
@@ -144,16 +162,48 @@ export default function BeOmOppfolgingsplan({
           <BodyLong>{texts.description.info1}</BodyLong>
           <BodyLong>{texts.description.info2}</BodyLong>
         </div>
-        <div>
-          <LabelAndText
-            label={texts.virksomhet}
-            text={aktivNarmesteLeder.virksomhetsnavn}
+        {!defaultNarmesteLeder && (
+          <Controller
+            name="narmesteLeder"
+            control={control}
+            rules={{ required: texts.missingVirksomhet }}
+            render={({ field, fieldState: { error } }) => (
+              <RadioGroup
+                name="narmesteLeder"
+                size="small"
+                legend="Arbeidsgiver"
+                error={error?.message}
+                value={field.value?.uuid}
+                onChange={(value) => {
+                  const selectedNarmesteLeder = activeNarmesteLedere.find(
+                    (nl) => nl.uuid === value
+                  );
+                  field.onChange(selectedNarmesteLeder);
+                }}
+              >
+                {activeNarmesteLedere.map(
+                  ({ virksomhetsnavn, uuid }, index) => (
+                    <Radio key={index} value={uuid}>
+                      {virksomhetsnavn}
+                    </Radio>
+                  )
+                )}
+              </RadioGroup>
+            )}
           />
-          <LabelAndText
-            label={texts.narmesteLeder}
-            text={aktivNarmesteLeder.narmesteLederNavn}
-          />
-        </div>
+        )}
+        {narmesteLeder && (
+          <div>
+            <LabelAndText
+              label={texts.virksomhet}
+              text={narmesteLeder.virksomhetsnavn}
+            />
+            <LabelAndText
+              label={texts.narmesteLeder}
+              text={narmesteLeder.narmesteLederNavn}
+            />
+          </div>
+        )}
         <div>
           <BodyLong>{texts.description.info3}</BodyLong>
           <ReadMore header={texts.readMoreText} onOpenChange={logReadMoreClick}>
@@ -166,8 +216,8 @@ export default function BeOmOppfolgingsplan({
           </Alert>
         ) : (
           <Button
+            type="submit"
             className="w-fit"
-            onClick={onClick}
             loading={postOppfolgingsplanForesporsel.isPending}
             icon={<PaperplaneIcon />}
           >
@@ -180,6 +230,6 @@ export default function BeOmOppfolgingsplan({
           </Alert>
         )}
       </Box>
-    </>
+    </form>
   );
 }
