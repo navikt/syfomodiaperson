@@ -36,7 +36,7 @@ function mockMotebehov(motebehov: MotebehovVeilederDTO[]) {
   );
 }
 
-const MotebehovArbeidstakerInTilfelleUbehandletMock: MotebehovVeilederDTO = {
+const motebehovArbeidstakerInTilfelleUbehandletMock: MotebehovVeilederDTO = {
   ...meldtMotebehovArbeidstakerBehandletMock,
   opprettetDato: addDays(new Date(), -25),
   motebehovSvar: {
@@ -48,7 +48,7 @@ const MotebehovArbeidstakerInTilfelleUbehandletMock: MotebehovVeilederDTO = {
   skjemaType: MotebehovSkjemaType.MELD_BEHOV,
 };
 
-const MotebehovArbeidsgiverInTilfelleUbehandletMock: MotebehovVeilederDTO = {
+const motebehovArbeidsgiverInTilfelleUbehandletMock: MotebehovVeilederDTO = {
   ...svartNeiMotebehovArbeidsgiverUbehandletMock,
   opprettetDato: addDays(new Date(), -25),
   motebehovSvar: {
@@ -60,7 +60,7 @@ const MotebehovArbeidsgiverInTilfelleUbehandletMock: MotebehovVeilederDTO = {
   skjemaType: MotebehovSkjemaType.MELD_BEHOV,
 };
 
-const MotebehovArbeidstakerInTilfelleSvartJaUbehandletMock: MotebehovVeilederDTO =
+const motebehovArbeidstakerInTilfelleSvartJaUbehandletMock: MotebehovVeilederDTO =
   {
     ...meldtMotebehovArbeidstakerBehandletMock,
     opprettetDato: addDays(new Date(), -25),
@@ -73,7 +73,7 @@ const MotebehovArbeidstakerInTilfelleSvartJaUbehandletMock: MotebehovVeilederDTO
     skjemaType: MotebehovSkjemaType.SVAR_BEHOV,
   };
 
-const MotebehovArbeidsgiverInTilfelleSvartNeiUbehandletMock: MotebehovVeilederDTO =
+const motebehovArbeidsgiverInTilfelleSvartNeiUbehandletMock: MotebehovVeilederDTO =
   {
     ...svartNeiMotebehovArbeidsgiverUbehandletMock,
     opprettetDato: addDays(new Date(), -25),
@@ -109,17 +109,17 @@ describe("MotebehovKvittering", () => {
     mockMotebehov([]);
 
     renderMotebehovKvittering();
-    expect(screen.getByText("Ingen tidligere møtebehov")).to.exist; //TODO: Hva ønsker vi skal vises i dette tilfelle?
+    expect(screen.getByText("Ingen tidligere møtebehov")).to.exist;
   });
   it("viser meldt møtebehov fra arbeidsgiver og sykmeldt innenfor tilfelle", () => {
     mockMotebehov([
-      MotebehovArbeidstakerInTilfelleUbehandletMock,
-      MotebehovArbeidsgiverInTilfelleUbehandletMock,
+      motebehovArbeidstakerInTilfelleUbehandletMock,
+      motebehovArbeidsgiverInTilfelleUbehandletMock,
     ]);
 
     renderMotebehovKvittering();
 
-    expect(screen.getByAltText("Sykmeldt Svart ja.")).to.exist;
+    expect(screen.getByAltText("Sykmeldt Meldt behov.")).to.exist;
     expect(
       screen.getByText("Samuel Sam Jones, har meldt behov", {
         exact: false,
@@ -127,7 +127,7 @@ describe("MotebehovKvittering", () => {
     ).to.exist;
     expect(screen.getByText("Jeg, arbeidstaker, har behov for møte.")).to.exist;
 
-    expect(screen.getByAltText("Arbeidsgiver Are Arbeidsgiver Svart ja.")).to
+    expect(screen.getByAltText("Arbeidsgiver Are Arbeidsgiver Meldt behov.")).to
       .exist;
     expect(
       screen.getByText("Are Arbeidsgiver, har meldt behov", {
@@ -137,10 +137,10 @@ describe("MotebehovKvittering", () => {
     expect(screen.getByText("Jeg, arbeidsgiver, har behov for møte.")).to.exist;
   });
   it("viser meldt møtebehov fra arbeidsgiver og sykmeldt når kun sykmeldt har meldt behov innenfor tilfelle", () => {
-    mockMotebehov([MotebehovArbeidstakerInTilfelleUbehandletMock]);
+    mockMotebehov([motebehovArbeidstakerInTilfelleUbehandletMock]);
 
     renderMotebehovKvittering();
-    expect(screen.getByAltText("Sykmeldt Svart ja.")).to.exist;
+    expect(screen.getByAltText("Sykmeldt Meldt behov.")).to.exist;
     expect(
       screen.getByText("Samuel Sam Jones, har meldt behov", {
         exact: false,
@@ -148,8 +148,9 @@ describe("MotebehovKvittering", () => {
     ).to.exist;
     expect(screen.getByText("Jeg, arbeidstaker, har behov for møte.")).to.exist;
 
-    expect(screen.getByAltText("Arbeidsgiver Tatten Tattover Ikke svart.")).to
-      .exist;
+    expect(
+      screen.getByAltText("Arbeidsgiver Tatten Tattover Ikke meldt behov.")
+    ).to.exist;
     expect(
       screen.getByText("Tatten Tattover, har ikke meldt behov", {
         exact: false,
@@ -157,17 +158,17 @@ describe("MotebehovKvittering", () => {
     ).to.exist;
   });
   it("viser meldt møtebehov fra arbeidsgiver og sykmeldt når kun arbeidsgiver har meldt behov innenfor tilfelle", () => {
-    mockMotebehov([MotebehovArbeidsgiverInTilfelleUbehandletMock]);
+    mockMotebehov([motebehovArbeidsgiverInTilfelleUbehandletMock]);
 
     renderMotebehovKvittering();
-    expect(screen.getByAltText("Sykmeldt Ikke svart.")).to.exist;
+    expect(screen.getByAltText("Sykmeldt Ikke meldt behov.")).to.exist;
     expect(
       screen.getByText("Samuel Sam Jones, har ikke meldt behov", {
         exact: false,
       })
     ).to.exist;
 
-    expect(screen.getByAltText("Arbeidsgiver Are Arbeidsgiver Svart ja.")).to
+    expect(screen.getByAltText("Arbeidsgiver Are Arbeidsgiver Meldt behov.")).to
       .exist;
     expect(
       screen.getByText("Are Arbeidsgiver, har meldt behov", {
@@ -178,13 +179,13 @@ describe("MotebehovKvittering", () => {
   });
   it("viser ingen møtebehov når ingen ubehandlede behov utenfor tilfelle", () => {
     const motebehovArbeidstakerInTilfelleBehandlet = createMotebehovBehandlet(
-      MotebehovArbeidstakerInTilfelleUbehandletMock
+      motebehovArbeidstakerInTilfelleUbehandletMock
     );
     const motebehovArbeidstakerUtenforTilfelleBehandlet =
       createMotebehovUtenforTilfelle(motebehovArbeidstakerInTilfelleBehandlet);
 
     const motebehovArbeidsgiverInTilfelleBehandlet = createMotebehovBehandlet(
-      MotebehovArbeidsgiverInTilfelleUbehandletMock
+      motebehovArbeidsgiverInTilfelleUbehandletMock
     );
     const motebehovArbeidsgiverUtenforTilfelleBehandlet =
       createMotebehovUtenforTilfelle(motebehovArbeidsgiverInTilfelleBehandlet);
@@ -195,16 +196,20 @@ describe("MotebehovKvittering", () => {
     ]);
 
     renderMotebehovKvittering();
-    expect(screen.getByText("Ingen tidligere møtebehov")).to.exist; //TODO: Hva ønsker vi skal vises i dette tilfelle?
+    expect(
+      screen.getByText(
+        "Alle tidligere møtebehov er behandlet, se møtebehovhistorikken for flere detaljer."
+      )
+    ).to.exist;
   });
   it("viser ubehandlede møtebehov når det finnes ubehandlede behov utenfor tilfelle", () => {
     const motebehovArbeidstakerUtenforTilfelleUbehandlet =
       createMotebehovUtenforTilfelle(
-        MotebehovArbeidstakerInTilfelleUbehandletMock
+        motebehovArbeidstakerInTilfelleUbehandletMock
       );
     const motebehovArbeidsgiverUtenforTilfelleUbehandlet =
       createMotebehovUtenforTilfelle(
-        MotebehovArbeidsgiverInTilfelleUbehandletMock
+        motebehovArbeidsgiverInTilfelleUbehandletMock
       );
 
     mockMotebehov([
@@ -213,7 +218,7 @@ describe("MotebehovKvittering", () => {
     ]);
 
     renderMotebehovKvittering();
-    expect(screen.getByAltText("Sykmeldt Svart ja.")).to.exist;
+    expect(screen.getByAltText("Sykmeldt Meldt behov.")).to.exist;
     expect(
       screen.getByText("Samuel Sam Jones, har meldt behov", {
         exact: false,
@@ -221,7 +226,7 @@ describe("MotebehovKvittering", () => {
     ).to.exist;
     expect(screen.getByText("Jeg, arbeidstaker, har behov for møte.")).to.exist;
 
-    expect(screen.getByAltText("Arbeidsgiver Are Arbeidsgiver Svart ja.")).to
+    expect(screen.getByAltText("Arbeidsgiver Are Arbeidsgiver Meldt behov.")).to
       .exist;
     expect(
       screen.getByText("Are Arbeidsgiver, har meldt behov", {
@@ -231,7 +236,7 @@ describe("MotebehovKvittering", () => {
     expect(screen.getByText("Jeg, arbeidsgiver, har behov for møte.")).to.exist;
   });
   it("viser svar møtebehov fra arbeidsgiver og sykmeldt når kun sykmeldt har svart behov innenfor tilfelle", () => {
-    mockMotebehov([MotebehovArbeidstakerInTilfelleSvartJaUbehandletMock]);
+    mockMotebehov([motebehovArbeidstakerInTilfelleSvartJaUbehandletMock]);
 
     renderMotebehovKvittering();
     expect(screen.getByAltText("Sykmeldt Svart ja.")).to.exist;
@@ -251,7 +256,7 @@ describe("MotebehovKvittering", () => {
     ).to.exist;
   });
   it("viser svar møtebehov fra arbeidsgiver og sykmeldt når kun arbeidsgiver har svart behov innenfor tilfelle", () => {
-    mockMotebehov([MotebehovArbeidsgiverInTilfelleSvartNeiUbehandletMock]);
+    mockMotebehov([motebehovArbeidsgiverInTilfelleSvartNeiUbehandletMock]);
 
     renderMotebehovKvittering();
     expect(screen.getByAltText("Sykmeldt Ikke svart.")).to.exist;

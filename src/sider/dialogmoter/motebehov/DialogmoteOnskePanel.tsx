@@ -5,7 +5,7 @@ import { DialogmotePanel } from "@/sider/dialogmoter/components/DialogmotePanel"
 import React from "react";
 
 const texts = {
-  onskerOmDialogmote: "Behov om dialogmøte",
+  onskerOmDialogmote: "Behov for dialogmøte",
 };
 
 export const DialogmoteOnskePanel = () => {

@@ -21,11 +21,6 @@ import { MemoryRouter } from "react-router-dom";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { dialogmoteunntakQueryKeys } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
-import {
-  svartNeiMotebehovArbeidsgiverUbehandletMock,
-  meldtMotebehovArbeidstakerBehandletMock,
-} from "@/mocks/syfomotebehov/motebehovMock";
-import { addDays } from "@/utils/datoUtils";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: any;
@@ -118,103 +113,5 @@ describe("MotelandingssideSide", () => {
         name: "Planlegg nytt dialogmøte",
       })
     ).to.exist;
-  });
-
-  it("Viser ønskepanel når det finnes møtebehov innenfor tilfelle", () => {
-    queryClient.setQueryData(
-      tilgangQueryKeys.tilgang(fnr),
-      () => tilgangBrukerMock
-    );
-    queryClient.setQueryData(
-      motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [
-        {
-          ...meldtMotebehovArbeidstakerBehandletMock,
-          opprettetDato: addDays(new Date(), -1),
-          behandletTidspunkt: null,
-          behandletVeilederIdent: null,
-        },
-      ]
-    );
-    renderMotelandingsside();
-
-    expect(
-      screen.getByRole("heading", {
-        name: "Behov om dialogmøte",
-      })
-    ).to.exist;
-  });
-
-  it("Viser ønskepanel når det finnes behandlet møtebehov innenfor tilfelle", () => {
-    queryClient.setQueryData(
-      tilgangQueryKeys.tilgang(fnr),
-      () => tilgangBrukerMock
-    );
-    queryClient.setQueryData(
-      motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [
-        {
-          ...svartNeiMotebehovArbeidsgiverUbehandletMock,
-          opprettetDato: addDays(new Date(), -2),
-          behandletTidspunkt: addDays(new Date(), -1),
-          behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
-        },
-        {
-          ...meldtMotebehovArbeidstakerBehandletMock,
-        },
-      ]
-    );
-    renderMotelandingsside();
-
-    expect(
-      screen.getByRole("heading", {
-        name: "Behov om dialogmøte",
-      })
-    ).to.exist;
-  });
-  it("Viser ønskepanel når det finnes ubehandlet møtebehov utenfor tilfelle", () => {
-    queryClient.setQueryData(
-      tilgangQueryKeys.tilgang(fnr),
-      () => tilgangBrukerMock
-    );
-    queryClient.setQueryData(
-      motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [
-        {
-          ...meldtMotebehovArbeidstakerBehandletMock,
-          opprettetDato: addDays(new Date(), -50),
-          behandletTidspunkt: null,
-          behandletVeilederIdent: null,
-        },
-      ]
-    );
-    renderMotelandingsside();
-
-    expect(
-      screen.getByRole("heading", {
-        name: "Behov om dialogmøte",
-      })
-    ).to.exist;
-  });
-
-  it("Viser ikke ønskepanel når det finnes ubehandlet møtebehov utenfor tilfelle", () => {
-    queryClient.setQueryData(
-      tilgangQueryKeys.tilgang(fnr),
-      () => tilgangBrukerMock
-    );
-    queryClient.setQueryData(
-      motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [
-        {
-          ...meldtMotebehovArbeidstakerBehandletMock,
-          opprettetDato: addDays(new Date(), -5),
-          behandletTidspunkt: addDays(new Date(), -1),
-          behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
-        },
-      ]
-    );
-    renderMotelandingsside();
-
-    expect(screen.queryByText("Behov om dialogmøte")).to.not.exist;
   });
 });

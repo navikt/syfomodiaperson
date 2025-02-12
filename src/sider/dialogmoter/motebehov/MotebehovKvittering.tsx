@@ -46,16 +46,23 @@ export const setSvarTekst = (
   }
 };
 
-const ikonAlternativTekst = (deltakerOnskerMote?: boolean) => {
+const ikonAlternativTekst = (
+  skjemaType: MotebehovSkjemaType | null,
+  deltakerOnskerMote?: boolean
+) => {
   switch (deltakerOnskerMote) {
     case true: {
-      return "Svart ja.";
+      return skjemaType === MotebehovSkjemaType.SVAR_BEHOV
+        ? "Svart ja."
+        : "Meldt behov.";
     }
     case false: {
       return "Svart nei.";
     }
     default: {
-      return "Ikke svart.";
+      return skjemaType === MotebehovSkjemaType.SVAR_BEHOV
+        ? "Ikke svart."
+        : "Ikke meldt behov.";
     }
   }
 };
@@ -91,16 +98,19 @@ export const MotebehovKvitteringInnholdArbeidstaker = ({
   const sykmeldt = useNavBrukerData();
   const arbeidstakerOnskerMote =
     arbeidstakersMotebehov?.motebehovSvar?.harMotebehov;
+  const skjemaTypeMotebehov =
+    skjemaType ?? arbeidstakersMotebehov?.skjemaType ?? null;
 
   const arbeidstakerTekst = composePersonSvarText(
     "Den sykmeldte: ",
-    skjemaType ?? arbeidstakersMotebehov?.skjemaType ?? null,
+    skjemaTypeMotebehov,
     sykmeldt?.navn ? capitalizeAllWords(sykmeldt.navn) : sykmeldt?.navn,
     arbeidstakerOnskerMote,
     arbeidstakersMotebehov?.opprettetDato
   );
 
   const ikonAltTekst = `Sykmeldt ${ikonAlternativTekst(
+    skjemaTypeMotebehov,
     arbeidstakerOnskerMote
   )}`;
 
@@ -133,13 +143,14 @@ export function MotebehovArbeidsgiverKvittering({
   motebehov,
   skjemaType,
 }: {
-  motebehov: MotebehovVeilederDTO | undefined;
+  motebehov: MotebehovVeilederDTO;
   skjemaType?: MotebehovSkjemaType | null;
 }) {
-  const arbeidsgiverOnskerMote = motebehov?.motebehovSvar?.harMotebehov;
+  const arbeidsgiverOnskerMote = motebehov.motebehovSvar.harMotebehov;
+  const skjemaTypeMotebehov = skjemaType ?? motebehov.skjemaType;
   const ikonAltTekst = `Arbeidsgiver ${arbeidsgiverNavnEllerTomStreng(
-    motebehov?.opprettetAvNavn ?? null
-  )} ${ikonAlternativTekst(arbeidsgiverOnskerMote)}`;
+    motebehov.opprettetAvNavn
+  )} ${ikonAlternativTekst(skjemaTypeMotebehov, arbeidsgiverOnskerMote)}`;
 
   return (
     <MotebehovKvitteringInnhold
@@ -147,10 +158,10 @@ export function MotebehovArbeidsgiverKvittering({
       ikonAltTekst={ikonAltTekst}
       motebehov={motebehov}
       tekst={composeArbeidsgiverSvarText(
-        motebehov?.opprettetAvNavn ?? null,
-        skjemaType ?? motebehov?.skjemaType ?? null,
+        motebehov.opprettetAvNavn,
+        skjemaTypeMotebehov,
         arbeidsgiverOnskerMote,
-        motebehov?.opprettetDato
+        motebehov.opprettetDato
       )}
     />
   );
@@ -170,7 +181,7 @@ export const MotebehovKvitteringInnholdArbeidsgiverUtenMotebehov = ({
       (leder: NarmesteLederRelasjonDTO, index: number) => {
         const ikonAltTekst = `Arbeidsgiver ${arbeidsgiverNavnEllerTomStreng(
           leder.narmesteLederNavn
-        )} ${ikonAlternativTekst(undefined)}`;
+        )} ${ikonAlternativTekst(skjemaType)}`;
         return (
           <MotebehovKvitteringInnhold
             key={index}
@@ -200,28 +211,30 @@ function MotebehovInCurrentTilfelle({
     (motebehov) => !isArbeidstakerMotebehov(motebehov)
   );
 
-  function findSkjemaType(motebehov: MotebehovVeilederDTO | undefined) {
+  function findSkjemaType(
+    motebehov: MotebehovVeilederDTO | undefined
+  ): MotebehovSkjemaType | null {
     if (motebehovArbeidstaker && motebehovArbeidsgiver) {
-      return motebehov?.skjemaType;
+      return motebehov?.skjemaType ?? null;
     } else if (motebehovArbeidstaker && !motebehovArbeidsgiver) {
       return motebehovArbeidstaker?.skjemaType;
     } else if (motebehovArbeidsgiver && !motebehovArbeidstaker) {
       return motebehovArbeidsgiver?.skjemaType;
     } else {
-      return undefined;
+      return null;
     }
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       <MotebehovKvitteringInnholdArbeidstaker
         arbeidstakersMotebehov={motebehovArbeidstaker}
-        skjemaType={findSkjemaType(motebehovArbeidstaker) ?? null}
+        skjemaType={findSkjemaType(motebehovArbeidstaker)}
       />
       <MotebehovArbeidsgiverInCurrentTilfelle
         motebehov={motebehovArbeidsgiver}
         oppfolgingstilfelle={oppfolgingstilfelle}
-        skjemaType={findSkjemaType(motebehovArbeidstaker) ?? null}
+        skjemaType={findSkjemaType(motebehovArbeidstaker)}
       />
     </div>
   );
@@ -257,12 +270,13 @@ function MotebehovArbeidsgiverInCurrentTilfelle({
 }
 
 function UbehandledeMotebehovUtenforTilfelle({
-  sorterteMotebehov,
+  sorterteMotebehovUtenforTilfelle,
 }: {
-  sorterteMotebehov: MotebehovVeilederDTO[];
+  sorterteMotebehovUtenforTilfelle: MotebehovVeilederDTO[];
 }) {
-  const ubehandledeEldreMotebehov =
-    getUbehandletSvarOgMeldtBehov(sorterteMotebehov);
+  const ubehandledeEldreMotebehov = getUbehandletSvarOgMeldtBehov(
+    sorterteMotebehovUtenforTilfelle
+  );
   const motebehovArbeidstaker = ubehandledeEldreMotebehov.find(
     isArbeidstakerMotebehov
   );
@@ -270,13 +284,11 @@ function UbehandledeMotebehovUtenforTilfelle({
     (motebehov) => !isArbeidstakerMotebehov(motebehov)
   );
 
-  return (
-    <div>
-      {(motebehovArbeidstaker || motebehovArbeidsgiver) && (
-        <BodyShort>
-          Ubehandlede møtebehov fra tidligere oppfølgingstilfelle
-        </BodyShort>
-      )}
+  return motebehovArbeidstaker || motebehovArbeidsgiver ? (
+    <div className="flex flex-col gap-2">
+      <BodyShort size="small">
+        Ubehandlede møtebehov fra tidligere oppfølgingstilfelle:
+      </BodyShort>
       {motebehovArbeidstaker && (
         <MotebehovKvitteringInnholdArbeidstaker
           arbeidstakersMotebehov={motebehovArbeidstaker}
@@ -290,27 +302,37 @@ function UbehandledeMotebehovUtenforTilfelle({
         />
       )}
     </div>
+  ) : (
+    <BodyShort size="small">
+      Alle tidligere møtebehov er behandlet, se møtebehovhistorikken for flere
+      detaljer.
+    </BodyShort>
   );
 }
 
 export default function MotebehovKvittering() {
   const { data: motebehov } = useMotebehovQuery();
-
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
   const sortertMotebehov = motebehov.sort(sorterMotebehovDataEtterDato);
-
   const motebehovInActiveTilfelle = getMotebehovInActiveTilfelle(
     sortertMotebehov,
     latestOppfolgingstilfelle
   );
+  const harMotebehovInTilfelle = !!(
+    motebehovInActiveTilfelle.length > 0 && latestOppfolgingstilfelle
+  );
 
-  return motebehovInActiveTilfelle.length > 0 && latestOppfolgingstilfelle ? (
+  return sortertMotebehov.length === 0 ? (
+    <BodyShort>Ingen tidligere møtebehov</BodyShort>
+  ) : harMotebehovInTilfelle ? (
     <MotebehovInCurrentTilfelle
       motebehovInTilfelle={motebehovInActiveTilfelle}
       oppfolgingstilfelle={latestOppfolgingstilfelle}
     />
   ) : (
-    <UbehandledeMotebehovUtenforTilfelle sorterteMotebehov={sortertMotebehov} />
+    <UbehandledeMotebehovUtenforTilfelle
+      sorterteMotebehovUtenforTilfelle={sortertMotebehov}
+    />
   );
 }
