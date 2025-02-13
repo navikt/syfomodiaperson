@@ -276,4 +276,19 @@ describe("MotebehovKvittering", () => {
     expect(screen.getByText("Jeg, arbeidsgiver, svarer nei til møte.")).to
       .exist;
   });
+  it("viser ingen møtebehov når nei-svar utenfor tilfelle, fordi disse kan ikke behandles", () => {
+    const motebehovArbeidsgiverUtenforTilfelleUbehandlet =
+      createMotebehovUtenforTilfelle(
+        motebehovArbeidsgiverInTilfelleSvartNeiUbehandletMock
+      );
+
+    mockMotebehov([motebehovArbeidsgiverUtenforTilfelleUbehandlet]);
+
+    renderMotebehovKvittering();
+    expect(
+      screen.getByText(
+        "Alle tidligere møtebehov er behandlet, se møtebehovhistorikken for flere detaljer."
+      )
+    ).to.exist;
+  });
 });

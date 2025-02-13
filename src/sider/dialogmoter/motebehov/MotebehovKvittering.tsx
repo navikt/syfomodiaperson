@@ -25,7 +25,7 @@ export const arbeidsgiverNavnEllerTomStreng = (lederNavn: string | null) => {
   return lederNavn ? `${lederNavn}` : "";
 };
 
-export const setSvarTekst = (
+export const getSvarTekst = (
   skjemaType: MotebehovSkjemaType | null,
   deltakerOnskerMote?: boolean
 ) => {
@@ -74,7 +74,7 @@ const composePersonSvarText = (
   harMotebehov?: boolean,
   svarOpprettetDato?: Date
 ) => {
-  const svarResultat = setSvarTekst(skjemaType, harMotebehov);
+  const svarResultat = getSvarTekst(skjemaType, harMotebehov);
   const opprettetDato = svarOpprettetDato
     ? " - " + tilLesbarDatoMedArUtenManedNavn(svarOpprettetDato)
     : undefined;
@@ -277,28 +277,34 @@ function UbehandledeMotebehovUtenforTilfelle({
   const ubehandledeEldreMotebehov = getUbehandletSvarOgMeldtBehov(
     sorterteMotebehovUtenforTilfelle
   );
-  const motebehovArbeidstaker = ubehandledeEldreMotebehov.find(
+  const ubehandletMotebehovArbeidstaker = ubehandledeEldreMotebehov.find(
     isArbeidstakerMotebehov
   );
-  const motebehovArbeidsgiver = ubehandledeEldreMotebehov.find(
+  const ubehandletMotebehovArbeidsgiver = ubehandledeEldreMotebehov.find(
     (motebehov) => !isArbeidstakerMotebehov(motebehov)
   );
 
-  return motebehovArbeidstaker || motebehovArbeidsgiver ? (
+  const harUbehandledeMotebehov = !!(
+    (ubehandletMotebehovArbeidstaker || ubehandletMotebehovArbeidsgiver) &&
+    (ubehandletMotebehovArbeidstaker?.motebehovSvar?.harMotebehov ||
+      ubehandletMotebehovArbeidsgiver?.motebehovSvar?.harMotebehov)
+  );
+
+  return harUbehandledeMotebehov ? (
     <div className="flex flex-col gap-2">
       <BodyShort size="small">
         Ubehandlede møtebehov fra tidligere oppfølgingstilfelle:
       </BodyShort>
-      {motebehovArbeidstaker && (
+      {ubehandletMotebehovArbeidstaker && (
         <MotebehovKvitteringInnholdArbeidstaker
-          arbeidstakersMotebehov={motebehovArbeidstaker}
-          skjemaType={motebehovArbeidstaker?.skjemaType ?? null}
+          arbeidstakersMotebehov={ubehandletMotebehovArbeidstaker}
+          skjemaType={ubehandletMotebehovArbeidstaker?.skjemaType ?? null}
         />
       )}
-      {motebehovArbeidsgiver && (
+      {ubehandletMotebehovArbeidsgiver && (
         <MotebehovArbeidsgiverKvittering
-          motebehov={motebehovArbeidsgiver}
-          skjemaType={motebehovArbeidsgiver?.skjemaType ?? null}
+          motebehov={ubehandletMotebehovArbeidsgiver}
+          skjemaType={ubehandletMotebehovArbeidsgiver?.skjemaType ?? null}
         />
       )}
     </div>
