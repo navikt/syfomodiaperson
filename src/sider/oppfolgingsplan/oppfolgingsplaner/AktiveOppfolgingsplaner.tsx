@@ -78,10 +78,19 @@ export default function AktiveOppfolgingsplaner({
         currentOppfolgingstilfelle
       )
     : [];
+  const activeNarmesteLedereWithoutActivePlan = activeNarmesteLedere.filter(
+    (leder) =>
+      !aktivePlaner.some(
+        (plan) => plan.virksomhet.virksomhetsnummer === leder.virksomhetsnummer
+      ) &&
+      !oppfolgingsplanerLPSUnprocessed.some(
+        (plan) => plan.virksomhetsnummer === leder.virksomhetsnummer
+      )
+  );
   const isBeOmOppfolgingsplanVisible =
     toggles.isBeOmOppfolgingsplanEnabled &&
     !!currentOppfolgingstilfelle &&
-    activeNarmesteLedere.length > 0;
+    activeNarmesteLedereWithoutActivePlan.length > 0;
 
   return (
     <div className="mb-8">
@@ -103,17 +112,15 @@ export default function AktiveOppfolgingsplaner({
           })}
         </>
       ) : (
-        <>
-          <Box background="surface-default" className="p-4 mb-2">
-            <BodyShort>{texts.ingenAktiveOppfolgingsplaner}</BodyShort>
-          </Box>
-          {isBeOmOppfolgingsplanVisible && (
-            <BeOmOppfolgingsplan
-              activeNarmesteLedere={activeNarmesteLedere}
-              currentOppfolgingstilfelle={currentOppfolgingstilfelle}
-            />
-          )}
-        </>
+        <Box background="surface-default" className="p-4 mb-2">
+          <BodyShort>{texts.ingenAktiveOppfolgingsplaner}</BodyShort>
+        </Box>
+      )}
+      {isBeOmOppfolgingsplanVisible && (
+        <BeOmOppfolgingsplan
+          activeNarmesteLedere={activeNarmesteLedereWithoutActivePlan}
+          currentOppfolgingstilfelle={currentOppfolgingstilfelle}
+        />
       )}
     </div>
   );
