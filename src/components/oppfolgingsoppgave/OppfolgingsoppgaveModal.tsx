@@ -69,6 +69,7 @@ function logOppfolgingsgrunnSendt(oppfolgingsgrunn: Oppfolgingsgrunn) {
     },
   });
 }
+
 function logOppfolgingsoppgaveEdited(
   oppfolgingsgrunn: Oppfolgingsgrunn,
   existingOppfolgingsoppgave: OppfolgingsoppgaveResponseDTO,
@@ -303,7 +304,7 @@ export const OppfolgingsoppgaveModal = ({
             </Alert>
           )}
 
-          <DatePicker {...datepickerProps} strategy="fixed">
+          <DatePicker {...datepickerProps} strategy="fixed" showWeekNumber>
             <DatePicker.Input {...inputProps} label={texts.datepickerLabel} />
           </DatePicker>
         </Modal.Body>
