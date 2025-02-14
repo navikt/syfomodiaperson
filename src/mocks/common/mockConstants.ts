@@ -107,6 +107,11 @@ export const NARMESTE_LEDER_DEFAULT = {
   personident: "02690001009",
 };
 
+const ANNEN_NARMESTE_LEDER = {
+  navn: "Sara Sjef",
+  personident: "02790001009",
+};
+
 export const LEDERE_DEFAULT = [
   {
     uuid: "3",
@@ -124,6 +129,15 @@ export const LEDERE_DEFAULT = [
     status: NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
   },
 ];
+
+export const ANNEN_LEDER_AKTIV = {
+  ...LEDERE_DEFAULT[0],
+  uuid: "4",
+  virksomhetsnummer: VIRKSOMHET_BRANNOGBIL.virksomhetsnummer,
+  virksomhetsnavn: VIRKSOMHET_BRANNOGBIL.virksomhetsnavn,
+  narmesteLederPersonIdentNumber: ANNEN_NARMESTE_LEDER.personident,
+  narmesteLederNavn: ANNEN_NARMESTE_LEDER.navn,
+};
 
 export const VEILEDER_BRUKER_KNYTNING_DEFAULT: VeilederBrukerKnytningDTO = {
   personident: ARBEIDSTAKER_DEFAULT.personIdent,

@@ -7,6 +7,18 @@ import {
 import { OppfolgingstilfellePersonDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { addWeeks } from "@/utils/datoUtils";
 
+export const currentOppfolgingstilfelle = {
+  arbeidstakerAtTilfelleEnd: true,
+  start: addWeeks(new Date(), -40),
+  end: addWeeks(new Date(), 20),
+  virksomhetsnummerList: [
+    VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+    VIRKSOMHET_BRANNOGBIL.virksomhetsnummer,
+    VIRKSOMHET_UTEN_NARMESTE_LEDER.virksomhetsnummer,
+  ],
+  antallSykedager: 294,
+  varighetUker: 48,
+};
 export const oppfolgingstilfellePersonMock: OppfolgingstilfellePersonDTO = {
   oppfolgingstilfelleList: [
     {
@@ -25,18 +37,7 @@ export const oppfolgingstilfellePersonMock: OppfolgingstilfellePersonDTO = {
       antallSykedager: 294,
       varighetUker: 48,
     },
-    {
-      arbeidstakerAtTilfelleEnd: true,
-      start: addWeeks(new Date(), -40),
-      end: addWeeks(new Date(), 20),
-      virksomhetsnummerList: [
-        VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-        VIRKSOMHET_BRANNOGBIL.virksomhetsnummer,
-        VIRKSOMHET_UTEN_NARMESTE_LEDER.virksomhetsnummer,
-      ],
-      antallSykedager: 294,
-      varighetUker: 48,
-    },
+    currentOppfolgingstilfelle,
   ],
   personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
 };
