@@ -5,7 +5,6 @@ import {
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import AvvistSykmeldingStatuspanel from "./AvvistSykmeldingStatuspanel";
 import { AvvistSykmeldingPanel } from "./AvvistSykmeldingPanel";
-import BekreftAvvistSykmelding from "./BekreftAvvistSykmelding";
 import { SykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingOpplysninger";
 
 interface AvvistSykmeldingProps {
@@ -24,7 +23,6 @@ const AvvistSykmelding = ({
       <div className="blokk">
         <SykmeldingOpplysninger sykmelding={sykmelding} />
       </div>
-      {sykmelding.status === SykmeldingStatus.NY && <BekreftAvvistSykmelding />}
     </>
   );
 };
