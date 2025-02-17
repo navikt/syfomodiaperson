@@ -34,7 +34,6 @@ export const useBehandleMotebehov = () => {
     onSettled: () =>
       queryClient.invalidateQueries({
         queryKey: motebehovQueryKey,
-        refetchType: "none",
       }),
   });
 };
