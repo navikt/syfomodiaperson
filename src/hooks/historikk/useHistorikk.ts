@@ -13,105 +13,47 @@ import { useOppfolgingsplanHistorikk } from "@/hooks/historikk/useOppfolgingspla
 import { useOppfolgingsoppgaveHistorikk } from "@/hooks/historikk/useOppfolgingsoppgaveHistorikk";
 import { useMotebehovHistorikk } from "@/hooks/historikk/useMotebehovHistorikk";
 
-interface HistorikkHook {
-  isHistorikkLoading: boolean;
-  isHistorikkError: boolean;
-  historikkEvents: HistorikkEvent[];
+export interface HistorikkHook {
+  isLoading: boolean;
+  isError: boolean;
+  events: HistorikkEvent[];
 }
 
 export function useHistorikk(): HistorikkHook {
   const motebehovHistorikk = useMotebehovHistorikk();
-
   const oppfolgingsplanHistorikk = useOppfolgingsplanHistorikk();
-
-  const { lederHistorikk, isLedereHistorikkLoading, isLedereHistorikkError } =
-    useLedereHistorikk();
-
-  const {
-    aktivitetskravHistorikk,
-    isAktivitetskravHistorikkLoading,
-    isAktivitetskravHistorikkError,
-  } = useAktivitetskravHistorikk();
-
-  const {
-    arbeidsuforhetHistorikk,
-    isArbeidsuforhetHistorikkLoading,
-    isArbeidsuforhetHistorikkError,
-  } = useArbeidsuforhetHistorikk();
-
-  const {
-    manglendeMedvirkningHistorikk,
-    isManglendeMedvirkningHistorikkLoading,
-    isManglendeMedvirkningHistorikkError,
-  } = useManglendeMedvirkningHistorikk();
-
-  const { vedtakHistorikk, isVedtakHistorikkLoading, isVedtakHistorikkError } =
-    useVedtakHistorikk();
-
+  const ledereHistorikk = useLedereHistorikk();
+  const aktivitetskravHistorikk = useAktivitetskravHistorikk();
+  const arbeidsuforhetHistorikk = useArbeidsuforhetHistorikk();
+  const manglendeMedvirkningHistorikk = useManglendeMedvirkningHistorikk();
+  const vedtakHistorikk = useVedtakHistorikk();
   const veilederTildelingHistorikk = useVeilederTildelingHistorikk();
-
-  const {
-    dialogmotekandidatHistorikk,
-    isDialogmotekandidatHistorikkLoading,
-    isDialogmotekandidatHistorikkError,
-  } = useDialogmotekandidatHistorikk();
-
+  const dialogmotekandidatHistorikk = useDialogmotekandidatHistorikk();
   const dialogMedBehandlerHistorikk = useDialogMedBehandlerHistorikk();
-
   const senOppfolgingHistorikk = useSenOppfolgingHistorikk();
-
   const dialogmoteStatusEndringHistorikk =
     useDialogmoteStatusEndringHistorikk();
-
   const oppfolgingsoppgaveHistorikk = useOppfolgingsoppgaveHistorikk();
 
-  const historikkEvents = motebehovHistorikk.events
-    .concat(oppfolgingsplanHistorikk.events)
-    .concat(lederHistorikk)
-    .concat(aktivitetskravHistorikk)
-    .concat(arbeidsuforhetHistorikk)
-    .concat(manglendeMedvirkningHistorikk)
-    .concat(vedtakHistorikk)
-    .concat(veilederTildelingHistorikk.events)
-    .concat(dialogMedBehandlerHistorikk.events)
-    .concat(senOppfolgingHistorikk.events)
-    .concat(dialogmotekandidatHistorikk)
-    .concat(oppfolgingsoppgaveHistorikk.events)
-    .concat(dialogmoteStatusEndringHistorikk.events);
-
-  const isHistorikkLoading =
-    oppfolgingsplanHistorikk.isLoading ||
-    motebehovHistorikk.isLoading ||
-    isLedereHistorikkLoading ||
-    isAktivitetskravHistorikkLoading ||
-    isArbeidsuforhetHistorikkLoading ||
-    isManglendeMedvirkningHistorikkLoading ||
-    isVedtakHistorikkLoading ||
-    veilederTildelingHistorikk.isLoading ||
-    dialogMedBehandlerHistorikk.isLoading ||
-    senOppfolgingHistorikk.isLoading ||
-    isDialogmotekandidatHistorikkLoading ||
-    oppfolgingsoppgaveHistorikk.isLoading ||
-    dialogmoteStatusEndringHistorikk.isLoading;
-
-  const isHistorikkError =
-    motebehovHistorikk.isError ||
-    oppfolgingsplanHistorikk.isError ||
-    isLedereHistorikkError ||
-    isAktivitetskravHistorikkError ||
-    isArbeidsuforhetHistorikkError ||
-    isManglendeMedvirkningHistorikkError ||
-    isVedtakHistorikkError ||
-    veilederTildelingHistorikk.isError ||
-    dialogMedBehandlerHistorikk.isError ||
-    senOppfolgingHistorikk.isError ||
-    isDialogmotekandidatHistorikkError ||
-    oppfolgingsoppgaveHistorikk.isError ||
-    dialogmoteStatusEndringHistorikk.isError;
+  const historikk: HistorikkHook[] = [
+    motebehovHistorikk,
+    oppfolgingsplanHistorikk,
+    ledereHistorikk,
+    aktivitetskravHistorikk,
+    arbeidsuforhetHistorikk,
+    manglendeMedvirkningHistorikk,
+    vedtakHistorikk,
+    veilederTildelingHistorikk,
+    dialogMedBehandlerHistorikk,
+    senOppfolgingHistorikk,
+    dialogmotekandidatHistorikk,
+    oppfolgingsoppgaveHistorikk,
+    dialogmoteStatusEndringHistorikk,
+  ];
 
   return {
-    historikkEvents,
-    isHistorikkLoading,
-    isHistorikkError,
+    events: historikk.map((value) => value.events).flat(),
+    isLoading: historikk.some((value) => value.isLoading),
+    isError: historikk.some((value) => value.isError),
   };
 }

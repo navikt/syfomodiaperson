@@ -4,6 +4,7 @@ import {
   VurderingResponseDTO as ManglendemedvirkningVurdering,
   VurderingType as ManglendemedvirkningVurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
+import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
 
 function manglendemedvirkningText(
   veilederident: string,
@@ -41,27 +42,14 @@ function createHistorikkEventsFromManglendemedvirkning(
   );
 }
 
-interface ManglendeMedvirkningHistorikk {
-  isManglendeMedvirkningHistorikkLoading: boolean;
-  isManglendeMedvirkningHistorikkError: boolean;
-  manglendeMedvirkningHistorikk: HistorikkEvent[];
-}
-
-export function useManglendeMedvirkningHistorikk(): ManglendeMedvirkningHistorikk {
-  const {
-    data: manglendemedvirkningVurderinger,
-    isLoading: isManglendemedvirkningLoading,
-    isError: isManglendemedvirkningError,
-  } = useManglendemedvirkningVurderingQuery();
-
+export function useManglendeMedvirkningHistorikk(): HistorikkHook {
+  const { data, isLoading, isError } = useManglendemedvirkningVurderingQuery();
   const manglendeMedvirkningHistorikk =
-    createHistorikkEventsFromManglendemedvirkning(
-      manglendemedvirkningVurderinger
-    );
+    createHistorikkEventsFromManglendemedvirkning(data);
 
   return {
-    isManglendeMedvirkningHistorikkLoading: isManglendemedvirkningLoading,
-    isManglendeMedvirkningHistorikkError: isManglendemedvirkningError,
-    manglendeMedvirkningHistorikk,
+    isLoading,
+    isError,
+    events: manglendeMedvirkningHistorikk,
   };
 }

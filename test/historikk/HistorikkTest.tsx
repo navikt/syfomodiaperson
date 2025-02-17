@@ -14,6 +14,8 @@ import {
   VEILEDER_TILDELING_HISTORIKK_ANNEN,
   VEILEDER_TILDELING_HISTORIKK_DEFAULT,
   VEILEDER_TILDELING_HISTORIKK_SYSTEM,
+  VIRKSOMHET_BRANNOGBIL,
+  VIRKSOMHET_ENTERPRISE,
 } from "@/mocks/common/mockConstants";
 import { historikkQueryKeys } from "@/data/historikk/historikkQueryHooks";
 import { aktivitetskravQueryKeys } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
@@ -53,6 +55,8 @@ import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes"
 import { addWeeks, tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { motebehovMock } from "@/mocks/syfomotebehov/motebehovMock";
+import { oppfolgingsplanForesporselQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
+import { mockForesporseler } from "@/mocks/isoppfolgingsplan/oppfolgingsplanForesporselMocks";
 
 let queryClient: QueryClient;
 
@@ -138,6 +142,12 @@ function setupTestdataHistorikk() {
   );
   queryClient.setQueryData(
     oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => []
+  );
+  queryClient.setQueryData(
+    oppfolgingsplanForesporselQueryKeys.foresporsel(
       ARBEIDSTAKER_DEFAULT.personIdent
     ),
     () => []
@@ -878,6 +888,32 @@ describe("Historikk", () => {
       ).to.exist;
       expect(screen.getByText("Z990000 vurderte behovet for dialogmøte")).to
         .exist;
+    });
+  });
+
+  describe("Forespørsel om oppfølgingsplan", () => {
+    it("viser forespørseler om oppfølgingsplan", async () => {
+      queryClient.setQueryData(
+        oppfolgingsplanForesporselQueryKeys.foresporsel(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => mockForesporseler
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(screen.getAllByText("Be om oppfølgingsplan")).to.have.length(2);
+      expect(
+        screen.getByText(
+          `Z990000 ba om oppfølgingsplan fra ${VIRKSOMHET_ENTERPRISE.virksomhetsnummer}.`
+        )
+      ).to.exist;
+      expect(
+        screen.getByText(
+          `Z990000 ba om oppfølgingsplan fra ${VIRKSOMHET_BRANNOGBIL.virksomhetsnummer}.`
+        )
+      ).to.exist;
     });
   });
 });
