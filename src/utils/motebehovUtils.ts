@@ -1,5 +1,3 @@
-import dayjs from "dayjs";
-import { dagerMellomDatoer } from "./datoUtils";
 import {
   MeldtMotebehov,
   MotebehovInnmelder,
@@ -19,67 +17,6 @@ export const sorterMotebehovDataEtterDato = (
     : b.opprettetDato > a.opprettetDato
     ? 1
     : -1;
-};
-
-export const finnNyesteMotebehovsvarFraHverDeltaker = (
-  sortertMotebehovListe: MotebehovVeilederDTO[]
-): MotebehovVeilederDTO[] => {
-  return sortertMotebehovListe.filter((motebehov1, index) => {
-    return (
-      sortertMotebehovListe.findIndex((motebehov2) => {
-        return motebehov1.opprettetAv === motebehov2.opprettetAv;
-      }) === index
-    );
-  });
-};
-
-export const finnArbeidstakerMotebehovSvar = (
-  motebehovListe: MotebehovVeilederDTO[]
-): MotebehovVeilederDTO | undefined => {
-  return motebehovListe.find(
-    (motebehov) => motebehov.opprettetAv === motebehov.aktorId
-  );
-};
-
-export const OPPFOLGINGSFORLOP_MOTEBEHOV_START_DAGER = 16 * 7;
-export const OPPFOLGINGSFORLOP_MOTEBEHOV_SLUTT_DAGER = 26 * 7;
-
-export const erOppfoelgingsdatoPassertMed16UkerOgIkke26Uker = (
-  startOppfolgingsdato: Date | string
-): boolean => {
-  const oppfoelgingstilfelleStartDato = new Date(startOppfolgingsdato);
-  oppfoelgingstilfelleStartDato.setHours(0, 0, 0, 0);
-  const dagensDato = new Date();
-  dagensDato.setHours(0, 0, 0, 0);
-
-  const antallDagerSidenOppfoelgingsTilfelleStart = dagerMellomDatoer(
-    oppfoelgingstilfelleStartDato,
-    dagensDato
-  );
-
-  return (
-    antallDagerSidenOppfoelgingsTilfelleStart >=
-      OPPFOLGINGSFORLOP_MOTEBEHOV_START_DAGER &&
-    antallDagerSidenOppfoelgingsTilfelleStart <
-      OPPFOLGINGSFORLOP_MOTEBEHOV_SLUTT_DAGER
-  );
-};
-
-export const erOppfolgingstilfelleSluttDatoPassert = (
-  sluttOppfolgingsdato: Date | string
-): boolean => {
-  const oppfolgingstilfelleSluttDato = new Date(sluttOppfolgingsdato);
-  oppfolgingstilfelleSluttDato.setHours(0, 0, 0, 0);
-  const dagensDato = new Date();
-  dagensDato.setHours(0, 0, 0, 0);
-
-  return dagensDato > oppfolgingstilfelleSluttDato;
-};
-
-export const harArbeidstakerSvartPaaMotebehov = (
-  motebehovData: MotebehovVeilederDTO[]
-): boolean => {
-  return !!finnArbeidstakerMotebehovSvar(motebehovData);
 };
 
 export const motebehovUbehandlet = (
@@ -160,28 +97,6 @@ export const motebehovlisteMedKunJaSvar = (
     (motebehov) =>
       motebehov.motebehovSvar && motebehov.motebehovSvar.harMotebehov
   );
-};
-
-export const motebehovFromLatestActiveTilfelle = (
-  sortertMotebehovListe: MotebehovVeilederDTO[],
-  latestOppfolgingstilfelle?: OppfolgingstilfelleDTO
-): MotebehovVeilederDTO[] => {
-  if (
-    latestOppfolgingstilfelle === undefined ||
-    latestOppfolgingstilfelle?.start <
-      dayjs(new Date()).subtract(16, "days").toDate()
-  ) {
-    return motebehovUbehandlet(sortertMotebehovListe);
-  }
-
-  const motebehovFromLatestTilfelle = sortertMotebehovListe.filter((svar) => {
-    return svar.opprettetDato >= latestOppfolgingstilfelle.start;
-  });
-  if (motebehovFromLatestTilfelle.length > 0) {
-    return motebehovFromLatestTilfelle;
-  } else {
-    return motebehovUbehandlet(sortertMotebehovListe);
-  }
 };
 
 export const getMotebehovInActiveTilfelle = (
