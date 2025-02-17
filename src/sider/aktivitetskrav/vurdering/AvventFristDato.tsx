@@ -34,7 +34,7 @@ export const AvventFristDato = () => {
   });
 
   return (
-    <DatePicker {...datepickerProps} strategy="fixed">
+    <DatePicker {...datepickerProps} strategy="fixed" showWeekNumber>
       <DatePicker.Input
         id={field.name}
         {...inputProps}
