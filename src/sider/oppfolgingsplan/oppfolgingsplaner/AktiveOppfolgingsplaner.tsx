@@ -18,7 +18,7 @@ const texts = {
   ingenAktiveOppfolgingsplaner: "Det er ingen aktive oppfølgingsplaner",
 };
 
-function activeNarmesteLederForCurrentOppfolgingstilfelle(
+export function activeNarmesteLederForCurrentOppfolgingstilfelle(
   ledere: NarmesteLederRelasjonDTO[],
   oppfolgingsTilfelle: OppfolgingstilfelleDTO
 ): NarmesteLederRelasjonDTO[] {

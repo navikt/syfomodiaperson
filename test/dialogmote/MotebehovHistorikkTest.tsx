@@ -7,8 +7,8 @@ import MotebehovHistorikk from "@/sider/dialogmoter/components/motehistorikk/Mot
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import {
-  motebehovArbeidsgiverMock,
-  motebehovArbeidstakerBehandletMock,
+  svartNeiMotebehovArbeidsgiverUbehandletMock,
+  meldtMotebehovArbeidstakerBehandletMock,
   motebehovMock,
 } from "@/mocks/syfomotebehov/motebehovMock";
 
@@ -58,7 +58,7 @@ describe("MotebehovHistorikk", () => {
   it("viser kun møtebehov fra arbeidsgiver", () => {
     queryClient.setQueryData(
       motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [motebehovArbeidsgiverMock]
+      () => [svartNeiMotebehovArbeidsgiverUbehandletMock]
     );
 
     renderMotebehovHistorikk();
@@ -71,7 +71,7 @@ describe("MotebehovHistorikk", () => {
   it("viser kun møtebehov fra arbeidstaker", () => {
     queryClient.setQueryData(
       motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [motebehovArbeidstakerBehandletMock]
+      () => [meldtMotebehovArbeidstakerBehandletMock]
     );
 
     renderMotebehovHistorikk();
@@ -84,7 +84,7 @@ describe("MotebehovHistorikk", () => {
   it("viser at møtebehovet er behandlet", () => {
     queryClient.setQueryData(
       motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [motebehovArbeidstakerBehandletMock]
+      () => [meldtMotebehovArbeidstakerBehandletMock]
     );
 
     renderMotebehovHistorikk();

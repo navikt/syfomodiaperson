@@ -11,7 +11,7 @@ import {
 } from "@/data/motebehov/types/motebehovTypes";
 import { addDays } from "@/utils/datoUtils";
 
-const motebehovArbeidstakerUbehandletMock: MotebehovVeilederDTO = {
+const svartJaMotebehovArbeidstakerUbehandletMock: MotebehovVeilederDTO = {
   id: "11111111-ee10-44b6-bddf-54d049ef25f9",
   opprettetDato: addDays(new Date(), -25),
   aktorId: "1",
@@ -29,7 +29,7 @@ const motebehovArbeidstakerUbehandletMock: MotebehovVeilederDTO = {
   skjemaType: MotebehovSkjemaType.SVAR_BEHOV,
 };
 
-export const motebehovArbeidstakerBehandletMock: MotebehovVeilederDTO = {
+export const meldtMotebehovArbeidstakerBehandletMock: MotebehovVeilederDTO = {
   id: "33333333-ee10-44b6-bddf-54d049ef25f2",
   opprettetDato: addDays(new Date(), -10),
   aktorId: "1",
@@ -47,26 +47,27 @@ export const motebehovArbeidstakerBehandletMock: MotebehovVeilederDTO = {
   skjemaType: MotebehovSkjemaType.MELD_BEHOV,
 };
 
-export const motebehovArbeidsgiverMock: MotebehovVeilederDTO = {
-  id: "22222222-9e9b-40b0-bd1c-d1c39dc5f481",
-  opprettetDato: addDays(new Date(), -5),
-  aktorId: "1",
-  opprettetAv: "1902690001009",
-  opprettetAvNavn: "Are Arbeidsgiver",
-  arbeidstakerFnr: ARBEIDSTAKER_DEFAULT.personIdent,
-  virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-  motebehovSvar: {
-    harMotebehov: false,
-    forklaring: "Jeg liker ikke møte!!",
-  },
-  tildeltEnhet: "0330",
-  behandletTidspunkt: null,
-  behandletVeilederIdent: null,
-  skjemaType: MotebehovSkjemaType.SVAR_BEHOV,
-};
+export const svartNeiMotebehovArbeidsgiverUbehandletMock: MotebehovVeilederDTO =
+  {
+    id: "22222222-9e9b-40b0-bd1c-d1c39dc5f481",
+    opprettetDato: addDays(new Date(), -5),
+    aktorId: "1",
+    opprettetAv: "1902690001009",
+    opprettetAvNavn: "Are Arbeidsgiver",
+    arbeidstakerFnr: ARBEIDSTAKER_DEFAULT.personIdent,
+    virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+    motebehovSvar: {
+      harMotebehov: false,
+      forklaring: "Jeg liker ikke møte!!",
+    },
+    tildeltEnhet: "0330",
+    behandletTidspunkt: null,
+    behandletVeilederIdent: null,
+    skjemaType: MotebehovSkjemaType.SVAR_BEHOV,
+  };
 
 export const motebehovMock = [
-  motebehovArbeidstakerUbehandletMock,
-  motebehovArbeidstakerBehandletMock,
-  motebehovArbeidsgiverMock,
+  svartJaMotebehovArbeidstakerUbehandletMock,
+  meldtMotebehovArbeidstakerBehandletMock,
+  svartNeiMotebehovArbeidsgiverUbehandletMock,
 ];

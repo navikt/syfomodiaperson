@@ -5,7 +5,6 @@ import { InnkallingDialogmotePanel } from "./components/innkalling/InnkallingDia
 import SideLaster from "../../components/SideLaster";
 import { DialogmoteOnskePanel } from "./motebehov/DialogmoteOnskePanel";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
-import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { DialogmoteFerdigstilteReferatPanel } from "@/sider/dialogmoter/components/DialogmoteFerdigstilteReferatPanel";
 import { DialogmoteStatus } from "@/data/dialogmote/types/dialogmoteTypes";
@@ -34,19 +33,12 @@ export function Motelandingsside() {
     isError: henterDialogmoteunntakFeilet,
     isLoading: henterDialogmoteunntak,
   } = useDialogmoteunntakQuery();
-  const { isError: henterMotebehovFeilet, isLoading: henterMotebehov } =
-    useMotebehovQuery();
   const { isLoading: henterLedere, isError: henterLedereFeilet } =
     useLedereQuery();
 
-  const henter =
-    henterDialogmoter ||
-    henterDialogmoteunntak ||
-    henterMotebehov ||
-    henterLedere;
+  const henter = henterDialogmoter || henterDialogmoteunntak || henterLedere;
   const hentingFeilet =
     henterLedereFeilet ||
-    henterMotebehovFeilet ||
     henterDialogmoterFeilet ||
     henterDialogmoteunntakFeilet;
 

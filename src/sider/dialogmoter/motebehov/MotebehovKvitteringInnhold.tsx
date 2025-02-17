@@ -35,7 +35,7 @@ export default function MotebehovKvitteringInnhold({
   tekst,
 }: Props) {
   return (
-    <div className="flex items-center mt-4">
+    <div className="flex items-center">
       <img
         src={setSvarIkon(deltakerOnskerMote)}
         alt={ikonAltTekst}

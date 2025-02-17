@@ -93,6 +93,15 @@ export const motebehovUbehandlet = (
   );
 };
 
+export const getUbehandletSvarOgMeldtBehov = (
+  motebehovListe: MotebehovVeilederDTO[]
+): MotebehovVeilederDTO[] => {
+  return motebehovListe.filter(
+    (motebehov) =>
+      !motebehov.behandletTidspunkt && !motebehov.behandletVeilederIdent
+  );
+};
+
 const erAlleMotebehovSvarBehandlet = (
   motebehovListe: MotebehovVeilederDTO[]
 ): boolean => {
@@ -173,6 +182,17 @@ export const motebehovFromLatestActiveTilfelle = (
   } else {
     return motebehovUbehandlet(sortertMotebehovListe);
   }
+};
+
+export const getMotebehovInActiveTilfelle = (
+  sortertMotebehovListe: MotebehovVeilederDTO[],
+  latestOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined
+): MotebehovVeilederDTO[] => {
+  return sortertMotebehovListe.filter(
+    (motebehov) =>
+      latestOppfolgingstilfelle &&
+      motebehov.opprettetDato >= latestOppfolgingstilfelle.start
+  );
 };
 
 export const toMotebehovTilbakemeldingDTO = (
