@@ -903,7 +903,9 @@ describe("Historikk", () => {
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
-      expect(screen.getAllByText("Bedt om oppfølgingsplan")).to.have.length(2);
+      expect(screen.getAllByText("Forespørsel oppfølgingsplan")).to.have.length(
+        2
+      );
       expect(
         screen.getByText(
           `Z990000 ba om oppfølgingsplan fra ${VIRKSOMHET_ENTERPRISE.virksomhetsnummer}.`
