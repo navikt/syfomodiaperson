@@ -1,11 +1,13 @@
 import { fullNaisUrlIntern } from "@/utils/miljoUtil";
 import React, { ReactElement } from "react";
 import { Link } from "@navikt/ds-react";
+import { MagnifyingGlassIcon } from "@navikt/aksel-icons";
 
 const texts = {
   oversikt: "Min oversikt",
   moter: "Mine møter",
   enhetensOversikt: "Enhetens oversikt",
+  sokSykmeldt: "Søk etter sykmeldt",
 };
 
 export const OversiktLenker = (): ReactElement => (
@@ -15,6 +17,10 @@ export const OversiktLenker = (): ReactElement => (
     </Link>
     <Link href={fullNaisUrlIntern("syfooversikt", "/enhet")}>
       {texts.enhetensOversikt}
+    </Link>
+    <Link href={fullNaisUrlIntern("syfooversikt", "/sok")}>
+      <MagnifyingGlassIcon />
+      {texts.sokSykmeldt}
     </Link>
     <Link href={fullNaisUrlIntern("syfomoteoversikt")}>{texts.moter}</Link>
   </div>
