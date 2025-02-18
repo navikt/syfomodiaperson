@@ -4,6 +4,7 @@ import {
   VurderingResponseDTO as ArbeidsuforhetVurderinger,
   VurderingType as ArbeidsuforhetVurderingType,
 } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
 
 function arbeidsuforhetText(
   veilederident: string,
@@ -36,17 +37,11 @@ function createHistorikkEventsFromArbeidsuforhet(
   );
 }
 
-interface ArbeidsuforhetHistorikk {
-  isArbeidsuforhetHistorikkLoading: boolean;
-  isArbeidsuforhetHistorikkError: boolean;
-  arbeidsuforhetHistorikk: HistorikkEvent[];
-}
-
-export function useArbeidsuforhetHistorikk(): ArbeidsuforhetHistorikk {
+export function useArbeidsuforhetHistorikk(): HistorikkHook {
   const {
     data: arbeidsuforhetVurderinger,
-    isLoading: isArbeidsuforhetLoading,
-    isError: isArbeidsuforhetError,
+    isLoading,
+    isError,
   } = useGetArbeidsuforhetVurderingerQuery();
 
   const arbeidsuforhetHistorikk = createHistorikkEventsFromArbeidsuforhet(
@@ -54,8 +49,8 @@ export function useArbeidsuforhetHistorikk(): ArbeidsuforhetHistorikk {
   );
 
   return {
-    isArbeidsuforhetHistorikkLoading: isArbeidsuforhetLoading,
-    isArbeidsuforhetHistorikkError: isArbeidsuforhetError,
-    arbeidsuforhetHistorikk,
+    isLoading,
+    isError,
+    events: arbeidsuforhetHistorikk,
   };
 }

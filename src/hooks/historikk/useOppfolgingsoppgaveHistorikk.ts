@@ -4,12 +4,7 @@ import {
   OppfolgingsoppgaveResponseDTO,
 } from "@/data/oppfolgingsoppgave/types";
 import { useOppfolgingsoppgaver } from "@/data/oppfolgingsoppgave/useOppfolgingsoppgaver";
-
-interface OppfolgingsoppgaveHistorikk {
-  isLoading: boolean;
-  isError: boolean;
-  events: HistorikkEvent[];
-}
+import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
 
 function createHistorikkEvents(
   oppfolgingsoppgaver: OppfolgingsoppgaveResponseDTO[]
@@ -57,18 +52,18 @@ function createHistorikkEvents(
   return historikkEvents;
 }
 
-export function useOppfolgingsoppgaveHistorikk(): OppfolgingsoppgaveHistorikk {
+export function useOppfolgingsoppgaveHistorikk(): HistorikkHook {
   const {
     oppfolgingsoppgaver: oppfolgingsoppgaver,
-    isLoading: isOppfolgingsoppgaverLoading,
-    isError: isOppfolgingsoppgaverError,
+    isLoading,
+    isError,
   } = useOppfolgingsoppgaver();
 
   const historikkEvents = createHistorikkEvents(oppfolgingsoppgaver || []);
 
   return {
-    isLoading: isOppfolgingsoppgaverLoading,
-    isError: isOppfolgingsoppgaverError,
+    isLoading,
+    isError,
     events: historikkEvents,
   };
 }

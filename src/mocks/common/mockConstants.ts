@@ -107,7 +107,7 @@ export const NARMESTE_LEDER_DEFAULT = {
   personident: "02690001009",
 };
 
-const ANNEN_NARMESTE_LEDER = {
+export const ANNEN_NARMESTE_LEDER = {
   navn: "Sara Sjef",
   personident: "02790001009",
 };

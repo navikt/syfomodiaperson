@@ -6,6 +6,7 @@ import {
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
+import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
 
 function getTextForHistorikk(
   historikk: AktivitetskravHistorikkDTO,
@@ -55,28 +56,22 @@ function createHistorikkEventsFromAktivitetskrav(
     });
 }
 
-interface AktivitetskravHistorikk {
-  isAktivitetskravHistorikkLoading: boolean;
-  isAktivitetskravHistorikkError: boolean;
-  aktivitetskravHistorikk: HistorikkEvent[];
-}
-
-export function useAktivitetskravHistorikk(): AktivitetskravHistorikk {
+export function useAktivitetskravHistorikk(): HistorikkHook {
   const { brukerinfo: person } = useBrukerinfoQuery();
   const {
     data: aktivitetskravHistorikk,
-    isLoading: isAktivitetskravHistorikkLoading,
-    isError: isAktivitetskravHistorikkError,
+    isLoading,
+    isError,
   } = useAktivitetskravHistorikkQuery();
 
-  const aktivitetskravHistorikkEvents = createHistorikkEventsFromAktivitetskrav(
+  const events = createHistorikkEventsFromAktivitetskrav(
     aktivitetskravHistorikk || [],
     person
   );
 
   return {
-    isAktivitetskravHistorikkLoading,
-    isAktivitetskravHistorikkError,
-    aktivitetskravHistorikk: aktivitetskravHistorikkEvents,
+    isLoading,
+    isError,
+    events,
   };
 }

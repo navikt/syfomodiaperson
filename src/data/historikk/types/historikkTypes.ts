@@ -12,7 +12,8 @@ export type HistorikkEventType =
   | "SEN_OPPFOLGING"
   | "DIALOGMOTEKANDIDAT"
   | "OPPFOLGINGSOPPGAVE"
-  | "OPPFOLGINGSPLAN_LPS";
+  | "OPPFOLGINGSPLAN_LPS"
+  | "OPPFOLGINGSPLAN_FORESPORSEL";
 
 export interface HistorikkEvent {
   opprettetAv?: string;

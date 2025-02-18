@@ -2,6 +2,7 @@ import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useMemo } from "react";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
+import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
 
 function createHistorikkEventsFromLedere(
   ledere: NarmesteLederRelasjonDTO[]
@@ -14,19 +15,8 @@ function createHistorikkEventsFromLedere(
   }));
 }
 
-interface LedereHistorikk {
-  isLedereHistorikkLoading: boolean;
-  isLedereHistorikkError: boolean;
-  lederHistorikk: HistorikkEvent[];
-}
-
-export function useLedereHistorikk(): LedereHistorikk {
-  const {
-    isLoading: isLedereLoading,
-    isError: isLedereError,
-    currentLedere,
-    formerLedere,
-  } = useLedereQuery();
+export function useLedereHistorikk(): HistorikkHook {
+  const { isLoading, isError, currentLedere, formerLedere } = useLedereQuery();
 
   const allLedere = useMemo(
     () => [...currentLedere, ...formerLedere],
@@ -36,8 +26,8 @@ export function useLedereHistorikk(): LedereHistorikk {
   const lederHistorikk = createHistorikkEventsFromLedere(allLedere);
 
   return {
-    isLedereHistorikkLoading: isLedereLoading,
-    isLedereHistorikkError: isLedereError,
-    lederHistorikk,
+    isLoading,
+    isError,
+    events: lederHistorikk,
   };
 }

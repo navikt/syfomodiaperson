@@ -5,14 +5,9 @@ import {
   SenOppfolgingVurderingType,
 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
+import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
 
 const OPPRETTET_AV_SYSTEM_DEFAULT = "SYSTEM";
-
-interface SenOppfolgingHistorikk {
-  isLoading: boolean;
-  isError: boolean;
-  events: HistorikkEvent[];
-}
 
 function createHistorikkEvents(
   senOppfolgingKandidater: SenOppfolgingKandidatResponseDTO[]
@@ -61,18 +56,18 @@ function createHistorikkEvents(
   });
 }
 
-export function useSenOppfolgingHistorikk(): SenOppfolgingHistorikk {
+export function useSenOppfolgingHistorikk(): HistorikkHook {
   const {
     data: senOppfolgingKandidater,
-    isLoading: isSenOppfolgingKandidatLoading,
-    isError: isSenOppfolgingKandidatError,
+    isLoading,
+    isError,
   } = useSenOppfolgingKandidatQuery();
 
   const historikkEvents = createHistorikkEvents(senOppfolgingKandidater);
 
   return {
-    isLoading: isSenOppfolgingKandidatLoading,
-    isError: isSenOppfolgingKandidatError,
+    isLoading,
+    isError,
     events: historikkEvents,
   };
 }

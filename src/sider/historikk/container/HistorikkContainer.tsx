@@ -23,8 +23,7 @@ const texts = {
 };
 
 export default function HistorikkContainer(): ReactElement {
-  const { historikkEvents, isHistorikkLoading, isHistorikkError } =
-    useHistorikk();
+  const { events, isLoading, isError } = useHistorikk();
   const {
     tilfellerDescendingStart,
     isLoading: isTilfellerLoading,
@@ -40,7 +39,7 @@ export default function HistorikkContainer(): ReactElement {
     toggles.isHistorikkFlexjarEnabled && !hasGivenFeedback;
 
   const tilfeller = tilfellerDescendingStart || [];
-  const ingenHistorikk = tilfeller.length === 0 || historikkEvents.length === 0;
+  const ingenHistorikk = tilfeller.length === 0 || events.length === 0;
 
   return (
     <Side
@@ -49,8 +48,8 @@ export default function HistorikkContainer(): ReactElement {
       flexjar={isFlexjarVisible && !ingenHistorikk && <HistorikkFlexjar />}
     >
       <SideLaster
-        henter={isHistorikkLoading || isTilfellerLoading}
-        hentingFeilet={isHistorikkError || isTilfellerError}
+        henter={isLoading || isTilfellerLoading}
+        hentingFeilet={isError || isTilfellerError}
         className="flex flex-col"
       >
         <Sidetopp tittel={texts.topp} />
@@ -60,7 +59,7 @@ export default function HistorikkContainer(): ReactElement {
             melding={texts.ingenHistorikk.melding}
           />
         ) : (
-          <Historikk historikkEvents={historikkEvents} tilfeller={tilfeller} />
+          <Historikk historikkEvents={events} tilfeller={tilfeller} />
         )}
       </SideLaster>
     </Side>

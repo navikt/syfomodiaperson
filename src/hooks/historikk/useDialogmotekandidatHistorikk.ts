@@ -6,6 +6,7 @@ import {
 } from "@/data/dialogmotekandidat/dialogmotekandidatTypes";
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
+import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
 
 function getDialogmotekandidatHistorikkText(
   { type, vurdertAv }: DialogmotekandidatHistorikkDTO,
@@ -35,18 +36,12 @@ function createHistorikkEventsFromDialogmotekandidatHistorikk(
   }));
 }
 
-interface DialogmotekandidatHistorikk {
-  isDialogmotekandidatHistorikkLoading: boolean;
-  isDialogmotekandidatHistorikkError: boolean;
-  dialogmotekandidatHistorikk: HistorikkEvent[];
-}
-
-export function useDialogmotekandidatHistorikk(): DialogmotekandidatHistorikk {
+export function useDialogmotekandidatHistorikk(): HistorikkHook {
   const { brukerinfo: person } = useBrukerinfoQuery();
   const {
     data: dialogmotekandidatHistorikk,
-    isLoading: isDialogmotekandidatHistorikkLoading,
-    isError: isDialogmotekandidatHistorikkError,
+    isLoading,
+    isError,
   } = useDialogmotekandidatHistorikkQuery();
 
   const dialogmotekandidatHistorikkEvents =
@@ -56,8 +51,8 @@ export function useDialogmotekandidatHistorikk(): DialogmotekandidatHistorikk {
     );
 
   return {
-    isDialogmotekandidatHistorikkLoading,
-    isDialogmotekandidatHistorikkError,
-    dialogmotekandidatHistorikk: dialogmotekandidatHistorikkEvents,
+    isLoading,
+    isError,
+    events: dialogmotekandidatHistorikkEvents,
   };
 }

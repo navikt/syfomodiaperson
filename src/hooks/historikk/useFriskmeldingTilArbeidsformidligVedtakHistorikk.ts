@@ -2,6 +2,7 @@ import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
 
 function friskTilArbeidText(vedtak: VedtakResponseDTO): string {
   const fom = tilLesbarDatoMedArUtenManedNavn(vedtak.fom);
@@ -22,25 +23,15 @@ function createHistorikkEventsFromFriskTilArbeid(
   });
 }
 
-interface VedtakHistorikk {
-  isVedtakHistorikkLoading: boolean;
-  isVedtakHistorikkError: boolean;
-  vedtakHistorikk: HistorikkEvent[];
-}
-
-export function useVedtakHistorikk(): VedtakHistorikk {
-  const {
-    data: vedtak,
-    isLoading: isVedtakLoading,
-    isError: isVedtakError,
-  } = useVedtakQuery();
+export function useVedtakHistorikk(): HistorikkHook {
+  const { data: vedtak, isLoading, isError } = useVedtakQuery();
 
   const frisktilarbeidHistorikk =
     createHistorikkEventsFromFriskTilArbeid(vedtak);
 
   return {
-    isVedtakHistorikkLoading: isVedtakLoading,
-    isVedtakHistorikkError: isVedtakError,
-    vedtakHistorikk: frisktilarbeidHistorikk,
+    isLoading,
+    isError,
+    events: frisktilarbeidHistorikk,
   };
 }
