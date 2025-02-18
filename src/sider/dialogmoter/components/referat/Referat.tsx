@@ -33,7 +33,6 @@ import {
   CheckboxGroup,
   Heading,
   HStack,
-  Link,
   TextField,
   VStack,
 } from "@navikt/ds-react";
@@ -56,6 +55,7 @@ import { DeltakerBehandlerHeading } from "@/sider/dialogmoter/components/referat
 import { DeltakerArbeidsgiverHeading } from "@/sider/dialogmoter/components/referat/DeltakerArbeidsgiverHeading";
 import { ExpansionCardFormField } from "@/components/ExpansionCardFormField";
 import { PlusIcon, TrashIcon } from "@navikt/aksel-icons";
+import { EksternLenke } from "@/components/EksternLenke";
 
 export const MAX_LENGTH_SITUASJON = 6500;
 export const MAX_LENGTH_KONKLUSJON = 1500;
@@ -71,10 +71,16 @@ export const texts = {
   abort: "Avbryt",
   digitalReferat:
     "Referatet formidles her på nav.no. Det er bare de arbeidstakerne som har reservert seg mot digital kommunikasjon, som vil få referatet i posten.",
-  personvern:
-    "Du må aldri skrive sensitive opplysninger om helse, diagnose, behandling og prognose. Dette gjelder også hvis arbeidstakeren er åpen om helsen og snakket om den i møtet. Se artikkel 9, Lov om behandling av personopplysninger. ",
-  personvernLenketekst:
-    "Du kan også lese mer om dette på Navet (åpnes i ny fane).",
+  personvern: (
+    <>
+      Du må aldri skrive sensitive opplysninger i referatet. Sensitive
+      opplysninger som har betydning for saken må likevel dokumenteres. For
+      <b> personbrukere</b> gjøres dette i personoversikten og aktivitetsplanen.
+      Samtaler med <b>andre typer brukere</b> (for eksempel arbeidsgivere)
+      skrives i Gosys.{" "}
+    </>
+  ),
+  personvernLenketekst: "Les mer om rutinen på Navet.",
   forhandsvisningContentLabel: "Forhåndsvis referat fra dialogmøte",
   referatSaved: "Referatet er lagret",
   fritekster: {
@@ -144,7 +150,7 @@ export const texts = {
 };
 
 const personvernUrl =
-  "https://navno.sharepoint.com/sites/fag-og-ytelser-veileder-for-arbeidsrettet-brukeroppfolging/SitePages/Sykmeldt-med-arbeidsgiver-%E2%80%93-avholde-dialogm%C3%B8te.aspx";
+  "https://navno.sharepoint.com/sites/fag-og-ytelser-fagsystemer/SitePages/Rutine-for-dialogen-i-Modia,-Ditt-NAV-og-Gosys.aspx";
 
 export const valideringsTexts = {
   situasjonMissing: "Vennligst angi situasjon og muligheter",
@@ -466,19 +472,15 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
             </VStack>
           </VStack>
           <Alert
-            variant="warning"
+            variant="info"
             size="small"
             inline
             className="mt-16 mb-8 [&>*]:max-w-fit"
           >
             {texts.personvern}
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href={personvernUrl}
-            >
+            <EksternLenke href={personvernUrl}>
               {texts.personvernLenketekst}
-            </Link>
+            </EksternLenke>
           </Alert>
           <MalformRadioGroup />
           {showToast && (
