@@ -10,7 +10,7 @@ export const DeltakerArbeidsgiverHeading = ({ children }: Props) => {
   return (
     <HStack gap="2">
       <PersonSuitIcon role="img" focusable={false} width={24} height={24} />
-      <Heading size="small">{children}</Heading>
+      <Heading size="xsmall">{children}</Heading>
     </HStack>
   );
 };

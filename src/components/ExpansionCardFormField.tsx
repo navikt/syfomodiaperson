@@ -28,7 +28,9 @@ export const ExpansionCardFormField = ({
       open={open}
       onToggle={() => setOpen(!open)}
     >
-      <ExpansionCard.Header>{heading}</ExpansionCard.Header>
+      <ExpansionCard.Header className="items-center">
+        {heading}
+      </ExpansionCard.Header>
       <ExpansionCard.Content>{children}</ExpansionCard.Content>
     </ExpansionCard>
   );

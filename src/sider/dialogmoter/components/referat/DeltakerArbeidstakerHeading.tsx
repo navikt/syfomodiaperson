@@ -9,7 +9,7 @@ export const DeltakerArbeidstakerHeading = () => {
   return (
     <HStack gap="2" className="pl-4">
       <PersonIcon role="img" focusable={false} width={24} height={24} />
-      <Heading size="small">{`Arbeidstaker: ${navbruker?.navn}`}</Heading>
+      <Heading size="xsmall">{`Arbeidstaker: ${navbruker?.navn}`}</Heading>
     </HStack>
   );
 };
