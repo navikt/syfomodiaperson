@@ -1,9 +1,9 @@
 import React from "react";
 import {
-  isArbeidstakerMotebehov,
-  getUbehandletSvarOgMeldtBehov,
-  sorterMotebehovDataEtterDato,
   getMotebehovInActiveTilfelle,
+  isArbeidstakerMotebehov,
+  motebehovUbehandlet,
+  sorterMotebehovDataEtterDato,
 } from "@/utils/motebehovUtils";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import {
@@ -274,7 +274,7 @@ function UbehandledeMotebehovUtenforTilfelle({
 }: {
   sorterteMotebehovUtenforTilfelle: MotebehovVeilederDTO[];
 }) {
-  const ubehandledeEldreMotebehov = getUbehandletSvarOgMeldtBehov(
+  const ubehandledeEldreMotebehov = motebehovUbehandlet(
     sorterteMotebehovUtenforTilfelle
   );
   const ubehandletMotebehovArbeidstaker = ubehandledeEldreMotebehov.find(
@@ -285,9 +285,7 @@ function UbehandledeMotebehovUtenforTilfelle({
   );
 
   const harUbehandledeMotebehov = !!(
-    (ubehandletMotebehovArbeidstaker || ubehandletMotebehovArbeidsgiver) &&
-    (ubehandletMotebehovArbeidstaker?.motebehovSvar?.harMotebehov ||
-      ubehandletMotebehovArbeidsgiver?.motebehovSvar?.harMotebehov)
+    ubehandletMotebehovArbeidstaker || ubehandletMotebehovArbeidsgiver
   );
 
   return harUbehandledeMotebehov ? (

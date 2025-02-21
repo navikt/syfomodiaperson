@@ -19,6 +19,7 @@ export const sorterMotebehovDataEtterDato = (
     : -1;
 };
 
+// Møtebehov av typen SVAR_BEHOV med harMotebehov = false genererer ikke oppgaver og skal ikke behandles
 export const motebehovUbehandlet = (
   motebehovListe: MotebehovVeilederDTO[]
 ): MotebehovVeilederDTO[] => {
@@ -26,29 +27,15 @@ export const motebehovUbehandlet = (
     (motebehov) =>
       motebehov.motebehovSvar &&
       motebehov.motebehovSvar.harMotebehov &&
-      !motebehov.behandletTidspunkt
+      !motebehov.behandletTidspunkt &&
+      !motebehov.behandletVeilederIdent
   );
 };
 
-export const getUbehandletSvarOgMeldtBehov = (
-  motebehovListe: MotebehovVeilederDTO[]
-): MotebehovVeilederDTO[] => {
-  return motebehovListe.filter(
-    (motebehov) =>
-      !motebehov.behandletTidspunkt && !motebehov.behandletVeilederIdent
-  );
-};
-
-const erAlleMotebehovSvarBehandlet = (
+export const erAlleMotebehovSvarBehandlet = (
   motebehovListe: MotebehovVeilederDTO[]
 ): boolean => {
   return motebehovUbehandlet(motebehovListe).length === 0;
-};
-
-export const erMotebehovBehandlet = (
-  motebehovListe: MotebehovVeilederDTO[]
-): boolean => {
-  return erAlleMotebehovSvarBehandlet(motebehovListe);
 };
 
 export const harUbehandletMotebehov = (
@@ -71,13 +58,6 @@ export const hentSistBehandletMotebehov = (
       return -1;
     }
   )[0];
-
-export const fjernBehandledeMotebehov = (
-  motebehovListe: MotebehovVeilederDTO[]
-): MotebehovVeilederDTO[] =>
-  motebehovListe.filter(
-    (motebehov: MotebehovVeilederDTO) => !motebehov.behandletTidspunkt
-  );
 
 export function fjerneDuplikatInnsendereMotebehov(
   motebehovListe: MotebehovVeilederDTO[]
