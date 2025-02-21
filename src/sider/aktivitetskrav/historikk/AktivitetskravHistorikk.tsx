@@ -26,7 +26,7 @@ const texts = {
 const isRelevantForHistorikk = (vurdering: AktivitetskravVurderingDTO) =>
   vurdering.status === AktivitetskravStatus.OPPFYLT ||
   vurdering.status === AktivitetskravStatus.UNNTAK ||
-  vurdering.status === AktivitetskravStatus.STANS ||
+  vurdering.status === AktivitetskravStatus.INNSTILLING_OM_STANS ||
   vurdering.status === AktivitetskravStatus.IKKE_OPPFYLT ||
   vurdering.status === AktivitetskravStatus.FORHANDSVARSEL ||
   vurdering.status === AktivitetskravStatus.AVVENT ||
@@ -70,11 +70,11 @@ const headerPrefix = (status: AktivitetskravStatus): string => {
     case AktivitetskravStatus.UNNTAK: {
       return capitalizeWord(status);
     }
-    case AktivitetskravStatus.STANS: {
-      return "Innstilling om stopp";
-    }
     case AktivitetskravStatus.IKKE_OPPFYLT: {
       return "Ikke oppfylt";
+    }
+    case AktivitetskravStatus.INNSTILLING_OM_STANS: {
+      return "Innstilling om stans";
     }
     case AktivitetskravStatus.FORHANDSVARSEL: {
       return "Forhåndsvarsel";

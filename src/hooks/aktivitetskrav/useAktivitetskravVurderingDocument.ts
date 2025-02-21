@@ -29,11 +29,19 @@ type VurderingDocumentValues = {
   arsak: VurderingArsak;
 };
 
-export const useAktivitetskravVarselDocument = (): {
+type InnstillingOmStansDocumentValues = {
+  stansDato: Date;
+  begrunnelse: string;
+};
+
+export const useAktivitetskravVurderingDocument = (): {
   getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
   ): DocumentComponentDto[];
   getVurderingDocument(values: VurderingDocumentValues): DocumentComponentDto[];
+  innstillingOmStansDocument(
+    values: InnstillingOmStansDocumentValues
+  ): DocumentComponentDto[];
 } => {
   const { getHilsen, getIntroGjelder, getVurdertAv } = useDocumentComponents();
 
@@ -107,9 +115,35 @@ export const useAktivitetskravVarselDocument = (): {
     return documentComponents;
   };
 
+  function innstillingOmStansDocument({
+    stansDato,
+    begrunnelse,
+  }: InnstillingOmStansDocumentValues): DocumentComponentDto[] {
+    const texts = {
+      title: "Vurdering av aktivitetskravet - Innstilling om stans",
+      stansetSykepenger: (dato: string) =>
+        `Nav har stanset sykepengene dine fra og med ${dato}.`,
+      pliktTilAktivitet:
+        "For å få sykepenger har du plikt til å være i arbeidsrettet aktivitet innen 8 uker.",
+      folketrygdloven:
+        "Vi har brukt folketrygdloven § 8-8 andre ledd når vi har behandlet saken din.",
+    };
+    const stansDatoText = tilDatoMedManedNavn(stansDato);
+    return [
+      createHeaderH1(texts.title),
+      getIntroGjelder(),
+      createParagraph(texts.stansetSykepenger(stansDatoText)),
+      createParagraph(texts.pliktTilAktivitet),
+      createParagraph(begrunnelse),
+      createParagraph(texts.folketrygdloven),
+      getVurdertAv(),
+    ];
+  }
+
   return {
     getForhandsvarselDocument,
     getVurderingDocument,
+    innstillingOmStansDocument,
   };
 };
 const getVurderingText = (type: VarselType, arsak: VurderingArsak): string => {
@@ -128,6 +162,9 @@ const getVurderingText = (type: VarselType, arsak: VurderingArsak): string => {
     case VarselType.FORHANDSVARSEL_STANS_AV_SYKEPENGER: {
       throw new Error("use getForhandsvarselDocument");
     }
+    case VarselType.INNSTILLING_OM_STANS: {
+      throw new Error("use innstillingOmStansDocument");
+    }
   }
 };
 
@@ -142,6 +179,9 @@ const getVedtakText = (type: VarselType) => {
     }
     case VarselType.FORHANDSVARSEL_STANS_AV_SYKEPENGER: {
       throw new Error("use getForhandsvarselDocument");
+    }
+    case VarselType.INNSTILLING_OM_STANS: {
+      throw new Error("use innstillingOmStansDocument");
     }
   }
 };

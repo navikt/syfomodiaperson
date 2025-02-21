@@ -214,3 +214,41 @@ export const getSendForhandsvarselDocument = (
 
   return documentComponents;
 };
+
+export function innstillingOmStansDocument(beskrivelse: string) {
+  return [
+    {
+      texts: ["Vurdering av aktivitetskravet - Innstilling om stans"],
+      type: DocumentComponentType.HEADER_H1,
+    },
+    vurderingGjelder,
+    {
+      texts: [
+        `Nav har stanset sykepengene dine fra og med ${tilDatoMedManedNavn(
+          new Date()
+        )}.`,
+      ],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [
+        "For å få sykepenger har du plikt til å være i arbeidsrettet aktivitet innen 8 uker.",
+      ],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [beskrivelse],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [
+        "Vi har brukt folketrygdloven § 8-8 andre ledd når vi har behandlet saken din.",
+      ],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [`Vurdert av ${VEILEDER_DEFAULT.fulltNavn()}`],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+  ];
+}

@@ -7,6 +7,7 @@ type AktivitetskravStatusSuccess =
   | AktivitetskravStatus.OPPFYLT
   | AktivitetskravStatus.UNNTAK
   | AktivitetskravStatus.IKKE_OPPFYLT
+  | AktivitetskravStatus.INNSTILLING_OM_STANS
   | AktivitetskravStatus.IKKE_AKTUELL;
 
 export const useAktivitetskravNotificationAlert = () => {
@@ -24,6 +25,9 @@ export const useAktivitetskravNotificationAlert = () => {
       }
       case AktivitetskravStatus.IKKE_OPPFYLT: {
         return `Det er vurdert at aktivitetskravet ikke er oppfylt for ${brukersNavn} ${today}.`;
+      }
+      case AktivitetskravStatus.INNSTILLING_OM_STANS: {
+        return `Det er vurdert innstilling om stans for aktivitetskravet for ${brukersNavn} ${today}.`;
       }
       case AktivitetskravStatus.IKKE_AKTUELL: {
         return `Det er vurdert at aktivitetskravet ikke er aktuelt for ${brukersNavn} ${today}.`;

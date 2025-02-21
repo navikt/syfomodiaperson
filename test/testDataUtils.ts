@@ -49,14 +49,15 @@ export const createAktivitetskrav = (
   };
 };
 
-export const createAktivitetskravVurdering = (
+export function createAktivitetskravVurdering(
   status: AktivitetskravStatus,
-  arsaker: VurderingArsak[],
+  arsaker: VurderingArsak[] = [],
   beskrivelse: string | undefined = "",
   createdAt = new Date(),
+  stansFom?: Date,
   frist?: Date,
   varsel?: AktivitetskravVarselDTO
-): AktivitetskravVurderingDTO => {
+): AktivitetskravVurderingDTO {
   return {
     beskrivelse,
     createdAt,
@@ -64,10 +65,11 @@ export const createAktivitetskravVurdering = (
     status,
     uuid: generateUUID(),
     arsaker,
+    stansFom,
     frist,
     varsel,
   };
-};
+}
 
 export const avventVurdering = createAktivitetskravVurdering(
   AktivitetskravStatus.AVVENT,
@@ -77,6 +79,7 @@ export const avventVurdering = createAktivitetskravVurdering(
   ],
   "",
   new Date(),
+  undefined,
   new Date()
 );
 export const avventVurderingUtenFrist = createAktivitetskravVurdering(
@@ -98,6 +101,7 @@ export const forhandsvarselVurdering = createAktivitetskravVurdering(
   "Begrunnelse for forhåndsvarsel",
   new Date(),
   undefined,
+  undefined,
   {
     uuid: generateUUID(),
     createdAt: new Date(),
@@ -111,6 +115,7 @@ export const expiredForhandsvarselVurdering = createAktivitetskravVurdering(
   [],
   "Begrunnelse for forhåndsvarsel",
   new Date(),
+  undefined,
   undefined,
   {
     uuid: generateUUID(),

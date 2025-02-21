@@ -13,7 +13,7 @@ import {
   OppfyltVurderingArsak,
   UnntakVurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { daysFromToday, getButton } from "../testUtils";
 import userEvent from "@testing-library/user-event";
@@ -53,9 +53,7 @@ const oppfyltVurderingWithoutBeskrivelse: AktivitetskravVurderingDTO = {
   beskrivelse: undefined,
 };
 const ikkeOppfyltVurdering = createAktivitetskravVurdering(
-  AktivitetskravStatus.IKKE_OPPFYLT,
-  [],
-  undefined
+  AktivitetskravStatus.IKKE_OPPFYLT
 );
 const unntakVurdering = createAktivitetskravVurdering(
   AktivitetskravStatus.UNNTAK,
@@ -64,8 +62,7 @@ const unntakVurdering = createAktivitetskravVurdering(
   dayInThePast
 );
 const stansVurdering = createAktivitetskravVurdering(
-  AktivitetskravStatus.STANS,
-  []
+  AktivitetskravStatus.INNSTILLING_OM_STANS
 );
 const varsel: AktivitetskravVarselDTO = {
   uuid: "123",
@@ -84,6 +81,7 @@ const forhandsvarselVurdering = createAktivitetskravVurdering(
   [],
   enBeskrivelse,
   today,
+  undefined,
   daysFromToday(21),
   varsel
 );
@@ -178,10 +176,10 @@ describe("AktivitetskravHistorikk", () => {
     expect(screen.getByText(vurdertAvTitle)).to.exist;
     expect(screen.getByText(VEILEDER_DEFAULT.fulltNavn())).to.exist;
   });
-  it("viser riktig overskrift for STANS-vurdering", () => {
+  it("viser riktig overskrift for INNSTILLING_OM_STANS-vurdering", () => {
     renderAktivitetskravHistorikk([stansVurdering]);
 
-    expect(getButton(`Innstilling om stopp - ${tilDatoMedManedNavn(today)}`)).to
+    expect(getButton(`Innstilling om stans - ${tilDatoMedManedNavn(today)}`)).to
       .exist;
   });
   it("viser riktig overskrift for IKKE_OPPFYLT-vurdering", () => {

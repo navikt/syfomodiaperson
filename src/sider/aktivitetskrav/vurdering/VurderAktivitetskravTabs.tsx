@@ -7,7 +7,7 @@ import { Tabs } from "@navikt/ds-react";
 import { UnntakAktivitetskravSkjema } from "@/sider/aktivitetskrav/vurdering/UnntakAktivitetskravSkjema";
 import { OppfyltAktivitetskravSkjema } from "@/sider/aktivitetskrav/vurdering/OppfyltAktivitetskravSkjema";
 import { SendForhandsvarselSkjema } from "@/sider/aktivitetskrav/vurdering/SendForhandsvarselSkjema";
-import { IkkeOppfyltAktivitetskravSkjema } from "@/sider/aktivitetskrav/vurdering/IkkeOppfyltAktivitetskravSkjema";
+import InnstillingOmStansSkjema from "@/sider/aktivitetskrav/vurdering/InnstillingOmStansSkjema";
 import styled from "styled-components";
 import { isExpiredForhandsvarsel } from "@/utils/datoUtils";
 
@@ -15,7 +15,7 @@ const texts = {
   unntak: "Sett unntak",
   oppfylt: "Er i aktivitet",
   forhandsvarsel: "Send forhåndsvarsel",
-  ikkeOppfylt: "Ikke oppfylt",
+  innstillingOmStans: "Innstilling om stans",
 };
 
 const StyledTabs = styled(Tabs)`
@@ -31,7 +31,7 @@ enum Tab {
   UNNTAK = "UNNTAK",
   OPPFYLT = "OPPFYLT",
   FORHANDSVARSEL = "FORHANDSVARSEL",
-  IKKE_OPPFYLT = "IKKE_OPPFYLT",
+  INNSTILLING_OM_STANS = "INNSTILLING_OM_STANS",
 }
 
 const isValidStateForForhandsvarsel = (
@@ -44,15 +44,13 @@ const isValidStateForForhandsvarsel = (
   );
 };
 
-interface VurderAktivitetskravTabsProps {
+interface Props {
   aktivitetskrav: AktivitetskravDTO;
 }
 
-export const VurderAktivitetskravTabs = ({
-  aktivitetskrav,
-}: VurderAktivitetskravTabsProps) => {
+export function VurderAktivitetskravTabs({ aktivitetskrav }: Props) {
   const latestVurdering = aktivitetskrav.vurderinger[0];
-  const isIkkeOppfyltTabVisible =
+  const isInnstillingOmStansTabVisible =
     latestVurdering &&
     isExpiredForhandsvarsel(latestVurdering.varsel?.svarfrist);
   const isForhandsvarselTabVisible = isValidStateForForhandsvarsel(
@@ -69,8 +67,11 @@ export const VurderAktivitetskravTabs = ({
         {isForhandsvarselTabVisible && (
           <Tabs.Tab value={Tab.FORHANDSVARSEL} label={texts.forhandsvarsel} />
         )}
-        {isIkkeOppfyltTabVisible && (
-          <Tabs.Tab value={Tab.IKKE_OPPFYLT} label={texts.ikkeOppfylt} />
+        {isInnstillingOmStansTabVisible && (
+          <Tabs.Tab
+            value={Tab.INNSTILLING_OM_STANS}
+            label={texts.innstillingOmStans}
+          />
         )}
       </Tabs.List>
       <Tabs.Panel value={Tab.UNNTAK}>
@@ -84,13 +85,15 @@ export const VurderAktivitetskravTabs = ({
           <SendForhandsvarselSkjema aktivitetskravUuid={aktivitetskravUuid} />
         </Tabs.Panel>
       )}
-      {isIkkeOppfyltTabVisible && (
-        <Tabs.Panel value={Tab.IKKE_OPPFYLT}>
-          <IkkeOppfyltAktivitetskravSkjema
-            aktivitetskravUuid={aktivitetskravUuid}
-          />
-        </Tabs.Panel>
-      )}
+      {isInnstillingOmStansTabVisible &&
+        !!latestVurdering.varsel?.svarfrist && (
+          <Tabs.Panel value={Tab.INNSTILLING_OM_STANS}>
+            <InnstillingOmStansSkjema
+              aktivitetskravUuid={aktivitetskravUuid}
+              varselSvarfrist={latestVurdering.varsel?.svarfrist}
+            />
+          </Tabs.Panel>
+        )}
     </StyledTabs>
   );
-};
+}

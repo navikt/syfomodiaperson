@@ -43,6 +43,9 @@ const VurderingText = ({ vurdering }: VurderingTextProps) => {
       case AktivitetskravStatus.IKKE_OPPFYLT: {
         return `Det ble vurdert at aktivitetskravet ikke er oppfylt for ${brukersNavn}.`;
       }
+      case AktivitetskravStatus.INNSTILLING_OM_STANS: {
+        return `Det ble sendt innstilling om stans for ${brukersNavn}.`;
+      }
       case AktivitetskravStatus.IKKE_AKTUELL: {
         return `Det ble vurdert at aktivitetskravet ikke er aktuelt for ${brukersNavn}.`;
       }
