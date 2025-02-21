@@ -46,7 +46,7 @@ export default function Side({
     >
       <div className="mx-6 flex flex-col">
         <div className="flex flex-col" id={MODIA_HEADER_ID}>
-          <div className="flex flex-row mt-4 mb-2 w-full">
+          <div className="flex flex-row mb-2 w-full bg-surface-default">
             <OversiktLenker />
             <TildeltVeileder />
           </div>
