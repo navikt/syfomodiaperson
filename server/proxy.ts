@@ -710,6 +710,24 @@ export const setupProxy = (
     }
   );
 
+  router.use(
+    "/pensjon-pen/*",
+    (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) => {
+      proxyOnBehalfOf(
+        req,
+        res,
+        next,
+        authClient,
+        issuer,
+        Config.auth.pensjonPenUfore
+      );
+    }
+  );
+
   return router;
 };
 
