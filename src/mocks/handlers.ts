@@ -32,6 +32,7 @@ import { mockSyfobehandlendeenhet } from "@/mocks/syfobehandlendeenhet/mockSyfob
 import { mockIshuskelapp } from "@/mocks/oppfolgingsoppgave/mockOppfolgingsoppgave";
 import { http, HttpResponse } from "msw";
 import { mockisoppfolgingsplanForesporsel } from "@/mocks/isoppfolgingsplan/mockisoppfolgingsplanForesporsel";
+import { mockPensjonPenUforegrad } from "@/mocks/uforegrad/mockUforegrad";
 
 const handlers = [
   http.post("https://amplitude.nav.no/collect", () => {
@@ -70,6 +71,7 @@ const handlers = [
   ...mockSyfoveileder,
   mockSykepengesoknadBackend,
   mockVeilarboppfolging,
+  mockPensjonPenUforegrad,
 ];
 
 export default handlers;

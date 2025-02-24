@@ -57,6 +57,7 @@ spec:
         - host: "teamsykefravr-unleash-api.nav.cloud.nais.io"
         - host: "ereg-services.prod-fss-pub.nais.io"
         - host: "syfooppfolgingsplanservice.prod-fss-pub.nais.io"
+        - host: "pensjon-pen.prod-fss-pub.nais.io"
       rules:
         - application: fastlegerest
         - application: isaktivitetskrav
@@ -187,6 +188,10 @@ spec:
       value: "prod-fss.team-esyfo.syfooppfolgingsplanservice"
     - name: SYFOOPPFOLGINGSPLANSERVICE_HOST
       value: "https://syfooppfolgingsplanservice.prod-fss-pub.nais.io"
+    - name: PENSJON_PEN_UFOREGRAD_AAD_APP_CLIENT_ID
+      value: "prod-fss.pensjondeployer.pensjon-pen"
+    - name: PENSJON_PEN_UFOREGRAD_HOST
+      value: "https://pensjon-pen.prod-fss-pub.nais.io"
     - name: LPS_OPPFOLGINGSPLAN_MOTTAK_AAD_APP_CLIENT_ID
       value: "prod-gcp.team-esyfo.lps-oppfolgingsplan-mottak"
     - name: LPS_OPPFOLGINGSPLAN_MOTTAK_HOST
