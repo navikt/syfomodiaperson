@@ -233,7 +233,7 @@ export function TildeltVeileder() {
   const veilederBrukerKnytningQuery = useGetVeilederBrukerKnytning();
   const veilederIdent = veilederBrukerKnytningQuery.data?.tildeltVeilederident;
   return veilederBrukerKnytningQuery.isSuccess ? (
-    <div className="ml-auto">
+    <div className="ml-auto my-auto mr-5">
       <b>{texts.tildeltVeileder}</b>
       {veilederIdent ? (
         <VeilederNavn tildeltVeilederident={veilederIdent} />
