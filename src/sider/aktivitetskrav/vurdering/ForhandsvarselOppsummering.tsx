@@ -10,15 +10,15 @@ const texts = {
   merInfo: "Husk å sjekke Gosys og Modia for mer informasjon før du vurderer. ",
 };
 
-interface ForhandsvarselOppsummeringProps {
+interface Props {
   varsel: AktivitetskravVarselDTO;
   beskrivelse: string | undefined;
 }
 
-export const ForhandsvarselOppsummering = ({
+export default function ForhandsvarselOppsummering({
   varsel,
   beskrivelse,
-}: ForhandsvarselOppsummeringProps) => {
+}: Props) {
   const fristDato = tilLesbarDatoMedArUtenManedNavn(varsel.svarfrist);
 
   return (
@@ -38,4 +38,4 @@ export const ForhandsvarselOppsummering = ({
       <BodyShort>{texts.merInfo}</BodyShort>
     </Panel>
   );
-};
+}

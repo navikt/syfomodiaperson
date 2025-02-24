@@ -12,7 +12,7 @@ import { render, screen } from "@testing-library/react";
 import { AktivitetskravSide } from "@/sider/aktivitetskrav/AktivitetskravSide";
 import { navEnhet } from "../dialogmote/testData";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
   createAktivitetskrav,
   generateOppfolgingstilfelle,
@@ -235,9 +235,12 @@ describe("AktivitetskravSide", () => {
         })
       ).to.exist;
     });
-    it("Vises når person har aktivitetskrav STANS", () => {
+    it("Vises når person har aktivitetskrav INNSTILLING_OM_STANS", () => {
       mockAktivitetskrav([
-        createAktivitetskrav(daysFromToday(20), AktivitetskravStatus.STANS),
+        createAktivitetskrav(
+          daysFromToday(20),
+          AktivitetskravStatus.INNSTILLING_OM_STANS
+        ),
       ]);
 
       renderAktivitetskravSide();

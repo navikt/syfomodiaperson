@@ -21,13 +21,14 @@ import {
 } from "../../testUtils";
 import {
   AktivitetskravDTO,
-  AktivitetskravStatus,
-  CreateAktivitetskravVurderingDTO,
   SendForhandsvarselDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { expect, describe, it, beforeEach } from "vitest";
-import { getSendForhandsvarselDocument } from "../varselDocuments";
-import { stubVurderAktivitetskravForhandsvarselApi } from "../../stubs/stubIsaktivitetskrav";
+import { beforeEach, describe, expect, it } from "vitest";
+import { getSendForhandsvarselDocument } from "../vurderingDocumentsTestUtils";
+import {
+  stubVurderAktivitetskravApi,
+  stubVurderAktivitetskravForhandsvarselApi,
+} from "../../stubs/stubIsaktivitetskrav";
 import { NotificationContext } from "@/context/notification/NotificationContext";
 import { Brevmal } from "@/data/aktivitetskrav/forhandsvarselTexts";
 import {
@@ -238,32 +239,17 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       );
     });
 
-    it("IKKE_OPPFYLT is present when status is forhandsvarsel and it is expired", async () => {
+    it("INNSTILLING_OM_STANS is present when status is forhandsvarsel and it is expired", async () => {
       renderVurderAktivitetskrav(expiredForhandsvarselAktivitetskrav);
+      stubVurderAktivitetskravApi(expiredForhandsvarselAktivitetskrav.uuid);
 
-      await clickTab(tabTexts["IKKE_OPPFYLT"]);
+      await clickTab("Innstilling om stans");
 
       expect(
         screen.getByRole("heading", {
-          name: "Ikke oppfylt",
+          name: "Innstilling om stans",
         })
       ).to.exist;
-
-      expect(
-        screen.getByText(/Innstilling må skrives og sendes til NAY i Gosys/)
-      ).to.exist;
-      await clickButton("Lagre");
-
-      const vurderIkkeOppfyltMutation = queryClient
-        .getMutationCache()
-        .getAll()[0];
-      const expectedVurdering: CreateAktivitetskravVurderingDTO = {
-        status: AktivitetskravStatus.IKKE_OPPFYLT,
-        arsaker: [],
-      };
-      expect(vurderIkkeOppfyltMutation.state.variables).to.deep.equal(
-        expectedVurdering
-      );
     });
     it("Fails to send forhåndsvarsel when no beskrivelse is filled in", async () => {
       renderVurderAktivitetskrav(aktivitetskrav);

@@ -38,6 +38,7 @@ const aktivitetskravUnntak: AktivitetskravDTO = {
       beskrivelse:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
       arsaker: [UnntakVurderingArsak.MEDISINSKE_GRUNNER],
+      stansFom: undefined,
       frist: undefined,
       varsel: undefined,
     },
@@ -59,6 +60,7 @@ const aktivitetskravOppfylt: AktivitetskravDTO = {
       beskrivelse:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim  veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
       arsaker: [OppfyltVurderingArsak.FRISKMELDT],
+      stansFom: undefined,
       frist: undefined,
       varsel: undefined,
     },
@@ -72,6 +74,7 @@ const aktivitetskravOppfylt: AktivitetskravDTO = {
         AvventVurderingArsak.OPPFOLGINGSPLAN_ARBEIDSGIVER,
         AvventVurderingArsak.INFORMASJON_BEHANDLER,
       ],
+      stansFom: undefined,
       frist: undefined,
       varsel: undefined,
     },
@@ -190,11 +193,12 @@ const aktivitetskravForhandsvarsel: AktivitetskravDTO = {
       status: AktivitetskravStatus.FORHANDSVARSEL,
       beskrivelse: begrunnelse,
       arsaker: [],
+      stansFom: undefined,
       frist: undefined,
       varsel: {
         uuid: varselUuid,
         createdAt: daysFromToday(-2),
-        svarfrist: daysFromToday(19),
+        svarfrist: daysFromToday(-2),
         document: getForhandsvarselDocument(begrunnelse, daysFromToday(1)),
       },
     },

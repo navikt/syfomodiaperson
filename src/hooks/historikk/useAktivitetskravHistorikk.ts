@@ -21,7 +21,8 @@ function getTextForHistorikk(
       return `${historikk.vurdertAv} vurderte unntak fra aktivitetskravet`;
     case AktivitetskravStatus.OPPFYLT:
       return `${historikk.vurdertAv} vurderte at aktivitetskravet var oppfylt`;
-    case AktivitetskravStatus.STANS:
+    case AktivitetskravStatus.INNSTILLING_OM_STANS:
+      return `${historikk.vurdertAv} vurderte innstilling om stans for aktivitetskravet`;
     case AktivitetskravStatus.IKKE_OPPFYLT:
       return `${historikk.vurdertAv} vurderte at aktivitetskravet ikke var oppfylt`;
     case AktivitetskravStatus.IKKE_AKTUELL:
