@@ -17,19 +17,19 @@ export const OversiktLenker = (): ReactElement => {
       <Tabs.List>
         <LinkAsTab
           href={fullNaisUrlIntern("syfooversikt", "/minoversikt")}
-          label={<Heading size="small">{texts.oversikt}</Heading>}
+          label={<Heading size="xsmall">{texts.oversikt}</Heading>}
         />
         <LinkAsTab
           href={fullNaisUrlIntern("syfooversikt", "/enhet")}
-          label={<Heading size="small">{texts.enhetensOversikt}</Heading>}
+          label={<Heading size="xsmall">{texts.enhetensOversikt}</Heading>}
         />
         <LinkAsTab
           href={fullNaisUrlIntern("syfomoteoversikt")}
-          label={<Heading size="small">{texts.moter}</Heading>}
+          label={<Heading size="xsmall">{texts.moter}</Heading>}
         />
         <LinkAsTab
           href={fullNaisUrlIntern("syfooversikt", "/sok")}
-          label={<Heading size="small">{texts.sokSykmeldt}</Heading>}
+          label={<Heading size="xsmall">{texts.sokSykmeldt}</Heading>}
           icon={<MagnifyingGlassIcon />}
         />
       </Tabs.List>
