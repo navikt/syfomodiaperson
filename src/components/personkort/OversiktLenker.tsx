@@ -1,6 +1,7 @@
 import { fullNaisUrlIntern } from "@/utils/miljoUtil";
 import React, { ReactElement } from "react";
-import { Link } from "@navikt/ds-react";
+import { Heading, Tabs } from "@navikt/ds-react";
+import LinkAsTab from "@/components/LinkAsTab";
 import { MagnifyingGlassIcon } from "@navikt/aksel-icons";
 
 const texts = {
@@ -10,18 +11,28 @@ const texts = {
   sokSykmeldt: "Søk etter sykmeldt",
 };
 
-export const OversiktLenker = (): ReactElement => (
-  <div className="flex gap-8">
-    <Link href={fullNaisUrlIntern("syfooversikt", "/minoversikt")}>
-      {texts.oversikt}
-    </Link>
-    <Link href={fullNaisUrlIntern("syfooversikt", "/enhet")}>
-      {texts.enhetensOversikt}
-    </Link>
-    <Link href={fullNaisUrlIntern("syfooversikt", "/sok")}>
-      <MagnifyingGlassIcon />
-      {texts.sokSykmeldt}
-    </Link>
-    <Link href={fullNaisUrlIntern("syfomoteoversikt")}>{texts.moter}</Link>
-  </div>
-);
+export const OversiktLenker = (): ReactElement => {
+  return (
+    <Tabs>
+      <Tabs.List>
+        <LinkAsTab
+          href={fullNaisUrlIntern("syfooversikt", "/minoversikt")}
+          label={<Heading size="xsmall">{texts.oversikt}</Heading>}
+        />
+        <LinkAsTab
+          href={fullNaisUrlIntern("syfooversikt", "/enhet")}
+          label={<Heading size="xsmall">{texts.enhetensOversikt}</Heading>}
+        />
+        <LinkAsTab
+          href={fullNaisUrlIntern("syfomoteoversikt")}
+          label={<Heading size="xsmall">{texts.moter}</Heading>}
+        />
+        <LinkAsTab
+          href={fullNaisUrlIntern("syfooversikt", "/sok")}
+          label={<Heading size="xsmall">{texts.sokSykmeldt}</Heading>}
+          icon={<MagnifyingGlassIcon />}
+        />
+      </Tabs.List>
+    </Tabs>
+  );
+};
