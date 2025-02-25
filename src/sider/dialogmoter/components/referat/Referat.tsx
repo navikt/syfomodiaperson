@@ -33,7 +33,7 @@ import {
   CheckboxGroup,
   Heading,
   HStack,
-  Link,
+  List,
   TextField,
   VStack,
 } from "@navikt/ds-react";
@@ -56,6 +56,7 @@ import { DeltakerBehandlerHeading } from "@/sider/dialogmoter/components/referat
 import { DeltakerArbeidsgiverHeading } from "@/sider/dialogmoter/components/referat/DeltakerArbeidsgiverHeading";
 import { ExpansionCardFormField } from "@/components/ExpansionCardFormField";
 import { PlusIcon, TrashIcon } from "@navikt/aksel-icons";
+import { EksternLenke } from "@/components/EksternLenke";
 
 export const MAX_LENGTH_SITUASJON = 6500;
 export const MAX_LENGTH_KONKLUSJON = 1500;
@@ -69,12 +70,25 @@ export const texts = {
   save: "Lagre",
   send: "Lagre og send",
   abort: "Avbryt",
-  digitalReferat:
-    "Referatet formidles her på nav.no. Det er bare de arbeidstakerne som har reservert seg mot digital kommunikasjon, som vil få referatet i posten.",
-  personvern:
-    "Du må aldri skrive sensitive opplysninger om helse, diagnose, behandling og prognose. Dette gjelder også hvis arbeidstakeren er åpen om helsen og snakket om den i møtet. Se artikkel 9, Lov om behandling av personopplysninger. ",
-  personvernLenketekst:
-    "Du kan også lese mer om dette på Navet (åpnes i ny fane).",
+  personvern: {
+    title:
+      "Du må aldri skrive sensitive opplysninger i referatet. Sensitive opplysninger som har betydning for saken må likevel dokumenteres.",
+    bulletPoint: {
+      one: (
+        <>
+          For <b> personbrukere</b> gjøres dette i personoversikten eller
+          aktivitetsplanen.{" "}
+        </>
+      ),
+      two: (
+        <>
+          Samtaler med <b>andre typer brukere</b> (for eksempel arbeidsgivere)
+          skrives i Gosys.{" "}
+        </>
+      ),
+    },
+  },
+  personvernLenketekst: "Les mer om rutinen på Navet.",
   forhandsvisningContentLabel: "Forhåndsvis referat fra dialogmøte",
   referatSaved: "Referatet er lagret",
   fritekster: {
@@ -144,7 +158,7 @@ export const texts = {
 };
 
 const personvernUrl =
-  "https://navno.sharepoint.com/sites/fag-og-ytelser-veileder-for-arbeidsrettet-brukeroppfolging/SitePages/Sykmeldt-med-arbeidsgiver-%E2%80%93-avholde-dialogm%C3%B8te.aspx";
+  "https://navno.sharepoint.com/sites/fag-og-ytelser-fagsystemer/SitePages/Rutine-for-dialogen-i-Modia,-Ditt-NAV-og-Gosys.aspx";
 
 export const valideringsTexts = {
   situasjonMissing: "Vennligst angi situasjon og muligheter",
@@ -353,14 +367,13 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
             debouncedAutoSave(getValues());
           }}
         >
-          <Heading size="large" className="mb-8">
+          <Heading level="2" size="medium" className="mb-8">
             {header}
           </Heading>
-          <Alert variant="info" size="small" className="mb-8 [&>*]:max-w-fit">
-            {texts.digitalReferat}
-          </Alert>
           <VStack gap="4">
-            <Heading size="medium">{texts.deltakere.title}</Heading>
+            <Heading level="3" size="small">
+              {texts.deltakere.title}
+            </Heading>
             <DeltakerArbeidstakerHeading />
             <DeltakerNavHeading />
             <ExpansionCardFormField
@@ -458,6 +471,7 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
               <Button
                 type="button"
                 variant="secondary"
+                size="small"
                 icon={<PlusIcon title="Pluss ikon" />}
                 onClick={() => append({ funksjon: "", navn: "" })}
               >
@@ -465,21 +479,15 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
               </Button>
             </VStack>
           </VStack>
-          <Alert
-            variant="warning"
-            size="small"
-            inline
-            className="mt-16 mb-8 [&>*]:max-w-fit"
-          >
-            {texts.personvern}
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href={personvernUrl}
-            >
+          <div className="my-8">
+            <List as="ul" size="small" description={texts.personvern.title}>
+              <List.Item>{texts.personvern.bulletPoint.one}</List.Item>
+              <List.Item>{texts.personvern.bulletPoint.two}</List.Item>
+            </List>
+            <EksternLenke href={personvernUrl}>
               {texts.personvernLenketekst}
-            </Link>
-          </Alert>
+            </EksternLenke>
+          </div>
           <MalformRadioGroup />
           {showToast && (
             <div className="mb-4 font-bold flex gap-2">

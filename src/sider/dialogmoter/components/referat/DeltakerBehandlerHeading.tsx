@@ -16,7 +16,7 @@ export const DeltakerBehandlerHeading = ({ children }: Props) => {
         src={MedisinskrinImage}
         alt="Medisinskrin-ikon"
       />
-      <Heading size="small">{children}</Heading>
+      <Heading size="xsmall">{children}</Heading>
     </HStack>
   );
 };
