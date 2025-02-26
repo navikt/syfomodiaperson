@@ -27,6 +27,11 @@ import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/opp
 import { addDays } from "@/utils/datoUtils";
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
 import { defaultVedtak } from "@/mocks/isfrisktilarbeid/mockIsfrisktilarbeid";
+import { uforegradQueryKeys } from "@/data/uforegrad/uforegradQueryHooks";
+import {
+  mockUforegrad,
+  mockUforegradNull,
+} from "@/mocks/uforegrad/mockUforegrad";
 
 let queryClient: any;
 
@@ -303,5 +308,25 @@ describe("PersonkortHeader", () => {
     renderPersonkortHeader();
 
     expect(screen.getByText("Har vedtak om § 8-5")).to.exist;
+  });
+
+  it("viser uføregrad tag", () => {
+    queryClient.setQueryData(
+      uforegradQueryKeys.uforegrad(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => mockUforegrad
+    );
+    renderPersonkortHeader();
+
+    expect(screen.getByText("Ufør 80%")).to.exist;
+  });
+
+  it("viser ikke uføregrad tag når null", () => {
+    queryClient.setQueryData(
+      uforegradQueryKeys.uforegrad(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => mockUforegradNull
+    );
+    renderPersonkortHeader();
+
+    expect(screen.queryByText("Ufør", { exact: false })).to.not.exist;
   });
 });

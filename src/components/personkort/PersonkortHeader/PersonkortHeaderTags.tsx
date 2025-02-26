@@ -8,6 +8,7 @@ import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQ
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { useUnderArbeidsrettetOppfolgingQuery } from "@/data/veilarboppfolging/useUnderArbeidsrettetOppfolgingQuery";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
+import { useUforegradQuery } from "@/data/uforegrad/uforegradQueryHooks";
 
 const texts = {
   fetchDiskresjonskodeFailed: "Klarte ikke hente diskresjonskode for brukeren.",
@@ -30,6 +31,7 @@ export const PersonkortHeaderTags = () => {
   const { data: arbeidsrettetOppfolging } =
     useUnderArbeidsrettetOppfolgingQuery();
   const { data: vedtakFriskTilArbeid } = useVedtakQuery();
+  const { data: uforegradData } = useUforegradQuery();
 
   const isDead = !!dodsdato;
   const dateOfDeath = tilLesbarDatoMedArUtenManedNavn(dodsdato);
@@ -72,6 +74,11 @@ export const PersonkortHeaderTags = () => {
         {hasActiveFriskmeldingVedtak && (
           <Tag variant="info" size="small">
             {texts.friskmeldingTilArbeidsformidling}
+          </Tag>
+        )}
+        {uforegradData?.uforegrad && (
+          <Tag variant="info" size="small">
+            {`Ufør ${uforegradData.uforegrad}%`}
           </Tag>
         )}
         {talesprakTolkSprakkode && (

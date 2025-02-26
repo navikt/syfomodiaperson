@@ -409,6 +409,16 @@ export const auth = {
     }),
     removePathPrefix: true,
   },
+  pensjonPenUfore: {
+    applicationName: "pensjon-pen",
+    clientId: envVar({
+      name: "PENSJON_PEN_UFOREGRAD_AAD_APP_CLIENT_ID",
+    }),
+    host: envVar({
+      name: "PENSJON_PEN_UFOREGRAD_HOST",
+    }),
+    removePathPrefix: true,
+  },
 };
 
 export const valkey = {

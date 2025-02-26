@@ -39,5 +39,6 @@ export const SYFOOVERSIKTSRV_PERSONTILDELING_ROOT = "/api/v2/persontildeling";
 export const SYKEPENGESOKNAD_BACKEND_ROOT = "/sykepengesoknad-backend/api";
 export const ISTILGANGSKONTROLL_ROOT = "/istilgangskontroll/api";
 export const SYFOVEILEDER_ROOT = "/syfoveileder/api/v3";
+export const PENSJON_PEN_UFOREGRAD_ROOT = "/pensjon-pen/api/uforetrygd";
 export const UNLEASH_ROOT = "/unleash";
 export const VEILARBOPPFOLGING_ROOT = "/veilarboppfolging/api/v2";
