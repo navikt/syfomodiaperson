@@ -14,6 +14,8 @@ import { Pride } from "@/components/festive/Pride";
 import { Oppfolgingsoppgave } from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { TildeltVeileder } from "@/components/TildeltVeileder";
+import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
+import { InaktivPersonident } from "@/components/InaktivPersonident";
 
 export const MODIA_HEADER_ID = "modia-header";
 
@@ -31,6 +33,7 @@ export default function Side({
   children,
 }: Props) {
   const { data: diskresjonskode } = useDiskresjonskodeQuery();
+  const { isInaktivPersonident } = useBrukerinfoQuery();
 
   useEffect(() => {
     Amplitude.logEvent({
@@ -45,11 +48,12 @@ export default function Side({
       title={tittel + (tittel.length > 0 ? " - Sykefravær" : "Sykefravær")}
     >
       <div className="mx-6 flex flex-col">
-        <div className="flex flex-col" id={MODIA_HEADER_ID}>
-          <div className="flex flex-row mb-2 w-full bg-surface-default">
+        <div className="flex flex-col gap-2" id={MODIA_HEADER_ID}>
+          <div className="flex flex-row w-full bg-surface-default">
             <OversiktLenker />
             <TildeltVeileder />
           </div>
+          {isInaktivPersonident && <InaktivPersonident />}
           {isPride() && <Pride>&nbsp;</Pride>}
           <Personkort />
         </div>

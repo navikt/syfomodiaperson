@@ -6,6 +6,7 @@ export interface KontaktinfoDTO {
 
 export interface BrukerinfoDTO {
   navn: string;
+  aktivPersonident: string;
   arbeidssituasjon: string;
   dodsdato: string | null;
   tilrettelagtKommunikasjon: TilrettelagtKommunikasjon | null;

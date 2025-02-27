@@ -27,6 +27,7 @@ export const useBrukerinfoQuery = () => {
 
   const defaultData: BrukerinfoDTO = {
     navn: "",
+    aktivPersonident: "",
     arbeidssituasjon: "ARBEIDSTAKER",
     dodsdato: null,
     tilrettelagtKommunikasjon: {
@@ -39,6 +40,10 @@ export const useBrukerinfoQuery = () => {
   return {
     ...query,
     brukerinfo: query.data || defaultData,
+    isInaktivPersonident:
+      !!personident &&
+      !!query.data?.aktivPersonident &&
+      personident !== query.data.aktivPersonident,
   };
 };
 
