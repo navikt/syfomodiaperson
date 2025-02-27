@@ -54,6 +54,7 @@ export function InaktivPersonident() {
         </ChangeAktivBrukerLink>
       </Alert>
       <Modal
+        closeOnBackdropClick
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         aria-label={texts.label}
