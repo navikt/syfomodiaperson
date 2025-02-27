@@ -35,6 +35,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import TextareaField from "@/sider/dialogmoter/components/TextareaField";
 import { DialogmoteFrist } from "@/sider/dialogmoter/components/DialogmoteFrist";
+import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 export interface DialogmoteInnkallingSkjemaValues extends TidStedSkjemaValues {
   fritekstArbeidsgiver: string;
@@ -64,6 +65,8 @@ export const texts = {
     "Forhåndsvis innkalling til dialogmøte behandler",
   reservertAlert:
     "Denne arbeidstakeren vil få brevet sendt som papirpost. Du kan inkludere telefonnummeret til kontaktsenteret i fritekstfeltet (55 55 33 33), slik at arbeidstakeren kan ta kontakt på telefon hvis tidspunktet ikke passer.",
+  arbeidsgiverBlirIkkeVarsletAlert:
+    "Bruker har ikke digital sykmelding. Arbeidsgiver vil derfor ikke få varsel på nav.no, men en kopi av innkallingen i Altinn. Vurder å varsle arbeidsgiver om møtet på annen måte i tillegg.",
 };
 
 export const MAX_LENGTH_INNKALLING_FRITEKST = 2000;
@@ -117,6 +120,7 @@ export const DialogmoteInnkallingSkjema = () => {
   const { toTidStedDto } = useSkjemaValuesToDto();
   const opprettInnkalling = useOpprettInnkallingDialogmote(fnr);
   const { malform } = useMalform();
+  const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const methods = useForm<DialogmoteInnkallingSkjemaValues>();
   const {
     register,
@@ -255,6 +259,11 @@ export const DialogmoteInnkallingSkjema = () => {
                 title={texts.forhandsvisningBehandlerTitle}
               />
             </div>
+          )}
+          {!hasActiveOppfolgingstilfelle && (
+            <Alert variant="warning" size="small" className="mb-4">
+              {texts.arbeidsgiverBlirIkkeVarsletAlert}
+            </Alert>
           )}
           {opprettInnkalling.isError && (
             <SkjemaInnsendingFeil error={opprettInnkalling.error} />

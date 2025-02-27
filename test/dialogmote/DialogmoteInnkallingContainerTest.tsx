@@ -90,8 +90,11 @@ describe("DialogmoteInnkallingContainer", () => {
     ]);
     renderDialogmoteInnkallingContainer();
 
-    expect(screen.getByText(/Denne arbeidstakeren har ingen aktiv sykmelding/))
-      .to.exist;
+    expect(
+      screen.getByText(
+        "Bruker har ikke digital sykmelding. Arbeidsgiver vil derfor ikke få varsel på nav.no, men en kopi av innkallingen i Altinn. Vurder å varsle arbeidsgiver om møtet på annen måte i tillegg."
+      )
+    ).to.exist;
 
     expect(screen.queryByRole("img", { name: "feil-ikon" })).to.not.exist;
   });
