@@ -95,7 +95,7 @@ export interface StatusEndring {
   sykmeldtFnr: SykmeldtFnr;
   arsakList: SykepengestoppArsak[];
   status: Status;
-  virksomhetNr: VirksomhetNr;
+  virksomhetNr: VirksomhetNr | undefined;
   opprettet: string;
-  enhetNr: EnhetNr;
+  enhetNr: EnhetNr | undefined;
 }
