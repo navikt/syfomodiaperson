@@ -24,7 +24,7 @@ const PengestoppHistorikk = ({ statusEndringList, sykmeldinger }: Props) => {
 
   function getArbeidsgiverNavn(statusEndring: StatusEndring) {
     return allArbeidsgivere.find(
-      (ag: Arbeidsgiver) => ag.orgnummer === statusEndring.virksomhetNr.value
+      (ag: Arbeidsgiver) => ag.orgnummer === statusEndring.virksomhetNr?.value
     )?.navn;
   }
 
