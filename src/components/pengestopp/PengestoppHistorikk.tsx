@@ -22,10 +22,14 @@ const PengestoppHistorikk = ({ statusEndringList, sykmeldinger }: Props) => {
     sykmeldingerToArbeidsgiver(sykmeldinger)
   );
 
-  function getArbeidsgiverNavn(statusEndring: StatusEndring) {
-    return allArbeidsgivere.find(
-      (ag: Arbeidsgiver) => ag.orgnummer === statusEndring.virksomhetNr.value
-    )?.navn;
+  function getArbeidsgiverNavn(
+    statusEndring: StatusEndring
+  ): string | undefined {
+    return (
+      allArbeidsgivere.find(
+        (ag: Arbeidsgiver) => ag.orgnummer === statusEndring.virksomhetNr?.value
+      )?.navn ?? "Ukjent arbeidsgiver"
+    );
   }
 
   function getArsakText(statusEndring: StatusEndring) {
