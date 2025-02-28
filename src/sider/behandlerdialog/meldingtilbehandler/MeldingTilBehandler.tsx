@@ -1,33 +1,23 @@
 import React from "react";
 import { MeldingTilBehandlerSkjema } from "@/sider/behandlerdialog/meldingtilbehandler/MeldingTilBehandlerSkjema";
-import { Alert, Heading } from "@navikt/ds-react";
-import styled from "styled-components";
+import { Alert, Box, Heading } from "@navikt/ds-react";
 
 const texts = {
   header: "Skriv til behandler",
   alertInfo:
-    "Dialogmeldingen skal bare benyttes i sykefraværsoppfølgingen. Meldingen vises til innbyggeren på Min side.",
+    "Dialogmeldingen skal kun benyttes i sykefraværsoppfølgingen. Meldingen vises til innbyggeren på Min side.",
 };
-
-const MeldingTilBehandlerAlert = styled(Alert)`
-  max-width: fit-content;
-  margin-bottom: 1.5em;
-
-  .navds-alert__wrapper {
-    max-width: fit-content;
-  }
-`;
 
 export const MeldingTilBehandler = () => {
   return (
-    <>
-      <Heading level="2" size="medium" spacing>
+    <Box background="surface-default" className="p-4 flex flex-col gap-4">
+      <Heading level="2" size="medium">
         {texts.header}
       </Heading>
-      <MeldingTilBehandlerAlert variant="warning" size="small">
+      <Alert variant="warning" size="small" inline>
         {texts.alertInfo}
-      </MeldingTilBehandlerAlert>
+      </Alert>
       <MeldingTilBehandlerSkjema />
-    </>
+    </Box>
   );
 };
