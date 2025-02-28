@@ -12,6 +12,7 @@ export const kontaktinformasjonMock = {
 };
 
 export const brukerinfoMock: BrukerinfoDTO = {
+  aktivPersonident: ARBEIDSTAKER_DEFAULT.personIdent,
   navn: ARBEIDSTAKER_DEFAULT_FULL_NAME,
   arbeidssituasjon: "ARBEIDSTAKER",
   dodsdato: null,
