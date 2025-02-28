@@ -91,6 +91,7 @@ export const MeldingTilBehandlerSkjema = () => {
           <Select
             id="type"
             className="mb-4"
+            size="small"
             label={texts.meldingsType.label}
             {...register("meldingsType", { required: true })}
             value={watch("meldingsType")}
@@ -121,6 +122,8 @@ export const MeldingTilBehandlerSkjema = () => {
           })}
           maxLength={MAX_LENGTH_BEHANDLER_MELDING}
           error={meldingTekstErrorMessage}
+          size="small"
+          minRows={4}
         />
         <ForhandsvisningModal
           contentLabel={texts.previewContentLabel}

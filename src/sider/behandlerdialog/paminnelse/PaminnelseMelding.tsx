@@ -62,6 +62,7 @@ export const PaminnelseMelding = ({
       <div className="flex gap-4">
         <Button
           icon={<BellIcon aria-hidden />}
+          size="small"
           onClick={() => {
             setVisPaminnelseModal(true);
             paminnelseTilBehandler.reset();
@@ -72,6 +73,7 @@ export const PaminnelseMelding = ({
         </Button>
         <Button
           variant="secondary"
+          size="small"
           loading={behandleOppgave.isPending}
           onClick={handleFjernOppgaveClick}
         >
