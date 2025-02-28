@@ -22,15 +22,30 @@ import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
+import {
+  StatusEndring,
+  ValidSykepengestoppArsakType,
+} from "@/data/pengestopp/types/FlaggPerson";
+import { pengestoppStatusQueryKeys } from "@/data/pengestopp/pengestoppQueryHooks";
+import { defaultStatusEndring } from "@/mocks/ispengestopp/pengestoppStatusMock";
 
 let queryClient: QueryClient;
 
-const renderVurderingHistorikk = (vurderinger: VurderingResponseDTO[]) => {
+const renderVurderingHistorikk = (
+  vurderinger: VurderingResponseDTO[],
+  statuser: StatusEndring[] = []
+) => {
   queryClient.setQueryData(
     manglendeMedvirkningQueryKeys.manglendeMedvirkning(
       ARBEIDSTAKER_DEFAULT.personIdent
     ),
     () => vurderinger
+  );
+  queryClient.setQueryData(
+    pengestoppStatusQueryKeys.pengestoppStatus(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => statuser
   );
 
   return render(
@@ -65,7 +80,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
     });
   });
   describe("med tidligere vurderinger", () => {
-    const oppfyltCreated = daysFromToday(50);
+    const oppfyltCreated = daysFromToday(55);
     const oppfylt = createManglendeMedvirkningVurdering(
       VurderingType.OPPFYLT,
       oppfyltCreated,
@@ -119,19 +134,19 @@ describe("ManglendeMedvirkningHistorikk", () => {
       const accordionButtons = screen.getAllByRole("button");
 
       expect(accordionButtons[0].textContent).to.contain(
-        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`
+        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`
       );
       expect(accordionButtons[1].textContent).to.contain(
-        `Stans - ${tilDatoMedManedNavn(stansCreated)}`
+        `Unntak - ${tilDatoMedManedNavn(unntakCreated)}`
       );
       expect(accordionButtons[2].textContent).to.contain(
         `Forhåndsvarsel - ${tilDatoMedManedNavn(forhandsvarselCreated)}`
       );
       expect(accordionButtons[3].textContent).to.contain(
-        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`
+        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`
       );
       expect(accordionButtons[4].textContent).to.contain(
-        `Unntak - ${tilDatoMedManedNavn(oppfyltCreated)}`
+        `Innstilling om stans - ${tilDatoMedManedNavn(stansCreated)}`
       );
     });
 
@@ -213,6 +228,65 @@ describe("ManglendeMedvirkningHistorikk", () => {
 
       expect(screen.getByRole("button", { name: "Se ikke aktuell vurdering" }))
         .to.exist;
+    });
+  });
+  describe("Har vurderinger og statusendringer", () => {
+    it("Viser forekomster av vurderinger og statusendringer sortert på dato i synkende rekkefølge", () => {
+      const statusendringer: StatusEndring[] = [
+        {
+          ...defaultStatusEndring,
+          opprettet: "2025-02-20T08:00:00.000Z",
+          arsakList: [
+            { type: ValidSykepengestoppArsakType.MANGLENDE_MEDVIRKING },
+          ],
+        },
+        {
+          ...defaultStatusEndring,
+          opprettet: "2025-02-21T08:00:00.000Z",
+          arsakList: [{ type: ValidSykepengestoppArsakType.AKTIVITETSKRAV }],
+        },
+      ];
+
+      const vurderinger: VurderingResponseDTO[] = [
+        createManglendeMedvirkningVurdering(
+          VurderingType.FORHANDSVARSEL,
+          new Date("2025-02-15T08:00:00.000Z")
+        ),
+        createManglendeMedvirkningVurdering(
+          VurderingType.STANS,
+          new Date("2025-02-16T08:00:00.000Z")
+        ),
+        createManglendeMedvirkningVurdering(
+          VurderingType.FORHANDSVARSEL,
+          new Date("2025-02-21T08:00:00.000Z")
+        ),
+        createManglendeMedvirkningVurdering(
+          VurderingType.STANS,
+          new Date("2025-02-22T08:00:00.000Z")
+        ),
+      ];
+
+      renderVurderingHistorikk(vurderinger, statusendringer);
+
+      const accordionButtons = screen.getAllByRole("button");
+
+      expect(accordionButtons.length).toBe(5);
+
+      expect(accordionButtons[0].textContent).to.contain(
+        "Innstilling om stans - 22. februar 2025"
+      );
+      expect(accordionButtons[1].textContent).to.contain(
+        "Forhåndsvarsel - 21. februar 2025"
+      );
+      expect(accordionButtons[2].textContent).to.contain(
+        "Melding om stans sendt - 20. februar 2025"
+      );
+      expect(accordionButtons[3].textContent).to.contain(
+        "Innstilling om stans - 16. februar 2025"
+      );
+      expect(accordionButtons[4].textContent).to.contain(
+        "Forhåndsvarsel - 15. februar 2025"
+      );
     });
   });
 });
