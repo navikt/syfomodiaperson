@@ -6,10 +6,17 @@ import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { VisBrev } from "@/components/VisBrev";
 import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import {
+  HistorikkEntry,
   typeTexts,
   VurderingResponseDTO,
   VurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
+import { usePengestoppStatusQuery } from "@/data/pengestopp/pengestoppQueryHooks";
+import {
+  StatusEndring,
+  ValidSykepengestoppArsakType,
+} from "@/data/pengestopp/types/FlaggPerson";
+import StatusItem from "@/sider/manglendemedvirkning/ManglendeMedVirkningStatusItem";
 
 const texts = {
   header: "Historikk",
@@ -74,10 +81,45 @@ function HistorikkItem({ vurdering }: VurderingHistorikkItemProps) {
   );
 }
 
+function isVurderingResponseDTO(
+  item: HistorikkEntry
+): item is VurderingResponseDTO {
+  return "vurderingType" in item;
+}
+
+function dateFromHistorikkEntry(a: HistorikkEntry) {
+  return isVurderingResponseDTO(a)
+    ? new Date(a.createdAt)
+    : new Date(a.opprettet);
+}
+
+function sortHistorikkEntriesDesc(a: HistorikkEntry, b: HistorikkEntry) {
+  return (
+    dateFromHistorikkEntry(b).getTime() - dateFromHistorikkEntry(a).getTime()
+  );
+}
+
+function filterStatusEndringManglendeMedvirkning(
+  statusEndringer: StatusEndring[]
+) {
+  return statusEndringer.filter((statusEndring) =>
+    statusEndring.arsakList.some(
+      (arsak) =>
+        arsak.type === ValidSykepengestoppArsakType.MANGLENDE_MEDVIRKING
+    )
+  );
+}
+
 export default function ManglendeMedvirkningHistorikk() {
   const { data } = useManglendemedvirkningVurderingQuery();
+  const { data: statusEndringList } = usePengestoppStatusQuery();
+  const manglendeMedvirkningStatus: StatusEndring[] =
+    filterStatusEndringManglendeMedvirkning(statusEndringList);
+  const items: HistorikkEntry[] = [...manglendeMedvirkningStatus, ...data].sort(
+    sortHistorikkEntriesDesc
+  );
   const subheader =
-    data.length > 0 ? texts.tidligereVurderinger : texts.noVurderinger;
+    items.length > 0 ? texts.tidligereVurderinger : texts.noVurderinger;
 
   return (
     <Box
@@ -92,9 +134,16 @@ export default function ManglendeMedvirkningHistorikk() {
         <BodyShort size="small">{subheader}</BodyShort>
       </div>
       <Accordion>
-        {data.map((vurdering, index) => (
-          <HistorikkItem key={index} vurdering={vurdering} />
-        ))}
+        {items.map((item, index) =>
+          isVurderingResponseDTO(item) ? (
+            <HistorikkItem
+              key={index}
+              vurdering={item as VurderingResponseDTO}
+            />
+          ) : (
+            <StatusItem key={index} status={item as StatusEndring} />
+          )
+        )}
       </Accordion>
     </Box>
   );
