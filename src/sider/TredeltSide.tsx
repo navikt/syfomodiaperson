@@ -43,7 +43,7 @@ export function SecondColumn({ children, className }: Props) {
   return (
     <div
       className={
-        "xl:flex-grow-[2] xl:flex-shrink-1 xl:basis-0 xl:h-screen xl:sticky xl:top-2 xl:overflow-y-scroll " +
+        "xl:flex-grow-[2] xl:flex-shrink-1 xl:basis-0 xl:h-screen xl:sticky xl:top-2 xl:overflow-y-scroll -xl:mt-2 " +
         className
       }
     >
