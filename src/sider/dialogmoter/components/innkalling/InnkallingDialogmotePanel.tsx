@@ -7,9 +7,8 @@ import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/sider/dialogmoter/compo
 import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
 import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
-import { ArbeidstakerHarIkkeAktivSykmeldingAdvarsel } from "@/sider/dialogmoter/components/ArbeidstakerHarIkkeAktivSykmelding";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { BodyShort, Button } from "@navikt/ds-react";
+import { Alert, BodyShort, Button } from "@navikt/ds-react";
 import {
   dialogmoteRoutePath,
   dialogmoteUnntakRoutePath,
@@ -29,6 +28,8 @@ export const texts = {
   settUnntakButton: "Sett unntak",
   nyttMote: "Nytt dialogmøte",
   ikkeAktuell: "Ikke aktuell",
+  ikkeSykmeldtAlert:
+    "Denne funksjonaliteten skal kun benyttes på sykmeldte som følges opp etter kapittel 8 i folketrygdloven. Du kan sende innkalling selv om den sykmeldte ikke har digital sykmelding.",
 };
 
 const dialogmotePanelHeaderText = (isKandidat: boolean): string => {
@@ -91,7 +92,13 @@ export const InnkallingDialogmotePanel = ({
           <BrukerKanIkkeVarslesPapirpostAdvarsel />
         )}
         {!hasActiveOppfolgingstilfelle && (
-          <ArbeidstakerHarIkkeAktivSykmeldingAdvarsel />
+          <Alert
+            variant="warning"
+            size="small"
+            className="mb-4 [&>*]:max-w-fit"
+          >
+            {texts.ikkeSykmeldtAlert}
+          </Alert>
         )}
 
         <FlexRow columnGap={FlexGapSize.MD}>

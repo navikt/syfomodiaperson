@@ -9,7 +9,6 @@ import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
-import { ArbeidstakerHarIkkeAktivSykmeldingAdvarsel } from "@/sider/dialogmoter/components/ArbeidstakerHarIkkeAktivSykmelding";
 import * as Tredelt from "@/sider/TredeltSide";
 import { MotehistorikkPanel } from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
 import { useDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
@@ -25,16 +24,11 @@ const texts = {
 
 export const DialogmoteInnkallingSide = (): ReactElement => {
   const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
-  const { hasActiveOppfolgingstilfelle, hasOppfolgingstilfelle } =
-    useOppfolgingstilfellePersonQuery();
 
   return (
     <div className="flex flex-col">
       {brukerKanIkkeVarslesDigitalt && (
         <BrukerKanIkkeVarslesPapirpostAdvarsel />
-      )}
-      {!hasActiveOppfolgingstilfelle && hasOppfolgingstilfelle && (
-        <ArbeidstakerHarIkkeAktivSykmeldingAdvarsel />
       )}
       <DialogmoteInnkallingSkjema />
     </div>
