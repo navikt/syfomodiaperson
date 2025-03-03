@@ -1,11 +1,10 @@
-import { DatePicker, useDatepicker } from "@navikt/ds-react";
+import { DatePicker, Label, useDatepicker } from "@navikt/ds-react";
 import { useController } from "react-hook-form";
 import React from "react";
 import { StansSkjemaValues } from "@/sider/manglendemedvirkning/stans/StansSkjema";
 
 const texts = {
-  label: "Velg dato for stans (obligatorisk)",
-  description: "Første mulige dato for stans er svarfristen i forhåndsvarselet",
+  label: "Innstillingen gjelder fra",
   missingStansdatoError: "Du må velge en dato",
 };
 
@@ -31,10 +30,10 @@ export function StansdatoDatePicker({ varselSvarfrist }: Props) {
     <DatePicker {...datepickerProps}>
       <DatePicker.Input
         {...inputProps}
-        label={texts.label}
-        description={texts.description}
+        label={<Label className={"text-lg"}>{texts.label}</Label>}
         error={fieldState.error?.message}
-        size="small"
+        size="medium"
+        className={"[&_input]:rounded-lg"}
       />
     </DatePicker>
   );
