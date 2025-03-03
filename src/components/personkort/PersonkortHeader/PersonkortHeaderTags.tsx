@@ -78,7 +78,7 @@ export const PersonkortHeaderTags = () => {
         )}
         {uforegradData?.uforegrad && (
           <Tag variant="info" size="small">
-            {`Ufør ${uforegradData.uforegrad}%`}
+            {`Ufør ${uforegradData.uforegrad} %`}
           </Tag>
         )}
         {talesprakTolkSprakkode && (
