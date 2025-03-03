@@ -317,7 +317,7 @@ describe("PersonkortHeader", () => {
     );
     renderPersonkortHeader();
 
-    expect(screen.getByText("Ufør 80%")).to.exist;
+    expect(screen.getByText("Ufør 80 %")).to.exist;
   });
 
   it("viser ikke uføregrad tag når null", () => {
