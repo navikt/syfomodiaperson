@@ -50,7 +50,7 @@ describe("MeldingTilBehandler", () => {
     renderMeldingTilBehandler();
 
     const alertText =
-      "Dialogmeldingen skal bare benyttes i sykefraværsoppfølgingen. Meldingen vises til innbyggeren på Min side.";
+      "Dialogmeldingen skal kun benyttes i sykefraværsoppfølgingen. Meldingen vises til innbyggeren på Min side.";
 
     expect(screen.getByRole("heading", { name: "Skriv til behandler" })).to
       .exist;

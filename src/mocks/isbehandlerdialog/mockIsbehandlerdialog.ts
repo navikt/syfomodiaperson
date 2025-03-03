@@ -18,7 +18,7 @@ const replaceNumberInString = (originalString: string, searchValue: string) => {
 
 export const mockIsbehandlerdialog = [
   http.get(`${ISBEHANDLERDIALOG_ROOT}/melding`, () => {
-    return HttpResponse.json(behandlerdialogMock);
+    return HttpResponse.json(behandlerdialogMockData);
   }),
   http.get(`${ISBEHANDLERDIALOG_ROOT}/melding/:uuid/:vedleggNumber/pdf`, () => {
     return HttpResponse.text("PDF");
