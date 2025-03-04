@@ -144,7 +144,7 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
       ).to.exist;
       expect(screen.getByRole("img", { name: "klokkeikon" })).to.exist;
       expect(
-        screen.getByRole("button", { name: "Innstilling om stans" })
+        screen.getByRole("button", { name: "Skriv innstilling" })
       ).to.have.property("disabled", true);
       expect(screen.getByRole("button", { name: "Oppfylt" })).to.exist;
       expect(screen.getByRole("button", { name: "Ikke aktuell" })).to.exist;
@@ -191,7 +191,7 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
           "dersom det ikke lenger er aktuelt å vurdere medvirkningsplikten, for eksempel ved friskmelding."
         )
       ).to.exist;
-      expect(screen.getByRole("button", { name: "Innstilling om stans" })).to
+      expect(screen.getByRole("button", { name: "Skriv innstilling" })).to
         .exist;
       expect(screen.getByRole("button", { name: "Oppfylt" })).to.exist;
       expect(screen.getByRole("button", { name: "Ikke aktuell" })).to.exist;

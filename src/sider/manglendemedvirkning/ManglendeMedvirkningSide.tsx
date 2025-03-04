@@ -60,7 +60,7 @@ export default function ManglendeMedvirkningSide({
       tittel={texts.title}
       aktivtMenypunkt={Menypunkter.MANGLENDE_MEDVIRKNING}
     >
-      <Sidetopp tittel={texts.title} />
+      <Sidetopp tittel={texts.title} className={"text-2xl"} />
       <SideLaster
         henter={isLoading}
         hentingFeilet={isError}
