@@ -69,6 +69,7 @@ export const ReturLegeerklaring = ({ melding }: ReturLegeerklaringProps) => {
           setVisReturModal(true);
           returLegeerklaring.reset();
         }}
+        size="small"
       >
         {texts.button}
       </Button>

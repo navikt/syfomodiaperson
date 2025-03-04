@@ -51,6 +51,7 @@ export const VelgBehandler = ({
       legend={legend}
       name="behandlerRef"
       error={fieldState.error?.message}
+      size="small"
     >
       {behandlere.map((behandler, index) => (
         <Radio
