@@ -78,7 +78,7 @@ const UtvidbarSykmelding = ({ sykmelding }: UtvidbarSykmeldingProps) => {
           <SykmeldingTittelbeskrivelse sykmelding={sykmelding} />
         </ExpansionCard.Title>
       </StyledExpantionCardHeader>
-      <ExpansionCard.Content>
+      <ExpansionCard.Content className={"print:block"}>
         <SykmeldingUtdragFraSykefravaretVisning sykmelding={sykmelding} />
       </ExpansionCard.Content>
     </ExpansionCard>
@@ -110,7 +110,7 @@ const SykmeldingTittelbeskrivelse = ({ sykmelding }: UtvidbarTittelProps) => {
   const erUtenArbeidsgiver = erSykmeldingUtenArbeidsgiver(sykmelding);
 
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col print:z-10">
       <div className="flex justify-between mb-2">
         <div>
           {periode}
