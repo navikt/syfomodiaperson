@@ -30,7 +30,7 @@ export function AvslagDatePicker({ varselSvarfrist }: Props) {
   });
 
   return (
-    <DatePicker {...datepickerProps} strategy="fixed">
+    <DatePicker {...datepickerProps} strategy="fixed" showWeekNumber>
       <DatePicker.Input
         {...inputProps}
         size="small"

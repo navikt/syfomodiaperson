@@ -28,7 +28,7 @@ export function StansdatoDatePicker({ varselSvarfrist }: Props) {
   });
 
   return (
-    <DatePicker {...datepickerProps}>
+    <DatePicker {...datepickerProps} showWeekNumber>
       <DatePicker.Input
         {...inputProps}
         label={texts.label}
