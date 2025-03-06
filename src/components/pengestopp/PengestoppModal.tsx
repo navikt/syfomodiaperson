@@ -3,6 +3,7 @@ import {
   Arbeidsgiver,
   SykepengestoppArsakType,
   validSykepengestoppArsakTekster,
+  ValidSykepengestoppArsakType,
 } from "@/data/pengestopp/types/FlaggPerson";
 import { useFlaggPerson } from "@/data/pengestopp/useFlaggPerson";
 import {
@@ -67,6 +68,11 @@ const PengestoppModal = ({ isOpen, arbeidsgivere, onModalClose }: Props) => {
 
   const tittel = isSuccess ? texts.stoppedTittel : texts.notStoppedTittel;
 
+  const manuellStoppknapp = [
+    ValidSykepengestoppArsakType.MEDISINSK_VILKAR,
+    ValidSykepengestoppArsakType.AKTIVITETSKRAV,
+  ].map((value) => value.toString());
+
   return (
     <form onSubmit={handleSubmit(submit)}>
       <Modal
@@ -107,17 +113,18 @@ const PengestoppModal = ({ isOpen, arbeidsgivere, onModalClose }: Props) => {
                 error={errors.arsaker?.message}
               >
                 {Object.entries(validSykepengestoppArsakTekster).map(
-                  ([type, text], index: number) => (
-                    <Checkbox
-                      key={index}
-                      value={type}
-                      {...register("arsaker", {
-                        required: texts.arsak.submitError,
-                      })}
-                    >
-                      {text}
-                    </Checkbox>
-                  )
+                  ([type, text], index: number) =>
+                    manuellStoppknapp.includes(type) ? (
+                      <Checkbox
+                        key={index}
+                        value={type}
+                        {...register("arsaker", {
+                          required: texts.arsak.submitError,
+                        })}
+                      >
+                        {text}
+                      </Checkbox>
+                    ) : null
                 )}
               </CheckboxGroup>
               <div className="flex gap-4">
