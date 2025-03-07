@@ -31,11 +31,11 @@ export default function StatusItem({ status }: StatusEndringItemProps) {
     opprettet
   )}`;
 
-  const allArbeidsgivere = uniqueArbeidsgivere(
-    sykmeldingerToArbeidsgiver(sykmeldinger)
-  );
-
   function getArbeidsgiverNavn(statusEndring: StatusEndring) {
+    const allArbeidsgivere = uniqueArbeidsgivere(
+      sykmeldingerToArbeidsgiver(sykmeldinger)
+    );
+
     return allArbeidsgivere.find(
       (ag: Arbeidsgiver) => ag.orgnummer === statusEndring.virksomhetNr?.value
     )?.navn;
