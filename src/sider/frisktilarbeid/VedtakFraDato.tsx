@@ -33,7 +33,7 @@ export const VedtakFraDato = ({ tilDato }: VedtakFraDatoProps) => {
   });
 
   return (
-    <DatePicker {...fraDatoDatePicker.datepickerProps}>
+    <DatePicker {...fraDatoDatePicker.datepickerProps} showWeekNumber>
       <DatePicker.Input
         {...fraDatoDatePicker.inputProps}
         label={texts.fraDatoLabel}
