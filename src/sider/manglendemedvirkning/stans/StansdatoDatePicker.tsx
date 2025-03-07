@@ -4,8 +4,7 @@ import React from "react";
 import { StansSkjemaValues } from "@/sider/manglendemedvirkning/stans/StansSkjema";
 
 const texts = {
-  label: "Velg dato for stans (obligatorisk)",
-  description: "Første mulige dato for stans er svarfristen i forhåndsvarselet",
+  label: "Innstillingen gjelder fra",
   missingStansdatoError: "Du må velge en dato",
 };
 
@@ -32,7 +31,6 @@ export function StansdatoDatePicker({ varselSvarfrist }: Props) {
       <DatePicker.Input
         {...inputProps}
         label={texts.label}
-        description={texts.description}
         error={fieldState.error?.message}
         size="small"
       />
