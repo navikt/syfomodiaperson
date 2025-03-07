@@ -87,10 +87,10 @@ function isVurderingResponseDTO(
   return "vurderingType" in item;
 }
 
-function dateFromHistorikkEntry(a: HistorikkEntry) {
-  return isVurderingResponseDTO(a)
-    ? new Date(a.createdAt)
-    : new Date(a.opprettet);
+function dateFromHistorikkEntry(historikkEntry: HistorikkEntry) {
+  return isVurderingResponseDTO(historikkEntry)
+    ? new Date(historikkEntry.createdAt)
+    : new Date(historikkEntry.opprettet);
 }
 
 function sortHistorikkEntriesDesc(a: HistorikkEntry, b: HistorikkEntry) {
