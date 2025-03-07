@@ -116,7 +116,7 @@ export default function StansSkjema({ varselSvarfrist }: Props) {
             maxLength={begrunnelseMaxLength}
           />
           <List as="ul" title={texts.afterSendInfo.title}>
-            <div className={"mb-4"}>{texts.afterSendInfo.gosysoppgave}</div>
+            {texts.afterSendInfo.gosysoppgave}
             <List as="ul" className="ml-1">
               <List.Item>
                 {texts.afterSendInfo.gosysoppgaveListe.tema}
