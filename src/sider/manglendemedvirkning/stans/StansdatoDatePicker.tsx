@@ -1,4 +1,4 @@
-import { DatePicker, Label, useDatepicker } from "@navikt/ds-react";
+import { DatePicker, useDatepicker } from "@navikt/ds-react";
 import { useController } from "react-hook-form";
 import React from "react";
 import { StansSkjemaValues } from "@/sider/manglendemedvirkning/stans/StansSkjema";
