@@ -59,19 +59,24 @@ describe("Manglendemedvirkning Stans", () => {
 
       renderStansSide();
 
-      expect(screen.getByText("Skriv innstilling til NAY")).to.exist;
+      expect(screen.getByText("Skriv innstilling om stans til NAY")).to.exist;
+      expect(screen.getByText("Når du skriver innstillingen")).to.exist;
       expect(
         screen.getByText(
-          "Skriv kort hvilke opplysninger som ligger til grunn for stans, samt din vurdering av hvorfor vilkåret ikke er oppfylt og vurdering av eventuelle nye opplysninger."
+          "Om du har vurdert § 8-8 allerede, så burde dette komme frem i innstillingen. Om personen har flere arbeidsgivere burde dette også komme frem i innstillingen."
         )
       ).to.exist;
       expect(
         screen.getByRole("textbox", {
-          name: "Innstilling om stans (obligatorisk)",
+          name: "Innstilling om avslag (obligatorisk)",
         })
       ).to.exist;
-      expect(screen.getByText("Før du trykker Stans må du huske å:")).to.exist;
-      expect(screen.getByText("Sende oppgave til NAY i Gosys:")).to.exist;
+      expect(screen.getByText("Videre må du huske å:")).to.exist;
+      expect(
+        screen.getByText(
+          "Sende beskjed i Gosys til Nav Arbeid og Ytelser. Dette er for å gjøre saksbehandler oppmerksom på at det har kommet en innstilling og at utbetalingen skal stanses."
+        )
+      ).to.exist;
       expect(screen.getByText("Tema: Sykepenger")).to.exist;
       expect(screen.getByText("Gjelder: Aktivitetskrav")).to.exist;
       expect(screen.getByText("Oppgavetype: Vurder konsekvens for ytelse")).to
@@ -79,15 +84,15 @@ describe("Manglendemedvirkning Stans", () => {
       expect(screen.getByText("Prioritet: Høy")).to.exist;
       expect(
         screen.getByText(
-          "Gi beskjed om stans til ny saksbehandlingsløsning via Stoppknappen under fanen Sykmeldinger i Modia."
+          "Send innstilling om stans og stans automatisk utbetaling"
         )
       ).to.exist;
       expect(
         screen.getByText(
-          "Når du trykker “Stans” blir innstillingen journalført og kan sees i Gosys."
+          "Når du sender innstillingen blir den journalført og kan sees i Gosys. Den automatiske utbetalingen til bruker stanses og oppgaven blir deretter plukket opp av saksbehandler fra Gosys."
         )
       ).to.exist;
-      expect(screen.getByRole("button", { name: "Stans" })).to.exist;
+      expect(screen.getByRole("button", { name: "Send" })).to.exist;
       expect(screen.getByRole("button", { name: "Avbryt" })).to.exist;
       expect(screen.getByRole("button", { name: "Forhåndsvisning" })).to.exist;
     });
@@ -97,7 +102,7 @@ describe("Manglendemedvirkning Stans", () => {
 
       renderStansSide();
 
-      await clickButton("Stans");
+      await clickButton("Send");
 
       expect(await screen.findByText("Vennligst angi begrunnelse")).to.exist;
     });
@@ -109,18 +114,18 @@ describe("Manglendemedvirkning Stans", () => {
 
       const today = dayjs();
       const datoInput = screen.getByRole("textbox", {
-        name: "Velg dato for stans (obligatorisk)",
+        name: "Innstillingen gjelder fra",
         hidden: true,
       });
       changeTextInput(datoInput, today.format("DD.MM.YYYY"));
 
       const begrunnelse = "En begrunnelse";
       const begrunnelseInput = getTextInput(
-        "Innstilling om stans (obligatorisk)"
+        "Innstilling om avslag (obligatorisk)"
       );
       changeTextInput(begrunnelseInput, begrunnelse);
 
-      await clickButton("Stans");
+      await clickButton("Send");
 
       const expectedRequestBody: StansVurdering = {
         personident: ARBEIDSTAKER_DEFAULT.personIdent,
