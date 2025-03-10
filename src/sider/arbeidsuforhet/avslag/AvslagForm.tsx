@@ -7,7 +7,7 @@ import {
   VurderingType,
 } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
 import {
-  BodyShort,
+  BodyLong,
   Box,
   Button,
   Heading,
@@ -22,9 +22,11 @@ import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { AvslagDatePicker } from "@/sider/arbeidsuforhet/avslag/AvslagDatePicker";
 import dayjs from "dayjs";
 import { useNotification } from "@/context/notification/NotificationContext";
+import { Paragraph } from "@/components/Paragraph";
 
 const texts = {
-  title: "Skriv innstilling til NAY",
+  title: "Skriv innstilling om avslag til NAY",
+  innstillingInfoLabel: "Når du skriver innstillingen",
   begrunnelseLabel: "Innstilling om avslag (obligatorisk)",
   info1:
     "Skriv kort hvilke opplysninger som ligger til grunn for avslaget, samt din vurdering av hvorfor vilkåret ikke er oppfylt og vurdering av eventuelle nye opplysninger.",
@@ -32,18 +34,25 @@ const texts = {
     "Hvis du har vurdert ordningen friskmelding til arbeidsformidling: skriv hvorfor ordningen ikke er aktuell og legg inn henvisning til §8-5.",
   afterSendInfo: {
     title: "Videre må du huske å:",
-    gosysoppgave: "Sende oppgave til NAY i Gosys.",
-    stoppknapp:
-      "Gi beskjed om avslag til ny saksbehandlingsløsning via Stoppknappen under fanen Sykmeldinger i Modia.",
+    gosysoppgave:
+      "Sende beskjed i Gosys til Nav Arbeid og Ytelser. Dette er for å gjøre saksbehandler oppmerksom på at det har kommet en innstilling og at utbetalingen skal stanses.",
+    gosysoppgaveListe: {
+      tema: "Tema: Sykepenger",
+      gjelder: "Gjelder: Behandle vedtak",
+      oppgavetype: "Oppgavetype: Vurder konsekvens for ytelse",
+      prioritet: "Prioritet: Høy",
+    },
   },
+  buttonDescriptionLabel:
+    "Send innstilling om avslag og stans automatisk utbetaling",
   buttonDescription:
-    "Når du trykker “Gi avslag” blir innstillingen journalført og kan sees i Gosys.",
+    "Når du sender innstillingen blir den journalført og kan sees i Gosys. Den automatiske utbetalingen til bruker stanses og oppgaven blir deretter plukket opp av saksbehandler fra Gosys",
   forhandsvisningLabel: "Forhåndsvis innstillingen",
   missingBegrunnelse: "Vennligst angi begrunnelse",
-  sendVarselButtonText: "Gi avslag",
+  sendVarselButtonText: "Send",
   avbrytButton: "Avbryt",
   success:
-    "Innstilling om avslag § 8-4 er lagret i historikken og blir journalført automatisk.",
+    "Innstilling om avslag § 8-4 er lagret i historikken og blir journalført automatisk. Automatisk utbetaling av sykepenger er stanset.",
 };
 
 const begrunnelseMaxLength = 5000;
@@ -96,8 +105,8 @@ export function AvslagForm({ varselSvarfrist }: Props) {
             {texts.title}
           </Heading>
           <AvslagDatePicker varselSvarfrist={varselSvarfrist} />
-          <BodyShort>{texts.info1}</BodyShort>
-          <BodyShort>{texts.info2}</BodyShort>
+          <Paragraph label={texts.innstillingInfoLabel} body={texts.info1} />
+          <BodyLong size={"small"}>{texts.info2}</BodyLong>
           <Textarea
             {...register("begrunnelse", {
               maxLength: begrunnelseMaxLength,
@@ -114,20 +123,29 @@ export function AvslagForm({ varselSvarfrist }: Props) {
             <SkjemaInnsendingFeil error={sendVurdering.error} />
           )}
           <List as="ul" title={texts.afterSendInfo.title}>
-            <List.Item className="ml-8">
-              {texts.afterSendInfo.gosysoppgave}
-            </List.Item>
-            <List.Item className="ml-8">
-              {texts.afterSendInfo.stoppknapp}
-            </List.Item>
+            {texts.afterSendInfo.gosysoppgave}
+            <List as="ul" className="ml-1">
+              <List.Item>
+                {texts.afterSendInfo.gosysoppgaveListe.tema}
+              </List.Item>
+              <List.Item>
+                {texts.afterSendInfo.gosysoppgaveListe.oppgavetype}
+              </List.Item>
+              <List.Item>
+                {texts.afterSendInfo.gosysoppgaveListe.gjelder}
+              </List.Item>
+              <List.Item>
+                {texts.afterSendInfo.gosysoppgaveListe.prioritet}
+              </List.Item>
+            </List>
           </List>
-          <BodyShort>{texts.buttonDescription}</BodyShort>
+          <Paragraph
+            label={texts.buttonDescriptionLabel}
+            body={texts.buttonDescription}
+          />
           <ButtonRow>
             <Button loading={sendVurdering.isPending} type="submit">
               {texts.sendVarselButtonText}
-            </Button>
-            <Button as={Link} to={arbeidsuforhetPath} variant="secondary">
-              {texts.avbrytButton}
             </Button>
             <Forhandsvisning
               contentLabel={texts.forhandsvisningLabel}
@@ -138,6 +156,9 @@ export function AvslagForm({ varselSvarfrist }: Props) {
                 })
               }
             />
+            <Button as={Link} to={arbeidsuforhetPath} variant="secondary">
+              {texts.avbrytButton}
+            </Button>
           </ButtonRow>
         </form>
       </FormProvider>

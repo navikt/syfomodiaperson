@@ -4,7 +4,7 @@ import { useController } from "react-hook-form";
 import { ArbeidsuforhetAvslagSkjemaValues } from "@/sider/arbeidsuforhet/avslag/AvslagForm";
 
 const texts = {
-  label: "Avslaget gjelder fra",
+  label: "Innstillingen gjelder fra",
   missingDate: "Vennligst angi dato",
 };
 
