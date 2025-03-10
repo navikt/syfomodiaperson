@@ -1,14 +1,6 @@
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { manglendeMedvirkningPath } from "@/routers/AppRouter";
-import {
-  BodyShort,
-  Box,
-  Button,
-  Heading,
-  HStack,
-  List,
-  Textarea,
-} from "@navikt/ds-react";
+import { Box, Button, Heading, HStack, List, Textarea } from "@navikt/ds-react";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
@@ -21,31 +13,35 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useNotification } from "@/context/notification/NotificationContext";
 import { useSendVurdering } from "@/data/manglendemedvirkning/useSendVurderingManglendeMedvirkning";
 import { StansdatoDatePicker } from "@/sider/manglendemedvirkning/stans/StansdatoDatePicker";
+import { Paragraph } from "@/components/Paragraph";
 
 const texts = {
-  heading: "Skriv innstilling til NAY",
-  p1: "Skriv kort hvilke opplysninger som ligger til grunn for stans, samt din vurdering av hvorfor vilkåret ikke er oppfylt og vurdering av eventuelle nye opplysninger.",
+  heading: "Skriv innstilling om stans til NAY",
+  innstillingInfoLabel: "Når du skriver innstillingen",
+  innstillingInfoParagraph:
+    "Skriv kort hvilke opplysninger som ligger til grunn for stans, samt din vurdering av hvorfor vilkåret ikke er oppfylt og vurdering av eventuelle nye opplysninger.",
   begrunnelseLabel: "Innstilling om stans (obligatorisk)",
   afterSendInfo: {
-    title: "Før du trykker Stans må du huske å:",
-    gosysoppgave: "Sende oppgave til NAY i Gosys:",
+    title: "Videre må du huske å:",
+    gosysoppgave:
+      "Sende beskjed i Gosys til Nav Arbeid og Ytelser. Dette er for å gjøre saksbehandler oppmerksom på at det har kommet en innstilling og at utbetalingen skal stanses.",
     gosysoppgaveListe: {
       tema: "Tema: Sykepenger",
       gjelder: "Gjelder: Aktivitetskrav",
       oppgavetype: "Oppgavetype: Vurder konsekvens for ytelse",
       prioritet: "Prioritet: Høy",
     },
-    stoppknapp:
-      "Gi beskjed om stans til ny saksbehandlingsløsning via Stoppknappen under fanen Sykmeldinger i Modia.",
   },
+  buttonDescriptionLabel:
+    "Send innstilling om stans og stans automatisk utbetaling",
   buttonDescription:
-    "Når du trykker “Stans” blir innstillingen journalført og kan sees i Gosys.",
+    "Når du sender innstillingen blir den journalført og kan sees i Gosys. Den automatiske utbetalingen til bruker stanses og oppgaven blir deretter plukket opp av saksbehandler fra Gosys.",
   forhandsvisningLabel: "Forhåndsvis innstillingen",
   missingBegrunnelse: "Vennligst angi begrunnelse",
-  sendVarselButtonText: "Stans",
+  sendVarselButtonText: "Send",
   avbrytButton: "Avbryt",
   success:
-    "Innstillingen om stans av sykepenger i forbindelse med medvirkningsplikten § 8-8 er lagret i historikken og blir journalført automatisk.",
+    "Innstilling om stans § 8-8 medvirkningsplikten er lagret i historikken og blir journalført automatisk. Automatisk utbetaling av sykepenger er stanset.",
 };
 
 const begrunnelseMaxLength = 5000;
@@ -103,6 +99,10 @@ export default function StansSkjema({ varselSvarfrist }: Props) {
             {texts.heading}
           </Heading>
           <StansdatoDatePicker varselSvarfrist={varselSvarfrist} />
+          <Paragraph
+            label={texts.innstillingInfoLabel}
+            body={texts.innstillingInfoParagraph}
+          />
           <Textarea
             {...register("begrunnelse", {
               maxLength: begrunnelseMaxLength,
@@ -110,33 +110,32 @@ export default function StansSkjema({ varselSvarfrist }: Props) {
             })}
             value={watch("begrunnelse")}
             label={texts.begrunnelseLabel}
-            description={texts.p1}
             error={errors.begrunnelse?.message}
             size="small"
             minRows={6}
             maxLength={begrunnelseMaxLength}
           />
           <List as="ul" title={texts.afterSendInfo.title}>
-            <List.Item>
-              {texts.afterSendInfo.gosysoppgave}
-              <List as="ul" className="ml-1">
-                <List.Item>
-                  {texts.afterSendInfo.gosysoppgaveListe.tema}
-                </List.Item>
-                <List.Item>
-                  {texts.afterSendInfo.gosysoppgaveListe.gjelder}
-                </List.Item>
-                <List.Item>
-                  {texts.afterSendInfo.gosysoppgaveListe.oppgavetype}
-                </List.Item>
-                <List.Item>
-                  {texts.afterSendInfo.gosysoppgaveListe.prioritet}
-                </List.Item>
-              </List>
-            </List.Item>
-            <List.Item>{texts.afterSendInfo.stoppknapp}</List.Item>
+            {texts.afterSendInfo.gosysoppgave}
+            <List as="ul" className="ml-1">
+              <List.Item>
+                {texts.afterSendInfo.gosysoppgaveListe.tema}
+              </List.Item>
+              <List.Item>
+                {texts.afterSendInfo.gosysoppgaveListe.oppgavetype}
+              </List.Item>
+              <List.Item>
+                {texts.afterSendInfo.gosysoppgaveListe.gjelder}
+              </List.Item>
+              <List.Item>
+                {texts.afterSendInfo.gosysoppgaveListe.prioritet}
+              </List.Item>
+            </List>
           </List>
-          <BodyShort>{texts.buttonDescription}</BodyShort>
+          <Paragraph
+            label={texts.buttonDescriptionLabel}
+            body={texts.buttonDescription}
+          />
           <HStack gap="4">
             <Button loading={sendVurdering.isPending} type="submit">
               {texts.sendVarselButtonText}
