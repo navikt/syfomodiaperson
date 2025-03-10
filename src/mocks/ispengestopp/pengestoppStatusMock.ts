@@ -1,11 +1,13 @@
 import {
   ARBEIDSTAKER_DEFAULT,
   ENHET_GAMLEOSLO,
+  VEILEDER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
 import {
   DeprecatedSykepengestoppArsakType,
   Status,
+  StatusEndring,
   StoppAutomatikk,
 } from "@/data/pengestopp/types/FlaggPerson";
 
@@ -18,6 +20,16 @@ const defaultStoppAutomatikk: StoppAutomatikk = {
   ],
 };
 
+export const defaultStatusEndring: StatusEndring = {
+  veilederIdent: { value: VEILEDER_DEFAULT.ident },
+  sykmeldtFnr: { value: ARBEIDSTAKER_DEFAULT.personIdent },
+  status: Status.STOPP_AUTOMATIKK,
+  virksomhetNr: { value: VIRKSOMHET_PONTYPANDY.virksomhetsnummer },
+  opprettet: new Date().toString(),
+  enhetNr: { value: ENHET_GAMLEOSLO.nummer },
+  arsakList: [],
+};
+
 export const createStatusList = (
   created: Date,
   stoppAutomatikk = defaultStoppAutomatikk
@@ -25,7 +37,7 @@ export const createStatusList = (
   return stoppAutomatikk.virksomhetNr.map((virksomhet) => {
     return {
       veilederIdent: {
-        value: "A111111",
+        value: VEILEDER_DEFAULT.ident,
       },
       sykmeldtFnr: {
         value: ARBEIDSTAKER_DEFAULT.personIdent,
@@ -38,6 +50,7 @@ export const createStatusList = (
       enhetNr: {
         value: "1337",
       },
-    };
+      arsakList: stoppAutomatikk.arsakList,
+    } as StatusEndring;
   });
 };
