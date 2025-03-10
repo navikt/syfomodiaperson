@@ -63,12 +63,12 @@ describe("Manglendemedvirkning Stans", () => {
       expect(screen.getByText("Når du skriver innstillingen")).to.exist;
       expect(
         screen.getByText(
-          "Om du har vurdert § 8-8 allerede, så burde dette komme frem i innstillingen. Om personen har flere arbeidsgivere burde dette også komme frem i innstillingen."
+          "Skriv kort hvilke opplysninger som ligger til grunn for stans, samt din vurdering av hvorfor vilkåret ikke er oppfylt og vurdering av eventuelle nye opplysninger."
         )
       ).to.exist;
       expect(
         screen.getByRole("textbox", {
-          name: "Innstilling om avslag (obligatorisk)",
+          name: "Innstilling om stans (obligatorisk)",
         })
       ).to.exist;
       expect(screen.getByText("Videre må du huske å:")).to.exist;
@@ -121,7 +121,7 @@ describe("Manglendemedvirkning Stans", () => {
 
       const begrunnelse = "En begrunnelse";
       const begrunnelseInput = getTextInput(
-        "Innstilling om avslag (obligatorisk)"
+        "Innstilling om stans (obligatorisk)"
       );
       changeTextInput(begrunnelseInput, begrunnelse);
 

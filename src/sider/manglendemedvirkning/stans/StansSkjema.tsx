@@ -19,8 +19,8 @@ const texts = {
   heading: "Skriv innstilling om stans til NAY",
   innstillingInfoLabel: "Når du skriver innstillingen",
   innstillingInfoParagraph:
-    "Om du har vurdert § 8-8 allerede, så burde dette komme frem i innstillingen. Om personen har flere arbeidsgivere burde dette også komme frem i innstillingen.",
-  begrunnelseLabel: "Innstilling om avslag (obligatorisk)",
+    "Skriv kort hvilke opplysninger som ligger til grunn for stans, samt din vurdering av hvorfor vilkåret ikke er oppfylt og vurdering av eventuelle nye opplysninger.",
+  begrunnelseLabel: "Innstilling om stans (obligatorisk)",
   afterSendInfo: {
     title: "Videre må du huske å:",
     gosysoppgave:
@@ -41,7 +41,7 @@ const texts = {
   sendVarselButtonText: "Send",
   avbrytButton: "Avbryt",
   success:
-    "Du har gitt avslag og stanset automatisk utbetaling. Oppgaven er fjernet fra oversikten og innstillingen er journalført.",
+    "Innstilling om stans § 8-8 medvirkningsplikten er lagret i historikken og blir journalført automatisk. Automatisk utbetaling av sykepenger er stanset.",
 };
 
 const begrunnelseMaxLength = 5000;
