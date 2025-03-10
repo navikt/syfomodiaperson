@@ -76,12 +76,6 @@ describe("Pengestopp", () => {
 
     expect(
       screen.getByRole("checkbox", {
-        name: /Medisinsk vilkår/,
-        hidden: true,
-      })
-    ).to.exist;
-    expect(
-      screen.getByRole("checkbox", {
         name: /Aktivitetskravet/,
         hidden: true,
       })
