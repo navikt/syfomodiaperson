@@ -8,7 +8,7 @@ import {
 import React from "react";
 
 const texts = {
-  avslag: "Innstilling om avslag",
+  avslag: "Skriv innstilling om avslag",
   oppfylt: "Oppfylt",
   ikkeAktuell: "Ikke aktuell",
 };
