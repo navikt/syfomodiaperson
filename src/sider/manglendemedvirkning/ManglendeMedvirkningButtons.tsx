@@ -9,7 +9,7 @@ import {
 import React from "react";
 
 const texts = {
-  stans: "Skriv innstilling",
+  stans: "Skriv innstilling om stans",
   oppfylt: "Oppfylt",
   unntak: "Unntak",
   ikkeAktuell: "Ikke aktuell",
