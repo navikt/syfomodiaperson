@@ -10,7 +10,7 @@ import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import React from "react";
 import { queryClientWithMockData } from "../testQueryClient";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { MeldingTilBehandler } from "@/sider/behandlerdialog/meldingtilbehandler/MeldingTilBehandler";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
 import {
@@ -24,6 +24,10 @@ import {
   expectedMeldingFraNAVDocument,
   expectedTilleggsopplysningerDocument,
 } from "./testDataDocuments";
+import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
+import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
+import { OppfolgingstilfellePersonDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 let queryClient: QueryClient;
 
@@ -46,14 +50,25 @@ describe("MeldingTilBehandler", () => {
     queryClient = queryClientWithMockData();
   });
 
-  it("Viser overskrift og warning-alert for kopi til bruker hvis toggle for legeerklæring er på", () => {
+  it("Viser overskrift og warning-alert for kopi til bruker dersom ikke aktivt oppfølgingstilfelle", () => {
+    const emptyOppfolgingstilfellePersonMock: OppfolgingstilfellePersonDTO = {
+      ...oppfolgingstilfellePersonMock,
+      oppfolgingstilfelleList: [],
+    };
+    queryClient.setQueryData(
+      oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
+      () => emptyOppfolgingstilfellePersonMock
+    );
+
     renderMeldingTilBehandler();
 
     const alertText =
-      "Dialogmeldingen skal kun benyttes i sykefraværsoppfølgingen. Meldingen vises til innbyggeren på Min side.";
+      "Personen har ikke et aktivt sykefravær. Dialogmeldingen skal kun benyttes i sykefraværsoppfølgingen. Meldingen vises til innbyggeren på Min side.";
 
-    expect(screen.getByRole("heading", { name: "Skriv til behandler" })).to
-      .exist;
+    expect(screen.getByRole("heading", { name: "Dialogmelding til behandler" }))
+      .to.exist;
     expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
     expect(screen.getByText(alertText)).to.exist;
   });
@@ -135,7 +150,9 @@ describe("MeldingTilBehandler", () => {
         target: { value: MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER },
       });
 
-      const meldingInput = getTextInput("Skriv inn meldingstekst");
+      const meldingInput = getTextInput(
+        "Skriv inn teksten du ønsker å sende til behandler"
+      );
       changeTextInput(meldingInput, enMeldingTekst);
 
       const previewButton = screen.getByRole("button", {
@@ -163,7 +180,9 @@ describe("MeldingTilBehandler", () => {
         target: { value: MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING },
       });
 
-      const meldingInput = getTextInput("Skriv inn meldingstekst");
+      const meldingInput = getTextInput(
+        "Skriv inn teksten du ønsker å sende til behandler"
+      );
       changeTextInput(meldingInput, enMeldingTekst);
 
       const previewButton = screen.getByRole("button", {
@@ -190,7 +209,9 @@ describe("MeldingTilBehandler", () => {
         target: { value: MeldingType.HENVENDELSE_MELDING_FRA_NAV },
       });
 
-      const meldingInput = getTextInput("Skriv inn meldingstekst");
+      const meldingInput = getTextInput(
+        "Skriv inn teksten du ønsker å sende til behandler"
+      );
       changeTextInput(meldingInput, enMeldingTekst);
 
       const previewButton = screen.getByRole("button", {
@@ -223,7 +244,9 @@ describe("MeldingTilBehandler", () => {
         expect(screen.getByText("Vennligst velg behandler")).to.exist;
       });
 
-      const meldingInput = getTextInput("Skriv inn meldingstekst");
+      const meldingInput = getTextInput(
+        "Skriv inn teksten du ønsker å sende til behandler"
+      );
       changeTextInput(meldingInput, enMeldingTekst);
       await waitFor(() => {
         expect(screen.queryByText("Vennligst angi meldingstekst")).to.not.exist;
@@ -261,7 +284,9 @@ describe("MeldingTilBehandler", () => {
         target: { value: MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER },
       });
 
-      const meldingInput = getTextInput("Skriv inn meldingstekst");
+      const meldingInput = getTextInput(
+        "Skriv inn teksten du ønsker å sende til behandler"
+      );
       changeTextInput(meldingInput, expectedMeldingTilBehandlerDTO.tekst);
 
       await clickButton("Send til behandler");
