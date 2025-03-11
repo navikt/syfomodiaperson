@@ -46,7 +46,7 @@ const texts = {
   buttonDescriptionLabel:
     "Send innstilling om avslag og stans automatisk utbetaling",
   buttonDescription:
-    "Når du sender innstillingen blir den journalført og kan sees i Gosys. Den automatiske utbetalingen til bruker stanses og oppgaven blir deretter plukket opp av saksbehandler fra Gosys",
+    "Når du sender innstillingen blir den journalført og kan sees i Gosys. Den automatiske utbetalingen til bruker stanses og oppgaven blir deretter plukket opp av saksbehandler fra Gosys.",
   forhandsvisningLabel: "Forhåndsvis innstillingen",
   missingBegrunnelse: "Vennligst angi begrunnelse",
   sendVarselButtonText: "Send",
@@ -122,7 +122,7 @@ export function AvslagForm({ varselSvarfrist }: Props) {
           {sendVurdering.isError && (
             <SkjemaInnsendingFeil error={sendVurdering.error} />
           )}
-          <List as="ul" title={texts.afterSendInfo.title}>
+          <List as="ul" title={texts.afterSendInfo.title} size={"small"}>
             {texts.afterSendInfo.gosysoppgave}
             <List as="ul" className="ml-1">
               <List.Item>
