@@ -68,10 +68,9 @@ const PengestoppModal = ({ isOpen, arbeidsgivere, onModalClose }: Props) => {
 
   const tittel = isSuccess ? texts.stoppedTittel : texts.notStoppedTittel;
 
-  const manuellStoppknapp = [
-    ValidSykepengestoppArsakType.MEDISINSK_VILKAR,
-    ValidSykepengestoppArsakType.AKTIVITETSKRAV,
-  ].map((value) => value.toString());
+  const manuellStoppknapp = [ValidSykepengestoppArsakType.AKTIVITETSKRAV].map(
+    (value) => value.toString()
+  );
 
   return (
     <form onSubmit={handleSubmit(submit)}>
