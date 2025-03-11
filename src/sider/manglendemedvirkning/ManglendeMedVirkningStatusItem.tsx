@@ -15,7 +15,7 @@ import React from "react";
 
 const texts = {
   vurdertLabel: "Vurdert av",
-  statusStansLabel: "Melding om stans sendt",
+  statusStansLabel: "Automatisk utbetaling stanset",
 };
 
 interface StatusEndringItemProps {

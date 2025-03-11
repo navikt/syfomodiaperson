@@ -279,7 +279,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
         "Forhåndsvarsel - 21. februar 2025"
       );
       expect(accordionButtons[2].textContent).to.contain(
-        "Melding om stans sendt - 20. februar 2025"
+        "Automatisk utbetaling stanset - 20. februar 2025"
       );
       expect(accordionButtons[3].textContent).to.contain(
         "Innstilling om stans - 16. februar 2025"
