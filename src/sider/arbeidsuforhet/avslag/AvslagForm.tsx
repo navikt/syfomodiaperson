@@ -27,7 +27,7 @@ import { Paragraph } from "@/components/Paragraph";
 const texts = {
   title: "Skriv innstilling om avslag til NAY",
   innstillingInfoLabel: "Når du skriver innstillingen",
-  begrunnelseLabel: "Innstilling om avslag (obligatorisk)",
+  begrunnelseLabel: "Begrunnelse (obligatorisk)",
   info1:
     "Skriv kort hvilke opplysninger som ligger til grunn for avslaget, samt din vurdering av hvorfor vilkåret ikke er oppfylt og vurdering av eventuelle nye opplysninger.",
   info2:

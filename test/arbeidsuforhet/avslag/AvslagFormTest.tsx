@@ -33,7 +33,7 @@ describe("AvslagForm", () => {
 
   describe("Form components", () => {
     it("shows date picker, textarea, and buttons", () => {
-      const begrunnelseLabel = "Innstilling om avslag (obligatorisk)";
+      const begrunnelseLabel = "Begrunnelse (obligatorisk)";
 
       renderAvslagForm();
 
@@ -89,7 +89,7 @@ describe("AvslagForm", () => {
     it("Send vurdering with date and begrunnelse filled in, without reseting the form", async () => {
       renderAvslagForm();
       const begrunnelse = "Dette er en begrunnelse!";
-      const begrunnelseLabel = "Innstilling om avslag (obligatorisk)";
+      const begrunnelseLabel = "Begrunnelse (obligatorisk)";
       const fristDate = new Date(Date.now());
       const dateLabel = "Innstillingen gjelder fra";
       const dateInput = getTextInput(dateLabel);
@@ -118,7 +118,7 @@ describe("AvslagForm", () => {
     it("Forhåndsvis brev with begrunnelse", async () => {
       renderAvslagForm();
       const begrunnelse = "Dette er en begrunnelse!";
-      const begrunnelseLabel = "Innstilling om avslag (obligatorisk)";
+      const begrunnelseLabel = "Begrunnelse (obligatorisk)";
       const fristDate = new Date(Date.now());
       const dateLabel = "Innstillingen gjelder fra";
       const dateInput = getTextInput(dateLabel);
