@@ -65,7 +65,7 @@ describe("ForhandsvarselSendt", () => {
         .exist;
       expect(screen.getByRole("img", { name: "klokkeikon" })).to.exist;
       expect(
-        screen.getByRole("button", { name: "Innstilling om avslag" })
+        screen.getByRole("button", { name: "Skriv innstilling om avslag" })
       ).to.have.property("disabled", true);
       expect(screen.getByRole("button", { name: "Oppfylt" })).to.exist;
       expect(screen.getByRole("button", { name: "Ikke aktuell" })).to.exist;
@@ -97,8 +97,9 @@ describe("ForhandsvarselSendt", () => {
           )} er gått ut. Trykk på Innstilling om avslag-knappen hvis vilkårene i § 8-4 ikke er oppfylt og rett til videre sykepenger skal avslås.`
         )
       ).to.exist;
-      expect(screen.getByRole("button", { name: "Innstilling om avslag" })).to
-        .exist;
+      expect(
+        screen.getByRole("button", { name: "Skriv innstilling om avslag" })
+      ).to.exist;
       expect(screen.getByRole("button", { name: "Oppfylt" })).to.exist;
       expect(screen.getByRole("button", { name: "Ikke aktuell" })).to.exist;
     });
