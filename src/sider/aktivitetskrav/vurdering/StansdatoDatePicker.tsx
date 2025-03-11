@@ -4,8 +4,7 @@ import React from "react";
 import { FormValues } from "@/sider/aktivitetskrav/vurdering/InnstillingOmStansSkjema";
 
 const texts = {
-  label: "Velg dato for stans (obligatorisk)",
-  description: "Første mulige dato for stans er svarfristen i forhåndsvarselet",
+  label: "Innstillingen gjelder fra",
   missingStansdatoError: "Vennligst angi dato for stans",
 };
 
@@ -32,7 +31,6 @@ export function StansdatoDatePicker({ varselSvarfrist }: Props) {
       <DatePicker.Input
         {...inputProps}
         label={texts.label}
-        description={texts.description}
         error={fieldState.error?.message}
         size="small"
       />

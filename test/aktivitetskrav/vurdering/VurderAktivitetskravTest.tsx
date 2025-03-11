@@ -106,7 +106,7 @@ describe("VurderAktivitetskrav", () => {
     expect(screen.queryByRole("tab", { name: "Er i aktivitet" })).to.exist;
     expect(screen.queryByRole("tab", { name: "Send forhåndsvarsel" })).to.not
       .exist;
-    expect(screen.queryByRole("tab", { name: "Innstilling om stans" })).to
+    expect(screen.queryByRole("tab", { name: "Skriv innstilling om stans" })).to
       .exist;
   });
 
@@ -415,9 +415,9 @@ describe("VurderAktivitetskrav", () => {
       renderVurderAktivitetskrav(expiredForhandsvarselAktivitetskrav);
       stubVurderAktivitetskravApi(expiredForhandsvarselAktivitetskrav.uuid);
 
-      await clickTab("Innstilling om stans");
+      await clickTab("Skriv innstilling om stans");
 
-      await clickButton("Send innstilling");
+      await clickButton("Send");
 
       expect(await screen.findByText("Vennligst angi dato for stans")).to.exist;
       expect(await screen.findByText("Vennligst angi begrunnelse")).to.exist;
@@ -426,14 +426,17 @@ describe("VurderAktivitetskrav", () => {
       renderVurderAktivitetskrav(expiredForhandsvarselAktivitetskrav);
       stubVurderAktivitetskravApi(expiredForhandsvarselAktivitetskrav.uuid);
 
-      await clickTab("Innstilling om stans");
+      await clickTab("Skriv innstilling om stans");
 
-      expect(screen.getByRole("heading", { name: "Innstilling om stans" })).to
-        .exist;
+      expect(
+        screen.getByRole("heading", {
+          name: "Skriv innstilling om stans til NAY",
+        })
+      ).to.exist;
 
       const today = dayjs();
       const datoInput = screen.getByRole("textbox", {
-        name: "Velg dato for stans (obligatorisk)",
+        name: "Innstillingen gjelder fra",
         hidden: true,
       });
       changeTextInput(datoInput, today.format("DD.MM.YYYY"));
@@ -442,7 +445,7 @@ describe("VurderAktivitetskrav", () => {
       const beskrivelse = "Flott beskrivelse";
       changeTextInput(beskrivelseInput, beskrivelse);
 
-      await clickButton("Send innstilling");
+      await clickButton("Send");
 
       const innstillingOmStansMutation = queryClient
         .getMutationCache()

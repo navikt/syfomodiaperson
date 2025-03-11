@@ -15,7 +15,7 @@ const texts = {
   unntak: "Sett unntak",
   oppfylt: "Er i aktivitet",
   forhandsvarsel: "Send forhåndsvarsel",
-  innstillingOmStans: "Innstilling om stans",
+  innstillingOmStans: "Skriv innstilling om stans",
 };
 
 const StyledTabs = styled(Tabs)`

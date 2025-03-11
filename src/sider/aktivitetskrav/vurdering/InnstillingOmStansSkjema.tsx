@@ -4,38 +4,41 @@ import {
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import React from "react";
 import { useVurderAktivitetskrav } from "@/data/aktivitetskrav/useVurderAktivitetskrav";
-import {
-  Alert,
-  BodyShort,
-  Button,
-  Heading,
-  List,
-  Textarea,
-} from "@navikt/ds-react";
+import { Alert, Button, Heading, List, Textarea } from "@navikt/ds-react";
 import { useAktivitetskravNotificationAlert } from "@/sider/aktivitetskrav/useAktivitetskravNotificationAlert";
 import { FormProvider, useForm } from "react-hook-form";
 import { StansdatoDatePicker } from "@/sider/aktivitetskrav/vurdering/StansdatoDatePicker";
 import { useAktivitetskravVurderingDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVurderingDocument";
 import { defaultErrorTexts } from "@/api/errors";
+import { Paragraph } from "@/components/Paragraph";
 
 const texts = {
-  sendInnstilling: "Send innstilling",
+  sendInnstilling: "Send",
   avbryt: "Avbryt",
-  title: "Innstilling om stans",
+  title: "Skriv innstilling om stans til NAY",
+  innstillingInfoLabel: "Når du skriver innstillingen",
+  innstillingInfoDescription:
+    "Skriv kort om hvilke opplysninger som ligger til grunn for stans av sykepenger, samt din vurdering av hvorfor aktivitetsplikten ikke er oppfylt og vurdering av eventuelle nye opplysninger.",
   form: {
     begrunnelseLabel: "Begrunnelse (obligatorisk)",
-    begrunnelseDescription:
-      "Skriv kort om hvilke opplysninger som ligger til grunn for stans av sykepenger, samt din vurdering av hvorfor aktivitetsplikten ikke er oppfylt og vurdering av eventuelle nye opplysninger.",
     missingBegrunnelse: "Vennligst angi begrunnelse",
   },
   afterSendInfo: {
-    title: "Etter innstilling er sendt må du:",
+    title: "Videre må du huske å:",
     gosysoppgave: "Sende oppgave til NAY i Gosys.",
+    gosysoppgaveListe: {
+      tema: "Tema: Sykepenger",
+      gjelder: "Gjelder: Aktivitetskrav",
+      oppgavetype: "Oppgavetype: Vurder konsekvens for ytelse",
+      prioritet: "Prioritet: Høy",
+    },
     stoppknapp:
       "Gi beskjed om stans til ny saksbehandlingsløsning via Stoppknappen under fanen Sykmeldinger i Modia.",
-    innstillingenBlirJournalfort:
-      "Innstillingen blir journalført og kan sees i Gosys.",
   },
+  buttonDescriptionLabel:
+    "Send innstilling om stans og stans automatisk utbetaling",
+  buttonDescription:
+    "Når du sender innstillingen blir den journalført og kan sees i Gosys. Den automatiske utbetalingen til bruker stanses og oppgaven blir deretter plukket opp av saksbehandler fra Gosys.",
 };
 
 const begrunnelseMaxLength = 5000;
@@ -91,6 +94,11 @@ export default function InnstillingOmStansSkjema({
 
         <StansdatoDatePicker varselSvarfrist={varselSvarfrist} />
 
+        <Paragraph
+          label={texts.innstillingInfoLabel}
+          body={texts.innstillingInfoDescription}
+        />
+
         <Textarea
           {...register("begrunnelse", {
             maxLength: begrunnelseMaxLength,
@@ -98,21 +106,32 @@ export default function InnstillingOmStansSkjema({
           })}
           value={watch("begrunnelse")}
           label={texts.form.begrunnelseLabel}
-          description={texts.form.begrunnelseDescription}
           error={errors.begrunnelse?.message}
           size="small"
           minRows={6}
           maxLength={begrunnelseMaxLength}
         />
 
-        <List as="ul" size="small" title={texts.afterSendInfo.title}>
-          <List.Item>{texts.afterSendInfo.gosysoppgave}</List.Item>
-          <List.Item>{texts.afterSendInfo.stoppknapp}</List.Item>
+        <List as="ul" title={texts.afterSendInfo.title} size={"small"}>
+          {texts.afterSendInfo.gosysoppgave}
+          <List as="ul" className="ml-1">
+            <List.Item>{texts.afterSendInfo.gosysoppgaveListe.tema}</List.Item>
+            <List.Item>
+              {texts.afterSendInfo.gosysoppgaveListe.oppgavetype}
+            </List.Item>
+            <List.Item>
+              {texts.afterSendInfo.gosysoppgaveListe.gjelder}
+            </List.Item>
+            <List.Item>
+              {texts.afterSendInfo.gosysoppgaveListe.prioritet}
+            </List.Item>
+          </List>
         </List>
 
-        <BodyShort>
-          {texts.afterSendInfo.innstillingenBlirJournalfort}
-        </BodyShort>
+        <Paragraph
+          label={texts.buttonDescriptionLabel}
+          body={texts.buttonDescription}
+        />
 
         {vurderAktivitetskrav.isError && (
           <Alert variant="error" size="small">
