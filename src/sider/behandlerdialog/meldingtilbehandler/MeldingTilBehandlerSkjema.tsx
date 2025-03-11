@@ -25,7 +25,7 @@ const texts = {
     defaultOption: "Velg meldingstype",
     missing: "Vennligst velg type melding",
   },
-  meldingsTekstLabel: "Skriv inn meldingstekst",
+  meldingsTekstLabel: "Skriv inn teksten du ønsker å sende til behandler",
   meldingsTekstMissing: "Vennligst angi meldingstekst",
   velgBehandlerLegend: "Velg behandler som skal motta meldingen",
 };
