@@ -9,8 +9,7 @@ import {
   uniqueArbeidsgivere,
 } from "@/utils/pengestoppUtils";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { texts } from "./Pengestopp";
-import { Box, Heading, Label } from "@navikt/ds-react";
+import { Box, Label } from "@navikt/ds-react";
 
 interface Props {
   statusEndringList: StatusEndring[];
@@ -40,7 +39,6 @@ const PengestoppHistorikk = ({ statusEndringList, sykmeldinger }: Props) => {
 
   return (
     <>
-      <Heading size="small">{texts.beskjeder}</Heading>
       {statusEndringList.map((statusEndring: StatusEndring, index: number) => {
         const opprettet = new Date(statusEndring.opprettet);
         return (
