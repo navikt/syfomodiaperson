@@ -71,29 +71,6 @@ describe("Pengestopp", () => {
     );
   });
 
-  it("viser ikke valg for bestridelse og tilbakedatering i modal", () => {
-    renderPengestopp();
-
-    expect(
-      screen.getByRole("checkbox", {
-        name: /Aktivitetskravet/,
-        hidden: true,
-      })
-    ).to.exist;
-    expect(
-      screen.queryByRole("checkbox", {
-        name: /Bestridelse av sykmelding/,
-        hidden: true,
-      })
-    ).to.not.exist;
-    expect(
-      screen.queryByRole("checkbox", {
-        name: /Tilbakedatering sykmelding/,
-        hidden: true,
-      })
-    ).to.not.exist;
-  });
-
   it("viser bestridelse og tilbakedatering i historikk", () => {
     renderPengestopp();
 

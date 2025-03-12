@@ -1,12 +1,15 @@
 import {
   ARBEIDSTAKER_DEFAULT,
   ENHET_GAMLEOSLO,
+  VEILEDER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
 import {
   DeprecatedSykepengestoppArsakType,
   Status,
+  StatusEndring,
   StoppAutomatikk,
+  ValidSykepengestoppArsakType,
 } from "@/data/pengestopp/types/FlaggPerson";
 
 const defaultStoppAutomatikk: StoppAutomatikk = {
@@ -41,3 +44,38 @@ export const createStatusList = (
     };
   });
 };
+
+const defaultStatusEndringStoppAutomatikk: StatusEndring = {
+  veilederIdent: {
+    value: VEILEDER_DEFAULT.ident,
+  },
+  sykmeldtFnr: {
+    value: ARBEIDSTAKER_DEFAULT.personIdent,
+  },
+  status: Status.STOPP_AUTOMATIKK,
+  virksomhetNr: {
+    value: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+  },
+  opprettet: new Date().toISOString(),
+  enhetNr: {
+    value: "1337",
+  },
+  arsakList: [{ type: ValidSykepengestoppArsakType.MANGLENDE_MEDVIRKING }],
+};
+
+export const statusEndringer = [
+  defaultStatusEndringStoppAutomatikk,
+  {
+    ...defaultStatusEndringStoppAutomatikk,
+    arsakList: [
+      { type: ValidSykepengestoppArsakType.AKTIVITETSKRAV },
+      { type: ValidSykepengestoppArsakType.MEDISINSK_VILKAR },
+    ],
+  },
+  {
+    ...defaultStatusEndringStoppAutomatikk,
+    arsakList: [
+      { type: DeprecatedSykepengestoppArsakType.TILBAKEDATERT_SYKMELDING },
+    ],
+  },
+];
