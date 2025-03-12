@@ -68,7 +68,7 @@ describe("Manglendemedvirkning Stans", () => {
       ).to.exist;
       expect(
         screen.getByRole("textbox", {
-          name: "Innstilling om stans (obligatorisk)",
+          name: "Begrunnelse (obligatorisk)",
         })
       ).to.exist;
       expect(screen.getByText("Videre må du huske å:")).to.exist;
@@ -120,9 +120,7 @@ describe("Manglendemedvirkning Stans", () => {
       changeTextInput(datoInput, today.format("DD.MM.YYYY"));
 
       const begrunnelse = "En begrunnelse";
-      const begrunnelseInput = getTextInput(
-        "Innstilling om stans (obligatorisk)"
-      );
+      const begrunnelseInput = getTextInput("Begrunnelse (obligatorisk)");
       changeTextInput(begrunnelseInput, begrunnelse);
 
       await clickButton("Send");
