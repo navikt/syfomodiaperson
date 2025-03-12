@@ -1,4 +1,5 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
+import { StatusEndring } from "@/data/pengestopp/types/FlaggPerson";
 
 interface VurderingRequestDTO {
   personident: string;
@@ -35,6 +36,8 @@ export type NewVurderingRequestDTO =
   | UnntakVurdering
   | IkkeAktuellVurdering;
 
+export type HistorikkEntry = VurderingResponseDTO | StatusEndring;
+
 export interface VurderingResponseDTO {
   uuid: string;
   personident: string;
@@ -66,7 +69,7 @@ export const typeTexts: {
 } = {
   [VurderingType.FORHANDSVARSEL]: "Forhåndsvarsel",
   [VurderingType.OPPFYLT]: "Oppfylt",
-  [VurderingType.STANS]: "Stans",
+  [VurderingType.STANS]: "Innstilling om stans",
   [VurderingType.IKKE_AKTUELL]: "Ikke aktuell",
   [VurderingType.UNNTAK]: "Unntak",
 };
