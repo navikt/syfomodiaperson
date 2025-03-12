@@ -23,13 +23,28 @@ import {
 import { daysFromToday } from "../testUtils";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import userEvent from "@testing-library/user-event";
+import { pengestoppStatusQueryKeys } from "@/data/pengestopp/pengestoppQueryHooks";
+import {
+  StatusEndring,
+  ValidSykepengestoppArsakType,
+} from "@/data/pengestopp/types/FlaggPerson";
+import { defaultStatusEndring } from "@/mocks/ispengestopp/pengestoppStatusMock";
 
 let queryClient: QueryClient;
 
-const renderVurderingHistorikk = (vurderinger: VurderingResponseDTO[]) => {
+const renderVurderingHistorikk = (
+  vurderinger: VurderingResponseDTO[],
+  statuser: StatusEndring[] = []
+) => {
   queryClient.setQueryData(
     arbeidsuforhetQueryKeys.arbeidsuforhet(ARBEIDSTAKER_DEFAULT.personIdent),
     () => vurderinger
+  );
+  queryClient.setQueryData(
+    pengestoppStatusQueryKeys.pengestoppStatus(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => statuser
   );
 
   return render(
@@ -108,16 +123,16 @@ describe("VurderingHistorikk", () => {
       const vurderingButtons = screen.getAllByRole("button");
 
       expect(vurderingButtons[0].textContent).to.contain(
-        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`
+        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`
       );
       expect(vurderingButtons[1].textContent).to.contain(
-        `Avslag - ${tilDatoMedManedNavn(avslagCreated)}`
-      );
-      expect(vurderingButtons[2].textContent).to.contain(
         `Forhåndsvarsel - ${tilDatoMedManedNavn(forhandsvarselCreated)}`
       );
+      expect(vurderingButtons[2].textContent).to.contain(
+        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`
+      );
       expect(vurderingButtons[3].textContent).to.contain(
-        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`
+        `Innstilling om avslag - ${tilDatoMedManedNavn(avslagCreated)}`
       );
     });
 
@@ -146,6 +161,67 @@ describe("VurderingHistorikk", () => {
       expect(screen.queryByText("Begrunnelse")).to.not.exist;
       expect(screen.getByText("Vurdert av")).to.exist;
       expect(screen.getByText(VEILEDER_DEFAULT.fulltNavn())).to.exist;
+    });
+  });
+  describe("Har vurderinger og statusendringer", () => {
+    it("Viser forekomster av vurderinger og statusendringer sortert på dato i synkende rekkefølge", () => {
+      const statusendringer: StatusEndring[] = [
+        {
+          ...defaultStatusEndring,
+          opprettet: "2025-02-20T08:00:00.000Z",
+          arsakList: [{ type: ValidSykepengestoppArsakType.MEDISINSK_VILKAR }],
+        },
+        {
+          ...defaultStatusEndring,
+          opprettet: "2025-02-21T08:00:00.000Z",
+          arsakList: [{ type: ValidSykepengestoppArsakType.AKTIVITETSKRAV }],
+        },
+      ];
+
+      const vurderinger: VurderingResponseDTO[] = [
+        createVurdering({
+          type: VurderingType.FORHANDSVARSEL,
+          begrunnelse: "begrunnelse",
+          createdAt: new Date("2025-02-15T08:00:00.000Z"),
+        }),
+        createVurdering({
+          type: VurderingType.AVSLAG,
+          begrunnelse: "begrunnelse",
+          createdAt: new Date("2025-02-16T08:00:00.000Z"),
+        }),
+        createVurdering({
+          type: VurderingType.FORHANDSVARSEL,
+          begrunnelse: "begrunnelse",
+          createdAt: new Date("2025-02-21T08:00:00.000Z"),
+        }),
+        createVurdering({
+          type: VurderingType.AVSLAG,
+          begrunnelse: "begrunnelse",
+          createdAt: new Date("2025-02-22T08:00:00.000Z"),
+        }),
+      ];
+
+      renderVurderingHistorikk(vurderinger, statusendringer);
+
+      const accordionButtons = screen.getAllByRole("button");
+
+      expect(accordionButtons.length).toBe(5);
+
+      expect(accordionButtons[0].textContent).to.contain(
+        "Innstilling om avslag - 22. februar 2025"
+      );
+      expect(accordionButtons[1].textContent).to.contain(
+        "Forhåndsvarsel - 21. februar 2025"
+      );
+      expect(accordionButtons[2].textContent).to.contain(
+        "Automatisk utbetaling stanset - 20. februar 2025"
+      );
+      expect(accordionButtons[3].textContent).to.contain(
+        "Innstilling om avslag - 16. februar 2025"
+      );
+      expect(accordionButtons[4].textContent).to.contain(
+        "Forhåndsvarsel - 15. februar 2025"
+      );
     });
   });
 });

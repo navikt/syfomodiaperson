@@ -3,6 +3,7 @@ import { Accordion, BodyShort, Box, Heading } from "@navikt/ds-react";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
 import {
   arsakTexts,
+  HistorikkEntry,
   typeTexts,
   VurderingResponseDTO,
   VurderingType,
@@ -11,6 +12,12 @@ import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks
 import { Paragraph } from "@/components/Paragraph";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { VisBrev } from "@/components/VisBrev";
+import {
+  StatusEndring,
+  ValidSykepengestoppArsakType,
+} from "@/data/pengestopp/types/FlaggPerson";
+import { usePengestoppStatusQuery } from "@/data/pengestopp/pengestoppQueryHooks";
+import StatusItem from "@/sider/arbeidsuforhet/historikk/ArbeidsuforhetStatusItem";
 
 const texts = {
   header: "Historikk",
@@ -72,10 +79,42 @@ const VurderingHistorikkItem = ({ vurdering }: VurderingHistorikkItemProps) => {
   );
 };
 
+function isVurderingResponseDTO(
+  item: HistorikkEntry
+): item is VurderingResponseDTO {
+  return "type" in item;
+}
+
+function dateFromHistorikkEntry(historikkEntry: HistorikkEntry) {
+  return isVurderingResponseDTO(historikkEntry)
+    ? new Date(historikkEntry.createdAt)
+    : new Date(historikkEntry.opprettet);
+}
+
+function sortHistorikkEntriesDesc(a: HistorikkEntry, b: HistorikkEntry) {
+  return (
+    dateFromHistorikkEntry(b).getTime() - dateFromHistorikkEntry(a).getTime()
+  );
+}
+
+function filterStatusArbeidsuforhet(statusEndringer: StatusEndring[]) {
+  return statusEndringer.filter((statusEndring) =>
+    statusEndring.arsakList.some(
+      (arsak) => arsak.type === ValidSykepengestoppArsakType.MEDISINSK_VILKAR
+    )
+  );
+}
+
 export const VurderingHistorikk = () => {
   const { data } = useGetArbeidsuforhetVurderingerQuery();
+  const { data: statusEndringList } = usePengestoppStatusQuery();
+  const arbeidsuforhetStatus: StatusEndring[] =
+    filterStatusArbeidsuforhet(statusEndringList);
+  const items: HistorikkEntry[] = [...arbeidsuforhetStatus, ...data].sort(
+    sortHistorikkEntriesDesc
+  );
   const subheader =
-    data.length > 0 ? texts.tidligereVurderinger : texts.noVurderinger;
+    items.length > 0 ? texts.tidligereVurderinger : texts.noVurderinger;
 
   return (
     <Box
@@ -90,9 +129,16 @@ export const VurderingHistorikk = () => {
         <BodyShort size="small">{subheader}</BodyShort>
       </div>
       <Accordion>
-        {data.map((vurdering, index) => (
-          <VurderingHistorikkItem key={index} vurdering={vurdering} />
-        ))}
+        {items.map((item, index) =>
+          isVurderingResponseDTO(item) ? (
+            <VurderingHistorikkItem
+              key={index}
+              vurdering={item as VurderingResponseDTO}
+            />
+          ) : (
+            <StatusItem key={index} status={item as StatusEndring} />
+          )
+        )}
       </Accordion>
     </Box>
   );
