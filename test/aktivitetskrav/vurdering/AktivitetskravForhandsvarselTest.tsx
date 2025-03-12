@@ -243,11 +243,11 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       renderVurderAktivitetskrav(expiredForhandsvarselAktivitetskrav);
       stubVurderAktivitetskravApi(expiredForhandsvarselAktivitetskrav.uuid);
 
-      await clickTab("Innstilling om stans");
+      await clickTab("Skriv innstilling om stans");
 
       expect(
         screen.getByRole("heading", {
-          name: "Innstilling om stans",
+          name: "Skriv innstilling om stans til NAY",
         })
       ).to.exist;
     });

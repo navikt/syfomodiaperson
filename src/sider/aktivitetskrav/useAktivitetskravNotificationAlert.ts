@@ -27,7 +27,7 @@ export const useAktivitetskravNotificationAlert = () => {
         return `Det er vurdert at aktivitetskravet ikke er oppfylt for ${brukersNavn} ${today}.`;
       }
       case AktivitetskravStatus.INNSTILLING_OM_STANS: {
-        return `Det er vurdert innstilling om stans for aktivitetskravet for ${brukersNavn} ${today}.`;
+        return `Innstilling om stans § 8-8 aktivitetsplikten er lagret i historikken og blir journalført automatisk. Automatisk utbetaling av sykepenger er stanset.`;
       }
       case AktivitetskravStatus.IKKE_AKTUELL: {
         return `Det er vurdert at aktivitetskravet ikke er aktuelt for ${brukersNavn} ${today}.`;
