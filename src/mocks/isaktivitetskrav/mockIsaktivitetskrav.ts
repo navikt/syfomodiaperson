@@ -10,11 +10,13 @@ import {
   NewVurderingDTO,
   SendForhandsvarselDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { daysFromToday } from "../../../test/testUtils";
+import { daysFromToday, minutesFromToday } from "../../../test/testUtils";
 import { generateUUID } from "@/utils/utils";
 import { VEILEDER_DEFAULT } from "../common/mockConstants";
 import { aktivitetskravHistorikkMock } from "./aktivitetskravHistorikkMock";
 import { http, HttpResponse } from "msw";
+import { addStatusEndring } from "@/mocks/ispengestopp/mockIspengestopp";
+import { stoppAutomatikkAktivitetskrav } from "@/mocks/ispengestopp/pengestoppStatusMock";
 
 let mockAktivitetskrav: AktivitetskravDTO[] = aktivitetskravMock;
 let aktivitetskravHistorikk: AktivitetskravHistorikkDTO[] =
@@ -53,6 +55,12 @@ export const mockIsaktivitetskrav = [
         },
         ...aktivitetskravHistorikk,
       ];
+
+      addStatusEndring({
+        ...stoppAutomatikkAktivitetskrav,
+        opprettet: minutesFromToday(1).toISOString(),
+      });
+
       return new HttpResponse(null, { status: 200 });
     }
   ),

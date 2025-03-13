@@ -4,6 +4,7 @@ import { NewVurderingDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { post } from "@/api/axios";
 import { aktivitetskravQueryKeys } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
+import { pengestoppStatusQueryKeys } from "@/data/pengestopp/pengestoppQueryHooks";
 
 export const useVurderAktivitetskrav = (aktivitetskravUuid: string) => {
   const personident = useValgtPersonident();
@@ -15,8 +16,11 @@ export const useVurderAktivitetskrav = (aktivitetskravUuid: string) => {
   return useMutation({
     mutationFn: postVurderAktivitetskrav,
     onSuccess: () => {
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: aktivitetskravQueryKeys.aktivitetskrav(personident),
+      });
+      queryClient.invalidateQueries({
+        queryKey: pengestoppStatusQueryKeys.pengestoppStatus(personident),
       });
     },
   });
