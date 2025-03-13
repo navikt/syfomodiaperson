@@ -3,7 +3,7 @@ import { statusEndringer } from "./pengestoppStatusMock";
 import { http, HttpResponse } from "msw";
 import { StatusEndring } from "@/data/pengestopp/types/FlaggPerson";
 
-export const STATUSLIST = statusEndringer;
+const STATUSLIST = statusEndringer;
 
 export const mockIspengestopp = [
   http.get(`${ISPENGESTOPP_ROOT}/person/status`, () => {
