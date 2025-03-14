@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   AktivitetskravStatus,
   AktivitetskravVurderingDTO,
+  HistorikkEntry,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { Accordion, BodyShort, Box, Heading } from "@navikt/ds-react";
 import { capitalizeWord } from "@/utils/stringUtils";
@@ -13,6 +14,12 @@ import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
 import { VisBrev } from "@/components/VisBrev";
 import { Paragraph } from "@/components/Paragraph";
+import {
+  StatusEndring,
+  ValidSykepengestoppArsakType,
+} from "@/data/pengestopp/types/FlaggPerson";
+import { usePengestoppStatusQuery } from "@/data/pengestopp/pengestoppQueryHooks";
+import StatusItem from "@/sider/aktivitetskrav/historikk/AktivitetskravStatusItem";
 
 const texts = {
   header: "Historikk",
@@ -22,6 +29,32 @@ const texts = {
   visBrevLabel: "Vis brevet",
   vurdertAv: "Vurdert av",
 };
+
+function isAktivitetskravVurderingDTO(
+  item: HistorikkEntry
+): item is AktivitetskravVurderingDTO {
+  return "arsaker" in item;
+}
+
+function dateFromHistorikkEntry(historikkEntry: HistorikkEntry) {
+  return isAktivitetskravVurderingDTO(historikkEntry)
+    ? new Date(historikkEntry.createdAt)
+    : new Date(historikkEntry.opprettet);
+}
+
+function sortHistorikkEntriesDesc(a: HistorikkEntry, b: HistorikkEntry) {
+  return (
+    dateFromHistorikkEntry(b).getTime() - dateFromHistorikkEntry(a).getTime()
+  );
+}
+
+function filterStatusAktivitetskrav(statusEndringer: StatusEndring[]) {
+  return statusEndringer.filter((statusEndring) =>
+    statusEndring.arsakList.some(
+      (arsak) => arsak.type === ValidSykepengestoppArsakType.AKTIVITETSKRAV
+    )
+  );
+}
 
 const isRelevantForHistorikk = (vurdering: AktivitetskravVurderingDTO) =>
   vurdering.status === AktivitetskravStatus.OPPFYLT ||
@@ -42,6 +75,13 @@ export const AktivitetskravHistorikk = () => {
   const vurderinger = data.flatMap((aktivitetskrav) =>
     aktivitetskrav.vurderinger.filter(isRelevantForHistorikk)
   );
+  const { data: statusEndringList } = usePengestoppStatusQuery();
+  const aktivitetskravStatusEndringer: StatusEndring[] =
+    filterStatusAktivitetskrav(statusEndringList);
+  const items: HistorikkEntry[] = [
+    ...aktivitetskravStatusEndringer,
+    ...vurderinger,
+  ].sort(sortHistorikkEntriesDesc);
 
   return (
     <Box
@@ -56,9 +96,16 @@ export const AktivitetskravHistorikk = () => {
         <BodyShort size="small">{texts.subHeader}</BodyShort>
       </div>
       <Accordion>
-        {vurderinger.sort(byCreatedAt).map((vurdering, index) => (
-          <HistorikkElement key={index} vurdering={vurdering} />
-        ))}
+        {items.map((item, index) =>
+          isAktivitetskravVurderingDTO(item) ? (
+            <HistorikkElement
+              key={index}
+              vurdering={item as AktivitetskravVurderingDTO}
+            />
+          ) : (
+            <StatusItem key={index} status={item as StatusEndring} />
+          )
+        )}
       </Accordion>
     </Box>
   );
