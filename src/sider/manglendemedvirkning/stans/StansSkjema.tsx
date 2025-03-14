@@ -20,7 +20,7 @@ const texts = {
   innstillingInfoLabel: "Når du skriver innstillingen",
   innstillingInfoParagraph:
     "Skriv kort hvilke opplysninger som ligger til grunn for stans, samt din vurdering av hvorfor vilkåret ikke er oppfylt og vurdering av eventuelle nye opplysninger.",
-  begrunnelseLabel: "Innstilling om stans (obligatorisk)",
+  begrunnelseLabel: "Begrunnelse (obligatorisk)",
   afterSendInfo: {
     title: "Videre må du huske å:",
     gosysoppgave:
@@ -115,7 +115,7 @@ export default function StansSkjema({ varselSvarfrist }: Props) {
             minRows={6}
             maxLength={begrunnelseMaxLength}
           />
-          <List as="ul" title={texts.afterSendInfo.title}>
+          <List as="ul" title={texts.afterSendInfo.title} size={"small"}>
             {texts.afterSendInfo.gosysoppgave}
             <List as="ul" className="ml-1">
               <List.Item>
