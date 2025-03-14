@@ -8,6 +8,9 @@ import {
 import { addDays } from "@/utils/datoUtils";
 import { http, HttpResponse } from "msw";
 import { generateUUID } from "@/utils/utils";
+import { addStatusEndring } from "@/mocks/ispengestopp/mockIspengestopp";
+import { stoppAutomatikkManglendeMedvirkning } from "@/mocks/ispengestopp/pengestoppStatusMock";
+import { minutesFromToday } from "../../../test/testUtils";
 
 let manglendeMedvirkningVurderinger: VurderingResponseDTO[] = [];
 
@@ -31,8 +34,8 @@ export const mockIsmanglendemedvirkning = [
               svarfrist: addDays(new Date(), -1),
             }
           : null;
-      const stansdato =
-        body.vurderingType === "STANS" ? body.stansdato : undefined;
+      const isStans = body.vurderingType === "STANS";
+      const stansdato = isStans ? body.stansdato : undefined;
       const sentVurdering: VurderingResponseDTO = {
         uuid: generateUUID(),
         createdAt: new Date(),
@@ -48,6 +51,13 @@ export const mockIsmanglendemedvirkning = [
         sentVurdering,
         ...manglendeMedvirkningVurderinger,
       ];
+
+      if (isStans) {
+        addStatusEndring({
+          ...stoppAutomatikkManglendeMedvirkning,
+          opprettet: minutesFromToday(1).toISOString(),
+        });
+      }
 
       return HttpResponse.json(sentVurdering);
     }

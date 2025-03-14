@@ -7,6 +7,7 @@ import {
   VurderingResponseDTO,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
+import { pengestoppStatusQueryKeys } from "@/data/pengestopp/pengestoppQueryHooks";
 
 export function useSendVurdering<T extends NewVurderingRequestDTO>() {
   const personident = useValgtPersonident();
@@ -23,6 +24,9 @@ export function useSendVurdering<T extends NewVurderingRequestDTO>() {
         manglendeMedvirkningQueryKeys.manglendeMedvirkning(personident),
         (oldData: VurderingResponseDTO[]) => [data, ...oldData]
       );
+      queryClient.invalidateQueries({
+        queryKey: pengestoppStatusQueryKeys.pengestoppStatus(personident),
+      });
     },
   });
 }

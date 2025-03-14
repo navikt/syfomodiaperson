@@ -11,6 +11,9 @@ import {
   VEILEDER_DEFAULT,
 } from "../common/mockConstants";
 import { http, HttpResponse } from "msw";
+import { addStatusEndring } from "@/mocks/ispengestopp/mockIspengestopp";
+import { stoppAutomatikkArbeidsuforhet } from "@/mocks/ispengestopp/pengestoppStatusMock";
+import { minutesFromToday } from "../../../test/testUtils";
 
 let arbeidsuforhetVurderinger = mockArbeidsuforhetvurdering;
 
@@ -46,6 +49,13 @@ export const mockIsarbeidsuforhet = [
         varsel,
       };
       arbeidsuforhetVurderinger = [sentVurdering, ...arbeidsuforhetVurderinger];
+
+      if (body.type === "AVSLAG") {
+        addStatusEndring({
+          ...stoppAutomatikkArbeidsuforhet,
+          opprettet: minutesFromToday(1).toISOString(),
+        });
+      }
 
       return HttpResponse.json(sentVurdering);
     }
