@@ -7,26 +7,23 @@ const texts = {
     "Her er noen punkter som må være på plass før du fatter vedtak og ordningen starter:",
   preparations: [
     "Sjekk om utbetaling av sykepenger er igangsatt",
-    "Vurder om bruker er frisk nok til å ta annet arbeid",
+    "Vurder om bruker er frisk nok til å ta annet arbeid. Dette bør avklares i samråd med behandler",
+    "Det kan ikke være overlapp mellom periode med sykmelding og periode med friskmelding til arbeidsformidling",
     "Bruker må være informert om ordningen og medfølgende plikter",
+    "Bruker må registrere seg som arbeidssøker",
     "Det må foreligge sluttattest/oppsigelse fra ansettelsesforholdet",
     "Det må foreligge bekreftelse om fritak fra arbeid i oppsigelsesperioden",
   ],
   rutineTitle: "Rutine",
   rutineSteps: {
     registrerSomArbeidssoker: {
-      title: "Bruker må registrere seg som arbeidssøker",
-      extraInfo: [
-        "Eventuelt kan du i samråd med den sykmeldte benytte Registrer arbeidssøker",
-      ],
+      title:
+        "Sjekk om bruker har registrert seg som arbeidssøker. Eventuelt kan du i samråd med den sykmeldte benytte “Registrer arbeidssøker”",
     },
     hentOppgaveArena: {
-      title:
-        "Hent oppgaven «Individuell oppfølging - automatisk opprettet» i Arena",
+      title: "Start oppgaven «Individuell oppfølging» i Arena",
       steps: [
         "Fatt §14a-vedtak i Arena",
-        "Oppdater meldestatus",
-        "Sjekk om meldekort er opprettet",
         "Sjekk om bruker har status som arbeidssøker",
       ],
     },
@@ -67,11 +64,6 @@ function StegForSteg() {
         <List.Item>
           {texts.rutineSteps.registrerSomArbeidssoker.title}
         </List.Item>
-        <List as="ul" size="small">
-          <List.Item>
-            {texts.rutineSteps.registrerSomArbeidssoker.extraInfo}
-          </List.Item>
-        </List>
         <List.Item>{texts.rutineSteps.hentOppgaveArena.title}</List.Item>
         <List as="ul" size="small">
           {texts.rutineSteps.hentOppgaveArena.steps.map((text, index) => (
