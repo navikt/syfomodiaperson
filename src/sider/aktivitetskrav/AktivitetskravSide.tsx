@@ -6,6 +6,7 @@ import { AktivitetskravHistorikk } from "@/sider/aktivitetskrav/historikk/Aktivi
 import { StartNyVurdering } from "./vurdering/StartNyVurdering";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { Alert } from "@navikt/ds-react";
+import Aktivitetskravvarsel from "@/sider/aktivitetskrav/Aktivitetskravvarsel";
 
 const texts = {
   noTilfelle:
@@ -35,6 +36,7 @@ export const AktivitetskravSide = () => {
           {texts.noTilfelle}
         </Alert>
       )}
+      <Aktivitetskravvarsel />
       {showStartNyVurdering ? (
         <StartNyVurdering aktivitetskrav={aktivitetskrav} />
       ) : (
