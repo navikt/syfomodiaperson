@@ -34,7 +34,7 @@ let queryClient: QueryClient;
 
 const renderVurderingHistorikk = (
   vurderinger: VurderingResponseDTO[],
-  statuser: Sykepengestopp[] = []
+  sykepengestoppList: Sykepengestopp[] = []
 ) => {
   queryClient.setQueryData(
     arbeidsuforhetQueryKeys.arbeidsuforhet(ARBEIDSTAKER_DEFAULT.personIdent),
@@ -44,7 +44,7 @@ const renderVurderingHistorikk = (
     pengestoppStatusQueryKeys.pengestoppStatus(
       ARBEIDSTAKER_DEFAULT.personIdent
     ),
-    () => statuser
+    () => sykepengestoppList
   );
 
   return render(
