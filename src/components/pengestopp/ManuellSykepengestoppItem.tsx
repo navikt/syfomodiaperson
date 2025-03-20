@@ -1,6 +1,7 @@
 import {
   Arbeidsgiver,
   Sykepengestopp,
+  VirksomhetNr,
 } from "@/data/pengestopp/types/FlaggPerson";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
@@ -9,12 +10,13 @@ import {
   sykmeldingerToArbeidsgiver,
   uniqueArbeidsgivere,
 } from "@/utils/pengestoppUtils";
-import { Accordion, Label } from "@navikt/ds-react";
+import { Accordion } from "@navikt/ds-react";
 import { Paragraph } from "@/components/Paragraph";
 import React from "react";
 
 const texts = {
   vurdertLabel: "Vurdert av",
+  arbeidsgiverLabel: "Arbeidsgiver",
   statusStansLabel: "Automatisk utbetaling stanset",
 };
 
@@ -22,36 +24,37 @@ interface Props {
   sykepengestopp: Sykepengestopp;
 }
 
-export default function ManuellSykepengestoppItem({ sykepengestopp }: Props) {
-  const { veilederIdent } = sykepengestopp;
+export default function ManuellSykepengestoppItem({
+  sykepengestopp: { veilederIdent, opprettet, virksomhetNr },
+}: Props) {
   const { data: veilederinfo } = useVeilederInfoQuery(veilederIdent.value);
   const { sykmeldinger } = useSykmeldingerQuery();
-  const opprettet = new Date(sykepengestopp.opprettet);
   const header = `${texts.statusStansLabel} - ${tilDatoMedManedNavn(
-    opprettet
+    new Date(opprettet)
   )}`;
 
-  function getArbeidsgiverNavn(sykepengestopp: Sykepengestopp) {
+  function getArbeidsgiverNavn(virksomhetNr: VirksomhetNr) {
     const allArbeidsgivere = uniqueArbeidsgivere(
       sykmeldingerToArbeidsgiver(sykmeldinger)
     );
 
-    return allArbeidsgivere.find(
-      (ag: Arbeidsgiver) => ag.orgnummer === sykepengestopp.virksomhetNr?.value
-    )?.navn;
+    return (
+      allArbeidsgivere.find(
+        (ag: Arbeidsgiver) => ag.orgnummer === virksomhetNr?.value
+      )?.navn ?? "Ukjent arbeidsgiver"
+    );
   }
-
-  const arbeidsgiver = sykepengestopp.virksomhetNr
-    ? ` · Gjelder for: ${getArbeidsgiverNavn(sykepengestopp)}`
-    : ``;
 
   return (
     <Accordion.Item>
       <Accordion.Header>{header}</Accordion.Header>
       <Accordion.Content>
-        <Label size="small">{`${opprettet.getDate()}.${
-          opprettet.getMonth() + 1
-        }.${opprettet.getFullYear()} ${arbeidsgiver}`}</Label>
+        {virksomhetNr && (
+          <Paragraph
+            label={texts.arbeidsgiverLabel}
+            body={`${getArbeidsgiverNavn(virksomhetNr)}`}
+          />
+        )}
         <Paragraph
           label={texts.vurdertLabel}
           body={veilederinfo?.fulltNavn() ?? ""}
