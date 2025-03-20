@@ -110,11 +110,12 @@ function filterSykepengestoppArbeidsuforhet(
 export const VurderingHistorikk = () => {
   const { data } = useGetArbeidsuforhetVurderingerQuery();
   const { data: sykepengestoppList } = usePengestoppStatusQuery();
-  const arbeidsuforhetStatus: Sykepengestopp[] =
+  const arbeidsuforhetSykepengestopp: Sykepengestopp[] =
     filterSykepengestoppArbeidsuforhet(sykepengestoppList);
-  const items: HistorikkEntry[] = [...arbeidsuforhetStatus, ...data].sort(
-    sortHistorikkEntriesDesc
-  );
+  const items: HistorikkEntry[] = [
+    ...arbeidsuforhetSykepengestopp,
+    ...data,
+  ].sort(sortHistorikkEntriesDesc);
   const subheader =
     items.length > 0 ? texts.tidligereVurderinger : texts.noVurderinger;
 
