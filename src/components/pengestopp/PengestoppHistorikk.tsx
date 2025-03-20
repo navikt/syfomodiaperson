@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
   Arbeidsgiver,
-  StatusEndring,
+  Sykepengestopp,
   sykepengestoppArsakTekster,
 } from "@/data/pengestopp/types/FlaggPerson";
 import {
@@ -12,7 +12,7 @@ import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat
 import { Box, Label } from "@navikt/ds-react";
 
 interface Props {
-  statusEndringList: StatusEndring[];
+  statusEndringList: Sykepengestopp[];
   sykmeldinger: SykmeldingOldFormat[];
 }
 
@@ -22,7 +22,7 @@ const PengestoppHistorikk = ({ statusEndringList, sykmeldinger }: Props) => {
   );
 
   function getArbeidsgiverNavn(
-    statusEndring: StatusEndring
+    statusEndring: Sykepengestopp
   ): string | undefined {
     return (
       allArbeidsgivere.find(
@@ -31,7 +31,7 @@ const PengestoppHistorikk = ({ statusEndringList, sykmeldinger }: Props) => {
     );
   }
 
-  function getArsakText(statusEndring: StatusEndring) {
+  function getArsakText(statusEndring: Sykepengestopp) {
     return `Årsak: ${statusEndring.arsakList
       .map((arsak) => sykepengestoppArsakTekster[arsak.type])
       .join(", ")}.`;
@@ -39,7 +39,7 @@ const PengestoppHistorikk = ({ statusEndringList, sykmeldinger }: Props) => {
 
   return (
     <>
-      {statusEndringList.map((statusEndring: StatusEndring, index: number) => {
+      {statusEndringList.map((statusEndring: Sykepengestopp, index: number) => {
         const opprettet = new Date(statusEndring.opprettet);
         return (
           <Box

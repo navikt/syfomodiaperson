@@ -1,6 +1,6 @@
 import {
   Arbeidsgiver,
-  StatusEndring,
+  Sykepengestopp,
 } from "@/data/pengestopp/types/FlaggPerson";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
@@ -18,31 +18,31 @@ const texts = {
   statusStansLabel: "Automatisk utbetaling stanset",
 };
 
-interface StatusEndringItemProps {
-  status: StatusEndring;
+interface Props {
+  sykepengestopp: Sykepengestopp;
 }
 
-export default function StatusItem({ status }: StatusEndringItemProps) {
-  const { veilederIdent } = status;
+export default function ManuellSykepengestoppItem({ sykepengestopp }: Props) {
+  const { veilederIdent } = sykepengestopp;
   const { data: veilederinfo } = useVeilederInfoQuery(veilederIdent.value);
   const { sykmeldinger } = useSykmeldingerQuery();
-  const opprettet = new Date(status.opprettet);
+  const opprettet = new Date(sykepengestopp.opprettet);
   const header = `${texts.statusStansLabel} - ${tilDatoMedManedNavn(
     opprettet
   )}`;
 
-  function getArbeidsgiverNavn(statusEndring: StatusEndring) {
+  function getArbeidsgiverNavn(sykepengestopp: Sykepengestopp) {
     const allArbeidsgivere = uniqueArbeidsgivere(
       sykmeldingerToArbeidsgiver(sykmeldinger)
     );
 
     return allArbeidsgivere.find(
-      (ag: Arbeidsgiver) => ag.orgnummer === statusEndring.virksomhetNr?.value
+      (ag: Arbeidsgiver) => ag.orgnummer === sykepengestopp.virksomhetNr?.value
     )?.navn;
   }
 
-  const arbeidsgiver = status.virksomhetNr
-    ? ` · Gjelder for: ${getArbeidsgiverNavn(status)}`
+  const arbeidsgiver = sykepengestopp.virksomhetNr
+    ? ` · Gjelder for: ${getArbeidsgiverNavn(sykepengestopp)}`
     : ``;
 
   return (

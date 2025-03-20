@@ -15,7 +15,7 @@ import {
 import {
   DeprecatedSykepengestoppArsakType,
   Status,
-  StatusEndring,
+  Sykepengestopp,
   ValidSykepengestoppArsakType,
 } from "@/data/pengestopp/types/FlaggPerson";
 import { expect, describe, it, beforeEach } from "vitest";
@@ -35,7 +35,7 @@ const defaultStatusEndring = {
   ],
   status: Status.STOPP_AUTOMATIKK,
 };
-const pengestoppHistorikk: StatusEndring[] = [
+const pengestoppHistorikk: Sykepengestopp[] = [
   defaultStatusEndring,
   {
     ...defaultStatusEndring,

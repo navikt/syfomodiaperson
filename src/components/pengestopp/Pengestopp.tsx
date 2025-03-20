@@ -1,7 +1,7 @@
 import * as React from "react";
 import PengestoppHistorikk from "./PengestoppHistorikk";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { Status, StatusEndring } from "@/data/pengestopp/types/FlaggPerson";
+import { Status, Sykepengestopp } from "@/data/pengestopp/types/FlaggPerson";
 import { usePengestoppStatusQuery } from "@/data/pengestopp/pengestoppQueryHooks";
 import { Alert, BodyShort, Box, Heading } from "@navikt/ds-react";
 
@@ -18,8 +18,8 @@ interface IPengestoppProps {
 
 const Pengestopp = ({ sykmeldinger }: IPengestoppProps) => {
   const { data: statusEndringList, isError } = usePengestoppStatusQuery();
-  const pengestopp: StatusEndring | undefined = statusEndringList.find(
-    (statusEndring: StatusEndring) =>
+  const pengestopp: Sykepengestopp | undefined = statusEndringList.find(
+    (statusEndring: Sykepengestopp) =>
       statusEndring.status === Status.STOPP_AUTOMATIKK
   );
 

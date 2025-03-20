@@ -7,7 +7,7 @@ import {
 import {
   DeprecatedSykepengestoppArsakType,
   Status,
-  StatusEndring,
+  Sykepengestopp,
   StoppAutomatikk,
   ValidSykepengestoppArsakType,
 } from "@/data/pengestopp/types/FlaggPerson";
@@ -21,7 +21,7 @@ const defaultStoppAutomatikk: StoppAutomatikk = {
   ],
 };
 
-export const defaultStatusEndring: StatusEndring = {
+export const defaultSykepengestopp: Sykepengestopp = {
   veilederIdent: { value: VEILEDER_DEFAULT.ident },
   sykmeldtFnr: { value: ARBEIDSTAKER_DEFAULT.personIdent },
   status: Status.STOPP_AUTOMATIKK,
@@ -52,11 +52,11 @@ export const createStatusList = (
         value: "1337",
       },
       arsakList: stoppAutomatikk.arsakList,
-    } as StatusEndring;
+    } as Sykepengestopp;
   });
 };
 
-const defaultStatusEndringStoppAutomatikk: StatusEndring = {
+const defaultSykepengestoppStoppAutomatikk: Sykepengestopp = {
   veilederIdent: {
     value: VEILEDER_DEFAULT.ident,
   },
@@ -74,17 +74,17 @@ const defaultStatusEndringStoppAutomatikk: StatusEndring = {
   arsakList: [{ type: ValidSykepengestoppArsakType.MANGLENDE_MEDVIRKING }],
 };
 
-export const statusEndringer = [
-  defaultStatusEndringStoppAutomatikk,
+export const sykepengestoppList = [
+  defaultSykepengestoppStoppAutomatikk,
   {
-    ...defaultStatusEndringStoppAutomatikk,
+    ...defaultSykepengestoppStoppAutomatikk,
     arsakList: [
       { type: ValidSykepengestoppArsakType.AKTIVITETSKRAV },
       { type: ValidSykepengestoppArsakType.MEDISINSK_VILKAR },
     ],
   },
   {
-    ...defaultStatusEndringStoppAutomatikk,
+    ...defaultSykepengestoppStoppAutomatikk,
     arsakList: [
       { type: DeprecatedSykepengestoppArsakType.TILBAKEDATERT_SYKMELDING },
     ],
