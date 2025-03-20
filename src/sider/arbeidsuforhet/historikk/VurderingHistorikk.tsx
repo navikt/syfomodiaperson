@@ -13,11 +13,11 @@ import { Paragraph } from "@/components/Paragraph";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { VisBrev } from "@/components/VisBrev";
 import {
-  StatusEndring,
+  Sykepengestopp,
   ValidSykepengestoppArsakType,
 } from "@/data/pengestopp/types/FlaggPerson";
 import { usePengestoppStatusQuery } from "@/data/pengestopp/pengestoppQueryHooks";
-import StatusItem from "@/sider/arbeidsuforhet/historikk/ArbeidsuforhetStatusItem";
+import ManuellSykepengestoppItem from "@/components/pengestopp/ManuellSykepengestoppItem";
 
 const texts = {
   header: "Historikk",
@@ -97,9 +97,11 @@ function sortHistorikkEntriesDesc(a: HistorikkEntry, b: HistorikkEntry) {
   );
 }
 
-function filterStatusArbeidsuforhet(statusEndringer: StatusEndring[]) {
-  return statusEndringer.filter((statusEndring) =>
-    statusEndring.arsakList.some(
+function filterSykepengestoppArbeidsuforhet(
+  sykepengestoppList: Sykepengestopp[]
+) {
+  return sykepengestoppList.filter((sykepengestopp) =>
+    sykepengestopp.arsakList.some(
       (arsak) => arsak.type === ValidSykepengestoppArsakType.MEDISINSK_VILKAR
     )
   );
@@ -107,9 +109,9 @@ function filterStatusArbeidsuforhet(statusEndringer: StatusEndring[]) {
 
 export const VurderingHistorikk = () => {
   const { data } = useGetArbeidsuforhetVurderingerQuery();
-  const { data: statusEndringList } = usePengestoppStatusQuery();
-  const arbeidsuforhetStatus: StatusEndring[] =
-    filterStatusArbeidsuforhet(statusEndringList);
+  const { data: sykepengestoppList } = usePengestoppStatusQuery();
+  const arbeidsuforhetStatus: Sykepengestopp[] =
+    filterSykepengestoppArbeidsuforhet(sykepengestoppList);
   const items: HistorikkEntry[] = [...arbeidsuforhetStatus, ...data].sort(
     sortHistorikkEntriesDesc
   );
@@ -136,7 +138,10 @@ export const VurderingHistorikk = () => {
               vurdering={item as VurderingResponseDTO}
             />
           ) : (
-            <StatusItem key={index} status={item as StatusEndring} />
+            <ManuellSykepengestoppItem
+              key={index}
+              sykepengestopp={item as Sykepengestopp}
+            />
           )
         )}
       </Accordion>

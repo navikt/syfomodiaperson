@@ -25,16 +25,16 @@ import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import userEvent from "@testing-library/user-event";
 import { pengestoppStatusQueryKeys } from "@/data/pengestopp/pengestoppQueryHooks";
 import {
-  StatusEndring,
+  Sykepengestopp,
   ValidSykepengestoppArsakType,
 } from "@/data/pengestopp/types/FlaggPerson";
-import { defaultStatusEndring } from "@/mocks/ispengestopp/pengestoppStatusMock";
+import { defaultSykepengestopp } from "@/mocks/ispengestopp/pengestoppStatusMock";
 
 let queryClient: QueryClient;
 
 const renderVurderingHistorikk = (
   vurderinger: VurderingResponseDTO[],
-  statuser: StatusEndring[] = []
+  statuser: Sykepengestopp[] = []
 ) => {
   queryClient.setQueryData(
     arbeidsuforhetQueryKeys.arbeidsuforhet(ARBEIDSTAKER_DEFAULT.personIdent),
@@ -163,16 +163,16 @@ describe("VurderingHistorikk", () => {
       expect(screen.getByText(VEILEDER_DEFAULT.fulltNavn())).to.exist;
     });
   });
-  describe("Har vurderinger og statusendringer", () => {
-    it("Viser forekomster av vurderinger og statusendringer sortert på dato i synkende rekkefølge", () => {
-      const statusendringer: StatusEndring[] = [
+  describe("Har vurderinger og sykepengestopp", () => {
+    it("Viser forekomster av vurderinger og sykepengestopp sortert på dato i synkende rekkefølge", () => {
+      const sykepengestoppList: Sykepengestopp[] = [
         {
-          ...defaultStatusEndring,
+          ...defaultSykepengestopp,
           opprettet: "2025-02-20T08:00:00.000Z",
           arsakList: [{ type: ValidSykepengestoppArsakType.MEDISINSK_VILKAR }],
         },
         {
-          ...defaultStatusEndring,
+          ...defaultSykepengestopp,
           opprettet: "2025-02-21T08:00:00.000Z",
           arsakList: [{ type: ValidSykepengestoppArsakType.AKTIVITETSKRAV }],
         },
@@ -201,7 +201,7 @@ describe("VurderingHistorikk", () => {
         }),
       ];
 
-      renderVurderingHistorikk(vurderinger, statusendringer);
+      renderVurderingHistorikk(vurderinger, sykepengestoppList);
 
       const accordionButtons = screen.getAllByRole("button");
 

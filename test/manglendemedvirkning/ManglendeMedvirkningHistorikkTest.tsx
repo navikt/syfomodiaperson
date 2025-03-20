@@ -23,17 +23,17 @@ import {
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
 import {
-  StatusEndring,
+  Sykepengestopp,
   ValidSykepengestoppArsakType,
 } from "@/data/pengestopp/types/FlaggPerson";
 import { pengestoppStatusQueryKeys } from "@/data/pengestopp/pengestoppQueryHooks";
-import { defaultStatusEndring } from "@/mocks/ispengestopp/pengestoppStatusMock";
+import { defaultSykepengestopp } from "@/mocks/ispengestopp/pengestoppStatusMock";
 
 let queryClient: QueryClient;
 
 const renderVurderingHistorikk = (
   vurderinger: VurderingResponseDTO[],
-  statuser: StatusEndring[] = []
+  statuser: Sykepengestopp[] = []
 ) => {
   queryClient.setQueryData(
     manglendeMedvirkningQueryKeys.manglendeMedvirkning(
@@ -230,18 +230,18 @@ describe("ManglendeMedvirkningHistorikk", () => {
         .to.exist;
     });
   });
-  describe("Har vurderinger og statusendringer", () => {
-    it("Viser forekomster av vurderinger og statusendringer sortert på dato i synkende rekkefølge", () => {
-      const statusendringer: StatusEndring[] = [
+  describe("Har vurderinger og sykepengestopp", () => {
+    it("Viser forekomster av vurderinger og sykepengestopp sortert på dato i synkende rekkefølge", () => {
+      const sykepengestoppList: Sykepengestopp[] = [
         {
-          ...defaultStatusEndring,
+          ...defaultSykepengestopp,
           opprettet: "2025-02-20T08:00:00.000Z",
           arsakList: [
             { type: ValidSykepengestoppArsakType.MANGLENDE_MEDVIRKING },
           ],
         },
         {
-          ...defaultStatusEndring,
+          ...defaultSykepengestopp,
           opprettet: "2025-02-21T08:00:00.000Z",
           arsakList: [{ type: ValidSykepengestoppArsakType.AKTIVITETSKRAV }],
         },
@@ -266,7 +266,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
         ),
       ];
 
-      renderVurderingHistorikk(vurderinger, statusendringer);
+      renderVurderingHistorikk(vurderinger, sykepengestoppList);
 
       const accordionButtons = screen.getAllByRole("button");
 
