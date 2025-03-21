@@ -104,21 +104,9 @@ export const getExpectedVedtakDocument = ({
     {
       title: "Nyttig informasjon",
       texts: [
-        "Sykepengene blir utbetalt etter at du har sendt meldekort. Du sender meldekort til Nav hver 14.dag.",
+        "Sykepengene blir utbetalt etter at du har sendt søknad. Du sender søknad til Nav hver 14. dag.",
       ],
       type: DocumentComponentType.PARAGRAPH,
-    },
-    {
-      texts: ["På meldekortet må du føre opp:"],
-      type: DocumentComponentType.PARAGRAPH,
-    },
-    {
-      type: DocumentComponentType.BULLET_POINTS,
-      texts: [
-        "Alle timer du har arbeidet",
-        "Antall dager du har deltatt på tiltak, kurs eller har vært under utdanning",
-        "Antall dager du har vært syk, og derfor ute av stand til å arbeide eller delta på tiltak",
-      ],
     },
     {
       texts: [
