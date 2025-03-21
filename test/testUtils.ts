@@ -32,6 +32,10 @@ export const maxLengthErrorMessage = (max: number) =>
 
 export const getTooLongText = (max: number) => "t".repeat(max + 1);
 
+export const minutesFromToday = (minutes: number): Date => {
+  return dayjs(new Date()).add(minutes, "minute").toDate();
+};
+
 export const daysFromToday = (days: number): Date => {
   return dayjs(new Date()).add(days, "days").toDate();
 };
