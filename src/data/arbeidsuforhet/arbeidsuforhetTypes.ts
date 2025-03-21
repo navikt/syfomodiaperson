@@ -1,4 +1,5 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
+import { Sykepengestopp } from "@/data/pengestopp/types/FlaggPerson";
 
 export interface VurderingRequestDTO {
   type: VurderingType;
@@ -21,7 +22,7 @@ export const typeTexts: {
 } = {
   [VurderingType.FORHANDSVARSEL]: "Forhåndsvarsel",
   [VurderingType.OPPFYLT]: "Oppfylt",
-  [VurderingType.AVSLAG]: "Avslag",
+  [VurderingType.AVSLAG]: "Innstilling om avslag",
   [VurderingType.IKKE_AKTUELL]: "Ikke aktuell",
 };
 
@@ -44,6 +45,8 @@ export interface VarselDTO {
   svarfrist: Date;
   isExpired: boolean;
 }
+
+export type HistorikkEntry = VurderingResponseDTO | Sykepengestopp;
 
 export interface VurderingResponseDTO {
   uuid: string;
