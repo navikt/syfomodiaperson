@@ -406,7 +406,7 @@ describe("AktivitetskravSide", () => {
 
         expect(
           screen.getByText(
-            "Grunnet teknisk feil har ikke forhåndsvarsel i perioden 27. februar – 12. mars",
+            "Grunnet teknisk feil har ikke forhåndsvarsel i denne perioden",
             { exact: false }
           )
         ).to.exist;
@@ -430,7 +430,7 @@ describe("AktivitetskravSide", () => {
 
         expect(
           screen.getByText(
-            "Grunnet teknisk feil har ikke forhåndsvarsel i perioden 27. februar – 12. mars",
+            "Grunnet teknisk feil har ikke forhåndsvarsel i denne perioden",
             { exact: false }
           )
         ).to.exist;
@@ -454,7 +454,7 @@ describe("AktivitetskravSide", () => {
 
         expect(
           screen.getByText(
-            "Grunnet teknisk feil har ikke forhåndsvarsel i perioden 27. februar – 12. mars",
+            "Grunnet teknisk feil har ikke forhåndsvarsel i denne perioden",
             { exact: false }
           )
         ).to.exist;
@@ -480,7 +480,7 @@ describe("AktivitetskravSide", () => {
 
         expect(
           screen.queryByText(
-            "Grunnet teknisk feil har ikke forhåndsvarsel i perioden 27. februar – 12. mars",
+            "Grunnet teknisk feil har ikke forhåndsvarsel i denne perioden",
             { exact: false }
           )
         ).to.not.exist;
@@ -504,7 +504,7 @@ describe("AktivitetskravSide", () => {
 
         expect(
           screen.queryByText(
-            "Grunnet teknisk feil har ikke forhåndsvarsel i perioden 27. februar – 12. mars",
+            "Grunnet teknisk feil har ikke forhåndsvarsel i denne perioden",
             { exact: false }
           )
         ).to.not.exist;
