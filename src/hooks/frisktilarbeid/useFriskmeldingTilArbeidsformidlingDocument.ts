@@ -1,7 +1,6 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
 import { useDocumentComponents } from "@/hooks/useDocumentComponents";
 import {
-  createBulletPoints,
   createHeaderH1,
   createParagraph,
   createParagraphWithTitle,
@@ -53,12 +52,6 @@ export const useFriskmeldingTilArbeidsformidlingDocument = (): {
       createParagraphWithTitle(
         vedtakTexts.nyttigInfo.header,
         vedtakTexts.nyttigInfo.part1
-      ),
-      createParagraph(vedtakTexts.nyttigInfo.meldekortInfo.header),
-      createBulletPoints(
-        vedtakTexts.nyttigInfo.meldekortInfo.bulletPoint1,
-        vedtakTexts.nyttigInfo.meldekortInfo.bulletPoint2,
-        vedtakTexts.nyttigInfo.meldekortInfo.bulletPoint3
       ),
       createParagraph(vedtakTexts.nyttigInfo.part2),
       createParagraph(vedtakTexts.nyttigInfo.part3),

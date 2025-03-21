@@ -30,15 +30,7 @@ export const getVedtakTexts = ({ fom, tom }: VedtakTextsValues) => ({
   nyttigInfo: {
     header: "Nyttig informasjon",
     part1:
-      "Sykepengene blir utbetalt etter at du har sendt meldekort. Du sender meldekort til Nav hver 14.dag.",
-    meldekortInfo: {
-      header: "På meldekortet må du føre opp:",
-      bulletPoint1: "Alle timer du har arbeidet",
-      bulletPoint2:
-        "Antall dager du har deltatt på tiltak, kurs eller har vært under utdanning",
-      bulletPoint3:
-        "Antall dager du har vært syk, og derfor ute av stand til å arbeide eller delta på tiltak",
-    },
+      "Sykepengene blir utbetalt etter at du har sendt søknad. Du sender søknad til Nav hver 14. dag.",
     part2:
       "Utbetalingen stanser når du får ny jobb, eller hvis du velger å takke nei til et aktuelt tilbud om en jobb.",
     part3:
