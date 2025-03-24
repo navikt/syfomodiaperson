@@ -48,11 +48,17 @@ import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplan
 import { getDefaultOppfolgingsplanLPS } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
 import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useOppfolgingsoppgaver";
 import {
+  DATO_INNENFOR_OPPFOLGINGSTILFELLE,
   historikkOppfolgingsoppgaveAktivMock,
   historikkOppfolgingsoppgaveFjernetMock,
 } from "@/mocks/oppfolgingsoppgave/historikkOppfolgingsoppgaveMock";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { addWeeks, tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
+import {
+  addDays,
+  addWeeks,
+  tilLesbarDatoMedArstall,
+  tilLesbarPeriodeMedArstall,
+} from "@/utils/datoUtils";
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { motebehovMock } from "@/mocks/syfomotebehov/motebehovMock";
 import { oppfolgingsplanForesporselQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
@@ -759,16 +765,18 @@ describe("Historikk", () => {
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            expandableToggleText +
-              " 21. juni 2024 Z990000 endret oppfølgingsoppgave \\(Vurder annen ytelse\\)"
+            `${expandableToggleText} ${tilLesbarDatoMedArstall(
+              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 1)
+            )} Z990000 endret oppfølgingsoppgave \\(Vurder annen ytelse\\)`
           ),
         })
       ).to.exist;
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            expandableToggleText +
-              " 20. juni 2024 Z990000 opprettet oppfølgingsoppgave \\(Vurder annen ytelse\\)"
+            `${expandableToggleText} ${tilLesbarDatoMedArstall(
+              DATO_INNENFOR_OPPFOLGINGSTILFELLE
+            )} Z990000 opprettet oppfølgingsoppgave \\(Vurder annen ytelse\\)`
           ),
         })
       ).to.exist;
@@ -788,39 +796,45 @@ describe("Historikk", () => {
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            "19. juni 2024 Z990000 fjernet oppfølgingsoppgaven \\(Ta kontakt med arbeidsgiver\\)"
+            `${tilLesbarDatoMedArstall(
+              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -1)
+            )} Z990000 fjernet oppfølgingsoppgaven \\(Ta kontakt med arbeidsgiver\\)`
           ),
         })
       ).to.exist;
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            expandableToggleText +
-              " 18. juni 2024 Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)"
+            `${expandableToggleText} ${tilLesbarDatoMedArstall(
+              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -2)
+            )} Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)`
           ),
         })
       ).to.exist;
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            expandableToggleText +
-              " 17. juni 2024 Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)"
+            `${expandableToggleText} ${tilLesbarDatoMedArstall(
+              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -3)
+            )} Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)`
           ),
         })
       ).to.exist;
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            expandableToggleText +
-              " 16. juni 2024 Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)"
+            `${expandableToggleText} ${tilLesbarDatoMedArstall(
+              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -4)
+            )} Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)`
           ),
         })
       ).to.exist;
       expect(
         screen.getByRole("row", {
           name: new RegExp(
-            expandableToggleText +
-              " 15. juni 2024 Z990000 opprettet oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)"
+            `${expandableToggleText} ${tilLesbarDatoMedArstall(
+              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -5)
+            )} Z990000 opprettet oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)`
           ),
         })
       ).to.exist;

@@ -5,8 +5,12 @@ import {
   OppfolgingsoppgaveResponseDTO,
 } from "@/data/oppfolgingsoppgave/types";
 import { addDays } from "@/utils/datoUtils";
+import { currentOppfolgingstilfelle } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
 
-const DATO_INNENFOR_OPPFOLGINGSTILFELLE = new Date("2024-06-20");
+export const DATO_INNENFOR_OPPFOLGINGSTILFELLE = addDays(
+  currentOppfolgingstilfelle.end,
+  -10
+);
 
 export const historikkOppfolgingsoppgaveAktivMock: OppfolgingsoppgaveResponseDTO =
   {
