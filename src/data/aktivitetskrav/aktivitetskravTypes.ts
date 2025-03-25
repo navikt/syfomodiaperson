@@ -1,5 +1,5 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
-import { StatusEndring } from "@/data/pengestopp/types/FlaggPerson";
+import { Sykepengestopp } from "@/data/pengestopp/types/FlaggPerson";
 
 export enum AktivitetskravStatus {
   NY = "NY",
@@ -66,7 +66,7 @@ export interface AktivitetskravHistorikkDTO {
   vurdertAv: string | null;
 }
 
-export type HistorikkEntry = AktivitetskravVurderingDTO | StatusEndring;
+export type HistorikkEntry = AktivitetskravVurderingDTO | Sykepengestopp;
 
 export interface AktivitetskravVurderingDTO {
   uuid: string;

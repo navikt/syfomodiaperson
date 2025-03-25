@@ -15,11 +15,11 @@ import { EventType } from "@/utils/amplitude";
 import { VisBrev } from "@/components/VisBrev";
 import { Paragraph } from "@/components/Paragraph";
 import {
-  StatusEndring,
+  Sykepengestopp,
   ValidSykepengestoppArsakType,
 } from "@/data/pengestopp/types/FlaggPerson";
 import { usePengestoppStatusQuery } from "@/data/pengestopp/pengestoppQueryHooks";
-import StatusItem from "@/sider/aktivitetskrav/historikk/AktivitetskravStatusItem";
+import ManuellSykepengestoppItem from "@/components/pengestopp/ManuellSykepengestoppItem";
 
 const texts = {
   header: "Historikk",
@@ -48,9 +48,9 @@ function sortHistorikkEntriesDesc(a: HistorikkEntry, b: HistorikkEntry) {
   );
 }
 
-function filterStatusAktivitetskrav(statusEndringer: StatusEndring[]) {
-  return statusEndringer.filter((statusEndring) =>
-    statusEndring.arsakList.some(
+function filterStatusAktivitetskrav(sykepengestoppList: Sykepengestopp[]) {
+  return sykepengestoppList.filter((sykepengestopp) =>
+    sykepengestopp.arsakList.some(
       (arsak) => arsak.type === ValidSykepengestoppArsakType.AKTIVITETSKRAV
     )
   );
@@ -75,11 +75,11 @@ export const AktivitetskravHistorikk = () => {
   const vurderinger = data.flatMap((aktivitetskrav) =>
     aktivitetskrav.vurderinger.filter(isRelevantForHistorikk)
   );
-  const { data: statusEndringList } = usePengestoppStatusQuery();
-  const aktivitetskravStatusEndringer: StatusEndring[] =
-    filterStatusAktivitetskrav(statusEndringList);
+  const { data: sykepengestoppList } = usePengestoppStatusQuery();
+  const aktivitetskravSykepengestopp: Sykepengestopp[] =
+    filterStatusAktivitetskrav(sykepengestoppList);
   const items: HistorikkEntry[] = [
-    ...aktivitetskravStatusEndringer,
+    ...aktivitetskravSykepengestopp,
     ...vurderinger,
   ].sort(sortHistorikkEntriesDesc);
 
@@ -103,7 +103,10 @@ export const AktivitetskravHistorikk = () => {
               vurdering={item as AktivitetskravVurderingDTO}
             />
           ) : (
-            <StatusItem key={index} status={item as StatusEndring} />
+            <ManuellSykepengestoppItem
+              key={index}
+              sykepengestopp={item as Sykepengestopp}
+            />
           )
         )}
       </Accordion>
