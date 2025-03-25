@@ -7,6 +7,7 @@ import {
   VurderingResponseDTO,
 } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
 import { arbeidsuforhetQueryKeys } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import { pengestoppStatusQueryKeys } from "@/data/pengestopp/pengestoppQueryHooks";
 
 export const useSendVurderingArbeidsuforhet = () => {
   const personident = useValgtPersonident();
@@ -22,6 +23,9 @@ export const useSendVurderingArbeidsuforhet = () => {
         arbeidsuforhetQueryKeys.arbeidsuforhet(personident),
         (oldData: VurderingResponseDTO[]) => [data, ...oldData]
       );
+      queryClient.invalidateQueries({
+        queryKey: pengestoppStatusQueryKeys.pengestoppStatus(personident),
+      });
     },
   });
 };

@@ -56,35 +56,32 @@ export const createStatusList = (
   });
 };
 
-const defaultStatusEndringStoppAutomatikk: StatusEndring = {
-  veilederIdent: {
-    value: VEILEDER_DEFAULT.ident,
-  },
-  sykmeldtFnr: {
-    value: ARBEIDSTAKER_DEFAULT.personIdent,
-  },
-  status: Status.STOPP_AUTOMATIKK,
-  virksomhetNr: {
-    value: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-  },
-  opprettet: new Date().toISOString(),
-  enhetNr: {
-    value: "1337",
-  },
+export const stoppAutomatikkManglendeMedvirkning: StatusEndring = {
+  ...defaultStatusEndring,
   arsakList: [{ type: ValidSykepengestoppArsakType.MANGLENDE_MEDVIRKING }],
 };
 
+export const stoppAutomatikkArbeidsuforhet: StatusEndring = {
+  ...defaultStatusEndring,
+  arsakList: [{ type: ValidSykepengestoppArsakType.MEDISINSK_VILKAR }],
+};
+
+export const stoppAutomatikkAktivitetskrav: StatusEndring = {
+  ...defaultStatusEndring,
+  arsakList: [{ type: ValidSykepengestoppArsakType.AKTIVITETSKRAV }],
+};
+
 export const statusEndringer = [
-  defaultStatusEndringStoppAutomatikk,
+  stoppAutomatikkManglendeMedvirkning,
   {
-    ...defaultStatusEndringStoppAutomatikk,
+    ...stoppAutomatikkManglendeMedvirkning,
     arsakList: [
       { type: ValidSykepengestoppArsakType.AKTIVITETSKRAV },
       { type: ValidSykepengestoppArsakType.MEDISINSK_VILKAR },
     ],
   },
   {
-    ...defaultStatusEndringStoppAutomatikk,
+    ...stoppAutomatikkManglendeMedvirkning,
     arsakList: [
       { type: DeprecatedSykepengestoppArsakType.TILBAKEDATERT_SYKMELDING },
     ],
