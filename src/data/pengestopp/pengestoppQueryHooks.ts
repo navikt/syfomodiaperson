@@ -3,7 +3,7 @@ import { ISPENGESTOPP_ROOT } from "@/apiConstants";
 import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/utils";
-import { StatusEndring } from "@/data/pengestopp/types/FlaggPerson";
+import { Sykepengestopp } from "@/data/pengestopp/types/FlaggPerson";
 
 export const pengestoppStatusQueryKeys = {
   pengestoppStatus: (fnr: string) => ["pengestoppstatus", fnr],
@@ -12,7 +12,7 @@ export const pengestoppStatusQueryKeys = {
 export const usePengestoppStatusQuery = () => {
   const fnr = useValgtPersonident();
   const path = `${ISPENGESTOPP_ROOT}/person/status`;
-  const fetchPengestoppStatus = () => get<StatusEndring[]>(path, fnr);
+  const fetchPengestoppStatus = () => get<Sykepengestopp[]>(path, fnr);
   const query = useQuery({
     queryKey: pengestoppStatusQueryKeys.pengestoppStatus(fnr),
     queryFn: fetchPengestoppStatus,

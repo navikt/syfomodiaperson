@@ -13,10 +13,10 @@ import {
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { usePengestoppStatusQuery } from "@/data/pengestopp/pengestoppQueryHooks";
 import {
-  StatusEndring,
+  Sykepengestopp,
   ValidSykepengestoppArsakType,
 } from "@/data/pengestopp/types/FlaggPerson";
-import StatusItem from "@/sider/manglendemedvirkning/ManglendeMedVirkningStatusItem";
+import ManuellSykepengestoppItem from "@/components/pengestopp/ManuellSykepengestoppItem";
 
 const texts = {
   header: "Historikk",
@@ -99,11 +99,11 @@ function sortHistorikkEntriesDesc(a: HistorikkEntry, b: HistorikkEntry) {
   );
 }
 
-function filterStatusEndringManglendeMedvirkning(
-  statusEndringer: StatusEndring[]
+function filterSykepengestoppManglendeMedvirkning(
+  sykepengestoppList: Sykepengestopp[]
 ) {
-  return statusEndringer.filter((statusEndring) =>
-    statusEndring.arsakList.some(
+  return sykepengestoppList.filter((sykepengestopp) =>
+    sykepengestopp.arsakList.some(
       (arsak) =>
         arsak.type === ValidSykepengestoppArsakType.MANGLENDE_MEDVIRKING
     )
@@ -112,12 +112,13 @@ function filterStatusEndringManglendeMedvirkning(
 
 export default function ManglendeMedvirkningHistorikk() {
   const { data } = useManglendemedvirkningVurderingQuery();
-  const { data: statusEndringList } = usePengestoppStatusQuery();
-  const manglendeMedvirkningStatus: StatusEndring[] =
-    filterStatusEndringManglendeMedvirkning(statusEndringList);
-  const items: HistorikkEntry[] = [...manglendeMedvirkningStatus, ...data].sort(
-    sortHistorikkEntriesDesc
-  );
+  const { data: sykepengestoppList } = usePengestoppStatusQuery();
+  const manglendeMedvirkningSykepengestopp: Sykepengestopp[] =
+    filterSykepengestoppManglendeMedvirkning(sykepengestoppList);
+  const items: HistorikkEntry[] = [
+    ...manglendeMedvirkningSykepengestopp,
+    ...data,
+  ].sort(sortHistorikkEntriesDesc);
   const subheader =
     items.length > 0 ? texts.tidligereVurderinger : texts.noVurderinger;
 
@@ -141,7 +142,10 @@ export default function ManglendeMedvirkningHistorikk() {
               vurdering={item as VurderingResponseDTO}
             />
           ) : (
-            <StatusItem key={index} status={item as StatusEndring} />
+            <ManuellSykepengestoppItem
+              key={index}
+              sykepengestopp={item as Sykepengestopp}
+            />
           )
         )}
       </Accordion>

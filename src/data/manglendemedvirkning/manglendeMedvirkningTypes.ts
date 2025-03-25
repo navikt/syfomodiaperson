@@ -1,5 +1,5 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
-import { StatusEndring } from "@/data/pengestopp/types/FlaggPerson";
+import { Sykepengestopp } from "@/data/pengestopp/types/FlaggPerson";
 
 interface VurderingRequestDTO {
   personident: string;
@@ -36,7 +36,7 @@ export type NewVurderingRequestDTO =
   | UnntakVurdering
   | IkkeAktuellVurdering;
 
-export type HistorikkEntry = VurderingResponseDTO | StatusEndring;
+export type HistorikkEntry = VurderingResponseDTO | Sykepengestopp;
 
 export interface VurderingResponseDTO {
   uuid: string;

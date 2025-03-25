@@ -1,8 +1,8 @@
 import { ISPENGESTOPP_ROOT } from "@/apiConstants";
-import { statusEndringer } from "./pengestoppStatusMock";
+import { sykepengestoppList } from "./pengestoppStatusMock";
 import { http, HttpResponse } from "msw";
 
-const STATUSLIST = statusEndringer;
+const STATUSLIST = sykepengestoppList;
 
 export const mockIspengestopp = [
   http.get(`${ISPENGESTOPP_ROOT}/person/status`, () => {

@@ -90,7 +90,7 @@ export enum Status {
   STOPP_AUTOMATIKK = "STOPP_AUTOMATIKK",
 }
 
-export interface StatusEndring {
+export interface Sykepengestopp {
   veilederIdent: VeilederIdent;
   sykmeldtFnr: SykmeldtFnr;
   arsakList: SykepengestoppArsak[];

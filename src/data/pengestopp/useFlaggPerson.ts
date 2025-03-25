@@ -4,7 +4,7 @@ import { post } from "@/api/axios";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   Status,
-  StatusEndring,
+  Sykepengestopp,
   StoppAutomatikk,
 } from "@/data/pengestopp/types/FlaggPerson";
 import { pengestoppStatusQueryKeys } from "@/data/pengestopp/pengestoppQueryHooks";
@@ -42,7 +42,7 @@ export const useFlaggPerson = () => {
     mutationFn: postFlaggPerson,
     onSuccess: (_, values) => {
       const previousStatusEndring =
-        queryClient.getQueryData<StatusEndring[]>(pengestoppStatusQueryKey) ||
+        queryClient.getQueryData<Sykepengestopp[]>(pengestoppStatusQueryKey) ||
         [];
       const updatedStatusEndring = stoppAutomatikk2StatusEndring(
         toStoppAutomatikk(fnr, values, valgtEnhet)
@@ -62,7 +62,7 @@ export const useFlaggPerson = () => {
 
 const stoppAutomatikk2StatusEndring = (
   stoppAutomatikk: StoppAutomatikk
-): StatusEndring[] => {
+): Sykepengestopp[] => {
   const { virksomhetNr, sykmeldtFnr, arsakList, enhetNr } = stoppAutomatikk;
   return virksomhetNr.map((virksomhet) => {
     return {
