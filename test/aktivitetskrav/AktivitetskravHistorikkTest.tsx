@@ -29,6 +29,12 @@ import {
   createAktivitetskravVurdering,
 } from "../testDataUtils";
 import { DocumentComponentType } from "@/data/documentcomponent/documentComponentTypes";
+import {
+  Sykepengestopp,
+  ValidSykepengestoppArsakType,
+} from "@/data/pengestopp/types/FlaggPerson";
+import { pengestoppStatusQueryKeys } from "@/data/pengestopp/pengestoppQueryHooks";
+import { defaultSykepengestopp } from "@/mocks/ispengestopp/pengestoppStatusMock";
 
 let queryClient: QueryClient;
 
@@ -87,7 +93,8 @@ const forhandsvarselVurdering = createAktivitetskravVurdering(
 );
 
 const renderAktivitetskravHistorikk = (
-  vurderinger: AktivitetskravVurderingDTO[]
+  vurderinger: AktivitetskravVurderingDTO[],
+  sykepengestoppList: Sykepengestopp[] = []
 ) => {
   const aktivitetskrav = createAktivitetskrav(
     daysFromToday(20),
@@ -97,6 +104,12 @@ const renderAktivitetskravHistorikk = (
   queryClient.setQueryData(aktivitetskravQueryKeys.aktivitetskrav(fnr), () => [
     aktivitetskrav,
   ]);
+  queryClient.setQueryData(
+    pengestoppStatusQueryKeys.pengestoppStatus(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => sykepengestoppList
+  );
   return render(
     <QueryClientProvider client={queryClient}>
       <ValgtEnhetContext.Provider
@@ -235,5 +248,62 @@ describe("AktivitetskravHistorikk", () => {
         hidden: true,
       })
     ).to.exist;
+  });
+  describe("Har vurderinger og sykepengestopp", () => {
+    it("Viser forekomster av vurderinger og sykepengestopp sortert på dato i synkende rekkefølge", () => {
+      const sykepengestoppList: Sykepengestopp[] = [
+        {
+          ...defaultSykepengestopp,
+          opprettet: "2025-02-21T08:00:00.000Z",
+          arsakList: [{ type: ValidSykepengestoppArsakType.MEDISINSK_VILKAR }],
+        },
+        {
+          ...defaultSykepengestopp,
+          opprettet: "2025-02-20T08:00:00.000Z",
+          arsakList: [{ type: ValidSykepengestoppArsakType.AKTIVITETSKRAV }],
+        },
+      ];
+
+      const vurderinger: AktivitetskravVurderingDTO[] = [
+        {
+          ...forhandsvarselVurdering,
+          createdAt: new Date("2025-02-15T08:00:00.000Z"),
+        },
+        {
+          ...stansVurdering,
+          createdAt: new Date("2025-02-16T08:00:00.000Z"),
+        },
+        {
+          ...forhandsvarselVurdering,
+          createdAt: new Date("2025-02-21T08:00:00.000Z"),
+        },
+        {
+          ...stansVurdering,
+          createdAt: new Date("2025-02-22T08:00:00.000Z"),
+        },
+      ];
+
+      renderAktivitetskravHistorikk(vurderinger, sykepengestoppList);
+
+      const accordionButtons = screen.getAllByRole("button");
+
+      expect(accordionButtons.length).toBe(5);
+
+      expect(accordionButtons[0].textContent).to.contain(
+        "Innstilling om stans - 22. februar 2025"
+      );
+      expect(accordionButtons[1].textContent).to.contain(
+        "Forhåndsvarsel - 21. februar 2025"
+      );
+      expect(accordionButtons[2].textContent).to.contain(
+        "Automatisk utbetaling stanset - 20. februar 2025"
+      );
+      expect(accordionButtons[3].textContent).to.contain(
+        "Innstilling om stans - 16. februar 2025"
+      );
+      expect(accordionButtons[4].textContent).to.contain(
+        "Forhåndsvarsel - 15. februar 2025"
+      );
+    });
   });
 });
