@@ -5,10 +5,9 @@ import {
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
 import {
-  DeprecatedSykepengestoppArsakType,
   Status,
-  Sykepengestopp,
   StoppAutomatikk,
+  Sykepengestopp,
   ValidSykepengestoppArsakType,
 } from "@/data/pengestopp/types/FlaggPerson";
 
@@ -16,9 +15,7 @@ const defaultStoppAutomatikk: StoppAutomatikk = {
   enhetNr: { value: ENHET_GAMLEOSLO.nummer },
   virksomhetNr: [{ value: VIRKSOMHET_PONTYPANDY.virksomhetsnummer }],
   sykmeldtFnr: { value: ARBEIDSTAKER_DEFAULT.personIdent },
-  arsakList: [
-    { type: DeprecatedSykepengestoppArsakType.BESTRIDELSE_SYKMELDING },
-  ],
+  arsakList: [{ type: ValidSykepengestoppArsakType.MANGLENDE_MEDVIRKING }],
 };
 
 export const defaultSykepengestopp: Sykepengestopp = {
@@ -85,8 +82,5 @@ export const sykepengestoppList = [
   },
   {
     ...defaultSykepengestoppStoppAutomatikk,
-    arsakList: [
-      { type: DeprecatedSykepengestoppArsakType.TILBAKEDATERT_SYKMELDING },
-    ],
   },
 ];

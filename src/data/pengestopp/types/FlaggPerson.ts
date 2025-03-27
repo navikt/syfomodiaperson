@@ -35,21 +35,13 @@ export interface EnhetNr {
   value: string;
 }
 
-/* Skal ikke lenger kunne velges (fra april 24). Oppgavene er overført fra NAV-kontor til NAY. */
-export enum DeprecatedSykepengestoppArsakType {
-  BESTRIDELSE_SYKMELDING = "BESTRIDELSE_SYKMELDING",
-  TILBAKEDATERT_SYKMELDING = "TILBAKEDATERT_SYKMELDING",
-}
-
 export enum ValidSykepengestoppArsakType {
   MEDISINSK_VILKAR = "MEDISINSK_VILKAR",
   AKTIVITETSKRAV = "AKTIVITETSKRAV",
   MANGLENDE_MEDVIRKING = "MANGLENDE_MEDVIRKING",
 }
 
-export type SykepengestoppArsakType =
-  | DeprecatedSykepengestoppArsakType
-  | ValidSykepengestoppArsakType;
+export type SykepengestoppArsakType = ValidSykepengestoppArsakType;
 
 export const validSykepengestoppArsakTekster: Record<
   ValidSykepengestoppArsakType,
@@ -68,10 +60,6 @@ export const sykepengestoppArsakTekster: Record<
   string
 > = {
   ...validSykepengestoppArsakTekster,
-  [DeprecatedSykepengestoppArsakType.BESTRIDELSE_SYKMELDING]:
-    "Bestridelse av sykmelding (§ 8-4 første ledd)",
-  [DeprecatedSykepengestoppArsakType.TILBAKEDATERT_SYKMELDING]:
-    "Tilbakedatert sykmelding (§ 8-7)",
 };
 
 export interface SykepengestoppArsak {
