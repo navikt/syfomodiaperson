@@ -26,10 +26,7 @@ import { historikkPath } from "@/routers/AppRouter";
 import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import {
-  currentOppfolgingstilfelle,
-  oppfolgingstilfellePersonMock,
-} from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
+import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
 import { veilederBrukerKnytningQueryKeys } from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
 import { behandlerdialogQueryKeys } from "@/data/behandlerdialog/behandlerdialogQueryHooks";
 import {
