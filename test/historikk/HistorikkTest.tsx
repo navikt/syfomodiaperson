@@ -26,7 +26,10 @@ import { historikkPath } from "@/routers/AppRouter";
 import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
+import {
+  currentOppfolgingstilfelle,
+  oppfolgingstilfellePersonMock,
+} from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
 import { veilederBrukerKnytningQueryKeys } from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
 import { behandlerdialogQueryKeys } from "@/data/behandlerdialog/behandlerdialogQueryHooks";
 import {
@@ -296,7 +299,7 @@ describe("Historikk", () => {
   describe("Dialog med behandler", () => {
     const defaultMeldingIPeriode: MeldingDTO = {
       ...defaultMelding,
-      tidspunkt: new Date("2024-06-20"),
+      tidspunkt: DATO_INNENFOR_OPPFOLGINGSTILFELLE,
     };
 
     it("Innkommende false - Veileder som avsender", async () => {
@@ -553,11 +556,9 @@ describe("Historikk", () => {
   });
 
   describe("Sen oppfølging", () => {
-    const DATO_INNENFOR_OPPFOLGING = new Date("2024-06-20");
-
     const senOppfolgingKandidatDefault: SenOppfolgingKandidatResponseDTO = {
       uuid: generateUUID(),
-      createdAt: DATO_INNENFOR_OPPFOLGING,
+      createdAt: DATO_INNENFOR_OPPFOLGINGSTILFELLE,
       personident: ARBEIDSTAKER_DEFAULT.personIdent,
       status: SenOppfolgingStatus.KANDIDAT,
       varselAt: undefined,
@@ -567,13 +568,13 @@ describe("Historikk", () => {
 
     const svar = {
       svar: {
-        svarAt: DATO_INNENFOR_OPPFOLGING,
+        svarAt: DATO_INNENFOR_OPPFOLGINGSTILFELLE,
         onskerOppfolging: OnskerOppfolging.JA,
       },
     };
 
     const varsel = {
-      varselAt: DATO_INNENFOR_OPPFOLGING,
+      varselAt: DATO_INNENFOR_OPPFOLGINGSTILFELLE,
     };
 
     const ferdigbehandlet = {
@@ -581,7 +582,7 @@ describe("Historikk", () => {
       vurderinger: [
         {
           uuid: generateUUID(),
-          createdAt: DATO_INNENFOR_OPPFOLGING,
+          createdAt: DATO_INNENFOR_OPPFOLGINGSTILFELLE,
           type: SenOppfolgingVurderingType.FERDIGBEHANDLET,
           veilederident: VEILEDER_IDENT_DEFAULT,
         },
