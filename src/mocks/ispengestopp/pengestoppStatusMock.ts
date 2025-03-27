@@ -5,7 +5,6 @@ import {
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
 import {
-  DeprecatedSykepengestoppArsakType,
   Status,
   StoppAutomatikk,
   Sykepengestopp,
@@ -16,9 +15,7 @@ const defaultStoppAutomatikk: StoppAutomatikk = {
   enhetNr: { value: ENHET_GAMLEOSLO.nummer },
   virksomhetNr: [{ value: VIRKSOMHET_PONTYPANDY.virksomhetsnummer }],
   sykmeldtFnr: { value: ARBEIDSTAKER_DEFAULT.personIdent },
-  arsakList: [
-    { type: DeprecatedSykepengestoppArsakType.BESTRIDELSE_SYKMELDING },
-  ],
+  arsakList: [{ type: ValidSykepengestoppArsakType.MANGLENDE_MEDVIRKING }],
 };
 
 export const defaultSykepengestopp: Sykepengestopp = {
