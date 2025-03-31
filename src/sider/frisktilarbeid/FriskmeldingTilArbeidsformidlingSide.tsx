@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import Side from "@/sider/Side";
 import Sidetopp from "@/components/Sidetopp";
 import SideLaster from "@/components/SideLaster";
@@ -6,7 +6,7 @@ import * as Tredelt from "@/sider/TredeltSide";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { FriskmeldingTilArbeidsformidling } from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidling";
-import { VeiledningBox } from "@/sider/frisktilarbeid/VeiledningBox";
+import VeiledningBox from "@/sider/frisktilarbeid/VeiledningBox";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import NyttigeLenkerBox from "@/sider/frisktilarbeid/NyttigeLenkerBox";
 
@@ -14,7 +14,7 @@ const texts = {
   title: "Friskmelding til arbeidsformidling",
 };
 
-export const FriskmeldingTilArbeidsformidlingSide = (): ReactElement => {
+export default function FriskmeldingTilArbeidsformidlingSide() {
   const { isLoading, isError } = useVedtakQuery();
 
   return (
@@ -35,4 +35,4 @@ export const FriskmeldingTilArbeidsformidlingSide = (): ReactElement => {
       </SideLaster>
     </Side>
   );
-};
+}

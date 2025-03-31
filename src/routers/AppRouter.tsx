@@ -29,7 +29,7 @@ import { ArbeidsuforhetSide } from "@/sider/arbeidsuforhet/ArbeidsuforhetSide";
 import { ArbeidsuforhetOppfyltSide } from "@/sider/arbeidsuforhet/oppfylt/ArbeidsuforhetOppfyltSide";
 import { Nokkelinformasjon } from "@/sider/nokkelinformasjon/Nokkelinformasjon";
 import { ArbeidsuforhetAvslagSide } from "@/sider/arbeidsuforhet/avslag/ArbeidsuforhetAvslagSide";
-import { FriskmeldingTilArbeidsformidlingSide } from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidlingSide";
+import FriskmeldingTilArbeidsformidlingSide from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidlingSide";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import DialogmoteEndreReferatContainer from "@/sider/dialogmoter/components/referat/DialogmoteEndreReferatContainer";
 import { Arbeidsuforhet } from "@/sider/arbeidsuforhet/Arbeidsuforhet";

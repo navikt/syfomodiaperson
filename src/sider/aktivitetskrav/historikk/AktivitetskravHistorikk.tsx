@@ -65,11 +65,6 @@ const isRelevantForHistorikk = (vurdering: AktivitetskravVurderingDTO) =>
   vurdering.status === AktivitetskravStatus.AVVENT ||
   vurdering.status === AktivitetskravStatus.IKKE_AKTUELL;
 
-const byCreatedAt = (
-  v1: AktivitetskravVurderingDTO,
-  v2: AktivitetskravVurderingDTO
-) => new Date(v2.createdAt).getTime() - new Date(v1.createdAt).getTime();
-
 export const AktivitetskravHistorikk = () => {
   const { data } = useAktivitetskravQuery();
   const vurderinger = data.flatMap((aktivitetskrav) =>
