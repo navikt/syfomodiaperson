@@ -6,8 +6,6 @@ const STATUSLIST = sykepengestoppList;
 
 export const mockIspengestopp = [
   http.get(`${ISPENGESTOPP_ROOT}/person/status`, () => {
-    return !STATUSLIST
-      ? new HttpResponse(null, { status: 204 })
-      : HttpResponse.json(STATUSLIST);
+    return HttpResponse.json(STATUSLIST);
   }),
 ];
