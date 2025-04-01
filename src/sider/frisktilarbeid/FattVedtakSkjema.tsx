@@ -15,7 +15,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { VedtakFraDato } from "@/sider/frisktilarbeid/VedtakFraDato";
 import { addDays, addWeeks } from "@/utils/datoUtils";
 import { useFattVedtak } from "@/data/frisktilarbeid/useFattVedtak";
-import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { VedtakRequestDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import dayjs from "dayjs";
 import { useFriskmeldingTilArbeidsformidlingDocument } from "@/hooks/frisktilarbeid/useFriskmeldingTilArbeidsformidlingDocument";
@@ -45,6 +44,8 @@ const texts = {
     `Foreløpig beregnet maksdato er tidligere enn 12 uker frem: ${dato}`,
   submittedAlert:
     "Vedtaket om friskmelding til arbeidsformidling fattet og sendt til bruker. Ny oppgave er lagt til i oversikten din.",
+  fattVedtakErrorMessage:
+    "Det oppstod en feil. Sjekk at sykmeldt er registrert som arbeidssøker og at perioden ikke overlapper med et eksisterende vedtak.",
 };
 
 function calculateTomDate(fomDato: Date, maksDato: Date | undefined): Date {
@@ -69,12 +70,12 @@ function DatepickerLabel(): ReactNode {
   );
 }
 
-export interface FormValues {
+interface FormValues {
   fraDato: Date;
   begrunnelse: string;
 }
 
-export function FattVedtakSkjema() {
+export default function FattVedtakSkjema() {
   const fattVedtak = useFattVedtak();
   const { getVedtakDocument } = useFriskmeldingTilArbeidsformidlingDocument();
   const { data: maksDato } = useMaksdatoQuery();
@@ -164,7 +165,9 @@ export function FattVedtakSkjema() {
             />
           </div>
           {fattVedtak.isError && (
-            <SkjemaInnsendingFeil error={fattVedtak.error} />
+            <Alert variant="error" size="small" contentMaxWidth={false}>
+              {texts.fattVedtakErrorMessage}
+            </Alert>
           )}
           <div className="flex gap-4">
             <Button

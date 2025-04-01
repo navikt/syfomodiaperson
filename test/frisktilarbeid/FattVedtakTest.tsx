@@ -3,7 +3,7 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import React from "react";
-import { FattVedtakSkjema } from "@/sider/frisktilarbeid/FattVedtakSkjema";
+import FattVedtakSkjema from "@/sider/frisktilarbeid/FattVedtakSkjema";
 import { queryClientWithMockData } from "../testQueryClient";
 import { beforeEach, describe, expect, it } from "vitest";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
