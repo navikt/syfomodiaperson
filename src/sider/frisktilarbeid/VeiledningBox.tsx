@@ -20,13 +20,7 @@ const texts = {
       title:
         "Sjekk om bruker har registrert seg som arbeidssøker. Eventuelt kan du i samråd med den sykmeldte benytte “Registrer arbeidssøker”",
     },
-    hentOppgaveArena: {
-      title: "Start oppgaven «Individuell oppfølging» i Arena",
-      steps: [
-        "Fatt §14a-vedtak i Arena",
-        "Sjekk om bruker har status som arbeidssøker",
-      ],
-    },
+    fatt14aVedtak: "Fatt § 14a-vedtak i Modia arbeidsrettet oppfølging",
     sendVedtak:
       "Send vedtak om Friskmelding til arbeidsformidling, med tilpasset begrunnelse",
     sendGosysOppgave: "Send Gosys-oppgave til NAY",
@@ -64,12 +58,7 @@ function StegForSteg() {
         <List.Item>
           {texts.rutineSteps.registrerSomArbeidssoker.title}
         </List.Item>
-        <List.Item>{texts.rutineSteps.hentOppgaveArena.title}</List.Item>
-        <List as="ul" size="small">
-          {texts.rutineSteps.hentOppgaveArena.steps.map((text, index) => (
-            <List.Item key={index}>{text}</List.Item>
-          ))}
-        </List>
+        <List.Item>{texts.rutineSteps.fatt14aVedtak}</List.Item>
         <List.Item>{texts.rutineSteps.sendVedtak}</List.Item>
         <List.Item>{texts.rutineSteps.sendGosysOppgave}</List.Item>
       </List>
@@ -92,7 +81,7 @@ function Tilleggsinformasjon() {
   );
 }
 
-export function VeiledningBox() {
+export default function VeiledningBox() {
   return (
     <Box background="surface-default" padding="6" className="mb-2">
       <Forberedelser />
