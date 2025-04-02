@@ -7,8 +7,8 @@ import {
 import {
   DeprecatedSykepengestoppArsakType,
   Status,
-  Sykepengestopp,
   StoppAutomatikk,
+  Sykepengestopp,
   ValidSykepengestoppArsakType,
 } from "@/data/pengestopp/types/FlaggPerson";
 
@@ -56,37 +56,28 @@ export const createStatusList = (
   });
 };
 
-const defaultSykepengestoppStoppAutomatikk: Sykepengestopp = {
-  veilederIdent: {
-    value: VEILEDER_DEFAULT.ident,
-  },
-  sykmeldtFnr: {
-    value: ARBEIDSTAKER_DEFAULT.personIdent,
-  },
-  status: Status.STOPP_AUTOMATIKK,
-  virksomhetNr: {
-    value: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-  },
-  opprettet: new Date().toISOString(),
-  enhetNr: {
-    value: "1337",
-  },
+export const stoppAutomatikkManglendeMedvirkning: Sykepengestopp = {
+  ...defaultSykepengestopp,
   arsakList: [{ type: ValidSykepengestoppArsakType.MANGLENDE_MEDVIRKING }],
 };
 
+export const stoppAutomatikkArbeidsuforhet: Sykepengestopp = {
+  ...defaultSykepengestopp,
+  arsakList: [{ type: ValidSykepengestoppArsakType.MEDISINSK_VILKAR }],
+};
+
+export const stoppAutomatikkAktivitetskrav: Sykepengestopp = {
+  ...defaultSykepengestopp,
+  arsakList: [{ type: ValidSykepengestoppArsakType.AKTIVITETSKRAV }],
+};
+
 export const sykepengestoppList = [
-  defaultSykepengestoppStoppAutomatikk,
+  stoppAutomatikkManglendeMedvirkning,
   {
-    ...defaultSykepengestoppStoppAutomatikk,
+    ...stoppAutomatikkAktivitetskrav,
     arsakList: [
       { type: ValidSykepengestoppArsakType.AKTIVITETSKRAV },
       { type: ValidSykepengestoppArsakType.MEDISINSK_VILKAR },
-    ],
-  },
-  {
-    ...defaultSykepengestoppStoppAutomatikk,
-    arsakList: [
-      { type: DeprecatedSykepengestoppArsakType.TILBAKEDATERT_SYKMELDING },
     ],
   },
 ];

@@ -1,7 +1,6 @@
 import React, { ReactElement } from "react";
 import Side from "../../Side";
 import DineSykmeldinger from "../sykmeldinger/DineSykmeldinger";
-import Pengestopp from "../../../components/pengestopp/Pengestopp";
 import SideLaster from "../../../components/SideLaster";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { BistandsbehovOppgaver } from "@/sider/sykmeldinger/VurderBistandsbehov";
@@ -15,7 +14,6 @@ export default function SykmeldingerSide(): ReactElement {
     <Side tittel="Sykmeldinger" aktivtMenypunkt={Menypunkter.SYKMELDINGER}>
       <SideLaster henter={isLoading} hentingFeilet={isError}>
         <div>
-          <Pengestopp sykmeldinger={sykmeldinger} />
           <BistandsbehovOppgaver />
           <Heading size="xlarge" className="text-center mt-4 mb-2">
             Sykmeldinger
