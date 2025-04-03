@@ -11,6 +11,7 @@ import {
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { Modal } from "@navikt/ds-react";
+import { tittelFromSoknadstype } from "@/utils/sykepengesoknadUtils";
 
 const texts = {
   dato: {
@@ -23,7 +24,6 @@ const texts = {
     sender: "Sender...",
     utkastTilKorrigering: "Utkast til endring",
   },
-  tittel: "Søknad om sykepenger",
   teaserTekst: "Gjelder perioden",
   close: "Lukk",
 };
@@ -84,7 +84,9 @@ const FremtidigSoknadTeaser = ({
                   )
                 )}
               </small>
-              <span className="inngangspanel__tittel">{texts.tittel}</span>
+              <span className="inngangspanel__tittel">
+                {tittelFromSoknadstype(soknad.soknadstype)}
+              </span>
             </h3>
             <p className="inngangspanel__status js-status">
               {textSoknadStatus(soknad.status)}

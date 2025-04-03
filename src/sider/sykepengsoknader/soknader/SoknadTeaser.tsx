@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import {
   erSendtTilBeggeMenIkkeSamtidig,
   getSendtTilSuffix,
+  tittelFromSoknadstype,
 } from "@/utils/sykepengesoknadUtils";
 import {
   tilLesbarDatoMedArstall,
@@ -26,9 +27,6 @@ const texts = {
   fremtidig: "Planlagt",
   avbrutt: "Avbrutt av deg",
   teaser: "Gjelder perioden",
-  utland: "Søknad om å beholde sykepenger utenfor EØS\n",
-  reisetilskudd: "Søknad om reisetilskudd",
-  tittel: "Søknad om sykepenger",
 };
 
 const textDato = (dato?: string) => {
@@ -203,20 +201,6 @@ const TeaserStatus = ({ soknad }: TeaserComponentProps) => (
     )}
   </p>
 );
-
-const tittelFromSoknadstype = (soknadstype: Soknadstype) => {
-  switch (soknadstype) {
-    case Soknadstype.OPPHOLD_UTLAND: {
-      return texts.utland;
-    }
-    case Soknadstype.REISETILSKUDD: {
-      return texts.reisetilskudd;
-    }
-    default: {
-      return texts.tittel;
-    }
-  }
-};
 
 const TeaserTittel = ({ soknad }: TeaserComponentProps) => (
   <h3 className="js-title" id={`soknad-header-${soknad.id}`}>

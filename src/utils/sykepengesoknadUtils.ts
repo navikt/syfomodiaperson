@@ -1,7 +1,17 @@
 import {
+  Soknadstype,
   SporsmalDTO,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+
+const texts = {
+  utland: "Søknad om å beholde sykepenger utenfor EØS\n",
+  reisetilskudd: "Søknad om reisetilskudd",
+  gradertReisetilskudd: "Søknad om gradert reisetilskudd",
+  friskmeldingTilArbeidsformidling:
+    "Søknad om sykepenger - Friskmelding til arbeidsformidling",
+  tittel: "Søknad om sykepenger",
+};
 
 export const getTidligsteSendtDato = (soknad: any) => {
   if (soknad.sendtTilNAVDato && soknad.sendtTilArbeidsgiverDato) {
@@ -98,4 +108,24 @@ export const erOpprettetSisteAar = (
   const ETT_AAR_SIDEN = new Date();
   ETT_AAR_SIDEN.setFullYear(ETT_AAR_SIDEN.getFullYear() - 1);
   return sykepengesoknad.opprettetDato >= ETT_AAR_SIDEN;
+};
+
+export const tittelFromSoknadstype = (soknadstype: Soknadstype) => {
+  switch (soknadstype) {
+    case Soknadstype.OPPHOLD_UTLAND: {
+      return texts.utland;
+    }
+    case Soknadstype.REISETILSKUDD: {
+      return texts.reisetilskudd;
+    }
+    case Soknadstype.GRADERT_REISETILSKUDD: {
+      return texts.gradertReisetilskudd;
+    }
+    case Soknadstype.FRISKMELDT_TIL_ARBEIDSFORMIDLING: {
+      return texts.friskmeldingTilArbeidsformidling;
+    }
+    default: {
+      return texts.tittel;
+    }
+  }
 };
