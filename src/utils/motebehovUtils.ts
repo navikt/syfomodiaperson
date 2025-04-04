@@ -32,6 +32,16 @@ export const motebehovUbehandlet = (
   );
 };
 
+export const filterBehandledeMotebehov = (
+  motebehovListe: MotebehovVeilederDTO[]
+): MotebehovVeilederDTO[] => {
+  return motebehovListe.filter(
+    (motebehov: MotebehovVeilederDTO): boolean =>
+      motebehov.behandletTidspunkt != null &&
+      motebehov.behandletVeilederIdent != null
+  );
+};
+
 export const erAlleMotebehovSvarBehandlet = (
   motebehovListe: MotebehovVeilederDTO[]
 ): boolean => {
