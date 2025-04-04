@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  filterBehandledeMotebehov,
   fjerneDuplikatInnsendereMotebehov,
   hentSistBehandletMotebehov,
   motebehovlisteMedKunJaSvar,
@@ -36,7 +37,9 @@ const texts = {
 export default function BehandleMotebehovKnapp() {
   const { data: motebehovData } = useMotebehovQuery();
   const motebehovListe = motebehovlisteMedKunJaSvar(motebehovData);
-  const sistBehandletMotebehov = hentSistBehandletMotebehov(motebehovListe);
+  const behandledeMotebehov = filterBehandledeMotebehov(motebehovData);
+  const sistBehandletMotebehov =
+    hentSistBehandletMotebehov(behandledeMotebehov);
   const ubehandledeMotebehov = motebehovUbehandlet(motebehovListe);
   const unikeInnsendereUbehandledeMotebehov =
     fjerneDuplikatInnsendereMotebehov(ubehandledeMotebehov);
