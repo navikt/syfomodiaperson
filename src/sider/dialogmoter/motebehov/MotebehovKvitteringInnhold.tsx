@@ -43,9 +43,9 @@ export default function MotebehovKvitteringInnhold({
       />
       <VStack>
         {tekst}
-        {motebehov?.motebehovSvar?.forklaring && (
+        {motebehov?.formValues.begrunnelse && (
           <VStack>
-            <i>{motebehov?.motebehovSvar?.forklaring}</i>
+            <i>{motebehov?.formValues.begrunnelse}</i>
           </VStack>
         )}
       </VStack>

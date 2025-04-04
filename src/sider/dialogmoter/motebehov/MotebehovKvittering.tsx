@@ -97,7 +97,7 @@ export const MotebehovKvitteringInnholdArbeidstaker = ({
 }: MotebehovKvitteringInnholdArbeidstakerProps) => {
   const sykmeldt = useNavBrukerData();
   const arbeidstakerOnskerMote =
-    arbeidstakersMotebehov?.motebehovSvar?.harMotebehov;
+    arbeidstakersMotebehov?.formValues.harMotebehov;
   const skjemaTypeMotebehov =
     skjemaType ?? arbeidstakersMotebehov?.skjemaType ?? null;
 
@@ -146,7 +146,7 @@ export function MotebehovArbeidsgiverKvittering({
   motebehov: MotebehovVeilederDTO;
   skjemaType?: MotebehovSkjemaType | null;
 }) {
-  const arbeidsgiverOnskerMote = motebehov.motebehovSvar.harMotebehov;
+  const arbeidsgiverOnskerMote = motebehov.formValues.harMotebehov;
   const skjemaTypeMotebehov = skjemaType ?? motebehov.skjemaType;
   const ikonAltTekst = `Arbeidsgiver ${arbeidsgiverNavnEllerTomStreng(
     motebehov.opprettetAvNavn

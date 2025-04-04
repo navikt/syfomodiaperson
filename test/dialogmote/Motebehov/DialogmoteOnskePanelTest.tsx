@@ -54,10 +54,14 @@ const tidligereOppfolgingstilfelle = {
 const arbeidstakerSvarNeiUbehandlet: MotebehovVeilederDTO = {
   ...svartJaMotebehovArbeidstakerUbehandletMock,
   opprettetDato: datoInnenforOppfolgingstilfelle,
-  motebehovSvar: {
+  formValues: {
     harMotebehov: false,
-    forklaring: "Trenger ikke møte",
-  },
+    begrunnelse: "Trenger ikke møte",
+    onskerSykmelderDeltar: null,
+    onskerSykmelderDeltarBegrunnelse: null,
+    onskerTolk: null,
+    tolkSprak: null,
+  }
 };
 
 const nyttOppfolgingstilfelle = {

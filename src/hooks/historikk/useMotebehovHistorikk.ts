@@ -12,8 +12,8 @@ import {
 import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
 
 function getTextForMeldtMotebehov(meldtMotebehov: MeldtMotebehov): string {
-  const meldtBehovBegrunnelse = meldtMotebehov.begrunnelse
-    ? `Begrunnelse: ${meldtMotebehov.begrunnelse}`
+  const meldtBehovBegrunnelse = meldtMotebehov.formValues.begrunnelse
+    ? `Begrunnelse: ${meldtMotebehov.formValues.begrunnelse}`
     : "";
 
   switch (meldtMotebehov.innmelder) {
@@ -55,11 +55,11 @@ function createHistorikkEventsFromMeldtMotebehov(
 }
 
 function getTextForSvarMotebehov(svarMotebehov: SvarMotebehov): string {
-  const svarResultat = svarMotebehov.motebehovSvar.harMotebehov
+  const svarResultat = svarMotebehov.formValues.harMotebehov
     ? "svarte ja på ønske om dialogmøte."
     : "svarte nei på ønske om dialogmøte.";
-  const svarForklaring = svarMotebehov.motebehovSvar.forklaring
-    ? `Svaret var: ${svarMotebehov.motebehovSvar.forklaring}`
+  const svarForklaring = svarMotebehov.formValues.begrunnelse
+    ? `Svaret var: ${svarMotebehov.formValues.begrunnelse}`
     : "";
 
   switch (svarMotebehov.innmelder) {
