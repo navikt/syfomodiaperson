@@ -3,14 +3,9 @@ import Statuspanel, {
   StatusNokkelopplysning,
   Statusopplysninger,
 } from "../../../components/speiling/Statuspanel";
-import {
-  VerktoyKnapp,
-  Verktoylinje,
-} from "../../../components/speiling/Verktoylinje";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import SykmeldingNokkelOpplysning from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingNokkelOpplysning";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { erOpprettetSisteAar } from "@/utils/sykepengesoknadUtils";
 import SykepengerOgSaksbehandlingstiderLink from "@/utils/soknad-felles/SykepengerOgSaksbehandlingstiderLink";
 
 const texts = {
@@ -18,7 +13,6 @@ const texts = {
   sendtTilNav: "Sendt til Nav",
   innsendt: "Dato sendt",
   tittel: "Utbetaling av sykepenger",
-  endre: "Endre søknad",
   tilNav: "Sykepenger utbetales etter at Nav har innvilget søknaden.",
 };
 
@@ -27,8 +21,6 @@ interface Props {
 }
 
 const SendtSoknadSelvstendigStatuspanel = ({ soknad }: Props): ReactElement => {
-  const visEndreknapp = erOpprettetSisteAar(soknad);
-
   return (
     <Statuspanel>
       <Statusopplysninger>
@@ -42,11 +34,6 @@ const SendtSoknadSelvstendigStatuspanel = ({ soknad }: Props): ReactElement => {
           <SykepengerOgSaksbehandlingstiderLink tittel={texts.tilNav} />
         </SykmeldingNokkelOpplysning>
       </Statusopplysninger>
-      {visEndreknapp && (
-        <Verktoylinje>
-          <VerktoyKnapp>{texts.endre}</VerktoyKnapp>
-        </Verktoylinje>
-      )}
     </Statuspanel>
   );
 };

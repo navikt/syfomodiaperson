@@ -4,10 +4,8 @@ import Statuspanel, {
   StatusNokkelopplysning,
   Statusopplysninger,
 } from "../../../components/speiling/Statuspanel";
-import VerktoylinjeGjenapne from "../soknad-felles/VerktoylinjeGjenapneSoknad";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { SykmeldingUtdragContainer } from "../SykmeldingUtdragContainer";
-import { erOpprettetSisteAar } from "@/utils/sykepengesoknadUtils";
 import { Heading } from "@navikt/ds-react";
 import TilbakeTilSoknader from "@/sider/sykepengsoknader/soknad-felles/TilbakeTilSoknader";
 
@@ -35,7 +33,6 @@ const AvbruttSoknadArbeidstakerStatuspanel = ({
           <p>{tilLesbarDatoMedArstall(soknad.avbruttDato)}</p>
         </StatusNokkelopplysning>
       </Statusopplysninger>
-      {erOpprettetSisteAar(soknad) && <VerktoylinjeGjenapne />}
     </Statuspanel>
   );
 };

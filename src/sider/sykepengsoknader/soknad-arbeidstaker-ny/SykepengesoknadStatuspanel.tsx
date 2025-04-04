@@ -4,21 +4,12 @@ import Statuspanel, {
   Statusopplysninger,
 } from "../../../components/speiling/Statuspanel";
 import Sykepengetekst from "../../../utils/soknad-felles/Sykepengetekst";
-import {
-  VerktoyKnapp,
-  Verktoylinje,
-} from "../../../components/speiling/Verktoylinje";
-import {
-  Soknadstatus,
-  SykepengesoknadDTO,
-} from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { erOpprettetSisteAar } from "@/utils/sykepengesoknadUtils";
+import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import SoknadStatustekst from "@/utils/soknad-felles/SoknadStatustekst";
 
 const texts = {
   status: "Status",
   tittel: "Utbetaling av sykepenger",
-  endre: "Endre søknad",
 };
 
 interface StatusOgSykepengeopplysningerProps {
@@ -48,17 +39,9 @@ interface SykepengesoknadStatuspanelProps {
 const SykepengesoknadStatuspanel = ({
   soknad,
 }: SykepengesoknadStatuspanelProps): ReactElement => {
-  const visEndreknapp =
-    erOpprettetSisteAar(soknad) && soknad.status === Soknadstatus.SENDT;
-
   return (
     <Statuspanel enKolonne>
       <StatusOgSykepengeopplysninger soknad={soknad} />
-      {visEndreknapp && (
-        <Verktoylinje>
-          <VerktoyKnapp>{texts.endre}</VerktoyKnapp>
-        </Verktoylinje>
-      )}
     </Statuspanel>
   );
 };
