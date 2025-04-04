@@ -25,8 +25,7 @@ export const motebehovUbehandlet = (
 ): MotebehovVeilederDTO[] => {
   return motebehovListe.filter(
     (motebehov) =>
-      motebehov.motebehovSvar &&
-      motebehov.motebehovSvar.harMotebehov &&
+      motebehov.formValues.harMotebehov &&
       !motebehov.behandletTidspunkt &&
       !motebehov.behandletVeilederIdent
   );
@@ -74,8 +73,7 @@ export const motebehovlisteMedKunJaSvar = (
   motebehovliste: MotebehovVeilederDTO[]
 ): MotebehovVeilederDTO[] => {
   return motebehovliste.filter(
-    (motebehov) =>
-      motebehov.motebehovSvar && motebehov.motebehovSvar.harMotebehov
+    (motebehov) => motebehov.formValues.harMotebehov
   );
 };
 
@@ -101,7 +99,7 @@ export const toMotebehovTilbakemeldingDTO = (
 };
 
 export function isArbeidstakerMotebehov(motebehov: MotebehovVeilederDTO) {
-  return motebehov.opprettetAv === motebehov.aktorId;
+  return motebehov.innmelderType === MotebehovInnmelder.ARBEIDSTAKER;
 }
 
 export function mapMotebehovToMeldtMotebehovFormat(
@@ -122,8 +120,7 @@ export function mapMotebehovToMeldtMotebehovFormat(
           : MotebehovInnmelder.ARBEIDSGIVER,
         arbeidstakerFnr: motebehov.arbeidstakerFnr,
         virksomhetsnummer: motebehov.virksomhetsnummer,
-        begrunnelse: motebehov.motebehovSvar.forklaring,
-        tildeltEnhet: motebehov.tildeltEnhet,
+        formValues: motebehov.formValues,
         behandletTidspunkt: motebehov.behandletTidspunkt,
         behandletVeilederIdent: motebehov.behandletVeilederIdent,
         skjemaType: MotebehovSkjemaType.MELD_BEHOV,
@@ -149,8 +146,7 @@ export function mapMotebehovToSvarMotebehovFormat(
           : MotebehovInnmelder.ARBEIDSGIVER,
         arbeidstakerFnr: motebehov.arbeidstakerFnr,
         virksomhetsnummer: motebehov.virksomhetsnummer,
-        motebehovSvar: motebehov.motebehovSvar,
-        tildeltEnhet: motebehov.tildeltEnhet,
+        formValues: motebehov.formValues,
         behandletTidspunkt: motebehov.behandletTidspunkt,
         behandletVeilederIdent: motebehov.behandletVeilederIdent,
         skjemaType: MotebehovSkjemaType.SVAR_BEHOV,

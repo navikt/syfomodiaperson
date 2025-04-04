@@ -39,9 +39,13 @@ function mockMotebehov(motebehov: MotebehovVeilederDTO[]) {
 const motebehovArbeidstakerInTilfelleUbehandletMock: MotebehovVeilederDTO = {
   ...meldtMotebehovArbeidstakerBehandletMock,
   opprettetDato: addDays(new Date(), -25),
-  motebehovSvar: {
+  formValues: {
     harMotebehov: true,
-    forklaring: "Jeg, arbeidstaker, har behov for møte.",
+    begrunnelse: "Jeg, arbeidstaker, har behov for møte.",
+    onskerSykmelderDeltar: null,
+    onskerSykmelderDeltarBegrunnelse: null,
+    onskerTolk: null,
+    tolkSprak: null,
   },
   behandletTidspunkt: null,
   behandletVeilederIdent: null,
@@ -51,9 +55,13 @@ const motebehovArbeidstakerInTilfelleUbehandletMock: MotebehovVeilederDTO = {
 const motebehovArbeidsgiverInTilfelleUbehandletMock: MotebehovVeilederDTO = {
   ...svartNeiMotebehovArbeidsgiverUbehandletMock,
   opprettetDato: addDays(new Date(), -25),
-  motebehovSvar: {
+  formValues: {
     harMotebehov: true,
-    forklaring: "Jeg, arbeidsgiver, har behov for møte.",
+    begrunnelse: "Jeg, arbeidsgiver, har behov for møte.",
+    onskerSykmelderDeltar: null,
+    onskerSykmelderDeltarBegrunnelse: null,
+    onskerTolk: null,
+    tolkSprak: null,
   },
   behandletTidspunkt: null,
   behandletVeilederIdent: null,
@@ -64,9 +72,13 @@ const motebehovArbeidstakerInTilfelleSvartJaUbehandletMock: MotebehovVeilederDTO
   {
     ...meldtMotebehovArbeidstakerBehandletMock,
     opprettetDato: addDays(new Date(), -25),
-    motebehovSvar: {
+    formValues: {
       harMotebehov: true,
-      forklaring: "Jeg, arbeidstaker, svarer ja til møte.",
+      begrunnelse: "Jeg, arbeidstaker, svarer ja til møte.",
+      onskerSykmelderDeltar: null,
+      onskerSykmelderDeltarBegrunnelse: null,
+      onskerTolk: null,
+      tolkSprak: null,
     },
     behandletTidspunkt: null,
     behandletVeilederIdent: null,
@@ -77,9 +89,13 @@ const motebehovArbeidsgiverInTilfelleSvartNeiUbehandletMock: MotebehovVeilederDT
   {
     ...svartNeiMotebehovArbeidsgiverUbehandletMock,
     opprettetDato: addDays(new Date(), -25),
-    motebehovSvar: {
+    formValues: {
       harMotebehov: false,
-      forklaring: "Jeg, arbeidsgiver, svarer nei til møte.",
+      begrunnelse: "Jeg, arbeidsgiver, svarer nei til møte.",
+      onskerSykmelderDeltar: null,
+      onskerSykmelderDeltarBegrunnelse: null,
+      onskerTolk: null,
+      tolkSprak: null,
     },
     behandletTidspunkt: null,
     behandletVeilederIdent: null,

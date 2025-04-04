@@ -1,5 +1,5 @@
 import React from "react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import Motelandingsside from "@/sider/dialogmoter/Motelandingsside";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
@@ -21,21 +21,35 @@ import { MemoryRouter } from "react-router-dom";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { dialogmoteunntakQueryKeys } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
+import {
+  MotebehovInnmelder,
+  MotebehovSkjemaType,
+  MotebehovVeilederDTO,
+} from "@/data/motebehov/types/motebehovTypes";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: any;
 
-const motebehovData = [
+const motebehovData: MotebehovVeilederDTO[] = [
   {
-    UUID: "33333333-c987-4b57-a401-a3915ec11411",
     id: "33333333-ee10-44b6-bddf-54d049ef25f2",
-    opprettetDato: "2019-01-08T13:53:57.047+01:00",
-    aktorId: "1",
+    opprettetDato: new Date(),
     opprettetAv: "1",
     virksomhetsnummer: "000999000",
-    tildeltEnhet: "0330",
-    behandletTidspunkt: "2019-01-10T13:53:57.047+01:00",
+    behandletTidspunkt: new Date(),
     behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
+    opprettetAvNavn: VEILEDER_IDENT_DEFAULT.toString(),
+    arbeidstakerFnr: ARBEIDSTAKER_DEFAULT.personIdent,
+    innmelderType: MotebehovInnmelder.ARBEIDSTAKER,
+    skjemaType: MotebehovSkjemaType.SVAR_BEHOV,
+    formValues: {
+      harMotebehov: false,
+      begrunnelse: null,
+      onskerSykmelderDeltar: null,
+      onskerSykmelderDeltarBegrunnelse: null,
+      onskerTolk: null,
+      tolkSprak: null,
+    },
   },
 ];
 
