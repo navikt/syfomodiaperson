@@ -59,6 +59,7 @@ export function SykepengesoknadSide() {
           switch (soknad?.soknadstype) {
             case Soknadstype.SELVSTENDIGE_OG_FRILANSERE:
             case Soknadstype.ARBEIDSLEDIG:
+            case Soknadstype.FRISKMELDT_TIL_ARBEIDSFORMIDLING:
             case Soknadstype.ANNET_ARBEIDSFORHOLD: {
               return (
                 <SykepengesoknadSelvstendig
@@ -107,6 +108,17 @@ export function SykepengesoknadSide() {
             }
             case Soknadstype.REISETILSKUDD: {
               return <SykepengesoknadReisetilskudd soknad={soknad} />;
+            }
+            case Soknadstype.GRADERT_REISETILSKUDD: {
+              switch (soknad.status) {
+                case Soknadstatus.SENDT:
+                case Soknadstatus.KORRIGERT: {
+                  return <SykepengesoknadReisetilskudd soknad={soknad} />;
+                }
+                default: {
+                  return <IkkeInnsendtSoknad />;
+                }
+              }
             }
           }
 
