@@ -30,7 +30,7 @@ interface Props {
 
 const texts = {
   begrunnelse: "Begrunnelse",
-  sykmelder: "Hvorfor ønsker du at leg/behandler deltar i møtet?",
+  sykmelder: "Hvorfor ønsker du at lege/behandler deltar i møtet?",
   tolk: "Hva slags tolk har dere behov for?",
 };
 
@@ -59,7 +59,7 @@ export default function MotebehovKvitteringInnhold({
 
       {motebehov?.formValues.begrunnelse && (
         <Textarea
-          label={texts.sykmelder}
+          label={texts.begrunnelse}
           readOnly={true}
           value={motebehov?.formValues.begrunnelse}
           minRows={1}
