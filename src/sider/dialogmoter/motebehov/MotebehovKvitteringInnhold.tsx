@@ -34,6 +34,51 @@ const texts = {
   tolk: "Hva slags tolk har dere behov for?",
 };
 
+interface MotebehovSvarProps {
+  motebehov: MotebehovVeilederDTO;
+}
+
+export const MotebehovSvar = ({
+  motebehov: {
+    formValues: {
+      begrunnelse,
+      onskerSykmelderDeltar,
+      onskerSykmelderDeltarBegrunnelse,
+      onskerTolk,
+      tolkSprak,
+    },
+  },
+}: MotebehovSvarProps) => (
+  <>
+    {begrunnelse && (
+      <Textarea
+        label={texts.begrunnelse}
+        value={begrunnelse}
+        readOnly={true}
+        minRows={1}
+      />
+    )}
+
+    {onskerSykmelderDeltar && onskerSykmelderDeltarBegrunnelse && (
+      <Textarea
+        label={texts.sykmelder}
+        value={onskerSykmelderDeltarBegrunnelse}
+        readOnly={true}
+        minRows={1}
+      />
+    )}
+
+    {onskerTolk && tolkSprak && (
+      <Textarea
+        label={texts.tolk}
+        value={tolkSprak}
+        readOnly={true}
+        minRows={1}
+      />
+    )}
+  </>
+);
+
 export default function MotebehovKvitteringInnhold({
   deltakerOnskerMote,
   ikonAltTekst,
@@ -57,34 +102,7 @@ export default function MotebehovKvitteringInnhold({
           <div>{tekst}</div>
         </VStack>
       </HStack>
-
-      {motebehov?.formValues.begrunnelse && (
-        <Textarea
-          label={texts.begrunnelse}
-          readOnly={true}
-          value={motebehov?.formValues.begrunnelse}
-          minRows={1}
-        />
-      )}
-
-      {motebehov?.formValues.onskerSykmelderDeltar &&
-        motebehov?.formValues.onskerSykmelderDeltarBegrunnelse && (
-          <Textarea
-            label={texts.sykmelder}
-            readOnly={true}
-            value={motebehov?.formValues.onskerSykmelderDeltarBegrunnelse}
-            minRows={1}
-          />
-        )}
-
-      {motebehov?.formValues.onskerTolk && motebehov?.formValues.tolkSprak && (
-        <Textarea
-          label={texts.tolk}
-          readOnly={true}
-          value={motebehov.formValues.tolkSprak}
-          minRows={1}
-        />
-      )}
+      {motebehov && <MotebehovSvar motebehov={motebehov} />}
     </Box>
   );
 }
