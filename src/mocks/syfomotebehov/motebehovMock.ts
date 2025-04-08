@@ -14,7 +14,6 @@ import { addDays } from "@/utils/datoUtils";
 const svartJaMotebehovArbeidstakerUbehandletMock: MotebehovVeilederDTO = {
   id: "11111111-ee10-44b6-bddf-54d049ef25f9",
   opprettetDato: addDays(new Date(), -25),
-  opprettetAv: "1",
   opprettetAvNavn: ARBEIDSTAKER_DEFAULT_FULL_NAME,
   arbeidstakerFnr: ARBEIDSTAKER_DEFAULT.personIdent,
   virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
@@ -35,7 +34,6 @@ const svartJaMotebehovArbeidstakerUbehandletMock: MotebehovVeilederDTO = {
 export const meldtMotebehovArbeidstakerBehandletMock: MotebehovVeilederDTO = {
   id: "33333333-ee10-44b6-bddf-54d049ef25f2",
   opprettetDato: addDays(new Date(), -10),
-  opprettetAv: "1",
   opprettetAvNavn: ARBEIDSTAKER_DEFAULT_FULL_NAME,
   arbeidstakerFnr: ARBEIDSTAKER_DEFAULT.personIdent,
   virksomhetsnummer: "000999000",
@@ -46,10 +44,10 @@ export const meldtMotebehovArbeidstakerBehandletMock: MotebehovVeilederDTO = {
   formValues: {
     harMotebehov: true,
     begrunnelse: "Møter er bra!",
-    onskerSykmelderDeltar: null,
-    onskerSykmelderDeltarBegrunnelse: null,
-    onskerTolk: null,
-    tolkSprak: null,
+    onskerSykmelderDeltar: true,
+    onskerSykmelderDeltarBegrunnelse: "Ønsker at legen min er tilstede",
+    onskerTolk: false,
+    tolkSprak: "Har behov for svensk tolk",
   },
 };
 
@@ -57,7 +55,6 @@ export const svartNeiMotebehovArbeidsgiverUbehandletMock: MotebehovVeilederDTO =
   {
     id: "22222222-9e9b-40b0-bd1c-d1c39dc5f481",
     opprettetDato: addDays(new Date(), -5),
-    opprettetAv: "1902690001009",
     opprettetAvNavn: "Are Arbeidsgiver",
     arbeidstakerFnr: ARBEIDSTAKER_DEFAULT.personIdent,
     virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
@@ -68,10 +65,10 @@ export const svartNeiMotebehovArbeidsgiverUbehandletMock: MotebehovVeilederDTO =
     formValues: {
       harMotebehov: false,
       begrunnelse: "Jeg liker ikke møte!!",
-      onskerSykmelderDeltar: null,
-      onskerSykmelderDeltarBegrunnelse: null,
-      onskerTolk: null,
-      tolkSprak: null,
+      onskerSykmelderDeltar: true,
+      onskerSykmelderDeltarBegrunnelse: "Ønsker lege tilstede",
+      onskerTolk: true,
+      tolkSprak: "Svensk",
     },
   };
 

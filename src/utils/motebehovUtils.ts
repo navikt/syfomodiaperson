@@ -63,7 +63,7 @@ export function fjerneDuplikatInnsendereMotebehov(
 ): MotebehovVeilederDTO[] {
   return motebehovListe.filter((motebehov, index) => {
     const funnetIndex = motebehovListe.findIndex((motebehovInner) => {
-      return motebehovInner.opprettetAv === motebehov.opprettetAv;
+      return motebehovInner.innmelderType === motebehov.innmelderType;
     });
     return funnetIndex >= index;
   });
@@ -113,7 +113,6 @@ export function mapMotebehovToMeldtMotebehovFormat(
       return {
         id: motebehov.id,
         opprettetDato: motebehov.opprettetDato,
-        opprettetAv: motebehov.opprettetAv,
         opprettetAvNavn: motebehov.opprettetAvNavn,
         innmelder: isArbeidstakerMotebehov(motebehov)
           ? MotebehovInnmelder.ARBEIDSTAKER
@@ -139,7 +138,6 @@ export function mapMotebehovToSvarMotebehovFormat(
       return {
         id: motebehov.id,
         opprettetDato: motebehov.opprettetDato,
-        opprettetAv: motebehov.opprettetAv,
         opprettetAvNavn: motebehov.opprettetAvNavn,
         innmelder: isArbeidstakerMotebehov(motebehov)
           ? MotebehovInnmelder.ARBEIDSTAKER

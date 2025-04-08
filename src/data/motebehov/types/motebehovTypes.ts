@@ -1,14 +1,13 @@
 export interface MotebehovVeilederDTO {
   id: string;
   opprettetDato: Date;
-  opprettetAv: string;
   opprettetAvNavn: string | null;
   arbeidstakerFnr: string;
   virksomhetsnummer: string;
   behandletTidspunkt: Date | null;
   behandletVeilederIdent: string | null;
-  innmelderType: MotebehovInnmelder; //TODO: Usikker på når det kommer ARBEIDSTAKER | ARBEIDSGIVER,
-  skjemaType: MotebehovSkjemaType | null; // Skal tydeligvis ikke være nullable
+  innmelderType: MotebehovInnmelder;
+  skjemaType: MotebehovSkjemaType;
   formValues: MotebehovFormValuesOutputDTO;
 }
 
@@ -30,7 +29,6 @@ export enum MotebehovSkjemaType {
 export interface MeldtMotebehov {
   id: string;
   opprettetDato: Date;
-  opprettetAv: string;
   opprettetAvNavn: string | null;
   innmelder: MotebehovInnmelder;
   arbeidstakerFnr: string;
@@ -44,7 +42,6 @@ export interface MeldtMotebehov {
 export interface SvarMotebehov {
   id: string;
   opprettetDato: Date;
-  opprettetAv: string;
   opprettetAvNavn: string | null;
   innmelder: MotebehovInnmelder;
   arbeidstakerFnr: string;
