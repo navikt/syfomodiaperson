@@ -102,14 +102,6 @@ export const erVaerKlarOverAt = (s: SporsmalDTO): boolean =>
 
 export const erTilSlutt = (s: SporsmalDTO): boolean => s.tag === "TIL_SLUTT";
 
-export const erOpprettetSisteAar = (
-  sykepengesoknad: SykepengesoknadDTO
-): boolean => {
-  const ETT_AAR_SIDEN = new Date();
-  ETT_AAR_SIDEN.setFullYear(ETT_AAR_SIDEN.getFullYear() - 1);
-  return sykepengesoknad.opprettetDato >= ETT_AAR_SIDEN;
-};
-
 export const tittelFromSoknadstype = (soknadstype: Soknadstype) => {
   switch (soknadstype) {
     case Soknadstype.OPPHOLD_UTLAND: {
