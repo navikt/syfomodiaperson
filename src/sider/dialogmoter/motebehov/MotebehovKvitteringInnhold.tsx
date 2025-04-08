@@ -45,6 +45,7 @@ export default function MotebehovKvitteringInnhold({
       background={"surface-alt-3-subtle"}
       padding={"3"}
       className={"[&>*:not(:last-child)]:mb-4"}
+      borderRadius={"medium"}
     >
       <HStack>
         <img
