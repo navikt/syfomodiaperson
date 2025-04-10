@@ -13,6 +13,7 @@ import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
 import { daysFromToday } from "../../testUtils";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
+import { behandlendeEnhetMockResponse } from "@/mocks/syfobehandlendeenhet/behandlendeEnhetMock";
 
 let queryClient: any;
 
@@ -50,15 +51,12 @@ describe("PersonkortVisning", () => {
   });
 
   it("Skal vise VisningEnhet, dersom visning for enhet er valgt", async () => {
-    const enhetNavn = "Nav Drammen";
+    const enhetNavn = "NAV Oppfølging utland";
     queryClient.setQueryData(
       behandlendeEnhetQueryKeys.behandlendeEnhet(
         ARBEIDSTAKER_DEFAULT.personIdent
       ),
-      () => ({
-        navn: enhetNavn,
-        enhetId: "1234",
-      })
+      () => behandlendeEnhetMockResponse
     );
     render(
       <QueryClientProvider client={queryClient}>

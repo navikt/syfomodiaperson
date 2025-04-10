@@ -1,24 +1,38 @@
 import { SYFOBEHANDLENDEENHET_ROOT } from "@/apiConstants";
-import {
-  behandlendeEnhetMock,
-  behandlendeEnhetNavUtlandMock,
-  personDTOMock,
-} from "./behandlendeEnhetMock";
-
-import { BehandlendeEnhet } from "@/data/behandlendeenhet/types/BehandlendeEnhet";
+import { behandlendeEnhetMockResponse } from "./behandlendeEnhetMock";
 import { http, HttpResponse } from "msw";
+import {
+  BehandlendeEnhetResponseDTO,
+  TildelOppfolgingsenhetRequestDTO,
+  TildelOppfolgingsenhetResponseDTO,
+} from "@/data/behandlendeenhet/types/BehandlendeEnhetDTOs";
 
-let behandlendeEnhet: BehandlendeEnhet = behandlendeEnhetMock;
+let behandlendeEnhet: BehandlendeEnhetResponseDTO =
+  behandlendeEnhetMockResponse;
 
 export const mockSyfobehandlendeenhet = [
   http.get(`${SYFOBEHANDLENDEENHET_ROOT}/personident`, () => {
     return HttpResponse.json(behandlendeEnhet);
   }),
-  http.post(`${SYFOBEHANDLENDEENHET_ROOT}/person`, () => {
-    behandlendeEnhet =
-      behandlendeEnhet === behandlendeEnhetNavUtlandMock
-        ? behandlendeEnhetMock
-        : behandlendeEnhetNavUtlandMock;
-    return HttpResponse.json(personDTOMock);
-  }),
+  http.post<object, TildelOppfolgingsenhetRequestDTO>(
+    `${SYFOBEHANDLENDEENHET_ROOT}/oppfolgingsenhet-tildelinger`,
+    async ({ request }) => {
+      const body = await request.json();
+      const responseDTO: TildelOppfolgingsenhetResponseDTO = {
+        tildelinger: body.personidenter.map((personident: string) => ({
+          personident,
+          oppfolgingsenhet: body.oppfolgingsenhet,
+        })),
+        errors: [],
+      };
+      behandlendeEnhet = {
+        ...behandlendeEnhet,
+        oppfolgingsenhet: {
+          enhetId: body.oppfolgingsenhet,
+          navn: "Nav testkontor",
+        },
+      };
+      return HttpResponse.json(responseDTO);
+    }
+  ),
 ];

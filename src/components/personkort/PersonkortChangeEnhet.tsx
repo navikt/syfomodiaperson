@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { BodyLong, Button, Heading, Modal } from "@navikt/ds-react";
-import { BehandlendeEnhet } from "@/data/behandlendeenhet/types/BehandlendeEnhet";
 import styled from "styled-components";
 import { useChangeEnhet } from "@/components/personkort/useChangeEnhet";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
+import {
+  BehandlendeEnhetResponseDTO,
+  TildelOppfolgingsenhetRequestDTO,
+} from "@/data/behandlendeenhet/types/BehandlendeEnhetDTOs";
+import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 
 const texts = {
   endre: "Endre til",
@@ -30,7 +34,7 @@ const ButtonGroup = styled.div`
 `;
 
 interface PersonkortChangeEnhetProps {
-  behandlendeEnhet: BehandlendeEnhet;
+  behandlendeEnhet: BehandlendeEnhetResponseDTO;
 }
 
 const PersonkortChangeEnhet = ({
@@ -40,9 +44,12 @@ const PersonkortChangeEnhet = ({
   const fnr = useValgtPersonident();
   const changeEnhet = useChangeEnhet(fnr);
 
-  const isCurrentlyNavUtland = behandlendeEnhet.enhetId === NAV_UTLAND;
+  const isCurrentlyNavUtland =
+    behandlendeEnhet.oppfolgingsenhet.enhetId === NAV_UTLAND;
   const heading = `${texts.endre} ${
-    isCurrentlyNavUtland ? "geografisk enhet" : "Nav utland"
+    isCurrentlyNavUtland
+      ? `geografisk enhet (${behandlendeEnhet.geografiskEnhet.enhetId})`
+      : "Nav utland"
   }`;
 
   const modalText1 = isCurrentlyNavUtland
@@ -53,11 +60,16 @@ const PersonkortChangeEnhet = ({
     : texts.toUtland.contentModal2;
 
   const updateEnhet = () => {
-    changeEnhet.mutate({
-      personident: fnr,
-      isNavUtland: !isCurrentlyNavUtland,
+    const newEnhet = isCurrentlyNavUtland
+      ? behandlendeEnhet.geografiskEnhet.enhetId
+      : NAV_UTLAND;
+    const requestDTO: TildelOppfolgingsenhetRequestDTO = {
+      personidenter: [fnr],
+      oppfolgingsenhet: newEnhet,
+    };
+    changeEnhet.mutate(requestDTO, {
+      onSuccess: () => setOpen(false),
     });
-    setOpen(false);
   };
 
   return (
@@ -82,10 +94,17 @@ const PersonkortChangeEnhet = ({
             <p>{modalText1}</p>
             <p>{modalText2}</p>
           </BodyLong>
+          {changeEnhet.isError && (
+            <SkjemaInnsendingFeil error={changeEnhet.error} />
+          )}
         </Modal.Body>
         <Modal.Footer>
           <ButtonGroup>
-            <Button variant="danger" onClick={updateEnhet}>
+            <Button
+              variant="danger"
+              onClick={updateEnhet}
+              loading={changeEnhet.isPending}
+            >
               {heading}
             </Button>
             <Button variant="tertiary" onClick={() => setOpen(false)}>
