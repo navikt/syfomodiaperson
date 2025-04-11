@@ -2,21 +2,16 @@ import React from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import PersonkortEnhet from "@/components/personkort/PersonkortEnhet";
-import {
-  stubBehandlendeEnhetApi,
-  stubChangeEnhetApi,
-} from "../../stubs/stubSyfobehandlendeEnhet";
-import { expect, describe, it, beforeEach } from "vitest";
+import { stubBehandlendeEnhetApi } from "../../stubs/stubSyfobehandlendeEnhet";
+import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithAktivBruker } from "../../testQueryClient";
-import { PersonDTO } from "@/data/behandlendeenhet/types/BehandlendeEnhet";
-import { DEFAULT_GODKJENT_FNR } from "@/mocks/util/requestUtil";
+import { BehandlendeEnhetResponseDTO } from "@/data/behandlendeenhet/types/BehandlendeEnhetDTOs";
 
 let queryClient: any;
 
-const enhet = { enhetId: "1234", navn: "Nav Drammen" };
-const person: PersonDTO = {
-  personident: DEFAULT_GODKJENT_FNR,
-  isNavUtland: false,
+const behandlendeEnhetUtenOverstyring: BehandlendeEnhetResponseDTO = {
+  geografiskEnhet: { enhetId: "1234", navn: "Nav Drammen" },
+  oppfolgingsenhet: { enhetId: "1234", navn: "Nav Drammen" },
 };
 
 const renderPersonkortEnhet = () =>
@@ -32,7 +27,7 @@ describe("PersonkortEnhet", () => {
   });
 
   it("viser behandlende enhet fra API", async () => {
-    stubBehandlendeEnhetApi(enhet);
+    stubBehandlendeEnhetApi(behandlendeEnhetUtenOverstyring);
     renderPersonkortEnhet();
 
     expect(await screen.findByText("Nav Drammen")).to.exist;
@@ -51,8 +46,7 @@ describe("PersonkortEnhet", () => {
   });
 
   it("viser endre enhet til Nav utland", async () => {
-    stubBehandlendeEnhetApi(enhet);
-    stubChangeEnhetApi(person);
+    stubBehandlendeEnhetApi(behandlendeEnhetUtenOverstyring);
     renderPersonkortEnhet();
 
     expect(await screen.findByRole("button", { name: "Endre til Nav utland" }))
@@ -60,13 +54,17 @@ describe("PersonkortEnhet", () => {
   });
 
   it("viser endre enhet til geografisk enhet hvis allerede Nav utland", async () => {
-    const utlandEnhet = { enhetId: "0393", navn: "Nav Utland" };
+    const utlandEnhet: BehandlendeEnhetResponseDTO = {
+      geografiskEnhet: { enhetId: "1235", navn: "Nav Asker" },
+      oppfolgingsenhet: { enhetId: "0393", navn: "Nav Utland" },
+    };
     stubBehandlendeEnhetApi(utlandEnhet);
-    stubChangeEnhetApi(person);
     renderPersonkortEnhet();
 
     expect(
-      await screen.findByRole("button", { name: "Endre til geografisk enhet" })
+      await screen.findByRole("button", {
+        name: "Endre til geografisk enhet (1235)",
+      })
     ).to.exist;
   });
 });
