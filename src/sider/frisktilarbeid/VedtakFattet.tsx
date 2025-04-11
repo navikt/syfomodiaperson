@@ -46,10 +46,12 @@ const visInfotrygdAlert = (status: InfotrygdStatus): boolean => {
 
 interface Props {
   vedtak: VedtakResponseDTO;
+  setIsNyVurderingStarted: (value: boolean) => void;
 }
 
 export function VedtakFattet({
   vedtak: { fom, infotrygdStatus, tom, uuid },
+  setIsNyVurderingStarted,
 }: Props) {
   const ferdigbehandleVedtak = useFerdigbehandleVedtak(uuid);
   const vedtakStartDateText = tilLesbarDatoMedArUtenManedNavn(fom);
@@ -60,6 +62,7 @@ export function VedtakFattet({
     ferdigbehandleVedtak.mutate(undefined, {
       onSuccess: () => {
         setNotification({ message: texts.oppgaveAvsluttetAlert });
+        setIsNyVurderingStarted(false);
       },
     });
   }

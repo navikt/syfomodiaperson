@@ -6,16 +6,38 @@ import {
   InfotrygdStatus,
   VedtakRequestDTO,
   VedtakResponseDTO,
+  VilkarResponseDTO,
 } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import dayjs from "dayjs";
 import { addWeeks } from "@/utils/datoUtils";
 import { http, HttpResponse } from "msw";
+
+export const defaultVedtak: VedtakResponseDTO = {
+  uuid: "123",
+  createdAt: new Date(),
+  veilederident: "Z999999",
+  begrunnelse: "En begrunnelse",
+  fom: new Date(),
+  tom: addWeeks(new Date(), 12),
+  document: [],
+  infotrygdStatus: InfotrygdStatus.KVITTERING_OK,
+  ferdigbehandletAt: undefined,
+  ferdigbehandletBy: undefined,
+};
+
+export const defaultVilkar: VilkarResponseDTO = {
+  isArbeidssoker: true,
+};
 
 let vedtak: VedtakResponseDTO[] = [];
 
 export const mockIsfrisktilarbeid = [
   http.get(`${ISFRISKTILARBEID_ROOT}/frisktilarbeid/vedtak`, () => {
     return HttpResponse.json(vedtak);
+  }),
+
+  http.get(`${ISFRISKTILARBEID_ROOT}/frisktilarbeid/vedtak-vilkar`, () => {
+    return HttpResponse.json(defaultVilkar);
   }),
 
   http.post<object, VedtakRequestDTO>(
@@ -57,16 +79,3 @@ export const mockIsfrisktilarbeid = [
     }
   ),
 ];
-
-export const defaultVedtak: VedtakResponseDTO = {
-  uuid: "123",
-  createdAt: new Date(),
-  veilederident: "Z999999",
-  begrunnelse: "En begrunnelse",
-  fom: new Date(),
-  tom: addWeeks(new Date(), 12),
-  document: [],
-  infotrygdStatus: InfotrygdStatus.KVITTERING_OK,
-  ferdigbehandletAt: undefined,
-  ferdigbehandletBy: undefined,
-};

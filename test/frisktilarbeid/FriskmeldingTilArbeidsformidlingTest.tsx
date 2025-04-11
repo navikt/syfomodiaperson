@@ -7,12 +7,16 @@ import React from "react";
 import { FriskmeldingTilArbeidsformidling } from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidling";
 import { beforeEach, describe, expect, it } from "vitest";
 import { clickButton, getButton } from "../testUtils";
-import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
+import {
+  VedtakResponseDTO,
+  VilkarResponseDTO,
+} from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { createVedtak } from "./frisktilarbeidTestData";
 import dayjs from "dayjs";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
+import { defaultVilkar } from "@/mocks/isfrisktilarbeid/mockIsfrisktilarbeid";
 
 let queryClient: QueryClient;
 
@@ -68,6 +72,10 @@ describe("FriskmeldingTilArbeidsformidling", () => {
       dayjs().subtract(1, "days").toDate(),
       dayjs().toDate()
     );
+    queryClient.setQueryData(
+      vedtakQueryKeys.vilkar(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => defaultVilkar
+    );
     mockVedtak([vedtak]);
 
     renderFriskmeldingTilArbeidsformidling();
@@ -82,5 +90,28 @@ describe("FriskmeldingTilArbeidsformidling", () => {
         name: "Fatt vedtak",
       })
     );
+  });
+
+  it("viser alert for manglende arbeidssokerregistrering hvis person ikke arbeidssoker", () => {
+    const vilkar: VilkarResponseDTO = {
+      isArbeidssoker: false,
+    };
+    queryClient.setQueryData(
+      vedtakQueryKeys.vilkar(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => vilkar
+    );
+
+    renderFriskmeldingTilArbeidsformidling();
+
+    expect(
+      screen.getByText(
+        "Her kan du fatte et nytt vedtak for § 8-5 friskmelding til arbeidsformidling. Husk å sjekke at alle nødvendige forutsetninger er oppfylt før ordningen starter."
+      )
+    ).to.exist;
+    expect(
+      screen.getByText(
+        "Den sykemeldte er ikke registrert som arbeidssøker. Dette må gjøres før et nytt vedtak kan fattes."
+      )
+    ).to.exist;
   });
 });

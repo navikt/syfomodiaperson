@@ -22,7 +22,10 @@ const renderVedtakFattet = (vedtak: VedtakResponseDTO) =>
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
         <NotificationProvider>
-          <VedtakFattet vedtak={vedtak} />
+          <VedtakFattet
+            vedtak={vedtak}
+            setIsNyVurderingStarted={() => void 0}
+          />
         </NotificationProvider>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>
