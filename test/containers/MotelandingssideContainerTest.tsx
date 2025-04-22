@@ -26,6 +26,7 @@ import {
   MotebehovSkjemaType,
   MotebehovVeilederDTO,
 } from "@/data/motebehov/types/motebehovTypes";
+import { defaultFormValue } from "@/mocks/syfomotebehov/motebehovMock";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: any;
@@ -42,13 +43,7 @@ const motebehovData: MotebehovVeilederDTO[] = [
     innmelderType: MotebehovInnmelder.ARBEIDSTAKER,
     skjemaType: MotebehovSkjemaType.SVAR_BEHOV,
     formValues: {
-      harMotebehov: false,
-      begrunnelse: null,
-      onskerSykmelderDeltar: null,
-      onskerSykmelderDeltarBegrunnelse: null,
-      onskerTolk: null,
-      tolkSprak: null,
-      formSnapshot: null,
+      ...defaultFormValue,
     },
   },
 ];

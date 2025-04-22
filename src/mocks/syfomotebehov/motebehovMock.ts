@@ -224,15 +224,6 @@ export const svartJaMotebehovArbeidstakerUbehandletMock: MotebehovVeilederDTO =
       MotebehovSkjemaType.SVAR_BEHOV,
       MotebehovInnmelder.ARBEIDSTAKER
     ),
-    // formValues: {
-    //   harMotebehov: true,
-    //   begrunnelse: "Jeg svarer på møtebehov ved 17 uker",
-    //   onskerSykmelderDeltar: null,
-    //   onskerSykmelderDeltarBegrunnelse: null,
-    //   onskerTolk: null,
-    //   tolkSprak: null,
-    //   formSnapshot: null,
-    // },
   };
 
 export const meldtMotebehovArbeidstakerBehandletMock = (

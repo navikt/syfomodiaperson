@@ -36,7 +36,7 @@ export default function MotebehovKvitteringInnhold({
   tekst,
 }: Props) {
   return (
-    <Box padding={"3"} borderRadius={"medium"} shadow={"medium"}>
+    <Box padding={"3"} borderRadius={"medium"}>
       <VStack gap={"4"}>
         <HStack>
           <img
