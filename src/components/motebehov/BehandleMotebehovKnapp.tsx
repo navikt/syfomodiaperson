@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   fjerneDuplikatInnsendereMotebehov,
+  getMotebehovInActiveTilfelle,
   hentSistBehandletMotebehov,
   motebehovlisteMedKunJaSvar,
   motebehovUbehandlet,
@@ -20,6 +21,7 @@ import { useBehandleMotebehovAndSendTilbakemelding } from "@/data/motebehov/useB
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { CheckmarkCircleFillIcon } from "@navikt/aksel-icons";
+import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 const texts = {
   fjernOppgave: "Jeg har vurdert behovet. Oppgaven kan fjernes fra oversikten.",
@@ -35,8 +37,15 @@ const texts = {
 
 export default function BehandleMotebehovKnapp() {
   const { data: motebehovData } = useMotebehovQuery();
+  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const motebehovListe = motebehovlisteMedKunJaSvar(motebehovData);
-  const sistBehandletMotebehov = hentSistBehandletMotebehov(motebehovListe);
+  const sistBehandletMotebehov = hentSistBehandletMotebehov(motebehovData);
+  const isSistBehandletMotebehovInnenforTilfelle = sistBehandletMotebehov
+    ? getMotebehovInActiveTilfelle(
+        [sistBehandletMotebehov],
+        latestOppfolgingstilfelle
+      ).length > 0
+    : false;
   const ubehandledeMotebehov = motebehovUbehandlet(motebehovListe);
   const unikeInnsendereUbehandledeMotebehov =
     fjerneDuplikatInnsendereMotebehov(ubehandledeMotebehov);
@@ -92,7 +101,7 @@ export default function BehandleMotebehovKnapp() {
         Send
       </Button>
     </VStack>
-  ) : sistBehandletMotebehov ? (
+  ) : isSistBehandletMotebehovInnenforTilfelle ? (
     <div className="flex flex-row gap-1 items-center">
       <CheckmarkCircleFillIcon
         fontSize="2em"

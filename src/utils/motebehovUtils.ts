@@ -32,6 +32,9 @@ export const motebehovUbehandlet = (
   );
 };
 
+const isBehandletMotebehov = (motebehov: MotebehovVeilederDTO): boolean =>
+  motebehov.behandletTidspunkt != null;
+
 export const erAlleMotebehovSvarBehandlet = (
   motebehovListe: MotebehovVeilederDTO[]
 ): boolean => {
@@ -47,8 +50,9 @@ export const harUbehandletMotebehov = (
 export const hentSistBehandletMotebehov = (
   motebehovListe: MotebehovVeilederDTO[]
 ): MotebehovVeilederDTO | undefined =>
-  [...motebehovListe].sort(
-    (mb1: MotebehovVeilederDTO, mb2: MotebehovVeilederDTO) => {
+  [...motebehovListe]
+    .filter(isBehandletMotebehov)
+    .sort((mb1: MotebehovVeilederDTO, mb2: MotebehovVeilederDTO) => {
       if (mb2.behandletTidspunkt === mb1.behandletTidspunkt) {
         return 0;
       }
@@ -56,8 +60,7 @@ export const hentSistBehandletMotebehov = (
         return 1;
       }
       return -1;
-    }
-  )[0];
+    })[0];
 
 export function fjerneDuplikatInnsendereMotebehov(
   motebehovListe: MotebehovVeilederDTO[]

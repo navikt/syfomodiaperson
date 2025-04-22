@@ -11,23 +11,24 @@ import {
 } from "@/data/motebehov/types/motebehovTypes";
 import { addDays } from "@/utils/datoUtils";
 
-const svartJaMotebehovArbeidstakerUbehandletMock: MotebehovVeilederDTO = {
-  id: "11111111-ee10-44b6-bddf-54d049ef25f9",
-  opprettetDato: addDays(new Date(), -25),
-  aktorId: "1",
-  opprettetAv: "1",
-  opprettetAvNavn: ARBEIDSTAKER_DEFAULT_FULL_NAME,
-  arbeidstakerFnr: ARBEIDSTAKER_DEFAULT.personIdent,
-  virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-  motebehovSvar: {
-    harMotebehov: true,
-    forklaring: "Jeg svarer på møtebehov ved 17 uker",
-  },
-  tildeltEnhet: ENHET_GRUNERLOKKA.nummer,
-  behandletTidspunkt: null,
-  behandletVeilederIdent: null,
-  skjemaType: MotebehovSkjemaType.SVAR_BEHOV,
-};
+export const svartJaMotebehovArbeidstakerUbehandletMock: MotebehovVeilederDTO =
+  {
+    id: "11111111-ee10-44b6-bddf-54d049ef25f9",
+    opprettetDato: addDays(new Date(), -25),
+    aktorId: "1",
+    opprettetAv: "1",
+    opprettetAvNavn: ARBEIDSTAKER_DEFAULT_FULL_NAME,
+    arbeidstakerFnr: ARBEIDSTAKER_DEFAULT.personIdent,
+    virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+    motebehovSvar: {
+      harMotebehov: true,
+      forklaring: "Jeg svarer på møtebehov ved 17 uker",
+    },
+    tildeltEnhet: ENHET_GRUNERLOKKA.nummer,
+    behandletTidspunkt: null,
+    behandletVeilederIdent: null,
+    skjemaType: MotebehovSkjemaType.SVAR_BEHOV,
+  };
 
 export const meldtMotebehovArbeidstakerBehandletMock: MotebehovVeilederDTO = {
   id: "33333333-ee10-44b6-bddf-54d049ef25f2",
