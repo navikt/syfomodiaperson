@@ -34,7 +34,6 @@ const motebehovData: MotebehovVeilederDTO[] = [
   {
     id: "33333333-ee10-44b6-bddf-54d049ef25f2",
     opprettetDato: new Date(),
-    opprettetAv: "1",
     virksomhetsnummer: "000999000",
     behandletTidspunkt: new Date(),
     behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
@@ -49,6 +48,7 @@ const motebehovData: MotebehovVeilederDTO[] = [
       onskerSykmelderDeltarBegrunnelse: null,
       onskerTolk: null,
       tolkSprak: null,
+      formSnapshot: null,
     },
   },
 ];

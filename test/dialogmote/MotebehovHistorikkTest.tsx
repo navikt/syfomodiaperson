@@ -58,7 +58,7 @@ describe("MotebehovHistorikk", () => {
   it("viser kun møtebehov fra arbeidsgiver", () => {
     queryClient.setQueryData(
       motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [svartNeiMotebehovArbeidsgiverUbehandletMock]
+      () => [svartNeiMotebehovArbeidsgiverUbehandletMock()]
     );
 
     renderMotebehovHistorikk();
@@ -71,7 +71,7 @@ describe("MotebehovHistorikk", () => {
   it("viser kun møtebehov fra arbeidstaker", () => {
     queryClient.setQueryData(
       motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [meldtMotebehovArbeidstakerBehandletMock]
+      () => [meldtMotebehovArbeidstakerBehandletMock()]
     );
 
     renderMotebehovHistorikk();
@@ -84,7 +84,7 @@ describe("MotebehovHistorikk", () => {
   it("viser at møtebehovet er behandlet", () => {
     queryClient.setQueryData(
       motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [meldtMotebehovArbeidstakerBehandletMock]
+      () => [meldtMotebehovArbeidstakerBehandletMock()]
     );
 
     renderMotebehovHistorikk();

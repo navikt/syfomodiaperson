@@ -9,8 +9,9 @@ import {
   VEILEDER_IDENT_DEFAULT,
 } from "@/mocks/common/mockConstants";
 import {
+  defaultFormValue,
   svartJaMotebehovArbeidstakerUbehandletMock,
-  svartNeiMotebehovArbeidsgiverUbehandletMock,
+  svartNeiMotebehovArbeidsgiverUbehandletMock
 } from "@/mocks/syfomotebehov/motebehovMock";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import { addDays, addWeeks, toDatePrettyPrint } from "@/utils/datoUtils";
@@ -46,7 +47,7 @@ const arbeidstakerSvarJaBehandlet: MotebehovVeilederDTO = {
 const tidligereOppfolgingstilfelle = {
   arbeidstakerSvarJa: arbeidstakerSvarJaBehandlet,
   arbeidsgiverSvarNeiUbehandlet: {
-    ...svartNeiMotebehovArbeidsgiverUbehandletMock,
+    ...svartNeiMotebehovArbeidsgiverUbehandletMock(),
     opprettetDato: datoUtenforOppfolgingstilfelle,
   },
 };
@@ -55,12 +56,9 @@ const arbeidstakerSvarNeiUbehandlet: MotebehovVeilederDTO = {
   ...svartJaMotebehovArbeidstakerUbehandletMock,
   opprettetDato: datoInnenforOppfolgingstilfelle,
   formValues: {
+    ...defaultFormValue,
     harMotebehov: false,
     begrunnelse: "Trenger ikke møte",
-    onskerSykmelderDeltar: null,
-    onskerSykmelderDeltarBegrunnelse: null,
-    onskerTolk: null,
-    tolkSprak: null,
   }
 };
 
@@ -71,7 +69,7 @@ const nyttOppfolgingstilfelle = {
     behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
   },
   arbeidsgiverSvarNeiUbehandlet: {
-    ...svartNeiMotebehovArbeidsgiverUbehandletMock,
+    ...svartNeiMotebehovArbeidsgiverUbehandletMock(),
     opprettetDato: datoInnenforOppfolgingstilfelle,
   },
 };
