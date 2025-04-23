@@ -6,7 +6,7 @@ describe("motebehovUtils", () => {
     it("Returnerer ingenting om det er ingen motebehov", () => {
       expect(hentSistBehandletMotebehov([])).to.be.undefined;
     });
-    it("Returnerer første motebehov i lista når ingen er behandlet", () => {
+    it("Returnerer ingen motebehov i lista når ingen er behandlet", () => {
       const motebehovUbehandlet1 = {
         behandletTidspunkt: null,
       };
@@ -15,7 +15,7 @@ describe("motebehovUtils", () => {
       };
       expect(
         hentSistBehandletMotebehov([motebehovUbehandlet1, motebehovUbehandlet2])
-      ).to.be.deep.equal(motebehovUbehandlet1);
+      ).to.be.undefined;
     });
     it("Returnerer motebehov med siste behandlet tidspunkt", () => {
       const motebehovBehandlet1 = {
