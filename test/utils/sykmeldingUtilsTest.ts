@@ -890,7 +890,6 @@ describe("sykmeldingUtils", () => {
       SykmeldingStatus.AVBRUTT,
       SykmeldingStatus.TIL_SENDING,
     ];
-    const unwantedBehandlingsutfall = [BehandlingsutfallStatusDTO.INVALID];
 
     const sykmeldingListContainsStatuser = (
       sykmeldinger: SykmeldingOldFormat[],
