@@ -6,6 +6,7 @@ import {
   SykmeldingPeriodeDTO,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
 import { manederMellomDatoer } from "@/utils/datoUtils";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import dayjs from "dayjs";
@@ -207,9 +208,11 @@ export const newAndActivatedSykmeldinger = (
 ) => {
   return sykmeldinger.filter((sykmelding) => {
     return (
-      sykmelding.status === SykmeldingStatus.BEKREFTET ||
-      sykmelding.status === SykmeldingStatus.SENDT ||
-      sykmelding.status === SykmeldingStatus.NY
+      sykmelding.behandlingsutfall.status !=
+        BehandlingsutfallStatusDTO.INVALID &&
+      (sykmelding.status === SykmeldingStatus.BEKREFTET ||
+        sykmelding.status === SykmeldingStatus.SENDT ||
+        sykmelding.status === SykmeldingStatus.NY)
     );
   });
 };

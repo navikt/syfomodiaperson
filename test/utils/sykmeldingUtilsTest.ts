@@ -890,6 +890,7 @@ describe("sykmeldingUtils", () => {
       SykmeldingStatus.AVBRUTT,
       SykmeldingStatus.TIL_SENDING,
     ];
+    const unwantedBehandlingsutfall = [BehandlingsutfallStatusDTO.INVALID];
 
     const sykmeldingListContainsStatuser = (
       sykmeldinger: SykmeldingOldFormat[],
@@ -900,7 +901,7 @@ describe("sykmeldingUtils", () => {
       });
     };
 
-    it("Returns a list containing only sykmeldinger with status SENDT, BEKREFTET, and NY", () => {
+    it("Returns a list containing no INVALID sykmeldinger only sykmeldinger with status SENDT, BEKREFTET, and NY", () => {
       const sykmeldinglistWithEveryStatus: SykmeldingOldFormat[] = Object.keys(
         SykmeldingStatus
       ).map((status) => {
@@ -945,6 +946,27 @@ describe("sykmeldingUtils", () => {
             status,
           } as SykmeldingOldFormat;
         });
+
+      const newAndUsedSykmeldinger = newAndActivatedSykmeldinger(
+        sykmeldinglistWithEveryStatus
+      );
+
+      expect(newAndUsedSykmeldinger.length).to.equal(0);
+    });
+    it("Returns an empty list if only unwanted behandlingsutfall in sykmelding list", () => {
+      const sykmeldinglistWithEveryStatus: SykmeldingOldFormat[] = Object.keys(
+        SykmeldingStatus
+      ).map((status) => {
+        return {
+          ...baseSykmelding,
+          status,
+          behandlingsutfall: {
+            status: BehandlingsutfallStatusDTO.INVALID,
+            begrunnelse: "Begrunnelse",
+            ruleHits: [],
+          },
+        } as SykmeldingOldFormat;
+      });
 
       const newAndUsedSykmeldinger = newAndActivatedSykmeldinger(
         sykmeldinglistWithEveryStatus
