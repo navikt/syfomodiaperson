@@ -11,7 +11,7 @@ import {
 import {
   defaultFormValue,
   svartJaMotebehovArbeidstakerUbehandletMock,
-  svartNeiMotebehovArbeidsgiverUbehandletMock
+  svartNeiMotebehovArbeidsgiverUbehandletMock,
 } from "@/mocks/syfomotebehov/motebehovMock";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import { addDays, addWeeks, toDatePrettyPrint } from "@/utils/datoUtils";
@@ -59,7 +59,7 @@ const arbeidstakerSvarNeiUbehandlet: MotebehovVeilederDTO = {
     ...defaultFormValue,
     harMotebehov: false,
     begrunnelse: "Trenger ikke møte",
-  }
+  },
 };
 
 const nyttOppfolgingstilfelle = {
