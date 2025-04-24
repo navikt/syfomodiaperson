@@ -187,6 +187,112 @@ const SYKMELDING_MYE_INFO = {
   harRedusertArbeidsgiverperiode: true,
 };
 
+const SYKMELDING_INVALID = {
+  id: "0baf68f6-d926-431a-85fa-245bba515e42",
+  mottattTidspunkt: "2020-10-14T20:00:00Z",
+  behandlingsutfall: {
+    status: "INVALID",
+    ruleHits: [
+      {
+        messageForSender: "For lang",
+        messageForUser: "For lang",
+        ruleName: "INVALID",
+        ruleStatus: "INVALID",
+      },
+    ],
+  },
+  legekontorOrgnummer: "223456789",
+  sykmeldingsperioder: [
+    {
+      fom: dayjs(new Date()).subtract(10, "days").toJSON(),
+      tom: dayjs(new Date()).add(360, "days").toJSON(),
+      gradert: null,
+      behandlingsdager: null,
+      innspillTilArbeidsgiver: null,
+      type: "AKTIVITET_IKKE_MULIG",
+      aktivitetIkkeMulig: {
+        medisinskArsak: {
+          beskrivelse: "andre årsaker til sykefravær",
+          arsak: ["AKTIVITET_FORHINDRER_BEDRING"],
+        },
+        arbeidsrelatertArsak: {
+          beskrivelse: "andre årsaker til sykefravær",
+          arsak: ["ANNET"],
+        },
+      },
+      reisetilskudd: false,
+    },
+  ],
+  sykmeldingStatus: {
+    statusEvent: "APEN",
+    timestamp: "2020-10-22T05:58:56.351983Z",
+    arbeidsgiver: null,
+  },
+  medisinskVurdering: {
+    hovedDiagnose: {
+      kode: "L87",
+      system: "ICPC-2",
+      tekst: "Bursitt/tendinitt/synovitt IKA",
+    },
+    biDiagnoser: [
+      {
+        kode: "L87",
+        system: "ICPC-2",
+        tekst: "Bursitt/tendinitt/synovitt IKA",
+      },
+    ],
+    annenFraversArsak: null,
+    svangerskap: false,
+    yrkesskade: false,
+    yrkesskadeDato: "2020-10-15",
+  },
+  skjermesForPasient: false,
+  prognose: {
+    arbeidsforEtterPeriode: true,
+    hensynArbeidsplassen: "Må ta det pent",
+    erIArbeid: {
+      egetArbeidPaSikt: true,
+      annetArbeidPaSikt: true,
+      arbeidFOM: "2020-10-15",
+      vurderingsdato: "2020-10-15",
+    },
+    erIkkeIArbeid: null,
+  },
+  tiltakArbeidsplassen: null,
+  tiltakNAV:
+    "Pasienten har plager som er kommet tilbake etter operasjon. Det er nylig tatt MR bildet som viser forandringer i hånd som mulig må opereres. Venter på time. Det er mulig sykemledingen vil vare utover aktuell sm periode. ",
+  andreTiltak: null,
+  meldingTilNAV: null,
+  meldingTilArbeidsgiver: null,
+  kontaktMedPasient: {
+    kontaktDato: null,
+    begrunnelseIkkeKontakt: null,
+  },
+  behandletTidspunkt: "2020-10-14T22:00:00Z",
+  behandler: {
+    fornavn: "Frida",
+    mellomnavn: "Perma",
+    etternavn: "Frost",
+    aktoerId: "190269000101",
+    fnr: "99900011122",
+    hpr: null,
+    her: null,
+    adresse: {
+      gate: "Kirkegårdsveien 3",
+      postnummer: 1348,
+      kommune: "Rykkinn",
+      postboks: null,
+      land: "Country",
+    },
+    tlf: "tel:94431152",
+  },
+  syketilfelleStartDato: "2020-10-15",
+  navnFastlege: "Victor Frankenstein",
+  egenmeldt: false,
+  papirsykmelding: false,
+  harRedusertArbeidsgiverperiode: false,
+};
+
 export const sykmeldingerMock = [
   {
     id: "1111a750-7f39-4974-9a06-fa1775f987d1",
@@ -1038,7 +1144,7 @@ export const sykmeldingerMock = [
           },
         },
         fom: "2020-03-22",
-        tom: "2020-006-22",
+        tom: "2020-06-22",
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -1874,110 +1980,6 @@ export const sykmeldingerMock = [
       land: "NO",
     },
   },
-  {
-    id: "0baf68f6-d926-431a-85fa-245bba515e42",
-    mottattTidspunkt: "2020-10-14T20:00:00Z",
-    behandlingsutfall: {
-      status: "INVALID",
-      ruleHits: [
-        {
-          messageForSender: "For lang",
-          messageForUser: "For lang",
-          ruleName: "INVALID",
-          ruleStatus: "INVALID",
-        },
-      ],
-    },
-    legekontorOrgnummer: "223456789",
-    sykmeldingsperioder: [
-      {
-        fom: dayjs(new Date()).subtract(10, "days").toJSON(),
-        tom: dayjs(new Date()).add(360, "days").toJSON(),
-        gradert: null,
-        behandlingsdager: null,
-        innspillTilArbeidsgiver: null,
-        type: "AKTIVITET_IKKE_MULIG",
-        aktivitetIkkeMulig: {
-          medisinskArsak: {
-            beskrivelse: "andre årsaker til sykefravær",
-            arsak: ["AKTIVITET_FORHINDRER_BEDRING"],
-          },
-          arbeidsrelatertArsak: {
-            beskrivelse: "andre årsaker til sykefravær",
-            arsak: ["ANNET"],
-          },
-        },
-        reisetilskudd: false,
-      },
-    ],
-    sykmeldingStatus: {
-      statusEvent: "APEN",
-      timestamp: "2020-10-22T05:58:56.351983Z",
-      arbeidsgiver: null,
-    },
-    medisinskVurdering: {
-      hovedDiagnose: {
-        kode: "L87",
-        system: "ICPC-2",
-        tekst: "Bursitt/tendinitt/synovitt IKA",
-      },
-      biDiagnoser: [
-        {
-          kode: "L87",
-          system: "ICPC-2",
-          tekst: "Bursitt/tendinitt/synovitt IKA",
-        },
-      ],
-      annenFraversArsak: null,
-      svangerskap: false,
-      yrkesskade: false,
-      yrkesskadeDato: "2020-10-15",
-    },
-    skjermesForPasient: false,
-    prognose: {
-      arbeidsforEtterPeriode: true,
-      hensynArbeidsplassen: "Må ta det pent",
-      erIArbeid: {
-        egetArbeidPaSikt: true,
-        annetArbeidPaSikt: true,
-        arbeidFOM: "2020-10-15",
-        vurderingsdato: "2020-10-15",
-      },
-      erIkkeIArbeid: null,
-    },
-    tiltakArbeidsplassen: null,
-    tiltakNAV:
-      "Pasienten har plager som er kommet tilbake etter operasjon. Det er nylig tatt MR bildet som viser forandringer i hånd som mulig må opereres. Venter på time. Det er mulig sykemledingen vil vare utover aktuell sm periode. ",
-    andreTiltak: null,
-    meldingTilNAV: null,
-    meldingTilArbeidsgiver: null,
-    kontaktMedPasient: {
-      kontaktDato: null,
-      begrunnelseIkkeKontakt: null,
-    },
-    behandletTidspunkt: "2020-10-14T22:00:00Z",
-    behandler: {
-      fornavn: "Frida",
-      mellomnavn: "Perma",
-      etternavn: "Frost",
-      aktoerId: "190269000101",
-      fnr: "99900011122",
-      hpr: null,
-      her: null,
-      adresse: {
-        gate: "Kirkegårdsveien 3",
-        postnummer: 1348,
-        kommune: "Rykkinn",
-        postboks: null,
-        land: "Country",
-      },
-      tlf: "tel:94431152",
-    },
-    syketilfelleStartDato: "2020-10-15",
-    navnFastlege: "Victor Frankenstein",
-    egenmeldt: false,
-    papirsykmelding: false,
-    harRedusertArbeidsgiverperiode: false,
-  },
   SYKMELDING_MYE_INFO,
+  SYKMELDING_INVALID,
 ];

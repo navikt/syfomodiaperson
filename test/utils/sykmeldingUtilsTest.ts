@@ -952,7 +952,7 @@ describe("sykmeldingUtils", () => {
 
       expect(newAndUsedSykmeldinger.length).to.equal(0);
     });
-    it("Returns an empty list if only unwanted behandlingsutfall in sykmelding list", () => {
+    it("Returns an empty list if only invalid behandlingsutfall in sykmelding list", () => {
       const sykmeldinglistWithEveryStatus: SykmeldingOldFormat[] = Object.keys(
         SykmeldingStatus
       ).map((status) => {
