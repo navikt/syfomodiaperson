@@ -117,9 +117,7 @@ export function mapMotebehovToMeldtMotebehovFormat(
         id: motebehov.id,
         opprettetDato: motebehov.opprettetDato,
         opprettetAvNavn: motebehov.opprettetAvNavn,
-        innmelder: isArbeidstakerMotebehov(motebehov)
-          ? MotebehovInnmelder.ARBEIDSTAKER
-          : MotebehovInnmelder.ARBEIDSGIVER,
+        innmelder: motebehov.innmelderType,
         arbeidstakerFnr: motebehov.arbeidstakerFnr,
         virksomhetsnummer: motebehov.virksomhetsnummer,
         formValues: motebehov.formValues,
@@ -142,9 +140,7 @@ export function mapMotebehovToSvarMotebehovFormat(
         id: motebehov.id,
         opprettetDato: motebehov.opprettetDato,
         opprettetAvNavn: motebehov.opprettetAvNavn,
-        innmelder: isArbeidstakerMotebehov(motebehov)
-          ? MotebehovInnmelder.ARBEIDSTAKER
-          : MotebehovInnmelder.ARBEIDSGIVER,
+        innmelder: motebehov.innmelderType,
         arbeidstakerFnr: motebehov.arbeidstakerFnr,
         virksomhetsnummer: motebehov.virksomhetsnummer,
         formValues: motebehov.formValues,
