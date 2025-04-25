@@ -11,6 +11,9 @@ export interface MotebehovVeilederDTO {
   formValues: MotebehovFormValuesOutputDTO;
 }
 
+export type Virksomhetsnummer = string;
+export type InnsenderKey = [Virksomhetsnummer, MotebehovInnmelder];
+
 export interface MotebehovFormValuesOutputDTO {
   harMotebehov: boolean;
   formSnapshot: FormSnapshot | null;

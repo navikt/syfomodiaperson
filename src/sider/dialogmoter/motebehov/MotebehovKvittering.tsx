@@ -3,7 +3,7 @@ import {
   getMotebehovInActiveTilfelle,
   isArbeidstakerMotebehov,
   motebehovUbehandlet,
-  sorterMotebehovDataEtterDato,
+  sorterMotebehovDataEtterDatoDesc,
 } from "@/utils/motebehovUtils";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import {
@@ -318,7 +318,7 @@ export default function MotebehovKvittering() {
   const { data: motebehov } = useMotebehovQuery();
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
-  const sortertMotebehov = motebehov.sort(sorterMotebehovDataEtterDato);
+  const sortertMotebehov = motebehov.sort(sorterMotebehovDataEtterDatoDesc);
   const motebehovInActiveTilfelle = getMotebehovInActiveTilfelle(
     sortertMotebehov,
     latestOppfolgingstilfelle

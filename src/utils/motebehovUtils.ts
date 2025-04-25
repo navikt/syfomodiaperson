@@ -1,4 +1,5 @@
 import {
+  InnsenderKey,
   MeldtMotebehov,
   MotebehovInnmelder,
   MotebehovSkjemaType,
@@ -8,7 +9,7 @@ import {
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { MotebehovTilbakemeldingDTO } from "@/data/motebehov/useBehandleMotebehovAndSendTilbakemelding";
 
-export const sorterMotebehovDataEtterDato = (
+export const sorterMotebehovDataEtterDatoDesc = (
   a: MotebehovVeilederDTO,
   b: MotebehovVeilederDTO
 ): number => {
@@ -64,12 +65,16 @@ export const hentSistBehandletMotebehov = (
 export function fjerneDuplikatInnsendereMotebehov(
   motebehovListe: MotebehovVeilederDTO[]
 ): MotebehovVeilederDTO[] {
-  return motebehovListe.filter((motebehov, index) => {
-    const funnetIndex = motebehovListe.findIndex((motebehovInner) => {
-      return motebehovInner.innmelderType === motebehov.innmelderType;
-    });
-    return funnetIndex >= index;
+  const unikeInnsendere = new Map<string, MotebehovVeilederDTO>();
+  motebehovListe.forEach((motebehov) => {
+    const { virksomhetsnummer, innmelderType } = motebehov;
+    const key: InnsenderKey = [virksomhetsnummer, innmelderType];
+    const keyAsString = JSON.stringify(key);
+    if (!unikeInnsendere.get(keyAsString)) {
+      unikeInnsendere.set(keyAsString, motebehov);
+    }
   });
+  return [...unikeInnsendere.values()];
 }
 
 export const motebehovlisteMedKunJaSvar = (
