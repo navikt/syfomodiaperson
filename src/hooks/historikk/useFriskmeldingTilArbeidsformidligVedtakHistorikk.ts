@@ -24,13 +24,13 @@ function createHistorikkEventsFromFriskTilArbeid(
 }
 
 export function useVedtakHistorikk(): HistorikkHook {
-  const { data: vedtak, isLoading, isError } = useVedtakQuery();
+  const { data: vedtak, isPending, isError } = useVedtakQuery();
 
   const frisktilarbeidHistorikk =
     createHistorikkEventsFromFriskTilArbeid(vedtak);
 
   return {
-    isLoading,
+    isLoading: isPending,
     isError,
     events: frisktilarbeidHistorikk,
   };

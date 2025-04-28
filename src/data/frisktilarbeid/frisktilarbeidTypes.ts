@@ -26,3 +26,7 @@ export enum InfotrygdStatus {
   KVITTERING_OK = "KVITTERING_OK",
   KVITTERING_FEIL = "KVITTERING_FEIL",
 }
+
+export interface VilkarResponseDTO {
+  isArbeidssoker: boolean;
+}

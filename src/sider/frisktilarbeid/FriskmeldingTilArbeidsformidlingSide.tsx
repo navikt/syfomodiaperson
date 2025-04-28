@@ -15,12 +15,12 @@ const texts = {
 };
 
 export default function FriskmeldingTilArbeidsformidlingSide() {
-  const { isLoading, isError } = useVedtakQuery();
+  const { isPending, isError } = useVedtakQuery();
 
   return (
     <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.FRISKTILARBEID}>
       <Sidetopp tittel={texts.title} />
-      <SideLaster henter={isLoading} hentingFeilet={isError}>
+      <SideLaster henter={isPending} hentingFeilet={isError}>
         <Tredelt.Container>
           <Tredelt.FirstColumn className="-xl:mb-2">
             <NotificationProvider>
