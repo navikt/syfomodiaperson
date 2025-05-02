@@ -6,7 +6,7 @@ const texts = {
   heading: "Veiledning",
   vurderFolgende: "Basert på svarene kan du vurdere følgende",
   rutine: [
-    "§ 14a-vedtak: Hvis den sykmeldte har svart at han eller hun trenger oppfølging, skal det gjøres et § 14a-vedtak i Arena",
+    "§ 14a-vedtak: Hvis den sykmeldte ber om mer oppfølging, skal du vurdere bistandsbehovet og fatte et § 14a-vedtak.",
     "Dialogmøte: Vurder om det burde kalles inn til et dialogmøte",
     "Kontakt bruker: Ta kontakt med den sykmeldte for å avklare behov for videre oppfølging",
     "Kontakt arbeidsgiver: Ta kontakt med arbeidsgiver for å avklare muligheter for tilrettelegging",
