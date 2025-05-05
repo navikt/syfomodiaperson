@@ -24,7 +24,7 @@ export const defaultBegrunnelse: TextFieldSnapshot = {
   fieldType: FormSnapshotFieldType.TEXT,
   description:
     "Hva ønsker du å ta opp i møtet? Hva tenker du at NAV kan bistå med? Ikke skriv sensitiv informasjon, for eksempel detaljerte opplysninger om helse.",
-  fieldLabel: "Begrunnelse",
+  label: "Begrunnelse",
   value: "Møter er bra!",
   wasRequired: true,
 };
@@ -135,7 +135,7 @@ export const defaultOnskerTolk: SingleCheckboxFieldSnapshot = {
   fieldId: "onskerTolkCheckbox",
   fieldType: FormSnapshotFieldType.CHECKBOX_SINGLE,
   description: null,
-  fieldLabel: "Vi har behov for tolk.",
+  label: "Vi har behov for tolk.",
   value: true,
 };
 
@@ -143,7 +143,7 @@ export const defaultOnskerTolkBegrunnelse: TextFieldSnapshot = {
   fieldId: "onskerTolkBegrunnelseText",
   fieldType: FormSnapshotFieldType.TEXT,
   description: null,
-  fieldLabel: "Hva slags tolk har dere behov for?",
+  label: "Hva slags tolk har dere behov for?",
   value: "Har behov for svensk tolk",
   wasRequired: true,
 };
@@ -152,7 +152,7 @@ export const defaultOnskerSykmelderDeltar: SingleCheckboxFieldSnapshot = {
   fieldId: "onskerSykmelderDeltarCheckbox",
   fieldType: FormSnapshotFieldType.CHECKBOX_SINGLE,
   description: null,
-  fieldLabel: "Jeg ønsker at sykmelder (lege/behandler) også deltar i møtet.",
+  label: "Jeg ønsker at sykmelder (lege/behandler) også deltar i møtet.",
   value: true,
 };
 
@@ -160,7 +160,7 @@ export const defaultOnskerSykmelderDeltarBegrunnelse: TextFieldSnapshot = {
   fieldId: "onskerSykmelderDeltarBegrunnelseText",
   fieldType: FormSnapshotFieldType.TEXT,
   description: null,
-  fieldLabel: "Hvorfor ønsker du at lege/behandler deltar i møtet?",
+  label: "Hvorfor ønsker du at lege/behandler deltar i møtet?",
   value: "Ønsker at legen min er tilstede",
   wasRequired: true,
 };
@@ -191,7 +191,7 @@ export const svarPaBehovForMote = (
   fieldType: FormSnapshotFieldType.RADIO_GROUP,
   description:
     "Du svarer på vegne av arbeidsgiver. Den ansatte har fått det samme spørsmålet og svarer på vegne av seg selv.",
-  fieldLabel: "Har dere behov for et dialogmøte med NAV?",
+  label: "Har dere behov for et dialogmøte med NAV?",
   selectedOptionId: value ? "Ja" : "Nei",
   selectedOptionLabel: value
     ? "Ja, vi har behov for et dialogmøte."

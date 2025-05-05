@@ -39,7 +39,7 @@ export enum FormIdentifier {
 
 export interface FieldSnapshot {
   fieldId: string;
-  fieldLabel: string;
+  label: string;
   description: string | null;
   fieldType: FormSnapshotFieldType;
 }

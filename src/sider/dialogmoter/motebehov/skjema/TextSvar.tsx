@@ -8,7 +8,7 @@ interface Props {
 
 export const TextSvar = ({ textSvar }: Props) => (
   <Textarea
-    label={textSvar.fieldLabel}
+    label={textSvar.label}
     value={textSvar.value}
     size={"small"}
     readOnly={true}

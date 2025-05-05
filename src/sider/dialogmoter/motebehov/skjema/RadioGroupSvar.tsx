@@ -9,7 +9,7 @@ interface Props {
 export const RadioGroupSvar = ({ radioGroupSvar }: Props) => (
   <RadioGroup
     readOnly={true}
-    legend={radioGroupSvar.fieldLabel}
+    legend={radioGroupSvar.label}
     value={radioGroupSvar.selectedOptionId}
     size={"small"}
   >

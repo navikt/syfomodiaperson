@@ -8,6 +8,6 @@ interface Props {
 
 export const CheckboxSvar = ({ checkboxSvar }: Props) => (
   <Checkbox checked={checkboxSvar.value} size={"small"} readOnly={true}>
-    {checkboxSvar.fieldLabel}
+    {checkboxSvar.label}
   </Checkbox>
 );
