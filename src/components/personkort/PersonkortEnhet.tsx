@@ -37,7 +37,7 @@ const PersonkortEnhet = () => {
         <PersonkortElement
           tittel={
             behandlendeenhet.oppfolgingsenhet?.navn ??
-            behandlendeenhet.geografiskenhet?.navn
+            behandlendeenhet.geografiskEnhet?.navn
           }
           icon={<img src={KontorByggImage} alt={"Kontorbygg"} />}
         >
@@ -47,7 +47,7 @@ const PersonkortEnhet = () => {
               informasjon={{
                 enhetId:
                   behandlendeenhet.oppfolgingsenhet?.enhetId ??
-                  behandlendeenhet.geografiskenhet?.enhetId,
+                  behandlendeenhet.geografiskEnhet?.enhetId,
               }}
             />
             <PersonkortChangeEnhet behandlendeEnhet={behandlendeenhet} />
