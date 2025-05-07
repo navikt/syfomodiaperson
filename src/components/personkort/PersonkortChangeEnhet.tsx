@@ -45,7 +45,8 @@ const PersonkortChangeEnhet = ({
   const changeEnhet = useChangeEnhet(fnr);
 
   const isCurrentlyNavUtland =
-    behandlendeEnhet.oppfolgingsenhet.enhetId === NAV_UTLAND;
+    (behandlendeEnhet.oppfolgingsenhet?.enhetId ??
+      behandlendeEnhet.geografiskEnhet?.enhetId) === NAV_UTLAND;
   const heading = `${texts.endre} ${
     isCurrentlyNavUtland
       ? `geografisk enhet (${behandlendeEnhet.geografiskEnhet.enhetId})`
