@@ -11,28 +11,19 @@ export function FriskmeldingTilArbeidsformidling() {
 
   const vedtak: VedtakResponseDTO | undefined = data[0];
   const isFerdigbehandlet = !!vedtak?.ferdigbehandletAt;
-  const isExistingVedtak = !!vedtak;
 
-  if (isExistingVedtak) {
-    if (isFerdigbehandlet) {
-      if (!isNyVurderingStarted) {
-        return <NyttVedtak setIsNyVurderingStarted={setIsNyVurderingStarted} />;
-      } else {
-        return <FattVedtakSkjema />;
-      }
-    } else {
-      return (
-        <VedtakFattet
-          vedtak={vedtak}
-          setIsNyVurderingStarted={setIsNyVurderingStarted}
-        />
-      );
-    }
-  } else {
-    if (!isNyVurderingStarted) {
-      return <NyttVedtak setIsNyVurderingStarted={setIsNyVurderingStarted} />;
-    } else {
-      return <FattVedtakSkjema />;
-    }
+  if (vedtak && !isFerdigbehandlet) {
+    return (
+      <VedtakFattet
+        vedtak={vedtak}
+        setIsNyVurderingStarted={setIsNyVurderingStarted}
+      />
+    );
   }
+
+  if (!isNyVurderingStarted) {
+    return <NyttVedtak setIsNyVurderingStarted={setIsNyVurderingStarted} />;
+  }
+
+  return <FattVedtakSkjema />;
 }
