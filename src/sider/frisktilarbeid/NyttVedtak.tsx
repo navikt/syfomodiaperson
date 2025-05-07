@@ -15,7 +15,7 @@ import {
   useVedtakQuery,
   useVilkarForVedtakQuery,
 } from "@/data/frisktilarbeid/vedtakQuery";
-import ArbeidssokerAlert from "@/sider/frisktilarbeid/ArbeidssokerAlert";
+import VilkarForNewVedtakNotMetAlert from "@/sider/frisktilarbeid/VilkarForNewVedtakNotMetAlert";
 
 const texts = {
   heading: "Start nytt vedtak",
@@ -59,6 +59,16 @@ export function ForrigeVedtakText({
   );
 }
 
+function isActiveExistingVedtak(vedtak?: VedtakResponseDTO): boolean {
+  if (!!vedtak?.tom) {
+    const vedtakTomDate = dayjs(vedtak.tom);
+    const today = dayjs(new Date());
+    return today.isBefore(vedtakTomDate, "date");
+  } else {
+    return false;
+  }
+}
+
 interface Props {
   setIsNyVurderingStarted: (value: boolean) => void;
 }
@@ -69,6 +79,8 @@ export default function NyttVedtak({ setIsNyVurderingStarted }: Props) {
   const { isNotArbeidssoker, isPending } = useVilkarForVedtakQuery();
   const vedtak: VedtakResponseDTO | undefined = data[0];
   const isExistingVedtak = !!vedtak;
+  const isActiveVedtak = isActiveExistingVedtak(vedtak);
+  const isVilkarForNewVedtakNotMet = isActiveVedtak || isNotArbeidssoker;
   return (
     <>
       {notification && (
@@ -94,11 +106,16 @@ export default function NyttVedtak({ setIsNyVurderingStarted }: Props) {
             <Loader size="xlarge" title="Laster inn vilkår for vedtak" />
           ) : (
             <>
-              {isNotArbeidssoker && <ArbeidssokerAlert />}
+              {isVilkarForNewVedtakNotMet && (
+                <VilkarForNewVedtakNotMetAlert
+                  isActiveVedtak={isActiveVedtak}
+                  isNotArbeidssoker={isNotArbeidssoker}
+                />
+              )}
               <Button
                 className="w-fit"
                 onClick={() => setIsNyVurderingStarted(true)}
-                disabled={isNotArbeidssoker}
+                disabled={isVilkarForNewVedtakNotMet}
               >
                 {texts.nyttVedtakKnapp}
               </Button>
