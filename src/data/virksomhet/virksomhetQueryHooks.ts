@@ -8,10 +8,10 @@ import { useQuery } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/utils";
 
 export const virksomhetQueryKeys = {
-  virksomhet: (virksomhetsnummer: string) => ["virksomhet", virksomhetsnummer],
+  virksomhet: (virksomhetsnummer?: string) => ["virksomhet", virksomhetsnummer],
 };
 
-export const useVirksomhetQuery = (virksomhetsnummer: string) => {
+export const useVirksomhetQuery = (virksomhetsnummer: string | undefined) => {
   const path = `${EREG_ROOT}/organisasjon/${virksomhetsnummer}`;
   const fetchVirksomhet = () => get<EregOrganisasjonResponseDTO>(path);
   const query = useQuery({
