@@ -117,6 +117,7 @@ export default function FattVedtakSkjema() {
       onSuccess: () =>
         setNotification({
           message: texts.submittedAlert,
+          variant: "success",
         }),
     });
   };

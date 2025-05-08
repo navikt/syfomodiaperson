@@ -14,6 +14,7 @@ import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { SyketilfelleList } from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleList";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
+import { TildeleBoks } from "@/sider/nokkelinformasjon/tildele/TildeleBoks";
 
 const texts = {
   title: "Sykmeldingsgrad",
@@ -106,6 +107,7 @@ export const Sykmeldingsgrad = ({
 
   return (
     <Box background="surface-default" padding={"4"} className={"mb-4"}>
+      <TildeleBoks />
       <Heading size="medium" level="2">
         {texts.title}
       </Heading>
