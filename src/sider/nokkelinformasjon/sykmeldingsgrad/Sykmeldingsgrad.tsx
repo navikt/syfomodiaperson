@@ -107,7 +107,6 @@ export const Sykmeldingsgrad = ({
 
   return (
     <Box background="surface-default" padding={"4"} className={"mb-4"}>
-      <TildeleBoks />
       <Heading size="medium" level="2">
         {texts.title}
       </Heading>

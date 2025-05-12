@@ -5,9 +5,10 @@ import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import Side from "@/sider/Side";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import SideLaster from "@/components/SideLaster";
-import { Heading } from "@navikt/ds-react";
+import { Box, Heading } from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import { TildeleBoks } from "@/sider/nokkelinformasjon/tildele/TildeleBoks";
 
 const texts = {
   pageTitle: "Nøkkelinformasjon",
@@ -35,6 +36,9 @@ export const Nokkelinformasjon = () => {
             {texts.pageTitle}
           </Heading>
         </header>
+        <Box background="surface-default" padding={"4"}>
+          <TildeleBoks />
+        </Box>
         <Sykmeldingsgrad
           selectedOppfolgingstilfelle={
             selectedOppfolgingstilfelle || latestOppfolgingstilfelle

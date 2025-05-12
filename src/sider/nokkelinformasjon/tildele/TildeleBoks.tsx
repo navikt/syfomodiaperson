@@ -12,12 +12,7 @@ export const TildeleBoks = () => {
 
   return (
     toggles.isTildelOppfolgingsenhetEnabled && (
-      <HGrid
-        gap={"4"}
-        className={"mb-4"}
-        columns={2}
-        maxWidth={{ xl: "1440px" }}
-      >
+      <HGrid gap={"4"} columns={2} maxWidth={{ xl: "1440px" }}>
         <Card>
           <OppfolgingsenhetInnhold modalRef={tildelOppfolgingsenhetModalRef} />
           <TildelOppfolgingsenhetModal ref={tildelOppfolgingsenhetModalRef} />
