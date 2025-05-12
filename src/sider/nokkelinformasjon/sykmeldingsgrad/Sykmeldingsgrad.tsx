@@ -14,7 +14,6 @@ import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { SyketilfelleList } from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleList";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
-import { TildeleBoks } from "@/sider/nokkelinformasjon/tildele/TildeleBoks";
 
 const texts = {
   title: "Sykmeldingsgrad",
