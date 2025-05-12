@@ -20,6 +20,8 @@ import {
   createOppfolgingstilfelleFromSykmelding,
   setSykmeldingDataFromOppfolgingstilfelle,
 } from "../utils/oppfolgingstilfelleUtils";
+import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
+import { behandlendeEnhetMockResponse } from "@/mocks/syfobehandlendeenhet/behandlendeEnhetMock";
 
 let queryClient: QueryClient;
 
@@ -82,6 +84,12 @@ describe("Nokkelinformasjon", () => {
     queryClient.setQueryData(
       ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
       () => [LEDERE_DEFAULT[0]]
+    );
+    queryClient.setQueryData(
+      behandlendeEnhetQueryKeys.behandlendeEnhet(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
+      () => behandlendeEnhetMockResponse
     );
   });
 
