@@ -5,7 +5,8 @@ import {
   MotebehovKanIkkeImage,
   MotebehovKanImage,
 } from "../../../../img/ImageComponents";
-import { VStack } from "@navikt/ds-react";
+import { Box, HStack, VStack } from "@navikt/ds-react";
+import { MotebehovSkjemasvar } from "@/sider/dialogmoter/motebehov/skjema/MotebehovSkjemasvar";
 
 const setSvarIkon = (deltakerOnskerMote?: boolean): string => {
   switch (deltakerOnskerMote) {
@@ -35,20 +36,18 @@ export default function MotebehovKvitteringInnhold({
   tekst,
 }: Props) {
   return (
-    <div className="flex items-center">
-      <img
-        src={setSvarIkon(deltakerOnskerMote)}
-        alt={ikonAltTekst}
-        className="mr-4 w-6"
-      />
-      <VStack>
-        {tekst}
-        {motebehov?.motebehovSvar?.forklaring && (
-          <VStack>
-            <i>{motebehov?.motebehovSvar?.forklaring}</i>
-          </VStack>
-        )}
+    <Box padding={"3"}>
+      <VStack gap={"4"}>
+        <HStack>
+          <img
+            src={setSvarIkon(deltakerOnskerMote)}
+            alt={ikonAltTekst}
+            className="mr-4 w-6"
+          />
+          <div>{tekst}</div>
+        </HStack>
+        {motebehov && <MotebehovSkjemasvar motebehov={motebehov} />}
       </VStack>
-    </div>
+    </Box>
   );
 }

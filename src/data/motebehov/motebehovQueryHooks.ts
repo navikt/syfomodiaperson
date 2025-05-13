@@ -4,7 +4,7 @@ import { get } from "@/api/axios";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import { useQuery } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/utils";
-import { sorterMotebehovDataEtterDato } from "@/utils/motebehovUtils";
+import { sorterMotebehovDataEtterDatoDesc } from "@/utils/motebehovUtils";
 
 export const motebehovQueryKeys = {
   motebehov: (fnr: string) => ["motebehov", fnr],
@@ -24,6 +24,6 @@ export const useMotebehovQuery = () => {
 
   return {
     ...query,
-    data: query.data?.sort(sorterMotebehovDataEtterDato) || [],
+    data: query.data?.sort(sorterMotebehovDataEtterDatoDesc) || [],
   };
 };

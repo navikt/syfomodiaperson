@@ -3,7 +3,7 @@ import {
   getMotebehovInActiveTilfelle,
   isArbeidstakerMotebehov,
   motebehovUbehandlet,
-  sorterMotebehovDataEtterDato,
+  sorterMotebehovDataEtterDatoDesc,
 } from "@/utils/motebehovUtils";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import {
@@ -97,7 +97,7 @@ export const MotebehovKvitteringInnholdArbeidstaker = ({
 }: MotebehovKvitteringInnholdArbeidstakerProps) => {
   const sykmeldt = useNavBrukerData();
   const arbeidstakerOnskerMote =
-    arbeidstakersMotebehov?.motebehovSvar?.harMotebehov;
+    arbeidstakersMotebehov?.formValues.harMotebehov;
   const skjemaTypeMotebehov =
     skjemaType ?? arbeidstakersMotebehov?.skjemaType ?? null;
 
@@ -146,7 +146,7 @@ export function MotebehovArbeidsgiverKvittering({
   motebehov: MotebehovVeilederDTO;
   skjemaType?: MotebehovSkjemaType | null;
 }) {
-  const arbeidsgiverOnskerMote = motebehov.motebehovSvar.harMotebehov;
+  const arbeidsgiverOnskerMote = motebehov.formValues.harMotebehov;
   const skjemaTypeMotebehov = skjemaType ?? motebehov.skjemaType;
   const ikonAltTekst = `Arbeidsgiver ${arbeidsgiverNavnEllerTomStreng(
     motebehov.opprettetAvNavn
@@ -226,7 +226,7 @@ function MotebehovInCurrentTilfelle({
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-6">
       <MotebehovKvitteringInnholdArbeidstaker
         arbeidstakersMotebehov={motebehovArbeidstaker}
         skjemaType={findSkjemaType(motebehovArbeidstaker)}
@@ -318,7 +318,7 @@ export default function MotebehovKvittering() {
   const { data: motebehov } = useMotebehovQuery();
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
-  const sortertMotebehov = motebehov.sort(sorterMotebehovDataEtterDato);
+  const sortertMotebehov = motebehov.sort(sorterMotebehovDataEtterDatoDesc);
   const motebehovInActiveTilfelle = getMotebehovInActiveTilfelle(
     sortertMotebehov,
     latestOppfolgingstilfelle

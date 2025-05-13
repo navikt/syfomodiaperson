@@ -1,4 +1,5 @@
 import {
+  InnsenderKey,
   MeldtMotebehov,
   MotebehovInnmelder,
   MotebehovSkjemaType,
@@ -8,7 +9,7 @@ import {
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { MotebehovTilbakemeldingDTO } from "@/data/motebehov/useBehandleMotebehovAndSendTilbakemelding";
 
-export const sorterMotebehovDataEtterDato = (
+export const sorterMotebehovDataEtterDatoDesc = (
   a: MotebehovVeilederDTO,
   b: MotebehovVeilederDTO
 ): number => {
@@ -25,8 +26,7 @@ export const motebehovUbehandlet = (
 ): MotebehovVeilederDTO[] => {
   return motebehovListe.filter(
     (motebehov) =>
-      motebehov.motebehovSvar &&
-      motebehov.motebehovSvar.harMotebehov &&
+      motebehov.formValues.harMotebehov &&
       !motebehov.behandletTidspunkt &&
       !motebehov.behandletVeilederIdent
   );
@@ -65,20 +65,23 @@ export const hentSistBehandletMotebehov = (
 export function fjerneDuplikatInnsendereMotebehov(
   motebehovListe: MotebehovVeilederDTO[]
 ): MotebehovVeilederDTO[] {
-  return motebehovListe.filter((motebehov, index) => {
-    const funnetIndex = motebehovListe.findIndex((motebehovInner) => {
-      return motebehovInner.opprettetAv === motebehov.opprettetAv;
-    });
-    return funnetIndex >= index;
+  const unikeInnsendere = new Map<string, MotebehovVeilederDTO>();
+  motebehovListe.forEach((motebehov) => {
+    const { virksomhetsnummer, innmelderType } = motebehov;
+    const key: InnsenderKey = [virksomhetsnummer, innmelderType];
+    const keyAsString = JSON.stringify(key);
+    if (!unikeInnsendere.get(keyAsString)) {
+      unikeInnsendere.set(keyAsString, motebehov);
+    }
   });
+  return [...unikeInnsendere.values()];
 }
 
 export const motebehovlisteMedKunJaSvar = (
   motebehovliste: MotebehovVeilederDTO[]
 ): MotebehovVeilederDTO[] => {
   return motebehovliste.filter(
-    (motebehov) =>
-      motebehov.motebehovSvar && motebehov.motebehovSvar.harMotebehov
+    (motebehov) => motebehov.formValues.harMotebehov
   );
 };
 
@@ -104,7 +107,7 @@ export const toMotebehovTilbakemeldingDTO = (
 };
 
 export function isArbeidstakerMotebehov(motebehov: MotebehovVeilederDTO) {
-  return motebehov.opprettetAv === motebehov.aktorId;
+  return motebehov.innmelderType === MotebehovInnmelder.ARBEIDSTAKER;
 }
 
 export function mapMotebehovToMeldtMotebehovFormat(
@@ -118,15 +121,11 @@ export function mapMotebehovToMeldtMotebehovFormat(
       return {
         id: motebehov.id,
         opprettetDato: motebehov.opprettetDato,
-        opprettetAv: motebehov.opprettetAv,
         opprettetAvNavn: motebehov.opprettetAvNavn,
-        innmelder: isArbeidstakerMotebehov(motebehov)
-          ? MotebehovInnmelder.ARBEIDSTAKER
-          : MotebehovInnmelder.ARBEIDSGIVER,
+        innmelder: motebehov.innmelderType,
         arbeidstakerFnr: motebehov.arbeidstakerFnr,
         virksomhetsnummer: motebehov.virksomhetsnummer,
-        begrunnelse: motebehov.motebehovSvar.forklaring,
-        tildeltEnhet: motebehov.tildeltEnhet,
+        formValues: motebehov.formValues,
         behandletTidspunkt: motebehov.behandletTidspunkt,
         behandletVeilederIdent: motebehov.behandletVeilederIdent,
         skjemaType: MotebehovSkjemaType.MELD_BEHOV,
@@ -145,15 +144,11 @@ export function mapMotebehovToSvarMotebehovFormat(
       return {
         id: motebehov.id,
         opprettetDato: motebehov.opprettetDato,
-        opprettetAv: motebehov.opprettetAv,
         opprettetAvNavn: motebehov.opprettetAvNavn,
-        innmelder: isArbeidstakerMotebehov(motebehov)
-          ? MotebehovInnmelder.ARBEIDSTAKER
-          : MotebehovInnmelder.ARBEIDSGIVER,
+        innmelder: motebehov.innmelderType,
         arbeidstakerFnr: motebehov.arbeidstakerFnr,
         virksomhetsnummer: motebehov.virksomhetsnummer,
-        motebehovSvar: motebehov.motebehovSvar,
-        tildeltEnhet: motebehov.tildeltEnhet,
+        formValues: motebehov.formValues,
         behandletTidspunkt: motebehov.behandletTidspunkt,
         behandletVeilederIdent: motebehov.behandletVeilederIdent,
         skjemaType: MotebehovSkjemaType.SVAR_BEHOV,

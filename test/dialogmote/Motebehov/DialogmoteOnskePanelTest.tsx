@@ -9,6 +9,7 @@ import {
   VEILEDER_IDENT_DEFAULT,
 } from "@/mocks/common/mockConstants";
 import {
+  defaultFormValue,
   svartJaMotebehovArbeidstakerUbehandletMock,
   svartNeiMotebehovArbeidsgiverUbehandletMock,
 } from "@/mocks/syfomotebehov/motebehovMock";
@@ -46,7 +47,7 @@ const arbeidstakerSvarJaBehandlet: MotebehovVeilederDTO = {
 const tidligereOppfolgingstilfelle = {
   arbeidstakerSvarJa: arbeidstakerSvarJaBehandlet,
   arbeidsgiverSvarNeiUbehandlet: {
-    ...svartNeiMotebehovArbeidsgiverUbehandletMock,
+    ...svartNeiMotebehovArbeidsgiverUbehandletMock(),
     opprettetDato: datoUtenforOppfolgingstilfelle,
   },
 };
@@ -54,9 +55,10 @@ const tidligereOppfolgingstilfelle = {
 const arbeidstakerSvarNeiUbehandlet: MotebehovVeilederDTO = {
   ...svartJaMotebehovArbeidstakerUbehandletMock,
   opprettetDato: datoInnenforOppfolgingstilfelle,
-  motebehovSvar: {
+  formValues: {
+    ...defaultFormValue,
     harMotebehov: false,
-    forklaring: "Trenger ikke møte",
+    begrunnelse: "Trenger ikke møte",
   },
 };
 
@@ -67,7 +69,7 @@ const nyttOppfolgingstilfelle = {
     behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
   },
   arbeidsgiverSvarNeiUbehandlet: {
-    ...svartNeiMotebehovArbeidsgiverUbehandletMock,
+    ...svartNeiMotebehovArbeidsgiverUbehandletMock(),
     opprettetDato: datoInnenforOppfolgingstilfelle,
   },
 };
