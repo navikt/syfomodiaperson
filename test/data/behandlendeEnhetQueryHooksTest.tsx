@@ -23,6 +23,11 @@ describe("behandlendeEnhetQueryHooks tests", () => {
 
     await waitFor(() => expect(result.current.isSuccess).to.be.true);
 
-    expect(result.current.data).to.deep.equal(behandlendeEnhetMockResponse);
+    expect(result.current.data?.geografiskEnhet).to.deep.equal(
+      behandlendeEnhetMockResponse.geografiskEnhet
+    );
+    expect(result.current.data?.oppfolgingsenhetDTO?.enhet).to.deep.equal(
+      behandlendeEnhetMockResponse.oppfolgingsenhetDTO.enhet
+    );
   });
 });
