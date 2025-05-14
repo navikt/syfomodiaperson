@@ -11,7 +11,7 @@ export interface Enhet {
 export interface OppfolgingsenhetDTO {
   enhet: Enhet;
   createdAt: Date;
-  veilederident: String;
+  veilederident: string;
 }
 
 export interface TildelOppfolgingsenhetRequestDTO {
