@@ -110,6 +110,25 @@ export function isArbeidstakerMotebehov(motebehov: MotebehovVeilederDTO) {
   return motebehov.innmelderType === MotebehovInnmelder.ARBEIDSTAKER;
 }
 
+export const findFirst = (
+  innmelderType: MotebehovInnmelder,
+  motebehovsvar: MotebehovVeilederDTO[]
+): MotebehovVeilederDTO | undefined => {
+  return motebehovsvar.find(
+    (motebehov) => motebehov.innmelderType === innmelderType
+  );
+};
+
+export const onskerTolk = (
+  motebehov: MotebehovVeilederDTO | undefined
+): boolean => {
+  return !!(
+    motebehov &&
+    motebehov.formValues.harMotebehov &&
+    motebehov.formValues.onskerTolk
+  );
+};
+
 export function mapMotebehovToMeldtMotebehovFormat(
   motebehov: MotebehovVeilederDTO[]
 ): MeldtMotebehov[] {

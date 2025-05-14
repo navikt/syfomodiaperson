@@ -15,6 +15,7 @@ import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { MotehistorikkPanel } from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
 import { MoteSvarHistorikk } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikk";
 import MotebehovHistorikk from "@/sider/dialogmoter/components/motehistorikk/MotebehovHistorikk";
+import { InfoOmTolk } from "@/sider/dialogmoter/motebehov/InfoOmTolk";
 
 const texts = {
   pageTitle: "Møtelandingsside",
@@ -50,6 +51,7 @@ export function Motelandingsside() {
         <Tredelt.Container>
           <Tredelt.FirstColumn>
             <DialogmoteOnskePanel />
+            <InfoOmTolk />
             <InnkallingDialogmotePanel aktivtDialogmote={aktivtDialogmote} />
             <DialogmoteFerdigstilteReferatPanel
               ferdigstilteMoter={historiskeDialogmoter.filter(
