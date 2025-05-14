@@ -5,10 +5,12 @@ import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import Side from "@/sider/Side";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import SideLaster from "@/components/SideLaster";
-import { Box, Heading } from "@navikt/ds-react";
+import { Heading } from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { TildeleBoks } from "@/sider/nokkelinformasjon/tildele/TildeleBoks";
+import { Tildele } from "@/sider/nokkelinformasjon/tildele/Tildele";
+import { TildeltNotification } from "@/sider/nokkelinformasjon/tildele/Oppfolgingsenhet";
+import { TildeltOppfolgingsenhetAlert } from "@/sider/nokkelinformasjon/tildele/TildeltOppfolgingsenhetAlert";
 
 const texts = {
   pageTitle: "Nøkkelinformasjon",
@@ -21,6 +23,9 @@ export const Nokkelinformasjon = () => {
 
   const [selectedOppfolgingstilfelle, setSelectedOppfolgingstilfelle] =
     useState<OppfolgingstilfelleDTO | undefined>();
+  const [tildeltNotification, setTildeltNotification] = useState<
+    TildeltNotification | undefined
+  >(undefined);
 
   return (
     <Side
@@ -36,9 +41,12 @@ export const Nokkelinformasjon = () => {
             {texts.pageTitle}
           </Heading>
         </header>
-        <Box background="surface-default" padding={"4"}>
-          <TildeleBoks />
-        </Box>
+        <TildeltOppfolgingsenhetAlert
+          tildeltNotification={tildeltNotification}
+        />
+        <Tildele
+          setTildeltOppfolgingsenhetNotification={setTildeltNotification}
+        />
         <Sykmeldingsgrad
           selectedOppfolgingstilfelle={
             selectedOppfolgingstilfelle || latestOppfolgingstilfelle

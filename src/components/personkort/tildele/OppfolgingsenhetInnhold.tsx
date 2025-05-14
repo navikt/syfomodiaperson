@@ -27,7 +27,6 @@ interface Props {
   modalRef: React.RefObject<HTMLDialogElement | null>;
 }
 
-//TODO: Rename
 export const OppfolgingsenhetInnhold = ({ modalRef }: Props) => {
   const {
     error,

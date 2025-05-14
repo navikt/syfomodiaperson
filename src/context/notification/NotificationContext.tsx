@@ -1,16 +1,7 @@
 import React, { ReactNode, useState } from "react";
-import { AlertProps } from "@navikt/ds-react";
 
-export type NotificationType =
-  | "tildelVeilederFailed"
-  | "tildelOppfolgingsenhetFailed"
-  | "tildelOppfolgingsenhetSuccess";
-
-export interface Notification extends Pick<AlertProps, "variant"> {
-  type?: NotificationType;
-  header?: string;
+export interface Notification {
   message: ReactNode;
-  isGlobal?: boolean;
 }
 
 type NotificationProviderProps = {
