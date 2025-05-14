@@ -29,7 +29,7 @@ export const mockSyfobehandlendeenhet = [
       behandlendeEnhet = {
         ...behandlendeEnhet,
         oppfolgingsenhetDTO: {
-          oppfolgingsenhet: {
+          enhet: {
             enhetId: body.oppfolgingsenhet,
             navn: "Nav testkontor",
           },

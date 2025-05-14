@@ -1,6 +1,6 @@
 export interface BehandlendeEnhetResponseDTO {
   geografiskEnhet: Enhet;
-  oppfolgingsenhetDTO: OppfolgingsenhetDTO;
+  oppfolgingsenhetDTO: OppfolgingsenhetDTO | null;
 }
 
 export interface Enhet {

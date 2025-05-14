@@ -18,7 +18,7 @@ export const behandlendeEnhetMockResponse = {
   geografiskEnhet: behandlendeEnhetMock,
   oppfolgingsenhetDTO: {
     enhet: behandlendeEnhetNavUtlandMock,
-    createdAt: "2024-10-15T00:00:00Z",
+    createdAt: new Date("2024-10-15"),
     veilederident: VEILEDER_IDENT_DEFAULT,
   },
 };
