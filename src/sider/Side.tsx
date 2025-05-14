@@ -16,8 +16,6 @@ import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQ
 import { TildeltVeileder } from "@/components/TildeltVeileder";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { InaktivPersonident } from "@/components/InaktivPersonident";
-import NotificationBar from "@/components/notification/NotificationBar";
-import { NotificationProvider } from "@/context/notification/NotificationContext";
 
 export const MODIA_HEADER_ID = "modia-header";
 
@@ -46,32 +44,29 @@ export default function Side({
   const isFlexjarVisible = diskresjonskode !== "6" && diskresjonskode !== "7";
 
   return (
-    <NotificationProvider>
-      <DocumentTitle
-        title={tittel + (tittel.length > 0 ? " - Sykefravær" : "Sykefravær")}
-      >
-        <div className="mx-6 flex flex-col">
-          <div className="flex flex-col gap-2" id={MODIA_HEADER_ID}>
-            <div className="flex flex-row w-full bg-surface-default">
-              <OversiktLenker />
-              <TildeltVeileder />
-            </div>
-            {isInaktivPersonident && <InaktivPersonident />}
-            {isPride() && <Pride>&nbsp;</Pride>}
-            <NotificationBar />
-            <Personkort />
+    <DocumentTitle
+      title={tittel + (tittel.length > 0 ? " - Sykefravær" : "Sykefravær")}
+    >
+      <div className="mx-6 flex flex-col">
+        <div className="flex flex-col gap-2" id={MODIA_HEADER_ID}>
+          <div className="flex flex-row w-full bg-surface-default">
+            <OversiktLenker />
+            <TildeltVeileder />
           </div>
-          <div className={"flex -md:flex-wrap"}>
-            <nav className="-md:w-full min-w-[15rem] w-[15rem] md:mr-2">
-              <GlobalNavigasjon aktivtMenypunkt={aktivtMenypunkt} />
-              <Oppfolgingsoppgave />
-              {isEaster() && <Easter />}
-            </nav>
-            <div className="w-full">{children}</div>
-          </div>
-          {isFlexjarVisible && flexjar}
+          {isInaktivPersonident && <InaktivPersonident />}
+          {isPride() && <Pride>&nbsp;</Pride>}
+          <Personkort />
         </div>
-      </DocumentTitle>
-    </NotificationProvider>
+        <div className={"flex -md:flex-wrap"}>
+          <nav className="-md:w-full min-w-[15rem] w-[15rem] md:mr-2">
+            <GlobalNavigasjon aktivtMenypunkt={aktivtMenypunkt} />
+            <Oppfolgingsoppgave />
+            {isEaster() && <Easter />}
+          </nav>
+          <div className="w-full">{children}</div>
+        </div>
+        {isFlexjarVisible && flexjar}
+      </div>
+    </DocumentTitle>
   );
 }

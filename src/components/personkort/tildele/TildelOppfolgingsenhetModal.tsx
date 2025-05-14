@@ -8,10 +8,6 @@ import {
 } from "@navikt/ds-react";
 import React, { useState } from "react";
 import {
-  Notification,
-  useNotification,
-} from "@/context/notification/NotificationContext";
-import {
   Enhet,
   useGetMuligeOppfolgingsenheter,
 } from "@/components/personkort/tildele/useGetMuligeOppfolgingsenheter";
@@ -20,6 +16,7 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { useVirksomhetsnummerOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { TildeltNotification } from "@/sider/nokkelinformasjon/tildele/Oppfolgingsenhet";
 
 const text = {
   heading: "Endre oppfølgingsenhet",
@@ -34,35 +31,42 @@ const text = {
 };
 
 interface Props {
-  ref: React.RefObject<HTMLDialogElement | null>;
+  modalRef: React.RefObject<HTMLDialogElement | null>;
+  setTildeltNotification: (
+    tildeltNotification: TildeltNotification | undefined
+  ) => void;
 }
 
-const tildelOppfolgingsenhetFailed: Notification = {
-  type: "tildelOppfolgingsenhetFailed",
-  variant: "error",
-  message: "Tildeling av oppfølgingsenhet feilet.",
+const tildelOppfolgingsenhetFailed = (
+  navn: string,
+  enhet: string
+): TildeltNotification => {
+  return {
+    variant: "error",
+    message: `Tildeling av ${navn} til ${enhet} feilet.`,
+  };
 };
 
 const tildelOppfolgingsenhetSuccess = (
   navn: string,
   enhet: string
-): Notification => {
+): TildeltNotification => {
   return {
-    type: "tildelOppfolgingsenhetSuccess",
     variant: "success",
-    header: "Bruker flyttet",
-    message: `${navn} tildelt ${enhet}.`,
-    isGlobal: true,
+    header: "Bruker tildelt",
+    message: `${navn} tildelt til ${enhet}.`,
   };
 };
 
-export default function TildelOppfolgingsenhetModal({ ref }: Props) {
+export default function TildelOppfolgingsenhetModal({
+  modalRef,
+  setTildeltNotification,
+}: Props) {
   const getMuligeOppfolgingsenheter = useGetMuligeOppfolgingsenheter();
   const fnr = useValgtPersonident();
   const changeEnhet = useChangeEnhet(fnr);
   const [oppfolgingsenhet, setOppfolgingsenhet] = useState<string>("");
   const [isFormError, setIsFormError] = useState<boolean>(false);
-  const { setNotification: displayNotification } = useNotification();
   const {
     brukerinfo: { navn },
   } = useBrukerinfoQuery();
@@ -70,7 +74,7 @@ export default function TildelOppfolgingsenhetModal({ ref }: Props) {
   const virksomhet = useVirksomhetQuery(virksomhetsnummer);
 
   function closeModal() {
-    ref.current?.close();
+    modalRef.current?.close();
   }
 
   function onOppfolgingsenhetChange(option: string, isSelected: boolean) {
@@ -89,6 +93,12 @@ export default function TildelOppfolgingsenhetModal({ ref }: Props) {
   function onSubmit(event: React.FormEvent) {
     event.preventDefault();
     const isFormValid = oppfolgingsenhet !== "";
+    const tildeltOppfolgingsenhet = findEnhetById(
+      getMuligeOppfolgingsenheter.data ?? []
+    );
+    const enhet = tildeltOppfolgingsenhet
+      ? `${tildeltOppfolgingsenhet.navn} (${tildeltOppfolgingsenhet.enhetId})`
+      : "Ukjent enhet";
     if (!isFormValid) {
       setIsFormError(true);
     } else {
@@ -99,28 +109,20 @@ export default function TildelOppfolgingsenhetModal({ ref }: Props) {
         },
         {
           onSuccess: () => {
-            const tildeltOppfolgingsenhet =
-              getMuligeOppfolgingsenheter.data?.find(
-                (enhet) => enhet.enhetId === oppfolgingsenhet
-              );
-            displayNotification(
-              tildelOppfolgingsenhetSuccess(
-                navn,
-                `${tildeltOppfolgingsenhet?.navn} (${tildeltOppfolgingsenhet?.enhetId})`
-              )
-            );
+            setTildeltNotification(tildelOppfolgingsenhetSuccess(navn, enhet));
           },
-          onError: () => displayNotification(tildelOppfolgingsenhetFailed),
+          onError: () =>
+            setTildeltNotification(tildelOppfolgingsenhetFailed(navn, enhet)),
         }
       );
-      ref.current?.close();
+      modalRef.current?.close();
     }
   }
 
-  const nyEnhet = findEnhetById(getMuligeOppfolgingsenheter.data ?? []);
+  const onsketEnhet = findEnhetById(getMuligeOppfolgingsenheter.data ?? []);
 
   return (
-    <Modal ref={ref} header={{ heading: text.heading }}>
+    <Modal ref={modalRef} header={{ heading: text.heading }}>
       <Modal.Body className="flex flex-col gap-4">
         {getMuligeOppfolgingsenheter.isLoading && (
           <>
@@ -146,12 +148,12 @@ export default function TildelOppfolgingsenhetModal({ ref }: Props) {
               {/* Filler element for fixed combobox */}
               <div className="h-[3.75rem]"></div>
             </form>
-            {oppfolgingsenhet && nyEnhet && (
+            {oppfolgingsenhet && onsketEnhet && (
               <BodyLong>{`Du tildeler nå ${navn} (${fnr}) ${
                 virksomhet.virksomhetsnavn
                   ? ` ved ${virksomhet.virksomhetsnavn}`
                   : " uten virksomhet"
-              } til ${nyEnhet.navn} (${nyEnhet.enhetId}).`}</BodyLong>
+              } til ${onsketEnhet.navn} (${onsketEnhet.enhetId}).`}</BodyLong>
             )}
           </>
         )}

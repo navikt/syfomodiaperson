@@ -63,7 +63,6 @@ export function VedtakFattet({
       onSuccess: () => {
         setNotification({
           message: texts.oppgaveAvsluttetAlert,
-          variant: "success",
         });
         setIsNyVurderingStarted(false);
       },

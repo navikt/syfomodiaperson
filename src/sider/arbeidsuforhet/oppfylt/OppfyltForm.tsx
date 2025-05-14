@@ -80,7 +80,6 @@ export const OppfyltForm = ({ forhandsvarselSendtDato }: Props) => {
       onSuccess: () => {
         setNotification({
           message: texts.success,
-          variant: "success",
         });
       },
     });

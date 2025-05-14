@@ -1,0 +1,29 @@
+import { Box, HGrid } from "@navikt/ds-react";
+import React from "react";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
+import {
+  Oppfolgingsenhet,
+  TildeltNotification,
+} from "@/sider/nokkelinformasjon/tildele/Oppfolgingsenhet";
+
+interface Props {
+  setTildeltOppfolgingsenhetNotification: (
+    tildeltNotification: TildeltNotification | undefined
+  ) => void;
+}
+
+export const Tildele = ({ setTildeltOppfolgingsenhetNotification }: Props) => {
+  const { toggles } = useFeatureToggles();
+
+  return (
+    toggles.isTildelOppfolgingsenhetEnabled && (
+      <Box background="surface-default" padding={"4"}>
+        <HGrid gap={"4"} columns={2} maxWidth={{ xl: "1440px" }}>
+          <Oppfolgingsenhet
+            setTildeltNotification={setTildeltOppfolgingsenhetNotification}
+          />
+        </HGrid>
+      </Box>
+    )
+  );
+};
