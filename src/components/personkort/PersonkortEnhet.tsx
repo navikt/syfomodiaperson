@@ -36,7 +36,7 @@ const PersonkortEnhet = () => {
       ) : behandlendeenhet ? (
         <PersonkortElement
           tittel={
-            behandlendeenhet.oppfolgingsenhet?.navn ??
+            behandlendeenhet.oppfolgingsenhetDTO?.enhet?.navn ??
             behandlendeenhet.geografiskEnhet?.navn
           }
           icon={<img src={KontorByggImage} alt={"Kontorbygg"} />}
@@ -46,7 +46,7 @@ const PersonkortEnhet = () => {
               informasjonNokkelTekster={informasjonNokkelTekster}
               informasjon={{
                 enhetId:
-                  behandlendeenhet.oppfolgingsenhet?.enhetId ??
+                  behandlendeenhet.oppfolgingsenhetDTO?.enhet?.enhetId ??
                   behandlendeenhet.geografiskEnhet?.enhetId,
               }}
             />

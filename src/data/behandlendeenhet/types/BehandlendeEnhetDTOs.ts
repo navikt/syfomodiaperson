@@ -1,11 +1,17 @@
 export interface BehandlendeEnhetResponseDTO {
   geografiskEnhet: Enhet;
-  oppfolgingsenhet: Enhet;
+  oppfolgingsenhetDTO: OppfolgingsenhetDTO;
 }
 
 export interface Enhet {
   enhetId: string;
   navn: string;
+}
+
+export interface OppfolgingsenhetDTO {
+  enhet: Enhet;
+  createdAt: Date;
+  veilederident: String;
 }
 
 export interface TildelOppfolgingsenhetRequestDTO {

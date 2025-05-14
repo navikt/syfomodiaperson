@@ -1,3 +1,4 @@
+import { VEILEDER_IDENT_DEFAULT } from "../common/mockConstants";
 import { SYFOBEHANDLENDEENHET_ROOT } from "@/apiConstants";
 import { behandlendeEnhetMockResponse } from "./behandlendeEnhetMock";
 import { http, HttpResponse } from "msw";
@@ -27,9 +28,13 @@ export const mockSyfobehandlendeenhet = [
       };
       behandlendeEnhet = {
         ...behandlendeEnhet,
-        oppfolgingsenhet: {
-          enhetId: body.oppfolgingsenhet,
-          navn: "Nav testkontor",
+        oppfolgingsenhetDTO: {
+          oppfolgingsenhet: {
+            enhetId: body.oppfolgingsenhet,
+            navn: "Nav testkontor",
+          },
+          createdAt: new Date("2024-10-15"),
+          veilederident: VEILEDER_IDENT_DEFAULT,
         },
       };
       return HttpResponse.json(responseDTO);
