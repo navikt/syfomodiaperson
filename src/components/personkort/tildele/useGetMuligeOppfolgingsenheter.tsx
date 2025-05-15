@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { get } from "@/api/axios";
 import { useBehandlendeEnhetQuery } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 
-const muligeOppfolgingsenhetQueryKeys = {
+export const muligeOppfolgingsenhetQueryKeys = {
   muligeOppfolgingsenheter: (enhetId?: string) => [
     "muligeOppfolgingsenheter",
     enhetId,
