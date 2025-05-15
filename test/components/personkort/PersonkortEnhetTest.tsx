@@ -11,7 +11,7 @@ let queryClient: any;
 
 const behandlendeEnhetUtenOverstyring: BehandlendeEnhetResponseDTO = {
   geografiskEnhet: { enhetId: "1234", navn: "Nav Drammen" },
-  oppfolgingsenhet: { enhetId: "1234", navn: "Nav Drammen" },
+  oppfolgingsenhetDTO: null,
 };
 
 const renderPersonkortEnhet = () =>
@@ -56,7 +56,11 @@ describe("PersonkortEnhet", () => {
   it("viser endre enhet til geografisk enhet hvis allerede Nav utland", async () => {
     const utlandEnhet: BehandlendeEnhetResponseDTO = {
       geografiskEnhet: { enhetId: "1235", navn: "Nav Asker" },
-      oppfolgingsenhet: { enhetId: "0393", navn: "Nav Utland" },
+      oppfolgingsenhetDTO: {
+        enhet: { enhetId: "0393", navn: "Nav Utland" },
+        createdAt: new Date("2024-10-15"),
+        veilederident: "Z999999",
+      },
     };
     stubBehandlendeEnhetApi(utlandEnhet);
     renderPersonkortEnhet();

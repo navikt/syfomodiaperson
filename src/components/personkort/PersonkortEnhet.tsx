@@ -35,14 +35,19 @@ const PersonkortEnhet = () => {
         <AppSpinner />
       ) : behandlendeenhet ? (
         <PersonkortElement
-          tittel={behandlendeenhet.oppfolgingsenhet.navn}
+          tittel={
+            behandlendeenhet.oppfolgingsenhetDTO?.enhet?.navn ??
+            behandlendeenhet.geografiskEnhet.navn
+          }
           icon={<img src={KontorByggImage} alt={"Kontorbygg"} />}
         >
           <StyledPersonkortElement>
             <PersonkortInformasjon
               informasjonNokkelTekster={informasjonNokkelTekster}
               informasjon={{
-                enhetId: behandlendeenhet.oppfolgingsenhet.enhetId,
+                enhetId:
+                  behandlendeenhet.oppfolgingsenhetDTO?.enhet?.enhetId ??
+                  behandlendeenhet.geografiskEnhet.enhetId,
               }}
             />
             <PersonkortChangeEnhet behandlendeEnhet={behandlendeenhet} />

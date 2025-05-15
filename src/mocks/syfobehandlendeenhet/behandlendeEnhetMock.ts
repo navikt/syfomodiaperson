@@ -1,4 +1,8 @@
-import { ENHET_GRUNERLOKKA, ENHET_NAV_UTLAND } from "../common/mockConstants";
+import {
+  ENHET_GRUNERLOKKA,
+  ENHET_NAV_UTLAND,
+  VEILEDER_IDENT_DEFAULT,
+} from "../common/mockConstants";
 
 const behandlendeEnhetMock = {
   enhetId: ENHET_GRUNERLOKKA.nummer,
@@ -12,5 +16,9 @@ const behandlendeEnhetNavUtlandMock = {
 
 export const behandlendeEnhetMockResponse = {
   geografiskEnhet: behandlendeEnhetMock,
-  oppfolgingsenhet: behandlendeEnhetNavUtlandMock,
+  oppfolgingsenhetDTO: {
+    enhet: behandlendeEnhetNavUtlandMock,
+    createdAt: new Date("2024-10-15"),
+    veilederident: VEILEDER_IDENT_DEFAULT,
+  },
 };
