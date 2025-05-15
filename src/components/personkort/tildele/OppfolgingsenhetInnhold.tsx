@@ -19,7 +19,7 @@ import { useEgenansattQuery } from "@/data/egenansatt/egenansattQueryHooks";
 const text = {
   header: "Oppfølgingsenhet",
   buttonLabelEndreOppfolgingsenhet: "Endre",
-  oppfolgingsenhet: "Kontortilhørighet",
+  kontortilhorighet: "Kontortilhørighet",
   endret: "Endret",
 };
 
@@ -31,61 +31,66 @@ export const OppfolgingsenhetInnhold = ({ modalRef }: Props) => {
   const {
     error,
     data: behandlendeenhet,
-    isLoading,
+    isPending,
     isFetching,
+    isError,
   } = useBehandlendeEnhetQuery();
   const { data: diskresjonskode } = useDiskresjonskodeQuery();
   const { data: isEgenAnsatt } = useEgenansattQuery();
 
-  const apiError = error instanceof ApiErrorException ? error.error : undefined;
+  if (isPending || isFetching) {
+    return <AppSpinner />;
+  }
+
+  if (isError) {
+    const apiError =
+      error instanceof ApiErrorException ? error.error : undefined;
+    return <ErrorBoundary apiError={apiError} />;
+  }
+
+  const oppfolgingsenhet = behandlendeenhet?.oppfolgingsenhetDTO
+    ? behandlendeenhet.oppfolgingsenhetDTO.enhet
+    : behandlendeenhet.geografiskEnhet;
   const isKode6 = diskresjonskode === "6";
   const isKode7 = diskresjonskode === "7";
   const kanTildele = !isEgenAnsatt && !isKode6 && !isKode7;
 
   return (
-    <ErrorBoundary apiError={apiError}>
-      {isLoading || isFetching ? (
-        <AppSpinner />
-      ) : (
-        behandlendeenhet && (
-          <HStack gap={"2"} className={"flex"}>
-            <Buildings2Icon fontSize={"1.75rem"} />
-            <VStack className={"flex-1"}>
-              <HStack align={"center"} className={"mb-2"}>
-                <Heading size={"medium"}>{text.header}</Heading>
-                <Spacer />
-                {behandlendeenhet.createdAt && (
-                  <div>
-                    {`${text.endret}: ${tilLesbarDatoMedArUtenManedNavn(
-                      behandlendeenhet.createdAt
-                    )}`}
-                  </div>
-                )}
-              </HStack>
-              <HStack align={"end"}>
-                <VStack>
-                  <BodyShort>
-                    {`${behandlendeenhet.oppfolgingsenhet.navn} (${behandlendeenhet.oppfolgingsenhet.enhetId})`}
-                  </BodyShort>
-                  <BodyShort>
-                    {`${text.oppfolgingsenhet}: ${behandlendeenhet.geografiskEnhet.navn} (${behandlendeenhet.geografiskEnhet.enhetId})`}
-                  </BodyShort>
-                </VStack>
-                <Spacer />
-                {kanTildele && (
-                  <Button
-                    variant="secondary"
-                    size="small"
-                    onClick={() => modalRef.current?.showModal()}
-                  >
-                    {text.buttonLabelEndreOppfolgingsenhet}
-                  </Button>
-                )}
-              </HStack>
-            </VStack>
-          </HStack>
-        )
-      )}
-    </ErrorBoundary>
+    <HStack gap={"2"} className={"flex"}>
+      <Buildings2Icon fontSize={"1.75rem"} />
+      <VStack className={"flex-1"}>
+        <HStack align={"center"} className={"mb-2"}>
+          <Heading size={"medium"}>{text.header}</Heading>
+          <Spacer />
+          {behandlendeenhet?.oppfolgingsenhetDTO && (
+            <div>
+              {`${text.endret}: ${tilLesbarDatoMedArUtenManedNavn(
+                behandlendeenhet.oppfolgingsenhetDTO.createdAt
+              )}`}
+            </div>
+          )}
+        </HStack>
+        <HStack align={"end"}>
+          <VStack>
+            <BodyShort>
+              {`${oppfolgingsenhet.navn} (${oppfolgingsenhet.enhetId})`}
+            </BodyShort>
+            <BodyShort>
+              {`${text.kontortilhorighet}: ${behandlendeenhet.geografiskEnhet.navn} (${behandlendeenhet.geografiskEnhet.enhetId})`}
+            </BodyShort>
+          </VStack>
+          <Spacer />
+          {kanTildele && (
+            <Button
+              variant="secondary"
+              size="small"
+              onClick={() => modalRef.current?.showModal()}
+            >
+              {text.buttonLabelEndreOppfolgingsenhet}
+            </Button>
+          )}
+        </HStack>
+      </VStack>
+    </HStack>
   );
 };
