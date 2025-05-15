@@ -50,7 +50,8 @@ export const mockSyfobehandlendeenhet = [
         oppfolgingsenhetDTO: {
           enhet: {
             enhetId: body.oppfolgingsenhet,
-            navn: findEnhetById(body.oppfolgingsenhet)?.navn ?? "Nav testkontor",
+            navn:
+              findEnhetById(body.oppfolgingsenhet)?.navn ?? "Nav testkontor",
           },
           createdAt: new Date(),
           veilederident: VEILEDER_IDENT_DEFAULT,
