@@ -12,7 +12,9 @@ export const muligeOppfolgingsenhetQueryKeys = {
 
 export function useGetMuligeOppfolgingsenheter() {
   const { data: behandlendeenhet } = useBehandlendeEnhetQuery();
-  const enhetId = behandlendeenhet?.geografiskEnhet?.enhetId;
+  const enhetId =
+    behandlendeenhet?.oppfolgingsenhetDTO?.enhet.enhetId ??
+    behandlendeenhet?.geografiskEnhet?.enhetId;
   const path = `${SYFOBEHANDLENDEENHET_ROOT}/tilordningsenheter/${enhetId}`;
   const getVeilederBrukerKnytning = () => get<Enhet[]>(path);
 
