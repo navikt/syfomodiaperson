@@ -53,5 +53,9 @@ export const getToggles = (veilederId, enhetId) => {
       "isBeOmOppfolgingsplanEnabled",
       context
     ),
+    isTildelOppfolgingsenhetEnabled: unleash.isEnabled(
+      "isTildelOppfolgingsenhetEnabled",
+      context
+    ),
   };
 };
