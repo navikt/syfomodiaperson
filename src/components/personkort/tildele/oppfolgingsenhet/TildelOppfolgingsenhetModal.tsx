@@ -10,13 +10,13 @@ import React, { useState } from "react";
 import {
   Enhet,
   useGetMuligeOppfolgingsenheter,
-} from "@/components/personkort/tildele/useGetMuligeOppfolgingsenheter";
+} from "@/data/oppfolgingsenhet/useGetMuligeOppfolgingsenheter";
 import { useChangeEnhet } from "@/components/personkort/useChangeEnhet";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { useVirksomhetsnummerOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { TildeltNotification } from "@/sider/nokkelinformasjon/tildele/Oppfolgingsenhet";
+import { TildeltNotification } from "@/components/personkort/tildele/oppfolgingsenhet/Oppfolgingsenhet";
 
 const text = {
   heading: "Endre oppfølgingsenhet",
@@ -151,8 +151,8 @@ export default function TildelOppfolgingsenhetModal({
             {oppfolgingsenhet && onsketEnhet && (
               <BodyLong>{`Du tildeler nå ${navn} (${fnr}) ${
                 virksomhet.virksomhetsnavn
-                  ? ` ved ${virksomhet.virksomhetsnavn}`
-                  : " uten virksomhet"
+                  ? `ved ${virksomhet.virksomhetsnavn}`
+                  : "uten virksomhet"
               } til ${onsketEnhet.navn} (${onsketEnhet.enhetId}).`}</BodyLong>
             )}
           </>

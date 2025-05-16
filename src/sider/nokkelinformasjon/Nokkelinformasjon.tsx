@@ -8,9 +8,9 @@ import SideLaster from "@/components/SideLaster";
 import { Heading } from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { Tildele } from "@/sider/nokkelinformasjon/tildele/Tildele";
-import { TildeltNotification } from "@/sider/nokkelinformasjon/tildele/Oppfolgingsenhet";
-import { TildeltOppfolgingsenhetAlert } from "@/sider/nokkelinformasjon/tildele/TildeltOppfolgingsenhetAlert";
+import { Tildele } from "@/components/personkort/tildele/Tildele";
+import { TildeltNotification } from "@/components/personkort/tildele/oppfolgingsenhet/Oppfolgingsenhet";
+import { TildeltOppfolgingsenhetAlert } from "@/components/personkort/tildele/oppfolgingsenhet/TildeltOppfolgingsenhetAlert";
 
 const texts = {
   pageTitle: "Nøkkelinformasjon",

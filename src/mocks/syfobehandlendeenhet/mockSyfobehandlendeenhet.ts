@@ -7,7 +7,7 @@ import {
   TildelOppfolgingsenhetRequestDTO,
   TildelOppfolgingsenhetResponseDTO,
 } from "@/data/behandlendeenhet/types/BehandlendeEnhetDTOs";
-import { Enhet } from "@/components/personkort/tildele/useGetMuligeOppfolgingsenheter";
+import { Enhet } from "@/data/oppfolgingsenhet/useGetMuligeOppfolgingsenheter";
 import { ENHET_GRUNERLOKKA } from "@/mocks/common/mockConstants";
 
 let behandlendeEnhet: BehandlendeEnhetResponseDTO =
