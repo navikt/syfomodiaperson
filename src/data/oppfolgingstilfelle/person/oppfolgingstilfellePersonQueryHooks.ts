@@ -89,6 +89,13 @@ export const useEndOfLatestOppfolgingstilfelle = (): Date | undefined => {
   return latestOppfolgingstilfelle?.end;
 };
 
+export const useVirksomhetsnummerOfLatestOppfolgingstilfelle = ():
+  | string
+  | undefined => {
+  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+  return latestOppfolgingstilfelle?.virksomhetsnummerList.at(0);
+};
+
 export const useCurrentVarighetOppfolgingstilfelle = (): number | undefined => {
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   return latestOppfolgingstilfelle?.varighetUker;

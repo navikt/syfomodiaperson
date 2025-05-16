@@ -28,7 +28,10 @@ import { mockModiacontextholder } from "@/mocks/modiacontextholder/mockModiacont
 import { mockSyfoperson } from "@/mocks/syfoperson/mockSyfoperson";
 import { mockSyfooversiktsrv } from "@/mocks/syfooversiktsrv/mockSyfooversiktsrv";
 import { mockSyfomotebehov } from "@/mocks/syfomotebehov/mockSyfomotebehov";
-import { mockSyfobehandlendeenhet } from "@/mocks/syfobehandlendeenhet/mockSyfobehandlendeenhet";
+import {
+  mockGetMuligeTildelinger,
+  mockSyfobehandlendeenhet,
+} from "@/mocks/syfobehandlendeenhet/mockSyfobehandlendeenhet";
 import { mockIshuskelapp } from "@/mocks/oppfolgingsoppgave/mockOppfolgingsoppgave";
 import { http, HttpResponse } from "msw";
 import { mockisoppfolgingsplanForesporsel } from "@/mocks/isoppfolgingsplan/mockisoppfolgingsplanForesporsel";
@@ -65,6 +68,7 @@ const handlers = [
   ...mockSyfoperson,
   ...mockSyfooversiktsrv,
   ...mockSyfomotebehov,
+  mockGetMuligeTildelinger(),
   ...mockSyfobehandlendeenhet,
   ...mockIshuskelapp,
   mockSyfosmregister,

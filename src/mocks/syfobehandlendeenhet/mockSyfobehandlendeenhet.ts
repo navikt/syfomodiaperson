@@ -7,9 +7,28 @@ import {
   TildelOppfolgingsenhetRequestDTO,
   TildelOppfolgingsenhetResponseDTO,
 } from "@/data/behandlendeenhet/types/BehandlendeEnhetDTOs";
+import { Enhet } from "@/data/oppfolgingsenhet/useGetMuligeOppfolgingsenheter";
+import { ENHET_GRUNERLOKKA } from "@/mocks/common/mockConstants";
 
 let behandlendeEnhet: BehandlendeEnhetResponseDTO =
   behandlendeEnhetMockResponse;
+
+const muligeoppfolgingsenheter: Enhet[] = [
+  { enhetId: "0106", navn: "Nav Fredrikstad" },
+  { enhetId: "0101", navn: "Nav Halden" },
+  { enhetId: "0105", navn: "Nav Sarpsborg" },
+  { enhetId: ENHET_GRUNERLOKKA.nummer, navn: ENHET_GRUNERLOKKA.navn },
+];
+
+const findEnhetById = (enhetId: string): Enhet | undefined =>
+  muligeoppfolgingsenheter.find((enhet) => enhet.enhetId === enhetId);
+
+export function mockGetMuligeTildelinger() {
+  return http.get(
+    `${SYFOBEHANDLENDEENHET_ROOT}/tilordningsenheter/:enhetId`,
+    () => HttpResponse.json(muligeoppfolgingsenheter)
+  );
+}
 
 export const mockSyfobehandlendeenhet = [
   http.get(`${SYFOBEHANDLENDEENHET_ROOT}/personident`, () => {
@@ -31,9 +50,10 @@ export const mockSyfobehandlendeenhet = [
         oppfolgingsenhetDTO: {
           enhet: {
             enhetId: body.oppfolgingsenhet,
-            navn: "Nav testkontor",
+            navn:
+              findEnhetById(body.oppfolgingsenhet)?.navn ?? "Nav testkontor",
           },
-          createdAt: new Date("2024-10-15"),
+          createdAt: new Date(),
           veilederident: VEILEDER_IDENT_DEFAULT,
         },
       };

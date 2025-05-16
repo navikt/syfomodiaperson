@@ -61,7 +61,9 @@ export function VedtakFattet({
   function handleAvsluttOppgaveOnClick() {
     ferdigbehandleVedtak.mutate(undefined, {
       onSuccess: () => {
-        setNotification({ message: texts.oppgaveAvsluttetAlert });
+        setNotification({
+          message: texts.oppgaveAvsluttetAlert,
+        });
         setIsNyVurderingStarted(false);
       },
     });
