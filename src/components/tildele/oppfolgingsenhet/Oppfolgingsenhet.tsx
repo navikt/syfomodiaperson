@@ -1,7 +1,7 @@
 import { Card } from "@/components/Card";
-import TildelOppfolgingsenhetModal from "@/components/personkort/tildele/oppfolgingsenhet/TildelOppfolgingsenhetModal";
+import TildelOppfolgingsenhetModal from "@/components/tildele/oppfolgingsenhet/TildelOppfolgingsenhetModal";
 import React, { ReactNode, useRef } from "react";
-import { OppfolgingsenhetInnhold } from "@/components/personkort/tildele/oppfolgingsenhet/OppfolgingsenhetInnhold";
+import { OppfolgingsenhetInnhold } from "@/components/tildele/oppfolgingsenhet/OppfolgingsenhetInnhold";
 import { AlertProps } from "@navikt/ds-react";
 
 interface Props {

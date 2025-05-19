@@ -4,7 +4,7 @@ import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import {
   Oppfolgingsenhet,
   TildeltNotification,
-} from "@/components/personkort/tildele/oppfolgingsenhet/Oppfolgingsenhet";
+} from "@/components/tildele/oppfolgingsenhet/Oppfolgingsenhet";
 
 interface Props {
   setTildeltOppfolgingsenhetNotification: (

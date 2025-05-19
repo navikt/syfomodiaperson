@@ -16,7 +16,7 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { useVirksomhetsnummerOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { TildeltNotification } from "@/components/personkort/tildele/oppfolgingsenhet/Oppfolgingsenhet";
+import { TildeltNotification } from "@/components/tildele/oppfolgingsenhet/Oppfolgingsenhet";
 
 const text = {
   heading: "Endre oppfølgingsenhet",

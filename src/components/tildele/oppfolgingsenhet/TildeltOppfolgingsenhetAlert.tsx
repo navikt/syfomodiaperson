@@ -1,6 +1,6 @@
 import { Alert, Heading } from "@navikt/ds-react";
 import React from "react";
-import { TildeltNotification } from "@/components/personkort/tildele/oppfolgingsenhet/Oppfolgingsenhet";
+import { TildeltNotification } from "@/components/tildele/oppfolgingsenhet/Oppfolgingsenhet";
 
 interface Props {
   tildeltNotification: TildeltNotification | undefined;

@@ -17,7 +17,7 @@ import {
 import { getButton, queryButton } from "../../../testUtils";
 import { diskresjonskodeQueryKeys } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { egenansattQueryKeys } from "@/data/egenansatt/egenansattQueryHooks";
-import { OppfolgingsenhetInnhold } from "@/components/personkort/tildele/oppfolgingsenhet/OppfolgingsenhetInnhold";
+import { OppfolgingsenhetInnhold } from "@/components/tildele/oppfolgingsenhet/OppfolgingsenhetInnhold";
 
 let queryClient: QueryClient;
 
