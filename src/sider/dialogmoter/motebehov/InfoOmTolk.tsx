@@ -53,25 +53,24 @@ export const InfoOmTolk = () => {
     (arbeidstakerOnskerTolk || arbeidsgiverOnskerTolk) &&
     !isTolkRegistrertIPdl(brukerinfo);
 
+  if (!visInfoOmRegistrereTolkIPdl) {
+    return null;
+  }
+
   return (
-    visInfoOmRegistrereTolkIPdl && (
-      <Box
-        background="surface-default"
-        className="flex flex-col mb-4 p-6 gap-6"
-      >
-        <Heading size={"medium"} level={"2"}>
-          <HStack>
-            {texts.header}
-            <LanguageIcon fontSize={"2rem"} />
-          </HStack>
-          <BodyLong>
-            {texts.body}
-            <EksternLenke href={texts.url} className={"pl-1"}>
-              {texts.urlText}
-            </EksternLenke>
-          </BodyLong>
-        </Heading>
-      </Box>
-    )
+    <Box background="surface-default" className="flex flex-col mb-4 p-6 gap-6">
+      <Heading size={"medium"} level={"2"}>
+        <HStack>
+          {texts.header}
+          <LanguageIcon fontSize={"2rem"} />
+        </HStack>
+        <BodyLong>
+          {texts.body}
+          <EksternLenke href={texts.url} className={"pl-1"}>
+            {texts.urlText}
+          </EksternLenke>
+        </BodyLong>
+      </Heading>
+    </Box>
   );
 };
