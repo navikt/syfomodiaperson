@@ -55,38 +55,6 @@ const harIkkeTolkIPdl2: BrukerinfoDTO = {
   },
 };
 
-const harIkkeTolkIPdl3: BrukerinfoDTO = {
-  ...brukerinfoMock,
-  tilrettelagtKommunikasjon: {
-    talesprakTolk: {
-      value: null,
-    },
-    tegnsprakTolk: {
-      value: null,
-    },
-  },
-};
-
-const harIkkeTolkIPdl4: BrukerinfoDTO = {
-  ...brukerinfoMock,
-  tilrettelagtKommunikasjon: {
-    talesprakTolk: {
-      value: null,
-    },
-    tegnsprakTolk: null,
-  },
-};
-
-const harIkkeTolkIPdl5: BrukerinfoDTO = {
-  ...brukerinfoMock,
-  tilrettelagtKommunikasjon: {
-    talesprakTolk: null,
-    tegnsprakTolk: {
-      value: null,
-    },
-  },
-};
-
 const harTolkIPdl: BrukerinfoDTO = {
   ...brukerinfoMock,
   tilrettelagtKommunikasjon: {
@@ -94,7 +62,7 @@ const harTolkIPdl: BrukerinfoDTO = {
       value: "EN",
     },
     tegnsprakTolk: {
-      value: null,
+      value: "EN",
     },
   },
 };
@@ -103,37 +71,13 @@ const harTolkIPdl2: BrukerinfoDTO = {
   ...brukerinfoMock,
   tilrettelagtKommunikasjon: {
     talesprakTolk: {
-      value: null,
-    },
-    tegnsprakTolk: {
-      value: "EN",
-    },
-  },
-};
-
-const harTolkIPdl3: BrukerinfoDTO = {
-  ...brukerinfoMock,
-  tilrettelagtKommunikasjon: {
-    talesprakTolk: {
-      value: "EN",
-    },
-    tegnsprakTolk: {
-      value: "EN",
-    },
-  },
-};
-
-const harTolkIPdl4: BrukerinfoDTO = {
-  ...brukerinfoMock,
-  tilrettelagtKommunikasjon: {
-    talesprakTolk: {
       value: "EN",
     },
     tegnsprakTolk: null,
   },
 };
 
-const harTolkIPdl5: BrukerinfoDTO = {
+const harTolkIPdl3: BrukerinfoDTO = {
   ...brukerinfoMock,
   tilrettelagtKommunikasjon: {
     talesprakTolk: null,
@@ -229,13 +173,8 @@ describe("InfoOmTolk", () => {
       harTolkIPdl,
       harTolkIPdl2,
       harTolkIPdl3,
-      harTolkIPdl4,
-      harTolkIPdl5,
       harIkkeTolkIPdl,
       harIkkeTolkIPdl2,
-      harIkkeTolkIPdl3,
-      harIkkeTolkIPdl4,
-      harIkkeTolkIPdl5,
     ])(
       "Ingen møtebehov og med følgende informasjon i pdl: (talesprakTolk: $tilrettelagtKommunikasjon.talesprakTolk, tegnsprakTolk: $tilrettelagtKommunikasjon.tegnsprakTolk) - Ikke vis informasjon om tolk",
       (brukerinfo: BrukerinfoDTO) => {
@@ -254,13 +193,7 @@ describe("InfoOmTolk", () => {
 
   describe("Noen har møtebehov innenfor aktivt oppfølgingstilfelle", () => {
     describe("Arbeidsgiver", () => {
-      it.each<BrukerinfoDTO>([
-        harTolkIPdl,
-        harTolkIPdl2,
-        harTolkIPdl3,
-        harTolkIPdl4,
-        harTolkIPdl5,
-      ])(
+      it.each<BrukerinfoDTO>([harTolkIPdl, harTolkIPdl2, harTolkIPdl3])(
         "Arbeidsgiver har ønske om tolk og pdl har denne informasjonen (talesprakTolk: $tilrettelagtKommunikasjon.talesprakTolk, tegnsprakTolk: $tilrettelagtKommunikasjon.tegnsprakTolk) - Ikke vis informasjon om tolk",
         (brukerinfo: BrukerinfoDTO) => {
           mockMotebehov([arbeidsgiverOnskerTolkInnenforTilfelle], brukerinfo);
@@ -275,13 +208,7 @@ describe("InfoOmTolk", () => {
         }
       );
 
-      it.each<BrukerinfoDTO>([
-        harIkkeTolkIPdl,
-        harIkkeTolkIPdl2,
-        harIkkeTolkIPdl3,
-        harIkkeTolkIPdl4,
-        harIkkeTolkIPdl5,
-      ])(
+      it.each<BrukerinfoDTO>([harIkkeTolkIPdl, harIkkeTolkIPdl2])(
         "Arbeidsgiver har ønske om tolk og pdl har ikke denne informasjonen (talesprakTolk: $tilrettelagtKommunikasjon.talesprakTolk, tegnsprakTolk: $tilrettelagtKommunikasjon.tegnsprakTolk) - Vis informasjon om tolk",
         (brukerinfo: BrukerinfoDTO) => {
           mockMotebehov([arbeidsgiverOnskerTolkInnenforTilfelle], brukerinfo);
@@ -303,13 +230,8 @@ describe("InfoOmTolk", () => {
         harTolkIPdl,
         harTolkIPdl2,
         harTolkIPdl3,
-        harTolkIPdl4,
-        harTolkIPdl5,
         harIkkeTolkIPdl,
         harIkkeTolkIPdl2,
-        harIkkeTolkIPdl3,
-        harIkkeTolkIPdl4,
-        harIkkeTolkIPdl5,
       ])(
         "Arbeidstaker har ikke ønske om tolk og pdl har følgende informasjon: (talesprakTolk: $tilrettelagtKommunikasjon.talesprakTolk, tegnsprakTolk: $tilrettelagtKommunikasjon.tegnsprakTolk) - Ikke vis informasjon om tolk",
         (brukerinfo: BrukerinfoDTO) => {
@@ -330,13 +252,7 @@ describe("InfoOmTolk", () => {
     });
 
     describe("Arbeidstaker", () => {
-      it.each<BrukerinfoDTO>([
-        harTolkIPdl,
-        harTolkIPdl2,
-        harTolkIPdl3,
-        harTolkIPdl4,
-        harTolkIPdl5,
-      ])(
+      it.each<BrukerinfoDTO>([harTolkIPdl, harTolkIPdl2, harTolkIPdl3])(
         "Arbeidstaker har ønske om tolk og pdl har denne informasjonen (talesprakTolk: $tilrettelagtKommunikasjon.talesprakTolk, tegnsprakTolk: $tilrettelagtKommunikasjon.tegnsprakTolk) - Ikke vis informasjon om tolk",
         (brukerinfo: BrukerinfoDTO) => {
           mockMotebehov([arbeidstakerOnskerTolkInnenforTilfelle], brukerinfo);
@@ -351,13 +267,7 @@ describe("InfoOmTolk", () => {
         }
       );
 
-      it.each<BrukerinfoDTO>([
-        harIkkeTolkIPdl,
-        harIkkeTolkIPdl2,
-        harIkkeTolkIPdl3,
-        harIkkeTolkIPdl4,
-        harIkkeTolkIPdl5,
-      ])(
+      it.each<BrukerinfoDTO>([harIkkeTolkIPdl, harIkkeTolkIPdl2])(
         "Arbeidstaker har ønske om tolk og pdl har ikke denne informasjonen (talesprakTolk: $tilrettelagtKommunikasjon.talesprakTolk, tegnsprakTolk: $tilrettelagtKommunikasjon.tegnsprakTolk) - Vis informasjon om tolk",
         (brukerinfo: BrukerinfoDTO) => {
           mockMotebehov([arbeidstakerOnskerTolkInnenforTilfelle], brukerinfo);
@@ -379,13 +289,8 @@ describe("InfoOmTolk", () => {
         harTolkIPdl,
         harTolkIPdl2,
         harTolkIPdl3,
-        harTolkIPdl4,
-        harTolkIPdl5,
         harIkkeTolkIPdl,
         harIkkeTolkIPdl2,
-        harIkkeTolkIPdl3,
-        harIkkeTolkIPdl4,
-        harIkkeTolkIPdl5,
       ])(
         "Arbeidstaker har ikke ønske om tolk og pdl har følgende informasjon: (talesprakTolk: $tilrettelagtKommunikasjon.talesprakTolk, tegnsprakTolk: $tilrettelagtKommunikasjon.tegnsprakTolk) - Ikke vis informasjon om tolk",
         (brukerinfo: BrukerinfoDTO) => {
@@ -406,13 +311,7 @@ describe("InfoOmTolk", () => {
     });
 
     describe("Arbeidsgiver og arbeidstaker ", () => {
-      it.each<BrukerinfoDTO>([
-        harTolkIPdl,
-        harTolkIPdl2,
-        harTolkIPdl3,
-        harTolkIPdl4,
-        harTolkIPdl5,
-      ])(
+      it.each<BrukerinfoDTO>([harTolkIPdl, harTolkIPdl2, harTolkIPdl3])(
         "Arbeidsgiver og arbeidstaker har ønske om tolk og pdl har denne informasjonen (talesprakTolk: $tilrettelagtKommunikasjon.talesprakTolk, tegnsprakTolk: $tilrettelagtKommunikasjon.tegnsprakTolk) - Ikke vis informasjon om tolk",
         (brukerinfo: BrukerinfoDTO) => {
           mockMotebehov(
@@ -433,13 +332,7 @@ describe("InfoOmTolk", () => {
         }
       );
 
-      it.each<BrukerinfoDTO>([
-        harIkkeTolkIPdl,
-        harIkkeTolkIPdl2,
-        harIkkeTolkIPdl3,
-        harIkkeTolkIPdl4,
-        harIkkeTolkIPdl5,
-      ])(
+      it.each<BrukerinfoDTO>([harIkkeTolkIPdl, harIkkeTolkIPdl2])(
         "Arbeidsgiver og arbeidstaker har ønske om tolk og pdl har ikke denne informasjonen (talesprakTolk: $tilrettelagtKommunikasjon.talesprakTolk, tegnsprakTolk: $tilrettelagtKommunikasjon.tegnsprakTolk) - Vis informasjon om tolk",
         (brukerinfo: BrukerinfoDTO) => {
           mockMotebehov(
@@ -467,13 +360,7 @@ describe("InfoOmTolk", () => {
 
   describe(`Noen har møtebehov utenfor aktivt oppfølgingstilfelle`, () => {
     describe(`Arbeidstaker`, () => {
-      it.each<BrukerinfoDTO>([
-        harTolkIPdl,
-        harTolkIPdl2,
-        harTolkIPdl3,
-        harTolkIPdl4,
-        harTolkIPdl5,
-      ])(
+      it.each<BrukerinfoDTO>([harTolkIPdl, harTolkIPdl2, harTolkIPdl3])(
         "Arbeidstaker har ønske om tolk og pdl har denne informasjonen (talesprakTolk: $tilrettelagtKommunikasjon.talesprakTolk, tegnsprakTolk: $tilrettelagtKommunikasjon.tegnsprakTolk) - Ikke vis informasjon om tolk",
         (brukerinfo: BrukerinfoDTO) => {
           mockMotebehov([arbeidstakerOnskerTolkUtenforTilfelle], brukerinfo);
@@ -488,13 +375,7 @@ describe("InfoOmTolk", () => {
         }
       );
 
-      it.each<BrukerinfoDTO>([
-        harIkkeTolkIPdl,
-        harIkkeTolkIPdl2,
-        harIkkeTolkIPdl3,
-        harIkkeTolkIPdl4,
-        harIkkeTolkIPdl5,
-      ])(
+      it.each<BrukerinfoDTO>([harIkkeTolkIPdl, harIkkeTolkIPdl2])(
         "Arbeidstaker har ønske om tolk og pdl har ikke denne informasjonen (talesprakTolk: $tilrettelagtKommunikasjon.talesprakTolk, tegnsprakTolk: $tilrettelagtKommunikasjon.tegnsprakTolk) - Vis informasjon om tolk",
         (brukerinfo: BrukerinfoDTO) => {
           mockMotebehov(
@@ -516,13 +397,8 @@ describe("InfoOmTolk", () => {
         harTolkIPdl,
         harTolkIPdl2,
         harTolkIPdl3,
-        harTolkIPdl4,
-        harTolkIPdl5,
         harIkkeTolkIPdl,
         harIkkeTolkIPdl2,
-        harIkkeTolkIPdl3,
-        harIkkeTolkIPdl4,
-        harIkkeTolkIPdl5,
       ])(
         "Arbeidstaker har ikke ønske om tolk og pdl har følgende informasjon: (talesprakTolk: $tilrettelagtKommunikasjon.talesprakTolk, tegnsprakTolk: $tilrettelagtKommunikasjon.tegnsprakTolk) - Ikke vis informasjon om tolk",
         (brukerinfo: BrukerinfoDTO) => {
@@ -540,13 +416,7 @@ describe("InfoOmTolk", () => {
     });
 
     describe(`Arbeidsgiver`, () => {
-      it.each<BrukerinfoDTO>([
-        harTolkIPdl,
-        harTolkIPdl2,
-        harTolkIPdl3,
-        harTolkIPdl4,
-        harTolkIPdl5,
-      ])(
+      it.each<BrukerinfoDTO>([harTolkIPdl, harTolkIPdl2, harTolkIPdl3])(
         "Arbeidsgiver har ønske om tolk og pdl har denne informasjonen (talesprakTolk: $tilrettelagtKommunikasjon.talesprakTolk, tegnsprakTolk: $tilrettelagtKommunikasjon.tegnsprakTolk) - Ikke vis informasjon om tolk",
         (brukerinfo: BrukerinfoDTO) => {
           mockMotebehov([arbeidsgiverOnskerTolkUtenforTilfelle], brukerinfo);
@@ -561,13 +431,7 @@ describe("InfoOmTolk", () => {
         }
       );
 
-      it.each<BrukerinfoDTO>([
-        harIkkeTolkIPdl,
-        harIkkeTolkIPdl2,
-        harIkkeTolkIPdl3,
-        harIkkeTolkIPdl4,
-        harIkkeTolkIPdl5,
-      ])(
+      it.each<BrukerinfoDTO>([harIkkeTolkIPdl, harIkkeTolkIPdl2])(
         "Arbeidsgiver har ønske om tolk og pdl har ikke denne informasjonen (talesprakTolk: $tilrettelagtKommunikasjon.talesprakTolk, tegnsprakTolk: $tilrettelagtKommunikasjon.tegnsprakTolk) - Vis informasjon om tolk",
         (brukerinfo: BrukerinfoDTO) => {
           mockMotebehov(
@@ -589,13 +453,8 @@ describe("InfoOmTolk", () => {
         harTolkIPdl,
         harTolkIPdl2,
         harTolkIPdl3,
-        harTolkIPdl4,
-        harTolkIPdl5,
         harIkkeTolkIPdl,
         harIkkeTolkIPdl2,
-        harIkkeTolkIPdl3,
-        harIkkeTolkIPdl4,
-        harIkkeTolkIPdl5,
       ])(
         "Arbeidsgiver har ikke ønske om tolk og pdl har følgende informasjon: (talesprakTolk: $tilrettelagtKommunikasjon.talesprakTolk, tegnsprakTolk: $tilrettelagtKommunikasjon.tegnsprakTolk) - Ikke vis informasjon om tolk",
         (brukerinfo: BrukerinfoDTO) => {
@@ -617,13 +476,8 @@ describe("InfoOmTolk", () => {
         harTolkIPdl,
         harTolkIPdl2,
         harTolkIPdl3,
-        harTolkIPdl4,
-        harTolkIPdl5,
         harIkkeTolkIPdl,
         harIkkeTolkIPdl2,
-        harIkkeTolkIPdl3,
-        harIkkeTolkIPdl4,
-        harIkkeTolkIPdl5,
       ])(
         "Arbeidsgiver og arbeidstaker har ønske om tolk og pdl har følgende informasjon (talesprakTolk: $tilrettelagtKommunikasjon.talesprakTolk, tegnsprakTolk: $tilrettelagtKommunikasjon.tegnsprakTolk) - Ikke vis informasjon om tolk",
         (brukerinfo: BrukerinfoDTO) => {

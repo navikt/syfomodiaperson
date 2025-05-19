@@ -21,14 +21,12 @@ const texts = {
   urlText: "Ønsker du å registrere behov for tolk på vedkommende, klikk her.",
 };
 
-export const isTolkRegistrertIPdl = (brukerinfo: BrukerinfoDTO): boolean => {
+const isTolkRegistrertIPdl = (brukerinfo: BrukerinfoDTO): boolean => {
   const { tilrettelagtKommunikasjon } = brukerinfo;
   return !!(
     tilrettelagtKommunikasjon &&
-    ((tilrettelagtKommunikasjon.tegnsprakTolk &&
-      tilrettelagtKommunikasjon.tegnsprakTolk.value) ||
-      (tilrettelagtKommunikasjon.talesprakTolk &&
-        tilrettelagtKommunikasjon.talesprakTolk.value))
+    (tilrettelagtKommunikasjon.tegnsprakTolk ||
+      tilrettelagtKommunikasjon.talesprakTolk)
   );
 };
 

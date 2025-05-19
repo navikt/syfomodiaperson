@@ -19,7 +19,7 @@ interface TilrettelagtKommunikasjon {
 }
 
 interface Sprak {
-  value: string | null;
+  value: string;
 }
 
 /* https://pdl-docs.dev.intern.nav.no/ekstern/index.html#_sikkerhetstiltak */
