@@ -27,6 +27,15 @@ interface Props {
   modalRef: React.RefObject<HTMLDialogElement | null>;
 }
 
+const kanTildeleOppfolgingsenhet = (
+  isEgenAnsatt: boolean | undefined,
+  diskresjonskode: string | undefined
+) => {
+  const isKode6 = diskresjonskode === "6";
+  const isKode7 = diskresjonskode === "7";
+  return !isEgenAnsatt && !isKode6 && !isKode7;
+};
+
 export const OppfolgingsenhetInnhold = ({ modalRef }: Props) => {
   const {
     error,
@@ -51,9 +60,7 @@ export const OppfolgingsenhetInnhold = ({ modalRef }: Props) => {
   const oppfolgingsenhet = behandlendeenhet?.oppfolgingsenhetDTO
     ? behandlendeenhet.oppfolgingsenhetDTO.enhet
     : behandlendeenhet.geografiskEnhet;
-  const isKode6 = diskresjonskode === "6";
-  const isKode7 = diskresjonskode === "7";
-  const kanTildele = !isEgenAnsatt && !isKode6 && !isKode7;
+  const kanTildele = kanTildeleOppfolgingsenhet(isEgenAnsatt, diskresjonskode);
 
   return (
     <HStack gap={"2"} className={"flex"}>
