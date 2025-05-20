@@ -6,13 +6,11 @@ import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import {
-  findFirst,
   getMotebehovInActiveTilfelle,
   onskerTolk,
   sorterMotebehovDataEtterDatoDesc,
 } from "@/utils/motebehovUtils";
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
-import { MotebehovInnmelder } from "@/data/motebehov/types/motebehovTypes";
 
 const texts = {
   header: "Det er meldt inn behov for tolk",
@@ -39,19 +37,9 @@ export const InfoOmTolk = () => {
     sortertMotebehov,
     latestOppfolgingstilfelle
   );
-  const arbeidstaker = findFirst(
-    MotebehovInnmelder.ARBEIDSTAKER,
-    motebehovInActiveTilfelle
-  );
-  const arbeidsgiver = findFirst(
-    MotebehovInnmelder.ARBEIDSGIVER,
-    motebehovInActiveTilfelle
-  );
-  const arbeidstakerOnskerTolk = onskerTolk(arbeidstaker);
-  const arbeidsgiverOnskerTolk = onskerTolk(arbeidsgiver);
+  const minstEnOnskerTolk = motebehovInActiveTilfelle.some(onskerTolk);
   const visInfoOmRegistrereTolkIPdl =
-    (arbeidstakerOnskerTolk || arbeidsgiverOnskerTolk) &&
-    !isTolkRegistrertIPdl(brukerinfo);
+    minstEnOnskerTolk && !isTolkRegistrertIPdl(brukerinfo);
 
   if (!visInfoOmRegistrereTolkIPdl) {
     return null;

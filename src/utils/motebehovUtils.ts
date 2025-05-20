@@ -110,15 +110,6 @@ export function isArbeidstakerMotebehov(motebehov: MotebehovVeilederDTO) {
   return motebehov.innmelderType === MotebehovInnmelder.ARBEIDSTAKER;
 }
 
-export const findFirst = (
-  innmelderType: MotebehovInnmelder,
-  motebehovsvar: MotebehovVeilederDTO[]
-): MotebehovVeilederDTO | undefined => {
-  return motebehovsvar.find(
-    (motebehov) => motebehov.innmelderType === innmelderType
-  );
-};
-
 export const onskerTolk = (
   motebehov: MotebehovVeilederDTO | undefined
 ): boolean => {
