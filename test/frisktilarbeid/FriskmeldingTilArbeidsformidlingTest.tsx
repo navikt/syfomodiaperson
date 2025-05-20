@@ -57,6 +57,23 @@ describe("FriskmeldingTilArbeidsformidling", () => {
 
   it("viser ferdigbehandlet vedtak når det finnes", () => {
     const vedtak = createVedtak(
+      dayjs().subtract(13, "weeks").toDate(),
+      dayjs().subtract(14, "weeks").toDate()
+    );
+    mockVedtak([vedtak]);
+
+    renderFriskmeldingTilArbeidsformidling();
+
+    expect(screen.getByText("Start nytt vedtak")).to.exist;
+    expect(
+      screen.getByText("Forrige vedtak på denne personen ble fattet", {
+        exact: false,
+      })
+    ).to.exist;
+  });
+
+  it("viser aktivt vedtak når det finnes", () => {
+    const vedtak = createVedtak(
       dayjs().subtract(1, "days").toDate(),
       dayjs().toDate()
     );
@@ -64,12 +81,12 @@ describe("FriskmeldingTilArbeidsformidling", () => {
 
     renderFriskmeldingTilArbeidsformidling();
 
-    expect(screen.getByText("Start nytt vedtak")).to.exist;
+    expect(screen.getByText("Aktivt vedtak")).to.exist;
   });
 
-  it("viser nytt vedtak skjema når bruker trykker 'Nytt vedtak' når ferdigbehandlet vedtak finnes", async () => {
+  it("viser nytt vedtak skjema når bruker trykker 'Nytt vedtak' når ferdigbehandlet vedtak finnes og vedtak sin til og med dato har passert", async () => {
     const vedtak = createVedtak(
-      dayjs().subtract(1, "days").toDate(),
+      dayjs().subtract(12, "weeks").subtract(1, "day").toDate(),
       dayjs().toDate()
     );
     queryClient.setQueryData(
@@ -111,6 +128,26 @@ describe("FriskmeldingTilArbeidsformidling", () => {
     expect(
       screen.getByText(
         "Den sykemeldte er ikke registrert som arbeidssøker. Dette må gjøres før et nytt vedtak kan fattes."
+      )
+    ).to.exist;
+  });
+
+  it("viser alert om at det ikke er mulig å starte nytt vedtak ettersom det finnes et eksisterende aktivt vedtak", () => {
+    const vedtak = createVedtak(
+      dayjs().subtract(12, "weeks").toDate(),
+      dayjs().toDate()
+    );
+    queryClient.setQueryData(
+      vedtakQueryKeys.vilkar(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => defaultVilkar
+    );
+    mockVedtak([vedtak]);
+    renderFriskmeldingTilArbeidsformidling();
+
+    expect(screen.getByText("Aktivt vedtak")).to.exist;
+    expect(
+      screen.getByText(
+        "Tidligst mulig tidspunkt for å fatte et nytt vedtak er dagen etter forrige vedtak er avsluttet."
       )
     ).to.exist;
   });

@@ -15,10 +15,13 @@ import {
   useVedtakQuery,
   useVilkarForVedtakQuery,
 } from "@/data/frisktilarbeid/vedtakQuery";
-import ArbeidssokerAlert from "@/sider/frisktilarbeid/ArbeidssokerAlert";
+import KanIkkeFatteNyttVedtakAlert from "@/sider/frisktilarbeid/KanIkkeFatteNyttVedtakAlert";
 
 const texts = {
-  heading: "Start nytt vedtak",
+  heading: {
+    startNytt: "Start nytt vedtak",
+    aktivtVedtak: "Aktivt vedtak",
+  },
   nyttVedtak:
     "Her kan du fatte et nytt vedtak for § 8-5 friskmelding til arbeidsformidling. Husk å sjekke at alle nødvendige forutsetninger er oppfylt før ordningen starter.",
   forrigeVedtakInfo: (
@@ -28,10 +31,13 @@ const texts = {
   ) => {
     return `Forrige vedtak på denne personen ble fattet ${vedtakFattetDato}. Perioden for friskmelding til arbeidsformidling ${vedtakStartText} og ${vedtakEndText}.`;
   },
+  vedtakFattet: "Vedtak fattet:",
+  vedtakStartet: "Startet:",
+  vedtakAvsluttes: "Avsluttes:",
   nyttVedtakKnapp: "Nytt vedtak",
 };
 
-export function ForrigeVedtakText({
+function ForrigeVedtakText({
   vedtak,
 }: {
   vedtak: VedtakResponseDTO;
@@ -59,6 +65,30 @@ export function ForrigeVedtakText({
   );
 }
 
+function isActiveExistingVedtak(vedtak: VedtakResponseDTO): boolean {
+  const vedtakTomDate = dayjs(vedtak.tom);
+  const today = dayjs();
+  return today.isBefore(vedtakTomDate) || today.isSame(vedtakTomDate, "date");
+}
+
+function AktivtVedtakInfo({ vedtak }: { vedtak: VedtakResponseDTO }) {
+  return (
+    <div>
+      <BodyShort>
+        {`${texts.vedtakFattet} ${tilDatoMedManedNavn(vedtak.createdAt)}`}
+      </BodyShort>
+      <div className="flex flex-row gap-4">
+        <BodyShort>
+          {`${texts.vedtakStartet} ${tilDatoMedManedNavn(vedtak.fom)}`}
+        </BodyShort>
+        <BodyShort>
+          {`${texts.vedtakAvsluttes} ${tilDatoMedManedNavn(vedtak.tom)}`}
+        </BodyShort>
+      </div>
+    </div>
+  );
+}
+
 interface Props {
   setIsNyVurderingStarted: (value: boolean) => void;
 }
@@ -66,9 +96,12 @@ interface Props {
 export default function NyttVedtak({ setIsNyVurderingStarted }: Props) {
   const { notification } = useNotification();
   const { data } = useVedtakQuery();
-  const { isNotArbeidssoker, isPending } = useVilkarForVedtakQuery();
+  const { isRegisteredArbeidssoker, isPending } = useVilkarForVedtakQuery();
   const vedtak: VedtakResponseDTO | undefined = data[0];
   const isExistingVedtak = !!vedtak;
+  const isActiveVedtak = isExistingVedtak && isActiveExistingVedtak(vedtak);
+  const kanFatteNyttVedtak = !isActiveVedtak && !!isRegisteredArbeidssoker;
+
   return (
     <>
       {notification && (
@@ -83,10 +116,16 @@ export default function NyttVedtak({ setIsNyVurderingStarted }: Props) {
           className="flex flex-col gap-4"
         >
           <Heading level="2" size="medium">
-            {texts.heading}
+            {isActiveVedtak
+              ? texts.heading.aktivtVedtak
+              : texts.heading.startNytt}
           </Heading>
           {isExistingVedtak ? (
-            <ForrigeVedtakText vedtak={vedtak} />
+            isActiveVedtak ? (
+              <AktivtVedtakInfo vedtak={vedtak} />
+            ) : (
+              <ForrigeVedtakText vedtak={vedtak} />
+            )
           ) : (
             <BodyShort>{texts.nyttVedtak}</BodyShort>
           )}
@@ -94,11 +133,16 @@ export default function NyttVedtak({ setIsNyVurderingStarted }: Props) {
             <Loader size="xlarge" title="Laster inn vilkår for vedtak" />
           ) : (
             <>
-              {isNotArbeidssoker && <ArbeidssokerAlert />}
+              {!kanFatteNyttVedtak && (
+                <KanIkkeFatteNyttVedtakAlert
+                  isActiveVedtak={isActiveVedtak}
+                  isRegisteredArbeidssoker={!!isRegisteredArbeidssoker}
+                />
+              )}
               <Button
                 className="w-fit"
                 onClick={() => setIsNyVurderingStarted(true)}
-                disabled={isNotArbeidssoker}
+                disabled={!kanFatteNyttVedtak}
               >
                 {texts.nyttVedtakKnapp}
               </Button>

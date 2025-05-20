@@ -44,6 +44,6 @@ export const useVilkarForVedtakQuery = () => {
   return {
     isPending: query.isPending,
     data: query.data,
-    isNotArbeidssoker: !query.data?.isArbeidssoker,
+    isRegisteredArbeidssoker: query.data?.isArbeidssoker,
   };
 };
