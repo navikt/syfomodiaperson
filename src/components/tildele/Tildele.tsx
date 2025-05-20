@@ -15,15 +15,17 @@ interface Props {
 export const Tildele = ({ setTildeltOppfolgingsenhetNotification }: Props) => {
   const { toggles } = useFeatureToggles();
 
+  if (!toggles.isTildelOppfolgingsenhetEnabled) {
+    return null;
+  }
+
   return (
-    toggles.isTildelOppfolgingsenhetEnabled && (
-      <Box background="surface-default" padding={"4"}>
-        <HGrid gap={"4"} columns={2} maxWidth={{ xl: "1440px" }}>
-          <Oppfolgingsenhet
-            setTildeltNotification={setTildeltOppfolgingsenhetNotification}
-          />
-        </HGrid>
-      </Box>
-    )
+    <Box background="surface-default" padding={"4"}>
+      <HGrid gap={"4"} columns={2} maxWidth={{ xl: "1440px" }}>
+        <Oppfolgingsenhet
+          setTildeltNotification={setTildeltOppfolgingsenhetNotification}
+        />
+      </HGrid>
+    </Box>
   );
 };

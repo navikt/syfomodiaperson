@@ -9,16 +9,18 @@ interface Props {
 export const TildeltOppfolgingsenhetAlert = ({
   tildeltNotification,
 }: Props) => {
+  if (!tildeltNotification) {
+    return null;
+  }
+
   return (
-    tildeltNotification && (
-      <Alert variant={tildeltNotification.variant} className="mb-2">
-        {!!tildeltNotification.header && (
-          <Heading size="xsmall" level="3">
-            {tildeltNotification.header}
-          </Heading>
-        )}
-        {tildeltNotification.message}
-      </Alert>
-    )
+    <Alert variant={tildeltNotification.variant} className="mb-2">
+      {!!tildeltNotification.header && (
+        <Heading size="xsmall" level="3">
+          {tildeltNotification.header}
+        </Heading>
+      )}
+      {tildeltNotification.message}
+    </Alert>
   );
 };
