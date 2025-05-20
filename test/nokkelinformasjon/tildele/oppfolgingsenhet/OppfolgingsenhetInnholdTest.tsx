@@ -90,6 +90,19 @@ describe("Tildele", () => {
     expect(getButton("Endre")).to.exist;
   });
 
+  it("Vis varsel hvis syfobehandlendeenhet returnerer noContent (finner ikke geografisk enhet)", async () => {
+    queryClient.setQueryData(
+      behandlendeEnhetQueryKeys.behandlendeEnhet(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
+      () => ""
+    );
+
+    renderOppfolgingsenhetInnhold();
+
+    expect(screen.getByText("Henting av kontortilhørighet feilet")).to.exist;
+  });
+
   describe("kanTildeleOppfolgingsenhet", async () => {
     it.each([
       [undefined, undefined],

@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Alert,
   BodyShort,
   Button,
   Heading,
@@ -21,6 +22,7 @@ const text = {
   buttonLabelEndreOppfolgingsenhet: "Endre",
   kontortilhorighet: "Kontortilhørighet",
   endret: "Endret",
+  errorIngenInfoOmBehandlendeEnhet: "Henting av kontortilhørighet feilet",
 };
 
 interface Props {
@@ -55,6 +57,12 @@ export const OppfolgingsenhetInnhold = ({ modalRef }: Props) => {
     const apiError =
       error instanceof ApiErrorException ? error.error : undefined;
     return <ErrorBoundary apiError={apiError} />;
+  }
+
+  if (!behandlendeenhet) {
+    return (
+      <Alert variant={"error"}>{text.errorIngenInfoOmBehandlendeEnhet}</Alert>
+    );
   }
 
   const oppfolgingsenhet = behandlendeenhet?.oppfolgingsenhetDTO
