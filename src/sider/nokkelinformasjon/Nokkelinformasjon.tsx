@@ -8,6 +8,9 @@ import SideLaster from "@/components/SideLaster";
 import { Heading } from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import { Tildele } from "@/components/tildele/Tildele";
+import { TildeltNotification } from "@/components/tildele/oppfolgingsenhet/Oppfolgingsenhet";
+import { TildeltOppfolgingsenhetAlert } from "@/components/tildele/oppfolgingsenhet/TildeltOppfolgingsenhetAlert";
 
 const texts = {
   pageTitle: "Nøkkelinformasjon",
@@ -20,6 +23,9 @@ export const Nokkelinformasjon = () => {
 
   const [selectedOppfolgingstilfelle, setSelectedOppfolgingstilfelle] =
     useState<OppfolgingstilfelleDTO | undefined>();
+  const [tildeltNotification, setTildeltNotification] = useState<
+    TildeltNotification | undefined
+  >(undefined);
 
   return (
     <Side
@@ -35,6 +41,12 @@ export const Nokkelinformasjon = () => {
             {texts.pageTitle}
           </Heading>
         </header>
+        <TildeltOppfolgingsenhetAlert
+          tildeltNotification={tildeltNotification}
+        />
+        <Tildele
+          setTildeltOppfolgingsenhetNotification={setTildeltNotification}
+        />
         <Sykmeldingsgrad
           selectedOppfolgingstilfelle={
             selectedOppfolgingstilfelle || latestOppfolgingstilfelle

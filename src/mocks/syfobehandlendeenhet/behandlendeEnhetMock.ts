@@ -3,8 +3,9 @@ import {
   ENHET_NAV_UTLAND,
   VEILEDER_IDENT_DEFAULT,
 } from "../common/mockConstants";
+import { BehandlendeEnhetResponseDTO } from "@/data/behandlendeenhet/types/BehandlendeEnhetDTOs";
 
-const behandlendeEnhetMock = {
+export const behandlendeEnhetMock = {
   enhetId: ENHET_GRUNERLOKKA.nummer,
   navn: ENHET_GRUNERLOKKA.navn,
 };
@@ -21,4 +22,9 @@ export const behandlendeEnhetMockResponse = {
     createdAt: new Date("2024-10-15"),
     veilederident: VEILEDER_IDENT_DEFAULT,
   },
+};
+
+export const ingenTildeltOppfolgingsenhet: BehandlendeEnhetResponseDTO = {
+  geografiskEnhet: behandlendeEnhetMock,
+  oppfolgingsenhetDTO: null,
 };

@@ -32,7 +32,7 @@ const TextWithJiraLink = ({ children }: TextWithJiraLinkProps) => {
 };
 
 interface ErrorBoundaryProps {
-  children: ReactNode;
+  children?: ReactNode;
   apiError?: ApiError | null;
   errorMessage?: string;
 }
