@@ -18,12 +18,10 @@ import { useNotification } from "@/context/notification/NotificationContext";
 const texts = {
   heading: (startDate: string, endDate: string) =>
     `Fattet vedtak varer fra ${startDate} til ${endDate}`,
-  avslutt:
-    "Etter at du avslutter oppgaven her, fjernes oppgaven fra oversikten og du trenger ikke å foreta deg noe mer.",
   videreOppfolging:
     "Videre oppfølging vil skje i aktivitetsplanen basert på bistandsbehovet i §14a-vedtaket.",
-  button: "Avslutt oppgave",
-  oppgaveAvsluttetAlert:
+  button: "Fjern oppgaven fra oversikten",
+  oppgaveFjernetAlert:
     "Oppgaven om vedtak er ferdigbehandlet, og er fjernet fra oversikten.",
   infotrygdAlert:
     "Overføring til Infotrygd feilet. Sjekk Infotrygd og registrer vedtaket manuelt om nødvendig.",
@@ -58,10 +56,10 @@ export function VedtakFattet({
   const vedtakEndDateText = tilLesbarDatoMedArUtenManedNavn(tom);
   const { notification, setNotification } = useNotification();
 
-  function handleAvsluttOppgaveOnClick() {
+  function handleFjernOppgaveOnClick() {
     ferdigbehandleVedtak.mutate(undefined, {
       onSuccess: () => {
-        setNotification({ message: texts.oppgaveAvsluttetAlert });
+        setNotification({ message: texts.oppgaveFjernetAlert });
         setIsNyVurderingStarted(false);
       },
     });
@@ -87,11 +85,11 @@ export function VedtakFattet({
           {`${texts.heading(vedtakStartDateText, vedtakEndDateText)} `}
         </Heading>
         <BodyShort>{texts.videreOppfolging}</BodyShort>
-        <BodyShort>{texts.avslutt}</BodyShort>
         <Button
           className="w-fit"
+          variant="secondary"
           loading={ferdigbehandleVedtak.isPending}
-          onClick={() => handleAvsluttOppgaveOnClick()}
+          onClick={() => handleFjernOppgaveOnClick()}
         >
           {texts.button}
         </Button>

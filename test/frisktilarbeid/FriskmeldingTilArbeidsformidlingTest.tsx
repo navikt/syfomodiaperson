@@ -46,13 +46,13 @@ describe("FriskmeldingTilArbeidsformidling", () => {
     queryClient = queryClientWithMockData();
   });
 
-  it("viser avslutt oppgave når vedtak har startet", () => {
+  it("viser mulighet for å fjerne oppgaven fra oversikten når vedtak har startet", () => {
     const vedtak = createVedtak(new Date());
     mockVedtak([vedtak]);
 
     renderFriskmeldingTilArbeidsformidling();
 
-    expect(getButton("Avslutt oppgave")).to.exist;
+    expect(getButton("Fjern oppgaven fra oversikten")).to.exist;
   });
 
   it("viser ferdigbehandlet vedtak når det finnes", () => {
