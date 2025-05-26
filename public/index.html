@@ -11,13 +11,27 @@
       rel="stylesheet"
       href="https://cdn.nav.no/personoversikt/internarbeidsflate-decorator-v3/prod/latest/dist/index.css"
     />
-    <% } %> <% if (process.env.NODE_ENV === 'development') { %>
+    <% } %>
+    <% if (process.env.NODE_ENV === 'development') { %>
     <script src="https://cdn.nav.no/personoversikt/internarbeidsflate-decorator-v3/dev/latest/dist/bundle.js"></script>
     <link
       rel="stylesheet"
       href="https://cdn.nav.no/personoversikt/internarbeidsflate-decorator-v3/dev/latest/dist/index.css"
     />
     <% } %>
+
+    <% if (process.env.NAIS_CONTEXT === 'prod') { %>
+      <!-- Legg til umami script når vi har fått tilgang i prod-->
+    <% } %>
+    <% if (process.env.NAIS_CONTEXT === 'dev') { %>
+      <script
+        defer
+        src="https://cdn.nav.no/team-researchops/sporing/sporing.js"
+        data-host-url="https://umami.nav.no"
+        data-website-id="e75681f5-0a2a-4061-8800-cfa36c982730">
+      </script>
+    <% } %>
+
   </head>
   <body>
     <div id="header"></div>
