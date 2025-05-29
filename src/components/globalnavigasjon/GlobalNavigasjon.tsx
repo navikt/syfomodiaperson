@@ -13,7 +13,7 @@ import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerU
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { BodyShort } from "@navikt/ds-react";
 import { EventType, logEvent } from "@/utils/amplitude";
-import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";

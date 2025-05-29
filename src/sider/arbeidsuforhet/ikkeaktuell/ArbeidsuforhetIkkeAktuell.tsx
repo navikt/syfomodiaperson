@@ -1,11 +1,11 @@
 import React from "react";
-import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
-import { VurderingType } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
+import { VurderingType } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { Navigate } from "react-router-dom";
 import { ArbeidsuforhetIkkeAktuellSkjema } from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuellSkjema";
 
-export const ArbeidsuforhetIkkeAktuell = () => {
+export default function ArbeidsuforhetIkkeAktuell() {
   const { data } = useGetArbeidsuforhetVurderingerQuery();
   const isForhandsvarsel = data[0]?.type === VurderingType.FORHANDSVARSEL;
 
@@ -14,4 +14,4 @@ export const ArbeidsuforhetIkkeAktuell = () => {
   ) : (
     <Navigate to={arbeidsuforhetPath} />
   );
-};
+}

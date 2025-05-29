@@ -9,11 +9,11 @@ import {
   arbeidsuforhetTexts,
   getAvslagArbeidsuforhetTexts,
   getForhandsvarselArbeidsuforhetTexts,
-} from "@/data/arbeidsuforhet/arbeidsuforhetDocumentTexts";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetDocumentTexts";
 import {
   arsakTexts,
   VurderingArsak,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 
 type ForhandsvarselDocumentValues = {
   begrunnelse: string;

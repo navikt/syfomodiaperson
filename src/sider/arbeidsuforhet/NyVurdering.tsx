@@ -1,18 +1,18 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import { Alert, BodyShort, Box, Button, Heading } from "@navikt/ds-react";
-import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import {
   typeTexts,
   VurderingResponseDTO,
   VurderingType,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { useNotification } from "@/context/notification/NotificationContext";
 
 const texts = {
   title: "Arbeidsuførhet",
   siste: "Siste vurdering",
-  button: "Start ny vurdering",
+  startNyVurderingButton: "Start ny vurdering",
 };
 
 const lastVurderingText = (vurderinger: VurderingResponseDTO[]) => {
@@ -32,13 +32,11 @@ const lastVurderingText = (vurderinger: VurderingResponseDTO[]) => {
   )}`;
 };
 
-interface NyVurderingProps {
+interface Props {
   handleClick: () => void;
 }
 
-export const NyVurdering = ({
-  handleClick,
-}: NyVurderingProps): ReactElement => {
+export default function NyVurdering({ handleClick }: Props) {
   const { data: vurderinger } = useGetArbeidsuforhetVurderingerQuery();
   const { notification } = useNotification();
 
@@ -57,9 +55,9 @@ export const NyVurdering = ({
           vurderinger
         )}`}</BodyShort>
         <Button onClick={handleClick} variant="secondary">
-          {texts.button}
+          {texts.startNyVurderingButton}
         </Button>
       </Box>
     </>
   );
-};
+}

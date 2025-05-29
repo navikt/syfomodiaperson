@@ -22,13 +22,13 @@ import {
   personOppgaveUbehandletBehandlerdialogSvar,
   personOppgaveUbehandletBehandlerdialogUbesvartMelding,
 } from "@/mocks/ispersonoppgave/personoppgaveMock";
-import { arbeidsuforhetQueryKeys } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import { arbeidsuforhetQueryKeys } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import {
   createForhandsvarsel,
   createVurdering,
 } from "../arbeidsuforhet/arbeidsuforhetTestData";
 import { addDays, addWeeks } from "@/utils/datoUtils";
-import { VurderingType } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+import { VurderingType } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { senOppfolgingKandidatQueryKeys } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks";
 import { mockUnleashResponse } from "@/mocks/unleashMocks";

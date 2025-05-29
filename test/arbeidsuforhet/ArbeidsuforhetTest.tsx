@@ -8,14 +8,14 @@ import {
   VurderingArsak,
   VurderingResponseDTO,
   VurderingType,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
-import { arbeidsuforhetQueryKeys } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
+import { arbeidsuforhetQueryKeys } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { addWeeks } from "@/utils/datoUtils";
 import {
   createForhandsvarsel,
   createVurdering,
 } from "./arbeidsuforhetTestData";
-import { Arbeidsuforhet } from "@/sider/arbeidsuforhet/Arbeidsuforhet";
+import Arbeidsuforhet from "@/sider/arbeidsuforhet/Arbeidsuforhet";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { clickButton } from "../testUtils";
 import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
@@ -71,7 +71,7 @@ describe("ArbeidsuforhetSide", () => {
         );
 
         expect(screen.getByText("Siste vurdering")).to.exist;
-        expect(screen.getByText(/oppfylt/)).to.exist;
+        expect(screen.getByText(/og oppfylt/)).to.exist;
         expect(screen.getByRole("button", { name: nyVurderingButtonText })).to
           .exist;
       });
@@ -93,7 +93,7 @@ describe("ArbeidsuforhetSide", () => {
         );
 
         expect(screen.getByText("Siste vurdering")).to.exist;
-        expect(screen.getByText(/avslag/)).to.exist;
+        expect(screen.getByText(/og innstilling om avslag/)).to.exist;
         expect(screen.getByText("Start ny vurdering")).to.exist;
       });
 

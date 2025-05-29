@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import {
   VurderingRequestDTO,
   VurderingType,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { arbeidsuforhetOppfyltPath } from "@/routers/AppRouter";
 import { AvslagForm } from "@/sider/arbeidsuforhet/avslag/AvslagForm";
 import { queryClientWithMockData } from "../../testQueryClient";

@@ -1,11 +1,11 @@
 import React from "react";
-import { useSendVurderingArbeidsuforhet } from "@/data/arbeidsuforhet/useSendVurderingArbeidsuforhet";
+import { useSendVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSendVurderingArbeidsuforhet";
 import { useArbeidsuforhetVurderingDocument } from "@/hooks/arbeidsuforhet/useArbeidsuforhetVurderingDocument";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   VurderingRequestDTO,
   VurderingType,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import {
   BodyLong,
   Box,

@@ -2,7 +2,7 @@ import {
   VurderingArsak,
   VurderingResponseDTO,
   VurderingType,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,

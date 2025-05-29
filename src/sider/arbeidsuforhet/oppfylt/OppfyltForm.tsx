@@ -13,9 +13,9 @@ import { useForm } from "react-hook-form";
 import {
   VurderingRequestDTO,
   VurderingType,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { useArbeidsuforhetVurderingDocument } from "@/hooks/arbeidsuforhet/useArbeidsuforhetVurderingDocument";
-import { useSendVurderingArbeidsuforhet } from "@/data/arbeidsuforhet/useSendVurderingArbeidsuforhet";
+import { useSendVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSendVurderingArbeidsuforhet";
 import { Link } from "react-router-dom";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { ButtonRow } from "@/components/Layout";

@@ -5,19 +5,16 @@ import SideLaster from "@/components/SideLaster";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import * as Tredelt from "@/sider/TredeltSide";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { VurderingHistorikk } from "@/sider/arbeidsuforhet/historikk/VurderingHistorikk";
 import NyttigeLenkerBox from "@/sider/arbeidsuforhet/NyttigeLenkerBox";
+import { Outlet } from "react-router-dom";
 
 const texts = {
   title: "Arbeidsuførhet",
 };
 
-interface Props {
-  children: ReactElement;
-}
-
-export function ArbeidsuforhetSide({ children }: Props): ReactElement {
+export default function ArbeidsuforhetSide(): ReactElement {
   const { isLoading, isError } = useGetArbeidsuforhetVurderingerQuery();
 
   return (
@@ -26,7 +23,7 @@ export function ArbeidsuforhetSide({ children }: Props): ReactElement {
       <SideLaster henter={isLoading} hentingFeilet={isError}>
         <Tredelt.Container>
           <Tredelt.FirstColumn>
-            {children}
+            <Outlet />
             <VurderingHistorikk />
           </Tredelt.FirstColumn>
           <Tredelt.SecondColumn>

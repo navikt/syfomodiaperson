@@ -19,7 +19,7 @@ import {
 } from "@/mocks/common/mockConstants";
 import { historikkQueryKeys } from "@/data/historikk/historikkQueryHooks";
 import { aktivitetskravQueryKeys } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
-import { arbeidsuforhetQueryKeys } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import { arbeidsuforhetQueryKeys } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
 import { historikkPath } from "@/routers/AppRouter";
