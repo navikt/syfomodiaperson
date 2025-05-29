@@ -3,7 +3,7 @@ import { stubFeatureTogglesApi } from "../../stubs/stubUnleash";
 import { queryHookWrapper } from "../queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { mockUnleashResponse } from "@/mocks/unleashMocks";
 
 let queryClient: any;

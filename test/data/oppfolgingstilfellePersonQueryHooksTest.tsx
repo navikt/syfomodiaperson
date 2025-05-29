@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { stubOppfolgingstilfellePersonApi } from "../stubs/stubIsoppfolgingstilfelle";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
@@ -21,7 +21,9 @@ describe("oppfolgingstilfellePersonQueryHooks tests", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
+    await waitFor(
+      () => expect(result.current.latestOppfolgingstilfelle).to.not.be.undefined
+    );
 
     expect(result.current.latestOppfolgingstilfelle).to.exist;
     expect(result.current.hasActiveOppfolgingstilfelle).to.be.true;

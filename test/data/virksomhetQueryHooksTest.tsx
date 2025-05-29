@@ -1,7 +1,7 @@
 import { stubVirksomhetApi } from "../stubs/stubEreg";
 import { renderHook, waitFor } from "@testing-library/react";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { virksomhetMock } from "@/mocks/ereg/virksomhetMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { VIRKSOMHET_PONTYPANDY } from "@/mocks/common/mockConstants";
@@ -25,8 +25,7 @@ describe("virksomhetQueryHooks tests", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
-
+    await waitFor(() => expect(result.current.data).to.not.be.undefined);
     expect(result.current.data).to.deep.equal(virksomhetMock());
   });
 });

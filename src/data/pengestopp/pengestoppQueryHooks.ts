@@ -21,7 +21,6 @@ export const usePengestoppStatusQuery = () => {
   });
 
   return {
-    ...query,
     data: query.data || [],
   };
 };

@@ -22,7 +22,7 @@ export const useVirksomhetQuery = (virksomhetsnummer: string | undefined) => {
   });
 
   return {
-    ...query,
+    data: query.data,
     virksomhetsnavn: query.data && getVirksomhetsnavn(query.data),
   };
 };

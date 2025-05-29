@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { stubPersoninfoApi } from "../stubs/stubSyfoperson";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
@@ -21,8 +21,7 @@ describe("navbrukerQueryHooks", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
-
+    await waitFor(() => expect(result.current.data).to.not.be.undefined);
     expect(result.current.data).to.deep.equal(brukerinfoMock);
   });
 });

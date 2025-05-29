@@ -22,7 +22,6 @@ export const useFastlegerQuery = () => {
   });
 
   return {
-    ...query,
     data: query.data || [],
     ikkeFunnet: query.data && query.data.length === 0,
     fastlege: useMemo(

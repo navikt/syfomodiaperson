@@ -38,7 +38,7 @@ export const useBrukerinfoQuery = () => {
   };
 
   return {
-    ...query,
+    data: query.data,
     brukerinfo: query.data || defaultData,
     isInaktivPersonident:
       !!personident &&
@@ -59,7 +59,7 @@ export const useKontaktinfoQuery = () => {
   });
 
   return {
-    ...query,
+    data: query.data,
     brukerKanIkkeVarslesDigitalt: query.data?.skalHaVarsel === false,
     brukerKanVarslesDigitalt: query.data?.skalHaVarsel === true,
   };

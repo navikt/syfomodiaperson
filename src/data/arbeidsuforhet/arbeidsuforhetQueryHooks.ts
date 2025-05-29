@@ -21,7 +21,8 @@ export function useGetArbeidsuforhetVurderingerQuery() {
   });
 
   return {
-    ...query,
     data: query.data || [],
+    isLoading: query.isLoading,
+    isError: query.isError,
   };
 }

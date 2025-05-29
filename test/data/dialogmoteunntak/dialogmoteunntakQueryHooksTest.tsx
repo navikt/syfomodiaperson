@@ -1,4 +1,4 @@
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { renderHook, waitFor } from "@testing-library/react";
 import { queryHookWrapper } from "../queryHookTestUtils";
 import { dialogmotekandidatMock } from "@/mocks/isdialogmotekandidat/dialogmotekandidatMock";
@@ -24,8 +24,7 @@ describe("dialogmotekandidatQuery tests", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
-
+    await waitFor(() => expect(result.current.data).to.not.be.empty);
     expect(result.current.data).to.deep.equal(dialogmotekandidatMock);
   });
 });

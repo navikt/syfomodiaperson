@@ -29,8 +29,9 @@ export const useDialogmoterQuery = () => {
   });
 
   return {
-    ...query,
     data: query.data || [],
+    isLoading: query.isLoading,
+    isError: query.isError,
     aktivtDialogmote: useMemo(
       () => query.data?.find((mote) => isAktivtDialogmote(mote)),
       [query.data]

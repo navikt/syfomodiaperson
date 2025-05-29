@@ -25,8 +25,7 @@ describe("sykepengesoknadQueryHooks", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
-
+    await waitFor(() => expect(result.current.data).to.not.be.empty);
     expect(result.current.data).to.deep.equal(
       (soknaderMock as unknown as SykepengesoknadDTO[]).map(parseSoknad)
     );

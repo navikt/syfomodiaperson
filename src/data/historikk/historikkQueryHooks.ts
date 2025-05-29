@@ -24,8 +24,9 @@ export const useHistorikkOppfolgingsplan = () => {
   });
 
   return {
-    ...query,
     data: mapHistorikkEvents(query.data || [], "OPPFOLGINGSPLAN"),
+    isLoading: query.isLoading,
+    isError: query.isError,
   };
 };
 

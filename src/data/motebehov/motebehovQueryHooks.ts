@@ -23,7 +23,8 @@ export const useMotebehovQuery = () => {
   });
 
   return {
-    ...query,
     data: query.data?.sort(sorterMotebehovDataEtterDatoDesc) || [],
+    isLoading: query.isLoading,
+    isError: query.isError,
   };
 };

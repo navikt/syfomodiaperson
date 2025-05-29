@@ -21,8 +21,7 @@ describe("behandlendeEnhetQueryHooks tests", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
-
+    await waitFor(() => expect(result.current.data).to.not.be.undefined);
     expect(result.current.data?.geografiskEnhet).to.deep.equal(
       behandlendeEnhetMockResponse.geografiskEnhet
     );

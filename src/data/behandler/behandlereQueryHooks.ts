@@ -20,8 +20,8 @@ export const useBehandlereQuery = () => {
   });
 
   return {
-    ...query,
     data: query.data || [],
+    isLoading: query.isLoading,
   };
 };
 
@@ -42,7 +42,6 @@ export const useSokBehandlereQuery = (searchstring: string) => {
   });
 
   return {
-    ...query,
     data: query.data || [],
   };
 };

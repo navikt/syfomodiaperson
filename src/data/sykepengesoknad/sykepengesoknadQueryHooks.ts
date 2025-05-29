@@ -29,8 +29,9 @@ export const useSykepengesoknaderQuery = () => {
   });
 
   return {
-    ...query,
     data: query.data || [],
+    isLoading: query.isLoading,
+    isError: query.isError,
   };
 };
 

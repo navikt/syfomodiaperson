@@ -26,7 +26,8 @@ export const useSykmeldingerQuery = () => {
   });
 
   return {
-    ...query,
+    isLoading: query.isLoading,
+    isError: query.isError,
     sykmeldinger: useMemo(
       () =>
         query.data?.map((sykmelding) =>

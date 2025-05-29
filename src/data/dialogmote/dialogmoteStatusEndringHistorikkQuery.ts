@@ -17,7 +17,8 @@ export function useDialogmoteStatusEndringHistorikkQuery() {
   });
 
   return {
-    ...query,
     data: query.data || [],
+    isLoading: query.isLoading,
+    isError: query.isError,
   };
 }

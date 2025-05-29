@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
   useAktivVeilederinfoQuery,
   useVeilederInfoQuery,
@@ -26,7 +26,7 @@ describe("veilederinfoQueryHooks tests", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
+    await waitFor(() => expect(result.current.data).to.not.be.undefined);
 
     expect(result.current.data).to.deep.equal(VEILEDER_DEFAULT);
   });
@@ -43,7 +43,7 @@ describe("veilederinfoQueryHooks tests", () => {
       }
     );
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
+    await waitFor(() => expect(result.current.data).to.not.be.undefined);
 
     expect(result.current.data).to.deep.equal(VEILEDER_DEFAULT);
   });

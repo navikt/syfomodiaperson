@@ -1,6 +1,6 @@
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { testQueryClient } from "../testQueryClient";
 import { useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
 import { maksdato, maksdatoMock } from "@/mocks/syfoperson/persondataMock";
@@ -21,8 +21,7 @@ describe("maksdatoQuery", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
-
+    await waitFor(() => expect(result.current.data).to.not.be.undefined);
     expect(result.current.data?.maxDate?.id).to.deep.equal(
       maksdatoMock.maxDate.id
     );
