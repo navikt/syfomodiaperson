@@ -1,6 +1,6 @@
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { stubSykmeldingApi } from "../stubs/stubSyfosmregister";
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
@@ -30,8 +30,7 @@ describe("sykmeldingQueryHooks", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
-
+    await waitFor(() => expect(result.current.sykmeldinger).to.not.be.empty);
     expect(result.current.sykmeldinger).to.deep.equal(
       sykmeldingerMockData.map((value) =>
         newSMFormat2OldFormat(value, ARBEIDSTAKER_DEFAULT.personIdent)

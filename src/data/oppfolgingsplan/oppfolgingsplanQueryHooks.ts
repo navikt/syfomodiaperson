@@ -37,8 +37,10 @@ export const useOppfolgingsplanerQuery = () => {
   });
 
   return {
-    ...query,
     data: query.data || [],
+    isLoading: query.isLoading,
+    isPending: query.isPending,
+    isError: query.isError,
     aktivePlaner: useMemo(
       () =>
         query.data?.filter(
@@ -63,8 +65,10 @@ export const useOppfolgingsplanerLPSQuery = () => {
   });
 
   return {
-    ...query,
     data: query.data || [],
+    isPending: query.isPending,
+    isLoading: query.isLoading,
+    isError: query.isError,
   };
 };
 

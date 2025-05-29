@@ -1,7 +1,7 @@
 import { stubPersonadresseApi } from "../stubs/stubSyfoperson";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { usePersonAdresseQuery } from "@/data/personinfo/personAdresseQueryHooks";
 import { personAdresseMock } from "@/mocks/syfoperson/personAdresseMock";
 import { testQueryClient } from "../testQueryClient";
@@ -21,7 +21,7 @@ describe("personAdresseQueryHooks", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
+    await waitFor(() => expect(result.current.data).to.not.be.undefined);
 
     expect(result.current.data).to.deep.equal(personAdresseMock);
   });

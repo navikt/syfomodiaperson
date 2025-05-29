@@ -23,7 +23,9 @@ export const useSenOppfolgingKandidatQuery = () => {
   });
 
   return {
-    ...query,
     data: query.data || [],
+    isLoading: query.isLoading,
+    isPending: query.isPending,
+    isError: query.isError,
   };
 };

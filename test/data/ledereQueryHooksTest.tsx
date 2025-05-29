@@ -1,7 +1,7 @@
 import { NarmesteLederRelasjonStatus } from "@/data/leder/ledereTypes";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { stubNarmestelederApi } from "../stubs/stubIsnarmesteleder";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { testQueryClient } from "../testQueryClient";
@@ -46,9 +46,10 @@ describe("ledereQueryHooks tests", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
-
-    expect(result.current.data).to.deep.equal(ledereData);
+    await waitFor(() =>
+      expect(result.current.allLedere?.length).to.be.greaterThan(0)
+    );
+    expect(result.current.allLedere).to.deep.equal(ledereData);
     expect(result.current.allLedere).to.deep.equal(ledereData);
     expect(result.current.currentLedere).to.deep.equal(currentLedere);
     expect(result.current.formerLedere).to.deep.equal(formerLedere);
