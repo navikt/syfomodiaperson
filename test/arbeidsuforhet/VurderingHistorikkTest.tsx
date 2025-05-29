@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { queryClientWithMockData } from "../testQueryClient";
-import { arbeidsuforhetQueryKeys } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import { arbeidsuforhetQueryKeys } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
@@ -19,7 +19,7 @@ import {
   VurderingArsak,
   VurderingResponseDTO,
   VurderingType,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { daysFromToday } from "../testUtils";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import userEvent from "@testing-library/user-event";

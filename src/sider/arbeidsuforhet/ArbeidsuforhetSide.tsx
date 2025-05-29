@@ -5,7 +5,7 @@ import SideLaster from "@/components/SideLaster";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import * as Tredelt from "@/sider/TredeltSide";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { VurderingHistorikk } from "@/sider/arbeidsuforhet/historikk/VurderingHistorikk";
 import NyttigeLenkerBox from "@/sider/arbeidsuforhet/NyttigeLenkerBox";
 
@@ -17,7 +17,7 @@ interface Props {
   children: ReactElement;
 }
 
-export function ArbeidsuforhetSide({ children }: Props): ReactElement {
+export default function ArbeidsuforhetSide({ children }: Props): ReactElement {
   const { isLoading, isError } = useGetArbeidsuforhetVurderingerQuery();
 
   return (

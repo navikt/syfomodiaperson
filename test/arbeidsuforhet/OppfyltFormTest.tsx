@@ -6,7 +6,7 @@ import { expect, describe, it, beforeEach } from "vitest";
 import {
   VurderingRequestDTO,
   VurderingType,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import {
   changeTextInput,
   clickButton,

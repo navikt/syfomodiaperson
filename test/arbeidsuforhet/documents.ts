@@ -8,12 +8,12 @@ import {
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
-import { getForhandsvarselArbeidsuforhetTexts } from "@/data/arbeidsuforhet/arbeidsuforhetDocumentTexts";
+import { getForhandsvarselArbeidsuforhetTexts } from "@/sider/arbeidsuforhet/data/arbeidsuforhetDocumentTexts";
 import { daysFromToday } from "../testUtils";
 import {
   arsakTexts,
   VurderingArsak,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 
 const expectedFristDate = getForhandsvarselFrist();

@@ -11,11 +11,11 @@ import {
   VarselDTO,
   VurderingResponseDTO,
   VurderingType,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import {
   arbeidsuforhetTexts,
   getForhandsvarselArbeidsuforhetTexts,
-} from "@/data/arbeidsuforhet/arbeidsuforhetDocumentTexts";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetDocumentTexts";
 
 const defaultOppfyltBegrunnelse = "Du har rett på sykepenger";
 

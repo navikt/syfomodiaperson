@@ -4,7 +4,7 @@ import {
   VurderingArsak,
   VurderingRequestDTO,
   VurderingType,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { Link } from "react-router-dom";
 import {
@@ -17,7 +17,7 @@ import {
 } from "@navikt/ds-react";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { ButtonRow } from "@/components/Layout";
-import { useSendVurderingArbeidsuforhet } from "@/data/arbeidsuforhet/useSendVurderingArbeidsuforhet";
+import { useSendVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSendVurderingArbeidsuforhet";
 import { useForm } from "react-hook-form";
 import { useNotification } from "@/context/notification/NotificationContext";
 import { useArbeidsuforhetVurderingDocument } from "@/hooks/arbeidsuforhet/useArbeidsuforhetVurderingDocument";

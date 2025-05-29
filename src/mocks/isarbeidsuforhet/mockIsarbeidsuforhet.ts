@@ -4,7 +4,7 @@ import { mockArbeidsuforhetvurdering } from "./arbeidsuforhetMock";
 import {
   VurderingRequestDTO,
   VurderingResponseDTO,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { generateUUID } from "@/utils/utils";
 import {
   ARBEIDSTAKER_DEFAULT,

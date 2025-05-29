@@ -1,4 +1,4 @@
-import { tilDatoMedManedNavn } from "../../utils/datoUtils";
+import { tilDatoMedManedNavn } from "../../../utils/datoUtils";
 
 type ForhandsvarselArbeidsuforhetTextsOptions = {
   frist: Date;
