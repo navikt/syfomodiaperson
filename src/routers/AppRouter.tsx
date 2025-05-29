@@ -25,15 +25,10 @@ import { AktivitetskravContainer } from "@/sider/aktivitetskrav/AktivitetskravCo
 import { BehandlerdialogContainer } from "@/sider/behandlerdialog/BehandlerdialogContainer";
 import * as Amplitude from "@/utils/amplitude";
 import Motelandingsside from "@/sider/dialogmoter/Motelandingsside";
-import { ArbeidsuforhetSide } from "@/sider/arbeidsuforhet/ArbeidsuforhetSide";
-import { ArbeidsuforhetOppfyltSide } from "@/sider/arbeidsuforhet/oppfylt/ArbeidsuforhetOppfyltSide";
 import { Nokkelinformasjon } from "@/sider/nokkelinformasjon/Nokkelinformasjon";
-import { ArbeidsuforhetAvslagSide } from "@/sider/arbeidsuforhet/avslag/ArbeidsuforhetAvslagSide";
 import FriskmeldingTilArbeidsformidlingSide from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidlingSide";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import DialogmoteEndreReferatContainer from "@/sider/dialogmoter/components/referat/DialogmoteEndreReferatContainer";
-import { Arbeidsuforhet } from "@/sider/arbeidsuforhet/Arbeidsuforhet";
-import { ArbeidsuforhetIkkeAktuellSide } from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuellSide";
 import ManglendeMedvirkningSide, {
   ManglendeMedvirkningIkkeAktuellSide,
   ManglendeMedvirkningOppfyltSide,
@@ -46,6 +41,10 @@ import SenOppfolging from "@/sider/senoppfolging/SenOppfolging";
 import OppfolgingsplanContainer from "@/sider/oppfolgingsplan/container/OppfolgingsplanContainer";
 import OppfoelgingsPlanerOversiktContainer from "@/sider/oppfolgingsplan/container/OppfoelgingsPlanerOversiktContainer";
 import { SykepengesoknadSide } from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
+import Arbeidsuforhet from "@/sider/arbeidsuforhet/Arbeidsuforhet";
+import ArbeidsuforhetOppfylt from "@/sider/arbeidsuforhet/oppfylt/ArbeidsuforhetOppfylt";
+import ArbeidsuforhetAvslag from "@/sider/arbeidsuforhet/avslag/ArbeidsuforhetAvslag";
+import ArbeidsuforhetIkkeAktuell from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuell";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -125,6 +124,7 @@ const AktivBrukerRouter = (): ReactElement => {
             path={`${appRoutePath}/sykepengesoknader`}
             element={<SykepengesoknaderSide />}
           />
+
           <Route
             path={arbeidsuforhetPath}
             element={
@@ -133,27 +133,15 @@ const AktivBrukerRouter = (): ReactElement => {
               </NotificationProvider>
             }
           >
+            <Route index element={<Arbeidsuforhet />} />
+            <Route path={`oppfylt`} element={<ArbeidsuforhetOppfylt />} />
+            <Route path={`avslag`} element={<ArbeidsuforhetAvslag />} />
             <Route
-              path={arbeidsuforhetPath}
-              element={
-                <ArbeidsuforhetSide>
-                  <Arbeidsuforhet />
-                </ArbeidsuforhetSide>
-              }
-            />
-            <Route
-              path={arbeidsuforhetOppfyltPath}
-              element={<ArbeidsuforhetOppfyltSide />}
-            />
-            <Route
-              path={arbeidsuforhetAvslagPath}
-              element={<ArbeidsuforhetAvslagSide />}
-            />
-            <Route
-              path={arbeidsuforhetIkkeAktuellPath}
-              element={<ArbeidsuforhetIkkeAktuellSide />}
+              path={`ikkeaktuell`}
+              element={<ArbeidsuforhetIkkeAktuell />}
             />
           </Route>
+
           <Route
             path={frisktilarbeidPath}
             element={<FriskmeldingTilArbeidsformidlingSide />}

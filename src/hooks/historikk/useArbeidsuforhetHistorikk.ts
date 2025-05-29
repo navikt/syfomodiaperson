@@ -1,9 +1,9 @@
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
-import { useGetArbeidsuforhetVurderingerQuery } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import {
   VurderingResponseDTO as ArbeidsuforhetVurderinger,
   VurderingType as ArbeidsuforhetVurderingType,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
 
 function arbeidsuforhetText(

@@ -8,7 +8,7 @@ import { stubArbeidsuforhetForhandsvarselApi } from "../stubs/stubIsarbeidsuforh
 import {
   VurderingRequestDTO,
   VurderingType,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { getSendForhandsvarselDocument } from "./documents";
 import { navEnhet } from "../dialogmote/testData";
 import { queryClientWithMockData } from "../testQueryClient";

@@ -3,7 +3,7 @@ import { BodyShort, Box, Heading, HStack } from "@navikt/ds-react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { BellIcon } from "@navikt/aksel-icons";
 import { ArbeidsuforhetButtons } from "@/sider/arbeidsuforhet/ArbeidsuforhetButtons";
-import { VurderingResponseDTO } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+import { VurderingResponseDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 
 const texts = {
   title: "Fristen er gått ut",
@@ -21,7 +21,7 @@ interface Props {
   forhandsvarsel: VurderingResponseDTO;
 }
 
-export const ForhandsvarselAfterDeadline = ({ forhandsvarsel }: Props) => {
+export default function ForhandsvarselAfterDeadline({ forhandsvarsel }: Props) {
   const frist = forhandsvarsel.varsel?.svarfrist;
 
   return (
@@ -45,4 +45,4 @@ export const ForhandsvarselAfterDeadline = ({ forhandsvarsel }: Props) => {
       <ArbeidsuforhetButtons isBeforeForhandsvarselDeadline={false} />
     </Box>
   );
-};
+}

@@ -1,14 +1,14 @@
 import { QueryClient } from "@tanstack/react-query";
 import React from "react";
 import { screen } from "@testing-library/react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
   VurderingResponseDTO,
   VurderingType,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
-import { arbeidsuforhetQueryKeys } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
+import { arbeidsuforhetQueryKeys } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { addWeeks } from "@/utils/datoUtils";
-import { ArbeidsuforhetAvslag } from "@/sider/arbeidsuforhet/avslag/ArbeidsuforhetAvslag";
+import ArbeidsuforhetAvslag from "@/sider/arbeidsuforhet/avslag/ArbeidsuforhetAvslag";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { queryClientWithMockData } from "../../testQueryClient";
 import {

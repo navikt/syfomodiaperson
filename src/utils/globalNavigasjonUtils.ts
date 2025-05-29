@@ -20,7 +20,7 @@ import {
   AktivitetskravStatus,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { VurderingResponseDTO } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+import { VurderingResponseDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import {
   SenOppfolgingKandidatResponseDTO,
   SenOppfolgingStatus,

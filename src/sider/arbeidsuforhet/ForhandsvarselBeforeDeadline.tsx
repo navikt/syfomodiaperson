@@ -10,7 +10,7 @@ import {
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { ClockIcon } from "@navikt/aksel-icons";
 import { ArbeidsuforhetButtons } from "@/sider/arbeidsuforhet/ArbeidsuforhetButtons";
-import { VurderingResponseDTO } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+import { VurderingResponseDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 
 const texts = {
   title: "Venter på svar fra bruker",
@@ -33,7 +33,9 @@ interface Props {
   forhandsvarsel: VurderingResponseDTO;
 }
 
-export const ForhandsvarselBeforeDeadline = ({ forhandsvarsel }: Props) => {
+export default function ForhandsvarselBeforeDeadline({
+  forhandsvarsel,
+}: Props) {
   const frist = forhandsvarsel.varsel?.svarfrist;
 
   return (
@@ -66,4 +68,4 @@ export const ForhandsvarselBeforeDeadline = ({ forhandsvarsel }: Props) => {
       </Box>
     </Box>
   );
-};
+}
