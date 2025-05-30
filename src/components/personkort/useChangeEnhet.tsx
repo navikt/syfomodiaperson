@@ -19,9 +19,15 @@ export const useChangeEnhet = (fnr: string) => {
     mutationFn: postChangeEnhet,
     onSuccess: (data: TildelOppfolgingsenhetResponseDTO) => {
       queryClient.setQueryData(behandlendeEnhetQueryKey, data);
-      return queryClient.invalidateQueries({
-        queryKey: behandlendeEnhetQueryKey,
-      });
+      return queryClient
+        .invalidateQueries({
+          queryKey: behandlendeEnhetQueryKey,
+        })
+        .then(() => {
+          return queryClient.invalidateQueries({
+            queryKey: behandlendeEnhetQueryKeys.historikk(fnr),
+          });
+        });
     },
   });
 };
