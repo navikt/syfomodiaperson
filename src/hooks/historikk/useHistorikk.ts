@@ -35,7 +35,8 @@ export function useHistorikk(): HistorikkHook {
   const dialogmoteStatusEndringHistorikk =
     useDialogmoteStatusEndringHistorikk();
   const oppfolgingsoppgaveHistorikk = useOppfolgingsoppgaveHistorikk();
-  const tildelOppfolgingsenhetHistorikk = useTildeltOppfolgingsenhetHistorikk();
+  const tildeltOppfolgingsenhetHistorikk =
+    useTildeltOppfolgingsenhetHistorikk();
 
   const historikk: HistorikkHook[] = [
     motebehovHistorikk,
@@ -51,7 +52,7 @@ export function useHistorikk(): HistorikkHook {
     dialogmotekandidatHistorikk,
     oppfolgingsoppgaveHistorikk,
     dialogmoteStatusEndringHistorikk,
-    tildelOppfolgingsenhetHistorikk,
+    tildeltOppfolgingsenhetHistorikk,
   ];
 
   return {

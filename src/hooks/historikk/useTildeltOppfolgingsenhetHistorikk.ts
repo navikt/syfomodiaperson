@@ -1,7 +1,7 @@
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
 import { Enhet } from "@/data/behandlendeenhet/types/BehandlendeEnhetDTOs";
-import { useTildelOppfolgingsenhetHistorikkQuery } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
+import { useTildeltOppfolgingsenhetHistorikkQuery } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 
 export enum TildeltType {
   TILDELT_ANNEN_ENHET_AV_VEILEDER = "TILDELT_ANNEN_ENHET_AV_VEILEDER",
@@ -69,7 +69,7 @@ export function useTildeltOppfolgingsenhetHistorikk(): HistorikkHook {
     data: tildeltOppfolgingsenhetHistorikk,
     isLoading,
     isError,
-  } = useTildelOppfolgingsenhetHistorikkQuery();
+  } = useTildeltOppfolgingsenhetHistorikkQuery();
 
   const events = createHistorikkEventsFromTildelHistorikk(
     tildeltOppfolgingsenhetHistorikk ?? []
