@@ -24,7 +24,7 @@ export const useBehandlendeEnhetQuery = () => {
   });
 };
 
-export const useTildelOppfolgingsenhetHistorikkQuery = () => {
+export const useTildeltOppfolgingsenhetHistorikkQuery = () => {
   const fnr = useValgtPersonident();
   const path = `${SYFOBEHANDLENDEENHET_ROOT}/historikk`;
   const fetchTildelHistorikkHistorikk = () =>
