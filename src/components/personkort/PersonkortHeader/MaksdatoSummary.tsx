@@ -5,7 +5,7 @@ import { SyketilfelleSummaryElement } from "@/components/personkort/PersonkortHe
 
 const texts = {
   maksdato: "Maksdato: ",
-  utbetaltTom: "Utbetalt tom: ",
+  utbetaltTom: "Søknad behandlet tom: ",
 };
 
 interface MaksdatoSummaryProps {
