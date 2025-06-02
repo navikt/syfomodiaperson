@@ -2,6 +2,7 @@ import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import {
   VurderingResponseDTO as ArbeidsuforhetVurderinger,
+  VurderingType,
   VurderingType as ArbeidsuforhetVurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
@@ -19,6 +20,12 @@ function arbeidsuforhetText(
       return veilederident + " vurderte avslag";
     case ArbeidsuforhetVurderingType.IKKE_AKTUELL:
       return veilederident + " vurderte ikke aktuell";
+    case VurderingType.OPPFYLT_UTEN_FORHANDSVARSEL:
+      return veilederident + " vurderte oppfylt uten forhåndsvarsel";
+    case VurderingType.AVSLAG_UTEN_FORHANDSVARSEL:
+      return (
+        veilederident + " vurderte innstilling om avslag uten forhåndsvarsel"
+      );
   }
 }
 

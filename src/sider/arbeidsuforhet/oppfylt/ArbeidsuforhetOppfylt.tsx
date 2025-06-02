@@ -4,7 +4,6 @@ import { VurderingType } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { OppfyltForm } from "@/sider/arbeidsuforhet/oppfylt/OppfyltForm";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { Navigate } from "react-router-dom";
-import ArbeidsuforhetSide from "../ArbeidsuforhetSide";
 
 export default function ArbeidsuforhetOppfylt() {
   const { data } = useGetArbeidsuforhetVurderingerQuery();
@@ -13,13 +12,9 @@ export default function ArbeidsuforhetOppfylt() {
     sisteVurdering?.type === VurderingType.FORHANDSVARSEL;
   const forhandsvarselSendtDato = sisteVurdering?.varsel?.createdAt;
 
-  return (
-    <ArbeidsuforhetSide>
-      {isForhandsvarsel && forhandsvarselSendtDato ? (
-        <OppfyltForm forhandsvarselSendtDato={forhandsvarselSendtDato} />
-      ) : (
-        <Navigate to={arbeidsuforhetPath} />
-      )}
-    </ArbeidsuforhetSide>
+  return isForhandsvarsel && forhandsvarselSendtDato ? (
+    <OppfyltForm forhandsvarselSendtDato={forhandsvarselSendtDato} />
+  ) : (
+    <Navigate to={arbeidsuforhetPath} />
   );
 }
