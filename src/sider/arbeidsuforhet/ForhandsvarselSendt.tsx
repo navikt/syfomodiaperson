@@ -1,15 +1,13 @@
 import React from "react";
-import { ForhandsvarselBeforeDeadline } from "@/sider/arbeidsuforhet/ForhandsvarselBeforeDeadline";
-import { ForhandsvarselAfterDeadline } from "@/sider/arbeidsuforhet/ForhandsvarselAfterDeadline";
-import { VurderingResponseDTO } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+import ForhandsvarselBeforeDeadline from "@/sider/arbeidsuforhet/ForhandsvarselBeforeDeadline";
+import ForhandsvarselAfterDeadline from "@/sider/arbeidsuforhet/ForhandsvarselAfterDeadline";
+import { VurderingResponseDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 
-interface ForhandsvarselSendtProps {
+interface Props {
   forhandsvarsel: VurderingResponseDTO;
 }
 
-export const ForhandsvarselSendt = ({
-  forhandsvarsel,
-}: ForhandsvarselSendtProps) => {
+export default function ForhandsvarselSendt({ forhandsvarsel }: Props) {
   const isForhandsvarselExpired =
     forhandsvarsel && forhandsvarsel?.varsel?.isExpired;
 
@@ -22,4 +20,4 @@ export const ForhandsvarselSendt = ({
       )}
     </div>
   );
-};
+}

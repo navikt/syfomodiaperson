@@ -8,8 +8,8 @@ import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import {
   VurderingRequestDTO,
   VurderingType,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
-import { useSendVurderingArbeidsuforhet } from "@/data/arbeidsuforhet/useSendVurderingArbeidsuforhet";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
+import { useSendVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSendVurderingArbeidsuforhet";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 import { InfoUtsattFristJuletid } from "@/components/InfoUtsattFristJuletid";
 
@@ -38,7 +38,7 @@ interface SkjemaValues {
   begrunnelse: string;
 }
 
-export const SendForhandsvarselSkjema = () => {
+export default function SendForhandsvarselSkjema() {
   const sendForhandsvarsel = useSendVurderingArbeidsuforhet();
   const {
     register,
@@ -111,4 +111,4 @@ export const SendForhandsvarselSkjema = () => {
       </form>
     </Box>
   );
-};
+}

@@ -5,8 +5,8 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   VurderingRequestDTO,
   VurderingResponseDTO,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
-import { arbeidsuforhetQueryKeys } from "@/data/arbeidsuforhet/arbeidsuforhetQueryHooks";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
+import { arbeidsuforhetQueryKeys } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 
 export const useSendVurderingArbeidsuforhet = () => {
   const personident = useValgtPersonident();

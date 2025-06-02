@@ -6,7 +6,7 @@ import {
   VurderingArsak,
   VurderingRequestDTO,
   VurderingType,
-} from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+} from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { QueryClient } from "@tanstack/react-query";
 import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
 import { arbeidsuforhetIkkeAktuellPath } from "@/routers/AppRouter";

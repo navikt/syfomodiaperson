@@ -2,7 +2,7 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { ISARBEIDSUFORHET_ROOT } from "@/apiConstants";
 import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
-import { VurderingResponseDTO } from "@/data/arbeidsuforhet/arbeidsuforhetTypes";
+import { VurderingResponseDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 
 export const arbeidsuforhetQueryKeys = {
   arbeidsuforhet: (personident: string) => ["arbeidsuforhet", personident],
