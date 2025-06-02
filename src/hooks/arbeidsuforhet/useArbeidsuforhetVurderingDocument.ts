@@ -34,6 +34,11 @@ type IkkeAktuellDocumentValues = {
   arsak: VurderingArsak;
 };
 
+type InnstillingUtenForhandsvarselDocumentValues = {
+  arsak: VurderingArsak;
+  begrunnelse: string;
+};
+
 export const useArbeidsuforhetVurderingDocument = (): {
   getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
@@ -45,6 +50,9 @@ export const useArbeidsuforhetVurderingDocument = (): {
   ): DocumentComponentDto[];
   getIkkeAktuellDocument(
     values: IkkeAktuellDocumentValues
+  ): DocumentComponentDto[];
+  getInnstillingUtenForhandsvarselDocument(
+    values: InnstillingUtenForhandsvarselDocumentValues
   ): DocumentComponentDto[];
 } => {
   const { getHilsen, getIntroGjelder, getVurdertAv, getVeiledernavn } =
@@ -144,10 +152,24 @@ export const useArbeidsuforhetVurderingDocument = (): {
     ];
   };
 
+  function getInnstillingUtenForhandsvarselDocument({
+    arsak,
+  }: InnstillingUtenForhandsvarselDocumentValues) {
+    return [
+      createHeaderH1("Innstilling om … uten forhåndsvarsel"),
+      getIntroGjelder(),
+      createParagraph(
+        `Det er vurdert at folketrygdloven § 8-4 ikke kommer til anvendelse i dette tilfellet. Årsak: ${arsakTexts[arsak]}.`
+      ),
+      getVurdertAv(),
+    ];
+  }
+
   return {
     getForhandsvarselDocument,
     getOppfyltDocument,
     getAvslagDocument,
     getIkkeAktuellDocument,
+    getInnstillingUtenForhandsvarselDocument,
   };
 };
