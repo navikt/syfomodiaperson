@@ -75,7 +75,7 @@ describe("TildeltVeileder", () => {
       });
       renderTildelVeileder();
 
-      await waitFor(() => expect(result.current.isSuccess).to.be.true);
+      await waitFor(() => expect(result.current.data).to.not.be.undefined);
       await screen.findByText("Ufordelt bruker");
     });
   });

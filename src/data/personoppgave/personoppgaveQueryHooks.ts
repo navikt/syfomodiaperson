@@ -21,7 +21,6 @@ export const usePersonoppgaverQuery = () => {
   });
 
   return {
-    ...query,
     data: query.data || [],
   };
 };

@@ -1,6 +1,6 @@
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { stubEgenansattApi } from "../stubs/stubSyfoperson";
 import { useEgenansattQuery } from "@/data/egenansatt/egenansattQueryHooks";
 import { testQueryClient } from "../testQueryClient";
@@ -20,7 +20,7 @@ describe("egenansattQueryHooks tests", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
+    await waitFor(() => expect(result.current.data).to.not.be.undefined);
 
     expect(result.current.data).to.deep.equal(true);
   });

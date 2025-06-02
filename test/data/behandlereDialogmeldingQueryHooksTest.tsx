@@ -1,6 +1,6 @@
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { stubBehandlereDialogmeldingApi } from "../stubs/stubIsdialogmelding";
 import { behandlereDialogmeldingMock } from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
 import { useBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
@@ -21,8 +21,7 @@ describe("behandlereQueryHooks tests", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
-
+    await waitFor(() => expect(result.current.data).to.not.be.empty);
     expect(result.current.data).to.deep.equal(behandlereDialogmeldingMock);
   });
 });

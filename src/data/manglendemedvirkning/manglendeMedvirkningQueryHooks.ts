@@ -24,8 +24,9 @@ export const useManglendemedvirkningVurderingQuery = () => {
   });
 
   return {
-    ...query,
     data: query.data || [],
+    isLoading: query.isLoading,
+    isError: query.isError,
     sisteVurdering: query.data?.[0],
   };
 };

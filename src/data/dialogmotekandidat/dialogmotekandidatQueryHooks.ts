@@ -51,12 +51,11 @@ export const useDialogmotekandidat = () => {
       query.data?.kandidat,
       query.data?.kandidatAt
     );
-
   const isKandidat: boolean =
     isNoFerdigstiltDialogmoteReferatAfterKandidatAt || false;
 
   return {
-    ...query,
+    data: query.data || {},
     isKandidat,
   };
 };

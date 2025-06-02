@@ -21,15 +21,13 @@ describe("historikkQueryHooks", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
-
+    await waitFor(() => expect(result.current.data).to.not.be.empty);
     const expectedHistorikkEvents = [...historikkoppfolgingsplanMock].map(
       (historikkEvent) => ({
         ...historikkEvent,
         kilde: "OPPFOLGINGSPLAN",
       })
     );
-
     expect(result.current.data).to.deep.equal(expectedHistorikkEvents);
   });
 });

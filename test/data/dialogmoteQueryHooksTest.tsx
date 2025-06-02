@@ -1,6 +1,6 @@
 import { stubDialogmoterApi } from "../stubs/stubIsdialogmote";
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
 import { dialogmoterMock } from "@/mocks/isdialogmote/dialogmoterMock";
 import { queryHookWrapper } from "./queryHookTestUtils";
@@ -22,8 +22,7 @@ describe("dialogmoteQueryHooks tests", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
-
+    await waitFor(() => expect(result.current.data).to.not.be.empty);
     expect(result.current.data).to.deep.equal(dialogmoterMock);
   });
 });

@@ -46,7 +46,8 @@ export const useLedereQuery = () => {
   };
 
   return {
-    ...query,
+    isLoading: query.isLoading,
+    isError: query.isError,
     getCurrentNarmesteLeder,
     currentLedere,
     formerLedere: useMemo(

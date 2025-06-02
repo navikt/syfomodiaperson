@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import {
   useDokumentinfoQuery,
@@ -34,8 +34,7 @@ describe("oppfolgingsplanQueryHooks tests", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
-
+    await waitFor(() => expect(result.current.data).to.not.be.empty);
     expect(result.current.data).to.deep.equal(oppfolgingsplanMock);
   });
 
@@ -48,8 +47,7 @@ describe("oppfolgingsplanQueryHooks tests", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
-
+    await waitFor(() => expect(result.current.data).to.not.be.empty);
     expect(result.current.data).to.deep.equal(oppfolgingsplanerLPSMock(today));
   });
 
@@ -66,7 +64,7 @@ describe("oppfolgingsplanQueryHooks tests", () => {
       }
     );
 
-    await waitFor(() => expect(result.current.isSuccess).to.be.true);
+    await waitFor(() => expect(result.current.data).to.not.be.undefined);
 
     expect(result.current.data).to.deep.equal(dokumentinfoMock);
   });

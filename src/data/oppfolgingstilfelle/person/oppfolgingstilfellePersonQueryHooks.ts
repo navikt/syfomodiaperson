@@ -1,4 +1,4 @@
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { get } from "@/api/axios";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { ISOPPFOLGINGSTILFELLE_ROOT } from "@/apiConstants";
@@ -34,7 +34,9 @@ export const oppfolgingstilfellePersonQueryKeys = {
   ],
 };
 
-type OppfolgingstilfellePersonQuery = UseQueryResult & {
+type OppfolgingstilfellePersonQuery = {
+  isLoading: boolean;
+  isError: boolean;
   latestOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined;
   tilfellerDescendingStart: OppfolgingstilfelleDTO[];
   hasOppfolgingstilfelle: boolean;
@@ -69,7 +71,8 @@ export const useOppfolgingstilfellePersonQuery =
       query.data && isGjentakendeSykefravar(query.data.oppfolgingstilfelleList);
 
     return {
-      ...query,
+      isLoading: query.isLoading,
+      isError: query.isError,
       latestOppfolgingstilfelle,
       tilfellerDescendingStart,
       hasOppfolgingstilfelle: !!latestOppfolgingstilfelle,
