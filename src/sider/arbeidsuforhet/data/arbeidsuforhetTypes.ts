@@ -15,6 +15,8 @@ export enum VurderingType {
   OPPFYLT = "OPPFYLT",
   AVSLAG = "AVSLAG",
   IKKE_AKTUELL = "IKKE_AKTUELL",
+  AVSLAG_UTEN_FORHANDSVARSEL = "AVSLAG_UTEN_FORHANDSVARSEL",
+  OPPFYLT_UTEN_FORHANDSVARSEL = "OPPFYLT_UTEN_FORHANDSVARSEL",
 }
 
 export const typeTexts: {
@@ -24,11 +26,17 @@ export const typeTexts: {
   [VurderingType.OPPFYLT]: "Oppfylt",
   [VurderingType.AVSLAG]: "Innstilling om avslag",
   [VurderingType.IKKE_AKTUELL]: "Ikke aktuell",
+  [VurderingType.AVSLAG_UTEN_FORHANDSVARSEL]:
+    "Innstilling om avslag uten forhåndsvarsel",
+  [VurderingType.OPPFYLT_UTEN_FORHANDSVARSEL]:
+    "InnstillingOppfylt uten forhåndsvarsel",
 };
 
 export enum VurderingArsak {
   FRISKMELDT = "FRISKMELDT",
   FRISKMELDING_TIL_ARBEIDSFORMIDLING = "FRISKMELDING_TIL_ARBEIDSFORMIDLING",
+  SYKEPENGER_IKKE_UTBETALT = "SYKEPENGER_IKKE_UTBETALT",
+  NY_VURDERING_NAY = "NY_VURDERING_NAY",
 }
 
 export const arsakTexts: {
@@ -37,6 +45,8 @@ export const arsakTexts: {
   [VurderingArsak.FRISKMELDT]: "Friskmeldt",
   [VurderingArsak.FRISKMELDING_TIL_ARBEIDSFORMIDLING]:
     "Friskmelding til arbeidsformidling",
+  [VurderingArsak.SYKEPENGER_IKKE_UTBETALT]: "Sykepenger ikke utbetalt",
+  [VurderingArsak.NY_VURDERING_NAY]: "Ny vurdering NAY",
 };
 
 export interface VarselDTO {

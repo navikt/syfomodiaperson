@@ -47,6 +47,7 @@ import ArbeidsuforhetAvslag from "@/sider/arbeidsuforhet/avslag/ArbeidsuforhetAv
 import ArbeidsuforhetIkkeAktuell from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuell";
 import SendForhandsvarselSkjema from "@/sider/arbeidsuforhet/SendForhandsvarselSkjema";
 import ArbeidsuforhetSide from "@/sider/arbeidsuforhet/ArbeidsuforhetSide";
+import InnstillingUtenForhandsvarsel from "@/sider/arbeidsuforhet/InnstillingUtenForhandsvarsel";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -139,6 +140,10 @@ const AktivBrukerRouter = (): ReactElement => {
             <Route
               path="forhandsvarsel"
               element={<SendForhandsvarselSkjema />}
+            />
+            <Route
+              path="innstilling-uten-forhandsvarsel"
+              element={<InnstillingUtenForhandsvarsel />}
             />
             <Route path="oppfylt" element={<ArbeidsuforhetOppfylt />} />
             <Route path="avslag" element={<ArbeidsuforhetAvslag />} />
