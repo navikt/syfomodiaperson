@@ -75,7 +75,7 @@ const DocumentComponentParagraph = (texts: string[], title?: string) => {
 
 export const DocumentComponentBulletPoints = (texts: string[]) => {
   return (
-    <List size={"small"}>
+    <List size="small">
       {texts.map((text, index) => (
         <List.Item key={index}>{text}</List.Item>
       ))}
