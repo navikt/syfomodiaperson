@@ -15,7 +15,7 @@ import { Enhet } from "@/data/oppfolgingsenhet/useGetMuligeOppfolgingsenheter";
 import { ENHET_GRUNERLOKKA } from "@/mocks/common/mockConstants";
 import {
   Tildelt,
-  TildeltHistorikkDTO,
+  TildeltHistorikkResponseDTO,
   TildeltTilbake,
   TildeltTilbakeAvSystem,
   TildeltType,
@@ -49,15 +49,17 @@ const tildeltTilbakeAvVeileder = {
   type: TildeltType.TILDELT_TILBAKE_TIL_GEOGRAFISK_ENHET_AV_VEILEDER,
 } as TildeltTilbake;
 
-export const tildeltOppfolgingsenhetHistorikk: TildeltHistorikkDTO[] = [
-  tildeltAvVeileder,
-  tildeltTilbakeAvVeileder,
-  {
-    createdAt: addDays(currentOppfolgingstilfelle.start, 10),
-    veilederident: SYSTEMBRUKER_IDENT_DEFAULT,
-    type: TildeltType.TILDELT_TILBAKE_TIL_GEOGRAFISK_ENHET_AV_SYSTEM,
-  } as TildeltTilbakeAvSystem,
-];
+export const tildeltOppfolgingsenhetHistorikk: TildeltHistorikkResponseDTO = {
+  tildelteOppfolgingsenheter: [
+    tildeltAvVeileder,
+    tildeltTilbakeAvVeileder,
+    {
+      createdAt: addDays(currentOppfolgingstilfelle.start, 10),
+      veilederident: SYSTEMBRUKER_IDENT_DEFAULT,
+      type: TildeltType.TILDELT_TILBAKE_TIL_GEOGRAFISK_ENHET_AV_SYSTEM,
+    } as TildeltTilbakeAvSystem,
+  ],
+};
 
 const findEnhetById = (enhetId: string): Enhet | undefined =>
   muligeoppfolgingsenheter.find((enhet) => enhet.enhetId === enhetId);
@@ -135,7 +137,9 @@ export const mockSyfobehandlendeenhet = [
         ? createTildeltTilbakeAvVeileder()
         : createTildeltAvVeileder(body);
 
-      tildeltOppfolgingsenhetHistorikk.push(tildeltHistorikk);
+      tildeltOppfolgingsenhetHistorikk.tildelteOppfolgingsenheter.push(
+        tildeltHistorikk
+      );
 
       return HttpResponse.json(responseDTO);
     }

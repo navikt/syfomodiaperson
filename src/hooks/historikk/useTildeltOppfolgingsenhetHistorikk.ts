@@ -40,6 +40,10 @@ export type TildeltHistorikkDTO =
   | TildeltTilbake
   | TildeltTilbakeAvSystem;
 
+export interface TildeltHistorikkResponseDTO {
+  tildelteOppfolgingsenheter: TildeltHistorikkDTO[];
+}
+
 function getTextForHistorikk(tildeltHistorikk: TildeltHistorikkDTO): string {
   switch (tildeltHistorikk.type) {
     case TildeltType.TILDELT_ANNEN_ENHET_AV_VEILEDER:
@@ -72,7 +76,7 @@ export function useTildeltOppfolgingsenhetHistorikk(): HistorikkHook {
   } = useTildeltOppfolgingsenhetHistorikkQuery();
 
   const events = createHistorikkEventsFromTildelHistorikk(
-    tildeltOppfolgingsenhetHistorikk ?? []
+    tildeltOppfolgingsenhetHistorikk?.tildelteOppfolgingsenheter ?? []
   );
 
   return {

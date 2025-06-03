@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { minutesToMillis } from "@/utils/utils";
 import { BehandlendeEnhetResponseDTO } from "@/data/behandlendeenhet/types/BehandlendeEnhetDTOs";
-import { TildeltHistorikkDTO } from "@/hooks/historikk/useTildeltOppfolgingsenhetHistorikk";
+import { TildeltHistorikkResponseDTO } from "@/hooks/historikk/useTildeltOppfolgingsenhetHistorikk";
 
 export const behandlendeEnhetQueryKeys = {
   behandlendeEnhet: (fnr: string) => ["behandlendeenhet", fnr],
@@ -28,7 +28,7 @@ export const useTildeltOppfolgingsenhetHistorikkQuery = () => {
   const fnr = useValgtPersonident();
   const path = `${SYFOBEHANDLENDEENHET_ROOT}/historikk`;
   const fetchTildelHistorikkHistorikk = () =>
-    get<TildeltHistorikkDTO[]>(path, fnr);
+    get<TildeltHistorikkResponseDTO>(path, fnr);
 
   return useQuery({
     queryKey: behandlendeEnhetQueryKeys.historikk(fnr),
