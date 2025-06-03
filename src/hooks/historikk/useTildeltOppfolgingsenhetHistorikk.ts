@@ -49,9 +49,9 @@ function getTextForHistorikk(tildeltHistorikk: TildeltHistorikkDTO): string {
     case TildeltType.TILDELT_ANNEN_ENHET_AV_VEILEDER:
       return `${tildeltHistorikk.veilederident} tildelte sykmeldt til ${tildeltHistorikk.enhet.navn} (${tildeltHistorikk.enhet.enhetId})`;
     case TildeltType.TILDELT_TILBAKE_TIL_GEOGRAFISK_ENHET_AV_VEILEDER:
-      return `${tildeltHistorikk.veilederident} tildelte sykmeldt tilbake til geografisk enhet`;
+      return `${tildeltHistorikk.veilederident} tildelte sykmeldt tilbake til geografisk kontortilhørighet`;
     case TildeltType.TILDELT_TILBAKE_TIL_GEOGRAFISK_ENHET_AV_SYSTEM:
-      return `Systemet tildelte sykmeldt tilbake til geografisk enhet`;
+      return `Systemet tildelte sykmeldt tilbake til geografisk kontortilhørighet`;
   }
 }
 

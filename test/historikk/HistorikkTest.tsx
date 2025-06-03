@@ -950,13 +950,13 @@ describe("Historikk", () => {
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
-      expect(screen.getAllByText("Tildelt oppfølgingsenhet")).to.have.length(3);
+      expect(screen.getAllByText("Oppfølgingsenhet")).to.have.length(3);
       expect(
         screen.getByRole("row", {
           name: new RegExp(
             `${tilLesbarDatoMedArstall(
               addDays(currentOppfolgingstilfelle.start, 5)
-            )} Z990000 tildelte sykmeldt tilbake til geografisk enhet`
+            )} Z990000 tildelte sykmeldt tilbake til geografisk kontortilhørighet`
           ),
         })
       ).to.exist;
@@ -974,7 +974,7 @@ describe("Historikk", () => {
           name: new RegExp(
             `${tilLesbarDatoMedArstall(
               addDays(currentOppfolgingstilfelle.start, 10)
-            )} Systemet tildelte sykmeldt tilbake til geografisk enhet`
+            )} Systemet tildelte sykmeldt tilbake til geografisk kontortilhørighet`
           ),
         })
       ).to.exist;
