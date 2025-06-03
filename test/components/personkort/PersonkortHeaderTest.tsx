@@ -172,12 +172,12 @@ describe("PersonkortHeader", () => {
     expect(screen.queryByText("Død")).not.to.exist;
   });
 
-  it("viser maksdato og utbetalt tom fra API", () => {
+  it("viser maksdato og søknad behandlet tom fra API", () => {
     renderPersonkortHeader();
 
     expect(screen.getByText("Maksdato:")).to.exist;
     expect(screen.getByText(dayjs(maksdato).format("DD.MM.YYYY"))).to.exist;
-    expect(screen.getByText("Utbetalt tom:")).to.exist;
+    expect(screen.getByText("Søknad behandlet tom:")).to.exist;
     expect(screen.getByText("01.07.2024")).to.exist;
   });
 
