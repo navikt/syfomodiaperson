@@ -1,4 +1,7 @@
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import {
+  tilDatoMedManedNavn,
+  tilLesbarDatoMedArUtenManedNavn,
+} from "@/utils/datoUtils";
 
 export type VedtakTextsValues = {
   fom: Date | undefined;
@@ -7,51 +10,62 @@ export type VedtakTextsValues = {
 
 export const getVedtakTexts = ({ fom, tom }: VedtakTextsValues) => ({
   header: "Vedtak om friskmelding til arbeidsformidling",
-  intro:
-    "Vi har vurdert at du oppfyller vilkårene for rett til friskmelding til arbeidsformidling. Dette betyr at du får utbetalt sykepenger i en periode mens du søker ny jobb.",
-  periode: `For deg gjelder dette perioden ${toReadableDateOrEmpty(
-    fom
-  )} til ${toReadableDateOrEmpty(tom)}.`,
+  innvilget: {
+    header: "Du har fått innvilget friskmelding til arbeidsformidling",
+    intro:
+      "Du oppfyller vilkårene for friskmelding til arbeidsformidling og kan få sykepenger fra Nav mens du ser etter ny jobb.",
+    periode: `Vedtaket gjelder for perioden: ${toReadableDateOrEmpty(
+      fom
+    )} - ${toReadableDateOrEmpty(tom)}.`,
+  },
   maksdato: `Siden din maksdato for sykepenger er beregnet til ${tilLesbarDatoMedArUtenManedNavn(
     tom
   )}, vil du ikke få sykepenger etter denne datoen.`,
-  arbeidssoker: {
-    part1: `Et vilkår for å motta sykepenger i denne perioden er at du har registrert deg som arbeidssøker hos Nav.`,
-    part2: "For å registrere deg går du inn på nav.no/arbeid/registrering.",
-  },
-  hjemmel: "Dette vedtaket er gjort etter folketrygdloven paragraf 8-5.",
-  behandler:
-    "Nav har ikke delt informasjon med legen din om at du er innvilget ordningen friskmeldt til arbeidsformidling. Du må gjerne selv informere legen din om dette. Legen din trenger ikke å skrive ut sykmelding i perioden vedtaket gjelder.",
   begrunnelse: {
-    header: "Begrunnelse",
-    part1:
-      "For at du skal ha rett til sykepenger, er det vanligvis et krav at du er for syk til å jobbe. I utgangspunktet har du ikke rett til sykepenger hvis du kan utføre en annen jobb enn den du er sykmeldt fra. Ordningen friskmelding til arbeidsformidling gjør at du likevel kan få sykepenger i opptil 12 uker mens du søker ny jobb.",
+    header: "Begrunnelse for vedtaket",
+    body: "Helsen din er slik at du kan komme tilbake i arbeid, men ikke til den jobben du har vært sykmeldt fra. Nå har du selv valgt å avslutte jobben, og benytte deg av ordningen friskmelding til arbeidsformidling. Dette vedtaket er gjort etter folketrygdloven § 8-5.",
   },
-  nyttigInfo: {
-    header: "Nyttig informasjon",
-    part1:
-      "Sykepengene blir utbetalt etter at du har sendt søknad. Du sender søknad til Nav hver 14. dag.",
-    part2:
-      "Utbetalingen stanser når du får ny jobb, eller hvis du velger å takke nei til et aktuelt tilbud om en jobb.",
-    part3:
-      "Hvis du ikke har fått ny jobb innen perioden din med sykepenger er over, kan det være aktuelt for deg å søke om dagpenger. Du må i så fall huske å sende en søknad om dagpenger før perioden med sykepenger er over.",
-    part4: "Les mer på nav.no/arbeidsledig.",
+  sykmelding: {
+    header: "Sykmelding fra legen",
+    body: "Nav har ikke delt informasjonen om vedtaket med legen din. Du trenger ikke sykmelding i perioden vedtaket gjelder for, med mindre du blir syk underveis. Da må du ta kontakt med legen din.",
+  },
+  forAFaSykepenger: {
+    header: "Hva du må gjøre for å få sykepenger",
+    body: "For å få sykepenger gjennom friskmelding til arbeidsformidling må du være registrert som arbeidssøker hos Nav og søke om sykepenger hver 14. dag. Du kan da få sykepenger i opptil 12 uker mens du søker etter ny jobb. Du vil få beskjed fra oss når søknaden er klar til å fylles ut. Hvis du ikke lenger ønsker å motta sykepenger fra Nav, må du gi beskjed om det i søknaden. ",
+  },
+  farNyJobb: {
+    header: "Hvis du får en ny jobb underveis",
+    body: "Hvis du får en ny jobb underveis hvor du tjener like mye eller mer enn sykepengene du får fra Nav, eller du begynner å jobbe mer enn 80 % av det du gjorde før du ble sykmeldt, vil du ikke ha rett på sykepenger lenger. Da stanser Nav utbetalingen din.",
+  },
+  ikkeFarNyJobb: {
+    header: "Hvis du ikke finner ny jobb",
+    body: "Hvis du ikke har fått jobb i løpet av perioden vedtaket gjelder for, kan det være aktuelt for deg å søke om dagpenger. Husk å sende søknaden før sykepengeperioden er slutt.",
+    lesMer: "Du kan lese mer om dagpenger på: nav.no/dagpenger#arbeidsledig",
+  },
+  endringSituasjon: {
+    header: "Hvis situasjonen din endrer seg",
+    body: "Endringer i livssituasjonen din kan påvirke retten din til sykepenger. Dersom du gir mangelfulle eller feilaktige opplysninger, kan det føre til at du må betale tilbake penger.",
+    lesMer: "Les mer om dette på: nav.no/endringer.",
   },
   sporsmal: {
-    header: "Spørsmål eller endringer",
-    body: "Hvis det skjer en endring i din situasjon, kan det påvirke din rett til utbetaling av sykepenger. Mangelfulle eller feilaktige opplysninger kan medføre krav om tilbakebetaling av sykepenger. Se nav.no/endringer.",
+    header: "Har du spørsmål?",
+    body: "Hvis du har spørsmål, kan du kontakte oss via: nav.no/kontaktoss/endringer.",
   },
-  kontakt:
-    "Har du spørsmål om saken din kan du kontakte oss på nav.no/kontaktoss.",
-  innsyn: {
-    header: "Rett til innsyn",
-    body: "Du har rett til innsyn i sakens opplysninger. Dette får du ved å logge deg inn på nav.no, eller ved å ta kontakt nav.no/kontaktoss.",
-  },
-  klage: {
-    header: "Du har rett til å klage",
-    body: "Hvis du ikke er enig i resultatet, kan du klage innen seks uker fra den datoen du mottok dette brevet. Les mer på nav.no/klagerettigheter og nav.no/klage#sykepenger.",
+  dineRettigheter: {
+    header: "Dine rettigheter",
+    innsyn: {
+      header: "Rett til innsyn:",
+      body: "Du kan se opplysninger i saken ved å logge deg inn på nav.no eller kontakte oss på nav.no/kontaktoss.",
+    },
+    klage: {
+      header: "Rett til å klage:",
+      body: "Hvis du ikke er enig i vedtaket, kan du klage innen seks uker fra du mottok dette brevet.",
+      lesMer: "Les mer om hvordan du klager her:",
+      url: "nav.no/klagerettigheter",
+      urlSykepenger: "nav.no/klage#sykepenger",
+    },
   },
 });
 
 const toReadableDateOrEmpty = (date: Date | undefined) =>
-  date ? tilLesbarDatoMedArUtenManedNavn(date) : "";
+  date ? tilDatoMedManedNavn(date) : "";
