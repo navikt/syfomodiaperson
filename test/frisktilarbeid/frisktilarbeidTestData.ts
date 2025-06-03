@@ -117,7 +117,7 @@ export const getExpectedVedtakDocument = ({
     },
     {
       texts: [
-        "For å få sykepenger gjennom friskmelding til arbeidsformidling må du være registrert som arbeidssøker hos Nav og søke om sykepenger hver 14. dag. Du kan da få sykepenger i opptil 12 uker mens du søker etter ny jobb. Du vil få beskjed fra oss når søknaden er klar til å fylles ut. Hvis du ikke lenger ønsker å motta sykepenger fra Nav, må du gi beskjed om det i søknaden. ",
+        "For å få sykepenger gjennom friskmelding til arbeidsformidling må du være registrert som arbeidssøker hos Nav og søke om sykepenger hver 14. dag. Du kan da få sykepenger i opptil 12 uker mens du søker etter ny jobb. Du vil få beskjed fra oss når søknaden er klar til å fylles ut. Hvis du ikke lenger ønsker å motta sykepenger fra Nav, må du gi beskjed om det i søknaden.",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
