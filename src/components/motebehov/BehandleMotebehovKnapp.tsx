@@ -22,6 +22,8 @@ import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { CheckmarkCircleFillIcon } from "@navikt/aksel-icons";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { MotebehovSkjemaType } from "@/data/motebehov/types/motebehovTypes";
+import { HjelpetekstVedMeldtBehov } from "@/components/motebehov/HjelpetekstVedMeldtBehov";
 
 const texts = {
   fjernOppgave: "Jeg har vurdert behovet. Oppgaven kan fjernes fra oversikten.",
@@ -59,6 +61,9 @@ export default function BehandleMotebehovKnapp() {
     (motebehov) => toMotebehovTilbakemeldingDTO(motebehov, texts.tilbakemelding)
   );
 
+  const minstEnHarMeldtBehov = motebehovListe.some(
+    (behov) => behov.skjemaType === MotebehovSkjemaType.MELD_BEHOV
+  );
   return ubehandledeMotebehov.length !== 0 ? (
     <VStack className="flex gap-4">
       <RadioGroup
@@ -84,6 +89,7 @@ export default function BehandleMotebehovKnapp() {
           }
         />
       )}
+      {minstEnHarMeldtBehov && <HjelpetekstVedMeldtBehov />}
       <Button
         className="w-max"
         loading={
@@ -102,19 +108,22 @@ export default function BehandleMotebehovKnapp() {
       </Button>
     </VStack>
   ) : isSistBehandletMotebehovInnenforTilfelle ? (
-    <div className="flex flex-row gap-1 items-center">
-      <CheckmarkCircleFillIcon
-        fontSize="2em"
-        color="var(--a-icon-success)"
-        title="suksess-ikon"
-      />
-      <BodyShort size="small">
-        {`Møtebehovet ble behandlet av ${
-          sistBehandletMotebehov?.behandletVeilederIdent
-        } den ${toDatePrettyPrint(
-          sistBehandletMotebehov?.behandletTidspunkt
-        )}.`}
-      </BodyShort>
-    </div>
+    <>
+      {minstEnHarMeldtBehov && <HjelpetekstVedMeldtBehov />}
+      <div className="flex flex-row gap-1 items-center">
+        <CheckmarkCircleFillIcon
+          fontSize="2em"
+          color="var(--a-icon-success)"
+          title="suksess-ikon"
+        />
+        <BodyShort size="small">
+          {`Møtebehovet ble behandlet av ${
+            sistBehandletMotebehov?.behandletVeilederIdent
+          } den ${toDatePrettyPrint(
+            sistBehandletMotebehov?.behandletTidspunkt
+          )}.`}
+        </BodyShort>
+      </div>
+    </>
   ) : null;
 }

@@ -282,6 +282,24 @@ export const svartNeiMotebehovArbeidsgiverUbehandletMock = (
   };
 };
 
+export const meldtMotebehovArbeidsgiverBehandletMock = {
+  ...svartNeiMotebehovArbeidsgiverUbehandletMock(
+    MotebehovSkjemaType.MELD_BEHOV
+  ),
+  opprettetDato: addDays(new Date(), -10),
+  behandletTidspunkt: addDays(new Date(), -1),
+  behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
+  formValues: createFormValues(
+    {
+      ...defaultFormValue,
+      harMotebehov: true,
+      begrunnelse: "Jeg liker møte.",
+    },
+    MotebehovSkjemaType.MELD_BEHOV,
+    MotebehovInnmelder.ARBEIDSGIVER
+  ),
+};
+
 export const motebehovMock = [
   svartJaMotebehovArbeidstakerUbehandletMock,
   meldtMotebehovArbeidstakerBehandletMock(),
