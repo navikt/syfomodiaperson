@@ -27,7 +27,6 @@ export const useFriskmeldingTilArbeidsformidlingDocument = (): {
   ): DocumentComponentDto[] => {
     const vedtakTexts = getVedtakTexts(values);
     const documentComponentDtos = [
-      getBrukerNavnFnr(),
       createHeaderH1(vedtakTexts.header),
       createHeaderH2(vedtakTexts.innvilget.header),
       createParagraph(vedtakTexts.innvilget.intro),

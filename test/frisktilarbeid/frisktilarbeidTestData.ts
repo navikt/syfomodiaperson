@@ -44,12 +44,6 @@ export const getExpectedVedtakDocument = ({
 }: ExpectedVedtakDocumentOptions): DocumentComponentDto[] => {
   return [
     {
-      texts: [
-        `${ARBEIDSTAKER_DEFAULT_FULL_NAME}, ${ARBEIDSTAKER_DEFAULT.personIdent}`,
-      ],
-      type: DocumentComponentType.PARAGRAPH,
-    },
-    {
       texts: ["Vedtak om friskmelding til arbeidsformidling"],
       type: DocumentComponentType.HEADER_H1,
     },
@@ -158,7 +152,7 @@ export const getExpectedVedtakDocument = ({
     },
     {
       texts: [
-        "Hvis du har spørsmål, kan du kontakte oss via: nav.no/kontaktoss/endringer.",
+        "Hvis du har spørsmål, kan du kontakte oss via: nav.no/kontaktoss.",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
