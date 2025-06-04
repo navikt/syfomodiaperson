@@ -7,11 +7,7 @@ import {
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
-import {
-  addWeeks,
-  tilDatoMedManedNavn,
-  tilLesbarDatoMedArUtenManedNavn,
-} from "@/utils/datoUtils";
+import { addWeeks, tilDatoMedManedNavn } from "@/utils/datoUtils";
 import {
   DocumentComponentDto,
   DocumentComponentType,
@@ -79,7 +75,7 @@ export const getExpectedVedtakDocument = ({
       ? [
           {
             texts: [
-              `Siden din maksdato for sykepenger er beregnet til ${tilLesbarDatoMedArUtenManedNavn(
+              `Siden din maksdato for sykepenger er beregnet til ${tilDatoMedManedNavn(
                 tom
               )}, vil du ikke få sykepenger etter denne datoen.`,
             ],
