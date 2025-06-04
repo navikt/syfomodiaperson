@@ -1,7 +1,4 @@
-import {
-  tilDatoMedManedNavn,
-  tilLesbarDatoMedArUtenManedNavn,
-} from "@/utils/datoUtils";
+import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 
 export type VedtakTextsValues = {
   fom: Date | undefined;
