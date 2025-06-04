@@ -2,11 +2,7 @@ import {
   InfotrygdStatus,
   VedtakResponseDTO,
 } from "@/data/frisktilarbeid/frisktilarbeidTypes";
-import {
-  ARBEIDSTAKER_DEFAULT,
-  ARBEIDSTAKER_DEFAULT_FULL_NAME,
-  VEILEDER_DEFAULT,
-} from "@/mocks/common/mockConstants";
+import { VEILEDER_DEFAULT } from "@/mocks/common/mockConstants";
 import { addWeeks, tilDatoMedManedNavn } from "@/utils/datoUtils";
 import {
   DocumentComponentDto,
