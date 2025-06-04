@@ -6,7 +6,7 @@ const texts = {
   part1:
     "Nav skal innkalle til dialogmøte 2 senest innen 26 uker etter at en arbeidstaker har blitt sykmeldt. Møtet kan imidlertid avholdes tidligere dersom arbeidstaker eller arbeidsgiver ber om det.",
   part2:
-    "I slike tilfeller har Nav plikt til å kalle inn og gjennomføre møtet. I slike tilfeller gjelder ikke unntaksreglene som vanligvis kan gjøre at møtet ikke blir holdt.",
+    "I slike tilfeller har Nav plikt til å kalle inn og gjennomføre møtet. Da gjelder ikke unntaksreglene som vanligvis kan gjøre at møtet ikke blir holdt.",
   part3:
     "Nav kan heller ikke stille krav om at arbeidsgiver først må ha gjennomført dialogmøte 1 eller sendt inn oppfølgingsplan. Plikten til å gjennomføre dialogmøte 2 gjelder selv om arbeidsgiver ikke har oppfylt sine plikter i oppfølgingsarbeidet.",
 };
