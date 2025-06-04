@@ -18,7 +18,7 @@ export const getVedtakTexts = ({ fom, tom }: VedtakTextsValues) => ({
       fom
     )} - ${toReadableDateOrEmpty(tom)}.`,
   },
-  maksdato: `Siden din maksdato for sykepenger er beregnet til ${tilLesbarDatoMedArUtenManedNavn(
+  maksdato: `Siden din maksdato for sykepenger er beregnet til ${toReadableDateOrEmpty(
     tom
   )}, vil du ikke få sykepenger etter denne datoen.`,
   begrunnelse: {
