@@ -11,7 +11,7 @@ const texts = {
     "Nav kan heller ikke stille krav om at arbeidsgiver først må ha gjennomført dialogmøte 1 eller sendt inn oppfølgingsplan. Plikten til å gjennomføre dialogmøte 2 gjelder selv om arbeidsgiver ikke har oppfylt sine plikter i oppfølgingsarbeidet.",
 };
 
-export const HjelpetekstVedMeldtBehov = () => {
+export default function HjelpetekstVedMeldtBehov() {
   return (
     <Accordion>
       <Accordion.Item>
@@ -28,4 +28,4 @@ export const HjelpetekstVedMeldtBehov = () => {
       </Accordion.Item>
     </Accordion>
   );
-};
+}

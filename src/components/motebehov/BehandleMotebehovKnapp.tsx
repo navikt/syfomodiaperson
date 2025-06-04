@@ -23,7 +23,7 @@ import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { CheckmarkCircleFillIcon } from "@navikt/aksel-icons";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { MotebehovSkjemaType } from "@/data/motebehov/types/motebehovTypes";
-import { HjelpetekstVedMeldtBehov } from "@/components/motebehov/HjelpetekstVedMeldtBehov";
+import HjelpetekstVedMeldtBehov from "@/components/motebehov/HjelpetekstVedMeldtBehov";
 
 const texts = {
   fjernOppgave: "Jeg har vurdert behovet. Oppgaven kan fjernes fra oversikten.",
