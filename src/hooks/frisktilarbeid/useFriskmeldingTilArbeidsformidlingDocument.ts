@@ -20,7 +20,7 @@ type VedtakDocumentValues = VedtakTextsValues & {
 export const useFriskmeldingTilArbeidsformidlingDocument = (): {
   getVedtakDocument(values: VedtakDocumentValues): DocumentComponentDto[];
 } => {
-  const { getHilsen, getBrukerNavnFnr } = useDocumentComponents();
+  const { getHilsen } = useDocumentComponents();
 
   const getVedtakDocument = (
     values: VedtakDocumentValues
