@@ -46,7 +46,7 @@ export const getVedtakTexts = ({ fom, tom }: VedtakTextsValues) => ({
   },
   sporsmal: {
     header: "Har du spørsmål?",
-    body: "Hvis du har spørsmål, kan du kontakte oss via: nav.no/kontaktoss/endringer.",
+    body: "Hvis du har spørsmål, kan du kontakte oss via: nav.no/kontaktoss.",
   },
   dineRettigheter: {
     header: "Dine rettigheter",
