@@ -24,7 +24,7 @@ export const getExpectedForesporselDocument = ({
     },
     {
       texts: [
-        `Gjelder ${ARBEIDSTAKER_DEFAULT_FULL_NAME}, f.nr. ${ARBEIDSTAKER_DEFAULT.personIdent}`,
+        `Gjelder ${ARBEIDSTAKER_DEFAULT_FULL_NAME}, f.nr. ${ARBEIDSTAKER_DEFAULT.personIdent}.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
