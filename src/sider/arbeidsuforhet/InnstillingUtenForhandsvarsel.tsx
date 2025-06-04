@@ -4,16 +4,18 @@ import {
   BodyShort,
   Box,
   Button,
+  DatePicker,
   Heading,
   Radio,
   RadioGroup,
   Textarea,
+  useDatepicker,
 } from "@navikt/ds-react";
 import { ButtonRow } from "@/components/Layout";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { Link } from "react-router-dom";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
-import { useForm } from "react-hook-form";
+import { useController, useForm } from "react-hook-form";
 import {
   VurderingArsak,
   VurderingRequestDTO,
@@ -31,8 +33,12 @@ const texts = {
   arsakTilInnstilling: {
     radioLegend: "Hvorfor sendes innstilling uten forhåndsvarsel?",
     sykepengerIkkeUtbetalt: "Sykepenger ikke utbetalt",
-    nyVurderingFraNay: "Det trengs en ny vurdering fra NAY", // TODO: "NAY ber om ny vurdering"?
+    nyVurderingFraNay: "NAY ber om ny vurdering",
     required: "Vennligst angi årsak til innstilling",
+  },
+  oppgaveSendtFraNayDato: {
+    label: "Når sendte NAY oppgaven i GOSYS?",
+    required: "Vennligst angi dato oppgaven ble sendt fra NAY",
   },
   begrunnelseLabel: "Begrunnelse (obligatorisk)",
   missingBegrunnelse: "Vennligst angi begrunnelse",
@@ -47,12 +53,14 @@ const texts = {
 const begrunnelseMaxLength = 1000;
 
 interface SkjemaValues {
-  arsak: VurderingArsak.SYKEPENGER_IKKE_UTBETALT | VurderingArsak.FRISKMELDT;
+  arsak:
+    | VurderingArsak.SYKEPENGER_IKKE_UTBETALT
+    | VurderingArsak.NAY_BER_OM_NY_VURDERING;
+  oppgaveFraNayDato?: Date;
   begrunnelse: string;
 }
 
 export default function InnstillingUtenForhandsvarsel() {
-  //TODO: Lagre / Sende ?
   const navigate = useNavigate();
   const lagreInnstilling = useSendVurderingArbeidsuforhet();
   const { getInnstillingUtenForhandsvarselDocument } =
@@ -61,19 +69,32 @@ export default function InnstillingUtenForhandsvarsel() {
   const {
     register,
     watch,
+    control,
+    setValue,
     formState: { errors },
     handleSubmit,
   } = useForm<SkjemaValues>();
+  const { field, fieldState } = useController({
+    name: "oppgaveFraNayDato",
+    control,
+    rules: {
+      required: watch("arsak") === VurderingArsak.NAY_BER_OM_NY_VURDERING,
+    },
+  });
   const submit = (values: SkjemaValues) => {
     const documentProps = {
       arsak: values.arsak,
       begrunnelse: values.begrunnelse,
     };
     const vurderingRequestDTO: VurderingRequestDTO = {
-      type: VurderingType.AVSLAG_UTEN_FORHANDSVARSEL, //TODO: Hva gjør vi med denne?
+      type: VurderingType.AVSLAG_UTEN_FORHANDSVARSEL,
       arsak: values.arsak,
       begrunnelse: values.begrunnelse,
       document: getInnstillingUtenForhandsvarselDocument(documentProps),
+      oppgaveFraNayDato:
+        values.arsak === VurderingArsak.NAY_BER_OM_NY_VURDERING
+          ? values.oppgaveFraNayDato
+          : undefined,
     };
     lagreInnstilling.mutate(vurderingRequestDTO, {
       onSuccess: () => {
@@ -84,6 +105,11 @@ export default function InnstillingUtenForhandsvarsel() {
       },
     });
   };
+
+  const { datepickerProps, inputProps } = useDatepicker({
+    onDateChange: (date: Date | undefined) => field.onChange(date),
+    defaultSelected: watch("oppgaveFraNayDato"),
+  });
 
   return (
     <Box background="surface-default" padding="6" className="mb-2">
@@ -105,12 +131,22 @@ export default function InnstillingUtenForhandsvarsel() {
             {texts.arsakTilInnstilling.sykepengerIkkeUtbetalt}
           </Radio>
           <Radio
-            value={VurderingArsak.FRISKMELDT}
+            value={VurderingArsak.NAY_BER_OM_NY_VURDERING}
             {...register("arsak", { required: true })}
           >
             {texts.arsakTilInnstilling.nyVurderingFraNay}
           </Radio>
         </RadioGroup>
+        {watch("arsak") === VurderingArsak.NAY_BER_OM_NY_VURDERING && (
+          <DatePicker {...datepickerProps} showWeekNumber>
+            <DatePicker.Input
+              {...inputProps}
+              label={texts.oppgaveSendtFraNayDato.label}
+              size="small"
+              error={fieldState.error && texts.oppgaveSendtFraNayDato.required}
+            />
+          </DatePicker>
+        )}
         <Textarea
           {...register("begrunnelse", {
             maxLength: begrunnelseMaxLength,
@@ -133,12 +169,11 @@ export default function InnstillingUtenForhandsvarsel() {
           </Button>
           <Forhandsvisning
             contentLabel={texts.forhandsvisning}
-            getDocumentComponents={
-              () => [] // TODO: Disable forhandsvisning?
-              // getInnstillingUtenForhandsvarselDocument({
-              //   arsak: values.arsak,
-              //   begrunnelse: values.begrunnelse,
-              // })
+            getDocumentComponents={() =>
+              getInnstillingUtenForhandsvarselDocument({
+                arsak: watch("arsak"),
+                begrunnelse: watch("begrunnelse"),
+              })
             }
           />
           <Button as={Link} to={arbeidsuforhetPath} variant="secondary">
