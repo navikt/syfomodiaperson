@@ -109,7 +109,6 @@ export default function BehandleMotebehovKnapp() {
     </VStack>
   ) : isSistBehandletMotebehovInnenforTilfelle ? (
     <>
-      {minstEnHarMeldtBehov && <HjelpetekstVedMeldtBehov />}
       <div className="flex flex-row gap-1 items-center">
         <CheckmarkCircleFillIcon
           fontSize="2em"
@@ -124,6 +123,7 @@ export default function BehandleMotebehovKnapp() {
           )}.`}
         </BodyShort>
       </div>
+      {minstEnHarMeldtBehov && <HjelpetekstVedMeldtBehov />}
     </>
   ) : null;
 }
