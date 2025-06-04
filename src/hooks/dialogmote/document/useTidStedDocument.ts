@@ -47,7 +47,7 @@ export const useTidStedDocument = (
   const { getMoteInfo, getIntroHei } = useDialogmoteDocumentComponents();
 
   const gjelderParagraph = createParagraph(
-    `${commonTexts.gjelder} ${navBruker.navn}, f.nr. ${valgtPersonident}`
+    `${commonTexts.gjelder} ${navBruker.navn}, f.nr. ${valgtPersonident}.`
   );
 
   const introComponents = [

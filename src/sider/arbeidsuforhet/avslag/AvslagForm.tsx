@@ -1,6 +1,6 @@
 import React from "react";
-import { useSendVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSendVurderingArbeidsuforhet";
-import { useArbeidsuforhetVurderingDocument } from "@/hooks/arbeidsuforhet/useArbeidsuforhetVurderingDocument";
+import { useSaveVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSaveVurderingArbeidsuforhet";
+import { useArbeidsuforhetVurderingDocument } from "@/sider/arbeidsuforhet/hooks/useArbeidsuforhetVurderingDocument";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   VurderingRequestDTO,
@@ -68,7 +68,7 @@ export interface ArbeidsuforhetAvslagSkjemaValues {
 }
 
 export function AvslagForm({ sisteVurdering }: Props) {
-  const sendVurdering = useSendVurderingArbeidsuforhet();
+  const lagreVurdering = useSaveVurderingArbeidsuforhet();
   const { getAvslagDocument } = useArbeidsuforhetVurderingDocument();
   const { setNotification } = useNotification();
   const formMethods = useForm<ArbeidsuforhetAvslagSkjemaValues>();
@@ -92,7 +92,7 @@ export function AvslagForm({ sisteVurdering }: Props) {
       ),
       gjelderFom: dayjs(values.fom).format("YYYY-MM-DD"),
     };
-    sendVurdering.mutate(vurderingRequestDTO, {
+    lagreVurdering.mutate(vurderingRequestDTO, {
       onSuccess: () => {
         setNotification({
           message: texts.success,
@@ -127,8 +127,8 @@ export function AvslagForm({ sisteVurdering }: Props) {
             minRows={6}
             maxLength={begrunnelseMaxLength}
           />
-          {sendVurdering.isError && (
-            <SkjemaInnsendingFeil error={sendVurdering.error} />
+          {lagreVurdering.isError && (
+            <SkjemaInnsendingFeil error={lagreVurdering.error} />
           )}
           <List as="ul" title={texts.afterSendInfo.title} size={"small"}>
             {texts.afterSendInfo.gosysoppgave}
@@ -152,7 +152,7 @@ export function AvslagForm({ sisteVurdering }: Props) {
             body={texts.buttonDescription}
           />
           <ButtonRow>
-            <Button loading={sendVurdering.isPending} type="submit">
+            <Button loading={lagreVurdering.isPending} type="submit">
               {texts.sendVarselButtonText}
             </Button>
             <Forhandsvisning

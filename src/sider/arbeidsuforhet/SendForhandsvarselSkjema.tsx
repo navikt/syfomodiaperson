@@ -2,16 +2,19 @@ import React from "react";
 import { ButtonRow } from "@/components/Layout";
 import { Box, Button, Heading, List, Textarea } from "@navikt/ds-react";
 import { useForm } from "react-hook-form";
-import { useArbeidsuforhetVurderingDocument } from "@/hooks/arbeidsuforhet/useArbeidsuforhetVurderingDocument";
+import { useArbeidsuforhetVurderingDocument } from "@/sider/arbeidsuforhet/hooks/useArbeidsuforhetVurderingDocument";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import {
   VurderingRequestDTO,
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
-import { useSendVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSendVurderingArbeidsuforhet";
+import { useSaveVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSaveVurderingArbeidsuforhet";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 import { InfoUtsattFristJuletid } from "@/components/InfoUtsattFristJuletid";
+import { useNavigate } from "react-router";
+import { arbeidsuforhetPath } from "@/routers/AppRouter";
+import { useNotification } from "@/context/notification/NotificationContext";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -28,6 +31,8 @@ const texts = {
   forhandsvisningLabel: "Forhåndsvis forhåndsvarselet",
   missingBeskrivelse: "Vennligst angi begrunnelse",
   sendVarselButtonText: "Send",
+  forhandsvarselSendt:
+    "Forhåndsvarsel er sendt. Personen ligger nå i oversikten og kan finnes under filteret for § 8-4 arbeidsuførhet.",
 };
 
 const forhandsvarselFrist = getForhandsvarselFrist();
@@ -39,7 +44,9 @@ interface SkjemaValues {
 }
 
 export default function SendForhandsvarselSkjema() {
-  const sendForhandsvarsel = useSendVurderingArbeidsuforhet();
+  const navigate = useNavigate();
+  const { setNotification } = useNotification();
+  const sendForhandsvarsel = useSaveVurderingArbeidsuforhet();
   const {
     register,
     watch,
@@ -58,7 +65,14 @@ export default function SendForhandsvarselSkjema() {
       }),
       frist: forhandsvarselFrist,
     };
-    sendForhandsvarsel.mutate(forhandsvarselRequestDTO);
+    sendForhandsvarsel.mutate(forhandsvarselRequestDTO, {
+      onSuccess: () => {
+        setNotification({
+          message: texts.forhandsvarselSendt,
+        });
+        navigate(arbeidsuforhetPath);
+      },
+    });
   };
 
   return (

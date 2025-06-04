@@ -5,7 +5,7 @@ import NyVurdering from "@/sider/arbeidsuforhet/NyVurdering";
 import ForhandsvarselSendt from "@/sider/arbeidsuforhet/ForhandsvarselSendt";
 import SendForhandsvarselSkjema from "./SendForhandsvarselSkjema";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import AktivVurdering from "@/sider/arbeidsuforhet/AktivVurdering";
+import VelgVurdering from "@/sider/arbeidsuforhet/VelgVurdering";
 
 export default function Arbeidsuforhet() {
   const { data } = useGetArbeidsuforhetVurderingerQuery();
@@ -22,7 +22,7 @@ export default function Arbeidsuforhet() {
         isForhandsvarsel ? (
           <ForhandsvarselSendt forhandsvarsel={sisteVurdering} />
         ) : toggles.isInnstillingUtenForhandsvarselArbeidsuforhetEnabled ? (
-          <AktivVurdering />
+          <VelgVurdering />
         ) : (
           <SendForhandsvarselSkjema />
         )

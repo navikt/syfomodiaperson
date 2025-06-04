@@ -17,10 +17,10 @@ import {
 } from "@navikt/ds-react";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { ButtonRow } from "@/components/Layout";
-import { useSendVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSendVurderingArbeidsuforhet";
+import { useSaveVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSaveVurderingArbeidsuforhet";
 import { useForm } from "react-hook-form";
 import { useNotification } from "@/context/notification/NotificationContext";
-import { useArbeidsuforhetVurderingDocument } from "@/hooks/arbeidsuforhet/useArbeidsuforhetVurderingDocument";
+import { useArbeidsuforhetVurderingDocument } from "@/sider/arbeidsuforhet/hooks/useArbeidsuforhetVurderingDocument";
 
 const texts = {
   title: "Vurdering av § 8-4 er ikke lenger aktuelt",
@@ -40,7 +40,7 @@ interface SkjemaValues {
 }
 
 export const ArbeidsuforhetIkkeAktuellSkjema = () => {
-  const sendVurdering = useSendVurderingArbeidsuforhet();
+  const sendVurdering = useSaveVurderingArbeidsuforhet();
   const { setNotification } = useNotification();
   const { getIkkeAktuellDocument } = useArbeidsuforhetVurderingDocument();
   const {
