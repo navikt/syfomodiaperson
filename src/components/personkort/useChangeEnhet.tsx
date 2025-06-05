@@ -1,7 +1,10 @@
 import { SYFOBEHANDLENDEENHET_ROOT } from "@/apiConstants";
 import { post } from "@/api/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
+import {
+  behandlendeenhetGlobalCacheKey,
+  behandlendeEnhetQueryKeys,
+} from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import {
   TildelOppfolgingsenhetRequestDTO,
   TildelOppfolgingsenhetResponseDTO,
@@ -19,15 +22,9 @@ export const useChangeEnhet = (fnr: string) => {
     mutationFn: postChangeEnhet,
     onSuccess: (data: TildelOppfolgingsenhetResponseDTO) => {
       queryClient.setQueryData(behandlendeEnhetQueryKey, data);
-      return queryClient
-        .invalidateQueries({
-          queryKey: behandlendeEnhetQueryKey,
-        })
-        .then(() => {
-          return queryClient.invalidateQueries({
-            queryKey: behandlendeEnhetQueryKeys.historikk(fnr),
-          });
-        });
+      return queryClient.invalidateQueries({
+        queryKey: behandlendeenhetGlobalCacheKey(fnr),
+      });
     },
   });
 };

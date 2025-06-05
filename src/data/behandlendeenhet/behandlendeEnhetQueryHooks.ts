@@ -6,9 +6,21 @@ import { minutesToMillis } from "@/utils/utils";
 import { BehandlendeEnhetResponseDTO } from "@/data/behandlendeenhet/types/BehandlendeEnhetDTOs";
 import { TildeltHistorikkResponseDTO } from "@/hooks/historikk/useTildeltOppfolgingsenhetHistorikk";
 
+const behandlendeenhetGlobalCacheKeyPrefix = "behandlendeenhet";
+export const behandlendeenhetGlobalCacheKey = (fnr: string) => [
+  behandlendeenhetGlobalCacheKeyPrefix,
+  fnr,
+];
 export const behandlendeEnhetQueryKeys = {
-  behandlendeEnhet: (fnr: string) => ["behandlendeenhet", fnr],
-  historikk: (fnr: string) => ["historikk", "tildeltOppfolgingsenhet", fnr],
+  behandlendeEnhet: (fnr: string) => [
+    behandlendeenhetGlobalCacheKeyPrefix,
+    fnr,
+  ],
+  historikk: (fnr: string) => [
+    behandlendeenhetGlobalCacheKeyPrefix,
+    fnr,
+    "historikk",
+  ],
 };
 
 export const useBehandlendeEnhetQuery = () => {
