@@ -113,7 +113,7 @@ export const getExpectedVedtakDocument = ({
     },
     {
       texts: [
-        "Hvis du får en ny jobb underveis hvor du tjener like mye eller mer enn sykepengene du får fra Nav, eller du begynner å jobbe mer enn 80 % av det du gjorde før du ble sykmeldt, vil du ikke ha rett på sykepenger lenger. Da stanser Nav utbetalingen din.",
+        "Hvis du får en ny jobb hvor du tjener like mye eller mer enn sykepengene du får fra Nav, vil du ikke ha rett på sykepenger lenger. Dette gjelder også hvis du begynner å jobbe mer enn 80 % av det du gjorde før du ble sykmeldt.",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
