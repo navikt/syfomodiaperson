@@ -162,7 +162,7 @@ export const getExpectedVedtakDocument = ({
     },
     {
       texts: [
-        "Du kan se opplysninger i saken ved å logge deg inn på nav.no. Du kan også kontakte oss på nav.no/kontaktoss eller 55 55 33 33.",
+        "Du kan se opplysninger i saken ved å logge deg inn på nav.no. Du kan også kontakte oss på nav.no/kontaktoss eller telefon 55 55 33 33.",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
