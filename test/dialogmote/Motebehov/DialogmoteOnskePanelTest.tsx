@@ -10,6 +10,8 @@ import {
 } from "@/mocks/common/mockConstants";
 import {
   defaultFormValue,
+  meldtMotebehovArbeidsgiverBehandletMock,
+  meldtMotebehovArbeidstakerBehandletMock,
   svartJaMotebehovArbeidstakerUbehandletMock,
   svartNeiMotebehovArbeidsgiverUbehandletMock,
 } from "@/mocks/syfomotebehov/motebehovMock";
@@ -199,5 +201,121 @@ describe("DialogmoteOnskePanel", () => {
     ).to.not.exist;
     expect(screen.queryByText("Vurder møtebehov og fjern oppgaven")).to.not
       .exist;
+  });
+
+  describe("Visning av hjelpetekst ved meldt behov", () => {
+    const arbeidstakerMeldtBehovBehandletInnenfor = {
+      ...meldtMotebehovArbeidstakerBehandletMock(),
+      opprettetDato: datoInnenforOppfolgingstilfelle,
+    };
+
+    const arbeidstakerMeldtBehovBehandletUtenfor = {
+      ...meldtMotebehovArbeidstakerBehandletMock(),
+      opprettetDato: datoUtenforOppfolgingstilfelle,
+    };
+
+    const arbeidstakerMeldtBehovUbehandletUtenfor = {
+      ...meldtMotebehovArbeidstakerBehandletMock(),
+      opprettetDato: datoUtenforOppfolgingstilfelle,
+      behandletTidspunkt: null,
+      behandletVeilederIdent: null,
+    };
+
+    const arbeidstakerMeldtBehovUbehandletInnenfor = {
+      ...meldtMotebehovArbeidstakerBehandletMock(),
+      opprettetDato: datoInnenforOppfolgingstilfelle,
+      behandletTidspunkt: null,
+      behandletVeilederIdent: null,
+    };
+
+    const arbeidsgiverMeldtBehovBehandletInnenfor = {
+      ...meldtMotebehovArbeidsgiverBehandletMock,
+      opprettetDato: datoInnenforOppfolgingstilfelle,
+    };
+
+    const arbeidsgiverMeldtBehovBehandletUtenfor = {
+      ...meldtMotebehovArbeidsgiverBehandletMock,
+      opprettetDato: datoUtenforOppfolgingstilfelle,
+    };
+
+    const arbeidsgiverMeldtBehovUbehandletUtenfor = {
+      ...meldtMotebehovArbeidsgiverBehandletMock,
+      opprettetDato: datoUtenforOppfolgingstilfelle,
+      behandletTidspunkt: null,
+      behandletVeilederIdent: null,
+    };
+
+    const arbeidsgiverMeldtBehovUbehandletInnenfor = {
+      ...meldtMotebehovArbeidsgiverBehandletMock,
+      opprettetDato: datoInnenforOppfolgingstilfelle,
+      behandletTidspunkt: null,
+      behandletVeilederIdent: null,
+    };
+
+    it.each<MotebehovVeilederDTO>([
+      arbeidstakerMeldtBehovBehandletInnenfor,
+      arbeidsgiverMeldtBehovBehandletInnenfor,
+    ])(
+      "Behandlet meldt behov fra $innmelderType innenfor oppfølgingstilfelle - vise hjelpetekst",
+      (motebehov: MotebehovVeilederDTO) => {
+        mockMotebehov([motebehov]);
+
+        renderDialogmoteOnskePanel();
+
+        expect(
+          screen.getByText("Les her om tidspunkt og plikt for dialogmøte 2")
+        ).to.exist;
+      }
+    );
+
+    it.each<MotebehovVeilederDTO>([
+      arbeidstakerMeldtBehovBehandletUtenfor,
+      arbeidsgiverMeldtBehovBehandletUtenfor,
+    ])(
+      `Behandlet meldt behov fra $innmelderType utenfor oppfølgingstilfelle - ikke vise hjelpetekst`,
+      (motebehov: MotebehovVeilederDTO) => {
+        mockMotebehov([motebehov]);
+
+        renderDialogmoteOnskePanel();
+
+        expect(
+          screen.queryByText("Les her om tidspunkt og plikt for dialogmøte 2")
+        ).to.not.exist;
+      }
+    );
+
+    describe.each<MotebehovVeilederDTO>([
+      arbeidstakerMeldtBehovUbehandletUtenfor,
+      arbeidstakerMeldtBehovUbehandletInnenfor,
+      arbeidsgiverMeldtBehovUbehandletUtenfor,
+      arbeidsgiverMeldtBehovUbehandletInnenfor,
+    ])(
+      "Ubehandlet meldt behov - vise hjelpetekst",
+      (motebehov: MotebehovVeilederDTO) => {
+        it(`Ubehandlet meldt behov fra ${motebehov.innmelderType} ${
+          motebehov.opprettetDato === datoInnenforOppfolgingstilfelle
+            ? "innenfor"
+            : "utenfor"
+        } oppfølgingstilfelle - vise hjelpetekst`, () => {
+          mockMotebehov([motebehov]);
+
+          renderDialogmoteOnskePanel();
+
+          expect(
+            screen.getByText("Les her om tidspunkt og plikt for dialogmøte 2")
+          ).to.exist;
+        });
+      }
+    );
+
+    it("Ingen har meldt behov - ikke vise hjelpetekst", () => {
+      mockMotebehov([]);
+
+      renderDialogmoteOnskePanel();
+
+      expect(
+        screen.queryByText("Les her om tidspunkt og plikt for dialogmøte 2")
+      ).to.not.exist;
+    });
   });
 });
