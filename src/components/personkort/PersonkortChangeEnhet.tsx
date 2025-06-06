@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { BodyLong, Button, Heading, Modal } from "@navikt/ds-react";
 import styled from "styled-components";
-import { useChangeEnhet } from "@/components/personkort/useChangeEnhet";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   BehandlendeEnhetResponseDTO,
   TildelOppfolgingsenhetRequestDTO,
 } from "@/data/behandlendeenhet/types/BehandlendeEnhetDTOs";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
+import { useChangeEnhet } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 
 const texts = {
   endre: "Endre til",

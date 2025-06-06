@@ -45,6 +45,7 @@ export const BEHANDLENDE_ENHET_DEFAULT = {
 };
 
 export const VEILEDER_IDENT_DEFAULT = "Z990000";
+export const SYSTEMBRUKER_IDENT_DEFAULT = "Z999999";
 
 export const VEILEDER_DEFAULT = new Veileder(
   VEILEDER_IDENT_DEFAULT,

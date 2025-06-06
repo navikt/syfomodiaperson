@@ -26,7 +26,10 @@ import { historikkPath } from "@/routers/AppRouter";
 import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
+import {
+  currentOppfolgingstilfelle,
+  oppfolgingstilfellePersonMock,
+} from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
 import { veilederBrukerKnytningQueryKeys } from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
 import { behandlerdialogQueryKeys } from "@/data/behandlerdialog/behandlerdialogQueryHooks";
 import {
@@ -63,6 +66,8 @@ import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { motebehovMock } from "@/mocks/syfomotebehov/motebehovMock";
 import { oppfolgingsplanForesporselQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
 import { mockForesporseler } from "@/mocks/isoppfolgingsplan/oppfolgingsplanForesporselMocks";
+import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
+import { tildeltOppfolgingsenhetHistorikk } from "@/mocks/syfobehandlendeenhet/mockSyfobehandlendeenhet";
 
 let queryClient: QueryClient;
 
@@ -156,6 +161,10 @@ function setupTestdataHistorikk() {
     oppfolgingsplanForesporselQueryKeys.foresporsel(
       ARBEIDSTAKER_DEFAULT.personIdent
     ),
+    () => []
+  );
+  queryClient.setQueryData(
+    behandlendeEnhetQueryKeys.historikk(ARBEIDSTAKER_DEFAULT.personIdent),
     () => []
   );
 }
@@ -927,6 +936,47 @@ describe("Historikk", () => {
         screen.getByText(
           `Z990000 ba om oppfølgingsplan fra ${VIRKSOMHET_BRANNOGBIL.virksomhetsnummer}.`
         )
+      ).to.exist;
+    });
+  });
+
+  describe("Tildelt oppfølgingenhet", () => {
+    it("Viser tildelte oppfølgingsenheter", async () => {
+      queryClient.setQueryData(
+        behandlendeEnhetQueryKeys.historikk(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => tildeltOppfolgingsenhetHistorikk
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(screen.getAllByText("Oppfølgingsenhet")).to.have.length(3);
+      expect(
+        screen.getByRole("row", {
+          name: new RegExp(
+            `${tilLesbarDatoMedArstall(
+              addDays(currentOppfolgingstilfelle.start, 5)
+            )} Z990000 tildelte sykmeldt tilbake til geografisk kontortilhørighet`
+          ),
+        })
+      ).to.exist;
+      expect(
+        screen.getByRole("row", {
+          name: new RegExp(
+            `${tilLesbarDatoMedArstall(
+              addDays(currentOppfolgingstilfelle.start, 3)
+            )} Z990000 tildelte sykmeldt til NAV Grünerløkka \\(0315\\)`
+          ),
+        })
+      ).to.exist;
+      expect(
+        screen.getByRole("row", {
+          name: new RegExp(
+            `${tilLesbarDatoMedArstall(
+              addDays(currentOppfolgingstilfelle.start, 10)
+            )} Systemet tildelte sykmeldt tilbake til geografisk kontortilhørighet`
+          ),
+        })
       ).to.exist;
     });
   });
