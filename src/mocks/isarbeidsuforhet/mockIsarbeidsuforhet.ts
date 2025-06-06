@@ -43,6 +43,7 @@ export const mockIsarbeidsuforhet = [
         arsak: body.arsak,
         begrunnelse: body.begrunnelse,
         document: body.document,
+        oppgaveFraNayDato: body.oppgaveFraNayDato,
         varsel,
       };
       arbeidsuforhetVurderinger = [sentVurdering, ...arbeidsuforhetVurderinger];
