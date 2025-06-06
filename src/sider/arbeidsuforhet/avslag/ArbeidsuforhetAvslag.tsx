@@ -9,7 +9,7 @@ export default function ArbeidsuforhetAvslag(): ReactElement {
   const sisteVurdering = data[0];
 
   return sisteVurdering.varsel?.isExpired ? (
-    <AvslagForm varselSvarfrist={sisteVurdering.varsel.svarfrist} />
+    <AvslagForm sisteVurdering={sisteVurdering} />
   ) : (
     <Navigate to={arbeidsuforhetPath} />
   );

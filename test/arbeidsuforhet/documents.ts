@@ -129,12 +129,21 @@ export const getOppfyltVurderingDocument = (
 
 export const getAvslagVurderingDocument = (
   begrunnelse: string,
-  fom: Date | undefined
+  fom: Date | undefined,
+  forhandsvarselDate: Date
 ): DocumentComponentDto[] => {
   return [
     {
       texts: ["Nav har avslått sykepengene dine"],
       type: DocumentComponentType.HEADER_H1,
+    },
+    {
+      texts: [
+        `Det er sendt forhåndsvarsel i denne saken den ${tilDatoMedManedNavn(
+          forhandsvarselDate
+        )}.`,
+      ],
+      type: DocumentComponentType.PARAGRAPH,
     },
     {
       texts: [
