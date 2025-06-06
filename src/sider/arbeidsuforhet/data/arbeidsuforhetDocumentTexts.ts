@@ -38,8 +38,14 @@ export const getForhandsvarselArbeidsuforhetTexts = ({
   },
 });
 
-export const getAvslagArbeidsuforhetTexts = (fom: Date | undefined) => ({
+export const getAvslagArbeidsuforhetTexts = (
+  fom: Date | undefined,
+  forhandsvarselDate: Date
+) => ({
   header: "Nav har avslått sykepengene dine",
+  forhandsvarselInfo: `Det er sendt forhåndsvarsel i denne saken den ${tilDatoMedManedNavn(
+    forhandsvarselDate
+  )}.`,
   fom: `Nav har avslått din søknad om sykepenger fra og med ${
     !!fom ? tilDatoMedManedNavn(fom) : ""
   }.`,
