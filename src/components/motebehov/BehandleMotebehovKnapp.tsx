@@ -15,6 +15,7 @@ import {
   Radio,
   RadioGroup,
   ReadMore,
+  Tag,
   VStack,
 } from "@navikt/ds-react";
 import { useBehandleMotebehovAndSendTilbakemelding } from "@/data/motebehov/useBehandleMotebehovAndSendTilbakemelding";
@@ -32,9 +33,9 @@ const texts = {
   vurdertMedTilbakemelding:
     "Jeg har vurdert møtebehovet og vil gi tilbakemelding til innmelder(e)",
   tilbakemeldingHeader:
-    "Vi sender en automatisk tilbakemelding til innmelder. Klikk her om du vil se hele teksten.",
+    "Dette er tilbakemeldingen vi sender automatisk til innmelder.",
   tilbakemelding:
-    "Vi har mottatt ditt ønske om dialogmøte med Nav. Vi vurderer at det på nåværende tidspunkt ikke er aktuelt at Nav kaller inn til et dialogmøte. Du kan når som helst melde inn et nytt behov i sykefraværsperioden.",
+    "Etter dialog med deg har vi kommet frem til at Nav ikke kaller inn til dialogmøte på nåværende tidspunkt. Du kan be om dialogmøte senere eller hvis det skjer endringer.",
 };
 
 export default function BehandleMotebehovKnapp() {
@@ -75,7 +76,14 @@ export default function BehandleMotebehovKnapp() {
         <Radio value={false}>{texts.vurdertUtenTilbakemelding}</Radio>
         <Radio value={true}>{texts.vurdertMedTilbakemelding}</Radio>
         {isTilbakemelding && (
-          <ReadMore size="small" header={texts.tilbakemeldingHeader}>
+          <ReadMore
+            size="small"
+            header={texts.tilbakemeldingHeader}
+            defaultOpen
+          >
+            <Tag variant="info" size="xsmall" className="w-fit mr-1">
+              Ny!
+            </Tag>
             {texts.tilbakemelding}
           </ReadMore>
         )}
