@@ -39,7 +39,10 @@ export const useArbeidsuforhetVurderingDocument = (): {
     values: ForhandsvarselDocumentValues
   ): DocumentComponentDto[];
   getOppfyltDocument(values: OppfyltDocumentValues): DocumentComponentDto[];
-  getAvslagDocument(values: AvslagDocumentValues): DocumentComponentDto[];
+  getAvslagDocument(
+    values: AvslagDocumentValues,
+    forhandsvarselDate: Date
+  ): DocumentComponentDto[];
   getIkkeAktuellDocument(
     values: IkkeAktuellDocumentValues
   ): DocumentComponentDto[];
@@ -82,12 +85,19 @@ export const useArbeidsuforhetVurderingDocument = (): {
     return documentComponents;
   };
 
-  const getAvslagDocument = (values: AvslagDocumentValues) => {
+  const getAvslagDocument = (
+    values: AvslagDocumentValues,
+    forhandsvarselDate: Date
+  ) => {
     const { begrunnelse, fom } = values;
-    const avslagArbeidsuforhetTexts = getAvslagArbeidsuforhetTexts(fom);
+    const avslagArbeidsuforhetTexts = getAvslagArbeidsuforhetTexts(
+      fom,
+      forhandsvarselDate
+    );
 
     const documentComponents = [
       createHeaderH1(avslagArbeidsuforhetTexts.header),
+      createParagraph(avslagArbeidsuforhetTexts.forhandsvarselInfo),
       createParagraph(avslagArbeidsuforhetTexts.fom),
       createParagraph(avslagArbeidsuforhetTexts.intro),
     ];

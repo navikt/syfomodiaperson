@@ -4,6 +4,7 @@ import { useArbeidsuforhetVurderingDocument } from "@/hooks/arbeidsuforhet/useAr
 import { FormProvider, useForm } from "react-hook-form";
 import {
   VurderingRequestDTO,
+  VurderingResponseDTO,
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import {
@@ -58,7 +59,7 @@ const texts = {
 const begrunnelseMaxLength = 5000;
 
 export interface Props {
-  varselSvarfrist: Date;
+  sisteVurdering: VurderingResponseDTO;
 }
 
 export interface ArbeidsuforhetAvslagSkjemaValues {
@@ -66,7 +67,7 @@ export interface ArbeidsuforhetAvslagSkjemaValues {
   fom: Date;
 }
 
-export function AvslagForm({ varselSvarfrist }: Props) {
+export function AvslagForm({ sisteVurdering }: Props) {
   const sendVurdering = useSendVurderingArbeidsuforhet();
   const { getAvslagDocument } = useArbeidsuforhetVurderingDocument();
   const { setNotification } = useNotification();
@@ -82,10 +83,13 @@ export function AvslagForm({ varselSvarfrist }: Props) {
     const vurderingRequestDTO: VurderingRequestDTO = {
       type: VurderingType.AVSLAG,
       begrunnelse: values.begrunnelse,
-      document: getAvslagDocument({
-        begrunnelse: values.begrunnelse,
-        fom: values.fom,
-      }),
+      document: getAvslagDocument(
+        {
+          begrunnelse: values.begrunnelse,
+          fom: values.fom,
+        },
+        sisteVurdering.createdAt
+      ),
       gjelderFom: dayjs(values.fom).format("YYYY-MM-DD"),
     };
     sendVurdering.mutate(vurderingRequestDTO, {
@@ -104,7 +108,11 @@ export function AvslagForm({ varselSvarfrist }: Props) {
           <Heading level="2" size="medium">
             {texts.title}
           </Heading>
-          <AvslagDatePicker varselSvarfrist={varselSvarfrist} />
+          {sisteVurdering.varsel && (
+            <AvslagDatePicker
+              varselSvarfrist={sisteVurdering.varsel.svarfrist}
+            />
+          )}
           <Paragraph label={texts.innstillingInfoLabel} body={texts.info1} />
           <BodyLong size={"small"}>{texts.info2}</BodyLong>
           <Textarea
@@ -150,10 +158,13 @@ export function AvslagForm({ varselSvarfrist }: Props) {
             <Forhandsvisning
               contentLabel={texts.forhandsvisningLabel}
               getDocumentComponents={() =>
-                getAvslagDocument({
-                  begrunnelse: watch("begrunnelse"),
-                  fom: watch("fom"),
-                })
+                getAvslagDocument(
+                  {
+                    begrunnelse: watch("begrunnelse"),
+                    fom: watch("fom"),
+                  },
+                  sisteVurdering.createdAt
+                )
               }
             />
             <Button as={Link} to={arbeidsuforhetPath} variant="secondary">

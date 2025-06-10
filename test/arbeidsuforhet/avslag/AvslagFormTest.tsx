@@ -11,16 +11,22 @@ import { AvslagForm } from "@/sider/arbeidsuforhet/avslag/AvslagForm";
 import { queryClientWithMockData } from "../../testQueryClient";
 import { changeTextInput, clickButton, getTextInput } from "../../testUtils";
 import { getAvslagVurderingDocument } from "../documents";
-import { toDatePrettyPrint } from "@/utils/datoUtils";
+import { addWeeks, toDatePrettyPrint } from "@/utils/datoUtils";
 import { renderArbeidsuforhetSide } from "../arbeidsuforhetTestUtils";
 import dayjs from "dayjs";
+import { createForhandsvarsel } from "../arbeidsuforhetTestData";
 
 let queryClient: QueryClient;
+
+const sisteForhandsvarsel = createForhandsvarsel({
+  createdAt: addWeeks(new Date(), -3),
+  svarfrist: new Date(),
+});
 
 const renderAvslagForm = () => {
   renderArbeidsuforhetSide(
     queryClient,
-    <AvslagForm varselSvarfrist={new Date(Date.now())} />,
+    <AvslagForm sisteVurdering={sisteForhandsvarsel} />,
     arbeidsuforhetOppfyltPath,
     [arbeidsuforhetOppfyltPath]
   );
@@ -106,7 +112,11 @@ describe("AvslagForm", () => {
         const expectedVurdering: VurderingRequestDTO = {
           type: VurderingType.AVSLAG,
           begrunnelse: begrunnelse,
-          document: getAvslagVurderingDocument(begrunnelse, fristDate),
+          document: getAvslagVurderingDocument(
+            begrunnelse,
+            fristDate,
+            sisteForhandsvarsel.createdAt
+          ),
           gjelderFom: dayjs(fristDate).format("YYYY-MM-DD"),
         };
         expect(useSendVurderingArbeidsuforhet.state.variables).to.deep.equal(
@@ -138,7 +148,11 @@ describe("AvslagForm", () => {
           hidden: true,
         })
       ).to.exist;
-      getAvslagVurderingDocument(begrunnelse, fristDate)
+      getAvslagVurderingDocument(
+        begrunnelse,
+        fristDate,
+        sisteForhandsvarsel.createdAt
+      )
         .flatMap((documentComponent) => documentComponent.texts)
         .forEach((text) => {
           expect(within(forhandsvisningVurdering).getByText(text)).to.exist;
