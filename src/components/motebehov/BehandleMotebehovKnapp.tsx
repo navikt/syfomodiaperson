@@ -78,6 +78,7 @@ export default function BehandleMotebehovKnapp() {
   );
   return ubehandledeMotebehov.length !== 0 ? (
     <VStack className="flex gap-4">
+      {minstEnHarMeldtBehov && <HjelpetekstVedMeldtBehov />}
       <RadioGroup
         defaultValue={false}
         size="small"
@@ -101,7 +102,6 @@ export default function BehandleMotebehovKnapp() {
           }
         />
       )}
-      {minstEnHarMeldtBehov && <HjelpetekstVedMeldtBehov />}
       <Button
         className="w-max"
         loading={
