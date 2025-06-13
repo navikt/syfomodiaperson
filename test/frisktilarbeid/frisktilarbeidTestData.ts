@@ -2,12 +2,8 @@ import {
   InfotrygdStatus,
   VedtakResponseDTO,
 } from "@/data/frisktilarbeid/frisktilarbeidTypes";
-import {
-  ARBEIDSTAKER_DEFAULT,
-  ARBEIDSTAKER_DEFAULT_FULL_NAME,
-  VEILEDER_DEFAULT,
-} from "@/mocks/common/mockConstants";
-import { addWeeks, tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { VEILEDER_DEFAULT } from "@/mocks/common/mockConstants";
+import { addWeeks, tilDatoMedManedNavn } from "@/utils/datoUtils";
 import {
   DocumentComponentDto,
   DocumentComponentType,
@@ -48,22 +44,20 @@ export const getExpectedVedtakDocument = ({
       type: DocumentComponentType.HEADER_H1,
     },
     {
+      texts: ["Du har fått innvilget friskmelding til arbeidsformidling"],
+      type: DocumentComponentType.HEADER_H2,
+    },
+    {
       texts: [
-        `${ARBEIDSTAKER_DEFAULT_FULL_NAME}, ${ARBEIDSTAKER_DEFAULT.personIdent}`,
+        "Du oppfyller vilkårene for friskmelding til arbeidsformidling og kan få sykepenger fra Nav mens du ser etter ny jobb.",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
     {
       texts: [
-        "Vi har vurdert at du oppfyller vilkårene for rett til friskmelding til arbeidsformidling. Dette betyr at du får utbetalt sykepenger i en periode mens du søker ny jobb.",
-      ],
-      type: DocumentComponentType.PARAGRAPH,
-    },
-    {
-      texts: [
-        `For deg gjelder dette perioden ${tilLesbarDatoMedArUtenManedNavn(
+        `Vedtaket gjelder for perioden: ${tilDatoMedManedNavn(
           fom
-        )} til ${tilLesbarDatoMedArUtenManedNavn(tom)}.`,
+        )} - ${tilDatoMedManedNavn(tom)}.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
@@ -71,7 +65,7 @@ export const getExpectedVedtakDocument = ({
       ? [
           {
             texts: [
-              `Siden din maksdato for sykepenger er beregnet til ${tilLesbarDatoMedArUtenManedNavn(
+              `Siden din maksdato for sykepenger er beregnet til ${tilDatoMedManedNavn(
                 tom
               )}, vil du ikke få sykepenger etter denne datoen.`,
             ],
@@ -80,82 +74,115 @@ export const getExpectedVedtakDocument = ({
         ]
       : []),
     {
-      texts: [
-        `Et vilkår for å motta sykepenger i denne perioden er at du har registrert deg som arbeidssøker hos Nav.`,
-        "For å registrere deg går du inn på nav.no/arbeid/registrering.",
-      ],
-      type: DocumentComponentType.PARAGRAPH,
-    },
-    {
-      texts: ["Dette vedtaket er gjort etter folketrygdloven paragraf 8-5."],
-      type: DocumentComponentType.PARAGRAPH,
+      texts: ["Begrunnelse for vedtaket"],
+      type: DocumentComponentType.HEADER_H2,
     },
     {
       texts: [begrunnelse],
       type: DocumentComponentType.PARAGRAPH,
-      title: "Begrunnelse",
     },
     {
       texts: [
-        "For at du skal ha rett til sykepenger, er det vanligvis et krav at du er for syk til å jobbe. I utgangspunktet har du ikke rett til sykepenger hvis du kan utføre en annen jobb enn den du er sykmeldt fra. Ordningen friskmelding til arbeidsformidling gjør at du likevel kan få sykepenger i opptil 12 uker mens du søker ny jobb.",
+        "Helsen din er slik at du kan komme tilbake i arbeid, men ikke til den jobben du har vært sykmeldt fra. Nå har du selv valgt å avslutte jobben, og benytte deg av ordningen friskmelding til arbeidsformidling. Dette vedtaket er gjort etter folketrygdloven § 8-5.",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
     {
-      title: "Nyttig informasjon",
+      texts: ["Sykmelding fra legen"],
+      type: DocumentComponentType.HEADER_H2,
+    },
+    {
       texts: [
-        "Sykepengene blir utbetalt etter at du har sendt søknad. Du sender søknad til Nav hver 14. dag.",
+        "Nav har ikke delt informasjonen om vedtaket med legen din. Du trenger ikke sykmelding i perioden vedtaket gjelder for, med mindre du blir syk underveis. Da må du ta kontakt med legen din.",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
     {
+      texts: ["Hva du må gjøre for å få sykepenger"],
+      type: DocumentComponentType.HEADER_H2,
+    },
+    {
       texts: [
-        "Utbetalingen stanser når du får ny jobb, eller hvis du velger å takke nei til et aktuelt tilbud om en jobb.",
+        "For å få sykepenger gjennom friskmelding til arbeidsformidling må du være registrert som arbeidssøker hos Nav og søke om sykepenger hver 14. dag. Du kan da få sykepenger i opptil 12 uker mens du søker etter ny jobb. Du vil få beskjed fra oss når søknaden er klar til å fylles ut. Hvis du ikke lenger ønsker å motta sykepenger fra Nav, må du gi beskjed om det i søknaden.",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
     {
+      texts: ["Hvis du får en ny jobb underveis"],
+      type: DocumentComponentType.HEADER_H2,
+    },
+    {
       texts: [
-        "Hvis du ikke har fått ny jobb innen perioden din med sykepenger er over, kan det være aktuelt for deg å søke om dagpenger. Du må i så fall huske å sende en søknad om dagpenger før perioden med sykepenger er over.",
+        "Hvis du får en ny jobb hvor du tjener like mye eller mer enn sykepengene du får fra Nav, vil du ikke ha rett på sykepenger lenger. Dette gjelder også hvis du begynner å jobbe mer enn 80 % av det du gjorde før du ble sykmeldt.",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
     {
-      texts: ["Les mer på nav.no/arbeidsledig."],
-      type: DocumentComponentType.PARAGRAPH,
+      texts: ["Hvis du ikke finner ny jobb"],
+      type: DocumentComponentType.HEADER_H2,
     },
     {
       texts: [
-        "Nav har ikke delt informasjon med legen din om at du er innvilget ordningen friskmeldt til arbeidsformidling. Du må gjerne selv informere legen din om dette. Legen din trenger ikke å skrive ut sykmelding i perioden vedtaket gjelder.",
+        "Hvis du ikke har fått jobb i løpet av perioden vedtaket gjelder for, kan det være aktuelt for deg å søke om dagpenger. Husk å sende søknaden før sykepengeperioden er slutt.",
+        "Du kan lese mer om dagpenger på: nav.no/dagpenger#arbeidsledig",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
     {
-      title: "Spørsmål eller endringer",
+      texts: ["Hvis situasjonen din endrer seg"],
+      type: DocumentComponentType.HEADER_H2,
+    },
+    {
       texts: [
-        "Hvis det skjer en endring i din situasjon, kan det påvirke din rett til utbetaling av sykepenger. Mangelfulle eller feilaktige opplysninger kan medføre krav om tilbakebetaling av sykepenger. Se nav.no/endringer.",
+        "Endringer i livssituasjonen din kan påvirke retten din til sykepenger. Dersom du gir mangelfulle eller feilaktige opplysninger, kan det føre til at du må betale tilbake penger.",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
     {
+      texts: ["Les mer om dette på: nav.no/endringer."],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: ["Har du spørsmål?"],
+      type: DocumentComponentType.HEADER_H2,
+    },
+    {
       texts: [
-        "Har du spørsmål om saken din kan du kontakte oss på nav.no/kontaktoss.",
+        "Hvis du har spørsmål, kan du kontakte oss via: nav.no/kontaktoss.",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
     {
-      title: "Rett til innsyn",
+      texts: ["Dine rettigheter"],
+      type: DocumentComponentType.HEADER_H2,
+    },
+    {
+      texts: ["Rett til innsyn:"],
+      type: DocumentComponentType.HEADER_H3,
+    },
+    {
       texts: [
-        "Du har rett til innsyn i sakens opplysninger. Dette får du ved å logge deg inn på nav.no, eller ved å ta kontakt nav.no/kontaktoss.",
+        "Du kan se opplysninger i saken ved å logge deg inn på nav.no. Du kan også kontakte oss på nav.no/kontaktoss eller telefon 55 55 33 33.",
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
     {
-      title: "Du har rett til å klage",
+      texts: ["Rett til å klage:"],
+      type: DocumentComponentType.HEADER_H3,
+    },
+    {
       texts: [
-        "Hvis du ikke er enig i resultatet, kan du klage innen seks uker fra den datoen du mottok dette brevet. Les mer på nav.no/klagerettigheter og nav.no/klage#sykepenger.",
+        "Hvis du ikke er enig i vedtaket, kan du klage innen seks uker fra du mottok dette brevet.",
       ],
       type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: ["Les mer om hvordan du klager her:"],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: ["nav.no/klagerettigheter", "nav.no/klage#sykepenger"],
+      type: DocumentComponentType.BULLET_POINTS,
     },
     {
       texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "Nav"],
