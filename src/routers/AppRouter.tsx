@@ -125,10 +125,13 @@ const AktivBrukerRouter = (): ReactElement => {
             <Route path=":sykmeldingId" element={<DinSykmeldingSide />} />
           </Route>
 
-          <Route
-            path={`${appRoutePath}/sykepengesoknader`}
-            element={<SykepengesoknaderSide />}
-          />
+          <Route path={`${appRoutePath}/sykepengesoknader`}>
+            <Route index element={<SykepengesoknaderSide />} />
+            <Route
+              path=":sykepengesoknadId"
+              element={<SykepengesoknadSide />}
+            />
+          </Route>
 
           <Route
             path={arbeidsuforhetPath}
@@ -190,10 +193,6 @@ const AktivBrukerRouter = (): ReactElement => {
               element={<ManglendeMedvirkningIkkeAktuellSide />}
             />
           </Route>
-          <Route
-            path={`${appRoutePath}/sykepengesoknader/:sykepengesoknadId`}
-            element={<SykepengesoknadSide />}
-          />
           <Route
             path={`${appRoutePath}/oppfoelgingsplaner`}
             element={<OppfoelgingsPlanerOversiktContainer />}
