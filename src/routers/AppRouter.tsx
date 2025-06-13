@@ -7,7 +7,7 @@ import {
   Routes,
 } from "react-router-dom";
 import AktivBrukerTilgangLaster from "@/components/AktivBrukerTilgangLaster";
-import SykmeldingerContainer from "@/sider/sykmeldinger/container/SykmeldingerContainer";
+import SykmeldingerSide from "@/sider/sykmeldinger/container/SykmeldingerSide";
 import SykepengesoknaderSide from "@/sider/sykepengsoknader/SykepengesoknaderSide";
 import HistorikkContainer from "@/sider/historikk/container/HistorikkContainer";
 import { erGyldigFodselsnummer } from "@/utils/frnValideringUtils";
@@ -36,7 +36,6 @@ import ManglendeMedvirkningSide, {
   ManglendeMedvirkningUnntakSide,
 } from "@/sider/manglendemedvirkning/ManglendeMedvirkningSide";
 import ManglendeMedvirkning from "@/sider/manglendemedvirkning/ManglendeMedvirkning";
-import { DinSykmeldingSide } from "@/sider/sykmeldinger/container/DinSykmeldingSide";
 import SenOppfolging from "@/sider/senoppfolging/SenOppfolging";
 import OppfolgingsplanContainer from "@/sider/oppfolgingsplan/container/OppfolgingsplanContainer";
 import OppfoelgingsPlanerOversiktContainer from "@/sider/oppfolgingsplan/container/OppfoelgingsPlanerOversiktContainer";
@@ -47,6 +46,7 @@ import ArbeidsuforhetAvslag from "@/sider/arbeidsuforhet/avslag/ArbeidsuforhetAv
 import ArbeidsuforhetIkkeAktuell from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuell";
 import SendForhandsvarselSkjema from "@/sider/arbeidsuforhet/SendForhandsvarselSkjema";
 import ArbeidsuforhetSide from "@/sider/arbeidsuforhet/ArbeidsuforhetSide";
+import { DinSykmeldingSide } from "@/sider/sykmeldinger/container/DinSykmeldingSide";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -118,10 +118,12 @@ const AktivBrukerRouter = (): ReactElement => {
             path={dialogmoteIkkeAktuellRoutePath}
             element={<DialogmoteikkeaktuellSkjemaContainer />}
           />
-          <Route
-            path={`${appRoutePath}/sykmeldinger`}
-            element={<SykmeldingerContainer />}
-          />
+
+          <Route path={`${appRoutePath}/sykmeldinger`}>
+            <Route index element={<SykmeldingerSide />} />
+            <Route path=":sykmeldingId" element={<DinSykmeldingSide />} />
+          </Route>
+
           <Route
             path={`${appRoutePath}/sykepengesoknader`}
             element={<SykepengesoknaderSide />}
@@ -186,10 +188,6 @@ const AktivBrukerRouter = (): ReactElement => {
           <Route
             path={`${appRoutePath}/sykepengesoknader/:sykepengesoknadId`}
             element={<SykepengesoknadSide />}
-          />
-          <Route
-            path={`${appRoutePath}/sykmeldinger/:sykmeldingId`}
-            element={<DinSykmeldingSide />}
           />
           <Route
             path={`${appRoutePath}/oppfoelgingsplaner`}
