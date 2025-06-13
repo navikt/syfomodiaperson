@@ -47,7 +47,7 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
 
   const hilsenParagraph = getHilsenMedSendtDato(veilederinfo);
   const gjelderParagraph = createParagraph(
-    `${commonTexts.gjelder} ${navBruker.navn}, f.nr. ${valgtPersonident}`
+    `${commonTexts.gjelder} ${navBruker.navn}, f.nr. ${valgtPersonident}.`
   );
 
   const getInnkallingDocumentArbeidstaker = (

@@ -47,6 +47,10 @@ const getButtonText = (type: VurderingType): string => {
     case VurderingType.IKKE_AKTUELL: {
       throw new Error("Not supported");
     }
+    case VurderingType.AVSLAG_UTEN_FORHANDSVARSEL:
+    case VurderingType.OPPFYLT_UTEN_FORHANDSVARSEL: {
+      return "Se innstilling";
+    }
   }
 };
 

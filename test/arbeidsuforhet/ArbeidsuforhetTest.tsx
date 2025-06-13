@@ -1,7 +1,11 @@
 import { QueryClient } from "@tanstack/react-query";
 import React from "react";
 import { queryClientWithMockData } from "../testQueryClient";
-import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  BEHANDLENDE_ENHET_DEFAULT,
+  VEILEDER_IDENT_DEFAULT,
+} from "@/mocks/common/mockConstants";
 import { screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import {
@@ -19,6 +23,8 @@ import Arbeidsuforhet from "@/sider/arbeidsuforhet/Arbeidsuforhet";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { clickButton } from "../testUtils";
 import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
+import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks";
+import { mockUnleashTogglesOffResponse } from "@/mocks/unleashMocks";
 
 let queryClient: QueryClient;
 
@@ -32,6 +38,13 @@ const mockArbeidsuforhetVurderinger = (vurderinger: VurderingResponseDTO[]) => {
 describe("ArbeidsuforhetSide", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
+    queryClient.setQueryData(
+      unleashQueryKeys.toggles(
+        BEHANDLENDE_ENHET_DEFAULT.enhetId,
+        VEILEDER_IDENT_DEFAULT
+      ),
+      () => mockUnleashTogglesOffResponse
+    );
   });
 
   describe("Show correct info", () => {

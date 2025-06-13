@@ -8,15 +8,15 @@ import {
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { arbeidsuforhetQueryKeys } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 
-export const useSendVurderingArbeidsuforhet = () => {
+export const useSaveVurderingArbeidsuforhet = () => {
   const personident = useValgtPersonident();
   const queryClient = useQueryClient();
   const path = `${ISARBEIDSUFORHET_ROOT}/arbeidsuforhet/vurderinger`;
-  const postForhandsvarsel = (forhandsvarsel: VurderingRequestDTO) =>
-    post<VurderingResponseDTO>(path, forhandsvarsel, personident);
+  const postVurdering = (vurdering: VurderingRequestDTO) =>
+    post<VurderingResponseDTO>(path, vurdering, personident);
 
   return useMutation({
-    mutationFn: postForhandsvarsel,
+    mutationFn: postVurdering,
     onSuccess: (data: VurderingResponseDTO) => {
       queryClient.setQueryData(
         arbeidsuforhetQueryKeys.arbeidsuforhet(personident),

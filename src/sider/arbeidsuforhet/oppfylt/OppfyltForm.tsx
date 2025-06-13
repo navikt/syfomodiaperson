@@ -14,8 +14,8 @@ import {
   VurderingRequestDTO,
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
-import { useArbeidsuforhetVurderingDocument } from "@/hooks/arbeidsuforhet/useArbeidsuforhetVurderingDocument";
-import { useSendVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSendVurderingArbeidsuforhet";
+import { useArbeidsuforhetVurderingDocument } from "@/sider/arbeidsuforhet/hooks/useArbeidsuforhetVurderingDocument";
+import { useSaveVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSaveVurderingArbeidsuforhet";
 import { Link } from "react-router-dom";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { ButtonRow } from "@/components/Layout";
@@ -57,7 +57,7 @@ interface SkjemaValues {
 }
 
 export const OppfyltForm = ({ forhandsvarselSendtDato }: Props) => {
-  const sendVurdering = useSendVurderingArbeidsuforhet();
+  const sendVurdering = useSaveVurderingArbeidsuforhet();
   const { getOppfyltDocument } = useArbeidsuforhetVurderingDocument();
   const { setNotification } = useNotification();
   const {

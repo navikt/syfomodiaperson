@@ -1,6 +1,5 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
+import { screen, waitFor, within } from "@testing-library/react";
+import { QueryClient } from "@tanstack/react-query";
 import React from "react";
 import { beforeEach, describe, expect, it } from "vitest";
 import SendForhandsvarselSkjema from "@/sider/arbeidsuforhet/SendForhandsvarselSkjema";
@@ -10,23 +9,22 @@ import {
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { getSendForhandsvarselDocument } from "./documents";
-import { navEnhet } from "../dialogmote/testData";
 import { queryClientWithMockData } from "../testQueryClient";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
+import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
+import { arbeidsuforhetPath } from "@/routers/AppRouter";
 
 let queryClient: QueryClient;
 
 const renderForhandsvarselSkjema = () =>
-  render(
-    <QueryClientProvider client={queryClient}>
-      <ValgtEnhetContext.Provider
-        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-      >
-        <SendForhandsvarselSkjema />
-      </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+  renderArbeidsuforhetSide(
+    queryClient,
+    <SendForhandsvarselSkjema />,
+    arbeidsuforhetPath,
+    [arbeidsuforhetPath]
   );
+
 describe("Forhandsvarselskjema arbeidsuforhet", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();

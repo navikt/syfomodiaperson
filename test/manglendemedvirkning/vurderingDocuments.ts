@@ -79,7 +79,7 @@ export const getOppfyltDocument = (
     },
     {
       texts: [
-        `Gjelder ${ARBEIDSTAKER_DEFAULT_FULL_NAME}, f.nr. ${ARBEIDSTAKER_DEFAULT.personIdent}`,
+        `Gjelder ${ARBEIDSTAKER_DEFAULT_FULL_NAME}, f.nr. ${ARBEIDSTAKER_DEFAULT.personIdent}.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
@@ -128,7 +128,7 @@ export const getSettUnntakDocument = (
     },
     {
       texts: [
-        `Gjelder ${ARBEIDSTAKER_DEFAULT_FULL_NAME}, f.nr. ${ARBEIDSTAKER_DEFAULT.personIdent}`,
+        `Gjelder ${ARBEIDSTAKER_DEFAULT_FULL_NAME}, f.nr. ${ARBEIDSTAKER_DEFAULT.personIdent}.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
@@ -169,7 +169,7 @@ export const getIkkeAktuellDocument = (
     },
     {
       texts: [
-        `Gjelder ${ARBEIDSTAKER_DEFAULT_FULL_NAME}, f.nr. ${ARBEIDSTAKER_DEFAULT.personIdent}`,
+        `Gjelder ${ARBEIDSTAKER_DEFAULT_FULL_NAME}, f.nr. ${ARBEIDSTAKER_DEFAULT.personIdent}.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
