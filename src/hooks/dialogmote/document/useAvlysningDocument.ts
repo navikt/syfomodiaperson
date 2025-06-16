@@ -45,7 +45,7 @@ export const useAvlysningDocument = (
 
   // TODO: Alle disse gjelder-paragraphene kan byttes ut når aktivitetskravet også er på nynorsk. Da kan vi lage en felles gjelder-intro igjen basert på målform
   const gjelderParagraph = createParagraph(
-    `${commonTexts.gjelder} ${navBruker.navn}, f.nr. ${valgtPersonident}`
+    `${commonTexts.gjelder} ${navBruker.navn}, f.nr. ${valgtPersonident}.`
   );
   // TODO: Samme her
   const hilsenParagraph = getHilsenMedSendtDato(veilederinfo);

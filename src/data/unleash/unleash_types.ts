@@ -9,6 +9,7 @@ export enum ToggleNames {
   isHistorikkFlexjarEnabled = "isHistorikkFlexjarEnabled",
   isBeOmOppfolgingsplanEnabled = "isBeOmOppfolgingsplanEnabled",
   isTildelOppfolgingsenhetEnabled = "isTildelOppfolgingsenhetEnabled",
+  isInnstillingUtenForhandsvarselArbeidsuforhetEnabled = "isInnstillingUtenForhandsvarselArbeidsuforhetEnabled",
 }
 
 export const defaultToggles: Toggles = {
@@ -17,4 +18,5 @@ export const defaultToggles: Toggles = {
   isHistorikkFlexjarEnabled: false,
   isBeOmOppfolgingsplanEnabled: false,
   isTildelOppfolgingsenhetEnabled: false,
+  isInnstillingUtenForhandsvarselArbeidsuforhetEnabled: false,
 };

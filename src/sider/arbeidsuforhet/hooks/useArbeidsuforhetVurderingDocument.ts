@@ -14,6 +14,7 @@ import {
   arsakTexts,
   VurderingArsak,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
+import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 
 type ForhandsvarselDocumentValues = {
   begrunnelse: string;
@@ -34,6 +35,12 @@ type IkkeAktuellDocumentValues = {
   arsak: VurderingArsak;
 };
 
+type InnstillingUtenForhandsvarselDocumentValues = {
+  arsak: VurderingArsak;
+  begrunnelse: string;
+  oppgaveFraNayDato?: Date;
+};
+
 export const useArbeidsuforhetVurderingDocument = (): {
   getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
@@ -45,6 +52,9 @@ export const useArbeidsuforhetVurderingDocument = (): {
   ): DocumentComponentDto[];
   getIkkeAktuellDocument(
     values: IkkeAktuellDocumentValues
+  ): DocumentComponentDto[];
+  getInnstillingUtenForhandsvarselDocument(
+    values: InnstillingUtenForhandsvarselDocumentValues
   ): DocumentComponentDto[];
 } => {
   const { getHilsen, getIntroGjelder, getVurdertAv, getVeiledernavn } =
@@ -144,10 +154,52 @@ export const useArbeidsuforhetVurderingDocument = (): {
     ];
   };
 
+  function getInnstillingOmAvslagUtenForhandsvarselDocument({
+    arsak,
+    begrunnelse,
+    oppgaveFraNayDato,
+  }: InnstillingUtenForhandsvarselDocumentValues) {
+    let grunnTilInnstillingUtenForhandsvarsel: string;
+    switch (arsak) {
+      case VurderingArsak.SYKEPENGER_IKKE_UTBETALT:
+        grunnTilInnstillingUtenForhandsvarsel = "utbetaling ikke er igangsatt";
+        break;
+      case VurderingArsak.NAY_BER_OM_NY_VURDERING:
+        grunnTilInnstillingUtenForhandsvarsel = `en forespørsel er sendt fra Nav arbeid og ytelser i Gosys ${
+          oppgaveFraNayDato ? tilLesbarDatoMedArstall(oppgaveFraNayDato) : ""
+        }`;
+        break;
+      default:
+        throw new Error("Ugyldig årsak for innstilling uten forhåndsvarsel");
+    }
+
+    return [
+      createHeaderH1("Innstilling om avslag til Nav arbeid og ytelser"),
+      createParagraph("Vurdering av arbeidsuførhet jf. folketrygdloven § 8-4."),
+      getIntroGjelder(),
+      createParagraph(
+        `Det er ikke sendt forhåndsvarsel i denne saken fordi ${grunnTilInnstillingUtenForhandsvarsel}.`
+      ),
+      createParagraph("Nav har vurdert at vilkåret ikke er oppfylt."),
+      createHeaderH3("Begrunnelse for vurderingen"),
+      createParagraph("Nav har avslått sykepengene dine."),
+      createParagraph(
+        "For å få sykepenger må du ha en sykdom eller skade som gjør at du ikke kan være i arbeid, eller at du bare klarer å gjøre deler av arbeidet ditt."
+      ),
+      createParagraph(begrunnelse),
+      createParagraph(
+        "Vi har brukt folketrygdloven § 8-4 første ledd når vi har behandlet saken din."
+      ),
+      getVurdertAv(),
+    ];
+  }
+
   return {
     getForhandsvarselDocument,
     getOppfyltDocument,
     getAvslagDocument,
     getIkkeAktuellDocument,
+    getInnstillingUtenForhandsvarselDocument:
+      getInnstillingOmAvslagUtenForhandsvarselDocument,
   };
 };

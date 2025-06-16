@@ -57,5 +57,9 @@ export const getToggles = (veilederId, enhetId) => {
       "isTildelOppfolgingsenhetEnabled",
       context
     ),
+    isInnstillingUtenForhandsvarselArbeidsuforhetEnabled: unleash.isEnabled(
+      "isInnstillingUtenForhandsvarselArbeidsuforhetEnabled",
+      context
+    ),
   };
 };

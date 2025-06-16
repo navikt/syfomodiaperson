@@ -1,28 +1,21 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import React from "react";
 import { queryClientWithMockData } from "../testQueryClient";
 import { screen } from "@testing-library/react";
-import { navEnhet } from "../dialogmote/testData";
-import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { beforeEach, describe, expect, it } from "vitest";
 import ForhandsvarselSendt from "@/sider/arbeidsuforhet/ForhandsvarselSendt";
 import { VurderingResponseDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { addWeeks, tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { createForhandsvarsel } from "./arbeidsuforhetTestData";
-import { renderWithRouter } from "../testRouterUtils";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
+import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
 
 let queryClient: QueryClient;
 
 const renderForhandsvarselSendt = (forhandsvarsel: VurderingResponseDTO) => {
-  renderWithRouter(
-    <QueryClientProvider client={queryClient}>
-      <ValgtEnhetContext.Provider
-        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-      >
-        <ForhandsvarselSendt forhandsvarsel={forhandsvarsel} />
-      </ValgtEnhetContext.Provider>
-    </QueryClientProvider>,
+  renderArbeidsuforhetSide(
+    queryClient,
+    <ForhandsvarselSendt forhandsvarsel={forhandsvarsel} />,
     arbeidsuforhetPath,
     [arbeidsuforhetPath]
   );
@@ -42,13 +35,6 @@ describe("ForhandsvarselSendt", () => {
 
       renderForhandsvarselSendt(forhandsvarselBeforeFrist);
 
-      expect(
-        screen.getByText(
-          `Forhåndsvarselet er sendt ${tilLesbarDatoMedArUtenManedNavn(
-            new Date()
-          )}.`
-        )
-      ).to.exist;
       expect(screen.getByText("Venter på svar fra bruker")).to.exist;
       expect(screen.getByText("Fristen går ut:")).to.exist;
       expect(

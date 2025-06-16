@@ -167,7 +167,7 @@ const expectedArbeidsgiverInnkalling = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
+    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}.`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -263,7 +263,7 @@ const expectedBehandlerInnkalling = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
+    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}.`],
     type: DocumentComponentType.PARAGRAPH,
   },
 
@@ -298,7 +298,7 @@ const expectedArbeidsgiverEndringsdokument = (
     type: DocumentComponentType.HEADER_H1,
   },
   {
-    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
+    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}.`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -507,7 +507,7 @@ const expectedBehandlerEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
+    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}.`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -580,7 +580,7 @@ const expectedAvlysningArbeidsgiver = (
     type: DocumentComponentType.HEADER_H1,
   },
   {
-    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
+    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}.`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -668,7 +668,7 @@ const expectedAvlysningBehandler = (
     type: DocumentComponentType.HEADER_H1,
   },
   {
-    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}`],
+    texts: [`Gjelder ${arbeidstaker.navn}, f.nr. ${arbeidstaker.personident}.`],
     type: DocumentComponentType.PARAGRAPH,
   },
   {

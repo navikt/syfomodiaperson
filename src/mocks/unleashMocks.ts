@@ -12,3 +12,10 @@ export const mockUnleashResponse = Object.values(ToggleNames).reduce(
   },
   {}
 );
+
+export const mockUnleashTogglesOffResponse = Object.values(ToggleNames).reduce(
+  (accumulator, toggleName) => {
+    return { ...accumulator, [toggleName]: false };
+  },
+  {}
+);
