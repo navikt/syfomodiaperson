@@ -4,27 +4,23 @@ import {
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import AvvistSykmeldingStatuspanel from "./AvvistSykmeldingStatuspanel";
-import { AvvistSykmeldingPanel } from "./AvvistSykmeldingPanel";
+import AvvistSykmeldingAlert from "./AvvistSykmeldingAlert";
 import { SykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingOpplysninger";
 
-interface AvvistSykmeldingProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-const AvvistSykmelding = ({
-  sykmelding,
-}: AvvistSykmeldingProps): ReactElement => {
+export default function AvvistSykmelding({ sykmelding }: Props): ReactElement {
   return (
     <>
+      <AvvistSykmeldingAlert sykmelding={sykmelding} />
       {sykmelding.status === SykmeldingStatus.BEKREFTET && (
         <AvvistSykmeldingStatuspanel sykmelding={sykmelding} />
       )}
-      <AvvistSykmeldingPanel sykmelding={sykmelding} />
-      <div className="blokk">
+      <div className="mb-8">
         <SykmeldingOpplysninger sykmelding={sykmelding} />
       </div>
     </>
   );
-};
-
-export default AvvistSykmelding;
+}
