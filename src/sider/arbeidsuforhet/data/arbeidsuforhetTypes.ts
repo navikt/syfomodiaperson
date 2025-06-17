@@ -8,7 +8,7 @@ export interface VurderingRequestDTO {
   document: DocumentComponentDto[];
   gjelderFom?: string;
   frist?: Date;
-  oppgaveFraNayDato?: Date;
+  oppgaveFraNayDato?: string;
 }
 
 export enum VurderingType {
@@ -68,5 +68,6 @@ export interface VurderingResponseDTO {
   begrunnelse: string;
   document: DocumentComponentDto[];
   varsel: VarselDTO | undefined;
-  oppgaveFraNayDato?: Date;
+  gjelderFom?: string;
+  oppgaveFraNayDato?: string;
 }

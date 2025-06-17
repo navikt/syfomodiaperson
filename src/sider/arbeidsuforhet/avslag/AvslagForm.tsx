@@ -21,9 +21,9 @@ import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { Link } from "react-router-dom";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { AvslagDatePicker } from "@/sider/arbeidsuforhet/avslag/AvslagDatePicker";
-import dayjs from "dayjs";
 import { useNotification } from "@/context/notification/NotificationContext";
 import { Paragraph } from "@/components/Paragraph";
+import dayjs from "dayjs";
 
 const texts = {
   title: "Skriv innstilling om avslag til NAY",

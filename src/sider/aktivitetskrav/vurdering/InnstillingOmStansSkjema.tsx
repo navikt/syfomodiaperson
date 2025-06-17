@@ -41,7 +41,7 @@ const texts = {
     "Når du sender innstillingen blir den journalført og kan sees i Gosys. Den automatiske utbetalingen til bruker stanses og oppgaven blir deretter plukket opp av saksbehandler fra Gosys.",
 };
 
-const begrunnelseMaxLength = 5000;
+const begrunnelseMaxLength = 8000;
 
 export interface FormValues {
   stansFom: Date;

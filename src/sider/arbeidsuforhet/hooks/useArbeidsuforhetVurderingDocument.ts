@@ -39,6 +39,7 @@ type InnstillingUtenForhandsvarselDocumentValues = {
   arsak: VurderingArsak;
   begrunnelse: string;
   oppgaveFraNayDato?: Date;
+  avslagFom?: Date;
 };
 
 export const useArbeidsuforhetVurderingDocument = (): {
@@ -157,6 +158,7 @@ export const useArbeidsuforhetVurderingDocument = (): {
   function getInnstillingOmAvslagUtenForhandsvarselDocument({
     arsak,
     begrunnelse,
+    avslagFom,
     oppgaveFraNayDato,
   }: InnstillingUtenForhandsvarselDocumentValues) {
     let grunnTilInnstillingUtenForhandsvarsel: string;
@@ -165,7 +167,7 @@ export const useArbeidsuforhetVurderingDocument = (): {
         grunnTilInnstillingUtenForhandsvarsel = "utbetaling ikke er igangsatt";
         break;
       case VurderingArsak.NAY_BER_OM_NY_VURDERING:
-        grunnTilInnstillingUtenForhandsvarsel = `en forespørsel er sendt fra Nav arbeid og ytelser i Gosys ${
+        grunnTilInnstillingUtenForhandsvarsel = `Nav arbeid og ytelser har bedt om en vurdering ${
           oppgaveFraNayDato ? tilLesbarDatoMedArstall(oppgaveFraNayDato) : ""
         }`;
         break;
@@ -180,9 +182,13 @@ export const useArbeidsuforhetVurderingDocument = (): {
       createParagraph(
         `Det er ikke sendt forhåndsvarsel i denne saken fordi ${grunnTilInnstillingUtenForhandsvarsel}.`
       ),
-      createParagraph("Nav har vurdert at vilkåret ikke er oppfylt."),
+      createParagraph(`Nav har vurdert at vilkåret ikke er oppfylt.`),
       createHeaderH3("Begrunnelse for vurderingen"),
-      createParagraph("Nav har avslått sykepengene dine."),
+      createParagraph(
+        `Nav har avslått sykepengene dine fra og med ${tilLesbarDatoMedArstall(
+          avslagFom
+        )}.`
+      ),
       createParagraph(
         "For å få sykepenger må du ha en sykdom eller skade som gjør at du ikke kan være i arbeid, eller at du bare klarer å gjøre deler av arbeidet ditt."
       ),

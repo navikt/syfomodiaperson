@@ -43,6 +43,7 @@ export const mockIsarbeidsuforhet = [
         arsak: body.arsak,
         begrunnelse: body.begrunnelse,
         document: body.document,
+        gjelderFom: body.gjelderFom,
         oppgaveFraNayDato: body.oppgaveFraNayDato,
         varsel,
       };
