@@ -13,8 +13,8 @@ import { changeTextInput, clickButton, getTextInput } from "../../testUtils";
 import { getAvslagVurderingDocument } from "../documents";
 import { addWeeks, toDatePrettyPrint } from "@/utils/datoUtils";
 import { renderArbeidsuforhetSide } from "../arbeidsuforhetTestUtils";
-import dayjs from "dayjs";
 import { createForhandsvarsel } from "../arbeidsuforhetTestData";
+import dayjs from "dayjs";
 
 let queryClient: QueryClient;
 
