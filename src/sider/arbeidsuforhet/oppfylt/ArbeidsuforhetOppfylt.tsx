@@ -1,7 +1,7 @@
 import React from "react";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { VurderingType } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
-import { OppfyltForm } from "@/sider/arbeidsuforhet/oppfylt/OppfyltForm";
+import OppfyltForm from "@/sider/arbeidsuforhet/oppfylt/OppfyltForm";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { Navigate } from "react-router-dom";
 
