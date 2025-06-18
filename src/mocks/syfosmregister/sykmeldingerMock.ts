@@ -188,7 +188,7 @@ const SYKMELDING_MYE_INFO = {
 };
 
 const SYKMELDING_INVALID = {
-  id: "0baf68f6-d926-431a-85fa-245bba515e42",
+  id: "1baf68f6-d926-431a-85fa-245bba515e42",
   mottattTidspunkt: "2020-10-14T20:00:00Z",
   behandlingsutfall: {
     status: "INVALID",
@@ -259,8 +259,7 @@ const SYKMELDING_INVALID = {
     erIkkeIArbeid: null,
   },
   tiltakArbeidsplassen: null,
-  tiltakNAV:
-    "Pasienten har plager som er kommet tilbake etter operasjon. Det er nylig tatt MR bildet som viser forandringer i hånd som mulig må opereres. Venter på time. Det er mulig sykemledingen vil vare utover aktuell sm periode. ",
+  tiltakNAV: "Det er lite dere kan gjøre",
   andreTiltak: null,
   meldingTilNAV: null,
   meldingTilArbeidsgiver: null,

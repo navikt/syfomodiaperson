@@ -1,33 +1,26 @@
 import React, { ReactElement } from "react";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
-import {
-  StatusNokkelopplysning,
-  Statusopplysninger,
-} from "../../../../components/speiling/Statuspanel";
+import { StatusNokkelopplysning } from "@/components/speiling/Statuspanel";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
-interface AvvistSykmeldingStatuspanelProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-const AvvistSykmeldingStatuspanel = ({
+export default function AvvistSykmeldingStatuspanel({
   sykmelding,
-}: AvvistSykmeldingStatuspanelProps): ReactElement => {
+}: Props): ReactElement {
   return (
-    <div className="statuspanel blokk--xl statuspanel--treKol">
-      <Statusopplysninger>
-        <StatusNokkelopplysning tittel="Status">
-          <p>Avvist av Nav</p>
-        </StatusNokkelopplysning>
-        <StatusNokkelopplysning tittel="Dato avvist">
-          <p>{tilLesbarDatoMedArstall(sykmelding.mottattTidspunkt)}</p>
-        </StatusNokkelopplysning>
-        <StatusNokkelopplysning tittel="Bekreftet av deg">
-          <p>{tilLesbarDatoMedArstall(sykmelding.sendtdato)}</p>
-        </StatusNokkelopplysning>
-      </Statusopplysninger>
+    <div className="mb-4 flex justify-between">
+      <StatusNokkelopplysning tittel="Status">
+        <p>Avvist av Nav</p>
+      </StatusNokkelopplysning>
+      <StatusNokkelopplysning tittel="Dato avvist">
+        <p>{tilLesbarDatoMedArstall(sykmelding.mottattTidspunkt)}</p>
+      </StatusNokkelopplysning>
+      <StatusNokkelopplysning tittel="Bekreftet av deg">
+        <p>{tilLesbarDatoMedArstall(sykmelding.sendtdato)}</p>
+      </StatusNokkelopplysning>
     </div>
   );
-};
-
-export default AvvistSykmeldingStatuspanel;
+}
