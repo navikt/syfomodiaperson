@@ -1,7 +1,6 @@
 import React from "react";
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
-import { useController } from "react-hook-form";
-import { ArbeidsuforhetAvslagSkjemaValues } from "@/sider/arbeidsuforhet/avslag/AvslagForm";
+import { useController, useFormContext } from "react-hook-form";
 
 const texts = {
   label: "Innstillingen gjelder fra",
@@ -12,21 +11,18 @@ interface Props {
   varselSvarfrist: Date;
 }
 
-export function AvslagDatePicker({ varselSvarfrist }: Props) {
-  const { field, fieldState } = useController<
-    ArbeidsuforhetAvslagSkjemaValues,
-    "fom"
-  >({
+export default function AvslagDatePicker({ varselSvarfrist }: Props) {
+  const { control } = useFormContext();
+  const { field, fieldState } = useController({
     name: "fom",
+    control,
     rules: {
       required: texts.missingDate,
     },
   });
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: varselSvarfrist,
-    onDateChange: (date: Date | undefined) => {
-      field.onChange(date);
-    },
+    onDateChange: field.onChange,
   });
 
   return (

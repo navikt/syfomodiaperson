@@ -20,7 +20,7 @@ import { ButtonRow } from "@/components/Layout";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { Link } from "react-router-dom";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
-import { AvslagDatePicker } from "@/sider/arbeidsuforhet/avslag/AvslagDatePicker";
+import AvslagDatePicker from "@/sider/arbeidsuforhet/avslag/AvslagDatePicker";
 import { useNotification } from "@/context/notification/NotificationContext";
 import { Paragraph } from "@/components/Paragraph";
 import dayjs from "dayjs";
@@ -56,13 +56,13 @@ const texts = {
     "Innstilling om avslag § 8-4 er lagret i historikken og blir journalført automatisk. Automatisk utbetaling av sykepenger er stanset.",
 };
 
-const begrunnelseMaxLength = 5000;
+const begrunnelseMaxLength = 8000;
 
 export interface Props {
   sisteVurdering: VurderingResponseDTO;
 }
 
-export interface ArbeidsuforhetAvslagSkjemaValues {
+interface FormValues {
   begrunnelse: string;
   fom: Date;
 }
@@ -71,7 +71,7 @@ export function AvslagForm({ sisteVurdering }: Props) {
   const lagreVurdering = useSaveVurderingArbeidsuforhet();
   const { getAvslagDocument } = useArbeidsuforhetVurderingDocument();
   const { setNotification } = useNotification();
-  const formMethods = useForm<ArbeidsuforhetAvslagSkjemaValues>();
+  const formMethods = useForm<FormValues>();
   const {
     register,
     watch,
@@ -79,7 +79,7 @@ export function AvslagForm({ sisteVurdering }: Props) {
     handleSubmit,
   } = formMethods;
 
-  const submit = (values: ArbeidsuforhetAvslagSkjemaValues) => {
+  const submit = (values: FormValues) => {
     const vurderingRequestDTO: VurderingRequestDTO = {
       type: VurderingType.AVSLAG,
       begrunnelse: values.begrunnelse,
