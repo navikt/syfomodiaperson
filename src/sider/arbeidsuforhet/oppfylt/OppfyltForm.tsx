@@ -50,13 +50,13 @@ interface Props {
 }
 
 const defaultValues = { begrunnelse: "" };
-const begrunnelseMaxLength = 1000;
+const begrunnelseMaxLength = 8000;
 
 interface SkjemaValues {
   begrunnelse: string;
 }
 
-export const OppfyltForm = ({ forhandsvarselSendtDato }: Props) => {
+export default function OppfyltForm({ forhandsvarselSendtDato }: Props) {
   const sendVurdering = useSaveVurderingArbeidsuforhet();
   const { getOppfyltDocument } = useArbeidsuforhetVurderingDocument();
   const { setNotification } = useNotification();
@@ -135,4 +135,4 @@ export const OppfyltForm = ({ forhandsvarselSendtDato }: Props) => {
       </form>
     </Box>
   );
-};
+}
