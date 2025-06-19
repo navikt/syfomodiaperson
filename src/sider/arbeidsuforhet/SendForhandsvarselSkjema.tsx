@@ -1,5 +1,4 @@
 import React from "react";
-import { ButtonRow } from "@/components/Layout";
 import { Box, Button, Heading, List, Textarea } from "@navikt/ds-react";
 import { useForm } from "react-hook-form";
 import { useArbeidsuforhetVurderingDocument } from "@/sider/arbeidsuforhet/hooks/useArbeidsuforhetVurderingDocument";
@@ -37,7 +36,7 @@ const texts = {
 
 const forhandsvarselFrist = getForhandsvarselFrist();
 const defaultValues = { begrunnelse: texts.defaultTextareaValue };
-const begrunnelseMaxLength = 5000;
+const begrunnelseMaxLength = 8000;
 
 interface SkjemaValues {
   begrunnelse: string;
@@ -76,7 +75,7 @@ export default function SendForhandsvarselSkjema() {
   };
 
   return (
-    <Box background="surface-default" padding="6">
+    <Box background="surface-default" padding="6" className="mb-2">
       <form onSubmit={handleSubmit(submit)}>
         <Heading className="mb-4" level="2" size="medium">
           {texts.title}
@@ -108,7 +107,7 @@ export default function SendForhandsvarselSkjema() {
           <SkjemaInnsendingFeil error={sendForhandsvarsel.error} />
         )}
         <InfoUtsattFristJuletid />
-        <ButtonRow>
+        <div className="flex gap-4">
           <Button loading={sendForhandsvarsel.isPending} type="submit">
             {texts.sendVarselButtonText}
           </Button>
@@ -121,7 +120,7 @@ export default function SendForhandsvarselSkjema() {
               })
             }
           />
-        </ButtonRow>
+        </div>
       </form>
     </Box>
   );
