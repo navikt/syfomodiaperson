@@ -4,7 +4,7 @@ import SideLaster from "../../../components/SideLaster";
 import Sidetopp from "../../../components/Sidetopp";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { Historikk } from "@/sider/historikk/Historikk";
+import Historikk from "@/sider/historikk/Historikk";
 import { Infomelding } from "@/components/Infomelding";
 import { useHistorikk } from "@/hooks/historikk/useHistorikk";
 import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
