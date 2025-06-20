@@ -7,7 +7,6 @@ import { navEnhet } from "../dialogmote/testData";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import React from "react";
 import OppfyltSide from "@/sider/manglendemedvirkning/oppfylt/OppfyltSide";
-import { manglendeMedvirkningOppfyltPath } from "@/routers/AppRouter";
 import {
   OppfyltVurdering,
   VurderingResponseDTO,
@@ -24,6 +23,7 @@ import {
 } from "../testUtils";
 import { screen, waitFor, within } from "@testing-library/react";
 import { getOppfyltDocument } from "./vurderingDocuments";
+import { manglendeMedvirkningPath } from "@/routers/AppRouter";
 
 let queryClient: QueryClient;
 
@@ -47,8 +47,8 @@ const renderOppfyltSide = () => {
         </NotificationProvider>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
-    manglendeMedvirkningOppfyltPath,
-    [manglendeMedvirkningOppfyltPath]
+    `${manglendeMedvirkningPath}/oppfylt`,
+    [`${manglendeMedvirkningPath}/oppfylt`]
   );
 };
 

@@ -37,9 +37,9 @@ interface Props {
   handleClick: () => void;
 }
 
-export const ManglendeMedvirkningNyVurdering = ({
+export default function ManglendeMedvirkningNyVurdering({
   handleClick,
-}: Props): ReactElement => {
+}: Props): ReactElement {
   const { data } = useManglendemedvirkningVurderingQuery();
   const { notification } = useNotification();
 
@@ -61,4 +61,4 @@ export const ManglendeMedvirkningNyVurdering = ({
       </Box>
     </>
   );
-};
+}

@@ -2,7 +2,7 @@ import React from "react";
 import { BodyShort, Box, Heading, HStack } from "@navikt/ds-react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { BellIcon } from "@navikt/aksel-icons";
-import { ManglendeMedvirkningButtons } from "@/sider/manglendemedvirkning/ManglendeMedvirkningButtons";
+import ManglendeMedvirkningButtons from "@/sider/manglendemedvirkning/ManglendeMedvirkningButtons";
 import { VurderingResponseDTO } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import SupportingTextList from "@/sider/manglendemedvirkning/forhandsvarsel/SupportingTextList";
 

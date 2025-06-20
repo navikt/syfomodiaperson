@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import { VurderingType } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
-import { ManglendeMedvirkningStartetVurdering } from "@/sider/manglendemedvirkning/ManglendeMedvirkningStartetVurdering";
-import { ManglendeMedvirkningNyVurdering } from "@/sider/manglendemedvirkning/ManglendeMedvirkningNyVurdering";
+import ManglendeMedvirkningNyVurdering from "@/sider/manglendemedvirkning/ManglendeMedvirkningNyVurdering";
+import ForhandsvarselSendt from "@/sider/manglendemedvirkning/forhandsvarsel/ForhandsvarselSendt";
+import ForhandsvarselSkjema from "@/sider/manglendemedvirkning/forhandsvarsel/ForhandsvarselSkjema";
 
 export default function ManglendeMedvirkning() {
   const { sisteVurdering } = useManglendemedvirkningVurderingQuery();
@@ -11,7 +12,11 @@ export default function ManglendeMedvirkning() {
   const [showStartetVurdering, setShowStartetVurdering] = useState(false);
 
   return showStartetVurdering || isForhandsvarsel ? (
-    <ManglendeMedvirkningStartetVurdering sisteVurdering={sisteVurdering} />
+    isForhandsvarsel ? (
+      <ForhandsvarselSendt forhandsvarsel={sisteVurdering} />
+    ) : (
+      <ForhandsvarselSkjema />
+    )
   ) : (
     <ManglendeMedvirkningNyVurdering
       handleClick={() => setShowStartetVurdering(true)}

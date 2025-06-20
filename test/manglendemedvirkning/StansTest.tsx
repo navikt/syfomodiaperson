@@ -1,5 +1,5 @@
 import React from "react";
-import { manglendeMedvirkningStansPath } from "@/routers/AppRouter";
+import { manglendeMedvirkningPath } from "@/routers/AppRouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { navEnhet } from "../dialogmote/testData";
 import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
@@ -34,8 +34,8 @@ const renderStansSide = () => {
         </NotificationProvider>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
-    manglendeMedvirkningStansPath,
-    [manglendeMedvirkningStansPath]
+    `${manglendeMedvirkningPath}/stans`,
+    [`${manglendeMedvirkningPath}/stans`]
   );
 };
 
