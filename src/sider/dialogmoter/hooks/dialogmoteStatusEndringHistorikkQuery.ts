@@ -2,8 +2,8 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { ISDIALOGMOTE_ROOT } from "@/apiConstants";
 import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
-import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
-import { DialogmoteStatusEndringDTO } from "@/data/dialogmote/types/dialogmoteStatusEndringTypes";
+import { dialogmoterQueryKeys } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
+import { DialogmoteStatusEndringDTO } from "@/sider/dialogmoter/types/dialogmoteStatusEndringTypes";
 
 export function useDialogmoteStatusEndringHistorikkQuery() {
   const fnr = useValgtPersonident();

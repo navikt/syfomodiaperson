@@ -11,7 +11,7 @@ import {
   DialogmoteDTO,
   MotedeltakerVarselType,
   SvarType,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { queryClientWithMockData } from "../../testQueryClient";
 import { DeltakereSvarInfo } from "@/sider/dialogmoter/components/DeltakereSvarInfo";
 

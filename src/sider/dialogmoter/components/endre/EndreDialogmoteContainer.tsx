@@ -1,7 +1,7 @@
 import React from "react";
 import EndreDialogmoteSkjema from "./EndreDialogmoteSkjema";
 import { useParams } from "react-router-dom";
-import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
+import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import Side from "@/sider/Side";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";

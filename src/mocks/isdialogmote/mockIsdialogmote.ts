@@ -8,7 +8,7 @@ import { ISDIALOGMOTE_ROOT } from "@/apiConstants";
 import {
   DialogmoteDTO,
   DialogmoteStatus,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import dayjs from "dayjs";
 import { http, HttpResponse } from "msw";
 

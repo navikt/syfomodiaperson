@@ -1,4 +1,4 @@
-import { DialogmotedeltakerArbeidsgiverVarselDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { DialogmotedeltakerArbeidsgiverVarselDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import React from "react";
 import { EkspanderbartSvarPanel } from "@/sider/dialogmoter/components/svar/EkspanderbartSvarPanel";
 import { SvarIcon } from "@/sider/dialogmoter/components/svar/SvarIcon";

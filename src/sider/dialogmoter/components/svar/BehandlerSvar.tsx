@@ -1,7 +1,7 @@
 import {
   DialogmotedeltakerBehandlerVarselDTO,
   DialogmotedeltakerBehandlerVarselSvarDTO,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { getSvarTekst } from "@/utils/dialogmoteUtils";
 import { SvarIcon } from "@/sider/dialogmoter/components/svar/SvarIcon";
 import React from "react";

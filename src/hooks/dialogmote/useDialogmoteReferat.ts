@@ -1,6 +1,6 @@
-import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
-import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
-import { ReferatDTO } from "@/data/dialogmote/types/dialogmoteReferatTypes";
+import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
+import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
+import { ReferatDTO } from "@/sider/dialogmoter/types/dialogmoteReferatTypes";
 
 export const useLatestFerdigstiltReferat = (): ReferatDTO | undefined => {
   const { ferdigstilteDialogmoter } = useDialogmoterQuery();
