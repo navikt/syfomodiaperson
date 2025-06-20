@@ -21,7 +21,7 @@ import {
   LEDERE_DEFAULT,
   VIRKSOMHET_UTEN_NARMESTE_LEDER,
 } from "@/mocks/common/mockConstants";
-import { DialogmoteInnkallingDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { DialogmoteInnkallingDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { renderWithRouter } from "../../testRouterUtils";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { OppfolgingstilfellePersonDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
@@ -29,7 +29,7 @@ import { DocumentComponentType } from "@/data/documentcomponent/documentComponen
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { Malform, MalformProvider } from "@/context/malform/MalformContext";
 import userEvent from "@testing-library/user-event";
-import { getInnkallingTexts } from "@/data/dialogmote/dialogmoteTexts";
+import { getInnkallingTexts } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import { kontaktinformasjonMock } from "@/mocks/syfoperson/persondataMock";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import {

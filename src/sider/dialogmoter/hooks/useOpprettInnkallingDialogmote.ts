@@ -1,8 +1,8 @@
 import { ISDIALOGMOTE_ROOT } from "@/apiConstants";
-import { DialogmoteInnkallingDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { DialogmoteInnkallingDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { post } from "@/api/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
+import { dialogmoterQueryKeys } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 
 export const useOpprettInnkallingDialogmote = (fnr: string) => {
   const queryClient = useQueryClient();

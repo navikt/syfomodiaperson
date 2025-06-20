@@ -2,7 +2,7 @@ import {
   DialogmotedeltakerVarselDTO,
   DialogmoteDTO,
   MotedeltakerVarselType,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { HStack, Label } from "@navikt/ds-react";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { ArbeidsgiverSvar } from "@/sider/dialogmoter/components/svar/ArbeidsgiverSvar";

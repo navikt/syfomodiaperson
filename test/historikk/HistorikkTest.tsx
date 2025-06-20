@@ -46,7 +46,7 @@ import {
 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { generateUUID } from "@/utils/utils";
 import { dialogmoteStatusEndringMock } from "@/mocks/isdialogmote/dialogmoterMock";
-import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
+import { dialogmoterQueryKeys } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { getDefaultOppfolgingsplanLPS } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
 import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useOppfolgingsoppgaver";

@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ISDIALOGMOTE_ROOT } from "@/apiConstants";
-import { NewDialogmoteReferatDTO } from "@/data/dialogmote/types/dialogmoteReferatTypes";
+import { NewDialogmoteReferatDTO } from "@/sider/dialogmoter/types/dialogmoteReferatTypes";
 import { post } from "@/api/axios";
-import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
+import { dialogmoterQueryKeys } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 
 export const useFerdigstillDialogmote = (dialogmoteUuid: string) => {

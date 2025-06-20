@@ -3,7 +3,7 @@ import { get } from "@/api/axios";
 import {
   DialogmoteDTO,
   DialogmoteStatus,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useQuery } from "@tanstack/react-query";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useMemo } from "react";

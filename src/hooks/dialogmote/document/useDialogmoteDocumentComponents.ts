@@ -3,9 +3,9 @@ import {
   createParagraph,
   createParagraphWithTitle,
 } from "@/utils/documentComponentUtils";
-import { getCommonTexts } from "@/data/dialogmote/dialogmoteTexts";
+import { getCommonTexts } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
-import { TidStedSkjemaValues } from "@/data/dialogmote/types/skjemaTypes";
+import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
 import {
   tilDatoMedManedNavnOgKlokkeslettWithComma,
   tilDatoMedUkedagOgManedNavnOgKlokkeslett,

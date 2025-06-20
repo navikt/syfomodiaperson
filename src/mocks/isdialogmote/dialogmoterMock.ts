@@ -9,7 +9,7 @@ import {
   MotedeltakerVarselType,
   SvarType,
   VarselSvarDTO,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { BehandlerType } from "@/data/behandler/BehandlerDTO";
 import {
   ANNEN_VEILEDER_IDENT,
@@ -18,16 +18,16 @@ import {
   VEILEDER_IDENT_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
-import { ReferatDTO } from "@/data/dialogmote/types/dialogmoteReferatTypes";
+import { ReferatDTO } from "@/sider/dialogmoter/types/dialogmoteReferatTypes";
 import {
   getReferatTexts,
   StandardtekstKey,
-} from "@/data/dialogmote/dialogmoteTexts";
+} from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import dayjs from "dayjs";
 import { DocumentComponentType } from "@/data/documentcomponent/documentComponentTypes";
 import { Malform } from "@/context/malform/MalformContext";
 import { addDays } from "@/utils/datoUtils";
-import { DialogmoteStatusEndringDTO } from "@/data/dialogmote/types/dialogmoteStatusEndringTypes";
+import { DialogmoteStatusEndringDTO } from "@/sider/dialogmoter/types/dialogmoteStatusEndringTypes";
 
 type VarselOpts = {
   varselType: MotedeltakerVarselType.INNKALT | MotedeltakerVarselType.AVLYST;

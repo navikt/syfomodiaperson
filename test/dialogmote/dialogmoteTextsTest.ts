@@ -1,8 +1,8 @@
-import { expect, describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
   getReferatTexts,
   StandardtekstKey,
-} from "@/data/dialogmote/dialogmoteTexts";
+} from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import { Malform } from "@/context/malform/MalformContext";
 
 const expectedStandardtekstKeys = [

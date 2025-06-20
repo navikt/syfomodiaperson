@@ -3,23 +3,23 @@ import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import {
   DialogmotedeltakerBehandlerDTO,
   DialogmoteDTO,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useReferatDocument } from "@/hooks/dialogmote/document/useReferatDocument";
 import {
   getReferatTexts,
   StandardtekstKey,
-} from "@/data/dialogmote/dialogmoteTexts";
+} from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import {
   NewDialogmotedeltakerAnnenDTO,
   NewDialogmoteReferatDTO,
-} from "@/data/dialogmote/types/dialogmoteReferatTypes";
-import { useFerdigstillDialogmote } from "@/data/dialogmote/useFerdigstillDialogmote";
+} from "@/sider/dialogmoter/types/dialogmoteReferatTypes";
+import { useFerdigstillDialogmote } from "@/sider/dialogmoter/hooks/useFerdigstillDialogmote";
 import { Link as RouterLink, Navigate } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import { useMellomlagreReferat } from "@/data/dialogmote/useMellomlagreReferat";
+import { useMellomlagreReferat } from "@/sider/dialogmoter/hooks/useMellomlagreReferat";
 import { useInitialValuesReferat } from "@/hooks/dialogmote/useInitialValuesReferat";
-import { useEndreReferat } from "@/data/dialogmote/useEndreReferat";
+import { useEndreReferat } from "@/sider/dialogmoter/hooks/useEndreReferat";
 import dayjs, { Dayjs } from "dayjs";
 import { useDebouncedCallback } from "use-debounce";
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";

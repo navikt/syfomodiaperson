@@ -3,7 +3,7 @@ import React, { ReactElement } from "react";
 import Sidetopp from "../../../../components/Sidetopp";
 import SideLaster from "../../../../components/SideLaster";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/sider/dialogmoter/components/BrukerKanIkkeVarslesPapirpostAdvarsel";
-import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
+import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 import { Navigate } from "react-router-dom";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";

@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
 import { useController } from "react-hook-form";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
-import { TidStedSkjemaValues } from "@/data/dialogmote/types/skjemaTypes";
+import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
 
 export const DialogmoteDato = () => {
   const now = new Date();

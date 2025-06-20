@@ -10,7 +10,7 @@ import {
 import {
   DialogmoteDTO,
   DialogmoteStatus,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { daysFromToday, getButton } from "../testUtils";
 import { MemoryRouter } from "react-router-dom";
 import { expect, describe, it } from "vitest";

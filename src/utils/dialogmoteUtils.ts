@@ -3,7 +3,7 @@ import {
   DialogmoteStatus,
   MotedeltakerVarselType,
   SvarType,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 import dayjs from "dayjs";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";

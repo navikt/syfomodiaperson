@@ -7,7 +7,7 @@ import React from "react";
 import {
   DialogmoteDTO,
   MotedeltakerVarselType,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 
 interface Props {
   dialogmote: DialogmoteDTO;

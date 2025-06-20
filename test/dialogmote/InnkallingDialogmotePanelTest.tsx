@@ -14,8 +14,8 @@ import { queryButton } from "../testUtils";
 import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { dialogmotekandidatMock } from "@/mocks/isdialogmotekandidat/dialogmotekandidatMock";
-import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
-import { DialogmoteStatus } from "@/data/dialogmote/types/dialogmoteTypes";
+import { dialogmoterQueryKeys } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
+import { DialogmoteStatus } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import {
   createDialogmote,
   createReferat,

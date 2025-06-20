@@ -4,21 +4,21 @@ import { validerKlokkeslett, validerVideoLink } from "@/utils/valideringUtils";
 import {
   DialogmoteInnkallingDTO,
   TidStedDto,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { Link, Navigate } from "react-router-dom";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   IInnkallingDocument,
   useInnkallingDocument,
 } from "@/hooks/dialogmote/document/useInnkallingDocument";
-import { useOpprettInnkallingDialogmote } from "@/data/dialogmote/useOpprettInnkallingDialogmote";
+import { useOpprettInnkallingDialogmote } from "@/sider/dialogmoter/hooks/useOpprettInnkallingDialogmote";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import DialogmoteInnkallingBehandler from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingBehandler";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
-import { TidStedSkjemaValues } from "@/data/dialogmote/types/skjemaTypes";
+import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
 import { Alert, Box, Button } from "@navikt/ds-react";
 import { MalformRadioGroup } from "@/components/MalformRadioGroup";
 import * as Amplitude from "@/utils/amplitude";

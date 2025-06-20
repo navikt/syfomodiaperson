@@ -4,10 +4,10 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   AvlysDialogmoteDTO,
   DialogmoteDTO,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useAvlysningDocument } from "@/hooks/dialogmote/document/useAvlysningDocument";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
-import { useAvlysDialogmote } from "@/data/dialogmote/useAvlysDialogmote";
+import { useAvlysDialogmote } from "@/sider/dialogmoter/hooks/useAvlysDialogmote";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { Alert, Box, Button, Label } from "@navikt/ds-react";
 import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";

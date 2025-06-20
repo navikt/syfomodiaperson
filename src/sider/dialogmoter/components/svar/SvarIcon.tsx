@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { SvarType } from "@/data/dialogmote/types/dialogmoteTypes";
+import { SvarType } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import {
   CheckmarkCircleFillIcon,
   ExclamationmarkTriangleFillIcon,

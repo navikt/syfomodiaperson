@@ -7,7 +7,7 @@ import {
   DialogmoteStatus,
   MotedeltakerVarselType,
   VarselSvarDTO,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import {
@@ -22,7 +22,7 @@ import { behandlerNavn } from "@/utils/behandlerUtils";
 import {
   getReferatTexts,
   StandardtekstKey,
-} from "@/data/dialogmote/dialogmoteTexts";
+} from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import { BehandlerDTO, BehandlerType } from "@/data/behandler/BehandlerDTO";
 import { DocumentComponentType } from "@/data/documentcomponent/documentComponentTypes";
 import { Malform } from "@/context/malform/MalformContext";

@@ -2,7 +2,7 @@ import { DialogmoteInnkallingSkjemaValues } from "@/sider/dialogmoter/components
 import {
   getCommonTexts,
   getInnkallingTexts,
-} from "@/data/dialogmote/dialogmoteTexts";
+} from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import {
   createHeaderH1,
   createParagraph,

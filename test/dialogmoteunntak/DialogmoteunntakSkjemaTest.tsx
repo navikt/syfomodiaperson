@@ -26,7 +26,7 @@ import {
   ValidUnntakArsak,
 } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 import { renderWithRouter } from "../testRouterUtils";
-import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
+import { dialogmoterQueryKeys } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 
 let queryClient: QueryClient;
 

@@ -21,7 +21,7 @@ import {
 import {
   DialogmoteDTO,
   EndreTidStedDialogmoteDTO,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MAX_LENGTH_ENDRE_BEGRUNNELSE } from "@/sider/dialogmoter/components/endre/EndreDialogmoteSkjema";
@@ -32,7 +32,7 @@ import { stubFeatureTogglesApi } from "../stubs/stubUnleash";
 import { queryClientWithMockData } from "../testQueryClient";
 import { DocumentComponentType } from "@/data/documentcomponent/documentComponentTypes";
 import { Malform, MalformProvider } from "@/context/malform/MalformContext";
-import { getEndreTidStedTexts } from "@/data/dialogmote/dialogmoteTexts";
+import { getEndreTidStedTexts } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import { StoreKey } from "@/hooks/useLocalStorageState";
 
 let queryClient: QueryClient;

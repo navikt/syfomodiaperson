@@ -17,8 +17,8 @@ import {
 import { screen, within } from "@testing-library/react";
 import { expectedEndretReferatDocument } from "./testDataDocuments";
 import { queryClientWithMockData } from "../testQueryClient";
-import { getReferatTexts } from "@/data/dialogmote/dialogmoteTexts";
-import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { getReferatTexts } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
+import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { renderWithRouter } from "../testRouterUtils";
 import { Malform, MalformProvider } from "@/context/malform/MalformContext";
 import Referat, {
