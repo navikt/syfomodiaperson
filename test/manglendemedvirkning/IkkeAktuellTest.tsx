@@ -6,7 +6,7 @@ import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import React from "react";
-import { manglendeMedvirkningIkkeAktuellPath } from "@/routers/AppRouter";
+import { manglendeMedvirkningPath } from "@/routers/AppRouter";
 import {
   IkkeAktuellVurdering,
   VurderingResponseDTO,
@@ -47,8 +47,8 @@ const renderIkkeAktuellSide = () => {
         </NotificationProvider>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
-    manglendeMedvirkningIkkeAktuellPath,
-    [manglendeMedvirkningIkkeAktuellPath]
+    `${manglendeMedvirkningPath}/ikkeaktuell`,
+    [`${manglendeMedvirkningPath}/ikkeaktuell`]
   );
 };
 

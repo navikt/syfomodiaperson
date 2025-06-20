@@ -1,11 +1,5 @@
 import React, { ReactElement } from "react";
-import {
-  BrowserRouter,
-  Navigate,
-  Outlet,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AktivBrukerTilgangLaster from "@/components/AktivBrukerTilgangLaster";
 import SykmeldingerSide from "@/sider/sykmeldinger/container/SykmeldingerSide";
 import SykepengesoknaderSide from "@/sider/sykepengsoknader/SykepengesoknaderSide";
@@ -29,12 +23,7 @@ import { Nokkelinformasjon } from "@/sider/nokkelinformasjon/Nokkelinformasjon";
 import FriskmeldingTilArbeidsformidlingSide from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidlingSide";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import DialogmoteEndreReferatContainer from "@/sider/dialogmoter/components/referat/DialogmoteEndreReferatContainer";
-import ManglendeMedvirkningSide, {
-  ManglendeMedvirkningIkkeAktuellSide,
-  ManglendeMedvirkningOppfyltSide,
-  ManglendeMedvirkningStansSide,
-  ManglendeMedvirkningUnntakSide,
-} from "@/sider/manglendemedvirkning/ManglendeMedvirkningSide";
+import ManglendeMedvirkningSide from "@/sider/manglendemedvirkning/ManglendeMedvirkningSide";
 import ManglendeMedvirkning from "@/sider/manglendemedvirkning/ManglendeMedvirkning";
 import SenOppfolging from "@/sider/senoppfolging/SenOppfolging";
 import OppfolgingsplanContainer from "@/sider/oppfolgingsplan/container/OppfolgingsplanContainer";
@@ -48,6 +37,10 @@ import SendForhandsvarselSkjema from "@/sider/arbeidsuforhet/SendForhandsvarselS
 import ArbeidsuforhetSide from "@/sider/arbeidsuforhet/ArbeidsuforhetSide";
 import { DinSykmeldingSide } from "@/sider/sykmeldinger/container/DinSykmeldingSide";
 import InnstillingUtenForhandsvarsel from "@/sider/arbeidsuforhet/innstillingutenforhandsvarsel/InnstillingUtenForhandsvarsel";
+import OppfyltSide from "@/sider/manglendemedvirkning/oppfylt/OppfyltSide";
+import StansSide from "@/sider/manglendemedvirkning/stans/StansSide";
+import IkkeAktuellSide from "@/sider/manglendemedvirkning/ikkeaktuell/IkkeAktuellSide";
+import UnntakSide from "@/sider/manglendemedvirkning/unntak/UnntakSide";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -62,10 +55,6 @@ export const arbeidsuforhetPath = `${appRoutePath}/arbeidsuforhet`;
 export const frisktilarbeidPath = `${appRoutePath}/frisktilarbeid`;
 export const senOppfolgingPath = `${appRoutePath}/senoppfolging`;
 export const manglendeMedvirkningPath = `${appRoutePath}/manglendemedvirkning`;
-export const manglendeMedvirkningOppfyltPath = `${appRoutePath}/manglendemedvirkning/oppfylt`;
-export const manglendeMedvirkningStansPath = `${appRoutePath}/manglendemedvirkning/stans`;
-export const manglendeMedvirkningUnntakPath = `${appRoutePath}/manglendemedvirkning/unntak`;
-export const manglendeMedvirkningIkkeAktuellPath = `${appRoutePath}/manglendemedvirkning/ikkeaktuell`;
 export const historikkPath = `${appRoutePath}/historikk`;
 
 const AktivBrukerRouter = (): ReactElement => {
@@ -160,39 +149,22 @@ const AktivBrukerRouter = (): ReactElement => {
             element={<FriskmeldingTilArbeidsformidlingSide />}
           />
           <Route path={senOppfolgingPath} element={<SenOppfolging />} />
+
           <Route
             path={manglendeMedvirkningPath}
             element={
               <NotificationProvider>
-                <Outlet />
+                <ManglendeMedvirkningSide />
               </NotificationProvider>
             }
           >
-            <Route
-              path={manglendeMedvirkningPath}
-              element={
-                <ManglendeMedvirkningSide>
-                  <ManglendeMedvirkning />
-                </ManglendeMedvirkningSide>
-              }
-            />
-            <Route
-              path={manglendeMedvirkningOppfyltPath}
-              element={<ManglendeMedvirkningOppfyltSide />}
-            />
-            <Route
-              path={manglendeMedvirkningStansPath}
-              element={<ManglendeMedvirkningStansSide />}
-            />
-            <Route
-              path={manglendeMedvirkningUnntakPath}
-              element={<ManglendeMedvirkningUnntakSide />}
-            />
-            <Route
-              path={manglendeMedvirkningIkkeAktuellPath}
-              element={<ManglendeMedvirkningIkkeAktuellSide />}
-            />
+            <Route index element={<ManglendeMedvirkning />} />
+            <Route path="oppfylt" element={<OppfyltSide />} />
+            <Route path="stans" element={<StansSide />} />
+            <Route path="unntak" element={<UnntakSide />} />
+            <Route path="ikkeaktuell" element={<IkkeAktuellSide />} />
           </Route>
+
           <Route
             path={`${appRoutePath}/oppfoelgingsplaner`}
             element={<OppfoelgingsPlanerOversiktContainer />}

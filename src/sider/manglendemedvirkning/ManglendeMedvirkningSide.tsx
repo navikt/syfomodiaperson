@@ -1,59 +1,18 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Sidetopp from "@/components/Sidetopp";
 import Side from "@/sider/Side";
 import SideLaster from "@/components/SideLaster";
 import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
-import UnntakSide from "@/sider/manglendemedvirkning/unntak/UnntakSide";
-import OppfyltSide from "@/sider/manglendemedvirkning/oppfylt/OppfyltSide";
-import IkkeAktuellSide from "@/sider/manglendemedvirkning/ikkeaktuell/IkkeAktuellSide";
-import StansSide from "./stans/StansSide";
 import ManglendeMedvirkningHistorikk from "@/sider/manglendemedvirkning/ManglendeMedvirkningHistorikk";
 import NyttigeLenkerBox from "@/sider/manglendemedvirkning/NyttigeLenkerBox";
+import { Outlet } from "react-router-dom";
 
 const texts = {
   title: "Manglende medvirkning",
 };
 
-export function ManglendeMedvirkningOppfyltSide() {
-  return (
-    <ManglendeMedvirkningSide>
-      <OppfyltSide />
-    </ManglendeMedvirkningSide>
-  );
-}
-
-export function ManglendeMedvirkningStansSide() {
-  return (
-    <ManglendeMedvirkningSide>
-      <StansSide />
-    </ManglendeMedvirkningSide>
-  );
-}
-
-export function ManglendeMedvirkningUnntakSide() {
-  return (
-    <ManglendeMedvirkningSide>
-      <UnntakSide />
-    </ManglendeMedvirkningSide>
-  );
-}
-
-export function ManglendeMedvirkningIkkeAktuellSide() {
-  return (
-    <ManglendeMedvirkningSide>
-      <IkkeAktuellSide />
-    </ManglendeMedvirkningSide>
-  );
-}
-
-interface Props {
-  children: ReactElement;
-}
-
-export default function ManglendeMedvirkningSide({
-  children,
-}: Props): ReactElement {
+export default function ManglendeMedvirkningSide() {
   const { isLoading, isError } = useManglendemedvirkningVurderingQuery();
   return (
     <Side
@@ -66,7 +25,7 @@ export default function ManglendeMedvirkningSide({
         hentingFeilet={isError}
         className="flex flex-col gap-2"
       >
-        {children}
+        <Outlet />
         <ManglendeMedvirkningHistorikk />
         <NyttigeLenkerBox />
       </SideLaster>

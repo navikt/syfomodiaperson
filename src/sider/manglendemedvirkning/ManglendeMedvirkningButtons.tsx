@@ -1,11 +1,6 @@
 import { Button, HStack } from "@navikt/ds-react";
 import { Link } from "react-router-dom";
-import {
-  manglendeMedvirkningIkkeAktuellPath,
-  manglendeMedvirkningOppfyltPath,
-  manglendeMedvirkningStansPath,
-  manglendeMedvirkningUnntakPath,
-} from "@/routers/AppRouter";
+import { manglendeMedvirkningPath } from "@/routers/AppRouter";
 import React from "react";
 
 const texts = {
@@ -19,31 +14,45 @@ interface Props {
   isBeforeForhandsvarselDeadline: boolean;
 }
 
-export const ManglendeMedvirkningButtons = ({
+export default function ManglendeMedvirkningButtons({
   isBeforeForhandsvarselDeadline,
-}: Props) => (
-  <HStack gap="4">
-    {isBeforeForhandsvarselDeadline ? (
-      <Button variant="primary" disabled>
-        {texts.stans}
+}: Props) {
+  return (
+    <HStack gap="4">
+      {isBeforeForhandsvarselDeadline ? (
+        <Button variant="primary" disabled>
+          {texts.stans}
+        </Button>
+      ) : (
+        <Button
+          as={Link}
+          to={`${manglendeMedvirkningPath}/stans`}
+          variant="primary"
+        >
+          {texts.stans}
+        </Button>
+      )}
+      <Button
+        as={Link}
+        to={`${manglendeMedvirkningPath}/oppfylt`}
+        variant="secondary"
+      >
+        {texts.oppfylt}
       </Button>
-    ) : (
-      <Button as={Link} to={manglendeMedvirkningStansPath} variant="primary">
-        {texts.stans}
+      <Button
+        as={Link}
+        to={`${manglendeMedvirkningPath}/unntak`}
+        variant="secondary"
+      >
+        {texts.unntak}
       </Button>
-    )}
-    <Button as={Link} to={manglendeMedvirkningOppfyltPath} variant="secondary">
-      {texts.oppfylt}
-    </Button>
-    <Button as={Link} to={manglendeMedvirkningUnntakPath} variant="secondary">
-      {texts.unntak}
-    </Button>
-    <Button
-      as={Link}
-      to={manglendeMedvirkningIkkeAktuellPath}
-      variant="secondary"
-    >
-      {texts.ikkeAktuell}
-    </Button>
-  </HStack>
-);
+      <Button
+        as={Link}
+        to={`${manglendeMedvirkningPath}/ikkeaktuell`}
+        variant="secondary"
+      >
+        {texts.ikkeAktuell}
+      </Button>
+    </HStack>
+  );
+}
