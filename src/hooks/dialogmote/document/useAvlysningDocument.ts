@@ -1,9 +1,9 @@
-import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { AvlysDialogmoteSkjemaValues } from "@/sider/dialogmoter/components/avlys/AvlysDialogmoteSkjema";
 import {
   getAvlysningTexts,
   getCommonTexts,
-} from "@/data/dialogmote/dialogmoteTexts";
+} from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
 import {
   createHeaderH1,

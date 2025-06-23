@@ -8,8 +8,8 @@ import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
 import {
   getCommonTexts,
   getEndreTidStedTexts,
-} from "@/data/dialogmote/dialogmoteTexts";
-import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/hooks/dialogmoteTexts";
+import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useDialogmoteDocumentComponents } from "@/hooks/dialogmote/document/useDialogmoteDocumentComponents";
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
 import { useMalform } from "@/context/malform/MalformContext";

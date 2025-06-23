@@ -3,7 +3,7 @@ import {
   DialogmoteDTO,
   DialogmoteStatus,
   MotedeltakerVarselType,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { ForhandsvisDocumentAccordionItem } from "@/sider/dialogmoter/components/motehistorikk/ForhandsvisDocumentAccordionItem";

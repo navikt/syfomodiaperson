@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ISDIALOGMOTE_ROOT } from "@/apiConstants";
-import { EndreTidStedDialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { EndreTidStedDialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { post } from "@/api/axios";
-import { dialogmoterQueryKeys } from "@/data/dialogmote/dialogmoteQueryHooks";
+import { dialogmoterQueryKeys } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 
 export const useEndreTidStedDialogmote = (
   fnr: string,

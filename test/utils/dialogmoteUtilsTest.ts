@@ -2,11 +2,11 @@ import {
   isAktivtDialogmote,
   isPersonoppgaveCompletedAfterLastMoteEndring,
 } from "@/utils/dialogmoteUtils";
-import { expect, describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
   DialogmoteDTO,
   DialogmoteStatus,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import dayjs from "dayjs";
 import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 

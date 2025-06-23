@@ -4,7 +4,7 @@ import { SvarIcon } from "@/sider/dialogmoter/components/svar/SvarIcon";
 import { capitalizeAllWords } from "@/utils/stringUtils";
 import { SvarDetaljer } from "@/sider/dialogmoter/components/svar/SvarDetaljer";
 import React from "react";
-import { DialogmotedeltakerArbeidstakerVarselDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { DialogmotedeltakerArbeidstakerVarselDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 
 const texts = {

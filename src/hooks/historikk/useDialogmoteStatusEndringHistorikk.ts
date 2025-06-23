@@ -1,7 +1,7 @@
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
-import { useDialogmoteStatusEndringHistorikkQuery } from "@/data/dialogmote/dialogmoteStatusEndringHistorikkQuery";
-import { DialogmoteStatusEndringDTO } from "@/data/dialogmote/types/dialogmoteStatusEndringTypes";
-import { DialogmoteStatus } from "@/data/dialogmote/types/dialogmoteTypes";
+import { useDialogmoteStatusEndringHistorikkQuery } from "@/sider/dialogmoter/hooks/dialogmoteStatusEndringHistorikkQuery";
+import { DialogmoteStatusEndringDTO } from "@/sider/dialogmoter/types/dialogmoteStatusEndringTypes";
+import { DialogmoteStatus } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
 
 function getDialogmoteStatusEndringText(

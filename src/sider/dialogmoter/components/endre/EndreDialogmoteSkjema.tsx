@@ -7,12 +7,12 @@ import { useTidStedDocument } from "@/hooks/dialogmote/document/useTidStedDocume
 import {
   DialogmoteDTO,
   EndreTidStedDialogmoteDTO,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
-import { useEndreTidStedDialogmote } from "@/data/dialogmote/useEndreTidStedDialogmote";
+import { useEndreTidStedDialogmote } from "@/sider/dialogmoter/hooks/useEndreTidStedDialogmote";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
-import { TidStedSkjemaValues } from "@/data/dialogmote/types/skjemaTypes";
+import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
 import { Alert, Box, Button } from "@navikt/ds-react";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { narmesteLederForVirksomhet } from "@/utils/ledereUtils";

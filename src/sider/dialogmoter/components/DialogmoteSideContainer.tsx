@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react";
 import { useParams } from "react-router-dom";
-import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/sider/dialogmoter/components/BrukerKanIkkeVarslesPapirpostAdvarsel";
-import { useDialogmoterQuery } from "@/data/dialogmote/dialogmoteQueryHooks";
+import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Side from "@/sider/Side";

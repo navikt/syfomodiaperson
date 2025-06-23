@@ -1,7 +1,7 @@
 import {
   DialogmoteDTO,
   DialogmoteStatus,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import React, { useState } from "react";
 import * as Amplitude from "@/utils/amplitude";

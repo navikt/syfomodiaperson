@@ -1,7 +1,7 @@
 import {
   DialogmoteDTO,
   DialogmoteStatus,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { DialogmoteMoteStatusPanel } from "@/sider/dialogmoter/components/innkalling/DialogmoteMoteStatusPanel";

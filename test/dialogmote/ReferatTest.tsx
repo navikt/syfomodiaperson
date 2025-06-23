@@ -10,7 +10,7 @@ import Referat, {
   texts as referatSkjemaTexts,
   valideringsTexts as referatSkjemaValideringsTexts,
 } from "../../src/sider/dialogmoter/components/referat/Referat";
-import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   changeTextInput,
@@ -36,8 +36,8 @@ import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expectedReferatDocument } from "./testDataDocuments";
 import { queryClientWithMockData } from "../testQueryClient";
-import { getReferatTexts } from "@/data/dialogmote/dialogmoteTexts";
-import { NewDialogmoteReferatDTO } from "@/data/dialogmote/types/dialogmoteReferatTypes";
+import { getReferatTexts } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
+import { NewDialogmoteReferatDTO } from "@/sider/dialogmoter/types/dialogmoteReferatTypes";
 import { renderWithRouter } from "../testRouterUtils";
 import { Malform, MalformProvider } from "@/context/malform/MalformContext";
 import { StoreKey } from "@/hooks/useLocalStorageState";

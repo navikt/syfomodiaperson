@@ -1,4 +1,4 @@
-import { DialogmoteDTO } from "@/data/dialogmote/types/dialogmoteTypes";
+import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import {
@@ -11,7 +11,7 @@ import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import {
   getCommonTexts,
   getReferatTexts,
-} from "@/data/dialogmote/dialogmoteTexts";
+} from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { useDialogmoteDocumentComponents } from "@/hooks/dialogmote/document/useDialogmoteDocumentComponents";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";

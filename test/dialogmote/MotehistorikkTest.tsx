@@ -4,7 +4,7 @@ import {
   DialogmoteDTO,
   DialogmoteStatus,
   MotedeltakerVarselType,
-} from "@/data/dialogmote/types/dialogmoteTypes";
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { MotehistorikkPanel } from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
 import { QueryClientProvider } from "@tanstack/react-query";
 import {

@@ -16,7 +16,7 @@ import {
   getEndreTidStedTexts,
   getInnkallingTexts,
   getReferatTexts,
-} from "@/data/dialogmote/dialogmoteTexts";
+} from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import {
   tilDatoMedManedNavnOgKlokkeslettWithComma,
   tilDatoMedUkedagOgManedNavnOgKlokkeslett,
