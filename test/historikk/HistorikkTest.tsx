@@ -218,8 +218,7 @@ describe("Historikk", () => {
     );
 
     expect(await screen.findAllByText("Historikk")).to.exist;
-    expect(screen.getByLabelText("Sykefraværstilfelle")).to.exist;
-    expect(screen.getByText("Sykefraværstilfelle")).to.exist;
+    expect(screen.getByLabelText("Velg sykefraværstilfelle")).to.exist;
     expect(screen.getByRole("option", { name: dropdownOptionText })).to.exist;
     expect(
       screen.queryByRole("option", { name: "Utenfor sykefraværstilfelle" })

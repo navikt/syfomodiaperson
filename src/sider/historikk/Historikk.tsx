@@ -18,7 +18,8 @@ import { fullNaisUrlIntern } from "@/utils/miljoUtil";
 import { EksternLenke } from "@/components/EksternLenke";
 
 const texts = {
-  sykefravaerstilfelleLabel: "Sykefraværstilfelle",
+  velgTilfelleLabel: "Velg sykefraværstilfelle",
+  velgTilfelleDefaultValg: "Alle sykefraværstilfeller",
   linkTiltak: "Åpne tiltakshistorikk",
 };
 const byTidspunkt: () => (h1: HistorikkEvent, h2: HistorikkEvent) => number =
@@ -102,7 +103,10 @@ interface Props {
   tilfeller: OppfolgingstilfelleDTO[];
 }
 
-export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
+export default function Historikk({
+  historikkEvents,
+  tilfeller,
+}: Props): ReactElement {
   const [selectedTilfelleIndex, setSelectedTilfelleIndex] = useState<number>(0);
   const eventUtenforTilfelleList = hentEventUtenforTilfelleList(
     tilfeller,
@@ -110,7 +114,9 @@ export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
   );
 
   function filteredEvents() {
-    if (selectedTilfelleIndex === -1) {
+    if (selectedTilfelleIndex === 0) {
+      return historikkEvents;
+    } else if (selectedTilfelleIndex === -1) {
       return eventUtenforTilfelleList;
     } else {
       return historikkEvents.filter((event) =>
@@ -130,16 +136,19 @@ export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
     logSykefravaerstilfelleChanged(isUtenforTilfelle);
   }
 
+  const historikkEntries = filteredEvents().sort(byTidspunkt());
+
   return (
     <Box background="surface-default" padding="4">
       <HStack justify="space-between" align="start">
         <Select
           className="w-fit mb-4"
-          label={texts.sykefravaerstilfelleLabel}
+          label={texts.velgTilfelleLabel}
           onChange={sykefravaerstilfelleOnChange}
         >
+          <option value={0}>{texts.velgTilfelleDefaultValg}</option>
           {tilfeller.map((tilfelle, index) => (
-            <option key={index} value={index}>
+            <option key={index + 1} value={index + 1}>
               {tilLesbarPeriodeMedArstall(tilfelle.start, tilfelle.end)}
             </option>
           ))}
@@ -168,9 +177,8 @@ export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {filteredEvents()
-              .sort(byTidspunkt())
-              .map(({ expandableContent, kilde, tekst, tidspunkt }, i) => {
+            {historikkEntries.map(
+              ({ expandableContent, kilde, tekst, tidspunkt }, i) => {
                 return expandableContent ? (
                   <Table.ExpandableRow
                     key={i}
@@ -196,7 +204,8 @@ export function Historikk({ historikkEvents, tilfeller }: Props): ReactElement {
                     <Table.DataCell>{tagFromKilde(kilde)}</Table.DataCell>
                   </Table.Row>
                 );
-              })}
+              }
+            )}
           </Table.Body>
         </Table>
       </Box>
