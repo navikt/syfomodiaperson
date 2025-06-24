@@ -1,7 +1,7 @@
 import React from "react";
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
 import { useController, useFormContext } from "react-hook-form";
-import { VurderingArsak } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
+import { VurderingInitiertAv } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 
 const texts = {
   label: "Når sendte NAY oppgaven i GOSYS? (obligatorisk)",
@@ -14,7 +14,7 @@ export default function OppgaveSendtFraNayDatepicker() {
     name: "oppgaveFraNayDato",
     control,
     rules: {
-      required: watch("arsak") === VurderingArsak.NAY_BER_OM_NY_VURDERING,
+      required: watch("vurderingInitiertAv") === VurderingInitiertAv.NAY,
     },
   });
   const { datepickerProps, inputProps } = useDatepicker({

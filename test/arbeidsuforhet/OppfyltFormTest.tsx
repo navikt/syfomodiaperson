@@ -4,7 +4,7 @@ import { queryClientWithMockData } from "../testQueryClient";
 import { screen, waitFor, within } from "@testing-library/react";
 import { expect, describe, it, beforeEach } from "vitest";
 import {
-  VurderingRequestDTO,
+  Oppfylt,
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import {
@@ -87,7 +87,7 @@ describe("OppfyltForm", () => {
         const useSendVurderingArbeidsuforhet = queryClient
           .getMutationCache()
           .getAll()[0];
-        const expectedVurdering: VurderingRequestDTO = {
+        const expectedVurdering: Oppfylt = {
           type: VurderingType.OPPFYLT,
           begrunnelse: begrunnelse,
           document: getOppfyltVurderingDocument(begrunnelse),

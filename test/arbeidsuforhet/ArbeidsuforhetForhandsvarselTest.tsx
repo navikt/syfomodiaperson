@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import SendForhandsvarselSkjema from "@/sider/arbeidsuforhet/SendForhandsvarselSkjema";
 import { stubArbeidsuforhetForhandsvarselApi } from "../stubs/stubIsarbeidsuforhet";
 import {
-  VurderingRequestDTO,
+  Forhandsvarsel,
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { getSendForhandsvarselDocument } from "./documents";
@@ -76,8 +76,8 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
         expect(sendForhandsvarselMutation).to.exist;
       });
       const vurdering = sendForhandsvarselMutation.state
-        .variables as unknown as VurderingRequestDTO;
-      const expectedVurdering: VurderingRequestDTO = {
+        .variables as unknown as Forhandsvarsel;
+      const expectedVurdering: Forhandsvarsel = {
         type: VurderingType.FORHANDSVARSEL,
         begrunnelse: begrunnelse,
         document: getSendForhandsvarselDocument(begrunnelse),

@@ -4,8 +4,8 @@ import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { clickButton } from "../testUtils";
 import {
   VurderingArsak,
-  VurderingRequestDTO,
   VurderingType,
+  IkkeAktuell,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { QueryClient } from "@tanstack/react-query";
 import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
@@ -63,7 +63,7 @@ describe("ArbeidsuforhetIkkeAktuell", () => {
     await clickButton("Lagre");
     await waitFor(() => {
       const sendVurderingMutation = queryClient.getMutationCache().getAll()[0];
-      const expectedVurdering: VurderingRequestDTO = {
+      const expectedVurdering: IkkeAktuell = {
         type: VurderingType.IKKE_AKTUELL,
         arsak: arsak,
         begrunnelse: "",

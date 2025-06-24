@@ -3,7 +3,7 @@ import { ISARBEIDSUFORHET_ROOT } from "@/apiConstants";
 import { post } from "@/api/axios";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
-  VurderingRequestDTO,
+  ArbeidsuforhetVurderingRequestDTO,
   VurderingResponseDTO,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { arbeidsuforhetQueryKeys } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
@@ -12,7 +12,7 @@ export const useSaveVurderingArbeidsuforhet = () => {
   const personident = useValgtPersonident();
   const queryClient = useQueryClient();
   const path = `${ISARBEIDSUFORHET_ROOT}/arbeidsuforhet/vurderinger`;
-  const postVurdering = (vurdering: VurderingRequestDTO) =>
+  const postVurdering = (vurdering: ArbeidsuforhetVurderingRequestDTO) =>
     post<VurderingResponseDTO>(path, vurdering, personident);
 
   return useMutation({

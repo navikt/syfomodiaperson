@@ -16,9 +16,9 @@ import { Link } from "react-router-dom";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { FormProvider, useForm } from "react-hook-form";
 import {
-  VurderingArsak,
-  VurderingRequestDTO,
+  VurderingInitiertAv,
   VurderingType,
+  AvslagUtenForhandsvarsel,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { useSaveVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSaveVurderingArbeidsuforhet";
 import { useArbeidsuforhetVurderingDocument } from "@/sider/arbeidsuforhet/hooks/useArbeidsuforhetVurderingDocument";
@@ -34,10 +34,10 @@ const texts = {
   info: "Her skal du gjøre vurderinger i saker der utbetaling ikke er igangsatt.",
   innstillingenJournalfores:
     "Innstillingen journalføres og blir synlig i Gosys.",
-  arsakTilInnstilling: {
-    radioLegend: "Årsak til innstilling uten forhåndsvarsel",
-    sykepengerIkkeUtbetalt: "Sykepenger ikke utbetalt",
-    nyVurderingFraNay: "NAY ber om vurdering i en sammensatt sak",
+  vurderingInitiertAv: {
+    radioLegend: "Hvem har initiert vurderingen? (obligatorisk)",
+    navVeileder: "Nav-kontor",
+    nayBerOmVurdering: "NAY",
     required: "Vennligst angi årsak til innstilling",
   },
   begrunnelseLabel: "Begrunnelse (obligatorisk)",
@@ -61,9 +61,7 @@ const texts = {
 const begrunnelseMaxLength = 5000;
 
 interface FormValues {
-  arsak:
-    | VurderingArsak.SYKEPENGER_IKKE_UTBETALT
-    | VurderingArsak.NAY_BER_OM_NY_VURDERING;
+  vurderingInitiertAv: VurderingInitiertAv;
   oppgaveFraNayDato?: Date;
   avslagFom: Date;
   begrunnelse: string;
@@ -84,21 +82,21 @@ export default function InnstillingUtenForhandsvarsel() {
   } = formProps;
   const submit = (values: FormValues) => {
     const documentProps = {
-      arsak: values.arsak,
+      vurderingInitiertAv: values.vurderingInitiertAv,
       begrunnelse: values.begrunnelse,
       avslagFom: values.avslagFom,
       oppgaveFraNayDato:
-        values.arsak === VurderingArsak.NAY_BER_OM_NY_VURDERING
+        values.vurderingInitiertAv === VurderingInitiertAv.NAY
           ? values.oppgaveFraNayDato
           : undefined,
     };
-    const vurderingRequestDTO: VurderingRequestDTO = {
+    const vurderingRequestDTO: AvslagUtenForhandsvarsel = {
       type: VurderingType.AVSLAG_UTEN_FORHANDSVARSEL,
-      arsak: values.arsak,
+      vurderingInitiertAv: values.vurderingInitiertAv,
       begrunnelse: values.begrunnelse,
       gjelderFom: dayjs(values.avslagFom).format("YYYY-MM-DD"),
       oppgaveFraNayDato:
-        values.arsak === VurderingArsak.NAY_BER_OM_NY_VURDERING
+        values.vurderingInitiertAv === VurderingInitiertAv.NAY
           ? dayjs(values.oppgaveFraNayDato).format("YYYY-MM-DD")
           : undefined,
       document: getInnstillingUtenForhandsvarselDocument(documentProps),
@@ -123,25 +121,27 @@ export default function InnstillingUtenForhandsvarsel() {
           <BodyShort>{texts.info}</BodyShort>
           <AvslagFomDatepicker />
           <RadioGroup
-            name="arsak"
-            legend={texts.arsakTilInnstilling.radioLegend}
+            name="vurderingInitiertAv"
+            legend={texts.vurderingInitiertAv.radioLegend}
             size="small"
-            error={errors.arsak && texts.arsakTilInnstilling.required}
+            error={
+              errors.vurderingInitiertAv && texts.vurderingInitiertAv.required
+            }
           >
             <Radio
-              value={VurderingArsak.SYKEPENGER_IKKE_UTBETALT}
-              {...register("arsak", { required: true })}
+              value={VurderingInitiertAv.NAV_KONTOR}
+              {...register("vurderingInitiertAv", { required: true })}
             >
-              {texts.arsakTilInnstilling.sykepengerIkkeUtbetalt}
+              {texts.vurderingInitiertAv.navVeileder}
             </Radio>
             <Radio
-              value={VurderingArsak.NAY_BER_OM_NY_VURDERING}
-              {...register("arsak", { required: true })}
+              value={VurderingInitiertAv.NAY}
+              {...register("vurderingInitiertAv", { required: true })}
             >
-              {texts.arsakTilInnstilling.nyVurderingFraNay}
+              {texts.vurderingInitiertAv.nayBerOmVurdering}
             </Radio>
           </RadioGroup>
-          {watch("arsak") === VurderingArsak.NAY_BER_OM_NY_VURDERING && (
+          {watch("vurderingInitiertAv") === VurderingInitiertAv.NAY && (
             <OppgaveSendtFraNayDatepicker />
           )}
           <Textarea
@@ -181,7 +181,7 @@ export default function InnstillingUtenForhandsvarsel() {
               contentLabel={texts.forhandsvisning}
               getDocumentComponents={() =>
                 getInnstillingUtenForhandsvarselDocument({
-                  arsak: watch("arsak"),
+                  vurderingInitiertAv: watch("vurderingInitiertAv"),
                   begrunnelse: watch("begrunnelse"),
                   avslagFom: watch("avslagFom"),
                   oppgaveFraNayDato: watch("oppgaveFraNayDato"),

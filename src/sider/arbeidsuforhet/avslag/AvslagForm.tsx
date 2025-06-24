@@ -3,7 +3,7 @@ import { useSaveVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/use
 import { useArbeidsuforhetVurderingDocument } from "@/sider/arbeidsuforhet/hooks/useArbeidsuforhetVurderingDocument";
 import { FormProvider, useForm } from "react-hook-form";
 import {
-  VurderingRequestDTO,
+  Avslag,
   VurderingResponseDTO,
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
@@ -79,7 +79,7 @@ export function AvslagForm({ sisteVurdering }: Props) {
   } = formMethods;
 
   const submit = (values: FormValues) => {
-    const vurderingRequestDTO: VurderingRequestDTO = {
+    const vurderingRequestDTO: Avslag = {
       type: VurderingType.AVSLAG,
       begrunnelse: values.begrunnelse,
       document: getAvslagDocument(
