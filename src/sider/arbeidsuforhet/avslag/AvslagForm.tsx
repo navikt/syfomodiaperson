@@ -29,10 +29,9 @@ const texts = {
   title: "Skriv innstilling om avslag til NAY",
   innstillingInfoLabel: "Når du skriver innstillingen",
   begrunnelseLabel: "Begrunnelse (obligatorisk)",
-  info1:
+  begrunnelseDescription:
     "Skriv kort hvilke opplysninger som ligger til grunn for avslaget, samt din vurdering av hvorfor vilkåret ikke er oppfylt og vurdering av eventuelle nye opplysninger.",
-  info2:
-    "Hvis du har vurdert ordningen friskmelding til arbeidsformidling: skriv hvorfor ordningen ikke er aktuell og legg inn henvisning til §8-5.",
+  info: "Hvis du har vurdert ordningen friskmelding til arbeidsformidling: skriv hvorfor ordningen ikke er aktuell og legg inn henvisning til §8-5.",
   afterSendInfo: {
     title: "Videre må du huske å:",
     gosysoppgave:
@@ -113,13 +112,13 @@ export function AvslagForm({ sisteVurdering }: Props) {
               varselSvarfrist={sisteVurdering.varsel.svarfrist}
             />
           )}
-          <Paragraph label={texts.innstillingInfoLabel} body={texts.info1} />
-          <BodyLong size={"small"}>{texts.info2}</BodyLong>
+          <BodyLong size={"small"}>{texts.info}</BodyLong>
           <Textarea
             {...register("begrunnelse", {
               maxLength: begrunnelseMaxLength,
               required: texts.missingBegrunnelse,
             })}
+            description={texts.begrunnelseDescription}
             value={watch("begrunnelse")}
             label={texts.begrunnelseLabel}
             error={errors.begrunnelse?.message}
