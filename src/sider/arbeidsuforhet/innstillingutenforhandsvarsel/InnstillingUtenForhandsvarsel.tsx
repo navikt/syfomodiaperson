@@ -1,6 +1,7 @@
 import React from "react";
 import {
   BodyLong,
+  BodyShort,
   Box,
   Button,
   Heading,
@@ -30,12 +31,9 @@ import dayjs from "dayjs";
 
 const texts = {
   title: "Innstilling om avslag uten forhåndsvarsel",
-  description:
-    "Innstillingen du skriver journalføres og kan bli brukt i et eventuelt vedtak fra NAY.",
-  punkt: [
-    "Skriv en kort setning om det er vilkåret om sykdom eller skade, arbeidsuførhet, eller årsakssammenheng mellom de to, som ikke er oppfylt. Skriv kort hvilke opplysninger som ligger til grunn.",
-    "Skriv kort din vurdering av hvorfor vilkåret ikke er oppfylt.",
-  ],
+  info: "Her skal du gjøre vurderinger i saker der utbetaling ikke er igangsatt.",
+  innstillingenJournalfores:
+    "Innstillingen journalføres og blir synlig i Gosys.",
   arsakTilInnstilling: {
     radioLegend: "Årsak til innstilling uten forhåndsvarsel",
     sykepengerIkkeUtbetalt: "Sykepenger ikke utbetalt",
@@ -43,6 +41,8 @@ const texts = {
     required: "Vennligst angi årsak til innstilling",
   },
   begrunnelseLabel: "Begrunnelse (obligatorisk)",
+  begrunnelseDescription:
+    "Skriv kort hvilke opplysninger som ligger til grunn for avslaget, samt din vurdering av hvorfor vilkåret ikke er oppfylt og vurdering av eventuelle nye opplysninger.",
   missingBegrunnelse: "Vennligst angi begrunnelse",
   huskGosysMelding: "Send oppgave til Nav Arbeid og ytelser i Gosys:",
   huskGosysMeldingPunkter: [
@@ -120,16 +120,7 @@ export default function InnstillingUtenForhandsvarsel() {
           <Heading level="2" size="medium">
             {texts.title}
           </Heading>
-          <div>
-            <BodyLong>{texts.description}</BodyLong>
-            <List as="ul" size="small">
-              {texts.punkt.map((text, index) => (
-                <List.Item key={index} className="mb-2">
-                  {text}
-                </List.Item>
-              ))}
-            </List>
-          </div>
+          <BodyShort>{texts.info}</BodyShort>
           <AvslagFomDatepicker />
           <RadioGroup
             name="arsak"
@@ -158,6 +149,7 @@ export default function InnstillingUtenForhandsvarsel() {
               maxLength: begrunnelseMaxLength,
               required: texts.missingBegrunnelse,
             })}
+            description={texts.begrunnelseDescription}
             value={watch("begrunnelse")}
             label={texts.begrunnelseLabel}
             error={errors.begrunnelse?.message}
@@ -177,6 +169,7 @@ export default function InnstillingUtenForhandsvarsel() {
               ))}
             </List>
           </div>
+          <BodyLong>{texts.innstillingenJournalfores}</BodyLong>
           {lagreInnstilling.isError && (
             <SkjemaInnsendingFeil error={lagreInnstilling.error} />
           )}

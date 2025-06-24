@@ -9,7 +9,7 @@ const texts = {
   description2:
     'I de fleste saker der vilkåret ikke er oppfylt skal du sende et forhåndsvarsel. Kun dersom utbetaling ikke er igangsatt, eller NAY ber om en innstilling som en del av en større sammensatt vurdering, skal du velge "Innstilling uten forhåndsvarsel".',
   forhandsvarselButton: "Forhåndsvarsel",
-  innstillingUtenForhandsvarselButton: "Innstilling uten forhåndsvarsel",
+  innstillingUtenForhandsvarselButton: "Avslag uten forhåndsvarsel",
 };
 
 export default function VelgVurdering() {
