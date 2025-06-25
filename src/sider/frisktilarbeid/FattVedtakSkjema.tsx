@@ -166,8 +166,8 @@ export default function FattVedtakSkjema() {
               label={texts.begrunnelse.label}
               error={errors.begrunnelse?.message}
             />
-            <Alert variant="info" className="[&>*]:max-w-fit">
-              <Heading spacing size="small" level="3">
+            <Alert variant="info" contentMaxWidth={false} size="small">
+              <Heading spacing size="xsmall" level="3">
                 {texts.gosysAlertHeader}
               </Heading>
               {texts.gosysAlertBody}
