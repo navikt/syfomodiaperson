@@ -4,7 +4,6 @@ import { erIdag } from "@/utils/datoUtils";
 import dayjs from "dayjs";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { OppfolgingsplanLPSMedPersonoppgave } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
@@ -40,7 +39,6 @@ export default function AktiveOppfolgingsplaner({
   aktivePlaner,
   oppfolgingsplanerLPSMedPersonoppgave,
 }: Props) {
-  const { toggles } = useFeatureToggles();
   const { currentLedere } = useLedereQuery();
 
   const { latestOppfolgingstilfelle, hasActiveOppfolgingstilfelle } =
@@ -88,7 +86,6 @@ export default function AktiveOppfolgingsplaner({
       )
   );
   const isBeOmOppfolgingsplanVisible =
-    toggles.isBeOmOppfolgingsplanEnabled &&
     !!currentOppfolgingstilfelle &&
     activeNarmesteLedereWithoutActivePlan.length > 0;
 
