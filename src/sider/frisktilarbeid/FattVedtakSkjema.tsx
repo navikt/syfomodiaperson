@@ -46,6 +46,9 @@ const texts = {
     "Vedtaket om friskmelding til arbeidsformidling fattet og sendt til bruker. Ny oppgave er lagt til i oversikten din.",
   fattVedtakErrorMessage:
     "Det oppstod en feil. Sjekk at sykmeldt er registrert som arbeidssøker og at perioden ikke overlapper med et eksisterende vedtak.",
+  gosysAlertHeader: "Modia sender Gosys-oppgaven automatisk",
+  gosysAlertBody:
+    "Dette vil skje noen minutter etter at vedtaket er fattet. Du trenger derfor ikke sende Gosys-oppgave manuelt.",
 };
 
 function calculateTomDate(fomDato: Date, maksDato: Date | undefined): Date {
@@ -163,6 +166,12 @@ export default function FattVedtakSkjema() {
               label={texts.begrunnelse.label}
               error={errors.begrunnelse?.message}
             />
+            <Alert variant="info" contentMaxWidth={false} size="small">
+              <Heading spacing size="xsmall" level="3">
+                {texts.gosysAlertHeader}
+              </Heading>
+              {texts.gosysAlertBody}
+            </Alert>
           </div>
           {fattVedtak.isError && (
             <Alert variant="error" size="small" contentMaxWidth={false}>

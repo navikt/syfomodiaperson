@@ -23,7 +23,8 @@ const texts = {
     fatt14aVedtak: "Fatt § 14a-vedtak i Modia arbeidsrettet oppfølging",
     sendVedtak:
       "Send vedtak om Friskmelding til arbeidsformidling, med tilpasset begrunnelse",
-    sendGosysOppgave: "Send Gosys-oppgave til NAY",
+    sendGosysOppgave:
+      "Modia sender Gosys-oppgave til NAY automatisk i løpet av noen minutter",
   },
   infoTitle: "Tilleggsinformasjon",
   infoBulletPoints: [
