@@ -4,8 +4,8 @@ import {
   SykmeldingOldFormat,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import Side from "../../Side";
-import SideLaster from "../../../components/SideLaster";
+import Side from "../../../components/side/Side";
+import SideLaster from "../../../components/side/SideLaster";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import LenkeTilDineSykmeldinger from "@/sider/sykmeldinger/sykmelding/LenkeTilDineSykmeldinger";
 import EndreSykmelding from "@/components/endresykmelding/EndreSykmelding";

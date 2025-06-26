@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import Sidetopp from "../../../components/Sidetopp";
+import Sidetopp from "../../../components/side/Sidetopp";
 import SoknadTeasere from "./SoknaderTeasere";
 import PlanlagteTeasere from "./PlanlagteTeasere";
 import {

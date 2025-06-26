@@ -1,9 +1,9 @@
 import React, { ReactElement } from "react";
-import Side from "@/sider/Side";
-import Sidetopp from "@/components/Sidetopp";
-import SideLaster from "@/components/SideLaster";
+import Side from "@/components/side/Side";
+import Sidetopp from "@/components/side/Sidetopp";
+import SideLaster from "@/components/side/SideLaster";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
-import * as Tredelt from "@/sider/TredeltSide";
+import * as Tredelt from "@/components/side/TredeltSide";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { VurderingHistorikk } from "@/sider/arbeidsuforhet/historikk/VurderingHistorikk";

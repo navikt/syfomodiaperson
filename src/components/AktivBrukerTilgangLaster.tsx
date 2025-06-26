@@ -3,7 +3,7 @@ import AppSpinner from "./AppSpinner";
 import Feilmelding from "./Feilmelding";
 import { useTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
 import Decorator from "@/decorator/Decorator";
-import { ikkeTilgangBegrunnelseTekst } from "@/components/SideLaster";
+import { ikkeTilgangBegrunnelseTekst } from "@/components/side/SideLaster";
 
 interface AktivBrukerTilgangLasterProps {
   children: ReactNode;

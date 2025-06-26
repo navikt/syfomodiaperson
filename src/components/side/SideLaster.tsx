@@ -1,6 +1,6 @@
 import React, { ReactElement, ReactNode } from "react";
-import AppSpinner from "./AppSpinner";
-import Feilmelding from "./Feilmelding";
+import AppSpinner from "../AppSpinner";
+import Feilmelding from "../Feilmelding";
 import { useTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
 
 interface Props {

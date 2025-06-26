@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react";
-import Side from "../Side";
+import Side from "../../components/side/Side";
 import Soknader from "./soknader/Soknader";
 import Feilstripe from "../../components/Feilstripe";
-import SideLaster from "../../components/SideLaster";
+import SideLaster from "../../components/side/SideLaster";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";

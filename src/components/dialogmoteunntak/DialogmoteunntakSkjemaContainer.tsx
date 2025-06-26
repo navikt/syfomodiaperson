@@ -1,11 +1,11 @@
 import React from "react";
-import Side from "@/sider/Side";
-import SideLaster from "@/components/SideLaster";
-import Sidetopp from "@/components/Sidetopp";
+import Side from "@/components/side/Side";
+import SideLaster from "@/components/side/SideLaster";
+import Sidetopp from "@/components/side/Sidetopp";
 import { MotehistorikkPanel } from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
 import DialogmoteunntakSkjema from "@/components/dialogmoteunntak/DialogmoteunntakSkjema";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import * as Tredelt from "@/sider/TredeltSide";
+import * as Tredelt from "@/components/side/TredeltSide";
 import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 import { useDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
 import { MalformProvider } from "@/context/malform/MalformContext";

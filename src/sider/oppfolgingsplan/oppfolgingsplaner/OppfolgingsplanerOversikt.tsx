@@ -1,5 +1,5 @@
 import React from "react";
-import Sidetopp from "../../../components/Sidetopp";
+import Sidetopp from "../../../components/side/Sidetopp";
 import { erIkkeIdag } from "@/utils/datoUtils";
 import OppfolgingsplanerOversiktLPS from "../lps/OppfolgingsplanerOversiktLPS";
 import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";

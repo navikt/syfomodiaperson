@@ -33,7 +33,7 @@ export enum Menypunkter {
   MANGLENDE_MEDVIRKNING = "MANGLENDE_MEDVIRKNING",
 }
 
-export type Menypunkt = { navn: string; sti: string };
+type Menypunkt = { navn: string; sti: string };
 
 const allMenypunkter: {
   [key in Menypunkter]: Menypunkt;
@@ -63,19 +63,19 @@ const allMenypunkter: {
     sti: "moteoversikt",
   },
   [Menypunkter.AKTIVITETSKRAV]: {
-    navn: "Aktivitetskrav",
+    navn: "§ 8-8 Aktivitetskrav",
     sti: "aktivitetskrav",
   },
   [Menypunkter.MANGLENDE_MEDVIRKNING]: {
-    navn: "Manglende medvirkning",
+    navn: "§ 8-8 Manglende medvirkning",
     sti: "manglendemedvirkning",
   },
   [Menypunkter.ARBEIDSUFORHET]: {
-    navn: "Arbeidsuførhet",
+    navn: "§ 8-4 Arbeidsuførhet",
     sti: "arbeidsuforhet",
   },
   [Menypunkter.FRISKTILARBEID]: {
-    navn: "Friskmelding til arbeidsformidling",
+    navn: "§ 8-5 Friskmelding til arbeidsformidling",
     sti: "frisktilarbeid",
   },
   [Menypunkter.SENOPPFOLGING]: {
@@ -88,13 +88,11 @@ const allMenypunkter: {
   },
 };
 
-interface GlobalNavigasjonProps {
+interface Props {
   aktivtMenypunkt: Menypunkter;
 }
 
-export const GlobalNavigasjon = ({
-  aktivtMenypunkt,
-}: GlobalNavigasjonProps) => {
+export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
   const [focusIndex, setFocusIndex] = useState(-1);
   const refs = useRef<HTMLAnchorElement[]>([]);
 
@@ -162,7 +160,7 @@ export const GlobalNavigasjon = ({
   };
 
   return (
-    <ul aria-label="Navigasjon" className="navigasjon">
+    <ul aria-label="Navigasjon">
       {allMenypunktEntries.map(([menypunkt, { navn, sti }], index) => {
         const isAktiv = menypunkt === aktivtMenypunkt;
         const className = cn("navigasjonspanel", {
@@ -211,4 +209,4 @@ export const GlobalNavigasjon = ({
       })}
     </ul>
   );
-};
+}

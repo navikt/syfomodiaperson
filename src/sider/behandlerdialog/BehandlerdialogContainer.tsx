@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react";
-import Side from "@/sider/Side";
-import SideLaster from "@/components/SideLaster";
+import Side from "@/components/side/Side";
+import SideLaster from "@/components/side/SideLaster";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import * as Tredelt from "@/sider/TredeltSide";
+import * as Tredelt from "@/components/side/TredeltSide";
 import { MeldingTilBehandler } from "@/sider/behandlerdialog/meldingtilbehandler/MeldingTilBehandler";
 import { Meldinger } from "@/sider/behandlerdialog/meldinger/Meldinger";
 import { useBehandlerdialogQuery } from "@/data/behandlerdialog/behandlerdialogQueryHooks";

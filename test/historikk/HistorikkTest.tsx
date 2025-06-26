@@ -868,7 +868,7 @@ describe("Historikk", () => {
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
-      expect(screen.getAllByText("Aktivitetskrav")).to.have.length(3); // To tags og menypunktet
+      expect(screen.getAllByText("Aktivitetskrav")).to.have.length(2);
       expect(
         screen.getByText("Samuel Sam Jones ble kandidat til aktivitetskravet")
       ).to.exist;

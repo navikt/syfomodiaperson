@@ -1,8 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import {
-  GlobalNavigasjon,
-  Menypunkter,
-} from "@/components/globalnavigasjon/GlobalNavigasjon";
+import GlobalNavigasjon from "@/components/globalnavigasjon/GlobalNavigasjon";
+import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -99,10 +97,10 @@ describe("GlobalNavigasjon", () => {
       "Dialog med behandler",
       "Oppfølgingsplaner",
       "Dialogmøter",
-      "Aktivitetskrav",
-      "Manglende medvirkning",
-      "Arbeidsuførhet",
-      "Friskmelding til arbeidsformidling",
+      "§ 8-8 Aktivitetskrav",
+      "§ 8-8 Manglende medvirkning",
+      "§ 8-4 Arbeidsuførhet",
+      "§ 8-5 Friskmelding til arbeidsformidling",
       "Snart slutt på sykepengene",
       "Historikk",
       "Vedtak",
@@ -194,7 +192,8 @@ describe("GlobalNavigasjon", () => {
 
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Aktivitetskrav 1" })).to.exist;
+    expect(screen.getByRole("link", { name: "§ 8-8 Aktivitetskrav 1" })).to
+      .exist;
   });
 
   it("viser rød prikk for menypunkt Aktivitetskrav når utløpt forhåndsvarsel", () => {
@@ -204,7 +203,8 @@ describe("GlobalNavigasjon", () => {
 
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Aktivitetskrav 1" })).to.exist;
+    expect(screen.getByRole("link", { name: "§ 8-8 Aktivitetskrav 1" })).to
+      .exist;
   });
 
   it("viser ikke rød prikk for menypunkt Aktivitetskrav når ikke-utløpt forhåndsvarsel", () => {
@@ -214,7 +214,7 @@ describe("GlobalNavigasjon", () => {
 
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Aktivitetskrav" })).to.exist;
+    expect(screen.getByRole("link", { name: "§ 8-8 Aktivitetskrav" })).to.exist;
   });
 
   it("viser rød prikk for menypunkt Arbeidsuforhet når siste vurdering er utløpt forhåndsvarsel", () => {
@@ -228,7 +228,8 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Arbeidsuførhet 1" })).to.exist;
+    expect(screen.getByRole("link", { name: "§ 8-4 Arbeidsuførhet 1" })).to
+      .exist;
   });
 
   it("viser ikke rød prikk for menypunkt Arbeidsuforhet når siste vurdering er ikke-utløpt forhåndsvarsel", () => {
@@ -242,7 +243,7 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Arbeidsuførhet" })).to.exist;
+    expect(screen.getByRole("link", { name: "§ 8-4 Arbeidsuførhet" })).to.exist;
   });
 
   it("viser ikke rød prikk for menypunkt Arbeidsuforhet når siste vurdering er oppfylt", () => {
@@ -257,7 +258,7 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Arbeidsuførhet" })).to.exist;
+    expect(screen.getByRole("link", { name: "§ 8-4 Arbeidsuførhet" })).to.exist;
   });
 
   it("viser ikke rød prikk for menypunkt Arbeidsuforhet når siste vurdering er avslag", () => {
@@ -272,7 +273,7 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Arbeidsuførhet" })).to.exist;
+    expect(screen.getByRole("link", { name: "§ 8-4 Arbeidsuførhet" })).to.exist;
   });
 
   it("viser ikke rød prikk for menypunkt Arbeidsuforhet når ingen vurdering", () => {
@@ -282,7 +283,7 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Arbeidsuførhet" })).to.exist;
+    expect(screen.getByRole("link", { name: "§ 8-4 Arbeidsuførhet" })).to.exist;
   });
 
   it('viser en rød prikk for menypunkt "Snart slutt på sykepengene" når kandidat med svar', () => {
@@ -370,7 +371,9 @@ describe("GlobalNavigasjon", () => {
     renderGlobalNavigasjon();
 
     expect(
-      screen.getByRole("link", { name: "Friskmelding til arbeidsformidling 1" })
+      screen.getByRole("link", {
+        name: "§ 8-5 Friskmelding til arbeidsformidling 1",
+      })
     ).to.exist;
   });
 
@@ -387,7 +390,9 @@ describe("GlobalNavigasjon", () => {
     renderGlobalNavigasjon();
 
     expect(
-      screen.getByRole("link", { name: "Friskmelding til arbeidsformidling" })
+      screen.getByRole("link", {
+        name: "§ 8-5 Friskmelding til arbeidsformidling",
+      })
     ).to.exist;
   });
 
@@ -403,7 +408,9 @@ describe("GlobalNavigasjon", () => {
     renderGlobalNavigasjon();
 
     expect(
-      screen.getByRole("link", { name: "Friskmelding til arbeidsformidling" })
+      screen.getByRole("link", {
+        name: "§ 8-5 Friskmelding til arbeidsformidling",
+      })
     ).to.exist;
   });
 
@@ -413,7 +420,9 @@ describe("GlobalNavigasjon", () => {
     renderGlobalNavigasjon();
 
     expect(
-      screen.getByRole("link", { name: "Friskmelding til arbeidsformidling" })
+      screen.getByRole("link", {
+        name: "§ 8-5 Friskmelding til arbeidsformidling",
+      })
     ).to.exist;
   });
 
@@ -425,8 +434,8 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Manglende medvirkning 1" })).to
-      .exist;
+    expect(screen.getByRole("link", { name: "§ 8-8 Manglende medvirkning 1" }))
+      .to.exist;
   });
 
   it('viser ikke en rød prikk for menypunkt "Manglende Medvirkning" når forhåndsvarselet ikke er utgått', () => {
@@ -437,7 +446,7 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Manglende medvirkning" })).to
+    expect(screen.getByRole("link", { name: "§ 8-8 Manglende medvirkning" })).to
       .exist;
   });
 });

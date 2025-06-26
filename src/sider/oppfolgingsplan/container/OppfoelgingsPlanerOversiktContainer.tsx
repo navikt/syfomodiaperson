@@ -1,8 +1,8 @@
 import React from "react";
-import Side from "../../Side";
+import Side from "../../../components/side/Side";
 import OppfolgingsplanerOversikt from "../oppfolgingsplaner/OppfolgingsplanerOversikt";
 import { activeOppfolgingsplaner } from "@/utils/oppfolgingsplanerUtils";
-import SideLaster from "../../../components/SideLaster";
+import SideLaster from "../../../components/side/SideLaster";
 import {
   useOppfolgingsplanerLPSQuery,
   useOppfolgingsplanerQuery,

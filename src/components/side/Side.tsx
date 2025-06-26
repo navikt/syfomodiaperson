@@ -1,10 +1,8 @@
 import React, { ReactNode, useEffect } from "react";
-import Personkort from "../components/personkort/Personkort";
+import Personkort from "../personkort/Personkort";
 import DocumentTitle from "react-document-title";
-import {
-  GlobalNavigasjon,
-  Menypunkter,
-} from "@/components/globalnavigasjon/GlobalNavigasjon";
+import GlobalNavigasjon from "@/components/globalnavigasjon/GlobalNavigasjon";
+import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { isEaster, isPride } from "@/utils/festiveUtils";
 import { Easter } from "@/components/festive/Easter";
 import * as Amplitude from "@/utils/amplitude";
