@@ -325,7 +325,7 @@ export const referatStandardTekster: Record<StandardtekstKey, StandardTekst> = {
   },
   [StandardtekstKey.OKONOMISK_STOTTE]: {
     label: "Hjelp til å søke om annen økonomisk støtte",
-    text: "Klarer du ikke å komme tilbake i arbeid før den siste dagen du har rett til sykepenger, trenger vi et nytt dialogmøte. Da vil vi snakke sammen om hvordan du eventuelt kan søke om annen økonomisk støtte fra Nav.",
+    text: "Dersom du ikke kan komme tilbake i arbeid før sykepengene tar slutt, kan du ha rett til annen økonomisk støtte. Ta kontakt med Nav for veiledning eller hjelp til å søke.",
   },
   [StandardtekstKey.INGEN_RETTIGHETER]: {
     label: "Ingen videre rettigheter",
