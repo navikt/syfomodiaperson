@@ -19,13 +19,13 @@ const texts = {
 export interface OppfolgingsoppgaveRequestDTO {
   oppfolgingsgrunn: Oppfolgingsgrunn;
   tekst?: string;
-  frist: string | null;
+  frist: string;
 }
 
 export interface EditOppfolgingsoppgaveRequestDTO {
   oppfolgingsgrunn: Oppfolgingsgrunn;
   tekst?: string;
-  frist: string | null;
+  frist?: string;
 }
 
 export interface OppfolgingsoppgaveResponseDTO {
@@ -43,7 +43,7 @@ export interface OppfolgingsoppgaveVersjonResponseDTO {
   createdBy: string;
   tekst: string | null;
   oppfolgingsgrunn: Oppfolgingsgrunn;
-  frist: string | null;
+  frist?: string;
 }
 
 export enum Oppfolgingsgrunn {
