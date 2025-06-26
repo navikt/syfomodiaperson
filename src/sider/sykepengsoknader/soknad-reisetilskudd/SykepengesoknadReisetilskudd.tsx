@@ -7,7 +7,6 @@ import {
 import { KorrigertAv } from "../soknad-arbeidstaker/KorrigertAv";
 import { RelaterteSoknader } from "../soknad-arbeidstaker/RelaterteSoknader";
 import { SykmeldingUtdragContainer } from "../SykmeldingUtdragContainer";
-import { erVaerKlarOverAt } from "@/utils/sykepengesoknadUtils";
 import SykepengesoknadStatuspanel from "@/sider/sykepengsoknader/soknad-arbeidstaker-ny/SykepengesoknadStatuspanel";
 import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
 import { Heading } from "@navikt/ds-react";
@@ -16,18 +15,6 @@ import TilbakeTilSoknader from "@/sider/sykepengsoknader/soknad-felles/TilbakeTi
 const texts = {
   tittel: "Søknad om reisetilskudd",
   oppsummeringTittel: "Oppsummering",
-};
-
-interface OppsummeringUtvidbarProps {
-  soknad: SykepengesoknadDTO;
-}
-
-const OppsummeringUtvidbar = ({ soknad }: OppsummeringUtvidbarProps) => {
-  return (
-    <SpeilingEkspanderbartPanel tittel={texts.oppsummeringTittel}>
-      <Oppsummeringsvisning soknad={soknad} />
-    </SpeilingEkspanderbartPanel>
-  );
 };
 
 interface SykepengesoknadReisetilskuddProps {
@@ -47,14 +34,9 @@ const SykepengesoknadReisetilskudd = ({
       )}
       <SykepengesoknadStatuspanel soknad={soknad} />
       <SykmeldingUtdragContainer soknad={soknad} />
-      <OppsummeringUtvidbar
-        soknad={{
-          ...soknad,
-          sporsmal: soknad.sporsmal.filter(
-            (sporsmal) => !erVaerKlarOverAt(sporsmal)
-          ),
-        }}
-      />
+      <SpeilingEkspanderbartPanel tittel={texts.oppsummeringTittel}>
+        <Oppsummeringsvisning soknad={soknad} />
+      </SpeilingEkspanderbartPanel>
       <RelaterteSoknader soknad={soknad} />
       <TilbakeTilSoknader />
     </div>

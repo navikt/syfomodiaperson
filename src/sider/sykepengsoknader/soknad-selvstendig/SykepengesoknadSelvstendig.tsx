@@ -9,7 +9,6 @@ import {
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { erVaerKlarOverAt } from "@/utils/sykepengesoknadUtils";
 import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
 import { Heading } from "@navikt/ds-react";
 import TilbakeTilSoknader from "@/sider/sykepengsoknader/soknad-felles/TilbakeTilSoknader";
@@ -58,25 +57,8 @@ const SykepengesoknadSelvstendig = ({
             <SykmeldingUtdragForSelvstendige sykmelding={sykmelding} erApen />
           )}
           <SpeilingEkspanderbartPanel tittel={texts.oppsummering} defaultOpen>
-            <Oppsummeringsvisning
-              soknad={{
-                ...soknad,
-                sporsmal: soknad.sporsmal.filter(
-                  (sporsmal) => !erVaerKlarOverAt(sporsmal)
-                ),
-              }}
-            />
+            <Oppsummeringsvisning soknad={soknad} />
           </SpeilingEkspanderbartPanel>
-          <div className="panel mb-4">
-            <Oppsummeringsvisning
-              soknad={{
-                ...soknad,
-                sporsmal: soknad.sporsmal.filter((sporsmal) =>
-                  erVaerKlarOverAt(sporsmal)
-                ),
-              }}
-            />
-          </div>
           <TilbakeTilSoknader />
         </div>
       );

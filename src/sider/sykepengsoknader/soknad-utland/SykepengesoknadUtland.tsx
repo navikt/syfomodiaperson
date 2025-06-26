@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import Oppsummeringsvisning from "../soknad-felles-oppsummering/Oppsummeringsvisning";
 import StatuspanelUtland from "./StatuspanelUtland";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { Heading, Panel } from "@navikt/ds-react";
+import { Box, Heading } from "@navikt/ds-react";
 import TilbakeTilSoknader from "@/sider/sykepengsoknader/soknad-felles/TilbakeTilSoknader";
 
 const texts = {
@@ -16,12 +16,12 @@ interface OppsummeringPanelProps {
 
 const OppsummeringPanel = ({ soknad }: OppsummeringPanelProps) => {
   return (
-    <Panel>
+    <Box padding="4" borderRadius="small">
       <Heading spacing size="small">
         {texts.oppsummering}
       </Heading>
       <Oppsummeringsvisning soknad={soknad} />
-    </Panel>
+    </Box>
   );
 };
 
