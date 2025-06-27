@@ -1,3 +1,129 @@
+import {
+  Soknadstatus,
+  Soknadstype,
+  SvarTypeDTO,
+  SykepengesoknadDTO,
+} from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+
+export const defaultSoknad: SykepengesoknadDTO = {
+  id: "d5c09c09-01f3-4ace-b098-7a76703fc9c1",
+  sykmeldingId: "8f316709-0d73-4491-8721-c40b616038f8",
+  soknadstype: Soknadstype.BEHANDLINGSDAGER,
+  status: Soknadstatus.SENDT,
+  fom: new Date("2020-01-12T00:00:00.000Z"),
+  tom: new Date("2020-01-22T00:00:00.000Z"),
+  opprettetDato: new Date("2020-02-11T00:00:00.000Z"),
+  avbruttDato: undefined,
+  sendtTilNAVDato: new Date("2020-02-21"),
+  sendtTilArbeidsgiverDato: new Date("2020-02-22"),
+  arbeidsgiver: {
+    navn: "Firma AS (Behandlingsdagersøknad NY ISIOHDGIOSHDIGBSDVB)",
+    orgnummer: "1234567890",
+  },
+  korrigerer: undefined,
+  korrigertAv: undefined,
+  sporsmal: [
+    {
+      id: "39078",
+      tag: "ANSVARSERKLARING",
+      sporsmalstekst:
+        "Jeg vet at jeg kan miste retten til sykepenger hvis opplysningene jeg gir ikke er riktige eller fullstendige. Jeg vet også at Nav kan holde igjen eller kreve tilbake penger, og at å gi feil opplysninger kan være straffbart.",
+      undertekst: undefined,
+      svartype: SvarTypeDTO.CHECKBOX_PANEL,
+      min: "",
+      max: "",
+      pavirkerAndreSporsmal: false,
+      kriterieForVisningAvUndersporsmal: undefined,
+      svar: [
+        {
+          verdi: "CHECKED",
+        },
+      ],
+      undersporsmal: [],
+    },
+    {
+      id: "67300",
+      tag: "ENKELTSTAENDE_BEHANDLINGSDAGER_0",
+      sporsmalstekst:
+        "Hvilke dager måtte du være helt borte fra jobben på grunn av behandling mellom 12. - 22. januar 2020?",
+      undertekst: undefined,
+      svartype: SvarTypeDTO.INFO_BEHANDLINGSDAGER,
+      min: "",
+      max: "",
+      pavirkerAndreSporsmal: false,
+      kriterieForVisningAvUndersporsmal: undefined,
+      svar: [],
+      undersporsmal: [
+        {
+          id: "40682",
+          tag: "ENKELTSTAENDE_BEHANDLINGSDAGER_UKE_0",
+          sporsmalstekst: "2020-01-13 - 2020-01-17",
+          undertekst: undefined,
+          svartype: SvarTypeDTO.RADIO_GRUPPE_UKEKALENDER,
+          min: "2020-01-13",
+          max: "2020-01-17",
+          pavirkerAndreSporsmal: false,
+          kriterieForVisningAvUndersporsmal: undefined,
+          svar: [
+            {
+              verdi: "2020-01-16",
+            },
+          ],
+          undersporsmal: [],
+        },
+        {
+          id: "40568",
+          tag: "ENKELTSTAENDE_BEHANDLINGSDAGER_UKE_1",
+          sporsmalstekst: "2020-01-20 - 2020-01-24",
+          undertekst: undefined,
+          svartype: SvarTypeDTO.RADIO_GRUPPE_UKEKALENDER,
+          min: "2020-01-20",
+          max: "2020-01-24",
+          pavirkerAndreSporsmal: false,
+          kriterieForVisningAvUndersporsmal: undefined,
+          svar: [
+            {
+              verdi: "Ikke til behandling",
+            },
+          ],
+          undersporsmal: [],
+        },
+        {
+          id: "44721",
+          tag: "ENKELTSTAENDE_BEHANDLINGSDAGER_UKE_2",
+          sporsmalstekst: "2020-01-27 - 2020-01-31",
+          undertekst: undefined,
+          svartype: SvarTypeDTO.RADIO_GRUPPE_UKEKALENDER,
+          min: "2020-01-27",
+          max: "2020-01-31",
+          pavirkerAndreSporsmal: false,
+          kriterieForVisningAvUndersporsmal: undefined,
+          svar: [],
+          undersporsmal: [],
+        },
+        {
+          id: "27201",
+          tag: "ENKELTSTAENDE_BEHANDLINGSDAGER_UKE_3",
+          sporsmalstekst: "2020-02-03 - 2020-02-05",
+          undertekst: undefined,
+          svartype: SvarTypeDTO.RADIO_GRUPPE_UKEKALENDER,
+          min: "2020-02-03",
+          max: "2020-02-05",
+          pavirkerAndreSporsmal: false,
+          kriterieForVisningAvUndersporsmal: undefined,
+          svar: [
+            {
+              verdi: "2020-02-05",
+            },
+          ],
+          undersporsmal: [],
+        },
+      ],
+    },
+  ],
+  _erOppdelt: undefined,
+};
+
 export const soknaderMock = [
   {
     id: "2f72c5a1-93d5-4b32-9b5a-edc357a6e4ed",
@@ -2767,15 +2893,15 @@ export const soknaderMock = [
     ],
   },
   {
-    id: "aeeab1d3-b84b-4068-8d5f-d4a4da1b9054",
+    id: "e16ff778-8475-47e1-b5dc-d2ce4ad6b9ee",
     sykmeldingId: null,
     soknadstype: "OPPHOLD_UTLAND",
-    status: "NY",
-    fom: null,
-    tom: null,
-    opprettetDato: "2020-02-11",
-    sendtTilNAVDato: null,
-    sendtTilArbeidsgiverDato: null,
+    status: "SENDT",
+    fom: "2024-10-19",
+    tom: "2024-11-08",
+    opprettetDato: "2024-02-11",
+    sendtTilNAVDato: "2023-11-09T11:45:16.373595",
+    sendtTilArbeidsgiverDato: "2023-11-09T11:45:16.373595",
     avbruttDato: null,
     startSykeforlop: null,
     sykmeldingUtskrevet: null,
