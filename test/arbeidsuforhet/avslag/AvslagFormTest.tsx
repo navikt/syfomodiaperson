@@ -3,7 +3,7 @@ import React from "react";
 import { screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import {
-  VurderingRequestDTO,
+  Avslag,
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { arbeidsuforhetOppfyltPath } from "@/routers/AppRouter";
@@ -108,7 +108,7 @@ describe("AvslagForm", () => {
         const useSendVurderingArbeidsuforhet = queryClient
           .getMutationCache()
           .getAll()[0];
-        const expectedVurdering: VurderingRequestDTO = {
+        const expectedVurdering: Avslag = {
           type: VurderingType.AVSLAG,
           begrunnelse: begrunnelse,
           document: getAvslagVurderingDocument(

@@ -2,7 +2,10 @@ import { ISARBEIDSUFORHET_ROOT } from "@/apiConstants";
 import { NAV_PERSONIDENT_HEADER } from "../util/requestUtil";
 import { mockArbeidsuforhetvurdering } from "./arbeidsuforhetMock";
 import {
-  VurderingRequestDTO,
+  ArbeidsuforhetVurderingRequestDTO,
+  Avslag,
+  AvslagUtenForhandsvarsel,
+  IkkeAktuell,
   VurderingResponseDTO,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { generateUUID } from "@/utils/utils";
@@ -19,11 +22,21 @@ export const mockIsarbeidsuforhet = [
     return HttpResponse.json(arbeidsuforhetVurderinger);
   }),
 
-  http.post<object, VurderingRequestDTO>(
+  http.post<object, ArbeidsuforhetVurderingRequestDTO>(
     `${ISARBEIDSUFORHET_ROOT}/arbeidsuforhet/vurderinger`,
     async ({ request }) => {
       const body = await request.json();
       const personident = request.headers[NAV_PERSONIDENT_HEADER];
+      const arsak =
+        body.type === "IKKE_AKTUELL" ? (body as IkkeAktuell).arsak : undefined;
+      const stansGjelderFom =
+        body.type === "AVSLAG" || body.type === "AVSLAG_UTEN_FORHANDSVARSEL"
+          ? (body as Avslag | AvslagUtenForhandsvarsel).gjelderFom
+          : undefined;
+      const oppgaveFraNayDato =
+        body.type === "AVSLAG_UTEN_FORHANDSVARSEL"
+          ? (body as AvslagUtenForhandsvarsel).oppgaveFraNayDato
+          : undefined;
       const varsel =
         body.type === "FORHANDSVARSEL"
           ? {
@@ -40,11 +53,11 @@ export const mockIsarbeidsuforhet = [
         createdAt: new Date(),
         veilederident: VEILEDER_DEFAULT.ident,
         type: body.type,
-        arsak: body.arsak,
+        arsak: arsak,
         begrunnelse: body.begrunnelse,
         document: body.document,
-        gjelderFom: body.gjelderFom,
-        oppgaveFraNayDato: body.oppgaveFraNayDato,
+        gjelderFom: stansGjelderFom,
+        oppgaveFraNayDato: oppgaveFraNayDato,
         varsel,
       };
       arbeidsuforhetVurderinger = [sentVurdering, ...arbeidsuforhetVurderinger];

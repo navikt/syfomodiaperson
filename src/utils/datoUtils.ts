@@ -50,8 +50,8 @@ const pad = (int: number): string | number => {
 export const tilLesbarDatoUtenArstall = (datoArg): string | null => {
   if (datoArg) {
     const dato = new Date(datoArg);
-    const dag = dato.getUTCDate();
-    const manedIndex = dato.getUTCMonth();
+    const dag = dato.getDate();
+    const manedIndex = dato.getMonth();
     const maned = maneder[manedIndex];
     return `${dag}. ${maned}`;
   }
@@ -62,7 +62,7 @@ export const tilLesbarDatoMedArstall = (datoArg): string | undefined => {
   return datoArg
     ? `${tilLesbarDatoUtenArstall(new Date(datoArg))} ${new Date(
         datoArg
-      ).getUTCFullYear()}`
+      ).getFullYear()}`
     : undefined;
 };
 

@@ -11,7 +11,7 @@ import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { useForm } from "react-hook-form";
 import {
-  VurderingRequestDTO,
+  Oppfylt,
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { useArbeidsuforhetVurderingDocument } from "@/sider/arbeidsuforhet/hooks/useArbeidsuforhetVurderingDocument";
@@ -71,7 +71,7 @@ export default function OppfyltForm({ forhandsvarselSendtDato }: Props) {
       begrunnelse: values.begrunnelse,
       forhandsvarselSendtDato: forhandsvarselSendtDato,
     };
-    const vurderingRequestDTO: VurderingRequestDTO = {
+    const vurderingRequestDTO: Oppfylt = {
       type: VurderingType.OPPFYLT,
       begrunnelse: values.begrunnelse,
       document: getOppfyltDocument(oppfyltDocumentProps),

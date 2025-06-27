@@ -13,6 +13,7 @@ import {
 import {
   arsakTexts,
   VurderingArsak,
+  VurderingInitiertAv,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 
@@ -36,7 +37,7 @@ type IkkeAktuellDocumentValues = {
 };
 
 type InnstillingUtenForhandsvarselDocumentValues = {
-  arsak: VurderingArsak;
+  vurderingInitiertAv: VurderingInitiertAv;
   begrunnelse: string;
   oppgaveFraNayDato?: Date;
   avslagFom?: Date;
@@ -156,23 +157,23 @@ export const useArbeidsuforhetVurderingDocument = (): {
   };
 
   function getInnstillingOmAvslagUtenForhandsvarselDocument({
-    arsak,
+    vurderingInitiertAv,
     begrunnelse,
     avslagFom,
     oppgaveFraNayDato,
   }: InnstillingUtenForhandsvarselDocumentValues) {
-    let grunnTilInnstillingUtenForhandsvarsel: string;
-    switch (arsak) {
-      case VurderingArsak.SYKEPENGER_IKKE_UTBETALT:
-        grunnTilInnstillingUtenForhandsvarsel = "utbetaling ikke er igangsatt";
+    let vurderingInitiertAvText: string;
+    switch (vurderingInitiertAv) {
+      case VurderingInitiertAv.NAV_KONTOR:
+        vurderingInitiertAvText = "Nav-kontoret.";
         break;
-      case VurderingArsak.NAY_BER_OM_NY_VURDERING:
-        grunnTilInnstillingUtenForhandsvarsel = `Nav arbeid og ytelser har bedt om en vurdering ${
-          oppgaveFraNayDato ? tilLesbarDatoMedArstall(oppgaveFraNayDato) : ""
+      case VurderingInitiertAv.NAY:
+        vurderingInitiertAvText = `Nav arbeid og ytelser. Forespørselen fra NAY om en vurdering ble sendt i Gosys${
+          oppgaveFraNayDato
+            ? ` ${tilLesbarDatoMedArstall(oppgaveFraNayDato)}.`
+            : "."
         }`;
         break;
-      default:
-        throw new Error("Ugyldig årsak for innstilling uten forhåndsvarsel");
     }
 
     return [
@@ -180,7 +181,7 @@ export const useArbeidsuforhetVurderingDocument = (): {
       createParagraph("Vurdering av arbeidsuførhet jf. folketrygdloven § 8-4."),
       getIntroGjelder(),
       createParagraph(
-        `Det er ikke sendt forhåndsvarsel i denne saken fordi ${grunnTilInnstillingUtenForhandsvarsel}.`
+        `Det er ikke sendt forhåndsvarsel i denne saken fordi utbetaling ikke er igangsatt. Vurderingen er initiert av ${vurderingInitiertAvText}`
       ),
       createParagraph(`Nav har vurdert at vilkåret ikke er oppfylt.`),
       createHeaderH3("Begrunnelse for vurderingen"),

@@ -1,8 +1,8 @@
 import React from "react";
 import {
   arsakTexts,
+  IkkeAktuell,
   VurderingArsak,
-  VurderingRequestDTO,
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
@@ -51,7 +51,7 @@ export const ArbeidsuforhetIkkeAktuellSkjema = () => {
 
   const submit = (values: SkjemaValues) => {
     const { arsak } = values;
-    const vurderingRequestDTO: VurderingRequestDTO = {
+    const vurderingRequestDTO: IkkeAktuell = {
       type: VurderingType.IKKE_AKTUELL,
       begrunnelse: "",
       arsak,

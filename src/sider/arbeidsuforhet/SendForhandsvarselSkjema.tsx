@@ -5,7 +5,7 @@ import { useArbeidsuforhetVurderingDocument } from "@/sider/arbeidsuforhet/hooks
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import {
-  VurderingRequestDTO,
+  Forhandsvarsel,
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { useSaveVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSaveVurderingArbeidsuforhet";
@@ -55,7 +55,7 @@ export default function SendForhandsvarselSkjema() {
   const { getForhandsvarselDocument } = useArbeidsuforhetVurderingDocument();
 
   const submit = (values: SkjemaValues) => {
-    const forhandsvarselRequestDTO: VurderingRequestDTO = {
+    const forhandsvarselRequestDTO: Forhandsvarsel = {
       type: VurderingType.FORHANDSVARSEL,
       begrunnelse: values.begrunnelse,
       document: getForhandsvarselDocument({

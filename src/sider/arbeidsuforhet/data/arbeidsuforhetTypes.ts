@@ -1,15 +1,41 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
 import { Sykepengestopp } from "@/data/pengestopp/types/FlaggPerson";
 
-export interface VurderingRequestDTO {
-  type: VurderingType;
-  arsak?: VurderingArsak;
-  begrunnelse: string;
-  document: DocumentComponentDto[];
-  gjelderFom?: string;
-  frist?: Date;
+export interface AvslagUtenForhandsvarsel
+  extends ArbeidsuforhetVurdering<VurderingType.AVSLAG_UTEN_FORHANDSVARSEL> {
+  vurderingInitiertAv: VurderingInitiertAv;
+  gjelderFom: string;
   oppgaveFraNayDato?: string;
 }
+
+export interface Forhandsvarsel
+  extends ArbeidsuforhetVurdering<VurderingType.FORHANDSVARSEL> {
+  frist: Date;
+}
+
+export interface IkkeAktuell
+  extends ArbeidsuforhetVurdering<VurderingType.IKKE_AKTUELL> {
+  arsak: VurderingArsak;
+}
+
+export interface Avslag extends ArbeidsuforhetVurdering<VurderingType.AVSLAG> {
+  gjelderFom: string;
+}
+
+export type Oppfylt = ArbeidsuforhetVurdering<VurderingType.OPPFYLT>;
+
+interface ArbeidsuforhetVurdering<T extends VurderingType> {
+  type: T;
+  begrunnelse: string;
+  document: DocumentComponentDto[];
+}
+
+export type ArbeidsuforhetVurderingRequestDTO =
+  | AvslagUtenForhandsvarsel
+  | Forhandsvarsel
+  | IkkeAktuell
+  | Avslag
+  | Oppfylt;
 
 export enum VurderingType {
   FORHANDSVARSEL = "FORHANDSVARSEL",
@@ -35,8 +61,11 @@ export const typeTexts: {
 export enum VurderingArsak {
   FRISKMELDT = "FRISKMELDT",
   FRISKMELDING_TIL_ARBEIDSFORMIDLING = "FRISKMELDING_TIL_ARBEIDSFORMIDLING",
-  SYKEPENGER_IKKE_UTBETALT = "SYKEPENGER_IKKE_UTBETALT",
-  NAY_BER_OM_NY_VURDERING = "NAY_BER_OM_NY_VURDERING",
+}
+
+export enum VurderingInitiertAv {
+  NAV_KONTOR = "NAV_KONTOR",
+  NAY = "NAY",
 }
 
 export const arsakTexts: {
@@ -45,8 +74,6 @@ export const arsakTexts: {
   [VurderingArsak.FRISKMELDT]: "Friskmeldt",
   [VurderingArsak.FRISKMELDING_TIL_ARBEIDSFORMIDLING]:
     "Friskmelding til arbeidsformidling",
-  [VurderingArsak.SYKEPENGER_IKKE_UTBETALT]: "Sykepenger ikke utbetalt",
-  [VurderingArsak.NAY_BER_OM_NY_VURDERING]: "NAY ber om ny vurdering",
 };
 
 export interface VarselDTO {
