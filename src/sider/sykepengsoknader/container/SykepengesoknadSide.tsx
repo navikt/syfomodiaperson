@@ -6,7 +6,7 @@ import SendtSoknadArbeidstakerNy from "../soknad-arbeidstaker-ny/SendtSoknadArbe
 import IkkeInnsendtSoknad from "../soknad-felles/IkkeInnsendtSoknad";
 import AvbruttSoknadArbeidtakerNy from "../soknad-arbeidstaker-ny/AvbruttSoknadArbeidtakerNy";
 import { useParams } from "react-router-dom";
-import SideLaster from "../../../components/SideLaster";
+import SideLaster from "../../../components/side/SideLaster";
 import {
   Soknadstatus,
   Soknadstype,
@@ -15,7 +15,7 @@ import SykepengesoknadReisetilskudd from "@/sider/sykepengsoknader/soknad-reiset
 import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import Side from "@/sider/Side";
+import Side from "@/components/side/Side";
 import StatuspanelBehandlingsdager from "@/sider/sykepengsoknader/soknad-behandlingsdager/StatuspanelBehandlingsdager";
 import { Box, Heading } from "@navikt/ds-react";
 import Oppsummeringsvisning from "@/sider/sykepengsoknader/soknad-felles-oppsummering/Oppsummeringsvisning";

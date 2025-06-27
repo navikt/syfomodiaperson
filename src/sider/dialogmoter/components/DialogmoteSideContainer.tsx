@@ -5,9 +5,9 @@ import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/sider/dialogmoter/compo
 import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import Side from "@/sider/Side";
-import SideLaster from "@/components/SideLaster";
-import Sidetopp from "@/components/Sidetopp";
+import Side from "@/components/side/Side";
+import SideLaster from "@/components/side/SideLaster";
+import Sidetopp from "@/components/side/Sidetopp";
 import Feilmelding from "@/components/Feilmelding";
 
 interface DialogmoteSideProps {

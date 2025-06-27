@@ -1,8 +1,8 @@
 import React from "react";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import Sidetopp from "@/components/Sidetopp";
-import Side from "@/sider/Side";
-import SideLaster from "@/components/SideLaster";
+import Sidetopp from "@/components/side/Sidetopp";
+import Side from "@/components/side/Side";
+import SideLaster from "@/components/side/SideLaster";
 import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import ManglendeMedvirkningHistorikk from "@/sider/manglendemedvirkning/ManglendeMedvirkningHistorikk";
 import NyttigeLenkerBox from "@/sider/manglendemedvirkning/NyttigeLenkerBox";

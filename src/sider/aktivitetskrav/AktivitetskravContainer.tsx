@@ -1,13 +1,13 @@
 import React, { ReactElement } from "react";
-import Side from "@/sider/Side";
-import Sidetopp from "@/components/Sidetopp";
+import Side from "@/components/side/Side";
+import Sidetopp from "@/components/side/Sidetopp";
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import SideLaster from "@/components/SideLaster";
+import SideLaster from "@/components/side/SideLaster";
 import { AktivitetskravSide } from "@/sider/aktivitetskrav/AktivitetskravSide";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
-import * as Tredelt from "@/sider/TredeltSide";
+import * as Tredelt from "@/components/side/TredeltSide";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import NyttigeLenkerBox from "@/sider/aktivitetskrav/NyttigeLenkerBox";
 

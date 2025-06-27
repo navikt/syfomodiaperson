@@ -1,8 +1,8 @@
 import React from "react";
-import Side from "@/sider/Side";
-import Sidetopp from "@/components/Sidetopp";
-import SideLaster from "@/components/SideLaster";
-import * as Tredelt from "@/sider/TredeltSide";
+import Side from "@/components/side/Side";
+import Sidetopp from "@/components/side/Sidetopp";
+import SideLaster from "@/components/side/SideLaster";
+import * as Tredelt from "@/components/side/TredeltSide";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { FriskmeldingTilArbeidsformidling } from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidling";

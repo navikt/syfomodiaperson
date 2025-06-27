@@ -1,8 +1,8 @@
 import React from "react";
-import Side from "@/sider/Side";
-import SideLaster from "@/components/SideLaster";
-import Sidetopp from "@/components/Sidetopp";
-import * as Tredelt from "@/sider/TredeltSide";
+import Side from "@/components/side/Side";
+import SideLaster from "@/components/side/SideLaster";
+import Sidetopp from "@/components/side/Sidetopp";
+import * as Tredelt from "@/components/side/TredeltSide";
 import { MotehistorikkPanel } from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
 import DialogmoteIkkeAktuellSkjema from "@/sider/dialogmoter/components/ikkeaktuell/DialogmoteIkkeAktuellSkjema";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";

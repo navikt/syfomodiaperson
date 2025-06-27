@@ -7,7 +7,7 @@ interface Props {
   tittel: string;
 }
 
-const Sidetopp = ({ tittel }: Props) => {
+export default function Sidetopp({ tittel }: Props) {
   return (
     <header>
       <Heading spacing size="large" id={SIDETOPP_ID} level="1">
@@ -15,6 +15,4 @@ const Sidetopp = ({ tittel }: Props) => {
       </Heading>
     </header>
   );
-};
-
-export default Sidetopp;
+}

@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
-import Side from "../../Side";
-import SideLaster from "../../../components/SideLaster";
-import Sidetopp from "../../../components/Sidetopp";
+import Side from "../../../components/side/Side";
+import SideLaster from "../../../components/side/SideLaster";
+import Sidetopp from "../../../components/side/Sidetopp";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Historikk from "@/sider/historikk/Historikk";

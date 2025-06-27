@@ -3,22 +3,19 @@ import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 
 const opActivePlanerText = (tasks: number) => {
   const activeText = tasks > 1 ? "aktive" : "aktiv";
-
   return `(${tasks} ${activeText})`;
 };
 
-interface UnfinishedTasksProps {
+interface Props {
   tasks: number;
   menypunkt: Menypunkter;
 }
 
-const UnfinishedTasks = (unfinishedTasksProps: UnfinishedTasksProps) => {
+export default function UnfinishedTasks(unfinishedTasksProps: Props) {
   const { tasks, menypunkt } = unfinishedTasksProps;
   return menypunkt === Menypunkter.OPPFOELGINGSPLANER ? (
-    <p className="antallNytt__oppfolgingsplan">{opActivePlanerText(tasks)}</p>
+    <p>{opActivePlanerText(tasks)}</p>
   ) : (
     <p className="antallNytt">{tasks}</p>
   );
-};
-
-export default UnfinishedTasks;
+}

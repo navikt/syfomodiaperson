@@ -1,14 +1,14 @@
 import React, { ReactNode } from "react";
 import { Column, Container, Row } from "nav-frontend-grid";
-import Personkort from "../components/personkort/Personkort";
+import Personkort from "../personkort/Personkort";
 import DocumentTitle from "react-document-title";
 
-interface SideFullbreddeProps {
+interface Props {
   tittel: string;
   children?: ReactNode;
 }
 
-const Side = (sideFullbreddeProps: SideFullbreddeProps) => {
+export default function SideFullbredde(sideFullbreddeProps: Props) {
   const { tittel, children } = sideFullbreddeProps;
 
   return (
@@ -27,6 +27,4 @@ const Side = (sideFullbreddeProps: SideFullbreddeProps) => {
       </Container>
     </DocumentTitle>
   );
-};
-
-export default Side;
+}

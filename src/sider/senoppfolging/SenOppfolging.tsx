@@ -2,7 +2,7 @@ import React, { ReactElement, useState } from "react";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { KandidatSvar } from "@/sider/senoppfolging/KandidatSvar";
 import { VurdertKandidat } from "@/sider/senoppfolging/VurdertKandidat";
-import * as Tredelt from "@/sider/TredeltSide";
+import * as Tredelt from "@/components/side/TredeltSide";
 import {
   SenOppfolgingStatus,
   SenOppfolgingVurderingType,
@@ -16,9 +16,9 @@ import SenFaseFlexjar from "@/sider/senoppfolging/flexjar/SenFaseFlexjar";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import Sidetopp from "@/components/Sidetopp";
-import Side from "@/sider/Side";
-import SideLaster from "@/components/SideLaster";
+import Sidetopp from "@/components/side/Sidetopp";
+import Side from "@/components/side/Side";
+import SideLaster from "@/components/side/SideLaster";
 import IkkeKandidatInfo from "@/sider/senoppfolging/IkkeKandidatInfo";
 import { SenOppfolgingHistorikk } from "@/sider/senoppfolging/historikk/SenOppfolgingHistorikk";
 

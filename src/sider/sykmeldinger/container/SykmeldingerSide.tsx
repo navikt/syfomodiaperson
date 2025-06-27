@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
-import Side from "../../Side";
+import Side from "../../../components/side/Side";
 import DineSykmeldinger from "../sykmeldinger/DineSykmeldinger";
-import SideLaster from "../../../components/SideLaster";
+import SideLaster from "../../../components/side/SideLaster";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { BistandsbehovOppgaver } from "@/sider/sykmeldinger/VurderBistandsbehov";
 import { Heading } from "@navikt/ds-react";
