@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import SoknadStatustekst from "@/utils/soknad-felles/SoknadStatustekst";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { defaultSoknad } from "../../mockdata/mockSoknader";
+import { defaultSoknad } from "@/mocks/sykepengesoknad/soknaderMock";
 
 const renderSoknadStatustekst = (soknad: SykepengesoknadDTO) => {
   render(<SoknadStatustekst soknad={soknad} />);
