@@ -1,6 +1,5 @@
 import React from "react";
 import { beforeEach, describe, expect, it } from "vitest";
-import mockSoknader from "../mockdata/mockSoknader";
 import { screen } from "@testing-library/react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
@@ -13,6 +12,7 @@ import { renderWithRouter } from "../testRouterUtils";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
 import { SykepengesoknadSide } from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
+import { soknaderMock } from "@/mocks/sykepengesoknad/soknaderMock";
 
 const NAERINGSDRIVENDESOKNAD_ID = "faadf7c1-3aac-4758-8673-e9cee1316a3c";
 const OPPHOLD_UTLAND_ID = "e16ff778-8475-47e1-b5dc-d2ce4ad6b9ee";
@@ -38,7 +38,7 @@ describe("SykepengesoknadSide", () => {
     it("Skal vise SendtSoknadArbeidstakerNy", () => {
       queryClient.setQueryData(
         sykepengesoknaderQueryKeys.sykepengesoknader(fnr),
-        () => mockSoknader
+        () => soknaderMock
       );
       renderWithRouter(
         <QueryClientProvider client={queryClient}>
