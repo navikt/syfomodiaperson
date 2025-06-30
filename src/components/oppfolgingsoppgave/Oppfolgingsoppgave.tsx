@@ -9,12 +9,12 @@ import {
   Tooltip,
 } from "@navikt/ds-react";
 import React, { useState } from "react";
-import { OpenOppfolgingsoppgaveModalButton } from "@/components/oppfolgingsoppgave/OpenOppfolgingsoppgaveModalButton";
+import OpenOppfolgingsoppgaveModalButton from "@/components/oppfolgingsoppgave/OpenOppfolgingsoppgaveModalButton";
 import { useAktivOppfolgingsoppgave } from "@/data/oppfolgingsoppgave/useAktivOppfolgingsoppgave";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { oppfolgingsgrunnToText } from "@/data/oppfolgingsoppgave/types";
-import { OppfolgingsoppgaveModal } from "@/components/oppfolgingsoppgave/OppfolgingsoppgaveModal";
+import OppfolgingsoppgaveModal from "@/components/oppfolgingsoppgave/OppfolgingsoppgaveModal";
 
 const texts = {
   title: "Oppfølgingsoppgave",
@@ -23,7 +23,7 @@ const texts = {
   removeTooltip: "Fjerner oppfølgingsoppgaven fra oversikten",
 };
 
-export const Oppfolgingsoppgave = () => {
+export default function Oppfolgingsoppgave() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const removeOppfolgingsoppgave = useRemoveOppfolgingsoppgave();
   const { aktivOppfolgingsoppgave } = useAktivOppfolgingsoppgave();
@@ -127,4 +127,4 @@ export const Oppfolgingsoppgave = () => {
   ) : (
     <OpenOppfolgingsoppgaveModalButton />
   );
-};
+}
