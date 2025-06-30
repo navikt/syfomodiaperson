@@ -8,26 +8,14 @@ import {
 import { KorrigertAv } from "../soknad-arbeidstaker/KorrigertAv";
 import { RelaterteSoknader } from "../soknad-arbeidstaker/RelaterteSoknader";
 import { SykmeldingUtdragContainer } from "../SykmeldingUtdragContainer";
-import { erTilSlutt, erVaerKlarOverAt } from "@/utils/sykepengesoknadUtils";
+import { erTilSlutt } from "@/utils/sykepengesoknadUtils";
 import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
-import { Heading } from "@navikt/ds-react";
+import { Box, Heading } from "@navikt/ds-react";
 import TilbakeTilSoknader from "@/sider/sykepengsoknader/soknad-felles/TilbakeTilSoknader";
 
 const texts = {
   tittel: "Søknad om sykepenger",
   oppsummeringTittel: "Oppsummering",
-};
-
-interface OppsummeringUtvidbarProps {
-  soknad: SykepengesoknadDTO;
-}
-
-const OppsummeringUtvidbar = ({ soknad }: OppsummeringUtvidbarProps) => {
-  return (
-    <SpeilingEkspanderbartPanel tittel={texts.oppsummeringTittel}>
-      <Oppsummeringsvisning soknad={soknad} />
-    </SpeilingEkspanderbartPanel>
-  );
 };
 
 interface Props {
@@ -47,24 +35,26 @@ export default function SendtSoknadArbeidstakerNy({
       )}
       <SykepengesoknadStatuspanel soknad={soknad} />
       <SykmeldingUtdragContainer soknad={soknad} />
-      <OppsummeringUtvidbar
-        soknad={{
-          ...soknad,
-          sporsmal: soknad.sporsmal.filter(
-            (sporsmal) => !(erVaerKlarOverAt(sporsmal) || erTilSlutt(sporsmal))
-          ),
-        }}
-      />
-      <div className="panel blokk">
+      <SpeilingEkspanderbartPanel tittel={texts.oppsummeringTittel}>
         <Oppsummeringsvisning
           soknad={{
             ...soknad,
             sporsmal: soknad.sporsmal.filter(
-              (sporsmal) => erVaerKlarOverAt(sporsmal) || erTilSlutt(sporsmal)
+              (sporsmal) => !erTilSlutt(sporsmal)
             ),
           }}
         />
-      </div>
+      </SpeilingEkspanderbartPanel>
+      <Box>
+        <Oppsummeringsvisning
+          soknad={{
+            ...soknad,
+            sporsmal: soknad.sporsmal.filter((sporsmal) =>
+              erTilSlutt(sporsmal)
+            ),
+          }}
+        />
+      </Box>
       <RelaterteSoknader soknad={soknad} />
       <TilbakeTilSoknader />
     </div>

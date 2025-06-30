@@ -635,20 +635,6 @@ export const soknaderMock = [
         ],
       },
       {
-        id: "39",
-        tag: "VAER_KLAR_OVER_AT",
-        sporsmalstekst: "Viktig å være klar over:",
-        undertekst:
-          '<ul><li>Du kan bare få sykepenger hvis det er din egen sykdom eller skade som hindrer deg i å jobbe. Sosiale eller økonomiske problemer gir ikke rett til sykepenger.</li><li>Du kan miste retten til sykepenger hvis du nekter å opplyse om din egen arbeidsevne, eller hvis du ikke tar imot behandling eller tilrettelegging.</li><li>Retten til sykepenger gjelder bare inntekt du har mottatt som lønn og betalt skatt av på sykmeldingstidspunktet.</li><li>Nav kan innhente opplysninger som er nødvendige for å behandle søknaden.</li><li>Du må melde fra til Nav hvis du satt i varetekt, sonet straff eller var under forvaring i sykmeldingsperioden.</li><li>Fristen for å søke sykepenger er som hovedregel 3 måneder</li></ul><p>Du kan lese mer om rettigheter og plikter på <a href="https://www.nav.no/sykepenger" target="_blank">nav.no/sykepenger</a>.</p>',
-        svartype: "IKKE_RELEVANT",
-        min: null,
-        max: null,
-        pavirkerAndreSporsmal: false,
-        kriterieForVisningAvUndersporsmal: null,
-        svar: [],
-        undersporsmal: [],
-      },
-      {
         id: "40",
         tag: "BEKREFT_OPPLYSNINGER",
         sporsmalstekst:
@@ -1123,20 +1109,6 @@ export const soknaderMock = [
           "Har du arbeidet i utlandet i løpet av de siste 12 månedene?",
         undertekst: null,
         svartype: "JA_NEI",
-        min: null,
-        max: null,
-        pavirkerAndreSporsmal: false,
-        kriterieForVisningAvUndersporsmal: null,
-        svar: [],
-        undersporsmal: [],
-      },
-      {
-        id: "66",
-        tag: "VAER_KLAR_OVER_AT",
-        sporsmalstekst: "Viktig å være klar over:",
-        undertekst:
-          '<ul><li>Du kan bare få sykepenger hvis det er din egen sykdom eller skade som hindrer deg i å jobbe. Sosiale eller økonomiske problemer gir ikke rett til sykepenger.</li><li>Du kan miste retten til sykepenger hvis du nekter å opplyse om din egen arbeidsevne, eller hvis du ikke tar imot behandling eller tilrettelegging.</li><li>Retten til sykepenger gjelder bare inntekt du har mottatt som lønn og betalt skatt av på sykmeldingstidspunktet.</li><li>NAV kan innhente opplysninger som er nødvendige for å behandle søknaden.</li><li>Du må melde fra til NAV hvis du satt i varetekt, sonet straff eller var under forvaring i sykmeldingsperioden.</li><li>Fristen for å søke sykepenger er som hovedregel 3 måneder</li></ul><p>Du kan lese mer om rettigheter og plikter på <a href="https://www.nav.no/sykepenger" target="_blank">nav.no/sykepenger</a>.</p>',
-        svartype: "IKKE_RELEVANT",
         min: null,
         max: null,
         pavirkerAndreSporsmal: false,
@@ -1986,20 +1958,6 @@ export const soknaderMock = [
         ],
       },
       {
-        id: "73640",
-        tag: "VAER_KLAR_OVER_AT",
-        sporsmalstekst: "Viktig å være klar over:",
-        undertekst:
-          '<ul><li>Du kan bare få sykepenger hvis det er din egen sykdom eller skade som hindrer deg i å jobbe. Sosiale eller økonomiske problemer gir ikke rett til sykepenger.</li><li>Du kan miste retten til sykepenger hvis du nekter å opplyse om din egen arbeidsevne, eller hvis du ikke tar imot behandling eller tilrettelegging.</li><li>Retten til sykepenger gjelder bare inntekt du har mottatt som lønn og betalt skatt av på sykmeldingstidspunktet.</li><li>Nav kan innhente opplysninger som er nødvendige for å behandle søknaden.</li><li>Du må melde fra til Nav hvis du satt i varetekt, sonet straff eller var under forvaring i sykmeldingsperioden.</li><li>Fristen for å søke sykepenger er som hovedregel 3 måneder</li></ul><p>Du kan lese mer om rettigheter og plikter på <a href="https://www.nav.no/sykepenger" target="_blank">nav.no/sykepenger</a>.</p>',
-        svartype: "IKKE_RELEVANT",
-        min: null,
-        max: null,
-        pavirkerAndreSporsmal: false,
-        kriterieForVisningAvUndersporsmal: null,
-        svar: [],
-        undersporsmal: [],
-      },
-      {
         id: "95339",
         tag: "BEKREFT_OPPLYSNINGER",
         sporsmalstekst:
@@ -2489,20 +2447,6 @@ export const soknaderMock = [
         svar: [],
         undersporsmal: [],
       },
-      {
-        id: "91",
-        tag: "VAER_KLAR_OVER_AT",
-        sporsmalstekst: "Viktig å være klar over:",
-        undertekst:
-          '<ul><li>Du kan bare få sykepenger hvis det er din egen sykdom eller skade som hindrer deg i å jobbe. Sosiale eller økonomiske problemer gir ikke rett til sykepenger.</li><li>Du kan miste retten til sykepenger hvis du nekter å opplyse om din egen arbeidsevne, eller hvis du ikke tar imot behandling eller tilrettelegging.</li><li>Retten til sykepenger gjelder bare inntekt du har mottatt som lønn og betalt skatt av på sykmeldingstidspunktet.</li><li>Nav kan innhente opplysninger som er nødvendige for å behandle søknaden.</li><li>Du må melde fra til Nav hvis du satt i varetekt, sonet straff eller var under forvaring i sykmeldingsperioden.</li><li>Fristen for å søke sykepenger er som hovedregel 3 måneder</li></ul><p>Du kan lese mer om rettigheter og plikter på <a href="https://www.nav.no/sykepenger" target="_blank">nav.no/sykepenger</a>.</p>',
-        svartype: "IKKE_RELEVANT",
-        min: null,
-        max: null,
-        pavirkerAndreSporsmal: false,
-        kriterieForVisningAvUndersporsmal: null,
-        svar: [],
-        undersporsmal: [],
-      },
     ],
   },
   {
@@ -2805,20 +2749,6 @@ export const soknaderMock = [
             ],
           },
         ],
-      },
-      {
-        id: "119",
-        tag: "VAER_KLAR_OVER_AT",
-        sporsmalstekst: "Viktig å være klar over:",
-        undertekst:
-          '<ul><li>Denne søknaden gjelder hvis selve behandlingen har en slik virkning på deg at du ikke kan jobbe resten av dagen. Grunnen er altså behandlingens effekt, og ikke at du for eksempel måtte bruke arbeidstid.</li><li>Nav kan innhente opplysninger som er nødvendige for å behandle søknaden.</li><li>Fristen for å søke sykepenger er som hovedregel 3 måneder</li></ul><p>Du kan lese mer om rettigheter og plikter på <a href="https://www.nav.no/sykepenger" target="_blank">nav.no/sykepenger</a>.</p>',
-        svartype: "IKKE_RELEVANT",
-        min: null,
-        max: null,
-        pavirkerAndreSporsmal: false,
-        kriterieForVisningAvUndersporsmal: null,
-        svar: [],
-        undersporsmal: [],
       },
       {
         id: "120",

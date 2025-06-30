@@ -97,9 +97,6 @@ export const getSendtTilSuffix = (sykepengesoknad: SykepengesoknadDTO) => {
   return "";
 };
 
-export const erVaerKlarOverAt = (s: SporsmalDTO): boolean =>
-  s.tag === "VAER_KLAR_OVER_AT";
-
 export const erTilSlutt = (s: SporsmalDTO): boolean => s.tag === "TIL_SLUTT";
 
 export const tittelFromSoknadstype = (soknadstype: Soknadstype) => {

@@ -8,8 +8,8 @@ import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/Sykepengesoknad
 
 const texts = {
   tittel: "Dato avbrutt",
-  status: "Status\n",
-  avbrutt: "Avbrutt av deg\n",
+  status: "Status",
+  avbrutt: "Avbrutt av sykmeldt",
 };
 
 interface AvbruttSoknadSelvstendigStatuspanelProps {
