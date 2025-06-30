@@ -19,7 +19,7 @@ import {
 import { generateUUID } from "@/utils/utils";
 import { beforeEach, describe, expect, it } from "vitest";
 import userEvent from "@testing-library/user-event";
-import { Oppfolgingsoppgave } from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
+import Oppfolgingsoppgave from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
 import { changeTextInput } from "../testUtils";
 import dayjs from "dayjs";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
@@ -180,7 +180,7 @@ describe("Oppfolgingsoppgave", () => {
       });
       const fristDateInput = screen.getByRole("textbox", {
         hidden: true,
-        name: "Frist",
+        name: "Frist (obligatorisk)",
       });
       const fristDate = dayjs();
       changeTextInput(fristDateInput, fristDate.format("DD-MM-YY"));
@@ -212,7 +212,7 @@ describe("Oppfolgingsoppgave", () => {
 
       const fristDateInput = screen.getByRole("textbox", {
         hidden: true,
-        name: "Frist",
+        name: "Frist (obligatorisk)",
       });
       const fristDate = dayjs();
       changeTextInput(fristDateInput, fristDate.format("DD-MM-YY"));
@@ -237,7 +237,7 @@ describe("Oppfolgingsoppgave", () => {
         ).to.deep.equal(expectedOppfolgingsoppgave);
       });
     });
-    it("fails if date is not edited on existing oppfolgingsoppgavemodal", async () => {
+    it("fails if no changes are made on existing oppfolgingsoppgavemodal", async () => {
       renderOppfolgingsoppgave();
 
       await clickEditButton();
@@ -245,7 +245,7 @@ describe("Oppfolgingsoppgave", () => {
       expect(
         screen.getByRole("textbox", {
           hidden: true,
-          name: "Frist",
+          name: "Frist (obligatorisk)",
         })
       ).to.exist;
 
@@ -288,8 +288,12 @@ describe("Oppfolgingsoppgave", () => {
       ).to.exist;
       expect(screen.getByRole("textbox", { hidden: true, name: "Beskrivelse" }))
         .to.exist;
-      expect(screen.getByRole("textbox", { hidden: true, name: "Frist" })).to
-        .exist;
+      expect(
+        screen.getByRole("textbox", {
+          hidden: true,
+          name: "Frist (obligatorisk)",
+        })
+      ).to.exist;
       expect(screen.getByRole("button", { hidden: true, name: "Lagre" })).to
         .exist;
       expect(screen.getByRole("button", { hidden: true, name: "Avbryt" })).to
@@ -315,7 +319,7 @@ describe("Oppfolgingsoppgave", () => {
 
       const fristDateInput = screen.getByRole("textbox", {
         hidden: true,
-        name: "Frist",
+        name: "Frist (obligatorisk)",
       });
       const fristDate = dayjs();
       changeTextInput(fristDateInput, fristDate.format("DD-MM-YY"));
