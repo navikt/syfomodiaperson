@@ -2,35 +2,31 @@ import { Heading, Tooltip } from "@navikt/ds-react";
 import { ArrowsCirclepathIcon } from "@navikt/aksel-icons";
 import React from "react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { hentBrukersFoedseldatoFraFnr } from "@/utils/fnrUtils";
 
 interface Props {
   navnSykmeldt: string;
-  personident: string;
+  fodselsdato: string | null;
 }
 
-export function hentBrukersAlderFraFnr(fnr: string) {
+function hentBrukersAlderFraFodselsdato(fodselsdato: string | null) {
+  if (!fodselsdato) return null;
   const dagensDato = new Date();
-  const fodselsdato = hentBrukersFoedseldatoFraFnr(fnr);
-
-  if (fodselsdato) {
-    const fodselsDatoIAr = new Date(fodselsdato);
-    fodselsDatoIAr.setFullYear(dagensDato.getFullYear());
-    if (fodselsdato && dagensDato.getTime() < fodselsDatoIAr.getTime()) {
-      return dagensDato.getFullYear() - fodselsdato.getFullYear() - 1;
-    }
-    return fodselsdato && dagensDato.getFullYear() - fodselsdato.getFullYear();
+  const fodselsdatoDate = new Date(fodselsdato);
+  const fodselsDatoIAr = new Date(fodselsdatoDate);
+  fodselsDatoIAr.setFullYear(dagensDato.getFullYear());
+  if (dagensDato.getTime() < fodselsDatoIAr.getTime()) {
+    return dagensDato.getFullYear() - fodselsdatoDate.getFullYear() - 1;
   }
-  return null;
+  return dagensDato.getFullYear() - fodselsdatoDate.getFullYear();
 }
 
-export function NavnHeader({ navnSykmeldt, personident }: Props) {
+export function NavnHeader({ navnSykmeldt, fodselsdato }: Props) {
   const { hasGjentakendeSykefravar } = useOppfolgingstilfellePersonQuery();
 
   return (
     <div className="flex items-center">
       <Heading size="xsmall" level="3">
-        {`${navnSykmeldt} (${hentBrukersAlderFraFnr(personident)} år)`}
+        {`${navnSykmeldt} (${hentBrukersAlderFraFodselsdato(fodselsdato)} år)`}
       </Heading>
       {hasGjentakendeSykefravar && (
         <Tooltip content={"Gjentatt sykefravær"}>

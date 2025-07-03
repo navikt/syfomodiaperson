@@ -8,6 +8,8 @@ export interface BrukerinfoDTO {
   navn: string;
   aktivPersonident: string;
   arbeidssituasjon: string;
+  kjonn: string | null;
+  fodselsdato: string | null;
   dodsdato: string | null;
   tilrettelagtKommunikasjon: TilrettelagtKommunikasjon | null;
   sikkerhetstiltak: Sikkerhetstiltak[];

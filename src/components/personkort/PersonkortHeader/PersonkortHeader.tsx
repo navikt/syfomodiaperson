@@ -37,9 +37,12 @@ export function PersonkortHeader() {
   return (
     <>
       <div className="flex personkortHeader__info">
-        <KjonnIkon personident={personident} />
+        <KjonnIkon kjonn={navbruker.kjonn} />
         <div>
-          <NavnHeader navnSykmeldt={navbruker.navn} personident={personident} />
+          <NavnHeader
+            navnSykmeldt={navbruker.navn}
+            fodselsdato={navbruker.fodselsdato}
+          />
 
           <StyledFnr>
             {formaterFnr(personident)}
