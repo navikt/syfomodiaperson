@@ -1,3 +1,5 @@
+import { KJOENN } from "@/konstanter";
+
 export interface KontaktinfoDTO {
   epost?: string;
   tlf?: string;
@@ -40,19 +42,13 @@ interface Sikkerhetstiltak {
   gyldigTom: Date;
 }
 
-export enum Kjoenn {
-  MANN = "MANN",
-  KVINNE = "KVINNE",
-  UKJENT = "UKJENT",
-}
-
-export function mapKjoennFromDto(kjonn: string | null): Kjoenn {
+export function mapKjoennFromDto(kjonn: string | null): KJOENN {
   switch (kjonn) {
-    case Kjoenn.MANN:
-      return Kjoenn.MANN;
-    case Kjoenn.KVINNE:
-      return Kjoenn.KVINNE;
+    case KJOENN.MANN:
+      return KJOENN.MANN;
+    case KJOENN.KVINNE:
+      return KJOENN.KVINNE;
     default:
-      return Kjoenn.UKJENT;
+      return KJOENN.UKJENT;
   }
 }

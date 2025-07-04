@@ -1,15 +1,15 @@
-import { KJOENN, Kjoenn } from "@/data/navbruker/types/BrukerinfoDTO";
+import { KJOENN } from "@/konstanter";
 import { getKvinneImage, getMannImage } from "@/utils/festiveUtils";
 import React from "react";
 
-export function KjonnIkon({ kjonn }: { kjonn: Kjoenn }) {
-  if (kjonn === Kjoenn.UKJENT) {
+export function KjonnIkon({ kjonn }: { kjonn: KJOENN }) {
+  if (kjonn === KJOENN.UKJENT) {
     return null;
   }
   return (
     <img
       className="mr-4"
-      src={kjonn === Kjoenn.KVINNE ? getKvinneImage() : getMannImage()}
+      src={kjonn === KJOENN.KVINNE ? getKvinneImage() : getMannImage()}
       alt="person"
     />
   );
