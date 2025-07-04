@@ -8,7 +8,7 @@ interface Props {
   fodselsdato: string | null;
 }
 
-function hentBrukersAlderFraFodselsdato(fodselsdato: string | null) {
+function beregnBrukersAlderFraFodselsdato(fodselsdato: string | null) {
   if (!fodselsdato) return null;
   const dagensDato = new Date();
   const fodselsdatoDate = new Date(fodselsdato);
@@ -22,11 +22,13 @@ function hentBrukersAlderFraFodselsdato(fodselsdato: string | null) {
 
 export function NavnHeader({ navnSykmeldt, fodselsdato }: Props) {
   const { hasGjentakendeSykefravar } = useOppfolgingstilfellePersonQuery();
+  const alder = beregnBrukersAlderFraFodselsdato(fodselsdato);
 
   return (
     <div className="flex items-center">
       <Heading size="xsmall" level="3">
-        {`${navnSykmeldt} (${hentBrukersAlderFraFodselsdato(fodselsdato)} år)`}
+        {navnSykmeldt}
+        {alder !== null && ` (${alder} år)`}
       </Heading>
       {hasGjentakendeSykefravar && (
         <Tooltip content={"Gjentatt sykefravær"}>

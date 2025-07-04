@@ -13,6 +13,7 @@ import { useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
 import { NavnHeader } from "@/components/personkort/PersonkortHeader/NavnHeader";
 import Utbetalingsinfo from "@/components/personkort/PersonkortHeader/Utbetalingsinfo";
 import { formaterFnr } from "@/utils/fnrUtils";
+import { mapKjoennFromDto, Kjoenn } from "@/data/navbruker/types/BrukerinfoDTO";
 
 const texts = {
   copied: "Kopiert!",
@@ -37,7 +38,7 @@ export function PersonkortHeader() {
   return (
     <>
       <div className="flex personkortHeader__info">
-        <KjonnIkon kjonn={navbruker.kjonn} />
+        <KjonnIkon kjonn={mapKjoennFromDto(navbruker.kjonn)} />
         <div>
           <NavnHeader
             navnSykmeldt={navbruker.navn}

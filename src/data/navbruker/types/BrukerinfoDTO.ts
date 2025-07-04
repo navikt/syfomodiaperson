@@ -39,3 +39,20 @@ interface Sikkerhetstiltak {
   gyldigFom: Date;
   gyldigTom: Date;
 }
+
+export enum Kjoenn {
+  MANN = "MANN",
+  KVINNE = "KVINNE",
+  UKJENT = "UKJENT",
+}
+
+export function mapKjoennFromDto(kjonn: string | null): Kjoenn {
+  switch (kjonn) {
+    case Kjoenn.MANN:
+      return Kjoenn.MANN;
+    case Kjoenn.KVINNE:
+      return Kjoenn.KVINNE;
+    default:
+      return Kjoenn.UKJENT;
+  }
+}
