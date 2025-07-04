@@ -1,3 +1,5 @@
+import { KJOENN } from "@/konstanter";
+
 export interface KontaktinfoDTO {
   epost?: string;
   tlf?: string;
@@ -8,6 +10,8 @@ export interface BrukerinfoDTO {
   navn: string;
   aktivPersonident: string;
   arbeidssituasjon: string;
+  kjonn: string | null;
+  fodselsdato: string | null;
   dodsdato: string | null;
   tilrettelagtKommunikasjon: TilrettelagtKommunikasjon | null;
   sikkerhetstiltak: Sikkerhetstiltak[];
@@ -36,4 +40,15 @@ interface Sikkerhetstiltak {
   beskrivelse: string;
   gyldigFom: Date;
   gyldigTom: Date;
+}
+
+export function mapKjoennFromDto(kjonn: string | null): KJOENN {
+  switch (kjonn) {
+    case KJOENN.MANN:
+      return KJOENN.MANN;
+    case KJOENN.KVINNE:
+      return KJOENN.KVINNE;
+    default:
+      return KJOENN.UKJENT;
+  }
 }
