@@ -5,30 +5,17 @@ import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/pe
 
 interface Props {
   navnSykmeldt: string;
-  fodselsdato: string | null;
+  alder: number | null;
 }
 
-function beregnBrukersAlderFraFodselsdato(fodselsdato: string | null) {
-  if (!fodselsdato) return null;
-  const dagensDato = new Date();
-  const fodselsdatoDate = new Date(fodselsdato);
-  const fodselsDatoIAr = new Date(fodselsdatoDate);
-  fodselsDatoIAr.setFullYear(dagensDato.getFullYear());
-  if (dagensDato.getTime() < fodselsDatoIAr.getTime()) {
-    return dagensDato.getFullYear() - fodselsdatoDate.getFullYear() - 1;
-  }
-  return dagensDato.getFullYear() - fodselsdatoDate.getFullYear();
-}
-
-export function NavnHeader({ navnSykmeldt, fodselsdato }: Props) {
+export function NavnHeader({ navnSykmeldt, alder }: Props) {
   const { hasGjentakendeSykefravar } = useOppfolgingstilfellePersonQuery();
-  const alder = beregnBrukersAlderFraFodselsdato(fodselsdato);
 
   return (
     <div className="flex items-center">
       <Heading size="xsmall" level="3">
         {navnSykmeldt}
-        {alder !== null && ` (${alder} år)`}
+        {alder != null && ` (${alder} år)`}
       </Heading>
       {hasGjentakendeSykefravar && (
         <Tooltip content={"Gjentatt sykefravær"}>

@@ -18,6 +18,7 @@ export const brukerinfoMock: BrukerinfoDTO = {
   dodsdato: null,
   kjonn: "MANN",
   fodselsdato: "1969-02-19",
+  alder: 56,
   tilrettelagtKommunikasjon: null,
   sikkerhetstiltak: [],
 };

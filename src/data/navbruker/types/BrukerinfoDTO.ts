@@ -12,6 +12,7 @@ export interface BrukerinfoDTO {
   arbeidssituasjon: string;
   kjonn: string | null;
   fodselsdato: string | null;
+  alder: number | null;
   dodsdato: string | null;
   tilrettelagtKommunikasjon: TilrettelagtKommunikasjon | null;
   sikkerhetstiltak: Sikkerhetstiltak[];
