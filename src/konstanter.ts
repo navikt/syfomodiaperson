@@ -6,7 +6,8 @@ export const PERSONKORTVISNING_TYPE = {
   SIKKERHETSTILTAK: "SIKKERHETSTILTAK",
 };
 
-export const KJOENN = {
-  KVINNE: "KVINNE",
-  MANN: "MANN",
-};
+export enum KJOENN {
+  KVINNE = "KVINNE",
+  MANN = "MANN",
+  UKJENT = "UKJENT",
+}

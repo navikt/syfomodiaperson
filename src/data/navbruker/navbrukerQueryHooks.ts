@@ -30,6 +30,9 @@ export const useBrukerinfoQuery = () => {
     aktivPersonident: "",
     arbeidssituasjon: "ARBEIDSTAKER",
     dodsdato: null,
+    kjonn: "UKJENT",
+    fodselsdato: null,
+    alder: null,
     tilrettelagtKommunikasjon: {
       talesprakTolk: null,
       tegnsprakTolk: null,
