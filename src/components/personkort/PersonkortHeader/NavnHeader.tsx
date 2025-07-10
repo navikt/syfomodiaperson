@@ -15,7 +15,7 @@ export function NavnHeader({ navnSykmeldt, alder }: Props) {
     <div className="flex items-center">
       <Heading size="xsmall" level="3">
         {navnSykmeldt}
-        {alder != null && ` (${alder} år)`}
+        {alder !== null && ` (${alder} år)`}
       </Heading>
       {hasGjentakendeSykefravar && (
         <Tooltip content={"Gjentatt sykefravær"}>
