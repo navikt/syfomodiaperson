@@ -11,7 +11,7 @@ import { OversiktLenker } from "@/components/personkort/OversiktLenker";
 import { Pride } from "@/components/festive/Pride";
 import Oppfolgingsoppgave from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
-import { TildeltVeileder } from "@/components/TildeltVeileder";
+import TildeltVeileder from "@/components/side/tildeltveileder/TildeltVeileder";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { InaktivPersonident } from "@/components/InaktivPersonident";
 

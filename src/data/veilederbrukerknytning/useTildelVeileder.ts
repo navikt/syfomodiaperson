@@ -9,12 +9,13 @@ export const useTildelVeileder = () => {
   const queryClient = useQueryClient();
 
   const path = `${SYFOOVERSIKTSRV_PERSONTILDELING_ROOT}/personer/single`;
-  const postTildelVeileder = (veilederIdent: string) => {
+  const postTildelVeileder = (
+    veilederIdent: VeilederIdent | IkkeTildeltVeileder
+  ) => {
     const veilederBrukerKnytning: VeilederBrukerKnytning = {
       veilederIdent: veilederIdent,
       fnr: personident,
     };
-
     return post(path, veilederBrukerKnytning);
   };
 
@@ -29,7 +30,10 @@ export const useTildelVeileder = () => {
   });
 };
 
+export type VeilederIdent = string;
+export type IkkeTildeltVeileder = null;
+
 interface VeilederBrukerKnytning {
-  veilederIdent: string;
+  veilederIdent: VeilederIdent | IkkeTildeltVeileder;
   fnr: string;
 }
