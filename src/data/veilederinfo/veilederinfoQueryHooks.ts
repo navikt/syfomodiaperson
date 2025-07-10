@@ -3,6 +3,7 @@ import { get } from "@/api/axios";
 import { Veileder } from "@/data/veilederinfo/types/Veileder";
 import { useQuery } from "@tanstack/react-query";
 import { useValgtEnhet } from "@/context/ValgtEnhetContext";
+import { VeilederIdent } from "@/data/veilederbrukerknytning/useTildelVeileder";
 
 export const veilederinfoQueryKeys = {
   veilederinfo: ["veilederinfo"],
@@ -34,7 +35,7 @@ export const useAktivVeilederinfoQuery = () => {
   });
 };
 
-export const useVeilederInfoQuery = (ident: string) => {
+export const useVeilederInfoQuery = (ident: VeilederIdent) => {
   const fetchVeilederinfoByIdent = () =>
     get<Veileder>(`${SYFOVEILEDER_ROOT}/veiledere/${ident}`);
   return useQuery({
