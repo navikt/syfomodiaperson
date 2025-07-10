@@ -20,7 +20,7 @@ import {
   veilederBrukerKnytningQueryKeys,
 } from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
 import { queryClientWithMockData } from "../testQueryClient";
-import { TildeltVeileder } from "@/components/TildeltVeileder";
+import TildeltVeileder from "@/components/side/tildeltveileder/TildeltVeileder";
 import React from "react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
