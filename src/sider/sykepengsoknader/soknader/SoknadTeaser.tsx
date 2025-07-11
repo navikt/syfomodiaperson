@@ -10,31 +10,21 @@ import {
   tilLesbarPeriodeMedArstall,
   toDatePrettyPrint,
 } from "@/utils/datoUtils";
-import {
-  GlobeHoverImage,
-  GlobeImage,
-  SoknaderHoverImage,
-  SoknaderImage,
-} from "../../../../img/ImageComponents";
+
 import {
   Soknadstatus,
   Soknadstype,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import { BodyShort, Box, Heading } from "@navikt/ds-react";
+import { ChevronRightIcon } from "@navikt/aksel-icons";
 
 const texts = {
+  tittel: "Søknad om sykepenger",
   sendt: "Sendt til",
   fremtidig: "Planlagt",
   avbrutt: "Avbrutt av deg",
-  teaser: "Gjelder perioden",
-};
-
-const textDato = (dato?: string) => {
-  return `Opprettet ${dato}`;
-};
-
-const textSendtTilArbeidsgiver = (dato?: string, arbeidsgiver?: string) => {
-  return `${texts.sendt} ${arbeidsgiver} ${dato}`;
+  tilSoknad: "Til søknad",
 };
 
 const textSendtTilNav = (dato?: string) => {
@@ -45,40 +35,16 @@ const textAvbrutt = (dato?: string) => {
   return `${texts.avbrutt} ${dato}`;
 };
 
-const textTeaserTekst = (periode: string) => {
-  return `Gjelder for perioden ${periode}`;
-};
-
-interface TeaserComponentProps {
-  soknad: SykepengesoknadDTO;
-}
-
-const SendtUlikt = ({ soknad }: TeaserComponentProps) => {
+const SendtUlikt = ({ soknad }: Props) => {
+  const textSendtTilArbeidsgiver = `${texts.sendt} ${
+    soknad.arbeidsgiver?.navn
+  } ${toDatePrettyPrint(soknad.sendtTilArbeidsgiverDato)}`;
   return (
     <span>
-      {textSendtTilArbeidsgiver(
-        toDatePrettyPrint(soknad.sendtTilArbeidsgiverDato),
-        soknad.arbeidsgiver?.navn
-      )}
+      {textSendtTilArbeidsgiver}
       <br />
       {textSendtTilNav(toDatePrettyPrint(soknad.sendtTilNAVDato))}
     </span>
-  );
-};
-
-const visIkon = (soknadstype: Soknadstype) => {
-  return soknadstype === Soknadstype.OPPHOLD_UTLAND ? (
-    <img alt="" className="js-ikon" src={GlobeImage} />
-  ) : (
-    <img alt="" className="js-ikon" src={SoknaderImage} />
-  );
-};
-
-const visIkonHover = (soknadstype: Soknadstype) => {
-  return soknadstype === Soknadstype.OPPHOLD_UTLAND ? (
-    <img alt="" className="js-ikon" src={GlobeHoverImage} />
-  ) : (
-    <img alt="" className="js-ikon" src={SoknaderHoverImage} />
   );
 };
 
@@ -109,7 +75,7 @@ const textSoknadTeaserStatus = (
     case "soknad.teaser.status.AVBRUTT":
       return textAvbrutt(dato);
     default:
-      return "";
+      return "Planlagt";
   }
 };
 
@@ -118,9 +84,7 @@ const beregnUndertekst = (soknad: SykepengesoknadDTO) => {
 
   if (soknad.status === Soknadstatus.AVBRUTT) {
     return textAvbrutt(tilLesbarDatoMedArstall(soknad.avbruttDato));
-  }
-
-  if (soknad.status === Soknadstatus.FREMTIDIG) {
+  } else if (soknad.status === Soknadstatus.FREMTIDIG) {
     return texts.fremtidig;
   }
 
@@ -191,72 +155,59 @@ const beregnUndertekst = (soknad: SykepengesoknadDTO) => {
   }
 };
 
-const TeaserStatus = ({ soknad }: TeaserComponentProps) => (
-  <p className="inngangspanel__status js-status">
-    {textSoknadTeaserStatus(
-      `soknad.teaser.status.${soknad.status}`,
-      tilLesbarDatoMedArstall(
-        soknad.sendtTilArbeidsgiverDato || soknad.sendtTilNAVDato
-      )
-    )}
-  </p>
-);
+interface Props {
+  soknad: SykepengesoknadDTO;
+}
 
-const TeaserTittel = ({ soknad }: TeaserComponentProps) => (
-  <h3 className="js-title" id={`soknad-header-${soknad.id}`}>
-    <small className="inngangspanel__meta js-meta">
-      {textDato(tilLesbarDatoMedArstall(soknad.opprettetDato))}
-    </small>
-    <span className="inngangspanel__tittel">
-      {tittelFromSoknadstype(soknad.soknadstype)}
-    </span>
-  </h3>
-);
-
-const TeaserPeriode = ({ soknad }: TeaserComponentProps) => (
-  <p className="inngangspanel__tekst js-tekst">
-    {textTeaserTekst(tilLesbarPeriodeMedArstall(soknad.fom, soknad.tom))}
-  </p>
-);
-
-const SykepengesoknadTeaser = ({
-  soknad,
-}: TeaserComponentProps): ReactElement => {
-  const status = soknad.status ? soknad.status.toLowerCase() : "";
+export default function SykepengesoknadTeaser({ soknad }: Props): ReactElement {
   const visStatus =
     [Soknadstatus.NY, Soknadstatus.SENDT, Soknadstatus.AVBRUTT].indexOf(
       soknad.status
     ) === -1;
   const undertekst = beregnUndertekst(soknad);
-  return (
-    <article aria-labelledby={`soknader-header-${soknad.id}`}>
-      <Link
-        className={`inngangspanel js-panel js-soknad-${status}`}
-        to={`/sykefravaer/sykepengesoknader/${soknad.id}`}
-      >
-        <span className="inngangspanel__ikon inngangspanel__ikon--normal">
-          {visIkon(soknad.soknadstype)}
-        </span>
-        <span className="inngangspanel__ikon inngangspanel__ikon--hover">
-          {visIkonHover(soknad.soknadstype)}
-        </span>
-        <div className="inngangspanel__innhold">
-          <header className="inngangspanel__header">
-            <TeaserTittel soknad={soknad} />
-            {visStatus && <TeaserStatus soknad={soknad} />}
-          </header>
-          {soknad.soknadstype !== Soknadstype.OPPHOLD_UTLAND && (
-            <TeaserPeriode soknad={soknad} />
-          )}
-          {undertekst && (
-            <p className="inngangspanel__undertekst js-undertekst mute">
-              {undertekst}
-            </p>
-          )}
-        </div>
-      </Link>
-    </article>
-  );
-};
 
-export default SykepengesoknadTeaser;
+  function statusText(soknad: SykepengesoknadDTO): string {
+    return textSoknadTeaserStatus(
+      `soknad.teaser.status.${soknad.status}`,
+      tilLesbarDatoMedArstall(
+        soknad.sendtTilArbeidsgiverDato || soknad.sendtTilNAVDato
+      )
+    );
+  }
+
+  return (
+    <Box
+      background="surface-default"
+      className="flex flex-col p-4 mt-2 mb-2 gap-2"
+    >
+      <div className="flex flex-row justify-between">
+        <Heading level="4" size="xsmall" className="mb-2">
+          {tittelFromSoknadstype(soknad.soknadstype)}
+        </Heading>
+        {visStatus && <BodyShort size="small">{statusText(soknad)}</BodyShort>}
+      </div>
+      <BodyShort size="small">{`Opprettet ${tilLesbarDatoMedArstall(
+        soknad.opprettetDato
+      )}`}</BodyShort>
+      {undertekst && <BodyShort size="small">{undertekst}</BodyShort>}
+      <div className="flex flex-row items-center">
+        {soknad.soknadstype !== Soknadstype.OPPHOLD_UTLAND && (
+          <BodyShort size="small">
+            {`Gjelder for perioden ${tilLesbarPeriodeMedArstall(
+              soknad.fom,
+              soknad.tom
+            )}
+            `}
+          </BodyShort>
+        )}
+        <Link
+          className="flex flex-row h-fit ml-auto"
+          to={`/sykefravaer/sykepengesoknader/${soknad.id}`}
+        >
+          {texts.tilSoknad}
+          <ChevronRightIcon className="h-5 w-5" />
+        </Link>
+      </div>
+    </Box>
+  );
+}

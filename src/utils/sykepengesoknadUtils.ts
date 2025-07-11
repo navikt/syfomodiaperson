@@ -99,7 +99,7 @@ export const getSendtTilSuffix = (sykepengesoknad: SykepengesoknadDTO) => {
 
 export const erTilSlutt = (s: SporsmalDTO): boolean => s.tag === "TIL_SLUTT";
 
-export const tittelFromSoknadstype = (soknadstype: Soknadstype) => {
+export function tittelFromSoknadstype(soknadstype: Soknadstype): string {
   switch (soknadstype) {
     case Soknadstype.OPPHOLD_UTLAND: {
       return texts.utland;
@@ -117,4 +117,4 @@ export const tittelFromSoknadstype = (soknadstype: Soknadstype) => {
       return texts.tittel;
     }
   }
-};
+}
