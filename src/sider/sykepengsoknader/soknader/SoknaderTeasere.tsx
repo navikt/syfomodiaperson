@@ -13,7 +13,7 @@ interface Props {
 export default function SoknaderTeasere({
   sykepengesoknader,
   className,
-  tittel = "",
+  tittel,
   tomListeTekst,
   id,
 }: Props) {

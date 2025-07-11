@@ -19,18 +19,17 @@ import {
 import {
   Soknadstatus,
   Soknadstype,
+  SporsmalDTO,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import { Tag } from "@navikt/ds-react";
 
 const texts = {
   sendt: "Sendt til",
   fremtidig: "Planlagt",
   avbrutt: "Avbrutt av deg",
   teaser: "Gjelder perioden",
-};
-
-const textDato = (dato?: string) => {
-  return `Opprettet ${dato}`;
+  harJobbet: "Har vært i arbeid",
 };
 
 const textSendtTilArbeidsgiver = (dato?: string, arbeidsgiver?: string) => {
@@ -49,11 +48,7 @@ const textTeaserTekst = (periode: string) => {
   return `Gjelder for perioden ${periode}`;
 };
 
-interface TeaserComponentProps {
-  soknad: SykepengesoknadDTO;
-}
-
-const SendtUlikt = ({ soknad }: TeaserComponentProps) => {
+const SendtUlikt = ({ soknad }: Props) => {
   return (
     <span>
       {textSendtTilArbeidsgiver(
@@ -191,7 +186,7 @@ const beregnUndertekst = (soknad: SykepengesoknadDTO) => {
   }
 };
 
-const TeaserStatus = ({ soknad }: TeaserComponentProps) => (
+const TeaserStatus = ({ soknad }: Props) => (
   <p className="inngangspanel__status js-status">
     {textSoknadTeaserStatus(
       `soknad.teaser.status.${soknad.status}`,
@@ -202,32 +197,33 @@ const TeaserStatus = ({ soknad }: TeaserComponentProps) => (
   </p>
 );
 
-const TeaserTittel = ({ soknad }: TeaserComponentProps) => (
-  <h3 className="js-title" id={`soknad-header-${soknad.id}`}>
-    <small className="inngangspanel__meta js-meta">
-      {textDato(tilLesbarDatoMedArstall(soknad.opprettetDato))}
-    </small>
-    <span className="inngangspanel__tittel">
-      {tittelFromSoknadstype(soknad.soknadstype)}
-    </span>
-  </h3>
-);
-
-const TeaserPeriode = ({ soknad }: TeaserComponentProps) => (
+const TeaserPeriode = ({ soknad }: Props) => (
   <p className="inngangspanel__tekst js-tekst">
     {textTeaserTekst(tilLesbarPeriodeMedArstall(soknad.fom, soknad.tom))}
   </p>
 );
 
-const SykepengesoknadTeaser = ({
-  soknad,
-}: TeaserComponentProps): ReactElement => {
+interface Props {
+  soknad: SykepengesoknadDTO;
+}
+
+export default function SykepengesoknadTeaser({ soknad }: Props): ReactElement {
   const status = soknad.status ? soknad.status.toLowerCase() : "";
   const visStatus =
     [Soknadstatus.NY, Soknadstatus.SENDT, Soknadstatus.AVBRUTT].indexOf(
       soknad.status
     ) === -1;
   const undertekst = beregnUndertekst(soknad);
+
+  function harJobbet(sporsmal: SporsmalDTO[]) {
+    return sporsmal.some(
+      (spm: SporsmalDTO) =>
+        spm.svartype === "TIMER" ||
+        spm.svartype === "PROSENT" ||
+        harJobbet(spm.undersporsmal)
+    );
+  }
+
   return (
     <article aria-labelledby={`soknader-header-${soknad.id}`}>
       <Link
@@ -240,9 +236,23 @@ const SykepengesoknadTeaser = ({
         <span className="inngangspanel__ikon inngangspanel__ikon--hover">
           {visIkonHover(soknad.soknadstype)}
         </span>
-        <div className="inngangspanel__innhold">
+        <div className="inngangspanel__innhold mr-4">
           <header className="inngangspanel__header">
-            <TeaserTittel soknad={soknad} />
+            <h3 className="js-title" id={`soknad-header-${soknad.id}`}>
+              <div className="flex flex-row justify-between">
+                <small className="inngangspanel__meta js-meta">
+                  {`Opprettet ${tilLesbarDatoMedArstall(soknad.opprettetDato)}`}
+                </small>
+                {harJobbet(soknad.sporsmal) && (
+                  <Tag variant="info" size="xsmall">
+                    {texts.harJobbet}
+                  </Tag>
+                )}
+              </div>
+              <span className="inngangspanel__tittel">
+                {tittelFromSoknadstype(soknad.soknadstype)}
+              </span>
+            </h3>
             {visStatus && <TeaserStatus soknad={soknad} />}
           </header>
           {soknad.soknadstype !== Soknadstype.OPPHOLD_UTLAND && (
@@ -257,6 +267,4 @@ const SykepengesoknadTeaser = ({
       </Link>
     </article>
   );
-};
-
-export default SykepengesoknadTeaser;
+}
