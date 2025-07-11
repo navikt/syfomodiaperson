@@ -2,6 +2,10 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
 import { SYFOOVERSIKTSRV_PERSONTILDELING_ROOT } from "@/apiConstants";
+import {
+  IkkeTildeltVeileder,
+  VeilederIdent,
+} from "@/data/veilederbrukerknytning/useTildelVeileder";
 
 export const veilederBrukerKnytningQueryKeys = {
   veilederBrukerKnytning: (personident: string) => [
@@ -43,13 +47,13 @@ export const useVeilederTildelingHistorikkData = () => {
 
 export interface VeilederBrukerKnytningDTO {
   personident: string;
-  tildeltVeilederident?: string;
+  tildeltVeilederident: VeilederIdent | IkkeTildeltVeileder;
   tildeltEnhet?: string;
 }
 
 export interface VeilederTildelingHistorikkDTO {
   tildeltDato: Date;
-  tildeltVeileder: string;
+  tildeltVeileder: VeilederIdent | IkkeTildeltVeileder;
   tildeltEnhet: string;
   tildeltAv: string;
 }

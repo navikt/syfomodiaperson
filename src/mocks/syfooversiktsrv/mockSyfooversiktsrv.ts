@@ -29,6 +29,12 @@ export const mockSyfooversiktsrv = [
         tildeltEnhet: "0315",
       },
       {
+        tildeltDato: "2024-06-21",
+        tildeltAv: "A123456",
+        tildeltVeileder: null,
+        tildeltEnhet: "0315",
+      },
+      {
         tildeltDato: "2024-02-21",
         tildeltAv: "X000000",
         tildeltVeileder: "A123456",

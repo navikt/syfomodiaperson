@@ -22,6 +22,8 @@ function getHistorikkTekst(value: VeilederTildelingHistorikkDTO): string {
     value.tildeltAv == value.tildeltVeileder
   ) {
     return `${value.tildeltVeileder} på enhet ${value.tildeltEnhet} ble satt som veileder`;
+  } else if (value.tildeltVeileder === null) {
+    return `${value.tildeltAv} satt sykmeldt som ufordelt`;
   } else {
     return `${value.tildeltAv} satt ${value.tildeltVeileder} på enhet ${value.tildeltEnhet} som veileder`;
   }

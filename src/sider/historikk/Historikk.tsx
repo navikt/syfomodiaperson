@@ -113,7 +113,7 @@ export default function Historikk({
     historikkEvents
   );
 
-  function filteredEvents() {
+  function filteredEvents(): HistorikkEvent[] {
     if (selectedTilfelleIndex === 0) {
       return historikkEvents;
     } else if (selectedTilfelleIndex === -1) {

@@ -3,6 +3,7 @@ import { Button, Tag } from "@navikt/ds-react";
 import { useGetVeilederBrukerKnytning } from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import EndreTildeltVeilederModal from "@/components/side/tildeltveileder/EndreTildeltVeilederModal";
+import { VeilederIdent } from "@/data/veilederbrukerknytning/useTildelVeileder";
 
 const texts = {
   tildeltVeileder: "Tildelt veileder: ",
@@ -11,7 +12,7 @@ const texts = {
 };
 
 interface VeilederNavnProps {
-  tildeltVeilederident: string;
+  tildeltVeilederident: VeilederIdent;
 }
 
 function VeilederNavn({ tildeltVeilederident }: VeilederNavnProps) {
@@ -25,7 +26,9 @@ function VeilederNavn({ tildeltVeilederident }: VeilederNavnProps) {
         : tildeltVeilederident}
     </span>
   ) : (
-    <span></span>
+    <Tag variant="info" size="small">
+      {texts.ufordelt}
+    </Tag>
   );
 }
 
