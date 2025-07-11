@@ -1,28 +1,25 @@
 import React from "react";
 import SoknadTeaser from "./SoknadTeaser";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import { Heading } from "@navikt/ds-react";
 
 interface Props {
   sykepengesoknader: SykepengesoknadDTO[];
-  id: string;
   tomListeTekst: string;
-  tittel?: string;
-  className?: string;
+  tittel: string;
 }
 
 export default function SoknaderTeasere({
   sykepengesoknader,
-  className,
-  tittel = "",
+  tittel,
   tomListeTekst,
-  id,
 }: Props) {
   return (
     <div className="mb-4">
-      <header className="inngangspanelerHeader">
-        <h2 className="inngangspanelerHeader__tittel">{tittel}</h2>
-      </header>
-      <div id={id} className={className || "js-content"}>
+      <Heading size="small" level="2">
+        {tittel}
+      </Heading>
+      <div>
         {sykepengesoknader.length > 0 ? (
           sykepengesoknader.map((soknad, idx) => (
             <SoknadTeaser key={idx} soknad={soknad} />
