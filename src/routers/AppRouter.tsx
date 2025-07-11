@@ -78,28 +78,28 @@ const AktivBrukerRouter = (): ReactElement => {
             path={`${appRoutePath}/behandlerdialog`}
             element={<BehandlerdialogContainer />}
           />
-          <Route path={historikkPath} element={<HistorikkContainer />} />
           <Route path={moteoversiktRoutePath} element={<Motelandingsside />} />
-          <Route
-            path={dialogmoteRoutePath}
-            element={<DialogmoteInnkallingContainer />}
-          />
-          <Route
-            path={`${dialogmoteRoutePath}/:dialogmoteUuid/avlys`}
-            element={<AvlysDialogmoteContainer />}
-          />
-          <Route
-            path={`${dialogmoteRoutePath}/:dialogmoteUuid/referat`}
-            element={<DialogmoteReferatContainer />}
-          />
-          <Route
-            path={`${dialogmoteRoutePath}/:dialogmoteUuid/referat/endre`}
-            element={<DialogmoteEndreReferatContainer />}
-          />
-          <Route
-            path={`${dialogmoteRoutePath}/:dialogmoteUuid/endre`}
-            element={<EndreDialogmoteContainer />}
-          />
+
+          <Route path={dialogmoteRoutePath}>
+            <Route index element={<DialogmoteInnkallingContainer />} />
+            <Route
+              path=":dialogmoteUuid/avlys"
+              element={<AvlysDialogmoteContainer />}
+            />
+            <Route
+              path=":dialogmoteUuid/referat"
+              element={<DialogmoteReferatContainer />}
+            />
+            <Route
+              path=":dialogmoteUuid/referat/endre"
+              element={<DialogmoteEndreReferatContainer />}
+            />
+            <Route
+              path=":dialogmoteUuid/endre"
+              element={<EndreDialogmoteContainer />}
+            />
+          </Route>
+
           <Route
             path={dialogmoteUnntakRoutePath}
             element={<DialogmoteunntakSkjemaContainer />}
@@ -120,6 +120,21 @@ const AktivBrukerRouter = (): ReactElement => {
               path=":sykepengesoknadId"
               element={<SykepengesoknadSide />}
             />
+          </Route>
+
+          <Route
+            path={manglendeMedvirkningPath}
+            element={
+              <NotificationProvider>
+                <ManglendeMedvirkningSide />
+              </NotificationProvider>
+            }
+          >
+            <Route index element={<ManglendeMedvirkning />} />
+            <Route path="oppfylt" element={<OppfyltSide />} />
+            <Route path="stans" element={<StansSide />} />
+            <Route path="unntak" element={<UnntakSide />} />
+            <Route path="ikkeaktuell" element={<IkkeAktuellSide />} />
           </Route>
 
           <Route
@@ -148,31 +163,19 @@ const AktivBrukerRouter = (): ReactElement => {
             path={frisktilarbeidPath}
             element={<FriskmeldingTilArbeidsformidlingSide />}
           />
+
           <Route path={senOppfolgingPath} element={<SenOppfolging />} />
 
-          <Route
-            path={manglendeMedvirkningPath}
-            element={
-              <NotificationProvider>
-                <ManglendeMedvirkningSide />
-              </NotificationProvider>
-            }
-          >
-            <Route index element={<ManglendeMedvirkning />} />
-            <Route path="oppfylt" element={<OppfyltSide />} />
-            <Route path="stans" element={<StansSide />} />
-            <Route path="unntak" element={<UnntakSide />} />
-            <Route path="ikkeaktuell" element={<IkkeAktuellSide />} />
+          <Route path={`${appRoutePath}/oppfoelgingsplaner`}>
+            <Route index element={<OppfoelgingsPlanerOversiktContainer />} />
+            <Route
+              path=":oppfoelgingsdialogId"
+              element={<OppfolgingsplanContainer />}
+            />
           </Route>
 
-          <Route
-            path={`${appRoutePath}/oppfoelgingsplaner`}
-            element={<OppfoelgingsPlanerOversiktContainer />}
-          />
-          <Route
-            path={`${appRoutePath}/oppfoelgingsplaner/:oppfoelgingsdialogId`}
-            element={<OppfolgingsplanContainer />}
-          />
+          <Route path={historikkPath} element={<HistorikkContainer />} />
+
           <Route
             path={`${appRoutePath}/personsok`}
             element={<PersonsokSide />}
