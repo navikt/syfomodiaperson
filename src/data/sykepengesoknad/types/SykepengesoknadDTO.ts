@@ -121,3 +121,21 @@ export function isSoknadSendt(soknad: SykepengesoknadDTO) {
     soknad.status === Soknadstatus.AVBRUTT
   );
 }
+
+/**
+ * Sjekker om søknaden har spørsmål som indikerer at sykmeldt har jobbet.
+ *
+ * Se [link](https://github.com/navikt/sykepengesoknad-backend/blob/c534d1942b97d83fd95fe38d9bca44c5de205156/src/main/kotlin/no/nav/helse/flex/soknadsopprettelse/SporsmalKonstanter.kt#L4) til `sykepenegersoknad-backend` for mulige verdier for `tag` propertien.
+ * @param soknad
+ * @return `true` hvis søknaden inneholder spørsmål om sykmeldt har jobbet og sykmeldt har svart ja, ellers `false`.
+ */
+export function harJobbet(soknad: SykepengesoknadDTO): boolean {
+  return soknad.sporsmal.some(
+    (sporsmal) =>
+      (sporsmal.tag.includes("ARBEID_UNDERVEIS_100_PROSENT") ||
+        sporsmal.tag.includes("TILBAKE_I_ARBEID") ||
+        sporsmal.tag.includes("NYTT_ARBEIDSFORHOLD_UNDERVEIS") ||
+        sporsmal.tag.includes("JOBBET_DU_GRADERT")) &&
+      sporsmal.svar.some((svar) => svar.verdi === "JA")
+  );
+}
