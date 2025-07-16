@@ -11,7 +11,7 @@ import { queryClientWithAktivBruker } from "../testQueryClient";
 import { renderWithRouter } from "../testRouterUtils";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
-import { SykepengesoknadSide } from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
+import SykepengesoknadSide from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
 import { soknaderMock } from "@/mocks/sykepengesoknad/soknaderMock";
 
 const NAERINGSDRIVENDESOKNAD_ID = "faadf7c1-3aac-4758-8673-e9cee1316a3c";

@@ -12,11 +12,12 @@ import {
 } from "@/utils/datoUtils";
 
 import {
+  harJobbet,
   Soknadstatus,
   Soknadstype,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { BodyShort, Box, Heading } from "@navikt/ds-react";
+import { BodyShort, Box, Heading, Tag } from "@navikt/ds-react";
 import { ChevronRightIcon } from "@navikt/aksel-icons";
 
 const texts = {
@@ -25,6 +26,7 @@ const texts = {
   fremtidig: "Planlagt",
   avbrutt: "Avbrutt av deg",
   tilSoknad: "Til søknad",
+  harJobbet: "Har jobbet",
 };
 
 const textSendtTilNav = (dato?: string) => {
@@ -161,9 +163,9 @@ interface Props {
 
 export default function SykepengesoknadTeaser({ soknad }: Props): ReactElement {
   const visStatus =
-    [Soknadstatus.NY, Soknadstatus.SENDT, Soknadstatus.AVBRUTT].indexOf(
-      soknad.status
-    ) === -1;
+    soknad.status == Soknadstatus.NY ||
+    soknad.status == Soknadstatus.SENDT ||
+    soknad.status == Soknadstatus.AVBRUTT;
   const undertekst = beregnUndertekst(soknad);
 
   function statusText(soknad: SykepengesoknadDTO): string {
@@ -180,33 +182,46 @@ export default function SykepengesoknadTeaser({ soknad }: Props): ReactElement {
       background="surface-default"
       className="flex flex-col p-4 mt-2 mb-2 gap-2"
     >
-      <div className="flex flex-row justify-between">
-        <Heading level="4" size="xsmall" className="mb-2">
+      <div className="flex flex-row justify-between mb-2">
+        <Heading level="4" size="xsmall" className="mr-4">
           {tittelFromSoknadstype(soknad.soknadstype)}
         </Heading>
-        {visStatus && <BodyShort size="small">{statusText(soknad)}</BodyShort>}
-      </div>
-      <BodyShort size="small">{`Opprettet ${tilLesbarDatoMedArstall(
-        soknad.opprettetDato
-      )}`}</BodyShort>
-      {undertekst && <BodyShort size="small">{undertekst}</BodyShort>}
-      <div className="flex flex-row items-center">
-        {soknad.soknadstype !== Soknadstype.OPPHOLD_UTLAND && (
-          <BodyShort size="small">
-            {`Gjelder for perioden ${tilLesbarPeriodeMedArstall(
-              soknad.fom,
-              soknad.tom
-            )}
-            `}
+        {visStatus && (
+          <BodyShort size="small" className="ml-4">
+            {statusText(soknad)}
           </BodyShort>
         )}
-        <Link
-          className="flex flex-row h-fit ml-auto"
-          to={`/sykefravaer/sykepengesoknader/${soknad.id}`}
-        >
-          {texts.tilSoknad}
-          <ChevronRightIcon className="h-5 w-5" />
-        </Link>
+      </div>
+      <div className="flex flex-row justify-between">
+        <div className="flex flex-col gap-2">
+          <BodyShort size="small">{`Opprettet ${tilLesbarDatoMedArstall(
+            soknad.opprettetDato
+          )}`}</BodyShort>
+          {undertekst && <BodyShort size="small">{undertekst}</BodyShort>}
+          {soknad.soknadstype !== Soknadstype.OPPHOLD_UTLAND && (
+            <BodyShort size="small">
+              {`Gjelder for perioden ${tilLesbarPeriodeMedArstall(
+                soknad.fom,
+                soknad.tom
+              )}
+            `}
+            </BodyShort>
+          )}
+          {harJobbet(soknad) && (
+            <Tag size="small" variant="info" className="w-fit mt-2">
+              {texts.harJobbet}
+            </Tag>
+          )}
+        </div>
+        <div className="flex flex-col justify-end">
+          <Link
+            className="flex flex-row h-fit"
+            to={`/sykefravaer/sykepengesoknader/${soknad.id}`}
+          >
+            {texts.tilSoknad}
+            <ChevronRightIcon className="h-5 w-5" />
+          </Link>
+        </div>
       </div>
     </Box>
   );

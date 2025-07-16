@@ -6,7 +6,7 @@ import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Sidetopp from "@/components/side/Sidetopp";
-import SoknadTeasere from "@/sider/sykepengsoknader/soknader/SoknaderTeasere";
+import SoknaderTeasere from "@/sider/sykepengsoknader/soknader/SoknaderTeasere";
 import PlanlagteTeasere from "@/sider/sykepengsoknader/soknader/PlanlagteTeasere";
 import {
   isSoknadSendt,
@@ -72,7 +72,7 @@ export default function SykepengesoknaderSide(): ReactElement {
             vis={isError}
           />
           <Sidetopp tittel={texts.sidetittel} />
-          <SoknadTeasere
+          <SoknaderTeasere
             sykepengesoknader={nyeSoknader}
             tittel={texts.nyeSoknader}
             tomListeTekst={texts.ingenSoknader}
@@ -86,7 +86,7 @@ export default function SykepengesoknaderSide(): ReactElement {
           )}
 
           {sendteSoknader.length > 0 && (
-            <SoknadTeasere
+            <SoknaderTeasere
               sykepengesoknader={sendteSoknader}
               tittel={texts.tidligereSoknader}
               tomListeTekst={texts.tidligereSoknader}

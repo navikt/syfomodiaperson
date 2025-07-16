@@ -28,7 +28,7 @@ import ManglendeMedvirkning from "@/sider/manglendemedvirkning/ManglendeMedvirkn
 import SenOppfolging from "@/sider/senoppfolging/SenOppfolging";
 import OppfolgingsplanContainer from "@/sider/oppfolgingsplan/container/OppfolgingsplanContainer";
 import OppfoelgingsPlanerOversiktContainer from "@/sider/oppfolgingsplan/container/OppfoelgingsPlanerOversiktContainer";
-import { SykepengesoknadSide } from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
+import SykepengesoknadSide from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
 import Arbeidsuforhet from "@/sider/arbeidsuforhet/Arbeidsuforhet";
 import ArbeidsuforhetOppfylt from "@/sider/arbeidsuforhet/oppfylt/ArbeidsuforhetOppfylt";
 import ArbeidsuforhetAvslag from "@/sider/arbeidsuforhet/avslag/ArbeidsuforhetAvslag";

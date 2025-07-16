@@ -29,7 +29,7 @@ const texts = {
   },
 };
 
-export function SykepengesoknadSide() {
+export default function SykepengesoknadSide() {
   const { sykepengesoknadId } = useParams<{
     sykepengesoknadId: string;
   }>();
