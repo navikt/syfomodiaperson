@@ -7,7 +7,6 @@ import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesokna
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Sidetopp from "@/components/side/Sidetopp";
 import SoknaderTeasere from "@/sider/sykepengsoknader/soknader/SoknaderTeasere";
-import PlanlagteTeasere from "@/sider/sykepengsoknader/soknader/PlanlagteTeasere";
 import {
   isSoknadSendt,
   Soknadstatus,
@@ -17,6 +16,8 @@ import {
   sorterEtterOpprettetDato,
   sorterEtterPerioder,
 } from "@/utils/sykepengesoknadUtils";
+import { Heading } from "@navikt/ds-react";
+import PlanlagtTeaser from "@/sider/sykepengsoknader/soknader/PlanlagtSoknad";
 
 const texts = {
   sidetittel: "Søknad om sykepenger",
@@ -24,10 +25,9 @@ const texts = {
   ingenSoknader:
     "Du har ingen nye søknader om sykepenger. Den neste søknaden du kan fylle ut kommer etter at sykmeldingsperioden er over.",
   tidligereSoknader: "Tidligere søknader",
-};
-
-const errorMessageText = (name: string) => {
-  return `Beklager – vi kunne ikke hente alle sykepengesøknadene til ${name}`;
+  planlagteSoknader: "Planlagte søknader",
+  errorMessage: (sykmeldtNavn: string) =>
+    `Beklager – vi kunne ikke hente alle sykepengesøknadene til ${sykmeldtNavn}`,
 };
 
 export default function SykepengesoknaderSide(): ReactElement {
@@ -58,7 +58,7 @@ export default function SykepengesoknaderSide(): ReactElement {
     .sort(sorterEtterPerioder)
     .reverse();
 
-  const brukernavn = useNavBrukerData().navn;
+  const sykmeldtNavn = useNavBrukerData().navn;
   return (
     <Side
       tittel="Sykepengesøknader"
@@ -68,7 +68,7 @@ export default function SykepengesoknaderSide(): ReactElement {
         <div>
           <Feilstripe
             className="blokk--s"
-            tekst={errorMessageText(brukernavn)}
+            tekst={texts.errorMessage(sykmeldtNavn)}
             vis={isError}
           />
           <Sidetopp tittel={texts.sidetittel} />
@@ -79,10 +79,12 @@ export default function SykepengesoknaderSide(): ReactElement {
           />
 
           {kommendeSoknader.length > 0 && (
-            <PlanlagteTeasere
-              sykepengesoknader={kommendeSoknader}
-              tittel="Planlagte søknader"
-            />
+            <div className="mb-4">
+              <Heading size="small">{texts.planlagteSoknader}</Heading>
+              {kommendeSoknader.map((soknad, idx) => (
+                <PlanlagtTeaser key={idx} soknad={soknad} />
+              ))}
+            </div>
           )}
 
           {sendteSoknader.length > 0 && (
