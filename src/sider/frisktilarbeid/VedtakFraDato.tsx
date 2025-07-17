@@ -7,7 +7,7 @@ const texts = {
   fraDatoMissing: "Vennligst angi dato",
   invalidFraDato: "Dato kan ikke være etter til-dato",
   fraDatoLabel: "Friskmeldingen gjelder fra",
-  fraDatoDescription: "Dette er datoen vedtaket starter",
+  fraDatoDescription: "Datoen vedtaket starter",
 };
 
 interface VedtakFraDatoProps {

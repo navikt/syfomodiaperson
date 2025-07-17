@@ -8,7 +8,6 @@ import {
   HelpText,
   Textarea,
   useDatepicker,
-  VStack,
 } from "@navikt/ds-react";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { FormProvider, useForm } from "react-hook-form";
@@ -138,22 +137,25 @@ export default function FattVedtakSkjema() {
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-8">
           <div className="flex flex-col gap-6">
-            <VedtakFraDato tilDato={tilDato} />
-            <VStack gap="2">
-              <DatePicker {...tilDatoDatePicker.datepickerProps}>
-                <DatePicker.Input
-                  value={tilDato ? dayjs(tilDato).format("DD.MM.YYYY") : ""}
-                  label={<DatepickerLabel />}
-                  description={texts.tilDatoDescription(tilDatoIsMaxDato)}
-                  readOnly
-                />
-              </DatePicker>
-              {tilDatoIsMaxDato && (
-                <Alert variant="warning" size="small" className="w-fit">
-                  {texts.maksdatoWarning(dayjs(tilDato).format("DD.MM.YYYY"))}
-                </Alert>
-              )}
-            </VStack>
+            <div className="flex flex-row gap-6">
+              <VedtakFraDato tilDato={tilDato} />
+              <div className="flex flex-col gap-2">
+                <DatePicker {...tilDatoDatePicker.datepickerProps}>
+                  <DatePicker.Input
+                    className="w-full"
+                    value={tilDato ? dayjs(tilDato).format("DD.MM.YYYY") : ""}
+                    label={<DatepickerLabel />}
+                    description={texts.tilDatoDescription(tilDatoIsMaxDato)}
+                    readOnly
+                  />
+                </DatePicker>
+                {tilDatoIsMaxDato && (
+                  <Alert variant="warning" className="w-fit">
+                    {texts.maksdatoWarning(dayjs(tilDato).format("DD.MM.YYYY"))}
+                  </Alert>
+                )}
+              </div>
+            </div>
             <Textarea
               {...register("begrunnelse", {
                 required: texts.begrunnelse.missing,
