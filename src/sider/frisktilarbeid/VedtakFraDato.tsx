@@ -10,11 +10,11 @@ const texts = {
   fraDatoDescription: "Datoen vedtaket starter",
 };
 
-interface VedtakFraDatoProps {
+interface Props {
   tilDato: Date | undefined;
 }
 
-export const VedtakFraDato = ({ tilDato }: VedtakFraDatoProps) => {
+export default function VedtakFraDato({ tilDato }: Props) {
   const { field, fieldState } = useController({
     name: "fraDato",
     rules: {
@@ -42,4 +42,4 @@ export const VedtakFraDato = ({ tilDato }: VedtakFraDatoProps) => {
       />
     </DatePicker>
   );
-};
+}

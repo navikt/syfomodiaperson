@@ -3,6 +3,8 @@ import {
   Alert,
   Box,
   Button,
+  Checkbox,
+  CheckboxGroup,
   DatePicker,
   Heading,
   HelpText,
@@ -11,7 +13,7 @@ import {
 } from "@navikt/ds-react";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { FormProvider, useForm } from "react-hook-form";
-import { VedtakFraDato } from "@/sider/frisktilarbeid/VedtakFraDato";
+import VedtakFraDato from "@/sider/frisktilarbeid/VedtakFraDato";
 import { addDays, addWeeks } from "@/utils/datoUtils";
 import { useFattVedtak } from "@/data/frisktilarbeid/useFattVedtak";
 import { VedtakRequestDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
@@ -24,6 +26,13 @@ const begrunnelseMaxLength = 5000;
 
 const texts = {
   header: "Fatt vedtak",
+  vedtakKrav: {
+    legend: "Dette må være oppfylt før vedtak kan fattes",
+    utbetalingMaVaereIgangsatt: "Utbetaling må være igangsatt",
+    oppsigelseErMottatt: "Oppsigelsen er mottatt",
+    fritakFraArbeidspliktErMottatt: "Fritak fra arbeidsplikt er mottatt",
+    error: "Alle tre punkter må være oppfylt før vedtak kan fattes",
+  },
   begrunnelse: {
     missing: "Vennligst angi begrunnelse",
     label: "Begrunnelse",
@@ -72,9 +81,16 @@ function DatepickerLabel(): ReactNode {
   );
 }
 
+enum VedtakKrav {
+  UTBETALING_IGANGSATT = "UTBETALING_IGANGSATT",
+  OPPSIGELSE_MOTTATT = "OPPSIGELSE_MOTTATT",
+  FRITAK_FRA_ARBEIDSPLIKT_MOTTATT = "FRITAK_FRA_ARBEIDSPLIKT_MOTTATT",
+}
+
 interface FormValues {
   fraDato: Date;
   begrunnelse: string;
+  vedtakKrav: VedtakKrav[];
 }
 
 export default function FattVedtakSkjema() {
@@ -102,7 +118,7 @@ export default function FattVedtakSkjema() {
     !!tilDato &&
     dayjs(tilDato).isSame(dayjs(maksDato?.maxDate?.forelopig_beregnet_slutt));
 
-  const submit = (values: FormValues) => {
+  function submit(values: FormValues) {
     const vedtakRequestDTO: VedtakRequestDTO = {
       fom: dayjs(values.fraDato).format("YYYY-MM-DD"),
       tom: dayjs(tilDato).format("YYYY-MM-DD"),
@@ -121,9 +137,14 @@ export default function FattVedtakSkjema() {
           message: texts.submittedAlert,
         }),
     });
-  };
+  }
 
   const tilDatoDatePicker = useDatepicker();
+  const checkboxFormRegister = {
+    ...register("vedtakKrav", {
+      validate: (values) => values.length === 3 || texts.vedtakKrav.error,
+    }),
+  };
 
   return (
     <Box
@@ -135,46 +156,68 @@ export default function FattVedtakSkjema() {
         {texts.header}
       </Heading>
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-8">
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-row gap-6">
-              <VedtakFraDato tilDato={tilDato} />
-              <div className="flex flex-col gap-2">
-                <DatePicker {...tilDatoDatePicker.datepickerProps}>
-                  <DatePicker.Input
-                    className="w-full"
-                    value={tilDato ? dayjs(tilDato).format("DD.MM.YYYY") : ""}
-                    label={<DatepickerLabel />}
-                    description={texts.tilDatoDescription(tilDatoIsMaxDato)}
-                    readOnly
-                  />
-                </DatePicker>
-                {tilDatoIsMaxDato && (
-                  <Alert variant="warning" className="w-fit">
-                    {texts.maksdatoWarning(dayjs(tilDato).format("DD.MM.YYYY"))}
-                  </Alert>
-                )}
-              </div>
+        <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-4">
+          <CheckboxGroup
+            legend={texts.vedtakKrav.legend}
+            size="small"
+            error={errors.vedtakKrav && texts.vedtakKrav.error}
+          >
+            <Checkbox
+              value={VedtakKrav.UTBETALING_IGANGSATT}
+              {...checkboxFormRegister}
+            >
+              {texts.vedtakKrav.utbetalingMaVaereIgangsatt}
+            </Checkbox>
+            <Checkbox
+              value={VedtakKrav.OPPSIGELSE_MOTTATT}
+              {...checkboxFormRegister}
+            >
+              {texts.vedtakKrav.oppsigelseErMottatt}
+            </Checkbox>
+            <Checkbox
+              value={VedtakKrav.FRITAK_FRA_ARBEIDSPLIKT_MOTTATT}
+              {...checkboxFormRegister}
+            >
+              {texts.vedtakKrav.fritakFraArbeidspliktErMottatt}
+            </Checkbox>
+          </CheckboxGroup>
+          <div className="flex flex-row gap-6">
+            <VedtakFraDato tilDato={tilDato} />
+            <div className="flex flex-col gap-2">
+              <DatePicker {...tilDatoDatePicker.datepickerProps}>
+                <DatePicker.Input
+                  className="w-full"
+                  value={tilDato ? dayjs(tilDato).format("DD.MM.YYYY") : ""}
+                  label={<DatepickerLabel />}
+                  description={texts.tilDatoDescription(tilDatoIsMaxDato)}
+                  readOnly
+                />
+              </DatePicker>
+              {tilDatoIsMaxDato && (
+                <Alert variant="warning" className="w-fit">
+                  {texts.maksdatoWarning(dayjs(tilDato).format("DD.MM.YYYY"))}
+                </Alert>
+              )}
             </div>
-            <Textarea
-              {...register("begrunnelse", {
-                required: texts.begrunnelse.missing,
-                maxLength: begrunnelseMaxLength,
-              })}
-              value={watch("begrunnelse")}
-              minRows={6}
-              maxLength={begrunnelseMaxLength}
-              description={texts.begrunnelse.description}
-              label={texts.begrunnelse.label}
-              error={errors.begrunnelse?.message}
-            />
-            <Alert variant="info" contentMaxWidth={false} size="small">
-              <Heading spacing size="xsmall" level="3">
-                {texts.gosysAlertHeader}
-              </Heading>
-              {texts.gosysAlertBody}
-            </Alert>
           </div>
+          <Textarea
+            {...register("begrunnelse", {
+              required: texts.begrunnelse.missing,
+              maxLength: begrunnelseMaxLength,
+            })}
+            value={watch("begrunnelse")}
+            minRows={6}
+            maxLength={begrunnelseMaxLength}
+            description={texts.begrunnelse.description}
+            label={texts.begrunnelse.label}
+            error={errors.begrunnelse?.message}
+          />
+          <Alert variant="info" contentMaxWidth={false} size="small">
+            <Heading spacing size="xsmall" level="3">
+              {texts.gosysAlertHeader}
+            </Heading>
+            {texts.gosysAlertBody}
+          </Alert>
           {fattVedtak.isError && (
             <Alert variant="error" size="small" contentMaxWidth={false}>
               {texts.fattVedtakErrorMessage}
