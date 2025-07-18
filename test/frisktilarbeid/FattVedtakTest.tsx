@@ -15,6 +15,7 @@ import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { maksdatoMock } from "@/mocks/syfoperson/persondataMock";
 import { getExpectedVedtakDocument } from "./frisktilarbeidTestData";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
+import userEvent from "@testing-library/user-event";
 
 let queryClient: QueryClient;
 
@@ -157,6 +158,19 @@ describe("FattVedtakSkjema", () => {
   it("fatter vedtak med verdier fra skjema", async () => {
     renderFattVedtakSkjema();
 
+    const utbetalingCheckbox: HTMLInputElement = screen.getByLabelText(
+      "Utbetaling må være igangsatt"
+    );
+    const oppsigelseCheckbox: HTMLInputElement = screen.getByLabelText(
+      "Oppsigelsen er mottatt"
+    );
+    const fritakCheckbox: HTMLInputElement = screen.getByLabelText(
+      "Fritak fra arbeidsplikt er mottatt"
+    );
+    await userEvent.click(utbetalingCheckbox);
+    await userEvent.click(oppsigelseCheckbox);
+    await userEvent.click(fritakCheckbox);
+
     const fraDato = getTextInput("Friskmeldingen gjelder fra");
     changeTextInput(fraDato, today.format("DD.MM.YYYY"));
 
@@ -199,6 +213,19 @@ describe("FattVedtakSkjema", () => {
     );
 
     renderFattVedtakSkjema();
+
+    const utbetalingCheckbox: HTMLInputElement = screen.getByLabelText(
+      "Utbetaling må være igangsatt"
+    );
+    const oppsigelseCheckbox: HTMLInputElement = screen.getByLabelText(
+      "Oppsigelsen er mottatt"
+    );
+    const fritakCheckbox: HTMLInputElement = screen.getByLabelText(
+      "Fritak fra arbeidsplikt er mottatt"
+    );
+    await userEvent.click(utbetalingCheckbox);
+    await userEvent.click(oppsigelseCheckbox);
+    await userEvent.click(fritakCheckbox);
 
     const fraDato = getTextInput("Friskmeldingen gjelder fra");
     changeTextInput(fraDato, today.format("DD.MM.YYYY"));

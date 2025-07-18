@@ -7,14 +7,14 @@ const texts = {
   fraDatoMissing: "Vennligst angi dato",
   invalidFraDato: "Dato kan ikke være etter til-dato",
   fraDatoLabel: "Friskmeldingen gjelder fra",
-  fraDatoDescription: "Dette er datoen vedtaket starter",
+  fraDatoDescription: "Datoen vedtaket starter",
 };
 
-interface VedtakFraDatoProps {
+interface Props {
   tilDato: Date | undefined;
 }
 
-export const VedtakFraDato = ({ tilDato }: VedtakFraDatoProps) => {
+export default function VedtakFraDato({ tilDato }: Props) {
   const { field, fieldState } = useController({
     name: "fraDato",
     rules: {
@@ -42,4 +42,4 @@ export const VedtakFraDato = ({ tilDato }: VedtakFraDatoProps) => {
       />
     </DatePicker>
   );
-};
+}
