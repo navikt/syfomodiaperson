@@ -4,12 +4,12 @@ import {
   MeldingStatusType,
   MeldingType,
 } from "@/data/behandlerdialog/behandlerdialogTypes";
-import { MeldingInnholdPanel } from "@/sider/behandlerdialog/meldinger/MeldingInnholdPanel";
+import MeldingInnholdPanel from "@/sider/behandlerdialog/meldinger/samtale/MeldingInnholdPanel";
 import styled from "styled-components";
 import {
   NavLogoRod,
   StetoskopIkonBakgrunn,
-} from "../../../../img/ImageComponents";
+} from "../../../../../img/ImageComponents";
 import PaminnelseMelding from "@/sider/behandlerdialog/meldinger/paminnelse/PaminnelseMelding";
 import { ReturLegeerklaring } from "@/sider/behandlerdialog/legeerklaring/ReturLegeerklaring";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
@@ -48,18 +48,15 @@ const StyledInnhold = styled.div`
   }
 `;
 
-interface MeldingInnholdProps {
+interface MeldingFraBehandlerProps {
+  meldinger: MeldingDTO[];
   melding: MeldingDTO;
 }
 
-interface MeldingFraBehandlerProps extends MeldingInnholdProps {
-  meldinger: MeldingDTO[];
-}
-
-const MeldingFraBehandler = ({
+export function MeldingFraBehandler({
   meldinger,
   melding,
-}: MeldingFraBehandlerProps) => {
+}: MeldingFraBehandlerProps) {
   const isLegeerklaring =
     melding.type === MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING;
   const sentReturForLegeerklaring = meldinger.some(
@@ -80,18 +77,19 @@ const MeldingFraBehandler = ({
       </StyledInnhold>
     </StyledMelding>
   );
-};
+}
 
-export const MeldingTilBehandler = ({ melding }: MeldingInnholdProps) => {
+interface MeldingInnholdProps {
+  melding: MeldingDTO;
+}
+
+export function MeldingTilBehandler({ melding }: MeldingInnholdProps) {
   const { data: oppgaver } = usePersonoppgaverQuery();
   const behandleOppgave = useBehandlePersonoppgave();
-  const ubehandledeUbesvartMeldingOppgaver = getAllUbehandledePersonOppgaver(
+  const ubesvartMeldingOppgave = getAllUbehandledePersonOppgaver(
     oppgaver,
     PersonOppgaveType.BEHANDLERDIALOG_MELDING_UBESVART
-  );
-  const ubesvartMeldingOppgave = ubehandledeUbesvartMeldingOppgaver.find(
-    (oppgave) => oppgave.referanseUuid === melding.uuid
-  );
+  ).find((oppgave) => oppgave.referanseUuid === melding.uuid);
   const avvistOppgave = oppgaver
     .filter(
       (oppgave) =>
@@ -127,7 +125,7 @@ export const MeldingTilBehandler = ({ melding }: MeldingInnholdProps) => {
       </StyledImageWrapper>
     </StyledMelding>
   );
-};
+}
 
 interface MeldingerISamtaleProps {
   meldinger: MeldingDTO[];

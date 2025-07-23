@@ -15,7 +15,7 @@ import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { personOppgaveUbehandletBehandlerdialogUbesvartMelding } from "@/mocks/ispersonoppgave/personoppgaveMock";
 import { expectedPaminnelseDocument } from "./testDataDocuments";
 import { foresporselPasientToBehandler } from "./meldingTestdataGenerator";
-import { MeldingerISamtale } from "@/sider/behandlerdialog/meldinger/MeldingerISamtale";
+import { MeldingerISamtale } from "@/sider/behandlerdialog/meldinger/samtale/MeldingerISamtale";
 import userEvent from "@testing-library/user-event";
 
 let queryClient: QueryClient;

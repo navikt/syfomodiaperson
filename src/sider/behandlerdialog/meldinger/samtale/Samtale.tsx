@@ -2,15 +2,11 @@ import React from "react";
 import { MeldingDTO } from "@/data/behandlerdialog/behandlerdialogTypes";
 import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { Accordion } from "@navikt/ds-react";
-import { MeldingerISamtale } from "@/sider/behandlerdialog/meldinger/MeldingerISamtale";
-import { StetoskopIkon } from "../../../../img/ImageComponents";
+import { MeldingerISamtale } from "@/sider/behandlerdialog/meldinger/samtale/MeldingerISamtale";
+import { StetoskopIkon } from "../../../../../img/ImageComponents";
 import { useBehandlerNavn } from "@/hooks/behandler/useBehandlerNavn";
-import SamtaleTags from "@/sider/behandlerdialog/meldinger/SamtaleTags";
+import SamtaleTags from "@/sider/behandlerdialog/meldinger/samtale/SamtaleTags";
 import { FlexRow } from "@/components/Layout";
-
-interface SamtaleAccordionItemProps {
-  meldinger: MeldingDTO[];
-}
 
 interface BehandlerNavnProps {
   behandlerRef: string;
@@ -25,9 +21,11 @@ const BehandlerNavn = ({
   return <span>{`${navn} ${dateAndTimeForNewestMelding}`}</span>;
 };
 
-export const SamtaleAccordionItem = ({
-  meldinger,
-}: SamtaleAccordionItemProps) => {
+interface Props {
+  meldinger: MeldingDTO[];
+}
+
+export default function Samtale({ meldinger }: Props) {
   const firstMelding = meldinger[0];
   const behandlerRef = firstMelding.behandlerRef;
   const newestMelding = meldinger.slice(-1)[0];
@@ -60,4 +58,4 @@ export const SamtaleAccordionItem = ({
       </Accordion.Content>
     </Accordion.Item>
   );
-};
+}

@@ -7,7 +7,7 @@ import { BodyLong, Detail, Panel } from "@navikt/ds-react";
 import { PaperclipIcon } from "@navikt/aksel-icons";
 import styled from "styled-components";
 import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
-import { VisMelding } from "@/sider/behandlerdialog/meldinger/VisMelding";
+import { VisMelding } from "@/sider/behandlerdialog/meldinger/samtale/VisMelding";
 import PdfVedleggLink from "@/sider/behandlerdialog/meldinger/PdfVedleggLink";
 import { DocumentComponentType } from "@/data/documentcomponent/documentComponentTypes";
 import { PaminnelseWarningIcon } from "@/sider/behandlerdialog/meldinger/paminnelse/PaminnelseWarningIcon";
@@ -88,11 +88,11 @@ const MeldingTekst = ({ melding }: MeldingTekstProps): ReactElement => {
   }
 };
 
-interface MeldingInnholdPanelProps {
+interface Props {
   melding: MeldingDTO;
 }
 
-export const MeldingInnholdPanel = ({ melding }: MeldingInnholdPanelProps) => {
+export default function MeldingInnholdPanel({ melding }: Props) {
   const { data: veilederInfo } = useVeilederInfoQuery(
     melding.veilederIdent ?? ""
   );
@@ -127,4 +127,4 @@ export const MeldingInnholdPanel = ({ melding }: MeldingInnholdPanelProps) => {
       </MeldingDetails>
     </Panel>
   );
-};
+}
