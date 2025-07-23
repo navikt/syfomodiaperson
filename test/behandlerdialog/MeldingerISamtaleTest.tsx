@@ -1,5 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MeldingDTO } from "@/data/behandlerdialog/behandlerdialogTypes";
+import {
+  MeldingDTO,
+  MeldingStatusType,
+} from "@/data/behandlerdialog/behandlerdialogTypes";
 import { render, screen } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
@@ -10,7 +13,9 @@ import { expect, describe, it, beforeEach } from "vitest";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import {
+  personOppgaveBehandletBehandlerdialogAvvistMelding,
   personOppgaveBehandletBehandlerdialogUbesvartMelding,
+  personOppgaveUbehandletBehandlerdialogAvvistMelding,
   personOppgaveUbehandletBehandlerdialogUbesvartMelding,
 } from "@/mocks/ispersonoppgave/personoppgaveMock";
 import { getButton } from "../testUtils";
@@ -36,15 +41,14 @@ const renderMeldingerISamtale = (meldinger: MeldingDTO[]) => {
   );
 };
 
-const paminnelseButtonText = "Vurder påminnelse til behandler";
-const returLegeerklaringButtonText = "Vurder retur av legeerklæring";
-
 describe("MeldingerISamtale", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
   });
 
   describe("Påminnelse button", () => {
+    const paminnelseButtonText = "Vurder påminnelse til behandler";
+
     it("render no paminnelse button when no meldinger", () => {
       renderMeldingerISamtale([]);
 
@@ -94,6 +98,8 @@ describe("MeldingerISamtale", () => {
   });
 
   describe("Retur legeerklæring button", () => {
+    const returLegeerklaringButtonText = "Vurder retur av legeerklæring";
+
     it("renders no retur legeerklæring button when no meldinger", () => {
       renderMeldingerISamtale([]);
 
@@ -151,6 +157,89 @@ describe("MeldingerISamtale", () => {
       ]);
 
       expect(getButton(returLegeerklaringButtonText)).to.exist;
+    });
+  });
+
+  describe("Avvist melding", () => {
+    const meldingTilBehandler = foresporselPasientToBehandler;
+
+    const avvistOppgaveText =
+      "Jeg har forstått at meldingen ikke ble levert. Oppgaven kan fjernes.";
+    const statusTekst = "Mottaker finnes ikke";
+    const avvistStatus = {
+      type: MeldingStatusType.AVVIST,
+      tekst: statusTekst,
+    };
+    const avvistMelding = {
+      ...meldingTilBehandler,
+      status: avvistStatus,
+    };
+
+    it("render nothing when melding with meldingstatus OK", () => {
+      renderMeldingerISamtale([meldingTilBehandler]);
+
+      expect(screen.queryByRole("div")).to.not.exist;
+    });
+
+    it("render nothing when AVVIST melding and no oppgave", () => {
+      renderMeldingerISamtale([avvistMelding]);
+
+      expect(screen.queryByText(avvistOppgaveText)).to.not.exist;
+    });
+
+    it("render checkbox when melding with meldingstatus AVVIST and has personoppgave", () => {
+      queryClient.setQueryData(
+        personoppgaverQueryKeys.personoppgaver(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [personOppgaveUbehandletBehandlerdialogAvvistMelding]
+      );
+
+      const melding = {
+        ...avvistMelding,
+        uuid: personOppgaveUbehandletBehandlerdialogAvvistMelding.referanseUuid,
+      };
+      renderMeldingerISamtale([melding]);
+
+      expect(screen.getByText(avvistOppgaveText)).to.exist;
+    });
+
+    it("render checkbox when melding with meldingstatus AVVIST and has personoppgave", () => {
+      queryClient.setQueryData(
+        personoppgaverQueryKeys.personoppgaver(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [personOppgaveUbehandletBehandlerdialogAvvistMelding]
+      );
+
+      const melding = {
+        ...avvistMelding,
+        status: {
+          type: MeldingStatusType.AVVIST,
+          tekst: null,
+        },
+        uuid: personOppgaveUbehandletBehandlerdialogAvvistMelding.referanseUuid,
+      };
+      renderMeldingerISamtale([melding]);
+
+      expect(screen.getByText(avvistOppgaveText)).to.exist;
+    });
+
+    it("render checkbox when melding with meldingstatus AVVIST and has behandlet personoppgave", () => {
+      queryClient.setQueryData(
+        personoppgaverQueryKeys.personoppgaver(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [personOppgaveBehandletBehandlerdialogAvvistMelding]
+      );
+
+      const melding = {
+        ...avvistMelding,
+        uuid: personOppgaveBehandletBehandlerdialogAvvistMelding.referanseUuid,
+      };
+      renderMeldingerISamtale([melding]);
+
+      expect(screen.getByText("Ferdigbehandlet av", { exact: false })).to.exist;
     });
   });
 });

@@ -10,7 +10,7 @@ import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { VisMelding } from "@/sider/behandlerdialog/meldinger/VisMelding";
 import PdfVedleggLink from "@/sider/behandlerdialog/meldinger/PdfVedleggLink";
 import { DocumentComponentType } from "@/data/documentcomponent/documentComponentTypes";
-import { PaminnelseWarningIcon } from "@/sider/behandlerdialog/paminnelse/PaminnelseWarningIcon";
+import { PaminnelseWarningIcon } from "@/sider/behandlerdialog/meldinger/paminnelse/PaminnelseWarningIcon";
 import { getHeaderText } from "@/utils/documentComponentUtils";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { meldingTypeTexts } from "@/data/behandlerdialog/behandlerdialogTexts";

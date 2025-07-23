@@ -10,22 +10,21 @@ import {
   NavLogoRod,
   StetoskopIkonBakgrunn,
 } from "../../../../img/ImageComponents";
-import { PaminnelseMelding } from "@/sider/behandlerdialog/paminnelse/PaminnelseMelding";
-import { AvvistMelding } from "@/sider/behandlerdialog/meldinger/AvvistMelding";
+import PaminnelseMelding from "@/sider/behandlerdialog/meldinger/paminnelse/PaminnelseMelding";
 import { ReturLegeerklaring } from "@/sider/behandlerdialog/legeerklaring/ReturLegeerklaring";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
-import { getAllUbehandledePersonOppgaver } from "@/utils/personOppgaveUtils";
+import {
+  getAllUbehandledePersonOppgaver,
+  isBehandletOppgave,
+} from "@/utils/personOppgaveUtils";
 import { PersonOppgaveType } from "@/data/personoppgave/types/PersonOppgave";
+import { useBehandlePersonoppgave } from "@/data/personoppgave/useBehandlePersonoppgave";
+import BehandlePersonOppgaveKnapp from "@/components/personoppgave/BehandlePersonOppgaveKnapp";
 
-const StyledWrapper = styled.div`
-  margin: 1em 0;
-
-  > * {
-    &:not(:last-child) {
-      margin-bottom: 1em;
-    }
-  }
-`;
+const texts = {
+  behandleOppgaveText:
+    "Jeg har forstått at meldingen ikke ble levert. Oppgaven kan fjernes.",
+};
 
 const StyledImageWrapper = styled.div<{ innkommende?: boolean }>`
   margin: ${(props) => (props.innkommende ? "0 1em 0 0" : "0 0 0 1em")};
@@ -85,6 +84,7 @@ const MeldingFraBehandler = ({
 
 export const MeldingTilBehandler = ({ melding }: MeldingInnholdProps) => {
   const { data: oppgaver } = usePersonoppgaverQuery();
+  const behandleOppgave = useBehandlePersonoppgave();
   const ubehandledeUbesvartMeldingOppgaver = getAllUbehandledePersonOppgaver(
     oppgaver,
     PersonOppgaveType.BEHANDLERDIALOG_MELDING_UBESVART
@@ -92,14 +92,29 @@ export const MeldingTilBehandler = ({ melding }: MeldingInnholdProps) => {
   const ubesvartMeldingOppgave = ubehandledeUbesvartMeldingOppgaver.find(
     (oppgave) => oppgave.referanseUuid === melding.uuid
   );
+  const avvistOppgave = oppgaver
+    .filter(
+      (oppgave) =>
+        oppgave.type === PersonOppgaveType.BEHANDLERDIALOG_MELDING_AVVIST
+    )
+    .find((oppgave) => oppgave.referanseUuid === melding.uuid);
 
   return (
     <StyledMelding>
       <StyledInnhold>
         <MeldingInnholdPanel melding={melding} />
-        {melding.status?.type === MeldingStatusType.AVVIST && (
-          <AvvistMelding meldingUuid={melding.uuid} />
-        )}
+        {melding.status?.type === MeldingStatusType.AVVIST &&
+          !!avvistOppgave && (
+            <BehandlePersonOppgaveKnapp
+              personOppgave={avvistOppgave}
+              behandleOppgaveText={texts.behandleOppgaveText}
+              handleBehandleOppgave={() =>
+                behandleOppgave.mutate(avvistOppgave.uuid)
+              }
+              isBehandleOppgaveLoading={behandleOppgave.isPending}
+              isBehandlet={isBehandletOppgave(avvistOppgave)}
+            />
+          )}
         {!!ubesvartMeldingOppgave && (
           <PaminnelseMelding
             melding={melding}
@@ -118,9 +133,9 @@ interface MeldingerISamtaleProps {
   meldinger: MeldingDTO[];
 }
 
-export const MeldingerISamtale = ({ meldinger }: MeldingerISamtaleProps) => {
+export function MeldingerISamtale({ meldinger }: MeldingerISamtaleProps) {
   return (
-    <StyledWrapper>
+    <div className="flex flex-col gap-4">
       {meldinger.map((melding: MeldingDTO, index: number) => {
         return melding.innkommende ? (
           <MeldingFraBehandler
@@ -132,6 +147,6 @@ export const MeldingerISamtale = ({ meldinger }: MeldingerISamtaleProps) => {
           <MeldingTilBehandler melding={melding} key={index} />
         );
       })}
-    </StyledWrapper>
+    </div>
   );
-};
+}

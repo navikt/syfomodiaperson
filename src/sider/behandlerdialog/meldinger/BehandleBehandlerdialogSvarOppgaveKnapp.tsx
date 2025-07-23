@@ -35,7 +35,7 @@ const getSisteBehandledeBehandlerdialogSvarOppgave = (
   )[0];
 };
 
-const BehandleBehandlerdialogSvarOppgaveKnapp = () => {
+export default function BehandleBehandlerdialogSvarOppgaveKnapp() {
   const { data: personOppgaver } = usePersonoppgaverQuery();
   const hasBehandlerDialogSvarOppgaver = personOppgaver.some(
     (p) => p.type === PersonOppgaveType.BEHANDLERDIALOG_SVAR
@@ -68,6 +68,4 @@ const BehandleBehandlerdialogSvarOppgaveKnapp = () => {
       )}
     </FlexRow>
   );
-};
-
-export default BehandleBehandlerdialogSvarOppgaveKnapp;
+}

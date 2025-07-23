@@ -4,14 +4,14 @@ import SideLaster from "@/components/side/SideLaster";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import * as Tredelt from "@/components/side/TredeltSide";
 import { MeldingTilBehandler } from "@/sider/behandlerdialog/meldingtilbehandler/MeldingTilBehandler";
-import { Meldinger } from "@/sider/behandlerdialog/meldinger/Meldinger";
+import Meldinger from "@/sider/behandlerdialog/meldinger/Meldinger";
 import { useBehandlerdialogQuery } from "@/data/behandlerdialog/behandlerdialogQueryHooks";
 
 const texts = {
   title: "Dialog med behandler",
 };
 
-export const BehandlerdialogContainer = (): ReactElement => {
+export default function BehandlerdialogContainer(): ReactElement {
   const { isLoading, isError } = useBehandlerdialogQuery();
 
   return (
@@ -28,4 +28,4 @@ export const BehandlerdialogContainer = (): ReactElement => {
       </SideLaster>
     </Side>
   );
-};
+}

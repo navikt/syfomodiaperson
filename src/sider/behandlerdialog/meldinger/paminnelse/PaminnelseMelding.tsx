@@ -10,11 +10,11 @@ import {
   usePaminnelseTilBehandler,
 } from "@/data/behandlerdialog/usePaminnelseTilBehandler";
 import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
-import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document/useMeldingTilBehandlerDocument";
+import { DocumentComponentHeaderH1 } from "@/components/document/DocumentComponentHeaderH1";
 import { DocumentComponentVisning } from "@/components/document/DocumentComponentVisning";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { CloseButton } from "@/components/CloseButton";
-import { DocumentComponentHeaderH1 } from "@/components/document/DocumentComponentHeaderH1";
+import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document/useMeldingTilBehandlerDocument";
 
 const texts = {
   button: "Vurder påminnelse til behandler",
@@ -22,15 +22,12 @@ const texts = {
   fjernOppgave: "Fjern oppgave uten å sende påminnelse",
 };
 
-interface VisOgSendPaminnelseProps {
+interface Props {
   melding: MeldingDTO;
   oppgave: PersonOppgave;
 }
 
-export const PaminnelseMelding = ({
-  melding,
-  oppgave,
-}: VisOgSendPaminnelseProps) => {
+export default function PaminnelseMelding({ melding, oppgave }: Props) {
   const [visPaminnelseModal, setVisPaminnelseModal] = useState(false);
 
   const { getPaminnelseDocument } = useMeldingTilBehandlerDocument();
@@ -51,12 +48,6 @@ export const PaminnelseMelding = ({
     });
   };
 
-  const handleFjernOppgaveClick = () => {
-    behandleOppgave.mutate(oppgave.uuid);
-  };
-
-  const handleClose = () => setVisPaminnelseModal(false);
-
   return (
     <>
       <div className="flex gap-4">
@@ -75,7 +66,7 @@ export const PaminnelseMelding = ({
           variant="secondary"
           size="small"
           loading={behandleOppgave.isPending}
-          onClick={handleFjernOppgaveClick}
+          onClick={() => behandleOppgave.mutate(oppgave.uuid)}
         >
           {texts.fjernOppgave}
         </Button>
@@ -84,7 +75,7 @@ export const PaminnelseMelding = ({
         width="medium"
         closeOnBackdropClick
         open={visPaminnelseModal}
-        onClose={handleClose}
+        onClose={() => setVisPaminnelseModal(false)}
         aria-labelledby="modal-heading"
       >
         <Modal.Header>
@@ -112,7 +103,7 @@ export const PaminnelseMelding = ({
             {texts.send}
           </Button>
           <CloseButton
-            onClick={handleClose}
+            onClick={() => setVisPaminnelseModal(false)}
             disabled={
               paminnelseTilBehandler.isPending || behandleOppgave.isPending
             }
@@ -121,4 +112,4 @@ export const PaminnelseMelding = ({
       </Modal>
     </>
   );
-};
+}

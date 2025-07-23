@@ -15,7 +15,7 @@ import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { personOppgaveUbehandletBehandlerdialogUbesvartMelding } from "@/mocks/ispersonoppgave/personoppgaveMock";
 import { expectedPaminnelseDocument } from "./testDataDocuments";
 import { foresporselPasientToBehandler } from "./meldingTestdataGenerator";
-import { MeldingTilBehandler } from "@/sider/behandlerdialog/meldinger/MeldingerISamtale";
+import { MeldingerISamtale } from "@/sider/behandlerdialog/meldinger/MeldingerISamtale";
 import userEvent from "@testing-library/user-event";
 
 let queryClient: QueryClient;
@@ -26,7 +26,7 @@ const renderPaminnelseMelding = (melding: MeldingDTO) => {
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <MeldingTilBehandler melding={melding} />
+        <MeldingerISamtale meldinger={[melding]} />
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>
   );

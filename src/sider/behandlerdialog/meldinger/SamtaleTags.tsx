@@ -1,6 +1,5 @@
 import { Tag, TagProps } from "@navikt/ds-react";
 import React from "react";
-import styled from "styled-components";
 import {
   MeldingDTO,
   MeldingStatusType,
@@ -12,7 +11,7 @@ import {
   PersonOppgave,
   PersonOppgaveType,
 } from "@/data/personoppgave/types/PersonOppgave";
-import { PaminnelseWarningIcon } from "@/sider/behandlerdialog/paminnelse/PaminnelseWarningIcon";
+import { PaminnelseWarningIcon } from "@/sider/behandlerdialog/meldinger/paminnelse/PaminnelseWarningIcon";
 import { ReturLegeerklaringWarningIcon } from "@/sider/behandlerdialog/legeerklaring/ReturLegeerklaringWarningIcon";
 import {
   antallOfType,
@@ -28,25 +27,14 @@ const texts = {
   vurderPaminnelse: "Vurder påminnelse",
 };
 
-const StyledWrapper = styled.div`
-  display: flex;
-  margin-left: 1em;
-`;
-
-const StyledTag = styled(Tag)`
-  gap: 0.2em;
-`;
-
-interface SamtaleTagsProps {
+interface Props {
   meldinger: MeldingDTO[];
 }
 
 const SamtaleTag = (props: TagProps) => (
-  <StyledWrapper>
-    <StyledTag {...props} size="small">
-      {props.children}
-    </StyledTag>
-  </StyledWrapper>
+  <Tag className="ml-4 gap-1" variant={props.variant} size="small">
+    {props.children}
+  </Tag>
 );
 
 type SamtaleTagStatus =
@@ -139,9 +127,9 @@ const getSamtaleTagStatus = (
   }
 };
 
-export const SamtaleTags = ({
+export default function SamtaleTags({
   meldinger,
-}: SamtaleTagsProps): React.ReactElement | null => {
+}: Props): React.ReactElement | null {
   const { data: oppgaver } = usePersonoppgaverQuery();
   const samtaleTagStatus = getSamtaleTagStatus(meldinger, oppgaver);
 
@@ -178,4 +166,4 @@ export const SamtaleTags = ({
       return null;
     }
   }
-};
+}
