@@ -30,7 +30,7 @@ const getFerdigbehandletText = (
   `;
 };
 
-interface BehandlePersonoppgaveKnappProps {
+interface Props {
   personOppgave: PersonOppgave | undefined;
   isBehandlet: boolean;
   handleBehandleOppgave: () => void;
@@ -38,13 +38,13 @@ interface BehandlePersonoppgaveKnappProps {
   behandleOppgaveText: string;
 }
 
-const BehandlePersonOppgaveKnapp = ({
+export default function BehandlePersonOppgaveKnapp({
   personOppgave,
   isBehandlet,
   handleBehandleOppgave,
   isBehandleOppgaveLoading,
   behandleOppgaveText,
-}: BehandlePersonoppgaveKnappProps) => {
+}: Props) {
   const { data: veilederInfo } = useVeilederInfoQuery(
     personOppgave?.behandletVeilederIdent ?? ""
   );
@@ -65,6 +65,4 @@ const BehandlePersonOppgaveKnapp = ({
       </Checkbox>
     </Box>
   );
-};
-
-export default BehandlePersonOppgaveKnapp;
+}

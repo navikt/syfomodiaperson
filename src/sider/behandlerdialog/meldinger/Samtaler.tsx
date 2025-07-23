@@ -13,10 +13,6 @@ const texts = {
   guidePanel: "Her kommer meldinger sendt til og fra behandler.",
 };
 
-const StyledSamtaler = styled.div`
-  margin-top: 1.5em;
-`;
-
 const StyledGuidePanel = styled(GuidePanel)`
   margin-bottom: 1.5em;
 
@@ -52,7 +48,7 @@ export const sortConversations = (
   return conversationRefs.map((ref: string) => conversations[ref]);
 };
 
-export const Samtaler = () => {
+export default function Samtaler() {
   const { data, isLoading } = useBehandlerdialogQuery();
 
   const sortedConversations: MeldingDTO[][] = useMemo(() => {
@@ -60,7 +56,7 @@ export const Samtaler = () => {
   }, [data]);
 
   return (
-    <StyledSamtaler>
+    <div className="mt-4">
       {isLoading ? (
         <AppSpinner />
       ) : sortedConversations.length ? (
@@ -72,6 +68,6 @@ export const Samtaler = () => {
       ) : (
         <StyledGuidePanel>{texts.guidePanel}</StyledGuidePanel>
       )}
-    </StyledSamtaler>
+    </div>
   );
-};
+}

@@ -15,8 +15,7 @@ import { useAktivBruker } from "@/data/modiacontext/modiacontextQueryHooks";
 import DialogmoteunntakSkjemaContainer from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaContainer";
 import DialogmoteikkeaktuellSkjemaContainer from "@/sider/dialogmoter/components/ikkeaktuell/DialogmoteikkeaktuellSkjemaContainer";
 import { PersonsokSide } from "@/components/PersonsokSide";
-import { AktivitetskravContainer } from "@/sider/aktivitetskrav/AktivitetskravContainer";
-import { BehandlerdialogContainer } from "@/sider/behandlerdialog/BehandlerdialogContainer";
+import BehandlerdialogContainer from "@/sider/behandlerdialog/BehandlerdialogContainer";
 import * as Amplitude from "@/utils/amplitude";
 import Motelandingsside from "@/sider/dialogmoter/Motelandingsside";
 import { Nokkelinformasjon } from "@/sider/nokkelinformasjon/Nokkelinformasjon";
@@ -41,6 +40,7 @@ import OppfyltSide from "@/sider/manglendemedvirkning/oppfylt/OppfyltSide";
 import StansSide from "@/sider/manglendemedvirkning/stans/StansSide";
 import IkkeAktuellSide from "@/sider/manglendemedvirkning/ikkeaktuell/IkkeAktuellSide";
 import UnntakSide from "@/sider/manglendemedvirkning/unntak/UnntakSide";
+import { AktivitetskravContainer } from "@/sider/aktivitetskrav/AktivitetskravContainer";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -70,10 +70,20 @@ const AktivBrukerRouter = (): ReactElement => {
             path={`${appRoutePath}/nokkelinformasjon`}
             element={<Nokkelinformasjon />}
           />
-          <Route
-            path={`${appRoutePath}/aktivitetskrav`}
-            element={<AktivitetskravContainer />}
-          />
+
+          <Route path={`${appRoutePath}/sykmeldinger`}>
+            <Route index element={<SykmeldingerSide />} />
+            <Route path=":sykmeldingId" element={<DinSykmeldingSide />} />
+          </Route>
+
+          <Route path={`${appRoutePath}/sykepengesoknader`}>
+            <Route index element={<SykepengesoknaderSide />} />
+            <Route
+              path=":sykepengesoknadId"
+              element={<SykepengesoknadSide />}
+            />
+          </Route>
+
           <Route
             path={`${appRoutePath}/behandlerdialog`}
             element={<BehandlerdialogContainer />}
@@ -109,18 +119,10 @@ const AktivBrukerRouter = (): ReactElement => {
             element={<DialogmoteikkeaktuellSkjemaContainer />}
           />
 
-          <Route path={`${appRoutePath}/sykmeldinger`}>
-            <Route index element={<SykmeldingerSide />} />
-            <Route path=":sykmeldingId" element={<DinSykmeldingSide />} />
-          </Route>
-
-          <Route path={`${appRoutePath}/sykepengesoknader`}>
-            <Route index element={<SykepengesoknaderSide />} />
-            <Route
-              path=":sykepengesoknadId"
-              element={<SykepengesoknadSide />}
-            />
-          </Route>
+          <Route
+            path={`${appRoutePath}/aktivitetskrav`}
+            element={<AktivitetskravContainer />}
+          />
 
           <Route
             path={manglendeMedvirkningPath}

@@ -5,7 +5,7 @@ import { Accordion } from "@navikt/ds-react";
 import { MeldingerISamtale } from "@/sider/behandlerdialog/meldinger/MeldingerISamtale";
 import { StetoskopIkon } from "../../../../img/ImageComponents";
 import { useBehandlerNavn } from "@/hooks/behandler/useBehandlerNavn";
-import { SamtaleTags } from "@/sider/behandlerdialog/meldinger/SamtaleTags";
+import SamtaleTags from "@/sider/behandlerdialog/meldinger/SamtaleTags";
 import { FlexRow } from "@/components/Layout";
 
 interface SamtaleAccordionItemProps {
