@@ -15,7 +15,6 @@ import {
   Radio,
   RadioGroup,
   ReadMore,
-  Tag,
   VStack,
 } from "@navikt/ds-react";
 import { useBehandleMotebehovAndSendTilbakemelding } from "@/data/motebehov/useBehandleMotebehovAndSendTilbakemelding";
@@ -37,17 +36,6 @@ const texts = {
   tilbakemelding:
     "Etter dialog med deg har vi kommet frem til at Nav ikke kaller inn til dialogmøte på nåværende tidspunkt. Du kan be om dialogmøte senere eller hvis det skjer endringer.",
 };
-
-function ReadMoreHeader() {
-  return (
-    <div>
-      <Tag variant="info" size="xsmall" className="w-fit mr-1">
-        Ny
-      </Tag>
-      {texts.tilbakemeldingHeader}
-    </div>
-  );
-}
 
 export default function BehandleMotebehovKnapp() {
   const { data: motebehovData } = useMotebehovQuery();
@@ -88,7 +76,13 @@ export default function BehandleMotebehovKnapp() {
         <Radio value={false}>{texts.vurdertUtenTilbakemelding}</Radio>
         <Radio value={true}>{texts.vurdertMedTilbakemelding}</Radio>
         {isTilbakemelding && (
-          <ReadMore size="small" header={<ReadMoreHeader />} defaultOpen>
+          <ReadMore
+            size="small"
+            header={
+              <BodyShort size="small">{texts.tilbakemeldingHeader}</BodyShort>
+            }
+            defaultOpen
+          >
             {texts.tilbakemelding}
           </ReadMore>
         )}
