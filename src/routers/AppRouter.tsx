@@ -34,7 +34,7 @@ import ArbeidsuforhetAvslag from "@/sider/arbeidsuforhet/avslag/ArbeidsuforhetAv
 import ArbeidsuforhetIkkeAktuell from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuell";
 import SendForhandsvarselSkjema from "@/sider/arbeidsuforhet/SendForhandsvarselSkjema";
 import ArbeidsuforhetSide from "@/sider/arbeidsuforhet/ArbeidsuforhetSide";
-import { DinSykmeldingSide } from "@/sider/sykmeldinger/container/DinSykmeldingSide";
+import DinSykmeldingSide from "@/sider/sykmeldinger/container/DinSykmeldingSide";
 import InnstillingUtenForhandsvarsel from "@/sider/arbeidsuforhet/innstillingutenforhandsvarsel/InnstillingUtenForhandsvarsel";
 import OppfyltSide from "@/sider/manglendemedvirkning/oppfylt/OppfyltSide";
 import StansSide from "@/sider/manglendemedvirkning/stans/StansSide";

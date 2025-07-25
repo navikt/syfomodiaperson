@@ -31,7 +31,7 @@ interface DiagnoserProps {
   hovedDiagnose?: SykmeldingDiagnose;
 }
 
-const Diagnoser = (diagnoserProps: DiagnoserProps) => {
+export default function Diagnoser(diagnoserProps: DiagnoserProps) {
   const biDiagnoser = diagnoserProps.biDiagnoser;
   const hovedDiagnose = diagnoserProps.hovedDiagnose;
   return (
@@ -43,6 +43,4 @@ const Diagnoser = (diagnoserProps: DiagnoserProps) => {
       })}
     </div>
   );
-};
-
-export default Diagnoser;
+}

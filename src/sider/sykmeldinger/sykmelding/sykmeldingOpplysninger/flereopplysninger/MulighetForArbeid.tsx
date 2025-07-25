@@ -2,7 +2,7 @@ import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import SykmeldingOpplysning from "./SykmeldingOpplysning";
 import { SykmeldingCheckbox } from "../SykmeldingCheckbox";
-import { SykmeldingOpplysningForFelt } from "./SykmeldingOpplysningForFelt";
+import SykmeldingOpplysningForFelt from "./SykmeldingOpplysningForFelt";
 import { SykmeldingCheckboxForFelt } from "../SykmeldingCheckboxForFelt";
 import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 
@@ -45,12 +45,11 @@ const Aarsaker = ({ aarsaker }: AarsakerProps) => {
   );
 };
 
-interface MulighetForArbeidProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-const MulighetForArbeid = (mulighetForArbeidProps: MulighetForArbeidProps) => {
-  const { sykmelding } = mulighetForArbeidProps;
+export default function MulighetForArbeid({ sykmelding }: Props) {
   const visSeksjon =
     (sykmelding.mulighetForArbeid.aktivitetIkkeMulig433 &&
       sykmelding.mulighetForArbeid.aktivitetIkkeMulig433.length) ||
@@ -106,5 +105,4 @@ const MulighetForArbeid = (mulighetForArbeidProps: MulighetForArbeidProps) => {
       />
     </SykmeldingSeksjon>
   );
-};
-export default MulighetForArbeid;
+}

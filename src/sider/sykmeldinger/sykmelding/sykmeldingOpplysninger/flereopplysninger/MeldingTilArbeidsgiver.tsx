@@ -1,6 +1,6 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { SykmeldingOpplysningForFelt } from "./SykmeldingOpplysningForFelt";
+import SykmeldingOpplysningForFelt from "./SykmeldingOpplysningForFelt";
 import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 
 const texts = {
@@ -8,13 +8,13 @@ const texts = {
   content: "Andre innspill til arbeidsgiver",
 };
 
-interface MeldingTilArbeidsgiverProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-const MeldingTilArbeidsgiver = (
-  meldingTilArbeidsgiverProps: MeldingTilArbeidsgiverProps
-) => {
+export default function MeldingTilArbeidsgiver(
+  meldingTilArbeidsgiverProps: Props
+) {
   const { sykmelding } = meldingTilArbeidsgiverProps;
   const visSeksjon = sykmelding.innspillTilArbeidsgiver;
   if (!visSeksjon) {
@@ -29,6 +29,4 @@ const MeldingTilArbeidsgiver = (
       />
     </SykmeldingSeksjon>
   );
-};
-
-export default MeldingTilArbeidsgiver;
+}

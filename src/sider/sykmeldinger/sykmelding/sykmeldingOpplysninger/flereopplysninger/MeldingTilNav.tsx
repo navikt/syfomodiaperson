@@ -3,7 +3,7 @@ import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat
 import { SykmeldingCheckbox } from "../SykmeldingCheckbox";
 import { erMeldingTilNavInformasjon } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
-import { SykmeldingOpplysningForFelt } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/SykmeldingOpplysningForFelt";
+import SykmeldingOpplysningForFelt from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/SykmeldingOpplysningForFelt";
 
 const texts = {
   begrunnelse: "Begrunn nærmere",

@@ -1,6 +1,6 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { SykmeldingOpplysningForFelt } from "./SykmeldingOpplysningForFelt";
+import SykmeldingOpplysningForFelt from "./SykmeldingOpplysningForFelt";
 import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 
 const texts = {
@@ -10,11 +10,11 @@ const texts = {
   tiltakAndre: "Eventuelle andre innspill til Nav",
 };
 
-interface BedreArbeidsevneProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-const BedreArbeidsevne = (bedreArbeidsevneProps: BedreArbeidsevneProps) => {
+export default function BedreArbeidsevne(bedreArbeidsevneProps: Props) {
   const { sykmelding } = bedreArbeidsevneProps;
   const visSeksjon =
     sykmelding.arbeidsevne.tilretteleggingArbeidsplass ||
@@ -42,6 +42,4 @@ const BedreArbeidsevne = (bedreArbeidsevneProps: BedreArbeidsevneProps) => {
       />
     </SykmeldingSeksjon>
   );
-};
-
-export default BedreArbeidsevne;
+}

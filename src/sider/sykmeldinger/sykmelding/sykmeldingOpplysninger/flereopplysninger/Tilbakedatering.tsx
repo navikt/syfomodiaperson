@@ -1,7 +1,7 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
-import { SykmeldingOpplysningForFelt } from "./SykmeldingOpplysningForFelt";
+import SykmeldingOpplysningForFelt from "./SykmeldingOpplysningForFelt";
 import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 
 const texts = {
@@ -11,11 +11,11 @@ const texts = {
   title: "Tilbakedatering",
 };
 
-interface TilbakedateringProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-const Tilbakedatering = (tilbakedateringProps: TilbakedateringProps) => {
+export default function Tilbakedatering(tilbakedateringProps: Props) {
   const { sykmelding } = tilbakedateringProps;
   const visSeksjon =
     sykmelding.tilbakedatering.dokumenterbarPasientkontakt ||
@@ -40,6 +40,4 @@ const Tilbakedatering = (tilbakedateringProps: TilbakedateringProps) => {
       />
     </SykmeldingSeksjon>
   );
-};
-
-export default Tilbakedatering;
+}

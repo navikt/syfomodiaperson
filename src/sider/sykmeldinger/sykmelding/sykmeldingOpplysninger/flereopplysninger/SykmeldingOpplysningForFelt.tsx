@@ -11,17 +11,18 @@ interface Props {
   isSubopplysning?: boolean;
 }
 
-export const SykmeldingOpplysningForFelt = ({
+export default function SykmeldingOpplysningForFelt({
   sykmeldingBolk,
   felt,
   tittel,
   opplysning,
   isSubopplysning = false,
-}: Props) =>
-  sykmeldingBolk[felt] ? (
+}: Props) {
+  return sykmeldingBolk[felt] ? (
     <SykmeldingOpplysning tittel={tittel} isSubopplysning={isSubopplysning}>
       <OpplysningListItem>
         {opplysning || sykmeldingBolk[felt]}
       </OpplysningListItem>
     </SykmeldingOpplysning>
   ) : null;
+}

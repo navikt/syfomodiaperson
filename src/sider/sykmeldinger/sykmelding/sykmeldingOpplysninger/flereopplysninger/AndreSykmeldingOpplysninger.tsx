@@ -1,19 +1,19 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { SykmeldingOpplysningForFelt } from "./SykmeldingOpplysningForFelt";
+import SykmeldingOpplysningForFelt from "./SykmeldingOpplysningForFelt";
 import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 
 const texts = {
   phone: "Telefon til lege/sykmelder",
 };
 
-interface AndreSykmeldingOpplysningerProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-const AndreSykmeldingOpplysninger = (
-  andreSykmeldingOpplysningerProps: AndreSykmeldingOpplysningerProps
-) => {
+export default function AndreSykmeldingOpplysninger(
+  andreSykmeldingOpplysningerProps: Props
+) {
   const { sykmelding } = andreSykmeldingOpplysningerProps;
   const visSeksjon =
     sykmelding.bekreftelse.sykmelderTlf ||
@@ -30,6 +30,4 @@ const AndreSykmeldingOpplysninger = (
       />
     </SykmeldingSeksjon>
   );
-};
-
-export default AndreSykmeldingOpplysninger;
+}
