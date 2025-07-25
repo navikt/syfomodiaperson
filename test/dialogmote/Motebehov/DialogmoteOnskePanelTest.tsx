@@ -17,14 +17,20 @@ import {
 } from "@/mocks/syfomotebehov/motebehovMock";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import { addDays, addWeeks, toDatePrettyPrint } from "@/utils/datoUtils";
-import { DialogmoteOnskePanel } from "@/sider/dialogmoter/motebehov/DialogmoteOnskePanel";
+import { UtropstegnImage } from "../../../img/ImageComponents";
+import MotebehovKvittering from "@/sider/dialogmoter/motebehov/MotebehovKvittering";
+import BehandleMotebehovKnapp from "@/components/motebehov/BehandleMotebehovKnapp";
+import { DialogmotePanel } from "@/sider/dialogmoter/components/DialogmotePanel";
 
 let queryClient: QueryClient;
 
 const renderDialogmoteOnskePanel = () => {
   render(
     <QueryClientProvider client={queryClient}>
-      <DialogmoteOnskePanel />
+      <DialogmotePanel icon={UtropstegnImage} header={"Behov for dialogmøte"}>
+        <MotebehovKvittering />
+        <BehandleMotebehovKnapp />
+      </DialogmotePanel>{" "}
     </QueryClientProvider>
   );
 };

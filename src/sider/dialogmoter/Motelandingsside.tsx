@@ -3,7 +3,6 @@ import Sidetopp from "../../components/side/Sidetopp";
 import UtdragFraSykefravaeretPanel from "../../components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { InnkallingDialogmotePanel } from "./components/innkalling/InnkallingDialogmotePanel";
 import SideLaster from "../../components/side/SideLaster";
-import { DialogmoteOnskePanel } from "./motebehov/DialogmoteOnskePanel";
 import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { DialogmoteFerdigstilteReferatPanel } from "@/sider/dialogmoter/components/DialogmoteFerdigstilteReferatPanel";
@@ -16,13 +15,18 @@ import { MotehistorikkPanel } from "@/sider/dialogmoter/components/motehistorikk
 import { MoteSvarHistorikk } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikk";
 import MotebehovHistorikk from "@/sider/dialogmoter/components/motehistorikk/MotebehovHistorikk";
 import { InfoOmTolk } from "@/sider/dialogmoter/motebehov/InfoOmTolk";
+import { UtropstegnImage } from "../../../img/ImageComponents";
+import MotebehovKvittering from "@/sider/dialogmoter/motebehov/MotebehovKvittering";
+import BehandleMotebehovKnapp from "@/components/motebehov/BehandleMotebehovKnapp";
+import { DialogmotePanel } from "@/sider/dialogmoter/components/DialogmotePanel";
 
 const texts = {
   pageTitle: "Møtelandingsside",
   dialogmoter: "Dialogmøter",
+  behovForDialogmote: "Behov for dialogmøte",
 };
 
-export function Motelandingsside() {
+export default function Motelandingsside() {
   const {
     isLoading: henterDialogmoter,
     isError: henterDialogmoterFeilet,
@@ -50,7 +54,13 @@ export function Motelandingsside() {
 
         <Tredelt.Container>
           <Tredelt.FirstColumn>
-            <DialogmoteOnskePanel />
+            <DialogmotePanel
+              icon={UtropstegnImage}
+              header={texts.behovForDialogmote}
+            >
+              <MotebehovKvittering />
+              <BehandleMotebehovKnapp />
+            </DialogmotePanel>
             <InfoOmTolk />
             <InnkallingDialogmotePanel aktivtDialogmote={aktivtDialogmote} />
             <DialogmoteFerdigstilteReferatPanel
@@ -74,5 +84,3 @@ export function Motelandingsside() {
     </Side>
   );
 }
-
-export default Motelandingsside;
