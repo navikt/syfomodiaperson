@@ -16,7 +16,7 @@ import { ReturLegeerklaringWarningIcon } from "@/sider/behandlerdialog/legeerkla
 import {
   antallOfType,
   hasMeldingOfType,
-} from "../../../../test/utils/behandlerdialogUtils";
+} from "../../../../../test/utils/behandlerdialogUtils";
 
 const texts = {
   nyMelding: "Ny melding",
@@ -46,10 +46,10 @@ type SamtaleTagStatus =
   | "VENTER_SVAR"
   | "INGEN";
 
-const getSamtaleTagStatus = (
+function getSamtaleTagStatus(
   meldinger: MeldingDTO[],
   oppgaver: PersonOppgave[]
-): SamtaleTagStatus => {
+): SamtaleTagStatus {
   const ubehandledeBehandlerDialogSvarOppgaver =
     getAllUbehandledePersonOppgaver(
       oppgaver,
@@ -125,7 +125,7 @@ const getSamtaleTagStatus = (
   } else {
     return "INGEN";
   }
-};
+}
 
 export default function SamtaleTags({
   meldinger,
