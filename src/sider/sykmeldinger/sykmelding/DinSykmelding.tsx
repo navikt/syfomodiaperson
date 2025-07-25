@@ -17,7 +17,7 @@ interface Props {
   eldsteSykmeldingId?: string;
 }
 
-export function DinSykmelding(dinSykmeldingProps: Props) {
+export default function DinSykmelding(dinSykmeldingProps: Props) {
   const { sykmelding, visEldreSykmeldingVarsel, eldsteSykmeldingId } =
     dinSykmeldingProps;
   return (

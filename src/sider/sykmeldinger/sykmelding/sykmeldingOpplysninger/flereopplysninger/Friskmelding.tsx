@@ -3,7 +3,7 @@ import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { SykmeldingCheckboxForFelt } from "../SykmeldingCheckboxForFelt";
 import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
-import { SykmeldingOpplysningForFelt } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/SykmeldingOpplysningForFelt";
+import SykmeldingOpplysningForFelt from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/SykmeldingOpplysningForFelt";
 
 const texts = {
   title: "Friskmelding/prognose",
@@ -24,11 +24,11 @@ const texts = {
     "Når antar du å kunne gi tilbakemelding på dette?",
 };
 
-interface FriskmeldingProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-const Friskmelding = (friskmeldingProps: FriskmeldingProps) => {
+export default function Friskmelding(friskmeldingProps: Props) {
   const { sykmelding } = friskmeldingProps;
   const visSeksjon =
     sykmelding.friskmelding.antarReturSammeArbeidsgiver ||
@@ -122,6 +122,4 @@ const Friskmelding = (friskmeldingProps: FriskmeldingProps) => {
       )}
     </SykmeldingSeksjon>
   );
-};
-
-export default Friskmelding;
+}

@@ -10,46 +10,42 @@ import Feilmelding from "../../../components/Feilmelding";
 import AvvistSykmelding from "./avvisteSykmeldinger/AvvistSykmelding";
 import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
 import { DinSendteSykmelding } from "@/sider/sykmeldinger/sykmelding/DinSendteSykmelding";
-import { DinSykmelding } from "@/sider/sykmeldinger/sykmelding/DinSykmelding";
+import DinSykmelding from "@/sider/sykmeldinger/sykmelding/DinSykmelding";
 import EgenmeldtKoronaSykmelding from "@/sider/sykmeldinger/sykmelding/EgenmeldtKoronaSykmelding";
 
 interface Props {
-  dinSykmelding?: SykmeldingOldFormat;
+  sykmelding?: SykmeldingOldFormat;
   arbeidsgiversSykmelding?: SykmeldingOldFormat;
 }
 
-export function SykmeldingSide({
-  dinSykmelding,
-  arbeidsgiversSykmelding,
-}: Props) {
-  if (!dinSykmelding) {
+export function SykmeldingSide({ sykmelding, arbeidsgiversSykmelding }: Props) {
+  if (!sykmelding) {
     return <Feilmelding tittel="Fant ikke sykmelding" />;
   }
   if (
-    dinSykmelding.behandlingsutfall.status ===
-    BehandlingsutfallStatusDTO.INVALID
+    sykmelding.behandlingsutfall.status === BehandlingsutfallStatusDTO.INVALID
   ) {
-    return <AvvistSykmelding sykmelding={dinSykmelding} />;
+    return <AvvistSykmelding sykmelding={sykmelding} />;
   }
 
-  if (dinSykmelding.egenmeldt) {
-    return <EgenmeldtKoronaSykmelding sykmelding={dinSykmelding} />;
+  if (sykmelding.egenmeldt) {
+    return <EgenmeldtKoronaSykmelding sykmelding={sykmelding} />;
   } else if (
-    dinSykmelding.status === SykmeldingStatus.SENDT &&
+    sykmelding.status === SykmeldingStatus.SENDT &&
     arbeidsgiversSykmelding
   ) {
-    return <DinSendteSykmelding sykmelding={dinSykmelding} />;
+    return <DinSendteSykmelding sykmelding={sykmelding} />;
   } else if (
     arbeidsgiversSykmelding &&
-    dinSykmelding.status === SykmeldingStatus.BEKREFTET
+    sykmelding.status === SykmeldingStatus.BEKREFTET
   ) {
-    return <DinBekreftedeSykmelding sykmelding={dinSykmelding} />;
-  } else if (dinSykmelding.status === SykmeldingStatus.UTGAATT) {
-    return <DinUtgaatteSykmelding sykmelding={dinSykmelding} />;
-  } else if (dinSykmelding.status === SykmeldingStatus.NY) {
-    return <DinSykmelding sykmelding={dinSykmelding} />;
-  } else if (dinSykmelding.status === SykmeldingStatus.AVBRUTT) {
-    return <DinAvbrutteSykmelding sykmelding={dinSykmelding} />;
+    return <DinBekreftedeSykmelding sykmelding={sykmelding} />;
+  } else if (sykmelding.status === SykmeldingStatus.UTGAATT) {
+    return <DinUtgaatteSykmelding sykmelding={sykmelding} />;
+  } else if (sykmelding.status === SykmeldingStatus.NY) {
+    return <DinSykmelding sykmelding={sykmelding} />;
+  } else if (sykmelding.status === SykmeldingStatus.AVBRUTT) {
+    return <DinAvbrutteSykmelding sykmelding={sykmelding} />;
   }
   return <Feilmelding tittel="Sykmeldingen har ukjent status" />;
 }

@@ -18,30 +18,27 @@ const texts = {
   pageTitleSykmelding: "Sykmelding",
 };
 
-export const getSykmelding = (
+function getSykmelding(
   sykmeldinger: SykmeldingOldFormat[],
   sykmeldingId: string
-): SykmeldingOldFormat | undefined => {
-  return sykmeldinger.find((sykmld) => {
-    return `${sykmld.id}` === `${sykmeldingId}`;
-  });
-};
+): SykmeldingOldFormat | undefined {
+  return sykmeldinger.find((sykmld) => `${sykmld.id}` === `${sykmeldingId}`);
+}
 
-export function DinSykmeldingSide() {
+export default function DinSykmeldingSide() {
   const sykmeldingId = window.location.pathname.split("/")[3];
 
   const { isLoading, isError, sykmeldinger, arbeidsgiverssykmeldinger } =
     useSykmeldingerQuery();
 
-  const dinSykmelding = getSykmelding(sykmeldinger, sykmeldingId);
+  const sykmelding = getSykmelding(sykmeldinger, sykmeldingId);
   let arbeidsgiversSykmelding = {} as SykmeldingOldFormat | undefined;
 
   if (
-    dinSykmelding &&
-    (dinSykmelding.status === SykmeldingStatus.SENDT ||
-      (dinSykmelding.status === SykmeldingStatus.BEKREFTET &&
-        dinSykmelding.valgtArbeidssituasjon ===
-          ArbeidssituasjonType.ARBEIDSTAKER))
+    sykmelding &&
+    (sykmelding.status === SykmeldingStatus.SENDT ||
+      (sykmelding.status === SykmeldingStatus.BEKREFTET &&
+        sykmelding.valgtArbeidssituasjon === ArbeidssituasjonType.ARBEIDSTAKER))
   ) {
     arbeidsgiversSykmelding = getSykmelding(
       arbeidsgiverssykmeldinger,
@@ -57,11 +54,11 @@ export function DinSykmeldingSide() {
       <SideLaster henter={isLoading} hentingFeilet={isError}>
         <Panel>
           <SykmeldingSide
-            dinSykmelding={dinSykmelding}
+            sykmelding={sykmelding}
             arbeidsgiversSykmelding={arbeidsgiversSykmelding}
           />
-          {dinSykmelding?.papirsykmelding && <EndreSykmelding />}
-          {dinSykmelding?.utenlandskSykmelding && <EndreUtenlandskSykmelding />}
+          {sykmelding?.papirsykmelding && <EndreSykmelding />}
+          {sykmelding?.utenlandskSykmelding && <EndreUtenlandskSykmelding />}
           <LenkeTilDineSykmeldinger />
         </Panel>
       </SideLaster>

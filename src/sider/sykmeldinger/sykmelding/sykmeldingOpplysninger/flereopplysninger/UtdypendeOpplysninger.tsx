@@ -9,11 +9,9 @@ const texts = {
   title: "Utdypende opplysninger",
 };
 
-interface OpplysningsGruppeProps {
+function OpplysningsGruppe(opplysningsGruppeProps: {
   opplysningGruppe: SporsmalSvarDTO;
-}
-
-const OpplysningsGruppe = (opplysningsGruppeProps: OpplysningsGruppeProps) => {
+}) {
   const { opplysningGruppe } = opplysningsGruppeProps;
   const sporsmal = Object.entries(opplysningGruppe).map(
     ([key, sporsmalSvar]) => (
@@ -23,15 +21,15 @@ const OpplysningsGruppe = (opplysningsGruppeProps: OpplysningsGruppeProps) => {
     )
   );
   return <div>{sporsmal}</div>;
-};
+}
 
-interface UtdypendeOpplysningerProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-const UtdypendeOpplysninger = (
-  utdypendeOpplysningerProps: UtdypendeOpplysningerProps
-) => {
+export default function UtdypendeOpplysninger(
+  utdypendeOpplysningerProps: Props
+) {
   const { sykmelding } = utdypendeOpplysningerProps;
   const utdypendeOpplysninger = sykmelding.utdypendeOpplysninger;
   return (
@@ -45,6 +43,4 @@ const UtdypendeOpplysninger = (
       </SykmeldingSeksjon>
     )
   );
-};
-
-export default UtdypendeOpplysninger;
+}

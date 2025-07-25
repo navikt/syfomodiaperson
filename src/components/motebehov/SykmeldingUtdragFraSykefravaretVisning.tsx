@@ -15,13 +15,13 @@ import {
   erUtdypendeOpplysninger,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 
-interface SykmeldingMotebehovVisningProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-const SykmeldingUtdragFraSykefravaretVisning = ({
+export default function SykmeldingUtdragFraSykefravaretVisning({
   sykmelding,
-}: SykmeldingMotebehovVisningProps) => {
+}: Props) {
   const isMeldingTilArbeidsgiverVisible =
     erMeldingTilArbeidsgiverInformasjon(sykmelding);
   const isMeldingTilNavVisible = erMeldingTilNavInformasjon(sykmelding);
@@ -53,6 +53,4 @@ const SykmeldingUtdragFraSykefravaretVisning = ({
       )}
     </div>
   );
-};
-
-export default SykmeldingUtdragFraSykefravaretVisning;
+}

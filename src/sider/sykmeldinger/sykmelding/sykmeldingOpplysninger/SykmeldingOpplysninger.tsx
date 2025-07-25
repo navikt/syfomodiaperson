@@ -1,21 +1,22 @@
 import React from "react";
-import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import {
+  SykmeldingDiagnose,
+  SykmeldingOldFormat,
+} from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import SykmeldingPerioder from "./SykmeldingPerioder";
 import { SykmeldingCheckbox } from "./SykmeldingCheckbox";
 import FlereOpplysninger from "./flereopplysninger/FlereOpplysninger";
 import { SykmeldingCheckboxForFelt } from "./SykmeldingCheckboxForFelt";
 import { Egenmeldingsdager } from "./Egenmeldingsdager";
-import { Heading } from "@navikt/ds-react";
+import { BodyShort, Heading, Label } from "@navikt/ds-react";
 import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
-import { RadContainer } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/RadContainer";
 
 const texts = {
   dinSykmeldingTittel: "Sykmelding",
   dinSykmeldingDiagnoseTittel: "Diagnose\n",
   dinSykmeldingBidiagnoseTittel: "Bidiagnose\n",
   yrkesskadeTittel: "Sykdommen kan skyldes en skade/yrkessykdom\n",
-  diagnoseMeta: "Diagnosen vises ikke til arbeidsgiveren",
   arbeidsforTittel: "Pasienten er 100 % arbeidsfør etter perioden\n",
   avsenderTittel: "Lege / sykmelder\n",
   arbeidsgiverTittel: "Arbeidsgiver som legen har skrevet inn",
@@ -31,9 +32,39 @@ interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
+function Hoveddiagnose({
+  hoveddiagnose,
+}: {
+  hoveddiagnose: SykmeldingDiagnose;
+}) {
+  return (
+    <div className="flex flex-col mb-5">
+      <Label size="small">{texts.dinSykmeldingDiagnoseTittel}</Label>
+      <BodyShort size="small">{`${hoveddiagnose.diagnose}`}</BodyShort>
+      <BodyShort size="small">{`(${hoveddiagnose.diagnosekode}, ${hoveddiagnose.diagnosesystem})`}</BodyShort>
+    </div>
+  );
+}
+
+function Bidiagnoser({ bidiagnoser }: { bidiagnoser: SykmeldingDiagnose[] }) {
+  return (
+    <>
+      {bidiagnoser.map((bidiagnose, index) => {
+        return (
+          <div key={index} className="flex flex-col mb-5">
+            <Label size="small">{texts.dinSykmeldingBidiagnoseTittel}</Label>
+            <BodyShort size="small">{bidiagnose.diagnose}</BodyShort>
+            <BodyShort size="small">{`(${bidiagnose.diagnosekode}, ${bidiagnose.diagnosesystem})`}</BodyShort>
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
 export function SykmeldingOpplysninger({ sykmelding }: Props) {
   return (
-    <div className="dine-opplysninger">
+    <div>
       <Heading level="2" size="large" className="mb-3">
         {sykmelding.mulighetForArbeid.perioder.some((periode) => {
           return !!periode.avventende;
@@ -49,44 +80,12 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
               egenmeldingsdager={sykmelding.sporsmal.egenmeldingsdager}
             />
           )}
-        {sykmelding.diagnose.hoveddiagnose ? (
-          <RadContainer>
-            <Nokkelopplysning
-              label={texts.dinSykmeldingDiagnoseTittel}
-              className={"mb-0"}
-            >
-              <p>{sykmelding.diagnose.hoveddiagnose.diagnose}</p>
-              <p>{texts.diagnoseMeta}</p>
-            </Nokkelopplysning>
-            <Nokkelopplysning
-              label={texts.dinSykmeldingDiagnoseTittel}
-              className={"mb-0"}
-            >
-              <p>
-                <span>{sykmelding.diagnose.hoveddiagnose.diagnosekode}</span>
-                &nbsp;
-                <span>{sykmelding.diagnose.hoveddiagnose.diagnosesystem}</span>
-              </p>
-            </Nokkelopplysning>
-          </RadContainer>
-        ) : null}
-        {sykmelding.diagnose.bidiagnoser &&
-          sykmelding.diagnose.bidiagnoser.map((bidiagnose, index) => {
-            return (
-              <RadContainer key={`${sykmelding.id}-bidiagnose-${index}`}>
-                <Nokkelopplysning label={texts.dinSykmeldingBidiagnoseTittel}>
-                  <p>{bidiagnose.diagnose}</p>
-                  <p>{texts.diagnoseMeta}</p>
-                </Nokkelopplysning>
-                <Nokkelopplysning label={texts.dinSykmeldingDiagnoseTittel}>
-                  <p>
-                    <span>{bidiagnose.diagnosekode}</span>
-                    <span>{bidiagnose.diagnosesystem}</span>
-                  </p>
-                </Nokkelopplysning>
-              </RadContainer>
-            );
-          })}
+        {!!sykmelding.diagnose.hoveddiagnose && (
+          <Hoveddiagnose hoveddiagnose={sykmelding.diagnose.hoveddiagnose} />
+        )}
+        {sykmelding.diagnose.bidiagnoser && (
+          <Bidiagnoser bidiagnoser={sykmelding.diagnose.bidiagnoser} />
+        )}
         {sykmelding.diagnose.fravaersgrunnLovfestet ? (
           <Nokkelopplysning label={"Lovfestet fraværsgrunn"}>
             <p>{sykmelding.diagnose.fravaersgrunnLovfestet}</p>

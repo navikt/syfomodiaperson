@@ -9,18 +9,17 @@ import MeldingTilNav from "./MeldingTilNav";
 import Tilbakedatering from "./Tilbakedatering";
 import MeldingTilArbeidsgiver from "./MeldingTilArbeidsgiver";
 import AndreSykmeldingOpplysninger from "./AndreSykmeldingOpplysninger";
-import { SykmeldingOpplysningForFelt } from "./SykmeldingOpplysningForFelt";
+import SykmeldingOpplysningForFelt from "./SykmeldingOpplysningForFelt";
 
 const texts = {
   utstedelsesdato: "Dato sykmeldingen ble skrevet",
 };
 
-interface FlereOpplysningerProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-const FlereOpplysninger = (flereOpplysningerProps: FlereOpplysningerProps) => {
-  const { sykmelding } = flereOpplysningerProps;
+export default function FlereOpplysninger({ sykmelding }: Props) {
   return (
     <div>
       <SykmeldingOpplysningForFelt
@@ -41,6 +40,4 @@ const FlereOpplysninger = (flereOpplysningerProps: FlereOpplysningerProps) => {
       <AndreSykmeldingOpplysninger sykmelding={sykmelding} />
     </div>
   );
-};
-
-export default FlereOpplysninger;
+}

@@ -19,7 +19,7 @@ export default function DineKoronaSykmeldingOpplysninger({
   sykmelding,
 }: Props) {
   return (
-    <div className="dine-opplysninger">
+    <div>
       <Heading size="medium" className="mb-6">
         Opplysninger
       </Heading>

@@ -22,13 +22,11 @@ const tekster = {
   },
 };
 
-interface GenerellSykmeldingInfoProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-export const GenerellSykmeldingInfo = ({
-  sykmelding,
-}: GenerellSykmeldingInfoProps) => {
+export default function GenerellSykmeldingInfo({ sykmelding }: Props) {
   const hovedDiagnose = sykmelding.diagnose.hoveddiagnose;
   const biDiagnoser = sykmelding.diagnose.bidiagnoser
     ? sykmelding.diagnose.bidiagnoser
@@ -61,6 +59,4 @@ export const GenerellSykmeldingInfo = ({
       ]}
     </div>
   );
-};
-
-export default GenerellSykmeldingInfo;
+}
