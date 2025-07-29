@@ -2,7 +2,7 @@ import React from "react";
 import Side from "@/components/side/Side";
 import SideLaster from "@/components/side/SideLaster";
 import Sidetopp from "@/components/side/Sidetopp";
-import { MotehistorikkPanel } from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
+import MotehistorikkPanel from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
 import DialogmoteunntakSkjema from "@/components/dialogmoteunntak/DialogmoteunntakSkjema";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import * as Tredelt from "@/components/side/TredeltSide";
@@ -14,7 +14,7 @@ const texts = {
   pageTitle: "Unntak fra dialogmøte",
 };
 
-const DialogmoteunntakSkjemaContainer = () => {
+export default function DialogmoteunntakSkjemaContainer() {
   const { historiskeDialogmoter } = useDialogmoterQuery();
   const { data: dialogmoteunntak } = useDialogmoteunntakQuery();
 
@@ -38,6 +38,4 @@ const DialogmoteunntakSkjemaContainer = () => {
       </SideLaster>
     </Side>
   );
-};
-
-export default DialogmoteunntakSkjemaContainer;
+}

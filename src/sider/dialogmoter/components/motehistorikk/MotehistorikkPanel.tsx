@@ -18,7 +18,7 @@ interface Props {
   historiskeMoter: DialogmoteDTO[];
 }
 
-export function MotehistorikkPanel({
+export default function MotehistorikkPanel({
   historiskeMoter,
   dialogmoteunntak,
 }: Props) {

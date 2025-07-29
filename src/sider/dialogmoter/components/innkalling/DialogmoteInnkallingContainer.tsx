@@ -10,7 +10,7 @@ import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import * as Tredelt from "@/components/side/TredeltSide";
-import { MotehistorikkPanel } from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
+import MotehistorikkPanel from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
 import { useDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { MalformProvider } from "@/context/malform/MalformContext";
@@ -35,7 +35,7 @@ export const DialogmoteInnkallingSide = (): ReactElement => {
   );
 };
 
-const DialogmoteInnkallingContainer = (): ReactElement => {
+export default function DialogmoteInnkallingContainer(): ReactElement {
   const { isLoading: henterLedere, isError: hentingLedereFeilet } =
     useLedereQuery();
   const { aktivtDialogmote, historiskeDialogmoter } = useDialogmoterQuery();
@@ -74,6 +74,4 @@ const DialogmoteInnkallingContainer = (): ReactElement => {
       </SideLaster>
     </Side>
   );
-};
-
-export default DialogmoteInnkallingContainer;
+}

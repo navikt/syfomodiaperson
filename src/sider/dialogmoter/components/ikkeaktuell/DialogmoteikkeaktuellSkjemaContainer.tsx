@@ -3,7 +3,7 @@ import Side from "@/components/side/Side";
 import SideLaster from "@/components/side/SideLaster";
 import Sidetopp from "@/components/side/Sidetopp";
 import * as Tredelt from "@/components/side/TredeltSide";
-import { MotehistorikkPanel } from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
+import MotehistorikkPanel from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
 import DialogmoteIkkeAktuellSkjema from "@/sider/dialogmoter/components/ikkeaktuell/DialogmoteIkkeAktuellSkjema";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
@@ -14,7 +14,7 @@ const texts = {
   pageTitle: "Ikke aktuell",
 };
 
-const DialogmoteikkeaktuellSkjemaContainer = () => {
+export default function DialogmoteikkeaktuellSkjemaContainer() {
   const { historiskeDialogmoter } = useDialogmoterQuery();
   const { data: dialogmoteunntak } = useDialogmoteunntakQuery();
 
@@ -38,6 +38,4 @@ const DialogmoteikkeaktuellSkjemaContainer = () => {
       </SideLaster>
     </Side>
   );
-};
-
-export default DialogmoteikkeaktuellSkjemaContainer;
+}

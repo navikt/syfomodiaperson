@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { MoteIkonBlaaImage } from "../../../../../img/ImageComponents";
-import { DialogmotePanel } from "../DialogmotePanel";
+import DialogmotePanel from "../DialogmotePanel";
 import {
   DialogmoteDTO,
   DialogmoteStatus,
@@ -65,7 +65,7 @@ interface Props {
   dialogmote: DialogmoteDTO;
 }
 
-export const DialogmoteMoteStatusPanel = ({ dialogmote }: Props) => {
+export default function DialogmoteMoteStatusPanel({ dialogmote }: Props) {
   const { arbeidsgiver } = dialogmote;
   const { currentLedere } = useLedereQuery();
 
@@ -133,4 +133,4 @@ export const DialogmoteMoteStatusPanel = ({ dialogmote }: Props) => {
       </div>
     </DialogmotePanel>
   );
-};
+}

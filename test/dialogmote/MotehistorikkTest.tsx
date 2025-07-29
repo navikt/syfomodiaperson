@@ -5,7 +5,7 @@ import {
   DialogmoteStatus,
   MotedeltakerVarselType,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
-import { MotehistorikkPanel } from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
+import MotehistorikkPanel from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
 import { QueryClientProvider } from "@tanstack/react-query";
 import {
   ENHET_GRUNERLOKKA,

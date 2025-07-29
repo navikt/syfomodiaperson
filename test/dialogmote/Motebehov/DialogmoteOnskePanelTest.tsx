@@ -20,7 +20,7 @@ import { addDays, addWeeks, toDatePrettyPrint } from "@/utils/datoUtils";
 import { UtropstegnImage } from "../../../img/ImageComponents";
 import MotebehovKvittering from "@/sider/dialogmoter/motebehov/MotebehovKvittering";
 import BehandleMotebehovKnapp from "@/components/motebehov/BehandleMotebehovKnapp";
-import { DialogmotePanel } from "@/sider/dialogmoter/components/DialogmotePanel";
+import DialogmotePanel from "@/sider/dialogmoter/components/DialogmotePanel";
 
 let queryClient: QueryClient;
 

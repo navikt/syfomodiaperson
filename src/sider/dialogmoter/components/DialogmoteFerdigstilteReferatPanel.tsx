@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
-import { DialogmotePanel } from "@/sider/dialogmoter/components/DialogmotePanel";
+import DialogmotePanel from "@/sider/dialogmoter/components/DialogmotePanel";
 import { BlueDocumentImage } from "../../../../img/ImageComponents";
 import dayjs from "dayjs";
 import {

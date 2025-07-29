@@ -1,7 +1,7 @@
 import React from "react";
 import Sidetopp from "../../components/side/Sidetopp";
 import UtdragFraSykefravaeretPanel from "../../components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
-import { InnkallingDialogmotePanel } from "./components/innkalling/InnkallingDialogmotePanel";
+import InnkallingDialogmotePanel from "./components/innkalling/InnkallingDialogmotePanel";
 import SideLaster from "../../components/side/SideLaster";
 import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
@@ -11,14 +11,14 @@ import { useDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteun
 import * as Tredelt from "@/components/side/TredeltSide";
 import Side from "@/components/side/Side";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { MotehistorikkPanel } from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
+import MotehistorikkPanel from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
 import { MoteSvarHistorikk } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikk";
 import MotebehovHistorikk from "@/sider/dialogmoter/components/motehistorikk/MotebehovHistorikk";
 import { InfoOmTolk } from "@/sider/dialogmoter/motebehov/InfoOmTolk";
 import { UtropstegnImage } from "../../../img/ImageComponents";
 import MotebehovKvittering from "@/sider/dialogmoter/motebehov/MotebehovKvittering";
 import BehandleMotebehovKnapp from "@/components/motebehov/BehandleMotebehovKnapp";
-import { DialogmotePanel } from "@/sider/dialogmoter/components/DialogmotePanel";
+import DialogmotePanel from "@/sider/dialogmoter/components/DialogmotePanel";
 
 const texts = {
   pageTitle: "Møtelandingsside",
