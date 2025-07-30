@@ -6,7 +6,8 @@ import {
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
-import { ForhandsvisDocumentAccordionItem } from "@/sider/dialogmoter/components/motehistorikk/ForhandsvisDocumentAccordionItem";
+import ForhandsvisDocumentAccordionItem from "@/sider/dialogmoter/components/motehistorikk/ForhandsvisDocumentAccordionItem";
+import { DocumentComponentVisning } from "@/components/document/DocumentComponentVisning";
 
 const texts = {
   avlystMote: "Avlysning av møte",
@@ -29,8 +30,12 @@ export default function MoteHistorikkEvent({ mote }: Props): ReactElement {
       )?.document || [];
 
     return (
-      <ForhandsvisDocumentAccordionItem document={document}>
-        {`${texts.avlystMote} ${moteDatoTekst}`}
+      <ForhandsvisDocumentAccordionItem
+        header={`${texts.avlystMote} ${moteDatoTekst}`}
+      >
+        {document.map((component, index) => (
+          <DocumentComponentVisning key={index} documentComponent={component} />
+        ))}
       </ForhandsvisDocumentAccordionItem>
     );
   }
@@ -45,9 +50,14 @@ export default function MoteHistorikkEvent({ mote }: Props): ReactElement {
         return (
           <ForhandsvisDocumentAccordionItem
             key={index}
-            document={referat.document}
+            header={`${texts.avholdtMote} ${moteDatoTekst}${suffix}`}
           >
-            {`${texts.avholdtMote} ${moteDatoTekst}${suffix}`}
+            {referat.document.map((component, index) => (
+              <DocumentComponentVisning
+                key={index}
+                documentComponent={component}
+              />
+            ))}
           </ForhandsvisDocumentAccordionItem>
         );
       })}

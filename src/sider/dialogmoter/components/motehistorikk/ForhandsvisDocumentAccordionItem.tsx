@@ -1,25 +1,19 @@
-import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
-import React, { ReactElement } from "react";
+import React, { ReactElement, ReactNode } from "react";
 import { Accordion } from "@navikt/ds-react";
-import { DocumentComponentVisning } from "@/components/document/DocumentComponentVisning";
 
 interface Props {
-  document: DocumentComponentDto[];
-  children: string;
+  header: string;
+  children: ReactNode;
 }
 
-export function ForhandsvisDocumentAccordionItem({
-  document,
+export default function ForhandsvisDocumentAccordionItem({
+  header,
   children,
 }: Props): ReactElement {
   return (
     <Accordion.Item>
-      <Accordion.Header>{children}</Accordion.Header>
-      <Accordion.Content>
-        {document.map((component, index) => (
-          <DocumentComponentVisning key={index} documentComponent={component} />
-        ))}
-      </Accordion.Content>
+      <Accordion.Header>{header}</Accordion.Header>
+      <Accordion.Content>{children}</Accordion.Content>
     </Accordion.Item>
   );
 }

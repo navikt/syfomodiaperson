@@ -10,7 +10,8 @@ import {
   DocumentComponentType,
 } from "@/data/documentcomponent/documentComponentTypes";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
-import { ForhandsvisDocumentAccordionItem } from "@/sider/dialogmoter/components/motehistorikk/ForhandsvisDocumentAccordionItem";
+import ForhandsvisDocumentAccordionItem from "@/sider/dialogmoter/components/motehistorikk/ForhandsvisDocumentAccordionItem";
+import { DocumentComponentVisning } from "@/components/document/DocumentComponentVisning";
 
 const texts = {
   unntakLenke: "Unntak fra dialogmøte",
@@ -65,8 +66,12 @@ export function MoteHistorikkUnntak({ unntak }: Props): ReactElement {
     veilederinfo?.fulltNavn()
   );
   return (
-    <ForhandsvisDocumentAccordionItem document={unntakDocument}>
-      {unntakLenkeText(unntak.createdAt)}
+    <ForhandsvisDocumentAccordionItem
+      header={unntakLenkeText(unntak.createdAt)}
+    >
+      {unntakDocument.map((component, index) => (
+        <DocumentComponentVisning key={index} documentComponent={component} />
+      ))}
     </ForhandsvisDocumentAccordionItem>
   );
 }
