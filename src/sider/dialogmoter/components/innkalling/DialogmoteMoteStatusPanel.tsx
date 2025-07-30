@@ -22,7 +22,7 @@ import {
   isPersonoppgaveCompletedAfterLastMoteEndring,
 } from "@/utils/dialogmoteUtils";
 import { BodyShort, Button } from "@navikt/ds-react";
-import { DialogmoteVeilederInfo } from "@/sider/dialogmoter/components/DialogmoteVeilederInfo";
+import DialogmoteVeilederInfo from "@/sider/dialogmoter/components/DialogmoteVeilederInfo";
 import { DialogmoteStedInfo } from "@/sider/dialogmoter/components/DialogmoteStedInfo";
 
 const texts = {
@@ -37,7 +37,7 @@ const texts = {
   moteTid: "Møtetidspunkt",
 };
 
-const Subtitle = (dialogmote: DialogmoteDTO): ReactNode => {
+function Subtitle(dialogmote: DialogmoteDTO): ReactNode {
   const moteDatoTid = tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid);
 
   return (
@@ -47,9 +47,9 @@ const Subtitle = (dialogmote: DialogmoteDTO): ReactNode => {
       <DialogmoteVeilederInfo dialogmote={dialogmote} />
     </>
   );
-};
+}
 
-const headerText = (dialogmote: DialogmoteDTO): string => {
+function headerText(dialogmote: DialogmoteDTO): string {
   const moteDatoTid = dayjs(dialogmote.tid);
   const today = dayjs(new Date());
   if (moteDatoTid.isBefore(today, "date")) {
@@ -59,7 +59,7 @@ const headerText = (dialogmote: DialogmoteDTO): string => {
   return dialogmote.status === DialogmoteStatus.NYTT_TID_STED
     ? texts.headerEndring
     : texts.headerInnkalling;
-};
+}
 
 interface Props {
   dialogmote: DialogmoteDTO;

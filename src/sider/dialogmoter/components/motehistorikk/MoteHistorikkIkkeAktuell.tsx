@@ -6,9 +6,9 @@ import {
   DocumentComponentType,
 } from "@/data/documentcomponent/documentComponentTypes";
 import { ikkeAktuellArsakTexts } from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
-import ForhandsvisDocumentAccordionItem from "@/sider/dialogmoter/components/motehistorikk/ForhandsvisDocumentAccordionItem";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { DocumentComponentVisning } from "@/components/document/DocumentComponentVisning";
+import { Accordion } from "@navikt/ds-react";
 
 const texts = {
   ikkeAktuellLenke: "Ikke aktuell for dialogmøte",
@@ -64,15 +64,18 @@ export default function MoteHistorikkIkkeAktuell({
   );
 
   return (
-    <ForhandsvisDocumentAccordionItem
-      header={ikkeAktuellLenkeText(ikkeAktuellVurdering.createdAt)}
-    >
-      {createIkkeAktuellDocument(
-        ikkeAktuellVurdering,
-        veilederinfo?.fulltNavn()
-      ).map((component, index) => (
-        <DocumentComponentVisning key={index} documentComponent={component} />
-      ))}
-    </ForhandsvisDocumentAccordionItem>
+    <>
+      <Accordion.Header>
+        {ikkeAktuellLenkeText(ikkeAktuellVurdering.createdAt)}
+      </Accordion.Header>
+      <Accordion.Content>
+        {createIkkeAktuellDocument(
+          ikkeAktuellVurdering,
+          veilederinfo?.fulltNavn()
+        ).map((component, index) => (
+          <DocumentComponentVisning key={index} documentComponent={component} />
+        ))}
+      </Accordion.Content>
+    </>
   );
 }

@@ -8,7 +8,7 @@ import * as Amplitude from "@/utils/amplitude";
 import { EventType } from "@/utils/amplitude";
 import { Accordion, HStack } from "@navikt/ds-react";
 import { DialogmoteStedInfo } from "@/sider/dialogmoter/components/DialogmoteStedInfo";
-import { DialogmoteVeilederInfo } from "@/sider/dialogmoter/components/DialogmoteVeilederInfo";
+import DialogmoteVeilederInfo from "@/sider/dialogmoter/components/DialogmoteVeilederInfo";
 import { MoteSvarHistorikkInnkalling } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkInnkalling";
 import { MoteSvarHistorikkEndringer } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkEndringer";
 

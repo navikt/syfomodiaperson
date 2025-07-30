@@ -1,11 +1,11 @@
 import { ISDIALOGMOTEKANDIDAT_ROOT } from "@/apiConstants";
-import { dialogmotekandidatMock } from "./dialogmotekandidatMock";
 import { http, HttpResponse } from "msw";
 import { VEILEDER_IDENT_DEFAULT } from "@/mocks/common/mockConstants";
 import {
   dialogmoteikkeaktuellMock,
   dialogmoteunntakMock,
-} from "@/mocks/isdialogmotekandidat/dialogmoteunntakMock";
+} from "@/mocks/isdialogmotekandidat/dialogmotebehovvurderingerMock";
+import { dialogmotekandidatMock } from "@/mocks/isdialogmotekandidat/dialogmotekandidatMock";
 
 export const mockIsdialogmotekandidat = [
   http.get(`${ISDIALOGMOTEKANDIDAT_ROOT}/kandidat/personident`, () => {

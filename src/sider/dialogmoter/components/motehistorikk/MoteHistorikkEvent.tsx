@@ -6,8 +6,8 @@ import {
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
-import ForhandsvisDocumentAccordionItem from "@/sider/dialogmoter/components/motehistorikk/ForhandsvisDocumentAccordionItem";
 import { DocumentComponentVisning } from "@/components/document/DocumentComponentVisning";
+import { Accordion } from "@navikt/ds-react";
 
 const texts = {
   avlystMote: "Avlysning av møte",
@@ -30,35 +30,39 @@ export default function MoteHistorikkEvent({ mote }: Props): ReactElement {
       )?.document || [];
 
     return (
-      <ForhandsvisDocumentAccordionItem
-        header={`${texts.avlystMote} ${moteDatoTekst}`}
-      >
-        {document.map((component, index) => (
-          <DocumentComponentVisning key={index} documentComponent={component} />
-        ))}
-      </ForhandsvisDocumentAccordionItem>
+      <>
+        <Accordion.Header>{`${texts.avlystMote} ${moteDatoTekst}`}</Accordion.Header>
+        <Accordion.Content>
+          {document.map((component, index) => (
+            <DocumentComponentVisning
+              key={index}
+              documentComponent={component}
+            />
+          ))}
+        </Accordion.Content>
+      </>
     );
   }
 
   return (
     <>
-      {ferdigstilteReferat.map((referat, index) => {
+      {ferdigstilteReferat.map((referat) => {
         const suffix = referat.endring
           ? ` - Endret ${tilDatoMedManedNavn(referat.updatedAt)}`
           : "";
 
         return (
-          <ForhandsvisDocumentAccordionItem
-            key={index}
-            header={`${texts.avholdtMote} ${moteDatoTekst}${suffix}`}
-          >
-            {referat.document.map((component, index) => (
-              <DocumentComponentVisning
-                key={index}
-                documentComponent={component}
-              />
-            ))}
-          </ForhandsvisDocumentAccordionItem>
+          <>
+            <Accordion.Header>{`${texts.avholdtMote} ${moteDatoTekst}${suffix}`}</Accordion.Header>
+            <Accordion.Content>
+              {referat.document.map((component, index) => (
+                <DocumentComponentVisning
+                  key={index}
+                  documentComponent={component}
+                />
+              ))}
+            </Accordion.Content>
+          </>
         );
       })}
     </>

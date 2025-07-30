@@ -10,10 +10,16 @@ import {
 } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 import { IkkeAktuellArsak } from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
 
-const createDialogmoteunntak = (arsak: UnntakArsak, beskrivelse?: string) => {
+const oneDayMillis = 1000 * 60 * 60 * 24;
+
+const createDialogmoteunntak = (
+  arsak: UnntakArsak,
+  createdAt: Date,
+  beskrivelse?: string
+) => {
   return {
     uuid: generateUUID(),
-    createdAt: new Date().toDateString(),
+    createdAt: createdAt.toDateString(),
     createdBy: VEILEDER_DEFAULT.ident,
     personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
     arsak,
@@ -23,10 +29,12 @@ const createDialogmoteunntak = (arsak: UnntakArsak, beskrivelse?: string) => {
 
 export const dialogmoteunntakMedBeskrivelse = createDialogmoteunntak(
   DeprecatedUnntakArsak.ARBEIDSFORHOLD_OPPHORT,
+  new Date(Date.now() - oneDayMillis),
   "Arbeidstaker jobber ikke lenger hos arbeidsgiver."
 );
 export const dialogmoteunntakUtenBeskrivelse = createDialogmoteunntak(
   ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
+  new Date(Date.now() + oneDayMillis),
   undefined
 );
 
@@ -37,11 +45,12 @@ export const dialogmoteunntakMock = [
 
 const createDialogmoteikkeaktuell = (
   arsak: IkkeAktuellArsak,
+  createdAt: Date,
   beskrivelse?: string
 ) => {
   return {
     uuid: generateUUID(),
-    createdAt: new Date().toDateString(),
+    createdAt: createdAt.toDateString(),
     createdBy: VEILEDER_DEFAULT.ident,
     personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
     arsak,
@@ -52,10 +61,12 @@ const createDialogmoteikkeaktuell = (
 export const dialogmoteikkeaktuellMock = [
   createDialogmoteikkeaktuell(
     IkkeAktuellArsak.ARBEIDSTAKER_AAP,
+    new Date(Date.now() - oneDayMillis),
     "Arbeidstaker mottar AAP."
   ),
   createDialogmoteikkeaktuell(
     IkkeAktuellArsak.ARBEIDSTAKER_DOD,
+    new Date(Date.now() + oneDayMillis),
     "Arbeidstaker er død."
   ),
 ];

@@ -18,7 +18,7 @@ import { createFerdigstiltReferat } from "./testData";
 import {
   dialogmoteunntakMedBeskrivelse,
   dialogmoteunntakUtenBeskrivelse,
-} from "@/mocks/isdialogmotekandidat/dialogmoteunntakMock";
+} from "@/mocks/isdialogmotekandidat/dialogmotebehovvurderingerMock";
 import { unntakLenkeText } from "@/sider/dialogmoter/components/motehistorikk/MoteHistorikkUnntak";
 import { testQueryClient } from "../testQueryClient";
 import { UnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";

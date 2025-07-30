@@ -28,7 +28,7 @@ export const mockIsdialogmote = [
   }),
 
   http.get(`${ISDIALOGMOTE_ROOT}/dialogmote/personident`, () => {
-    return HttpResponse.json([]);
+    return HttpResponse.json(mockedDialogmoter);
   }),
 
   http.get(

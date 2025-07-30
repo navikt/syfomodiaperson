@@ -13,7 +13,53 @@ const texts = {
   subtitle:
     "Oversikt over tidligere dialogmøter som ble innkalt i Modia (inkluderer ikke historikk fra Arena).",
   ingenHistoriskeMoter: "Ingen tidligere møtehistorikk",
+  avlystMote: "Avlysning av møte",
+  avholdtMote: "Referat fra møte",
 };
+
+interface HistorikkEvent {
+  eventDate: Date;
+  content: React.ReactNode;
+}
+
+function createHistorikkEvents(
+  historiskeMoter: DialogmoteDTO[],
+  dialogmoteunntak: UnntakDTO[],
+  dialogmoteikkeaktuell: IkkeAktuellVurdering[]
+): HistorikkEvent[] {
+  return [
+    ...dialogmoteHistorikkEvents(historiskeMoter),
+    ...dialogmoteUnntakEvents(dialogmoteunntak),
+    ...dialogmoteIkkeAktuellEvents(dialogmoteikkeaktuell),
+  ].sort((a, b) => b.eventDate.getTime() - a.eventDate.getTime());
+}
+
+function dialogmoteHistorikkEvents(
+  historiskeMoter: DialogmoteDTO[]
+): HistorikkEvent[] {
+  return historiskeMoter.map((mote) => ({
+    eventDate: new Date(mote.tid),
+    content: <MoteHistorikkEvent mote={mote} />,
+  }));
+}
+
+function dialogmoteUnntakEvents(
+  dialogmoteunntak: UnntakDTO[]
+): HistorikkEvent[] {
+  return dialogmoteunntak.map((unntak) => ({
+    eventDate: new Date(unntak.createdAt),
+    content: <MoteHistorikkUnntak unntak={unntak} />,
+  }));
+}
+
+function dialogmoteIkkeAktuellEvents(
+  dialogmoteikkeaktuell: IkkeAktuellVurdering[]
+): HistorikkEvent[] {
+  return dialogmoteikkeaktuell.map((ikkeaktuell) => ({
+    eventDate: new Date(ikkeaktuell.createdAt),
+    content: <MoteHistorikkIkkeAktuell ikkeAktuellVurdering={ikkeaktuell} />,
+  }));
+}
 
 interface Props {
   historiskeMoter: DialogmoteDTO[];
@@ -26,8 +72,11 @@ export default function MotehistorikkPanel({
   dialogmoteunntak,
   dialogmoteikkeaktuell,
 }: Props) {
-  const hasMotehistorikk =
-    historiskeMoter.length > 0 || dialogmoteunntak.length > 0;
+  const historikkEvents = createHistorikkEvents(
+    historiskeMoter,
+    dialogmoteunntak,
+    dialogmoteikkeaktuell
+  );
 
   return (
     <Box background="surface-default" padding="6">
@@ -35,19 +84,10 @@ export default function MotehistorikkPanel({
         title={texts.header}
         subtitle={texts.subtitle}
       />
-      {hasMotehistorikk ? (
+      {historikkEvents.length > 0 ? (
         <Accordion>
-          {historiskeMoter.map((mote, index) => (
-            <MoteHistorikkEvent key={index} mote={mote} />
-          ))}
-          {dialogmoteunntak.map((unntak, index) => (
-            <MoteHistorikkUnntak key={index} unntak={unntak} />
-          ))}
-          {dialogmoteikkeaktuell.map((ikkeaktuell, index) => (
-            <MoteHistorikkIkkeAktuell
-              key={index}
-              ikkeAktuellVurdering={ikkeaktuell}
-            />
+          {historikkEvents.map((event, index) => (
+            <Accordion.Item key={index}>{event.content}</Accordion.Item>
           ))}
         </Accordion>
       ) : (
