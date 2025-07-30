@@ -8,6 +8,7 @@ import {
   UnntakArsak,
   ValidUnntakArsak,
 } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
+import { IkkeAktuellArsak } from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
 
 const createDialogmoteunntak = (arsak: UnntakArsak, beskrivelse?: string) => {
   return {
@@ -32,4 +33,29 @@ export const dialogmoteunntakUtenBeskrivelse = createDialogmoteunntak(
 export const dialogmoteunntakMock = [
   dialogmoteunntakMedBeskrivelse,
   dialogmoteunntakUtenBeskrivelse,
+];
+
+const createDialogmoteikkeaktuell = (
+  arsak: IkkeAktuellArsak,
+  beskrivelse?: string
+) => {
+  return {
+    uuid: generateUUID(),
+    createdAt: new Date().toDateString(),
+    createdBy: VEILEDER_DEFAULT.ident,
+    personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
+    arsak,
+    beskrivelse,
+  };
+};
+
+export const dialogmoteikkeaktuellMock = [
+  createDialogmoteikkeaktuell(
+    IkkeAktuellArsak.ARBEIDSTAKER_AAP,
+    "Arbeidstaker mottar AAP."
+  ),
+  createDialogmoteikkeaktuell(
+    IkkeAktuellArsak.ARBEIDSTAKER_DOD,
+    "Arbeidstaker er død."
+  ),
 ];

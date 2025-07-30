@@ -27,6 +27,7 @@ import {
   MotebehovVeilederDTO,
 } from "@/data/motebehov/types/motebehovTypes";
 import { defaultFormValue } from "@/mocks/syfomotebehov/motebehovMock";
+import { dialogmotekandidatQueryKeys } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: any;
@@ -79,6 +80,10 @@ describe("MotelandingssideSide", () => {
     );
     queryClient.setQueryData(ledereQueryKeys.ledere(fnr), () => LEDERE_DEFAULT);
     queryClient.setQueryData(dialogmoteunntakQueryKeys.unntak(fnr), () => []);
+    queryClient.setQueryData(
+      dialogmotekandidatQueryKeys.ikkeAktuellVurdering(fnr),
+      () => []
+    );
   });
 
   it("Skal vise AppSpinner når henter data", () => {

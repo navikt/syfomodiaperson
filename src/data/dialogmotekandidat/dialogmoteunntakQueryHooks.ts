@@ -8,7 +8,7 @@ export const dialogmoteunntakQueryKeys = {
   unntak: (personident: string) => ["dialogmoteunntak", personident],
 };
 
-export const useDialogmoteunntakQuery = () => {
+export const useGetDialogmoteunntakQuery = () => {
   const personident = useValgtPersonident();
   const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/unntak/personident`;
   const fetchUnntak = () => get<UnntakDTO[]>(path, personident);

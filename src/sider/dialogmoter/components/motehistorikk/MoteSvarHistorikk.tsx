@@ -14,7 +14,7 @@ interface Props {
   historiskeMoter: DialogmoteDTO[];
 }
 
-export function MoteSvarHistorikk({ historiskeMoter }: Props) {
+export default function MoteSvarHistorikk({ historiskeMoter }: Props) {
   const hasMoteHistorikk = historiskeMoter.length > 0;
 
   return (

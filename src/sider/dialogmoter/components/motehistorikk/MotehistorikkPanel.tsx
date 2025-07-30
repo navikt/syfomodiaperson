@@ -5,6 +5,8 @@ import { MoteHistorikkUnntak } from "@/sider/dialogmoter/components/motehistorik
 import { Accordion, BodyShort, Box } from "@navikt/ds-react";
 import MoteHistorikkEvent from "@/sider/dialogmoter/components/motehistorikk/MoteHistorikkEvent";
 import DialogmoteHistorikkHeader from "@/sider/dialogmoter/components/motehistorikk/DialogmoteHistorikkHeader";
+import { IkkeAktuellVurdering } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
+import MoteHistorikkIkkeAktuell from "@/sider/dialogmoter/components/motehistorikk/MoteHistorikkIkkeAktuell";
 
 const texts = {
   header: "Møtehistorikk",
@@ -14,13 +16,15 @@ const texts = {
 };
 
 interface Props {
-  dialogmoteunntak: UnntakDTO[];
   historiskeMoter: DialogmoteDTO[];
+  dialogmoteunntak: UnntakDTO[];
+  dialogmoteikkeaktuell: IkkeAktuellVurdering[];
 }
 
 export default function MotehistorikkPanel({
   historiskeMoter,
   dialogmoteunntak,
+  dialogmoteikkeaktuell,
 }: Props) {
   const hasMotehistorikk =
     historiskeMoter.length > 0 || dialogmoteunntak.length > 0;
@@ -38,6 +42,12 @@ export default function MotehistorikkPanel({
           ))}
           {dialogmoteunntak.map((unntak, index) => (
             <MoteHistorikkUnntak key={index} unntak={unntak} />
+          ))}
+          {dialogmoteikkeaktuell.map((ikkeaktuell, index) => (
+            <MoteHistorikkIkkeAktuell
+              key={index}
+              ikkeAktuellVurdering={ikkeaktuell}
+            />
           ))}
         </Accordion>
       ) : (

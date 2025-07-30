@@ -23,6 +23,7 @@ import { unntakLenkeText } from "@/sider/dialogmoter/components/motehistorikk/Mo
 import { testQueryClient } from "../testQueryClient";
 import { UnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 import { veilederinfoQueryKeys } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { IkkeAktuellVurdering } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
 
 let queryClient: any;
 const ferdigstiltMoteTid = "2021-01-15T11:52:13.539843";
@@ -114,12 +115,14 @@ const dialogmoter: DialogmoteDTO[] = [ferdigstiltMote, avlystMote];
 
 const renderMotehistorikk = (
   dialogmoteunntak: UnntakDTO[],
+  dialogmoteikkeaktuell: IkkeAktuellVurdering[],
   historiskeMoter: DialogmoteDTO[]
 ) => {
   render(
     <QueryClientProvider client={queryClient}>
       <MotehistorikkPanel
         dialogmoteunntak={dialogmoteunntak}
+        dialogmoteikkeaktuell={dialogmoteikkeaktuell}
         historiskeMoter={historiskeMoter}
       />
     </QueryClientProvider>
@@ -131,7 +134,7 @@ describe("Historiske dialogmøter", () => {
     queryClient = testQueryClient();
   });
   it("Fremviser avholdte og avlyste dialogmøter", () => {
-    renderMotehistorikk([], dialogmoter);
+    renderMotehistorikk([], [], dialogmoter);
 
     expect(screen.getByText("Referat fra møte 15. januar 2021")).to.exist;
     expect(screen.getByText("Avlysning av møte 22. mars 2020")).to.exist;
@@ -146,7 +149,7 @@ describe("Historiske dialogmøter", () => {
         ],
       },
     ];
-    renderMotehistorikk([], historiskeMoter);
+    renderMotehistorikk([], [], historiskeMoter);
 
     const buttons = screen.getAllByRole("button");
     expect(buttons).to.have.length(2);
@@ -168,7 +171,7 @@ describe("Historiske dialogmøter", () => {
         createdAt: new Date("2021-05-21T12:56:26.271381"),
       },
     ];
-    renderMotehistorikk(dialogmoteunntakListe, []);
+    renderMotehistorikk(dialogmoteunntakListe, [], []);
 
     dialogmoteunntakListe.forEach((dialogmoteunntak) => {
       expect(screen.getByText(unntakLenkeText(dialogmoteunntak.createdAt))).to
@@ -186,7 +189,7 @@ describe("Historiske dialogmøter", () => {
       veilederinfoQueryKeys.veilederinfoByIdent(VEILEDER_IDENT_DEFAULT),
       () => VEILEDER_DEFAULT
     );
-    renderMotehistorikk(dialogmoteunntakListe, []);
+    renderMotehistorikk(dialogmoteunntakListe, [], []);
 
     expect(screen.getByText("Vurdert av")).to.exist;
     expect(screen.getByText("Vetle Veileder (Z990000)")).to.exist;

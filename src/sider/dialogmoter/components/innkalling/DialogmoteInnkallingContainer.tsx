@@ -11,11 +11,12 @@ import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/pe
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import * as Tredelt from "@/components/side/TredeltSide";
 import MotehistorikkPanel from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
-import { useDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
+import { useGetDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { MalformProvider } from "@/context/malform/MalformContext";
 import { DialogmoteInnkallingSkjema } from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
 import MotebehovHistorikk from "@/sider/dialogmoter/components/motehistorikk/MotebehovHistorikk";
+import { useGetDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
 
 const texts = {
   title: "Innkalling til dialogmøte",
@@ -39,7 +40,8 @@ export default function DialogmoteInnkallingContainer(): ReactElement {
   const { isLoading: henterLedere, isError: hentingLedereFeilet } =
     useLedereQuery();
   const { aktivtDialogmote, historiskeDialogmoter } = useDialogmoterQuery();
-  const { data: dialogmoteunntak } = useDialogmoteunntakQuery();
+  const { data: dialogmoteunntak } = useGetDialogmoteunntakQuery();
+  const { data: dialogmoteikkeaktuell } = useGetDialogmoteIkkeAktuell();
   const {
     isLoading: henterOppfolgingstilfeller,
     isError: hentingOppfolgingstilfellerFeilet,
@@ -67,6 +69,7 @@ export default function DialogmoteInnkallingContainer(): ReactElement {
             <MotehistorikkPanel
               historiskeMoter={historiskeDialogmoter}
               dialogmoteunntak={dialogmoteunntak}
+              dialogmoteikkeaktuell={dialogmoteikkeaktuell}
             />
             <MotebehovHistorikk />
           </Tredelt.SecondColumn>

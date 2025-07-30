@@ -8,7 +8,7 @@ import {
   ikkeAktuellArsakTexts,
 } from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { useSettDialogmoteIkkeAktuell } from "@/data/dialogmotekandidat/useSettDialogmoteIkkeAktuell";
+import { useSettDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useSettDialogmoteIkkeAktuell";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {

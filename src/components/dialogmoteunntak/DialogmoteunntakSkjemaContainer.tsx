@@ -7,8 +7,9 @@ import DialogmoteunntakSkjema from "@/components/dialogmoteunntak/Dialogmoteunnt
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import * as Tredelt from "@/components/side/TredeltSide";
 import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
-import { useDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
+import { useGetDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
 import { MalformProvider } from "@/context/malform/MalformContext";
+import { useGetDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
 
 const texts = {
   pageTitle: "Unntak fra dialogmøte",
@@ -16,7 +17,8 @@ const texts = {
 
 export default function DialogmoteunntakSkjemaContainer() {
   const { historiskeDialogmoter } = useDialogmoterQuery();
-  const { data: dialogmoteunntak } = useDialogmoteunntakQuery();
+  const { data: dialogmoteunntak } = useGetDialogmoteunntakQuery();
+  const { data: dialogmoteikkeaktuell } = useGetDialogmoteIkkeAktuell();
 
   return (
     <Side tittel={texts.pageTitle} aktivtMenypunkt={Menypunkter.DIALOGMOTE}>
@@ -32,6 +34,7 @@ export default function DialogmoteunntakSkjemaContainer() {
             <MotehistorikkPanel
               historiskeMoter={historiskeDialogmoter}
               dialogmoteunntak={dialogmoteunntak}
+              dialogmoteikkeaktuell={dialogmoteikkeaktuell}
             />
           </Tredelt.SecondColumn>
         </Tredelt.Container>
