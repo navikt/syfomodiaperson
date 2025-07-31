@@ -7,7 +7,7 @@ import MotehistorikkPanel from "@/sider/dialogmoter/components/motehistorikk/Mot
 import DialogmoteIkkeAktuellSkjema from "@/sider/dialogmoter/components/ikkeaktuell/DialogmoteIkkeAktuellSkjema";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
-import { useGetDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
+import { useGetDialogmoteunntakQuery } from "@/data/dialogmotekandidat/useGetDialogmoteunntakQuery";
 import { MalformProvider } from "@/context/malform/MalformContext";
 import { useGetDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
 

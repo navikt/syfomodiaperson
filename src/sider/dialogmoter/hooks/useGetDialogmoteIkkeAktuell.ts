@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/utils";
 import { IkkeAktuellArsak } from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
 
-export const dialogmotekandidatQueryKeys = {
+export const dialogmoteIkkeAktuellQueryKeys = {
   ikkeAktuellVurdering: (personident: string) => [
     "dialogmotekandidat-ikkeaktuell",
     personident,
@@ -18,7 +18,7 @@ export function useGetDialogmoteIkkeAktuell() {
   const fetchIkkeAktuell = () => get<IkkeAktuellVurdering[]>(path, personident);
 
   const query = useQuery({
-    queryKey: dialogmotekandidatQueryKeys.ikkeAktuellVurdering(personident),
+    queryKey: dialogmoteIkkeAktuellQueryKeys.ikkeAktuellVurdering(personident),
     queryFn: fetchIkkeAktuell,
     enabled: !!personident,
     staleTime: minutesToMillis(5),

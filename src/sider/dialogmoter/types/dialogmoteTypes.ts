@@ -157,3 +157,15 @@ export interface DialogmoteDTO {
   readonly videoLink?: string;
   readonly referatList: ReferatDTO[];
 }
+
+export function getDialogmoteReferat(dialogmote: DialogmoteDTO) {
+  const referatList = dialogmote?.referatList;
+  const ferdigstilte = referatList.filter((referat) => referat.ferdigstilt);
+  return {
+    latestReferat: referatList[0],
+    ferdigstilteReferatList: ferdigstilte.map((referat, index) => ({
+      referat,
+      isEndretReferat: index !== ferdigstilte.length - 1,
+    })),
+  };
+}

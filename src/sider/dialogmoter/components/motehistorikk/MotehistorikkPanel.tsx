@@ -1,20 +1,23 @@
 import React from "react";
-import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
+import {
+  DialogmoteDTO,
+  DialogmoteStatus,
+  getDialogmoteReferat,
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { UnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 import { MoteHistorikkUnntak } from "@/sider/dialogmoter/components/motehistorikk/MoteHistorikkUnntak";
 import { Accordion, BodyShort, Box } from "@navikt/ds-react";
-import MoteHistorikkEvent from "@/sider/dialogmoter/components/motehistorikk/MoteHistorikkEvent";
 import DialogmoteHistorikkHeader from "@/sider/dialogmoter/components/motehistorikk/DialogmoteHistorikkHeader";
 import { IkkeAktuellVurdering } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
 import MoteHistorikkIkkeAktuell from "@/sider/dialogmoter/components/motehistorikk/MoteHistorikkIkkeAktuell";
+import AvlystMoteHistorikkEvent from "@/sider/dialogmoter/components/motehistorikk/AvlystMoteHistorikkEvent";
+import ReferatFraMoteHistorikkEvent from "@/sider/dialogmoter/components/motehistorikk/ReferatFraMoteHistorikkEvent";
 
 const texts = {
   header: "Møtehistorikk",
   subtitle:
     "Oversikt over tidligere dialogmøter som ble innkalt i Modia (inkluderer ikke historikk fra Arena).",
   ingenHistoriskeMoter: "Ingen tidligere møtehistorikk",
-  avlystMote: "Avlysning av møte",
-  avholdtMote: "Referat fra møte",
 };
 
 interface HistorikkEvent {
@@ -27,20 +30,50 @@ function createHistorikkEvents(
   dialogmoteunntak: UnntakDTO[],
   dialogmoteikkeaktuell: IkkeAktuellVurdering[]
 ): HistorikkEvent[] {
+  const avlysteMoter = historiskeMoter.filter(
+    (mote) => mote.status === DialogmoteStatus.AVLYST
+  );
+  const moterMedReferat = historiskeMoter.filter(
+    (mote) => mote.referatList.length > 0
+  );
   return [
-    ...dialogmoteHistorikkEvents(historiskeMoter),
+    ...avlystDialogmoteHistorikkEvents(avlysteMoter),
+    ...referatHistorikkEvents(moterMedReferat),
     ...dialogmoteUnntakEvents(dialogmoteunntak),
     ...dialogmoteIkkeAktuellEvents(dialogmoteikkeaktuell),
   ].sort((a, b) => b.eventDate.getTime() - a.eventDate.getTime());
 }
 
-function dialogmoteHistorikkEvents(
-  historiskeMoter: DialogmoteDTO[]
+function avlystDialogmoteHistorikkEvents(
+  avlysteMoter: DialogmoteDTO[]
 ): HistorikkEvent[] {
-  return historiskeMoter.map((mote) => ({
-    eventDate: new Date(mote.tid),
-    content: <MoteHistorikkEvent mote={mote} />,
-  }));
+  return avlysteMoter.map((mote) => {
+    return {
+      eventDate: new Date(mote.tid),
+      content: <AvlystMoteHistorikkEvent mote={mote} />,
+    };
+  });
+}
+
+function referatHistorikkEvents(
+  moterMedReferat: DialogmoteDTO[]
+): HistorikkEvent[] {
+  return moterMedReferat.flatMap((mote) =>
+    getDialogmoteReferat(mote).ferdigstilteReferatList.map(
+      ({ referat, isEndretReferat }) => {
+        return {
+          eventDate: new Date(mote.tid),
+          content: (
+            <ReferatFraMoteHistorikkEvent
+              mote={mote}
+              referat={referat}
+              isEndretReferat={isEndretReferat}
+            />
+          ),
+        };
+      }
+    )
+  );
 }
 
 function dialogmoteUnntakEvents(

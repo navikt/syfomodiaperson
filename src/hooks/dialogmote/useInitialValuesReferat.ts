@@ -1,4 +1,7 @@
-import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
+import {
+  DialogmoteDTO,
+  getDialogmoteReferat,
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { ReferatSkjemaValues } from "@/sider/dialogmoter/components/referat/Referat";
 import {
   getReferatTexts,
@@ -6,7 +9,6 @@ import {
 } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import { useMemo } from "react";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
-import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
 import { useMalform } from "@/context/malform/MalformContext";
 
 export const useInitialValuesReferat = (
@@ -18,7 +20,7 @@ export const useInitialValuesReferat = (
     arbeidsgiver: { virksomhetsnummer },
     behandler,
   } = dialogmote;
-  const { latestReferat } = useDialogmoteReferat(dialogmote);
+  const { latestReferat } = getDialogmoteReferat(dialogmote);
   const currentNarmesteLederNavn =
     getCurrentNarmesteLeder(virksomhetsnummer)?.narmesteLederNavn;
 

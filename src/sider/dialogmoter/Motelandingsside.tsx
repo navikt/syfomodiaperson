@@ -7,7 +7,7 @@ import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHo
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { DialogmoteFerdigstilteReferatPanel } from "@/sider/dialogmoter/components/DialogmoteFerdigstilteReferatPanel";
 import { DialogmoteStatus } from "@/sider/dialogmoter/types/dialogmoteTypes";
-import { useGetDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
+import { useGetDialogmoteunntakQuery } from "@/data/dialogmotekandidat/useGetDialogmoteunntakQuery";
 import * as Tredelt from "@/components/side/TredeltSide";
 import Side from "@/components/side/Side";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";

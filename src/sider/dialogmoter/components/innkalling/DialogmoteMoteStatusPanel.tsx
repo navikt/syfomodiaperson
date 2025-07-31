@@ -4,13 +4,13 @@ import DialogmotePanel from "../DialogmotePanel";
 import {
   DialogmoteDTO,
   DialogmoteStatus,
+  getDialogmoteReferat,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { DeltakereSvarInfo } from "@/sider/dialogmoter/components/DeltakereSvarInfo";
 import dayjs from "dayjs";
-import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { narmesteLederForVirksomhet } from "@/utils/ledereUtils";
 import { NoNarmesteLederAlert } from "@/sider/dialogmoter/components/innkalling/NoNarmestLederAlert";
@@ -76,7 +76,7 @@ export default function DialogmoteMoteStatusPanel({ dialogmote }: Props) {
   );
   const noNarmesteLeder = !narmesteLeder;
 
-  const { latestReferat } = useDialogmoteReferat(dialogmote);
+  const { latestReferat } = getDialogmoteReferat(dialogmote);
   const referatKnappText = !!latestReferat
     ? texts.fortsettReferat
     : texts.skrivReferat;

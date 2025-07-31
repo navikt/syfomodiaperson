@@ -1,5 +1,8 @@
 import React, { ReactElement } from "react";
-import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
+import {
+  DialogmoteDTO,
+  getDialogmoteReferat,
+} from "@/sider/dialogmoter/types/dialogmoteTypes";
 import DialogmotePanel from "@/sider/dialogmoter/components/DialogmotePanel";
 import { BlueDocumentImage } from "../../../../img/ImageComponents";
 import dayjs from "dayjs";
@@ -8,7 +11,7 @@ import {
   tilDatoMedUkedagOgManedNavnOgKlokkeslett,
   tilLesbarDatoMedArstall,
 } from "@/utils/datoUtils";
-import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
+
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { Link } from "react-router-dom";
 import { Button } from "@navikt/ds-react";
@@ -18,11 +21,11 @@ interface FerdigstilteReferatListProps {
 }
 
 const FerdigstilteReferatList = ({ mote }: FerdigstilteReferatListProps) => {
-  const { ferdigstilteReferat } = useDialogmoteReferat(mote);
+  const { ferdigstilteReferatList } = getDialogmoteReferat(mote);
   return (
     <ul>
-      {ferdigstilteReferat.map((referat, index) => {
-        const referatTekst = referat.endring ? "Endret referat" : "Referat";
+      {ferdigstilteReferatList.map(({ referat, isEndretReferat }, index) => {
+        const referatTekst = isEndretReferat ? "Endret referat" : "Referat";
         return (
           <li key={index}>
             {`${referatTekst}, sendt ${tilLesbarDatoMedArstall(
@@ -41,7 +44,7 @@ interface EndreReferatPanelProps {
 
 const EndreReferatPanel = ({ mote }: EndreReferatPanelProps): ReactElement => {
   const endreReferatFrist = getEndreReferatFrist(mote);
-  const { latestReferat } = useDialogmoteReferat(mote);
+  const { latestReferat } = getDialogmoteReferat(mote);
   return (
     <>
       <FerdigstilteReferatList mote={mote} />

@@ -7,7 +7,7 @@ import DialogmoteunntakSkjema from "@/components/dialogmoteunntak/Dialogmoteunnt
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import * as Tredelt from "@/components/side/TredeltSide";
 import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
-import { useGetDialogmoteunntakQuery } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
+import { useGetDialogmoteunntakQuery } from "@/data/dialogmotekandidat/useGetDialogmoteunntakQuery";
 import { MalformProvider } from "@/context/malform/MalformContext";
 import { useGetDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
 
