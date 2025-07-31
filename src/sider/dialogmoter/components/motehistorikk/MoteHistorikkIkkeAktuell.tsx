@@ -7,7 +7,7 @@ import {
 } from "@/data/documentcomponent/documentComponentTypes";
 import { ikkeAktuellArsakTexts } from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
-import { DocumentComponentVisning } from "@/components/document/DocumentComponentVisning";
+import DocumentComponentVisning from "@/components/document/DocumentComponentVisning";
 import { Accordion } from "@navikt/ds-react";
 
 const texts = {
@@ -16,11 +16,6 @@ const texts = {
   beskrivelseLabel: "Beskrivelse",
   vurdertAvLabel: "Vurdert av",
 };
-
-export function ikkeAktuellLenkeText(createdAt: Date): string {
-  const unntakDatoTekst = tilDatoMedManedNavn(createdAt);
-  return `${texts.ikkeAktuellLenke} ${unntakDatoTekst}`;
-}
 
 function createIkkeAktuellDocument(
   vurdering: IkkeAktuellVurdering,
@@ -66,7 +61,9 @@ export default function MoteHistorikkIkkeAktuell({
   return (
     <>
       <Accordion.Header>
-        {ikkeAktuellLenkeText(ikkeAktuellVurdering.createdAt)}
+        {`${texts.ikkeAktuellLenke} ${tilDatoMedManedNavn(
+          ikkeAktuellVurdering.createdAt
+        )}`}
       </Accordion.Header>
       <Accordion.Content>
         {createIkkeAktuellDocument(

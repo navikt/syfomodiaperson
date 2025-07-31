@@ -11,7 +11,7 @@ import {
 } from "@/data/behandlerdialog/usePaminnelseTilBehandler";
 import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 import { DocumentComponentHeaderH1 } from "@/components/document/DocumentComponentHeaderH1";
-import { DocumentComponentVisning } from "@/components/document/DocumentComponentVisning";
+import DocumentComponentVisning from "@/components/document/DocumentComponentVisning";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { CloseButton } from "@/components/CloseButton";
 import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document/useMeldingTilBehandlerDocument";

@@ -6,7 +6,7 @@ import {
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
-import { DocumentComponentVisning } from "@/components/document/DocumentComponentVisning";
+import DocumentComponentVisning from "@/components/document/DocumentComponentVisning";
 import { Accordion } from "@navikt/ds-react";
 
 const texts = {

@@ -9,8 +9,7 @@ import {
   ValidUnntakArsak,
 } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 import { IkkeAktuellArsak } from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
-
-const oneDayMillis = 1000 * 60 * 60 * 24;
+import { daysFromToday } from "../../../test/testUtils";
 
 const createDialogmoteunntak = (
   arsak: UnntakArsak,
@@ -29,12 +28,12 @@ const createDialogmoteunntak = (
 
 export const dialogmoteunntakMedBeskrivelse = createDialogmoteunntak(
   DeprecatedUnntakArsak.ARBEIDSFORHOLD_OPPHORT,
-  new Date(Date.now() - oneDayMillis),
+  daysFromToday(-1),
   "Arbeidstaker jobber ikke lenger hos arbeidsgiver."
 );
 export const dialogmoteunntakUtenBeskrivelse = createDialogmoteunntak(
   ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
-  new Date(Date.now() + oneDayMillis),
+  daysFromToday(1),
   undefined
 );
 
@@ -61,12 +60,12 @@ const createDialogmoteikkeaktuell = (
 export const dialogmoteikkeaktuellMock = [
   createDialogmoteikkeaktuell(
     IkkeAktuellArsak.ARBEIDSTAKER_AAP,
-    new Date(Date.now() - oneDayMillis),
+    daysFromToday(-1),
     "Arbeidstaker mottar AAP."
   ),
   createDialogmoteikkeaktuell(
     IkkeAktuellArsak.ARBEIDSTAKER_DOD,
-    new Date(Date.now() + oneDayMillis),
+    daysFromToday(1),
     "Arbeidstaker er død."
   ),
 ];

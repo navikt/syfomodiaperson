@@ -10,7 +10,7 @@ import {
   DocumentComponentType,
 } from "@/data/documentcomponent/documentComponentTypes";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
-import { DocumentComponentVisning } from "@/components/document/DocumentComponentVisning";
+import DocumentComponentVisning from "@/components/document/DocumentComponentVisning";
 import { Accordion } from "@navikt/ds-react";
 
 const texts = {

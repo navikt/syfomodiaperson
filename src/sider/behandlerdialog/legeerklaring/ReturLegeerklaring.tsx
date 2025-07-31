@@ -5,7 +5,7 @@ import {
 } from "@/data/behandlerdialog/behandlerdialogTypes";
 import { ArrowUndoIcon } from "@navikt/aksel-icons";
 import { Button, Modal, Textarea } from "@navikt/ds-react";
-import { DocumentComponentVisning } from "@/components/document/DocumentComponentVisning";
+import DocumentComponentVisning from "@/components/document/DocumentComponentVisning";
 import { CloseButton } from "@/components/CloseButton";
 import { useReturLegeerklaring } from "@/data/behandlerdialog/useReturLegeerklaring";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
