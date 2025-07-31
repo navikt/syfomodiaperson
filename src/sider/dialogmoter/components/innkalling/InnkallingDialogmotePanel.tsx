@@ -1,8 +1,7 @@
 import React, { ReactElement } from "react";
-import { FlexGapSize, FlexRow } from "@/components/Layout";
 import { MoteIkonBlaaImage } from "../../../../../img/ImageComponents";
-import { DialogmotePanel } from "../DialogmotePanel";
-import { DialogmoteMoteStatusPanel } from "./DialogmoteMoteStatusPanel";
+import DialogmotePanel from "../DialogmotePanel";
+import DialogmoteMoteStatusPanel from "./DialogmoteMoteStatusPanel";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/sider/dialogmoter/components/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
@@ -17,7 +16,7 @@ import {
 import { Link } from "react-router-dom";
 import { DialogmoteFrist } from "@/sider/dialogmoter/components/DialogmoteFrist";
 
-export const texts = {
+const texts = {
   bekreftetMote: "Bekreftet møte",
   seMotestatus: "Se møtestatus",
   planleggNyttMote: "Planlegg nytt dialogmøte",
@@ -32,52 +31,40 @@ export const texts = {
     "Denne funksjonaliteten skal kun benyttes på sykmeldte som følges opp etter kapittel 8 i folketrygdloven. Du kan sende innkalling selv om den sykmeldte ikke har digital sykmelding.",
 };
 
-const dialogmotePanelHeaderText = (isKandidat: boolean): string => {
-  return isKandidat ? texts.kandidatDialogmote : texts.planleggNyttMote;
-};
+function NyttDialogmoteButton() {
+  return (
+    <Button as={Link} to={dialogmoteRoutePath} variant={"primary"}>
+      {texts.nyttMote}
+    </Button>
+  );
+}
 
-interface InnkallingDialogmotePanelProps {
+function SettUnntakButton() {
+  return (
+    <Button as={Link} to={dialogmoteUnntakRoutePath} variant="secondary">
+      {texts.settUnntakButton}
+    </Button>
+  );
+}
+
+function IkkeAktuellButton() {
+  return (
+    <Button as={Link} to={dialogmoteIkkeAktuellRoutePath} variant="secondary">
+      {texts.ikkeAktuell}
+    </Button>
+  );
+}
+
+interface Props {
   aktivtDialogmote: DialogmoteDTO | undefined;
 }
 
-export const InnkallingDialogmotePanel = ({
+export default function InnkallingDialogmotePanel({
   aktivtDialogmote,
-}: InnkallingDialogmotePanelProps): ReactElement => {
+}: Props): ReactElement {
   const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
   const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const { isKandidat } = useDialogmotekandidat();
-
-  const NyttDialogmoteButton = () => {
-    return (
-      <Button as={Link} to={dialogmoteRoutePath} variant={"primary"}>
-        {texts.nyttMote}
-      </Button>
-    );
-  };
-
-  const SettUnntakButton = () => {
-    return (
-      <Button as={Link} to={dialogmoteUnntakRoutePath} variant="secondary">
-        {texts.settUnntakButton}
-      </Button>
-    );
-  };
-  const IkkeAktuellButton = () => {
-    return (
-      <Button as={Link} to={dialogmoteIkkeAktuellRoutePath} variant="secondary">
-        {texts.ikkeAktuell}
-      </Button>
-    );
-  };
-
-  const Subtitle = () => {
-    return (
-      <>
-        <BodyShort size="small">{texts.ingenMoterPlanlagt}</BodyShort>
-        <DialogmoteFrist />
-      </>
-    );
-  };
 
   if (aktivtDialogmote) {
     return <DialogmoteMoteStatusPanel dialogmote={aktivtDialogmote} />;
@@ -85,8 +72,13 @@ export const InnkallingDialogmotePanel = ({
     return (
       <DialogmotePanel
         icon={MoteIkonBlaaImage}
-        header={dialogmotePanelHeaderText(isKandidat)}
-        subtitle={<Subtitle />}
+        header={isKandidat ? texts.kandidatDialogmote : texts.planleggNyttMote}
+        subtitle={
+          <>
+            <BodyShort size="small">{texts.ingenMoterPlanlagt}</BodyShort>
+            <DialogmoteFrist />
+          </>
+        }
       >
         {brukerKanIkkeVarslesDigitalt && (
           <BrukerKanIkkeVarslesPapirpostAdvarsel />
@@ -101,12 +93,12 @@ export const InnkallingDialogmotePanel = ({
           </Alert>
         )}
 
-        <FlexRow columnGap={FlexGapSize.MD}>
+        <div className="flex flex-row gap-4">
           <NyttDialogmoteButton />
           {isKandidat && <SettUnntakButton />}
           {isKandidat && <IkkeAktuellButton />}
-        </FlexRow>
+        </div>
       </DialogmotePanel>
     );
   }
-};
+}

@@ -73,7 +73,7 @@ const DocumentComponentParagraph = (texts: string[], title?: string) => {
   );
 };
 
-export const DocumentComponentBulletPoints = (texts: string[]) => {
+function DocumentComponentBulletPoints(texts: string[]) {
   return (
     <List size="small">
       {texts.map((text, index) => (
@@ -81,15 +81,15 @@ export const DocumentComponentBulletPoints = (texts: string[]) => {
       ))}
     </List>
   );
-};
+}
 
-interface DocumentComponentVisningProps {
+interface Props {
   documentComponent: DocumentComponentDto;
 }
 
-export const DocumentComponentVisning = ({
+export default function DocumentComponentVisning({
   documentComponent: { type, title, texts },
-}: DocumentComponentVisningProps): ReactElement => {
+}: Props): ReactElement {
   switch (type) {
     case DocumentComponentType.HEADER: {
       return DocumentComponentHeaderH2(texts);
@@ -113,4 +113,4 @@ export const DocumentComponentVisning = ({
       return DocumentComponentBulletPoints(texts);
     }
   }
-};
+}

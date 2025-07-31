@@ -19,7 +19,7 @@ import { queryClientWithAktivBruker } from "../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { MemoryRouter } from "react-router-dom";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
-import { dialogmoteunntakQueryKeys } from "@/data/dialogmotekandidat/dialogmoteunntakQueryHooks";
+import { dialogmoteunntakQueryKeys } from "@/data/dialogmotekandidat/useGetDialogmoteunntakQuery";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
 import {
   MotebehovInnmelder,
@@ -27,6 +27,7 @@ import {
   MotebehovVeilederDTO,
 } from "@/data/motebehov/types/motebehovTypes";
 import { defaultFormValue } from "@/mocks/syfomotebehov/motebehovMock";
+import { dialogmoteIkkeAktuellQueryKeys } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: any;
@@ -79,6 +80,10 @@ describe("MotelandingssideSide", () => {
     );
     queryClient.setQueryData(ledereQueryKeys.ledere(fnr), () => LEDERE_DEFAULT);
     queryClient.setQueryData(dialogmoteunntakQueryKeys.unntak(fnr), () => []);
+    queryClient.setQueryData(
+      dialogmoteIkkeAktuellQueryKeys.ikkeAktuellVurdering(fnr),
+      () => []
+    );
   });
 
   it("Skal vise AppSpinner når henter data", () => {

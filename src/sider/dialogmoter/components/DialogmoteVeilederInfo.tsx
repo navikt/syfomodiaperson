@@ -12,7 +12,7 @@ interface Props {
   dialogmote: DialogmoteDTO;
 }
 
-export const DialogmoteVeilederInfo = ({ dialogmote }: Props) => {
+export default function DialogmoteVeilederInfo({ dialogmote }: Props) {
   const { data: innkaltVeileder } = useVeilederInfoQuery(
     dialogmote.opprettetAv
   );
@@ -30,4 +30,4 @@ export const DialogmoteVeilederInfo = ({ dialogmote }: Props) => {
   };
 
   return <BodyShort size="small">{veilederTekst()}</BodyShort>;
-};
+}

@@ -1,75 +1,75 @@
-import React, { ReactElement } from "react";
-import {
-  unntakArsakTexts,
-  UnntakDTO,
-} from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
+import React from "react";
+import { IkkeAktuellVurdering } from "../../hooks/useGetDialogmoteIkkeAktuell";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
-
 import {
   DocumentComponentDto,
   DocumentComponentType,
 } from "@/data/documentcomponent/documentComponentTypes";
+import { ikkeAktuellArsakTexts } from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import DocumentComponentVisning from "@/components/document/DocumentComponentVisning";
 import { Accordion } from "@navikt/ds-react";
 
 const texts = {
-  unntakLenke: "Unntak fra dialogmøte",
+  ikkeAktuellLenke: "Ikke aktuell for dialogmøte",
   arsakLabel: "Årsak til unntak",
   beskrivelseLabel: "Beskrivelse",
   vurdertAvLabel: "Vurdert av",
 };
 
-export function unntakLenkeText(unntakCreatedAt: Date) {
-  const unntakDatoTekst = tilDatoMedManedNavn(unntakCreatedAt);
-  return `${texts.unntakLenke} ${unntakDatoTekst}`;
-}
-
-function createUnntakDocument(
-  unntak: UnntakDTO,
+function createIkkeAktuellDocument(
+  vurdering: IkkeAktuellVurdering,
   veilederNavn: string | undefined
 ): DocumentComponentDto[] {
-  const arsakText: string = unntakArsakTexts[unntak.arsak] || unntak.arsak;
+  const arsakText: string = ikkeAktuellArsakTexts[vurdering.arsak];
   const componentList: DocumentComponentDto[] = [
     {
       type: DocumentComponentType.PARAGRAPH,
-      key: unntak.arsak,
+      key: vurdering.arsak,
       title: texts.arsakLabel,
       texts: [arsakText],
     },
   ];
-  if (unntak.beskrivelse) {
+  if (vurdering.beskrivelse) {
     componentList.push({
       type: DocumentComponentType.PARAGRAPH,
       title: texts.beskrivelseLabel,
-      texts: [unntak.beskrivelse],
+      texts: [vurdering.beskrivelse],
     });
   }
   if (veilederNavn) {
     componentList.push({
       type: DocumentComponentType.PARAGRAPH,
       title: texts.vurdertAvLabel,
-      texts: [`${veilederNavn} (${unntak.createdBy})`],
+      texts: [`${veilederNavn} (${vurdering.createdBy})`],
     });
   }
   return componentList;
 }
 
 interface Props {
-  unntak: UnntakDTO;
+  ikkeAktuellVurdering: IkkeAktuellVurdering;
 }
 
-export function MoteHistorikkUnntak({ unntak }: Props): ReactElement {
-  const { data: veilederinfo } = useVeilederInfoQuery(unntak.createdBy);
-  const unntakDocument = createUnntakDocument(
-    unntak,
-    veilederinfo?.fulltNavn()
+export default function MoteHistorikkIkkeAktuell({
+  ikkeAktuellVurdering,
+}: Props) {
+  const { data: veilederinfo } = useVeilederInfoQuery(
+    ikkeAktuellVurdering.createdBy
   );
+
   return (
     <>
-      <Accordion.Header>{unntakLenkeText(unntak.createdAt)}</Accordion.Header>
+      <Accordion.Header>
+        {`${texts.ikkeAktuellLenke} ${tilDatoMedManedNavn(
+          ikkeAktuellVurdering.createdAt
+        )}`}
+      </Accordion.Header>
       <Accordion.Content>
-        {unntakDocument.map((component, index) => (
+        {createIkkeAktuellDocument(
+          ikkeAktuellVurdering,
+          veilederinfo?.fulltNavn()
+        ).map((component, index) => (
           <DocumentComponentVisning key={index} documentComponent={component} />
         ))}
       </Accordion.Content>

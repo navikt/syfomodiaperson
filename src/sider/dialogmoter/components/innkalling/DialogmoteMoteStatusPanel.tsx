@@ -1,16 +1,16 @@
 import React, { ReactNode } from "react";
 import { MoteIkonBlaaImage } from "../../../../../img/ImageComponents";
-import { DialogmotePanel } from "../DialogmotePanel";
+import DialogmotePanel from "../DialogmotePanel";
 import {
   DialogmoteDTO,
   DialogmoteStatus,
+  getDialogmoteReferat,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
 import { dialogmoteRoutePath } from "@/routers/AppRouter";
 import { DeltakereSvarInfo } from "@/sider/dialogmoter/components/DeltakereSvarInfo";
 import dayjs from "dayjs";
-import { useDialogmoteReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { narmesteLederForVirksomhet } from "@/utils/ledereUtils";
 import { NoNarmesteLederAlert } from "@/sider/dialogmoter/components/innkalling/NoNarmestLederAlert";
@@ -22,7 +22,7 @@ import {
   isPersonoppgaveCompletedAfterLastMoteEndring,
 } from "@/utils/dialogmoteUtils";
 import { BodyShort, Button } from "@navikt/ds-react";
-import { DialogmoteVeilederInfo } from "@/sider/dialogmoter/components/DialogmoteVeilederInfo";
+import DialogmoteVeilederInfo from "@/sider/dialogmoter/components/DialogmoteVeilederInfo";
 import { DialogmoteStedInfo } from "@/sider/dialogmoter/components/DialogmoteStedInfo";
 
 const texts = {
@@ -37,7 +37,7 @@ const texts = {
   moteTid: "Møtetidspunkt",
 };
 
-const Subtitle = (dialogmote: DialogmoteDTO): ReactNode => {
+function Subtitle(dialogmote: DialogmoteDTO): ReactNode {
   const moteDatoTid = tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid);
 
   return (
@@ -47,9 +47,9 @@ const Subtitle = (dialogmote: DialogmoteDTO): ReactNode => {
       <DialogmoteVeilederInfo dialogmote={dialogmote} />
     </>
   );
-};
+}
 
-const headerText = (dialogmote: DialogmoteDTO): string => {
+function headerText(dialogmote: DialogmoteDTO): string {
   const moteDatoTid = dayjs(dialogmote.tid);
   const today = dayjs(new Date());
   if (moteDatoTid.isBefore(today, "date")) {
@@ -59,13 +59,13 @@ const headerText = (dialogmote: DialogmoteDTO): string => {
   return dialogmote.status === DialogmoteStatus.NYTT_TID_STED
     ? texts.headerEndring
     : texts.headerInnkalling;
-};
+}
 
 interface Props {
   dialogmote: DialogmoteDTO;
 }
 
-export const DialogmoteMoteStatusPanel = ({ dialogmote }: Props) => {
+export default function DialogmoteMoteStatusPanel({ dialogmote }: Props) {
   const { arbeidsgiver } = dialogmote;
   const { currentLedere } = useLedereQuery();
 
@@ -76,7 +76,7 @@ export const DialogmoteMoteStatusPanel = ({ dialogmote }: Props) => {
   );
   const noNarmesteLeder = !narmesteLeder;
 
-  const { latestReferat } = useDialogmoteReferat(dialogmote);
+  const { latestReferat } = getDialogmoteReferat(dialogmote);
   const referatKnappText = !!latestReferat
     ? texts.fortsettReferat
     : texts.skrivReferat;
@@ -133,4 +133,4 @@ export const DialogmoteMoteStatusPanel = ({ dialogmote }: Props) => {
       </div>
     </DialogmotePanel>
   );
-};
+}

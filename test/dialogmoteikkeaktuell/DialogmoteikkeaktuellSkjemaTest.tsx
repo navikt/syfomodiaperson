@@ -13,10 +13,6 @@ import {
 } from "../testUtils";
 import { queryClientWithMockData } from "../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
-import DialogmoteIkkeAktuellSkjema, {
-  skjemaBeskrivelseMaxLength,
-  texts as ikkeaktuellSkjemaTexts,
-} from "@/sider/dialogmoter/components/ikkeaktuell/DialogmoteIkkeAktuellSkjema";
 import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { dialogmotekandidatMock } from "@/mocks/isdialogmotekandidat/dialogmotekandidatMock";
@@ -27,6 +23,7 @@ import {
 } from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
 import { renderWithRouter } from "../testRouterUtils";
 import { dialogmoterQueryKeys } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
+import DialogmoteIkkeAktuellSkjema from "@/sider/dialogmoter/components/ikkeaktuell/DialogmoteIkkeAktuellSkjema";
 
 let queryClient: QueryClient;
 
@@ -49,22 +46,26 @@ describe("DialogmoteikkeaktuellSkjema", () => {
   it("viser informasjonstekster", () => {
     renderDialogmoteikkeaktuellSkjema();
 
-    expect(screen.getByText(ikkeaktuellSkjemaTexts.noBrev)).to.not.be.empty;
-    expect(screen.getByText(ikkeaktuellSkjemaTexts.infoKandidatlist)).to.not.be
-      .empty;
+    expect(
+      screen.getByText(
+        "Det blir ikke sendt ut varsel eller brev til den sykmeldte."
+      )
+    ).to.not.be.empty;
+    expect(
+      screen.getByText(
+        `Når du setter ikke aktuell vil arbeidstakeren bli fjernet fra kandidatlisten. Dersom du på et senere tidspunkt vurderer at det likevel er nødvendig med et dialogmøte, kan du kalle inn til dialogmøte ved å søke deg frem til denne arbeidstakeren.`
+      )
+    ).to.not.be.empty;
   });
 
   it("valideringsmeldinger forsvinner ved utbedring", async () => {
     renderDialogmoteikkeaktuellSkjema();
     await clickButton(submitButtonText);
 
-    expect(await screen.findByText(ikkeaktuellSkjemaTexts.arsakErrorMessage)).to
-      .not.be.empty;
+    expect(await screen.findByText("Vennligst angi årsak.")).to.not.be.empty;
 
-    const tooLongBeskrivelse = getTooLongText(skjemaBeskrivelseMaxLength);
-    const beskrivelseInput = getTextInput(
-      ikkeaktuellSkjemaTexts.beskrivelseLabel
-    );
+    const tooLongBeskrivelse = getTooLongText(2000);
+    const beskrivelseInput = getTextInput("Beskrivelse (valgfri)");
     changeTextInput(beskrivelseInput, tooLongBeskrivelse);
     const maxLengthErrorMsg = "1 tegn for mye";
     expect(screen.getAllByText(maxLengthErrorMsg)).to.not.be.empty;
@@ -73,8 +74,7 @@ describe("DialogmoteikkeaktuellSkjema", () => {
 
     // Feilmeldinger forsvinner
     await waitFor(() => {
-      expect(screen.queryAllByText(ikkeaktuellSkjemaTexts.arsakErrorMessage)).to
-        .be.empty;
+      expect(screen.queryAllByText("Vennligst angi årsak.")).to.be.empty;
     });
     await waitFor(() => {
       expect(screen.queryAllByText(maxLengthErrorMsg)).to.be.empty;
@@ -155,9 +155,7 @@ const passSkjemaInput = (
   fireEvent.click(arsakRadioButton);
 
   if (beskrivelse) {
-    const beskrivelseInput = getTextInput(
-      ikkeaktuellSkjemaTexts.beskrivelseLabel
-    );
+    const beskrivelseInput = getTextInput("Beskrivelse (valgfri)");
     changeTextInput(beskrivelseInput, beskrivelse);
   }
 };

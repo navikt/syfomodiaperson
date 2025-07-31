@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateIkkeAktuellDTO } from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
 import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
+import { dialogmoteIkkeAktuellQueryKeys } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
 
 export const useSettDialogmoteIkkeAktuell = () => {
   const queryClient = useQueryClient();
@@ -17,9 +18,14 @@ export const useSettDialogmoteIkkeAktuell = () => {
 
   return useMutation({
     mutationFn: postSettDialogmoteikkeaktuell,
-    onSettled: () =>
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: dialogmotekandidatQueryKeys.kandidat(personident),
-      }),
+      });
+      queryClient.invalidateQueries({
+        queryKey:
+          dialogmoteIkkeAktuellQueryKeys.ikkeAktuellVurdering(personident),
+      });
+    },
   });
 };

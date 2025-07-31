@@ -2,7 +2,7 @@ import { expect, describe, it, beforeEach } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import React from "react";
 import dayjs from "dayjs";
-import { InnkallingDialogmotePanel } from "@/sider/dialogmoter/components/innkalling/InnkallingDialogmotePanel";
+import InnkallingDialogmotePanel from "@/sider/dialogmoter/components/innkalling/InnkallingDialogmotePanel";
 import { texts as brukerKanIkkeVarslesPapirpostTexts } from "../../src/sider/dialogmoter/components/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";

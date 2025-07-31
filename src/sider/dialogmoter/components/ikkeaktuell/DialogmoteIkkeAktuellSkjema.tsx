@@ -8,7 +8,7 @@ import {
   ikkeAktuellArsakTexts,
 } from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { useSettDialogmoteIkkeAktuell } from "@/data/dialogmotekandidat/useSettDialogmoteIkkeAktuell";
+import { useSettDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useSettDialogmoteIkkeAktuell";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
@@ -20,7 +20,7 @@ import {
   Textarea,
 } from "@navikt/ds-react";
 
-export const texts = {
+const texts = {
   noBrev: "Det blir ikke sendt ut varsel eller brev til den sykmeldte.",
   infoKandidatlist: `Når du setter ikke aktuell vil arbeidstakeren bli fjernet fra kandidatlisten. Dersom du på et senere tidspunkt vurderer at det likevel er nødvendig med et dialogmøte, kan du kalle inn til dialogmøte ved å søke deg frem til denne arbeidstakeren.`,
   arsakLegend: "Årsak til ikke aktuell (obligatorisk)",
@@ -30,14 +30,14 @@ export const texts = {
   avbryt: "Avbryt",
 };
 
-export const skjemaBeskrivelseMaxLength = 2000;
+const skjemaBeskrivelseMaxLength = 2000;
 
 interface SkjemaValues {
   arsak: IkkeAktuellArsak;
   beskrivelse?: string;
 }
 
-const DialogmoteIkkeAktuellSkjema = () => {
+export default function DialogmoteIkkeAktuellSkjema() {
   const personIdent = useValgtPersonident();
   const { isKandidat } = useDialogmotekandidat();
   const settDialogmoteikkeaktuell = useSettDialogmoteIkkeAktuell();
@@ -115,6 +115,4 @@ const DialogmoteIkkeAktuellSkjema = () => {
       </form>
     </Box>
   );
-};
-
-export default DialogmoteIkkeAktuellSkjema;
+}

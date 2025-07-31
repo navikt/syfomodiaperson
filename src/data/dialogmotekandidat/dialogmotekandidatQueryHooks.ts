@@ -6,8 +6,10 @@ import {
   DialogmotekandidatDTO,
   DialogmotekandidatHistorikkDTO,
 } from "@/data/dialogmotekandidat/dialogmotekandidatTypes";
-import { useLatestFerdigstiltReferat } from "@/hooks/dialogmote/useDialogmoteReferat";
 import { minutesToMillis } from "@/utils/utils";
+import { ReferatDTO } from "@/sider/dialogmoter/types/dialogmoteReferatTypes";
+import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
+import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 
 export const dialogmotekandidatQueryKeys = {
   kandidat: (personident: string) => ["dialogmotekandidat", personident],
@@ -33,6 +35,17 @@ export const useIsDialogmoteKandidatWithoutFerdigstiltReferat = (
     new Date(kandidatAt)?.getTime() >
     new Date(latestFerdigstiltReferat.createdAt).getTime()
   );
+};
+
+const useLatestFerdigstiltReferat = (): ReferatDTO | undefined => {
+  const { ferdigstilteDialogmoter } = useDialogmoterQuery();
+  const latestFerdigstiltDialogmote: DialogmoteDTO | undefined =
+    ferdigstilteDialogmoter.sort((a, b) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    })[0];
+  return latestFerdigstiltDialogmote?.referatList.filter(
+    (referat) => referat.ferdigstilt
+  )[0];
 };
 
 export const useDialogmotekandidat = () => {
