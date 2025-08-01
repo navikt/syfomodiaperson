@@ -3,9 +3,9 @@ import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import FattVedtakSkjema from "@/sider/frisktilarbeid/FattVedtakSkjema";
 import NyttVedtak from "@/sider/frisktilarbeid/NyttVedtak";
-import { VedtakFattet } from "@/sider/frisktilarbeid/VedtakFattet";
+import VedtakFattet from "@/sider/frisktilarbeid/VedtakFattet";
 
-export function FriskmeldingTilArbeidsformidling() {
+export default function FriskmeldingTilArbeidsformidling() {
   const { data } = useVedtakQuery();
   const [isNyVurderingStarted, setIsNyVurderingStarted] = useState(false);
 
