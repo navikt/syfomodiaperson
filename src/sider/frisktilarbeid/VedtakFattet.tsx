@@ -5,6 +5,7 @@ import {
 import React from "react";
 import {
   Alert,
+  BodyLong,
   BodyShort,
   Box,
   Button,
@@ -14,6 +15,7 @@ import {
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { useFerdigbehandleVedtak } from "@/data/frisktilarbeid/useFerdigbehandleVedtak";
 import { useNotification } from "@/context/notification/NotificationContext";
+import { CheckmarkCircleIcon } from "@navikt/aksel-icons";
 
 const texts = {
   heading: (startDate: string, endDate: string) =>
@@ -29,6 +31,12 @@ const texts = {
     "Registrer 'J' på 'tiltak' på SP SA, trykk F6, legg inn kode FA og periode for friskmelding til arbeidsformidling, trykk F6.",
   infotrygdDisclaimer:
     "Dersom du har rettet opp manuelt i Infotrygd kan du se bort fra denne meldingen.",
+  aktivtVedtak: "Aktivt vedtak",
+  ikkeMuligMedNyttVedtak:
+    "Det er ikke mulig å fatte et nytt vedtak når det foreligger et aktivt vedtak.",
+  gosysOppgaveSendt: "Gosys oppgaven er automatisk sendt til NAY.",
+  vedtakJournalfort: "Vedtaket er journalført i Gosys.",
+  oppgaveIPersonoversikten: "Oppgave i Personoversikten",
 };
 
 const visInfotrygdAlert = (status: InfotrygdStatus): boolean => {
@@ -47,11 +55,12 @@ interface Props {
   setIsNyVurderingStarted: (value: boolean) => void;
 }
 
-export function VedtakFattet({
-  vedtak: { fom, infotrygdStatus, tom, uuid },
+export default function VedtakFattet({
+  vedtak: { createdAt, fom, infotrygdStatus, tom, uuid },
   setIsNyVurderingStarted,
 }: Props) {
   const ferdigbehandleVedtak = useFerdigbehandleVedtak(uuid);
+  const vedtakFattetDate = tilLesbarDatoMedArUtenManedNavn(createdAt);
   const vedtakStartDateText = tilLesbarDatoMedArUtenManedNavn(fom);
   const vedtakEndDateText = tilLesbarDatoMedArUtenManedNavn(tom);
   const { notification, setNotification } = useNotification();
@@ -82,9 +91,50 @@ export function VedtakFattet({
         className="flex flex-col gap-4"
       >
         <Heading level="2" size="medium">
-          {`${texts.heading(vedtakStartDateText, vedtakEndDateText)} `}
+          {texts.aktivtVedtak}
         </Heading>
-        <BodyShort>{texts.videreOppfolging}</BodyShort>
+        <BodyShort>{texts.ikkeMuligMedNyttVedtak}</BodyShort>
+        <Box background="surface-subtle" className="flex flex-col p-4 gap-2">
+          <div>
+            <div className="flex flex-row gap-4">
+              <BodyShort>
+                Start: <b>{vedtakStartDateText}</b>
+              </BodyShort>
+              <BodyShort>
+                Slutt: <b>{vedtakEndDateText}</b>
+              </BodyShort>
+            </div>
+            <BodyShort>
+              Vedtaket ble fattet: <b>{vedtakFattetDate}</b>
+            </BodyShort>
+          </div>
+          <div className="flex flex-row gap-2">
+            <CheckmarkCircleIcon
+              color="green"
+              title="a11y-title"
+              fontSize="1.5rem"
+            />
+            <BodyShort>{texts.gosysOppgaveSendt}</BodyShort>
+          </div>
+          <div className="flex flex-row gap-2">
+            <CheckmarkCircleIcon
+              color="green"
+              title="a11y-title"
+              fontSize="1.5rem"
+            />
+            <BodyShort>{texts.vedtakJournalfort}</BodyShort>
+          </div>
+        </Box>
+      </Box>
+      <Box
+        background="surface-default"
+        padding="6"
+        className="flex flex-col gap-4"
+      >
+        <Heading level="2" size="medium">
+          {texts.oppgaveIPersonoversikten}
+        </Heading>
+        <BodyLong>{texts.videreOppfolging}</BodyLong>
         <Button
           className="w-fit"
           variant="secondary"
