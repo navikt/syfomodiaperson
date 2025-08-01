@@ -5,7 +5,7 @@ import SideLaster from "@/components/side/SideLaster";
 import * as Tredelt from "@/components/side/TredeltSide";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
-import { FriskmeldingTilArbeidsformidling } from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidling";
+import FriskmeldingTilArbeidsformidling from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidling";
 import VeiledningBox from "@/sider/frisktilarbeid/VeiledningBox";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import NyttigeLenkerBox from "@/sider/frisktilarbeid/NyttigeLenkerBox";
