@@ -2,22 +2,20 @@ import {
   InfotrygdStatus,
   VedtakResponseDTO,
 } from "@/data/frisktilarbeid/frisktilarbeidTypes";
-import React from "react";
+import React, { useState } from "react";
 import {
   Alert,
-  BodyShort,
+  BodyLong,
   Box,
   Button,
   Detail,
   Heading,
 } from "@navikt/ds-react";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { useFerdigbehandleVedtak } from "@/data/frisktilarbeid/useFerdigbehandleVedtak";
 import { useNotification } from "@/context/notification/NotificationContext";
+import VedtakInfoPanel from "@/sider/frisktilarbeid/VedtakInfoPanel";
 
 const texts = {
-  heading: (startDate: string, endDate: string) =>
-    `Fattet vedtak varer fra ${startDate} til ${endDate}`,
   videreOppfolging:
     "Videre oppfølging vil skje i aktivitetsplanen basert på bistandsbehovet i §14a-vedtaket.",
   button: "Fjern oppgaven fra oversikten",
@@ -29,9 +27,10 @@ const texts = {
     "Registrer 'J' på 'tiltak' på SP SA, trykk F6, legg inn kode FA og periode for friskmelding til arbeidsformidling, trykk F6.",
   infotrygdDisclaimer:
     "Dersom du har rettet opp manuelt i Infotrygd kan du se bort fra denne meldingen.",
+  oppgaveIPersonoversikten: "Oppgave i Personoversikten",
 };
 
-const visInfotrygdAlert = (status: InfotrygdStatus): boolean => {
+function visInfotrygdAlert(status: InfotrygdStatus): boolean {
   switch (status) {
     case InfotrygdStatus.IKKE_SENDT:
     case InfotrygdStatus.KVITTERING_FEIL:
@@ -40,21 +39,20 @@ const visInfotrygdAlert = (status: InfotrygdStatus): boolean => {
     case InfotrygdStatus.KVITTERING_OK:
       return false;
   }
-};
+}
 
 interface Props {
   vedtak: VedtakResponseDTO;
   setIsNyVurderingStarted: (value: boolean) => void;
 }
 
-export function VedtakFattet({
-  vedtak: { fom, infotrygdStatus, tom, uuid },
+export default function VedtakFattet({
+  vedtak,
   setIsNyVurderingStarted,
 }: Props) {
-  const ferdigbehandleVedtak = useFerdigbehandleVedtak(uuid);
-  const vedtakStartDateText = tilLesbarDatoMedArUtenManedNavn(fom);
-  const vedtakEndDateText = tilLesbarDatoMedArUtenManedNavn(tom);
+  const ferdigbehandleVedtak = useFerdigbehandleVedtak(vedtak.uuid);
   const { notification, setNotification } = useNotification();
+  const [isNotificationVisible, setIsNotificationVisible] = useState(true);
 
   function handleFjernOppgaveOnClick() {
     ferdigbehandleVedtak.mutate(undefined, {
@@ -67,24 +65,33 @@ export function VedtakFattet({
 
   return (
     <div className="flex flex-col gap-4">
-      {notification && <Alert variant="success">{notification.message}</Alert>}
-      {visInfotrygdAlert(infotrygdStatus) && (
-        <Alert variant="warning" className="[&>*]:max-w-fit">
+      {notification && isNotificationVisible && (
+        <Alert
+          variant="success"
+          closeButton
+          onClose={() => setIsNotificationVisible(false)}
+        >
+          {notification.message}
+        </Alert>
+      )}
+      {visInfotrygdAlert(vedtak.infotrygdStatus) && (
+        <Alert variant="warning" className="[&>*]:max-w-fit" closeButton>
           {texts.infotrygdAlert}
           <br />
           <i>{texts.infotrygdRutine}</i>
           <Detail>{texts.infotrygdDisclaimer}</Detail>
         </Alert>
       )}
+      <VedtakInfoPanel vedtak={vedtak} />
       <Box
         background="surface-default"
         padding="6"
         className="flex flex-col gap-4"
       >
-        <Heading level="2" size="medium">
-          {`${texts.heading(vedtakStartDateText, vedtakEndDateText)} `}
+        <Heading level="3" size="medium">
+          {texts.oppgaveIPersonoversikten}
         </Heading>
-        <BodyShort>{texts.videreOppfolging}</BodyShort>
+        <BodyLong>{texts.videreOppfolging}</BodyLong>
         <Button
           className="w-fit"
           variant="secondary"

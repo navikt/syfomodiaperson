@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import React from "react";
-import { FriskmeldingTilArbeidsformidling } from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidling";
+import FriskmeldingTilArbeidsformidling from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidling";
 import { beforeEach, describe, expect, it } from "vitest";
 import { clickButton, getButton } from "../testUtils";
 import {
@@ -65,11 +65,7 @@ describe("FriskmeldingTilArbeidsformidling", () => {
     renderFriskmeldingTilArbeidsformidling();
 
     expect(screen.getByText("Start nytt vedtak")).to.exist;
-    expect(
-      screen.getByText("Forrige vedtak på denne personen ble fattet", {
-        exact: false,
-      })
-    ).to.exist;
+    expect(screen.getByText("Tidligere vedtak")).to.exist;
   });
 
   it("viser aktivt vedtak når det finnes", () => {
