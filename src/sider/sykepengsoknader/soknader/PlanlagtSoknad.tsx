@@ -8,7 +8,7 @@ import {
   Soknadstatus,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { BodyShort, Box, Heading } from "@navikt/ds-react";
+import { BodyShort, Box, Heading, Tag } from "@navikt/ds-react";
 import { tittelFromSoknadstype } from "@/utils/sykepengesoknadUtils";
 
 const texts = {
@@ -49,7 +49,9 @@ export default function PlanlagtSoknad({ soknad }: Props): ReactElement {
           </BodyShort>
         )}
         {soknadStatusText && (
-          <BodyShort size="small">{soknadStatusText}</BodyShort>
+          <Tag size="small" variant="info" className="w-fit">
+            {soknadStatusText}
+          </Tag>
         )}
       </div>
       <Heading size="xsmall">

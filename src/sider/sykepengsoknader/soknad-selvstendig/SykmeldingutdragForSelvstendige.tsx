@@ -59,15 +59,15 @@ const textArbeidssituasjon = (arbeidssituasjon?: string) => {
   }
 };
 
-interface SykmeldingUtdragForSelvstendigeProps {
+interface Props {
   erApen: boolean;
   sykmelding: SykmeldingOldFormat;
 }
 
-const SykmeldingUtdragForSelvstendige = ({
+export default function SykmeldingUtdragForSelvstendige({
   erApen,
   sykmelding,
-}: SykmeldingUtdragForSelvstendigeProps): ReactElement => {
+}: Props): ReactElement {
   return (
     <SpeilingEkspanderbartPanel
       defaultOpen={erApen}
@@ -102,6 +102,4 @@ const SykmeldingUtdragForSelvstendige = ({
       </div>
     </SpeilingEkspanderbartPanel>
   );
-};
-
-export default SykmeldingUtdragForSelvstendige;
+}

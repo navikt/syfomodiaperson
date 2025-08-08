@@ -91,9 +91,6 @@ export const getSendtTilSuffix = (sykepengesoknad: SykepengesoknadDTO) => {
   if (sykepengesoknad.sendtTilArbeidsgiverDato) {
     return ".til-arbeidsgiver";
   }
-  if (sykepengesoknad.sendtTilNAVDato) {
-    return ".til-nav";
-  }
   return "";
 };
 
