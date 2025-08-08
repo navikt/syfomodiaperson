@@ -254,10 +254,10 @@ describe("FattVedtakSkjema", () => {
     });
   });
 
-  it("åpner forhåndsvisning", () => {
+  it("åpner forhåndsvisning", async () => {
     renderFattVedtakSkjema();
 
-    clickButton("Forhåndsvisning");
+    await clickButton("Forhåndsvisning");
 
     const forhandsvisModal = screen.getAllByRole("dialog", {
       hidden: true,

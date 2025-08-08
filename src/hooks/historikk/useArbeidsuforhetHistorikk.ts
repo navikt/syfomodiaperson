@@ -15,13 +15,12 @@ function arbeidsuforhetText(
     case ArbeidsuforhetVurderingType.FORHANDSVARSEL:
       return veilederident + " sendte forhåndsvarsel";
     case ArbeidsuforhetVurderingType.OPPFYLT:
+    case ArbeidsuforhetVurderingType.OPPFYLT_UTEN_FORHANDSVARSEL:
       return veilederident + " vurderte oppfylt";
     case ArbeidsuforhetVurderingType.AVSLAG:
       return veilederident + " vurderte avslag";
     case ArbeidsuforhetVurderingType.IKKE_AKTUELL:
       return veilederident + " vurderte ikke aktuell";
-    case VurderingType.OPPFYLT_UTEN_FORHANDSVARSEL:
-      return veilederident + " vurderte oppfylt uten forhåndsvarsel";
     case VurderingType.AVSLAG_UTEN_FORHANDSVARSEL:
       return (
         veilederident + " vurderte innstilling om avslag uten forhåndsvarsel"

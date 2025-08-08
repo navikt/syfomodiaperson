@@ -24,6 +24,9 @@ export interface Avslag extends ArbeidsuforhetVurdering<VurderingType.AVSLAG> {
 
 export type Oppfylt = ArbeidsuforhetVurdering<VurderingType.OPPFYLT>;
 
+export type OppfyltUtenForhandsvarsel =
+  ArbeidsuforhetVurdering<VurderingType.OPPFYLT_UTEN_FORHANDSVARSEL>;
+
 interface ArbeidsuforhetVurdering<T extends VurderingType> {
   type: T;
   begrunnelse: string;
@@ -32,6 +35,7 @@ interface ArbeidsuforhetVurdering<T extends VurderingType> {
 
 export type ArbeidsuforhetVurderingRequestDTO =
   | AvslagUtenForhandsvarsel
+  | OppfyltUtenForhandsvarsel
   | Forhandsvarsel
   | IkkeAktuell
   | Avslag
@@ -51,11 +55,11 @@ export const typeTexts: {
 } = {
   [VurderingType.FORHANDSVARSEL]: "Forhåndsvarsel",
   [VurderingType.OPPFYLT]: "Oppfylt",
+  [VurderingType.OPPFYLT_UTEN_FORHANDSVARSEL]: "Oppfylt",
   [VurderingType.AVSLAG]: "Innstilling om avslag",
   [VurderingType.IKKE_AKTUELL]: "Ikke aktuell",
   [VurderingType.AVSLAG_UTEN_FORHANDSVARSEL]:
     "Innstilling om avslag uten forhåndsvarsel",
-  [VurderingType.OPPFYLT_UTEN_FORHANDSVARSEL]: "Oppfylt uten forhåndsvarsel",
 };
 
 export enum VurderingArsak {

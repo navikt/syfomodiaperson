@@ -29,7 +29,6 @@ import OppfolgingsplanContainer from "@/sider/oppfolgingsplan/container/Oppfolgi
 import OppfoelgingsPlanerOversiktContainer from "@/sider/oppfolgingsplan/container/OppfoelgingsPlanerOversiktContainer";
 import SykepengesoknadSide from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
 import Arbeidsuforhet from "@/sider/arbeidsuforhet/Arbeidsuforhet";
-import ArbeidsuforhetOppfylt from "@/sider/arbeidsuforhet/oppfylt/ArbeidsuforhetOppfylt";
 import ArbeidsuforhetAvslag from "@/sider/arbeidsuforhet/avslag/ArbeidsuforhetAvslag";
 import ArbeidsuforhetIkkeAktuell from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuell";
 import SendForhandsvarselSkjema from "@/sider/arbeidsuforhet/SendForhandsvarselSkjema";
@@ -41,6 +40,7 @@ import StansSide from "@/sider/manglendemedvirkning/stans/StansSide";
 import IkkeAktuellSide from "@/sider/manglendemedvirkning/ikkeaktuell/IkkeAktuellSide";
 import UnntakSide from "@/sider/manglendemedvirkning/unntak/UnntakSide";
 import { AktivitetskravContainer } from "@/sider/aktivitetskrav/AktivitetskravContainer";
+import OppfyltForm from "@/sider/arbeidsuforhet/oppfylt/OppfyltForm";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -156,7 +156,7 @@ const AktivBrukerRouter = (): ReactElement => {
               path="innstilling-uten-forhandsvarsel"
               element={<InnstillingUtenForhandsvarsel />}
             />
-            <Route path="oppfylt" element={<ArbeidsuforhetOppfylt />} />
+            <Route path="oppfylt" element={<OppfyltForm />} />
             <Route path="avslag" element={<ArbeidsuforhetAvslag />} />
             <Route path="ikkeaktuell" element={<ArbeidsuforhetIkkeAktuell />} />
           </Route>
