@@ -20,7 +20,9 @@ interface Props {
   soknad: SykepengesoknadDTO;
 }
 
-const SendtSoknadSelvstendigStatuspanel = ({ soknad }: Props): ReactElement => {
+export default function SendtSoknadSelvstendigStatuspanel({
+  soknad,
+}: Props): ReactElement {
   return (
     <Statuspanel>
       <Statusopplysninger>
@@ -36,6 +38,4 @@ const SendtSoknadSelvstendigStatuspanel = ({ soknad }: Props): ReactElement => {
       </Statusopplysninger>
     </Statuspanel>
   );
-};
-
-export default SendtSoknadSelvstendigStatuspanel;
+}

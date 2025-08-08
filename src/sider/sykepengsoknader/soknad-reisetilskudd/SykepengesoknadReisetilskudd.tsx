@@ -17,13 +17,13 @@ const texts = {
   oppsummeringTittel: "Oppsummering",
 };
 
-interface SykepengesoknadReisetilskuddProps {
+interface Props {
   soknad: SykepengesoknadDTO;
 }
 
-const SykepengesoknadReisetilskudd = ({
+export default function SykepengesoknadReisetilskudd({
   soknad,
-}: SykepengesoknadReisetilskuddProps): ReactElement => {
+}: Props): ReactElement {
   return (
     <div>
       <Heading level="1" size="large">
@@ -41,6 +41,4 @@ const SykepengesoknadReisetilskudd = ({
       <TilbakeTilSoknader />
     </div>
   );
-};
-
-export default SykepengesoknadReisetilskudd;
+}

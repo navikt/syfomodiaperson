@@ -1,7 +1,7 @@
 import React from "react";
-import SoknadTeaser from "./SoknadTeaser";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { Heading } from "@navikt/ds-react";
+import SykepengesoknadListItem from "@/sider/sykepengsoknader/soknader/SykepengesoknadListItem";
 
 interface Props {
   sykepengesoknader: SykepengesoknadDTO[];
@@ -9,7 +9,7 @@ interface Props {
   tittel: string;
 }
 
-export default function SoknaderTeasere({
+export default function SoknaderList({
   sykepengesoknader,
   tittel,
   tomListeTekst,
@@ -22,7 +22,7 @@ export default function SoknaderTeasere({
       <div>
         {sykepengesoknader.length > 0 ? (
           sykepengesoknader.map((soknad, idx) => (
-            <SoknadTeaser key={idx} soknad={soknad} />
+            <SykepengesoknadListItem key={idx} soknad={soknad} />
           ))
         ) : (
           <p className="panel typo-infotekst">{tomListeTekst}</p>
