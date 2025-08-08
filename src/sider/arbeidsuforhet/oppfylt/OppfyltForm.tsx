@@ -20,11 +20,14 @@ import { Link } from "react-router-dom";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { ButtonRow } from "@/components/Layout";
 import { useNotification } from "@/context/notification/NotificationContext";
+import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 
 const texts = {
   title: "Skriv innstilling om oppfylt vilkår",
   veiledning: {
-    info: "Skriv en kort begrunnelse for hvorfor bruker likevel oppfyller vilkårene i § 8-4, og hvilke opplysninger som ligger til grunn for vurderingen.",
+    info: "Skriv en kort begrunnelse for hvorfor bruker oppfyller vilkårene i § 8-4, og hvilke opplysninger som ligger til grunn for vurderingen.",
+    infoEtterForhandsvarsel:
+      "Skriv en kort begrunnelse for hvorfor bruker likevel oppfyller vilkårene i § 8-4, og hvilke opplysninger som ligger til grunn for vurderingen.",
     hvisFriskmeldingTilArbeidsformidling:
       "Hvis du har vurdert ordningen friskmelding til arbeidsformidling, skriv hvorfor ordningen eventuelt er aktuell og legg inn henvisning til §8-5.",
   },
@@ -45,8 +48,23 @@ const texts = {
     "Vurderingen om at bruker oppfyller § 8-4 er lagret i historikken og blir journalført automatisk.",
 };
 
-interface Props {
-  forhandsvarselSendtDato: Date;
+interface FormInfoProps {
+  isSisteVurderingForhandsvarsel: boolean;
+}
+
+function VeiledningInfo({ isSisteVurderingForhandsvarsel }: FormInfoProps) {
+  return (
+    <>
+      <BodyShort>
+        {isSisteVurderingForhandsvarsel
+          ? texts.veiledning.infoEtterForhandsvarsel
+          : texts.veiledning.info}
+      </BodyShort>
+      <BodyShort>
+        {texts.veiledning.hvisFriskmeldingTilArbeidsformidling}
+      </BodyShort>
+    </>
+  );
 }
 
 const defaultValues = { begrunnelse: "" };
@@ -56,7 +74,13 @@ interface SkjemaValues {
   begrunnelse: string;
 }
 
-export default function OppfyltForm({ forhandsvarselSendtDato }: Props) {
+export default function OppfyltForm() {
+  const { data } = useGetArbeidsuforhetVurderingerQuery();
+  const sisteVurdering = data[0];
+  const isSisteVurderingForhandsvarsel =
+    sisteVurdering?.type === VurderingType.FORHANDSVARSEL;
+  const forhandsvarselSendtDato = sisteVurdering?.varsel?.createdAt;
+
   const sendVurdering = useSaveVurderingArbeidsuforhet();
   const { getOppfyltDocument } = useArbeidsuforhetVurderingDocument();
   const { setNotification } = useNotification();
@@ -91,7 +115,11 @@ export default function OppfyltForm({ forhandsvarselSendtDato }: Props) {
         <Heading level="2" size="medium">
           {texts.title}
         </Heading>
-        <BodyShort>{texts.veiledning.info}</BodyShort>
+        <BodyShort>
+          {isSisteVurderingForhandsvarsel
+            ? texts.veiledning.infoEtterForhandsvarsel
+            : texts.veiledning.info}
+        </BodyShort>
         <BodyShort>
           {texts.veiledning.hvisFriskmeldingTilArbeidsformidling}
         </BodyShort>
@@ -111,10 +139,12 @@ export default function OppfyltForm({ forhandsvarselSendtDato }: Props) {
         {sendVurdering.isError && (
           <SkjemaInnsendingFeil error={sendVurdering.error} />
         )}
-        <List as="ol" size="small" title={texts.forDuGarVidere.head}>
-          <List.Item>{texts.forDuGarVidere.step1}</List.Item>
-          <List.Item>{texts.forDuGarVidere.step2}</List.Item>
-        </List>
+        {isSisteVurderingForhandsvarsel && (
+          <List as="ol" size="small" title={texts.forDuGarVidere.head}>
+            <List.Item>{texts.forDuGarVidere.step1}</List.Item>
+            <List.Item>{texts.forDuGarVidere.step2}</List.Item>
+          </List>
+        )}
         <ButtonRow>
           <Button loading={sendVurdering.isPending} type="submit">
             {texts.sendVarselButtonText}

@@ -10,6 +10,7 @@ const texts = {
     'I de fleste saker der vilkåret ikke er oppfylt skal du sende et forhåndsvarsel. Kun dersom utbetaling ikke er igangsatt, eller NAY ber om en innstilling som en del av en større sammensatt vurdering, skal du velge "Innstilling uten forhåndsvarsel".',
   forhandsvarselButton: "Forhåndsvarsel",
   innstillingUtenForhandsvarselButton: "Avslag uten forhåndsvarsel",
+  oppfyltButton: "Oppfylt",
 };
 
 export default function VelgVurdering() {
@@ -21,23 +22,31 @@ export default function VelgVurdering() {
       </Heading>
       <BodyShort className="mb-4">{texts.description}</BodyShort>
       <BodyShort className="mb-4">{texts.description2}</BodyShort>
-      <Button
-        as="a"
-        variant="primary"
-        onClick={() => navigate(`${arbeidsuforhetPath}/forhandsvarsel`)}
-        className="mr-2"
-      >
-        {texts.forhandsvarselButton}
-      </Button>
-      <Button
-        as="a"
-        variant="secondary"
-        onClick={() =>
-          navigate(`${arbeidsuforhetPath}/innstilling-uten-forhandsvarsel`)
-        }
-      >
-        {texts.innstillingUtenForhandsvarselButton}
-      </Button>
+      <div className="flex flex-row gap-4">
+        <Button
+          as="a"
+          variant="primary"
+          onClick={() => navigate(`${arbeidsuforhetPath}/forhandsvarsel`)}
+        >
+          {texts.forhandsvarselButton}
+        </Button>
+        <Button
+          as="a"
+          variant="secondary"
+          onClick={() =>
+            navigate(`${arbeidsuforhetPath}/innstilling-uten-forhandsvarsel`)
+          }
+        >
+          {texts.innstillingUtenForhandsvarselButton}
+        </Button>
+        <Button
+          as="a"
+          variant="secondary"
+          onClick={() => navigate(`${arbeidsuforhetPath}/oppfylt`)}
+        >
+          {texts.oppfyltButton}
+        </Button>
+      </div>
     </Box>
   );
 }
