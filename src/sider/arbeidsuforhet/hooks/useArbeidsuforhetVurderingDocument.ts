@@ -24,7 +24,7 @@ type ForhandsvarselDocumentValues = {
 
 type OppfyltDocumentValues = {
   begrunnelse: string;
-  forhandsvarselSendtDato: Date;
+  forhandsvarselSendtDato?: Date;
 };
 
 type AvslagDocumentValues = {
@@ -126,24 +126,30 @@ export const useArbeidsuforhetVurderingDocument = (): {
     return documentComponents;
   };
 
-  const getOppfyltDocument = ({
+  function getOppfyltDocument({
     begrunnelse,
     forhandsvarselSendtDato,
-  }: OppfyltDocumentValues) => {
+  }: OppfyltDocumentValues) {
     const documentComponents = [
       createHeaderH1(arbeidsuforhetTexts.header),
       getIntroGjelder(),
-      createParagraph(
-        arbeidsuforhetTexts.previousForhandsvarsel(forhandsvarselSendtDato)
-      ),
+    ];
+    if (!!forhandsvarselSendtDato) {
+      documentComponents.push(
+        createParagraph(
+          arbeidsuforhetTexts.previousForhandsvarsel(forhandsvarselSendtDato)
+        )
+      );
+    }
+
+    return [
+      ...documentComponents,
       createParagraph(arbeidsuforhetTexts.forAFaSykepenger),
       createParagraph(begrunnelse),
       createParagraph(arbeidsuforhetTexts.viHarBruktLoven),
+      getVurdertAv(),
     ];
-    documentComponents.push(getVurdertAv());
-
-    return documentComponents;
-  };
+  }
 
   const getIkkeAktuellDocument = ({ arsak }: IkkeAktuellDocumentValues) => {
     return [
