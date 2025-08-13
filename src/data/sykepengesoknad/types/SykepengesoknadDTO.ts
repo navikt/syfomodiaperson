@@ -85,7 +85,6 @@ export enum Soknadstype {
 
 export enum Soknadstatus {
   NY = "NY",
-  TIL_SENDING = "TIL_SENDING",
   SENDT = "SENDT",
   FREMTIDIG = "FREMTIDIG",
   UTKAST_TIL_KORRIGERING = "UTKAST_TIL_KORRIGERING",

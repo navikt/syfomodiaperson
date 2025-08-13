@@ -20,8 +20,6 @@ function textSoknadStatus(status: Soknadstatus): string | undefined {
   switch (status) {
     case Soknadstatus.FREMTIDIG:
       return "Planlagt";
-    case Soknadstatus.TIL_SENDING:
-      return "Sender...";
     case Soknadstatus.UTKAST_TIL_KORRIGERING:
       return "Utkast til endring";
   }

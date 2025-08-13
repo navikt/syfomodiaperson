@@ -45,8 +45,6 @@ const textSoknadTeaserStatus = (
   arbeidsgiver?: string
 ) => {
   switch (key) {
-    case "soknad.teaser.status.TIL_SENDING.til-arbeidsgiver-og-nav":
-      return `Sender til ${arbeidsgiver} og Nav...`;
     case "soknad.teaser.status.SENDT.til-arbeidsgiver":
       return `Sendt til ${arbeidsgiver} ${dato}`;
     case "soknad.teaser.status.SENDT.til-arbeidsgiver-og-nav":
@@ -70,8 +68,7 @@ function beregnUndertekst(soknad: SykepengesoknadDTO) {
     }
     default: {
       switch (soknad.status) {
-        case Soknadstatus.SENDT:
-        case Soknadstatus.TIL_SENDING: {
+        case Soknadstatus.SENDT: {
           return sendtTilBeggeMenIkkeSamtidig ? (
             <SendtUlikt soknad={soknad} />
           ) : (
@@ -107,8 +104,6 @@ function soknadsStatusText(soknadStatus: Soknadstatus, dato?: string): string {
   switch (soknadStatus) {
     case Soknadstatus.NY:
       return "Ikke sendt";
-    case Soknadstatus.TIL_SENDING:
-      return "Sender...";
     case Soknadstatus.SENDT:
       return `Sendt ${dato}`;
     case Soknadstatus.UTKAST_TIL_KORRIGERING:
