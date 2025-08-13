@@ -22,33 +22,22 @@ import { ChevronRightIcon } from "@navikt/aksel-icons";
 
 const texts = {
   tittel: "Søknad om sykepenger",
-  sendt: "Sendt til",
   fremtidig: "Planlagt",
-  avbrutt: "Avbrutt av deg",
   tilSoknad: "Til søknad",
   harJobbet: "Har jobbet",
 };
 
-const textSendtTilNav = (dato?: string) => {
-  return `${texts.sendt} Nav ${dato}`;
-};
-
-const textAvbrutt = (dato?: string) => {
-  return `${texts.avbrutt} ${dato}`;
-};
-
-const SendtUlikt = ({ soknad }: Props) => {
-  const textSendtTilArbeidsgiver = `${texts.sendt} ${
-    soknad.arbeidsgiver?.navn
-  } ${toDatePrettyPrint(soknad.sendtTilArbeidsgiverDato)}`;
+function SendtUlikt({ soknad }: Props) {
   return (
     <span>
-      {textSendtTilArbeidsgiver}
+      {`Sendt til ${soknad.arbeidsgiver?.navn} ${toDatePrettyPrint(
+        soknad.sendtTilArbeidsgiverDato
+      )}`}
       <br />
-      {textSendtTilNav(toDatePrettyPrint(soknad.sendtTilNAVDato))}
+      {`Sendt til Nav ${toDatePrettyPrint(soknad.sendtTilNAVDato)}`}
     </span>
   );
-};
+}
 
 const textSoknadTeaserStatus = (
   key: string,
@@ -56,39 +45,17 @@ const textSoknadTeaserStatus = (
   arbeidsgiver?: string
 ) => {
   switch (key) {
-    case "soknad.teaser.status.TIL_SENDING":
-      return "Sender...";
-    case "soknad.teaser.status.TIL_SENDING.til-arbeidsgiver-og-nav":
-      return `Sender til ${arbeidsgiver} og Nav...`;
-    case "soknad.teaser.status.SENDT":
-      return `Sendt ${dato}`;
-    case "soknad.teaser.status.SENDT.til-nav":
-      return `Sendt til Nav ${dato}`;
     case "soknad.teaser.status.SENDT.til-arbeidsgiver":
       return `Sendt til ${arbeidsgiver} ${dato}`;
     case "soknad.teaser.status.SENDT.til-arbeidsgiver-og-nav":
       return `Sendt til ${arbeidsgiver} og Nav ${dato}`;
-    case "soknad.teaser.status.UTKAST_TIL_KORRIGERING":
-      return "Utkast til endring";
-    case "soknad.teaser.status.UTGAATT":
-      return "Ikke brukt på nett";
-    case "soknad.teaser.status.FREMTIDIG":
-      return "Planlagt";
-    case "soknad.teaser.status.AVBRUTT":
-      return textAvbrutt(dato);
     default:
       return "";
   }
 };
 
-const beregnUndertekst = (soknad: SykepengesoknadDTO) => {
+function beregnUndertekst(soknad: SykepengesoknadDTO) {
   const sendtTilBeggeMenIkkeSamtidig = erSendtTilBeggeMenIkkeSamtidig(soknad);
-
-  if (soknad.status === Soknadstatus.AVBRUTT) {
-    return textAvbrutt(tilLesbarDatoMedArstall(soknad.avbruttDato));
-  } else if (soknad.status === Soknadstatus.FREMTIDIG) {
-    return texts.fremtidig;
-  }
 
   switch (soknad.soknadstype) {
     case Soknadstype.OPPHOLD_UTLAND:
@@ -96,41 +63,12 @@ const beregnUndertekst = (soknad: SykepengesoknadDTO) => {
     case Soknadstype.ANNET_ARBEIDSFORHOLD:
     case Soknadstype.SELVSTENDIGE_OG_FRILANSERE: {
       return soknad.status === Soknadstatus.SENDT && soknad.sendtTilNAVDato
-        ? textSendtTilNav(tilLesbarDatoMedArstall(soknad.sendtTilNAVDato))
+        ? `Sendt til Nav ${tilLesbarDatoMedArstall(soknad.sendtTilNAVDato)}`
         : "";
-    }
-    case Soknadstype.BEHANDLINGSDAGER:
-    case Soknadstype.ARBEIDSTAKERE: {
-      switch (soknad.status) {
-        case Soknadstatus.UTKAST_TIL_KORRIGERING:
-        case Soknadstatus.NY: {
-          return soknad.arbeidsgiver?.navn ?? "";
-        }
-        case Soknadstatus.SENDT:
-        case Soknadstatus.TIL_SENDING: {
-          return sendtTilBeggeMenIkkeSamtidig ? (
-            <SendtUlikt soknad={soknad} />
-          ) : (
-            textSoknadTeaserStatus(
-              `soknad.teaser.status.${soknad.status}${getSendtTilSuffix(
-                soknad
-              )}`,
-              tilLesbarDatoMedArstall(
-                soknad.sendtTilArbeidsgiverDato || soknad.sendtTilNAVDato
-              ),
-              soknad.arbeidsgiver?.navn ?? ""
-            )
-          );
-        }
-        default: {
-          return "";
-        }
-      }
     }
     default: {
       switch (soknad.status) {
-        case Soknadstatus.SENDT:
-        case Soknadstatus.TIL_SENDING: {
+        case Soknadstatus.SENDT: {
           return sendtTilBeggeMenIkkeSamtidig ? (
             <SendtUlikt soknad={soknad} />
           ) : (
@@ -145,37 +83,50 @@ const beregnUndertekst = (soknad: SykepengesoknadDTO) => {
             )
           );
         }
-        case Soknadstatus.NY:
-        case Soknadstatus.UTKAST_TIL_KORRIGERING: {
-          return soknad.arbeidsgiver ? soknad.arbeidsgiver.navn : "";
-        }
         default: {
           return "";
         }
       }
     }
   }
-};
+}
+
+function statusText(soknad: SykepengesoknadDTO): string {
+  return soknadsStatusText(
+    soknad.status,
+    tilLesbarDatoMedArstall(
+      soknad.sendtTilArbeidsgiverDato || soknad.sendtTilNAVDato
+    )
+  );
+}
+
+function soknadsStatusText(soknadStatus: Soknadstatus, dato?: string): string {
+  switch (soknadStatus) {
+    case Soknadstatus.NY:
+      return "Ikke sendt";
+    case Soknadstatus.SENDT:
+      return `Sendt ${dato}`;
+    case Soknadstatus.UTKAST_TIL_KORRIGERING:
+      return "Utkast til endring";
+    case Soknadstatus.UTGAATT:
+      return "Ikke brukt på nett";
+    case Soknadstatus.FREMTIDIG:
+      return "Planlagt";
+    case Soknadstatus.AVBRUTT:
+      return `Avbrutt av deg ${dato}`;
+    default:
+      return "";
+  }
+}
 
 interface Props {
   soknad: SykepengesoknadDTO;
 }
 
-export default function SykepengesoknadTeaser({ soknad }: Props): ReactElement {
-  const visStatus =
-    soknad.status == Soknadstatus.NY ||
-    soknad.status == Soknadstatus.SENDT ||
-    soknad.status == Soknadstatus.AVBRUTT;
+export default function SykepengesoknadListItem({
+  soknad,
+}: Props): ReactElement {
   const undertekst = beregnUndertekst(soknad);
-
-  function statusText(soknad: SykepengesoknadDTO): string {
-    return textSoknadTeaserStatus(
-      `soknad.teaser.status.${soknad.status}`,
-      tilLesbarDatoMedArstall(
-        soknad.sendtTilArbeidsgiverDato || soknad.sendtTilNAVDato
-      )
-    );
-  }
 
   return (
     <Box
@@ -186,17 +137,18 @@ export default function SykepengesoknadTeaser({ soknad }: Props): ReactElement {
         <Heading level="4" size="xsmall" className="mr-4">
           {tittelFromSoknadstype(soknad.soknadstype)}
         </Heading>
-        {visStatus && (
-          <BodyShort size="small" className="ml-4">
-            {statusText(soknad)}
-          </BodyShort>
-        )}
+        <Tag size="small" variant="info" className="w-fit">
+          {statusText(soknad)}
+        </Tag>
       </div>
       <div className="flex flex-row justify-between">
         <div className="flex flex-col gap-2">
           <BodyShort size="small">{`Opprettet ${tilLesbarDatoMedArstall(
             soknad.opprettetDato
           )}`}</BodyShort>
+          {soknad.arbeidsgiver && (
+            <BodyShort size="small">{soknad.arbeidsgiver.navn}</BodyShort>
+          )}
           {undertekst && <BodyShort size="small">{undertekst}</BodyShort>}
           {soknad.soknadstype !== Soknadstype.OPPHOLD_UTLAND && (
             <BodyShort size="small">

@@ -85,7 +85,6 @@ export enum Soknadstype {
 
 export enum Soknadstatus {
   NY = "NY",
-  TIL_SENDING = "TIL_SENDING",
   SENDT = "SENDT",
   FREMTIDIG = "FREMTIDIG",
   UTKAST_TIL_KORRIGERING = "UTKAST_TIL_KORRIGERING",
@@ -113,10 +112,9 @@ export interface SykepengesoknadDTO {
   _erOppdelt?: boolean;
 }
 
-export function isSoknadSendt(soknad: SykepengesoknadDTO) {
+export function erSoknadSendt(soknad: SykepengesoknadDTO) {
   return (
     soknad.status === Soknadstatus.SENDT ||
-    soknad.status === Soknadstatus.TIL_SENDING ||
     soknad.status === Soknadstatus.UTGAATT ||
     soknad.status === Soknadstatus.AVBRUTT
   );

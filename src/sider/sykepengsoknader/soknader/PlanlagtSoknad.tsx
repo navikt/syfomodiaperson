@@ -8,7 +8,7 @@ import {
   Soknadstatus,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { BodyShort, Box, Heading } from "@navikt/ds-react";
+import { BodyShort, Box, Heading, Tag } from "@navikt/ds-react";
 import { tittelFromSoknadstype } from "@/utils/sykepengesoknadUtils";
 
 const texts = {
@@ -20,8 +20,6 @@ function textSoknadStatus(status: Soknadstatus): string | undefined {
   switch (status) {
     case Soknadstatus.FREMTIDIG:
       return "Planlagt";
-    case Soknadstatus.TIL_SENDING:
-      return "Sender...";
     case Soknadstatus.UTKAST_TIL_KORRIGERING:
       return "Utkast til endring";
   }
@@ -49,7 +47,9 @@ export default function PlanlagtSoknad({ soknad }: Props): ReactElement {
           </BodyShort>
         )}
         {soknadStatusText && (
-          <BodyShort size="small">{soknadStatusText}</BodyShort>
+          <Tag size="small" variant="info" className="w-fit">
+            {soknadStatusText}
+          </Tag>
         )}
       </div>
       <Heading size="xsmall">

@@ -11,25 +11,9 @@ import Statuspanel, {
 
 const texts = {
   sendt: "Sendt til Nav",
-  sender: "Sender til Nav",
   dato: "Dato",
   status: "Status",
-};
-
-const { SENDT, TIL_SENDING } = Soknadstatus;
-
-const getStatusTekst = (soknad: SykepengesoknadDTO) => {
-  switch (soknad.status) {
-    case SENDT: {
-      return texts.sendt;
-    }
-    case TIL_SENDING: {
-      return texts.sender;
-    }
-    default: {
-      return "Ukjent status";
-    }
-  }
+  ukjentStatus: "Ukjent status",
 };
 
 interface SendtDatoProps {
@@ -53,18 +37,13 @@ const StatuspanelUtland = (
   statuspanelUtlandProps: StatuspanelUtlandProps
 ): ReactElement => {
   const { soknad } = statuspanelUtlandProps;
-  const tekst = getStatusTekst(soknad);
+  const tekst =
+    soknad.status === Soknadstatus.SENDT ? texts.sendt : texts.ukjentStatus;
   return (
     <Statuspanel>
       <Statusopplysninger>
         <StatusNokkelopplysning tittel={texts.status}>
-          {soknad.status === TIL_SENDING ? (
-            <div>
-              <span>{tekst}</span>
-            </div>
-          ) : (
-            <p>{tekst}</p>
-          )}
+          <p>{tekst}</p>
         </StatusNokkelopplysning>
         <SendtDato soknad={soknad} />
       </Statusopplysninger>

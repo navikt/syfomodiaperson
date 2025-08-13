@@ -6,9 +6,9 @@ import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Sidetopp from "@/components/side/Sidetopp";
-import SoknaderTeasere from "@/sider/sykepengsoknader/soknader/SoknaderTeasere";
+import SoknaderList from "@/sider/sykepengsoknader/soknader/SoknaderList";
 import {
-  isSoknadSendt,
+  erSoknadSendt,
   Soknadstatus,
   Soknadstype,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
@@ -48,7 +48,7 @@ export default function SykepengesoknaderSide(): ReactElement {
     .sort(sorterEtterOpprettetDato);
 
   const sendteSoknader = sykepengesoknader
-    .filter(isSoknadSendt)
+    .filter(erSoknadSendt)
     .sort(sorterEtterPerioder);
 
   const kommendeSoknader = sykepengesoknader
@@ -72,7 +72,7 @@ export default function SykepengesoknaderSide(): ReactElement {
             vis={isError}
           />
           <Sidetopp tittel={texts.sidetittel} />
-          <SoknaderTeasere
+          <SoknaderList
             sykepengesoknader={nyeSoknader}
             tittel={texts.nyeSoknader}
             tomListeTekst={texts.ingenSoknader}
@@ -88,7 +88,7 @@ export default function SykepengesoknaderSide(): ReactElement {
           )}
 
           {sendteSoknader.length > 0 && (
-            <SoknaderTeasere
+            <SoknaderList
               sykepengesoknader={sendteSoknader}
               tittel={texts.tidligereSoknader}
               tomListeTekst={texts.tidligereSoknader}

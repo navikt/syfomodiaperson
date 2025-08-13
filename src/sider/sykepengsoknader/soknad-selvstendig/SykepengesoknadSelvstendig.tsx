@@ -18,15 +18,15 @@ const texts = {
   oppsummering: "Oppsummering",
 };
 
-interface SykepengesoknadSelvstendigProps {
+interface Props {
   soknad: SykepengesoknadDTO;
   sykmelding?: SykmeldingOldFormat;
 }
 
-const SykepengesoknadSelvstendig = ({
+export default function SykepengesoknadSelvstendig({
   soknad,
   sykmelding,
-}: SykepengesoknadSelvstendigProps): ReactElement => {
+}: Props): ReactElement {
   switch (soknad.status) {
     case Soknadstatus.NY:
     case Soknadstatus.FREMTIDIG: {
@@ -64,6 +64,4 @@ const SykepengesoknadSelvstendig = ({
       );
     }
   }
-};
-
-export default SykepengesoknadSelvstendig;
+}
