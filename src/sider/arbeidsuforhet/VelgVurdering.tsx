@@ -7,7 +7,7 @@ const texts = {
   title: "Registrer ny vurdering",
   description: "Her kan du starte en vilkårsvurdering av arbeidsuførhet.",
   description2:
-    'I de fleste saker der vilkåret ikke er oppfylt skal du sende et forhåndsvarsel. Kun dersom utbetaling ikke er igangsatt, eller NAY ber om en innstilling som en del av en større sammensatt vurdering, skal du velge "Innstilling uten forhåndsvarsel".',
+    'I de fleste saker der vilkåret ikke er oppfylt skal du sende et forhåndsvarsel. Kun dersom utbetaling ikke er igangsatt, eller NAY ber om en innstilling som en del av en større sammensatt vurdering, skal du velge "Avslag uten forhåndsvarsel".',
   forhandsvarselButton: "Forhåndsvarsel",
   innstillingUtenForhandsvarselButton: "Avslag uten forhåndsvarsel",
 };
