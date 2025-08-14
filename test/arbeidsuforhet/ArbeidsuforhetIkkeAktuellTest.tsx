@@ -11,7 +11,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
 import { arbeidsuforhetIkkeAktuellPath } from "@/routers/AppRouter";
 import React from "react";
-import { ArbeidsuforhetIkkeAktuellSkjema } from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuellSkjema";
+import ArbeidsuforhetIkkeAktuellSkjema from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuellSkjema";
 import { getIkkeAktuellVurderingDocument } from "./documents";
 
 let queryClient: QueryClient;
