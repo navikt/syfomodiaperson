@@ -1,39 +1,38 @@
 <!DOCTYPE html>
 <html lang="no">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
     <title>Sykefravær</title>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
     <% if (process.env.NODE_ENV !== 'development') { %>
     <script src="https://cdn.nav.no/personoversikt/internarbeidsflate-decorator-v3/prod/latest/dist/bundle.js"></script>
     <link
-      rel="stylesheet"
       href="https://cdn.nav.no/personoversikt/internarbeidsflate-decorator-v3/prod/latest/dist/index.css"
+      rel="stylesheet"
     />
     <% } %>
     <% if (process.env.NODE_ENV === 'development') { %>
     <script src="https://cdn.nav.no/personoversikt/internarbeidsflate-decorator-v3/dev/latest/dist/bundle.js"></script>
     <link
-      rel="stylesheet"
       href="https://cdn.nav.no/personoversikt/internarbeidsflate-decorator-v3/dev/latest/dist/index.css"
+      rel="stylesheet"
     />
     <% } %>
 
     <% if (process.env.NAIS_CONTEXT === 'prod') { %>
       <script
-        defer
-        src="https://cdn.nav.no/team-researchops/sporing/sporing.js"
         data-host-url="https://umami.nav.no"
-        data-website-id="d9c74695-30bc-47e9-b751-bebd1c7472a0">
+        data-website-id="d9c74695-30bc-47e9-b751-bebd1c7472a0"
+        defer
+        src="https://cdn.nav.no/team-researchops/sporing/sporing.js">
       </script>
-    <% } %>
-    <% if (process.env.NAIS_CONTEXT === 'dev') { %>
+    <% } else if (process.env.NAIS_CONTEXT === 'dev') { %>
       <script
-        defer
-        src="https://cdn.nav.no/team-researchops/sporing/sporing.js"
         data-host-url="https://umami.nav.no"
-        data-website-id="e75681f5-0a2a-4061-8800-cfa36c982730">
+        data-website-id="e75681f5-0a2a-4061-8800-cfa36c982730"
+        defer
+        src="https://cdn.nav.no/team-researchops/sporing/sporing.js">
       </script>
     <% } %>
 
@@ -41,8 +40,8 @@
   <body>
     <div id="header"></div>
 
-    <div id="maincontent" class="app app--laster" tabindex="-1">
-      <div class="app-spinner" aria-label="Vent litt mens siden laster"></div>
+    <div class="app app--laster" id="maincontent" tabindex="-1">
+      <div aria-label="Vent litt mens siden laster" class="app-spinner"></div>
     </div>
   </body>
 </html>

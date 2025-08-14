@@ -109,7 +109,7 @@ spec:
     - "https://syfomodiaperson.ansatt.dev.nav.no"
   env:
     - name: NAIS_CONTEXT
-      value: 'dev'
+      value: "dev"
     - name: NODE_ENV
       value: "production"
     - name: AUTH_REDIRECT_URI

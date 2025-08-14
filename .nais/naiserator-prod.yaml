@@ -108,7 +108,7 @@ spec:
     - "https://syfomodiaperson.intern.nav.no"
   env:
     - name: NAIS_CONTEXT
-      value: 'prod'
+      value: "prod"
     - name: NODE_ENV
       value: "production"
     - name: AUTH_REDIRECT_URI
