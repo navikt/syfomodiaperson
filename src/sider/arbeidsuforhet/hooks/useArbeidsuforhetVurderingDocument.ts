@@ -24,6 +24,10 @@ type ForhandsvarselDocumentValues = {
 
 type OppfyltDocumentValues = {
   begrunnelse: string;
+};
+
+type OppfyltEtterForhandsvarselDocumentValues = {
+  begrunnelse: string;
   forhandsvarselSendtDato: Date;
 };
 
@@ -48,6 +52,9 @@ export const useArbeidsuforhetVurderingDocument = (): {
     values: ForhandsvarselDocumentValues
   ): DocumentComponentDto[];
   getOppfyltDocument(values: OppfyltDocumentValues): DocumentComponentDto[];
+  getOppfyltEtterForhandsvarselDocument(
+    values: OppfyltEtterForhandsvarselDocumentValues
+  ): DocumentComponentDto[];
   getAvslagDocument(
     values: AvslagDocumentValues,
     forhandsvarselDate: Date
@@ -126,24 +133,37 @@ export const useArbeidsuforhetVurderingDocument = (): {
     return documentComponents;
   };
 
-  const getOppfyltDocument = ({
-    begrunnelse,
-    forhandsvarselSendtDato,
-  }: OppfyltDocumentValues) => {
-    const documentComponents = [
+  function getOppfyltDocument({ begrunnelse }: OppfyltDocumentValues) {
+    return [
       createHeaderH1(arbeidsuforhetTexts.header),
       getIntroGjelder(),
-      createParagraph(
-        arbeidsuforhetTexts.previousForhandsvarsel(forhandsvarselSendtDato)
-      ),
-      createParagraph(arbeidsuforhetTexts.forAFaSykepenger),
       createParagraph(begrunnelse),
       createParagraph(arbeidsuforhetTexts.viHarBruktLoven),
+      getVurdertAv(),
     ];
-    documentComponents.push(getVurdertAv());
+  }
 
-    return documentComponents;
-  };
+  function getOppfyltEtterForhandsvarselDocument({
+    begrunnelse,
+    forhandsvarselSendtDato,
+  }: OppfyltEtterForhandsvarselDocumentValues) {
+    const documentComponents = [
+      createHeaderH1(arbeidsuforhetTexts.tilSykmeldt.header),
+      getIntroGjelder(),
+      createParagraph(
+        arbeidsuforhetTexts.tilSykmeldt.previousForhandsvarsel(
+          forhandsvarselSendtDato
+        )
+      ),
+      createParagraph(arbeidsuforhetTexts.tilSykmeldt.forAFaSykepenger),
+    ];
+    return [
+      ...documentComponents,
+      createParagraph(begrunnelse),
+      createParagraph(arbeidsuforhetTexts.tilSykmeldt.viHarBruktLoven),
+      getVurdertAv(),
+    ];
+  }
 
   const getIkkeAktuellDocument = ({ arsak }: IkkeAktuellDocumentValues) => {
     return [
@@ -204,6 +224,7 @@ export const useArbeidsuforhetVurderingDocument = (): {
   return {
     getForhandsvarselDocument,
     getOppfyltDocument,
+    getOppfyltEtterForhandsvarselDocument,
     getAvslagDocument,
     getIkkeAktuellDocument,
     getInnstillingUtenForhandsvarselDocument:

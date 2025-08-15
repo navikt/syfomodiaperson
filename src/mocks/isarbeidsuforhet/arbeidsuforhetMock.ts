@@ -91,12 +91,14 @@ const getOppfyltDocument = (
     },
     {
       texts: [
-        arbeidsuforhetTexts.previousForhandsvarsel(forhandsvarselSendtDato),
+        arbeidsuforhetTexts.tilSykmeldt.previousForhandsvarsel(
+          forhandsvarselSendtDato
+        ),
       ],
       type: DocumentComponentType.PARAGRAPH,
     },
     {
-      texts: [arbeidsuforhetTexts.forAFaSykepenger],
+      texts: [arbeidsuforhetTexts.tilSykmeldt.forAFaSykepenger],
       type: DocumentComponentType.PARAGRAPH,
     },
     {

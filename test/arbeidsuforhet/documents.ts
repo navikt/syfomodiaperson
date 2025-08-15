@@ -9,7 +9,7 @@ import {
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
 import { getForhandsvarselArbeidsuforhetTexts } from "@/sider/arbeidsuforhet/data/arbeidsuforhetDocumentTexts";
-import { daysFromToday } from "../testUtils";
+import { weeksFromToday } from "../testUtils";
 import {
   arsakTexts,
   VurderingArsak,
@@ -82,9 +82,40 @@ export const getSendForhandsvarselDocument = (
   ];
 };
 
-export const getOppfyltVurderingDocument = (
+export function getOppfyltDocument(
   begrunnelse: string
-): DocumentComponentDto[] => {
+): DocumentComponentDto[] {
+  return [
+    {
+      texts: ["Vilkår i § 8-4 er oppfylt"],
+      type: DocumentComponentType.HEADER_H1,
+    },
+    {
+      texts: [
+        `Gjelder ${ARBEIDSTAKER_DEFAULT_FULL_NAME}, f.nr. ${ARBEIDSTAKER_DEFAULT.personIdent}.`,
+      ],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [begrunnelse],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [
+        `Vi har brukt folketrygdloven § 8-4 første ledd når vi har behandlet saken.`,
+      ],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: [`Vurdert av ${VEILEDER_DEFAULT.fulltNavn()}`],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+  ];
+}
+
+export function getOppfyltEtterForhandsvarselDocument(
+  begrunnelse: string
+): DocumentComponentDto[] {
   return [
     {
       texts: ["Du har rett til videre utbetaling av sykepenger"],
@@ -99,7 +130,7 @@ export const getOppfyltVurderingDocument = (
     {
       texts: [
         `I forhåndsvarsel av ${tilDatoMedManedNavn(
-          daysFromToday(-40)
+          weeksFromToday(-12)
         )} ble du informert om at Nav vurderte å avslå dine sykepenger. Vi har nå vurdert at vilkåret om arbeidsuførhet er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
@@ -125,7 +156,7 @@ export const getOppfyltVurderingDocument = (
       type: DocumentComponentType.PARAGRAPH,
     },
   ];
-};
+}
 
 export const getAvslagVurderingDocument = (
   begrunnelse: string,

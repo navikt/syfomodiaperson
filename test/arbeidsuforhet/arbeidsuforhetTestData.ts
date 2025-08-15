@@ -29,7 +29,7 @@ export const createForhandsvarsel = ({
     document: getSendForhandsvarselDocument("begrunnelse"),
     varsel: {
       uuid: "654",
-      createdAt: new Date(),
+      createdAt: createdAt,
       svarfrist,
       isExpired: svarfrist <= new Date(),
     },
