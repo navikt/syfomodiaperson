@@ -12,6 +12,7 @@ import {
   Box,
   Button,
   Heading,
+  List,
   Radio,
   RadioGroup,
 } from "@navikt/ds-react";
@@ -29,6 +30,12 @@ const texts = {
     "Når du trykker Lagre journalføres vurderingen automatisk og hendelsen fjernes fra oversikten.",
   arsakLegend: "Årsak (obligatorisk)",
   missingArsak: "Vennligst angi årsak",
+  forDuGarVidere: {
+    head: "Før du går videre bør du gjøre følgende:",
+    step1: "Informere bruker om utfallet av vurderingen.",
+    step2:
+      "Besvare Gosys-oppgaven dersom Nav Arbeid og ytelser ba om vurderingen.",
+  },
   lagreButton: "Lagre",
   avbrytButton: "Avbryt",
   success:
@@ -39,7 +46,7 @@ interface SkjemaValues {
   arsak: VurderingArsak;
 }
 
-export const ArbeidsuforhetIkkeAktuellSkjema = () => {
+export default function ArbeidsuforhetIkkeAktuellSkjema() {
   const sendVurdering = useSaveVurderingArbeidsuforhet();
   const { setNotification } = useNotification();
   const { getIkkeAktuellDocument } = useArbeidsuforhetVurderingDocument();
@@ -92,6 +99,10 @@ export const ArbeidsuforhetIkkeAktuellSkjema = () => {
         {sendVurdering.isError && (
           <SkjemaInnsendingFeil error={sendVurdering.error} />
         )}
+        <List as="ol" size="small" title={texts.forDuGarVidere.head}>
+          <List.Item>{texts.forDuGarVidere.step1}</List.Item>
+          <List.Item>{texts.forDuGarVidere.step2}</List.Item>
+        </List>
         <BodyShort size="small" textColor="subtle">
           {texts.description}
         </BodyShort>
@@ -106,4 +117,4 @@ export const ArbeidsuforhetIkkeAktuellSkjema = () => {
       </form>
     </Box>
   );
-};
+}
