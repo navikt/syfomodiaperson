@@ -7,9 +7,6 @@ import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Historikk from "@/sider/historikk/Historikk";
 import { Infomelding } from "@/components/Infomelding";
 import { useHistorikk } from "@/hooks/historikk/useHistorikk";
-import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
-import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import HistorikkFlexjar from "@/sider/historikk/flexjar/HistorikkFlexjar";
 
 const texts = {
   topp: "Historikk",
@@ -29,24 +26,11 @@ export default function HistorikkContainer(): ReactElement {
     isLoading: isTilfellerLoading,
     isError: isTilfellerError,
   } = useOppfolgingstilfellePersonQuery();
-  const { toggles } = useFeatureToggles();
-
-  const { storedValue: flexjarFeedbackDate } = useLocalStorageState<Date>(
-    StoreKey.FLEXJAR_HISTORIKK_DATE
-  );
-  const hasGivenFeedback = !!flexjarFeedbackDate;
-  const isFlexjarVisible =
-    toggles.isHistorikkFlexjarEnabled && !hasGivenFeedback;
-
   const tilfeller = tilfellerDescendingStart || [];
   const ingenHistorikk = tilfeller.length === 0 || events.length === 0;
 
   return (
-    <Side
-      tittel={texts.pageTitle}
-      aktivtMenypunkt={Menypunkter.HISTORIKK}
-      flexjar={isFlexjarVisible && !ingenHistorikk && <HistorikkFlexjar />}
-    >
+    <Side tittel={texts.pageTitle} aktivtMenypunkt={Menypunkter.HISTORIKK}>
       <SideLaster
         henter={isLoading || isTilfellerLoading}
         hentingFeilet={isError || isTilfellerError}
