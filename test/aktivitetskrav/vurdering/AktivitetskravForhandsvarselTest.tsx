@@ -247,7 +247,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
 
       expect(
         screen.getByRole("heading", {
-          name: "Skriv innstilling om stans til NAY",
+          name: "Skriv innstilling om stans til Nav arbeid og ytelser",
         })
       ).to.exist;
     });

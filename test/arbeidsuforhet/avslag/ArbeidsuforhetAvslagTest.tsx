@@ -52,7 +52,11 @@ describe("AvslagSide", () => {
 
       renderArbeidsuforhetAvslagSide();
 
-      expect(screen.getByText("Skriv innstilling om avslag til NAY")).to.exist;
+      expect(
+        screen.getByText(
+          "Skriv innstilling om avslag til Nav arbeid og ytelser"
+        )
+      ).to.exist;
     });
 
     it("redirect to arbeidsuforhet page if latest arbeidsuforhet status is forhandsvarsel and frist is not utgatt", () => {

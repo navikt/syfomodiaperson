@@ -43,7 +43,11 @@ describe("AvslagForm", () => {
 
       renderAvslagForm();
 
-      expect(screen.getByText("Skriv innstilling om avslag til NAY")).to.exist;
+      expect(
+        screen.getByText(
+          "Skriv innstilling om avslag til Nav arbeid og ytelser"
+        )
+      ).to.exist;
       expect(screen.getByText("Innstillingen gjelder fra")).to.exist;
       expect(
         screen.getByText("Skriv kort hvilke opplysninger", { exact: false })
