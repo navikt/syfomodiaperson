@@ -18,8 +18,8 @@ export interface VedtakResponseDTO {
   infotrygdStatus: InfotrygdStatus;
   ferdigbehandletAt?: Date;
   ferdigbehandletBy?: string;
-  isJournalfort: Boolean;
-  hasGosysOppgave: Boolean;
+  isJournalfort: boolean;
+  hasGosysOppgave: boolean;
 }
 
 export enum InfotrygdStatus {
