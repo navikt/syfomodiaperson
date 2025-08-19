@@ -3,13 +3,11 @@ import Statuspanel, {
   StatusNokkelopplysning,
   Statusopplysninger,
 } from "../../../components/speiling/Statuspanel";
-import Sykepengetekst from "../../../utils/soknad-felles/Sykepengetekst";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import SoknadStatustekst from "@/utils/soknad-felles/SoknadStatustekst";
 
 const texts = {
   status: "Status",
-  tittel: "Utbetaling av sykepenger",
 };
 
 interface StatusOgSykepengeopplysningerProps {
@@ -24,9 +22,6 @@ const StatusOgSykepengeopplysninger = (
     <Statusopplysninger>
       <StatusNokkelopplysning tittel={texts.status}>
         <SoknadStatustekst soknad={soknad} />
-      </StatusNokkelopplysning>
-      <StatusNokkelopplysning tittel={texts.tittel}>
-        <Sykepengetekst soknad={soknad} />
       </StatusNokkelopplysning>
     </Statusopplysninger>
   );
