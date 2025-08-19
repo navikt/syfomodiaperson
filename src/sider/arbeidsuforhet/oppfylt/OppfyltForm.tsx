@@ -143,9 +143,13 @@ export default function OppfyltForm() {
         {sendVurdering.isError && (
           <SkjemaInnsendingFeil error={sendVurdering.error} />
         )}
-        {isSisteVurderingForhandsvarsel && (
+        {isSisteVurderingForhandsvarsel ? (
           <List as="ol" size="small" title={texts.forDuGarVidere.head}>
             <List.Item>{texts.forDuGarVidere.step1}</List.Item>
+            <List.Item>{texts.forDuGarVidere.step2}</List.Item>
+          </List>
+        ) : (
+          <List as="ul" size="small" title={texts.forDuGarVidere.head}>
             <List.Item>{texts.forDuGarVidere.step2}</List.Item>
           </List>
         )}
