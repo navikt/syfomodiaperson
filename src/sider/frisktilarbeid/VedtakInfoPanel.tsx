@@ -9,7 +9,11 @@ const texts = {
   aktivtVedtak: "Aktivt vedtak",
   tidligereVedtak: "Tidligere vedtak",
   gosysOppgaveSendt: "Gosys oppgaven er automatisk sendt til NAY.",
+  gosysOppgaveIkkeSendt:
+    "Sending av Gosys oppgaven til NAY feilet. Systemet vil forsøke å sende den på nytt i løpet av noen minutter.",
   vedtakJournalfort: "Vedtaket er journalført i Gosys.",
+  vedtakIkkeJournalfort:
+    "Journalføring av vedtaket feilet. System vil forsøke på nytt i løpet av noen minutter.",
 };
 
 function isActiveExistingVedtak(vedtak: VedtakResponseDTO): boolean {
@@ -67,7 +71,11 @@ export default function VedtakInfoPanel({ vedtak, className }: Props) {
             fontSize="1.5rem"
           />
         )}
-        <BodyShort>{texts.gosysOppgaveSendt}</BodyShort>
+        <BodyShort>
+          {vedtak.hasGosysOppgave
+            ? texts.gosysOppgaveSendt
+            : texts.gosysOppgaveIkkeSendt}
+        </BodyShort>
       </div>
       <div className="flex flex-row gap-2">
         {vedtak.isJournalfort ? (
@@ -85,7 +93,11 @@ export default function VedtakInfoPanel({ vedtak, className }: Props) {
             fontSize="1.5rem"
           />
         )}
-        <BodyShort>{texts.vedtakJournalfort}</BodyShort>
+        <BodyShort>
+          {vedtak.isJournalfort
+            ? texts.vedtakJournalfort
+            : texts.vedtakIkkeJournalfort}
+        </BodyShort>
       </div>
     </Box>
   );
