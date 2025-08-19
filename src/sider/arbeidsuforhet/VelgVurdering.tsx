@@ -45,15 +45,13 @@ export default function VelgVurdering() {
             {texts.innstillingUtenForhandsvarselButton}
           </Button>
         )}
-        {toggles.isInnstillingUtenForhandsvarselArbeidsuforhetEnabled && (
-          <Button
-            as="a"
-            variant="secondary"
-            onClick={() => navigate(`${arbeidsuforhetPath}/oppfylt`)}
-          >
-            {texts.oppfyltButton}
-          </Button>
-        )}
+        <Button
+          as="a"
+          variant="secondary"
+          onClick={() => navigate(`${arbeidsuforhetPath}/oppfylt`)}
+        >
+          {texts.oppfyltButton}
+        </Button>
       </div>
     </Box>
   );
