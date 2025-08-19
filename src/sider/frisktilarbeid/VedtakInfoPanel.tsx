@@ -1,5 +1,5 @@
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
-import { CheckmarkCircleIcon } from "@navikt/aksel-icons";
+import { CheckmarkCircleIcon, XMarkIcon } from "@navikt/aksel-icons";
 import React from "react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
@@ -52,19 +52,39 @@ export default function VedtakInfoPanel({ vedtak, className }: Props) {
         </BodyShort>
       </div>
       <div className="flex flex-row gap-2">
-        <CheckmarkCircleIcon
-          color="green"
-          title="a11y-title"
-          fontSize="1.5rem"
-        />
+        {vedtak.hasGosysOppgave ? (
+          <CheckmarkCircleIcon
+            data-testid="gosys-icon-true"
+            color="green"
+            title="a11y-title"
+            fontSize="1.5rem"
+          />
+        ) : (
+          <XMarkIcon
+            data-testid="gosys-icon-false"
+            color="red"
+            title="a11y-title"
+            fontSize="1.5rem"
+          />
+        )}
         <BodyShort>{texts.gosysOppgaveSendt}</BodyShort>
       </div>
       <div className="flex flex-row gap-2">
-        <CheckmarkCircleIcon
-          color="green"
-          title="a11y-title"
-          fontSize="1.5rem"
-        />
+        {vedtak.isJournalfort ? (
+          <CheckmarkCircleIcon
+            data-testid="journal-icon-true"
+            color="green"
+            title="a11y-title"
+            fontSize="1.5rem"
+          />
+        ) : (
+          <XMarkIcon
+            data-testid="journal-icon-false"
+            color="red"
+            title="a11y-title"
+            fontSize="1.5rem"
+          />
+        )}
         <BodyShort>{texts.vedtakJournalfort}</BodyShort>
       </div>
     </Box>
