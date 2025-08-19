@@ -19,21 +19,17 @@ const texts = {
 
 interface Props {
   kandidat: SenOppfolgingKandidatResponseDTO;
-  setIsSubmitted: (isSubmitted: boolean) => void;
 }
 
-export function NewVurderingForm({ kandidat, setIsSubmitted }: Props) {
+export default function NewVurderingForm({ kandidat }: Props) {
   const vurderKandidat = useVurderSenOppfolgingKandidat(kandidat.uuid);
   const [begrunnelse, setBegrunnelse] = useState<string>();
 
   function handleOnSubmit() {
-    vurderKandidat.mutate(
-      {
-        type: SenOppfolgingVurderingType.FERDIGBEHANDLET,
-        begrunnelse: begrunnelse,
-      },
-      { onSuccess: () => setIsSubmitted(true) }
-    );
+    vurderKandidat.mutate({
+      type: SenOppfolgingVurderingType.FERDIGBEHANDLET,
+      begrunnelse: begrunnelse,
+    });
   }
 
   return (

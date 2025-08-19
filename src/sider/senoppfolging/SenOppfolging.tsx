@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { KandidatSvar } from "@/sider/senoppfolging/KandidatSvar";
 import { VurdertKandidat } from "@/sider/senoppfolging/VurdertKandidat";
@@ -8,13 +8,10 @@ import {
   SenOppfolgingVurderingType,
 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { VeiledningRutine } from "@/sider/senoppfolging/VeiledningRutine";
-import { NewVurderingForm } from "@/sider/senoppfolging/NewVurderingForm";
+import NewVurderingForm from "@/sider/senoppfolging/NewVurderingForm";
 import OvingssideLink from "@/sider/senoppfolging/OvingssideLink";
 import { KandidatIkkeSvart } from "@/sider/senoppfolging/KandidatIkkeSvart";
 import { isVarselUbesvart } from "@/utils/senOppfolgingUtils";
-import SenFaseFlexjar from "@/sider/senoppfolging/flexjar/SenFaseFlexjar";
-import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Sidetopp from "@/components/side/Sidetopp";
 import Side from "@/components/side/Side";
@@ -32,8 +29,6 @@ export default function SenOppfolging(): ReactElement {
     isError,
     isPending,
   } = useSenOppfolgingKandidatQuery();
-  const [isVurderingSubmitted, setIsVurderingSubmitted] =
-    useState<boolean>(false);
   const [kandidat, ...tidligereKandidater] = kandidater;
   const svar = kandidat?.svar;
   const varselAt = kandidat?.varselAt;
@@ -43,19 +38,8 @@ export default function SenOppfolging(): ReactElement {
     (vurdering) => vurdering.type === SenOppfolgingVurderingType.FERDIGBEHANDLET
   );
 
-  const { storedValue: flexjarFeedbackDate } = useLocalStorageState<Date>(
-    StoreKey.FLEXJAR_SEN_FASE_FEEDBACK_DATE
-  );
-  const hasGivenFeedback = !!flexjarFeedbackDate;
-  const { toggles } = useFeatureToggles();
-  const showFlexjar = toggles.isSenFaseFlexjarEnabled && !hasGivenFeedback;
-
   return (
-    <Side
-      tittel={texts.title}
-      aktivtMenypunkt={Menypunkter.SENOPPFOLGING}
-      flexjar={isVurderingSubmitted && showFlexjar && <SenFaseFlexjar />}
-    >
+    <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.SENOPPFOLGING}>
       <Sidetopp tittel={texts.title} />
       <SideLaster henter={isPending} hentingFeilet={isError}>
         {kandidat ? (
@@ -68,10 +52,7 @@ export default function SenOppfolging(): ReactElement {
                   <VurdertKandidat vurdering={ferdigbehandletVurdering} />
                 ) : (
                   (svar || isVarselUbesvart(kandidat)) && (
-                    <NewVurderingForm
-                      kandidat={kandidat}
-                      setIsSubmitted={setIsVurderingSubmitted}
-                    />
+                    <NewVurderingForm kandidat={kandidat} />
                   )
                 )}
                 <SenOppfolgingHistorikk historikk={tidligereKandidater} />
