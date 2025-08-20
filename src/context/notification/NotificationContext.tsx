@@ -2,6 +2,7 @@ import React, { ReactNode, useState } from "react";
 
 export interface Notification {
   message: ReactNode;
+  alertVariant?: "info" | "success";
 }
 
 type NotificationProviderProps = {

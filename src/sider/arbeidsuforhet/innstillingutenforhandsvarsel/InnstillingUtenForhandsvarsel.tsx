@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Heading,
-  List,
   Radio,
   RadioGroup,
   Textarea,
@@ -22,7 +21,10 @@ import {
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { useSaveVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSaveVurderingArbeidsuforhet";
 import { useArbeidsuforhetVurderingDocument } from "@/sider/arbeidsuforhet/hooks/useArbeidsuforhetVurderingDocument";
-import { useNotification } from "@/context/notification/NotificationContext";
+import {
+  Notification,
+  useNotification,
+} from "@/context/notification/NotificationContext";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useNavigate } from "react-router";
 import OppgaveSendtFraNayDatepicker from "@/sider/arbeidsuforhet/innstillingutenforhandsvarsel/OppgaveSendtFraNayDatepicker";
@@ -44,13 +46,9 @@ const texts = {
   begrunnelseDescription:
     "Skriv kort hvilke opplysninger som ligger til grunn for avslaget, samt din vurdering av hvorfor vilkåret ikke er oppfylt og vurdering av eventuelle nye opplysninger.",
   missingBegrunnelse: "Vennligst angi begrunnelse",
-  huskGosysMelding: "Send oppgave til Nav Arbeid og ytelser i Gosys:",
-  huskGosysMeldingPunkter: [
-    "Tema: Sykepenger",
-    "Gjelder: Behandle vedtak",
-    "Oppgavetype: Vurder konsekvens for ytelse",
-    "Prioritet: Høy",
-  ],
+  huskGosysMeldingHeading: "Husk å svare på oppgave i Gosys",
+  huskGosysMeldingContent:
+    "For å fullføre prosessen må du svare på oppgaven fra Nav arbeid og ytelser i Gosys.",
   journalforInnstilling: "Journalfør innstilling",
   forhandsvisning: "Forhåndsvisning",
   avbryt: "Avbryt",
@@ -59,6 +57,18 @@ const texts = {
 };
 
 const begrunnelseMaxLength = 5000;
+
+const huskSendTilGosysNotification: Notification = {
+  message: (
+    <>
+      <Heading spacing size="xsmall" level="3">
+        {texts.huskGosysMeldingHeading}
+      </Heading>
+      {texts.huskGosysMeldingContent}
+    </>
+  ),
+  alertVariant: "info",
+};
 
 interface FormValues {
   vurderingInitiertAv: VurderingInitiertAv;
@@ -80,6 +90,7 @@ export default function InnstillingUtenForhandsvarsel() {
     formState: { errors },
     handleSubmit,
   } = formProps;
+
   const submit = (values: FormValues) => {
     const documentProps = {
       vurderingInitiertAv: values.vurderingInitiertAv,
@@ -103,9 +114,11 @@ export default function InnstillingUtenForhandsvarsel() {
     };
     lagreInnstilling.mutate(vurderingRequestDTO, {
       onSuccess: () => {
-        setNotification({
-          message: texts.innstillingenErLagret,
-        });
+        const notification: Notification =
+          values.vurderingInitiertAv === VurderingInitiertAv.NAY
+            ? huskSendTilGosysNotification
+            : { message: texts.innstillingenErLagret, alertVariant: "success" };
+        setNotification(notification);
         navigate(arbeidsuforhetPath);
       },
     });
@@ -157,18 +170,6 @@ export default function InnstillingUtenForhandsvarsel() {
             minRows={3}
             maxLength={begrunnelseMaxLength}
           />
-          <div>
-            <Heading level="4" size="xsmall">
-              {texts.huskGosysMelding}
-            </Heading>
-            <List as="ul" size="small">
-              {texts.huskGosysMeldingPunkter.map((text, index) => (
-                <List.Item key={index} className="mb-2">
-                  {text}
-                </List.Item>
-              ))}
-            </List>
-          </div>
           <BodyLong>{texts.innstillingenJournalfores}</BodyLong>
           {lagreInnstilling.isError && (
             <SkjemaInnsendingFeil error={lagreInnstilling.error} />

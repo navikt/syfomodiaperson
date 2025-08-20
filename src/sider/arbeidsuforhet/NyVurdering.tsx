@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Alert, BodyShort, Box, Button, Heading } from "@navikt/ds-react";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import {
@@ -7,7 +7,10 @@ import {
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
-import { useNotification } from "@/context/notification/NotificationContext";
+import {
+  Notification,
+  useNotification,
+} from "@/context/notification/NotificationContext";
 
 const texts = {
   title: "Arbeidsuførhet",
@@ -33,6 +36,27 @@ const lastVurderingText = (vurderinger: VurderingResponseDTO[]) => {
   }
 };
 
+function NotificationAlert({
+  notification,
+  setIsNotificationVisible,
+}: {
+  notification: Notification;
+  setIsNotificationVisible: (visible: boolean) => void;
+}) {
+  return (
+    <Alert
+      variant={
+        notification.alertVariant ? notification.alertVariant : "success"
+      }
+      closeButton
+      onClose={() => setIsNotificationVisible(false)}
+      className="mb-2"
+    >
+      {notification.message}
+    </Alert>
+  );
+}
+
 interface Props {
   handleClick: () => void;
 }
@@ -40,13 +64,15 @@ interface Props {
 export default function NyVurdering({ handleClick }: Props) {
   const { data: vurderinger } = useGetArbeidsuforhetVurderingerQuery();
   const { notification } = useNotification();
+  const [isNotificationVisible, setIsNotificationVisible] = useState(true);
 
   return (
     <>
-      {notification && (
-        <Alert variant="success" className="mb-2">
-          {notification.message}
-        </Alert>
+      {notification && isNotificationVisible && (
+        <NotificationAlert
+          notification={notification}
+          setIsNotificationVisible={setIsNotificationVisible}
+        />
       )}
       <Box background="surface-default" padding="6">
         <Heading className="mb-4" level="2" size="medium">
