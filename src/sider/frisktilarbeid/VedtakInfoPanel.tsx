@@ -1,5 +1,8 @@
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
-import { CheckmarkCircleIcon, XMarkIcon } from "@navikt/aksel-icons";
+import {
+  CheckmarkCircleIcon,
+  ExclamationmarkTriangleIcon,
+} from "@navikt/aksel-icons";
 import React from "react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
@@ -65,9 +68,9 @@ export default function VedtakInfoPanel({ vedtak, className }: Props) {
             fontSize="1.5rem"
           />
         ) : (
-          <XMarkIcon
+          <ExclamationmarkTriangleIcon
             data-testid="gosys-icon-false"
-            color="red"
+            color="var(--a-icon-warning)"
             title="a11y-title"
             fontSize="1.5rem"
           />
@@ -87,9 +90,9 @@ export default function VedtakInfoPanel({ vedtak, className }: Props) {
             fontSize="1.5rem"
           />
         ) : (
-          <XMarkIcon
+          <ExclamationmarkTriangleIcon
             data-testid="journal-icon-false"
-            color="red"
+            color="var(--a-icon-warning)"
             title="a11y-title"
             fontSize="1.5rem"
           />
