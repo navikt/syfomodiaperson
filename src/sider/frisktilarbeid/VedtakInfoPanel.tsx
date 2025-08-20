@@ -8,12 +8,13 @@ import dayjs from "dayjs";
 const texts = {
   aktivtVedtak: "Aktivt vedtak",
   tidligereVedtak: "Tidligere vedtak",
-  gosysOppgaveSendt: "Gosys oppgaven er automatisk sendt til NAY.",
+  gosysOppgaveSendt:
+    "Gosys-oppgave er automatisk sendt til Nav arbeid og ytelser.",
   gosysOppgaveIkkeSendt:
-    "Sending av Gosys oppgaven til NAY feilet. Systemet vil forsøke å sende den på nytt i løpet av noen minutter.",
+    "Feil ved sending av Gosys-oppgave. Nytt forsøk gjøres automatisk.",
   vedtakJournalfort: "Vedtaket er journalført i Gosys.",
   vedtakIkkeJournalfort:
-    "Journalføring av vedtaket feilet. System vil forsøke på nytt i løpet av noen minutter.",
+    "Feil ved Journalføring av vedtaket. Nytt forsøk gjøres automatisk.",
 };
 
 function isActiveExistingVedtak(vedtak: VedtakResponseDTO): boolean {
