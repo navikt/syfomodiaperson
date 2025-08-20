@@ -20,16 +20,17 @@ const lastVurderingText = (vurderinger: VurderingResponseDTO[]) => {
   if (!lastVurdering) {
     return "Ingen vurderinger har blitt gjort, trykk på 'Start ny vurdering' for å sende forhåndsvarsel";
   }
-  const lastForhandsvarsel = vurderinger.find(
-    (vurdering) => vurdering.type === VurderingType.FORHANDSVARSEL
-  );
-  const lastVurderingType = typeTexts[lastVurdering.type].toLowerCase();
 
-  return `Forrige forhåndsvarsel på 8-4 ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
-    lastForhandsvarsel?.createdAt
-  )} og ${lastVurderingType} ${tilLesbarDatoMedArUtenManedNavn(
-    lastVurdering?.createdAt
-  )}`;
+  if (lastVurdering.type === VurderingType.FORHANDSVARSEL) {
+    return `Forrige forhåndsvarsel på 8-4 ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
+      lastVurdering?.createdAt
+    )}`;
+  } else {
+    const lastVurderingType = typeTexts[lastVurdering.type].toLowerCase();
+    return `Siste vurdering var ${lastVurderingType} og ble gjort ${tilLesbarDatoMedArUtenManedNavn(
+      lastVurdering?.createdAt
+    )}`;
+  }
 };
 
 interface Props {
