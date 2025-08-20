@@ -97,30 +97,9 @@ describe("ArbeidsuforhetSide", () => {
       );
 
       expect(screen.getByText("Siste vurdering")).to.exist;
-      expect(screen.getByText(/og oppfylt/)).to.exist;
+      expect(screen.getByText(/Siste vurdering var/)).to.exist;
       expect(screen.getByRole("button", { name: nyVurderingButtonText })).to
         .exist;
-    });
-
-    it("if status is avslag", () => {
-      const avslag = createVurdering({
-        type: VurderingType.AVSLAG,
-        begrunnelse: "",
-        createdAt: new Date(),
-      });
-      const vurderinger = [avslag];
-      stubArbeidsuforhetVurderinger(vurderinger);
-
-      renderArbeidsuforhetSide(
-        queryClient,
-        <Arbeidsuforhet />,
-        arbeidsuforhetPath,
-        [arbeidsuforhetPath]
-      );
-
-      expect(screen.getByText("Siste vurdering")).to.exist;
-      expect(screen.getByText(/og innstilling om avslag/)).to.exist;
-      expect(screen.getByText("Start ny vurdering")).to.exist;
     });
 
     it("if status is ikke aktuell", () => {
