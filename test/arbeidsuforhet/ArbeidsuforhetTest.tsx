@@ -59,7 +59,7 @@ describe("ArbeidsuforhetSide", () => {
     );
     await clickButton(nyVurderingButtonText);
 
-    expect(screen.getByText("Registrer ny vurdering")).to.exist;
+    expect(screen.getByText("Registrer ny § 8-4 vurdering")).to.exist;
     expect(screen.getByRole("button", { name: "Forhåndsvarsel" })).to.exist;
   });
 

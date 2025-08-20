@@ -59,7 +59,9 @@ describe("Manglendemedvirkning Stans", () => {
 
       renderStansSide();
 
-      expect(screen.getByText("Skriv innstilling om stans til NAY")).to.exist;
+      expect(
+        screen.getByText("Skriv innstilling om stans til Nav arbeid og ytelser")
+      ).to.exist;
       expect(screen.getByText("Når du skriver innstillingen")).to.exist;
       expect(
         screen.getByText(

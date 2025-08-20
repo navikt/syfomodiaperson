@@ -26,7 +26,7 @@ import { Paragraph } from "@/components/Paragraph";
 import dayjs from "dayjs";
 
 const texts = {
-  title: "Skriv innstilling om avslag til NAY",
+  title: "Skriv innstilling om avslag til Nav arbeid og ytelser",
   innstillingInfoLabel: "Når du skriver innstillingen",
   begrunnelseLabel: "Begrunnelse (obligatorisk)",
   begrunnelseDescription:

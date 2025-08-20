@@ -188,7 +188,7 @@ export const useArbeidsuforhetVurderingDocument = (): {
         vurderingInitiertAvText = "Nav-kontoret.";
         break;
       case VurderingInitiertAv.NAY:
-        vurderingInitiertAvText = `Nav arbeid og ytelser. Forespørselen fra NAY om en vurdering ble sendt i Gosys${
+        vurderingInitiertAvText = `Nav arbeid og ytelser. Forespørselen fra Nav arbeid og ytelser om en vurdering ble sendt i Gosys${
           oppgaveFraNayDato
             ? ` ${tilLesbarDatoMedArstall(oppgaveFraNayDato)}.`
             : "."

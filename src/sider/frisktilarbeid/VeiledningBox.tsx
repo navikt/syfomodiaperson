@@ -24,7 +24,7 @@ const texts = {
     sendVedtak:
       "Send vedtak om Friskmelding til arbeidsformidling, med tilpasset begrunnelse",
     sendGosysOppgave:
-      "Modia sender Gosys-oppgave til NAY automatisk i løpet av noen minutter",
+      "Modia sender Gosys-oppgave til Nav arbeid og ytelser automatisk i løpet av noen minutter",
   },
   infoTitle: "Tilleggsinformasjon",
   infoBulletPoints: [

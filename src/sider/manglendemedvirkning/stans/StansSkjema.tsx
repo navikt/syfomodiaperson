@@ -16,7 +16,7 @@ import { StansdatoDatePicker } from "@/sider/manglendemedvirkning/stans/Stansdat
 import { Paragraph } from "@/components/Paragraph";
 
 const texts = {
-  heading: "Skriv innstilling om stans til NAY",
+  heading: "Skriv innstilling om stans til Nav arbeid og ytelser",
   innstillingInfoLabel: "Når du skriver innstillingen",
   innstillingInfoParagraph:
     "Skriv kort hvilke opplysninger som ligger til grunn for stans, samt din vurdering av hvorfor vilkåret ikke er oppfylt og vurdering av eventuelle nye opplysninger.",

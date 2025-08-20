@@ -15,7 +15,7 @@ import { Paragraph } from "@/components/Paragraph";
 const texts = {
   sendInnstilling: "Send",
   avbryt: "Avbryt",
-  title: "Skriv innstilling om stans til NAY",
+  title: "Skriv innstilling om stans til Nav arbeid og ytelser",
   innstillingInfoLabel: "Når du skriver innstillingen",
   innstillingInfoDescription:
     "Skriv kort om hvilke opplysninger som ligger til grunn for stans av sykepenger, samt din vurdering av hvorfor aktivitetsplikten ikke er oppfylt og vurdering av eventuelle nye opplysninger.",
@@ -25,7 +25,7 @@ const texts = {
   },
   afterSendInfo: {
     title: "Videre må du huske å:",
-    gosysoppgave: "Sende oppgave til NAY i Gosys.",
+    gosysoppgave: "Sende oppgave til Nav arbeid og ytelser i Gosys.",
     gosysoppgaveListe: {
       tema: "Tema: Sykepenger",
       gjelder: "Gjelder: Aktivitetskrav",
