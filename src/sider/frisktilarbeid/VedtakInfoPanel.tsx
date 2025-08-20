@@ -9,7 +9,7 @@ const texts = {
   aktivtVedtak: "Aktivt vedtak",
   tidligereVedtak: "Tidligere vedtak",
   gosysOppgaveSendt:
-    "Gosys-oppgave er automatisk sendt til Nav arbeid og ytelser.",
+    "Gosys-oppgave er automatisk sendt til Nav Arbeid og ytelser.",
   gosysOppgaveIkkeSendt:
     "Feil ved sending av Gosys-oppgave. Nytt forsøk gjøres automatisk.",
   vedtakJournalfort: "Vedtaket er journalført i Gosys.",
