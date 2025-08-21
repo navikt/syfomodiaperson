@@ -134,9 +134,9 @@ interface Props {
   selectedOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined;
 }
 
-export const UtdragOppfolgingsplaner = ({
+export default function UtdragOppfolgingsplaner({
   selectedOppfolgingstilfelle,
-}: Props) => {
+}: Props) {
   const {
     aktivePlaner,
     isPending: henterOppfolgingsplaner,
@@ -175,4 +175,4 @@ export const UtdragOppfolgingsplaner = ({
       )}
     </div>
   );
-};
+}

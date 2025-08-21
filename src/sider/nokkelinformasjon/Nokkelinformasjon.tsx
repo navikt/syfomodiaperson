@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import UtdragFraSykefravaeret from "../../components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
-import { Sykmeldingsgrad } from "@/sider/nokkelinformasjon/sykmeldingsgrad/Sykmeldingsgrad";
+import Sykmeldingsgrad from "@/sider/nokkelinformasjon/sykmeldingsgrad/Sykmeldingsgrad";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import Side from "@/components/side/Side";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
@@ -8,18 +8,20 @@ import SideLaster from "@/components/side/SideLaster";
 import { Heading } from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { Tildele } from "@/components/tildele/Tildele";
+import Tildele from "@/components/tildele/Tildele";
 import { TildeltNotification } from "@/components/tildele/oppfolgingsenhet/Oppfolgingsenhet";
-import { TildeltOppfolgingsenhetAlert } from "@/components/tildele/oppfolgingsenhet/TildeltOppfolgingsenhetAlert";
+import TildeltOppfolgingsenhetAlert from "@/components/tildele/oppfolgingsenhet/TildeltOppfolgingsenhetAlert";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 
 const texts = {
   pageTitle: "Nøkkelinformasjon",
 };
 
-export const Nokkelinformasjon = () => {
+export default function Nokkelinformasjon() {
   const { isError: henterSykmeldingerFeilet, isLoading: henterSykmeldinger } =
     useSykmeldingerQuery();
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+  const { toggles } = useFeatureToggles();
 
   const [selectedOppfolgingstilfelle, setSelectedOppfolgingstilfelle] =
     useState<OppfolgingstilfelleDTO | undefined>();
@@ -41,12 +43,16 @@ export const Nokkelinformasjon = () => {
             {texts.pageTitle}
           </Heading>
         </header>
-        <TildeltOppfolgingsenhetAlert
-          tildeltNotification={tildeltNotification}
-        />
-        <Tildele
-          setTildeltOppfolgingsenhetNotification={setTildeltNotification}
-        />
+        {tildeltNotification && (
+          <TildeltOppfolgingsenhetAlert
+            tildeltNotification={tildeltNotification}
+          />
+        )}
+        {toggles.isTildelOppfolgingsenhetEnabled && (
+          <Tildele
+            setTildeltOppfolgingsenhetNotification={setTildeltNotification}
+          />
+        )}
         <Sykmeldingsgrad
           selectedOppfolgingstilfelle={
             selectedOppfolgingstilfelle || latestOppfolgingstilfelle
@@ -61,4 +67,4 @@ export const Nokkelinformasjon = () => {
       </SideLaster>
     </Side>
   );
-};
+}

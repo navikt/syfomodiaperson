@@ -1,6 +1,6 @@
 import React from "react";
 import { finnMiljoStreng } from "@/utils/miljoUtil";
-import { UtdragOppfolgingsplaner } from "./UtdragOppfolgingsplaner";
+import UtdragOppfolgingsplaner from "./UtdragOppfolgingsplaner";
 import { SpinnsynLenke } from "@/components/vedtak/SpinnsynLenke";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { BodyShort, Box, Heading, Link } from "@navikt/ds-react";
@@ -24,7 +24,7 @@ function tilfelleText(start: Date, end: Date, varighet: number) {
   )} (${varighet} uker).`;
 }
 
-export const Samtalereferat = () => {
+function Samtalereferat() {
   const fnr = useValgtPersonident();
   return (
     <div>
@@ -39,13 +39,15 @@ export const Samtalereferat = () => {
       </Link>
     </div>
   );
-};
+}
 
 interface Props {
   selectedOppfolgingstilfelle?: OppfolgingstilfelleDTO;
 }
 
-const UtdragFraSykefravaeret = ({ selectedOppfolgingstilfelle }: Props) => {
+export default function UtdragFraSykefravaeret({
+  selectedOppfolgingstilfelle,
+}: Props) {
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const oppfolgingstilfelle =
     selectedOppfolgingstilfelle || latestOppfolgingstilfelle;
@@ -78,6 +80,4 @@ const UtdragFraSykefravaeret = ({ selectedOppfolgingstilfelle }: Props) => {
       <SpinnsynLenke />
     </Box>
   );
-};
-
-export default UtdragFraSykefravaeret;
+}

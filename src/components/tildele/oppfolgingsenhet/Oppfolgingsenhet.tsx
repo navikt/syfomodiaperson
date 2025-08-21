@@ -1,8 +1,7 @@
-import { Card } from "@/components/Card";
 import TildelOppfolgingsenhetModal from "@/components/tildele/oppfolgingsenhet/TildelOppfolgingsenhetModal";
 import React, { ReactNode, useRef } from "react";
 import { OppfolgingsenhetInnhold } from "@/components/tildele/oppfolgingsenhet/OppfolgingsenhetInnhold";
-import { AlertProps } from "@navikt/ds-react";
+import { AlertProps, Box } from "@navikt/ds-react";
 
 interface Props {
   setTildeltNotification: (
@@ -15,16 +14,16 @@ export interface TildeltNotification extends Pick<AlertProps, "variant"> {
   message: ReactNode;
 }
 
-export const Oppfolgingsenhet = ({ setTildeltNotification }: Props) => {
+export default function Oppfolgingsenhet({ setTildeltNotification }: Props) {
   const tildelOppfolgingsenhetModalRef = useRef<HTMLDialogElement>(null);
 
   return (
-    <Card>
+    <Box background="bg-subtle" borderRadius="large" padding="4">
       <OppfolgingsenhetInnhold modalRef={tildelOppfolgingsenhetModalRef} />
       <TildelOppfolgingsenhetModal
         modalRef={tildelOppfolgingsenhetModalRef}
         setTildeltNotification={setTildeltNotification}
       />
-    </Card>
+    </Box>
   );
-};
+}

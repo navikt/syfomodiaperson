@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
-import { Nokkelinformasjon } from "@/sider/nokkelinformasjon/Nokkelinformasjon";
+import Nokkelinformasjon from "@/sider/nokkelinformasjon/Nokkelinformasjon";
 import { addDays } from "@/utils/datoUtils";
 import {
   ARBEIDSTAKER_DEFAULT,
