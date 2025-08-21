@@ -1,5 +1,8 @@
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
-import { CheckmarkCircleIcon } from "@navikt/aksel-icons";
+import {
+  CheckmarkCircleIcon,
+  ExclamationmarkTriangleIcon,
+} from "@navikt/aksel-icons";
 import React from "react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
@@ -8,8 +11,13 @@ import dayjs from "dayjs";
 const texts = {
   aktivtVedtak: "Aktivt vedtak",
   tidligereVedtak: "Tidligere vedtak",
-  gosysOppgaveSendt: "Gosys oppgaven er automatisk sendt til NAY.",
+  gosysOppgaveSendt:
+    "Gosys-oppgave er automatisk sendt til Nav Arbeid og ytelser.",
+  gosysOppgaveIkkeSendt:
+    "Feil ved sending av Gosys-oppgave. Nytt forsøk gjøres automatisk.",
   vedtakJournalfort: "Vedtaket er journalført i Gosys.",
+  vedtakIkkeJournalfort:
+    "Feil ved Journalføring av vedtaket. Nytt forsøk gjøres automatisk.",
 };
 
 function isActiveExistingVedtak(vedtak: VedtakResponseDTO): boolean {
@@ -52,20 +60,48 @@ export default function VedtakInfoPanel({ vedtak, className }: Props) {
         </BodyShort>
       </div>
       <div className="flex flex-row gap-2">
-        <CheckmarkCircleIcon
-          color="green"
-          title="a11y-title"
-          fontSize="1.5rem"
-        />
-        <BodyShort>{texts.gosysOppgaveSendt}</BodyShort>
+        {vedtak.hasGosysOppgave ? (
+          <CheckmarkCircleIcon
+            data-testid="gosys-icon-true"
+            color="green"
+            title="a11y-title"
+            fontSize="1.5rem"
+          />
+        ) : (
+          <ExclamationmarkTriangleIcon
+            data-testid="gosys-icon-false"
+            color="var(--a-icon-warning)"
+            title="a11y-title"
+            fontSize="1.5rem"
+          />
+        )}
+        <BodyShort>
+          {vedtak.hasGosysOppgave
+            ? texts.gosysOppgaveSendt
+            : texts.gosysOppgaveIkkeSendt}
+        </BodyShort>
       </div>
       <div className="flex flex-row gap-2">
-        <CheckmarkCircleIcon
-          color="green"
-          title="a11y-title"
-          fontSize="1.5rem"
-        />
-        <BodyShort>{texts.vedtakJournalfort}</BodyShort>
+        {vedtak.isJournalfort ? (
+          <CheckmarkCircleIcon
+            data-testid="journal-icon-true"
+            color="green"
+            title="a11y-title"
+            fontSize="1.5rem"
+          />
+        ) : (
+          <ExclamationmarkTriangleIcon
+            data-testid="journal-icon-false"
+            color="var(--a-icon-warning)"
+            title="a11y-title"
+            fontSize="1.5rem"
+          />
+        )}
+        <BodyShort>
+          {vedtak.isJournalfort
+            ? texts.vedtakJournalfort
+            : texts.vedtakIkkeJournalfort}
+        </BodyShort>
       </div>
     </Box>
   );

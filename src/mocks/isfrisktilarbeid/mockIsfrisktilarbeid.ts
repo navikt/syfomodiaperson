@@ -23,6 +23,8 @@ export const defaultVedtak: VedtakResponseDTO = {
   infotrygdStatus: InfotrygdStatus.KVITTERING_OK,
   ferdigbehandletAt: undefined,
   ferdigbehandletBy: undefined,
+  isJournalfort: true,
+  hasGosysOppgave: true,
 };
 
 export const defaultVilkar: VilkarResponseDTO = {
@@ -55,6 +57,8 @@ export const mockIsfrisktilarbeid = [
         infotrygdStatus: InfotrygdStatus.KVITTERING_OK,
         ferdigbehandletAt: undefined,
         ferdigbehandletBy: undefined,
+        isJournalfort: true,
+        hasGosysOppgave: true,
       };
       vedtak = [sentVedtak, ...vedtak];
 

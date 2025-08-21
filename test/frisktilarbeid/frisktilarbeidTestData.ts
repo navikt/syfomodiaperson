@@ -23,6 +23,8 @@ export const createVedtak = (
   infotrygdStatus: InfotrygdStatus.KVITTERING_OK,
   ferdigbehandletAt: ferdigbehandletAt,
   ferdigbehandletBy: ferdigbehandletAt && VEILEDER_DEFAULT.ident,
+  isJournalfort: true,
+  hasGosysOppgave: true,
 });
 
 type ExpectedVedtakDocumentOptions = {
