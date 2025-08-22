@@ -38,7 +38,7 @@ const kanTildeleOppfolgingsenhet = (
   return !isEgenAnsatt && !isKode6 && !isKode7;
 };
 
-export const OppfolgingsenhetInnhold = ({ modalRef }: Props) => {
+export default function OppfolgingsenhetInnhold({ modalRef }: Props) {
   const {
     error,
     data: behandlendeenhet,
@@ -108,4 +108,4 @@ export const OppfolgingsenhetInnhold = ({ modalRef }: Props) => {
       </VStack>
     </HStack>
   );
-};
+}

@@ -1,5 +1,3 @@
-import dayjs from "dayjs";
-import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import React, { ReactElement } from "react";
 import {
   newAndActivatedSykmeldinger,
@@ -13,13 +11,23 @@ import {
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import SyketilfelleList from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleList";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { BodyShort, Box, Heading } from "@navikt/ds-react";
+import { Alert, BodyShort, Box, Heading } from "@navikt/ds-react";
+import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
+import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import {
+  harJobbet,
+  SykepengesoknadDTO,
+} from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import dayjs from "dayjs";
 
 const texts = {
   title: "Sykmeldingsgrad",
   subtitle: "Endringer i sykmeldingsgrad",
   xAxis: "X-akse: måned i tilfellet",
   yAxis: "Y-akse: sykmeldingsgrad",
+  harJobbetUtoverSykmeldingsgrad:
+    "Har jobbet utover sykmeldingsgrad. Se sykepengesøknader for mer informasjon.",
 };
 
 function tilfelleVarighetText(start: Date, end: Date, varighet: number) {
@@ -39,6 +47,7 @@ export default function Sykmeldingsgrad({
   setSelectedOppfolgingstilfelle,
 }: Props) {
   const { sykmeldinger } = useSykmeldingerQuery();
+  const getSykepengesoknader = useSykepengesoknaderQuery();
 
   const newAndUsedSykmeldinger = newAndActivatedSykmeldinger(sykmeldinger);
   const sykmeldingerIOppfolgingstilfellet =
@@ -46,6 +55,20 @@ export default function Sykmeldingsgrad({
       newAndUsedSykmeldinger,
       selectedOppfolgingstilfelle
     );
+
+  function harOpplystOmJobbetIOppfolgingsTilfellet(
+    sykmeldingerIOppfolgingstilfelle: SykmeldingOldFormat[]
+  ): boolean {
+    const sykmeldingIds = new Set(
+      sykmeldingerIOppfolgingstilfelle.map((s) => s.id)
+    );
+    return getSykepengesoknader.data
+      .filter(
+        (soknad) =>
+          soknad.sykmeldingId && sykmeldingIds.has(soknad.sykmeldingId)
+      )
+      .some((soknad: SykepengesoknadDTO) => harJobbet(soknad));
+  }
 
   const perioderListSortert = sykmeldingerIOppfolgingstilfellet
     .flatMap((sykmelding) => sykmelding.mulighetForArbeid.perioder)
@@ -119,12 +142,19 @@ export default function Sykmeldingsgrad({
           )}
         </BodyShort>
       )}
+      {harOpplystOmJobbetIOppfolgingsTilfellet(
+        sykmeldingerIOppfolgingstilfellet
+      ) && (
+        <Alert variant="info" size="small" className="mt-2 w-fit">
+          {texts.harJobbetUtoverSykmeldingsgrad}
+        </Alert>
+      )}
 
       <div className="flex flex-row">
         <ResponsiveContainer width="70%" height={360}>
           <AreaChart
             data={dataBarChart}
-            margin={{ top: 40, right: 30, left: 0, bottom: 0 }}
+            margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
           >
             <YAxis type="number" domain={[0, 100]} tickCount={11} />
             <XAxis
@@ -137,11 +167,9 @@ export default function Sykmeldingsgrad({
           </AreaChart>
         </ResponsiveContainer>
 
-        {
-          <SyketilfelleList
-            changeSelectedTilfelle={setSelectedOppfolgingstilfelle}
-          />
-        }
+        <SyketilfelleList
+          setSelectedTilfelle={setSelectedOppfolgingstilfelle}
+        />
       </div>
 
       <BodyShort size="small">{texts.yAxis}</BodyShort>
