@@ -16,13 +16,11 @@ const texts = {
   title: "Siste sykefravær",
 };
 
-interface SyketilfelleListProps {
+interface Props {
   changeSelectedTilfelle: (value: OppfolgingstilfelleDTO) => void;
 }
 
-export const SyketilfelleList = ({
-  changeSelectedTilfelle,
-}: SyketilfelleListProps) => {
+export default function SyketilfelleList({ changeSelectedTilfelle }: Props) {
   const { tilfellerDescendingStart } = useOppfolgingstilfellePersonQuery();
   const { sykmeldinger } = useSykmeldingerQuery();
 
@@ -46,37 +44,35 @@ export const SyketilfelleList = ({
   };
 
   return (
-    <div>
-      <RadioGroup
-        legend={texts.title}
-        onChange={(value: OppfolgingstilfelleDTO) =>
-          changeSelectedTilfelle(value)
+    <RadioGroup
+      legend={texts.title}
+      onChange={(value: OppfolgingstilfelleDTO) =>
+        changeSelectedTilfelle(value)
+      }
+      size="small"
+      defaultValue={tilfellerDescendingStart[0]}
+    >
+      {tenLatestTilfeller.map(
+        (tilfelle: OppfolgingstilfelleDTO, index: number) => {
+          const diagnose = getDiagnose(tilfelle);
+          return (
+            <div className="flex items-center gap-2" key={index}>
+              <Radio key={index} value={tilfelle}>
+                {tilfelleText(tilfelle)}
+              </Radio>
+              <BodyShort size="small">{`(${tilfelle.varighetUker} uker)`}</BodyShort>
+              {diagnose?.diagnosekode && (
+                <Tooltip content={diagnose.diagnose ?? "Ukjent diagnosenavn"}>
+                  <div className="flex">
+                    <img src={MedisinskrinImage} alt="Medisinskrin" />
+                    <span className="ml-1">{diagnose.diagnosekode}</span>
+                  </div>
+                </Tooltip>
+              )}
+            </div>
+          );
         }
-        size="small"
-        defaultValue={tilfellerDescendingStart[0]}
-      >
-        {tenLatestTilfeller.map(
-          (tilfelle: OppfolgingstilfelleDTO, index: number) => {
-            const diagnose = getDiagnose(tilfelle);
-            return (
-              <div className="flex items-center gap-2" key={index}>
-                <Radio key={index} value={tilfelle}>
-                  {tilfelleText(tilfelle)}
-                </Radio>
-                <BodyShort size="small">{`(${tilfelle.varighetUker} uker)`}</BodyShort>
-                {diagnose?.diagnosekode && (
-                  <Tooltip content={diagnose.diagnose ?? "Ukjent diagnosenavn"}>
-                    <div className="flex">
-                      <img src={MedisinskrinImage} alt="Medisinskrin" />
-                      <span className="ml-1">{diagnose.diagnosekode}</span>
-                    </div>
-                  </Tooltip>
-                )}
-              </div>
-            );
-          }
-        )}
-      </RadioGroup>
-    </div>
+      )}
+    </RadioGroup>
   );
-};
+}

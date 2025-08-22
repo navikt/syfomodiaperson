@@ -11,7 +11,7 @@ import {
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
-import { SyketilfelleList } from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleList";
+import SyketilfelleList from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleList";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
 
@@ -34,10 +34,10 @@ interface Props {
   ) => void;
 }
 
-export const Sykmeldingsgrad = ({
+export default function Sykmeldingsgrad({
   selectedOppfolgingstilfelle,
   setSelectedOppfolgingstilfelle,
-}: Props) => {
+}: Props) {
   const { sykmeldinger } = useSykmeldingerQuery();
 
   const newAndUsedSykmeldinger = newAndActivatedSykmeldinger(sykmeldinger);
@@ -105,7 +105,7 @@ export const Sykmeldingsgrad = ({
   };
 
   return (
-    <Box background="surface-default" padding={"4"} className={"mb-4"}>
+    <Box background="surface-default" padding="4" className="mb-4">
       <Heading size="medium" level="2">
         {texts.title}
       </Heading>
@@ -120,11 +120,11 @@ export const Sykmeldingsgrad = ({
         </BodyShort>
       )}
 
-      <div className={"flex flex-row"}>
+      <div className="flex flex-row">
         <ResponsiveContainer width="70%" height={360}>
           <AreaChart
             data={dataBarChart}
-            margin={{ top: 40, right: 30, left: 0, bottom: 30 }}
+            margin={{ top: 40, right: 30, left: 0, bottom: 0 }}
           >
             <YAxis type="number" domain={[0, 100]} tickCount={11} />
             <XAxis
@@ -148,4 +148,4 @@ export const Sykmeldingsgrad = ({
       <BodyShort size="small">{texts.xAxis}</BodyShort>
     </Box>
   );
-};
+}

@@ -18,7 +18,7 @@ import { PersonsokSide } from "@/components/PersonsokSide";
 import BehandlerdialogContainer from "@/sider/behandlerdialog/BehandlerdialogContainer";
 import * as Amplitude from "@/utils/amplitude";
 import Motelandingsside from "@/sider/dialogmoter/Motelandingsside";
-import { Nokkelinformasjon } from "@/sider/nokkelinformasjon/Nokkelinformasjon";
+import Nokkelinformasjon from "@/sider/nokkelinformasjon/Nokkelinformasjon";
 import FriskmeldingTilArbeidsformidlingSide from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidlingSide";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import DialogmoteEndreReferatContainer from "@/sider/dialogmoter/components/referat/DialogmoteEndreReferatContainer";

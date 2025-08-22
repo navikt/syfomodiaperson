@@ -217,10 +217,10 @@ export const newAndActivatedSykmeldinger = (
   });
 };
 
-export const sykmeldingerInnenforOppfolgingstilfelle = (
+export function sykmeldingerInnenforOppfolgingstilfelle(
   sykmeldinger: SykmeldingOldFormat[],
   oppfolgingstilfelle?: OppfolgingstilfelleDTO
-): SykmeldingOldFormat[] => {
+): SykmeldingOldFormat[] {
   if (!oppfolgingstilfelle) {
     return [];
   }
@@ -235,7 +235,7 @@ export const sykmeldingerInnenforOppfolgingstilfelle = (
       oppfolgingstilfelleEnd.isSameOrAfter(sykmeldingStart, "day")
     );
   });
-};
+}
 
 export function sykmeldingerSortertNyestTilEldstPeriode(
   sykmeldinger: SykmeldingOldFormat[]
