@@ -15,8 +15,8 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { useVirksomhetsnummerOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { TildeltNotification } from "@/components/tildele/oppfolgingsenhet/Oppfolgingsenhet";
 import { useChangeEnhet } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
+import { TildeltNotification } from "@/components/oppfolgingsenhet/Oppfolgingsenhet";
 
 const text = {
   heading: "Endre oppfølgingsenhet",

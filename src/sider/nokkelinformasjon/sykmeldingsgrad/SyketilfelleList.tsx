@@ -17,38 +17,36 @@ const texts = {
 };
 
 interface Props {
-  changeSelectedTilfelle: (value: OppfolgingstilfelleDTO) => void;
+  setSelectedTilfelle: (value: OppfolgingstilfelleDTO) => void;
 }
 
-export default function SyketilfelleList({ changeSelectedTilfelle }: Props) {
+export default function SyketilfelleList({ setSelectedTilfelle }: Props) {
   const { tilfellerDescendingStart } = useOppfolgingstilfellePersonQuery();
   const { sykmeldinger } = useSykmeldingerQuery();
 
   const tenLatestTilfeller = tilfellerDescendingStart?.slice(0, 10);
 
-  const getDiagnose = (
+  function getDiagnose(
     tilfelle: OppfolgingstilfelleDTO
-  ): SykmeldingDiagnose | undefined => {
+  ): SykmeldingDiagnose | undefined {
     const newAndUsedSykmeldinger = newAndActivatedSykmeldinger(sykmeldinger);
     const sykmeldingerIOppfolgingstilfellet =
       sykmeldingerInnenforOppfolgingstilfelle(newAndUsedSykmeldinger, tilfelle);
 
     return getDiagnoseFromLatestSykmelding(sykmeldingerIOppfolgingstilfellet);
-  };
+  }
 
-  const tilfelleText = (tilfelle: OppfolgingstilfelleDTO) => {
+  function tilfelleText(tilfelle: OppfolgingstilfelleDTO) {
     return `${tilLesbarPeriodeMedArUtenManednavn(
       tilfelle.start,
       tilfelle.end
     )}`;
-  };
+  }
 
   return (
     <RadioGroup
       legend={texts.title}
-      onChange={(value: OppfolgingstilfelleDTO) =>
-        changeSelectedTilfelle(value)
-      }
+      onChange={(value: OppfolgingstilfelleDTO) => setSelectedTilfelle(value)}
       size="small"
       defaultValue={tilfellerDescendingStart[0]}
     >
