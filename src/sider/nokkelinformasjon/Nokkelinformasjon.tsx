@@ -8,10 +8,11 @@ import SideLaster from "@/components/side/SideLaster";
 import { Heading } from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import Tildele from "@/components/tildele/Tildele";
-import { TildeltNotification } from "@/components/tildele/oppfolgingsenhet/Oppfolgingsenhet";
-import TildeltOppfolgingsenhetAlert from "@/components/tildele/oppfolgingsenhet/TildeltOppfolgingsenhetAlert";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
+import Oppfolgingsenhet, {
+  TildeltNotification,
+} from "@/components/oppfolgingsenhet/Oppfolgingsenhet";
+import TildeltOppfolgingsenhetAlert from "@/components/oppfolgingsenhet/TildeltOppfolgingsenhetAlert";
 
 const texts = {
   pageTitle: "Nøkkelinformasjon",
@@ -49,7 +50,7 @@ export default function Nokkelinformasjon() {
           />
         )}
         {toggles.isTildelOppfolgingsenhetEnabled && (
-          <Tildele
+          <Oppfolgingsenhet
             setTildeltOppfolgingsenhetNotification={setTildeltNotification}
           />
         )}

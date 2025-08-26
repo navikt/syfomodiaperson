@@ -16,10 +16,10 @@ import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { behandlendeEnhetMockResponse } from "@/mocks/syfobehandlendeenhet/behandlendeEnhetMock";
 import userEvent from "@testing-library/user-event";
-import TildelOppfolgingsenhetModal from "@/components/tildele/oppfolgingsenhet/TildelOppfolgingsenhetModal";
 import { mockServer } from "../../../setup";
 import { mockGetMuligeTildelinger } from "@/mocks/syfobehandlendeenhet/mockSyfobehandlendeenhet";
 import { virksomhetQueryKeys } from "@/data/virksomhet/virksomhetQueryHooks";
+import TildelOppfolgingsenhetModal from "@/components/oppfolgingsenhet/TildelOppfolgingsenhetModal";
 
 let queryClient: QueryClient;
 
