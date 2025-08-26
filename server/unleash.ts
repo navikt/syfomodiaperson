@@ -31,7 +31,7 @@ export const unleash = initialize({
   strategies: [new VeilederIds(), new EnhetIds()],
 });
 
-export const getToggles = (veilederId, enhetId) => {
+export function getToggles(veilederId, enhetId) {
   const context = {
     veilederId: veilederId,
     enhetId: enhetId,
@@ -49,5 +49,9 @@ export const getToggles = (veilederId, enhetId) => {
       "isInnstillingUtenForhandsvarselArbeidsuforhetEnabled",
       context
     ),
+    isKartleggingssporsmalEnabled: unleash.isEnabled(
+      "isKartleggingssporsmalEnabled",
+      context
+    ),
   };
-};
+}
