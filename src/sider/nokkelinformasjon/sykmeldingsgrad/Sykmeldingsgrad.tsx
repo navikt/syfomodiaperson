@@ -1,13 +1,9 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import {
   newAndActivatedSykmeldinger,
   sykmeldingerInnenforOppfolgingstilfelle,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
-import {
-  dagerMellomDatoer,
-  getDatoKomponenter,
-  tilLesbarPeriodeMedArstall,
-} from "@/utils/datoUtils";
+import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
 import SyketilfelleList from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleList";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
@@ -18,8 +14,7 @@ import {
   harJobbet,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import dayjs from "dayjs";
+import SykmeldingsgradChart from "@/sider/nokkelinformasjon/sykmeldingsgrad/SykmeldingsgradChart";
 
 const texts = {
   title: "Sykmeldingsgrad",
@@ -50,13 +45,13 @@ export default function Sykmeldingsgrad({
   const getSykepengesoknader = useSykepengesoknaderQuery();
 
   const newAndUsedSykmeldinger = newAndActivatedSykmeldinger(sykmeldinger);
-  const sykmeldingerIOppfolgingstilfellet =
+  const sykmeldingerIOppfolgingstilfelle =
     sykmeldingerInnenforOppfolgingstilfelle(
       newAndUsedSykmeldinger,
       selectedOppfolgingstilfelle
     );
 
-  function harOpplystOmJobbetIOppfolgingsTilfellet(
+  function harOpplystOmJobbetIOppfolgingstilfelle(
     sykmeldingerIOppfolgingstilfelle: SykmeldingOldFormat[]
   ): boolean {
     const sykmeldingIds = new Set(
@@ -70,62 +65,9 @@ export default function Sykmeldingsgrad({
       .some((soknad: SykepengesoknadDTO) => harJobbet(soknad));
   }
 
-  const perioderListSortert = sykmeldingerIOppfolgingstilfellet
+  const sortedSykmeldingsperioder = sykmeldingerIOppfolgingstilfelle
     .flatMap((sykmelding) => sykmelding.mulighetForArbeid.perioder)
     .sort((a, b) => a.fom.getTime() - b.fom.getTime());
-
-  const varighetOppfolgingstilfelle =
-    perioderListSortert.length === 0
-      ? 0
-      : dagerMellomDatoer(
-          perioderListSortert[0].fom,
-          perioderListSortert[perioderListSortert.length - 1].tom
-        );
-  const oneYearInDays = 52 * 7;
-  const DAYS_IN_GRAPH =
-    varighetOppfolgingstilfelle > oneYearInDays
-      ? varighetOppfolgingstilfelle
-      : oneYearInDays;
-  const sykmeldingsgradPerDay = new Int32Array(DAYS_IN_GRAPH);
-
-  perioderListSortert.forEach((periode) => {
-    const dayZero = perioderListSortert[0].fom;
-    const daysInPeriode = dagerMellomDatoer(periode.fom, periode.tom);
-
-    for (let i = 0; i < daysInPeriode; i++) {
-      const dayCount = dagerMellomDatoer(dayZero, periode.fom) + i;
-      sykmeldingsgradPerDay[dayCount] = periode.grad || 100;
-    }
-  });
-
-  const dataBarChart = [...sykmeldingsgradPerDay].map(
-    (grad: number, index: number) => {
-      return {
-        grad,
-        x: index,
-      };
-    }
-  );
-
-  const renderTick = (tickProps: any): ReactElement<SVGElement> => {
-    const { x, y, payload } = tickProps;
-    const dayCount = payload.value;
-    if (perioderListSortert == null || perioderListSortert.length < 1)
-      return <div></div>;
-    const dayZero = perioderListSortert[0].fom;
-    const currentDate = dayjs(dayZero).add(dayCount, "days").toDate();
-    if (currentDate.getDate() === 1) {
-      const pathX = Math.floor(x - payload.offset) + 0.5;
-      return <path d={`M${pathX},${y + 8}v${-15}`} stroke="grey" />;
-    } else if (currentDate.getDate() === 15) {
-      return (
-        <text x={x} y={y + 8} textAnchor="middle" fill="#666">
-          {getDatoKomponenter(currentDate).maaned.substring(0, 3)}
-        </text>
-      );
-    }
-    return <div></div>;
-  };
 
   return (
     <Box background="surface-default" padding="4" className="mb-4">
@@ -133,7 +75,7 @@ export default function Sykmeldingsgrad({
         {texts.title}
       </Heading>
       <BodyShort size="small">{texts.subtitle}</BodyShort>
-      {selectedOppfolgingstilfelle && perioderListSortert.length > 0 && (
+      {selectedOppfolgingstilfelle && sortedSykmeldingsperioder.length > 0 && (
         <BodyShort size="small">
           {tilfelleVarighetText(
             selectedOppfolgingstilfelle.start,
@@ -142,8 +84,8 @@ export default function Sykmeldingsgrad({
           )}
         </BodyShort>
       )}
-      {harOpplystOmJobbetIOppfolgingsTilfellet(
-        sykmeldingerIOppfolgingstilfellet
+      {harOpplystOmJobbetIOppfolgingstilfelle(
+        sykmeldingerIOppfolgingstilfelle
       ) && (
         <Alert variant="info" size="small" className="mt-2 w-fit">
           {texts.harJobbetUtoverSykmeldingsgrad}
@@ -151,21 +93,7 @@ export default function Sykmeldingsgrad({
       )}
 
       <div className="flex flex-row">
-        <ResponsiveContainer width="70%" height={360}>
-          <AreaChart
-            data={dataBarChart}
-            margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
-          >
-            <YAxis type="number" domain={[0, 100]} tickCount={11} />
-            <XAxis
-              dataKey="x"
-              interval={0}
-              tick={renderTick}
-              tickLine={false}
-            />
-            <Area dataKey="grad" stroke="grey" fill="#8884d8" />
-          </AreaChart>
-        </ResponsiveContainer>
+        <SykmeldingsgradChart sykmeldingsperioder={sortedSykmeldingsperioder} />
 
         <SyketilfelleList
           setSelectedTilfelle={setSelectedOppfolgingstilfelle}
