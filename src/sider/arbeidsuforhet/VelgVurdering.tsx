@@ -1,12 +1,5 @@
-import React, { ReactElement, useState } from "react";
-import {
-  BodyShort,
-  Box,
-  Button,
-  Heading,
-  ReadMore,
-  ReadMoreProps,
-} from "@navikt/ds-react";
+import React from "react";
+import { BodyShort, Box, Button, Heading, ReadMore } from "@navikt/ds-react";
 import { useNavigate } from "react-router";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
@@ -38,32 +31,6 @@ function logReadMore(tekst: string) {
   });
 }
 
-interface ReadMoreLogProps extends ReadMoreProps {
-  logMessage: string;
-}
-
-function ReadMoreLog({
-  header,
-  children,
-  logMessage,
-}: ReadMoreLogProps): ReactElement {
-  const [isClicked, setIsClicked] = useState(false);
-
-  return (
-    <ReadMore
-      header={header}
-      onClick={() => {
-        if (!isClicked) {
-          logReadMore(logMessage);
-          setIsClicked(true);
-        }
-      }}
-    >
-      {children}
-    </ReadMore>
-  );
-}
-
 export default function VelgVurdering() {
   const navigate = useNavigate();
   const { toggles } = useFeatureToggles();
@@ -74,19 +41,27 @@ export default function VelgVurdering() {
       </Heading>
       {toggles.isInnstillingUtenForhandsvarselArbeidsuforhetEnabled ? (
         <>
-          <ReadMoreLog
+          <ReadMore
             header={texts.narForhandsvarsel}
-            logMessage={"sende forhåndsvarsel"}
+            onOpenChange={(open) => {
+              if (open) {
+                logReadMore("sende forhåndsvarsel");
+              }
+            }}
           >
             {texts.narForhandsvarselContent}
-          </ReadMoreLog>
-          <ReadMoreLog
+          </ReadMore>
+          <ReadMore
             header={texts.narAvslagUtenForhandsvarsel}
-            logMessage={"avslag uten forhåndsvarsel"}
+            onOpenChange={(open) => {
+              if (open) {
+                logReadMore("avslag uten forhåndsvarsel");
+              }
+            }}
             className="mb-2"
           >
             {texts.narAvslagUtenForhandsvarselContent}
-          </ReadMoreLog>
+          </ReadMore>
         </>
       ) : (
         <BodyShort className="mb-4">{texts.description}</BodyShort>
