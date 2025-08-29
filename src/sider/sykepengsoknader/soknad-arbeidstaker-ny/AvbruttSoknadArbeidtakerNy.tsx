@@ -7,7 +7,7 @@ import Statuspanel, {
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { SykmeldingUtdragContainer } from "../SykmeldingUtdragContainer";
 import { Heading } from "@navikt/ds-react";
-import TilbakeTilSoknader from "@/sider/sykepengsoknader/soknad-felles/TilbakeTilSoknader";
+import Tilbakelenke from "@/components/Tilbakelenke";
 
 const texts = {
   tittel: "Søknad om sykepenger",
@@ -51,7 +51,10 @@ const AvbruttSoknadArbeidstaker = ({
       </Heading>
       <AvbruttSoknadArbeidstakerStatuspanel soknad={soknad} />
       <SykmeldingUtdragContainer soknad={soknad} />
-      <TilbakeTilSoknader />
+      <Tilbakelenke
+        to="/sykefravaer/sykepengesoknader"
+        tekst="Gå til sykepengesøknader"
+      />
     </div>
   );
 };

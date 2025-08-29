@@ -14,11 +14,11 @@ const textKorrigert = (dato?: string) => {
   return `${texts.korrigert} ${dato}.`;
 };
 
-interface KorrigertAvProps {
+interface Props {
   soknadId: string;
 }
 
-export const KorrigertAv = ({ soknadId }: KorrigertAvProps): ReactElement => {
+export default function KorrigertAv({ soknadId }: Props): ReactElement {
   const { data: sykepengesoknader } = useSykepengesoknaderQuery();
   const korrigertAvSoknad = sykepengesoknader.find(
     (s) => s.korrigerer === soknadId
@@ -40,4 +40,4 @@ export const KorrigertAv = ({ soknadId }: KorrigertAvProps): ReactElement => {
       </p>
     </AlertStripe>
   );
-};
+}

@@ -31,10 +31,12 @@ const OppsummeringRadiogruppe = ({
           tekst={besvartUndersporsmal.sporsmalstekst}
         />
       )}
-      <OppsummeringUndersporsmalsliste
-        sporsmalsliste={besvartUndersporsmal.undersporsmal}
-        overskriftsnivaa={overskriftsnivaa && overskriftsnivaa + 1}
-      />
+      {besvartUndersporsmal.undersporsmal.length > 0 && (
+        <OppsummeringUndersporsmalsliste
+          sporsmalsliste={besvartUndersporsmal.undersporsmal}
+          overskriftsnivaa={overskriftsnivaa && overskriftsnivaa + 1}
+        />
+      )}
     </OppsummeringSporsmalscontainer>
   ) : null;
 };

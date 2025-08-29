@@ -11,7 +11,7 @@ import {
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
 import { Heading } from "@navikt/ds-react";
-import TilbakeTilSoknader from "@/sider/sykepengsoknader/soknad-felles/TilbakeTilSoknader";
+import Tilbakelenke from "@/components/Tilbakelenke";
 
 const texts = {
   sideTittel: "Søknad om sykepenger",
@@ -42,7 +42,10 @@ export default function SykepengesoknadSelvstendig({
           {sykmelding?.sporsmal && (
             <SykmeldingUtdragForSelvstendige sykmelding={sykmelding} erApen />
           )}
-          <TilbakeTilSoknader />
+          <Tilbakelenke
+            to="sykefravaer/sykepengesoknader"
+            tekst="Gå til sykepengesøknader"
+          />
         </div>
       );
     }
@@ -59,7 +62,10 @@ export default function SykepengesoknadSelvstendig({
           <SpeilingEkspanderbartPanel tittel={texts.oppsummering} defaultOpen>
             <Oppsummeringsvisning soknad={soknad} />
           </SpeilingEkspanderbartPanel>
-          <TilbakeTilSoknader />
+          <Tilbakelenke
+            to="/sykefravaer/sykepengesoknader"
+            tekst="Gå til sykepengesøknader"
+          />
         </div>
       );
     }

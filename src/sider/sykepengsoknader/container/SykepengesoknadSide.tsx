@@ -19,7 +19,7 @@ import Side from "@/components/side/Side";
 import StatuspanelBehandlingsdager from "@/sider/sykepengsoknader/soknad-behandlingsdager/StatuspanelBehandlingsdager";
 import { Box, Heading } from "@navikt/ds-react";
 import Oppsummeringsvisning from "@/sider/sykepengsoknader/soknad-felles-oppsummering/Oppsummeringsvisning";
-import TilbakeTilSoknader from "@/sider/sykepengsoknader/soknad-felles/TilbakeTilSoknader";
+import Tilbakelenke from "@/components/Tilbakelenke";
 
 const texts = {
   tittel: "Sykepengesøknader",
@@ -102,7 +102,10 @@ export default function SykepengesoknadSide() {
                     </Heading>
                     <Oppsummeringsvisning soknad={soknad} />
                   </Box>
-                  <TilbakeTilSoknader />
+                  <Tilbakelenke
+                    to="/sykefravaer/sykepengesoknader"
+                    tekst="Gå til sykepengesøknader"
+                  />
                 </div>
               );
             }
