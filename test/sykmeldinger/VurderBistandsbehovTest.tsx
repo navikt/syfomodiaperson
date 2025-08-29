@@ -11,11 +11,12 @@ import {
   personOppgaveUbehandletBehandlerBerOmBistand,
   personOppgaveUbehandletBehandlerBerOmBistand2,
 } from "@/mocks/ispersonoppgave/personoppgaveMock";
-import { BistandsbehovOppgaver } from "@/sider/sykmeldinger/VurderBistandsbehov";
 import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 import { renderWithRouter } from "../testRouterUtils";
 import { clickButton } from "../testUtils";
+
+import SykmeldingerSide from "@/sider/sykmeldinger/container/SykmeldingerSide";
 
 let queryClient: QueryClient;
 
@@ -25,7 +26,7 @@ const renderBistandsbehovOppgaver = () => {
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <BistandsbehovOppgaver />
+        <SykmeldingerSide />
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     "/sykefravaer/sykmeldinger/:sykmeldingId",

@@ -18,7 +18,10 @@ interface Props {
   arbeidsgiversSykmelding?: SykmeldingOldFormat;
 }
 
-export function SykmeldingSide({ sykmelding, arbeidsgiversSykmelding }: Props) {
+export default function SykmeldingSide({
+  sykmelding,
+  arbeidsgiversSykmelding,
+}: Props) {
   if (!sykmelding) {
     return <Feilmelding tittel="Fant ikke sykmelding" />;
   }

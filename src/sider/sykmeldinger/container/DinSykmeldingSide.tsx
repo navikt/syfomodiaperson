@@ -7,15 +7,16 @@ import {
 import Side from "../../../components/side/Side";
 import SideLaster from "../../../components/side/SideLaster";
 import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
-import LenkeTilDineSykmeldinger from "@/sider/sykmeldinger/sykmelding/LenkeTilDineSykmeldinger";
 import EndreSykmelding from "@/components/endresykmelding/EndreSykmelding";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { Panel } from "@navikt/ds-react";
-import { SykmeldingSide } from "@/sider/sykmeldinger/sykmelding/SykmeldingSide";
+import { Box } from "@navikt/ds-react";
+import SykmeldingSide from "@/sider/sykmeldinger/sykmelding/SykmeldingSide";
 import EndreUtenlandskSykmelding from "@/components/endresykmelding/EndreUtenlandskSykmelding";
+import Tilbakelenke from "@/components/Tilbakelenke";
 
 const texts = {
   pageTitleSykmelding: "Sykmelding",
+  tilbake: "Gå til dine sykmeldinger",
 };
 
 function getSykmelding(
@@ -52,15 +53,15 @@ export default function DinSykmeldingSide() {
       aktivtMenypunkt={Menypunkter.SYKMELDINGER}
     >
       <SideLaster henter={isLoading} hentingFeilet={isError}>
-        <Panel>
+        <Box background="surface-default" className="p-4">
           <SykmeldingSide
             sykmelding={sykmelding}
             arbeidsgiversSykmelding={arbeidsgiversSykmelding}
           />
           {sykmelding?.papirsykmelding && <EndreSykmelding />}
           {sykmelding?.utenlandskSykmelding && <EndreUtenlandskSykmelding />}
-          <LenkeTilDineSykmeldinger />
-        </Panel>
+          <Tilbakelenke to="/sykefravaer/sykmeldinger" tekst={texts.tilbake} />
+        </Box>
       </SideLaster>
     </Side>
   );
