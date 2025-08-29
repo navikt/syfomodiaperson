@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-interface TilbakelenkeProps {
+interface Props {
   to: string;
   tekst: string;
 }
 
-const Tilbakelenke = ({ to, tekst }: TilbakelenkeProps) => {
+export default function Tilbakelenke({ to, tekst }: Props) {
   return (
     <div className="blokk">
       <Link to={to} className="tilbakelenke">
@@ -14,6 +14,4 @@ const Tilbakelenke = ({ to, tekst }: TilbakelenkeProps) => {
       </Link>
     </div>
   );
-};
-
-export default Tilbakelenke;
+}
