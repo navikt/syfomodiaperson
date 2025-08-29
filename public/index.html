@@ -19,23 +19,6 @@
       rel="stylesheet"
     />
     <% } %>
-
-    <% if (process.env.NAIS_CONTEXT === 'prod') { %>
-      <script
-        data-host-url="https://umami.nav.no"
-        data-website-id="d9c74695-30bc-47e9-b751-bebd1c7472a0"
-        defer
-        src="https://cdn.nav.no/team-researchops/sporing/sporing.js">
-      </script>
-    <% } else if (process.env.NAIS_CONTEXT === 'dev') { %>
-      <script
-        data-host-url="https://umami.nav.no"
-        data-website-id="e75681f5-0a2a-4061-8800-cfa36c982730"
-        defer
-        src="https://cdn.nav.no/team-researchops/sporing/sporing.js">
-      </script>
-    <% } %>
-
   </head>
   <body>
     <div id="header"></div>

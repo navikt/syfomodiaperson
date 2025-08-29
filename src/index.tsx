@@ -9,7 +9,7 @@ import { minutesToMillis } from "@/utils/utils";
 import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 import { isClientError } from "@/api/errors";
 import { initFaro } from "@/faro";
-import { erLokal } from "@/utils/miljoUtil";
+import { erLokal, erProd } from "@/utils/miljoUtil";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,7 +38,25 @@ const container =
   document.getElementById("maincontent") || new DocumentFragment();
 const root = createRoot(container);
 
+function addUmamiScript() {
+  const dataWebsiteId = erProd()
+    ? "d9c74695-30bc-47e9-b751-bebd1c7472a0"
+    : "e75681f5-0a2a-4061-8800-cfa36c982730";
+  const script = document.createElement("script");
+  script.setAttribute("data-host-url", "https://umami.nav.no");
+  script.setAttribute("data-website-id", dataWebsiteId);
+  script.setAttribute(
+    "src",
+    "https://cdn.nav.no/team-researchops/sporing/sporing.js"
+  );
+  script.setAttribute("defer", "defer");
+  document.head.appendChild(script);
+}
+
 function renderApp() {
+  if (!erLokal()) {
+    addUmamiScript();
+  }
   root.render(
     <ValgtEnhetProvider>
       <QueryClientProvider client={queryClient}>
