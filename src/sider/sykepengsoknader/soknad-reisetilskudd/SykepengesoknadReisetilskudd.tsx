@@ -4,13 +4,13 @@ import {
   Soknadstatus,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { KorrigertAv } from "../soknad-arbeidstaker/KorrigertAv";
+import KorrigertAv from "../soknad-arbeidstaker/KorrigertAv";
 import { RelaterteSoknader } from "../soknad-arbeidstaker/RelaterteSoknader";
 import { SykmeldingUtdragContainer } from "../SykmeldingUtdragContainer";
 import SykepengesoknadStatuspanel from "@/sider/sykepengsoknader/soknad-arbeidstaker-ny/SykepengesoknadStatuspanel";
 import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
 import { Heading } from "@navikt/ds-react";
-import TilbakeTilSoknader from "@/sider/sykepengsoknader/soknad-felles/TilbakeTilSoknader";
+import Tilbakelenke from "@/components/Tilbakelenke";
 
 const texts = {
   tittel: "Søknad om reisetilskudd",
@@ -38,7 +38,10 @@ export default function SykepengesoknadReisetilskudd({
         <Oppsummeringsvisning soknad={soknad} />
       </SpeilingEkspanderbartPanel>
       <RelaterteSoknader soknad={soknad} />
-      <TilbakeTilSoknader />
+      <Tilbakelenke
+        to="/sykefravaer/sykepengesoknader"
+        tekst="Gå til sykepengesøknader"
+      />
     </div>
   );
 }

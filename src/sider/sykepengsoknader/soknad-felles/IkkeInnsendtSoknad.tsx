@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
-import TilbakeTilSoknader from "./TilbakeTilSoknader";
 import { Box, Heading } from "@navikt/ds-react";
+import Tilbakelenke from "@/components/Tilbakelenke";
 
 const texts = {
   title: "Søknaden er ikke sendt ennå",
@@ -17,7 +17,10 @@ const IkkeInnsendtSoknad = (): ReactElement => (
       <hr className="bg-amber-500/75 w-8 h-px border-0" />
       <p>{texts.content}</p>
     </Box>
-    <TilbakeTilSoknader />
+    <Tilbakelenke
+      to="/sykefravaer/sykepengesoknader"
+      tekst="Gå til sykepengesøknader"
+    />
   </>
 );
 
