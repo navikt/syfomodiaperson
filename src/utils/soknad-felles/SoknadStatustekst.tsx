@@ -11,11 +11,11 @@ const texts = {
   korrigert: "Korrigert",
 };
 
-interface SoknadStatustekstProps {
+interface Props {
   soknad: SykepengesoknadDTO;
 }
 
-const SoknadStatustekst = ({ soknad }: SoknadStatustekstProps) => {
+export default function SoknadStatustekst({ soknad }: Props) {
   const isSoknadSentToNav = !!soknad.sendtTilNAVDato;
   const isSoknadSentToArbeidsgiver = !!soknad.sendtTilArbeidsgiverDato;
 
@@ -46,6 +46,4 @@ const SoknadStatustekst = ({ soknad }: SoknadStatustekstProps) => {
       </BodyShort>
     );
   }
-};
-
-export default SoknadStatustekst;
+}

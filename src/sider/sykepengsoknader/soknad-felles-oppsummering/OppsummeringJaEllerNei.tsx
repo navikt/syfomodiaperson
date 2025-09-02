@@ -42,12 +42,13 @@ const OppsummeringJaEllerNei = ({
       <OppsummeringAvkrysset
         tekst={getLedetekstFraSvar(svar[0].verdi as string)}
       />
-      {erUndersporsmalStilt(svar, kriterieForVisningAvUndersporsmal) && (
-        <OppsummeringUndersporsmalsliste
-          sporsmalsliste={undersporsmal}
-          overskriftsnivaa={overskriftsnivaa + 1}
-        />
-      )}
+      {erUndersporsmalStilt(svar, kriterieForVisningAvUndersporsmal) &&
+        undersporsmal.length > 0 && (
+          <OppsummeringUndersporsmalsliste
+            sporsmalsliste={undersporsmal}
+            overskriftsnivaa={overskriftsnivaa + 1}
+          />
+        )}
     </OppsummeringSporsmalscontainer>
   );
 };

@@ -12,15 +12,15 @@ const texts = {
   utdrag: "Dato sykmeldingen ble skrevet",
 };
 
-interface SykmeldingUtdragProps {
+interface Props {
   erApen?: boolean;
   sykmelding: SykmeldingOldFormat;
 }
 
-const SykmeldingUtdrag = ({
+export default function SykmeldingUtdrag({
   erApen,
   sykmelding,
-}: SykmeldingUtdragProps): ReactElement => {
+}: Props): ReactElement {
   return (
     <div className="blokk">
       <SpeilingEkspanderbartPanel
@@ -49,6 +49,4 @@ const SykmeldingUtdrag = ({
       </SpeilingEkspanderbartPanel>
     </div>
   );
-};
-
-export default SykmeldingUtdrag;
+}
