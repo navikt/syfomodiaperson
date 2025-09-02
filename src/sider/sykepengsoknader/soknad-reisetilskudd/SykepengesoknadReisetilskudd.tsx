@@ -4,7 +4,7 @@ import {
   Soknadstatus,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { KorrigertAv } from "../soknad-arbeidstaker/KorrigertAv";
+import KorrigertAv from "../soknad-arbeidstaker/KorrigertAv";
 import { RelaterteSoknader } from "../soknad-arbeidstaker/RelaterteSoknader";
 import { SykmeldingUtdragContainer } from "../SykmeldingUtdragContainer";
 import SykepengesoknadStatuspanel from "@/sider/sykepengsoknader/soknad-arbeidstaker-ny/SykepengesoknadStatuspanel";

@@ -23,10 +23,12 @@ const OppsummeringBekreftelsespunkter = ({
         />
       ))}
     </ul>
-    <OppsummeringUndersporsmalsliste
-      sporsmalsliste={undersporsmal}
-      overskriftsnivaa={overskriftsnivaa}
-    />
+    {undersporsmal.length > 0 && (
+      <OppsummeringUndersporsmalsliste
+        sporsmalsliste={undersporsmal}
+        overskriftsnivaa={overskriftsnivaa}
+      />
+    )}
   </div>
 );
 
