@@ -18,10 +18,12 @@ const OppsummeringUndertekst = ({
       className="redaksjonelt-innhold"
       dangerouslySetInnerHTML={{ __html: undertekst ?? "" }}
     />
-    <OppsummeringUndersporsmalsliste
-      sporsmalsliste={undersporsmal}
-      overskriftsnivaa={overskriftsnivaa}
-    />
+    {undersporsmal.length > 0 && (
+      <OppsummeringUndersporsmalsliste
+        sporsmalsliste={undersporsmal}
+        overskriftsnivaa={overskriftsnivaa}
+      />
+    )}
   </div>
 );
 

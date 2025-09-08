@@ -20,9 +20,9 @@ export interface OppsummeringSporsmalProps extends SporsmalDTO {
   overskriftsnivaa?: number;
 }
 
-const OppsummeringSporsmal = (
+export default function OppsummeringSporsmal(
   props: OppsummeringSporsmalProps
-): ReactElement | null => {
+): ReactElement | null {
   switch (props.svartype) {
     case SvarTypeDTO.CHECKBOX_PANEL:
     case SvarTypeDTO.CHECKBOX: {
@@ -78,6 +78,4 @@ const OppsummeringSporsmal = (
       return null;
     }
   }
-};
-
-export default OppsummeringSporsmal;
+}

@@ -8,11 +8,11 @@ interface OppsummeringUndersporsmalslisteProps {
   overskriftsnivaa?: number;
 }
 
-const OppsummeringUndersporsmalsliste = ({
-  sporsmalsliste = [],
+export default function OppsummeringUndersporsmalsliste({
+  sporsmalsliste,
   overskriftsnivaa = 4,
-}: OppsummeringUndersporsmalslisteProps): ReactElement | null =>
-  sporsmalsliste.length > 0 ? (
+}: OppsummeringUndersporsmalslisteProps): ReactElement {
+  return (
     <div className="oppsummering__undersporsmalsliste">
       {sporsmalsliste.map((sporsmal) => (
         <OppsummeringSporsmal
@@ -22,6 +22,5 @@ const OppsummeringUndersporsmalsliste = ({
         />
       ))}
     </div>
-  ) : null;
-
-export default OppsummeringUndersporsmalsliste;
+  );
+}
