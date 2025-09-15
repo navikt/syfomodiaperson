@@ -24,14 +24,7 @@ export const useAktivVeilederinfoQuery = () => {
     queryKey: veilederinfoQueryKeys.veilederinfo,
     queryFn: fetchVeilederinfo,
     select: (data) =>
-      new Veileder(
-        data.ident,
-        data.fornavn,
-        data.etternavn,
-        data.epost,
-        data.enabled,
-        data.telefonnummer
-      ),
+      new Veileder(data.ident, data.fornavn, data.etternavn, data.enabled),
   });
 };
 
@@ -43,14 +36,7 @@ export const useVeilederInfoQuery = (ident: VeilederIdent) => {
     queryFn: fetchVeilederinfoByIdent,
     enabled: !!ident,
     select: (data) =>
-      new Veileder(
-        data.ident,
-        data.fornavn,
-        data.etternavn,
-        data.epost,
-        data.enabled,
-        data.telefonnummer
-      ),
+      new Veileder(data.ident, data.fornavn, data.etternavn, data.enabled),
   });
 };
 
