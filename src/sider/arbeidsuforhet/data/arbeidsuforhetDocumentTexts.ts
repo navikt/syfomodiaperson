@@ -38,23 +38,6 @@ export const getForhandsvarselArbeidsuforhetTexts = ({
   },
 });
 
-export const getAvslagArbeidsuforhetTexts = (
-  fom: Date | undefined,
-  forhandsvarselDate: Date
-) => ({
-  header: "Nav har avslått sykepengene dine",
-  forhandsvarselInfo: `Det er sendt forhåndsvarsel i denne saken den ${tilDatoMedManedNavn(
-    forhandsvarselDate
-  )}.`,
-  fom: `Nav har avslått din søknad om sykepenger fra og med ${
-    !!fom ? tilDatoMedManedNavn(fom) : ""
-  }.`,
-  intro:
-    "For å få sykepenger må du ha en sykdom eller skade som gjør at du ikke kan være i arbeid, eller at du bare klarer å gjøre deler av arbeidet ditt.",
-  hjemmel:
-    "Vi har brukt folketrygdloven § 8-4 første ledd når vi har behandlet saken din.",
-});
-
 export const arbeidsuforhetTexts = {
   header: "Vilkår i § 8-4 er oppfylt",
   viHarBruktLoven: `Vi har brukt folketrygdloven § 8-4 første ledd når vi har behandlet saken.`,
