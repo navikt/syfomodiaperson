@@ -57,7 +57,7 @@ const texts = {
 
 const begrunnelseMaxLength = 8000;
 
-export interface Props {
+interface Props {
   sisteVurdering: VurderingResponseDTO;
 }
 
@@ -78,7 +78,7 @@ export function AvslagForm({ sisteVurdering }: Props) {
     handleSubmit,
   } = formMethods;
 
-  const submit = (values: FormValues) => {
+  function submit(values: FormValues) {
     const vurderingRequestDTO: Avslag = {
       type: VurderingType.AVSLAG,
       begrunnelse: values.begrunnelse,
@@ -98,7 +98,7 @@ export function AvslagForm({ sisteVurdering }: Props) {
         });
       },
     });
-  };
+  }
 
   return (
     <Box background="surface-default" padding="6" className="mb-2">
@@ -129,9 +129,12 @@ export function AvslagForm({ sisteVurdering }: Props) {
           {lagreVurdering.isError && (
             <SkjemaInnsendingFeil error={lagreVurdering.error} />
           )}
-          <List as="ul" title={texts.afterSendInfo.title} size={"small"}>
-            {texts.afterSendInfo.gosysoppgave}
-            <List as="ul" className="ml-1">
+          <div>
+            <Heading size="xsmall" level="3">
+              {texts.afterSendInfo.title}
+            </Heading>
+            <BodyLong>{texts.afterSendInfo.gosysoppgave}</BodyLong>
+            <List as="ul">
               <List.Item>
                 {texts.afterSendInfo.gosysoppgaveListe.tema}
               </List.Item>
@@ -145,7 +148,7 @@ export function AvslagForm({ sisteVurdering }: Props) {
                 {texts.afterSendInfo.gosysoppgaveListe.prioritet}
               </List.Item>
             </List>
-          </List>
+          </div>
           <Paragraph
             label={texts.buttonDescriptionLabel}
             body={texts.buttonDescription}

@@ -7,7 +7,6 @@ import {
 } from "@/utils/documentComponentUtils";
 import {
   arbeidsuforhetTexts,
-  getAvslagArbeidsuforhetTexts,
   getForhandsvarselArbeidsuforhetTexts,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetDocumentTexts";
 import {
@@ -15,7 +14,10 @@ import {
   VurderingArsak,
   VurderingInitiertAv,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import {
+  tilDatoMedManedNavn,
+  tilLesbarDatoMedArstall,
+} from "@/utils/datoUtils";
 
 type ForhandsvarselDocumentValues = {
   begrunnelse: string;
@@ -47,7 +49,7 @@ type InnstillingUtenForhandsvarselDocumentValues = {
   avslagFom?: Date;
 };
 
-export const useArbeidsuforhetVurderingDocument = (): {
+export function useArbeidsuforhetVurderingDocument(): {
   getForhandsvarselDocument(
     values: ForhandsvarselDocumentValues
   ): DocumentComponentDto[];
@@ -62,14 +64,14 @@ export const useArbeidsuforhetVurderingDocument = (): {
   getIkkeAktuellDocument(
     values: IkkeAktuellDocumentValues
   ): DocumentComponentDto[];
-  getInnstillingUtenForhandsvarselDocument(
+  getAvslagUtenForhandsvarselDocument(
     values: InnstillingUtenForhandsvarselDocumentValues
   ): DocumentComponentDto[];
-} => {
+} {
   const { getHilsen, getIntroGjelder, getVurdertAv, getVeiledernavn } =
     useDocumentComponents();
 
-  const getForhandsvarselDocument = (values: ForhandsvarselDocumentValues) => {
+  function getForhandsvarselDocument(values: ForhandsvarselDocumentValues) {
     const { begrunnelse, frist } = values;
     const sendForhandsvarselTexts = getForhandsvarselArbeidsuforhetTexts({
       frist,
@@ -102,23 +104,28 @@ export const useArbeidsuforhetVurderingDocument = (): {
     );
 
     return documentComponents;
-  };
+  }
 
-  const getAvslagDocument = (
+  function getAvslagDocument(
     values: AvslagDocumentValues,
     forhandsvarselDate: Date
-  ) => {
+  ) {
     const { begrunnelse, fom } = values;
-    const avslagArbeidsuforhetTexts = getAvslagArbeidsuforhetTexts(
-      fom,
-      forhandsvarselDate
-    );
-
     const documentComponents = [
-      createHeaderH1(avslagArbeidsuforhetTexts.header),
-      createParagraph(avslagArbeidsuforhetTexts.forhandsvarselInfo),
-      createParagraph(avslagArbeidsuforhetTexts.fom),
-      createParagraph(avslagArbeidsuforhetTexts.intro),
+      createHeaderH1("Vurdering av § 8-4 - Innstilling om avslag"),
+      createParagraph(
+        `Det er sendt forhåndsvarsel i denne saken den ${tilDatoMedManedNavn(
+          forhandsvarselDate
+        )}.`
+      ),
+      createParagraph(
+        `Nav har avslått din søknad om sykepenger fra og med ${
+          !!fom ? tilDatoMedManedNavn(fom) : ""
+        }.`
+      ),
+      createParagraph(
+        "For å få sykepenger må du ha en sykdom eller skade som gjør at du ikke kan være i arbeid, eller at du bare klarer å gjøre deler av arbeidet ditt."
+      ),
     ];
 
     if (begrunnelse) {
@@ -126,12 +133,14 @@ export const useArbeidsuforhetVurderingDocument = (): {
     }
 
     documentComponents.push(
-      createParagraph(avslagArbeidsuforhetTexts.hjemmel),
+      createParagraph(
+        "Vi har brukt folketrygdloven § 8-4 første ledd når vi har behandlet saken din."
+      ),
       getVeiledernavn()
     );
 
     return documentComponents;
-  };
+  }
 
   function getOppfyltDocument({ begrunnelse }: OppfyltDocumentValues) {
     return [
@@ -165,7 +174,7 @@ export const useArbeidsuforhetVurderingDocument = (): {
     ];
   }
 
-  const getIkkeAktuellDocument = ({ arsak }: IkkeAktuellDocumentValues) => {
+  function getIkkeAktuellDocument({ arsak }: IkkeAktuellDocumentValues) {
     return [
       createHeaderH1("Vurdering av § 8-4 arbeidsuførhet"),
       getIntroGjelder(),
@@ -174,9 +183,9 @@ export const useArbeidsuforhetVurderingDocument = (): {
       ),
       getVurdertAv(),
     ];
-  };
+  }
 
-  function getInnstillingOmAvslagUtenForhandsvarselDocument({
+  function getAvslagUtenForhandsvarselDocument({
     vurderingInitiertAv,
     begrunnelse,
     avslagFom,
@@ -197,7 +206,7 @@ export const useArbeidsuforhetVurderingDocument = (): {
     }
 
     return [
-      createHeaderH1("Innstilling om avslag til Nav arbeid og ytelser"),
+      createHeaderH1("Vurdering av § 8-4 - Innstilling om avslag"),
       createParagraph("Vurdering av arbeidsuførhet jf. folketrygdloven § 8-4."),
       getIntroGjelder(),
       createParagraph(
@@ -227,7 +236,6 @@ export const useArbeidsuforhetVurderingDocument = (): {
     getOppfyltEtterForhandsvarselDocument,
     getAvslagDocument,
     getIkkeAktuellDocument,
-    getInnstillingUtenForhandsvarselDocument:
-      getInnstillingOmAvslagUtenForhandsvarselDocument,
+    getAvslagUtenForhandsvarselDocument,
   };
-};
+}

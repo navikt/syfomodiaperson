@@ -147,7 +147,7 @@ describe("AvslagForm", () => {
       })[1];
       expect(
         within(forhandsvisningVurdering).getByRole("heading", {
-          name: "Nav har avslått sykepengene dine",
+          name: "Vurdering av § 8-4 - Innstilling om avslag",
           hidden: true,
         })
       ).to.exist;
