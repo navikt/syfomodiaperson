@@ -80,7 +80,7 @@ interface FormValues {
 export default function InnstillingUtenForhandsvarsel() {
   const navigate = useNavigate();
   const lagreInnstilling = useSaveVurderingArbeidsuforhet();
-  const { getInnstillingUtenForhandsvarselDocument } =
+  const { getAvslagUtenForhandsvarselDocument } =
     useArbeidsuforhetVurderingDocument();
   const { setNotification } = useNotification();
   const formProps = useForm<FormValues>();
@@ -110,7 +110,7 @@ export default function InnstillingUtenForhandsvarsel() {
         values.vurderingInitiertAv === VurderingInitiertAv.NAY
           ? dayjs(values.oppgaveFraNayDato).format("YYYY-MM-DD")
           : undefined,
-      document: getInnstillingUtenForhandsvarselDocument(documentProps),
+      document: getAvslagUtenForhandsvarselDocument(documentProps),
     };
     lagreInnstilling.mutate(vurderingRequestDTO, {
       onSuccess: () => {
@@ -181,7 +181,7 @@ export default function InnstillingUtenForhandsvarsel() {
             <Forhandsvisning
               contentLabel={texts.forhandsvisning}
               getDocumentComponents={() =>
-                getInnstillingUtenForhandsvarselDocument({
+                getAvslagUtenForhandsvarselDocument({
                   vurderingInitiertAv: watch("vurderingInitiertAv"),
                   begrunnelse: watch("begrunnelse"),
                   avslagFom: watch("avslagFom"),
