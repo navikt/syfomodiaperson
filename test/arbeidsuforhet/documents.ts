@@ -165,7 +165,7 @@ export const getAvslagVurderingDocument = (
 ): DocumentComponentDto[] => {
   return [
     {
-      texts: ["Nav har avslått sykepengene dine"],
+      texts: ["Vurdering av § 8-4 - Innstilling om avslag"],
       type: DocumentComponentType.HEADER_H1,
     },
     {
