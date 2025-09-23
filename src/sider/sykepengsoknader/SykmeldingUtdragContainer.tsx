@@ -4,7 +4,7 @@ import {
   Soknadstype,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 
 interface Props {
   soknad: SykepengesoknadDTO;
@@ -13,7 +13,7 @@ interface Props {
 export const SykmeldingUtdragContainer = ({
   soknad,
 }: Props): ReactElement | null => {
-  const { sykmeldinger } = useSykmeldingerQuery();
+  const { sykmeldinger } = useGetSykmeldingerQuery();
   const sykmelding = sykmeldinger.find((s) => {
     return s.id === soknad.sykmeldingId;
   });

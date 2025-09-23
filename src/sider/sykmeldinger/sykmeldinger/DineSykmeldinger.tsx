@@ -1,5 +1,8 @@
 import React, { ReactElement, useState } from "react";
-import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import {
+  SykmeldingOldFormat,
+  SykmeldingStatus,
+} from "@/data/sykmelding/types/SykmeldingOldFormat";
 import Sykmeldinger from "./Sykmeldinger";
 import { VelgSykmeldingSorteringDropdown } from "./VelgSykmeldingSorteringDropdown";
 import {
@@ -7,10 +10,8 @@ import {
   SorteringsKriteriumVerdi,
   sorterSykmeldinger,
 } from "@/utils/sorterSykmeldingerUtils";
-import {
-  skalVisesSomAktivSykmelding,
-  skalVisesSomTidligereSykmelding,
-} from "@/utils/sykmeldinger/sykmeldingUtils";
+import { manederMellomDatoer } from "@/utils/datoUtils";
+import { senesteTom } from "@/utils/periodeUtils";
 
 const texts = {
   tidligereSykmeldinger: "Tidligere sykmeldinger",
@@ -33,18 +34,32 @@ const sorteringsKriterier: SorteringKriterium[] = [
   },
 ];
 
+const isAktivSykmelding = (sykmld: SykmeldingOldFormat) =>
+  sykmld.status === SykmeldingStatus.NY &&
+  manederMellomDatoer(
+    senesteTom(sykmld.mulighetForArbeid.perioder),
+    new Date()
+  ) < 3;
+
+const isTidligereSykmelding = (sykmld: SykmeldingOldFormat) =>
+  sykmld.status !== SykmeldingStatus.NY ||
+  manederMellomDatoer(
+    senesteTom(sykmld.mulighetForArbeid.perioder),
+    new Date()
+  ) >= 3;
+
 interface Props {
   sykmeldinger: SykmeldingOldFormat[];
 }
 
 export default function DineSykmeldinger({
-  sykmeldinger = [],
+  sykmeldinger,
 }: Props): ReactElement {
   const nyeSykmeldinger = sykmeldinger.filter((sykmld) => {
-    return skalVisesSomAktivSykmelding(sykmld);
+    return isAktivSykmelding(sykmld);
   });
   const tidligereSykmeldinger = sykmeldinger.filter((sykmld) => {
-    return skalVisesSomTidligereSykmelding(sykmld);
+    return isTidligereSykmelding(sykmld);
   });
   const [valgtSortering, setValgtSortering] =
     useState<SorteringsKriteriumVerdi>("dato");

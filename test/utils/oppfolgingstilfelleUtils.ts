@@ -4,7 +4,7 @@ import {
 } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
 import { getWeeksBetween } from "@/utils/datoUtils";
-import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { sykmeldingerQueryKeys } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { QueryClient } from "@tanstack/react-query";

@@ -6,7 +6,7 @@ import {
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import Side from "../../../components/side/Side";
 import SideLaster from "../../../components/side/SideLaster";
-import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import EndreSykmelding from "@/components/endresykmelding/EndreSykmelding";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { Box } from "@navikt/ds-react";
@@ -30,7 +30,7 @@ export default function DinSykmeldingSide() {
   const sykmeldingId = window.location.pathname.split("/")[3];
 
   const { isLoading, isError, sykmeldinger, arbeidsgiverssykmeldinger } =
-    useSykmeldingerQuery();
+    useGetSykmeldingerQuery();
 
   const sykmelding = getSykmelding(sykmeldinger, sykmeldingId);
   let arbeidsgiversSykmelding = {} as SykmeldingOldFormat | undefined;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import UtdragFraSykefravaeret from "../../components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import Sykmeldingsgrad from "@/sider/nokkelinformasjon/sykmeldingsgrad/Sykmeldingsgrad";
-import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import Side from "@/components/side/Side";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import SideLaster from "@/components/side/SideLaster";
@@ -20,7 +20,7 @@ const texts = {
 
 export default function Nokkelinformasjon() {
   const { isError: henterSykmeldingerFeilet, isLoading: henterSykmeldinger } =
-    useSykmeldingerQuery();
+    useGetSykmeldingerQuery();
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const { toggles } = useFeatureToggles();
 

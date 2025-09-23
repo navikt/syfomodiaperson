@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  erMulighetForArbeidInformasjon,
-  finnAvventendeSykmeldingTekst,
-} from "@/utils/sykmeldinger/sykmeldingUtils";
+import { erMulighetForArbeidInformasjon } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BodyShort, Heading } from "@navikt/ds-react";
 import styled from "styled-components";
@@ -27,6 +24,17 @@ const tekster = {
     },
   },
 };
+
+export function finnAvventendeSykmeldingTekst(
+  sykmelding: SykmeldingOldFormat
+): string | undefined {
+  const avventendePeriode =
+    sykmelding.mulighetForArbeid.perioder &&
+    sykmelding.mulighetForArbeid.perioder.find((periode) => {
+      return !!periode.avventende;
+    });
+  return avventendePeriode?.avventende;
+}
 
 interface AvventendeSykmeldingProps {
   avventendeTekst: string;
@@ -116,7 +124,9 @@ interface MulighetForArbeidProps {
   sykmelding: SykmeldingOldFormat;
 }
 
-const MulighetForArbeid = ({ sykmelding }: MulighetForArbeidProps) => {
+export default function MulighetForArbeid({
+  sykmelding,
+}: MulighetForArbeidProps) {
   const mulighetForArbeid = sykmelding.mulighetForArbeid;
   const avventendeTekst = finnAvventendeSykmeldingTekst(sykmelding);
   const aktivitetIkkeMulig433 = mulighetForArbeid.aktivitetIkkeMulig433;
@@ -154,6 +164,4 @@ const MulighetForArbeid = ({ sykmelding }: MulighetForArbeidProps) => {
       )}
     </>
   );
-};
-
-export default MulighetForArbeid;
+}

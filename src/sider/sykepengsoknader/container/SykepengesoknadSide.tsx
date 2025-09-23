@@ -13,7 +13,7 @@ import {
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import SykepengesoknadReisetilskudd from "@/sider/sykepengsoknader/soknad-reisetilskudd/SykepengesoknadReisetilskudd";
 import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
-import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Side from "@/components/side/Side";
 import StatuspanelBehandlingsdager from "@/sider/sykepengsoknader/soknad-behandlingsdager/StatuspanelBehandlingsdager";
@@ -43,7 +43,7 @@ export default function SykepengesoknadSide() {
     sykmeldinger,
     isError: hentingSykmeldingerFeilet,
     isLoading: henterSykmeldinger,
-  } = useSykmeldingerQuery();
+  } = useGetSykmeldingerQuery();
 
   const henter = henterSykmeldinger || henterSoknader;
   const hentingFeilet = hentingFeiletSoknader || hentingSykmeldingerFeilet;

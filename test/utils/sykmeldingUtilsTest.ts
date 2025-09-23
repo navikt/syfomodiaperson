@@ -9,9 +9,6 @@ import {
   erHensynPaaArbeidsplassenInformasjon,
   erMeldingTilArbeidsgiverInformasjon,
   erMulighetForArbeidInformasjon,
-  finnAvventendeSykmeldingTekst,
-  getDiagnoseFromLatestSykmelding,
-  latestSykmeldingForVirksomhet,
   newAndActivatedSykmeldinger,
   stringMedAlleGraderingerFraSykmeldingPerioder,
   sykmeldingerInnenforOppfolgingstilfelle,
@@ -27,6 +24,8 @@ import {
 import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
 import { SporsmalSvarDTO } from "@/data/sykmelding/types/SporsmalSvarDTO";
 import dayjs from "dayjs";
+import { getDiagnoseFromLatestSykmelding } from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleList";
+import { finnAvventendeSykmeldingTekst } from "@/components/motebehov/MulighetForArbeid";
 
 const baseSykmelding: SykmeldingOldFormat = {
   arbeidsevne: {},
@@ -730,157 +729,6 @@ describe("sykmeldingUtils", () => {
         );
 
       expect(stringMedAllegraderinger).to.equal("");
-    });
-  });
-
-  describe("latestSykmeldingForVirksomhet", () => {
-    it("skal returnere sykmeldingen hvis det kun er én, og den hører til riktig virksomhet", () => {
-      const wantedVirksomhetsnummer = "11223344";
-      const wantedSykmeldingId = "1";
-      const sykmeldinger: SykmeldingOldFormat[] = [
-        {
-          ...baseSykmelding,
-          id: wantedSykmeldingId,
-          status: SykmeldingStatus.SENDT,
-          bekreftelse: {
-            utstedelsesdato: new Date(Date.now() - 1000),
-          },
-          mottakendeArbeidsgiver: {
-            virksomhetsnummer: wantedVirksomhetsnummer,
-            navn: "Arbeidsgiver",
-            juridiskOrgnummer: "1",
-          },
-        },
-      ];
-
-      const actualSykmelding = latestSykmeldingForVirksomhet(
-        sykmeldinger,
-        wantedVirksomhetsnummer
-      );
-
-      expect(actualSykmelding.id).to.equal(wantedSykmeldingId);
-    });
-
-    it("skal returnere undefined hvis ingen sykmeldinger i listen", () => {
-      const wantedVirksomhetsnummer = "11223344";
-      const sykmeldinger: any[] = [];
-
-      const actualSykmelding = latestSykmeldingForVirksomhet(
-        sykmeldinger,
-        wantedVirksomhetsnummer
-      );
-
-      expect(actualSykmelding).to.equal(undefined);
-    });
-
-    it("skal returnere undefined hvis det ikke finnes en sykmelding fra ønsket virksomhet", () => {
-      const wantedVirksomhetsnummer = "11223344";
-      const wrongVirksomhetsnummer = "99988877";
-      const sykmeldinger: SykmeldingOldFormat[] = [
-        {
-          ...baseSykmelding,
-          id: "1",
-          status: SykmeldingStatus.SENDT,
-          bekreftelse: {
-            utstedelsesdato: new Date(Date.now() - 1000),
-          },
-          mottakendeArbeidsgiver: {
-            virksomhetsnummer: wrongVirksomhetsnummer,
-            juridiskOrgnummer: wrongVirksomhetsnummer,
-            navn: "Arbeidsgiver",
-          },
-        },
-      ];
-
-      const actualSykmelding = latestSykmeldingForVirksomhet(
-        sykmeldinger,
-        wantedVirksomhetsnummer
-      );
-
-      expect(actualSykmelding).to.equal(undefined);
-    });
-
-    it("skal returnere riktig sykmelding hvis én er fra riktig og én er fra feil virksomhet", () => {
-      const wantedVirksomhetsnummer = "11223344";
-      const wrongVirksomhetsnummer = "99988877";
-      const wantedSykmeldingId = "1";
-
-      const sykmeldinger: SykmeldingOldFormat[] = [
-        {
-          ...baseSykmelding,
-          id: wantedSykmeldingId,
-          status: SykmeldingStatus.SENDT,
-          bekreftelse: {
-            utstedelsesdato: new Date(Date.now() - 1000),
-          },
-          mottakendeArbeidsgiver: {
-            virksomhetsnummer: wantedVirksomhetsnummer,
-            navn: "Arbeidsgiver",
-            juridiskOrgnummer: wantedVirksomhetsnummer,
-          },
-        },
-        {
-          ...baseSykmelding,
-          id: "2",
-          status: SykmeldingStatus.SENDT,
-          bekreftelse: {
-            utstedelsesdato: new Date(Date.now() - 1000),
-          },
-          mottakendeArbeidsgiver: {
-            virksomhetsnummer: wrongVirksomhetsnummer,
-            juridiskOrgnummer: wrongVirksomhetsnummer,
-            navn: "Arbeidsgiver",
-          },
-        },
-      ];
-
-      const actualSykmelding = latestSykmeldingForVirksomhet(
-        sykmeldinger,
-        wantedVirksomhetsnummer
-      );
-
-      expect(actualSykmelding.id).to.equal(wantedSykmeldingId);
-    });
-
-    it("skal returnere nyeste sykmelding hvis flere fra riktig virksomhet", () => {
-      const wantedVirksomhetsnummer = "11223344";
-      const wantedSykmeldingId = "1";
-      const latestDate = new Date(Date.now() + 1000);
-      const earliestDate = new Date(Date.now() - 1000);
-
-      const sykmeldinger: SykmeldingOldFormat[] = [
-        {
-          ...baseSykmelding,
-          id: "2",
-          mulighetForArbeid: {
-            perioder: [{ fom: earliestDate, tom: earliestDate }],
-          },
-          mottakendeArbeidsgiver: {
-            virksomhetsnummer: wantedVirksomhetsnummer,
-            juridiskOrgnummer: wantedVirksomhetsnummer,
-            navn: "Arbeidsgiver",
-          },
-        },
-        {
-          ...baseSykmelding,
-          id: wantedSykmeldingId,
-          mulighetForArbeid: {
-            perioder: [{ fom: latestDate, tom: latestDate }],
-          },
-          mottakendeArbeidsgiver: {
-            virksomhetsnummer: wantedVirksomhetsnummer,
-            juridiskOrgnummer: wantedVirksomhetsnummer,
-            navn: "Arbeidsgiver",
-          },
-        },
-      ];
-
-      const actualSykmelding = latestSykmeldingForVirksomhet(
-        sykmeldinger,
-        wantedVirksomhetsnummer
-      );
-
-      expect(actualSykmelding.id).to.equal(wantedSykmeldingId);
     });
   });
 

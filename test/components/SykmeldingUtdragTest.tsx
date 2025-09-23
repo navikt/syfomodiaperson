@@ -12,7 +12,7 @@ import {
   VIRKSOMHET_PONTYPANDY,
 } from "@/mocks/common/mockConstants";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { sykmeldingerQueryKeys } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import { queryClientWithAktivBruker } from "../testQueryClient";
 
 let queryClient: any;

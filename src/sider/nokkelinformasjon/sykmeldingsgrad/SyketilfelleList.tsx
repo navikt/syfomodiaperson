@@ -3,18 +3,29 @@ import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/pe
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
 import { BodyShort, Radio, RadioGroup, Tooltip } from "@navikt/ds-react";
-import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import {
-  getDiagnoseFromLatestSykmelding,
   newAndActivatedSykmeldinger,
   sykmeldingerInnenforOppfolgingstilfelle,
+  sykmeldingerSortertNyestTilEldstPeriode,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { MedisinskrinImage } from "../../../../img/ImageComponents";
-import { SykmeldingDiagnose } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import {
+  SykmeldingDiagnose,
+  SykmeldingOldFormat,
+} from "@/data/sykmelding/types/SykmeldingOldFormat";
 
 const texts = {
   title: "Siste sykefravær",
 };
+
+export function getDiagnoseFromLatestSykmelding(
+  sykmeldinger: SykmeldingOldFormat[]
+): SykmeldingDiagnose | undefined {
+  const latestSykmelding =
+    sykmeldingerSortertNyestTilEldstPeriode(sykmeldinger)[0];
+  return latestSykmelding?.diagnose?.hoveddiagnose;
+}
 
 interface Props {
   setSelectedTilfelle: (value: OppfolgingstilfelleDTO) => void;
@@ -22,7 +33,7 @@ interface Props {
 
 export default function SyketilfelleList({ setSelectedTilfelle }: Props) {
   const { tilfellerDescendingStart } = useOppfolgingstilfellePersonQuery();
-  const { sykmeldinger } = useSykmeldingerQuery();
+  const { sykmeldinger } = useGetSykmeldingerQuery();
 
   const tenLatestTilfeller = tilfellerDescendingStart?.slice(0, 10);
 
