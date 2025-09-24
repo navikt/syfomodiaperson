@@ -13,6 +13,7 @@ import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerU
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { BodyShort } from "@navikt/ds-react";
 import { EventType, logEvent } from "@/utils/amplitude";
+import * as Umami from "@/utils/umami";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
@@ -151,6 +152,13 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
   const handleOnClick = (lenketekst: string, destinasjon: string) => {
     const destinationPath = window.location.href + "/sykefravaer" + destinasjon;
     logEvent({
+      type: EventType.Navigation,
+      data: {
+        lenketekst: lenketekst,
+        destinasjon: destinationPath,
+      },
+    });
+    Umami.logEvent({
       type: EventType.Navigation,
       data: {
         lenketekst: lenketekst,

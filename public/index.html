@@ -19,6 +19,24 @@
       rel="stylesheet"
     />
     <% } %>
+    <script>
+      window.beforeSendHandler = (type, payload) => {
+        // console.log(JSON.stringify(type));
+        console.log(JSON.stringify(payload));
+        // if (payload.url.includes("/sykefravaer/sykmeldinger/")) {
+        //   // const modifiedPayload = checkPayload(payload);
+        //   return {
+        //     ...payload,
+        //     url: "/sykefravaer/sykmeldinger/",
+        //   }
+        //
+        // } else {
+        //   return payload;
+        // }
+
+        return payload
+      };
+    </script>
   </head>
   <body>
     <div id="header"></div>

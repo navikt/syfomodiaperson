@@ -50,13 +50,13 @@ function addUmamiScript() {
     "https://cdn.nav.no/team-researchops/sporing/sporing.js"
   );
   script.setAttribute("defer", "defer");
+  // script.setAttribute("data-auto-track", "false");
+  script.setAttribute("data-before-send", "beforeSendHandler");
   document.head.appendChild(script);
 }
 
 function renderApp() {
-  if (!erLokal()) {
-    addUmamiScript();
-  }
+  addUmamiScript();
   root.render(
     <ValgtEnhetProvider>
       <QueryClientProvider client={queryClient}>

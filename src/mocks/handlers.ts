@@ -41,6 +41,9 @@ const handlers = [
   http.post("https://amplitude.nav.no/collect", () => {
     return HttpResponse.text("mocked amplitude");
   }),
+  http.post("https://umami.nav.no/api/send", () => {
+    return HttpResponse.text("mocked umami");
+  }),
   mockUnleashEndpoint,
   mockEreg,
   mockSykepengedagerInformasjon,

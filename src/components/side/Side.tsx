@@ -6,6 +6,7 @@ import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { isEaster, isPride } from "@/utils/festiveUtils";
 import { Easter } from "@/components/festive/Easter";
 import * as Amplitude from "@/utils/amplitude";
+import * as Umami from "@/utils/umami";
 import { EventType } from "@/utils/amplitude";
 import { OversiktLenker } from "@/components/personkort/OversiktLenker";
 import { Pride } from "@/components/festive/Pride";
@@ -14,6 +15,7 @@ import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQ
 import TildeltVeileder from "@/components/side/tildeltveileder/TildeltVeileder";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { InaktivPersonident } from "@/components/InaktivPersonident";
+import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
 export const MODIA_HEADER_ID = "modia-header";
 
@@ -32,13 +34,21 @@ export default function Side({
 }: Props) {
   const { data: diskresjonskode } = useDiskresjonskodeQuery();
   const { isInaktivPersonident } = useBrukerinfoQuery();
+  const veilederinfo = useAktivVeilederinfoQuery().data;
 
   useEffect(() => {
+    // TODO: Flytte et sentralisert sted. Mulig det holder å sette denne en gang
+    // TODO: Hashe ident
+    umami.identify(veilederinfo?.ident ?? "anonymous");
     Amplitude.logEvent({
       type: EventType.PageView,
       data: { url: window.location.href, sidetittel: tittel },
     });
-  }, [tittel]);
+    Umami.logEvent({
+      type: EventType.PageView,
+      data: { url: window.location.href, sidetittel: tittel },
+    });
+  }, [tittel, veilederinfo]); //TODO: La til veilederinfo her, men tror ikke det er riktig. Funker i hvert fall
   const isFlexjarVisible = diskresjonskode !== "6" && diskresjonskode !== "7";
 
   return (
