@@ -3,7 +3,7 @@ import {
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
 } from "../common/mockConstants";
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
-import { weeksFromToday } from "../../../test/testUtils";
+import { daysFromToday, weeksFromToday } from "../../../test/testUtils";
 
 export const kontaktinformasjonMock = {
   epost: ARBEIDSTAKER_DEFAULT.epost,
@@ -35,7 +35,7 @@ export const maksdatoMock = {
     fnr: ARBEIDSTAKER_DEFAULT.personIdent,
     forelopig_beregnet_slutt: maksdato,
     utbetalt_tom: weeksFromToday(-2),
-    tom: weeksFromToday(-1),
+    tom: daysFromToday(-3),
     gjenstaende_sykedager: "70",
     opprettet: Date.now().toString(),
   },

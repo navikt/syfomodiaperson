@@ -22,25 +22,24 @@ describe("maksdatoQuery", () => {
     });
 
     await waitFor(() => expect(result.current.data).to.not.be.undefined);
-    expect(result.current.data?.maxDate?.id).to.deep.equal(
-      maksdatoMock.maxDate.id
+    const data = result.current.data?.maxDate;
+    expect(data?.id).to.deep.equal(maksdatoMock.maxDate.id);
+    expect(data?.fnr).to.deep.equal(maksdatoMock.maxDate.fnr);
+    expect(data?.opprettet).to.deep.equal(maksdatoMock.maxDate.opprettet);
+
+    const toIso = (d: any) => new Date(d).toISOString();
+
+    // Date fields may arrive as either string (from JSON) or Date depending on runtime parsing.
+    expect(toIso(data?.utbetalt_tom)).to.equal(
+      toIso(maksdatoMock.maxDate.utbetalt_tom)
     );
-    expect(result.current.data?.maxDate?.fnr).to.deep.equal(
-      maksdatoMock.maxDate.fnr
+    expect(toIso(data?.tom)).to.equal(toIso(maksdatoMock.maxDate.tom));
+    expect(toIso(data?.forelopig_beregnet_slutt)).to.equal(
+      toIso(maksdatoMock.maxDate.forelopig_beregnet_slutt)
     );
-    expect(result.current.data?.maxDate?.opprettet).to.deep.equal(
-      maksdatoMock.maxDate.opprettet
-    );
-    expect(result.current.data?.maxDate?.utbetalt_tom).to.deep.equal(
-      maksdatoMock.maxDate.utbetalt_tom
-    );
-    expect(result.current.data?.maxDate?.gjenstaende_sykedager).to.deep.equal(
+
+    expect(data?.gjenstaende_sykedager).to.deep.equal(
       maksdatoMock.maxDate.gjenstaende_sykedager
-    );
-    expect(
-      result.current.data?.maxDate?.forelopig_beregnet_slutt
-    ).to.deep.equal(
-      maksdatoMock.maxDate.forelopig_beregnet_slutt.toISOString()
     );
   });
 });
