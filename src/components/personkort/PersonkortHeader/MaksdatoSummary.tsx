@@ -5,6 +5,7 @@ import { SyketilfelleSummaryElement } from "@/components/personkort/PersonkortHe
 
 const texts = {
   maksdato: "Maksdato: ",
+  utbetaltTom: "Utbetalt tom: ",
   soknadBehandletTom: "Søknad behandlet tom: ",
 };
 
@@ -22,8 +23,12 @@ export function MaksdatoSummary({ maxDate }: MaksdatoSummaryProps) {
         )}
       />
       <SyketilfelleSummaryElement
-        keyword={texts.soknadBehandletTom}
+        keyword={texts.utbetaltTom}
         value={tilLesbarDatoMedArUtenManedNavn(maxDate.utbetalt_tom)}
+      />
+      <SyketilfelleSummaryElement
+        keyword={texts.soknadBehandletTom}
+        value={tilLesbarDatoMedArUtenManedNavn(maxDate.tom)}
       />
     </div>
   );
