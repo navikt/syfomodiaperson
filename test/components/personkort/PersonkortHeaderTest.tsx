@@ -194,6 +194,23 @@ describe("PersonkortHeader", () => {
     expect(screen.getByText(expectedSoknadBehandletTom)).to.exist;
   });
 
+  it("viser 'Mangler' for utbetalt tom når utbetalt_tom er null", () => {
+    queryClient.setQueryData(
+      maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => ({
+        maxDate: {
+          ...maksdatoMock.maxDate,
+          utbetalt_tom: null,
+        },
+      })
+    );
+
+    renderPersonkortHeader();
+
+    expect(screen.getByText("Utbetalt tom:")).to.exist;
+    expect(screen.getByText("Mangler")).to.exist;
+  });
+
   describe("Utbetalingsinfo warning", () => {
     const startDate = addDays(new Date(), -10);
     const endDate = addDays(new Date(), 10);
