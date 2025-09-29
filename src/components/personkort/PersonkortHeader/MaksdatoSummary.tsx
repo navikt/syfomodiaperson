@@ -14,6 +14,9 @@ interface MaksdatoSummaryProps {
 }
 
 export function MaksdatoSummary({ maxDate }: MaksdatoSummaryProps) {
+  const utbetaltTomVerdi = maxDate.utbetalt_tom
+    ? tilLesbarDatoMedArUtenManedNavn(maxDate.utbetalt_tom)
+    : "Mangler";
   return (
     <div className={"flex flex-row gap-3 items-center"}>
       <SyketilfelleSummaryElement
@@ -24,7 +27,7 @@ export function MaksdatoSummary({ maxDate }: MaksdatoSummaryProps) {
       />
       <SyketilfelleSummaryElement
         keyword={texts.utbetaltTom}
-        value={tilLesbarDatoMedArUtenManedNavn(maxDate.utbetalt_tom)}
+        value={utbetaltTomVerdi}
       />
       <SyketilfelleSummaryElement
         keyword={texts.soknadBehandletTom}

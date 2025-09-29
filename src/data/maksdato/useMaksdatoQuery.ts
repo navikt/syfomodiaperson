@@ -12,7 +12,7 @@ export interface Maksdato {
   id: string;
   fnr: string;
   forelopig_beregnet_slutt: Date;
-  utbetalt_tom: Date;
+  utbetalt_tom: Date | null;
   tom: Date;
   gjenstaende_sykedager: string;
   opprettet: Date;
