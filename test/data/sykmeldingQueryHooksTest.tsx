@@ -1,7 +1,7 @@
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
-import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import { stubSykmeldingApi } from "../stubs/stubSyfosmregister";
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 import { SykmeldingNewFormatDTO } from "@/data/sykmelding/types/SykmeldingNewFormatDTO";
@@ -26,7 +26,7 @@ describe("sykmeldingQueryHooks", () => {
     stubSykmeldingApi();
     const wrapper = queryHookWrapper(queryClient);
 
-    const { result } = renderHook(() => useSykmeldingerQuery(), {
+    const { result } = renderHook(() => useGetSykmeldingerQuery(), {
       wrapper,
     });
 

@@ -10,7 +10,7 @@ import { RelaterteSoknader } from "../soknad-arbeidstaker/RelaterteSoknader";
 import { erTilSlutt } from "@/utils/sykepengesoknadUtils";
 import { Box, Heading } from "@navikt/ds-react";
 import SoknadStatustekst from "@/utils/soknad-felles/SoknadStatustekst";
-import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import SykmeldingUtdrag from "@/sider/sykepengsoknader/soknad-felles/SykmeldingUtdrag";
 import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 import TilbakeTilSoknader from "@/sider/sykepengsoknader/soknad-felles/TilbakeTilSoknader";
@@ -28,7 +28,7 @@ interface Props {
 export default function SendtSoknadArbeidstakerNy({
   soknad,
 }: Props): ReactElement {
-  const { sykmeldinger } = useSykmeldingerQuery();
+  const { sykmeldinger } = useGetSykmeldingerQuery();
   const sykmelding = sykmeldinger.find((s) => {
     return s.id === soknad.sykmeldingId;
   });

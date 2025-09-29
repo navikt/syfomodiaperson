@@ -4,7 +4,7 @@ import {
   sykmeldingerInnenforOppfolgingstilfelle,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
-import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import SyketilfelleList from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleList";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { Alert, BodyShort, Box, Heading } from "@navikt/ds-react";
@@ -41,7 +41,7 @@ export default function Sykmeldingsgrad({
   selectedOppfolgingstilfelle,
   setSelectedOppfolgingstilfelle,
 }: Props) {
-  const { sykmeldinger } = useSykmeldingerQuery();
+  const { sykmeldinger } = useGetSykmeldingerQuery();
   const getSykepengesoknader = useSykepengesoknaderQuery();
 
   const newAndUsedSykmeldinger = newAndActivatedSykmeldinger(sykmeldinger);

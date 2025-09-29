@@ -1,5 +1,5 @@
 import React from "react";
-import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import {
   BodyShort,
   Box,
@@ -30,7 +30,7 @@ interface Props {
 
 export default function VurderBistandsbehov({ oppgave }: Props) {
   const behandleOppgave = useBehandlePersonoppgaveWithoutRefetch();
-  const { sykmeldinger } = useSykmeldingerQuery();
+  const { sykmeldinger } = useGetSykmeldingerQuery();
 
   const sykmelding = sykmeldinger.find(
     (sykmelding) => sykmelding.id === oppgave.referanseUuid

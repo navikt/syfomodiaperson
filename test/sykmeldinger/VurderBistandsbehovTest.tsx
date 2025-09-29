@@ -11,7 +11,7 @@ import {
   personOppgaveUbehandletBehandlerBerOmBistand,
   personOppgaveUbehandletBehandlerBerOmBistand2,
 } from "@/mocks/ispersonoppgave/personoppgaveMock";
-import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { sykmeldingerQueryKeys } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 import { renderWithRouter } from "../testRouterUtils";
 import { clickButton } from "../testUtils";

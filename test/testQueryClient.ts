@@ -39,7 +39,7 @@ import { egenansattQueryKeys } from "@/data/egenansatt/egenansattQueryHooks";
 import { personinfoQueryKeys } from "@/data/personinfo/personAdresseQueryHooks";
 import { personAdresseMock } from "@/mocks/syfoperson/personAdresseMock";
 import { maksdatoQueryKeys } from "@/data/maksdato/useMaksdatoQuery";
-import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { sykmeldingerQueryKeys } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 import { senOppfolgingKandidatQueryKeys } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { senOppfolgingKandidatMock } from "@/mocks/ismeroppfolging/mockIsmeroppfolging";

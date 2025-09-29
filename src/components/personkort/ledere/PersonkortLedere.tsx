@@ -9,7 +9,7 @@ import PersonKortVirksomhetLedere from "./PersonKortVirksomhetLedere";
 import PersonKortVirksomhetHeader from "./PersonKortVirksomhetHeader";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
-import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 
 const texts = {
   noLeader:
@@ -33,7 +33,7 @@ function groupArrayByKey(array: any, key: any) {
 
 const PersonkortLedere = () => {
   const { allLedere } = useLedereQuery();
-  const { sykmeldinger } = useSykmeldingerQuery();
+  const { sykmeldinger } = useGetSykmeldingerQuery();
   const virksomheterFromSykmeldinger = virksomheterWithoutLeder(
     allLedere,
     sykmeldinger

@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import Side from "../../../components/side/Side";
 import DineSykmeldinger from "../sykmeldinger/DineSykmeldinger";
 import SideLaster from "../../../components/side/SideLaster";
-import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import { Heading } from "@navikt/ds-react";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
@@ -11,7 +11,7 @@ import { PersonOppgaveType } from "@/data/personoppgave/types/PersonOppgave";
 import VurderBistandsbehov from "@/sider/sykmeldinger/VurderBistandsbehov";
 
 export default function SykmeldingerSide(): ReactElement {
-  const { isLoading, isError, sykmeldinger } = useSykmeldingerQuery();
+  const { isLoading, isError, sykmeldinger } = useGetSykmeldingerQuery();
   const { data: oppgaver } = usePersonoppgaverQuery();
 
   const ubehandletBistandsbehovOppgaver = getAllUbehandledePersonOppgaver(

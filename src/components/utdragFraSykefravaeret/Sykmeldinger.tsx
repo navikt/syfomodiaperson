@@ -1,4 +1,4 @@
-import { useSykmeldingerQuery } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import {
   SykmeldingOldFormat,
   SykmeldingStatus,
@@ -8,7 +8,6 @@ import { EventType } from "@/utils/amplitude";
 import {
   arbeidsgivernavnEllerArbeidssituasjon,
   erEkstraInformasjonISykmeldingen,
-  erSykmeldingUtenArbeidsgiver,
   stringMedAlleGraderingerFraSykmeldingPerioder,
   sykmeldingerInnenforOppfolgingstilfelle,
   sykmeldingerSortertNyestTilEldstPeriode,
@@ -36,6 +35,14 @@ const StyledExpantionCardHeader = styled(ExpansionCard.Header)`
     width: 100%;
   }
 `;
+
+function erSykmeldingUtenArbeidsgiver(
+  sykmelding: SykmeldingOldFormat
+): boolean {
+  return (
+    !sykmelding.orgnummer && sykmelding.status === SykmeldingStatus.BEKREFTET
+  );
+}
 
 function logAccordionOpened(isOpen: boolean) {
   if (isOpen) {
@@ -152,7 +159,7 @@ interface Props {
 }
 
 export default function Sykmeldinger({ selectedOppfolgingstilfelle }: Props) {
-  const { sykmeldinger } = useSykmeldingerQuery();
+  const { sykmeldinger } = useGetSykmeldingerQuery();
 
   const aktuelleSykmeldinger = sykmeldinger.filter(
     (sykmelding) =>

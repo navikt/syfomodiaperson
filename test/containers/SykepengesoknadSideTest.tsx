@@ -6,7 +6,7 @@ import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
 import { tilgangBrukerMock } from "@/mocks/istilgangskontroll/tilgangtilbrukerMock";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { sykepengesoknaderQueryKeys } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
-import { sykmeldingerQueryKeys } from "@/data/sykmelding/sykmeldingQueryHooks";
+import { sykmeldingerQueryKeys } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import { queryClientWithAktivBruker } from "../testQueryClient";
 import { renderWithRouter } from "../testRouterUtils";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";

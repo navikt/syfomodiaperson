@@ -1,27 +1,14 @@
 import { senesteTom, tidligsteFom } from "../periodeUtils";
 import {
   ArbeidssituasjonType,
-  SykmeldingDiagnose,
   SykmeldingOldFormat,
   SykmeldingPeriodeDTO,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
-import { manederMellomDatoer } from "@/utils/datoUtils";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
-
-export const finnAvventendeSykmeldingTekst = (
-  sykmelding: SykmeldingOldFormat
-): string | undefined => {
-  const avventendePeriode =
-    sykmelding.mulighetForArbeid.perioder &&
-    sykmelding.mulighetForArbeid.perioder.find((periode) => {
-      return !!periode.avventende;
-    });
-  return avventendePeriode?.avventende;
-};
 
 export const erBehandlingsdagerEllerReisetilskudd = (
   sykmelding: SykmeldingOldFormat
@@ -168,22 +155,6 @@ export const arbeidsgivernavnEllerArbeidssituasjon = (
   }
 };
 
-export const sykmeldingerUtenArbeidsgiver = (
-  sykmeldinger: SykmeldingOldFormat[]
-): SykmeldingOldFormat[] => {
-  return sykmeldinger.filter((sykmelding) =>
-    erSykmeldingUtenArbeidsgiver(sykmelding)
-  );
-};
-
-export const erSykmeldingUtenArbeidsgiver = (
-  sykmelding: SykmeldingOldFormat
-): boolean => {
-  return (
-    !sykmelding.orgnummer && sykmelding.status === SykmeldingStatus.BEKREFTET
-  );
-};
-
 export const sykmeldingperioderSortertEldstTilNyest = (
   perioder: SykmeldingPeriodeDTO[]
 ): SykmeldingPeriodeDTO[] => {
@@ -303,38 +274,4 @@ export const activeSykmeldingerSentToArbeidsgiver = (
       isSykmeldingActiveToday(sykmelding)
     );
   });
-};
-
-export const latestSykmeldingForVirksomhet = (
-  sykmeldinger: SykmeldingOldFormat[],
-  virksomhetsnummer: string
-): SykmeldingOldFormat => {
-  const sykmeldingerForVirksomhet = sykmeldinger.filter(
-    (sykmelding) =>
-      sykmelding.mottakendeArbeidsgiver?.virksomhetsnummer === virksomhetsnummer
-  );
-
-  return sykmeldingerSortertNyestTilEldstPeriode(sykmeldingerForVirksomhet)[0];
-};
-
-export const skalVisesSomAktivSykmelding = (sykmld: SykmeldingOldFormat) =>
-  sykmld.status === SykmeldingStatus.NY &&
-  manederMellomDatoer(
-    senesteTom(sykmld.mulighetForArbeid.perioder),
-    new Date()
-  ) < 3;
-
-export const skalVisesSomTidligereSykmelding = (sykmld: SykmeldingOldFormat) =>
-  sykmld.status !== SykmeldingStatus.NY ||
-  manederMellomDatoer(
-    senesteTom(sykmld.mulighetForArbeid.perioder),
-    new Date()
-  ) >= 3;
-
-export const getDiagnoseFromLatestSykmelding = (
-  sykmeldinger: SykmeldingOldFormat[]
-): SykmeldingDiagnose | undefined => {
-  const latestSykmelding =
-    sykmeldingerSortertNyestTilEldstPeriode(sykmeldinger)[0];
-  return latestSykmelding?.diagnose?.hoveddiagnose;
 };
