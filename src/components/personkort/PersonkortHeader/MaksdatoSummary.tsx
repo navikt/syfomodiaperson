@@ -27,7 +27,7 @@ export function MaksdatoSummary({ maxDate }: MaksdatoSummaryProps) {
       />
       <SyketilfelleSummaryElement
         keyword={texts.utbetaltTom}
-        value={utbetaltTomVerdi}
+        value={utbetaltTom}
       />
       <SyketilfelleSummaryElement
         keyword={texts.soknadBehandletTom}

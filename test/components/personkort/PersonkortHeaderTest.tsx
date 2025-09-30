@@ -188,7 +188,6 @@ describe("PersonkortHeader", () => {
       maksdatoMock.maxDate.tom
     );
 
-    // Verifiser verdier
     expect(screen.getByText(expectedMaksdato)).to.exist;
     expect(screen.getByText(expectedUtbetaltTom)).to.exist;
     expect(screen.getByText(expectedSoknadBehandletTom)).to.exist;
