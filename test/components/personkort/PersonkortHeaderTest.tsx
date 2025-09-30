@@ -210,6 +210,87 @@ describe("PersonkortHeader", () => {
     expect(screen.getByText("Mangler")).to.exist;
   });
 
+  it("viser 'Mangler' for utbetalt tom når utbetalt_tom er før oppfølgingstilfellets start", () => {
+    const startDate = new Date("2025-01-10");
+    const endDate = new Date("2025-02-10");
+
+    const oppfolgingstilfelle = {
+      ...oppfolgingstilfellePersonMock,
+      oppfolgingstilfelleList: [
+        oppfolgingstilfellePersonMock.oppfolgingstilfelleList[0],
+        oppfolgingstilfellePersonMock.oppfolgingstilfelleList[1],
+        {
+          ...oppfolgingstilfellePersonMock.oppfolgingstilfelleList[2],
+          start: startDate,
+          end: endDate,
+        },
+      ],
+    };
+
+    queryClient.setQueryData(
+      oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
+      () => oppfolgingstilfelle
+    );
+
+    queryClient.setQueryData(
+      maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => ({
+        maxDate: {
+          ...maksdatoMock.maxDate,
+          utbetalt_tom: new Date("2025-01-05"), // before start
+        },
+      })
+    );
+
+    renderPersonkortHeader();
+
+    expect(screen.getByText("Utbetalt tom:")).to.exist;
+    expect(screen.getByText("Mangler")).to.exist;
+  });
+
+  it("viser dato for utbetalt tom når utbetalt_tom er etter oppfølgingstilfellets start", () => {
+    const startDate = new Date("2025-01-10");
+    const endDate = new Date("2025-02-10");
+    const utbetaltTomDate = new Date("2025-01-15");
+
+    const oppfolgingstilfelle = {
+      ...oppfolgingstilfellePersonMock,
+      oppfolgingstilfelleList: [
+        oppfolgingstilfellePersonMock.oppfolgingstilfelleList[0],
+        oppfolgingstilfellePersonMock.oppfolgingstilfelleList[1],
+        {
+          ...oppfolgingstilfellePersonMock.oppfolgingstilfelleList[2],
+          start: startDate,
+          end: endDate,
+        },
+      ],
+    };
+
+    queryClient.setQueryData(
+      oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
+      () => oppfolgingstilfelle
+    );
+
+    queryClient.setQueryData(
+      maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => ({
+        maxDate: {
+          ...maksdatoMock.maxDate,
+          utbetalt_tom: utbetaltTomDate, // after start
+        },
+      })
+    );
+
+    renderPersonkortHeader();
+
+    const expected = tilLesbarDatoMedArUtenManedNavn(utbetaltTomDate);
+    expect(screen.getByText(expected)).to.exist;
+  });
+
   describe("Utbetalingsinfo warning", () => {
     const startDate = addDays(new Date(), -10);
     const endDate = addDays(new Date(), 10);

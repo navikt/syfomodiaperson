@@ -11,12 +11,17 @@ const texts = {
 
 interface MaksdatoSummaryProps {
   maxDate: Maksdato;
+  startDate?: Date;
 }
 
-export function MaksdatoSummary({ maxDate }: MaksdatoSummaryProps) {
-  const utbetaltTom = maxDate.utbetalt_tom
-    ? tilLesbarDatoMedArUtenManedNavn(maxDate.utbetalt_tom)
-    : "Mangler";
+export function MaksdatoSummary({ maxDate, startDate }: MaksdatoSummaryProps) {
+  const isUtbetaltTomBeforeStart =
+    !!startDate && !!maxDate.utbetalt_tom && maxDate.utbetalt_tom < startDate;
+  const utbetaltTom =
+    !maxDate.utbetalt_tom || isUtbetaltTomBeforeStart
+      ? "Mangler"
+      : tilLesbarDatoMedArUtenManedNavn(maxDate.utbetalt_tom);
+
   return (
     <div className={"flex flex-row gap-3 items-center"}>
       <SyketilfelleSummaryElement
