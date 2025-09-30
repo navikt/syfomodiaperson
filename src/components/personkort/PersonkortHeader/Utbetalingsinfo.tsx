@@ -26,7 +26,7 @@ export default function Utbetalingsinfo({ maksdato }: Props) {
 
   return maksdato ? (
     <>
-      <MaksdatoSummary maxDate={maksdato} />
+      <MaksdatoSummary maxDate={maksdato} startDate={startDate} />
       {isUtbetalingsinfoFromBeforeOppfolgingstilfelleStart(
         maksdato,
         startDate
