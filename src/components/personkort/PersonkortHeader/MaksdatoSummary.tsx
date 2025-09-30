@@ -5,6 +5,7 @@ import { SyketilfelleSummaryElement } from "@/components/personkort/PersonkortHe
 
 const texts = {
   maksdato: "Maksdato: ",
+  utbetaltTom: "Utbetalt tom: ",
   soknadBehandletTom: "Søknad behandlet tom: ",
 };
 
@@ -13,6 +14,9 @@ interface MaksdatoSummaryProps {
 }
 
 export function MaksdatoSummary({ maxDate }: MaksdatoSummaryProps) {
+  const utbetaltTom = maxDate.utbetalt_tom
+    ? tilLesbarDatoMedArUtenManedNavn(maxDate.utbetalt_tom)
+    : "Mangler";
   return (
     <div className={"flex flex-row gap-3 items-center"}>
       <SyketilfelleSummaryElement
@@ -22,8 +26,12 @@ export function MaksdatoSummary({ maxDate }: MaksdatoSummaryProps) {
         )}
       />
       <SyketilfelleSummaryElement
+        keyword={texts.utbetaltTom}
+        value={utbetaltTom}
+      />
+      <SyketilfelleSummaryElement
         keyword={texts.soknadBehandletTom}
-        value={tilLesbarDatoMedArUtenManedNavn(maxDate.utbetalt_tom)}
+        value={tilLesbarDatoMedArUtenManedNavn(maxDate.tom)}
       />
     </div>
   );

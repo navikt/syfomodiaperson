@@ -32,6 +32,7 @@ import {
   mockUforegrad,
   mockUforegradNull,
 } from "@/mocks/uforegrad/mockUforegrad";
+import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 
 let queryClient: any;
 
@@ -176,9 +177,37 @@ describe("PersonkortHeader", () => {
     renderPersonkortHeader();
 
     expect(screen.getByText("Maksdato:")).to.exist;
-    expect(screen.getByText(dayjs(maksdato).format("DD.MM.YYYY"))).to.exist;
+    expect(screen.getByText("Utbetalt tom:")).to.exist;
     expect(screen.getByText("Søknad behandlet tom:")).to.exist;
-    expect(screen.getByText("01.07.2024")).to.exist;
+
+    const expectedMaksdato = dayjs(maksdato).format("DD.MM.YYYY");
+    const expectedUtbetaltTom = tilLesbarDatoMedArUtenManedNavn(
+      maksdatoMock.maxDate.utbetalt_tom
+    );
+    const expectedSoknadBehandletTom = tilLesbarDatoMedArUtenManedNavn(
+      maksdatoMock.maxDate.tom
+    );
+
+    expect(screen.getByText(expectedMaksdato)).to.exist;
+    expect(screen.getByText(expectedUtbetaltTom)).to.exist;
+    expect(screen.getByText(expectedSoknadBehandletTom)).to.exist;
+  });
+
+  it("viser 'Mangler' for utbetalt tom når utbetalt_tom er null", () => {
+    queryClient.setQueryData(
+      maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => ({
+        maxDate: {
+          ...maksdatoMock.maxDate,
+          utbetalt_tom: null,
+        },
+      })
+    );
+
+    renderPersonkortHeader();
+
+    expect(screen.getByText("Utbetalt tom:")).to.exist;
+    expect(screen.getByText("Mangler")).to.exist;
   });
 
   describe("Utbetalingsinfo warning", () => {
