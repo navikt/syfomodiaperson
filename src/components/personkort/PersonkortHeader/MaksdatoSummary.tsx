@@ -14,7 +14,7 @@ interface MaksdatoSummaryProps {
 }
 
 export function MaksdatoSummary({ maxDate }: MaksdatoSummaryProps) {
-  const utbetaltTomVerdi = maxDate.utbetalt_tom
+  const utbetaltTom = maxDate.utbetalt_tom
     ? tilLesbarDatoMedArUtenManedNavn(maxDate.utbetalt_tom)
     : "Mangler";
   return (
