@@ -7,7 +7,7 @@ import { get } from "@/api/axios";
 import {
   KartleggingssporsmalsvarStatusResponseDTO,
   KartleggingssporsmalKandidatResponseDTO,
-} from "@/data/kartlegging/kartleggingTypes";
+} from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import { useQuery } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/utils";
 

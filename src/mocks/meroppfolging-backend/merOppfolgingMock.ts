@@ -2,7 +2,7 @@ import { MEROPPFOLGING_BACKEND_ROOT } from "@/apiConstants";
 import { SenOppfolgingFormResponseDTOV2 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { ARBEIDSTAKER_DEFAULT } from "../common/mockConstants";
 import { http, HttpResponse } from "msw";
-import { KartleggingssporsmalsvarStatusResponseDTO } from "@/data/kartlegging/kartleggingTypes";
+import { KartleggingssporsmalsvarStatusResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import {
   FormIdentifier,
   FormSnapshotFieldOption,

@@ -4,23 +4,23 @@ import Sidetopp from "@/components/side/Sidetopp";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { Box, Button, VStack } from "@navikt/ds-react";
 import * as Tredelt from "@/components/side/TredeltSide";
-import KartleggingskandidatStatus from "@/sider/kartlegging/KartleggingskandidatStatus";
+import KartleggingskandidatStatus from "@/sider/kartleggingssporsmal/KartleggingskandidatStatus";
 import SideLaster from "@/components/side/SideLaster";
 import {
   hasReceivedQuestions,
   isKandidat,
-} from "@/data/kartlegging/kartleggingTypes";
-import Kartleggingssporsmalsvar from "@/sider/kartlegging/Kartleggingssporsmalsvar";
+} from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
+import Kartleggingssporsmalsvar from "@/sider/kartleggingssporsmal/Kartleggingssporsmalsvar";
 import {
   useKartleggingssporsmalKandidatQuery,
   useKartleggingssporsmalsvarQuery,
-} from "@/data/kartlegging/kartleggingssporsmalQueryHooks";
+} from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 
 const texts = {
   title: "Kartleggingsspørsmål",
 };
 
-export default function KartleggingContainer(): ReactElement {
+export default function KartleggingssporsmalContainer(): ReactElement {
   const {
     isLoading: isLoadingKartlegging,
     isError: isErrorKartlegging,

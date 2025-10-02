@@ -16,7 +16,7 @@ import { http, HttpResponse } from "msw";
 import {
   KandidatStatus,
   KartleggingssporsmalKandidatResponseDTO,
-} from "@/data/kartlegging/kartleggingTypes";
+} from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import { daysFromToday } from "../../../test/testUtils";
 
 export const mockIsmeroppfolging = [
