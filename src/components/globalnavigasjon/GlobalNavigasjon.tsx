@@ -32,7 +32,7 @@ export enum Menypunkter {
   FRISKTILARBEID = "FRISKTILARBEID",
   SENOPPFOLGING = "SENOPPFOLGING",
   MANGLENDE_MEDVIRKNING = "MANGLENDE_MEDVIRKNING",
-  KARTLEGGING = "KARTLEGGING",
+  KARTLEGGINGSSPORSMAL = "KARTLEGGINGSSPORSMAL",
 }
 
 type Menypunkt = { navn: string; sti: string };
@@ -64,9 +64,9 @@ const allMenypunkter: {
     navn: "Dialogmøter",
     sti: "moteoversikt",
   },
-  [Menypunkter.KARTLEGGING]: {
+  [Menypunkter.KARTLEGGINGSSPORSMAL]: {
     navn: "Kartleggingsspørsmål",
-    sti: "kartlegging",
+    sti: "kartleggingssporsmal",
   },
   [Menypunkter.AKTIVITETSKRAV]: {
     navn: "§ 8-8 Aktivitetskrav",
@@ -171,7 +171,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
       {allMenypunktEntries.map(([menypunkt, { navn, sti }], index) => {
         if (
           !toggles.isKartleggingssporsmalEnabled &&
-          menypunkt === Menypunkter.KARTLEGGING
+          menypunkt === Menypunkter.KARTLEGGINGSSPORSMAL
         ) {
           return null;
         }
