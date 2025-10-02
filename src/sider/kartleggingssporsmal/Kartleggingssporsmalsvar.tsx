@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { KartleggingssporsmalsvarResponseDTO } from "@/data/kartlegging/kartleggingTypes";
+import { KartleggingssporsmalsvarResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { Skjemasvar } from "@/sider/dialogmoter/motebehov/skjema/Skjemasvar";
 

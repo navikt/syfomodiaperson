@@ -3,7 +3,7 @@ import {
   hasReceivedQuestions,
   isKandidat,
   KartleggingssporsmalKandidatResponseDTO,
-} from "@/data/kartlegging/kartleggingTypes";
+} from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 
 interface Props {
