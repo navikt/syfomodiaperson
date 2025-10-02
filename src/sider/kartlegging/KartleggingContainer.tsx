@@ -39,7 +39,10 @@ export default function KartleggingContainer(): ReactElement {
   const isError = isErrorKartlegging && isErrorKartleggingsvar;
 
   return (
-    <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.KARTLEGGING}>
+    <Side
+      tittel={texts.title}
+      aktivtMenypunkt={Menypunkter.KARTLEGGINGSSPORSMAL}
+    >
       <Sidetopp tittel={texts.title} />
       <SideLaster henter={isLoading} hentingFeilet={isError}>
         <Tredelt.Container>

@@ -202,6 +202,7 @@ export const numberOfTasks = (
       return getNumberOfManglendeMedvirkningOppgaver(
         manglendeMedvirkningVurdering
       );
+    case Menypunkter.KARTLEGGINGSSPORSMAL:
     case Menypunkter.NOKKELINFORMASJON:
     case Menypunkter.SYKEPENGESOKNADER:
     case Menypunkter.HISTORIKK: {
