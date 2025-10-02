@@ -13,6 +13,11 @@ import {
 } from "../common/mockConstants";
 import { addDays, addWeeks } from "@/utils/datoUtils";
 import { http, HttpResponse } from "msw";
+import {
+  KandidatStatus,
+  KartleggingssporsmalKandidatResponseDTO,
+} from "@/data/kartlegging/kartleggingTypes";
+import { daysFromToday } from "../../../test/testUtils";
 
 export const mockIsmeroppfolging = [
   http.get(`${ISMEROPPFOLGING_ROOT}/senoppfolging/kandidater`, () => {
@@ -43,6 +48,9 @@ export const mockIsmeroppfolging = [
       return HttpResponse.json(vurdering);
     }
   ),
+  http.get(`${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater`, () => {
+    return HttpResponse.json(kartleggingIsKandidatAndReceivedQuestions);
+  }),
 ];
 
 export const senOppfolgingKandidatMock: SenOppfolgingKandidatResponseDTO = {
@@ -76,3 +84,21 @@ export const ferdigbehandletKandidatMock: SenOppfolgingKandidatResponseDTO = {
     },
   ],
 };
+
+const kartleggingIsKandidatAndReceivedQuestions: KartleggingssporsmalKandidatResponseDTO =
+  {
+    uuid: crypto.randomUUID(),
+    createdAt: new Date(),
+    personident: ARBEIDSTAKER_DEFAULT.personIdent,
+    varsletAt: daysFromToday(1),
+    status: KandidatStatus.KANDIDAT,
+  };
+
+const kartleggingIsKandidatAndNotReceivedQuestions: KartleggingssporsmalKandidatResponseDTO =
+  {
+    uuid: crypto.randomUUID(),
+    createdAt: new Date(),
+    personident: ARBEIDSTAKER_DEFAULT.personIdent,
+    varsletAt: null,
+    status: KandidatStatus.KANDIDAT,
+  };
