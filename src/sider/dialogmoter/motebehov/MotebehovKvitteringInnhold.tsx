@@ -6,7 +6,7 @@ import {
   MotebehovKanImage,
 } from "../../../../img/ImageComponents";
 import { Box, HStack, VStack } from "@navikt/ds-react";
-import { MotebehovSkjemasvar } from "@/sider/dialogmoter/motebehov/skjema/MotebehovSkjemasvar";
+import { Skjemasvar } from "@/sider/dialogmoter/motebehov/skjema/Skjemasvar";
 
 const setSvarIkon = (deltakerOnskerMote?: boolean): string => {
   switch (deltakerOnskerMote) {
@@ -46,7 +46,9 @@ export default function MotebehovKvitteringInnhold({
           />
           <div>{tekst}</div>
         </HStack>
-        {motebehov && <MotebehovSkjemasvar motebehov={motebehov} />}
+        {motebehov && (
+          <Skjemasvar formSnapshot={motebehov.formValues.formSnapshot} />
+        )}
       </VStack>
     </Box>
   );
