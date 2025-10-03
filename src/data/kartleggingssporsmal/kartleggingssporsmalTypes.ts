@@ -13,12 +13,12 @@ export enum KandidatStatus {
   IKKE_KANDIDAT = "IKKE_KANDIDAT",
 }
 
-export interface KartleggingssporsmalsvarStatusResponseDTO {
+export interface KartleggingssporsmalSvarStatusResponseDTO {
   isKandidat: boolean;
-  formResponse: KartleggingssporsmalsvarResponseDTO | null;
+  formResponse: KartleggingssporsmalSvarResponseDTO | null;
 }
 
-export interface KartleggingssporsmalsvarResponseDTO {
+export interface KartleggingssporsmalSvarResponseDTO {
   uuid: string;
   fnr: string;
   kandidatId: string;

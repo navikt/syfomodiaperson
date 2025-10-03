@@ -7,21 +7,21 @@ import {
 import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 
 interface Props {
-  kartleggingData: KartleggingssporsmalKandidatResponseDTO | undefined;
+  kandidat: KartleggingssporsmalKandidatResponseDTO | undefined;
 }
 
-export default function KartleggingskandidatStatus({
-  kartleggingData,
+export default function KartleggingssporsmalKandidat({
+  kandidat,
 }: Props): ReactElement {
-  if (!kartleggingData || !isKandidat(kartleggingData)) {
+  if (!kandidat || !isKandidat(kandidat)) {
     return <div>Personen har ikke blitt kandidat</div>;
   }
 
   return (
     <div className="mb-4">
-      {hasReceivedQuestions(kartleggingData)
+      {hasReceivedQuestions(kandidat)
         ? `Personen er kandidat og har mottatt kartleggingsspørsmål (${tilDatoMedManedNavnOgKlokkeslett(
-            kartleggingData.varsletAt
+            kandidat.varsletAt
           )})`
         : `Personen er kandidat og har ikke mottatt kartleggingsspørsmål`}
     </div>

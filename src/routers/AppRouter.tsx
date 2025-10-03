@@ -41,7 +41,7 @@ import IkkeAktuellSide from "@/sider/manglendemedvirkning/ikkeaktuell/IkkeAktuel
 import UnntakSide from "@/sider/manglendemedvirkning/unntak/UnntakSide";
 import { AktivitetskravContainer } from "@/sider/aktivitetskrav/AktivitetskravContainer";
 import OppfyltForm from "@/sider/arbeidsuforhet/oppfylt/OppfyltForm";
-import KartleggingssporsmalContainer from "@/sider/kartleggingssporsmal/KartleggingssporsmalContainer";
+import KartleggingssporsmalSide from "@/sider/kartleggingssporsmal/KartleggingssporsmalSide";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 
 export const appRoutePath = "/sykefravaer";
@@ -58,7 +58,6 @@ export const frisktilarbeidPath = `${appRoutePath}/frisktilarbeid`;
 export const senOppfolgingPath = `${appRoutePath}/senoppfolging`;
 export const manglendeMedvirkningPath = `${appRoutePath}/manglendemedvirkning`;
 export const historikkPath = `${appRoutePath}/historikk`;
-export const kartleggingssporsmalPath = `${appRoutePath}/kartleggingssporsmal`;
 
 const AktivBrukerRouter = (): ReactElement => {
   const { toggles } = useFeatureToggles();
@@ -125,8 +124,8 @@ const AktivBrukerRouter = (): ReactElement => {
 
           {toggles.isKartleggingssporsmalEnabled && (
             <Route
-              path={kartleggingssporsmalPath}
-              element={<KartleggingssporsmalContainer />}
+              path={`${appRoutePath}/kartleggingssporsmal`}
+              element={<KartleggingssporsmalSide />}
             />
           )}
 
