@@ -80,7 +80,7 @@ const kartleggingssporsmal: RadioGroupFieldSnapshot[] = [
   {
     ...defaultRadioGroupSporsmal(true),
     label:
-      "Hvordan vil du beskrive samarbeidet og relasjonen mellom deg og arbeidsgiveren din? ",
+      "Hvordan vil du beskrive samarbeidet og relasjonen mellom deg og arbeidsgiveren din?",
     options: [
       createRadioOption("Jeg opplever forholdet vårt som godt"),
       createRadioOption("Jeg opplever ikke forholdet vårt som godt", true),
@@ -98,7 +98,7 @@ const kartleggingssporsmal: RadioGroupFieldSnapshot[] = [
   },
 ];
 
-const kartleggingssporsmalAnswered: KartleggingssporsmalSvarStatusResponseDTO =
+export const kartleggingssporsmalAnswered: KartleggingssporsmalSvarStatusResponseDTO =
   {
     isKandidat: true,
     formResponse: {

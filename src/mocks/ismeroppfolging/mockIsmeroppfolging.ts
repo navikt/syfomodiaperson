@@ -85,7 +85,7 @@ export const ferdigbehandletKandidatMock: SenOppfolgingKandidatResponseDTO = {
   ],
 };
 
-const kartleggingIsKandidatAndReceivedQuestions: KartleggingssporsmalKandidatResponseDTO =
+export const kartleggingIsKandidatAndReceivedQuestions: KartleggingssporsmalKandidatResponseDTO =
   {
     uuid: crypto.randomUUID(),
     createdAt: new Date(),
