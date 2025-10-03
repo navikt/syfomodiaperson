@@ -17,6 +17,7 @@ import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hoo
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 
 export enum Menypunkter {
   AKTIVITETSKRAV = "AKTIVITETSKRAV",
@@ -31,6 +32,7 @@ export enum Menypunkter {
   FRISKTILARBEID = "FRISKTILARBEID",
   SENOPPFOLGING = "SENOPPFOLGING",
   MANGLENDE_MEDVIRKNING = "MANGLENDE_MEDVIRKNING",
+  KARTLEGGINGSSPORSMAL = "KARTLEGGINGSSPORSMAL",
 }
 
 type Menypunkt = { navn: string; sti: string };
@@ -61,6 +63,10 @@ const allMenypunkter: {
   [Menypunkter.DIALOGMOTE]: {
     navn: "Dialogmøter",
     sti: "moteoversikt",
+  },
+  [Menypunkter.KARTLEGGINGSSPORSMAL]: {
+    navn: "Kartleggingsspørsmål",
+    sti: "kartleggingssporsmal",
   },
   [Menypunkter.AKTIVITETSKRAV]: {
     navn: "§ 8-8 Aktivitetskrav",
@@ -107,6 +113,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
   const { data: friskmeldingTilArbeidsformidlingVedtak } = useVedtakQuery();
   const { sisteVurdering: manglendeMedvirkningVurdering } =
     useManglendemedvirkningVurderingQuery();
+  const { toggles } = useFeatureToggles();
 
   const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.map(
     (oppfolgingsplanLPS) =>
@@ -162,6 +169,12 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
   return (
     <ul aria-label="Navigasjon">
       {allMenypunktEntries.map(([menypunkt, { navn, sti }], index) => {
+        if (
+          !toggles.isKartleggingssporsmalEnabled &&
+          menypunkt === Menypunkter.KARTLEGGINGSSPORSMAL
+        ) {
+          return null;
+        }
         const isAktiv = menypunkt === aktivtMenypunkt;
         const className = cn("navigasjonspanel", {
           "navigasjonspanel--aktiv": isAktiv,

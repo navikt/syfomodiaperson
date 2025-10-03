@@ -1,6 +1,6 @@
 import {
+  FormSnapshot,
   FormSnapshotFieldType,
-  MotebehovVeilederDTO,
   RadioGroupFieldSnapshot,
   SingleCheckboxFieldSnapshot,
   TextFieldSnapshot,
@@ -11,11 +11,11 @@ import { RadioGroupSvar } from "@/sider/dialogmoter/motebehov/skjema/RadioGroupS
 import React from "react";
 
 interface Props {
-  motebehov: MotebehovVeilederDTO;
+  formSnapshot: FormSnapshot | null;
 }
 
-export const MotebehovSkjemasvar = ({ motebehov }: Props) =>
-  motebehov.formValues.formSnapshot?.fieldSnapshots.map((field, index) => {
+export const Skjemasvar = ({ formSnapshot }: Props) =>
+  formSnapshot?.fieldSnapshots.map((field, index) => {
     switch (field.fieldType) {
       case FormSnapshotFieldType.TEXT:
         return <TextSvar key={index} textSvar={field as TextFieldSnapshot} />;
