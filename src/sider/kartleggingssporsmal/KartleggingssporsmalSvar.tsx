@@ -1,23 +1,23 @@
 import React, { ReactElement } from "react";
-import { KartleggingssporsmalsvarResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
+import { KartleggingssporsmalSvarResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { Skjemasvar } from "@/sider/dialogmoter/motebehov/skjema/Skjemasvar";
 
 interface Props {
-  kartleggingssporsmalsvar: KartleggingssporsmalsvarResponseDTO;
+  kartleggingssporsmalSvar: KartleggingssporsmalSvarResponseDTO;
 }
 
-export default function Kartleggingssporsmalsvar({
-  kartleggingssporsmalsvar,
+export default function KartleggingssporsmalSvar({
+  kartleggingssporsmalSvar,
 }: Props): ReactElement {
   return (
     <>
       <div>
         {`Svar mottatt: ${tilDatoMedManedNavnOgKlokkeslett(
-          kartleggingssporsmalsvar.createdAt
+          kartleggingssporsmalSvar.createdAt
         )}`}
       </div>
-      <Skjemasvar formSnapshot={kartleggingssporsmalsvar.formSnapshot} />
+      <Skjemasvar formSnapshot={kartleggingssporsmalSvar.formSnapshot} />
     </>
   );
 }

@@ -4,39 +4,34 @@ import Sidetopp from "@/components/side/Sidetopp";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { Box, Button, VStack } from "@navikt/ds-react";
 import * as Tredelt from "@/components/side/TredeltSide";
-import KartleggingskandidatStatus from "@/sider/kartleggingssporsmal/KartleggingskandidatStatus";
+import KartleggingssporsmalKandidat from "@/sider/kartleggingssporsmal/KartleggingssporsmalKandidat";
 import SideLaster from "@/components/side/SideLaster";
 import {
   hasReceivedQuestions,
   isKandidat,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
-import Kartleggingssporsmalsvar from "@/sider/kartleggingssporsmal/Kartleggingssporsmalsvar";
+import KartleggingssporsmalSvar from "@/sider/kartleggingssporsmal/KartleggingssporsmalSvar";
 import {
   useKartleggingssporsmalKandidatQuery,
-  useKartleggingssporsmalsvarQuery,
+  useKartleggingssporsmalSvarQuery,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 
 const texts = {
   title: "Kartleggingsspørsmål",
+  vurdereOppgaveText: "Behovet er vurdert, fjern oppgaven",
+  extraInfo: "Informasjon om hva som skal gjøres ved vurdering",
 };
 
-export default function KartleggingssporsmalContainer(): ReactElement {
-  const {
-    isLoading: isLoadingKartlegging,
-    isError: isErrorKartlegging,
-    data: kartleggingData,
-  } = useKartleggingssporsmalKandidatQuery();
-
-  const {
-    isLoading: isLoadingKartleggingsvar,
-    isError: isErrorKartleggingsvar,
-    data: kartleggingsvar,
-  } = useKartleggingssporsmalsvarQuery(
-    isKandidat(kartleggingData) && hasReceivedQuestions(kartleggingData)
+export default function KartleggingssporsmalSide(): ReactElement {
+  const getKandidat = useKartleggingssporsmalKandidatQuery();
+  const getKartleggingssporsmalSvar = useKartleggingssporsmalSvarQuery(
+    isKandidat(getKandidat.data) && hasReceivedQuestions(getKandidat.data)
   );
+  const kartleggingsvar = getKartleggingssporsmalSvar.data;
 
-  const isLoading = isLoadingKartlegging && isLoadingKartleggingsvar;
-  const isError = isErrorKartlegging && isErrorKartleggingsvar;
+  const isLoading =
+    getKandidat.isLoading && getKartleggingssporsmalSvar.isLoading;
+  const isError = getKandidat.isError || getKartleggingssporsmalSvar.isError;
 
   return (
     <Side
@@ -48,16 +43,16 @@ export default function KartleggingssporsmalContainer(): ReactElement {
         <Tredelt.Container>
           <Tredelt.FirstColumn className="-xl:mb-2">
             <Box background="surface-default" className="p-6 gap-6">
-              <KartleggingskandidatStatus kartleggingData={kartleggingData} />
+              <KartleggingssporsmalKandidat kandidat={getKandidat.data} />
               {kartleggingsvar && kartleggingsvar.formResponse !== null && (
                 <>
-                  <VStack gap={"4"}>
-                    <Kartleggingssporsmalsvar
-                      kartleggingssporsmalsvar={kartleggingsvar.formResponse}
+                  <VStack gap="4">
+                    <KartleggingssporsmalSvar
+                      kartleggingssporsmalSvar={kartleggingsvar.formResponse}
                     />
                   </VStack>
-                  <Button variant="secondary" size="small" className="mt-4">
-                    Jeg har vurdert spørsmålene, fjern oppgaven.
+                  <Button variant="primary" size="small" className="mt-4">
+                    {texts.vurdereOppgaveText}
                   </Button>
                 </>
               )}
@@ -65,7 +60,7 @@ export default function KartleggingssporsmalContainer(): ReactElement {
           </Tredelt.FirstColumn>
           <Tredelt.SecondColumn>
             <Box background="surface-default" padding="6" className="mb-2">
-              Informasjon om hva som skal gjøres ved vurdering
+              {texts.extraInfo}
             </Box>
           </Tredelt.SecondColumn>
         </Tredelt.Container>

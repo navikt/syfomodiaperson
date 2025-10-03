@@ -5,7 +5,7 @@ import {
 } from "@/apiConstants";
 import { get } from "@/api/axios";
 import {
-  KartleggingssporsmalsvarStatusResponseDTO,
+  KartleggingssporsmalSvarStatusResponseDTO,
   KartleggingssporsmalKandidatResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import { useQuery } from "@tanstack/react-query";
@@ -16,7 +16,7 @@ export const kartleggingssporsmalQueryKeys = {
     "kartleggingssporsmalKandidat",
     fnr,
   ],
-  kartleggingssporsmalsvar: (fnr: string) => ["kartleggingssporsmalsvar", fnr],
+  kartleggingssporsmalSvar: (fnr: string) => ["kartleggingssporsmalsvar", fnr],
 };
 
 export const useKartleggingssporsmalKandidatQuery = () => {
@@ -33,15 +33,15 @@ export const useKartleggingssporsmalKandidatQuery = () => {
   });
 };
 
-export const useKartleggingssporsmalsvarQuery = (isEnabled: boolean) => {
+export const useKartleggingssporsmalSvarQuery = (isEnabled: boolean) => {
   const fnr = useValgtPersonident();
   const path = `${MEROPPFOLGING_BACKEND_ROOT}/kartleggingssporsmal/latest`;
-  const getKartleggingssporsmalsvar = () =>
-    get<KartleggingssporsmalsvarStatusResponseDTO>(path, fnr);
+  const getKartleggingssporsmalSvar = () =>
+    get<KartleggingssporsmalSvarStatusResponseDTO>(path, fnr);
 
   return useQuery({
-    queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalsvar(fnr),
-    queryFn: getKartleggingssporsmalsvar,
+    queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalSvar(fnr),
+    queryFn: getKartleggingssporsmalSvar,
     enabled: !!fnr && isEnabled,
     staleTime: minutesToMillis(60 * 12),
   });

@@ -2,7 +2,7 @@ import { MEROPPFOLGING_BACKEND_ROOT } from "@/apiConstants";
 import { SenOppfolgingFormResponseDTOV2 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { ARBEIDSTAKER_DEFAULT } from "../common/mockConstants";
 import { http, HttpResponse } from "msw";
-import { KartleggingssporsmalsvarStatusResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
+import { KartleggingssporsmalSvarStatusResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import {
   FormIdentifier,
   FormSnapshotFieldOption,
@@ -98,7 +98,7 @@ const kartleggingssporsmal: RadioGroupFieldSnapshot[] = [
   },
 ];
 
-const kartleggingssporsmalAnswered: KartleggingssporsmalsvarStatusResponseDTO =
+const kartleggingssporsmalAnswered: KartleggingssporsmalSvarStatusResponseDTO =
   {
     isKandidat: true,
     formResponse: {
@@ -114,7 +114,7 @@ const kartleggingssporsmalAnswered: KartleggingssporsmalsvarStatusResponseDTO =
     },
   };
 
-const kartleggingssporsmalNotAnswered: KartleggingssporsmalsvarStatusResponseDTO =
+const kartleggingssporsmalNotAnswered: KartleggingssporsmalSvarStatusResponseDTO =
   {
     isKandidat: false,
     formResponse: null,
