@@ -27,10 +27,13 @@ import HjelpetekstVedMeldtBehov from "@/components/motebehov/HjelpetekstVedMeldt
 
 const texts = {
   fjernOppgave: "Jeg har vurdert behovet. Oppgaven kan fjernes fra oversikten.",
-  radioLegend: "Vurder møtebehov og fjern oppgaven",
-  vurdertUtenTilbakemelding: "Jeg har vurdert møtebehovet",
-  vurdertMedTilbakemelding:
-    "Jeg har vurdert møtebehovet og vil gi tilbakemelding til innmelder(e)",
+  radioLegend: "Vurder behov for dialogmøte",
+  vurderBehovForDialogmoteRadioBtn: "Behov for dialogmøte",
+  vurderBehovForDialogmoteRadioBtnDescription:
+    "Krever at man manuelt sender en innkalling til dialogmøte etterpå.",
+  vurderIkkeBehovForDialogmoteRadioBtn: "Ikke behov for dialogmøte",
+  vurderIkkeBehovForDialogmoteRadioBtnDescription:
+    "Sender en automatisk tilbakemelding til innmelder(e) at det ikke er behov for dialogmøte.",
   tilbakemeldingHeader:
     "Dette er tilbakemeldingen vi sender automatisk til innmelder.",
   tilbakemelding:
@@ -73,8 +76,18 @@ export default function BehandleMotebehovKnapp() {
         legend={texts.radioLegend}
         onChange={(value) => setIsTilbakemelding(value)}
       >
-        <Radio value={false}>{texts.vurdertUtenTilbakemelding}</Radio>
-        <Radio value={true}>{texts.vurdertMedTilbakemelding}</Radio>
+        <Radio
+          value={false}
+          description={texts.vurderBehovForDialogmoteRadioBtnDescription}
+        >
+          {texts.vurderBehovForDialogmoteRadioBtn}
+        </Radio>
+        <Radio
+          value={true}
+          description={texts.vurderIkkeBehovForDialogmoteRadioBtnDescription}
+        >
+          {texts.vurderIkkeBehovForDialogmoteRadioBtn}
+        </Radio>
         {isTilbakemelding && (
           <ReadMore
             size="small"
@@ -110,7 +123,7 @@ export default function BehandleMotebehovKnapp() {
           }
         }}
       >
-        Send
+        Bekreft
       </Button>
     </VStack>
   ) : isSistBehandletMotebehovInnenforTilfelle ? (
