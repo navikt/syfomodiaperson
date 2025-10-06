@@ -19,9 +19,7 @@ import { screen } from "@testing-library/react";
 let queryClient: QueryClient;
 
 const mockKartleggingssporsmalKandidat = (
-  kartleggingssporsmalKandidatResponseDTO:
-    | KartleggingssporsmalKandidatResponseDTO
-    | undefined,
+  kartleggingssporsmalKandidatResponseDTO: KartleggingssporsmalKandidatResponseDTO | null,
   fnr: string
 ) => {
   queryClient.setQueryData(
@@ -58,10 +56,7 @@ describe("Kartleggingssporsmal", () => {
   });
 
   it("Sykmeldt is not kandidat", () => {
-    mockKartleggingssporsmalKandidat(
-      undefined,
-      ARBEIDSTAKER_DEFAULT.personIdent
-    );
+    mockKartleggingssporsmalKandidat(null, ARBEIDSTAKER_DEFAULT.personIdent);
 
     renderKartleggingssporsmal();
 
