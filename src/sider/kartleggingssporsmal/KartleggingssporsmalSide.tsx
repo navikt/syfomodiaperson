@@ -30,7 +30,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
   const kartleggingsvar = getKartleggingssporsmalSvar.data;
 
   const isLoading =
-    getKandidat.isLoading && getKartleggingssporsmalSvar.isLoading;
+    getKandidat.isLoading || getKartleggingssporsmalSvar.isLoading;
   const isError = getKandidat.isError || getKartleggingssporsmalSvar.isError;
 
   return (
