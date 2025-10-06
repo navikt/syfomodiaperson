@@ -5,11 +5,12 @@ import {
 } from "@/apiConstants";
 import { get } from "@/api/axios";
 import {
-  KartleggingssporsmalSvarStatusResponseDTO,
   KartleggingssporsmalKandidatResponseDTO,
+  KartleggingssporsmalSvarStatusResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import { useQuery } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/utils";
+import { ApiErrorException } from "@/api/errors";
 
 export const kartleggingssporsmalQueryKeys = {
   kartleggingssporsmalKandidat: (fnr: string) => [
@@ -23,7 +24,13 @@ export const useKartleggingssporsmalKandidatQuery = () => {
   const fnr = useValgtPersonident();
   const path = `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater`;
   const getKartleggingssporsmalKandidat = () =>
-    get<KartleggingssporsmalKandidatResponseDTO>(path, fnr);
+    get<KartleggingssporsmalKandidatResponseDTO>(path, fnr).catch(
+      (error: ApiErrorException) => {
+        if (error.code === 404) {
+          return null;
+        }
+      }
+    );
 
   return useQuery({
     queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
