@@ -161,14 +161,15 @@ describe("FattVedtakSkjema", () => {
     const utbetalingCheckbox: HTMLInputElement = screen.getByLabelText(
       "Utbetaling må være igangsatt"
     );
-    const oppsigelseCheckbox: HTMLInputElement = screen.getByLabelText(
-      "Oppsigelsen er mottatt"
+    const arbeidsforholdCheckbox: HTMLInputElement = screen.getByLabelText(
+      "Dokumentasjon på at arbeidsforholdet er opphørt"
     );
     const fritakCheckbox: HTMLInputElement = screen.getByLabelText(
-      "Fritak fra arbeidsplikt er mottatt"
+      "Fritak fra arbeidsplikten er dokumentert"
     );
+
     await userEvent.click(utbetalingCheckbox);
-    await userEvent.click(oppsigelseCheckbox);
+    await userEvent.click(arbeidsforholdCheckbox);
     await userEvent.click(fritakCheckbox);
 
     const fraDato = getTextInput("Friskmeldingen gjelder fra");
@@ -217,14 +218,15 @@ describe("FattVedtakSkjema", () => {
     const utbetalingCheckbox: HTMLInputElement = screen.getByLabelText(
       "Utbetaling må være igangsatt"
     );
-    const oppsigelseCheckbox: HTMLInputElement = screen.getByLabelText(
-      "Oppsigelsen er mottatt"
+    const arbeidsforholdCheckbox: HTMLInputElement = screen.getByLabelText(
+      "Dokumentasjon på at arbeidsforholdet er opphørt"
     );
     const fritakCheckbox: HTMLInputElement = screen.getByLabelText(
-      "Fritak fra arbeidsplikt er mottatt"
+      "Fritak fra arbeidsplikten er dokumentert"
     );
+
     await userEvent.click(utbetalingCheckbox);
-    await userEvent.click(oppsigelseCheckbox);
+    await userEvent.click(arbeidsforholdCheckbox);
     await userEvent.click(fritakCheckbox);
 
     const fraDato = getTextInput("Friskmeldingen gjelder fra");
