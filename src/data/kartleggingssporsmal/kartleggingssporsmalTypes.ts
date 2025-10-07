@@ -27,13 +27,13 @@ export interface KartleggingssporsmalSvarResponseDTO {
 }
 
 export function isKandidat(
-  kartleggingData: KartleggingssporsmalKandidatResponseDTO | undefined
+  kartleggingData: KartleggingssporsmalKandidatResponseDTO | null | undefined
 ): boolean {
   return kartleggingData?.status === KandidatStatus.KANDIDAT;
 }
 
 export function hasReceivedQuestions(
-  kartleggingData: KartleggingssporsmalKandidatResponseDTO | undefined
+  kartleggingData: KartleggingssporsmalKandidatResponseDTO | null | undefined
 ): boolean {
   return kartleggingData?.varsletAt !== null;
 }

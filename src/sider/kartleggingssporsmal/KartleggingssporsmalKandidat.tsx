@@ -7,7 +7,7 @@ import {
 import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 
 interface Props {
-  kandidat: KartleggingssporsmalKandidatResponseDTO | undefined;
+  kandidat: KartleggingssporsmalKandidatResponseDTO | null | undefined;
 }
 
 export default function KartleggingssporsmalKandidat({
