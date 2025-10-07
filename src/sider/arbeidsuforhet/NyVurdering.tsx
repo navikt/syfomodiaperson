@@ -21,7 +21,7 @@ const texts = {
 const lastVurderingText = (vurderinger: VurderingResponseDTO[]) => {
   const lastVurdering = vurderinger[0];
   if (!lastVurdering) {
-    return "Ingen vurderinger har blitt gjort, trykk på 'Start ny vurdering' for å sende forhåndsvarsel";
+    return "Ingen vurderinger har blitt gjort.";
   }
 
   if (lastVurdering.type === VurderingType.FORHANDSVARSEL) {
