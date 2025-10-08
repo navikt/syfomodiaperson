@@ -100,7 +100,6 @@ const kartleggingssporsmal: RadioGroupFieldSnapshot[] = [
 
 export const kartleggingssporsmalAnswered: KartleggingssporsmalSvarStatusResponseDTO =
   {
-    isKandidat: true,
     formResponse: {
       uuid: crypto.randomUUID(),
       fnr: ARBEIDSTAKER_DEFAULT.personIdent,

@@ -14,7 +14,6 @@ export enum KandidatStatus {
 }
 
 export interface KartleggingssporsmalSvarStatusResponseDTO {
-  isKandidat: boolean;
   formResponse: KartleggingssporsmalSvarResponseDTO | null;
 }
 
