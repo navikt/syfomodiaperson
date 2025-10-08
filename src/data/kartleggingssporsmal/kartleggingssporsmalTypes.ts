@@ -5,7 +5,7 @@ export interface KartleggingssporsmalKandidatResponseDTO {
   createdAt: Date;
   personident: string;
   status: KandidatStatus;
-  varsletAt: Date | null;
+  varsletAt: Date;
 }
 
 export enum KandidatStatus {
@@ -30,10 +30,4 @@ export function isKandidat(
   kartleggingData: KartleggingssporsmalKandidatResponseDTO | null | undefined
 ): boolean {
   return kartleggingData?.status === KandidatStatus.KANDIDAT;
-}
-
-export function hasReceivedQuestions(
-  kartleggingData: KartleggingssporsmalKandidatResponseDTO | null | undefined
-): boolean {
-  return kartleggingData?.varsletAt !== null;
 }

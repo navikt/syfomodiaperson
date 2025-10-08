@@ -113,9 +113,3 @@ export const kartleggingssporsmalAnswered: KartleggingssporsmalSvarStatusRespons
       },
     },
   };
-
-const kartleggingssporsmalNotAnswered: KartleggingssporsmalSvarStatusResponseDTO =
-  {
-    isKandidat: false,
-    formResponse: null,
-  };

@@ -4,28 +4,29 @@ import Sidetopp from "@/components/side/Sidetopp";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { Box, Button, VStack } from "@navikt/ds-react";
 import * as Tredelt from "@/components/side/TredeltSide";
-import KartleggingssporsmalKandidat from "@/sider/kartleggingssporsmal/KartleggingssporsmalKandidat";
 import SideLaster from "@/components/side/SideLaster";
-import {
-  hasReceivedQuestions,
-  isKandidat,
-} from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
-import KartleggingssporsmalSvar from "@/sider/kartleggingssporsmal/KartleggingssporsmalSvar";
+import { isKandidat } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import {
   useKartleggingssporsmalKandidatQuery,
   useKartleggingssporsmalSvarQuery,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
+import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
+import { Skjemasvar } from "@/sider/dialogmoter/motebehov/skjema/Skjemasvar";
 
 const texts = {
   title: "Kartleggingsspørsmål",
   vurdereOppgaveText: "Behovet er vurdert, fjern oppgaven",
+  kandidat: "Sykmeldt er kandidat og har mottatt kartleggingsspørsmål",
+  ikkeKandidat: "Sykmeldt har ikke blitt kandidat",
+  svarMottatt: "Svar mottatt",
   extraInfo: "Informasjon om hva som skal gjøres ved vurdering",
 };
 
 export default function KartleggingssporsmalSide(): ReactElement {
   const getKandidat = useKartleggingssporsmalKandidatQuery();
+  const kandidat = getKandidat.data;
   const getKartleggingssporsmalSvar = useKartleggingssporsmalSvarQuery(
-    isKandidat(getKandidat.data) && hasReceivedQuestions(getKandidat.data)
+    isKandidat(kandidat)
   );
   const kartleggingsvar = getKartleggingssporsmalSvar.data;
 
@@ -43,12 +44,28 @@ export default function KartleggingssporsmalSide(): ReactElement {
         <Tredelt.Container>
           <Tredelt.FirstColumn className="-xl:mb-2">
             <Box background="surface-default" className="p-6 gap-6">
-              <KartleggingssporsmalKandidat kandidat={getKandidat.data} />
+              {kandidat && isKandidat(kandidat) ? (
+                <div className="mb-4">
+                  {`${texts.kandidat} (${tilDatoMedManedNavnOgKlokkeslett(
+                    kandidat.varsletAt
+                  )})`}
+                </div>
+              ) : (
+                <div>{texts.ikkeKandidat}</div>
+              )}
+
               {kartleggingsvar && kartleggingsvar.formResponse !== null && (
                 <>
                   <VStack gap="4">
-                    <KartleggingssporsmalSvar
-                      kartleggingssporsmalSvar={kartleggingsvar.formResponse}
+                    <div>
+                      {`${
+                        texts.svarMottatt
+                      }: ${tilDatoMedManedNavnOgKlokkeslett(
+                        kartleggingsvar.formResponse.createdAt
+                      )}`}
+                    </div>
+                    <Skjemasvar
+                      formSnapshot={kartleggingsvar.formResponse.formSnapshot}
                     />
                   </VStack>
                   <Button variant="primary" size="small" className="mt-4">

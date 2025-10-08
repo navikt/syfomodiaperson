@@ -93,12 +93,3 @@ export const kartleggingIsKandidatAndReceivedQuestions: KartleggingssporsmalKand
     varsletAt: daysFromToday(1),
     status: KandidatStatus.KANDIDAT,
   };
-
-const kartleggingIsKandidatAndNotReceivedQuestions: KartleggingssporsmalKandidatResponseDTO =
-  {
-    uuid: crypto.randomUUID(),
-    createdAt: new Date(),
-    personident: ARBEIDSTAKER_DEFAULT.personIdent,
-    varsletAt: null,
-    status: KandidatStatus.KANDIDAT,
-  };

@@ -60,7 +60,7 @@ describe("Kartleggingssporsmal", () => {
 
     renderKartleggingssporsmal();
 
-    expect(screen.getByText("Personen har ikke blitt kandidat")).to.exist;
+    expect(screen.getByText("Sykmeldt har ikke blitt kandidat")).to.exist;
   });
 
   it("Sykmeldt is kandidat and has answered questions", () => {
@@ -77,7 +77,7 @@ describe("Kartleggingssporsmal", () => {
 
     expect(
       screen.queryByText(
-        "Personen er kandidat og har mottatt kartleggingsspørsmål",
+        "Sykmeldt er kandidat og har mottatt kartleggingsspørsmål",
         { exact: false }
       )
     ).to.exist;
