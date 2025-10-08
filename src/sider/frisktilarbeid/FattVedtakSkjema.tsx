@@ -29,8 +29,12 @@ const texts = {
   vedtakKrav: {
     legend: "Dette må være oppfylt før vedtak kan fattes",
     utbetalingMaVaereIgangsatt: "Utbetaling må være igangsatt",
-    oppsigelseErMottatt: "Oppsigelsen er mottatt",
-    fritakFraArbeidspliktErMottatt: "Fritak fra arbeidsplikt er mottatt",
+    dokumentasjonPaAtArbeidsforholdetErOpphort:
+      "Dokumentasjon på at arbeidsforholdet er opphørt",
+    fritakFraArbeidspliktenErDokumentert:
+      "Fritak fra arbeidsplikten er dokumentert",
+    fritakFraArbeidspliktenErDokumentertStottetekst:
+      "Evt at arbeidsforholdet er opphørt tilbake i tid",
     error: "Alle tre punkter må være oppfylt før vedtak kan fattes",
   },
   begrunnelse: {
@@ -83,8 +87,8 @@ function DatepickerLabel(): ReactNode {
 
 enum VedtakKrav {
   UTBETALING_IGANGSATT = "UTBETALING_IGANGSATT",
-  OPPSIGELSE_MOTTATT = "OPPSIGELSE_MOTTATT",
-  FRITAK_FRA_ARBEIDSPLIKT_MOTTATT = "FRITAK_FRA_ARBEIDSPLIKT_MOTTATT",
+  ARBEIDSFORHOLD_OPPHORT = "ARBEIDSFORHOLD_OPPHORT",
+  FRITAK_ARBEIDSPLIKT = "FRITAK_ARBEIDSPLIKT",
 }
 
 interface FormValues {
@@ -169,16 +173,19 @@ export default function FattVedtakSkjema() {
               {texts.vedtakKrav.utbetalingMaVaereIgangsatt}
             </Checkbox>
             <Checkbox
-              value={VedtakKrav.OPPSIGELSE_MOTTATT}
+              value={VedtakKrav.ARBEIDSFORHOLD_OPPHORT}
               {...checkboxFormRegister}
             >
-              {texts.vedtakKrav.oppsigelseErMottatt}
+              {texts.vedtakKrav.dokumentasjonPaAtArbeidsforholdetErOpphort}
             </Checkbox>
             <Checkbox
-              value={VedtakKrav.FRITAK_FRA_ARBEIDSPLIKT_MOTTATT}
+              value={VedtakKrav.FRITAK_ARBEIDSPLIKT}
               {...checkboxFormRegister}
+              description={
+                texts.vedtakKrav.fritakFraArbeidspliktenErDokumentertStottetekst
+              }
             >
-              {texts.vedtakKrav.fritakFraArbeidspliktErMottatt}
+              {texts.vedtakKrav.fritakFraArbeidspliktenErDokumentert}
             </Checkbox>
           </CheckboxGroup>
           <div className="flex flex-row gap-6">
