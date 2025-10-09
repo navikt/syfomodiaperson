@@ -1,4 +1,4 @@
-import { FormSnapshot } from "@/data/motebehov/types/motebehovTypes";
+import { FormSnapshot } from "@/data/skjemasvar/types/SkjemasvarTypes";
 
 export interface KartleggingssporsmalKandidatResponseDTO {
   uuid: string;

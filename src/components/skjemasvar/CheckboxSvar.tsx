@@ -1,6 +1,6 @@
-import { SingleCheckboxFieldSnapshot } from "@/data/motebehov/types/motebehovTypes";
 import { Checkbox } from "@navikt/ds-react";
 import React from "react";
+import { SingleCheckboxFieldSnapshot } from "@/data/skjemasvar/types/SkjemasvarTypes";
 
 interface Props {
   checkboxSvar: SingleCheckboxFieldSnapshot;

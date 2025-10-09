@@ -6,7 +6,7 @@ import {
   MotebehovKanImage,
 } from "../../../../img/ImageComponents";
 import { Box, HStack, VStack } from "@navikt/ds-react";
-import { Skjemasvar } from "@/sider/dialogmoter/motebehov/skjema/Skjemasvar";
+import { Skjemasvar } from "@/components/skjemasvar/Skjemasvar";
 
 const setSvarIkon = (deltakerOnskerMote?: boolean): string => {
   switch (deltakerOnskerMote) {
