@@ -13,6 +13,7 @@ import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
 import SykepengesoknadSide from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
 import { soknaderMock } from "@/mocks/sykepengesoknad/soknaderMock";
+import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 
 const NAERINGSDRIVENDESOKNAD_ID = "faadf7c1-3aac-4758-8673-e9cee1316a3c";
 const OPPHOLD_UTLAND_ID = "e16ff778-8475-47e1-b5dc-d2ce4ad6b9ee";
@@ -41,9 +42,11 @@ describe("SykepengesoknadSide", () => {
         () => soknaderMock
       );
       renderWithRouter(
-        <QueryClientProvider client={queryClient}>
-          <SykepengesoknadSide />
-        </QueryClientProvider>,
+        <ValgtEnhetProvider>
+          <QueryClientProvider client={queryClient}>
+            <SykepengesoknadSide />
+          </QueryClientProvider>
+        </ValgtEnhetProvider>,
         "/sykefravaer/sykepengesoknader/:sykepengesoknadId",
         [`/sykefravaer/sykepengesoknader/${OPPHOLD_UTLAND_ID}`]
       );
@@ -64,9 +67,11 @@ describe("SykepengesoknadSide", () => {
       );
 
       renderWithRouter(
-        <QueryClientProvider client={queryClient}>
-          <SykepengesoknadSide />
-        </QueryClientProvider>,
+        <ValgtEnhetProvider>
+          <QueryClientProvider client={queryClient}>
+            <SykepengesoknadSide />
+          </QueryClientProvider>
+        </ValgtEnhetProvider>,
         "/sykefravaer/sykepengesoknader/:sykepengesoknadId",
         [`/sykefravaer/sykepengesoknader/${NAERINGSDRIVENDESOKNAD_ID}`]
       );

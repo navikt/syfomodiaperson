@@ -63,7 +63,7 @@ const handlers = [
   mockIstilgangskontroll,
   ...mockSyfooppfolgingsplanservice,
   ...mockLpsOppfolgingsplanerMottak,
-  mockMerOppfolging,
+  ...mockMerOppfolging,
   ...mockModiacontextholder,
   ...mockSyfoperson,
   ...mockSyfooversiktsrv,
