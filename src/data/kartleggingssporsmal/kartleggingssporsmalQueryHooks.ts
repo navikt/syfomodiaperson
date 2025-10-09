@@ -17,7 +17,7 @@ export const kartleggingssporsmalQueryKeys = {
     "kartleggingssporsmalKandidat",
     fnr,
   ],
-  kartleggingssporsmalSvar: (fnr: string) => ["kartleggingssporsmalsvar", fnr],
+  kartleggingssporsmalSvar: (fnr: string) => ["kartleggingssporsmalSvar", fnr],
 };
 
 export const useKartleggingssporsmalKandidatQuery = () => {
