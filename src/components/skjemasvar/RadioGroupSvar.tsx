@@ -1,6 +1,6 @@
-import { RadioGroupFieldSnapshot } from "@/data/motebehov/types/motebehovTypes";
 import { Radio, RadioGroup } from "@navikt/ds-react";
 import React from "react";
+import { RadioGroupFieldSnapshot } from "@/data/skjemasvar/types/SkjemasvarTypes";
 
 interface Props {
   radioGroupSvar: RadioGroupFieldSnapshot;

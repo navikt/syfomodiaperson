@@ -5,19 +5,21 @@ import {
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
 import {
-  FormIdentifier,
-  FormSnapshot,
-  FormSnapshotFieldOption,
-  FormSnapshotFieldType,
   MotebehovFormValuesOutputDTO,
   MotebehovInnmelder,
   MotebehovSkjemaType,
   MotebehovVeilederDTO,
+} from "@/data/motebehov/types/motebehovTypes";
+import { addDays } from "@/utils/datoUtils";
+import {
+  FormIdentifier,
+  FormSnapshot,
+  FormSnapshotFieldOption,
+  FormSnapshotFieldType,
   RadioGroupFieldSnapshot,
   SingleCheckboxFieldSnapshot,
   TextFieldSnapshot,
-} from "@/data/motebehov/types/motebehovTypes";
-import { addDays } from "@/utils/datoUtils";
+} from "@/data/skjemasvar/types/SkjemasvarTypes";
 
 export const defaultBegrunnelse: TextFieldSnapshot = {
   fieldId: "begrunnelseText",

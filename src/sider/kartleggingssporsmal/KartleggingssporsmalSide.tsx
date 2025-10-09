@@ -11,7 +11,7 @@ import {
   useKartleggingssporsmalSvarQuery,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
-import { Skjemasvar } from "@/sider/dialogmoter/motebehov/skjema/Skjemasvar";
+import { Skjemasvar } from "@/components/skjemasvar/Skjemasvar";
 
 const texts = {
   title: "Kartleggingsspørsmål",

@@ -1,6 +1,6 @@
-import { TextFieldSnapshot } from "@/data/motebehov/types/motebehovTypes";
 import { Textarea } from "@navikt/ds-react";
 import React from "react";
+import { TextFieldSnapshot } from "@/data/skjemasvar/types/SkjemasvarTypes";
 
 interface Props {
   textSvar: TextFieldSnapshot;
