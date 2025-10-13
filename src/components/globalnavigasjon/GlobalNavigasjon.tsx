@@ -101,7 +101,7 @@ interface Props {
 export function GlobalNavigasjonSkeleton(): ReactElement {
   return (
     <VStack gap="2" className="mb-2">
-      {[...Array(13)].map((_, i) => (
+      {Object.values(Menypunkter).map((_, i) => (
         <Skeleton variant="rectangle" width="100%" height={52} key={i} />
       ))}
     </VStack>
@@ -134,10 +134,6 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
     senOppfolgingKandidat.isLoading ||
     friskmeldingTilArbeidsformidlingVedtak.isLoading ||
     manglendeMedvirkningVurdering.isLoading;
-
-  if (isLoading) {
-    return <GlobalNavigasjonSkeleton />;
-  }
 
   const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.data.map(
     (oppfolgingsplanLPS) =>
@@ -192,6 +188,10 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
       },
     });
   };
+
+  if (isLoading) {
+    return <GlobalNavigasjonSkeleton />;
+  }
 
   return (
     <ul aria-label="Navigasjon">
