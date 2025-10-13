@@ -43,6 +43,14 @@ import { sykmeldingerQueryKeys } from "@/data/sykmelding/useGetSykmeldingerQuery
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 import { senOppfolgingKandidatQueryKeys } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { senOppfolgingKandidatMock } from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
+import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
+import { aktivitetskravQueryKeys } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
+import { arbeidsuforhetQueryKeys } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
+import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
+import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
+import { navEnhet } from "./dialogmote/testData";
+import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
 
 export const testQueryClient = (): QueryClient => {
   return new QueryClient();
@@ -156,3 +164,54 @@ export const queryClientWithMockData = (): QueryClient => {
 
   return queryClient;
 };
+
+export function setEmptyQueryData(existingClient: QueryClient): void {
+  existingClient.setQueryData(
+    oppfolgingsplanQueryKeys.oppfolgingsplaner(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => []
+  );
+  existingClient.setQueryData(
+    oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => []
+  );
+  existingClient.setQueryData(
+    personoppgaverQueryKeys.personoppgaver(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
+  );
+  existingClient.setQueryData(
+    motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
+  );
+  existingClient.setQueryData(
+    aktivitetskravQueryKeys.aktivitetskrav(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
+  );
+  existingClient.setQueryData(
+    arbeidsuforhetQueryKeys.arbeidsuforhet(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
+  );
+  existingClient.setQueryData(
+    senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => []
+  );
+  existingClient.setQueryData(
+    vedtakQueryKeys.vedtak(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
+  );
+  existingClient.setQueryData(
+    manglendeMedvirkningQueryKeys.manglendeMedvirkning(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => []
+  );
+  existingClient.setQueryData(
+    unleashQueryKeys.toggles(navEnhet.id, ""),
+    () => mockUnleashResponse
+  );
+}
