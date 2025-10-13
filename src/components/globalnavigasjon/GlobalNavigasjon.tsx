@@ -123,17 +123,29 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
   const manglendeMedvirkningVurdering = useManglendemedvirkningVurderingQuery();
   const featureToggles = useFeatureToggles();
 
+  // const isLoading =
+  //   featureToggles.isLoading ||
+  //   personoppgaver.isLoading ||
+  //   oppfolgingsplaner.isLoading ||
+  //   oppfolgingsplanerLPS.isLoading ||
+  //   motebehov.isLoading ||
+  //   aktivitetskrav.isLoading ||
+  //   arbeidsuforhetVurderinger.isLoading ||
+  //   senOppfolgingKandidat.isLoading ||
+  //   friskmeldingTilArbeidsformidlingVedtak.isLoading ||
+  //   manglendeMedvirkningVurdering.isLoading;
+
   const isLoading =
-    featureToggles.isLoading ||
-    personoppgaver.isLoading ||
-    oppfolgingsplaner.isLoading ||
-    oppfolgingsplanerLPS.isLoading ||
-    motebehov.isLoading ||
-    aktivitetskrav.isLoading ||
-    arbeidsuforhetVurderinger.isLoading ||
-    senOppfolgingKandidat.isLoading ||
-    friskmeldingTilArbeidsformidlingVedtak.isLoading ||
-    manglendeMedvirkningVurdering.isLoading;
+    featureToggles.isPending ||
+    personoppgaver.isPending ||
+    oppfolgingsplaner.isPending ||
+    oppfolgingsplanerLPS.isPending ||
+    motebehov.isPending ||
+    aktivitetskrav.isPending ||
+    arbeidsuforhetVurderinger.isPending ||
+    senOppfolgingKandidat.isPending ||
+    friskmeldingTilArbeidsformidlingVedtak.isPending ||
+    manglendeMedvirkningVurdering.isPending;
 
   const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.data.map(
     (oppfolgingsplanLPS) =>
