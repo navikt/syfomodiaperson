@@ -8,7 +8,7 @@ import {
   FormSnapshotFieldOption,
   FormSnapshotFieldType,
   RadioGroupFieldSnapshot,
-} from "@/data/motebehov/types/motebehovTypes";
+} from "@/data/skjemasvar/types/SkjemasvarTypes";
 
 export const mockMerOppfolging = [
   http.get(`${MEROPPFOLGING_BACKEND_ROOT}/senoppfolging/formresponse`, () => {
