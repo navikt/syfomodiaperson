@@ -43,7 +43,8 @@ export default function Side({
   }, [tittel]);
   const isFlexjarVisible =
     diskresjonskode.data !== "6" && diskresjonskode.data !== "7";
-  const isLoading = diskresjonskode.isLoading || brukerinfo.isLoading;
+  // const isLoading = diskresjonskode.isLoading || brukerinfo.isLoading;
+  const isLoading = diskresjonskode.isPending || brukerinfo.isPending;
 
   return (
     <DocumentTitle
