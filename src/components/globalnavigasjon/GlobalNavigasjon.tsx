@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { ReactElement, useRef, useState } from "react";
 import cn from "classnames";
 import UnfinishedTasks from "./UnfinishedTasks";
 import { Link } from "react-router-dom";
@@ -11,7 +11,7 @@ import {
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
-import { BodyShort } from "@navikt/ds-react";
+import { BodyShort, Skeleton, VStack } from "@navikt/ds-react";
 import { EventType, logEvent } from "@/utils/amplitude";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
@@ -98,26 +98,49 @@ interface Props {
   aktivtMenypunkt: Menypunkter;
 }
 
+export function GlobalNavigasjonSkeleton(): ReactElement {
+  return (
+    <VStack gap="2" className="mb-2">
+      {Object.values(Menypunkter).map((_, i) => (
+        <Skeleton variant="rectangle" width="100%" height={52} key={i} />
+      ))}
+    </VStack>
+  );
+}
+
 export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
   const [focusIndex, setFocusIndex] = useState(-1);
   const refs = useRef<HTMLAnchorElement[]>([]);
 
-  const { data: personoppgaver } = usePersonoppgaverQuery();
-  const { data: oppfolgingsplaner } = useOppfolgingsplanerQuery();
-  const { data: oppfolgingsplanerLPS } = useOppfolgingsplanerLPSQuery();
-  const { data: motebehov } = useMotebehovQuery();
-  const { data: aktivitetskrav } = useAktivitetskravQuery();
-  const { data: arbeidsuforhetVurderinger } =
-    useGetArbeidsuforhetVurderingerQuery();
-  const { data: senOppfolgingKandidat } = useSenOppfolgingKandidatQuery();
-  const { data: friskmeldingTilArbeidsformidlingVedtak } = useVedtakQuery();
-  const { sisteVurdering: manglendeMedvirkningVurdering } =
-    useManglendemedvirkningVurderingQuery();
-  const { toggles } = useFeatureToggles();
+  const personoppgaver = usePersonoppgaverQuery();
+  const oppfolgingsplaner = useOppfolgingsplanerQuery();
+  const oppfolgingsplanerLPS = useOppfolgingsplanerLPSQuery();
+  const motebehov = useMotebehovQuery();
+  const aktivitetskrav = useAktivitetskravQuery();
+  const arbeidsuforhetVurderinger = useGetArbeidsuforhetVurderingerQuery();
+  const senOppfolgingKandidat = useSenOppfolgingKandidatQuery();
+  const friskmeldingTilArbeidsformidlingVedtak = useVedtakQuery();
+  const manglendeMedvirkningVurdering = useManglendemedvirkningVurderingQuery();
+  const featureToggles = useFeatureToggles();
 
-  const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.map(
+  const isPending =
+    featureToggles.isPending ||
+    personoppgaver.isPending ||
+    oppfolgingsplaner.isPending ||
+    oppfolgingsplanerLPS.isPending ||
+    motebehov.isPending ||
+    aktivitetskrav.isPending ||
+    arbeidsuforhetVurderinger.isPending ||
+    senOppfolgingKandidat.isPending ||
+    friskmeldingTilArbeidsformidlingVedtak.isPending ||
+    manglendeMedvirkningVurdering.isPending;
+
+  const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.data.map(
     (oppfolgingsplanLPS) =>
-      toOppfolgingsplanLPSMedPersonoppgave(oppfolgingsplanLPS, personoppgaver)
+      toOppfolgingsplanLPSMedPersonoppgave(
+        oppfolgingsplanLPS,
+        personoppgaver.data
+      )
   );
   const allMenypunktEntries: [Menypunkter, Menypunkt][] = Object.entries(
     allMenypunkter
@@ -166,11 +189,15 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
     });
   };
 
+  if (isPending) {
+    return <GlobalNavigasjonSkeleton />;
+  }
+
   return (
     <ul aria-label="Navigasjon">
       {allMenypunktEntries.map(([menypunkt, { navn, sti }], index) => {
         if (
-          !toggles.isKartleggingssporsmalEnabled &&
+          !featureToggles.toggles.isKartleggingssporsmalEnabled &&
           menypunkt === Menypunkter.KARTLEGGINGSSPORSMAL
         ) {
           return null;
@@ -181,15 +208,15 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
         });
         const tasks = numberOfTasks(
           menypunkt,
-          motebehov,
-          oppfolgingsplaner,
-          personoppgaver,
+          motebehov.data,
+          oppfolgingsplaner.data,
+          personoppgaver.data,
           oppfolgingsplanerLPSMedPersonOppgave,
-          aktivitetskrav,
-          arbeidsuforhetVurderinger,
-          senOppfolgingKandidat,
-          friskmeldingTilArbeidsformidlingVedtak,
-          manglendeMedvirkningVurdering
+          aktivitetskrav.data,
+          arbeidsuforhetVurderinger.data,
+          senOppfolgingKandidat.data,
+          friskmeldingTilArbeidsformidlingVedtak.data,
+          manglendeMedvirkningVurdering.sisteVurdering
         );
 
         return (

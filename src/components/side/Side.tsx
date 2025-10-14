@@ -1,8 +1,10 @@
 import React, { ReactNode, useEffect } from "react";
 import Personkort from "../personkort/Personkort";
 import DocumentTitle from "react-document-title";
-import GlobalNavigasjon from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
+import GlobalNavigasjon, {
+  GlobalNavigasjonSkeleton,
+  Menypunkter,
+} from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { isEaster, isPride } from "@/utils/festiveUtils";
 import { Easter } from "@/components/festive/Easter";
 import * as Amplitude from "@/utils/amplitude";
@@ -30,8 +32,8 @@ export default function Side({
   flexjar,
   children,
 }: Props) {
-  const { data: diskresjonskode } = useDiskresjonskodeQuery();
-  const { isInaktivPersonident } = useBrukerinfoQuery();
+  const diskresjonskode = useDiskresjonskodeQuery();
+  const brukerinfo = useBrukerinfoQuery();
 
   useEffect(() => {
     Amplitude.logEvent({
@@ -39,7 +41,9 @@ export default function Side({
       data: { url: window.location.href, sidetittel: tittel },
     });
   }, [tittel]);
-  const isFlexjarVisible = diskresjonskode !== "6" && diskresjonskode !== "7";
+  const isFlexjarVisible =
+    diskresjonskode.data !== "6" && diskresjonskode.data !== "7";
+  const isPending = diskresjonskode.isPending || brukerinfo.isPending;
 
   return (
     <DocumentTitle
@@ -51,13 +55,17 @@ export default function Side({
             <OversiktLenker />
             <TildeltVeileder />
           </div>
-          {isInaktivPersonident && <InaktivPersonident />}
+          {brukerinfo.isInaktivPersonident && <InaktivPersonident />}
           {isPride() && <Pride>&nbsp;</Pride>}
           <Personkort />
         </div>
         <div className={"flex -md:flex-wrap"}>
           <nav className="-md:w-full min-w-[15rem] w-[15rem] md:mr-2">
-            <GlobalNavigasjon aktivtMenypunkt={aktivtMenypunkt} />
+            {isPending ? (
+              <GlobalNavigasjonSkeleton />
+            ) : (
+              <GlobalNavigasjon aktivtMenypunkt={aktivtMenypunkt} />
+            )}
             <Oppfolgingsoppgave />
             {isEaster() && <Easter />}
           </nav>

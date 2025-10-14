@@ -32,6 +32,7 @@ export const useAktivitetskravQuery = () => {
   return {
     data: query.data || [],
     isLoading: query.isLoading,
+    isPending: query.isPending,
     isError: query.isError,
   };
 };

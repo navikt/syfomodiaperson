@@ -1,15 +1,15 @@
 import { render, screen } from "@testing-library/react";
-import GlobalNavigasjon from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
+import GlobalNavigasjon, {
+  Menypunkter,
+} from "@/components/globalnavigasjon/GlobalNavigasjon";
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { beforeEach, describe, expect, it } from "vitest";
 import { MemoryRouter } from "react-router-dom";
-import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
 import {
   queryClientWithAktivBruker,
-  queryClientWithMockData,
+  setEmptyQueryData,
 } from "../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { navEnhet } from "../dialogmote/testData";
@@ -75,18 +75,7 @@ const renderGlobalNavigasjon = () =>
 describe("GlobalNavigasjon", () => {
   beforeEach(() => {
     queryClient = queryClientWithAktivBruker();
-    queryClient.setQueryData(
-      oppfolgingsplanQueryKeys.oppfolgingsplaner(fnr),
-      () => []
-    );
-    queryClient.setQueryData(
-      oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(fnr),
-      () => []
-    );
-    queryClient.setQueryData(
-      personoppgaverQueryKeys.personoppgaver(fnr),
-      () => []
-    );
+    setEmptyQueryData(queryClient);
   });
   it("viser linker for alle menypunkter uten toggle", () => {
     renderGlobalNavigasjon();
@@ -97,6 +86,7 @@ describe("GlobalNavigasjon", () => {
       "Dialog med behandler",
       "Oppfølgingsplaner",
       "Dialogmøter",
+      "Kartleggingsspørsmål",
       "§ 8-8 Aktivitetskrav",
       "§ 8-8 Manglende medvirkning",
       "§ 8-4 Arbeidsuførhet",
@@ -130,7 +120,6 @@ describe("GlobalNavigasjon", () => {
   });
 
   it("viser én rød prikk for menypunkt Dialog med behandler når ubehandlet oppgave behandlerdialog-svar", () => {
-    queryClient = queryClientWithMockData();
     queryClient.setQueryData(
       personoppgaverQueryKeys.personoppgaver(fnr),
       () => [personOppgaveUbehandletBehandlerdialogSvar]
@@ -143,7 +132,6 @@ describe("GlobalNavigasjon", () => {
   });
 
   it("viser én rød prikk for menypunkt Dialog med behandler når ubehandlet oppgave ubesvart melding", () => {
-    queryClient = queryClientWithMockData();
     queryClient.setQueryData(
       personoppgaverQueryKeys.personoppgaver(fnr),
       () => [personOppgaveUbehandletBehandlerdialogUbesvartMelding]
@@ -156,7 +144,6 @@ describe("GlobalNavigasjon", () => {
   });
 
   it("viser én rød prikk for menypunkt Dialog med behandler når ubehandlet oppgave avvist melding", () => {
-    queryClient = queryClientWithMockData();
     queryClient.setQueryData(
       personoppgaverQueryKeys.personoppgaver(fnr),
       () => [personOppgaveUbehandletBehandlerdialogAvvistMelding]
@@ -169,7 +156,6 @@ describe("GlobalNavigasjon", () => {
   });
 
   it("viser tre røde prikker for menypunkt Dialog med behandler når ubehandlet oppgave ubesvart melding, ubehandlet behandlerdialog-svar og ubehandlet avvist melding", () => {
-    queryClient = queryClientWithMockData();
     queryClient.setQueryData(
       personoppgaverQueryKeys.personoppgaver(fnr),
       () => [

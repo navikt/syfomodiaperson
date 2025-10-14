@@ -43,6 +43,7 @@ export const useBrukerinfoQuery = () => {
   return {
     data: query.data,
     brukerinfo: query.data || defaultData,
+    isPending: query.isPending,
     isInaktivPersonident:
       !!personident &&
       !!query.data?.aktivPersonident &&

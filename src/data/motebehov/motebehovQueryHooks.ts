@@ -25,6 +25,7 @@ export const useMotebehovQuery = () => {
   return {
     data: query.data?.sort(sorterMotebehovDataEtterDatoDesc) || [],
     isLoading: query.isLoading,
+    isPending: query.isPending,
     isError: query.isError,
   };
 };

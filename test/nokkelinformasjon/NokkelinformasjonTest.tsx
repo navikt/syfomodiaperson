@@ -10,7 +10,7 @@ import {
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 import { PeriodetypeDTO } from "@/data/sykmelding/types/PeriodetypeDTO";
 import { beforeEach, describe, expect, it } from "vitest";
-import { queryClientWithMockData } from "../testQueryClient";
+import { setEmptyQueryData, queryClientWithMockData } from "../testQueryClient";
 import { navEnhet } from "../dialogmote/testData";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { MemoryRouter } from "react-router-dom";
@@ -75,6 +75,7 @@ const sykmeldingOppfolgingstilfelle2 = {
 describe("Nokkelinformasjon", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
+    setEmptyQueryData(queryClient);
     queryClient.setQueryData(
       oppfolgingsplanQueryKeys.oppfolgingsplaner(
         ARBEIDSTAKER_DEFAULT.personIdent

@@ -22,5 +22,6 @@ export const usePersonoppgaverQuery = () => {
 
   return {
     data: query.data || [],
+    isPending: query.isPending,
   };
 };
