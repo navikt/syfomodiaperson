@@ -23,6 +23,7 @@ export function useGetArbeidsuforhetVurderingerQuery() {
   return {
     data: query.data || [],
     isLoading: query.isLoading,
+    isPending: query.isPending,
     isError: query.isError,
   };
 }

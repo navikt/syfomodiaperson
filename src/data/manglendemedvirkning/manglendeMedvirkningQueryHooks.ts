@@ -26,6 +26,7 @@ export const useManglendemedvirkningVurderingQuery = () => {
   return {
     data: query.data || [],
     isLoading: query.isLoading,
+    isPending: query.isPending,
     isError: query.isError,
     sisteVurdering: query.data?.[0],
   };

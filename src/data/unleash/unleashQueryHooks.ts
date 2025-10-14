@@ -26,6 +26,7 @@ export const useFeatureToggles = () => {
     data: togglesResponse,
     refetch: refreshToggles,
     isLoading: isLoading,
+    isPending: isPending,
     isSuccess: isSuccess,
   } = useQuery({
     queryKey: unleashQueryKeys.toggles(valgtEnhet, veilederIdent),
@@ -38,6 +39,7 @@ export const useFeatureToggles = () => {
     toggles,
     refreshToggles,
     isLoading,
+    isPending,
     isSuccess,
   };
 };

@@ -43,7 +43,7 @@ export default function Side({
   }, [tittel]);
   const isFlexjarVisible =
     diskresjonskode.data !== "6" && diskresjonskode.data !== "7";
-  const isLoading = diskresjonskode.isLoading || brukerinfo.isLoading;
+  const isPending = diskresjonskode.isPending || brukerinfo.isPending;
 
   return (
     <DocumentTitle
@@ -61,7 +61,7 @@ export default function Side({
         </div>
         <div className={"flex -md:flex-wrap"}>
           <nav className="-md:w-full min-w-[15rem] w-[15rem] md:mr-2">
-            {isLoading ? (
+            {isPending ? (
               <GlobalNavigasjonSkeleton />
             ) : (
               <GlobalNavigasjon aktivtMenypunkt={aktivtMenypunkt} />

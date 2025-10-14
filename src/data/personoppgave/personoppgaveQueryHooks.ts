@@ -22,6 +22,6 @@ export const usePersonoppgaverQuery = () => {
 
   return {
     data: query.data || [],
-    isLoading: query.isLoading,
+    isPending: query.isPending,
   };
 };

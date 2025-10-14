@@ -25,7 +25,6 @@ export const useVedtakQuery = () => {
 
   return {
     isPending: query.isPending,
-    isLoading: query.isLoading,
     isError: query.isError,
     data: query.data || [],
   };
