@@ -133,7 +133,7 @@ describe("DialogmoteOnskePanel", () => {
         )}`
       )
     ).to.exist;
-    expect(screen.getByText("Vurder møtebehov og fjern oppgaven")).to.exist;
+    expect(screen.getByText("Vurder behov for dialogmøte")).to.exist;
   });
 
   it("Et tidligere behandlet møtebehov utenfor oppfølgingstilfelle og et behandlet innenfor oppfølgingstilfelle", () => {
