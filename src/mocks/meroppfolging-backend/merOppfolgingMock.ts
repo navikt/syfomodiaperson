@@ -72,8 +72,8 @@ const kartleggingssporsmal: RadioGroupFieldSnapshot[] = [
       "Hvor sannsynlig er det at du kommer tilbake i jobben du ble sykmeldt fra?",
     options: [
       createRadioOption("Jeg tror det er veldig sannsynlig"),
-      createRadioOption("Jeg er usikker", true),
       createRadioOption("Jeg tror det er lite sannsynlig"),
+      createRadioOption("Jeg er usikker", true),
     ],
     selectedOptionId: "Jeg er usikker",
   },
@@ -82,19 +82,22 @@ const kartleggingssporsmal: RadioGroupFieldSnapshot[] = [
     label:
       "Hvordan vil du beskrive samarbeidet og relasjonen mellom deg og arbeidsgiveren din?",
     options: [
-      createRadioOption("Jeg opplever forholdet vårt som godt"),
-      createRadioOption("Jeg opplever ikke forholdet vårt som godt", true),
+      createRadioOption("Jeg opplever samarbeidet og relasjonen som god"),
+      createRadioOption(
+        "Jeg opplever samarbeidet og relasjonen som dårlig",
+        true
+      ),
     ],
-    selectedOptionId: "Jeg opplever ikke forholdet vårt som godt",
+    selectedOptionId: "Jeg opplever samarbeidet og relasjonen som dårlig",
   },
   {
     ...defaultRadioGroupSporsmal(true),
-    label: "Hvor lenge tror du at du har behov for å være sykmeldt?",
+    label: "Hvor lenge tror du at du kommer til å være sykmeldt?",
     options: [
-      createRadioOption("Mindre enn 26 uker (6 måneder) totalt", true),
-      createRadioOption("Mer enn 26 uker (6 måneder) totalt"),
+      createRadioOption("Mindre enn seks måneder", true),
+      createRadioOption("Mer enn seks måneder"),
     ],
-    selectedOptionId: "Mindre enn 26 uker (6 måneder) totalt",
+    selectedOptionId: "Mindre enn seks måneder",
   },
 ];
 
