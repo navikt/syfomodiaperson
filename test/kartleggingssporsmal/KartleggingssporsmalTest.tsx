@@ -108,19 +108,19 @@ describe("Kartleggingssporsmal", () => {
     ).to.exist;
     expect(
       screen.getByRole("radio", {
-        name: "Jeg opplever ikke forholdet vårt som godt",
+        name: "Jeg opplever samarbeidet og relasjonen som dårlig",
         checked: true,
       })
     ).to.exist;
 
     expect(
       screen.getAllByRole("group", {
-        name: RegExp("Hvor lenge tror du at du har behov for å være sykmeldt?"),
+        name: RegExp("Hvor lenge tror du at du kommer til å være sykmeldt?"),
       })[0]
     ).to.exist;
     expect(
       screen.getByRole("radio", {
-        name: "Mindre enn 26 uker (6 måneder) totalt",
+        name: "Mindre enn seks måneder",
         checked: true,
       })
     ).to.exist;
