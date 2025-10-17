@@ -115,3 +115,8 @@ export const kartleggingssporsmalAnswered: KartleggingssporsmalSvarStatusRespons
       },
     },
   };
+
+export const kartleggingssporsmalNotAnswered: KartleggingssporsmalSvarStatusResponseDTO =
+  {
+    formResponse: null,
+  };

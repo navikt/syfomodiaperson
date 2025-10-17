@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import Side from "@/components/side/Side";
 import Sidetopp from "@/components/side/Sidetopp";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { BodyShort, Box, Button, VStack } from "@navikt/ds-react";
+import { BodyShort, Box, Button } from "@navikt/ds-react";
 import * as Tredelt from "@/components/side/TredeltSide";
 import SideLaster from "@/components/side/SideLaster";
 import { isKandidat } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
@@ -10,19 +10,47 @@ import {
   useKartleggingssporsmalKandidatQuery,
   useKartleggingssporsmalSvarQuery,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
-import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
+import {
+  tilDatoMedManedNavnOgKlokkeslett,
+  tilLesbarDatoMedArstall,
+} from "@/utils/datoUtils";
+import { EksternLenke } from "@/components/EksternLenke";
 import { Skjemasvar } from "@/components/skjemasvar/Skjemasvar";
+import BulletedList from "@/components/BulletedList";
 
 const texts = {
   title: "Kartleggingsspørsmål",
   vurdereOppgaveText: "Behovet er vurdert, fjern oppgaven",
-  kandidat: "Sykmeldt er kandidat og har mottatt kartleggingsspørsmål",
+  kandidat: "Spørsmålene ble sendt",
+  ikkeSvart: "Den sykmeldte har ikke svart",
   svarMottatt: "Svar mottatt",
-  extraInfo: "Informasjon om hva som skal gjøres ved vurdering",
+  extraInfo:
+    "Ved manglende svar vil vi automatisk sende et nytt varsel på SMS etter 7/syv dager, du trenger ikke å purre manuelt. Den sykmeldte er foreløpig ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på medvirkningsplikten kap § 8.8 dersom det ikke kommer inn et svar.",
   ikkeKandidatInfo1:
     "Den sykmeldte har ikke mottatt kartleggingsspørsmål da personen ikke er kandidat for å motta disse.",
   ikkeKandidatInfo2:
     "Når spørsmålene er besvart, vil du få en oppgave i oversikten din om å vurdere svarene. Svarene fra den sykmeldte dukker opp på denne siden.",
+  link: "Slik ser spørsmålene ut for den sykmeldte",
+  demoUrl: "https://demo.ekstern.dev.nav.no/syk/kartleggingssporsmal",
+  rutineSteps: {
+    description:
+      "Svarene skal gi vurderingsgrunnlag for om sykmeldte trenger videre kartlegging eller ikke. Se også etter gjentagende fravær, sjekk den medisinske dokumentasjonen og om noen har meldt inn behov.",
+    heading1: "Ikke behov for kartlegging",
+    bulletPoints1: [
+      "forventer å returnere til arbeidet vedkommende ble sykmeldt fra, og",
+      "har en god relasjon til arbeidsgiveren sin, og",
+      "forventer friskmelding innen 26 uker, og",
+      "oppfyller vilkårene for å motta sykepenger og ikke har uutnyttet arbeidsevne",
+    ],
+    heading2: "Behov for kartlegging",
+    bulletPoints2: [
+      "er usikker på retur til arbeidsgiver,",
+      "har en dårlig relasjon til arbeidsgiver, eller",
+      "forventer sykefravær i mer enn 26 uker",
+      "forventer å være tilbake i arbeid innen 26 uker men har gjentakende fravær",
+      "forventer å være tilbake i arbeid innen 26 uker men hvor vilkårene for å motta sykepenger er usikre",
+    ],
+  },
 };
 
 export default function KartleggingssporsmalSide(): ReactElement {
@@ -31,7 +59,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
   const getKartleggingssporsmalSvar = useKartleggingssporsmalSvarQuery(
     isKandidat(kandidat)
   );
-  const kartleggingsvar = getKartleggingssporsmalSvar.data;
+  const answeredQuestions = getKartleggingssporsmalSvar.data?.formResponse;
 
   const isLoading =
     getKandidat.isLoading || getKartleggingssporsmalSvar.isLoading;
@@ -47,37 +75,59 @@ export default function KartleggingssporsmalSide(): ReactElement {
         {kandidat && isKandidat(kandidat) ? (
           <Tredelt.Container>
             <Tredelt.FirstColumn className="-xl:mb-2">
-              <Box background="surface-default" className="p-6 gap-6">
-                <div className="mb-4">
-                  {`${texts.kandidat} (${tilDatoMedManedNavnOgKlokkeslett(
-                    kandidat.varsletAt
-                  )})`}
-                </div>
-
-                {kartleggingsvar && kartleggingsvar.formResponse !== null && (
+              <Box
+                background="surface-default"
+                className="p-6 gap-6 [&>*]:mb-4"
+              >
+                {answeredQuestions ? (
                   <>
-                    <VStack gap="4">
-                      <div>
-                        {`${
-                          texts.svarMottatt
-                        }: ${tilDatoMedManedNavnOgKlokkeslett(
-                          kartleggingsvar.formResponse.createdAt
-                        )}`}
-                      </div>
-                      <Skjemasvar
-                        formSnapshot={kartleggingsvar.formResponse.formSnapshot}
-                      />
-                    </VStack>
+                    <div>
+                      {`${
+                        texts.svarMottatt
+                      }: ${tilDatoMedManedNavnOgKlokkeslett(
+                        answeredQuestions.createdAt
+                      )}`}
+                    </div>
+                    <Skjemasvar formSnapshot={answeredQuestions.formSnapshot} />
                     <Button variant="primary" size="small" className="mt-4">
                       {texts.vurdereOppgaveText}
                     </Button>
+                  </>
+                ) : (
+                  <>
+                    <BodyShort size="small" weight="semibold">
+                      {texts.ikkeSvart}
+                    </BodyShort>
+                    <BodyShort size="small" weight="semibold">
+                      {`${texts.kandidat} (${tilLesbarDatoMedArstall(
+                        kandidat.varsletAt
+                      )})`}
+                    </BodyShort>
+                    <EksternLenke href={texts.demoUrl}>
+                      {texts.link}
+                    </EksternLenke>
+                    <BodyShort size="small">{texts.extraInfo}</BodyShort>
                   </>
                 )}
               </Box>
             </Tredelt.FirstColumn>
             <Tredelt.SecondColumn>
-              <Box background="surface-default" padding="6" className="mb-2">
-                {texts.extraInfo}
+              <Box
+                background="surface-default"
+                padding="6"
+                className="mb-2 [&>*]:mb-4"
+              >
+                <BodyShort size="small">
+                  {texts.rutineSteps.description}
+                </BodyShort>
+                <BulletedList
+                  title={texts.rutineSteps.heading1}
+                  instructions={texts.rutineSteps.bulletPoints1}
+                />
+                <BulletedList
+                  title={texts.rutineSteps.heading2}
+                  instructions={texts.rutineSteps.bulletPoints2}
+                />
               </Box>
             </Tredelt.SecondColumn>
           </Tredelt.Container>
