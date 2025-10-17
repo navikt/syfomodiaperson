@@ -9,6 +9,7 @@ import {
   FormSnapshotFieldType,
   RadioGroupFieldSnapshot,
 } from "@/data/skjemasvar/types/SkjemasvarTypes";
+import { daysFromToday } from "../../../test/testUtils";
 
 export const mockMerOppfolging = [
   http.get(`${MEROPPFOLGING_BACKEND_ROOT}/senoppfolging/formresponse`, () => {
@@ -107,7 +108,7 @@ export const kartleggingssporsmalAnswered: KartleggingssporsmalSvarStatusRespons
       uuid: crypto.randomUUID(),
       fnr: ARBEIDSTAKER_DEFAULT.personIdent,
       kandidatId: crypto.randomUUID(),
-      createdAt: new Date(),
+      createdAt: daysFromToday(5),
       formSnapshot: {
         formIdentifier: FormIdentifier.MEROPPFOLGING_KARTLEGGINGSSPORSMAL,
         formSemanticVersion: "1.0.0",
