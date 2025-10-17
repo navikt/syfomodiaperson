@@ -85,6 +85,8 @@ describe("Kartleggingssporsmal", () => {
     expect(screen.queryByText("Den sykmeldte har ikke svart")).to.exist;
     expect(screen.queryByText("Spørsmålene ble sendt", { exact: false })).to
       .exist;
+    expect(screen.queryByText("Slik ser spørsmålene ut for den sykmeldte")).to
+      .exist;
     expect(
       screen.queryByText("Ved manglende svar vil vi automatisk sende", {
         exact: false,
