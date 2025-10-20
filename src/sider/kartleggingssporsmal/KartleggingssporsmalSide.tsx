@@ -99,9 +99,9 @@ export default function KartleggingssporsmalSide(): ReactElement {
                       {texts.ikkeSvart}
                     </BodyShort>
                     <BodyShort size="small" weight="semibold">
-                      {`${texts.kandidat} (${tilLesbarDatoMedArstall(
+                      {`${texts.kandidat} ${tilLesbarDatoMedArstall(
                         kandidat.varsletAt
-                      )})`}
+                      )}`}
                     </BodyShort>
                     <EksternLenke href={texts.demoUrl}>
                       {texts.link}
