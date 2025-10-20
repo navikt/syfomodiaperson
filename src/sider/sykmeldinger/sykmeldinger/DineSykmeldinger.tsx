@@ -11,7 +11,6 @@ import {
   sorterSykmeldinger,
 } from "@/utils/sorterSykmeldingerUtils";
 import { manederMellomDatoer } from "@/utils/datoUtils";
-import { senesteTom } from "@/utils/periodeUtils";
 
 const texts = {
   tidligereSykmeldinger: "Tidligere sykmeldinger",
@@ -36,17 +35,11 @@ const sorteringsKriterier: SorteringKriterium[] = [
 
 const isAktivSykmelding = (sykmld: SykmeldingOldFormat) =>
   sykmld.status === SykmeldingStatus.NY &&
-  manederMellomDatoer(
-    senesteTom(sykmld.mulighetForArbeid.perioder),
-    new Date()
-  ) < 3;
+  manederMellomDatoer(sykmld.bekreftelse.utstedelsesdato, new Date()) < 3;
 
 const isTidligereSykmelding = (sykmld: SykmeldingOldFormat) =>
   sykmld.status !== SykmeldingStatus.NY ||
-  manederMellomDatoer(
-    senesteTom(sykmld.mulighetForArbeid.perioder),
-    new Date()
-  ) >= 3;
+  manederMellomDatoer(sykmld.bekreftelse.utstedelsesdato, new Date()) >= 3;
 
 interface Props {
   sykmeldinger: SykmeldingOldFormat[];
