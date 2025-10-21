@@ -41,7 +41,7 @@ const texts = {
     info2:
       "Det er en sterk predikator for at den sykmeldte blir langvarig sykmeldt dersom personen svarer at hen kommer til å være sykmeldt mer enn seks måneder. Dersom vedkommende også har svart usikkerhet knyttet til jobbsituasjonen eller dårlig relasjon med arbeidsgiver gir dette grunn til å undersøke saken nærmere.",
     link: "Bruk Bli kjent og forstå behov",
-    url: "",
+    url: "https://navno.sharepoint.com/:u:/r/sites/fag-og-ytelser-veileder-for-arbeidsrettet-brukeroppfolging/SitePages/Start.aspx?csf=1&web=1&e=qc76DU#bli-kjent-og-forst%C3%A5-behov",
   },
 };
 
