@@ -17,7 +17,6 @@ import {
   KandidatStatus,
   KartleggingssporsmalKandidatResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
-import { daysFromToday } from "../../../test/testUtils";
 
 export const mockIsmeroppfolging = [
   http.get(`${ISMEROPPFOLGING_ROOT}/senoppfolging/kandidater`, () => {
@@ -90,6 +89,6 @@ export const kartleggingIsKandidatAndReceivedQuestions: KartleggingssporsmalKand
     uuid: crypto.randomUUID(),
     createdAt: new Date(),
     personident: ARBEIDSTAKER_DEFAULT.personIdent,
-    varsletAt: daysFromToday(1),
+    varsletAt: new Date(),
     status: KandidatStatus.KANDIDAT,
   };
