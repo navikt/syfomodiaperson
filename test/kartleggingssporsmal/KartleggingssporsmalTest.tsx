@@ -111,7 +111,12 @@ describe("Kartleggingssporsmal", () => {
 
     renderKartleggingssporsmal();
 
-    expect(screen.queryByText("Svar mottatt", { exact: false })).to.exist;
+    expect(screen.queryByText("Den sykmeldte svarte", { exact: false })).to
+      .exist;
+    expect(screen.queryByText("Spørsmålene ble sendt", { exact: false })).to
+      .exist;
+    expect(screen.queryByText("Slik ser spørsmålene ut for den sykmeldte")).to
+      .exist;
     expect(screen.getAllByRole("group").length).toBe(3);
 
     expect(
@@ -153,5 +158,12 @@ describe("Kartleggingssporsmal", () => {
         checked: true,
       })
     ).to.exist;
+
+    expect(
+      screen.queryByText("Svarene fra den sykmeldte skal være", {
+        exact: false,
+      })
+    ).to.exist;
+    expect(screen.queryByText("Utdrag fra sykefraværet")).to.exist;
   });
 });

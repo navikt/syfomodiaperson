@@ -10,19 +10,17 @@ import {
   useKartleggingssporsmalKandidatQuery,
   useKartleggingssporsmalSvarQuery,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
-import {
-  tilDatoMedManedNavnOgKlokkeslett,
-  tilLesbarDatoMedArstall,
-} from "@/utils/datoUtils";
+import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { EksternLenke } from "@/components/EksternLenke";
 import { Skjemasvar } from "@/components/skjemasvar/Skjemasvar";
+import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 
 const texts = {
   title: "Kartleggingsspørsmål",
   vurdereOppgaveText: "Behovet er vurdert, fjern oppgaven",
   kandidat: "Spørsmålene ble sendt",
+  svart: "Den sykmeldte svarte",
   ikkeSvart: "Den sykmeldte har ikke svart",
-  svarMottatt: "Svar mottatt",
   extraInfo:
     "Ved manglende svar vil vi automatisk sende et nytt varsel på SMS etter syv dager, du trenger ikke å purre manuelt. Den sykmeldte er ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på medvirkningsplikten kap § 8.8 dersom det ikke kommer inn et svar.",
   ikkeKandidatInfo1:
@@ -73,13 +71,19 @@ export default function KartleggingssporsmalSide(): ReactElement {
               >
                 {answeredQuestions ? (
                   <>
-                    <div>
-                      {`${
-                        texts.svarMottatt
-                      }: ${tilDatoMedManedNavnOgKlokkeslett(
+                    <BodyShort size="small" weight="semibold">
+                      {`${texts.svart} ${tilLesbarDatoMedArstall(
                         answeredQuestions.createdAt
                       )}`}
-                    </div>
+                    </BodyShort>
+                    <BodyShort size="small" weight="semibold">
+                      {`${texts.kandidat} ${tilLesbarDatoMedArstall(
+                        kandidat.varsletAt
+                      )}`}
+                    </BodyShort>
+                    <EksternLenke href={texts.demoUrl}>
+                      {texts.link}
+                    </EksternLenke>
                     <Skjemasvar formSnapshot={answeredQuestions.formSnapshot} />
                     <Button variant="primary" size="small" className="mt-4">
                       {texts.vurdereOppgaveText}
@@ -104,7 +108,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
               </Box>
             </Tredelt.FirstColumn>
             <Tredelt.SecondColumn>
-              <Box background="surface-default" padding="6">
+              <Box background="surface-default" padding="6" className="mb-4">
                 <BodyShort size="small" className="mb-4">
                   {texts.rutineSteps.description}
                 </BodyShort>
@@ -124,6 +128,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                   {texts.rutineSteps.link}
                 </EksternLenke>
               </Box>
+              {answeredQuestions && <UtdragFraSykefravaeret />}
             </Tredelt.SecondColumn>
           </Tredelt.Container>
         ) : (
