@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import Side from "@/components/side/Side";
 import Sidetopp from "@/components/side/Sidetopp";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { BodyShort, Box, Button } from "@navikt/ds-react";
+import { BodyShort, Box, Button, Heading } from "@navikt/ds-react";
 import * as Tredelt from "@/components/side/TredeltSide";
 import SideLaster from "@/components/side/SideLaster";
 import { isKandidat } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
@@ -16,7 +16,6 @@ import {
 } from "@/utils/datoUtils";
 import { EksternLenke } from "@/components/EksternLenke";
 import { Skjemasvar } from "@/components/skjemasvar/Skjemasvar";
-import BulletedList from "@/components/BulletedList";
 
 const texts = {
   title: "Kartleggingsspørsmål",
@@ -25,7 +24,7 @@ const texts = {
   ikkeSvart: "Den sykmeldte har ikke svart",
   svarMottatt: "Svar mottatt",
   extraInfo:
-    "Ved manglende svar vil vi automatisk sende et nytt varsel på SMS etter 7/syv dager, du trenger ikke å purre manuelt. Den sykmeldte er foreløpig ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på medvirkningsplikten kap § 8.8 dersom det ikke kommer inn et svar.",
+    "Ved manglende svar vil vi automatisk sende et nytt varsel på SMS etter syv dager, du trenger ikke å purre manuelt. Den sykmeldte er ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på medvirkningsplikten kap § 8.8 dersom det ikke kommer inn et svar.",
   ikkeKandidatInfo1:
     "Den sykmeldte har ikke mottatt kartleggingsspørsmål da personen ikke er kandidat for å motta disse.",
   ikkeKandidatInfo2:
@@ -34,22 +33,15 @@ const texts = {
   demoUrl: "https://demo.ekstern.dev.nav.no/syk/kartleggingssporsmal",
   rutineSteps: {
     description:
-      "Svarene skal gi vurderingsgrunnlag for om sykmeldte trenger videre kartlegging eller ikke. Se også etter gjentagende fravær, sjekk den medisinske dokumentasjonen og om noen har meldt inn behov.",
+      "Svarene fra den sykmeldte skal være til hjelp for å identifisere hvem som har økt risiko for langvarig fravær og som kan ha behov for oppfølging. Bruk svarene i dialog med den sykmeldte for å kartlegge behov. Svarene må sees i sammenheng med andre opplysninger Nav har om situasjonen til den sykmeldte.",
     heading1: "Ikke behov for kartlegging",
-    bulletPoints1: [
-      "forventer å returnere til arbeidet vedkommende ble sykmeldt fra, og",
-      "har en god relasjon til arbeidsgiveren sin, og",
-      "forventer friskmelding innen 26 uker, og",
-      "oppfyller vilkårene for å motta sykepenger og ikke har uutnyttet arbeidsevne",
-    ],
+    info1:
+      "Personer som svarer at de blir sykmeldte mindre enn seks måneder, har god relasjon til arbeidsgiver og som skal tilbake i jobben som man er sykmeldt fra, har som hovedregel ikke behov for nærmere samtale med Nav.",
     heading2: "Behov for kartlegging",
-    bulletPoints2: [
-      "er usikker på retur til arbeidsgiver,",
-      "har en dårlig relasjon til arbeidsgiver, eller",
-      "forventer sykefravær i mer enn 26 uker",
-      "forventer å være tilbake i arbeid innen 26 uker men har gjentakende fravær",
-      "forventer å være tilbake i arbeid innen 26 uker men hvor vilkårene for å motta sykepenger er usikre",
-    ],
+    info2:
+      "Det er en sterk predikator for at den sykmeldte blir langvarig sykmeldt dersom personen svarer at hen kommer til å være sykmeldt mer enn seks måneder. Dersom vedkommende også har svart usikkerhet knyttet til jobbsituasjonen eller dårlig relasjon med arbeidsgiver gir dette grunn til å undersøke saken nærmere.",
+    link: "Bruk Bli kjent og forstå behov",
+    url: "",
   },
 };
 
@@ -112,22 +104,25 @@ export default function KartleggingssporsmalSide(): ReactElement {
               </Box>
             </Tredelt.FirstColumn>
             <Tredelt.SecondColumn>
-              <Box
-                background="surface-default"
-                padding="6"
-                className="mb-2 [&>*]:mb-4"
-              >
-                <BodyShort size="small">
+              <Box background="surface-default" padding="6">
+                <BodyShort size="small" className="mb-4">
                   {texts.rutineSteps.description}
                 </BodyShort>
-                <BulletedList
-                  title={texts.rutineSteps.heading1}
-                  instructions={texts.rutineSteps.bulletPoints1}
-                />
-                <BulletedList
-                  title={texts.rutineSteps.heading2}
-                  instructions={texts.rutineSteps.bulletPoints2}
-                />
+                <Heading level="3" size="small">
+                  {texts.rutineSteps.heading1}
+                </Heading>
+                <BodyShort size="small" className="mb-4">
+                  {texts.rutineSteps.info1}
+                </BodyShort>
+                <Heading level="3" size="small">
+                  {texts.rutineSteps.heading2}
+                </Heading>
+                <BodyShort size="small" className="mb-4">
+                  {texts.rutineSteps.info2}
+                </BodyShort>
+                <EksternLenke href={texts.rutineSteps.url}>
+                  {texts.rutineSteps.link}
+                </EksternLenke>
               </Box>
             </Tredelt.SecondColumn>
           </Tredelt.Container>

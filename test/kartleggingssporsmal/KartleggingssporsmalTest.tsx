@@ -93,7 +93,9 @@ describe("Kartleggingssporsmal", () => {
       })
     ).to.exist;
     expect(
-      screen.queryByText("Svarene skal gi vurderingsgrunnlag", { exact: false })
+      screen.queryByText("Svarene fra den sykmeldte skal være", {
+        exact: false,
+      })
     ).to.exist;
   });
 
