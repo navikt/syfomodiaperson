@@ -9,7 +9,10 @@ import {
 import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithMockData } from "../testQueryClient";
 import { kartleggingIsKandidatAndReceivedQuestions } from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
-import { kartleggingssporsmalAnswered } from "@/mocks/meroppfolging-backend/merOppfolgingMock";
+import {
+  kartleggingssporsmalAnswered,
+  kartleggingssporsmalNotAnswered,
+} from "@/mocks/meroppfolging-backend/merOppfolgingMock";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 import { renderWithRouter } from "../testRouterUtils";
@@ -67,6 +70,35 @@ describe("Kartleggingssporsmal", () => {
     ).to.exist;
   });
 
+  it("Sykmeldt is kandidat and has not answered questions", () => {
+    mockKartleggingssporsmalKandidat(
+      kartleggingIsKandidatAndReceivedQuestions,
+      ARBEIDSTAKER_DEFAULT.personIdent
+    );
+    mockKartleggingssporsmalSvar(
+      kartleggingssporsmalNotAnswered,
+      ARBEIDSTAKER_DEFAULT.personIdent
+    );
+
+    renderKartleggingssporsmal();
+
+    expect(screen.queryByText("Den sykmeldte har ikke svart")).to.exist;
+    expect(screen.queryByText("Spørsmålene ble sendt", { exact: false })).to
+      .exist;
+    expect(screen.queryByText("Slik ser spørsmålene ut for den sykmeldte")).to
+      .exist;
+    expect(
+      screen.queryByText("Ved manglende svar vil vi automatisk sende", {
+        exact: false,
+      })
+    ).to.exist;
+    expect(
+      screen.queryByText("Svarene fra den sykmeldte skal være", {
+        exact: false,
+      })
+    ).to.exist;
+  });
+
   it("Sykmeldt is kandidat and has answered questions", () => {
     mockKartleggingssporsmalKandidat(
       kartleggingIsKandidatAndReceivedQuestions,
@@ -79,14 +111,7 @@ describe("Kartleggingssporsmal", () => {
 
     renderKartleggingssporsmal();
 
-    expect(
-      screen.queryByText(
-        "Sykmeldt er kandidat og har mottatt kartleggingsspørsmål",
-        { exact: false }
-      )
-    ).to.exist;
     expect(screen.queryByText("Svar mottatt", { exact: false })).to.exist;
-
     expect(screen.getAllByRole("group").length).toBe(3);
 
     expect(

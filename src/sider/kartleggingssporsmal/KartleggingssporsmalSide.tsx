@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import Side from "@/components/side/Side";
 import Sidetopp from "@/components/side/Sidetopp";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { BodyShort, Box, Button, VStack } from "@navikt/ds-react";
+import { BodyShort, Box, Button, Heading } from "@navikt/ds-react";
 import * as Tredelt from "@/components/side/TredeltSide";
 import SideLaster from "@/components/side/SideLaster";
 import { isKandidat } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
@@ -10,19 +10,39 @@ import {
   useKartleggingssporsmalKandidatQuery,
   useKartleggingssporsmalSvarQuery,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
-import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
+import {
+  tilDatoMedManedNavnOgKlokkeslett,
+  tilLesbarDatoMedArstall,
+} from "@/utils/datoUtils";
+import { EksternLenke } from "@/components/EksternLenke";
 import { Skjemasvar } from "@/components/skjemasvar/Skjemasvar";
 
 const texts = {
   title: "Kartleggingsspørsmål",
   vurdereOppgaveText: "Behovet er vurdert, fjern oppgaven",
-  kandidat: "Sykmeldt er kandidat og har mottatt kartleggingsspørsmål",
+  kandidat: "Spørsmålene ble sendt",
+  ikkeSvart: "Den sykmeldte har ikke svart",
   svarMottatt: "Svar mottatt",
-  extraInfo: "Informasjon om hva som skal gjøres ved vurdering",
+  extraInfo:
+    "Ved manglende svar vil vi automatisk sende et nytt varsel på SMS etter syv dager, du trenger ikke å purre manuelt. Den sykmeldte er ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på medvirkningsplikten kap § 8.8 dersom det ikke kommer inn et svar.",
   ikkeKandidatInfo1:
     "Den sykmeldte har ikke mottatt kartleggingsspørsmål da personen ikke er kandidat for å motta disse.",
   ikkeKandidatInfo2:
     "Når spørsmålene er besvart, vil du få en oppgave i oversikten din om å vurdere svarene. Svarene fra den sykmeldte dukker opp på denne siden.",
+  link: "Slik ser spørsmålene ut for den sykmeldte",
+  demoUrl: "https://demo.ekstern.dev.nav.no/syk/kartleggingssporsmal",
+  rutineSteps: {
+    description:
+      "Svarene fra den sykmeldte skal være til hjelp for å identifisere hvem som har økt risiko for langvarig fravær og som kan ha behov for oppfølging. Bruk svarene i dialog med den sykmeldte for å kartlegge behov. Svarene må sees i sammenheng med andre opplysninger Nav har om situasjonen til den sykmeldte.",
+    heading1: "Ikke behov for kartlegging",
+    info1:
+      "Personer som svarer at de blir sykmeldte mindre enn seks måneder, har god relasjon til arbeidsgiver og som skal tilbake i jobben som man er sykmeldt fra, har som hovedregel ikke behov for nærmere samtale med Nav.",
+    heading2: "Behov for kartlegging",
+    info2:
+      "Det er en sterk predikator for at den sykmeldte blir langvarig sykmeldt dersom personen svarer at hen kommer til å være sykmeldt mer enn seks måneder. Dersom vedkommende også har svart usikkerhet knyttet til jobbsituasjonen eller dårlig relasjon med arbeidsgiver gir dette grunn til å undersøke saken nærmere.",
+    link: "Bruk Bli kjent og forstå behov",
+    url: "https://navno.sharepoint.com/:u:/r/sites/fag-og-ytelser-veileder-for-arbeidsrettet-brukeroppfolging/SitePages/Start.aspx?csf=1&web=1&e=qc76DU#bli-kjent-og-forst%C3%A5-behov",
+  },
 };
 
 export default function KartleggingssporsmalSide(): ReactElement {
@@ -31,7 +51,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
   const getKartleggingssporsmalSvar = useKartleggingssporsmalSvarQuery(
     isKandidat(kandidat)
   );
-  const kartleggingsvar = getKartleggingssporsmalSvar.data;
+  const answeredQuestions = getKartleggingssporsmalSvar.data?.formResponse;
 
   const isLoading =
     getKandidat.isLoading || getKartleggingssporsmalSvar.isLoading;
@@ -47,37 +67,62 @@ export default function KartleggingssporsmalSide(): ReactElement {
         {kandidat && isKandidat(kandidat) ? (
           <Tredelt.Container>
             <Tredelt.FirstColumn className="-xl:mb-2">
-              <Box background="surface-default" className="p-6 gap-6">
-                <div className="mb-4">
-                  {`${texts.kandidat} (${tilDatoMedManedNavnOgKlokkeslett(
-                    kandidat.varsletAt
-                  )})`}
-                </div>
-
-                {kartleggingsvar && kartleggingsvar.formResponse !== null && (
+              <Box
+                background="surface-default"
+                className="p-6 gap-6 [&>*]:mb-4"
+              >
+                {answeredQuestions ? (
                   <>
-                    <VStack gap="4">
-                      <div>
-                        {`${
-                          texts.svarMottatt
-                        }: ${tilDatoMedManedNavnOgKlokkeslett(
-                          kartleggingsvar.formResponse.createdAt
-                        )}`}
-                      </div>
-                      <Skjemasvar
-                        formSnapshot={kartleggingsvar.formResponse.formSnapshot}
-                      />
-                    </VStack>
+                    <div>
+                      {`${
+                        texts.svarMottatt
+                      }: ${tilDatoMedManedNavnOgKlokkeslett(
+                        answeredQuestions.createdAt
+                      )}`}
+                    </div>
+                    <Skjemasvar formSnapshot={answeredQuestions.formSnapshot} />
                     <Button variant="primary" size="small" className="mt-4">
                       {texts.vurdereOppgaveText}
                     </Button>
+                  </>
+                ) : (
+                  <>
+                    <BodyShort size="small" weight="semibold">
+                      {texts.ikkeSvart}
+                    </BodyShort>
+                    <BodyShort size="small" weight="semibold">
+                      {`${texts.kandidat} ${tilLesbarDatoMedArstall(
+                        kandidat.varsletAt
+                      )}`}
+                    </BodyShort>
+                    <EksternLenke href={texts.demoUrl}>
+                      {texts.link}
+                    </EksternLenke>
+                    <BodyShort size="small">{texts.extraInfo}</BodyShort>
                   </>
                 )}
               </Box>
             </Tredelt.FirstColumn>
             <Tredelt.SecondColumn>
-              <Box background="surface-default" padding="6" className="mb-2">
-                {texts.extraInfo}
+              <Box background="surface-default" padding="6">
+                <BodyShort size="small" className="mb-4">
+                  {texts.rutineSteps.description}
+                </BodyShort>
+                <Heading level="3" size="small">
+                  {texts.rutineSteps.heading1}
+                </Heading>
+                <BodyShort size="small" className="mb-4">
+                  {texts.rutineSteps.info1}
+                </BodyShort>
+                <Heading level="3" size="small">
+                  {texts.rutineSteps.heading2}
+                </Heading>
+                <BodyShort size="small" className="mb-4">
+                  {texts.rutineSteps.info2}
+                </BodyShort>
+                <EksternLenke href={texts.rutineSteps.url}>
+                  {texts.rutineSteps.link}
+                </EksternLenke>
               </Box>
             </Tredelt.SecondColumn>
           </Tredelt.Container>
