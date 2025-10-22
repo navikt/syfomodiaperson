@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import Side from "@/components/side/Side";
 import Sidetopp from "@/components/side/Sidetopp";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { BodyShort, Box, Button, Heading } from "@navikt/ds-react";
+import { BodyShort, Box, Button, Heading, List } from "@navikt/ds-react";
 import * as Tredelt from "@/components/side/TredeltSide";
 import SideLaster from "@/components/side/SideLaster";
 import { isKandidat } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
@@ -23,10 +23,17 @@ const texts = {
   ikkeSvart: "Den sykmeldte har ikke svart",
   extraInfo:
     "Ved manglende svar vil vi automatisk sende et nytt varsel på SMS etter syv dager, du trenger ikke å purre manuelt. Den sykmeldte er ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på medvirkningsplikten kap § 8.8 dersom det ikke kommer inn et svar.",
-  ikkeKandidatInfo1:
-    "Den sykmeldte har ikke mottatt kartleggingsspørsmål da personen ikke er kandidat for å motta disse.",
+  ikkeKandidatInfo1: "Den sykmeldte har ikke mottatt kartleggingsspørsmål.",
   ikkeKandidatInfo2:
-    "Når spørsmålene er besvart, vil du få en oppgave i oversikten din om å vurdere svarene. Svarene fra den sykmeldte dukker opp på denne siden.",
+    "Alle sykmeldte i Norge ved uke seks mottar spørsmålene, bortsett fra de som:",
+  ikkeKandidatKriterier: [
+    "Er 67 år eller eldre",
+    "Ikke har en arbeidsgiver",
+    "Har et gjeldende § 14a-vedtak for inneværende oppfølgingsperiode",
+  ],
+  behovsrettetLink: "Link til artikkel på Navet",
+  behovsrettetUrl:
+    "https://navno.sharepoint.com/:u:/r/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Behovsrettet-oppf%C3%B8lging.aspx?csf=1&web=1&e=e73C3c",
   link: "Slik ser spørsmålene ut for den sykmeldte",
   demoUrl: "https://demo.ekstern.dev.nav.no/syk/kartleggingssporsmal",
   rutineSteps: {
@@ -139,6 +146,14 @@ export default function KartleggingssporsmalSide(): ReactElement {
           >
             <BodyShort size="small">{texts.ikkeKandidatInfo1}</BodyShort>
             <BodyShort size="small">{texts.ikkeKandidatInfo2}</BodyShort>
+            <List size="small">
+              {texts.ikkeKandidatKriterier.map((text, index) => (
+                <List.Item key={index}>{text}</List.Item>
+              ))}
+            </List>
+            <EksternLenke href={texts.behovsrettetUrl}>
+              {texts.behovsrettetLink}
+            </EksternLenke>
           </Box>
         )}
       </SideLaster>
