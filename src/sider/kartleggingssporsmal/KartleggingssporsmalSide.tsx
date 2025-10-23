@@ -22,7 +22,7 @@ const texts = {
   svart: "Den sykmeldte svarte",
   ikkeSvart: "Den sykmeldte har ikke svart",
   extraInfo:
-    "Ved manglende svar vil vi automatisk sende et nytt varsel på SMS etter syv dager, du trenger ikke å purre manuelt. Den sykmeldte er ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på medvirkningsplikten kap § 8.8 dersom det ikke kommer inn et svar.",
+    "Ved manglende svar vil vi automatisk sende et nytt varsel på SMS etter syv dager, du trenger ikke å purre manuelt. Den sykmeldte er ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på folketrygdloven § 8-8 dersom det ikke kommer inn et svar.",
   ikkeKandidatInfo1: "Den sykmeldte har ikke mottatt kartleggingsspørsmål.",
   ikkeKandidatInfo2:
     "Alle sykmeldte i Norge ved uke seks mottar spørsmålene, bortsett fra de som:",
@@ -31,21 +31,22 @@ const texts = {
     "Ikke har en arbeidsgiver",
     "Har et gjeldende § 14a-vedtak for inneværende oppfølgingsperiode",
   ],
-  behovsrettetLink: "Link til artikkel på Navet",
+  behovsrettetLink: "Les mer om behovsrettet sykefraværsoppfølging på Navet",
   behovsrettetUrl:
     "https://navno.sharepoint.com/:u:/r/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Behovsrettet-oppf%C3%B8lging.aspx?csf=1&web=1&e=e73C3c",
   link: "Slik ser spørsmålene ut for den sykmeldte",
   demoUrl: "https://demo.ekstern.dev.nav.no/syk/kartleggingssporsmal",
   rutineSteps: {
-    description:
-      "Svarene fra den sykmeldte skal være til hjelp for å identifisere hvem som har økt risiko for langvarig fravær og som kan ha behov for oppfølging. Bruk svarene i dialog med den sykmeldte for å kartlegge behov. Svarene må sees i sammenheng med andre opplysninger Nav har om situasjonen til den sykmeldte.",
-    heading1: "Ikke behov for kartlegging",
+    heading1: "Slik vurderer du svarene",
     info1:
-      "Personer som svarer at de blir sykmeldte mindre enn seks måneder, har god relasjon til arbeidsgiver og som skal tilbake i jobben som man er sykmeldt fra, har som hovedregel ikke behov for nærmere samtale med Nav.",
-    heading2: "Behov for kartlegging",
+      "Svarene fra den sykmeldte skal være til hjelp for å identifisere hvem som har økt risiko for langvarig fravær og som kan ha behov for oppfølging. Bruk svarene i dialog med den sykmeldte for å kartlegge behov. Svarene må sees i sammenheng med andre opplysninger Nav har om situasjonen til den sykmeldte. I det den sykmeldte sender inn svarene vil de automatisk bli journalført.",
+    heading2: "Ikke behov for kartlegging",
     info2:
+      "Personer som svarer at de blir sykmeldte mindre enn seks måneder, har god relasjon til arbeidsgiver og som skal tilbake i jobben som man er sykmeldt fra, har som hovedregel ikke behov for nærmere samtale med Nav.",
+    heading3: "Behov for kartlegging",
+    info3:
       "Det er en sterk predikator for at den sykmeldte blir langvarig sykmeldt dersom personen svarer at hen kommer til å være sykmeldt mer enn seks måneder. Dersom vedkommende også har svart usikkerhet knyttet til jobbsituasjonen eller dårlig relasjon med arbeidsgiver gir dette grunn til å undersøke saken nærmere.",
-    link: "Bruk Bli kjent og forstå behov",
+    link: 'Bruk også "Bli kjent og forstå behov"',
     url: "https://navno.sharepoint.com/:u:/r/sites/fag-og-ytelser-veileder-for-arbeidsrettet-brukeroppfolging/SitePages/Start.aspx?csf=1&web=1&e=qc76DU#bli-kjent-og-forst%C3%A5-behov",
   },
 };
@@ -116,9 +117,6 @@ export default function KartleggingssporsmalSide(): ReactElement {
             </Tredelt.FirstColumn>
             <Tredelt.SecondColumn>
               <Box background="surface-default" padding="6" className="mb-4">
-                <BodyShort size="small" className="mb-4">
-                  {texts.rutineSteps.description}
-                </BodyShort>
                 <Heading level="3" size="small">
                   {texts.rutineSteps.heading1}
                 </Heading>
@@ -130,6 +128,12 @@ export default function KartleggingssporsmalSide(): ReactElement {
                 </Heading>
                 <BodyShort size="small" className="mb-4">
                   {texts.rutineSteps.info2}
+                </BodyShort>
+                <Heading level="3" size="small">
+                  {texts.rutineSteps.heading3}
+                </Heading>
+                <BodyShort size="small" className="mb-4">
+                  {texts.rutineSteps.info3}
                 </BodyShort>
                 <EksternLenke href={texts.rutineSteps.url}>
                   {texts.rutineSteps.link}
