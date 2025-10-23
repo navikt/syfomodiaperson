@@ -2,25 +2,33 @@ import React, { ReactElement } from "react";
 import Side from "@/components/side/Side";
 import Sidetopp from "@/components/side/Sidetopp";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { BodyShort, Box, Button, Heading, List } from "@navikt/ds-react";
+import { Alert, BodyShort, Box, Button, Heading, List } from "@navikt/ds-react";
 import * as Tredelt from "@/components/side/TredeltSide";
 import SideLaster from "@/components/side/SideLaster";
-import { isKandidat } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
+import {
+  isKandidat,
+  KandidatStatus,
+} from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import {
   useKartleggingssporsmalKandidatQuery,
   useKartleggingssporsmalSvarQuery,
+  useKartleggingssporsmalVurderSvar,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { EksternLenke } from "@/components/EksternLenke";
 import { Skjemasvar } from "@/components/skjemasvar/Skjemasvar";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
+import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
+import { PaddingSize } from "@/components/Layout";
 
 const texts = {
   title: "Kartleggingsspørsmål",
-  vurdereOppgaveText: "Behovet er vurdert, fjern oppgaven",
+  vurdereOppgaveText: "Svarene er vurdert, fjern oppgaven",
   kandidat: "Spørsmålene ble sendt",
   svart: "Den sykmeldte svarte",
   ikkeSvart: "Den sykmeldte har ikke svart",
+  svarVurdert: "Svarene er vurdert",
+  svarVurdertAv: "Oppgaven er behandlet av",
   extraInfo:
     "Ved manglende svar vil vi automatisk sende et nytt varsel på SMS etter syv dager, du trenger ikke å purre manuelt. Den sykmeldte er ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på folketrygdloven § 8-8 dersom det ikke kommer inn et svar.",
   ikkeKandidatInfo1: "Den sykmeldte har ikke mottatt kartleggingsspørsmål.",
@@ -58,6 +66,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
     isKandidat(kandidat)
   );
   const answeredQuestions = getKartleggingssporsmalSvar.data?.formResponse;
+  const vurderSvar = useKartleggingssporsmalVurderSvar();
 
   const isLoading =
     getKandidat.isLoading || getKartleggingssporsmalSvar.isLoading;
@@ -93,9 +102,40 @@ export default function KartleggingssporsmalSide(): ReactElement {
                       {texts.link}
                     </EksternLenke>
                     <Skjemasvar formSnapshot={answeredQuestions.formSnapshot} />
-                    <Button variant="primary" size="small" className="mt-4">
-                      {texts.vurdereOppgaveText}
-                    </Button>
+                    {kandidat.status === KandidatStatus.SVAR_MOTTATT && (
+                      <>
+                        <Button
+                          variant="primary"
+                          size="medium"
+                          onClick={() => vurderSvar.mutate(kandidat.uuid)}
+                          loading={vurderSvar.isPending}
+                        >
+                          {texts.vurdereOppgaveText}
+                        </Button>
+                        {vurderSvar.isError && (
+                          <SkjemaInnsendingFeil
+                            bottomPadding={PaddingSize.NONE}
+                            error={vurderSvar.error}
+                          />
+                        )}
+                      </>
+                    )}
+                    {kandidat.status === KandidatStatus.FERDIGBEHANDLET && (
+                      <Alert size="medium" variant="success">
+                        <BodyShort
+                          size="small"
+                          weight="semibold"
+                          className="mb-2"
+                        >
+                          {`${texts.svarVurdert} ${tilLesbarDatoMedArstall(
+                            kandidat.vurdering?.vurdertAt
+                          )}`}
+                        </BodyShort>
+                        <BodyShort size="small">
+                          {`${texts.svarVurdertAv} ${kandidat.vurdering?.vurdertBy}`}
+                        </BodyShort>
+                      </Alert>
+                    )}
                   </>
                 ) : (
                   <>

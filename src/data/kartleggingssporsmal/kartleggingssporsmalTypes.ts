@@ -6,11 +6,18 @@ export interface KartleggingssporsmalKandidatResponseDTO {
   personident: string;
   status: KandidatStatus;
   varsletAt: Date;
+  vurdering: KartleggingssporsmalKandidatVurderingResponseDTO | null;
+}
+
+export interface KartleggingssporsmalKandidatVurderingResponseDTO {
+  vurdertAt: Date;
+  vurdertBy: string;
 }
 
 export enum KandidatStatus {
   KANDIDAT = "KANDIDAT",
-  IKKE_KANDIDAT = "IKKE_KANDIDAT",
+  SVAR_MOTTATT = "SVAR_MOTTATT",
+  FERDIGBEHANDLET = "FERDIGBEHANDLET",
 }
 
 export interface KartleggingssporsmalSvarStatusResponseDTO {
@@ -28,5 +35,5 @@ export interface KartleggingssporsmalSvarResponseDTO {
 export function isKandidat(
   kartleggingData: KartleggingssporsmalKandidatResponseDTO | null | undefined
 ): boolean {
-  return kartleggingData?.status === KandidatStatus.KANDIDAT;
+  return !!kartleggingData;
 }

@@ -30,6 +30,7 @@ export enum FlexGapSize {
 }
 
 export enum PaddingSize {
+  NONE = "",
   SM = "1em",
   MD = "2em",
   LG = "3em",

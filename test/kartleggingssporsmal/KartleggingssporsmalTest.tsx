@@ -8,7 +8,10 @@ import {
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithMockData } from "../testQueryClient";
-import { kartleggingIsKandidatAndReceivedQuestions } from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
+import {
+  kartleggingIsKandidatAndAnsweredQuestions,
+  kartleggingIsKandidatAndReceivedQuestions,
+} from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
 import {
   kartleggingssporsmalAnswered,
   kartleggingssporsmalNotAnswered,
@@ -18,6 +21,11 @@ import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 import { renderWithRouter } from "../testRouterUtils";
 import { appRoutePath } from "@/routers/AppRouter";
 import { screen } from "@testing-library/react";
+import { clickButton, getButton, queryButton } from "../testUtils";
+import {
+  stubDefaultIsmeroppfolging,
+  stubVurderSvarError,
+} from "../stubs/stubIsmeroppfolging";
 
 let queryClient: QueryClient;
 
@@ -97,11 +105,13 @@ describe("Kartleggingssporsmal", () => {
         exact: false,
       })
     ).to.exist;
+
+    expect(queryButton("Svarene er vurdert, fjern oppgaven")).to.not.exist;
   });
 
   it("Sykmeldt is kandidat and has answered questions", () => {
     mockKartleggingssporsmalKandidat(
-      kartleggingIsKandidatAndReceivedQuestions,
+      kartleggingIsKandidatAndAnsweredQuestions,
       ARBEIDSTAKER_DEFAULT.personIdent
     );
     mockKartleggingssporsmalSvar(
@@ -165,5 +175,48 @@ describe("Kartleggingssporsmal", () => {
       })
     ).to.exist;
     expect(screen.queryByText("Utdrag fra sykefraværet")).to.exist;
+
+    expect(getButton("Svarene er vurdert, fjern oppgaven")).to.exist;
+  });
+
+  describe("Evaluate answers to kartleggingsspørsmål", () => {
+    it("API returning Ok will show success message", async () => {
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalAnswered,
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+      stubDefaultIsmeroppfolging();
+
+      renderKartleggingssporsmal();
+
+      await clickButton("Svarene er vurdert, fjern oppgaven");
+      expect(await screen.findByText("Oppgaven er behandlet av Z990000")).to
+        .exist;
+    });
+
+    it("API returning error will show error message", async () => {
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalAnswered,
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+      stubVurderSvarError();
+
+      renderKartleggingssporsmal();
+
+      await clickButton("Svarene er vurdert, fjern oppgaven");
+      expect(
+        await screen.findByText(
+          "Det skjedde en uventet feil. Vennligst prøv igjen senere."
+        )
+      ).to.exist;
+    });
   });
 });
