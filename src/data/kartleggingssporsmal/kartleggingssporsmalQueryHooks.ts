@@ -1,10 +1,11 @@
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   ISMEROPPFOLGING_ROOT,
-  MEROPPFOLGING_BACKEND_ROOT,
+  MEROPPFOLGING_BACKEND_V1_ROOT,
 } from "@/apiConstants";
 import { get, put } from "@/api/axios";
 import {
+  isKandidat,
   KartleggingssporsmalKandidatResponseDTO,
   KartleggingssporsmalSvarStatusResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
@@ -40,16 +41,18 @@ export const useKartleggingssporsmalKandidatQuery = () => {
   });
 };
 
-export const useKartleggingssporsmalSvarQuery = (isEnabled: boolean) => {
+export const useKartleggingssporsmalSvarQuery = (
+  kandidat: KartleggingssporsmalKandidatResponseDTO | null | undefined
+) => {
   const fnr = useValgtPersonident();
-  const path = `${MEROPPFOLGING_BACKEND_ROOT}/kartleggingssporsmal/latest`;
+  const path = `${MEROPPFOLGING_BACKEND_V1_ROOT}/kartleggingssporsmal/${kandidat?.kandidatUuid}/svar`;
   const getKartleggingssporsmalSvar = () =>
-    get<KartleggingssporsmalSvarStatusResponseDTO>(path, fnr);
+    get<KartleggingssporsmalSvarStatusResponseDTO>(path);
 
   return useQuery({
     queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalSvar(fnr),
     queryFn: getKartleggingssporsmalSvar,
-    enabled: !!fnr && isEnabled,
+    enabled: !!fnr && isKandidat(kandidat),
     staleTime: minutesToMillis(5),
   });
 };

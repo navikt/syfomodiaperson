@@ -1,4 +1,7 @@
-import { MEROPPFOLGING_BACKEND_ROOT } from "@/apiConstants";
+import {
+  MEROPPFOLGING_BACKEND_V2_ROOT,
+  MEROPPFOLGING_BACKEND_V1_ROOT,
+} from "@/apiConstants";
 import { SenOppfolgingFormResponseDTOV2 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { ARBEIDSTAKER_DEFAULT } from "../common/mockConstants";
 import { http, HttpResponse } from "msw";
@@ -13,12 +16,18 @@ import { daysFromToday } from "../../../test/testUtils";
 import { generateUUID } from "@/utils/utils";
 
 export const mockMerOppfolging = [
-  http.get(`${MEROPPFOLGING_BACKEND_ROOT}/senoppfolging/formresponse`, () => {
-    return HttpResponse.json(merOppfolgingMock);
-  }),
-  http.get(`${MEROPPFOLGING_BACKEND_ROOT}/kartleggingssporsmal/latest`, () => {
-    return HttpResponse.json(kartleggingssporsmalAnswered);
-  }),
+  http.get(
+    `${MEROPPFOLGING_BACKEND_V2_ROOT}/senoppfolging/formresponse`,
+    () => {
+      return HttpResponse.json(merOppfolgingMock);
+    }
+  ),
+  http.get(
+    `${MEROPPFOLGING_BACKEND_V1_ROOT}/kartleggingssporsmal/:kandidatUUID`,
+    () => {
+      return HttpResponse.json(kartleggingssporsmalAnswered);
+    }
+  ),
 ];
 
 export const merOppfolgingMock: SenOppfolgingFormResponseDTOV2 = {
