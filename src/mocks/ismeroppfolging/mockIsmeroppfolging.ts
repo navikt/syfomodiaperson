@@ -9,6 +9,7 @@ import {
 import { generateUUID } from "@/utils/utils";
 import {
   ARBEIDSTAKER_DEFAULT,
+  VEILEDER_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
 } from "../common/mockConstants";
 import { addDays, addWeeks } from "@/utils/datoUtils";
@@ -17,6 +18,7 @@ import {
   KandidatStatus,
   KartleggingssporsmalKandidatResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
+import { daysFromToday } from "../../../test/testUtils";
 
 export const mockIsmeroppfolging = [
   http.get(`${ISMEROPPFOLGING_ROOT}/senoppfolging/kandidater`, () => {
@@ -48,8 +50,22 @@ export const mockIsmeroppfolging = [
     }
   ),
   http.get(`${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater`, () => {
-    return HttpResponse.json(kartleggingIsKandidatAndReceivedQuestions);
+    return HttpResponse.json(kartleggingIsKandidatAndAnsweredQuestions);
   }),
+  http.put(
+    `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater/:kandidatUUID`,
+    () => {
+      const svarVurdert: KartleggingssporsmalKandidatResponseDTO = {
+        ...kartleggingIsKandidatAndReceivedQuestions,
+        status: KandidatStatus.FERDIGBEHANDLET,
+        vurdering: {
+          vurdertAt: daysFromToday(5),
+          vurdertBy: VEILEDER_DEFAULT.ident,
+        },
+      };
+      return HttpResponse.json(svarVurdert);
+    }
+  ),
 ];
 
 export const senOppfolgingKandidatMock: SenOppfolgingKandidatResponseDTO = {
@@ -86,9 +102,17 @@ export const ferdigbehandletKandidatMock: SenOppfolgingKandidatResponseDTO = {
 
 export const kartleggingIsKandidatAndReceivedQuestions: KartleggingssporsmalKandidatResponseDTO =
   {
-    uuid: crypto.randomUUID(),
-    createdAt: new Date(),
+    uuid: generateUUID(),
+    createdAt: daysFromToday(-5),
     personident: ARBEIDSTAKER_DEFAULT.personIdent,
-    varsletAt: new Date(),
+    varsletAt: daysFromToday(-5),
     status: KandidatStatus.KANDIDAT,
+    vurdering: null,
+  };
+
+export const kartleggingIsKandidatAndAnsweredQuestions: KartleggingssporsmalKandidatResponseDTO =
+  {
+    ...kartleggingIsKandidatAndReceivedQuestions,
+    status: KandidatStatus.SVAR_MOTTATT,
+    vurdering: null,
   };
