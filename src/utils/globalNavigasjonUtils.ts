@@ -29,6 +29,7 @@ import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { VurderingResponseDTO as ManglendeMedvirkningVurderingResponseDTO } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { isExpiredForhandsvarsel } from "@/utils/datoUtils";
 import { isVarselUbesvart } from "@/utils/senOppfolgingUtils";
+import { KartleggingssporsmalKandidatResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 
 const getNumberOfMoteOppgaver = (
   motebehov: MotebehovVeilederDTO[],
@@ -156,6 +157,17 @@ function getNumberOfManglendeMedvirkningOppgaver(
     : 0;
 }
 
+function getNumberOfKartleggingssporsmalOppgaver(
+  kartleggingssporsmalKandidatResponseDTO:
+    | KartleggingssporsmalKandidatResponseDTO
+    | null
+    | undefined
+): number {
+  return kartleggingssporsmalKandidatResponseDTO?.status == "SVAR_MOTTATT"
+    ? 1
+    : 0;
+}
+
 export const numberOfTasks = (
   menypunkt: Menypunkter,
   motebehov: MotebehovVeilederDTO[],
@@ -168,7 +180,11 @@ export const numberOfTasks = (
   friskmeldingTilArbeidsformidlingVedtak: VedtakResponseDTO[],
   manglendeMedvirkningVurdering:
     | ManglendeMedvirkningVurderingResponseDTO
+    | undefined,
+  kartleggingVurdering:
+    | KartleggingssporsmalKandidatResponseDTO
     | undefined
+    | null
 ): number => {
   switch (menypunkt) {
     case Menypunkter.DIALOGMOTE:
@@ -203,6 +219,7 @@ export const numberOfTasks = (
         manglendeMedvirkningVurdering
       );
     case Menypunkter.KARTLEGGINGSSPORSMAL:
+      return getNumberOfKartleggingssporsmalOppgaver(kartleggingVurdering);
     case Menypunkter.NOKKELINFORMASJON:
     case Menypunkter.SYKEPENGESOKNADER:
     case Menypunkter.HISTORIKK: {

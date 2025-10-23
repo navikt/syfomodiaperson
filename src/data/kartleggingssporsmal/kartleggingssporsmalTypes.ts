@@ -3,8 +3,10 @@ import { FormSnapshot } from "@/data/skjemasvar/types/SkjemasvarTypes";
 export interface KartleggingssporsmalKandidatResponseDTO {
   kandidatUuid: string;
   personident: string;
-  status: KandidatStatus;
   varsletAt: Date;
+  svarAt: Date | null;
+  status: KandidatStatus;
+  statusAt: Date;
   vurdering: KartleggingssporsmalKandidatVurderingResponseDTO | null;
 }
 
@@ -34,5 +36,5 @@ export interface KartleggingssporsmalSvarResponseDTO {
 export function isKandidat(
   kartleggingData: KartleggingssporsmalKandidatResponseDTO | null | undefined
 ): boolean {
-  return !!kartleggingData;
+  return kartleggingData?.status === KandidatStatus.KANDIDAT;
 }
