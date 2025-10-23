@@ -1,5 +1,5 @@
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { MEROPPFOLGING_BACKEND_ROOT } from "@/apiConstants";
+import { MEROPPFOLGING_BACKEND_V2_ROOT } from "@/apiConstants";
 import { get } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/utils";
@@ -11,7 +11,7 @@ export const senOppfolgingSvarQueryKeys = {
 
 export const useSenOppfolgingSvarQuery = () => {
   const fnr = useValgtPersonident();
-  const path = `${MEROPPFOLGING_BACKEND_ROOT}/senoppfolging/formresponse`;
+  const path = `${MEROPPFOLGING_BACKEND_V2_ROOT}/senoppfolging/formresponse`;
   const getSenOppfolgingSvar = () =>
     get<SenOppfolgingFormResponseDTOV2 | undefined>(path, fnr);
 
