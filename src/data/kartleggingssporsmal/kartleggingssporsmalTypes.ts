@@ -1,8 +1,7 @@
 import { FormSnapshot } from "@/data/skjemasvar/types/SkjemasvarTypes";
 
 export interface KartleggingssporsmalKandidatResponseDTO {
-  uuid: string;
-  createdAt: Date;
+  kandidatUuid: string;
   personident: string;
   status: KandidatStatus;
   varsletAt: Date;

@@ -102,8 +102,7 @@ export const ferdigbehandletKandidatMock: SenOppfolgingKandidatResponseDTO = {
 
 export const kartleggingIsKandidatAndReceivedQuestions: KartleggingssporsmalKandidatResponseDTO =
   {
-    uuid: generateUUID(),
-    createdAt: daysFromToday(-5),
+    kandidatUuid: generateUUID(),
     personident: ARBEIDSTAKER_DEFAULT.personIdent,
     varsletAt: daysFromToday(-5),
     status: KandidatStatus.KANDIDAT,
