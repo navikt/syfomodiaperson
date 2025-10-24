@@ -107,7 +107,9 @@ export default function KartleggingssporsmalSide(): ReactElement {
                         <Button
                           variant="primary"
                           size="medium"
-                          onClick={() => vurderSvar.mutate(kandidat.uuid)}
+                          onClick={() =>
+                            vurderSvar.mutate(kandidat.kandidatUuid)
+                          }
                           loading={vurderSvar.isPending}
                         >
                           {texts.vurdereOppgaveText}
