@@ -51,6 +51,7 @@ import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/mangl
 import { navEnhet } from "./dialogmote/testData";
 import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
+import { kartleggingssporsmalQueryKeys } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 
 export const testQueryClient = (): QueryClient => {
   return new QueryClient();
@@ -161,7 +162,12 @@ export const queryClientWithMockData = (): QueryClient => {
     ),
     () => senOppfolgingKandidatMock
   );
-
+  queryClient.setQueryData(
+    kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => null
+  );
   return queryClient;
 };
 
@@ -213,5 +219,11 @@ export function setEmptyQueryData(existingClient: QueryClient): void {
   existingClient.setQueryData(
     unleashQueryKeys.toggles(navEnhet.id, ""),
     () => mockUnleashResponse
+  );
+  existingClient.setQueryData(
+    kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => null
   );
 }

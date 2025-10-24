@@ -1,16 +1,24 @@
 import { FormSnapshot } from "@/data/skjemasvar/types/SkjemasvarTypes";
 
 export interface KartleggingssporsmalKandidatResponseDTO {
-  uuid: string;
-  createdAt: Date;
+  kandidatUuid: string;
   personident: string;
+  varsletAt: Date | null | undefined;
+  svarAt: Date | null | undefined;
   status: KandidatStatus;
-  varsletAt: Date;
+  statusAt: Date;
+  vurdering: KartleggingVurderingDTO | null;
+}
+
+export interface KartleggingVurderingDTO {
+  vurdertAt: Date;
+  vurdertBy: string;
 }
 
 export enum KandidatStatus {
   KANDIDAT = "KANDIDAT",
-  IKKE_KANDIDAT = "IKKE_KANDIDAT",
+  SVAR_MOTTATT = "SVAR_MOTTATT",
+  FERDIGBEHANDLET = "FERDIGBEHANDLET",
 }
 
 export interface KartleggingssporsmalSvarStatusResponseDTO {
@@ -28,5 +36,8 @@ export interface KartleggingssporsmalSvarResponseDTO {
 export function isKandidat(
   kartleggingData: KartleggingssporsmalKandidatResponseDTO | null | undefined
 ): boolean {
-  return kartleggingData?.status === KandidatStatus.KANDIDAT;
+  return (
+    kartleggingData?.status === KandidatStatus.KANDIDAT ||
+    kartleggingData?.status === KandidatStatus.SVAR_MOTTATT
+  );
 }
