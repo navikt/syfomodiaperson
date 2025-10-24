@@ -54,9 +54,8 @@ const texts = {
 export default function KartleggingssporsmalSide(): ReactElement {
   const getKandidat = useKartleggingssporsmalKandidatQuery();
   const kandidat = getKandidat.data;
-  const getKartleggingssporsmalSvar = useKartleggingssporsmalSvarQuery(
-    isKandidat(kandidat)
-  );
+  const getKartleggingssporsmalSvar =
+    useKartleggingssporsmalSvarQuery(kandidat);
   const answeredQuestions = getKartleggingssporsmalSvar.data?.formResponse;
 
   const isLoading =
