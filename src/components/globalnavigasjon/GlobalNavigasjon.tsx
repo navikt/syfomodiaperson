@@ -18,6 +18,7 @@ import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfol
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
+import { useKartleggingssporsmalKandidatQuery } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 
 export enum Menypunkter {
   AKTIVITETSKRAV = "AKTIVITETSKRAV",
@@ -121,6 +122,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
   const senOppfolgingKandidat = useSenOppfolgingKandidatQuery();
   const friskmeldingTilArbeidsformidlingVedtak = useVedtakQuery();
   const manglendeMedvirkningVurdering = useManglendemedvirkningVurderingQuery();
+  const kartleggingssporsmalKandidat = useKartleggingssporsmalKandidatQuery();
   const featureToggles = useFeatureToggles();
 
   const isPending =
@@ -133,7 +135,8 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
     arbeidsuforhetVurderinger.isPending ||
     senOppfolgingKandidat.isPending ||
     friskmeldingTilArbeidsformidlingVedtak.isPending ||
-    manglendeMedvirkningVurdering.isPending;
+    manglendeMedvirkningVurdering.isPending ||
+    kartleggingssporsmalKandidat.isPending;
 
   const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.data.map(
     (oppfolgingsplanLPS) =>
@@ -216,7 +219,8 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
           arbeidsuforhetVurderinger.data,
           senOppfolgingKandidat.data,
           friskmeldingTilArbeidsformidlingVedtak.data,
-          manglendeMedvirkningVurdering.sisteVurdering
+          manglendeMedvirkningVurdering.sisteVurdering,
+          kartleggingssporsmalKandidat.data
         );
 
         return (

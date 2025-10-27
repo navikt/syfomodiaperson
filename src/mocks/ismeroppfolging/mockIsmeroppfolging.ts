@@ -105,7 +105,9 @@ export const kartleggingIsKandidatAndReceivedQuestions: KartleggingssporsmalKand
     kandidatUuid: generateUUID(),
     personident: ARBEIDSTAKER_DEFAULT.personIdent,
     varsletAt: daysFromToday(-5),
+    svarAt: null,
     status: KandidatStatus.KANDIDAT,
+    statusAt: daysFromToday(-5),
     vurdering: null,
   };
 
@@ -113,5 +115,6 @@ export const kartleggingIsKandidatAndAnsweredQuestions: KartleggingssporsmalKand
   {
     ...kartleggingIsKandidatAndReceivedQuestions,
     status: KandidatStatus.SVAR_MOTTATT,
+    svarAt: daysFromToday(0),
     vurdering: null,
   };
