@@ -3,12 +3,12 @@ import {
   ISMEROPPFOLGING_ROOT,
   MEROPPFOLGING_BACKEND_ROOT,
 } from "@/apiConstants";
-import { get } from "@/api/axios";
+import { get, put } from "@/api/axios";
 import {
   KartleggingssporsmalKandidatResponseDTO,
   KartleggingssporsmalSvarStatusResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/utils";
 import { ApiErrorException } from "@/api/errors";
 
@@ -36,7 +36,7 @@ export const useKartleggingssporsmalKandidatQuery = () => {
     queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
     queryFn: getKartleggingssporsmalKandidat,
     enabled: !!fnr,
-    staleTime: minutesToMillis(60 * 12),
+    staleTime: minutesToMillis(5),
   });
 };
 
@@ -50,6 +50,27 @@ export const useKartleggingssporsmalSvarQuery = (isEnabled: boolean) => {
     queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalSvar(fnr),
     queryFn: getKartleggingssporsmalSvar,
     enabled: !!fnr && isEnabled,
-    staleTime: minutesToMillis(60 * 12),
+    staleTime: minutesToMillis(5),
+  });
+};
+
+export const useKartleggingssporsmalVurderSvar = () => {
+  const fnr = useValgtPersonident();
+  const queryClient = useQueryClient();
+  const postVurderSvar = (kandidatUuid: string) => {
+    const path = `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater/${kandidatUuid}`;
+    return put<KartleggingssporsmalKandidatResponseDTO>(path, {}, fnr);
+  };
+  const kartleggingssporsmalKandidatQueryKey =
+    kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr);
+
+  return useMutation({
+    mutationFn: postVurderSvar,
+    onSuccess: (data: KartleggingssporsmalKandidatResponseDTO) => {
+      return queryClient.setQueryData(
+        kartleggingssporsmalKandidatQueryKey,
+        data
+      );
+    },
   });
 };
