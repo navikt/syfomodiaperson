@@ -59,6 +59,46 @@ const texts = {
   },
 };
 
+function PilotInfo() {
+  return (
+    <Box
+      background="surface-selected"
+      borderColor="border-alt-3"
+      borderWidth="1"
+      className="flex flex-col rounded p-4 mt-2 gap-4"
+    >
+      <Heading size="small">
+        Send inn feil, mangler eller annet du lurer på
+      </Heading>
+      <div>
+        <BodyShort size="small">
+          Generelle tilbakemeldinger sendes på Teams.
+        </BodyShort>
+        <EksternLenke
+          href={
+            "https://teams.microsoft.com/l/channel/19%3A53f937eda2124d29938e4278a1cb106c%40thread.tacv2/Pilot%20kartleggingssp%C3%B8rsm%C3%A5l?groupId=05b6c0d2-b6db-4440-96b4-4de66c09b3c6&tenantId=62366534-1ec3-4962-8869-9b5535279d0b&ngc=true"
+          }
+        >
+          Gå til Pilot kartlegginsspørsmål-kanalen
+        </EksternLenke>
+      </div>
+      <div>
+        <BodyShort size="small">
+          Tilbakemeldinger om en spesifikk sykmeldt kan du melde i Porten med
+          tittel [Pilot Modia syfo].
+        </BodyShort>
+        <EksternLenke
+          href={
+            "https://jira.adeo.no/plugins/servlet/desk/portal/541/create/1401"
+          }
+        >
+          Meld sak i Porten
+        </EksternLenke>
+      </div>
+    </Box>
+  );
+}
+
 export default function KartleggingssporsmalSide(): ReactElement {
   const getKandidat = useKartleggingssporsmalKandidatQuery();
   const kandidat = getKandidat.data;
@@ -177,9 +217,10 @@ export default function KartleggingssporsmalSide(): ReactElement {
                 <BodyShort size="small" className="mb-4">
                   {texts.rutineSteps.info3}
                 </BodyShort>
-                <EksternLenke href={texts.rutineSteps.url}>
+                <EksternLenke href={texts.rutineSteps.url} className="mb-2">
                   {texts.rutineSteps.link}
                 </EksternLenke>
+                <PilotInfo />
               </Box>
               {answeredQuestions && <UtdragFraSykefravaeret />}
             </Tredelt.SecondColumn>
