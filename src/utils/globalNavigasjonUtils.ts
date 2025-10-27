@@ -178,7 +178,9 @@ export const numberOfTasks = (
   arbeidsuforhetVurderinger: VurderingResponseDTO[],
   senOppfolgingKandidatOppgaver: SenOppfolgingKandidatResponseDTO[],
   friskmeldingTilArbeidsformidlingVedtak: VedtakResponseDTO[],
-  manglendeMedvirkningVurdering: ManglendeMedvirkningVurderingResponseDTO,
+  manglendeMedvirkningVurdering:
+    | ManglendeMedvirkningVurderingResponseDTO
+    | undefined,
   kartleggingVurdering:
     | KartleggingssporsmalKandidatResponseDTO
     | undefined
