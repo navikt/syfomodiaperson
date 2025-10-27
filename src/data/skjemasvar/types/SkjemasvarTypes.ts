@@ -46,3 +46,8 @@ export interface FormSnapshotFieldOption {
   optionLabel: string;
   wasSelected: boolean;
 }
+
+export interface RadioGroupFieldSnapshotV2 extends FieldSnapshot {
+  options: FormSnapshotFieldOption[];
+  wasRequired: boolean | null;
+}

@@ -16,10 +16,10 @@ import {
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { EksternLenke } from "@/components/EksternLenke";
-import { Skjemasvar } from "@/components/skjemasvar/Skjemasvar";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { PaddingSize } from "@/components/Layout";
+import { SkjemasvarV2 } from "@/components/skjemasvar/v2/SkjemasvarV2";
 
 const texts = {
   title: "Kartleggingsspørsmål",
@@ -140,7 +140,9 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     <EksternLenke href={texts.demoUrl}>
                       {texts.link}
                     </EksternLenke>
-                    <Skjemasvar formSnapshot={answeredQuestions.formSnapshot} />
+                    <SkjemasvarV2
+                      formSnapshot={answeredQuestions.formSnapshot}
+                    />
                     {kandidat.status === KandidatStatus.SVAR_MOTTATT && (
                       <>
                         <Button

@@ -1,6 +1,6 @@
 import {
-  MEROPPFOLGING_BACKEND_V2_ROOT,
   MEROPPFOLGING_BACKEND_V1_ROOT,
+  MEROPPFOLGING_BACKEND_V2_ROOT,
 } from "@/apiConstants";
 import { SenOppfolgingFormResponseDTOV2 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { ARBEIDSTAKER_DEFAULT } from "../common/mockConstants";
@@ -10,7 +10,7 @@ import {
   FormIdentifier,
   FormSnapshotFieldOption,
   FormSnapshotFieldType,
-  RadioGroupFieldSnapshot,
+  RadioGroupFieldSnapshotV2,
 } from "@/data/skjemasvar/types/SkjemasvarTypes";
 import { daysFromToday } from "../../../test/testUtils";
 import { generateUUID } from "@/utils/utils";
@@ -52,19 +52,6 @@ export const merOppfolgingMock: SenOppfolgingFormResponseDTOV2 = {
   ],
 };
 
-export const defaultRadioGroupSporsmal = (
-  value: boolean
-): RadioGroupFieldSnapshot => ({
-  fieldId: "hvorSannsynligTilbakeTilJobben",
-  fieldType: FormSnapshotFieldType.RADIO_GROUP,
-  description: null,
-  label: "Label 1",
-  selectedOptionId: value ? "Ja" : "Nei",
-  selectedOptionLabel: value ? "Ja" : "Nei",
-  options: [createRadioOption("Ja", true), createRadioOption("Nei")],
-  wasRequired: true,
-});
-
 const createRadioOption = (
   label: string,
   isSelected = false
@@ -76,9 +63,18 @@ const createRadioOption = (
   };
 };
 
-const kartleggingssporsmal: RadioGroupFieldSnapshot[] = [
+export const defaultRadioGroupSporsmal: RadioGroupFieldSnapshotV2 = {
+  fieldId: "hvorSannsynligTilbakeTilJobben",
+  fieldType: FormSnapshotFieldType.RADIO_GROUP,
+  description: null,
+  label: "Label 1",
+  options: [createRadioOption("Ja", true), createRadioOption("Nei")],
+  wasRequired: true,
+};
+
+const kartleggingssporsmal: RadioGroupFieldSnapshotV2[] = [
   {
-    ...defaultRadioGroupSporsmal(true),
+    ...defaultRadioGroupSporsmal,
     label:
       "Hvor sannsynlig er det at du kommer tilbake i jobben du ble sykmeldt fra?",
     options: [
@@ -86,10 +82,9 @@ const kartleggingssporsmal: RadioGroupFieldSnapshot[] = [
       createRadioOption("Jeg tror det er lite sannsynlig"),
       createRadioOption("Jeg er usikker", true),
     ],
-    selectedOptionId: "Jeg er usikker",
   },
   {
-    ...defaultRadioGroupSporsmal(true),
+    ...defaultRadioGroupSporsmal,
     label:
       "Hvordan vil du beskrive samarbeidet og relasjonen mellom deg og arbeidsgiveren din?",
     options: [
@@ -99,16 +94,14 @@ const kartleggingssporsmal: RadioGroupFieldSnapshot[] = [
         true
       ),
     ],
-    selectedOptionId: "Jeg opplever samarbeidet og relasjonen som dårlig",
   },
   {
-    ...defaultRadioGroupSporsmal(true),
+    ...defaultRadioGroupSporsmal,
     label: "Hvor lenge tror du at du kommer til å være sykmeldt?",
     options: [
       createRadioOption("Mindre enn seks måneder", true),
       createRadioOption("Mer enn seks måneder"),
     ],
-    selectedOptionId: "Mindre enn seks måneder",
   },
 ];
 
