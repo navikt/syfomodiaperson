@@ -36,8 +36,5 @@ export interface KartleggingssporsmalSvarResponseDTO {
 export function isKandidat(
   kartleggingData: KartleggingssporsmalKandidatResponseDTO | null | undefined
 ): boolean {
-  return (
-    kartleggingData?.status === KandidatStatus.KANDIDAT ||
-    kartleggingData?.status === KandidatStatus.SVAR_MOTTATT
-  );
+  return !!kartleggingData;
 }

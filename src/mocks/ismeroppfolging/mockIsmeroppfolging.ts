@@ -107,7 +107,7 @@ export const kartleggingIsKandidatAndReceivedQuestions: KartleggingssporsmalKand
     varsletAt: daysFromToday(-5),
     svarAt: null,
     status: KandidatStatus.KANDIDAT,
-    statusAt: new Date(),
+    statusAt: daysFromToday(-5),
     vurdering: null,
   };
 
