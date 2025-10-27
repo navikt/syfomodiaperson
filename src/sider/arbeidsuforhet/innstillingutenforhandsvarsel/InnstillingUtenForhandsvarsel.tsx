@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Heading,
+  List,
   Radio,
   RadioGroup,
   Textarea,
@@ -46,6 +47,17 @@ const texts = {
   begrunnelseDescription:
     "Skriv kort hvilke opplysninger som ligger til grunn for avslaget, samt din vurdering av hvorfor vilkåret ikke er oppfylt og vurdering av eventuelle nye opplysninger.",
   missingBegrunnelse: "Vennligst angi begrunnelse",
+  videreHusk: {
+    title: "Videre må du huske å:",
+    gosysoppgave:
+      "Sende beskjed i Gosys til Nav Arbeid og Ytelser. Dette er for å gjøre saksbehandler oppmerksom på at det har kommet en innstilling og at utbetalingen ikke skal igangsettes.",
+    gosysoppgaveListe: {
+      tema: "Tema: Sykepenger",
+      gjelder: "Gjelder: Behandle vedtak",
+      oppgavetype: "Oppgavetype: Vurder konsekvens for ytelse",
+      prioritet: "Prioritet: Høy",
+    },
+  },
   huskGosysMeldingHeading: "Husk å svare på oppgave i Gosys",
   huskGosysMeldingContent:
     "For å fullføre prosessen må du svare på oppgaven fra Nav arbeid og ytelser i Gosys.",
@@ -170,6 +182,21 @@ export default function InnstillingUtenForhandsvarsel() {
             minRows={3}
             maxLength={begrunnelseMaxLength}
           />
+          <List as="ul" title={texts.videreHusk.title} size={"small"}>
+            {texts.videreHusk.gosysoppgave}
+            <List as="ul" className="ml-1">
+              <List.Item>{texts.videreHusk.gosysoppgaveListe.tema}</List.Item>
+              <List.Item>
+                {texts.videreHusk.gosysoppgaveListe.oppgavetype}
+              </List.Item>
+              <List.Item>
+                {texts.videreHusk.gosysoppgaveListe.gjelder}
+              </List.Item>
+              <List.Item>
+                {texts.videreHusk.gosysoppgaveListe.prioritet}
+              </List.Item>
+            </List>
+          </List>
           <BodyLong>{texts.innstillingenJournalfores}</BodyLong>
           {lagreInnstilling.isError && (
             <SkjemaInnsendingFeil error={lagreInnstilling.error} />
