@@ -26,6 +26,8 @@ import {
   stubDefaultIsmeroppfolging,
   stubVurderSvarError,
 } from "../stubs/stubIsmeroppfolging";
+import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
+import { kontaktinformasjonMock } from "@/mocks/syfoperson/persondataMock";
 
 let queryClient: QueryClient;
 
@@ -64,10 +66,18 @@ const renderKartleggingssporsmal = () => {
 describe("Kartleggingssporsmal", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
+    queryClient.setQueryData(
+      brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => kontaktinformasjonMock
+    );
   });
 
   it("Sykmeldt is not kandidat", () => {
     mockKartleggingssporsmalKandidat(null, ARBEIDSTAKER_DEFAULT.personIdent);
+    mockKartleggingssporsmalSvar(
+      kartleggingssporsmalNotAnswered,
+      ARBEIDSTAKER_DEFAULT.personIdent
+    );
 
     renderKartleggingssporsmal();
 
@@ -105,6 +115,42 @@ describe("Kartleggingssporsmal", () => {
         exact: false,
       })
     ).to.exist;
+
+    expect(queryButton("Svarene er vurdert, fjern oppgaven")).to.not.exist;
+  });
+
+  it("Sykmeldt is kandidat, is reservert, and has not answered questions", () => {
+    mockKartleggingssporsmalKandidat(
+      kartleggingIsKandidatAndReceivedQuestions,
+      ARBEIDSTAKER_DEFAULT.personIdent
+    );
+    mockKartleggingssporsmalSvar(
+      kartleggingssporsmalNotAnswered,
+      ARBEIDSTAKER_DEFAULT.personIdent
+    );
+    const kontaktinfo = {
+      ...kontaktinformasjonMock,
+      skalHaVarsel: false,
+    };
+    queryClient.setQueryData(
+      brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => kontaktinfo
+    );
+
+    renderKartleggingssporsmal();
+
+    expect(screen.getByText("Den sykmeldte har ikke svart")).to.exist;
+    expect(screen.getByText("Spørsmålene ble sendt", { exact: false })).to
+      .exist;
+    expect(screen.getByText("Slik ser spørsmålene ut for den sykmeldte")).to
+      .exist;
+    expect(
+      screen.getByText(
+        "Den sykmeldte er ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på folketrygdloven § 8-8 dersom det ikke kommer inn et svar."
+      )
+    ).to.exist;
+    expect(screen.getByText("Brukeren er reservert fra digital kommunikasjon"))
+      .to.exist;
 
     expect(queryButton("Svarene er vurdert, fjern oppgaven")).to.not.exist;
   });

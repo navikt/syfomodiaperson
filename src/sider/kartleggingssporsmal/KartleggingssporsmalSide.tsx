@@ -19,6 +19,7 @@ import { EksternLenke } from "@/components/EksternLenke";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { PaddingSize } from "@/components/Layout";
+import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";
 
 const texts = {
@@ -31,6 +32,14 @@ const texts = {
   svarVurdertAv: "Oppgaven er behandlet av",
   extraInfo:
     "Ved manglende svar vil vi automatisk sende et nytt varsel på SMS etter syv dager, du trenger ikke å purre manuelt. Den sykmeldte er ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på folketrygdloven § 8-8 dersom det ikke kommer inn et svar.",
+  extraInfoReservert:
+    "Den sykmeldte er ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på folketrygdloven § 8-8 dersom det ikke kommer inn et svar.",
+  reservertWarning: {
+    header: "Brukeren er reservert fra digital kommunikasjon",
+    info1: "Ring eller benytt brev per post om du vil kontakte den sykmeldte.",
+    info2:
+      "Selv om den sykmeldte ikke får varsel om kartleggingsspørsmålene på SMS vil de være tilgjengelig på innloggede sider, og derfra er det mulig å svare på spørsmålene.",
+  },
   ikkeKandidatInfo1: "Den sykmeldte har ikke mottatt kartleggingsspørsmål.",
   ikkeKandidatInfo2:
     "Alle sykmeldte i Norge ved uke seks mottar spørsmålene, bortsett fra de som:",
@@ -106,10 +115,16 @@ export default function KartleggingssporsmalSide(): ReactElement {
     useKartleggingssporsmalSvarQuery(kandidat);
   const answeredQuestions = getKartleggingssporsmalSvar.data;
   const vurderSvar = useKartleggingssporsmalVurderSvar();
+  const kontaktinformasjon = useKontaktinfoQuery();
 
-  const isLoading =
-    getKandidat.isLoading || getKartleggingssporsmalSvar.isLoading;
-  const isError = getKandidat.isError || getKartleggingssporsmalSvar.isError;
+  const isPending =
+    getKandidat.isPending ||
+    getKartleggingssporsmalSvar.isPending ||
+    kontaktinformasjon.isPending;
+  const isError =
+    getKandidat.isError ||
+    getKartleggingssporsmalSvar.isError ||
+    kontaktinformasjon.isError;
 
   return (
     <Side
@@ -117,7 +132,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
       aktivtMenypunkt={Menypunkter.KARTLEGGINGSSPORSMAL}
     >
       <Sidetopp tittel={texts.title} />
-      <SideLaster henter={isLoading} hentingFeilet={isError}>
+      <SideLaster henter={isPending} hentingFeilet={isError}>
         {kandidat && isKandidat(kandidat) ? (
           <Tredelt.Container>
             <Tredelt.FirstColumn className="-xl:mb-2">
@@ -182,6 +197,19 @@ export default function KartleggingssporsmalSide(): ReactElement {
                   </>
                 ) : (
                   <>
+                    {kontaktinformasjon.brukerKanIkkeVarslesDigitalt && (
+                      <Alert variant="warning" size="small">
+                        <Heading size="xsmall">
+                          {texts.reservertWarning.header}
+                        </Heading>
+                        <BodyShort size="small" spacing>
+                          {texts.reservertWarning.info1}
+                        </BodyShort>
+                        <BodyShort size="small" spacing>
+                          {texts.reservertWarning.info2}
+                        </BodyShort>
+                      </Alert>
+                    )}
                     <BodyShort size="small" weight="semibold">
                       {texts.ikkeSvart}
                     </BodyShort>
@@ -193,7 +221,13 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     <EksternLenke href={texts.demoUrl}>
                       {texts.link}
                     </EksternLenke>
-                    <BodyShort size="small">{texts.extraInfo}</BodyShort>
+                    {kontaktinformasjon.brukerKanIkkeVarslesDigitalt ? (
+                      <BodyShort size="small">
+                        {texts.extraInfoReservert}
+                      </BodyShort>
+                    ) : (
+                      <BodyShort size="small">{texts.extraInfo}</BodyShort>
+                    )}
                   </>
                 )}
               </Box>
