@@ -32,18 +32,12 @@ export const useKartleggingssporsmalKandidatQuery = () => {
       }
     );
 
-  const query = useQuery({
+  return useQuery({
     queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
     queryFn: getKartleggingssporsmalKandidat,
     enabled: !!fnr,
     staleTime: minutesToMillis(5),
   });
-  return {
-    data: query.data,
-    isLoading: query.isLoading,
-    isPending: query.isPending,
-    isError: query.isError,
-  };
 };
 
 export const useKartleggingssporsmalSvarQuery = (isEnabled: boolean) => {

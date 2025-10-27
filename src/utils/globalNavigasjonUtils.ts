@@ -163,7 +163,7 @@ function getNumberOfKartleggingssporsmalOppgaver(
     | null
     | undefined
 ): number {
-  return kartleggingssporsmalKandidatResponseDTO?.status == "SVAR_MOTTATT"
+  return kartleggingssporsmalKandidatResponseDTO?.status === "SVAR_MOTTATT"
     ? 1
     : 0;
 }
