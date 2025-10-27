@@ -5,7 +5,7 @@ import {
 import { SenOppfolgingFormResponseDTOV2 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { ARBEIDSTAKER_DEFAULT } from "../common/mockConstants";
 import { http, HttpResponse } from "msw";
-import { KartleggingssporsmalSvarStatusResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
+import { KartleggingssporsmalSvarResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import {
   FormIdentifier,
   FormSnapshotFieldOption,
@@ -23,7 +23,7 @@ export const mockMerOppfolging = [
     }
   ),
   http.get(
-    `${MEROPPFOLGING_BACKEND_V1_ROOT}/kartleggingssporsmal/:kandidatUUID`,
+    `${MEROPPFOLGING_BACKEND_V1_ROOT}/kartleggingssporsmal/:kandidatUUID/svar`,
     () => {
       return HttpResponse.json(kartleggingssporsmalAnswered);
     }
@@ -112,22 +112,18 @@ const kartleggingssporsmal: RadioGroupFieldSnapshot[] = [
   },
 ];
 
-export const kartleggingssporsmalAnswered: KartleggingssporsmalSvarStatusResponseDTO =
+export const kartleggingssporsmalAnswered: KartleggingssporsmalSvarResponseDTO =
   {
-    formResponse: {
-      uuid: generateUUID(),
-      fnr: ARBEIDSTAKER_DEFAULT.personIdent,
-      kandidatId: generateUUID(),
-      createdAt: daysFromToday(-2),
-      formSnapshot: {
-        formIdentifier: FormIdentifier.MEROPPFOLGING_KARTLEGGINGSSPORSMAL,
-        formSemanticVersion: "1.0.0",
-        fieldSnapshots: [...kartleggingssporsmal],
-      },
+    uuid: generateUUID(),
+    fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+    kandidatId: generateUUID(),
+    createdAt: daysFromToday(-2),
+    formSnapshot: {
+      formIdentifier: FormIdentifier.MEROPPFOLGING_KARTLEGGINGSSPORSMAL,
+      formSemanticVersion: "1.0.0",
+      fieldSnapshots: [...kartleggingssporsmal],
     },
   };
 
-export const kartleggingssporsmalNotAnswered: KartleggingssporsmalSvarStatusResponseDTO =
-  {
-    formResponse: null,
-  };
+export const kartleggingssporsmalNotAnswered: KartleggingssporsmalSvarResponseDTO | null =
+  null;

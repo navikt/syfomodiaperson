@@ -7,7 +7,7 @@ import { get, put } from "@/api/axios";
 import {
   isKandidat,
   KartleggingssporsmalKandidatResponseDTO,
-  KartleggingssporsmalSvarStatusResponseDTO,
+  KartleggingssporsmalSvarResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/utils";
@@ -47,7 +47,7 @@ export const useKartleggingssporsmalSvarQuery = (
   const fnr = useValgtPersonident();
   const path = `${MEROPPFOLGING_BACKEND_V1_ROOT}/kartleggingssporsmal/${kandidat?.kandidatUuid}/svar`;
   const getKartleggingssporsmalSvar = () =>
-    get<KartleggingssporsmalSvarStatusResponseDTO>(path);
+    get<KartleggingssporsmalSvarResponseDTO>(path);
 
   return useQuery({
     queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalSvar(fnr),

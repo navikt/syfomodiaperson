@@ -21,10 +21,6 @@ export enum KandidatStatus {
   FERDIGBEHANDLET = "FERDIGBEHANDLET",
 }
 
-export interface KartleggingssporsmalSvarStatusResponseDTO {
-  formResponse: KartleggingssporsmalSvarResponseDTO | null;
-}
-
 export interface KartleggingssporsmalSvarResponseDTO {
   uuid: string;
   fnr: string;

@@ -104,7 +104,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
   const kandidat = getKandidat.data;
   const getKartleggingssporsmalSvar =
     useKartleggingssporsmalSvarQuery(kandidat);
-  const answeredQuestions = getKartleggingssporsmalSvar.data?.formResponse;
+  const answeredQuestions = getKartleggingssporsmalSvar.data;
   const vurderSvar = useKartleggingssporsmalVurderSvar();
 
   const isLoading =

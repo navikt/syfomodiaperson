@@ -4,7 +4,7 @@ import KartleggingssporsmalSide from "@/sider/kartleggingssporsmal/Kartleggingss
 import { kartleggingssporsmalQueryKeys } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 import {
   KartleggingssporsmalKandidatResponseDTO,
-  KartleggingssporsmalSvarStatusResponseDTO,
+  KartleggingssporsmalSvarResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithMockData } from "../testQueryClient";
@@ -40,12 +40,12 @@ const mockKartleggingssporsmalKandidat = (
 };
 
 const mockKartleggingssporsmalSvar = (
-  kartleggingssporsmalSvarStatusResponseDTO: KartleggingssporsmalSvarStatusResponseDTO,
+  kartleggingssporsmalSvarResponseDTO: KartleggingssporsmalSvarResponseDTO | null,
   fnr: string
 ) => {
   queryClient.setQueryData(
     kartleggingssporsmalQueryKeys.kartleggingssporsmalSvar(fnr),
-    () => kartleggingssporsmalSvarStatusResponseDTO
+    () => kartleggingssporsmalSvarResponseDTO
   );
 };
 
