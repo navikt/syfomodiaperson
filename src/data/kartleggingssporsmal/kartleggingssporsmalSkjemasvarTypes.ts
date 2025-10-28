@@ -11,20 +11,7 @@ export interface KartleggingssporsmalFieldSnapshot {
 }
 
 export enum KartleggingssporsmalFormSnapshotFieldType {
-  TEXT = "TEXT",
-  CHECKBOX_SINGLE = "CHECKBOX_SINGLE",
   RADIO_GROUP = "RADIO_GROUP",
-}
-
-export interface KartleggingssporsmalTextFieldSnapshot
-  extends KartleggingssporsmalFieldSnapshot {
-  value: string;
-  wasRequired: boolean | null;
-}
-
-export interface KartleggingssporsmalSingleCheckboxFieldSnapshot
-  extends KartleggingssporsmalFieldSnapshot {
-  value: boolean;
 }
 
 export interface KartleggingssporsmalRadioGroupFieldSnapshot
