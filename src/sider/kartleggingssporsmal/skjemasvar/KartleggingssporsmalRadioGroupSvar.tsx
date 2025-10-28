@@ -1,12 +1,12 @@
 import { Radio, RadioGroup } from "@navikt/ds-react";
 import React from "react";
-import { RadioGroupFieldSnapshotV2 } from "@/data/skjemasvar/types/SkjemasvarTypes";
+import { KartleggingssporsmalRadioGroupFieldSnapshot } from "@/data/kartleggingssporsmal/kartleggingssporsmalSkjemasvarTypes";
 
 interface Props {
-  radioGroupSvar: RadioGroupFieldSnapshotV2;
+  radioGroupSvar: KartleggingssporsmalRadioGroupFieldSnapshot;
 }
 
-export function RadioGroupSvarV2({ radioGroupSvar }: Props) {
+export function KartleggingssporsmalRadioGroupSvar({ radioGroupSvar }: Props) {
   const svar = radioGroupSvar.options.find((option) => option.wasSelected);
 
   return (

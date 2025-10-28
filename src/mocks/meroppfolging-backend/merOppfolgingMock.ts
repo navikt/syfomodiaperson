@@ -6,14 +6,13 @@ import { SenOppfolgingFormResponseDTOV2 } from "@/data/senoppfolging/senOppfolgi
 import { ARBEIDSTAKER_DEFAULT } from "../common/mockConstants";
 import { http, HttpResponse } from "msw";
 import { KartleggingssporsmalSvarResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
-import {
-  FormIdentifier,
-  FormSnapshotFieldOption,
-  FormSnapshotFieldType,
-  RadioGroupFieldSnapshotV2,
-} from "@/data/skjemasvar/types/SkjemasvarTypes";
+import { FormSnapshotFieldOption } from "@/data/skjemasvar/types/SkjemasvarTypes";
 import { daysFromToday } from "../../../test/testUtils";
 import { generateUUID } from "@/utils/utils";
+import {
+  KartleggingssporsmalFormSnapshotFieldType,
+  KartleggingssporsmalRadioGroupFieldSnapshot,
+} from "@/data/kartleggingssporsmal/kartleggingssporsmalSkjemasvarTypes";
 
 export const mockMerOppfolging = [
   http.get(
@@ -63,16 +62,17 @@ const createRadioOption = (
   };
 };
 
-export const defaultRadioGroupSporsmal: RadioGroupFieldSnapshotV2 = {
-  fieldId: "hvorSannsynligTilbakeTilJobben",
-  fieldType: FormSnapshotFieldType.RADIO_GROUP,
-  description: null,
-  label: "Label 1",
-  options: [createRadioOption("Ja", true), createRadioOption("Nei")],
-  wasRequired: true,
-};
+export const defaultRadioGroupSporsmal: KartleggingssporsmalRadioGroupFieldSnapshot =
+  {
+    fieldId: "hvorSannsynligTilbakeTilJobben",
+    fieldType: KartleggingssporsmalFormSnapshotFieldType.RADIO_GROUP,
+    description: null,
+    label: "Label 1",
+    options: [createRadioOption("Ja", true), createRadioOption("Nei")],
+    wasRequired: true,
+  };
 
-const kartleggingssporsmal: RadioGroupFieldSnapshotV2[] = [
+const kartleggingssporsmal: KartleggingssporsmalRadioGroupFieldSnapshot[] = [
   {
     ...defaultRadioGroupSporsmal,
     label:
@@ -112,7 +112,6 @@ export const kartleggingssporsmalAnswered: KartleggingssporsmalSvarResponseDTO =
     kandidatId: generateUUID(),
     createdAt: daysFromToday(-2),
     formSnapshot: {
-      formIdentifier: FormIdentifier.MEROPPFOLGING_KARTLEGGINGSSPORSMAL,
       formSemanticVersion: "1.0.0",
       fieldSnapshots: [...kartleggingssporsmal],
     },

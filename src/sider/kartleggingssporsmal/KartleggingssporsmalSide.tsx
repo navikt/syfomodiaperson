@@ -19,7 +19,7 @@ import { EksternLenke } from "@/components/EksternLenke";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { PaddingSize } from "@/components/Layout";
-import { SkjemasvarV2 } from "@/components/skjemasvar/v2/SkjemasvarV2";
+import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";
 
 const texts = {
   title: "Kartleggingsspørsmål",
@@ -140,7 +140,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     <EksternLenke href={texts.demoUrl}>
                       {texts.link}
                     </EksternLenke>
-                    <SkjemasvarV2
+                    <KartleggingssporsmalSkjemasvar
                       formSnapshot={answeredQuestions.formSnapshot}
                     />
                     {kandidat.status === KandidatStatus.SVAR_MOTTATT && (

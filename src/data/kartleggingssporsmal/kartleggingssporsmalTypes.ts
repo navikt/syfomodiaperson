@@ -1,4 +1,4 @@
-import { FormSnapshot } from "@/data/skjemasvar/types/SkjemasvarTypes";
+import { KartleggingssporsmalFormSnapshot } from "@/data/kartleggingssporsmal/kartleggingssporsmalSkjemasvarTypes";
 
 export interface KartleggingssporsmalKandidatResponseDTO {
   kandidatUuid: string;
@@ -25,7 +25,7 @@ export interface KartleggingssporsmalSvarResponseDTO {
   uuid: string;
   fnr: string;
   kandidatId: string;
-  formSnapshot: FormSnapshot;
+  formSnapshot: KartleggingssporsmalFormSnapshot;
   createdAt: Date;
 }
 
