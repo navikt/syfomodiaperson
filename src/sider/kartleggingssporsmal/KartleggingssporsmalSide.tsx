@@ -16,10 +16,10 @@ import {
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { EksternLenke } from "@/components/EksternLenke";
-import { Skjemasvar } from "@/components/skjemasvar/Skjemasvar";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { PaddingSize } from "@/components/Layout";
+import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";
 
 const texts = {
   title: "Kartleggingsspørsmål",
@@ -102,10 +102,9 @@ function PilotInfo() {
 export default function KartleggingssporsmalSide(): ReactElement {
   const getKandidat = useKartleggingssporsmalKandidatQuery();
   const kandidat = getKandidat.data;
-  const getKartleggingssporsmalSvar = useKartleggingssporsmalSvarQuery(
-    isKandidat(kandidat)
-  );
-  const answeredQuestions = getKartleggingssporsmalSvar.data?.formResponse;
+  const getKartleggingssporsmalSvar =
+    useKartleggingssporsmalSvarQuery(kandidat);
+  const answeredQuestions = getKartleggingssporsmalSvar.data;
   const vurderSvar = useKartleggingssporsmalVurderSvar();
 
   const isLoading =
@@ -141,7 +140,9 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     <EksternLenke href={texts.demoUrl}>
                       {texts.link}
                     </EksternLenke>
-                    <Skjemasvar formSnapshot={answeredQuestions.formSnapshot} />
+                    <KartleggingssporsmalSkjemasvar
+                      formSnapshot={answeredQuestions.formSnapshot}
+                    />
                     {kandidat.status === KandidatStatus.SVAR_MOTTATT && (
                       <>
                         <Button

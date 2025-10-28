@@ -9,7 +9,6 @@ export enum FormIdentifier {
   MOTEBEHOV_ARBEIDSGIVER_MELD = "motebehov-arbeidsgiver-meld",
   MOTEBEHOV_ARBEIDSTAKER_SVAR = "motebehov-arbeidstaker-svar",
   MOTEBEHOV_ARBEIDSTAKER_MELD = "motebehov-arbeidstaker-meld",
-  MEROPPFOLGING_KARTLEGGINGSSPORSMAL = "kartlegging-test-form",
 }
 
 export interface FieldSnapshot {
