@@ -42,7 +42,6 @@ import UnntakSide from "@/sider/manglendemedvirkning/unntak/UnntakSide";
 import { AktivitetskravContainer } from "@/sider/aktivitetskrav/AktivitetskravContainer";
 import OppfyltForm from "@/sider/arbeidsuforhet/oppfylt/OppfyltForm";
 import KartleggingssporsmalSide from "@/sider/kartleggingssporsmal/KartleggingssporsmalSide";
-import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -60,7 +59,6 @@ export const manglendeMedvirkningPath = `${appRoutePath}/manglendemedvirkning`;
 export const historikkPath = `${appRoutePath}/historikk`;
 
 const AktivBrukerRouter = (): ReactElement => {
-  const { toggles } = useFeatureToggles();
   Amplitude.logViewportAndScreenSize();
 
   return (
@@ -122,12 +120,10 @@ const AktivBrukerRouter = (): ReactElement => {
             element={<DialogmoteikkeaktuellSkjemaContainer />}
           />
 
-          {toggles.isKartleggingssporsmalEnabled && (
-            <Route
-              path={`${appRoutePath}/kartleggingssporsmal`}
-              element={<KartleggingssporsmalSide />}
-            />
-          )}
+          <Route
+            path={`${appRoutePath}/kartleggingssporsmal`}
+            element={<KartleggingssporsmalSide />}
+          />
 
           <Route
             path={`${appRoutePath}/aktivitetskrav`}
