@@ -22,7 +22,7 @@ export const mockMerOppfolging = [
     }
   ),
   http.get(
-    `${MEROPPFOLGING_BACKEND_V1_ROOT}/kartleggingssporsmal/:kandidatUUID/svar`,
+    `${MEROPPFOLGING_BACKEND_V1_ROOT}/kartleggingssporsmal/kandidat/:kandidatUUID/svar`,
     () => {
       return HttpResponse.json(kartleggingssporsmalAnswered);
     }

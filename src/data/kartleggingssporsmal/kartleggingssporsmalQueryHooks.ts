@@ -45,7 +45,7 @@ export const useKartleggingssporsmalSvarQuery = (
   kandidat: KartleggingssporsmalKandidatResponseDTO | null | undefined
 ) => {
   const fnr = useValgtPersonident();
-  const path = `${MEROPPFOLGING_BACKEND_V1_ROOT}/kartleggingssporsmal/${kandidat?.kandidatUuid}/svar`;
+  const path = `${MEROPPFOLGING_BACKEND_V1_ROOT}/kartleggingssporsmal/kandidat/${kandidat?.kandidatUuid}/svar`;
   const getKartleggingssporsmalSvar = () =>
     get<KartleggingssporsmalSvarResponseDTO>(path);
 
