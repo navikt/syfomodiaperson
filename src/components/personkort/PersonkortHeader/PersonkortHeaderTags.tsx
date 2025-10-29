@@ -9,6 +9,7 @@ import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { useUnderArbeidsrettetOppfolgingQuery } from "@/data/veilarboppfolging/useUnderArbeidsrettetOppfolgingQuery";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { useUforegradQuery } from "@/data/uforegrad/uforegradQueryHooks";
+import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 
 const texts = {
   fetchDiskresjonskodeFailed: "Klarte ikke hente diskresjonskode for brukeren.",
@@ -21,6 +22,7 @@ const texts = {
   sikkerhetstiltak: "Sikkerhetstiltak",
   ao: "Under arbeidsrettet oppfølging",
   friskmeldingTilArbeidsformidling: "Har vedtak om § 8-5",
+  reservertKRR: "Reservert KRR",
 };
 
 export const PersonkortHeaderTags = () => {
@@ -32,6 +34,7 @@ export const PersonkortHeaderTags = () => {
     useUnderArbeidsrettetOppfolgingQuery();
   const { data: vedtakFriskTilArbeid } = useVedtakQuery();
   const { data: uforegradData } = useUforegradQuery();
+  const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
 
   const isDead = !!dodsdato;
   const dateOfDeath = tilLesbarDatoMedArUtenManedNavn(dodsdato);
@@ -100,6 +103,11 @@ export const PersonkortHeaderTags = () => {
         {hasSikkerhetstiltak && (
           <Tag variant="error" size="small">
             {texts.sikkerhetstiltak}
+          </Tag>
+        )}
+        {brukerKanIkkeVarslesDigitalt && (
+          <Tag variant="warning" size="small">
+            {texts.reservertKRR}
           </Tag>
         )}
       </div>
