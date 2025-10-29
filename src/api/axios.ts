@@ -13,6 +13,8 @@ export const NAV_CALL_ID_HEADER = "Nav-Call-Id";
 export const NAV_CONSUMER_ID_HEADER = "Nav-Consumer-Id";
 export const NAV_CONSUMER_ID = "syfomodiaperson";
 export const NAV_PERSONIDENT_HEADER = "nav-personident";
+const SECOND_IN_MILLISECONDS = 1000;
+const REQUEST_TIMEOUT = 30 * SECOND_IN_MILLISECONDS;
 
 export const defaultRequestHeaders = (
   personIdent?: string,
@@ -80,6 +82,7 @@ export const get = <ResponseData>(
   return axios
     .get(url, {
       headers: defaultRequestHeaders(personIdent, addHeader),
+      timeout: REQUEST_TIMEOUT,
     })
     .then((response) => response.data)
     .catch((error) => {
