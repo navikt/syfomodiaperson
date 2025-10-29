@@ -30,14 +30,13 @@ interface DialogmoteInnkallingBehandlerProps {
 
 function behandlerRefValidationErrors(
   behandlerRef: string | undefined,
-  allowNoBehandler: boolean,
   hasClickedBehandlerRadio: boolean
 ) {
   if (!hasClickedBehandlerRadio) {
     return texts.behandlerRadioNotClicked;
   }
 
-  if ((!allowNoBehandler && behandlerRef === "NONE") || !behandlerRef) {
+  if (!behandlerRef) {
     return texts.behandlerMissing;
   }
   return undefined;
@@ -56,7 +55,7 @@ const DialogmoteInnkallingBehandler = ({
     name: "behandlerRef",
     rules: {
       validate: (value) =>
-        behandlerRefValidationErrors(value, true, hasClickedBehandlerRadio),
+        behandlerRefValidationErrors(value, hasClickedBehandlerRadio),
     },
   });
 
