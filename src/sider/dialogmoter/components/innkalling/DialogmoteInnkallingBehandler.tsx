@@ -14,7 +14,7 @@ export const texts = {
   tlf: "Telefonnummer",
   noBehandler: "Ingen behandler",
   behandlerMissing: "Vennligst velg behandler",
-  behandlerRadioNotClicked: "Vennligst velg ett alternativ",
+  behandlerNotSelected: "Vennligst velg ett alternativ",
 };
 
 const behandlerRadioGruppeTexts = {
@@ -30,10 +30,10 @@ interface DialogmoteInnkallingBehandlerProps {
 
 function behandlerRefValidationErrors(
   behandlerRef: string | undefined,
-  hasClickedBehandlerRadio: boolean
+  isBehandlerSelected: boolean
 ) {
-  if (!hasClickedBehandlerRadio) {
-    return texts.behandlerRadioNotClicked;
+  if (!isBehandlerSelected) {
+    return texts.behandlerNotSelected;
   }
 
   if (!behandlerRef) {
@@ -46,7 +46,7 @@ const DialogmoteInnkallingBehandler = ({
   setSelectedBehandler,
   selectedbehandler,
 }: DialogmoteInnkallingBehandlerProps): ReactElement => {
-  const [hasClickedBehandlerRadio, setHasClickedBehandlerRadio] =
+  const [isBehandlerSelected, setIsBehandlerSelected] =
     useState<boolean>(false);
   const { field, fieldState } = useController<
     DialogmoteInnkallingSkjemaValues,
@@ -55,7 +55,7 @@ const DialogmoteInnkallingBehandler = ({
     name: "behandlerRef",
     rules: {
       validate: (value) =>
-        behandlerRefValidationErrors(value, hasClickedBehandlerRadio),
+        behandlerRefValidationErrors(value, isBehandlerSelected),
     },
   });
 
@@ -74,18 +74,18 @@ const DialogmoteInnkallingBehandler = ({
     field,
     selectedbehandler?.behandlerRef,
     showBehandlerSearch,
-    hasClickedBehandlerRadio,
+    isBehandlerSelected,
   ]);
 
   const updateBehandlerAndHideSearch = (behandler?: BehandlerDTO) => {
     setShowBehandlerSearch(false);
-    setHasClickedBehandlerRadio(true);
+    setIsBehandlerSelected(true);
     setSelectedBehandler(behandler);
   };
 
   const handleAddBehandlerRadioClick = () => {
     setShowBehandlerSearch(true);
-    setHasClickedBehandlerRadio(true);
+    setIsBehandlerSelected(true);
     setSelectedBehandler(undefined);
   };
 
