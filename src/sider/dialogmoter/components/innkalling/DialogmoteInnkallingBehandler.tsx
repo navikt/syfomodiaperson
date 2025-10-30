@@ -14,6 +14,7 @@ export const texts = {
   tlf: "Telefonnummer",
   noBehandler: "Ingen behandler",
   behandlerMissing: "Vennligst velg behandler",
+  behandlerNotSelected: "Vennligst velg ett alternativ",
 };
 
 const behandlerRadioGruppeTexts = {
@@ -29,9 +30,13 @@ interface DialogmoteInnkallingBehandlerProps {
 
 function behandlerRefValidationErrors(
   behandlerRef: string | undefined,
-  allowNoBehandler: boolean
+  isBehandlerSelected: boolean
 ) {
-  if ((!allowNoBehandler && behandlerRef === "NONE") || !behandlerRef) {
+  if (!isBehandlerSelected) {
+    return texts.behandlerNotSelected;
+  }
+
+  if (!behandlerRef) {
     return texts.behandlerMissing;
   }
   return undefined;
@@ -41,13 +46,16 @@ const DialogmoteInnkallingBehandler = ({
   setSelectedBehandler,
   selectedbehandler,
 }: DialogmoteInnkallingBehandlerProps): ReactElement => {
+  const [isBehandlerSelected, setIsBehandlerSelected] =
+    useState<boolean>(false);
   const { field, fieldState } = useController<
     DialogmoteInnkallingSkjemaValues,
     "behandlerRef"
   >({
     name: "behandlerRef",
     rules: {
-      validate: (value) => behandlerRefValidationErrors(value, true),
+      validate: (value) =>
+        behandlerRefValidationErrors(value, isBehandlerSelected),
     },
   });
 
@@ -62,15 +70,22 @@ const DialogmoteInnkallingBehandler = ({
     } else {
       field.onChange(selectedbehandler?.behandlerRef);
     }
-  }, [field, selectedbehandler?.behandlerRef, showBehandlerSearch]);
+  }, [
+    field,
+    selectedbehandler?.behandlerRef,
+    showBehandlerSearch,
+    isBehandlerSelected,
+  ]);
 
   const updateBehandlerAndHideSearch = (behandler?: BehandlerDTO) => {
     setShowBehandlerSearch(false);
+    setIsBehandlerSelected(true);
     setSelectedBehandler(behandler);
   };
 
   const handleAddBehandlerRadioClick = () => {
     setShowBehandlerSearch(true);
+    setIsBehandlerSelected(true);
     setSelectedBehandler(undefined);
   };
 

@@ -130,11 +130,12 @@ describe("DialogmoteInnkallingSkjema", () => {
     expect(screen.queryByText(texts.reservertAlert)).to.not.exist;
   });
 
-  it("validerer arbeidsgiver, dato, tid og sted", async () => {
+  it("validerer arbeidsgiver, behandler, dato, tid og sted", async () => {
     renderDialogmoteInnkallingSkjema();
     await clickButton("Send innkallingene");
 
     expect(await screen.findByText("Vennligst velg arbeidsgiver")).to.exist;
+    expect(await screen.findByText("Vennligst velg ett alternativ")).to.exist;
     expect(await screen.findByText(/Vennligst angi en gyldig dato/)).to.exist;
     expect(await screen.findByText(valideringsTexts.timeMissing)).to.exist;
     expect(await screen.findByText(texts.stedMissing)).to.exist;
@@ -145,6 +146,7 @@ describe("DialogmoteInnkallingSkjema", () => {
     await clickButton("Send innkallingene");
 
     expect(await screen.findByText("Vennligst velg arbeidsgiver")).to.exist;
+    expect(await screen.findByText("Vennligst velg ett alternativ")).to.exist;
     expect(await screen.findByText(/Vennligst angi en gyldig dato/)).to.exist;
     expect(await screen.findByText(valideringsTexts.timeMissing)).to.exist;
     expect(await screen.findByText(texts.stedMissing)).to.exist;
@@ -154,6 +156,9 @@ describe("DialogmoteInnkallingSkjema", () => {
     // Feilmeldinger forsvinner
     await waitFor(() => {
       expect(screen.queryByText("Vennligst velg arbeidsgiver")).to.not.exist;
+    });
+    await waitFor(() => {
+      expect(screen.queryByText("Vennligst velg ett alternativ")).to.not.exist;
     });
     await waitFor(() => {
       expect(screen.queryByText(/Vennligst angi en gyldig dato/)).to.not.exist;
