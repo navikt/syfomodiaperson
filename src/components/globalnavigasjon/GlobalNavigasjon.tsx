@@ -125,18 +125,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
   const kartleggingssporsmalKandidat = useKartleggingssporsmalKandidatQuery();
   const featureToggles = useFeatureToggles();
 
-  const isPending =
-    featureToggles.isPending ||
-    personoppgaver.isPending ||
-    oppfolgingsplaner.isPending ||
-    oppfolgingsplanerLPS.isPending ||
-    motebehov.isPending ||
-    aktivitetskrav.isPending ||
-    arbeidsuforhetVurderinger.isPending ||
-    senOppfolgingKandidat.isPending ||
-    friskmeldingTilArbeidsformidlingVedtak.isPending ||
-    manglendeMedvirkningVurdering.isPending ||
-    kartleggingssporsmalKandidat.isPending;
+  const isPending = featureToggles.isPending;
 
   const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.data.map(
     (oppfolgingsplanLPS) =>
