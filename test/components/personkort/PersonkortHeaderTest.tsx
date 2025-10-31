@@ -11,6 +11,7 @@ import { egenansattQueryKeys } from "@/data/egenansatt/egenansattQueryHooks";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import {
   brukerinfoMock,
+  kontaktinformasjonMock,
   maksdato,
   maksdatoMock,
 } from "@/mocks/syfoperson/persondataMock";
@@ -438,5 +439,31 @@ describe("PersonkortHeader", () => {
     renderPersonkortHeader();
 
     expect(screen.queryByText("Ufør", { exact: false })).to.not.exist;
+  });
+
+  it("Viser reservert KRR tag når bruker er reservert i KRR", () => {
+    const kontaktinfo = {
+      ...kontaktinformasjonMock,
+      skalHaVarsel: false,
+    };
+    queryClient.setQueryData(
+      brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => kontaktinfo
+    );
+
+    renderPersonkortHeader();
+
+    expect(screen.getByText("Reservert KRR")).to.exist;
+  });
+
+  it("Viser ikke reservert KRR tag når bruker ikke er reservert i KRR", () => {
+    queryClient.setQueryData(
+      brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => kontaktinformasjonMock
+    );
+
+    renderPersonkortHeader();
+
+    expect(screen.queryByText("Reservert KRR")).to.not.exist;
   });
 });
