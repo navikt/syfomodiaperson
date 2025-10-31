@@ -42,6 +42,7 @@ import UnntakSide from "@/sider/manglendemedvirkning/unntak/UnntakSide";
 import { AktivitetskravContainer } from "@/sider/aktivitetskrav/AktivitetskravContainer";
 import OppfyltForm from "@/sider/arbeidsuforhet/oppfylt/OppfyltForm";
 import KartleggingssporsmalSide from "@/sider/kartleggingssporsmal/KartleggingssporsmalSide";
+import * as Umami from "@/utils/umami";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -58,8 +59,13 @@ export const senOppfolgingPath = `${appRoutePath}/senoppfolging`;
 export const manglendeMedvirkningPath = `${appRoutePath}/manglendemedvirkning`;
 export const historikkPath = `${appRoutePath}/historikk`;
 
-const AktivBrukerRouter = (): ReactElement => {
+function AktivBrukerRouter({
+  veilederident,
+}: {
+  veilederident: string;
+}): ReactElement {
   Amplitude.logViewportAndScreenSize();
+  Umami.setIdentifier(veilederident);
 
   return (
     <AktivBrukerTilgangLaster>
@@ -193,7 +199,7 @@ const AktivBrukerRouter = (): ReactElement => {
       </BrowserRouter>
     </AktivBrukerTilgangLaster>
   );
-};
+}
 
 const IngenAktivBrukerRouter = (): ReactElement => {
   return (
@@ -215,7 +221,7 @@ const AktivBrukerLoader = () => {
   if (!data || !erGyldigFodselsnummer(data.aktivBruker)) {
     return <IngenAktivBrukerRouter />;
   } else {
-    return <AktivBrukerRouter />;
+    return <AktivBrukerRouter veilederident={data.aktivBruker} />;
   }
 };
 
