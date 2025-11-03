@@ -119,7 +119,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
 
   const isPending =
     getKandidat.isPending ||
-    getKartleggingssporsmalSvar.isPending ||
+    getKartleggingssporsmalSvar.isLoading ||
     kontaktinformasjon.isPending;
   const isError =
     getKandidat.isError ||
