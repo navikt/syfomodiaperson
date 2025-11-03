@@ -113,7 +113,7 @@ function soknadsStatusText(soknadStatus: Soknadstatus, dato?: string): string {
     case Soknadstatus.FREMTIDIG:
       return "Planlagt";
     case Soknadstatus.AVBRUTT:
-      return `Avbrutt av deg ${dato}`;
+      return `Avbrutt av den sykmeldte ${dato}`;
     default:
       return "";
   }

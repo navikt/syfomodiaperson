@@ -15,8 +15,8 @@ const texts = {
   status: {
     tittel: "Status",
     sender: "Sender...",
-    avbrutt: "Avbrutt av deg",
-    bekreftet: "Bekreftet av deg",
+    avbrutt: "Avbrutt av den sykmeldte",
+    bekreftet: "Bekreftet av den sykmeldte",
     sendt: "Sendt til arbeidsgiver",
   },
   dato: {

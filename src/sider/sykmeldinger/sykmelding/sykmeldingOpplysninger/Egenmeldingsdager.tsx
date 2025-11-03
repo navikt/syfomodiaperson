@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 
 const texts = {
-  title: "Egenmeldingsdager (lagt til av deg)",
+  title: "Egenmeldingsdager",
   daySingle: "dag",
   dayMultiple: "dager",
 };

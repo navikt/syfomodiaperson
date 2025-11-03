@@ -6,7 +6,7 @@ import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/S
 import { SykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingOpplysninger";
 
 const texts = {
-  dineOpplysninger: "Dine opplysninger",
+  dineOpplysninger: "Opplysninger",
 };
 
 interface DinAvbrutteSykmeldingProps {

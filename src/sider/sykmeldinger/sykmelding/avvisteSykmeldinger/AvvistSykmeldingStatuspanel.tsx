@@ -18,7 +18,7 @@ export default function AvvistSykmeldingStatuspanel({
       <StatusNokkelopplysning tittel="Dato avvist">
         <p>{tilLesbarDatoMedArstall(sykmelding.mottattTidspunkt)}</p>
       </StatusNokkelopplysning>
-      <StatusNokkelopplysning tittel="Bekreftet av deg">
+      <StatusNokkelopplysning tittel="Bekreftet av den sykmeldte">
         <p>{tilLesbarDatoMedArstall(sykmelding.sendtdato)}</p>
       </StatusNokkelopplysning>
     </div>

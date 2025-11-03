@@ -10,7 +10,7 @@ const mockSykmelding = (
   return data as SykmeldingOldFormat;
 };
 
-const headerText = "Egenmeldingsdager (lagt til av deg)";
+const headerText = "Egenmeldingsdager";
 
 describe("Egenmeldingsdager", () => {
   it("renders nothing when no egenmeldingsdager", () => {

@@ -27,8 +27,8 @@ const texts = {
   sendt: "Sendt til arbeidsgiver\n",
   utgaatt: "Ikke brukt på nett\n",
   tilSending: "Sender...",
-  avbrutt: "Avbrutt av deg\n",
-  bekreftet: "Bekreftet av deg\n",
+  avbrutt: "Avbrutt av den sykmeldte\n",
+  bekreftet: "Bekreftet av den sykmeldte\n",
   avvist: "Avvist av Nav\n",
   papirLabelText: "Papir",
 };

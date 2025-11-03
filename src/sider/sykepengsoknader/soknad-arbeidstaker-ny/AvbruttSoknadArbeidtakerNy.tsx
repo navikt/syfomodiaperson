@@ -11,7 +11,7 @@ import TilbakeTilSoknader from "@/sider/sykepengsoknader/soknad-felles/TilbakeTi
 
 const texts = {
   tittel: "Søknad om sykepenger",
-  avbrutt: "Avbrutt av deg",
+  avbrutt: "Avbrutt av den sykmeldte",
   avbruttTittel: "Dato avbrutt",
   status: "Status",
 };
