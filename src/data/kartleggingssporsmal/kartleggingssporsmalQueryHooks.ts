@@ -5,7 +5,7 @@ import {
 } from "@/apiConstants";
 import { get, put } from "@/api/axios";
 import {
-  isKandidat,
+  hasAnsweredKartleggingssporsmal,
   KartleggingssporsmalKandidatResponseDTO,
   KartleggingssporsmalSvarResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
@@ -52,7 +52,7 @@ export const useKartleggingssporsmalSvarQuery = (
   return useQuery({
     queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalSvar(fnr),
     queryFn: getKartleggingssporsmalSvar,
-    enabled: !!fnr && isKandidat(kandidat),
+    enabled: !!fnr && hasAnsweredKartleggingssporsmal(kandidat),
     staleTime: minutesToMillis(5),
   });
 };

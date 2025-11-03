@@ -6,7 +6,7 @@ import { Alert, BodyShort, Box, Button, Heading, List } from "@navikt/ds-react";
 import * as Tredelt from "@/components/side/TredeltSide";
 import SideLaster from "@/components/side/SideLaster";
 import {
-  isKandidat,
+  hasMottattKartleggingssporsmal,
   KandidatStatus,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import {
@@ -133,7 +133,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
     >
       <Sidetopp tittel={texts.title} />
       <SideLaster henter={isPending} hentingFeilet={isError}>
-        {kandidat && isKandidat(kandidat) ? (
+        {kandidat && hasMottattKartleggingssporsmal(kandidat) ? (
           <Tredelt.Container>
             <Tredelt.FirstColumn className="-xl:mb-2">
               <Box

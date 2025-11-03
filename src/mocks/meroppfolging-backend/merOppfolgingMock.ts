@@ -116,6 +116,3 @@ export const kartleggingssporsmalAnswered: KartleggingssporsmalSvarResponseDTO =
       fieldSnapshots: [...kartleggingssporsmal],
     },
   };
-
-export const kartleggingssporsmalNotAnswered: KartleggingssporsmalSvarResponseDTO | null =
-  null;
