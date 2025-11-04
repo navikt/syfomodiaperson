@@ -12,10 +12,7 @@ import {
   kartleggingIsKandidatAndAnsweredQuestions,
   kartleggingIsKandidatAndReceivedQuestions,
 } from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
-import {
-  kartleggingssporsmalAnswered,
-  kartleggingssporsmalNotAnswered,
-} from "@/mocks/meroppfolging-backend/merOppfolgingMock";
+import { kartleggingssporsmalAnswered } from "@/mocks/meroppfolging-backend/merOppfolgingMock";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 import { renderWithRouter } from "../testRouterUtils";
@@ -74,10 +71,6 @@ describe("Kartleggingssporsmal", () => {
 
   it("Sykmeldt is not kandidat", () => {
     mockKartleggingssporsmalKandidat(null, ARBEIDSTAKER_DEFAULT.personIdent);
-    mockKartleggingssporsmalSvar(
-      kartleggingssporsmalNotAnswered,
-      ARBEIDSTAKER_DEFAULT.personIdent
-    );
 
     renderKartleggingssporsmal();
 
@@ -91,10 +84,6 @@ describe("Kartleggingssporsmal", () => {
   it("Sykmeldt is kandidat and has not answered questions", () => {
     mockKartleggingssporsmalKandidat(
       kartleggingIsKandidatAndReceivedQuestions,
-      ARBEIDSTAKER_DEFAULT.personIdent
-    );
-    mockKartleggingssporsmalSvar(
-      kartleggingssporsmalNotAnswered,
       ARBEIDSTAKER_DEFAULT.personIdent
     );
 
@@ -119,13 +108,28 @@ describe("Kartleggingssporsmal", () => {
     expect(queryButton("Svarene er vurdert, fjern oppgaven")).to.not.exist;
   });
 
+  it("Sykmeldt is kandidat, but was not varslet (kandidat pre-pilot)", () => {
+    const kandidatNotVarslet = {
+      ...kartleggingIsKandidatAndReceivedQuestions,
+      varsletAt: null,
+    };
+    mockKartleggingssporsmalKandidat(
+      kandidatNotVarslet,
+      ARBEIDSTAKER_DEFAULT.personIdent
+    );
+
+    renderKartleggingssporsmal();
+
+    expect(
+      screen.getByText("Den sykmeldte har ikke mottatt kartleggingsspørsmål", {
+        exact: false,
+      })
+    ).to.exist;
+  });
+
   it("Sykmeldt is kandidat, is reservert, and has not answered questions", () => {
     mockKartleggingssporsmalKandidat(
       kartleggingIsKandidatAndReceivedQuestions,
-      ARBEIDSTAKER_DEFAULT.personIdent
-    );
-    mockKartleggingssporsmalSvar(
-      kartleggingssporsmalNotAnswered,
       ARBEIDSTAKER_DEFAULT.personIdent
     );
     const kontaktinfo = {
