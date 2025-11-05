@@ -54,9 +54,7 @@ function addUmamiScript() {
 }
 
 function renderApp() {
-  if (!erLokal()) {
-    addUmamiScript();
-  }
+  addUmamiScript();
   root.render(
     <ValgtEnhetProvider>
       <QueryClientProvider client={queryClient}>
