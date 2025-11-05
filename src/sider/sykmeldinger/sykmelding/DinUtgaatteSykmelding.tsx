@@ -6,7 +6,7 @@ import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/S
 import { SpeilingEkspanderbartPanelTittel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanelTittel";
 
 const texts = {
-  tittel: "Dine opplysninger",
+  tittel: "Opplysninger",
 };
 
 interface DinUtgaatteSykmeldingProps {

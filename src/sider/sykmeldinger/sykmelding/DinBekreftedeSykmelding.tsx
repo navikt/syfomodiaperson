@@ -6,7 +6,7 @@ import { SpeilingEkspanderbartPanelTittel } from "@/components/speiling/ekspande
 import { SykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingOpplysninger";
 
 const texts = {
-  tittel: "Dine opplysinger",
+  tittel: "Opplysninger",
 };
 
 interface Props {

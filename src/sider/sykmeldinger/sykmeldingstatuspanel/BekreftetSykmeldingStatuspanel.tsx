@@ -13,12 +13,12 @@ import AngreBekreftSykmelding from "../sykmeldinger/AngreBekreftSykmelding";
 import { tilStorForbokstav } from "@/utils";
 
 const texts = {
-  tittel: "Jeg er sykmeldt fra",
+  tittel: "Sykmeldt fra",
   tilSending: "Sender...",
-  avbrutt: "Avbrutt av deg",
+  avbrutt: "Avbrutt av den sykmeldte",
   sendt: "Send til arbeidsgiver",
   utgaatt: "Ikke brukt på nett",
-  bekreftet: "Bekreftet av deg",
+  bekreftet: "Bekreftet av den sykmeldte",
 
   status: {
     tittel: "Status",

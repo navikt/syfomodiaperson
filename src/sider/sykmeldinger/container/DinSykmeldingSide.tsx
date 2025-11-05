@@ -16,7 +16,7 @@ import Tilbakelenke from "@/components/Tilbakelenke";
 
 const texts = {
   pageTitleSykmelding: "Sykmelding",
-  tilbake: "Gå til dine sykmeldinger",
+  tilbake: "Gå til sykmeldinger",
 };
 
 function getSykmelding(
