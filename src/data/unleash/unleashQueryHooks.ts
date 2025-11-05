@@ -31,7 +31,7 @@ export const useFeatureToggles = () => {
   } = useQuery({
     queryKey: unleashQueryKeys.toggles(valgtEnhet, veilederIdent),
     queryFn: fetchToggles,
-    enabled: !!valgtEnhet || !!veilederIdent,
+    enabled: !!valgtEnhet && !!veilederIdent,
   });
   const toggles = togglesResponse ?? defaultToggles;
 
