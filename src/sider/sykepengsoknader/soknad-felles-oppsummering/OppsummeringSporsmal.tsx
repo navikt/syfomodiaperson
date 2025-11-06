@@ -40,7 +40,7 @@ export default function OppsummeringSporsmal(
       return <OppsummeringPerioder {...props} />;
     }
     case SvarTypeDTO.COMBOBOX_SINGLE:
-    case SvarTypeDTO.COMBOBOX_MULTIPLE:
+    case SvarTypeDTO.COMBOBOX_MULTI:
     case SvarTypeDTO.LAND:
     case SvarTypeDTO.FRITEKST: {
       return <OppsummeringFritekst {...props} />;
