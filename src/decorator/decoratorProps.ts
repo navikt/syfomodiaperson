@@ -8,7 +8,7 @@ export interface DecoratorProps {
   fetchActiveUserOnMount?: boolean | undefined; // Om fnr er undefined fra container appen, og denne er satt til true for at den skal hente siste aktiv fnr.
   onEnhetChanged: (enhetId?: string | null, enhet?: Enhet) => void; // Kalles når enheten endres
   onFnrChanged: (fnr?: string | null) => void; // Kalles når fnr enheten endres
-  onLinkClick?: (link: { text: string; url: string }) => void; // Kan brukes for å legge til callbacks ved klikk på lenker i menyen. Merk at callbacken ikke kan awaites og man må selv håndtere at siden lukkes. Nyttig for å f.eks tracke navigasjon events i amplitude
+  onLinkClick?: (link: { text: string; url: string }) => void; // Kan brukes for å legge til callbacks ved klikk på lenker i menyen. Merk at callbacken ikke kan awaites og man må selv håndtere at siden lukkes. Nyttig for å f.eks tracke navigasjon events i umami
   appName: string; // Navn på applikasjonen
   hotkeys?: Hotkey[]; // Konfigurasjon av hurtigtaster
   markup?: Markup; // Egen HTML

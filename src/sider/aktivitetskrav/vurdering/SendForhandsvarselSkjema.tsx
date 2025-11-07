@@ -13,8 +13,6 @@ import {
 import { useForm } from "react-hook-form";
 import { SkjemaHeading } from "@/sider/aktivitetskrav/vurdering/SkjemaHeading";
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
 import { Brevmal } from "@/data/aktivitetskrav/forhandsvarselTexts";
 import { InfoUtsattFristJuletid } from "@/components/InfoUtsattFristJuletid";
 
@@ -77,26 +75,12 @@ export const SendForhandsvarselSkjema = ({
     }
   };
 
-  const handlePreviewButtonClick = () => {
-    setShowForhandsvisning(true);
-    Amplitude.logEvent({
-      type: EventType.ButtonClick,
-      data: { tekst: texts.forhandsvisning, url: window.location.href },
-    });
-  };
+  const handlePreviewButtonClick = () => setShowForhandsvisning(true);
 
   const handleBrevmalChanged = (
     e: ChangeEvent<HTMLSelectElement> & { target: { value: Brevmal } }
   ) => {
     setBrevmal(e.target.value);
-    Amplitude.logEvent({
-      type: EventType.OptionSelected,
-      data: {
-        url: window.location.href,
-        tekst: "Aktivitetskrav forhåndsvarsel brevmal",
-        option: e.target.value,
-      },
-    });
   };
 
   return (

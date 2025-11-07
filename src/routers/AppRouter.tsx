@@ -16,7 +16,6 @@ import DialogmoteunntakSkjemaContainer from "@/components/dialogmoteunntak/Dialo
 import DialogmoteikkeaktuellSkjemaContainer from "@/sider/dialogmoter/components/ikkeaktuell/DialogmoteikkeaktuellSkjemaContainer";
 import { PersonsokSide } from "@/components/PersonsokSide";
 import BehandlerdialogContainer from "@/sider/behandlerdialog/BehandlerdialogContainer";
-import * as Amplitude from "@/utils/amplitude";
 import Motelandingsside from "@/sider/dialogmoter/Motelandingsside";
 import Nokkelinformasjon from "@/sider/nokkelinformasjon/Nokkelinformasjon";
 import FriskmeldingTilArbeidsformidlingSide from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidlingSide";
@@ -59,8 +58,6 @@ export const manglendeMedvirkningPath = `${appRoutePath}/manglendemedvirkning`;
 export const historikkPath = `${appRoutePath}/historikk`;
 
 const AktivBrukerRouter = (): ReactElement => {
-  Amplitude.logViewportAndScreenSize();
-
   return (
     <AktivBrukerTilgangLaster>
       <BrowserRouter>

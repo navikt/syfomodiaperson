@@ -33,11 +33,6 @@ $ npm install # installerer avhengigheter
 
 Bruker teamsykefravr sin felles Valkey-cache på Aiven for å cache bruker-sessions.
 
-## Event tracking
-
-Vi bruker amplitude for event tracking, og har `ISyfo - dev` og `ISyfo - prod` projects og
-spaces. [Se amplitude](https://app.eu.amplitude.com/analytics/nav/home).
-
 ## Feature toggling
 
 Unleash brukes for feature toggling. Se [team siden](https://teamsykefravr-unleash-web.nav.cloud.nais.io/) for

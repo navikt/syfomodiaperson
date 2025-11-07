@@ -25,8 +25,6 @@ import DialogmoteSted, {
 import DialogmoteVideolink from "@/sider/dialogmoter/components/DialogmoteVideolink";
 import DialogmoteKlokkeslett from "@/sider/dialogmoter/components/DialogmoteKlokkeslett";
 import { MalformRadioGroup } from "@/components/MalformRadioGroup";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
 import { useMalform } from "@/context/malform/MalformContext";
 import TextareaField from "@/sider/dialogmoter/components/TextareaField";
 import { DialogmoteFrist } from "@/sider/dialogmoter/components/DialogmoteFrist";
@@ -132,18 +130,7 @@ const EndreDialogmoteSkjema = ({ dialogmote }: Props) => {
 
   const submit = (values: EndreTidStedSkjemaValues) => {
     const dialogmoteEndring = toEndreTidSted(values);
-    endreTidStedDialogmote.mutate(dialogmoteEndring, {
-      onSuccess: () => {
-        Amplitude.logEvent({
-          type: EventType.OptionSelected,
-          data: {
-            url: window.location.href,
-            tekst: "Målform valgt",
-            option: malform,
-          },
-        });
-      },
-    });
+    endreTidStedDialogmote.mutate(dialogmoteEndring);
   };
 
   if (endreTidStedDialogmote.isSuccess) {

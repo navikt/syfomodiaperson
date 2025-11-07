@@ -8,8 +8,6 @@ import {
   useTildelVeileder,
   VeilederIdent,
 } from "@/data/veilederbrukerknytning/useTildelVeileder";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
 import {
   Alert,
   BodyShort,
@@ -127,16 +125,7 @@ export default function EndreTildeltVeilederModal({
   function handleTildelVeileder() {
     if (selectedVeilederIdent !== undefined) {
       tildelVeileder.mutate(selectedVeilederIdent, {
-        onSuccess: () => {
-          Amplitude.logEvent({
-            type: EventType.ButtonClick,
-            data: {
-              tekst: "Tildelt veileder",
-              url: window.location.href,
-            },
-          });
-          handleClose();
-        },
+        onSuccess: () => handleClose(),
       });
     } else {
       setIsError(true);
@@ -145,16 +134,7 @@ export default function EndreTildeltVeilederModal({
 
   function handleSettSomUfordelt() {
     tildelVeileder.mutate(null, {
-      onSuccess: () => {
-        Amplitude.logEvent({
-          type: EventType.ButtonClick,
-          data: {
-            tekst: "Sett som ufordelt",
-            url: window.location.href,
-          },
-        });
-        handleClose();
-      },
+      onSuccess: () => handleClose(),
     });
   }
 

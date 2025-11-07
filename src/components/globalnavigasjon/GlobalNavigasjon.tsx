@@ -12,7 +12,6 @@ import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { BodyShort, Skeleton, VStack } from "@navikt/ds-react";
-import { EventType, logEvent } from "@/utils/amplitude";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
@@ -170,16 +169,6 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
         break;
     }
   };
-  const handleOnClick = (lenketekst: string, destinasjon: string) => {
-    const destinationPath = window.location.href + "/sykefravaer" + destinasjon;
-    logEvent({
-      type: EventType.Navigation,
-      data: {
-        lenketekst: lenketekst,
-        destinasjon: destinationPath,
-      },
-    });
-  };
 
   if (isPending) {
     return <GlobalNavigasjonSkeleton />;
@@ -226,7 +215,6 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
                 onFocus={() => {
                   setFocusIndex(index);
                 }}
-                onClick={() => handleOnClick(navn, sti)}
                 onKeyDown={(e) => {
                   handleKeyDown(e);
                 }}

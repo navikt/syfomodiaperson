@@ -38,8 +38,6 @@ import {
   VStack,
 } from "@navikt/ds-react";
 import { MalformRadioGroup } from "@/components/MalformRadioGroup";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
 import { Malform, useMalform } from "@/context/malform/MalformContext";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import {
@@ -281,14 +279,6 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
     } else {
       ferdigstillDialogmote.mutate(newDialogmoteReferatDTO);
     }
-    Amplitude.logEvent({
-      type: EventType.OptionSelected,
-      data: {
-        url: window.location.href,
-        tekst: "Målform valgt",
-        option: malform,
-      },
-    });
   };
 
   const isNullOrEmpty = (value?: string | undefined) => {

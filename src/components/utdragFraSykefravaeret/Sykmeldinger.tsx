@@ -3,8 +3,6 @@ import {
   SykmeldingOldFormat,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
 import {
   arbeidsgivernavnEllerArbeidssituasjon,
   erEkstraInformasjonISykmeldingen,
@@ -44,18 +42,6 @@ function erSykmeldingUtenArbeidsgiver(
   );
 }
 
-function logAccordionOpened(isOpen: boolean) {
-  if (isOpen) {
-    Amplitude.logEvent({
-      type: EventType.AccordionOpen,
-      data: {
-        tekst: `Åpne sykmeldinger accordion`,
-        url: window.location.href,
-      },
-    });
-  }
-}
-
 const Info = ({ label, text }: { label: string; text: string }) => {
   return (
     <div className="text-base font-normal">
@@ -76,7 +62,7 @@ const UtvidbarSykmelding = ({ sykmelding }: UtvidbarSykmeldingProps) => {
     ? arbeidsgiverEllerSituasjon
     : "Sykmelding uten arbeidsgiver";
   return (
-    <ExpansionCard aria-label={title} onToggle={logAccordionOpened}>
+    <ExpansionCard aria-label={title}>
       <StyledExpantionCardHeader className="w-full">
         <ExpansionCard.Title
           as="div"

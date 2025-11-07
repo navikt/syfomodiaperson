@@ -12,11 +12,6 @@ const ResizeObserverMock = vi.fn(() => ({
 
 vi.stubGlobal("ResizeObserver", ResizeObserverMock);
 
-vi.mock("@amplitude/analytics-browser", () => ({
-  track: vi.fn(),
-  init: vi.fn(),
-}));
-
 export const mockServer = setupServer(
   http.get(`*${SYFOVEILEDER_ROOT}/veiledere/self`, () =>
     HttpResponse.json(VEILEDER_DEFAULT)

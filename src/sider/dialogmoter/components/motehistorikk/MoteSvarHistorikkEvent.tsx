@@ -4,8 +4,6 @@ import {
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import React, { useState } from "react";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
 import { Accordion, HStack } from "@navikt/ds-react";
 import { DialogmoteStedInfo } from "@/sider/dialogmoter/components/DialogmoteStedInfo";
 import DialogmoteVeilederInfo from "@/sider/dialogmoter/components/DialogmoteVeilederInfo";
@@ -32,15 +30,6 @@ export default function MoteSvarHistorikkEvent({ dialogmote }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleAccordionClick = () => {
-    if (!isOpen) {
-      Amplitude.logEvent({
-        type: EventType.AccordionOpen,
-        data: {
-          tekst: `Åpne møtesvar-historikk accordion`,
-          url: window.location.href,
-        },
-      });
-    }
     setIsOpen(!isOpen);
   };
 

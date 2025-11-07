@@ -10,8 +10,6 @@ import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { vurderingArsakTexts } from "@/data/aktivitetskrav/aktivitetskravTexts";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
 import { VisBrev } from "@/components/VisBrev";
 import { Paragraph } from "@/components/Paragraph";
 import {
@@ -156,16 +154,6 @@ const HistorikkElement = ({ vurdering }: HistorikkElementProps) => {
     arsaker.map((arsak) => vurderingArsakTexts[arsak] || arsak).join(", ");
 
   const handleAccordionClick = () => {
-    if (!isOpen) {
-      // Vil bare logge klikk som åpner accordion
-      Amplitude.logEvent({
-        type: EventType.AccordionOpen,
-        data: {
-          tekst: `Åpne accordion aktivitetskrav historikk: ${header}`,
-          url: window.location.href,
-        },
-      });
-    }
     setIsOpen(!isOpen);
   };
 

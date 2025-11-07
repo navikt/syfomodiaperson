@@ -3,8 +3,6 @@ import { BodyShort, Box, Button, Heading, ReadMore } from "@navikt/ds-react";
 import { useNavigate } from "react-router";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
 
 const texts = {
   title: "Registrer ny § 8-4 vurdering",
@@ -21,16 +19,6 @@ const texts = {
   oppfyltButton: "Oppfylt",
 };
 
-function logReadMore(tekst: string) {
-  Amplitude.logEvent({
-    type: EventType.AccordionOpen,
-    data: {
-      url: window.location.href,
-      tekst: `Åpnet ${tekst} for å lese mer`,
-    },
-  });
-}
-
 export default function VelgVurdering() {
   const navigate = useNavigate();
   const { toggles } = useFeatureToggles();
@@ -41,25 +29,10 @@ export default function VelgVurdering() {
       </Heading>
       {toggles.isInnstillingUtenForhandsvarselArbeidsuforhetEnabled ? (
         <>
-          <ReadMore
-            header={texts.narForhandsvarsel}
-            onOpenChange={(open) => {
-              if (open) {
-                logReadMore("sende forhåndsvarsel");
-              }
-            }}
-          >
+          <ReadMore header={texts.narForhandsvarsel}>
             {texts.narForhandsvarselContent}
           </ReadMore>
-          <ReadMore
-            header={texts.narAvslagUtenForhandsvarsel}
-            onOpenChange={(open) => {
-              if (open) {
-                logReadMore("avslag uten forhåndsvarsel");
-              }
-            }}
-            className="mb-2"
-          >
+          <ReadMore header={texts.narAvslagUtenForhandsvarsel} className="mb-2">
             {texts.narAvslagUtenForhandsvarselContent}
           </ReadMore>
         </>

@@ -17,9 +17,7 @@ import {
   OppfolgingsoppgaveRequestDTO,
   OppfolgingsoppgaveResponseDTO,
 } from "@/data/oppfolgingsoppgave/types";
-import { useForm, FormProvider } from "react-hook-form";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
+import { FormProvider, useForm } from "react-hook-form";
 import dayjs from "dayjs";
 import { useEditOppfolgingsoppgave } from "@/data/oppfolgingsoppgave/useEditOppfolgingsoppgave";
 import FristDatePicker from "@/components/oppfolgingsoppgave/FristDatePicker";
@@ -51,59 +49,6 @@ interface FormValues {
 
 const MAX_LENGTH_BESKRIVELSE = 300;
 const ALERT_LENGTH_BESKRIVELSE = 200;
-
-function logOppfolgingsgrunnSendt(oppfolgingsgrunn: Oppfolgingsgrunn) {
-  Amplitude.logEvent({
-    type: EventType.OppfolgingsgrunnSendt,
-    data: {
-      url: window.location.href,
-      oppfolgingsgrunn: oppfolgingsgrunn,
-    },
-  });
-}
-
-function logOppfolgingsoppgaveEdited(
-  oppfolgingsgrunn: Oppfolgingsgrunn,
-  existingOppfolgingsoppgave: OppfolgingsoppgaveResponseDTO,
-  editedOppfolgingsoppgave: EditOppfolgingsoppgaveRequestDTO
-) {
-  const existingOppfolgingsoppgaveVersjon =
-    existingOppfolgingsoppgave.versjoner[0];
-  const existingOppfolgingsgrunn =
-    existingOppfolgingsoppgaveVersjon?.oppfolgingsgrunn;
-  if (oppfolgingsgrunn !== existingOppfolgingsgrunn) {
-    Amplitude.logEvent({
-      type: EventType.OppfolgingsgrunnEdited,
-      data: {
-        url: window.location.href,
-        oldOppfolgingsgrunn: existingOppfolgingsgrunn,
-        newOppfolgingsgrunn: oppfolgingsgrunn,
-      },
-    });
-  } else {
-    const editedFields: string[] = [];
-    if (
-      editedOppfolgingsoppgave.frist !==
-      existingOppfolgingsoppgaveVersjon?.frist
-    ) {
-      editedFields.push("frist");
-    }
-    if (
-      editedOppfolgingsoppgave.tekst !==
-      existingOppfolgingsoppgaveVersjon?.tekst
-    ) {
-      editedFields.push("tekst");
-    }
-    Amplitude.logEvent({
-      type: EventType.OppfolgingsoppgaveEdited,
-      data: {
-        url: window.location.href,
-        oppfolgingsgrunn: oppfolgingsgrunn,
-        fieldsEdited: editedFields,
-      },
-    });
-  }
-}
 
 interface Props {
   isOpen: boolean;
@@ -165,31 +110,21 @@ export default function OppfolgingsoppgaveModal({
       if (!isFormEdited(existingOppfolgingsoppgave)) {
         setIsFormError(true);
       } else {
-        submitEditedOppfolgingsoppgave(values, existingOppfolgingsoppgave);
+        submitEditedOppfolgingsoppgave(values);
       }
     } else {
       submitNewOppfolgingsoppgave(values);
     }
   };
 
-  function submitEditedOppfolgingsoppgave(
-    values: FormValues,
-    existingOppfolgingsoppgave: OppfolgingsoppgaveResponseDTO
-  ) {
+  function submitEditedOppfolgingsoppgave(values: FormValues) {
     const oppfolgingsoppgaveDto: EditOppfolgingsoppgaveRequestDTO = {
       oppfolgingsgrunn: values.oppfolgingsgrunn,
       tekst: values.beskrivelse,
       frist: dayjs(values.frist).format("YYYY-MM-DD"),
     };
     editOppfolgingsoppgave.mutate(oppfolgingsoppgaveDto, {
-      onSuccess: () => {
-        logOppfolgingsoppgaveEdited(
-          values.oppfolgingsgrunn,
-          existingOppfolgingsoppgave,
-          oppfolgingsoppgaveDto
-        );
-        toggleOpen(false);
-      },
+      onSuccess: () => toggleOpen(false),
     });
   }
 
@@ -200,10 +135,7 @@ export default function OppfolgingsoppgaveModal({
       frist: dayjs(values.frist).format("YYYY-MM-DD"),
     };
     createOppfolgingsoppgave.mutate(oppfolgingsoppgaveDto, {
-      onSuccess: () => {
-        logOppfolgingsgrunnSendt(values.oppfolgingsgrunn);
-        toggleOpen(false);
-      },
+      onSuccess: () => toggleOpen(false),
     });
   }
 

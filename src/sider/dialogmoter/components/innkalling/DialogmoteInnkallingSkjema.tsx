@@ -21,8 +21,6 @@ import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
 import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
 import { Alert, Box, Button } from "@navikt/ds-react";
 import { MalformRadioGroup } from "@/components/MalformRadioGroup";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
 import { useMalform } from "@/context/malform/MalformContext";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { DialogmoteDato } from "@/sider/dialogmoter/components/DialogmoteDato";
@@ -143,14 +141,6 @@ export const DialogmoteInnkallingSkjema = () => {
       selectedBehandler
     );
     opprettInnkalling.mutate(dialogmoteInnkalling);
-    Amplitude.logEvent({
-      type: EventType.OptionSelected,
-      data: {
-        url: window.location.href,
-        tekst: "Målform valgt",
-        option: malform,
-      },
-    });
   };
 
   return (

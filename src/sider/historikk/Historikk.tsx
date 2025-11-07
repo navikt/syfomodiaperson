@@ -12,8 +12,6 @@ import {
   OppfolgingstilfelleDTO,
 } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { Box, HStack, Select, Table, Tag } from "@navikt/ds-react";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
 import { fullNaisUrlIntern } from "@/utils/miljoUtil";
 import { EksternLenke } from "@/components/EksternLenke";
 
@@ -85,19 +83,6 @@ function tagFromKilde(kilde: HistorikkEventType): ReactElement {
   }
 }
 
-function logSykefravaerstilfelleChanged(isUtenforTilfelle: boolean) {
-  Amplitude.logEvent({
-    type: EventType.OptionSelected,
-    data: {
-      url: window.location.href,
-      tekst: "Sykefraværstilfelle valgt",
-      option: isUtenforTilfelle
-        ? "Utenfor sykefraværstilfelle"
-        : "Innenfor et sykefraværstilfelle",
-    },
-  });
-}
-
 interface Props {
   historikkEvents: HistorikkEvent[];
   tilfeller: OppfolgingstilfelleDTO[];
@@ -132,8 +117,6 @@ export default function Historikk({
     event: React.ChangeEvent<HTMLSelectElement>
   ) {
     setSelectedTilfelleIndex(Number(event.target.value));
-    const isUtenforTilfelle = event.target.value === "-1";
-    logSykefravaerstilfelleChanged(isUtenforTilfelle);
   }
 
   const historikkEntries = filteredEvents().sort(byTidspunkt());
