@@ -1,4 +1,4 @@
-import DineKoronaSykmeldingOpplysninger from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/DineKoronaSykmeldingOpplysninger";
+import KoronaSykmeldingOpplysninger from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/KoronaSykmeldingOpplysninger";
 import React from "react";
 import {
   SykmeldingOldFormat,
@@ -33,7 +33,7 @@ export default function EgenmeldtKoronaSykmelding({ sykmelding }: Props) {
         <BekreftetSykmeldingStatuspanel sykmelding={sykmelding} />
       )}
       {isAvbrutt && <SykmeldingStatuspanel sykmelding={sykmelding} />}
-      <DineKoronaSykmeldingOpplysninger sykmelding={sykmelding} />
+      <KoronaSykmeldingOpplysninger sykmelding={sykmelding} />
     </>
   ) : (
     <Feilmelding tittel="Egenmeldingen har ukjent status" />

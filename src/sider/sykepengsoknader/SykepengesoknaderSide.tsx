@@ -22,8 +22,7 @@ import PlanlagtTeaser from "@/sider/sykepengsoknader/soknader/PlanlagtSoknad";
 const texts = {
   sidetittel: "Søknad om sykepenger",
   nyeSoknader: "Nye søknader",
-  ingenSoknader:
-    "Du har ingen nye søknader om sykepenger. Den neste søknaden du kan fylle ut kommer etter at sykmeldingsperioden er over.",
+  ingenSoknader: "Ingen nye søknader om sykepenger",
   tidligereSoknader: "Tidligere søknader",
   planlagteSoknader: "Planlagte søknader",
   errorMessage: (sykmeldtNavn: string) =>

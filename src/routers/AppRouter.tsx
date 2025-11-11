@@ -32,7 +32,7 @@ import ArbeidsuforhetAvslag from "@/sider/arbeidsuforhet/avslag/ArbeidsuforhetAv
 import ArbeidsuforhetIkkeAktuell from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuell";
 import SendForhandsvarselSkjema from "@/sider/arbeidsuforhet/SendForhandsvarselSkjema";
 import ArbeidsuforhetSide from "@/sider/arbeidsuforhet/ArbeidsuforhetSide";
-import DinSykmeldingSide from "@/sider/sykmeldinger/container/DinSykmeldingSide";
+import SykmeldingSide from "@/sider/sykmeldinger/container/SykmeldingSide";
 import InnstillingUtenForhandsvarsel from "@/sider/arbeidsuforhet/innstillingutenforhandsvarsel/InnstillingUtenForhandsvarsel";
 import OppfyltSide from "@/sider/manglendemedvirkning/oppfylt/OppfyltSide";
 import StansSide from "@/sider/manglendemedvirkning/stans/StansSide";
@@ -71,7 +71,7 @@ const AktivBrukerRouter = (): ReactElement => {
 
           <Route path={`${appRoutePath}/sykmeldinger`}>
             <Route index element={<SykmeldingerSide />} />
-            <Route path=":sykmeldingId" element={<DinSykmeldingSide />} />
+            <Route path=":sykmeldingId" element={<SykmeldingSide />} />
           </Route>
 
           <Route path={`${appRoutePath}/sykepengesoknader`}>

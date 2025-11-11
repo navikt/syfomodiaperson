@@ -3,14 +3,14 @@ import {
   SykmeldingOldFormat,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import DinBekreftedeSykmelding from "./DinBekreftedeSykmelding";
-import DinAvbrutteSykmelding from "./DinAvbrutteSykmelding";
-import DinUtgaatteSykmelding from "./DinUtgaatteSykmelding";
+import BekreftetSykmelding from "./BekreftetSykmelding";
+import AvbruttSykmelding from "./AvbruttSykmelding";
+import UtgattSykmelding from "./UtgattSykmelding";
 import Feilmelding from "../../../components/Feilmelding";
 import AvvistSykmelding from "./avvisteSykmeldinger/AvvistSykmelding";
 import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
-import { DinSendteSykmelding } from "@/sider/sykmeldinger/sykmelding/DinSendteSykmelding";
-import DinSykmelding from "@/sider/sykmeldinger/sykmelding/DinSykmelding";
+import { SendtSykmelding } from "@/sider/sykmeldinger/sykmelding/SendtSykmelding";
+import NySykmelding from "@/sider/sykmeldinger/sykmelding/NySykmelding";
 import EgenmeldtKoronaSykmelding from "@/sider/sykmeldinger/sykmelding/EgenmeldtKoronaSykmelding";
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
   arbeidsgiversSykmelding?: SykmeldingOldFormat;
 }
 
-export default function SykmeldingSide({
+export default function Sykmelding({
   sykmelding,
   arbeidsgiversSykmelding,
 }: Props) {
@@ -37,18 +37,18 @@ export default function SykmeldingSide({
     sykmelding.status === SykmeldingStatus.SENDT &&
     arbeidsgiversSykmelding
   ) {
-    return <DinSendteSykmelding sykmelding={sykmelding} />;
+    return <SendtSykmelding sykmelding={sykmelding} />;
   } else if (
     arbeidsgiversSykmelding &&
     sykmelding.status === SykmeldingStatus.BEKREFTET
   ) {
-    return <DinBekreftedeSykmelding sykmelding={sykmelding} />;
+    return <BekreftetSykmelding sykmelding={sykmelding} />;
   } else if (sykmelding.status === SykmeldingStatus.UTGAATT) {
-    return <DinUtgaatteSykmelding sykmelding={sykmelding} />;
+    return <UtgattSykmelding sykmelding={sykmelding} />;
   } else if (sykmelding.status === SykmeldingStatus.NY) {
-    return <DinSykmelding sykmelding={sykmelding} />;
+    return <NySykmelding sykmelding={sykmelding} />;
   } else if (sykmelding.status === SykmeldingStatus.AVBRUTT) {
-    return <DinAvbrutteSykmelding sykmelding={sykmelding} />;
+    return <AvbruttSykmelding sykmelding={sykmelding} />;
   }
   return <Feilmelding tittel="Sykmeldingen har ukjent status" />;
 }

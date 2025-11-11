@@ -15,9 +15,7 @@ interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-export default function DineKoronaSykmeldingOpplysninger({
-  sykmelding,
-}: Props) {
+export default function KoronaSykmeldingOpplysninger({ sykmelding }: Props) {
   return (
     <div>
       <Heading size="medium" className="mb-6">
