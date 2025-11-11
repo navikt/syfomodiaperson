@@ -14,6 +14,7 @@ import { InfoUtsattFristJuletid } from "@/components/InfoUtsattFristJuletid";
 import { useNavigate } from "react-router";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { useNotification } from "@/context/notification/NotificationContext";
+import { Link } from "react-router-dom";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -32,6 +33,7 @@ const texts = {
   sendVarselButtonText: "Send",
   forhandsvarselSendt:
     "Forhåndsvarsel er sendt. Personen ligger nå i oversikten og kan finnes under filteret for § 8-4 arbeidsuførhet.",
+  avbrytButton: "Avbryt",
 };
 
 const forhandsvarselFrist = getForhandsvarselFrist();
@@ -120,6 +122,9 @@ export default function SendForhandsvarselSkjema() {
               })
             }
           />
+          <Button as={Link} to={arbeidsuforhetPath} variant="secondary">
+            {texts.avbrytButton}
+          </Button>
         </div>
       </form>
     </Box>
