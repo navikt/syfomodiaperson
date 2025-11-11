@@ -6,13 +6,11 @@ export type Toggles = {
 export enum ToggleNames {
   isVirksomhetsinputEnabled = "isVirksomhetsinputEnabled",
   isTildelOppfolgingsenhetEnabled = "isTildelOppfolgingsenhetEnabled",
-  isInnstillingUtenForhandsvarselArbeidsuforhetEnabled = "isInnstillingUtenForhandsvarselArbeidsuforhetEnabled",
   isKartleggingssporsmalEnabled = "isKartleggingssporsmalEnabled",
 }
 
 export const defaultToggles: Toggles = {
   isVirksomhetsinputEnabled: false,
   isTildelOppfolgingsenhetEnabled: false,
-  isInnstillingUtenForhandsvarselArbeidsuforhetEnabled: false,
   isKartleggingssporsmalEnabled: false,
 };
