@@ -9,8 +9,6 @@ import {
   MotebehovArbeidsgiverKvittering,
   MotebehovKvitteringInnholdArbeidstaker,
 } from "@/sider/dialogmoter/motebehov/MotebehovKvittering";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
 
 const texts = {
   title: "Møtebehovhistorikk",
@@ -31,19 +29,7 @@ function MotebehovHistorikkEvent({
   const isBehandlet =
     motebehov.behandletTidspunkt && motebehov.behandletVeilederIdent;
 
-  const handleAccordionClick = () => {
-    if (!isOpen) {
-      // Vil bare logge klikk som åpner accordion
-      Amplitude.logEvent({
-        type: EventType.AccordionOpen,
-        data: {
-          tekst: `Åpne accordion møtebehovhistorikk: ${headerText}`,
-          url: window.location.href,
-        },
-      });
-    }
-    setIsOpen(!isOpen);
-  };
+  const handleAccordionClick = () => setIsOpen(!isOpen);
 
   return (
     <Accordion.Item open={isOpen}>

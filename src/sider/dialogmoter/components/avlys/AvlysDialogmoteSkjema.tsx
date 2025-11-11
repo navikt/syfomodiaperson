@@ -14,9 +14,6 @@ import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { useForm } from "react-hook-form";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { MalformRadioGroup } from "@/components/MalformRadioGroup";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
-import { useMalform } from "@/context/malform/MalformContext";
 import TextareaField from "@/sider/dialogmoter/components/TextareaField";
 
 export const MAX_LENGTH_AVLYS_BEGRUNNELSE = 500;
@@ -68,7 +65,6 @@ const AvlysDialogmoteSkjema = ({
     getAvlysningDocumentArbeidsgiver,
     getAvlysningDocumentBehandler,
   } = useAvlysningDocument(dialogmote);
-  const { malform } = useMalform();
 
   const {
     register,
@@ -97,18 +93,7 @@ const AvlysDialogmoteSkjema = ({
       };
     }
 
-    avlysDialogmote.mutate(avlysDto, {
-      onSuccess: () => {
-        Amplitude.logEvent({
-          type: EventType.OptionSelected,
-          data: {
-            url: window.location.href,
-            tekst: "Målform valgt",
-            option: malform,
-          },
-        });
-      },
-    });
+    avlysDialogmote.mutate(avlysDto);
   };
 
   if (avlysDialogmote.isSuccess) {

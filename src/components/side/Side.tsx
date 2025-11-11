@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode } from "react";
 import Personkort from "../personkort/Personkort";
 import DocumentTitle from "react-document-title";
 import GlobalNavigasjon, {
@@ -7,8 +7,6 @@ import GlobalNavigasjon, {
 } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { isEaster, isPride } from "@/utils/festiveUtils";
 import { Easter } from "@/components/festive/Easter";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
 import { OversiktLenker } from "@/components/personkort/OversiktLenker";
 import { Pride } from "@/components/festive/Pride";
 import Oppfolgingsoppgave from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
@@ -35,12 +33,6 @@ export default function Side({
   const diskresjonskode = useDiskresjonskodeQuery();
   const brukerinfo = useBrukerinfoQuery();
 
-  useEffect(() => {
-    Amplitude.logEvent({
-      type: EventType.PageView,
-      data: { url: window.location.href, sidetittel: tittel },
-    });
-  }, [tittel]);
   const isFlexjarVisible =
     diskresjonskode.data !== "6" && diskresjonskode.data !== "7";
   const isPending = diskresjonskode.isPending || brukerinfo.isPending;

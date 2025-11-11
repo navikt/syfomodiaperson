@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
 import { Button } from "@navikt/ds-react";
 import { EyeWithPupilIcon } from "@navikt/aksel-icons";
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
@@ -24,10 +22,6 @@ export const VisBrev = ({
 
   const handleButtonClick = () => {
     setVisBrev(true);
-    Amplitude.logEvent({
-      type: EventType.ButtonClick,
-      data: { tekst: buttonText, url: window.location.href },
-    });
   };
 
   return (

@@ -13,8 +13,6 @@ import { PaperplaneIcon } from "@navikt/aksel-icons";
 import React from "react";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
 import {
   NewOppfolgingsplanForesporselDTO,
   useGetOppfolgingsplanForesporselQuery,
@@ -48,28 +46,6 @@ const texts = {
   foresporselFeilet: "Det skjedde en uventet feil. Vennligst prøv igjen senere",
   readMoreText: "Dette får nærmeste leder tilsendt i e-posten fra Nav",
 };
-
-function logOppfolgingsplanForesporselEvent() {
-  Amplitude.logEvent({
-    type: EventType.ButtonClick,
-    data: {
-      url: window.location.href,
-      tekst: "Be om oppfølgingsplan",
-    },
-  });
-}
-
-function logReadMoreClick(isOpened: boolean) {
-  if (isOpened) {
-    Amplitude.logEvent({
-      type: Amplitude.EventType.ButtonClick,
-      data: {
-        url: window.location.href,
-        tekst: "Åpne ReadMore for innhold epost",
-      },
-    });
-  }
-}
 
 function ReadMoreContent() {
   return (
@@ -139,9 +115,7 @@ export default function BeOmOppfolgingsplan({
         virksomhetNavn: values.narmesteLeder.virksomhetsnavn,
       }),
     };
-    postOppfolgingsplanForesporsel.mutate(foresporsel, {
-      onSuccess: () => logOppfolgingsplanForesporselEvent(),
-    });
+    postOppfolgingsplanForesporsel.mutate(foresporsel);
   }
 
   return (
@@ -206,7 +180,7 @@ export default function BeOmOppfolgingsplan({
         )}
         <div>
           <BodyLong>{texts.description.info3}</BodyLong>
-          <ReadMore header={texts.readMoreText} onOpenChange={logReadMoreClick}>
+          <ReadMore header={texts.readMoreText}>
             <ReadMoreContent />
           </ReadMore>
         </div>

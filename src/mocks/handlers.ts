@@ -33,14 +33,10 @@ import {
   mockSyfobehandlendeenhet,
 } from "@/mocks/syfobehandlendeenhet/mockSyfobehandlendeenhet";
 import { mockIshuskelapp } from "@/mocks/oppfolgingsoppgave/mockOppfolgingsoppgave";
-import { http, HttpResponse } from "msw";
 import { mockisoppfolgingsplanForesporsel } from "@/mocks/isoppfolgingsplan/mockisoppfolgingsplanForesporsel";
 import { mockPensjonPenUforegrad } from "@/mocks/uforegrad/mockUforegrad";
 
 const handlers = [
-  http.post("https://amplitude.nav.no/collect", () => {
-    return HttpResponse.text("mocked amplitude");
-  }),
   mockUnleashEndpoint,
   mockEreg,
   mockSykepengedagerInformasjon,

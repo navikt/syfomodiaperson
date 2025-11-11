@@ -20,8 +20,6 @@ import { useForm } from "react-hook-form";
 import { VurderAktivitetskravSkjemaProps } from "@/sider/aktivitetskrav/vurdering/vurderAktivitetskravSkjemaTypes";
 import { useAktivitetskravVurderingDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVurderingDocument";
 import { ikkeAktuellVurderingArsakTexts } from "@/data/aktivitetskrav/aktivitetskravTexts";
-import * as Amplitude from "@/utils/amplitude";
-import { EventType } from "@/utils/amplitude";
 
 const texts = {
   lagre: "Lagre",
@@ -48,13 +46,6 @@ interface IkkeAktuellAktivitetskravSkjemaProps
 interface SkjemaValues {
   arsak: IkkeAktuellArsak;
   begrunnelse?: string;
-}
-
-function logArsakToAmplitude(arsak: IkkeAktuellArsak) {
-  Amplitude.logEvent({
-    type: EventType.IkkeAktuellVurderingArsak,
-    data: { arsak: arsak },
-  });
 }
 
 export const IkkeAktuellAktivitetskravSkjema = ({
@@ -90,7 +81,6 @@ export const IkkeAktuellAktivitetskravSkjema = ({
       onSuccess: () => {
         setModalOpen(false);
         displayNotification(status);
-        logArsakToAmplitude(values.arsak);
       },
     });
   };
