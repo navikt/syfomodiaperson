@@ -21,7 +21,6 @@ import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
 import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
 import { Alert, Box, Button } from "@navikt/ds-react";
 import { MalformRadioGroup } from "@/components/MalformRadioGroup";
-import { useMalform } from "@/context/malform/MalformContext";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { DialogmoteDato } from "@/sider/dialogmoter/components/DialogmoteDato";
 import DialogmoteKlokkeslett from "@/sider/dialogmoter/components/DialogmoteKlokkeslett";
@@ -117,7 +116,6 @@ export const DialogmoteInnkallingSkjema = () => {
   const innkallingDocument = useInnkallingDocument();
   const { toTidStedDto } = useSkjemaValuesToDto();
   const opprettInnkalling = useOpprettInnkallingDialogmote(fnr);
-  const { malform } = useMalform();
   const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const methods = useForm<DialogmoteInnkallingSkjemaValues>();
   const {

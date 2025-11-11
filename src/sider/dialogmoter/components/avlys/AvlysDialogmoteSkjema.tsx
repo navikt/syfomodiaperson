@@ -14,7 +14,6 @@ import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { useForm } from "react-hook-form";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { MalformRadioGroup } from "@/components/MalformRadioGroup";
-import { useMalform } from "@/context/malform/MalformContext";
 import TextareaField from "@/sider/dialogmoter/components/TextareaField";
 
 export const MAX_LENGTH_AVLYS_BEGRUNNELSE = 500;
@@ -66,7 +65,6 @@ const AvlysDialogmoteSkjema = ({
     getAvlysningDocumentArbeidsgiver,
     getAvlysningDocumentBehandler,
   } = useAvlysningDocument(dialogmote);
-  const { malform } = useMalform();
 
   const {
     register,

@@ -38,7 +38,7 @@ import {
   VStack,
 } from "@navikt/ds-react";
 import { MalformRadioGroup } from "@/components/MalformRadioGroup";
-import { Malform, useMalform } from "@/context/malform/MalformContext";
+import { Malform } from "@/context/malform/MalformContext";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import {
   showTimeIncludingSeconds,
@@ -237,7 +237,6 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
 
   const { getReferatDocument } = useReferatDocument(dialogmote, mode);
   const initialValues = useInitialValuesReferat(dialogmote);
-  const { malform } = useMalform();
   const { standardTekster: standardTeksterForVisning } = getReferatTexts(
     Malform.BOKMAL
   );
