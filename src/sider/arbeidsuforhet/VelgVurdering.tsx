@@ -2,7 +2,6 @@ import React from "react";
 import { BodyShort, Box, Button, Heading, ReadMore } from "@navikt/ds-react";
 import { useNavigate } from "react-router";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
-import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 
 const texts = {
   title: "Registrer ny § 8-4 vurdering",
@@ -21,24 +20,20 @@ const texts = {
 
 export default function VelgVurdering() {
   const navigate = useNavigate();
-  const { toggles } = useFeatureToggles();
   return (
-    <Box background="surface-default" padding="6">
-      <Heading level="2" size="medium" className="mb-4">
+    <Box background="surface-default" className="flex flex-col gap-4 p-6">
+      <Heading level="2" size="medium">
         {texts.title}
       </Heading>
-      {toggles.isInnstillingUtenForhandsvarselArbeidsuforhetEnabled ? (
-        <>
-          <ReadMore header={texts.narForhandsvarsel}>
-            {texts.narForhandsvarselContent}
-          </ReadMore>
-          <ReadMore header={texts.narAvslagUtenForhandsvarsel} className="mb-2">
-            {texts.narAvslagUtenForhandsvarselContent}
-          </ReadMore>
-        </>
-      ) : (
-        <BodyShort className="mb-4">{texts.description}</BodyShort>
-      )}
+      <BodyShort>{texts.description}</BodyShort>
+      <div>
+        <ReadMore header={texts.narForhandsvarsel}>
+          {texts.narForhandsvarselContent}
+        </ReadMore>
+        <ReadMore header={texts.narAvslagUtenForhandsvarsel} className="mb-2">
+          {texts.narAvslagUtenForhandsvarselContent}
+        </ReadMore>
+      </div>
 
       <div className="flex flex-row gap-4">
         <Button
@@ -48,17 +43,15 @@ export default function VelgVurdering() {
         >
           {texts.forhandsvarselButton}
         </Button>
-        {toggles.isInnstillingUtenForhandsvarselArbeidsuforhetEnabled && (
-          <Button
-            as="a"
-            variant="secondary"
-            onClick={() =>
-              navigate(`${arbeidsuforhetPath}/innstilling-uten-forhandsvarsel`)
-            }
-          >
-            {texts.innstillingUtenForhandsvarselButton}
-          </Button>
-        )}
+        <Button
+          as="a"
+          variant="secondary"
+          onClick={() =>
+            navigate(`${arbeidsuforhetPath}/innstilling-uten-forhandsvarsel`)
+          }
+        >
+          {texts.innstillingUtenForhandsvarselButton}
+        </Button>
         <Button
           as="a"
           variant="secondary"

@@ -45,10 +45,6 @@ export function getToggles(veilederId, enhetId) {
       "isTildelOppfolgingsenhetEnabled",
       context
     ),
-    isInnstillingUtenForhandsvarselArbeidsuforhetEnabled: unleash.isEnabled(
-      "isInnstillingUtenForhandsvarselArbeidsuforhetEnabled",
-      context
-    ),
     isKartleggingssporsmalEnabled: unleash.isEnabled(
       "isKartleggingssporsmalEnabled",
       context
