@@ -85,8 +85,12 @@ export const getExpectedVedtakDocument = ({
     },
     {
       texts: [
-        "Helsen din er slik at du kan komme tilbake i arbeid, men ikke til den jobben du har vært sykmeldt fra. Nå har du selv valgt å avslutte jobben, og benytte deg av ordningen friskmelding til arbeidsformidling. Dette vedtaket er gjort etter folketrygdloven § 8-5.",
+        "Helsen din er slik at du kan komme tilbake i arbeid, men ikke til den jobben du har vært sykmeldt fra. Nå har du selv valgt å avslutte jobben, og benytte deg av ordningen friskmelding til arbeidsformidling. Formålet med ordningen er å hjelpe deg over i en rolle som aktiv arbeidssøker. Vi oppfordrer deg til å aktivt søke jobber for å finne nytt arbeid.",
       ],
+      type: DocumentComponentType.PARAGRAPH,
+    },
+    {
+      texts: ["Dette vedtaket er gjort etter folketrygdloven § 8-5."],
       type: DocumentComponentType.PARAGRAPH,
     },
     {

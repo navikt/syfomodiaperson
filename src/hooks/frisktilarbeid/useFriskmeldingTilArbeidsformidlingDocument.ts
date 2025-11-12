@@ -42,6 +42,9 @@ export const useFriskmeldingTilArbeidsformidlingDocument = (): {
       documentComponentDtos.push(createParagraph(values.begrunnelse));
     }
     documentComponentDtos.push(createParagraph(vedtakTexts.begrunnelse.body));
+    documentComponentDtos.push(
+      createParagraph(vedtakTexts.begrunnelse.paragraf)
+    );
 
     documentComponentDtos.push(
       createHeaderH2(vedtakTexts.sykmelding.header),
