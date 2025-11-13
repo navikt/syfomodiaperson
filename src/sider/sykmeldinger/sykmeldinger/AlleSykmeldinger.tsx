@@ -14,8 +14,8 @@ import { manederMellomDatoer } from "@/utils/datoUtils";
 
 const texts = {
   tidligereSykmeldinger: "Tidligere sykmeldinger",
-  ingenNyeSykmeldinger: "Du har ingen nye sykmeldinger",
-  ingenTidligereSykmeldinger: "Du har ingen tidligere sykmeldinger",
+  ingenNyeSykmeldinger: "Ingen nye sykmeldinger",
+  ingenTidligereSykmeldinger: "Ingen tidligere sykmeldinger",
   nyeSykmeldinger: "Nye sykmeldinger",
   apneSykmelding: "Åpne sykmelding",
   sorteringDato: "Dato",
@@ -45,7 +45,7 @@ interface Props {
   sykmeldinger: SykmeldingOldFormat[];
 }
 
-export default function DineSykmeldinger({
+export default function AlleSykmeldinger({
   sykmeldinger,
 }: Props): ReactElement {
   const nyeSykmeldinger = sykmeldinger.filter((sykmld) => {

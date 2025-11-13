@@ -10,7 +10,7 @@ import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQue
 import EndreSykmelding from "@/components/endresykmelding/EndreSykmelding";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { Box } from "@navikt/ds-react";
-import SykmeldingSide from "@/sider/sykmeldinger/sykmelding/SykmeldingSide";
+import Sykmelding from "@/sider/sykmeldinger/sykmelding/Sykmelding";
 import EndreUtenlandskSykmelding from "@/components/endresykmelding/EndreUtenlandskSykmelding";
 import Tilbakelenke from "@/components/Tilbakelenke";
 
@@ -26,7 +26,7 @@ function getSykmelding(
   return sykmeldinger.find((sykmld) => `${sykmld.id}` === `${sykmeldingId}`);
 }
 
-export default function DinSykmeldingSide() {
+export default function SykmeldingSide() {
   const sykmeldingId = window.location.pathname.split("/")[3];
 
   const { isLoading, isError, sykmeldinger, arbeidsgiverssykmeldinger } =
@@ -54,7 +54,7 @@ export default function DinSykmeldingSide() {
     >
       <SideLaster henter={isLoading} hentingFeilet={isError}>
         <Box background="surface-default" className="p-4">
-          <SykmeldingSide
+          <Sykmelding
             sykmelding={sykmelding}
             arbeidsgiversSykmelding={arbeidsgiversSykmelding}
           />

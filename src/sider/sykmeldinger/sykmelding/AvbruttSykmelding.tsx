@@ -1,19 +1,17 @@
 import React from "react";
 import SykmeldingStatuspanel from "../sykmeldingstatuspanel/SykmeldingStatuspanel";
-import { SykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingOpplysninger";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import { SykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingOpplysninger";
 
-interface DinUtgaatteSykmeldingProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-const DinUtgatteSykmelding = ({ sykmelding }: DinUtgaatteSykmeldingProps) => {
+export default function AvbruttSykmelding({ sykmelding }: Props) {
   return (
     <>
       <SykmeldingStatuspanel sykmelding={sykmelding} />
       <SykmeldingOpplysninger sykmelding={sykmelding} />
     </>
   );
-};
-
-export default DinUtgatteSykmelding;
+}

@@ -7,7 +7,7 @@ interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-export default function DinBekreftedeSykmelding({ sykmelding }: Props) {
+export default function BekreftetSykmelding({ sykmelding }: Props) {
   return (
     <>
       <BekreftetSykmeldingStatuspanel sykmelding={sykmelding} />

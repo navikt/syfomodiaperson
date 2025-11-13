@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import Side from "../../../components/side/Side";
-import DineSykmeldinger from "../sykmeldinger/DineSykmeldinger";
+import AlleSykmeldinger from "../sykmeldinger/AlleSykmeldinger";
 import SideLaster from "../../../components/side/SideLaster";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import { Heading } from "@navikt/ds-react";
@@ -29,7 +29,7 @@ export default function SykmeldingerSide(): ReactElement {
           <Heading size="xlarge" className="text-center mt-4 mb-2">
             Sykmeldinger
           </Heading>
-          <DineSykmeldinger sykmeldinger={sykmeldinger} />
+          <AlleSykmeldinger sykmeldinger={sykmeldinger} />
         </div>
       </SideLaster>
     </Side>
