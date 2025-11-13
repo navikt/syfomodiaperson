@@ -20,7 +20,8 @@ export const getVedtakTexts = ({ fom, tom }: VedtakTextsValues) => ({
   )}, vil du ikke få sykepenger etter denne datoen.`,
   begrunnelse: {
     header: "Begrunnelse for vedtaket",
-    body: "Helsen din er slik at du kan komme tilbake i arbeid, men ikke til den jobben du har vært sykmeldt fra. Nå har du selv valgt å avslutte jobben, og benytte deg av ordningen friskmelding til arbeidsformidling. Dette vedtaket er gjort etter folketrygdloven § 8-5.",
+    body: "Helsen din er slik at du kan komme tilbake i arbeid, men ikke til den jobben du har vært sykmeldt fra. Nå har du selv valgt å avslutte jobben, og benytte deg av ordningen friskmelding til arbeidsformidling. Formålet med ordningen er å hjelpe deg over i en rolle som aktiv arbeidssøker. Vi oppfordrer deg til å aktivt søke jobber for å finne nytt arbeid.",
+    paragraf: "Dette vedtaket er gjort etter folketrygdloven § 8-5.",
   },
   sykmelding: {
     header: "Sykmelding fra legen",
