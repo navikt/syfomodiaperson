@@ -42,5 +42,8 @@ export function hasMottattKartleggingssporsmal(
 export function hasAnsweredKartleggingssporsmal(
   kartleggingData: KartleggingssporsmalKandidatResponseDTO | null | undefined
 ): boolean {
-  return kartleggingData?.status === KandidatStatus.SVAR_MOTTATT;
+  return (
+    kartleggingData?.status === KandidatStatus.SVAR_MOTTATT ||
+    kartleggingData?.status === KandidatStatus.FERDIGBEHANDLET
+  );
 }
