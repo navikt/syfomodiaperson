@@ -20,54 +20,6 @@ import {
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import { daysFromToday } from "../../../test/testUtils";
 
-export const mockIsmeroppfolging = [
-  http.get(`${ISMEROPPFOLGING_ROOT}/senoppfolging/kandidater`, () => {
-    return HttpResponse.json([
-      senOppfolgingKandidatMock,
-      ferdigbehandletKandidatMock,
-    ]);
-  }),
-  http.post<object, SenOppfolgingVurderingRequestDTO>(
-    `${ISMEROPPFOLGING_ROOT}/senoppfolging/kandidater/:kandidatUUID/vurderinger`,
-    async ({ request }) => {
-      const body = await request.json();
-      const vurdering: SenOppfolgingKandidatResponseDTO = {
-        ...senOppfolgingKandidatMock,
-        createdAt: addWeeks(new Date(), -60),
-        status: SenOppfolgingStatus.FERDIGBEHANDLET,
-        vurderinger: [
-          {
-            uuid: generateUUID(),
-            createdAt: addWeeks(new Date(), -50),
-            type: SenOppfolgingVurderingType.FERDIGBEHANDLET,
-            veilederident: VEILEDER_IDENT_DEFAULT,
-            begrunnelse: body.begrunnelse,
-          },
-        ],
-      };
-
-      return HttpResponse.json(vurdering);
-    }
-  ),
-  http.get(`${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater`, () => {
-    return HttpResponse.json(kartleggingIsKandidatAndAnsweredQuestions);
-  }),
-  http.put(
-    `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater/:kandidatUUID`,
-    () => {
-      const svarVurdert: KartleggingssporsmalKandidatResponseDTO = {
-        ...kartleggingIsKandidatAndReceivedQuestions,
-        status: KandidatStatus.FERDIGBEHANDLET,
-        vurdering: {
-          vurdertAt: daysFromToday(5),
-          vurdertBy: VEILEDER_DEFAULT.ident,
-        },
-      };
-      return HttpResponse.json(svarVurdert);
-    }
-  ),
-];
-
 export const senOppfolgingKandidatMock: SenOppfolgingKandidatResponseDTO = {
   uuid: generateUUID(),
   createdAt: new Date(),
@@ -118,3 +70,55 @@ export const kartleggingIsKandidatAndAnsweredQuestions: KartleggingssporsmalKand
     svarAt: daysFromToday(0),
     vurdering: null,
   };
+
+let kartleggingssporsmalMock: KartleggingssporsmalKandidatResponseDTO =
+  kartleggingIsKandidatAndAnsweredQuestions;
+
+export const mockIsmeroppfolging = [
+  http.get(`${ISMEROPPFOLGING_ROOT}/senoppfolging/kandidater`, () => {
+    return HttpResponse.json([
+      senOppfolgingKandidatMock,
+      ferdigbehandletKandidatMock,
+    ]);
+  }),
+  http.post<object, SenOppfolgingVurderingRequestDTO>(
+    `${ISMEROPPFOLGING_ROOT}/senoppfolging/kandidater/:kandidatUUID/vurderinger`,
+    async ({ request }) => {
+      const body = await request.json();
+      const vurdering: SenOppfolgingKandidatResponseDTO = {
+        ...senOppfolgingKandidatMock,
+        createdAt: addWeeks(new Date(), -60),
+        status: SenOppfolgingStatus.FERDIGBEHANDLET,
+        vurderinger: [
+          {
+            uuid: generateUUID(),
+            createdAt: addWeeks(new Date(), -50),
+            type: SenOppfolgingVurderingType.FERDIGBEHANDLET,
+            veilederident: VEILEDER_IDENT_DEFAULT,
+            begrunnelse: body.begrunnelse,
+          },
+        ],
+      };
+
+      return HttpResponse.json(vurdering);
+    }
+  ),
+  http.get(`${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater`, () => {
+    return HttpResponse.json(kartleggingssporsmalMock);
+  }),
+  http.put(
+    `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater/:kandidatUUID`,
+    () => {
+      const svarVurdert: KartleggingssporsmalKandidatResponseDTO = {
+        ...kartleggingIsKandidatAndReceivedQuestions,
+        status: KandidatStatus.FERDIGBEHANDLET,
+        vurdering: {
+          vurdertAt: daysFromToday(5),
+          vurdertBy: VEILEDER_DEFAULT.ident,
+        },
+      };
+      kartleggingssporsmalMock = svarVurdert;
+      return HttpResponse.json(svarVurdert);
+    }
+  ),
+];
