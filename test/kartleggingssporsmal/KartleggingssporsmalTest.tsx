@@ -11,9 +11,13 @@ import { queryClientWithMockData } from "../testQueryClient";
 import {
   kartleggingIsKandidatAndAnsweredQuestions,
   kartleggingIsKandidatAndReceivedQuestions,
+  kartleggingssporsmalFerdigbehandlet,
 } from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
 import { kartleggingssporsmalAnswered } from "@/mocks/meroppfolging-backend/merOppfolgingMock";
-import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  VEILEDER_DEFAULT,
+} from "@/mocks/common/mockConstants";
 import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 import { renderWithRouter } from "../testRouterUtils";
 import { appRoutePath } from "@/routers/AppRouter";
@@ -227,6 +231,30 @@ describe("Kartleggingssporsmal", () => {
     expect(screen.queryByText("Utdrag fra sykefraværet")).to.exist;
 
     expect(getButton("Svarene er vurdert, fjern oppgaven")).to.exist;
+  });
+
+  it("Sykmeldt is ferdigbehandlet", () => {
+    mockKartleggingssporsmalKandidat(
+      kartleggingssporsmalFerdigbehandlet,
+      ARBEIDSTAKER_DEFAULT.personIdent
+    );
+    mockKartleggingssporsmalSvar(
+      kartleggingssporsmalAnswered,
+      ARBEIDSTAKER_DEFAULT.personIdent
+    );
+
+    renderKartleggingssporsmal();
+
+    expect(screen.queryByText("Den sykmeldte svarte", { exact: false })).to
+      .exist;
+    expect(screen.queryByText("Spørsmålene ble sendt", { exact: false })).to
+      .exist;
+    expect(screen.queryByText("Slik ser spørsmålene ut for den sykmeldte")).to
+      .exist;
+
+    expect(
+      screen.queryByText(`Oppgaven er behandlet av ${VEILEDER_DEFAULT.ident}`)
+    ).to.exist;
   });
 
   describe("Evaluate answers to kartleggingsspørsmål", () => {
