@@ -71,6 +71,16 @@ export const kartleggingIsKandidatAndAnsweredQuestions: KartleggingssporsmalKand
     vurdering: null,
   };
 
+export const kartleggingssporsmalFerdigbehandlet: KartleggingssporsmalKandidatResponseDTO =
+  {
+    ...kartleggingIsKandidatAndReceivedQuestions,
+    status: KandidatStatus.FERDIGBEHANDLET,
+    vurdering: {
+      vurdertAt: daysFromToday(5),
+      vurdertBy: VEILEDER_DEFAULT.ident,
+    },
+  };
+
 let kartleggingssporsmalMock: KartleggingssporsmalKandidatResponseDTO =
   kartleggingIsKandidatAndAnsweredQuestions;
 
@@ -109,16 +119,8 @@ export const mockIsmeroppfolging = [
   http.put(
     `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater/:kandidatUUID`,
     () => {
-      const svarVurdert: KartleggingssporsmalKandidatResponseDTO = {
-        ...kartleggingIsKandidatAndReceivedQuestions,
-        status: KandidatStatus.FERDIGBEHANDLET,
-        vurdering: {
-          vurdertAt: daysFromToday(5),
-          vurdertBy: VEILEDER_DEFAULT.ident,
-        },
-      };
-      kartleggingssporsmalMock = svarVurdert;
-      return HttpResponse.json(svarVurdert);
+      kartleggingssporsmalMock = kartleggingssporsmalFerdigbehandlet;
+      return HttpResponse.json(kartleggingssporsmalFerdigbehandlet);
     }
   ),
 ];
