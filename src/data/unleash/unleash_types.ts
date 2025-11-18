@@ -7,10 +7,12 @@ export enum ToggleNames {
   isVirksomhetsinputEnabled = "isVirksomhetsinputEnabled",
   isTildelOppfolgingsenhetEnabled = "isTildelOppfolgingsenhetEnabled",
   isKartleggingssporsmalEnabled = "isKartleggingssporsmalEnabled",
+  isFlexjarKartleggingssporsmalEnabled = "isFlexjarKartleggingssporsmalEnabled",
 }
 
 export const defaultToggles: Toggles = {
   isVirksomhetsinputEnabled: false,
   isTildelOppfolgingsenhetEnabled: false,
   isKartleggingssporsmalEnabled: false,
+  isFlexjarKartleggingssporsmalEnabled: false,
 };
