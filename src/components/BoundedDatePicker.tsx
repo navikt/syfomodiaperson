@@ -34,7 +34,9 @@ export function BoundedDatePicker({
     },
   });
 
-  const handleBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
+  const handleDateSelectedOrEdited: React.FocusEventHandler<
+    HTMLInputElement
+  > = (e) => {
     const raw = e.target.value.trim();
     if (!raw) {
       onChange(undefined);
@@ -75,7 +77,7 @@ export function BoundedDatePicker({
         label={label}
         error={internalError ?? error}
         size={size}
-        onBlur={handleBlur}
+        onBlur={handleDateSelectedOrEdited}
       />
     </DatePicker>
   );
