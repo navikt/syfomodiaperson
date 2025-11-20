@@ -1,9 +1,6 @@
 import React from "react";
-import { finnMiljoStreng } from "@/utils/miljoUtil";
 import UtdragOppfolgingsplaner from "./UtdragOppfolgingsplaner";
-import { SpinnsynLenke } from "@/components/vedtak/SpinnsynLenke";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { BodyShort, Box, Heading, Link } from "@navikt/ds-react";
+import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import Sykmeldinger from "./Sykmeldinger";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
@@ -11,10 +8,6 @@ import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 
 const texts = {
   header: "Utdrag fra sykefraværet",
-  samtalereferat: {
-    header: "Samtalereferat",
-    lenkeTekst: "Samtalereferat",
-  },
 };
 
 function tilfelleText(start: Date, end: Date, varighet: number) {
@@ -22,23 +15,6 @@ function tilfelleText(start: Date, end: Date, varighet: number) {
     start,
     end
   )} (${varighet} uker).`;
-}
-
-function Samtalereferat() {
-  const fnr = useValgtPersonident();
-  return (
-    <div>
-      <Heading size="small" level="3">
-        {texts.samtalereferat.header}
-      </Heading>
-      <Link
-        href={`https://modapp${finnMiljoStreng()}.adeo.no/modiabrukerdialog/person/${fnr}#!meldinger`}
-        target="_blank"
-      >
-        {texts.samtalereferat.lenkeTekst}
-      </Link>
-    </div>
-  );
 }
 
 interface Props {
@@ -76,8 +52,6 @@ export default function UtdragFraSykefravaeret({
         selectedOppfolgingstilfelle={oppfolgingstilfelle}
       />
       <Sykmeldinger selectedOppfolgingstilfelle={oppfolgingstilfelle} />
-      <Samtalereferat />
-      <SpinnsynLenke />
     </Box>
   );
 }
