@@ -307,3 +307,6 @@ export function isExpiredForhandsvarsel(svarfrist: Date | undefined): boolean {
     return false;
   }
 }
+
+export const toDateOnly = (d: Date) =>
+  new Date(d.getFullYear(), d.getMonth(), d.getDate());

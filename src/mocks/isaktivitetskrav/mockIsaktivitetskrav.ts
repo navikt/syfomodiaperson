@@ -10,7 +10,6 @@ import {
   NewVurderingDTO,
   SendForhandsvarselDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { daysFromToday } from "../../../test/testUtils";
 import { generateUUID } from "@/utils/utils";
 import { VEILEDER_DEFAULT } from "../common/mockConstants";
 import { aktivitetskravHistorikkMock } from "./aktivitetskravHistorikkMock";
@@ -60,10 +59,11 @@ export const mockIsaktivitetskrav = [
     `${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/:aktivitetskravUuid/forhandsvarsel`,
     async ({ request }) => {
       const body = await request.json();
+      const fristDate = new Date(body.frist);
       const forhandsvarsel = {
         uuid: "123",
         createdAt: new Date(),
-        svarfrist: daysFromToday(21),
+        svarfrist: fristDate,
         document: body.document,
       };
       const newForhandsvarselVurdering: AktivitetskravVurderingDTO = {
@@ -74,7 +74,7 @@ export const mockIsaktivitetskrav = [
         createdAt: new Date(),
         createdBy: VEILEDER_DEFAULT.ident,
         stansFom: undefined,
-        frist: daysFromToday(21),
+        frist: fristDate,
         varsel: forhandsvarsel,
       };
       let firstAktivitetskrav = mockAktivitetskrav.shift() as AktivitetskravDTO;

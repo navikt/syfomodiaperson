@@ -18,6 +18,7 @@ import {
   clickTab,
   getTextInput,
   getTooLongText,
+  daysFromToday,
 } from "../../testUtils";
 import {
   AktivitetskravDTO,
@@ -122,13 +123,11 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       const expectedVurdering: SendForhandsvarselDTO = {
         fritekst: enLangBeskrivelse,
         document: getSendForhandsvarselDocument(enLangBeskrivelse),
-        frist: expectedFrist,
+        frist: expectedFrist.toISOString().substring(0, 10),
       };
       expect(vurdering.fritekst).to.deep.equal(expectedVurdering.fritekst);
       expect(vurdering.document).to.deep.equal(expectedVurdering.document);
-      expect(vurdering.frist.toDateString()).to.deep.equal(
-        expectedVurdering.frist.toDateString()
-      );
+      expect(vurdering.frist).to.deep.equal(expectedVurdering.frist);
 
       await waitFor(
         () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist
@@ -174,13 +173,11 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
           enLangBeskrivelse,
           Brevmal.UTEN_ARBEIDSGIVER
         ),
-        frist: expectedFrist,
+        frist: expectedFrist.toISOString().substring(0, 10),
       };
       expect(vurdering.fritekst).to.deep.equal(expectedVurdering.fritekst);
       expect(vurdering.document).to.deep.equal(expectedVurdering.document);
-      expect(vurdering.frist.toDateString()).to.deep.equal(
-        expectedVurdering.frist.toDateString()
-      );
+      expect(vurdering.frist).to.deep.equal(expectedVurdering.frist);
 
       await waitFor(
         () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist
@@ -226,13 +223,11 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
           enLangBeskrivelse,
           Brevmal.UTLAND
         ),
-        frist: expectedFrist,
+        frist: expectedFrist.toISOString().substring(0, 10),
       };
       expect(vurdering.fritekst).to.deep.equal(expectedVurdering.fritekst);
       expect(vurdering.document).to.deep.equal(expectedVurdering.document);
-      expect(vurdering.frist.toDateString()).to.deep.equal(
-        expectedVurdering.frist.toDateString()
-      );
+      expect(vurdering.frist).to.deep.equal(expectedVurdering.frist);
 
       await waitFor(
         () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist
@@ -268,6 +263,71 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       await clickButton("Send");
 
       expect(await screen.findByText("1 tegn for mye")).to.exist;
+    });
+    it("Tillater valg av fristDato innenfor 3-6 uker og sender valgt frist", async () => {
+      renderVurderAktivitetskrav(aktivitetskrav);
+      stubVurderAktivitetskravForhandsvarselApi(aktivitetskrav.uuid);
+      await clickTab(tabTexts["FORHANDSVARSEL"]);
+      const beskrivelseInput = getTextInput("Begrunnelse (obligatorisk)");
+      changeTextInput(beskrivelseInput, enLangBeskrivelse);
+      const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
+      const pad = (n: number) => n.toString().padStart(2, "0");
+      const targetDate = daysFromToday(25);
+      const formatted = `${pad(targetDate.getDate())}.${pad(
+        targetDate.getMonth() + 1
+      )}.${targetDate.getFullYear()}`;
+      changeTextInput(fristInput, formatted);
+      fireEvent.blur(fristInput);
+      await clickButton("Send");
+      let sendForhandsvarselMutation;
+      await waitFor(() => {
+        sendForhandsvarselMutation = queryClient.getMutationCache().getAll()[0];
+        expect(sendForhandsvarselMutation).to.exist;
+      });
+      const vurdering = sendForhandsvarselMutation.state
+        .variables as unknown as SendForhandsvarselDTO;
+      const expectedFristString = `${targetDate.getFullYear()}-${(
+        targetDate.getMonth() + 1
+      )
+        .toString()
+        .padStart(2, "0")}-${targetDate.getDate().toString().padStart(2, "0")}`;
+      expect(vurdering.frist).to.equal(expectedFristString);
+    });
+    it("Viser feil ved ugyldig datoformat i fristdato", async () => {
+      renderVurderAktivitetskrav(aktivitetskrav);
+      await clickTab(tabTexts["FORHANDSVARSEL"]);
+      const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
+      changeTextInput(fristInput, "2025/01/01");
+      fireEvent.blur(fristInput);
+      expect(await screen.findByText("Ugyldig datoformat. Bruk dd.mm.åååå")).to
+        .exist;
+      await clickButton("Send");
+      expect(queryClient.getMutationCache().getAll().length).to.equal(0);
+    });
+    it("Viser feil ved fristdato utenfor gyldig intervall", async () => {
+      renderVurderAktivitetskrav(aktivitetskrav);
+      await clickTab(tabTexts["FORHANDSVARSEL"]);
+      const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
+      const pad = (n: number) => n.toString().padStart(2, "0");
+      const tooEarly = daysFromToday(10);
+      const formattedTooEarly = `${pad(tooEarly.getDate())}.${pad(
+        tooEarly.getMonth() + 1
+      )}.${tooEarly.getFullYear()}`;
+      changeTextInput(fristInput, formattedTooEarly);
+      fireEvent.blur(fristInput);
+      expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
+      await clickButton("Send");
+      expect(queryClient.getMutationCache().getAll().length).to.equal(0);
+    });
+    it("Viser required feil ved tom fristdato", async () => {
+      renderVurderAktivitetskrav(aktivitetskrav);
+      await clickTab(tabTexts["FORHANDSVARSEL"]);
+      const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
+      changeTextInput(fristInput, "");
+      fireEvent.blur(fristInput);
+      expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
+      await clickButton("Send");
+      expect(queryClient.getMutationCache().getAll().length).to.equal(0);
     });
   });
   describe("ForhandsvarselOppsummering", () => {
