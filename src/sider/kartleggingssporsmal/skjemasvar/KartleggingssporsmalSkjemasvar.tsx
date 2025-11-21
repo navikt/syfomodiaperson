@@ -5,11 +5,18 @@ import {
   KartleggingssporsmalFormSnapshotFieldType,
   KartleggingssporsmalRadioGroupFieldSnapshot,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalSkjemasvarTypes";
+import { Alert } from "@navikt/ds-react";
 
 interface Props {
   formSnapshot: KartleggingssporsmalFormSnapshot | null;
 }
 
+/**
+ * Benytter FormSnapshot 2.0 hvorav **RadioGroupFieldSnapshot** ikke lenger har
+ * følgende felter:
+ * - selectedOptionId
+ * - selectedOptionLabel
+ */
 export const KartleggingssporsmalSkjemasvar = ({ formSnapshot }: Props) =>
   formSnapshot?.fieldSnapshots.map((field, index) => {
     switch (field.fieldType) {
@@ -21,6 +28,13 @@ export const KartleggingssporsmalSkjemasvar = ({ formSnapshot }: Props) =>
               field as KartleggingssporsmalRadioGroupFieldSnapshot
             }
           />
+        );
+      default:
+        return (
+          <Alert className="w-1/2" variant={"warning"}>
+            Mottok spørsmål av typen: {field.fieldType} som fremvisningen ikke
+            støtter.
+          </Alert>
         );
     }
   });

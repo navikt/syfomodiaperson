@@ -14,6 +14,9 @@ interface Props {
   formSnapshot: FormSnapshot | null;
 }
 
+/**
+ * Benytter FormSnapshot 1.0
+ */
 export const Skjemasvar = ({ formSnapshot }: Props) =>
   formSnapshot?.fieldSnapshots.map((field, index) => {
     switch (field.fieldType) {
