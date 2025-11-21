@@ -39,6 +39,7 @@ import {
   forhandsvarselAktivitetskrav,
   tabTexts,
 } from "./vurderingTestUtils";
+import dayjs from "dayjs";
 
 let queryClient: QueryClient;
 
@@ -271,11 +272,8 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       const beskrivelseInput = getTextInput("Begrunnelse (obligatorisk)");
       changeTextInput(beskrivelseInput, enLangBeskrivelse);
       const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
-      const pad = (n: number) => n.toString().padStart(2, "0");
       const targetDate = daysFromToday(25);
-      const formatted = `${pad(targetDate.getDate())}.${pad(
-        targetDate.getMonth() + 1
-      )}.${targetDate.getFullYear()}`;
+      const formatted = dayjs(targetDate).format("DD.MM.YYYY");
       changeTextInput(fristInput, formatted);
       fireEvent.blur(fristInput);
       await clickButton("Send");
@@ -286,11 +284,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       });
       const vurdering = sendForhandsvarselMutation.state
         .variables as unknown as SendForhandsvarselDTO;
-      const expectedFristString = `${targetDate.getFullYear()}-${(
-        targetDate.getMonth() + 1
-      )
-        .toString()
-        .padStart(2, "0")}-${targetDate.getDate().toString().padStart(2, "0")}`;
+      const expectedFristString = dayjs(targetDate).format("YYYY-MM-DD");
       expect(vurdering.frist).to.equal(expectedFristString);
     });
     it("Viser feil ved ugyldig datoformat i fristdato", async () => {
@@ -308,11 +302,8 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       renderVurderAktivitetskrav(aktivitetskrav);
       await clickTab(tabTexts["FORHANDSVARSEL"]);
       const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
-      const pad = (n: number) => n.toString().padStart(2, "0");
       const tooEarly = daysFromToday(10);
-      const formattedTooEarly = `${pad(tooEarly.getDate())}.${pad(
-        tooEarly.getMonth() + 1
-      )}.${tooEarly.getFullYear()}`;
+      const formattedTooEarly = dayjs(tooEarly).format("DD.MM.YYYY");
       changeTextInput(fristInput, formattedTooEarly);
       fireEvent.blur(fristInput);
       expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
