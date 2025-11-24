@@ -124,7 +124,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       const expectedVurdering: SendForhandsvarselDTO = {
         fritekst: enLangBeskrivelse,
         document: getSendForhandsvarselDocument(enLangBeskrivelse),
-        frist: expectedFrist.toISOString().substring(0, 10),
+        frist: dayjs(expectedFrist).format("YYYY-MM-DD"),
       };
       expect(vurdering.fritekst).to.deep.equal(expectedVurdering.fritekst);
       expect(vurdering.document).to.deep.equal(expectedVurdering.document);
@@ -174,7 +174,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
           enLangBeskrivelse,
           Brevmal.UTEN_ARBEIDSGIVER
         ),
-        frist: expectedFrist.toISOString().substring(0, 10),
+        frist: dayjs(expectedFrist).format("YYYY-MM-DD"),
       };
       expect(vurdering.fritekst).to.deep.equal(expectedVurdering.fritekst);
       expect(vurdering.document).to.deep.equal(expectedVurdering.document);
@@ -224,7 +224,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
           enLangBeskrivelse,
           Brevmal.UTLAND
         ),
-        frist: expectedFrist.toISOString().substring(0, 10),
+        frist: dayjs(expectedFrist).format("DD.MM.YYYY"),
       };
       expect(vurdering.fritekst).to.deep.equal(expectedVurdering.fritekst);
       expect(vurdering.document).to.deep.equal(expectedVurdering.document);
