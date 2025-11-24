@@ -275,13 +275,15 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       const targetDate = daysFromToday(25);
       const formatted = dayjs(targetDate).format("DD.MM.YYYY");
       changeTextInput(fristInput, formatted);
+
       fireEvent.blur(fristInput);
       await clickButton("Send");
+
       let sendForhandsvarselMutation;
       await waitFor(() => {
         sendForhandsvarselMutation = queryClient.getMutationCache().getAll()[0];
-        expect(sendForhandsvarselMutation).to.exist;
       });
+      expect(sendForhandsvarselMutation).to.exist;
       const vurdering = sendForhandsvarselMutation.state
         .variables as unknown as SendForhandsvarselDTO;
       const expectedFristString = dayjs(targetDate).format("YYYY-MM-DD");
@@ -292,7 +294,9 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       await clickTab(tabTexts["FORHANDSVARSEL"]);
       const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
       changeTextInput(fristInput, "2025/01/01");
+
       fireEvent.blur(fristInput);
+
       expect(await screen.findByText("Ugyldig datoformat. Bruk dd.mm.åååå")).to
         .exist;
       await clickButton("Send");
@@ -305,7 +309,9 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       const tooEarly = daysFromToday(10);
       const formattedTooEarly = dayjs(tooEarly).format("DD.MM.YYYY");
       changeTextInput(fristInput, formattedTooEarly);
+
       fireEvent.blur(fristInput);
+
       expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
       await clickButton("Send");
       expect(queryClient.getMutationCache().getAll().length).to.equal(0);
@@ -315,7 +321,9 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       await clickTab(tabTexts["FORHANDSVARSEL"]);
       const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
       changeTextInput(fristInput, "");
+
       fireEvent.blur(fristInput);
+
       expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
       await clickButton("Send");
       expect(queryClient.getMutationCache().getAll().length).to.equal(0);
