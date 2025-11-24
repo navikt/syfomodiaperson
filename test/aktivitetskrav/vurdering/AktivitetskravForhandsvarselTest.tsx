@@ -224,7 +224,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
           enLangBeskrivelse,
           Brevmal.UTLAND
         ),
-        frist: dayjs(expectedFrist).format("DD.MM.YYYY"),
+        frist: dayjs(expectedFrist).format("YYYY-MM-DD"),
       };
       expect(vurdering.fritekst).to.deep.equal(expectedVurdering.fritekst);
       expect(vurdering.document).to.deep.equal(expectedVurdering.document);
