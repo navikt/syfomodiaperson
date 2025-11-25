@@ -12,6 +12,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/utils";
 import { ApiErrorException } from "@/api/errors";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 
 export const kartleggingssporsmalQueryKeys = {
   kartleggingssporsmalKandidat: (fnr: string) => [
@@ -22,6 +23,7 @@ export const kartleggingssporsmalQueryKeys = {
 };
 
 export const useKartleggingssporsmalKandidatQuery = () => {
+  const { toggles } = useFeatureToggles();
   const fnr = useValgtPersonident();
   const path = `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater`;
   const getKartleggingssporsmalKandidat = () =>
@@ -36,7 +38,7 @@ export const useKartleggingssporsmalKandidatQuery = () => {
   return useQuery({
     queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
     queryFn: getKartleggingssporsmalKandidat,
-    enabled: !!fnr,
+    enabled: !!fnr && toggles.isKartleggingssporsmalEnabled,
     staleTime: minutesToMillis(5),
   });
 };
