@@ -31,9 +31,9 @@ export const KartleggingssporsmalSkjemasvar = ({ formSnapshot }: Props) =>
         );
       default:
         return (
-          <Alert className="w-1/2" variant={"warning"}>
+          <Alert className="w-1/2" variant={"error"}>
             Mottok spørsmål av typen: {field.fieldType} som fremvisningen ikke
-            støtter.
+            støtter. Send en sak i Porten der du melder ifra om dette.
           </Alert>
         );
     }
