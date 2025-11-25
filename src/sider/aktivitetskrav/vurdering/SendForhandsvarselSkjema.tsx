@@ -7,15 +7,12 @@ import { ButtonRow } from "@/components/Layout";
 import { Button, HelpText, Label, Select, Textarea } from "@navikt/ds-react";
 import { useSendForhandsvarsel } from "@/data/aktivitetskrav/useSendForhandsvarsel";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import {
-  AktivitetskravSkjemaValues,
-  VurderAktivitetskravSkjemaProps,
-} from "@/sider/aktivitetskrav/vurdering/vurderAktivitetskravSkjemaTypes";
+import { VurderAktivitetskravSkjemaProps } from "@/sider/aktivitetskrav/vurdering/vurderAktivitetskravSkjemaTypes";
 import { useForm, useController } from "react-hook-form";
 import { SkjemaHeading } from "@/sider/aktivitetskrav/vurdering/SkjemaHeading";
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
 import { Brevmal } from "@/data/aktivitetskrav/forhandsvarselTexts";
-import { BoundedDatePicker } from "@/components/BoundedDatePicker";
+import BoundedDatePicker from "@/components/BoundedDatePicker";
 import dayjs from "dayjs";
 
 const texts = {
@@ -45,8 +42,8 @@ const brevMalTexts: {
   [Brevmal.UTLAND]: "Bosatt i utlandet",
 };
 
-export interface SendForhandsvarselSkjemaValues
-  extends AktivitetskravSkjemaValues {
+interface SendForhandsvarselSkjemaValues {
+  begrunnelse: string;
   fristDato: Date;
 }
 

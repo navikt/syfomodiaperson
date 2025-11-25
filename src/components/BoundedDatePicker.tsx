@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
 import { toDateOnly } from "@/utils/datoUtils";
 
-export interface BoundedDatePickerProps {
+interface Props {
   fromDate: Date;
   toDate: Date;
   label: React.ReactNode;
@@ -13,7 +13,7 @@ export interface BoundedDatePickerProps {
   onChange: (date: Date | undefined) => void;
 }
 
-export function BoundedDatePicker({
+export default function BoundedDatePicker({
   fromDate,
   toDate,
   label,
@@ -22,7 +22,7 @@ export function BoundedDatePicker({
   validationMessage,
   defaultSelected,
   onChange,
-}: BoundedDatePickerProps) {
+}: Props) {
   const [internalError, setInternalError] = useState<string | undefined>();
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate,
