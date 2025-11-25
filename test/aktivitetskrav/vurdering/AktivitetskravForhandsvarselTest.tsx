@@ -276,7 +276,6 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       const formatted = dayjs(targetDate).format("DD.MM.YYYY");
       changeTextInput(fristInput, formatted);
 
-      fireEvent.blur(fristInput);
       await clickButton("Send");
 
       let sendForhandsvarselMutation;
@@ -295,11 +294,8 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
       changeTextInput(fristInput, "2025/01/01");
 
-      fireEvent.blur(fristInput);
-
-      expect(await screen.findByText("Ugyldig datoformat. Bruk dd.mm.åååå")).to
-        .exist;
       await clickButton("Send");
+      expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
       expect(queryClient.getMutationCache().getAll().length).to.equal(0);
     });
     it("Viser feil ved fristdato utenfor gyldig intervall", async () => {
@@ -310,10 +306,20 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       const formattedTooEarly = dayjs(tooEarly).format("DD.MM.YYYY");
       changeTextInput(fristInput, formattedTooEarly);
 
-      fireEvent.blur(fristInput);
-
-      expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
       await clickButton("Send");
+      expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
+      expect(queryClient.getMutationCache().getAll().length).to.equal(0);
+    });
+    it("Viser feil ved fristdato utenfor gyldig intervall ved forhåndsvisning", async () => {
+      renderVurderAktivitetskrav(aktivitetskrav);
+      await clickTab(tabTexts["FORHANDSVARSEL"]);
+      const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
+      const tooEarly = daysFromToday(10);
+      const formattedTooEarly = dayjs(tooEarly).format("DD.MM.YYYY");
+      changeTextInput(fristInput, formattedTooEarly);
+
+      await clickButton("Forhåndsvisning");
+      expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
       expect(queryClient.getMutationCache().getAll().length).to.equal(0);
     });
     it("Viser required feil ved tom fristdato", async () => {
@@ -322,10 +328,9 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
       changeTextInput(fristInput, "");
 
-      fireEvent.blur(fristInput);
+      await clickButton("Send");
 
       expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
-      await clickButton("Send");
       expect(queryClient.getMutationCache().getAll().length).to.equal(0);
     });
   });

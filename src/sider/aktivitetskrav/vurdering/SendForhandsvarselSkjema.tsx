@@ -66,7 +66,10 @@ export const SendForhandsvarselSkjema = ({
     handleSubmit,
     reset,
     control,
-  } = useForm<SendForhandsvarselSkjemaValues>({ defaultValues });
+  } = useForm<SendForhandsvarselSkjemaValues>({
+    defaultValues,
+    mode: "onChange",
+  });
   const threeWeeks = toDateOnly(addWeeks(new Date(), 3));
   const sixWeeks = toDateOnly(addWeeks(new Date(), 6));
   const { field: fristField, fieldState: fristFieldState } = useController<
@@ -100,7 +103,11 @@ export const SendForhandsvarselSkjema = ({
     }
   };
 
-  const handlePreviewButtonClick = () => setShowForhandsvisning(true);
+  const handlePreviewButtonClick = () => {
+    handleSubmit(() => {
+      setShowForhandsvisning(true);
+    })();
+  };
 
   const handleBrevmalChanged = (
     e: ChangeEvent<HTMLSelectElement> & { target: { value: Brevmal } }
@@ -124,7 +131,6 @@ export const SendForhandsvarselSkjema = ({
             </div>
           }
           error={fristFieldState.error && fristFieldState.error.message}
-          validationMessage={texts.missingFristDato}
         />
         <Select
           size="small"
