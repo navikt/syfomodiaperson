@@ -13,10 +13,6 @@ export const erAnsattDev = (): boolean => {
   return window.location.href.indexOf("ansatt.dev.nav.no") > -1;
 };
 
-export const finnMiljoStreng = () => {
-  return erDev() ? "-q1" : "";
-};
-
 export const erLokal = (): boolean => {
   return window.location.host.indexOf("localhost") > -1;
 };
