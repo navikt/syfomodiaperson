@@ -5,9 +5,8 @@ interface Props {
   fromDate: Date;
   toDate: Date;
   label: React.ReactNode;
-  size?: "medium" | "small";
   error?: string;
-  defaultSelected?: Date;
+  defaultSelected: Date;
   onChange: (date: Date | undefined) => void;
 }
 
@@ -15,7 +14,6 @@ export default function BoundedDatePicker({
   fromDate,
   toDate,
   label,
-  size = "small",
   error,
   defaultSelected,
   onChange,
@@ -37,7 +35,7 @@ export default function BoundedDatePicker({
         {...inputProps}
         label={label}
         error={internalError ?? error}
-        size={size}
+        size={"small"}
       />
     </DatePicker>
   );
