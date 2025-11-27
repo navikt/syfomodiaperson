@@ -1,13 +1,16 @@
 import React from "react";
 import UtdragOppfolgingsplaner from "./UtdragOppfolgingsplaner";
-import { BodyShort, Box, Heading } from "@navikt/ds-react";
+import { BodyShort, Box, Heading, Link } from "@navikt/ds-react";
 import Sykmeldinger from "./Sykmeldinger";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
+import { finnNaisUrlIntern } from "@/utils/miljoUtil";
 
 const texts = {
   header: "Utdrag fra sykefraværet",
+  samtalereferat: "Samtalereferat",
+  kommunikasjonIModiapersonoversikt: "Kommunikasjon i Modia Personoversikt",
 };
 
 function tilfelleText(start: Date, end: Date, varighet: number) {
@@ -15,6 +18,22 @@ function tilfelleText(start: Date, end: Date, varighet: number) {
     start,
     end
   )} (${varighet} uker).`;
+}
+
+function Samtalereferat() {
+  return (
+    <div>
+      <Heading size="small" level="3">
+        {texts.samtalereferat}
+      </Heading>
+      <Link
+        href={`https://modiapersonoversikt${finnNaisUrlIntern()}/person/meldinger`}
+        target="_blank"
+      >
+        {texts.kommunikasjonIModiapersonoversikt}
+      </Link>
+    </div>
+  );
 }
 
 interface Props {
@@ -52,6 +71,7 @@ export default function UtdragFraSykefravaeret({
         selectedOppfolgingstilfelle={oppfolgingstilfelle}
       />
       <Sykmeldinger selectedOppfolgingstilfelle={oppfolgingstilfelle} />
+      <Samtalereferat />
     </Box>
   );
 }
