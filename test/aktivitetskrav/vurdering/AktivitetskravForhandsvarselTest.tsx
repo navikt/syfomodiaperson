@@ -18,6 +18,7 @@ import {
   clickTab,
   getTextInput,
   getTooLongText,
+  daysFromToday,
 } from "../../testUtils";
 import {
   AktivitetskravDTO,
@@ -38,6 +39,7 @@ import {
   forhandsvarselAktivitetskrav,
   tabTexts,
 } from "./vurderingTestUtils";
+import dayjs from "dayjs";
 
 let queryClient: QueryClient;
 
@@ -122,13 +124,11 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       const expectedVurdering: SendForhandsvarselDTO = {
         fritekst: enLangBeskrivelse,
         document: getSendForhandsvarselDocument(enLangBeskrivelse),
-        frist: expectedFrist,
+        frist: dayjs(expectedFrist).format("YYYY-MM-DD"),
       };
       expect(vurdering.fritekst).to.deep.equal(expectedVurdering.fritekst);
       expect(vurdering.document).to.deep.equal(expectedVurdering.document);
-      expect(vurdering.frist.toDateString()).to.deep.equal(
-        expectedVurdering.frist.toDateString()
-      );
+      expect(vurdering.frist).to.deep.equal(expectedVurdering.frist);
 
       await waitFor(
         () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist
@@ -174,13 +174,11 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
           enLangBeskrivelse,
           Brevmal.UTEN_ARBEIDSGIVER
         ),
-        frist: expectedFrist,
+        frist: dayjs(expectedFrist).format("YYYY-MM-DD"),
       };
       expect(vurdering.fritekst).to.deep.equal(expectedVurdering.fritekst);
       expect(vurdering.document).to.deep.equal(expectedVurdering.document);
-      expect(vurdering.frist.toDateString()).to.deep.equal(
-        expectedVurdering.frist.toDateString()
-      );
+      expect(vurdering.frist).to.deep.equal(expectedVurdering.frist);
 
       await waitFor(
         () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist
@@ -226,13 +224,11 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
           enLangBeskrivelse,
           Brevmal.UTLAND
         ),
-        frist: expectedFrist,
+        frist: dayjs(expectedFrist).format("YYYY-MM-DD"),
       };
       expect(vurdering.fritekst).to.deep.equal(expectedVurdering.fritekst);
       expect(vurdering.document).to.deep.equal(expectedVurdering.document);
-      expect(vurdering.frist.toDateString()).to.deep.equal(
-        expectedVurdering.frist.toDateString()
-      );
+      expect(vurdering.frist).to.deep.equal(expectedVurdering.frist);
 
       await waitFor(
         () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist
@@ -268,6 +264,74 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       await clickButton("Send");
 
       expect(await screen.findByText("1 tegn for mye")).to.exist;
+    });
+    it("Tillater valg av fristDato innenfor 3-6 uker og sender valgt frist", async () => {
+      renderVurderAktivitetskrav(aktivitetskrav);
+      stubVurderAktivitetskravForhandsvarselApi(aktivitetskrav.uuid);
+      await clickTab(tabTexts["FORHANDSVARSEL"]);
+      const beskrivelseInput = getTextInput("Begrunnelse (obligatorisk)");
+      changeTextInput(beskrivelseInput, enLangBeskrivelse);
+      const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
+      const targetDate = daysFromToday(25);
+      const formatted = dayjs(targetDate).format("DD.MM.YYYY");
+      changeTextInput(fristInput, formatted);
+
+      await clickButton("Send");
+
+      let sendForhandsvarselMutation;
+      await waitFor(() => {
+        sendForhandsvarselMutation = queryClient.getMutationCache().getAll()[0];
+      });
+      expect(sendForhandsvarselMutation).to.exist;
+      const vurdering = sendForhandsvarselMutation.state
+        .variables as unknown as SendForhandsvarselDTO;
+      const expectedFristString = dayjs(targetDate).format("YYYY-MM-DD");
+      expect(vurdering.frist).to.equal(expectedFristString);
+    });
+    it("Viser feil ved ugyldig datoformat i fristdato", async () => {
+      renderVurderAktivitetskrav(aktivitetskrav);
+      await clickTab(tabTexts["FORHANDSVARSEL"]);
+      const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
+      changeTextInput(fristInput, "2025/01/01");
+
+      await clickButton("Send");
+      expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
+      expect(queryClient.getMutationCache().getAll().length).to.equal(0);
+    });
+    it("Viser feil ved fristdato utenfor gyldig intervall", async () => {
+      renderVurderAktivitetskrav(aktivitetskrav);
+      await clickTab(tabTexts["FORHANDSVARSEL"]);
+      const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
+      const tooEarly = daysFromToday(10);
+      const formattedTooEarly = dayjs(tooEarly).format("DD.MM.YYYY");
+      changeTextInput(fristInput, formattedTooEarly);
+
+      await clickButton("Send");
+      expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
+      expect(queryClient.getMutationCache().getAll().length).to.equal(0);
+    });
+    it("Viser feil ved fristdato utenfor gyldig intervall ved forhåndsvisning", async () => {
+      renderVurderAktivitetskrav(aktivitetskrav);
+      await clickTab(tabTexts["FORHANDSVARSEL"]);
+      const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
+      const tooEarly = daysFromToday(10);
+      const formattedTooEarly = dayjs(tooEarly).format("DD.MM.YYYY");
+      changeTextInput(fristInput, formattedTooEarly);
+
+      await clickButton("Forhåndsvisning");
+      expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
+      expect(queryClient.getMutationCache().getAll().length).to.equal(0);
+    });
+    it("Viser required feil ved tom fristdato", async () => {
+      renderVurderAktivitetskrav(aktivitetskrav);
+      await clickTab(tabTexts["FORHANDSVARSEL"]);
+      const fristInput = screen.getByRole("textbox", { name: /Svarfrist/ });
+      changeTextInput(fristInput, "");
+
+      await clickButton("Send");
+
+      expect(await screen.findByText("Vennligst velg en gyldig dato")).to.exist;
+      expect(queryClient.getMutationCache().getAll().length).to.equal(0);
     });
   });
   describe("ForhandsvarselOppsummering", () => {

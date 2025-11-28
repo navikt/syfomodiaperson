@@ -2,19 +2,18 @@ import React, { ChangeEvent, useState } from "react";
 import { SendForhandsvarselDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { useAktivitetskravVurderingDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVurderingDocument";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
+import { addWeeks, toDateOnly } from "@/utils/datoUtils";
 import { ButtonRow } from "@/components/Layout";
 import { Button, HelpText, Label, Select, Textarea } from "@navikt/ds-react";
 import { useSendForhandsvarsel } from "@/data/aktivitetskrav/useSendForhandsvarsel";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import {
-  AktivitetskravSkjemaValues,
-  VurderAktivitetskravSkjemaProps,
-} from "@/sider/aktivitetskrav/vurdering/vurderAktivitetskravSkjemaTypes";
-import { useForm } from "react-hook-form";
+import { VurderAktivitetskravSkjemaProps } from "@/sider/aktivitetskrav/vurdering/vurderAktivitetskravSkjemaTypes";
+import { useForm, useController } from "react-hook-form";
 import { SkjemaHeading } from "@/sider/aktivitetskrav/vurdering/SkjemaHeading";
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
 import { Brevmal } from "@/data/aktivitetskrav/forhandsvarselTexts";
-import { InfoUtsattFristJuletid } from "@/components/InfoUtsattFristJuletid";
+import BoundedDatePicker from "@/components/BoundedDatePicker";
+import dayjs from "dayjs";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -24,11 +23,15 @@ const texts = {
   forhandsvisning: "Forhåndsvisning",
   forhandsvisningLabel: "Forhåndsvis forhåndsvarselet",
   missingBeskrivelse: "Vennligst angi begrunnelse",
+  missingFristDato: "Vennligst velg en gyldig dato",
   sendVarselButtonText: "Send",
   avbrytButtonText: "Avbryt",
   malLabel: "Velg arbeidssituasjon",
   malHelptext:
     "Her kan du velge mellom ulike brevmaler som er tilpasset den sykmeldtes arbeidssituasjon",
+  svarfristLabel: "Svarfrist",
+  svarfristHelptext:
+    "Her kan du sette tilpasset/egen frist i forhåndsvarslet. Du kan ikke gi mindre enn 3 uker frist, og ikke mer enn 6 uker.",
 };
 
 const brevMalTexts: {
@@ -39,7 +42,16 @@ const brevMalTexts: {
   [Brevmal.UTLAND]: "Bosatt i utlandet",
 };
 
-const defaultValues = { begrunnelse: "", arsak: undefined };
+interface SendForhandsvarselSkjemaValues {
+  begrunnelse: string;
+  fristDato: Date;
+}
+
+const defaultValues: SendForhandsvarselSkjemaValues = {
+  begrunnelse: "",
+  fristDato: getForhandsvarselFrist(),
+};
+
 const begrunnelseMaxLength = 5000;
 
 export const SendForhandsvarselSkjema = ({
@@ -53,20 +65,36 @@ export const SendForhandsvarselSkjema = ({
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm<AktivitetskravSkjemaValues>({ defaultValues });
+    control,
+  } = useForm<SendForhandsvarselSkjemaValues>({
+    defaultValues,
+    mode: "onChange",
+  });
+  const threeWeeks = toDateOnly(addWeeks(new Date(), 3));
+  const sixWeeks = toDateOnly(addWeeks(new Date(), 6));
+  const { field: fristField, fieldState: fristFieldState } = useController<
+    SendForhandsvarselSkjemaValues,
+    "fristDato"
+  >({
+    name: "fristDato",
+    control,
+    rules: {
+      required: texts.missingFristDato,
+    },
+  });
   const { getForhandsvarselDocument } = useAktivitetskravVurderingDocument();
   const [showForhandsvisning, setShowForhandsvisning] = useState(false);
 
-  const submit = (values: AktivitetskravSkjemaValues) => {
-    const forhandsvarselFrist = getForhandsvarselFrist();
+  const submit = (values: SendForhandsvarselSkjemaValues) => {
+    const fristDate = values.fristDato;
     const forhandsvarselDTO: SendForhandsvarselDTO = {
       fritekst: values.begrunnelse,
       document: getForhandsvarselDocument({
         mal: brevmal,
         begrunnelse: values.begrunnelse,
-        frist: forhandsvarselFrist,
+        frist: fristDate,
       }),
-      frist: forhandsvarselFrist,
+      frist: dayjs(fristDate).format("YYYY-MM-DD"),
     };
     if (aktivitetskravUuid) {
       sendForhandsvarsel.mutate(forhandsvarselDTO, {
@@ -75,7 +103,11 @@ export const SendForhandsvarselSkjema = ({
     }
   };
 
-  const handlePreviewButtonClick = () => setShowForhandsvisning(true);
+  const handlePreviewButtonClick = () => {
+    handleSubmit(() => {
+      setShowForhandsvisning(true);
+    })();
+  };
 
   const handleBrevmalChanged = (
     e: ChangeEvent<HTMLSelectElement> & { target: { value: Brevmal } }
@@ -86,23 +118,38 @@ export const SendForhandsvarselSkjema = ({
   return (
     <form onSubmit={handleSubmit(submit)}>
       <SkjemaHeading title={texts.title} />
-      <Select
-        size="small"
-        className="w-fit mb-4"
-        label={
-          <div className="flex gap-1 items-center">
-            <Label size="small">{texts.malLabel}</Label>
-            <HelpText placement="right">{texts.malHelptext}</HelpText>
-          </div>
-        }
-        onChange={handleBrevmalChanged}
-      >
-        {Object.keys(brevMalTexts).map((key, index) => (
-          <option key={index} value={key as Brevmal}>
-            {brevMalTexts[key]}
-          </option>
-        ))}
-      </Select>
+      <div className="flex gap-6 items-start mb-4">
+        <BoundedDatePicker
+          fromDate={threeWeeks}
+          toDate={sixWeeks}
+          defaultSelected={fristField.value}
+          onChange={(date) => fristField.onChange(date as Date)}
+          label={
+            <div className="flex gap-1 items-center">
+              <Label size="small">{texts.svarfristLabel}</Label>
+              <HelpText placement="right">{texts.svarfristHelptext}</HelpText>
+            </div>
+          }
+          error={fristFieldState.error && fristFieldState.error.message}
+        />
+        <Select
+          size="small"
+          className="w-fit"
+          label={
+            <div className="flex gap-1 items-center">
+              <Label size="small">{texts.malLabel}</Label>
+              <HelpText placement="right">{texts.malHelptext}</HelpText>
+            </div>
+          }
+          onChange={handleBrevmalChanged}
+        >
+          {Object.keys(brevMalTexts).map((key, index) => (
+            <option key={index} value={key as Brevmal}>
+              {brevMalTexts[key]}
+            </option>
+          ))}
+        </Select>
+      </div>
       <Textarea
         className="mb-8"
         {...register("begrunnelse", {
@@ -120,7 +167,6 @@ export const SendForhandsvarselSkjema = ({
       {sendForhandsvarsel.isError && (
         <SkjemaInnsendingFeil error={sendForhandsvarsel.error} />
       )}
-      <InfoUtsattFristJuletid />
       <ButtonRow>
         <Button loading={sendForhandsvarsel.isPending} type="submit">
           {texts.sendVarselButtonText}
@@ -141,7 +187,7 @@ export const SendForhandsvarselSkjema = ({
           getForhandsvarselDocument({
             mal: brevmal,
             begrunnelse: watch("begrunnelse"),
-            frist: getForhandsvarselFrist(),
+            frist: watch("fristDato") || getForhandsvarselFrist(),
           })
         }
       />

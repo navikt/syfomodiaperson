@@ -294,6 +294,8 @@ export const addDays = (date: Date, numberOfDays: number): Date => {
   return dayjs(date).add(numberOfDays, "days").toDate();
 };
 
+export const toDateOnly = (date: Date) => dayjs(date).startOf("day").toDate();
+
 export const getWeeksBetween = (date1, date2): number => {
   return Math.abs(dayjs(date1).diff(date2, "week"));
 };

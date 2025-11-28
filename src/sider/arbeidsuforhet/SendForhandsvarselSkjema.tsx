@@ -10,7 +10,6 @@ import {
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { useSaveVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSaveVurderingArbeidsuforhet";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
-import { InfoUtsattFristJuletid } from "@/components/InfoUtsattFristJuletid";
 import { useNavigate } from "react-router";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import { useNotification } from "@/context/notification/NotificationContext";
@@ -108,7 +107,6 @@ export default function SendForhandsvarselSkjema() {
         {sendForhandsvarsel.isError && (
           <SkjemaInnsendingFeil error={sendForhandsvarsel.error} />
         )}
-        <InfoUtsattFristJuletid />
         <div className="flex gap-4">
           <Button loading={sendForhandsvarsel.isPending} type="submit">
             {texts.sendVarselButtonText}

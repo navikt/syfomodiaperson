@@ -107,7 +107,7 @@ export interface CreateAktivitetskravVurderingDTO extends NewVurderingDTO {
 export interface SendForhandsvarselDTO {
   fritekst: string;
   document: DocumentComponentDto[];
-  frist: Date;
+  frist: string;
 }
 
 export interface InnstillingOmStansVurderingDTO extends NewVurderingDTO {
