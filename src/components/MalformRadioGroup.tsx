@@ -6,7 +6,7 @@ const texts = {
   husk: "Husk å skrive nynorsk i alle fritekstfelt",
 };
 
-export const MalformRadioGroup = () => {
+export default function MalformRadioGroup() {
   const { malform, setMalform } = useMalform();
   return (
     <RadioGroup
@@ -25,4 +25,4 @@ export const MalformRadioGroup = () => {
       </Radio>
     </RadioGroup>
   );
-};
+}

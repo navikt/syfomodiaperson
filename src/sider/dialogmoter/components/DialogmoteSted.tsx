@@ -8,17 +8,17 @@ const texts = {
   description: "F.eks: På arbeidsplassen",
 };
 
-const DialogmoteSted = (
+export default function DialogmoteSted(
   props: Omit<TextFieldProps, "label" | "description" | "maxLength" | "size">
-) => (
-  <TextField
-    type="text"
-    size="small"
-    maxLength={MAX_LENGTH_STED}
-    label={texts.label}
-    description={texts.description}
-    {...props}
-  />
-);
-
-export default DialogmoteSted;
+) {
+  return (
+    <TextField
+      type="text"
+      size="small"
+      maxLength={MAX_LENGTH_STED}
+      label={texts.label}
+      description={texts.description}
+      {...props}
+    />
+  );
+}

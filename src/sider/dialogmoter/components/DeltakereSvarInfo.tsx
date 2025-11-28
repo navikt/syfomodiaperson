@@ -4,11 +4,11 @@ import { ArbeidsgiverSvar } from "@/sider/dialogmoter/components/svar/Arbeidsgiv
 import { ArbeidstakerSvar } from "@/sider/dialogmoter/components/svar/ArbeidstakerSvar";
 import { BehandlerSvar } from "@/sider/dialogmoter/components/svar/BehandlerSvar";
 
-interface DeltakereSvarInfoProps {
+interface Props {
   dialogmote: DialogmoteDTO;
 }
 
-export const DeltakereSvarInfo = ({ dialogmote }: DeltakereSvarInfoProps) => {
+export default function DeltakereSvarInfo({ dialogmote }: Props) {
   return (
     <div className="flex flex-col w-full gap-4">
       <ArbeidsgiverSvar
@@ -24,4 +24,4 @@ export const DeltakereSvarInfo = ({ dialogmote }: DeltakereSvarInfoProps) => {
       )}
     </div>
   );
-};
+}

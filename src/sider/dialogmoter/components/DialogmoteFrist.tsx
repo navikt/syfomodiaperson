@@ -5,7 +5,7 @@ import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandi
 
 const FRIST_DIALOGMOTE2_IN_WEEKS = 26;
 
-export const DialogmoteFrist = () => {
+export default function DialogmoteFrist() {
   const { hasActiveOppfolgingstilfelle, latestOppfolgingstilfelle } =
     useOppfolgingstilfellePersonQuery();
   const { isKandidat } = useDialogmotekandidat();
@@ -21,4 +21,4 @@ export const DialogmoteFrist = () => {
       getFrist(latestOppfolgingstilfelle.start)
     )}`}</p>
   ) : null;
-};
+}

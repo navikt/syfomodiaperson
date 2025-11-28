@@ -20,9 +20,9 @@ import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
 import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
 import { Alert, Box, Button } from "@navikt/ds-react";
-import { MalformRadioGroup } from "@/components/MalformRadioGroup";
+import MalformRadioGroup from "@/components/MalformRadioGroup";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
-import { DialogmoteDato } from "@/sider/dialogmoter/components/DialogmoteDato";
+import DialogmoteDato from "@/sider/dialogmoter/components/DialogmoteDato";
 import DialogmoteKlokkeslett from "@/sider/dialogmoter/components/DialogmoteKlokkeslett";
 import DialogmoteSted, {
   MAX_LENGTH_STED,
@@ -31,7 +31,7 @@ import DialogmoteVideolink from "@/sider/dialogmoter/components/DialogmoteVideol
 import { FormProvider, useForm } from "react-hook-form";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import TextareaField from "@/sider/dialogmoter/components/TextareaField";
-import { DialogmoteFrist } from "@/sider/dialogmoter/components/DialogmoteFrist";
+import DialogmoteFrist from "@/sider/dialogmoter/components/DialogmoteFrist";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 export interface DialogmoteInnkallingSkjemaValues extends TidStedSkjemaValues {
@@ -109,7 +109,7 @@ const toInnkalling = (
   return innkalling;
 };
 
-export const DialogmoteInnkallingSkjema = () => {
+export default function DialogmoteInnkallingSkjema() {
   const fnr = useValgtPersonident();
   const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
@@ -277,4 +277,4 @@ export const DialogmoteInnkallingSkjema = () => {
       </FormProvider>
     </Box>
   );
-};
+}

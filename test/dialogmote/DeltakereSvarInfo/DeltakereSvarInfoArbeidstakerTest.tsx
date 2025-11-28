@@ -13,7 +13,7 @@ import {
   SvarType,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { queryClientWithMockData } from "../../testQueryClient";
-import { DeltakereSvarInfo } from "@/sider/dialogmoter/components/DeltakereSvarInfo";
+import DeltakereSvarInfo from "@/sider/dialogmoter/components/DeltakereSvarInfo";
 
 let queryClient: any;
 

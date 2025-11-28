@@ -14,7 +14,7 @@ import {
   dialogmoteIkkeAktuellRoutePath,
 } from "@/routers/AppRouter";
 import { Link } from "react-router-dom";
-import { DialogmoteFrist } from "@/sider/dialogmoter/components/DialogmoteFrist";
+import DialogmoteFrist from "@/sider/dialogmoter/components/DialogmoteFrist";
 
 const texts = {
   bekreftetMote: "Bekreftet møte",
