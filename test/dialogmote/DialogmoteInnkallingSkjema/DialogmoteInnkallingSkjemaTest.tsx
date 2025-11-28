@@ -32,8 +32,7 @@ import userEvent from "@testing-library/user-event";
 import { getInnkallingTexts } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import { kontaktinformasjonMock } from "@/mocks/syfoperson/persondataMock";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
-import {
-  DialogmoteInnkallingSkjema,
+import DialogmoteInnkallingSkjema, {
   texts,
 } from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
 import { behandlereQueryKeys } from "@/data/behandler/behandlereQueryHooks";

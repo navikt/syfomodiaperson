@@ -10,7 +10,7 @@ import Sidetopp from "@/components/side/Sidetopp";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/sider/dialogmoter/components/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import Feilmelding from "@/components/Feilmelding";
 import * as Tredelt from "@/components/side/TredeltSide";
-import { DeltakereSvarInfo } from "@/sider/dialogmoter/components/DeltakereSvarInfo";
+import DeltakereSvarInfo from "@/sider/dialogmoter/components/DeltakereSvarInfo";
 import { BodyLong, Box, Heading } from "@navikt/ds-react";
 import { MoteIkonBlaaImage } from "../../../../../img/ImageComponents";
 import { MalformProvider } from "@/context/malform/MalformContext";
@@ -23,7 +23,7 @@ const texts = {
   motesvarSubheading: "Viser svar på siste innkalling/endring",
 };
 
-const EndreDialogmoteContainer = () => {
+export default function EndreDialogmoteContainer() {
   const { dialogmoteUuid } = useParams<{
     dialogmoteUuid: string;
   }>();
@@ -72,6 +72,4 @@ const EndreDialogmoteContainer = () => {
       </SideLaster>
     </Side>
   );
-};
-
-export default EndreDialogmoteContainer;
+}

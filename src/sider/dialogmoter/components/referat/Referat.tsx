@@ -37,7 +37,7 @@ import {
   TextField,
   VStack,
 } from "@navikt/ds-react";
-import { MalformRadioGroup } from "@/components/MalformRadioGroup";
+import MalformRadioGroup from "@/components/MalformRadioGroup";
 import { Malform } from "@/context/malform/MalformContext";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import {

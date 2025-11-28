@@ -5,7 +5,7 @@ import { useController } from "react-hook-form";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
 import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
 
-export const DialogmoteDato = () => {
+export default function DialogmoteDato() {
   const now = new Date();
   const today = dayjs(now);
   const yearFromToday = today.add(1, "year").toDate();
@@ -40,4 +40,4 @@ export const DialogmoteDato = () => {
       />
     </DatePicker>
   );
-};
+}

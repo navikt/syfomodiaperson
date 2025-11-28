@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { DialogmoteSideContainer } from "../DialogmoteSideContainer";
+import DialogmoteSideContainer from "../DialogmoteSideContainer";
 import Referat, { ReferatMode } from "./Referat";
 import { MalformProvider } from "@/context/malform/MalformContext";
 
@@ -8,14 +8,14 @@ const texts = {
   pageHeader: "Referat fra dialogmøte",
 };
 
-const DialogmoteReferatContainer = (): ReactElement => (
-  <DialogmoteSideContainer title={texts.pageTitle} header={texts.pageHeader}>
-    {(dialogmote) => (
-      <MalformProvider>
-        <Referat dialogmote={dialogmote} mode={ReferatMode.NYTT} />
-      </MalformProvider>
-    )}
-  </DialogmoteSideContainer>
-);
-
-export default DialogmoteReferatContainer;
+export default function DialogmoteReferatContainer(): ReactElement {
+  return (
+    <DialogmoteSideContainer title={texts.pageTitle} header={texts.pageHeader}>
+      {(dialogmote) => (
+        <MalformProvider>
+          <Referat dialogmote={dialogmote} mode={ReferatMode.NYTT} />
+        </MalformProvider>
+      )}
+    </DialogmoteSideContainer>
+  );
+}

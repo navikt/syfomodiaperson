@@ -5,16 +5,16 @@ const texts = {
   label: "Klokkeslett",
 };
 
-const DialogmoteKlokkeslett = (
+export default function DialogmoteKlokkeslett(
   props: Omit<TextFieldProps, "label" | "size">
-) => (
-  <TextField
-    type="time"
-    autoComplete="off"
-    size="small"
-    label={texts.label}
-    {...props}
-  />
-);
-
-export default DialogmoteKlokkeslett;
+) {
+  return (
+    <TextField
+      type="time"
+      autoComplete="off"
+      size="small"
+      label={texts.label}
+      {...props}
+    />
+  );
+}

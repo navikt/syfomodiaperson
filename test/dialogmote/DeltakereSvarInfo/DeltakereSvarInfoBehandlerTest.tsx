@@ -17,7 +17,7 @@ import {
   queryClientWithMockData,
   testQueryClient,
 } from "../../testQueryClient";
-import { DeltakereSvarInfo } from "@/sider/dialogmoter/components/DeltakereSvarInfo";
+import DeltakereSvarInfo from "@/sider/dialogmoter/components/DeltakereSvarInfo";
 
 let queryClient: QueryClient;
 

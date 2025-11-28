@@ -18,15 +18,15 @@ import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { narmesteLederForVirksomhet } from "@/utils/ledereUtils";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { FormProvider, useForm } from "react-hook-form";
-import { DialogmoteDato } from "@/sider/dialogmoter/components/DialogmoteDato";
+import DialogmoteDato from "@/sider/dialogmoter/components/DialogmoteDato";
 import DialogmoteSted, {
   MAX_LENGTH_STED,
 } from "@/sider/dialogmoter/components/DialogmoteSted";
 import DialogmoteVideolink from "@/sider/dialogmoter/components/DialogmoteVideolink";
 import DialogmoteKlokkeslett from "@/sider/dialogmoter/components/DialogmoteKlokkeslett";
-import { MalformRadioGroup } from "@/components/MalformRadioGroup";
+import MalformRadioGroup from "@/components/MalformRadioGroup";
 import TextareaField from "@/sider/dialogmoter/components/TextareaField";
-import { DialogmoteFrist } from "@/sider/dialogmoter/components/DialogmoteFrist";
+import DialogmoteFrist from "@/sider/dialogmoter/components/DialogmoteFrist";
 
 export const texts = {
   send: "Send",
@@ -67,7 +67,7 @@ interface Props {
   dialogmote: DialogmoteDTO;
 }
 
-const EndreDialogmoteSkjema = ({ dialogmote }: Props) => {
+export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
   const { sted, arbeidsgiver, tid, uuid, behandler, videoLink } = dialogmote;
   const fnr = useValgtPersonident();
   const { currentLedere } = useLedereQuery();
@@ -102,9 +102,9 @@ const EndreDialogmoteSkjema = ({ dialogmote }: Props) => {
     watch,
   } = methods;
 
-  const toEndreTidSted = (
+  function toEndreTidSted(
     values: EndreTidStedSkjemaValues
-  ): EndreTidStedDialogmoteDTO => {
+  ): EndreTidStedDialogmoteDTO {
     const endreTidStedDto: EndreTidStedDialogmoteDTO = {
       ...toTidStedDto(values),
       arbeidstaker: {
@@ -124,7 +124,7 @@ const EndreDialogmoteSkjema = ({ dialogmote }: Props) => {
     }
 
     return endreTidStedDto;
-  };
+  }
 
   const submit = (values: EndreTidStedSkjemaValues) => {
     const dialogmoteEndring = toEndreTidSted(values);
@@ -261,6 +261,4 @@ const EndreDialogmoteSkjema = ({ dialogmote }: Props) => {
       </FormProvider>
     </Box>
   );
-};
-
-export default EndreDialogmoteSkjema;
+}

@@ -14,7 +14,7 @@ import MotehistorikkPanel from "@/sider/dialogmoter/components/motehistorikk/Mot
 import { useGetDialogmoteunntakQuery } from "@/data/dialogmotekandidat/useGetDialogmoteunntakQuery";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { MalformProvider } from "@/context/malform/MalformContext";
-import { DialogmoteInnkallingSkjema } from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
+import DialogmoteInnkallingSkjema from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
 import MotebehovHistorikk from "@/sider/dialogmoter/components/motehistorikk/MotebehovHistorikk";
 import { useGetDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
 
@@ -23,7 +23,7 @@ const texts = {
   tilbake: "Tilbake",
 };
 
-export const DialogmoteInnkallingSide = (): ReactElement => {
+function DialogmoteInnkallingSide(): ReactElement {
   const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
 
   return (
@@ -34,7 +34,7 @@ export const DialogmoteInnkallingSide = (): ReactElement => {
       <DialogmoteInnkallingSkjema />
     </div>
   );
-};
+}
 
 export default function DialogmoteInnkallingContainer(): ReactElement {
   const { isLoading: henterLedere, isError: hentingLedereFeilet } =

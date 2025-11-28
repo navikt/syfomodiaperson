@@ -13,7 +13,7 @@ import { Alert, Box, Button, Label } from "@navikt/ds-react";
 import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { useForm } from "react-hook-form";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
-import { MalformRadioGroup } from "@/components/MalformRadioGroup";
+import MalformRadioGroup from "@/components/MalformRadioGroup";
 import TextareaField from "@/sider/dialogmoter/components/TextareaField";
 
 export const MAX_LENGTH_AVLYS_BEGRUNNELSE = 500;

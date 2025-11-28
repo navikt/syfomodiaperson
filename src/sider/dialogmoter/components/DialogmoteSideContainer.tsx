@@ -20,11 +20,11 @@ const texts = {
   moteNotFound: "Fant ikke dialogmøte",
 };
 
-export const DialogmoteSideContainer = ({
+export default function DialogmoteSideContainer({
   title,
   header,
   children,
-}: DialogmoteSideProps): ReactElement => {
+}: DialogmoteSideProps): ReactElement {
   const { dialogmoteUuid } = useParams<{
     dialogmoteUuid: string;
   }>();
@@ -50,4 +50,4 @@ export const DialogmoteSideContainer = ({
       </SideLaster>
     </Side>
   );
-};
+}

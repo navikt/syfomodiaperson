@@ -27,8 +27,7 @@ import { behandlereQueryKeys } from "@/data/behandler/behandlereQueryHooks";
 import { renderWithRouter } from "../../testRouterUtils";
 import { stubFeatureTogglesApi } from "../../stubs/stubUnleash";
 import { MalformProvider } from "@/context/malform/MalformContext";
-import {
-  DialogmoteInnkallingSkjema,
+import DialogmoteInnkallingSkjema, {
   MAX_LENGTH_INNKALLING_FRITEKST,
 } from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
 

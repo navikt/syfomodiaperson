@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import { DialogmoteInnkallingSide } from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingContainer";
 import React from "react";
 import { queryClientWithMockData } from "../testQueryClient";
 import { MemoryRouter } from "react-router-dom";
@@ -19,6 +18,7 @@ import { daysFromToday } from "../testUtils";
 import { navEnhet } from "./testData";
 import { MalformProvider } from "@/context/malform/MalformContext";
 import { dagerMellomDatoer } from "@/utils/datoUtils";
+import DialogmoteInnkallingContainer from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingContainer";
 
 let queryClient: QueryClient;
 
@@ -56,7 +56,7 @@ const renderDialogmoteInnkallingContainer = () =>
           value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
         >
           <MalformProvider>
-            <DialogmoteInnkallingSide />
+            <DialogmoteInnkallingContainer />
           </MalformProvider>
         </ValgtEnhetContext.Provider>
       </QueryClientProvider>

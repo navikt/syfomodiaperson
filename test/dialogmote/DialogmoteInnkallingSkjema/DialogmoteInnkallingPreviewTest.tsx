@@ -20,8 +20,7 @@ import { behandlereQueryKeys } from "@/data/behandler/behandlereQueryHooks";
 import { renderWithRouter } from "../../testRouterUtils";
 import { stubFeatureTogglesApi } from "../../stubs/stubUnleash";
 import { MalformProvider } from "@/context/malform/MalformContext";
-import {
-  DialogmoteInnkallingSkjema,
+import DialogmoteInnkallingSkjema, {
   texts,
 } from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
 
