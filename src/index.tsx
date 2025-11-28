@@ -49,6 +49,7 @@ function addUmamiScript() {
     "src",
     "https://cdn.nav.no/team-researchops/sporing/sporing.js"
   );
+  script.setAttribute("data-before-send", "beforeSendHandler");
   script.setAttribute("defer", "defer");
   document.head.appendChild(script);
 }

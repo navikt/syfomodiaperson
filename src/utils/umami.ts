@@ -13,3 +13,13 @@ async function hashId(id: string): Promise<string> {
     .join("")
     .slice(0, 40);
 }
+
+function beforeSendHandler(type, payload) {
+  if (payload.id != null) {
+    return payload;
+  }
+  return null;
+}
+
+// Make the function globally accessible to make "data-before-send" in umami script work
+(window as any).beforeSendHandler = beforeSendHandler;
