@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 
 export enum StoreKey {
   MALFORM = "malform",
+  FLEXJAR_KARTLEGGGINSSPORSMAL_FEEDBACK_DATE = "flexjarKartleggingssporsmalFeedbackDate",
 }
 
-export const useLocalStorageState = <T>(key: StoreKey) => {
+export function useLocalStorageState<T>(key: StoreKey) {
   const item = localStorage.getItem(key);
   const [state, setState] = useState<T | null>(() => {
     try {
@@ -16,5 +17,5 @@ export const useLocalStorageState = <T>(key: StoreKey) => {
   useEffect(() => {
     localStorage.setItem(key, JSON.stringify(state));
   }, [state, key]);
-  return { storedValue: state, setStoredValue: setState } as const;
-};
+  return [state, setState] as const;
+}

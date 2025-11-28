@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { FLEXJAR_ROOT } from "@/apiConstants";
 import { post } from "@/api/axios";
 
-export const useFlexjarFeedback = () => {
+export function useFlexjarFeedback() {
   const path = `${FLEXJAR_ROOT}/feedback/azure`;
   const postFlexjarFeedback = (feedback: FlexjarFeedbackDTO) =>
     post(path, feedback);
@@ -10,7 +10,7 @@ export const useFlexjarFeedback = () => {
   return useMutation({
     mutationFn: postFlexjarFeedback,
   });
-};
+}
 
 export interface FlexjarFeedbackDTO {
   feedbackId: string;

@@ -14,13 +14,16 @@ import {
   useKartleggingssporsmalSvarQuery,
   useKartleggingssporsmalVurderSvar,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { getWeeksBetween, tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { EksternLenke } from "@/components/EksternLenke";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { PaddingSize } from "@/components/Layout";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";
+import KartleggingssporsmalFlexjar from "@/sider/kartleggingssporsmal/KartleggingssporsmalFlexjar";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
+import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
 
 const texts = {
   title: "Kartleggingsspørsmål",
@@ -116,6 +119,14 @@ export default function KartleggingssporsmalSide(): ReactElement {
   const answeredQuestions = getKartleggingssporsmalSvar.data;
   const vurderSvar = useKartleggingssporsmalVurderSvar();
   const kontaktinformasjon = useKontaktinfoQuery();
+  const { toggles } = useFeatureToggles();
+  const [feedbackDate] = useLocalStorageState<Date | null>(
+    StoreKey.FLEXJAR_KARTLEGGGINSSPORSMAL_FEEDBACK_DATE
+  );
+  const isFlexjarVisible =
+    toggles.isFlexjarKartleggingssporsmalEnabled &&
+    vurderSvar.isSuccess &&
+    (feedbackDate === null || getWeeksBetween(new Date(), feedbackDate) >= 12);
 
   const isPending =
     getKandidat.isPending ||
@@ -278,6 +289,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
             </EksternLenke>
           </Box>
         )}
+        {isFlexjarVisible && <KartleggingssporsmalFlexjar />}
       </SideLaster>
     </Side>
   );

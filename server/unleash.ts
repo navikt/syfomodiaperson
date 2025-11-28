@@ -49,5 +49,9 @@ export function getToggles(veilederId, enhetId) {
       "isKartleggingssporsmalEnabled",
       context
     ),
+    isFlexjarKartleggingssporsmalEnabled: unleash.isEnabled(
+      "isFlexjarKartleggingssporsmalEnabled",
+      context
+    ),
   };
 }
