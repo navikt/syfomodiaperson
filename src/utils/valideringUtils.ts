@@ -1,17 +1,19 @@
 import { genererDato } from "@/sider/dialogmoter/utils";
 import { containsWhiteSpace } from "@/utils/stringUtils";
 
+const validVideoLinks = ["https://video.nav.no", "https://videosamtale.nav.no"];
+
 export const texts = {
   timeMissing: "Vennligst angi klokkeslett",
   timePassed: "Tidspunktet har passert",
-  invalidVideoLink: "Lenken må begynne med https://video.nav.no",
+  invalidVideoLink: `Lenken må begynne med ${validVideoLinks.join(" eller ")}`,
   whiteSpaceInVideoLink: "Lenken kan ikke inneholde mellomrom",
 };
 
-export const validerKlokkeslett = (
+export function validerKlokkeslett(
   dato: string | undefined,
   klokkeslett: string | undefined
-): string | undefined => {
+): string | undefined {
   if (!klokkeslett) {
     return texts.timeMissing;
   }
@@ -23,9 +25,9 @@ export const validerKlokkeslett = (
       return texts.timePassed;
     }
   }
-};
+}
 
-export const validerVideoLink = (videoLink?: string): string | undefined => {
+export function validerVideoLink(videoLink?: string): string | undefined {
   if (!videoLink) {
     return undefined;
   }
@@ -33,7 +35,7 @@ export const validerVideoLink = (videoLink?: string): string | undefined => {
   try {
     const trimmedVideoLink = videoLink.trim();
     const url = new URL(trimmedVideoLink);
-    if (url.origin !== "https://video.nav.no") {
+    if (!validVideoLinks.includes(url.origin)) {
       return texts.invalidVideoLink;
     }
     if (containsWhiteSpace(trimmedVideoLink)) {
@@ -44,4 +46,4 @@ export const validerVideoLink = (videoLink?: string): string | undefined => {
   }
 
   return undefined;
-};
+}
