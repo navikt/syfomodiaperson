@@ -3,12 +3,16 @@ import Side from "../../../components/side/Side";
 import AlleSykmeldinger from "../sykmeldinger/AlleSykmeldinger";
 import SideLaster from "../../../components/side/SideLaster";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
-import { Heading } from "@navikt/ds-react";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { getAllUbehandledePersonOppgaver } from "@/utils/personOppgaveUtils";
 import { PersonOppgaveType } from "@/data/personoppgave/types/PersonOppgave";
 import VurderBistandsbehov from "@/sider/sykmeldinger/VurderBistandsbehov";
+import Sidetopp from "@/components/side/Sidetopp";
+
+const texts = {
+  title: "Sykmeldinger",
+};
 
 export default function SykmeldingerSide(): ReactElement {
   const { isLoading, isError, sykmeldinger } = useGetSykmeldingerQuery();
@@ -26,9 +30,7 @@ export default function SykmeldingerSide(): ReactElement {
           {ubehandletBistandsbehovOppgaver.map((oppgave) => (
             <VurderBistandsbehov oppgave={oppgave} key={oppgave.uuid} />
           ))}
-          <Heading size="xlarge" className="text-center mt-4 mb-2">
-            Sykmeldinger
-          </Heading>
+          <Sidetopp tittel={texts.title} />
           <AlleSykmeldinger sykmeldinger={sykmeldinger} />
         </div>
       </SideLaster>
