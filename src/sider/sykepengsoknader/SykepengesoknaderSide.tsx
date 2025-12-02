@@ -63,7 +63,7 @@ export default function SykepengesoknaderSide(): ReactElement {
       tittel="Sykepengesøknader"
       aktivtMenypunkt={Menypunkter.SYKEPENGESOKNADER}
     >
-      <SideLaster henter={isLoading} hentingFeilet={isError}>
+      <SideLaster isLoading={isLoading} isError={isError}>
         <div>
           <Feilstripe
             className="blokk--s"

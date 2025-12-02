@@ -32,8 +32,8 @@ export default function HistorikkContainer(): ReactElement {
   return (
     <Side tittel={texts.pageTitle} aktivtMenypunkt={Menypunkter.HISTORIKK}>
       <SideLaster
-        henter={isLoading || isTilfellerLoading}
-        hentingFeilet={isError || isTilfellerError}
+        isLoading={isLoading || isTilfellerLoading}
+        isError={isError || isTilfellerError}
         className="flex flex-col"
       >
         <Sidetopp tittel={texts.topp} />

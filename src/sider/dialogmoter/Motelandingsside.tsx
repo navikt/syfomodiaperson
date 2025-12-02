@@ -56,7 +56,7 @@ export default function Motelandingsside() {
 
   return (
     <Side tittel={texts.pageTitle} aktivtMenypunkt={Menypunkter.DIALOGMOTE}>
-      <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
+      <SideLaster isLoading={henter} isError={hentingFeilet}>
         <Sidetopp tittel={texts.dialogmoter} />
 
         <Tredelt.Container>

@@ -2,7 +2,7 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import { stubTilgangApi } from "../stubs/stubIstilgangskontroll";
-import { useTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
+import { useGetTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
 import { tilgangBrukerMock } from "@/mocks/istilgangskontroll/tilgangtilbrukerMock";
 import { testQueryClient } from "../testQueryClient";
 
@@ -18,7 +18,7 @@ describe("tilgangQueryHooks tests", () => {
 
     const wrapper = queryHookWrapper(queryClient);
 
-    const { result } = renderHook(() => useTilgangQuery(), {
+    const { result } = renderHook(() => useGetTilgangQuery(), {
       wrapper,
     });
 

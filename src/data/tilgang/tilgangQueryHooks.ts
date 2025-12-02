@@ -8,7 +8,7 @@ export const tilgangQueryKeys = {
   tilgang: (fnr: string) => ["tilgang", fnr],
 };
 
-export const useTilgangQuery = () => {
+export function useGetTilgangQuery() {
   const fnr = useValgtPersonident();
   const path = `${ISTILGANGSKONTROLL_ROOT}/tilgang/navident/person`;
   const fetchTilgang = () => get<Tilgang>(path, fnr);
@@ -17,4 +17,4 @@ export const useTilgangQuery = () => {
     queryFn: fetchTilgang,
     enabled: !!fnr,
   });
-};
+}

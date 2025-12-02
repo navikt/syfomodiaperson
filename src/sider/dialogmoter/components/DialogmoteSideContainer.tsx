@@ -37,7 +37,7 @@ export default function DialogmoteSideContainer({
 
   return (
     <Side tittel={title} aktivtMenypunkt={Menypunkter.DIALOGMOTE}>
-      <SideLaster henter={isLoading} hentingFeilet={isError}>
+      <SideLaster isLoading={isLoading} isError={isError}>
         <Sidetopp tittel={header} />
         {brukerKanIkkeVarslesDigitalt && (
           <BrukerKanIkkeVarslesPapirpostAdvarsel />

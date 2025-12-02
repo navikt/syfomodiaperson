@@ -1,4 +1,4 @@
-import { expect, describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
   mockAvbruttActiveOppfolgingsplan,
   mockAvbruttInactiveOppfolgingsplan,
@@ -6,8 +6,8 @@ import {
   mockValidActiveOppfolgingsplanWithDifferentVirksomhet,
 } from "../mockdata/mockOppfolgingsplaner";
 import {
-  activeLPSOppfolgingsplaner,
   activeOppfolgingsplaner,
+  oppfolgingsplanerLPSOpprettetIdag,
   toOppfolgingsplanLPSMedPersonoppgave,
 } from "@/utils/oppfolgingsplanerUtils";
 import {
@@ -70,7 +70,7 @@ describe("oppfolgingsplanerUtils", () => {
     });
   });
 
-  describe("activeLPSOppfolgingsplaner", () => {
+  describe("oppfolgingsplanerLPSOpprettetIdag", () => {
     it("Gives the plan created last, if more than one from a virksomhet", () => {
       const planOne = {
         uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd2",
@@ -96,7 +96,7 @@ describe("oppfolgingsplanerUtils", () => {
 
       const planer = [planMedPersonoppgaveOne, planMedPersonoppgaveTwo];
 
-      const aktiveLPSPlaner = activeLPSOppfolgingsplaner(planer);
+      const aktiveLPSPlaner = oppfolgingsplanerLPSOpprettetIdag(planer);
 
       expect(aktiveLPSPlaner.length).to.be.equal(1);
       expect(aktiveLPSPlaner[0]).to.deep.equal(planMedPersonoppgaveOne);

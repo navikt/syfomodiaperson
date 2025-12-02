@@ -41,7 +41,7 @@ export default function SenOppfolging(): ReactElement {
   return (
     <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.SENOPPFOLGING}>
       <Sidetopp tittel={texts.title} />
-      <SideLaster henter={isPending} hentingFeilet={isError}>
+      <SideLaster isLoading={isPending} isError={isError}>
         {kandidat ? (
           <div className="flex flex-col">
             <Tredelt.Container>

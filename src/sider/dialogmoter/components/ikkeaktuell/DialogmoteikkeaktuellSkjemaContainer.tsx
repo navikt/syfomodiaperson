@@ -22,7 +22,7 @@ export default function DialogmoteikkeaktuellSkjemaContainer() {
 
   return (
     <Side tittel={texts.pageTitle} aktivtMenypunkt={Menypunkter.DIALOGMOTE}>
-      <SideLaster henter={false} hentingFeilet={false}>
+      <SideLaster isLoading={false} isError={false}>
         <Sidetopp tittel={texts.pageTitle} />
         <Tredelt.Container>
           <Tredelt.FirstColumn>

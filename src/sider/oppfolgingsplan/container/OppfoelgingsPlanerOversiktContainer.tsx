@@ -4,30 +4,23 @@ import OppfolgingsplanerOversikt from "../oppfolgingsplaner/OppfolgingsplanerOve
 import { activeOppfolgingsplaner } from "@/utils/oppfolgingsplanerUtils";
 import SideLaster from "../../../components/side/SideLaster";
 import {
-  useOppfolgingsplanerLPSQuery,
-  useOppfolgingsplanerQuery,
+  useGetLPSOppfolgingsplanerQuery,
+  useGetOppfolgingsplanerQuery,
 } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 
 export default function OppfoelgingsPlanerOversiktContainer() {
-  const {
-    data: oppfolgingsplaner,
-    isError: oppfolgingsplanerHentingFeilet,
-    isLoading: henterOppfolgingsplaner,
-  } = useOppfolgingsplanerQuery();
-  const {
-    data: oppfolgingsplanerLPS,
-    isError: oppfolgingsplanerLPSHentingFeilet,
-    isLoading: henterOppfolgingsplanerLPS,
-  } = useOppfolgingsplanerLPSQuery();
+  const getOppfolgingsplaner = useGetOppfolgingsplanerQuery();
+  const getLPSOppfolgingsplaner = useGetLPSOppfolgingsplanerQuery();
 
-  const henter = henterOppfolgingsplaner || henterOppfolgingsplanerLPS;
+  const henter =
+    getOppfolgingsplaner.isLoading || getLPSOppfolgingsplaner.isLoading;
 
   const hentingFeilet =
-    oppfolgingsplanerHentingFeilet || oppfolgingsplanerLPSHentingFeilet;
+    getOppfolgingsplaner.isError || getLPSOppfolgingsplaner.isError;
 
-  const aktivePlaner = activeOppfolgingsplaner(oppfolgingsplaner);
-  const inaktivePlaner = oppfolgingsplaner.filter(
+  const aktivePlaner = activeOppfolgingsplaner(getOppfolgingsplaner.data);
+  const inaktivePlaner = getOppfolgingsplaner.data.filter(
     (plan) => !aktivePlaner.includes(plan)
   );
 
@@ -36,11 +29,11 @@ export default function OppfoelgingsPlanerOversiktContainer() {
       tittel="Oppfølgingsplaner"
       aktivtMenypunkt={Menypunkter.OPPFOELGINGSPLANER}
     >
-      <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
+      <SideLaster isLoading={henter} isError={hentingFeilet}>
         <OppfolgingsplanerOversikt
           aktivePlaner={aktivePlaner}
           inaktivePlaner={inaktivePlaner}
-          oppfolgingsplanerLPS={oppfolgingsplanerLPS}
+          oppfolgingsplanerLPS={getLPSOppfolgingsplaner.data}
         />
       </SideLaster>
     </Side>

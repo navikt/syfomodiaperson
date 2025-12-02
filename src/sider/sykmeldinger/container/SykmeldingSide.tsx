@@ -52,7 +52,7 @@ export default function SykmeldingSide() {
       tittel={texts.pageTitleSykmelding}
       aktivtMenypunkt={Menypunkter.SYKMELDINGER}
     >
-      <SideLaster henter={isLoading} hentingFeilet={isError}>
+      <SideLaster isLoading={isLoading} isError={isError}>
         <Box background="surface-default" className="p-4">
           <Sykmelding
             sykmelding={sykmelding}

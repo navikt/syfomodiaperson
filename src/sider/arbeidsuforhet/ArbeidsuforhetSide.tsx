@@ -20,7 +20,7 @@ export default function ArbeidsuforhetSide(): ReactElement {
   return (
     <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.ARBEIDSUFORHET}>
       <Sidetopp tittel={texts.title} />
-      <SideLaster henter={isLoading} hentingFeilet={isError}>
+      <SideLaster isLoading={isLoading} isError={isError}>
         <Tredelt.Container>
           <Tredelt.FirstColumn>
             <Outlet />

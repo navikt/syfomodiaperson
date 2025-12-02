@@ -16,7 +16,7 @@ export default function BehandlerdialogContainer(): ReactElement {
 
   return (
     <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.BEHANDLERDIALOG}>
-      <SideLaster henter={isLoading} hentingFeilet={isError}>
+      <SideLaster isLoading={isLoading} isError={isError}>
         <Tredelt.Container>
           <Tredelt.FirstColumn>
             <Meldinger />

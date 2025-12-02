@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import { numberOfTasks } from "@/utils/globalNavigasjonUtils";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import {
-  useOppfolgingsplanerLPSQuery,
-  useOppfolgingsplanerQuery,
+  useGetLPSOppfolgingsplanerQuery,
+  useGetOppfolgingsplanerQuery,
 } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
@@ -113,8 +113,8 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
   const refs = useRef<HTMLAnchorElement[]>([]);
 
   const personoppgaver = usePersonoppgaverQuery();
-  const oppfolgingsplaner = useOppfolgingsplanerQuery();
-  const oppfolgingsplanerLPS = useOppfolgingsplanerLPSQuery();
+  const getOppfolgingsplanerQuery = useGetOppfolgingsplanerQuery();
+  const getLPSOppfolgingsplaner = useGetLPSOppfolgingsplanerQuery();
   const motebehov = useMotebehovQuery();
   const aktivitetskrav = useAktivitetskravQuery();
   const arbeidsuforhetVurderinger = useGetArbeidsuforhetVurderingerQuery();
@@ -126,7 +126,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
 
   const isPending = featureToggles.isPending;
 
-  const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.data.map(
+  const oppfolgingsplanerLPSMedPersonOppgave = getLPSOppfolgingsplaner.data.map(
     (oppfolgingsplanLPS) =>
       toOppfolgingsplanLPSMedPersonoppgave(
         oppfolgingsplanLPS,
@@ -190,7 +190,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
         const tasks = numberOfTasks(
           menypunkt,
           motebehov.data,
-          oppfolgingsplaner.data,
+          getOppfolgingsplanerQuery.data,
           personoppgaver.data,
           oppfolgingsplanerLPSMedPersonOppgave,
           aktivitetskrav.data,
