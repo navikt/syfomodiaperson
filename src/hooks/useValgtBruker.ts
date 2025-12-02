@@ -1,6 +1,6 @@
 import { useAktivBruker } from "@/data/modiacontext/modiacontextQueryHooks";
 
-export const useValgtPersonident = (): string => {
+export function useValgtPersonident(): string {
   const { data } = useAktivBruker();
   return data?.aktivBruker || "";
-};
+}

@@ -44,43 +44,40 @@ type OppfolgingstilfellePersonQuery = {
   hasGjentakendeSykefravar: boolean;
 };
 
-export const useOppfolgingstilfellePersonQuery =
-  (): OppfolgingstilfellePersonQuery => {
-    const personIdent = useValgtPersonident();
-    const path = `${ISOPPFOLGINGSTILFELLE_ROOT}/oppfolgingstilfelle/personident`;
-    const fetchOppfolgingstilfellePerson = () =>
-      get<OppfolgingstilfellePersonDTO>(path, personIdent);
-    const query = useQuery({
-      queryKey:
-        oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-          personIdent
-        ),
-      queryFn: fetchOppfolgingstilfellePerson,
-      enabled: !!personIdent,
-      staleTime: minutesToMillis(60 * 12),
-    });
+export function useOppfolgingstilfellePersonQuery(): OppfolgingstilfellePersonQuery {
+  const personIdent = useValgtPersonident();
+  const path = `${ISOPPFOLGINGSTILFELLE_ROOT}/oppfolgingstilfelle/personident`;
+  const fetchOppfolgingstilfellePerson = () =>
+    get<OppfolgingstilfellePersonDTO>(path, personIdent);
+  const query = useQuery({
+    queryKey:
+      oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(personIdent),
+    queryFn: fetchOppfolgingstilfellePerson,
+    enabled: !!personIdent,
+    staleTime: minutesToMillis(60 * 12),
+  });
 
-    const tilfellerDescendingStart = query.data
-      ? sortByDescendingStart(query.data.oppfolgingstilfelleList)
-      : [];
+  const tilfellerDescendingStart = query.data
+    ? sortByDescendingStart(query.data.oppfolgingstilfelleList)
+    : [];
 
-    const latestOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined =
-      tilfellerDescendingStart && tilfellerDescendingStart[0];
+  const latestOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined =
+    tilfellerDescendingStart && tilfellerDescendingStart[0];
 
-    const gjentakende =
-      query.data && isGjentakendeSykefravar(query.data.oppfolgingstilfelleList);
+  const gjentakende =
+    query.data && isGjentakendeSykefravar(query.data.oppfolgingstilfelleList);
 
-    return {
-      isLoading: query.isLoading,
-      isError: query.isError,
-      latestOppfolgingstilfelle,
-      tilfellerDescendingStart,
-      hasOppfolgingstilfelle: !!latestOppfolgingstilfelle,
-      hasActiveOppfolgingstilfelle:
-        !!latestOppfolgingstilfelle && !isInactive(latestOppfolgingstilfelle),
-      hasGjentakendeSykefravar: !!gjentakende,
-    };
+  return {
+    isLoading: query.isLoading,
+    isError: query.isError,
+    latestOppfolgingstilfelle,
+    tilfellerDescendingStart,
+    hasOppfolgingstilfelle: !!latestOppfolgingstilfelle,
+    hasActiveOppfolgingstilfelle:
+      !!latestOppfolgingstilfelle && !isInactive(latestOppfolgingstilfelle),
+    hasGjentakendeSykefravar: !!gjentakende,
   };
+}
 
 export const useStartOfLatestOppfolgingstilfelle = (): Date | undefined => {
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();

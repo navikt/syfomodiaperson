@@ -1,4 +1,4 @@
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import { LinkPanel } from "@navikt/ds-react";
 import OppfolgingsplanVirksomhetTittel from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanVirksomhetTittel";
 import React from "react";

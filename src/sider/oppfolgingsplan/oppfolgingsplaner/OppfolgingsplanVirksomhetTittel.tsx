@@ -1,7 +1,7 @@
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { Heading } from "@navikt/ds-react";
 import React from "react";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 
 interface Props {
   plan: OppfolgingsplanDTO;

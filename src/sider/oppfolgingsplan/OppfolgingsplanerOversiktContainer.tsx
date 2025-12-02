@@ -1,15 +1,15 @@
 import React from "react";
-import Side from "../../../components/side/Side";
-import OppfolgingsplanerOversikt from "../oppfolgingsplaner/OppfolgingsplanerOversikt";
 import { activeOppfolgingsplaner } from "@/utils/oppfolgingsplanerUtils";
-import SideLaster from "../../../components/side/SideLaster";
 import {
   useGetLPSOppfolgingsplanerQuery,
   useGetOppfolgingsplanerQuery,
-} from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+} from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
+import Side from "@/components/side/Side";
+import SideLaster from "@/components/side/SideLaster";
+import OppfolgingsplanerOversikt from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanerOversikt";
 
-export default function OppfoelgingsPlanerOversiktContainer() {
+export default function OppfolgingsPlanerOversiktContainer() {
   const getOppfolgingsplaner = useGetOppfolgingsplanerQuery();
   const getLPSOppfolgingsplaner = useGetLPSOppfolgingsplanerQuery();
 

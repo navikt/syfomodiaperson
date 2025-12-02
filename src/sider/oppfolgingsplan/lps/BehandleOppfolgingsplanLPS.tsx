@@ -4,7 +4,7 @@ import { useBehandlePersonoppgave } from "@/data/personoppgave/useBehandlePerson
 import { StatusKanImage } from "../../../../img/ImageComponents";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
-import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
+import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 
 const texts = {
   marker: "Marker som behandlet",

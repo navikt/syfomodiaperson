@@ -1,4 +1,7 @@
-import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
+import {
+  isPlanWithinActiveTilfelle,
+  OppfolgingsplanLPS,
+} from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 const newestLpsPlanPerVirksomhet = (lpsplaner: OppfolgingsplanLPS[]) => {
@@ -15,25 +18,15 @@ const newestLpsPlanPerVirksomhet = (lpsplaner: OppfolgingsplanLPS[]) => {
   });
 };
 
-const lpsPlanerWithinActiveTilfelle = (
-  lpsplaner: OppfolgingsplanLPS[],
-  oppfolgingstilfelle: OppfolgingstilfelleDTO
-) => {
-  return lpsplaner.filter((plan) => {
-    return (
-      new Date(plan.opprettet) >= new Date(oppfolgingstilfelle.start) &&
-      new Date(plan.opprettet) <= new Date(oppfolgingstilfelle.end)
-    );
-  });
-};
-
-export const lpsPlanerWithActiveTilfelle = (
+export function lpsPlanerWithActiveTilfelle(
   lpsplaner: OppfolgingsplanLPS[],
   oppfolgingstilfelle: OppfolgingstilfelleDTO | undefined
-): OppfolgingsplanLPS[] => {
+): OppfolgingsplanLPS[] {
   const aktivePlanerForOppfolgingstilfelle = oppfolgingstilfelle
-    ? lpsPlanerWithinActiveTilfelle(lpsplaner, oppfolgingstilfelle)
+    ? lpsplaner.filter((plan) =>
+        isPlanWithinActiveTilfelle(plan, oppfolgingstilfelle)
+      )
     : [];
 
   return newestLpsPlanPerVirksomhet(aktivePlanerForOppfolgingstilfelle);
-};
+}

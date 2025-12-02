@@ -17,7 +17,7 @@ import {
   NewOppfolgingsplanForesporselDTO,
   useGetOppfolgingsplanForesporselQuery,
   usePostOppfolgingsplanForesporsel,
-} from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
+} from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanForesporselHooks";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import {
   isDateInOppfolgingstilfelle,

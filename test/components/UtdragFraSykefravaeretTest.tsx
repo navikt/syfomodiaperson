@@ -12,7 +12,7 @@ import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/
 
 import { addDays, addWeeks, tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { PeriodetypeDTO } from "@/data/sykmelding/types/PeriodetypeDTO";
-import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { oppfolgingsplanerLPSMock } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
 import dayjs from "dayjs";
 import {

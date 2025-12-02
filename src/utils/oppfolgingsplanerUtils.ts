@@ -1,9 +1,12 @@
 import { erIdag } from "./datoUtils";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import {
+  isPlanValidNow,
+  OppfolgingsplanDTO,
+} from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import {
   OppfolgingsplanLPS,
   OppfolgingsplanLPSMedPersonoppgave,
-} from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
+} from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 
 export function toOppfolgingsplanLPSMedPersonoppgave(
@@ -65,13 +68,6 @@ function firstPlanForEachVirksomhet(
   });
 
   return newestPlanPerVirksomhet;
-}
-
-function isPlanValidNow(plan: OppfolgingsplanDTO): boolean {
-  return (
-    new Date(plan.godkjentPlan.gyldighetstidspunkt.tom) > new Date() &&
-    plan.godkjentPlan.deltMedNAV
-  );
 }
 
 export function activeOppfolgingsplaner(
