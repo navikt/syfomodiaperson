@@ -5,14 +5,14 @@ import {
   tilLesbarDatoMedArstall,
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
-import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
+import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import { LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT } from "@/apiConstants";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import {
   useGetLPSOppfolgingsplanerQuery,
   useGetOppfolgingsplanerQuery,
-} from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+} from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
+import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { Alert, Heading, Link, Loader } from "@navikt/ds-react";
 

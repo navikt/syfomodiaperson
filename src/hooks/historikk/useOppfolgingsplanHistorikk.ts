@@ -1,12 +1,12 @@
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { useHistorikkOppfolgingsplan } from "@/data/historikk/historikkQueryHooks";
-import { useGetLPSOppfolgingsplanerQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
-import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
+import { useGetLPSOppfolgingsplanerQuery } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
+import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
 import {
   OppfolgingsplanForesporselResponse,
   useGetOppfolgingsplanForesporselQuery,
-} from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
+} from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanForesporselHooks";
 
 function lpsplanerToHistorikkEvents(
   oppfolgingsplanerLPS: OppfolgingsplanLPS[]

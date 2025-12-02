@@ -12,7 +12,7 @@ import {
   NewOppfolgingsplanForesporselDTO,
   oppfolgingsplanForesporselQueryKeys,
   OppfolgingsplanForesporselResponse,
-} from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
+} from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanForesporselHooks";
 import {
   ANNEN_LEDER_AKTIV,
   ARBEIDSTAKER_DEFAULT,

@@ -4,7 +4,7 @@ import { VEILEDER_DEFAULT } from "@/mocks/common/mockConstants";
 import {
   NewOppfolgingsplanForesporselDTO,
   OppfolgingsplanForesporselResponse,
-} from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
+} from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanForesporselHooks";
 
 export const mockisoppfolgingsplanForesporsel = [
   http.get(`${ISOPPFOLGINGSPLAN_ROOT}/oppfolgingsplan/foresporsler`, () => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { restdatoTilLesbarDato } from "@/utils/datoUtils";
-import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
+import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import BehandleOppfolgingsplanLPS from "./BehandleOppfolgingsplanLPS";
 import { LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT } from "@/apiConstants";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";

@@ -47,7 +47,7 @@ import {
 import { generateUUID } from "@/utils/utils";
 import { dialogmoteStatusEndringMock } from "@/mocks/isdialogmote/dialogmoterMock";
 import { dialogmoterQueryKeys } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
-import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { getDefaultOppfolgingsplanLPS } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
 import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useOppfolgingsoppgaver";
 import {
@@ -64,7 +64,7 @@ import {
 } from "@/utils/datoUtils";
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { motebehovMock } from "@/mocks/syfomotebehov/motebehovMock";
-import { oppfolgingsplanForesporselQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
+import { oppfolgingsplanForesporselQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanForesporselHooks";
 import { mockForesporseler } from "@/mocks/isoppfolgingsplan/oppfolgingsplanForesporselMocks";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { tildeltOppfolgingsenhetHistorikk } from "@/mocks/syfobehandlendeenhet/mockSyfobehandlendeenhet";
