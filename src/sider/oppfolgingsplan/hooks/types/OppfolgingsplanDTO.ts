@@ -29,3 +29,10 @@ export interface OppfolgingsplanDTO {
   godkjentPlan: GodkjentPlanDTO;
   virksomhet: OPVirksomhetDTO;
 }
+
+export function isPlanValidNow(plan: OppfolgingsplanDTO): boolean {
+  return (
+    new Date(plan.godkjentPlan.gyldighetstidspunkt.tom) >= new Date() &&
+    plan.godkjentPlan.deltMedNAV
+  );
+}

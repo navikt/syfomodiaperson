@@ -6,7 +6,7 @@ import { navEnhet } from "../../../dialogmote/testData";
 import React, { createRef } from "react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithMockData } from "../../../testQueryClient";
-import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import {
   ARBEIDSTAKER_DEFAULT,
   LEDERE_DEFAULT,

@@ -24,8 +24,7 @@ import DialogmoteEndreReferatContainer from "@/sider/dialogmoter/components/refe
 import ManglendeMedvirkningSide from "@/sider/manglendemedvirkning/ManglendeMedvirkningSide";
 import ManglendeMedvirkning from "@/sider/manglendemedvirkning/ManglendeMedvirkning";
 import SenOppfolging from "@/sider/senoppfolging/SenOppfolging";
-import OppfolgingsplanContainer from "@/sider/oppfolgingsplan/container/OppfolgingsplanContainer";
-import OppfoelgingsPlanerOversiktContainer from "@/sider/oppfolgingsplan/container/OppfoelgingsPlanerOversiktContainer";
+import OppfolgingsplanContainer from "@/sider/oppfolgingsplan/OppfolgingsplanContainer";
 import SykepengesoknadSide from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
 import Arbeidsuforhet from "@/sider/arbeidsuforhet/Arbeidsuforhet";
 import ArbeidsuforhetAvslag from "@/sider/arbeidsuforhet/avslag/ArbeidsuforhetAvslag";
@@ -42,6 +41,7 @@ import { AktivitetskravContainer } from "@/sider/aktivitetskrav/AktivitetskravCo
 import OppfyltForm from "@/sider/arbeidsuforhet/oppfylt/OppfyltForm";
 import KartleggingssporsmalSide from "@/sider/kartleggingssporsmal/KartleggingssporsmalSide";
 import * as Umami from "@/utils/umami";
+import OppfolgingsPlanerOversiktContainer from "@/sider/oppfolgingsplan/OppfolgingsplanerOversiktContainer";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -181,7 +181,7 @@ function AktivBrukerRouter({
           <Route path={senOppfolgingPath} element={<SenOppfolging />} />
 
           <Route path={`${appRoutePath}/oppfoelgingsplaner`}>
-            <Route index element={<OppfoelgingsPlanerOversiktContainer />} />
+            <Route index element={<OppfolgingsPlanerOversiktContainer />} />
             <Route
               path=":oppfoelgingsdialogId"
               element={<OppfolgingsplanContainer />}

@@ -49,7 +49,7 @@ import { arbeidsuforhetQueryKeys } from "@/sider/arbeidsuforhet/hooks/arbeidsufo
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
 import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import { navEnhet } from "./dialogmote/testData";
-import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { kartleggingssporsmalQueryKeys } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 
@@ -57,7 +57,7 @@ export const testQueryClient = (): QueryClient => {
   return new QueryClient();
 };
 
-export const queryClientWithAktivBruker = (): QueryClient => {
+export function queryClientWithAktivBruker(): QueryClient {
   const queryClient = testQueryClient();
   queryClient.setQueryData(
     modiacontextQueryKeys.aktivbruker,
@@ -65,11 +65,11 @@ export const queryClientWithAktivBruker = (): QueryClient => {
   );
 
   return queryClient;
-};
+}
 
-export const setQueryDataWithPersonkortdata = (
+export function setQueryDataWithPersonkortdata(
   existingClient: QueryClient
-): void => {
+): void {
   existingClient.setQueryData(
     brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
     () => brukerinfoMock
@@ -90,7 +90,7 @@ export const setQueryDataWithPersonkortdata = (
     maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
     () => maksdatoMock
   );
-};
+}
 
 export const queryClientWithMockData = (): QueryClient => {
   const queryClient = queryClientWithAktivBruker();

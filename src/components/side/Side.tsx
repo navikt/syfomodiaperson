@@ -15,7 +15,7 @@ import TildeltVeileder from "@/components/side/tildeltveileder/TildeltVeileder";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { InaktivPersonident } from "@/components/InaktivPersonident";
 
-export const MODIA_HEADER_ID = "modia-header";
+const MODIA_HEADER_ID = "modia-header";
 
 interface Props {
   tittel: string;

@@ -1,4 +1,4 @@
-import { OppfolgingsplanForesporselResponse } from "@/data/oppfolgingsplan/oppfolgingsplanForesporselHooks";
+import { OppfolgingsplanForesporselResponse } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanForesporselHooks";
 import { addWeeks } from "@/utils/datoUtils";
 import { generateUUID } from "@/utils/utils";
 import {

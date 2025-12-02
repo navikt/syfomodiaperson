@@ -4,8 +4,8 @@ import Knapp from "nav-frontend-knapper";
 import Feilmelding from "../../../components/Feilmelding";
 import AppSpinner from "../../../components/AppSpinner";
 import { SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT } from "@/apiConstants";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
-import { useDokumentinfoQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
+import { useDokumentinfoQuery } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 
 function TilbakeTilOppfolgingsplaner() {
   return (

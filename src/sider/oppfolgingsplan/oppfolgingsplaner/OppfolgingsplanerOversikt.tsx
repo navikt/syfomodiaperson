@@ -2,13 +2,18 @@ import React from "react";
 import Sidetopp from "../../../components/side/Sidetopp";
 import { erIkkeIdag } from "@/utils/datoUtils";
 import OppfolgingsplanerOversiktLPS from "../lps/OppfolgingsplanerOversiktLPS";
-import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import OppfolgingsplanLink from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanLink";
 import AktiveOppfolgingsplaner from "@/sider/oppfolgingsplan/oppfolgingsplaner/AktiveOppfolgingsplaner";
+
+import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
+import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
+import { useGetOppfolgingsplanerV2Query } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
+import { partitionOppfolgingsplanerByActiveTilfelle } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
+import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import OppfolgingsplanV2Item from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanV2Item";
 
 const texts = {
   titles: {
@@ -32,7 +37,9 @@ export default function OppfolgingsplanerOversikt({
   inaktivePlaner,
   oppfolgingsplanerLPS,
 }: Props) {
+  const getOppfolgingsplanerV2 = useGetOppfolgingsplanerV2Query();
   const getPersonOppgaverQuery = usePersonoppgaverQuery();
+  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.map(
     (oppfolgingsplanLPS) =>
       toOppfolgingsplanLPSMedPersonoppgave(
@@ -70,11 +77,20 @@ export default function OppfolgingsplanerOversikt({
   const hasTidligereOppfolgingsplaner =
     inaktivePlaner.length !== 0 || oppfolgingsplanerLPSProcessed.length !== 0;
 
+  const [aktiveOppfolgingsplanerV2, inaktiveOppfolgingsplanerV2] =
+    !!latestOppfolgingstilfelle && getOppfolgingsplanerV2.isSuccess
+      ? partitionOppfolgingsplanerByActiveTilfelle(
+          getOppfolgingsplanerV2.data,
+          latestOppfolgingstilfelle
+        )
+      : [[], []];
+
   return (
     <div>
       <Sidetopp tittel="Oppfølgingsplaner" />
       <AktiveOppfolgingsplaner
         aktivePlaner={aktivePlaner}
+        aktivePlanerV2={aktiveOppfolgingsplanerV2}
         oppfolgingsplanerLPSMedPersonoppgave={
           oppfolgingsplanerLPSMedPersonOppgave
         }
@@ -96,6 +112,9 @@ export default function OppfolgingsplanerOversikt({
               />
             );
           })}
+          {inaktiveOppfolgingsplanerV2.map((plan, index) => (
+            <OppfolgingsplanV2Item key={index} oppfolgingsplan={plan} />
+          ))}
         </>
       ) : (
         <Box background="surface-default" className="p-4">

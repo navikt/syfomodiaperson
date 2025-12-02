@@ -95,6 +95,8 @@ spec:
           namespace: team-esyfo
         - application: lps-oppfolgingsplan-mottak
           namespace: team-esyfo
+        - application: syfo-oppfolgingsplan-backend
+          namespace: team-esyfo
         - application: meroppfolging-backend
           namespace: team-esyfo
         - application: modiacontextholder
@@ -191,6 +193,10 @@ spec:
       value: "prod-fss.team-esyfo.syfooppfolgingsplanservice"
     - name: SYFOOPPFOLGINGSPLANSERVICE_HOST
       value: "https://syfooppfolgingsplanservice.prod-fss-pub.nais.io"
+    - name: SYFO_OPPFOLGINGSPLAN_BACKEND_AAD_APP_CLIENT_ID
+      value: "prod-gcp.team-esyfo.syfo-oppfolgingsplan-backend"
+    - name: SYFO_OPPFOLGINGSPLAN_BACKEND_HOST
+      value: "http://syfo-oppfolgingsplan-backend.team-esyfo"
     - name: PENSJON_PEN_UFOREGRAD_AAD_APP_CLIENT_ID
       value: "prod-fss.pensjondeployer.pensjon-pen"
     - name: PENSJON_PEN_UFOREGRAD_HOST

@@ -14,7 +14,7 @@ import { setEmptyQueryData, queryClientWithMockData } from "../testQueryClient";
 import { navEnhet } from "../dialogmote/testData";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { MemoryRouter } from "react-router-dom";
-import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import {
   createOppfolgingstilfelleFromSykmelding,

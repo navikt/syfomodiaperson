@@ -1,18 +1,27 @@
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT,
+  SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT,
   SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT,
   SYFOOPPFOLGINGSPLANSERVICE_V3_ROOT,
 } from "@/apiConstants";
-import { get } from "@/api/axios";
+import { get, post } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
-import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
-import { DokumentinfoDTO } from "@/data/oppfolgingsplan/types/DokumentinfoDTO";
+import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
+import { DokumentinfoDTO } from "@/sider/oppfolgingsplan/hooks/types/DokumentinfoDTO";
 import { useMemo } from "react";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import { minutesToMillis } from "@/utils/utils";
+import {
+  OppfolgingsplanV2DTO,
+  OppfolgingsplanV2RequestBody,
+} from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 
 export const oppfolgingsplanQueryKeys = {
+  oppfolgingsplanerV2: (personident: string) => [
+    "oppfolgingsplanerV2",
+    personident,
+  ],
   oppfolgingsplaner: (personident: string) => [
     "oppfolgingsplaner",
     personident,
@@ -72,7 +81,31 @@ export function useGetLPSOppfolgingsplanerQuery() {
   };
 }
 
-export const useDokumentinfoQuery = (oppfolgingsplanId: number) => {
+export function useGetOppfolgingsplanerV2Query() {
+  const fnr = useValgtPersonident();
+  const path = `${SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT}/oppfolgingsplaner/query`;
+  const payload: OppfolgingsplanV2RequestBody = {
+    sykmeldtFnr: fnr,
+  };
+  const fetchOppfolgingsplanerV2 = () =>
+    post<OppfolgingsplanV2DTO[]>(path, payload);
+  const query = useQuery({
+    queryKey: oppfolgingsplanQueryKeys.oppfolgingsplanerV2(fnr),
+    queryFn: fetchOppfolgingsplanerV2,
+    enabled: !!fnr,
+    staleTime: minutesToMillis(60 * 12),
+  });
+
+  return {
+    data: query.data || [],
+    isLoading: query.isLoading,
+    isPending: query.isPending,
+    isSuccess: query.isSuccess,
+    isError: query.isError,
+  };
+}
+
+export function useDokumentinfoQuery(oppfolgingsplanId: number) {
   const path = `${SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT}/dokument/${oppfolgingsplanId}/dokumentinfo`;
   const fetchDokumentinfo = () => get<DokumentinfoDTO>(path);
   return useQuery({
@@ -80,4 +113,4 @@ export const useDokumentinfoQuery = (oppfolgingsplanId: number) => {
     queryFn: fetchDokumentinfo,
     staleTime: minutesToMillis(60 * 12),
   });
-};
+}
