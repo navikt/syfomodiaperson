@@ -1,7 +1,7 @@
 import React, { ReactElement, ReactNode } from "react";
 import AppSpinner from "./AppSpinner";
 import Feilmelding from "./Feilmelding";
-import { useTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
+import { useGetTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
 import Decorator from "@/decorator/Decorator";
 import { ikkeTilgangBegrunnelseTekst } from "@/components/side/SideLaster";
 
@@ -13,18 +13,14 @@ const texts = {
   errorTitle: "Du har ikke tilgang til denne brukeren",
 };
 
-const AktivBrukerTilgangLaster = ({
+export default function AktivBrukerTilgangLaster({
   children,
-}: AktivBrukerTilgangLasterProps): ReactElement => {
-  const {
-    isLoading: henterTilgang,
-    isError: hentingTilgangFeilet,
-    data: tilgang,
-  } = useTilgangQuery();
-  const harTilgang = tilgang?.erGodkjent === true;
+}: AktivBrukerTilgangLasterProps): ReactElement {
+  const getTilgangQuery = useGetTilgangQuery();
+  const harTilgang = getTilgangQuery.data?.erGodkjent === true;
 
   let visning;
-  if (henterTilgang) {
+  if (getTilgangQuery.isLoading) {
     visning = <AppSpinner />;
   } else if (!harTilgang) {
     visning = (
@@ -33,7 +29,7 @@ const AktivBrukerTilgangLaster = ({
         melding={ikkeTilgangBegrunnelseTekst}
       />
     );
-  } else if (hentingTilgangFeilet) {
+  } else if (getTilgangQuery.isError) {
     visning = <Feilmelding />;
   } else {
     visning = children;
@@ -44,6 +40,4 @@ const AktivBrukerTilgangLaster = ({
       {visning}
     </>
   );
-};
-
-export default AktivBrukerTilgangLaster;
+}

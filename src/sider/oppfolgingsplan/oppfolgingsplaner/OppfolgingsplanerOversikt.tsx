@@ -32,10 +32,13 @@ export default function OppfolgingsplanerOversikt({
   inaktivePlaner,
   oppfolgingsplanerLPS,
 }: Props) {
-  const { data: personoppgaver } = usePersonoppgaverQuery();
+  const getPersonOppgaverQuery = usePersonoppgaverQuery();
   const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.map(
     (oppfolgingsplanLPS) =>
-      toOppfolgingsplanLPSMedPersonoppgave(oppfolgingsplanLPS, personoppgaver)
+      toOppfolgingsplanLPSMedPersonoppgave(
+        oppfolgingsplanLPS,
+        getPersonOppgaverQuery.data
+      )
   );
 
   const oppfolgingsplanerLPSProcessed = oppfolgingsplanerLPSMedPersonOppgave

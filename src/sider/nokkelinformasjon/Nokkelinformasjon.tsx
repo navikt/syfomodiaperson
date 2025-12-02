@@ -36,8 +36,8 @@ export default function Nokkelinformasjon() {
       aktivtMenypunkt={Menypunkter.NOKKELINFORMASJON}
     >
       <SideLaster
-        henter={henterSykmeldinger}
-        hentingFeilet={henterSykmeldingerFeilet}
+        isLoading={henterSykmeldinger}
+        isError={henterSykmeldingerFeilet}
       >
         <header>
           <Heading spacing size="large" className="hidden" level="1">

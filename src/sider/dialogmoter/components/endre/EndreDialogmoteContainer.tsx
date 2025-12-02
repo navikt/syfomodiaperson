@@ -36,7 +36,7 @@ export default function EndreDialogmoteContainer() {
 
   return (
     <Side tittel={texts.pageTitle} aktivtMenypunkt={Menypunkter.DIALOGMOTE}>
-      <SideLaster henter={isLoading} hentingFeilet={isError}>
+      <SideLaster isLoading={isLoading} isError={isError}>
         <Sidetopp tittel={texts.pageHeader} />
         {dialogmote ? (
           <Tredelt.Container>

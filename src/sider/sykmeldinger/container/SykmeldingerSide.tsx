@@ -21,7 +21,7 @@ export default function SykmeldingerSide(): ReactElement {
 
   return (
     <Side tittel="Sykmeldinger" aktivtMenypunkt={Menypunkter.SYKMELDINGER}>
-      <SideLaster henter={isLoading} hentingFeilet={isError}>
+      <SideLaster isLoading={isLoading} isError={isError}>
         <div>
           {ubehandletBistandsbehovOppgaver.map((oppgave) => (
             <VurderBistandsbehov oppgave={oppgave} key={oppgave.uuid} />

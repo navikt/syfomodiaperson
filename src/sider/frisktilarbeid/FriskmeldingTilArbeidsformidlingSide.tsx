@@ -20,7 +20,7 @@ export default function FriskmeldingTilArbeidsformidlingSide() {
   return (
     <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.FRISKTILARBEID}>
       <Sidetopp tittel={texts.title} />
-      <SideLaster henter={isPending} hentingFeilet={isError}>
+      <SideLaster isLoading={isPending} isError={isError}>
         <Tredelt.Container>
           <Tredelt.FirstColumn className="-xl:mb-2">
             <NotificationProvider>

@@ -9,8 +9,8 @@ import { OppfolgingsplanLPS } from "@/data/oppfolgingsplan/types/Oppfolgingsplan
 import { LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT } from "@/apiConstants";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import {
-  useOppfolgingsplanerLPSQuery,
-  useOppfolgingsplanerQuery,
+  useGetLPSOppfolgingsplanerQuery,
+  useGetOppfolgingsplanerQuery,
 } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
@@ -95,40 +95,42 @@ interface LpsPlanerProps {
   lpsPlaner: OppfolgingsplanLPS[];
 }
 
-const LpsPlaner = ({ lpsPlaner }: LpsPlanerProps) => (
-  <>
-    {lpsPlaner.map((plan, index) => {
-      const lesbarDato = tilLesbarDatoMedArstall(plan.opprettet);
-      return (
-        <div key={index}>
-          <LpsPlanLenke lpsPlan={plan} />
-          <span>{` innsendt ${lesbarDato} (LPS)`}</span>
-        </div>
-      );
-    })}
-  </>
-);
+function LPSPlaner({ lpsPlaner }: LpsPlanerProps) {
+  return (
+    <>
+      {lpsPlaner.map((plan, index) => {
+        const lesbarDato = tilLesbarDatoMedArstall(plan.opprettet);
+        return (
+          <div key={index}>
+            <LpsPlanLenke lpsPlan={plan} />
+            <span>{` innsendt ${lesbarDato} (LPS)`}</span>
+          </div>
+        );
+      })}
+    </>
+  );
+}
 
 interface OppfolgingsplanerProps {
   aktivePlaner: OppfolgingsplanDTO[];
   lpsPlaner: OppfolgingsplanLPS[];
 }
 
-const Oppfolgingsplaner = ({
+function Oppfolgingsplaner({
   aktivePlaner,
   lpsPlaner,
-}: OppfolgingsplanerProps) => {
+}: OppfolgingsplanerProps) {
   const anyActivePlaner = aktivePlaner.length > 0 || lpsPlaner.length > 0;
 
   return anyActivePlaner ? (
     <div>
       <AktivePlaner aktivePlaner={aktivePlaner} />
-      <LpsPlaner lpsPlaner={lpsPlaner} />
+      <LPSPlaner lpsPlaner={lpsPlaner} />
     </div>
   ) : (
     <p>{texts.ingenPlanerDelt}</p>
   );
-};
+}
 
 interface Props {
   selectedOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined;
@@ -137,24 +139,18 @@ interface Props {
 export default function UtdragOppfolgingsplaner({
   selectedOppfolgingstilfelle,
 }: Props) {
-  const {
-    aktivePlaner,
-    isPending: henterOppfolgingsplaner,
-    isError: henterOppfolgingsplanerFeilet,
-  } = useOppfolgingsplanerQuery();
-  const {
-    data: oppfolgingsplanerLPS,
-    isPending: henterOppfolgingsplanerLPS,
-    isError: henterOppfolgingsplanerLPSFeilet,
-  } = useOppfolgingsplanerLPSQuery();
+  const getOppfolgingsplanerQuery = useGetOppfolgingsplanerQuery();
+  const getLPSOppfolgingsplanerQuery = useGetLPSOppfolgingsplanerQuery();
 
   const activeLpsPlaner = lpsPlanerWithActiveTilfelle(
-    oppfolgingsplanerLPS,
+    getLPSOppfolgingsplanerQuery.data,
     selectedOppfolgingstilfelle
   );
-  const showLoader = henterOppfolgingsplaner && henterOppfolgingsplanerLPS;
+  const showLoader =
+    getOppfolgingsplanerQuery.isPending &&
+    getLPSOppfolgingsplanerQuery.isPending;
   const showError =
-    henterOppfolgingsplanerFeilet && henterOppfolgingsplanerLPSFeilet;
+    getOppfolgingsplanerQuery.isError && getLPSOppfolgingsplanerQuery.isError;
 
   return (
     <div>
@@ -169,7 +165,7 @@ export default function UtdragOppfolgingsplaner({
         </Alert>
       ) : (
         <Oppfolgingsplaner
-          aktivePlaner={aktivePlaner}
+          aktivePlaner={getOppfolgingsplanerQuery.data}
           lpsPlaner={activeLpsPlaner}
         />
       )}

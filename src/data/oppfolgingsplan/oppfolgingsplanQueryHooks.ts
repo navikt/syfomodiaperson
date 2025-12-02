@@ -25,7 +25,7 @@ export const oppfolgingsplanQueryKeys = {
   foresporsel: (personident: string) => ["foresporsel", personident],
 };
 
-export const useOppfolgingsplanerQuery = () => {
+export function useGetOppfolgingsplanerQuery() {
   const fnr = useValgtPersonident();
   const path = `${SYFOOPPFOLGINGSPLANSERVICE_V3_ROOT}/oppfolgingsplan`;
   const fetchOppfolgingsplaner = () => get<OppfolgingsplanDTO[]>(path, fnr);
@@ -51,9 +51,9 @@ export const useOppfolgingsplanerQuery = () => {
       [query.data]
     ),
   };
-};
+}
 
-export const useOppfolgingsplanerLPSQuery = () => {
+export function useGetLPSOppfolgingsplanerQuery() {
   const fnr = useValgtPersonident();
   const path = `${LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT}/oppfolgingsplan/lps`;
   const fetchOppfolgingsplanerLPS = () => get<OppfolgingsplanLPS[]>(path, fnr);
@@ -70,7 +70,7 @@ export const useOppfolgingsplanerLPSQuery = () => {
     isLoading: query.isLoading,
     isError: query.isError,
   };
-};
+}
 
 export const useDokumentinfoQuery = (oppfolgingsplanId: number) => {
   const path = `${SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT}/dokument/${oppfolgingsplanId}/dokumentinfo`;

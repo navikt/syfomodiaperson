@@ -3,8 +3,8 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import {
   useDokumentinfoQuery,
-  useOppfolgingsplanerLPSQuery,
-  useOppfolgingsplanerQuery,
+  useGetLPSOppfolgingsplanerQuery,
+  useGetOppfolgingsplanerQuery,
 } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
 import { oppfolgingsplanMock } from "@/mocks/syfooppfolgingsplanservice/oppfolgingsplanMock";
 import {
@@ -30,7 +30,7 @@ describe("oppfolgingsplanQueryHooks tests", () => {
 
     const wrapper = queryHookWrapper(queryClient);
 
-    const { result } = renderHook(() => useOppfolgingsplanerQuery(), {
+    const { result } = renderHook(() => useGetOppfolgingsplanerQuery(), {
       wrapper,
     });
 
@@ -43,7 +43,7 @@ describe("oppfolgingsplanQueryHooks tests", () => {
 
     const wrapper = queryHookWrapper(queryClient);
 
-    const { result } = renderHook(() => useOppfolgingsplanerLPSQuery(), {
+    const { result } = renderHook(() => useGetLPSOppfolgingsplanerQuery(), {
       wrapper,
     });
 

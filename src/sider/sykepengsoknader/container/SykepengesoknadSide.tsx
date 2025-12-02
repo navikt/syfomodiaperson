@@ -54,7 +54,7 @@ export default function SykepengesoknadSide() {
 
   return (
     <Side tittel={texts.tittel} aktivtMenypunkt={Menypunkter.SYKEPENGESOKNADER}>
-      <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
+      <SideLaster isLoading={henter} isError={hentingFeilet}>
         {(() => {
           switch (soknad?.soknadstype) {
             case Soknadstype.SELVSTENDIGE_OG_FRILANSERE:

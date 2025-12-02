@@ -1,11 +1,11 @@
 import React, { ReactElement, ReactNode } from "react";
 import AppSpinner from "../AppSpinner";
 import Feilmelding from "../Feilmelding";
-import { useTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
+import { useGetTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
 
 interface Props {
-  henter: boolean;
-  hentingFeilet: boolean;
+  isLoading: boolean;
+  isError: boolean;
   children: ReactNode;
   className?: string;
 }
@@ -22,19 +22,15 @@ export const ikkeTilgangBegrunnelseTekst = `
   `;
 
 export default function SideLaster({
-  henter,
-  hentingFeilet,
+  isLoading,
+  isError,
   children,
   className,
 }: Props): ReactElement {
-  const {
-    isLoading: henterTilgang,
-    isError: hentingTilgangFeilet,
-    data: tilgang,
-  } = useTilgangQuery();
-  const harTilgang = tilgang?.erGodkjent === true;
+  const getTilgangQuery = useGetTilgangQuery();
+  const harTilgang = getTilgangQuery.data?.erGodkjent === true;
 
-  if (henter || henterTilgang) {
+  if (isLoading || getTilgangQuery.isLoading) {
     return <AppSpinner />;
   }
   if (!harTilgang) {
@@ -45,7 +41,7 @@ export default function SideLaster({
       />
     );
   }
-  if (hentingFeilet || hentingTilgangFeilet) {
+  if (isError || getTilgangQuery.isError) {
     return <Feilmelding />;
   }
   return (

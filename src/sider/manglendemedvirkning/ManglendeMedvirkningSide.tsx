@@ -21,8 +21,8 @@ export default function ManglendeMedvirkningSide() {
     >
       <Sidetopp tittel={texts.title} />
       <SideLaster
-        henter={isLoading}
-        hentingFeilet={isError}
+        isLoading={isLoading}
+        isError={isError}
         className="flex flex-col gap-2"
       >
         <Outlet />

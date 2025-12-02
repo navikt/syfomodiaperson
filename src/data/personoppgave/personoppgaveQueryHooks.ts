@@ -9,7 +9,7 @@ export const personoppgaverQueryKeys = {
   personoppgaver: (fnr: string) => ["personoppgaver", fnr],
 };
 
-export const usePersonoppgaverQuery = () => {
+export function usePersonoppgaverQuery() {
   const fnr = useValgtPersonident();
   const path = `${ISPERSONOPPGAVE_ROOT}/personoppgave/personident`;
   const fetchPersonoppgaver = () => get<PersonOppgave[]>(path, fnr);
@@ -24,4 +24,4 @@ export const usePersonoppgaverQuery = () => {
     data: query.data || [],
     isPending: query.isPending,
   };
-};
+}

@@ -57,7 +57,7 @@ export default function DialogmoteInnkallingContainer(): ReactElement {
 
   return (
     <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.DIALOGMOTE}>
-      <SideLaster henter={henter} hentingFeilet={hentingFeilet}>
+      <SideLaster isLoading={henter} isError={hentingFeilet}>
         <Sidetopp tittel={texts.title} />
         <Tredelt.Container>
           <Tredelt.FirstColumn>

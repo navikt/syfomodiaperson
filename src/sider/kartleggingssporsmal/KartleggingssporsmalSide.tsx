@@ -143,7 +143,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
       aktivtMenypunkt={Menypunkter.KARTLEGGINGSSPORSMAL}
     >
       <Sidetopp tittel={texts.title} />
-      <SideLaster henter={isPending} hentingFeilet={isError}>
+      <SideLaster isLoading={isPending} isError={isError}>
         {kandidat && hasMottattKartleggingssporsmal(kandidat) ? (
           <Tredelt.Container>
             <Tredelt.FirstColumn className="-xl:mb-2">

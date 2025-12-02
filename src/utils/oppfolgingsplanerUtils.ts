@@ -6,10 +6,10 @@ import {
 } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
 import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 
-export const toOppfolgingsplanLPSMedPersonoppgave = (
+export function toOppfolgingsplanLPSMedPersonoppgave(
   oppfolgingsplanLPS: OppfolgingsplanLPS,
   personoppgaver: PersonOppgave[]
-): OppfolgingsplanLPSMedPersonoppgave => {
+): OppfolgingsplanLPSMedPersonoppgave {
   const personoppgave = personoppgaver.find(
     (personoppgave) => personoppgave.referanseUuid === oppfolgingsplanLPS.uuid
   );
@@ -22,82 +22,67 @@ export const toOppfolgingsplanLPSMedPersonoppgave = (
   }
 
   return oppfolgingsplanLPS;
-};
+}
 
-const oppfolgingsplanerValidNow = (oppfolgingsplaner: OppfolgingsplanDTO[]) => {
-  return oppfolgingsplaner.filter((plan) => {
-    return (
-      new Date(plan.godkjentPlan.gyldighetstidspunkt.tom) > new Date() &&
-      plan.godkjentPlan.deltMedNAV
-    );
-  });
-};
-
-const oppfolgingsplanerLPSOpprettetIdag = (
+export function oppfolgingsplanerLPSOpprettetIdag(
   oppfolgingsplaner: OppfolgingsplanLPSMedPersonoppgave[]
-) => {
-  return oppfolgingsplaner.filter((plan) => {
-    return erIdag(plan.opprettet) && !plan.personoppgave;
-  });
-};
+) {
+  return oppfolgingsplaner.filter(
+    (plan) => erIdag(plan.opprettet) && !plan.personoppgave
+  );
+}
 
-const planerSortedDescendingByDeltMedNAVTidspunkt = (
+function planerSortedDescendingByDeltMedNAVTidspunkt(
   oppfolgingsplaner: OppfolgingsplanDTO[]
-) => {
-  return oppfolgingsplaner.sort((a, b) => {
-    return (
+) {
+  return oppfolgingsplaner.sort(
+    (a, b) =>
       new Date(b.godkjentPlan.deltMedNAVTidspunkt).getTime() -
       new Date(a.godkjentPlan.deltMedNAVTidspunkt).getTime()
-    );
-  });
-};
+  );
+}
 
-const virksomheterWithPlan = (
+function virksomheterWithPlan(
   oppfolgingsplaner: OppfolgingsplanDTO[]
-): string[] => {
+): string[] {
   const uniqueVirksomheter = new Set(
     oppfolgingsplaner.map((plan) => plan.virksomhet.virksomhetsnummer)
   );
-
   return [...uniqueVirksomheter];
-};
+}
 
-const firstPlanForEachVirksomhet = (
+function firstPlanForEachVirksomhet(
   oppfolgingsplaner: OppfolgingsplanDTO[],
   virksomheter: string[]
-) => {
+) {
   const newestPlanPerVirksomhet = [] as any[];
 
   virksomheter.forEach((nummer) => {
-    const newestPlanForVirksomhetsnummer = oppfolgingsplaner.find((plan) => {
-      return plan.virksomhet.virksomhetsnummer === nummer;
-    });
+    const newestPlanForVirksomhetsnummer = oppfolgingsplaner.find(
+      (plan) => plan.virksomhet.virksomhetsnummer === nummer
+    );
     newestPlanPerVirksomhet.push(newestPlanForVirksomhetsnummer);
   });
 
   return newestPlanPerVirksomhet;
-};
+}
 
-const newestPlanForEachVirksomhet = (
+function isPlanValidNow(plan: OppfolgingsplanDTO): boolean {
+  return (
+    new Date(plan.godkjentPlan.gyldighetstidspunkt.tom) > new Date() &&
+    plan.godkjentPlan.deltMedNAV
+  );
+}
+
+export function activeOppfolgingsplaner(
   oppfolgingsplaner: OppfolgingsplanDTO[]
-) => {
+): OppfolgingsplanDTO[] {
   const sortedPlaner =
     planerSortedDescendingByDeltMedNAVTidspunkt(oppfolgingsplaner);
+  const virksomheterMedOppfolgingsplan = virksomheterWithPlan(sortedPlaner);
 
-  const virksomheter = virksomheterWithPlan(sortedPlaner);
-
-  return firstPlanForEachVirksomhet(sortedPlaner, virksomheter);
-};
-
-export const activeOppfolgingsplaner = (
-  oppfolgingsplaner: OppfolgingsplanDTO[]
-): OppfolgingsplanDTO[] => {
-  const newestPlans = newestPlanForEachVirksomhet(oppfolgingsplaner);
-  return oppfolgingsplanerValidNow(newestPlans);
-};
-
-export const activeLPSOppfolgingsplaner = (
-  oppfolgingsplaner: OppfolgingsplanLPSMedPersonoppgave[]
-) => {
-  return oppfolgingsplanerLPSOpprettetIdag(oppfolgingsplaner);
-};
+  return firstPlanForEachVirksomhet(
+    sortedPlaner,
+    virksomheterMedOppfolgingsplan
+  ).filter((plan) => isPlanValidNow(plan));
+}

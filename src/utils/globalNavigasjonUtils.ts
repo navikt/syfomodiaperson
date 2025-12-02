@@ -1,7 +1,7 @@
 import { harUbehandletMotebehov } from "./motebehovUtils";
 import {
-  activeLPSOppfolgingsplaner,
   activeOppfolgingsplaner,
+  oppfolgingsplanerLPSOpprettetIdag,
 } from "./oppfolgingsplanerUtils";
 import {
   PersonOppgave,
@@ -53,11 +53,13 @@ const numberOfActiveOppfolgingsplaner = (
   return activeOppfolgingsplaner(oppfolgingsplaner).length;
 };
 
-const numberOfActiveLPSOppfolgingsplaner = (
+function numberOfActiveLPSOppfolgingsplaner(
   oppfolgingsplanerLps: OppfolgingsplanLPSMedPersonoppgave[]
-) => {
-  return activeLPSOppfolgingsplaner(oppfolgingsplanerLps).length;
-};
+) {
+  const aktiveLPSOppfolgingsplaner =
+    oppfolgingsplanerLPSOpprettetIdag(oppfolgingsplanerLps);
+  return aktiveLPSOppfolgingsplaner.length;
+}
 
 const getNumberOfAktivitetskravOppgaver = (
   aktivitetskrav: AktivitetskravDTO[]
@@ -168,7 +170,7 @@ function getNumberOfKartleggingssporsmalOppgaver(
     : 0;
 }
 
-export const numberOfTasks = (
+export function numberOfTasks(
   menypunkt: Menypunkter,
   motebehov: MotebehovVeilederDTO[],
   oppfolgingsplaner: OppfolgingsplanDTO[],
@@ -185,7 +187,7 @@ export const numberOfTasks = (
     | KartleggingssporsmalKandidatResponseDTO
     | undefined
     | null
-): number => {
+): number {
   switch (menypunkt) {
     case Menypunkter.DIALOGMOTE:
       return getNumberOfMoteOppgaver(motebehov, personOppgaver);
@@ -226,4 +228,4 @@ export const numberOfTasks = (
       return 0;
     }
   }
-};
+}
