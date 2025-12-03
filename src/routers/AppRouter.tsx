@@ -63,7 +63,9 @@ function AktivBrukerRouter({
 }: {
   veilederident: string;
 }): ReactElement {
-  Umami.setIdentifier(veilederident);
+  if (window.umami !== undefined) {
+    Umami.setIdentifier(veilederident);
+  }
 
   return (
     <AktivBrukerTilgangLaster>
