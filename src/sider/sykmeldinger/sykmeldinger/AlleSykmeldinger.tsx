@@ -14,8 +14,8 @@ import { manederMellomDatoer } from "@/utils/datoUtils";
 
 const texts = {
   tidligereSykmeldinger: "Tidligere sykmeldinger",
-  ingenNyeSykmeldinger: "Ingen nye sykmeldinger",
-  ingenTidligereSykmeldinger: "Ingen tidligere sykmeldinger",
+  ingenNyeSykmeldinger: "Det er ingen nye sykmeldinger",
+  ingenTidligereSykmeldinger: "Det er ingen tidligere sykmeldinger",
   nyeSykmeldinger: "Nye sykmeldinger",
   apneSykmelding: "Åpne sykmelding",
   sorteringDato: "Dato",
