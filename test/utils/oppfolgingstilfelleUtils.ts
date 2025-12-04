@@ -33,6 +33,7 @@ export function createOppfolgingstilfellePersonDTO(
 ): OppfolgingstilfellePersonDTO {
   return {
     personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
+    hasGjentakendeSykefravar: false,
     oppfolgingstilfelleList: [
       {
         ...oppfolgingstilfellePersonMock.oppfolgingstilfelleList[0],

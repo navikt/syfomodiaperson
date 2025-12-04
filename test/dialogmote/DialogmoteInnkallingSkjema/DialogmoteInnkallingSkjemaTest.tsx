@@ -241,6 +241,7 @@ describe("DialogmoteInnkallingSkjema", () => {
     const oppfolgingstilfellePerson: OppfolgingstilfellePersonDTO = {
       personIdent: arbeidstaker.personident,
       oppfolgingstilfelleList: [],
+      hasGjentakendeSykefravar: false,
     };
     queryClient.setQueryData(
       oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
@@ -272,6 +273,7 @@ describe("DialogmoteInnkallingSkjema", () => {
     const oppfolgingstilfellePerson: OppfolgingstilfellePersonDTO = {
       personIdent: arbeidstaker.personident,
       oppfolgingstilfelleList: [],
+      hasGjentakendeSykefravar: false,
     };
     queryClient.setQueryData(
       oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(

@@ -36,6 +36,7 @@ const mockOppfolgingstilfellePerson = (
   const oppfolgingstilfellePerson: OppfolgingstilfellePersonDTO = {
     personIdent: fnr,
     oppfolgingstilfelleList: oppfolgingstilfeller,
+    hasGjentakendeSykefravar: false,
   };
   queryClient.setQueryData(
     oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(fnr),

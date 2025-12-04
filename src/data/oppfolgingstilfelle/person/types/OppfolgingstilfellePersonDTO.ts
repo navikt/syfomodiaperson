@@ -1,6 +1,7 @@
 export interface OppfolgingstilfellePersonDTO {
   oppfolgingstilfelleList: OppfolgingstilfelleDTO[];
   personIdent: string;
+  hasGjentakendeSykefravar: boolean | null;
 }
 
 export interface OppfolgingstilfelleDTO {
