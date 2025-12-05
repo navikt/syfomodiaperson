@@ -5,7 +5,7 @@ import SideLaster from "../../../components/side/SideLaster";
 import { useParams } from "react-router-dom";
 import Feilmelding from "@/components/Feilmelding";
 import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
-import { useGetOppfolgingsplanerQuery } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { useGetOppfolgingsplanerQuery } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 
 const texts = {
   tittel: "Oppfølgingsplan",

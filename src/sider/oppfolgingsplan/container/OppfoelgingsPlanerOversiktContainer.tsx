@@ -6,7 +6,7 @@ import SideLaster from "../../../components/side/SideLaster";
 import {
   useGetLPSOppfolgingsplanerQuery,
   useGetOppfolgingsplanerQuery,
-} from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+} from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 
 export default function OppfoelgingsPlanerOversiktContainer() {

@@ -7,8 +7,8 @@ import {
   PersonOppgave,
   PersonOppgaveType,
 } from "@/data/personoppgave/types/PersonOppgave";
-import { OppfolgingsplanLPSMedPersonoppgave } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import { OppfolgingsplanLPSMedPersonoppgave } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
+import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import {
   getAllUbehandledePersonOppgaver,

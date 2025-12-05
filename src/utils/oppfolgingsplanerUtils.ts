@@ -1,9 +1,9 @@
 import { erIdag } from "./datoUtils";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import {
   OppfolgingsplanLPS,
   OppfolgingsplanLPSMedPersonoppgave,
-} from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
+} from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 
 export function toOppfolgingsplanLPSMedPersonoppgave(

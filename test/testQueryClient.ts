@@ -49,7 +49,7 @@ import { arbeidsuforhetQueryKeys } from "@/sider/arbeidsuforhet/hooks/arbeidsufo
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
 import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import { navEnhet } from "./dialogmote/testData";
-import { oppfolgingsplanQueryKeys } from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { kartleggingssporsmalQueryKeys } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 
