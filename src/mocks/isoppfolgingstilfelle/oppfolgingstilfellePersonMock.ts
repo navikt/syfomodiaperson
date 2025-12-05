@@ -40,4 +40,5 @@ export const oppfolgingstilfellePersonMock: OppfolgingstilfellePersonDTO = {
     currentOppfolgingstilfelle,
   ],
   personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
+  hasGjentakendeSykefravar: true,
 };

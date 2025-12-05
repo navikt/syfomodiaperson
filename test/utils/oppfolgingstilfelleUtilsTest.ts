@@ -1,62 +1,93 @@
 import { expect, describe, it } from "vitest";
 import {
-  isGjentakendeSykefravar,
+  hasGjentakendeSykefravar,
   sortByDescendingStart,
 } from "@/utils/oppfolgingstilfelleUtils";
 import { generateOppfolgingstilfelle } from "../testDataUtils";
 import { daysFromToday } from "../testUtils";
 import { THREE_YEARS_AGO_IN_MONTHS } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import dayjs from "dayjs";
-import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { VIRKSOMHET_BRANNOGBIL } from "@/mocks/common/mockConstants";
+import {
+  OppfolgingstilfelleDTO,
+  OppfolgingstilfellePersonDTO,
+} from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import {
+  ARBEIDSTAKER_DEFAULT,
+  VIRKSOMHET_BRANNOGBIL,
+} from "@/mocks/common/mockConstants";
 
 describe("OppfolgingstilfelleUtils", () => {
   describe("isGjentakendeSykefravar", () => {
+    const tilfellePerson: OppfolgingstilfellePersonDTO = {
+      oppfolgingstilfelleList: [],
+      personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
+      hasGjentakendeSykefravar: null,
+    };
+
+    it("is a gjentakende sykefravar if hasGjentakendeSykefravar is true", () => {
+      const hasGjentakendeFravar = true;
+
+      expect(
+        hasGjentakendeSykefravar({
+          ...tilfellePerson,
+          hasGjentakendeSykefravar: hasGjentakendeFravar,
+        })
+      ).to.be.true;
+    });
+
     it("is a gjentakende sykefravar if sick twice adding up to more than 400 days", () => {
-      const tilfeller = [
+      const oppfolgingstilfelleList = [
         generateOppfolgingstilfelle(daysFromToday(-601), daysFromToday(-401)),
         generateOppfolgingstilfelle(daysFromToday(-400), daysFromToday(-200)),
       ];
 
-      expect(isGjentakendeSykefravar(tilfeller)).to.be.true;
+      expect(
+        hasGjentakendeSykefravar({ ...tilfellePerson, oppfolgingstilfelleList })
+      ).to.be.true;
     });
 
     it("is NOT a gjentakende sykefravar if sick once for more than 400 days ", () => {
-      const tilfeller = [
+      const oppfolgingstilfelleList = [
         generateOppfolgingstilfelle(daysFromToday(-500), daysFromToday(-100)),
       ];
 
-      expect(isGjentakendeSykefravar(tilfeller)).to.be.false;
+      expect(
+        hasGjentakendeSykefravar({ ...tilfellePerson, oppfolgingstilfelleList })
+      ).to.be.false;
     });
 
-    it("is NOT a gjentakende sykefravar if 5 short, less than 3 days, sykefravar and one long adding up to more than 100 days", () => {
-      const tilfeller = [
+    it("is NOT a gjentakende sykefravar if 5 short, less than 16 days, sykefravar and one long adding up to more than 100 days", () => {
+      const oppfolgingstilfelleList = [
         generateOppfolgingstilfelle(daysFromToday(-500), daysFromToday(-400)),
         generateOppfolgingstilfelle(daysFromToday(-300), daysFromToday(-299)),
-        generateOppfolgingstilfelle(daysFromToday(-250), daysFromToday(-249)),
-        generateOppfolgingstilfelle(daysFromToday(-200), daysFromToday(-199)),
-        generateOppfolgingstilfelle(daysFromToday(-150), daysFromToday(-149)),
-        generateOppfolgingstilfelle(daysFromToday(-100), daysFromToday(-99)),
+        generateOppfolgingstilfelle(daysFromToday(-250), daysFromToday(-240)),
+        generateOppfolgingstilfelle(daysFromToday(-200), daysFromToday(-188)),
+        generateOppfolgingstilfelle(daysFromToday(-150), daysFromToday(-140)),
+        generateOppfolgingstilfelle(daysFromToday(-100), daysFromToday(-90)),
       ];
 
-      expect(isGjentakendeSykefravar(tilfeller)).to.be.false;
+      expect(
+        hasGjentakendeSykefravar({ ...tilfellePerson, oppfolgingstilfelleList })
+      ).to.be.false;
     });
 
-    it("is a gjentakende sykefravar if 5 almost short, exactly 3 days, sykefravar and one long adding up to more than 100 days", () => {
-      const tilfeller = [
+    it("is a gjentakende sykefravar if 5 almost short, exactly 16 days, sykefravar and one long adding up to more than 100 days", () => {
+      const oppfolgingstilfelleList = [
         generateOppfolgingstilfelle(daysFromToday(-500), daysFromToday(-400)),
-        generateOppfolgingstilfelle(daysFromToday(-300), daysFromToday(-298)),
-        generateOppfolgingstilfelle(daysFromToday(-250), daysFromToday(-248)),
-        generateOppfolgingstilfelle(daysFromToday(-200), daysFromToday(-198)),
-        generateOppfolgingstilfelle(daysFromToday(-150), daysFromToday(-148)),
-        generateOppfolgingstilfelle(daysFromToday(-100), daysFromToday(-98)),
+        generateOppfolgingstilfelle(daysFromToday(-300), daysFromToday(-285)),
+        generateOppfolgingstilfelle(daysFromToday(-250), daysFromToday(-235)),
+        generateOppfolgingstilfelle(daysFromToday(-200), daysFromToday(-184)),
+        generateOppfolgingstilfelle(daysFromToday(-150), daysFromToday(-135)),
+        generateOppfolgingstilfelle(daysFromToday(-100), daysFromToday(-85)),
       ];
 
-      expect(isGjentakendeSykefravar(tilfeller)).to.be.true;
+      expect(
+        hasGjentakendeSykefravar({ ...tilfellePerson, oppfolgingstilfelleList })
+      ).to.be.true;
     });
 
     it("is a gjentakende sykefravar if 5 sykefravar adding up to 101 days", () => {
-      const tilfeller = [
+      const oppfolgingstilfelleList = [
         generateOppfolgingstilfelle(daysFromToday(-500), daysFromToday(-481)),
         generateOppfolgingstilfelle(daysFromToday(-450), daysFromToday(-431)),
         generateOppfolgingstilfelle(daysFromToday(-400), daysFromToday(-381)),
@@ -64,7 +95,9 @@ describe("OppfolgingstilfelleUtils", () => {
         generateOppfolgingstilfelle(daysFromToday(-300), daysFromToday(-280)),
       ];
 
-      expect(isGjentakendeSykefravar(tilfeller)).to.be.true;
+      expect(
+        hasGjentakendeSykefravar({ ...tilfellePerson, oppfolgingstilfelleList })
+      ).to.be.true;
     });
 
     it("is NOT a gjentakende sykefravar if sick twice adding up to more than 400 days and one is old", () => {
@@ -75,12 +108,14 @@ describe("OppfolgingstilfelleUtils", () => {
       const threeYearsMinus200Days = dayjs(threeYearsAgo)
         .subtract(200, "day")
         .toDate();
-      const tilfeller = [
+      const oppfolgingstilfelleList = [
         generateOppfolgingstilfelle(threeYearsMinus200Days, threeYearsAgo),
         generateOppfolgingstilfelle(daysFromToday(-400), daysFromToday(-200)),
       ];
 
-      expect(isGjentakendeSykefravar(tilfeller)).to.be.false;
+      expect(
+        hasGjentakendeSykefravar({ ...tilfellePerson, oppfolgingstilfelleList })
+      ).to.be.false;
     });
 
     it("is a gjentakende sykefravar if tilfelle ends less than three years ago", () => {
@@ -92,20 +127,22 @@ describe("OppfolgingstilfelleUtils", () => {
         .subtract(THREE_YEARS_AGO_IN_MONTHS, "month")
         .add(1, "day")
         .toDate();
-      const tilfeller = [
+      const oppfolgingstilfelleList = [
         generateOppfolgingstilfelle(fiveYearsAgo, lessThanThreeYearsAgo),
         generateOppfolgingstilfelle(daysFromToday(-400), daysFromToday(-200)),
       ];
 
-      expect(isGjentakendeSykefravar(tilfeller)).to.be.true;
+      expect(
+        hasGjentakendeSykefravar({ ...tilfellePerson, oppfolgingstilfelleList })
+      ).to.be.true;
     });
   });
 
   describe("sortByDescendingStart", () => {
     it("return empty list if input is empty", () => {
-      const tilfeller: OppfolgingstilfelleDTO[] = [];
+      const oppfolgingstilfelleList: OppfolgingstilfelleDTO[] = [];
 
-      const sortedTilfeller = sortByDescendingStart(tilfeller);
+      const sortedTilfeller = sortByDescendingStart(oppfolgingstilfelleList);
 
       expect(sortedTilfeller.length).to.be.equal(0);
     });
@@ -113,7 +150,7 @@ describe("OppfolgingstilfelleUtils", () => {
     it("return list with tilfelle with latest start first", () => {
       const earliestStart = new Date("2023-01-01");
       const latestStart = new Date("2023-02-02");
-      const tilfeller: OppfolgingstilfelleDTO[] = [
+      const oppfolgingstilfelleList: OppfolgingstilfelleDTO[] = [
         {
           arbeidstakerAtTilfelleEnd: true,
           start: earliestStart,
@@ -132,7 +169,7 @@ describe("OppfolgingstilfelleUtils", () => {
         },
       ];
 
-      const sortedTilfeller = sortByDescendingStart(tilfeller);
+      const sortedTilfeller = sortByDescendingStart(oppfolgingstilfelleList);
 
       expect(sortedTilfeller[0].start).to.be.equal(latestStart);
     });
