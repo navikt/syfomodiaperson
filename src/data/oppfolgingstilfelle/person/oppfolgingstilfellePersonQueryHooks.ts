@@ -3,29 +3,13 @@ import { get } from "@/api/axios";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { ISOPPFOLGINGSTILFELLE_ROOT } from "@/apiConstants";
 import {
+  hasGjentakendeSykefravar,
+  isInactive,
   OppfolgingstilfelleDTO,
   OppfolgingstilfellePersonDTO,
 } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { minutesToMillis } from "@/utils/utils";
-import dayjs from "dayjs";
-import {
-  hasGjentakendeSykefravar,
-  sortByDescendingStart,
-} from "@/utils/oppfolgingstilfelleUtils";
-
-export const ARBEIDSGIVERPERIODE_DAYS = 16;
-export const THREE_YEARS_AGO_IN_MONTHS = 36;
-export const MIN_DAYS_IN_LONG_TILFELLE = 16;
-
-function isInactive(oppfolgingstilfelle: OppfolgingstilfelleDTO) {
-  const today = dayjs(new Date());
-  const tilfelleEnd = dayjs(oppfolgingstilfelle.end);
-
-  return today.isAfter(
-    tilfelleEnd.add(ARBEIDSGIVERPERIODE_DAYS, "days"),
-    "date"
-  );
-}
+import { sortByDescendingStart } from "@/utils/oppfolgingstilfelleUtils";
 
 export const oppfolgingstilfellePersonQueryKeys = {
   oppfolgingstilfelleperson: (personIdent: string) => [
