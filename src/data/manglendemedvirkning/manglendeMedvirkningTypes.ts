@@ -9,7 +9,7 @@ interface VurderingRequestDTO {
 
 export interface ForhandsvarselVurdering extends VurderingRequestDTO {
   vurderingType: VurderingType.FORHANDSVARSEL;
-  varselSvarfrist: Date;
+  varselSvarfrist: string;
 }
 
 export interface StansVurdering extends VurderingRequestDTO {

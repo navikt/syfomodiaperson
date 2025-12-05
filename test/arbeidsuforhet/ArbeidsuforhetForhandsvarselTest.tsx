@@ -14,6 +14,7 @@ import { changeTextInput, clickButton, getTextInput } from "../testUtils";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
+import dayjs from "dayjs";
 
 let queryClient: QueryClient;
 
@@ -81,16 +82,14 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
         type: VurderingType.FORHANDSVARSEL,
         begrunnelse: begrunnelse,
         document: getSendForhandsvarselDocument(begrunnelse),
-        frist: getForhandsvarselFrist(),
+        frist: dayjs(getForhandsvarselFrist()).format("YYYY-MM-DD"),
       };
       expect(vurdering.type).to.deep.equal(expectedVurdering.type);
       expect(vurdering.begrunnelse).to.deep.equal(
         expectedVurdering.begrunnelse
       );
       expect(vurdering.document).to.deep.equal(expectedVurdering.document);
-      expect(vurdering.frist?.toDateString()).to.deep.equal(
-        expectedVurdering.frist?.toDateString()
-      );
+      expect(vurdering.frist).to.deep.equal(expectedVurdering.frist);
 
       expect(screen.queryByText(begrunnelse)).to.exist;
     });
