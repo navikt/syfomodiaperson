@@ -107,6 +107,38 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
         });
       });
     });
+    it("Send forhåndsvarsel with custom svarfrist", async () => {
+      renderForhandsvarselSkjema();
+      const begrunnelse = "En begrunnelse";
+      const begrunnelseInput = getTextInput("Begrunnelse (obligatorisk)");
+      changeTextInput(begrunnelseInput, begrunnelse);
+      const customFrist = addWeeks(new Date(), 5);
+      const datepickerInput = screen.getByRole("textbox", {
+        name: /Svarfrist/,
+      });
+      const formatted = dayjs(customFrist).format("DD.MM.YYYY");
+      changeTextInput(datepickerInput, formatted);
+
+      await clickButton("Send");
+      const expectedRequestBody: ForhandsvarselVurdering = {
+        personident: ARBEIDSTAKER_DEFAULT.personIdent,
+        vurderingType: VurderingType.FORHANDSVARSEL,
+        begrunnelse: begrunnelse,
+        document: getSendForhandsvarselDocument(begrunnelse, customFrist),
+        varselSvarfrist: dayjs(customFrist).format("YYYY-MM-DD"),
+      };
+      await waitFor(() => {
+        const vurderingMutation = queryClient.getMutationCache().getAll().pop();
+
+        expect(vurderingMutation?.state.variables).to.deep.include({
+          personident: expectedRequestBody.personident,
+          vurderingType: expectedRequestBody.vurderingType,
+          begrunnelse: expectedRequestBody.begrunnelse,
+          document: expectedRequestBody.document,
+          varselSvarfrist: expectedRequestBody.varselSvarfrist,
+        });
+      });
+    });
   });
 
   describe("ForhandsvarselSendt", () => {

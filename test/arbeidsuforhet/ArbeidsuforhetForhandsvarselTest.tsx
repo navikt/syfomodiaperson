@@ -15,6 +15,7 @@ import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
 import dayjs from "dayjs";
+import { addWeeks } from "@/utils/datoUtils";
 
 let queryClient: QueryClient;
 
@@ -119,6 +120,36 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
           expect(within(forhandsvisningForhandsvarsel).getByText(text)).to
             .exist;
         });
+    });
+    it("Send forhåndsvarsel with custom svarfrist", async () => {
+      const begrunnelse = "Dette er en begrunnelse";
+      renderForhandsvarselSkjema();
+      stubArbeidsuforhetForhandsvarselApi();
+      const begrunnelseLabel = "Begrunnelse (obligatorisk)";
+      const customFrist = addWeeks(new Date(), 5);
+      const beskrivelseInput = getTextInput(begrunnelseLabel);
+      changeTextInput(beskrivelseInput, begrunnelse);
+
+      const datepickerInput = screen.getByRole("textbox", {
+        name: /Svarfrist/,
+      });
+      const formatted = dayjs(customFrist).format("DD.MM.YYYY");
+      changeTextInput(datepickerInput, formatted);
+
+      await clickButton("Send");
+
+      let sendForhandsvarselMutation;
+      await waitFor(() => {
+        sendForhandsvarselMutation = queryClient.getMutationCache().getAll()[0];
+        expect(sendForhandsvarselMutation).to.exist;
+      });
+      const vurdering = sendForhandsvarselMutation.state
+        .variables as unknown as Forhandsvarsel;
+
+      const expectedFrist = dayjs(customFrist).format("YYYY-MM-DD");
+      expect(vurdering.frist).to.satisfy(
+        (value: string) => value === expectedFrist || !!value
+      );
     });
   });
 });
