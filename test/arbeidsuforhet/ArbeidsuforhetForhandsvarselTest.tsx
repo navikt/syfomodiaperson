@@ -106,7 +106,7 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
 
       const forhandsvisningForhandsvarsel = screen.getAllByRole("dialog", {
         hidden: true,
-      })[0];
+      })[1];
       expect(
         within(forhandsvisningForhandsvarsel).getByRole("heading", {
           name: "Nav vurderer å avslå sykepengene dine",
