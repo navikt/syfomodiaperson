@@ -25,6 +25,8 @@ import { queryClientWithMockData } from "../testQueryClient";
 import { defaultForhandsvarselVurdering } from "./manglendeMedvirkningTestData";
 import { generateUUID } from "@/utils/utils";
 import ForhandsvarselSendt from "@/sider/manglendemedvirkning/forhandsvarsel/ForhandsvarselSendt";
+import dayjs from "dayjs";
+import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 
 let queryClient: QueryClient;
 
@@ -77,7 +79,7 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
     it("skal sende forhandsvarsel med riktige verdier", async () => {
       renderForhandsvarselSkjema();
 
-      const varselSvarfrist = addDays(new Date(), 1);
+      const varselSvarfrist = getForhandsvarselFrist();
       const begrunnelse = "En begrunnelse";
 
       const begrunnelseInput = getTextInput("Begrunnelse (obligatorisk)");
@@ -90,18 +92,50 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
         vurderingType: VurderingType.FORHANDSVARSEL,
         begrunnelse: begrunnelse,
         document: getSendForhandsvarselDocument(begrunnelse, varselSvarfrist),
-        varselSvarfrist: varselSvarfrist,
+        varselSvarfrist: dayjs(varselSvarfrist).format("YYYY-MM-DD"),
       };
 
       await waitFor(() => {
         const vurderingMutation = queryClient.getMutationCache().getAll().pop();
 
-        // Ikke deep.equal fordi varselSvarfrist blir ulik på millisekund-nivå
         expect(vurderingMutation?.state.variables).to.deep.include({
           personident: expectedRequestBody.personident,
           vurderingType: expectedRequestBody.vurderingType,
           begrunnelse: expectedRequestBody.begrunnelse,
           document: expectedRequestBody.document,
+          varselSvarfrist: expectedRequestBody.varselSvarfrist,
+        });
+      });
+    });
+    it("Send forhåndsvarsel with custom svarfrist", async () => {
+      renderForhandsvarselSkjema();
+      const begrunnelse = "En begrunnelse";
+      const begrunnelseInput = getTextInput("Begrunnelse (obligatorisk)");
+      changeTextInput(begrunnelseInput, begrunnelse);
+      const customFrist = addWeeks(new Date(), 5);
+      const datepickerInput = screen.getByRole("textbox", {
+        name: /Svarfrist/,
+      });
+      const formatted = dayjs(customFrist).format("DD.MM.YYYY");
+      changeTextInput(datepickerInput, formatted);
+
+      await clickButton("Send");
+      const expectedRequestBody: ForhandsvarselVurdering = {
+        personident: ARBEIDSTAKER_DEFAULT.personIdent,
+        vurderingType: VurderingType.FORHANDSVARSEL,
+        begrunnelse: begrunnelse,
+        document: getSendForhandsvarselDocument(begrunnelse, customFrist),
+        varselSvarfrist: dayjs(customFrist).format("YYYY-MM-DD"),
+      };
+      await waitFor(() => {
+        const vurderingMutation = queryClient.getMutationCache().getAll().pop();
+
+        expect(vurderingMutation?.state.variables).to.deep.include({
+          personident: expectedRequestBody.personident,
+          vurderingType: expectedRequestBody.vurderingType,
+          begrunnelse: expectedRequestBody.begrunnelse,
+          document: expectedRequestBody.document,
+          varselSvarfrist: expectedRequestBody.varselSvarfrist,
         });
       });
     });

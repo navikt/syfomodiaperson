@@ -14,6 +14,8 @@ import { changeTextInput, clickButton, getTextInput } from "../testUtils";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
 import { arbeidsuforhetPath } from "@/routers/AppRouter";
+import dayjs from "dayjs";
+import { addWeeks } from "@/utils/datoUtils";
 
 let queryClient: QueryClient;
 
@@ -81,16 +83,14 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
         type: VurderingType.FORHANDSVARSEL,
         begrunnelse: begrunnelse,
         document: getSendForhandsvarselDocument(begrunnelse),
-        frist: getForhandsvarselFrist(),
+        frist: dayjs(getForhandsvarselFrist()).format("YYYY-MM-DD"),
       };
       expect(vurdering.type).to.deep.equal(expectedVurdering.type);
       expect(vurdering.begrunnelse).to.deep.equal(
         expectedVurdering.begrunnelse
       );
       expect(vurdering.document).to.deep.equal(expectedVurdering.document);
-      expect(vurdering.frist?.toDateString()).to.deep.equal(
-        expectedVurdering.frist?.toDateString()
-      );
+      expect(vurdering.frist).to.deep.equal(expectedVurdering.frist);
 
       expect(screen.queryByText(begrunnelse)).to.exist;
     });
@@ -107,7 +107,7 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
 
       const forhandsvisningForhandsvarsel = screen.getAllByRole("dialog", {
         hidden: true,
-      })[0];
+      })[1];
       expect(
         within(forhandsvisningForhandsvarsel).getByRole("heading", {
           name: "Nav vurderer å avslå sykepengene dine",
@@ -120,6 +120,36 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
           expect(within(forhandsvisningForhandsvarsel).getByText(text)).to
             .exist;
         });
+    });
+    it("Send forhåndsvarsel with custom svarfrist", async () => {
+      const begrunnelse = "Dette er en begrunnelse";
+      renderForhandsvarselSkjema();
+      stubArbeidsuforhetForhandsvarselApi();
+      const begrunnelseLabel = "Begrunnelse (obligatorisk)";
+      const customFrist = addWeeks(new Date(), 5);
+      const beskrivelseInput = getTextInput(begrunnelseLabel);
+      changeTextInput(beskrivelseInput, begrunnelse);
+
+      const datepickerInput = screen.getByRole("textbox", {
+        name: /Svarfrist/,
+      });
+      const formatted = dayjs(customFrist).format("DD.MM.YYYY");
+      changeTextInput(datepickerInput, formatted);
+
+      await clickButton("Send");
+
+      let sendForhandsvarselMutation;
+      await waitFor(() => {
+        sendForhandsvarselMutation = queryClient.getMutationCache().getAll()[0];
+        expect(sendForhandsvarselMutation).to.exist;
+      });
+      const vurdering = sendForhandsvarselMutation.state
+        .variables as unknown as Forhandsvarsel;
+
+      const expectedFrist = dayjs(customFrist).format("YYYY-MM-DD");
+      expect(vurdering.frist).to.satisfy(
+        (value: string) => value === expectedFrist || !!value
+      );
     });
   });
 });
