@@ -10,7 +10,7 @@ export interface AvslagUtenForhandsvarsel
 
 export interface Forhandsvarsel
   extends ArbeidsuforhetVurdering<VurderingType.FORHANDSVARSEL> {
-  frist: Date;
+  frist: string;
 }
 
 export interface IkkeAktuell
