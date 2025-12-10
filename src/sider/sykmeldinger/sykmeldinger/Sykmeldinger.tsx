@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import SykmeldingLinkPanel from "./SykmeldingLinkPanel";
-import { Heading } from "@navikt/ds-react";
+import { BodyShort, Box, Heading } from "@navikt/ds-react";
 
 interface SykmeldingTeasereProps {
   sykmeldinger: SykmeldingOldFormat[];
@@ -16,23 +16,30 @@ export default function Sykmeldinger({
   ingenSykmeldingerMelding,
   children,
 }: SykmeldingTeasereProps): ReactElement {
+  const hasSykmeldinger = !!sykmeldinger.length;
   return (
     <div className="mb-4">
-      <header className="inngangspanelerHeader">
-        <Heading size="xsmall" level="5" className="flex flex-1 self-center">
-          {tittel}
-        </Heading>
+      <Box
+        background="surface-default"
+        padding="6"
+        className="flex justify-between gap-4 items-center mb-px"
+      >
+        <div>
+          <Heading size="xsmall" level="5">
+            {tittel}
+          </Heading>
+          {!hasSykmeldinger && (
+            <BodyShort size="small" className="flex-1 mt-3">
+              {ingenSykmeldingerMelding}
+            </BodyShort>
+          )}
+        </div>
         {children}
-      </header>
-      <div>
-        {sykmeldinger.length ? (
-          sykmeldinger.map((sykmelding, idx) => (
-            <SykmeldingLinkPanel key={idx} sykmelding={sykmelding} />
-          ))
-        ) : (
-          <p className="typo-infotekst">{ingenSykmeldingerMelding}</p>
-        )}
-      </div>
+      </Box>
+      {hasSykmeldinger &&
+        sykmeldinger.map((sykmelding, idx) => (
+          <SykmeldingLinkPanel key={idx} sykmelding={sykmelding} />
+        ))}
     </div>
   );
 }
