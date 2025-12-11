@@ -1,10 +1,10 @@
 import React from "react";
-import Knapp from "nav-frontend-knapper";
 import { useBehandlePersonoppgave } from "@/data/personoppgave/useBehandlePersonoppgave";
 import { StatusKanImage } from "../../../../img/ImageComponents";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
+import { Button } from "@navikt/ds-react";
 
 const texts = {
   marker: "Marker som behandlet",
@@ -26,15 +26,14 @@ export default function BehandleOppfolgingsplanLPS({
   return (
     <>
       {personoppgave && !personoppgave.behandletTidspunkt && (
-        <Knapp
-          autoDisableVedSpinner
+        <Button
+          variant="secondary"
+          size="small"
           onClick={() => behandlePersonoppgave.mutate(personoppgave.uuid)}
-          spinner={behandlePersonoppgave.isPending}
-          id="behandle_personoppgave"
-          mini
+          loading={behandlePersonoppgave.isPending}
         >
           {texts.marker}
-        </Knapp>
+        </Button>
       )}
       {personoppgave && personoppgave.behandletTidspunkt && (
         <p>
