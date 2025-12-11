@@ -5,7 +5,7 @@ import {
   useDokumentinfoQuery,
   useGetLPSOppfolgingsplanerQuery,
   useGetOppfolgingsplanerQuery,
-} from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+} from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { oppfolgingsplanMock } from "@/mocks/syfooppfolgingsplanservice/oppfolgingsplanMock";
 import {
   stubDokumentinfoApi,

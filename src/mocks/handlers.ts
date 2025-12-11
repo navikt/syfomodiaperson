@@ -36,6 +36,7 @@ import { mockIshuskelapp } from "@/mocks/oppfolgingsoppgave/mockOppfolgingsoppga
 import { http, HttpResponse } from "msw";
 import { mockisoppfolgingsplanForesporsel } from "@/mocks/isoppfolgingsplan/mockisoppfolgingsplanForesporsel";
 import { mockPensjonPenUforegrad } from "@/mocks/uforegrad/mockUforegrad";
+import { mockSyfooppfolgingsplanbackend } from "@/mocks/syfooppfolgingsplanbackend/mockSyfooppfolgingsplanbackend";
 
 const handlers = [
   http.post("https://umami.nav.no/api/send", () => {
@@ -63,6 +64,7 @@ const handlers = [
   mockIstilgangskontroll,
   ...mockSyfooppfolgingsplanservice,
   ...mockLpsOppfolgingsplanerMottak,
+  ...mockSyfooppfolgingsplanbackend,
   ...mockMerOppfolging,
   ...mockModiacontextholder,
   ...mockSyfoperson,

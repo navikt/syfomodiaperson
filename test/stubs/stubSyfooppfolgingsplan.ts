@@ -1,5 +1,6 @@
 import {
   LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT,
+  SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT,
   SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT,
   SYFOOPPFOLGINGSPLANSERVICE_V3_ROOT,
 } from "@/apiConstants";
@@ -9,6 +10,7 @@ import { historikkoppfolgingsplanMock } from "@/mocks/syfooppfolgingsplanservice
 import { oppfolgingsplanerLPSMock } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
 import { mockServer } from "../setup";
 import { http, HttpResponse } from "msw";
+import { oppfolgingsplanV2Mock } from "@/mocks/syfooppfolgingsplanbackend/oppfolgingsplanV2Mock";
 
 export const stubOppfolgingsplanApi = () =>
   mockServer.use(
@@ -39,3 +41,12 @@ export const stubOppfolgingsplanHistorikkApi = () =>
       () => HttpResponse.json(historikkoppfolgingsplanMock)
     )
   );
+
+export function stubGetOppfolgingsplanV2() {
+  mockServer.use(
+    http.get(
+      `*${SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT}/oppfolgingsplaner/query`,
+      () => HttpResponse.json(oppfolgingsplanV2Mock)
+    )
+  );
+}

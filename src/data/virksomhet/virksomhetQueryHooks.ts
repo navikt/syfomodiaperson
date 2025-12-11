@@ -11,7 +11,7 @@ export const virksomhetQueryKeys = {
   virksomhet: (virksomhetsnummer?: string) => ["virksomhet", virksomhetsnummer],
 };
 
-export const useVirksomhetQuery = (virksomhetsnummer: string | undefined) => {
+export function useVirksomhetQuery(virksomhetsnummer: string | undefined) {
   const path = `${EREG_ROOT}/organisasjon/${virksomhetsnummer}`;
   const fetchVirksomhet = () => get<EregOrganisasjonResponseDTO>(path);
   const query = useQuery({
@@ -25,4 +25,4 @@ export const useVirksomhetQuery = (virksomhetsnummer: string | undefined) => {
     data: query.data,
     virksomhetsnavn: query.data && getVirksomhetsnavn(query.data),
   };
-};
+}

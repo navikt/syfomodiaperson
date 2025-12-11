@@ -7,7 +7,7 @@ import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryH
 import {
   useGetLPSOppfolgingsplanerQuery,
   useGetOppfolgingsplanerQuery,
-} from "@/data/oppfolgingsplan/oppfolgingsplanQueryHooks";
+} from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";

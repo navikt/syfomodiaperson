@@ -6,11 +6,13 @@ import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { OppfolgingsplanLPSMedPersonoppgave } from "@/data/oppfolgingsplan/types/OppfolgingsplanLPS";
-import { OppfolgingsplanDTO } from "@/data/oppfolgingsplan/types/OppfolgingsplanDTO";
+import { OppfolgingsplanLPSMedPersonoppgave } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
+import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import OppfolgingsplanerOversiktLPS from "@/sider/oppfolgingsplan/lps/OppfolgingsplanerOversiktLPS";
 import OppfolgingsplanLink from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanLink";
 import BeOmOppfolgingsplan from "@/sider/oppfolgingsplan/oppfolgingsplaner/BeOmOppfolgingsplan";
+import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
+import OppfolgingsplanV2Item from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanV2Item";
 
 const texts = {
   aktiveOppfolgingsplaner: "Aktive oppfølgingsplaner",
@@ -32,11 +34,13 @@ export function activeNarmesteLederForCurrentOppfolgingstilfelle(
 
 interface Props {
   aktivePlaner: OppfolgingsplanDTO[];
+  aktivePlanerV2: OppfolgingsplanV2DTO[];
   oppfolgingsplanerLPSMedPersonoppgave: OppfolgingsplanLPSMedPersonoppgave[];
 }
 
 export default function AktiveOppfolgingsplaner({
   aktivePlaner,
+  aktivePlanerV2,
   oppfolgingsplanerLPSMedPersonoppgave,
 }: Props) {
   const { currentLedere } = useLedereQuery();
@@ -68,7 +72,9 @@ export default function AktiveOppfolgingsplaner({
     });
 
   const hasActivePlan =
-    aktivePlaner.length !== 0 || oppfolgingsplanerLPSUnprocessed.length !== 0;
+    aktivePlaner.length !== 0 ||
+    oppfolgingsplanerLPSUnprocessed.length !== 0 ||
+    aktivePlanerV2.length !== 0;
 
   const activeNarmesteLedere = !!currentOppfolgingstilfelle
     ? activeNarmesteLederForCurrentOppfolgingstilfelle(
@@ -83,6 +89,9 @@ export default function AktiveOppfolgingsplaner({
       ) &&
       !oppfolgingsplanerLPSUnprocessed.some(
         (plan) => plan.virksomhetsnummer === leder.virksomhetsnummer
+      ) &&
+      !aktivePlanerV2.some(
+        (plan) => plan.virksomhetsnummer === leder.virksomhetsnummer
       )
   );
   const isBeOmOppfolgingsplanVisible =
@@ -96,17 +105,18 @@ export default function AktiveOppfolgingsplaner({
       </Heading>
       {hasActivePlan ? (
         <>
-          {oppfolgingsplanerLPSUnprocessed.map((planLPS, index) => {
-            return (
-              <OppfolgingsplanerOversiktLPS
-                key={index}
-                oppfolgingsplanLPSBistandsbehov={planLPS}
-              />
-            );
-          })}
-          {aktivePlaner.map((dialog, index) => {
-            return <OppfolgingsplanLink key={index} dialog={dialog} />;
-          })}
+          {oppfolgingsplanerLPSUnprocessed.map((planLPS, index) => (
+            <OppfolgingsplanerOversiktLPS
+              key={index}
+              oppfolgingsplanLPSBistandsbehov={planLPS}
+            />
+          ))}
+          {aktivePlaner.map((dialog, index) => (
+            <OppfolgingsplanLink key={index} dialog={dialog} />
+          ))}
+          {aktivePlanerV2.map((plan, index) => (
+            <OppfolgingsplanV2Item key={index} oppfolgingsplan={plan} />
+          ))}
         </>
       ) : (
         <Box background="surface-default" className="p-4 mb-2">
