@@ -4,7 +4,7 @@ import { StatusKanImage } from "../../../../img/ImageComponents";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
-import { Button } from "@navikt/ds-react";
+import { BodyShort, Button } from "@navikt/ds-react";
 
 const texts = {
   marker: "Marker som behandlet",
@@ -36,14 +36,16 @@ export default function BehandleOppfolgingsplanLPS({
         </Button>
       )}
       {personoppgave && personoppgave.behandletTidspunkt && (
-        <p>
-          <span className="ferdigbehandlet__ikon">
-            <img src={StatusKanImage} alt="Ferdig behandlet" />
-          </span>{" "}
+        <BodyShort size="small" className="flex gap-1 items-center">
+          <img
+            src={StatusKanImage}
+            alt="Ferdig behandlet"
+            className="w-6 h-6"
+          />
           {`Ferdigbehandlet: ${toDatePrettyPrint(
             personoppgave.behandletTidspunkt
           )} av ${personoppgave.behandletVeilederIdent}`}
-        </p>
+        </BodyShort>
       )}
     </>
   );
