@@ -41,7 +41,7 @@ export default function OppfolgingsplanerOversiktLPS({
   return (
     <Box
       background="surface-default"
-      padding="8"
+      padding="4"
       className="mb-2"
       data-testid="oppfolgingsplan-lps"
     >
