@@ -1,12 +1,7 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
-import {
-  ReportProblemTriangleImage,
-  SykmeldingerHoverBlaaImage,
-  SykmeldingerImage,
-} from "../../../../img/ImageComponents";
 import {
   SykmeldingOldFormat,
   SykmeldingPeriodeDTO,
@@ -20,6 +15,7 @@ import { erEkstraInformasjonISykmeldingen } from "@/utils/sykmeldinger/sykmeldin
 import ImportantInformationIcon from "@/components/ImportantInformationIcon";
 import { sykmeldingPeriodeTekst } from "@/sider/sykmeldinger/sykmeldinger/SykmeldingPeriodeInfo";
 import { UtenlandskSykmeldingTag } from "@/components/UtenlandskSykmeldingTag";
+import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 
 const texts = {
   teaserTekst: "Sykmelding\n",
@@ -73,18 +69,6 @@ export function PeriodeListe({ perioder, arbeidsgiver }: PeriodeListeProps) {
   );
 }
 
-const getIkon = (behandlingsutfallStatus: BehandlingsutfallStatusDTO) => {
-  return behandlingsutfallStatus === BehandlingsutfallStatusDTO.INVALID
-    ? ReportProblemTriangleImage
-    : SykmeldingerImage;
-};
-
-const getHoverIkon = (behandlingsutfallStatus: BehandlingsutfallStatusDTO) => {
-  return behandlingsutfallStatus === BehandlingsutfallStatusDTO.INVALID
-    ? ReportProblemTriangleImage
-    : SykmeldingerHoverBlaaImage;
-};
-
 const StyledLinkPanel = styled(LinkPanel)`
   margin-bottom: 0.1em;
 
@@ -101,7 +85,6 @@ export default function SykmeldingLinkPanel({
   sykmelding,
 }: Props): ReactElement {
   const behandlingsutfallStatus = sykmelding.behandlingsutfall.status;
-  const [ikon, setIkon] = useState(getIkon(behandlingsutfallStatus));
 
   const visStatus =
     sykmelding.status !== SykmeldingStatus.NY ||
@@ -115,15 +98,8 @@ export default function SykmeldingLinkPanel({
       forwardedAs={Link}
       to={`/sykefravaer/sykmeldinger/${sykmelding.id}`}
       border={false}
-      onMouseEnter={() => {
-        setIkon(getHoverIkon(behandlingsutfallStatus));
-      }}
-      onMouseLeave={() => {
-        setIkon(getIkon(behandlingsutfallStatus));
-      }}
     >
-      <div className="flex gap-4">
-        <img src={ikon} alt="Plaster-ikon" className="self-start" />
+      <div className="flex gap-5">
         <div className="w-full">
           <div className="flex justify-between">
             {tilLesbarPeriodeMedArstall(
@@ -132,15 +108,25 @@ export default function SykmeldingLinkPanel({
             )}
             <div className="flex gap-2 items-center">
               {visStatus && (
-                <text>
-                  {textStatus(sykmelding.status, behandlingsutfallStatus)}
-                </text>
+                <div className="flex gap-1 items-center">
+                  {sykmelding.behandlingsutfall.status ===
+                    BehandlingsutfallStatusDTO.INVALID && (
+                    <ExclamationmarkTriangleIcon
+                      title="advarsel-ikon"
+                      fontSize="1.5rem"
+                      color="var(--a-icon-danger)"
+                    />
+                  )}
+                  <text>
+                    {textStatus(sykmelding.status, behandlingsutfallStatus)}
+                  </text>
+                </div>
               )}
               {erViktigInformasjon && <ImportantInformationIcon />}
             </div>
           </div>
-          <div className="flex">
-            <Heading size="small" className="flex mr-2">
+          <div className="flex mt-2">
+            <Heading size="xsmall" className="flex mr-2">
               {sykmelding.egenmeldt
                 ? texts.egenmeldtTeaserTekst
                 : texts.teaserTekst}

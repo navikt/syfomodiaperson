@@ -21,11 +21,11 @@ export default function Sykmeldinger({
     <div className="mb-4">
       <Box
         background="surface-default"
-        padding="6"
+        padding="4"
         className="flex justify-between gap-4 items-center mb-px"
       >
         <div>
-          <Heading size="xsmall" level="5">
+          <Heading size="small" level="5">
             {tittel}
           </Heading>
           {!hasSykmeldinger && (
