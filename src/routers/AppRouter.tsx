@@ -48,6 +48,7 @@ export const appRoutePath = "/sykefravaer";
 export const dialogmoteRoutePath = `${appRoutePath}/dialogmote`;
 export const dialogmoteUnntakRoutePath = `${appRoutePath}/dialogmoteunntak`;
 export const dialogmoteIkkeAktuellRoutePath = `${appRoutePath}/dialogmoteikkeaktuell`;
+export const dialogmoteAvventRoutePath = `${appRoutePath}/dialogmoteavvent`;
 export const moteoversiktRoutePath = `${appRoutePath}/moteoversikt`;
 export const arbeidsuforhetOppfyltPath = `${appRoutePath}/arbeidsuforhet/oppfylt`;
 export const arbeidsuforhetAvslagPath = `${appRoutePath}/arbeidsuforhet/avslag`;
