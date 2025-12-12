@@ -7,13 +7,13 @@ import GlobalNavigasjon, {
 } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { isEaster, isPride } from "@/utils/festiveUtils";
 import { Easter } from "@/components/festive/Easter";
-import { OversiktLenker } from "@/components/personkort/OversiktLenker";
 import { Pride } from "@/components/festive/Pride";
 import Oppfolgingsoppgave from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import TildeltVeileder from "@/components/side/tildeltveileder/TildeltVeileder";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { InaktivPersonident } from "@/components/InaktivPersonident";
+import OversiktLenker from "@/components/personkort/OversiktLenker";
 
 const MODIA_HEADER_ID = "modia-header";
 
