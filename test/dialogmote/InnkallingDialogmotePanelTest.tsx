@@ -205,4 +205,25 @@ describe("InnkallingDialogmotePanel", () => {
       await userEvent.click(button);
     });
   });
+  it("viser ikke avvent-banner når det ikke finnes avvent-data", () => {
+    renderInnkallingDialogmotePanel(brukerKanVarsles);
+
+    expect(screen.queryByText(/Dialogmøte er satt på vent til/)).to.not.exist;
+  });
+
+  it("viser avvent-banner når det finnes avvent-data", () => {
+    const frist = new Date("2025-01-10T00:00:00Z");
+    queryClient.setQueryData(
+      dialogmotekandidatQueryKeys.avvent(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => ({
+        frist,
+        tekst: "Vi avventer ny informasjon",
+      })
+    );
+
+    renderInnkallingDialogmotePanel(brukerKanVarsles);
+
+    expect(screen.getByText(/Dialogmøte er satt på vent til/)).to.exist;
+    expect(screen.getByText("Vi avventer ny informasjon")).to.exist;
+  });
 });

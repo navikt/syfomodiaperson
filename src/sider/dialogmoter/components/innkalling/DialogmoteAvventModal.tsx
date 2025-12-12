@@ -10,11 +10,7 @@ import {
 import { useForm } from "react-hook-form";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { useSettDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useSettDialogmoteIkkeAktuell";
-import {
-  CreateIkkeAktuellDTO,
-  IkkeAktuellArsak,
-} from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
+import { useAvventDialogmoteMutation } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 
 const texts = {
   header: "Avvent",
@@ -49,7 +45,7 @@ export const DialogmoteAvventModal = ({
   onClose,
 }: DialogmoteAvventModalProps): ReactElement => {
   const personIdent = useValgtPersonident();
-  const settDialogmoteAvvent = useSettDialogmoteIkkeAktuell();
+  const avventMutation = useAvventDialogmoteMutation();
 
   const {
     handleSubmit,
@@ -75,19 +71,17 @@ export const DialogmoteAvventModal = ({
     const { begrunnelse, frist } = values;
     const isBlank = begrunnelse?.trim() === "";
 
-    const dto: CreateIkkeAktuellDTO & { frist?: string } = {
-      personIdent,
-      // Use a fixed årsak since we don't show a choice in this Avvent modal
-      arsak: IkkeAktuellArsak.DIALOGMOTE_AVHOLDT,
-      beskrivelse: isBlank ? undefined : begrunnelse,
-      frist,
-    };
-
-    settDialogmoteAvvent.mutate(dto, {
-      onSuccess: () => {
-        onClose();
+    avventMutation.mutate(
+      {
+        frist: frist!,
+        beskrivelse: isBlank ? undefined : begrunnelse,
       },
-    });
+      {
+        onSuccess: () => {
+          onClose();
+        },
+      }
+    );
   };
 
   return (
@@ -129,12 +123,12 @@ export const DialogmoteAvventModal = ({
             </DatePicker>
           </div>
 
-          {settDialogmoteAvvent.isError && (
-            <SkjemaInnsendingFeil error={settDialogmoteAvvent.error} />
+          {avventMutation.isError && (
+            <SkjemaInnsendingFeil error={avventMutation.error} />
           )}
 
           <div className="flex gap-4 mt-4">
-            <Button loading={settDialogmoteAvvent.isPending} type="submit">
+            <Button loading={avventMutation.isPending} type="submit">
               {texts.lagre}
             </Button>
             <Button type="button" variant="tertiary" onClick={onClose}>
