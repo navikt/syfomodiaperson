@@ -6,6 +6,7 @@ interface IconHeaderProps {
   altIcon: string;
   header: string;
   subtitle?: ReactNode;
+  headerAction?: ReactNode;
 }
 
 export const IconHeader = ({
@@ -13,16 +14,20 @@ export const IconHeader = ({
   altIcon,
   header,
   subtitle,
+  headerAction,
 }: IconHeaderProps) => {
   return (
-    <div className="flex flex-row items-center">
-      <img className="mr-4 w-12" src={icon} alt={altIcon} />
-      <div className="flex flex-col gap-1">
-        <Heading level="2" size="medium">
-          {header}
-        </Heading>
-        {typeof subtitle === "string" ? <p>{subtitle}</p> : subtitle}
+    <div className="flex flex-row items-start justify-between">
+      <div className="flex flex-row items-center">
+        <img className="mr-4 w-12" src={icon} alt={altIcon} />
+        <div className="flex flex-col gap-1">
+          <Heading level="2" size="medium">
+            {header}
+          </Heading>
+          {typeof subtitle === "string" ? <p>{subtitle}</p> : subtitle}
+        </div>
       </div>
+      {headerAction && <div className="ml-4">{headerAction}</div>}
     </div>
   );
 };

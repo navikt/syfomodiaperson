@@ -6,6 +6,7 @@ interface Props {
   icon: string;
   header: string;
   subtitle?: ReactNode;
+  headerAction?: ReactNode;
   children: ReactNode;
 }
 
