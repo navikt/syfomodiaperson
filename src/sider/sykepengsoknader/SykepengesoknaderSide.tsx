@@ -16,13 +16,13 @@ import {
   sorterEtterOpprettetDato,
   sorterEtterPerioder,
 } from "@/utils/sykepengesoknadUtils";
-import { Heading } from "@navikt/ds-react";
+import { Box, Heading } from "@navikt/ds-react";
 import PlanlagtTeaser from "@/sider/sykepengsoknader/soknader/PlanlagtSoknad";
 
 const texts = {
   sidetittel: "Søknad om sykepenger",
   nyeSoknader: "Nye søknader",
-  ingenSoknader: "Ingen nye søknader om sykepenger",
+  ingenSoknader: "Det er ingen nye søknader om sykepenger",
   tidligereSoknader: "Tidligere søknader",
   planlagteSoknader: "Planlagte søknader",
   errorMessage: (sykmeldtNavn: string) =>
@@ -79,7 +79,9 @@ export default function SykepengesoknaderSide(): ReactElement {
 
           {kommendeSoknader.length > 0 && (
             <div className="mb-4">
-              <Heading size="small">{texts.planlagteSoknader}</Heading>
+              <Box background="surface-default" padding="4" className="mb-px">
+                <Heading size="small">{texts.planlagteSoknader}</Heading>
+              </Box>
               {kommendeSoknader.map((soknad, idx) => (
                 <PlanlagtTeaser key={idx} soknad={soknad} />
               ))}
