@@ -8,6 +8,7 @@ export enum ToggleNames {
   isTildelOppfolgingsenhetEnabled = "isTildelOppfolgingsenhetEnabled",
   isKartleggingssporsmalEnabled = "isKartleggingssporsmalEnabled",
   isFlexjarKartleggingssporsmalEnabled = "isFlexjarKartleggingssporsmalEnabled",
+  isForsokForsterketOppfolgingMerkingEnabled = "isForsokForsterketOppfolgingMerkingEnabled",
 }
 
 export const defaultToggles: Toggles = {
@@ -15,4 +16,5 @@ export const defaultToggles: Toggles = {
   isTildelOppfolgingsenhetEnabled: false,
   isKartleggingssporsmalEnabled: false,
   isFlexjarKartleggingssporsmalEnabled: false,
+  isForsokForsterketOppfolgingMerkingEnabled: false,
 };
