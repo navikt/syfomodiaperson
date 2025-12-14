@@ -41,7 +41,7 @@ import { AktivitetskravContainer } from "@/sider/aktivitetskrav/AktivitetskravCo
 import OppfyltForm from "@/sider/arbeidsuforhet/oppfylt/OppfyltForm";
 import KartleggingssporsmalSide from "@/sider/kartleggingssporsmal/KartleggingssporsmalSide";
 import * as Umami from "@/utils/umami";
-import OppfolgingsPlanerOversiktContainer from "@/sider/oppfolgingsplan/OppfolgingsplanerOversiktContainer";
+import OppfolgingsplanerOversikt from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanerOversikt";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -181,7 +181,7 @@ function AktivBrukerRouter({
           <Route path={senOppfolgingPath} element={<SenOppfolging />} />
 
           <Route path={`${appRoutePath}/oppfoelgingsplaner`}>
-            <Route index element={<OppfolgingsPlanerOversiktContainer />} />
+            <Route index element={<OppfolgingsplanerOversikt />} />
             <Route
               path=":oppfoelgingsdialogId"
               element={<OppfolgingsplanContainer />}
@@ -201,7 +201,7 @@ function AktivBrukerRouter({
   );
 }
 
-const IngenAktivBrukerRouter = (): ReactElement => {
+function IngenAktivBrukerRouter(): ReactElement {
   return (
     <BrowserRouter>
       <Routes>
@@ -209,9 +209,9 @@ const IngenAktivBrukerRouter = (): ReactElement => {
       </Routes>
     </BrowserRouter>
   );
-};
+}
 
-const AktivBrukerLoader = () => {
+function AppRouter() {
   const { isLoading, data } = useAktivBruker();
 
   if (isLoading) {
@@ -223,8 +223,6 @@ const AktivBrukerLoader = () => {
   } else {
     return <AktivBrukerRouter veilederident={data.aktivBruker} />;
   }
-};
-
-const AppRouter = () => AktivBrukerLoader();
+}
 
 export default AppRouter;

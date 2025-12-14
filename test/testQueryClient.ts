@@ -168,6 +168,18 @@ export const queryClientWithMockData = (): QueryClient => {
     ),
     () => null
   );
+  queryClient.setQueryData(
+    oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => []
+  );
+  queryClient.setQueryData(
+    oppfolgingsplanQueryKeys.oppfolgingsplaner(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => []
+  );
   return queryClient;
 };
 
