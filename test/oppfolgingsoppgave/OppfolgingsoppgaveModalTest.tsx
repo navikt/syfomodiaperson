@@ -24,6 +24,7 @@ import { changeTextInput } from "../testUtils";
 import dayjs from "dayjs";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { stubOppfolgingsoppgaveApi } from "../stubs/stubIshuskelapp";
+import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 
 let queryClient: QueryClient;
 
@@ -52,7 +53,9 @@ const openOppfolgingsoppgaveButtonText = "Oppfølgingsoppgave";
 const renderOppfolgingsoppgave = () =>
   render(
     <QueryClientProvider client={queryClient}>
-      <Oppfolgingsoppgave />
+      <ValgtEnhetProvider>
+        <Oppfolgingsoppgave />
+      </ValgtEnhetProvider>
     </QueryClientProvider>
   );
 

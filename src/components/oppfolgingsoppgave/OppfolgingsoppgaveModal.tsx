@@ -21,6 +21,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import dayjs from "dayjs";
 import { useEditOppfolgingsoppgave } from "@/data/oppfolgingsoppgave/useEditOppfolgingsoppgave";
 import FristDatePicker from "@/components/oppfolgingsoppgave/FristDatePicker";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 
 const texts = {
   header: "Oppfølgingsoppgave",
@@ -61,6 +62,7 @@ export default function OppfolgingsoppgaveModal({
   toggleOpen,
   existingOppfolgingsoppgave,
 }: Props) {
+  const { toggles } = useFeatureToggles();
   const [isFormError, setIsFormError] = useState(false);
   const createOppfolgingsoppgave = useCreateOppfolgingsoppgave();
   const editOppfolgingsoppgave = useEditOppfolgingsoppgave(
@@ -184,13 +186,18 @@ export default function OppfolgingsoppgaveModal({
               value={watch("oppfolgingsgrunn")}
             >
               <option value="">{texts.oppfolgingsgrunnDefaultOption}</option>
-              {Object.values(Oppfolgingsgrunn).map(
-                (oppfolgingsgrunn, index) => (
+              {Object.values(Oppfolgingsgrunn)
+                .filter(
+                  (oppfolgingsgrunn) =>
+                    toggles.isForsokForsterketOppfolgingMerkingEnabled ||
+                    oppfolgingsgrunn !==
+                      Oppfolgingsgrunn.DELTAR_FORSOK_FORSTERKET_OPPFOLGING
+                )
+                .map((oppfolgingsgrunn, index) => (
                   <option key={index} value={oppfolgingsgrunn}>
                     {oppfolgingsgrunnToText[oppfolgingsgrunn]}
                   </option>
-                )
-              )}
+                ))}
             </Select>
 
             {isOppfolgingsgrunnAnnet && (

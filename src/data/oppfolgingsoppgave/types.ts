@@ -12,6 +12,8 @@ const texts = {
     vurder14a: "Vurder §14a",
     vurderAnnenYtelse: "Vurder annen ytelse",
     samtaleMedBruker: "Samtale med bruker",
+    deltarForsokForsterketOppfolging:
+      "Deltar i forsøk med forsterket oppfølging",
     annet: "Annet",
   },
 };
@@ -58,6 +60,7 @@ export enum Oppfolgingsgrunn {
   VURDER_14A = "VURDER_14A",
   VURDER_ANNEN_YTELSE = "VURDER_ANNEN_YTELSE",
   SAMTALE_MED_BRUKER = "SAMTALE_MED_BRUKER",
+  DELTAR_FORSOK_FORSTERKET_OPPFOLGING = "DELTAR_FORSOK_FORSTERKET_OPPFOLGING",
   ANNET = "ANNET",
 }
 
@@ -83,5 +86,7 @@ export const oppfolgingsgrunnToText = {
     texts.oppfolgingsgrunn.vurderAnnenYtelse,
   [Oppfolgingsgrunn.SAMTALE_MED_BRUKER]:
     texts.oppfolgingsgrunn.samtaleMedBruker,
+  [Oppfolgingsgrunn.DELTAR_FORSOK_FORSTERKET_OPPFOLGING]:
+    texts.oppfolgingsgrunn.deltarForsokForsterketOppfolging,
   [Oppfolgingsgrunn.ANNET]: texts.oppfolgingsgrunn.annet,
 };
