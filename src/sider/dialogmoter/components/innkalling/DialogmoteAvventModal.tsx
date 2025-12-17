@@ -9,12 +9,15 @@ import {
 } from "@navikt/ds-react";
 import { useForm } from "react-hook-form";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { useSettDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useSettDialogmoteIkkeAktuell";
-import {
-  CreateIkkeAktuellDTO,
-  IkkeAktuellArsak,
-} from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
+import { useAvventDialogmoteMutation } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
+import dayjs from "dayjs";
+import { toDatePrettyPrint } from "@/utils/datoUtils";
+
+const now = new Date();
+const inTwoMonths = dayjs(now).add(2, "months").toDate();
+const invalidDateMessage = `Vennligst angi en gyldig dato innen ${toDatePrettyPrint(
+  inTwoMonths
+)}`;
 
 const texts = {
   header: "Avvent",
@@ -26,13 +29,13 @@ const texts = {
   frist: {
     label: "Avventer til",
     description: "Velg frist for ny vurdering av dialogmøtebehov",
-    missing: "Vennligst angi frist",
+    missing: invalidDateMessage,
   },
   lagre: "Lagre",
   avbryt: "Avbryt",
 };
 
-const begrunnelseMaxLength = 1000;
+const begrunnelseMaxLength = 200;
 
 interface DialogmoteAvventModalProps {
   open: boolean;
@@ -41,15 +44,14 @@ interface DialogmoteAvventModalProps {
 
 interface SkjemaValues {
   begrunnelse?: string;
-  frist?: string;
+  frist: string; // påkrevd
 }
 
 export const DialogmoteAvventModal = ({
   open,
   onClose,
 }: DialogmoteAvventModalProps): ReactElement => {
-  const personIdent = useValgtPersonident();
-  const settDialogmoteAvvent = useSettDialogmoteIkkeAktuell();
+  const avventMutation = useAvventDialogmoteMutation();
 
   const {
     handleSubmit,
@@ -62,32 +64,36 @@ export const DialogmoteAvventModal = ({
   const { datepickerProps, inputProps } = useDatepicker({
     onDateChange: (date) => {
       if (date) {
-        setValue("frist", date.toISOString().substring(0, 10), {
+        setValue("frist", dayjs(date).format("YYYY-MM-DD"), {
           shouldValidate: true,
         });
       } else {
-        setValue("frist", undefined, { shouldValidate: true });
+        setValue("frist", "", { shouldValidate: true });
       }
     },
+    fromDate: now,
+    toDate: inTwoMonths,
   });
 
   const onSubmit = (values: SkjemaValues) => {
     const { begrunnelse, frist } = values;
     const isBlank = begrunnelse?.trim() === "";
 
-    const dto: CreateIkkeAktuellDTO & { frist?: string } = {
-      personIdent,
-      // Use a fixed årsak since we don't show a choice in this Avvent modal
-      arsak: IkkeAktuellArsak.DIALOGMOTE_AVHOLDT,
-      beskrivelse: isBlank ? undefined : begrunnelse,
-      frist,
-    };
+    if (!frist) {
+      return;
+    }
 
-    settDialogmoteAvvent.mutate(dto, {
-      onSuccess: () => {
-        onClose();
+    avventMutation.mutate(
+      {
+        frist,
+        beskrivelse: isBlank ? undefined : begrunnelse,
       },
-    });
+      {
+        onSuccess: () => {
+          onClose();
+        },
+      }
+    );
   };
 
   return (
@@ -122,19 +128,20 @@ export const DialogmoteAvventModal = ({
             <DatePicker {...datepickerProps}>
               <DatePicker.Input
                 {...inputProps}
+                {...register("frist", { required: texts.frist.missing })}
                 label={texts.frist.label}
                 description={texts.frist.description}
-                error={errors.frist && texts.frist.missing}
+                error={errors.frist?.message}
               />
             </DatePicker>
           </div>
 
-          {settDialogmoteAvvent.isError && (
-            <SkjemaInnsendingFeil error={settDialogmoteAvvent.error} />
+          {avventMutation.isError && (
+            <SkjemaInnsendingFeil error={avventMutation.error} />
           )}
 
           <div className="flex gap-4 mt-4">
-            <Button loading={settDialogmoteAvvent.isPending} type="submit">
+            <Button loading={avventMutation.isPending} type="submit">
               {texts.lagre}
             </Button>
             <Button type="button" variant="tertiary" onClick={onClose}>
