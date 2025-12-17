@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import DialogmoteFrist from "@/sider/dialogmoter/components/DialogmoteFrist";
 import { HourglassTopFilledIcon } from "@navikt/aksel-icons";
 import { DialogmoteAvventModal } from "./DialogmoteAvventModal";
+import { DialogmoteAvventAlert } from "./DialogmoteAvventAlert";
 
 const texts = {
   bekreftetMote: "Bekreftet møte",
@@ -80,7 +81,7 @@ export default function InnkallingDialogmotePanel({
 }: Props): ReactElement {
   const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
   const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
-  const { isKandidat } = useDialogmotekandidat();
+  const { isKandidat, avvent } = useDialogmotekandidat();
   const [visAvventModal, setVisAvventModal] = useState(false);
 
   if (aktivtDialogmote) {
@@ -92,6 +93,7 @@ export default function InnkallingDialogmotePanel({
           open={visAvventModal}
           onClose={() => setVisAvventModal(false)}
         />
+        {avvent && <DialogmoteAvventAlert avvent={avvent} />}
         <DialogmotePanel
           icon={MoteIkonBlaaImage}
           header={
