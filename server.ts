@@ -2,11 +2,10 @@ import express = require("express");
 import helmet = require("helmet");
 import path = require("path");
 import prometheus = require("prom-client");
-
+import unleash = require("./server/unleash");
 import { getOpenIdClient, getOpenIdIssuer } from "./server/authUtils";
 import { setupProxy } from "./server/proxy";
 import { setupSession } from "./server/session";
-import unleash = require("./server/unleash");
 
 // Prometheus metrics
 const collectDefaultMetrics = prometheus.collectDefaultMetrics;
@@ -79,7 +78,7 @@ const setupServer = async () => {
     [
       "/",
       "/sykefravaer",
-      "/sykefravaer/*",
+      "/sykefravaer/:path(.*)",
       /^\/sykefravaer\/(?!(resources)).*$/,
     ],
     [nocache, redirectIfUnauthorized],
