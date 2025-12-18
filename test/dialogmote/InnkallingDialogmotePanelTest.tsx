@@ -205,4 +205,35 @@ describe("InnkallingDialogmotePanel", () => {
       await userEvent.click(button);
     });
   });
+
+  it("viser avvent-banner når det finnes avvent-data", () => {
+    const frist = "2025-01-10";
+    queryClient.setQueryData(
+      dialogmotekandidatQueryKeys.avvent(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => [
+        {
+          frist,
+          createdBy: "Z123456",
+          beskrivelse: "Vi avventer ny informasjon",
+        },
+      ]
+    );
+
+    renderInnkallingDialogmotePanel(brukerKanVarsles);
+
+    const labels = screen.getAllByText(/Avventer til/i);
+    expect(labels.length).to.be.greaterThan(0);
+    expect(screen.getByText("Vi avventer ny informasjon")).to.exist;
+  });
+
+  it("viser ikke avvent-banner når avvent-listen er tom (for eksempel etter unntak/ikke-aktuell)", () => {
+    queryClient.setQueryData(
+      dialogmotekandidatQueryKeys.avvent(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => []
+    );
+
+    renderInnkallingDialogmotePanel(brukerKanVarsles);
+
+    expect(screen.queryByText("Vi avventer ny informasjon")).to.not.exist;
+  });
 });

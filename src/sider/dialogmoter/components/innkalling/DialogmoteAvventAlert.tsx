@@ -11,6 +11,10 @@ interface Props {
   avvent: DialogmoteAvventDTO;
 }
 
+const texts = {
+  avventerTil: "Avventer til",
+};
+
 export function DialogmoteAvventAlert({ avvent }: Props) {
   const { frist, tekst } = avvent;
 
@@ -18,7 +22,7 @@ export function DialogmoteAvventAlert({ avvent }: Props) {
     <Alert variant="warning" size="small" className="mb-4">
       <Label size="small">
         {frist
-          ? `Avventer til ${tilDatoMedManedNavn(new Date(frist))}`
+          ? `${texts.avventerTil} ${tilDatoMedManedNavn(new Date(frist))}`
           : "Avventer"}
       </Label>
       <BodyShort size="small">{tekst}</BodyShort>
