@@ -55,7 +55,7 @@ const useLatestFerdigstiltReferat = (): ReferatDTO | undefined => {
   )[0];
 };
 
-const useAvventQuery = () => {
+function useAvventQuery() {
   const personident = useValgtPersonident();
   const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/avvent/personident`;
   const fetchAvvent = () => get<AvventDTO[]>(path, personident);
@@ -70,19 +70,12 @@ const useAvventQuery = () => {
   const avventListe = query.data || [];
   const sisteAvventDto: AvventDTO | undefined = avventListe[0];
 
-  const avvent =
-    sisteAvventDto &&
-    ({
-      frist: sisteAvventDto.frist,
-      tekst: sisteAvventDto.beskrivelse ?? "",
-    } as const);
-
   return {
-    data: avvent,
+    data: sisteAvventDto,
     isLoading: query.isLoading,
     isError: query.isError,
   };
-};
+}
 
 export const useDialogmotekandidat = () => {
   const personident = useValgtPersonident();

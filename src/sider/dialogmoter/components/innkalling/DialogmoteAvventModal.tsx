@@ -25,6 +25,7 @@ const texts = {
   begrunnelse: {
     label: "Beskrivelse",
     description: "Beskrivelse for årsaken til at dialogmøtet avventes",
+    missing: "Begrunnelse mangler",
   },
   frist: {
     label: "Avventer til",
@@ -37,20 +38,20 @@ const texts = {
 
 const begrunnelseMaxLength = 200;
 
-interface DialogmoteAvventModalProps {
-  open: boolean;
+interface Props {
+  isOpen: boolean;
   onClose: () => void;
 }
 
 interface SkjemaValues {
   begrunnelse?: string;
-  frist: string; // påkrevd
+  frist: string;
 }
 
-export const DialogmoteAvventModal = ({
-  open,
+export function DialogmoteAvventModal({
+  isOpen,
   onClose,
-}: DialogmoteAvventModalProps): ReactElement => {
+}: Props): ReactElement {
   const avventMutation = useAvventDialogmoteMutation();
 
   const {
@@ -98,7 +99,7 @@ export const DialogmoteAvventModal = ({
 
   return (
     <Modal
-      open={open}
+      open={isOpen}
       onClose={onClose}
       closeOnBackdropClick
       aria-labelledby={texts.header}
@@ -115,10 +116,13 @@ export const DialogmoteAvventModal = ({
             {...register("begrunnelse", {
               maxLength: begrunnelseMaxLength,
             })}
+            {...register("begrunnelse", {
+              required: texts.begrunnelse.missing,
+            })}
             value={watch("begrunnelse")}
             label={texts.begrunnelse.label}
             description={texts.begrunnelse.description}
-            error={errors.begrunnelse && ""}
+            error={errors.begrunnelse && texts.begrunnelse.missing}
             size="small"
             minRows={6}
             maxLength={begrunnelseMaxLength}
@@ -152,4 +156,4 @@ export const DialogmoteAvventModal = ({
       </Modal.Body>
     </Modal>
   );
-};
+}
