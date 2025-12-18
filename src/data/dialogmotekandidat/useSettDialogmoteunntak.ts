@@ -8,12 +8,11 @@ import { dialogmoteunntakQueryKeys } from "@/data/dialogmotekandidat/useGetDialo
 
 export const useSettDialogmoteunntak = () => {
   const queryClient = useQueryClient();
+  const personident = useValgtPersonident();
 
   const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/unntak/personident`;
   const postSettDialogmoteunntak = (newUnntakDTO: CreateUnntakDTO) =>
     post(path, newUnntakDTO);
-
-  const personident = useValgtPersonident();
 
   return useMutation({
     mutationFn: postSettDialogmoteunntak,
@@ -23,6 +22,9 @@ export const useSettDialogmoteunntak = () => {
       });
       queryClient.invalidateQueries({
         queryKey: dialogmoteunntakQueryKeys.unntak(personident),
+      });
+      queryClient.invalidateQueries({
+        queryKey: dialogmotekandidatQueryKeys.avvent(personident),
       });
     },
   });
