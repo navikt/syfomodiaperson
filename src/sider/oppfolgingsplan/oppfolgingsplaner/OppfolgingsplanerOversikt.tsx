@@ -8,14 +8,21 @@ import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import OppfolgingsplanLink from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanLink";
 import AktiveOppfolgingsplaner from "@/sider/oppfolgingsplan/oppfolgingsplaner/AktiveOppfolgingsplaner";
 
-import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
-import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
-import { useGetOppfolgingsplanerV2Query } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
+import {
+  useGetLPSOppfolgingsplanerQuery,
+  useGetOppfolgingsplanerQuery,
+  useGetOppfolgingsplanerV2Query,
+} from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { partitionOppfolgingsplanerByActiveTilfelle } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import OppfolgingsplanV2Item from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanV2Item";
+import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
+import SideLaster from "@/components/side/SideLaster";
+import Side from "@/components/side/Side";
+import { partitionOppfolgingsplanerByAktivPlan } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 
 const texts = {
+  pageTitle: "Oppfølgingsplaner",
   titles: {
     tidligereOppfolgingsplaner: "Tidligere oppfølgingsplaner",
     lpsOppfolgingsplaner: "Oppfølgingsplaner med bistandsbehov",
@@ -26,21 +33,28 @@ const texts = {
   },
 };
 
-interface Props {
-  aktivePlaner: OppfolgingsplanDTO[];
-  inaktivePlaner: OppfolgingsplanDTO[];
-  oppfolgingsplanerLPS: OppfolgingsplanLPS[];
-}
-
-export default function OppfolgingsplanerOversikt({
-  aktivePlaner,
-  inaktivePlaner,
-  oppfolgingsplanerLPS,
-}: Props) {
+export default function OppfolgingsplanerOversikt() {
   const getOppfolgingsplanerV2 = useGetOppfolgingsplanerV2Query();
+  const getOppfolgingsplaner = useGetOppfolgingsplanerQuery();
+  const getLPSOppfolgingsplaner = useGetLPSOppfolgingsplanerQuery();
+
+  const isLoading =
+    getOppfolgingsplaner.isLoading ||
+    getLPSOppfolgingsplaner.isLoading ||
+    getOppfolgingsplanerV2.isLoading;
+
+  const isError =
+    getOppfolgingsplaner.isError ||
+    getLPSOppfolgingsplaner.isError ||
+    getOppfolgingsplanerV2.isError;
+
+  const [aktivePlaner, inaktivePlaner] = partitionOppfolgingsplanerByAktivPlan(
+    getOppfolgingsplaner.data
+  );
+
   const getPersonOppgaverQuery = usePersonoppgaverQuery();
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
-  const oppfolgingsplanerLPSMedPersonOppgave = oppfolgingsplanerLPS.map(
+  const oppfolgingsplanerLPSMedPersonOppgave = getLPSOppfolgingsplaner.data.map(
     (oppfolgingsplanLPS) =>
       toOppfolgingsplanLPSMedPersonoppgave(
         oppfolgingsplanLPS,
@@ -60,23 +74,6 @@ export default function OppfolgingsplanerOversikt({
       return new Date(b.opprettet).getTime() - new Date(a.opprettet).getTime();
     });
 
-  aktivePlaner.sort((a, b) => {
-    return (
-      new Date(b.godkjentPlan.deltMedNAVTidspunkt).getTime() -
-      new Date(a.godkjentPlan.deltMedNAVTidspunkt).getTime()
-    );
-  });
-
-  inaktivePlaner.sort((a, b) => {
-    return (
-      new Date(b.godkjentPlan.deltMedNAVTidspunkt).getTime() -
-      new Date(a.godkjentPlan.deltMedNAVTidspunkt).getTime()
-    );
-  });
-
-  const hasTidligereOppfolgingsplaner =
-    inaktivePlaner.length !== 0 || oppfolgingsplanerLPSProcessed.length !== 0;
-
   const [aktiveOppfolgingsplanerV2, inaktiveOppfolgingsplanerV2] =
     !!latestOppfolgingstilfelle && getOppfolgingsplanerV2.isSuccess
       ? partitionOppfolgingsplanerByActiveTilfelle(
@@ -85,44 +82,54 @@ export default function OppfolgingsplanerOversikt({
         )
       : [[], []];
 
-  return (
-    <div>
-      <Sidetopp tittel="Oppfølgingsplaner" />
-      <AktiveOppfolgingsplaner
-        aktivePlaner={aktivePlaner}
-        aktivePlanerV2={aktiveOppfolgingsplanerV2}
-        oppfolgingsplanerLPSMedPersonoppgave={
-          oppfolgingsplanerLPSMedPersonOppgave
-        }
-      />
+  const hasTidligereOppfolgingsplaner =
+    inaktivePlaner.length !== 0 ||
+    oppfolgingsplanerLPSProcessed.length !== 0 ||
+    inaktiveOppfolgingsplanerV2.length !== 0;
 
-      <Heading spacing level="2" size="medium">
-        {texts.titles.tidligereOppfolgingsplaner}
-      </Heading>
-      {hasTidligereOppfolgingsplaner ? (
-        <>
-          {inaktivePlaner.map((dialog, index) => {
-            return <OppfolgingsplanLink key={index} dialog={dialog} />;
-          })}
-          {oppfolgingsplanerLPSProcessed.map((planLPS, index) => {
-            return (
-              <OppfolgingsplanerOversiktLPS
-                key={index}
-                oppfolgingsplanLPSBistandsbehov={planLPS}
-              />
-            );
-          })}
-          {inaktiveOppfolgingsplanerV2.map((plan, index) => (
-            <OppfolgingsplanV2Item key={index} oppfolgingsplan={plan} />
-          ))}
-        </>
-      ) : (
-        <Box background="surface-default" className="p-4">
-          <BodyShort>
-            {texts.alertMessages.ingenTidligereOppfolgingsplaner}
-          </BodyShort>
-        </Box>
-      )}
-    </div>
+  return (
+    <Side
+      tittel="Oppfølgingsplaner"
+      aktivtMenypunkt={Menypunkter.OPPFOELGINGSPLANER}
+    >
+      <SideLaster isLoading={isLoading} isError={isError}>
+        <Sidetopp tittel={texts.pageTitle} />
+        <AktiveOppfolgingsplaner
+          aktivePlaner={aktivePlaner}
+          aktivePlanerV2={aktiveOppfolgingsplanerV2}
+          oppfolgingsplanerLPSMedPersonoppgave={
+            oppfolgingsplanerLPSMedPersonOppgave
+          }
+        />
+
+        <Heading spacing level="2" size="medium">
+          {texts.titles.tidligereOppfolgingsplaner}
+        </Heading>
+        {hasTidligereOppfolgingsplaner ? (
+          <>
+            {inaktivePlaner.map((dialog, index) => {
+              return <OppfolgingsplanLink key={index} dialog={dialog} />;
+            })}
+            {oppfolgingsplanerLPSProcessed.map((planLPS, index) => {
+              return (
+                <OppfolgingsplanerOversiktLPS
+                  key={index}
+                  oppfolgingsplanLPSBistandsbehov={planLPS}
+                />
+              );
+            })}
+            {inaktiveOppfolgingsplanerV2.map((plan, index) => (
+              <OppfolgingsplanV2Item key={index} oppfolgingsplan={plan} />
+            ))}
+          </>
+        ) : (
+          <Box background="surface-default" className="p-4">
+            <BodyShort>
+              {texts.alertMessages.ingenTidligereOppfolgingsplaner}
+            </BodyShort>
+          </Box>
+        )}
+      </SideLaster>
+    </Side>
   );
 }

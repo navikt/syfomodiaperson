@@ -1,14 +1,14 @@
 import { harUbehandletMotebehov } from "./motebehovUtils";
-import {
-  activeOppfolgingsplaner,
-  oppfolgingsplanerLPSOpprettetIdag,
-} from "./oppfolgingsplanerUtils";
+import { oppfolgingsplanerLPSOpprettetIdag } from "./oppfolgingsplanerUtils";
 import {
   PersonOppgave,
   PersonOppgaveType,
 } from "@/data/personoppgave/types/PersonOppgave";
 import { OppfolgingsplanLPSMedPersonoppgave } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
-import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
+import {
+  aktiveOppfolgingsplaner,
+  OppfolgingsplanDTO,
+} from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import {
   getAllUbehandledePersonOppgaver,
@@ -45,12 +45,6 @@ const getNumberOfMoteOppgaver = (
     ? 1
     : 0;
   return numberOfUbehandledeMotebehov + numberOfUbehandledeDialogmotesvar;
-};
-
-const numberOfActiveOppfolgingsplaner = (
-  oppfolgingsplaner: OppfolgingsplanDTO[]
-) => {
-  return activeOppfolgingsplaner(oppfolgingsplaner).length;
 };
 
 function numberOfActiveLPSOppfolgingsplaner(
@@ -193,7 +187,7 @@ export function numberOfTasks(
       return getNumberOfMoteOppgaver(motebehov, personOppgaver);
     case Menypunkter.OPPFOELGINGSPLANER:
       return (
-        numberOfActiveOppfolgingsplaner(oppfolgingsplaner) +
+        aktiveOppfolgingsplaner(oppfolgingsplaner).length +
         numberOfActiveLPSOppfolgingsplaner(oppfolgingsplanerlps) +
         numberOfUbehandledePersonOppgaver(
           personOppgaver,

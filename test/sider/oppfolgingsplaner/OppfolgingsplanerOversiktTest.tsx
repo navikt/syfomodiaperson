@@ -1,5 +1,4 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { queryClientWithMockData } from "../../testQueryClient";
 import { render, screen, within } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../../dialogmote/testData";
@@ -26,40 +25,41 @@ import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/p
 import { generateOppfolgingstilfelle } from "../../testDataUtils";
 import { daysFromToday } from "../../testUtils";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
+import { MemoryRouter } from "react-router-dom";
+import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
+import { queryClientWithMockData } from "../../testQueryClient";
 
 let queryClient: QueryClient;
 
-const renderOppfolgingsplanerOversikt = (
-  oppfolgingsplanerLPS: OppfolgingsplanLPS[]
-) => {
+function renderOppfolgingsplanerOversikt() {
   return render(
-    <QueryClientProvider client={queryClient}>
-      <ValgtEnhetContext.Provider
-        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-      >
-        <OppfolgingsplanerOversikt
-          aktivePlaner={[]}
-          inaktivePlaner={[]}
-          oppfolgingsplanerLPS={oppfolgingsplanerLPS}
-        />
-      </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    <MemoryRouter>
+      <QueryClientProvider client={queryClient}>
+        <ValgtEnhetContext.Provider
+          value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+        >
+          <OppfolgingsplanerOversikt />
+        </ValgtEnhetContext.Provider>
+      </QueryClientProvider>
+    </MemoryRouter>
   );
-};
+}
 
 describe("OppfolgingsplanerOversikt", () => {
-  beforeEach(() => {
-    queryClient = queryClientWithMockData();
-  });
+  beforeEach(() => (queryClient = queryClientWithMockData()));
+
   describe("Oppfølgingsplaner visning", () => {
     it("Sorterer ubehandlede oppfølgingsplan-LPSer etter opprettet dato", () => {
       const olderOppfolgingsplan = createOppfolgingsplanLps(90, false);
       const newerOppfolgingsplan = createOppfolgingsplanLps(10, false);
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [olderOppfolgingsplan, newerOppfolgingsplan]
+      );
 
-      renderOppfolgingsplanerOversikt([
-        olderOppfolgingsplan,
-        newerOppfolgingsplan,
-      ]);
+      renderOppfolgingsplanerOversikt();
 
       const olderDate = restdatoTilLesbarDato(olderOppfolgingsplan.opprettet);
       const newerDate = restdatoTilLesbarDato(newerOppfolgingsplan.opprettet);
@@ -78,11 +78,14 @@ describe("OppfolgingsplanerOversikt", () => {
     it("Sorterer behandlede oppfølgingsplan-LPSer etter opprettet dato", () => {
       const olderOppfolgingsplan = createOppfolgingsplanLps(90, true);
       const newerOppfolgingsplan = createOppfolgingsplanLps(10, true);
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [olderOppfolgingsplan, newerOppfolgingsplan]
+      );
 
-      renderOppfolgingsplanerOversikt([
-        olderOppfolgingsplan,
-        newerOppfolgingsplan,
-      ]);
+      renderOppfolgingsplanerOversikt();
 
       const olderDate = restdatoTilLesbarDato(olderOppfolgingsplan.opprettet);
       const newerDate = restdatoTilLesbarDato(newerOppfolgingsplan.opprettet);
@@ -114,16 +117,28 @@ describe("OppfolgingsplanerOversikt", () => {
           ],
         })
       );
-      renderOppfolgingsplanerOversikt([]);
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => []
+      );
+      renderOppfolgingsplanerOversikt();
 
       expect(screen.queryByText("Be om oppfølgingsplan")).to.not.exist;
       expect(screen.queryByRole("button", { name: "Send forespørsel" })).to.not
         .exist;
     });
     it("Viser be om oppfølgingsplan funksjonalitet om sykmeldt har en arbeidsgiver", () => {
-      renderOppfolgingsplanerOversikt([]);
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => []
+      );
+      renderOppfolgingsplanerOversikt();
 
-      expect(screen.getByText("Det er ingen aktive oppfølgingsplaner")).to
+      expect(screen.queryByText("Det er ingen aktive oppfølgingsplaner")).to
         .exist;
       expect(screen.getByText("Be om oppfølgingsplan")).to.exist;
       expect(screen.getByRole("button", { name: "Send forespørsel" })).to.exist;
@@ -133,7 +148,13 @@ describe("OppfolgingsplanerOversikt", () => {
         ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
         () => [...LEDERE_DEFAULT, ANNEN_LEDER_AKTIV]
       );
-      renderOppfolgingsplanerOversikt([]);
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => []
+      );
+      renderOppfolgingsplanerOversikt();
 
       expect(screen.getByText("Det er ingen aktive oppfølgingsplaner")).to
         .exist;
@@ -141,7 +162,13 @@ describe("OppfolgingsplanerOversikt", () => {
       expect(screen.getByRole("button", { name: "Send forespørsel" })).to.exist;
     });
     it("Viser be om oppfølgingsplan funksjonalitet om det ikke finnes en aktiv oppfølgingsplan", () => {
-      renderOppfolgingsplanerOversikt([]);
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => []
+      );
+      renderOppfolgingsplanerOversikt();
 
       expect(screen.getByText("Det er ingen aktive oppfølgingsplaner")).to
         .exist;
@@ -160,7 +187,13 @@ describe("OppfolgingsplanerOversikt", () => {
         ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
         () => [...LEDERE_DEFAULT, ANNEN_LEDER_AKTIV]
       );
-      renderOppfolgingsplanerOversikt([createOppfolgingsplanLps(10, false)]);
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [createOppfolgingsplanLps(10, false)]
+      );
+      renderOppfolgingsplanerOversikt();
 
       expect(screen.queryByText("Det er ingen aktive oppfølgingsplaner")).to.not
         .exist;
@@ -172,7 +205,13 @@ describe("OppfolgingsplanerOversikt", () => {
         ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
         () => [...LEDERE_DEFAULT, ANNEN_LEDER_AKTIV]
       );
-      renderOppfolgingsplanerOversikt([createOppfolgingsplanLps(10, false)]);
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [createOppfolgingsplanLps(10, false)]
+      );
+      renderOppfolgingsplanerOversikt();
 
       expect(screen.queryByText("Det er ingen aktive oppfølgingsplaner")).to.not
         .exist;
@@ -198,10 +237,17 @@ describe("OppfolgingsplanerOversikt", () => {
         ...oppfolgingsplanLPSDefaultVirksomhet,
         virksomhetsnummer: VIRKSOMHET_BRANNOGBIL.virksomhetsnummer,
       };
-      renderOppfolgingsplanerOversikt([
-        oppfolgingsplanLPSDefaultVirksomhet,
-        oppfolgingsplanLPSAnnenVirksomhet,
-      ]);
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [
+          oppfolgingsplanLPSDefaultVirksomhet,
+          oppfolgingsplanLPSAnnenVirksomhet,
+        ]
+      );
+
+      renderOppfolgingsplanerOversikt();
 
       expect(screen.queryByText("Det er ingen aktive oppfølgingsplaner")).to.not
         .exist;
@@ -210,7 +256,13 @@ describe("OppfolgingsplanerOversikt", () => {
         .exist;
     });
     it("Viser ikke be om oppfølgingsplan funksjonalitet om det finnes aktiv oppfølgingsplan fra eneste arbeidsgiver", () => {
-      renderOppfolgingsplanerOversikt([createOppfolgingsplanLps(10, false)]);
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [createOppfolgingsplanLps(10, false)]
+      );
+      renderOppfolgingsplanerOversikt();
 
       expect(screen.queryByText("Det er ingen aktive oppfølgingsplaner")).to.not
         .exist;

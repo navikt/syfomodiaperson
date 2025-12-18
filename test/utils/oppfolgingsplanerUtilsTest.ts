@@ -6,7 +6,6 @@ import {
   mockValidActiveOppfolgingsplanWithDifferentVirksomhet,
 } from "../mockdata/mockOppfolgingsplaner";
 import {
-  activeOppfolgingsplaner,
   oppfolgingsplanerLPSOpprettetIdag,
   toOppfolgingsplanLPSMedPersonoppgave,
 } from "@/utils/oppfolgingsplanerUtils";
@@ -14,13 +13,15 @@ import {
   ARBEIDSTAKER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
 } from "@/mocks/common/mockConstants";
+import { aktiveOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
+import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 
 describe("oppfolgingsplanerUtils", () => {
-  describe("activeOppfolgingsplaner", () => {
+  describe("aktiveOppfolgingsplaner", () => {
     it("Gives a list of one plan, when one is active", () => {
       const planer = [mockValidActiveOppfolgingsplan];
 
-      const actualPlaner = activeOppfolgingsplaner(planer);
+      const actualPlaner = aktiveOppfolgingsplaner(planer);
 
       expect(actualPlaner.length).to.be.equal(planer.length);
       expect(actualPlaner[0]).to.deep.equal(planer[0]);
@@ -29,7 +30,7 @@ describe("oppfolgingsplanerUtils", () => {
     it("Gives a list of one plan, when one is active and avbrutt", () => {
       const planer = [mockAvbruttActiveOppfolgingsplan];
 
-      const actualPlaner = activeOppfolgingsplaner(planer);
+      const actualPlaner = aktiveOppfolgingsplaner(planer);
 
       expect(actualPlaner.length).to.be.equal(planer.length);
       expect(actualPlaner[0]).to.deep.equal(planer[0]);
@@ -38,7 +39,7 @@ describe("oppfolgingsplanerUtils", () => {
     it("Gives empty list if all plans are invalid", () => {
       const planer = [mockAvbruttInactiveOppfolgingsplan];
 
-      const actualPlaner = activeOppfolgingsplaner(planer);
+      const actualPlaner = aktiveOppfolgingsplaner(planer);
       expect(actualPlaner.length).to.be.equal(0);
     });
 
@@ -48,7 +49,7 @@ describe("oppfolgingsplanerUtils", () => {
         mockValidActiveOppfolgingsplan,
       ];
 
-      const actualPlaner = activeOppfolgingsplaner(planer);
+      const actualPlaner = aktiveOppfolgingsplaner(planer);
 
       expect(actualPlaner.length).to.be.equal(planer.length);
       expect(actualPlaner[0]).to.deep.equal(planer[0]);
@@ -63,7 +64,7 @@ describe("oppfolgingsplanerUtils", () => {
 
       const expectedPlan = mockValidActiveOppfolgingsplan;
 
-      const actualPlaner = activeOppfolgingsplaner(planer);
+      const actualPlaner = aktiveOppfolgingsplaner(planer);
 
       expect(actualPlaner.length).to.be.equal(1);
       expect(actualPlaner[0]).to.deep.equal(expectedPlan);
@@ -72,22 +73,25 @@ describe("oppfolgingsplanerUtils", () => {
 
   describe("oppfolgingsplanerLPSOpprettetIdag", () => {
     it("Gives the plan created last, if more than one from a virksomhet", () => {
-      const planOne = {
+      const planOne: OppfolgingsplanLPS = {
         uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd2",
         fnr: ARBEIDSTAKER_DEFAULT.personIdent,
         virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-        opprettet: new Date(),
+        opprettet: new Date().toISOString(),
+        sistEndret: new Date().toISOString(),
       };
       const planMedPersonoppgaveOne = toOppfolgingsplanLPSMedPersonoppgave(
         planOne,
         []
       );
 
-      const planTwo = {
+      const yesterdayDate = new Date(Date.now() - 24 * 60 * 60 * 1000);
+      const planTwo: OppfolgingsplanLPS = {
         uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd2",
         fnr: ARBEIDSTAKER_DEFAULT.personIdent,
         virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-        opprettet: new Date() - 3600000 * 24,
+        opprettet: yesterdayDate.toISOString(),
+        sistEndret: yesterdayDate.toISOString(),
       };
       const planMedPersonoppgaveTwo = toOppfolgingsplanLPSMedPersonoppgave(
         planTwo,

@@ -1,4 +1,5 @@
 import { VIRKSOMHET_PONTYPANDY } from "@/mocks/common/mockConstants";
+import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 
 const MILLISECONDS_PER_HOUR = 3600000;
 const DAY_IN_MILLISECONDS = MILLISECONDS_PER_HOUR * 24;
@@ -8,11 +9,11 @@ const TOMORROW = new Date(Date.now() + DAY_IN_MILLISECONDS);
 const YESTERDAY = new Date(Date.now() - DAY_IN_MILLISECONDS);
 const TWO_DAYS_AGO = new Date(Date.now() - DAY_IN_MILLISECONDS * 2);
 
-export const mockValidActiveOppfolgingsplan = {
+export const mockValidActiveOppfolgingsplan: OppfolgingsplanDTO = {
   id: 1,
   uuid: "111e2629-062b-442d-ae1f-3b08e9574cd1",
   sistEndretAvAktoerId: "1902690001002",
-  sistEndretDato: "2020-01-30T08:49:05.621",
+  sistEndretDato: new Date("2020-01-30T08:49:05.621"),
   status: "AKTIV",
   virksomhet: {
     navn: "X-Files",
@@ -28,20 +29,17 @@ export const mockValidActiveOppfolgingsplan = {
     tvungenGodkjenning: false,
     deltMedNAVTidspunkt: TODAY,
     deltMedNAV: true,
-    deltMedFastlegeTidspunkt: null,
+    deltMedFastlegeTidspunkt: undefined,
     deltMedFastlege: false,
     dokumentUuid: "664fb21f-48c3-4669-82ca-d61f51d20c84",
   },
-  oppgaver: [],
-  arbeidsgiver: null,
-  arbeidstaker: null,
 };
 
-export const mockAvbruttActiveOppfolgingsplan = {
+export const mockAvbruttActiveOppfolgingsplan: OppfolgingsplanDTO = {
   id: 2,
   uuid: "222e2629-062b-442d-ae1f-3b08e9574cd1",
   sistEndretAvAktoerId: "1902690001002",
-  sistEndretDato: "2020-01-30T08:49:05.621",
+  sistEndretDato: new Date("2020-01-30T08:49:05.621"),
   status: "AVBRUTT",
   virksomhet: {
     navn: "X-Files",
@@ -57,20 +55,17 @@ export const mockAvbruttActiveOppfolgingsplan = {
     tvungenGodkjenning: false,
     deltMedNAVTidspunkt: YESTERDAY,
     deltMedNAV: true,
-    deltMedFastlegeTidspunkt: null,
+    deltMedFastlegeTidspunkt: undefined,
     deltMedFastlege: false,
     dokumentUuid: "664fb21f-48c3-4669-82ca-d61f51d20c84",
   },
-  oppgaver: [],
-  arbeidsgiver: null,
-  arbeidstaker: null,
 };
 
-export const mockAvbruttInactiveOppfolgingsplan = {
+export const mockAvbruttInactiveOppfolgingsplan: OppfolgingsplanDTO = {
   id: 3,
   uuid: "333e2629-062b-442d-ae1f-3b08e9574cd1",
   sistEndretAvAktoerId: "1902690001002",
-  sistEndretDato: "2020-01-30T08:49:05.621",
+  sistEndretDato: new Date("2020-01-30T08:49:05.621"),
   status: "AVBRUTT",
   virksomhet: {
     navn: "X-Files",
@@ -86,19 +81,17 @@ export const mockAvbruttInactiveOppfolgingsplan = {
     tvungenGodkjenning: false,
     deltMedNAVTidspunkt: TWO_DAYS_AGO,
     deltMedNAV: true,
-    deltMedFastlegeTidspunkt: null,
+    deltMedFastlegeTidspunkt: undefined,
     deltMedFastlege: false,
     dokumentUuid: "664fb21f-48c3-4669-82ca-d61f51d20c84",
   },
-  oppgaver: [],
-  arbeidsgiver: null,
-  arbeidstaker: null,
 };
 
-export const mockValidActiveOppfolgingsplanWithDifferentVirksomhet = {
-  ...mockValidActiveOppfolgingsplan,
-  virksomhet: {
-    navn: "The Syndicate",
-    virksomhetsnummer: "987654321",
-  },
-};
+export const mockValidActiveOppfolgingsplanWithDifferentVirksomhet: OppfolgingsplanDTO =
+  {
+    ...mockValidActiveOppfolgingsplan,
+    virksomhet: {
+      navn: "The Syndicate",
+      virksomhetsnummer: "987654321",
+    },
+  };
