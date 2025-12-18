@@ -1,14 +1,10 @@
 import React from "react";
 import { Alert, BodyShort, Label } from "@navikt/ds-react";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
-
-export interface DialogmoteAvventDTO {
-  frist?: string;
-  tekst: string;
-}
+import { AvventDTO } from "@/data/dialogmotekandidat/dialogmotekandidatTypes";
 
 interface Props {
-  avvent: DialogmoteAvventDTO;
+  avvent: AvventDTO;
 }
 
 const texts = {
@@ -16,16 +12,16 @@ const texts = {
 };
 
 export function DialogmoteAvventAlert({ avvent }: Props) {
-  const { frist, tekst } = avvent;
-
   return (
     <Alert variant="warning" size="small" className="mb-4">
       <Label size="small">
-        {frist
-          ? `${texts.avventerTil} ${tilDatoMedManedNavn(new Date(frist))}`
+        {avvent.frist
+          ? `${texts.avventerTil} ${tilDatoMedManedNavn(
+              new Date(avvent.frist)
+            )}`
           : "Avventer"}
       </Label>
-      <BodyShort size="small">{tekst}</BodyShort>
+      <BodyShort size="small">{avvent.beskrivelse}</BodyShort>
     </Alert>
   );
 }

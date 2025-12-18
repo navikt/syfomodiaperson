@@ -90,7 +90,7 @@ export default function InnkallingDialogmotePanel({
     return (
       <>
         <DialogmoteAvventModal
-          open={visAvventModal}
+          isOpen={visAvventModal}
           onClose={() => setVisAvventModal(false)}
         />
         {avvent && <DialogmoteAvventAlert avvent={avvent} />}
