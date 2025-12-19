@@ -34,7 +34,7 @@ const texts = {
   avbryt: "Avbryt",
 };
 
-const begrunnelseMaxLength = 200;
+const begrunnelseMaxLength = 300;
 
 export interface AvventAktivitetskravSkjemaValues
   extends AktivitetskravSkjemaValues {

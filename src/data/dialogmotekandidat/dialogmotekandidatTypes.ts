@@ -10,7 +10,7 @@ export interface DialogmotekandidatHistorikkDTO {
 }
 
 export interface CreateAvventDTO {
-  personIdent: string;
+  personident: string;
   frist: string;
   beskrivelse: string | undefined;
 }

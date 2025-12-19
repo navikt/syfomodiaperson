@@ -117,15 +117,15 @@ export const useDialogmotekandidatHistorikkQuery = () => {
   });
 };
 
-export const useAvventDialogmoteMutation = () => {
+export function useAvventDialogmoteMutation() {
   const queryClient = useQueryClient();
   const personIdent = useValgtPersonident();
 
   return useMutation({
-    mutationFn: (payload: Omit<CreateAvventDTO, "personIdent">) => {
+    mutationFn: (payload: Omit<CreateAvventDTO, "personident">) => {
       const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/avvent/personident`;
       const body: CreateAvventDTO = {
-        personIdent: personIdent,
+        personident: personIdent,
         frist: payload.frist,
         beskrivelse: payload.beskrivelse,
       };
@@ -139,4 +139,4 @@ export const useAvventDialogmoteMutation = () => {
       }
     },
   });
-};
+}

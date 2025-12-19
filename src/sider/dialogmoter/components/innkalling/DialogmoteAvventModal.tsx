@@ -36,7 +36,7 @@ const texts = {
   avbryt: "Avbryt",
 };
 
-const begrunnelseMaxLength = 200;
+const begrunnelseMaxLength = 300;
 
 interface Props {
   isOpen: boolean;
@@ -80,10 +80,6 @@ export function DialogmoteAvventModal({
     const { begrunnelse, frist } = values;
     const isBlank = begrunnelse?.trim() === "";
 
-    if (!frist) {
-      return;
-    }
-
     avventMutation.mutate(
       {
         frist,
@@ -115,8 +111,6 @@ export function DialogmoteAvventModal({
             className="mb-4"
             {...register("begrunnelse", {
               maxLength: begrunnelseMaxLength,
-            })}
-            {...register("begrunnelse", {
               required: texts.begrunnelse.missing,
             })}
             value={watch("begrunnelse")}
