@@ -75,12 +75,7 @@ const setupServer = async () => {
   );
 
   server.get(
-    [
-      "/",
-      "/sykefravaer",
-      "/sykefravaer/:path(.*)",
-      /^\/sykefravaer\/(?!(resources)).*$/,
-    ],
+    ["/", "/sykefravaer", /^\/sykefravaer\/(?!(resources)).*$/],
     [nocache, redirectIfUnauthorized],
     (req: express.Request, res: express.Response) => {
       res.sendFile(HTML_FILE);
