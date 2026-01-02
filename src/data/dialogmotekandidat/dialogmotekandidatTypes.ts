@@ -9,6 +9,18 @@ export interface DialogmotekandidatHistorikkDTO {
   vurdertAv: string | null;
 }
 
+export interface CreateAvventDTO {
+  personident: string;
+  frist: string;
+  beskrivelse: string | undefined;
+}
+
+export interface AvventDTO {
+  frist: string;
+  createdBy: string;
+  beskrivelse: string | null;
+}
+
 export enum HistorikkType {
   KANDIDAT = "KANDIDAT",
   UNNTAK = "UNNTAK",

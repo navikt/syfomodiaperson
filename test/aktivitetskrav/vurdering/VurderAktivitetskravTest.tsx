@@ -235,7 +235,7 @@ describe("VurderAktivitetskrav", () => {
         name: "Lagre",
         hidden: true,
       });
-      const tooLongBeskrivelse = getTooLongText(200);
+      const tooLongBeskrivelse = getTooLongText(300);
       const beskrivelseInput = screen.getByRole("textbox", {
         name: "Beskrivelse",
         hidden: true,

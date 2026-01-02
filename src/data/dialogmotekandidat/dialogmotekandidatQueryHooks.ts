@@ -1,10 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { get } from "@/api/axios";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { get, post } from "@/api/axios";
 import { ISDIALOGMOTEKANDIDAT_ROOT } from "@/apiConstants";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   DialogmotekandidatDTO,
   DialogmotekandidatHistorikkDTO,
+  AvventDTO,
+  CreateAvventDTO,
 } from "@/data/dialogmotekandidat/dialogmotekandidatTypes";
 import { minutesToMillis } from "@/utils/utils";
 import { ReferatDTO } from "@/sider/dialogmoter/types/dialogmoteReferatTypes";
@@ -15,6 +17,11 @@ export const dialogmotekandidatQueryKeys = {
   kandidat: (personident: string) => ["dialogmotekandidat", personident],
   historikk: (personident: string) => [
     "historikk",
+    "dialogmotekandidat",
+    personident,
+  ],
+  avvent: (personident: string) => [
+    "avvent",
     "dialogmotekandidat",
     personident,
   ],
@@ -48,28 +55,53 @@ const useLatestFerdigstiltReferat = (): ReferatDTO | undefined => {
   )[0];
 };
 
+function useAvventQuery() {
+  const personident = useValgtPersonident();
+  const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/avvent/personident`;
+  const fetchAvvent = () => get<AvventDTO[]>(path, personident);
+
+  const query = useQuery({
+    queryKey: dialogmotekandidatQueryKeys.avvent(personident),
+    queryFn: fetchAvvent,
+    enabled: !!personident,
+    staleTime: minutesToMillis(5),
+  });
+
+  const avventListe = query.data || [];
+  const sisteAvventDto: AvventDTO | undefined = avventListe[0];
+
+  return {
+    data: sisteAvventDto,
+    isLoading: query.isLoading,
+    isError: query.isError,
+  };
+}
+
 export const useDialogmotekandidat = () => {
   const personident = useValgtPersonident();
   const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/kandidat/personident`;
   const fetchKandidat = () => get<DialogmotekandidatDTO>(path, personident);
-  const query = useQuery({
+  const kandidatQuery = useQuery({
     queryKey: dialogmotekandidatQueryKeys.kandidat(personident),
     queryFn: fetchKandidat,
     enabled: !!personident,
     staleTime: minutesToMillis(5),
   });
 
+  const { data: avvent } = useAvventQuery();
+
   const isNoFerdigstiltDialogmoteReferatAfterKandidatAt =
     useIsDialogmoteKandidatWithoutFerdigstiltReferat(
-      query.data?.kandidat,
-      query.data?.kandidatAt
+      kandidatQuery.data?.kandidat,
+      kandidatQuery.data?.kandidatAt
     );
   const isKandidat: boolean =
     isNoFerdigstiltDialogmoteReferatAfterKandidatAt || false;
 
   return {
-    data: query.data || {},
+    data: kandidatQuery.data || {},
     isKandidat,
+    avvent,
   };
 };
 
@@ -84,3 +116,27 @@ export const useDialogmotekandidatHistorikkQuery = () => {
     enabled: !!personident,
   });
 };
+
+export function useAvventDialogmoteMutation() {
+  const queryClient = useQueryClient();
+  const personIdent = useValgtPersonident();
+
+  return useMutation({
+    mutationFn: (payload: Omit<CreateAvventDTO, "personident">) => {
+      const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/avvent/personident`;
+      const body: CreateAvventDTO = {
+        personident: personIdent,
+        frist: payload.frist,
+        beskrivelse: payload.beskrivelse,
+      };
+      return post<AvventDTO>(path, body, personIdent);
+    },
+    onSuccess: async () => {
+      if (personIdent) {
+        await queryClient.invalidateQueries({
+          queryKey: dialogmotekandidatQueryKeys.avvent(personIdent),
+        });
+      }
+    },
+  });
+}

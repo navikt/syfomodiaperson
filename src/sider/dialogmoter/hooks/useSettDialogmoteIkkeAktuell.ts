@@ -8,13 +8,12 @@ import { dialogmoteIkkeAktuellQueryKeys } from "@/sider/dialogmoter/hooks/useGet
 
 export const useSettDialogmoteIkkeAktuell = () => {
   const queryClient = useQueryClient();
+  const personident = useValgtPersonident();
 
   const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/ikkeaktuell/personident`;
   const postSettDialogmoteikkeaktuell = (
     newIkkeAktuellDTO: CreateIkkeAktuellDTO
   ) => post(path, newIkkeAktuellDTO);
-
-  const personident = useValgtPersonident();
 
   return useMutation({
     mutationFn: postSettDialogmoteikkeaktuell,
@@ -25,6 +24,9 @@ export const useSettDialogmoteIkkeAktuell = () => {
       queryClient.invalidateQueries({
         queryKey:
           dialogmoteIkkeAktuellQueryKeys.ikkeAktuellVurdering(personident),
+      });
+      queryClient.invalidateQueries({
+        queryKey: dialogmotekandidatQueryKeys.avvent(personident),
       });
     },
   });
