@@ -6,6 +6,7 @@ import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { finnNaisUrlIntern } from "@/utils/miljoUtil";
+import { EventType, trackEvent } from "@/utils/umami";
 
 const texts = {
   header: "Utdrag fra sykefraværet",
@@ -20,6 +21,16 @@ function tilfelleText(start: Date, end: Date, varighet: number) {
   )} (${varighet} uker).`;
 }
 
+function logEvent() {
+  trackEvent({
+    type: EventType.LenkeKlikket,
+    data: {
+      tekst: texts.kommunikasjonIModiapersonoversikt,
+      destinasjonUrl: `https://modiapersonoversikt${finnNaisUrlIntern()}/person/meldinger`,
+    },
+  });
+}
+
 function Samtalereferat() {
   return (
     <div>
@@ -29,6 +40,7 @@ function Samtalereferat() {
       <Link
         href={`https://modiapersonoversikt${finnNaisUrlIntern()}/person/meldinger`}
         target="_blank"
+        onClick={logEvent}
       >
         {texts.kommunikasjonIModiapersonoversikt}
       </Link>
