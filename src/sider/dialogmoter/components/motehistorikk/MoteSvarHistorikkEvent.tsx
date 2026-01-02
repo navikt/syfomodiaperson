@@ -4,11 +4,14 @@ import {
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import React, { useState } from "react";
-import { Accordion, HStack } from "@navikt/ds-react";
-import { DialogmoteStedInfo } from "@/sider/dialogmoter/components/DialogmoteStedInfo";
+import { Accordion, BodyShort, HStack } from "@navikt/ds-react";
 import DialogmoteVeilederInfo from "@/sider/dialogmoter/components/DialogmoteVeilederInfo";
 import { MoteSvarHistorikkInnkalling } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkInnkalling";
 import { MoteSvarHistorikkEndringer } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkEndringer";
+
+const texts = {
+  sted: "Sted",
+};
 
 const getHeaderText = (mote: DialogmoteDTO): string => {
   const moteDato = tilDatoMedManedNavn(mote.tid);
@@ -41,7 +44,7 @@ export default function MoteSvarHistorikkEvent({ dialogmote }: Props) {
       <Accordion.Content>
         <HStack gap="4">
           <div>
-            <DialogmoteStedInfo dialogmote={dialogmote} />
+            <BodyShort size="small">{`${texts.sted}: ${dialogmote.sted}`}</BodyShort>
             <DialogmoteVeilederInfo dialogmote={dialogmote} />
           </div>
           <MoteSvarHistorikkInnkalling dialogmote={dialogmote} />
