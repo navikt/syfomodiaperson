@@ -1,10 +1,10 @@
 import React, { ReactElement } from "react";
 import Statuspanel, {
-  StatusNokkelopplysning,
   Statusopplysninger,
 } from "../../../components/speiling/Statuspanel";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 
 const texts = {
   tittel: "Dato avbrutt",
@@ -22,12 +22,18 @@ const AvbruttSoknadSelvstendigStatuspanel = ({
   return (
     <Statuspanel>
       <Statusopplysninger>
-        <StatusNokkelopplysning tittel={texts.status}>
+        <Nokkelopplysning
+          label={texts.status}
+          className={"nokkelopplysning--statusopplysning"}
+        >
           <p>{texts.avbrutt}</p>
-        </StatusNokkelopplysning>
-        <StatusNokkelopplysning tittel={texts.tittel}>
+        </Nokkelopplysning>
+        <Nokkelopplysning
+          label={texts.tittel}
+          className={"nokkelopplysning--statusopplysning"}
+        >
           <p>{tilLesbarDatoMedArstall(soknad.avbruttDato)}</p>
-        </StatusNokkelopplysning>
+        </Nokkelopplysning>
       </Statusopplysninger>
     </Statuspanel>
   );

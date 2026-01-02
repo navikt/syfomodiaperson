@@ -5,9 +5,9 @@ import {
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import Statuspanel, {
-  StatusNokkelopplysning,
   Statusopplysninger,
 } from "../../../components/speiling/Statuspanel";
+import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 
 const texts = {
   sendt: "Sendt til Nav",
@@ -23,9 +23,12 @@ interface SendtDatoProps {
 const SendtDato = (sendtDatoProps: SendtDatoProps) => {
   const { soknad } = sendtDatoProps;
   return (
-    <StatusNokkelopplysning tittel={texts.dato}>
+    <Nokkelopplysning
+      label={texts.dato}
+      className={"nokkelopplysning--statusopplysning"}
+    >
       <p>{tilLesbarDatoMedArstall(soknad.sendtTilNAVDato)}</p>
-    </StatusNokkelopplysning>
+    </Nokkelopplysning>
   );
 };
 
@@ -42,9 +45,12 @@ const StatuspanelUtland = (
   return (
     <Statuspanel>
       <Statusopplysninger>
-        <StatusNokkelopplysning tittel={texts.status}>
+        <Nokkelopplysning
+          label={texts.status}
+          className={"nokkelopplysning--statusopplysning"}
+        >
           <p>{tekst}</p>
-        </StatusNokkelopplysning>
+        </Nokkelopplysning>
         <SendtDato soknad={soknad} />
       </Statusopplysninger>
     </Statuspanel>

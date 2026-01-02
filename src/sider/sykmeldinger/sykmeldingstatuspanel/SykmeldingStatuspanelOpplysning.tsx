@@ -8,7 +8,6 @@ import {
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
 import { Vis } from "@/utils";
-import { StatusNokkelopplysning } from "@/components/speiling/Statuspanel";
 import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 
 const texts = {
@@ -59,7 +58,10 @@ export const Sykmeldingstatus = (
 ): ReactElement => {
   const { sykmelding } = sykmeldingstatusProps;
   return (
-    <StatusNokkelopplysning tittel={texts.status.tittel}>
+    <Nokkelopplysning
+      label={texts.status.tittel}
+      className="nokkelopplysning--statusopplysning"
+    >
       {sykmelding.status === TIL_SENDING ? (
         <div className="medHjelpetekst">
           <span>{textStatus(sykmelding.status)}</span>
@@ -67,7 +69,7 @@ export const Sykmeldingstatus = (
       ) : (
         <p>{textStatus(sykmelding.status)}</p>
       )}
-    </StatusNokkelopplysning>
+    </Nokkelopplysning>
   );
 };
 
@@ -84,9 +86,12 @@ export const SendtDato = (sendtDatoProps: SendtDatoProps): ReactElement => {
       ? texts.dato.avbrutt
       : texts.dato.sendt;
   return (
-    <StatusNokkelopplysning tittel={tittel}>
+    <Nokkelopplysning
+      label={tittel}
+      className="nokkelopplysning--statusopplysning"
+    >
       <p>{tilLesbarDatoMedArstall(sykmelding.sendtdato)}</p>
-    </StatusNokkelopplysning>
+    </Nokkelopplysning>
   );
 };
 
@@ -99,9 +104,12 @@ export const Arbeidsgiver = (
 ): ReactElement => {
   const { sykmelding } = arbeidsgiverProps;
   return (
-    <StatusNokkelopplysning tittel={texts.arbeidsgiver}>
+    <Nokkelopplysning
+      label={texts.arbeidsgiver}
+      className="nokkelopplysning--statusopplysning"
+    >
       <p>{sykmelding.innsendtArbeidsgivernavn}</p>
-    </StatusNokkelopplysning>
+    </Nokkelopplysning>
   );
 };
 
@@ -115,9 +123,12 @@ export const Orgnummer = (orgnummerProps: OrgnummerProps): ReactElement => {
     ? sykmelding.orgnummer.replace(/(...)(...)(...)/g, "$1 $2 $3")
     : null;
   return (
-    <StatusNokkelopplysning tittel={texts.orgnr}>
+    <Nokkelopplysning
+      label={texts.orgnr}
+      className="nokkelopplysning--statusopplysning"
+    >
       <p>{orgnummer}</p>
-    </StatusNokkelopplysning>
+    </Nokkelopplysning>
   );
 };
 

@@ -1,25 +1,4 @@
-import React, { JSX, ReactNode } from "react";
-import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
-
-interface StatusNokkelopplysningProps {
-  children?: ReactNode;
-  Overskrift?: keyof JSX.IntrinsicElements;
-  tittel: string;
-}
-
-export const StatusNokkelopplysning = (
-  statusNokkelopplysningProps: StatusNokkelopplysningProps
-) => {
-  const { children, tittel } = statusNokkelopplysningProps;
-  return (
-    <Nokkelopplysning
-      label={tittel}
-      className={"nokkelopplysning--statusopplysning"}
-    >
-      {children}
-    </Nokkelopplysning>
-  );
-};
+import React, { ReactNode } from "react";
 
 interface StatusopplysningerProps {
   children?: ReactNode;

@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
-import { StatusNokkelopplysning } from "../../../components/speiling/Statuspanel";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import SoknadStatustekst from "@/utils/soknad-felles/SoknadStatustekst";
+import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 
 const texts = {
   sendt: "Sendt til Nav",
@@ -15,16 +15,17 @@ interface StatuspanelBehandlingsdagerProps {
   soknad: SykepengesoknadDTO;
 }
 
-const StatuspanelBehandlingsdager = ({
+export function StatuspanelBehandlingsdager({
   soknad,
-}: StatuspanelBehandlingsdagerProps): ReactElement => {
+}: StatuspanelBehandlingsdagerProps): ReactElement {
   return (
     <div>
-      <StatusNokkelopplysning tittel={texts.status}>
+      <Nokkelopplysning
+        label={texts.status}
+        className={"nokkelopplysning--statusopplysning"}
+      >
         <SoknadStatustekst soknad={soknad} />
-      </StatusNokkelopplysning>
+      </Nokkelopplysning>
     </div>
   );
-};
-
-export default StatuspanelBehandlingsdager;
+}

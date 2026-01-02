@@ -6,11 +6,11 @@ import {
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { Frilansersporsmal } from "./SykmeldingStatuspanelOpplysning";
 import Statuspanel, {
-  StatusNokkelopplysning,
   Statusopplysninger,
 } from "../../../components/speiling/Statuspanel";
 import AngreBekreftSykmelding from "../sykmeldinger/AngreBekreftSykmelding";
 import { tilStorForbokstav } from "@/utils";
+import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 
 const texts = {
   tittel: "Sykmeldt fra",
@@ -90,13 +90,19 @@ const BekreftetSykmeldingStatuspanel = (
   return (
     <Statuspanel>
       <Statusopplysninger>
-        <StatusNokkelopplysning tittel={texts.status.tittel}>
+        <Nokkelopplysning
+          label={texts.status.tittel}
+          className={"nokkelopplysning--statusopplysning"}
+        >
           <p>
             {textStatus(sykmelding.status)} –{" "}
             {tilLesbarDatoMedArstall(sykmelding.sendtdato)}
           </p>
-        </StatusNokkelopplysning>
-        <StatusNokkelopplysning tittel={texts.tittel}>
+        </Nokkelopplysning>
+        <Nokkelopplysning
+          label={texts.tittel}
+          className={"nokkelopplysning--statusopplysning"}
+        >
           <p>
             {tilStorForbokstav(
               textArbeidssituasjon(
@@ -104,7 +110,7 @@ const BekreftetSykmeldingStatuspanel = (
               )
             )}
           </p>
-        </StatusNokkelopplysning>
+        </Nokkelopplysning>
         <Frilansersporsmal sykmelding={sykmelding} />
       </Statusopplysninger>
       <AngreBekreftSykmelding sykmelding={sykmelding} />

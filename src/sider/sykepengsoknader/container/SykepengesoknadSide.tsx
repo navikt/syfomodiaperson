@@ -16,10 +16,10 @@ import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesokna
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Side from "@/components/side/Side";
-import StatuspanelBehandlingsdager from "@/sider/sykepengsoknader/soknad-behandlingsdager/StatuspanelBehandlingsdager";
 import { Box, Heading } from "@navikt/ds-react";
 import Oppsummeringsvisning from "@/sider/sykepengsoknader/soknad-felles-oppsummering/Oppsummeringsvisning";
 import TilbakeTilSoknader from "@/sider/sykepengsoknader/soknad-felles/TilbakeTilSoknader";
+import { StatuspanelBehandlingsdager } from "@/sider/sykepengsoknader/soknad-behandlingsdager/StatuspanelBehandlingsdager";
 
 const texts = {
   tittel: "Sykepengesøknader",
