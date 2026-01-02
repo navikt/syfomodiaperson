@@ -14,7 +14,6 @@ import {
 import { useOpprettInnkallingDialogmote } from "@/sider/dialogmoter/hooks/useOpprettInnkallingDialogmote";
 import { moteoversiktRoutePath } from "@/routers/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import DialogmoteInnkallingBehandler from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingBehandler";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
@@ -33,6 +32,7 @@ import { Forhandsvisning } from "@/components/Forhandsvisning";
 import TextareaField from "@/sider/dialogmoter/components/TextareaField";
 import DialogmoteFrist from "@/sider/dialogmoter/components/DialogmoteFrist";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { DialogmoteInnkallingBehandler } from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingBehandler";
 
 export interface DialogmoteInnkallingSkjemaValues extends TidStedSkjemaValues {
   fritekstArbeidsgiver: string;

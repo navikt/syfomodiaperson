@@ -8,7 +8,7 @@ import BehandlerSearch from "@/components/behandler/BehandlerSearch";
 import { useController } from "react-hook-form";
 import { DialogmoteInnkallingSkjemaValues } from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
 
-export const texts = {
+const texts = {
   title: "Behandler",
   legekontor: "Legekontor",
   tlf: "Telefonnummer",
@@ -42,10 +42,10 @@ function behandlerRefValidationErrors(
   return undefined;
 }
 
-const DialogmoteInnkallingBehandler = ({
+export function DialogmoteInnkallingBehandler({
   setSelectedBehandler,
   selectedbehandler,
-}: DialogmoteInnkallingBehandlerProps): ReactElement => {
+}: DialogmoteInnkallingBehandlerProps): ReactElement {
   const [isBehandlerSelected, setIsBehandlerSelected] =
     useState<boolean>(false);
   const { field, fieldState } = useController<
@@ -77,17 +77,17 @@ const DialogmoteInnkallingBehandler = ({
     isBehandlerSelected,
   ]);
 
-  const updateBehandlerAndHideSearch = (behandler?: BehandlerDTO) => {
+  function updateBehandlerAndHideSearch(behandler?: BehandlerDTO) {
     setShowBehandlerSearch(false);
     setIsBehandlerSelected(true);
     setSelectedBehandler(behandler);
-  };
+  }
 
-  const handleAddBehandlerRadioClick = () => {
+  function handleAddBehandlerRadioClick() {
     setShowBehandlerSearch(true);
     setIsBehandlerSelected(true);
     setSelectedBehandler(undefined);
-  };
+  }
 
   return (
     <>
@@ -140,6 +140,4 @@ const DialogmoteInnkallingBehandler = ({
       <ErrorMessage size="small">{fieldState.error?.message}</ErrorMessage>
     </>
   );
-};
-
-export default DialogmoteInnkallingBehandler;
+}

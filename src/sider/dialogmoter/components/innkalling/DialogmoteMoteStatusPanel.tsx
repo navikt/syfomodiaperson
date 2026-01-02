@@ -23,7 +23,6 @@ import {
 } from "@/utils/dialogmoteUtils";
 import { BodyShort, Button } from "@navikt/ds-react";
 import DialogmoteVeilederInfo from "@/sider/dialogmoter/components/DialogmoteVeilederInfo";
-import { DialogmoteStedInfo } from "@/sider/dialogmoter/components/DialogmoteStedInfo";
 
 const texts = {
   innkallingSendtTrackingContext: "Møtelandingsside: Sendt innkalling",
@@ -35,6 +34,7 @@ const texts = {
   skrivReferat: "Skriv referat",
   fortsettReferat: "Fortsett på referatet",
   moteTid: "Møtetidspunkt",
+  sted: "Sted",
 };
 
 function Subtitle(dialogmote: DialogmoteDTO): ReactNode {
@@ -43,7 +43,7 @@ function Subtitle(dialogmote: DialogmoteDTO): ReactNode {
   return (
     <>
       <BodyShort size="small">{`${texts.moteTid}: ${moteDatoTid}`}</BodyShort>
-      <DialogmoteStedInfo dialogmote={dialogmote} />
+      <BodyShort size="small">{`${texts.sted}: ${dialogmote.sted}`}</BodyShort>
       <DialogmoteVeilederInfo dialogmote={dialogmote} />
     </>
   );
