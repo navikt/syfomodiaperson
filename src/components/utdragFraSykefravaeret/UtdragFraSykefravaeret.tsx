@@ -10,8 +10,7 @@ import { EventType, trackEvent } from "@/utils/umami";
 
 const texts = {
   header: "Utdrag fra sykefraværet",
-  samtalereferat: "Samtalereferat",
-  kommunikasjonIModiapersonoversikt: "Kommunikasjon i Modia Personoversikt",
+  kommunikasjonMedBruker: "Kommunikasjon med bruker",
 };
 
 function tilfelleText(start: Date, end: Date, varighet: number) {
@@ -21,30 +20,23 @@ function tilfelleText(start: Date, end: Date, varighet: number) {
   )} (${varighet} uker).`;
 }
 
+const lenkeKommunikasjonMedBruker = `https://modiapersonoversikt${finnNaisUrlIntern()}/person/meldinger`;
+
 function logEvent() {
   trackEvent({
     type: EventType.LenkeKlikket,
     data: {
-      tekst: texts.kommunikasjonIModiapersonoversikt,
-      destinasjonUrl: `https://modiapersonoversikt${finnNaisUrlIntern()}/person/meldinger`,
+      tekst: texts.kommunikasjonMedBruker,
+      destinasjonUrl: lenkeKommunikasjonMedBruker,
     },
   });
 }
 
 function Samtalereferat() {
   return (
-    <div>
-      <Heading size="small" level="3">
-        {texts.samtalereferat}
-      </Heading>
-      <Link
-        href={`https://modiapersonoversikt${finnNaisUrlIntern()}/person/meldinger`}
-        target="_blank"
-        onClick={logEvent}
-      >
-        {texts.kommunikasjonIModiapersonoversikt}
-      </Link>
-    </div>
+    <Link href={lenkeKommunikasjonMedBruker} target="_blank" onClick={logEvent}>
+      {texts.kommunikasjonMedBruker}
+    </Link>
   );
 }
 
