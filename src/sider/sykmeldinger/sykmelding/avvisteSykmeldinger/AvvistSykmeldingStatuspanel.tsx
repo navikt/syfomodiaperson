@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
-import { StatusNokkelopplysning } from "@/components/speiling/Statuspanel";
+import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
 interface Props {
@@ -12,15 +12,24 @@ export default function AvvistSykmeldingStatuspanel({
 }: Props): ReactElement {
   return (
     <div className="mb-4 flex justify-between">
-      <StatusNokkelopplysning tittel="Status">
+      <Nokkelopplysning
+        label="Status"
+        className="nokkelopplysning--statusopplysning"
+      >
         <p>Avvist av Nav</p>
-      </StatusNokkelopplysning>
-      <StatusNokkelopplysning tittel="Dato avvist">
+      </Nokkelopplysning>
+      <Nokkelopplysning
+        label="Dato avvist"
+        className="nokkelopplysning--statusopplysning"
+      >
         <p>{tilLesbarDatoMedArstall(sykmelding.mottattTidspunkt)}</p>
-      </StatusNokkelopplysning>
-      <StatusNokkelopplysning tittel="Bekreftet av den sykmeldte">
+      </Nokkelopplysning>
+      <Nokkelopplysning
+        label="Bekreftet av den sykmeldte"
+        className="nokkelopplysning--statusopplysning"
+      >
         <p>{tilLesbarDatoMedArstall(sykmelding.sendtdato)}</p>
-      </StatusNokkelopplysning>
+      </Nokkelopplysning>
     </div>
   );
 }

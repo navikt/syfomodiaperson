@@ -1,13 +1,13 @@
 import React, { ReactElement } from "react";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import Statuspanel, {
-  StatusNokkelopplysning,
   Statusopplysninger,
 } from "../../../components/speiling/Statuspanel";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { SykmeldingUtdragContainer } from "../SykmeldingUtdragContainer";
 import { Heading } from "@navikt/ds-react";
 import TilbakeTilSoknader from "@/sider/sykepengsoknader/soknad-felles/TilbakeTilSoknader";
+import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 
 const texts = {
   tittel: "Søknad om sykepenger",
@@ -26,12 +26,18 @@ const AvbruttSoknadArbeidstakerStatuspanel = ({
   return (
     <Statuspanel>
       <Statusopplysninger>
-        <StatusNokkelopplysning tittel={texts.status}>
+        <Nokkelopplysning
+          label={texts.status}
+          className={"nokkelopplysning--statusopplysning"}
+        >
           <p>{texts.avbrutt}</p>
-        </StatusNokkelopplysning>
-        <StatusNokkelopplysning tittel={texts.avbruttTittel}>
+        </Nokkelopplysning>
+        <Nokkelopplysning
+          label={texts.avbruttTittel}
+          className={"nokkelopplysning--statusopplysning"}
+        >
           <p>{tilLesbarDatoMedArstall(soknad.avbruttDato)}</p>
-        </StatusNokkelopplysning>
+        </Nokkelopplysning>
       </Statusopplysninger>
     </Statuspanel>
   );

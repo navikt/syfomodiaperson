@@ -1,44 +1,30 @@
 import React, { ReactElement } from "react";
 import Statuspanel, {
-  StatusNokkelopplysning,
   Statusopplysninger,
 } from "../../../components/speiling/Statuspanel";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 import SoknadStatustekst from "@/utils/soknad-felles/SoknadStatustekst";
 
 const texts = {
   status: "Status",
 };
 
-interface StatusOgSykepengeopplysningerProps {
+interface Props {
   soknad: SykepengesoknadDTO;
 }
 
-const StatusOgSykepengeopplysninger = (
-  statusOgSykepengeopplysningerProps: StatusOgSykepengeopplysningerProps
-) => {
-  const { soknad } = statusOgSykepengeopplysningerProps;
-  return (
-    <Statusopplysninger>
-      <StatusNokkelopplysning tittel={texts.status}>
-        <SoknadStatustekst soknad={soknad} />
-      </StatusNokkelopplysning>
-    </Statusopplysninger>
-  );
-};
-
-interface SykepengesoknadStatuspanelProps {
-  soknad: SykepengesoknadDTO;
-}
-
-const SykepengesoknadStatuspanel = ({
-  soknad,
-}: SykepengesoknadStatuspanelProps): ReactElement => {
+export function SykepengesoknadStatuspanel({ soknad }: Props): ReactElement {
   return (
     <Statuspanel enKolonne>
-      <StatusOgSykepengeopplysninger soknad={soknad} />
+      <Statusopplysninger>
+        <Nokkelopplysning
+          label={texts.status}
+          className={"nokkelopplysning--statusopplysning"}
+        >
+          <SoknadStatustekst soknad={soknad} />
+        </Nokkelopplysning>
+      </Statusopplysninger>
     </Statuspanel>
   );
-};
-
-export default SykepengesoknadStatuspanel;
+}
