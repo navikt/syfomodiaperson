@@ -6,11 +6,11 @@ import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { finnNaisUrlIntern } from "@/utils/miljoUtil";
+import { EventType, trackEvent } from "@/utils/umami";
 
 const texts = {
   header: "Utdrag fra sykefraværet",
-  samtalereferat: "Samtalereferat",
-  kommunikasjonIModiapersonoversikt: "Kommunikasjon i Modia Personoversikt",
+  kommunikasjonMedBruker: "Kommunikasjon med bruker",
 };
 
 function tilfelleText(start: Date, end: Date, varighet: number) {
@@ -20,19 +20,23 @@ function tilfelleText(start: Date, end: Date, varighet: number) {
   )} (${varighet} uker).`;
 }
 
+const lenkeKommunikasjonMedBruker = `https://modiapersonoversikt${finnNaisUrlIntern()}/person/meldinger`;
+
+function logEvent() {
+  trackEvent({
+    type: EventType.LenkeKlikket,
+    data: {
+      tekst: texts.kommunikasjonMedBruker,
+      destinasjonUrl: lenkeKommunikasjonMedBruker,
+    },
+  });
+}
+
 function Samtalereferat() {
   return (
-    <div>
-      <Heading size="small" level="3">
-        {texts.samtalereferat}
-      </Heading>
-      <Link
-        href={`https://modiapersonoversikt${finnNaisUrlIntern()}/person/meldinger`}
-        target="_blank"
-      >
-        {texts.kommunikasjonIModiapersonoversikt}
-      </Link>
-    </div>
+    <Link href={lenkeKommunikasjonMedBruker} target="_blank" onClick={logEvent}>
+      {texts.kommunikasjonMedBruker}
+    </Link>
   );
 }
 
