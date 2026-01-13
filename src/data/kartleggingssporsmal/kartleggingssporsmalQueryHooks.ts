@@ -79,7 +79,9 @@ export const useKartleggingssporsmalVurderSvar = () => {
     onSuccess: (data: KartleggingssporsmalKandidatResponseDTO) => {
       return queryClient.setQueryData(
         kartleggingssporsmalKandidatQueryKey,
-        data
+        (oldData: KartleggingssporsmalKandidatResponseDTO[] = []) => {
+          return [data, ...oldData.slice(1)];
+        }
       );
     },
   });

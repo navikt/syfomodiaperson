@@ -38,7 +38,7 @@ const mockKartleggingssporsmalKandidat = (
 ) => {
   queryClient.setQueryData(
     kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
-    () => kartleggingssporsmalKandidatResponseDTO
+    () => [kartleggingssporsmalKandidatResponseDTO]
   );
 };
 

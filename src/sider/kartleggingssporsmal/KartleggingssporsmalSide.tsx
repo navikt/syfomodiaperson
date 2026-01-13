@@ -115,9 +115,9 @@ function PilotInfo() {
 export default function KartleggingssporsmalSide(): ReactElement {
   const getKandidat = useKartleggingssporsmalKandidatQuery();
   const kandidater = getKandidat.data || [];
-  const latestKandidat = kandidater[0];
+  const sisteKandidatur = kandidater[0];
   const getKartleggingssporsmalSvar =
-    useKartleggingssporsmalSvarQuery(latestKandidat);
+    useKartleggingssporsmalSvarQuery(sisteKandidatur);
   const answeredQuestions = getKartleggingssporsmalSvar.data;
   const vurderSvar = useKartleggingssporsmalVurderSvar();
   const kontaktinformasjon = useKontaktinfoQuery();
@@ -146,7 +146,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
     >
       <Sidetopp tittel={texts.title} />
       <SideLaster isLoading={isPending} isError={isError}>
-        {latestKandidat && hasMottattKartleggingssporsmal(latestKandidat) ? (
+        {sisteKandidatur && hasMottattKartleggingssporsmal(sisteKandidatur) ? (
           <Tredelt.Container>
             <Tredelt.FirstColumn className="-xl:mb-2">
               <Box
@@ -162,7 +162,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     </BodyShort>
                     <BodyShort size="small" weight="semibold">
                       {`${texts.kandidat} ${tilLesbarDatoMedArstall(
-                        latestKandidat.varsletAt
+                        sisteKandidatur.varsletAt
                       )}`}
                     </BodyShort>
                     <EksternLenke href={texts.demoUrl}>
@@ -171,13 +171,13 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     <KartleggingssporsmalSkjemasvar
                       formSnapshot={answeredQuestions.formSnapshot}
                     />
-                    {latestKandidat.status === KandidatStatus.SVAR_MOTTATT && (
+                    {sisteKandidatur.status === KandidatStatus.SVAR_MOTTATT && (
                       <>
                         <Button
                           variant="primary"
                           size="medium"
                           onClick={() =>
-                            vurderSvar.mutate(latestKandidat.kandidatUuid)
+                            vurderSvar.mutate(sisteKandidatur.kandidatUuid)
                           }
                           loading={vurderSvar.isPending}
                         >
@@ -191,7 +191,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                         )}
                       </>
                     )}
-                    {latestKandidat.status ===
+                    {sisteKandidatur.status ===
                       KandidatStatus.FERDIGBEHANDLET && (
                       <Alert size="medium" variant="success">
                         <BodyShort
@@ -200,11 +200,11 @@ export default function KartleggingssporsmalSide(): ReactElement {
                           className="mb-2"
                         >
                           {`${texts.svarVurdert} ${tilLesbarDatoMedArstall(
-                            latestKandidat.vurdering?.vurdertAt
+                            sisteKandidatur.vurdering?.vurdertAt
                           )}`}
                         </BodyShort>
                         <BodyShort size="small">
-                          {`${texts.svarVurdertAv} ${latestKandidat.vurdering?.vurdertBy}`}
+                          {`${texts.svarVurdertAv} ${sisteKandidatur.vurdering?.vurdertBy}`}
                         </BodyShort>
                       </Alert>
                     )}
@@ -229,7 +229,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     </BodyShort>
                     <BodyShort size="small" weight="semibold">
                       {`${texts.kandidat} ${tilLesbarDatoMedArstall(
-                        latestKandidat.varsletAt
+                        sisteKandidatur.varsletAt
                       )}`}
                     </BodyShort>
                     <EksternLenke href={texts.demoUrl}>
