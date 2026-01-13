@@ -19,9 +19,11 @@ interface Props {
  *   </Tredelt.SecondColumn>
  * </Tredelt.Container>
  */
-export function Container({ children }: Props) {
+export function Container({ children, className = "" }: Props) {
   return (
-    <div className="flex flex-row -xl:flex-col -xl:overflow-y-scroll">
+    <div
+      className={`${className} flex flex-row -xl:flex-col -xl:overflow-y-scroll`}
+    >
       {children}
     </div>
   );

@@ -212,7 +212,7 @@ function IngenAktivBrukerRouter(): ReactElement {
   );
 }
 
-function AppRouter() {
+export default function AppRouter() {
   const { isLoading, data } = useAktivBruker();
 
   if (isLoading) {
@@ -225,5 +225,3 @@ function AppRouter() {
     return <AktivBrukerRouter veilederident={data.aktivBruker} />;
   }
 }
-
-export default AppRouter;

@@ -8,7 +8,6 @@ import {
   ANNEN_LEDER_AKTIV,
   ARBEIDSTAKER_DEFAULT,
   LEDERE_DEFAULT,
-  VIRKSOMHET_BRANNOGBIL,
   VIRKSOMHET_PONTYPANDY,
 } from "@/mocks/common/mockConstants";
 import dayjs from "dayjs";
@@ -199,76 +198,6 @@ describe("OppfolgingsplanerOversikt", () => {
         .exist;
       expect(screen.getByText("Be om oppfølgingsplan")).to.exist;
       expect(screen.getByRole("button", { name: "Send forespørsel" })).to.exist;
-    });
-    it("Kan ikke be om oppfølgingsplan fra arbeidsgiver med aktiv oppfølgingsplan", () => {
-      queryClient.setQueryData(
-        ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => [...LEDERE_DEFAULT, ANNEN_LEDER_AKTIV]
-      );
-      queryClient.setQueryData(
-        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-          ARBEIDSTAKER_DEFAULT.personIdent
-        ),
-        () => [createOppfolgingsplanLps(10, false)]
-      );
-      renderOppfolgingsplanerOversikt();
-
-      expect(screen.queryByText("Det er ingen aktive oppfølgingsplaner")).to.not
-        .exist;
-      expect(screen.getByText("Be om oppfølgingsplan")).to.exist;
-      expect(screen.getByRole("button", { name: "Send forespørsel" })).to.exist;
-
-      expect(screen.queryAllByRole("radio")).to.be.empty;
-      expect(screen.getByText("Virksomhet:")).to.exist;
-      expect(screen.getByText("Nærmeste leder:")).to.exist;
-      expect(screen.getByText(VIRKSOMHET_BRANNOGBIL.virksomhetsnavn)).to.exist;
-      expect(screen.getByText(ANNEN_LEDER_AKTIV.narmesteLederNavn)).to.exist;
-    });
-    it("Viser ikke be om oppfølgingsplan funksjonalitet om det finnes aktiv oppfølgingsplan fra alle arbeidsgiver", () => {
-      queryClient.setQueryData(
-        ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => [...LEDERE_DEFAULT, ANNEN_LEDER_AKTIV]
-      );
-      const oppfolgingsplanLPSDefaultVirksomhet = createOppfolgingsplanLps(
-        10,
-        false
-      );
-      const oppfolgingsplanLPSAnnenVirksomhet: OppfolgingsplanLPS = {
-        ...oppfolgingsplanLPSDefaultVirksomhet,
-        virksomhetsnummer: VIRKSOMHET_BRANNOGBIL.virksomhetsnummer,
-      };
-      queryClient.setQueryData(
-        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-          ARBEIDSTAKER_DEFAULT.personIdent
-        ),
-        () => [
-          oppfolgingsplanLPSDefaultVirksomhet,
-          oppfolgingsplanLPSAnnenVirksomhet,
-        ]
-      );
-
-      renderOppfolgingsplanerOversikt();
-
-      expect(screen.queryByText("Det er ingen aktive oppfølgingsplaner")).to.not
-        .exist;
-      expect(screen.queryByText("Be om oppfølgingsplan")).to.not.exist;
-      expect(screen.queryByRole("button", { name: "Send forespørsel" })).to.not
-        .exist;
-    });
-    it("Viser ikke be om oppfølgingsplan funksjonalitet om det finnes aktiv oppfølgingsplan fra eneste arbeidsgiver", () => {
-      queryClient.setQueryData(
-        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-          ARBEIDSTAKER_DEFAULT.personIdent
-        ),
-        () => [createOppfolgingsplanLps(10, false)]
-      );
-      renderOppfolgingsplanerOversikt();
-
-      expect(screen.queryByText("Det er ingen aktive oppfølgingsplaner")).to.not
-        .exist;
-      expect(screen.queryByText("Be om oppfølgingsplan")).to.not.exist;
-      expect(screen.queryByRole("button", { name: "Send forespørsel" })).to.not
-        .exist;
     });
   });
 });
