@@ -104,7 +104,7 @@ describe("Kartleggingssporsmal", () => {
       })
     ).to.exist;
     expect(
-      screen.queryByText("Svarene fra den sykmeldte skal være", {
+      screen.queryByText("Svarene fra den sykmeldte skal", {
         exact: false,
       })
     ).to.exist;
@@ -224,7 +224,7 @@ describe("Kartleggingssporsmal", () => {
     ).to.exist;
 
     expect(
-      screen.queryByText("Svarene fra den sykmeldte skal være", {
+      screen.queryByText("Svarene fra den sykmeldte skal", {
         exact: false,
       })
     ).to.exist;
