@@ -17,8 +17,10 @@ import MotebehovKvitteringInnhold from "@/sider/dialogmoter/motebehov/MotebehovK
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
-import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { activeNarmesteLederForCurrentOppfolgingstilfelle } from "@/sider/oppfolgingsplan/oppfolgingsplaner/AktiveOppfolgingsplaner";
+import {
+  aktiveNarmesteLedereForOppfolgingstilfelle,
+  OppfolgingstilfelleDTO,
+} from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { BodyShort } from "@navikt/ds-react";
 
 export const arbeidsgiverNavnEllerTomStreng = (lederNavn: string | null) => {
@@ -250,11 +252,10 @@ function MotebehovArbeidsgiverInCurrentTilfelle({
   skjemaType: MotebehovSkjemaType | null;
 }) {
   const { currentLedere } = useLedereQuery();
-  const ledereInCurrentTilfelle =
-    activeNarmesteLederForCurrentOppfolgingstilfelle(
-      currentLedere,
-      oppfolgingstilfelle
-    );
+  const ledereInCurrentTilfelle = aktiveNarmesteLedereForOppfolgingstilfelle(
+    currentLedere,
+    oppfolgingstilfelle
+  );
 
   return motebehov ? (
     <MotebehovArbeidsgiverKvittering

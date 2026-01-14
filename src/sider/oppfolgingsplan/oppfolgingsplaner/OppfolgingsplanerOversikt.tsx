@@ -6,8 +6,7 @@ import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryH
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import OppfolgingsplanLink from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanLink";
-import AktiveOppfolgingsplaner from "@/sider/oppfolgingsplan/oppfolgingsplaner/AktiveOppfolgingsplaner";
-
+import * as Tredelt from "@/components/side/TredeltSide";
 import {
   useGetLPSOppfolgingsplanerQuery,
   useGetOppfolgingsplanerQuery,
@@ -20,6 +19,10 @@ import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import SideLaster from "@/components/side/SideLaster";
 import Side from "@/components/side/Side";
 import { partitionOppfolgingsplanerByAktivPlan } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
+import BeOmOppfolgingsplan from "@/sider/oppfolgingsplan/oppfolgingsplaner/BeOmOppfolgingsplan";
+import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
+import AktiveOppfolgingsplaner from "@/sider/oppfolgingsplan/oppfolgingsplaner/AktiveOppfolgingsplaner";
+import { aktiveNarmesteLedereForOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 const texts = {
   pageTitle: "Oppfølgingsplaner",
@@ -37,6 +40,12 @@ export default function OppfolgingsplanerOversikt() {
   const getOppfolgingsplanerV2 = useGetOppfolgingsplanerV2Query();
   const getOppfolgingsplaner = useGetOppfolgingsplanerQuery();
   const getLPSOppfolgingsplaner = useGetLPSOppfolgingsplanerQuery();
+  const { latestOppfolgingstilfelle, hasActiveOppfolgingstilfelle } =
+    useOppfolgingstilfellePersonQuery();
+  const currentOppfolgingstilfelle = hasActiveOppfolgingstilfelle
+    ? latestOppfolgingstilfelle
+    : undefined;
+  const { currentLedere } = useLedereQuery();
 
   const isLoading =
     getOppfolgingsplaner.isLoading ||
@@ -53,7 +62,6 @@ export default function OppfolgingsplanerOversikt() {
   );
 
   const getPersonOppgaverQuery = usePersonoppgaverQuery();
-  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const oppfolgingsplanerLPSMedPersonOppgave = getLPSOppfolgingsplaner.data.map(
     (oppfolgingsplanLPS) =>
       toOppfolgingsplanLPSMedPersonoppgave(
@@ -87,6 +95,15 @@ export default function OppfolgingsplanerOversikt() {
     oppfolgingsplanerLPSProcessed.length !== 0 ||
     inaktiveOppfolgingsplanerV2.length !== 0;
 
+  const activeNarmesteLedere = !!currentOppfolgingstilfelle
+    ? aktiveNarmesteLedereForOppfolgingstilfelle(
+        currentLedere,
+        currentOppfolgingstilfelle
+      )
+    : [];
+  const isBeOmOppfolgingsplanVisible =
+    !!currentOppfolgingstilfelle && activeNarmesteLedere.length > 0;
+
   return (
     <Side
       tittel="Oppfølgingsplaner"
@@ -94,41 +111,53 @@ export default function OppfolgingsplanerOversikt() {
     >
       <SideLaster isLoading={isLoading} isError={isError}>
         <Sidetopp tittel={texts.pageTitle} />
-        <AktiveOppfolgingsplaner
-          aktivePlaner={aktivePlaner}
-          aktivePlanerV2={aktiveOppfolgingsplanerV2}
-          oppfolgingsplanerLPSMedPersonoppgave={
-            oppfolgingsplanerLPSMedPersonOppgave
-          }
-        />
+        <Tredelt.Container className="-xl:flex-col-reverse">
+          <Tredelt.FirstColumn className="-xl:mb-2">
+            <AktiveOppfolgingsplaner
+              aktivePlaner={aktivePlaner}
+              aktivePlanerV2={aktiveOppfolgingsplanerV2}
+              oppfolgingsplanerLPSMedPersonoppgave={
+                oppfolgingsplanerLPSMedPersonOppgave
+              }
+            />
 
-        <Heading spacing level="2" size="medium">
-          {texts.titles.tidligereOppfolgingsplaner}
-        </Heading>
-        {hasTidligereOppfolgingsplaner ? (
-          <>
-            {inaktivePlaner.map((dialog, index) => {
-              return <OppfolgingsplanLink key={index} dialog={dialog} />;
-            })}
-            {oppfolgingsplanerLPSProcessed.map((planLPS, index) => {
-              return (
-                <OppfolgingsplanerOversiktLPS
-                  key={index}
-                  oppfolgingsplanLPSBistandsbehov={planLPS}
-                />
-              );
-            })}
-            {inaktiveOppfolgingsplanerV2.map((plan, index) => (
-              <OppfolgingsplanV2Item key={index} oppfolgingsplan={plan} />
-            ))}
-          </>
-        ) : (
-          <Box background="surface-default" className="p-4">
-            <BodyShort>
-              {texts.alertMessages.ingenTidligereOppfolgingsplaner}
-            </BodyShort>
-          </Box>
-        )}
+            <Heading spacing level="2" size="medium">
+              {texts.titles.tidligereOppfolgingsplaner}
+            </Heading>
+            {hasTidligereOppfolgingsplaner ? (
+              <>
+                {inaktivePlaner.map((dialog, index) => {
+                  return <OppfolgingsplanLink key={index} dialog={dialog} />;
+                })}
+                {oppfolgingsplanerLPSProcessed.map((planLPS, index) => {
+                  return (
+                    <OppfolgingsplanerOversiktLPS
+                      key={index}
+                      oppfolgingsplanLPSBistandsbehov={planLPS}
+                    />
+                  );
+                })}
+                {inaktiveOppfolgingsplanerV2.map((plan, index) => (
+                  <OppfolgingsplanV2Item key={index} oppfolgingsplan={plan} />
+                ))}
+              </>
+            ) : (
+              <Box background="surface-default" className="p-4">
+                <BodyShort>
+                  {texts.alertMessages.ingenTidligereOppfolgingsplaner}
+                </BodyShort>
+              </Box>
+            )}
+          </Tredelt.FirstColumn>
+          {isBeOmOppfolgingsplanVisible && (
+            <Tredelt.SecondColumn className="mt-11">
+              <BeOmOppfolgingsplan
+                activeNarmesteLedere={activeNarmesteLedere}
+                currentOppfolgingstilfelle={currentOppfolgingstilfelle}
+              />
+            </Tredelt.SecondColumn>
+          )}
+        </Tredelt.Container>
       </SideLaster>
     </Side>
   );
