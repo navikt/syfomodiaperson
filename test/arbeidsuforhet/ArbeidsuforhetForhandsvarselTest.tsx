@@ -13,7 +13,7 @@ import { queryClientWithMockData } from "../testQueryClient";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
-import { arbeidsuforhetPath } from "@/routers/AppRouter";
+import { arbeidsuforhetPath } from "@/AppRouter";
 import dayjs from "dayjs";
 import { addWeeks } from "@/utils/datoUtils";
 

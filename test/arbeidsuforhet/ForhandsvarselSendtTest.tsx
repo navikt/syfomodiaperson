@@ -7,7 +7,7 @@ import ForhandsvarselSendt from "@/sider/arbeidsuforhet/ForhandsvarselSendt";
 import { VurderingResponseDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { addWeeks, tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { createForhandsvarsel } from "./arbeidsuforhetTestData";
-import { arbeidsuforhetPath } from "@/routers/AppRouter";
+import { arbeidsuforhetPath } from "@/AppRouter";
 import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
 
 let queryClient: QueryClient;

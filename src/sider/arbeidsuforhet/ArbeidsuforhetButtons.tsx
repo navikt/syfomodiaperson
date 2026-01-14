@@ -4,7 +4,7 @@ import {
   arbeidsuforhetAvslagPath,
   arbeidsuforhetIkkeAktuellPath,
   arbeidsuforhetOppfyltPath,
-} from "@/routers/AppRouter";
+} from "@/AppRouter";
 import React from "react";
 
 const texts = {

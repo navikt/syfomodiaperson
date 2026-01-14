@@ -2,7 +2,7 @@ import React from "react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
-import { dialogmoteIkkeAktuellRoutePath } from "@/routers/AppRouter";
+import { dialogmoteIkkeAktuellRoutePath } from "@/AppRouter";
 import { stubFeatureTogglesApi } from "../stubs/stubUnleash";
 import { arbeidstaker, navEnhet } from "../dialogmote/testData";
 import {

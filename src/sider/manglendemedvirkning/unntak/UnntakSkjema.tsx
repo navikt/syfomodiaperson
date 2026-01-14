@@ -10,7 +10,7 @@ import {
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { Link } from "react-router-dom";
-import { manglendeMedvirkningPath } from "@/routers/AppRouter";
+import { manglendeMedvirkningPath } from "@/AppRouter";
 import {
   UnntakVurdering,
   VurderingType,

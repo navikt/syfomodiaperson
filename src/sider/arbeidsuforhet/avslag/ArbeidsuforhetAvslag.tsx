@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { Navigate } from "react-router-dom";
-import { arbeidsuforhetPath } from "@/routers/AppRouter";
+import { arbeidsuforhetPath } from "@/AppRouter";
 import { AvslagForm } from "@/sider/arbeidsuforhet/avslag/AvslagForm";
 
 export default function ArbeidsuforhetAvslag(): ReactElement {

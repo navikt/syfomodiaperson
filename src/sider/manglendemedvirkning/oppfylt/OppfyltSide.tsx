@@ -1,7 +1,7 @@
 import React from "react";
 import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import { Navigate } from "react-router-dom";
-import { manglendeMedvirkningPath } from "@/routers/AppRouter";
+import { manglendeMedvirkningPath } from "@/AppRouter";
 import { VurderingType } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import OppfyltSkjema from "@/sider/manglendemedvirkning/oppfylt/OppfyltSkjema";
 

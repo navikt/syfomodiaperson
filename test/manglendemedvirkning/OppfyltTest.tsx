@@ -23,7 +23,7 @@ import {
 } from "../testUtils";
 import { screen, waitFor, within } from "@testing-library/react";
 import { getOppfyltDocument } from "./vurderingDocuments";
-import { manglendeMedvirkningPath } from "@/routers/AppRouter";
+import { manglendeMedvirkningPath } from "@/AppRouter";
 
 let queryClient: QueryClient;
 

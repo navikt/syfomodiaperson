@@ -5,7 +5,7 @@ import SideLaster from "../../../../components/side/SideLaster";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/sider/dialogmoter/components/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 import { Navigate } from "react-router-dom";
-import { moteoversiktRoutePath } from "@/routers/AppRouter";
+import { moteoversiktRoutePath } from "@/AppRouter";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";

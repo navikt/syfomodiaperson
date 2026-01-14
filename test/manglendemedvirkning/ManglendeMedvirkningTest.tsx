@@ -13,7 +13,7 @@ import {
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import { renderWithRouter } from "../testRouterUtils";
-import { manglendeMedvirkningPath } from "@/routers/AppRouter";
+import { manglendeMedvirkningPath } from "@/AppRouter";
 import ManglendeMedvirkning from "@/sider/manglendemedvirkning/ManglendeMedvirkning";
 import {
   createManglendeMedvirkningVurdering,

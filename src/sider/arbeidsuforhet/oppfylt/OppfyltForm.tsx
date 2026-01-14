@@ -18,7 +18,7 @@ import {
 import { useArbeidsuforhetVurderingDocument } from "@/sider/arbeidsuforhet/hooks/useArbeidsuforhetVurderingDocument";
 import { useSaveVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSaveVurderingArbeidsuforhet";
 import { Link, useNavigate } from "react-router-dom";
-import { arbeidsuforhetPath } from "@/routers/AppRouter";
+import { arbeidsuforhetPath } from "@/AppRouter";
 import { ButtonRow } from "@/components/Layout";
 import { useNotification } from "@/context/notification/NotificationContext";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";

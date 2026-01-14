@@ -12,7 +12,7 @@ import {
   tilLesbarDatoMedArstall,
 } from "@/utils/datoUtils";
 
-import { dialogmoteRoutePath } from "@/routers/AppRouter";
+import { dialogmoteRoutePath } from "@/AppRouter";
 import { Link } from "react-router-dom";
 import { Button } from "@navikt/ds-react";
 

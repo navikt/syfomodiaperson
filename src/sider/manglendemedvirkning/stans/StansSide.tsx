@@ -1,5 +1,5 @@
 import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
-import { manglendeMedvirkningPath } from "@/routers/AppRouter";
+import { manglendeMedvirkningPath } from "@/AppRouter";
 import { isExpiredForhandsvarsel } from "@/utils/datoUtils";
 import React from "react";
 import { Navigate } from "react-router-dom";
