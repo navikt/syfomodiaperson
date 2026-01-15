@@ -245,7 +245,9 @@ export default function KartleggingssporsmalSide(): ReactElement {
                   </>
                 )}
               </Box>
-              <KartleggingssporsmalHistorikk kandidater={kandidater.slice(1)} />
+              <KartleggingssporsmalHistorikk
+                tidligereKandidater={kandidater.slice(1)}
+              />
             </Tredelt.FirstColumn>
             <Tredelt.SecondColumn>
               <Box background="surface-default" padding="6" className="mb-4">

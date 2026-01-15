@@ -14,11 +14,11 @@ const texts = {
 };
 
 interface Props {
-  kandidater: KartleggingssporsmalKandidatResponseDTO[];
+  tidligereKandidater: KartleggingssporsmalKandidatResponseDTO[];
 }
 
-export function KartleggingssporsmalHistorikk({ kandidater }: Props) {
-  const kandidaterMedSvar = kandidater.filter(
+export function KartleggingssporsmalHistorikk({ tidligereKandidater }: Props) {
+  const kandidaterMedSvar = tidligereKandidater.filter(
     (kandidat) =>
       kandidat.status === "SVAR_MOTTATT" ||
       kandidat.status === "FERDIGBEHANDLET"
@@ -42,7 +42,10 @@ export function KartleggingssporsmalHistorikk({ kandidater }: Props) {
       </div>
       <Accordion>
         {kandidaterMedSvar.map((kandidat) => (
-          <HistorikkElement key={kandidat.kandidatUuid} kandidat={kandidat} />
+          <HistorikkElement
+            key={kandidat.kandidatUuid}
+            tidligereKandidat={kandidat}
+          />
         ))}
       </Accordion>
     </Box>
@@ -50,15 +53,15 @@ export function KartleggingssporsmalHistorikk({ kandidater }: Props) {
 }
 
 interface HistorikkElementProps {
-  kandidat: KartleggingssporsmalKandidatResponseDTO;
+  tidligereKandidat: KartleggingssporsmalKandidatResponseDTO;
 }
 
-function HistorikkElement({ kandidat }: HistorikkElementProps) {
+function HistorikkElement({ tidligereKandidat }: HistorikkElementProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { data: veilederinfo } = useVeilederInfoQuery(
-    kandidat.vurdering?.vurdertBy || ""
+    tidligereKandidat.vurdering?.vurdertBy || ""
   );
-  const { data: svar } = useKartleggingssporsmalSvarQuery(kandidat);
+  const { data: svar } = useKartleggingssporsmalSvarQuery(tidligereKandidat);
 
   if (!svar) {
     return null;
