@@ -20,7 +20,7 @@ import {
 } from "@/mocks/common/mockConstants";
 import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 import { renderWithRouter } from "../testRouterUtils";
-import { appRoutePath } from "@/routers/AppRouter";
+import { appRoutePath } from "@/AppRouter";
 import { screen } from "@testing-library/react";
 import { clickButton, getButton, queryButton } from "../testUtils";
 import {
@@ -104,7 +104,7 @@ describe("Kartleggingssporsmal", () => {
       })
     ).to.exist;
     expect(
-      screen.queryByText("Svarene fra den sykmeldte skal være", {
+      screen.queryByText("Svarene fra den sykmeldte skal", {
         exact: false,
       })
     ).to.exist;
@@ -224,7 +224,7 @@ describe("Kartleggingssporsmal", () => {
     ).to.exist;
 
     expect(
-      screen.queryByText("Svarene fra den sykmeldte skal være", {
+      screen.queryByText("Svarene fra den sykmeldte skal", {
         exact: false,
       })
     ).to.exist;

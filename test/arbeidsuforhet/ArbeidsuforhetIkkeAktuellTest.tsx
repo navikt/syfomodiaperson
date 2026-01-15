@@ -9,7 +9,7 @@ import {
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { QueryClient } from "@tanstack/react-query";
 import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
-import { arbeidsuforhetIkkeAktuellPath } from "@/routers/AppRouter";
+import { arbeidsuforhetIkkeAktuellPath } from "@/AppRouter";
 import React from "react";
 import ArbeidsuforhetIkkeAktuellSkjema from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuellSkjema";
 import { getIkkeAktuellVurderingDocument } from "./documents";

@@ -5,10 +5,10 @@ import SykmeldingerSide from "@/sider/sykmeldinger/container/SykmeldingerSide";
 import SykepengesoknaderSide from "@/sider/sykepengsoknader/SykepengesoknaderSide";
 import HistorikkContainer from "@/sider/historikk/container/HistorikkContainer";
 import { erGyldigFodselsnummer } from "@/utils/frnValideringUtils";
-import DialogmoteInnkallingContainer from "../sider/dialogmoter/components/innkalling/DialogmoteInnkallingContainer";
+import DialogmoteInnkallingContainer from "./sider/dialogmoter/components/innkalling/DialogmoteInnkallingContainer";
 import AvlysDialogmoteContainer from "@/sider/dialogmoter/components/avlys/AvlysDialogmoteContainer";
-import AppSpinner from "../components/AppSpinner";
-import DialogmoteReferatContainer from "../sider/dialogmoter/components/referat/DialogmoteReferatContainer";
+import AppSpinner from "./components/AppSpinner";
+import DialogmoteReferatContainer from "./sider/dialogmoter/components/referat/DialogmoteReferatContainer";
 import EndreDialogmoteContainer from "@/sider/dialogmoter/components/endre/EndreDialogmoteContainer";
 import { IngenBrukerSide } from "@/components/IngenBrukerSide";
 import { useAktivBruker } from "@/data/modiacontext/modiacontextQueryHooks";
@@ -42,6 +42,7 @@ import OppfyltForm from "@/sider/arbeidsuforhet/oppfylt/OppfyltForm";
 import KartleggingssporsmalSide from "@/sider/kartleggingssporsmal/KartleggingssporsmalSide";
 import * as Umami from "@/utils/umami";
 import OppfolgingsplanerOversikt from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanerOversikt";
+import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -59,13 +60,10 @@ export const senOppfolgingPath = `${appRoutePath}/senoppfolging`;
 export const manglendeMedvirkningPath = `${appRoutePath}/manglendemedvirkning`;
 export const historikkPath = `${appRoutePath}/historikk`;
 
-function AktivBrukerRouter({
-  veilederident,
-}: {
-  veilederident: string;
-}): ReactElement {
-  if (window.umami !== undefined) {
-    Umami.setIdentifier(veilederident);
+function AktivBrukerRouter(): ReactElement {
+  const getAktivVeileder = useAktivVeilederinfoQuery();
+  if (window.umami !== undefined && getAktivVeileder.isSuccess) {
+    Umami.setIdentifier(getAktivVeileder.data.ident);
   }
 
   return (
@@ -212,7 +210,7 @@ function IngenAktivBrukerRouter(): ReactElement {
   );
 }
 
-function AppRouter() {
+export default function AppRouter() {
   const { isLoading, data } = useAktivBruker();
 
   if (isLoading) {
@@ -222,8 +220,6 @@ function AppRouter() {
   if (!data || !erGyldigFodselsnummer(data.aktivBruker)) {
     return <IngenAktivBrukerRouter />;
   } else {
-    return <AktivBrukerRouter veilederident={data.aktivBruker} />;
+    return <AktivBrukerRouter />;
   }
 }
-
-export default AppRouter;

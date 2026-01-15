@@ -9,7 +9,7 @@ import {
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { Link } from "react-router-dom";
-import { manglendeMedvirkningPath } from "@/routers/AppRouter";
+import { manglendeMedvirkningPath } from "@/AppRouter";
 import React from "react";
 import { useSendVurdering } from "@/data/manglendemedvirkning/useSendVurderingManglendeMedvirkning";
 import { useForm } from "react-hook-form";

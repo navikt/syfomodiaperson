@@ -60,13 +60,13 @@ const texts = {
   rutineSteps: {
     heading1: "Slik vurderer du svarene",
     info1:
-      "Svarene fra den sykmeldte skal være til hjelp for å identifisere hvem som har økt risiko for langvarig fravær og som kan ha behov for oppfølging. Bruk svarene i dialog med den sykmeldte for å kartlegge behov. Svarene må sees i sammenheng med andre opplysninger Nav har om situasjonen til den sykmeldte. I det den sykmeldte sender inn svarene vil de automatisk bli journalført.",
-    heading2: "Ikke behov for kartlegging",
+      "Svarene fra den sykmeldte skal hjelpe deg å tidlig identifisere personer som står i fare for et langvarig sykefravær eller å falle ut av arbeidslivet. Spørsmålene tar utgangspunkt i kjente risikofaktorer, og svarene vil derfor gi en indikasjon på hvem som trenger videre vurdering av oppfølgingsbehov. Svarene må ses i sammenheng med andre opplysninger Nav har om situasjonen til den sykmeldte.",
+    heading2: "Ikke behov for videre vurdering av oppfølgingsbehov",
     info2:
-      "Personer som svarer at de blir sykmeldte mindre enn seks måneder, har god relasjon til arbeidsgiver og som skal tilbake i jobben som man er sykmeldt fra, har som hovedregel ikke behov for nærmere samtale med Nav.",
-    heading3: "Behov for kartlegging",
+      "Sykmeldte som svarer at de blir sykmeldte mindre enn seks måneder, har god relasjon til arbeidsgiver og som skal tilbake i jobben man er sykmeldt fra, har som hovedregel ikke behov for mer kartlegging og vurdering av oppfølgingsbehov på nåværende tidspunkt.",
+    heading3: "Behov for vurdering av oppfølgingsbehov",
     info3:
-      "Det er en sterk predikator for at den sykmeldte blir langvarig sykmeldt dersom personen svarer at hen kommer til å være sykmeldt mer enn seks måneder. Dersom vedkommende også har svart usikkerhet knyttet til jobbsituasjonen eller dårlig relasjon med arbeidsgiver gir dette grunn til å undersøke saken nærmere.",
+      "Sykmeldte som svarer at de tror de blir sykmeldt mer enn seks måneder, har dårlig relasjon til arbeidsgiver eller som er usikre på om de kommer tilbake til nåværende jobb, gir en indikasjon på behov for nærmere vurdering av oppfølgingsbehov. Dette vil ofte innebære at Nav bør ta kontakt med den sykmeldte og arbeidsgiver.",
     link: 'Bruk også "Bli kjent og forstå behov"',
     url: "https://navno.sharepoint.com/:u:/r/sites/fag-og-ytelser-veileder-for-arbeidsrettet-brukeroppfolging/SitePages/Start.aspx?csf=1&web=1&e=qc76DU#bli-kjent-og-forst%C3%A5-behov",
   },

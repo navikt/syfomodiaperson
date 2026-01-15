@@ -2,7 +2,7 @@ import React from "react";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { texts as valideringsTexts } from "@/utils/valideringUtils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { dialogmoteRoutePath } from "@/routers/AppRouter";
+import { dialogmoteRoutePath } from "@/AppRouter";
 import { stubInnkallingApi } from "../../stubs/stubIsdialogmote";
 import {
   arbeidsgiver,

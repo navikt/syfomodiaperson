@@ -19,7 +19,7 @@ import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { ButtonRow } from "@/components/Layout";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { Link } from "react-router-dom";
-import { arbeidsuforhetPath } from "@/routers/AppRouter";
+import { arbeidsuforhetPath } from "@/AppRouter";
 import AvslagDatePicker from "@/sider/arbeidsuforhet/avslag/AvslagDatePicker";
 import { useNotification } from "@/context/notification/NotificationContext";
 import { Paragraph } from "@/components/Paragraph";

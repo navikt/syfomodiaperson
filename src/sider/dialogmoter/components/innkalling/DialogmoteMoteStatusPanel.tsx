@@ -8,7 +8,7 @@ import {
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
-import { dialogmoteRoutePath } from "@/routers/AppRouter";
+import { dialogmoteRoutePath } from "@/AppRouter";
 import DeltakereSvarInfo from "@/sider/dialogmoter/components/DeltakereSvarInfo";
 import dayjs from "dayjs";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
