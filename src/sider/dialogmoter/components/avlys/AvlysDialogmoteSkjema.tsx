@@ -6,7 +6,7 @@ import {
   DialogmoteDTO,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useAvlysningDocument } from "@/hooks/dialogmote/document/useAvlysningDocument";
-import { moteoversiktRoutePath } from "@/routers/AppRouter";
+import { moteoversiktRoutePath } from "@/AppRouter";
 import { useAvlysDialogmote } from "@/sider/dialogmoter/hooks/useAvlysDialogmote";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { Alert, Box, Button, Label } from "@navikt/ds-react";

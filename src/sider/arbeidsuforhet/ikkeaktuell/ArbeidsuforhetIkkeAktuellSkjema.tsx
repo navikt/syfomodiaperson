@@ -5,7 +5,7 @@ import {
   VurderingArsak,
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
-import { arbeidsuforhetPath } from "@/routers/AppRouter";
+import { arbeidsuforhetPath } from "@/AppRouter";
 import { Link } from "react-router-dom";
 import {
   BodyShort,

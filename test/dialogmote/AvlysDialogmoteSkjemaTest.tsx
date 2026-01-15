@@ -11,7 +11,7 @@ import {
   getTooLongText,
 } from "../testUtils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { dialogmoteRoutePath } from "@/routers/AppRouter";
+import { dialogmoteRoutePath } from "@/AppRouter";
 import { stubAvlysApi } from "../stubs/stubIsdialogmote";
 import { dialogmote, dialogmoteMedBehandler, moteTekster } from "./testData";
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";

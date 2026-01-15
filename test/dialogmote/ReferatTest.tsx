@@ -19,7 +19,7 @@ import {
   getTooLongText,
 } from "../testUtils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { dialogmoteRoutePath } from "@/routers/AppRouter";
+import { dialogmoteRoutePath } from "@/AppRouter";
 import { stubFerdigstillApi } from "../stubs/stubIsdialogmote";
 import {
   annenDeltakerFunksjon,

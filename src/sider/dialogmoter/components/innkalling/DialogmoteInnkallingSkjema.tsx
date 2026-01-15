@@ -12,7 +12,7 @@ import {
   useInnkallingDocument,
 } from "@/hooks/dialogmote/document/useInnkallingDocument";
 import { useOpprettInnkallingDialogmote } from "@/sider/dialogmoter/hooks/useOpprettInnkallingDialogmote";
-import { moteoversiktRoutePath } from "@/routers/AppRouter";
+import { moteoversiktRoutePath } from "@/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { behandlerNavn } from "@/utils/behandlerUtils";

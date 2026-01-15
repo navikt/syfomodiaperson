@@ -10,7 +10,7 @@ import {
 import { fireEvent, screen, within } from "@testing-library/react";
 import { expect, describe, it, beforeEach } from "vitest";
 import userEvent from "@testing-library/user-event";
-import { dialogmoteRoutePath } from "@/routers/AppRouter";
+import { dialogmoteRoutePath } from "@/AppRouter";
 import React from "react";
 import { changeTextInput, getTextInput } from "../../testUtils";
 import { expectedInnkallingDocuments } from "../testDataDocuments";

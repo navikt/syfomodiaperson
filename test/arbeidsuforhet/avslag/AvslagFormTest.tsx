@@ -6,7 +6,7 @@ import {
   Avslag,
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
-import { arbeidsuforhetOppfyltPath } from "@/routers/AppRouter";
+import { arbeidsuforhetOppfyltPath } from "@/AppRouter";
 import { AvslagForm } from "@/sider/arbeidsuforhet/avslag/AvslagForm";
 import { queryClientWithMockData } from "../../testQueryClient";
 import { changeTextInput, clickButton, getTextInput } from "../../testUtils";
