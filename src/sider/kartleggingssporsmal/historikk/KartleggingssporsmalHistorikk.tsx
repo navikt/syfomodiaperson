@@ -64,7 +64,7 @@ function HistorikkElement({ kandidat }: HistorikkElementProps) {
     return null;
   }
 
-  const header = `Sykmeldte svarte ${tilDatoMedManedNavn(kandidat.svarAt)}`;
+  const header = `Sykmeldte svarte ${tilDatoMedManedNavn(svar.createdAt)}`;
 
   const handleAccordionClick = () => {
     setIsOpen(!isOpen);
