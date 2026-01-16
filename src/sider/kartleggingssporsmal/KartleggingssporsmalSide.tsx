@@ -2,7 +2,16 @@ import React, { ReactElement } from "react";
 import Side from "@/components/side/Side";
 import Sidetopp from "@/components/side/Sidetopp";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { Alert, BodyShort, Box, Button, Heading, List } from "@navikt/ds-react";
+import {
+  Accordion,
+  Alert,
+  BodyLong,
+  BodyShort,
+  Box,
+  Button,
+  Heading,
+  List,
+} from "@navikt/ds-react";
 import * as Tredelt from "@/components/side/TredeltSide";
 import SideLaster from "@/components/side/SideLaster";
 import {
@@ -57,14 +66,17 @@ const texts = {
     "https://navno.sharepoint.com/:u:/r/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Behovsrettet-oppf%C3%B8lging.aspx?csf=1&web=1&e=e73C3c",
   link: "Slik ser spørsmålene ut for den sykmeldte",
   demoUrl: "https://demo.ekstern.dev.nav.no/syk/kartleggingssporsmal",
-  rutineSteps: {
-    heading1: "Slik vurderer du svarene",
+  veiledningBox: {
+    heading: "Veiledning",
+    intro:
+      "Svarene fra den sykmeldte skal hjelpe deg å tidlig identifisere personer som står i fare for et langvarig sykefravær eller å falle ut av arbeidslivet.",
+    accordion1: "Slik vurderer du svarene",
     info1:
-      "Svarene fra den sykmeldte skal hjelpe deg å tidlig identifisere personer som står i fare for et langvarig sykefravær eller å falle ut av arbeidslivet. Spørsmålene tar utgangspunkt i kjente risikofaktorer, og svarene vil derfor gi en indikasjon på hvem som trenger videre vurdering av oppfølgingsbehov. Svarene må ses i sammenheng med andre opplysninger Nav har om situasjonen til den sykmeldte.",
-    heading2: "Ikke behov for videre vurdering av oppfølgingsbehov",
+      "Spørsmålene tar utgangspunkt i kjente risikofaktorer, og svarene vil derfor gi en indikasjon på hvem som trenger videre vurdering av oppfølgingsbehov. Svarene må ses i sammenheng med andre opplysninger Nav har om situasjonen til den sykmeldte.",
+    accordion2: "Ikke behov for videre vurdering av oppfølgingsbehov",
     info2:
       "Sykmeldte som svarer at de blir sykmeldte mindre enn seks måneder, har god relasjon til arbeidsgiver og som skal tilbake i jobben man er sykmeldt fra, har som hovedregel ikke behov for mer kartlegging og vurdering av oppfølgingsbehov på nåværende tidspunkt.",
-    heading3: "Behov for vurdering av oppfølgingsbehov",
+    accordion3: "Behov for vurdering av oppfølgingsbehov",
     info3:
       "Sykmeldte som svarer at de tror de blir sykmeldt mer enn seks måneder, har dårlig relasjon til arbeidsgiver eller som er usikre på om de kommer tilbake til nåværende jobb, gir en indikasjon på behov for nærmere vurdering av oppfølgingsbehov. Dette vil ofte innebære at Nav bør ta kontakt med den sykmeldte og arbeidsgiver.",
     link: 'Bruk også "Bli kjent og forstå behov"',
@@ -251,28 +263,51 @@ export default function KartleggingssporsmalSide(): ReactElement {
             </Tredelt.FirstColumn>
             <Tredelt.SecondColumn>
               <Box background="surface-default" padding="6" className="mb-4">
-                <Heading level="3" size="small">
-                  {texts.rutineSteps.heading1}
+                <Heading level="2" size="medium">
+                  {texts.veiledningBox.heading}
                 </Heading>
-                <BodyShort size="small" className="mb-4">
-                  {texts.rutineSteps.info1}
-                </BodyShort>
-                <Heading level="3" size="small">
-                  {texts.rutineSteps.heading2}
-                </Heading>
-                <BodyShort size="small" className="mb-4">
-                  {texts.rutineSteps.info2}
-                </BodyShort>
-                <Heading level="3" size="small">
-                  {texts.rutineSteps.heading3}
-                </Heading>
-                <BodyShort size="small" className="mb-4">
-                  {texts.rutineSteps.info3}
-                </BodyShort>
-                <EksternLenke href={texts.rutineSteps.url} className="mb-2">
-                  {texts.rutineSteps.link}
-                </EksternLenke>
-                <PilotInfo />
+                <BodyLong size="small" className="mb-4">
+                  {texts.veiledningBox.intro}
+                </BodyLong>
+                <Accordion size="small">
+                  <Accordion.Item defaultOpen>
+                    <Accordion.Header>
+                      {texts.veiledningBox.accordion1}
+                    </Accordion.Header>
+                    <Accordion.Content>
+                      <BodyLong size="small">
+                        {texts.veiledningBox.info1}
+                      </BodyLong>
+                    </Accordion.Content>
+                  </Accordion.Item>
+                  <Accordion.Item>
+                    <Accordion.Header>
+                      {texts.veiledningBox.accordion2}
+                    </Accordion.Header>
+                    <Accordion.Content>
+                      <BodyLong size="small">
+                        {texts.veiledningBox.info2}
+                      </BodyLong>
+                    </Accordion.Content>
+                  </Accordion.Item>
+                  <Accordion.Item>
+                    <Accordion.Header>
+                      {texts.veiledningBox.accordion3}
+                    </Accordion.Header>
+                    <Accordion.Content>
+                      <BodyLong size="small">
+                        {texts.veiledningBox.info3}
+                        <EksternLenke
+                          href={texts.veiledningBox.url}
+                          className="mt-2"
+                        >
+                          {texts.veiledningBox.link}
+                        </EksternLenke>
+                      </BodyLong>
+                    </Accordion.Content>
+                  </Accordion.Item>
+                  <PilotInfo />
+                </Accordion>
               </Box>
               {answeredQuestions && <UtdragFraSykefravaeret />}
             </Tredelt.SecondColumn>
