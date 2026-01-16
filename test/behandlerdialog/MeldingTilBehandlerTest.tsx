@@ -130,11 +130,13 @@ describe("MeldingTilBehandler", () => {
       expect(screen.getByText("Søk etter behandler")).to.exist;
     });
 
-    it("Viser behandlersøk ved klikk på radiobutton 'Søk etter behandler'", () => {
+    it("Viser behandlersøk ved klikk på radiobutton 'Søk etter behandler'", async () => {
       renderMeldingTilBehandler();
 
-      const sokBehandlerRadioButton = screen.getByText("Søk etter behandler");
-      fireEvent.click(sokBehandlerRadioButton);
+      const sokBehandlerRadioButton = await screen.findByRole("radio", {
+        name: "Søk etter behandler",
+      });
+      await userEvent.click(sokBehandlerRadioButton);
 
       expect(
         screen.getByText("Finner du ikke behandleren du leter etter?", {

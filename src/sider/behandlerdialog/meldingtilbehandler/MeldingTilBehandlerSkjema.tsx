@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Alert, Button, Select, Textarea } from "@navikt/ds-react";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import {
@@ -10,12 +10,17 @@ import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document/useMeldingTilBehandlerDocument";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { MeldingsTypeInfo } from "@/sider/behandlerdialog/meldingtilbehandler/MeldingsTypeInfo";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { meldingTypeTexts } from "@/data/behandlerdialog/behandlerdialogTexts";
 import { ButtonRow } from "@/components/Layout";
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
 import { VelgBehandler } from "@/components/behandler/VelgBehandler";
 import { PreviewButton } from "@/sider/behandlerdialog/meldingtilbehandler/PreviewButton";
+import {
+  useDeleteMeldingTilBehandlerDraft,
+  useMeldingTilBehandlerDraftQuery,
+  useSaveMeldingTilBehandlerDraft,
+} from "@/data/behandlerdialog/meldingtilbehandlerDraftQueryHooks";
 
 const texts = {
   sendKnapp: "Send til behandler",
@@ -34,6 +39,11 @@ export interface MeldingTilBehandlerSkjemaValues {
   behandlerRef: string;
   meldingsType: MeldingType;
   meldingTekst: string;
+
+  /**
+   * Internal field used by `VelgBehandler` radio-group.
+   */
+  behandlerRefSelection?: string;
 }
 
 export const MAX_LENGTH_BEHANDLER_MELDING = 5000;
@@ -51,7 +61,19 @@ export const MeldingTilBehandlerSkjema = () => {
     formState: { errors },
     reset,
     getValues,
+    setValue,
+    control,
   } = formMethods;
+
+  const watchedMeldingTekst = useWatch({ control, name: "meldingTekst" }) ?? "";
+  const watchedMeldingsType = useWatch({ control, name: "meldingsType" });
+
+  const draftQuery = useMeldingTilBehandlerDraftQuery();
+  const saveDraft = useSaveMeldingTilBehandlerDraft();
+  const deleteDraft = useDeleteMeldingTilBehandlerDraft();
+
+  const isApplyingDraftRef = useRef(false);
+  const autosaveTimeoutRef = useRef<number | undefined>(undefined);
 
   const now = new Date();
   const meldingTekstErrorMessage =
@@ -59,10 +81,86 @@ export const MeldingTilBehandlerSkjema = () => {
     getValues("meldingTekst") === "" &&
     texts.meldingsTekstMissing;
 
+  useEffect(() => {
+    const draft = draftQuery.data;
+    if (!draft || !draft.tekst) {
+      return;
+    }
+
+    const draftBehandler = draft.behandler;
+    const draftBehandlerRef = draftBehandler?.behandlerRef;
+
+    // Avoid triggering autosave immediately when we populate the form with the draft.
+    isApplyingDraftRef.current = true;
+
+    if (draftBehandler) {
+      setSelectedBehandler(draftBehandler);
+    }
+
+    const nextBehandlerRef = draftBehandlerRef ?? getValues("behandlerRef");
+
+    reset({
+      ...getValues(),
+      meldingTekst: draft.tekst,
+      // Optional fields (only set if present to not override current user choices)
+      meldingsType:
+        (draft.meldingsType as MeldingType) ?? getValues("meldingsType"),
+      behandlerRef: nextBehandlerRef,
+      // Do NOT set behandlerRefSelection here. VelgBehandler derives list vs search
+      // based on behandlerRef and the fetched behandler list.
+    });
+
+    if (nextBehandlerRef) {
+      setValue("behandlerRef", nextBehandlerRef, { shouldValidate: true });
+    }
+
+    // Do NOT set behandlerRefSelection here. Avoid flipping list selections into search
+    // when draft refetch happens after autosave.
+
+    const id = window.setTimeout(() => {
+      isApplyingDraftRef.current = false;
+    }, 0);
+
+    return () => {
+      window.clearTimeout(id);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [draftQuery.data, reset]);
+
+  useEffect(() => {
+    const meldingTekst = watchedMeldingTekst;
+    const meldingsType = watchedMeldingsType;
+
+    if (isApplyingDraftRef.current) {
+      return;
+    }
+
+    if (autosaveTimeoutRef.current) {
+      window.clearTimeout(autosaveTimeoutRef.current);
+    }
+
+    autosaveTimeoutRef.current = window.setTimeout(() => {
+      saveDraft.mutate({
+        tekst: meldingTekst,
+        meldingsType: meldingsType || undefined,
+        behandler: selectedBehandler,
+      });
+    }, 700);
+
+    return () => {
+      if (autosaveTimeoutRef.current) {
+        window.clearTimeout(autosaveTimeoutRef.current);
+      }
+    };
+  }, [saveDraft, selectedBehandler, watchedMeldingsType, watchedMeldingTekst]);
+
   const submit = (values: MeldingTilBehandlerSkjemaValues) => {
+    const effectiveBehandlerRef =
+      selectedBehandler?.behandlerRef ?? values.behandlerRef;
+
     const meldingTilBehandlerDTO: MeldingTilBehandlerDTO = {
       type: values.meldingsType,
-      behandlerRef: values.behandlerRef,
+      behandlerRef: effectiveBehandlerRef,
       tekst: values.meldingTekst,
       document: getMeldingTilBehandlerDocument(values),
       behandlerIdent: selectedBehandler?.fnr,
@@ -71,7 +169,11 @@ export const MeldingTilBehandlerSkjema = () => {
         : undefined,
     };
     meldingTilBehandler.mutate(meldingTilBehandlerDTO, {
-      onSuccess: () => reset(),
+      onSuccess: () => {
+        deleteDraft.mutate();
+        reset();
+        setSelectedBehandler(undefined);
+      },
     });
   };
 
@@ -112,6 +214,7 @@ export const MeldingTilBehandlerSkjema = () => {
         </div>
         <VelgBehandler
           onBehandlerSelected={setSelectedBehandler}
+          selectedBehandler={selectedBehandler}
           legend={texts.velgBehandlerLegend}
         />
         <Textarea
