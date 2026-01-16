@@ -4,7 +4,10 @@ import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { Paragraph } from "@/components/Paragraph";
-import { KartleggingssporsmalKandidatResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
+import {
+  hasAnsweredKartleggingssporsmal,
+  KartleggingssporsmalKandidatResponseDTO,
+} from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import { useKartleggingssporsmalSvarQuery } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 
 const texts = {
@@ -59,10 +62,8 @@ interface Props {
 }
 
 export function KartleggingssporsmalHistorikk({ tidligereKandidater }: Props) {
-  const kandidaterMedSvar = tidligereKandidater.filter(
-    (kandidat) =>
-      kandidat.status === "SVAR_MOTTATT" ||
-      kandidat.status === "FERDIGBEHANDLET"
+  const kandidaterMedSvar = tidligereKandidater.filter((kandidat) =>
+    hasAnsweredKartleggingssporsmal(kandidat)
   );
 
   if (kandidaterMedSvar.length === 0) {
