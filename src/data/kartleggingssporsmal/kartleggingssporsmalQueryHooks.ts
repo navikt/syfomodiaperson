@@ -19,7 +19,10 @@ export const kartleggingssporsmalQueryKeys = {
     "kartleggingssporsmalKandidat",
     fnr,
   ],
-  kartleggingssporsmalSvar: (fnr: string) => ["kartleggingssporsmalSvar", fnr],
+  kartleggingssporsmalSvar: (kandidatUuid: string | undefined) => [
+    "kartleggingssporsmalSvar",
+    kandidatUuid,
+  ],
 };
 
 export const useKartleggingssporsmalKandidaterQuery = () => {
@@ -51,15 +54,17 @@ export const useKartleggingssporsmalKandidaterQuery = () => {
 export const useKartleggingssporsmalSvarQuery = (
   kandidat: KartleggingssporsmalKandidatResponseDTO | null | undefined
 ) => {
-  const fnr = useValgtPersonident();
   const path = `${MEROPPFOLGING_BACKEND_V1_ROOT}/kartleggingssporsmal/kandidat/${kandidat?.kandidatUuid}/svar`;
   const getKartleggingssporsmalSvar = () =>
     get<KartleggingssporsmalSvarResponseDTO>(path);
 
   return useQuery({
-    queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalSvar(fnr),
+    queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalSvar(
+      kandidat?.kandidatUuid
+    ),
     queryFn: getKartleggingssporsmalSvar,
-    enabled: !!fnr && hasAnsweredKartleggingssporsmal(kandidat),
+    enabled:
+      !!kandidat?.kandidatUuid && hasAnsweredKartleggingssporsmal(kandidat),
     staleTime: minutesToMillis(5),
   });
 };

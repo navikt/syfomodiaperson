@@ -61,10 +61,10 @@ const mockKartleggingssporsmalKandidater = (
 
 const mockKartleggingssporsmalSvar = (
   kartleggingssporsmalSvarResponseDTO: KartleggingssporsmalSvarResponseDTO | null,
-  fnr: string
+  kandidatUuid: string
 ) => {
   queryClient.setQueryData(
-    kartleggingssporsmalQueryKeys.kartleggingssporsmalSvar(fnr),
+    kartleggingssporsmalQueryKeys.kartleggingssporsmalSvar(kandidatUuid),
     () => kartleggingssporsmalSvarResponseDTO
   );
 };
@@ -187,7 +187,7 @@ describe("Kartleggingssporsmal", () => {
     );
     mockKartleggingssporsmalSvar(
       kartleggingssporsmalAnswered,
-      ARBEIDSTAKER_DEFAULT.personIdent
+      kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
     );
 
     renderKartleggingssporsmal();
@@ -257,7 +257,7 @@ describe("Kartleggingssporsmal", () => {
     );
     mockKartleggingssporsmalSvar(
       kartleggingssporsmalAnswered,
-      ARBEIDSTAKER_DEFAULT.personIdent
+      kartleggingssporsmalFerdigbehandlet.kandidatUuid
     );
 
     renderKartleggingssporsmal();
@@ -282,7 +282,7 @@ describe("Kartleggingssporsmal", () => {
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalAnswered,
-        ARBEIDSTAKER_DEFAULT.personIdent
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
       stubDefaultIsmeroppfolging();
 
@@ -300,7 +300,7 @@ describe("Kartleggingssporsmal", () => {
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalAnswered,
-        ARBEIDSTAKER_DEFAULT.personIdent
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
       stubVurderSvarError();
 
@@ -341,7 +341,7 @@ describe("Kartleggingssporsmal", () => {
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalAnswered,
-        ARBEIDSTAKER_DEFAULT.personIdent
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
 
       renderKartleggingssporsmal();
@@ -356,7 +356,7 @@ describe("Kartleggingssporsmal", () => {
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalAnswered,
-        ARBEIDSTAKER_DEFAULT.personIdent
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
 
       renderKartleggingssporsmal();
@@ -371,7 +371,11 @@ describe("Kartleggingssporsmal", () => {
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalAnswered,
-        ARBEIDSTAKER_DEFAULT.personIdent
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalAnswered,
+        tidligereKandidatMedSvar.kandidatUuid
       );
 
       renderKartleggingssporsmal();
@@ -388,13 +392,18 @@ describe("Kartleggingssporsmal", () => {
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalAnswered,
-        ARBEIDSTAKER_DEFAULT.personIdent
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalAnswered,
+        tidligereKandidatMedSvar.kandidatUuid
       );
 
       renderKartleggingssporsmal();
 
-      expect(screen.queryByText("Den sykmeldte svarte", { exact: false })).to
-        .exist;
+      expect(
+        screen.getAllByText("Sykmeldte svarte", { exact: false }).length
+      ).toBeGreaterThanOrEqual(1);
     });
   });
 });
