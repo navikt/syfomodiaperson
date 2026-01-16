@@ -36,7 +36,6 @@ import {
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { kontaktinformasjonMock } from "@/mocks/syfoperson/persondataMock";
 import { generateUUID } from "@/utils/utils";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 
 let queryClient: QueryClient;
 
