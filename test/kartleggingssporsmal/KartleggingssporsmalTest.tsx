@@ -3,6 +3,7 @@ import React from "react";
 import KartleggingssporsmalSide from "@/sider/kartleggingssporsmal/KartleggingssporsmalSide";
 import { kartleggingssporsmalQueryKeys } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 import {
+  KandidatStatus,
   KartleggingssporsmalKandidatResponseDTO,
   KartleggingssporsmalSvarResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
@@ -22,13 +23,20 @@ import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 import { renderWithRouter } from "../testRouterUtils";
 import { appRoutePath } from "@/AppRouter";
 import { screen } from "@testing-library/react";
-import { clickButton, getButton, queryButton } from "../testUtils";
+import {
+  clickButton,
+  daysFromToday,
+  getButton,
+  queryButton,
+} from "../testUtils";
 import {
   stubDefaultIsmeroppfolging,
   stubVurderSvarError,
 } from "../stubs/stubIsmeroppfolging";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { kontaktinformasjonMock } from "@/mocks/syfoperson/persondataMock";
+import { generateUUID } from "@/utils/utils";
+import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 
 let queryClient: QueryClient;
 
@@ -39,6 +47,16 @@ const mockKartleggingssporsmalKandidat = (
   queryClient.setQueryData(
     kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
     () => [kartleggingssporsmalKandidatResponseDTO]
+  );
+};
+
+const mockKartleggingssporsmalKandidater = (
+  kartleggingssporsmalKandidatResponseDTOs: KartleggingssporsmalKandidatResponseDTO[],
+  fnr: string
+) => {
+  queryClient.setQueryData(
+    kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
+    () => kartleggingssporsmalKandidatResponseDTOs
   );
 };
 
@@ -295,6 +313,89 @@ describe("Kartleggingssporsmal", () => {
           "Det skjedde en uventet feil. Vennligst prøv igjen senere."
         )
       ).to.exist;
+    });
+  });
+
+  describe("KartleggingssporsmalHistorikk", () => {
+    const tidligereKandidatMedSvar: KartleggingssporsmalKandidatResponseDTO = {
+      ...kartleggingssporsmalFerdigbehandlet,
+      kandidatUuid: generateUUID(),
+      svarAt: daysFromToday(-30),
+      vurdering: {
+        vurdertAt: daysFromToday(-25),
+        vurdertBy: VEILEDER_DEFAULT.ident,
+      },
+    };
+
+    const tidligereKandidatUtenSvar: KartleggingssporsmalKandidatResponseDTO = {
+      ...kartleggingIsKandidatAndReceivedQuestions,
+      kandidatUuid: generateUUID(),
+      status: KandidatStatus.KANDIDAT,
+      svarAt: null,
+      vurdering: null,
+    };
+
+    it("renders nothing when there are no previous kandidater", () => {
+      mockKartleggingssporsmalKandidater(
+        [kartleggingIsKandidatAndAnsweredQuestions],
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalAnswered,
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+
+      renderKartleggingssporsmal();
+
+      expect(screen.queryByText("Historikk")).to.not.exist;
+    });
+
+    it("renders nothing when previous kandidater have not answered", () => {
+      mockKartleggingssporsmalKandidater(
+        [kartleggingIsKandidatAndAnsweredQuestions, tidligereKandidatUtenSvar],
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalAnswered,
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+
+      renderKartleggingssporsmal();
+
+      expect(screen.queryByText("Historikk")).to.not.exist;
+    });
+
+    it("renders historikk header when there are previous kandidater with svar", () => {
+      mockKartleggingssporsmalKandidater(
+        [kartleggingIsKandidatAndAnsweredQuestions, tidligereKandidatMedSvar],
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalAnswered,
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+
+      renderKartleggingssporsmal();
+
+      expect(screen.getByText("Historikk")).to.exist;
+      expect(screen.getByText("Tidligere svar på kartleggingsspørsmål")).to
+        .exist;
+    });
+
+    it("renders accordion with svar date as header", () => {
+      mockKartleggingssporsmalKandidater(
+        [kartleggingIsKandidatAndAnsweredQuestions, tidligereKandidatMedSvar],
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalAnswered,
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+
+      renderKartleggingssporsmal();
+
+      expect(screen.queryByText("Den sykmeldte svarte", { exact: false })).to
+        .exist;
     });
   });
 });
