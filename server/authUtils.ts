@@ -1,6 +1,5 @@
 import { Request } from "express";
 import OpenIdClient = require("openid-client");
-import Url = require("url");
 import {
   createRemoteJWKSet,
   FlattenedJWSInput,
@@ -50,6 +49,18 @@ const validateToken = async (
   token: string,
   azureAdIssuer: OpenIdClient.Issuer<any>
 ) => {
+  const payload = await verifyTokenGetPayload(token, azureAdIssuer);
+  if (!payload) {
+    return false;
+  } else {
+    return checkVerificationPayload(payload);
+  }
+};
+
+const verifyTokenGetPayload = async (
+  token: string,
+  azureAdIssuer: OpenIdClient.Issuer<any>
+) => {
   try {
     if (!_remoteJWKSet) {
       await initJWKSet();
@@ -58,11 +69,10 @@ const validateToken = async (
       audience: Config.auth.clientId,
       issuer: azureAdIssuer.metadata.issuer,
     });
-    return checkVerificationPayload(verification.payload);
+    return verification.payload;
   } catch (e) {
     console.error("Token validation failed:", e);
   }
-  return false;
 };
 
 const checkVerificationPayload = (payload: JWTPayload) => {
@@ -172,4 +182,17 @@ export const getOpenIdClient = async (
     },
     Config.auth.jwks
   );
+};
+
+export const getVeilederIdentFromRequest = async (
+  req: Request,
+  azureAdIssuer: OpenIdClient.Issuer<any>
+): Promise<string | undefined> => {
+  const token = await retrieveAndValidateToken(req, azureAdIssuer);
+  if (!token) {
+    return undefined;
+  }
+  const payload = await verifyTokenGetPayload(token, azureAdIssuer);
+  const navIdent = (payload as Record<string, unknown>)["NAVident"] as string;
+  return navIdent;
 };
