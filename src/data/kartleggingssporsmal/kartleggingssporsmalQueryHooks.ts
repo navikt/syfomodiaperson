@@ -22,7 +22,7 @@ export const kartleggingssporsmalQueryKeys = {
   kartleggingssporsmalSvar: (fnr: string) => ["kartleggingssporsmalSvar", fnr],
 };
 
-export const useKartleggingssporsmalKandidatQuery = () => {
+export const useKartleggingssporsmalKandidaterQuery = () => {
   const { toggles } = useFeatureToggles();
   const fnr = useValgtPersonident();
   const path = `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater`;
