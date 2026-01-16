@@ -154,14 +154,16 @@ function getNumberOfManglendeMedvirkningOppgaver(
 }
 
 function getNumberOfKartleggingssporsmalOppgaver(
-  kartleggingssporsmalKandidatResponseDTO:
-    | KartleggingssporsmalKandidatResponseDTO
+  kartleggingssporsmalKandidater:
+    | KartleggingssporsmalKandidatResponseDTO[]
     | null
     | undefined
 ): number {
-  return kartleggingssporsmalKandidatResponseDTO?.status === "SVAR_MOTTATT"
-    ? 1
-    : 0;
+  return (
+    kartleggingssporsmalKandidater?.filter(
+      (kandidat) => kandidat.status === "SVAR_MOTTATT"
+    ).length ?? 0
+  );
 }
 
 export function numberOfTasks(
@@ -177,8 +179,8 @@ export function numberOfTasks(
   manglendeMedvirkningVurdering:
     | ManglendeMedvirkningVurderingResponseDTO
     | undefined,
-  kartleggingVurdering:
-    | KartleggingssporsmalKandidatResponseDTO
+  kartleggingVurderinger:
+    | KartleggingssporsmalKandidatResponseDTO[]
     | undefined
     | null
 ): number {
@@ -215,7 +217,7 @@ export function numberOfTasks(
         manglendeMedvirkningVurdering
       );
     case Menypunkter.KARTLEGGINGSSPORSMAL:
-      return getNumberOfKartleggingssporsmalOppgaver(kartleggingVurdering);
+      return getNumberOfKartleggingssporsmalOppgaver(kartleggingVurderinger);
     case Menypunkter.NOKKELINFORMASJON:
     case Menypunkter.SYKEPENGESOKNADER:
     case Menypunkter.HISTORIKK: {
