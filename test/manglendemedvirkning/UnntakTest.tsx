@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { defaultForhandsvarselVurdering } from "./manglendeMedvirkningTestData";
-import { manglendeMedvirkningPath } from "@/routers/AppRouter";
+import { manglendeMedvirkningPath } from "@/AppRouter";
 import { screen, waitFor } from "@testing-library/react";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
 import {

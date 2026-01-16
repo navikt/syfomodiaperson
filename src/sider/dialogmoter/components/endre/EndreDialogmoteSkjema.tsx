@@ -8,7 +8,7 @@ import {
   DialogmoteDTO,
   EndreTidStedDialogmoteDTO,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
-import { moteoversiktRoutePath } from "@/routers/AppRouter";
+import { moteoversiktRoutePath } from "@/AppRouter";
 import { useEndreTidStedDialogmote } from "@/sider/dialogmoter/hooks/useEndreTidStedDialogmote";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";

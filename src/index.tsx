@@ -1,6 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import AppRouter from "./routers/AppRouter";
+import AppRouter from "./AppRouter";
 import "./styles/styles.less";
 import "./styles/style.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

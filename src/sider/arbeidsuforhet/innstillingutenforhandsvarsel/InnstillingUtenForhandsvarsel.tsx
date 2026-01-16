@@ -13,7 +13,7 @@ import {
 import { ButtonRow } from "@/components/Layout";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { Link } from "react-router-dom";
-import { arbeidsuforhetPath } from "@/routers/AppRouter";
+import { arbeidsuforhetPath } from "@/AppRouter";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   VurderingInitiertAv,

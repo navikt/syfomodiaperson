@@ -1,5 +1,6 @@
 import { dagerMellomDatoer } from "@/utils/datoUtils";
 import dayjs from "dayjs";
+import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 
 export interface OppfolgingstilfellePersonDTO {
   oppfolgingstilfelleList: OppfolgingstilfelleDTO[];
@@ -37,6 +38,19 @@ export function isDateInOppfolgingstilfelle(
   return (
     new Date(oppfolgingstilfelle.start) <= new Date(date) &&
     new Date(date) <= new Date(oppfolgingstilfelle.end)
+  );
+}
+
+export function aktiveNarmesteLedereForOppfolgingstilfelle(
+  ledere: NarmesteLederRelasjonDTO[],
+  oppfolgingsTilfelle: OppfolgingstilfelleDTO
+): NarmesteLederRelasjonDTO[] {
+  return ledere.filter(
+    (leder) =>
+      leder.status === "INNMELDT_AKTIV" &&
+      oppfolgingsTilfelle.virksomhetsnummerList.includes(
+        leder.virksomhetsnummer
+      )
   );
 }
 

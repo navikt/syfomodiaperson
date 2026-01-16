@@ -15,7 +15,7 @@ import {
 } from "@/sider/dialogmoter/types/dialogmoteReferatTypes";
 import { useFerdigstillDialogmote } from "@/sider/dialogmoter/hooks/useFerdigstillDialogmote";
 import { Link as RouterLink, Navigate } from "react-router-dom";
-import { moteoversiktRoutePath } from "@/routers/AppRouter";
+import { moteoversiktRoutePath } from "@/AppRouter";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useMellomlagreReferat } from "@/sider/dialogmoter/hooks/useMellomlagreReferat";
 import { useInitialValuesReferat } from "@/hooks/dialogmote/useInitialValuesReferat";

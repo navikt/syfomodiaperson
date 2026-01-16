@@ -17,7 +17,7 @@ export const veilederinfoQueryKeys = {
   ],
 };
 
-export const useAktivVeilederinfoQuery = () => {
+export function useAktivVeilederinfoQuery() {
   const path = `${SYFOVEILEDER_ROOT}/veiledere/self`;
   const fetchVeilederinfo = () => get<Veileder>(path);
   return useQuery({
@@ -26,7 +26,7 @@ export const useAktivVeilederinfoQuery = () => {
     select: (data) =>
       new Veileder(data.ident, data.fornavn, data.etternavn, data.enabled),
   });
-};
+}
 
 export const useVeilederInfoQuery = (ident: VeilederIdent) => {
   const fetchVeilederinfoByIdent = () =>

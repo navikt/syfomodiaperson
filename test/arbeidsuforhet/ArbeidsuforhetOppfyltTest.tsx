@@ -8,7 +8,7 @@ import { VurderingResponseDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhet
 import { arbeidsuforhetQueryKeys } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { addWeeks } from "@/utils/datoUtils";
 import { createForhandsvarsel } from "./arbeidsuforhetTestData";
-import { arbeidsuforhetOppfyltPath } from "@/routers/AppRouter";
+import { arbeidsuforhetOppfyltPath } from "@/AppRouter";
 import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
 import OppfyltForm from "@/sider/arbeidsuforhet/oppfylt/OppfyltForm";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";

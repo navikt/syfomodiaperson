@@ -19,7 +19,7 @@ import {
 import { useSaveVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSaveVurderingArbeidsuforhet";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 import { useNavigate } from "react-router";
-import { arbeidsuforhetPath } from "@/routers/AppRouter";
+import { arbeidsuforhetPath } from "@/AppRouter";
 import { useNotification } from "@/context/notification/NotificationContext";
 import { Link } from "react-router-dom";
 import BoundedDatePicker from "@/components/BoundedDatePicker";

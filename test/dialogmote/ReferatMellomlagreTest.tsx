@@ -6,7 +6,7 @@ import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { expect, describe, it, beforeEach } from "vitest";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { dialogmoteRoutePath } from "@/routers/AppRouter";
+import { dialogmoteRoutePath } from "@/AppRouter";
 import {
   annenDeltakerFunksjon,
   annenDeltakerNavn,

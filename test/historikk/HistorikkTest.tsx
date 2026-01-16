@@ -22,7 +22,7 @@ import { aktivitetskravQueryKeys } from "@/data/aktivitetskrav/aktivitetskravQue
 import { arbeidsuforhetQueryKeys } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
-import { historikkPath } from "@/routers/AppRouter";
+import { historikkPath } from "@/AppRouter";
 import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";

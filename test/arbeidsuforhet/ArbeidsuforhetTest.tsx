@@ -20,7 +20,7 @@ import {
   createVurdering,
 } from "./arbeidsuforhetTestData";
 import Arbeidsuforhet from "@/sider/arbeidsuforhet/Arbeidsuforhet";
-import { arbeidsuforhetPath } from "@/routers/AppRouter";
+import { arbeidsuforhetPath } from "@/AppRouter";
 import { clickButton } from "../testUtils";
 import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
 import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks";

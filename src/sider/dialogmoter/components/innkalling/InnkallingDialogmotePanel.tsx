@@ -12,7 +12,7 @@ import {
   dialogmoteRoutePath,
   dialogmoteUnntakRoutePath,
   dialogmoteIkkeAktuellRoutePath,
-} from "@/routers/AppRouter";
+} from "@/AppRouter";
 import { Link } from "react-router-dom";
 import DialogmoteFrist from "@/sider/dialogmoter/components/DialogmoteFrist";
 import { HourglassTopFilledIcon } from "@navikt/aksel-icons";

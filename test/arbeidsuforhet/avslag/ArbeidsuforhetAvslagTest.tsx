@@ -15,7 +15,7 @@ import {
   createForhandsvarsel,
   createVurdering,
 } from "../arbeidsuforhetTestData";
-import { arbeidsuforhetAvslagPath } from "@/routers/AppRouter";
+import { arbeidsuforhetAvslagPath } from "@/AppRouter";
 import { renderArbeidsuforhetSide } from "../arbeidsuforhetTestUtils";
 
 let queryClient: QueryClient;

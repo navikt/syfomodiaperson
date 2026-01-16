@@ -29,7 +29,7 @@ import {
 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
 import { renderWithRouter } from "../testRouterUtils";
-import { senOppfolgingPath } from "@/routers/AppRouter";
+import { senOppfolgingPath } from "@/AppRouter";
 
 let queryClient: QueryClient;
 

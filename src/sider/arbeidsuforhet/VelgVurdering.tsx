@@ -1,7 +1,7 @@
 import React from "react";
 import { BodyShort, Box, Button, Heading, ReadMore } from "@navikt/ds-react";
 import { useNavigate } from "react-router";
-import { arbeidsuforhetPath } from "@/routers/AppRouter";
+import { arbeidsuforhetPath } from "@/AppRouter";
 
 const texts = {
   title: "Registrer ny § 8-4 vurdering",

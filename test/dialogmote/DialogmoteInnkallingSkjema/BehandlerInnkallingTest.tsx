@@ -15,7 +15,7 @@ import {
   getTextInput,
   getTooLongText,
 } from "../../testUtils";
-import { dialogmoteRoutePath } from "@/routers/AppRouter";
+import { dialogmoteRoutePath } from "@/AppRouter";
 import { stubInnkallingApi } from "../../stubs/stubIsdialogmote";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
