@@ -8,6 +8,7 @@ export interface KartleggingssporsmalKandidatResponseDTO {
   status: KandidatStatus;
   statusAt: Date;
   vurdering: KartleggingssporsmalKandidatVurderingResponseDTO | null;
+  createdAt: Date;
 }
 
 export interface KartleggingssporsmalKandidatVurderingResponseDTO {

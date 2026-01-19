@@ -19,21 +19,29 @@ export const kartleggingssporsmalQueryKeys = {
     "kartleggingssporsmalKandidat",
     fnr,
   ],
-  kartleggingssporsmalSvar: (fnr: string) => ["kartleggingssporsmalSvar", fnr],
+  kartleggingssporsmalSvar: (kandidatUuid: string | undefined) => [
+    "kartleggingssporsmalSvar",
+    kandidatUuid,
+  ],
 };
 
-export const useKartleggingssporsmalKandidatQuery = () => {
+export const useKartleggingssporsmalKandidaterQuery = () => {
   const { toggles } = useFeatureToggles();
   const fnr = useValgtPersonident();
   const path = `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater`;
+  // TODO: clean up after updating endpoint in ismeroppfolging
   const getKartleggingssporsmalKandidat = () =>
-    get<KartleggingssporsmalKandidatResponseDTO>(path, fnr).catch(
-      (error: ApiErrorException) => {
+    get<
+      | KartleggingssporsmalKandidatResponseDTO
+      | KartleggingssporsmalKandidatResponseDTO[]
+    >(path, fnr)
+      .then((data) => (Array.isArray(data) ? data : [data]))
+      .catch((error: ApiErrorException) => {
         if (error.code === 404) {
-          return null;
+          return [];
         }
-      }
-    );
+        throw error;
+      });
 
   return useQuery({
     queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
@@ -46,15 +54,17 @@ export const useKartleggingssporsmalKandidatQuery = () => {
 export const useKartleggingssporsmalSvarQuery = (
   kandidat: KartleggingssporsmalKandidatResponseDTO | null | undefined
 ) => {
-  const fnr = useValgtPersonident();
   const path = `${MEROPPFOLGING_BACKEND_V1_ROOT}/kartleggingssporsmal/kandidat/${kandidat?.kandidatUuid}/svar`;
   const getKartleggingssporsmalSvar = () =>
     get<KartleggingssporsmalSvarResponseDTO>(path);
 
   return useQuery({
-    queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalSvar(fnr),
+    queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalSvar(
+      kandidat?.kandidatUuid
+    ),
     queryFn: getKartleggingssporsmalSvar,
-    enabled: !!fnr && hasAnsweredKartleggingssporsmal(kandidat),
+    enabled:
+      !!kandidat?.kandidatUuid && hasAnsweredKartleggingssporsmal(kandidat),
     staleTime: minutesToMillis(5),
   });
 };
@@ -74,7 +84,9 @@ export const useKartleggingssporsmalVurderSvar = () => {
     onSuccess: (data: KartleggingssporsmalKandidatResponseDTO) => {
       return queryClient.setQueryData(
         kartleggingssporsmalKandidatQueryKey,
-        data
+        (oldData: KartleggingssporsmalKandidatResponseDTO[] = []) => {
+          return [data, ...oldData.slice(1)];
+        }
       );
     },
   });

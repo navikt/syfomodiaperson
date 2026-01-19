@@ -61,6 +61,7 @@ export const kartleggingIsKandidatAndReceivedQuestions: KartleggingssporsmalKand
     status: KandidatStatus.KANDIDAT,
     statusAt: daysFromToday(-5),
     vurdering: null,
+    createdAt: daysFromToday(-5),
   };
 
 export const kartleggingIsKandidatAndAnsweredQuestions: KartleggingssporsmalKandidatResponseDTO =
@@ -114,7 +115,10 @@ export const mockIsmeroppfolging = [
     }
   ),
   http.get(`${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater`, () => {
-    return HttpResponse.json(kartleggingssporsmalMock);
+    return HttpResponse.json([
+      kartleggingssporsmalMock,
+      kartleggingssporsmalFerdigbehandlet,
+    ]);
   }),
   http.put(
     `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater/:kandidatUUID`,

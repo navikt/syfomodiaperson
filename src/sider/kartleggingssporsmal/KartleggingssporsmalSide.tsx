@@ -19,7 +19,7 @@ import {
   KandidatStatus,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import {
-  useKartleggingssporsmalKandidatQuery,
+  useKartleggingssporsmalKandidaterQuery,
   useKartleggingssporsmalSvarQuery,
   useKartleggingssporsmalVurderSvar,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
@@ -33,6 +33,7 @@ import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skj
 import KartleggingssporsmalFlexjar from "@/sider/kartleggingssporsmal/KartleggingssporsmalFlexjar";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
+import { KartleggingssporsmalHistorikk } from "@/sider/kartleggingssporsmal/historikk/KartleggingssporsmalHistorikk";
 
 const texts = {
   title: "Kartleggingsspørsmål",
@@ -124,10 +125,11 @@ function PilotInfo() {
 }
 
 export default function KartleggingssporsmalSide(): ReactElement {
-  const getKandidat = useKartleggingssporsmalKandidatQuery();
-  const kandidat = getKandidat.data;
+  const getKandidater = useKartleggingssporsmalKandidaterQuery();
+  const kandidater = getKandidater.data || [];
+  const nyesteKandidat = kandidater[0];
   const getKartleggingssporsmalSvar =
-    useKartleggingssporsmalSvarQuery(kandidat);
+    useKartleggingssporsmalSvarQuery(nyesteKandidat);
   const answeredQuestions = getKartleggingssporsmalSvar.data;
   const vurderSvar = useKartleggingssporsmalVurderSvar();
   const kontaktinformasjon = useKontaktinfoQuery();
@@ -141,11 +143,11 @@ export default function KartleggingssporsmalSide(): ReactElement {
     (feedbackDate === null || getWeeksBetween(new Date(), feedbackDate) >= 12);
 
   const isPending =
-    getKandidat.isPending ||
+    getKandidater.isPending ||
     getKartleggingssporsmalSvar.isLoading ||
     kontaktinformasjon.isPending;
   const isError =
-    getKandidat.isError ||
+    getKandidater.isError ||
     getKartleggingssporsmalSvar.isError ||
     kontaktinformasjon.isError;
 
@@ -156,12 +158,12 @@ export default function KartleggingssporsmalSide(): ReactElement {
     >
       <Sidetopp tittel={texts.title} />
       <SideLaster isLoading={isPending} isError={isError}>
-        {kandidat && hasMottattKartleggingssporsmal(kandidat) ? (
+        {nyesteKandidat && hasMottattKartleggingssporsmal(nyesteKandidat) ? (
           <Tredelt.Container>
             <Tredelt.FirstColumn className="-xl:mb-2">
               <Box
                 background="surface-default"
-                className="p-6 gap-6 [&>*]:mb-4"
+                className="p-6 gap-6 [&>*]:mb-4 mb-4"
               >
                 {answeredQuestions ? (
                   <>
@@ -172,7 +174,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     </BodyShort>
                     <BodyShort size="small" weight="semibold">
                       {`${texts.kandidat} ${tilLesbarDatoMedArstall(
-                        kandidat.varsletAt
+                        nyesteKandidat.varsletAt
                       )}`}
                     </BodyShort>
                     <EksternLenke href={texts.demoUrl}>
@@ -181,13 +183,13 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     <KartleggingssporsmalSkjemasvar
                       formSnapshot={answeredQuestions.formSnapshot}
                     />
-                    {kandidat.status === KandidatStatus.SVAR_MOTTATT && (
+                    {nyesteKandidat.status === KandidatStatus.SVAR_MOTTATT && (
                       <>
                         <Button
                           variant="primary"
                           size="medium"
                           onClick={() =>
-                            vurderSvar.mutate(kandidat.kandidatUuid)
+                            vurderSvar.mutate(nyesteKandidat.kandidatUuid)
                           }
                           loading={vurderSvar.isPending}
                         >
@@ -201,7 +203,8 @@ export default function KartleggingssporsmalSide(): ReactElement {
                         )}
                       </>
                     )}
-                    {kandidat.status === KandidatStatus.FERDIGBEHANDLET && (
+                    {nyesteKandidat.status ===
+                      KandidatStatus.FERDIGBEHANDLET && (
                       <Alert size="medium" variant="success">
                         <BodyShort
                           size="small"
@@ -209,11 +212,11 @@ export default function KartleggingssporsmalSide(): ReactElement {
                           className="mb-2"
                         >
                           {`${texts.svarVurdert} ${tilLesbarDatoMedArstall(
-                            kandidat.vurdering?.vurdertAt
+                            nyesteKandidat.vurdering?.vurdertAt
                           )}`}
                         </BodyShort>
                         <BodyShort size="small">
-                          {`${texts.svarVurdertAv} ${kandidat.vurdering?.vurdertBy}`}
+                          {`${texts.svarVurdertAv} ${nyesteKandidat.vurdering?.vurdertBy}`}
                         </BodyShort>
                       </Alert>
                     )}
@@ -238,7 +241,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     </BodyShort>
                     <BodyShort size="small" weight="semibold">
                       {`${texts.kandidat} ${tilLesbarDatoMedArstall(
-                        kandidat.varsletAt
+                        nyesteKandidat.varsletAt
                       )}`}
                     </BodyShort>
                     <EksternLenke href={texts.demoUrl}>
@@ -254,6 +257,9 @@ export default function KartleggingssporsmalSide(): ReactElement {
                   </>
                 )}
               </Box>
+              <KartleggingssporsmalHistorikk
+                tidligereKandidater={kandidater.slice(1)}
+              />
             </Tredelt.FirstColumn>
             <Tredelt.SecondColumn>
               <Box background="surface-default" padding="6" className="mb-4">
