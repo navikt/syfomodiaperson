@@ -15,9 +15,9 @@ import { toDatePrettyPrint } from "@/utils/datoUtils";
 
 const now = new Date();
 const inTwoMonths = dayjs(now).add(2, "months").toDate();
-const invalidDateMessage = `Vennligst angi en gyldig dato innen ${toDatePrettyPrint(
-  inTwoMonths
-)}`;
+const invalidDateMessage = `Vennligst angi en gyldig dato i intervallet ${toDatePrettyPrint(
+  now
+)} - ${toDatePrettyPrint(inTwoMonths)}`;
 
 const texts = {
   header: "Avvent",
@@ -30,7 +30,6 @@ const texts = {
   frist: {
     label: "Avventer til",
     description: "Velg frist for ny vurdering av dialogmøtebehov",
-    missing: invalidDateMessage,
   },
   lagre: "Lagre",
   avbryt: "Avbryt",
@@ -74,6 +73,20 @@ export function DialogmoteAvventModal({
     },
     fromDate: now,
     toDate: inTwoMonths,
+  });
+
+  register("frist", {
+    required: invalidDateMessage,
+    validate: (value) => {
+      if (!value) return invalidDateMessage;
+      const selectedDate = dayjs(value).startOf("day");
+      const maxDate = dayjs(inTwoMonths).startOf("day");
+      const minDate = dayjs(now).startOf("day");
+      if (selectedDate.isAfter(maxDate) || selectedDate.isBefore(minDate)) {
+        return invalidDateMessage;
+      }
+      return true;
+    },
   });
 
   const onSubmit = (values: SkjemaValues) => {
@@ -126,7 +139,6 @@ export function DialogmoteAvventModal({
             <DatePicker {...datepickerProps}>
               <DatePicker.Input
                 {...inputProps}
-                {...register("frist", { required: texts.frist.missing })}
                 label={texts.frist.label}
                 description={texts.frist.description}
                 error={errors.frist?.message}
