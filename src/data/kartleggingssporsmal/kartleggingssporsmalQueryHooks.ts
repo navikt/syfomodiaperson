@@ -31,17 +31,14 @@ export const useKartleggingssporsmalKandidaterQuery = () => {
   const path = `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater`;
   // TODO: clean up after updating endpoint in ismeroppfolging
   const getKartleggingssporsmalKandidat = () =>
-    get<
-      | KartleggingssporsmalKandidatResponseDTO
-      | KartleggingssporsmalKandidatResponseDTO[]
-    >(path, fnr)
-      .then((data) => (Array.isArray(data) ? data : [data]))
-      .catch((error: ApiErrorException) => {
+    get<KartleggingssporsmalKandidatResponseDTO[]>(path, fnr).catch(
+      (error: ApiErrorException) => {
         if (error.code === 404) {
           return [];
         }
         throw error;
-      });
+      }
+    );
 
   return useQuery({
     queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
