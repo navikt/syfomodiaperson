@@ -7,7 +7,7 @@ interface DiagnoseBoksProps {
   erBiDiagnose?: boolean;
 }
 
-export const DiagnoseBoks = ({ diagnose, erBiDiagnose }: DiagnoseBoksProps) => {
+const DiagnoseBoks = ({ diagnose, erBiDiagnose }: DiagnoseBoksProps) => {
   const diagnoseTittel = erBiDiagnose ? "Bidiagnose" : "Diagnose";
   const diagnosekodeTittel = "Diagnosekode";
 

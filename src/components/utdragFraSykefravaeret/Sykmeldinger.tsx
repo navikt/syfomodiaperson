@@ -1,26 +1,20 @@
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import {
+  erSykmeldingUtenArbeidsgiver,
   SykmeldingOldFormat,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import {
   arbeidsgivernavnEllerArbeidssituasjon,
-  erEkstraInformasjonISykmeldingen,
-  stringMedAlleGraderingerFraSykmeldingPerioder,
   sykmeldingerInnenforOppfolgingstilfelle,
   sykmeldingerSortertNyestTilEldstPeriode,
-  sykmeldingperioderSortertEldstTilNyest,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
-import { ExpansionCard, Heading, Tag } from "@navikt/ds-react";
+import { ExpansionCard, Heading } from "@navikt/ds-react";
 import React from "react";
-import SykmeldingUtdragFraSykefravaretVisning from "../motebehov/SykmeldingUtdragFraSykefravaretVisning";
+import SykmeldingUtdragFraSykefravaretVisning from "./SykmeldingUtdragFraSykefravaretVisning";
 import styled from "styled-components";
-import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
-import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
-import { PapirsykmeldingTag } from "../PapirsykmeldingTag";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import ImportantInformationIcon from "@/components/ImportantInformationIcon";
-import { UtenlandskSykmeldingTag } from "@/components/UtenlandskSykmeldingTag";
+import { SykmeldingTittel } from "@/components/utdragFraSykefravaeret/SykmeldingTittel";
 
 const texts = {
   header: "Sykmeldinger",
@@ -34,28 +28,11 @@ const StyledExpantionCardHeader = styled(ExpansionCard.Header)`
   }
 `;
 
-function erSykmeldingUtenArbeidsgiver(
-  sykmelding: SykmeldingOldFormat
-): boolean {
-  return (
-    !sykmelding.orgnummer && sykmelding.status === SykmeldingStatus.BEKREFTET
-  );
-}
-
-const Info = ({ label, text }: { label: string; text: string }) => {
-  return (
-    <div className="text-base font-normal">
-      <b>{label}</b>
-      <span>{text}</span>
-    </div>
-  );
-};
-
 interface UtvidbarSykmeldingProps {
   sykmelding: SykmeldingOldFormat;
 }
 
-const UtvidbarSykmelding = ({ sykmelding }: UtvidbarSykmeldingProps) => {
+function UtvidbarSykmelding({ sykmelding }: UtvidbarSykmeldingProps) {
   const arbeidsgiverEllerSituasjon =
     arbeidsgivernavnEllerArbeidssituasjon(sykmelding);
   const title = arbeidsgiverEllerSituasjon
@@ -68,7 +45,7 @@ const UtvidbarSykmelding = ({ sykmelding }: UtvidbarSykmeldingProps) => {
           as="div"
           className="flex justify-between m-0 text-base"
         >
-          <SykmeldingTittelbeskrivelse sykmelding={sykmelding} />
+          <SykmeldingTittel sykmelding={sykmelding} />
         </ExpansionCard.Title>
       </StyledExpantionCardHeader>
       <ExpansionCard.Content className={"print:block"}>
@@ -76,69 +53,7 @@ const UtvidbarSykmelding = ({ sykmelding }: UtvidbarSykmeldingProps) => {
       </ExpansionCard.Content>
     </ExpansionCard>
   );
-};
-
-interface UtvidbarTittelProps {
-  sykmelding: SykmeldingOldFormat;
 }
-
-const SykmeldingTittelbeskrivelse = ({ sykmelding }: UtvidbarTittelProps) => {
-  const sykmeldingPerioderSortertEtterDato =
-    sykmeldingperioderSortertEldstTilNyest(
-      sykmelding.mulighetForArbeid.perioder
-    );
-
-  const periode = `${tilLesbarPeriodeMedArstall(
-    tidligsteFom(sykmelding.mulighetForArbeid.perioder),
-    senesteTom(sykmelding.mulighetForArbeid.perioder)
-  )}: `;
-  const graderinger = stringMedAlleGraderingerFraSykmeldingPerioder(
-    sykmeldingPerioderSortertEtterDato
-  );
-  const diagnose = `${sykmelding.diagnose.hoveddiagnose?.diagnosekode} (${sykmelding.diagnose.hoveddiagnose?.diagnose})`;
-  const erViktigInformasjon = erEkstraInformasjonISykmeldingen(sykmelding);
-  const sykmelder = sykmelding.bekreftelse.sykmelder;
-  const arbeidsgiver = arbeidsgivernavnEllerArbeidssituasjon(sykmelding);
-  const erIkkeTattIBruk = sykmelding.status === SykmeldingStatus.NY;
-  const erUtenArbeidsgiver = erSykmeldingUtenArbeidsgiver(sykmelding);
-
-  return (
-    <div className="w-full flex flex-col print:z-10">
-      <div className="flex justify-between mb-2">
-        <div>
-          {periode}
-          {graderinger}
-        </div>
-        <div className="flex gap-4">
-          {erIkkeTattIBruk && (
-            <Tag variant="warning" size="small">
-              {texts.ny}
-            </Tag>
-          )}
-          {erUtenArbeidsgiver && (
-            <Tag variant="info" size="small">
-              {texts.utenArbeidsgiver}
-            </Tag>
-          )}
-          {erViktigInformasjon && <ImportantInformationIcon />}
-        </div>
-      </div>
-      {sykmelding.diagnose.hoveddiagnose && (
-        <Info label={"Diagnose: "} text={diagnose} />
-      )}
-      {sykmelder && <Info label={"Sykmelder: "} text={sykmelder} />}
-      {arbeidsgiver && <Info label={"Arbeidsgiver: "} text={arbeidsgiver} />}
-      {sykmelding.yrkesbetegnelse && (
-        <Info
-          label={"Stilling fra sykmelding: "}
-          text={sykmelding.yrkesbetegnelse}
-        />
-      )}
-      {sykmelding.papirsykmelding && <PapirsykmeldingTag />}
-      {sykmelding.utenlandskSykmelding && <UtenlandskSykmeldingTag />}
-    </div>
-  );
-};
 
 interface Props {
   selectedOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined;

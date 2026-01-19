@@ -1,11 +1,11 @@
 import React from "react";
-import MeldingTilArbeidsgiver from "./MeldingTilArbeidsgiver";
-import MeldingTilNav from "./MeldingTilNav";
-import BedreArbeidsevnen from "./BedreArbeidsevnen";
-import UtdypendeOpplysninger from "./UtdypendeOpplysninger";
-import TilbakeIArbeid from "./TilbakeIArbeid";
+import MeldingTilArbeidsgiver from "../motebehov/MeldingTilArbeidsgiver";
+import MeldingTilNav from "../motebehov/MeldingTilNav";
+import BedreArbeidsevnen from "../motebehov/BedreArbeidsevnen";
+import { UtdypendeOpplysninger } from "./UtdypendeOpplysninger";
+import TilbakeIArbeid from "../motebehov/TilbakeIArbeid";
 import GenerellSykmeldingInfo from "./GenerellSykmeldingInfo";
-import MulighetForArbeid from "./MulighetForArbeid";
+import MulighetForArbeid from "../motebehov/MulighetForArbeid";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import {
   erBedringAvArbeidsevnenInformasjon,

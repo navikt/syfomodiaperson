@@ -66,6 +66,7 @@ export interface FriskmeldingDTO {
   utenArbeidsgiverAntarTilbakeIArbeidDato?: Date;
   utenArbeidsgiverTilbakemelding?: Date;
 }
+
 export interface UtenlandskSykmeldingDTO {
   land: string;
 }
@@ -145,4 +146,12 @@ export interface SykmeldingOldFormat {
   papirsykmelding?: boolean;
   harRedusertArbeidsgiverperiode?: boolean;
   utenlandskSykmelding?: UtenlandskSykmeldingDTO;
+}
+
+export function erSykmeldingUtenArbeidsgiver(
+  sykmelding: SykmeldingOldFormat
+): boolean {
+  return (
+    !sykmelding.orgnummer && sykmelding.status === SykmeldingStatus.BEKREFTET
+  );
 }

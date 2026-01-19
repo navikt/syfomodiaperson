@@ -7,8 +7,8 @@ import {
   sykmeldingperioderSortertEldstTilNyest,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import Diagnoser from "./Diagnoser";
-import Perioder from "./Perioder";
-import EkstraDiagnoseInformasjon from "./EkstraDiagnoseInformasjon";
+import { Perioder } from "@/components/utdragFraSykefravaeret/Perioder";
+import EkstraDiagnoseInformasjon from "../motebehov/EkstraDiagnoseInformasjon";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
 const tekster = {
