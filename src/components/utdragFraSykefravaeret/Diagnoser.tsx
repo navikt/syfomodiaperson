@@ -1,30 +1,37 @@
 import React from "react";
-import BoksRad from "./BoksRad";
 import { SykmeldingDiagnose } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import { Column, Row } from "nav-frontend-grid";
 
 interface DiagnoseBoksProps {
   diagnose: SykmeldingDiagnose;
-  erBiDiagnose?: boolean;
+  erHovedDiagnose: boolean;
 }
 
-const DiagnoseBoks = ({ diagnose, erBiDiagnose }: DiagnoseBoksProps) => {
-  const diagnoseTittel = erBiDiagnose ? "Bidiagnose" : "Diagnose";
-  const diagnosekodeTittel = "Diagnosekode";
-
+function DiagnoseBoks({ diagnose, erHovedDiagnose }: DiagnoseBoksProps) {
+  const tittel = erHovedDiagnose ? "Diagnose" : "Bidiagnose";
   return (
     <div className="sykmeldingMotebehovVisning__diagnoseBoks">
-      <BoksRad
-        kolonne1Tekst={diagnoseTittel}
-        kolonne2Tekst={diagnosekodeTittel}
-        erTittel
-      />
-      <BoksRad
-        kolonne1Tekst={diagnose.diagnose}
-        kolonne2Tekst={`${diagnose.diagnosekode} ${diagnose.diagnosesystem}`}
-      />
+      <Row>
+        <Column className="col-sm-6">
+          <p className="sykmeldingMotebehovVisning__boksRad--tittel">
+            {tittel}
+          </p>
+          <p className="sykmeldingMotebehovVisning__boksRad--tekst">
+            {diagnose.diagnose}
+          </p>
+        </Column>
+        <Column className="col-sm-6">
+          <p className="sykmeldingMotebehovVisning__boksRad--tittel">
+            Diagnosekode
+          </p>
+          <p className="sykmeldingMotebehovVisning__boksRad--tekst">
+            {diagnose.diagnosekode} {diagnose.diagnosesystem}
+          </p>
+        </Column>
+      </Row>
     </div>
   );
-};
+}
 
 interface DiagnoserProps {
   biDiagnoser: SykmeldingDiagnose[];
@@ -36,11 +43,13 @@ export default function Diagnoser(diagnoserProps: DiagnoserProps) {
   const hovedDiagnose = diagnoserProps.hovedDiagnose;
   return (
     <div className="sykmeldingMotebehovVisning__diagnoser">
-      {hovedDiagnose && <DiagnoseBoks diagnose={hovedDiagnose} />}
+      {hovedDiagnose && (
+        <DiagnoseBoks diagnose={hovedDiagnose} erHovedDiagnose />
+      )}
 
-      {biDiagnoser.map((diagnose, index) => {
-        return <DiagnoseBoks key={index} diagnose={diagnose} erBiDiagnose />;
-      })}
+      {biDiagnoser.map((diagnose, index) => (
+        <DiagnoseBoks key={index} diagnose={diagnose} erHovedDiagnose={false} />
+      ))}
     </div>
   );
 }

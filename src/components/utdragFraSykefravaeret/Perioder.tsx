@@ -1,7 +1,7 @@
 import React from "react";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
-import BoksRad from "./BoksRad";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import { Column, Row } from "nav-frontend-grid";
 
 const kolonne2Tekst = (periode: SykmeldingPeriodeDTO) => {
   if (!!periode.behandlingsdager) {
@@ -31,14 +31,18 @@ export function Perioder({ perioder }: Props) {
       {perioder.map((periode, index) => {
         return (
           <div key={index} className="sykmeldingMotebehovVisning__periodeBoks">
-            <BoksRad
-              kolonne1Tekst={`${tilLesbarPeriodeMedArUtenManednavn(
-                periode.fom,
-                periode.tom
-              )}`}
-              kolonne2Tekst={kolonne2Tekst(periode)}
-              erTittel
-            />
+            <Row>
+              <Column className="col-sm-6">
+                <p className="sykmeldingMotebehovVisning__boksRad--tittel">
+                  {tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom)}
+                </p>
+              </Column>
+              <Column className="col-sm-6">
+                <p className="sykmeldingMotebehovVisning__boksRad--tittel">
+                  {kolonne2Tekst(periode)}
+                </p>
+              </Column>
+            </Row>
           </div>
         );
       })}
