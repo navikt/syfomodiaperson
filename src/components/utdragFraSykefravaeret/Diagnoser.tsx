@@ -44,7 +44,11 @@ export default function Diagnoser(diagnoserProps: DiagnoserProps) {
       )}
 
       {biDiagnoser.map((diagnose, index) => (
-        <DiagnoseBoks key={index} diagnose={diagnose} erHovedDiagnose={false} />
+          <DiagnoseBoks
+            key={index}
+            diagnose={diagnose}
+            erHovedDiagnose={false}
+          />
       ))}
     </>
   );
