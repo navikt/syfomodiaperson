@@ -1,32 +1,15 @@
-import React, { JSX, ReactNode } from "react";
+import React, { ReactNode } from "react";
 
-interface SykmeldingNokkelOpplysningProps {
+interface Props {
   tittel: string;
   children?: ReactNode;
-  className?: string;
-  Overskrift?: keyof JSX.IntrinsicElements;
 }
 
-const SykmeldingNokkelOpplysning = (
-  sykmeldingNokkelOpplysningProps: SykmeldingNokkelOpplysningProps
-) => {
-  const {
-    tittel,
-    children,
-    className = "",
-    Overskrift = "h3",
-  } = sykmeldingNokkelOpplysningProps;
+export function SykmeldingNokkelOpplysning({ tittel, children }: Props) {
   return (
-    <div className={`nokkelopplysning ${className}`}>
-      {tittel ? (
-        <Overskrift
-          className="nokkelopplysning__tittel"
-          dangerouslySetInnerHTML={{ __html: tittel }}
-        />
-      ) : null}
+    <div className="nokkelopplysning">
+      <h3 className="nokkelopplysning__tittel">{tittel}</h3>
       {children}
     </div>
   );
-};
-
-export default SykmeldingNokkelOpplysning;
+}
