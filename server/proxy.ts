@@ -58,6 +58,7 @@ const proxyExternalHost = (
   proxy(host, {
     https: false,
     parseReqBody: parseReqBody,
+    timeout: 30000,
     proxyReqOptDecorator: async (options, srcReq) => {
       if (!accessToken) {
         return options;
