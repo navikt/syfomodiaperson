@@ -26,7 +26,7 @@ const BehandlerSearch = ({
 }: BehandlerSearchProps): ReactElement => {
   const searchRef = useRef(null);
   const [searchValue, setSearchValue] = useState("");
-  const [selectedSearchResult, setselectedSearchResult] = useState(""); //TODO: Finn bedre namn/oppsett
+  const [selectedSearchResult, setselectedSearchResult] = useState("");
   const [popoverIsOpen, setPopoverIsOpen] = useState<boolean>(false);
   const isHydratingRef = useRef(false);
 
