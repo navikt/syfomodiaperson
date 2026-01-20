@@ -27,9 +27,9 @@ interface UtdypendeOpplysningerProps {
   utdypendeOpplysninger: Map<string, Map<string, SporsmalSvarDTO>>;
 }
 
-export const UtdypendeOpplysninger = ({
+export function UtdypendeOpplysninger({
   utdypendeOpplysninger,
-}: UtdypendeOpplysningerProps) => {
+}: UtdypendeOpplysningerProps) {
   return (
     <div className="sykmeldingMotebehovVisning__avsnitt">
       <h5 className="undertittel">{tekster.UtdypendeOpplysninger.header}</h5>
@@ -39,6 +39,4 @@ export const UtdypendeOpplysninger = ({
       ))}
     </div>
   );
-};
-
-export default UtdypendeOpplysninger;
+}

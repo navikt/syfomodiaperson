@@ -20,34 +20,28 @@ const kolonne2Tekst = (periode: SykmeldingPeriodeDTO) => {
   return periode.grad ? `${periode.grad}%` : "";
 };
 
-interface PeriodeBoksProps {
-  periode: SykmeldingPeriodeDTO;
-}
-
-export const PeriodeBoks = ({ periode }: PeriodeBoksProps) => (
-  <div className="sykmeldingMotebehovVisning__periodeBoks">
-    <BoksRad
-      kolonne1Tekst={`${tilLesbarPeriodeMedArUtenManednavn(
-        periode.fom,
-        periode.tom
-      )}`}
-      kolonne2Tekst={kolonne2Tekst(periode)}
-      erTittel
-    />
-  </div>
-);
-
-interface PerioderProps {
+interface Props {
   perioder: SykmeldingPeriodeDTO[];
 }
 
-const Perioder = ({ perioder }: PerioderProps) => (
-  <div className="sykmeldingMotebehovVisning__perioder">
-    <h5 className="undertittel">Perioder</h5>
-    {perioder.map((periode, index) => {
-      return <PeriodeBoks key={index} periode={periode} />;
-    })}
-  </div>
-);
-
-export default Perioder;
+export function Perioder({ perioder }: Props) {
+  return (
+    <div className="sykmeldingMotebehovVisning__perioder">
+      <h5 className="undertittel">Perioder</h5>
+      {perioder.map((periode, index) => {
+        return (
+          <div key={index} className="sykmeldingMotebehovVisning__periodeBoks">
+            <BoksRad
+              kolonne1Tekst={`${tilLesbarPeriodeMedArUtenManednavn(
+                periode.fom,
+                periode.tom
+              )}`}
+              kolonne2Tekst={kolonne2Tekst(periode)}
+              erTittel
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
