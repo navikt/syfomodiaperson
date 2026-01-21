@@ -168,11 +168,33 @@ export const MeldingTilBehandlerSkjema = () => {
         ? behandlerNavn(selectedBehandler)
         : undefined,
     };
+
     meldingTilBehandler.mutate(meldingTilBehandlerDTO, {
       onSuccess: () => {
-        deleteDraft.mutate();
-        reset();
+        // Prevent autosave from re-creating the draft while we clear UI + delete draft.
+        isApplyingDraftRef.current = true;
+        if (autosaveTimeoutRef.current) {
+          window.clearTimeout(autosaveTimeoutRef.current);
+        }
+
+        // Clear UI
+        reset({
+          behandlerRef: "",
+          behandlerRefSelection: undefined,
+          meldingsType: "" as unknown as MeldingType,
+          meldingTekst: "",
+        });
         setSelectedBehandler(undefined);
+        setDisplayPreview(false);
+
+        // Delete draft in Valkey
+        deleteDraft.mutate(undefined, {
+          onSettled: () => {
+            window.setTimeout(() => {
+              isApplyingDraftRef.current = false;
+            }, 0);
+          },
+        });
       },
     });
   };
