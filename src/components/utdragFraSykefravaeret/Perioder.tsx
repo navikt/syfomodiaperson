@@ -1,7 +1,7 @@
 import React from "react";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { Column, Row } from "nav-frontend-grid";
+import { BodyShort, HGrid } from "@navikt/ds-react";
 
 const kolonne2Tekst = (periode: SykmeldingPeriodeDTO) => {
   if (!!periode.behandlingsdager) {
@@ -26,24 +26,18 @@ interface Props {
 
 export function Perioder({ perioder }: Props) {
   return (
-    <div className="sykmeldingMotebehovVisning__perioder">
-      <h5 className="undertittel">Perioder</h5>
+    <div>
+      <BodyShort size="small" weight="semibold">
+        Perioder
+      </BodyShort>
       {perioder.map((periode, index) => {
         return (
-          <div key={index} className="sykmeldingMotebehovVisning__periodeBoks">
-            <Row>
-              <Column className="col-sm-6">
-                <p className="sykmeldingMotebehovVisning__boksRad--tittel">
-                  {tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom)}
-                </p>
-              </Column>
-              <Column className="col-sm-6">
-                <p className="sykmeldingMotebehovVisning__boksRad--tittel">
-                  {kolonne2Tekst(periode)}
-                </p>
-              </Column>
-            </Row>
-          </div>
+          <HGrid key={index} gap="space-16" columns={2}>
+            <BodyShort size="small">
+              {tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom)}
+            </BodyShort>
+            <BodyShort size="small">{kolonne2Tekst(periode)}</BodyShort>
+          </HGrid>
         );
       })}
     </div>

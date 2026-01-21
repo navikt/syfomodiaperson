@@ -10,6 +10,7 @@ import Diagnoser from "./Diagnoser";
 import { Perioder } from "@/components/utdragFraSykefravaeret/Perioder";
 import EkstraDiagnoseInformasjon from "../motebehov/EkstraDiagnoseInformasjon";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import { BodyShort, VStack } from "@navikt/ds-react";
 
 const tekster = {
   generellSykmeldingInfo: {
@@ -38,7 +39,7 @@ export default function GenerellSykmeldingInfo({ sykmelding }: Props) {
   const isEkstraDiagnoseInformasjonVisible =
     erEkstraDiagnoseInformasjon(sykmelding);
   return (
-    <div className="sykmeldingMotebehovVisning__avsnitt">
+    <VStack gap="4">
       <Perioder perioder={sykmeldingPerioderSortertEtterDato} />
       <Diagnoser hovedDiagnose={hovedDiagnose} biDiagnoser={biDiagnoser} />
       {isEkstraDiagnoseInformasjonVisible && (
@@ -51,12 +52,16 @@ export default function GenerellSykmeldingInfo({ sykmelding }: Props) {
           disabled
         />
       )}
-      {erHensynPaaArbeidsplassenInformasjon(sykmelding) && [
-        <h6 key={0} className="sporsmal">
-          {tekster.generellSykmeldingInfo.hensynPaaArbeidsplassen.tittel}
-        </h6>,
-        <p key={1}>{sykmelding.friskmelding.hensynPaaArbeidsplassen}</p>,
-      ]}
-    </div>
+      {erHensynPaaArbeidsplassenInformasjon(sykmelding) && (
+        <div>
+          <BodyShort size="small" weight="semibold">
+            {tekster.generellSykmeldingInfo.hensynPaaArbeidsplassen.tittel}
+          </BodyShort>
+          <BodyShort size="small">
+            {sykmelding.friskmelding.hensynPaaArbeidsplassen}
+          </BodyShort>
+        </div>
+      )}
+    </VStack>
   );
 }

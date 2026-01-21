@@ -1,6 +1,6 @@
 import React from "react";
 import { SykmeldingDiagnose } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { Column, Row } from "nav-frontend-grid";
+import { BodyShort, HGrid } from "@navikt/ds-react";
 
 interface DiagnoseBoksProps {
   diagnose: SykmeldingDiagnose;
@@ -10,26 +10,22 @@ interface DiagnoseBoksProps {
 function DiagnoseBoks({ diagnose, erHovedDiagnose }: DiagnoseBoksProps) {
   const tittel = erHovedDiagnose ? "Diagnose" : "Bidiagnose";
   return (
-    <div className="sykmeldingMotebehovVisning__diagnoseBoks">
-      <Row>
-        <Column className="col-sm-6">
-          <p className="sykmeldingMotebehovVisning__boksRad--tittel">
-            {tittel}
-          </p>
-          <p className="sykmeldingMotebehovVisning__boksRad--tekst">
-            {diagnose.diagnose}
-          </p>
-        </Column>
-        <Column className="col-sm-6">
-          <p className="sykmeldingMotebehovVisning__boksRad--tittel">
-            Diagnosekode
-          </p>
-          <p className="sykmeldingMotebehovVisning__boksRad--tekst">
-            {diagnose.diagnosekode} {diagnose.diagnosesystem}
-          </p>
-        </Column>
-      </Row>
-    </div>
+    <HGrid gap="space-16" columns={2}>
+      <div>
+        <BodyShort size="small" weight="semibold">
+          {tittel}
+        </BodyShort>
+        <BodyShort size="small">{diagnose.diagnose}</BodyShort>
+      </div>
+      <div>
+        <BodyShort size="small" weight="semibold">
+          Diagnosekode
+        </BodyShort>
+        <BodyShort size="small">
+          {diagnose.diagnosekode} {diagnose.diagnosesystem}
+        </BodyShort>
+      </div>
+    </HGrid>
   );
 }
 
@@ -42,7 +38,7 @@ export default function Diagnoser(diagnoserProps: DiagnoserProps) {
   const biDiagnoser = diagnoserProps.biDiagnoser;
   const hovedDiagnose = diagnoserProps.hovedDiagnose;
   return (
-    <div className="sykmeldingMotebehovVisning__diagnoser">
+    <>
       {hovedDiagnose && (
         <DiagnoseBoks diagnose={hovedDiagnose} erHovedDiagnose />
       )}
@@ -50,6 +46,6 @@ export default function Diagnoser(diagnoserProps: DiagnoserProps) {
       {biDiagnoser.map((diagnose, index) => (
         <DiagnoseBoks key={index} diagnose={diagnose} erHovedDiagnose={false} />
       ))}
-    </div>
+    </>
   );
 }
