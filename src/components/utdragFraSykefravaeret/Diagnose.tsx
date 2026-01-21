@@ -2,12 +2,16 @@ import React from "react";
 import { SykmeldingDiagnose } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BodyShort, HGrid } from "@navikt/ds-react";
 
-interface DiagnoseBoksProps {
+const texts = {
+  diagnosekode: "Diagnosekode",
+};
+
+interface Props {
   diagnose: SykmeldingDiagnose;
   erHovedDiagnose: boolean;
 }
 
-function DiagnoseBoks({ diagnose, erHovedDiagnose }: DiagnoseBoksProps) {
+export function Diagnose({ diagnose, erHovedDiagnose }: Props) {
   const tittel = erHovedDiagnose ? "Diagnose" : "Bidiagnose";
   return (
     <HGrid gap="space-16" columns={2}>
@@ -19,33 +23,12 @@ function DiagnoseBoks({ diagnose, erHovedDiagnose }: DiagnoseBoksProps) {
       </div>
       <div>
         <BodyShort size="small" weight="semibold">
-          Diagnosekode
+          {texts.diagnosekode}
         </BodyShort>
         <BodyShort size="small">
           {diagnose.diagnosekode} {diagnose.diagnosesystem}
         </BodyShort>
       </div>
     </HGrid>
-  );
-}
-
-interface DiagnoserProps {
-  biDiagnoser: SykmeldingDiagnose[];
-  hovedDiagnose?: SykmeldingDiagnose;
-}
-
-export default function Diagnoser(diagnoserProps: DiagnoserProps) {
-  const biDiagnoser = diagnoserProps.biDiagnoser;
-  const hovedDiagnose = diagnoserProps.hovedDiagnose;
-  return (
-    <>
-      {hovedDiagnose && (
-        <DiagnoseBoks diagnose={hovedDiagnose} erHovedDiagnose />
-      )}
-
-      {biDiagnoser.map((diagnose, index) => (
-        <DiagnoseBoks key={index} diagnose={diagnose} erHovedDiagnose={false} />
-      ))}
-    </>
   );
 }
