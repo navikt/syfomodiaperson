@@ -24,7 +24,7 @@ import {
   useMeldingTilBehandlerDraftQuery,
   useSaveMeldingTilBehandlerDraft,
 } from "@/data/behandlerdialog/meldingtilbehandlerDraftQueryHooks";
-import { SaveFile } from "@/img/ImageComponents";
+import { SaveFile } from "../../../../img/ImageComponents";
 
 const texts = {
   sendKnapp: "Send til behandler",
