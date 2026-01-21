@@ -6,7 +6,10 @@ import {
   MeldingType,
 } from "@/data/behandlerdialog/behandlerdialogTypes";
 import { useMeldingTilBehandler } from "@/data/behandlerdialog/useMeldingTilBehandler";
-import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
+import {
+  tilDatoMedManedNavnOgKlokkeslett,
+  showTimeIncludingSeconds,
+} from "@/utils/datoUtils";
 import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document/useMeldingTilBehandlerDocument";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { MeldingsTypeInfo } from "@/sider/behandlerdialog/meldingtilbehandler/MeldingsTypeInfo";
@@ -21,6 +24,7 @@ import {
   useMeldingTilBehandlerDraftQuery,
   useSaveMeldingTilBehandlerDraft,
 } from "@/data/behandlerdialog/meldingtilbehandlerDraftQueryHooks";
+import { SaveFile } from "@/img/ImageComponents";
 
 const texts = {
   sendKnapp: "Send til behandler",
@@ -33,6 +37,7 @@ const texts = {
   meldingsTekstLabel: "Skriv inn teksten du ønsker å sende til behandler",
   meldingsTekstMissing: "Vennligst angi meldingstekst",
   velgBehandlerLegend: "Velg behandler som skal motta meldingen",
+  utkastSaved: "Utkast lagret",
 };
 
 export interface MeldingTilBehandlerSkjemaValues {
@@ -50,6 +55,8 @@ export const MAX_LENGTH_BEHANDLER_MELDING = 5000;
 
 export const MeldingTilBehandlerSkjema = () => {
   const [displayPreview, setDisplayPreview] = useState(false);
+  const [showUtkastSaved, setShowUtkastSaved] = useState(false);
+  const [lastUtkastSavedTime, setLastUtkastSavedTime] = useState<Date>();
   const { getMeldingTilBehandlerDocument } = useMeldingTilBehandlerDocument();
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
   const meldingTilBehandler = useMeldingTilBehandler();
@@ -127,6 +134,10 @@ export const MeldingTilBehandlerSkjema = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [draftQuery.data, reset]);
 
+  const utkastSavedText = (savedDate: Date) => {
+    return `${texts.utkastSaved} ${showTimeIncludingSeconds(savedDate)}`;
+  };
+
   useEffect(() => {
     const meldingTekst = watchedMeldingTekst;
     const meldingsType = watchedMeldingsType;
@@ -140,11 +151,20 @@ export const MeldingTilBehandlerSkjema = () => {
     }
 
     autosaveTimeoutRef.current = window.setTimeout(() => {
-      saveDraft.mutate({
-        tekst: meldingTekst,
-        meldingsType: meldingsType || undefined,
-        behandler: selectedBehandler,
-      });
+      saveDraft.mutate(
+        {
+          tekst: meldingTekst,
+          meldingsType: meldingsType || undefined,
+          behandler: selectedBehandler,
+        },
+        {
+          onSuccess: () => {
+            setShowUtkastSaved(true);
+            setLastUtkastSavedTime(new Date());
+          },
+          onError: () => setShowUtkastSaved(false),
+        }
+      );
     }, 700);
 
     return () => {
@@ -186,6 +206,8 @@ export const MeldingTilBehandlerSkjema = () => {
         });
         setSelectedBehandler(undefined);
         setDisplayPreview(false);
+        setShowUtkastSaved(false);
+        setLastUtkastSavedTime(undefined);
 
         // Delete draft in Valkey
         deleteDraft.mutate(undefined, {
@@ -258,6 +280,12 @@ export const MeldingTilBehandlerSkjema = () => {
             getMeldingTilBehandlerDocument(getValues()) ?? []
           }
         />
+        {showUtkastSaved && lastUtkastSavedTime && (
+          <div className="mb-2 font-bold flex gap-2">
+            <img src={SaveFile} alt="saved" />
+            <span>{utkastSavedText(lastUtkastSavedTime)}</span>
+          </div>
+        )}
         <ButtonRow>
           <Button
             variant="primary"
