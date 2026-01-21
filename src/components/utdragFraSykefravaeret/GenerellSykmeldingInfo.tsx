@@ -6,7 +6,7 @@ import {
   erHensynPaaArbeidsplassenInformasjon,
   sykmeldingperioderSortertEldstTilNyest,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
-import Diagnoser from "./Diagnoser";
+import { Diagnose } from "./Diagnose";
 import { Perioder } from "@/components/utdragFraSykefravaeret/Perioder";
 import EkstraDiagnoseInformasjon from "../motebehov/EkstraDiagnoseInformasjon";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
@@ -41,7 +41,10 @@ export default function GenerellSykmeldingInfo({ sykmelding }: Props) {
   return (
     <VStack gap="4">
       <Perioder perioder={sykmeldingPerioderSortertEtterDato} />
-      <Diagnoser hovedDiagnose={hovedDiagnose} biDiagnoser={biDiagnoser} />
+      {hovedDiagnose && <Diagnose diagnose={hovedDiagnose} erHovedDiagnose />}
+      {biDiagnoser.map((diagnose, index) => (
+        <Diagnose key={index} diagnose={diagnose} erHovedDiagnose={false} />
+      ))}
       {isEkstraDiagnoseInformasjonVisible && (
         <EkstraDiagnoseInformasjon diagnose={sykmelding.diagnose} />
       )}
