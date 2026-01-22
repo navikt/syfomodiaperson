@@ -2,25 +2,21 @@ import React from "react";
 import { Checkbox } from "nav-frontend-skjema";
 import {
   erArbeidsforEtterPerioden,
-  erEkstraDiagnoseInformasjon,
   erHensynPaaArbeidsplassenInformasjon,
   sykmeldingperioderSortertEldstTilNyest,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { Diagnose } from "./Diagnose";
 import { Perioder } from "@/components/utdragFraSykefravaeret/Perioder";
-import EkstraDiagnoseInformasjon from "../motebehov/EkstraDiagnoseInformasjon";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BodyShort, VStack } from "@navikt/ds-react";
+import { AnnenLovfestetFravaersgrunn } from "@/components/utdragFraSykefravaeret/AnnenLovfestetFravaersgrunn";
+import { Yrkesskade } from "@/components/utdragFraSykefravaeret/Yrkesskade";
 
 const tekster = {
-  generellSykmeldingInfo: {
-    arbeidsforEtterPerioden: {
-      tittel: "Pasienten er 100 % arbeidsfør etter perioden",
-    },
-    hensynPaaArbeidsplassen: {
-      tittel: "Beskriv eventuelle hensyn som må tas på arbeidsplassen",
-    },
-  },
+  arbeidsforEtterPerioden: "Pasienten er 100 % arbeidsfør etter perioden",
+  hensynPaaArbeidsplassen:
+    "Beskriv eventuelle hensyn som må tas på arbeidsplassen",
+  svangerskapsrelatert: "Sykdommen er svangerskapsrelatert",
 };
 
 interface Props {
@@ -28,29 +24,35 @@ interface Props {
 }
 
 export default function GenerellSykmeldingInfo({ sykmelding }: Props) {
-  const hovedDiagnose = sykmelding.diagnose.hoveddiagnose;
-  const biDiagnoser = sykmelding.diagnose.bidiagnoser
-    ? sykmelding.diagnose.bidiagnoser
-    : [];
+  const diagnose = sykmelding.diagnose;
+  const hovedDiagnose = diagnose.hoveddiagnose;
+  const biDiagnoser = diagnose.bidiagnoser;
   const sykmeldingPerioderSortertEtterDato =
     sykmeldingperioderSortertEldstTilNyest(
       sykmelding.mulighetForArbeid.perioder
     );
-  const isEkstraDiagnoseInformasjonVisible =
-    erEkstraDiagnoseInformasjon(sykmelding);
+
   return (
     <VStack gap="4">
       <Perioder perioder={sykmeldingPerioderSortertEtterDato} />
       {hovedDiagnose && <Diagnose diagnose={hovedDiagnose} erHovedDiagnose />}
-      {biDiagnoser.map((diagnose, index) => (
-        <Diagnose key={index} diagnose={diagnose} erHovedDiagnose={false} />
-      ))}
-      {isEkstraDiagnoseInformasjonVisible && (
-        <EkstraDiagnoseInformasjon diagnose={sykmelding.diagnose} />
+      {biDiagnoser &&
+        biDiagnoser.map((diagnose, index) => (
+          <Diagnose key={index} diagnose={diagnose} erHovedDiagnose={false} />
+        ))}
+      {diagnose.fravaersgrunnLovfestet && (
+        <AnnenLovfestetFravaersgrunn
+          fravaersgrunn={diagnose.fravaersgrunnLovfestet}
+          fravaersBeskrivelse={diagnose.fravaerBeskrivelse}
+        />
       )}
+      {diagnose.svangerskap && (
+        <Checkbox label={tekster.svangerskapsrelatert} checked disabled />
+      )}
+      {diagnose.yrkesskade && <Yrkesskade dato={diagnose.yrkesskadeDato} />}
       {erArbeidsforEtterPerioden(sykmelding) && (
         <Checkbox
-          label={tekster.generellSykmeldingInfo.arbeidsforEtterPerioden.tittel}
+          label={tekster.arbeidsforEtterPerioden}
           checked={sykmelding.friskmelding.arbeidsfoerEtterPerioden}
           disabled
         />
@@ -58,7 +60,7 @@ export default function GenerellSykmeldingInfo({ sykmelding }: Props) {
       {erHensynPaaArbeidsplassenInformasjon(sykmelding) && (
         <div>
           <BodyShort size="small" weight="semibold">
-            {tekster.generellSykmeldingInfo.hensynPaaArbeidsplassen.tittel}
+            {tekster.hensynPaaArbeidsplassen}
           </BodyShort>
           <BodyShort size="small">
             {sykmelding.friskmelding.hensynPaaArbeidsplassen}
