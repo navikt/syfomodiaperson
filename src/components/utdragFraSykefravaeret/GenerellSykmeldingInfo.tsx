@@ -1,5 +1,4 @@
 import React from "react";
-import { Checkbox } from "nav-frontend-skjema";
 import {
   erArbeidsforEtterPerioden,
   erHensynPaaArbeidsplassenInformasjon,
@@ -8,7 +7,7 @@ import {
 import { Diagnose } from "./Diagnose";
 import { Perioder } from "@/components/utdragFraSykefravaeret/Perioder";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { BodyShort, VStack } from "@navikt/ds-react";
+import { BodyShort, Checkbox, VStack } from "@navikt/ds-react";
 import { AnnenLovfestetFravaersgrunn } from "@/components/utdragFraSykefravaeret/AnnenLovfestetFravaersgrunn";
 import { Yrkesskade } from "@/components/utdragFraSykefravaeret/Yrkesskade";
 
@@ -47,15 +46,25 @@ export default function GenerellSykmeldingInfo({ sykmelding }: Props) {
         />
       )}
       {diagnose.svangerskap && (
-        <Checkbox label={tekster.svangerskapsrelatert} checked disabled />
+        <Checkbox
+          value={tekster.svangerskapsrelatert}
+          size="small"
+          readOnly
+          checked
+        >
+          {tekster.svangerskapsrelatert}
+        </Checkbox>
       )}
       {diagnose.yrkesskade && <Yrkesskade dato={diagnose.yrkesskadeDato} />}
       {erArbeidsforEtterPerioden(sykmelding) && (
         <Checkbox
-          label={tekster.arbeidsforEtterPerioden}
+          value={tekster.arbeidsforEtterPerioden}
+          size="small"
           checked={sykmelding.friskmelding.arbeidsfoerEtterPerioden}
-          disabled
-        />
+          readOnly
+        >
+          {tekster.arbeidsforEtterPerioden}
+        </Checkbox>
       )}
       {erHensynPaaArbeidsplassenInformasjon(sykmelding) && (
         <div>
