@@ -17,6 +17,7 @@ import {
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { ANTALL_MS_DAG, dagerMellomDatoer } from "@/utils/datoUtils";
 import {
+  finnAvventendeSykmeldingTekst,
   SykmeldingOldFormat,
   SykmeldingPeriodeDTO,
   SykmeldingStatus,
@@ -25,7 +26,6 @@ import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/Behandlingsu
 import { SporsmalSvarDTO } from "@/data/sykmelding/types/SporsmalSvarDTO";
 import dayjs from "dayjs";
 import { getDiagnoseFromLatestSykmelding } from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleList";
-import { finnAvventendeSykmeldingTekst } from "@/components/motebehov/MulighetForArbeid";
 
 const baseSykmelding: SykmeldingOldFormat = {
   arbeidsevne: {},
