@@ -3,7 +3,7 @@ import MeldingTilArbeidsgiver from "../motebehov/MeldingTilArbeidsgiver";
 import MeldingTilNav from "../motebehov/MeldingTilNav";
 import BedreArbeidsevnen from "../motebehov/BedreArbeidsevnen";
 import { UtdypendeOpplysninger } from "./UtdypendeOpplysninger";
-import TilbakeIArbeid from "../motebehov/TilbakeIArbeid";
+import { TilbakeIArbeid } from "@/components/utdragFraSykefravaeret/TilbakeIArbeid";
 import GenerellSykmeldingInfo from "./GenerellSykmeldingInfo";
 import MulighetForArbeid from "./MulighetForArbeid";
 import {
