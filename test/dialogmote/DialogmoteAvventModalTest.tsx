@@ -28,8 +28,9 @@ describe("DialogmoteAvventModal", () => {
     await userEvent.click(lagreButton);
 
     expect(await screen.findByText("Begrunnelse mangler")).to.exist;
-    expect(await screen.findByText(/Vennligst angi en gyldig dato innen/)).to
-      .exist;
+    expect(
+      await screen.findByText(/Vennligst angi en gyldig dato i intervallet/)
+    ).to.exist;
   });
 
   it("lukker modalen når skjemaet sendes inn med gyldige verdier", async () => {
