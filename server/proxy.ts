@@ -149,7 +149,7 @@ export const setupProxy = (
   const router = express.Router();
 
   router.use(
-    "/isaktivitetskrav",
+    "/isaktivitetskrav/*",
     (
       req: express.Request,
       res: express.Response,
@@ -167,7 +167,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/isarbeidsuforhet",
+    "/isarbeidsuforhet/*",
     (
       req: express.Request,
       res: express.Response,
@@ -185,7 +185,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/isbehandlerdialog",
+    "/isbehandlerdialog/*",
     (
       req: express.Request,
       res: express.Response,
@@ -203,7 +203,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/isdialogmote",
+    "/isdialogmote/*",
     (
       req: express.Request,
       res: express.Response,
@@ -221,7 +221,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/isdialogmotekandidat",
+    "/isdialogmotekandidat/*",
     (
       req: express.Request,
       res: express.Response,
@@ -239,7 +239,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/isdialogmelding",
+    "/isdialogmelding/*",
     (
       req: express.Request,
       res: express.Response,
@@ -257,7 +257,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/isfrisktilarbeid",
+    "/isfrisktilarbeid/*",
     (
       req: express.Request,
       res: express.Response,
@@ -275,7 +275,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/ishuskelapp",
+    "/ishuskelapp/*",
     (
       req: express.Request,
       res: express.Response,
@@ -293,7 +293,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/ismeroppfolging",
+    "/ismeroppfolging/*",
     (
       req: express.Request,
       res: express.Response,
@@ -311,7 +311,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/isnarmesteleder",
+    "/isnarmesteleder/*",
     (
       req: express.Request,
       res: express.Response,
@@ -329,7 +329,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/isoppfolgingstilfelle",
+    "/isoppfolgingstilfelle/*",
     (
       req: express.Request,
       res: express.Response,
@@ -347,7 +347,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/ispengestopp",
+    "/ispengestopp/*",
     (
       req: express.Request,
       res: express.Response,
@@ -365,7 +365,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/ispersonoppgave",
+    "/ispersonoppgave/*",
     (
       req: express.Request,
       res: express.Response,
@@ -383,7 +383,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/fastlegerest",
+    "/fastlegerest/*",
     (
       req: express.Request,
       res: express.Response,
@@ -401,7 +401,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/modiacontextholder",
+    "/modiacontextholder/*",
     (
       req: express.Request,
       res: express.Response,
@@ -419,7 +419,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/syfobehandlendeenhet",
+    "/syfobehandlendeenhet/*",
     (
       req: express.Request,
       res: express.Response,
@@ -437,7 +437,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/ereg",
+    "/ereg/*",
     (
       req: express.Request,
       res: express.Response,
@@ -448,7 +448,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/syfomotebehov",
+    "/syfomotebehov/*",
     (
       req: express.Request,
       res: express.Response,
@@ -466,7 +466,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/syfooppfolgingsplanservice",
+    "/syfooppfolgingsplanservice/*",
     (
       req: express.Request,
       res: express.Response,
@@ -484,7 +484,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/lps-oppfolgingsplan-mottak",
+    "/lps-oppfolgingsplan-mottak/*",
     (
       req: express.Request,
       res: express.Response,
@@ -502,7 +502,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/syfo-oppfolgingsplan-backend",
+    "/syfo-oppfolgingsplan-backend/*",
     (
       req: express.Request,
       res: express.Response,
@@ -520,7 +520,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/api/v2/persontildeling",
+    "/api/v2/persontildeling/*",
     (
       req: express.Request,
       res: express.Response,
@@ -538,7 +538,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/syfoperson",
+    "/syfoperson/*",
     (
       req: express.Request,
       res: express.Response,
@@ -556,7 +556,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/syfosmregister",
+    "/syfosmregister/*",
     (
       req: express.Request,
       res: express.Response,
@@ -575,7 +575,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/sykepengesoknad-backend",
+    "/sykepengesoknad-backend/*",
     (
       req: express.Request,
       res: express.Response,
@@ -593,7 +593,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/istilgangskontroll",
+    "/istilgangskontroll/*",
     (
       req: express.Request,
       res: express.Response,
@@ -611,7 +611,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/syfoveileder",
+    "/syfoveileder/*",
     (
       req: express.Request,
       res: express.Response,
@@ -629,7 +629,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/meroppfolging-backend",
+    "/meroppfolging-backend/*",
     (
       req: express.Request,
       res: express.Response,
@@ -647,7 +647,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/sykepengedager-informasjon",
+    "/sykepengedager-informasjon/*",
     (
       req: express.Request,
       res: express.Response,
@@ -665,7 +665,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/flexjar-backend",
+    "/flexjar-backend/*",
     (
       req: express.Request,
       res: express.Response,
@@ -676,7 +676,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/veilarboppfolging",
+    "/veilarboppfolging/*",
     (
       req: express.Request,
       res: express.Response,
@@ -694,7 +694,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/ismanglendemedvirkning",
+    "/ismanglendemedvirkning/*",
     (
       req: express.Request,
       res: express.Response,
@@ -712,7 +712,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/isoppfolgingsplan",
+    "/isoppfolgingsplan/*",
     (
       req: express.Request,
       res: express.Response,
@@ -730,7 +730,7 @@ export const setupProxy = (
   );
 
   router.use(
-    "/pensjon-pen",
+    "/pensjon-pen/*",
     (
       req: express.Request,
       res: express.Response,
