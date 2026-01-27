@@ -13,6 +13,7 @@ import { useOppfolgingsplanHistorikk } from "@/hooks/historikk/useOppfolgingspla
 import { useOppfolgingsoppgaveHistorikk } from "@/hooks/historikk/useOppfolgingsoppgaveHistorikk";
 import { useMotebehovHistorikk } from "@/hooks/historikk/useMotebehovHistorikk";
 import { useTildeltOppfolgingsenhetHistorikk } from "@/hooks/historikk/useTildeltOppfolgingsenhetHistorikk";
+import { useKartleggingssporsmalHistorikk } from "@/hooks/historikk/useKartleggingssporsmalHistorikk";
 
 export interface HistorikkHook {
   isLoading: boolean;
@@ -37,6 +38,7 @@ export function useHistorikk(): HistorikkHook {
   const oppfolgingsoppgaveHistorikk = useOppfolgingsoppgaveHistorikk();
   const tildeltOppfolgingsenhetHistorikk =
     useTildeltOppfolgingsenhetHistorikk();
+  const kartleggingssporsmalHistorikk = useKartleggingssporsmalHistorikk();
 
   const historikk: HistorikkHook[] = [
     motebehovHistorikk,
@@ -53,6 +55,7 @@ export function useHistorikk(): HistorikkHook {
     oppfolgingsoppgaveHistorikk,
     dialogmoteStatusEndringHistorikk,
     tildeltOppfolgingsenhetHistorikk,
+    kartleggingssporsmalHistorikk,
   ];
 
   return {
