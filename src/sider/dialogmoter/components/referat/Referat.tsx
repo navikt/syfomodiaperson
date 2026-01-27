@@ -45,7 +45,12 @@ import {
   tilDatoMedManedNavn,
 } from "@/utils/datoUtils";
 import { SaveFile } from "../../../../../img/ImageComponents";
-import { FormProvider, useFieldArray, useForm } from "react-hook-form";
+import {
+  Controller,
+  FormProvider,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import ReferatTextArea from "@/sider/dialogmoter/components/referat/ReferatTextArea";
 import { ReferatInfoBox } from "@/sider/dialogmoter/components/referat/ReferatInfoBox";
 import { DeltakerArbeidstakerHeading } from "@/sider/dialogmoter/components/referat/DeltakerArbeidstakerHeading";
@@ -583,26 +588,27 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
             />
             <div className="flex">
               <div className="flex-1">
-                <CheckboxGroup
-                  size="small"
-                  legend={texts.standardtekster.label}
-                  description={texts.standardtekster.description}
-                  value={watch("standardtekster")}
-                  onChange={(values) =>
-                    formMethods.setValue(
-                      "standardtekster",
-                      values as StandardtekstKey[]
-                    )
-                  }
-                >
-                  {Object.entries(standardTeksterForVisning).map(
-                    ([key, standardtekst], index) => (
-                      <Checkbox key={index} size="small" value={key}>
-                        {standardtekst.label}
-                      </Checkbox>
-                    )
+                <Controller
+                  name="standardtekster"
+                  control={control}
+                  render={({ field: { value, onChange } }) => (
+                    <CheckboxGroup
+                      size="small"
+                      legend={texts.standardtekster.label}
+                      description={texts.standardtekster.description}
+                      value={value}
+                      onChange={onChange}
+                    >
+                      {Object.entries(standardTeksterForVisning).map(
+                        ([key, standardtekst], index) => (
+                          <Checkbox key={index} size="small" value={key}>
+                            {standardtekst.label}
+                          </Checkbox>
+                        )
+                      )}
+                    </CheckboxGroup>
                   )}
-                </CheckboxGroup>
+                />
               </div>
               <div className="flex-[0.5]">
                 <ReferatInfoBox>{texts.standardtekster.info}</ReferatInfoBox>
