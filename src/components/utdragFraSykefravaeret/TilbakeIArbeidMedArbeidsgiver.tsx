@@ -1,6 +1,6 @@
 import React from "react";
 import { Checkbox } from "nav-frontend-skjema";
-import TilbakeIArbeidCheckboxMedSporsmalOgDato from "./TilbakeIArbeidCheckboxMedSporsmalOgDato";
+import { TilbakeIArbeidCheckboxMedSporsmalOgDato } from "@/components/utdragFraSykefravaeret/TilbakeIArbeidCheckboxMedSporsmalOgDato";
 import { FriskmeldingDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
 const tekster = {
@@ -15,58 +15,36 @@ const tekster = {
     "Jeg er usikker på om pasienten kan komme tilbake i arbeid hos egen eller annen arbeidsgiver",
 };
 
-interface ReturSammeArbeidsgiverProps {
+interface Props {
   friskmelding: FriskmeldingDTO;
 }
 
-const ReturSammeArbeidsgiver = ({
-  friskmelding,
-}: ReturSammeArbeidsgiverProps) => {
-  return (
-    <div>
-      {friskmelding.antarReturSammeArbeidsgiver && (
-        <TilbakeIArbeidCheckboxMedSporsmalOgDato
-          checkboxLabel={tekster.returSammeArbeidsgiver}
-          sporsmal={tekster.datoSporsmal}
-          returDato={friskmelding.antattDatoReturSammeArbeidsgiver}
-        />
-      )}
-      {friskmelding.antarReturAnnenArbeidsgiver && (
-        <Checkbox
-          className="sykmeldingMotebehovVisning__checkbox"
-          label={tekster.returAnnenArbeidsgiver}
-          checked
-          disabled
-        />
-      )}
-    </div>
-  );
-};
-
-interface TilbakeIArbeidMedArbeidsgiverProps {
-  friskmelding: FriskmeldingDTO;
-}
-
-const TilbakeIArbeidMedArbeidsgiver = ({
-  friskmelding,
-}: TilbakeIArbeidMedArbeidsgiverProps) => {
-  const skalVise =
-    friskmelding.antarReturSammeArbeidsgiver ||
-    friskmelding.antarReturAnnenArbeidsgiver ||
-    friskmelding.tilbakemeldingReturArbeid;
+export function TilbakeIArbeidMedArbeidsgiver({ friskmelding }: Props) {
   const antarRetur =
     friskmelding.antarReturSammeArbeidsgiver ||
     friskmelding.antarReturAnnenArbeidsgiver;
-
-  if (!skalVise) {
-    return null;
-  }
 
   return (
     <div className="sykmeldingMotebehovVisning__tilbakeIArbeid--medArbeidsgiver">
       <h5 className="undertittel">{tekster.header}</h5>
       {antarRetur ? (
-        <ReturSammeArbeidsgiver friskmelding={friskmelding} />
+        <div>
+          {friskmelding.antarReturSammeArbeidsgiver && (
+            <TilbakeIArbeidCheckboxMedSporsmalOgDato
+              checkboxLabel={tekster.returSammeArbeidsgiver}
+              sporsmal={tekster.datoSporsmal}
+              returDato={friskmelding.antattDatoReturSammeArbeidsgiver}
+            />
+          )}
+          {friskmelding.antarReturAnnenArbeidsgiver && (
+            <Checkbox
+              className="sykmeldingMotebehovVisning__checkbox"
+              label={tekster.returAnnenArbeidsgiver}
+              checked
+              disabled
+            />
+          )}
+        </div>
       ) : (
         <TilbakeIArbeidCheckboxMedSporsmalOgDato
           checkboxLabel={tekster.usikkerCheckboxLabel}
@@ -76,6 +54,4 @@ const TilbakeIArbeidMedArbeidsgiver = ({
       )}
     </div>
   );
-};
-
-export default TilbakeIArbeidMedArbeidsgiver;
+}
