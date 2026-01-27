@@ -1,6 +1,7 @@
 import React from "react";
 import { TilbakeIArbeidCheckboxMedSporsmalOgDato } from "./TilbakeIArbeidCheckboxMedSporsmalOgDato";
 import { FriskmeldingDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import { BodyShort } from "@navikt/ds-react";
 
 const tekster = {
   header: "8 uker: Pasient uten arbeidsgiver, utdypende opplysninger",
@@ -19,8 +20,10 @@ export function TilbakeIArbeidUtenArbeidsgiver({ friskmelding }: Props) {
   const antarTilbakeIArbeid = friskmelding.utenArbeidsgiverAntarTilbakeIArbeid;
 
   return (
-    <div className="sykmeldingMotebehovVisning__tilbakeIArbeid--utenArbeidsgiver">
-      <h5 className="undertittel">{tekster.header}</h5>
+    <div>
+      <BodyShort size="small" weight="semibold">
+        {tekster.header}
+      </BodyShort>
       {antarTilbakeIArbeid ? (
         <TilbakeIArbeidCheckboxMedSporsmalOgDato
           checkboxLabel={tekster.retur}
