@@ -587,18 +587,17 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
                   size="small"
                   legend={texts.standardtekster.label}
                   description={texts.standardtekster.description}
+                  value={watch("standardtekster")}
+                  onChange={(values) =>
+                    formMethods.setValue(
+                      "standardtekster",
+                      values as StandardtekstKey[]
+                    )
+                  }
                 >
                   {Object.entries(standardTeksterForVisning).map(
                     ([key, standardtekst], index) => (
-                      <Checkbox
-                        key={index}
-                        size="small"
-                        value={key}
-                        defaultChecked={initialValues.standardtekster?.includes(
-                          key as StandardtekstKey
-                        )}
-                        {...register("standardtekster")}
-                      >
+                      <Checkbox key={index} size="small" value={key}>
                         {standardtekst.label}
                       </Checkbox>
                     )
