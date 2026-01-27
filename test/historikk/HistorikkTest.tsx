@@ -68,6 +68,11 @@ import { oppfolgingsplanForesporselQueryKeys } from "@/sider/oppfolgingsplan/hoo
 import { mockForesporseler } from "@/mocks/isoppfolgingsplan/oppfolgingsplanForesporselMocks";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { tildeltOppfolgingsenhetHistorikk } from "@/mocks/syfobehandlendeenhet/mockSyfobehandlendeenhet";
+import { kartleggingssporsmalQueryKeys } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
+import {
+  KandidatStatus,
+  KartleggingssporsmalKandidatResponseDTO,
+} from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 
 let queryClient: QueryClient;
 
@@ -165,6 +170,12 @@ function setupTestdataHistorikk() {
   );
   queryClient.setQueryData(
     behandlendeEnhetQueryKeys.historikk(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
+  );
+  queryClient.setQueryData(
+    kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
     () => []
   );
 }
@@ -977,6 +988,130 @@ describe("Historikk", () => {
           ),
         })
       ).to.exist;
+    });
+  });
+
+  describe("Kartleggingsspørsmål", () => {
+    const kartleggingssporsmalKandidatDefault: KartleggingssporsmalKandidatResponseDTO =
+      {
+        kandidatUuid: generateUUID(),
+        personident: ARBEIDSTAKER_DEFAULT.personIdent,
+        varsletAt: null,
+        svarAt: null,
+        status: KandidatStatus.KANDIDAT,
+        statusAt: DATO_INNENFOR_OPPFOLGINGSTILFELLE,
+        vurdering: null,
+        createdAt: DATO_INNENFOR_OPPFOLGINGSTILFELLE,
+      };
+
+    it("Ingen kandidater - 0 rader i oversikten", async () => {
+      queryClient.setQueryData(
+        kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => []
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(screen.queryByText("ble kandidat til kartleggingsspørsmål")).to.be
+        .null;
+      expect(screen.queryByText("ble varslet om kartleggingsspørsmål")).to.be
+        .null;
+      expect(screen.queryByText("svarte på kartleggingsspørsmål")).to.be.null;
+    });
+
+    it("Kandidat opprettet - 1 rad i oversikten", async () => {
+      queryClient.setQueryData(
+        kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [kartleggingssporsmalKandidatDefault]
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(screen.getByText(/ble kandidat til kartleggingsspørsmål/)).to
+        .exist;
+    });
+
+    it("Kandidat varslet og svart og vurdert - 4 rader i oversikten", async () => {
+      const varsletAt = addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 1);
+      const svarAt = addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 2);
+      const vurdertAt = addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 3);
+
+      queryClient.setQueryData(
+        kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [
+          {
+            ...kartleggingssporsmalKandidatDefault,
+            varsletAt: varsletAt,
+            svarAt: svarAt,
+            status: KandidatStatus.FERDIGBEHANDLET,
+            vurdering: {
+              vurdertAt: vurdertAt,
+              vurdertBy: VEILEDER_IDENT_DEFAULT,
+            },
+          },
+        ]
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(screen.getByText(/ble kandidat til kartleggingsspørsmål/)).to
+        .exist;
+      expect(screen.getByText(/ble varslet om kartleggingsspørsmål/)).to.exist;
+      expect(screen.getByText(/svarte på kartleggingsspørsmål/)).to.exist;
+      expect(
+        screen.getByText(
+          `Kartleggingsspørsmålene ble vurdert av ${VEILEDER_IDENT_DEFAULT}`
+        )
+      ).to.exist;
+    });
+
+    it("To kandidater med svar - 6 rader i oversikten", async () => {
+      const varsletAt = addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 1);
+      const svarAt = addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 2);
+
+      queryClient.setQueryData(
+        kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [
+          {
+            ...kartleggingssporsmalKandidatDefault,
+            kandidatUuid: generateUUID(),
+            varsletAt: varsletAt,
+            svarAt: svarAt,
+            status: KandidatStatus.SVAR_MOTTATT,
+          },
+          {
+            ...kartleggingssporsmalKandidatDefault,
+            kandidatUuid: generateUUID(),
+            varsletAt: varsletAt,
+            svarAt: svarAt,
+            status: KandidatStatus.SVAR_MOTTATT,
+          },
+        ]
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(
+        screen.queryAllByText(/ble kandidat til kartleggingsspørsmål/).length
+      ).toBe(2);
+      expect(
+        screen.queryAllByText(/ble varslet om kartleggingsspørsmål/).length
+      ).toBe(2);
+      expect(
+        screen.queryAllByText(/svarte på kartleggingsspørsmål/).length
+      ).toBe(2);
     });
   });
 });

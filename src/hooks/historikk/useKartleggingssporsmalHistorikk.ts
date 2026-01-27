@@ -55,6 +55,6 @@ export function useKartleggingssporsmalHistorikk(): HistorikkHook {
   return {
     isLoading,
     isError,
-    events: events || [],
+    events,
   };
 }
