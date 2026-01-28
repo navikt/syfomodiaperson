@@ -80,6 +80,8 @@ function tagFromKilde(kilde: HistorikkEventType): ReactElement {
       return <Tag variant="success">Dialogmøte</Tag>;
     case "TILDELT_OPPFOLGINGSENHET":
       return <Tag variant="alt1-moderate">Oppfølgingsenhet</Tag>;
+    case "KARTLEGGINGSPORSMAAL":
+      return <Tag variant="warning-moderate">Kartleggingsspørsmål</Tag>;
   }
 }
 

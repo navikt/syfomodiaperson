@@ -77,9 +77,13 @@ export const kartleggingssporsmalFerdigbehandlet: KartleggingssporsmalKandidatRe
     ...kartleggingIsKandidatAndReceivedQuestions,
     status: KandidatStatus.FERDIGBEHANDLET,
     vurdering: {
-      vurdertAt: daysFromToday(5),
+      vurdertAt: daysFromToday(-14),
       vurdertBy: VEILEDER_DEFAULT.ident,
     },
+    createdAt: daysFromToday(-20),
+    statusAt: daysFromToday(-20),
+    svarAt: daysFromToday(-15),
+    varsletAt: daysFromToday(-20),
   };
 
 let kartleggingssporsmalMock: KartleggingssporsmalKandidatResponseDTO =
