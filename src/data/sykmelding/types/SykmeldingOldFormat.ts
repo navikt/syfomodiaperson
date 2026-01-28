@@ -122,6 +122,11 @@ export interface SykmeldingOldFormat {
     aarsakAktivitetIkkeMulig434?: string;
   };
   friskmelding: FriskmeldingDTO;
+  /**
+   * Ytre key representerer et sett med opplysninger sendt inn i uke 7 (key: 6.3), 17 (key: 6.4) og 39 (key: 6.5).
+   * Indre key representerer spørsmålene.
+   * Verdien er et `SporsmalSvarDTO` -objekt som inneholder spørsmålet og det tilhørende svaret.
+   */
   utdypendeOpplysninger: Map<string, Map<string, SporsmalSvarDTO>>;
   arbeidsevne: {
     tilretteleggingArbeidsplass?: string;
