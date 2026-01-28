@@ -6,6 +6,7 @@ import unleash = require("./server/unleash");
 import { getOpenIdClient, getOpenIdIssuer } from "./server/authUtils";
 import { setupProxy } from "./server/proxy";
 import { setupSession } from "./server/session";
+import { setupBehandlerdialogDraftEndpoints } from "./server/behandlerdialogDraft";
 
 // Prometheus metrics
 const collectDefaultMetrics = prometheus.collectDefaultMetrics;
@@ -52,10 +53,11 @@ const redirectIfUnauthorized = async (
 
 const setupServer = async () => {
   setupSession(server);
+  setupBehandlerdialogDraftEndpoints(server);
   const issuer = await getOpenIdIssuer();
   const authClient = await getOpenIdClient(issuer);
 
-  server.use(setupProxy(authClient, issuer));
+  server.use(setupProxy(authClient));
 
   const DIST_DIR = path.join(__dirname, "dist");
   const HTML_FILE = path.join(DIST_DIR, "index.html");
