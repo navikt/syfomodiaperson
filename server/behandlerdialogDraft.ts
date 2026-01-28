@@ -8,7 +8,7 @@ const DRAFT_KEY_PREFIX = "draft:behandlerdialog:meldingtilbehandler";
 
 interface MeldingTilBehandlerDraftDTO {
   tekst: string;
-  meldingsType?: string;
+  meldingType?: string;
   behandlerRef?: string;
 }
 
@@ -81,7 +81,7 @@ export function setupBehandlerdialogDraftEndpoints(
       const tekst = typeof body.tekst === "string" ? body.tekst : "";
       const payload: MeldingTilBehandlerDraftDTO = {
         tekst,
-        meldingsType: body.meldingsType,
+        meldingType: body.meldingType,
         behandlerRef: body.behandlerRef,
       };
 

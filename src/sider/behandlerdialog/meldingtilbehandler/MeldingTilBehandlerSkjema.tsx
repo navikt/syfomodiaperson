@@ -30,7 +30,7 @@ import {
 const texts = {
   sendKnapp: "Send til behandler",
   previewContentLabel: "Forhåndsvis melding til behandler",
-  meldingsType: {
+  meldingType: {
     label: "Hvilken meldingstype ønsker du å sende?",
     defaultOption: "Velg meldingstype",
     missing: "Vennligst velg type melding",
@@ -46,7 +46,7 @@ export interface MeldingTilBehandlerSkjemaValues {
   behandlerRef?: string;
   behandlerRefSok?: string;
   isBehandlerSokSelected?: boolean;
-  meldingsType: MeldingType;
+  meldingType: MeldingType;
   meldingTekst: string;
 }
 
@@ -89,7 +89,7 @@ export const MeldingTilBehandlerSkjema = () => {
 
   const watchedValues = watch([
     "meldingTekst",
-    "meldingsType",
+    "meldingType",
     "behandlerRef",
     "behandlerRefSok",
   ]);
@@ -99,13 +99,13 @@ export const MeldingTilBehandlerSkjema = () => {
       return;
     }
 
-    const [meldingTekst, meldingsType, behandlerRef, behandlerRefSok] =
+    const [meldingTekst, meldingType, behandlerRef, behandlerRefSok] =
       watchedValues;
 
     const timeoutId = window.setTimeout(() => {
       const draftPayload = {
         tekst: meldingTekst ?? "",
-        meldingsType: meldingsType,
+        meldingType: meldingType,
         behandlerRef: behandlerRef || behandlerRefSok || undefined,
       };
 
@@ -146,7 +146,7 @@ export const MeldingTilBehandlerSkjema = () => {
 
     hasHydratedDraftRef.current = true;
 
-    const meldingsType = Object.values(MeldingType).includes(
+    const meldingType = Object.values(MeldingType).includes(
       draft.meldingType as MeldingType
     )
       ? (draft.meldingType as MeldingType)
@@ -154,7 +154,7 @@ export const MeldingTilBehandlerSkjema = () => {
 
     reset({
       meldingTekst: draft.tekst,
-      meldingsType,
+      meldingType: meldingType,
       behandlerRef: draft.behandlerRef ?? undefined,
       behandlerRefSok: undefined,
       isBehandlerSokSelected: false,
@@ -179,7 +179,7 @@ export const MeldingTilBehandlerSkjema = () => {
     }
 
     const meldingTilBehandlerDTO: MeldingTilBehandlerDTO = {
-      type: values.meldingsType,
+      type: values.meldingType,
       behandlerRef: behandlerRefToUse,
       tekst: values.meldingTekst,
       document: getMeldingTilBehandlerDocument(values),
@@ -236,12 +236,12 @@ export const MeldingTilBehandlerSkjema = () => {
             id="type"
             className="mb-4"
             size="small"
-            label={texts.meldingsType.label}
-            {...register("meldingsType", { required: true })}
-            value={watch("meldingsType")}
-            error={errors.meldingsType && texts.meldingsType.missing}
+            label={texts.meldingType.label}
+            {...register("meldingType", { required: true })}
+            value={watch("meldingType")}
+            error={errors.meldingType && texts.meldingType.missing}
           >
-            <option value="">{texts.meldingsType.defaultOption}</option>
+            <option value="">{texts.meldingType.defaultOption}</option>
             <MeldingTypeOption
               type={MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER}
             />
@@ -250,8 +250,8 @@ export const MeldingTilBehandlerSkjema = () => {
             />
             <MeldingTypeOption type={MeldingType.HENVENDELSE_MELDING_FRA_NAV} />
           </Select>
-          {watch("meldingsType") && (
-            <MeldingsTypeInfo meldingType={watch("meldingsType")} />
+          {watch("meldingType") && (
+            <MeldingsTypeInfo meldingType={watch("meldingType")} />
           )}
         </div>
         <VelgBehandler
