@@ -1004,7 +1004,7 @@ describe("Historikk", () => {
         createdAt: DATO_INNENFOR_OPPFOLGINGSTILFELLE,
       };
 
-    it("Ingen kandidater - 0 rader i oversikten", async () => {
+    it("Ingen spørsmål tilsendt - 0 rader i oversikten", async () => {
       queryClient.setQueryData(
         kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(
           ARBEIDSTAKER_DEFAULT.personIdent
@@ -1015,29 +1015,12 @@ describe("Historikk", () => {
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
-      expect(screen.queryByText("ble kandidat til kartleggingsspørsmål")).to.be
-        .null;
-      expect(screen.queryByText("ble varslet om kartleggingsspørsmål")).to.be
+      expect(screen.queryByText("ble tilsendt kartleggingsspørsmål")).to.be
         .null;
       expect(screen.queryByText("svarte på kartleggingsspørsmål")).to.be.null;
     });
 
-    it("Kandidat opprettet - 1 rad i oversikten", async () => {
-      queryClient.setQueryData(
-        kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(
-          ARBEIDSTAKER_DEFAULT.personIdent
-        ),
-        () => [kartleggingssporsmalKandidatDefault]
-      );
-
-      renderHistorikk();
-
-      expect(await screen.findAllByText("Historikk")).to.exist;
-      expect(screen.getByText(/ble kandidat til kartleggingsspørsmål/)).to
-        .exist;
-    });
-
-    it("Kandidat varslet og svart og vurdert - 4 rader i oversikten", async () => {
+    it("Kandidat varslet og svart og vurdert - 3 rader i oversikten", async () => {
       const varsletAt = addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 1);
       const svarAt = addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 2);
       const vurdertAt = addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 3);
@@ -1063,18 +1046,16 @@ describe("Historikk", () => {
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
-      expect(screen.getByText(/ble kandidat til kartleggingsspørsmål/)).to
-        .exist;
-      expect(screen.getByText(/ble varslet om kartleggingsspørsmål/)).to.exist;
+      expect(screen.getByText(/ble tilsendt kartleggingsspørsmål/)).to.exist;
       expect(screen.getByText(/svarte på kartleggingsspørsmål/)).to.exist;
       expect(
         screen.getByText(
-          `Kartleggingsspørsmålene ble vurdert av ${VEILEDER_IDENT_DEFAULT}`
+          `Svar på kartleggingsspørsmål ble vurdert av ${VEILEDER_IDENT_DEFAULT}`
         )
       ).to.exist;
     });
 
-    it("To kandidater med svar - 6 rader i oversikten", async () => {
+    it("To kandidater med svar - 4 rader i oversikten", async () => {
       const varsletAt = addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 1);
       const svarAt = addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 2);
 
@@ -1104,10 +1085,7 @@ describe("Historikk", () => {
 
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
-        screen.queryAllByText(/ble kandidat til kartleggingsspørsmål/).length
-      ).toBe(2);
-      expect(
-        screen.queryAllByText(/ble varslet om kartleggingsspørsmål/).length
+        screen.queryAllByText(/ble tilsendt kartleggingsspørsmål/).length
       ).toBe(2);
       expect(
         screen.queryAllByText(/svarte på kartleggingsspørsmål/).length

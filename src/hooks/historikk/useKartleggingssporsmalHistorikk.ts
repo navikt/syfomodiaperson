@@ -15,7 +15,7 @@ function createEventsFromKandidat(
   const events: HistorikkEvent[] = [];
   if (kandidat.varsletAt) {
     events.push({
-      tekst: `${person.navn} ble varslet om kartleggingsspørsmål`,
+      tekst: `${person.navn} ble tilsendt kartleggingsspørsmål`,
       tidspunkt: new Date(kandidat.varsletAt),
       kilde: "KARTLEGGINGSPORSMAAL" as HistorikkEventType,
     });
@@ -29,16 +29,11 @@ function createEventsFromKandidat(
   }
   if (kandidat.vurdering?.vurdertAt) {
     events.push({
-      tekst: `Kartleggingsspørsmålene ble vurdert av ${kandidat.vurdering.vurdertBy}`,
+      tekst: `Svar på kartleggingsspørsmål ble vurdert av ${kandidat.vurdering.vurdertBy}`,
       tidspunkt: new Date(kandidat.vurdering.vurdertAt),
       kilde: "KARTLEGGINGSPORSMAAL" as HistorikkEventType,
     });
   }
-  events.push({
-    tekst: `${person.navn} ble kandidat til kartleggingsspørsmål`,
-    tidspunkt: new Date(kandidat.createdAt),
-    kilde: "KARTLEGGINGSPORSMAAL" as HistorikkEventType,
-  });
   return events;
 }
 
@@ -48,9 +43,8 @@ export function useKartleggingssporsmalHistorikk(): HistorikkHook {
 
   const kandidater = data || [];
   const events = kandidater
-    ?.map((kandidat) => createEventsFromKandidat(kandidat, person))
-    .flat()
-    .sort((a, b) => b.tidspunkt.getTime() - a.tidspunkt.getTime());
+    .map((kandidat) => createEventsFromKandidat(kandidat, person))
+    .flat();
 
   return {
     isLoading,
