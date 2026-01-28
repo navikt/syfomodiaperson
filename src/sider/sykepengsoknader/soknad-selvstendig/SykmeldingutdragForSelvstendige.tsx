@@ -6,7 +6,7 @@ import {
   SykmeldingopplysningFravaersperioder,
 } from "@/sider/sykmeldinger/sykmeldingstatuspanel/SykmeldingStatuspanelOpplysning";
 import SykmeldingPerioder from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingPerioder";
-import SykmeldingNokkelOpplysning from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingNokkelOpplysning";
+import { SykmeldingNokkelOpplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingNokkelOpplysning";
 import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
 import { SpeilingEkspanderbartPanelTittel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanelTittel";
 

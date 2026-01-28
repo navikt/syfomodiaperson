@@ -29,7 +29,7 @@ export const useKartleggingssporsmalKandidaterQuery = () => {
   const { toggles } = useFeatureToggles();
   const fnr = useValgtPersonident();
   const path = `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater`;
-  // TODO: clean up after updating endpoint in ismeroppfolging
+
   const getKartleggingssporsmalKandidat = () =>
     get<KartleggingssporsmalKandidatResponseDTO[]>(path, fnr).catch(
       (error: ApiErrorException) => {

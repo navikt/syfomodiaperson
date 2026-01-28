@@ -155,3 +155,14 @@ export function erSykmeldingUtenArbeidsgiver(
     !sykmelding.orgnummer && sykmelding.status === SykmeldingStatus.BEKREFTET
   );
 }
+
+export function finnAvventendeSykmeldingTekst(
+  sykmelding: SykmeldingOldFormat
+): string | undefined {
+  const avventendePeriode =
+    sykmelding.mulighetForArbeid.perioder &&
+    sykmelding.mulighetForArbeid.perioder.find(
+      (periode) => !!periode.avventende
+    );
+  return avventendePeriode?.avventende;
+}

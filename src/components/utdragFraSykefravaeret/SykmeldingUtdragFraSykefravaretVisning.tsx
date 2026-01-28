@@ -3,15 +3,19 @@ import MeldingTilArbeidsgiver from "../motebehov/MeldingTilArbeidsgiver";
 import MeldingTilNav from "../motebehov/MeldingTilNav";
 import BedreArbeidsevnen from "../motebehov/BedreArbeidsevnen";
 import { UtdypendeOpplysninger } from "./UtdypendeOpplysninger";
-import TilbakeIArbeid from "../motebehov/TilbakeIArbeid";
+import { TilbakeIArbeid } from "@/components/utdragFraSykefravaeret/TilbakeIArbeid";
 import GenerellSykmeldingInfo from "./GenerellSykmeldingInfo";
-import MulighetForArbeid from "../motebehov/MulighetForArbeid";
-import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import MulighetForArbeid from "./MulighetForArbeid";
+import {
+  finnAvventendeSykmeldingTekst,
+  SykmeldingOldFormat,
+} from "@/data/sykmelding/types/SykmeldingOldFormat";
 import {
   erBedringAvArbeidsevnenInformasjon,
   erFriskmeldingInformasjon,
   erMeldingTilArbeidsgiverInformasjon,
   erMeldingTilNavInformasjon,
+  erMulighetForArbeidInformasjon,
   erUtdypendeOpplysninger,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 
@@ -27,11 +31,16 @@ export default function SykmeldingUtdragFraSykefravaretVisning({
   const isMeldingTilNavVisible = erMeldingTilNavInformasjon(sykmelding);
   const isUtdypendeOpplysningerVisible =
     sykmelding && erUtdypendeOpplysninger(sykmelding);
+  const erMulighetForArbeidInformasjonSynlig =
+    erMulighetForArbeidInformasjon(sykmelding) ||
+    !!finnAvventendeSykmeldingTekst(sykmelding);
 
   return (
     <div className="sykmeldingMotebehovVisning">
       <GenerellSykmeldingInfo sykmelding={sykmelding} />
-      <MulighetForArbeid sykmelding={sykmelding} />
+      {erMulighetForArbeidInformasjonSynlig && (
+        <MulighetForArbeid sykmelding={sykmelding} />
+      )}
       {erFriskmeldingInformasjon(sykmelding) && (
         <TilbakeIArbeid sykmelding={sykmelding} />
       )}
