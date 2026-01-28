@@ -1,42 +1,45 @@
 import React from "react";
-import { Checkbox } from "nav-frontend-skjema";
+import { BodyLong, BodyShort, Checkbox } from "@navikt/ds-react";
 
 const tekster = {
-  meldingTilNav: {
-    header: "Melding til Nav",
-    navBoerTaTakISaken: {
-      tittel: "Ønskes bistand fra Nav nå?",
-      begrunnelseTittel: "Begrunn nærmere",
-    },
+  meldingTilNav: "Melding til Nav",
+  navBoerTaTakISaken: {
+    tittel: "Ønskes bistand fra Nav nå?",
+    begrunnelseTittel: "Begrunn nærmere",
   },
 };
 
-interface MeldingTilNavProps {
+interface Props {
   meldingTilNav: {
     navBoerTaTakISaken?: boolean;
     navBoerTaTakISakenBegrunnelse?: string;
   };
 }
 
-const MeldingTilNav = ({ meldingTilNav }: MeldingTilNavProps) => {
+export function MeldingTilNav({ meldingTilNav }: Props) {
   return (
-    <div className="sykmeldingMotebehovVisning__avsnitt">
-      <h5 className="undertittel">{tekster.meldingTilNav.header}</h5>
+    <div className="mt-4">
+      <BodyShort size="small" weight="semibold">
+        {tekster.meldingTilNav}
+      </BodyShort>
 
       <Checkbox
-        className="sykmeldingMotebehovVisning__checkbox"
-        label={tekster.meldingTilNav.navBoerTaTakISaken.tittel}
+        size="small"
         checked={meldingTilNav.navBoerTaTakISaken}
-        disabled
-      />
-      {meldingTilNav.navBoerTaTakISakenBegrunnelse && [
-        <h6 key={0} className="sporsmal">
-          {tekster.meldingTilNav.navBoerTaTakISaken.begrunnelseTittel}
-        </h6>,
-        <p key={1}>{meldingTilNav.navBoerTaTakISakenBegrunnelse}</p>,
-      ]}
+        readOnly
+      >
+        {tekster.navBoerTaTakISaken.tittel}
+      </Checkbox>
+      {meldingTilNav.navBoerTaTakISakenBegrunnelse && (
+        <>
+          <BodyShort size="small" weight="semibold">
+            {tekster.navBoerTaTakISaken.begrunnelseTittel}
+          </BodyShort>
+          <BodyLong size="small">
+            {meldingTilNav.navBoerTaTakISakenBegrunnelse}
+          </BodyLong>
+        </>
+      )}
     </div>
   );
-};
-
-export default MeldingTilNav;
+}
