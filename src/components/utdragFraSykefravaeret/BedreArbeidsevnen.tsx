@@ -1,5 +1,6 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import { BodyLong, BodyShort, VStack } from "@navikt/ds-react";
 
 const tekster = {
   bedreArbeidsevnen: {
@@ -11,44 +12,46 @@ const tekster = {
   },
 };
 
-interface BedreArbeidsevnenProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-export const BedreArbeidsevnen = ({ sykmelding }: BedreArbeidsevnenProps) => {
+export function BedreArbeidsevnen({ sykmelding }: Props) {
   const arbeidsevne = sykmelding.arbeidsevne;
   return (
-    <div className="sykmeldingMotebehovVisning__avsnitt">
-      <h5 className="undertittel">{tekster.bedreArbeidsevnen.header}</h5>
+    <VStack gap="2" className="mt-4">
+      <BodyShort size="small" weight="semibold">
+        {tekster.bedreArbeidsevnen.header}
+      </BodyShort>
 
       {arbeidsevne.tilretteleggingArbeidsplass && (
         <div>
-          <h6 className="sporsmal">
+          <BodyShort size="small" weight="semibold">
             {tekster.bedreArbeidsevnen.tilretteleggingTittel}
-          </h6>
-          <p>{arbeidsevne.tilretteleggingArbeidsplass}</p>
+          </BodyShort>
+          <BodyLong size="small">
+            {arbeidsevne.tilretteleggingArbeidsplass}
+          </BodyLong>
         </div>
       )}
 
       {arbeidsevne.tiltakNAV && (
         <div>
-          <h6 className="sporsmal">
+          <BodyShort size="small" weight="semibold">
             {tekster.bedreArbeidsevnen.tiltakNavTittel}
-          </h6>
-          <p>{arbeidsevne.tiltakNAV}</p>
+          </BodyShort>
+          <BodyLong size="small">{arbeidsevne.tiltakNAV}</BodyLong>
         </div>
       )}
 
       {arbeidsevne.tiltakAndre && (
         <div>
-          <h6 className="sporsmal">
+          <BodyShort size="small" weight="semibold">
             {tekster.bedreArbeidsevnen.tiltakAndreTittel}
-          </h6>
-          <p>{arbeidsevne.tiltakAndre}</p>
+          </BodyShort>
+          <BodyLong size="small">{arbeidsevne.tiltakAndre}</BodyLong>
         </div>
       )}
-    </div>
+    </VStack>
   );
-};
-
-export default BedreArbeidsevnen;
+}
