@@ -1,6 +1,6 @@
 import React from "react";
-import { Checkbox } from "nav-frontend-skjema";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { BodyShort, Checkbox } from "@navikt/ds-react";
 
 interface Props {
   checkboxLabel: string;
@@ -15,14 +15,13 @@ export function TilbakeIArbeidCheckboxMedSporsmalOgDato({
 }: Props) {
   return (
     <div>
-      <Checkbox
-        className="sykmeldingMotebehovVisning__checkbox"
-        label={checkboxLabel}
-        checked
-        disabled
-      />
-      <h6 className="sporsmal">{sporsmal}</h6>
-      <p>{tilLesbarDatoMedArstall(returDato)}</p>
+      <Checkbox size="small" checked readOnly>
+        {checkboxLabel}
+      </Checkbox>
+      <BodyShort size="small" weight="semibold">
+        {sporsmal}
+      </BodyShort>
+      <BodyShort size="small">{tilLesbarDatoMedArstall(returDato)}</BodyShort>
     </div>
   );
 }

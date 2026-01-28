@@ -1,7 +1,7 @@
 import React from "react";
-import { Checkbox } from "nav-frontend-skjema";
 import { TilbakeIArbeidCheckboxMedSporsmalOgDato } from "@/components/utdragFraSykefravaeret/TilbakeIArbeidCheckboxMedSporsmalOgDato";
 import { FriskmeldingDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import { BodyShort, Checkbox, VStack } from "@navikt/ds-react";
 
 const tekster = {
   header: "8 uker: Pasient med arbeidsgiver, utdypende opplysninger",
@@ -25,10 +25,12 @@ export function TilbakeIArbeidMedArbeidsgiver({ friskmelding }: Props) {
     friskmelding.antarReturAnnenArbeidsgiver;
 
   return (
-    <div className="sykmeldingMotebehovVisning__tilbakeIArbeid--medArbeidsgiver">
-      <h5 className="undertittel">{tekster.header}</h5>
+    <div>
+      <BodyShort size="small" weight="semibold">
+        {tekster.header}
+      </BodyShort>
       {antarRetur ? (
-        <div>
+        <VStack gap="2">
           {friskmelding.antarReturSammeArbeidsgiver && (
             <TilbakeIArbeidCheckboxMedSporsmalOgDato
               checkboxLabel={tekster.returSammeArbeidsgiver}
@@ -37,14 +39,11 @@ export function TilbakeIArbeidMedArbeidsgiver({ friskmelding }: Props) {
             />
           )}
           {friskmelding.antarReturAnnenArbeidsgiver && (
-            <Checkbox
-              className="sykmeldingMotebehovVisning__checkbox"
-              label={tekster.returAnnenArbeidsgiver}
-              checked
-              disabled
-            />
+            <Checkbox size="small" checked readOnly>
+              {tekster.returAnnenArbeidsgiver}
+            </Checkbox>
           )}
-        </div>
+        </VStack>
       ) : (
         <TilbakeIArbeidCheckboxMedSporsmalOgDato
           checkboxLabel={tekster.usikkerCheckboxLabel}
