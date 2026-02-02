@@ -26,6 +26,7 @@ import {
   useMeldingTilBehandlerDraftQuery,
   useSaveMeldingTilBehandlerDraft,
 } from "@/data/behandlerdialog/meldingtilbehandlerDraftQueryHooks";
+import { useDebouncedCallback } from "use-debounce";
 
 const texts = {
   sendKnapp: "Send til behandler",
@@ -87,26 +88,13 @@ export const MeldingTilBehandlerSkjema = () => {
   const hasHydratedDraftRef = useRef(false);
   const lastSavedDraftJsonRef = useRef<string>("");
 
-  const watchedValues = watch([
-    "meldingTekst",
-    "meldingType",
-    "behandlerRef",
-    "behandlerRefSok",
-  ]);
-
-  useEffect(() => {
-    if (!isDirty) {
-      return;
-    }
-
-    const [meldingTekst, meldingType, behandlerRef, behandlerRefSok] =
-      watchedValues;
-
-    const timeoutId = window.setTimeout(() => {
+  const debouncedAutoSaveDraft = useDebouncedCallback(
+    (values: MeldingTilBehandlerSkjemaValues) => {
       const draftPayload = {
-        tekst: meldingTekst ?? "",
-        meldingType: meldingType,
-        behandlerRef: behandlerRef || behandlerRefSok || undefined,
+        tekst: values.meldingTekst ?? "",
+        meldingType: values.meldingType,
+        behandlerRef:
+          values.behandlerRef || values.behandlerRefSok || undefined,
       };
 
       const draftJson = JSON.stringify(draftPayload);
@@ -122,17 +110,20 @@ export const MeldingTilBehandlerSkjema = () => {
           setLastUtkastSavedTime(new Date());
         },
         onError: () => {
+          setHasUtkastSaveFailed(true);
           setShowUtkastSaved(false);
           setLastUtkastSavedTime(undefined);
-          setHasUtkastSaveFailed(true);
         },
       });
-    }, 750);
+    },
+    750
+  );
 
+  useEffect(() => {
     return () => {
-      window.clearTimeout(timeoutId);
+      debouncedAutoSaveDraft.cancel();
     };
-  }, [isDirty, saveDraft, watchedValues]);
+  }, [debouncedAutoSaveDraft]);
 
   useEffect(() => {
     if (
@@ -200,6 +191,7 @@ export const MeldingTilBehandlerSkjema = () => {
         setShowUtkastSaved(false);
         setLastUtkastSavedTime(undefined);
         setSelectedBehandler(undefined);
+        debouncedAutoSaveDraft.cancel();
         reset();
 
         queryClient.setQueriesData(
@@ -218,7 +210,17 @@ export const MeldingTilBehandlerSkjema = () => {
 
   return (
     <FormProvider {...formMethods}>
-      <form onSubmit={handleSubmit(submit)} className={"flex flex-col gap-4"}>
+      <form
+        onSubmit={handleSubmit(submit)}
+        onChange={() => {
+          if (!isDirty) {
+            return;
+          }
+
+          debouncedAutoSaveDraft(getValues());
+        }}
+        className={"flex flex-col gap-4"}
+      >
         {lastMeldingSentTime && (
           <Alert variant="success" size="small">
             {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(
