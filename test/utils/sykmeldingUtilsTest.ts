@@ -7,7 +7,6 @@ import {
   erEkstraDiagnoseInformasjon,
   erFriskmeldingInformasjon,
   erHensynPaaArbeidsplassenInformasjon,
-  erMeldingTilArbeidsgiverInformasjon,
   erMulighetForArbeidInformasjon,
   newAndActivatedSykmeldinger,
   stringMedAlleGraderingerFraSykmeldingPerioder,
@@ -366,36 +365,6 @@ describe("sykmeldingUtils", () => {
       };
 
       const erIkkeEkstraInfo = erBedringAvArbeidsevnenInformasjon(sykmelding);
-
-      expect(erIkkeEkstraInfo).to.equal(false);
-    });
-  });
-
-  describe("erMeldingTilArbeidsgiverInformasjon", () => {
-    it("skal returnere true dersom sykmeldingen inneholder informasjon om melding til arbeidsgiver", () => {
-      const sykmelding: SykmeldingOldFormat = {
-        ...baseSykmelding,
-        innspillTilArbeidsgiver: "Arbeidsgiver må gjøre noe!",
-      };
-
-      const erEkstraInfo = erMeldingTilArbeidsgiverInformasjon(sykmelding);
-
-      expect(erEkstraInfo).to.equal(true);
-    });
-    it("skal returnere false dersom sykmeldingen ikke inneholder informasjon om melding til arbeidsgiver", () => {
-      const sykmelding: SykmeldingOldFormat = {
-        ...baseSykmelding,
-        innspillTilArbeidsgiver: undefined,
-      };
-
-      const erIkkeEkstraInfo = erMeldingTilArbeidsgiverInformasjon(sykmelding);
-
-      expect(erIkkeEkstraInfo).to.equal(false);
-    });
-    it("skal returnere false dersom sykmeldingen ikke inneholder innspillTilArbeidsgiver-felt, er undefined", () => {
-      const sykmelding = baseSykmelding;
-
-      const erIkkeEkstraInfo = erMeldingTilArbeidsgiverInformasjon(sykmelding);
 
       expect(erIkkeEkstraInfo).to.equal(false);
     });
