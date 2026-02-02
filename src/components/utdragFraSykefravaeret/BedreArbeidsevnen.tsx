@@ -17,7 +17,7 @@ interface Props {
 export function BedreArbeidsevnen({ sykmelding }: Props) {
   const arbeidsevne = sykmelding.arbeidsevne;
   return (
-    <VStack gap="2" className="mt-4">
+    <VStack gap="2" className="pt-4">
       <BodyShort size="small" weight="semibold">
         {tekster.header}
       </BodyShort>

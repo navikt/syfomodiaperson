@@ -33,7 +33,7 @@ export default function SykmeldingUtdragFraSykefravaretVisning({
     !!finnAvventendeSykmeldingTekst(sykmelding);
 
   return (
-    <div className="sykmeldingMotebehovVisning">
+    <div className="space-y-4 divide-y divide-gray-500">
       <GenerellSykmeldingInfo sykmelding={sykmelding} />
       {erMulighetForArbeidInformasjonSynlig && (
         <MulighetForArbeid sykmelding={sykmelding} />
