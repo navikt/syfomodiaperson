@@ -1,7 +1,7 @@
 import React from "react";
 import MeldingTilArbeidsgiver from "../motebehov/MeldingTilArbeidsgiver";
-import { MeldingTilNav } from "../motebehov/MeldingTilNav";
-import BedreArbeidsevnen from "../motebehov/BedreArbeidsevnen";
+import { MeldingTilNav } from "./MeldingTilNav";
+import { BedreArbeidsevnen } from "./BedreArbeidsevnen";
 import { UtdypendeOpplysninger } from "./UtdypendeOpplysninger";
 import { TilbakeIArbeid } from "@/components/utdragFraSykefravaeret/TilbakeIArbeid";
 import GenerellSykmeldingInfo from "./GenerellSykmeldingInfo";
