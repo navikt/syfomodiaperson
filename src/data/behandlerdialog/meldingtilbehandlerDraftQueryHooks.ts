@@ -12,9 +12,8 @@ export const meldingtilbehandlerDraftQueryKeys = {
 export function useMeldingTilBehandlerDraftQuery() {
   const personident = useValgtPersonident();
 
-  const fetchDraft = async () => {
-    return get<MeldingTilBehandlerDraftDTO>(draftPath, personident);
-  };
+  const fetchDraft = async () =>
+    get<MeldingTilBehandlerDraftDTO>(draftPath, personident);
 
   return useQuery({
     queryKey: meldingtilbehandlerDraftQueryKeys.draft(personident),
@@ -28,9 +27,8 @@ export function useSaveMeldingTilBehandlerDraft() {
   const personident = useValgtPersonident();
   const queryClient = useQueryClient();
 
-  const saveDraft = async (draft: MeldingTilBehandlerDraftDTO) => {
+  const saveDraft = async (draft: MeldingTilBehandlerDraftDTO) =>
     await put<void>(draftPath, draft, personident);
-  };
 
   return useMutation({
     mutationFn: saveDraft,
@@ -46,9 +44,8 @@ export function useDeleteMeldingTilBehandlerDraft() {
   const personident = useValgtPersonident();
   const queryClient = useQueryClient();
 
-  const deleteDraft = async () => {
+  const deleteDraft = async () =>
     await deleteRequest<void>(draftPath, personident);
-  };
 
   return useMutation({
     mutationFn: deleteDraft,
