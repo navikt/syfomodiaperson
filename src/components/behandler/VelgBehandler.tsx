@@ -71,7 +71,7 @@ export const VelgBehandler = ({
 
   const isBehandlerSokSelected = !!isBehandlerSokSelectedField.value;
 
-  const handleSetSelectedBehandler = (behandler: BehandlerDTO | undefined) => {
+  function handleSetSokBehandlerSelected(behandler: BehandlerDTO | undefined) {
     if (!behandler) {
       return;
     }
@@ -81,7 +81,17 @@ export const VelgBehandler = ({
     setValue("isBehandlerSokSelected", true);
 
     onBehandlerSelected(behandler);
-  };
+  }
+
+  function handleSetListedBehandlerSelected(
+    behandler: BehandlerDTO,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) {
+    setValue("behandlerRefSok", undefined);
+    setValue("isBehandlerSokSelected", false);
+    onBehandlerSelected(behandler);
+    field.onChange(event);
+  }
 
   const selectedBehandlerRefValue = field.value ?? undefined;
 
@@ -101,12 +111,9 @@ export const VelgBehandler = ({
         <Radio
           key={index}
           value={behandler.behandlerRef}
-          onChange={(event) => {
-            setValue("behandlerRefSok", undefined);
-            setValue("isBehandlerSokSelected", false);
-            onBehandlerSelected(behandler);
-            field.onChange(event);
-          }}
+          onChange={(event) =>
+            handleSetListedBehandlerSelected(behandler, event)
+          }
         >
           {behandlerDisplayText(behandler)}
         </Radio>
@@ -123,7 +130,9 @@ export const VelgBehandler = ({
       </Radio>
       {isBehandlerSokSelected && (
         <div className="flex flex-row items-center">
-          <BehandlerSearch setSelectedBehandler={handleSetSelectedBehandler} />
+          <BehandlerSearch
+            setSelectedBehandler={handleSetSokBehandlerSelected}
+          />
           <HelpText
             title={texts.sokEtterBehandlerHelpTextTitle}
             className="ml-1"
