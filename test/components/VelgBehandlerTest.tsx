@@ -120,16 +120,6 @@ describe("VelgBehandler", () => {
     expect(searchOption).to.have.property("checked", true);
 
     expect(screen.getByText(behandlerSearchResultMock.fnr)).to.exist;
-
-    // When selecting from search, the selected behandlerRef is stored in a separate hidden field
-    // so the search radio stays selected.
-    const behandlerRefSokInput = screen.getByLabelText(
-      "behandlerRefSok"
-    ) as HTMLInputElement;
-
-    expect(behandlerRefSokInput.value).to.equal(
-      behandlerSearchResultMock.behandlerRef
-    );
   });
   it("autovelger behandler fra radioknapper nar behandlerRef er forhndsutfylt", async () => {
     render(

@@ -27,9 +27,7 @@ export const VelgBehandler = ({
   const { data: behandlere, isLoading } = useBehandlereQuery();
   const { setValue, formState } = useFormContext();
 
-  const { field: behandlerRefSokField } = useController({
-    name: "behandlerRefSok",
-  });
+  const behandlerRefSok = useWatch({ name: "behandlerRefSok" });
 
   const { field: isBehandlerSokSelectedField } = useController({
     name: "isBehandlerSokSelected",
@@ -43,7 +41,7 @@ export const VelgBehandler = ({
         const isBehandlerSokSelected = !!isBehandlerSokSelectedField.value;
 
         if (isBehandlerSokSelected) {
-          return !!behandlerRefSokField.value || texts.behandlerMissing;
+          return !!behandlerRefSok || texts.behandlerMissing;
         }
 
         return !!value || texts.behandlerMissing;
@@ -139,11 +137,6 @@ export const VelgBehandler = ({
           >
             {texts.sokEtterBehandlerHelpText}
           </HelpText>
-          <input
-            type="hidden"
-            aria-label="behandlerRefSok"
-            {...behandlerRefSokField}
-          />
         </div>
       )}
     </RadioGroup>
