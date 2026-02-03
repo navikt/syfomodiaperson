@@ -55,13 +55,10 @@ export const MAX_LENGTH_BEHANDLER_MELDING = 5000;
 
 export const MeldingTilBehandlerSkjema = () => {
   const [displayPreview, setDisplayPreview] = useState(false);
-  const [showUtkastSaved, setShowUtkastSaved] = useState(false);
-  const [lastUtkastSavedTime, setLastUtkastSavedTime] = useState<Date>();
-  const [hasUtkastSaveFailed, setHasUtkastSaveFailed] = useState(false);
-  const [lastMeldingSentTime, setLastMeldingSentTime] = useState<Date>();
-  const [hasClearedAfterSend, setHasClearedAfterSend] = useState(false);
-  const { getMeldingTilBehandlerDocument } = useMeldingTilBehandlerDocument();
+  const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
+  const [meldingSentTime, setMeldingSentTime] = useState<Date>();
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
+  const { getMeldingTilBehandlerDocument } = useMeldingTilBehandlerDocument();
   const meldingTilBehandler = useMeldingTilBehandler();
   const formMethods = useForm<MeldingTilBehandlerSkjemaValues>({
     defaultValues: {
@@ -85,7 +82,6 @@ export const MeldingTilBehandlerSkjema = () => {
   const { data: draft } = useMeldingTilBehandlerDraftQuery();
   const saveDraft = useSaveMeldingTilBehandlerDraft();
   const deleteDraft = useDeleteMeldingTilBehandlerDraft();
-  const hasHydratedDraftRef = useRef(false);
   const lastSavedDraftJsonRef = useRef<string>("");
 
   const debouncedAutoSaveDraft = useDebouncedCallback(
@@ -105,14 +101,10 @@ export const MeldingTilBehandlerSkjema = () => {
       lastSavedDraftJsonRef.current = draftJson;
       saveDraft.mutate(draftPayload, {
         onSuccess: () => {
-          setHasUtkastSaveFailed(false);
-          setShowUtkastSaved(true);
-          setLastUtkastSavedTime(new Date());
+          setUtkastSavedTime(new Date());
         },
         onError: () => {
-          setHasUtkastSaveFailed(true);
-          setShowUtkastSaved(false);
-          setLastUtkastSavedTime(undefined);
+          setUtkastSavedTime(undefined);
         },
       });
     },
@@ -126,16 +118,14 @@ export const MeldingTilBehandlerSkjema = () => {
   }, [debouncedAutoSaveDraft]);
 
   useEffect(() => {
-    if (
-      hasClearedAfterSend ||
-      !draft ||
-      hasHydratedDraftRef.current ||
-      isDirty
-    ) {
+    if (!draft || isDirty) {
       return;
     }
 
-    hasHydratedDraftRef.current = true;
+    const currentMeldingTekst = getValues("meldingTekst");
+    if (currentMeldingTekst !== "") {
+      return;
+    }
 
     const meldingType = Object.values(MeldingType).includes(
       draft.meldingType as MeldingType
@@ -150,7 +140,7 @@ export const MeldingTilBehandlerSkjema = () => {
       behandlerRefSok: undefined,
       isBehandlerSokSelected: false,
     });
-  }, [draft, hasClearedAfterSend, isDirty, reset]);
+  }, [draft, isDirty, reset, getValues]);
 
   const meldingTekstErrorMessage =
     errors.meldingTekst &&
@@ -182,14 +172,10 @@ export const MeldingTilBehandlerSkjema = () => {
 
     meldingTilBehandler.mutate(meldingTilBehandlerDTO, {
       onSuccess: () => {
-        setLastMeldingSentTime(new Date());
+        setMeldingSentTime(new Date());
 
-        setHasClearedAfterSend(true);
-        hasHydratedDraftRef.current = true;
         lastSavedDraftJsonRef.current = "";
-        setHasUtkastSaveFailed(false);
-        setShowUtkastSaved(false);
-        setLastUtkastSavedTime(undefined);
+        setUtkastSavedTime(undefined);
         setSelectedBehandler(undefined);
         debouncedAutoSaveDraft.cancel();
         reset();
@@ -221,14 +207,14 @@ export const MeldingTilBehandlerSkjema = () => {
         }}
         className={"flex flex-col gap-4"}
       >
-        {lastMeldingSentTime && (
+        {meldingSentTime && (
           <Alert variant="success" size="small">
             {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(
-              lastMeldingSentTime
+              meldingSentTime
             )}`}
           </Alert>
         )}
-        {hasUtkastSaveFailed && (
+        {saveDraft.isError && (
           <Alert variant="error" size="small">
             {texts.utkastSaveFailed}
           </Alert>
@@ -279,10 +265,10 @@ export const MeldingTilBehandlerSkjema = () => {
             getMeldingTilBehandlerDocument(getValues()) ?? []
           }
         />
-        {showUtkastSaved && lastUtkastSavedTime && (
+        {utkastSavedTime && (
           <div className="mb-2 font-bold flex gap-2">
             <img src={SaveFile} alt="saved" />
-            <span>{utkastSavedText(lastUtkastSavedTime)}</span>
+            <span>{utkastSavedText(utkastSavedTime)}</span>
           </div>
         )}
         <ButtonRow>
