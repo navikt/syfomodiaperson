@@ -28,18 +28,13 @@ export const VelgBehandler = ({
   const { setValue, formState } = useFormContext();
 
   const behandlerRefSok = useWatch({ name: "behandlerRefSok" });
-
-  const { field: isBehandlerSokSelectedField } = useController({
-    name: "isBehandlerSokSelected",
-    defaultValue: false,
-  });
+  const isBehandlerSokSelected = useWatch({ name: "isBehandlerSokSelected" });
+  const watchedBehandlerRef = useWatch({ name: "behandlerRef" });
 
   const { field, fieldState } = useController({
     name: "behandlerRef",
     rules: {
       validate: (value) => {
-        const isBehandlerSokSelected = !!isBehandlerSokSelectedField.value;
-
         if (isBehandlerSokSelected) {
           return !!behandlerRefSok || texts.behandlerMissing;
         }
@@ -48,8 +43,6 @@ export const VelgBehandler = ({
       },
     },
   });
-
-  const watchedBehandlerRef = useWatch({ name: "behandlerRef" });
 
   useEffect(() => {
     if (!behandlere?.length || !watchedBehandlerRef) {
@@ -66,8 +59,6 @@ export const VelgBehandler = ({
 
     onBehandlerSelected(matchingBehandler);
   }, [behandlere, onBehandlerSelected, watchedBehandlerRef]);
-
-  const isBehandlerSokSelected = !!isBehandlerSokSelectedField.value;
 
   function handleSetSokBehandlerSelected(behandler: BehandlerDTO | undefined) {
     if (!behandler) {
@@ -91,23 +82,19 @@ export const VelgBehandler = ({
     field.onChange(event);
   }
 
-  const selectedBehandlerRefValue = field.value ?? undefined;
-
-  const isSubmitted = formState.submitCount > 0;
-
   return isLoading ? (
     <AppSpinner />
   ) : (
     <RadioGroup
       legend={legend}
       name="behandlerRef"
-      error={isSubmitted ? fieldState.error?.message : undefined}
+      error={formState.submitCount > 0 ? fieldState.error?.message : undefined}
       size="small"
-      value={selectedBehandlerRefValue}
+      value={field.value}
     >
-      {behandlere.map((behandler, index) => (
+      {behandlere.map((behandler) => (
         <Radio
-          key={index}
+          key={behandler.behandlerRef}
           value={behandler.behandlerRef}
           onChange={(event) =>
             handleSetListedBehandlerSelected(behandler, event)
