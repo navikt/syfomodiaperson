@@ -112,12 +112,6 @@ export const MeldingTilBehandlerSkjema = () => {
   );
 
   useEffect(() => {
-    return () => {
-      debouncedAutoSaveDraft.cancel();
-    };
-  }, [debouncedAutoSaveDraft]);
-
-  useEffect(() => {
     if (!draft || isDirty) {
       return;
     }
