@@ -97,6 +97,14 @@ export const MeldingTilBehandlerSkjema = () => {
           values.behandlerRef || values.behandlerRefSok || undefined,
       };
 
+      if (
+        !draftPayload.tekst &&
+        !draftPayload.meldingType &&
+        !draftPayload.behandlerRef
+      ) {
+        return;
+      }
+
       const draftJson = JSON.stringify(draftPayload);
       if (draftJson === lastSavedDraftJsonRef.current) {
         return;
@@ -153,12 +161,13 @@ export const MeldingTilBehandlerSkjema = () => {
 
   useEffect(() => {
     const subscription = watch((values, { type }) => {
-      if (type === "change" && isDirty) {
+      if (type) {
         debouncedAutoSaveDraft(values as MeldingTilBehandlerSkjemaValues);
       }
     });
     return () => subscription.unsubscribe();
-  }, [watch, isDirty, debouncedAutoSaveDraft]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const meldingTekstErrorMessage =
     errors.meldingTekst &&
