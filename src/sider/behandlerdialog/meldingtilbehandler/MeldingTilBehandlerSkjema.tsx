@@ -67,6 +67,7 @@ export const MeldingTilBehandlerSkjema = () => {
       behandlerRef: undefined,
       behandlerRefSok: undefined,
       isBehandlerSokSelected: false,
+      meldingType: "" as any,
       meldingTekst: "",
     },
   });
@@ -115,7 +116,7 @@ export const MeldingTilBehandlerSkjema = () => {
   );
 
   useEffect(() => {
-    if (!draft || hasHydratedRef.current) {
+    if (!draft || hasHydratedRef.current || isDirty) {
       return;
     }
 
@@ -148,20 +149,16 @@ export const MeldingTilBehandlerSkjema = () => {
     }
 
     hasHydratedRef.current = true;
-  }, [draft, reset, getValues, behandlere]);
-
-  const watchedBehandlerRef = watch("behandlerRef");
-  const watchedMeldingTekst = watch("meldingTekst");
-  const watchedMeldingType = watch("meldingType");
+  }, [draft, reset, getValues, behandlere, isDirty]);
 
   useEffect(() => {
-    if (!isDirty) {
-      return;
-    }
-
-    debouncedAutoSaveDraft(getValues());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [watchedBehandlerRef, watchedMeldingTekst, watchedMeldingType, isDirty]);
+    const subscription = watch((values, { type }) => {
+      if (type === "change" && isDirty) {
+        debouncedAutoSaveDraft(values as MeldingTilBehandlerSkjemaValues);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, isDirty, debouncedAutoSaveDraft]);
 
   const meldingTekstErrorMessage =
     errors.meldingTekst &&

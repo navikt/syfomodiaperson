@@ -42,7 +42,6 @@ export const VelgBehandler = ({
         shouldDirty: true,
       });
       onBehandlerSelected(behandler);
-      setShowBehandlerSearch(false);
     }
   };
 
