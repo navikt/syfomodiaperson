@@ -137,7 +137,6 @@ export const MeldingTilBehandlerSkjema = () => {
       isBehandlerSokSelected: false,
     });
 
-    // Hydrere selectedBehandler kun hvis behandleren finnes i listen (ikke søkt fram)
     if (draft.behandlerRef && behandlere.length > 0) {
       const matchingBehandler = behandlere.find(
         (b) => b.behandlerRef === draft.behandlerRef
@@ -147,6 +146,25 @@ export const MeldingTilBehandlerSkjema = () => {
       }
     }
   }, [draft, isDirty, reset, getValues, behandlere]);
+
+  const watchedBehandlerRef = watch("behandlerRef");
+  const watchedMeldingTekst = watch("meldingTekst");
+  const watchedMeldingType = watch("meldingType");
+
+  useEffect(() => {
+    if (!isDirty) {
+      return;
+    }
+
+    debouncedAutoSaveDraft(getValues());
+  }, [
+    watchedBehandlerRef,
+    watchedMeldingTekst,
+    watchedMeldingType,
+    isDirty,
+    debouncedAutoSaveDraft,
+    getValues,
+  ]);
 
   const meldingTekstErrorMessage =
     errors.meldingTekst &&
@@ -202,17 +220,7 @@ export const MeldingTilBehandlerSkjema = () => {
 
   return (
     <FormProvider {...formMethods}>
-      <form
-        onSubmit={handleSubmit(submit)}
-        onChange={() => {
-          if (!isDirty) {
-            return;
-          }
-
-          debouncedAutoSaveDraft(getValues());
-        }}
-        className={"flex flex-col gap-4"}
-      >
+      <form onSubmit={handleSubmit(submit)} className={"flex flex-col gap-4"}>
         {meldingSentTime && (
           <Alert variant="success" size="small">
             {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(
