@@ -60,10 +60,9 @@ export const VelgBehandler = ({
           key={index}
           value={behandler.behandlerRef}
           checked={field.value === behandler.behandlerRef}
-          onChange={(event) => {
+          onChange={() => {
             setShowBehandlerSearch(false);
-            field.onChange(event);
-            onBehandlerSelected(behandler);
+            handleSetSelectedBehandler(behandler);
           }}
         >
           {behandlerDisplayText(behandler)}
