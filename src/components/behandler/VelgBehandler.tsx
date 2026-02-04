@@ -39,8 +39,10 @@ export const VelgBehandler = ({
     if (behandler) {
       setValue("behandlerRef", behandler?.behandlerRef, {
         shouldValidate: true,
+        shouldDirty: true,
       });
       onBehandlerSelected(behandler);
+      setShowBehandlerSearch(false);
     }
   };
 
@@ -57,10 +59,11 @@ export const VelgBehandler = ({
         <Radio
           key={index}
           value={behandler.behandlerRef}
+          checked={field.value === behandler.behandlerRef}
           onChange={(event) => {
             setShowBehandlerSearch(false);
-            handleSetSelectedBehandler(behandler);
             field.onChange(event);
+            onBehandlerSelected(behandler);
           }}
         >
           {behandlerDisplayText(behandler)}
@@ -68,6 +71,7 @@ export const VelgBehandler = ({
       ))}
       <Radio
         value=""
+        checked={field.value === ""}
         onChange={(event) => {
           setShowBehandlerSearch(true);
           field.onChange(event);
