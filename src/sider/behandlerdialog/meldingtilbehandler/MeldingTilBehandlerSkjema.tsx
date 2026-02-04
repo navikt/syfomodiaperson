@@ -172,7 +172,6 @@ export const MeldingTilBehandlerSkjema = () => {
         setUtkastSavedTime(undefined);
         setSelectedBehandler(undefined);
         debouncedAutoSaveDraft.cancel();
-        reset();
 
         queryClient.setQueriesData(
           { queryKey: ["meldingtilbehandlerDraft"] },
@@ -180,6 +179,7 @@ export const MeldingTilBehandlerSkjema = () => {
         );
 
         deleteDraft.mutate(undefined);
+        reset();
       },
     });
   };
