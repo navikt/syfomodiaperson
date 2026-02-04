@@ -27,6 +27,7 @@ import {
   useSaveMeldingTilBehandlerDraft,
 } from "@/data/behandlerdialog/meldingtilbehandlerDraftQueryHooks";
 import { useDebouncedCallback } from "use-debounce";
+import { useBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
 
 const texts = {
   sendKnapp: "Send til behandler",
@@ -60,6 +61,7 @@ export const MeldingTilBehandlerSkjema = () => {
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
   const { getMeldingTilBehandlerDocument } = useMeldingTilBehandlerDocument();
   const meldingTilBehandler = useMeldingTilBehandler();
+  const { data: behandlere } = useBehandlereQuery();
   const formMethods = useForm<MeldingTilBehandlerSkjemaValues>({
     defaultValues: {
       behandlerRef: undefined,
@@ -134,7 +136,17 @@ export const MeldingTilBehandlerSkjema = () => {
       behandlerRefSok: undefined,
       isBehandlerSokSelected: false,
     });
-  }, [draft, isDirty, reset, getValues]);
+
+    // Hydrere selectedBehandler kun hvis behandleren finnes i listen (ikke søkt fram)
+    if (draft.behandlerRef && behandlere.length > 0) {
+      const matchingBehandler = behandlere.find(
+        (b) => b.behandlerRef === draft.behandlerRef
+      );
+      if (matchingBehandler) {
+        setSelectedBehandler(matchingBehandler);
+      }
+    }
+  }, [draft, isDirty, reset, getValues, behandlere]);
 
   const meldingTekstErrorMessage =
     errors.meldingTekst &&

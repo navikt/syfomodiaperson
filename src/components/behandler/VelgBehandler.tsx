@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import AppSpinner from "@/components/AppSpinner";
 import { useBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
 import { HelpText, Radio, RadioGroup } from "@navikt/ds-react";
 import BehandlerSearch from "@/components/behandler/BehandlerSearch";
 import { behandlerDisplayText } from "@/utils/behandlerUtils";
-import { useController, useFormContext, useWatch } from "react-hook-form";
+import { useController, useFormContext } from "react-hook-form";
 
 const texts = {
   sokEtterBehandlerHelpText:
@@ -25,62 +25,24 @@ export const VelgBehandler = ({
   onBehandlerSelected,
 }: VelgBehandlerProps) => {
   const { data: behandlere, isLoading } = useBehandlereQuery();
-  const { setValue, formState } = useFormContext();
-
-  const behandlerRefSok = useWatch({ name: "behandlerRefSok" });
-  const isBehandlerSokSelected = useWatch({ name: "isBehandlerSokSelected" });
-  const watchedBehandlerRef = useWatch({ name: "behandlerRef" });
-
+  const [showBehandlerSearch, setShowBehandlerSearch] =
+    useState<boolean>(false);
+  const { setValue } = useFormContext();
   const { field, fieldState } = useController({
     name: "behandlerRef",
     rules: {
-      validate: (value) => {
-        if (isBehandlerSokSelected) {
-          return !!behandlerRefSok || texts.behandlerMissing;
-        }
-
-        return !!value || texts.behandlerMissing;
-      },
+      required: texts.behandlerMissing,
     },
   });
 
-  useEffect(() => {
-    if (!behandlere?.length || !watchedBehandlerRef) {
-      return;
+  const handleSetSelectedBehandler = (behandler: BehandlerDTO | undefined) => {
+    if (behandler) {
+      setValue("behandlerRef", behandler?.behandlerRef, {
+        shouldValidate: true,
+      });
+      onBehandlerSelected(behandler);
     }
-
-    const matchingBehandler = behandlere.find(
-      (behandler) => behandler.behandlerRef === watchedBehandlerRef
-    );
-
-    if (!matchingBehandler) {
-      return;
-    }
-
-    onBehandlerSelected(matchingBehandler);
-  }, [behandlere, onBehandlerSelected, watchedBehandlerRef]);
-
-  function handleSetSokBehandlerSelected(behandler: BehandlerDTO | undefined) {
-    if (!behandler) {
-      return;
-    }
-
-    setValue("behandlerRef", undefined);
-    setValue("behandlerRefSok", behandler.behandlerRef, { shouldDirty: true });
-    setValue("isBehandlerSokSelected", true);
-
-    onBehandlerSelected(behandler);
-  }
-
-  function handleSetListedBehandlerSelected(
-    behandler: BehandlerDTO,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) {
-    setValue("behandlerRefSok", undefined);
-    setValue("isBehandlerSokSelected", false);
-    onBehandlerSelected(behandler);
-    field.onChange(event);
-  }
+  };
 
   return isLoading ? (
     <AppSpinner />
@@ -88,36 +50,34 @@ export const VelgBehandler = ({
     <RadioGroup
       legend={legend}
       name="behandlerRef"
-      error={formState.submitCount > 0 ? fieldState.error?.message : undefined}
+      error={fieldState.error?.message}
       size="small"
-      value={field.value}
     >
-      {behandlere.map((behandler) => (
+      {behandlere.map((behandler, index) => (
         <Radio
-          key={behandler.behandlerRef}
+          key={index}
           value={behandler.behandlerRef}
-          onChange={(event) =>
-            handleSetListedBehandlerSelected(behandler, event)
-          }
+          onChange={(event) => {
+            setShowBehandlerSearch(false);
+            handleSetSelectedBehandler(behandler);
+            field.onChange(event);
+          }}
         >
           {behandlerDisplayText(behandler)}
         </Radio>
       ))}
       <Radio
-        value={"__SOK__"}
-        checked={isBehandlerSokSelected}
-        onChange={() => {
-          setValue("behandlerRef", undefined);
-          setValue("isBehandlerSokSelected", true);
+        value=""
+        onChange={(event) => {
+          setShowBehandlerSearch(true);
+          field.onChange(event);
         }}
       >
         {texts.behandlerSearchOptionText}
       </Radio>
-      {isBehandlerSokSelected && (
+      {showBehandlerSearch && (
         <div className="flex flex-row items-center">
-          <BehandlerSearch
-            setSelectedBehandler={handleSetSokBehandlerSelected}
-          />
+          <BehandlerSearch setSelectedBehandler={handleSetSelectedBehandler} />
           <HelpText
             title={texts.sokEtterBehandlerHelpTextTitle}
             className="ml-1"
