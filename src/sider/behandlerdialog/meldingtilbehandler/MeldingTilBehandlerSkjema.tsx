@@ -85,6 +85,7 @@ export const MeldingTilBehandlerSkjema = () => {
   const saveDraft = useSaveMeldingTilBehandlerDraft();
   const deleteDraft = useDeleteMeldingTilBehandlerDraft();
   const lastSavedDraftJsonRef = useRef<string>("");
+  const hasHydratedRef = useRef(false);
 
   const debouncedAutoSaveDraft = useDebouncedCallback(
     (values: MeldingTilBehandlerSkjemaValues) => {
@@ -114,7 +115,7 @@ export const MeldingTilBehandlerSkjema = () => {
   );
 
   useEffect(() => {
-    if (!draft || isDirty) {
+    if (!draft || hasHydratedRef.current) {
       return;
     }
 
@@ -145,7 +146,9 @@ export const MeldingTilBehandlerSkjema = () => {
         setSelectedBehandler(matchingBehandler);
       }
     }
-  }, [draft, isDirty, reset, getValues, behandlere]);
+
+    hasHydratedRef.current = true;
+  }, [draft, reset, getValues, behandlere]);
 
   const watchedBehandlerRef = watch("behandlerRef");
   const watchedMeldingTekst = watch("meldingTekst");
@@ -157,14 +160,8 @@ export const MeldingTilBehandlerSkjema = () => {
     }
 
     debouncedAutoSaveDraft(getValues());
-  }, [
-    watchedBehandlerRef,
-    watchedMeldingTekst,
-    watchedMeldingType,
-    isDirty,
-    debouncedAutoSaveDraft,
-    getValues,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchedBehandlerRef, watchedMeldingTekst, watchedMeldingType, isDirty]);
 
   const meldingTekstErrorMessage =
     errors.meldingTekst &&
@@ -201,6 +198,7 @@ export const MeldingTilBehandlerSkjema = () => {
         lastSavedDraftJsonRef.current = "";
         setUtkastSavedTime(undefined);
         setSelectedBehandler(undefined);
+        hasHydratedRef.current = false;
         debouncedAutoSaveDraft.cancel();
 
         queryClient.setQueriesData(
