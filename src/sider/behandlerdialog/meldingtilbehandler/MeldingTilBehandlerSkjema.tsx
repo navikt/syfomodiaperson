@@ -90,10 +90,14 @@ export const MeldingTilBehandlerSkjema = () => {
 
   const debouncedAutoSaveDraft = useDebouncedCallback(
     (values: MeldingTilBehandlerSkjemaValues) => {
-      const behandlerRefValue =
+      let behandlerRefValue =
         values.behandlerRef === "__NONE__"
           ? undefined
           : values.behandlerRef || values.behandlerRefSok || undefined;
+
+      if (behandlerRefValue?.startsWith("__SEARCH__")) {
+        behandlerRefValue = behandlerRefValue.substring("__SEARCH__".length);
+      }
 
       const draftPayload = {
         tekst: values.meldingTekst ?? "",
@@ -183,8 +187,13 @@ export const MeldingTilBehandlerSkjema = () => {
   };
 
   const submit = (values: MeldingTilBehandlerSkjemaValues) => {
-    const behandlerRefToUse =
+    let behandlerRefToUse =
       values.behandlerRef || values.behandlerRefSok || undefined;
+
+    // Fjern __SEARCH__ prefix hvis det finnes
+    if (behandlerRefToUse?.startsWith("__SEARCH__")) {
+      behandlerRefToUse = behandlerRefToUse.substring("__SEARCH__".length);
+    }
 
     if (!behandlerRefToUse) {
       return;

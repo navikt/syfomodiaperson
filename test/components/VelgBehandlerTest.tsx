@@ -115,7 +115,9 @@ describe("VelgBehandler", () => {
     await userEvent.click(searchResult);
 
     expect(await screen.findByText(behandlerSearchResultMock.fnr)).to.exist;
-    expect(screen.getByText(behandlerSearchResultMock.behandlerRef)).to.exist;
+    expect(
+      screen.getByText(`__SEARCH__${behandlerSearchResultMock.behandlerRef}`)
+    ).to.exist;
   });
 });
 

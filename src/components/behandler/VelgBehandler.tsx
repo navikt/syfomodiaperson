@@ -29,9 +29,9 @@ export const VelgBehandler = ({
   const { field, fieldState } = useController({
     name: "behandlerRef",
     rules: {
-      required: texts.behandlerMissing,
       validate: (value) =>
-        (value !== "__NONE__" && value !== "") || texts.behandlerMissing,
+        (value && value !== "__NONE__" && value !== "") ||
+        texts.behandlerMissing,
     },
   });
   const [showBehandlerSearch, setShowBehandlerSearch] =
@@ -40,10 +40,12 @@ export const VelgBehandler = ({
     undefined
   );
 
-  const handleSetSelectedBehandler = (behandler: BehandlerDTO | undefined) => {
+  const handleSetSelectedBehandlerFromSearch = (
+    behandler: BehandlerDTO | undefined
+  ) => {
     if (behandler) {
       selectedBehandlerFromSearchRef.current = behandler;
-      setValue("behandlerRef", behandler?.behandlerRef, {
+      setValue("behandlerRef", `__SEARCH__${behandler.behandlerRef}`, {
         shouldValidate: true,
         shouldDirty: true,
       });
@@ -55,11 +57,10 @@ export const VelgBehandler = ({
     setShowBehandlerSearch(field.value === "");
 
     if (field.value && field.value !== "" && field.value !== "__NONE__") {
-      if (
-        selectedBehandlerFromSearchRef.current &&
-        selectedBehandlerFromSearchRef.current.behandlerRef === field.value
-      ) {
-        onBehandlerSelected(selectedBehandlerFromSearchRef.current);
+      if (field.value.startsWith("__SEARCH__")) {
+        if (selectedBehandlerFromSearchRef.current) {
+          onBehandlerSelected(selectedBehandlerFromSearchRef.current);
+        }
       } else {
         const matchingBehandler = behandlere.find(
           (b) => b.behandlerRef === field.value
@@ -89,7 +90,9 @@ export const VelgBehandler = ({
       <Radio value="">{texts.behandlerSearchOptionText}</Radio>
       {showBehandlerSearch && (
         <div className="flex flex-row items-center">
-          <BehandlerSearch setSelectedBehandler={handleSetSelectedBehandler} />
+          <BehandlerSearch
+            setSelectedBehandler={handleSetSelectedBehandlerFromSearch}
+          />
           <HelpText
             title={texts.sokEtterBehandlerHelpTextTitle}
             className="ml-1"
