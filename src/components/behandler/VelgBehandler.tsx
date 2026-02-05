@@ -32,9 +32,8 @@ export const VelgBehandler = ({
       required: texts.behandlerMissing,
     },
   });
-  const [showBehandlerSearch, setShowBehandlerSearch] = useState<boolean>(
-    !field.value || field.value === ""
-  );
+  const [showBehandlerSearch, setShowBehandlerSearch] =
+    useState<boolean>(false);
 
   const handleSetSelectedBehandler = (behandler: BehandlerDTO | undefined) => {
     if (behandler) {
@@ -66,7 +65,7 @@ export const VelgBehandler = ({
       legend={legend}
       error={fieldState.error?.message}
       size="small"
-      value={field.value ?? ""}
+      value={field.value}
       onChange={field.onChange}
     >
       {behandlere.map((behandler, index) => (
