@@ -54,7 +54,9 @@ export const VelgBehandler = ({
   };
 
   useEffect(() => {
-    setShowBehandlerSearch(field.value === "");
+    setShowBehandlerSearch(
+      field.value === "" || field.value.startsWith("__SEARCH__")
+    );
 
     if (field.value && field.value !== "" && field.value !== "__NONE__") {
       if (field.value.startsWith("__SEARCH__")) {
@@ -79,7 +81,7 @@ export const VelgBehandler = ({
       legend={legend}
       error={fieldState.error?.message}
       size="small"
-      value={field.value || ""}
+      value={field.value?.startsWith("__SEARCH__") ? "" : field.value || ""}
       onChange={field.onChange}
     >
       {behandlere.map((behandler, index) => (
