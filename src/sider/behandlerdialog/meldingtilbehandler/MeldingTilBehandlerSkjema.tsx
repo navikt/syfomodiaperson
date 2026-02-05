@@ -46,8 +46,6 @@ const texts = {
 
 export interface MeldingTilBehandlerSkjemaValues {
   behandlerRef?: string;
-  behandlerRefSok?: string;
-  isBehandlerSokSelected?: boolean;
   meldingType: MeldingType;
   meldingTekst: string;
 }
@@ -65,8 +63,6 @@ export const MeldingTilBehandlerSkjema = () => {
   const formMethods = useForm<MeldingTilBehandlerSkjemaValues>({
     defaultValues: {
       behandlerRef: "__NONE__",
-      behandlerRefSok: undefined,
-      isBehandlerSokSelected: false,
       meldingType: "" as any,
       meldingTekst: "",
     },
@@ -88,16 +84,18 @@ export const MeldingTilBehandlerSkjema = () => {
   const lastSavedDraftJsonRef = useRef<string>("");
   const hasHydratedRef = useRef(false);
 
+  const cleanBehandlerRef = (behandlerRef?: string): string | undefined => {
+    if (!behandlerRef || behandlerRef === "__NONE__") {
+      return undefined;
+    }
+    return behandlerRef.startsWith("__SEARCH__")
+      ? behandlerRef.substring("__SEARCH__".length)
+      : behandlerRef;
+  };
+
   const debouncedAutoSaveDraft = useDebouncedCallback(
     (values: MeldingTilBehandlerSkjemaValues) => {
-      let behandlerRefValue =
-        values.behandlerRef === "__NONE__"
-          ? undefined
-          : values.behandlerRef || values.behandlerRefSok || undefined;
-
-      if (behandlerRefValue?.startsWith("__SEARCH__")) {
-        behandlerRefValue = behandlerRefValue.substring("__SEARCH__".length);
-      }
+      const behandlerRefValue = cleanBehandlerRef(values.behandlerRef);
 
       const draftPayload = {
         tekst: values.meldingTekst ?? "",
@@ -151,8 +149,6 @@ export const MeldingTilBehandlerSkjema = () => {
       meldingTekst: draft.tekst,
       meldingType: meldingType,
       behandlerRef: draft.behandlerRef ?? undefined,
-      behandlerRefSok: undefined,
-      isBehandlerSokSelected: false,
     });
 
     if (draft.behandlerRef && behandlere.length > 0) {
@@ -168,14 +164,11 @@ export const MeldingTilBehandlerSkjema = () => {
   }, [draft, reset, getValues, behandlere, isDirty]);
 
   useEffect(() => {
-    const subscription = watch((values, { type }) => {
-      if (type) {
-        debouncedAutoSaveDraft(values as MeldingTilBehandlerSkjemaValues);
-      }
+    const subscription = watch((values) => {
+      debouncedAutoSaveDraft(values as MeldingTilBehandlerSkjemaValues);
     });
     return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [debouncedAutoSaveDraft, watch]);
 
   const meldingTekstErrorMessage =
     errors.meldingTekst &&
@@ -187,12 +180,7 @@ export const MeldingTilBehandlerSkjema = () => {
   };
 
   const submit = (values: MeldingTilBehandlerSkjemaValues) => {
-    let behandlerRefToUse =
-      values.behandlerRef || values.behandlerRefSok || undefined;
-
-    if (behandlerRefToUse?.startsWith("__SEARCH__")) {
-      behandlerRefToUse = behandlerRefToUse.substring("__SEARCH__".length);
-    }
+    const behandlerRefToUse = cleanBehandlerRef(values.behandlerRef);
 
     if (!behandlerRefToUse) {
       return;
