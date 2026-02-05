@@ -190,7 +190,6 @@ export const MeldingTilBehandlerSkjema = () => {
     let behandlerRefToUse =
       values.behandlerRef || values.behandlerRefSok || undefined;
 
-    // Fjern __SEARCH__ prefix hvis det finnes
     if (behandlerRefToUse?.startsWith("__SEARCH__")) {
       behandlerRefToUse = behandlerRefToUse.substring("__SEARCH__".length);
     }
@@ -219,13 +218,13 @@ export const MeldingTilBehandlerSkjema = () => {
         setSelectedBehandler(undefined);
         debouncedAutoSaveDraft.cancel();
 
-        queryClient.setQueriesData(
-          { queryKey: ["meldingtilbehandlerDraft"] },
-          undefined
-        );
+        queryClient.invalidateQueries({
+          queryKey: ["meldingtilbehandlerDraft"],
+        });
 
         deleteDraft.mutate(undefined);
         reset();
+        hasHydratedRef.current = true;
       },
     });
   };
