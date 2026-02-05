@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import AppSpinner from "@/components/AppSpinner";
 import { useBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
@@ -30,13 +30,19 @@ export const VelgBehandler = ({
     name: "behandlerRef",
     rules: {
       required: texts.behandlerMissing,
+      validate: (value) =>
+        (value !== "__NONE__" && value !== "") || texts.behandlerMissing,
     },
   });
   const [showBehandlerSearch, setShowBehandlerSearch] =
     useState<boolean>(false);
+  const selectedBehandlerFromSearchRef = useRef<BehandlerDTO | undefined>(
+    undefined
+  );
 
   const handleSetSelectedBehandler = (behandler: BehandlerDTO | undefined) => {
     if (behandler) {
+      selectedBehandlerFromSearchRef.current = behandler;
       setValue("behandlerRef", behandler?.behandlerRef, {
         shouldValidate: true,
         shouldDirty: true,
@@ -48,12 +54,19 @@ export const VelgBehandler = ({
   useEffect(() => {
     setShowBehandlerSearch(field.value === "");
 
-    if (field.value && field.value !== "") {
-      const matchingBehandler = behandlere.find(
-        (b) => b.behandlerRef === field.value
-      );
-      if (matchingBehandler) {
-        onBehandlerSelected(matchingBehandler);
+    if (field.value && field.value !== "" && field.value !== "__NONE__") {
+      if (
+        selectedBehandlerFromSearchRef.current &&
+        selectedBehandlerFromSearchRef.current.behandlerRef === field.value
+      ) {
+        onBehandlerSelected(selectedBehandlerFromSearchRef.current);
+      } else {
+        const matchingBehandler = behandlere.find(
+          (b) => b.behandlerRef === field.value
+        );
+        if (matchingBehandler) {
+          onBehandlerSelected(matchingBehandler);
+        }
       }
     }
   }, [field.value, behandlere, onBehandlerSelected]);
@@ -65,7 +78,7 @@ export const VelgBehandler = ({
       legend={legend}
       error={fieldState.error?.message}
       size="small"
-      value={field.value}
+      value={field.value || ""}
       onChange={field.onChange}
     >
       {behandlere.map((behandler, index) => (

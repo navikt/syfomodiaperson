@@ -64,7 +64,7 @@ export const MeldingTilBehandlerSkjema = () => {
   const { data: behandlere } = useBehandlereQuery();
   const formMethods = useForm<MeldingTilBehandlerSkjemaValues>({
     defaultValues: {
-      behandlerRef: undefined,
+      behandlerRef: "__NONE__",
       behandlerRefSok: undefined,
       isBehandlerSokSelected: false,
       meldingType: "" as any,
@@ -90,11 +90,15 @@ export const MeldingTilBehandlerSkjema = () => {
 
   const debouncedAutoSaveDraft = useDebouncedCallback(
     (values: MeldingTilBehandlerSkjemaValues) => {
+      const behandlerRefValue =
+        values.behandlerRef === "__NONE__"
+          ? undefined
+          : values.behandlerRef || values.behandlerRefSok || undefined;
+
       const draftPayload = {
         tekst: values.meldingTekst ?? "",
         meldingType: values.meldingType,
-        behandlerRef:
-          values.behandlerRef || values.behandlerRefSok || undefined,
+        behandlerRef: behandlerRefValue,
       };
 
       if (

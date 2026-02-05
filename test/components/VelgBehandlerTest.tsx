@@ -114,14 +114,18 @@ describe("VelgBehandler", () => {
     });
     await userEvent.click(searchResult);
 
-    expect(screen.getByText(behandlerSearchResultMock.fnr)).to.exist;
+    expect(await screen.findByText(behandlerSearchResultMock.fnr)).to.exist;
     expect(screen.getByText(behandlerSearchResultMock.behandlerRef)).to.exist;
   });
 });
 
 const VelgBehandlerWrapper = () => {
   const [behandler, setBehandler] = useState<BehandlerDTO>();
-  const formMethods = useForm<{ behandlerRef: string }>();
+  const formMethods = useForm<{ behandlerRef: string }>({
+    defaultValues: {
+      behandlerRef: "__NONE__",
+    },
+  });
   const submit = ({}) => {
     /* noop */
   };
