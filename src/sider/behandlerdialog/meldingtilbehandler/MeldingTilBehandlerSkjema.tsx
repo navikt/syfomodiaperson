@@ -276,6 +276,7 @@ export const MeldingTilBehandlerSkjema = () => {
           legend={texts.velgBehandlerLegend}
         />
         <Textarea
+          key={hasHydratedRef.current ? "hydrated" : "initial"}
           label={texts.meldingsTekstLabel}
           {...register("meldingTekst", {
             required: true,
