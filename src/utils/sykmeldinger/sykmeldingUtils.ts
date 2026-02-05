@@ -95,12 +95,6 @@ export const erMeldingTilNavInformasjon = (
   );
 };
 
-export const erMeldingTilArbeidsgiverInformasjon = (
-  sykmelding: SykmeldingOldFormat
-): boolean => {
-  return !!sykmelding.innspillTilArbeidsgiver;
-};
-
 export const erUtdypendeOpplysninger = (
   sykmelding: SykmeldingOldFormat
 ): boolean => {
@@ -123,7 +117,7 @@ export const erEkstraInformasjonISykmeldingen = (
     erUtdypendeOpplysninger(sykmelding) ||
     erBedringAvArbeidsevnenInformasjon(sykmelding) ||
     erMeldingTilNavInformasjon(sykmelding) ||
-    erMeldingTilArbeidsgiverInformasjon(sykmelding) ||
+    !!sykmelding.innspillTilArbeidsgiver ||
     erBehandlingsdagerEllerReisetilskudd(sykmelding)
   );
 };

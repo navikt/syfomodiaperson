@@ -1,5 +1,5 @@
 import React from "react";
-import MeldingTilArbeidsgiver from "../motebehov/MeldingTilArbeidsgiver";
+import { MeldingTilArbeidsgiver } from "./MeldingTilArbeidsgiver";
 import { MeldingTilNav } from "./MeldingTilNav";
 import { BedreArbeidsevnen } from "./BedreArbeidsevnen";
 import { UtdypendeOpplysninger } from "./UtdypendeOpplysninger";
@@ -13,7 +13,6 @@ import {
 import {
   erBedringAvArbeidsevnenInformasjon,
   erFriskmeldingInformasjon,
-  erMeldingTilArbeidsgiverInformasjon,
   erMeldingTilNavInformasjon,
   erMulighetForArbeidInformasjon,
   erUtdypendeOpplysninger,
@@ -26,8 +25,6 @@ interface Props {
 export default function SykmeldingUtdragFraSykefravaretVisning({
   sykmelding,
 }: Props) {
-  const isMeldingTilArbeidsgiverVisible =
-    erMeldingTilArbeidsgiverInformasjon(sykmelding);
   const isMeldingTilNavVisible = erMeldingTilNavInformasjon(sykmelding);
   const isUtdypendeOpplysningerVisible =
     sykmelding && erUtdypendeOpplysninger(sykmelding);
@@ -55,7 +52,7 @@ export default function SykmeldingUtdragFraSykefravaretVisning({
       {isMeldingTilNavVisible && (
         <MeldingTilNav meldingTilNav={sykmelding.meldingTilNav} />
       )}
-      {isMeldingTilArbeidsgiverVisible && (
+      {!!sykmelding.innspillTilArbeidsgiver && (
         <MeldingTilArbeidsgiver
           innspillTilArbeidsgiver={sykmelding.innspillTilArbeidsgiver}
         />
