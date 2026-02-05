@@ -217,7 +217,6 @@ export const MeldingTilBehandlerSkjema = () => {
         lastSavedDraftJsonRef.current = "";
         setUtkastSavedTime(undefined);
         setSelectedBehandler(undefined);
-        hasHydratedRef.current = false;
         debouncedAutoSaveDraft.cancel();
 
         queryClient.setQueriesData(
