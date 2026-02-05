@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import AppSpinner from "@/components/AppSpinner";
 import { useBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
@@ -25,8 +25,6 @@ export const VelgBehandler = ({
   onBehandlerSelected,
 }: VelgBehandlerProps) => {
   const { data: behandlere, isLoading } = useBehandlereQuery();
-  const [showBehandlerSearch, setShowBehandlerSearch] =
-    useState<boolean>(false);
   const { setValue } = useFormContext();
   const { field, fieldState } = useController({
     name: "behandlerRef",
@@ -34,6 +32,9 @@ export const VelgBehandler = ({
       required: texts.behandlerMissing,
     },
   });
+  const [showBehandlerSearch, setShowBehandlerSearch] = useState<boolean>(
+    !field.value || field.value === ""
+  );
 
   const handleSetSelectedBehandler = (behandler: BehandlerDTO | undefined) => {
     if (behandler) {
@@ -45,38 +46,35 @@ export const VelgBehandler = ({
     }
   };
 
+  useEffect(() => {
+    setShowBehandlerSearch(field.value === "");
+
+    if (field.value && field.value !== "") {
+      const matchingBehandler = behandlere.find(
+        (b) => b.behandlerRef === field.value
+      );
+      if (matchingBehandler) {
+        onBehandlerSelected(matchingBehandler);
+      }
+    }
+  }, [field.value, behandlere, onBehandlerSelected]);
+
   return isLoading ? (
     <AppSpinner />
   ) : (
     <RadioGroup
       legend={legend}
-      name="behandlerRef"
       error={fieldState.error?.message}
       size="small"
+      value={field.value ?? ""}
+      onChange={field.onChange}
     >
       {behandlere.map((behandler, index) => (
-        <Radio
-          key={index}
-          value={behandler.behandlerRef}
-          checked={field.value === behandler.behandlerRef}
-          onChange={() => {
-            setShowBehandlerSearch(false);
-            handleSetSelectedBehandler(behandler);
-          }}
-        >
+        <Radio key={index} value={behandler.behandlerRef}>
           {behandlerDisplayText(behandler)}
         </Radio>
       ))}
-      <Radio
-        value=""
-        checked={field.value === ""}
-        onChange={(event) => {
-          setShowBehandlerSearch(true);
-          field.onChange(event);
-        }}
-      >
-        {texts.behandlerSearchOptionText}
-      </Radio>
+      <Radio value="">{texts.behandlerSearchOptionText}</Radio>
       {showBehandlerSearch && (
         <div className="flex flex-row items-center">
           <BehandlerSearch setSelectedBehandler={handleSetSelectedBehandler} />
