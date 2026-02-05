@@ -233,6 +233,9 @@ export const MeldingTilBehandlerSkjema = () => {
     <option value={type}>{meldingTypeTexts[type]}</option>
   );
 
+  const meldingType = watch("meldingType");
+  const meldingTekst = watch("meldingTekst");
+
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={handleSubmit(submit)} className={"flex flex-col gap-4"}>
@@ -255,7 +258,7 @@ export const MeldingTilBehandlerSkjema = () => {
             size="small"
             label={texts.meldingType.label}
             {...register("meldingType", { required: true })}
-            value={watch("meldingType")}
+            value={meldingType}
             error={errors.meldingType && texts.meldingType.missing}
           >
             <option value="">{texts.meldingType.defaultOption}</option>
@@ -267,9 +270,7 @@ export const MeldingTilBehandlerSkjema = () => {
             />
             <MeldingTypeOption type={MeldingType.HENVENDELSE_MELDING_FRA_NAV} />
           </Select>
-          {watch("meldingType") && (
-            <MeldingsTypeInfo meldingType={watch("meldingType")} />
-          )}
+          {meldingType && <MeldingsTypeInfo meldingType={meldingType} />}
         </div>
         <VelgBehandler
           onBehandlerSelected={setSelectedBehandler}
@@ -281,7 +282,7 @@ export const MeldingTilBehandlerSkjema = () => {
             required: true,
             maxLength: MAX_LENGTH_BEHANDLER_MELDING,
           })}
-          value={watch("meldingTekst")}
+          value={meldingTekst}
           maxLength={MAX_LENGTH_BEHANDLER_MELDING}
           error={meldingTekstErrorMessage}
           size="small"
