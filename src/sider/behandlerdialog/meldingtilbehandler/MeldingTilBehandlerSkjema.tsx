@@ -59,7 +59,6 @@ export const MeldingTilBehandlerSkjema = () => {
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const [meldingSentTime, setMeldingSentTime] = useState<Date>();
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
-  const [hydrationKey, setHydrationKey] = useState(0);
   const { getMeldingTilBehandlerDocument } = useMeldingTilBehandlerDocument();
   const meldingTilBehandler = useMeldingTilBehandler();
   const { data: behandlere } = useBehandlereQuery();
@@ -166,10 +165,6 @@ export const MeldingTilBehandlerSkjema = () => {
     }
 
     hasHydratedRef.current = true;
-
-    setTimeout(() => {
-      setHydrationKey((prev) => prev + 1);
-    }, 0);
   }, [draft, reset, getValues, behandlere, isDirty]);
 
   useEffect(() => {
@@ -281,12 +276,12 @@ export const MeldingTilBehandlerSkjema = () => {
           legend={texts.velgBehandlerLegend}
         />
         <Textarea
-          key={`textarea-${hydrationKey}`}
           label={texts.meldingsTekstLabel}
           {...register("meldingTekst", {
             required: true,
             maxLength: MAX_LENGTH_BEHANDLER_MELDING,
           })}
+          value={watch("meldingTekst")}
           maxLength={MAX_LENGTH_BEHANDLER_MELDING}
           error={meldingTekstErrorMessage}
           size="small"
