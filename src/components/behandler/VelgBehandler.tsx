@@ -7,6 +7,9 @@ import BehandlerSearch from "@/components/behandler/BehandlerSearch";
 import { behandlerDisplayText } from "@/utils/behandlerUtils";
 import { useController, useFormContext } from "react-hook-form";
 
+export const BEHANDLER_REF_NONE = "__NONE__";
+export const BEHANDLER_REF_SEARCH_PREFIX = "__SEARCH__";
+
 const texts = {
   sokEtterBehandlerHelpText:
     "Du kan søke etter behandlerens fornavn, etternavn, kontornavn og organisasjonsnummeret til kontoret. Søk gjerne med flere av disse samtidig. Finner du ikke behandleren du leter etter? Da bør du melde det inn i Porten.",
@@ -30,7 +33,7 @@ export const VelgBehandler = ({
     name: "behandlerRef",
     rules: {
       validate: (value) =>
-        (value && value !== "__NONE__" && value !== "") ||
+        (value && value !== BEHANDLER_REF_NONE && value !== "") ||
         texts.behandlerMissing,
     },
   });
@@ -45,21 +48,29 @@ export const VelgBehandler = ({
   ) => {
     if (behandler) {
       selectedBehandlerFromSearchRef.current = behandler;
-      setValue("behandlerRef", `__SEARCH__${behandler.behandlerRef}`, {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
+      setValue(
+        "behandlerRef",
+        `${BEHANDLER_REF_SEARCH_PREFIX}${behandler.behandlerRef}`,
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+        }
+      );
       onBehandlerSelected(behandler);
     }
   };
 
   useEffect(() => {
     setShowBehandlerSearch(
-      field.value === "" || field.value.startsWith("__SEARCH__")
+      field.value === "" || field.value.startsWith(BEHANDLER_REF_SEARCH_PREFIX)
     );
 
-    if (field.value && field.value !== "" && field.value !== "__NONE__") {
-      if (field.value.startsWith("__SEARCH__")) {
+    if (
+      field.value &&
+      field.value !== "" &&
+      field.value !== BEHANDLER_REF_NONE
+    ) {
+      if (field.value.startsWith(BEHANDLER_REF_SEARCH_PREFIX)) {
         if (selectedBehandlerFromSearchRef.current) {
           onBehandlerSelected(selectedBehandlerFromSearchRef.current);
         }
@@ -81,7 +92,11 @@ export const VelgBehandler = ({
       legend={legend}
       error={fieldState.error?.message}
       size="small"
-      value={field.value?.startsWith("__SEARCH__") ? "" : field.value || ""}
+      value={
+        field.value?.startsWith(BEHANDLER_REF_SEARCH_PREFIX)
+          ? ""
+          : field.value || ""
+      }
       onChange={field.onChange}
     >
       {behandlere.map((behandler, index) => (

@@ -18,7 +18,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { meldingTypeTexts } from "@/data/behandlerdialog/behandlerdialogTexts";
 import { ButtonRow } from "@/components/Layout";
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
-import { VelgBehandler } from "@/components/behandler/VelgBehandler";
+import {
+  VelgBehandler,
+  BEHANDLER_REF_NONE,
+  BEHANDLER_REF_SEARCH_PREFIX,
+} from "@/components/behandler/VelgBehandler";
 import { PreviewButton } from "@/sider/behandlerdialog/meldingtilbehandler/PreviewButton";
 import { SaveFile } from "../../../../img/ImageComponents";
 import {
@@ -55,14 +59,13 @@ export const MAX_LENGTH_BEHANDLER_MELDING = 5000;
 export const MeldingTilBehandlerSkjema = () => {
   const [displayPreview, setDisplayPreview] = useState(false);
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
-  const [meldingSentTime, setMeldingSentTime] = useState<Date>();
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
   const { getMeldingTilBehandlerDocument } = useMeldingTilBehandlerDocument();
   const meldingTilBehandler = useMeldingTilBehandler();
   const { data: behandlere } = useBehandlereQuery();
   const formMethods = useForm<MeldingTilBehandlerSkjemaValues>({
     defaultValues: {
-      behandlerRef: "__NONE__",
+      behandlerRef: BEHANDLER_REF_NONE,
       meldingType: "" as any,
       meldingTekst: "",
     },
@@ -76,6 +79,7 @@ export const MeldingTilBehandlerSkjema = () => {
     getValues,
   } = formMethods;
 
+  const now = new Date();
   const queryClient = useQueryClient();
 
   const { data: draft } = useMeldingTilBehandlerDraftQuery();
@@ -85,11 +89,11 @@ export const MeldingTilBehandlerSkjema = () => {
   const hasHydratedRef = useRef(false);
 
   const cleanBehandlerRef = (behandlerRef?: string): string | undefined => {
-    if (!behandlerRef || behandlerRef === "__NONE__") {
+    if (!behandlerRef || behandlerRef === BEHANDLER_REF_NONE) {
       return undefined;
     }
-    return behandlerRef.startsWith("__SEARCH__")
-      ? behandlerRef.substring("__SEARCH__".length)
+    return behandlerRef.startsWith(BEHANDLER_REF_SEARCH_PREFIX)
+      ? behandlerRef.substring(BEHANDLER_REF_SEARCH_PREFIX.length)
       : behandlerRef;
   };
 
@@ -199,8 +203,6 @@ export const MeldingTilBehandlerSkjema = () => {
 
     meldingTilBehandler.mutate(meldingTilBehandlerDTO, {
       onSuccess: () => {
-        setMeldingSentTime(new Date());
-
         lastSavedDraftJsonRef.current = "";
         setUtkastSavedTime(undefined);
         setSelectedBehandler(undefined);
@@ -227,11 +229,9 @@ export const MeldingTilBehandlerSkjema = () => {
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={handleSubmit(submit)} className={"flex flex-col gap-4"}>
-        {meldingSentTime && (
+        {meldingTilBehandler.isSuccess && (
           <Alert variant="success" size="small">
-            {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(
-              meldingSentTime
-            )}`}
+            {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(now)}`}
           </Alert>
         )}
         {saveDraft.isError && (

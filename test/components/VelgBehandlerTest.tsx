@@ -1,7 +1,10 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { expect, describe, it, beforeEach } from "vitest";
 import React, { useState } from "react";
-import { VelgBehandler } from "@/components/behandler/VelgBehandler";
+import {
+  VelgBehandler,
+  BEHANDLER_REF_NONE,
+} from "@/components/behandler/VelgBehandler";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { FormProvider, useForm } from "react-hook-form";
 import { navEnhet } from "../dialogmote/testData";
@@ -125,7 +128,7 @@ const VelgBehandlerWrapper = () => {
   const [behandler, setBehandler] = useState<BehandlerDTO>();
   const formMethods = useForm<{ behandlerRef: string }>({
     defaultValues: {
-      behandlerRef: "__NONE__",
+      behandlerRef: BEHANDLER_REF_NONE,
     },
   });
   const submit = ({}) => {
