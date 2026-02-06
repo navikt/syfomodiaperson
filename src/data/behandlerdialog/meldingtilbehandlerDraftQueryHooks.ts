@@ -1,5 +1,5 @@
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { get, put, deleteRequest } from "@/api/axios";
+import { deleteRequest, get, put } from "@/api/axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { MeldingTilBehandlerDraftDTO } from "@/data/behandlerdialog/meldingtilbehandlerDraftTypes";
 
@@ -9,7 +9,7 @@ export const meldingtilbehandlerDraftQueryKeys = {
   draft: (personident: string) => ["meldingtilbehandlerDraft", personident],
 };
 
-export function useMeldingTilBehandlerDraftQuery() {
+export function useGetMeldingTilBehandlerDraftQuery() {
   const personident = useValgtPersonident();
 
   const fetchDraft = async () =>

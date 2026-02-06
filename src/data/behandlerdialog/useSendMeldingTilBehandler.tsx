@@ -5,7 +5,7 @@ import { MeldingTilBehandlerDTO } from "@/data/behandlerdialog/behandlerdialogTy
 import { post } from "@/api/axios";
 import { behandlerdialogQueryKeys } from "@/data/behandlerdialog/behandlerdialogQueryHooks";
 
-export const useMeldingTilBehandler = () => {
+export function useSendMeldingTilBehandler() {
   const personident = useValgtPersonident();
   const queryClient = useQueryClient();
   const path = `${ISBEHANDLERDIALOG_ROOT}/melding`;
@@ -20,4 +20,4 @@ export const useMeldingTilBehandler = () => {
       });
     },
   });
-};
+}

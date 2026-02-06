@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Button, Select, Textarea } from "@navikt/ds-react";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import {
   MeldingTilBehandlerDTO,
   MeldingType,
 } from "@/data/behandlerdialog/behandlerdialogTypes";
-import { useMeldingTilBehandler } from "@/data/behandlerdialog/useMeldingTilBehandler";
+import { useSendMeldingTilBehandler } from "@/data/behandlerdialog/useSendMeldingTilBehandler";
 import {
   showTimeIncludingSeconds,
   tilDatoMedManedNavnOgKlokkeslett,
@@ -18,20 +18,15 @@ import { useQueryClient } from "@tanstack/react-query";
 import { meldingTypeTexts } from "@/data/behandlerdialog/behandlerdialogTexts";
 import { ButtonRow } from "@/components/Layout";
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
-import {
-  VelgBehandler,
-  BEHANDLER_REF_NONE,
-  BEHANDLER_REF_SEARCH_PREFIX,
-} from "@/components/behandler/VelgBehandler";
+import { VelgBehandler } from "@/components/behandler/VelgBehandler";
 import { PreviewButton } from "@/sider/behandlerdialog/meldingtilbehandler/PreviewButton";
 import { SaveFile } from "../../../../img/ImageComponents";
 import {
   useDeleteMeldingTilBehandlerDraft,
-  useMeldingTilBehandlerDraftQuery,
+  useGetMeldingTilBehandlerDraftQuery,
   useSaveMeldingTilBehandlerDraft,
 } from "@/data/behandlerdialog/meldingtilbehandlerDraftQueryHooks";
 import { useDebouncedCallback } from "use-debounce";
-import { useBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
 
 const texts = {
   sendKnapp: "Send til behandler",
@@ -49,7 +44,7 @@ const texts = {
 };
 
 export interface MeldingTilBehandlerSkjemaValues {
-  behandlerRef?: string;
+  behandlerRef: string;
   meldingType: MeldingType;
   meldingTekst: string;
 }
@@ -61,11 +56,9 @@ export const MeldingTilBehandlerSkjema = () => {
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
   const { getMeldingTilBehandlerDocument } = useMeldingTilBehandlerDocument();
-  const meldingTilBehandler = useMeldingTilBehandler();
-  const { data: behandlere } = useBehandlereQuery();
+  const sendMeldingTilBehandler = useSendMeldingTilBehandler();
   const formMethods = useForm<MeldingTilBehandlerSkjemaValues>({
     defaultValues: {
-      behandlerRef: BEHANDLER_REF_NONE,
       meldingType: "" as any,
       meldingTekst: "",
     },
@@ -74,7 +67,8 @@ export const MeldingTilBehandlerSkjema = () => {
     register,
     watch,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors },
+    setValue,
     reset,
     getValues,
   } = formMethods;
@@ -82,45 +76,19 @@ export const MeldingTilBehandlerSkjema = () => {
   const now = new Date();
   const queryClient = useQueryClient();
 
-  const { data: draft } = useMeldingTilBehandlerDraftQuery();
+  const getMeldingTilBehandlerDraftQuery =
+    useGetMeldingTilBehandlerDraftQuery();
   const saveDraft = useSaveMeldingTilBehandlerDraft();
   const deleteDraft = useDeleteMeldingTilBehandlerDraft();
-  const lastSavedDraftJsonRef = useRef<string>("");
-  const hasHydratedRef = useRef(false);
-
-  const cleanBehandlerRef = (behandlerRef?: string): string | undefined => {
-    if (!behandlerRef || behandlerRef === BEHANDLER_REF_NONE) {
-      return undefined;
-    }
-    return behandlerRef.startsWith(BEHANDLER_REF_SEARCH_PREFIX)
-      ? behandlerRef.substring(BEHANDLER_REF_SEARCH_PREFIX.length)
-      : behandlerRef;
-  };
 
   const debouncedAutoSaveDraft = useDebouncedCallback(
     (values: MeldingTilBehandlerSkjemaValues) => {
-      const behandlerRefValue = cleanBehandlerRef(values.behandlerRef);
-
       const draftPayload = {
         tekst: values.meldingTekst ?? "",
         meldingType: values.meldingType,
-        behandlerRef: behandlerRefValue,
+        behandlerRef: values.behandlerRef,
       };
 
-      if (
-        !draftPayload.tekst &&
-        !draftPayload.meldingType &&
-        !draftPayload.behandlerRef
-      ) {
-        return;
-      }
-
-      const draftJson = JSON.stringify(draftPayload);
-      if (draftJson === lastSavedDraftJsonRef.current) {
-        return;
-      }
-
-      lastSavedDraftJsonRef.current = draftJson;
       saveDraft.mutate(draftPayload, {
         onSuccess: () => {
           setUtkastSavedTime(new Date());
@@ -134,45 +102,10 @@ export const MeldingTilBehandlerSkjema = () => {
   );
 
   useEffect(() => {
-    if (!draft || hasHydratedRef.current || isDirty) {
-      return;
+    if (getMeldingTilBehandlerDraftQuery.data) {
+      setValue("meldingTekst", getMeldingTilBehandlerDraftQuery.data.tekst);
     }
-
-    const currentMeldingTekst = getValues("meldingTekst");
-    if (currentMeldingTekst !== "") {
-      return;
-    }
-
-    const meldingType = Object.values(MeldingType).includes(
-      draft.meldingType as MeldingType
-    )
-      ? (draft.meldingType as MeldingType)
-      : undefined;
-
-    reset({
-      meldingTekst: draft.tekst,
-      meldingType: meldingType,
-      behandlerRef: draft.behandlerRef ?? undefined,
-    });
-
-    if (draft.behandlerRef && behandlere.length > 0) {
-      const matchingBehandler = behandlere.find(
-        (b) => b.behandlerRef === draft.behandlerRef
-      );
-      if (matchingBehandler) {
-        setSelectedBehandler(matchingBehandler);
-      }
-    }
-
-    hasHydratedRef.current = true;
-  }, [draft, reset, getValues, behandlere, isDirty]);
-
-  useEffect(() => {
-    const subscription = watch((values) => {
-      debouncedAutoSaveDraft(values as MeldingTilBehandlerSkjemaValues);
-    });
-    return () => subscription.unsubscribe();
-  }, [debouncedAutoSaveDraft, watch]);
+  }, [getMeldingTilBehandlerDraftQuery.data, setValue]);
 
   const meldingTekstErrorMessage =
     errors.meldingTekst &&
@@ -184,15 +117,9 @@ export const MeldingTilBehandlerSkjema = () => {
   };
 
   const submit = (values: MeldingTilBehandlerSkjemaValues) => {
-    const behandlerRefToUse = cleanBehandlerRef(values.behandlerRef);
-
-    if (!behandlerRefToUse) {
-      return;
-    }
-
     const meldingTilBehandlerDTO: MeldingTilBehandlerDTO = {
       type: values.meldingType,
-      behandlerRef: behandlerRefToUse,
+      behandlerRef: values.behandlerRef,
       tekst: values.meldingTekst,
       document: getMeldingTilBehandlerDocument(values),
       behandlerIdent: selectedBehandler?.fnr,
@@ -201,9 +128,8 @@ export const MeldingTilBehandlerSkjema = () => {
         : undefined,
     };
 
-    meldingTilBehandler.mutate(meldingTilBehandlerDTO, {
+    sendMeldingTilBehandler.mutate(meldingTilBehandlerDTO, {
       onSuccess: () => {
-        lastSavedDraftJsonRef.current = "";
         setUtkastSavedTime(undefined);
         setSelectedBehandler(undefined);
         debouncedAutoSaveDraft.cancel();
@@ -214,7 +140,6 @@ export const MeldingTilBehandlerSkjema = () => {
 
         deleteDraft.mutate(undefined);
         reset();
-        hasHydratedRef.current = true;
       },
     });
   };
@@ -228,8 +153,12 @@ export const MeldingTilBehandlerSkjema = () => {
 
   return (
     <FormProvider {...formMethods}>
-      <form onSubmit={handleSubmit(submit)} className={"flex flex-col gap-4"}>
-        {meldingTilBehandler.isSuccess && (
+      <form
+        onSubmit={handleSubmit(submit)}
+        className={"flex flex-col gap-4"}
+        onChange={() => debouncedAutoSaveDraft(getValues())}
+      >
+        {sendMeldingTilBehandler.isSuccess && (
           <Alert variant="success" size="small">
             {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(now)}`}
           </Alert>
@@ -294,7 +223,7 @@ export const MeldingTilBehandlerSkjema = () => {
           <Button
             variant="primary"
             onClick={handleSubmit(submit)}
-            loading={meldingTilBehandler.isPending}
+            loading={sendMeldingTilBehandler.isPending}
             type="submit"
           >
             {texts.sendKnapp}
