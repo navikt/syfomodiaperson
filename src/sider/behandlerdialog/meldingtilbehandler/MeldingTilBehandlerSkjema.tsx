@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Alert, Button, Select, Textarea } from "@navikt/ds-react";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import {
@@ -6,21 +6,37 @@ import {
   MeldingType,
 } from "@/data/behandlerdialog/behandlerdialogTypes";
 import { useMeldingTilBehandler } from "@/data/behandlerdialog/useMeldingTilBehandler";
-import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
+import {
+  showTimeIncludingSeconds,
+  tilDatoMedManedNavnOgKlokkeslett,
+} from "@/utils/datoUtils";
 import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document/useMeldingTilBehandlerDocument";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { MeldingsTypeInfo } from "@/sider/behandlerdialog/meldingtilbehandler/MeldingsTypeInfo";
 import { FormProvider, useForm } from "react-hook-form";
+import { useQueryClient } from "@tanstack/react-query";
 import { meldingTypeTexts } from "@/data/behandlerdialog/behandlerdialogTexts";
 import { ButtonRow } from "@/components/Layout";
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
-import { VelgBehandler } from "@/components/behandler/VelgBehandler";
+import {
+  VelgBehandler,
+  BEHANDLER_REF_NONE,
+  BEHANDLER_REF_SEARCH_PREFIX,
+} from "@/components/behandler/VelgBehandler";
 import { PreviewButton } from "@/sider/behandlerdialog/meldingtilbehandler/PreviewButton";
+import { SaveFile } from "../../../../img/ImageComponents";
+import {
+  useDeleteMeldingTilBehandlerDraft,
+  useMeldingTilBehandlerDraftQuery,
+  useSaveMeldingTilBehandlerDraft,
+} from "@/data/behandlerdialog/meldingtilbehandlerDraftQueryHooks";
+import { useDebouncedCallback } from "use-debounce";
+import { useBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
 
 const texts = {
   sendKnapp: "Send til behandler",
   previewContentLabel: "Forhåndsvis melding til behandler",
-  meldingsType: {
+  meldingType: {
     label: "Hvilken meldingstype ønsker du å sende?",
     defaultOption: "Velg meldingstype",
     missing: "Vennligst velg type melding",
@@ -28,11 +44,13 @@ const texts = {
   meldingsTekstLabel: "Skriv inn teksten du ønsker å sende til behandler",
   meldingsTekstMissing: "Vennligst angi meldingstekst",
   velgBehandlerLegend: "Velg behandler som skal motta meldingen",
+  utkastSaved: "Utkast lagret",
+  utkastSaveFailed: "Lagring av utkast feilet",
 };
 
 export interface MeldingTilBehandlerSkjemaValues {
-  behandlerRef: string;
-  meldingsType: MeldingType;
+  behandlerRef?: string;
+  meldingType: MeldingType;
   meldingTekst: string;
 }
 
@@ -40,29 +58,141 @@ export const MAX_LENGTH_BEHANDLER_MELDING = 5000;
 
 export const MeldingTilBehandlerSkjema = () => {
   const [displayPreview, setDisplayPreview] = useState(false);
-  const { getMeldingTilBehandlerDocument } = useMeldingTilBehandlerDocument();
+  const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
+  const { getMeldingTilBehandlerDocument } = useMeldingTilBehandlerDocument();
   const meldingTilBehandler = useMeldingTilBehandler();
-  const formMethods = useForm<MeldingTilBehandlerSkjemaValues>();
+  const { data: behandlere } = useBehandlereQuery();
+  const formMethods = useForm<MeldingTilBehandlerSkjemaValues>({
+    defaultValues: {
+      behandlerRef: BEHANDLER_REF_NONE,
+      meldingType: "" as any,
+      meldingTekst: "",
+    },
+  });
   const {
     register,
     watch,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
     reset,
     getValues,
   } = formMethods;
 
   const now = new Date();
+  const queryClient = useQueryClient();
+
+  const { data: draft } = useMeldingTilBehandlerDraftQuery();
+  const saveDraft = useSaveMeldingTilBehandlerDraft();
+  const deleteDraft = useDeleteMeldingTilBehandlerDraft();
+  const lastSavedDraftJsonRef = useRef<string>("");
+  const hasHydratedRef = useRef(false);
+
+  const cleanBehandlerRef = (behandlerRef?: string): string | undefined => {
+    if (!behandlerRef || behandlerRef === BEHANDLER_REF_NONE) {
+      return undefined;
+    }
+    return behandlerRef.startsWith(BEHANDLER_REF_SEARCH_PREFIX)
+      ? behandlerRef.substring(BEHANDLER_REF_SEARCH_PREFIX.length)
+      : behandlerRef;
+  };
+
+  const debouncedAutoSaveDraft = useDebouncedCallback(
+    (values: MeldingTilBehandlerSkjemaValues) => {
+      const behandlerRefValue = cleanBehandlerRef(values.behandlerRef);
+
+      const draftPayload = {
+        tekst: values.meldingTekst ?? "",
+        meldingType: values.meldingType,
+        behandlerRef: behandlerRefValue,
+      };
+
+      if (
+        !draftPayload.tekst &&
+        !draftPayload.meldingType &&
+        !draftPayload.behandlerRef
+      ) {
+        return;
+      }
+
+      const draftJson = JSON.stringify(draftPayload);
+      if (draftJson === lastSavedDraftJsonRef.current) {
+        return;
+      }
+
+      lastSavedDraftJsonRef.current = draftJson;
+      saveDraft.mutate(draftPayload, {
+        onSuccess: () => {
+          setUtkastSavedTime(new Date());
+        },
+        onError: () => {
+          setUtkastSavedTime(undefined);
+        },
+      });
+    },
+    750
+  );
+
+  useEffect(() => {
+    if (!draft || hasHydratedRef.current || isDirty) {
+      return;
+    }
+
+    const currentMeldingTekst = getValues("meldingTekst");
+    if (currentMeldingTekst !== "") {
+      return;
+    }
+
+    const meldingType = Object.values(MeldingType).includes(
+      draft.meldingType as MeldingType
+    )
+      ? (draft.meldingType as MeldingType)
+      : undefined;
+
+    reset({
+      meldingTekst: draft.tekst,
+      meldingType: meldingType,
+      behandlerRef: draft.behandlerRef ?? undefined,
+    });
+
+    if (draft.behandlerRef && behandlere.length > 0) {
+      const matchingBehandler = behandlere.find(
+        (b) => b.behandlerRef === draft.behandlerRef
+      );
+      if (matchingBehandler) {
+        setSelectedBehandler(matchingBehandler);
+      }
+    }
+
+    hasHydratedRef.current = true;
+  }, [draft, reset, getValues, behandlere, isDirty]);
+
+  useEffect(() => {
+    const subscription = watch((values) => {
+      debouncedAutoSaveDraft(values as MeldingTilBehandlerSkjemaValues);
+    });
+    return () => subscription.unsubscribe();
+  }, [debouncedAutoSaveDraft, watch]);
+
   const meldingTekstErrorMessage =
     errors.meldingTekst &&
     getValues("meldingTekst") === "" &&
     texts.meldingsTekstMissing;
 
+  const utkastSavedText = (savedDate: Date) => {
+    return `${texts.utkastSaved} ${showTimeIncludingSeconds(savedDate)}`;
+  };
+
   const submit = (values: MeldingTilBehandlerSkjemaValues) => {
+    const behandlerRefToUse = cleanBehandlerRef(values.behandlerRef);
+
+    if (!behandlerRefToUse) {
+      return;
+    }
+
     const meldingTilBehandlerDTO: MeldingTilBehandlerDTO = {
-      type: values.meldingsType,
-      behandlerRef: values.behandlerRef,
+      type: values.meldingType,
+      behandlerRef: behandlerRefToUse,
       tekst: values.meldingTekst,
       document: getMeldingTilBehandlerDocument(values),
       behandlerIdent: selectedBehandler?.fnr,
@@ -70,14 +200,31 @@ export const MeldingTilBehandlerSkjema = () => {
         ? behandlerNavn(selectedBehandler)
         : undefined,
     };
+
     meldingTilBehandler.mutate(meldingTilBehandlerDTO, {
-      onSuccess: () => reset(),
+      onSuccess: () => {
+        lastSavedDraftJsonRef.current = "";
+        setUtkastSavedTime(undefined);
+        setSelectedBehandler(undefined);
+        debouncedAutoSaveDraft.cancel();
+
+        queryClient.invalidateQueries({
+          queryKey: ["meldingtilbehandlerDraft"],
+        });
+
+        deleteDraft.mutate(undefined);
+        reset();
+        hasHydratedRef.current = true;
+      },
     });
   };
 
   const MeldingTypeOption = ({ type }: { type: MeldingType }) => (
     <option value={type}>{meldingTypeTexts[type]}</option>
   );
+
+  const meldingType = watch("meldingType");
+  const meldingTekst = watch("meldingTekst");
 
   return (
     <FormProvider {...formMethods}>
@@ -87,17 +234,22 @@ export const MeldingTilBehandlerSkjema = () => {
             {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(now)}`}
           </Alert>
         )}
+        {saveDraft.isError && (
+          <Alert variant="error" size="small">
+            {texts.utkastSaveFailed}
+          </Alert>
+        )}
         <div className="max-w-[23rem]">
           <Select
             id="type"
             className="mb-4"
             size="small"
-            label={texts.meldingsType.label}
-            {...register("meldingsType", { required: true })}
-            value={watch("meldingsType")}
-            error={errors.meldingsType && texts.meldingsType.missing}
+            label={texts.meldingType.label}
+            {...register("meldingType", { required: true })}
+            value={meldingType}
+            error={errors.meldingType && texts.meldingType.missing}
           >
-            <option value="">{texts.meldingsType.defaultOption}</option>
+            <option value="">{texts.meldingType.defaultOption}</option>
             <MeldingTypeOption
               type={MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER}
             />
@@ -106,9 +258,7 @@ export const MeldingTilBehandlerSkjema = () => {
             />
             <MeldingTypeOption type={MeldingType.HENVENDELSE_MELDING_FRA_NAV} />
           </Select>
-          {watch("meldingsType") && (
-            <MeldingsTypeInfo meldingType={watch("meldingsType")} />
-          )}
+          {meldingType && <MeldingsTypeInfo meldingType={meldingType} />}
         </div>
         <VelgBehandler
           onBehandlerSelected={setSelectedBehandler}
@@ -120,6 +270,7 @@ export const MeldingTilBehandlerSkjema = () => {
             required: true,
             maxLength: MAX_LENGTH_BEHANDLER_MELDING,
           })}
+          value={meldingTekst}
           maxLength={MAX_LENGTH_BEHANDLER_MELDING}
           error={meldingTekstErrorMessage}
           size="small"
@@ -133,6 +284,12 @@ export const MeldingTilBehandlerSkjema = () => {
             getMeldingTilBehandlerDocument(getValues()) ?? []
           }
         />
+        {utkastSavedTime && (
+          <div className="mb-2 font-bold flex gap-2">
+            <img src={SaveFile} alt="saved" />
+            <span>{utkastSavedText(utkastSavedTime)}</span>
+          </div>
+        )}
         <ButtonRow>
           <Button
             variant="primary"

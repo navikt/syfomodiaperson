@@ -1,7 +1,10 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { expect, describe, it, beforeEach } from "vitest";
 import React, { useState } from "react";
-import { VelgBehandler } from "@/components/behandler/VelgBehandler";
+import {
+  VelgBehandler,
+  BEHANDLER_REF_NONE,
+} from "@/components/behandler/VelgBehandler";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { FormProvider, useForm } from "react-hook-form";
 import { navEnhet } from "../dialogmote/testData";
@@ -114,14 +117,20 @@ describe("VelgBehandler", () => {
     });
     await userEvent.click(searchResult);
 
-    expect(screen.getByText(behandlerSearchResultMock.fnr)).to.exist;
-    expect(screen.getByText(behandlerSearchResultMock.behandlerRef)).to.exist;
+    expect(await screen.findByText(behandlerSearchResultMock.fnr)).to.exist;
+    expect(
+      screen.getByText(`__SEARCH__${behandlerSearchResultMock.behandlerRef}`)
+    ).to.exist;
   });
 });
 
 const VelgBehandlerWrapper = () => {
   const [behandler, setBehandler] = useState<BehandlerDTO>();
-  const formMethods = useForm<{ behandlerRef: string }>();
+  const formMethods = useForm<{ behandlerRef: string }>({
+    defaultValues: {
+      behandlerRef: BEHANDLER_REF_NONE,
+    },
+  });
   const submit = ({}) => {
     /* noop */
   };

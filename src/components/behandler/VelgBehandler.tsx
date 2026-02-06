@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import AppSpinner from "@/components/AppSpinner";
 import { useBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
@@ -6,6 +6,9 @@ import { HelpText, Radio, RadioGroup } from "@navikt/ds-react";
 import BehandlerSearch from "@/components/behandler/BehandlerSearch";
 import { behandlerDisplayText } from "@/utils/behandlerUtils";
 import { useController, useFormContext } from "react-hook-form";
+
+export const BEHANDLER_REF_NONE = "__NONE__";
+export const BEHANDLER_REF_SEARCH_PREFIX = "__SEARCH__";
 
 const texts = {
   sokEtterBehandlerHelpText:
@@ -25,59 +28,88 @@ export const VelgBehandler = ({
   onBehandlerSelected,
 }: VelgBehandlerProps) => {
   const { data: behandlere, isLoading } = useBehandlereQuery();
-  const [showBehandlerSearch, setShowBehandlerSearch] =
-    useState<boolean>(false);
   const { setValue } = useFormContext();
   const { field, fieldState } = useController({
     name: "behandlerRef",
     rules: {
-      required: texts.behandlerMissing,
+      validate: (value) =>
+        (value && value !== BEHANDLER_REF_NONE && value !== "") ||
+        texts.behandlerMissing,
     },
   });
+  const [showBehandlerSearch, setShowBehandlerSearch] =
+    useState<boolean>(false);
+  const selectedBehandlerFromSearchRef = useRef<BehandlerDTO | undefined>(
+    undefined
+  );
 
-  const handleSetSelectedBehandler = (behandler: BehandlerDTO | undefined) => {
+  const handleSetSelectedBehandlerFromSearch = (
+    behandler: BehandlerDTO | undefined
+  ) => {
     if (behandler) {
-      setValue("behandlerRef", behandler?.behandlerRef, {
-        shouldValidate: true,
-      });
+      selectedBehandlerFromSearchRef.current = behandler;
+      setValue(
+        "behandlerRef",
+        `${BEHANDLER_REF_SEARCH_PREFIX}${behandler.behandlerRef}`,
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+        }
+      );
       onBehandlerSelected(behandler);
     }
   };
+
+  useEffect(() => {
+    setShowBehandlerSearch(
+      field.value === "" || field.value.startsWith(BEHANDLER_REF_SEARCH_PREFIX)
+    );
+
+    if (
+      field.value &&
+      field.value !== "" &&
+      field.value !== BEHANDLER_REF_NONE
+    ) {
+      if (field.value.startsWith(BEHANDLER_REF_SEARCH_PREFIX)) {
+        if (selectedBehandlerFromSearchRef.current) {
+          onBehandlerSelected(selectedBehandlerFromSearchRef.current);
+        }
+      } else {
+        const matchingBehandler = behandlere.find(
+          (b) => b.behandlerRef === field.value
+        );
+        if (matchingBehandler) {
+          onBehandlerSelected(matchingBehandler);
+        }
+      }
+    }
+  }, [field.value, behandlere, onBehandlerSelected]);
 
   return isLoading ? (
     <AppSpinner />
   ) : (
     <RadioGroup
       legend={legend}
-      name="behandlerRef"
       error={fieldState.error?.message}
       size="small"
+      value={
+        field.value?.startsWith(BEHANDLER_REF_SEARCH_PREFIX)
+          ? ""
+          : field.value || ""
+      }
+      onChange={field.onChange}
     >
       {behandlere.map((behandler, index) => (
-        <Radio
-          key={index}
-          value={behandler.behandlerRef}
-          onChange={(event) => {
-            setShowBehandlerSearch(false);
-            handleSetSelectedBehandler(behandler);
-            field.onChange(event);
-          }}
-        >
+        <Radio key={index} value={behandler.behandlerRef}>
           {behandlerDisplayText(behandler)}
         </Radio>
       ))}
-      <Radio
-        value=""
-        onChange={(event) => {
-          setShowBehandlerSearch(true);
-          field.onChange(event);
-        }}
-      >
-        {texts.behandlerSearchOptionText}
-      </Radio>
+      <Radio value="">{texts.behandlerSearchOptionText}</Radio>
       {showBehandlerSearch && (
         <div className="flex flex-row items-center">
-          <BehandlerSearch setSelectedBehandler={handleSetSelectedBehandler} />
+          <BehandlerSearch
+            setSelectedBehandler={handleSetSelectedBehandlerFromSearch}
+          />
           <HelpText
             title={texts.sokEtterBehandlerHelpTextTitle}
             className="ml-1"
