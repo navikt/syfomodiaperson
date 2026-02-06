@@ -11,7 +11,7 @@ interface Props {
 
 export function MeldingTilArbeidsgiver({ innspillTilArbeidsgiver }: Props) {
   return (
-    <div className="mt-4">
+    <div className="pt-4">
       <BodyShort size="small" weight="semibold">
         {tekster.header}
       </BodyShort>

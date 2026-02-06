@@ -18,7 +18,7 @@ interface Props {
 
 export function MeldingTilNav({ meldingTilNav }: Props) {
   return (
-    <div className="mt-4">
+    <div className="pt-4">
       <BodyShort size="small" weight="semibold">
         {tekster.meldingTilNav}
       </BodyShort>

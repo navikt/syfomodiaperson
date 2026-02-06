@@ -33,7 +33,7 @@ export function UtdypendeOpplysninger({
   utdypendeOpplysninger,
 }: UtdypendeOpplysningerProps) {
   return (
-    <VStack gap="2" className="mt-4">
+    <VStack gap="2" className="pt-4">
       <BodyShort size="small" weight="semibold">
         {tekster.utdypendeOpplysninger}
       </BodyShort>

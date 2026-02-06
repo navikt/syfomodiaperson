@@ -18,7 +18,7 @@ export function TilbakeIArbeid({ sykmelding }: Props) {
     friskmelding.utenArbeidsgiverTilbakemelding;
 
   return (
-    <div className="mt-4">
+    <div className="pt-4">
       {medArbeidsgiver && (
         <TilbakeIArbeidMedArbeidsgiver friskmelding={friskmelding} />
       )}
