@@ -3,12 +3,8 @@ import {
   finnAvventendeSykmeldingTekst,
   SykmeldingOldFormat,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { BodyShort, Heading } from "@navikt/ds-react";
-import {
-  BriefcaseIcon,
-  CheckmarkIcon,
-  FirstAidKitIcon,
-} from "@navikt/aksel-icons";
+import { BodyShort, Checkbox, Heading } from "@navikt/ds-react";
+import { BriefcaseIcon, FirstAidKitIcon } from "@navikt/aksel-icons";
 
 const tekster = {
   avventende: "Innspill til arbeidsgiveren ved avventende sykmelding",
@@ -57,10 +53,15 @@ export default function MulighetForArbeid({
 
           {aktivitetIkkeMulig433.map(
             (ikkeMuligTekst: string, index: number) => (
-              <div key={index} className="flex items-center ml-8">
-                <CheckmarkIcon fontSize="1.5rem" />
-                <BodyShort size="small">{ikkeMuligTekst}</BodyShort>
-              </div>
+              <Checkbox
+                key={index}
+                size="small"
+                checked
+                readOnly
+                className="ml-8"
+              >
+                {ikkeMuligTekst}
+              </Checkbox>
             )
           )}
           {aarsakAktivitetIkkeMulig433 && (
@@ -86,10 +87,15 @@ export default function MulighetForArbeid({
 
           {aktivitetIkkeMulig434.map(
             (ikkeMuligTekst: string, index: number) => (
-              <div key={index} className="flex items-center ml-8">
-                <CheckmarkIcon fontSize="1.5rem" />
-                <BodyShort size="small">{ikkeMuligTekst}</BodyShort>
-              </div>
+              <Checkbox
+                key={index}
+                size="small"
+                checked
+                readOnly
+                className="ml-8"
+              >
+                {ikkeMuligTekst}
+              </Checkbox>
             )
           )}
           {aarsakAktivitetIkkeMulig434 && (
