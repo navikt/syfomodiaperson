@@ -109,13 +109,11 @@ const proxyOnBehalfOf = (
   res: any,
   next: any,
   authClient: any,
-  issuer: OpenIdClient.Issuer<any>,
   externalAppConfig: Config.ExternalAppConfig,
   rewritePath?: (path: string) => string
 ) => {
   AuthUtils.getOrRefreshOnBehalfOfToken(
     authClient,
-    issuer,
     req,
     externalAppConfig.clientId
   )
@@ -142,10 +140,7 @@ const proxyOnBehalfOf = (
     });
 };
 
-export const setupProxy = (
-  authClient: OpenIdClient.Client,
-  issuer: OpenIdClient.Issuer<any>
-) => {
+export const setupProxy = (authClient: OpenIdClient.Client) => {
   const router = express.Router();
 
   router.use(
@@ -155,14 +150,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.isaktivitetskrav
-      );
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.isaktivitetskrav);
     }
   );
 
@@ -173,14 +161,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.isarbeidsuforhet
-      );
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.isarbeidsuforhet);
     }
   );
 
@@ -196,7 +177,6 @@ export const setupProxy = (
         res,
         next,
         authClient,
-        issuer,
         Config.auth.isbehandlerdialog
       );
     }
@@ -209,14 +189,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.isdialogmote
-      );
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.isdialogmote);
     }
   );
 
@@ -232,7 +205,6 @@ export const setupProxy = (
         res,
         next,
         authClient,
-        issuer,
         Config.auth.isdialogmotekandidat
       );
     }
@@ -245,14 +217,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.isdialogmelding
-      );
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.isdialogmelding);
     }
   );
 
@@ -263,14 +228,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.isfrisktilarbeid
-      );
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.isfrisktilarbeid);
     }
   );
 
@@ -281,14 +239,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.ishuskelapp
-      );
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.ishuskelapp);
     }
   );
 
@@ -299,14 +250,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.ismeroppfolging
-      );
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.ismeroppfolging);
     }
   );
 
@@ -317,14 +261,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.isnarmesteleder
-      );
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.isnarmesteleder);
     }
   );
 
@@ -340,7 +277,6 @@ export const setupProxy = (
         res,
         next,
         authClient,
-        issuer,
         Config.auth.isoppfolgingstilfelle
       );
     }
@@ -353,14 +289,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.ispengestopp
-      );
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.ispengestopp);
     }
   );
 
@@ -371,14 +300,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.ispersonoppgave
-      );
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.ispersonoppgave);
     }
   );
 
@@ -389,14 +311,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.fastlegerest
-      );
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.fastlegerest);
     }
   );
 
@@ -412,7 +327,6 @@ export const setupProxy = (
         res,
         next,
         authClient,
-        issuer,
         Config.auth.modiacontextholder
       );
     }
@@ -430,7 +344,6 @@ export const setupProxy = (
         res,
         next,
         authClient,
-        issuer,
         Config.auth.syfobehandlendeenhet
       );
     }
@@ -454,14 +367,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.syfomotebehov
-      );
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.syfomotebehov);
     }
   );
 
@@ -477,7 +383,6 @@ export const setupProxy = (
         res,
         next,
         authClient,
-        issuer,
         Config.auth.syfooppfolgingsplanservice
       );
     }
@@ -495,7 +400,6 @@ export const setupProxy = (
         res,
         next,
         authClient,
-        issuer,
         Config.auth.lpsOppfolgingsplanMottak
       );
     }
@@ -513,7 +417,6 @@ export const setupProxy = (
         res,
         next,
         authClient,
-        issuer,
         Config.auth.syfoOppfolgingsplanBackend
       );
     }
@@ -526,14 +429,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.syfooversiktsrv
-      );
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.syfooversiktsrv);
     }
   );
 
@@ -544,14 +440,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.syfoperson
-      );
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.syfoperson);
     }
   );
 
@@ -567,7 +456,6 @@ export const setupProxy = (
         res,
         next,
         authClient,
-        issuer,
         Config.auth.syfosmregister,
         (path) => path.replace("/sykmeldinger", "/internal/sykmeldinger")
       );
@@ -586,7 +474,6 @@ export const setupProxy = (
         res,
         next,
         authClient,
-        issuer,
         Config.auth.sykepengesoknadBackend
       );
     }
@@ -604,7 +491,6 @@ export const setupProxy = (
         res,
         next,
         authClient,
-        issuer,
         Config.auth.istilgangskontroll
       );
     }
@@ -617,14 +503,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.syfoveileder
-      );
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.syfoveileder);
     }
   );
 
@@ -640,7 +519,6 @@ export const setupProxy = (
         res,
         next,
         authClient,
-        issuer,
         Config.auth.meroppfolgingBackend
       );
     }
@@ -658,7 +536,6 @@ export const setupProxy = (
         res,
         next,
         authClient,
-        issuer,
         Config.auth.sykepengedagerinformasjon
       );
     }
@@ -671,7 +548,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, issuer, Config.auth.flexjar);
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.flexjar);
     }
   );
 
@@ -687,7 +564,6 @@ export const setupProxy = (
         res,
         next,
         authClient,
-        issuer,
         Config.auth.veilarboppfolging
       );
     }
@@ -705,7 +581,6 @@ export const setupProxy = (
         res,
         next,
         authClient,
-        issuer,
         Config.auth.ismanglendemedvirkning
       );
     }
@@ -723,7 +598,6 @@ export const setupProxy = (
         res,
         next,
         authClient,
-        issuer,
         Config.auth.isoppfolgingsplan
       );
     }
@@ -736,14 +610,7 @@ export const setupProxy = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        issuer,
-        Config.auth.pensjonPenUfore
-      );
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.pensjonPenUfore);
     }
   );
 
