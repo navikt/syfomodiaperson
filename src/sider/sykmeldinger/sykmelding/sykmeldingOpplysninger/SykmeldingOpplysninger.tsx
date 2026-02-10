@@ -5,12 +5,18 @@ import {
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import SykmeldingPerioder from "./SykmeldingPerioder";
-import { SykmeldingCheckbox } from "./SykmeldingCheckbox";
-import FlereOpplysninger from "./flereopplysninger/FlereOpplysninger";
-import { SykmeldingCheckboxForFelt } from "./SykmeldingCheckboxForFelt";
 import { Egenmeldingsdager } from "./Egenmeldingsdager";
-import { BodyShort, Heading, Label } from "@navikt/ds-react";
+import { BodyShort, Checkbox, Heading, Label } from "@navikt/ds-react";
 import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
+import SykmeldingOpplysningForFelt from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/SykmeldingOpplysningForFelt";
+import MulighetForArbeid from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/MulighetForArbeid";
+import Friskmelding from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/Friskmelding";
+import UtdypendeOpplysninger from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/UtdypendeOpplysninger";
+import BedreArbeidsevne from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/BedreArbeidsevne";
+import MeldingTilNav from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/MeldingTilNav";
+import MeldingTilArbeidsgiver from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/MeldingTilArbeidsgiver";
+import Tilbakedatering from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/Tilbakedatering";
+import AndreSykmeldingOpplysninger from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/AndreSykmeldingOpplysninger";
 
 const texts = {
   dinSykmeldingTittel: "Sykmelding",
@@ -22,6 +28,8 @@ const texts = {
   arbeidsgiverTittel: "Arbeidsgiver som legen har skrevet inn",
   hensynTittel: "Beskriv eventuelle hensyn som må tas på arbeidsplassen\n",
   svangerskapTittel: "Sykdommen er svangerskapsrelatert\n\n",
+  utstedelsesdato: "Dato sykmeldingen ble skrevet",
+  skadedato: "Skadedato",
 };
 
 const getStillingsprosentText = (stillingsprosent?: number) => {
@@ -86,56 +94,78 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
         {sykmelding.diagnose.bidiagnoser && (
           <Bidiagnoser bidiagnoser={sykmelding.diagnose.bidiagnoser} />
         )}
-        {sykmelding.diagnose.fravaersgrunnLovfestet ? (
+        {sykmelding.diagnose.fravaersgrunnLovfestet && (
           <Nokkelopplysning label={"Lovfestet fraværsgrunn"}>
             <p>{sykmelding.diagnose.fravaersgrunnLovfestet}</p>
           </Nokkelopplysning>
-        ) : null}
-        {sykmelding.diagnose.fravaerBeskrivelse ? (
+        )}
+        {sykmelding.diagnose.fravaerBeskrivelse && (
           <Nokkelopplysning label={"Beskriv fraværet"}>
             <p>{sykmelding.diagnose.fravaerBeskrivelse}</p>
           </Nokkelopplysning>
-        ) : null}
-        <SykmeldingCheckboxForFelt
-          sykmeldingBolk={sykmelding.diagnose}
-          felt="svangerskap"
-          tekst={texts.svangerskapTittel}
-          className="blokk"
-        />
-        {!sykmelding.diagnose.yrkesskadeDato ? null : (
-          <SykmeldingCheckbox tekst={texts.yrkesskadeTittel} />
         )}
-        {!sykmelding.diagnose.yrkesskadeDato ? null : (
-          <Nokkelopplysning label={"Skadedato"} isSubopplysning={true}>
-            <p>{tilLesbarDatoMedArstall(sykmelding.diagnose.yrkesskadeDato)}</p>
-          </Nokkelopplysning>
+        {sykmelding.diagnose.svangerskap && (
+          <Checkbox checked readOnly size="small" className="mb-4">
+            {texts.svangerskapTittel}
+          </Checkbox>
         )}
-        <SykmeldingCheckboxForFelt
-          sykmeldingBolk={sykmelding.friskmelding}
-          felt="arbeidsfoerEtterPerioden"
-          tekst={texts.arbeidsforTittel}
-          className="blokk"
-        />
-        {!sykmelding.friskmelding.hensynPaaArbeidsplassen ? null : (
+        {sykmelding.diagnose.yrkesskadeDato && (
+          <div className="mb-4">
+            <Checkbox checked readOnly size="small">
+              {texts.yrkesskadeTittel}
+            </Checkbox>
+            <div className="ml-6">
+              <BodyShort size="small" weight="semibold">
+                {texts.skadedato}
+              </BodyShort>
+              <BodyShort size="small">
+                {tilLesbarDatoMedArstall(sykmelding.diagnose.yrkesskadeDato)}
+              </BodyShort>
+            </div>
+          </div>
+        )}
+        {sykmelding.friskmelding.arbeidsfoerEtterPerioden && (
+          <Checkbox checked readOnly size="small" className="mb-4">
+            {texts.arbeidsforTittel}
+          </Checkbox>
+        )}
+        {sykmelding.friskmelding.hensynPaaArbeidsplassen && (
           <Nokkelopplysning label={texts.hensynTittel}>
             <p>{sykmelding.friskmelding.hensynPaaArbeidsplassen}</p>
           </Nokkelopplysning>
         )}
-        {sykmelding.arbeidsgiver ? (
+        {sykmelding.arbeidsgiver && (
           <Nokkelopplysning label={texts.arbeidsgiverTittel}>
             <p className={"mb-0"}>{sykmelding.arbeidsgiver}</p>
-            {sykmelding.stillingsprosent ? (
+            {sykmelding.stillingsprosent && (
               <p>{getStillingsprosentText(sykmelding.stillingsprosent)}</p>
-            ) : null}
+            )}
           </Nokkelopplysning>
-        ) : null}
-        {sykmelding.bekreftelse.sykmelder ? (
+        )}
+        {sykmelding.bekreftelse.sykmelder && (
           <Nokkelopplysning label={texts.avsenderTittel}>
             <p>{sykmelding.bekreftelse.sykmelder}</p>
           </Nokkelopplysning>
-        ) : null}
+        )}
       </div>
-      <FlereOpplysninger sykmelding={sykmelding} />
+      <div>
+        <SykmeldingOpplysningForFelt
+          sykmeldingBolk={sykmelding.bekreftelse}
+          felt={"utstedelsesdato"}
+          tittel={texts.utstedelsesdato}
+          opplysning={tilLesbarDatoMedArstall(
+            sykmelding.bekreftelse.utstedelsesdato
+          )}
+        />
+        <MulighetForArbeid sykmelding={sykmelding} />
+        <Friskmelding sykmelding={sykmelding} />
+        <UtdypendeOpplysninger sykmelding={sykmelding} />
+        <BedreArbeidsevne sykmelding={sykmelding} />
+        <MeldingTilNav sykmelding={sykmelding} />
+        <MeldingTilArbeidsgiver sykmelding={sykmelding} />
+        <Tilbakedatering sykmelding={sykmelding} />
+        <AndreSykmeldingOpplysninger sykmelding={sykmelding} />
+      </div>
     </div>
   );
 }

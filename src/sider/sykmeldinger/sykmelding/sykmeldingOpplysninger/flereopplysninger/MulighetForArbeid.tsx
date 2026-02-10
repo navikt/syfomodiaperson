@@ -1,10 +1,9 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import SykmeldingOpplysning from "./SykmeldingOpplysning";
-import { SykmeldingCheckbox } from "../SykmeldingCheckbox";
 import SykmeldingOpplysningForFelt from "./SykmeldingOpplysningForFelt";
-import { SykmeldingCheckboxForFelt } from "../SykmeldingCheckboxForFelt";
 import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
+import { Checkbox } from "@navikt/ds-react";
 
 const texts = {
   mulighetForArbeid: "Mulighet for arbeid",
@@ -17,33 +16,27 @@ const texts = {
   medisinskAarsakBeskriv: "Beskriv nærmere",
 };
 
-const fjernAnnet = (array: string[]): string[] => {
-  if (array.length === 1 && array.indexOf("Annet") > -1) {
-    return [];
-  }
-  return array;
-};
-
 interface AarsakerProps {
   aarsaker: string[];
 }
 
-const Aarsaker = ({ aarsaker }: AarsakerProps) => {
+function Aarsaker({ aarsaker }: AarsakerProps) {
+  const fjernAnnet = (array: string[]): string[] => {
+    if (array.length === 1 && array.indexOf("Annet") > -1) {
+      return [];
+    }
+    return array;
+  };
   return (
     <>
-      {fjernAnnet(aarsaker).map((aarsak: string, key: number) => {
-        return (
-          <SykmeldingCheckbox
-            tekst={aarsak}
-            key={key}
-            className={"mb-2 last:mb-0"}
-            isSubopplysning={true}
-          />
-        );
-      })}
+      {fjernAnnet(aarsaker).map((aarsak: string, key: number) => (
+        <Checkbox key={key} checked readOnly size="small" className="ml-6">
+          {aarsak}
+        </Checkbox>
+      ))}
     </>
   );
-};
+}
 
 interface Props {
   sykmelding: SykmeldingOldFormat;
@@ -64,40 +57,32 @@ export default function MulighetForArbeid({ sykmelding }: Props) {
   return (
     <SykmeldingSeksjon tittel={texts.mulighetForArbeid}>
       {sykmelding.mulighetForArbeid.aktivitetIkkeMulig433 &&
-      sykmelding.mulighetForArbeid.aktivitetIkkeMulig433.length > 0 ? (
-        <SykmeldingOpplysning tittel={texts.erIkkeIArbeid}>
-          <SykmeldingCheckboxForFelt
-            sykmeldingBolk={sykmelding.mulighetForArbeid}
-            felt="aktivitetIkkeMulig433"
-            tekst={texts.medisinskAarsak}
-            className={"mb-2 last:mb-0"}
-          />
-          <Aarsaker
-            aarsaker={sykmelding.mulighetForArbeid.aktivitetIkkeMulig433}
-          />
-        </SykmeldingOpplysning>
-      ) : null}
-      {(() => (
-        <SykmeldingOpplysningForFelt
-          sykmeldingBolk={sykmelding.mulighetForArbeid}
-          felt={"aarsakAktivitetIkkeMulig433"}
-          tittel={texts.medisinskAarsakBeskriv}
-        />
-      ))()}
+        sykmelding.mulighetForArbeid.aktivitetIkkeMulig433.length > 0 && (
+          <SykmeldingOpplysning tittel={texts.erIkkeIArbeid}>
+            <Checkbox checked readOnly size="small">
+              {texts.medisinskAarsak}
+            </Checkbox>
+            <Aarsaker
+              aarsaker={sykmelding.mulighetForArbeid.aktivitetIkkeMulig433}
+            />
+          </SykmeldingOpplysning>
+        )}
+      <SykmeldingOpplysningForFelt
+        sykmeldingBolk={sykmelding.mulighetForArbeid}
+        felt={"aarsakAktivitetIkkeMulig433"}
+        tittel={texts.medisinskAarsakBeskriv}
+      />
       {sykmelding.mulighetForArbeid.aktivitetIkkeMulig434 &&
-      sykmelding.mulighetForArbeid.aktivitetIkkeMulig434.length > 0 ? (
-        <SykmeldingOpplysning tittel={texts.erIkkeIArbeid}>
-          <SykmeldingCheckboxForFelt
-            sykmeldingBolk={sykmelding.mulighetForArbeid}
-            felt="aktivitetIkkeMulig434"
-            tekst={texts.arbeidsplassForhold}
-            className={"mb-2 last:mb-0"}
-          />
-          <Aarsaker
-            aarsaker={sykmelding.mulighetForArbeid.aktivitetIkkeMulig434}
-          />
-        </SykmeldingOpplysning>
-      ) : null}
+        sykmelding.mulighetForArbeid.aktivitetIkkeMulig434?.length > 0 && (
+          <SykmeldingOpplysning tittel={texts.erIkkeIArbeid}>
+            <Checkbox checked readOnly size="small">
+              {texts.arbeidsplassForhold}
+            </Checkbox>
+            <Aarsaker
+              aarsaker={sykmelding.mulighetForArbeid.aktivitetIkkeMulig434}
+            />
+          </SykmeldingOpplysning>
+        )}
       <SykmeldingOpplysningForFelt
         sykmeldingBolk={sykmelding.mulighetForArbeid}
         felt="aarsakAktivitetIkkeMulig434"

@@ -1,9 +1,9 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { SykmeldingCheckbox } from "../SykmeldingCheckbox";
 import { erMeldingTilNavInformasjon } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 import SykmeldingOpplysningForFelt from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/SykmeldingOpplysningForFelt";
+import { Checkbox } from "@navikt/ds-react";
 
 const texts = {
   begrunnelse: "Begrunn nærmere",
@@ -21,10 +21,12 @@ export default function MeldingTilNav({ sykmelding }: Props) {
   }
   return (
     <SykmeldingSeksjon tittel={texts.meldingTilNav}>
-      {!sykmelding.meldingTilNav.navBoerTaTakISaken ? null : (
-        <SykmeldingCheckbox tekst={texts.bistandNav} />
+      {sykmelding.meldingTilNav.navBoerTaTakISaken && (
+        <Checkbox checked readOnly size="small">
+          {texts.bistandNav}
+        </Checkbox>
       )}
-      {!sykmelding.meldingTilNav.navBoerTaTakISakenBegrunnelse ? null : (
+      {sykmelding.meldingTilNav.navBoerTaTakISakenBegrunnelse && (
         <SykmeldingOpplysningForFelt
           sykmeldingBolk={sykmelding.meldingTilNav}
           felt={"navBoerTaTakISakenBegrunnelse"}
