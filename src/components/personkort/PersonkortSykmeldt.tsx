@@ -1,5 +1,5 @@
 import React from "react";
-import PersonkortElement from "./PersonkortElement";
+import { PersonkortElement } from "./PersonkortElement";
 import PersonkortInformasjon from "./PersonkortInformasjon";
 import {
   formaterBostedsadresse,
@@ -22,7 +22,7 @@ const texts = {
   oppholdsadresse: "Oppholdsadresse",
 };
 
-export default function PersonkortSykmeldt() {
+export function PersonkortSykmeldt() {
   const { data: personadresse } = usePersonAdresseQuery();
   const { data: kontaktinfo } = useKontaktinfoQuery();
   const informasjonNokkelTekster = new Map([

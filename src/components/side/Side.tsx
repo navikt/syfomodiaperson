@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import Personkort from "../personkort/Personkort";
+import { Personkort } from "../personkort/Personkort";
 import DocumentTitle from "react-document-title";
 import GlobalNavigasjon, {
   GlobalNavigasjonSkeleton,

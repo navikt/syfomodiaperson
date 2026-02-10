@@ -4,12 +4,12 @@ import {
   SykmeldingLeder,
   virksomheterWithoutLeder,
 } from "@/utils/ledereUtils";
-import PersonkortFeilmelding from "../PersonkortFeilmelding";
-import PersonKortVirksomhetLedere from "./PersonKortVirksomhetLedere";
-import PersonKortVirksomhetHeader from "./PersonKortVirksomhetHeader";
+import { PersonKortVirksomhetHeader } from "./PersonKortVirksomhetHeader";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
+import { Alert } from "@navikt/ds-react";
+import { PersonKortVirksomhetLedere } from "@/components/personkort/ledere/PersonKortVirksomhetLedere";
 
 const texts = {
   noLeader:
@@ -31,7 +31,7 @@ function groupArrayByKey(array: any, key: any) {
   }, {});
 }
 
-const PersonkortLedere = () => {
+export function PersonkortLedere() {
   const { allLedere } = useLedereQuery();
   const { sykmeldinger } = useGetSykmeldingerQuery();
   const virksomheterFromSykmeldinger = virksomheterWithoutLeder(
@@ -48,7 +48,11 @@ const PersonkortLedere = () => {
     "virksomhetsnummer"
   );
   if (Object.keys(virksomhetLederMap).length === 0) {
-    return <PersonkortFeilmelding>{texts.noLeader}</PersonkortFeilmelding>;
+    return (
+      <Alert variant="info" size="small">
+        {texts.noLeader}
+      </Alert>
+    );
   } else {
     return (
       <div>
@@ -78,6 +82,4 @@ const PersonkortLedere = () => {
       </div>
     );
   }
-};
-
-export default PersonkortLedere;
+}

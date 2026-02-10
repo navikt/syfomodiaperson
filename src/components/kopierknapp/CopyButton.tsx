@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
-import styled from "styled-components";
 import { CopyImage } from "../../../img/ImageComponents";
 import { Popover } from "@navikt/ds-react";
+import styled from "styled-components";
 
-interface CopyButtonProps {
+interface Props {
   message: string;
   value: string;
 }
@@ -13,12 +13,13 @@ const StyledButton = styled.button`
   padding: 0;
   border: 0;
   background: none;
+
   img {
     margin-right: 0;
   }
 `;
 
-const CopyButton = ({ message, value }: CopyButtonProps) => {
+export function CopyButton({ message, value }: Props) {
   const [showPopover, setShowPopover] = useState<boolean>(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -45,6 +46,4 @@ const CopyButton = ({ message, value }: CopyButtonProps) => {
       </Popover>
     </div>
   );
-};
-
-export default CopyButton;
+}

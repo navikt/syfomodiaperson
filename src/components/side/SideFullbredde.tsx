@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { Column, Container, Row } from "nav-frontend-grid";
-import Personkort from "../personkort/Personkort";
+import { Personkort } from "../personkort/Personkort";
 import DocumentTitle from "react-document-title";
 
 interface Props {

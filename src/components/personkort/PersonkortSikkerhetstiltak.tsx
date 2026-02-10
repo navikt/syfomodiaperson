@@ -2,10 +2,10 @@ import React from "react";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { Detail } from "@navikt/ds-react";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
-import PersonkortElement from "@/components/personkort/PersonkortElement";
+import { PersonkortElement } from "@/components/personkort/PersonkortElement";
 import { ExclamationmarkTriangleFillIcon } from "@navikt/aksel-icons";
 
-export const PersonkortSikkerhetstiltak = () => {
+export function PersonkortSikkerhetstiltak() {
   const { sikkerhetstiltak } = useNavBrukerData();
 
   return (
@@ -37,4 +37,4 @@ export const PersonkortSikkerhetstiltak = () => {
       </>
     </PersonkortElement>
   );
-};
+}

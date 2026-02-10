@@ -1,26 +1,20 @@
 import React from "react";
-import PersonkortElement from "./PersonkortElement";
+import { PersonkortElement } from "./PersonkortElement";
 import PersonkortInformasjon from "./PersonkortInformasjon";
 import { KontorByggImage } from "../../../img/ImageComponents";
 import ErrorBoundary from "../ErrorBoundary";
 import { useBehandlendeEnhetQuery } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { ApiErrorException } from "@/api/errors";
 import AppSpinner from "@/components/AppSpinner";
-import PersonkortFeilmelding from "@/components/personkort/PersonkortFeilmelding";
 import PersonkortChangeEnhet from "@/components/personkort/PersonkortChangeEnhet";
-import styled from "styled-components";
+import { Alert } from "@navikt/ds-react";
 
 const texts = {
   enhet: "Enhet",
   notFound: "Fant ikke behandlende enhet for person, prøv igjen senere.",
 };
 
-const StyledPersonkortElement = styled.div`
-  flex-direction: column;
-  width: fit-content;
-`;
-
-const PersonkortEnhet = () => {
+export function PersonkortEnhet() {
   const {
     error,
     data: behandlendeenhet,
@@ -41,7 +35,7 @@ const PersonkortEnhet = () => {
           }
           icon={<img src={KontorByggImage} alt={"Kontorbygg"} />}
         >
-          <StyledPersonkortElement>
+          <div className="flex-col w-fit">
             <PersonkortInformasjon
               informasjonNokkelTekster={informasjonNokkelTekster}
               informasjon={{
@@ -51,13 +45,13 @@ const PersonkortEnhet = () => {
               }}
             />
             <PersonkortChangeEnhet behandlendeEnhet={behandlendeenhet} />
-          </StyledPersonkortElement>
+          </div>
         </PersonkortElement>
       ) : (
-        <PersonkortFeilmelding>{texts.notFound}</PersonkortFeilmelding>
+        <Alert variant="info" size="small">
+          {texts.notFound}
+        </Alert>
       )}
     </ErrorBoundary>
   );
-};
-
-export default PersonkortEnhet;
+}

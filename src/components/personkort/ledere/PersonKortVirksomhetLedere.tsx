@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Column, Row } from "nav-frontend-grid";
 import { Undertekst } from "nav-frontend-typografi";
 import { restdatoTildato } from "@/utils/datoUtils";
-import PersonKortVirksomhetHeader from "./PersonKortVirksomhetHeader";
+import { PersonKortVirksomhetHeader } from "./PersonKortVirksomhetHeader";
 import EpostButton from "../EpostButton";
 import {
   NarmesteLederRelasjonDTO,
@@ -54,11 +54,11 @@ const UndertekstUppercase = styled(Undertekst)`
   text-transform: uppercase;
 `;
 
-const RowFullWidth = ({ children }: { children: ReactNode }) => {
+function RowFullWidth({ children }: { children: ReactNode }) {
   return <Row className="w-full mb-2 flex items-center">{children}</Row>;
-};
+}
 
-export const PersonKortVirksomhetLederIngressRow = () => {
+function PersonKortVirksomhetLederIngressRow() {
   return (
     <RowFullWidth>
       <Column className="col-sm-3">
@@ -75,7 +75,7 @@ export const PersonKortVirksomhetLederIngressRow = () => {
       </Column>
     </RowFullWidth>
   );
-};
+}
 
 interface PersonKortVirksomhetLederColumnProps {
   colSize: number;
@@ -83,25 +83,25 @@ interface PersonKortVirksomhetLederColumnProps {
   isActive: boolean;
 }
 
-export const PersonKortVirksomhetLederColumn = (
-  personKortVirksomhetLederColumnProps: PersonKortVirksomhetLederColumnProps
-) => {
-  const { colSize, text, isActive } = personKortVirksomhetLederColumnProps;
+function PersonKortVirksomhetLederColumn({
+  colSize,
+  text,
+  isActive,
+}: PersonKortVirksomhetLederColumnProps) {
   return (
     <Column className={`col-sm-${colSize}`}>
       <p>{isActive ? <b>{text}</b> : text}</p>
     </Column>
   );
-};
+}
 
 interface PersonKortVirksomhetLederRowProps {
   leder: NarmesteLederRelasjonDTO;
 }
 
-export const PersonKortVirksomhetLederRow = (
-  personKortVirksomhetLederRowProps: PersonKortVirksomhetLederRowProps
-) => {
-  const { leder } = personKortVirksomhetLederRowProps;
+function PersonKortVirksomhetLederRow({
+  leder,
+}: PersonKortVirksomhetLederRowProps) {
   const isActive = leder.status === NarmesteLederRelasjonStatus.INNMELDT_AKTIV;
   return (
     <RowFullWidth>
@@ -132,7 +132,7 @@ export const PersonKortVirksomhetLederRow = (
       )}
     </RowFullWidth>
   );
-};
+}
 
 interface PersonKortVirksomhetLedereProps {
   sykmeldinger: SykmeldingOldFormat[];
@@ -140,11 +140,11 @@ interface PersonKortVirksomhetLedereProps {
   virksomhetsnummer: string;
 }
 
-const PersonKortVirksomhetLedere = (
-  personKortVirksomhetLedereProps: PersonKortVirksomhetLedereProps
-) => {
-  const { sykmeldinger, virksomhetLederMap, virksomhetsnummer } =
-    personKortVirksomhetLedereProps;
+export function PersonKortVirksomhetLedere({
+  sykmeldinger,
+  virksomhetLederMap,
+  virksomhetsnummer,
+}: PersonKortVirksomhetLedereProps) {
   const currentLeder: NarmesteLederRelasjonDTO =
     virksomhetLederMap[virksomhetsnummer][0];
 
@@ -165,6 +165,4 @@ const PersonKortVirksomhetLedere = (
       )}
     </PersonKortVirksomhetHeader>
   );
-};
-
-export default PersonKortVirksomhetLedere;
+}

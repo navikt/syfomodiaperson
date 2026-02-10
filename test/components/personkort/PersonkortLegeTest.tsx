@@ -1,8 +1,9 @@
 import { fastlegerQueryKeys } from "@/data/fastlege/fastlegerQueryHooks";
 import { render, screen } from "@testing-library/react";
 import { QueryClientProvider } from "@tanstack/react-query";
-import PersonkortLege, {
+import {
   FastlegeVikar,
+  PersonkortLege,
 } from "@/components/personkort/PersonkortLege";
 import { expect, describe, it, beforeEach } from "vitest";
 import React from "react";

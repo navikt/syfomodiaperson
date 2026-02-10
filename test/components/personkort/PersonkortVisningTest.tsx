@@ -1,6 +1,5 @@
 import React from "react";
 import { expect, describe, it, beforeEach } from "vitest";
-import PersonkortVisning from "../../../src/components/personkort/PersonkortVisning";
 import { PERSONKORTVISNING_TYPE } from "@/konstanter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
@@ -14,6 +13,7 @@ import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
 import { daysFromToday } from "../../testUtils";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
 import { behandlendeEnhetMockResponse } from "@/mocks/syfobehandlendeenhet/behandlendeEnhetMock";
+import { PersonkortVisning } from "@/components/personkort/PersonkortVisning";
 
 let queryClient: any;
 

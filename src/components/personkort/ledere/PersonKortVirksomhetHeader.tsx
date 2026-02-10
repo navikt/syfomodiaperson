@@ -52,16 +52,13 @@ interface PersonKortVirksomhetHeaderProps {
   sykmeldinger: SykmeldingOldFormat[];
 }
 
-const PersonKortVirksomhetHeader = (
-  personKortVirksomhetHeaderProps: PersonKortVirksomhetHeaderProps
-) => {
-  const {
-    children,
-    arbeidsgiverForskutterer,
-    virksomhetsnavn,
-    virksomhetsnummer,
-    sykmeldinger,
-  } = personKortVirksomhetHeaderProps;
+export function PersonKortVirksomhetHeader({
+  children,
+  arbeidsgiverForskutterer,
+  virksomhetsnavn,
+  virksomhetsnummer,
+  sykmeldinger,
+}: PersonKortVirksomhetHeaderProps) {
   const virksomhetsnummerText = textVirksomhetsnummer(virksomhetsnummer);
   const forskutteringText = textForskuttering(arbeidsgiverForskutterer);
   const activeSykmeldingText =
@@ -85,6 +82,4 @@ const PersonKortVirksomhetHeader = (
       {children}
     </PersonKortVirksomhetLederHeaderStyled>
   );
-};
-
-export default PersonKortVirksomhetHeader;
+}
