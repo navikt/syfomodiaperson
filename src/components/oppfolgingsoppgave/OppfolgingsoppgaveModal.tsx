@@ -250,6 +250,16 @@ export default function OppfolgingsoppgaveModal({
             {isFormError && (
               <ErrorMessage>{texts.formNeedsChangeToSave}</ErrorMessage>
             )}
+            {createOppfolgingsoppgave.isError && (
+              <ErrorMessage>
+                {createOppfolgingsoppgave.error.error.defaultErrorMsg}
+              </ErrorMessage>
+            )}
+            {editOppfolgingsoppgave.isError && (
+              <ErrorMessage>
+                {editOppfolgingsoppgave.error.error.defaultErrorMsg}
+              </ErrorMessage>
+            )}
           </Modal.Footer>
         </Modal>
       </form>

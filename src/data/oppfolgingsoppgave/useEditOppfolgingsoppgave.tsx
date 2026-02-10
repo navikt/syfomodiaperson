@@ -5,10 +5,16 @@ import { post } from "@/api/axios";
 import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useOppfolgingsoppgaver";
 import { aktivOppfolgingsoppgaveQueryKeys } from "@/data/oppfolgingsoppgave/useAktivOppfolgingsoppgave";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { UseMutationResult } from "@tanstack/react-query/build/modern/types";
+import { ApiErrorException } from "@/api/errors";
 
 export function useEditOppfolgingsoppgave(
   existingOppfolgingsoppgaveUuid?: string
-) {
+): UseMutationResult<
+  EditOppfolgingsoppgaveRequestDTO,
+  ApiErrorException,
+  EditOppfolgingsoppgaveRequestDTO
+> {
   const personident = useValgtPersonident();
   const queryClient = useQueryClient();
   const path = `${ISHUSKELAPP_ROOT}/huskelapp/${existingOppfolgingsoppgaveUuid}`;
