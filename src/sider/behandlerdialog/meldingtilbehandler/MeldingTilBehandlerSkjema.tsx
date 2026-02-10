@@ -76,11 +76,10 @@ export const MeldingTilBehandlerSkjema = () => {
 
   const queryClient = useQueryClient();
 
-  const { data: draft } = useMeldingTilBehandlerDraftQuery();
+  const getMeldingTilBehandlerDraftQuery = useMeldingTilBehandlerDraftQuery();
   const saveDraft = useSaveMeldingTilBehandlerDraft();
   const deleteDraft = useDeleteMeldingTilBehandlerDraft();
   const lastSavedDraftJsonRef = useRef<string>("");
-  const hasHydratedRef = useRef(false);
 
   const debouncedAutoSaveDraft = useDebouncedCallback(
     (values: MeldingTilBehandlerSkjemaValues) => {
@@ -112,35 +111,15 @@ export const MeldingTilBehandlerSkjema = () => {
   );
 
   useEffect(() => {
-    if (!draft || hasHydratedRef.current || isDirty) {
-      return;
+    if (!!getMeldingTilBehandlerDraftQuery.data?.tekst) {
+      setValue("meldingTekst", getMeldingTilBehandlerDraftQuery.data.tekst);
     }
-
-    const currentMeldingTekst = getValues("meldingTekst");
-    if (currentMeldingTekst !== "") {
-      return;
-    }
-
-    const meldingType = Object.values(MeldingType).includes(
-      draft.meldingType as MeldingType
-    )
-      ? (draft.meldingType as MeldingType)
-      : undefined;
-
-    setValue("meldingTekst", draft.tekst, { shouldDirty: false });
-    if (meldingType) {
-      setValue("meldingType", meldingType, { shouldDirty: false });
-    }
-
-    hasHydratedRef.current = true;
-  }, [draft, isDirty, getValues, setValue]);
-
-  useEffect(() => {
-    const subscription = watch((values) => {
-      debouncedAutoSaveDraft(values as MeldingTilBehandlerSkjemaValues);
-    });
-    return () => subscription.unsubscribe();
-  }, [debouncedAutoSaveDraft, watch]);
+    getMeldingTilBehandlerDraftQuery.data?.meldingType &&
+      setValue(
+        "meldingType",
+        getMeldingTilBehandlerDraftQuery.data.meldingType as MeldingType
+      );
+  }, [getMeldingTilBehandlerDraftQuery.data, setValue]);
 
   const meldingTekstErrorMessage =
     errors.meldingTekst &&
@@ -199,7 +178,11 @@ export const MeldingTilBehandlerSkjema = () => {
 
   return (
     <FormProvider {...formMethods}>
-      <form onSubmit={handleSubmit(submit)} className={"flex flex-col gap-4"}>
+      <form
+        onSubmit={handleSubmit(submit)}
+        onChange={() => debouncedAutoSaveDraft(getValues())}
+        className={"flex flex-col gap-4"}
+      >
         {meldingSentTime && (
           <Alert variant="success" size="small">
             {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(
