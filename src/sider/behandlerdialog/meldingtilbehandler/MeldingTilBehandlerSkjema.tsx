@@ -68,7 +68,7 @@ export const MeldingTilBehandlerSkjema = () => {
     register,
     watch,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors },
     reset,
     getValues,
     setValue,
