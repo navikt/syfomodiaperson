@@ -15,8 +15,9 @@ const BehandlerSearch = ({
 }: BehandlerSearchProps): ReactElement => {
   const searchRef = useRef(null);
   const [searchValue, setSearchValue] = useState("");
-  const [selectedSearchResult, setselectedSearchResult] = useState(""); //TODO: Finn bedre navn/oppsett
+  const [selectedSearchResult, setselectedSearchResult] = useState("");
   const [popoverIsOpen, setPopoverIsOpen] = useState<boolean>(false);
+
   const setSearchText = (text) => {
     if (text.length > 3) {
       setSearchValue(text);
@@ -27,6 +28,7 @@ const BehandlerSearch = ({
     setSelectedBehandler(undefined);
     setPopoverIsOpen(true);
   };
+
   return (
     <div className="w-[30rem]">
       <Search

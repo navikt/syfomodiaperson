@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Alert, Button, Select, Textarea } from "@navikt/ds-react";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import {
@@ -6,21 +6,32 @@ import {
   MeldingType,
 } from "@/data/behandlerdialog/behandlerdialogTypes";
 import { useMeldingTilBehandler } from "@/data/behandlerdialog/useMeldingTilBehandler";
-import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
+import {
+  showTimeIncludingSeconds,
+  tilDatoMedManedNavnOgKlokkeslett,
+} from "@/utils/datoUtils";
 import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document/useMeldingTilBehandlerDocument";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { MeldingsTypeInfo } from "@/sider/behandlerdialog/meldingtilbehandler/MeldingsTypeInfo";
 import { FormProvider, useForm } from "react-hook-form";
+import { useQueryClient } from "@tanstack/react-query";
 import { meldingTypeTexts } from "@/data/behandlerdialog/behandlerdialogTexts";
 import { ButtonRow } from "@/components/Layout";
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
 import { VelgBehandler } from "@/components/behandler/VelgBehandler";
 import { PreviewButton } from "@/sider/behandlerdialog/meldingtilbehandler/PreviewButton";
+import { SaveFile } from "../../../../img/ImageComponents";
+import {
+  useDeleteMeldingTilBehandlerDraft,
+  useMeldingTilBehandlerDraftQuery,
+  useSaveMeldingTilBehandlerDraft,
+} from "@/data/behandlerdialog/meldingtilbehandlerDraftQueryHooks";
+import { useDebouncedCallback } from "use-debounce";
 
 const texts = {
   sendKnapp: "Send til behandler",
   previewContentLabel: "Forhåndsvis melding til behandler",
-  meldingsType: {
+  meldingType: {
     label: "Hvilken meldingstype ønsker du å sende?",
     defaultOption: "Velg meldingstype",
     missing: "Vennligst velg type melding",
@@ -28,11 +39,13 @@ const texts = {
   meldingsTekstLabel: "Skriv inn teksten du ønsker å sende til behandler",
   meldingsTekstMissing: "Vennligst angi meldingstekst",
   velgBehandlerLegend: "Velg behandler som skal motta meldingen",
+  utkastSaved: "Utkast lagret",
+  utkastSaveFailed: "Lagring av utkast feilet",
 };
 
 export interface MeldingTilBehandlerSkjemaValues {
   behandlerRef: string;
-  meldingsType: MeldingType;
+  meldingType: MeldingType;
   meldingTekst: string;
 }
 
@@ -40,38 +53,140 @@ export const MAX_LENGTH_BEHANDLER_MELDING = 5000;
 
 export const MeldingTilBehandlerSkjema = () => {
   const [displayPreview, setDisplayPreview] = useState(false);
-  const { getMeldingTilBehandlerDocument } = useMeldingTilBehandlerDocument();
+  const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
+  const [meldingSentTime, setMeldingSentTime] = useState<Date>();
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
+  const { getMeldingTilBehandlerDocument } = useMeldingTilBehandlerDocument();
   const meldingTilBehandler = useMeldingTilBehandler();
-  const formMethods = useForm<MeldingTilBehandlerSkjemaValues>();
+  const formMethods = useForm<MeldingTilBehandlerSkjemaValues>({
+    defaultValues: {
+      meldingType: "" as any,
+      meldingTekst: "",
+    },
+  });
   const {
     register,
     watch,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
     reset,
     getValues,
+    setValue,
   } = formMethods;
 
-  const now = new Date();
+  const queryClient = useQueryClient();
+
+  const { data: draft } = useMeldingTilBehandlerDraftQuery();
+  const saveDraft = useSaveMeldingTilBehandlerDraft();
+  const deleteDraft = useDeleteMeldingTilBehandlerDraft();
+  const lastSavedDraftJsonRef = useRef<string>("");
+  const hasHydratedRef = useRef(false);
+
+  const debouncedAutoSaveDraft = useDebouncedCallback(
+    (values: MeldingTilBehandlerSkjemaValues) => {
+      const draftPayload = {
+        tekst: values.meldingTekst ?? "",
+        meldingType: values.meldingType,
+      };
+
+      if (!draftPayload.tekst && !draftPayload.meldingType) {
+        return;
+      }
+
+      const draftJson = JSON.stringify(draftPayload);
+      if (draftJson === lastSavedDraftJsonRef.current) {
+        return;
+      }
+
+      lastSavedDraftJsonRef.current = draftJson;
+      saveDraft.mutate(draftPayload, {
+        onSuccess: () => {
+          setUtkastSavedTime(new Date());
+        },
+        onError: () => {
+          setUtkastSavedTime(undefined);
+        },
+      });
+    },
+    750
+  );
+
+  useEffect(() => {
+    if (!draft || hasHydratedRef.current || isDirty) {
+      return;
+    }
+
+    const currentMeldingTekst = getValues("meldingTekst");
+    if (currentMeldingTekst !== "") {
+      return;
+    }
+
+    const meldingType = Object.values(MeldingType).includes(
+      draft.meldingType as MeldingType
+    )
+      ? (draft.meldingType as MeldingType)
+      : undefined;
+
+    setValue("meldingTekst", draft.tekst, { shouldDirty: false });
+    if (meldingType) {
+      setValue("meldingType", meldingType, { shouldDirty: false });
+    }
+
+    hasHydratedRef.current = true;
+  }, [draft, isDirty, getValues, setValue]);
+
+  useEffect(() => {
+    const subscription = watch((values) => {
+      debouncedAutoSaveDraft(values as MeldingTilBehandlerSkjemaValues);
+    });
+    return () => subscription.unsubscribe();
+  }, [debouncedAutoSaveDraft, watch]);
+
   const meldingTekstErrorMessage =
     errors.meldingTekst &&
     getValues("meldingTekst") === "" &&
     texts.meldingsTekstMissing;
 
+  const utkastSavedText = (savedDate: Date) => {
+    return `${texts.utkastSaved} ${showTimeIncludingSeconds(savedDate)}`;
+  };
+
   const submit = (values: MeldingTilBehandlerSkjemaValues) => {
+    if (!selectedBehandler) {
+      return;
+    }
+
     const meldingTilBehandlerDTO: MeldingTilBehandlerDTO = {
-      type: values.meldingsType,
-      behandlerRef: values.behandlerRef,
+      type: values.meldingType,
+      behandlerRef: selectedBehandler.behandlerRef,
       tekst: values.meldingTekst,
       document: getMeldingTilBehandlerDocument(values),
-      behandlerIdent: selectedBehandler?.fnr,
-      behandlerNavn: selectedBehandler
-        ? behandlerNavn(selectedBehandler)
-        : undefined,
+      behandlerIdent: selectedBehandler.fnr,
+      behandlerNavn: behandlerNavn(selectedBehandler),
     };
+
     meldingTilBehandler.mutate(meldingTilBehandlerDTO, {
-      onSuccess: () => reset(),
+      onSuccess: () => {
+        setMeldingSentTime(new Date());
+        lastSavedDraftJsonRef.current = "";
+        setUtkastSavedTime(undefined);
+        setSelectedBehandler(undefined);
+        debouncedAutoSaveDraft.cancel();
+
+        queryClient.cancelQueries({
+          queryKey: ["meldingtilbehandlerDraft"],
+        });
+
+        queryClient.setQueryData(["meldingtilbehandlerDraft"], null);
+
+        reset();
+
+        deleteDraft.mutate(undefined, {
+          onSettled: () => {
+            queryClient.setQueryData(["meldingtilbehandlerDraft"], null);
+          },
+        });
+      },
     });
   };
 
@@ -79,12 +194,22 @@ export const MeldingTilBehandlerSkjema = () => {
     <option value={type}>{meldingTypeTexts[type]}</option>
   );
 
+  const meldingType = watch("meldingType");
+  const meldingTekst = watch("meldingTekst");
+
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={handleSubmit(submit)} className={"flex flex-col gap-4"}>
-        {meldingTilBehandler.isSuccess && (
+        {meldingSentTime && (
           <Alert variant="success" size="small">
-            {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(now)}`}
+            {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(
+              meldingSentTime
+            )}`}
+          </Alert>
+        )}
+        {saveDraft.isError && (
+          <Alert variant="error" size="small">
+            {texts.utkastSaveFailed}
           </Alert>
         )}
         <div className="max-w-[23rem]">
@@ -92,12 +217,12 @@ export const MeldingTilBehandlerSkjema = () => {
             id="type"
             className="mb-4"
             size="small"
-            label={texts.meldingsType.label}
-            {...register("meldingsType", { required: true })}
-            value={watch("meldingsType")}
-            error={errors.meldingsType && texts.meldingsType.missing}
+            label={texts.meldingType.label}
+            {...register("meldingType", { required: true })}
+            value={meldingType}
+            error={errors.meldingType && texts.meldingType.missing}
           >
-            <option value="">{texts.meldingsType.defaultOption}</option>
+            <option value="">{texts.meldingType.defaultOption}</option>
             <MeldingTypeOption
               type={MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER}
             />
@@ -106,11 +231,10 @@ export const MeldingTilBehandlerSkjema = () => {
             />
             <MeldingTypeOption type={MeldingType.HENVENDELSE_MELDING_FRA_NAV} />
           </Select>
-          {watch("meldingsType") && (
-            <MeldingsTypeInfo meldingType={watch("meldingsType")} />
-          )}
+          {meldingType && <MeldingsTypeInfo meldingType={meldingType} />}
         </div>
         <VelgBehandler
+          key={meldingSentTime?.getTime() || "initial"}
           onBehandlerSelected={setSelectedBehandler}
           legend={texts.velgBehandlerLegend}
         />
@@ -120,6 +244,7 @@ export const MeldingTilBehandlerSkjema = () => {
             required: true,
             maxLength: MAX_LENGTH_BEHANDLER_MELDING,
           })}
+          value={meldingTekst}
           maxLength={MAX_LENGTH_BEHANDLER_MELDING}
           error={meldingTekstErrorMessage}
           size="small"
@@ -133,6 +258,12 @@ export const MeldingTilBehandlerSkjema = () => {
             getMeldingTilBehandlerDocument(getValues()) ?? []
           }
         />
+        {utkastSavedTime && (
+          <div className="mb-2 font-bold flex gap-2">
+            <img src={SaveFile} alt="saved" />
+            <span>{utkastSavedText(utkastSavedTime)}</span>
+          </div>
+        )}
         <ButtonRow>
           <Button
             variant="primary"
