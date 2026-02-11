@@ -5,8 +5,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useOppfolgingsoppgaver";
 import { aktivOppfolgingsoppgaveQueryKeys } from "@/data/oppfolgingsoppgave/useAktivOppfolgingsoppgave";
 import { OppfolgingsoppgaveRequestDTO } from "@/data/oppfolgingsoppgave/types";
+import { UseMutationResult } from "@tanstack/react-query/build/modern/types";
+import { ApiErrorException } from "@/api/errors";
 
-export const useCreateOppfolgingsoppgave = () => {
+export const useCreateOppfolgingsoppgave = (): UseMutationResult<
+  OppfolgingsoppgaveRequestDTO,
+  ApiErrorException,
+  OppfolgingsoppgaveRequestDTO
+> => {
   const personident = useValgtPersonident();
   const queryClient = useQueryClient();
   const path = `${ISHUSKELAPP_ROOT}/huskelapp`;
