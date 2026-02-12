@@ -41,10 +41,14 @@ async function initJWKSet() {
   _remoteJWKSet = await createRemoteJWKSet(new URL(Config.auth.jwksUri));
 }
 
+function retrieveToken(req: Request): string | undefined {
+  return req.headers.authorization?.replace("Bearer ", "");
+}
+
 async function retrieveAndValidateToken(
   req: Request
 ): Promise<string | undefined> {
-  const token = req.headers.authorization?.replace("Bearer ", "");
+  const token = retrieveToken(req);
   if (token && (await validateToken(token))) {
     return token;
   }
@@ -209,7 +213,7 @@ export async function getOpenIdClient(
 export async function getVeilederidentFromRequest(
   req: Request
 ): Promise<string | undefined> {
-  const token = await retrieveAndValidateToken(req);
+  const token = retrieveToken(req);
   if (!token) {
     return undefined;
   }
