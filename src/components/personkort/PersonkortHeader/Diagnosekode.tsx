@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
-import { sykmeldingerSortertNyestTilEldstPeriode } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { Tooltip } from "@navikt/ds-react";
 import { MedisinskrinImage } from "../../../../img/ImageComponents";
+import { sykmeldingerSortertNyestTilEldstPeriode } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
 const texts = {
   tooltip: "Siste kjente diagnosekode",

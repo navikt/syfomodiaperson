@@ -10,6 +10,12 @@ import { useUnderArbeidsrettetOppfolgingQuery } from "@/data/veilarboppfolging/u
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { useUforegradQuery } from "@/data/uforegrad/uforegradQueryHooks";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
+import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
+import {
+  erSykmeldingUtenArbeidsgiver,
+  sykmeldingerSortertNyestTilEldstPeriode,
+  SykmeldingStatus,
+} from "@/data/sykmelding/types/SykmeldingOldFormat";
 
 const texts = {
   fetchDiskresjonskodeFailed: "Klarte ikke hente diskresjonskode for brukeren.",
@@ -23,6 +29,7 @@ const texts = {
   ao: "Under arbeidsrettet oppfølging",
   friskmeldingTilArbeidsformidling: "Har vedtak om § 8-5",
   reservertKRR: "Reservert KRR",
+  harIkkeArbeidsgiver: "Uten arbeidsgiver",
 };
 
 export function PersonkortHeaderTags() {
@@ -35,6 +42,7 @@ export function PersonkortHeaderTags() {
   const { data: vedtakFriskTilArbeid } = useVedtakQuery();
   const { data: uforegradData } = useUforegradQuery();
   const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
+  const getSykmeldingerQuery = useGetSykmeldingerQuery();
 
   const isDead = !!dodsdato;
   const dateOfDeath = tilLesbarDatoMedArUtenManedNavn(dodsdato);
@@ -47,6 +55,18 @@ export function PersonkortHeaderTags() {
   const hasActiveFriskmeldingVedtak =
     vedtakFriskTilArbeid[0] &&
     new Date(vedtakFriskTilArbeid[0].tom).getTime() >= new Date().getTime();
+
+  const nyligsteSendtEllerBekreftetSykmelding =
+    sykmeldingerSortertNyestTilEldstPeriode(
+      getSykmeldingerQuery.sykmeldinger
+    ).find(
+      (sykmelding) =>
+        sykmelding.status === SykmeldingStatus.SENDT ||
+        sykmelding.status === SykmeldingStatus.BEKREFTET
+    );
+  const harIkkeArbeidsgiver = nyligsteSendtEllerBekreftetSykmelding
+    ? erSykmeldingUtenArbeidsgiver(nyligsteSendtEllerBekreftetSykmelding)
+    : false;
 
   return (
     <ErrorBoundary
@@ -108,6 +128,11 @@ export function PersonkortHeaderTags() {
         {brukerKanIkkeVarslesDigitalt && (
           <Tag variant="warning" size="small">
             {texts.reservertKRR}
+          </Tag>
+        )}
+        {harIkkeArbeidsgiver && (
+          <Tag variant="warning" size="small">
+            {texts.harIkkeArbeidsgiver}
           </Tag>
         )}
       </div>

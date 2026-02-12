@@ -2,15 +2,20 @@ import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { formaterOrgnr } from "@/utils";
 import { lederHasActiveSykmelding } from "@/utils/ledereUtils";
-import kanskjeBooleanTilJaNeiKanskje from "../kanskjeBooleanTilJaNeiKanskje";
 import { FabrikkImage } from "../../../../img/ImageComponents";
-import navFarger from "nav-frontend-core";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { Tag } from "@navikt/ds-react";
 
 const texts = {
   activeSykmelding: "Sykmeldt nå",
 };
+
+function arbeidsgiverForskuttererToText(arbeidsgiverForskutterer?: boolean) {
+  if (arbeidsgiverForskutterer === null) {
+    return "Ikke oppgitt";
+  }
+  return arbeidsgiverForskutterer ? "Ja" : "Nei";
+}
 
 const GridRow = styled.div`
   width: 100%;
@@ -26,25 +31,7 @@ const FlexColumn = styled.div`
   align-items: flex-end;
 `;
 
-const HeaderStyled = styled.div`
-  background-color: ${navFarger.navGraBakgrunn};
-  padding: 0.5em;
-  border: none;
-`;
-
-const PersonKortVirksomhetLederHeaderStyled = styled.div`
-  margin-bottom: 2em;
-`;
-
-const textVirksomhetsnummer = (orgnummer: string) => {
-  return `Org.nr.: ${formaterOrgnr(orgnummer)}`;
-};
-
-const textForskuttering = (arbeidsgiverForskutterer?: boolean) => {
-  return `Forsk.: ${kanskjeBooleanTilJaNeiKanskje(arbeidsgiverForskutterer)}`;
-};
-
-interface PersonKortVirksomhetHeaderProps {
+interface Props {
   children?: ReactNode;
   arbeidsgiverForskutterer?: boolean;
   virksomhetsnavn: string;
@@ -58,15 +45,17 @@ export function PersonKortVirksomhetHeader({
   virksomhetsnavn,
   virksomhetsnummer,
   sykmeldinger,
-}: PersonKortVirksomhetHeaderProps) {
-  const virksomhetsnummerText = textVirksomhetsnummer(virksomhetsnummer);
-  const forskutteringText = textForskuttering(arbeidsgiverForskutterer);
+}: Props) {
+  const virksomhetsnummerText = `Org.nr.: ${formaterOrgnr(virksomhetsnummer)}`;
+  const forskutteringText = `Forsk.: ${arbeidsgiverForskuttererToText(
+    arbeidsgiverForskutterer
+  )}`;
   const activeSykmeldingText =
     lederHasActiveSykmelding(virksomhetsnummer, sykmeldinger) &&
     texts.activeSykmelding;
   return (
-    <PersonKortVirksomhetLederHeaderStyled>
-      <HeaderStyled className="personkortElement__tittel">
+    <div className="mb-8">
+      <div className="personkortElement__tittel bg-surface-subtle p-2 border-0">
         <img src={FabrikkImage} alt="Fabrikk" />
         <GridRow>
           <FlexColumn>{virksomhetsnavn}</FlexColumn>
@@ -78,8 +67,8 @@ export function PersonKortVirksomhetHeader({
             </FlexColumn>
           )}
         </GridRow>
-      </HeaderStyled>
+      </div>
       {children}
-    </PersonKortVirksomhetLederHeaderStyled>
+    </div>
   );
 }

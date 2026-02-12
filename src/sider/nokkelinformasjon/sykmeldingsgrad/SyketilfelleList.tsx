@@ -7,11 +7,11 @@ import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQue
 import {
   newAndActivatedSykmeldinger,
   sykmeldingerInnenforOppfolgingstilfelle,
-  sykmeldingerSortertNyestTilEldstPeriode,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { MedisinskrinImage } from "../../../../img/ImageComponents";
 import {
   SykmeldingDiagnose,
+  sykmeldingerSortertNyestTilEldstPeriode,
   SykmeldingOldFormat,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
