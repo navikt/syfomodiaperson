@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { Personkort } from "../personkort/Personkort";
-import DocumentTitle from "react-document-title";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import GlobalNavigasjon, {
   GlobalNavigasjonSkeleton,
   Menypunkter,
@@ -33,38 +33,36 @@ export default function Side({
   const diskresjonskode = useDiskresjonskodeQuery();
   const brukerinfo = useBrukerinfoQuery();
 
+  useDocumentTitle(tittel);
+
   const isFlexjarVisible =
     diskresjonskode.data !== "6" && diskresjonskode.data !== "7";
   const isPending = diskresjonskode.isPending || brukerinfo.isPending;
 
   return (
-    <DocumentTitle
-      title={tittel + (tittel.length > 0 ? " - Sykefravær" : "Sykefravær")}
-    >
-      <div className="mx-6 flex flex-col">
-        <div className="flex flex-col gap-2" id={MODIA_HEADER_ID}>
-          <div className="flex flex-row w-full bg-surface-default">
-            <OversiktLenker />
-            <TildeltVeileder />
-          </div>
-          {brukerinfo.isInaktivPersonident && <InaktivPersonident />}
-          {isPride() && <Pride>&nbsp;</Pride>}
-          <Personkort />
+    <div className="mx-6 flex flex-col">
+      <div className="flex flex-col gap-2" id={MODIA_HEADER_ID}>
+        <div className="flex flex-row w-full bg-surface-default">
+          <OversiktLenker />
+          <TildeltVeileder />
         </div>
-        <div className={"flex -md:flex-wrap"}>
-          <nav className="-md:w-full min-w-[15rem] w-[15rem] md:mr-2">
-            {isPending ? (
-              <GlobalNavigasjonSkeleton />
-            ) : (
-              <GlobalNavigasjon aktivtMenypunkt={aktivtMenypunkt} />
-            )}
-            <Oppfolgingsoppgave />
-            {isEaster() && <Easter />}
-          </nav>
-          <div className="w-full">{children}</div>
-        </div>
-        {isFlexjarVisible && flexjar}
+        {brukerinfo.isInaktivPersonident && <InaktivPersonident />}
+        {isPride() && <Pride>&nbsp;</Pride>}
+        <Personkort />
       </div>
-    </DocumentTitle>
+      <div className={"flex -md:flex-wrap"}>
+        <nav className="-md:w-full min-w-[15rem] w-[15rem] md:mr-2">
+          {isPending ? (
+            <GlobalNavigasjonSkeleton />
+          ) : (
+            <GlobalNavigasjon aktivtMenypunkt={aktivtMenypunkt} />
+          )}
+          <Oppfolgingsoppgave />
+          {isEaster() && <Easter />}
+        </nav>
+        <div className="w-full">{children}</div>
+      </div>
+      {isFlexjarVisible && flexjar}
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { Column, Container, Row } from "nav-frontend-grid";
 import { Personkort } from "../personkort/Personkort";
-import DocumentTitle from "react-document-title";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 interface Props {
   tittel: string;
@@ -11,20 +11,18 @@ interface Props {
 export default function SideFullbredde(sideFullbreddeProps: Props) {
   const { tittel, children } = sideFullbreddeProps;
 
+  useDocumentTitle(tittel);
+
   return (
-    <DocumentTitle
-      title={tittel + (tittel.length > 0 ? " - Sykefravær" : "Sykefravær")}
-    >
-      <Container>
-        <Row>
-          <Column className="col-xs-12">
-            <Personkort />
-          </Column>
-        </Row>
-        <Row>
-          <Column className="col-xs-12 col-sm-12">{children}</Column>
-        </Row>
-      </Container>
-    </DocumentTitle>
+    <Container>
+      <Row>
+        <Column className="col-xs-12">
+          <Personkort />
+        </Column>
+      </Row>
+      <Row>
+        <Column className="col-xs-12 col-sm-12">{children}</Column>
+      </Row>
+    </Container>
   );
 }
