@@ -1,22 +1,28 @@
 import React from "react";
 import styled from "styled-components";
-import CopyButton from "../../kopierknapp/CopyButton";
+import { CopyButton } from "../../kopierknapp/CopyButton";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { HStack } from "@navikt/ds-react";
 import { PersonkortHeaderTags } from "@/components/personkort/PersonkortHeader/PersonkortHeaderTags";
 import { KjonnIkon } from "@/components/personkort/PersonkortHeader/KjonnIkon";
 import { TilfellePeriod } from "@/components/personkort/PersonkortHeader/TilfellePeriod";
-import { Varighet } from "@/components/personkort/PersonkortHeader/Varighet";
 import { Diagnosekode } from "@/components/personkort/PersonkortHeader/Diagnosekode";
 import { useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
 import { NavnHeader } from "@/components/personkort/PersonkortHeader/NavnHeader";
 import Utbetalingsinfo from "@/components/personkort/PersonkortHeader/Utbetalingsinfo";
 import { formaterFnr } from "@/utils/fnrUtils";
 import { mapKjoennFromDto } from "@/data/navbruker/types/BrukerinfoDTO";
+import {
+  useCurrentVarighetOppfolgingstilfelle,
+  useStartOfLatestOppfolgingstilfelle,
+} from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { SyketilfelleSummaryElement } from "@/components/personkort/PersonkortHeader/SyketilfelleSummaryElement";
 
 const texts = {
   copied: "Kopiert!",
+  varighet: "Varighet: ",
+  uker: "uker",
 };
 
 const StyledFnr = styled.div`
@@ -33,6 +39,10 @@ export function PersonkortHeader() {
   const navbruker = useNavBrukerData();
   const personident = useValgtPersonident();
   const getMaksdato = useMaksdatoQuery();
+  const oppfolgingstilfelleStartDate = useStartOfLatestOppfolgingstilfelle();
+  const oppfolgingstilfelleVarighetUker =
+    useCurrentVarighetOppfolgingstilfelle();
+
   const maksdato = getMaksdato.data?.maxDate;
 
   return (
@@ -49,7 +59,12 @@ export function PersonkortHeader() {
 
           <HStack gap="3">
             <TilfellePeriod />
-            <Varighet />
+            {oppfolgingstilfelleStartDate && (
+              <SyketilfelleSummaryElement
+                keyword={texts.varighet}
+                value={`${oppfolgingstilfelleVarighetUker} ${texts.uker}`}
+              />
+            )}
             <Diagnosekode />
           </HStack>
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { PERSONKORTVISNING_TYPE } from "@/konstanter";
-import PersonkortVisning from "./PersonkortVisning";
+import { PersonkortVisning } from "./PersonkortVisning";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import Ekspanderbartpanel from "nav-frontend-ekspanderbartpanel";
 import { PersonkortHeader } from "@/components/personkort/PersonkortHeader/PersonkortHeader";
@@ -15,7 +15,7 @@ const texts = {
   },
 };
 
-export default function Personkort() {
+export function Personkort() {
   const [visning, setVisning] = useState(PERSONKORTVISNING_TYPE.SYKMELDT);
   const { hasSikkerhetstiltak } = useNavBrukerData();
 
@@ -99,9 +99,7 @@ export default function Personkort() {
               </li>
             )}
           </ul>
-          <div aria-live="polite">
-            <PersonkortVisning visning={visning} />
-          </div>
+          <PersonkortVisning visning={visning} />
         </div>
       </Ekspanderbartpanel>
     </div>

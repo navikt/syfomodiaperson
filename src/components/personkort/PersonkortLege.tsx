@@ -1,13 +1,12 @@
 import React, { ReactElement } from "react";
 import { restdatoTilLesbarDato } from "@/utils/datoUtils";
-import PersonkortFeilmelding from "./PersonkortFeilmelding";
 import { Adresse, Fastlege } from "@/data/fastlege/types/Fastlege";
 import { useFastlegerQuery } from "@/data/fastlege/fastlegerQueryHooks";
 import { Column, Row } from "nav-frontend-grid";
 import styled from "styled-components";
 import PersonkortInformasjon from "@/components/personkort/PersonkortInformasjon";
 import { FlexColumn, FlexRow } from "@/components/Layout";
-import { Detail, Heading } from "@navikt/ds-react";
+import { Alert, Detail, Heading } from "@navikt/ds-react";
 import { formatPhonenumber } from "@/utils/stringUtils";
 
 const texts = {
@@ -20,30 +19,31 @@ const texts = {
     "Det kan hende brukeren ikke har en fastlege. Ta kontakt med brukeren for å få behandlers kontaktopplysninger.",
 };
 
-export const hentTekstFastlegePeriode = (fastlege: Fastlege) => {
-  return `Fastlege: ${restdatoTilLesbarDato(fastlege.pasientforhold.fom)} - nå`;
-};
-export const hentTekstFastlegeNavn = (fastlege?: Fastlege) => {
-  return fastlege ? `${fastlege.fornavn} ${fastlege.etternavn}` : "";
-};
-
-export const hentTekstFastlegeBesoeksadresse = (besoeksadresse: Adresse) => {
-  return besoeksadresse
-    ? `${besoeksadresse.adresse}, ${besoeksadresse.postnummer} ${besoeksadresse.poststed}`
-    : "";
-};
-
-export const hentTekstFastlegePostadresse = (postadresse: Adresse) => {
-  return postadresse
-    ? `${postadresse.adresse}, ${postadresse.postnummer} ${postadresse.poststed}`
-    : "";
-};
-
 const FastlegeVikarTekst = styled(FlexColumn)`
   margin-right: 1.5em;
 `;
 
-const fastlegeVikarTekst = (fastlegeVikar: Fastlege) => {
+function hentTekstFastlegeNavn(fastlege?: Fastlege) {
+  return fastlege ? `${fastlege.fornavn} ${fastlege.etternavn}` : "";
+}
+
+function hentTekstFastlegePeriode(fastlege: Fastlege): string {
+  return `Fastlege: ${restdatoTilLesbarDato(fastlege.pasientforhold.fom)} - nå`;
+}
+
+function hentTekstFastlegeBesoeksadresse(besoeksadresse: Adresse): string {
+  return besoeksadresse
+    ? `${besoeksadresse.adresse}, ${besoeksadresse.postnummer} ${besoeksadresse.poststed}`
+    : "";
+}
+
+function hentTekstFastlegePostadresse(postadresse: Adresse): string {
+  return postadresse
+    ? `${postadresse.adresse}, ${postadresse.postnummer} ${postadresse.poststed}`
+    : "";
+}
+
+function fastlegeVikarTekst(fastlegeVikar: Fastlege) {
   const vikarlegeNavn = hentTekstFastlegeNavn(fastlegeVikar);
   const periodeTekst = `${restdatoTilLesbarDato(
     fastlegeVikar.gyldighet.fom
@@ -61,7 +61,7 @@ const fastlegeVikarTekst = (fastlegeVikar: Fastlege) => {
       )}
     </>
   );
-};
+}
 
 interface FastlegeVikarProps {
   fastlegeVikarer: Fastlege[];
@@ -109,7 +109,7 @@ const PersonKortElementLege = styled.div`
   }
 `;
 
-const PersonkortLege = () => {
+export function PersonkortLege() {
   const { fastlege, fastlegeVikarer, ikkeFunnet } = useFastlegerQuery();
   const fastlegekontor = fastlege?.fastlegekontor;
 
@@ -154,7 +154,9 @@ const PersonkortLege = () => {
   };
 
   return ikkeFunnet ? (
-    <PersonkortFeilmelding>{texts.error}</PersonkortFeilmelding>
+    <Alert variant="info" size="small">
+      {texts.error}
+    </Alert>
   ) : (
     <>
       {fastlege && (
@@ -178,6 +180,4 @@ const PersonkortLege = () => {
       )}
     </>
   );
-};
-
-export default PersonkortLege;
+}

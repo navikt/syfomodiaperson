@@ -25,7 +25,7 @@ const texts = {
   reservertKRR: "Reservert KRR",
 };
 
-export const PersonkortHeaderTags = () => {
+export function PersonkortHeaderTags() {
   const { data: isEgenAnsatt } = useEgenansattQuery();
   const { dodsdato, hasSikkerhetstiltak, tilrettelagtKommunikasjon } =
     useNavBrukerData();
@@ -113,4 +113,4 @@ export const PersonkortHeaderTags = () => {
       </div>
     </ErrorBoundary>
   );
-};
+}

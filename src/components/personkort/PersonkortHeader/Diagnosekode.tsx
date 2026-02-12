@@ -13,25 +13,23 @@ const DiagnosekodeWrapper = styled.div`
   align-self: end;
 `;
 
-const KodeSpan = styled.span`
-  margin-left: 0.5em;
-`;
-
-export const Diagnosekode = () => {
+export function Diagnosekode() {
   const { sykmeldinger } = useGetSykmeldingerQuery();
   const sortedSykmeldinger =
     sykmeldingerSortertNyestTilEldstPeriode(sykmeldinger);
   const latestSykmelding = sortedSykmeldinger[0];
   const diagnosekode = latestSykmelding?.diagnose?.hoveddiagnose?.diagnosekode;
 
-  return !!diagnosekode ? (
-    <DiagnosekodeWrapper>
-      <Tooltip content={texts.tooltip}>
-        <div>
-          <img src={MedisinskrinImage} alt="Medisinskrin" />
-          <KodeSpan>{diagnosekode}</KodeSpan>
-        </div>
-      </Tooltip>
-    </DiagnosekodeWrapper>
-  ) : null;
-};
+  return (
+    !!diagnosekode && (
+      <DiagnosekodeWrapper>
+        <Tooltip content={texts.tooltip}>
+          <div>
+            <img src={MedisinskrinImage} alt="Medisinskrin" />
+            <span className="ml-2">{diagnosekode}</span>
+          </div>
+        </Tooltip>
+      </DiagnosekodeWrapper>
+    )
+  );
+}

@@ -1,19 +1,19 @@
 import React, { ReactElement } from "react";
 import cn from "classnames";
 
-interface PersonkortElementProps {
+interface Props {
   tittel: string;
   icon: ReactElement;
   children: ReactElement;
   antallKolonner?: number;
 }
 
-const PersonkortElement = ({
+export function PersonkortElement({
   children,
   icon,
   tittel,
   antallKolonner = 2,
-}: PersonkortElementProps) => {
+}: Props) {
   const classNameRad = cn("personkortElement__rad", {
     "personkortElement__rad--treKolonner": antallKolonner === 3,
     "personkortElement__rad--toKolonner": antallKolonner === 2,
@@ -27,6 +27,4 @@ const PersonkortElement = ({
       <div className={classNameRad}>{children}</div>
     </div>
   );
-};
-
-export default PersonkortElement;
+}

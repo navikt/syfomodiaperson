@@ -7,13 +7,13 @@ import { queryClientWithAktivBruker } from "../../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
-import Personkort from "@/components/personkort/Personkort";
 import { daysFromToday, getButton } from "../../testUtils";
 import userEvent from "@testing-library/user-event";
+import { Personkort } from "@/components/personkort/Personkort";
 
 let queryClient: QueryClient;
 
-const renderAndExpandPersonkort = async () => {
+async function renderAndExpandPersonkort() {
   render(
     <QueryClientProvider client={queryClient}>
       <Personkort />
@@ -21,7 +21,7 @@ const renderAndExpandPersonkort = async () => {
   );
   const expandable = screen.getAllByRole("button")[0];
   await userEvent.click(expandable);
-};
+}
 
 describe("Personkort", () => {
   beforeEach(() => {
