@@ -1,13 +1,13 @@
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import {
   erSykmeldingUtenArbeidsgiver,
+  sykmeldingerSortertNyestTilEldstPeriode,
   SykmeldingOldFormat,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import {
   arbeidsgivernavnEllerArbeidssituasjon,
   sykmeldingerInnenforOppfolgingstilfelle,
-  sykmeldingerSortertNyestTilEldstPeriode,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { ExpansionCard, Heading } from "@navikt/ds-react";
 import React from "react";

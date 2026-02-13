@@ -11,12 +11,12 @@ import {
   newAndActivatedSykmeldinger,
   stringMedAlleGraderingerFraSykmeldingPerioder,
   sykmeldingerInnenforOppfolgingstilfelle,
-  sykmeldingerSortertNyestTilEldstPeriode,
   sykmeldingperioderSortertEldstTilNyest,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { ANTALL_MS_DAG, dagerMellomDatoer } from "@/utils/datoUtils";
 import {
   finnAvventendeSykmeldingTekst,
+  sykmeldingerSortertNyestTilEldstPeriode,
   SykmeldingOldFormat,
   SykmeldingPeriodeDTO,
   SykmeldingStatus,
