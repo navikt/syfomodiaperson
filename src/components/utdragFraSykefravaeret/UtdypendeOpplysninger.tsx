@@ -3,7 +3,7 @@ import { SporsmalSvarDTO } from "@/data/sykmelding/types/SporsmalSvarDTO";
 import { BodyLong, BodyShort, VStack } from "@navikt/ds-react";
 
 const tekster = {
-  utdypendeOpplysninger: "Utdypende opplysninger ved 8 uker",
+  utdypendeOpplysninger: "Utdypende opplysninger",
 };
 
 interface OpplysningsGruppeProps {
