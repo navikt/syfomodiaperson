@@ -1,9 +1,9 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
-import { SykmeldingCheckboxForFelt } from "../SykmeldingCheckboxForFelt";
 import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 import SykmeldingOpplysningForFelt from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/SykmeldingOpplysningForFelt";
+import { Checkbox } from "@navikt/ds-react";
 
 const texts = {
   title: "Friskmelding/prognose",
@@ -45,12 +45,13 @@ export default function Friskmelding(friskmeldingProps: Props) {
   }
   return (
     <SykmeldingSeksjon tittel={texts.title}>
-      <SykmeldingCheckboxForFelt
-        sykmeldingBolk={sykmelding.friskmelding}
-        felt="antarReturSammeArbeidsgiver"
-        tekst={texts.returArbeidsgiver}
-      />
-      {!sykmelding.friskmelding.antattDatoReturSammeArbeidsgiver ? null : (
+      {sykmelding.friskmelding.antarReturSammeArbeidsgiver && (
+        <Checkbox checked readOnly size="small">
+          {texts.returArbeidsgiver}
+        </Checkbox>
+      )}
+
+      {sykmelding.friskmelding.antattDatoReturSammeArbeidsgiver && (
         <SykmeldingOpplysningForFelt
           sykmeldingBolk={sykmelding.friskmelding}
           felt={"antattDatoReturSammeArbeidsgiver"}
@@ -61,64 +62,61 @@ export default function Friskmelding(friskmeldingProps: Props) {
           isSubopplysning={true}
         />
       )}
-      <SykmeldingCheckboxForFelt
-        sykmeldingBolk={sykmelding.friskmelding}
-        felt="antarReturAnnenArbeidsgiver"
-        tekst={texts.returArbeidsgiverAnnen}
-        className="blokk-s"
-      />
-      <SykmeldingCheckboxForFelt
-        sykmeldingBolk={sykmelding.friskmelding}
-        felt="tilbakemeldingReturArbeid"
-        tekst={texts.returUsikker}
-      />
-      {!sykmelding.friskmelding.tilbakemeldingReturArbeid ? null : (
-        <SykmeldingOpplysningForFelt
-          sykmeldingBolk={sykmelding.friskmelding}
-          felt={"tilbakemeldingReturArbeid"}
-          tittel={texts.returUsikkerDato}
-          opplysning={tilLesbarDatoMedArstall(
-            sykmelding.friskmelding.tilbakemeldingReturArbeid
-          )}
-          isSubopplysning={true}
-        />
+      {sykmelding.friskmelding.antarReturAnnenArbeidsgiver && (
+        <Checkbox checked readOnly size="small">
+          {texts.returArbeidsgiverAnnen}
+        </Checkbox>
       )}
-      <SykmeldingCheckboxForFelt
-        sykmeldingBolk={sykmelding.friskmelding}
-        felt="utenArbeidsgiverAntarTilbakeIArbeid"
-        tekst={texts.returUtenArbeidsgiver}
-        className="blokk-s"
-      />
-      {!(
-        sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeid &&
-        sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeidDato
-      ) ? null : (
-        <SykmeldingOpplysningForFelt
-          sykmeldingBolk={sykmelding.friskmelding}
-          felt={"utenArbeidsgiverAntarTilbakeIArbeid"}
-          tittel={texts.returUtenArbeidsgiverDato}
-          opplysning={tilLesbarDatoMedArstall(
-            sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeidDato
-          )}
-          isSubopplysning={true}
-        />
+
+      {sykmelding.friskmelding.tilbakemeldingReturArbeid && (
+        <>
+          <Checkbox checked readOnly size="small">
+            {texts.returUsikker}
+          </Checkbox>
+          <SykmeldingOpplysningForFelt
+            sykmeldingBolk={sykmelding.friskmelding}
+            felt={"tilbakemeldingReturArbeid"}
+            tittel={texts.returUsikkerDato}
+            opplysning={tilLesbarDatoMedArstall(
+              sykmelding.friskmelding.tilbakemeldingReturArbeid
+            )}
+            isSubopplysning={true}
+          />
+        </>
       )}
-      <SykmeldingCheckboxForFelt
-        sykmeldingBolk={sykmelding.friskmelding}
-        felt="utenArbeidsgiverTilbakemelding"
-        tekst={texts.returUtenArbeidsgiverUsikker}
-        className="blokk-s"
-      />
-      {!sykmelding.friskmelding.utenArbeidsgiverTilbakemelding ? null : (
-        <SykmeldingOpplysningForFelt
-          sykmeldingBolk={sykmelding.friskmelding}
-          felt={"utenArbeidsgiverTilbakemelding"}
-          tittel={texts.returUtenArbeidsgiverUsikkerDato}
-          opplysning={tilLesbarDatoMedArstall(
-            sykmelding.friskmelding.utenArbeidsgiverTilbakemelding
+      {sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeid && (
+        <>
+          <Checkbox checked readOnly size="small">
+            {texts.returUtenArbeidsgiver}
+          </Checkbox>
+          {sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeidDato && (
+            <SykmeldingOpplysningForFelt
+              sykmeldingBolk={sykmelding.friskmelding}
+              felt={"utenArbeidsgiverAntarTilbakeIArbeid"}
+              tittel={texts.returUtenArbeidsgiverDato}
+              opplysning={tilLesbarDatoMedArstall(
+                sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeidDato
+              )}
+              isSubopplysning={true}
+            />
           )}
-          isSubopplysning={true}
-        />
+        </>
+      )}
+      {sykmelding.friskmelding.utenArbeidsgiverTilbakemelding && (
+        <>
+          <Checkbox checked readOnly size="small">
+            {texts.returUtenArbeidsgiverUsikker}
+          </Checkbox>
+          <SykmeldingOpplysningForFelt
+            sykmeldingBolk={sykmelding.friskmelding}
+            felt={"utenArbeidsgiverTilbakemelding"}
+            tittel={texts.returUtenArbeidsgiverUsikkerDato}
+            opplysning={tilLesbarDatoMedArstall(
+              sykmelding.friskmelding.utenArbeidsgiverTilbakemelding
+            )}
+            isSubopplysning={true}
+          />
+        </>
       )}
     </SykmeldingSeksjon>
   );
