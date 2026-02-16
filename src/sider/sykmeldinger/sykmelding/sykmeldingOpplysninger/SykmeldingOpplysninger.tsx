@@ -71,6 +71,11 @@ function Bidiagnoser({ bidiagnoser }: { bidiagnoser: SykmeldingDiagnose[] }) {
 }
 
 export function SykmeldingOpplysninger({ sykmelding }: Props) {
+  const erMulighetForArbeid =
+    sykmelding.mulighetForArbeid.aktivitetIkkeMulig433?.length ||
+    sykmelding.mulighetForArbeid.aarsakAktivitetIkkeMulig433 ||
+    sykmelding.mulighetForArbeid.aktivitetIkkeMulig434?.length ||
+    sykmelding.mulighetForArbeid.aarsakAktivitetIkkeMulig434;
   return (
     <div>
       <Heading level="2" size="large" className="mb-3">
@@ -157,7 +162,7 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
             sykmelding.bekreftelse.utstedelsesdato
           )}
         />
-        <MulighetForArbeid sykmelding={sykmelding} />
+        {erMulighetForArbeid && <MulighetForArbeid sykmelding={sykmelding} />}
         <Friskmelding sykmelding={sykmelding} />
         <UtdypendeOpplysninger sykmelding={sykmelding} />
         <BedreArbeidsevne sykmelding={sykmelding} />

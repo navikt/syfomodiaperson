@@ -1,9 +1,7 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import SykmeldingOpplysning from "./SykmeldingOpplysning";
-import SykmeldingOpplysningForFelt from "./SykmeldingOpplysningForFelt";
 import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
-import { Checkbox } from "@navikt/ds-react";
+import { BodyShort, Checkbox, Heading } from "@navikt/ds-react";
 
 const texts = {
   mulighetForArbeid: "Mulighet for arbeid",
@@ -43,51 +41,62 @@ interface Props {
 }
 
 export default function MulighetForArbeid({ sykmelding }: Props) {
-  const visSeksjon =
-    (sykmelding.mulighetForArbeid.aktivitetIkkeMulig433 &&
-      sykmelding.mulighetForArbeid.aktivitetIkkeMulig433.length) ||
-    sykmelding.mulighetForArbeid.aarsakAktivitetIkkeMulig433 ||
-    (sykmelding.mulighetForArbeid.aktivitetIkkeMulig434 &&
-      sykmelding.mulighetForArbeid.aktivitetIkkeMulig434.length) ||
-    sykmelding.mulighetForArbeid.aarsakAktivitetIkkeMulig434;
-  if (!visSeksjon) {
-    return <span />;
-  }
-
   return (
     <SykmeldingSeksjon tittel={texts.mulighetForArbeid}>
       {sykmelding.mulighetForArbeid.aktivitetIkkeMulig433 &&
         sykmelding.mulighetForArbeid.aktivitetIkkeMulig433.length > 0 && (
-          <SykmeldingOpplysning tittel={texts.erIkkeIArbeid}>
+          <div className="mb-5">
+            <Heading level="4" size="xsmall" className="mb-1">
+              {texts.erIkkeIArbeid}
+            </Heading>
             <Checkbox checked readOnly size="small">
               {texts.medisinskAarsak}
             </Checkbox>
             <Aarsaker
               aarsaker={sykmelding.mulighetForArbeid.aktivitetIkkeMulig433}
             />
-          </SykmeldingOpplysning>
+          </div>
         )}
-      <SykmeldingOpplysningForFelt
-        sykmeldingBolk={sykmelding.mulighetForArbeid}
-        felt={"aarsakAktivitetIkkeMulig433"}
-        tittel={texts.medisinskAarsakBeskriv}
-      />
+      {sykmelding.mulighetForArbeid.aarsakAktivitetIkkeMulig433 && (
+        <div className="mb-5">
+          <Heading level="4" size="xsmall" className="mb-1">
+            {texts.medisinskAarsakBeskriv}
+          </Heading>
+          <BodyShort
+            size="small"
+            className="before:content-['–'] before:mr-1 before:inline-block"
+          >
+            {sykmelding.mulighetForArbeid.aarsakAktivitetIkkeMulig433}
+          </BodyShort>
+        </div>
+      )}
       {sykmelding.mulighetForArbeid.aktivitetIkkeMulig434 &&
         sykmelding.mulighetForArbeid.aktivitetIkkeMulig434?.length > 0 && (
-          <SykmeldingOpplysning tittel={texts.erIkkeIArbeid}>
+          <div className="mb-5">
+            <Heading level="4" size="xsmall" className="mb-1">
+              {texts.erIkkeIArbeid}
+            </Heading>
             <Checkbox checked readOnly size="small">
               {texts.arbeidsplassForhold}
             </Checkbox>
             <Aarsaker
               aarsaker={sykmelding.mulighetForArbeid.aktivitetIkkeMulig434}
             />
-          </SykmeldingOpplysning>
+          </div>
         )}
-      <SykmeldingOpplysningForFelt
-        sykmeldingBolk={sykmelding.mulighetForArbeid}
-        felt="aarsakAktivitetIkkeMulig434"
-        tittel={texts.arsak}
-      />
+      {sykmelding.mulighetForArbeid.aarsakAktivitetIkkeMulig434 && (
+        <div className="pb-5">
+          <Heading level="4" size="xsmall" className="mb-1">
+            {texts.arsak}
+          </Heading>
+          <BodyShort
+            size="small"
+            className="before:content-['–'] before:mr-1 before:inline-block"
+          >
+            {sykmelding.mulighetForArbeid.aarsakAktivitetIkkeMulig434}
+          </BodyShort>
+        </div>
+      )}
     </SykmeldingSeksjon>
   );
 }
