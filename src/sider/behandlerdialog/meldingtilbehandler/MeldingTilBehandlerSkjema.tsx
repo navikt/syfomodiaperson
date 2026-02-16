@@ -153,16 +153,22 @@ export const MeldingTilBehandlerSkjema = () => {
         debouncedAutoSaveDraft.cancel();
 
         queryClient.cancelQueries({
-          queryKey: ["meldingtilbehandlerDraft"],
+          queryKey: ["draft", "behandlerdialog-meldingtilbehandler"],
         });
 
-        queryClient.setQueryData(["meldingtilbehandlerDraft"], null);
+        queryClient.setQueryData(
+          ["draft", "behandlerdialog-meldingtilbehandler"],
+          null
+        );
 
         reset();
 
         deleteDraft.mutate(undefined, {
           onSettled: () => {
-            queryClient.setQueryData(["meldingtilbehandlerDraft"], null);
+            queryClient.setQueryData(
+              ["draft", "behandlerdialog-meldingtilbehandler"],
+              null
+            );
           },
         });
       },
