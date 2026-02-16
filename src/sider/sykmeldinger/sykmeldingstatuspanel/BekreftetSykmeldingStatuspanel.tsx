@@ -8,7 +8,6 @@ import { Frilansersporsmal } from "./SykmeldingStatuspanelOpplysning";
 import Statuspanel, {
   Statusopplysninger,
 } from "../../../components/speiling/Statuspanel";
-import AngreBekreftSykmelding from "../sykmeldinger/AngreBekreftSykmelding";
 import { tilStorForbokstav } from "@/utils";
 import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 
@@ -113,7 +112,6 @@ const BekreftetSykmeldingStatuspanel = (
         </Nokkelopplysning>
         <Frilansersporsmal sykmelding={sykmelding} />
       </Statusopplysninger>
-      <AngreBekreftSykmelding sykmelding={sykmelding} />
     </Statuspanel>
   );
 };
