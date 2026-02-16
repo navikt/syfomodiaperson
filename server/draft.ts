@@ -13,7 +13,8 @@ const VALID_CATEGORIES = [
 type DraftCategory = (typeof VALID_CATEGORIES)[number];
 
 const CATEGORY_KEY_PREFIX: Record<DraftCategory, string> = {
-  "behandlerdialog-meldingtilbehandler": "draft:behandlerdialog:meldingtilbehandler",
+  "behandlerdialog-meldingtilbehandler":
+    "draft:behandlerdialog:meldingtilbehandler",
   "arbeidsuforhet-forhandsvarsel": "draft:arbeidsuforhet:forhandsvarsel",
 };
 
