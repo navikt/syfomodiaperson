@@ -4,7 +4,6 @@ import { getValkeyClient } from "./valkey";
 import { getVeilederidentFromRequest } from "./authUtils";
 
 const DRAFT_TTL_SECONDS = 7 * 60 * 60 * 24;
-const DRAFT_KEY_PREFIX = "draft";
 
 const VALID_CATEGORIES = [
   "behandlerdialog-meldingtilbehandler",
@@ -12,6 +11,12 @@ const VALID_CATEGORIES = [
 ] as const;
 
 type DraftCategory = (typeof VALID_CATEGORIES)[number];
+
+const CATEGORY_KEY_PREFIX: Record<DraftCategory, string> = {
+  "behandlerdialog-meldingtilbehandler":
+    "draft:behandlerdialog:meldingtilbehandler",
+  "arbeidsuforhet-forhandsvarsel": "draft:arbeidsuforhet:forhandsvarsel",
+};
 
 function isValidCategory(category: string): category is DraftCategory {
   return VALID_CATEGORIES.includes(category as DraftCategory);
@@ -39,7 +44,7 @@ async function draftKey(
     return undefined;
   }
 
-  return `${DRAFT_KEY_PREFIX}:${category}:${veilederIdent}:${personident}`;
+  return `${CATEGORY_KEY_PREFIX[category]}:${veilederIdent}:${personident}`;
 }
 
 export function setupDraftEndpoints(server: express.Application) {
