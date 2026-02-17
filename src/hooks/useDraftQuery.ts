@@ -31,9 +31,7 @@ export function useDraftQuery<T>(category: DraftCategory) {
   });
 }
 
-export function useSaveDraft<T extends Record<string, any>>(
-  category: DraftCategory
-) {
+export function useSaveDraft<T extends object>(category: DraftCategory) {
   const personident = useValgtPersonident();
   const queryClient = useQueryClient();
 
