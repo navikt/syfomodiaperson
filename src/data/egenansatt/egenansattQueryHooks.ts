@@ -8,7 +8,7 @@ export const egenansattQueryKeys = {
   egenansatt: (fnr: string) => ["egenansatt", fnr],
 };
 
-export const useEgenansattQuery = () => {
+export function useEgenansattQuery() {
   const fnr = useValgtPersonident();
   const path = `${SYFOPERSON_ROOT}/person/egenansatt`;
   const fetchEgenansatt = () => get<boolean>(path, fnr);
@@ -18,4 +18,4 @@ export const useEgenansattQuery = () => {
     enabled: !!fnr,
     staleTime: minutesToMillis(60 * 12),
   });
-};
+}
