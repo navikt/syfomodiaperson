@@ -5,21 +5,26 @@ import { getVeilederidentFromRequest } from "./authUtils";
 
 const DRAFT_TTL_SECONDS = 7 * 60 * 60 * 24;
 
-const VALID_CATEGORIES = [
-  "behandlerdialog-meldingtilbehandler",
-  "arbeidsuforhet-forhandsvarsel",
-] as const;
+enum Draft {
+  MELDING_TIL_BEHANDLER = "behandlerdialog-meldingtilbehandler",
+  ARBEIDSUFORHET_FORHANDSVARSEL = "arbeidsuforhet-forhandsvarsel",
+}
 
-type DraftCategory = (typeof VALID_CATEGORIES)[number];
+function isValidCategory(category: string): boolean {
+  return Object.values(Draft).includes(category as Draft);
+}
 
-const CATEGORY_KEY_PREFIX: Record<DraftCategory, string> = {
-  "behandlerdialog-meldingtilbehandler":
-    "draft:behandlerdialog:meldingtilbehandler",
-  "arbeidsuforhet-forhandsvarsel": "draft:arbeidsuforhet:forhandsvarsel",
-};
-
-function isValidCategory(category: string): category is DraftCategory {
-  return VALID_CATEGORIES.includes(category as DraftCategory);
+function toDraftCachekey(
+  category: Draft,
+  veilederIdent: string,
+  personident: string
+): string {
+  switch (category) {
+    case Draft.MELDING_TIL_BEHANDLER:
+      return `draft:behandlerdialog:meldingtilbehandler:${veilederIdent}:${personident}`;
+    case Draft.ARBEIDSUFORHET_FORHANDSVARSEL:
+      return `draft:arbeidsuforhet:forhandsvarsel:${veilederIdent}:${personident}`;
+  }
 }
 
 function getPersonident(req: express.Request): string | undefined {
@@ -32,7 +37,7 @@ function getPersonident(req: express.Request): string | undefined {
 
 async function draftKey(
   req: express.Request,
-  category: DraftCategory
+  category: Draft
 ): Promise<string | undefined> {
   const personident = getPersonident(req);
   if (!personident) {
@@ -44,7 +49,7 @@ async function draftKey(
     return undefined;
   }
 
-  return `${CATEGORY_KEY_PREFIX[category]}:${veilederIdent}:${personident}`;
+  return toDraftCachekey(category, veilederIdent, personident);
 }
 
 export function setupDraftEndpoints(server: express.Application) {
@@ -56,7 +61,7 @@ export function setupDraftEndpoints(server: express.Application) {
         return res.status(400).send({ message: "Invalid draft category" });
       }
 
-      const key = await draftKey(req, category);
+      const key = await draftKey(req, category as Draft);
       if (!key) {
         return res
           .status(400)
@@ -94,7 +99,7 @@ export function setupDraftEndpoints(server: express.Application) {
         return res.status(400).send({ message: "Invalid draft category" });
       }
 
-      const key = await draftKey(req, category);
+      const key = await draftKey(req, category as Draft);
       if (!key) {
         return res
           .status(400)
@@ -128,7 +133,7 @@ export function setupDraftEndpoints(server: express.Application) {
         return res.status(400).send({ message: "Invalid draft category" });
       }
 
-      const key = await draftKey(req, category);
+      const key = await draftKey(req, category as Draft);
       if (!key) {
         return res
           .status(400)
