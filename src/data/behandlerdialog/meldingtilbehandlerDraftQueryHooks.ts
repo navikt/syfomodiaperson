@@ -7,10 +7,6 @@ import { MeldingTilBehandlerDraftDTO } from "@/data/behandlerdialog/meldingtilbe
 
 const CATEGORY = "behandlerdialog-meldingtilbehandler" as const;
 
-export const meldingtilbehandlerDraftQueryKeys = {
-  draft: (personident: string) => ["draft", CATEGORY, personident],
-};
-
 export function useMeldingTilBehandlerDraftQuery() {
   return useDraftQuery<MeldingTilBehandlerDraftDTO>(CATEGORY);
 }
