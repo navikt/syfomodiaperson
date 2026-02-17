@@ -8,11 +8,11 @@ let draft: MeldingTilBehandlerDraftDTO = {
 };
 
 export const mockBehandlerdialog = [
-  http.get(`/api/behandlerdialog/meldingtilbehandler/draft`, () => {
+  http.get(`/api/draft/behandlerdialog-meldingtilbehandler`, () => {
     return HttpResponse.json(draft);
   }),
   http.put<object, MeldingTilBehandlerDraftDTO>(
-    `/api/behandlerdialog/meldingtilbehandler/draft`,
+    `/api/draft/behandlerdialog-meldingtilbehandler`,
     async ({ request }) => {
       const body = await request.json();
       draft = {
@@ -23,7 +23,7 @@ export const mockBehandlerdialog = [
       return new HttpResponse(null, { status: 200 });
     }
   ),
-  http.delete(`/api/behandlerdialog/meldingtilbehandler/draft`, () => {
+  http.delete(`/api/draft/behandlerdialog-meldingtilbehandler`, () => {
     draft = {
       tekst: "",
       meldingType: undefined,
