@@ -30,13 +30,14 @@ import {
   toDateOnly,
 } from "@/utils/datoUtils";
 import dayjs from "dayjs";
-import {
-  useArbeidsuforhetForhandsvarselDraftQuery,
-  useSaveArbeidsuforhetForhandsvarselDraft,
-  useDeleteArbeidsuforhetForhandsvarselDraft,
-} from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetForhandsvarselDraftQueryHooks";
 import { useDebouncedCallback } from "use-debounce";
 import { SaveFile } from "../../../img/ImageComponents";
+import {
+  useDeleteDraft,
+  useDraftQuery,
+  useSaveDraft,
+} from "@/hooks/useDraftQuery";
+import { ArbeidsuforhetForhandsvarselDraftDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetForhandsvarselDraftTypes";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -92,9 +93,12 @@ export default function SendForhandsvarselSkjema() {
   } = useForm<SkjemaValues>({ defaultValues, mode: "onChange" });
   const { getForhandsvarselDocument } = useArbeidsuforhetVurderingDocument();
 
-  const getDraftQuery = useArbeidsuforhetForhandsvarselDraftQuery();
-  const saveDraft = useSaveArbeidsuforhetForhandsvarselDraft();
-  const deleteDraft = useDeleteArbeidsuforhetForhandsvarselDraft();
+  const CATEGORY = "arbeidsuforhet-forhandsvarsel";
+  const getDraftQuery =
+    useDraftQuery<ArbeidsuforhetForhandsvarselDraftDTO>(CATEGORY);
+  const saveDraft =
+    useSaveDraft<ArbeidsuforhetForhandsvarselDraftDTO>(CATEGORY);
+  const deleteDraft = useDeleteDraft(CATEGORY);
   const lastSavedDraftJsonRef = useRef<string>("");
 
   const debouncedAutoSaveDraft = useDebouncedCallback((begrunnelse: string) => {
