@@ -14,8 +14,13 @@ import {
   VEILEDER_DEFAULT,
 } from "../common/mockConstants";
 import { http, HttpResponse } from "msw";
+import { ArbeidsuforhetForhandsvarselDraftDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetForhandsvarselDraftTypes";
 
 let arbeidsuforhetVurderinger = mockArbeidsuforhetvurdering;
+
+let arbeidsuforhetForhandsvarselDraft: ArbeidsuforhetForhandsvarselDraftDTO = {
+  begrunnelse: "",
+};
 
 export const mockIsarbeidsuforhet = [
   http.get(`${ISARBEIDSUFORHET_ROOT}/arbeidsuforhet/vurderinger`, () => {
@@ -65,4 +70,24 @@ export const mockIsarbeidsuforhet = [
       return HttpResponse.json(sentVurdering);
     }
   ),
+
+  http.get(`/api/draft/arbeidsuforhet-forhandsvarsel`, () => {
+    return HttpResponse.json(arbeidsuforhetForhandsvarselDraft);
+  }),
+  http.put<object, ArbeidsuforhetForhandsvarselDraftDTO>(
+    `/api/draft/arbeidsuforhet-forhandsvarsel`,
+    async ({ request }) => {
+      const body = await request.json();
+      arbeidsuforhetForhandsvarselDraft = {
+        begrunnelse: body.begrunnelse,
+      };
+      return new HttpResponse(null, { status: 204 });
+    }
+  ),
+  http.delete(`/api/draft/arbeidsuforhet-forhandsvarsel`, () => {
+    arbeidsuforhetForhandsvarselDraft = {
+      begrunnelse: "",
+    };
+    return new HttpResponse(null, { status: 204 });
+  }),
 ];

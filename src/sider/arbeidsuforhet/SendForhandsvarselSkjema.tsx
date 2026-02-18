@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
+  Alert,
   Box,
   Button,
   Heading,
@@ -23,8 +24,19 @@ import { arbeidsuforhetPath } from "@/AppRouter";
 import { useNotification } from "@/context/notification/NotificationContext";
 import { Link } from "react-router-dom";
 import BoundedDatePicker from "@/components/BoundedDatePicker";
-import { addWeeks, toDateOnly } from "@/utils/datoUtils";
+import {
+  addWeeks,
+  showTimeIncludingSeconds,
+  toDateOnly,
+} from "@/utils/datoUtils";
 import dayjs from "dayjs";
+import {
+  useArbeidsuforhetForhandsvarselDraftQuery,
+  useSaveArbeidsuforhetForhandsvarselDraft,
+  useDeleteArbeidsuforhetForhandsvarselDraft,
+} from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetForhandsvarselDraftQueryHooks";
+import { useDebouncedCallback } from "use-debounce";
+import { SaveFile } from "../../../img/ImageComponents";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -48,6 +60,8 @@ const texts = {
   forhandsvarselSendt:
     "Forhåndsvarsel er sendt. Personen ligger nå i oversikten og kan finnes under filteret for § 8-4 arbeidsuførhet.",
   avbrytButton: "Avbryt",
+  utkastSaved: "Utkast lagret",
+  utkastSaveFailed: "Lagring av utkast feilet",
 };
 
 const forhandsvarselFrist = getForhandsvarselFrist();
@@ -66,14 +80,50 @@ export default function SendForhandsvarselSkjema() {
   const navigate = useNavigate();
   const { setNotification } = useNotification();
   const sendForhandsvarsel = useSaveVurderingArbeidsuforhet();
+  const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const {
     register,
     watch,
     formState: { errors },
     handleSubmit,
     control,
+    getValues,
+    setValue,
   } = useForm<SkjemaValues>({ defaultValues, mode: "onChange" });
   const { getForhandsvarselDocument } = useArbeidsuforhetVurderingDocument();
+
+  const getDraftQuery = useArbeidsuforhetForhandsvarselDraftQuery();
+  const saveDraft = useSaveArbeidsuforhetForhandsvarselDraft();
+  const deleteDraft = useDeleteArbeidsuforhetForhandsvarselDraft();
+  const lastSavedDraftJsonRef = useRef<string>("");
+
+  const debouncedAutoSaveDraft = useDebouncedCallback((begrunnelse: string) => {
+    if (!begrunnelse || begrunnelse === texts.defaultTextareaValue) {
+      return;
+    }
+
+    const draftPayload = { begrunnelse };
+    const draftJson = JSON.stringify(draftPayload);
+    if (draftJson === lastSavedDraftJsonRef.current) {
+      return;
+    }
+
+    lastSavedDraftJsonRef.current = draftJson;
+    saveDraft.mutate(draftPayload, {
+      onSuccess: () => {
+        setUtkastSavedTime(new Date());
+      },
+      onError: () => {
+        setUtkastSavedTime(undefined);
+      },
+    });
+  }, 750);
+
+  useEffect(() => {
+    if (getDraftQuery.data?.begrunnelse) {
+      setValue("begrunnelse", getDraftQuery.data.begrunnelse);
+    }
+  }, [getDraftQuery.data, setValue]);
 
   const threeWeeks = toDateOnly(addWeeks(new Date(), 3));
   const sixWeeks = toDateOnly(addWeeks(new Date(), 6));
@@ -101,6 +151,10 @@ export default function SendForhandsvarselSkjema() {
     };
     sendForhandsvarsel.mutate(forhandsvarselRequestDTO, {
       onSuccess: () => {
+        lastSavedDraftJsonRef.current = "";
+        setUtkastSavedTime(undefined);
+        debouncedAutoSaveDraft.cancel();
+        deleteDraft.mutate(undefined);
         setNotification({
           message: texts.forhandsvarselSendt,
         });
@@ -111,7 +165,10 @@ export default function SendForhandsvarselSkjema() {
 
   return (
     <Box background="surface-default" padding="6" className="mb-2">
-      <form onSubmit={handleSubmit(submit)}>
+      <form
+        onSubmit={handleSubmit(submit)}
+        onChange={() => debouncedAutoSaveDraft(getValues("begrunnelse"))}
+      >
         <Heading className="mb-4" level="2" size="medium">
           {texts.title}
         </Heading>
@@ -153,6 +210,19 @@ export default function SendForhandsvarselSkjema() {
           minRows={6}
           maxLength={begrunnelseMaxLength}
         />
+        {saveDraft.isError && (
+          <Alert variant="error" size="small">
+            {texts.utkastSaveFailed}
+          </Alert>
+        )}
+        {utkastSavedTime && (
+          <div className="mb-2 font-bold flex gap-2">
+            <img src={SaveFile} alt="saved" />
+            <span>{`${texts.utkastSaved} ${showTimeIncludingSeconds(
+              utkastSavedTime
+            )}`}</span>
+          </div>
+        )}
         {sendForhandsvarsel.isError && (
           <SkjemaInnsendingFeil error={sendForhandsvarsel.error} />
         )}
