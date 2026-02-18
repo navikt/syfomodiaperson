@@ -6,10 +6,7 @@ import {
   MeldingType,
 } from "@/data/behandlerdialog/behandlerdialogTypes";
 import { useMeldingTilBehandler } from "@/data/behandlerdialog/useMeldingTilBehandler";
-import {
-  showTimeIncludingSeconds,
-  tilDatoMedManedNavnOgKlokkeslett,
-} from "@/utils/datoUtils";
+import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document/useMeldingTilBehandlerDocument";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { MeldingsTypeInfo } from "@/sider/behandlerdialog/meldingtilbehandler/MeldingsTypeInfo";
@@ -20,13 +17,13 @@ import { ButtonRow } from "@/components/Layout";
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
 import { VelgBehandler } from "@/components/behandler/VelgBehandler";
 import { PreviewButton } from "@/sider/behandlerdialog/meldingtilbehandler/PreviewButton";
-import { SaveFile } from "../../../../img/ImageComponents";
 import {
   useDeleteMeldingTilBehandlerDraft,
   useMeldingTilBehandlerDraftQuery,
   useSaveMeldingTilBehandlerDraft,
 } from "@/data/behandlerdialog/meldingtilbehandlerDraftQueryHooks";
 import { useDebouncedCallback } from "use-debounce";
+import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 
 const texts = {
   sendKnapp: "Send til behandler",
@@ -39,8 +36,6 @@ const texts = {
   meldingsTekstLabel: "Skriv inn teksten du ønsker å sende til behandler",
   meldingsTekstMissing: "Vennligst angi meldingstekst",
   velgBehandlerLegend: "Velg behandler som skal motta meldingen",
-  utkastSaved: "Utkast lagret",
-  utkastSaveFailed: "Lagring av utkast feilet",
 };
 
 export interface MeldingTilBehandlerSkjemaValues {
@@ -126,10 +121,6 @@ export const MeldingTilBehandlerSkjema = () => {
     getValues("meldingTekst") === "" &&
     texts.meldingsTekstMissing;
 
-  const utkastSavedText = (savedDate: Date) => {
-    return `${texts.utkastSaved} ${showTimeIncludingSeconds(savedDate)}`;
-  };
-
   const submit = (values: MeldingTilBehandlerSkjemaValues) => {
     if (!selectedBehandler) {
       return;
@@ -196,11 +187,6 @@ export const MeldingTilBehandlerSkjema = () => {
             )}`}
           </Alert>
         )}
-        {saveDraft.isError && (
-          <Alert variant="error" size="small">
-            {texts.utkastSaveFailed}
-          </Alert>
-        )}
         <div className="max-w-[23rem]">
           <Select
             id="type"
@@ -247,12 +233,10 @@ export const MeldingTilBehandlerSkjema = () => {
             getMeldingTilBehandlerDocument(getValues()) ?? []
           }
         />
-        {utkastSavedTime && (
-          <div className="mb-2 font-bold flex gap-2">
-            <img src={SaveFile} alt="saved" />
-            <span>{utkastSavedText(utkastSavedTime)}</span>
-          </div>
-        )}
+        <DraftSaveStatus
+          isSaveError={saveDraft.isError}
+          savedTime={utkastSavedTime}
+        />
         <ButtonRow>
           <Button
             variant="primary"
