@@ -17,7 +17,7 @@ export const ledereQueryKeys = {
 export const ISNARMESTELEDER_NARMESTELEDERRELASJON_PERSONIDENT_PATH =
   "/narmestelederrelasjon/personident";
 
-export const useLedereQuery = () => {
+export function useLedereQuery() {
   const fnr = useValgtPersonident();
   const path = `${ISNARMESTELEDER_ROOT}${ISNARMESTELEDER_NARMESTELEDERRELASJON_PERSONIDENT_PATH}`;
   const fetchLedere = () => get<NarmesteLederRelasjonDTO[]>(path, fnr);
@@ -59,4 +59,4 @@ export const useLedereQuery = () => {
     ),
     allLedere: query.data || [],
   };
-};
+}
