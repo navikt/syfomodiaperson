@@ -6,8 +6,13 @@ import {
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import SykmeldingPerioder from "./SykmeldingPerioder";
 import { Egenmeldingsdager } from "./Egenmeldingsdager";
-import { BodyShort, Checkbox, Heading, Label } from "@navikt/ds-react";
-import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
+import {
+  BodyLong,
+  BodyShort,
+  Checkbox,
+  Heading,
+  Label,
+} from "@navikt/ds-react";
 import MulighetForArbeid from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/MulighetForArbeid";
 import Friskmelding from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/Friskmelding";
 import UtdypendeOpplysninger from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/UtdypendeOpplysninger";
@@ -18,15 +23,18 @@ import Tilbakedatering from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysnin
 import AndreSykmeldingOpplysninger from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/AndreSykmeldingOpplysninger";
 
 const texts = {
-  dinSykmeldingTittel: "Sykmelding",
-  dinSykmeldingDiagnoseTittel: "Diagnose\n",
-  dinSykmeldingBidiagnoseTittel: "Bidiagnose\n",
-  yrkesskadeTittel: "Sykdommen kan skyldes en skade/yrkessykdom\n",
-  arbeidsforTittel: "Pasienten er 100 % arbeidsfør etter perioden\n",
-  avsenderTittel: "Lege / sykmelder\n",
+  sykmelding: "Sykmelding",
+  avventendeSykmelding: "Avventende sykmelding",
+  diagnose: "Diagnose",
+  bidiagnose: "Bidiagnose",
+  lovfestetFravaersgrunn: "Lovfestet fraværsgrunn",
+  beskrivFravaeret: "Beskriv fraværet",
+  yrkesskadeTittel: "Sykdommen kan skyldes en skade/yrkessykdom",
+  arbeidsforTittel: "Pasienten er 100 % arbeidsfør etter perioden",
+  avsenderTittel: "Lege / sykmelder",
   arbeidsgiverTittel: "Arbeidsgiver som legen har skrevet inn",
-  hensynTittel: "Beskriv eventuelle hensyn som må tas på arbeidsplassen\n",
-  svangerskapTittel: "Sykdommen er svangerskapsrelatert\n\n",
+  hensynTittel: "Beskriv eventuelle hensyn som må tas på arbeidsplassen",
+  svangerskapTittel: "Sykdommen er svangerskapsrelatert",
   utstedelsesdato: "Dato sykmeldingen ble skrevet",
   skadedato: "Skadedato",
 };
@@ -41,8 +49,8 @@ function Hoveddiagnose({
   hoveddiagnose: SykmeldingDiagnose;
 }) {
   return (
-    <div className="flex flex-col mb-5">
-      <Label size="small">{texts.dinSykmeldingDiagnoseTittel}</Label>
+    <div className="mb-5">
+      <Label size="small">{texts.diagnose}</Label>
       <BodyShort size="small">{`${hoveddiagnose.diagnose}`}</BodyShort>
       <BodyShort size="small">{`(${hoveddiagnose.diagnosekode}, ${hoveddiagnose.diagnosesystem})`}</BodyShort>
     </div>
@@ -54,8 +62,8 @@ function Bidiagnoser({ bidiagnoser }: { bidiagnoser: SykmeldingDiagnose[] }) {
     <>
       {bidiagnoser.map((bidiagnose, index) => {
         return (
-          <div key={index} className="flex flex-col mb-5">
-            <Label size="small">{texts.dinSykmeldingBidiagnoseTittel}</Label>
+          <div key={index} className="mb-5">
+            <Label size="small">{texts.bidiagnose}</Label>
             <BodyShort size="small">{bidiagnose.diagnose}</BodyShort>
             <BodyShort size="small">{`(${bidiagnose.diagnosekode}, ${bidiagnose.diagnosesystem})`}</BodyShort>
           </div>
@@ -81,10 +89,10 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
         {sykmelding.mulighetForArbeid.perioder.some((periode) => {
           return !!periode.avventende;
         })
-          ? "Avventende sykmelding"
-          : texts.dinSykmeldingTittel}
+          ? texts.avventendeSykmelding
+          : texts.sykmelding}
       </Heading>
-      <div className="side-innhold">
+      <div>
         <SykmeldingPerioder perioder={sykmelding.mulighetForArbeid.perioder} />
         {sykmelding.sporsmal.egenmeldingsdager &&
           sykmelding.sporsmal.egenmeldingsdager.length > 0 && (
@@ -99,14 +107,24 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
           <Bidiagnoser bidiagnoser={sykmelding.diagnose.bidiagnoser} />
         )}
         {sykmelding.diagnose.fravaersgrunnLovfestet && (
-          <Nokkelopplysning label={"Lovfestet fraværsgrunn"}>
-            <p>{sykmelding.diagnose.fravaersgrunnLovfestet}</p>
-          </Nokkelopplysning>
+          <div className="mb-5">
+            <Heading level="4" size="xsmall" className="mb-1">
+              {texts.lovfestetFravaersgrunn}
+            </Heading>
+            <BodyLong size="small">
+              {sykmelding.diagnose.fravaersgrunnLovfestet}
+            </BodyLong>
+          </div>
         )}
         {sykmelding.diagnose.fravaerBeskrivelse && (
-          <Nokkelopplysning label={"Beskriv fraværet"}>
-            <p>{sykmelding.diagnose.fravaerBeskrivelse}</p>
-          </Nokkelopplysning>
+          <div className="mb-5">
+            <Heading level="4" size="xsmall" className="mb-1">
+              {texts.beskrivFravaeret}
+            </Heading>
+            <BodyLong size="small">
+              {sykmelding.diagnose.fravaerBeskrivelse}
+            </BodyLong>
+          </div>
         )}
         {sykmelding.diagnose.svangerskap && (
           <Checkbox checked readOnly size="small" className="mb-4">
@@ -134,22 +152,35 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
           </Checkbox>
         )}
         {sykmelding.friskmelding.hensynPaaArbeidsplassen && (
-          <Nokkelopplysning label={texts.hensynTittel}>
-            <p>{sykmelding.friskmelding.hensynPaaArbeidsplassen}</p>
-          </Nokkelopplysning>
+          <div className="mb-5">
+            <Heading level="4" size="xsmall" className="mb-1">
+              {texts.hensynTittel}
+            </Heading>
+            <BodyLong size="small">
+              {sykmelding.friskmelding.hensynPaaArbeidsplassen}
+            </BodyLong>
+          </div>
         )}
         {sykmelding.arbeidsgiver && (
-          <Nokkelopplysning label={texts.arbeidsgiverTittel}>
-            <p className={"mb-0"}>{sykmelding.arbeidsgiver}</p>
+          <div className="mb-5">
+            <Heading level="4" size="xsmall" className="mb-1">
+              {texts.arbeidsgiverTittel}
+            </Heading>
+            <BodyShort size="small">{sykmelding.arbeidsgiver}</BodyShort>
             {sykmelding.stillingsprosent && (
-              <p>{getStillingsprosentText(sykmelding.stillingsprosent)}</p>
+              <BodyShort size="small">
+                {getStillingsprosentText(sykmelding.stillingsprosent)}
+              </BodyShort>
             )}
-          </Nokkelopplysning>
+          </div>
         )}
         {sykmelding.bekreftelse.sykmelder && (
-          <Nokkelopplysning label={texts.avsenderTittel}>
-            <p>{sykmelding.bekreftelse.sykmelder}</p>
-          </Nokkelopplysning>
+          <div className="mb-5">
+            <Heading level="4" size="xsmall" className="mb-1">
+              {texts.avsenderTittel}
+            </Heading>
+            <BodyLong size="small">{sykmelding.bekreftelse.sykmelder}</BodyLong>
+          </div>
         )}
       </div>
       <div>
