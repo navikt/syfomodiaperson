@@ -22,7 +22,6 @@
   "author": "Team DigiSyfo <digisyfo@nav.no>",
   "license": "ISC",
   "dependencies": {
-    "@babel/polyfill": "7.12.1",
     "@grafana/faro-react": "2.2.3",
     "@grafana/faro-web-sdk": "2.2.3",
     "@grafana/faro-web-tracing": "2.2.3",
