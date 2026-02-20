@@ -33,7 +33,7 @@ import {
   mockSyfobehandlendeenhet,
 } from "@/mocks/syfobehandlendeenhet/mockSyfobehandlendeenhet";
 import { mockIshuskelapp } from "@/mocks/oppfolgingsoppgave/mockOppfolgingsoppgave";
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse, ws } from "msw";
 import { mockisoppfolgingsplanForesporsel } from "@/mocks/isoppfolgingsplan/mockisoppfolgingsplanForesporsel";
 import { mockPensjonPenUforegrad } from "@/mocks/uforegrad/mockUforegrad";
 import { mockSyfooppfolgingsplanbackend } from "@/mocks/syfooppfolgingsplanbackend/mockSyfooppfolgingsplanbackend";
@@ -42,6 +42,9 @@ import { mockBehandlerdialog } from "@/mocks/behandlerdialog/mockbehandlerdialog
 const handlers = [
   http.post("https://umami.nav.no/api/send", () => {
     return HttpResponse.text("mocked umami");
+  }),
+  ws.link("ws://localhost:4000/*").addEventListener("connection", () => {
+    // Silently ignore WebSocket connections to Internflatedecorator in local development
   }),
   mockUnleashEndpoint,
   mockEreg,
