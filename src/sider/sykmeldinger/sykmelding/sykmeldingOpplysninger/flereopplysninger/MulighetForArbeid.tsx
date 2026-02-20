@@ -62,10 +62,7 @@ export default function MulighetForArbeid({ sykmelding }: Props) {
           <Heading level="4" size="xsmall" className="mb-1">
             {texts.medisinskAarsakBeskriv}
           </Heading>
-          <BodyShort
-            size="small"
-            className="before:content-['–'] before:mr-1 before:inline-block"
-          >
+          <BodyShort size="small">
             {sykmelding.mulighetForArbeid.aarsakAktivitetIkkeMulig433}
           </BodyShort>
         </div>
@@ -89,10 +86,7 @@ export default function MulighetForArbeid({ sykmelding }: Props) {
           <Heading level="4" size="xsmall" className="mb-1">
             {texts.arsak}
           </Heading>
-          <BodyShort
-            size="small"
-            className="before:content-['–'] before:mr-1 before:inline-block"
-          >
+          <BodyShort size="small">
             {sykmelding.mulighetForArbeid.aarsakAktivitetIkkeMulig434}
           </BodyShort>
         </div>

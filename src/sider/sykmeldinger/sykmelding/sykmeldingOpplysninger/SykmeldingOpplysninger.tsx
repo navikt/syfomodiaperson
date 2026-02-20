@@ -8,7 +8,6 @@ import SykmeldingPerioder from "./SykmeldingPerioder";
 import { Egenmeldingsdager } from "./Egenmeldingsdager";
 import { BodyShort, Checkbox, Heading, Label } from "@navikt/ds-react";
 import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
-import SykmeldingOpplysningForFelt from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/SykmeldingOpplysningForFelt";
 import MulighetForArbeid from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/MulighetForArbeid";
 import Friskmelding from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/Friskmelding";
 import UtdypendeOpplysninger from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/UtdypendeOpplysninger";
@@ -35,10 +34,6 @@ const texts = {
 const getStillingsprosentText = (stillingsprosent?: number) => {
   return `${stillingsprosent} % stilling`;
 };
-
-interface Props {
-  sykmelding: SykmeldingOldFormat;
-}
 
 function Hoveddiagnose({
   hoveddiagnose,
@@ -68,6 +63,10 @@ function Bidiagnoser({ bidiagnoser }: { bidiagnoser: SykmeldingDiagnose[] }) {
       })}
     </>
   );
+}
+
+interface Props {
+  sykmelding: SykmeldingOldFormat;
 }
 
 export function SykmeldingOpplysninger({ sykmelding }: Props) {
@@ -154,14 +153,16 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
         )}
       </div>
       <div>
-        <SykmeldingOpplysningForFelt
-          sykmeldingBolk={sykmelding.bekreftelse}
-          felt={"utstedelsesdato"}
-          tittel={texts.utstedelsesdato}
-          opplysning={tilLesbarDatoMedArstall(
-            sykmelding.bekreftelse.utstedelsesdato
-          )}
-        />
+        {sykmelding.bekreftelse.utstedelsesdato && (
+          <div className="mb-5">
+            <Heading level="4" size="xsmall" className="mb-1">
+              {texts.utstedelsesdato}
+            </Heading>
+            <BodyShort size="small">
+              {tilLesbarDatoMedArstall(sykmelding.bekreftelse.utstedelsesdato)}
+            </BodyShort>
+          </div>
+        )}
         {erMulighetForArbeid && <MulighetForArbeid sykmelding={sykmelding} />}
         <Friskmelding sykmelding={sykmelding} />
         <UtdypendeOpplysninger sykmelding={sykmelding} />
