@@ -1,7 +1,7 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import SykmeldingOpplysningForFelt from "./SykmeldingOpplysningForFelt";
 import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
+import { BodyLong, Heading } from "@navikt/ds-react";
 
 const texts = {
   arbeidsevne: "Hva skal til for å bedre arbeidsevnen?",
@@ -16,30 +16,35 @@ interface Props {
 
 export default function BedreArbeidsevne(bedreArbeidsevneProps: Props) {
   const { sykmelding } = bedreArbeidsevneProps;
-  const visSeksjon =
-    sykmelding.arbeidsevne.tilretteleggingArbeidsplass ||
-    sykmelding.arbeidsevne.tiltakNAV ||
-    sykmelding.arbeidsevne.tiltakAndre;
-  if (!visSeksjon) {
-    return <span />;
-  }
+
   return (
     <SykmeldingSeksjon tittel={texts.arbeidsevne}>
-      <SykmeldingOpplysningForFelt
-        sykmeldingBolk={sykmelding.arbeidsevne}
-        felt={"tilretteleggingArbeidsplass"}
-        tittel={texts.tilrettelegging}
-      />
-      <SykmeldingOpplysningForFelt
-        sykmeldingBolk={sykmelding.arbeidsevne}
-        felt={"tiltakNAV"}
-        tittel={texts.tiltakNAV}
-      />
-      <SykmeldingOpplysningForFelt
-        sykmeldingBolk={sykmelding.arbeidsevne}
-        felt={"tiltakAndre"}
-        tittel={texts.tiltakAndre}
-      />
+      {sykmelding.arbeidsevne.tilretteleggingArbeidsplass && (
+        <div className="mb-5">
+          <Heading level="4" size="xsmall" className="mb-1">
+            {texts.tilrettelegging}
+          </Heading>
+          <BodyLong size="small">
+            {sykmelding.arbeidsevne.tilretteleggingArbeidsplass}
+          </BodyLong>
+        </div>
+      )}
+      {sykmelding.arbeidsevne.tiltakNAV && (
+        <div className="mb-5">
+          <Heading level="4" size="xsmall" className="mb-1">
+            {texts.tiltakNAV}
+          </Heading>
+          <BodyLong size="small">{sykmelding.arbeidsevne.tiltakNAV}</BodyLong>
+        </div>
+      )}
+      {sykmelding.arbeidsevne.tiltakAndre && (
+        <div className="mb-5">
+          <Heading level="4" size="xsmall" className="mb-1">
+            {texts.tiltakAndre}
+          </Heading>
+          <BodyLong size="small">{sykmelding.arbeidsevne.tiltakAndre}</BodyLong>
+        </div>
+      )}
     </SykmeldingSeksjon>
   );
 }
