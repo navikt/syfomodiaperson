@@ -8,7 +8,7 @@ export function KjonnIkon({ kjonn }: { kjonn: KJOENN }) {
   }
   return (
     <img
-      className="mr-4"
+      className="mr-4 w-12"
       src={kjonn === KJOENN.KVINNE ? getKvinneImage() : getMannImage()}
       alt="person"
     />
