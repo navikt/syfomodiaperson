@@ -1,8 +1,8 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
-import SykmeldingOpplysningForFelt from "./SykmeldingOpplysningForFelt";
 import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
+import { BodyLong, Heading } from "@navikt/ds-react";
 
 const texts = {
   begrunnelse: "Pasienten har ikke kunne ivareta egne interesser. Begrunn",
@@ -17,27 +17,33 @@ interface Props {
 
 export default function Tilbakedatering(tilbakedateringProps: Props) {
   const { sykmelding } = tilbakedateringProps;
-  const visSeksjon =
-    sykmelding.tilbakedatering.dokumenterbarPasientkontakt ||
-    sykmelding.tilbakedatering.tilbakedatertBegrunnelse;
-  if (!visSeksjon) {
-    return <span />;
-  }
+
   return (
     <SykmeldingSeksjon tittel={texts.title}>
-      <SykmeldingOpplysningForFelt
-        sykmeldingBolk={sykmelding.tilbakedatering}
-        felt="dokumenterbarPasientkontakt"
-        tittel={texts.dokumenterbarPasientkontakt}
-        opplysning={tilLesbarDatoMedArstall(
-          sykmelding.tilbakedatering.dokumenterbarPasientkontakt
-        )}
-      />
-      <SykmeldingOpplysningForFelt
-        sykmeldingBolk={sykmelding.tilbakedatering}
-        felt="tilbakedatertBegrunnelse"
-        tittel={texts.begrunnelse}
-      />
+      {sykmelding.tilbakedatering.dokumenterbarPasientkontakt && (
+        <div className="mb-5">
+          <Heading level="4" size="xsmall" className="mb-1">
+            {texts.dokumenterbarPasientkontakt}
+          </Heading>
+          <BodyLong size="small">
+            {tilLesbarDatoMedArstall(
+              sykmelding.tilbakedatering.dokumenterbarPasientkontakt
+            )}
+          </BodyLong>
+        </div>
+      )}
+      {sykmelding.tilbakedatering.tilbakedatertBegrunnelse && (
+        <div className="mb-5">
+          <Heading level="4" size="xsmall" className="mb-1">
+            {texts.begrunnelse}
+          </Heading>
+          <BodyLong size="small">
+            {tilLesbarDatoMedArstall(
+              sykmelding.tilbakedatering.tilbakedatertBegrunnelse
+            )}
+          </BodyLong>
+        </div>
+      )}
     </SykmeldingSeksjon>
   );
 }

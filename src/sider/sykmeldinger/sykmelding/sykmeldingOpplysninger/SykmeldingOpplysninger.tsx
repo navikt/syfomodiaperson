@@ -20,7 +20,8 @@ import BedreArbeidsevne from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysni
 import MeldingTilNav from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/MeldingTilNav";
 import MeldingTilArbeidsgiver from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/MeldingTilArbeidsgiver";
 import Tilbakedatering from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/Tilbakedatering";
-import AndreSykmeldingOpplysninger from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/AndreSykmeldingOpplysninger";
+import { erMeldingTilNavInformasjon } from "@/utils/sykmeldinger/sykmeldingUtils";
+import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 
 const texts = {
   sykmelding: "Sykmelding",
@@ -37,6 +38,7 @@ const texts = {
   svangerskapTittel: "Sykdommen er svangerskapsrelatert",
   utstedelsesdato: "Dato sykmeldingen ble skrevet",
   skadedato: "Skadedato",
+  telefonTilLegeSykmelder: "Telefon til lege/sykmelder",
 };
 
 const getStillingsprosentText = (stillingsprosent?: number) => {
@@ -83,6 +85,25 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
     sykmelding.mulighetForArbeid.aarsakAktivitetIkkeMulig433 ||
     sykmelding.mulighetForArbeid.aktivitetIkkeMulig434?.length ||
     sykmelding.mulighetForArbeid.aarsakAktivitetIkkeMulig434;
+  const erFriskmelding =
+    sykmelding.friskmelding.antarReturSammeArbeidsgiver ||
+    sykmelding.friskmelding.antattDatoReturSammeArbeidsgiver ||
+    sykmelding.friskmelding.antarReturAnnenArbeidsgiver ||
+    sykmelding.friskmelding.tilbakemeldingReturArbeid ||
+    sykmelding.friskmelding.utenArbeidsgiverTilbakemelding ||
+    sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeid ||
+    sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeidDato ||
+    sykmelding.friskmelding.utenArbeidsgiverTilbakemelding;
+  const erUtdypendeOpplysninger = sykmelding.utdypendeOpplysninger;
+  const erArbeidsevne =
+    sykmelding.arbeidsevne.tilretteleggingArbeidsplass ||
+    sykmelding.arbeidsevne.tiltakNAV ||
+    sykmelding.arbeidsevne.tiltakAndre;
+  const erMeldingTilNav = erMeldingTilNavInformasjon(sykmelding);
+  const erTilbakedatering =
+    sykmelding.tilbakedatering.dokumenterbarPasientkontakt ||
+    sykmelding.tilbakedatering.tilbakedatertBegrunnelse;
+
   return (
     <div>
       <Heading level="2" size="large" className="mb-3">
@@ -195,13 +216,28 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
           </div>
         )}
         {erMulighetForArbeid && <MulighetForArbeid sykmelding={sykmelding} />}
-        <Friskmelding sykmelding={sykmelding} />
-        <UtdypendeOpplysninger sykmelding={sykmelding} />
-        <BedreArbeidsevne sykmelding={sykmelding} />
-        <MeldingTilNav sykmelding={sykmelding} />
-        <MeldingTilArbeidsgiver sykmelding={sykmelding} />
-        <Tilbakedatering sykmelding={sykmelding} />
-        <AndreSykmeldingOpplysninger sykmelding={sykmelding} />
+        {erFriskmelding && <Friskmelding sykmelding={sykmelding} />}
+        {erUtdypendeOpplysninger && (
+          <UtdypendeOpplysninger sykmelding={sykmelding} />
+        )}
+        {erArbeidsevne && <BedreArbeidsevne sykmelding={sykmelding} />}
+        {erMeldingTilNav && <MeldingTilNav sykmelding={sykmelding} />}
+        {sykmelding.innspillTilArbeidsgiver && (
+          <MeldingTilArbeidsgiver sykmelding={sykmelding} />
+        )}
+        {erTilbakedatering && <Tilbakedatering sykmelding={sykmelding} />}
+        {sykmelding.bekreftelse.sykmelderTlf && (
+          <SykmeldingSeksjon tittel="Annet">
+            <div className="mb-5">
+              <Heading level="4" size="xsmall" className="mb-1">
+                {texts.telefonTilLegeSykmelder}
+              </Heading>
+              <BodyLong size="small">
+                {sykmelding.bekreftelse.sykmelderTlf}
+              </BodyLong>
+            </div>
+          </SykmeldingSeksjon>
+        )}
       </div>
     </div>
   );
