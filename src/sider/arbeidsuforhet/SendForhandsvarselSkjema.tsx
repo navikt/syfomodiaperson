@@ -162,10 +162,7 @@ export default function SendForhandsvarselSkjema() {
 
   return (
     <Box background="surface-default" padding="6" className="mb-2">
-      <form
-        onSubmit={handleSubmit(submit)}
-        onChange={() => debouncedAutoSaveDraft(getValues("begrunnelse"))}
-      >
+      <form onSubmit={handleSubmit(submit)}>
         <Heading className="mb-4" level="2" size="medium">
           {texts.title}
         </Heading>
@@ -206,6 +203,7 @@ export default function SendForhandsvarselSkjema() {
           size="small"
           minRows={6}
           maxLength={begrunnelseMaxLength}
+          onChange={() => debouncedAutoSaveDraft(getValues("begrunnelse"))}
         />
         <DraftSaveStatus
           isSaveError={saveDraft.isError}
