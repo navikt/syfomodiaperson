@@ -195,6 +195,9 @@ export default function SendForhandsvarselSkjema() {
             required: texts.missingBeskrivelse,
             validate: (value) =>
               value !== texts.defaultTextareaValue || texts.missingBeskrivelse,
+            onChange: (e) => {
+              debouncedAutoSaveDraft(e.target.value);
+            },
           })}
           value={watch("begrunnelse")}
           label={texts.beskrivelseLabel}
@@ -203,7 +206,6 @@ export default function SendForhandsvarselSkjema() {
           size="small"
           minRows={6}
           maxLength={begrunnelseMaxLength}
-          onChange={() => debouncedAutoSaveDraft(getValues("begrunnelse"))}
         />
         <DraftSaveStatus
           isSaveError={saveDraft.isError}

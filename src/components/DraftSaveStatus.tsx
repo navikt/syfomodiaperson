@@ -11,7 +11,7 @@ interface Props {
 }
 
 const defaultTexts = {
-  saved: "Utkast lagret",
+  saved: "Utkast lagret (utløper om 7 dager)",
   saveFailed: "Lagring av utkast feilet",
 };
 
