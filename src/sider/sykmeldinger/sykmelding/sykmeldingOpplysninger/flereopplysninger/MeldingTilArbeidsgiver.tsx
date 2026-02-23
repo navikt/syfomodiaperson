@@ -22,7 +22,6 @@ export default function MeldingTilArbeidsgiver(
       </Heading>
       <BodyLong size="small" className="mb-5">
         {sykmelding.innspillTilArbeidsgiver}
-        hei arbeidsgiver
       </BodyLong>
     </div>
   );
