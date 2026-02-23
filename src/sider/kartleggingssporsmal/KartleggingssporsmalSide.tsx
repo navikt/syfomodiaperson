@@ -270,7 +270,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                   {texts.veiledningBox.intro}
                 </BodyLong>
                 <Accordion size="small">
-                  <Accordion.Item defaultOpen>
+                  <Accordion.Item>
                     <Accordion.Header>
                       {texts.veiledningBox.accordion1}
                     </Accordion.Header>
