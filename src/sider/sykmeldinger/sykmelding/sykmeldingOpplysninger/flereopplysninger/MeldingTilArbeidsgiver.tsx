@@ -1,11 +1,9 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import SykmeldingOpplysningForFelt from "./SykmeldingOpplysningForFelt";
-import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
+import { BodyLong, Heading } from "@navikt/ds-react";
 
 const texts = {
   title: "Melding til arbeidsgiver",
-  content: "Andre innspill til arbeidsgiver",
 };
 
 interface Props {
@@ -16,17 +14,16 @@ export default function MeldingTilArbeidsgiver(
   meldingTilArbeidsgiverProps: Props
 ) {
   const { sykmelding } = meldingTilArbeidsgiverProps;
-  const visSeksjon = sykmelding.innspillTilArbeidsgiver;
-  if (!visSeksjon) {
-    return <span />;
-  }
+
   return (
-    <SykmeldingSeksjon tittel={texts.title}>
-      <SykmeldingOpplysningForFelt
-        sykmeldingBolk={sykmelding}
-        felt={"innspillTilArbeidsgiver"}
-        tittel={texts.content}
-      />
-    </SykmeldingSeksjon>
+    <div>
+      <Heading level="3" size="medium" className="my-5">
+        {texts.title}
+      </Heading>
+      <BodyLong size="small" className="mb-5">
+        {sykmelding.innspillTilArbeidsgiver}
+        hei arbeidsgiver
+      </BodyLong>
+    </div>
   );
 }

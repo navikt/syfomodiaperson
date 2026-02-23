@@ -2,8 +2,7 @@ import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
-import SykmeldingOpplysningForFelt from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/SykmeldingOpplysningForFelt";
-import { Checkbox } from "@navikt/ds-react";
+import { BodyShort, Checkbox, Heading } from "@navikt/ds-react";
 
 const texts = {
   title: "Friskmelding/prognose",
@@ -30,19 +29,7 @@ interface Props {
 
 export default function Friskmelding(friskmeldingProps: Props) {
   const { sykmelding } = friskmeldingProps;
-  const visSeksjon =
-    sykmelding.friskmelding.antarReturSammeArbeidsgiver ||
-    sykmelding.friskmelding.antattDatoReturSammeArbeidsgiver ||
-    sykmelding.friskmelding.antarReturAnnenArbeidsgiver ||
-    sykmelding.friskmelding.tilbakemeldingReturArbeid ||
-    sykmelding.friskmelding.utenArbeidsgiverTilbakemelding ||
-    sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeid ||
-    sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeidDato ||
-    sykmelding.friskmelding.utenArbeidsgiverTilbakemelding;
 
-  if (!visSeksjon) {
-    return <div />;
-  }
   return (
     <SykmeldingSeksjon tittel={texts.title}>
       {sykmelding.friskmelding.antarReturSammeArbeidsgiver && (
@@ -50,38 +37,38 @@ export default function Friskmelding(friskmeldingProps: Props) {
           {texts.returArbeidsgiver}
         </Checkbox>
       )}
-
       {sykmelding.friskmelding.antattDatoReturSammeArbeidsgiver && (
-        <SykmeldingOpplysningForFelt
-          sykmeldingBolk={sykmelding.friskmelding}
-          felt={"antattDatoReturSammeArbeidsgiver"}
-          tittel={texts.returArbeidsgiverDato}
-          opplysning={tilLesbarDatoMedArstall(
-            sykmelding.friskmelding.antattDatoReturSammeArbeidsgiver
-          )}
-          isSubopplysning={true}
-        />
+        <div className="mb-5 ml-6">
+          <Heading level="4" size="xsmall" className="mb-1">
+            {texts.returArbeidsgiverDato}
+          </Heading>
+          <BodyShort size="small">
+            {tilLesbarDatoMedArstall(
+              sykmelding.friskmelding.antattDatoReturSammeArbeidsgiver
+            )}
+          </BodyShort>
+        </div>
       )}
       {sykmelding.friskmelding.antarReturAnnenArbeidsgiver && (
         <Checkbox checked readOnly size="small">
           {texts.returArbeidsgiverAnnen}
         </Checkbox>
       )}
-
       {sykmelding.friskmelding.tilbakemeldingReturArbeid && (
         <>
           <Checkbox checked readOnly size="small">
             {texts.returUsikker}
           </Checkbox>
-          <SykmeldingOpplysningForFelt
-            sykmeldingBolk={sykmelding.friskmelding}
-            felt={"tilbakemeldingReturArbeid"}
-            tittel={texts.returUsikkerDato}
-            opplysning={tilLesbarDatoMedArstall(
-              sykmelding.friskmelding.tilbakemeldingReturArbeid
-            )}
-            isSubopplysning={true}
-          />
+          <div className="mb-5 ml-6">
+            <Heading level="4" size="xsmall" className="mb-1">
+              {texts.returUsikkerDato}
+            </Heading>
+            <BodyShort size="small">
+              {tilLesbarDatoMedArstall(
+                sykmelding.friskmelding.tilbakemeldingReturArbeid
+              )}
+            </BodyShort>
+          </div>
         </>
       )}
       {sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeid && (
@@ -90,15 +77,17 @@ export default function Friskmelding(friskmeldingProps: Props) {
             {texts.returUtenArbeidsgiver}
           </Checkbox>
           {sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeidDato && (
-            <SykmeldingOpplysningForFelt
-              sykmeldingBolk={sykmelding.friskmelding}
-              felt={"utenArbeidsgiverAntarTilbakeIArbeid"}
-              tittel={texts.returUtenArbeidsgiverDato}
-              opplysning={tilLesbarDatoMedArstall(
-                sykmelding.friskmelding.utenArbeidsgiverAntarTilbakeIArbeidDato
-              )}
-              isSubopplysning={true}
-            />
+            <div className="mb-5 ml-6">
+              <Heading level="4" size="xsmall" className="mb-1">
+                {texts.returUtenArbeidsgiverDato}
+              </Heading>
+              <BodyShort size="small">
+                {tilLesbarDatoMedArstall(
+                  sykmelding.friskmelding
+                    .utenArbeidsgiverAntarTilbakeIArbeidDato
+                )}
+              </BodyShort>
+            </div>
           )}
         </>
       )}
@@ -107,15 +96,16 @@ export default function Friskmelding(friskmeldingProps: Props) {
           <Checkbox checked readOnly size="small">
             {texts.returUtenArbeidsgiverUsikker}
           </Checkbox>
-          <SykmeldingOpplysningForFelt
-            sykmeldingBolk={sykmelding.friskmelding}
-            felt={"utenArbeidsgiverTilbakemelding"}
-            tittel={texts.returUtenArbeidsgiverUsikkerDato}
-            opplysning={tilLesbarDatoMedArstall(
-              sykmelding.friskmelding.utenArbeidsgiverTilbakemelding
-            )}
-            isSubopplysning={true}
-          />
+          <div className="mb-5 ml-6">
+            <Heading level="4" size="xsmall" className="mb-1">
+              {texts.returUtenArbeidsgiverUsikkerDato}
+            </Heading>
+            <BodyShort size="small">
+              {tilLesbarDatoMedArstall(
+                sykmelding.friskmelding.utenArbeidsgiverTilbakemelding
+              )}
+            </BodyShort>
+          </div>
         </>
       )}
     </SykmeldingSeksjon>

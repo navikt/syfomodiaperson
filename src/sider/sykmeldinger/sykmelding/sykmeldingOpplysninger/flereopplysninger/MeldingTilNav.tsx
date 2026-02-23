@@ -1,9 +1,7 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { erMeldingTilNavInformasjon } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
-import SykmeldingOpplysningForFelt from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/SykmeldingOpplysningForFelt";
-import { Checkbox } from "@navikt/ds-react";
+import { BodyLong, Checkbox, Heading } from "@navikt/ds-react";
 
 const texts = {
   begrunnelse: "Begrunn nærmere",
@@ -16,9 +14,6 @@ interface Props {
 }
 
 export default function MeldingTilNav({ sykmelding }: Props) {
-  if (!erMeldingTilNavInformasjon(sykmelding)) {
-    return <span />;
-  }
   return (
     <SykmeldingSeksjon tittel={texts.meldingTilNav}>
       {sykmelding.meldingTilNav.navBoerTaTakISaken && (
@@ -27,12 +22,14 @@ export default function MeldingTilNav({ sykmelding }: Props) {
         </Checkbox>
       )}
       {sykmelding.meldingTilNav.navBoerTaTakISakenBegrunnelse && (
-        <SykmeldingOpplysningForFelt
-          sykmeldingBolk={sykmelding.meldingTilNav}
-          felt={"navBoerTaTakISakenBegrunnelse"}
-          tittel={texts.begrunnelse}
-          isSubopplysning={true}
-        />
+        <div className="mb-5 ml-6">
+          <Heading level="4" size="xsmall" className="mb-1">
+            {texts.begrunnelse}
+          </Heading>
+          <BodyLong size="small">
+            {sykmelding.meldingTilNav.navBoerTaTakISakenBegrunnelse}
+          </BodyLong>
+        </div>
       )}
     </SykmeldingSeksjon>
   );
