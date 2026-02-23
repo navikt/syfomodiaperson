@@ -1,6 +1,5 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 import { BodyLong, Heading } from "@navikt/ds-react";
 
 const texts = {
@@ -18,7 +17,10 @@ export default function BedreArbeidsevne(bedreArbeidsevneProps: Props) {
   const { sykmelding } = bedreArbeidsevneProps;
 
   return (
-    <SykmeldingSeksjon tittel={texts.arbeidsevne}>
+    <>
+      <Heading level="3" size="medium">
+        {texts.arbeidsevne}
+      </Heading>
       {sykmelding.arbeidsevne.tilretteleggingArbeidsplass && (
         <div className="mb-5">
           <Heading level="4" size="xsmall" className="mb-1">
@@ -45,6 +47,6 @@ export default function BedreArbeidsevne(bedreArbeidsevneProps: Props) {
           <BodyLong size="small">{sykmelding.arbeidsevne.tiltakAndre}</BodyLong>
         </div>
       )}
-    </SykmeldingSeksjon>
+    </>
   );
 }

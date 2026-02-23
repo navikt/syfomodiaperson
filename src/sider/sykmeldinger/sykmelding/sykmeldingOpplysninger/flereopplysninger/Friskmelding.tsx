@@ -1,7 +1,6 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
-import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 import { BodyShort, Checkbox, Heading } from "@navikt/ds-react";
 
 const texts = {
@@ -31,7 +30,10 @@ export default function Friskmelding(friskmeldingProps: Props) {
   const { sykmelding } = friskmeldingProps;
 
   return (
-    <SykmeldingSeksjon tittel={texts.title}>
+    <>
+      <Heading level="3" size="medium">
+        {texts.title}
+      </Heading>
       {sykmelding.friskmelding.antarReturSammeArbeidsgiver && (
         <Checkbox checked readOnly size="small">
           {texts.returArbeidsgiver}
@@ -108,6 +110,6 @@ export default function Friskmelding(friskmeldingProps: Props) {
           </div>
         </>
       )}
-    </SykmeldingSeksjon>
+    </>
   );
 }

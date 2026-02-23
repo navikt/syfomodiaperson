@@ -21,7 +21,6 @@ import MeldingTilNav from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninge
 import MeldingTilArbeidsgiver from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/MeldingTilArbeidsgiver";
 import Tilbakedatering from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/Tilbakedatering";
 import { erMeldingTilNavInformasjon } from "@/utils/sykmeldinger/sykmeldingUtils";
-import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 
 const texts = {
   sykmelding: "Sykmelding",
@@ -39,6 +38,7 @@ const texts = {
   utstedelsesdato: "Dato sykmeldingen ble skrevet",
   skadedato: "Skadedato",
   telefonTilLegeSykmelder: "Telefon til lege/sykmelder",
+  annet: "Annet",
 };
 
 const getStillingsprosentText = (stillingsprosent?: number) => {
@@ -227,16 +227,17 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
         )}
         {erTilbakedatering && <Tilbakedatering sykmelding={sykmelding} />}
         {sykmelding.bekreftelse.sykmelderTlf && (
-          <SykmeldingSeksjon tittel="Annet">
-            <div className="mb-5">
-              <Heading level="4" size="xsmall" className="mb-1">
-                {texts.telefonTilLegeSykmelder}
-              </Heading>
-              <BodyLong size="small">
-                {sykmelding.bekreftelse.sykmelderTlf}
-              </BodyLong>
-            </div>
-          </SykmeldingSeksjon>
+          <div className="mb-5">
+            <Heading level="3" size="medium">
+              {texts.annet}
+            </Heading>
+            <Heading level="4" size="xsmall" className="mb-1">
+              {texts.telefonTilLegeSykmelder}
+            </Heading>
+            <BodyLong size="small">
+              {sykmelding.bekreftelse.sykmelderTlf}
+            </BodyLong>
+          </div>
         )}
       </div>
     </div>

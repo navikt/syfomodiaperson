@@ -1,6 +1,5 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 import { BodyShort, Checkbox, Heading } from "@navikt/ds-react";
 
 const texts = {
@@ -42,7 +41,10 @@ interface Props {
 
 export default function MulighetForArbeid({ sykmelding }: Props) {
   return (
-    <SykmeldingSeksjon tittel={texts.mulighetForArbeid}>
+    <>
+      <Heading level="3" size="medium">
+        {texts.mulighetForArbeid}
+      </Heading>
       {sykmelding.mulighetForArbeid.aktivitetIkkeMulig433 &&
         sykmelding.mulighetForArbeid.aktivitetIkkeMulig433.length > 0 && (
           <div className="mb-5">
@@ -82,7 +84,7 @@ export default function MulighetForArbeid({ sykmelding }: Props) {
           </div>
         )}
       {sykmelding.mulighetForArbeid.aarsakAktivitetIkkeMulig434 && (
-        <div className="pb-5">
+        <div className="mb-5">
           <Heading level="4" size="xsmall" className="mb-1">
             {texts.arsak}
           </Heading>
@@ -91,6 +93,6 @@ export default function MulighetForArbeid({ sykmelding }: Props) {
           </BodyShort>
         </div>
       )}
-    </SykmeldingSeksjon>
+    </>
   );
 }

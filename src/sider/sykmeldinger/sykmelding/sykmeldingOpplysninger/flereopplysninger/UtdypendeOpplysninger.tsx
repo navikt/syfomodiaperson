@@ -1,7 +1,6 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { SporsmalSvarDTO } from "@/data/sykmelding/types/SporsmalSvarDTO";
-import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 import { BodyLong, Heading } from "@navikt/ds-react";
 
 const texts = {
@@ -35,10 +34,13 @@ export default function UtdypendeOpplysninger(
   const { sykmelding } = utdypendeOpplysningerProps;
   const utdypendeOpplysninger = sykmelding.utdypendeOpplysninger;
   return (
-    <SykmeldingSeksjon tittel={texts.title}>
+    <>
+      <Heading level="3" size="medium">
+        {texts.title}
+      </Heading>
       {Object.entries(utdypendeOpplysninger).map(([key, opplysningGruppe]) => (
         <OpplysningsGruppe key={key} opplysningGruppe={opplysningGruppe} />
       ))}
-    </SykmeldingSeksjon>
+    </>
   );
 }
