@@ -81,7 +81,6 @@ export default function SendForhandsvarselSkjema() {
     formState: { errors },
     handleSubmit,
     control,
-    getValues,
     setValue,
   } = useForm<SkjemaValues>({ defaultValues, mode: "onChange" });
   const { getForhandsvarselDocument } = useArbeidsuforhetVurderingDocument();
