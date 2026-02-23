@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -91,20 +91,13 @@ export default function SendForhandsvarselSkjema() {
   const saveDraft =
     useSaveDraft<ArbeidsuforhetForhandsvarselDraftDTO>(CATEGORY);
   const deleteDraft = useDeleteDraft(CATEGORY);
-  const lastSavedDraftJsonRef = useRef<string>("");
 
   const debouncedAutoSaveDraft = useDebouncedCallback((begrunnelse: string) => {
     if (!begrunnelse) {
       return;
     }
-
     const draftPayload = { begrunnelse };
-    const draftJson = JSON.stringify(draftPayload);
-    if (draftJson === lastSavedDraftJsonRef.current) {
-      return;
-    }
 
-    lastSavedDraftJsonRef.current = draftJson;
     saveDraft.mutate(draftPayload, {
       onSuccess: () => {
         setUtkastSavedTime(new Date());
@@ -147,7 +140,6 @@ export default function SendForhandsvarselSkjema() {
     };
     sendForhandsvarsel.mutate(forhandsvarselRequestDTO, {
       onSuccess: () => {
-        lastSavedDraftJsonRef.current = "";
         setUtkastSavedTime(undefined);
         debouncedAutoSaveDraft.cancel();
         deleteDraft.mutate(undefined);
