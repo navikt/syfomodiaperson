@@ -10,32 +10,25 @@ import {
 interface Props {
   isSaveError: boolean;
   savedTime?: Date;
-  savedText?: string;
-  saveFailedText?: string;
 }
 
-const defaultTexts = {
+const texts = {
   saved: "Utkast lagret, utløper ",
   saveFailed: "Lagring av utkast feilet",
 };
 
-export function DraftSaveStatus({
-  isSaveError,
-  savedTime,
-  savedText = defaultTexts.saved,
-  saveFailedText = defaultTexts.saveFailed,
-}: Props) {
+export function DraftSaveStatus({ isSaveError, savedTime }: Props) {
   return (
     <>
       {isSaveError && (
         <Alert variant="error" size="small">
-          {saveFailedText}
+          {texts.saveFailed}
         </Alert>
       )}
-      {savedTime && (
+      {!isSaveError && savedTime && (
         <div className="mb-2 font-bold flex gap-2">
           <img src={SaveFile} alt="saved" />
-          <span>{`${savedText} ${tilLesbarDatoUtenArstall(
+          <span>{`${texts.saved} ${tilLesbarDatoUtenArstall(
             addDays(savedTime, 7)
           )} ${showTimeIncludingSeconds(savedTime)}`}</span>
         </div>
