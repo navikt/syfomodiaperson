@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw";
-import { ArbeidsuforhetForhandsvarselDraftDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetForhandsvarselDraftTypes";
+import { TextBoxDraftDTO } from "@/hooks/draftTypes";
 
-let arbeidsuforhetOppfyltDraft: ArbeidsuforhetForhandsvarselDraftDTO = {
+let arbeidsuforhetOppfyltDraft: TextBoxDraftDTO = {
   begrunnelse: "",
 };
 
@@ -9,7 +9,7 @@ export const mockArbeidsuforhetOppfyltDraft = [
   http.get(`/api/draft/arbeidsuforhet-oppfylt`, () => {
     return HttpResponse.json(arbeidsuforhetOppfyltDraft);
   }),
-  http.put<object, ArbeidsuforhetForhandsvarselDraftDTO>(
+  http.put<object, TextBoxDraftDTO>(
     `/api/draft/arbeidsuforhet-oppfylt`,
     async ({ request }) => {
       const body = await request.json();

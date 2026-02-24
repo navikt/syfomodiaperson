@@ -37,7 +37,7 @@ import {
   useDraftQuery,
   useSaveDraft,
 } from "@/hooks/useDraftQuery";
-import { ArbeidsuforhetForhandsvarselDraftDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetForhandsvarselDraftTypes";
+import { TextBoxDraftDTO } from "@/hooks/draftTypes";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 
 const texts = {
@@ -114,10 +114,8 @@ export default function InnstillingUtenForhandsvarsel() {
   } = formProps;
 
   const CATEGORY = "arbeidsuforhet-avslag-uten-forhandsvarsel";
-  const getDraftQuery =
-    useDraftQuery<ArbeidsuforhetForhandsvarselDraftDTO>(CATEGORY);
-  const saveDraft =
-    useSaveDraft<ArbeidsuforhetForhandsvarselDraftDTO>(CATEGORY);
+  const getDraftQuery = useDraftQuery<TextBoxDraftDTO>(CATEGORY);
+  const saveDraft = useSaveDraft<TextBoxDraftDTO>(CATEGORY);
   const deleteDraft = useDeleteDraft(CATEGORY);
 
   const debouncedAutoSaveDraft = useDebouncedCallback((begrunnelse: string) => {
