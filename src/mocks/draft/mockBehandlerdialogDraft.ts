@@ -7,7 +7,7 @@ let draft: MeldingTilBehandlerDraftDTO = {
   behandlerRef: undefined,
 };
 
-export const mockBehandlerdialog = [
+export const mockBehandlerdialogDraft = [
   http.get(`/api/draft/behandlerdialog-meldingtilbehandler`, () => {
     return HttpResponse.json(draft);
   }),

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -25,6 +25,14 @@ import { Link } from "react-router-dom";
 import BoundedDatePicker from "@/components/BoundedDatePicker";
 import { addWeeks, toDateOnly } from "@/utils/datoUtils";
 import dayjs from "dayjs";
+import { useDebouncedCallback } from "use-debounce";
+import {
+  useDeleteDraft,
+  useDraftQuery,
+  useSaveDraft,
+} from "@/hooks/useDraftQuery";
+import { ArbeidsuforhetForhandsvarselDraftDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetForhandsvarselDraftTypes";
+import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -66,14 +74,45 @@ export default function SendForhandsvarselSkjema() {
   const navigate = useNavigate();
   const { setNotification } = useNotification();
   const sendForhandsvarsel = useSaveVurderingArbeidsuforhet();
+  const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const {
     register,
     watch,
     formState: { errors },
     handleSubmit,
     control,
+    setValue,
   } = useForm<SkjemaValues>({ defaultValues, mode: "onChange" });
   const { getForhandsvarselDocument } = useArbeidsuforhetVurderingDocument();
+
+  const CATEGORY = "arbeidsuforhet-forhandsvarsel";
+  const getDraftQuery =
+    useDraftQuery<ArbeidsuforhetForhandsvarselDraftDTO>(CATEGORY);
+  const saveDraft =
+    useSaveDraft<ArbeidsuforhetForhandsvarselDraftDTO>(CATEGORY);
+  const deleteDraft = useDeleteDraft(CATEGORY);
+
+  const debouncedAutoSaveDraft = useDebouncedCallback((begrunnelse: string) => {
+    if (!begrunnelse) {
+      return;
+    }
+    const draftPayload = { begrunnelse };
+
+    saveDraft.mutate(draftPayload, {
+      onSuccess: () => {
+        setUtkastSavedTime(new Date());
+      },
+      onError: () => {
+        setUtkastSavedTime(undefined);
+      },
+    });
+  }, 750);
+
+  useEffect(() => {
+    if (getDraftQuery.data?.begrunnelse) {
+      setValue("begrunnelse", getDraftQuery.data.begrunnelse);
+    }
+  }, [getDraftQuery.data, setValue]);
 
   const threeWeeks = toDateOnly(addWeeks(new Date(), 3));
   const sixWeeks = toDateOnly(addWeeks(new Date(), 6));
@@ -101,6 +140,9 @@ export default function SendForhandsvarselSkjema() {
     };
     sendForhandsvarsel.mutate(forhandsvarselRequestDTO, {
       onSuccess: () => {
+        setUtkastSavedTime(undefined);
+        debouncedAutoSaveDraft.cancel();
+        deleteDraft.mutate(undefined);
         setNotification({
           message: texts.forhandsvarselSendt,
         });
@@ -144,6 +186,9 @@ export default function SendForhandsvarselSkjema() {
             required: texts.missingBeskrivelse,
             validate: (value) =>
               value !== texts.defaultTextareaValue || texts.missingBeskrivelse,
+            onChange: (e) => {
+              debouncedAutoSaveDraft(e.target.value);
+            },
           })}
           value={watch("begrunnelse")}
           label={texts.beskrivelseLabel}
@@ -152,6 +197,10 @@ export default function SendForhandsvarselSkjema() {
           size="small"
           minRows={6}
           maxLength={begrunnelseMaxLength}
+        />
+        <DraftSaveStatus
+          isSaveError={saveDraft.isError}
+          savedTime={utkastSavedTime}
         />
         {sendForhandsvarsel.isError && (
           <SkjemaInnsendingFeil error={sendForhandsvarsel.error} />
