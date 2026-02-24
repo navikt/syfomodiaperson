@@ -39,6 +39,8 @@ import { mockPensjonPenUforegrad } from "@/mocks/uforegrad/mockUforegrad";
 import { mockSyfooppfolgingsplanbackend } from "@/mocks/syfooppfolgingsplanbackend/mockSyfooppfolgingsplanbackend";
 import { mockBehandlerdialogDraft } from "@/mocks/draft/mockBehandlerdialogDraft";
 import { mockArbeidsuforhetForhandsvarselDraft } from "@/mocks/draft/mockArbeidsuforhetForhandsvarselDraft";
+import { mockArbeidsuforhetAvslagUtenForhandsvarselDraft } from "@/mocks/draft/mockArbeidsuforhetAvslagUtenForhandsvarselDraft";
+import { mockArbeidsuforhetOppfyltDraft } from "@/mocks/draft/mockArbeidsuforhetOppfyltDraft";
 
 const handlers = [
   http.post("https://umami.nav.no/api/send", () => {
@@ -57,6 +59,8 @@ const handlers = [
   ...mockIsbehandlerdialog,
   ...mockBehandlerdialogDraft,
   ...mockArbeidsuforhetForhandsvarselDraft,
+  ...mockArbeidsuforhetAvslagUtenForhandsvarselDraft,
+  ...mockArbeidsuforhetOppfyltDraft,
   ...mockIsdialogmelding,
   ...mockIsdialogmote,
   ...mockIsdialogmotekandidat,
