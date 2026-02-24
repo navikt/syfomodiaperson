@@ -1,7 +1,11 @@
 import React from "react";
 import { Alert } from "@navikt/ds-react";
 import { SaveFile } from "../../img/ImageComponents";
-import { showTimeIncludingSeconds } from "@/utils/datoUtils";
+import {
+  addDays,
+  showTimeIncludingSeconds,
+  tilLesbarDatoUtenArstall,
+} from "@/utils/datoUtils";
 
 interface Props {
   isSaveError: boolean;
@@ -11,7 +15,7 @@ interface Props {
 }
 
 const defaultTexts = {
-  saved: "Utkast lagret (utløper om 7 dager)",
+  saved: "Utkast lagret, utløper ",
   saveFailed: "Lagring av utkast feilet",
 };
 
@@ -31,7 +35,9 @@ export function DraftSaveStatus({
       {savedTime && (
         <div className="mb-2 font-bold flex gap-2">
           <img src={SaveFile} alt="saved" />
-          <span>{`${savedText} ${showTimeIncludingSeconds(savedTime)}`}</span>
+          <span>{`${savedText} ${tilLesbarDatoUtenArstall(
+            addDays(savedTime, 7)
+          )} ${showTimeIncludingSeconds(savedTime)}`}</span>
         </div>
       )}
     </>
