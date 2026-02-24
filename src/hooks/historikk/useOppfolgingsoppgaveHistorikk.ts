@@ -4,7 +4,7 @@ import {
   OppfolgingsoppgaveResponseDTO,
 } from "@/data/oppfolgingsoppgave/types";
 import { useOppfolgingsoppgaver } from "@/data/oppfolgingsoppgave/useOppfolgingsoppgaver";
-import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
+import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function createHistorikkEvents(
   oppfolgingsoppgaver: OppfolgingsoppgaveResponseDTO[]
@@ -52,7 +52,7 @@ function createHistorikkEvents(
   return historikkEvents;
 }
 
-export function useOppfolgingsoppgaveHistorikk(): HistorikkHook {
+export function useOppfolgingsoppgaveHistorikk(): HistorikkEvents {
   const {
     oppfolgingsoppgaver: oppfolgingsoppgaver,
     isLoading,

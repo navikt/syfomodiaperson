@@ -9,7 +9,7 @@ import {
   MotebehovInnmelder,
   SvarMotebehov,
 } from "@/data/motebehov/types/motebehovTypes";
-import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
+import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function getTextForMeldtMotebehov(meldtMotebehov: MeldtMotebehov): string {
   const meldtBehovBegrunnelse = meldtMotebehov.formValues.begrunnelse
@@ -100,7 +100,7 @@ function createHistorikkEventsFromSvarMotebehov(
   return svarMotebehovEvents;
 }
 
-export function useMotebehovHistorikk(): HistorikkHook {
+export function useMotebehovHistorikk(): HistorikkEvents {
   const motebehov = useMotebehovQuery();
   const meldtMotebehov = mapMotebehovToMeldtMotebehovFormat(motebehov.data);
   const svarMotebehov = mapMotebehovToSvarMotebehovFormat(motebehov.data);

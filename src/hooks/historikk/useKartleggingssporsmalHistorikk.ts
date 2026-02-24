@@ -1,4 +1,4 @@
-import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
+import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 import { useKartleggingssporsmalKandidaterQuery } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 import {
   HistorikkEvent,
@@ -37,7 +37,7 @@ function createEventsFromKandidat(
   return events;
 }
 
-export function useKartleggingssporsmalHistorikk(): HistorikkHook {
+export function useKartleggingssporsmalHistorikk(): HistorikkEvents {
   const { data, isLoading, isError } = useKartleggingssporsmalKandidaterQuery();
   const { brukerinfo: person } = useBrukerinfoQuery();
 

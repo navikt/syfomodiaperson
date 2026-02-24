@@ -15,13 +15,13 @@ import { useMotebehovHistorikk } from "@/hooks/historikk/useMotebehovHistorikk";
 import { useTildeltOppfolgingsenhetHistorikk } from "@/hooks/historikk/useTildeltOppfolgingsenhetHistorikk";
 import { useKartleggingssporsmalHistorikk } from "@/hooks/historikk/useKartleggingssporsmalHistorikk";
 
-export interface HistorikkHook {
+export interface HistorikkEvents {
   isLoading: boolean;
   isError: boolean;
   events: HistorikkEvent[];
 }
 
-export function useHistorikk(): HistorikkHook {
+export function useHistorikk(): HistorikkEvents {
   const motebehovHistorikk = useMotebehovHistorikk();
   const oppfolgingsplanHistorikk = useOppfolgingsplanHistorikk();
   const ledereHistorikk = useLedereHistorikk();
@@ -40,7 +40,7 @@ export function useHistorikk(): HistorikkHook {
     useTildeltOppfolgingsenhetHistorikk();
   const kartleggingssporsmalHistorikk = useKartleggingssporsmalHistorikk();
 
-  const historikk: HistorikkHook[] = [
+  const historikk: HistorikkEvents[] = [
     motebehovHistorikk,
     oppfolgingsplanHistorikk,
     ledereHistorikk,

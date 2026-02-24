@@ -3,7 +3,7 @@ import {
   useVeilederTildelingHistorikkData,
   VeilederTildelingHistorikkDTO,
 } from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
-import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
+import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function createHistorikkEventsFromVeilederTildelingHistorikk(
   veilederTildelingHistorikkDTO: VeilederTildelingHistorikkDTO[]
@@ -29,7 +29,7 @@ function getHistorikkTekst(value: VeilederTildelingHistorikkDTO): string {
   }
 }
 
-export function useVeilederTildelingHistorikk(): HistorikkHook {
+export function useVeilederTildelingHistorikk(): HistorikkEvents {
   const {
     data: events,
     isLoading,

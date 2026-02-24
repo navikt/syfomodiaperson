@@ -5,7 +5,7 @@ import {
   SenOppfolgingVurderingType,
 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
-import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
+import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 const OPPRETTET_AV_SYSTEM_DEFAULT = "SYSTEM";
 
@@ -56,7 +56,7 @@ function createHistorikkEvents(
   });
 }
 
-export function useSenOppfolgingHistorikk(): HistorikkHook {
+export function useSenOppfolgingHistorikk(): HistorikkEvents {
   const {
     data: senOppfolgingKandidater,
     isLoading,

@@ -6,7 +6,7 @@ import {
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
-import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
+import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function getTextForHistorikk(
   historikk: AktivitetskravHistorikkDTO,
@@ -17,6 +17,8 @@ function getTextForHistorikk(
       return `${person.navn} ble kandidat til aktivitetskravet`;
     case AktivitetskravStatus.NY_VURDERING:
       return `Det ble startet ny vurdering av aktivitetskravet`;
+    case AktivitetskravStatus.AVVENT:
+      return `${historikk.vurdertAv} avventet vurdering av aktivitetskrav`;
     case AktivitetskravStatus.UNNTAK:
       return `${historikk.vurdertAv} vurderte unntak fra aktivitetskravet`;
     case AktivitetskravStatus.OPPFYLT:
@@ -31,7 +33,6 @@ function getTextForHistorikk(
       return `Det ble sendt et forhåndsvarsel for aktivitetskravet av ${historikk.vurdertAv}`;
     case AktivitetskravStatus.LUKKET:
       return `Vurderingen av aktivitetskravet ble lukket av systemet`;
-    case AktivitetskravStatus.AVVENT:
     case AktivitetskravStatus.AUTOMATISK_OPPFYLT:
       throw new Error("Not supported");
   }
@@ -42,22 +43,16 @@ function createHistorikkEventsFromAktivitetskrav(
   person: BrukerinfoDTO
 ): HistorikkEvent[] {
   return aktivitietskravHistorikkDTO
-    .filter(
-      (entry) =>
-        entry.status !== AktivitetskravStatus.AUTOMATISK_OPPFYLT &&
-        entry.status !== AktivitetskravStatus.AVVENT
-    )
-    .map((entry: AktivitetskravHistorikkDTO) => {
-      return {
-        opprettetAv: entry.vurdertAv ?? undefined,
-        tekst: getTextForHistorikk(entry, person),
-        tidspunkt: entry.tidspunkt,
-        kilde: "AKTIVITETSKRAV",
-      };
-    });
+    .filter((entry) => entry.status !== AktivitetskravStatus.AUTOMATISK_OPPFYLT)
+    .map((entry: AktivitetskravHistorikkDTO) => ({
+      opprettetAv: entry.vurdertAv ?? undefined,
+      tekst: getTextForHistorikk(entry, person),
+      tidspunkt: entry.tidspunkt,
+      kilde: "AKTIVITETSKRAV",
+    }));
 }
 
-export function useAktivitetskravHistorikk(): HistorikkHook {
+export function useAktivitetskravHistorikk(): HistorikkEvents {
   const { brukerinfo: person } = useBrukerinfoQuery();
   const {
     data: aktivitetskravHistorikk,

@@ -1,5 +1,5 @@
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
-import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
+import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 import { Enhet } from "@/data/behandlendeenhet/types/BehandlendeEnhetDTOs";
 import { useTildeltOppfolgingsenhetHistorikkQuery } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 
@@ -68,7 +68,7 @@ function createHistorikkEventsFromTildelHistorikk(
   });
 }
 
-export function useTildeltOppfolgingsenhetHistorikk(): HistorikkHook {
+export function useTildeltOppfolgingsenhetHistorikk(): HistorikkEvents {
   const {
     data: tildeltOppfolgingsenhetHistorikk,
     isLoading,
