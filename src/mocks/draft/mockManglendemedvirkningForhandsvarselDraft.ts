@@ -1,16 +1,15 @@
 import { http, HttpResponse } from "msw";
-import { ArbeidsuforhetForhandsvarselDraftDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetForhandsvarselDraftTypes";
+import { TextBoxDraftDTO } from "@/hooks/draftTypes";
 
-let manglendemedvirkningForhandsvarselDraft: ArbeidsuforhetForhandsvarselDraftDTO =
-  {
-    begrunnelse: "",
-  };
+let manglendemedvirkningForhandsvarselDraft: TextBoxDraftDTO = {
+  begrunnelse: "",
+};
 
 export const mockManglendemedvirkningForhandsvarselDraft = [
   http.get(`/api/draft/manglendemedvirkning-forhandsvarsel`, () => {
     return HttpResponse.json(manglendemedvirkningForhandsvarselDraft);
   }),
-  http.put<object, ArbeidsuforhetForhandsvarselDraftDTO>(
+  http.put<object, TextBoxDraftDTO>(
     `/api/draft/manglendemedvirkning-forhandsvarsel`,
     async ({ request }) => {
       const body = await request.json();
