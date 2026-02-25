@@ -40,7 +40,6 @@ import MotebehovKanImage from "./svg/motebehov--kan.svg";
 import MotebehovKanIkkeImage from "./svg/motebehov--kanikke.svg";
 import MoteIkonBlaaImage from "./svg/moteikon_blaabg.svg";
 import NavLogoRod from "./svg/nav_logo_rod.svg";
-import PersonImage from "./svg/person.svg";
 import PersonHighContrastImage from "./svg/person-highcontrast.svg";
 import PersonHoverImage from "./svg/person_hover.svg";
 import PilVidereBlaaImage from "./svg/pilVidere--blaa.svg";
@@ -112,7 +111,6 @@ export {
   MotebehovKanIkkeImage,
   MoteIkonBlaaImage,
   NavLogoRod,
-  PersonImage,
   PersonHighContrastImage,
   PersonHoverImage,
   PepperkakeKvinneImage,

@@ -6,12 +6,12 @@ import {
   formaterKontaktadresse,
   formaterOppholdsadresse,
 } from "@/utils/adresseUtils";
-import { PersonImage } from "../../../img/ImageComponents";
 import { usePersonAdresseQuery } from "@/data/personinfo/personAdresseQueryHooks";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { formaterFnr } from "@/utils/fnrUtils";
 import { formatPhonenumber } from "@/utils/stringUtils";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
+import { PersonCircleIcon } from "@navikt/aksel-icons";
 
 const texts = {
   fnr: "F.nummer",
@@ -63,7 +63,13 @@ export function PersonkortSykmeldt() {
     <PersonkortElement
       tittel="Kontaktinformasjon"
       antallKolonner={3}
-      icon={<img src={PersonImage} alt={"Bilde av person"} />}
+      icon={
+        <PersonCircleIcon
+          fontSize="1.5rem"
+          title="Bilde av person"
+          className="mr-2"
+        />
+      }
     >
       <PersonkortInformasjon
         informasjonNokkelTekster={informasjonNokkelTekster}

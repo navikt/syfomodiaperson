@@ -5,8 +5,6 @@ import { Normaltekst } from "nav-frontend-typografi";
 import {
   DoctorHoverImage,
   DoctorImage,
-  PersonHoverImage,
-  PersonImage,
   PlasterHoverImage,
   PlasterImage,
 } from "../../../../img/ImageComponents";
@@ -24,13 +22,6 @@ const getIconProps = (icon: IconType): IconProps => {
         altText: "Lege",
       };
     }
-    case "person": {
-      return {
-        icon: PersonImage,
-        hover: PersonHoverImage,
-        altText: "Du",
-      };
-    }
     case "plaster": {
       return {
         icon: PlasterImage,
@@ -40,7 +31,7 @@ const getIconProps = (icon: IconType): IconProps => {
     }
   }
 };
-type IconType = "person" | "lege" | "plaster";
+type IconType = "lege" | "plaster";
 
 interface SpeilingEkspanderbartPanelTittelProps {
   children: string;
