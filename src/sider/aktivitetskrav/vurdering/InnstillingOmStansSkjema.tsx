@@ -4,7 +4,7 @@ import {
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import React from "react";
 import { useVurderAktivitetskrav } from "@/data/aktivitetskrav/useVurderAktivitetskrav";
-import { Alert, Button, Heading, List, Textarea, Box } from "@navikt/ds-react";
+import { Alert, Box, Button, Heading, List, Textarea } from "@navikt/ds-react";
 import { useAktivitetskravNotificationAlert } from "@/sider/aktivitetskrav/useAktivitetskravNotificationAlert";
 import { FormProvider, useForm } from "react-hook-form";
 import { StansdatoDatePicker } from "@/sider/aktivitetskrav/vurdering/StansdatoDatePicker";
@@ -116,27 +116,23 @@ export default function InnstillingOmStansSkjema({
           <Heading as="h3" size="small">
             {texts.afterSendInfo.title}
           </Heading>
-          <Box marginBlock="space-16" asChild>
-            <List as="ul" size={"small"}>
+          <Box marginBlock="space-12" asChild>
+            <List as="ul" size="small">
               {texts.afterSendInfo.gosysoppgave}
-              <div className="ml-1">
-                <Box marginBlock="space-16" asChild>
-                  <List as="ul">
-                    <List.Item>
-                      {texts.afterSendInfo.gosysoppgaveListe.tema}
-                    </List.Item>
-                    <List.Item>
-                      {texts.afterSendInfo.gosysoppgaveListe.oppgavetype}
-                    </List.Item>
-                    <List.Item>
-                      {texts.afterSendInfo.gosysoppgaveListe.gjelder}
-                    </List.Item>
-                    <List.Item>
-                      {texts.afterSendInfo.gosysoppgaveListe.prioritet}
-                    </List.Item>
-                  </List>
-                </Box>
-              </div>
+              <List as="ul" className="ml-1">
+                <List.Item>
+                  {texts.afterSendInfo.gosysoppgaveListe.tema}
+                </List.Item>
+                <List.Item>
+                  {texts.afterSendInfo.gosysoppgaveListe.oppgavetype}
+                </List.Item>
+                <List.Item>
+                  {texts.afterSendInfo.gosysoppgaveListe.gjelder}
+                </List.Item>
+                <List.Item>
+                  {texts.afterSendInfo.gosysoppgaveListe.prioritet}
+                </List.Item>
+              </List>
             </List>
           </Box>
         </div>

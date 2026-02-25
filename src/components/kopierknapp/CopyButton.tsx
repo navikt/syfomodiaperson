@@ -9,7 +9,7 @@ interface Props {
 }
 
 // Uses <span> instead of <button> to avoid nested <button> when rendered inside accordion headers
-const StyledCopyTrigger = styled.span`
+const StyledCopyButton = styled.span`
   margin: 0;
   padding: 0;
   border: 0;
@@ -35,7 +35,7 @@ export function CopyButton({ message, value }: Props) {
 
   return (
     <div>
-      <StyledCopyTrigger
+      <StyledCopyButton
         ref={triggerRef}
         role="button"
         tabIndex={0}
@@ -48,7 +48,7 @@ export function CopyButton({ message, value }: Props) {
         }}
       >
         <img alt="kopier" src={CopyImage} />
-      </StyledCopyTrigger>
+      </StyledCopyButton>
       <Popover
         open={showPopover}
         onClose={() => setShowPopover(false)}
