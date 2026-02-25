@@ -87,8 +87,8 @@ const texts = {
 function PilotInfo() {
   return (
     <Box
-      background="surface-selected"
-      borderColor="border-alt-3"
+      background="accent-soft"
+      borderColor="brand-blue"
       borderWidth="1"
       className="flex flex-col rounded p-4 mt-2 gap-4"
     >
@@ -161,10 +161,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
         {nyesteKandidat && hasMottattKartleggingssporsmal(nyesteKandidat) ? (
           <Tredelt.Container>
             <Tredelt.FirstColumn className="-xl:mb-2">
-              <Box
-                background="surface-default"
-                className="p-6 gap-6 [&>*]:mb-4 mb-4"
-              >
+              <Box background="default" className="p-6 gap-6 [&>*]:mb-4 mb-4">
                 {answeredQuestions ? (
                   <>
                     <BodyShort size="small" weight="semibold">
@@ -262,7 +259,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
               />
             </Tredelt.FirstColumn>
             <Tredelt.SecondColumn>
-              <Box background="surface-default" padding="6" className="mb-4">
+              <Box background="default" padding="space-24" className="mb-4">
                 <Heading level="2" size="medium">
                   {texts.veiledningBox.heading}
                 </Heading>
@@ -314,17 +311,19 @@ export default function KartleggingssporsmalSide(): ReactElement {
           </Tredelt.Container>
         ) : (
           <Box
-            background="surface-default"
-            padding="6"
+            background="default"
+            padding="space-24"
             className="flex flex-col gap-4"
           >
             <BodyShort size="small">{texts.ikkeKandidatInfo1}</BodyShort>
             <BodyShort size="small">{texts.ikkeKandidatInfo2}</BodyShort>
-            <List size="small">
-              {texts.ikkeKandidatKriterier.map((text, index) => (
-                <List.Item key={index}>{text}</List.Item>
-              ))}
-            </List>
+            <Box marginBlock="space-12" asChild>
+              <List size="small">
+                {texts.ikkeKandidatKriterier.map((text, index) => (
+                  <List.Item key={index}>{text}</List.Item>
+                ))}
+              </List>
+            </Box>
             <EksternLenke href={texts.behovsrettetUrl}>
               {texts.behovsrettetLink}
             </EksternLenke>

@@ -18,8 +18,8 @@ export function SenOppfolgingHistorikk({ historikk }: Props) {
   const subheader = historikk.length > 0 ? texts.subHeader : texts.noHistorikk;
 
   return (
-    <Box padding="6" background="surface-default">
-      <VStack gap="8">
+    <Box padding="space-24" background="default">
+      <VStack gap="space-32">
         <div>
           <Heading level="2" size="medium">
             {texts.header}

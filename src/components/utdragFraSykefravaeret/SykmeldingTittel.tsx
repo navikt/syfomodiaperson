@@ -64,12 +64,12 @@ export function SykmeldingTittel({ sykmelding }: Props) {
         </div>
         <div className="flex gap-4">
           {erIkkeTattIBruk && (
-            <Tag variant="warning" size="small">
+            <Tag data-color="warning" variant="outline" size="small">
               {texts.ny}
             </Tag>
           )}
           {erUtenArbeidsgiver && (
-            <Tag variant="info" size="small">
+            <Tag data-color="info" variant="outline" size="small">
               {texts.utenArbeidsgiver}
             </Tag>
           )}

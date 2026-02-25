@@ -17,7 +17,7 @@ export default function SoknaderList({
   const hasSykepengersoknad = !!sykepengesoknader.length;
   return (
     <div className="mb-4">
-      <Box background="surface-default" padding="4">
+      <Box background="default" padding="space-16">
         <Heading size="small" level="2">
           {tittel}
         </Heading>

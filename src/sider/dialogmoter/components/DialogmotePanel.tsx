@@ -15,7 +15,7 @@ export default function DialogmotePanel({
   ...rest
 }: Props): ReactElement {
   return (
-    <Box background="surface-default" className="flex flex-col mb-4 p-6 gap-6">
+    <Box background="default" className="flex flex-col mb-4 p-6 gap-6">
       <IconHeader altIcon="moteikon" {...rest} />
       {children}
     </Box>

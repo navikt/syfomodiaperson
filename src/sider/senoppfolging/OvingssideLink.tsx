@@ -15,8 +15,8 @@ const demoUrl =
 export default function OvingssideLink() {
   return (
     <Box
-      background="surface-default"
-      padding="6"
+      background="default"
+      padding="space-24"
       className="flex flex-col gap-4 mb-2"
     >
       <Heading level="2" size="medium">

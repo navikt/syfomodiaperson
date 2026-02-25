@@ -10,11 +10,11 @@ export default function LinkAsTab({ href, label, icon }: Props) {
   return (
     <Link
       className={
-        "navds-tabs__tab text-text-default no-underline text-center focus-visible:bg-transparent active:bg-transparent active:text-text-default active:shadow-[inset_0_-3px_0_0] active:shadow-border-subtle-hover"
+        "aksel-tabs__tab text-ax-text-neutral no-underline text-center focus-visible:bg-transparent active:bg-transparent active:text-ax-text-neutral active:shadow-[inset_0_-3px_0_0] active:shadow-ax-border-neutral"
       }
       href={href}
     >
-      <span className={"navds-tabs__tab-inner"}>
+      <span className={"aksel-tabs__tab-inner"}>
         <span aria-hidden={!!label}>{icon}</span>
         {label}
       </span>

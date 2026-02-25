@@ -37,7 +37,7 @@ export default function Utbetalingsinfo({ maksdato }: Props) {
       )}
     </>
   ) : (
-    <Tag variant="warning" size="small" className="mt-1">
+    <Tag data-color="warning" variant="outline" size="small" className="mt-1">
       {texts.ikkeUtbetalt}
     </Tag>
   );

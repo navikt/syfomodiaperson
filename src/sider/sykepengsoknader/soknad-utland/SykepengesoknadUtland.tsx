@@ -21,7 +21,7 @@ export default function SykepengesoknadUtland({ soknad }: Props): ReactElement {
         {texts.tittel}
       </Heading>
       <StatuspanelUtland soknad={soknad} />
-      <Box padding="4" borderRadius="small">
+      <Box padding="space-16" borderRadius="2">
         <Heading spacing size="small">
           {texts.oppsummering}
         </Heading>

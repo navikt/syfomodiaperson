@@ -36,8 +36,8 @@ export default function MotebehovKvitteringInnhold({
   tekst,
 }: Props) {
   return (
-    <Box padding={"3"}>
-      <VStack gap={"4"}>
+    <Box padding={"space-12"}>
+      <VStack gap={"space-16"}>
         <HStack>
           <img
             src={setSvarIkon(deltakerOnskerMote)}

@@ -5,6 +5,6 @@ export const ReturLegeerklaringWarningIcon = () => (
   <ArrowUndoIcon
     fontSize="1.25em"
     title="Tilbakepil-ikon for retur"
-    color="var(--a-icon-warning)"
+    color="var(--ax-text-warning-decoration)"
   />
 );

@@ -23,7 +23,7 @@ const texts = {
 };
 
 const StyledExpantionCardHeader = styled(ExpansionCard.Header)`
-  .navds-expansioncard__header-content {
+  .aksel-expansioncard__header-content {
     width: 100%;
   }
 `;

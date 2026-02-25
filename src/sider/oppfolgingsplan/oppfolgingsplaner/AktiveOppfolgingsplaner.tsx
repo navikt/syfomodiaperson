@@ -71,7 +71,7 @@ export default function AktiveOppfolgingsplaner({
           ))}
         </>
       ) : (
-        <Box background="surface-default" className="p-4 mb-2">
+        <Box background="default" className="p-4 mb-2">
           <BodyShort>{texts.ingenAktiveOppfolgingsplaner}</BodyShort>
         </Box>
       )}

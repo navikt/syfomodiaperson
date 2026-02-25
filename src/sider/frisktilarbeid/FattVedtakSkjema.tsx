@@ -152,8 +152,8 @@ export default function FattVedtakSkjema() {
 
   return (
     <Box
-      background="surface-default"
-      padding="6"
+      background="default"
+      padding="space-24"
       className="flex flex-col [&>*]:mb-4"
     >
       <Heading level="2" size="medium" className="mb-1">

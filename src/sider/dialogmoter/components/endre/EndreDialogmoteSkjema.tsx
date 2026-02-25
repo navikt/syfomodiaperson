@@ -136,7 +136,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
   }
 
   return (
-    <Box background="surface-default" padding="6" className="mb-2">
+    <Box background="default" padding="space-24" className="mb-2">
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(submit)}>
           <div className="flex flex-col gap-4 mb-6">

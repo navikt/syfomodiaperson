@@ -124,8 +124,8 @@ export default function ManglendeMedvirkningHistorikk() {
 
   return (
     <Box
-      padding="6"
-      background="surface-default"
+      padding="space-24"
+      background="default"
       className="flex flex-col gap-8"
     >
       <div>

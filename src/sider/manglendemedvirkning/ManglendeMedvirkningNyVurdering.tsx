@@ -50,7 +50,7 @@ export default function ManglendeMedvirkningNyVurdering({
           {notification.message}
         </Alert>
       )}
-      <Box background="surface-default" padding="6">
+      <Box background="default" padding="space-24">
         <Heading className="mb-4" level="2" size="medium">
           {texts.siste}
         </Heading>

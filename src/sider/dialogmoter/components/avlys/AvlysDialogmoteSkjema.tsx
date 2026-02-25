@@ -101,7 +101,7 @@ const AvlysDialogmoteSkjema = ({
   }
 
   return (
-    <Box background="surface-default" padding="6">
+    <Box background="default" padding="space-24">
       <form onSubmit={handleSubmit(submit)}>
         <MalformRadioGroup />
         <div className="mb-8 flex flex-col">

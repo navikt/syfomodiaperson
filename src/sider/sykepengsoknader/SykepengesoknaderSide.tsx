@@ -79,7 +79,7 @@ export default function SykepengesoknaderSide(): ReactElement {
 
           {kommendeSoknader.length > 0 && (
             <div className="mb-4">
-              <Box background="surface-default" padding="4" className="mb-px">
+              <Box background="default" padding="space-16" className="mb-px">
                 <Heading size="small">{texts.planlagteSoknader}</Heading>
               </Box>
               {kommendeSoknader.map((soknad, idx) => (

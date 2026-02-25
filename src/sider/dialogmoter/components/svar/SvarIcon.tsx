@@ -17,7 +17,7 @@ export const SvarIcon = ({ svarType }: Props): ReactElement => {
       return (
         <CheckmarkCircleFillIcon
           fontSize="1.5em"
-          color="var(--a-icon-success)"
+          color="var(--ax-text-success-decoration)"
           title="suksess-ikon"
         />
       );
@@ -25,7 +25,7 @@ export const SvarIcon = ({ svarType }: Props): ReactElement => {
       return (
         <ExclamationmarkTriangleFillIcon
           fontSize="1.5em"
-          color="var(--a-icon-warning)"
+          color="var(--ax-text-warning-decoration)"
           title="advarsel-ikon"
         />
       );
@@ -33,7 +33,7 @@ export const SvarIcon = ({ svarType }: Props): ReactElement => {
       return (
         <XMarkOctagonFillIcon
           fontSize="1.5em"
-          color="var(--a-icon-danger)"
+          color="var(--ax-text-danger-decoration)"
           title="feil-ikon"
         />
       );
@@ -41,7 +41,7 @@ export const SvarIcon = ({ svarType }: Props): ReactElement => {
       return (
         <MinusCircleFillIcon
           fontSize="1.5em"
-          color="var(--a-gray-600)"
+          color="var(--ax-neutral-700)"
           title="minus-sirkel-ikon"
         />
       );

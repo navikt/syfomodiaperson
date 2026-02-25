@@ -72,7 +72,7 @@ const toVeilederOption = (
 });
 
 const StyledCombobox = styled(UNSAFE_Combobox)`
-  .navds-combobox__list {
+  .aksel-combobox__list {
     max-height: 15rem;
   }
 `;

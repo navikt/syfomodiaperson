@@ -101,7 +101,7 @@ export function AvslagForm({ sisteVurdering }: Props) {
   }
 
   return (
-    <Box background="surface-default" padding="6" className="mb-2">
+    <Box background="default" padding="space-24" className="mb-2">
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(submit)} className="[&>*]:mb-4">
           <Heading level="2" size="medium">
@@ -134,20 +134,22 @@ export function AvslagForm({ sisteVurdering }: Props) {
               {texts.afterSendInfo.title}
             </Heading>
             <BodyLong>{texts.afterSendInfo.gosysoppgave}</BodyLong>
-            <List as="ul">
-              <List.Item>
-                {texts.afterSendInfo.gosysoppgaveListe.tema}
-              </List.Item>
-              <List.Item>
-                {texts.afterSendInfo.gosysoppgaveListe.oppgavetype}
-              </List.Item>
-              <List.Item>
-                {texts.afterSendInfo.gosysoppgaveListe.gjelder}
-              </List.Item>
-              <List.Item>
-                {texts.afterSendInfo.gosysoppgaveListe.prioritet}
-              </List.Item>
-            </List>
+            <Box marginBlock="space-16" asChild>
+              <List as="ul">
+                <List.Item>
+                  {texts.afterSendInfo.gosysoppgaveListe.tema}
+                </List.Item>
+                <List.Item>
+                  {texts.afterSendInfo.gosysoppgaveListe.oppgavetype}
+                </List.Item>
+                <List.Item>
+                  {texts.afterSendInfo.gosysoppgaveListe.gjelder}
+                </List.Item>
+                <List.Item>
+                  {texts.afterSendInfo.gosysoppgaveListe.prioritet}
+                </List.Item>
+              </List>
+            </Box>
           </div>
           <Paragraph
             label={texts.buttonDescriptionLabel}

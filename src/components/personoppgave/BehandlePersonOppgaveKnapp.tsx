@@ -54,7 +54,7 @@ export default function BehandlePersonOppgaveKnapp({
       : behandleOppgaveText;
 
   return (
-    <Box borderColor="border-subtle" borderWidth="1" padding="4">
+    <Box borderColor="neutral-subtle" borderWidth="1" padding="space-16">
       <Checkbox
         onClick={handleBehandleOppgave}
         disabled={isBehandlet || isBehandleOppgaveLoading}

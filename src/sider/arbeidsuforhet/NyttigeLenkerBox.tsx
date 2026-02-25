@@ -14,8 +14,8 @@ const rundskrivUrl =
 export default function NyttigeLenkerBox() {
   return (
     <Box
-      background="surface-default"
-      padding="4"
+      background="default"
+      padding="space-16"
       className="flex flex-col gap-4 mb-2"
     >
       <Heading level="2" size="medium">

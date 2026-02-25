@@ -261,9 +261,10 @@ describe("FattVedtakSkjema", () => {
 
     await clickButton("Forhåndsvisning");
 
-    const forhandsvisModal = screen.getAllByRole("dialog", {
+    const forhandsvisModal = screen.getByRole("dialog", {
+      name: "Forhåndsvis vedtaket",
       hidden: true,
-    })[2];
+    });
     expect(forhandsvisModal).to.exist;
     expect(
       within(forhandsvisModal).getAllByRole("button", {

@@ -26,7 +26,7 @@ function VeilederNavn({ tildeltVeilederident }: VeilederNavnProps) {
         : tildeltVeilederident}
     </span>
   ) : (
-    <Tag variant="info" size="small">
+    <Tag data-color="info" variant="outline" size="small">
       {texts.ufordelt}
     </Tag>
   );
@@ -43,7 +43,7 @@ export default function TildeltVeileder() {
       {veilederIdent ? (
         <VeilederNavn tildeltVeilederident={veilederIdent} />
       ) : (
-        <Tag variant="info" size="small">
+        <Tag data-color="info" variant="outline" size="small">
           {texts.ufordelt}
         </Tag>
       )}

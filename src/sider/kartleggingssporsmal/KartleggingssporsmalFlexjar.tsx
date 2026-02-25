@@ -78,12 +78,12 @@ export default function KartleggingssporsmalFlexjar() {
       </Button>
       {isApen && (
         <Box
-          background={"surface-default"}
-          borderColor="border-default"
+          background={"default"}
+          borderColor="neutral"
           borderWidth="2"
-          shadow="large"
-          borderRadius="medium"
-          padding="4"
+          shadow="dialog"
+          borderRadius="4"
+          padding="space-16"
           className="flex flex-col gap-4 w-[25rem]"
         >
           {sendFeedback.isSuccess ? (

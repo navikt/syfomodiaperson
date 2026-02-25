@@ -61,7 +61,7 @@ export default function MotebehovHistorikk() {
   const hasMotebehov = data.length > 0;
 
   return (
-    <Box background="surface-default" padding="6">
+    <Box background="default" padding="space-24">
       <DialogmoteHistorikkHeader
         title={texts.title}
         subtitle={texts.subtitle}

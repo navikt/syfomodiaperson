@@ -102,7 +102,8 @@ const PersonkortChangeEnhet = ({
         <Modal.Footer>
           <ButtonGroup>
             <Button
-              variant="danger"
+              data-color="danger"
+              variant="primary"
               onClick={updateEnhet}
               loading={changeEnhet.isPending}
             >

@@ -11,6 +11,11 @@ module.exports = merge(common, {
   devServer: {
     port: 8080,
     static: "./public",
+    client: {
+      overlay: {
+        warnings: false,
+      },
+    },
     setupMiddlewares: (middlewares: any, devServer: any) => {
       setupDev(devServer);
       return middlewares;

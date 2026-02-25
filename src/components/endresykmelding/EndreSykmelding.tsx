@@ -15,7 +15,7 @@ const EndreSykmelding = () => {
   const smregistrering = `https://syk-dig.${env}.nav.no/nasjonal/ferdigstilt/${sykmeldingId}`;
 
   return (
-    <Box background="surface-default" padding="4" className="mb-4">
+    <Box background="default" padding="space-16" className="mb-4">
       <Heading size="medium" className="mb-2">
         {texts.title}
       </Heading>

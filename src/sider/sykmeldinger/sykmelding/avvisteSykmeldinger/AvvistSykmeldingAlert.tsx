@@ -33,7 +33,7 @@ export default function AvvistSykmeldingAlert({
   const description = "Grunnen til at sykmeldingen er avvist:";
 
   return (
-    <Box background="surface-default" className="mb-4">
+    <Box background="default" className="mb-4">
       <Alert variant="warning" size="small">
         <Heading level="3" size="small">
           Sykmeldingen er avvist
@@ -46,15 +46,17 @@ export default function AvvistSykmeldingAlert({
                 {sykmelding.behandlingsutfall.ruleHits[0].messageForUser}
               </BodyShort>
             ) : (
-              <List as="ul" size="small">
-                {avvistSykmeldingFilter(sykmelding).map((ruleHit) => {
-                  return (
-                    <List.Item key={ruleHit.ruleName}>
-                      {ruleHit.messageForUser}
-                    </List.Item>
-                  );
-                })}
-              </List>
+              <Box marginBlock="space-12" asChild>
+                <List as="ul" size="small">
+                  {avvistSykmeldingFilter(sykmelding).map((ruleHit) => {
+                    return (
+                      <List.Item key={ruleHit.ruleName}>
+                        {ruleHit.messageForUser}
+                      </List.Item>
+                    );
+                  })}
+                </List>
+              </Box>
             )}
           </div>
         )}

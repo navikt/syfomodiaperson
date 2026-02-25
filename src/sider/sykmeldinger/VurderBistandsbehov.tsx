@@ -43,14 +43,16 @@ export default function VurderBistandsbehov({ oppgave }: Props) {
   const bistandsbehov = sykmelding?.meldingTilNav.navBoerTaTakISakenBegrunnelse;
   return (
     !!sykmelding && (
-      <Box background="surface-default" className="mb-4 p-4">
+      <Box background="default" className="mb-4 p-4">
         <div className={"flex flex-row justify-between"}>
           <Heading size="medium" level="2">
             {texts.header}
           </Heading>
           <div className="flex gap-2 items-center">
             {!!oppgave.duplikatReferanseUuid && (
-              <Tag variant="warning-moderate">Mulig duplikat</Tag>
+              <Tag data-color="warning" variant="moderate">
+                Mulig duplikat
+              </Tag>
             )}
             <HelpText
               placement="bottom"

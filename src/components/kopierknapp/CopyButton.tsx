@@ -8,11 +8,13 @@ interface Props {
   value: string;
 }
 
-const StyledButton = styled.button`
+// Uses <span> instead of <button> to avoid nested <button> when rendered inside accordion headers
+const StyledCopyTrigger = styled.span`
   margin: 0;
   padding: 0;
   border: 0;
   background: none;
+  cursor: pointer;
 
   img {
     margin-right: 0;
@@ -21,26 +23,36 @@ const StyledButton = styled.button`
 
 export function CopyButton({ message, value }: Props) {
   const [showPopover, setShowPopover] = useState<boolean>(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLSpanElement>(null);
+
+  function handleCopy(event: React.SyntheticEvent) {
+    event.stopPropagation();
+    setShowPopover(!showPopover);
+    if (value) {
+      navigator.clipboard.writeText(value);
+    }
+  }
 
   return (
     <div>
-      <StyledButton
-        ref={buttonRef}
-        onClick={(event) => {
-          event.stopPropagation();
-          setShowPopover(!showPopover);
-          if (value) {
-            navigator.clipboard.writeText(value);
+      <StyledCopyTrigger
+        ref={triggerRef}
+        role="button"
+        tabIndex={0}
+        onClick={handleCopy}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            handleCopy(event);
           }
         }}
       >
         <img alt="kopier" src={CopyImage} />
-      </StyledButton>
+      </StyledCopyTrigger>
       <Popover
         open={showPopover}
         onClose={() => setShowPopover(false)}
-        anchorEl={buttonRef.current}
+        anchorEl={triggerRef.current}
       >
         <Popover.Content>{message}</Popover.Content>
       </Popover>

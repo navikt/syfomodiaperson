@@ -27,10 +27,13 @@ export default function ForhandsvarselOppsummering({
         <Heading size="small" level="3">
           {texts.title}
         </Heading>
-        <Tag variant="warning-moderate">{`Frist: ${fristDato}`}</Tag>
+        <Tag
+          data-color="warning"
+          variant="moderate"
+        >{`Frist: ${fristDato}`}</Tag>
       </div>
       {beskrivelse && (
-        <ExpandableBlockquote className="border-gray-400 rounded p-4">
+        <ExpandableBlockquote className="border-ax-neutral-500 rounded p-4">
           {beskrivelse}
         </ExpandableBlockquote>
       )}

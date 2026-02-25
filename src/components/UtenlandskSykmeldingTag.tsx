@@ -6,7 +6,7 @@ const texts = {
 };
 
 export const UtenlandskSykmeldingTag = () => (
-  <Tag className="w-max" variant="neutral" size="small">
+  <Tag data-color="neutral" className="w-max" variant="outline" size="small">
     {texts.tag}
   </Tag>
 );

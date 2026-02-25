@@ -8,7 +8,7 @@ interface Props {
 
 export const DeltakerArbeidsgiverHeading = ({ children }: Props) => {
   return (
-    <HStack gap="2">
+    <HStack gap="space-8">
       <PersonSuitIcon role="img" focusable={false} width={24} height={24} />
       <Heading size="xsmall">{children}</Heading>
     </HStack>

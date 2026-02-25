@@ -40,8 +40,8 @@ export default function OppfolgingsplanerOversiktLPS({
 
   return (
     <Box
-      background="surface-default"
-      padding="4"
+      background="default"
+      padding="space-16"
       className="mb-2"
       data-testid="oppfolgingsplan-lps"
     >
@@ -50,7 +50,7 @@ export default function OppfolgingsplanerOversiktLPS({
         Mottatt:{" "}
         {restdatoTilLesbarDato(oppfolgingsplanLPSBistandsbehov.opprettet)}
       </p>
-      <Tag variant="info" className="mb-4">
+      <Tag data-color="info" variant="outline" className="mb-4">
         LPS
       </Tag>
       <div className="mb-4">

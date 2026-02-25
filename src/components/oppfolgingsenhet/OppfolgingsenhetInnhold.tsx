@@ -71,7 +71,7 @@ export default function OppfolgingsenhetInnhold({ modalRef }: Props) {
   const kanTildele = kanTildeleOppfolgingsenhet(isEgenAnsatt, diskresjonskode);
 
   return (
-    <HStack gap={"2"} className={"flex"}>
+    <HStack gap={"space-8"} className={"flex"}>
       <Buildings2Icon fontSize={"1.75rem"} />
       <VStack className={"flex-1"}>
         <HStack align={"center"} className={"mb-2"}>

@@ -18,7 +18,7 @@ export default function ManglendeMedvirkningButtons({
   isBeforeForhandsvarselDeadline,
 }: Props) {
   return (
-    <HStack gap="4">
+    <HStack gap="space-16">
       {isBeforeForhandsvarselDeadline ? (
         <Button variant="primary" disabled>
           {texts.stans}

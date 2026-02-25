@@ -93,8 +93,8 @@ export default function SykepengesoknadSide() {
                   </Heading>
                   <StatuspanelBehandlingsdager soknad={soknad} />
                   <Box
-                    background="surface-default"
-                    padding={"4"}
+                    background="default"
+                    padding={"space-16"}
                     className={"mb-4"}
                   >
                     <Heading spacing size="small">

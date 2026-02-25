@@ -125,10 +125,7 @@ export default function BeOmOppfolgingsplan({
           {aktivForesporselTekst}
         </Alert>
       )}
-      <Box
-        background="surface-default"
-        className="mb-4 flex flex-col p-4 gap-4"
-      >
+      <Box background="default" className="mb-4 flex flex-col p-4 gap-4">
         <Heading size="small" level="3">
           {texts.header}
         </Heading>

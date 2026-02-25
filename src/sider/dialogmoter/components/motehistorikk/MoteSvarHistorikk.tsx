@@ -18,7 +18,7 @@ export default function MoteSvarHistorikk({ historiskeMoter }: Props) {
   const hasMoteHistorikk = historiskeMoter.length > 0;
 
   return (
-    <Box background="surface-default" padding="6">
+    <Box background="default" padding="space-24">
       <DialogmoteHistorikkHeader
         title={texts.header}
         subtitle={texts.subtitle}

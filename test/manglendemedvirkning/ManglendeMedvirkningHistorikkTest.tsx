@@ -131,7 +131,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
         unntak,
       ]);
 
-      const accordionButtons = screen.getAllByRole("button");
+      const accordionButtons = getAccordionButtons();
 
       expect(accordionButtons[0].textContent).to.contain(
         `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`
@@ -153,7 +153,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
     it("klikk på overskriften til en oppfylt vurdering og viser begrunnelse, veileder og knapp for å se document for vurderingen", async () => {
       renderVurderingHistorikk([oppfylt]);
 
-      const accordionButton = screen.getByRole("button");
+      const accordionButton = getAccordionButtons()[0];
 
       await userEvent.click(accordionButton);
 
@@ -168,7 +168,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
     it("klikk på overskriften til en forhåndsvarsel vurdering og viser begrunnelse, veileder og knapp for å se document for vurderingen", async () => {
       renderVurderingHistorikk([forhandsvarsel]);
 
-      const accordionButton = screen.getByRole("button");
+      const accordionButton = getAccordionButtons()[0];
 
       await userEvent.click(accordionButton);
 
@@ -201,7 +201,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
     it("klikk på overskriften til et stans vurdering og viser knapp for å se document for vurderingen", async () => {
       renderVurderingHistorikk([stans]);
 
-      const accordionButton = screen.getByRole("button");
+      const accordionButton = getAccordionButtons()[0];
 
       await userEvent.click(accordionButton);
 
@@ -212,7 +212,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
     it("klikk på overskriften til et unntak vurdering og viser knapp for å se document for vurderingen", async () => {
       renderVurderingHistorikk([unntak]);
 
-      const accordionButton = screen.getByRole("button");
+      const accordionButton = getAccordionButtons()[0];
 
       await userEvent.click(accordionButton);
 
@@ -222,7 +222,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
     it("klikk på overskriften til en ikke aktuell vurdering og viser knapp for å se document for vurderingen", async () => {
       renderVurderingHistorikk([ikkeAktuell]);
 
-      const accordionButton = screen.getByRole("button");
+      const accordionButton = getAccordionButtons()[0];
 
       await userEvent.click(accordionButton);
 
@@ -268,7 +268,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
 
       renderVurderingHistorikk(vurderinger, sykepengestoppList);
 
-      const accordionButtons = screen.getAllByRole("button");
+      const accordionButtons = getAccordionButtons();
 
       expect(accordionButtons.length).toBe(5);
 
@@ -290,3 +290,8 @@ describe("ManglendeMedvirkningHistorikk", () => {
     });
   });
 });
+
+const getAccordionButtons = () =>
+  screen
+    .getAllByRole("button")
+    .filter((button) => button.className.includes("aksel-accordion__header"));

@@ -39,49 +39,97 @@ function hentEventUtenforTilfelleList(
 function tagFromKilde(kilde: HistorikkEventType): ReactElement {
   switch (kilde) {
     case "OPPFOLGINGSPLAN":
-      return <Tag variant="alt3">Oppfølgingsplan</Tag>;
+      return (
+        <Tag data-color="info" variant="outline">
+          Oppfølgingsplan
+        </Tag>
+      );
     case "OPPFOLGINGSPLAN_LPS":
-      return <Tag variant="alt3">Oppfølgingsplan LPS</Tag>;
+      return (
+        <Tag data-color="info" variant="outline">
+          Oppfølgingsplan LPS
+        </Tag>
+      );
     case "OPPFOLGINGSPLAN_FORESPORSEL":
-      return <Tag variant="alt3">Forespørsel oppfølgingsplan</Tag>;
+      return (
+        <Tag data-color="info" variant="outline">
+          Forespørsel oppfølgingsplan
+        </Tag>
+      );
     case "LEDER":
-      return <Tag variant="alt2">Leder</Tag>;
+      return (
+        <Tag data-color="meta-lime" variant="outline">
+          Leder
+        </Tag>
+      );
     case "VEILEDER_TILDELING":
-      return <Tag variant="alt2">Veileder</Tag>;
+      return (
+        <Tag data-color="meta-lime" variant="outline">
+          Veileder
+        </Tag>
+      );
     case "AKTIVITETSKRAV":
-      return <Tag variant="alt1">Aktivitetskrav</Tag>;
+      return (
+        <Tag data-color="meta-purple" variant="outline">
+          Aktivitetskrav
+        </Tag>
+      );
     case "ARBEIDSUFORHET":
-      return <Tag variant="warning">Arbeidsuførhet</Tag>;
+      return (
+        <Tag data-color="warning" variant="outline">
+          Arbeidsuførhet
+        </Tag>
+      );
     case "MANGLENDE_MEDVIRKNING":
-      return <Tag variant="warning">Manglende medvirkning</Tag>;
+      return (
+        <Tag data-color="warning" variant="outline">
+          Manglende medvirkning
+        </Tag>
+      );
     case "FRISKMELDING_TIL_ARBEIDSFORMIDLING":
       return (
-        <Tag className="w-max" variant="info">
+        <Tag data-color="info" className="w-max" variant="outline">
           Friskmelding til arbeidsformidling
         </Tag>
       );
     case "DIALOG_MED_BEHANDLER":
       return (
-        <Tag className="w-max" variant="neutral">
+        <Tag data-color="neutral" className="w-max" variant="outline">
           Dialog med behandler
         </Tag>
       );
     case "SEN_OPPFOLGING":
       return (
-        <Tag className="w-max" variant="alt2">
+        <Tag data-color="meta-lime" className="w-max" variant="outline">
           Snart slutt på sykepengene
         </Tag>
       );
     case "OPPFOLGINGSOPPGAVE":
-      return <Tag variant="info">Oppfølgingsoppgave</Tag>;
+      return (
+        <Tag data-color="info" variant="outline">
+          Oppfølgingsoppgave
+        </Tag>
+      );
     case "MOTEBEHOV":
     case "MOTER":
     case "DIALOGMOTEKANDIDAT":
-      return <Tag variant="success">Dialogmøte</Tag>;
+      return (
+        <Tag data-color="success" variant="outline">
+          Dialogmøte
+        </Tag>
+      );
     case "TILDELT_OPPFOLGINGSENHET":
-      return <Tag variant="alt1-moderate">Oppfølgingsenhet</Tag>;
+      return (
+        <Tag data-color="meta-purple" variant="moderate">
+          Oppfølgingsenhet
+        </Tag>
+      );
     case "KARTLEGGINGSPORSMAAL":
-      return <Tag variant="warning-moderate">Kartleggingsspørsmål</Tag>;
+      return (
+        <Tag data-color="warning" variant="moderate">
+          Kartleggingsspørsmål
+        </Tag>
+      );
   }
 }
 
@@ -124,7 +172,7 @@ export default function Historikk({
   const historikkEntries = filteredEvents().sort(byTidspunkt());
 
   return (
-    <Box background="surface-default" padding="4">
+    <Box background="default" padding="space-16">
       <HStack justify="space-between" align="start">
         <Select
           className="w-fit mb-4"

@@ -13,7 +13,7 @@ export const MeldingTilBehandler = () => {
   const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
   return (
-    <Box background="surface-default" className="p-4 flex flex-col gap-4">
+    <Box background="default" className="p-4 flex flex-col gap-4">
       <Heading level="2" size="medium">
         {texts.header}
       </Heading>

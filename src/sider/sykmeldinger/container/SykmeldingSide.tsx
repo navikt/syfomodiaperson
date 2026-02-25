@@ -53,7 +53,7 @@ export default function SykmeldingSide() {
       aktivtMenypunkt={Menypunkter.SYKMELDINGER}
     >
       <SideLaster isLoading={isLoading} isError={isError}>
-        <Box background="surface-default" className="p-4">
+        <Box background="default" className="p-4">
           <Sykmelding
             sykmelding={sykmelding}
             arbeidsgiversSykmelding={arbeidsgiversSykmelding}

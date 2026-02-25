@@ -57,7 +57,7 @@ export function PersonkortHeader() {
             <CopyButton message={texts.copied} value={personident} />
           </StyledFnr>
 
-          <HStack gap="3">
+          <HStack gap="space-12">
             <TilfellePeriod />
             {oppfolgingstilfelleStartDate && (
               <SyketilfelleSummaryElement

@@ -33,11 +33,10 @@ export function UtdypendeOpplysninger({
   utdypendeOpplysninger,
 }: UtdypendeOpplysningerProps) {
   return (
-    <VStack gap="2" className="pt-4">
+    <VStack gap="space-8" className="pt-4">
       <BodyShort size="small" weight="semibold">
         {tekster.utdypendeOpplysninger}
       </BodyShort>
-
       {Object.entries(utdypendeOpplysninger).map(([key, opplysningGruppe]) => (
         <OpplysningsGruppe key={key} opplysningGruppe={opplysningGruppe} />
       ))}

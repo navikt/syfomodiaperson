@@ -120,7 +120,7 @@ describe("VurderingHistorikk", () => {
     it("viser klikkbar overskrift med type og dato for hver vurdering", () => {
       renderVurderingHistorikk([ikkeAktuell, avslag, forhandsvarsel, oppfylt]);
 
-      const vurderingButtons = screen.getAllByRole("button");
+      const vurderingButtons = getAccordionButtons();
 
       expect(vurderingButtons[0].textContent).to.contain(
         `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`
@@ -139,7 +139,7 @@ describe("VurderingHistorikk", () => {
     it("klikk på overskrift viser begrunnelse, veileder og knapp for å se document for vurderingen", async () => {
       renderVurderingHistorikk([oppfylt]);
 
-      const vurderingButton = screen.getByRole("button");
+      const vurderingButton = getAccordionButtons()[0];
 
       await userEvent.click(vurderingButton);
 
@@ -154,7 +154,7 @@ describe("VurderingHistorikk", () => {
     it("klikk på ikke-aktuell viser årsak og veileder for vurderingen", async () => {
       renderVurderingHistorikk([ikkeAktuell]);
 
-      const vurderingButton = screen.getByRole("button");
+      const vurderingButton = getAccordionButtons()[0];
 
       await userEvent.click(vurderingButton);
 
@@ -203,7 +203,7 @@ describe("VurderingHistorikk", () => {
 
       renderVurderingHistorikk(vurderinger, sykepengestoppList);
 
-      const accordionButtons = screen.getAllByRole("button");
+      const accordionButtons = getAccordionButtons();
 
       expect(accordionButtons.length).toBe(5);
 
@@ -225,3 +225,8 @@ describe("VurderingHistorikk", () => {
     });
   });
 });
+
+const getAccordionButtons = () =>
+  screen
+    .getAllByRole("button")
+    .filter((button) => button.className.includes("aksel-accordion__header"));

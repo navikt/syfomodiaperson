@@ -99,7 +99,7 @@ export default function ForhandsvarselSkjema() {
   };
 
   return (
-    <Box background="surface-default" padding="6">
+    <Box background="default" padding="space-24">
       <form onSubmit={handleSubmit(submit)}>
         <Heading className="mb-4" level="2" size="medium">
           {texts.title}
@@ -119,13 +119,15 @@ export default function ForhandsvarselSkjema() {
             error={fristFieldState.error && fristFieldState.error.message}
           />
         </div>
-        <List as="ul" size="small">
-          {texts.helptexts.map((text, index) => (
-            <List.Item key={index} className="mb-2">
-              {text}
-            </List.Item>
-          ))}
-        </List>
+        <Box marginBlock="space-12" asChild>
+          <List as="ul" size="small">
+            {texts.helptexts.map((text, index) => (
+              <List.Item key={index} className="mb-2">
+                {text}
+              </List.Item>
+            ))}
+          </List>
+        </Box>
         <Textarea
           className="mb-8 mt-8"
           {...register("begrunnelse", {

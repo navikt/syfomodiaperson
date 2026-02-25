@@ -62,7 +62,7 @@ export default function DialogmoteIkkeAktuellSkjema() {
   };
 
   return (
-    <Box background="surface-default" padding="6">
+    <Box background="default" padding="space-24">
       <Alert variant="info" size="small" className="p-4 mb-4">
         {texts.noBrev}
       </Alert>

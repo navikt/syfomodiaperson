@@ -131,7 +131,7 @@ export default function BehandleMotebehovKnapp() {
       <div className="flex flex-row gap-1 items-center">
         <CheckmarkCircleFillIcon
           fontSize="2em"
-          color="var(--a-icon-success)"
+          color="var(--ax-text-success-decoration)"
           title="suksess-ikon"
         />
         <BodyShort size="small">

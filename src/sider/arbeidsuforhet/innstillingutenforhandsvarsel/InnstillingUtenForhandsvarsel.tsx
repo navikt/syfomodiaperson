@@ -177,7 +177,7 @@ export default function InnstillingUtenForhandsvarsel() {
   };
 
   return (
-    <Box background="surface-default" padding="6" className="mb-2">
+    <Box background="default" padding="space-24" className="mb-2">
       <FormProvider {...formProps}>
         <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-4">
           <Heading level="2" size="medium">
@@ -229,21 +229,34 @@ export default function InnstillingUtenForhandsvarsel() {
             isSaveError={saveDraft.isError}
             savedTime={utkastSavedTime}
           />
-          <List as="ul" title={texts.videreHusk.title} size={"small"}>
-            {texts.videreHusk.gosysoppgave}
-            <List as="ul" className="ml-1">
-              <List.Item>{texts.videreHusk.gosysoppgaveListe.tema}</List.Item>
-              <List.Item>
-                {texts.videreHusk.gosysoppgaveListe.oppgavetype}
-              </List.Item>
-              <List.Item>
-                {texts.videreHusk.gosysoppgaveListe.gjelder}
-              </List.Item>
-              <List.Item>
-                {texts.videreHusk.gosysoppgaveListe.prioritet}
-              </List.Item>
-            </List>
-          </List>
+          <div>
+            <Heading as="h3" size="small">
+              {texts.videreHusk.title}
+            </Heading>
+            <Box marginBlock="space-16" asChild>
+              <List as="ul" size={"small"}>
+                {texts.videreHusk.gosysoppgave}
+                <div className="ml-1">
+                  <Box marginBlock="space-16" asChild>
+                    <List as="ul">
+                      <List.Item>
+                        {texts.videreHusk.gosysoppgaveListe.tema}
+                      </List.Item>
+                      <List.Item>
+                        {texts.videreHusk.gosysoppgaveListe.oppgavetype}
+                      </List.Item>
+                      <List.Item>
+                        {texts.videreHusk.gosysoppgaveListe.gjelder}
+                      </List.Item>
+                      <List.Item>
+                        {texts.videreHusk.gosysoppgaveListe.prioritet}
+                      </List.Item>
+                    </List>
+                  </Box>
+                </div>
+              </List>
+            </Box>
+          </div>
           <BodyLong>{texts.innstillingenJournalfores}</BodyLong>
           {lagreInnstilling.isError && (
             <SkjemaInnsendingFeil error={lagreInnstilling.error} />

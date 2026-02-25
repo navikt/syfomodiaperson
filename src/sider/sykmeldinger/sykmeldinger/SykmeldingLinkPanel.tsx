@@ -8,7 +8,7 @@ import {
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
-import { Heading, LinkPanel, List } from "@navikt/ds-react";
+import { Heading, LinkPanel, List, Box } from "@navikt/ds-react";
 import styled from "styled-components";
 import { PapirsykmeldingTag } from "@/components/PapirsykmeldingTag";
 import { erEkstraInformasjonISykmeldingen } from "@/utils/sykmeldinger/sykmeldingUtils";
@@ -59,20 +59,22 @@ interface PeriodeListeProps {
 
 export function PeriodeListe({ perioder, arbeidsgiver }: PeriodeListeProps) {
   return (
-    <List as="ul" size="small">
-      {perioder.map((periode, index) => (
-        <List.Item key={index}>
-          {sykmeldingPeriodeTekst(periode, arbeidsgiver)}
-        </List.Item>
-      ))}
-    </List>
+    <Box marginBlock="space-12" asChild>
+      <List as="ul" size="small">
+        {perioder.map((periode, index) => (
+          <List.Item key={index}>
+            {sykmeldingPeriodeTekst(periode, arbeidsgiver)}
+          </List.Item>
+        ))}
+      </List>
+    </Box>
   );
 }
 
 const StyledLinkPanel = styled(LinkPanel)`
   margin-bottom: 0.1em;
 
-  .navds-link-panel__content {
+  .aksel-link-panel__content {
     width: 100%;
   }
 `;
@@ -114,12 +116,12 @@ export default function SykmeldingLinkPanel({
                     <ExclamationmarkTriangleIcon
                       title="advarsel-ikon"
                       fontSize="1.5rem"
-                      color="var(--a-icon-danger)"
+                      color="var(--ax-text-danger-decoration)"
                     />
                   )}
-                  <text>
+                  <span>
                     {textStatus(sykmelding.status, behandlingsutfallStatus)}
-                  </text>
+                  </span>
                 </div>
               )}
               {erViktigInformasjon && <ImportantInformationIcon />}

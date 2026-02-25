@@ -22,16 +22,23 @@ const rutineUrl =
 export function VeiledningRutine() {
   return (
     <Box
-      background="surface-default"
-      padding="6"
+      background="default"
+      padding="space-24"
       className="flex flex-col gap-4 mb-2"
     >
       <Heading size="medium">{texts.heading}</Heading>
-      <List as="ul" title={texts.vurderFolgende} size="small">
-        {texts.rutine.map((text, index) => (
-          <List.Item key={index}>{text}</List.Item>
-        ))}
-      </List>
+      <div>
+        <Heading as="h3" size="xsmall">
+          {texts.vurderFolgende}
+        </Heading>
+        <Box marginBlock="space-12" asChild>
+          <List as="ul" size="small">
+            {texts.rutine.map((text, index) => (
+              <List.Item key={index}>{text}</List.Item>
+            ))}
+          </List>
+        </Box>
+      </div>
       <EksternLenke href={rutineUrl}>{texts.link}</EksternLenke>
     </Box>
   );

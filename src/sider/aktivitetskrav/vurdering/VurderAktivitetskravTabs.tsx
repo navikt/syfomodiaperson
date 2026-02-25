@@ -22,7 +22,7 @@ const StyledTabs = styled(Tabs)`
   margin-top: 1rem;
   width: 100%;
 
-  .navds-tabs__tablist-wrapper {
+  .aksel-tabs__tablist-wrapper {
     width: max-content;
   }
 `;

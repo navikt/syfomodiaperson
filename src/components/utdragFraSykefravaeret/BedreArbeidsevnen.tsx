@@ -17,11 +17,10 @@ interface Props {
 export function BedreArbeidsevnen({ sykmelding }: Props) {
   const arbeidsevne = sykmelding.arbeidsevne;
   return (
-    <VStack gap="2" className="pt-4">
+    <VStack gap="space-8" className="pt-4">
       <BodyShort size="small" weight="semibold">
         {tekster.header}
       </BodyShort>
-
       {arbeidsevne.tilretteleggingArbeidsplass && (
         <div>
           <BodyShort size="small" weight="semibold">
@@ -32,7 +31,6 @@ export function BedreArbeidsevnen({ sykmelding }: Props) {
           </BodyLong>
         </div>
       )}
-
       {arbeidsevne.tiltakNAV && (
         <div>
           <BodyShort size="small" weight="semibold">
@@ -41,7 +39,6 @@ export function BedreArbeidsevnen({ sykmelding }: Props) {
           <BodyLong size="small">{arbeidsevne.tiltakNAV}</BodyLong>
         </div>
       )}
-
       {arbeidsevne.tiltakAndre && (
         <div>
           <BodyShort size="small" weight="semibold">

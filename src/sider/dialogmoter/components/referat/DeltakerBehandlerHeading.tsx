@@ -8,7 +8,7 @@ interface Props {
 
 export const DeltakerBehandlerHeading = ({ children }: Props) => {
   return (
-    <HStack gap="2">
+    <HStack gap="space-8">
       <img
         role="img"
         width={24}
