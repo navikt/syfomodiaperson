@@ -10,7 +10,9 @@ export const Paragraph = ({ label, body }: ParagraphProps) => {
   return (
     <div className="mb-4">
       <Label size="small">{label}</Label>
-      <BodyLong size="small">{body}</BodyLong>
+      <BodyLong size="small" className="whitespace-pre-wrap">
+        {body}
+      </BodyLong>
     </div>
   );
 };
