@@ -3,9 +3,14 @@ import {
   useSaveDraft,
   useDeleteDraft,
 } from "@/hooks/useDraftQuery";
-import { MeldingTilBehandlerDraftDTO } from "@/data/behandlerdialog/meldingtilbehandlerDraftTypes";
 
-const CATEGORY = "behandlerdialog-meldingtilbehandler" as const;
+export interface MeldingTilBehandlerDraftDTO {
+  tekst: string;
+  meldingType?: string;
+  behandlerRef?: string;
+}
+
+const CATEGORY = "behandlerdialog-meldingtilbehandler";
 
 export function useMeldingTilBehandlerDraftQuery() {
   return useDraftQuery<MeldingTilBehandlerDraftDTO>(CATEGORY);

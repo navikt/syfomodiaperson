@@ -1,27 +1,27 @@
 import { http, HttpResponse } from "msw";
-import { TextBoxDraftDTO } from "@/hooks/draftTypes";
+import { DraftTextDTO } from "@/hooks/useDraftQuery";
 
-let arbeidsuforhetForhandsvarselDraft: TextBoxDraftDTO = {
-  begrunnelse: "",
+let arbeidsuforhetForhandsvarselDraft: DraftTextDTO = {
+  tekst: "",
 };
 
 export const mockArbeidsuforhetForhandsvarselDraft = [
   http.get(`/api/draft/arbeidsuforhet-forhandsvarsel`, () => {
     return HttpResponse.json(arbeidsuforhetForhandsvarselDraft);
   }),
-  http.put<object, TextBoxDraftDTO>(
+  http.put<object, DraftTextDTO>(
     `/api/draft/arbeidsuforhet-forhandsvarsel`,
     async ({ request }) => {
       const body = await request.json();
       arbeidsuforhetForhandsvarselDraft = {
-        begrunnelse: body.begrunnelse,
+        tekst: body.tekst,
       };
       return new HttpResponse(null, { status: 204 });
     }
   ),
   http.delete(`/api/draft/arbeidsuforhet-forhandsvarsel`, () => {
     arbeidsuforhetForhandsvarselDraft = {
-      begrunnelse: "",
+      tekst: "",
     };
     return new HttpResponse(null, { status: 204 });
   }),

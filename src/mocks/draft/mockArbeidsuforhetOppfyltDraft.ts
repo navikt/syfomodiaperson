@@ -1,27 +1,27 @@
 import { http, HttpResponse } from "msw";
-import { TextBoxDraftDTO } from "@/hooks/draftTypes";
+import { DraftTextDTO } from "@/hooks/useDraftQuery";
 
-let arbeidsuforhetOppfyltDraft: TextBoxDraftDTO = {
-  begrunnelse: "",
+let arbeidsuforhetOppfyltDraft: DraftTextDTO = {
+  tekst: "",
 };
 
 export const mockArbeidsuforhetOppfyltDraft = [
   http.get(`/api/draft/arbeidsuforhet-oppfylt`, () => {
     return HttpResponse.json(arbeidsuforhetOppfyltDraft);
   }),
-  http.put<object, TextBoxDraftDTO>(
+  http.put<object, DraftTextDTO>(
     `/api/draft/arbeidsuforhet-oppfylt`,
     async ({ request }) => {
       const body = await request.json();
       arbeidsuforhetOppfyltDraft = {
-        begrunnelse: body.begrunnelse,
+        tekst: body.tekst,
       };
       return new HttpResponse(null, { status: 204 });
     }
   ),
   http.delete(`/api/draft/arbeidsuforhet-oppfylt`, () => {
     arbeidsuforhetOppfyltDraft = {
-      begrunnelse: "",
+      tekst: "",
     };
     return new HttpResponse(null, { status: 204 });
   }),

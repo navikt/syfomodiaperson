@@ -33,11 +33,11 @@ import AvslagFomDatepicker from "@/sider/arbeidsuforhet/innstillingutenforhandsv
 import dayjs from "dayjs";
 import { useDebouncedCallback } from "use-debounce";
 import {
+  DraftTextDTO,
   useDeleteDraft,
   useDraftQuery,
   useSaveDraft,
 } from "@/hooks/useDraftQuery";
-import { TextBoxDraftDTO } from "@/hooks/draftTypes";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 
 const texts = {
@@ -114,15 +114,15 @@ export default function InnstillingUtenForhandsvarsel() {
   } = formProps;
 
   const CATEGORY = "arbeidsuforhet-avslag-uten-forhandsvarsel";
-  const getDraftQuery = useDraftQuery<TextBoxDraftDTO>(CATEGORY);
-  const saveDraft = useSaveDraft<TextBoxDraftDTO>(CATEGORY);
+  const getDraftQuery = useDraftQuery<DraftTextDTO>(CATEGORY);
+  const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
   const deleteDraft = useDeleteDraft(CATEGORY);
 
-  const debouncedAutoSaveDraft = useDebouncedCallback((begrunnelse: string) => {
-    if (!begrunnelse) {
+  const debouncedAutoSaveDraft = useDebouncedCallback((tekst: string) => {
+    if (!tekst) {
       return;
     }
-    const draftPayload = { begrunnelse };
+    const draftPayload = { tekst };
 
     saveDraft.mutate(draftPayload, {
       onSuccess: () => {
@@ -135,8 +135,8 @@ export default function InnstillingUtenForhandsvarsel() {
   }, 750);
 
   useEffect(() => {
-    if (getDraftQuery.data?.begrunnelse) {
-      setValue("begrunnelse", getDraftQuery.data.begrunnelse);
+    if (getDraftQuery.data?.tekst) {
+      setValue("begrunnelse", getDraftQuery.data.tekst);
     }
   }, [getDraftQuery.data, setValue]);
 
