@@ -17,7 +17,7 @@ export default function MeldingTilArbeidsgiver(
 
   return (
     <div>
-      <Heading level="3" size="medium" className="my-5">
+      <Heading level="3" size="medium">
         {texts.title}
       </Heading>
       <BodyLong size="small" className="mb-5">

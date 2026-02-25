@@ -1,6 +1,5 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 import { BodyLong, Checkbox, Heading } from "@navikt/ds-react";
 
 const texts = {
@@ -15,7 +14,10 @@ interface Props {
 
 export default function MeldingTilNav({ sykmelding }: Props) {
   return (
-    <SykmeldingSeksjon tittel={texts.meldingTilNav}>
+    <>
+      <Heading level="3" size="medium">
+        {texts.meldingTilNav}
+      </Heading>
       {sykmelding.meldingTilNav.navBoerTaTakISaken && (
         <Checkbox checked readOnly size="small">
           {texts.bistandNav}
@@ -31,6 +33,6 @@ export default function MeldingTilNav({ sykmelding }: Props) {
           </BodyLong>
         </div>
       )}
-    </SykmeldingSeksjon>
+    </>
   );
 }

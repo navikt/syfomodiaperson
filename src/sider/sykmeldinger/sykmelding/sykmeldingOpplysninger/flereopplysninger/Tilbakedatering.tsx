@@ -1,7 +1,6 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
-import { SykmeldingSeksjon } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingSeksjon";
 import { BodyLong, Heading } from "@navikt/ds-react";
 
 const texts = {
@@ -19,7 +18,10 @@ export default function Tilbakedatering(tilbakedateringProps: Props) {
   const { sykmelding } = tilbakedateringProps;
 
   return (
-    <SykmeldingSeksjon tittel={texts.title}>
+    <>
+      <Heading level="3" size="medium">
+        {texts.title}
+      </Heading>
       {sykmelding.tilbakedatering.dokumenterbarPasientkontakt && (
         <div className="mb-5">
           <Heading level="4" size="xsmall" className="mb-1">
@@ -44,6 +46,6 @@ export default function Tilbakedatering(tilbakedateringProps: Props) {
           </BodyLong>
         </div>
       )}
-    </SykmeldingSeksjon>
+    </>
   );
 }
