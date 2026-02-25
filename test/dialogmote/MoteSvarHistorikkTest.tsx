@@ -244,4 +244,5 @@ const assertExpandableWithHeader = (header: string, count = 1) => {
 const getAccordionButtons = () =>
   screen
     .getAllByRole("button")
-    .filter((button) => button.className.includes("aksel-accordion__header"));
+    // eslint-disable-next-line testing-library/no-node-access -- No RTL query can distinguish accordion headers from other buttons
+    .filter((button) => button.parentElement?.hasAttribute("data-expanded"));

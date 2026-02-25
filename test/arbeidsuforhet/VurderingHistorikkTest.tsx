@@ -20,7 +20,7 @@ import {
   VurderingResponseDTO,
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
-import { daysFromToday } from "../testUtils";
+import { daysFromToday, getButton } from "../testUtils";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import userEvent from "@testing-library/user-event";
 import { pengestoppStatusQueryKeys } from "@/data/pengestopp/pengestoppQueryHooks";
@@ -139,7 +139,9 @@ describe("VurderingHistorikk", () => {
     it("klikk på overskrift viser begrunnelse, veileder og knapp for å se document for vurderingen", async () => {
       renderVurderingHistorikk([oppfylt]);
 
-      const vurderingButton = getAccordionButtons()[0];
+      const vurderingButton = getButton(
+        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`
+      );
 
       await userEvent.click(vurderingButton);
 
@@ -154,7 +156,9 @@ describe("VurderingHistorikk", () => {
     it("klikk på ikke-aktuell viser årsak og veileder for vurderingen", async () => {
       renderVurderingHistorikk([ikkeAktuell]);
 
-      const vurderingButton = getAccordionButtons()[0];
+      const vurderingButton = getButton(
+        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`
+      );
 
       await userEvent.click(vurderingButton);
 
@@ -229,4 +233,5 @@ describe("VurderingHistorikk", () => {
 const getAccordionButtons = () =>
   screen
     .getAllByRole("button")
-    .filter((button) => button.className.includes("aksel-accordion__header"));
+    // eslint-disable-next-line testing-library/no-node-access -- No RTL query can distinguish accordion headers from other buttons
+    .filter((button) => button.parentElement?.hasAttribute("data-expanded"));
