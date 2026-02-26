@@ -2,7 +2,7 @@ import { http, HttpResponse } from "msw";
 import { DraftTextDTO } from "@/hooks/useDraftQuery";
 
 let arbeidsuforhetAvslagUtenForhandsvarselDraft: DraftTextDTO = {
-  tekst: "",
+  begrunnelse: "",
 };
 
 export const mockArbeidsuforhetAvslagUtenForhandsvarselDraft = [
@@ -14,14 +14,14 @@ export const mockArbeidsuforhetAvslagUtenForhandsvarselDraft = [
     async ({ request }) => {
       const body = await request.json();
       arbeidsuforhetAvslagUtenForhandsvarselDraft = {
-        tekst: body.tekst,
+        begrunnelse: body.begrunnelse,
       };
       return new HttpResponse(null, { status: 204 });
     }
   ),
   http.delete(`/api/draft/arbeidsuforhet-avslag-uten-forhandsvarsel`, () => {
     arbeidsuforhetAvslagUtenForhandsvarselDraft = {
-      tekst: "",
+      begrunnelse: "",
     };
     return new HttpResponse(null, { status: 204 });
   }),

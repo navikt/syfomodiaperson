@@ -2,7 +2,7 @@ import { http, HttpResponse } from "msw";
 import { DraftTextDTO } from "@/hooks/useDraftQuery";
 
 let arbeidsuforhetForhandsvarselDraft: DraftTextDTO = {
-  tekst: "",
+  begrunnelse: "",
 };
 
 export const mockArbeidsuforhetForhandsvarselDraft = [
@@ -14,14 +14,14 @@ export const mockArbeidsuforhetForhandsvarselDraft = [
     async ({ request }) => {
       const body = await request.json();
       arbeidsuforhetForhandsvarselDraft = {
-        tekst: body.tekst,
+        begrunnelse: body.begrunnelse,
       };
       return new HttpResponse(null, { status: 204 });
     }
   ),
   http.delete(`/api/draft/arbeidsuforhet-forhandsvarsel`, () => {
     arbeidsuforhetForhandsvarselDraft = {
-      tekst: "",
+      begrunnelse: "",
     };
     return new HttpResponse(null, { status: 204 });
   }),

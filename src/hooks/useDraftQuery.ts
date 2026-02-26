@@ -21,7 +21,7 @@ export const draftQueryKeys = {
 };
 
 export interface DraftTextDTO {
-  tekst: string;
+  begrunnelse: string;
 }
 
 export function useDraftQuery<T>(category: DraftCategory) {

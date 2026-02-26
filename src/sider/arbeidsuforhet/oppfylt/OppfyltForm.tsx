@@ -111,7 +111,7 @@ export default function OppfyltForm() {
     if (!tekst) {
       return;
     }
-    const draftPayload = { tekst };
+    const draftPayload = { begrunnelse: tekst };
 
     saveDraft.mutate(draftPayload, {
       onSuccess: () => {
@@ -124,8 +124,8 @@ export default function OppfyltForm() {
   }, 750);
 
   useEffect(() => {
-    if (getDraftQuery.data?.tekst) {
-      setValue("begrunnelse", getDraftQuery.data.tekst);
+    if (getDraftQuery.data?.begrunnelse) {
+      setValue("begrunnelse", getDraftQuery.data.begrunnelse);
     }
   }, [getDraftQuery.data, setValue]);
 
