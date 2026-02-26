@@ -40,7 +40,7 @@ export default function SykepengesoknadSelvstendig({
           </Heading>
           <AvbruttSoknadSelvstendigStatuspanel soknad={soknad} />
           {sykmelding?.sporsmal && (
-            <SykmeldingUtdragForSelvstendige sykmelding={sykmelding} erApen />
+            <SykmeldingUtdragForSelvstendige sykmelding={sykmelding} />
           )}
           <TilbakeTilSoknader />
         </div>
@@ -54,7 +54,7 @@ export default function SykepengesoknadSelvstendig({
           </Heading>
           <SendtSoknadSelvstendigStatuspanel soknad={soknad} />
           {sykmelding?.sporsmal && (
-            <SykmeldingUtdragForSelvstendige sykmelding={sykmelding} erApen />
+            <SykmeldingUtdragForSelvstendige sykmelding={sykmelding} />
           )}
           <SpeilingEkspanderbartPanel tittel={texts.oppsummering} defaultOpen>
             <Oppsummeringsvisning soknad={soknad} />

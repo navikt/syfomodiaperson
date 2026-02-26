@@ -6,7 +6,6 @@ import {
   mockSykmeldinger,
 } from "../mockdata/sykmeldinger/mockSykmeldinger";
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import {
   ARBEIDSTAKER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
@@ -36,7 +35,6 @@ describe("SykmeldingUtdrag", () => {
         <SykmeldingUtdragContainer soknad={mockSykepengeSoknad} />
       </QueryClientProvider>
     );
-    await userEvent.click(screen.getByRole("button"));
     expect(sykmelding?.sykmeldingStatus?.arbeidsgiver?.orgNavn).to.equal(
       VIRKSOMHET_PONTYPANDY.virksomhetsnavn
     );
