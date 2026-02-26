@@ -5,7 +5,7 @@ import {
   VurderingType,
   VurderingType as ArbeidsuforhetVurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
-import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
+import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function arbeidsuforhetText(
   veilederident: string,
@@ -43,7 +43,7 @@ function createHistorikkEventsFromArbeidsuforhet(
   );
 }
 
-export function useArbeidsuforhetHistorikk(): HistorikkHook {
+export function useArbeidsuforhetHistorikk(): HistorikkEvents {
   const {
     data: arbeidsuforhetVurderinger,
     isLoading,

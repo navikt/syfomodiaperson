@@ -2,7 +2,7 @@ import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useMemo } from "react";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
-import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
+import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function createHistorikkEventsFromLedere(
   ledere: NarmesteLederRelasjonDTO[]
@@ -15,7 +15,7 @@ function createHistorikkEventsFromLedere(
   }));
 }
 
-export function useLedereHistorikk(): HistorikkHook {
+export function useLedereHistorikk(): HistorikkEvents {
   const { isLoading, isError, currentLedere, formerLedere } = useLedereQuery();
 
   const allLedere = useMemo(

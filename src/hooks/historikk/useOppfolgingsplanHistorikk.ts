@@ -2,7 +2,7 @@ import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { useHistorikkOppfolgingsplan } from "@/data/historikk/historikkQueryHooks";
 import { useGetLPSOppfolgingsplanerQuery } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
-import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
+import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 import {
   OppfolgingsplanForesporselResponse,
   useGetOppfolgingsplanForesporselQuery,
@@ -30,7 +30,7 @@ function foresporslerToHistorikkEvents(
   );
 }
 
-export function useOppfolgingsplanHistorikk(): HistorikkHook {
+export function useOppfolgingsplanHistorikk(): HistorikkEvents {
   const {
     data: oppfolgingsplanHistorikk,
     isLoading: isOppfolgingsplanLoading,

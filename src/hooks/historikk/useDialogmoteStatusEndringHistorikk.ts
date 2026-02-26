@@ -2,7 +2,7 @@ import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { useDialogmoteStatusEndringHistorikkQuery } from "@/sider/dialogmoter/hooks/dialogmoteStatusEndringHistorikkQuery";
 import { DialogmoteStatusEndringDTO } from "@/sider/dialogmoter/types/dialogmoteStatusEndringTypes";
 import { DialogmoteStatus } from "@/sider/dialogmoter/types/dialogmoteTypes";
-import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
+import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function getDialogmoteStatusEndringText(
   statusendring: DialogmoteStatusEndringDTO
@@ -34,7 +34,7 @@ function createHistorikkEvents(
   });
 }
 
-export function useDialogmoteStatusEndringHistorikk(): HistorikkHook {
+export function useDialogmoteStatusEndringHistorikk(): HistorikkEvents {
   const {
     data: statusendringer,
     isLoading,

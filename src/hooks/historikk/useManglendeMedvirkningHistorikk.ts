@@ -4,7 +4,7 @@ import {
   VurderingResponseDTO as ManglendemedvirkningVurdering,
   VurderingType as ManglendemedvirkningVurderingType,
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
-import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
+import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function manglendemedvirkningText(
   veilederident: string,
@@ -42,7 +42,7 @@ function createHistorikkEventsFromManglendemedvirkning(
   );
 }
 
-export function useManglendeMedvirkningHistorikk(): HistorikkHook {
+export function useManglendeMedvirkningHistorikk(): HistorikkEvents {
   const { data, isLoading, isError } = useManglendemedvirkningVurderingQuery();
   const manglendeMedvirkningHistorikk =
     createHistorikkEventsFromManglendemedvirkning(data);

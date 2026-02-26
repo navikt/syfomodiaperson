@@ -2,7 +2,7 @@ import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
-import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
+import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function friskTilArbeidText(vedtak: VedtakResponseDTO): string {
   const fom = tilLesbarDatoMedArUtenManedNavn(vedtak.fom);
@@ -23,7 +23,7 @@ function createHistorikkEventsFromFriskTilArbeid(
   });
 }
 
-export function useVedtakHistorikk(): HistorikkHook {
+export function useVedtakHistorikk(): HistorikkEvents {
   const { data: vedtak, isPending, isError } = useVedtakQuery();
 
   const frisktilarbeidHistorikk =

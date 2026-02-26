@@ -6,7 +6,7 @@ import {
 } from "@/data/dialogmotekandidat/dialogmotekandidatTypes";
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
-import { HistorikkHook } from "@/hooks/historikk/useHistorikk";
+import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function getDialogmotekandidatHistorikkText(
   { type, vurdertAv }: DialogmotekandidatHistorikkDTO,
@@ -36,7 +36,7 @@ function createHistorikkEventsFromDialogmotekandidatHistorikk(
   }));
 }
 
-export function useDialogmotekandidatHistorikk(): HistorikkHook {
+export function useDialogmotekandidatHistorikk(): HistorikkEvents {
   const { brukerinfo: person } = useBrukerinfoQuery();
   const {
     data: dialogmotekandidatHistorikk,
