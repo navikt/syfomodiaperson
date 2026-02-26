@@ -9,7 +9,7 @@ const texts = {
   label: "Avventer til",
 };
 
-export const AvventFristDato = () => {
+export function AvventFristDato() {
   const now = new Date();
   const inTwoMonths = dayjs(now).add(2, "months").toDate();
   const invalidDateMessage = `Vennligst angi en gyldig dato innen ${toDatePrettyPrint(
@@ -44,4 +44,4 @@ export const AvventFristDato = () => {
       />
     </DatePicker>
   );
-};
+}

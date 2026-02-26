@@ -32,9 +32,9 @@ interface VurderAktivitetskravProps {
   aktivitetskrav: AktivitetskravDTO;
 }
 
-export const VurderAktivitetskrav = ({
+export function VurderAktivitetskrav({
   aktivitetskrav,
-}: VurderAktivitetskravProps) => {
+}: VurderAktivitetskravProps) {
   const { tilfellerDescendingStart } = useOppfolgingstilfellePersonQuery();
   const oppfolgingstilfelle = oppfolgingstilfelleForAktivitetskrav(
     aktivitetskrav,
@@ -75,4 +75,4 @@ export const VurderAktivitetskrav = ({
       </Box>
     </>
   );
-};
+}

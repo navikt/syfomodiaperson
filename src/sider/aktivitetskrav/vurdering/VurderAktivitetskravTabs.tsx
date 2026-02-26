@@ -34,15 +34,15 @@ enum Tab {
   INNSTILLING_OM_STANS = "INNSTILLING_OM_STANS",
 }
 
-const isValidStateForForhandsvarsel = (
+function isValidStateForForhandsvarsel(
   aktivitetskravStatus: AktivitetskravStatus
-) => {
+) {
   return (
     aktivitetskravStatus === AktivitetskravStatus.NY ||
     aktivitetskravStatus === AktivitetskravStatus.NY_VURDERING ||
     aktivitetskravStatus === AktivitetskravStatus.AVVENT
   );
-};
+}
 
 interface Props {
   aktivitetskrav: AktivitetskravDTO;

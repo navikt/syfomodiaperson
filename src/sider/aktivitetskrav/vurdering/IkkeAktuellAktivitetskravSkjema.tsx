@@ -48,10 +48,10 @@ interface SkjemaValues {
   begrunnelse?: string;
 }
 
-export const IkkeAktuellAktivitetskravSkjema = ({
+export function IkkeAktuellAktivitetskravSkjema({
   aktivitetskravUuid,
   setModalOpen,
-}: IkkeAktuellAktivitetskravSkjemaProps) => {
+}: IkkeAktuellAktivitetskravSkjemaProps) {
   const vurderAktivitetskrav = useVurderAktivitetskrav(aktivitetskravUuid);
   const { getVurderingDocument } = useAktivitetskravVurderingDocument();
   const { displayNotification } = useAktivitetskravNotificationAlert();
@@ -139,4 +139,4 @@ export const IkkeAktuellAktivitetskravSkjema = ({
       </ButtonRow>
     </form>
   );
-};
+}

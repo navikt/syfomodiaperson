@@ -37,9 +37,9 @@ export interface OppfyltAktivitetskravSkjemaValues
 const defaultValues = { begrunnelse: "", arsak: undefined };
 const begrunnelseMaxLength = 1000;
 
-export const OppfyltAktivitetskravSkjema = ({
+export function OppfyltAktivitetskravSkjema({
   aktivitetskravUuid,
-}: VurderAktivitetskravSkjemaProps) => {
+}: VurderAktivitetskravSkjemaProps) {
   const {
     register,
     watch,
@@ -116,4 +116,4 @@ export const OppfyltAktivitetskravSkjema = ({
       </Button>
     </form>
   );
-};
+}

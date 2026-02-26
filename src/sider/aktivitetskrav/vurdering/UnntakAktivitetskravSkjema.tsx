@@ -38,9 +38,9 @@ export interface UnntakAktivitetskravSkjemaValues
   arsak: UnntakVurderingArsak;
 }
 
-export const UnntakAktivitetskravSkjema = ({
+export function UnntakAktivitetskravSkjema({
   aktivitetskravUuid,
-}: VurderAktivitetskravSkjemaProps) => {
+}: VurderAktivitetskravSkjemaProps) {
   const {
     register,
     watch,
@@ -117,4 +117,4 @@ export const UnntakAktivitetskravSkjema = ({
       </Button>
     </form>
   );
-};
+}

@@ -7,26 +7,28 @@ interface VurderAktivitetskravSkjemaHeadingProps {
   subtitles?: string[];
 }
 
-export const SkjemaHeading = ({
+export function SkjemaHeading({
   title,
   subtitles,
-}: VurderAktivitetskravSkjemaHeadingProps) => (
-  <>
-    <div className={"mt-4 mb-4"}>
-      <Heading level="2" size="small">
-        {title}
-      </Heading>
-    </div>
-    {subtitles && (
-      <FlexRow bottomPadding={PaddingSize.MD}>
-        <FlexColumn>
-          {subtitles.map((subtitle, index) => (
-            <BodyShort key={index} size="small">
-              {subtitle}
-            </BodyShort>
-          ))}
-        </FlexColumn>
-      </FlexRow>
-    )}
-  </>
-);
+}: VurderAktivitetskravSkjemaHeadingProps) {
+  return (
+    <>
+      <div className={"mt-4 mb-4"}>
+        <Heading level="2" size="small">
+          {title}
+        </Heading>
+      </div>
+      {subtitles && (
+        <FlexRow bottomPadding={PaddingSize.MD}>
+          <FlexColumn>
+            {subtitles.map((subtitle, index) => (
+              <BodyShort key={index} size="small">
+                {subtitle}
+              </BodyShort>
+            ))}
+          </FlexColumn>
+        </FlexRow>
+      )}
+    </>
+  );
+}
