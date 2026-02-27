@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 export type DraftCategory =
   | "behandlerdialog-meldingtilbehandler"
   | "arbeidsuforhet-forhandsvarsel"
+  | "manglendemedvirkning-forhandsvarsel"
   | "arbeidsuforhet-avslag-uten-forhandsvarsel"
   | "arbeidsuforhet-oppfylt";
 

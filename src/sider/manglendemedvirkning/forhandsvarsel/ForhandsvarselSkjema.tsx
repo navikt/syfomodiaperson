@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -23,6 +23,14 @@ import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 import BoundedDatePicker from "@/components/BoundedDatePicker";
 import { addWeeks, toDateOnly } from "@/utils/datoUtils";
 import dayjs from "dayjs";
+import { useDebouncedCallback } from "use-debounce";
+import {
+  DraftTextDTO,
+  useDeleteDraft,
+  useDraftQuery,
+  useSaveDraft,
+} from "@/hooks/useDraftQuery";
+import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -56,16 +64,45 @@ interface SkjemaValues {
 export default function ForhandsvarselSkjema() {
   const personident = useValgtPersonident();
   const sendForhandsvarsel = useSendVurdering<ForhandsvarselVurdering>();
+  const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const {
     register,
     watch,
     formState: { errors },
     handleSubmit,
     control,
+    setValue,
   } = useForm<SkjemaValues>({
     defaultValues: { begrunnelse: "", fristDato: forhandsvarselFrist },
     mode: "onChange",
   });
+
+  const CATEGORY = "manglendemedvirkning-forhandsvarsel";
+  const getDraftQuery = useDraftQuery<DraftTextDTO>(CATEGORY);
+  const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
+  const deleteDraft = useDeleteDraft(CATEGORY);
+
+  const debouncedAutoSaveDraft = useDebouncedCallback((begrunnelse: string) => {
+    if (!begrunnelse) {
+      return;
+    }
+    const draftPayload = { begrunnelse };
+
+    saveDraft.mutate(draftPayload, {
+      onSuccess: () => {
+        setUtkastSavedTime(new Date());
+      },
+      onError: () => {
+        setUtkastSavedTime(undefined);
+      },
+    });
+  }, 750);
+
+  useEffect(() => {
+    if (getDraftQuery.data?.begrunnelse) {
+      setValue("begrunnelse", getDraftQuery.data.begrunnelse);
+    }
+  }, [getDraftQuery.data, setValue]);
 
   const threeWeeks = toDateOnly(addWeeks(new Date(), 3));
   const sixWeeks = toDateOnly(addWeeks(new Date(), 6));
@@ -95,7 +132,13 @@ export default function ForhandsvarselSkjema() {
       }),
       varselSvarfrist: dayjs(fristDate).format("YYYY-MM-DD"),
     };
-    sendForhandsvarsel.mutate(forhandsvarselRequestDTO);
+    sendForhandsvarsel.mutate(forhandsvarselRequestDTO, {
+      onSuccess: () => {
+        setUtkastSavedTime(undefined);
+        debouncedAutoSaveDraft.cancel();
+        deleteDraft.mutate(undefined);
+      },
+    });
   };
 
   return (
@@ -131,6 +174,9 @@ export default function ForhandsvarselSkjema() {
           {...register("begrunnelse", {
             maxLength: begrunnelseMaxLength,
             required: texts.missingBeskrivelse,
+            onChange: (e) => {
+              debouncedAutoSaveDraft(e.target.value);
+            },
           })}
           value={watch("begrunnelse")}
           label={texts.beskrivelseLabel}
@@ -139,6 +185,10 @@ export default function ForhandsvarselSkjema() {
           size="small"
           minRows={6}
           maxLength={begrunnelseMaxLength}
+        />
+        <DraftSaveStatus
+          isSaveError={saveDraft.isError}
+          savedTime={utkastSavedTime}
         />
         {sendForhandsvarsel.isError && (
           <SkjemaInnsendingFeil error={sendForhandsvarsel.error} />

@@ -39,6 +39,7 @@ import { mockPensjonPenUforegrad } from "@/mocks/uforegrad/mockUforegrad";
 import { mockSyfooppfolgingsplanbackend } from "@/mocks/syfooppfolgingsplanbackend/mockSyfooppfolgingsplanbackend";
 import { mockBehandlerdialogDraft } from "@/mocks/draft/mockBehandlerdialogDraft";
 import { mockArbeidsuforhetForhandsvarselDraft } from "@/mocks/draft/mockArbeidsuforhetForhandsvarselDraft";
+import { mockManglendemedvirkningForhandsvarselDraft } from "@/mocks/draft/mockManglendemedvirkningForhandsvarselDraft";
 import { mockArbeidsuforhetAvslagUtenForhandsvarselDraft } from "@/mocks/draft/mockArbeidsuforhetAvslagUtenForhandsvarselDraft";
 import { mockArbeidsuforhetOppfyltDraft } from "@/mocks/draft/mockArbeidsuforhetOppfyltDraft";
 
@@ -59,6 +60,7 @@ const handlers = [
   ...mockIsbehandlerdialog,
   ...mockBehandlerdialogDraft,
   ...mockArbeidsuforhetForhandsvarselDraft,
+  ...mockManglendemedvirkningForhandsvarselDraft,
   ...mockArbeidsuforhetAvslagUtenForhandsvarselDraft,
   ...mockArbeidsuforhetOppfyltDraft,
   ...mockIsdialogmelding,
