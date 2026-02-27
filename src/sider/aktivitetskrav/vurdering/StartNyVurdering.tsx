@@ -1,5 +1,12 @@
 import React from "react";
-import { Alert, BodyShort, Button, Heading, Panel } from "@navikt/ds-react";
+import {
+  Alert,
+  BodyLong,
+  BodyShort,
+  Button,
+  Heading,
+  Panel,
+} from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { useCreateAktivitetskrav } from "@/data/aktivitetskrav/useCreateAktivitetskrav";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
@@ -28,7 +35,7 @@ interface VurderingTextProps {
   vurdering: AktivitetskravVurderingDTO;
 }
 
-const VurderingText = ({ vurdering }: VurderingTextProps) => {
+function VurderingText({ vurdering }: VurderingTextProps) {
   const { navn: brukersNavn } = useNavBrukerData();
   const { status, arsaker, beskrivelse } = vurdering;
 
@@ -69,18 +76,18 @@ const VurderingText = ({ vurdering }: VurderingTextProps) => {
         {isArsakBlank ? null : (
           <BodyShort>{texts.arsak(arsakerText)}</BodyShort>
         )}
-        <BodyShort>{beskrivelseText}</BodyShort>
+        <BodyLong className="whitespace-pre-wrap">{beskrivelseText}</BodyLong>
       </blockquote>
       <BodyShort className={"mb-4"}>{texts.changeUtfall}</BodyShort>
     </>
   );
-};
+}
 
 interface StartNyVurderingProps {
   aktivitetskrav: AktivitetskravDTO | undefined;
 }
 
-export const StartNyVurdering = ({ aktivitetskrav }: StartNyVurderingProps) => {
+export function StartNyVurdering({ aktivitetskrav }: StartNyVurderingProps) {
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const createAktivitetskrav = useCreateAktivitetskrav();
   const { notification } = useAktivitetskravNotificationAlert();
@@ -135,4 +142,4 @@ export const StartNyVurdering = ({ aktivitetskrav }: StartNyVurderingProps) => {
       </Panel>
     </>
   );
-};
+}

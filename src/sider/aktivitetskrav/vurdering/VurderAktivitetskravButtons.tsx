@@ -20,9 +20,9 @@ interface VurderAktivitetskravButtonsProps {
   aktivitetskrav: AktivitetskravDTO;
 }
 
-export const VurderAktivitetskravButtons = ({
+export function VurderAktivitetskravButtons({
   aktivitetskrav,
-}: VurderAktivitetskravButtonsProps) => {
+}: VurderAktivitetskravButtonsProps) {
   const [visVurderAktivitetskravModal, setVisVurderAktivitetskravModal] =
     useState(false);
   const [modalType, setModalType] = useState<ModalType>();
@@ -60,4 +60,4 @@ export const VurderAktivitetskravButtons = ({
       />
     </>
   );
-};
+}

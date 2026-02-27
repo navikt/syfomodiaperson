@@ -25,12 +25,12 @@ interface VurderAktivitetskravModalProps
   modalType: ModalType | undefined;
 }
 
-export const VurderAktivitetskravModal = ({
+export function VurderAktivitetskravModal({
   isOpen,
   setModalOpen,
   modalType,
   aktivitetskravUuid,
-}: VurderAktivitetskravModalProps) => {
+}: VurderAktivitetskravModalProps) {
   const header = (): string => {
     switch (modalType) {
       case "AVVENT":
@@ -61,7 +61,7 @@ export const VurderAktivitetskravModal = ({
       )}
     </Modal>
   );
-};
+}
 
 interface VurderAktivitetskravModalContentProps
   extends Pick<
@@ -71,10 +71,10 @@ interface VurderAktivitetskravModalContentProps
   modalType: ModalType;
 }
 
-const VurderAktivitetskravModalContent = ({
+function VurderAktivitetskravModalContent({
   modalType,
   ...rest
-}: VurderAktivitetskravModalContentProps): ReactElement => {
+}: VurderAktivitetskravModalContentProps): ReactElement {
   switch (modalType) {
     case "AVVENT": {
       return <AvventAktivitetskravSkjema {...rest} />;
@@ -83,4 +83,4 @@ const VurderAktivitetskravModalContent = ({
       return <IkkeAktuellAktivitetskravSkjema {...rest} />;
     }
   }
-};
+}

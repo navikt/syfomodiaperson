@@ -3,20 +3,22 @@ import { ApiErrorException, defaultErrorTexts } from "@/api/errors";
 import React from "react";
 import { Alert } from "@navikt/ds-react";
 
-interface SkjemaInnsendingFeilProps {
+interface Props {
   error: unknown;
   bottomPadding?: PaddingSize | null;
 }
 
-export const SkjemaInnsendingFeil = ({
+export function SkjemaInnsendingFeil({
   error,
   bottomPadding = PaddingSize.MD,
-}: SkjemaInnsendingFeilProps) => (
-  <FlexRow bottomPadding={bottomPadding ? bottomPadding : undefined}>
-    <Alert variant="error" size="small" contentMaxWidth={false}>
-      {error instanceof ApiErrorException
-        ? error.error.defaultErrorMsg
-        : defaultErrorTexts.generalError}
-    </Alert>
-  </FlexRow>
-);
+}: Props) {
+  return (
+    <FlexRow bottomPadding={bottomPadding ? bottomPadding : undefined}>
+      <Alert variant="error" size="small" contentMaxWidth={false}>
+        {error instanceof ApiErrorException
+          ? error.error.defaultErrorMsg
+          : defaultErrorTexts.generalError}
+      </Alert>
+    </FlexRow>
+  );
+}

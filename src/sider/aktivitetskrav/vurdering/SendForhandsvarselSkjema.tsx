@@ -54,9 +54,9 @@ const defaultValues: SendForhandsvarselSkjemaValues = {
 
 const begrunnelseMaxLength = 5000;
 
-export const SendForhandsvarselSkjema = ({
+export function SendForhandsvarselSkjema({
   aktivitetskravUuid,
-}: VurderAktivitetskravSkjemaProps) => {
+}: VurderAktivitetskravSkjemaProps) {
   const sendForhandsvarsel = useSendForhandsvarsel(aktivitetskravUuid);
   const [brevmal, setBrevmal] = useState<Brevmal>(Brevmal.MED_ARBEIDSGIVER);
   const {
@@ -193,4 +193,4 @@ export const SendForhandsvarselSkjema = ({
       />
     </form>
   );
-};
+}
