@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw";
-import { TextBoxDraftDTO } from "@/hooks/draftTypes";
+import { DraftTextDTO } from "@/hooks/useDraftQuery";
 
-let manglendemedvirkningForhandsvarselDraft: TextBoxDraftDTO = {
+let manglendemedvirkningForhandsvarselDraft: DraftTextDTO = {
   begrunnelse: "",
 };
 
@@ -9,7 +9,7 @@ export const mockManglendemedvirkningForhandsvarselDraft = [
   http.get(`/api/draft/manglendemedvirkning-forhandsvarsel`, () => {
     return HttpResponse.json(manglendemedvirkningForhandsvarselDraft);
   }),
-  http.put<object, TextBoxDraftDTO>(
+  http.put<object, DraftTextDTO>(
     `/api/draft/manglendemedvirkning-forhandsvarsel`,
     async ({ request }) => {
       const body = await request.json();
