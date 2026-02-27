@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BodyShort,
   Box,
@@ -22,6 +22,14 @@ import { arbeidsuforhetPath } from "@/AppRouter";
 import { ButtonRow } from "@/components/Layout";
 import { useNotification } from "@/context/notification/NotificationContext";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
+import { useDebouncedCallback } from "use-debounce";
+import {
+  DraftTextDTO,
+  useDeleteDraft,
+  useDraftQuery,
+  useSaveDraft,
+} from "@/hooks/useDraftQuery";
+import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 
 const texts = {
   title: "Skriv innstilling om oppfylt vilkår",
@@ -85,12 +93,42 @@ export default function OppfyltForm() {
   const { getOppfyltDocument, getOppfyltEtterForhandsvarselDocument } =
     useArbeidsuforhetVurderingDocument();
   const { setNotification } = useNotification();
+  const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const {
     register,
     watch,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useForm<SkjemaValues>({ defaultValues });
+
+  const CATEGORY = "arbeidsuforhet-oppfylt";
+  const getDraftQuery = useDraftQuery<DraftTextDTO>(CATEGORY);
+  const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
+  const deleteDraft = useDeleteDraft(CATEGORY);
+
+  const debouncedAutoSaveDraft = useDebouncedCallback((tekst: string) => {
+    if (!tekst) {
+      return;
+    }
+    const draftPayload = { begrunnelse: tekst };
+
+    saveDraft.mutate(draftPayload, {
+      onSuccess: () => {
+        setUtkastSavedTime(new Date());
+      },
+      onError: () => {
+        setUtkastSavedTime(undefined);
+      },
+    });
+  }, 750);
+
+  useEffect(() => {
+    if (getDraftQuery.data?.begrunnelse) {
+      setValue("begrunnelse", getDraftQuery.data.begrunnelse);
+    }
+  }, [getDraftQuery.data, setValue]);
+
   const submit = (values: SkjemaValues) => {
     const vurderingRequestDTO: Oppfylt | OppfyltUtenForhandsvarsel = {
       type: isSisteVurderingForhandsvarsel
@@ -101,6 +139,9 @@ export default function OppfyltForm() {
     };
     sendVurdering.mutate(vurderingRequestDTO, {
       onSuccess: () => {
+        setUtkastSavedTime(undefined);
+        debouncedAutoSaveDraft.cancel();
+        deleteDraft.mutate(undefined);
         setNotification({
           message: texts.success,
         });
@@ -131,6 +172,9 @@ export default function OppfyltForm() {
           {...register("begrunnelse", {
             maxLength: begrunnelseMaxLength,
             required: texts.missingBegrunnelse,
+            onChange: (e) => {
+              debouncedAutoSaveDraft(e.target.value);
+            },
           })}
           value={watch("begrunnelse")}
           label={texts.begrunnelseLabel}
@@ -139,6 +183,10 @@ export default function OppfyltForm() {
           size="small"
           minRows={6}
           maxLength={begrunnelseMaxLength}
+        />
+        <DraftSaveStatus
+          isSaveError={saveDraft.isError}
+          savedTime={utkastSavedTime}
         />
         {sendVurdering.isError && (
           <SkjemaInnsendingFeil error={sendVurdering.error} />

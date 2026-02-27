@@ -1,5 +1,5 @@
 import { http, HttpResponse } from "msw";
-import { MeldingTilBehandlerDraftDTO } from "@/data/behandlerdialog/meldingtilbehandlerDraftTypes";
+import { MeldingTilBehandlerDraftDTO } from "@/data/behandlerdialog/meldingtilbehandlerDraftQueryHooks";
 
 let draft: MeldingTilBehandlerDraftDTO = {
   tekst: "",

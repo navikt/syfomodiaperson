@@ -8,6 +8,8 @@ const DRAFT_TTL_SECONDS = 7 * 60 * 60 * 24;
 enum Draft {
   MELDING_TIL_BEHANDLER = "behandlerdialog-meldingtilbehandler",
   ARBEIDSUFORHET_FORHANDSVARSEL = "arbeidsuforhet-forhandsvarsel",
+  ARBEIDSUFORHET_AVSLAG_UTEN_FORHANDSVARSEL = "arbeidsuforhet-avslag-uten-forhandsvarsel",
+  ARBEIDSUFORHET_OPPFYLT = "arbeidsuforhet-oppfylt",
 }
 
 function isValidCategory(category: string): boolean {
@@ -24,6 +26,10 @@ function toDraftCachekey(
       return `draft:behandlerdialog:meldingtilbehandler:${veilederIdent}:${personident}`;
     case Draft.ARBEIDSUFORHET_FORHANDSVARSEL:
       return `draft:arbeidsuforhet:forhandsvarsel:${veilederIdent}:${personident}`;
+    case Draft.ARBEIDSUFORHET_AVSLAG_UTEN_FORHANDSVARSEL:
+      return `draft:arbeidsuforhet:avslag-uten-forhandsvarsel:${veilederIdent}:${personident}`;
+    case Draft.ARBEIDSUFORHET_OPPFYLT:
+      return `draft:arbeidsuforhet:oppfylt:${veilederIdent}:${personident}`;
   }
 }
 

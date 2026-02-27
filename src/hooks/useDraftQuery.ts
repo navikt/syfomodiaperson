@@ -4,7 +4,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export type DraftCategory =
   | "behandlerdialog-meldingtilbehandler"
-  | "arbeidsuforhet-forhandsvarsel";
+  | "arbeidsuforhet-forhandsvarsel"
+  | "arbeidsuforhet-avslag-uten-forhandsvarsel"
+  | "arbeidsuforhet-oppfylt";
 
 function draftPath(category: DraftCategory): string {
   return `/api/draft/${category}`;
@@ -17,6 +19,10 @@ export const draftQueryKeys = {
     personident,
   ],
 };
+
+export interface DraftTextDTO {
+  begrunnelse: string;
+}
 
 export function useDraftQuery<T>(category: DraftCategory) {
   const personident = useValgtPersonident();

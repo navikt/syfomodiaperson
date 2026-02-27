@@ -27,11 +27,11 @@ import { addWeeks, toDateOnly } from "@/utils/datoUtils";
 import dayjs from "dayjs";
 import { useDebouncedCallback } from "use-debounce";
 import {
+  DraftTextDTO,
   useDeleteDraft,
   useDraftQuery,
   useSaveDraft,
 } from "@/hooks/useDraftQuery";
-import { ArbeidsuforhetForhandsvarselDraftDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetForhandsvarselDraftTypes";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 
 const texts = {
@@ -86,17 +86,15 @@ export default function SendForhandsvarselSkjema() {
   const { getForhandsvarselDocument } = useArbeidsuforhetVurderingDocument();
 
   const CATEGORY = "arbeidsuforhet-forhandsvarsel";
-  const getDraftQuery =
-    useDraftQuery<ArbeidsuforhetForhandsvarselDraftDTO>(CATEGORY);
-  const saveDraft =
-    useSaveDraft<ArbeidsuforhetForhandsvarselDraftDTO>(CATEGORY);
+  const getDraftQuery = useDraftQuery<DraftTextDTO>(CATEGORY);
+  const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
   const deleteDraft = useDeleteDraft(CATEGORY);
 
-  const debouncedAutoSaveDraft = useDebouncedCallback((begrunnelse: string) => {
-    if (!begrunnelse) {
+  const debouncedAutoSaveDraft = useDebouncedCallback((tekst: string) => {
+    if (!tekst) {
       return;
     }
-    const draftPayload = { begrunnelse };
+    const draftPayload = { begrunnelse: tekst };
 
     saveDraft.mutate(draftPayload, {
       onSuccess: () => {

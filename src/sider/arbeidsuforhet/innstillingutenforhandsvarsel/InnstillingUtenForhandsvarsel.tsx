@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BodyLong,
   BodyShort,
@@ -31,6 +31,14 @@ import { useNavigate } from "react-router";
 import OppgaveSendtFraNayDatepicker from "@/sider/arbeidsuforhet/innstillingutenforhandsvarsel/OppgaveSendtFraNayDatepicker";
 import AvslagFomDatepicker from "@/sider/arbeidsuforhet/innstillingutenforhandsvarsel/AvslagFomDatepicker";
 import dayjs from "dayjs";
+import { useDebouncedCallback } from "use-debounce";
+import {
+  DraftTextDTO,
+  useDeleteDraft,
+  useDraftQuery,
+  useSaveDraft,
+} from "@/hooks/useDraftQuery";
+import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 
 const texts = {
   title: "Innstilling om avslag uten forhåndsvarsel",
@@ -95,13 +103,42 @@ export default function InnstillingUtenForhandsvarsel() {
   const { getAvslagUtenForhandsvarselDocument } =
     useArbeidsuforhetVurderingDocument();
   const { setNotification } = useNotification();
+  const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const formProps = useForm<FormValues>();
   const {
     register,
     watch,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = formProps;
+
+  const CATEGORY = "arbeidsuforhet-avslag-uten-forhandsvarsel";
+  const getDraftQuery = useDraftQuery<DraftTextDTO>(CATEGORY);
+  const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
+  const deleteDraft = useDeleteDraft(CATEGORY);
+
+  const debouncedAutoSaveDraft = useDebouncedCallback((tekst: string) => {
+    if (!tekst) {
+      return;
+    }
+    const draftPayload = { begrunnelse: tekst };
+
+    saveDraft.mutate(draftPayload, {
+      onSuccess: () => {
+        setUtkastSavedTime(new Date());
+      },
+      onError: () => {
+        setUtkastSavedTime(undefined);
+      },
+    });
+  }, 750);
+
+  useEffect(() => {
+    if (getDraftQuery.data?.begrunnelse) {
+      setValue("begrunnelse", getDraftQuery.data.begrunnelse);
+    }
+  }, [getDraftQuery.data, setValue]);
 
   const submit = (values: FormValues) => {
     const documentProps = {
@@ -126,6 +163,9 @@ export default function InnstillingUtenForhandsvarsel() {
     };
     lagreInnstilling.mutate(vurderingRequestDTO, {
       onSuccess: () => {
+        setUtkastSavedTime(undefined);
+        debouncedAutoSaveDraft.cancel();
+        deleteDraft.mutate(undefined);
         const notification: Notification =
           values.vurderingInitiertAv === VurderingInitiertAv.NAY
             ? huskSendTilGosysNotification
@@ -173,6 +213,9 @@ export default function InnstillingUtenForhandsvarsel() {
             {...register("begrunnelse", {
               maxLength: begrunnelseMaxLength,
               required: texts.missingBegrunnelse,
+              onChange: (e) => {
+                debouncedAutoSaveDraft(e.target.value);
+              },
             })}
             description={texts.begrunnelseDescription}
             value={watch("begrunnelse")}
@@ -181,6 +224,10 @@ export default function InnstillingUtenForhandsvarsel() {
             size="small"
             minRows={3}
             maxLength={begrunnelseMaxLength}
+          />
+          <DraftSaveStatus
+            isSaveError={saveDraft.isError}
+            savedTime={utkastSavedTime}
           />
           <List as="ul" title={texts.videreHusk.title} size={"small"}>
             {texts.videreHusk.gosysoppgave}
