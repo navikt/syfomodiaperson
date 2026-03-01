@@ -15,9 +15,9 @@ export function FieldReadOnly({
 }: Props) {
   return (
     <div
-      className={`navds-body-short--small inline-table w-full mb-5 ${className}`}
+      className={`aksel-body-short--small inline-table w-full mb-5 ${className}`}
     >
-      <div className={`navds-label mt-0 mb-1 ${classNameLabel}`}>{label}</div>
+      <div className={`aksel-label mt-0 mb-1 ${classNameLabel}`}>{label}</div>
       {children}
     </div>
   );

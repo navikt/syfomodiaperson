@@ -42,7 +42,7 @@ export default function MoteSvarHistorikkEvent({ dialogmote }: Props) {
         {getHeaderText(dialogmote)}
       </Accordion.Header>
       <Accordion.Content>
-        <HStack gap="4">
+        <HStack gap="space-16">
           <div>
             <BodyShort size="small">{`${texts.sted}: ${dialogmote.sted}`}</BodyShort>
             <DialogmoteVeilederInfo dialogmote={dialogmote} />

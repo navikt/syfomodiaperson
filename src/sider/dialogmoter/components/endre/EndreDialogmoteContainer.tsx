@@ -49,10 +49,7 @@ export default function EndreDialogmoteContainer() {
               </MalformProvider>
             </Tredelt.FirstColumn>
             <Tredelt.SecondColumn>
-              <Box
-                background="surface-default"
-                className="flex flex-col gap-4 p-6"
-              >
+              <Box background="default" className="flex flex-col gap-4 p-6">
                 <div className="flex gap-4">
                   <img src={MoteIkonBlaaImage} alt="moteikon" />
                   <div>

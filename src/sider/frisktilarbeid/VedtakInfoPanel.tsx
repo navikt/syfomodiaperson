@@ -38,7 +38,7 @@ export default function VedtakInfoPanel({ vedtak, className }: Props) {
 
   return (
     <Box
-      background="surface-default"
+      background="default"
       className={`flex flex-col p-4 gap-2 ${className}`}
     >
       <Heading level="3" size="medium">
@@ -70,7 +70,7 @@ export default function VedtakInfoPanel({ vedtak, className }: Props) {
         ) : (
           <ExclamationmarkTriangleIcon
             data-testid="gosys-icon-false"
-            color="var(--a-icon-warning)"
+            color="var(--ax-text-warning-decoration)"
             title="a11y-title"
             fontSize="1.5rem"
           />
@@ -92,7 +92,7 @@ export default function VedtakInfoPanel({ vedtak, className }: Props) {
         ) : (
           <ExclamationmarkTriangleIcon
             data-testid="journal-icon-false"
-            color="var(--a-icon-warning)"
+            color="var(--ax-text-warning-decoration)"
             title="a11y-title"
             fontSize="1.5rem"
           />

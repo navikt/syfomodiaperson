@@ -9,7 +9,7 @@ export const texts = {
 
 export default function Meldinger() {
   return (
-    <Box background="surface-default" className="p-4">
+    <Box background="default" className="p-4">
       <Heading level="2" size="medium" spacing>
         {texts.header}
       </Heading>

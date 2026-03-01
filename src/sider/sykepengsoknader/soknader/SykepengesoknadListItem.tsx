@@ -129,12 +129,12 @@ export default function SykepengesoknadListItem({
   const undertekst = beregnUndertekst(soknad);
 
   return (
-    <Box background="surface-default" className="flex flex-col p-4 my-px gap-2">
+    <Box background="default" className="flex flex-col p-4 my-px gap-2">
       <div className="flex flex-row justify-between mb-2">
         <Heading level="4" size="xsmall" className="mr-4">
           {tittelFromSoknadstype(soknad.soknadstype)}
         </Heading>
-        <Tag size="small" variant="info" className="w-fit">
+        <Tag data-color="info" size="small" variant="outline" className="w-fit">
           {statusText(soknad)}
         </Tag>
       </div>
@@ -157,7 +157,12 @@ export default function SykepengesoknadListItem({
             </BodyShort>
           )}
           {harJobbet(soknad) && (
-            <Tag size="small" variant="info" className="w-fit mt-2">
+            <Tag
+              data-color="info"
+              size="small"
+              variant="outline"
+              className="w-fit mt-2"
+            >
               {texts.harJobbet}
             </Tag>
           )}

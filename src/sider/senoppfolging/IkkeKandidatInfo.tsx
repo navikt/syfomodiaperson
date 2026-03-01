@@ -13,8 +13,8 @@ const texts = {
 export default function IkkeKandidatInfo() {
   return (
     <Box
-      background="surface-default"
-      padding="6"
+      background="default"
+      padding="space-24"
       className="flex flex-col gap-4"
     >
       <BodyShort size="small">{texts.info1}</BodyShort>

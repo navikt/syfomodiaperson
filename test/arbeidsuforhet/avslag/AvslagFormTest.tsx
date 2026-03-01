@@ -142,9 +142,10 @@ describe("AvslagForm", () => {
 
       await clickButton("Forhåndsvisning");
 
-      const forhandsvisningVurdering = screen.getAllByRole("dialog", {
+      const forhandsvisningVurdering = screen.getByRole("dialog", {
+        name: "Forhåndsvis innstillingen",
         hidden: true,
-      })[1];
+      });
       expect(
         within(forhandsvisningVurdering).getByRole("heading", {
           name: "Vurdering av § 8-4 - Innstilling om avslag",

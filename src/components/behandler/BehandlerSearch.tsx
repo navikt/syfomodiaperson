@@ -1,5 +1,4 @@
 import React, { ReactElement, useRef, useState } from "react";
-import "@navikt/ds-css";
 import { Search } from "@navikt/ds-react";
 import BehandlerSearchResult from "@/components/behandler/BehandlerSearchResult";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";

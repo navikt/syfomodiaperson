@@ -47,7 +47,7 @@ export function MoteSvarHistorikkEndringer({ dialogmote }: Props) {
           <Label size="small">{`Endret tid/sted sendt ${tilDatoMedManedNavn(
             arbeidgiverVarsel.createdAt
           )} - svar:`}</Label>
-          <HStack gap="4">
+          <HStack gap="space-16">
             <ArbeidsgiverSvar
               varsel={arbeidgiverVarsel}
               virksomhetsnummer={dialogmote.arbeidsgiver.virksomhetsnummer}

@@ -70,7 +70,7 @@ export default function Sykmeldingsgrad({
     .sort((a, b) => a.fom.getTime() - b.fom.getTime());
 
   return (
-    <Box background="surface-default" padding="4" className="mb-4">
+    <Box background="default" padding="space-16" className="mb-4">
       <Heading size="medium" level="2">
         {texts.title}
       </Heading>
@@ -91,7 +91,6 @@ export default function Sykmeldingsgrad({
           {texts.harJobbetUtoverSykmeldingsgrad}
         </Alert>
       )}
-
       <div className="flex flex-row">
         <SykmeldingsgradChart sykmeldingsperioder={sortedSykmeldingsperioder} />
 
@@ -99,7 +98,6 @@ export default function Sykmeldingsgrad({
           setSelectedTilfelle={setSelectedOppfolgingstilfelle}
         />
       </div>
-
       <BodyShort size="small">{texts.yAxis}</BodyShort>
       <BodyShort size="small">{texts.xAxis}</BodyShort>
     </Box>

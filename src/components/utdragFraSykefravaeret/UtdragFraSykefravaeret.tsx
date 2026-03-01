@@ -53,8 +53,8 @@ export default function UtdragFraSykefravaeret({
 
   return (
     <Box
-      padding="4"
-      background="surface-default"
+      padding="space-16"
+      background="default"
       className="mb-2 h-min flex flex-col gap-6"
     >
       <div>

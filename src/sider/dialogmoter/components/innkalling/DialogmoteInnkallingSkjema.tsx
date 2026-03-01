@@ -142,7 +142,7 @@ export default function DialogmoteInnkallingSkjema() {
   };
 
   return (
-    <Box background="surface-default" padding="6" className="mb-2">
+    <Box background="default" padding="space-24" className="mb-2">
       <MalformRadioGroup />
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(submit)}>

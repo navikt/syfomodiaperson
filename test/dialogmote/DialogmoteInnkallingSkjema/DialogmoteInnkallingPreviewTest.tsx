@@ -41,12 +41,10 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
     expect(previewButtons).to.have.length(2);
     const expectedSendtDato = new Date();
     await userEvent.click(previewButtons[0]);
-    const forhandsvisningInnkallingArbeidstaker = screen.getAllByRole(
-      "dialog",
-      {
-        hidden: true,
-      }
-    )[1];
+    const forhandsvisningInnkallingArbeidstaker = screen.getByRole("dialog", {
+      name: texts.forhandsvisningArbeidstakerContentLabel,
+      hidden: true,
+    });
 
     expect(
       within(forhandsvisningInnkallingArbeidstaker).getByRole("heading", {
@@ -79,12 +77,10 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
     expect(previewButtons).to.have.length(2);
     const expectedSendtDato = new Date();
     await userEvent.click(previewButtons[1]);
-    const forhandsvisningInnkallingArbeidsgiver = screen.getAllByRole(
-      "dialog",
-      {
-        hidden: true,
-      }
-    )[2];
+    const forhandsvisningInnkallingArbeidsgiver = screen.getByRole("dialog", {
+      name: texts.forhandsvisningArbeidsgiverContentLabel,
+      hidden: true,
+    });
 
     expect(
       within(forhandsvisningInnkallingArbeidsgiver).getByRole("heading", {
@@ -129,9 +125,10 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
     expect(previewButtons).to.have.length(3);
     const expectedSendtDato = new Date();
     await userEvent.click(previewButtons[2]);
-    const forhandsvisningInnkallingBehandler = screen.getAllByRole("dialog", {
+    const forhandsvisningInnkallingBehandler = screen.getByRole("dialog", {
+      name: texts.forhandsvisningBehandlerContentLabel,
       hidden: true,
-    })[3];
+    });
 
     expect(
       within(forhandsvisningInnkallingBehandler).getByRole("heading", {

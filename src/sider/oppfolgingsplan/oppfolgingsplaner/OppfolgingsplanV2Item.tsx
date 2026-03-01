@@ -21,7 +21,7 @@ export default function OppfolgingsplanV2Item({ oppfolgingsplan }: Props) {
   const deltMedNav = restdatoTilLesbarDato(oppfolgingsplan.deltMedNavTidspunkt);
 
   return (
-    <Box background="surface-default" padding="8" className="mb-2">
+    <Box background="default" padding="space-32" className="mb-2">
       <Heading size="small">{virksomhetsnavn}</Heading>
       <BodyShort>Opprettet: {opprettet}</BodyShort>
       <BodyShort>Delt med Nav: {deltMedNav}</BodyShort>

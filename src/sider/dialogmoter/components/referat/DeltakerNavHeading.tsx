@@ -7,7 +7,7 @@ export const DeltakerNavHeading = () => {
   const { data: veilederinfo } = useAktivVeilederinfoQuery();
 
   return (
-    <HStack gap="2" className="pl-4">
+    <HStack gap="space-8" className="pl-4">
       <PersonPencilIcon role="img" focusable={false} width={24} height={24} />
       <Heading size="xsmall">{`Fra Nav: ${veilederinfo?.fulltNavn()}`}</Heading>
     </HStack>

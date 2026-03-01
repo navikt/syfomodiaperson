@@ -13,7 +13,7 @@ const texts = {
 
 export default function HjelpetekstVedMeldtBehov() {
   return (
-    <Accordion size="small" headingSize="xsmall" className="mb-4">
+    <Accordion size="small" className="mb-4">
       <Accordion.Item>
         <Accordion.Header>{texts.header}</Accordion.Header>
         <Accordion.Content>

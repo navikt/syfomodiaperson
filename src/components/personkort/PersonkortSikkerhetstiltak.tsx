@@ -14,7 +14,7 @@ export function PersonkortSikkerhetstiltak() {
       icon={
         <ExclamationmarkTriangleFillIcon
           className="mr-2"
-          color="var(--a-icon-danger)"
+          color="var(--ax-text-danger-decoration)"
           title="advarsel-ikon"
           fontSize="1.5rem"
         />

@@ -40,11 +40,13 @@ function Forberedelser() {
         {texts.title}
       </Heading>
       <BodyShort size="small">{texts.intro}</BodyShort>
-      <List as="ul" size="small">
-        {texts.preparations.map((text, index) => (
-          <List.Item key={index}>{text}</List.Item>
-        ))}
-      </List>
+      <Box marginBlock="space-12" asChild>
+        <List as="ul" size="small">
+          {texts.preparations.map((text, index) => (
+            <List.Item key={index}>{text}</List.Item>
+          ))}
+        </List>
+      </Box>
     </>
   );
 }
@@ -55,14 +57,16 @@ function StegForSteg() {
       <Heading level="3" size="small">
         {texts.rutineTitle}
       </Heading>
-      <List as="ol" size="small">
-        <List.Item>
-          {texts.rutineSteps.registrerSomArbeidssoker.title}
-        </List.Item>
-        <List.Item>{texts.rutineSteps.fatt14aVedtak}</List.Item>
-        <List.Item>{texts.rutineSteps.sendVedtak}</List.Item>
-        <List.Item>{texts.rutineSteps.sendGosysOppgave}</List.Item>
-      </List>
+      <Box marginBlock="space-12" asChild>
+        <List as="ol" size="small">
+          <List.Item>
+            {texts.rutineSteps.registrerSomArbeidssoker.title}
+          </List.Item>
+          <List.Item>{texts.rutineSteps.fatt14aVedtak}</List.Item>
+          <List.Item>{texts.rutineSteps.sendVedtak}</List.Item>
+          <List.Item>{texts.rutineSteps.sendGosysOppgave}</List.Item>
+        </List>
+      </Box>
     </>
   );
 }
@@ -73,18 +77,20 @@ function Tilleggsinformasjon() {
       <Heading level="4" size="xsmall">
         {texts.infoTitle}
       </Heading>
-      <List as="ul" size="small">
-        {texts.infoBulletPoints.map((text, index) => (
-          <List.Item key={index}>{text}</List.Item>
-        ))}
-      </List>
+      <Box marginBlock="space-12" asChild>
+        <List as="ul" size="small">
+          {texts.infoBulletPoints.map((text, index) => (
+            <List.Item key={index}>{text}</List.Item>
+          ))}
+        </List>
+      </Box>
     </>
   );
 }
 
 export default function VeiledningBox() {
   return (
-    <Box background="surface-default" padding="6" className="mb-2">
+    <Box background="default" padding="space-24" className="mb-2">
       <Forberedelser />
       <StegForSteg />
       <Tilleggsinformasjon />

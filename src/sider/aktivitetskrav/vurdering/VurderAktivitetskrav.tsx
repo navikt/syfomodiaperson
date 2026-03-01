@@ -57,7 +57,7 @@ export function VurderAktivitetskrav({
         />
       )}
       <Box
-        background="surface-default"
+        background="default"
         className="mb-4 flex flex-col pt-4 pr-4 pb-8 pl-8"
       >
         <div className="flex flex-row">

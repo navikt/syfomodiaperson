@@ -5,7 +5,7 @@ import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import React from "react";
 import { beforeEach, describe, expect, it } from "vitest";
-import { daysFromToday } from "../testUtils";
+import { daysFromToday, getButton } from "../testUtils";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import userEvent from "@testing-library/user-event";
 import {
@@ -131,7 +131,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
         unntak,
       ]);
 
-      const accordionButtons = screen.getAllByRole("button");
+      const accordionButtons = getAccordionButtons();
 
       expect(accordionButtons[0].textContent).to.contain(
         `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`
@@ -153,7 +153,9 @@ describe("ManglendeMedvirkningHistorikk", () => {
     it("klikk på overskriften til en oppfylt vurdering og viser begrunnelse, veileder og knapp for å se document for vurderingen", async () => {
       renderVurderingHistorikk([oppfylt]);
 
-      const accordionButton = screen.getByRole("button");
+      const accordionButton = getButton(
+        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`
+      );
 
       await userEvent.click(accordionButton);
 
@@ -168,7 +170,9 @@ describe("ManglendeMedvirkningHistorikk", () => {
     it("klikk på overskriften til en forhåndsvarsel vurdering og viser begrunnelse, veileder og knapp for å se document for vurderingen", async () => {
       renderVurderingHistorikk([forhandsvarsel]);
 
-      const accordionButton = screen.getByRole("button");
+      const accordionButton = getButton(
+        `Forhåndsvarsel - ${tilDatoMedManedNavn(forhandsvarselCreated)}`
+      );
 
       await userEvent.click(accordionButton);
 
@@ -201,7 +205,9 @@ describe("ManglendeMedvirkningHistorikk", () => {
     it("klikk på overskriften til et stans vurdering og viser knapp for å se document for vurderingen", async () => {
       renderVurderingHistorikk([stans]);
 
-      const accordionButton = screen.getByRole("button");
+      const accordionButton = getButton(
+        `Innstilling om stans - ${tilDatoMedManedNavn(stansCreated)}`
+      );
 
       await userEvent.click(accordionButton);
 
@@ -212,7 +218,9 @@ describe("ManglendeMedvirkningHistorikk", () => {
     it("klikk på overskriften til et unntak vurdering og viser knapp for å se document for vurderingen", async () => {
       renderVurderingHistorikk([unntak]);
 
-      const accordionButton = screen.getByRole("button");
+      const accordionButton = getButton(
+        `Unntak - ${tilDatoMedManedNavn(unntakCreated)}`
+      );
 
       await userEvent.click(accordionButton);
 
@@ -222,7 +230,9 @@ describe("ManglendeMedvirkningHistorikk", () => {
     it("klikk på overskriften til en ikke aktuell vurdering og viser knapp for å se document for vurderingen", async () => {
       renderVurderingHistorikk([ikkeAktuell]);
 
-      const accordionButton = screen.getByRole("button");
+      const accordionButton = getButton(
+        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`
+      );
 
       await userEvent.click(accordionButton);
 
@@ -268,7 +278,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
 
       renderVurderingHistorikk(vurderinger, sykepengestoppList);
 
-      const accordionButtons = screen.getAllByRole("button");
+      const accordionButtons = getAccordionButtons();
 
       expect(accordionButtons.length).toBe(5);
 
@@ -290,3 +300,9 @@ describe("ManglendeMedvirkningHistorikk", () => {
     });
   });
 });
+
+const getAccordionButtons = () =>
+  screen
+    .getAllByRole("button")
+    // eslint-disable-next-line testing-library/no-node-access -- No RTL query can distinguish accordion headers from other buttons
+    .filter((button) => button.parentElement?.hasAttribute("data-expanded"));

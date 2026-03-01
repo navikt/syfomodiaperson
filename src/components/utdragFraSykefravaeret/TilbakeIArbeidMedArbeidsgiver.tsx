@@ -30,7 +30,7 @@ export function TilbakeIArbeidMedArbeidsgiver({ friskmelding }: Props) {
         {tekster.header}
       </BodyShort>
       {antarRetur ? (
-        <VStack gap="2">
+        <VStack gap="space-8">
           {friskmelding.antarReturSammeArbeidsgiver && (
             <TilbakeIArbeidCheckboxMedSporsmalOgDato
               checkboxLabel={tekster.returSammeArbeidsgiver}

@@ -31,7 +31,7 @@ export function MoteSvarHistorikkInnkalling({ dialogmote }: Props) {
       <Label size="small">{`Innkalling sendt ${tilDatoMedManedNavn(
         dialogmote.createdAt
       )} - svar:`}</Label>
-      <HStack gap="4">
+      <HStack gap="space-16">
         {innkallingArbeidsgiver && (
           <ArbeidsgiverSvar
             varsel={innkallingArbeidsgiver}

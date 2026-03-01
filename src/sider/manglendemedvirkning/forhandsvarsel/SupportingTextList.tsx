@@ -1,4 +1,4 @@
-import { List } from "@navikt/ds-react";
+import { List, Heading, Box } from "@navikt/ds-react";
 import React from "react";
 
 const texts = {
@@ -29,27 +29,34 @@ export default function SupportingTextList({
   isBeforeForhandsvarselDeadline,
 }: Props) {
   return (
-    <List as="ul" title={texts.listTitle}>
-      {isBeforeForhandsvarselDeadline ? (
-        ""
-      ) : (
-        <List.Item>
-          <span className="font-semibold">{texts.stans.bold}</span>
-          {texts.stans.text}
-        </List.Item>
-      )}
-      <List.Item>
-        <span className="font-semibold">{texts.oppfylt.bold}</span>
-        {texts.oppfylt.text}
-      </List.Item>
-      <List.Item>
-        <span className="font-semibold">{texts.unntak.bold}</span>
-        {texts.unntak.text}
-      </List.Item>
-      <List.Item>
-        <span className="font-semibold">{texts.ikkeAktuell.bold}</span>
-        {texts.ikkeAktuell.text}
-      </List.Item>
-    </List>
+    <div>
+      <Heading as="h3" size="small">
+        {texts.listTitle}
+      </Heading>
+      <Box marginBlock="space-16" asChild>
+        <List as="ul">
+          {isBeforeForhandsvarselDeadline ? (
+            ""
+          ) : (
+            <List.Item>
+              <span className="font-semibold">{texts.stans.bold}</span>
+              {texts.stans.text}
+            </List.Item>
+          )}
+          <List.Item>
+            <span className="font-semibold">{texts.oppfylt.bold}</span>
+            {texts.oppfylt.text}
+          </List.Item>
+          <List.Item>
+            <span className="font-semibold">{texts.unntak.bold}</span>
+            {texts.unntak.text}
+          </List.Item>
+          <List.Item>
+            <span className="font-semibold">{texts.ikkeAktuell.bold}</span>
+            {texts.ikkeAktuell.text}
+          </List.Item>
+        </List>
+      </Box>
+    </div>
   );
 }

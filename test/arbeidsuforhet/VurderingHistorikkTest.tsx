@@ -20,7 +20,7 @@ import {
   VurderingResponseDTO,
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
-import { daysFromToday } from "../testUtils";
+import { daysFromToday, getButton } from "../testUtils";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import userEvent from "@testing-library/user-event";
 import { pengestoppStatusQueryKeys } from "@/data/pengestopp/pengestoppQueryHooks";
@@ -120,7 +120,7 @@ describe("VurderingHistorikk", () => {
     it("viser klikkbar overskrift med type og dato for hver vurdering", () => {
       renderVurderingHistorikk([ikkeAktuell, avslag, forhandsvarsel, oppfylt]);
 
-      const vurderingButtons = screen.getAllByRole("button");
+      const vurderingButtons = getAccordionButtons();
 
       expect(vurderingButtons[0].textContent).to.contain(
         `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`
@@ -139,7 +139,9 @@ describe("VurderingHistorikk", () => {
     it("klikk på overskrift viser begrunnelse, veileder og knapp for å se document for vurderingen", async () => {
       renderVurderingHistorikk([oppfylt]);
 
-      const vurderingButton = screen.getByRole("button");
+      const vurderingButton = getButton(
+        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`
+      );
 
       await userEvent.click(vurderingButton);
 
@@ -154,7 +156,9 @@ describe("VurderingHistorikk", () => {
     it("klikk på ikke-aktuell viser årsak og veileder for vurderingen", async () => {
       renderVurderingHistorikk([ikkeAktuell]);
 
-      const vurderingButton = screen.getByRole("button");
+      const vurderingButton = getButton(
+        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`
+      );
 
       await userEvent.click(vurderingButton);
 
@@ -203,7 +207,7 @@ describe("VurderingHistorikk", () => {
 
       renderVurderingHistorikk(vurderinger, sykepengestoppList);
 
-      const accordionButtons = screen.getAllByRole("button");
+      const accordionButtons = getAccordionButtons();
 
       expect(accordionButtons.length).toBe(5);
 
@@ -225,3 +229,9 @@ describe("VurderingHistorikk", () => {
     });
   });
 });
+
+const getAccordionButtons = () =>
+  screen
+    .getAllByRole("button")
+    // eslint-disable-next-line testing-library/no-node-access -- No RTL query can distinguish accordion headers from other buttons
+    .filter((button) => button.parentElement?.hasAttribute("data-expanded"));

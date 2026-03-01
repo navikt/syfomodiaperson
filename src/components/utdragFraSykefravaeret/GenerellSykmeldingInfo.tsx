@@ -32,7 +32,7 @@ export default function GenerellSykmeldingInfo({ sykmelding }: Props) {
     );
 
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       <Perioder perioder={sykmeldingPerioderSortertEtterDato} />
       {hovedDiagnose && <Diagnose diagnose={hovedDiagnose} erHovedDiagnose />}
       {biDiagnoser &&

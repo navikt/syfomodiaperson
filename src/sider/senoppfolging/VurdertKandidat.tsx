@@ -21,8 +21,8 @@ export function VurdertKandidat({ vurdering }: Props) {
 
   return (
     <Box
-      background="surface-default"
-      padding="6"
+      background="default"
+      padding="space-24"
       className="flex flex-col gap-4 mb-2"
     >
       <Heading size="medium">{texts.heading}</Heading>
@@ -32,7 +32,7 @@ export function VurdertKandidat({ vurdering }: Props) {
       <div className="flex flex-row gap-1 items-center">
         <CheckmarkCircleFillIcon
           fontSize="2em"
-          color="var(--a-icon-success)"
+          color="var(--ax-text-success-decoration)"
           title="suksess-ikon"
         />
         <VurdertAv vurdering={vurdering} />

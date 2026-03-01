@@ -55,7 +55,7 @@ export function PersonKortVirksomhetHeader({
     texts.activeSykmelding;
   return (
     <div className="mb-8">
-      <div className="personkortElement__tittel bg-surface-subtle p-2 border-0">
+      <div className="personkortElement__tittel bg-ax-bg-neutral-soft p-2 border-0">
         <img src={FabrikkImage} alt="Fabrikk" />
         <GridRow>
           <FlexColumn>{virksomhetsnavn}</FlexColumn>
@@ -63,7 +63,9 @@ export function PersonKortVirksomhetHeader({
           <FlexColumn>{forskutteringText}</FlexColumn>
           {activeSykmeldingText && (
             <FlexColumn>
-              <Tag variant="alt3">{activeSykmeldingText}</Tag>
+              <Tag data-color="info" variant="outline">
+                {activeSykmeldingText}
+              </Tag>
             </FlexColumn>
           )}
         </GridRow>

@@ -178,7 +178,7 @@ describe("MoteSvarHistorikk", () => {
   it("viser accordion for hvert møte", () => {
     renderMoteSvarHistorikk([ferdigstiltMote, avlystMote]);
 
-    const accordions = screen.getAllByRole("button");
+    const accordions = getAccordionButtons();
     expect(accordions.length).to.equal(2);
     expect(accordions[0].textContent).to.contain("Møte 15. januar 2021");
     expect(accordions[1].textContent).to.contain("Avlyst møte 22. mars 2020");
@@ -198,7 +198,9 @@ describe("MoteSvarHistorikk", () => {
   it("viser innkalling og endring med svar for ferdigstilt møte", async () => {
     renderMoteSvarHistorikk([ferdigstiltMote]);
 
-    const accordion = screen.getByRole("button");
+    const accordion = screen.getByRole("button", {
+      name: "Møte 15. januar 2021",
+    });
     await userEvent.click(accordion);
 
     expect(screen.getByText("Innkalling sendt 26. mai 2021 - svar:")).to.exist;
@@ -219,7 +221,9 @@ describe("MoteSvarHistorikk", () => {
   it("viser innkalling med svar for avlyst møte", async () => {
     renderMoteSvarHistorikk([avlystMote]);
 
-    const accordion = screen.getByRole("button");
+    const accordion = screen.getByRole("button", {
+      name: "Avlyst møte 22. mars 2020",
+    });
     await userEvent.click(accordion);
 
     assertExpandableWithHeader(
@@ -236,3 +240,9 @@ describe("MoteSvarHistorikk", () => {
 const assertExpandableWithHeader = (header: string, count = 1) => {
   expect(screen.getAllByRole("region", { name: header })).to.have.length(count);
 };
+
+const getAccordionButtons = () =>
+  screen
+    .getAllByRole("button")
+    // eslint-disable-next-line testing-library/no-node-access -- No RTL query can distinguish accordion headers from other buttons
+    .filter((button) => button.parentElement?.hasAttribute("data-expanded"));

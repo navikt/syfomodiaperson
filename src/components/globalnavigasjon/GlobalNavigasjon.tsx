@@ -100,7 +100,7 @@ interface Props {
 
 export function GlobalNavigasjonSkeleton(): ReactElement {
   return (
-    <VStack gap="2" className="mb-2">
+    <VStack gap="space-8" className="mb-2">
       {Object.values(Menypunkter).map((_, i) => (
         <Skeleton variant="rectangle" width="100%" height={52} key={i} />
       ))}

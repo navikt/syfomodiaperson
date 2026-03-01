@@ -9,7 +9,7 @@ interface Props {
 export function Infomelding(infomeldingProps: Props) {
   const { tittel, melding } = infomeldingProps;
   return (
-    <Box background="surface-default" className="text-center" padding="6">
+    <Box background="default" className="text-center" padding="space-24">
       <Heading size="small" level="3" className="mt-8">
         {tittel}
       </Heading>

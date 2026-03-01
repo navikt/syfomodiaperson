@@ -75,7 +75,7 @@ export default function IkkeAktuellSkjema() {
   };
 
   return (
-    <Box background="surface-default" padding="6" className="mb-2">
+    <Box background="default" padding="space-24" className="mb-2">
       <form onSubmit={handleSubmit(submit)} className="[&>*]:mb-4">
         <Heading level="2" size="medium">
           {texts.title}
@@ -97,7 +97,7 @@ export default function IkkeAktuellSkjema() {
         {sendVurdering.isError && (
           <SkjemaInnsendingFeil error={sendVurdering.error} />
         )}
-        <HStack gap="4">
+        <HStack gap="space-16">
           <Button loading={sendVurdering.isPending} type="submit">
             {texts.buttons.save}
           </Button>

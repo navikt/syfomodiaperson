@@ -142,7 +142,7 @@ export default function OppfolgingsplanerOversikt() {
                 ))}
               </>
             ) : (
-              <Box background="surface-default" className="p-4">
+              <Box background="default" className="p-4">
                 <BodyShort>
                   {texts.alertMessages.ingenTidligereOppfolgingsplaner}
                 </BodyShort>

@@ -7,7 +7,7 @@ export const DeltakerArbeidstakerHeading = () => {
   const navbruker = useNavBrukerData();
 
   return (
-    <HStack gap="2" className="pl-4">
+    <HStack gap="space-8" className="pl-4">
       <PersonIcon role="img" focusable={false} width={24} height={24} />
       <Heading size="xsmall">{`Arbeidstaker: ${navbruker?.navn}`}</Heading>
     </HStack>

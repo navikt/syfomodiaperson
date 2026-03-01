@@ -32,7 +32,6 @@ const BehandlerSearchResult = ({
       placement="bottom-start"
       open={behandlere.length > 0 && searchText !== ""}
       onClose={() => null}
-      arrow={false}
       className="w-[30rem] overflow-auto max-h-60"
       offset={8}
       tabIndex={0}

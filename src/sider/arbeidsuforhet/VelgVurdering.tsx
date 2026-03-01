@@ -21,7 +21,7 @@ const texts = {
 export default function VelgVurdering() {
   const navigate = useNavigate();
   return (
-    <Box background="surface-default" className="flex flex-col gap-4 p-6">
+    <Box background="default" className="flex flex-col gap-4 p-6">
       <Heading level="2" size="medium">
         {texts.title}
       </Heading>
@@ -34,7 +34,6 @@ export default function VelgVurdering() {
           {texts.narAvslagUtenForhandsvarselContent}
         </ReadMore>
       </div>
-
       <div className="flex flex-row gap-4">
         <Button
           as="a"

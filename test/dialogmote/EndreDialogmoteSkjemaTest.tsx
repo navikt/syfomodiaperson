@@ -260,9 +260,10 @@ describe("EndreDialogmoteSkjemaTest", () => {
     const expectedSendtDato = new Date();
     await userEvent.click(previewButtons[0]);
 
-    const forhandsvisningEndringArbeidstaker = screen.getAllByRole("dialog", {
+    const forhandsvisningEndringArbeidstaker = screen.getByRole("dialog", {
+      name: texts.forhandsvisningArbeidstakerContentLabel,
       hidden: true,
-    })[1];
+    });
 
     expect(
       within(forhandsvisningEndringArbeidstaker).getByRole("heading", {
@@ -295,9 +296,10 @@ describe("EndreDialogmoteSkjemaTest", () => {
     const expectedSendtDato = new Date();
     await userEvent.click(previewButtons[1]);
 
-    const forhandsvisningEndringArbeidsgiver = screen.getAllByRole("dialog", {
+    const forhandsvisningEndringArbeidsgiver = screen.getByRole("dialog", {
+      name: texts.forhandsvisningArbeidsgiverContentLabel,
       hidden: true,
-    })[2];
+    });
 
     expect(
       within(forhandsvisningEndringArbeidsgiver).getByRole("heading", {
@@ -336,9 +338,10 @@ describe("EndreDialogmoteSkjemaTest", () => {
     const expectedSendtDato = new Date();
     await userEvent.click(previewButtons[2]);
 
-    const forhandsvisningEndringBehandler = screen.getAllByRole("dialog", {
+    const forhandsvisningEndringBehandler = screen.getByRole("dialog", {
+      name: texts.forhandsvisningBehandlerContentLabel,
       hidden: true,
-    })[3];
+    });
 
     expect(
       within(forhandsvisningEndringBehandler).getByRole("heading", {

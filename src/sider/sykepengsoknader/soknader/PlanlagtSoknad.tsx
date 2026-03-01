@@ -36,7 +36,7 @@ export default function PlanlagtSoknad({ soknad }: Props): ReactElement {
   const soknadStatusText = textSoknadStatus(soknad.status);
 
   return (
-    <Box background="surface-default" className="flex flex-col p-4 my-px gap-2">
+    <Box background="default" className="flex flex-col p-4 my-px gap-2">
       <div className="flex flex-row justify-between">
         {soknadTomDato && (
           <BodyShort size="small">
@@ -44,7 +44,12 @@ export default function PlanlagtSoknad({ soknad }: Props): ReactElement {
           </BodyShort>
         )}
         {soknadStatusText && (
-          <Tag size="small" variant="info" className="w-fit">
+          <Tag
+            data-color="info"
+            size="small"
+            variant="outline"
+            className="w-fit"
+          >
             {soknadStatusText}
           </Tag>
         )}

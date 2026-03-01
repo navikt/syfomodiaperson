@@ -84,8 +84,8 @@ export default function VedtakFattet({
       )}
       <VedtakInfoPanel vedtak={vedtak} />
       <Box
-        background="surface-default"
-        padding="6"
+        background="default"
+        padding="space-24"
         className="flex flex-col gap-4"
       >
         <Heading level="3" size="medium">

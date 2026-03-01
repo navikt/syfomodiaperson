@@ -1,6 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "@navikt/ds-css";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 .ekspanderbartPanel__tittel {
   display: flex;

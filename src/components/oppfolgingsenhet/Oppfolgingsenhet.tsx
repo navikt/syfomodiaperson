@@ -20,9 +20,9 @@ export default function Oppfolgingsenhet({
   const tildelOppfolgingsenhetModalRef = useRef<HTMLDialogElement>(null);
 
   return (
-    <Box background="surface-default" className="pt-4 pl-4 pr-4">
-      <HGrid gap="4" columns={2} maxWidth={{ xl: "1440px" }}>
-        <Box background="bg-subtle" borderRadius="large" padding="4">
+    <Box background="default" className="pt-4 pl-4 pr-4">
+      <HGrid gap="space-16" columns={2} maxWidth={{ xl: "1440px" }}>
+        <Box background="neutral-soft" borderRadius="8" padding="space-16">
           <OppfolgingsenhetInnhold modalRef={tildelOppfolgingsenhetModalRef} />
           <TildelOppfolgingsenhetModal
             modalRef={tildelOppfolgingsenhetModalRef}

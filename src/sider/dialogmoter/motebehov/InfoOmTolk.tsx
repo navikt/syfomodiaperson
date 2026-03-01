@@ -46,7 +46,7 @@ export const InfoOmTolk = () => {
   }
 
   return (
-    <Box background="surface-default" className="flex flex-col mb-4 p-6 gap-6">
+    <Box background="default" className="flex flex-col mb-4 p-6 gap-6">
       <Heading size={"medium"} level={"2"}>
         <HStack>
           {texts.header}

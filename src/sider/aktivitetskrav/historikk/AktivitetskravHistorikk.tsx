@@ -71,8 +71,8 @@ export function AktivitetskravHistorikk() {
 
   return (
     <Box
-      background="surface-default"
-      padding="8"
+      background="default"
+      padding="space-32"
       className="flex flex-col mb-4 gap-8"
     >
       <div>

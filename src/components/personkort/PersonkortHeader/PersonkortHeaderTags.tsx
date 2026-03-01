@@ -75,63 +75,64 @@ export function PersonkortHeaderTags() {
     >
       <div className="flex flex-1 gap-2 h-fit flex-wrap justify-end mr-4">
         {isKode6 && (
-          <Tag variant="warning" size="small">
+          <Tag data-color="warning" variant="outline" size="small">
             {texts.kode6}
           </Tag>
         )}
         {isKode7 && (
-          <Tag variant="warning" size="small">
+          <Tag data-color="warning" variant="outline" size="small">
             {texts.kode7}
           </Tag>
         )}
         {isEgenAnsatt && (
-          <Tag variant="warning" size="small">
+          <Tag data-color="warning" variant="outline" size="small">
             {texts.egenansatt}
           </Tag>
         )}
         {arbeidsrettetOppfolging?.underOppfolging && (
-          <Tag variant="warning" size="small">
+          <Tag data-color="warning" variant="outline" size="small">
             {texts.ao}
           </Tag>
         )}
         {hasActiveFriskmeldingVedtak && (
-          <Tag variant="info" size="small">
+          <Tag data-color="info" variant="outline" size="small">
             {texts.friskmeldingTilArbeidsformidling}
           </Tag>
         )}
         {uforegradData?.uforegrad && (
-          <Tag variant="info" size="small">
+          <Tag data-color="info" variant="outline" size="small">
             {`Ufør ${uforegradData.uforegrad} %`}
           </Tag>
         )}
         {talesprakTolkSprakkode && (
-          <Tag variant="warning" size="small">
+          <Tag data-color="warning" variant="outline" size="small">
             {texts.talesprakTolk}: {talesprakTolkSprakkode}
           </Tag>
         )}
         {tegnsprakTolkSprakkode && (
-          <Tag variant="warning" size="small">
+          <Tag data-color="warning" variant="outline" size="small">
             {texts.tegnsprakTolk}: {tegnsprakTolkSprakkode}
           </Tag>
         )}
         {isDead && (
           <Tag
-            variant="error"
+            data-color="danger"
+            variant="outline"
             size="small"
           >{`${texts.dod} ${dateOfDeath}`}</Tag>
         )}
         {hasSikkerhetstiltak && (
-          <Tag variant="error" size="small">
+          <Tag data-color="danger" variant="outline" size="small">
             {texts.sikkerhetstiltak}
           </Tag>
         )}
         {brukerKanIkkeVarslesDigitalt && (
-          <Tag variant="warning" size="small">
+          <Tag data-color="warning" variant="outline" size="small">
             {texts.reservertKRR}
           </Tag>
         )}
         {harIkkeArbeidsgiver && (
-          <Tag variant="warning" size="small">
+          <Tag data-color="warning" variant="outline" size="small">
             {texts.harIkkeArbeidsgiver}
           </Tag>
         )}

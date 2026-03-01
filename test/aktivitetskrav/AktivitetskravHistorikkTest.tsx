@@ -136,10 +136,7 @@ describe("AktivitetskravHistorikk", () => {
       oppfyltVurdering,
     ]);
 
-    const allButtons = screen.getAllByRole("button");
-    const vurderingButtons = allButtons.filter(
-      (button) => button.textContent !== "Se hele brevet"
-    );
+    const vurderingButtons = getAccordionButtons();
     expect(vurderingButtons[0].textContent).to.contain(
       `Forhåndsvarsel - ${tilDatoMedManedNavn(today)}`
     );
@@ -153,7 +150,9 @@ describe("AktivitetskravHistorikk", () => {
   it("klikk på overskrift viser årsak med tittel, beskrivelse med tittel og veileder-navn", async () => {
     renderAktivitetskravHistorikk([oppfyltVurdering]);
 
-    const vurderingButton = screen.getByRole("button");
+    const vurderingButton = getButton(
+      `Oppfylt - ${tilDatoMedManedNavn(today)}`
+    );
     await userEvent.click(vurderingButton);
 
     expect(screen.getByText(arsakTitle)).to.exist;
@@ -166,7 +165,9 @@ describe("AktivitetskravHistorikk", () => {
   it("klikk på overskrift viser årsak med tittel og veileder-navn, uten beskrivelse og tittel hvis beskrivelse mangler", async () => {
     renderAktivitetskravHistorikk([oppfyltVurderingWithoutBeskrivelse]);
 
-    const vurderingButton = screen.getByRole("button");
+    const vurderingButton = getButton(
+      `Oppfylt - ${tilDatoMedManedNavn(today)}`
+    );
     await userEvent.click(vurderingButton);
 
     expect(screen.getByText(arsakTitle)).to.exist;
@@ -179,7 +180,9 @@ describe("AktivitetskravHistorikk", () => {
   it("klikk på overskrift viser kun veiledernavn hvis årsak og beskrivelse mangler", async () => {
     renderAktivitetskravHistorikk([ikkeOppfyltVurdering]);
 
-    const vurderingButton = screen.getByRole("button");
+    const vurderingButton = getButton(
+      `Ikke oppfylt - ${tilDatoMedManedNavn(today)}`
+    );
     await userEvent.click(vurderingButton);
 
     expect(screen.queryByText(arsakTitle)).to.not.exist;
@@ -211,7 +214,9 @@ describe("AktivitetskravHistorikk", () => {
     );
     renderAktivitetskravHistorikk([avventVurdering]);
 
-    const vurderingButton = screen.getByRole("button");
+    const vurderingButton = getButton(
+      `Avventer - ${tilDatoMedManedNavn(today)}`
+    );
     await userEvent.click(vurderingButton);
 
     expect(screen.getByText(arsakTitle)).to.exist;
@@ -228,7 +233,9 @@ describe("AktivitetskravHistorikk", () => {
   it("Viser knapp for å se hele forhåndsvarsel-brevet dersom vurderingen var et forhåndsvarsel", async () => {
     renderAktivitetskravHistorikk([forhandsvarselVurdering]);
 
-    const vurderingAccordion = screen.getByRole("button");
+    const vurderingAccordion = getButton(
+      `Forhåndsvarsel - ${tilDatoMedManedNavn(today)}`
+    );
     await userEvent.click(vurderingAccordion);
     const button = screen.getByRole("button", { name: "Se hele brevet" });
 
@@ -285,7 +292,7 @@ describe("AktivitetskravHistorikk", () => {
 
       renderAktivitetskravHistorikk(vurderinger, sykepengestoppList);
 
-      const accordionButtons = screen.getAllByRole("button");
+      const accordionButtons = getAccordionButtons();
 
       expect(accordionButtons.length).toBe(5);
 
@@ -307,3 +314,9 @@ describe("AktivitetskravHistorikk", () => {
     });
   });
 });
+
+const getAccordionButtons = () =>
+  screen
+    .getAllByRole("button")
+    // eslint-disable-next-line testing-library/no-node-access -- No RTL query can distinguish accordion headers from other buttons
+    .filter((button) => button.parentElement?.hasAttribute("data-expanded"));

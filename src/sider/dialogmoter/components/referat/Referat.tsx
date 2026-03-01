@@ -352,7 +352,7 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
     }`;
 
   return (
-    <Box background="surface-default" padding="4">
+    <Box background="default" padding="space-16">
       <FormProvider {...formMethods}>
         <form
           onSubmit={handleSubmit(submit)}
@@ -364,7 +364,7 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
           <Heading level="2" size="medium" className="mb-8">
             {header}
           </Heading>
-          <VStack gap="4">
+          <VStack gap="space-16">
             <Heading level="3" size="small">
               {texts.deltakere.title}
             </Heading>
@@ -379,7 +379,7 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
                 </DeltakerArbeidsgiverHeading>
               }
             >
-              <VStack gap="4">
+              <VStack gap="space-16">
                 <TextField
                   className="w-2/4"
                   {...register("naermesteLeder", {
@@ -410,7 +410,7 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
                   </DeltakerBehandlerHeading>
                 }
               >
-                <VStack gap="4">
+                <VStack gap="space-16">
                   <BodyLong size="small">
                     {texts.deltakere.behandlerTekst}
                   </BodyLong>
@@ -429,7 +429,7 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
                 </VStack>
               </ExpansionCardFormField>
             )}
-            <VStack gap="4" align="start">
+            <VStack gap="space-16" align="start">
               {fields.map((field, index) => (
                 <div key={field.id} className="flex w-full gap-2">
                   <TextField
@@ -474,22 +474,27 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
             </VStack>
           </VStack>
           <div className="my-8">
-            <List as="ul" size="small" description={texts.personvern.title}>
-              <List.Item>{texts.personvern.bulletPoint.one}</List.Item>
-              <List.Item>{texts.personvern.bulletPoint.two}</List.Item>
-            </List>
+            <div>
+              <BodyShort size="small">{texts.personvern.title}</BodyShort>
+              <Box marginBlock="space-12" asChild>
+                <List as="ul" size="small">
+                  <List.Item>{texts.personvern.bulletPoint.one}</List.Item>
+                  <List.Item>{texts.personvern.bulletPoint.two}</List.Item>
+                </List>
+              </Box>
+            </div>
             <EksternLenke href={personvernUrl}>
               {texts.personvernLenketekst}
             </EksternLenke>
           </div>
           <MalformRadioGroup />
           {showToast && (
-            <div className="mb-4 font-bold flex gap-2">
+            <div className="mb-4 font-ax-bold flex gap-2">
               <img src={SaveFile} alt="saved" />
               <span>{savedReferatText(lastSavedTime.toDate())}</span>
             </div>
           )}
-          <VStack gap="8">
+          <VStack gap="space-32">
             {mode === ReferatMode.ENDRET && (
               <ReferatTextArea
                 {...register("begrunnelseEndring", {
@@ -635,7 +640,7 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
               {savedReferatText(lastSavedTime.toDate())}
             </Alert>
           )}
-          <HStack gap="4" className="mt-8">
+          <HStack gap="space-16" className="mt-8">
             <Button
               type="button"
               variant="secondary"

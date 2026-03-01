@@ -49,10 +49,11 @@ export default function Oppfolgingsoppgave() {
     : undefined;
 
   return isExistingOppfolgingsoppgave ? (
-    <Box background={"surface-default"} padding="4" className="flex-1 mb-2">
+    <Box background={"default"} padding="space-16" className="flex-1 mb-2">
       {frist && (
         <Tag
-          variant="warning"
+          data-color="warning"
+          variant="outline"
           size="small"
           className="mb-4"
         >{`Frist: ${frist}`}</Tag>
@@ -74,8 +75,9 @@ export default function Oppfolgingsoppgave() {
         </>
       )}
       <Button
+        data-color="neutral"
         type="button"
-        variant={"primary-neutral"}
+        variant={"primary"}
         onClick={() => setIsModalOpen(true)}
         className={"ml-auto mr-4"}
         size={"small"}
@@ -84,8 +86,9 @@ export default function Oppfolgingsoppgave() {
       </Button>
       <Tooltip content={texts.removeTooltip}>
         <Button
+          data-color="neutral"
           type="button"
-          variant={"secondary-neutral"}
+          variant={"secondary"}
           onClick={() =>
             handleRemoveOppfolgingsoppgave(aktivOppfolgingsoppgave.uuid)
           }

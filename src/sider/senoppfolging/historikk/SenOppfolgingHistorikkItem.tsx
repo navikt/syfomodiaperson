@@ -63,7 +63,7 @@ export function SenOppfolgingHistorikkItem({ kandidat }: Props) {
     <Accordion.Item>
       <Accordion.Header>{headerText(kandidat)}</Accordion.Header>
       <Accordion.Content>
-        <VStack gap="4">
+        <VStack gap="space-16">
           <BodyShort size="small">
             {svar ? svarTekst(svar) : texts.ikkeSvart}
           </BodyShort>

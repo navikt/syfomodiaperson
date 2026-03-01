@@ -125,8 +125,8 @@ export const VurderingHistorikk = () => {
 
   return (
     <Box
-      padding="6"
-      background="surface-default"
+      padding="space-24"
+      background="default"
       className="flex flex-col gap-8 mb-2"
     >
       <div>

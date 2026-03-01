@@ -160,7 +160,7 @@ export default function OppfyltForm() {
   }
 
   return (
-    <Box background="surface-default" padding="6" className="mb-2">
+    <Box background="default" padding="space-24" className="mb-2">
       <form onSubmit={handleSubmit(submit)} className="[&>*]:mb-4">
         <Heading level="2" size="medium">
           {texts.title}
@@ -192,14 +192,28 @@ export default function OppfyltForm() {
           <SkjemaInnsendingFeil error={sendVurdering.error} />
         )}
         {isSisteVurderingForhandsvarsel ? (
-          <List as="ol" size="small" title={texts.forDuGarVidere.head}>
-            <List.Item>{texts.forDuGarVidere.step1}</List.Item>
-            <List.Item>{texts.forDuGarVidere.step2}</List.Item>
-          </List>
+          <div>
+            <Heading as="h3" size="xsmall">
+              {texts.forDuGarVidere.head}
+            </Heading>
+            <Box marginBlock="space-12" asChild>
+              <List as="ol" size="small">
+                <List.Item>{texts.forDuGarVidere.step1}</List.Item>
+                <List.Item>{texts.forDuGarVidere.step2}</List.Item>
+              </List>
+            </Box>
+          </div>
         ) : (
-          <List as="ul" size="small" title={texts.forDuGarVidere.head}>
-            <List.Item>{texts.forDuGarVidere.step2}</List.Item>
-          </List>
+          <div>
+            <Heading as="h3" size="xsmall">
+              {texts.forDuGarVidere.head}
+            </Heading>
+            <Box marginBlock="space-12" asChild>
+              <List as="ul" size="small">
+                <List.Item>{texts.forDuGarVidere.step2}</List.Item>
+              </List>
+            </Box>
+          </div>
         )}
         <ButtonRow>
           <Button loading={sendVurdering.isPending} type="submit">

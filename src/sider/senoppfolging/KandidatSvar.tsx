@@ -17,8 +17,8 @@ export function KandidatSvar({ svar }: KandidatSvarProps) {
 
   return (
     <Box
-      background="surface-default"
-      padding="6"
+      background="default"
+      padding="space-24"
       className="flex flex-col gap-4 mb-2"
     >
       <Heading size="medium">{texts.heading}</Heading>

@@ -74,7 +74,7 @@ export default function NyVurdering({ handleClick }: Props) {
           setIsNotificationVisible={setIsNotificationVisible}
         />
       )}
-      <Box background="surface-default" padding="6">
+      <Box background="default" padding="space-24">
         <Heading className="mb-4" level="2" size="medium">
           {texts.siste}
         </Heading>

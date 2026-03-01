@@ -92,7 +92,7 @@ export default function StansSkjema({ varselSvarfrist }: Props) {
   }
 
   return (
-    <Box background="surface-default" padding="6">
+    <Box background="default" padding="space-24">
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(submit)} className="[&>*]:mb-4">
           <Heading level="2" size="medium">
@@ -115,28 +115,39 @@ export default function StansSkjema({ varselSvarfrist }: Props) {
             minRows={6}
             maxLength={begrunnelseMaxLength}
           />
-          <List as="ul" title={texts.afterSendInfo.title} size={"small"}>
-            {texts.afterSendInfo.gosysoppgave}
-            <List as="ul" className="ml-1">
-              <List.Item>
-                {texts.afterSendInfo.gosysoppgaveListe.tema}
-              </List.Item>
-              <List.Item>
-                {texts.afterSendInfo.gosysoppgaveListe.oppgavetype}
-              </List.Item>
-              <List.Item>
-                {texts.afterSendInfo.gosysoppgaveListe.gjelder}
-              </List.Item>
-              <List.Item>
-                {texts.afterSendInfo.gosysoppgaveListe.prioritet}
-              </List.Item>
-            </List>
-          </List>
+          <div>
+            <Heading as="h3" size="small">
+              {texts.afterSendInfo.title}
+            </Heading>
+            <Box marginBlock="space-16" asChild>
+              <List as="ul" size={"small"}>
+                {texts.afterSendInfo.gosysoppgave}
+                <div className="ml-1">
+                  <Box marginBlock="space-16" asChild>
+                    <List as="ul">
+                      <List.Item>
+                        {texts.afterSendInfo.gosysoppgaveListe.tema}
+                      </List.Item>
+                      <List.Item>
+                        {texts.afterSendInfo.gosysoppgaveListe.oppgavetype}
+                      </List.Item>
+                      <List.Item>
+                        {texts.afterSendInfo.gosysoppgaveListe.gjelder}
+                      </List.Item>
+                      <List.Item>
+                        {texts.afterSendInfo.gosysoppgaveListe.prioritet}
+                      </List.Item>
+                    </List>
+                  </Box>
+                </div>
+              </List>
+            </Box>
+          </div>
           <Paragraph
             label={texts.buttonDescriptionLabel}
             body={texts.buttonDescription}
           />
-          <HStack gap="4">
+          <HStack gap="space-16">
             <Button loading={sendVurdering.isPending} type="submit">
               {texts.sendVarselButtonText}
             </Button>
