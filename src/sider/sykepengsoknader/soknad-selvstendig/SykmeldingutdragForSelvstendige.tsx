@@ -7,8 +7,7 @@ import {
 } from "@/sider/sykmeldinger/sykmeldingstatuspanel/SykmeldingStatuspanelOpplysning";
 import SykmeldingPerioder from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingPerioder";
 import { SykmeldingNokkelOpplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingNokkelOpplysning";
-import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
-import { SpeilingEkspanderbartPanelTittel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanelTittel";
+import { BodyShort, Box, Heading } from "@navikt/ds-react";
 
 const texts = {
   datoSykmelding: "Dato sykmeldingen ble skrevet",
@@ -60,38 +59,30 @@ const textArbeidssituasjon = (arbeidssituasjon?: string) => {
 };
 
 interface Props {
-  erApen: boolean;
   sykmelding: SykmeldingOldFormat;
 }
 
 export default function SykmeldingUtdragForSelvstendige({
-  erApen,
   sykmelding,
 }: Props): ReactElement {
   return (
-    <SpeilingEkspanderbartPanel
-      defaultOpen={erApen}
-      showCloseButton={!erApen}
-      variant="lyselilla"
-      tittel={
-        <SpeilingEkspanderbartPanelTittel icon="plaster">
-          {texts.opplysninger}
-        </SpeilingEkspanderbartPanelTittel>
-      }
-    >
+    <Box background="default" padding="space-24" className="mb-4">
+      <Heading size={"small"} className="mb-4">
+        {texts.opplysninger}
+      </Heading>
       <div>
         <SykmeldingPerioder perioder={sykmelding.mulighetForArbeid.perioder} />
         <SykmeldingNokkelOpplysning tittel={texts.datoSykmelding}>
-          <p className="js-utstedelsesdato">
+          <BodyShort size="small">
             {tilLesbarDatoMedArstall(sykmelding.bekreftelse.utstedelsesdato)}
-          </p>
+          </BodyShort>
         </SykmeldingNokkelOpplysning>
         <SykmeldingNokkelOpplysning tittel={texts.passer}>
-          <p className="js-arbeidssituasjon">
+          <BodyShort size="small">
             {textArbeidssituasjon(
               sykmelding.valgtArbeidssituasjon?.toLowerCase()
             )}
-          </p>
+          </BodyShort>
         </SykmeldingNokkelOpplysning>
         {sykmelding.sporsmal.harAnnetFravaer !== null && (
           <SykmeldingopplysningFravaersperioder sykmelding={sykmelding} />
@@ -100,6 +91,6 @@ export default function SykmeldingUtdragForSelvstendige({
           <SykmeldingopplysningForsikring sykmelding={sykmelding} />
         )}
       </div>
-    </SpeilingEkspanderbartPanel>
+    </Box>
   );
 }
