@@ -16,6 +16,7 @@ import {
   sykmeldingerSortertNyestTilEldstPeriode,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
 
 const texts = {
   fetchDiskresjonskodeFailed: "Klarte ikke hente diskresjonskode for brukeren.",
@@ -61,8 +62,10 @@ export function PersonkortHeaderTags() {
       getSykmeldingerQuery.sykmeldinger
     ).find(
       (sykmelding) =>
-        sykmelding.status === SykmeldingStatus.SENDT ||
-        sykmelding.status === SykmeldingStatus.BEKREFTET
+        sykmelding.behandlingsutfall.status !==
+          BehandlingsutfallStatusDTO.INVALID &&
+        (sykmelding.status === SykmeldingStatus.SENDT ||
+          sykmelding.status === SykmeldingStatus.BEKREFTET)
     );
   const harIkkeArbeidsgiver = nyligsteSendtEllerBekreftetSykmelding
     ? erSykmeldingUtenArbeidsgiver(nyligsteSendtEllerBekreftetSykmelding)

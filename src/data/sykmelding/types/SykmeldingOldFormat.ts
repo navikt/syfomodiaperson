@@ -158,7 +158,9 @@ export function erSykmeldingUtenArbeidsgiver(
   sykmelding: SykmeldingOldFormat
 ): boolean {
   return (
-    !sykmelding.orgnummer && sykmelding.status === SykmeldingStatus.BEKREFTET
+    !sykmelding.orgnummer &&
+    !sykmelding.arbeidsgiver &&
+    sykmelding.status === SykmeldingStatus.BEKREFTET
   );
 }
 
