@@ -40,9 +40,7 @@ export default function Tilbakedatering(tilbakedateringProps: Props) {
             {texts.begrunnelse}
           </Heading>
           <BodyLong size="small">
-            {tilLesbarDatoMedArstall(
-              sykmelding.tilbakedatering.tilbakedatertBegrunnelse
-            )}
+            {sykmelding.tilbakedatering.tilbakedatertBegrunnelse}
           </BodyLong>
         </div>
       )}
