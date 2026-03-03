@@ -20,14 +20,14 @@ const MODIA_HEADER_ID = "modia-header";
 interface Props {
   tittel: string;
   aktivtMenypunkt: Menypunkter;
-  flexjar?: ReactNode;
+  lumi?: ReactNode;
   children: ReactNode;
 }
 
 export default function Side({
   tittel,
   aktivtMenypunkt,
-  flexjar,
+  lumi,
   children,
 }: Props) {
   const diskresjonskode = useDiskresjonskodeQuery();
@@ -35,7 +35,7 @@ export default function Side({
 
   useDocumentTitle(tittel);
 
-  const isFlexjarVisible =
+  const shouldShowLumi =
     diskresjonskode.data !== "6" && diskresjonskode.data !== "7";
   const isPending = diskresjonskode.isPending || brukerinfo.isPending;
 
@@ -62,7 +62,7 @@ export default function Side({
         </nav>
         <div className="w-full">{children}</div>
       </div>
-      {isFlexjarVisible && flexjar}
+      {shouldShowLumi && lumi}
     </div>
   );
 }

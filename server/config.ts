@@ -400,6 +400,16 @@ export const auth = {
     }),
     removePathPrefix: true,
   },
+  lumiApi: {
+    applicationName: "lumi-api",
+    clientId: envVar({
+      name: "LUMI_API_AAD_APP_CLIENT_ID",
+    }),
+    host: envVar({
+      name: "LUMI_API_HOST",
+    }),
+    removePathPrefix: true,
+  },
   veilarboppfolging: {
     applicationName: "veilarboppfolging",
     clientId: envVar({

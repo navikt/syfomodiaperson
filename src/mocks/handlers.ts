@@ -2,6 +2,7 @@ import mockEreg from "@/mocks/ereg/mockEreg";
 import { mockSykepengedagerInformasjon } from "@/mocks/sykepengerdager-informasjon/mockSykepengedagerInformasjon";
 import { mockFastlegerest } from "@/mocks/fastlegerest/mockFastlegerest";
 import { mockFlexjar } from "@/mocks/flexjar/mockFlexjar";
+import { mockLumi } from "@/mocks/lumi/mockLumi";
 import { mockVeilarboppfolging } from "@/mocks/veilarboppfolging/mockVeilarboppfolging";
 import { mockIsaktivitetskrav } from "@/mocks/isaktivitetskrav/mockIsaktivitetskrav";
 import { mockIsarbeidsuforhet } from "@/mocks/isarbeidsuforhet/mockIsarbeidsuforhet";
@@ -54,6 +55,7 @@ const handlers = [
   mockSykepengedagerInformasjon,
   mockFastlegerest,
   mockFlexjar,
+  mockLumi,
   ...mockIsaktivitetskrav,
   ...mockIsarbeidsuforhet,
   ...mockIsbehandlerdialog,
