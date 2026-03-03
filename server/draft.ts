@@ -128,7 +128,7 @@ export function setupDraftEndpoints(server: express.Application) {
             );
             return res.status(500).send({ message: "Failed to save draft" });
           }
-          return res.status(204).send();
+          return res.status(200).send(req.body);
         }
       );
     }

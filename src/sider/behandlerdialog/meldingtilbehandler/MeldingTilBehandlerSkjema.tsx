@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Alert, Button, Select, Textarea } from "@navikt/ds-react";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import {
@@ -19,7 +19,6 @@ import { VelgBehandler } from "@/components/behandler/VelgBehandler";
 import { PreviewButton } from "@/sider/behandlerdialog/meldingtilbehandler/PreviewButton";
 import {
   useDeleteMeldingTilBehandlerDraft,
-  useMeldingTilBehandlerDraftQuery,
   useSaveMeldingTilBehandlerDraft,
 } from "@/data/behandlerdialog/meldingtilbehandlerDraftQueryHooks";
 import { useDebouncedCallback } from "use-debounce";
@@ -44,9 +43,17 @@ export interface MeldingTilBehandlerSkjemaValues {
   meldingTekst: string;
 }
 
-export const MAX_LENGTH_BEHANDLER_MELDING = 5000;
+const MAX_LENGTH_BEHANDLER_MELDING = 5000;
 
-export const MeldingTilBehandlerSkjema = () => {
+interface Props {
+  meldingTekst?: string;
+  meldingType?: MeldingType;
+}
+
+export function MeldingTilBehandlerSkjema({
+  meldingTekst,
+  meldingType,
+}: Props) {
   const [displayPreview, setDisplayPreview] = useState(false);
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const [meldingSentTime, setMeldingSentTime] = useState<Date>();
@@ -55,8 +62,8 @@ export const MeldingTilBehandlerSkjema = () => {
   const meldingTilBehandler = useMeldingTilBehandler();
   const formMethods = useForm<MeldingTilBehandlerSkjemaValues>({
     defaultValues: {
-      meldingType: "" as any,
-      meldingTekst: "",
+      meldingType: meldingType,
+      meldingTekst: meldingTekst ?? "",
     },
   });
   const {
@@ -66,15 +73,12 @@ export const MeldingTilBehandlerSkjema = () => {
     formState: { errors },
     reset,
     getValues,
-    setValue,
   } = formMethods;
 
   const queryClient = useQueryClient();
 
-  const getMeldingTilBehandlerDraftQuery = useMeldingTilBehandlerDraftQuery();
   const saveDraft = useSaveMeldingTilBehandlerDraft();
   const deleteDraft = useDeleteMeldingTilBehandlerDraft();
-  const lastSavedDraftJsonRef = useRef<string>("");
 
   const debouncedAutoSaveDraft = useDebouncedCallback(
     (values: MeldingTilBehandlerSkjemaValues) => {
@@ -87,12 +91,6 @@ export const MeldingTilBehandlerSkjema = () => {
         return;
       }
 
-      const draftJson = JSON.stringify(draftPayload);
-      if (draftJson === lastSavedDraftJsonRef.current) {
-        return;
-      }
-
-      lastSavedDraftJsonRef.current = draftJson;
       saveDraft.mutate(draftPayload, {
         onSuccess: () => {
           setUtkastSavedTime(new Date());
@@ -105,24 +103,13 @@ export const MeldingTilBehandlerSkjema = () => {
     750
   );
 
-  useEffect(() => {
-    if (!!getMeldingTilBehandlerDraftQuery.data?.tekst) {
-      setValue("meldingTekst", getMeldingTilBehandlerDraftQuery.data.tekst);
-    }
-    getMeldingTilBehandlerDraftQuery.data?.meldingType &&
-      setValue(
-        "meldingType",
-        getMeldingTilBehandlerDraftQuery.data.meldingType as MeldingType
-      );
-  }, [getMeldingTilBehandlerDraftQuery.data, setValue]);
-
   const meldingTekstErrorMessage =
     errors.meldingTekst &&
     getValues("meldingTekst") === "" &&
     texts.meldingsTekstMissing;
 
   const submit = (values: MeldingTilBehandlerSkjemaValues) => {
-    if (!selectedBehandler) {
+    if (!selectedBehandler || !values.meldingType || !values.meldingTekst) {
       return;
     }
 
@@ -138,7 +125,6 @@ export const MeldingTilBehandlerSkjema = () => {
     meldingTilBehandler.mutate(meldingTilBehandlerDTO, {
       onSuccess: () => {
         setMeldingSentTime(new Date());
-        lastSavedDraftJsonRef.current = "";
         setUtkastSavedTime(undefined);
         setSelectedBehandler(undefined);
         debouncedAutoSaveDraft.cancel();
@@ -170,8 +156,8 @@ export const MeldingTilBehandlerSkjema = () => {
     <option value={type}>{meldingTypeTexts[type]}</option>
   );
 
-  const meldingType = watch("meldingType");
-  const meldingTekst = watch("meldingTekst");
+  const meldingTypeInput = watch("meldingType");
+  const meldingTekstInput = watch("meldingTekst");
 
   return (
     <FormProvider {...formMethods}>
@@ -194,7 +180,7 @@ export const MeldingTilBehandlerSkjema = () => {
             size="small"
             label={texts.meldingType.label}
             {...register("meldingType", { required: true })}
-            value={meldingType}
+            value={meldingTypeInput}
             error={errors.meldingType && texts.meldingType.missing}
           >
             <option value="">{texts.meldingType.defaultOption}</option>
@@ -206,7 +192,9 @@ export const MeldingTilBehandlerSkjema = () => {
             />
             <MeldingTypeOption type={MeldingType.HENVENDELSE_MELDING_FRA_NAV} />
           </Select>
-          {meldingType && <MeldingsTypeInfo meldingType={meldingType} />}
+          {meldingTypeInput && (
+            <MeldingsTypeInfo meldingType={meldingTypeInput} />
+          )}
         </div>
         <VelgBehandler
           key={meldingSentTime?.getTime() || "initial"}
@@ -219,7 +207,7 @@ export const MeldingTilBehandlerSkjema = () => {
             required: true,
             maxLength: MAX_LENGTH_BEHANDLER_MELDING,
           })}
-          value={meldingTekst}
+          value={meldingTekstInput}
           maxLength={MAX_LENGTH_BEHANDLER_MELDING}
           error={meldingTekstErrorMessage}
           size="small"
@@ -251,4 +239,4 @@ export const MeldingTilBehandlerSkjema = () => {
       </form>
     </FormProvider>
   );
-};
+}

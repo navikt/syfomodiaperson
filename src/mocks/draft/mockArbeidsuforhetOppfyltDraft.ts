@@ -16,7 +16,9 @@ export const mockArbeidsuforhetOppfyltDraft = [
       arbeidsuforhetOppfyltDraft = {
         begrunnelse: body.begrunnelse,
       };
-      return new HttpResponse(null, { status: 204 });
+      return new HttpResponse(JSON.stringify(arbeidsuforhetOppfyltDraft), {
+        status: 200,
+      });
     }
   ),
   http.delete(`/api/draft/arbeidsuforhet-oppfylt`, () => {

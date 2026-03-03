@@ -52,6 +52,7 @@ import { navEnhet } from "./dialogmote/testData";
 import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { kartleggingssporsmalQueryKeys } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
+import { draftQueryKeys } from "@/hooks/useDraftQuery";
 
 export const testQueryClient = (): QueryClient => {
   return new QueryClient();
@@ -176,6 +177,13 @@ export const queryClientWithMockData = (): QueryClient => {
   );
   queryClient.setQueryData(
     oppfolgingsplanQueryKeys.oppfolgingsplaner(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => []
+  );
+  queryClient.setQueryData(
+    draftQueryKeys.draft(
+      "behandlerdialog-meldingtilbehandler",
       ARBEIDSTAKER_DEFAULT.personIdent
     ),
     () => []

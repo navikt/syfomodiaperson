@@ -5,7 +5,6 @@ import { navEnhet } from "../dialogmote/testData";
 import React from "react";
 import { queryClientWithMockData } from "../testQueryClient";
 import { expect, describe, it, beforeEach } from "vitest";
-import Meldinger from "@/sider/behandlerdialog/meldinger/Meldinger";
 import { behandlerdialogQueryKeys } from "@/data/behandlerdialog/behandlerdialogQueryHooks";
 import {
   ARBEIDSTAKER_DEFAULT,
@@ -36,6 +35,9 @@ import {
   meldingFraNAVConversationMedSvar,
 } from "./meldingTestdataGenerator";
 import { getManedText } from "@/utils/datoUtils";
+import { Box, Heading } from "@navikt/ds-react";
+import BehandleBehandlerdialogSvarOppgaveKnapp from "@/sider/behandlerdialog/meldinger/BehandleBehandlerdialogSvarOppgaveKnapp";
+import Samtaler from "@/sider/behandlerdialog/meldinger/Samtaler";
 
 let queryClient: QueryClient;
 
@@ -45,7 +47,13 @@ const renderMeldinger = () => {
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
-        <Meldinger />
+        <Box background="default" className="p-4">
+          <Heading level="2" size="medium" spacing>
+            Meldinger
+          </Heading>
+          <BehandleBehandlerdialogSvarOppgaveKnapp />
+          <Samtaler />
+        </Box>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>
   );
