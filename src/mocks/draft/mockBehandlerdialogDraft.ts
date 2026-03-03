@@ -20,7 +20,7 @@ export const mockBehandlerdialogDraft = [
         meldingType: body.meldingType,
         behandlerRef: body.behandlerRef,
       };
-      return new HttpResponse(null, { status: 200 });
+      return new HttpResponse(JSON.stringify(draft), { status: 200 });
     }
   ),
   http.delete(`/api/draft/behandlerdialog-meldingtilbehandler`, () => {

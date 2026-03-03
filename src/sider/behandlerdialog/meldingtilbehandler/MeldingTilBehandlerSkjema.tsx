@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Button, Select, Textarea } from "@navikt/ds-react";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import {
@@ -46,7 +46,7 @@ export interface MeldingTilBehandlerSkjemaValues {
 
 export const MAX_LENGTH_BEHANDLER_MELDING = 5000;
 
-export const MeldingTilBehandlerSkjema = () => {
+export function MeldingTilBehandlerSkjema() {
   const [displayPreview, setDisplayPreview] = useState(false);
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const [meldingSentTime, setMeldingSentTime] = useState<Date>();
@@ -74,7 +74,6 @@ export const MeldingTilBehandlerSkjema = () => {
   const getMeldingTilBehandlerDraftQuery = useMeldingTilBehandlerDraftQuery();
   const saveDraft = useSaveMeldingTilBehandlerDraft();
   const deleteDraft = useDeleteMeldingTilBehandlerDraft();
-  const lastSavedDraftJsonRef = useRef<string>("");
 
   const debouncedAutoSaveDraft = useDebouncedCallback(
     (values: MeldingTilBehandlerSkjemaValues) => {
@@ -87,12 +86,6 @@ export const MeldingTilBehandlerSkjema = () => {
         return;
       }
 
-      const draftJson = JSON.stringify(draftPayload);
-      if (draftJson === lastSavedDraftJsonRef.current) {
-        return;
-      }
-
-      lastSavedDraftJsonRef.current = draftJson;
       saveDraft.mutate(draftPayload, {
         onSuccess: () => {
           setUtkastSavedTime(new Date());
@@ -106,15 +99,18 @@ export const MeldingTilBehandlerSkjema = () => {
   );
 
   useEffect(() => {
-    if (!!getMeldingTilBehandlerDraftQuery.data?.tekst) {
-      setValue("meldingTekst", getMeldingTilBehandlerDraftQuery.data.tekst);
+    function hydrateFormFromDraft() {
+      if (!!getMeldingTilBehandlerDraftQuery.data?.tekst) {
+        setValue("meldingTekst", getMeldingTilBehandlerDraftQuery.data.tekst);
+      }
+      getMeldingTilBehandlerDraftQuery.data?.meldingType &&
+        setValue(
+          "meldingType",
+          getMeldingTilBehandlerDraftQuery.data.meldingType as MeldingType
+        );
     }
-    getMeldingTilBehandlerDraftQuery.data?.meldingType &&
-      setValue(
-        "meldingType",
-        getMeldingTilBehandlerDraftQuery.data.meldingType as MeldingType
-      );
-  }, [getMeldingTilBehandlerDraftQuery.data, setValue]);
+    hydrateFormFromDraft();
+  }, []);
 
   const meldingTekstErrorMessage =
     errors.meldingTekst &&
@@ -138,7 +134,6 @@ export const MeldingTilBehandlerSkjema = () => {
     meldingTilBehandler.mutate(meldingTilBehandlerDTO, {
       onSuccess: () => {
         setMeldingSentTime(new Date());
-        lastSavedDraftJsonRef.current = "";
         setUtkastSavedTime(undefined);
         setSelectedBehandler(undefined);
         debouncedAutoSaveDraft.cancel();
@@ -251,4 +246,4 @@ export const MeldingTilBehandlerSkjema = () => {
       </form>
     </FormProvider>
   );
-};
+}

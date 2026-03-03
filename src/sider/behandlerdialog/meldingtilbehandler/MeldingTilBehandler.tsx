@@ -9,7 +9,7 @@ const texts = {
     "Personen har ikke et aktivt sykefravær. Dialogmeldingen skal kun benyttes i sykefraværsoppfølgingen. Meldingen vises til innbyggeren på Min side.",
 };
 
-export const MeldingTilBehandler = () => {
+export function MeldingTilBehandler() {
   const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
   return (
@@ -25,4 +25,4 @@ export const MeldingTilBehandler = () => {
       <MeldingTilBehandlerSkjema />
     </Box>
   );
-};
+}
