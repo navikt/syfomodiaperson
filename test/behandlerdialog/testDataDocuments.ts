@@ -8,7 +8,11 @@ import {
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
 import { MeldingDTO } from "@/data/behandlerdialog/behandlerdialogTypes";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import {
+  addWeeks,
+  tilDatoMedManedNavn,
+  tilLesbarDatoMedArUtenManedNavn,
+} from "@/utils/datoUtils";
 
 export const expectedTilleggsopplysningerDocument = (
   meldingTekst: string
@@ -112,6 +116,14 @@ export const expectedLegeerklaringDocument = (
   {
     texts: [
       "Nav trenger opplysninger fra deg vedrørende din pasient. Du kan utelate opplysninger som etter din vurdering faller utenfor formålet.",
+    ],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [
+      `For å kunne behandle din pasient sin sak ber vi om svar så fort som mulig og innen ${tilDatoMedManedNavn(
+        addWeeks(new Date(), 3)
+      )} (tre uker). Nav kan gi forlenget frist.`,
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
