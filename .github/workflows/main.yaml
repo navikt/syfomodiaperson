@@ -8,6 +8,7 @@ jobs:
       packages: read
       id-token: write
       contents: read
+      packages: read
     with:
       dev-cluster: dev-gcp
       prod-cluster: prod-gcp
