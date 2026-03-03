@@ -36,7 +36,9 @@ export default function Side({
   useDocumentTitle(tittel);
 
   const shouldShowLumi =
-    diskresjonskode.data !== "6" && diskresjonskode.data !== "7";
+    diskresjonskode.isSuccess &&
+    diskresjonskode.data !== "6" &&
+    diskresjonskode.data !== "7";
   const isPending = diskresjonskode.isPending || brukerinfo.isPending;
 
   return (
