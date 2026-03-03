@@ -5,6 +5,7 @@ jobs:
   build-and-deploy:
     uses: navikt/isworkflows/.github/workflows/node-build-deploy.yml@master
     permissions:
+      packages: read
       id-token: write
       contents: read
     with:
