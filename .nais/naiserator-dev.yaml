@@ -89,7 +89,7 @@ spec:
           namespace: flex
         - application: flexjar-backend
           namespace: flex
-        - application: lumi-api
+        - application: lumi-submission-proxy
           namespace: team-esyfo
         - application: sykepengedager-informasjon
           namespace: team-esyfo
