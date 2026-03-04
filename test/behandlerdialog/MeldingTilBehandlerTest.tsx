@@ -273,7 +273,7 @@ describe("MeldingTilBehandler", () => {
       document: expectedTilleggsopplysningerDocument(enMeldingTekst),
     };
 
-    it("Send melding med verdier fra skjema", async () => {
+    it("Send foresporsel tilleggsopplysninger med verdier fra skjema", async () => {
       renderMeldingTilBehandler();
 
       const velgBehandlerRadioButton = screen.getAllByText("Fastlege:", {
@@ -299,6 +299,45 @@ describe("MeldingTilBehandler", () => {
 
         expect(meldingTilBehandlerMutation.state.variables).to.deep.equal(
           expectedMeldingTilBehandlerDTO
+        );
+      });
+    });
+
+    it("Send legeerklaring med verdier fra skjema", async () => {
+      const expectedLegeerklaringDTO: MeldingTilBehandlerDTO = {
+        type: MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING,
+        behandlerIdent: behandlereDialogmeldingMock[0].fnr,
+        behandlerNavn: `${behandlereDialogmeldingMock[0].fornavn} ${behandlereDialogmeldingMock[0].mellomnavn} ${behandlereDialogmeldingMock[0].etternavn}`,
+        behandlerRef: behandlereDialogmeldingMock[0].behandlerRef,
+        tekst: enMeldingTekst,
+        document: expectedLegeerklaringDocument(enMeldingTekst),
+      };
+
+      renderMeldingTilBehandler();
+
+      const velgBehandlerRadioButton = screen.getAllByText("Fastlege:", {
+        exact: false,
+      })[0];
+      fireEvent.click(velgBehandlerRadioButton);
+
+      fireEvent.change(screen.getByLabelText(selectLabel), {
+        target: { value: MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING },
+      });
+
+      const meldingInput = getTextInput(
+        "Skriv inn teksten du ønsker å sende til behandler"
+      );
+      changeTextInput(meldingInput, expectedMeldingTilBehandlerDTO.tekst);
+
+      await clickButton("Send til behandler");
+
+      await waitFor(() => {
+        const meldingTilBehandlerMutation = queryClient
+          .getMutationCache()
+          .getAll()[0];
+
+        expect(meldingTilBehandlerMutation.state.variables).to.deep.equal(
+          expectedLegeerklaringDTO
         );
       });
     });

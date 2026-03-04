@@ -4,7 +4,10 @@ import {
   behandlerRefDoktorLegesen,
   behandlerRefLegoLasLegesen,
 } from "../isdialogmelding/behandlereDialogmeldingMock";
-import { DocumentComponentType } from "@/data/documentcomponent/documentComponentTypes";
+import {
+  DocumentComponentDto,
+  DocumentComponentType,
+} from "@/data/documentcomponent/documentComponentTypes";
 import {
   ARBEIDSTAKER_DEFAULT,
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
@@ -12,6 +15,7 @@ import {
   VEILEDER_IDENT_DEFAULT,
 } from "../common/mockConstants";
 import {
+  legeerklaringTexts,
   paminnelseTexts,
   returLegeerklaringTexts,
   tilleggsOpplysningerPasientTexts,
@@ -23,7 +27,7 @@ import {
 
 const defaultMeldingTekst = "Dette er en melding";
 const returLegeerklaringBegrunnelse = "Begrunnelse for retur";
-const meldingtilBehandlerDocument = [
+const tilleggsopplysningDocument: DocumentComponentDto[] = [
   {
     texts: [tilleggsOpplysningerPasientTexts.header],
     type: DocumentComponentType.HEADER_H1,
@@ -63,7 +67,48 @@ const meldingtilBehandlerDocument = [
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
-const paminnelseDocument = [
+const legeerklaringDocument: DocumentComponentDto[] = [
+  {
+    texts: [legeerklaringTexts.header],
+    type: DocumentComponentType.HEADER_H1,
+  },
+  {
+    texts: [
+      `Gjelder pasient: ${ARBEIDSTAKER_DEFAULT_FULL_NAME}, ${ARBEIDSTAKER_DEFAULT.personIdent}.`,
+    ],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [legeerklaringTexts.opplysninger],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [legeerklaringTexts.frist],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [legeerklaringTexts.takst],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [defaultMeldingTekst],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    title: legeerklaringTexts.lovhjemmel.title,
+    texts: [legeerklaringTexts.lovhjemmel.text],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: [legeerklaringTexts.klage1, legeerklaringTexts.klage2],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
+    texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "Nav"],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+];
+const paminnelseDocument: DocumentComponentDto[] = [
   {
     texts: [paminnelseTexts.header],
     type: DocumentComponentType.HEADER_H1,
@@ -93,7 +138,7 @@ const paminnelseDocument = [
     type: DocumentComponentType.PARAGRAPH,
   },
 ];
-const returLegeerklaringDocument = [
+const returLegeerklaringDocument: DocumentComponentDto[] = [
   {
     texts: [returLegeerklaringTexts.header],
     type: DocumentComponentType.HEADER_H1,
@@ -155,7 +200,7 @@ export const defaultMelding = {
   tidspunkt: "2023-01-01T12:00:00.000+01:00",
   innkommende: false,
   type: MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER,
-  document: meldingtilBehandlerDocument,
+  document: tilleggsopplysningDocument,
   antallVedlegg: 0,
   status: defaultStatus,
   veilederIdent: VEILEDER_IDENT_DEFAULT,
@@ -172,7 +217,7 @@ export const defaultMeldingLegeerklaring = {
   tidspunkt: "2023-01-01T12:00:00.000+01:00",
   innkommende: false,
   type: MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING,
-  document: meldingtilBehandlerDocument,
+  document: legeerklaringDocument,
   antallVedlegg: 0,
   status: defaultStatus,
   veilederIdent: VEILEDER_IDENT_DEFAULT,

@@ -139,6 +139,7 @@ export const useMeldingTilBehandlerDocument = (): {
       createHeaderH1(legeerklaringTexts.header),
       createParagraph(`Gjelder pasient: ${navBruker.navn}, ${personident}.`),
       createParagraph(legeerklaringTexts.opplysninger),
+      createParagraph(legeerklaringTexts.frist),
       createParagraph(legeerklaringTexts.takst),
     ];
 
