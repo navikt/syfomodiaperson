@@ -20,7 +20,7 @@ export const oppfolgingsplanSurvey = {
       maxLength: 1000,
       visibleIf: {
         field: "ANSWER",
-        questionId: "rating",
+        questionId: "inntrykk",
         operator: "EXISTS",
       },
     },
