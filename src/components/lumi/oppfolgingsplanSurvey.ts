@@ -5,7 +5,7 @@ export const oppfolgingsplanSurvey = {
   type: "rating",
   questions: [
     {
-      id: "rating",
+      id: "inntrykk",
       type: "rating",
       variant: "emoji",
       prompt: "Hva er ditt inntrykk av den nye oppfølgingsplanen?",
@@ -14,7 +14,7 @@ export const oppfolgingsplanSurvey = {
       required: true,
     },
     {
-      id: "kommentar",
+      id: "innspill",
       type: "text",
       prompt: "Har du noen kommentarer eller innspill?",
       maxLength: 1000,
