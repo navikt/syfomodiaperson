@@ -237,9 +237,9 @@ spec:
     - name: FLEXJAR_HOST
       value: "http://flexjar-backend.flex"
     - name: LUMI_API_AAD_APP_CLIENT_ID
-      value: "dev-gcp.team-esyfo.lumi-api"
+      value: "dev-gcp.team-esyfo.lumi-submission-proxy"
     - name: LUMI_API_HOST
-      value: "http://lumi-api.team-esyfo"
+      value: "http://lumi-submission-proxy.team-esyfo"
     - name: MEROPPFOLGING_BACKEND_AAD_APP_CLIENT_ID
       value: "dev-gcp.team-esyfo.meroppfolging-backend"
     - name: MEROPPFOLGING_BACKEND_HOST
