@@ -553,6 +553,17 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
   );
 
   router.use(
+    "/lumi-api",
+    (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) => {
+      proxyOnBehalfOf(req, res, next, authClient, Config.auth.lumiApi);
+    }
+  );
+
+  router.use(
     "/veilarboppfolging",
     (
       req: express.Request,

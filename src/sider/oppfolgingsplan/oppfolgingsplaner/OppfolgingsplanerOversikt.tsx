@@ -23,6 +23,8 @@ import BeOmOppfolgingsplan from "@/sider/oppfolgingsplan/oppfolgingsplaner/BeOmO
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import AktiveOppfolgingsplaner from "@/sider/oppfolgingsplan/oppfolgingsplaner/AktiveOppfolgingsplaner";
 import { aktiveNarmesteLedereForOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import LumiSurvey from "@/components/lumi/LumiSurvey";
+import { oppfolgingsplanSurvey } from "@/components/lumi/oppfolgingsplanSurvey";
 
 const texts = {
   pageTitle: "Oppfølgingsplaner",
@@ -103,11 +105,19 @@ export default function OppfolgingsplanerOversikt() {
     : [];
   const isBeOmOppfolgingsplanVisible =
     !!currentOppfolgingstilfelle && activeNarmesteLedere.length > 0;
+  const lumiSurvey =
+    aktiveOppfolgingsplanerV2.length > 0 ? (
+      <LumiSurvey
+        surveyId="modia-ny-oppfolgingsplan"
+        survey={oppfolgingsplanSurvey}
+      />
+    ) : null;
 
   return (
     <Side
       tittel="Oppfølgingsplaner"
       aktivtMenypunkt={Menypunkter.OPPFOELGINGSPLANER}
+      lumi={lumiSurvey}
     >
       <SideLaster isLoading={isLoading} isError={isError}>
         <Sidetopp tittel={texts.pageTitle} />

@@ -3,7 +3,7 @@ import { render, screen, within } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../../dialogmote/testData";
 import React from "react";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   ANNEN_LEDER_AKTIV,
   ARBEIDSTAKER_DEFAULT,
@@ -27,6 +27,13 @@ import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { MemoryRouter } from "react-router-dom";
 import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { queryClientWithMockData } from "../../testQueryClient";
+import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
+
+vi.mock("@/components/lumi/LumiSurvey", () => ({
+  default: ({ surveyId }: { surveyId: string }) => (
+    <div data-testid="lumi-survey">{surveyId}</div>
+  ),
+}));
 
 let queryClient: QueryClient;
 
@@ -198,6 +205,55 @@ describe("OppfolgingsplanerOversikt", () => {
         .exist;
       expect(screen.getByText("Be om oppfølgingsplan")).to.exist;
       expect(screen.getByRole("button", { name: "Send forespørsel" })).to.exist;
+    });
+  });
+
+  describe("Lumi survey", () => {
+    it("Viser ikke Lumi survey når det ikke finnes aktive V2-oppfølgingsplaner", () => {
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => []
+      );
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => []
+      );
+
+      renderOppfolgingsplanerOversikt();
+
+      expect(screen.queryByTestId("lumi-survey")).to.not.exist;
+    });
+
+    it("Viser Lumi survey når det finnes aktive V2-oppfølgingsplaner", () => {
+      const activePlan: OppfolgingsplanV2DTO = {
+        uuid: generateUUID(),
+        fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+        virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+        deltMedNavTidspunkt: dayjs().toJSON(),
+        opprettet: dayjs().toJSON(),
+        sistEndret: dayjs().toJSON(),
+        evalueringsdato: dayjs().add(30, "days").toJSON(),
+      };
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => []
+      );
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [activePlan]
+      );
+
+      renderOppfolgingsplanerOversikt();
+
+      expect(screen.getByTestId("lumi-survey")).to.exist;
     });
   });
 });
