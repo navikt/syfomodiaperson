@@ -7,8 +7,7 @@ import {
 import KorrigertAv from "../soknad-arbeidstaker/KorrigertAv";
 import { RelaterteSoknader } from "../soknad-arbeidstaker/RelaterteSoknader";
 import { SykmeldingUtdragContainer } from "../SykmeldingUtdragContainer";
-import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
-import { Heading } from "@navikt/ds-react";
+import { Box, Heading } from "@navikt/ds-react";
 import TilbakeTilSoknader from "@/sider/sykepengsoknader/soknad-felles/TilbakeTilSoknader";
 import { SykepengesoknadStatuspanel } from "@/sider/sykepengsoknader/soknad-arbeidstaker-ny/SykepengesoknadStatuspanel";
 
@@ -34,9 +33,12 @@ export default function SykepengesoknadReisetilskudd({
       )}
       <SykepengesoknadStatuspanel soknad={soknad} />
       <SykmeldingUtdragContainer soknad={soknad} />
-      <SpeilingEkspanderbartPanel tittel={texts.oppsummeringTittel}>
+      <Box background="default" padding="space-24" className="mb-8">
+        <Heading size="medium" level="2" spacing>
+          {texts.oppsummeringTittel}
+        </Heading>
         <Oppsummeringsvisning soknad={soknad} />
-      </SpeilingEkspanderbartPanel>
+      </Box>
       <RelaterteSoknader soknad={soknad} />
       <TilbakeTilSoknader />
     </div>

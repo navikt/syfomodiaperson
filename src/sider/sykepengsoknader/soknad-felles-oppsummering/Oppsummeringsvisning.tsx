@@ -4,31 +4,15 @@ import {
   SvarTypeDTO,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import styled from "styled-components";
 
 export const getKey = (tag: string, id?: string | number): string =>
   `${tag}_${id}`;
 
-interface OppsummeringsvisningProps {
+interface Props {
   soknad: SykepengesoknadDTO;
 }
 
-const OppsummeringsSeksjon = styled.div`
-  border-bottom: 1px solid;
-  margin-bottom: 2em;
-  padding-bottom: 2em;
-  line-height: 1.3;
-
-  :last-child {
-    border-bottom-width: 0;
-    margin-bottom: 0;
-    padding-bottom: 0;
-  }
-`;
-
-const Oppsummeringsvisning = ({
-  soknad: { sporsmal },
-}: OppsummeringsvisningProps) => {
+export default function Oppsummeringsvisning({ soknad: { sporsmal } }: Props) {
   return (
     <>
       {sporsmal
@@ -39,12 +23,13 @@ const Oppsummeringsvisning = ({
             sporsmal.svartype === SvarTypeDTO.IKKE_RELEVANT
         )
         .map((sporsmal) => (
-          <OppsummeringsSeksjon key={getKey(sporsmal.tag, sporsmal.id)}>
+          <div
+            key={getKey(sporsmal.tag, sporsmal.id)}
+            className="border-b border-solid mb-8 pb-8 last:border-b-0 last:mb-0 last:pb-0"
+          >
             <OppsummeringSporsmal {...sporsmal} />
-          </OppsummeringsSeksjon>
+          </div>
         ))}
     </>
   );
-};
-
-export default Oppsummeringsvisning;
+}
