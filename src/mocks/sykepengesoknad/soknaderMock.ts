@@ -4596,7 +4596,7 @@ export const soknaderMock: any[] = [
         tag: "BEKREFT_OPPLYSNINGER_UTLAND_INFO",
         sporsmalstekst: "Før du reiser ber vi deg bekrefte:",
         undertekst:
-          "<ul>\n    <li>Jeg har avklart med legen at reisen ikke vil forlenge sykefraværet</li>\n    <li>Reisen hindrer ikke planlagt behandling eller avtaler med Nav</li>\n</ul>",
+          "Jeg har avklart med legen at reisen ikke vil forlenge sykefraværet. Reisen hindrer ikke planlagt behandling eller avtaler med Nav.",
         svartype: "IKKE_RELEVANT",
         min: null,
         max: null,

@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import TilbakeTilSoknader from "./TilbakeTilSoknader";
 import { Box, Heading } from "@navikt/ds-react";
 
@@ -8,17 +8,17 @@ const texts = {
     "Når brukeren har fullført søknaden og sendt den inn til arbeidsgiver og/eller Nav vil du kunne se statusen på søknaden her.",
 };
 
-const IkkeInnsendtSoknad = (): ReactElement => (
-  <>
-    <Box background="default" className="mb-4 text-center" padding="space-24">
-      <Heading size="small" level="2" className="mt-8">
-        {texts.title}
-      </Heading>
-      <hr className="bg-amber-500/75 w-8 h-px border-0" />
-      <p>{texts.content}</p>
-    </Box>
-    <TilbakeTilSoknader />
-  </>
-);
-
-export default IkkeInnsendtSoknad;
+export default function IkkeInnsendtSoknad() {
+  return (
+    <>
+      <Box background="default" className="mb-4 text-center" padding="space-24">
+        <Heading size="small" level="2" className="mt-8">
+          {texts.title}
+        </Heading>
+        <hr className="bg-amber-500/75 w-8 h-px border-0" />
+        <p>{texts.content}</p>
+      </Box>
+      <TilbakeTilSoknader />
+    </>
+  );
+}

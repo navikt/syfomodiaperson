@@ -78,14 +78,13 @@ const textStatus = (status: SykmeldingStatus) => {
   }
 };
 
-interface BekreftetSykmeldingStatuspanelProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-const BekreftetSykmeldingStatuspanel = (
-  bekreftetSykmeldingStatuspanelProps: BekreftetSykmeldingStatuspanelProps
-): ReactElement => {
-  const { sykmelding } = bekreftetSykmeldingStatuspanelProps;
+export default function BekreftetSykmeldingStatuspanel({
+  sykmelding,
+}: Props): ReactElement {
   return (
     <Statuspanel>
       <Statusopplysninger>
@@ -114,6 +113,4 @@ const BekreftetSykmeldingStatuspanel = (
       </Statusopplysninger>
     </Statuspanel>
   );
-};
-
-export default BekreftetSykmeldingStatuspanel;
+}
