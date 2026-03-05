@@ -17,9 +17,9 @@ interface NokkelopplysningerProps {
   sykmelding: SykmeldingOldFormat;
 }
 
-export const Nokkelopplysninger = ({
+function Nokkelopplysninger({
   sykmelding,
-}: NokkelopplysningerProps): ReactElement | null => {
+}: NokkelopplysningerProps): ReactElement | null {
   switch (sykmelding.status) {
     case SykmeldingStatus.SENDT:
     case SykmeldingStatus.TIL_SENDING: {
@@ -51,20 +51,18 @@ export const Nokkelopplysninger = ({
       return null;
     }
   }
-};
+}
 
 interface SykmeldingStatuspanelProps {
   sykmelding: SykmeldingOldFormat;
 }
 
-const SykmeldingStatuspanel = ({
+export default function SykmeldingStatuspanel({
   sykmelding,
-}: SykmeldingStatuspanelProps): ReactElement => {
+}: SykmeldingStatuspanelProps): ReactElement {
   return (
     <Statuspanel>
       <Nokkelopplysninger sykmelding={sykmelding} />
     </Statuspanel>
   );
-};
-
-export default SykmeldingStatuspanel;
+}
