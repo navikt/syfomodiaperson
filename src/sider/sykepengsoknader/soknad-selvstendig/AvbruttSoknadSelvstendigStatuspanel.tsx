@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import Statuspanel, {
   Statusopplysninger,
 } from "../../../components/speiling/Statuspanel";
@@ -12,13 +12,11 @@ const texts = {
   avbrutt: "Avbrutt av sykmeldt",
 };
 
-interface AvbruttSoknadSelvstendigStatuspanelProps {
+interface Props {
   soknad: SykepengesoknadDTO;
 }
 
-const AvbruttSoknadSelvstendigStatuspanel = ({
-  soknad,
-}: AvbruttSoknadSelvstendigStatuspanelProps): ReactElement => {
+export default function AvbruttSoknadSelvstendigStatuspanel({ soknad }: Props) {
   return (
     <Statuspanel>
       <Statusopplysninger>
@@ -37,6 +35,4 @@ const AvbruttSoknadSelvstendigStatuspanel = ({
       </Statusopplysninger>
     </Statuspanel>
   );
-};
-
-export default AvbruttSoknadSelvstendigStatuspanel;
+}

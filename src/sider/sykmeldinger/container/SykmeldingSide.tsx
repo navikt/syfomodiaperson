@@ -13,6 +13,7 @@ import { Box } from "@navikt/ds-react";
 import Sykmelding from "@/sider/sykmeldinger/sykmelding/Sykmelding";
 import EndreUtenlandskSykmelding from "@/components/endresykmelding/EndreUtenlandskSykmelding";
 import Tilbakelenke from "@/components/Tilbakelenke";
+import Feilmelding from "@/components/Feilmelding";
 
 const texts = {
   pageTitleSykmelding: "Sykmelding",
@@ -54,10 +55,14 @@ export default function SykmeldingSide() {
     >
       <SideLaster isLoading={isLoading} isError={isError}>
         <Box background="default" className="p-4">
-          <Sykmelding
-            sykmelding={sykmelding}
-            arbeidsgiversSykmelding={arbeidsgiversSykmelding}
-          />
+          {sykmelding ? (
+            <Sykmelding
+              sykmelding={sykmelding}
+              arbeidsgiversSykmelding={arbeidsgiversSykmelding}
+            />
+          ) : (
+            <Feilmelding tittel="Fant ikke sykmelding" />
+          )}
           {sykmelding?.papirsykmelding && <EndreSykmelding />}
           {sykmelding?.utenlandskSykmelding && <EndreUtenlandskSykmelding />}
           <Tilbakelenke to="/sykefravaer/sykmeldinger" tekst={texts.tilbake} />

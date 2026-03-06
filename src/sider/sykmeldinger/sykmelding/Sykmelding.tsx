@@ -3,18 +3,17 @@ import {
   SykmeldingOldFormat,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import BekreftetSykmelding from "./BekreftetSykmelding";
-import AvbruttSykmelding from "./AvbruttSykmelding";
-import UtgattSykmelding from "./UtgattSykmelding";
 import Feilmelding from "../../../components/Feilmelding";
-import AvvistSykmelding from "./avvisteSykmeldinger/AvvistSykmelding";
 import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
-import { SendtSykmelding } from "@/sider/sykmeldinger/sykmelding/SendtSykmelding";
-import NySykmelding from "@/sider/sykmeldinger/sykmelding/NySykmelding";
 import EgenmeldtKoronaSykmelding from "@/sider/sykmeldinger/sykmelding/EgenmeldtKoronaSykmelding";
+import SykmeldingStatuspanel from "@/sider/sykmeldinger/sykmeldingstatuspanel/SykmeldingStatuspanel";
+import { SykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingOpplysninger";
+import BekreftetSykmeldingStatuspanel from "@/sider/sykmeldinger/sykmeldingstatuspanel/BekreftetSykmeldingStatuspanel";
+import AvvistSykmeldingAlert from "@/sider/sykmeldinger/sykmelding/avvisteSykmeldinger/AvvistSykmeldingAlert";
+import AvvistSykmeldingStatuspanel from "@/sider/sykmeldinger/sykmelding/avvisteSykmeldinger/AvvistSykmeldingStatuspanel";
 
 interface Props {
-  sykmelding?: SykmeldingOldFormat;
+  sykmelding: SykmeldingOldFormat;
   arbeidsgiversSykmelding?: SykmeldingOldFormat;
 }
 
@@ -22,13 +21,20 @@ export default function Sykmelding({
   sykmelding,
   arbeidsgiversSykmelding,
 }: Props) {
-  if (!sykmelding) {
-    return <Feilmelding tittel="Fant ikke sykmelding" />;
-  }
   if (
     sykmelding.behandlingsutfall.status === BehandlingsutfallStatusDTO.INVALID
   ) {
-    return <AvvistSykmelding sykmelding={sykmelding} />;
+    return (
+      <>
+        <AvvistSykmeldingAlert sykmelding={sykmelding} />
+        {sykmelding.status === SykmeldingStatus.BEKREFTET && (
+          <AvvistSykmeldingStatuspanel sykmelding={sykmelding} />
+        )}
+        <div className="mb-8">
+          <SykmeldingOpplysninger sykmelding={sykmelding} />
+        </div>
+      </>
+    );
   }
 
   if (sykmelding.egenmeldt) {
@@ -37,18 +43,38 @@ export default function Sykmelding({
     sykmelding.status === SykmeldingStatus.SENDT &&
     arbeidsgiversSykmelding
   ) {
-    return <SendtSykmelding sykmelding={sykmelding} />;
+    return (
+      <>
+        <SykmeldingStatuspanel sykmelding={sykmelding} />
+        <SykmeldingOpplysninger sykmelding={sykmelding} />
+      </>
+    );
   } else if (
     arbeidsgiversSykmelding &&
     sykmelding.status === SykmeldingStatus.BEKREFTET
   ) {
-    return <BekreftetSykmelding sykmelding={sykmelding} />;
+    return (
+      <>
+        <BekreftetSykmeldingStatuspanel sykmelding={sykmelding} />
+        <SykmeldingOpplysninger sykmelding={sykmelding} />
+      </>
+    );
   } else if (sykmelding.status === SykmeldingStatus.UTGAATT) {
-    return <UtgattSykmelding sykmelding={sykmelding} />;
+    return (
+      <>
+        <SykmeldingStatuspanel sykmelding={sykmelding} />
+        <SykmeldingOpplysninger sykmelding={sykmelding} />
+      </>
+    );
   } else if (sykmelding.status === SykmeldingStatus.NY) {
-    return <NySykmelding sykmelding={sykmelding} />;
+    return <SykmeldingOpplysninger sykmelding={sykmelding} />;
   } else if (sykmelding.status === SykmeldingStatus.AVBRUTT) {
-    return <AvbruttSykmelding sykmelding={sykmelding} />;
+    return (
+      <>
+        <SykmeldingStatuspanel sykmelding={sykmelding} />
+        <SykmeldingOpplysninger sykmelding={sykmelding} />
+      </>
+    );
   }
   return <Feilmelding tittel="Sykmeldingen har ukjent status" />;
 }
