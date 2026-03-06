@@ -9,8 +9,7 @@ import {
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { SpeilingEkspanderbartPanel } from "@/components/speiling/ekspanderbar/SpeilingEkspanderbartPanel";
-import { Heading } from "@navikt/ds-react";
+import { Box, Heading } from "@navikt/ds-react";
 import TilbakeTilSoknader from "@/sider/sykepengsoknader/soknad-felles/TilbakeTilSoknader";
 
 const texts = {
@@ -56,9 +55,12 @@ export default function SykepengesoknadSelvstendig({
           {sykmelding?.sporsmal && (
             <SykmeldingUtdragForSelvstendige sykmelding={sykmelding} />
           )}
-          <SpeilingEkspanderbartPanel tittel={texts.oppsummering} defaultOpen>
+          <Box background="default" padding="space-24" className="mb-8">
+            <Heading size="medium" level="2" spacing>
+              {texts.oppsummering}
+            </Heading>
             <Oppsummeringsvisning soknad={soknad} />
-          </SpeilingEkspanderbartPanel>
+          </Box>
           <TilbakeTilSoknader />
         </div>
       );
