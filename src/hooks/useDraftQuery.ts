@@ -6,7 +6,8 @@ export type DraftCategory =
   | "behandlerdialog-meldingtilbehandler"
   | "arbeidsuforhet-forhandsvarsel"
   | "arbeidsuforhet-avslag-uten-forhandsvarsel"
-  | "arbeidsuforhet-oppfylt";
+  | "arbeidsuforhet-oppfylt"
+  | "manglendemedvirkning-forhandsvarsel";
 
 function draftPath(category: DraftCategory): string {
   return `/api/draft/${category}`;
