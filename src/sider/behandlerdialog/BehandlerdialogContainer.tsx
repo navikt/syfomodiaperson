@@ -4,11 +4,14 @@ import SideLaster from "@/components/side/SideLaster";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import * as Tredelt from "@/components/side/TredeltSide";
 import { MeldingTilBehandler } from "@/sider/behandlerdialog/meldingtilbehandler/MeldingTilBehandler";
-import Meldinger from "@/sider/behandlerdialog/meldinger/Meldinger";
 import { useBehandlerdialogQuery } from "@/data/behandlerdialog/behandlerdialogQueryHooks";
+import { Box, Heading } from "@navikt/ds-react";
+import BehandleBehandlerdialogSvarOppgaveKnapp from "./meldinger/BehandleBehandlerdialogSvarOppgaveKnapp";
+import Samtaler from "./meldinger/Samtaler";
 
 const texts = {
   title: "Dialog med behandler",
+  meldingerHeader: "Meldinger",
 };
 
 export default function BehandlerdialogContainer(): ReactElement {
@@ -19,7 +22,13 @@ export default function BehandlerdialogContainer(): ReactElement {
       <SideLaster isLoading={isLoading} isError={isError}>
         <Tredelt.Container>
           <Tredelt.FirstColumn>
-            <Meldinger />
+            <Box background="default" className="p-4">
+              <Heading level="2" size="medium" spacing>
+                {texts.meldingerHeader}
+              </Heading>
+              <BehandleBehandlerdialogSvarOppgaveKnapp />
+              <Samtaler />
+            </Box>
           </Tredelt.FirstColumn>
           <Tredelt.SecondColumn>
             <MeldingTilBehandler />
