@@ -43,6 +43,10 @@ import { mockArbeidsuforhetForhandsvarselDraft } from "@/mocks/draft/mockArbeids
 import { mockManglendemedvirkningForhandsvarselDraft } from "@/mocks/draft/mockManglendemedvirkningForhandsvarselDraft";
 import { mockArbeidsuforhetAvslagUtenForhandsvarselDraft } from "@/mocks/draft/mockArbeidsuforhetAvslagUtenForhandsvarselDraft";
 import { mockArbeidsuforhetOppfyltDraft } from "@/mocks/draft/mockArbeidsuforhetOppfyltDraft";
+import { mockAktivitetskravForhandsvarselDraft } from "@/mocks/draft/mockAktivitetskravForhandsvarselDraft";
+import { mockAktivitetskravUnntakDraft } from "@/mocks/draft/mockAktivitetskravUnntakDraft";
+import { mockAktivitetskravOppfyltDraft } from "@/mocks/draft/mockAktivitetskravOppfyltDraft";
+import { mockAktivitetskravInnstillingOmStansDraft } from "@/mocks/draft/mockAktivitetskravInnstillingOmStansDraft";
 
 const handlers = [
   http.post("https://umami.nav.no/api/send", () => {
@@ -65,6 +69,10 @@ const handlers = [
   ...mockArbeidsuforhetAvslagUtenForhandsvarselDraft,
   ...mockArbeidsuforhetOppfyltDraft,
   ...mockManglendemedvirkningForhandsvarselDraft,
+  ...mockAktivitetskravForhandsvarselDraft,
+  ...mockAktivitetskravUnntakDraft,
+  ...mockAktivitetskravOppfyltDraft,
+  ...mockAktivitetskravInnstillingOmStansDraft,
   ...mockIsdialogmelding,
   ...mockIsdialogmote,
   ...mockIsdialogmotekandidat,
