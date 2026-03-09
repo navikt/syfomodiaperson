@@ -1,6 +1,7 @@
 import { tidligsteFom } from "@/utils/periodeUtils";
 import { BehandlingsutfallDTO } from "./BehandlingsutfallDTO";
 import { SporsmalSvarDTO } from "./SporsmalSvarDTO";
+import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
 
 export enum ArbeidssituasjonType {
   NAERINGSDRIVENDE = "NAERINGSDRIVENDE",
@@ -158,9 +159,13 @@ export function erSykmeldingUtenArbeidsgiver(
   sykmelding: SykmeldingOldFormat
 ): boolean {
   return (
-    !sykmelding.orgnummer &&
-    !sykmelding.arbeidsgiver &&
-    sykmelding.status === SykmeldingStatus.BEKREFTET
+    !sykmelding.orgnummer && sykmelding.status === SykmeldingStatus.BEKREFTET
+  );
+}
+
+export function erAvvistSykmelding(sykmelding: SykmeldingOldFormat): boolean {
+  return (
+    sykmelding.behandlingsutfall.status === BehandlingsutfallStatusDTO.INVALID
   );
 }
 
