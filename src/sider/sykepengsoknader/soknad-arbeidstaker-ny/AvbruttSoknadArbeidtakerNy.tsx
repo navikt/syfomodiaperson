@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import Statuspanel, {
   Statusopplysninger,
@@ -16,50 +16,34 @@ const texts = {
   status: "Status",
 };
 
-interface AvbruttSoknadArbeidstakerStatuspanelProps {
+interface Props {
   soknad: SykepengesoknadDTO;
 }
 
-const AvbruttSoknadArbeidstakerStatuspanel = ({
-  soknad,
-}: AvbruttSoknadArbeidstakerStatuspanelProps) => {
-  return (
-    <Statuspanel>
-      <Statusopplysninger>
-        <Nokkelopplysning
-          label={texts.status}
-          className={"nokkelopplysning--statusopplysning"}
-        >
-          <p>{texts.avbrutt}</p>
-        </Nokkelopplysning>
-        <Nokkelopplysning
-          label={texts.avbruttTittel}
-          className={"nokkelopplysning--statusopplysning"}
-        >
-          <p>{tilLesbarDatoMedArstall(soknad.avbruttDato)}</p>
-        </Nokkelopplysning>
-      </Statusopplysninger>
-    </Statuspanel>
-  );
-};
-
-interface AvbruttSoknadArbeidstakerProps {
-  soknad: SykepengesoknadDTO;
-}
-
-const AvbruttSoknadArbeidstaker = ({
-  soknad,
-}: AvbruttSoknadArbeidstakerProps): ReactElement => {
+export default function AvbruttSoknadArbeidstaker({ soknad }: Props) {
   return (
     <div>
       <Heading level="1" size="large">
         {texts.tittel}
       </Heading>
-      <AvbruttSoknadArbeidstakerStatuspanel soknad={soknad} />
+      <Statuspanel>
+        <Statusopplysninger>
+          <Nokkelopplysning
+            label={texts.status}
+            className={"nokkelopplysning--statusopplysning"}
+          >
+            <p>{texts.avbrutt}</p>
+          </Nokkelopplysning>
+          <Nokkelopplysning
+            label={texts.avbruttTittel}
+            className={"nokkelopplysning--statusopplysning"}
+          >
+            <p>{tilLesbarDatoMedArstall(soknad.avbruttDato)}</p>
+          </Nokkelopplysning>
+        </Statusopplysninger>
+      </Statuspanel>
       <SykmeldingUtdragContainer soknad={soknad} />
       <TilbakeTilSoknader />
     </div>
   );
-};
-
-export default AvbruttSoknadArbeidstaker;
+}
