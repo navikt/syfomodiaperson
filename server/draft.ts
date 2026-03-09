@@ -10,6 +10,7 @@ enum Draft {
   ARBEIDSUFORHET_FORHANDSVARSEL = "arbeidsuforhet-forhandsvarsel",
   ARBEIDSUFORHET_AVSLAG_UTEN_FORHANDSVARSEL = "arbeidsuforhet-avslag-uten-forhandsvarsel",
   ARBEIDSUFORHET_OPPFYLT = "arbeidsuforhet-oppfylt",
+  MANGLENDEMEDVIRKNING_FORHANDSVARSEL = "manglendemedvirkning-forhandsvarsel",
 }
 
 function isValidCategory(category: string): boolean {
@@ -30,6 +31,8 @@ function toDraftCachekey(
       return `draft:arbeidsuforhet:avslag-uten-forhandsvarsel:${veilederIdent}:${personident}`;
     case Draft.ARBEIDSUFORHET_OPPFYLT:
       return `draft:arbeidsuforhet:oppfylt:${veilederIdent}:${personident}`;
+    case Draft.MANGLENDEMEDVIRKNING_FORHANDSVARSEL:
+      return `draft:manglendemedvirkning:forhandsvarsel:${veilederIdent}:${personident}`;
   }
 }
 
