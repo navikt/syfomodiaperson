@@ -39,14 +39,7 @@ import { mockisoppfolgingsplanForesporsel } from "@/mocks/isoppfolgingsplan/mock
 import { mockPensjonPenUforegrad } from "@/mocks/uforegrad/mockUforegrad";
 import { mockSyfooppfolgingsplanbackend } from "@/mocks/syfooppfolgingsplanbackend/mockSyfooppfolgingsplanbackend";
 import { mockBehandlerdialogDraft } from "@/mocks/draft/mockBehandlerdialogDraft";
-import { mockArbeidsuforhetForhandsvarselDraft } from "@/mocks/draft/mockArbeidsuforhetForhandsvarselDraft";
-import { mockManglendemedvirkningForhandsvarselDraft } from "@/mocks/draft/mockManglendemedvirkningForhandsvarselDraft";
-import { mockArbeidsuforhetAvslagUtenForhandsvarselDraft } from "@/mocks/draft/mockArbeidsuforhetAvslagUtenForhandsvarselDraft";
-import { mockArbeidsuforhetOppfyltDraft } from "@/mocks/draft/mockArbeidsuforhetOppfyltDraft";
-import { mockAktivitetskravForhandsvarselDraft } from "@/mocks/draft/mockAktivitetskravForhandsvarselDraft";
-import { mockAktivitetskravUnntakDraft } from "@/mocks/draft/mockAktivitetskravUnntakDraft";
-import { mockAktivitetskravOppfyltDraft } from "@/mocks/draft/mockAktivitetskravOppfyltDraft";
-import { mockAktivitetskravInnstillingOmStansDraft } from "@/mocks/draft/mockAktivitetskravInnstillingOmStansDraft";
+import { mockDraftText } from "@/mocks/draft/mockDraftText";
 
 const handlers = [
   http.post("https://umami.nav.no/api/send", () => {
@@ -65,14 +58,7 @@ const handlers = [
   ...mockIsarbeidsuforhet,
   ...mockIsbehandlerdialog,
   ...mockBehandlerdialogDraft,
-  ...mockArbeidsuforhetForhandsvarselDraft,
-  ...mockArbeidsuforhetAvslagUtenForhandsvarselDraft,
-  ...mockArbeidsuforhetOppfyltDraft,
-  ...mockManglendemedvirkningForhandsvarselDraft,
-  ...mockAktivitetskravForhandsvarselDraft,
-  ...mockAktivitetskravUnntakDraft,
-  ...mockAktivitetskravOppfyltDraft,
-  ...mockAktivitetskravInnstillingOmStansDraft,
+  ...mockDraftText,
   ...mockIsdialogmelding,
   ...mockIsdialogmote,
   ...mockIsdialogmotekandidat,
