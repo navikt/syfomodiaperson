@@ -12,11 +12,11 @@ import { useUforegradQuery } from "@/data/uforegrad/uforegradQueryHooks";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import {
+  erAvvistSykmelding,
   erSykmeldingUtenArbeidsgiver,
   sykmeldingerSortertNyestTilEldstPeriode,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
 
 const texts = {
   fetchDiskresjonskodeFailed: "Klarte ikke hente diskresjonskode for brukeren.",
@@ -62,8 +62,7 @@ export function PersonkortHeaderTags() {
       getSykmeldingerQuery.sykmeldinger
     ).find(
       (sykmelding) =>
-        sykmelding.behandlingsutfall.status !==
-          BehandlingsutfallStatusDTO.INVALID &&
+        !erAvvistSykmelding(sykmelding) &&
         (sykmelding.status === SykmeldingStatus.SENDT ||
           sykmelding.status === SykmeldingStatus.BEKREFTET)
     );

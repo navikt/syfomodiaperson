@@ -1,10 +1,10 @@
 import React from "react";
 import {
+  erAvvistSykmelding,
   SykmeldingOldFormat,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import Feilmelding from "../../../components/Feilmelding";
-import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
 import EgenmeldtKoronaSykmelding from "@/sider/sykmeldinger/sykmelding/EgenmeldtKoronaSykmelding";
 import SykmeldingStatuspanel from "@/sider/sykmeldinger/sykmeldingstatuspanel/SykmeldingStatuspanel";
 import { SykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/SykmeldingOpplysninger";
@@ -21,9 +21,7 @@ export default function Sykmelding({
   sykmelding,
   arbeidsgiversSykmelding,
 }: Props) {
-  if (
-    sykmelding.behandlingsutfall.status === BehandlingsutfallStatusDTO.INVALID
-  ) {
+  if (erAvvistSykmelding(sykmelding)) {
     return (
       <>
         <AvvistSykmeldingAlert sykmelding={sykmelding} />
