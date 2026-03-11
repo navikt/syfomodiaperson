@@ -189,7 +189,7 @@ export function SendForhandsvarselSkjema({
         </Select>
       </div>
       <Textarea
-        className="mb-4"
+        className="mb-8"
         {...register("begrunnelse", {
           maxLength: begrunnelseMaxLength,
           required: true,
