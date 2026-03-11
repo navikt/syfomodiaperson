@@ -2,6 +2,8 @@ import React from "react";
 import { MeldingTilBehandlerSkjema } from "@/sider/behandlerdialog/meldingtilbehandler/MeldingTilBehandlerSkjema";
 import { Alert, Box, Heading } from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { useMeldingTilBehandlerDraftQuery } from "@/data/behandlerdialog/meldingtilbehandlerDraftQueryHooks";
+import AppSpinner from "@/components/AppSpinner";
 
 const texts = {
   header: "Dialogmelding til behandler",
@@ -9,8 +11,9 @@ const texts = {
     "Personen har ikke et aktivt sykefravær. Dialogmeldingen skal kun benyttes i sykefraværsoppfølgingen. Meldingen vises til innbyggeren på Min side.",
 };
 
-export const MeldingTilBehandler = () => {
+export function MeldingTilBehandler() {
   const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+  const getMeldingTilBehandlerDraftQuery = useMeldingTilBehandlerDraftQuery();
 
   return (
     <Box background="default" className="p-4 flex flex-col gap-4">
@@ -22,7 +25,14 @@ export const MeldingTilBehandler = () => {
           {texts.alertInfo}
         </Alert>
       )}
-      <MeldingTilBehandlerSkjema />
+      {getMeldingTilBehandlerDraftQuery.isPending ? (
+        <AppSpinner />
+      ) : (
+        <MeldingTilBehandlerSkjema
+          meldingTekst={getMeldingTilBehandlerDraftQuery.data?.tekst}
+          meldingType={getMeldingTilBehandlerDraftQuery.data?.meldingType}
+        />
+      )}
     </Box>
   );
-};
+}

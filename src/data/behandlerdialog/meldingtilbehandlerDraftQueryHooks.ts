@@ -3,10 +3,11 @@ import {
   useSaveDraft,
   useDeleteDraft,
 } from "@/hooks/useDraftQuery";
+import { MeldingType } from "./behandlerdialogTypes";
 
 export interface MeldingTilBehandlerDraftDTO {
   tekst: string;
-  meldingType?: string;
+  meldingType?: MeldingType;
   behandlerRef?: string;
 }
 

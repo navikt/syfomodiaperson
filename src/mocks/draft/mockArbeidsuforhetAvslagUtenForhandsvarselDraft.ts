@@ -16,7 +16,10 @@ export const mockArbeidsuforhetAvslagUtenForhandsvarselDraft = [
       arbeidsuforhetAvslagUtenForhandsvarselDraft = {
         begrunnelse: body.begrunnelse,
       };
-      return new HttpResponse(null, { status: 204 });
+      return new HttpResponse(
+        JSON.stringify(arbeidsuforhetAvslagUtenForhandsvarselDraft),
+        { status: 200 }
+      );
     }
   ),
   http.delete(`/api/draft/arbeidsuforhet-avslag-uten-forhandsvarsel`, () => {
