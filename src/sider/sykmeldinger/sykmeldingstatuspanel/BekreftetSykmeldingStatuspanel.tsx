@@ -1,15 +1,12 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import {
   SykmeldingOldFormat,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { Frilansersporsmal } from "./SykmeldingStatuspanelOpplysning";
-import Statuspanel, {
-  Statusopplysninger,
-} from "../../../components/speiling/Statuspanel";
 import { tilStorForbokstav } from "@/utils";
-import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
+import { BodyLong, Heading } from "@navikt/ds-react";
 
 const texts = {
   tittel: "Sykmeldt fra",
@@ -82,35 +79,31 @@ interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-export default function BekreftetSykmeldingStatuspanel({
-  sykmelding,
-}: Props): ReactElement {
+export default function BekreftetSykmeldingStatuspanel({ sykmelding }: Props) {
   return (
-    <Statuspanel>
-      <Statusopplysninger>
-        <Nokkelopplysning
-          label={texts.status.tittel}
-          className={"nokkelopplysning--statusopplysning"}
-        >
-          <p>
-            {textStatus(sykmelding.status)} –{" "}
-            {tilLesbarDatoMedArstall(sykmelding.sendtdato)}
-          </p>
-        </Nokkelopplysning>
-        <Nokkelopplysning
-          label={texts.tittel}
-          className={"nokkelopplysning--statusopplysning"}
-        >
-          <p>
-            {tilStorForbokstav(
-              textArbeidssituasjon(
-                `${sykmelding.valgtArbeidssituasjon?.toLowerCase()}.2`
-              )
-            )}
-          </p>
-        </Nokkelopplysning>
-        <Frilansersporsmal sykmelding={sykmelding} />
-      </Statusopplysninger>
-    </Statuspanel>
+    <div className="grid grid-cols-2 gap-x-4">
+      <div className="mb-5">
+        <Heading size="xsmall" level="3" className="mb-1">
+          {texts.status.tittel}
+        </Heading>
+        <BodyLong size="small">
+          {textStatus(sykmelding.status)} –{" "}
+          {tilLesbarDatoMedArstall(sykmelding.sendtdato)}
+        </BodyLong>
+      </div>
+      <div className="mb-5">
+        <Heading size="xsmall" level="3" className="mb-1">
+          {texts.tittel}
+        </Heading>
+        <BodyLong size="small">
+          {tilStorForbokstav(
+            textArbeidssituasjon(
+              `${sykmelding.valgtArbeidssituasjon?.toLowerCase()}.2`
+            )
+          )}
+        </BodyLong>
+      </div>
+      <Frilansersporsmal sykmelding={sykmelding} />
+    </div>
   );
 }

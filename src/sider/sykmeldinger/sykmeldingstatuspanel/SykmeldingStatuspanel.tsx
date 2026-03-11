@@ -1,68 +1,45 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import {
   Arbeidsgiver,
   Orgnummer,
   SendtDato,
   Sykmeldingstatus,
 } from "./SykmeldingStatuspanelOpplysning";
-import Statuspanel, {
-  Statusopplysninger,
-} from "../../../components/speiling/Statuspanel";
 import {
   SykmeldingOldFormat,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
-interface NokkelopplysningerProps {
+interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-function Nokkelopplysninger({
-  sykmelding,
-}: NokkelopplysningerProps): ReactElement | null {
+export default function SykmeldingStatuspanel({ sykmelding }: Props) {
   switch (sykmelding.status) {
     case SykmeldingStatus.SENDT:
     case SykmeldingStatus.TIL_SENDING: {
       return (
-        <Statusopplysninger>
+        <div className="grid grid-cols-2 gap-x-4">
           <Sykmeldingstatus sykmelding={sykmelding} />
           <SendtDato sykmelding={sykmelding} />
           <Arbeidsgiver sykmelding={sykmelding} />
           <Orgnummer sykmelding={sykmelding} />
-        </Statusopplysninger>
+        </div>
       );
     }
     case SykmeldingStatus.AVBRUTT: {
       return (
-        <Statusopplysninger>
+        <div className="grid grid-cols-2 gap-2">
           <Sykmeldingstatus sykmelding={sykmelding} />
           <SendtDato sykmelding={sykmelding} />
-        </Statusopplysninger>
+        </div>
       );
     }
     case SykmeldingStatus.UTGAATT: {
-      return (
-        <Statusopplysninger>
-          <Sykmeldingstatus sykmelding={sykmelding} />
-        </Statusopplysninger>
-      );
+      return <Sykmeldingstatus sykmelding={sykmelding} />;
     }
     default: {
       return null;
     }
   }
-}
-
-interface SykmeldingStatuspanelProps {
-  sykmelding: SykmeldingOldFormat;
-}
-
-export default function SykmeldingStatuspanel({
-  sykmelding,
-}: SykmeldingStatuspanelProps): ReactElement {
-  return (
-    <Statuspanel>
-      <Nokkelopplysninger sykmelding={sykmelding} />
-    </Statuspanel>
-  );
 }
