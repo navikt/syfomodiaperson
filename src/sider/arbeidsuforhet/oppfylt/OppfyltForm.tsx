@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   BodyShort,
   Box,
@@ -123,9 +123,12 @@ export default function OppfyltForm() {
     });
   }, 750);
 
+  const draftApplied = useRef(false);
+
   useEffect(() => {
-    if (getDraftQuery.data?.begrunnelse) {
+    if (!draftApplied.current && getDraftQuery.data?.begrunnelse) {
       setValue("begrunnelse", getDraftQuery.data.begrunnelse);
+      draftApplied.current = true;
     }
   }, [getDraftQuery.data, setValue]);
 

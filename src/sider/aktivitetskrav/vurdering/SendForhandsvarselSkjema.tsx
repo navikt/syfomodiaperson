@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { SendForhandsvarselDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { useAktivitetskravVurderingDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVurderingDocument";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
@@ -112,9 +112,12 @@ export function SendForhandsvarselSkjema({
     );
   }, 750);
 
+  const draftApplied = useRef(false);
+
   useEffect(() => {
-    if (getDraftQuery.data?.begrunnelse) {
+    if (!draftApplied.current && getDraftQuery.data?.begrunnelse) {
       setValue("begrunnelse", getDraftQuery.data.begrunnelse);
+      draftApplied.current = true;
     }
   }, [getDraftQuery.data, setValue]);
 

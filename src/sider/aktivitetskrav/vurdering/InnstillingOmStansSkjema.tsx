@@ -2,7 +2,7 @@ import {
   AktivitetskravStatus,
   InnstillingOmStansVurderingDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useVurderAktivitetskrav } from "@/data/aktivitetskrav/useVurderAktivitetskrav";
 import { Alert, Box, Button, Heading, List, Textarea } from "@navikt/ds-react";
 import { useAktivitetskravNotificationAlert } from "@/sider/aktivitetskrav/useAktivitetskravNotificationAlert";
@@ -95,9 +95,12 @@ export default function InnstillingOmStansSkjema({
     );
   }, 750);
 
+  const draftApplied = useRef(false);
+
   useEffect(() => {
-    if (getDraftQuery.data?.begrunnelse) {
+    if (!draftApplied.current && getDraftQuery.data?.begrunnelse) {
       setValue("begrunnelse", getDraftQuery.data.begrunnelse);
+      draftApplied.current = true;
     }
   }, [getDraftQuery.data, setValue]);
 
