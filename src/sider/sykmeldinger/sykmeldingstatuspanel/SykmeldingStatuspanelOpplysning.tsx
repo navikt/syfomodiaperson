@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import {
   SykmeldingOldFormat,
   SykmeldingStatus,
@@ -7,8 +7,7 @@ import {
   tilLesbarDatoMedArstall,
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
-import { Vis } from "@/utils";
-import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
+import { BodyLong, BodyShort, Heading } from "@navikt/ds-react";
 
 const texts = {
   status: {
@@ -53,32 +52,22 @@ interface SykmeldingstatusProps {
   sykmelding: SykmeldingOldFormat;
 }
 
-export const Sykmeldingstatus = (
-  sykmeldingstatusProps: SykmeldingstatusProps
-): ReactElement => {
-  const { sykmelding } = sykmeldingstatusProps;
+export function Sykmeldingstatus({ sykmelding }: SykmeldingstatusProps) {
   return (
-    <Nokkelopplysning
-      label={texts.status.tittel}
-      className="nokkelopplysning--statusopplysning"
-    >
-      {sykmelding.status === TIL_SENDING ? (
-        <div className="medHjelpetekst">
-          <span>{textStatus(sykmelding.status)}</span>
-        </div>
-      ) : (
-        <p>{textStatus(sykmelding.status)}</p>
-      )}
-    </Nokkelopplysning>
+    <div className="mb-5">
+      <Heading size="xsmall" level="3" className="mb-1">
+        {texts.status.tittel}
+      </Heading>
+      <BodyShort size="small">{textStatus(sykmelding.status)}</BodyShort>
+    </div>
   );
-};
+}
 
 interface SendtDatoProps {
   sykmelding: SykmeldingOldFormat;
 }
 
-export const SendtDato = (sendtDatoProps: SendtDatoProps): ReactElement => {
-  const { sykmelding } = sendtDatoProps;
+export function SendtDato({ sykmelding }: SendtDatoProps) {
   const tittel =
     sykmelding.status === BEKREFTET
       ? texts.dato.bekreftet
@@ -86,66 +75,65 @@ export const SendtDato = (sendtDatoProps: SendtDatoProps): ReactElement => {
       ? texts.dato.avbrutt
       : texts.dato.sendt;
   return (
-    <Nokkelopplysning
-      label={tittel}
-      className="nokkelopplysning--statusopplysning"
-    >
-      <p>{tilLesbarDatoMedArstall(sykmelding.sendtdato)}</p>
-    </Nokkelopplysning>
+    <div className="mb-5">
+      <Heading size="xsmall" level="3" className="mb-1">
+        {tittel}
+      </Heading>
+      <BodyShort size="small">
+        {tilLesbarDatoMedArstall(sykmelding.sendtdato)}
+      </BodyShort>
+    </div>
   );
-};
+}
 
 interface ArbeidsgiverProps {
   sykmelding: SykmeldingOldFormat;
 }
 
-export const Arbeidsgiver = (
-  arbeidsgiverProps: ArbeidsgiverProps
-): ReactElement => {
-  const { sykmelding } = arbeidsgiverProps;
+export function Arbeidsgiver({ sykmelding }: ArbeidsgiverProps) {
   return (
-    <Nokkelopplysning
-      label={texts.arbeidsgiver}
-      className="nokkelopplysning--statusopplysning"
-    >
-      <p>{sykmelding.innsendtArbeidsgivernavn}</p>
-    </Nokkelopplysning>
+    <div className="mb-5">
+      <Heading size="xsmall" level="3" className="mb-1">
+        {texts.arbeidsgiver}
+      </Heading>
+      <BodyShort size="small">{sykmelding.innsendtArbeidsgivernavn}</BodyShort>
+    </div>
   );
-};
+}
 
 interface OrgnummerProps {
   sykmelding: SykmeldingOldFormat;
 }
 
-export const Orgnummer = (orgnummerProps: OrgnummerProps): ReactElement => {
-  const { sykmelding } = orgnummerProps;
+export function Orgnummer({ sykmelding }: OrgnummerProps) {
   const orgnummer = sykmelding.orgnummer
     ? sykmelding.orgnummer.replace(/(...)(...)(...)/g, "$1 $2 $3")
     : null;
   return (
-    <Nokkelopplysning
-      label={texts.orgnr}
-      className="nokkelopplysning--statusopplysning"
-    >
-      <p>{orgnummer}</p>
-    </Nokkelopplysning>
+    <div className="mb-5">
+      <Heading size="xsmall" level="3" className="mb-1">
+        {texts.orgnr}
+      </Heading>
+      <BodyShort size="small">{orgnummer}</BodyShort>
+    </div>
   );
-};
+}
 
 interface SykmeldingopplysningFravaersperioderProps {
   sykmelding: SykmeldingOldFormat;
-  className?: string;
 }
 
-export const SykmeldingopplysningFravaersperioder = (
-  sykmeldingopplysningFravaersperioderProps: SykmeldingopplysningFravaersperioderProps
-): ReactElement => {
-  const { sykmelding, className } = sykmeldingopplysningFravaersperioderProps;
+export function SykmeldingopplysningFravaersperioder({
+  sykmelding,
+}: SykmeldingopplysningFravaersperioderProps) {
   return (
-    <Nokkelopplysning label={texts.egenmeldingPapir} className={className}>
+    <div className="mb-5">
+      <Heading size="xsmall" level="3" className="mb-1">
+        {texts.egenmeldingPapir}
+      </Heading>
       {sykmelding.sporsmal.fravaersperioder &&
       sykmelding.sporsmal.fravaersperioder.length > 0 ? (
-        <ul className={"m-0 pl-6"}>
+        <ul className="m-0 pl-6">
           {sykmelding.sporsmal.fravaersperioder?.map((p, index) => {
             return (
               <li key={index}>{tilLesbarPeriodeMedArstall(p.fom, p.tom)}</li>
@@ -153,62 +141,47 @@ export const SykmeldingopplysningFravaersperioder = (
           })}
         </ul>
       ) : (
-        <p>{texts.egenmeldingPapirNei}</p>
+        <BodyLong size="small">{texts.egenmeldingPapirNei}</BodyLong>
       )}
-    </Nokkelopplysning>
+    </div>
   );
-};
+}
 
 interface SykmeldingopplysningForsikringProps {
   sykmelding: SykmeldingOldFormat;
-  className?: string;
 }
 
-export const SykmeldingopplysningForsikring = (
-  sykmeldingopplysningForsikringProps: SykmeldingopplysningForsikringProps
-): ReactElement => {
-  const { sykmelding, className } = sykmeldingopplysningForsikringProps;
+export function SykmeldingopplysningForsikring({
+  sykmelding,
+}: SykmeldingopplysningForsikringProps) {
   const text = sykmelding.sporsmal.harForsikring ? texts.ja : texts.nei;
   return (
-    <Nokkelopplysning label={texts.forsikring} className={className}>
-      <p>{text}</p>
-    </Nokkelopplysning>
+    <div className="mb-5">
+      <Heading size="xsmall" level="3" className="mb-1">
+        {texts.forsikring}
+      </Heading>
+      <BodyLong size="small">{text}</BodyLong>
+    </div>
   );
-};
+}
 
 interface FrilansersporsmalProps {
   sykmelding: SykmeldingOldFormat;
 }
 
-export const Frilansersporsmal = (
-  frilansersporsmalProps: FrilansersporsmalProps
-): ReactElement => {
-  const { sykmelding } = frilansersporsmalProps;
+export function Frilansersporsmal({ sykmelding }: FrilansersporsmalProps) {
   return (
-    <Vis
-      hvis={
-        sykmelding.sporsmal &&
-        (sykmelding.sporsmal.harAnnetFravaer !== null ||
-          sykmelding.sporsmal.harForsikring !== null)
-      }
-      render={() => {
-        return [
-          sykmelding.sporsmal.harAnnetFravaer !== null && (
-            <SykmeldingopplysningFravaersperioder
-              key={`fravaersperioder-${sykmelding.id}`}
-              sykmelding={sykmelding}
-              className="nokkelopplysning--statusopplysning"
-            />
-          ),
-          sykmelding.sporsmal.harForsikring !== null && (
-            <SykmeldingopplysningForsikring
-              key={`forsikring-${sykmelding.id}`}
-              sykmelding={sykmelding}
-              className="nokkelopplysning--statusopplysning"
-            />
-          ),
-        ];
-      }}
-    />
+    sykmelding.sporsmal &&
+    (sykmelding.sporsmal.harAnnetFravaer !== null ||
+      sykmelding.sporsmal.harForsikring !== null) && (
+      <>
+        {sykmelding.sporsmal.harAnnetFravaer !== null && (
+          <SykmeldingopplysningFravaersperioder sykmelding={sykmelding} />
+        )}
+        {sykmelding.sporsmal.harForsikring !== null && (
+          <SykmeldingopplysningForsikring sykmelding={sykmelding} />
+        )}
+      </>
+    )
   );
-};
+}
