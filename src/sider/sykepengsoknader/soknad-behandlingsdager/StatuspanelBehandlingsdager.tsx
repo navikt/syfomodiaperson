@@ -1,31 +1,25 @@
 import React, { ReactElement } from "react";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import SoknadStatustekst from "@/utils/soknad-felles/SoknadStatustekst";
-import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
+import { Heading } from "@navikt/ds-react";
 
 const texts = {
   sendt: "Sendt til Nav",
   sender: "Sender til Nav",
-  hjelpetekst:
-    "Du har gjort det riktig! Det kan bare ta noen minutter før den er kommet fram til mottakeren. Du trenger ikke gjøre noe mer.",
   status: "Status",
 };
 
-interface StatuspanelBehandlingsdagerProps {
+interface Props {
   soknad: SykepengesoknadDTO;
 }
 
-export function StatuspanelBehandlingsdager({
-  soknad,
-}: StatuspanelBehandlingsdagerProps): ReactElement {
+export function StatuspanelBehandlingsdager({ soknad }: Props): ReactElement {
   return (
-    <div>
-      <Nokkelopplysning
-        label={texts.status}
-        className={"nokkelopplysning--statusopplysning"}
-      >
-        <SoknadStatustekst soknad={soknad} />
-      </Nokkelopplysning>
+    <div className="grid grid-cols-2 gap-4 mb-5">
+      <Heading size="xsmall" level="3" className="mb-1">
+        {texts.status}
+      </Heading>
+      <SoknadStatustekst soknad={soknad} />
     </div>
   );
 }
