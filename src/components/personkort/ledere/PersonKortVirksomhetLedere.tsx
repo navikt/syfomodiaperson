@@ -1,7 +1,5 @@
-import React, { ReactNode } from "react";
-import styled from "styled-components";
+import React from "react";
 import { Column, Row } from "nav-frontend-grid";
-import { Undertekst } from "nav-frontend-typografi";
 import { restdatoTildato } from "@/utils/datoUtils";
 import { PersonKortVirksomhetHeader } from "./PersonKortVirksomhetHeader";
 import EpostButton from "../EpostButton";
@@ -12,6 +10,7 @@ import {
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { capitalizeAllWords, formatPhonenumber } from "@/utils/stringUtils";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
+import { BodyShort } from "@navikt/ds-react";
 
 const texts = {
   name: "Navn",
@@ -50,33 +49,6 @@ const getNarmesteLederRelasjonStatusText = (
   }
 };
 
-const UndertekstUppercase = styled(Undertekst)`
-  text-transform: uppercase;
-`;
-
-function RowFullWidth({ children }: { children: ReactNode }) {
-  return <Row className="w-full mb-2 flex items-center">{children}</Row>;
-}
-
-function PersonKortVirksomhetLederIngressRow() {
-  return (
-    <RowFullWidth>
-      <Column className="col-sm-3">
-        <Undertekst>{texts.name}</Undertekst>
-      </Column>
-      <Column className="col-sm-3">
-        <UndertekstUppercase>{texts.email}</UndertekstUppercase>
-      </Column>
-      <Column className="col-sm-2">
-        <UndertekstUppercase>{texts.phone}</UndertekstUppercase>
-      </Column>
-      <Column className="col-sm-2">
-        <UndertekstUppercase>{texts.startDate}</UndertekstUppercase>
-      </Column>
-    </RowFullWidth>
-  );
-}
-
 interface PersonKortVirksomhetLederColumnProps {
   colSize: number;
   text?: string;
@@ -92,45 +64,6 @@ function PersonKortVirksomhetLederColumn({
     <Column className={`col-sm-${colSize}`}>
       <p>{isActive ? <b>{text}</b> : text}</p>
     </Column>
-  );
-}
-
-interface PersonKortVirksomhetLederRowProps {
-  leder: NarmesteLederRelasjonDTO;
-}
-
-function PersonKortVirksomhetLederRow({
-  leder,
-}: PersonKortVirksomhetLederRowProps) {
-  const isActive = leder.status === NarmesteLederRelasjonStatus.INNMELDT_AKTIV;
-  return (
-    <RowFullWidth>
-      <PersonKortVirksomhetLederColumn
-        colSize={3}
-        text={capitalizeAllWords(leder.narmesteLederNavn)}
-        isActive={isActive}
-      />
-      <EpostButton epost={leder.narmesteLederEpost} isActive={isActive} />
-      <PersonKortVirksomhetLederColumn
-        colSize={2}
-        text={formatPhonenumber(leder.narmesteLederTelefonnummer)}
-        isActive={isActive}
-      />
-      {leder.aktivFom && (
-        <PersonKortVirksomhetLederColumn
-          colSize={2}
-          text={restdatoTildato(leder.aktivFom)}
-          isActive={isActive}
-        />
-      )}
-      {leder.status && (
-        <PersonKortVirksomhetLederColumn
-          colSize={2}
-          text={getNarmesteLederRelasjonStatusText(leder.status)}
-          isActive={isActive}
-        />
-      )}
-    </RowFullWidth>
   );
 }
 
@@ -157,10 +90,56 @@ export function PersonKortVirksomhetLedere({
       virksomhetsnummer={currentLeder.virksomhetsnummer}
       sykmeldinger={sykmeldinger}
     >
-      <PersonKortVirksomhetLederIngressRow />
+      <Row className="w-full mb-2 flex items-center">
+        <div className="col-sm-3">
+          <BodyShort className="text-sm">{texts.name}</BodyShort>
+        </div>
+        <div className="col-sm-3">
+          <BodyShort className="text-sm">{texts.email}</BodyShort>
+        </div>
+        <div className="col-sm-2">
+          <BodyShort className="text-sm">{texts.phone}</BodyShort>
+        </div>
+        <div className="col-sm-2">
+          <BodyShort className="text-sm">{texts.startDate}</BodyShort>
+        </div>
+      </Row>
       {virksomhetLederMap[virksomhetsnummer].map(
         (leder: NarmesteLederRelasjonDTO, idx: number) => {
-          return <PersonKortVirksomhetLederRow key={idx} leder={leder} />;
+          const isActive =
+            leder.status === NarmesteLederRelasjonStatus.INNMELDT_AKTIV;
+          return (
+            <Row className="w-full mb-2 flex items-center" key={idx}>
+              <PersonKortVirksomhetLederColumn
+                colSize={3}
+                text={capitalizeAllWords(leder.narmesteLederNavn)}
+                isActive={isActive}
+              />
+              <EpostButton
+                epost={leder.narmesteLederEpost}
+                isActive={isActive}
+              />
+              <PersonKortVirksomhetLederColumn
+                colSize={2}
+                text={formatPhonenumber(leder.narmesteLederTelefonnummer)}
+                isActive={isActive}
+              />
+              {leder.aktivFom && (
+                <PersonKortVirksomhetLederColumn
+                  colSize={2}
+                  text={restdatoTildato(leder.aktivFom)}
+                  isActive={isActive}
+                />
+              )}
+              {leder.status && (
+                <PersonKortVirksomhetLederColumn
+                  colSize={2}
+                  text={getNarmesteLederRelasjonStatusText(leder.status)}
+                  isActive={isActive}
+                />
+              )}
+            </Row>
+          );
         }
       )}
     </PersonKortVirksomhetHeader>
