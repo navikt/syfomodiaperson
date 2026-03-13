@@ -7,7 +7,11 @@ export type DraftCategory =
   | "arbeidsuforhet-forhandsvarsel"
   | "arbeidsuforhet-avslag-uten-forhandsvarsel"
   | "arbeidsuforhet-oppfylt"
-  | "manglendemedvirkning-forhandsvarsel";
+  | "manglendemedvirkning-forhandsvarsel"
+  | "aktivitetskrav-forhandsvarsel"
+  | "aktivitetskrav-unntak"
+  | "aktivitetskrav-oppfylt"
+  | "aktivitetskrav-innstilling-om-stans";
 
 function draftPath(category: DraftCategory): string {
   return `/api/draft/${category}`;

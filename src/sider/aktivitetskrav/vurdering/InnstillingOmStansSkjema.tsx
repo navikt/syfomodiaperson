@@ -2,7 +2,7 @@ import {
   AktivitetskravStatus,
   InnstillingOmStansVurderingDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useVurderAktivitetskrav } from "@/data/aktivitetskrav/useVurderAktivitetskrav";
 import { Alert, Box, Button, Heading, List, Textarea } from "@navikt/ds-react";
 import { useAktivitetskravNotificationAlert } from "@/sider/aktivitetskrav/useAktivitetskravNotificationAlert";
@@ -11,6 +11,14 @@ import { StansdatoDatePicker } from "@/sider/aktivitetskrav/vurdering/StansdatoD
 import { useAktivitetskravVurderingDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVurderingDocument";
 import { defaultErrorTexts } from "@/api/errors";
 import { Paragraph } from "@/components/Paragraph";
+import { useDebouncedCallback } from "use-debounce";
+import {
+  DraftTextDTO,
+  useDeleteDraft,
+  useDraftQuery,
+  useSaveDraft,
+} from "@/hooks/useDraftQuery";
+import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 
 const texts = {
   sendInnstilling: "Send",
@@ -53,20 +61,48 @@ interface Props {
   varselSvarfrist: Date;
 }
 
+const CATEGORY = "aktivitetskrav-innstilling-om-stans";
+
 export default function InnstillingOmStansSkjema({
   aktivitetskravUuid,
   varselSvarfrist,
 }: Props) {
+  const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const formMethods = useForm<FormValues>();
   const {
     register,
     watch,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = formMethods;
   const vurderAktivitetskrav = useVurderAktivitetskrav(aktivitetskravUuid);
   const { innstillingOmStansDocument } = useAktivitetskravVurderingDocument();
   const { displayNotification } = useAktivitetskravNotificationAlert();
+
+  const getDraftQuery = useDraftQuery<DraftTextDTO>(CATEGORY);
+  const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
+  const deleteDraft = useDeleteDraft(CATEGORY);
+
+  const debouncedAutoSaveDraft = useDebouncedCallback((tekst: string) => {
+    if (!tekst) return;
+    saveDraft.mutate(
+      { begrunnelse: tekst },
+      {
+        onSuccess: () => setUtkastSavedTime(new Date()),
+        onError: () => setUtkastSavedTime(undefined),
+      }
+    );
+  }, 750);
+
+  const draftApplied = useRef(false);
+
+  useEffect(() => {
+    if (!draftApplied.current && getDraftQuery.data?.begrunnelse) {
+      setValue("begrunnelse", getDraftQuery.data.begrunnelse);
+      draftApplied.current = true;
+    }
+  }, [getDraftQuery.data, setValue]);
 
   function submit(values: FormValues) {
     const createAktivitetskravVurderingDTO: InnstillingOmStansVurderingDTO = {
@@ -80,6 +116,9 @@ export default function InnstillingOmStansSkjema({
     };
     vurderAktivitetskrav.mutate(createAktivitetskravVurderingDTO, {
       onSuccess: () => {
+        setUtkastSavedTime(undefined);
+        debouncedAutoSaveDraft.cancel();
+        deleteDraft.mutate(undefined);
         displayNotification(AktivitetskravStatus.INNSTILLING_OM_STANS);
       },
     });
@@ -103,6 +142,7 @@ export default function InnstillingOmStansSkjema({
           {...register("begrunnelse", {
             maxLength: begrunnelseMaxLength,
             required: texts.form.missingBegrunnelse,
+            onChange: (e) => debouncedAutoSaveDraft(e.target.value),
           })}
           value={watch("begrunnelse")}
           label={texts.form.begrunnelseLabel}
@@ -110,6 +150,11 @@ export default function InnstillingOmStansSkjema({
           size="small"
           minRows={6}
           maxLength={begrunnelseMaxLength}
+        />
+
+        <DraftSaveStatus
+          isSaveError={saveDraft.isError}
+          savedTime={utkastSavedTime}
         />
 
         <div>
