@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { SendForhandsvarselDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { useAktivitetskravVurderingDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVurderingDocument";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
@@ -18,7 +18,6 @@ import { useDebouncedCallback } from "use-debounce";
 import {
   DraftTextDTO,
   useDeleteDraft,
-  useDraftQuery,
   useSaveDraft,
 } from "@/hooks/useDraftQuery";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
@@ -55,17 +54,13 @@ interface SendForhandsvarselSkjemaValues {
   fristDato: Date;
 }
 
-const defaultValues: SendForhandsvarselSkjemaValues = {
-  begrunnelse: "",
-  fristDato: getForhandsvarselFrist(),
-};
-
 const begrunnelseMaxLength = 5000;
 
 const CATEGORY = "aktivitetskrav-forhandsvarsel";
 
 export function SendForhandsvarselSkjema({
   aktivitetskravUuid,
+  initiellBegrunnelse,
 }: VurderAktivitetskravSkjemaProps) {
   const sendForhandsvarsel = useSendForhandsvarsel(aktivitetskravUuid);
   const [brevmal, setBrevmal] = useState<Brevmal>(Brevmal.MED_ARBEIDSGIVER);
@@ -77,9 +72,11 @@ export function SendForhandsvarselSkjema({
     handleSubmit,
     reset,
     control,
-    setValue,
   } = useForm<SendForhandsvarselSkjemaValues>({
-    defaultValues,
+    defaultValues: {
+      begrunnelse: initiellBegrunnelse ?? "",
+      fristDato: getForhandsvarselFrist(),
+    },
     mode: "onChange",
   });
   const threeWeeks = toDateOnly(addWeeks(new Date(), 3));
@@ -97,7 +94,6 @@ export function SendForhandsvarselSkjema({
   const { getForhandsvarselDocument } = useAktivitetskravVurderingDocument();
   const [showForhandsvisning, setShowForhandsvisning] = useState(false);
 
-  const getDraftQuery = useDraftQuery<DraftTextDTO>(CATEGORY);
   const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
   const deleteDraft = useDeleteDraft(CATEGORY);
 
@@ -111,15 +107,6 @@ export function SendForhandsvarselSkjema({
       }
     );
   }, 750);
-
-  const draftApplied = useRef(false);
-
-  useEffect(() => {
-    if (!draftApplied.current && getDraftQuery.data?.begrunnelse) {
-      setValue("begrunnelse", getDraftQuery.data.begrunnelse);
-      draftApplied.current = true;
-    }
-  }, [getDraftQuery.data, setValue]);
 
   const submit = (values: SendForhandsvarselSkjemaValues) => {
     const fristDate = values.fristDato;

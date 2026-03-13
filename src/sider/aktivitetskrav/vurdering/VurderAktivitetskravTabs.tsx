@@ -10,6 +10,8 @@ import { SendForhandsvarselSkjema } from "@/sider/aktivitetskrav/vurdering/SendF
 import InnstillingOmStansSkjema from "@/sider/aktivitetskrav/vurdering/InnstillingOmStansSkjema";
 import styled from "styled-components";
 import { isExpiredForhandsvarsel } from "@/utils/datoUtils";
+import { DraftTextDTO, useDraftQuery } from "@/hooks/useDraftQuery";
+import AppSpinner from "@/components/AppSpinner";
 
 const texts = {
   unntak: "Sett unntak",
@@ -59,6 +61,15 @@ export function VurderAktivitetskravTabs({ aktivitetskrav }: Props) {
 
   const aktivitetskravUuid = aktivitetskrav.uuid;
 
+  const unntakDraft = useDraftQuery<DraftTextDTO>("aktivitetskrav-unntak");
+  const oppfyltDraft = useDraftQuery<DraftTextDTO>("aktivitetskrav-oppfylt");
+  const forhandsvarselDraft = useDraftQuery<DraftTextDTO>(
+    "aktivitetskrav-forhandsvarsel"
+  );
+  const innstillingOmStansDraft = useDraftQuery<DraftTextDTO>(
+    "aktivitetskrav-innstilling-om-stans"
+  );
+
   return (
     <StyledTabs defaultValue={Tab.UNNTAK}>
       <Tabs.List>
@@ -75,23 +86,49 @@ export function VurderAktivitetskravTabs({ aktivitetskrav }: Props) {
         )}
       </Tabs.List>
       <Tabs.Panel value={Tab.UNNTAK}>
-        <UnntakAktivitetskravSkjema aktivitetskravUuid={aktivitetskravUuid} />
+        {unntakDraft.isPending ? (
+          <AppSpinner />
+        ) : (
+          <UnntakAktivitetskravSkjema
+            aktivitetskravUuid={aktivitetskravUuid}
+            initiellBegrunnelse={unntakDraft.data?.begrunnelse}
+          />
+        )}
       </Tabs.Panel>
       <Tabs.Panel value={Tab.OPPFYLT}>
-        <OppfyltAktivitetskravSkjema aktivitetskravUuid={aktivitetskravUuid} />
+        {oppfyltDraft.isPending ? (
+          <AppSpinner />
+        ) : (
+          <OppfyltAktivitetskravSkjema
+            aktivitetskravUuid={aktivitetskravUuid}
+            initiellBegrunnelse={oppfyltDraft.data?.begrunnelse}
+          />
+        )}
       </Tabs.Panel>
       {isForhandsvarselTabVisible && (
         <Tabs.Panel value={Tab.FORHANDSVARSEL}>
-          <SendForhandsvarselSkjema aktivitetskravUuid={aktivitetskravUuid} />
+          {forhandsvarselDraft.isPending ? (
+            <AppSpinner />
+          ) : (
+            <SendForhandsvarselSkjema
+              aktivitetskravUuid={aktivitetskravUuid}
+              initiellBegrunnelse={forhandsvarselDraft.data?.begrunnelse}
+            />
+          )}
         </Tabs.Panel>
       )}
       {isInnstillingOmStansTabVisible &&
         !!latestVurdering.varsel?.svarfrist && (
           <Tabs.Panel value={Tab.INNSTILLING_OM_STANS}>
-            <InnstillingOmStansSkjema
-              aktivitetskravUuid={aktivitetskravUuid}
-              varselSvarfrist={latestVurdering.varsel?.svarfrist}
-            />
+            {innstillingOmStansDraft.isPending ? (
+              <AppSpinner />
+            ) : (
+              <InnstillingOmStansSkjema
+                aktivitetskravUuid={aktivitetskravUuid}
+                varselSvarfrist={latestVurdering.varsel?.svarfrist}
+                initiellBegrunnelse={innstillingOmStansDraft.data?.begrunnelse}
+              />
+            )}
           </Tabs.Panel>
         )}
     </StyledTabs>
