@@ -4,7 +4,6 @@ import {
 } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import React from "react";
-import { SyketilfelleSummaryElement } from "@/components/personkort/PersonkortHeader/SyketilfelleSummaryElement";
 
 const texts = {
   startDate: "Sykmeldt: ",
@@ -19,7 +18,10 @@ export function TilfellePeriod() {
   return (
     !!startDate &&
     !!endDate && (
-      <SyketilfelleSummaryElement keyword={texts.startDate} value={periode} />
+      <div className="font-normal">
+        <span>{texts.startDate}</span>
+        <b>{periode}</b>
+      </div>
     )
   );
 }

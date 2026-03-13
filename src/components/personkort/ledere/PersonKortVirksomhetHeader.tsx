@@ -2,9 +2,9 @@ import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { formaterOrgnr } from "@/utils";
 import { lederHasActiveSykmelding } from "@/utils/ledereUtils";
-import { FabrikkImage } from "../../../../img/ImageComponents";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { Tag } from "@navikt/ds-react";
+import { Buildings2Icon } from "@navikt/aksel-icons";
 
 const texts = {
   activeSykmelding: "Sykmeldt nå",
@@ -30,11 +30,6 @@ const GridRow = styled.div`
   font-weight: 800;
 `;
 
-const FlexColumn = styled.div`
-  display: flex;
-  align-items: flex-end;
-`;
-
 interface Props {
   children?: ReactNode;
   arbeidsgiverForskutterer?: boolean;
@@ -51,25 +46,25 @@ export function PersonKortVirksomhetHeader({
   sykmeldinger,
 }: Props) {
   const virksomhetsnummerText = `Org.nr.: ${formaterOrgnr(virksomhetsnummer)}`;
-  const activeSykmeldingText =
-    lederHasActiveSykmelding(virksomhetsnummer, sykmeldinger) &&
-    texts.activeSykmelding;
   return (
     <div className="mb-8">
       <div className="personkortElement__tittel bg-ax-bg-neutral-soft p-2 border-0">
-        <img src={FabrikkImage} alt="Fabrikk" />
+        <Buildings2Icon title="a11y-title" fontSize="1.5rem" className="mr-2" />
         <GridRow>
-          <FlexColumn>{virksomhetsnavn}</FlexColumn>
-          <FlexColumn>{virksomhetsnummerText}</FlexColumn>
-          <FlexColumn>
+          <div className="flex items-end">{virksomhetsnavn}</div>
+          <div className="flex items-end">{virksomhetsnummerText}</div>
+          <div className="flex items-end">
             {arbeidsgiverForskuttererToText(arbeidsgiverForskutterer)}
-          </FlexColumn>
-          {activeSykmeldingText && (
-            <FlexColumn>
-              <Tag data-color="info" variant="outline">
-                {activeSykmeldingText}
-              </Tag>
-            </FlexColumn>
+          </div>
+          {lederHasActiveSykmelding(virksomhetsnummer, sykmeldinger) && (
+            <Tag
+              size="small"
+              data-color="info"
+              variant="outline"
+              className="max-w-fit"
+            >
+              {texts.activeSykmelding}
+            </Tag>
           )}
         </GridRow>
       </div>
