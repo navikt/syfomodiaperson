@@ -1,5 +1,4 @@
 import React from "react";
-import { MeldingTilArbeidsgiver } from "./MeldingTilArbeidsgiver";
 import { MeldingTilNav } from "./MeldingTilNav";
 import { BedreArbeidsevnen } from "./BedreArbeidsevnen";
 import { UtdypendeOpplysninger } from "./UtdypendeOpplysninger";
@@ -17,6 +16,11 @@ import {
   erMulighetForArbeidInformasjon,
   erUtdypendeOpplysninger,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
+import { BodyLong, BodyShort } from "@navikt/ds-react";
+
+const tekster = {
+  meldingTilArbeidsgiver: "Melding til arbeidsgiver",
+};
 
 interface Props {
   sykmelding: SykmeldingOldFormat;
@@ -53,9 +57,12 @@ export default function SykmeldingUtdragFraSykefravaretVisning({
         <MeldingTilNav meldingTilNav={sykmelding.meldingTilNav} />
       )}
       {!!sykmelding.innspillTilArbeidsgiver && (
-        <MeldingTilArbeidsgiver
-          innspillTilArbeidsgiver={sykmelding.innspillTilArbeidsgiver}
-        />
+        <div className="pt-4">
+          <BodyShort size="small" weight="semibold">
+            {tekster.meldingTilArbeidsgiver}
+          </BodyShort>
+          <BodyLong size="small">{sykmelding.innspillTilArbeidsgiver}</BodyLong>
+        </div>
       )}
     </div>
   );

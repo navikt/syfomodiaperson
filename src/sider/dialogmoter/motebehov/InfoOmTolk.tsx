@@ -19,16 +19,16 @@ const texts = {
   urlText: "Ønsker du å registrere behov for tolk på vedkommende, klikk her.",
 };
 
-const isTolkRegistrertIPdl = (brukerinfo: BrukerinfoDTO): boolean => {
+function isTolkRegistrertIPdl(brukerinfo: BrukerinfoDTO): boolean {
   const { tilrettelagtKommunikasjon } = brukerinfo;
   return !!(
     tilrettelagtKommunikasjon &&
     (tilrettelagtKommunikasjon.tegnsprakTolk ||
       tilrettelagtKommunikasjon.talesprakTolk)
   );
-};
+}
 
-export const InfoOmTolk = () => {
+export function InfoOmTolk() {
   const { brukerinfo } = useBrukerinfoQuery();
   const { data: motebehov } = useMotebehovQuery();
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
@@ -61,4 +61,4 @@ export const InfoOmTolk = () => {
       </Heading>
     </Box>
   );
-};
+}
