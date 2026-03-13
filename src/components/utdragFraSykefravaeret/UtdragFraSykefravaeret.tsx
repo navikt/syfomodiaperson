@@ -32,14 +32,6 @@ function logEvent() {
   });
 }
 
-function Samtalereferat() {
-  return (
-    <Link href={lenkeKommunikasjonMedBruker} target="_blank" onClick={logEvent}>
-      {texts.kommunikasjonMedBruker}
-    </Link>
-  );
-}
-
 interface Props {
   selectedOppfolgingstilfelle?: OppfolgingstilfelleDTO;
 }
@@ -75,7 +67,13 @@ export default function UtdragFraSykefravaeret({
         selectedOppfolgingstilfelle={oppfolgingstilfelle}
       />
       <Sykmeldinger selectedOppfolgingstilfelle={oppfolgingstilfelle} />
-      <Samtalereferat />
+      <Link
+        href={lenkeKommunikasjonMedBruker}
+        target="_blank"
+        onClick={logEvent}
+      >
+        {texts.kommunikasjonMedBruker}
+      </Link>
     </Box>
   );
 }
