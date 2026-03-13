@@ -4,12 +4,8 @@ import {
   Soknadstatus,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { Box, Heading } from "@navikt/ds-react";
+import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import TilbakeTilSoknader from "../soknad-felles/TilbakeTilSoknader";
-import Statuspanel, {
-  Statusopplysninger,
-} from "@/components/speiling/Statuspanel";
-import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 
 const texts = {
@@ -33,22 +29,22 @@ export default function SykepengesoknadUtland({ soknad }: Props): ReactElement {
       <Heading level="1" size="large">
         {texts.tittel}
       </Heading>
-      <Statuspanel>
-        <Statusopplysninger>
-          <Nokkelopplysning
-            label={texts.status}
-            className={"nokkelopplysning--statusopplysning"}
-          >
-            <p>{tekst}</p>
-          </Nokkelopplysning>
-          <Nokkelopplysning
-            label={texts.dato}
-            className={"nokkelopplysning--statusopplysning"}
-          >
-            <p>{tilLesbarDatoMedArstall(soknad.sendtTilNAVDato)}</p>
-          </Nokkelopplysning>
-        </Statusopplysninger>
-      </Statuspanel>
+      <div className="grid grid-cols-2 gap-4 mb-5">
+        <div>
+          <Heading size="xsmall" level="3" className="mb-1">
+            {texts.status}
+          </Heading>
+          <BodyShort size="small">{tekst}</BodyShort>
+        </div>
+        <div>
+          <Heading size="xsmall" level="3" className="mb-1">
+            {texts.dato}
+          </Heading>
+          <BodyShort size="small">
+            {tilLesbarDatoMedArstall(soknad.sendtTilNAVDato)}
+          </BodyShort>
+        </div>
+      </div>
       <Box padding="space-16" borderRadius="2">
         <Heading spacing size="small">
           {texts.oppsummering}

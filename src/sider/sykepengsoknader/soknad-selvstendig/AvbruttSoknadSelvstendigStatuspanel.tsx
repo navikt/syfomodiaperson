@@ -1,10 +1,7 @@
 import React from "react";
-import Statuspanel, {
-  Statusopplysninger,
-} from "../../../components/speiling/Statuspanel";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
+import { BodyShort, Heading } from "@navikt/ds-react";
 
 const texts = {
   tittel: "Dato avbrutt",
@@ -18,21 +15,21 @@ interface Props {
 
 export default function AvbruttSoknadSelvstendigStatuspanel({ soknad }: Props) {
   return (
-    <Statuspanel>
-      <Statusopplysninger>
-        <Nokkelopplysning
-          label={texts.status}
-          className={"nokkelopplysning--statusopplysning"}
-        >
-          <p>{texts.avbrutt}</p>
-        </Nokkelopplysning>
-        <Nokkelopplysning
-          label={texts.tittel}
-          className={"nokkelopplysning--statusopplysning"}
-        >
-          <p>{tilLesbarDatoMedArstall(soknad.avbruttDato)}</p>
-        </Nokkelopplysning>
-      </Statusopplysninger>
-    </Statuspanel>
+    <div className="mb-4 flex justify-between gap-5">
+      <div>
+        <Heading size="xsmall" level="3" className="mb-1">
+          {texts.status}
+        </Heading>
+        <BodyShort size="small">{texts.avbrutt}</BodyShort>
+      </div>
+      <div>
+        <Heading size="xsmall" level="3" className="mb-1">
+          {texts.tittel}
+        </Heading>
+        <BodyShort size="small">
+          {tilLesbarDatoMedArstall(soknad.avbruttDato)}
+        </BodyShort>
+      </div>
+    </div>
   );
 }

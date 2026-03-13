@@ -1,10 +1,7 @@
 import React, { ReactElement } from "react";
-import Statuspanel, {
-  Statusopplysninger,
-} from "../../../components/speiling/Statuspanel";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 import SoknadStatustekst from "@/utils/soknad-felles/SoknadStatustekst";
+import { Heading } from "@navikt/ds-react";
 
 const texts = {
   status: "Status",
@@ -16,15 +13,11 @@ interface Props {
 
 export function SykepengesoknadStatuspanel({ soknad }: Props): ReactElement {
   return (
-    <Statuspanel enKolonne>
-      <Statusopplysninger>
-        <Nokkelopplysning
-          label={texts.status}
-          className={"nokkelopplysning--statusopplysning"}
-        >
-          <SoknadStatustekst soknad={soknad} />
-        </Nokkelopplysning>
-      </Statusopplysninger>
-    </Statuspanel>
+    <div className="mb-5">
+      <Heading size="xsmall" level="3" className="mb-1">
+        {texts.status}
+      </Heading>
+      <SoknadStatustekst soknad={soknad} />
+    </div>
   );
 }

@@ -12,7 +12,6 @@ import { Box, Heading } from "@navikt/ds-react";
 import SoknadStatustekst from "@/utils/soknad-felles/SoknadStatustekst";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import SykmeldingUtdrag from "@/sider/sykepengsoknader/soknad-felles/SykmeldingUtdrag";
-import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
 import TilbakeTilSoknader from "@/sider/sykepengsoknader/soknad-felles/TilbakeTilSoknader";
 
 const texts = {
@@ -45,12 +44,12 @@ export default function SendtSoknadArbeidstakerNy({
       {soknad.status === Soknadstatus.KORRIGERT && (
         <KorrigertAv soknadId={soknad.id} />
       )}
-      <Nokkelopplysning
-        label={texts.status}
-        className="nokkelopplysning--statusopplysning"
-      >
+      <div className="mb-5">
+        <Heading size="xsmall" level="3" className="mb-1">
+          {texts.status}
+        </Heading>
         <SoknadStatustekst soknad={soknad} />
-      </Nokkelopplysning>
+      </div>
       {isSykmeldingUtdragVisible && (
         <SykmeldingUtdrag sykmelding={sykmelding} />
       )}
