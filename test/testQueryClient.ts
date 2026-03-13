@@ -181,13 +181,23 @@ export const queryClientWithMockData = (): QueryClient => {
     ),
     () => []
   );
-  queryClient.setQueryData(
-    draftQueryKeys.draft(
-      "behandlerdialog-meldingtilbehandler",
-      ARBEIDSTAKER_DEFAULT.personIdent
-    ),
-    () => []
-  );
+  const draftCategories = [
+    "behandlerdialog-meldingtilbehandler",
+    "aktivitetskrav-forhandsvarsel",
+    "aktivitetskrav-unntak",
+    "aktivitetskrav-oppfylt",
+    "aktivitetskrav-innstilling-om-stans",
+    "arbeidsuforhet-forhandsvarsel",
+    "arbeidsuforhet-avslag-uten-forhandsvarsel",
+    "arbeidsuforhet-oppfylt",
+    "manglendemedvirkning-forhandsvarsel",
+  ] as const;
+  draftCategories.forEach((category) => {
+    queryClient.setQueryData(
+      draftQueryKeys.draft(category, ARBEIDSTAKER_DEFAULT.personIdent),
+      () => null
+    );
+  });
   return queryClient;
 };
 
