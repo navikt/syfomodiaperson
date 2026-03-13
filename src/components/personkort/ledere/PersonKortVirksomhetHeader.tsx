@@ -10,11 +10,15 @@ const texts = {
   activeSykmelding: "Sykmeldt nå",
 };
 
-function arbeidsgiverForskuttererToText(arbeidsgiverForskutterer?: boolean) {
-  if (arbeidsgiverForskutterer === null) {
-    return "Ikke oppgitt";
+function arbeidsgiverForskuttererToText(
+  arbeidsgiverForskutterer?: boolean
+): string {
+  if (arbeidsgiverForskutterer === undefined) {
+    return "Forskuttering ikke oppgitt";
   }
-  return arbeidsgiverForskutterer ? "Ja" : "Nei";
+  return arbeidsgiverForskutterer
+    ? "Arbeidsgiver forskutterer"
+    : "Arbeidsgiver forskutterer ikke";
 }
 
 const GridRow = styled.div`
@@ -47,9 +51,6 @@ export function PersonKortVirksomhetHeader({
   sykmeldinger,
 }: Props) {
   const virksomhetsnummerText = `Org.nr.: ${formaterOrgnr(virksomhetsnummer)}`;
-  const forskutteringText = `Forsk.: ${arbeidsgiverForskuttererToText(
-    arbeidsgiverForskutterer
-  )}`;
   const activeSykmeldingText =
     lederHasActiveSykmelding(virksomhetsnummer, sykmeldinger) &&
     texts.activeSykmelding;
@@ -60,7 +61,9 @@ export function PersonKortVirksomhetHeader({
         <GridRow>
           <FlexColumn>{virksomhetsnavn}</FlexColumn>
           <FlexColumn>{virksomhetsnummerText}</FlexColumn>
-          <FlexColumn>{forskutteringText}</FlexColumn>
+          <FlexColumn>
+            {arbeidsgiverForskuttererToText(arbeidsgiverForskutterer)}
+          </FlexColumn>
           {activeSykmeldingText && (
             <FlexColumn>
               <Tag data-color="info" variant="outline">
