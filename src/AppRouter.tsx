@@ -29,16 +29,16 @@ import SykepengesoknadSide from "@/sider/sykepengsoknader/container/Sykepengesok
 import Arbeidsuforhet from "@/sider/arbeidsuforhet/Arbeidsuforhet";
 import ArbeidsuforhetAvslag from "@/sider/arbeidsuforhet/avslag/ArbeidsuforhetAvslag";
 import ArbeidsuforhetIkkeAktuell from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuell";
-import SendForhandsvarselSkjema from "@/sider/arbeidsuforhet/SendForhandsvarselSkjema";
+import SendForhandsvarselSkjemaContainer from "@/sider/arbeidsuforhet/SendForhandsvarselSkjemaContainer";
 import ArbeidsuforhetSide from "@/sider/arbeidsuforhet/ArbeidsuforhetSide";
 import SykmeldingSide from "@/sider/sykmeldinger/container/SykmeldingSide";
-import InnstillingUtenForhandsvarsel from "@/sider/arbeidsuforhet/innstillingutenforhandsvarsel/InnstillingUtenForhandsvarsel";
+import InnstillingUtenForhandsvarselContainer from "@/sider/arbeidsuforhet/innstillingutenforhandsvarsel/InnstillingUtenForhandsvarselContainer";
 import OppfyltSide from "@/sider/manglendemedvirkning/oppfylt/OppfyltSide";
 import StansSide from "@/sider/manglendemedvirkning/stans/StansSide";
 import IkkeAktuellSide from "@/sider/manglendemedvirkning/ikkeaktuell/IkkeAktuellSide";
 import UnntakSide from "@/sider/manglendemedvirkning/unntak/UnntakSide";
 import { AktivitetskravContainer } from "@/sider/aktivitetskrav/AktivitetskravContainer";
-import OppfyltForm from "@/sider/arbeidsuforhet/oppfylt/OppfyltForm";
+import OppfyltFormContainer from "@/sider/arbeidsuforhet/oppfylt/OppfyltFormContainer";
 import KartleggingssporsmalSide from "@/sider/kartleggingssporsmal/KartleggingssporsmalSide";
 import * as Umami from "@/utils/umami";
 import OppfolgingsplanerOversikt from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanerOversikt";
@@ -161,13 +161,13 @@ function AktivBrukerRouter(): ReactElement {
             <Route index element={<Arbeidsuforhet />} />
             <Route
               path="forhandsvarsel"
-              element={<SendForhandsvarselSkjema />}
+              element={<SendForhandsvarselSkjemaContainer />}
             />
             <Route
               path="innstilling-uten-forhandsvarsel"
-              element={<InnstillingUtenForhandsvarsel />}
+              element={<InnstillingUtenForhandsvarselContainer />}
             />
-            <Route path="oppfylt" element={<OppfyltForm />} />
+            <Route path="oppfylt" element={<OppfyltFormContainer />} />
             <Route path="avslag" element={<ArbeidsuforhetAvslag />} />
             <Route path="ikkeaktuell" element={<ArbeidsuforhetIkkeAktuell />} />
           </Route>

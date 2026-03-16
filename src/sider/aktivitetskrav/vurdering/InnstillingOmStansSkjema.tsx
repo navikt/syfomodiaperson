@@ -1,8 +1,8 @@
+import React, { useState } from "react";
 import {
   AktivitetskravStatus,
   InnstillingOmStansVurderingDTO,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import React, { useEffect, useRef, useState } from "react";
 import { useVurderAktivitetskrav } from "@/data/aktivitetskrav/useVurderAktivitetskrav";
 import { Alert, Box, Button, Heading, List, Textarea } from "@navikt/ds-react";
 import { useAktivitetskravNotificationAlert } from "@/sider/aktivitetskrav/useAktivitetskravNotificationAlert";
@@ -15,7 +15,6 @@ import { useDebouncedCallback } from "use-debounce";
 import {
   DraftTextDTO,
   useDeleteDraft,
-  useDraftQuery,
   useSaveDraft,
 } from "@/hooks/useDraftQuery";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
@@ -59,6 +58,7 @@ export interface FormValues {
 interface Props {
   aktivitetskravUuid: string;
   varselSvarfrist: Date;
+  begrunnelseUtkast?: string;
 }
 
 const CATEGORY = "aktivitetskrav-innstilling-om-stans";
@@ -66,21 +66,22 @@ const CATEGORY = "aktivitetskrav-innstilling-om-stans";
 export default function InnstillingOmStansSkjema({
   aktivitetskravUuid,
   varselSvarfrist,
+  begrunnelseUtkast,
 }: Props) {
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
-  const formMethods = useForm<FormValues>();
+  const formMethods = useForm<FormValues>({
+    defaultValues: { begrunnelse: begrunnelseUtkast ?? "" },
+  });
   const {
     register,
     watch,
     formState: { errors },
     handleSubmit,
-    setValue,
   } = formMethods;
   const vurderAktivitetskrav = useVurderAktivitetskrav(aktivitetskravUuid);
   const { innstillingOmStansDocument } = useAktivitetskravVurderingDocument();
   const { displayNotification } = useAktivitetskravNotificationAlert();
 
-  const getDraftQuery = useDraftQuery<DraftTextDTO>(CATEGORY);
   const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
   const deleteDraft = useDeleteDraft(CATEGORY);
 
@@ -94,15 +95,6 @@ export default function InnstillingOmStansSkjema({
       }
     );
   }, 750);
-
-  const draftApplied = useRef(false);
-
-  useEffect(() => {
-    if (!draftApplied.current && getDraftQuery.data?.begrunnelse) {
-      setValue("begrunnelse", getDraftQuery.data.begrunnelse);
-      draftApplied.current = true;
-    }
-  }, [getDraftQuery.data, setValue]);
 
   function submit(values: FormValues) {
     const createAktivitetskravVurderingDTO: InnstillingOmStansVurderingDTO = {

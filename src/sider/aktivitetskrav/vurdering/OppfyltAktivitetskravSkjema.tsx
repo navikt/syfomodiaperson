@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   AktivitetskravStatus,
   CreateAktivitetskravVurderingDTO,
@@ -22,7 +22,6 @@ import { useDebouncedCallback } from "use-debounce";
 import {
   DraftTextDTO,
   useDeleteDraft,
-  useDraftQuery,
   useSaveDraft,
 } from "@/hooks/useDraftQuery";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
@@ -42,13 +41,13 @@ export interface OppfyltAktivitetskravSkjemaValues
   arsak: OppfyltVurderingArsak;
 }
 
-const defaultValues = { begrunnelse: "", arsak: undefined };
 const begrunnelseMaxLength = 1000;
 
 const CATEGORY = "aktivitetskrav-oppfylt";
 
 export function OppfyltAktivitetskravSkjema({
   aktivitetskravUuid,
+  begrunnelseUtkast,
 }: VurderAktivitetskravSkjemaProps) {
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const {
@@ -57,15 +56,13 @@ export function OppfyltAktivitetskravSkjema({
     formState: { errors },
     handleSubmit,
     reset,
-    setValue,
   } = useForm<OppfyltAktivitetskravSkjemaValues>({
-    defaultValues,
+    defaultValues: { begrunnelse: begrunnelseUtkast ?? "", arsak: undefined },
   });
   const vurderAktivitetskrav = useVurderAktivitetskrav(aktivitetskravUuid);
   const { getVurderingDocument } = useAktivitetskravVurderingDocument();
   const { displayNotification } = useAktivitetskravNotificationAlert();
 
-  const getDraftQuery = useDraftQuery<DraftTextDTO>(CATEGORY);
   const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
   const deleteDraft = useDeleteDraft(CATEGORY);
 
@@ -79,15 +76,6 @@ export function OppfyltAktivitetskravSkjema({
       }
     );
   }, 750);
-
-  const draftApplied = useRef(false);
-
-  useEffect(() => {
-    if (!draftApplied.current && getDraftQuery.data?.begrunnelse) {
-      setValue("begrunnelse", getDraftQuery.data.begrunnelse);
-      draftApplied.current = true;
-    }
-  }, [getDraftQuery.data, setValue]);
 
   const submit = (values: OppfyltAktivitetskravSkjemaValues) => {
     const { arsak, begrunnelse } = values;

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -29,7 +29,6 @@ import { useDebouncedCallback } from "use-debounce";
 import {
   DraftTextDTO,
   useDeleteDraft,
-  useDraftQuery,
   useSaveDraft,
 } from "@/hooks/useDraftQuery";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
@@ -59,10 +58,6 @@ const texts = {
 };
 
 const forhandsvarselFrist = getForhandsvarselFrist();
-const defaultValues = {
-  begrunnelse: texts.defaultTextareaValue,
-  fristDato: forhandsvarselFrist,
-};
 const begrunnelseMaxLength = 8000;
 
 interface SkjemaValues {
@@ -70,7 +65,11 @@ interface SkjemaValues {
   fristDato: Date;
 }
 
-export default function SendForhandsvarselSkjema() {
+interface Props {
+  begrunnelseUtkast?: string;
+}
+
+export default function SendForhandsvarselSkjema({ begrunnelseUtkast }: Props) {
   const navigate = useNavigate();
   const { setNotification } = useNotification();
   const sendForhandsvarsel = useSaveVurderingArbeidsuforhet();
@@ -81,12 +80,16 @@ export default function SendForhandsvarselSkjema() {
     formState: { errors },
     handleSubmit,
     control,
-    setValue,
-  } = useForm<SkjemaValues>({ defaultValues, mode: "onChange" });
+  } = useForm<SkjemaValues>({
+    defaultValues: {
+      begrunnelse: begrunnelseUtkast ?? texts.defaultTextareaValue,
+      fristDato: forhandsvarselFrist,
+    },
+    mode: "onChange",
+  });
   const { getForhandsvarselDocument } = useArbeidsuforhetVurderingDocument();
 
   const CATEGORY = "arbeidsuforhet-forhandsvarsel";
-  const getDraftQuery = useDraftQuery<DraftTextDTO>(CATEGORY);
   const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
   const deleteDraft = useDeleteDraft(CATEGORY);
 
@@ -105,15 +108,6 @@ export default function SendForhandsvarselSkjema() {
       },
     });
   }, 750);
-
-  const draftApplied = useRef(false);
-
-  useEffect(() => {
-    if (!draftApplied.current && getDraftQuery.data?.begrunnelse) {
-      setValue("begrunnelse", getDraftQuery.data.begrunnelse);
-      draftApplied.current = true;
-    }
-  }, [getDraftQuery.data, setValue]);
 
   const threeWeeks = toDateOnly(addWeeks(new Date(), 3));
   const sixWeeks = toDateOnly(addWeeks(new Date(), 6));

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   AktivitetskravStatus,
   CreateAktivitetskravVurderingDTO,
@@ -22,7 +22,6 @@ import { useDebouncedCallback } from "use-debounce";
 import {
   DraftTextDTO,
   useDeleteDraft,
-  useDraftQuery,
   useSaveDraft,
 } from "@/hooks/useDraftQuery";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
@@ -38,7 +37,6 @@ const texts = {
   lagre: "Lagre",
 };
 
-const defaultValues = { begrunnelse: "", arsak: undefined };
 const begrunnelseMaxLength = 1000;
 
 export interface UnntakAktivitetskravSkjemaValues
@@ -50,6 +48,7 @@ const CATEGORY = "aktivitetskrav-unntak";
 
 export function UnntakAktivitetskravSkjema({
   aktivitetskravUuid,
+  begrunnelseUtkast,
 }: VurderAktivitetskravSkjemaProps) {
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const {
@@ -58,13 +57,13 @@ export function UnntakAktivitetskravSkjema({
     formState: { errors },
     handleSubmit,
     reset,
-    setValue,
-  } = useForm<UnntakAktivitetskravSkjemaValues>({ defaultValues });
+  } = useForm<UnntakAktivitetskravSkjemaValues>({
+    defaultValues: { begrunnelse: begrunnelseUtkast ?? "", arsak: undefined },
+  });
   const vurderAktivitetskrav = useVurderAktivitetskrav(aktivitetskravUuid);
   const { getVurderingDocument } = useAktivitetskravVurderingDocument();
   const { displayNotification } = useAktivitetskravNotificationAlert();
 
-  const getDraftQuery = useDraftQuery<DraftTextDTO>(CATEGORY);
   const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
   const deleteDraft = useDeleteDraft(CATEGORY);
 
@@ -78,15 +77,6 @@ export function UnntakAktivitetskravSkjema({
       }
     );
   }, 750);
-
-  const draftApplied = useRef(false);
-
-  useEffect(() => {
-    if (!draftApplied.current && getDraftQuery.data?.begrunnelse) {
-      setValue("begrunnelse", getDraftQuery.data.begrunnelse);
-      draftApplied.current = true;
-    }
-  }, [getDraftQuery.data, setValue]);
 
   const submit = (values: UnntakAktivitetskravSkjemaValues) => {
     const status = AktivitetskravStatus.UNNTAK;
