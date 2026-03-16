@@ -91,7 +91,7 @@ export function VurderAktivitetskravTabs({ aktivitetskrav }: Props) {
         ) : (
           <UnntakAktivitetskravSkjema
             aktivitetskravUuid={aktivitetskravUuid}
-            initiellBegrunnelse={unntakDraft.data?.begrunnelse}
+            begrunnelseUtkast={unntakDraft.data?.begrunnelse}
           />
         )}
       </Tabs.Panel>
@@ -101,7 +101,7 @@ export function VurderAktivitetskravTabs({ aktivitetskrav }: Props) {
         ) : (
           <OppfyltAktivitetskravSkjema
             aktivitetskravUuid={aktivitetskravUuid}
-            initiellBegrunnelse={oppfyltDraft.data?.begrunnelse}
+            begrunnelseUtkast={oppfyltDraft.data?.begrunnelse}
           />
         )}
       </Tabs.Panel>
@@ -112,7 +112,7 @@ export function VurderAktivitetskravTabs({ aktivitetskrav }: Props) {
           ) : (
             <SendForhandsvarselSkjema
               aktivitetskravUuid={aktivitetskravUuid}
-              initiellBegrunnelse={forhandsvarselDraft.data?.begrunnelse}
+              begrunnelseUtkast={forhandsvarselDraft.data?.begrunnelse}
             />
           )}
         </Tabs.Panel>
@@ -126,7 +126,7 @@ export function VurderAktivitetskravTabs({ aktivitetskrav }: Props) {
               <InnstillingOmStansSkjema
                 aktivitetskravUuid={aktivitetskravUuid}
                 varselSvarfrist={latestVurdering.varsel?.svarfrist}
-                initiellBegrunnelse={innstillingOmStansDraft.data?.begrunnelse}
+                begrunnelseUtkast={innstillingOmStansDraft.data?.begrunnelse}
               />
             )}
           </Tabs.Panel>

@@ -97,11 +97,11 @@ interface FormValues {
 }
 
 interface Props {
-  initiellBegrunnelse?: string;
+  begrunnelseUtkast?: string;
 }
 
 export default function InnstillingUtenForhandsvarsel({
-  initiellBegrunnelse,
+  begrunnelseUtkast,
 }: Props) {
   const navigate = useNavigate();
   const lagreInnstilling = useSaveVurderingArbeidsuforhet();
@@ -110,7 +110,7 @@ export default function InnstillingUtenForhandsvarsel({
   const { setNotification } = useNotification();
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const formProps = useForm<FormValues>({
-    defaultValues: { begrunnelse: initiellBegrunnelse ?? "" },
+    defaultValues: { begrunnelse: begrunnelseUtkast ?? "" },
   });
   const {
     register,

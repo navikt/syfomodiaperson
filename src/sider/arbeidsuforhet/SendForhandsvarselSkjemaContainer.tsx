@@ -11,6 +11,6 @@ export default function SendForhandsvarselSkjemaContainer() {
   }
 
   return (
-    <SendForhandsvarselSkjema initiellBegrunnelse={draft.data?.begrunnelse} />
+    <SendForhandsvarselSkjema begrunnelseUtkast={draft.data?.begrunnelse} />
   );
 }

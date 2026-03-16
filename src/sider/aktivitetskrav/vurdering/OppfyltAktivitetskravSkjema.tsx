@@ -47,7 +47,7 @@ const CATEGORY = "aktivitetskrav-oppfylt";
 
 export function OppfyltAktivitetskravSkjema({
   aktivitetskravUuid,
-  initiellBegrunnelse,
+  begrunnelseUtkast,
 }: VurderAktivitetskravSkjemaProps) {
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const {
@@ -57,7 +57,7 @@ export function OppfyltAktivitetskravSkjema({
     handleSubmit,
     reset,
   } = useForm<OppfyltAktivitetskravSkjemaValues>({
-    defaultValues: { begrunnelse: initiellBegrunnelse ?? "", arsak: undefined },
+    defaultValues: { begrunnelse: begrunnelseUtkast ?? "", arsak: undefined },
   });
   const vurderAktivitetskrav = useVurderAktivitetskrav(aktivitetskravUuid);
   const { getVurderingDocument } = useAktivitetskravVurderingDocument();

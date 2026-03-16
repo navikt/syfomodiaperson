@@ -66,12 +66,10 @@ interface SkjemaValues {
 }
 
 interface Props {
-  initiellBegrunnelse?: string;
+  begrunnelseUtkast?: string;
 }
 
-export default function SendForhandsvarselSkjema({
-  initiellBegrunnelse,
-}: Props) {
+export default function SendForhandsvarselSkjema({ begrunnelseUtkast }: Props) {
   const navigate = useNavigate();
   const { setNotification } = useNotification();
   const sendForhandsvarsel = useSaveVurderingArbeidsuforhet();
@@ -84,7 +82,7 @@ export default function SendForhandsvarselSkjema({
     control,
   } = useForm<SkjemaValues>({
     defaultValues: {
-      begrunnelse: initiellBegrunnelse ?? texts.defaultTextareaValue,
+      begrunnelse: begrunnelseUtkast ?? texts.defaultTextareaValue,
       fristDato: forhandsvarselFrist,
     },
     mode: "onChange",

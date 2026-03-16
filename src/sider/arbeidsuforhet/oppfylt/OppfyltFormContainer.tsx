@@ -10,5 +10,5 @@ export default function OppfyltFormContainer() {
     return <AppSpinner />;
   }
 
-  return <OppfyltForm initiellBegrunnelse={draft.data?.begrunnelse} />;
+  return <OppfyltForm begrunnelseUtkast={draft.data?.begrunnelse} />;
 }

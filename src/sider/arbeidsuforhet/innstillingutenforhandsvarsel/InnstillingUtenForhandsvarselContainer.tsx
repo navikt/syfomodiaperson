@@ -8,12 +8,11 @@ export default function InnstillingUtenForhandsvarselContainer() {
     "arbeidsuforhet-avslag-uten-forhandsvarsel"
   );
 
-  return (
-    {draft.isPending ?
-      <AppSpinner />
-      : <InnstillingUtenForhandsvarsel
-      initiellBegrunnelse={draft.data?.begrunnelse}
-      />
-    }
+  return draft.isPending ? (
+    <AppSpinner />
+  ) : (
+    <InnstillingUtenForhandsvarsel
+      begrunnelseUtkast={draft.data?.begrunnelse}
+    />
   );
 }

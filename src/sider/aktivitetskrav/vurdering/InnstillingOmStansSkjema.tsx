@@ -58,7 +58,7 @@ export interface FormValues {
 interface Props {
   aktivitetskravUuid: string;
   varselSvarfrist: Date;
-  initiellBegrunnelse?: string;
+  begrunnelseUtkast?: string;
 }
 
 const CATEGORY = "aktivitetskrav-innstilling-om-stans";
@@ -66,11 +66,11 @@ const CATEGORY = "aktivitetskrav-innstilling-om-stans";
 export default function InnstillingOmStansSkjema({
   aktivitetskravUuid,
   varselSvarfrist,
-  initiellBegrunnelse,
+  begrunnelseUtkast,
 }: Props) {
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const formMethods = useForm<FormValues>({
-    defaultValues: { begrunnelse: initiellBegrunnelse ?? "" },
+    defaultValues: { begrunnelse: begrunnelseUtkast ?? "" },
   });
   const {
     register,

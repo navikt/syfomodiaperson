@@ -61,10 +61,10 @@ interface SkjemaValues {
 }
 
 interface Props {
-  initiellBegrunnelse?: string;
+  begrunnelseUtkast?: string;
 }
 
-export default function ForhandsvarselSkjema({ initiellBegrunnelse }: Props) {
+export default function ForhandsvarselSkjema({ begrunnelseUtkast }: Props) {
   const personident = useValgtPersonident();
   const sendForhandsvarsel = useSendVurdering<ForhandsvarselVurdering>();
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
@@ -76,7 +76,7 @@ export default function ForhandsvarselSkjema({ initiellBegrunnelse }: Props) {
     control,
   } = useForm<SkjemaValues>({
     defaultValues: {
-      begrunnelse: initiellBegrunnelse ?? "",
+      begrunnelse: begrunnelseUtkast ?? "",
       fristDato: forhandsvarselFrist,
     },
     mode: "onChange",

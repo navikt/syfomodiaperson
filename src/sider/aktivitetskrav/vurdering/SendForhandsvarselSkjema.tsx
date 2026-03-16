@@ -60,7 +60,7 @@ const CATEGORY = "aktivitetskrav-forhandsvarsel";
 
 export function SendForhandsvarselSkjema({
   aktivitetskravUuid,
-  initiellBegrunnelse,
+  begrunnelseUtkast,
 }: VurderAktivitetskravSkjemaProps) {
   const sendForhandsvarsel = useSendForhandsvarsel(aktivitetskravUuid);
   const [brevmal, setBrevmal] = useState<Brevmal>(Brevmal.MED_ARBEIDSGIVER);
@@ -74,7 +74,7 @@ export function SendForhandsvarselSkjema({
     control,
   } = useForm<SendForhandsvarselSkjemaValues>({
     defaultValues: {
-      begrunnelse: initiellBegrunnelse ?? "",
+      begrunnelse: begrunnelseUtkast ?? "",
       fristDato: getForhandsvarselFrist(),
     },
     mode: "onChange",

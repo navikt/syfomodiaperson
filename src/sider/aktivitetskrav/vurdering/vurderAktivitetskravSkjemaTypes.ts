@@ -1,6 +1,6 @@
 export interface VurderAktivitetskravSkjemaProps {
   aktivitetskravUuid: string;
-  initiellBegrunnelse?: string;
+  begrunnelseUtkast?: string;
 }
 
 export interface AktivitetskravSkjemaValues {

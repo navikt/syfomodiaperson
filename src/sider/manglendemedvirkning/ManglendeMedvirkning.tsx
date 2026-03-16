@@ -24,7 +24,7 @@ export default function ManglendeMedvirkning() {
       <AppSpinner />
     ) : (
       <ForhandsvarselSkjema
-        initiellBegrunnelse={forhandsvarselDraft.data?.begrunnelse}
+        begrunnelseUtkast={forhandsvarselDraft.data?.begrunnelse}
       />
     )
   ) : (

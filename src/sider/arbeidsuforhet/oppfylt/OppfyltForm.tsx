@@ -80,10 +80,10 @@ interface SkjemaValues {
 }
 
 interface Props {
-  initiellBegrunnelse?: string;
+  begrunnelseUtkast?: string;
 }
 
-export default function OppfyltForm({ initiellBegrunnelse }: Props) {
+export default function OppfyltForm({ begrunnelseUtkast }: Props) {
   const navigate = useNavigate();
   const { data } = useGetArbeidsuforhetVurderingerQuery();
   const sisteVurdering = data[0];
@@ -102,7 +102,7 @@ export default function OppfyltForm({ initiellBegrunnelse }: Props) {
     formState: { errors },
     handleSubmit,
   } = useForm<SkjemaValues>({
-    defaultValues: { begrunnelse: initiellBegrunnelse ?? "" },
+    defaultValues: { begrunnelse: begrunnelseUtkast ?? "" },
   });
 
   const CATEGORY = "arbeidsuforhet-oppfylt";
