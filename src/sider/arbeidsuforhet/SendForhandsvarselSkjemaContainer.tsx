@@ -6,11 +6,9 @@ import AppSpinner from "@/components/AppSpinner";
 export default function SendForhandsvarselSkjemaContainer() {
   const draft = useDraftQuery<DraftTextDTO>("arbeidsuforhet-forhandsvarsel");
 
-  if (draft.isPending) {
-    return <AppSpinner />;
-  }
-
-  return (
+  return draft.isPending ? (
+    <AppSpinner />
+  ) : (
     <SendForhandsvarselSkjema begrunnelseUtkast={draft.data?.begrunnelse} />
   );
 }

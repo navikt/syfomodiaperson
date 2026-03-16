@@ -6,9 +6,9 @@ import AppSpinner from "@/components/AppSpinner";
 export default function OppfyltFormContainer() {
   const draft = useDraftQuery<DraftTextDTO>("arbeidsuforhet-oppfylt");
 
-  if (draft.isPending) {
-    return <AppSpinner />;
-  }
-
-  return <OppfyltForm begrunnelseUtkast={draft.data?.begrunnelse} />;
+  return draft.isPending ? (
+    <AppSpinner />
+  ) : (
+    <OppfyltForm begrunnelseUtkast={draft.data?.begrunnelse} />
+  );
 }
