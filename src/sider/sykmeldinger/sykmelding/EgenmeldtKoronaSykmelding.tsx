@@ -1,4 +1,4 @@
-import KoronaSykmeldingOpplysninger from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/KoronaSykmeldingOpplysninger";
+import { KoronaSykmeldingOpplysninger } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/KoronaSykmeldingOpplysninger";
 import React from "react";
 import {
   SykmeldingOldFormat,
