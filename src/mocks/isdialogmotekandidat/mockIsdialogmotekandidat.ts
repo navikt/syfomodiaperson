@@ -40,26 +40,6 @@ export const mockIsdialogmotekandidat = [
   http.get(`${ISDIALOGMOTEKANDIDAT_ROOT}/ikkeaktuell/personident`, () => {
     return HttpResponse.json(dialogmoteikkeaktuellMock);
   }),
-  http.post(
-    `${ISDIALOGMOTEKANDIDAT_ROOT}/avvent/personident`,
-    async ({ request }) => {
-      const body = (await request.json()) as {
-        personIdent: string;
-        frist: string;
-        beskrivelse?: string;
-      };
-
-      const nyAvvent = {
-        frist: body.frist,
-        createdBy: VEILEDER_IDENT_DEFAULT,
-        beskrivelse: body.beskrivelse ?? null,
-      };
-
-      avventMock = [nyAvvent, ...avventMock];
-
-      return HttpResponse.json(nyAvvent, { status: 200 });
-    }
-  ),
   http.get(`${ISDIALOGMOTEKANDIDAT_ROOT}/avvent/personident`, () => {
     return HttpResponse.json(avventMock);
   }),
