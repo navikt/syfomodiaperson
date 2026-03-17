@@ -4,7 +4,7 @@ import {
   dialogmoterMock,
   dialogmoteStatusEndringMock,
 } from "./dialogmoterMock";
-import { ISDIALOGMOTE_ROOT_V2 } from "@/apiConstants";
+import { ISDIALOGMOTE_ROOT, ISDIALOGMOTE_ROOT_V2 } from "@/apiConstants";
 import {
   DialogmoteDTO,
   DialogmoteStatus,
@@ -105,7 +105,7 @@ export const mockIsdialogmote = [
     }
   ),
 
-  http.post(`${ISDIALOGMOTE_ROOT_V2}/avvent`, async ({ request }) => {
+  http.post(`${ISDIALOGMOTE_ROOT}/avvent`, async ({ request }) => {
     const body = (await request.json()) as {
       personIdent: string;
       frist: string;
@@ -123,7 +123,7 @@ export const mockIsdialogmote = [
     return HttpResponse.json(nyAvvent, { status: 200 });
   }),
 
-  http.post(`${ISDIALOGMOTE_ROOT_V2}/avvent/query`, () => {
+  http.post(`${ISDIALOGMOTE_ROOT}/avvent/query`, () => {
     return HttpResponse.json(avventMock);
   }),
 ];
