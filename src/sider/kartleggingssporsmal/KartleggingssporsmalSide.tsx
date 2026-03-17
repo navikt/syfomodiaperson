@@ -55,11 +55,12 @@ const texts = {
   },
   ikkeKandidatInfo1: "Den sykmeldte har ikke mottatt kartleggingsspørsmål.",
   ikkeKandidatInfo2:
-    "Alle sykmeldte i Norge ved uke seks mottar spørsmålene, bortsett fra de som:",
+    "Alle sykmeldte i Norge mottar spørsmålene ved uke 6, bortsett fra de som",
   ikkeKandidatKriterier: [
-    "Er 67 år eller eldre",
-    "Ikke har en arbeidsgiver",
-    "Har et gjeldende § 14a-vedtak for inneværende oppfølgingsperiode",
+    "er 67 år eller eldre",
+    "ikke har en arbeidsgiver",
+    "har et gjeldende § 14a-vedtak for inneværende oppfølgingsperiode",
+    'har mottatt spørsmålene om "Snart slutt på sykepengene" innen siste 6 måneder',
   ],
   behovsrettetLink: "Les mer om behovsrettet sykefraværsoppfølging på Navet",
   behovsrettetUrl:
@@ -315,15 +316,21 @@ export default function KartleggingssporsmalSide(): ReactElement {
             padding="space-24"
             className="flex flex-col gap-4"
           >
-            <BodyShort size="small">{texts.ikkeKandidatInfo1}</BodyShort>
-            <BodyShort size="small">{texts.ikkeKandidatInfo2}</BodyShort>
-            <Box marginBlock="space-12" asChild>
-              <List size="small">
-                {texts.ikkeKandidatKriterier.map((text, index) => (
-                  <List.Item key={index}>{text}</List.Item>
-                ))}
-              </List>
-            </Box>
+            <BodyShort size="small" weight="semibold">
+              {texts.ikkeKandidatInfo1}
+            </BodyShort>
+            <div>
+              <BodyShort size="small" spacing>
+                {texts.ikkeKandidatInfo2}
+              </BodyShort>
+              <Box asChild>
+                <List size="small">
+                  {texts.ikkeKandidatKriterier.map((text, index) => (
+                    <List.Item key={index}>{text}</List.Item>
+                  ))}
+                </List>
+              </Box>
+            </div>
             <EksternLenke href={texts.behovsrettetUrl}>
               {texts.behovsrettetLink}
             </EksternLenke>

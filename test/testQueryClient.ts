@@ -52,6 +52,7 @@ import { navEnhet } from "./dialogmote/testData";
 import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { kartleggingssporsmalQueryKeys } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
+import { draftQueryKeys } from "@/hooks/useDraftQuery";
 
 export const testQueryClient = (): QueryClient => {
   return new QueryClient();
@@ -180,6 +181,23 @@ export const queryClientWithMockData = (): QueryClient => {
     ),
     () => []
   );
+  const draftCategories = [
+    "behandlerdialog-meldingtilbehandler",
+    "aktivitetskrav-forhandsvarsel",
+    "aktivitetskrav-unntak",
+    "aktivitetskrav-oppfylt",
+    "aktivitetskrav-innstilling-om-stans",
+    "arbeidsuforhet-forhandsvarsel",
+    "arbeidsuforhet-avslag-uten-forhandsvarsel",
+    "arbeidsuforhet-oppfylt",
+    "manglendemedvirkning-forhandsvarsel",
+  ] as const;
+  draftCategories.forEach((category) => {
+    queryClient.setQueryData(
+      draftQueryKeys.draft(category, ARBEIDSTAKER_DEFAULT.personIdent),
+      () => null
+    );
+  });
   return queryClient;
 };
 

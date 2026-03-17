@@ -92,11 +92,7 @@ export default function SykepengesoknadSide() {
                     {texts.behandlingsdager.sideTittel}
                   </Heading>
                   <StatuspanelBehandlingsdager soknad={soknad} />
-                  <Box
-                    background="default"
-                    padding={"space-16"}
-                    className={"mb-4"}
-                  >
+                  <Box background="default" padding="space-16" className="mb-4">
                     <Heading spacing size="small">
                       {texts.behandlingsdager.oppsummering}
                     </Heading>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   BodyLong,
   BodyShort,
@@ -35,7 +35,6 @@ import { useDebouncedCallback } from "use-debounce";
 import {
   DraftTextDTO,
   useDeleteDraft,
-  useDraftQuery,
   useSaveDraft,
 } from "@/hooks/useDraftQuery";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
@@ -97,24 +96,30 @@ interface FormValues {
   begrunnelse: string;
 }
 
-export default function InnstillingUtenForhandsvarsel() {
+interface Props {
+  begrunnelseUtkast?: string;
+}
+
+export default function InnstillingUtenForhandsvarsel({
+  begrunnelseUtkast,
+}: Props) {
   const navigate = useNavigate();
   const lagreInnstilling = useSaveVurderingArbeidsuforhet();
   const { getAvslagUtenForhandsvarselDocument } =
     useArbeidsuforhetVurderingDocument();
   const { setNotification } = useNotification();
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
-  const formProps = useForm<FormValues>();
+  const formProps = useForm<FormValues>({
+    defaultValues: { begrunnelse: begrunnelseUtkast ?? "" },
+  });
   const {
     register,
     watch,
     formState: { errors },
     handleSubmit,
-    setValue,
   } = formProps;
 
   const CATEGORY = "arbeidsuforhet-avslag-uten-forhandsvarsel";
-  const getDraftQuery = useDraftQuery<DraftTextDTO>(CATEGORY);
   const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
   const deleteDraft = useDeleteDraft(CATEGORY);
 
@@ -133,12 +138,6 @@ export default function InnstillingUtenForhandsvarsel() {
       },
     });
   }, 750);
-
-  useEffect(() => {
-    if (getDraftQuery.data?.begrunnelse) {
-      setValue("begrunnelse", getDraftQuery.data.begrunnelse);
-    }
-  }, [getDraftQuery.data, setValue]);
 
   const submit = (values: FormValues) => {
     const documentProps = {

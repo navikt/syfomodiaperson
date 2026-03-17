@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -27,7 +27,6 @@ import { useDebouncedCallback } from "use-debounce";
 import {
   DraftTextDTO,
   useDeleteDraft,
-  useDraftQuery,
   useSaveDraft,
 } from "@/hooks/useDraftQuery";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
@@ -61,7 +60,11 @@ interface SkjemaValues {
   fristDato: Date;
 }
 
-export default function ForhandsvarselSkjema() {
+interface Props {
+  begrunnelseUtkast?: string;
+}
+
+export default function ForhandsvarselSkjema({ begrunnelseUtkast }: Props) {
   const personident = useValgtPersonident();
   const sendForhandsvarsel = useSendVurdering<ForhandsvarselVurdering>();
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
@@ -71,14 +74,15 @@ export default function ForhandsvarselSkjema() {
     formState: { errors },
     handleSubmit,
     control,
-    setValue,
   } = useForm<SkjemaValues>({
-    defaultValues: { begrunnelse: "", fristDato: forhandsvarselFrist },
+    defaultValues: {
+      begrunnelse: begrunnelseUtkast ?? "",
+      fristDato: forhandsvarselFrist,
+    },
     mode: "onChange",
   });
 
   const CATEGORY = "manglendemedvirkning-forhandsvarsel";
-  const getDraftQuery = useDraftQuery<DraftTextDTO>(CATEGORY);
   const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
   const deleteDraft = useDeleteDraft(CATEGORY);
 
@@ -97,12 +101,6 @@ export default function ForhandsvarselSkjema() {
       },
     });
   }, 750);
-
-  useEffect(() => {
-    if (getDraftQuery.data?.begrunnelse) {
-      setValue("begrunnelse", getDraftQuery.data.begrunnelse);
-    }
-  }, [getDraftQuery.data, setValue]);
 
   const threeWeeks = toDateOnly(addWeeks(new Date(), 3));
   const sixWeeks = toDateOnly(addWeeks(new Date(), 6));

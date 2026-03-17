@@ -7,7 +7,11 @@ export type DraftCategory =
   | "arbeidsuforhet-forhandsvarsel"
   | "arbeidsuforhet-avslag-uten-forhandsvarsel"
   | "arbeidsuforhet-oppfylt"
-  | "manglendemedvirkning-forhandsvarsel";
+  | "manglendemedvirkning-forhandsvarsel"
+  | "aktivitetskrav-forhandsvarsel"
+  | "aktivitetskrav-unntak"
+  | "aktivitetskrav-oppfylt"
+  | "aktivitetskrav-innstilling-om-stans";
 
 function draftPath(category: DraftCategory): string {
   return `/api/draft/${category}`;
@@ -43,14 +47,15 @@ export function useSaveDraft<T extends object>(category: DraftCategory) {
   const queryClient = useQueryClient();
 
   const saveDraft = async (draft: T) =>
-    await put<void>(draftPath(category), draft, personident);
+    await put<T>(draftPath(category), draft, personident);
 
   return useMutation({
     mutationFn: saveDraft,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: draftQueryKeys.draft(category, personident),
-      });
+    onSuccess: async (data: T) => {
+      await queryClient.setQueryData(
+        draftQueryKeys.draft(category, personident),
+        data
+      );
     },
   });
 }

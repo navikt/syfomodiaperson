@@ -11,6 +11,10 @@ enum Draft {
   ARBEIDSUFORHET_AVSLAG_UTEN_FORHANDSVARSEL = "arbeidsuforhet-avslag-uten-forhandsvarsel",
   ARBEIDSUFORHET_OPPFYLT = "arbeidsuforhet-oppfylt",
   MANGLENDEMEDVIRKNING_FORHANDSVARSEL = "manglendemedvirkning-forhandsvarsel",
+  AKTIVITETSKRAV_FORHANDSVARSEL = "aktivitetskrav-forhandsvarsel",
+  AKTIVITETSKRAV_UNNTAK = "aktivitetskrav-unntak",
+  AKTIVITETSKRAV_OPPFYLT = "aktivitetskrav-oppfylt",
+  AKTIVITETSKRAV_INNSTILLING_OM_STANS = "aktivitetskrav-innstilling-om-stans",
 }
 
 function isValidCategory(category: string): boolean {
@@ -33,6 +37,14 @@ function toDraftCachekey(
       return `draft:arbeidsuforhet:oppfylt:${veilederIdent}:${personident}`;
     case Draft.MANGLENDEMEDVIRKNING_FORHANDSVARSEL:
       return `draft:manglendemedvirkning:forhandsvarsel:${veilederIdent}:${personident}`;
+    case Draft.AKTIVITETSKRAV_FORHANDSVARSEL:
+      return `draft:aktivitetskrav:forhandsvarsel:${veilederIdent}:${personident}`;
+    case Draft.AKTIVITETSKRAV_UNNTAK:
+      return `draft:aktivitetskrav:unntak:${veilederIdent}:${personident}`;
+    case Draft.AKTIVITETSKRAV_OPPFYLT:
+      return `draft:aktivitetskrav:oppfylt:${veilederIdent}:${personident}`;
+    case Draft.AKTIVITETSKRAV_INNSTILLING_OM_STANS:
+      return `draft:aktivitetskrav:innstilling-om-stans:${veilederIdent}:${personident}`;
   }
 }
 
@@ -128,7 +140,7 @@ export function setupDraftEndpoints(server: express.Application) {
             );
             return res.status(500).send({ message: "Failed to save draft" });
           }
-          return res.status(204).send();
+          return res.status(200).send(req.body);
         }
       );
     }

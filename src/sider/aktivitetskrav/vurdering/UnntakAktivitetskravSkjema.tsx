@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AktivitetskravStatus,
   CreateAktivitetskravVurderingDTO,
@@ -18,6 +18,13 @@ import { useForm } from "react-hook-form";
 import { Button, Radio, RadioGroup, Textarea } from "@navikt/ds-react";
 import { useAktivitetskravNotificationAlert } from "@/sider/aktivitetskrav/useAktivitetskravNotificationAlert";
 import { useAktivitetskravVurderingDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVurderingDocument";
+import { useDebouncedCallback } from "use-debounce";
+import {
+  DraftTextDTO,
+  useDeleteDraft,
+  useSaveDraft,
+} from "@/hooks/useDraftQuery";
+import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 
 const texts = {
   title: "Sett unntak fra aktivitetskravet",
@@ -30,7 +37,6 @@ const texts = {
   lagre: "Lagre",
 };
 
-const defaultValues = { begrunnelse: "", arsak: undefined };
 const begrunnelseMaxLength = 1000;
 
 export interface UnntakAktivitetskravSkjemaValues
@@ -38,19 +44,39 @@ export interface UnntakAktivitetskravSkjemaValues
   arsak: UnntakVurderingArsak;
 }
 
+const CATEGORY = "aktivitetskrav-unntak";
+
 export function UnntakAktivitetskravSkjema({
   aktivitetskravUuid,
+  begrunnelseUtkast,
 }: VurderAktivitetskravSkjemaProps) {
+  const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const {
     register,
     watch,
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm<UnntakAktivitetskravSkjemaValues>({ defaultValues });
+  } = useForm<UnntakAktivitetskravSkjemaValues>({
+    defaultValues: { begrunnelse: begrunnelseUtkast ?? "", arsak: undefined },
+  });
   const vurderAktivitetskrav = useVurderAktivitetskrav(aktivitetskravUuid);
   const { getVurderingDocument } = useAktivitetskravVurderingDocument();
   const { displayNotification } = useAktivitetskravNotificationAlert();
+
+  const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
+  const deleteDraft = useDeleteDraft(CATEGORY);
+
+  const debouncedAutoSaveDraft = useDebouncedCallback((tekst: string) => {
+    if (!tekst) return;
+    saveDraft.mutate(
+      { begrunnelse: tekst },
+      {
+        onSuccess: () => setUtkastSavedTime(new Date()),
+        onError: () => setUtkastSavedTime(undefined),
+      }
+    );
+  }, 750);
 
   const submit = (values: UnntakAktivitetskravSkjemaValues) => {
     const status = AktivitetskravStatus.UNNTAK;
@@ -67,6 +93,9 @@ export function UnntakAktivitetskravSkjema({
     };
     vurderAktivitetskrav.mutate(createAktivitetskravVurderingDTO, {
       onSuccess: () => {
+        setUtkastSavedTime(undefined);
+        debouncedAutoSaveDraft.cancel();
+        deleteDraft.mutate(undefined);
         reset();
         displayNotification(status);
       },
@@ -99,6 +128,7 @@ export function UnntakAktivitetskravSkjema({
           {...register("begrunnelse", {
             maxLength: begrunnelseMaxLength,
             required: true,
+            onChange: (e) => debouncedAutoSaveDraft(e.target.value),
           })}
           error={errors.begrunnelse && texts.missingBegrunnelse}
           value={watch("begrunnelse")}
@@ -112,6 +142,10 @@ export function UnntakAktivitetskravSkjema({
       {vurderAktivitetskrav.isError && (
         <SkjemaInnsendingFeil error={vurderAktivitetskrav.error} />
       )}
+      <DraftSaveStatus
+        isSaveError={saveDraft.isError}
+        savedTime={utkastSavedTime}
+      />
       <Button loading={vurderAktivitetskrav.isPending} type="submit">
         {texts.lagre}
       </Button>

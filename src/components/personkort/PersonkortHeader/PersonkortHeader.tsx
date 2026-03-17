@@ -5,19 +5,18 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { HStack } from "@navikt/ds-react";
 import { PersonkortHeaderTags } from "@/components/personkort/PersonkortHeader/PersonkortHeaderTags";
-import { KjonnIkon } from "@/components/personkort/PersonkortHeader/KjonnIkon";
 import { TilfellePeriod } from "@/components/personkort/PersonkortHeader/TilfellePeriod";
 import { Diagnosekode } from "@/components/personkort/PersonkortHeader/Diagnosekode";
 import { useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
 import { NavnHeader } from "@/components/personkort/PersonkortHeader/NavnHeader";
 import Utbetalingsinfo from "@/components/personkort/PersonkortHeader/Utbetalingsinfo";
 import { formaterFnr } from "@/utils/fnrUtils";
-import { mapKjoennFromDto } from "@/data/navbruker/types/BrukerinfoDTO";
 import {
   useCurrentVarighetOppfolgingstilfelle,
   useStartOfLatestOppfolgingstilfelle,
 } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { SyketilfelleSummaryElement } from "@/components/personkort/PersonkortHeader/SyketilfelleSummaryElement";
+import { getKvinneImage, getMannImage } from "@/utils/festiveUtils";
+import { KJOENN } from "@/konstanter";
 
 const texts = {
   copied: "Kopiert!",
@@ -48,7 +47,17 @@ export function PersonkortHeader() {
   return (
     <>
       <div className="flex personkortHeader__info">
-        <KjonnIkon kjonn={mapKjoennFromDto(navbruker.kjonn)} />
+        {navbruker.kjonn !== KJOENN.UKJENT && (
+          <img
+            className="mr-4 w-12"
+            src={
+              navbruker.kjonn === KJOENN.KVINNE
+                ? getKvinneImage()
+                : getMannImage()
+            }
+            alt="person"
+          />
+        )}
         <div>
           <NavnHeader navnSykmeldt={navbruker.navn} alder={navbruker.alder} />
 
@@ -60,10 +69,10 @@ export function PersonkortHeader() {
           <HStack gap="space-12">
             <TilfellePeriod />
             {oppfolgingstilfelleStartDate && (
-              <SyketilfelleSummaryElement
-                keyword={texts.varighet}
-                value={`${oppfolgingstilfelleVarighetUker} ${texts.uker}`}
-              />
+              <div className="font-normal">
+                <span>{texts.varighet}</span>
+                <b>{`${oppfolgingstilfelleVarighetUker} ${texts.uker}`}</b>
+              </div>
             )}
             <Diagnosekode />
           </HStack>

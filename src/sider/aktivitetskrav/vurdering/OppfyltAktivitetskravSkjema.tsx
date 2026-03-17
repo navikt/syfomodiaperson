@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AktivitetskravStatus,
   CreateAktivitetskravVurderingDTO,
@@ -18,6 +18,13 @@ import { useForm } from "react-hook-form";
 import { Button, Radio, RadioGroup, Textarea } from "@navikt/ds-react";
 import { useAktivitetskravNotificationAlert } from "@/sider/aktivitetskrav/useAktivitetskravNotificationAlert";
 import { useAktivitetskravVurderingDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVurderingDocument";
+import { useDebouncedCallback } from "use-debounce";
+import {
+  DraftTextDTO,
+  useDeleteDraft,
+  useSaveDraft,
+} from "@/hooks/useDraftQuery";
+import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 
 const texts = {
   title: "Er i aktivitet",
@@ -34,12 +41,15 @@ export interface OppfyltAktivitetskravSkjemaValues
   arsak: OppfyltVurderingArsak;
 }
 
-const defaultValues = { begrunnelse: "", arsak: undefined };
 const begrunnelseMaxLength = 1000;
+
+const CATEGORY = "aktivitetskrav-oppfylt";
 
 export function OppfyltAktivitetskravSkjema({
   aktivitetskravUuid,
+  begrunnelseUtkast,
 }: VurderAktivitetskravSkjemaProps) {
+  const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const {
     register,
     watch,
@@ -47,11 +57,25 @@ export function OppfyltAktivitetskravSkjema({
     handleSubmit,
     reset,
   } = useForm<OppfyltAktivitetskravSkjemaValues>({
-    defaultValues,
+    defaultValues: { begrunnelse: begrunnelseUtkast ?? "", arsak: undefined },
   });
   const vurderAktivitetskrav = useVurderAktivitetskrav(aktivitetskravUuid);
   const { getVurderingDocument } = useAktivitetskravVurderingDocument();
   const { displayNotification } = useAktivitetskravNotificationAlert();
+
+  const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
+  const deleteDraft = useDeleteDraft(CATEGORY);
+
+  const debouncedAutoSaveDraft = useDebouncedCallback((tekst: string) => {
+    if (!tekst) return;
+    saveDraft.mutate(
+      { begrunnelse: tekst },
+      {
+        onSuccess: () => setUtkastSavedTime(new Date()),
+        onError: () => setUtkastSavedTime(undefined),
+      }
+    );
+  }, 750);
 
   const submit = (values: OppfyltAktivitetskravSkjemaValues) => {
     const { arsak, begrunnelse } = values;
@@ -68,6 +92,9 @@ export function OppfyltAktivitetskravSkjema({
     };
     vurderAktivitetskrav.mutate(createAktivitetskravVurderingDTO, {
       onSuccess: () => {
+        setUtkastSavedTime(undefined);
+        debouncedAutoSaveDraft.cancel();
+        deleteDraft.mutate(undefined);
         reset();
         displayNotification(status);
       },
@@ -99,6 +126,7 @@ export function OppfyltAktivitetskravSkjema({
         <Textarea
           {...register("begrunnelse", {
             maxLength: begrunnelseMaxLength,
+            onChange: (e) => debouncedAutoSaveDraft(e.target.value),
           })}
           value={watch("begrunnelse")}
           label={texts.begrunnelseLabel}
@@ -111,6 +139,10 @@ export function OppfyltAktivitetskravSkjema({
       {vurderAktivitetskrav.isError && (
         <SkjemaInnsendingFeil error={vurderAktivitetskrav.error} />
       )}
+      <DraftSaveStatus
+        isSaveError={saveDraft.isError}
+        savedTime={utkastSavedTime}
+      />
       <Button loading={vurderAktivitetskrav.isPending} type="submit">
         {texts.lagre}
       </Button>

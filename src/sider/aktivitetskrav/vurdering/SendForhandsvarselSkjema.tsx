@@ -14,6 +14,13 @@ import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
 import { Brevmal } from "@/data/aktivitetskrav/forhandsvarselTexts";
 import BoundedDatePicker from "@/components/BoundedDatePicker";
 import dayjs from "dayjs";
+import { useDebouncedCallback } from "use-debounce";
+import {
+  DraftTextDTO,
+  useDeleteDraft,
+  useSaveDraft,
+} from "@/hooks/useDraftQuery";
+import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 
 const texts = {
   title: "Send forhåndsvarsel",
@@ -47,18 +54,17 @@ interface SendForhandsvarselSkjemaValues {
   fristDato: Date;
 }
 
-const defaultValues: SendForhandsvarselSkjemaValues = {
-  begrunnelse: "",
-  fristDato: getForhandsvarselFrist(),
-};
-
 const begrunnelseMaxLength = 5000;
+
+const CATEGORY = "aktivitetskrav-forhandsvarsel";
 
 export function SendForhandsvarselSkjema({
   aktivitetskravUuid,
+  begrunnelseUtkast,
 }: VurderAktivitetskravSkjemaProps) {
   const sendForhandsvarsel = useSendForhandsvarsel(aktivitetskravUuid);
   const [brevmal, setBrevmal] = useState<Brevmal>(Brevmal.MED_ARBEIDSGIVER);
+  const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
   const {
     register,
     watch,
@@ -67,7 +73,10 @@ export function SendForhandsvarselSkjema({
     reset,
     control,
   } = useForm<SendForhandsvarselSkjemaValues>({
-    defaultValues,
+    defaultValues: {
+      begrunnelse: begrunnelseUtkast ?? "",
+      fristDato: getForhandsvarselFrist(),
+    },
     mode: "onChange",
   });
   const threeWeeks = toDateOnly(addWeeks(new Date(), 3));
@@ -85,6 +94,20 @@ export function SendForhandsvarselSkjema({
   const { getForhandsvarselDocument } = useAktivitetskravVurderingDocument();
   const [showForhandsvisning, setShowForhandsvisning] = useState(false);
 
+  const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
+  const deleteDraft = useDeleteDraft(CATEGORY);
+
+  const debouncedAutoSaveDraft = useDebouncedCallback((tekst: string) => {
+    if (!tekst) return;
+    saveDraft.mutate(
+      { begrunnelse: tekst },
+      {
+        onSuccess: () => setUtkastSavedTime(new Date()),
+        onError: () => setUtkastSavedTime(undefined),
+      }
+    );
+  }, 750);
+
   const submit = (values: SendForhandsvarselSkjemaValues) => {
     const fristDate = values.fristDato;
     const forhandsvarselDTO: SendForhandsvarselDTO = {
@@ -98,7 +121,12 @@ export function SendForhandsvarselSkjema({
     };
     if (aktivitetskravUuid) {
       sendForhandsvarsel.mutate(forhandsvarselDTO, {
-        onSuccess: () => reset(),
+        onSuccess: () => {
+          setUtkastSavedTime(undefined);
+          debouncedAutoSaveDraft.cancel();
+          deleteDraft.mutate(undefined);
+          reset();
+        },
       });
     }
   };
@@ -155,6 +183,7 @@ export function SendForhandsvarselSkjema({
         {...register("begrunnelse", {
           maxLength: begrunnelseMaxLength,
           required: true,
+          onChange: (e) => debouncedAutoSaveDraft(e.target.value),
         })}
         value={watch("begrunnelse")}
         label={texts.beskrivelseLabel}
@@ -163,6 +192,10 @@ export function SendForhandsvarselSkjema({
         size="small"
         minRows={6}
         maxLength={begrunnelseMaxLength}
+      />
+      <DraftSaveStatus
+        isSaveError={saveDraft.isError}
+        savedTime={utkastSavedTime}
       />
       {sendForhandsvarsel.isError && (
         <SkjemaInnsendingFeil error={sendForhandsvarsel.error} />

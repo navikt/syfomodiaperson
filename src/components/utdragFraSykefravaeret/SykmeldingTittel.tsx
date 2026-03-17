@@ -13,23 +13,23 @@ import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
 import { Tag } from "@navikt/ds-react";
 import ImportantInformationIcon from "@/components/ImportantInformationIcon";
-import { PapirsykmeldingTag } from "@/components/PapirsykmeldingTag";
-import { UtenlandskSykmeldingTag } from "@/components/UtenlandskSykmeldingTag";
 import React from "react";
 
 const texts = {
   utenArbeidsgiver: "Uten arbeidsgiver",
   ny: "Ikke tatt i bruk",
+  papirTag: "Papir",
+  utenlandskTag: "Utenlandsk",
 };
 
-const Info = ({ label, text }: { label: string; text: string }) => {
+function Info({ label, text }: { label: string; text: string }) {
   return (
     <div className="text-base font-normal">
       <b>{label}</b>
       <span>{text}</span>
     </div>
   );
-};
+}
 
 interface Props {
   sykmelding: SykmeldingOldFormat;
@@ -57,7 +57,7 @@ export function SykmeldingTittel({ sykmelding }: Props) {
 
   return (
     <div className="w-full flex flex-col print:z-10">
-      <div className="flex justify-between mb-2">
+      <div className="flex gap-4 mb-2">
         <div>
           {periode}
           {graderinger}
@@ -87,8 +87,26 @@ export function SykmeldingTittel({ sykmelding }: Props) {
           text={sykmelding.yrkesbetegnelse}
         />
       )}
-      {sykmelding.papirsykmelding && <PapirsykmeldingTag />}
-      {sykmelding.utenlandskSykmelding && <UtenlandskSykmeldingTag />}
+      {sykmelding.papirsykmelding && (
+        <Tag
+          data-color="neutral"
+          className="w-max"
+          variant="outline"
+          size="small"
+        >
+          {texts.papirTag}
+        </Tag>
+      )}
+      {sykmelding.utenlandskSykmelding && (
+        <Tag
+          data-color="neutral"
+          className="w-max"
+          variant="outline"
+          size="small"
+        >
+          {texts.utenlandskTag}
+        </Tag>
+      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   BodyShort,
   Box,
@@ -26,7 +26,6 @@ import { useDebouncedCallback } from "use-debounce";
 import {
   DraftTextDTO,
   useDeleteDraft,
-  useDraftQuery,
   useSaveDraft,
 } from "@/hooks/useDraftQuery";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
@@ -57,7 +56,6 @@ const texts = {
     "Vurderingen om at bruker oppfyller § 8-4 er lagret i historikken og blir journalført automatisk.",
 };
 
-const defaultValues = { begrunnelse: "" };
 const begrunnelseMaxLength = 8000;
 
 function FormInformation({
@@ -81,7 +79,11 @@ interface SkjemaValues {
   begrunnelse: string;
 }
 
-export default function OppfyltForm() {
+interface Props {
+  begrunnelseUtkast?: string;
+}
+
+export default function OppfyltForm({ begrunnelseUtkast }: Props) {
   const navigate = useNavigate();
   const { data } = useGetArbeidsuforhetVurderingerQuery();
   const sisteVurdering = data[0];
@@ -99,11 +101,11 @@ export default function OppfyltForm() {
     watch,
     formState: { errors },
     handleSubmit,
-    setValue,
-  } = useForm<SkjemaValues>({ defaultValues });
+  } = useForm<SkjemaValues>({
+    defaultValues: { begrunnelse: begrunnelseUtkast ?? "" },
+  });
 
   const CATEGORY = "arbeidsuforhet-oppfylt";
-  const getDraftQuery = useDraftQuery<DraftTextDTO>(CATEGORY);
   const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
   const deleteDraft = useDeleteDraft(CATEGORY);
 
@@ -122,12 +124,6 @@ export default function OppfyltForm() {
       },
     });
   }, 750);
-
-  useEffect(() => {
-    if (getDraftQuery.data?.begrunnelse) {
-      setValue("begrunnelse", getDraftQuery.data.begrunnelse);
-    }
-  }, [getDraftQuery.data, setValue]);
 
   const submit = (values: SkjemaValues) => {
     const vurderingRequestDTO: Oppfylt | OppfyltUtenForhandsvarsel = {
