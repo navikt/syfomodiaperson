@@ -11,6 +11,9 @@ import {
   Button,
   Heading,
   List,
+  Radio,
+  RadioGroup,
+  Textarea,
 } from "@navikt/ds-react";
 import * as Tredelt from "@/components/side/TredeltSide";
 import SideLaster from "@/components/side/SideLaster";
@@ -183,16 +186,16 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     />
                     {nyesteKandidat.status === KandidatStatus.SVAR_MOTTATT && (
                       <>
-                        <Button
-                          variant="primary"
-                          size="medium"
-                          onClick={() =>
-                            vurderSvar.mutate(nyesteKandidat.kandidatUuid)
-                          }
-                          loading={vurderSvar.isPending}
-                        >
-                          {texts.vurdereOppgaveText}
-                        </Button>
+                        {/*<Button*/}
+                        {/*  variant="primary"*/}
+                        {/*  size="medium"*/}
+                        {/*  onClick={() =>*/}
+                        {/*    vurderSvar.mutate(nyesteKandidat.kandidatUuid)*/}
+                        {/*  }*/}
+                        {/*  loading={vurderSvar.isPending}*/}
+                        {/*>*/}
+                        {/*  {texts.vurdereOppgaveText}*/}
+                        {/*</Button>*/}
                         {vurderSvar.isError && (
                           <SkjemaInnsendingFeil
                             bottomPadding={PaddingSize.NONE}
@@ -254,6 +257,31 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     )}
                   </>
                 )}
+              </Box>
+              <Box background="default" className="p-6 gap-6 [&>*]:mb-4 mb-4">
+                <Heading size={"medium"}>Vurdering</Heading>
+                <RadioGroup
+                  legend={"Velg alternativet som passer vurderingen"}
+                  size="small"
+                >
+                  <Radio value="vurdert">
+                    Jeg vurderer at den sykmeldte har risiko for et
+                    langtidsfravær
+                  </Radio>
+                  <Radio value="ikke_vurdert">
+                    Jeg vurderer at den sykmeldte ikke har risiko for et
+                    langtidsfravær
+                  </Radio>
+                </RadioGroup>
+                <Textarea label={"Skriv din vurdering (valgfritt)"} />
+                <Button
+                  variant="primary"
+                  size="medium"
+                  onClick={() => vurderSvar.mutate(nyesteKandidat.kandidatUuid)}
+                  loading={vurderSvar.isPending}
+                >
+                  Lagre vurdering, fjern oppgaven
+                </Button>
               </Box>
               <KartleggingssporsmalHistorikk
                 tidligereKandidater={kandidater.slice(1)}
