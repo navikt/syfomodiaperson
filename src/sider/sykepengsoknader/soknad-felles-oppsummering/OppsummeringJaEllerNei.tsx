@@ -1,13 +1,13 @@
 import React, { ReactElement } from "react";
 import OppsummeringSporsmalscontainer from "./OppsummeringSporsmalscontainer";
-import OppsummeringSporsmalstekst from "./OppsummeringSporsmalstekst";
-import OppsummeringAvkrysset from "./OppsummeringAvkrysset";
+import OppsummeringSporsmalstekst from "@/sider/sykepengsoknader/soknad-felles-oppsummering/OppsummeringSporsmalstekst";
 import OppsummeringUndersporsmalsliste from "./OppsummeringUndersporsmalsliste";
 import { OppsummeringSporsmalProps } from "./OppsummeringSporsmal";
 import {
   SvarDTO,
   VisningskriterieDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import { Checkbox } from "@navikt/ds-react";
 
 const texts = {
   ja: "Ja",
@@ -23,14 +23,14 @@ const erUndersporsmalStilt = (
   kriterieForVisningAvUndersporsmal?: VisningskriterieDTO
 ) => svar.some((s) => s.verdi === kriterieForVisningAvUndersporsmal);
 
-const OppsummeringJaEllerNei = ({
+export function OppsummeringJaEllerNei({
   svar,
   sporsmalstekst,
   tag,
   overskriftsnivaa = 3,
   kriterieForVisningAvUndersporsmal,
   undersporsmal,
-}: OppsummeringSporsmalProps): ReactElement | null => {
+}: OppsummeringSporsmalProps): ReactElement | null {
   if (svar[0] === undefined) {
     return null;
   }
@@ -39,9 +39,9 @@ const OppsummeringJaEllerNei = ({
       <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
         {sporsmalstekst}
       </OppsummeringSporsmalstekst>
-      <OppsummeringAvkrysset
-        tekst={getLedetekstFraSvar(svar[0].verdi as string)}
-      />
+      <Checkbox size="small" readOnly checked>
+        {getLedetekstFraSvar(svar[0].verdi as string)}
+      </Checkbox>
       {erUndersporsmalStilt(svar, kriterieForVisningAvUndersporsmal) &&
         undersporsmal.length > 0 && (
           <OppsummeringUndersporsmalsliste
@@ -51,6 +51,4 @@ const OppsummeringJaEllerNei = ({
         )}
     </OppsummeringSporsmalscontainer>
   );
-};
-
-export default OppsummeringJaEllerNei;
+}
