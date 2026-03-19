@@ -21,7 +21,14 @@ import {
   aktiveNarmesteLedereForOppfolgingstilfelle,
   OppfolgingstilfelleDTO,
 } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { BodyShort } from "@navikt/ds-react";
+import { BodyShort, Heading } from "@navikt/ds-react";
+import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
+
+const texts = {
+  motebehovTitle: "Møtebehov",
+  kandidatIkkeSvart: "Kandidat har ikke svart på motebehov",
+  ingenTidligereMotebehov: "Ingen tidligere møtebehov",
+};
 
 export const arbeidsgiverNavnEllerTomStreng = (lederNavn: string | null) => {
   return lederNavn ? `${lederNavn}` : "";
@@ -318,8 +325,11 @@ function UbehandledeMotebehovUtenforTilfelle({
 export default function MotebehovKvittering() {
   const { data: motebehov } = useMotebehovQuery();
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+  const dialogmotekandidat = useDialogmotekandidat();
 
-  const sortertMotebehov = motebehov.sort(sorterMotebehovDataEtterDatoDesc);
+  const sortertMotebehov = [...motebehov].sort(
+    sorterMotebehovDataEtterDatoDesc
+  );
   const motebehovInActiveTilfelle = getMotebehovInActiveTilfelle(
     sortertMotebehov,
     latestOppfolgingstilfelle
@@ -328,16 +338,27 @@ export default function MotebehovKvittering() {
     motebehovInActiveTilfelle.length > 0 && latestOppfolgingstilfelle
   );
 
-  return sortertMotebehov.length === 0 ? (
-    <BodyShort>Ingen tidligere møtebehov</BodyShort>
-  ) : harMotebehovInTilfelle ? (
-    <MotebehovInCurrentTilfelle
-      motebehovInTilfelle={motebehovInActiveTilfelle}
-      oppfolgingstilfelle={latestOppfolgingstilfelle}
-    />
-  ) : (
-    <UbehandledeMotebehovUtenforTilfelle
-      sorterteMotebehovUtenforTilfelle={sortertMotebehov}
-    />
+  return (
+    <div>
+      <Heading level="3" size="small">
+        {texts.motebehovTitle}
+      </Heading>
+      {sortertMotebehov.length === 0 ? (
+        <BodyShort>
+          {dialogmotekandidat.isKandidat
+            ? texts.kandidatIkkeSvart
+            : texts.ingenTidligereMotebehov}
+        </BodyShort>
+      ) : harMotebehovInTilfelle ? (
+        <MotebehovInCurrentTilfelle
+          motebehovInTilfelle={motebehovInActiveTilfelle}
+          oppfolgingstilfelle={latestOppfolgingstilfelle}
+        />
+      ) : (
+        <UbehandledeMotebehovUtenforTilfelle
+          sorterteMotebehovUtenforTilfelle={sortertMotebehov}
+        />
+      )}
+    </div>
   );
 }

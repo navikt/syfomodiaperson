@@ -1,6 +1,6 @@
 import { FormSnapshot } from "@/data/skjemasvar/types/SkjemasvarTypes";
 
-export interface MotebehovVeilederDTO {
+export interface Motebehov {
   id: string;
   opprettetDato: Date;
   opprettetAvNavn: string | null;
@@ -8,10 +8,23 @@ export interface MotebehovVeilederDTO {
   virksomhetsnummer: string;
   behandletTidspunkt: Date | null;
   behandletVeilederIdent: string | null;
-  innmelderType: MotebehovInnmelder;
-  skjemaType: MotebehovSkjemaType;
+  skjemaType: MotebehovSkjemaType.MELD_BEHOV | MotebehovSkjemaType.SVAR_BEHOV;
   formValues: MotebehovFormValuesOutputDTO;
 }
+
+export type MotebehovVeilederDTO = Motebehov & {
+  innmelderType: MotebehovInnmelder;
+};
+
+export type MeldtMotebehov = Motebehov & {
+  innmelder: MotebehovInnmelder;
+  skjemaType: MotebehovSkjemaType.MELD_BEHOV;
+};
+
+export type SvarMotebehov = Motebehov & {
+  innmelder: MotebehovInnmelder;
+  skjemaType: MotebehovSkjemaType.SVAR_BEHOV;
+};
 
 export type Virksomhetsnummer = string;
 export type InnsenderKey = [Virksomhetsnummer, MotebehovInnmelder];
@@ -29,32 +42,6 @@ export interface MotebehovFormValuesOutputDTO {
 export enum MotebehovSkjemaType {
   MELD_BEHOV = "MELD_BEHOV",
   SVAR_BEHOV = "SVAR_BEHOV",
-}
-
-export interface MeldtMotebehov {
-  id: string;
-  opprettetDato: Date;
-  opprettetAvNavn: string | null;
-  innmelder: MotebehovInnmelder;
-  arbeidstakerFnr: string;
-  virksomhetsnummer: string;
-  behandletTidspunkt: Date | null;
-  behandletVeilederIdent: string | null;
-  skjemaType: MotebehovSkjemaType.MELD_BEHOV;
-  formValues: MotebehovFormValuesOutputDTO;
-}
-
-export interface SvarMotebehov {
-  id: string;
-  opprettetDato: Date;
-  opprettetAvNavn: string | null;
-  innmelder: MotebehovInnmelder;
-  arbeidstakerFnr: string;
-  virksomhetsnummer: string;
-  behandletTidspunkt: Date | null;
-  behandletVeilederIdent: string | null;
-  skjemaType: MotebehovSkjemaType.SVAR_BEHOV;
-  formValues: MotebehovFormValuesOutputDTO;
 }
 
 export enum MotebehovInnmelder {

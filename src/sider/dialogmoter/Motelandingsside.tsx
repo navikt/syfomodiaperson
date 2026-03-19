@@ -15,10 +15,6 @@ import MotehistorikkPanel from "@/sider/dialogmoter/components/motehistorikk/Mot
 import MoteSvarHistorikk from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikk";
 import MotebehovHistorikk from "@/sider/dialogmoter/components/motehistorikk/MotebehovHistorikk";
 import { InfoOmTolk } from "@/sider/dialogmoter/motebehov/InfoOmTolk";
-import { UtropstegnImage } from "../../../img/ImageComponents";
-import MotebehovKvittering from "@/sider/dialogmoter/motebehov/MotebehovKvittering";
-import BehandleMotebehovKnapp from "@/components/motebehov/BehandleMotebehovKnapp";
-import DialogmotePanel from "@/sider/dialogmoter/components/DialogmotePanel";
 import { useGetDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
 
 const texts = {
@@ -61,15 +57,8 @@ export default function Motelandingsside() {
 
         <Tredelt.Container>
           <Tredelt.FirstColumn>
-            <DialogmotePanel
-              icon={UtropstegnImage}
-              header={texts.behovForDialogmote}
-            >
-              <MotebehovKvittering />
-              <BehandleMotebehovKnapp />
-            </DialogmotePanel>
-            <InfoOmTolk />
             <InnkallingDialogmotePanel aktivtDialogmote={aktivtDialogmote} />
+            <InfoOmTolk />
             <DialogmoteFerdigstilteReferatPanel
               ferdigstilteMoter={historiskeDialogmoter.filter(
                 (mote) => mote.status === DialogmoteStatus.FERDIGSTILT
