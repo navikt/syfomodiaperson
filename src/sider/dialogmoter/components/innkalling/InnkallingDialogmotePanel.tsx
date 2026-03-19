@@ -4,20 +4,26 @@ import DialogmotePanel from "../DialogmotePanel";
 import DialogmoteMoteStatusPanel from "./DialogmoteMoteStatusPanel";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/sider/dialogmoter/components/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
-import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
+import {
+  useDialogmotekandidat,
+  useLatestFerdigstiltReferat,
+} from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { Alert, BodyShort, Button } from "@navikt/ds-react";
 import {
+  dialogmoteIkkeAktuellRoutePath,
   dialogmoteRoutePath,
   dialogmoteUnntakRoutePath,
-  dialogmoteIkkeAktuellRoutePath,
 } from "@/AppRouter";
 import { Link } from "react-router-dom";
 import DialogmoteFrist from "@/sider/dialogmoter/components/DialogmoteFrist";
 import { HourglassTopFilledIcon } from "@navikt/aksel-icons";
 import { DialogmoteAvventModal } from "./DialogmoteAvventModal";
 import { DialogmoteAvventAlert } from "./DialogmoteAvventAlert";
+import MotebehovKvittering from "@/sider/dialogmoter/motebehov/MotebehovKvittering";
+import BehandleMotebehovKnapp from "@/components/motebehov/BehandleMotebehovKnapp";
+import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 
 const texts = {
   bekreftetMote: "Bekreftet møte",
@@ -81,8 +87,17 @@ export default function InnkallingDialogmotePanel({
 }: Props): ReactElement {
   const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
   const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
-  const { isKandidat, avvent } = useDialogmotekandidat();
+  const dialogmotekandidat = useDialogmotekandidat();
   const [visAvventModal, setVisAvventModal] = useState(false);
+  const motebehovQuery = useMotebehovQuery();
+  const latestFerdigstilteReferat = useLatestFerdigstiltReferat();
+
+  const latestSubmittedMotebehov = motebehovQuery.data[0];
+  const latestMoteHasReferat =
+    latestSubmittedMotebehov &&
+    latestFerdigstilteReferat &&
+    new Date(latestSubmittedMotebehov.opprettetDato) <
+      new Date(latestFerdigstilteReferat.createdAt);
 
   if (aktivtDialogmote) {
     return <DialogmoteMoteStatusPanel dialogmote={aktivtDialogmote} />;
@@ -93,11 +108,15 @@ export default function InnkallingDialogmotePanel({
           isOpen={visAvventModal}
           onClose={() => setVisAvventModal(false)}
         />
-        {avvent && <DialogmoteAvventAlert avvent={avvent} />}
+        {dialogmotekandidat.avvent && (
+          <DialogmoteAvventAlert avvent={dialogmotekandidat.avvent} />
+        )}
         <DialogmotePanel
           icon={MoteIkonBlaaImage}
           header={
-            isKandidat ? texts.kandidatDialogmote : texts.planleggNyttMote
+            dialogmotekandidat.isKandidat
+              ? texts.kandidatDialogmote
+              : texts.planleggNyttMote
           }
           subtitle={
             <>
@@ -106,7 +125,7 @@ export default function InnkallingDialogmotePanel({
             </>
           }
           headerAction={
-            isKandidat ? (
+            dialogmotekandidat.isKandidat ? (
               <AvventDialogmoteButton onClick={() => setVisAvventModal(true)} />
             ) : undefined
           }
@@ -124,11 +143,20 @@ export default function InnkallingDialogmotePanel({
             </Alert>
           )}
 
-          <div className="flex flex-row gap-4">
-            <NyttDialogmoteButton />
-            {isKandidat && <SettUnntakButton />}
-            {isKandidat && <IkkeAktuellButton />}
-          </div>
+          {!latestMoteHasReferat && (
+            <>
+              <MotebehovKvittering />
+              <BehandleMotebehovKnapp />
+            </>
+          )}
+
+          {!!latestSubmittedMotebehov?.behandletTidspunkt && (
+            <div className="flex flex-row gap-4">
+              <NyttDialogmoteButton />
+              {dialogmotekandidat.isKandidat && <SettUnntakButton />}
+              {dialogmotekandidat.isKandidat && <IkkeAktuellButton />}
+            </div>
+          )}
         </DialogmotePanel>
       </>
     );
