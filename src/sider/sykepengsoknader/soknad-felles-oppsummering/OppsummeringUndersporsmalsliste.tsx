@@ -13,7 +13,7 @@ export default function OppsummeringUndersporsmalsliste({
   overskriftsnivaa = 4,
 }: OppsummeringUndersporsmalslisteProps): ReactElement {
   return (
-    <div className="oppsummering__undersporsmalsliste">
+    <div className="ml-6">
       {sporsmalsliste.map((sporsmal) => (
         <OppsummeringSporsmal
           {...sporsmal}

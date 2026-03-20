@@ -1,17 +1,17 @@
 import React, { ReactElement } from "react";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
 import OppsummeringSporsmalscontainer from "./OppsummeringSporsmalscontainer";
-import OppsummeringSporsmalstekst from "./OppsummeringSporsmalstekst";
-import OppsummeringAvkrysset from "./OppsummeringAvkrysset";
+import OppsummeringSporsmalstekst from "@/sider/sykepengsoknader/soknad-felles-oppsummering/OppsummeringSporsmalstekst";
 import { OppsummeringSporsmalProps } from "./OppsummeringSporsmal";
+import { Checkbox } from "@navikt/ds-react";
 
-const OppsummeringGruppeRadioUkekalender = ({
+export function OppsummeringGruppeRadioUkekalender({
   tag,
   svar,
   sporsmalstekst,
   overskriftsnivaa,
   id,
-}: OppsummeringSporsmalProps): ReactElement => {
+}: OppsummeringSporsmalProps): ReactElement {
   const oppsummertSvar =
     svar[0] && svar[0].verdi !== "Ikke til behandling"
       ? toDatePrettyPrint(svar[0].verdi)
@@ -21,9 +21,9 @@ const OppsummeringGruppeRadioUkekalender = ({
       <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
         {sporsmalstekst}
       </OppsummeringSporsmalstekst>
-      <OppsummeringAvkrysset id={id} tekst={oppsummertSvar} />
+      <Checkbox size="small" id={id} readOnly checked>
+        {oppsummertSvar}
+      </Checkbox>
     </OppsummeringSporsmalscontainer>
   );
-};
-
-export default OppsummeringGruppeRadioUkekalender;
+}

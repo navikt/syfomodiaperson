@@ -3,11 +3,11 @@ import OppsummeringPerioder from "./OppsummeringPerioder";
 import OppsummeringDato from "./OppsummeringDato";
 import OppsummeringTall from "./OppsummeringTall";
 import OppsummeringCheckbox from "./OppsummeringCheckbox";
-import OppsummeringJaEllerNei from "./OppsummeringJaEllerNei";
-import OppsummeringFritekst from "./OppsummeringFritekst";
+import { OppsummeringJaEllerNei } from "./OppsummeringJaEllerNei";
+import { OppsummeringFritekst } from "./OppsummeringFritekst";
 import { OppsummeringUndertekst } from "./OppsummeringUndertekst";
 import OppsummeringRadioGruppe from "./OppsummeringRadioGruppe";
-import OppsummeringGruppeRadioUkekalender from "./OppsummeringGruppeRadioUkekalender";
+import { OppsummeringGruppeRadioUkekalender } from "./OppsummeringGruppeRadioUkekalender";
 import {
   SporsmalDTO,
   SvarTypeDTO,
