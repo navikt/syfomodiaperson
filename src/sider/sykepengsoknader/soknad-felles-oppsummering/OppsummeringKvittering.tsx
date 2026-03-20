@@ -33,7 +33,6 @@ const sumOfKvitteringer = (svar: SvarDTO[]): number => {
 
 export default function OppsummeringKvittering({
   sporsmalstekst,
-  tag,
   overskriftsnivaa,
   svar,
 }: OppsummeringSporsmalProps) {
@@ -50,7 +49,7 @@ export default function OppsummeringKvittering({
   }
 
   return (
-    <OppsummeringSporsmalscontainer tag={tag}>
+    <OppsummeringSporsmalscontainer>
       <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
         {sporsmalstekst}
       </OppsummeringSporsmalstekst>

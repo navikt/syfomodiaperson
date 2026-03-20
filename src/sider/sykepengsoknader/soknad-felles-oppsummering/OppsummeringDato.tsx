@@ -13,7 +13,7 @@ export default function OppsummeringDato({
   overskriftsnivaa = 3,
 }: OppsummeringSporsmalProps): ReactElement {
   return (
-    <OppsummeringSporsmalscontainer tag={tag}>
+    <OppsummeringSporsmalscontainer>
       <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
         {sporsmalstekst}
       </OppsummeringSporsmalstekst>

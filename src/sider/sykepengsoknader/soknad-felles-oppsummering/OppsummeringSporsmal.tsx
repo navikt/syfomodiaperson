@@ -54,7 +54,7 @@ export default function OppsummeringSporsmal(
     }
     case SvarTypeDTO.CHECKBOX_GRUPPE: {
       return (
-        <OppsummeringSporsmalscontainer tag={props.tag}>
+        <OppsummeringSporsmalscontainer>
           <OppsummeringSporsmalstekst overskriftsnivaa={props.overskriftsnivaa}>
             {props.sporsmalstekst}
           </OppsummeringSporsmalstekst>

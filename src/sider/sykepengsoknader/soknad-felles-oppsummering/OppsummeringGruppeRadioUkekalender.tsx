@@ -6,7 +6,6 @@ import { OppsummeringSporsmalProps } from "./OppsummeringSporsmal";
 import { Checkbox } from "@navikt/ds-react";
 
 export function OppsummeringGruppeRadioUkekalender({
-  tag,
   svar,
   sporsmalstekst,
   overskriftsnivaa,
@@ -17,7 +16,7 @@ export function OppsummeringGruppeRadioUkekalender({
       ? toDatePrettyPrint(svar[0].verdi)
       : "Ikke til behandling";
   return (
-    <OppsummeringSporsmalscontainer tag={tag}>
+    <OppsummeringSporsmalscontainer>
       <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
         {sporsmalstekst}
       </OppsummeringSporsmalstekst>

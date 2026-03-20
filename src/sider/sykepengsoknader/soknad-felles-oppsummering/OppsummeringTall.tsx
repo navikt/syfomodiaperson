@@ -43,7 +43,7 @@ const OppsummeringTall = ({
 }: OppsummeringSporsmalProps): ReactElement => {
   const text = getSvartypeText(svartype);
   return (
-    <OppsummeringSporsmalscontainer tag={tag}>
+    <OppsummeringSporsmalscontainer>
       <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
         {sporsmalstekst}
       </OppsummeringSporsmalstekst>

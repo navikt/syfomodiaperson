@@ -16,7 +16,7 @@ export default function OppsummeringPerioder({
   tag,
 }: OppsummeringSporsmalProps): ReactElement {
   return (
-    <OppsummeringSporsmalscontainer tag={tag}>
+    <OppsummeringSporsmalscontainer>
       <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
         {sporsmalstekst}
       </OppsummeringSporsmalstekst>
