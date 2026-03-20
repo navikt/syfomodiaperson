@@ -2,8 +2,8 @@ import React, { ReactElement } from "react";
 import OppsummeringSporsmalscontainer from "./OppsummeringSporsmalscontainer";
 import OppsummeringSporsmalstekst from "@/sider/sykepengsoknader/soknad-felles-oppsummering/OppsummeringSporsmalstekst";
 import OppsummeringUndersporsmalsliste from "./OppsummeringUndersporsmalsliste";
-import { OppsummeringSporsmalProps } from "./OppsummeringSporsmal";
 import {
+  SporsmalDTO,
   SvarDTO,
   VisningskriterieDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
@@ -26,27 +26,21 @@ const erUndersporsmalStilt = (
 export function OppsummeringJaEllerNei({
   svar,
   sporsmalstekst,
-  overskriftsnivaa = 3,
   kriterieForVisningAvUndersporsmal,
   undersporsmal,
-}: OppsummeringSporsmalProps): ReactElement | null {
+}: SporsmalDTO): ReactElement | null {
   if (svar[0] === undefined) {
     return null;
   }
   return (
     <OppsummeringSporsmalscontainer>
-      <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
-        {sporsmalstekst}
-      </OppsummeringSporsmalstekst>
+      <OppsummeringSporsmalstekst>{sporsmalstekst}</OppsummeringSporsmalstekst>
       <Checkbox size="small" readOnly checked>
         {getLedetekstFraSvar(svar[0].verdi as string)}
       </Checkbox>
       {erUndersporsmalStilt(svar, kriterieForVisningAvUndersporsmal) &&
         undersporsmal.length > 0 && (
-          <OppsummeringUndersporsmalsliste
-            sporsmalsliste={undersporsmal}
-            overskriftsnivaa={overskriftsnivaa + 1}
-          />
+          <OppsummeringUndersporsmalsliste sporsmalsliste={undersporsmal} />
         )}
     </OppsummeringSporsmalscontainer>
   );
