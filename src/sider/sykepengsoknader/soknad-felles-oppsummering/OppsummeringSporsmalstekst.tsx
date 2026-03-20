@@ -1,20 +1,16 @@
-import React, { JSX, ReactElement } from "react";
+import React, { ReactElement } from "react";
+import { Label } from "@navikt/ds-react";
 
-interface OppsummeringSporsmalstekstProps {
-  overskriftsnivaa?: number;
+interface Props {
   children?: string;
 }
 
-const OppsummeringSporsmalstekst = ({
-  overskriftsnivaa = 3,
+export default function OppsummeringSporsmalstekst({
   children,
-}: OppsummeringSporsmalstekstProps): ReactElement => {
-  const Overskriftstag = `h${overskriftsnivaa}` as keyof JSX.IntrinsicElements;
+}: Props): ReactElement {
   return (
-    <Overskriftstag className="oppsummering__sporsmal">
+    <Label size="small" className="mt-2">
       {children}
-    </Overskriftstag>
+    </Label>
   );
-};
-
-export default OppsummeringSporsmalstekst;
+}

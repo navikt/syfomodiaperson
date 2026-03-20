@@ -18,12 +18,8 @@ import OppsummeringUndersporsmalsliste from "@/sider/sykepengsoknader/soknad-fel
 import { getKey } from "@/sider/sykepengsoknader/soknad-felles-oppsummering/Oppsummeringsvisning";
 import OppsummeringSporsmalscontainer from "@/sider/sykepengsoknader/soknad-felles-oppsummering/OppsummeringSporsmalscontainer";
 
-export interface OppsummeringSporsmalProps extends SporsmalDTO {
-  overskriftsnivaa?: number;
-}
-
 export default function OppsummeringSporsmal(
-  props: OppsummeringSporsmalProps
+  props: SporsmalDTO
 ): ReactElement | null {
   switch (props.svartype) {
     case SvarTypeDTO.CHECKBOX_PANEL:
@@ -55,17 +51,11 @@ export default function OppsummeringSporsmal(
     case SvarTypeDTO.CHECKBOX_GRUPPE: {
       return (
         <OppsummeringSporsmalscontainer>
-          <OppsummeringSporsmalstekst overskriftsnivaa={props.overskriftsnivaa}>
+          <OppsummeringSporsmalstekst>
             {props.sporsmalstekst}
           </OppsummeringSporsmalstekst>
           {props.undersporsmal.map((s) => (
-            <OppsummeringSporsmal
-              {...s}
-              overskriftsnivaa={
-                props.overskriftsnivaa && props.overskriftsnivaa + 1
-              }
-              key={getKey(s.tag, s.id)}
-            />
+            <OppsummeringSporsmal {...s} key={getKey(s.tag, s.id)} />
           ))}
         </OppsummeringSporsmalscontainer>
       );
@@ -89,7 +79,7 @@ export default function OppsummeringSporsmal(
     case SvarTypeDTO.BEKREFTELSESPUNKTER: {
       return (
         <div className="oppsummering__VisUndertekst" id={props.id}>
-          <OppsummeringSporsmalstekst overskriftsnivaa={props.overskriftsnivaa}>
+          <OppsummeringSporsmalstekst>
             {props.sporsmalstekst}
           </OppsummeringSporsmalstekst>
           <ul>
@@ -102,7 +92,6 @@ export default function OppsummeringSporsmal(
           {props.undersporsmal.length > 0 && (
             <OppsummeringUndersporsmalsliste
               sporsmalsliste={props.undersporsmal}
-              overskriftsnivaa={props.overskriftsnivaa}
             />
           )}
         </div>
