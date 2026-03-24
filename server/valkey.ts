@@ -1,19 +1,20 @@
-import redis = require("redis");
+import { createClient, RedisClientType } from "redis";
+import Config from "./config.js";
 
-import Config = require("./config");
+let valkeyClient: RedisClientType | undefined;
 
-let valkeyClient: redis.RedisClient | undefined;
-
-export function getValkeyClient(): redis.RedisClient {
+export async function getValkeyClient(): Promise<RedisClientType> {
   if (valkeyClient) {
     return valkeyClient;
   }
 
-  valkeyClient = redis.createClient({
+  valkeyClient = createClient({
     url: Config.valkey.uri,
-    no_ready_check: true,
-  });
-  valkeyClient.auth(Config.valkey.password, Config.valkey.username);
-  valkeyClient.select(Config.valkey.database);
+    username: Config.valkey.username,
+    password: Config.valkey.password,
+    database: Config.valkey.database,
+  }) as RedisClientType;
+
+  await valkeyClient.connect();
   return valkeyClient;
 }

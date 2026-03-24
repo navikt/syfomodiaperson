@@ -1,9 +1,10 @@
-import express = require("express");
-import proxy = require("express-http-proxy");
-import url = require("url");
+import express from "express";
+import proxy from "express-http-proxy";
+import url from "url";
 
-import { getOnBehalfOfToken } from "./authUtils";
-import Config = require("./config");
+import { getOnBehalfOfToken } from "./authUtils.js";
+import type { ExternalAppConfig } from "./config.js";
+import Config from "./config.js";
 
 const proxyExternalHostWithoutAuthentication = (host: any) =>
   proxy(host, {
@@ -95,7 +96,7 @@ const proxyOnBehalfOf = (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
-  externalAppConfig: Config.ExternalAppConfig,
+  externalAppConfig: ExternalAppConfig,
   rewritePath?: (path: string) => string
 ) => {
   getOnBehalfOfToken(req, externalAppConfig.clientId)
@@ -513,8 +514,4 @@ export const setupProxy = (): express.Router => {
   );
 
   return router;
-};
-
-module.exports = {
-  setupProxy: setupProxy,
 };
