@@ -13,4 +13,5 @@ jobs:
       prod-cluster: prod-gcp
       node-version: 22
       distroless: true
+      buildServer: true
     secrets: inherit

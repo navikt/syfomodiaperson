@@ -13,6 +13,7 @@
     "test": "vitest run",
     "start": "webpack serve --config webpack.dev.ts",
     "build": "webpack --config webpack.prod.ts",
+    "build:server": "tsc --build ./server/tsconfig.json",
     "lint-and-typecheck": "npm run lint && npm run typecheck",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint src test --ext .ts  --ext .tsx  --ext .js  --ext .jsx",
