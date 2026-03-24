@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-const jsdom = require("jsdom");
+import * as jsdom from "jsdom";
 
 /**
  * Borrowed from: https://github.com/tmpvar/jsdom/issues/135#issuecomment-68191941
