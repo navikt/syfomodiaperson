@@ -1,8 +1,8 @@
-import express = require("express");
-import helmet = require("helmet");
-import path = require("path");
-import prometheus = require("prom-client");
-import unleash = require("./server/unleash");
+import express from "express";
+import helmet from "helmet";
+import path from "path";
+import prometheus from "prom-client";
+import { getToggles } from "./server/unleash";
 import { validateToken } from "./server/authUtils";
 import { setupProxy } from "./server/proxy";
 import { setupDraftEndpoints } from "./server/draft";
@@ -64,7 +64,7 @@ const setupServer = async () => {
     "/unleash/toggles",
     redirectIfUnauthorized,
     (req: express.Request, res: express.Response) => {
-      const togglesResponse = unleash.getToggles(
+      const togglesResponse = getToggles(
         req.query.veilederId,
         req.query.enhetId
       );

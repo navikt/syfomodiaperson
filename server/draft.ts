@@ -1,4 +1,4 @@
-import express = require("express");
+import express from "express";
 
 import { getValkeyClient } from "./valkey";
 import { getVeilederidentFromRequest } from "./authUtils";

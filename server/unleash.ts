@@ -1,8 +1,5 @@
-import unleashClient = require("unleash-client");
-import Config = require("./config");
-import { Strategy } from "unleash-client";
-
-const { initialize } = unleashClient;
+import { initialize, Strategy } from "unleash-client";
+import Config from "./config";
 
 class VeilederIds extends Strategy {
   constructor() {

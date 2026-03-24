@@ -1,6 +1,6 @@
 import { Request } from "express";
 
-import Config = require("./config");
+import Config from "./config";
 
 interface TokenIntrospectionResponse {
   active: boolean;

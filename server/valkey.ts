@@ -1,6 +1,6 @@
-import redis = require("redis");
+import redis from "redis";
 
-import Config = require("./config");
+import Config from "./config";
 
 let valkeyClient: redis.RedisClient | undefined;
 

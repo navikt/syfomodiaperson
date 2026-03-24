@@ -1,11 +1,14 @@
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { ISHUSKELAPP_ROOT } from "@/apiConstants";
 import { post } from "@/api/axios";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  type UseMutationResult,
+} from "@tanstack/react-query";
 import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useOppfolgingsoppgaver";
 import { aktivOppfolgingsoppgaveQueryKeys } from "@/data/oppfolgingsoppgave/useAktivOppfolgingsoppgave";
 import { OppfolgingsoppgaveRequestDTO } from "@/data/oppfolgingsoppgave/types";
-import { UseMutationResult } from "@tanstack/react-query/build/modern/types";
 import { ApiErrorException } from "@/api/errors";
 
 export const useCreateOppfolgingsoppgave = (): UseMutationResult<

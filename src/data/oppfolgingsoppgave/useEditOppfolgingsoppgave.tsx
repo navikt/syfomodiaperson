@@ -4,8 +4,11 @@ import { EditOppfolgingsoppgaveRequestDTO } from "@/data/oppfolgingsoppgave/type
 import { post } from "@/api/axios";
 import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useOppfolgingsoppgaver";
 import { aktivOppfolgingsoppgaveQueryKeys } from "@/data/oppfolgingsoppgave/useAktivOppfolgingsoppgave";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { UseMutationResult } from "@tanstack/react-query/build/modern/types";
+import {
+  useMutation,
+  useQueryClient,
+  type UseMutationResult,
+} from "@tanstack/react-query";
 import { ApiErrorException } from "@/api/errors";
 
 export function useEditOppfolgingsoppgave(

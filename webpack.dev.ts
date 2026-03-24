@@ -1,9 +1,13 @@
 import { merge } from "webpack-merge";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const common = require("./webpack.common.ts");
-const path = require("path");
+import common from "./webpack.common.ts";
 
-module.exports = merge(common, {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default merge(common, {
   mode: "development",
   devtool: "eval-source-map",
   devServer: {
