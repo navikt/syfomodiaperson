@@ -1,23 +1,21 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ESNext",
     "target": "ES2019",
     "lib": ["es2019", "dom"],
     "sourceMap": true,
     "allowJs": true,
     "jsx": "react",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "outDir": "./dist",
-    "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     },
     "strict": true,
     //Todo: Endre til true under og legg inn returntyper i sagas
     "noImplicitAny": false,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "ignoreDeprecations": "6.0" //TODO: Fix for TS 6
+    "skipLibCheck": true
   },
   "exclude": ["node_modules", "build", "scripts", "acceptance-tests", "jest"],
   "types": ["typePatches"]
