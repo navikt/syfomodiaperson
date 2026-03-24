@@ -16,7 +16,8 @@
     //Todo: Endre til true under og legg inn returntyper i sagas
     "noImplicitAny": false,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "ignoreDeprecations": "6.0" //TODO: Fix for TS 6
   },
   "exclude": ["node_modules", "build", "scripts", "acceptance-tests", "jest"],
   "types": ["typePatches"]
