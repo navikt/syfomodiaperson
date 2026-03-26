@@ -11,7 +11,6 @@ import { Checkbox } from "@navikt/ds-react";
 
 export default function OppsummeringRadiogruppe({
   sporsmalstekst,
-  tag,
   overskriftsnivaa,
   undersporsmal,
   id,
@@ -22,7 +21,7 @@ export default function OppsummeringRadiogruppe({
   });
   return (
     besvartUndersporsmal && (
-      <OppsummeringSporsmalscontainer tag={tag}>
+      <OppsummeringSporsmalscontainer>
         <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
           {sporsmalstekst}
         </OppsummeringSporsmalstekst>

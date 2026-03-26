@@ -26,7 +26,6 @@ const erUndersporsmalStilt = (
 export function OppsummeringJaEllerNei({
   svar,
   sporsmalstekst,
-  tag,
   overskriftsnivaa = 3,
   kriterieForVisningAvUndersporsmal,
   undersporsmal,
@@ -35,7 +34,7 @@ export function OppsummeringJaEllerNei({
     return null;
   }
   return (
-    <OppsummeringSporsmalscontainer tag={tag}>
+    <OppsummeringSporsmalscontainer>
       <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
         {sporsmalstekst}
       </OppsummeringSporsmalstekst>
