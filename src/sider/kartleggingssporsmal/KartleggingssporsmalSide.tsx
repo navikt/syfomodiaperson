@@ -105,7 +105,7 @@ function PilotInfo() {
             "https://teams.microsoft.com/l/channel/19%3A53f937eda2124d29938e4278a1cb106c%40thread.tacv2/Pilot%20kartleggingssp%C3%B8rsm%C3%A5l?groupId=05b6c0d2-b6db-4440-96b4-4de66c09b3c6&tenantId=62366534-1ec3-4962-8869-9b5535279d0b&ngc=true"
           }
         >
-          Gå til Pilot kartlegginsspørsmål-kanalen
+          Gå til Pilot kartleggingsspørsmål-kanalen
         </EksternLenke>
       </div>
       <div>
