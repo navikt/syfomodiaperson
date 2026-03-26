@@ -4,7 +4,6 @@ import Feilmelding from "./Feilmelding";
 import { useGetTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
 import Decorator from "@/decorator/Decorator";
 import { ikkeTilgangBegrunnelseTekst } from "@/components/side/SideLaster";
-import LegacyTilgangBanner from "@/components/LegacyTilgangBanner";
 
 interface AktivBrukerTilgangLasterProps {
   children: ReactNode;
@@ -19,7 +18,6 @@ export default function AktivBrukerTilgangLaster({
 }: AktivBrukerTilgangLasterProps): ReactElement {
   const getTilgangQuery = useGetTilgangQuery();
   const harTilgang = getTilgangQuery.data?.erGodkjent === true;
-  const hasLegacyTilgang = getTilgangQuery.data?.legacyTilgang === true;
 
   let visning;
   if (getTilgangQuery.isLoading) {
@@ -39,7 +37,6 @@ export default function AktivBrukerTilgangLaster({
   return (
     <>
       <Decorator />
-      {harTilgang && hasLegacyTilgang && <LegacyTilgangBanner />}
       {visning}
     </>
   );
