@@ -57,5 +57,9 @@ export function getToggles(veilederId, enhetId) {
       "isForsokForsterketOppfolgingMerkingEnabled",
       context
     ),
+    isNyTilgangskontrollEnabled: unleash.isEnabled(
+      "isNyTilgangskontrollEnabled",
+      context
+    ),
   };
 }
