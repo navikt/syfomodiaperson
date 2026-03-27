@@ -40,7 +40,7 @@ export default function Side({
   const { toggles } = useFeatureToggles();
   const showLegacyTilgangBanner =
     tilgangQuery.data?.legacyTilgang === true &&
-    toggles[ToggleNames.isNyTilgangskontrollEnabled];
+    toggles.isNyTilgangskontrollEnabled;
 
   useDocumentTitle(tittel);
 
