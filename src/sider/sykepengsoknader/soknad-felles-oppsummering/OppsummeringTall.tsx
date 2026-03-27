@@ -2,11 +2,12 @@ import React, { ReactElement } from "react";
 import OppsummeringSporsmalscontainer from "./OppsummeringSporsmalscontainer";
 import OppsummeringSporsmalstekst from "./OppsummeringSporsmalstekst";
 import { getKey } from "./Oppsummeringsvisning";
-import { OppsummeringSporsmalProps } from "./OppsummeringSporsmal";
 import {
+  SporsmalDTO,
   SvarDTO,
   SvarTypeDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import { BodyShort } from "@navikt/ds-react";
 
 const texts = {
   timerTotalt: "timer totalt",
@@ -34,31 +35,24 @@ const getSvartypeText = (svartype: SvarTypeDTO | undefined): string => {
   }
 };
 
-const OppsummeringTall = ({
+export default function OppsummeringTall({
   svar,
   sporsmalstekst,
   tag,
-  overskriftsnivaa,
   svartype,
-}: OppsummeringSporsmalProps): ReactElement => {
+}: SporsmalDTO): ReactElement {
   const text = getSvartypeText(svartype);
   return (
     <OppsummeringSporsmalscontainer>
-      <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
-        {sporsmalstekst}
-      </OppsummeringSporsmalstekst>
-      <div className="oppsummering__tekstsvar">
-        {svar.map((svarverdi, index) => {
-          const verdi = verdiAdjustedIfBelop(svarverdi, svartype);
-          return (
-            <p className="oppsummering__tekst" key={getKey(tag, index)}>
-              {verdi} {text}
-            </p>
-          );
-        })}
-      </div>
+      <OppsummeringSporsmalstekst>{sporsmalstekst}</OppsummeringSporsmalstekst>
+      {svar.map((svarverdi, index) => {
+        const verdi = verdiAdjustedIfBelop(svarverdi, svartype);
+        return (
+          <BodyShort size="small" key={getKey(tag, index)}>
+            {verdi} {text}
+          </BodyShort>
+        );
+      })}
     </OppsummeringSporsmalscontainer>
   );
-};
-
-export default OppsummeringTall;
+}
