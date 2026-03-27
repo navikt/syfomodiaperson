@@ -12,6 +12,7 @@ import { generateUUID } from "@/utils/utils";
 import {
   KartleggingssporsmalFormSnapshotFieldType,
   KartleggingssporsmalRadioGroupFieldSnapshot,
+  KartleggingssporsmalTextFieldSnapshot,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalSkjemasvarTypes";
 
 export const mockMerOppfolging = [
@@ -105,6 +106,30 @@ const kartleggingssporsmal: KartleggingssporsmalRadioGroupFieldSnapshot[] = [
   },
 ];
 
+const hvorforUsikkerTextSporsmal: KartleggingssporsmalTextFieldSnapshot = {
+  fieldId: "tilbakemelding",
+  fieldType: KartleggingssporsmalFormSnapshotFieldType.TEXT,
+  description:
+    "Skriv kortfattet hvorfor du er usikker på om du kommer tilbake i jobben du ble sykmeldt fra",
+  label: "Hva gjør deg usikker?",
+  value:
+    "Tror kanskje jeg bør bytte jobb da jobben ikke klarer å tilpasse oppgaver til meg" +
+    " og leder oppfører seg dårlig når jeg er syk.",
+  wasRequired: false,
+};
+
+const samarbeidTextSporsmal: KartleggingssporsmalTextFieldSnapshot = {
+  fieldId: "tilbakemelding",
+  fieldType: KartleggingssporsmalFormSnapshotFieldType.TEXT,
+  description: null,
+  label: "Hva gjør samarbeidet og relasjonen dårlig?",
+  value:
+    "Lederen min behandler meg dårlig fordi jeg er blitt syk " +
+    "og skjelte meg ut, så nå vet jeg ikke om jeg tørr å fortsette der. " +
+    "Jeg kan liksom ikke noe for at jeg har havnet i denne situasjonen.",
+  wasRequired: false,
+};
+
 export const kartleggingssporsmalAnswered: KartleggingssporsmalSvarResponseDTO =
   {
     uuid: generateUUID(),
@@ -113,6 +138,12 @@ export const kartleggingssporsmalAnswered: KartleggingssporsmalSvarResponseDTO =
     createdAt: daysFromToday(-2),
     formSnapshot: {
       formSemanticVersion: "1.0.0",
-      fieldSnapshots: [...kartleggingssporsmal],
+      fieldSnapshots: [
+        kartleggingssporsmal[0],
+        hvorforUsikkerTextSporsmal,
+        ...kartleggingssporsmal.slice(1, 2),
+        samarbeidTextSporsmal,
+        ...kartleggingssporsmal.slice(2),
+      ],
     },
   };
