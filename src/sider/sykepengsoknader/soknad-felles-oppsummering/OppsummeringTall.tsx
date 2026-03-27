@@ -7,6 +7,7 @@ import {
   SvarDTO,
   SvarTypeDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import { BodyShort } from "@navikt/ds-react";
 
 const texts = {
   timerTotalt: "timer totalt",
@@ -34,28 +35,24 @@ const getSvartypeText = (svartype: SvarTypeDTO | undefined): string => {
   }
 };
 
-const OppsummeringTall = ({
+export default function OppsummeringTall({
   svar,
   sporsmalstekst,
   tag,
   svartype,
-}: SporsmalDTO): ReactElement => {
+}: SporsmalDTO): ReactElement {
   const text = getSvartypeText(svartype);
   return (
     <OppsummeringSporsmalscontainer>
       <OppsummeringSporsmalstekst>{sporsmalstekst}</OppsummeringSporsmalstekst>
-      <div className="oppsummering__tekstsvar">
-        {svar.map((svarverdi, index) => {
-          const verdi = verdiAdjustedIfBelop(svarverdi, svartype);
-          return (
-            <p className="oppsummering__tekst" key={getKey(tag, index)}>
-              {verdi} {text}
-            </p>
-          );
-        })}
-      </div>
+      {svar.map((svarverdi, index) => {
+        const verdi = verdiAdjustedIfBelop(svarverdi, svartype);
+        return (
+          <BodyShort size="small" key={getKey(tag, index)}>
+            {verdi} {text}
+          </BodyShort>
+        );
+      })}
     </OppsummeringSporsmalscontainer>
   );
-};
-
-export default OppsummeringTall;
+}
