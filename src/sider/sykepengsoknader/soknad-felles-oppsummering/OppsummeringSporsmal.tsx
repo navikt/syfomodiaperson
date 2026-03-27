@@ -78,15 +78,13 @@ export default function OppsummeringSporsmal(
     }
     case SvarTypeDTO.BEKREFTELSESPUNKTER: {
       return (
-        <div className="oppsummering__VisUndertekst" id={props.id}>
+        <div id={props.id}>
           <OppsummeringSporsmalstekst>
             {props.sporsmalstekst}
           </OppsummeringSporsmalstekst>
           <ul>
             {props.svar.map((s, index) => (
-              <li key={index} className="redaksjonelt-innhold">
-                {s.verdi}
-              </li>
+              <li key={index}>{s.verdi}</li>
             ))}
           </ul>
           {props.undersporsmal.length > 0 && (
