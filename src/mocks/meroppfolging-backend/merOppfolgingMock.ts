@@ -113,8 +113,8 @@ const hvorforUsikkerTextSporsmal: KartleggingssporsmalTextFieldSnapshot = {
     "Skriv kortfattet hvorfor du er usikker på om du kommer tilbake i jobben du ble sykmeldt fra",
   label: "Hva gjør deg usikker?",
   value:
-    "Tror kanskje jeg bør bytte jobb da jobben ikke klarer å tilpasse oppgaver til meg" +
-    " og leder oppfører seg dårlig når jeg er syk.",
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   wasRequired: false,
 };
 
@@ -124,9 +124,9 @@ const samarbeidTextSporsmal: KartleggingssporsmalTextFieldSnapshot = {
   description: null,
   label: "Hva gjør samarbeidet og relasjonen dårlig?",
   value:
-    "Lederen min behandler meg dårlig fordi jeg er blitt syk " +
-    "og skjelte meg ut, så nå vet jeg ikke om jeg tørr å fortsette der. " +
-    "Jeg kan liksom ikke noe for at jeg har havnet i denne situasjonen.",
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+    "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
   wasRequired: false,
 };
 
