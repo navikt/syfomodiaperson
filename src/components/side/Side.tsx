@@ -17,7 +17,6 @@ import OversiktLenker from "@/components/personkort/OversiktLenker";
 import LegacyTilgangBanner from "@/components/LegacyTilgangBanner";
 import { useGetTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import { ToggleNames } from "@/data/unleash/unleash_types";
 
 const MODIA_HEADER_ID = "modia-header";
 
