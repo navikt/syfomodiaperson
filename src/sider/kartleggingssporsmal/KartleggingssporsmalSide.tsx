@@ -162,7 +162,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
         {nyesteKandidat && hasMottattKartleggingssporsmal(nyesteKandidat) ? (
           <Tredelt.Container>
             <Tredelt.FirstColumn className="-xl:mb-2">
-              <Box background="default" className="p-6 gap-6 [&>*]:mb-4 mb-4">
+              <Box background="default" className="p-8 gap-6 [&>*]:mb-4 mb-4">
                 {answeredQuestions ? (
                   <>
                     <BodyShort size="small" weight="semibold">
