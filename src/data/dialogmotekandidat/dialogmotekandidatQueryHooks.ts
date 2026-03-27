@@ -44,7 +44,7 @@ export const useIsDialogmoteKandidatWithoutFerdigstiltReferat = (
   );
 };
 
-const useLatestFerdigstiltReferat = (): ReferatDTO | undefined => {
+export const useLatestFerdigstiltReferat = (): ReferatDTO | undefined => {
   const { ferdigstilteDialogmoter } = useDialogmoterQuery();
   const latestFerdigstiltDialogmote: DialogmoteDTO | undefined =
     ferdigstilteDialogmoter.sort((a, b) => {
@@ -99,7 +99,7 @@ export const useDialogmotekandidat = () => {
     isNoFerdigstiltDialogmoteReferatAfterKandidatAt || false;
 
   return {
-    data: kandidatQuery.data || {},
+    data: kandidatQuery.data,
     isKandidat,
     avvent,
   };

@@ -1,4 +1,4 @@
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import React from "react";
 import dayjs from "dayjs";
@@ -23,6 +23,11 @@ import {
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { kontaktinformasjonMock } from "@/mocks/syfoperson/persondataMock";
 import { KontaktinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
+import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
+import {
+  meldtMotebehovArbeidstakerBehandletMock,
+  svartJaMotebehovArbeidstakerUbehandletMock,
+} from "@/mocks/syfomotebehov/motebehovMock";
 
 let queryClient: QueryClient;
 
@@ -35,7 +40,7 @@ const brukerKanIkkeVarsles = {
   skalHaVarsel: false,
 };
 
-const renderInnkallingDialogmotePanel = (kontaktinfo: KontaktinfoDTO) => {
+function renderInnkallingDialogmotePanel(kontaktinfo: KontaktinfoDTO) {
   queryClient.setQueryData(
     brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
     () => kontaktinfo
@@ -51,7 +56,28 @@ const renderInnkallingDialogmotePanel = (kontaktinfo: KontaktinfoDTO) => {
       </QueryClientProvider>
     </MemoryRouter>
   );
-};
+}
+
+function mockUbehandletMotebehov() {
+  queryClient.setQueryData(
+    motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => [svartJaMotebehovArbeidstakerUbehandletMock]
+  );
+}
+
+function mockBehandletMotebehov() {
+  queryClient.setQueryData(
+    motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => [meldtMotebehovArbeidstakerBehandletMock()]
+  );
+}
+
+function mockDialogmotekandidat() {
+  queryClient.setQueryData(
+    dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => dialogmotekandidatMock
+  );
+}
 
 describe("InnkallingDialogmotePanel", () => {
   beforeEach(() => {
@@ -60,6 +86,8 @@ describe("InnkallingDialogmotePanel", () => {
 
   describe("med dm2 enabled", () => {
     it("viser advarsel om fysisk brev når bruker ikke kan varsles", () => {
+      mockBehandletMotebehov();
+
       renderInnkallingDialogmotePanel(brukerKanIkkeVarsles);
 
       expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
@@ -72,7 +100,10 @@ describe("InnkallingDialogmotePanel", () => {
         screen.getByText(brukerKanIkkeVarslesPapirpostTexts.papirpostDialogmote)
       ).to.exist;
     });
+
     it("viser knapp til Dialogmoteinkalling når bruker ikke kan varsles", async () => {
+      mockBehandletMotebehov();
+
       renderInnkallingDialogmotePanel(brukerKanIkkeVarsles);
 
       const button = screen.getByRole("button", { name: "Nytt dialogmøte" });
@@ -81,6 +112,8 @@ describe("InnkallingDialogmotePanel", () => {
     });
 
     it("viser ingen advarsel når bruker kan varsles", () => {
+      mockBehandletMotebehov();
+
       renderInnkallingDialogmotePanel(brukerKanVarsles);
 
       expect(screen.queryByRole("img", { name: "Advarsel" })).to.not.exist;
@@ -90,23 +123,56 @@ describe("InnkallingDialogmotePanel", () => {
         )
       ).to.not.exist;
     });
-    it("viser knapp til Dialogmoteinkalling  når bruker kan varsles", async () => {
+
+    it("viser ikke knapp til DialogmoteUnntak når bruker ikke er Dialogmotekandidat", () => {
+      mockBehandletMotebehov();
+
+      renderInnkallingDialogmotePanel(brukerKanVarsles);
+
+      expect(queryButton("Sett unntak")).to.not.exist;
+      expect(queryButton("Ikke aktuell")).to.not.exist;
+    });
+
+    it("viser ingen knapper under møtebehov-kvittering når møtebehov ikke er behandlet og bruker ikke er kandidat", async () => {
+      mockUbehandletMotebehov();
+
+      renderInnkallingDialogmotePanel(brukerKanVarsles);
+
+      expect(await screen.findByText("Vurder behov for dialogmøte")).to.exist;
+      expect(queryButton("Nytt dialogmøte")).to.not.exist;
+      expect(queryButton("Sett unntak")).to.not.exist;
+      expect(queryButton("Ikke aktuell")).to.not.exist;
+    });
+
+    it("viser ingen knapper under møtebehov-kvittering når møtebehov ikke er behandlet og bruker er kandidat", async () => {
+      mockDialogmotekandidat();
+      mockUbehandletMotebehov();
+
+      renderInnkallingDialogmotePanel(brukerKanVarsles);
+
+      expect(await screen.findByText("Vurder behov for dialogmøte")).to.exist;
+      expect(screen.getByRole("button", { name: "Avvent" })).to.exist;
+      expect(queryButton("Nytt dialogmøte")).to.not.exist;
+      expect(queryButton("Sett unntak")).to.not.exist;
+      expect(queryButton("Ikke aktuell")).to.not.exist;
+    });
+
+    it("viser kun Nytt dialogmote etter møtebehov er behandlet og når bruker ikke er kandidat", async () => {
+      mockBehandletMotebehov();
+
       renderInnkallingDialogmotePanel(brukerKanVarsles);
 
       const button = screen.getByRole("button", { name: "Nytt dialogmøte" });
       expect(button).to.exist;
+      expect(queryButton("Sett unntak")).to.not.exist;
+      expect(queryButton("Ikke aktuell")).to.not.exist;
       await userEvent.click(button);
     });
-    it("viser ikke knapp til DialogmoteUnntak når bruker ikke er Dialogmotekandidat", () => {
-      renderInnkallingDialogmotePanel(brukerKanVarsles);
 
-      expect(queryButton("Sett unntak")).to.not.exist;
-    });
-    it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og ingen ferdigstilte referat ", async () => {
-      queryClient.setQueryData(
-        dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => dialogmotekandidatMock
-      );
+    it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og ingen ferdigstilte referat", async () => {
+      mockDialogmotekandidat();
+      mockBehandletMotebehov();
+
       queryClient.setQueryData(
         dialogmoterQueryKeys.dialogmoter(ARBEIDSTAKER_DEFAULT.personIdent),
         () => []
@@ -114,15 +180,15 @@ describe("InnkallingDialogmotePanel", () => {
 
       renderInnkallingDialogmotePanel(brukerKanVarsles);
 
-      const button = screen.getByRole("button", { name: "Sett unntak" });
+      const button = await screen.findByRole("button", { name: "Sett unntak" });
       expect(button).to.exist;
       await userEvent.click(button);
     });
+
     it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og det er et ferdigstilt referat som er opprettet tidligere enn tidspunkt for Kandidat", async () => {
-      queryClient.setQueryData(
-        dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => dialogmotekandidatMock
-      );
+      mockDialogmotekandidat();
+      mockBehandletMotebehov();
+
       const createdAt = dayjs(
         new Date(dialogmotekandidatMock.kandidatAt)
       ).subtract(1, "days");
@@ -142,15 +208,15 @@ describe("InnkallingDialogmotePanel", () => {
 
       renderInnkallingDialogmotePanel(brukerKanVarsles);
 
-      const button = screen.getByText("Sett unntak");
+      const button = await screen.findByRole("button", { name: "Sett unntak" });
       expect(button).to.exist;
       await userEvent.click(button);
     });
+
     it("viser ikke knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og det er et ferdigstilt referat som er opprettet etter tidspunkt for Kandidat", () => {
-      queryClient.setQueryData(
-        dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => dialogmotekandidatMock
-      );
+      mockDialogmotekandidat();
+      mockBehandletMotebehov();
+
       const createdAt = dayjs(new Date(dialogmotekandidatMock.kandidatAt)).add(
         1,
         "days"
@@ -173,12 +239,13 @@ describe("InnkallingDialogmotePanel", () => {
 
       const button = queryButton("Sett unntak");
       expect(button).to.not.exist;
+      expect(queryButton("Ikke aktuell")).to.not.exist;
     });
+
     it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og det er et mellomlagret referat som er opprettet etter tidspunkt for Kandidat", async () => {
-      queryClient.setQueryData(
-        dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => dialogmotekandidatMock
-      );
+      mockDialogmotekandidat();
+      mockBehandletMotebehov();
+
       const createdAt = dayjs(new Date(dialogmotekandidatMock.kandidatAt)).add(
         1,
         "days"
@@ -200,13 +267,46 @@ describe("InnkallingDialogmotePanel", () => {
 
       renderInnkallingDialogmotePanel(brukerKanVarsles);
 
-      const button = screen.getByText("Sett unntak");
+      const button = await screen.findByRole("button", { name: "Sett unntak" });
       expect(button).to.exist;
+      expect(await screen.findByRole("button", { name: "Ikke aktuell" })).to
+        .exist;
       await userEvent.click(button);
     });
   });
 
+  it("viser ikke innhold relatert til møtebehov når siste møtebehov har ferdigstilt referat", () => {
+    mockUbehandletMotebehov();
+
+    const referatCreatedAt = dayjs(
+      new Date(svartJaMotebehovArbeidstakerUbehandletMock.opprettetDato)
+    ).add(1, "day");
+
+    const dialogmote = createDialogmote(
+      "1",
+      DialogmoteStatus.FERDIGSTILT,
+      referatCreatedAt.toDate()
+    );
+    const dialogmoteMedFerdigstiltReferatEtterMotebehov = {
+      ...dialogmote,
+      referatList: [createReferat(true, referatCreatedAt.toISOString())],
+    };
+
+    queryClient.setQueryData(
+      dialogmoterQueryKeys.dialogmoter(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => [dialogmoteMedFerdigstiltReferatEtterMotebehov]
+    );
+
+    renderInnkallingDialogmotePanel(brukerKanVarsles);
+
+    expect(screen.queryByText("Møtebehov")).to.not.exist;
+    expect(screen.queryByText("Vurder behov for dialogmøte")).to.not.exist;
+    expect(queryButton("Bekreft")).to.not.exist;
+  });
+
   it("viser avvent-banner når det finnes avvent-data", () => {
+    mockBehandletMotebehov();
+
     const frist = "2025-01-10";
     queryClient.setQueryData(
       dialogmotekandidatQueryKeys.avvent(ARBEIDSTAKER_DEFAULT.personIdent),
@@ -227,6 +327,8 @@ describe("InnkallingDialogmotePanel", () => {
   });
 
   it("viser ikke avvent-banner når avvent-listen er tom (for eksempel etter unntak/ikke-aktuell)", () => {
+    mockBehandletMotebehov();
+
     queryClient.setQueryData(
       dialogmotekandidatQueryKeys.avvent(ARBEIDSTAKER_DEFAULT.personIdent),
       () => []

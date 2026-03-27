@@ -22,6 +22,7 @@ import {
   MotebehovVeilederDTO,
 } from "@/data/motebehov/types/motebehovTypes";
 import { addDays, addWeeks } from "@/utils/datoUtils";
+import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 
 let queryClient: QueryClient;
 
@@ -37,6 +38,16 @@ function mockMotebehov(motebehov: MotebehovVeilederDTO[]) {
   queryClient.setQueryData(
     motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
     () => motebehov
+  );
+}
+
+function mockDialogmotekandidat(kandidatAt?: Date) {
+  queryClient.setQueryData(
+    dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => ({
+      kandidat: true,
+      kandidatAt: kandidatAt?.toISOString(),
+    })
   );
 }
 
@@ -314,6 +325,21 @@ describe("MotebehovKvittering", () => {
       screen.getByText(
         "Alle tidligere møtebehov er behandlet, se møtebehovhistorikken for flere detaljer."
       )
+    ).to.exist;
+  });
+
+  it("viser motebehovkvittering når kandidaten har svart etter kandidatAt", () => {
+    mockDialogmotekandidat(addDays(new Date(), -26));
+    mockMotebehov([motebehovArbeidstakerInTilfelleSvartJaUbehandletMock]);
+
+    renderMotebehovKvittering();
+
+    expect(screen.queryByText("Kandidat har ikke svart på motebehov")).to.not
+      .exist;
+    expect(
+      screen.getByText("Samuel Sam Jones, har svart JA", {
+        exact: false,
+      })
     ).to.exist;
   });
 

@@ -53,6 +53,8 @@ import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgi
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { kartleggingssporsmalQueryKeys } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 import { draftQueryKeys } from "@/hooks/useDraftQuery";
+import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
+import { dialogmoterQueryKeys } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 
 export const testQueryClient = (): QueryClient => {
   return new QueryClient();
@@ -155,6 +157,26 @@ export const queryClientWithMockData = (): QueryClient => {
   queryClient.setQueryData(
     sykmeldingerQueryKeys.sykmeldinger(ARBEIDSTAKER_DEFAULT.personIdent),
     () => sykmeldingerMock.slice(0, 2)
+  );
+  queryClient.setQueryData(
+    dialogmoterQueryKeys.dialogmoter(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
+  );
+  queryClient.setQueryData(
+    motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
+  );
+  queryClient.setQueryData(
+    personoppgaverQueryKeys.personoppgaver(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
+  );
+  queryClient.setQueryData(
+    dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => ({ kandidat: false })
+  );
+  queryClient.setQueryData(
+    dialogmotekandidatQueryKeys.avvent(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => []
   );
 
   queryClient.setQueryData(
