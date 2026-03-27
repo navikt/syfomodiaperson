@@ -2,8 +2,8 @@ import React, { ReactElement } from "react";
 import OppsummeringSporsmalscontainer from "./OppsummeringSporsmalscontainer";
 import OppsummeringSporsmalstekst from "./OppsummeringSporsmalstekst";
 import { getKey } from "./Oppsummeringsvisning";
-import { OppsummeringSporsmalProps } from "./OppsummeringSporsmal";
 import {
+  SporsmalDTO,
   SvarDTO,
   SvarTypeDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
@@ -38,15 +38,12 @@ const OppsummeringTall = ({
   svar,
   sporsmalstekst,
   tag,
-  overskriftsnivaa,
   svartype,
-}: OppsummeringSporsmalProps): ReactElement => {
+}: SporsmalDTO): ReactElement => {
   const text = getSvartypeText(svartype);
   return (
     <OppsummeringSporsmalscontainer>
-      <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
-        {sporsmalstekst}
-      </OppsummeringSporsmalstekst>
+      <OppsummeringSporsmalstekst>{sporsmalstekst}</OppsummeringSporsmalstekst>
       <div className="oppsummering__tekstsvar">
         {svar.map((svarverdi, index) => {
           const verdi = verdiAdjustedIfBelop(svarverdi, svartype);
