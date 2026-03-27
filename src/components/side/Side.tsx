@@ -14,6 +14,9 @@ import TildeltVeileder from "@/components/side/tildeltveileder/TildeltVeileder";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { InaktivPersonident } from "@/components/InaktivPersonident";
 import OversiktLenker from "@/components/personkort/OversiktLenker";
+import LegacyTilgangBanner from "@/components/LegacyTilgangBanner";
+import { useGetTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
+import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 
 const MODIA_HEADER_ID = "modia-header";
 
@@ -32,6 +35,11 @@ export default function Side({
 }: Props) {
   const diskresjonskode = useDiskresjonskodeQuery();
   const brukerinfo = useBrukerinfoQuery();
+  const tilgangQuery = useGetTilgangQuery();
+  const { toggles } = useFeatureToggles();
+  const showLegacyTilgangBanner =
+    tilgangQuery.data?.legacyTilgang === true &&
+    toggles.isNyTilgangskontrollEnabled;
 
   useDocumentTitle(tittel);
 
@@ -48,6 +56,7 @@ export default function Side({
           <OversiktLenker />
           <TildeltVeileder />
         </div>
+        {showLegacyTilgangBanner && <LegacyTilgangBanner />}
         {brukerinfo.isInaktivPersonident && <InaktivPersonident />}
         {isPride() && <Pride>&nbsp;</Pride>}
         <Personkort />
