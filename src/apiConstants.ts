@@ -6,7 +6,8 @@ export const FLEXJAR_ROOT = "/flexjar-backend/api/v1";
 export const ISAKTIVITETSKRAV_ROOT = "/isaktivitetskrav/api/internad/v1";
 export const ISARBEIDSUFORHET_ROOT = "/isarbeidsuforhet/api/internad/v1";
 export const ISBEHANDLERDIALOG_ROOT = "/isbehandlerdialog/api/internad/v1";
-export const ISDIALOGMOTE_ROOT = "/isdialogmote/api/v2";
+export const ISDIALOGMOTE_ROOT = "/isdialogmote/api";
+export const ISDIALOGMOTE_ROOT_V2 = "/isdialogmote/api/v2";
 export const ISDIALOGMOTEKANDIDAT_ROOT =
   "/isdialogmotekandidat/api/internad/v1";
 export const ISDIALOGMELDING_ROOT = "/isdialogmelding/api/v1";

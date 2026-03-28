@@ -4,18 +4,25 @@ import {
   dialogmoterMock,
   dialogmoteStatusEndringMock,
 } from "./dialogmoterMock";
-import { ISDIALOGMOTE_ROOT } from "@/apiConstants";
+import { ISDIALOGMOTE_ROOT, ISDIALOGMOTE_ROOT_V2 } from "@/apiConstants";
 import {
   DialogmoteDTO,
   DialogmoteStatus,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import dayjs from "dayjs";
 import { http, HttpResponse } from "msw";
+import { VEILEDER_IDENT_DEFAULT } from "@/mocks/common/mockConstants";
 
 let mockedDialogmoter = dialogmoterMock;
 
+let avventMock: {
+  frist: string;
+  createdBy: string;
+  beskrivelse: string | null;
+}[] = [];
+
 export const mockIsdialogmote = [
-  http.post(`${ISDIALOGMOTE_ROOT}/dialogmote/personident`, () => {
+  http.post(`${ISDIALOGMOTE_ROOT_V2}/dialogmote/personident`, () => {
     mockedDialogmoter = [
       ...mockedDialogmoter,
       createDialogmote(
@@ -27,19 +34,19 @@ export const mockIsdialogmote = [
     return new HttpResponse(null, { status: 200 });
   }),
 
-  http.get(`${ISDIALOGMOTE_ROOT}/dialogmote/personident`, () => {
-    return HttpResponse.json(mockedDialogmoter);
+  http.get(`${ISDIALOGMOTE_ROOT_V2}/dialogmote/personident`, () => {
+    return HttpResponse.json([]);
   }),
 
   http.get(
-    `${ISDIALOGMOTE_ROOT}/dialogmote/personident/motestatusendringer`,
+    `${ISDIALOGMOTE_ROOT_V2}/dialogmote/personident/motestatusendringer`,
     () => {
       return HttpResponse.json(dialogmoteStatusEndringMock);
     }
   ),
 
   http.post<{ moteuuid: string }>(
-    `${ISDIALOGMOTE_ROOT}/dialogmote/:moteuuid/avlys`,
+    `${ISDIALOGMOTE_ROOT_V2}/dialogmote/:moteuuid/avlys`,
     ({ params }) => {
       const { moteuuid } = params;
       const dialogmoteToUpdate: DialogmoteDTO | undefined =
@@ -62,12 +69,12 @@ export const mockIsdialogmote = [
     }
   ),
 
-  http.post(`${ISDIALOGMOTE_ROOT}/dialogmote/:moteuuid/tidsted`, () => {
+  http.post(`${ISDIALOGMOTE_ROOT_V2}/dialogmote/:moteuuid/tidsted`, () => {
     return new HttpResponse(null, { status: 200 });
   }),
 
   http.post<{ moteuuid: string }>(
-    `${ISDIALOGMOTE_ROOT}/dialogmote/:moteuuid/ferdigstill`,
+    `${ISDIALOGMOTE_ROOT_V2}/dialogmote/:moteuuid/ferdigstill`,
     ({ params }) => {
       const { moteuuid } = params;
       const dialogmoteToUpdate: DialogmoteDTO | undefined =
@@ -92,9 +99,31 @@ export const mockIsdialogmote = [
   ),
 
   http.post(
-    `${ISDIALOGMOTE_ROOT}/dialogmote/:moteuuid/endreferdigstilt`,
+    `${ISDIALOGMOTE_ROOT_V2}/dialogmote/:moteuuid/endreferdigstilt`,
     () => {
       return new HttpResponse(null, { status: 200 });
     }
   ),
+
+  http.post(`${ISDIALOGMOTE_ROOT}/avvent`, async ({ request }) => {
+    const body = (await request.json()) as {
+      personIdent: string;
+      frist: string;
+      beskrivelse?: string;
+    };
+
+    const nyAvvent = {
+      frist: body.frist,
+      createdBy: VEILEDER_IDENT_DEFAULT,
+      beskrivelse: body.beskrivelse ?? null,
+    };
+
+    avventMock = [nyAvvent, ...avventMock];
+
+    return HttpResponse.json(nyAvvent, { status: 200 });
+  }),
+
+  http.post(`${ISDIALOGMOTE_ROOT}/avvent/query`, () => {
+    return HttpResponse.json(avventMock);
+  }),
 ];

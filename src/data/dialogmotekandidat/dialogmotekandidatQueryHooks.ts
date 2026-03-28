@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { get, post } from "@/api/axios";
-import { ISDIALOGMOTEKANDIDAT_ROOT } from "@/apiConstants";
+import { ISDIALOGMOTE_ROOT, ISDIALOGMOTEKANDIDAT_ROOT } from "@/apiConstants";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   DialogmotekandidatDTO,
@@ -57,8 +57,20 @@ const useLatestFerdigstiltReferat = (): ReferatDTO | undefined => {
 
 function useAvventQuery() {
   const personident = useValgtPersonident();
-  const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/avvent/personident`;
-  const fetchAvvent = () => get<AvventDTO[]>(path, personident);
+  const getPath = `${ISDIALOGMOTEKANDIDAT_ROOT}/avvent/personident`;
+  const postPath = `${ISDIALOGMOTE_ROOT}/avvent/query`;
+
+  const fetchAvvent = async () => {
+    const [avventByPersonident, avventByQuery] = await Promise.all([
+      get<AvventDTO[]>(getPath, personident),
+      post<AvventDTO[]>(postPath, { personidenter: [personident] }),
+    ]);
+
+    if (avventByQuery.length > 0) {
+      return avventByQuery;
+    }
+    return avventByPersonident;
+  };
 
   const query = useQuery({
     queryKey: dialogmotekandidatQueryKeys.avvent(personident),
@@ -123,7 +135,7 @@ export function useAvventDialogmoteMutation() {
 
   return useMutation({
     mutationFn: (payload: Omit<CreateAvventDTO, "personident">) => {
-      const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/avvent/personident`;
+      const path = `${ISDIALOGMOTE_ROOT}/avvent`;
       const body: CreateAvventDTO = {
         personident: personIdent,
         frist: payload.frist,

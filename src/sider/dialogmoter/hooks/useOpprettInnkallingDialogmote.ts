@@ -1,4 +1,4 @@
-import { ISDIALOGMOTE_ROOT } from "@/apiConstants";
+import { ISDIALOGMOTE_ROOT_V2 } from "@/apiConstants";
 import { DialogmoteInnkallingDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { post } from "@/api/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -6,7 +6,7 @@ import { dialogmoterQueryKeys } from "@/sider/dialogmoter/hooks/dialogmoteQueryH
 
 export const useOpprettInnkallingDialogmote = (fnr: string) => {
   const queryClient = useQueryClient();
-  const path = `${ISDIALOGMOTE_ROOT}/dialogmote/personident`;
+  const path = `${ISDIALOGMOTE_ROOT_V2}/dialogmote/personident`;
   const postOpprettInnkalling = (innkalling: DialogmoteInnkallingDTO) =>
     post(path, innkalling, fnr);
 

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ISDIALOGMOTE_ROOT } from "@/apiConstants";
+import { ISDIALOGMOTE_ROOT_V2 } from "@/apiConstants";
 import { EndreTidStedDialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { post } from "@/api/axios";
 import { dialogmoterQueryKeys } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
@@ -9,7 +9,7 @@ export const useEndreTidStedDialogmote = (
   dialogmoteUuid: string
 ) => {
   const queryClient = useQueryClient();
-  const path = `${ISDIALOGMOTE_ROOT}/dialogmote/${dialogmoteUuid}/tidsted`;
+  const path = `${ISDIALOGMOTE_ROOT_V2}/dialogmote/${dialogmoteUuid}/tidsted`;
   const postEndreTidSted = (endring: EndreTidStedDialogmoteDTO) =>
     post(path, endring);
 

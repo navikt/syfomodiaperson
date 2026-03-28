@@ -7,6 +7,8 @@ import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
+import { harUbehandletMotebehov } from "@/utils/motebehovUtils";
 import { Alert, BodyShort, Button } from "@navikt/ds-react";
 import {
   dialogmoteRoutePath,
@@ -82,7 +84,9 @@ export default function InnkallingDialogmotePanel({
   const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
   const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const { isKandidat, avvent } = useDialogmotekandidat();
+  const { data: motebehovData } = useMotebehovQuery();
   const [visAvventModal, setVisAvventModal] = useState(false);
+  const showAvventButton = isKandidat || harUbehandletMotebehov(motebehovData);
 
   if (aktivtDialogmote) {
     return <DialogmoteMoteStatusPanel dialogmote={aktivtDialogmote} />;
@@ -106,7 +110,7 @@ export default function InnkallingDialogmotePanel({
             </>
           }
           headerAction={
-            isKandidat ? (
+            showAvventButton ? (
               <AvventDialogmoteButton onClick={() => setVisAvventModal(true)} />
             ) : undefined
           }

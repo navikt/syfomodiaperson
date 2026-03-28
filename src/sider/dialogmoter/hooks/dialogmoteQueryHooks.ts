@@ -1,4 +1,4 @@
-import { ISDIALOGMOTE_ROOT } from "@/apiConstants";
+import { ISDIALOGMOTE_ROOT_V2 } from "@/apiConstants";
 import { get } from "@/api/axios";
 import {
   DialogmoteDTO,
@@ -20,7 +20,7 @@ export const dialogmoterQueryKeys = {
 
 export const useDialogmoterQuery = () => {
   const fnr = useValgtPersonident();
-  const path = `${ISDIALOGMOTE_ROOT}/dialogmote/personident`;
+  const path = `${ISDIALOGMOTE_ROOT_V2}/dialogmote/personident`;
   const fetchDialogmoter = () => get<DialogmoteDTO[]>(path, fnr);
   const query = useQuery({
     queryKey: dialogmoterQueryKeys.dialogmoter(fnr),
