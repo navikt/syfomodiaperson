@@ -12,6 +12,7 @@ import { generateUUID } from "@/utils/utils";
 import {
   KartleggingssporsmalFormSnapshotFieldType,
   KartleggingssporsmalRadioGroupFieldSnapshot,
+  KartleggingssporsmalTextFieldSnapshot,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalSkjemasvarTypes";
 
 export const mockMerOppfolging = [
@@ -105,6 +106,30 @@ const kartleggingssporsmal: KartleggingssporsmalRadioGroupFieldSnapshot[] = [
   },
 ];
 
+const hvorforUsikkerTextSporsmal: KartleggingssporsmalTextFieldSnapshot = {
+  fieldId: "tilbakemelding",
+  fieldType: KartleggingssporsmalFormSnapshotFieldType.TEXT,
+  description:
+    "Skriv kortfattet hvorfor du er usikker på om du kommer tilbake i jobben du ble sykmeldt fra",
+  label: "Hva gjør deg usikker?",
+  value:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  wasRequired: false,
+};
+
+const samarbeidTextSporsmal: KartleggingssporsmalTextFieldSnapshot = {
+  fieldId: "tilbakemelding",
+  fieldType: KartleggingssporsmalFormSnapshotFieldType.TEXT,
+  description: null,
+  label: "Hva gjør samarbeidet og relasjonen dårlig?",
+  value:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+    "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+  wasRequired: false,
+};
+
 export const kartleggingssporsmalAnswered: KartleggingssporsmalSvarResponseDTO =
   {
     uuid: generateUUID(),
@@ -113,6 +138,12 @@ export const kartleggingssporsmalAnswered: KartleggingssporsmalSvarResponseDTO =
     createdAt: daysFromToday(-2),
     formSnapshot: {
       formSemanticVersion: "1.0.0",
-      fieldSnapshots: [...kartleggingssporsmal],
+      fieldSnapshots: [
+        kartleggingssporsmal[0],
+        hvorforUsikkerTextSporsmal,
+        ...kartleggingssporsmal.slice(1, 2),
+        samarbeidTextSporsmal,
+        ...kartleggingssporsmal.slice(2),
+      ],
     },
   };
