@@ -125,3 +125,14 @@
   TypeScript when touching them.
 - The webpack configuration is legacy and should not be changed unless absolutely necessary.
 - The Express backend server is legacy and should not be changed unless absolutely necessary.
+
+## Analytics with Umami
+
+- We use [Umami](https://aksel.nav.no/god-praksis/artikler/male-brukeradferd-med-umami) for measuring user behavior.
+- Event tracking utilities are in `src/utils/umami.ts`.
+- Event types and property shapes come from `@navikt/analytics-types` — use `Events`, `TaxonomyEvent`, and the per-event `*Properties` types from that package.
+- Follow the [NAV Umami taxonomy](https://startumami.ansatt.nav.no/taksonomi) for event naming.
+- To track a new type of event:
+  1. Check if the event already exists in `@navikt/analytics-types` (see the `Events` object).
+  2. If it exists, import `Events` from `@/utils/umami` and call `trackEvent({ name: Events.MY_EVENT, properties: { ... } })` from the relevant component.
+  3. If it does not exist, define a new event constant and properties type locally and add it to the `Event` union in `umami.ts`, following the shape used by `@navikt/analytics-types`.
