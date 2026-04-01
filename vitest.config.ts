@@ -8,6 +8,11 @@ export default defineConfig({
     environment: "jsdom",
     include: ["test/**/*{test,Test}.*"],
     setupFiles: ["test/setup.ts"],
+    server: {
+      deps: {
+        inline: ["@navikt/analytics-types"],
+      },
+    },
     deps: {
       web: {
         transformAssets: false,

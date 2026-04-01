@@ -45,6 +45,9 @@ const handlers = [
   http.post("https://umami.nav.no/api/send", () => {
     return HttpResponse.text("mocked umami");
   }),
+  http.post("https://reops-event-proxy.ekstern.dev.nav.no/api/send", () => {
+    return HttpResponse.text("mocked umami");
+  }),
   ws.link("ws://localhost:4000/*").addEventListener("connection", () => {
     // Silently ignore WebSocket connections to Internflatedecorator in local development
   }),
