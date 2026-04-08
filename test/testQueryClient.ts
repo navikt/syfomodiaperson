@@ -55,7 +55,14 @@ import { kartleggingssporsmalQueryKeys } from "@/data/kartleggingssporsmal/kartl
 import { draftQueryKeys } from "@/hooks/useDraftQuery";
 
 export const testQueryClient = (): QueryClient => {
-  return new QueryClient();
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: Infinity,
+        retry: false,
+      },
+    },
+  });
 };
 
 export function queryClientWithAktivBruker(): QueryClient {
