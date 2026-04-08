@@ -1,12 +1,16 @@
 import React from "react";
-import { InitialEntry } from "history";
 import { render } from "@testing-library/react";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import {
+  MemoryRouter,
+  type MemoryRouterProps,
+  Route,
+  Routes,
+} from "react-router-dom";
 
 export const renderWithRouter = (
   element: React.ReactNode,
   path: string,
-  initialEntries?: InitialEntry[]
+  initialEntries?: MemoryRouterProps["initialEntries"]
 ) => {
   render(
     <MemoryRouter initialEntries={initialEntries}>

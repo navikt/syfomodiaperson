@@ -3,6 +3,7 @@
 node_modules
 *.log
 npm-debug.log*
+package-lock.json
 dist/
 dist-server/
 settings.json
