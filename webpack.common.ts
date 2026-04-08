@@ -38,9 +38,11 @@ module.exports = {
     rules: [
       {
         // @navikt/analytics-types is a strict ESM package that omits .js extensions
-        // in its internal imports. Webpack 5 requires fullySpecified: false to resolve them.
-        test: /\.js$/,
-        include: /node_modules\/@navikt\/analytics-types/,
+        // in its internal imports. Without type: 'javascript/auto', webpack classifies
+        // the file as javascript/esm and enforces fullySpecified regardless of resolve options.
+        test: /\.m?js$/,
+        include: /analytics-types/,
+        type: "javascript/auto",
         resolve: { fullySpecified: false },
       },
       {
