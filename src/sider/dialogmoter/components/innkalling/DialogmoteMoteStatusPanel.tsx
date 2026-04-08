@@ -23,7 +23,6 @@ import {
 } from "@/utils/dialogmoteUtils";
 import { BodyShort, Button } from "@navikt/ds-react";
 import DialogmoteVeilederInfo from "@/sider/dialogmoter/components/DialogmoteVeilederInfo";
-import MotebehovKvittering from "@/sider/dialogmoter/motebehov/MotebehovKvittering";
 
 const texts = {
   innkallingSendtTrackingContext: "Møtelandingsside: Sendt innkalling",
@@ -102,7 +101,6 @@ export default function DialogmoteMoteStatusPanel({ dialogmote }: Props) {
       subtitle={Subtitle(dialogmote)}
       header={headerText(dialogmote)}
     >
-      <MotebehovKvittering />
       {noNarmesteLeder && <NoNarmesteLederAlert />}
       <DeltakereSvarInfo dialogmote={dialogmote} />
       {skalVurderes && (
@@ -110,7 +108,6 @@ export default function DialogmoteMoteStatusPanel({ dialogmote }: Props) {
           personOppgave={personOppgaveForMote}
         />
       )}
-
       <div className="flex gap-6">
         <Button
           as={Link}
