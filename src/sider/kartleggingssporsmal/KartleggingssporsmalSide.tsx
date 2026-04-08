@@ -28,6 +28,7 @@ import { EksternLenke } from "@/components/EksternLenke";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { PaddingSize } from "@/components/Layout";
+import { Events, trackEvent } from "@/utils/umami";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";
 import KartleggingssporsmalFlexjar from "@/sider/kartleggingssporsmal/KartleggingssporsmalFlexjar";
@@ -123,6 +124,18 @@ function PilotInfo() {
       </div>
     </Box>
   );
+}
+
+function trackAccordionApnet(isOpen: boolean, accordionTekst: string): void {
+  if (isOpen) {
+    trackEvent({
+      name: Events.ACCORDION_APNET,
+      properties: {
+        tittel: accordionTekst,
+        kontekst: texts.title,
+      },
+    });
+  }
 }
 
 export default function KartleggingssporsmalSide(): ReactElement {
@@ -268,7 +281,14 @@ export default function KartleggingssporsmalSide(): ReactElement {
                   {texts.veiledningBox.intro}
                 </BodyLong>
                 <Accordion size="small">
-                  <Accordion.Item>
+                  <Accordion.Item
+                    onOpenChange={(isOpen) =>
+                      trackAccordionApnet(
+                        isOpen,
+                        texts.veiledningBox.accordion1
+                      )
+                    }
+                  >
                     <Accordion.Header>
                       {texts.veiledningBox.accordion1}
                     </Accordion.Header>
@@ -278,7 +298,14 @@ export default function KartleggingssporsmalSide(): ReactElement {
                       </BodyLong>
                     </Accordion.Content>
                   </Accordion.Item>
-                  <Accordion.Item>
+                  <Accordion.Item
+                    onOpenChange={(isOpen) =>
+                      trackAccordionApnet(
+                        isOpen,
+                        texts.veiledningBox.accordion2
+                      )
+                    }
+                  >
                     <Accordion.Header>
                       {texts.veiledningBox.accordion2}
                     </Accordion.Header>
@@ -288,7 +315,14 @@ export default function KartleggingssporsmalSide(): ReactElement {
                       </BodyLong>
                     </Accordion.Content>
                   </Accordion.Item>
-                  <Accordion.Item>
+                  <Accordion.Item
+                    onOpenChange={(isOpen) =>
+                      trackAccordionApnet(
+                        isOpen,
+                        texts.veiledningBox.accordion3
+                      )
+                    }
+                  >
                     <Accordion.Header>
                       {texts.veiledningBox.accordion3}
                     </Accordion.Header>
