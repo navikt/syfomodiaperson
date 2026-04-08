@@ -1,8 +1,8 @@
 import React from "react";
-import { OppsummeringSporsmalProps } from "@/sider/sykepengsoknader/soknad-felles-oppsummering/OppsummeringSporsmal";
 import OppsummeringSporsmalstekst from "@/sider/sykepengsoknader/soknad-felles-oppsummering/OppsummeringSporsmalstekst";
 import {
   Kvittering,
+  SporsmalDTO,
   SvarDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import OppsummeringSporsmalscontainer from "@/sider/sykepengsoknader/soknad-felles-oppsummering/OppsummeringSporsmalscontainer";
@@ -33,9 +33,8 @@ const sumOfKvitteringer = (svar: SvarDTO[]): number => {
 
 export default function OppsummeringKvittering({
   sporsmalstekst,
-  overskriftsnivaa,
   svar,
-}: OppsummeringSporsmalProps) {
+}: SporsmalDTO) {
   const antall = svar.length;
   const sum = sumOfKvitteringer(svar);
 
@@ -50,9 +49,7 @@ export default function OppsummeringKvittering({
 
   return (
     <OppsummeringSporsmalscontainer>
-      <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
-        {sporsmalstekst}
-      </OppsummeringSporsmalstekst>
+      <OppsummeringSporsmalstekst>{sporsmalstekst}</OppsummeringSporsmalstekst>
       <Checkbox size="small" readOnly checked>
         {svartekst}
       </Checkbox>
