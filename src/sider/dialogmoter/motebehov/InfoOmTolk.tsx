@@ -11,6 +11,7 @@ import {
   sorterMotebehovDataEtterDatoDesc,
 } from "@/utils/motebehovUtils";
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
+import { useLatestFerdigstiltReferat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 
 const texts = {
   header: "Det er meldt inn behov for tolk",
@@ -37,11 +38,20 @@ export function InfoOmTolk() {
     sortertMotebehov,
     latestOppfolgingstilfelle
   );
+  const latestFerdigstilteReferat = useLatestFerdigstiltReferat();
+
   const minstEnOnskerTolk = motebehovInActiveTilfelle.some(onskerTolk);
   const visInfoOmRegistrereTolkIPdl =
     minstEnOnskerTolk && !isTolkRegistrertIPdl(brukerinfo);
 
-  if (!visInfoOmRegistrereTolkIPdl) {
+  const latestSubmittedMotebehov = motebehov[0];
+  const latestMoteHasReferat =
+    latestSubmittedMotebehov &&
+    latestFerdigstilteReferat &&
+    new Date(latestSubmittedMotebehov.opprettetDato) <
+      new Date(latestFerdigstilteReferat.createdAt);
+
+  if (!visInfoOmRegistrereTolkIPdl || latestMoteHasReferat) {
     return null;
   }
 
