@@ -12,10 +12,10 @@ import {
 import dayjs from "dayjs";
 import { http, HttpResponse } from "msw";
 import { VEILEDER_IDENT_DEFAULT } from "@/mocks/common/mockConstants";
-import { motebehovMock } from "@/mocks/syfomotebehov/motebehovMock";
-import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
-
-let mockedMotebehov: MotebehovVeilederDTO[] = motebehovMock;
+import {
+  getMotebehovMock,
+  setMotebehovMock,
+} from "@/mocks/syfomotebehov/motebehovMock";
 
 let mockedDialogmoter = dialogmoterMock;
 
@@ -132,11 +132,12 @@ export const mockIsdialogmote = [
   }),
 
   http.post(`${ISDIALOGMOTE_ROOT}/motebehov/vurderinger`, () => {
-    mockedMotebehov = mockedMotebehov.map((motebehov) => ({
+    const mockedMotebehov = getMotebehovMock().map((motebehov) => ({
       ...motebehov,
       behandletTidspunkt: new Date(),
       behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
     }));
+    setMotebehovMock(mockedMotebehov);
     return new HttpResponse(null, { status: 200 });
   }),
 ];
