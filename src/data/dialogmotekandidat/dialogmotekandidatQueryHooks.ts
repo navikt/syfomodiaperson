@@ -57,20 +57,10 @@ const useLatestFerdigstiltReferat = (): ReferatDTO | undefined => {
 
 function useAvventQuery() {
   const personident = useValgtPersonident();
-  const getPath = `${ISDIALOGMOTEKANDIDAT_ROOT}/avvent/personident`;
-  const postPath = `${ISDIALOGMOTE_ROOT}/avvent/query`;
+  const path = `${ISDIALOGMOTE_ROOT}/avvent/query`;
 
-  const fetchAvvent = async () => {
-    const [avventByPersonident, avventByQuery] = await Promise.all([
-      get<AvventDTO[]>(getPath, personident),
-      post<AvventDTO[]>(postPath, { personidenter: [personident] }),
-    ]);
-
-    if (avventByQuery.length > 0) {
-      return avventByQuery;
-    }
-    return avventByPersonident;
-  };
+  const fetchAvvent = () =>
+    post<AvventDTO[]>(path, { personidenter: [personident] });
 
   const query = useQuery({
     queryKey: dialogmotekandidatQueryKeys.avvent(personident),
