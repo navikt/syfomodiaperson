@@ -76,7 +76,10 @@ async function draftKey(
 export function setupDraftEndpoints(server: express.Application) {
   server.get(
     "/api/draft/:category",
-    async (req: express.Request, res: express.Response) => {
+    async (
+      req: express.Request<{ category: string }>,
+      res: express.Response
+    ) => {
       const { category } = req.params;
       if (!isValidCategory(category)) {
         return res.status(400).send({ message: "Invalid draft category" });
@@ -114,7 +117,10 @@ export function setupDraftEndpoints(server: express.Application) {
 
   server.put(
     "/api/draft/:category",
-    async (req: express.Request, res: express.Response) => {
+    async (
+      req: express.Request<{ category: string }>,
+      res: express.Response
+    ) => {
       const { category } = req.params;
       if (!isValidCategory(category)) {
         return res.status(400).send({ message: "Invalid draft category" });
@@ -148,7 +154,10 @@ export function setupDraftEndpoints(server: express.Application) {
 
   server.delete(
     "/api/draft/:category",
-    async (req: express.Request, res: express.Response) => {
+    async (
+      req: express.Request<{ category: string }>,
+      res: express.Response
+    ) => {
       const { category } = req.params;
       if (!isValidCategory(category)) {
         return res.status(400).send({ message: "Invalid draft category" });

@@ -51,7 +51,9 @@ const proxyExternalHost = (
       if (!options.headers) {
         options.headers = {};
       }
-      options.headers["Authorization"] = `Bearer ${accessToken}`;
+      (options.headers as Record<string, string>)[
+        "Authorization"
+      ] = `Bearer ${accessToken}`;
       if (host === Config.auth.syfosmregister.host) {
         options.headers["fnr"] = options.headers["nav-personident"]; // TODO: brukes dette?
       }
@@ -116,7 +118,7 @@ const proxyOnBehalfOf = (
     });
 };
 
-export const setupProxy = () => {
+export const setupProxy = (): express.Router => {
   const router = express.Router();
 
   router.use(

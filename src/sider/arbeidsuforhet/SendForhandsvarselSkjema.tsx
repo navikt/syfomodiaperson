@@ -18,10 +18,9 @@ import {
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { useSaveVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSaveVurderingArbeidsuforhet";
 import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
-import { useNavigate } from "react-router";
 import { arbeidsuforhetPath } from "@/AppRouter";
 import { useNotification } from "@/context/notification/NotificationContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BoundedDatePicker from "@/components/BoundedDatePicker";
 import { addWeeks, toDateOnly } from "@/utils/datoUtils";
 import dayjs from "dayjs";

@@ -1,23 +1,14 @@
-FROM node:22-alpine AS builder
+FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:22-slim
 WORKDIR /syfomodiaperson
 
-COPY server.ts package.json tsconfig.json ./
-COPY dist-server ./dist-server
+COPY package.json ./
+COPY dist-server/server.js ./
+COPY dist-server/server.js.map ./
+COPY dist-server/server ./server
+COPY dist/index.html ./dist/index.html
+COPY dist/main.bundle.js ./dist/main.bundle.js
 COPY node_modules ./node_modules
 COPY img ./img
-COPY dist ./dist
-
-FROM gcr.io/distroless/nodejs22-debian12
-WORKDIR /syfomodiaperson
-
-COPY --from=builder /syfomodiaperson/package.json ./
-COPY --from=builder /syfomodiaperson/dist-server/server.js ./
-COPY --from=builder /syfomodiaperson/dist-server/server.js.map ./
-COPY --from=builder /syfomodiaperson/dist-server/server ./server
-COPY --from=builder /syfomodiaperson/dist/index.html ./dist/index.html
-COPY --from=builder /syfomodiaperson/dist/main.bundle.js ./dist/main.bundle.js
-COPY --from=builder /syfomodiaperson/node_modules ./node_modules
-COPY --from=builder /syfomodiaperson/img ./img
 
 EXPOSE 8080
 USER nonroot

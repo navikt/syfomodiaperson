@@ -182,6 +182,11 @@ describe("DialogmoteInnkallingSkjema", () => {
     renderDialogmoteInnkallingSkjema();
     passSkjemaInput();
 
+    expect(screen.queryByText(/Det er ikke registrert en nærmeste leder/i)).to
+      .not.exist;
+    expect(screen.getByText("Nærmeste leder")).to.exist;
+    expect(screen.getByText("Epost")).to.exist;
+
     const expectedSendtDato = new Date();
     await clickButton("Send innkallingene");
 
@@ -215,11 +220,6 @@ describe("DialogmoteInnkallingSkjema", () => {
         expectedInnkallingDto
       );
     });
-
-    expect(screen.queryByText(/Det er ikke registrert en nærmeste leder/i)).to
-      .not.exist;
-    expect(screen.getByText("Nærmeste leder")).to.exist;
-    expect(screen.getByText("Epost")).to.exist;
   });
 
   it("viser alertstripe hvis valgt arbeidsgiver ikke har registrert nærmeste leder", () => {
