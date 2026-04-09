@@ -4,13 +4,13 @@ import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import { NotificationContext } from "@/context/notification/NotificationContext";
 import React from "react";
-import { InitialEntry } from "history";
+import type { MemoryRouterProps } from "react-router-dom";
 
 export const renderArbeidsuforhetSide = (
   queryClient: QueryClient,
   element: React.ReactNode,
   path: string,
-  initialEntries?: InitialEntry[]
+  initialEntries?: MemoryRouterProps["initialEntries"]
 ) =>
   renderWithRouter(
     <QueryClientProvider client={queryClient}>

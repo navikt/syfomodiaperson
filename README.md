@@ -11,7 +11,7 @@ Node-app som kjører på Naiserator, og bygges med GitHub Actions
 
 Applikasjonen har en mock som kan brukes lokalt. Her mockes diverse endepunkter, dog ikke alle.
 
-Du må ha Node v22 og npm v10 installert.
+Du må ha Node v22 og pnpm v10 installert.
 
 ### Sette opp NPM_AUTH_TOKEN
 
@@ -41,11 +41,11 @@ export NPM_AUTH_TOKEN=ghp_din_token_her
 ### Starte appen
 
 - For å kjøre koden lokalt:
-  - `$ npm install`
-  - `$ npm start`
+  - `$ pnpm install`
+  - `$ pnpm start`
   - Eventuelt kan kommandoene kjøres fra `package.json` i IntelliJ.
-- Kjør tester med `npm test` eller `npm test:watch`
-- Lint JS-kode med `npm run lint` eller `npm run lint:fix`
+- Kjør tester med `pnpm test` eller `pnpm test:watch`
+- Lint JS-kode med `pnpm lint` eller `pnpm lint:fix`
 
 Appen nås på [http://localhost:8080/sykefravaer](http://localhost:8080/sykefravaer)
 
@@ -53,7 +53,7 @@ Ved første kjøring:
 
 ```sh
 $ cp .env.template .env # for å sette opp lokale miljøvariabler
-$ npm install # installerer avhengigheter
+$ pnpm install # installerer avhengigheter
 ```
 
 ## Valkey Cache

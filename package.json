@@ -3,25 +3,26 @@
   "version": "0.0.1",
   "description": "Digitalisering av sykefraværsoppfølging",
   "main": "index.tsx",
-  "test": "npm run test",
+  "test": "pnpm test",
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,scss,md,less,html}": [
-      "prettier --write"
+      "pnpm prettier --write"
     ]
   },
   "scripts": {
     "test": "vitest run",
     "start": "webpack serve --config webpack.dev.ts",
-    "build": "webpack --config webpack.prod.ts",
+    "build": "webpack --config webpack.prod.ts && pnpm build:server",
     "build:server": "tsc --build ./server/tsconfig.json",
-    "lint-and-typecheck": "npm run lint && npm run typecheck",
+    "lint-and-typecheck": "pnpm lint && pnpm typecheck",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint src test --ext .ts  --ext .tsx  --ext .js  --ext .jsx",
-    "lint:fix": "npm run lint -- --fix",
-    "prepare": "husky install"
+    "lint:fix": "pnpm lint --fix",
+    "prepare": "husky install || true"
   },
   "author": "Team DigiSyfo <digisyfo@nav.no>",
   "license": "ISC",
+  "packageManager": "pnpm@10.33.0",
   "dependencies": {
     "@grafana/faro-react": "2.2.3",
     "@grafana/faro-web-sdk": "2.2.3",
@@ -32,7 +33,7 @@
     "@navikt/ds-react": "8.6.0",
     "@navikt/ds-tailwind": "8.6.0",
     "@navikt/lumi-survey": "^0.1.1",
-    "@navikt/navspa": "4.1.1",
+    "@navikt/navspa": "7.4.0",
     "@tanstack/react-query": "5.90.21",
     "@tanstack/react-query-devtools": "5.91.3",
     "@types/express": "5.0.6",
@@ -72,9 +73,9 @@
     "nav-frontend-typografi-style": "2.0.2",
     "postcss-preset-env": "7.8.3",
     "prom-client": "11.5.3",
-    "react": "19.2.4",
+    "react": "19.2.1",
     "react-collapse": "5.1.1",
-    "react-dom": "19.2.4",
+    "react-dom": "19.2.1",
     "react-hook-form": "7.71.1",
     "react-router-dom": "6.30.3",
     "recharts": "2.15.3",
@@ -96,7 +97,6 @@
     "@testing-library/user-event": "14.6.1",
     "@types/node": "22.13.10",
     "@types/react-document-title": "2.0.10",
-    "@types/react-router-dom": "5.3.3",
     "@types/webpack": "5.28.5",
     "@typescript-eslint/eslint-plugin": "5.48.2",
     "@typescript-eslint/parser": "6.21.0",
@@ -121,7 +121,7 @@
     "less": "4.2.0",
     "less-loader": "11.1.0",
     "lint-staged": "13.2.1",
-    "msw": "2.7.3",
+    "msw": "2.12.1",
     "postcss-loader": "7.2.4",
     "prettier": "2.8.4",
     "style-loader": "3.3.4",

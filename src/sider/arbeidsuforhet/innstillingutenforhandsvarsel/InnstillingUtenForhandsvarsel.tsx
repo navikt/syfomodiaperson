@@ -12,7 +12,7 @@ import {
 } from "@navikt/ds-react";
 import { ButtonRow } from "@/components/Layout";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { arbeidsuforhetPath } from "@/AppRouter";
 import { FormProvider, useForm } from "react-hook-form";
 import {
@@ -27,7 +27,6 @@ import {
   useNotification,
 } from "@/context/notification/NotificationContext";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import { useNavigate } from "react-router";
 import OppgaveSendtFraNayDatepicker from "@/sider/arbeidsuforhet/innstillingutenforhandsvarsel/OppgaveSendtFraNayDatepicker";
 import AvslagFomDatepicker from "@/sider/arbeidsuforhet/innstillingutenforhandsvarsel/AvslagFomDatepicker";
 import dayjs from "dayjs";
