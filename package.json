@@ -3,21 +3,21 @@
   "version": "0.0.1",
   "description": "Digitalisering av sykefraværsoppfølging",
   "main": "index.tsx",
-  "test": "npm run test",
+  "test": "pnpm test",
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,scss,md,less,html}": [
-      "prettier --write"
+      "pnpm prettier --write"
     ]
   },
   "scripts": {
     "test": "vitest run",
     "start": "webpack serve --config webpack.dev.ts",
-    "build": "webpack --config webpack.prod.ts && pnpm run build:server",
+    "build": "webpack --config webpack.prod.ts && pnpm build:server",
     "build:server": "tsc --build ./server/tsconfig.json",
     "lint-and-typecheck": "pnpm lint && pnpm typecheck",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint src test --ext .ts  --ext .tsx  --ext .js  --ext .jsx",
-    "lint:fix": "pnpm run lint -- --fix",
+    "lint:fix": "pnpm lint --fix",
     "prepare": "husky install || true"
   },
   "author": "Team DigiSyfo <digisyfo@nav.no>",
