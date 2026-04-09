@@ -9,13 +9,11 @@ import {
   MotebehovArbeidsgiverKvittering,
   MotebehovKvitteringInnholdArbeidstaker,
 } from "@/sider/dialogmoter/motebehov/MotebehovKvittering";
-import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 
 const texts = {
   title: "Møtebehovhistorikk",
   subtitle: "Oversikt over svar og innmeldte møtebehov",
   ingenSvarHistorikk: "Ingen tidligere møtebehov",
-  ingenSvarKandidat: "Kandidat har ikke svart på møtebehov",
 };
 
 function MotebehovHistorikkEvent({
@@ -59,9 +57,8 @@ function MotebehovHistorikkEvent({
 }
 
 export default function MotebehovHistorikk() {
-  const motebehovList = useMotebehovQuery();
-  const dialogmotekandidat = useDialogmotekandidat();
-  const hasMotebehov = motebehovList.data.length > 0;
+  const { data } = useMotebehovQuery();
+  const hasMotebehov = data.length > 0;
 
   return (
     <Box background="default" padding="space-24">
@@ -71,16 +68,12 @@ export default function MotebehovHistorikk() {
       />
       {hasMotebehov ? (
         <Accordion>
-          {motebehovList.data.map((motebehov, index) => (
+          {data.map((motebehov, index) => (
             <MotebehovHistorikkEvent key={index} motebehov={motebehov} />
           ))}
         </Accordion>
       ) : (
-        <BodyShort>
-          {dialogmotekandidat.isKandidat
-            ? texts.ingenSvarKandidat
-            : texts.ingenSvarHistorikk}
-        </BodyShort>
+        <BodyShort>{texts.ingenSvarHistorikk}</BodyShort>
       )}
     </Box>
   );
