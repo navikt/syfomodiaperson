@@ -131,6 +131,11 @@ export const mockIsdialogmote = [
     return HttpResponse.json(avventMock);
   }),
 
+  http.post(`${ISDIALOGMOTE_ROOT}/avvent/lukk`, () => {
+    avventMock = [];
+    return new HttpResponse(null, { status: 200 });
+  }),
+
   http.post(`${ISDIALOGMOTE_ROOT}/motebehov/vurderinger`, () => {
     const mockedMotebehov = getMotebehovMock().map((motebehov) => ({
       ...motebehov,
