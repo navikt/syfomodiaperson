@@ -1,22 +1,33 @@
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { SYFOMOTEBEHOV_ROOT } from "@/apiConstants";
+import { ISDIALOGMOTE_ROOT } from "@/apiConstants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { post } from "@/api/axios";
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 
-export const useBehandleMotebehov = () => {
+export interface MotebehovTilbakemeldingDTO {
+  varseltekst: string;
+  motebehovId: string;
+}
+
+export interface MotebehovVurderingDTO {
+  personident: string;
+  harBehovForMote: boolean;
+  tilbakemeldinger: MotebehovTilbakemeldingDTO[];
+}
+
+export function useVurderMotebehov() {
   const fnr = useValgtPersonident();
   const { data: veilederinfo } = useAktivVeilederinfoQuery();
   const veilederIdent = veilederinfo?.ident;
   const queryClient = useQueryClient();
-  const path = `${SYFOMOTEBEHOV_ROOT}/motebehov/behandle`;
-  const postBehandleMotebehov = () => post(path, {}, fnr);
+  const path = `${ISDIALOGMOTE_ROOT}/motebehov/vurderinger`;
   const motebehovQueryKey = motebehovQueryKeys.motebehov(fnr);
 
   return useMutation({
-    mutationFn: postBehandleMotebehov,
+    mutationFn: (vurdering: Omit<MotebehovVurderingDTO, "personident">) =>
+      post(path, { ...vurdering, personident: fnr }, fnr),
     onSuccess: () => {
       const previousMotebehov =
         queryClient.getQueryData<MotebehovVeilederDTO[]>(motebehovQueryKey);
@@ -36,4 +47,4 @@ export const useBehandleMotebehov = () => {
         queryKey: motebehovQueryKey,
       }),
   });
-};
+}
