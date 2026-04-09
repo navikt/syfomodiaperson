@@ -7,6 +7,8 @@ import { useVurderAktivitetskrav } from "@/data/aktivitetskrav/useVurderAktivite
 import { Alert, Box, Button, Heading, List, Textarea } from "@navikt/ds-react";
 import { useAktivitetskravNotificationAlert } from "@/sider/aktivitetskrav/useAktivitetskravNotificationAlert";
 import { FormProvider, useForm } from "react-hook-form";
+import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
+import { ButtonRow } from "@/components/Layout";
 import { StansdatoDatePicker } from "@/sider/aktivitetskrav/vurdering/StansdatoDatePicker";
 import { useAktivitetskravVurderingDocument } from "@/hooks/aktivitetskrav/useAktivitetskravVurderingDocument";
 import { defaultErrorTexts } from "@/api/errors";
@@ -22,6 +24,8 @@ import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 const texts = {
   sendInnstilling: "Send",
   avbryt: "Avbryt",
+  forhandsvisning: "Forhåndsvisning",
+  forhandsvisningLabel: "Forhåndsvis innstilling om stans",
   title: "Skriv innstilling om stans til Nav arbeid og ytelser",
   innstillingInfoLabel: "Når du skriver innstillingen",
   innstillingInfoDescription:
@@ -82,6 +86,8 @@ export default function InnstillingOmStansSkjema({
   const { innstillingOmStansDocument } = useAktivitetskravVurderingDocument();
   const { displayNotification } = useAktivitetskravNotificationAlert();
 
+  const [showForhandsvisning, setShowForhandsvisning] = useState(false);
+
   const saveDraft = useSaveDraft<DraftTextDTO>(CATEGORY);
   const deleteDraft = useDeleteDraft(CATEGORY);
 
@@ -115,6 +121,12 @@ export default function InnstillingOmStansSkjema({
       },
     });
   }
+
+  const handlePreviewButtonClick = () => {
+    handleSubmit(() => {
+      setShowForhandsvisning(true);
+    })();
+  };
 
   return (
     <FormProvider {...formMethods}>
@@ -184,13 +196,29 @@ export default function InnstillingOmStansSkjema({
             {defaultErrorTexts.generalError}
           </Alert>
         )}
-        <Button
-          loading={vurderAktivitetskrav.isPending}
-          type="submit"
-          className="w-fit"
-        >
-          {texts.sendInnstilling}
-        </Button>
+        <ButtonRow>
+          <Button loading={vurderAktivitetskrav.isPending} type="submit">
+            {texts.sendInnstilling}
+          </Button>
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={handlePreviewButtonClick}
+          >
+            {texts.forhandsvisning}
+          </Button>
+        </ButtonRow>
+        <ForhandsvisningModal
+          contentLabel={texts.forhandsvisningLabel}
+          isOpen={showForhandsvisning}
+          handleClose={() => setShowForhandsvisning(false)}
+          getDocumentComponents={() =>
+            innstillingOmStansDocument({
+              stansDato: watch("stansFom"),
+              begrunnelse: watch("begrunnelse"),
+            })
+          }
+        />
       </form>
     </FormProvider>
   );

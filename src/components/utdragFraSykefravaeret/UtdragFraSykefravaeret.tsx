@@ -6,7 +6,7 @@ import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { finnNaisUrlIntern } from "@/utils/miljoUtil";
-import { EventType, trackEvent } from "@/utils/umami";
+import { Events, trackEvent } from "@/utils/umami";
 
 const texts = {
   header: "Utdrag fra sykefraværet",
@@ -24,10 +24,10 @@ const lenkeKommunikasjonMedBruker = `https://modiapersonoversikt${finnNaisUrlInt
 
 function logEvent() {
   trackEvent({
-    type: EventType.LenkeKlikket,
-    data: {
+    name: Events.LINK_KLIKKET,
+    properties: {
       tekst: texts.kommunikasjonMedBruker,
-      destinasjonUrl: lenkeKommunikasjonMedBruker,
+      href: lenkeKommunikasjonMedBruker,
     },
   });
 }

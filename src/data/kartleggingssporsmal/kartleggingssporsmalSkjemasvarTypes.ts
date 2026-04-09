@@ -12,11 +12,18 @@ export interface KartleggingssporsmalFieldSnapshot {
 
 export enum KartleggingssporsmalFormSnapshotFieldType {
   RADIO_GROUP = "RADIO_GROUP",
+  TEXT = "TEXT",
 }
 
 export interface KartleggingssporsmalRadioGroupFieldSnapshot
   extends KartleggingssporsmalFieldSnapshot {
   options: KartleggingssporsmalFormSnapshotFieldOption[];
+  wasRequired: boolean | null;
+}
+
+export interface KartleggingssporsmalTextFieldSnapshot
+  extends KartleggingssporsmalFieldSnapshot {
+  value: string;
   wasRequired: boolean | null;
 }
 

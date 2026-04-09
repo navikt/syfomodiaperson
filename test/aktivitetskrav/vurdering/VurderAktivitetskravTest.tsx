@@ -411,6 +411,22 @@ describe("VurderAktivitetskrav", () => {
   });
 
   describe("Innstilling om stans", () => {
+    it("viser forhåndsvisning-knapp", async () => {
+      renderVurderAktivitetskrav(expiredForhandsvarselAktivitetskrav);
+
+      await clickTab("Skriv innstilling om stans");
+
+      expect(screen.getByRole("button", { name: "Forhåndsvisning" })).to.exist;
+    });
+    it("forhåndsvisning validerer skjema", async () => {
+      renderVurderAktivitetskrav(expiredForhandsvarselAktivitetskrav);
+
+      await clickTab("Skriv innstilling om stans");
+      await clickButton("Forhåndsvisning");
+
+      expect(await screen.findByText("Vennligst angi dato for stans")).to.exist;
+      expect(await screen.findByText("Vennligst angi begrunnelse")).to.exist;
+    });
     it("får valideringersfeil uten stansdato og begrunnelse", async () => {
       renderVurderAktivitetskrav(expiredForhandsvarselAktivitetskrav);
       stubVurderAktivitetskravApi(expiredForhandsvarselAktivitetskrav.uuid);

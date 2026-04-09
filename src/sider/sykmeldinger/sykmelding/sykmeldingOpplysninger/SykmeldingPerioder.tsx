@@ -1,11 +1,7 @@
 import React from "react";
-import SykmeldingPeriode from "./SykmeldingPeriode";
+import { SykmeldingPeriode } from "./SykmeldingPeriode";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { getDuration, toDate } from "@/utils/datoUtils";
-
-interface Props {
-  perioder: SykmeldingPeriodeDTO[];
-}
 
 function sorterPerioderEldsteForst(
   perioder: SykmeldingPeriodeDTO[]
@@ -18,8 +14,11 @@ function sorterPerioderEldsteForst(
   });
 }
 
-export default function SykmeldingPerioder(sykmeldingPerioderProps: Props) {
-  const { perioder = [] } = sykmeldingPerioderProps;
+interface Props {
+  perioder: SykmeldingPeriodeDTO[];
+}
+
+export default function SykmeldingPerioder({ perioder = [] }: Props) {
   return (
     <div className={`${perioder.length > 1 ? "margin-bottom: 1rem;" : ""}`}>
       {sorterPerioderEldsteForst(perioder).map((periode, index) => {

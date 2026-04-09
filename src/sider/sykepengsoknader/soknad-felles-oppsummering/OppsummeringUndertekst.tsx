@@ -1,26 +1,21 @@
 import React, { ReactElement } from "react";
 import OppsummeringSporsmalstekst from "./OppsummeringSporsmalstekst";
 import OppsummeringUndersporsmalsliste from "./OppsummeringUndersporsmalsliste";
-import { OppsummeringSporsmalProps } from "./OppsummeringSporsmal";
+import { SporsmalDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import { BodyShort } from "@navikt/ds-react";
 
 export function OppsummeringUndertekst({
   sporsmalstekst,
   id,
-  overskriftsnivaa,
   undertekst,
   undersporsmal,
-}: OppsummeringSporsmalProps): ReactElement {
+}: SporsmalDTO): ReactElement {
   return (
-    <div className="oppsummering__VisUndertekst" id={id}>
-      <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
-        {sporsmalstekst}
-      </OppsummeringSporsmalstekst>
-      {undertekst && <div className="redaksjonelt-innhold">{undertekst}</div>}
+    <div id={id}>
+      <OppsummeringSporsmalstekst>{sporsmalstekst}</OppsummeringSporsmalstekst>
+      {undertekst && <BodyShort size="small">{undertekst}</BodyShort>}
       {undersporsmal.length > 0 && (
-        <OppsummeringUndersporsmalsliste
-          sporsmalsliste={undersporsmal}
-          overskriftsnivaa={overskriftsnivaa}
-        />
+        <OppsummeringUndersporsmalsliste sporsmalsliste={undersporsmal} />
       )}
     </div>
   );

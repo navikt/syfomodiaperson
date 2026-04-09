@@ -6,7 +6,11 @@ import { mockServer } from "../setup";
 import { http, HttpResponse } from "msw";
 
 describe("Axios API tests", () => {
-  const tilgangDenied: Tilgang = { erGodkjent: false, erAvslatt: true };
+  const tilgangDenied: Tilgang = {
+    erGodkjent: false,
+    erAvslatt: true,
+    legacyTilgang: false,
+  };
   const tilgangDeniedMessage = { message: "Denied!" };
   const happyCaseMessage = "Woop woop";
 

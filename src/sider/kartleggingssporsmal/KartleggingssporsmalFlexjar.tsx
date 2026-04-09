@@ -15,7 +15,7 @@ import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
 const texts = {
   apneKnapp: "Vi ønsker din tilbakemelding",
   sporsmal:
-    "Hjelper svarene på kartleggingsspørsmål deg å forstå situasjonen til den sykmeldte?",
+    "Hjelper kartleggingsspørsmålene deg med å tidlig kunne identifisere de som står i fare for et langvarig sykefravær?",
   ja: "Ja",
   nei: "Nei",
   fortellMer: "Fortell oss gjerne mer",

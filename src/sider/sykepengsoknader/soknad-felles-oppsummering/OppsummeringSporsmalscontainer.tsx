@@ -1,20 +1,11 @@
 import React, { ReactElement, ReactNode } from "react";
 
-interface OppsummeringSporsmalscontainerProps {
-  tag: string;
+interface Props {
   children: ReactNode;
 }
 
-const OppsummeringSporsmalscontainer = ({
-  tag,
+export default function OppsummeringSporsmalscontainer({
   children,
-}: OppsummeringSporsmalscontainerProps): ReactElement => (
-  <div
-    className="oppsummering__sporsmalscontainer"
-    id={`js-${tag.toLowerCase()}`}
-  >
-    {children}
-  </div>
-);
-
-export default OppsummeringSporsmalscontainer;
+}: Props): ReactElement {
+  return <div className="mb-2">{children}</div>;
+}

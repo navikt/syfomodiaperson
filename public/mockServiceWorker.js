@@ -8,20 +8,20 @@
  * - Please do NOT serve this file on production.
  */
 
-const PACKAGE_VERSION = "2.4.9";
+const PACKAGE_VERSION = "2.7.3";
 const INTEGRITY_CHECKSUM = "00729d72e3b82faf54ca8b9621dbb96f";
 const IS_MOCKED_RESPONSE = Symbol("isMockedResponse");
 const activeClientIds = new Set();
 
-self.addEventListener("install", function () {
+self.addEventListener("install", function() {
   self.skipWaiting();
 });
 
-self.addEventListener("activate", function (event) {
+self.addEventListener("activate", function(event) {
   event.waitUntil(self.clients.claim());
 });
 
-self.addEventListener("message", async function (event) {
+self.addEventListener("message", async function(event) {
   const clientId = event.source.id;
 
   if (!clientId || !self.clients) {
@@ -35,13 +35,13 @@ self.addEventListener("message", async function (event) {
   }
 
   const allClients = await self.clients.matchAll({
-    type: "window",
+    type: "window"
   });
 
   switch (event.data) {
     case "KEEPALIVE_REQUEST": {
       sendToClient(client, {
-        type: "KEEPALIVE_RESPONSE",
+        type: "KEEPALIVE_RESPONSE"
       });
       break;
     }
@@ -51,8 +51,8 @@ self.addEventListener("message", async function (event) {
         type: "INTEGRITY_CHECK_RESPONSE",
         payload: {
           packageVersion: PACKAGE_VERSION,
-          checksum: INTEGRITY_CHECKSUM,
-        },
+          checksum: INTEGRITY_CHECKSUM
+        }
       });
       break;
     }
@@ -94,7 +94,7 @@ self.addEventListener("message", async function (event) {
   }
 });
 
-self.addEventListener("fetch", function (event) {
+self.addEventListener("fetch", function(event) {
   const { request } = event;
 
   // Bypass navigation requests.
@@ -128,7 +128,7 @@ async function handleRequest(event, requestId) {
   // Ensure MSW is active and ready to handle the message, otherwise
   // this message will pend indefinitely.
   if (client && activeClientIds.has(client.id)) {
-    (async function () {
+    ;(async function() {
       const responseClone = response.clone();
 
       sendToClient(
@@ -142,8 +142,8 @@ async function handleRequest(event, requestId) {
             status: responseClone.status,
             statusText: responseClone.statusText,
             body: responseClone.body,
-            headers: Object.fromEntries(responseClone.headers.entries()),
-          },
+            headers: Object.fromEntries(responseClone.headers.entries())
+          }
         },
         [responseClone.body]
       );
@@ -169,7 +169,7 @@ async function resolveMainClient(event) {
   }
 
   const allClients = await self.clients.matchAll({
-    type: "window",
+    type: "window"
   });
 
   return allClients
@@ -249,8 +249,8 @@ async function getResponse(event, client, requestId) {
         referrer: request.referrer,
         referrerPolicy: request.referrerPolicy,
         body: requestBuffer,
-        keepalive: request.keepalive,
-      },
+        keepalive: request.keepalive
+      }
     },
     [requestBuffer]
   );
@@ -300,7 +300,7 @@ async function respondWithMock(response) {
 
   Reflect.defineProperty(mockedResponse, IS_MOCKED_RESPONSE, {
     value: true,
-    enumerable: true,
+    enumerable: true
   });
 
   return mockedResponse;

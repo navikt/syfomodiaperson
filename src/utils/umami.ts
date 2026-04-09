@@ -2,23 +2,13 @@
  See documentation for naming guidelines: https://startumami.ansatt.nav.no/taksonomi
  Other documentation for umami on Aksel: https://aksel.nav.no/god-praksis/artikler/male-brukeradferd-med-umami
  */
-export enum EventType {
-  LenkeKlikket = "lenke klikket",
-}
+export {
+  Events,
+  type TaxonomyEvent,
+  type EventName,
+} from "@navikt/analytics-types";
 
-/** Event fired when a link is clicked
- * @property tekst - The text of the link
- * @property destinasjonUrl - The destination URL of the link
- */
-export type LenkeKlikket = {
-  type: EventType.LenkeKlikket;
-  data: {
-    tekst: string;
-    destinasjonUrl: string;
-  };
-};
-
-type Event = LenkeKlikket;
+import type { EventName, TaxonomyEvent } from "@navikt/analytics-types";
 
 export async function setIdentifier(veilederident: string) {
   const maskedVeilederIdent = await hashId(veilederident);
@@ -46,6 +36,6 @@ function beforeSendHandler(type, payload) {
 // Make the function globally accessible to make "data-before-send" in umami script work
 (window as any).beforeSendHandler = beforeSendHandler;
 
-export function trackEvent(event: Event) {
-  umami.track(event.type, { ...event.data });
+export function trackEvent<K extends EventName>(event: TaxonomyEvent<K>) {
+  umami.track(event.name, { ...event.properties });
 }

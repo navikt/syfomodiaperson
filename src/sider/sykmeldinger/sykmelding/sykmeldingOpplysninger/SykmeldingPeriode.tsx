@@ -1,7 +1,7 @@
 import React from "react";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
-import { Nokkelopplysning } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/Nokkelopplysning";
+import { BodyLong, Heading } from "@navikt/ds-react";
 
 const texts = {
   title: "Periode",
@@ -14,52 +14,50 @@ const texts = {
   reisetilskuddTitle: "Reisetilskudd",
 };
 
-interface SykmeldingPeriodeProps {
+interface Props {
   periode: SykmeldingPeriodeDTO;
   antallDager: number;
 }
 
-const SykmeldingPeriode = (sykmeldingPeriodeProps: SykmeldingPeriodeProps) => {
-  const { periode, antallDager = 1 } = sykmeldingPeriodeProps;
+export function SykmeldingPeriode({ periode, antallDager = 1 }: Props) {
   const dayText = antallDager === 1 ? texts.daySingle : texts.dayMultiple;
 
   return (
-    <Nokkelopplysning
-      label={texts.title}
+    <div
       className={`[&:not(:only-child)]:pb-4 mb-4 border-solid border-0 [&:not(:only-child)]:border-b border-ax-neutral-500`}
     >
-      <p className="mb-0">
+      <Heading size="xsmall" level="3" className="mb-1">
+        {texts.title}
+      </Heading>
+      <BodyLong size="small">
         <strong>{tilLesbarPeriodeMedArstall(periode.fom, periode.tom)}</strong>{" "}
         &bull; {antallDager}&nbsp;{dayText}
-      </p>
-      {periode.grad ? (
-        <p className="mb-0">
+      </BodyLong>
+      {periode.grad && (
+        <BodyLong size="small">
           {periode.grad} % sykmeldt
-          {periode.reisetilskudd && periode.grad > 0 && periode.grad < 100
-            ? ` ${texts.reisetilskudd}`
-            : null}
-        </p>
-      ) : (
-        ""
+          {periode.reisetilskudd &&
+            periode.grad > 0 &&
+            periode.grad < 100 &&
+            ` ${texts.reisetilskudd}`}
+        </BodyLong>
       )}
-      {periode.behandlingsdager ? (
-        <p>
+      {periode.behandlingsdager && (
+        <BodyLong size="small">
           {periode.behandlingsdager} {texts.behandlingsdager}
-        </p>
-      ) : null}
-      {periode.reisetilskudd && periode.grad === null ? (
-        <p>{texts.reisetilskuddTitle}</p>
-      ) : null}
-      {periode.avventende ? (
-        <Nokkelopplysning
-          label={texts.avventendeInspill}
-          className={"[&]:mb-0"}
-        >
-          {periode.avventende}
-        </Nokkelopplysning>
-      ) : null}
-    </Nokkelopplysning>
+        </BodyLong>
+      )}
+      {periode.reisetilskudd && periode.grad === null && (
+        <BodyLong size="small">{texts.reisetilskuddTitle}</BodyLong>
+      )}
+      {periode.avventende && (
+        <div>
+          <Heading size="xsmall" level="3" className="mb-1">
+            {texts.avventendeInspill}
+          </Heading>
+          <BodyLong size="small">{periode.avventende}</BodyLong>
+        </div>
+      )}
+    </div>
   );
-};
-
-export default SykmeldingPeriode;
+}

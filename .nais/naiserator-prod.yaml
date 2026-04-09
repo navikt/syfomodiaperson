@@ -5,6 +5,8 @@ metadata:
   namespace: teamsykefravr
   labels:
     team: teamsykefravr
+  annotations:
+    texas.nais.io/enabled: "true"
 spec:
   image: {{ image }}
   replicas:
@@ -106,7 +108,6 @@ spec:
         - application: veilarboppfolging
           namespace: poao
   envFrom:
-    - secret: syfomodiaperson-session-key
     - secret: syfomodiaperson-unleash-api-token
   ingresses:
     - "https://syfomodiaperson.intern.nav.no"

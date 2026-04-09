@@ -105,6 +105,7 @@ describe("MotelandingssideSide", () => {
     stubTilgangApi({
       erGodkjent: false,
       erAvslatt: true,
+      legacyTilgang: false,
     });
     renderMotelandingsside();
 

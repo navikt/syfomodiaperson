@@ -3,28 +3,24 @@ import { toDatePrettyPrint } from "@/utils/datoUtils";
 import { getKey } from "./Oppsummeringsvisning";
 import OppsummeringSporsmalscontainer from "./OppsummeringSporsmalscontainer";
 import OppsummeringSporsmalstekst from "./OppsummeringSporsmalstekst";
-import { OppsummeringSporsmalProps } from "./OppsummeringSporsmal";
+import { BodyShort } from "@navikt/ds-react";
+import { SporsmalDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 
-const OppsummeringDato = ({
+export default function OppsummeringDato({
   tag,
   sporsmalstekst,
   svar,
-  overskriftsnivaa = 3,
-}: OppsummeringSporsmalProps): ReactElement => (
-  <OppsummeringSporsmalscontainer tag={tag}>
-    <OppsummeringSporsmalstekst overskriftsnivaa={overskriftsnivaa}>
-      {sporsmalstekst}
-    </OppsummeringSporsmalstekst>
-    <div className="oppsummering__tekstsvar">
+}: SporsmalDTO): ReactElement {
+  return (
+    <OppsummeringSporsmalscontainer>
+      <OppsummeringSporsmalstekst>{sporsmalstekst}</OppsummeringSporsmalstekst>
       {svar.map((svarverdi, index) => {
         return (
-          <p className="oppsummering__dato" key={getKey(tag, index)}>
+          <BodyShort size="small" key={getKey(tag, index)}>
             {toDatePrettyPrint(svarverdi.verdi)}
-          </p>
+          </BodyShort>
         );
       })}
-    </div>
-  </OppsummeringSporsmalscontainer>
-);
-
-export default OppsummeringDato;
+    </OppsummeringSporsmalscontainer>
+  );
+}

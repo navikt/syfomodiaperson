@@ -1,9 +1,8 @@
 import express = require("express");
 import proxy = require("express-http-proxy");
-import OpenIdClient = require("openid-client");
 import url = require("url");
 
-import AuthUtils = require("./authUtils");
+import { getOnBehalfOfToken } from "./authUtils";
 import Config = require("./config");
 
 const proxyExternalHostWithoutAuthentication = (host: any) =>
@@ -35,20 +34,6 @@ const proxyExternalHostWithoutAuthentication = (host: any) =>
     },
   });
 
-const proxyDirectly = (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction,
-  authClient: any,
-  externalAppConfig: Config.ExternalAppConfig
-) => {
-  return proxyExternalHostWithoutAuthentication(externalAppConfig.host)(
-    req,
-    res,
-    next
-  );
-};
-
 const proxyExternalHost = (
   { applicationName, host, removePathPrefix }: any,
   accessToken: any,
@@ -59,7 +44,7 @@ const proxyExternalHost = (
     https: false,
     parseReqBody: parseReqBody,
     timeout: 30000,
-    proxyReqOptDecorator: async (options, srcReq) => {
+    proxyReqOptDecorator: async (options) => {
       if (!accessToken) {
         return options;
       }
@@ -105,42 +90,33 @@ const proxyExternalHost = (
   });
 
 const proxyOnBehalfOf = (
-  req: any,
-  res: any,
-  next: any,
-  authClient: any,
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
   externalAppConfig: Config.ExternalAppConfig,
   rewritePath?: (path: string) => string
 ) => {
-  AuthUtils.getOrRefreshOnBehalfOfToken(
-    authClient,
-    req,
-    externalAppConfig.clientId
-  )
-    .then((onBehalfOfToken: any) => {
-      if (!onBehalfOfToken.accessToken) {
+  getOnBehalfOfToken(req, externalAppConfig.clientId)
+    .then((accessToken) => {
+      if (!accessToken) {
         res.status(500).send("Failed to fetch access token on behalf of user.");
-        console.log(
-          "proxyOnBehalfOf: Got on-behalf-of token, but the accessToken was undefined"
-        );
+        console.log("proxyOnBehalfOf: on-behalf-of-token was undefined");
         return;
       }
       return proxyExternalHost(
         externalAppConfig,
-        onBehalfOfToken.accessToken,
+        accessToken,
         req.method === "POST",
         rewritePath
       )(req, res, next);
     })
     .catch((error) => {
-      console.log("Failed to renew token(s). Original error: %s", error);
-      res
-        .status(500)
-        .send("Failed to fetch/refresh access tokens on behalf of user");
+      console.log("Failed to get OBO token. Original error: %s", error);
+      res.status(500).send("Failed to fetch access tokens on behalf of user");
     });
 };
 
-export const setupProxy = (authClient: OpenIdClient.Client) => {
+export const setupProxy = () => {
   const router = express.Router();
 
   router.use(
@@ -150,7 +126,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.isaktivitetskrav);
+      proxyOnBehalfOf(req, res, next, Config.auth.isaktivitetskrav);
     }
   );
 
@@ -161,7 +137,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.isarbeidsuforhet);
+      proxyOnBehalfOf(req, res, next, Config.auth.isarbeidsuforhet);
     }
   );
 
@@ -172,13 +148,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        Config.auth.isbehandlerdialog
-      );
+      proxyOnBehalfOf(req, res, next, Config.auth.isbehandlerdialog);
     }
   );
 
@@ -189,7 +159,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.isdialogmote);
+      proxyOnBehalfOf(req, res, next, Config.auth.isdialogmote);
     }
   );
 
@@ -200,13 +170,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        Config.auth.isdialogmotekandidat
-      );
+      proxyOnBehalfOf(req, res, next, Config.auth.isdialogmotekandidat);
     }
   );
 
@@ -217,7 +181,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.isdialogmelding);
+      proxyOnBehalfOf(req, res, next, Config.auth.isdialogmelding);
     }
   );
 
@@ -228,7 +192,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.isfrisktilarbeid);
+      proxyOnBehalfOf(req, res, next, Config.auth.isfrisktilarbeid);
     }
   );
 
@@ -239,7 +203,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.ishuskelapp);
+      proxyOnBehalfOf(req, res, next, Config.auth.ishuskelapp);
     }
   );
 
@@ -250,7 +214,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.ismeroppfolging);
+      proxyOnBehalfOf(req, res, next, Config.auth.ismeroppfolging);
     }
   );
 
@@ -261,7 +225,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.isnarmesteleder);
+      proxyOnBehalfOf(req, res, next, Config.auth.isnarmesteleder);
     }
   );
 
@@ -272,13 +236,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        Config.auth.isoppfolgingstilfelle
-      );
+      proxyOnBehalfOf(req, res, next, Config.auth.isoppfolgingstilfelle);
     }
   );
 
@@ -289,7 +247,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.ispengestopp);
+      proxyOnBehalfOf(req, res, next, Config.auth.ispengestopp);
     }
   );
 
@@ -300,7 +258,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.ispersonoppgave);
+      proxyOnBehalfOf(req, res, next, Config.auth.ispersonoppgave);
     }
   );
 
@@ -311,7 +269,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.fastlegerest);
+      proxyOnBehalfOf(req, res, next, Config.auth.fastlegerest);
     }
   );
 
@@ -322,13 +280,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        Config.auth.modiacontextholder
-      );
+      proxyOnBehalfOf(req, res, next, Config.auth.modiacontextholder);
     }
   );
 
@@ -339,13 +291,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        Config.auth.syfobehandlendeenhet
-      );
+      proxyOnBehalfOf(req, res, next, Config.auth.syfobehandlendeenhet);
     }
   );
 
@@ -356,7 +302,11 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyDirectly(req, res, next, authClient, Config.auth.ereg);
+      proxyExternalHostWithoutAuthentication(Config.auth.ereg.host)(
+        req,
+        res,
+        next
+      );
     }
   );
 
@@ -367,7 +317,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.syfomotebehov);
+      proxyOnBehalfOf(req, res, next, Config.auth.syfomotebehov);
     }
   );
 
@@ -378,13 +328,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        Config.auth.syfooppfolgingsplanservice
-      );
+      proxyOnBehalfOf(req, res, next, Config.auth.syfooppfolgingsplanservice);
     }
   );
 
@@ -395,13 +339,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        Config.auth.lpsOppfolgingsplanMottak
-      );
+      proxyOnBehalfOf(req, res, next, Config.auth.lpsOppfolgingsplanMottak);
     }
   );
 
@@ -412,13 +350,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        Config.auth.syfoOppfolgingsplanBackend
-      );
+      proxyOnBehalfOf(req, res, next, Config.auth.syfoOppfolgingsplanBackend);
     }
   );
 
@@ -429,7 +361,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.syfooversiktsrv);
+      proxyOnBehalfOf(req, res, next, Config.auth.syfooversiktsrv);
     }
   );
 
@@ -440,7 +372,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.syfoperson);
+      proxyOnBehalfOf(req, res, next, Config.auth.syfoperson);
     }
   );
 
@@ -451,13 +383,8 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        Config.auth.syfosmregister,
-        (path) => path.replace("/sykmeldinger", "/internal/sykmeldinger")
+      proxyOnBehalfOf(req, res, next, Config.auth.syfosmregister, (path) =>
+        path.replace("/sykmeldinger", "/internal/sykmeldinger")
       );
     }
   );
@@ -469,13 +396,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        Config.auth.sykepengesoknadBackend
-      );
+      proxyOnBehalfOf(req, res, next, Config.auth.sykepengesoknadBackend);
     }
   );
 
@@ -486,13 +407,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        Config.auth.istilgangskontroll
-      );
+      proxyOnBehalfOf(req, res, next, Config.auth.istilgangskontroll);
     }
   );
 
@@ -503,7 +418,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.syfoveileder);
+      proxyOnBehalfOf(req, res, next, Config.auth.syfoveileder);
     }
   );
 
@@ -514,13 +429,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        Config.auth.meroppfolgingBackend
-      );
+      proxyOnBehalfOf(req, res, next, Config.auth.meroppfolgingBackend);
     }
   );
 
@@ -531,13 +440,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        Config.auth.sykepengedagerinformasjon
-      );
+      proxyOnBehalfOf(req, res, next, Config.auth.sykepengedagerinformasjon);
     }
   );
 
@@ -548,7 +451,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.flexjar);
+      proxyOnBehalfOf(req, res, next, Config.auth.flexjar);
     }
   );
 
@@ -559,7 +462,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.lumiApi);
+      proxyOnBehalfOf(req, res, next, Config.auth.lumiApi);
     }
   );
 
@@ -570,13 +473,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        Config.auth.veilarboppfolging
-      );
+      proxyOnBehalfOf(req, res, next, Config.auth.veilarboppfolging);
     }
   );
 
@@ -587,13 +484,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        Config.auth.ismanglendemedvirkning
-      );
+      proxyOnBehalfOf(req, res, next, Config.auth.ismanglendemedvirkning);
     }
   );
 
@@ -604,13 +495,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(
-        req,
-        res,
-        next,
-        authClient,
-        Config.auth.isoppfolgingsplan
-      );
+      proxyOnBehalfOf(req, res, next, Config.auth.isoppfolgingsplan);
     }
   );
 
@@ -621,7 +506,7 @@ export const setupProxy = (authClient: OpenIdClient.Client) => {
       res: express.Response,
       next: express.NextFunction
     ) => {
-      proxyOnBehalfOf(req, res, next, authClient, Config.auth.pensjonPenUfore);
+      proxyOnBehalfOf(req, res, next, Config.auth.pensjonPenUfore);
     }
   );
 

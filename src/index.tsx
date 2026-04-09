@@ -40,16 +40,18 @@ const container =
 const root = createRoot(container);
 
 function addUmamiScript() {
-  const dataWebsiteId = erProd()
-    ? "d9c74695-30bc-47e9-b751-bebd1c7472a0"
-    : "e75681f5-0a2a-4061-8800-cfa36c982730";
+  const [dataWebsiteId, src] = erProd()
+    ? [
+        "d9c74695-30bc-47e9-b751-bebd1c7472a0",
+        "https://cdn.nav.no/team-researchops/sporing/sporing.js",
+      ]
+    : [
+        "e75681f5-0a2a-4061-8800-cfa36c982730",
+        "https://cdn.nav.no/team-researchops/sporing/sporing-dev.js",
+      ];
   const script = document.createElement("script");
-  script.setAttribute("data-host-url", "https://umami.nav.no");
   script.setAttribute("data-website-id", dataWebsiteId);
-  script.setAttribute(
-    "src",
-    "https://cdn.nav.no/team-researchops/sporing/sporing.js"
-  );
+  script.setAttribute("src", src);
   script.setAttribute("data-before-send", "beforeSendHandler");
   script.setAttribute("defer", "defer");
   document.head.appendChild(script);

@@ -3,9 +3,8 @@ import helmet = require("helmet");
 import path = require("path");
 import prometheus = require("prom-client");
 import unleash = require("./server/unleash");
-import { getOpenIdClient, getOpenIdIssuer } from "./server/authUtils";
+import { validateToken } from "./server/authUtils";
 import { setupProxy } from "./server/proxy";
-import { setupSession } from "./server/session";
 import { setupDraftEndpoints } from "./server/draft";
 
 // Prometheus metrics
@@ -44,7 +43,7 @@ const redirectIfUnauthorized = async (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  if (req.headers["authorization"]) {
+  if (await validateToken(req)) {
     next();
   } else {
     res.redirect(`/oauth2/login?redirect=${req.originalUrl}`);
@@ -52,12 +51,9 @@ const redirectIfUnauthorized = async (
 };
 
 const setupServer = async () => {
-  setupSession(server);
   setupDraftEndpoints(server);
-  const issuer = await getOpenIdIssuer();
-  const authClient = await getOpenIdClient(issuer);
 
-  server.use(setupProxy(authClient));
+  server.use(setupProxy());
 
   const DIST_DIR = path.join(__dirname, "dist");
   const HTML_FILE = path.join(DIST_DIR, "index.html");

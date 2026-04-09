@@ -1,26 +1,23 @@
 import React, { ReactElement } from "react";
 import OppsummeringUndersporsmalsliste from "./OppsummeringUndersporsmalsliste";
-import { OppsummeringSporsmalProps } from "./OppsummeringSporsmal";
-import { VisningskriterieDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { CheckboxPng } from "../../../../img/ImageComponents";
+import {
+  SporsmalDTO,
+  VisningskriterieDTO,
+} from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
+import { Checkbox } from "@navikt/ds-react";
 
 export default function OppsummeringCheckbox({
   svar,
   sporsmalstekst,
   undersporsmal,
-  overskriftsnivaa = 3,
-}: OppsummeringSporsmalProps): ReactElement | null {
+}: SporsmalDTO): ReactElement | null {
   return svar[0] && svar[0].verdi === VisningskriterieDTO.CHECKED ? (
     <div>
-      <div className="oppsummering__avkrysset">
-        <img src={CheckboxPng} alt="Avkrysset" />
-        <span>{sporsmalstekst}</span>
-      </div>
+      <Checkbox size="small" readOnly checked>
+        {sporsmalstekst}
+      </Checkbox>
       {undersporsmal.length > 0 && (
-        <OppsummeringUndersporsmalsliste
-          sporsmalsliste={undersporsmal}
-          overskriftsnivaa={overskriftsnivaa}
-        />
+        <OppsummeringUndersporsmalsliste sporsmalsliste={undersporsmal} />
       )}
     </div>
   ) : null;
