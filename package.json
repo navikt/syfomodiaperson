@@ -18,7 +18,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint src test --ext .ts  --ext .tsx  --ext .js  --ext .jsx",
     "lint:fix": "pnpm run lint -- --fix",
-    "prepare": "husky install"
+    "prepare": "husky install || true"
   },
   "author": "Team DigiSyfo <digisyfo@nav.no>",
   "license": "ISC",
