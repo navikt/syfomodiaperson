@@ -9,9 +9,9 @@ import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { Alert, BodyShort, Button } from "@navikt/ds-react";
 import {
+  dialogmoteIkkeAktuellRoutePath,
   dialogmoteRoutePath,
   dialogmoteUnntakRoutePath,
-  dialogmoteIkkeAktuellRoutePath,
 } from "@/AppRouter";
 import { Link } from "react-router-dom";
 import DialogmoteFrist from "@/sider/dialogmoter/components/DialogmoteFrist";

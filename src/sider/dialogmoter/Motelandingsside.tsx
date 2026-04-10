@@ -1,12 +1,8 @@
 import React from "react";
 import Sidetopp from "../../components/side/Sidetopp";
-import UtdragFraSykefravaeretPanel from "../../components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
-import InnkallingDialogmotePanel from "./components/innkalling/InnkallingDialogmotePanel";
 import SideLaster from "../../components/side/SideLaster";
 import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
-import { DialogmoteFerdigstilteReferatPanel } from "@/sider/dialogmoter/components/DialogmoteFerdigstilteReferatPanel";
-import { DialogmoteStatus } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useGetDialogmoteunntakQuery } from "@/data/dialogmotekandidat/useGetDialogmoteunntakQuery";
 import * as Tredelt from "@/components/side/TredeltSide";
 import Side from "@/components/side/Side";
@@ -14,17 +10,14 @@ import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import MotehistorikkPanel from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
 import MoteSvarHistorikk from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikk";
 import MotebehovHistorikk from "@/sider/dialogmoter/components/motehistorikk/MotebehovHistorikk";
-import { InfoOmTolk } from "@/sider/dialogmoter/motebehov/InfoOmTolk";
-import { UtropstegnImage } from "../../../img/ImageComponents";
-import MotebehovKvittering from "@/sider/dialogmoter/motebehov/MotebehovKvittering";
-import BehandleMotebehovKnapp from "@/components/motebehov/BehandleMotebehovKnapp";
-import DialogmotePanel from "@/sider/dialogmoter/components/DialogmotePanel";
 import { useGetDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
+import { MotelandingssidePanels } from "@/sider/dialogmoter/utils/MotelandingssidePanels";
+import { harUbehandletMotebehov } from "@/utils/motebehovUtils";
+import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 
 const texts = {
   pageTitle: "Møtelandingsside",
   dialogmoter: "Dialogmøter",
-  behovForDialogmote: "Behov for dialogmøte",
 };
 
 export default function Motelandingsside() {
@@ -32,6 +25,7 @@ export default function Motelandingsside() {
     isLoading: henterDialogmoter,
     isError: henterDialogmoterFeilet,
     aktivtDialogmote,
+    ferdigstilteDialogmoter,
     historiskeDialogmoter,
   } = useDialogmoterQuery();
   const {
@@ -42,6 +36,7 @@ export default function Motelandingsside() {
   const getDialogmoteIkkeAktuell = useGetDialogmoteIkkeAktuell();
   const { isLoading: henterLedere, isError: henterLedereFeilet } =
     useLedereQuery();
+  const motebehov = useMotebehovQuery();
 
   const henter =
     henterDialogmoter ||
@@ -54,6 +49,8 @@ export default function Motelandingsside() {
     henterDialogmoteunntakFeilet ||
     getDialogmoteIkkeAktuell.isError;
 
+  const hasUbehandletMotebehov = harUbehandletMotebehov(motebehov.data);
+
   return (
     <Side tittel={texts.pageTitle} aktivtMenypunkt={Menypunkter.DIALOGMOTE}>
       <SideLaster isLoading={henter} isError={hentingFeilet}>
@@ -61,21 +58,11 @@ export default function Motelandingsside() {
 
         <Tredelt.Container>
           <Tredelt.FirstColumn>
-            <DialogmotePanel
-              icon={UtropstegnImage}
-              header={texts.behovForDialogmote}
-            >
-              <MotebehovKvittering />
-              <BehandleMotebehovKnapp />
-            </DialogmotePanel>
-            <InfoOmTolk />
-            <InnkallingDialogmotePanel aktivtDialogmote={aktivtDialogmote} />
-            <DialogmoteFerdigstilteReferatPanel
-              ferdigstilteMoter={historiskeDialogmoter.filter(
-                (mote) => mote.status === DialogmoteStatus.FERDIGSTILT
-              )}
+            <MotelandingssidePanels
+              hasUbehandletMotebehov={hasUbehandletMotebehov}
+              ferdigstilteDialogmoter={ferdigstilteDialogmoter}
+              aktivtDialogmote={aktivtDialogmote}
             />
-            <UtdragFraSykefravaeretPanel />
           </Tredelt.FirstColumn>
 
           <Tredelt.SecondColumn className="flex flex-col gap-4">
