@@ -12,7 +12,6 @@ export interface MotebehovTilbakemeldingDTO {
 }
 
 export interface MotebehovVurderingDTO {
-  personident: string;
   harBehovForMote: boolean;
   tilbakemeldinger: MotebehovTilbakemeldingDTO[];
 }
@@ -22,12 +21,12 @@ export function useVurderMotebehov() {
   const { data: veilederinfo } = useAktivVeilederinfoQuery();
   const veilederIdent = veilederinfo?.ident;
   const queryClient = useQueryClient();
-  const path = `${ISDIALOGMOTE_ROOT}/motebehov/vurderinger`;
+  const vurderingerPath = `${ISDIALOGMOTE_ROOT}/motebehov/vurderinger`;
   const motebehovQueryKey = motebehovQueryKeys.motebehov(fnr);
 
   return useMutation({
-    mutationFn: (vurdering: Omit<MotebehovVurderingDTO, "personident">) =>
-      post(path, { ...vurdering, personident: fnr }, fnr),
+    mutationFn: (vurdering: MotebehovVurderingDTO) =>
+      post(vurderingerPath, { ...vurdering, personident: fnr }),
     onSuccess: () => {
       const previousMotebehov =
         queryClient.getQueryData<MotebehovVeilederDTO[]>(motebehovQueryKey);

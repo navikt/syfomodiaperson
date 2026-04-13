@@ -10,12 +10,12 @@ export const useSettDialogmoteIkkeAktuell = () => {
   const queryClient = useQueryClient();
   const personident = useValgtPersonident();
 
-  const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/ikkeaktuell/personident`;
+  const setIkkeAktuellPath = `${ISDIALOGMOTEKANDIDAT_ROOT}/ikkeaktuell/personident`;
   const lukkAvventPath = `${ISDIALOGMOTE_ROOT}/avvent/lukk`;
 
   return useMutation({
     mutationFn: async (newIkkeAktuellDTO: CreateIkkeAktuellDTO) => {
-      await post(path, newIkkeAktuellDTO);
+      await post(setIkkeAktuellPath, newIkkeAktuellDTO);
       await post(lukkAvventPath, { personident });
     },
     onSettled: () => {

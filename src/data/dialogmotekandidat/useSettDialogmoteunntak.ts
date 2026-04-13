@@ -10,12 +10,12 @@ export const useSettDialogmoteunntak = () => {
   const queryClient = useQueryClient();
   const personident = useValgtPersonident();
 
-  const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/unntak/personident`;
+  const setUnntakPath = `${ISDIALOGMOTEKANDIDAT_ROOT}/unntak/personident`;
   const lukkAvventPath = `${ISDIALOGMOTE_ROOT}/avvent/lukk`;
 
   return useMutation({
     mutationFn: async (newUnntakDTO: CreateUnntakDTO) => {
-      await post(path, newUnntakDTO);
+      await post(setUnntakPath, newUnntakDTO);
       await post(lukkAvventPath, { personident });
     },
     onSettled: () => {
