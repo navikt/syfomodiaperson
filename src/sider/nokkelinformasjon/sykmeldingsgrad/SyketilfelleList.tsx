@@ -65,11 +65,16 @@ export default function SyketilfelleList({ setSelectedTilfelle }: Props) {
         (tilfelle: OppfolgingstilfelleDTO, index: number) => {
           const diagnose = getDiagnose(tilfelle);
           return (
-            <div className="flex items-center gap-2" key={index}>
-              <Radio key={index} value={tilfelle}>
-                {tilfelleText(tilfelle)}
-              </Radio>
-              <BodyShort size="small">{`(${tilfelle.varighetUker} uker)`}</BodyShort>
+            <div
+              className="flex items-center gap-2 w-full justify-between"
+              key={index}
+            >
+              <div className="flex gap-2 items-center">
+                <Radio key={index} value={tilfelle}>
+                  {tilfelleText(tilfelle)}
+                </Radio>
+                <BodyShort size="small">{`(${tilfelle.varighetUker} uker)`}</BodyShort>
+              </div>
               {diagnose?.diagnosekode && (
                 <Tooltip content={diagnose.diagnose ?? "Ukjent diagnosenavn"}>
                   <div className="flex">
