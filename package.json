@@ -12,8 +12,8 @@
   },
   "scripts": {
     "test": "vitest run",
-    "start": "webpack serve --config webpack.dev.ts",
-    "build": "webpack --config webpack.prod.ts && pnpm build:server",
+    "start": "webpack serve --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js && pnpm build:server",
     "build:server": "tsc --build ./server/tsconfig.json",
     "lint-and-typecheck": "pnpm lint && pnpm typecheck",
     "typecheck": "tsc --noEmit -p tsconfig.json",
@@ -127,7 +127,6 @@
     "prettier": "2.8.4",
     "style-loader": "3.3.4",
     "tailwindcss": "3.4.16",
-    "ts-node": "10.9.2",
     "tsconfig-paths-webpack-plugin": "3.5.2",
     "typescript": "5.9.3",
     "vite-tsconfig-paths": "4.3.2",
