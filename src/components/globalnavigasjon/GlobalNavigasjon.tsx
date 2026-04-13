@@ -212,6 +212,9 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
                 }}
                 className={`flex justify-between ${className}`}
                 to={`/sykefravaer/${sti}`}
+                onClick={() => {
+                  window.scrollTo(0, 0);
+                }}
                 onFocus={() => {
                   setFocusIndex(index);
                 }}
