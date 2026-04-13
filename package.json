@@ -2,6 +2,7 @@
   "name": "syfomodiaperson",
   "version": "0.0.1",
   "description": "Digitalisering av sykefraværsoppfølging",
+  "type": "module",
   "main": "index.tsx",
   "test": "pnpm test",
   "lint-staged": {
@@ -79,7 +80,7 @@
     "react-hook-form": "7.71.1",
     "react-router-dom": "6.30.3",
     "recharts": "2.15.3",
-    "redis": "3.1.2",
+    "redis": "5.11.0",
     "styled-components": "5.3.6",
     "unleash-client": "6.9.6",
     "use-debounce": "10.1.0"

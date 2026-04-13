@@ -1,4 +1,4 @@
-import dotenv = require("dotenv");
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -411,11 +411,13 @@ export const unleash: { serverApiUrl: string; serverApiToken: string } = {
   serverApiToken: envVar({ name: "UNLEASH_SERVER_API_TOKEN" }),
 };
 
-module.exports = {
-  auth: auth,
-  isDev: isDev,
-  isProd: isProd,
-  valkey: valkey,
-  unleash: unleash,
-  server: server,
+const Config = {
+  auth,
+  isDev,
+  isProd,
+  valkey,
+  unleash,
+  server,
 };
+
+export default Config;

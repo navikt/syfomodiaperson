@@ -11,9 +11,9 @@ import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { harUbehandletMotebehov } from "@/utils/motebehovUtils";
 import { Alert, BodyShort, Button } from "@navikt/ds-react";
 import {
+  dialogmoteIkkeAktuellRoutePath,
   dialogmoteRoutePath,
   dialogmoteUnntakRoutePath,
-  dialogmoteIkkeAktuellRoutePath,
 } from "@/AppRouter";
 import { Link } from "react-router-dom";
 import DialogmoteFrist from "@/sider/dialogmoter/components/DialogmoteFrist";

@@ -1,11 +1,15 @@
-import express = require("express");
-import helmet = require("helmet");
-import path = require("path");
-import prometheus = require("prom-client");
-import unleash = require("./server/unleash");
-import { validateToken } from "./server/authUtils";
-import { setupProxy } from "./server/proxy";
-import { setupDraftEndpoints } from "./server/draft";
+import express from "express";
+import helmet from "helmet";
+import path from "path";
+import prometheus from "prom-client";
+import { fileURLToPath } from "url";
+import { getToggles } from "./server/unleash.js";
+import { validateToken } from "./server/authUtils.js";
+import { setupProxy } from "./server/proxy.js";
+import { setupDraftEndpoints } from "./server/draft.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Prometheus metrics
 const collectDefaultMetrics = prometheus.collectDefaultMetrics;
@@ -64,7 +68,7 @@ const setupServer = async () => {
     "/unleash/toggles",
     redirectIfUnauthorized,
     (req: express.Request, res: express.Response) => {
-      const togglesResponse = unleash.getToggles(
+      const togglesResponse = getToggles(
         req.query.veilederId,
         req.query.enhetId
       );
