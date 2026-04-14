@@ -3,8 +3,9 @@ import { ISMEROPPFOLGING_ROOT } from "@/apiConstants";
 import { mockIsmeroppfolging } from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
 import { mockServer } from "../setup";
 
-export const stubDefaultIsmeroppfolging = () =>
-  mockServer.use(...mockIsmeroppfolging);
+export const stubDefaultIsmeroppfolging = (
+  isVurderingssideKartleggingEnabled: boolean
+) => mockServer.use(...mockIsmeroppfolging(isVurderingssideKartleggingEnabled));
 
 export const stubVurderSvarError = () =>
   mockServer.use(

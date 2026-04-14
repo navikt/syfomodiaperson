@@ -86,10 +86,27 @@ export const kartleggingssporsmalFerdigbehandlet: KartleggingssporsmalKandidatRe
     varsletAt: daysFromToday(-20),
   };
 
+export const kartleggingssporsmalVurderingFerdigbehandlet: KartleggingssporsmalKandidatResponseDTO =
+  {
+    ...kartleggingIsKandidatAndReceivedQuestions,
+    status: KandidatStatus.FERDIGBEHANDLET,
+    vurdering: {
+      vurdertAt: daysFromToday(-14),
+      vurdertBy: VEILEDER_DEFAULT.ident,
+      vurderingAlternativ: "IKKE_RISIKO_FOR_LANGTIDSFRAVAR",
+    },
+    createdAt: daysFromToday(-20),
+    statusAt: daysFromToday(-20),
+    svarAt: daysFromToday(-15),
+    varsletAt: daysFromToday(-20),
+  };
+
 let kartleggingssporsmalMock: KartleggingssporsmalKandidatResponseDTO =
   kartleggingIsKandidatAndAnsweredQuestions;
 
-export const mockIsmeroppfolging = [
+export const mockIsmeroppfolging = (
+  isVurderingssideKartleggingEnabled?: boolean
+) => [
   http.get(`${ISMEROPPFOLGING_ROOT}/senoppfolging/kandidater`, () => {
     return HttpResponse.json([
       senOppfolgingKandidatMock,
@@ -121,14 +138,22 @@ export const mockIsmeroppfolging = [
   http.get(`${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater`, () => {
     return HttpResponse.json([
       kartleggingssporsmalMock,
-      kartleggingssporsmalFerdigbehandlet,
+      isVurderingssideKartleggingEnabled
+        ? kartleggingssporsmalVurderingFerdigbehandlet
+        : kartleggingssporsmalFerdigbehandlet,
     ]);
   }),
   http.put(
     `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater/:kandidatUUID`,
     () => {
-      kartleggingssporsmalMock = kartleggingssporsmalFerdigbehandlet;
-      return HttpResponse.json(kartleggingssporsmalFerdigbehandlet);
+      kartleggingssporsmalMock = isVurderingssideKartleggingEnabled
+        ? kartleggingssporsmalVurderingFerdigbehandlet
+        : kartleggingssporsmalFerdigbehandlet;
+      return HttpResponse.json(
+        isVurderingssideKartleggingEnabled
+          ? kartleggingssporsmalVurderingFerdigbehandlet
+          : kartleggingssporsmalFerdigbehandlet
+      );
     }
   ),
 ];

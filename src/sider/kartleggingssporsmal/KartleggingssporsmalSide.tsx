@@ -35,6 +35,8 @@ import KartleggingssporsmalFlexjar from "@/sider/kartleggingssporsmal/Kartleggin
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
 import { KartleggingssporsmalHistorikk } from "@/sider/kartleggingssporsmal/historikk/KartleggingssporsmalHistorikk";
+import { KartleggingVurdering } from "@/sider/kartleggingssporsmal/vurdering/KartleggingVurdering.tsx";
+import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessAlert.tsx";
 
 const texts = {
   title: "Kartleggingsspørsmål",
@@ -42,8 +44,6 @@ const texts = {
   kandidat: "Spørsmålene ble sendt",
   svart: "Den sykmeldte svarte",
   ikkeSvart: "Den sykmeldte har ikke svart",
-  svarVurdert: "Svarene er vurdert",
-  svarVurdertAv: "Oppgaven er behandlet av",
   extraInfo:
     "Ved manglende svar vil vi automatisk sende et nytt varsel på SMS etter syv dager, du trenger ikke å purre manuelt. Den sykmeldte er ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på folketrygdloven § 8-8 dersom det ikke kommer inn et svar.",
   extraInfoReservert:
@@ -84,6 +84,16 @@ const texts = {
       "Sykmeldte som svarer at de tror de blir sykmeldt mer enn seks måneder, har dårlig relasjon til arbeidsgiver eller som er usikre på om de kommer tilbake til nåværende jobb, gir en indikasjon på behov for nærmere vurdering av oppfølgingsbehov. Dette vil ofte innebære at Nav bør ta kontakt med den sykmeldte og arbeidsgiver.",
     link: 'Bruk også "Bli kjent og forstå behov"',
     url: "https://navno.sharepoint.com/:u:/r/sites/fag-og-ytelser-veileder-for-arbeidsrettet-brukeroppfolging/SitePages/Start.aspx?csf=1&web=1&e=qc76DU#bli-kjent-og-forst%C3%A5-behov",
+  },
+  vurderingBox: {
+    heading: "Vurdering",
+    legend: "Velg alternativet som passer vurderingen",
+    RISIKO_FOR_LANGTIDSFRAVAR:
+      "Jeg vurderer at den sykmeldte har risiko for et langtidsfravær",
+    IKKE_RISIKO_FOR_LANGTIDSFRAVAR:
+      "Jeg vurderer at den sykmeldte ikke har risiko for et langtidsfravær",
+    button: "Lagre vurdering, fjern oppgaven",
+    error: "Du må velge et alternativ",
   },
 };
 
@@ -140,15 +150,19 @@ function trackAccordionApnet(isOpen: boolean, accordionTekst: string): void {
 }
 
 export default function KartleggingssporsmalSide(): ReactElement {
+  const { toggles } = useFeatureToggles();
+
   const getKandidater = useKartleggingssporsmalKandidaterQuery();
   const kandidater = getKandidater.data || [];
   const nyesteKandidat = kandidater[0];
+
   const getKartleggingssporsmalSvar =
     useKartleggingssporsmalSvarQuery(nyesteKandidat);
   const answeredQuestions = getKartleggingssporsmalSvar.data;
+
   const vurderSvar = useKartleggingssporsmalVurderSvar();
   const kontaktinformasjon = useKontaktinfoQuery();
-  const { toggles } = useFeatureToggles();
+
   const [feedbackDate] = useLocalStorageState<Date | null>(
     StoreKey.FLEXJAR_KARTLEGGGINSSPORSMAL_FEEDBACK_DATE
   );
@@ -165,6 +179,12 @@ export default function KartleggingssporsmalSide(): ReactElement {
     getKandidater.isError ||
     getKartleggingssporsmalSvar.isError ||
     kontaktinformasjon.isError;
+
+  const behandletWithoutVurdering =
+    nyesteKandidat?.status === "FERDIGBEHANDLET" &&
+    !nyesteKandidat?.vurdering?.vurderingAlternativ;
+  const showKartleggingVurdering =
+    toggles.isVurderingssideKartleggingEnabled && !behandletWithoutVurdering;
 
   return (
     <Side
@@ -195,42 +215,37 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     <KartleggingssporsmalSkjemasvar
                       formSnapshot={answeredQuestions.formSnapshot}
                     />
-                    {nyesteKandidat.status === KandidatStatus.SVAR_MOTTATT && (
+
+                    {!showKartleggingVurdering && (
                       <>
-                        <Button
-                          variant="primary"
-                          size="medium"
-                          onClick={() =>
-                            vurderSvar.mutate(nyesteKandidat.kandidatUuid)
-                          }
-                          loading={vurderSvar.isPending}
-                        >
-                          {texts.vurdereOppgaveText}
-                        </Button>
-                        {vurderSvar.isError && (
-                          <SkjemaInnsendingFeil
-                            bottomPadding={PaddingSize.NONE}
-                            error={vurderSvar.error}
-                          />
+                        {nyesteKandidat.status ===
+                          KandidatStatus.SVAR_MOTTATT && (
+                          <>
+                            <Button
+                              variant="primary"
+                              size="medium"
+                              onClick={() =>
+                                vurderSvar.mutate({
+                                  kandidatUuid: nyesteKandidat.kandidatUuid,
+                                })
+                              }
+                              loading={vurderSvar.isPending}
+                            >
+                              {texts.vurdereOppgaveText}
+                            </Button>
+                            {vurderSvar.isError && (
+                              <SkjemaInnsendingFeil
+                                bottomPadding={PaddingSize.NONE}
+                                error={vurderSvar.error}
+                              />
+                            )}
+                          </>
+                        )}
+                        {nyesteKandidat.status ===
+                          KandidatStatus.FERDIGBEHANDLET && (
+                          <SuccessAlert nyesteKandidat={nyesteKandidat} />
                         )}
                       </>
-                    )}
-                    {nyesteKandidat.status ===
-                      KandidatStatus.FERDIGBEHANDLET && (
-                      <Alert size="medium" variant="success">
-                        <BodyShort
-                          size="small"
-                          weight="semibold"
-                          className="mb-2"
-                        >
-                          {`${texts.svarVurdert} ${tilLesbarDatoMedArstall(
-                            nyesteKandidat.vurdering?.vurdertAt
-                          )}`}
-                        </BodyShort>
-                        <BodyShort size="small">
-                          {`${texts.svarVurdertAv} ${nyesteKandidat.vurdering?.vurdertBy}`}
-                        </BodyShort>
-                      </Alert>
                     )}
                   </>
                 ) : (
@@ -269,6 +284,10 @@ export default function KartleggingssporsmalSide(): ReactElement {
                   </>
                 )}
               </Box>
+              {showKartleggingVurdering &&
+                nyesteKandidat.status !== KandidatStatus.KANDIDAT && (
+                  <KartleggingVurdering nyesteKandidat={nyesteKandidat} />
+                )}
               <KartleggingssporsmalHistorikk
                 tidligereKandidater={kandidater.slice(1)}
               />
