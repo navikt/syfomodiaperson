@@ -13,6 +13,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/utils";
 import { ApiErrorException } from "@/api/errors";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
+import { VurderingAlternativ } from "@/sider/kartleggingssporsmal/types.ts";
 
 export const kartleggingssporsmalQueryKeys = {
   kartleggingssporsmalKandidat: (fnr: string) => [
@@ -69,9 +70,19 @@ export const useKartleggingssporsmalSvarQuery = (
 export const useKartleggingssporsmalVurderSvar = () => {
   const fnr = useValgtPersonident();
   const queryClient = useQueryClient();
-  const postVurderSvar = (kandidatUuid: string) => {
+  const postVurderSvar = ({
+    kandidatUuid,
+    vurderingAlternativ,
+  }: {
+    kandidatUuid: string;
+    vurderingAlternativ?: VurderingAlternativ;
+  }) => {
     const path = `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater/${kandidatUuid}`;
-    return put<KartleggingssporsmalKandidatResponseDTO>(path, {}, fnr);
+    return put<KartleggingssporsmalKandidatResponseDTO>(
+      path,
+      vurderingAlternativ ? { vurderingAlternativ: vurderingAlternativ } : {},
+      fnr
+    );
   };
   const kartleggingssporsmalKandidatQueryKey =
     kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr);

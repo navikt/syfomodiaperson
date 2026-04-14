@@ -13,13 +13,16 @@ import {
   kartleggingIsKandidatAndAnsweredQuestions,
   kartleggingIsKandidatAndReceivedQuestions,
   kartleggingssporsmalFerdigbehandlet,
+  kartleggingssporsmalVurderingFerdigbehandlet,
 } from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
 import { kartleggingssporsmalAnswered } from "@/mocks/meroppfolging-backend/merOppfolgingMock";
 import {
   ARBEIDSTAKER_DEFAULT,
+  BEHANDLENDE_ENHET_DEFAULT,
   VEILEDER_DEFAULT,
+  VEILEDER_IDENT_DEFAULT,
 } from "@/mocks/common/mockConstants";
-import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
+import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { renderWithRouter } from "../testRouterUtils";
 import { appRoutePath } from "@/AppRouter";
 import { screen } from "@testing-library/react";
@@ -36,6 +39,9 @@ import {
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { kontaktinformasjonMock } from "@/mocks/syfoperson/persondataMock";
 import { generateUUID } from "@/utils/utils";
+import { mockUnleashTogglesOffResponse } from "@/mocks/unleashMocks.ts";
+import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks.ts";
+import { ToggleNames } from "@/data/unleash/unleash_types.ts";
 
 let queryClient: QueryClient;
 
@@ -69,13 +75,32 @@ const mockKartleggingssporsmalSvar = (
   );
 };
 
+const mockEnabledToggles = (enabledToggles: ToggleNames[]) =>
+  queryClient.setQueryData(
+    unleashQueryKeys.toggles(
+      BEHANDLENDE_ENHET_DEFAULT.enhetId,
+      VEILEDER_IDENT_DEFAULT
+    ),
+    () => ({
+      ...mockUnleashTogglesOffResponse,
+      ...enabledToggles.reduce((accumulator, toggleName) => {
+        return { ...accumulator, [toggleName]: true };
+      }, {}),
+    })
+  );
+
 const renderKartleggingssporsmal = () => {
   renderWithRouter(
-    <ValgtEnhetProvider>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <ValgtEnhetContext.Provider
+        value={{
+          valgtEnhet: BEHANDLENDE_ENHET_DEFAULT.enhetId,
+          setValgtEnhet: () => void 0,
+        }}
+      >
         <KartleggingssporsmalSide />
-      </QueryClientProvider>
-    </ValgtEnhetProvider>,
+      </ValgtEnhetContext.Provider>
+    </QueryClientProvider>,
     `${appRoutePath}/kartleggingssporsmal`,
     [`${appRoutePath}/kartleggingssporsmal`]
   );
@@ -88,6 +113,7 @@ describe("Kartleggingssporsmal", () => {
       brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
       () => kontaktinformasjonMock
     );
+    mockEnabledToggles([]);
   });
 
   it("Sykmeldt is not kandidat", () => {
@@ -272,6 +298,41 @@ describe("Kartleggingssporsmal", () => {
     expect(
       screen.queryByText(`Oppgaven er behandlet av ${VEILEDER_DEFAULT.ident}`)
     ).to.exist;
+
+    expect(screen.queryByText(`Velg alternativet som passer vurderingen`)).to
+      .not.exist;
+  });
+
+  it("Sykmeldt is ferdigbehandlet with vurdering", () => {
+    mockEnabledToggles([ToggleNames.isVurderingssideKartleggingEnabled]);
+
+    mockKartleggingssporsmalKandidat(
+      kartleggingssporsmalVurderingFerdigbehandlet,
+      ARBEIDSTAKER_DEFAULT.personIdent
+    );
+    mockKartleggingssporsmalSvar(
+      kartleggingssporsmalAnswered,
+      kartleggingssporsmalVurderingFerdigbehandlet.kandidatUuid
+    );
+
+    renderKartleggingssporsmal();
+
+    expect(screen.queryByText("Den sykmeldte svarte", { exact: false })).to
+      .exist;
+    expect(screen.queryByText("Spørsmålene ble sendt", { exact: false })).to
+      .exist;
+    expect(screen.queryByText("Slik ser spørsmålene ut for den sykmeldte")).to
+      .exist;
+
+    expect(
+      screen.queryByText(`Oppgaven er behandlet av ${VEILEDER_DEFAULT.ident}`)
+    ).to.exist;
+
+    expect(
+      screen.queryByText(
+        `Jeg vurderer at den sykmeldte ikke har risiko for et langtidsfravær`
+      )
+    ).to.exist;
   });
 
   describe("Evaluate answers to kartleggingsspørsmål", () => {
@@ -284,7 +345,7 @@ describe("Kartleggingssporsmal", () => {
         kartleggingssporsmalAnswered,
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
-      stubDefaultIsmeroppfolging();
+      stubDefaultIsmeroppfolging(false);
 
       renderKartleggingssporsmal();
 
@@ -307,6 +368,80 @@ describe("Kartleggingssporsmal", () => {
       renderKartleggingssporsmal();
 
       await clickButton("Svarene er vurdert, fjern oppgaven");
+      expect(
+        await screen.findByText(
+          "Det skjedde en uventet feil. Vennligst prøv igjen senere."
+        )
+      ).to.exist;
+    });
+  });
+
+  describe("Evaluate answers to kartleggingsspørsmål with vurdering", () => {
+    it("Submitting without choosing an option shows error message", async () => {
+      mockEnabledToggles([ToggleNames.isVurderingssideKartleggingEnabled]);
+
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalAnswered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+      );
+      stubVurderSvarError();
+
+      renderKartleggingssporsmal();
+
+      await clickButton("Lagre vurdering, fjern oppgaven");
+      expect(await screen.findByText("Du må velge et alternativ")).to.exist;
+    });
+
+    it("API returning Ok will show success message", async () => {
+      mockEnabledToggles([ToggleNames.isVurderingssideKartleggingEnabled]);
+
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalAnswered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+      );
+      stubDefaultIsmeroppfolging(true);
+
+      renderKartleggingssporsmal();
+
+      await screen
+        .getByLabelText(
+          "Jeg vurderer at den sykmeldte har risiko for et langtidsfravær"
+        )
+        .click();
+      await clickButton("Lagre vurdering, fjern oppgaven");
+      expect(await screen.findByText("Oppgaven er behandlet av Z990000")).to
+        .exist;
+    });
+
+    it("API returning error will show error message", async () => {
+      mockEnabledToggles([ToggleNames.isVurderingssideKartleggingEnabled]);
+
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalAnswered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+      );
+      stubVurderSvarError();
+
+      renderKartleggingssporsmal();
+
+      await screen
+        .getByLabelText(
+          "Jeg vurderer at den sykmeldte har risiko for et langtidsfravær"
+        )
+        .click();
+      await clickButton("Lagre vurdering, fjern oppgaven");
       expect(
         await screen.findByText(
           "Det skjedde en uventet feil. Vennligst prøv igjen senere."
@@ -346,7 +481,8 @@ describe("Kartleggingssporsmal", () => {
 
       renderKartleggingssporsmal();
 
-      expect(screen.queryByText("Historikk")).to.not.exist;
+      expect(screen.queryByRole("heading", { level: 2, name: "Historikk" })).to
+        .not.exist;
     });
 
     it("renders nothing when previous kandidater have not answered", () => {
@@ -361,7 +497,8 @@ describe("Kartleggingssporsmal", () => {
 
       renderKartleggingssporsmal();
 
-      expect(screen.queryByText("Historikk")).to.not.exist;
+      expect(screen.queryByRole("heading", { level: 2, name: "Historikk" })).to
+        .not.exist;
     });
 
     it("renders historikk header when there are previous kandidater with svar", () => {
@@ -380,7 +517,8 @@ describe("Kartleggingssporsmal", () => {
 
       renderKartleggingssporsmal();
 
-      expect(screen.getByText("Historikk")).to.exist;
+      expect(screen.queryByRole("heading", { level: 2, name: "Historikk" })).to
+        .exist;
       expect(screen.getByText("Tidligere svar på kartleggingsspørsmål")).to
         .exist;
     });
