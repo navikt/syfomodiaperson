@@ -55,7 +55,7 @@ export default function BehandleMotebehovKnapp() {
     fjerneDuplikatInnsendereMotebehov(ubehandledeMotebehov);
 
   const vurderMotebehov = useVurderMotebehov();
-  const [harMoteBehov, setHarMoteBehov] = useState(false);
+  const [harMoteBehov, setHarMoteBehov] = useState(true);
 
   const tilbakemeldinger = unikeInnsendereUbehandledeMotebehov.map(
     (motebehov) => toMotebehovTilbakemeldingDTO(motebehov, texts.tilbakemelding)
@@ -68,19 +68,19 @@ export default function BehandleMotebehovKnapp() {
     <VStack className="flex gap-4">
       {minstEnHarMeldtBehov && <HjelpetekstVedMeldtBehov />}
       <RadioGroup
-        defaultValue={false}
+        defaultValue={true}
         size="small"
         legend={texts.radioLegend}
         onChange={(value) => setHarMoteBehov(value)}
       >
         <Radio
-          value={false}
+          value={true}
           description={texts.vurderBehovForDialogmoteRadioBtnDescription}
         >
           {texts.vurderBehovForDialogmoteRadioBtn}
         </Radio>
         <Radio
-          value={true}
+          value={false}
           description={texts.vurderIkkeBehovForDialogmoteRadioBtnDescription}
         >
           {texts.vurderIkkeBehovForDialogmoteRadioBtn}
