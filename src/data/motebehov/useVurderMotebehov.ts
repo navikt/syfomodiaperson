@@ -5,6 +5,7 @@ import { post } from "@/api/axios";
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
+import { dialogmotekandidatQueryKeys } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks.ts";
 
 export interface MotebehovTilbakemeldingDTO {
   varseltekst: string;
@@ -41,9 +42,13 @@ export function useVurderMotebehov() {
         );
       }
     },
-    onSettled: () =>
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: motebehovQueryKey,
-      }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: dialogmotekandidatQueryKeys.avvent(fnr),
+      });
+    },
   });
 }
