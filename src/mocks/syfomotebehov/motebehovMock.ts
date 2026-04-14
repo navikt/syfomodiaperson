@@ -302,8 +302,17 @@ export const meldtMotebehovArbeidsgiverBehandletMock = {
   ),
 };
 
-export const motebehovMock = [
+// used by both mockSyfomotebehov and mockIsdialogmote
+export let motebehovMock = [
   svartJaMotebehovArbeidstakerUbehandletMock,
   meldtMotebehovArbeidstakerBehandletMock(),
   svartNeiMotebehovArbeidsgiverUbehandletMock(),
 ];
+
+export function getMotebehovMock() {
+  return motebehovMock;
+}
+
+export function setMotebehovMock(newMock: MotebehovVeilederDTO[]) {
+  motebehovMock = newMock;
+}

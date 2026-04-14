@@ -1,4 +1,4 @@
-import { ISDIALOGMOTEKANDIDAT_ROOT } from "@/apiConstants";
+import { ISDIALOGMOTE_ROOT, ISDIALOGMOTEKANDIDAT_ROOT } from "@/apiConstants";
 import { post } from "@/api/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateIkkeAktuellDTO } from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
@@ -10,13 +10,14 @@ export const useSettDialogmoteIkkeAktuell = () => {
   const queryClient = useQueryClient();
   const personident = useValgtPersonident();
 
-  const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/ikkeaktuell/personident`;
-  const postSettDialogmoteikkeaktuell = (
-    newIkkeAktuellDTO: CreateIkkeAktuellDTO
-  ) => post(path, newIkkeAktuellDTO);
+  const setIkkeAktuellPath = `${ISDIALOGMOTEKANDIDAT_ROOT}/ikkeaktuell/personident`;
+  const lukkAvventPath = `${ISDIALOGMOTE_ROOT}/avvent/lukk`;
 
   return useMutation({
-    mutationFn: postSettDialogmoteikkeaktuell,
+    mutationFn: async (newIkkeAktuellDTO: CreateIkkeAktuellDTO) => {
+      await post(setIkkeAktuellPath, newIkkeAktuellDTO);
+      await post(lukkAvventPath, { personident });
+    },
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: dialogmotekandidatQueryKeys.kandidat(personident),

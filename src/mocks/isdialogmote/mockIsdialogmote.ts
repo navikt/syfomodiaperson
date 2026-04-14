@@ -11,8 +11,19 @@ import {
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import dayjs from "dayjs";
 import { http, HttpResponse } from "msw";
+import { VEILEDER_IDENT_DEFAULT } from "@/mocks/common/mockConstants";
+import {
+  getMotebehovMock,
+  setMotebehovMock,
+} from "@/mocks/syfomotebehov/motebehovMock";
 
 let mockedDialogmoter = dialogmoterMock;
+
+let avventMock: {
+  frist: string;
+  createdBy: string;
+  beskrivelse: string | null;
+}[] = [];
 
 export const mockIsdialogmote = [
   http.post(`${ISDIALOGMOTE_ROOT}/dialogmote/personident`, () => {
@@ -28,7 +39,7 @@ export const mockIsdialogmote = [
   }),
 
   http.get(`${ISDIALOGMOTE_ROOT}/dialogmote/personident`, () => {
-    return HttpResponse.json(mockedDialogmoter);
+    return HttpResponse.json([]);
   }),
 
   http.get(
@@ -97,4 +108,41 @@ export const mockIsdialogmote = [
       return new HttpResponse(null, { status: 200 });
     }
   ),
+
+  http.post(`${ISDIALOGMOTE_ROOT}/avvent`, async ({ request }) => {
+    const body = (await request.json()) as {
+      personIdent: string;
+      frist: string;
+      beskrivelse?: string;
+    };
+
+    const nyAvvent = {
+      frist: body.frist,
+      createdBy: VEILEDER_IDENT_DEFAULT,
+      beskrivelse: body.beskrivelse ?? null,
+    };
+
+    avventMock = [nyAvvent, ...avventMock];
+
+    return HttpResponse.json(nyAvvent, { status: 200 });
+  }),
+
+  http.post(`${ISDIALOGMOTE_ROOT}/avvent/query`, () => {
+    return HttpResponse.json(avventMock);
+  }),
+
+  http.post(`${ISDIALOGMOTE_ROOT}/avvent/lukk`, () => {
+    avventMock = [];
+    return new HttpResponse(null, { status: 200 });
+  }),
+
+  http.post(`${ISDIALOGMOTE_ROOT}/motebehov/vurderinger`, () => {
+    const mockedMotebehov = getMotebehovMock().map((motebehov) => ({
+      ...motebehov,
+      behandletTidspunkt: new Date(),
+      behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
+    }));
+    setMotebehovMock(mockedMotebehov);
+    return new HttpResponse(null, { status: 200 });
+  }),
 ];

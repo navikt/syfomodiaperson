@@ -7,7 +7,7 @@ import {
   SvarMotebehov,
 } from "@/data/motebehov/types/motebehovTypes";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { MotebehovTilbakemeldingDTO } from "@/data/motebehov/useBehandleMotebehovAndSendTilbakemelding";
+import { MotebehovTilbakemeldingDTO } from "@/data/motebehov/useVurderMotebehov";
 
 export const sorterMotebehovDataEtterDatoDesc = (
   a: MotebehovVeilederDTO,

@@ -1,4 +1,4 @@
-import { ISDIALOGMOTEKANDIDAT_ROOT } from "@/apiConstants";
+import { ISDIALOGMOTE_ROOT, ISDIALOGMOTEKANDIDAT_ROOT } from "@/apiConstants";
 import { post } from "@/api/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateUnntakDTO } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
@@ -10,12 +10,14 @@ export const useSettDialogmoteunntak = () => {
   const queryClient = useQueryClient();
   const personident = useValgtPersonident();
 
-  const path = `${ISDIALOGMOTEKANDIDAT_ROOT}/unntak/personident`;
-  const postSettDialogmoteunntak = (newUnntakDTO: CreateUnntakDTO) =>
-    post(path, newUnntakDTO);
+  const setUnntakPath = `${ISDIALOGMOTEKANDIDAT_ROOT}/unntak/personident`;
+  const lukkAvventPath = `${ISDIALOGMOTE_ROOT}/avvent/lukk`;
 
   return useMutation({
-    mutationFn: postSettDialogmoteunntak,
+    mutationFn: async (newUnntakDTO: CreateUnntakDTO) => {
+      await post(setUnntakPath, newUnntakDTO);
+      await post(lukkAvventPath, { personident });
+    },
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: dialogmotekandidatQueryKeys.kandidat(personident),

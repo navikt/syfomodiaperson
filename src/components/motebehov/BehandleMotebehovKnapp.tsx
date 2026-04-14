@@ -8,7 +8,7 @@ import {
   toMotebehovTilbakemeldingDTO,
 } from "@/utils/motebehovUtils";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
-import { useBehandleMotebehov } from "@/data/motebehov/useBehandleMotebehov";
+import { useVurderMotebehov } from "@/data/motebehov/useVurderMotebehov";
 import {
   BodyShort,
   Button,
@@ -17,7 +17,6 @@ import {
   ReadMore,
   VStack,
 } from "@navikt/ds-react";
-import { useBehandleMotebehovAndSendTilbakemelding } from "@/data/motebehov/useBehandleMotebehovAndSendTilbakemelding";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { CheckmarkCircleFillIcon } from "@navikt/aksel-icons";
@@ -55,10 +54,8 @@ export default function BehandleMotebehovKnapp() {
   const unikeInnsendereUbehandledeMotebehov =
     fjerneDuplikatInnsendereMotebehov(ubehandledeMotebehov);
 
-  const behandleMotebehov = useBehandleMotebehov();
-  const behandleMotebehovAndSendTilbakemelding =
-    useBehandleMotebehovAndSendTilbakemelding();
-  const [isTilbakemelding, setIsTilbakemelding] = useState(false);
+  const vurderMotebehov = useVurderMotebehov();
+  const [harMoteBehov, setharMoteBehov] = useState(true);
 
   const tilbakemeldinger = unikeInnsendereUbehandledeMotebehov.map(
     (motebehov) => toMotebehovTilbakemeldingDTO(motebehov, texts.tilbakemelding)
@@ -71,24 +68,24 @@ export default function BehandleMotebehovKnapp() {
     <VStack className="flex gap-4">
       {minstEnHarMeldtBehov && <HjelpetekstVedMeldtBehov />}
       <RadioGroup
-        defaultValue={false}
+        defaultValue={true}
         size="small"
         legend={texts.radioLegend}
-        onChange={(value) => setIsTilbakemelding(value)}
+        onChange={(value) => setharMoteBehov(value)}
       >
         <Radio
-          value={false}
+          value={true}
           description={texts.vurderBehovForDialogmoteRadioBtnDescription}
         >
           {texts.vurderBehovForDialogmoteRadioBtn}
         </Radio>
         <Radio
-          value={true}
+          value={false}
           description={texts.vurderIkkeBehovForDialogmoteRadioBtnDescription}
         >
           {texts.vurderIkkeBehovForDialogmoteRadioBtn}
         </Radio>
-        {isTilbakemelding && (
+        {!harMoteBehov && (
           <ReadMore
             size="small"
             header={
@@ -100,27 +97,17 @@ export default function BehandleMotebehovKnapp() {
           </ReadMore>
         )}
       </RadioGroup>
-      {(behandleMotebehov.isError ||
-        behandleMotebehovAndSendTilbakemelding.isError) && (
-        <SkjemaInnsendingFeil
-          error={
-            behandleMotebehov.error ||
-            behandleMotebehovAndSendTilbakemelding.isError
-          }
-        />
+      {vurderMotebehov.isError && (
+        <SkjemaInnsendingFeil error={vurderMotebehov.error} />
       )}
       <Button
         className="w-max"
-        loading={
-          behandleMotebehovAndSendTilbakemelding.isPending ||
-          behandleMotebehov.isPending
-        }
+        loading={vurderMotebehov.isPending}
         onClick={() => {
-          if (isTilbakemelding) {
-            behandleMotebehovAndSendTilbakemelding.mutate(tilbakemeldinger);
-          } else {
-            behandleMotebehov.mutate();
-          }
+          vurderMotebehov.mutate({
+            harBehovForMote: harMoteBehov,
+            tilbakemeldinger: harMoteBehov ? [] : tilbakemeldinger,
+          });
         }}
       >
         Bekreft
