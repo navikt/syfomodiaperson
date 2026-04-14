@@ -55,7 +55,7 @@ export default function BehandleMotebehovKnapp() {
     fjerneDuplikatInnsendereMotebehov(ubehandledeMotebehov);
 
   const vurderMotebehov = useVurderMotebehov();
-  const [harMoteBehov, setHarMoteBehov] = useState(true);
+  const [harMoteBehov, setharMoteBehov] = useState(true);
 
   const tilbakemeldinger = unikeInnsendereUbehandledeMotebehov.map(
     (motebehov) => toMotebehovTilbakemeldingDTO(motebehov, texts.tilbakemelding)
@@ -71,7 +71,7 @@ export default function BehandleMotebehovKnapp() {
         defaultValue={true}
         size="small"
         legend={texts.radioLegend}
-        onChange={(value) => setHarMoteBehov(value)}
+        onChange={(value) => setharMoteBehov(value)}
       >
         <Radio
           value={true}
@@ -85,7 +85,7 @@ export default function BehandleMotebehovKnapp() {
         >
           {texts.vurderIkkeBehovForDialogmoteRadioBtn}
         </Radio>
-        {harMoteBehov && (
+        {!harMoteBehov && (
           <ReadMore
             size="small"
             header={
