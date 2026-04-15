@@ -71,7 +71,7 @@ const texts = {
   veiledningBox: {
     heading: "Veiledning",
     intro:
-      "Svarene fra den sykmeldte skal hjelpe deg å tidlig identifisere personer som står i fare for et langvarig sykefravær eller å falle ut av arbeidslivet. " +
+      "Svarene fra den sykmeldte skal hjelpe deg å tidlig identifisere personer som står i fare for et langvarig sykefravær eller å falle ut av arbeidslivet.\n\n" +
       "Det sykmeldte svarer om forhold på arbeidsplassen er taushetsbelagt informasjon og skal ikke deles med arbeidsgiver.",
     accordion1: "Slik vurderer du svarene",
     info1:
@@ -278,7 +278,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                 <Heading level="2" size="medium">
                   {texts.veiledningBox.heading}
                 </Heading>
-                <BodyLong size="small" className="mb-4">
+                <BodyLong size="small" className="mb-4 whitespace-pre-line">
                   {texts.veiledningBox.intro}
                 </BodyLong>
                 <Accordion size="small">
