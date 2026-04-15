@@ -71,7 +71,8 @@ const texts = {
   veiledningBox: {
     heading: "Veiledning",
     intro:
-      "Svarene fra den sykmeldte skal hjelpe deg å tidlig identifisere personer som står i fare for et langvarig sykefravær eller å falle ut av arbeidslivet.",
+      "Svarene fra den sykmeldte skal hjelpe deg å tidlig identifisere personer som står i fare for et langvarig sykefravær eller å falle ut av arbeidslivet. " +
+      "Det sykmeldte svarer om forhold på arbeidsplassen er taushetsbelagt informasjon og skal ikke deles med arbeidsgiver.",
     accordion1: "Slik vurderer du svarene",
     info1:
       "Spørsmålene tar utgangspunkt i kjente risikofaktorer, og svarene vil derfor gi en indikasjon på hvem som trenger videre vurdering av oppfølgingsbehov. Svarene må ses i sammenheng med andre opplysninger Nav har om situasjonen til den sykmeldte.",
