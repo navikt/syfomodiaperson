@@ -7,14 +7,17 @@ interface Props {
 }
 
 export function KartleggingssporsmalTextSvar({ textSvar }: Props) {
+  const isEmpty = !textSvar.value.trim();
+
   return (
     <Textarea
       label={textSvar.label}
       description={textSvar.description}
-      value={textSvar.value}
+      value={isEmpty ? "Ingen tekst" : textSvar.value}
       size={"small"}
       readOnly={true}
       minRows={1}
+      className={isEmpty ? "[&_textarea]:italic" : undefined}
     />
   );
 }
