@@ -1,11 +1,9 @@
 import React, { ReactElement } from "react";
 import Oppsummeringsvisning from "../soknad-felles-oppsummering/Oppsummeringsvisning";
 import {
-  Soknadstatus,
   Soknadstype,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import KorrigertAv from "../soknad-arbeidstaker/KorrigertAv";
 import { RelaterteSoknader } from "../soknad-arbeidstaker/RelaterteSoknader";
 import { erTilSlutt } from "@/utils/sykepengesoknadUtils";
 import { Box, Heading } from "@navikt/ds-react";
@@ -41,9 +39,6 @@ export default function SendtSoknadArbeidstakerNy({
       <Heading level="1" size="large">
         {texts.tittel}
       </Heading>
-      {soknad.status === Soknadstatus.KORRIGERT && (
-        <KorrigertAv soknadId={soknad.id} />
-      )}
       <div className="mb-5">
         <Heading size="xsmall" level="3" className="mb-1">
           {texts.status}
