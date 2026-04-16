@@ -4,7 +4,7 @@ import { FriskmeldingDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BodyShort, Checkbox, VStack } from "@navikt/ds-react";
 
 const tekster = {
-  header: "8 uker: Pasient med arbeidsgiver, utdypende opplysninger",
+  header: "Pasient med arbeidsgiver, utdypende opplysninger",
   returSammeArbeidsgiver:
     "Jeg antar at pasienten på sikt kan komme tilbake til samme arbeidsgiver",
   datoSporsmal: "Anslå når du tror dette kan skje",
