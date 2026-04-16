@@ -1,10 +1,6 @@
 import React, { ReactElement } from "react";
 import Oppsummeringsvisning from "../soknad-felles-oppsummering/Oppsummeringsvisning";
-import {
-  Soknadstatus,
-  SykepengesoknadDTO,
-} from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import KorrigertAv from "../soknad-arbeidstaker/KorrigertAv";
+import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { RelaterteSoknader } from "../soknad-arbeidstaker/RelaterteSoknader";
 import { SykmeldingUtdragContainer } from "../SykmeldingUtdragContainer";
 import { Box, Heading } from "@navikt/ds-react";
@@ -28,9 +24,6 @@ export default function SykepengesoknadReisetilskudd({
       <Heading level="1" size="large">
         {texts.tittel}
       </Heading>
-      {soknad.status === Soknadstatus.KORRIGERT && (
-        <KorrigertAv soknadId={soknad.id} />
-      )}
       <SykepengesoknadStatuspanel soknad={soknad} />
       <SykmeldingUtdragContainer soknad={soknad} />
       <Box background="default" padding="space-24" className="mb-8">
