@@ -1,4 +1,5 @@
 import { KartleggingssporsmalFormSnapshot } from "@/data/kartleggingssporsmal/kartleggingssporsmalSkjemasvarTypes";
+import { VurderingAlternativ } from "@/sider/kartleggingssporsmal/types.ts";
 
 export interface KartleggingssporsmalKandidatResponseDTO {
   kandidatUuid: string;
@@ -14,6 +15,7 @@ export interface KartleggingssporsmalKandidatResponseDTO {
 export interface KartleggingssporsmalKandidatVurderingResponseDTO {
   vurdertAt: Date;
   vurdertBy: string;
+  vurderingAlternativ?: VurderingAlternativ;
 }
 
 export enum KandidatStatus {
