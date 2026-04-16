@@ -109,7 +109,7 @@ const proxyOnBehalfOf = (
       return proxyExternalHost(
         externalAppConfig,
         accessToken,
-        req.method === "POST",
+        ["POST", "PUT", "PATCH"].includes(req.method),
         rewritePath
       )(req, res, next);
     })
