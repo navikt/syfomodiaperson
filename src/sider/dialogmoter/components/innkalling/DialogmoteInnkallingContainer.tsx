@@ -17,10 +17,13 @@ import { MalformProvider } from "@/context/malform/MalformContext";
 import DialogmoteInnkallingSkjema from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingSkjema";
 import MotebehovHistorikk from "@/sider/dialogmoter/components/motehistorikk/MotebehovHistorikk";
 import { useGetDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
+import { Alert } from "@navikt/ds-react";
 
 const texts = {
   title: "Innkalling til dialogmøte",
   tilbake: "Tilbake",
+  ikkeSykmeldtAlert:
+    "Denne funksjonaliteten skal kun benyttes på sykmeldte som følges opp etter kapittel 8 i folketrygdloven. Du kan sende innkalling selv om den sykmeldte ikke har digital sykmelding.",
 };
 
 function DialogmoteInnkallingSide(): ReactElement {
@@ -46,6 +49,7 @@ export default function DialogmoteInnkallingContainer(): ReactElement {
     isLoading: henterOppfolgingstilfeller,
     isError: hentingOppfolgingstilfellerFeilet,
   } = useOppfolgingstilfellePersonQuery();
+  const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
   if (aktivtDialogmote) {
     return <Navigate to={moteoversiktRoutePath} />;
@@ -59,6 +63,17 @@ export default function DialogmoteInnkallingContainer(): ReactElement {
     <Side tittel={texts.title} aktivtMenypunkt={Menypunkter.DIALOGMOTE}>
       <SideLaster isLoading={henter} isError={hentingFeilet}>
         <Sidetopp tittel={texts.title} />
+
+        {!hasActiveOppfolgingstilfelle && (
+          <Alert
+            variant="warning"
+            size="small"
+            className="mb-4 [&>*]:max-w-fit"
+          >
+            {texts.ikkeSykmeldtAlert}
+          </Alert>
+        )}
+
         <Tredelt.Container>
           <Tredelt.FirstColumn>
             <MalformProvider>

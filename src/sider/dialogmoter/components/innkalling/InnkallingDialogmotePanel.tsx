@@ -6,10 +6,9 @@ import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/sider/dialogmoter/compo
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useDialogmotekandidat } from "@/data/dialogmotekandidat/dialogmotekandidatQueryHooks";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
-import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { harUbehandletMotebehov } from "@/utils/motebehovUtils";
-import { Alert, BodyShort, Button } from "@navikt/ds-react";
+import { BodyShort, Button } from "@navikt/ds-react";
 import {
   dialogmoteIkkeAktuellRoutePath,
   dialogmoteRoutePath,
@@ -33,8 +32,6 @@ const texts = {
   nyttMote: "Nytt dialogmøte",
   ikkeAktuell: "Ikke aktuell",
   avvent: "Avvent",
-  ikkeSykmeldtAlert:
-    "Denne funksjonaliteten skal kun benyttes på sykmeldte som følges opp etter kapittel 8 i folketrygdloven. Du kan sende innkalling selv om den sykmeldte ikke har digital sykmelding.",
 };
 
 function NyttDialogmoteButton() {
@@ -82,7 +79,6 @@ export default function InnkallingDialogmotePanel({
   aktivtDialogmote,
 }: Props): ReactElement {
   const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
-  const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const { isKandidat, avvent } = useDialogmotekandidat();
   const { data: motebehovData } = useMotebehovQuery();
   const [visAvventModal, setVisAvventModal] = useState(false);
@@ -117,15 +113,6 @@ export default function InnkallingDialogmotePanel({
         >
           {brukerKanIkkeVarslesDigitalt && (
             <BrukerKanIkkeVarslesPapirpostAdvarsel />
-          )}
-          {!hasActiveOppfolgingstilfelle && (
-            <Alert
-              variant="warning"
-              size="small"
-              className="mb-4 [&>*]:max-w-fit"
-            >
-              {texts.ikkeSykmeldtAlert}
-            </Alert>
           )}
 
           <div className="flex flex-row gap-4">
