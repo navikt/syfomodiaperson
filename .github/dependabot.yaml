@@ -1,4 +1,16 @@
 version: 2
+
+registries:
+  npmjs:
+    type: npm-registry
+    url: https://registry.npmjs.org
+
+  github-packages:
+    type: npm-registry
+    url: https://npm.pkg.github.com
+    token: ${{ secrets.NPM_AUTH_TOKEN }}
+    replaces-base: false
+
 updates:
   - package-ecosystem: github-actions
     directory: "/"
@@ -9,11 +21,14 @@ updates:
 
   - package-ecosystem: npm
     directory: "/"
+    registries:
+      - npmjs
+      - github-packages
     schedule:
       interval: weekly
     open-pull-requests-limit: 10
     ignore:
-      - dependency-name: 'nav-frontend*'
+      - dependency-name: "nav-frontend*"
     groups:
       minor-and-patch:
         patterns:
