@@ -90,6 +90,7 @@ export default function InnkallingDialogmotePanel({
     return (
       <>
         <DialogmoteAvventModal
+          isKandidat={isKandidat}
           isOpen={visAvventModal}
           onClose={() => setVisAvventModal(false)}
         />

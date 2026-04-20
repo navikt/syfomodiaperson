@@ -1,10 +1,10 @@
 import React, { ReactElement } from "react";
 import {
-  Modal,
-  Button,
-  Textarea,
   BodyShort,
+  Button,
   DatePicker,
+  Modal,
+  Textarea,
   useDatepicker,
 } from "@navikt/ds-react";
 import { useForm } from "react-hook-form";
@@ -14,14 +14,14 @@ import dayjs from "dayjs";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
 
 const now = new Date();
+const inThreeWeeks = dayjs(now).add(3, "weeks").toDate();
 const inTwoMonths = dayjs(now).add(2, "months").toDate();
-const invalidDateMessage = `Vennligst angi en gyldig dato i intervallet ${toDatePrettyPrint(
-  now
-)} - ${toDatePrettyPrint(inTwoMonths)}`;
 
 const texts = {
   header: "Avvent",
   body: "Informasjonen du oppgir her vil kun brukes til videre saksbehandling. Ingenting sendes videre til arbeidstaker eller arbeidsgiver.",
+  deadlineDescription:
+    "Det forventes at et meldt behov for et dialogmøte besvares innen rimelig tid. Det er derfor ikke mulig å avvente behandlingen av behovet mer enn 3 uker frem i tid.",
   begrunnelse: {
     label: "Beskrivelse",
     description: "Beskrivelse for årsaken til at dialogmøtet avventes",
@@ -38,6 +38,7 @@ const texts = {
 const begrunnelseMaxLength = 300;
 
 interface Props {
+  isKandidat: boolean;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -48,6 +49,7 @@ interface SkjemaValues {
 }
 
 export function DialogmoteAvventModal({
+  isKandidat,
   isOpen,
   onClose,
 }: Props): ReactElement {
@@ -61,6 +63,12 @@ export function DialogmoteAvventModal({
     formState: { errors },
   } = useForm<SkjemaValues>();
 
+  const deadline = isKandidat ? inTwoMonths : inThreeWeeks;
+  const invalidDateMessage = (deadline: Date) =>
+    `Vennligst angi en gyldig dato i intervallet ${toDatePrettyPrint(
+      now
+    )} - ${toDatePrettyPrint(deadline)}`;
+
   const { datepickerProps, inputProps } = useDatepicker({
     onDateChange: (date) => {
       if (date) {
@@ -72,18 +80,18 @@ export function DialogmoteAvventModal({
       }
     },
     fromDate: now,
-    toDate: inTwoMonths,
+    toDate: deadline,
   });
 
   register("frist", {
-    required: invalidDateMessage,
+    required: invalidDateMessage(deadline),
     validate: (value) => {
-      if (!value) return invalidDateMessage;
+      if (!value) return invalidDateMessage(deadline);
       const selectedDate = dayjs(value).startOf("day");
-      const maxDate = dayjs(inTwoMonths).startOf("day");
+      const maxDate = dayjs(deadline).startOf("day");
       const minDate = dayjs(now).startOf("day");
       if (selectedDate.isAfter(maxDate) || selectedDate.isBefore(minDate)) {
-        return invalidDateMessage;
+        return invalidDateMessage(deadline);
       }
       return true;
     },
@@ -116,9 +124,14 @@ export function DialogmoteAvventModal({
     >
       <Modal.Body className="min-w-[600px] p-8">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <BodyShort className="mb-8" size="small">
+          <BodyShort className="mb-2" size="small">
             {texts.body}
           </BodyShort>
+          {!isKandidat && (
+            <BodyShort className="mb-8" size="small">
+              {texts.deadlineDescription}
+            </BodyShort>
+          )}
 
           <Textarea
             className="mb-4"
