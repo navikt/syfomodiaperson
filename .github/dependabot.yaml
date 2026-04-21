@@ -1,10 +1,6 @@
 version: 2
 
 registries:
-  npmjs:
-    type: npm-registry
-    url: https://registry.npmjs.org
-
   github-packages:
     type: npm-registry
     url: https://npm.pkg.github.com
@@ -22,7 +18,6 @@ updates:
   - package-ecosystem: npm
     directory: "/"
     registries:
-      - npmjs
       - github-packages
     schedule:
       interval: weekly
