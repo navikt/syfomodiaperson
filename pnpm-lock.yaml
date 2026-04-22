@@ -43,8 +43,8 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1(@navikt/ds-css@8.6.0)(@navikt/ds-react@8.6.0(@types/react@19.2.14)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@navikt/navspa':
-        specifier: 7.4.0
-        version: 7.4.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        specifier: 7.5.0
+        version: 7.5.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@tanstack/react-query':
         specifier: 5.90.21
         version: 5.90.21(react@19.2.1)
@@ -1490,6 +1490,9 @@ packages:
       '@types/react': ^17.0.30 || ^18 || ^19
       react: ^17 || ^18 || ^19
       react-dom: ^17 || ^18 || ^19
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-tailwind@8.6.0':
     resolution: {integrity: sha512-+Juw/m7bH6ZkfF7EYZX6/bQMjBAsbJ/GbQbmhoLCSMiSmA1c8U6ImLQBxjDijFsLO4DvVYPgTY/cAiAaF3YR7w==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/8.6.0/f39a4c58d7eab94107bef172a5bf64ce8c248108}
@@ -1508,8 +1511,8 @@ packages:
       react: '>=18'
       react-dom: '>=18'
 
-  '@navikt/navspa@7.4.0':
-    resolution: {integrity: sha512-WQCyOnbBHJRxtp6Hq1CMmHFW83z0zuJ2HNBajhHtVhcnR5dV01GfxMFX1clqNsigByrU9yTaxEbFNLacoSgLSA==, tarball: https://npm.pkg.github.com/download/@navikt/navspa/7.4.0/8e7cfa5ca022fa7301e85796f39de4374eaf47ac}
+  '@navikt/navspa@7.5.0':
+    resolution: {integrity: sha512-md8EDCzOpv5aHdDYHxW23fxQCFghHklli+AyfSBkGZ5gGKApi4LatDYUoJuTlnTZihMI89FX80sFC79ms/QewA==, tarball: https://npm.pkg.github.com/download/@navikt/navspa/7.5.0/d82d23977eec915b4a7bcd7d287d53074632462e}
     peerDependencies:
       react: '>=19.2.1'
       react-dom: '>=19.2.1'
@@ -7605,11 +7608,12 @@ snapshots:
       '@floating-ui/react-dom': 2.1.8(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@navikt/aksel-icons': 8.6.0
       '@navikt/ds-tokens': 8.9.0
-      '@types/react': 19.2.14
       date-fns: 4.1.0
       react: 19.2.1
       react-day-picker: 9.7.0(react@19.2.1)
       react-dom: 19.2.1(react@19.2.1)
+    optionalDependencies:
+      '@types/react': 19.2.14
 
   '@navikt/ds-tailwind@8.6.0': {}
 
@@ -7624,7 +7628,7 @@ snapshots:
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
 
-  '@navikt/navspa@7.4.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@navikt/navspa@7.5.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
     dependencies:
       loadjs: 4.3.0
       react: 19.2.1
