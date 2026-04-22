@@ -6,12 +6,16 @@ updates:
     schedule:
       interval: daily
       time: "07:00"
+    cooldown:
+      default-days: 3
     open-pull-requests-limit: 10
 
   - package-ecosystem: npm
     directory: "/"
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 3
     open-pull-requests-limit: 10
     ignore:
       - dependency-name: "nav-frontend*"
