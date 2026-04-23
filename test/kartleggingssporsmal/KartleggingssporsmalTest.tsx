@@ -224,10 +224,10 @@ describe("Kartleggingssporsmal", () => {
       .exist;
     expect(screen.queryByText("Slik ser spørsmålene ut for den sykmeldte")).to
       .exist;
-    expect(screen.getAllByRole("group").length).toBe(3);
+    expect(screen.getAllByRole("radiogroup").length).toBe(3);
 
     expect(
-      screen.getAllByRole("group", {
+      screen.getAllByRole("radiogroup", {
         name: RegExp(
           "Hvor sannsynlig er det at du kommer tilbake i jobben du ble sykmeldt fra?"
         ),
@@ -241,7 +241,7 @@ describe("Kartleggingssporsmal", () => {
     ).to.exist;
 
     expect(
-      screen.getAllByRole("group", {
+      screen.getAllByRole("radiogroup", {
         name: RegExp(
           "Hvordan vil du beskrive samarbeidet og relasjonen mellom deg og arbeidsgiveren din?"
         ),
@@ -255,7 +255,7 @@ describe("Kartleggingssporsmal", () => {
     ).to.exist;
 
     expect(
-      screen.getAllByRole("group", {
+      screen.getAllByRole("radiogroup", {
         name: RegExp("Hvor lenge tror du at du kommer til å være sykmeldt?"),
       })[0]
     ).to.exist;
