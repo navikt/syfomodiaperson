@@ -12,14 +12,15 @@
   },
   "scripts": {
     "test": "vitest run",
-    "start": "webpack serve --config webpack.dev.js",
+    "start": "pnpm msw:update && webpack serve --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js && pnpm build:server",
     "build:server": "tsc --build ./server/tsconfig.json",
     "lint-and-typecheck": "pnpm lint && pnpm typecheck",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint src test --ext .ts  --ext .tsx  --ext .js  --ext .jsx",
     "lint:fix": "pnpm lint --fix",
-    "prepare": "husky install || true"
+    "prepare": "husky install || true",
+    "msw:update": "msw init public --save"
   },
   "author": "Team DigiSyfo <digisyfo@nav.no>",
   "license": "ISC",
