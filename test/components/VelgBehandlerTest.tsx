@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import React, { useState } from "react";
 import { VelgBehandler } from "@/components/behandler/VelgBehandler";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
@@ -45,7 +45,7 @@ describe("VelgBehandler", () => {
   it("Viser radiobuttons med behandlervalg", async () => {
     renderVelgBehandler();
 
-    expect(screen.getByRole("group", { name: "Velg behandler" })).to.exist;
+    expect(screen.getByRole("radiogroup", { name: "Velg behandler" })).to.exist;
     expect(screen.getByRole("radio", { name: /Fastlege/ })).to.exist;
     expect(screen.getByRole("radio", { name: "Søk etter behandler" })).to.exist;
     expect(screen.queryByRole("searchbox")).to.not.exist;

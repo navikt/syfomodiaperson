@@ -415,7 +415,7 @@ describe("MotebehovKvittering", () => {
           })
         ).to.exist;
         expect(
-          screen.getAllByRole("group", {
+          screen.getAllByRole("radiogroup", {
             name: RegExp("Har dere behov for et dialogmøte med NAV?"),
           })[0]
         ).to.exist;
@@ -462,7 +462,7 @@ describe("MotebehovKvittering", () => {
           })
         ).to.exist;
         expect(
-          screen.getAllByRole("group", {
+          screen.getAllByRole("radiogroup", {
             name: RegExp("Har dere behov for et dialogmøte med NAV?"),
           })[1]
         ).to.exist;
@@ -551,7 +551,7 @@ describe("MotebehovKvittering", () => {
           })
         ).to.exist;
         expect(
-          screen.getAllByRole("group", {
+          screen.getAllByRole("radiogroup", {
             name: RegExp("Har dere behov for et dialogmøte med NAV?"),
           })[0]
         ).to.exist;
@@ -595,7 +595,7 @@ describe("MotebehovKvittering", () => {
           })
         ).to.exist;
         expect(
-          screen.getAllByRole("group", {
+          screen.getAllByRole("radiogroup", {
             name: RegExp("Har dere behov for et dialogmøte med NAV?"),
           })[1]
         ).to.exist;
@@ -671,7 +671,7 @@ describe("MotebehovKvittering", () => {
           })
         ).to.exist;
         expect(
-          screen.getAllByRole("group", {
+          screen.getAllByRole("radiogroup", {
             name: RegExp("Har dere behov for et dialogmøte med NAV?"),
           })[0]
         ).to.exist;
@@ -710,7 +710,7 @@ describe("MotebehovKvittering", () => {
           })
         ).to.exist;
         expect(
-          screen.getAllByRole("group", {
+          screen.getAllByRole("radiogroup", {
             name: RegExp("Har dere behov for et dialogmøte med NAV?"),
           })[1]
         ).to.exist;
