@@ -10,7 +10,6 @@ import {
   SvarType,
   VarselSvarDTO,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
-import { BehandlerType } from "@/data/behandler/BehandlerDTO";
 import {
   ANNEN_VEILEDER_IDENT,
   ARBEIDSTAKER_DEFAULT,
@@ -285,26 +284,6 @@ export const createReferat = (
   };
 };
 
-const behandler = (uuid: string): DialogmotedeltakerBehandlerDTO => {
-  return {
-    uuid: uuid + 4,
-    personIdent: "01038521470",
-    behandlerRef: uuid + 5,
-    behandlerNavn: "Lego Legesen",
-    behandlerKontor: "Fastlegekontoret",
-    behandlerType: BehandlerType.FASTLEGE,
-    type: "BEHANDLER",
-    varselList: [],
-    deltatt: true,
-    mottarReferat: true,
-  };
-};
-
-export const innkaltDialogmote = createDialogmote(
-  "5f1e2629-062b-442d-ae1f-3b08e9574cd3",
-  DialogmoteStatus.INNKALT,
-  dayjs().add(2, "days").toDate()
-);
 export const avlystDialogmote = createDialogmote(
   "2",
   DialogmoteStatus.AVLYST,
@@ -316,19 +295,7 @@ export const ferdigstiltDialogmote = createDialogmote(
   dayjs().subtract(2, "years").toDate()
 );
 
-export const innkaltDialogmoteMedBehandler = createDialogmote(
-  "4",
-  DialogmoteStatus.INNKALT,
-  dayjs().add(2, "days").toDate(),
-  behandler("4")
-);
-
-export const dialogmoterMock = [
-  innkaltDialogmote,
-  avlystDialogmote,
-  ferdigstiltDialogmote,
-  innkaltDialogmoteMedBehandler,
-];
+export const dialogmoterMock = [avlystDialogmote, ferdigstiltDialogmote];
 
 export const dialogmoteStatusEndringMock: DialogmoteStatusEndringDTO[] = [
   {

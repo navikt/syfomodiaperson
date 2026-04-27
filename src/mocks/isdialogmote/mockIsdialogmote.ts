@@ -7,6 +7,7 @@ import {
 import { ISDIALOGMOTE_ROOT } from "@/apiConstants";
 import {
   DialogmoteDTO,
+  DialogmoteInnkallingDTO,
   DialogmoteStatus,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import dayjs from "dayjs";
@@ -16,6 +17,7 @@ import {
   getMotebehovMock,
   setMotebehovMock,
 } from "@/mocks/syfomotebehov/motebehovMock";
+import { BehandlerType } from "@/data/behandler/BehandlerDTO.ts";
 
 let mockedDialogmoter = dialogmoterMock;
 
@@ -26,20 +28,38 @@ let avventMock: {
 }[] = [];
 
 export const mockIsdialogmote = [
-  http.post(`${ISDIALOGMOTE_ROOT}/dialogmote/personident`, () => {
-    mockedDialogmoter = [
-      ...mockedDialogmoter,
-      createDialogmote(
-        "0",
-        DialogmoteStatus.INNKALT,
-        dayjs().add(10, "days").toDate()
-      ),
-    ];
-    return new HttpResponse(null, { status: 200 });
-  }),
+  http.post(
+    `${ISDIALOGMOTE_ROOT}/dialogmote/personident`,
+    async ({ request }) => {
+      const body = (await request.json()) as DialogmoteInnkallingDTO;
+      mockedDialogmoter = [
+        ...mockedDialogmoter,
+        createDialogmote(
+          "0",
+          DialogmoteStatus.INNKALT,
+          dayjs().add(10, "days").toDate(),
+          body.behandler
+            ? {
+                uuid: "123",
+                personIdent: body.behandler?.personIdent,
+                behandlerRef: body.behandler?.behandlerRef,
+                behandlerNavn: body.behandler?.behandlerNavn,
+                behandlerKontor: body.behandler?.behandlerKontor,
+                behandlerType: BehandlerType.FASTLEGE,
+                type: "BEHANDLER",
+                varselList: [],
+                deltatt: true,
+                mottarReferat: true,
+              }
+            : undefined
+        ),
+      ];
+      return new HttpResponse(null, { status: 200 });
+    }
+  ),
 
   http.get(`${ISDIALOGMOTE_ROOT}/dialogmote/personident`, () => {
-    return HttpResponse.json([]);
+    return HttpResponse.json([...mockedDialogmoter]);
   }),
 
   http.get(
