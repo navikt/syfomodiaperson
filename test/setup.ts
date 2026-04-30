@@ -4,13 +4,24 @@ import { http, HttpResponse } from "msw";
 import { SYFOVEILEDER_ROOT } from "@/apiConstants";
 import { VEILEDER_DEFAULT } from "@/mocks/common/mockConstants";
 
-const ResizeObserverMock = vi.fn(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
+class ResizeObserverMock {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+}
+
+class IntersectionObserverMock {
+  root = null;
+  rootMargin = "0px";
+  thresholds = [0];
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+  takeRecords = vi.fn(() => []);
+}
 
 vi.stubGlobal("ResizeObserver", ResizeObserverMock);
+vi.stubGlobal("IntersectionObserver", IntersectionObserverMock);
 
 export const mockServer = setupServer(
   http.get(`*${SYFOVEILEDER_ROOT}/veiledere/self`, () =>

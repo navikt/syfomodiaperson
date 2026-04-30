@@ -6,7 +6,7 @@ COPY dist-server/server.js ./
 COPY dist-server/server.js.map ./
 COPY dist-server/server ./server
 COPY dist/index.html ./dist/index.html
-COPY dist/main.bundle.js ./dist/main.bundle.js
+COPY dist/assets ./dist/assets
 COPY node_modules ./node_modules
 COPY img ./img
 

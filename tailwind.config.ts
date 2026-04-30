@@ -1,9 +1,7 @@
 /** @type {import("tailwindcss").Config} */
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   presets: [require("@navikt/ds-tailwind")],
   theme: {
-    extend: {},
     screens: {
       md: "768px",
       "-md": { max: "767px" },
@@ -13,7 +11,6 @@ module.exports = {
       "-xl": { max: "1279px" },
     },
   },
-  plugins: [],
   corePlugins: {
     preflight: false,
   },

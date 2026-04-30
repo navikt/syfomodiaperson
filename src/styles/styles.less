@@ -1,8 +1,16 @@
-@import "~nav-frontend-core/less/core";
-@import "~nav-frontend-lenker-style/src/lenker-style";
-@import "~nav-frontend-knapper-style/src/index";
-@import "~nav-frontend-paneler-style/src/mixins";
-@import "~nav-frontend-typografi-style/src/index";
+@import "nav-frontend-core/less/_variabler.less";
+@import "nav-frontend-core/less/_mixins.less";
+@import "nav-frontend-core/less/_elevasjon.less";
+@import "nav-frontend-core/less/print.less";
+@import "nav-frontend-core/less/scaffolding.less";
+@import "nav-frontend-core/less/hide-text.less";
+@import "nav-frontend-core/less/utilities.less";
+@import "nav-frontend-core/less/responsive-utilities.less";
+
+@import "nav-frontend-lenker-style/src/lenker-style";
+@import "nav-frontend-knapper-style/src/index";
+@import "nav-frontend-paneler-style/src/mixins";
+@import "nav-frontend-typografi-style/src/index";
 
 @import "_mixins";
 @import "_antallNytt";
@@ -26,10 +34,6 @@ body {
   background-color: #f1f1f1;
 }
 
-a {
-  text-decoration: none;
-}
-
 .medHjelpetekst {
   display: flex;
   position: relative;
@@ -39,18 +43,4 @@ a {
 .knapp--enten,
 .knapp--standard {
   margin-right: 2em;
-}
-
-fieldset {
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.skjema__legend,
-legend {
-  font-size: 1.25em;
-  font-weight: 700;
-  line-height: 1.25;
-  margin-bottom: 1em;
 }

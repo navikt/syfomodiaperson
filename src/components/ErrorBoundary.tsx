@@ -1,9 +1,9 @@
 import React, { ReactNode } from "react";
-import Alertstripe from "nav-frontend-alertstriper";
+import { AlertStripeFeil } from "nav-frontend-alertstriper";
 import { Normaltekst } from "nav-frontend-typografi";
-import Lenke from "nav-frontend-lenker";
 import styled from "styled-components";
 import { ApiError, defaultErrorTexts, ErrorType } from "@/api/errors";
+import { Link } from "@navikt/ds-react";
 
 const texts = {
   meldFeil: "Meld oss gjerne om feilen her",
@@ -12,7 +12,7 @@ const texts = {
 const newJiraTicketUrl =
   "https://jira.adeo.no/plugins/servlet/desk/portal/541/create/1401";
 
-const InlineLenke = styled(Lenke)`
+const InlineLenke = styled(Link)`
   margin-left: 0.2em;
 `;
 
@@ -55,16 +55,16 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, State> {
     //Frontend errors
     if (this.state.hasError) {
       return (
-        <Alertstripe type="feil">
+        <AlertStripeFeil>
           <TextWithJiraLink>{defaultErrorTexts.generalError}</TextWithJiraLink>
-        </Alertstripe>
+        </AlertStripeFeil>
       );
     }
 
     //API errors
     if (this.props.apiError) {
       return (
-        <Alertstripe type="feil">
+        <AlertStripeFeil>
           {this.props.errorMessage && (
             <Normaltekst>{this.props.errorMessage}</Normaltekst>
           )}
@@ -76,7 +76,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, State> {
           ) : (
             this.props.apiError.defaultErrorMsg
           )}
-        </Alertstripe>
+        </AlertStripeFeil>
       );
     }
 

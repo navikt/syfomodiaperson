@@ -48,7 +48,6 @@ describe("Personkort", () => {
         ],
       })
     );
-
     await renderAndExpandPersonkort();
 
     expect(getButton("Sikkerhetstiltak")).to.exist;

@@ -29,7 +29,7 @@ export function CopyButton({ message, value }: Props) {
     event.stopPropagation();
     setShowPopover(!showPopover);
     if (value) {
-      navigator.clipboard.writeText(value);
+      navigator.clipboard?.writeText(value);
     }
   }
 

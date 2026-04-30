@@ -58,12 +58,10 @@ const redirectIfUnauthorized = async (
 const setupServer = async () => {
   setupDraftEndpoints(server);
 
-  server.use(setupProxy());
-
   const DIST_DIR = path.join(__dirname, "dist");
   const HTML_FILE = path.join(DIST_DIR, "index.html");
 
-  server.use("/static", express.static(DIST_DIR));
+  server.use(setupProxy());
 
   server.get(
     "/unleash/toggles",
@@ -74,15 +72,6 @@ const setupServer = async () => {
         req.query.enhetId
       );
       res.status(200).send(togglesResponse);
-    }
-  );
-
-  server.get(
-    ["/", "/sykefravaer", /^\/sykefravaer\/(?!(resources)).*$/],
-    [nocache, redirectIfUnauthorized],
-    (req: express.Request, res: express.Response) => {
-      res.sendFile(HTML_FILE);
-      httpRequestDurationMicroseconds.labels(req.route.path).observe(10);
     }
   );
 
@@ -105,6 +94,24 @@ const setupServer = async () => {
     "/health/isReady",
     (req: express.Request, res: express.Response) => {
       res.sendStatus(200);
+    }
+  );
+
+  server.use("/", express.static(DIST_DIR));
+
+  server.get(
+    ["/", /^\/sykefravaer/],
+    [nocache, redirectIfUnauthorized],
+    (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) => {
+      if (path.extname(req.path)) {
+        return next();
+      }
+
+      res.sendFile(HTML_FILE);
     }
   );
 
