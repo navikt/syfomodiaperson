@@ -18,7 +18,8 @@
     //Todo: Endre til true under og legg inn returntyper i sagas
     "noImplicitAny": false,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["vite/client"]
   },
   "exclude": ["node_modules", "build", "scripts", "acceptance-tests", "jest"],
   "types": ["typePatches"]

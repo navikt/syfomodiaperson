@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Knapp from "nav-frontend-knapper";
+import { Knapp } from "nav-frontend-knapper";
 import Feilmelding from "../../../components/Feilmelding";
 import AppSpinner from "../../../components/AppSpinner";
 import { SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT } from "@/apiConstants";
@@ -21,7 +21,7 @@ interface Props {
   oppfolgingsplan: OppfolgingsplanDTO;
 }
 
-export default function Oppfolgingsplan({ oppfolgingsplan }: Props) {
+export function Oppfolgingsplan({ oppfolgingsplan }: Props) {
   const {
     data: dokumentinfo,
     isLoading,

@@ -11,6 +11,6 @@ settings.json
 .floo
 .flooignore
 .vscode/
-public/mockServiceWorker.js
+mockServiceWorker.js
 
 .env

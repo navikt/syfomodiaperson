@@ -10,7 +10,7 @@ export default function LinkAsTab({ href, label, icon }: Props) {
   return (
     <Link
       className={
-        "aksel-tabs__tab text-ax-text-neutral no-underline text-center focus-visible:bg-transparent active:bg-transparent active:text-ax-text-neutral active:shadow-[inset_0_-3px_0_0] active:shadow-ax-border-neutral"
+        "aksel-tabs__tab text-ax-text-neutral no-underline! text-center focus-visible:bg-transparent active:bg-transparent active:text-ax-text-neutral active:shadow-[inset_0_-3px_0_0] active:shadow-ax-border-neutral"
       }
       href={href}
     >

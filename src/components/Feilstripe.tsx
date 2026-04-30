@@ -1,5 +1,5 @@
 import React from "react";
-import Alertstripe from "nav-frontend-alertstriper";
+import { AlertStripeAdvarsel } from "nav-frontend-alertstriper";
 
 interface FeilstripeProps {
   vis: boolean;
@@ -16,9 +16,9 @@ const Feilstripe = (feilstripeProps: FeilstripeProps) => {
   return (
     <div aria-live="polite" role="alert">
       {vis ? (
-        <Alertstripe type="advarsel" className={className}>
+        <AlertStripeAdvarsel className={className}>
           <p className="sist">{tekst}</p>
-        </Alertstripe>
+        </AlertStripeAdvarsel>
       ) : null}
     </div>
   );

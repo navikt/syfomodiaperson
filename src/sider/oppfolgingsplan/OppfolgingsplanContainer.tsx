@@ -1,6 +1,6 @@
 import React from "react";
 import SideFullbredde from "../../components/side/SideFullbredde";
-import Oppfolgingsplan from "./oppfolgingsplaner/Oppfolgingsplan";
+import { Oppfolgingsplan } from "./oppfolgingsplaner/Oppfolgingsplan";
 import SideLaster from "../../components/side/SideLaster";
 import { useParams } from "react-router-dom";
 import Feilmelding from "@/components/Feilmelding";

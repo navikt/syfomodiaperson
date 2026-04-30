@@ -5,20 +5,11 @@
     <title>Sykefravær</title>
     <meta charset="UTF-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <% if (process.env.NODE_ENV !== 'development') { %>
     <script src="https://cdn.nav.no/personoversikt/internarbeidsflate-decorator-v3/prod/latest/dist/bundle.js"></script>
     <link
       href="https://cdn.nav.no/personoversikt/internarbeidsflate-decorator-v3/prod/latest/dist/index.css"
       rel="stylesheet"
     />
-    <% } %>
-    <% if (process.env.NODE_ENV === 'development') { %>
-    <script src="https://cdn.nav.no/personoversikt/internarbeidsflate-decorator-v3/dev/latest/dist/bundle.js"></script>
-    <link
-      href="https://cdn.nav.no/personoversikt/internarbeidsflate-decorator-v3/dev/latest/dist/index.css"
-      rel="stylesheet"
-    />
-    <% } %>
   </head>
   <body>
     <div id="header"></div>
@@ -26,5 +17,6 @@
     <div class="app app--laster" id="maincontent" tabindex="-1">
       <div aria-label="Vent litt mens siden laster" class="app-spinner"></div>
     </div>
+    <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>

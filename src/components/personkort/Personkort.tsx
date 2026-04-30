@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { PERSONKORTVISNING_TYPE } from "@/konstanter";
 import { PersonkortVisning } from "./PersonkortVisning";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
-import Ekspanderbartpanel from "nav-frontend-ekspanderbartpanel";
 import { PersonkortHeader } from "@/components/personkort/PersonkortHeader/PersonkortHeader";
+import EkspanderbartpanelModule from "nav-frontend-ekspanderbartpanel";
 
 const texts = {
   buttons: {
@@ -18,6 +18,9 @@ const texts = {
 export function Personkort() {
   const [visning, setVisning] = useState(PERSONKORTVISNING_TYPE.SYKMELDT);
   const { hasSikkerhetstiltak } = useNavBrukerData();
+
+  const Ekspanderbartpanel =
+    (EkspanderbartpanelModule as any).default ?? EkspanderbartpanelModule;
 
   return (
     <div className="personkort">
