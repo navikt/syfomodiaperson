@@ -169,7 +169,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
   const isFlexjarVisible =
     toggles.isFlexjarKartleggingssporsmalEnabled &&
     vurderSvar.isSuccess &&
-    (feedbackDate === null || getWeeksBetween(new Date(), feedbackDate) >= 12);
+    (feedbackDate === null || getWeeksBetween(new Date(), feedbackDate) >= 6);
 
   const isPending =
     getKandidater.isPending ||
@@ -286,7 +286,10 @@ export default function KartleggingssporsmalSide(): ReactElement {
               </Box>
               {showKartleggingVurdering &&
                 nyesteKandidat.status !== KandidatStatus.KANDIDAT && (
-                  <KartleggingVurdering nyesteKandidat={nyesteKandidat} />
+                  <KartleggingVurdering
+                    nyesteKandidat={nyesteKandidat}
+                    vurderSvarMutation={vurderSvar}
+                  />
                 )}
               <KartleggingssporsmalHistorikk
                 tidligereKandidater={kandidater.slice(1)}
