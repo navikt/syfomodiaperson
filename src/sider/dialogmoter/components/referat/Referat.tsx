@@ -31,6 +31,7 @@ import {
   Button,
   Checkbox,
   CheckboxGroup,
+  ErrorMessage,
   Heading,
   HStack,
   List,
@@ -157,6 +158,8 @@ export const texts = {
     behandlerMottaReferatLabel: "Behandleren skal motta referatet",
     behandlerReferatSamtykke:
       "Dersom behandleren ikke deltok i møtet, men likevel ønsker å motta referat, krever det et samtykke fra arbeidstakeren.",
+    behandlerMottarReferatError:
+      "Behandleren skal motta referat hvis de har deltatt i møtet",
   },
 };
 
@@ -345,10 +348,15 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
   }`;
   const behandlerDeltakerHeading = (
     behandler: DialogmotedeltakerBehandlerDTO,
-    deltatt: boolean | undefined
+    deltatt: boolean | undefined,
+    mottarReferat: boolean | undefined
   ): string =>
     `Behandler: ${behandler.behandlerNavn}${
-      deltatt === false ? ", deltok ikke" : ""
+      deltatt === false ? ", deltok ikke" : ", deltok"
+    }${
+      mottarReferat === false
+        ? " og skal ikke motta referat"
+        : " og skal motta referat"
     }`;
 
   return (
@@ -399,16 +407,19 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
               <ExpansionCardFormField
                 ariaLabel={behandlerDeltakerHeading(
                   dialogmote.behandler,
-                  watch("behandlerDeltatt")
+                  watch("behandlerDeltatt"),
+                  watch("behandlerMottarReferat")
                 )}
                 heading={
                   <DeltakerBehandlerHeading>
                     {behandlerDeltakerHeading(
                       dialogmote.behandler,
-                      watch("behandlerDeltatt")
+                      watch("behandlerDeltatt"),
+                      watch("behandlerMottarReferat")
                     )}
                   </DeltakerBehandlerHeading>
                 }
+                hasError={!!errors.behandlerMottarReferat}
               >
                 <VStack gap="space-16">
                   <BodyLong size="small">
@@ -419,10 +430,22 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
                   </Checkbox>
                   <Checkbox
                     size="small"
-                    {...register("behandlerMottarReferat")}
+                    {...register("behandlerMottarReferat", {
+                      validate: (value, formValues) => {
+                        if (formValues?.behandlerDeltatt && !value) {
+                          return texts.deltakere.behandlerMottarReferatError;
+                        }
+                        return true;
+                      },
+                    })}
                   >
                     {texts.deltakere.behandlerMottaReferatLabel}
                   </Checkbox>
+                  {errors.behandlerMottarReferat?.message && (
+                    <ErrorMessage size="small">
+                      {errors.behandlerMottarReferat.message}
+                    </ErrorMessage>
+                  )}
                   <BodyLong size="small">
                     {texts.deltakere.behandlerReferatSamtykke}
                   </BodyLong>

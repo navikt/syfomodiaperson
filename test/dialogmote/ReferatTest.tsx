@@ -112,12 +112,15 @@ describe("ReferatTest", () => {
   it("viser behandler som deltaker når behandler er med", () => {
     renderReferat(dialogmoteMedBehandler);
 
-    expect(screen.getByRole("heading", { name: behandlerDeltakerTekst })).to
-      .exist;
+    expect(
+      screen.getByRole("heading", {
+        name: `${behandlerDeltakerTekst}, deltok og skal motta referat`,
+      })
+    ).to.exist;
 
     expect(
       screen.getByRole("region", {
-        name: behandlerDeltakerTekst,
+        name: `${behandlerDeltakerTekst}, deltok og skal motta referat`,
       })
     ).to.exist;
 
