@@ -81,7 +81,7 @@
     "react-hook-form": "7.72.1",
     "react-router-dom": "6.30.3",
     "recharts": "2.15.3",
-    "redis": "5.12.1",
+    "redis": "5.11.0",
     "styled-components": "5.3.6",
     "unleash-client": "6.10.1",
     "use-debounce": "10.1.1"
