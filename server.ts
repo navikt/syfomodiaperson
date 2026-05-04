@@ -7,6 +7,7 @@ import { getToggles } from "./server/unleash.js";
 import { validateToken } from "./server/authUtils.js";
 import { setupProxy } from "./server/proxy.js";
 import { setupDraftEndpoints } from "./server/draft.js";
+import { logger } from "@navikt/pino-logger";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -110,7 +111,7 @@ const setupServer = async () => {
   const port = 8080;
 
   server.listen(port, () => {
-    console.log(`App listening on port: ${port}`);
+    logger.info(`App listening on port: ${port}`);
   });
 };
 

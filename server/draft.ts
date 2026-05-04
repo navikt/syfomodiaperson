@@ -2,6 +2,7 @@ import express from "express";
 
 import { getValkeyClient } from "./valkey.js";
 import { getVeilederidentFromRequest } from "./authUtils.js";
+import { logger } from "@navikt/pino-logger";
 
 const DRAFT_TTL_SECONDS = 7 * 60 * 60 * 24;
 
@@ -103,15 +104,15 @@ export function setupDraftEndpoints(server: express.Application) {
         try {
           const parsed = JSON.parse(value);
           return res.status(200).send(parsed);
-        } catch (error) {
-          console.error(
+        } catch (error: any) {
+          logger.error(
             `Failed to parse draft for ${category} from valkey`,
             error
           );
           return res.status(500).send({ message: "Failed to parse draft" });
         }
-      } catch (error) {
-        console.error(
+      } catch (error: any) {
+        logger.error(
           `Failed to fetch draft for ${category} from valkey`,
           error
         );
@@ -143,8 +144,8 @@ export function setupDraftEndpoints(server: express.Application) {
         await client.setEx(key, DRAFT_TTL_SECONDS, JSON.stringify(req.body));
 
         return res.status(200).send(req.body);
-      } catch (error) {
-        console.error(`Failed to save draft for ${category} to valkey`, error);
+      } catch (error: any) {
+        logger.error(`Failed to save draft for ${category} to valkey`, error);
         return res.status(500).send({ message: "Failed to save draft" });
       }
     }
@@ -173,8 +174,8 @@ export function setupDraftEndpoints(server: express.Application) {
         await client.del(key);
 
         return res.status(204).send();
-      } catch (error) {
-        console.error(
+      } catch (error: any) {
+        logger.error(
           `Failed to delete draft for ${category} from valkey`,
           error
         );
