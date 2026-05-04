@@ -110,7 +110,7 @@
     "babel-plugin-styled-components": "2.1.4",
     "clean-webpack-plugin": "4.0.0",
     "css-loader": "6.10.0",
-    "dotenv-webpack": "7.1.1",
+    "dotenv-webpack": "9.0.0",
     "eslint": "8.57.0",
     "eslint-config-prettier": "8.10.0",
     "eslint-plugin-jsx-a11y": "6.10.2",

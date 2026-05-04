@@ -263,8 +263,8 @@ importers:
         specifier: 6.10.0
         version: 6.10.0(webpack@5.106.2)
       dotenv-webpack:
-        specifier: 7.1.1
-        version: 7.1.1(webpack@5.106.2)
+        specifier: 9.0.0
+        version: 9.0.0(webpack@5.106.2)
       eslint:
         specifier: 8.57.0
         version: 8.57.0
@@ -1499,9 +1499,6 @@ packages:
       '@types/react': ^17.0.30 || ^18 || ^19
       react: ^17 || ^18 || ^19
       react-dom: ^17 || ^18 || ^19
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
 
   '@navikt/ds-tailwind@8.10.0':
     resolution: {integrity: sha512-3HyFIjJZEYWhVPVuyMWaMHsGomCWFpQ9vjb4MvYdHMFZbB4jNSzrWnJy24sfrJNrqcIN+PLWqP5gNlL5sadIrw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/8.10.0/fea92538a8340ba08f680954f063b1e6a2b12fac}
@@ -3268,22 +3265,22 @@ packages:
   dot-case@3.0.4:
     resolution: {integrity: sha512-Kv5nKlh6yRrdrGvxeJ2e5y2eRUpkUosIW4A2AS38zwSz27zu7ufDwQPi5Jhs3XAlGNetl3bmnGhQsMtkKJnj3w==}
 
-  dotenv-defaults@2.0.2:
-    resolution: {integrity: sha512-iOIzovWfsUHU91L5i8bJce3NYK5JXeAwH50Jh6+ARUdLiiGlYWfGw6UkzsYqaXZH/hjE/eCd/PlfM/qqyK0AMg==}
+  dotenv-defaults@5.0.2:
+    resolution: {integrity: sha512-y5z4NhblzwNk8XBIYVzjLcFkANK0rxbRDO6kGOfH9QrVYIGVEX52IqwSprKVsaLHM9pnNkCSxazZF/JPydDPvA==}
 
-  dotenv-webpack@7.1.1:
-    resolution: {integrity: sha512-xw/19VqHDkXALtBOJAnnrSU/AZDIQRXczAmJyp0lZv6SH2aBLzUTl96W1MVryJZ7okZ+djZS4Gj4KlZ0xP7deA==}
-    engines: {node: '>=10'}
+  dotenv-webpack@9.0.0:
+    resolution: {integrity: sha512-uUtvrfEt+wXXadiZ/VvBYmLmd7KffMhsdaJLZmTTGaixFBZqD2emBwLsWKP4mdJ7bj11gxEcmH6EBFAoWwHrqA==}
+    engines: {node: '>=18.18.0'}
     peerDependencies:
       webpack: ^4 || ^5
+
+  dotenv@14.3.2:
+    resolution: {integrity: sha512-vwEppIphpFdvaMCaHfCEv9IgwcxMljMw2TnAQBB4VWPvzXQLTb82jwmdOKzlEVUL3gNFT4l4TPKO+Bn+sqcrVQ==}
+    engines: {node: '>=12'}
 
   dotenv@16.5.0:
     resolution: {integrity: sha512-m/C+AwOAr9/W1UOIZUo232ejMNnJAJtYQjUbHoNTBNTJSvqzzDh7vnrei3o3r3m9blf6ZoDkvcw0VmozNRFJxg==}
     engines: {node: '>=12'}
-
-  dotenv@8.6.0:
-    resolution: {integrity: sha512-IrPdXQsk2BbzvCBGBOTmmSH5SodmqZNt4ERAZDmW4CT+tL8VtvinqywuANaFu4bOMWki16nqf0e4oC0QIaDr/g==}
-    engines: {node: '>=10'}
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -6263,6 +6260,7 @@ packages:
 
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
   v8-compile-cache-lib@3.0.1:
@@ -7812,12 +7810,11 @@ snapshots:
       '@floating-ui/react-dom': 2.1.8(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@navikt/aksel-icons': 8.10.0
       '@navikt/ds-tokens': 8.10.1
+      '@types/react': 19.2.14
       date-fns: 4.1.0
       react: 19.2.5
       react-day-picker: 9.14.0(react@19.2.5)
       react-dom: 19.2.5(react@19.2.5)
-    optionalDependencies:
-      '@types/react': 19.2.14
 
   '@navikt/ds-tailwind@8.10.0': {}
 
@@ -9707,18 +9704,18 @@ snapshots:
       no-case: 3.0.4
       tslib: 2.8.1
 
-  dotenv-defaults@2.0.2:
+  dotenv-defaults@5.0.2:
     dependencies:
-      dotenv: 8.6.0
+      dotenv: 14.3.2
 
-  dotenv-webpack@7.1.1(webpack@5.106.2):
+  dotenv-webpack@9.0.0(webpack@5.106.2):
     dependencies:
-      dotenv-defaults: 2.0.2
+      dotenv-defaults: 5.0.2
       webpack: 5.106.2(webpack-cli@5.1.4)
 
-  dotenv@16.5.0: {}
+  dotenv@14.3.2: {}
 
-  dotenv@8.6.0: {}
+  dotenv@16.5.0: {}
 
   dunder-proto@1.0.1:
     dependencies:
