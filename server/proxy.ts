@@ -5,6 +5,7 @@ import url from "url";
 import { getOnBehalfOfToken } from "./authUtils.js";
 import type { ExternalAppConfig } from "./config.js";
 import Config from "./config.js";
+import { logger } from "@navikt/pino-logger";
 
 const proxyExternalHostWithoutAuthentication = (host: any) =>
   proxy(host, {
@@ -26,9 +27,9 @@ const proxyExternalHostWithoutAuthentication = (host: any) =>
       return newPath;
     },
     proxyErrorHandler: (err, res, next) => {
-      console.log(`Error in proxy for ${host} ${err.message}, ${err.code}`);
+      logger.error(`Error in proxy for ${host} ${err.message}, ${err.code}`);
       if (err && err.code === "ECONNREFUSED") {
-        console.log("proxyErrorHandler: Got ECONNREFUSED");
+        logger.error("proxyErrorHandler: Got ECONNREFUSED");
         return res.status(503).send({ message: `Could not contact ${host}` });
       }
       next(err);
@@ -83,9 +84,9 @@ const proxyExternalHost = (
       return rewritePath != null ? rewritePath(newPath) : newPath;
     },
     proxyErrorHandler: (err, res, next) => {
-      console.log(`Error in proxy for ${host} ${err.message}, ${err.code}`);
+      logger.error(`Error in proxy for ${host} ${err.message}, ${err.code}`);
       if (err && err.code === "ECONNREFUSED") {
-        console.log("proxyErrorHandler: Got ECONNREFUSED");
+        logger.error("proxyErrorHandler: Got ECONNREFUSED");
         return res.status(503).send({ message: `Could not contact ${host}` });
       }
       next(err);
@@ -103,7 +104,7 @@ const proxyOnBehalfOf = (
     .then((accessToken) => {
       if (!accessToken) {
         res.status(500).send("Failed to fetch access token on behalf of user.");
-        console.log("proxyOnBehalfOf: on-behalf-of-token was undefined");
+        logger.error("proxyOnBehalfOf: on-behalf-of-token was undefined");
         return;
       }
       return proxyExternalHost(
@@ -114,7 +115,7 @@ const proxyOnBehalfOf = (
       )(req, res, next);
     })
     .catch((error) => {
-      console.log("Failed to get OBO token. Original error: %s", error);
+      logger.error("Failed to get OBO token. Original error: %s", error);
       res.status(500).send("Failed to fetch access tokens on behalf of user");
     });
 };

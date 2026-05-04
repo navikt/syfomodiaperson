@@ -1,6 +1,7 @@
 import type { Request } from "express";
 
 import Config from "./config.js";
+import { logger } from "@navikt/pino-logger";
 
 interface TokenIntrospectionResponse {
   active: boolean;
@@ -29,7 +30,7 @@ export async function validateToken(req: Request): Promise<boolean> {
   });
 
   if (!response.ok) {
-    console.error(`Token introspection failed: ${response.status}`);
+    logger.error(`Token introspection failed: ${response.status}`);
     return false;
   }
 
@@ -56,7 +57,7 @@ export async function getOnBehalfOfToken(
   });
 
   if (!response.ok) {
-    console.error(`Token exchange failed: ${response.status}`);
+    logger.error(`Token exchange failed: ${response.status}`);
     return undefined;
   }
 
@@ -78,7 +79,7 @@ export async function getVeilederidentFromRequest(
   });
 
   if (!response.ok) {
-    console.error(`Token introspection failed: ${response.status}`);
+    logger.error(`Token introspection failed: ${response.status}`);
     return undefined;
   }
 
