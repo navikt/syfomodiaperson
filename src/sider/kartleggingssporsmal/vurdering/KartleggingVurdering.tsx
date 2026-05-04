@@ -7,8 +7,8 @@ import { VurderingAlternativ } from "@/sider/kartleggingssporsmal/types.ts";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil.tsx";
 import { PaddingSize } from "@/components/Layout.tsx";
 import React, { useState } from "react";
-import { useKartleggingssporsmalVurderSvar } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks.ts";
 import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessAlert.tsx";
+import { UseMutationResult } from "@tanstack/react-query";
 
 const texts = {
   heading: "Vurdering",
@@ -21,15 +21,25 @@ const texts = {
   error: "Du må velge et alternativ",
 };
 
-interface KartleggingVurderingProps {
+interface Props {
   nyesteKandidat: KartleggingssporsmalKandidatResponseDTO;
+  // Vi må ta inn denne fordi visning av flexjar-boksen er knyttet til mutation i Kartleggingssporsmal.tsx
+  // Kan unngå dette når man har én vurderingsside, ikke to ulike måter å vurdere på
+  vurderSvarMutation: UseMutationResult<
+    KartleggingssporsmalKandidatResponseDTO,
+    Error,
+    {
+      kandidatUuid: string;
+      vurderingAlternativ?: VurderingAlternativ;
+    },
+    unknown
+  >;
 }
 
-export const KartleggingVurdering = ({
+export function KartleggingVurdering({
   nyesteKandidat,
-}: KartleggingVurderingProps) => {
-  const vurderSvar = useKartleggingssporsmalVurderSvar();
-
+  vurderSvarMutation,
+}: Props) {
   const [chosenAlternative, setChosenAlternative] =
     useState<VurderingAlternativ | null>(
       nyesteKandidat.vurdering?.vurderingAlternativ ?? null
@@ -63,7 +73,7 @@ export const KartleggingVurdering = ({
           size="medium"
           onClick={() => {
             if (chosenAlternative) {
-              vurderSvar.mutate({
+              vurderSvarMutation.mutate({
                 kandidatUuid: nyesteKandidat.kandidatUuid,
                 vurderingAlternativ: chosenAlternative,
               });
@@ -71,15 +81,15 @@ export const KartleggingVurdering = ({
               setChosenAlternativeError(texts.error);
             }
           }}
-          loading={vurderSvar.isPending}
+          loading={vurderSvarMutation.isPending}
         >
           {texts.button}
         </Button>
       )}
-      {vurderSvar.isError && (
+      {vurderSvarMutation.isError && (
         <SkjemaInnsendingFeil
           bottomPadding={PaddingSize.NONE}
-          error={vurderSvar.error}
+          error={vurderSvarMutation.error}
         />
       )}
       {nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET && (
@@ -87,4 +97,4 @@ export const KartleggingVurdering = ({
       )}
     </Box>
   );
-};
+}
