@@ -13,10 +13,10 @@ export async function getValkeyClient(): Promise<RedisClientType> {
 
   if (valkeyClient) {
     valkeyClient.removeAllListeners();
-    valkeyClient = undefined;
+    valkeyClient.destroy();
   }
 
-  const client = createClient({
+  valkeyClient = createClient({
     url: Config.valkey.uri,
     username: Config.valkey.username,
     password: Config.valkey.password,
@@ -30,16 +30,10 @@ export async function getValkeyClient(): Promise<RedisClientType> {
     },
   }) as RedisClientType;
 
-  client.on("error", (err) => {
+  valkeyClient.on("error", (err) => {
     logger.error({ err }, "Valkey client error");
   });
 
-  client.on("end", () => {
-    logger.warn("Valkey client disconnected");
-    valkeyClient = undefined;
-  });
-
-  await client.connect();
-  valkeyClient = client;
+  await valkeyClient.connect();
   return valkeyClient;
 }
