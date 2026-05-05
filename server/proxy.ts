@@ -1,4 +1,5 @@
 import express from "express";
+import http from "http";
 import proxy from "express-http-proxy";
 import url from "url";
 
@@ -7,9 +8,32 @@ import type { ExternalAppConfig } from "./config.js";
 import Config from "./config.js";
 import { logger } from "@navikt/pino-logger";
 
+/**
+ * Custom HTTP agent with keepAlive disabled.
+ *
+ * express-http-proxy hardcodes `Connection: close` on all outgoing requests.
+ * Node.js 22+ defaults the global http.Agent to keepAlive: true, which causes
+ * the agent to pool sockets that upstream servers have already closed — resulting
+ * in ECONNRESET errors on the next reuse attempt. Using a dedicated agent with
+ * keepAlive: false matches the library's Connection: close behavior.
+ */
+const proxyAgent = new http.Agent({ keepAlive: false });
+
+const transientErrorCodes = [
+  "ECONNRESET",
+  "EPIPE",
+  "ECONNABORTED",
+  "ETIMEDOUT",
+  "ECONNREFUSED",
+];
+
 const proxyExternalHostWithoutAuthentication = (host: any) =>
   proxy(host, {
     https: false,
+    proxyReqOptDecorator: (options) => {
+      options.agent = proxyAgent;
+      return options;
+    },
     proxyReqPathResolver: (req) => {
       const urlFromApi = url.parse(host);
       const pathFromApi =
@@ -28,9 +52,8 @@ const proxyExternalHostWithoutAuthentication = (host: any) =>
     },
     proxyErrorHandler: (err, res, next) => {
       logger.error(`Error in proxy for ${host} ${err.message}, ${err.code}`);
-      if (err && err.code === "ECONNREFUSED") {
-        logger.error("proxyErrorHandler: Got ECONNREFUSED");
-        return res.status(503).send({ message: `Could not contact ${host}` });
+      if (err && transientErrorCodes.includes(err.code)) {
+        return res.status(502).send({ message: `Could not contact ${host}` });
       }
       next(err);
     },
@@ -47,6 +70,7 @@ const proxyExternalHost = (
     parseReqBody: parseReqBody,
     timeout: 30000,
     proxyReqOptDecorator: async (options) => {
+      options.agent = proxyAgent;
       if (!accessToken) {
         return options;
       }
@@ -85,9 +109,8 @@ const proxyExternalHost = (
     },
     proxyErrorHandler: (err, res, next) => {
       logger.error(`Error in proxy for ${host} ${err.message}, ${err.code}`);
-      if (err && err.code === "ECONNREFUSED") {
-        logger.error("proxyErrorHandler: Got ECONNREFUSED");
-        return res.status(503).send({ message: `Could not contact ${host}` });
+      if (err && transientErrorCodes.includes(err.code)) {
+        return res.status(502).send({ message: `Could not contact ${host}` });
       }
       next(err);
     },
