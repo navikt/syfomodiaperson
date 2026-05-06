@@ -1,5 +1,6 @@
 import express from "express";
 import http from "http";
+import https from "https";
 import proxy from "express-http-proxy";
 import url from "url";
 
@@ -9,15 +10,21 @@ import Config from "./config.js";
 import { logger } from "@navikt/pino-logger";
 
 /**
- * Custom HTTP agent with keepAlive disabled.
+ * Custom HTTP/HTTPS agents with keepAlive disabled.
  *
  * express-http-proxy hardcodes `Connection: close` on all outgoing requests.
  * Node.js 22+ defaults the global http.Agent to keepAlive: true, which causes
  * the agent to pool sockets that upstream servers have already closed — resulting
- * in ECONNRESET errors on the next reuse attempt. Using a dedicated agent with
+ * in ECONNRESET errors on the next reuse attempt. Using dedicated agents with
  * keepAlive: false matches the library's Connection: close behavior.
+ * Two agents are needed since http.Agent cannot be used for https:// targets.
  */
-const proxyAgent = new http.Agent({ keepAlive: false });
+const httpProxyAgent = new http.Agent({ keepAlive: false });
+const httpsProxyAgent = new https.Agent({ keepAlive: false });
+
+function getProxyAgent(host: string) {
+  return host.startsWith("https://") ? httpsProxyAgent : httpProxyAgent;
+}
 
 const transientErrorCodes = [
   "ECONNRESET",
@@ -31,7 +38,7 @@ const proxyExternalHostWithoutAuthentication = (host: any) =>
   proxy(host, {
     https: false,
     proxyReqOptDecorator: (options) => {
-      options.agent = proxyAgent;
+      options.agent = getProxyAgent(host);
       return options;
     },
     proxyReqPathResolver: (req) => {
@@ -70,7 +77,7 @@ const proxyExternalHost = (
     parseReqBody: parseReqBody,
     timeout: 30000,
     proxyReqOptDecorator: async (options) => {
-      options.agent = proxyAgent;
+      options.agent = getProxyAgent(host);
       if (!accessToken) {
         return options;
       }
