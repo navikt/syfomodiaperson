@@ -1,532 +1,294 @@
 import express from "express";
-import proxy from "express-http-proxy";
-import url from "url";
 
 import { getOnBehalfOfToken } from "./authUtils.js";
 import type { ExternalAppConfig } from "./config.js";
 import Config from "./config.js";
 import { logger } from "@navikt/pino-logger";
 
-const transientErrorCodes = [
+const TRANSIENT_ERROR_CODES = new Set([
   "ECONNRESET",
   "EPIPE",
   "ECONNABORTED",
   "ETIMEDOUT",
   "ECONNREFUSED",
-];
+]);
 
-const proxyExternalHostWithoutAuthentication = (host: any) =>
-  proxy(host, {
-    https: false,
-    proxyReqOptDecorator: (options) => {
-      options.headers = {
-        ...options.headers,
-        connection: "keep-alive",
-      };
-      return options;
-    },
-    proxyReqPathResolver: (req) => {
-      const urlFromApi = url.parse(host);
-      const pathFromApi =
-        urlFromApi.pathname === "/" ? "" : urlFromApi.pathname;
+/** Headers that must not be forwarded between proxy and backend (hop-by-hop). */
+const EXCLUDED_HEADERS = new Set([
+  "host",
+  "connection",
+  "keep-alive",
+  "transfer-encoding",
+  "te",
+  "trailers",
+  "proxy-authenticate",
+  "proxy-authorization",
+  "upgrade",
+  "content-length",
+  "content-encoding",
+]);
 
-      const urlFromRequest = url.parse(req.originalUrl);
-      const pathFromRequest = urlFromRequest.pathname;
-
-      const queryString = urlFromRequest.query;
-      const newPath =
-        (pathFromApi ? pathFromApi : "") +
-        (pathFromRequest ? pathFromRequest : "") +
-        (queryString ? "?" + queryString : "");
-
-      return newPath;
-    },
-    proxyErrorHandler: (err, res, next) => {
-      logger.error(`Error in proxy for ${host} ${err.message}, ${err.code}`);
-      if (err && transientErrorCodes.includes(err.code)) {
-        return res.status(502).send({ message: `Could not contact ${host}` });
-      }
-      next(err);
-    },
-  });
-
-const proxyExternalHost = (
-  { applicationName, host, removePathPrefix }: any,
-  accessToken: any,
-  parseReqBody: any,
+function buildTargetUrl(
+  host: string,
+  req: express.Request,
+  applicationName: string,
+  removePathPrefix: boolean,
   rewritePath?: (path: string) => string
-) =>
-  proxy(host, {
-    https: false,
-    parseReqBody: parseReqBody,
-    timeout: 30000,
-    proxyReqOptDecorator: async (options) => {
-      options.headers = {
-        ...options.headers,
-        connection: "keep-alive",
-      };
-      if (!accessToken) {
-        return options;
-      }
-      (options.headers as Record<string, string>)[
-        "Authorization"
-      ] = `Bearer ${accessToken}`;
-      if (host === Config.auth.syfosmregister.host) {
-        options.headers["fnr"] = options.headers["nav-personident"]; // TODO: brukes dette?
-      }
-      return options;
-    },
-    proxyReqPathResolver: (req) => {
-      const urlFromApi = url.parse(host);
-      const pathFromApi =
-        urlFromApi.pathname === "/" ? "" : urlFromApi.pathname;
+): string {
+  const hostUrl = new URL(host);
+  const basePath = hostUrl.pathname === "/" ? "" : hostUrl.pathname;
 
-      const urlFromRequest = url.parse(req.originalUrl);
-      const pathFromRequest = urlFromRequest.pathname;
+  const reqUrl = new URL(req.originalUrl, "http://localhost");
+  let path = basePath + reqUrl.pathname + reqUrl.search;
 
-      const queryString = urlFromRequest.query;
-      const newPath =
-        (pathFromApi ? pathFromApi : "") +
-        (pathFromRequest ? pathFromRequest : "") +
-        (queryString ? "?" + queryString : "");
+  if (removePathPrefix) {
+    path = path.replace(`${applicationName}/`, "");
+  }
 
-      if (removePathPrefix) {
-        const newPathWithoutPrefix = newPath.replace(`${applicationName}/`, "");
-        return rewritePath != null
-          ? rewritePath(newPathWithoutPrefix)
-          : newPathWithoutPrefix;
-      }
-      return rewritePath != null ? rewritePath(newPath) : newPath;
-    },
-    proxyErrorHandler: (err, res, next) => {
-      logger.error(`Error in proxy for ${host} ${err.message}, ${err.code}`);
-      if (err && transientErrorCodes.includes(err.code)) {
-        return res.status(502).send({ message: `Could not contact ${host}` });
-      }
-      next(err);
-    },
-  });
+  if (rewritePath) {
+    path = rewritePath(path);
+  }
 
-const proxyOnBehalfOf = (
+  return `${hostUrl.protocol}//${hostUrl.host}${path}`;
+}
+
+function buildForwardedHeaders(
+  req: express.Request,
+  accessToken?: string
+): Record<string, string> {
+  const headers: Record<string, string> = {};
+
+  for (const [key, value] of Object.entries(req.headers)) {
+    if (!EXCLUDED_HEADERS.has(key.toLowerCase()) && typeof value === "string") {
+      headers[key] = value;
+    }
+  }
+
+  if (accessToken) {
+    headers["authorization"] = `Bearer ${accessToken}`;
+  }
+
+  return headers;
+}
+
+function getErrorCode(error: unknown): string | undefined {
+  if (error instanceof TypeError) {
+    const cause = (error as TypeError & { cause?: unknown }).cause;
+    if (cause instanceof Error) {
+      return (cause as NodeJS.ErrnoException).code;
+    }
+  }
+  return undefined;
+}
+
+async function sendProxyRequest(
+  targetUrl: string,
   req: express.Request,
   res: express.Response,
-  next: express.NextFunction,
-  externalAppConfig: ExternalAppConfig,
-  rewritePath?: (path: string) => string
-) => {
-  getOnBehalfOfToken(req, externalAppConfig.clientId)
-    .then((accessToken) => {
-      if (!accessToken) {
-        res.status(500).send("Failed to fetch access token on behalf of user.");
-        logger.error("proxyOnBehalfOf: on-behalf-of-token was undefined");
-        return;
-      }
-      return proxyExternalHost(
-        externalAppConfig,
-        accessToken,
-        ["POST", "PUT", "PATCH"].includes(req.method),
-        rewritePath
-      )(req, res, next);
-    })
-    .catch((error) => {
+  headers: Record<string, string>
+): Promise<void> {
+  const hasBody =
+    ["POST", "PUT", "PATCH"].includes(req.method) && req.body !== undefined;
+
+  const response = await fetch(targetUrl, {
+    method: req.method,
+    headers: hasBody
+      ? { ...headers, "content-type": "application/json" }
+      : headers,
+    body: hasBody ? JSON.stringify(req.body) : undefined,
+  });
+
+  res.status(response.status);
+
+  response.headers.forEach((value, key) => {
+    if (!EXCLUDED_HEADERS.has(key.toLowerCase())) {
+      res.setHeader(key, value);
+    }
+  });
+
+  const buffer = await response.arrayBuffer();
+  res.end(Buffer.from(buffer));
+}
+
+/** Creates a middleware that proxies the request to an external service using an OBO token. */
+const proxyOnBehalfOf =
+  (
+    externalAppConfig: ExternalAppConfig,
+    rewritePath?: (path: string) => string
+  ): express.RequestHandler =>
+  async (req, res, next) => {
+    const {
+      applicationName,
+      host,
+      clientId,
+      removePathPrefix = false,
+    } = externalAppConfig;
+
+    let accessToken: string | undefined;
+    try {
+      accessToken = await getOnBehalfOfToken(req, clientId);
+    } catch (error) {
       logger.error("Failed to get OBO token. Original error: %s", error);
       res.status(500).send("Failed to fetch access tokens on behalf of user");
-    });
-};
+      return;
+    }
+
+    if (!accessToken) {
+      res.status(500).send("Failed to fetch access token on behalf of user.");
+      logger.error("proxyOnBehalfOf: on-behalf-of-token was undefined");
+      return;
+    }
+
+    const targetUrl = buildTargetUrl(
+      host,
+      req,
+      applicationName,
+      removePathPrefix,
+      rewritePath
+    );
+    const headers = buildForwardedHeaders(req, accessToken);
+
+    try {
+      await sendProxyRequest(targetUrl, req, res, headers);
+    } catch (error) {
+      const code = getErrorCode(error);
+      logger.error(
+        `Error in proxy for ${host} ${
+          error instanceof Error ? error.message : error
+        }, ${code}`
+      );
+      if (code && TRANSIENT_ERROR_CODES.has(code)) {
+        res.status(502).send({ message: `Could not contact ${host}` });
+        return;
+      }
+      next(error);
+    }
+  };
+
+/** Creates a middleware that proxies the request to an external service without authentication. */
+const proxyWithoutAuthentication =
+  (host: string): express.RequestHandler =>
+  async (req, res, next) => {
+    const targetUrl = buildTargetUrl(host, req, "", false);
+    const headers = buildForwardedHeaders(req);
+
+    try {
+      await sendProxyRequest(targetUrl, req, res, headers);
+    } catch (error) {
+      const code = getErrorCode(error);
+      logger.error(
+        `Error in proxy for ${host} ${
+          error instanceof Error ? error.message : error
+        }, ${code}`
+      );
+      if (code && TRANSIENT_ERROR_CODES.has(code)) {
+        res.status(502).send({ message: `Could not contact ${host}` });
+        return;
+      }
+      next(error);
+    }
+  };
 
 export const setupProxy = (): express.Router => {
   const router = express.Router();
 
   router.use(
     "/isaktivitetskrav",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.isaktivitetskrav);
-    }
+    proxyOnBehalfOf(Config.auth.isaktivitetskrav)
   );
-
   router.use(
     "/isarbeidsuforhet",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.isarbeidsuforhet);
-    }
+    proxyOnBehalfOf(Config.auth.isarbeidsuforhet)
   );
-
   router.use(
     "/isbehandlerdialog",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.isbehandlerdialog);
-    }
+    proxyOnBehalfOf(Config.auth.isbehandlerdialog)
   );
-
-  router.use(
-    "/isdialogmote",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.isdialogmote);
-    }
-  );
-
+  router.use("/isdialogmote", proxyOnBehalfOf(Config.auth.isdialogmote));
   router.use(
     "/isdialogmotekandidat",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.isdialogmotekandidat);
-    }
+    proxyOnBehalfOf(Config.auth.isdialogmotekandidat)
   );
-
-  router.use(
-    "/isdialogmelding",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.isdialogmelding);
-    }
-  );
-
+  router.use("/isdialogmelding", proxyOnBehalfOf(Config.auth.isdialogmelding));
   router.use(
     "/isfrisktilarbeid",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.isfrisktilarbeid);
-    }
+    proxyOnBehalfOf(Config.auth.isfrisktilarbeid)
   );
-
-  router.use(
-    "/ishuskelapp",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.ishuskelapp);
-    }
-  );
-
-  router.use(
-    "/ismeroppfolging",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.ismeroppfolging);
-    }
-  );
-
-  router.use(
-    "/isnarmesteleder",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.isnarmesteleder);
-    }
-  );
-
+  router.use("/ishuskelapp", proxyOnBehalfOf(Config.auth.ishuskelapp));
+  router.use("/ismeroppfolging", proxyOnBehalfOf(Config.auth.ismeroppfolging));
+  router.use("/isnarmesteleder", proxyOnBehalfOf(Config.auth.isnarmesteleder));
   router.use(
     "/isoppfolgingstilfelle",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.isoppfolgingstilfelle);
-    }
+    proxyOnBehalfOf(Config.auth.isoppfolgingstilfelle)
   );
-
-  router.use(
-    "/ispengestopp",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.ispengestopp);
-    }
-  );
-
-  router.use(
-    "/ispersonoppgave",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.ispersonoppgave);
-    }
-  );
-
-  router.use(
-    "/fastlegerest",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.fastlegerest);
-    }
-  );
-
+  router.use("/ispengestopp", proxyOnBehalfOf(Config.auth.ispengestopp));
+  router.use("/ispersonoppgave", proxyOnBehalfOf(Config.auth.ispersonoppgave));
+  router.use("/fastlegerest", proxyOnBehalfOf(Config.auth.fastlegerest));
   router.use(
     "/modiacontextholder",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.modiacontextholder);
-    }
+    proxyOnBehalfOf(Config.auth.modiacontextholder)
   );
-
   router.use(
     "/syfobehandlendeenhet",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.syfobehandlendeenhet);
-    }
+    proxyOnBehalfOf(Config.auth.syfobehandlendeenhet)
   );
-
-  router.use(
-    "/ereg",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyExternalHostWithoutAuthentication(Config.auth.ereg.host)(
-        req,
-        res,
-        next
-      );
-    }
-  );
-
-  router.use(
-    "/syfomotebehov",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.syfomotebehov);
-    }
-  );
-
+  router.use("/ereg", proxyWithoutAuthentication(Config.auth.ereg.host));
+  router.use("/syfomotebehov", proxyOnBehalfOf(Config.auth.syfomotebehov));
   router.use(
     "/syfooppfolgingsplanservice",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.syfooppfolgingsplanservice);
-    }
+    proxyOnBehalfOf(Config.auth.syfooppfolgingsplanservice)
   );
-
   router.use(
     "/lps-oppfolgingsplan-mottak",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.lpsOppfolgingsplanMottak);
-    }
+    proxyOnBehalfOf(Config.auth.lpsOppfolgingsplanMottak)
   );
-
   router.use(
     "/syfo-oppfolgingsplan-backend",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.syfoOppfolgingsplanBackend);
-    }
+    proxyOnBehalfOf(Config.auth.syfoOppfolgingsplanBackend)
   );
-
   router.use(
     "/api/v2/persontildeling",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.syfooversiktsrv);
-    }
+    proxyOnBehalfOf(Config.auth.syfooversiktsrv)
   );
-
-  router.use(
-    "/syfoperson",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.syfoperson);
-    }
-  );
-
+  router.use("/syfoperson", proxyOnBehalfOf(Config.auth.syfoperson));
   router.use(
     "/syfosmregister",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.syfosmregister, (path) =>
-        path.replace("/sykmeldinger", "/internal/sykmeldinger")
-      );
-    }
+    proxyOnBehalfOf(Config.auth.syfosmregister, (path) =>
+      path.replace("/sykmeldinger", "/internal/sykmeldinger")
+    )
   );
-
   router.use(
     "/sykepengesoknad-backend",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.sykepengesoknadBackend);
-    }
+    proxyOnBehalfOf(Config.auth.sykepengesoknadBackend)
   );
-
   router.use(
     "/istilgangskontroll",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.istilgangskontroll);
-    }
+    proxyOnBehalfOf(Config.auth.istilgangskontroll)
   );
-
-  router.use(
-    "/syfoveileder",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.syfoveileder);
-    }
-  );
-
+  router.use("/syfoveileder", proxyOnBehalfOf(Config.auth.syfoveileder));
   router.use(
     "/meroppfolging-backend",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.meroppfolgingBackend);
-    }
+    proxyOnBehalfOf(Config.auth.meroppfolgingBackend)
   );
-
   router.use(
     "/sykepengedager-informasjon",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.sykepengedagerinformasjon);
-    }
+    proxyOnBehalfOf(Config.auth.sykepengedagerinformasjon)
   );
-
-  router.use(
-    "/flexjar-backend",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.flexjar);
-    }
-  );
-
-  router.use(
-    "/lumi-api",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.lumiApi);
-    }
-  );
-
+  router.use("/flexjar-backend", proxyOnBehalfOf(Config.auth.flexjar));
+  router.use("/lumi-api", proxyOnBehalfOf(Config.auth.lumiApi));
   router.use(
     "/veilarboppfolging",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.veilarboppfolging);
-    }
+    proxyOnBehalfOf(Config.auth.veilarboppfolging)
   );
-
   router.use(
     "/ismanglendemedvirkning",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.ismanglendemedvirkning);
-    }
+    proxyOnBehalfOf(Config.auth.ismanglendemedvirkning)
   );
-
   router.use(
     "/isoppfolgingsplan",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.isoppfolgingsplan);
-    }
+    proxyOnBehalfOf(Config.auth.isoppfolgingsplan)
   );
-
-  router.use(
-    "/pensjon-pen",
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => {
-      proxyOnBehalfOf(req, res, next, Config.auth.pensjonPenUfore);
-    }
-  );
+  router.use("/pensjon-pen", proxyOnBehalfOf(Config.auth.pensjonPenUfore));
 
   return router;
 };
