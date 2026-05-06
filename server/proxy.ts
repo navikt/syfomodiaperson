@@ -7,9 +7,24 @@ import type { ExternalAppConfig } from "./config.js";
 import Config from "./config.js";
 import { logger } from "@navikt/pino-logger";
 
+const transientErrorCodes = [
+  "ECONNRESET",
+  "EPIPE",
+  "ECONNABORTED",
+  "ETIMEDOUT",
+  "ECONNREFUSED",
+];
+
 const proxyExternalHostWithoutAuthentication = (host: any) =>
   proxy(host, {
     https: false,
+    proxyReqOptDecorator: (options) => {
+      options.headers = {
+        ...options.headers,
+        connection: "keep-alive",
+      };
+      return options;
+    },
     proxyReqPathResolver: (req) => {
       const urlFromApi = url.parse(host);
       const pathFromApi =
@@ -28,9 +43,8 @@ const proxyExternalHostWithoutAuthentication = (host: any) =>
     },
     proxyErrorHandler: (err, res, next) => {
       logger.error(`Error in proxy for ${host} ${err.message}, ${err.code}`);
-      if (err && err.code === "ECONNREFUSED") {
-        logger.error("proxyErrorHandler: Got ECONNREFUSED");
-        return res.status(503).send({ message: `Could not contact ${host}` });
+      if (err && transientErrorCodes.includes(err.code)) {
+        return res.status(502).send({ message: `Could not contact ${host}` });
       }
       next(err);
     },
@@ -47,11 +61,12 @@ const proxyExternalHost = (
     parseReqBody: parseReqBody,
     timeout: 30000,
     proxyReqOptDecorator: async (options) => {
+      options.headers = {
+        ...options.headers,
+        connection: "keep-alive",
+      };
       if (!accessToken) {
         return options;
-      }
-      if (!options.headers) {
-        options.headers = {};
       }
       (options.headers as Record<string, string>)[
         "Authorization"
@@ -85,9 +100,8 @@ const proxyExternalHost = (
     },
     proxyErrorHandler: (err, res, next) => {
       logger.error(`Error in proxy for ${host} ${err.message}, ${err.code}`);
-      if (err && err.code === "ECONNREFUSED") {
-        logger.error("proxyErrorHandler: Got ECONNREFUSED");
-        return res.status(503).send({ message: `Could not contact ${host}` });
+      if (err && transientErrorCodes.includes(err.code)) {
+        return res.status(502).send({ message: `Could not contact ${host}` });
       }
       next(err);
     },
