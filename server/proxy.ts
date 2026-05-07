@@ -54,7 +54,8 @@ function buildTargetUrl(
 
 function buildForwardedHeaders(
   req: express.Request,
-  accessToken?: string
+  accessToken?: string,
+  isSyfosmregister = false
 ): Record<string, string> {
   const headers: Record<string, string> = {};
 
@@ -67,7 +68,7 @@ function buildForwardedHeaders(
   if (accessToken) {
     headers["authorization"] = `Bearer ${accessToken}`;
   }
-  if (req.hostname === Config.auth.syfosmregister.host) {
+  if (isSyfosmregister) {
     headers["fnr"] = headers["nav-personident"];
   }
 
@@ -149,7 +150,9 @@ const proxyOnBehalfOf =
       removePathPrefix,
       rewritePath
     );
-    const headers = buildForwardedHeaders(req, accessToken);
+    const isSyfosmregister =
+      applicationName === Config.auth.syfosmregister.applicationName;
+    const headers = buildForwardedHeaders(req, accessToken, isSyfosmregister);
 
     try {
       await sendProxyRequest(targetUrl, req, res, headers);
