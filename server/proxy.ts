@@ -67,6 +67,9 @@ function buildForwardedHeaders(
   if (accessToken) {
     headers["authorization"] = `Bearer ${accessToken}`;
   }
+  if (req.host === Config.auth.syfosmregister.host) {
+    headers["fnr"] = headers["nav-personident"];
+  }
 
   return headers;
 }
