@@ -6,16 +6,10 @@ let valkeyClient: RedisClientType | undefined;
 
 const MAX_RECONNECT_DELAY_MS = 5000;
 
-export async function getValkeyClient(): Promise<RedisClientType> {
-  if (valkeyClient?.isReady) {
-    return valkeyClient;
-  }
-
-  if (valkeyClient) {
-    valkeyClient.removeAllListeners();
-    valkeyClient.destroy();
-  }
-
+/**
+ * Initializes and connects the Valkey client. Call once at server startup.
+ */
+export async function connectValkey(): Promise<void> {
   valkeyClient = createClient({
     url: Config.valkey.uri,
     username: Config.valkey.username,
@@ -35,5 +29,17 @@ export async function getValkeyClient(): Promise<RedisClientType> {
   });
 
   await valkeyClient.connect();
+  logger.info("Valkey client connected");
+}
+
+/**
+ * Returns the Valkey client. Throws if {@link connectValkey} has not been called.
+ */
+export function getValkeyClient(): RedisClientType {
+  if (!valkeyClient) {
+    throw new Error(
+      "Valkey client is not initialized. Call connectValkey() at startup."
+    );
+  }
   return valkeyClient;
 }

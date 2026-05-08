@@ -94,7 +94,7 @@ export function setupDraftEndpoints(server: express.Application) {
       }
 
       try {
-        const client = await getValkeyClient();
+        const client = getValkeyClient();
         const value = await client.get(key);
 
         if (!value) {
@@ -140,7 +140,7 @@ export function setupDraftEndpoints(server: express.Application) {
       }
 
       try {
-        const client = await getValkeyClient();
+        const client = getValkeyClient();
         await client.setEx(key, DRAFT_TTL_SECONDS, JSON.stringify(req.body));
 
         return res.status(200).send(req.body);
@@ -170,7 +170,7 @@ export function setupDraftEndpoints(server: express.Application) {
       }
 
       try {
-        const client = await getValkeyClient();
+        const client = getValkeyClient();
         await client.del(key);
 
         return res.status(204).send();
