@@ -1,4 +1,8 @@
-import { createClient, RedisClientType } from "redis";
+import {
+  createClient,
+  RedisClientType,
+  SocketClosedUnexpectedlyError,
+} from "redis";
 import Config from "./config.js";
 import { logger } from "@navikt/pino-logger";
 
@@ -25,7 +29,14 @@ export async function connectValkey(): Promise<void> {
   }) as RedisClientType;
 
   valkeyClient.on("error", (err) => {
-    logger.error({ err }, "Valkey client error");
+    if (err.type == SocketClosedUnexpectedlyError) {
+      logger.warn(
+        { err },
+        "Valkey client socket closed unexpectedly, will attempt to reconnect"
+      );
+    } else {
+      logger.error({ err }, "Valkey client error");
+    }
   });
 
   await valkeyClient.connect();
