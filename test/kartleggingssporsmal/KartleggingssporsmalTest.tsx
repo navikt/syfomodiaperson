@@ -330,7 +330,7 @@ describe("Kartleggingssporsmal", () => {
 
     expect(
       screen.queryByText(
-        `Jeg vurderer at den sykmeldte ikke har risiko for et langtidsfravær`
+        `Jeg vurderer at den sykmeldte ikke har behov for oppfølging`
       )
     ).to.exist;
   });
@@ -413,7 +413,7 @@ describe("Kartleggingssporsmal", () => {
 
       await screen
         .getByLabelText(
-          "Jeg vurderer at den sykmeldte har risiko for et langtidsfravær"
+          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for oppfølging"
         )
         .click();
       await clickButton("Lagre vurdering, fjern oppgaven");
@@ -438,7 +438,7 @@ describe("Kartleggingssporsmal", () => {
 
       await screen
         .getByLabelText(
-          "Jeg vurderer at den sykmeldte har risiko for et langtidsfravær"
+          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for oppfølging"
         )
         .click();
       await clickButton("Lagre vurdering, fjern oppgaven");
