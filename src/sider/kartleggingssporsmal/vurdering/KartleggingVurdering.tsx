@@ -1,4 +1,11 @@
-import { Box, Button, Heading, Radio, RadioGroup } from "@navikt/ds-react";
+import {
+  BodyLong,
+  Box,
+  Button,
+  Heading,
+  Radio,
+  RadioGroup,
+} from "@navikt/ds-react";
 import {
   KandidatStatus,
   KartleggingssporsmalKandidatResponseDTO,
@@ -9,6 +16,9 @@ import { PaddingSize } from "@/components/Layout.tsx";
 import React, { useState } from "react";
 import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessAlert.tsx";
 import { UseMutationResult } from "@tanstack/react-query";
+import { finnNaisUrlIntern } from "@/utils/miljoUtil.ts";
+import { EksternLenke } from "@/components/EksternLenke.tsx";
+import { Events, trackEvent } from "@/utils/umami.ts";
 
 const texts = {
   heading: "Vurdering",
@@ -19,7 +29,22 @@ const texts = {
     "Jeg vurderer at den sykmeldte ikke har risiko for et langtidsfravær",
   button: "Lagre vurdering, fjern oppgaven",
   error: "Du må velge et alternativ",
+  vurdertRisikoForLangtidsfravar:
+    "Det er vurdert risiko for langtidsfravær. Da kan det være aktuelt å gjøre en § 14a-vurdering i ",
+  lenkeTilModiaAO: "vedtaksstøtteløsningen i Modia Arbeidsrettet oppfølging.",
 };
+
+const lenke14a = `https://veilarbpersonflate${finnNaisUrlIntern()}/vedtaksstotte`;
+
+function logEvent() {
+  trackEvent({
+    name: Events.LINK_KLIKKET,
+    properties: {
+      tekst: texts.lenkeTilModiaAO,
+      href: lenke14a,
+    },
+  });
+}
 
 interface Props {
   nyesteKandidat: KartleggingssporsmalKandidatResponseDTO;
@@ -66,7 +91,6 @@ export function KartleggingVurdering({
           {texts.IKKE_RISIKO_FOR_LANGTIDSFRAVAR}
         </Radio>
       </RadioGroup>
-
       {nyesteKandidat.status === KandidatStatus.SVAR_MOTTATT && (
         <Button
           variant="primary"
@@ -95,6 +119,15 @@ export function KartleggingVurdering({
       {nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET && (
         <SuccessAlert nyesteKandidat={nyesteKandidat} />
       )}
+      {nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET &&
+        chosenAlternative === "RISIKO_FOR_LANGTIDSFRAVAR" && (
+          <BodyLong size="small">
+            {texts.vurdertRisikoForLangtidsfravar}
+            <EksternLenke href={lenke14a} onClick={logEvent}>
+              {texts.lenkeTilModiaAO}
+            </EksternLenke>
+          </BodyLong>
+        )}
     </Box>
   );
 }
