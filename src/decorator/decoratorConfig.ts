@@ -25,6 +25,7 @@ export const decoratorConfig: DecoratorProps = {
   showEnheter: true,
   showSearchArea: true,
   showHotkeys: false,
+  enableHotkeys: true,
   environment: getEnvironment(),
   urlFormat: getUrlFormat(),
   proxy: "/modiacontextholder",

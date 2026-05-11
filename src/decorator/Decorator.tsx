@@ -52,6 +52,7 @@ const Decorator = () => {
       show-enheter={String(decoratorConfig.showEnheter)}
       show-search-area={String(decoratorConfig.showSearchArea)}
       show-hotkeys={String(decoratorConfig.showHotkeys)}
+      enable-hotkeys={String(decoratorConfig.enableHotkeys)}
       environment={decoratorConfig.environment}
       url-format={decoratorConfig.urlFormat}
       proxy={decoratorConfig.proxy}
