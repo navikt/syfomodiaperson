@@ -46,6 +46,9 @@ const Decorator = () => {
     <internarbeidsflate-decorator
       ref={decoratorRef}
       app-name={decoratorConfig.appName}
+      fetch-active-user-on-mount={String(
+        decoratorConfig.fetchActiveUserOnMount
+      )}
       fetch-active-enhet-on-mount={String(
         decoratorConfig.fetchActiveEnhetOnMount
       )}
