@@ -1,43 +1,68 @@
-import React, { useCallback } from "react";
-import NAVSPA from "@navikt/navspa";
-import { DecoratorProps } from "./decoratorProps";
-import decoratorConfig from "./decoratorConfig";
-import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { useValgtEnhet } from "@/context/ValgtEnhetContext";
-
-export const INTERNFLATEDECORATOR_ID = "internflatedecorator";
-
-const InternflateDecorator = NAVSPA.importer<DecoratorProps>(
-  "internarbeidsflate-decorator-v3"
-);
+import React, { useLayoutEffect, useRef } from "react";
+import { decoratorConfig } from "./decoratorConfig";
+import { fullNaisUrlIntern } from "@/utils/miljoUtil.ts";
+import { useValgtEnhet } from "@/context/ValgtEnhetContext.tsx";
+import { usePostAktivBruker } from "@/data/modiacontext/usePostAktivBruker.ts";
+import { useValgtPersonident } from "@/hooks/useValgtBruker.ts";
 
 const Decorator = () => {
-  const { setValgtEnhet } = useValgtEnhet();
+  const valgtEnhet = useValgtEnhet();
+  const valgtPersonident = useValgtPersonident();
+  const postAktivBruker = usePostAktivBruker();
+  const decoratorRef = useRef<InternarbeidsflateDecoratorElement>(null);
 
-  const fnr = useValgtPersonident();
+  useLayoutEffect(() => {
+    const handlePersonsokSubmit = (nyttFnr: string) => {
+      postAktivBruker.mutate(nyttFnr, {
+        onSuccess: () => {
+          const host = "syfomodiaperson";
+          const path = `/sykefravaer`;
+          window.location.href = fullNaisUrlIntern(host, path);
+        },
+      });
+    };
 
-  const handlePersonsokSubmit = () => {
-    if (window.location.pathname.includes("personsok")) {
-      window.location.href = "/sykefravaer";
-    } else {
-      window.location.reload();
-    }
-  };
+    const decoratorElement = decoratorRef.current;
+    if (!decoratorElement) return;
 
-  const handleChangeEnhet = (nyEnhet: string) => {
-    setValgtEnhet(nyEnhet);
-  };
+    const onEnhetChanged = (event: CustomEvent<EnhetChangedDetail>) => {
+      const { enhet } = event.detail;
+      if (enhet) valgtEnhet.setValgtEnhet(enhet);
+    };
 
-  const config = useCallback(decoratorConfig, [
-    fnr,
-    handlePersonsokSubmit,
-    handleChangeEnhet,
-  ])(fnr, handlePersonsokSubmit, handleChangeEnhet);
+    const onFnrChanged = (event: CustomEvent<FnrChangedDetail>) => {
+      const { fnr } = event.detail;
+      if (fnr && fnr !== valgtPersonident) handlePersonsokSubmit(fnr);
+    };
+
+    decoratorElement.addEventListener("fnr-changed", onFnrChanged);
+    decoratorElement.addEventListener("enhet-changed", onEnhetChanged);
+
+    return () => {
+      decoratorElement.removeEventListener("fnr-changed", onFnrChanged);
+      decoratorElement.removeEventListener("enhet-changed", onEnhetChanged);
+    };
+  });
 
   return (
-    <div id={INTERNFLATEDECORATOR_ID}>
-      <InternflateDecorator {...config} />
-    </div>
+    <internarbeidsflate-decorator
+      ref={decoratorRef}
+      app-name={decoratorConfig.appName}
+      fetch-active-user-on-mount={String(
+        decoratorConfig.fetchActiveUserOnMount
+      )}
+      fetch-active-enhet-on-mount={String(
+        decoratorConfig.fetchActiveEnhetOnMount
+      )}
+      show-enheter={String(decoratorConfig.showEnheter)}
+      show-search-area={String(decoratorConfig.showSearchArea)}
+      show-hotkeys={String(decoratorConfig.showHotkeys)}
+      enable-hotkeys={String(decoratorConfig.enableHotkeys)}
+      environment={decoratorConfig.environment}
+      url-format={decoratorConfig.urlFormat}
+      proxy={decoratorConfig.proxy}
+      fnr-sync-mode={decoratorConfig.fnrSyncMode}
+    />
   );
 };
 
