@@ -19,6 +19,7 @@ export async function connectValkey(): Promise<void> {
     username: Config.valkey.username,
     password: Config.valkey.password,
     database: Config.valkey.database,
+    pingInterval: 60000, // send ping every minute
     socket: {
       reconnectStrategy: (retries: number) => {
         const delay = Math.min(retries * 100, MAX_RECONNECT_DELAY_MS);
