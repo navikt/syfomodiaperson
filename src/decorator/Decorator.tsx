@@ -3,9 +3,11 @@ import { decoratorConfig } from "./decoratorConfig";
 import { fullNaisUrlIntern } from "@/utils/miljoUtil.ts";
 import { useValgtEnhet } from "@/context/ValgtEnhetContext.tsx";
 import { usePostAktivBruker } from "@/data/modiacontext/usePostAktivBruker.ts";
+import { useValgtPersonident } from "@/hooks/useValgtBruker.ts";
 
 const Decorator = () => {
   const valgtEnhet = useValgtEnhet();
+  const valgtPersonident = useValgtPersonident();
   const postAktivBruker = usePostAktivBruker();
   const decoratorRef = useRef<InternarbeidsflateDecoratorElement>(null);
 
@@ -30,7 +32,7 @@ const Decorator = () => {
 
     const onFnrChanged = (event: CustomEvent<FnrChangedDetail>) => {
       const { fnr } = event.detail;
-      if (fnr) handlePersonsokSubmit(fnr);
+      if (fnr && fnr !== valgtPersonident) handlePersonsokSubmit(fnr);
     };
 
     decoratorElement.addEventListener("fnr-changed", onFnrChanged);
