@@ -48,9 +48,7 @@ export async function connectValkey(): Promise<void> {
  */
 export function getValkeyClient(): RedisClientType {
   if (!valkeyClient) {
-    throw new Error(
-      "Valkey client is not initialized. Call connectValkey() at startup."
-    );
+    throw new Error("Valkey client is not initialized.");
   }
   return valkeyClient;
 }
