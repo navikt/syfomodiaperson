@@ -96,12 +96,17 @@ async function sendProxyRequest(
 ): Promise<void> {
   const hasBody =
     ["POST", "PUT", "PATCH"].includes(req.method) && req.body !== undefined;
+  const hasContentTypeHeader = Object.keys(headers).some(
+    (key) => key.toLowerCase() === "content-type"
+  );
+  const forwardedHeaders =
+    hasBody && !hasContentTypeHeader
+      ? { ...headers, "content-type": "application/json" }
+      : headers;
 
   const response = await fetch(targetUrl, {
     method: req.method,
-    headers: hasBody
-      ? { ...headers, "content-type": "application/json" }
-      : headers,
+    headers: forwardedHeaders,
     body: hasBody ? JSON.stringify(req.body) : undefined,
     signal: AbortSignal.timeout(30_000),
   });
