@@ -100,6 +100,7 @@ async function sendProxyRequest(
       ? { ...headers, "content-type": "application/json" }
       : headers,
     body: hasBody ? JSON.stringify(req.body) : undefined,
+    signal: AbortSignal.timeout(30_000),
   });
 
   res.status(response.status);
