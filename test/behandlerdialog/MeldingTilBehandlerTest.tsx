@@ -28,6 +28,9 @@ import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/p
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
 import { OppfolgingstilfellePersonDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import { ISBEHANDLERDIALOG_ROOT } from "@/apiConstants";
+import { http, HttpResponse } from "msw";
+import { mockServer } from "../setup";
 
 let queryClient: QueryClient;
 
@@ -339,6 +342,38 @@ describe("MeldingTilBehandler", () => {
         expect(meldingTilBehandlerMutation.state.variables).to.deep.equal(
           expectedLegeerklaringDTO
         );
+      });
+    });
+
+    it("Viser feilmelding ved 403-feil fra API", async () => {
+      mockServer.use(
+        http.post(`*${ISBEHANDLERDIALOG_ROOT}/melding`, () =>
+          HttpResponse.json({ message: "Forbidden" }, { status: 403 })
+        )
+      );
+
+      renderMeldingTilBehandler();
+
+      const velgBehandlerRadioButton = screen.getAllByText("Fastlege:", {
+        exact: false,
+      })[0];
+      fireEvent.click(velgBehandlerRadioButton);
+
+      fireEvent.change(screen.getByLabelText(selectLabel), {
+        target: { value: MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER },
+      });
+
+      const meldingInput = getTextInput(
+        "Skriv inn teksten du ønsker å sende til behandler"
+      );
+      changeTextInput(meldingInput, enMeldingTekst);
+
+      await clickButton("Send til behandler");
+
+      await waitFor(() => {
+        expect(
+          screen.getByText("Du har ikke tilgang til å utføre denne handlingen.")
+        ).to.exist;
       });
     });
   });
