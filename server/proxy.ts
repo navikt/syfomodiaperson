@@ -42,7 +42,10 @@ function buildTargetUrl(
   let path = basePath + reqUrl.pathname + reqUrl.search;
 
   if (removePathPrefix) {
-    path = path.replace(`${applicationName}/`, "");
+    const appPathPrefix = `/${applicationName}`;
+    if (path.startsWith(`${appPathPrefix}/`)) {
+      path = path.slice(appPathPrefix.length);
+    }
   }
 
   if (rewritePath) {
