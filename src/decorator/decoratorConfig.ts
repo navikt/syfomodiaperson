@@ -21,12 +21,13 @@ const getUrlFormat = (): UrlFormat => {
 
 export const decoratorConfig: DecoratorProps = {
   appName: "Sykefraværsoppfølging",
+  fetchActiveUserOnMount: true,
   fetchActiveEnhetOnMount: true,
   showEnheter: true,
   showSearchArea: true,
   showHotkeys: false,
+  enableHotkeys: true,
   environment: getEnvironment(),
   urlFormat: getUrlFormat(),
   proxy: "/modiacontextholder",
-  fnrSyncMode: "writeOnly",
 };

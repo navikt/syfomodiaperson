@@ -85,16 +85,6 @@ const texts = {
     link: 'Bruk også "Bli kjent og forstå behov"',
     url: "https://navno.sharepoint.com/:u:/r/sites/fag-og-ytelser-veileder-for-arbeidsrettet-brukeroppfolging/SitePages/Start.aspx?csf=1&web=1&e=qc76DU#bli-kjent-og-forst%C3%A5-behov",
   },
-  vurderingBox: {
-    heading: "Vurdering",
-    legend: "Velg alternativet som passer vurderingen",
-    RISIKO_FOR_LANGTIDSFRAVAR:
-      "Jeg vurderer at den sykmeldte har risiko for et langtidsfravær",
-    IKKE_RISIKO_FOR_LANGTIDSFRAVAR:
-      "Jeg vurderer at den sykmeldte ikke har risiko for et langtidsfravær",
-    button: "Lagre vurdering, fjern oppgaven",
-    error: "Du må velge et alternativ",
-  },
 };
 
 function PilotInfo() {
