@@ -2,6 +2,7 @@ import express from "express";
 import helmet from "helmet";
 import path from "path";
 import prometheus from "prom-client";
+import { Agent, setGlobalDispatcher } from "undici";
 import { fileURLToPath } from "url";
 import { getToggles } from "./server/unleash.js";
 import { validateToken } from "./server/authUtils.js";
@@ -9,6 +10,17 @@ import { setupProxy } from "./server/proxy.js";
 import { setupDraftEndpoints } from "./server/draft.js";
 import { connectValkey } from "./server/valkey.js";
 import { logger } from "@navikt/pino-logger";
+
+// http agent config
+setGlobalDispatcher(
+  new Agent({
+    connect: {
+      timeout: 15_000,
+    },
+    keepAliveTimeout: 60_000,
+    keepAliveMaxTimeout: 300_000,
+  })
+);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

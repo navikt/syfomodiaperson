@@ -11,6 +11,7 @@ const TRANSIENT_ERROR_CODES = new Set([
   "ECONNABORTED",
   "ETIMEDOUT",
   "ECONNREFUSED",
+  "UND_ERR_CONNECT_TIMEOUT",
 ]);
 
 /** Headers that must not be forwarded between proxy and backend (hop-by-hop). */
