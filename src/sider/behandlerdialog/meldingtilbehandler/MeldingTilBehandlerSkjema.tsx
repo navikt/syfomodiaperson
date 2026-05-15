@@ -23,6 +23,7 @@ import {
 } from "@/data/behandlerdialog/meldingtilbehandlerDraftQueryHooks";
 import { useDebouncedCallback } from "use-debounce";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
+import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 
 const texts = {
   sendKnapp: "Send til behandler",
@@ -225,6 +226,9 @@ export function MeldingTilBehandlerSkjema({
           isSaveError={saveDraft.isError}
           savedTime={utkastSavedTime}
         />
+        {meldingTilBehandler.isError && (
+          <SkjemaInnsendingFeil error={meldingTilBehandler.error} />
+        )}
         <ButtonRow>
           <Button
             variant="primary"
