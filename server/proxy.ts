@@ -79,8 +79,11 @@ function buildForwardedHeaders(
 }
 
 function getErrorCode(error: unknown): string | undefined {
-  if (error instanceof TypeError) {
-    const cause = (error as TypeError & { cause?: unknown }).cause;
+  if (error instanceof DOMException && error.name === "AbortError") {
+    return "ABORT_ERR";
+  }
+  if (error instanceof Error) {
+    const cause = (error as Error & { cause?: unknown }).cause;
     if (cause instanceof Error) {
       return (cause as NodeJS.ErrnoException).code;
     }
