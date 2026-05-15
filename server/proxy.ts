@@ -124,6 +124,7 @@ async function sendProxyRequest(
     method: req.method,
     headers: forwardedHeaders,
     body: hasBody ? JSON.stringify(req.body) : undefined,
+    redirect: "manual",
     signal: AbortSignal.timeout(30_000),
   });
 
