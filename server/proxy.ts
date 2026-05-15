@@ -88,6 +88,7 @@ function getErrorCode(error: unknown): string | undefined {
   return undefined;
 }
 
+/** Checks if a header key exists in the headers map using case-insensitive comparison. */
 function hasHeader(headers: Record<string, string>, headerName: string): boolean {
   const lowerCaseHeaderName = headerName.toLowerCase();
   for (const key in headers) {
