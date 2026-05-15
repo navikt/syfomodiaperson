@@ -7,6 +7,7 @@ import { getToggles } from "./server/unleash.js";
 import { validateToken } from "./server/authUtils.js";
 import { setupProxy } from "./server/proxy.js";
 import { setupDraftEndpoints } from "./server/draft.js";
+import { connectValkey } from "./server/valkey.js";
 import { logger } from "@navikt/pino-logger";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -56,6 +57,8 @@ const redirectIfUnauthorized = async (
 };
 
 const setupServer = async () => {
+  await connectValkey();
+
   setupDraftEndpoints(server);
 
   const DIST_DIR = path.join(__dirname, "dist");

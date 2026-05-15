@@ -1,4 +1,8 @@
-import { createClient, RedisClientType } from "redis";
+import {
+  createClient,
+  RedisClientType,
+  SocketClosedUnexpectedlyError,
+} from "redis";
 import Config from "./config.js";
 import { logger } from "@navikt/pino-logger";
 
@@ -6,21 +10,16 @@ let valkeyClient: RedisClientType | undefined;
 
 const MAX_RECONNECT_DELAY_MS = 5000;
 
-export async function getValkeyClient(): Promise<RedisClientType> {
-  if (valkeyClient?.isReady) {
-    return valkeyClient;
-  }
-
-  if (valkeyClient) {
-    valkeyClient.removeAllListeners();
-    valkeyClient.destroy();
-  }
-
+/**
+ * Initializes and connects the Valkey client. Call once at server startup.
+ */
+export async function connectValkey(): Promise<void> {
   valkeyClient = createClient({
     url: Config.valkey.uri,
     username: Config.valkey.username,
     password: Config.valkey.password,
     database: Config.valkey.database,
+    pingInterval: 60000, // send ping every minute
     socket: {
       reconnectStrategy: (retries: number) => {
         const delay = Math.min(retries * 100, MAX_RECONNECT_DELAY_MS);
@@ -31,9 +30,26 @@ export async function getValkeyClient(): Promise<RedisClientType> {
   }) as RedisClientType;
 
   valkeyClient.on("error", (err) => {
-    logger.error({ err }, "Valkey client error");
+    if (err.type == SocketClosedUnexpectedlyError) {
+      logger.warn(
+        { err },
+        "Valkey client socket closed unexpectedly, will attempt to reconnect"
+      );
+    } else {
+      logger.error({ err }, "Valkey client error");
+    }
   });
 
   await valkeyClient.connect();
+  logger.info("Valkey client connected");
+}
+
+/**
+ * Returns the Valkey client. Throws if {@link connectValkey} has not been called.
+ */
+export function getValkeyClient(): RedisClientType {
+  if (!valkeyClient) {
+    throw new Error("Valkey client is not initialized.");
+  }
   return valkeyClient;
 }
