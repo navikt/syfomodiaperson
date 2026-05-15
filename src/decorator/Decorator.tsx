@@ -3,9 +3,11 @@ import { decoratorConfig } from "./decoratorConfig";
 import { fullNaisUrlIntern } from "@/utils/miljoUtil.ts";
 import { useValgtEnhet } from "@/context/ValgtEnhetContext.tsx";
 import { usePostAktivBruker } from "@/data/modiacontext/usePostAktivBruker.ts";
+import { useValgtPersonident } from "@/hooks/useValgtBruker.ts";
 
 const Decorator = () => {
   const valgtEnhet = useValgtEnhet();
+  const valgtPersonident = useValgtPersonident();
   const postAktivBruker = usePostAktivBruker();
   const decoratorRef = useRef<InternarbeidsflateDecoratorElement>(null);
 
@@ -30,7 +32,7 @@ const Decorator = () => {
 
     const onFnrChanged = (event: CustomEvent<FnrChangedDetail>) => {
       const { fnr } = event.detail;
-      if (fnr) handlePersonsokSubmit(fnr);
+      if (fnr && fnr !== valgtPersonident) handlePersonsokSubmit(fnr);
     };
 
     decoratorElement.addEventListener("fnr-changed", onFnrChanged);
@@ -46,12 +48,16 @@ const Decorator = () => {
     <internarbeidsflate-decorator
       ref={decoratorRef}
       app-name={decoratorConfig.appName}
+      fetch-active-user-on-mount={String(
+        decoratorConfig.fetchActiveUserOnMount
+      )}
       fetch-active-enhet-on-mount={String(
         decoratorConfig.fetchActiveEnhetOnMount
       )}
       show-enheter={String(decoratorConfig.showEnheter)}
       show-search-area={String(decoratorConfig.showSearchArea)}
       show-hotkeys={String(decoratorConfig.showHotkeys)}
+      enable-hotkeys={String(decoratorConfig.enableHotkeys)}
       environment={decoratorConfig.environment}
       url-format={decoratorConfig.urlFormat}
       proxy={decoratorConfig.proxy}

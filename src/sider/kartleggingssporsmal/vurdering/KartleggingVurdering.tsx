@@ -24,9 +24,9 @@ const texts = {
   heading: "Vurdering",
   legend: "Velg alternativet som passer vurderingen",
   RISIKO_FOR_LANGTIDSFRAVAR:
-    "Jeg vurderer at den sykmeldte har risiko for et langtidsfravær",
+    "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for oppfølging",
   IKKE_RISIKO_FOR_LANGTIDSFRAVAR:
-    "Jeg vurderer at den sykmeldte ikke har risiko for et langtidsfravær",
+    "Jeg vurderer at den sykmeldte ikke har behov for oppfølging",
   button: "Lagre vurdering, fjern oppgaven",
   error: "Du må velge et alternativ",
   vurdertRisikoForLangtidsfravar:
