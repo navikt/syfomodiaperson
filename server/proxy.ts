@@ -88,6 +88,17 @@ function getErrorCode(error: unknown): string | undefined {
   return undefined;
 }
 
+function hasHeader(headers: Record<string, string>, headerName: string): boolean {
+  const lowerCaseHeaderName = headerName.toLowerCase();
+  for (const key in headers) {
+    if (key.toLowerCase() === lowerCaseHeaderName) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 async function sendProxyRequest(
   targetUrl: string,
   req: express.Request,
@@ -96,9 +107,7 @@ async function sendProxyRequest(
 ): Promise<void> {
   const hasBody =
     ["POST", "PUT", "PATCH"].includes(req.method) && req.body !== undefined;
-  const hasContentTypeHeader = Object.keys(headers).some(
-    (key) => key.toLowerCase() === "content-type"
-  );
+  const hasContentTypeHeader = hasHeader(headers, "content-type");
   const forwardedHeaders =
     hasBody && !hasContentTypeHeader
       ? { ...headers, "content-type": "application/json" }
