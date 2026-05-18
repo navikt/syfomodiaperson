@@ -1,7 +1,11 @@
 export interface KartleggingssporsmalFormSnapshot {
   formSemanticVersion: string;
-  fieldSnapshots: KartleggingssporsmalFieldSnapshot[];
+  fieldSnapshots: KartleggingssporsmalFieldSnapshotUnion[];
 }
+
+export type KartleggingssporsmalFieldSnapshotUnion =
+  | KartleggingssporsmalRadioGroupFieldSnapshot
+  | KartleggingssporsmalTextFieldSnapshot;
 
 export interface KartleggingssporsmalFieldSnapshot {
   fieldId: string;
@@ -17,12 +21,14 @@ export enum KartleggingssporsmalFormSnapshotFieldType {
 
 export interface KartleggingssporsmalRadioGroupFieldSnapshot
   extends KartleggingssporsmalFieldSnapshot {
+  fieldType: KartleggingssporsmalFormSnapshotFieldType.RADIO_GROUP;
   options: KartleggingssporsmalFormSnapshotFieldOption[];
   wasRequired: boolean | null;
 }
 
 export interface KartleggingssporsmalTextFieldSnapshot
   extends KartleggingssporsmalFieldSnapshot {
+  fieldType: KartleggingssporsmalFormSnapshotFieldType.TEXT;
   value: string;
   wasRequired: boolean | null;
 }

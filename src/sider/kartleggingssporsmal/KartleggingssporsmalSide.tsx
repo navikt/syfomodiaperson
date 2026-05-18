@@ -275,9 +275,11 @@ export default function KartleggingssporsmalSide(): ReactElement {
                 )}
               </Box>
               {showKartleggingVurdering &&
+                answeredQuestions &&
                 nyesteKandidat.status !== KandidatStatus.KANDIDAT && (
                   <KartleggingVurdering
                     nyesteKandidat={nyesteKandidat}
+                    answeredQuestions={answeredQuestions}
                     vurderSvarMutation={vurderSvar}
                   />
                 )}
