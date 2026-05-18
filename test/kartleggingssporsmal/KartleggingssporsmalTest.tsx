@@ -15,7 +15,10 @@ import {
   kartleggingssporsmalFerdigbehandlet,
   kartleggingssporsmalVurderingFerdigbehandlet,
 } from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
-import { kartleggingssporsmalAnswered } from "@/mocks/meroppfolging-backend/merOppfolgingMock";
+import {
+  kartleggingssporsmalAnswered,
+  kartleggingssporsmalLowRiskAnswered,
+} from "@/mocks/meroppfolging-backend/merOppfolgingMock";
 import {
   ARBEIDSTAKER_DEFAULT,
   BEHANDLENDE_ENHET_DEFAULT,
@@ -42,6 +45,8 @@ import { generateUUID } from "@/utils/utils";
 import { mockUnleashTogglesOffResponse } from "@/mocks/unleashMocks.ts";
 import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks.ts";
 import { ToggleNames } from "@/data/unleash/unleash_types.ts";
+import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock.ts";
+import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
 
 let queryClient: QueryClient;
 
@@ -74,6 +79,19 @@ const mockKartleggingssporsmalSvar = (
     () => kartleggingssporsmalSvarResponseDTO
   );
 };
+
+const mockGjentagendeFravar = (hasGjentakendeSykefravar: boolean) =>
+  queryClient.setQueryData(
+    oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => {
+      return {
+        ...oppfolgingstilfellePersonMock,
+        hasGjentakendeSykefravar: hasGjentakendeSykefravar,
+      };
+    }
+  );
 
 const mockEnabledToggles = (enabledToggles: ToggleNames[]) =>
   queryClient.setQueryData(
@@ -447,6 +465,101 @@ describe("Kartleggingssporsmal", () => {
           "Det skjedde en uventet feil. Vennligst prøv igjen senere."
         )
       ).to.exist;
+    });
+  });
+
+  describe("Display information box above vurdering", () => {
+    const hasGjentakendeSykefravar = "Den sykmeldte har gjentagende fravær";
+    const noGjentakendeSykefravar = "Den sykmeldte har ikke gjentagende fravær";
+    const hasRiskoForLangtidsfravar =
+      "Svarene indikerer behov for vurdering av oppfølging – se veiledning";
+    const noRiskoForLangtidsfravar =
+      "Svarene indikerer ikke behov for videre vurdering av oppfølging – se veiledning";
+
+    it("Shows hasRiskoForLangtidsfravarText when svar indicate risk for langtidsfravar", () => {
+      mockEnabledToggles([ToggleNames.isVurderingssideKartleggingEnabled]);
+
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalAnswered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+      );
+
+      renderKartleggingssporsmal();
+
+      expect(screen.queryByText(hasRiskoForLangtidsfravar)).to.exist;
+      expect(screen.queryByText(noRiskoForLangtidsfravar)).to.not.exist;
+    });
+
+    it("Does not show hasRiskoForLangtidsfravarText when all selected radio options are low-risk", () => {
+      mockEnabledToggles([ToggleNames.isVurderingssideKartleggingEnabled]);
+
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalLowRiskAnswered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+      );
+
+      renderKartleggingssporsmal();
+
+      expect(
+        screen.getByRole("listitem", {
+          name: (_, element) => {
+            return element?.textContent === noRiskoForLangtidsfravar;
+          },
+        })
+      ).to.exist;
+      expect(screen.queryByText(hasRiskoForLangtidsfravar)).to.not.exist;
+    });
+
+    it("Shows hasGjentakendeSykefravarText when hasGjentakendeSykefravar is true", () => {
+      mockEnabledToggles([ToggleNames.isVurderingssideKartleggingEnabled]);
+
+      mockGjentagendeFravar(true);
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalAnswered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+      );
+
+      renderKartleggingssporsmal();
+
+      expect(screen.queryByText(hasGjentakendeSykefravar)).to.exist;
+      expect(screen.queryByText(noGjentakendeSykefravar)).to.not.exist;
+    });
+
+    it("Does not show hasGjentakendeSykefravarText when hasGjentakendeSykefravar is true", () => {
+      mockEnabledToggles([ToggleNames.isVurderingssideKartleggingEnabled]);
+
+      mockGjentagendeFravar(false);
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalAnswered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+      );
+
+      renderKartleggingssporsmal();
+
+      expect(
+        screen.getByRole("listitem", {
+          name: (_, element) => {
+            return element?.textContent === noGjentakendeSykefravar;
+          },
+        })
+      ).to.exist;
+      expect(screen.queryByText(hasGjentakendeSykefravar)).to.not.exist;
     });
   });
 

@@ -53,61 +53,69 @@ export const merOppfolgingMock: SenOppfolgingFormResponseDTOV2 = {
 };
 
 const createRadioOption = (
+  id: string,
   label: string,
   isSelected = false
 ): FormSnapshotFieldOption => {
   return {
-    optionId: label,
+    optionId: id,
     optionLabel: label,
     wasSelected: isSelected,
   };
 };
 
-export const defaultRadioGroupSporsmal: KartleggingssporsmalRadioGroupFieldSnapshot =
-  {
-    fieldId: "hvorSannsynligTilbakeTilJobben",
+export const defaultRadioGroupSporsmal = (
+  fieldId: string
+): KartleggingssporsmalRadioGroupFieldSnapshot => {
+  return {
+    fieldId: fieldId,
     fieldType: KartleggingssporsmalFormSnapshotFieldType.RADIO_GROUP,
     description: null,
     label: "Label 1",
-    options: [createRadioOption("Ja", true), createRadioOption("Nei")],
+    options: [
+      createRadioOption("1a", "Ja", true),
+      createRadioOption("1b", "Nei"),
+    ],
     wasRequired: true,
   };
+};
 
 const kartleggingssporsmal: KartleggingssporsmalRadioGroupFieldSnapshot[] = [
   {
-    ...defaultRadioGroupSporsmal,
+    ...defaultRadioGroupSporsmal("hvorSannsynligTilbakeTilJobben"),
     label:
       "Hvor sannsynlig er det at du kommer tilbake i jobben du ble sykmeldt fra?",
     options: [
-      createRadioOption("Jeg tror det er veldig sannsynlig"),
-      createRadioOption("Jeg tror det er lite sannsynlig"),
-      createRadioOption("Jeg er usikker", true),
+      createRadioOption("1a", "Jeg tror det er veldig sannsynlig"),
+      createRadioOption("1b", "Jeg tror det er lite sannsynlig"),
+      createRadioOption("1c", "Jeg er usikker", true),
     ],
   },
   {
-    ...defaultRadioGroupSporsmal,
+    ...defaultRadioGroupSporsmal("arbeidsgiverHvordanErSamarbeidFlervalg"),
     label:
       "Hvordan vil du beskrive samarbeidet og relasjonen mellom deg og arbeidsgiveren din?",
     options: [
-      createRadioOption("Jeg opplever samarbeidet og relasjonen som god"),
+      createRadioOption("2a", "Jeg opplever samarbeidet og relasjonen som god"),
       createRadioOption(
+        "2b",
         "Jeg opplever samarbeidet og relasjonen som dårlig",
         true
       ),
     ],
   },
   {
-    ...defaultRadioGroupSporsmal,
+    ...defaultRadioGroupSporsmal("naarTilbakeTilJobbenFlervalg"),
     label: "Hvor lenge tror du at du kommer til å være sykmeldt?",
     options: [
-      createRadioOption("Mindre enn seks måneder", true),
-      createRadioOption("Mer enn seks måneder"),
+      createRadioOption("3a", "Mindre enn seks måneder", true),
+      createRadioOption("3b", "Mer enn seks måneder"),
     ],
   },
 ];
 
 const hvorforUsikkerTextSporsmal: KartleggingssporsmalTextFieldSnapshot = {
-  fieldId: "tilbakemelding",
+  fieldId: "tilbakeTilJobbenLiteSannsynligBegrunnelse",
   fieldType: KartleggingssporsmalFormSnapshotFieldType.TEXT,
   description:
     "Skriv kortfattet hvorfor du er usikker på om du kommer tilbake i jobben du ble sykmeldt fra",
@@ -119,7 +127,7 @@ const hvorforUsikkerTextSporsmal: KartleggingssporsmalTextFieldSnapshot = {
 };
 
 const samarbeidTextSporsmal: KartleggingssporsmalTextFieldSnapshot = {
-  fieldId: "tilbakemelding",
+  fieldId: "arbeidsgiverSamarbeidDarligBegrunnelse",
   fieldType: KartleggingssporsmalFormSnapshotFieldType.TEXT,
   description: null,
   label: "Hva gjør samarbeidet og relasjonen dårlig?",
@@ -141,6 +149,55 @@ export const kartleggingssporsmalAnswered: KartleggingssporsmalSvarResponseDTO =
         ...kartleggingssporsmal.slice(1, 2),
         samarbeidTextSporsmal,
         ...kartleggingssporsmal.slice(2),
+      ],
+    },
+  };
+
+export const kartleggingssporsmalLowRiskAnswered: KartleggingssporsmalSvarResponseDTO =
+  {
+    uuid: generateUUID(),
+    fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+    kandidatId: generateUUID(),
+    createdAt: daysFromToday(-2),
+    formSnapshot: {
+      formSemanticVersion: "1.0.0",
+      fieldSnapshots: [
+        {
+          ...defaultRadioGroupSporsmal("hvorSannsynligTilbakeTilJobben"),
+          label:
+            "Hvor sannsynlig er det at du kommer tilbake i jobben du ble sykmeldt fra?",
+          options: [
+            createRadioOption("1a", "Jeg tror det er veldig sannsynlig", true),
+            createRadioOption("1b", "Jeg tror det er lite sannsynlig"),
+            createRadioOption("1c", "Jeg er usikker"),
+          ],
+        },
+        {
+          ...defaultRadioGroupSporsmal(
+            "arbeidsgiverHvordanErSamarbeidFlervalg"
+          ),
+          label:
+            "Hvordan vil du beskrive samarbeidet og relasjonen mellom deg og arbeidsgiveren din?",
+          options: [
+            createRadioOption(
+              "2a",
+              "Jeg opplever samarbeidet og relasjonen som god",
+              true
+            ),
+            createRadioOption(
+              "2b",
+              "Jeg opplever samarbeidet og relasjonen som dårlig"
+            ),
+          ],
+        },
+        {
+          ...defaultRadioGroupSporsmal("naarTilbakeTilJobbenFlervalg"),
+          label: "Hvor lenge tror du at du kommer til å være sykmeldt?",
+          options: [
+            createRadioOption("3a", "Mindre enn seks måneder", true),
+            createRadioOption("3b", "Mer enn seks måneder"),
+          ],
+        },
       ],
     },
   };
