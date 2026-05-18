@@ -58,7 +58,7 @@ $ pnpm install # installerer avhengigheter
 
 ## Valkey Cache
 
-Bruker teamsykefravr sin felles Valkey-cache på Aiven for å cache bruker-sessions.
+Bruker `teamsykefravr` sin felles Valkey-cache på Aiven til mellomlagring.
 
 ## Feature toggling
 
