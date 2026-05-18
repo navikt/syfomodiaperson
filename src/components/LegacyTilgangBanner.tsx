@@ -1,11 +1,10 @@
-import { GlobalAlert } from "@navikt/ds-react";
+import { GlobalAlert, Link } from "@navikt/ds-react";
 import React from "react";
 
 const texts = {
-  title:
-    "Grunnet nye tilgangsordninger i Modia/Syfo vil tilgangen din snart stenges.",
+  title: "Du har en gammel tilgang til Modia Sykefraværsoppfølging",
   description:
-    "For å beholde tilgangen må du be din leder om å gi deg en av tilgangene MODIA-SYFO-VEILEDER eller MODIA-SYFO-LESETILGANG i Mine Tilganger.",
+    "Det er opprettet nye tilganger for Modia SYFO. Hvis du er SYFO-veileder må du få tildelt den nye tilgangen innen 1. juni 2026. Etter det vil brukere med gammel tilgang kun ha tilgang til Finn fastlege.",
 };
 
 export default function LegacyTilgangBanner() {
@@ -16,7 +15,17 @@ export default function LegacyTilgangBanner() {
           {texts.title}
         </GlobalAlert.Title>
       </GlobalAlert.Header>
-      <GlobalAlert.Content>{texts.description}</GlobalAlert.Content>
+      <GlobalAlert.Content>
+        {texts.description}{" "}
+        <Link
+          href="https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Nye-tilganger-til-Modia-sykefrav%C3%A6rsoppf%C3%B8lging.aspx"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Les mer på Navet
+        </Link>
+        .
+      </GlobalAlert.Content>
     </GlobalAlert>
   );
 }

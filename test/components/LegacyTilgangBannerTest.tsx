@@ -19,8 +19,7 @@ import { ToggleNames } from "@/data/unleash/unleash_types";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
 import { tilgangBrukerMock } from "@/mocks/istilgangskontroll/tilgangtilbrukerMock";
 
-const bannerTitle =
-  "Grunnet nye tilgangsordninger i Modia/Syfo vil tilgangen din snart stenges.";
+const bannerTitle = "Du har en gammel tilgang til Modia Sykefraværsoppfølging";
 
 describe("LegacyTilgangBanner", () => {
   it("viser advarsel om legacy tilgang", () => {
