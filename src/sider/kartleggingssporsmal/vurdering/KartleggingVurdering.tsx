@@ -9,6 +9,7 @@ import {
 import {
   KandidatStatus,
   KartleggingssporsmalKandidatResponseDTO,
+  KartleggingssporsmalSvarResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes.ts";
 import { VurderingAlternativ } from "@/sider/kartleggingssporsmal/types.ts";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil.tsx";
@@ -19,6 +20,7 @@ import { UseMutationResult } from "@tanstack/react-query";
 import { finnNaisUrlIntern } from "@/utils/miljoUtil.ts";
 import { EksternLenke } from "@/components/EksternLenke.tsx";
 import { Events, trackEvent } from "@/utils/umami.ts";
+import { KartleggingInfo } from "@/sider/kartleggingssporsmal/info/KartleggingInfo.tsx";
 
 const texts = {
   heading: "Vurdering",
@@ -48,6 +50,7 @@ function logEvent() {
 
 interface Props {
   nyesteKandidat: KartleggingssporsmalKandidatResponseDTO;
+  answeredQuestions: KartleggingssporsmalSvarResponseDTO;
   // Vi må ta inn denne fordi visning av flexjar-boksen er knyttet til mutation i Kartleggingssporsmal.tsx
   // Kan unngå dette når man har én vurderingsside, ikke to ulike måter å vurdere på
   vurderSvarMutation: UseMutationResult<
@@ -63,6 +66,7 @@ interface Props {
 
 export function KartleggingVurdering({
   nyesteKandidat,
+  answeredQuestions,
   vurderSvarMutation,
 }: Props) {
   const [chosenAlternative, setChosenAlternative] =
@@ -75,6 +79,8 @@ export function KartleggingVurdering({
 
   return (
     <Box background="default" className="p-6 gap-6 [&>*]:mb-4 mb-4">
+      <KartleggingInfo answeredQuestions={answeredQuestions} />
+
       <Heading size={"medium"}>{texts.heading}</Heading>
       <RadioGroup
         legend={texts.legend}

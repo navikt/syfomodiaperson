@@ -4,8 +4,6 @@ import { KartleggingssporsmalTextSvar } from "@/sider/kartleggingssporsmal/skjem
 import {
   KartleggingssporsmalFormSnapshot,
   KartleggingssporsmalFormSnapshotFieldType,
-  KartleggingssporsmalRadioGroupFieldSnapshot,
-  KartleggingssporsmalTextFieldSnapshot,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalSkjemasvarTypes";
 import { Alert } from "@navikt/ds-react";
 
@@ -23,28 +21,25 @@ export function KartleggingssporsmalSkjemasvar({ formSnapshot }: Props) {
   return (
     <div className="flex flex-col gap-7">
       {formSnapshot?.fieldSnapshots.map((field, index) => {
+        const fieldType: string = field.fieldType;
+
         switch (field.fieldType) {
           case KartleggingssporsmalFormSnapshotFieldType.RADIO_GROUP:
             return (
               <KartleggingssporsmalRadioGroupSvar
                 key={index}
-                radioGroupSvar={
-                  field as KartleggingssporsmalRadioGroupFieldSnapshot
-                }
+                radioGroupSvar={field}
               />
             );
           case KartleggingssporsmalFormSnapshotFieldType.TEXT:
             return (
-              <KartleggingssporsmalTextSvar
-                key={index}
-                textSvar={field as KartleggingssporsmalTextFieldSnapshot}
-              />
+              <KartleggingssporsmalTextSvar key={index} textSvar={field} />
             );
           default:
             return (
               <Alert className="w-1/2" variant={"error"}>
-                Mottok spørsmål av typen: {field.fieldType} som fremvisningen
-                ikke støtter. Send en sak i Porten der du melder ifra om dette.
+                Mottok spørsmål av typen: {fieldType} som fremvisningen ikke
+                støtter. Send en sak i Porten der du melder ifra om dette.
               </Alert>
             );
         }
