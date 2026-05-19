@@ -1,5 +1,17 @@
+import { Events, trackEvent } from "@/utils/umami";
 import { GlobalAlert, Link } from "@navikt/ds-react";
-import React from "react";
+import React, { useEffect } from "react";
+
+function logShowingBannerEvent() {
+  trackEvent({
+    // Fikk ikke til å bruke GLOBALALERT_VIST_EVENT, det er nok noe galt med typingen
+    // i analytics-types
+    name: Events.ALERT_VIST,
+    properties: {
+      tekst: texts.title,
+    },
+  });
+}
 
 const texts = {
   title: "Du har en gammel tilgang til Modia Sykefraværsoppfølging",
@@ -8,6 +20,10 @@ const texts = {
 };
 
 export default function LegacyTilgangBanner() {
+  useEffect(() => {
+    logShowingBannerEvent();
+  }, []);
+
   return (
     <GlobalAlert status="warning">
       <GlobalAlert.Header>
