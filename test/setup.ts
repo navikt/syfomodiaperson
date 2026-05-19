@@ -22,6 +22,10 @@ class IntersectionObserverMock {
 
 vi.stubGlobal("ResizeObserver", ResizeObserverMock);
 vi.stubGlobal("IntersectionObserver", IntersectionObserverMock);
+vi.stubGlobal("umami", {
+  track: vi.fn(),
+  identify: vi.fn(),
+});
 
 export const mockServer = setupServer(
   http.get(`*${SYFOVEILEDER_ROOT}/veiledere/self`, () =>
