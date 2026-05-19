@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import LegacyTilgangBanner from "../../src/components/LegacyTilgangBanner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -18,20 +18,23 @@ import { mockUnleashResponse } from "@/mocks/unleashMocks";
 import { ToggleNames } from "@/data/unleash/unleash_types";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
 import { tilgangBrukerMock } from "@/mocks/istilgangskontroll/tilgangtilbrukerMock";
-import { Events } from "@/utils/umami";
+import { Events, setIdentifier } from "@/utils/umami";
 
 const bannerTitle = "Du har en gammel tilgang til Modia Sykefraværsoppfølging";
 
 describe("LegacyTilgangBanner", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
+    await setIdentifier(VEILEDER_IDENT_DEFAULT);
   });
 
-  it("viser advarsel om legacy tilgang", () => {
+  it("viser advarsel om legacy tilgang", async () => {
     render(<LegacyTilgangBanner />);
 
     expect(screen.getByText(bannerTitle)).to.exist;
-    expect(umami.track).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(umami.track).toHaveBeenCalledTimes(1);
+    });
     expect(umami.track).toHaveBeenCalledWith(Events.ALERT_VIST, {
       tekst: bannerTitle,
     });
