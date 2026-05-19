@@ -28,8 +28,8 @@ importers:
         specifier: 8.10.0
         version: 8.10.0
       '@navikt/analytics-types':
-        specifier: 0.0.8
-        version: 0.0.8
+        specifier: 0.0.9
+        version: 0.0.9
       '@navikt/ds-css':
         specifier: 8.10.0
         version: 8.10.0
@@ -726,8 +726,8 @@ packages:
   '@navikt/aksel-icons@8.10.0':
     resolution: {integrity: sha512-lnIGzIHHx+xCEbtvsJzi3ULaLKzupHkBCVRwLQob3HXvd0RRh8dF6OBOqQMU3XzbB2x1zFTjNas+4anG65oriA==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/8.10.0/094a50d3b6ac0714b5f73eddf38e8aa7b517c1ff}
 
-  '@navikt/analytics-types@0.0.8':
-    resolution: {integrity: sha512-h+JVrGmIdEpWG2CjUI9XdW8sxG/loFj4qJTgC9xanw1CDVjGrDxia4WI19+jV+frBPGV/onP+f02fkRr33tUQw==, tarball: https://npm.pkg.github.com/download/@navikt/analytics-types/0.0.8/a7634f8854ca6d40b95ece91c0c6f5e206c3178e}
+  '@navikt/analytics-types@0.0.9':
+    resolution: {integrity: sha512-bopCvqEogyFcmrJiBxK/Mr25d6yPKF7GR36MGrJqiHCPJYf1rDu6lK4cpooTG4Q//D/1xTkHRom8ZH5BI6dTew==, tarball: https://npm.pkg.github.com/download/@navikt/analytics-types/0.0.9/5919241a6dbb782eb101fff3234ce5c36d16e942}
     engines: {node: '>=20.0.0', npm: '>=9.0.0'}
 
   '@navikt/ds-css@8.10.0':
@@ -739,6 +739,9 @@ packages:
       '@types/react': ^17.0.30 || ^18 || ^19
       react: ^17 || ^18 || ^19
       react-dom: ^17 || ^18 || ^19
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-tailwind@8.10.0':
     resolution: {integrity: sha512-3HyFIjJZEYWhVPVuyMWaMHsGomCWFpQ9vjb4MvYdHMFZbB4jNSzrWnJy24sfrJNrqcIN+PLWqP5gNlL5sadIrw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/8.10.0/fea92538a8340ba08f680954f063b1e6a2b12fac}
@@ -4992,7 +4995,7 @@ snapshots:
 
   '@navikt/aksel-icons@8.10.0': {}
 
-  '@navikt/analytics-types@0.0.8': {}
+  '@navikt/analytics-types@0.0.9': {}
 
   '@navikt/ds-css@8.10.0': {}
 
@@ -5002,11 +5005,12 @@ snapshots:
       '@floating-ui/react-dom': 2.1.8(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@navikt/aksel-icons': 8.10.0
       '@navikt/ds-tokens': 8.10.1
-      '@types/react': 19.2.14
       date-fns: 4.1.0
       react: 19.2.5
       react-day-picker: 9.14.0(react@19.2.5)
       react-dom: 19.2.5(react@19.2.5)
+    optionalDependencies:
+      '@types/react': 19.2.14
 
   '@navikt/ds-tailwind@8.10.0': {}
 
