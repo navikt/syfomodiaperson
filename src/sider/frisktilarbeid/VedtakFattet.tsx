@@ -75,7 +75,7 @@ export default function VedtakFattet({
         </Alert>
       )}
       {visInfotrygdAlert(vedtak.infotrygdStatus) && (
-        <Alert variant="warning" className="[&>*]:max-w-fit" closeButton>
+        <Alert variant="warning" className="[&>*]:max-w-fit">
           {texts.infotrygdAlert}
           <br />
           <i>{texts.infotrygdRutine}</i>
