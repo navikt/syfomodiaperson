@@ -63,7 +63,7 @@ export const historikkPath = `${appRoutePath}/historikk`;
 function AktivBrukerRouter(): ReactElement {
   const getAktivVeileder = useAktivVeilederinfoQuery();
   if (window.umami !== undefined && getAktivVeileder.isSuccess) {
-    void Umami.setIdentifier(getAktivVeileder.data.ident);
+    Umami.setIdentifier(getAktivVeileder.data.ident);
   }
 
   return (

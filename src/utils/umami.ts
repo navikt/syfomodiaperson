@@ -10,9 +10,18 @@ export {
 
 import type { EventName, TaxonomyEvent } from "@navikt/analytics-types";
 
-export async function setIdentifier(veilederident: string) {
-  const maskedVeilederIdent = await hashId(veilederident);
-  await umami.identify(maskedVeilederIdent);
+/** Resolves once the veileder identifier has been set via {@link setIdentifier}. */
+let identifierReady: Promise<void> = Promise.resolve();
+
+/**
+ * Hashes and sets the veileder identifier in Umami.
+ * Must be called before any {@link trackEvent} calls to ensure events are attributed correctly.
+ */
+export function setIdentifier(veilederident: string): void {
+  identifierReady = (async () => {
+    const maskedVeilederIdent = await hashId(veilederident);
+    await umami.identify(maskedVeilederIdent);
+  })();
 }
 
 async function hashId(id: string): Promise<string> {
@@ -36,6 +45,13 @@ function beforeSendHandler(type, payload) {
 // Make the function globally accessible to make "data-before-send" in umami script work
 (window as any).beforeSendHandler = beforeSendHandler;
 
-export function trackEvent<K extends EventName>(event: TaxonomyEvent<K>) {
+/**
+ * Tracks a Umami event. Waits for the veileder identifier to be set before sending,
+ * to ensure the event is correctly attributed.
+ */
+export async function trackEvent<K extends EventName>(
+  event: TaxonomyEvent<K>
+): Promise<void> {
+  await identifierReady;
   umami.track(event.name, { ...event.properties });
 }
