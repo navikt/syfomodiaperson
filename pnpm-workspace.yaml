@@ -4,9 +4,11 @@ allowBuilds:
   msw: true
   protobufjs: true
   styled-components: true
+minimumReleaseAge: 4320 # 3 days
 overrides:
   follow-redirects@<=1.15.11: '>=1.16.0'
   minimatch@>=9.0.0 <9.0.6: '>=9.0.6'
   minimatch@>=9.0.0 <9.0.7: '>=9.0.7'
   protobufjs@<7.5.5: '>=7.5.5'
   protobufjs@>=8.0.0 <8.0.1: '>=8.0.1'
+ignoreScripts: true
