@@ -1,6 +1,6 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
-import { beforeEach, describe, expect, it } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import LegacyTilgangBanner from "../../src/components/LegacyTilgangBanner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -18,6 +18,7 @@ import { mockUnleashResponse } from "@/mocks/unleashMocks";
 import { ToggleNames } from "@/data/unleash/unleash_types";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
 import { tilgangBrukerMock } from "@/mocks/istilgangskontroll/tilgangtilbrukerMock";
+import { Events, setIdentifier } from "@/utils/umami";
 
 const bannerTitle = "Du har en gammel tilgang til Modia Sykefraværsoppfølging";
 
@@ -61,14 +62,23 @@ describe("LegacyTilgangBanner i Side", () => {
     );
   }
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    vi.clearAllMocks();
+    await setIdentifier(VEILEDER_IDENT_DEFAULT);
     queryClient = queryClientWithMockData();
   });
 
-  it("vises når toggle er true og legacyTilgang er true", () => {
+  it("vises når toggle er true og legacyTilgang er true", async () => {
     renderSide();
 
     expect(screen.getByText(bannerTitle)).to.exist;
+
+    await waitFor(() => {
+      expect(umami.track).toHaveBeenCalledTimes(1);
+    });
+    expect(umami.track).toHaveBeenCalledWith(Events.ALERT_VIST, {
+      tekst: bannerTitle,
+    });
   });
 
   it("vises ikke når unleash toggle isNyTilgangskontrollEnabled er false", () => {
@@ -86,6 +96,7 @@ describe("LegacyTilgangBanner i Side", () => {
     renderSide();
 
     expect(screen.queryByText(bannerTitle)).to.be.null;
+    expect(umami.track).not.toHaveBeenCalled();
   });
 
   it("vises ikke når legacyTilgang er false", () => {
@@ -97,5 +108,6 @@ describe("LegacyTilgangBanner i Side", () => {
     renderSide();
 
     expect(screen.queryByText(bannerTitle)).to.be.null;
+    expect(umami.track).not.toHaveBeenCalled();
   });
 });
