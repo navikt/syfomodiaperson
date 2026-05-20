@@ -23,21 +23,10 @@ import { Events, setIdentifier } from "@/utils/umami";
 const bannerTitle = "Du har en gammel tilgang til Modia Sykefraværsoppfølging";
 
 describe("LegacyTilgangBanner", () => {
-  beforeEach(async () => {
-    vi.clearAllMocks();
-    await setIdentifier(VEILEDER_IDENT_DEFAULT);
-  });
-
-  it("viser advarsel om legacy tilgang", async () => {
+  it("viser advarsel om legacy tilgang", () => {
     render(<LegacyTilgangBanner />);
 
     expect(screen.getByText(bannerTitle)).to.exist;
-    await waitFor(() => {
-      expect(umami.track).toHaveBeenCalledTimes(1);
-    });
-    expect(umami.track).toHaveBeenCalledWith(Events.ALERT_VIST, {
-      tekst: bannerTitle,
-    });
   });
 });
 
@@ -73,14 +62,23 @@ describe("LegacyTilgangBanner i Side", () => {
     );
   }
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    vi.clearAllMocks();
+    await setIdentifier(VEILEDER_IDENT_DEFAULT);
     queryClient = queryClientWithMockData();
   });
 
-  it("vises når toggle er true og legacyTilgang er true", () => {
+  it("vises når toggle er true og legacyTilgang er true", async () => {
     renderSide();
 
     expect(screen.getByText(bannerTitle)).to.exist;
+
+    await waitFor(() => {
+      expect(umami.track).toHaveBeenCalledTimes(1);
+    });
+    expect(umami.track).toHaveBeenCalledWith(Events.ALERT_VIST, {
+      tekst: bannerTitle,
+    });
   });
 
   it("vises ikke når unleash toggle isNyTilgangskontrollEnabled er false", () => {
@@ -98,6 +96,7 @@ describe("LegacyTilgangBanner i Side", () => {
     renderSide();
 
     expect(screen.queryByText(bannerTitle)).to.be.null;
+    expect(umami.track).not.toHaveBeenCalled();
   });
 
   it("vises ikke når legacyTilgang er false", () => {
@@ -109,5 +108,6 @@ describe("LegacyTilgangBanner i Side", () => {
     renderSide();
 
     expect(screen.queryByText(bannerTitle)).to.be.null;
+    expect(umami.track).not.toHaveBeenCalled();
   });
 });
