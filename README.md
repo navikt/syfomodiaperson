@@ -47,7 +47,7 @@ export NPM_AUTH_TOKEN=ghp_din_token_her
 - Kjør tester med `pnpm test` eller `pnpm test:watch`
 - Lint JS-kode med `pnpm lint` eller `pnpm lint:fix`
 
-Appen nås på [http://localhost:8080/sykefravaer](http://localhost:8080/sykefravaer)
+Appen nås på [http://localhost:3000/sykefravaer](http://localhost:3000/sykefravaer)
 
 Ved første kjøring:
 
@@ -58,7 +58,7 @@ $ pnpm install # installerer avhengigheter
 
 ## Valkey Cache
 
-Bruker teamsykefravr sin felles Valkey-cache på Aiven for å cache bruker-sessions.
+Bruker `teamsykefravr` sin felles Valkey-cache på Aiven til mellomlagring.
 
 ## Feature toggling
 
