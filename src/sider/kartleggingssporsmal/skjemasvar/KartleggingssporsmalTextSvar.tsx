@@ -12,7 +12,6 @@ export function KartleggingssporsmalTextSvar({ textSvar }: Props) {
   return (
     <Textarea
       label={textSvar.label}
-      description={textSvar.description}
       value={isEmpty ? "Ingen tekst" : textSvar.value}
       size={"small"}
       readOnly={true}
