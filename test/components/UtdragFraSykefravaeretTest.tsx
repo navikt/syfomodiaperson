@@ -6,6 +6,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import {
   ARBEIDSTAKER_DEFAULT,
   VIRKSOMHET_BRANNOGBIL,
+  VIRKSOMHET_PONTYPANDY,
 } from "@/mocks/common/mockConstants";
 import { queryClientWithMockData } from "../testQueryClient";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
@@ -20,6 +21,7 @@ import {
   setSykmeldingDataFromOppfolgingstilfelle,
 } from "../utils/oppfolgingstilfelleUtils";
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
+import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 
 let queryClient: QueryClient;
 
@@ -177,6 +179,68 @@ describe("UtdragFraSykefravaeret", () => {
           dayjs(oppfolgingsplanCreatedAt).subtract(1, "days").toDate()
         )} (LPS)`
       )
+    ).to.not.exist;
+  });
+
+  it("Viser oppfolgingsplan V2 innenfor oppfolgingstilfelle", () => {
+    const oppfolgingstilfeller = createOppfolgingstilfelleFromSykmelding([
+      sykmeldingNow,
+    ]);
+    const tilfelle = oppfolgingstilfeller[0];
+    const planInnenforTilfelle: OppfolgingsplanV2DTO = {
+      uuid: "test-uuid-v2",
+      fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+      virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+      opprettet: new Date().toISOString(),
+      deltMedNavTidspunkt: new Date().toISOString(),
+      sistEndret: new Date().toISOString(),
+      evalueringsdato: addDays(new Date(), 7).toString(),
+    };
+    queryClient.setQueryData(
+      oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
+      () => [planInnenforTilfelle]
+    );
+
+    renderUtdragFraSykefravaeret(tilfelle);
+
+    expect(
+      screen.getByRole("link", {
+        name: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+      })
+    ).to.exist;
+    expect(screen.queryByText("Ingen planer er delt med Nav")).to.not.exist;
+  });
+
+  it("Viser ikke oppfolgingsplan V2 når den er utenfor oppfolgingstilfellet", () => {
+    const oppfolgingstilfeller = createOppfolgingstilfelleFromSykmelding([
+      sykmeldingNow,
+    ]);
+    const tilfelle = oppfolgingstilfeller[0];
+    const planUtenforTilfelle: OppfolgingsplanV2DTO = {
+      uuid: "test-uuid-v2-old",
+      fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+      virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+      opprettet: addWeeks(new Date(), -4).toISOString(),
+      deltMedNavTidspunkt: addWeeks(new Date(), -4).toISOString(),
+      sistEndret: addWeeks(new Date(), -4).toISOString(),
+      evalueringsdato: addWeeks(new Date(), -2).toString(),
+    };
+    queryClient.setQueryData(
+      oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
+      () => [planUtenforTilfelle]
+    );
+
+    renderUtdragFraSykefravaeret(tilfelle);
+
+    expect(screen.getByText("Ingen planer er delt med Nav")).to.exist;
+    expect(
+      screen.queryByRole("link", {
+        name: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+      })
     ).to.not.exist;
   });
 });

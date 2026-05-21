@@ -2,17 +2,26 @@ import React from "react";
 import styled from "styled-components";
 import { lpsPlanerWithActiveTilfelle } from "@/utils/oppfolgingsplanUtils";
 import {
+  restdatoTilLesbarDato,
   tilLesbarDatoMedArstall,
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
-import { LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT } from "@/apiConstants";
+import {
+  LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT,
+  SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT,
+} from "@/apiConstants";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import {
   useGetLPSOppfolgingsplanerQuery,
   useGetOppfolgingsplanerQuery,
+  useGetOppfolgingsplanerV2Query,
 } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
+import {
+  OppfolgingsplanV2DTO,
+  partitionOppfolgingsplanerByActiveTilfelle,
+} from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { Alert, Heading, Link, Loader } from "@navikt/ds-react";
 
@@ -111,20 +120,64 @@ function LPSPlaner({ lpsPlaner }: LpsPlanerProps) {
   );
 }
 
+interface AktivPlanV2LenkeProps {
+  aktivPlan: OppfolgingsplanV2DTO;
+}
+
+function AktivPlanV2Lenke({ aktivPlan }: AktivPlanV2LenkeProps) {
+  const { virksomhetsnavn } = useVirksomhetQuery(aktivPlan.virksomhetsnummer);
+  const deltMedNav = restdatoTilLesbarDato(aktivPlan.deltMedNavTidspunkt);
+  return (
+    <AktivPlan>
+      <a
+        className="lenke"
+        href={`${SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT}/oppfolgingsplaner/${aktivPlan.uuid}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {virksomhetsnavn && virksomhetsnavn.length > 0
+          ? virksomhetsnavn.toLowerCase()
+          : aktivPlan.virksomhetsnummer}
+      </a>
+      <span className="ml-8">{`delt med Nav ${deltMedNav}`}</span>
+    </AktivPlan>
+  );
+}
+
+interface AktivePlanerV2Props {
+  aktivePlaner: OppfolgingsplanV2DTO[];
+}
+
+function AktivePlanerV2({ aktivePlaner }: AktivePlanerV2Props) {
+  return (
+    <>
+      {aktivePlaner.map((plan, index) => (
+        <AktivPlanV2Lenke key={index} aktivPlan={plan} />
+      ))}
+    </>
+  );
+}
+
 interface OppfolgingsplanerProps {
   aktivePlaner: OppfolgingsplanDTO[];
+  aktivePlanerV2: OppfolgingsplanV2DTO[];
   lpsPlaner: OppfolgingsplanLPS[];
 }
 
 function Oppfolgingsplaner({
   aktivePlaner,
+  aktivePlanerV2,
   lpsPlaner,
 }: OppfolgingsplanerProps) {
-  const anyActivePlaner = aktivePlaner.length > 0 || lpsPlaner.length > 0;
+  const anyActivePlaner =
+    aktivePlaner.length > 0 ||
+    aktivePlanerV2.length > 0 ||
+    lpsPlaner.length > 0;
 
   return anyActivePlaner ? (
     <div>
       <AktivePlaner aktivePlaner={aktivePlaner} />
+      <AktivePlanerV2 aktivePlaner={aktivePlanerV2} />
       <LPSPlaner lpsPlaner={lpsPlaner} />
     </div>
   ) : (
@@ -141,16 +194,27 @@ export default function UtdragOppfolgingsplaner({
 }: Props) {
   const getOppfolgingsplanerQuery = useGetOppfolgingsplanerQuery();
   const getLPSOppfolgingsplanerQuery = useGetLPSOppfolgingsplanerQuery();
+  const getOppfolgingsplanerV2Query = useGetOppfolgingsplanerV2Query();
 
   const activeLpsPlaner = lpsPlanerWithActiveTilfelle(
     getLPSOppfolgingsplanerQuery.data,
     selectedOppfolgingstilfelle
   );
+  const [aktiveOppfolgingsplanerV2] = selectedOppfolgingstilfelle
+    ? partitionOppfolgingsplanerByActiveTilfelle(
+        getOppfolgingsplanerV2Query.data,
+        selectedOppfolgingstilfelle
+      )
+    : [[]];
+
   const showLoader =
     getOppfolgingsplanerQuery.isPending &&
-    getLPSOppfolgingsplanerQuery.isPending;
+    getLPSOppfolgingsplanerQuery.isPending &&
+    getOppfolgingsplanerV2Query.isPending;
   const showError =
-    getOppfolgingsplanerQuery.isError && getLPSOppfolgingsplanerQuery.isError;
+    getOppfolgingsplanerQuery.isError &&
+    getLPSOppfolgingsplanerQuery.isError &&
+    getOppfolgingsplanerV2Query.isError;
 
   return (
     <div>
@@ -166,6 +230,7 @@ export default function UtdragOppfolgingsplaner({
       ) : (
         <Oppfolgingsplaner
           aktivePlaner={getOppfolgingsplanerQuery.data}
+          aktivePlanerV2={aktiveOppfolgingsplanerV2}
           lpsPlaner={activeLpsPlaner}
         />
       )}
