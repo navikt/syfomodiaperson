@@ -7,9 +7,10 @@ import { queryClientWithAktivBruker } from "../../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
-import { daysFromToday, getButton } from "../../testUtils";
+import { getButton } from "../../testUtils";
 import userEvent from "@testing-library/user-event";
 import { Personkort } from "@/components/personkort/Personkort";
+import { daysFromToday } from "@/utils/datoUtils.ts";
 
 let queryClient: QueryClient;
 

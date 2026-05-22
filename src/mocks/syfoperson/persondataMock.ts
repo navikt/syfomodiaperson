@@ -3,7 +3,7 @@ import {
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
 } from "../common/mockConstants";
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
-import { daysFromToday, weeksFromToday } from "../../../test/testUtils";
+import { daysFromToday, weeksFromToday } from "@/utils/datoUtils.ts";
 
 export const kontaktinformasjonMock = {
   epost: ARBEIDSTAKER_DEFAULT.epost,

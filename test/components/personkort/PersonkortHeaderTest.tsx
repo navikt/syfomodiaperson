@@ -17,7 +17,6 @@ import {
 } from "@/mocks/syfoperson/persondataMock";
 import { diskresjonskodeQueryKeys } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
-import { daysFromToday } from "../../testUtils";
 import dayjs from "dayjs";
 import { underArbeidsrettetOppfolgingQueryKeys } from "@/data/veilarboppfolging/useUnderArbeidsrettetOppfolgingQuery";
 import { UnderArbeidsrettetOppfolgingResponseDTO } from "@/data/veilarboppfolging/veilarboppfolgingTypes";
@@ -25,7 +24,7 @@ import { PersonkortHeader } from "@/components/personkort/PersonkortHeader/Perso
 import { maksdatoQueryKeys } from "@/data/maksdato/useMaksdatoQuery";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
-import { addDays } from "@/utils/datoUtils";
+import { addDays, daysFromToday } from "@/utils/datoUtils";
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
 import { defaultVedtak } from "@/mocks/isfrisktilarbeid/mockIsfrisktilarbeid";
 import { uforegradQueryKeys } from "@/data/uforegrad/uforegradQueryHooks";

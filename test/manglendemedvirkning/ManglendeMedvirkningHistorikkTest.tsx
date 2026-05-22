@@ -5,8 +5,8 @@ import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import React from "react";
 import { beforeEach, describe, expect, it } from "vitest";
-import { daysFromToday, getButton } from "../testUtils";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { getButton } from "../testUtils";
+import { daysFromToday, tilDatoMedManedNavn } from "@/utils/datoUtils";
 import userEvent from "@testing-library/user-event";
 import {
   VurderingResponseDTO,

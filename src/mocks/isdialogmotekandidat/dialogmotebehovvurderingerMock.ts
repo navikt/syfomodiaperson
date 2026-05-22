@@ -9,7 +9,8 @@ import {
   ValidUnntakArsak,
 } from "@/data/dialogmotekandidat/types/dialogmoteunntakTypes";
 import { IkkeAktuellArsak } from "@/data/dialogmotekandidat/types/dialogmoteikkeaktuellTypes";
-import { daysFromToday } from "../../../test/testUtils";
+
+import { daysFromToday } from "@/utils/datoUtils.ts";
 
 const createDialogmoteunntak = (
   arsak: UnntakArsak,

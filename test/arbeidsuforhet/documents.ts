@@ -2,14 +2,13 @@ import {
   DocumentComponentDto,
   DocumentComponentType,
 } from "@/data/documentcomponent/documentComponentTypes";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { tilDatoMedManedNavn, weeksFromToday } from "@/utils/datoUtils";
 import {
   ARBEIDSTAKER_DEFAULT,
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
 import { getForhandsvarselArbeidsuforhetTexts } from "@/sider/arbeidsuforhet/data/arbeidsuforhetDocumentTexts";
-import { weeksFromToday } from "../testUtils";
 import {
   arsakTexts,
   VurderingArsak,

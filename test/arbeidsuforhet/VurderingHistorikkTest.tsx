@@ -20,8 +20,8 @@ import {
   VurderingResponseDTO,
   VurderingType,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
-import { daysFromToday, getButton } from "../testUtils";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { getButton } from "../testUtils";
+import { daysFromToday, tilDatoMedManedNavn } from "@/utils/datoUtils";
 import userEvent from "@testing-library/user-event";
 import { pengestoppStatusQueryKeys } from "@/data/pengestopp/pengestoppQueryHooks";
 import {

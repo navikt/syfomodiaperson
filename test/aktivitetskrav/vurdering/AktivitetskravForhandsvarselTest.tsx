@@ -18,7 +18,6 @@ import {
   clickTab,
   getTextInput,
   getTooLongText,
-  daysFromToday,
 } from "../../testUtils";
 import {
   AktivitetskravDTO,
@@ -40,6 +39,7 @@ import {
   tabTexts,
 } from "./vurderingTestUtils";
 import dayjs from "dayjs";
+import { daysFromToday } from "@/utils/datoUtils.ts";
 
 let queryClient: QueryClient;
 

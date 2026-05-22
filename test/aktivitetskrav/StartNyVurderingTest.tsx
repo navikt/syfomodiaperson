@@ -16,9 +16,10 @@ import {
   createAktivitetskravVurdering,
   generateOppfolgingstilfelle,
 } from "../testDataUtils";
-import { clickButton, daysFromToday, getButton } from "../testUtils";
+import { clickButton, getButton } from "../testUtils";
 import {
   addWeeks,
+  daysFromToday,
   tilLesbarPeriodeMedArUtenManednavn,
 } from "@/utils/datoUtils";
 import {

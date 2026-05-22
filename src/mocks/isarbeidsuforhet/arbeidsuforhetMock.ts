@@ -2,7 +2,6 @@ import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
 } from "../common/mockConstants";
-import { daysFromToday } from "../../../test/testUtils";
 import {
   DocumentComponentDto,
   DocumentComponentType,
@@ -16,6 +15,7 @@ import {
   arbeidsuforhetTexts,
   getForhandsvarselArbeidsuforhetTexts,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetDocumentTexts";
+import { daysFromToday } from "@/utils/datoUtils.ts";
 
 const defaultOppfyltBegrunnelse = "Du har rett på sykepenger";
 

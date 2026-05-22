@@ -20,7 +20,6 @@ import {
   changeTextInput,
   clickButton,
   clickTab,
-  daysFromToday,
   getTextInput,
   getTooLongText,
 } from "../../testUtils";
@@ -35,7 +34,10 @@ import {
   UnntakVurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { beforeEach, describe, expect, it } from "vitest";
-import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
+import {
+  daysFromToday,
+  tilLesbarPeriodeMedArUtenManednavn,
+} from "@/utils/datoUtils";
 import dayjs from "dayjs";
 import {
   getIkkeAktuellDocument,

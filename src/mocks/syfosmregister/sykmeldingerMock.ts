@@ -5,7 +5,8 @@ import {
   VIRKSOMHET_BRANNOGBIL,
   VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
-import { daysFromToday } from "../../../test/testUtils";
+
+import { daysFromToday } from "@/utils/datoUtils.ts";
 
 const SYKMELDING_MYE_INFO = {
   id: "1111a750-7f39-4974-9a06-fa1775f987d1",

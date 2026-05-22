@@ -18,11 +18,10 @@ import {
   PersonOppgave,
   PersonOppgaveType,
 } from "@/data/personoppgave/types/PersonOppgave";
-import { restdatoTilLesbarDato } from "@/utils/datoUtils";
+import { daysFromToday, restdatoTilLesbarDato } from "@/utils/datoUtils";
 import { generateUUID } from "@/utils/utils";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { generateOppfolgingstilfelle } from "../../testDataUtils";
-import { daysFromToday } from "../../testUtils";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { MemoryRouter } from "react-router-dom";
 import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
