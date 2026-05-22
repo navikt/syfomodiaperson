@@ -44,7 +44,7 @@
     "dayjs": "1.11.20",
     "dotenv": "16.5.0",
     "express": "5.2.1",
-    "helmet": "4.6.0",
+    "helmet": "8.1.0",
     "nav-frontend-alertstriper": "4.0.2",
     "nav-frontend-alertstriper-style": "3.0.2",
     "nav-frontend-chevron": "1.0.30",
