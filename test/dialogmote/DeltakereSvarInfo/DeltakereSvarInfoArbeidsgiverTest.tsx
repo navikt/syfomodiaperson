@@ -14,10 +14,12 @@ import {
   SvarType,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { queryClientWithMockData } from "../../testQueryClient";
+import { VIRKSOMHET_PONTYPANDY } from "@/mocks/common/mockConstants";
 
 let queryClient: any;
 
 const ingenDetaljerTekst = "Ingen detaljer er tilgjengelig.";
+const narmesteLederNavnMedVirksomhet = `${narmesteLederNavn} (${VIRKSOMHET_PONTYPANDY.virksomhetsnavn})`;
 
 const renderDeltakereSvarInfo = (dialogmote: DialogmoteDTO) =>
   render(
@@ -43,7 +45,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     );
 
     it("viser nærmeste leder har åpnet innkalling med minus-sirkel-ikon og begrunnelse", () => {
-      const expectedText = `${narmesteLederNavn}, åpnet innkallingen 01.12.2021 - Har ikke gitt svar`;
+      const expectedText = `${narmesteLederNavnMedVirksomhet}, åpnet innkallingen 01.12.2021 - Har ikke gitt svar`;
       renderDeltakereSvarInfo(dialogmoteMedLestInnkalling);
 
       expect(screen.getByText("Nærmeste leder:")).to.exist;
@@ -71,7 +73,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     );
 
     it("viser nærmeste leder 'kommer' med suksess-ikon og manglende begrunnelse", () => {
-      const expectedText = `${narmesteLederNavn}, kommer - Svar mottatt 01.12.2021`;
+      const expectedText = `${narmesteLederNavnMedVirksomhet}, kommer - Svar mottatt 01.12.2021`;
       renderDeltakereSvarInfo(dialogmoteMedLestInnkalling);
 
       expect(screen.getByText("Nærmeste leder:")).to.exist;
@@ -99,7 +101,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     );
 
     it("viser nærmeste leder ønsker å endre tid/sted med advarsel-ikon og begrunnelse", () => {
-      const expectedText = `${narmesteLederNavn}, ønsker å endre tidspunkt eller sted - Svar mottatt 01.12.2021`;
+      const expectedText = `${narmesteLederNavnMedVirksomhet}, ønsker å endre tidspunkt eller sted - Svar mottatt 01.12.2021`;
       renderDeltakereSvarInfo(dialogmoteMedLestInnkalling);
 
       expect(screen.getByText("Nærmeste leder:")).to.exist;
@@ -127,7 +129,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     );
 
     it("viser nærmeste leder ønsker å avlyse med feil-ikon og begrunnelse", () => {
-      const expectedText = `${narmesteLederNavn}, ønsker å avlyse - Svar mottatt 01.12.2021`;
+      const expectedText = `${narmesteLederNavnMedVirksomhet}, ønsker å avlyse - Svar mottatt 01.12.2021`;
       renderDeltakereSvarInfo(dialogmoteMedLestInnkalling);
 
       expect(screen.getByText("Nærmeste leder:")).to.exist;
@@ -145,7 +147,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     );
 
     it("viser nærmeste leder har ikke åpnet innkalling med minus-sirkel-ikon og manglende begrunnelse", () => {
-      const expectedText = `${narmesteLederNavn}, har ikke åpnet innkallingen`;
+      const expectedText = `${narmesteLederNavnMedVirksomhet}, har ikke åpnet innkallingen`;
       renderDeltakereSvarInfo(dialogmoteMedUlestInnkalling);
 
       expect(screen.getByText("Nærmeste leder:")).to.exist;
@@ -171,7 +173,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     );
 
     it("viser nærmeste leder har åpnet endring med minus-sirkel-ikon og manglende begrunnelse", () => {
-      const expectedText = `${narmesteLederNavn}, åpnet endringen 03.12.2021 - Har ikke gitt svar`;
+      const expectedText = `${narmesteLederNavnMedVirksomhet}, åpnet endringen 03.12.2021 - Har ikke gitt svar`;
       renderDeltakereSvarInfo(dialogmoteMedLestEndring);
 
       expect(screen.getByText("Nærmeste leder:")).to.exist;
@@ -199,7 +201,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     );
 
     it("viser nærmeste leder 'kommer' med suksess-ikon og manglende begrunnelse", () => {
-      const expectedText = `${narmesteLederNavn}, kommer - Svar mottatt 03.12.2021`;
+      const expectedText = `${narmesteLederNavnMedVirksomhet}, kommer - Svar mottatt 03.12.2021`;
       renderDeltakereSvarInfo(dialogmoteMedLestEndring);
 
       expect(screen.getByText("Nærmeste leder:")).to.exist;
@@ -227,7 +229,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     );
 
     it("viser nærmeste leder ønsker å endre tid/sted med advarsel-ikon og begrunnelse", () => {
-      const expectedText = `${narmesteLederNavn}, ønsker å endre tidspunkt eller sted - Svar mottatt 03.12.2021`;
+      const expectedText = `${narmesteLederNavnMedVirksomhet}, ønsker å endre tidspunkt eller sted - Svar mottatt 03.12.2021`;
       renderDeltakereSvarInfo(dialogmoteMedLestEndring);
 
       expect(screen.getByText("Nærmeste leder:")).to.exist;
@@ -255,7 +257,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     );
 
     it("viser nærmeste leder ønsker å avlyse med feil-ikon og begrunnelse", () => {
-      const expectedText = `${narmesteLederNavn}, ønsker å avlyse - Svar mottatt 03.12.2021`;
+      const expectedText = `${narmesteLederNavnMedVirksomhet}, ønsker å avlyse - Svar mottatt 03.12.2021`;
       renderDeltakereSvarInfo(dialogmoteMedLestEndring);
 
       expect(screen.getByText("Nærmeste leder:")).to.exist;
@@ -273,7 +275,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     );
 
     it("viser nærmeste leder har ikke åpnet endring med minus-sirkel-ikon og manglende begrunnelse", () => {
-      const expectedText = `${narmesteLederNavn}, har ikke åpnet endringen`;
+      const expectedText = `${narmesteLederNavnMedVirksomhet}, har ikke åpnet endringen`;
       renderDeltakereSvarInfo(dialogmoteMedUlestEndring);
 
       expect(screen.getByText("Nærmeste leder:")).to.exist;

@@ -7,6 +7,7 @@ import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
+  VIRKSOMHET_PONTYPANDY,
 } from "@/mocks/common/mockConstants";
 import {
   defaultFormValue,
@@ -21,8 +22,11 @@ import { UtropstegnImage } from "../../../img/ImageComponents";
 import MotebehovKvittering from "@/sider/dialogmoter/motebehov/MotebehovKvittering";
 import BehandleMotebehovKnapp from "@/components/motebehov/BehandleMotebehovKnapp";
 import DialogmotePanel from "@/sider/dialogmoter/components/DialogmotePanel";
+import { virksomhetQueryKeys } from "@/data/virksomhet/virksomhetQueryHooks";
 
 let queryClient: QueryClient;
+
+const arbeidsgiverMedVirksomhet = `Are Arbeidsgiver (${VIRKSOMHET_PONTYPANDY.virksomhetsnavn})`;
 
 const renderDialogmoteOnskePanel = () => {
   render(
@@ -39,6 +43,17 @@ function mockMotebehov(motebehov: MotebehovVeilederDTO[]) {
   queryClient.setQueryData(
     motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
     () => motebehov
+  );
+}
+
+function mockVirksomhet() {
+  queryClient.setQueryData(
+    virksomhetQueryKeys.virksomhet(VIRKSOMHET_PONTYPANDY.virksomhetsnummer),
+    () => ({
+      navn: {
+        navnelinje1: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
+      },
+    })
   );
 }
 
@@ -85,6 +100,7 @@ const nyttOppfolgingstilfelle = {
 describe("DialogmoteOnskePanel", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
+    mockVirksomhet();
   });
 
   it("Tidligere behandlet møtebehov utenfor oppfølgingstilfelle", () => {
@@ -160,7 +176,7 @@ describe("DialogmoteOnskePanel", () => {
     ).to.exist;
     expect(
       screen.getByText(
-        `Are Arbeidsgiver, har svart NEI - ${toDatePrettyPrint(
+        `${arbeidsgiverMedVirksomhet}, har svart NEI - ${toDatePrettyPrint(
           datoInnenforOppfolgingstilfelle
         )}`
       )
@@ -193,7 +209,7 @@ describe("DialogmoteOnskePanel", () => {
     ).to.exist;
     expect(
       screen.getByText(
-        `Are Arbeidsgiver, har svart NEI - ${toDatePrettyPrint(
+        `${arbeidsgiverMedVirksomhet}, har svart NEI - ${toDatePrettyPrint(
           datoInnenforOppfolgingstilfelle
         )}`
       )

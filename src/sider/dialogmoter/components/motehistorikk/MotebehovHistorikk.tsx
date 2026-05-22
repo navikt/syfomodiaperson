@@ -9,6 +9,7 @@ import {
   MotebehovArbeidsgiverKvittering,
   MotebehovKvitteringInnholdArbeidstaker,
 } from "@/sider/dialogmoter/motebehov/MotebehovKvittering";
+import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks.ts";
 
 const texts = {
   title: "Møtebehovhistorikk",
@@ -21,13 +22,16 @@ function MotebehovHistorikkEvent({
 }: {
   motebehov: MotebehovVeilederDTO;
 }) {
+  const { virksomhetsnavn } = useVirksomhetQuery(motebehov?.virksomhetsnummer);
   const [isOpen, setIsOpen] = useState(false);
+
   const isArbeidstaker = isArbeidstakerMotebehov(motebehov);
   const headerText = `Møtebehov fra ${
     isArbeidstaker ? "den sykmeldte" : "nærmeste leder"
   } ${tilLesbarDatoMedArstall(motebehov.opprettetDato)}`;
   const isBehandlet =
     motebehov.behandletTidspunkt && motebehov.behandletVeilederIdent;
+  const virksomhet = virksomhetsnavn || motebehov?.virksomhetsnummer;
 
   const handleAccordionClick = () => setIsOpen(!isOpen);
 
@@ -42,7 +46,10 @@ function MotebehovHistorikkEvent({
             arbeidstakersMotebehov={motebehov}
           />
         ) : (
-          <MotebehovArbeidsgiverKvittering motebehov={motebehov} />
+          <MotebehovArbeidsgiverKvittering
+            motebehov={motebehov}
+            virksomhet={virksomhet}
+          />
         )}
         {isBehandlet && (
           <BodyShort className="mt-2">{`Møtebehovet ble vurdert av ${

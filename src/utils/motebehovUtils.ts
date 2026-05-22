@@ -8,6 +8,7 @@ import {
 } from "@/data/motebehov/types/motebehovTypes";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { MotebehovTilbakemeldingDTO } from "@/data/motebehov/useVurderMotebehov";
+import { arbeidsgiverNavnEllerTomStreng } from "@/sider/dialogmoter/motebehov/MotebehovKvittering.tsx";
 
 export const sorterMotebehovDataEtterDatoDesc = (
   a: MotebehovVeilederDTO,
@@ -164,4 +165,13 @@ export function mapMotebehovToSvarMotebehovFormat(
         skjemaType: MotebehovSkjemaType.SVAR_BEHOV,
       };
     });
+}
+
+export function arbeidsgiverNavnMedVirksomhet(
+  lederNavn: string | null,
+  virksomhet?: string
+) {
+  const lederNavnString = arbeidsgiverNavnEllerTomStreng(lederNavn);
+
+  return virksomhet ? `${lederNavnString} (${virksomhet})` : lederNavnString;
 }

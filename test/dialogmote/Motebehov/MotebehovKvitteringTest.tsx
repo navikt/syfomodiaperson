@@ -7,7 +7,9 @@ import MotebehovKvittering from "@/sider/dialogmoter/motebehov/MotebehovKvitteri
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import {
   ARBEIDSTAKER_DEFAULT,
+  LEDERE_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
+  VIRKSOMHET_PONTYPANDY,
 } from "@/mocks/common/mockConstants";
 import {
   createFormValues,
@@ -22,8 +24,16 @@ import {
   MotebehovVeilederDTO,
 } from "@/data/motebehov/types/motebehovTypes";
 import { addDays, addWeeks } from "@/utils/datoUtils";
+import { virksomhetQueryKeys } from "@/data/virksomhet/virksomhetQueryHooks";
+import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 
 let queryClient: QueryClient;
+
+const virksomhetsnavnInText = "pontypandy Fire Service";
+const arbeidsgiverMedVirksomhet = `Are Arbeidsgiver (${virksomhetsnavnInText})`;
+const arbeidsgiverAltMedVirksomhet = `Are Arbeidsgiver (${VIRKSOMHET_PONTYPANDY.virksomhetsnavn})`;
+const narmesteLederMedVirksomhet = `Tatten Tattover (${virksomhetsnavnInText})`;
+const narmesteLederAltMedVirksomhet = `Tatten Tattover (${VIRKSOMHET_PONTYPANDY.virksomhetsnavn})`;
 
 const renderMotebehovKvittering = () => {
   render(
@@ -37,6 +47,28 @@ function mockMotebehov(motebehov: MotebehovVeilederDTO[]) {
   queryClient.setQueryData(
     motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
     () => motebehov
+  );
+}
+
+function mockVirksomhet() {
+  queryClient.setQueryData(
+    virksomhetQueryKeys.virksomhet(VIRKSOMHET_PONTYPANDY.virksomhetsnummer),
+    () => ({
+      navn: {
+        navnelinje1: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
+      },
+    })
+  );
+}
+
+function mockLedereUtenVirksomhetsnavn() {
+  queryClient.setQueryData(
+    ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
+    () =>
+      LEDERE_DEFAULT.map((leder) => ({
+        ...leder,
+        virksomhetsnavn: "",
+      }))
   );
 }
 
@@ -129,6 +161,7 @@ function createMotebehovUtenforTilfelle(motebehov: MotebehovVeilederDTO) {
 describe("MotebehovKvittering", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
+    mockVirksomhet();
   });
   it("Ingen møtebehov", () => {
     mockMotebehov([]);
@@ -152,10 +185,13 @@ describe("MotebehovKvittering", () => {
     ).to.exist;
     expect(screen.getByText("Jeg, arbeidstaker, har behov for møte.")).to.exist;
 
-    expect(screen.getByAltText("Arbeidsgiver Are Arbeidsgiver Meldt behov.")).to
-      .exist;
     expect(
-      screen.getByText("Are Arbeidsgiver, har meldt behov", {
+      screen.getByAltText(
+        `Arbeidsgiver ${arbeidsgiverAltMedVirksomhet} Meldt behov.`
+      )
+    ).to.exist;
+    expect(
+      screen.getByText(`${arbeidsgiverMedVirksomhet}, har meldt behov`, {
         exact: false,
       })
     ).to.exist;
@@ -174,12 +210,38 @@ describe("MotebehovKvittering", () => {
     expect(screen.getByText("Jeg, arbeidstaker, har behov for møte.")).to.exist;
 
     expect(
-      screen.getByAltText("Arbeidsgiver Tatten Tattover Ikke meldt behov.")
+      screen.getByAltText(
+        `Arbeidsgiver ${narmesteLederAltMedVirksomhet} Ikke meldt behov.`
+      )
     ).to.exist;
     expect(
-      screen.getByText("Tatten Tattover, har ikke meldt behov", {
+      screen.getByText(`${narmesteLederMedVirksomhet}, har ikke meldt behov`, {
         exact: false,
       })
+    ).to.exist;
+  });
+  it("viser virksomhetsnummer når nærmeste leder mangler virksomhetsnavn", () => {
+    queryClient.removeQueries({
+      queryKey: virksomhetQueryKeys.virksomhet(
+        VIRKSOMHET_PONTYPANDY.virksomhetsnummer
+      ),
+      exact: true,
+    });
+    mockLedereUtenVirksomhetsnavn();
+    mockMotebehov([motebehovArbeidstakerInTilfelleUbehandletMock]);
+
+    renderMotebehovKvittering();
+
+    expect(
+      screen.getByAltText(
+        `Arbeidsgiver Tatten Tattover (${VIRKSOMHET_PONTYPANDY.virksomhetsnummer}) Ikke meldt behov.`
+      )
+    ).to.exist;
+    expect(
+      screen.getByText(
+        `Tatten Tattover (${VIRKSOMHET_PONTYPANDY.virksomhetsnummer}), har ikke meldt behov`,
+        { exact: false }
+      )
     ).to.exist;
   });
   it("viser meldt møtebehov fra arbeidsgiver og sykmeldt når kun arbeidsgiver har meldt behov innenfor tilfelle", () => {
@@ -193,10 +255,13 @@ describe("MotebehovKvittering", () => {
       })
     ).to.exist;
 
-    expect(screen.getByAltText("Arbeidsgiver Are Arbeidsgiver Meldt behov.")).to
-      .exist;
     expect(
-      screen.getByText("Are Arbeidsgiver, har meldt behov", {
+      screen.getByAltText(
+        `Arbeidsgiver ${arbeidsgiverAltMedVirksomhet} Meldt behov.`
+      )
+    ).to.exist;
+    expect(
+      screen.getByText(`${arbeidsgiverMedVirksomhet}, har meldt behov`, {
         exact: false,
       })
     ).to.exist;
@@ -251,10 +316,13 @@ describe("MotebehovKvittering", () => {
     ).to.exist;
     expect(screen.getByText("Jeg, arbeidstaker, har behov for møte.")).to.exist;
 
-    expect(screen.getByAltText("Arbeidsgiver Are Arbeidsgiver Meldt behov.")).to
-      .exist;
     expect(
-      screen.getByText("Are Arbeidsgiver, har meldt behov", {
+      screen.getByAltText(
+        `Arbeidsgiver ${arbeidsgiverAltMedVirksomhet} Meldt behov.`
+      )
+    ).to.exist;
+    expect(
+      screen.getByText(`${arbeidsgiverMedVirksomhet}, har meldt behov`, {
         exact: false,
       })
     ).to.exist;
@@ -272,10 +340,13 @@ describe("MotebehovKvittering", () => {
     ).to.exist;
     expect(screen.getByText("Møter er bra!")).to.exist;
 
-    expect(screen.getByAltText("Arbeidsgiver Tatten Tattover Ikke svart.")).to
-      .exist;
     expect(
-      screen.getByText("Tatten Tattover, har ikke svart", {
+      screen.getByAltText(
+        `Arbeidsgiver ${narmesteLederAltMedVirksomhet} Ikke svart.`
+      )
+    ).to.exist;
+    expect(
+      screen.getByText(`${narmesteLederMedVirksomhet}, har ikke svart`, {
         exact: false,
       })
     ).to.exist;
@@ -291,10 +362,13 @@ describe("MotebehovKvittering", () => {
       })
     ).to.exist;
 
-    expect(screen.getByAltText("Arbeidsgiver Are Arbeidsgiver Svart nei.")).to
-      .exist;
     expect(
-      screen.getByText("Are Arbeidsgiver, har svart NEI", {
+      screen.getByAltText(
+        `Arbeidsgiver ${arbeidsgiverAltMedVirksomhet} Svart nei.`
+      )
+    ).to.exist;
+    expect(
+      screen.getByText(`${arbeidsgiverMedVirksomhet}, har svart NEI`, {
         exact: false,
       })
     ).to.exist;
@@ -358,9 +432,12 @@ describe("MotebehovKvittering", () => {
         expect(screen.getByText("Hva slags tolk har dere behov for?")).to.exist;
         expect(screen.getByText("Har behov for svensk tolk")).to.exist;
         expect(
-          screen.getByText("Tatten Tattover, har ikke meldt behov", {
-            exact: false,
-          })
+          screen.getByText(
+            `${narmesteLederMedVirksomhet}, har ikke meldt behov`,
+            {
+              exact: false,
+            }
+          )
         ).to.exist;
       });
     });
@@ -457,7 +534,7 @@ describe("MotebehovKvittering", () => {
         expect(screen.getByText("Har behov for svensk tolk")).to.exist;
 
         expect(
-          screen.getByText("Are Arbeidsgiver, har svart JA", {
+          screen.getByText(`${arbeidsgiverMedVirksomhet}, har svart JA`, {
             exact: false,
           })
         ).to.exist;
@@ -590,7 +667,7 @@ describe("MotebehovKvittering", () => {
         ).to.exist;
 
         expect(
-          screen.getByText("Are Arbeidsgiver, har svart JA", {
+          screen.getByText(`${arbeidsgiverMedVirksomhet}, har svart JA`, {
             exact: false,
           })
         ).to.exist;
@@ -705,7 +782,7 @@ describe("MotebehovKvittering", () => {
         ).to.exist;
 
         expect(
-          screen.getByText("Are Arbeidsgiver, har svart NEI", {
+          screen.getByText(`${arbeidsgiverMedVirksomhet}, har svart NEI`, {
             exact: false,
           })
         ).to.exist;

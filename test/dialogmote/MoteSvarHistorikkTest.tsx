@@ -26,6 +26,8 @@ import userEvent from "@testing-library/user-event";
 
 let queryClient: QueryClient;
 
+const narmesteLederNavnMedVirksomhet = `${NARMESTE_LEDER_DEFAULT.navn} (${VIRKSOMHET_PONTYPANDY.virksomhetsnavn})`;
+
 type InnkallingSvar = Pick<VarselSvarDTO, "svarType" | "svarTekst">;
 const varselAT = (
   svar: InnkallingSvar,
@@ -212,10 +214,10 @@ describe("MoteSvarHistorikk", () => {
       2
     );
     assertExpandableWithHeader(
-      `${NARMESTE_LEDER_DEFAULT.navn}, kommer - Svar mottatt 26.05.2021`
+      `${narmesteLederNavnMedVirksomhet}, kommer - Svar mottatt 26.05.2021`
     );
     assertExpandableWithHeader(
-      `${NARMESTE_LEDER_DEFAULT.navn}, ønsker å endre tidspunkt eller sted - Svar mottatt 26.05.2021`
+      `${narmesteLederNavnMedVirksomhet}, ønsker å endre tidspunkt eller sted - Svar mottatt 26.05.2021`
     );
   });
   it("viser innkalling med svar for avlyst møte", async () => {
@@ -227,7 +229,7 @@ describe("MoteSvarHistorikk", () => {
     await userEvent.click(accordion);
 
     assertExpandableWithHeader(
-      `${NARMESTE_LEDER_DEFAULT.navn}, kommer - Svar mottatt 26.05.2021`
+      `${narmesteLederNavnMedVirksomhet}, kommer - Svar mottatt 26.05.2021`
     );
     assertExpandableWithHeader(
       `${ARBEIDSTAKER_DEFAULT_FULL_NAME}, ønsker å avlyse - Svar mottatt 26.05.2021`
