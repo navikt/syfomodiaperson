@@ -24,7 +24,6 @@ import {
   OppfolgingstilfelleDTO,
 } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { useOppfolgingsplanForesporselDocument } from "@/hooks/oppfolgingsplan/useOppfolgingsplanForesporselDocument";
-import { oppfolgingstilfelle } from "../../../../test/aktivitetskrav/vurdering/vurderingTestUtils";
 import LabelAndText from "@/components/LabelAndText";
 import { Controller, useForm } from "react-hook-form";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
@@ -91,12 +90,10 @@ export default function BeOmOppfolgingsplan({
   const narmesteLeder = watch("narmesteLeder");
   const lastForesporselCreatedAt = lastForesporsel?.createdAt;
   const isAktivForesporsel =
-    !!lastForesporselCreatedAt &&
-    !!currentOppfolgingstilfelle &&
-    !postOppfolgingsplanForesporsel.isSuccess
+    !!lastForesporselCreatedAt && !postOppfolgingsplanForesporsel.isSuccess
       ? isDateInOppfolgingstilfelle(
           lastForesporselCreatedAt,
-          oppfolgingstilfelle
+          currentOppfolgingstilfelle
         )
       : false;
 
