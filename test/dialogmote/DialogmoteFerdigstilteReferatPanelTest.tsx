@@ -11,10 +11,11 @@ import {
   DialogmoteDTO,
   DialogmoteStatus,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
-import { daysFromToday, getButton } from "../testUtils";
+import { getButton } from "../testUtils";
 import { MemoryRouter } from "react-router-dom";
-import { expect, describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
+  daysFromToday,
   tilDatoMedManedNavnOgKlokkeslett,
   tilLesbarDatoMedArstall,
 } from "@/utils/datoUtils";

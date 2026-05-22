@@ -1,6 +1,7 @@
-import { daysFromToday } from "../../../test/testUtils";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { VEILEDER_DEFAULT } from "../common/mockConstants";
+
+import { daysFromToday } from "@/utils/datoUtils.ts";
 
 export const aktivitetskravHistorikkMock = [
   {

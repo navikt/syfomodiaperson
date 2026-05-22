@@ -12,13 +12,12 @@ import {
   VEILEDER_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
 } from "../common/mockConstants";
-import { addDays, addWeeks } from "@/utils/datoUtils";
+import { addDays, addWeeks, daysFromToday } from "@/utils/datoUtils";
 import { http, HttpResponse } from "msw";
 import {
   KandidatStatus,
   KartleggingssporsmalKandidatResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
-import { daysFromToday } from "../../../test/testUtils";
 
 export const senOppfolgingKandidatMock: SenOppfolgingKandidatResponseDTO = {
   uuid: generateUUID(),

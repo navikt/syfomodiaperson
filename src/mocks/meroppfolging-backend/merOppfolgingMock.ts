@@ -7,13 +7,13 @@ import { ARBEIDSTAKER_DEFAULT } from "../common/mockConstants";
 import { http, HttpResponse } from "msw";
 import { KartleggingssporsmalSvarResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import { FormSnapshotFieldOption } from "@/data/skjemasvar/types/SkjemasvarTypes";
-import { daysFromToday } from "../../../test/testUtils";
 import { generateUUID } from "@/utils/utils";
 import {
   KartleggingssporsmalFormSnapshotFieldType,
   KartleggingssporsmalRadioGroupFieldSnapshot,
   KartleggingssporsmalTextFieldSnapshot,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalSkjemasvarTypes";
+import { daysFromToday } from "@/utils/datoUtils.ts";
 
 export const mockMerOppfolging = [
   http.get(

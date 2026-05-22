@@ -7,7 +7,6 @@ import {
   OppfolgingstilfellePersonDTO,
 } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { daysFromToday } from "../testUtils";
 import { render, screen } from "@testing-library/react";
 import { AktivitetskravSide } from "@/sider/aktivitetskrav/AktivitetskravSide";
 import { navEnhet } from "../dialogmote/testData";
@@ -23,6 +22,7 @@ import {
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { aktivitetskravQueryKeys } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { NotificationContext } from "@/context/notification/NotificationContext";
+import { daysFromToday } from "@/utils/datoUtils.ts";
 
 let queryClient: QueryClient;
 

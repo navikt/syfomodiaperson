@@ -29,12 +29,7 @@ import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { renderWithRouter } from "../testRouterUtils";
 import { appRoutePath } from "@/AppRouter";
 import { screen } from "@testing-library/react";
-import {
-  clickButton,
-  daysFromToday,
-  getButton,
-  queryButton,
-} from "../testUtils";
+import { clickButton, getButton, queryButton } from "../testUtils";
 import {
   stubDefaultIsmeroppfolging,
   stubVurderSvarError,
@@ -47,6 +42,7 @@ import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks.ts";
 import { ToggleNames } from "@/data/unleash/unleash_types.ts";
 import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock.ts";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
+import { daysFromToday } from "@/utils/datoUtils.ts";
 
 let queryClient: QueryClient;
 

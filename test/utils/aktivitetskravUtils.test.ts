@@ -3,9 +3,9 @@ import {
   generateOppfolgingstilfelle,
 } from "../testDataUtils";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { daysFromToday } from "../testUtils";
 import { describe, expect, it } from "vitest";
 import { oppfolgingstilfelleForAktivitetskrav } from "@/sider/aktivitetskrav/vurdering/VurderAktivitetskrav";
+import { daysFromToday } from "@/utils/datoUtils.ts";
 
 describe("aktivitetskravUtils", () => {
   describe("oppfolgingstilfelleForAktivitetskrav", () => {

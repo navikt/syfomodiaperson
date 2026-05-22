@@ -6,8 +6,8 @@ import {
 } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { generateOppfolgingstilfelle } from "../testDataUtils";
-import { daysFromToday } from "../testUtils";
 import dayjs from "dayjs";
+import { daysFromToday } from "@/utils/datoUtils.ts";
 
 describe("oppfolgingstilfellePersonDTO tests", () => {
   describe("hasGjentakendeSykefravar", () => {

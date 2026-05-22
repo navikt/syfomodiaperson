@@ -16,7 +16,7 @@ import { ReturLegeerklaringWarningIcon } from "@/sider/behandlerdialog/legeerkla
 import {
   antallOfType,
   hasMeldingOfType,
-} from "../../../../../test/utils/behandlerdialogUtils";
+} from "../../../../utils/behandlerdialogUtils.ts";
 
 const texts = {
   nyMelding: "Ny melding",

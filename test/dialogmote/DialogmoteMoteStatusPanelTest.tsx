@@ -8,14 +8,15 @@ import DialogmoteMoteStatusPanel from "@/sider/dialogmoter/components/innkalling
 import { dialogmote, dialogmoteMedMellomlagretReferat } from "./testData";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
-import { expect, describe, it } from "vitest";
-import { daysFromToday, getButton } from "../testUtils";
+import { describe, expect, it } from "vitest";
+import { getButton } from "../testUtils";
 import { queryClientWithMockData } from "../testQueryClient";
 import {
   ANNEN_VEILEDER,
   ANNEN_VEILEDER_IDENT,
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
+import { daysFromToday } from "@/utils/datoUtils.ts";
 
 const queryClient = queryClientWithMockData();
 

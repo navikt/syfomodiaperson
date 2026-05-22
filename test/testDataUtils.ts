@@ -13,8 +13,7 @@ import {
   VurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { generateUUID } from "@/utils/utils";
-import { daysFromToday } from "./testUtils";
-import { dagerMellomDatoer } from "@/utils/datoUtils";
+import { dagerMellomDatoer, daysFromToday } from "@/utils/datoUtils";
 
 export const generateOppfolgingstilfelle = (
   start: Date,

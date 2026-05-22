@@ -4,8 +4,8 @@ import {
   forhandsvarselVurdering,
   generateOppfolgingstilfelle,
 } from "../../testDataUtils";
-import { daysFromToday } from "../../testUtils";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
+import { daysFromToday } from "@/utils/datoUtils.ts";
 
 export const aktivitetskrav = createAktivitetskrav(
   daysFromToday(5),

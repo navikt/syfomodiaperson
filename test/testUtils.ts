@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import userEvent from "@testing-library/user-event";
 import { fireEvent, screen } from "@testing-library/react";
 
@@ -31,11 +30,3 @@ export const maxLengthErrorMessage = (max: number) =>
   `Maks ${max} tegn tillatt`;
 
 export const getTooLongText = (max: number) => "t".repeat(max + 1);
-
-export const daysFromToday = (days: number): Date => {
-  return dayjs(new Date()).add(days, "days").toDate();
-};
-
-export const weeksFromToday = (weeks: number): Date => {
-  return dayjs(new Date()).add(weeks, "weeks").toDate();
-};

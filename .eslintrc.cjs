@@ -27,4 +27,19 @@ module.exports = {
     "no-only-tests/no-only-tests": "error",
     "react/jsx-no-useless-fragment": 2,
   },
+  overrides: [
+    {
+      files: ["src/**/*.{ts,tsx,js,jsx}"],
+      rules: {
+        "no-restricted-syntax": [
+          "error",
+          {
+            selector: "ImportDeclaration[source.value=/^(\\.\\.\\/)+test\\//]",
+            message:
+              "Production code must not import from test/. Move shared data/helpers to src/mocks, src/utils, or a domain module.",
+          },
+        ],
+      },
+    },
+  ],
 };

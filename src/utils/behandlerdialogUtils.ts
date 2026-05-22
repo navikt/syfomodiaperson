@@ -1,7 +1,7 @@
 import {
   MeldingDTO,
   MeldingType,
-} from "@/data/behandlerdialog/behandlerdialogTypes";
+} from "@/data/behandlerdialog/behandlerdialogTypes.ts";
 
 export const hasMeldingOfType = (
   meldinger: MeldingDTO[],

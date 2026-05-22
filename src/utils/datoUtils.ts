@@ -309,3 +309,11 @@ export function isExpiredForhandsvarsel(svarfrist: Date | undefined): boolean {
     return false;
   }
 }
+
+export const daysFromToday = (days: number): Date => {
+  return dayjs(new Date()).add(days, "days").toDate();
+};
+
+export const weeksFromToday = (weeks: number): Date => {
+  return dayjs(new Date()).add(weeks, "weeks").toDate();
+};

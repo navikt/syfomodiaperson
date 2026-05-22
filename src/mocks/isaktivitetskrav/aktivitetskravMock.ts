@@ -7,12 +7,12 @@ import {
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { generateUUID } from "@/utils/utils";
 import { VEILEDER_DEFAULT } from "../common/mockConstants";
-import { daysFromToday } from "../../../test/testUtils";
 import { DocumentComponentType } from "@/data/documentcomponent/documentComponentTypes";
 import {
   Brevmal,
   getForhandsvarselTexts,
 } from "@/data/aktivitetskrav/forhandsvarselTexts";
+import { daysFromToday } from "@/utils/datoUtils.ts";
 
 const aktivitetskravNy: AktivitetskravDTO = {
   uuid: generateUUID(),

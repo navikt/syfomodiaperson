@@ -13,11 +13,10 @@ import {
   OppfolgingstilfelleDTO,
   OppfolgingstilfellePersonDTO,
 } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { expect, describe, it, beforeEach } from "vitest";
-import { daysFromToday } from "../testUtils";
+import { beforeEach, describe, expect, it } from "vitest";
 import { navEnhet } from "./testData";
 import { MalformProvider } from "@/context/malform/MalformContext";
-import { dagerMellomDatoer } from "@/utils/datoUtils";
+import { dagerMellomDatoer, daysFromToday } from "@/utils/datoUtils";
 import DialogmoteInnkallingContainer from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingContainer";
 
 let queryClient: QueryClient;

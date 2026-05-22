@@ -14,8 +14,8 @@ import {
   UnntakVurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { beforeEach, describe, expect, it } from "vitest";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
-import { daysFromToday, getButton } from "../testUtils";
+import { daysFromToday, tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { getButton } from "../testUtils";
 import userEvent from "@testing-library/user-event";
 import {
   ARBEIDSTAKER_DEFAULT,
