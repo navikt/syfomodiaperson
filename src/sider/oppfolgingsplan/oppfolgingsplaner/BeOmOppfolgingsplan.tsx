@@ -90,9 +90,7 @@ export default function BeOmOppfolgingsplan({
   const narmesteLeder = watch("narmesteLeder");
   const lastForesporselCreatedAt = lastForesporsel?.createdAt;
   const isAktivForesporsel =
-    !!lastForesporselCreatedAt &&
-    !!currentOppfolgingstilfelle &&
-    !postOppfolgingsplanForesporsel.isSuccess
+    !!lastForesporselCreatedAt && !postOppfolgingsplanForesporsel.isSuccess
       ? isDateInOppfolgingstilfelle(
           lastForesporselCreatedAt,
           currentOppfolgingstilfelle
