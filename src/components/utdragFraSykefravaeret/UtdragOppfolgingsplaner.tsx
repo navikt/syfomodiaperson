@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import { lpsPlanerWithActiveTilfelle } from "@/utils/oppfolgingsplanUtils";
 import {
   restdatoTilLesbarDato,
@@ -37,14 +36,9 @@ interface AktivePlanerProps {
   aktivePlaner: OppfolgingsplanDTO[];
 }
 
-const AktivPlan = styled.div`
-  margin-top: 0.5em;
-  margin-bottom: 1em;
-
-  a {
-    text-transform: capitalize;
-  }
-`;
+function AktivPlan({ children }: { children: React.ReactNode }) {
+  return <div className="mt-2 mb-4 [&_a]:capitalize">{children}</div>;
+}
 
 interface AktivPlanLenkeProps {
   aktivPlan: OppfolgingsplanDTO;
