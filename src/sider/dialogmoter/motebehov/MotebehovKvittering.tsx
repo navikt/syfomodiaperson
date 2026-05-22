@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  arbeidsgiverNavnMedVirksomhet,
   getMotebehovInActiveTilfelle,
   isArbeidstakerMotebehov,
   motebehovUbehandlet,
@@ -22,6 +23,10 @@ import {
   OppfolgingstilfelleDTO,
 } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { BodyShort } from "@navikt/ds-react";
+import {
+  useVirksomheterQueries,
+  useVirksomhetQuery,
+} from "@/data/virksomhet/virksomhetQueryHooks.ts";
 
 export const arbeidsgiverNavnEllerTomStreng = (lederNavn: string | null) => {
   return lederNavn ? `${lederNavn}` : "";
@@ -127,7 +132,7 @@ export const MotebehovKvitteringInnholdArbeidstaker = ({
 };
 
 export const composeArbeidsgiverSvarText = (
-  lederNavn: string | null,
+  arbeidsgiverInfo: string | null,
   skjemaType: MotebehovSkjemaType | null,
   harMotebehov?: boolean,
   svarOpprettetDato?: Date
@@ -135,7 +140,7 @@ export const composeArbeidsgiverSvarText = (
   return composePersonSvarText(
     "Nærmeste leder: ",
     skjemaType,
-    arbeidsgiverNavnEllerTomStreng(capitalizeAllWords(lederNavn || "")),
+    arbeidsgiverInfo || "",
     harMotebehov,
     svarOpprettetDato
   );
@@ -144,15 +149,22 @@ export const composeArbeidsgiverSvarText = (
 export function MotebehovArbeidsgiverKvittering({
   motebehov,
   skjemaType,
+  virksomhet,
 }: {
   motebehov: MotebehovVeilederDTO;
   skjemaType?: MotebehovSkjemaType | null;
+  virksomhet?: string;
 }) {
   const arbeidsgiverOnskerMote = motebehov.formValues.harMotebehov;
   const skjemaTypeMotebehov = skjemaType ?? motebehov.skjemaType;
-  const ikonAltTekst = `Arbeidsgiver ${arbeidsgiverNavnEllerTomStreng(
-    motebehov.opprettetAvNavn
-  )} ${ikonAlternativTekst(skjemaTypeMotebehov, arbeidsgiverOnskerMote)}`;
+  const arbeidsgiverInfo = arbeidsgiverNavnMedVirksomhet(
+    motebehov.opprettetAvNavn,
+    virksomhet
+  );
+  const ikonAltTekst = `Arbeidsgiver ${arbeidsgiverInfo} ${ikonAlternativTekst(
+    skjemaTypeMotebehov,
+    arbeidsgiverOnskerMote
+  )}`;
 
   return (
     <MotebehovKvitteringInnhold
@@ -160,7 +172,7 @@ export function MotebehovArbeidsgiverKvittering({
       ikonAltTekst={ikonAltTekst}
       motebehov={motebehov}
       tekst={composeArbeidsgiverSvarText(
-        motebehov.opprettetAvNavn,
+        arbeidsgiverInfo,
         skjemaTypeMotebehov,
         arbeidsgiverOnskerMote,
         motebehov.opprettetDato
@@ -170,28 +182,29 @@ export function MotebehovArbeidsgiverKvittering({
 }
 
 interface MotebehovKvitteringInnholdArbeidsgiverUtenMotebehovProps {
-  ledereUtenInnsendtMotebehov: NarmesteLederRelasjonDTO[];
+  ledereInCurrentTilfelle: NarmesteLederRelasjonDTO[];
   skjemaType: MotebehovSkjemaType | null;
 }
 
 export const MotebehovKvitteringInnholdArbeidsgiverUtenMotebehov = ({
-  ledereUtenInnsendtMotebehov,
+  ledereInCurrentTilfelle,
   skjemaType,
 }: MotebehovKvitteringInnholdArbeidsgiverUtenMotebehovProps) => (
   <>
-    {ledereUtenInnsendtMotebehov.map(
+    {ledereInCurrentTilfelle.map(
       (leder: NarmesteLederRelasjonDTO, index: number) => {
-        const ikonAltTekst = `Arbeidsgiver ${arbeidsgiverNavnEllerTomStreng(
-          leder.narmesteLederNavn
-        )} ${ikonAlternativTekst(skjemaType)}`;
+        const arbeidsgiverInfo = arbeidsgiverNavnMedVirksomhet(
+          leder.narmesteLederNavn,
+          leder.virksomhetsnavn || leder.virksomhetsnummer
+        );
+        const ikonAltTekst = `Arbeidsgiver ${arbeidsgiverInfo} ${ikonAlternativTekst(
+          skjemaType
+        )}`;
         return (
           <MotebehovKvitteringInnhold
             key={index}
             ikonAltTekst={ikonAltTekst}
-            tekst={composeArbeidsgiverSvarText(
-              leder.narmesteLederNavn,
-              skjemaType
-            )}
+            tekst={composeArbeidsgiverSvarText(arbeidsgiverInfo, skjemaType)}
           />
         );
       }
@@ -251,20 +264,38 @@ function MotebehovArbeidsgiverInCurrentTilfelle({
   oppfolgingstilfelle: OppfolgingstilfelleDTO;
   skjemaType: MotebehovSkjemaType | null;
 }) {
+  const { virksomhetsnavn } = useVirksomhetQuery(motebehov?.virksomhetsnummer);
+  const virksomhet = virksomhetsnavn || motebehov?.virksomhetsnummer;
+
   const { currentLedere } = useLedereQuery();
   const ledereInCurrentTilfelle = aktiveNarmesteLedereForOppfolgingstilfelle(
     currentLedere,
     oppfolgingstilfelle
   );
+  const virksomheterByLedereInCurrentTilfelle = useVirksomheterQueries(
+    ledereInCurrentTilfelle.map((leder) => leder.virksomhetsnummer)
+  );
+  const ledereInCurrentTilfelleWithVirksomhetsnavn =
+    ledereInCurrentTilfelle.map((leder) => {
+      const virksomhetForLeder =
+        virksomheterByLedereInCurrentTilfelle.data[leder.virksomhetsnummer];
+
+      return {
+        ...leder,
+        virksomhetsnavn:
+          virksomhetForLeder?.virksomhetsnavn || leder.virksomhetsnavn,
+      };
+    });
 
   return motebehov ? (
     <MotebehovArbeidsgiverKvittering
       motebehov={motebehov}
       skjemaType={motebehov?.skjemaType ?? null}
+      virksomhet={virksomhet}
     />
   ) : (
     <MotebehovKvitteringInnholdArbeidsgiverUtenMotebehov
-      ledereUtenInnsendtMotebehov={ledereInCurrentTilfelle}
+      ledereInCurrentTilfelle={ledereInCurrentTilfelleWithVirksomhetsnavn}
       skjemaType={skjemaType}
     />
   );
@@ -284,10 +315,16 @@ function UbehandledeMotebehovUtenforTilfelle({
   const ubehandletMotebehovArbeidsgiver = ubehandledeEldreMotebehov.find(
     (motebehov) => !isArbeidstakerMotebehov(motebehov)
   );
+  const { virksomhetsnavn } = useVirksomhetQuery(
+    ubehandletMotebehovArbeidsgiver?.virksomhetsnummer
+  );
 
   const harUbehandledeMotebehov = !!(
     ubehandletMotebehovArbeidstaker || ubehandletMotebehovArbeidsgiver
   );
+
+  const virksomhet =
+    virksomhetsnavn || ubehandletMotebehovArbeidsgiver?.virksomhetsnummer;
 
   return harUbehandledeMotebehov ? (
     <div className="flex flex-col gap-2">
@@ -304,6 +341,7 @@ function UbehandledeMotebehovUtenforTilfelle({
         <MotebehovArbeidsgiverKvittering
           motebehov={ubehandletMotebehovArbeidsgiver}
           skjemaType={ubehandletMotebehovArbeidsgiver?.skjemaType ?? null}
+          virksomhet={virksomhet}
         />
       )}
     </div>
