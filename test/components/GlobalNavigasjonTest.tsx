@@ -440,7 +440,7 @@ describe("GlobalNavigasjon", () => {
       .exist;
   });
 
-  it("viser rød prikk for menypunkt Oppfølgingsplaner når det finnes aktive V2-planer", () => {
+  it("viser aktive planer for menypunkt Oppfølgingsplaner når det finnes aktive V2-planer", () => {
     queryClient.setQueryData(
       oppfolgingsplanQueryKeys.oppfolgingsplanerV2(fnr),
       () => oppfolgingsplanV2Mock
