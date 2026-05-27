@@ -203,6 +203,12 @@ export const queryClientWithMockData = (): QueryClient => {
 
 export function setEmptyQueryData(existingClient: QueryClient): void {
   existingClient.setQueryData(
+    oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => []
+  );
+  existingClient.setQueryData(
     oppfolgingsplanQueryKeys.oppfolgingsplaner(
       ARBEIDSTAKER_DEFAULT.personIdent
     ),
@@ -255,5 +261,15 @@ export function setEmptyQueryData(existingClient: QueryClient): void {
       ARBEIDSTAKER_DEFAULT.personIdent
     ),
     () => null
+  );
+  existingClient.setQueryData(
+    oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => ({
+      oppfolgingstilfelleList: [],
+      personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
+      hasGjentakendeSykefravar: false,
+    })
   );
 }

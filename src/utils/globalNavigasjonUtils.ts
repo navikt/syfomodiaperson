@@ -9,6 +9,11 @@ import {
   aktiveOppfolgingsplaner,
   OppfolgingsplanDTO,
 } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
+import {
+  OppfolgingsplanV2DTO,
+  partitionOppfolgingsplanerByActiveTilfelle,
+} from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
+import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import {
   getAllUbehandledePersonOppgaver,
@@ -182,20 +187,30 @@ export function numberOfTasks(
   kartleggingVurderinger:
     | KartleggingssporsmalKandidatResponseDTO[]
     | undefined
-    | null
+    | null,
+  oppfolgingsplanerV2: OppfolgingsplanV2DTO[],
+  latestOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined
 ): number {
   switch (menypunkt) {
     case Menypunkter.DIALOGMOTE:
       return getNumberOfMoteOppgaver(motebehov, personOppgaver);
-    case Menypunkter.OPPFOELGINGSPLANER:
+    case Menypunkter.OPPFOELGINGSPLANER: {
+      const aktiveV2Planer = latestOppfolgingstilfelle
+        ? partitionOppfolgingsplanerByActiveTilfelle(
+            oppfolgingsplanerV2,
+            latestOppfolgingstilfelle
+          )[0].length
+        : 0;
       return (
         aktiveOppfolgingsplaner(oppfolgingsplaner).length +
         numberOfActiveLPSOppfolgingsplaner(oppfolgingsplanerlps) +
         numberOfUbehandledePersonOppgaver(
           personOppgaver,
           PersonOppgaveType.OPPFOLGINGSPLANLPS
-        )
+        ) +
+        aktiveV2Planer
       );
+    }
     case Menypunkter.AKTIVITETSKRAV:
       return getNumberOfAktivitetskravOppgaver(aktivitetskrav);
     case Menypunkter.BEHANDLERDIALOG:

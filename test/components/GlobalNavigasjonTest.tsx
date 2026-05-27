@@ -20,6 +20,10 @@ import {
   personOppgaveUbehandletBehandlerdialogSvar,
   personOppgaveUbehandletBehandlerdialogUbesvartMelding,
 } from "@/mocks/ispersonoppgave/personoppgaveMock";
+import { oppfolgingsplanV2Mock } from "@/mocks/syfooppfolgingsplanbackend/oppfolgingsplanV2Mock";
+import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
+import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { arbeidsuforhetQueryKeys } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import {
   createForhandsvarsel,
@@ -434,5 +438,20 @@ describe("GlobalNavigasjon", () => {
 
     expect(screen.getByRole("link", { name: "§ 8-8 Manglende medvirkning" })).to
       .exist;
+  });
+
+  it("viser rød prikk for menypunkt Oppfølgingsplaner når det finnes aktive V2-planer", () => {
+    queryClient.setQueryData(
+      oppfolgingsplanQueryKeys.oppfolgingsplanerV2(fnr),
+      () => oppfolgingsplanV2Mock
+    );
+    queryClient.setQueryData(
+      oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(fnr),
+      () => oppfolgingstilfellePersonMock
+    );
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("link", { name: /Oppfølgingsplaner \(\d+ aktiv/ }))
+      .to.exist;
   });
 });
