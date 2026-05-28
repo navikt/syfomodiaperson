@@ -49,6 +49,7 @@ import { dialogmoteStatusEndringMock } from "@/mocks/isdialogmote/dialogmoterMoc
 import { dialogmoterQueryKeys } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { getDefaultOppfolgingsplanLPS } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
+import { oppfolgingsplanV2Mock } from "@/mocks/syfooppfolgingsplanbackend/oppfolgingsplanV2Mock";
 import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useOppfolgingsoppgaver";
 import {
   DATO_INNENFOR_OPPFOLGINGSTILFELLE,
@@ -106,6 +107,12 @@ function setupTestdataHistorikk() {
   );
   queryClient.setQueryData(
     oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+      ARBEIDSTAKER_DEFAULT.personIdent
+    ),
+    () => []
+  );
+  queryClient.setQueryData(
+    oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
       ARBEIDSTAKER_DEFAULT.personIdent
     ),
     () => []
@@ -746,6 +753,23 @@ describe("Historikk", () => {
       ).to.exist;
       expect(screen.getByText("Oppfølgingsplan")).to.exist;
       expect(screen.getByText("Oppfølgingsplan LPS")).to.exist;
+    });
+
+    it("viser historikk for V2-oppfølgingsplaner delt med Nav", () => {
+      const oppfolgingsplanV2 = oppfolgingsplanV2Mock[0];
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [oppfolgingsplanV2]
+      );
+      renderHistorikk();
+
+      expect(
+        screen.getByText(
+          `Oppfølgingsplanen ble delt med Nav av ${oppfolgingsplanV2.virksomhetsnummer}.`
+        )
+      ).to.exist;
     });
   });
 

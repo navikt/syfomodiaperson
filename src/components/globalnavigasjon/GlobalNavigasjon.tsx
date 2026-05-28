@@ -7,6 +7,7 @@ import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryH
 import {
   useGetLPSOppfolgingsplanerQuery,
   useGetOppfolgingsplanerQuery,
+  useGetOppfolgingsplanerV2Query,
 } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
@@ -18,6 +19,7 @@ import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { useKartleggingssporsmalKandidaterQuery } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
+import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 export enum Menypunkter {
   AKTIVITETSKRAV = "AKTIVITETSKRAV",
@@ -115,6 +117,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
   const personoppgaver = usePersonoppgaverQuery();
   const getOppfolgingsplanerQuery = useGetOppfolgingsplanerQuery();
   const getLPSOppfolgingsplaner = useGetLPSOppfolgingsplanerQuery();
+  const getOppfolgingsplanerV2Query = useGetOppfolgingsplanerV2Query();
   const motebehov = useMotebehovQuery();
   const aktivitetskrav = useAktivitetskravQuery();
   const arbeidsuforhetVurderinger = useGetArbeidsuforhetVurderingerQuery();
@@ -123,6 +126,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
   const manglendeMedvirkningVurdering = useManglendemedvirkningVurderingQuery();
   const kartleggingssporsmalKandidat = useKartleggingssporsmalKandidaterQuery();
   const featureToggles = useFeatureToggles();
+  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
   const isPending = featureToggles.isPending;
 
@@ -198,7 +202,9 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
           senOppfolgingKandidat.data,
           friskmeldingTilArbeidsformidlingVedtak.data,
           manglendeMedvirkningVurdering.sisteVurdering,
-          kartleggingssporsmalKandidat.data
+          kartleggingssporsmalKandidat.data,
+          getOppfolgingsplanerV2Query.data,
+          latestOppfolgingstilfelle
         );
 
         return (
