@@ -1,12 +1,16 @@
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { useHistorikkOppfolgingsplan } from "@/data/historikk/historikkQueryHooks";
-import { useGetLPSOppfolgingsplanerQuery } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
+import {
+  useGetLPSOppfolgingsplanerQuery,
+  useGetOppfolgingsplanerV2Query,
+} from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 import {
   OppfolgingsplanForesporselResponse,
   useGetOppfolgingsplanForesporselQuery,
 } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanForesporselHooks";
+import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 
 function lpsplanerToHistorikkEvents(
   oppfolgingsplanerLPS: OppfolgingsplanLPS[]
@@ -16,6 +20,18 @@ function lpsplanerToHistorikkEvents(
     tekst: `Oppfølgingsplanen ble delt med Nav av ${virksomhetsnummer}.`,
     tidspunkt: new Date(opprettet),
   }));
+}
+
+function oppfolgingsplanerV2ToHistorikkEvents(
+  oppfolgingsplanerV2: OppfolgingsplanV2DTO[]
+): HistorikkEvent[] {
+  return oppfolgingsplanerV2.map(
+    ({ deltMedNavTidspunkt, virksomhetsnummer }) => ({
+      kilde: "OPPFOLGINGSPLAN",
+      tekst: `Oppfølgingsplanen ble delt med Nav av ${virksomhetsnummer}.`,
+      tidspunkt: new Date(deltMedNavTidspunkt),
+    })
+  );
 }
 
 function foresporslerToHistorikkEvents(
@@ -46,20 +62,28 @@ export function useOppfolgingsplanHistorikk(): HistorikkEvents {
     isLoading: isOppfolgingsplanForesporslerLoading,
     isError: isOppfolgingsplanForesporslerError,
   } = useGetOppfolgingsplanForesporselQuery();
+  const {
+    data: oppfolgingsplanerV2,
+    isLoading: isOppfolgingsplanerV2Loading,
+    isError: isOppfolgingsplanerV2Error,
+  } = useGetOppfolgingsplanerV2Query();
 
   const oppfolgingsplanHistorikkEvents = oppfolgingsplanHistorikk
     .concat(lpsplanerToHistorikkEvents(oppfolgingsplanerLPS))
-    .concat(foresporslerToHistorikkEvents(oppfolgingsplanForesporsler || []));
+    .concat(foresporslerToHistorikkEvents(oppfolgingsplanForesporsler || []))
+    .concat(oppfolgingsplanerV2ToHistorikkEvents(oppfolgingsplanerV2));
 
   return {
     isLoading:
       isOppfolgingsplanLoading ||
       isOppfolgingsplanerLPSLoading ||
-      isOppfolgingsplanForesporslerLoading,
+      isOppfolgingsplanForesporslerLoading ||
+      isOppfolgingsplanerV2Loading,
     isError:
       isOppfolgingsplanError ||
       isOppfolgingsplanerLPSError ||
-      isOppfolgingsplanForesporslerError,
+      isOppfolgingsplanForesporslerError ||
+      isOppfolgingsplanerV2Error,
     events: oppfolgingsplanHistorikkEvents,
   };
 }
