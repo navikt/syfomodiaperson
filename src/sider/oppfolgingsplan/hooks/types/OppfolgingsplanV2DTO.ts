@@ -29,27 +29,43 @@ function isOppfolgingsplanWithinActiveTilfelle(
 
 /**
  * Partisjonerer en liste av oppfølgingsplaner i aktive og inaktive basert på om oppfølgingsplanen er opprettet innenfor det siste oppfølgingstilfellet.
+ * Kun den siste planen (nyeste `opprettet`) per virksomhet innenfor det aktive tilfellet regnes som aktiv.
  * @param planer Liste over alle historiske oppfølgingsplaner som skal partisjoneres.
  * @param latestOppfolgingstilfelle Det siste oppfølgingstilfellet.
- * @returns En tuple \`[aktivePlaner, inaktivePlaner]\` der første element inneholder planer innenfor perioden,
+ * @returns En tuple \`[aktivePlaner, inaktivePlaner]\` der første element inneholder den siste planen per virksomhet innenfor perioden,
  *          og andre element inneholder alle andre planer.
  */
 export function partitionOppfolgingsplanerByActiveTilfelle(
   planer: OppfolgingsplanV2DTO[],
   latestOppfolgingstilfelle: OppfolgingstilfelleDTO
 ): [OppfolgingsplanV2DTO[], OppfolgingsplanV2DTO[]] {
-  const [aktivePlaner, inaktivePlaner] = planer.reduce(
-    (acc, plan) => {
-      if (
-        isOppfolgingsplanWithinActiveTilfelle(plan, latestOppfolgingstilfelle)
-      ) {
-        acc[0].push(plan);
-      } else {
-        acc[1].push(plan);
-      }
-      return acc;
-    },
-    [[], []] as [OppfolgingsplanV2DTO[], OppfolgingsplanV2DTO[]]
-  );
+  const planerInnenforTilfelle: OppfolgingsplanV2DTO[] = [];
+  const planerUtenforTilfelle: OppfolgingsplanV2DTO[] = [];
+
+  for (const plan of planer) {
+    if (
+      isOppfolgingsplanWithinActiveTilfelle(plan, latestOppfolgingstilfelle)
+    ) {
+      planerInnenforTilfelle.push(plan);
+    } else {
+      planerUtenforTilfelle.push(plan);
+    }
+  }
+
+  const sistePerVirksomhet = new Map<string, OppfolgingsplanV2DTO>();
+  for (const plan of planerInnenforTilfelle) {
+    const existing = sistePerVirksomhet.get(plan.virksomhetsnummer);
+    if (!existing || new Date(plan.opprettet) > new Date(existing.opprettet)) {
+      sistePerVirksomhet.set(plan.virksomhetsnummer, plan);
+    }
+  }
+
+  const aktivePlaner = [...sistePerVirksomhet.values()];
+  const aktiveUuids = new Set(aktivePlaner.map((p) => p.uuid));
+  const inaktivePlaner = [
+    ...planerInnenforTilfelle.filter((p) => !aktiveUuids.has(p.uuid)),
+    ...planerUtenforTilfelle,
+  ];
+
   return [aktivePlaner, inaktivePlaner];
 }
