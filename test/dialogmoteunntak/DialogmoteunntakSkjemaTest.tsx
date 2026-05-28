@@ -50,8 +50,7 @@ describe("DialogmoteunntakSkjema", () => {
     renderDialogmoteunntakSkjema();
 
     expect(screen.getByText(unntakSkjemaTexts.noBrev)).to.not.be.empty;
-    expect(screen.getByText(unntakSkjemaTexts.infoKandidatlist)).to.not.be
-      .empty;
+    expect(screen.getByText(unntakSkjemaTexts.unntakInfo)).to.not.be.empty;
   });
 
   it("valideringsmeldinger forsvinner ved utbedring", async () => {

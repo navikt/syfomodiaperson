@@ -13,6 +13,7 @@ import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   Alert,
+  BodyLong,
   Box,
   Button,
   Radio,
@@ -22,7 +23,7 @@ import {
 
 export const texts = {
   noBrev: "Det blir ikke sendt ut varsel eller brev til den sykmeldte.",
-  infoKandidatlist: `Når du setter unntak fra dialogmøte vil arbeidstakeren bli fjernet fra kandidatlisten. Dersom du på et senere tidspunkt vurderer at det likevel er nødvendig med et dialogmøte, kan du kalle inn til dialogmøte ved å søke deg frem til denne arbeidstakeren.`,
+  unntakInfo: `Når du setter unntak fra dialogmøte vil oppgaven lukkes og brukeren fjernes fra oversikten. Du kan når som helst kalle inn til dialogmøte på et senere tidspunkt.`,
   arsakLegend: "Årsak til unntak (obligatorisk)",
   arsakErrorMessage: "Vennligst angi årsak.",
   beskrivelseLabel: "Beskrivelse (valgfri)",
@@ -37,7 +38,7 @@ export interface DialogmoteunntakSkjemaValues {
   beskrivelse?: string;
 }
 
-const DialogmoteunntakSkjema = () => {
+export default function DialogmoteunntakSkjema() {
   const personIdent = useValgtPersonident();
   const { isKandidat } = useDialogmotekandidat();
   const settDialogmoteunntak = useSettDialogmoteunntak();
@@ -66,7 +67,9 @@ const DialogmoteunntakSkjema = () => {
       <Alert variant="info" size="small" className="p-4 mb-4">
         {texts.noBrev}
       </Alert>
-      <p>{texts.infoKandidatlist}</p>
+      <BodyLong size="small" spacing>
+        {texts.unntakInfo}
+      </BodyLong>
       <form onSubmit={handleSubmit(onSubmit)}>
         {settDialogmoteunntak.isError && (
           <SkjemaInnsendingFeil error={settDialogmoteunntak.error} />
@@ -114,6 +117,4 @@ const DialogmoteunntakSkjema = () => {
       </form>
     </Box>
   );
-};
-
-export default DialogmoteunntakSkjema;
+}
