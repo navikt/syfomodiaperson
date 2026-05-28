@@ -6,7 +6,6 @@ import { SvarDetaljer } from "@/sider/dialogmoter/components/svar/SvarDetaljer";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { getHarAapnetTekst, getSvarTekst } from "@/utils/dialogmoteUtils";
 import { arbeidsgiverNavnMedVirksomhet } from "@/utils/motebehovUtils.ts";
-import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks.ts";
 
 const texts = {
   label: "Nærmeste leder:",
@@ -24,14 +23,11 @@ export const ArbeidsgiverSvar = ({
   defaultClosed = false,
 }: Props) => {
   const { getCurrentNarmesteLeder } = useLedereQuery();
-  const { virksomhetsnavn } = useVirksomhetQuery(virksomhetsnummer);
   const narmesteLeder = getCurrentNarmesteLeder(virksomhetsnummer);
   const arbeidsgiverInfo = narmesteLeder
     ? arbeidsgiverNavnMedVirksomhet(
         narmesteLeder.narmesteLederNavn,
-        virksomhetsnavn ||
-          narmesteLeder.virksomhetsnavn ||
-          narmesteLeder.virksomhetsnummer
+        narmesteLeder.virksomhetsnavn || narmesteLeder.virksomhetsnummer
       )
     : "";
 

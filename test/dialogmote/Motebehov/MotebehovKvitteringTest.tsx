@@ -29,11 +29,8 @@ import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 
 let queryClient: QueryClient;
 
-const virksomhetsnavnInText = "pontypandy Fire Service";
-const arbeidsgiverMedVirksomhet = `Are Arbeidsgiver (${virksomhetsnavnInText})`;
-const arbeidsgiverAltMedVirksomhet = `Are Arbeidsgiver (${VIRKSOMHET_PONTYPANDY.virksomhetsnavn})`;
-const narmesteLederMedVirksomhet = `Tatten Tattover (${virksomhetsnavnInText})`;
-const narmesteLederAltMedVirksomhet = `Tatten Tattover (${VIRKSOMHET_PONTYPANDY.virksomhetsnavn})`;
+const arbeidsgiverMedVirksomhet = `Are Arbeidsgiver (${VIRKSOMHET_PONTYPANDY.virksomhetsnavn})`;
+const narmesteLederMedVirksomhet = `Tatten Tattover (${VIRKSOMHET_PONTYPANDY.virksomhetsnavn})`;
 
 const renderMotebehovKvittering = () => {
   render(
@@ -187,7 +184,7 @@ describe("MotebehovKvittering", () => {
 
     expect(
       screen.getByAltText(
-        `Arbeidsgiver ${arbeidsgiverAltMedVirksomhet} Meldt behov.`
+        `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`
       )
     ).to.exist;
     expect(
@@ -211,7 +208,7 @@ describe("MotebehovKvittering", () => {
 
     expect(
       screen.getByAltText(
-        `Arbeidsgiver ${narmesteLederAltMedVirksomhet} Ikke meldt behov.`
+        `Arbeidsgiver ${narmesteLederMedVirksomhet} Ikke meldt behov.`
       )
     ).to.exist;
     expect(
@@ -221,12 +218,6 @@ describe("MotebehovKvittering", () => {
     ).to.exist;
   });
   it("viser virksomhetsnummer når nærmeste leder mangler virksomhetsnavn", () => {
-    queryClient.removeQueries({
-      queryKey: virksomhetQueryKeys.virksomhet(
-        VIRKSOMHET_PONTYPANDY.virksomhetsnummer
-      ),
-      exact: true,
-    });
     mockLedereUtenVirksomhetsnavn();
     mockMotebehov([motebehovArbeidstakerInTilfelleUbehandletMock]);
 
@@ -257,7 +248,7 @@ describe("MotebehovKvittering", () => {
 
     expect(
       screen.getByAltText(
-        `Arbeidsgiver ${arbeidsgiverAltMedVirksomhet} Meldt behov.`
+        `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`
       )
     ).to.exist;
     expect(
@@ -318,7 +309,7 @@ describe("MotebehovKvittering", () => {
 
     expect(
       screen.getByAltText(
-        `Arbeidsgiver ${arbeidsgiverAltMedVirksomhet} Meldt behov.`
+        `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`
       )
     ).to.exist;
     expect(
@@ -342,7 +333,7 @@ describe("MotebehovKvittering", () => {
 
     expect(
       screen.getByAltText(
-        `Arbeidsgiver ${narmesteLederAltMedVirksomhet} Ikke svart.`
+        `Arbeidsgiver ${narmesteLederMedVirksomhet} Ikke svart.`
       )
     ).to.exist;
     expect(
@@ -364,7 +355,7 @@ describe("MotebehovKvittering", () => {
 
     expect(
       screen.getByAltText(
-        `Arbeidsgiver ${arbeidsgiverAltMedVirksomhet} Svart nei.`
+        `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Svart nei.`
       )
     ).to.exist;
     expect(
