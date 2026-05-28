@@ -16,7 +16,7 @@ function logShowingBannerEvent() {
 const texts = {
   title: "Du har en gammel tilgang til Modia Sykefraværsoppfølging",
   description:
-    "Det er opprettet nye tilganger for Modia SYFO. Hvis du er SYFO-veileder må du få tildelt den nye tilgangen innen 1. juni 2026. Etter det vil brukere med gammel tilgang kun ha tilgang til Finn fastlege.",
+    "Det er opprettet nye tilganger for Modia SYFO. Hvis du er SYFO-veileder må du få tildelt den nye tilgangen innen 1. juli 2026. Etter det vil brukere med gammel tilgang kun ha tilgang til Finn fastlege.",
 };
 
 export default function LegacyTilgangBanner() {
