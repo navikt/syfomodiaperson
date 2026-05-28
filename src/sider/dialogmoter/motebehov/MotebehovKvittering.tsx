@@ -23,10 +23,7 @@ import {
   OppfolgingstilfelleDTO,
 } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { BodyShort } from "@navikt/ds-react";
-import {
-  useVirksomheterQueries,
-  useVirksomhetQuery,
-} from "@/data/virksomhet/virksomhetQueryHooks.ts";
+import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks.ts";
 
 export const arbeidsgiverNavnEllerTomStreng = (lederNavn: string | null) => {
   return lederNavn ? `${lederNavn}` : "";
@@ -272,20 +269,6 @@ function MotebehovArbeidsgiverInCurrentTilfelle({
     currentLedere,
     oppfolgingstilfelle
   );
-  const virksomheterByLedereInCurrentTilfelle = useVirksomheterQueries(
-    ledereInCurrentTilfelle.map((leder) => leder.virksomhetsnummer)
-  );
-  const ledereInCurrentTilfelleWithVirksomhetsnavn =
-    ledereInCurrentTilfelle.map((leder) => {
-      const virksomhetForLeder =
-        virksomheterByLedereInCurrentTilfelle.data[leder.virksomhetsnummer];
-
-      return {
-        ...leder,
-        virksomhetsnavn:
-          virksomhetForLeder?.virksomhetsnavn || leder.virksomhetsnavn,
-      };
-    });
 
   return motebehov ? (
     <MotebehovArbeidsgiverKvittering
@@ -295,7 +278,7 @@ function MotebehovArbeidsgiverInCurrentTilfelle({
     />
   ) : (
     <MotebehovKvitteringInnholdArbeidsgiverUtenMotebehov
-      ledereInCurrentTilfelle={ledereInCurrentTilfelleWithVirksomhetsnavn}
+      ledereInCurrentTilfelle={ledereInCurrentTilfelle}
       skjemaType={skjemaType}
     />
   );
