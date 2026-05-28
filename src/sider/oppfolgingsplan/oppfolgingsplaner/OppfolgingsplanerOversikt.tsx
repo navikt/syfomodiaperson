@@ -18,6 +18,7 @@ import { aktiveNarmesteLedereForOppfolgingstilfelle } from "@/data/oppfolgingsti
 import LumiSurvey from "@/components/lumi/LumiSurvey";
 import { oppfolgingsplanSurvey } from "@/components/lumi/oppfolgingsplanSurvey";
 import { useOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/useOppfolgingsplaner";
+import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
 
 const texts = {
   pageTitle: "Oppfølgingsplaner",
@@ -32,6 +33,8 @@ const texts = {
 };
 
 export default function OppfolgingsplanerOversikt() {
+  const { latestOppfolgingstilfelle, hasActiveOppfolgingstilfelle } =
+    useOppfolgingstilfellePersonQuery();
   const {
     aktivePlaner,
     inaktivePlaner,
@@ -40,8 +43,6 @@ export default function OppfolgingsplanerOversikt() {
     lpsPlaner,
     isLoading,
     isError,
-    latestOppfolgingstilfelle,
-    hasActiveOppfolgingstilfelle,
   } = useOppfolgingsplaner();
   const currentOppfolgingstilfelle = hasActiveOppfolgingstilfelle
     ? latestOppfolgingstilfelle

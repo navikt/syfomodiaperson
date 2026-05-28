@@ -13,7 +13,6 @@ import {
   partitionOppfolgingsplanerByActiveTilfelle,
 } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 export interface OppfolgingsplanerResult {
   aktivePlaner: OppfolgingsplanDTO[];
@@ -24,8 +23,6 @@ export interface OppfolgingsplanerResult {
   lpsPlaner: OppfolgingsplanLPS[];
   isLoading: boolean;
   isError: boolean;
-  latestOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined;
-  hasActiveOppfolgingstilfelle: boolean;
 }
 
 /**
@@ -37,8 +34,7 @@ export function useOppfolgingsplaner(): OppfolgingsplanerResult {
   const getOppfolgingsplanerQuery = useGetOppfolgingsplanerQuery();
   const getLPSOppfolgingsplanerQuery = useGetLPSOppfolgingsplanerQuery();
   const getOppfolgingsplanerV2Query = useGetOppfolgingsplanerV2Query();
-  const { latestOppfolgingstilfelle, hasActiveOppfolgingstilfelle } =
-    useOppfolgingstilfellePersonQuery();
+  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
   const [aktivePlaner, inaktivePlaner] = partitionOppfolgingsplanerByAktivPlan(
     getOppfolgingsplanerQuery.data
@@ -66,7 +62,5 @@ export function useOppfolgingsplaner(): OppfolgingsplanerResult {
       getOppfolgingsplanerQuery.isError ||
       getLPSOppfolgingsplanerQuery.isError ||
       getOppfolgingsplanerV2Query.isError,
-    latestOppfolgingstilfelle,
-    hasActiveOppfolgingstilfelle,
   };
 }
