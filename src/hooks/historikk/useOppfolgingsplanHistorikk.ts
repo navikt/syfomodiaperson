@@ -1,9 +1,5 @@
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { useHistorikkOppfolgingsplan } from "@/data/historikk/historikkQueryHooks";
-import {
-  useGetLPSOppfolgingsplanerQuery,
-  useGetOppfolgingsplanerV2Query,
-} from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 import {
@@ -11,6 +7,7 @@ import {
   useGetOppfolgingsplanForesporselQuery,
 } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanForesporselHooks";
 import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
+import { useOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/useOppfolgingsplaner";
 
 function lpsplanerToHistorikkEvents(
   oppfolgingsplanerLPS: OppfolgingsplanLPS[]
@@ -53,20 +50,16 @@ export function useOppfolgingsplanHistorikk(): HistorikkEvents {
     isError: isOppfolgingsplanError,
   } = useHistorikkOppfolgingsplan();
   const {
-    data: oppfolgingsplanerLPS,
-    isLoading: isOppfolgingsplanerLPSLoading,
-    isError: isOppfolgingsplanerLPSError,
-  } = useGetLPSOppfolgingsplanerQuery();
+    lpsPlaner: oppfolgingsplanerLPS,
+    allePlanerV2: oppfolgingsplanerV2,
+    isLoading: isOppfolgingsplanerLoading,
+    isError: isOppfolgingsplanerError,
+  } = useOppfolgingsplaner();
   const {
     data: oppfolgingsplanForesporsler,
     isLoading: isOppfolgingsplanForesporslerLoading,
     isError: isOppfolgingsplanForesporslerError,
   } = useGetOppfolgingsplanForesporselQuery();
-  const {
-    data: oppfolgingsplanerV2,
-    isLoading: isOppfolgingsplanerV2Loading,
-    isError: isOppfolgingsplanerV2Error,
-  } = useGetOppfolgingsplanerV2Query();
 
   const oppfolgingsplanHistorikkEvents = oppfolgingsplanHistorikk
     .concat(lpsplanerToHistorikkEvents(oppfolgingsplanerLPS))
@@ -76,14 +69,12 @@ export function useOppfolgingsplanHistorikk(): HistorikkEvents {
   return {
     isLoading:
       isOppfolgingsplanLoading ||
-      isOppfolgingsplanerLPSLoading ||
-      isOppfolgingsplanForesporslerLoading ||
-      isOppfolgingsplanerV2Loading,
+      isOppfolgingsplanerLoading ||
+      isOppfolgingsplanForesporslerLoading,
     isError:
       isOppfolgingsplanError ||
-      isOppfolgingsplanerLPSError ||
-      isOppfolgingsplanForesporslerError ||
-      isOppfolgingsplanerV2Error,
+      isOppfolgingsplanerError ||
+      isOppfolgingsplanForesporslerError,
     events: oppfolgingsplanHistorikkEvents,
   };
 }
