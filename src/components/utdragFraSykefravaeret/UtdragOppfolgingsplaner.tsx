@@ -11,11 +11,6 @@ import {
   SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT,
 } from "@/apiConstants";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
-import {
-  useGetLPSOppfolgingsplanerQuery,
-  useGetOppfolgingsplanerQuery,
-  useGetOppfolgingsplanerV2Query,
-} from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import {
   OppfolgingsplanV2DTO,
@@ -23,6 +18,7 @@ import {
 } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { Alert, Heading, Link, Loader } from "@navikt/ds-react";
+import { useOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/useOppfolgingsplaner";
 
 const texts = {
   header: "Oppfølgingsplan",
@@ -186,44 +182,34 @@ interface Props {
 export default function UtdragOppfolgingsplaner({
   selectedOppfolgingstilfelle,
 }: Props) {
-  const getOppfolgingsplanerQuery = useGetOppfolgingsplanerQuery();
-  const getLPSOppfolgingsplanerQuery = useGetLPSOppfolgingsplanerQuery();
-  const getOppfolgingsplanerV2Query = useGetOppfolgingsplanerV2Query();
+  const { aktivePlaner, allePlanerV2, lpsPlaner, isLoading, isError } =
+    useOppfolgingsplaner();
 
   const activeLpsPlaner = lpsPlanerWithActiveTilfelle(
-    getLPSOppfolgingsplanerQuery.data,
+    lpsPlaner,
     selectedOppfolgingstilfelle
   );
   const [aktiveOppfolgingsplanerV2] = selectedOppfolgingstilfelle
     ? partitionOppfolgingsplanerByActiveTilfelle(
-        getOppfolgingsplanerV2Query.data,
+        allePlanerV2,
         selectedOppfolgingstilfelle
       )
     : [[]];
-
-  const showLoader =
-    getOppfolgingsplanerQuery.isPending &&
-    getLPSOppfolgingsplanerQuery.isPending &&
-    getOppfolgingsplanerV2Query.isPending;
-  const showError =
-    getOppfolgingsplanerQuery.isError &&
-    getLPSOppfolgingsplanerQuery.isError &&
-    getOppfolgingsplanerV2Query.isError;
 
   return (
     <div>
       <Heading size="small" level="3">
         {texts.header}
       </Heading>
-      {showLoader ? (
+      {isLoading ? (
         <Loader size="large" title={texts.pending} />
-      ) : showError ? (
+      ) : isError ? (
         <Alert size="small" inline variant="error">
           {texts.error}
         </Alert>
       ) : (
         <Oppfolgingsplaner
-          aktivePlaner={getOppfolgingsplanerQuery.data}
+          aktivePlaner={aktivePlaner}
           aktivePlanerV2={aktiveOppfolgingsplanerV2}
           lpsPlaner={activeLpsPlaner}
         />

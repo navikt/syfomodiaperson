@@ -9,11 +9,6 @@ import {
   aktiveOppfolgingsplaner,
   OppfolgingsplanDTO,
 } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
-import {
-  OppfolgingsplanV2DTO,
-  partitionOppfolgingsplanerByActiveTilfelle,
-} from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
-import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import {
   getAllUbehandledePersonOppgaver,
@@ -188,19 +183,12 @@ export function numberOfTasks(
     | KartleggingssporsmalKandidatResponseDTO[]
     | undefined
     | null,
-  oppfolgingsplanerV2: OppfolgingsplanV2DTO[],
-  latestOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined
+  antallAktiveV2Planer: number
 ): number {
   switch (menypunkt) {
     case Menypunkter.DIALOGMOTE:
       return getNumberOfMoteOppgaver(motebehov, personOppgaver);
     case Menypunkter.OPPFOELGINGSPLANER: {
-      const aktiveV2Planer = latestOppfolgingstilfelle
-        ? partitionOppfolgingsplanerByActiveTilfelle(
-            oppfolgingsplanerV2,
-            latestOppfolgingstilfelle
-          )[0].length
-        : 0;
       return (
         aktiveOppfolgingsplaner(oppfolgingsplaner).length +
         numberOfActiveLPSOppfolgingsplaner(oppfolgingsplanerlps) +
@@ -208,7 +196,7 @@ export function numberOfTasks(
           personOppgaver,
           PersonOppgaveType.OPPFOLGINGSPLANLPS
         ) +
-        aktiveV2Planer
+        antallAktiveV2Planer
       );
     }
     case Menypunkter.AKTIVITETSKRAV:

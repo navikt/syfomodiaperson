@@ -7,24 +7,17 @@ import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerU
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import OppfolgingsplanLink from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanLink";
 import * as Tredelt from "@/components/side/TredeltSide";
-import {
-  useGetLPSOppfolgingsplanerQuery,
-  useGetOppfolgingsplanerQuery,
-  useGetOppfolgingsplanerV2Query,
-} from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
-import { partitionOppfolgingsplanerByActiveTilfelle } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
-import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import OppfolgingsplanV2Item from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanV2Item";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import SideLaster from "@/components/side/SideLaster";
 import Side from "@/components/side/Side";
-import { partitionOppfolgingsplanerByAktivPlan } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import BeOmOppfolgingsplan from "@/sider/oppfolgingsplan/oppfolgingsplaner/BeOmOppfolgingsplan";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import AktiveOppfolgingsplaner from "@/sider/oppfolgingsplan/oppfolgingsplaner/AktiveOppfolgingsplaner";
 import { aktiveNarmesteLedereForOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import LumiSurvey from "@/components/lumi/LumiSurvey";
 import { oppfolgingsplanSurvey } from "@/components/lumi/oppfolgingsplanSurvey";
+import { useOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/useOppfolgingsplaner";
 
 const texts = {
   pageTitle: "Oppfølgingsplaner",
@@ -39,32 +32,24 @@ const texts = {
 };
 
 export default function OppfolgingsplanerOversikt() {
-  const getOppfolgingsplanerV2 = useGetOppfolgingsplanerV2Query();
-  const getOppfolgingsplaner = useGetOppfolgingsplanerQuery();
-  const getLPSOppfolgingsplaner = useGetLPSOppfolgingsplanerQuery();
-  const { latestOppfolgingstilfelle, hasActiveOppfolgingstilfelle } =
-    useOppfolgingstilfellePersonQuery();
+  const {
+    aktivePlaner,
+    inaktivePlaner,
+    aktivePlanerV2: aktiveOppfolgingsplanerV2,
+    inaktivePlanerV2: inaktiveOppfolgingsplanerV2,
+    lpsPlaner,
+    isLoading,
+    isError,
+    latestOppfolgingstilfelle,
+    hasActiveOppfolgingstilfelle,
+  } = useOppfolgingsplaner();
   const currentOppfolgingstilfelle = hasActiveOppfolgingstilfelle
     ? latestOppfolgingstilfelle
     : undefined;
   const { currentLedere } = useLedereQuery();
 
-  const isLoading =
-    getOppfolgingsplaner.isLoading ||
-    getLPSOppfolgingsplaner.isLoading ||
-    getOppfolgingsplanerV2.isLoading;
-
-  const isError =
-    getOppfolgingsplaner.isError ||
-    getLPSOppfolgingsplaner.isError ||
-    getOppfolgingsplanerV2.isError;
-
-  const [aktivePlaner, inaktivePlaner] = partitionOppfolgingsplanerByAktivPlan(
-    getOppfolgingsplaner.data
-  );
-
   const getPersonOppgaverQuery = usePersonoppgaverQuery();
-  const oppfolgingsplanerLPSMedPersonOppgave = getLPSOppfolgingsplaner.data.map(
+  const oppfolgingsplanerLPSMedPersonOppgave = lpsPlaner.map(
     (oppfolgingsplanLPS) =>
       toOppfolgingsplanLPSMedPersonoppgave(
         oppfolgingsplanLPS,
@@ -83,14 +68,6 @@ export default function OppfolgingsplanerOversikt() {
     .sort((a, b) => {
       return new Date(b.opprettet).getTime() - new Date(a.opprettet).getTime();
     });
-
-  const [aktiveOppfolgingsplanerV2, inaktiveOppfolgingsplanerV2] =
-    !!latestOppfolgingstilfelle && getOppfolgingsplanerV2.isSuccess
-      ? partitionOppfolgingsplanerByActiveTilfelle(
-          getOppfolgingsplanerV2.data,
-          latestOppfolgingstilfelle
-        )
-      : [[], []];
 
   const hasTidligereOppfolgingsplaner =
     inaktivePlaner.length !== 0 ||

@@ -4,11 +4,6 @@ import UnfinishedTasks from "./UnfinishedTasks";
 import { Link } from "react-router-dom";
 import { numberOfTasks } from "@/utils/globalNavigasjonUtils";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
-import {
-  useGetLPSOppfolgingsplanerQuery,
-  useGetOppfolgingsplanerQuery,
-  useGetOppfolgingsplanerV2Query,
-} from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
@@ -19,7 +14,7 @@ import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { useKartleggingssporsmalKandidaterQuery } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
-import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { useOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/useOppfolgingsplaner";
 
 export enum Menypunkter {
   AKTIVITETSKRAV = "AKTIVITETSKRAV",
@@ -115,9 +110,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
   const refs = useRef<HTMLAnchorElement[]>([]);
 
   const personoppgaver = usePersonoppgaverQuery();
-  const getOppfolgingsplanerQuery = useGetOppfolgingsplanerQuery();
-  const getLPSOppfolgingsplaner = useGetLPSOppfolgingsplanerQuery();
-  const getOppfolgingsplanerV2Query = useGetOppfolgingsplanerV2Query();
+  const { aktivePlaner, aktivePlanerV2, lpsPlaner } = useOppfolgingsplaner();
   const motebehov = useMotebehovQuery();
   const aktivitetskrav = useAktivitetskravQuery();
   const arbeidsuforhetVurderinger = useGetArbeidsuforhetVurderingerQuery();
@@ -126,11 +119,10 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
   const manglendeMedvirkningVurdering = useManglendemedvirkningVurderingQuery();
   const kartleggingssporsmalKandidat = useKartleggingssporsmalKandidaterQuery();
   const featureToggles = useFeatureToggles();
-  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
   const isPending = featureToggles.isPending;
 
-  const oppfolgingsplanerLPSMedPersonOppgave = getLPSOppfolgingsplaner.data.map(
+  const oppfolgingsplanerLPSMedPersonOppgave = lpsPlaner.map(
     (oppfolgingsplanLPS) =>
       toOppfolgingsplanLPSMedPersonoppgave(
         oppfolgingsplanLPS,
@@ -194,7 +186,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
         const tasks = numberOfTasks(
           menypunkt,
           motebehov.data,
-          getOppfolgingsplanerQuery.data,
+          aktivePlaner,
           personoppgaver.data,
           oppfolgingsplanerLPSMedPersonOppgave,
           aktivitetskrav.data,
@@ -203,8 +195,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
           friskmeldingTilArbeidsformidlingVedtak.data,
           manglendeMedvirkningVurdering.sisteVurdering,
           kartleggingssporsmalKandidat.data,
-          getOppfolgingsplanerV2Query.data,
-          latestOppfolgingstilfelle
+          aktivePlanerV2.length
         );
 
         return (
