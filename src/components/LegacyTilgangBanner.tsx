@@ -22,7 +22,7 @@ export default function LegacyTilgangBanner() {
   }, []);
 
   return (
-    <GlobalAlert status="warning" centered={false}>
+    <GlobalAlert status="warning" size="small">
       <GlobalAlert.Header>
         <GlobalAlert.Title className="text-base">
           {BANNER_TITLE}
@@ -41,10 +41,10 @@ export default function LegacyTilgangBanner() {
             className="relative -top-0.5 pr-1"
           />
         </Link>{" "}
-        SYFO-veiledere må tildeles ny tilgang innen{" "}
-        <strong>1. juli 2026</strong>. Etter denne datoen vil gammel tilgang kun
-        gi tilgang til Finn fastlege. Det arbeides med en midlertidig tilgang
-        til Modia SYFO for utvalgte grupper, som vil være på plass før 1. juli.{" "}
+        SYFO-veiledere må tildeles ny tilgang innen <strong>1. juli</strong>.
+        Etter denne datoen vil gammel tilgang kun gi tilgang til Finn fastlege.
+        Det arbeides med en midlertidig tilgang til Modia SYFO for utvalgte
+        grupper, som vil være på plass før 1. juli.
       </GlobalAlert.Content>
     </GlobalAlert>
   );
