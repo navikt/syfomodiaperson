@@ -6,6 +6,7 @@ import {
   restdatoTilLesbarDato,
   tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
+import { SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT } from "@/apiConstants";
 
 const texts = {
   duration: "Varighet",
@@ -32,7 +33,11 @@ interface Props {
 
 export default function OppfolgingsplanLink({ dialog }: Props) {
   return (
-    <LinkPanel href={`/sykefravaer/oppfoelgingsplaner/${dialog.id}`}>
+    <LinkPanel
+      href={`${SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT}/dokument/${dialog.id}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <LinkPanel.Title>
         <OppfolgingsplanVirksomhetTittel plan={dialog} />
       </LinkPanel.Title>
