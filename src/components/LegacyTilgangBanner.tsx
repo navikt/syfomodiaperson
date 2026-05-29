@@ -1,4 +1,5 @@
 import { Events, trackEvent } from "@/utils/umami";
+import { ExternalLinkIcon } from "@navikt/aksel-icons";
 import { GlobalAlert, Link } from "@navikt/ds-react";
 import React, { useEffect } from "react";
 
@@ -8,16 +9,12 @@ function logShowingBannerEvent() {
     // i analytics-types
     name: Events.ALERT_VIST,
     properties: {
-      tekst: texts.title,
+      tekst: BANNER_TITLE,
     },
   });
 }
 
-const texts = {
-  title: "Du har en gammel tilgang til Modia Sykefraværsoppfølging",
-  description:
-    "Det er opprettet nye tilganger for Modia SYFO. Hvis du er SYFO-veileder må du få tildelt den nye tilgangen innen 1. juli 2026. Etter det vil brukere med gammel tilgang kun ha tilgang til Finn fastlege.",
-};
+const BANNER_TITLE = "Du har en gammel tilgang til Modia Sykefraværsoppfølging";
 
 export default function LegacyTilgangBanner() {
   useEffect(() => {
@@ -25,22 +22,29 @@ export default function LegacyTilgangBanner() {
   }, []);
 
   return (
-    <GlobalAlert status="warning">
+    <GlobalAlert status="warning" centered={false}>
       <GlobalAlert.Header>
         <GlobalAlert.Title className="text-base">
-          {texts.title}
+          {BANNER_TITLE}
         </GlobalAlert.Title>
       </GlobalAlert.Header>
       <GlobalAlert.Content>
-        {texts.description}{" "}
+        SYFO-veiledere må tildeles ny tilgang innen{" "}
+        <strong>1. juli 2026</strong>. Etter denne datoen vil gammel tilgang kun
+        gi tilgang til Finn fastlege. Det arbeides med en midlertidig tilgang
+        til Modia SYFO for utvalgte grupper, som vil være på plass før 1. juli.{" "}
         <Link
           href="https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Nye-tilganger-til-Modia-sykefrav%C3%A6rsoppf%C3%B8lging.aspx"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Les mer på Navet
+          Les mer om nye tilganger på Navet{" "}
+          <ExternalLinkIcon
+            title="a11y-title"
+            fontSize="1.2rem"
+            className="relative -top-0.5"
+          />
         </Link>
-        .
       </GlobalAlert.Content>
     </GlobalAlert>
   );
