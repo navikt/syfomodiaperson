@@ -29,22 +29,22 @@ export default function LegacyTilgangBanner() {
         </GlobalAlert.Title>
       </GlobalAlert.Header>
       <GlobalAlert.Content>
-        SYFO-veiledere må tildeles ny tilgang innen{" "}
-        <strong>1. juli 2026</strong>. Etter denne datoen vil gammel tilgang kun
-        gi tilgang til Finn fastlege. Det arbeides med en midlertidig tilgang
-        til Modia SYFO for utvalgte grupper, som vil være på plass før 1. juli.{" "}
         <Link
           href="https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Nye-tilganger-til-Modia-sykefrav%C3%A6rsoppf%C3%B8lging.aspx"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Les mer om nye tilganger på Navet{" "}
+          Nye tilganger til Modia SYFO (Navet){" "}
           <ExternalLinkIcon
             title="a11y-title"
             fontSize="1.2rem"
-            className="relative -top-0.5"
+            className="relative -top-0.5 pr-1"
           />
-        </Link>
+        </Link>{" "}
+        SYFO-veiledere må tildeles ny tilgang innen{" "}
+        <strong>1. juli 2026</strong>. Etter denne datoen vil gammel tilgang kun
+        gi tilgang til Finn fastlege. Det arbeides med en midlertidig tilgang
+        til Modia SYFO for utvalgte grupper, som vil være på plass før 1. juli.{" "}
       </GlobalAlert.Content>
     </GlobalAlert>
   );
