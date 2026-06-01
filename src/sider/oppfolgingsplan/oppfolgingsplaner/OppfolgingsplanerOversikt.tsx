@@ -5,7 +5,7 @@ import OppfolgingsplanerOversiktLPS from "../lps/OppfolgingsplanerOversiktLPS";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
-import OppfolgingsplanLink from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanLink";
+import OppfolgingsplanV1Item from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanV1Item.tsx";
 import * as Tredelt from "@/components/side/TredeltSide";
 import OppfolgingsplanV2Item from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanV2Item";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
@@ -115,7 +115,12 @@ export default function OppfolgingsplanerOversikt() {
             {hasTidligereOppfolgingsplaner ? (
               <>
                 {inaktivePlaner.map((dialog, index) => {
-                  return <OppfolgingsplanLink key={index} dialog={dialog} />;
+                  return (
+                    <OppfolgingsplanV1Item
+                      key={index}
+                      oppfolgingsplan={dialog}
+                    />
+                  );
                 })}
                 {oppfolgingsplanerLPSProcessed.map((planLPS, index) => {
                   return (

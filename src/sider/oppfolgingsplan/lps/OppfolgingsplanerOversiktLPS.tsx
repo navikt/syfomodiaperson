@@ -4,28 +4,11 @@ import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/Oppfolgi
 import BehandleOppfolgingsplanLPS from "./BehandleOppfolgingsplanLPS";
 import { LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT } from "@/apiConstants";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
-import { Box, Heading, Tag } from "@navikt/ds-react";
+import { BodyShort, Box, Heading, Link, Tag, VStack } from "@navikt/ds-react";
 
 const texts = {
-  buttonOpenPlan: "Åpne oppfølgingsplanen(pdf)",
+  buttonOpenPlan: "Åpne oppfølgingsplanen (pdf)",
 };
-
-interface OpenPlanButtonProps {
-  oppfolgingsplanLPS: OppfolgingsplanLPS;
-}
-
-function OpenPlanButton(buttonOpenPlanProps: OpenPlanButtonProps) {
-  return (
-    <a
-      className="lenke"
-      href={`${LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT}/oppfolgingsplan/lps/${buttonOpenPlanProps.oppfolgingsplanLPS.uuid}`}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {texts.buttonOpenPlan}
-    </a>
-  );
-}
 
 interface Props {
   oppfolgingsplanLPSBistandsbehov: OppfolgingsplanLPS;
@@ -46,19 +29,25 @@ export default function OppfolgingsplanerOversiktLPS({
       data-testid="oppfolgingsplan-lps"
     >
       <Heading size="small">{virksomhetsnavn}</Heading>
-      <p>
-        Mottatt:{" "}
-        {restdatoTilLesbarDato(oppfolgingsplanLPSBistandsbehov.opprettet)}
-      </p>
-      <Tag data-color="info" variant="outline" className="mb-4">
-        LPS
-      </Tag>
-      <div className="mb-4">
-        <OpenPlanButton oppfolgingsplanLPS={oppfolgingsplanLPSBistandsbehov} />
-      </div>
-      <BehandleOppfolgingsplanLPS
-        oppfolgingsplanLPS={oppfolgingsplanLPSBistandsbehov}
-      />
+      <VStack align="baseline" gap="space-4">
+        <BodyShort size="small">
+          Mottatt:{" "}
+          {restdatoTilLesbarDato(oppfolgingsplanLPSBistandsbehov.opprettet)}
+        </BodyShort>
+        <Tag data-color="info" variant="outline">
+          LPS
+        </Tag>
+        <Link
+          href={`${LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT}/oppfolgingsplan/lps/${oppfolgingsplanLPSBistandsbehov.uuid}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {texts.buttonOpenPlan}
+        </Link>
+        <BehandleOppfolgingsplanLPS
+          oppfolgingsplanLPS={oppfolgingsplanLPSBistandsbehov}
+        />
+      </VStack>
     </Box>
   );
 }
