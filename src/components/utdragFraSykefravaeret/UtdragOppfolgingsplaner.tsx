@@ -9,6 +9,7 @@ import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/Oppfolgi
 import {
   LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT,
   SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT,
+  SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT,
 } from "@/apiConstants";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
@@ -46,7 +47,9 @@ const AktivPlanLenke = ({ aktivPlan }: AktivPlanLenkeProps) => {
   );
   return (
     <span>
-      <Link href={`/sykefravaer/oppfoelgingsplaner/${aktivPlan.id}`}>
+      <Link
+        href={`${SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT}/dokument/${aktivPlan.id}`}
+      >
         {virksomhetsnavn && virksomhetsnavn.length > 0
           ? virksomhetsnavn.toLowerCase()
           : aktivPlan.virksomhet.virksomhetsnummer}
