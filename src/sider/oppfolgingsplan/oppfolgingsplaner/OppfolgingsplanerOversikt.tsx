@@ -4,7 +4,7 @@ import { erIkkeIdag } from "@/utils/datoUtils";
 import OppfolgingsplanerOversiktLPS from "../lps/OppfolgingsplanerOversiktLPS";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
-import { BodyShort, Box, Heading } from "@navikt/ds-react";
+import { BodyShort, Box, Heading, VStack } from "@navikt/ds-react";
 import OppfolgingsplanV1Item from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanV1Item.tsx";
 import * as Tredelt from "@/components/side/TredeltSide";
 import OppfolgingsplanV2Item from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanV2Item";
@@ -19,6 +19,7 @@ import LumiSurvey from "@/components/lumi/LumiSurvey";
 import { oppfolgingsplanSurvey } from "@/components/lumi/oppfolgingsplanSurvey";
 import { useOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/useOppfolgingsplaner";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
+import { EksternLenke } from "@/components/EksternLenke.tsx";
 
 const texts = {
   pageTitle: "Oppfølgingsplaner",
@@ -30,7 +31,17 @@ const texts = {
     ingenTidligereOppfolgingsplaner: "Det er ingen tidligere oppfølgingsplaner",
     noLPSOppfolgingsplaner: "Det er ingen oppfølgingsplaner med bistandsbehov",
   },
+  nyttigeLenker: {
+    heading: "Nyttige lenker",
+    arbeidsgiverLenkeTekst: "Slik ser oppfølgingsplanen ut for arbeidsgiver",
+    arbeidstakerLenkeTekst: "Slik ser oppfølgingsplanen ut for den sykmeldte",
+  },
 };
+
+const demoArbeidsgiverUrl =
+  "https://demo.ekstern.dev.nav.no/syk/oppfolgingsplan/123";
+const demoArbeidstakerUrl =
+  "https://demo.ekstern.dev.nav.no/syk/oppfolgingsplan/sykmeldt";
 
 export default function OppfolgingsplanerOversikt() {
   const { latestOppfolgingstilfelle, hasActiveOppfolgingstilfelle } =
@@ -142,14 +153,27 @@ export default function OppfolgingsplanerOversikt() {
               </Box>
             )}
           </Tredelt.FirstColumn>
-          {isBeOmOppfolgingsplanVisible && (
-            <Tredelt.SecondColumn className="mt-11">
+          <Tredelt.SecondColumn className="mt-11">
+            {isBeOmOppfolgingsplanVisible && (
               <BeOmOppfolgingsplan
                 activeNarmesteLedere={activeNarmesteLedere}
                 currentOppfolgingstilfelle={currentOppfolgingstilfelle}
               />
-            </Tredelt.SecondColumn>
-          )}
+            )}
+            <Box background="default" className="p-4 mb-2">
+              <Heading level="2" size="medium" spacing>
+                {texts.nyttigeLenker.heading}
+              </Heading>
+              <VStack gap="space-16">
+                <EksternLenke href={demoArbeidsgiverUrl}>
+                  {texts.nyttigeLenker.arbeidsgiverLenkeTekst}
+                </EksternLenke>
+                <EksternLenke href={demoArbeidstakerUrl}>
+                  {texts.nyttigeLenker.arbeidstakerLenkeTekst}
+                </EksternLenke>
+              </VStack>
+            </Box>
+          </Tredelt.SecondColumn>
         </Tredelt.Container>
       </SideLaster>
     </Side>
