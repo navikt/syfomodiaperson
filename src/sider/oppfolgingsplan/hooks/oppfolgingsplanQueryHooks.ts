@@ -2,13 +2,11 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT,
   SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT,
-  SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT,
   SYFOOPPFOLGINGSPLANSERVICE_V3_ROOT,
 } from "@/apiConstants";
 import { get, post } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
-import { DokumentinfoDTO } from "@/sider/oppfolgingsplan/hooks/types/DokumentinfoDTO";
 import { useMemo } from "react";
 import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import { minutesToMillis } from "@/utils/utils";
@@ -103,14 +101,4 @@ export function useGetOppfolgingsplanerV2Query() {
     isSuccess: query.isSuccess,
     isError: query.isError,
   };
-}
-
-export function useDokumentinfoQuery(oppfolgingsplanId: number) {
-  const path = `${SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT}/dokument/${oppfolgingsplanId}/dokumentinfo`;
-  const fetchDokumentinfo = () => get<DokumentinfoDTO>(path);
-  return useQuery({
-    queryKey: oppfolgingsplanQueryKeys.dokumentinfo(oppfolgingsplanId),
-    queryFn: fetchDokumentinfo,
-    staleTime: minutesToMillis(60 * 12),
-  });
 }
