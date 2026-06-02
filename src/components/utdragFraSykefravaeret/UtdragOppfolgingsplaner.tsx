@@ -198,7 +198,7 @@ export default function UtdragOppfolgingsplaner({
     lpsPlaner,
     selectedOppfolgingstilfelle
   );
-  const [aktiveOppfolgingsplanerV2] = selectedOppfolgingstilfelle
+  const [planerV2ByOppfolgingstilfelle] = selectedOppfolgingstilfelle
     ? partitionOppfolgingsplanerByActiveTilfelle(
         allePlanerV2,
         selectedOppfolgingstilfelle
@@ -219,7 +219,7 @@ export default function UtdragOppfolgingsplaner({
       ) : (
         <Oppfolgingsplaner
           planerV1={planerV1ByOppfolgingstilfelle}
-          planerV2={aktiveOppfolgingsplanerV2}
+          planerV2={planerV2ByOppfolgingstilfelle}
           lpsPlaner={activeLpsPlaner}
         />
       )}

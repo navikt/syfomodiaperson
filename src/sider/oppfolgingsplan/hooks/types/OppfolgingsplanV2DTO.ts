@@ -24,7 +24,10 @@ function isOppfolgingsplanWithinActiveTilfelle(
   plan: OppfolgingsplanV2DTO,
   oppfolgingstilfelle: OppfolgingstilfelleDTO
 ): boolean {
-  return new Date(plan.opprettet) >= new Date(oppfolgingstilfelle.start);
+  const tilfelleStart = new Date(oppfolgingstilfelle.start);
+  const tilfelleEnd = new Date(oppfolgingstilfelle.end);
+  const planOpprettet = new Date(plan.opprettet);
+  return tilfelleStart <= planOpprettet && planOpprettet <= tilfelleEnd;
 }
 
 /**
