@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { OppfolgingsplanLPSMedPersonoppgave } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import OppfolgingsplanerOversiktLPS from "@/sider/oppfolgingsplan/lps/OppfolgingsplanerOversiktLPS";
-import OppfolgingsplanLink from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanLink";
+import OppfolgingsplanV1Item from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanV1Item.tsx";
 import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 import OppfolgingsplanV2Item from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanV2Item";
 
@@ -64,7 +64,7 @@ export default function AktiveOppfolgingsplaner({
             />
           ))}
           {aktivePlaner.map((dialog, index) => (
-            <OppfolgingsplanLink key={index} dialog={dialog} />
+            <OppfolgingsplanV1Item key={index} oppfolgingsplan={dialog} />
           ))}
           {aktivePlanerV2.map((plan, index) => (
             <OppfolgingsplanV2Item key={index} oppfolgingsplan={plan} />
