@@ -194,7 +194,7 @@ export default function UtdragOppfolgingsplaner({
       selectedOppfolgingstilfelle
     );
 
-  const activeLpsPlaner = lpsPlanerWithActiveTilfelle(
+  const lpsPlanerByOppfolgingstilfelle = lpsPlanerWithActiveTilfelle(
     lpsPlaner,
     selectedOppfolgingstilfelle
   );
@@ -220,7 +220,7 @@ export default function UtdragOppfolgingsplaner({
         <Oppfolgingsplaner
           planerV1={planerV1ByOppfolgingstilfelle}
           planerV2={planerV2ByOppfolgingstilfelle}
-          lpsPlaner={activeLpsPlaner}
+          lpsPlaner={lpsPlanerByOppfolgingstilfelle}
         />
       )}
     </div>
