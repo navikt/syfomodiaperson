@@ -22,6 +22,7 @@ import {
 } from "../utils/oppfolgingstilfelleUtils";
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
+import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 
 let queryClient: QueryClient;
 
@@ -63,6 +64,40 @@ const sykmeldingIkkeTattIBruk = {
     sporsmalOgSvarListe: null,
   },
 };
+
+function createV1Oppfolgingsplan(
+  id: number,
+  virksomhetsnummer: string,
+  fom: Date,
+  tom: Date,
+  deltMedNAV: boolean
+): OppfolgingsplanDTO {
+  return {
+    id,
+    uuid: `v1-${id}`,
+    sistEndretAvAktoerId: "1902690001002",
+    sistEndretDato: new Date(),
+    status: "AKTIV",
+    virksomhet: {
+      navn: virksomhetsnummer,
+      virksomhetsnummer,
+    },
+    godkjentPlan: {
+      opprettetTidspunkt: new Date(fom),
+      gyldighetstidspunkt: {
+        fom: new Date(fom),
+        tom: new Date(tom),
+        evalueres: new Date(tom),
+      },
+      tvungenGodkjenning: false,
+      deltMedNAVTidspunkt: new Date(fom),
+      deltMedNAV,
+      deltMedFastlegeTidspunkt: undefined,
+      deltMedFastlege: false,
+      dokumentUuid: `dokument-${id}`,
+    },
+  };
+}
 
 describe("UtdragFraSykefravaeret", () => {
   beforeAll(() => {
@@ -241,6 +276,52 @@ describe("UtdragFraSykefravaeret", () => {
       screen.queryByRole("link", {
         name: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
       })
+    ).to.not.exist;
+  });
+
+  it("Filtrerer oppfolgingsplan V1 på valgt oppfolgingstilfelle og deltMedNAV", () => {
+    const oppfolgingstilfeller = createOppfolgingstilfelleFromSykmelding([
+      sykmeldingNow,
+    ]);
+    const tilfelle = oppfolgingstilfeller[0];
+    const planInnenforTilfelle = createV1Oppfolgingsplan(
+      1,
+      "123456789",
+      addDays(new Date(tilfelle.start), 1),
+      addDays(new Date(tilfelle.end), -1),
+      true
+    );
+    const planUtenforTilfelle = createV1Oppfolgingsplan(
+      2,
+      "223456789",
+      addWeeks(new Date(tilfelle.start), -6),
+      addWeeks(new Date(tilfelle.start), -4),
+      true
+    );
+    const planIkkeDeltMedNAV = createV1Oppfolgingsplan(
+      3,
+      "323456789",
+      addDays(new Date(tilfelle.start), 1),
+      addDays(new Date(tilfelle.end), -1),
+      false
+    );
+    queryClient.setQueryData(
+      oppfolgingsplanQueryKeys.oppfolgingsplaner(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
+      () => [planInnenforTilfelle, planUtenforTilfelle, planIkkeDeltMedNAV]
+    );
+
+    renderUtdragFraSykefravaeret(tilfelle);
+
+    expect(
+      screen.getByRole("link", { name: planInnenforTilfelle.virksomhet.navn })
+    ).to.exist;
+    expect(
+      screen.queryByRole("link", { name: planUtenforTilfelle.virksomhet.navn })
+    ).to.not.exist;
+    expect(
+      screen.queryByRole("link", { name: planIkkeDeltMedNAV.virksomhet.navn })
     ).to.not.exist;
   });
 });

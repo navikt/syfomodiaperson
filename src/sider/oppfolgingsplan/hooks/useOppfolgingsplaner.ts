@@ -15,8 +15,9 @@ import {
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 export interface OppfolgingsplanerResult {
-  aktivePlaner: OppfolgingsplanDTO[];
-  inaktivePlaner: OppfolgingsplanDTO[];
+  allePlanerV1: OppfolgingsplanDTO[];
+  aktivePlanerV1: OppfolgingsplanDTO[];
+  inaktivePlanerV1: OppfolgingsplanDTO[];
   aktivePlanerV2: OppfolgingsplanV2DTO[];
   inaktivePlanerV2: OppfolgingsplanV2DTO[];
   allePlanerV2: OppfolgingsplanV2DTO[];
@@ -36,9 +37,8 @@ export function useOppfolgingsplaner(): OppfolgingsplanerResult {
   const getOppfolgingsplanerV2Query = useGetOppfolgingsplanerV2Query();
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
-  const [aktivePlaner, inaktivePlaner] = partitionOppfolgingsplanerByAktivPlan(
-    getOppfolgingsplanerQuery.data
-  );
+  const [aktivePlanerV1, inaktivePlanerV1] =
+    partitionOppfolgingsplanerByAktivPlan(getOppfolgingsplanerQuery.data);
 
   const [aktivePlanerV2, inaktivePlanerV2] = latestOppfolgingstilfelle
     ? partitionOppfolgingsplanerByActiveTilfelle(
@@ -48,8 +48,9 @@ export function useOppfolgingsplaner(): OppfolgingsplanerResult {
     : [[], []];
 
   return {
-    aktivePlaner,
-    inaktivePlaner,
+    allePlanerV1: getOppfolgingsplanerQuery.data,
+    aktivePlanerV1,
+    inaktivePlanerV1,
     aktivePlanerV2,
     inaktivePlanerV2,
     allePlanerV2: getOppfolgingsplanerV2Query.data,

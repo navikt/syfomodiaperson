@@ -12,7 +12,10 @@ import {
   SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT,
 } from "@/apiConstants";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
-import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
+import {
+  filterOppfolgingsplanerByOppfolgingstilfelle,
+  OppfolgingsplanDTO,
+} from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import {
   OppfolgingsplanV2DTO,
   partitionOppfolgingsplanerByActiveTilfelle,
@@ -152,25 +155,23 @@ function AktivePlanerV2({ aktivePlaner }: AktivePlanerV2Props) {
 }
 
 interface OppfolgingsplanerProps {
-  aktivePlaner: OppfolgingsplanDTO[];
-  aktivePlanerV2: OppfolgingsplanV2DTO[];
+  planerV1: OppfolgingsplanDTO[];
+  planerV2: OppfolgingsplanV2DTO[];
   lpsPlaner: OppfolgingsplanLPS[];
 }
 
 function Oppfolgingsplaner({
-  aktivePlaner,
-  aktivePlanerV2,
+  planerV1,
+  planerV2,
   lpsPlaner,
 }: OppfolgingsplanerProps) {
   const anyActivePlaner =
-    aktivePlaner.length > 0 ||
-    aktivePlanerV2.length > 0 ||
-    lpsPlaner.length > 0;
+    planerV1.length > 0 || planerV2.length > 0 || lpsPlaner.length > 0;
 
   return anyActivePlaner ? (
     <div>
-      <AktivePlaner aktivePlaner={aktivePlaner} />
-      <AktivePlanerV2 aktivePlaner={aktivePlanerV2} />
+      <AktivePlanerV2 aktivePlaner={planerV2} />
+      <AktivePlaner aktivePlaner={planerV1} />
       <LPSPlaner lpsPlaner={lpsPlaner} />
     </div>
   ) : (
@@ -185,8 +186,13 @@ interface Props {
 export default function UtdragOppfolgingsplaner({
   selectedOppfolgingstilfelle,
 }: Props) {
-  const { aktivePlaner, allePlanerV2, lpsPlaner, isLoading, isError } =
+  const { allePlanerV1, allePlanerV2, lpsPlaner, isLoading, isError } =
     useOppfolgingsplaner();
+  const planerV1ByOppfolgingstilfelle =
+    filterOppfolgingsplanerByOppfolgingstilfelle(
+      allePlanerV1,
+      selectedOppfolgingstilfelle
+    );
 
   const activeLpsPlaner = lpsPlanerWithActiveTilfelle(
     lpsPlaner,
@@ -212,8 +218,8 @@ export default function UtdragOppfolgingsplaner({
         </Alert>
       ) : (
         <Oppfolgingsplaner
-          aktivePlaner={aktivePlaner}
-          aktivePlanerV2={aktiveOppfolgingsplanerV2}
+          planerV1={planerV1ByOppfolgingstilfelle}
+          planerV2={aktiveOppfolgingsplanerV2}
           lpsPlaner={activeLpsPlaner}
         />
       )}

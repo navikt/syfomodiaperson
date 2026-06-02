@@ -1,3 +1,5 @@
+import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+
 export interface OppfolgingsplanDTO {
   id: number;
   uuid: string;
@@ -34,6 +36,39 @@ export function isPlanValidNow(plan: OppfolgingsplanDTO): boolean {
   return (
     new Date(plan.godkjentPlan.gyldighetstidspunkt.tom) >= new Date() &&
     plan.godkjentPlan.deltMedNAV
+  );
+}
+
+function isPlanWithinOppfolgingstilfelle(
+  plan: OppfolgingsplanDTO,
+  oppfolgingstilfelle: OppfolgingstilfelleDTO
+): boolean {
+  const planStart = new Date(plan.godkjentPlan.gyldighetstidspunkt.fom);
+  const planEnd = new Date(plan.godkjentPlan.gyldighetstidspunkt.tom);
+  const tilfelleStart = new Date(oppfolgingstilfelle.start);
+  const tilfelleEnd = new Date(oppfolgingstilfelle.end);
+
+  return planStart <= tilfelleEnd && planEnd >= tilfelleStart;
+}
+
+/**
+ * Filtrerer oppfolgingsplaner som overlapper med valgt oppfolgingstilfelle.
+ * Kun planer som er delt med NAV inkluderes.
+ */
+export function filterOppfolgingsplanerByOppfolgingstilfelle(
+  planer: OppfolgingsplanDTO[],
+  oppfolgingstilfelle: OppfolgingstilfelleDTO | undefined
+): OppfolgingsplanDTO[] {
+  if (!oppfolgingstilfelle) {
+    return [];
+  }
+
+  return planerSortedDescendingByDeltMedNAVTidspunkt(
+    planer.filter(
+      (plan) =>
+        plan.godkjentPlan.deltMedNAV &&
+        isPlanWithinOppfolgingstilfelle(plan, oppfolgingstilfelle)
+    )
   );
 }
 

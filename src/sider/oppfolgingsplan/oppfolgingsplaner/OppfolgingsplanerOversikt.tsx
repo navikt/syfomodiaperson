@@ -36,8 +36,8 @@ export default function OppfolgingsplanerOversikt() {
   const { latestOppfolgingstilfelle, hasActiveOppfolgingstilfelle } =
     useOppfolgingstilfellePersonQuery();
   const {
-    aktivePlaner,
-    inaktivePlaner,
+    aktivePlanerV1,
+    inaktivePlanerV1,
     aktivePlanerV2: aktiveOppfolgingsplanerV2,
     inaktivePlanerV2: inaktiveOppfolgingsplanerV2,
     lpsPlaner,
@@ -71,7 +71,7 @@ export default function OppfolgingsplanerOversikt() {
     });
 
   const hasTidligereOppfolgingsplaner =
-    inaktivePlaner.length !== 0 ||
+    inaktivePlanerV1.length !== 0 ||
     oppfolgingsplanerLPSProcessed.length !== 0 ||
     inaktiveOppfolgingsplanerV2.length !== 0;
 
@@ -102,7 +102,7 @@ export default function OppfolgingsplanerOversikt() {
         <Tredelt.Container className="-xl:flex-col-reverse">
           <Tredelt.FirstColumn className="-xl:mb-2">
             <AktiveOppfolgingsplaner
-              aktivePlaner={aktivePlaner}
+              aktivePlaner={aktivePlanerV1}
               aktivePlanerV2={aktiveOppfolgingsplanerV2}
               oppfolgingsplanerLPSMedPersonoppgave={
                 oppfolgingsplanerLPSMedPersonOppgave
@@ -114,7 +114,7 @@ export default function OppfolgingsplanerOversikt() {
             </Heading>
             {hasTidligereOppfolgingsplaner ? (
               <>
-                {inaktivePlaner.map((dialog, index) => {
+                {inaktivePlanerV1.map((dialog, index) => {
                   return <OppfolgingsplanLink key={index} dialog={dialog} />;
                 })}
                 {oppfolgingsplanerLPSProcessed.map((planLPS, index) => {
