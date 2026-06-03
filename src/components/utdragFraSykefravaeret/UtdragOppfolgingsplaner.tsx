@@ -85,14 +85,13 @@ const LpsPlanLenke = ({ lpsPlan }: LpsPlanLenkeProps) => {
   const { virksomhetsnavn } = useVirksomhetQuery(lpsPlan.virksomhetsnummer);
   const virksomhetsNavn = virksomhetsnavn || lpsPlan.virksomhetsnummer;
   return (
-    <a
-      className="lenke"
+    <Link
       href={`${LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT}/oppfolgingsplan/lps/${lpsPlan.uuid}`}
       target="_blank"
       rel="noopener noreferrer"
     >
       {`${virksomhetsNavn} (pdf)`}
-    </a>
+    </Link>
   );
 };
 
@@ -125,8 +124,7 @@ function AktivPlanV2Lenke({ aktivPlan }: AktivPlanV2LenkeProps) {
   const deltMedNav = restdatoTilLesbarDato(aktivPlan.deltMedNavTidspunkt);
   return (
     <AktivPlan>
-      <a
-        className="lenke"
+      <Link
         href={`${SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT}/oppfolgingsplaner/${aktivPlan.uuid}`}
         target="_blank"
         rel="noopener noreferrer"
@@ -134,7 +132,7 @@ function AktivPlanV2Lenke({ aktivPlan }: AktivPlanV2LenkeProps) {
         {virksomhetsnavn && virksomhetsnavn.length > 0
           ? virksomhetsnavn.toLowerCase()
           : aktivPlan.virksomhetsnummer}
-      </a>
+      </Link>
       <span className="ml-8">{`delt med Nav ${deltMedNav}`}</span>
     </AktivPlan>
   );

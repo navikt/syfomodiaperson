@@ -24,7 +24,6 @@ import DialogmoteEndreReferatContainer from "@/sider/dialogmoter/components/refe
 import ManglendeMedvirkningSide from "@/sider/manglendemedvirkning/ManglendeMedvirkningSide";
 import ManglendeMedvirkning from "@/sider/manglendemedvirkning/ManglendeMedvirkning";
 import SenOppfolging from "@/sider/senoppfolging/SenOppfolging";
-import OppfolgingsplanContainer from "@/sider/oppfolgingsplan/OppfolgingsplanContainer";
 import SykepengesoknadSide from "@/sider/sykepengsoknader/container/SykepengesoknadSide";
 import Arbeidsuforhet from "@/sider/arbeidsuforhet/Arbeidsuforhet";
 import ArbeidsuforhetAvslag from "@/sider/arbeidsuforhet/avslag/ArbeidsuforhetAvslag";
@@ -181,10 +180,6 @@ function AktivBrukerRouter(): ReactElement {
 
           <Route path={`${appRoutePath}/oppfoelgingsplaner`}>
             <Route index element={<OppfolgingsplanerOversikt />} />
-            <Route
-              path=":oppfoelgingsdialogId"
-              element={<OppfolgingsplanContainer />}
-            />
           </Route>
 
           <Route path={historikkPath} element={<HistorikkContainer />} />

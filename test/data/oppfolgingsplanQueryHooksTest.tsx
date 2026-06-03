@@ -2,17 +2,14 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import {
-  useDokumentinfoQuery,
   useGetLPSOppfolgingsplanerQuery,
   useGetOppfolgingsplanerQuery,
 } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { oppfolgingsplanMock } from "@/mocks/syfooppfolgingsplanservice/oppfolgingsplanMock";
 import {
-  stubDokumentinfoApi,
   stubOppfolgingsplanApi,
   stubOppfolgingsplanLPSApi,
 } from "../stubs/stubSyfooppfolgingsplan";
-import { dokumentinfoMock } from "@/mocks/syfooppfolgingsplanservice/dokumentinfoMock";
 import { testQueryClient } from "../testQueryClient";
 import { oppfolgingsplanerLPSMock } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
 
@@ -49,23 +46,5 @@ describe("oppfolgingsplanQueryHooks tests", () => {
 
     await waitFor(() => expect(result.current.data).to.not.be.empty);
     expect(result.current.data).to.deep.equal(oppfolgingsplanerLPSMock(today));
-  });
-
-  it("loads dokumentinfo for oppfolgingsplan", async () => {
-    const oppfolgingsplanId = 10;
-    stubDokumentinfoApi(oppfolgingsplanId);
-
-    const wrapper = queryHookWrapper(queryClient);
-
-    const { result } = renderHook(
-      () => useDokumentinfoQuery(oppfolgingsplanId),
-      {
-        wrapper,
-      }
-    );
-
-    await waitFor(() => expect(result.current.data).to.not.be.undefined);
-
-    expect(result.current.data).to.deep.equal(dokumentinfoMock);
   });
 });
