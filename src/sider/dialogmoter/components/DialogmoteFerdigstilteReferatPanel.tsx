@@ -8,13 +8,13 @@ import { BlueDocumentImage } from "../../../../img/ImageComponents";
 import dayjs from "dayjs";
 import {
   tilDatoMedManedNavnOgKlokkeslett,
-  tilDatoMedUkedagOgManedNavnOgKlokkeslett,
   tilLesbarDatoMedArstall,
 } from "@/utils/datoUtils";
 
 import { dialogmoteRoutePath } from "@/AppRouter";
 import { Link } from "react-router-dom";
 import { Button } from "@navikt/ds-react";
+import { ReferatPanelSubtitle } from "@/sider/dialogmoter/components/referat/ReferatPanelSubtitle.tsx";
 
 interface FerdigstilteReferatListProps {
   mote: DialogmoteDTO;
@@ -92,14 +92,18 @@ export const DialogmoteFerdigstilteReferatPanel = ({
 }: DialogmoteReferatPanelProps): ReactElement => (
   <>
     {ferdigstilteMoter.filter(kanEndreReferat()).map((mote, index) => {
-      const moteDatoTid = tilDatoMedUkedagOgManedNavnOgKlokkeslett(mote.tid);
-      const subtitle = `Møtetidspunkt: ${moteDatoTid} - ${mote.sted}`;
       return (
         <DialogmotePanel
           key={index}
           icon={BlueDocumentImage}
           header={texts.header}
-          subtitle={subtitle}
+          subtitle={
+            <ReferatPanelSubtitle
+              tid={mote.tid}
+              sted={mote.sted}
+              virksomhetsnummer={mote.arbeidsgiver.virksomhetsnummer}
+            />
+          }
         >
           <EndreReferatPanel key={index} mote={mote} />
         </DialogmotePanel>

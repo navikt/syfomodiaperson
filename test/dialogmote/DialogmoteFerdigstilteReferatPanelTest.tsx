@@ -13,13 +13,18 @@ import {
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { getButton } from "../testUtils";
 import { MemoryRouter } from "react-router-dom";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
   daysFromToday,
   tilDatoMedManedNavnOgKlokkeslett,
   tilLesbarDatoMedArstall,
 } from "@/utils/datoUtils";
 import dayjs from "dayjs";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { VIRKSOMHET_PONTYPANDY } from "@/mocks/common/mockConstants.ts";
+import { virksomhetQueryKeys } from "@/data/virksomhet/virksomhetQueryHooks.ts";
+
+let queryClient: QueryClient;
 
 const today = new Date();
 const yesterday = daysFromToday(-1);
@@ -50,14 +55,27 @@ const renderDialogmoteFerdigstilteReferatPanel = (
   ferdigstilteMoter: DialogmoteDTO[]
 ) =>
   render(
-    <MemoryRouter>
-      <DialogmoteFerdigstilteReferatPanel
-        ferdigstilteMoter={ferdigstilteMoter}
-      />
-    </MemoryRouter>
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter>
+        <DialogmoteFerdigstilteReferatPanel
+          ferdigstilteMoter={ferdigstilteMoter}
+        />
+      </MemoryRouter>
+    </QueryClientProvider>
   );
 
 describe("DialogmoteFerdigstilteReferatPanel", () => {
+  beforeEach(() => {
+    queryClient = new QueryClient();
+    queryClient.setQueryData(
+      virksomhetQueryKeys.virksomhet(VIRKSOMHET_PONTYPANDY.virksomhetsnummer),
+      () => ({
+        navn: {
+          navnelinje1: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
+        },
+      })
+    );
+  });
   it("viser ingenting når ingen ferdigstilte møter kan endre referat", () => {
     const ferdigstilteMoter = [
       ferdigstiltDialogmote30DaysAgo,
@@ -124,6 +142,22 @@ describe("DialogmoteFerdigstilteReferatPanel", () => {
         `${fristText} ${tilDatoMedManedNavnOgKlokkeslett(expectedFrist)}`
       )
     );
+  });
+  it("viser arbeidsgivers virksomhetsnavn", () => {
+    const ferdigstiltDialogmote: DialogmoteDTO = {
+      ...dialogmote,
+      status: DialogmoteStatus.FERDIGSTILT,
+      tid: yesterday.toISOString(),
+      referatList: [createFerdigstiltReferat(yesterday.toISOString())],
+      arbeidsgiver: {
+        ...dialogmote.arbeidsgiver,
+        virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+      },
+    };
+    renderDialogmoteFerdigstilteReferatPanel([ferdigstiltDialogmote]);
+    const virksomhetsnavn = VIRKSOMHET_PONTYPANDY.virksomhetsnavn;
+
+    expect(screen.getByText(`Arbeidsgiver: ${virksomhetsnavn}`)).to.exist;
   });
   it("viser knapp for å endre referat", () => {
     const ferdigstiltDialogmote: DialogmoteDTO = {
