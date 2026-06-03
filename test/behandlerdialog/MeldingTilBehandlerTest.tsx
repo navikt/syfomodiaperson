@@ -68,7 +68,7 @@ describe("MeldingTilBehandler", () => {
     renderMeldingTilBehandler();
 
     const alertText =
-      "Personen har ikke et aktivt sykefravær. Dialogmeldingen skal kun benyttes i sykefraværsoppfølgingen. Meldingen vises til innbyggeren på Min side.";
+      "Personen har ikke et aktivt oppfølgingstilfelle. Du kan likevel sende en dialogmelding til behandler så lenge henvendelsen gjelder sykefraværsoppfølging. Meldingen blir synlig for innbyggeren på innloggede sider.";
 
     expect(screen.getByRole("heading", { name: "Dialogmelding til behandler" }))
       .to.exist;

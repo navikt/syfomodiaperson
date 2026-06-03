@@ -8,7 +8,7 @@ import AppSpinner from "@/components/AppSpinner";
 const texts = {
   header: "Dialogmelding til behandler",
   alertInfo:
-    "Personen har ikke et aktivt sykefravær. Dialogmeldingen skal kun benyttes i sykefraværsoppfølgingen. Meldingen vises til innbyggeren på Min side.",
+    "Personen har ikke et aktivt oppfølgingstilfelle. Du kan likevel sende en dialogmelding til behandler så lenge henvendelsen gjelder sykefraværsoppfølging. Meldingen blir synlig for innbyggeren på innloggede sider.",
 };
 
 export function MeldingTilBehandler() {
