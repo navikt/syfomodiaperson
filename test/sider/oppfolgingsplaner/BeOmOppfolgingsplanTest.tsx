@@ -122,7 +122,7 @@ describe("BeOmOppfolgingsplan", () => {
     await userEvent.click(beOmOppfolgingsplanButton);
     expect(
       await screen.findByText(
-        "Det skjedde en uventet feil. Vennligst prøv igjen senere"
+        "Det skjedde en uventet feil. Vennligst prøv igjen senere."
       )
     ).to.exist;
   });

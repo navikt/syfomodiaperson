@@ -13,7 +13,6 @@ import {
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes.ts";
 import { VurderingAlternativ } from "@/sider/kartleggingssporsmal/types.ts";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil.tsx";
-import { PaddingSize } from "@/components/Layout.tsx";
 import React, { useState } from "react";
 import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessAlert.tsx";
 import { UseMutationResult } from "@tanstack/react-query";
@@ -117,10 +116,7 @@ export function KartleggingVurdering({
         </Button>
       )}
       {vurderSvarMutation.isError && (
-        <SkjemaInnsendingFeil
-          bottomPadding={PaddingSize.NONE}
-          error={vurderSvarMutation.error}
-        />
+        <SkjemaInnsendingFeil error={vurderSvarMutation.error} />
       )}
       {nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET && (
         <SuccessAlert nyesteKandidat={nyesteKandidat} />

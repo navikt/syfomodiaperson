@@ -8,6 +8,7 @@ import {
   Tag,
   Tooltip,
 } from "@navikt/ds-react";
+import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import React, { useState } from "react";
 import OpenOppfolgingsoppgaveModalButton from "@/components/oppfolgingsoppgave/OpenOppfolgingsoppgaveModalButton";
 import { useAktivOppfolgingsoppgave } from "@/data/oppfolgingsoppgave/useAktivOppfolgingsoppgave";
@@ -99,6 +100,9 @@ export default function Oppfolgingsoppgave() {
           {texts.remove}
         </Button>
       </Tooltip>
+      {removeOppfolgingsoppgave.isError && (
+        <SkjemaInnsendingFeil error={removeOppfolgingsoppgave.error} />
+      )}
       <div className="mt-2">
         <Detail textColor="subtle" className="text-xs">
           {`Opprettet: ${tilLesbarDatoMedArUtenManedNavn(

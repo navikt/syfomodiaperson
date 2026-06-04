@@ -27,7 +27,6 @@ import { getWeeksBetween, tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { EksternLenke } from "@/components/EksternLenke";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import { PaddingSize } from "@/components/Layout";
 import { Events, trackEvent } from "@/utils/umami";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";
@@ -224,10 +223,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                               {texts.vurdereOppgaveText}
                             </Button>
                             {vurderSvar.isError && (
-                              <SkjemaInnsendingFeil
-                                bottomPadding={PaddingSize.NONE}
-                                error={vurderSvar.error}
-                              />
+                              <SkjemaInnsendingFeil error={vurderSvar.error} />
                             )}
                           </>
                         )}

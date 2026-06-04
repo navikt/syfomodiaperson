@@ -16,9 +16,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { arbeidsuforhetPath } from "@/AppRouter";
 import { FormProvider, useForm } from "react-hook-form";
 import {
+  AvslagUtenForhandsvarsel,
   VurderingInitiertAv,
   VurderingType,
-  AvslagUtenForhandsvarsel,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { useSaveVurderingArbeidsuforhet } from "@/sider/arbeidsuforhet/hooks/useSaveVurderingArbeidsuforhet";
 import { useArbeidsuforhetVurderingDocument } from "@/sider/arbeidsuforhet/hooks/useArbeidsuforhetVurderingDocument";

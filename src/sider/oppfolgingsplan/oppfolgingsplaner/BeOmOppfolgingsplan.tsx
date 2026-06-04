@@ -27,6 +27,7 @@ import { useOppfolgingsplanForesporselDocument } from "@/hooks/oppfolgingsplan/u
 import LabelAndText from "@/components/LabelAndText";
 import { Controller, useForm } from "react-hook-form";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
+import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 
 const texts = {
   aktivForesporsel: "Obs! Det ble bedt om oppfølgingsplan fra",
@@ -42,7 +43,6 @@ const texts = {
   narmesteLeder: "Nærmeste leder:",
   button: "Send forespørsel",
   foresporselSendt: "Forespørsel om oppfølgingsplan sendt",
-  foresporselFeilet: "Det skjedde en uventet feil. Vennligst prøv igjen senere",
   readMoreText: "Dette får nærmeste leder tilsendt i e-posten fra Nav",
 };
 
@@ -193,9 +193,7 @@ export default function BeOmOppfolgingsplan({
           </Button>
         )}
         {postOppfolgingsplanForesporsel.isError && (
-          <Alert inline variant="error">
-            {texts.foresporselFeilet}
-          </Alert>
+          <SkjemaInnsendingFeil error={postOppfolgingsplanForesporsel.error} />
         )}
       </Box>
     </form>
