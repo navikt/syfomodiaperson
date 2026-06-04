@@ -125,14 +125,6 @@ export default function OppfolgingsplanerOversikt() {
             </Heading>
             {hasTidligereOppfolgingsplaner ? (
               <>
-                {inaktivePlanerV1.map((dialog, index) => {
-                  return (
-                    <OppfolgingsplanV1Item
-                      key={index}
-                      oppfolgingsplan={dialog}
-                    />
-                  );
-                })}
                 {oppfolgingsplanerLPSProcessed.map((planLPS, index) => {
                   return (
                     <OppfolgingsplanerOversiktLPS
@@ -144,6 +136,14 @@ export default function OppfolgingsplanerOversikt() {
                 {inaktiveOppfolgingsplanerV2.map((plan, index) => (
                   <OppfolgingsplanV2Item key={index} oppfolgingsplan={plan} />
                 ))}
+                {inaktivePlanerV1.map((dialog, index) => {
+                  return (
+                    <OppfolgingsplanV1Item
+                      key={index}
+                      oppfolgingsplan={dialog}
+                    />
+                  );
+                })}
               </>
             ) : (
               <Box background="default" className="p-4">
