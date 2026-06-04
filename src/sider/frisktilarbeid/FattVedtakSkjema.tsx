@@ -21,6 +21,7 @@ import dayjs from "dayjs";
 import { useFriskmeldingTilArbeidsformidlingDocument } from "@/hooks/frisktilarbeid/useFriskmeldingTilArbeidsformidlingDocument";
 import { useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
 import { useNotification } from "@/context/notification/NotificationContext";
+import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 
 const begrunnelseMaxLength = 5000;
 
@@ -226,9 +227,10 @@ export default function FattVedtakSkjema() {
             {texts.gosysAlertBody}
           </Alert>
           {fattVedtak.isError && (
-            <Alert variant="error" size="small" contentMaxWidth={false}>
-              {texts.fattVedtakErrorMessage}
-            </Alert>
+            <SkjemaInnsendingFeil
+              error={fattVedtak.error}
+              defaultErrorMsgOverride={texts.fattVedtakErrorMessage}
+            />
           )}
           <div className="flex gap-4">
             <Button

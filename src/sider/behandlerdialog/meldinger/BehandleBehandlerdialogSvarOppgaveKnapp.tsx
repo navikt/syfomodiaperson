@@ -12,7 +12,8 @@ import {
   getAllBehandledePersonOppgaver,
   hasUbehandletPersonoppgave,
 } from "@/utils/personOppgaveUtils";
-import { FlexRow } from "@/components/Layout";
+import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
+import { HStack } from "@navikt/ds-react";
 
 const texts = {
   fjernOppgave:
@@ -54,18 +55,23 @@ export default function BehandleBehandlerdialogSvarOppgaveKnapp() {
     getSisteBehandledeBehandlerdialogSvarOppgave(personOppgaver);
 
   return (
-    <FlexRow>
-      {hasBehandlerDialogSvarOppgaver && (
-        <BehandlePersonOppgaveKnapp
-          personOppgave={sisteBehandledeOppgave}
-          isBehandlet={isBehandlet}
-          handleBehandleOppgave={() =>
-            behandleAllPersonoppgaver.mutate(behandlePersonOppgaveRequestDTO)
-          }
-          isBehandleOppgaveLoading={behandleAllPersonoppgaver.isPending}
-          behandleOppgaveText={texts.fjernOppgave}
-        />
+    <>
+      <HStack>
+        {hasBehandlerDialogSvarOppgaver && (
+          <BehandlePersonOppgaveKnapp
+            personOppgave={sisteBehandledeOppgave}
+            isBehandlet={isBehandlet}
+            handleBehandleOppgave={() =>
+              behandleAllPersonoppgaver.mutate(behandlePersonOppgaveRequestDTO)
+            }
+            isBehandleOppgaveLoading={behandleAllPersonoppgaver.isPending}
+            behandleOppgaveText={texts.fjernOppgave}
+          />
+        )}
+      </HStack>
+      {behandleAllPersonoppgaver.isError && (
+        <SkjemaInnsendingFeil error={behandleAllPersonoppgaver.error} />
       )}
-    </FlexRow>
+    </>
   );
 }

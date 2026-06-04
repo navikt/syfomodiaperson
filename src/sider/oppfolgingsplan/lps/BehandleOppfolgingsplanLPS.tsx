@@ -5,6 +5,7 @@ import { toDatePrettyPrint } from "@/utils/datoUtils";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import { BodyShort, Button } from "@navikt/ds-react";
+import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 
 const texts = {
   marker: "Marker som behandlet",
@@ -26,14 +27,19 @@ export default function BehandleOppfolgingsplanLPS({
   return (
     <>
       {personoppgave && !personoppgave.behandletTidspunkt && (
-        <Button
-          variant="secondary"
-          size="small"
-          onClick={() => behandlePersonoppgave.mutate(personoppgave.uuid)}
-          loading={behandlePersonoppgave.isPending}
-        >
-          {texts.marker}
-        </Button>
+        <>
+          <Button
+            variant="secondary"
+            size="small"
+            onClick={() => behandlePersonoppgave.mutate(personoppgave.uuid)}
+            loading={behandlePersonoppgave.isPending}
+          >
+            {texts.marker}
+          </Button>
+          {behandlePersonoppgave.isError && (
+            <SkjemaInnsendingFeil error={behandlePersonoppgave.error} />
+          )}
+        </>
       )}
       {personoppgave && personoppgave.behandletTidspunkt && (
         <BodyShort size="small" className="flex gap-1 items-center">

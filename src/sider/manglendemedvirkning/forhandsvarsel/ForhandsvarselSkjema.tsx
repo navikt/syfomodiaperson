@@ -3,10 +3,10 @@ import {
   Box,
   Button,
   Heading,
-  List,
-  Textarea,
   HelpText,
   Label,
+  List,
+  Textarea,
 } from "@navikt/ds-react";
 import { useController, useForm } from "react-hook-form";
 import { Forhandsvisning } from "@/components/Forhandsvisning";

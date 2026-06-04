@@ -13,6 +13,7 @@ import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 import { useBehandlePersonoppgaveWithoutRefetch } from "@/data/personoppgave/useBehandlePersonoppgave";
 import { StatusKanImage } from "../../../img/ImageComponents";
 import { Link as RouterLink } from "react-router-dom";
+import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 
 const texts = {
   header: "Vurder bistandsbehovet eller forslag til tiltak fra behandler:",
@@ -116,6 +117,9 @@ export default function VurderBistandsbehov({ oppgave }: Props) {
             </div>
           )}
         </div>
+        {behandleOppgave.isError && (
+          <SkjemaInnsendingFeil error={behandleOppgave.error} />
+        )}
       </Box>
     )
   );
