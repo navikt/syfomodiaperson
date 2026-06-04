@@ -41,23 +41,28 @@ export function isPlanValidNow(plan: OppfolgingsplanDTO): boolean {
 
 function isPlanWithinOppfolgingstilfelle(
   plan: OppfolgingsplanDTO,
-  oppfolgingstilfelle: OppfolgingstilfelleDTO
+  oppfolgingstilfelle: OppfolgingstilfelleDTO,
+  isLatestTilfelle = false
 ): boolean {
-  const planStart = new Date(plan.godkjentPlan.gyldighetstidspunkt.fom);
   const planEnd = new Date(plan.godkjentPlan.gyldighetstidspunkt.tom);
   const tilfelleStart = new Date(oppfolgingstilfelle.start);
+  if (isLatestTilfelle) {
+    return planEnd >= tilfelleStart;
+  }
+  const planStart = new Date(plan.godkjentPlan.gyldighetstidspunkt.fom);
   const tilfelleEnd = new Date(oppfolgingstilfelle.end);
-
   return planStart <= tilfelleEnd && planEnd >= tilfelleStart;
 }
 
 /**
  * Filtrerer oppfolgingsplaner som overlapper med valgt oppfolgingstilfelle.
  * Kun planer som er delt med NAV inkluderes.
+ * @param isLatestTilfelle Om det valgte tilfellet er det siste registrerte. Når true sammenlignes kun mot start-dato (ikke slutt-dato).
  */
 export function filterOppfolgingsplanerByOppfolgingstilfelle(
   planer: OppfolgingsplanDTO[],
-  oppfolgingstilfelle: OppfolgingstilfelleDTO | undefined
+  oppfolgingstilfelle: OppfolgingstilfelleDTO | undefined,
+  isLatestTilfelle = false
 ): OppfolgingsplanDTO[] {
   if (!oppfolgingstilfelle) {
     return [];
@@ -67,7 +72,11 @@ export function filterOppfolgingsplanerByOppfolgingstilfelle(
     planer.filter(
       (plan) =>
         plan.godkjentPlan.deltMedNAV &&
-        isPlanWithinOppfolgingstilfelle(plan, oppfolgingstilfelle)
+        isPlanWithinOppfolgingstilfelle(
+          plan,
+          oppfolgingstilfelle,
+          isLatestTilfelle
+        )
     )
   );
 }

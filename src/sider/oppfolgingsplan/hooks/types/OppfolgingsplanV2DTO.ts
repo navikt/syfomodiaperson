@@ -22,11 +22,15 @@ export interface OppfolgingsplanV2DTO {
 
 function isOppfolgingsplanWithinActiveTilfelle(
   plan: OppfolgingsplanV2DTO,
-  oppfolgingstilfelle: OppfolgingstilfelleDTO
+  oppfolgingstilfelle: OppfolgingstilfelleDTO,
+  isLatestTilfelle = false
 ): boolean {
   const tilfelleStart = new Date(oppfolgingstilfelle.start);
-  const tilfelleEnd = new Date(oppfolgingstilfelle.end);
   const planOpprettet = new Date(plan.opprettet);
+  if (isLatestTilfelle) {
+    return planOpprettet >= tilfelleStart;
+  }
+  const tilfelleEnd = new Date(oppfolgingstilfelle.end);
   return tilfelleStart <= planOpprettet && planOpprettet <= tilfelleEnd;
 }
 
@@ -35,19 +39,25 @@ function isOppfolgingsplanWithinActiveTilfelle(
  * Kun den siste planen (nyeste `opprettet`) per virksomhet innenfor det aktive tilfellet regnes som aktiv.
  * @param planer Liste over alle historiske oppfølgingsplaner som skal partisjoneres.
  * @param latestOppfolgingstilfelle Det siste oppfølgingstilfellet.
+ * @param isLatestTilfelle Om det valgte tilfellet er det siste registrerte. Når true sammenlignes kun mot start-dato (ikke slutt-dato).
  * @returns En tuple \`[aktivePlaner, inaktivePlaner]\` der første element inneholder den siste planen per virksomhet innenfor perioden,
  *          og andre element inneholder alle andre planer.
  */
 export function partitionOppfolgingsplanerByActiveTilfelle(
   planer: OppfolgingsplanV2DTO[],
-  latestOppfolgingstilfelle: OppfolgingstilfelleDTO
+  latestOppfolgingstilfelle: OppfolgingstilfelleDTO,
+  isLatestTilfelle = false
 ): [OppfolgingsplanV2DTO[], OppfolgingsplanV2DTO[]] {
   const planerInnenforTilfelle: OppfolgingsplanV2DTO[] = [];
   const planerUtenforTilfelle: OppfolgingsplanV2DTO[] = [];
 
   for (const plan of planer) {
     if (
-      isOppfolgingsplanWithinActiveTilfelle(plan, latestOppfolgingstilfelle)
+      isOppfolgingsplanWithinActiveTilfelle(
+        plan,
+        latestOppfolgingstilfelle,
+        isLatestTilfelle
+      )
     ) {
       planerInnenforTilfelle.push(plan);
     } else {

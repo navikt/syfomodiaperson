@@ -93,4 +93,49 @@ describe("partitionOppfolgingsplanerByActiveTilfelle", () => {
     expect(aktive[0].uuid).toBe("1");
     expect(inaktive).toHaveLength(0);
   });
+
+  describe("isLatestTilfelle = true", () => {
+    it("inkluderer plan opprettet etter tilfelle-slutt", () => {
+      const planEtterTilfelle = lagPlan("1", "111111111", "2027-03-01");
+
+      const [aktive, inaktive] = partitionOppfolgingsplanerByActiveTilfelle(
+        [planEtterTilfelle],
+        aktivtTilfelle,
+        true
+      );
+
+      expect(aktive).toHaveLength(1);
+      expect(aktive[0].uuid).toBe("1");
+      expect(inaktive).toHaveLength(0);
+    });
+
+    it("ekskluderer plan opprettet før tilfelle-start", () => {
+      const planForTilfelle = lagPlan("1", "111111111", "2025-06-01");
+
+      const [aktive, inaktive] = partitionOppfolgingsplanerByActiveTilfelle(
+        [planForTilfelle],
+        aktivtTilfelle,
+        true
+      );
+
+      expect(aktive).toHaveLength(0);
+      expect(inaktive).toHaveLength(1);
+    });
+
+    it("inkluderer siste plan per virksomhet uavhengig av tilfelle-slutt", () => {
+      const planInnenfor = lagPlan("1", "111111111", "2026-05-01");
+      const planEtter = lagPlan("2", "111111111", "2027-01-01");
+
+      const [aktive, inaktive] = partitionOppfolgingsplanerByActiveTilfelle(
+        [planInnenfor, planEtter],
+        aktivtTilfelle,
+        true
+      );
+
+      expect(aktive).toHaveLength(1);
+      expect(aktive[0].uuid).toBe("2");
+      expect(inaktive).toHaveLength(1);
+      expect(inaktive[0].uuid).toBe("1");
+    });
+  });
 });

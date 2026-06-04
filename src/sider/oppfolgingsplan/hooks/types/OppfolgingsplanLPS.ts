@@ -15,10 +15,14 @@ export type OppfolgingsplanLPSMedPersonoppgave = OppfolgingsplanLPS & {
 
 export function isPlanWithinActiveTilfelle(
   plan: OppfolgingsplanLPS,
-  oppfolgingstilfelle: OppfolgingstilfelleDTO
+  oppfolgingstilfelle: OppfolgingstilfelleDTO,
+  isLatestTilfelle = false
 ): boolean {
   const tilfelleStart = new Date(oppfolgingstilfelle.start);
-  const tilfelleEnd = new Date(oppfolgingstilfelle.end);
   const planOpprettet = new Date(plan.opprettet);
+  if (isLatestTilfelle) {
+    return planOpprettet >= tilfelleStart;
+  }
+  const tilfelleEnd = new Date(oppfolgingstilfelle.end);
   return tilfelleStart <= planOpprettet && planOpprettet <= tilfelleEnd;
 }

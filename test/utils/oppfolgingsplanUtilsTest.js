@@ -131,5 +131,41 @@ describe("oppfolgingsplanUtils", () => {
       expect(activePlaner.length).to.be.equal(1);
       expect(activePlaner[0]).to.deep.equal(activePlanFromRandomVirksomhet);
     });
+
+    describe("isLatestTilfelle = true", () => {
+      it("should include plan opprettet after tilfelle end", () => {
+        const planAfterTilfelleEnd = {
+          ...defaultLpsplan,
+          opprettet: addDays(today, 10).toJSON(),
+        };
+
+        const planer = [planAfterTilfelleEnd];
+
+        const activePlaner = lpsPlanerWithActiveTilfelle(
+          planer,
+          defaultOppfolgingstilfelle,
+          true
+        );
+
+        expect(activePlaner.length).to.be.equal(1);
+      });
+
+      it("should exclude plan opprettet before tilfelle start", () => {
+        const planBeforeTilfelleStart = {
+          ...defaultLpsplan,
+          opprettet: addDays(today, -10).toJSON(),
+        };
+
+        const planer = [planBeforeTilfelleStart];
+
+        const activePlaner = lpsPlanerWithActiveTilfelle(
+          planer,
+          defaultOppfolgingstilfelle,
+          true
+        );
+
+        expect(activePlaner.length).to.be.equal(0);
+      });
+    });
   });
 });

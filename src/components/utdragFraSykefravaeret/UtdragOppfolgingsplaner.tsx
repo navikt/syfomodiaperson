@@ -23,6 +23,7 @@ import {
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { Alert, Heading, Link, Loader } from "@navikt/ds-react";
 import { useOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/useOppfolgingsplaner";
+import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 const texts = {
   header: "Oppfølgingsplan",
@@ -186,20 +187,33 @@ export default function UtdragOppfolgingsplaner({
 }: Props) {
   const { allePlanerV1, allePlanerV2, lpsPlaner, isLoading, isError } =
     useOppfolgingsplaner();
+  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+
+  const isLatestTilfelle =
+    selectedOppfolgingstilfelle !== undefined &&
+    latestOppfolgingstilfelle !== undefined &&
+    new Date(selectedOppfolgingstilfelle.start).getTime() ===
+      new Date(latestOppfolgingstilfelle.start).getTime() &&
+    new Date(selectedOppfolgingstilfelle.end).getTime() ===
+      new Date(latestOppfolgingstilfelle.end).getTime();
+
   const planerV1ByOppfolgingstilfelle =
     filterOppfolgingsplanerByOppfolgingstilfelle(
       allePlanerV1,
-      selectedOppfolgingstilfelle
+      selectedOppfolgingstilfelle,
+      isLatestTilfelle
     );
 
   const lpsPlanerByOppfolgingstilfelle = lpsPlanerWithActiveTilfelle(
     lpsPlaner,
-    selectedOppfolgingstilfelle
+    selectedOppfolgingstilfelle,
+    isLatestTilfelle
   );
   const [planerV2ByOppfolgingstilfelle] = selectedOppfolgingstilfelle
     ? partitionOppfolgingsplanerByActiveTilfelle(
         allePlanerV2,
-        selectedOppfolgingstilfelle
+        selectedOppfolgingstilfelle,
+        isLatestTilfelle
       )
     : [[]];
 

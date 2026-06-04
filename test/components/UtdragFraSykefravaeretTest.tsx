@@ -2,7 +2,15 @@ import { render, screen, within } from "@testing-library/react";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import {
   ARBEIDSTAKER_DEFAULT,
   VIRKSOMHET_BRANNOGBIL,
@@ -23,6 +31,7 @@ import {
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
+import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 
 let queryClient: QueryClient;
 
@@ -323,5 +332,157 @@ describe("UtdragFraSykefravaeret", () => {
     expect(
       screen.queryByRole("link", { name: planIkkeDeltMedNAV.virksomhet.navn })
     ).to.not.exist;
+  });
+
+  describe("Siste oppfølgingstilfelle (isLatestTilfelle = true)", () => {
+    beforeEach(() => {
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplaner(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => []
+      );
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => []
+      );
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => []
+      );
+    });
+    it("Viser LPS-plan opprettet etter tilfelle-slutt når valgt tilfelle er siste", () => {
+      const tilfelle = createOppfolgingstilfelleFromSykmelding([
+        sykmeldingNow,
+      ])[0];
+      setSykmeldingDataFromOppfolgingstilfelle(
+        [sykmeldingNow],
+        [tilfelle],
+        queryClient
+      );
+
+      const planEtterTilfelleSlutt: OppfolgingsplanLPS = {
+        uuid: "lps-etter-slutt",
+        fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+        virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+        opprettet: addWeeks(new Date(tilfelle.end), 2).toISOString(),
+        sistEndret: addWeeks(new Date(tilfelle.end), 2).toISOString(),
+      };
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [planEtterTilfelleSlutt]
+      );
+
+      renderUtdragFraSykefravaeret(tilfelle);
+
+      expect(
+        screen.getByText(`${VIRKSOMHET_PONTYPANDY.virksomhetsnummer} (pdf)`)
+      ).to.exist;
+      expect(screen.queryByText("Ingen planer er delt med Nav")).to.not.exist;
+    });
+
+    it("Viser ikke LPS-plan opprettet før tilfelle-start selv om det er siste tilfelle", () => {
+      const tilfelle = createOppfolgingstilfelleFromSykmelding([
+        sykmeldingNow,
+      ])[0];
+      setSykmeldingDataFromOppfolgingstilfelle(
+        [sykmeldingNow],
+        [tilfelle],
+        queryClient
+      );
+
+      const planForTilfelleStart: OppfolgingsplanLPS = {
+        uuid: "lps-for-start",
+        fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+        virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+        opprettet: addWeeks(new Date(tilfelle.start), -2).toISOString(),
+        sistEndret: addWeeks(new Date(tilfelle.start), -2).toISOString(),
+      };
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [planForTilfelleStart]
+      );
+
+      renderUtdragFraSykefravaeret(tilfelle);
+
+      expect(screen.getByText("Ingen planer er delt med Nav")).to.exist;
+    });
+
+    it("Viser V2-plan opprettet etter tilfelle-slutt når valgt tilfelle er siste", () => {
+      const tilfelle = createOppfolgingstilfelleFromSykmelding([
+        sykmeldingNow,
+      ])[0];
+      setSykmeldingDataFromOppfolgingstilfelle(
+        [sykmeldingNow],
+        [tilfelle],
+        queryClient
+      );
+
+      const planEtterTilfelleSlutt: OppfolgingsplanV2DTO = {
+        uuid: "v2-etter-slutt",
+        fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+        virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+        opprettet: addWeeks(new Date(tilfelle.end), 2).toISOString(),
+        deltMedNavTidspunkt: addWeeks(new Date(tilfelle.end), 2).toISOString(),
+        sistEndret: addWeeks(new Date(tilfelle.end), 2).toISOString(),
+        evalueringsdato: addWeeks(new Date(tilfelle.end), 6).toISOString(),
+      };
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [planEtterTilfelleSlutt]
+      );
+
+      renderUtdragFraSykefravaeret(tilfelle);
+
+      expect(
+        screen.getByRole("link", {
+          name: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+        })
+      ).to.exist;
+      expect(screen.queryByText("Ingen planer er delt med Nav")).to.not.exist;
+    });
+
+    it("Viser V1-plan med gyldighetstidspunkt.tom etter tilfelle-start når valgt tilfelle er siste", () => {
+      const tilfelle = createOppfolgingstilfelleFromSykmelding([
+        sykmeldingNow,
+      ])[0];
+      setSykmeldingDataFromOppfolgingstilfelle(
+        [sykmeldingNow],
+        [tilfelle],
+        queryClient
+      );
+
+      const planMedTomEtterTilfelleStart = createV1Oppfolgingsplan(
+        99,
+        "999999999",
+        addWeeks(new Date(tilfelle.end), 1),
+        addWeeks(new Date(tilfelle.end), 5),
+        true
+      );
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplaner(
+          ARBEIDSTAKER_DEFAULT.personIdent
+        ),
+        () => [planMedTomEtterTilfelleStart]
+      );
+
+      renderUtdragFraSykefravaeret(tilfelle);
+
+      expect(
+        screen.getByRole("link", {
+          name: planMedTomEtterTilfelleStart.virksomhet.navn,
+        })
+      ).to.exist;
+    });
   });
 });
