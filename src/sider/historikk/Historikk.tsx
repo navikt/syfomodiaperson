@@ -1,8 +1,5 @@
 import React, { ReactElement, useState } from "react";
-import {
-  tilLesbarDatoMedArstall,
-  tilLesbarPeriodeMedArstall,
-} from "@/utils/datoUtils";
+import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import {
   HistorikkEvent,
   HistorikkEventType,
@@ -133,6 +130,8 @@ function tagFromKilde(kilde: HistorikkEventType): ReactElement {
   }
 }
 
+const TILFELLE_OPTION_OFFSET = 1;
+
 interface Props {
   historikkEvents: HistorikkEvent[];
   tilfeller: OppfolgingstilfelleDTO[];
@@ -157,7 +156,7 @@ export default function Historikk({
       return historikkEvents.filter((event) =>
         isDateInOppfolgingstilfelle(
           event.tidspunkt,
-          tilfeller[selectedTilfelleIndex]
+          tilfeller[selectedTilfelleIndex - TILFELLE_OPTION_OFFSET]
         )
       );
     }
@@ -181,8 +180,13 @@ export default function Historikk({
         >
           <option value={0}>{texts.velgTilfelleDefaultValg}</option>
           {tilfeller.map((tilfelle, index) => (
-            <option key={index + 1} value={index + 1}>
-              {tilLesbarPeriodeMedArstall(tilfelle.start, tilfelle.end)}
+            <option
+              key={index + TILFELLE_OPTION_OFFSET}
+              value={index + TILFELLE_OPTION_OFFSET}
+            >
+              {`${tilLesbarDatoMedArstall(
+                new Date(tilfelle.start)
+              )} - ${tilLesbarDatoMedArstall(new Date(tilfelle.end))}`}
             </option>
           ))}
           {eventUtenforTilfelleList.length > 0 && (
