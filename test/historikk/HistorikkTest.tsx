@@ -57,12 +57,7 @@ import {
   historikkOppfolgingsoppgaveFjernetMock,
 } from "@/mocks/oppfolgingsoppgave/historikkOppfolgingsoppgaveMock";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import {
-  addDays,
-  addWeeks,
-  tilLesbarDatoMedArstall,
-  tilLesbarPeriodeMedArstall,
-} from "@/utils/datoUtils";
+import { addDays, addWeeks, tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { motebehovMock } from "@/mocks/syfomotebehov/motebehovMock";
 import { oppfolgingsplanForesporselQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanForesporselHooks";
@@ -226,18 +221,11 @@ describe("Historikk", () => {
     );
     renderHistorikk();
 
-    const lastOppfolgingstilfelle =
-      oppfolgingstilfellePersonMock.oppfolgingstilfelleList[
-        oppfolgingstilfellePersonMock.oppfolgingstilfelleList.length - 1
-      ];
-    const dropdownOptionText = tilLesbarPeriodeMedArstall(
-      lastOppfolgingstilfelle.start,
-      lastOppfolgingstilfelle.end
-    );
-
     expect(await screen.findAllByText("Historikk")).to.exist;
     expect(screen.getByLabelText("Velg sykefraværstilfelle")).to.exist;
-    expect(screen.getByRole("option", { name: dropdownOptionText })).to.exist;
+    expect(
+      screen.getByRole("option", { name: "6. juni 2019 - 21. januar 2020" })
+    ).to.exist;
     expect(
       screen.queryByRole("option", { name: "Utenfor sykefraværstilfelle" })
     ).to.not.exist;
@@ -261,17 +249,10 @@ describe("Historikk", () => {
     );
     renderHistorikk();
 
-    const lastOppfolgingstilfelle =
-      oppfolgingstilfellePersonMock.oppfolgingstilfelleList[
-        oppfolgingstilfellePersonMock.oppfolgingstilfelleList.length - 1
-      ];
-    const dropdownOptionText = tilLesbarPeriodeMedArstall(
-      lastOppfolgingstilfelle.start,
-      lastOppfolgingstilfelle.end
-    );
-
     expect(await screen.findAllByText("Historikk")).to.exist;
-    expect(screen.getByRole("option", { name: dropdownOptionText })).to.exist;
+    expect(
+      screen.getByRole("option", { name: "6. juni 2019 - 21. januar 2020" })
+    ).to.exist;
     expect(screen.getByRole("option", { name: "Utenfor sykefraværstilfelle" }))
       .to.exist;
   });
