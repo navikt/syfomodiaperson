@@ -113,7 +113,7 @@ export default function OppfolgingsplanerOversikt() {
         <Tredelt.Container className="-xl:flex-col-reverse">
           <Tredelt.FirstColumn className="-xl:mb-2">
             <AktiveOppfolgingsplaner
-              aktivePlaner={aktivePlanerV1}
+              aktivePlanerV1={aktivePlanerV1}
               aktivePlanerV2={aktiveOppfolgingsplanerV2}
               oppfolgingsplanerLPSMedPersonoppgave={
                 oppfolgingsplanerLPSMedPersonOppgave
