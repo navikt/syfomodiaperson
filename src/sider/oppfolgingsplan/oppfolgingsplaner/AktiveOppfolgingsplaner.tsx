@@ -63,11 +63,11 @@ export default function AktiveOppfolgingsplaner({
               oppfolgingsplanLPSBistandsbehov={planLPS}
             />
           ))}
-          {aktivePlanerV1.map((dialog, index) => (
-            <OppfolgingsplanV1Item key={index} oppfolgingsplan={dialog} />
-          ))}
           {aktivePlanerV2.map((plan, index) => (
             <OppfolgingsplanV2Item key={index} oppfolgingsplan={plan} />
+          ))}
+          {aktivePlanerV1.map((dialog, index) => (
+            <OppfolgingsplanV1Item key={index} oppfolgingsplan={dialog} />
           ))}
         </>
       ) : (
