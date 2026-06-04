@@ -110,7 +110,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
   const refs = useRef<HTMLAnchorElement[]>([]);
 
   const personoppgaver = usePersonoppgaverQuery();
-  const { aktivePlaner, aktivePlanerV2, lpsPlaner } = useOppfolgingsplaner();
+  const { aktivePlanerV1, aktivePlanerV2, lpsPlaner } = useOppfolgingsplaner();
   const motebehov = useMotebehovQuery();
   const aktivitetskrav = useAktivitetskravQuery();
   const arbeidsuforhetVurderinger = useGetArbeidsuforhetVurderingerQuery();
@@ -186,7 +186,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
         const tasks = numberOfTasks(
           menypunkt,
           motebehov.data,
-          aktivePlaner,
+          aktivePlanerV1,
           personoppgaver.data,
           oppfolgingsplanerLPSMedPersonOppgave,
           aktivitetskrav.data,

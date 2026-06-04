@@ -15,13 +15,13 @@ const texts = {
 };
 
 interface Props {
-  aktivePlaner: OppfolgingsplanDTO[];
+  aktivePlanerV1: OppfolgingsplanDTO[];
   aktivePlanerV2: OppfolgingsplanV2DTO[];
   oppfolgingsplanerLPSMedPersonoppgave: OppfolgingsplanLPSMedPersonoppgave[];
 }
 
 export default function AktiveOppfolgingsplaner({
-  aktivePlaner,
+  aktivePlanerV1,
   aktivePlanerV2,
   oppfolgingsplanerLPSMedPersonoppgave,
 }: Props) {
@@ -46,7 +46,7 @@ export default function AktiveOppfolgingsplaner({
     });
 
   const hasActivePlan =
-    aktivePlaner.length !== 0 ||
+    aktivePlanerV1.length !== 0 ||
     oppfolgingsplanerLPSUnprocessed.length !== 0 ||
     aktivePlanerV2.length !== 0;
 
@@ -63,7 +63,7 @@ export default function AktiveOppfolgingsplaner({
               oppfolgingsplanLPSBistandsbehov={planLPS}
             />
           ))}
-          {aktivePlaner.map((dialog, index) => (
+          {aktivePlanerV1.map((dialog, index) => (
             <OppfolgingsplanV1Item key={index} oppfolgingsplan={dialog} />
           ))}
           {aktivePlanerV2.map((plan, index) => (
