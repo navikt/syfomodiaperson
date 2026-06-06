@@ -505,12 +505,10 @@ describe("Kartleggingssporsmal", () => {
       renderKartleggingssporsmal();
 
       expect(
-        screen.getByRole("listitem", {
-          name: (_, element) => {
-            return element?.textContent === noRiskoForLangtidsfravar;
-          },
-        })
-      ).to.exist;
+        screen
+          .getAllByRole("listitem")
+          .some((item) => item.textContent?.includes(noRiskoForLangtidsfravar))
+      ).to.be.true;
       expect(screen.queryByText(hasRiskoForLangtidsfravar)).to.not.exist;
     });
 
@@ -533,6 +531,30 @@ describe("Kartleggingssporsmal", () => {
       expect(screen.queryByText(noGjentakendeSykefravar)).to.not.exist;
     });
 
+    it("Shows readmore for gjentakende sykefravær definition", () => {
+      mockEnabledToggles([ToggleNames.isVurderingssideKartleggingEnabled]);
+
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalAnswered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+      );
+
+      renderKartleggingssporsmal();
+
+      expect(
+        screen.getByRole("button", { name: "Hva er gjentakende sykefravær?" })
+      ).to.exist;
+      expect(
+        screen.getByText(
+          "Definisjonen på gjentagende sykefravær i Modia er enten:"
+        )
+      );
+    });
+
     it("Does not show hasGjentakendeSykefravarText when hasGjentakendeSykefravar is true", () => {
       mockEnabledToggles([ToggleNames.isVurderingssideKartleggingEnabled]);
 
@@ -549,12 +571,10 @@ describe("Kartleggingssporsmal", () => {
       renderKartleggingssporsmal();
 
       expect(
-        screen.getByRole("listitem", {
-          name: (_, element) => {
-            return element?.textContent === noGjentakendeSykefravar;
-          },
-        })
-      ).to.exist;
+        screen
+          .getAllByRole("listitem")
+          .some((item) => item.textContent?.includes(noGjentakendeSykefravar))
+      ).to.be.true;
       expect(screen.queryByText(hasGjentakendeSykefravar)).to.not.exist;
     });
   });

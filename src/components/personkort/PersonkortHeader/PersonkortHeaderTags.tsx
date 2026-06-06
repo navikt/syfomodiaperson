@@ -17,6 +17,8 @@ import {
   sykmeldingerSortertNyestTilEldstPeriode,
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
+import { ArrowsCirclepathIcon } from "@navikt/aksel-icons";
 
 const texts = {
   fetchDiskresjonskodeFailed: "Klarte ikke hente diskresjonskode for brukeren.",
@@ -24,6 +26,7 @@ const texts = {
   kode6: "Kode 6",
   kode7: "Kode 7",
   egenansatt: "Egenansatt",
+  gjentakendeSykefravar: "Gjentakende sykefravær",
   talesprakTolk: "Talespråktolk",
   tegnsprakTolk: "Tegnspråktolk",
   sikkerhetstiltak: "Sikkerhetstiltak",
@@ -44,6 +47,7 @@ export function PersonkortHeaderTags() {
   const { data: uforegradData } = useUforegradQuery();
   const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
   const getSykmeldingerQuery = useGetSykmeldingerQuery();
+  const { hasGjentakendeSykefravar } = useOppfolgingstilfellePersonQuery();
 
   const isDead = !!dodsdato;
   const dateOfDeath = tilLesbarDatoMedArUtenManedNavn(dodsdato);
@@ -89,6 +93,12 @@ export function PersonkortHeaderTags() {
         {isEgenAnsatt && (
           <Tag data-color="warning" variant="outline" size="small">
             {texts.egenansatt}
+          </Tag>
+        )}
+        {hasGjentakendeSykefravar && (
+          <Tag data-color="warning" variant="outline" size="small">
+            <ArrowsCirclepathIcon className="mr-1" />
+            {texts.gjentakendeSykefravar}
           </Tag>
         )}
         {arbeidsrettetOppfolging?.underOppfolging && (

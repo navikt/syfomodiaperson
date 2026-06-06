@@ -440,6 +440,35 @@ describe("PersonkortHeader", () => {
     expect(screen.queryByText("Ufør", { exact: false })).to.not.exist;
   });
 
+  it("viser 'Gjentakende sykefravær' tag når hasGjentakendeSykefravar er true", () => {
+    queryClient.setQueryData(
+      oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
+      () => oppfolgingstilfellePersonMock
+    );
+
+    renderPersonkortHeader();
+
+    expect(screen.getByText("Gjentakende sykefravær")).to.exist;
+  });
+
+  it("viser ikke 'Gjentakende sykefravær' tag når hasGjentakendeSykefravar er false", () => {
+    queryClient.setQueryData(
+      oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
+        ARBEIDSTAKER_DEFAULT.personIdent
+      ),
+      () => ({
+        ...oppfolgingstilfellePersonMock,
+        hasGjentakendeSykefravar: false,
+      })
+    );
+
+    renderPersonkortHeader();
+
+    expect(screen.queryByText("Gjentakende sykefravær")).not.to.exist;
+  });
+
   it("Viser reservert KRR tag når bruker er reservert i KRR", () => {
     const kontaktinfo = {
       ...kontaktinformasjonMock,
