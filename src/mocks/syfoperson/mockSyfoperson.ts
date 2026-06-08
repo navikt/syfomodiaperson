@@ -1,6 +1,6 @@
 import { personAdresseMock } from "./personAdresseMock";
 import { SYFOPERSON_ROOT } from "@/apiConstants";
-import { brukerinfoMock } from "./persondataMock";
+import { arbeidsforholdPersonMock, brukerinfoMock } from "./persondataMock";
 import { http, HttpResponse } from "msw";
 
 const isEgenAnsatt = true;
@@ -24,5 +24,9 @@ export const mockSyfoperson = [
 
   http.get(`${SYFOPERSON_ROOT}/person/kontaktinformasjon`, () => {
     return HttpResponse.json(brukerinfoMock);
+  }),
+
+  http.get(`${SYFOPERSON_ROOT}/person/arbeidsforhold`, () => {
+    return HttpResponse.json(arbeidsforholdPersonMock);
   }),
 ];

@@ -15,6 +15,7 @@ import {
   useCurrentVarighetOppfolgingstilfelle,
   useStartOfLatestOppfolgingstilfelle,
 } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { useArbeidsforholdQuery } from "@/data/arbeidsforhold/arbeidsforholdQueryHooks";
 import { getKvinneImage, getMannImage } from "@/utils/festiveUtils";
 import { KJOENN } from "@/konstanter";
 
@@ -41,6 +42,7 @@ export function PersonkortHeader() {
   const oppfolgingstilfelleStartDate = useStartOfLatestOppfolgingstilfelle();
   const oppfolgingstilfelleVarighetUker =
     useCurrentVarighetOppfolgingstilfelle();
+  useArbeidsforholdQuery();
 
   const maksdato = getMaksdato.data?.maxDate;
 

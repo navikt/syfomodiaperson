@@ -3,6 +3,7 @@ import {
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
 } from "../common/mockConstants";
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
+import { ArbeidsforholdPersonDTO } from "@/data/arbeidsforhold/ArbeidsforholdDTO";
 import { daysFromToday, weeksFromToday } from "@/utils/datoUtils.ts";
 
 export const kontaktinformasjonMock = {
@@ -21,6 +22,24 @@ export const brukerinfoMock: BrukerinfoDTO = {
   alder: 56,
   tilrettelagtKommunikasjon: null,
   sikkerhetstiltak: [],
+};
+
+export const arbeidsforholdPersonMock: ArbeidsforholdPersonDTO = {
+  personident: ARBEIDSTAKER_DEFAULT.personIdent,
+  arbeidsforhold: [
+    {
+      navArbeidsforholdId: 1,
+      opprettet: "2020-01-01T00:00:00",
+      sistBekreftet: "2024-01-01T00:00:00",
+      orgnummer: "123456789",
+      type: "Ordinært arbeidsforhold",
+      ansettelseStart: "2020-01-01",
+      ansettelseSlutt: null,
+      ansettelsesform: "Fast ansettelse",
+      yrke: "Sykepleier",
+      stillingsprosent: "100",
+    },
+  ],
 };
 
 export const diskresjonskodeMock: "6" | "7" | "" = "";
