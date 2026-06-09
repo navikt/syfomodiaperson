@@ -6,7 +6,7 @@ export interface ArbeidsforholdDTO {
   type: string; // Ordinært arbeidsforhold el.
   ansettelseStart: string;
   ansettelseSlutt: string | null;
-  ansettelsesform: string; // Fast ansettelse el.
+  ansettelsesform: string | null; // Fast ansettelse el.
   yrke: string;
   stillingsprosent: string;
 }
