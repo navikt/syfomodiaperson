@@ -76,7 +76,7 @@ const mockKartleggingssporsmalSvar = (
   );
 };
 
-const mockGjentagendeFravar = (hasGjentakendeSykefravar: boolean) =>
+const mockGjentakendeFravar = (hasGjentakendeSykefravar: boolean) =>
   queryClient.setQueryData(
     oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
       ARBEIDSTAKER_DEFAULT.personIdent
@@ -465,8 +465,8 @@ describe("Kartleggingssporsmal", () => {
   });
 
   describe("Display information box above vurdering", () => {
-    const hasGjentakendeSykefravar = "Den sykmeldte har gjentagende fravær";
-    const noGjentakendeSykefravar = "Den sykmeldte har ikke gjentagende fravær";
+    const hasGjentakendeSykefravar = "Den sykmeldte har gjentakende fravær";
+    const noGjentakendeSykefravar = "Den sykmeldte har ikke gjentakende fravær";
     const hasRiskoForLangtidsfravar =
       "Svarene indikerer behov for vurdering av oppfølging – se veiledning";
     const noRiskoForLangtidsfravar =
@@ -515,7 +515,7 @@ describe("Kartleggingssporsmal", () => {
     it("Shows hasGjentakendeSykefravarText when hasGjentakendeSykefravar is true", () => {
       mockEnabledToggles([ToggleNames.isVurderingssideKartleggingEnabled]);
 
-      mockGjentagendeFravar(true);
+      mockGjentakendeFravar(true);
       mockKartleggingssporsmalKandidat(
         kartleggingIsKandidatAndAnsweredQuestions,
         ARBEIDSTAKER_DEFAULT.personIdent
@@ -550,7 +550,7 @@ describe("Kartleggingssporsmal", () => {
       ).to.exist;
       expect(
         screen.getByText(
-          "Definisjonen på gjentagende sykefravær i Modia er enten:"
+          "Definisjonen på gjentakende sykefravær i Modia er enten:"
         )
       );
     });
@@ -558,7 +558,7 @@ describe("Kartleggingssporsmal", () => {
     it("Does not show hasGjentakendeSykefravarText when hasGjentakendeSykefravar is true", () => {
       mockEnabledToggles([ToggleNames.isVurderingssideKartleggingEnabled]);
 
-      mockGjentagendeFravar(false);
+      mockGjentakendeFravar(false);
       mockKartleggingssporsmalKandidat(
         kartleggingIsKandidatAndAnsweredQuestions,
         ARBEIDSTAKER_DEFAULT.personIdent

@@ -8,15 +8,15 @@ import { ArrowsCirclepathIcon } from "@navikt/aksel-icons";
 const texts = {
   heading: "Oppsummering av den sykmeldtes situasjon",
   list: {
-    hasGjentakendeSykefravar: "Den sykmeldte har gjentagende fravær",
-    noGjentakendeSykefravar: "Den sykmeldte har ikke gjentagende fravær",
+    hasGjentakendeSykefravar: "Den sykmeldte har gjentakende fravær",
+    noGjentakendeSykefravar: "Den sykmeldte har ikke gjentakende fravær",
     hasRiskoForLangtidsfravar:
       "Svarene indikerer behov for vurdering av oppfølging – se veiledning",
     noRiskoForLangtidsfravar:
       "Svarene indikerer ikke behov for videre vurdering av oppfølging – se veiledning",
   },
   gjentakende: {
-    definisjon: "Definisjonen på gjentagende sykefravær i Modia er enten:",
+    definisjon: "Definisjonen på gjentakende sykefravær i Modia er enten:",
     hyppigeFravar:
       "5 tilfeller eller mer med totalt 100 dager fravær eller mer i løpet av en 3 årsperiode, eller",
     langeFravar:
