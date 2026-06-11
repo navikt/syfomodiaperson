@@ -1,25 +1,11 @@
 import React, { useRef, useState } from "react";
 import { CopyImage } from "../../../img/ImageComponents";
 import { Popover } from "@navikt/ds-react";
-import styled from "styled-components";
 
 interface Props {
   message: string;
   value: string;
 }
-
-// Uses <span> instead of <button> to avoid nested <button> when rendered inside accordion headers
-const StyledCopyButton = styled.span`
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-
-  img {
-    margin-right: 0;
-  }
-`;
 
 export function CopyButton({ message, value }: Props) {
   const [showPopover, setShowPopover] = useState<boolean>(false);
@@ -35,7 +21,9 @@ export function CopyButton({ message, value }: Props) {
 
   return (
     <div>
-      <StyledCopyButton
+      {/*Uses <span> instead of <button> to avoid nested <button> when rendered inside accordion headers*/}
+      <span
+        className="m-0 cursor-pointer"
         ref={triggerRef}
         role="button"
         tabIndex={0}
@@ -47,8 +35,8 @@ export function CopyButton({ message, value }: Props) {
           }
         }}
       >
-        <img alt="kopier" src={CopyImage} />
-      </StyledCopyButton>
+        <img alt="kopier" src={CopyImage} className="h-5" />
+      </span>
       <Popover
         open={showPopover}
         onClose={() => setShowPopover(false)}

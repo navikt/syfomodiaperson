@@ -1,14 +1,12 @@
 import React from "react";
-import styled from "styled-components";
 import { CopyButton } from "../../kopierknapp/CopyButton";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
-import { HStack } from "@navikt/ds-react";
+import { Heading, HStack } from "@navikt/ds-react";
 import { PersonkortHeaderTags } from "@/components/personkort/PersonkortHeader/PersonkortHeaderTags";
 import { TilfellePeriod } from "@/components/personkort/PersonkortHeader/TilfellePeriod";
 import { Diagnosekode } from "@/components/personkort/PersonkortHeader/Diagnosekode";
 import { useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
-import { NavnHeader } from "@/components/personkort/PersonkortHeader/NavnHeader";
 import Utbetalingsinfo from "@/components/personkort/PersonkortHeader/Utbetalingsinfo";
 import { formaterFnr } from "@/utils/fnrUtils";
 import {
@@ -24,16 +22,6 @@ const texts = {
   varighet: "Varighet: ",
   uker: "uker",
 };
-
-const StyledFnr = styled.div`
-  display: flex;
-
-  img {
-    padding-left: 0.5em;
-    width: auto;
-    height: 1.2em;
-  }
-`;
 
 export function PersonkortHeader() {
   const navbruker = useNavBrukerData();
@@ -61,12 +49,15 @@ export function PersonkortHeader() {
           />
         )}
         <div>
-          <NavnHeader navnSykmeldt={navbruker.navn} alder={navbruker.alder} />
+          <Heading size="xsmall" level="3">
+            {navbruker.navn}
+            {navbruker.alder !== null && ` (${navbruker.alder} år)`}
+          </Heading>
 
-          <StyledFnr>
+          <div className="flex items-center gap-2 text-base">
             {formaterFnr(personident)}
             <CopyButton message={texts.copied} value={personident} />
-          </StyledFnr>
+          </div>
 
           <HStack gap="space-12">
             <TilfellePeriod />
