@@ -10,6 +10,7 @@ import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 import { egenansattQueryKeys } from "@/data/egenansatt/egenansattQueryHooks";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import {
+  arbeidsforholdPersonMock,
   brukerinfoMock,
   kontaktinformasjonMock,
   maksdato,
@@ -24,7 +25,11 @@ import { PersonkortHeader } from "@/components/personkort/PersonkortHeader/Perso
 import { maksdatoQueryKeys } from "@/data/maksdato/useMaksdatoQuery";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
-import { addDays, daysFromToday } from "@/utils/datoUtils";
+import {
+  addDays,
+  daysFromToday,
+  tilLesbarDatoMedArUtenManedNavn,
+} from "@/utils/datoUtils";
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
 import { defaultVedtak } from "@/mocks/isfrisktilarbeid/mockIsfrisktilarbeid";
 import { uforegradQueryKeys } from "@/data/uforegrad/uforegradQueryHooks";
@@ -32,7 +37,12 @@ import {
   mockUforegrad,
   mockUforegradNull,
 } from "@/mocks/uforegrad/mockUforegrad";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { arbeidsforholdQueryKeys } from "@/data/arbeidsforhold/arbeidsforholdQueryHooks";
+import { ArbeidsforholdPersonDTO } from "@/data/arbeidsforhold/ArbeidsforholdDTO";
+import { mockServer } from "../../setup";
+import { http, HttpResponse } from "msw";
+import { SYFOPERSON_ROOT } from "@/apiConstants";
+import { virksomhetQueryKeys } from "@/data/virksomhet/virksomhetQueryHooks.ts";
 
 let queryClient: any;
 
@@ -171,6 +181,132 @@ describe("PersonkortHeader", () => {
     renderPersonkortHeader();
 
     expect(screen.queryByText("Død")).not.to.exist;
+  });
+
+  it("viser ett arbeidsforhold uten komma-separator", () => {
+    const ettAktivtArbeidsforhold: ArbeidsforholdPersonDTO = {
+      personident: ARBEIDSTAKER_DEFAULT.personIdent,
+      arbeidsforhold: [
+        {
+          ...arbeidsforholdPersonMock.arbeidsforhold[0],
+          navArbeidsforholdId: 101,
+          orgnummer: "333666999",
+          yrke: "Sykepleier",
+          stillingsprosent: "80",
+          ansettelseSlutt: null,
+        },
+      ],
+    };
+
+    queryClient.setQueryData(
+      arbeidsforholdQueryKeys.arbeidsforhold(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => ettAktivtArbeidsforhold
+    );
+    queryClient.setQueryData(
+      virksomhetQueryKeys.virksomhet("333666999"),
+      () => ({
+        navn: {
+          navnelinje1: "Sykehus AS",
+        },
+      })
+    );
+
+    renderPersonkortHeader();
+
+    expect(screen.getByText("Arbeidsforhold:")).to.exist;
+    expect(screen.getByText(/Sykepleier i Sykehus AS \(80%\)/)).to.exist;
+    expect(screen.queryByText(",")).to.not.exist;
+  });
+
+  it("viser flere arbeidsforhold med komma-separator og virksomhetsnavn", () => {
+    const flereAktiveArbeidsforhold: ArbeidsforholdPersonDTO = {
+      personident: ARBEIDSTAKER_DEFAULT.personIdent,
+      arbeidsforhold: [
+        {
+          ...arbeidsforholdPersonMock.arbeidsforhold[0],
+          navArbeidsforholdId: 201,
+          orgnummer: "333666999",
+          yrke: "Sykepleier",
+          stillingsprosent: "80",
+          ansettelseSlutt: null,
+        },
+        {
+          ...arbeidsforholdPersonMock.arbeidsforhold[1],
+          navArbeidsforholdId: 202,
+          orgnummer: "110110110",
+          yrke: "Brannmann",
+          stillingsprosent: "40",
+          ansettelseSlutt: null,
+        },
+      ],
+    };
+
+    queryClient.setQueryData(
+      arbeidsforholdQueryKeys.arbeidsforhold(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => flereAktiveArbeidsforhold
+    );
+    queryClient.setQueryData(
+      virksomhetQueryKeys.virksomhet("333666999"),
+      () => ({
+        navn: {
+          navnelinje1: "Sykehus AS",
+        },
+      })
+    );
+    queryClient.setQueryData(
+      virksomhetQueryKeys.virksomhet("110110110"),
+      () => ({
+        navn: {
+          navnelinje1: "Brannvesenet",
+        },
+      })
+    );
+
+    renderPersonkortHeader();
+
+    expect(screen.getByText("Arbeidsforhold:")).to.exist;
+    expect(screen.getByText(/Sykepleier i Sykehus AS \(80%\),/)).to.exist;
+    expect(screen.getByText(/Brannmann i Brannvesenet \(40%\)/)).to.exist;
+  });
+
+  it("viser 'mangler' når ingen aktive arbeidsforhold finnes", () => {
+    const arbeidsforholdUtenAktive: ArbeidsforholdPersonDTO = {
+      personident: ARBEIDSTAKER_DEFAULT.personIdent,
+      arbeidsforhold: [
+        {
+          ...arbeidsforholdPersonMock.arbeidsforhold[0],
+          navArbeidsforholdId: 100,
+          ansettelseSlutt: "2025-01-01",
+        },
+      ],
+    };
+
+    queryClient.setQueryData(
+      arbeidsforholdQueryKeys.arbeidsforhold(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => arbeidsforholdUtenAktive
+    );
+
+    renderPersonkortHeader();
+
+    expect(screen.getByText("Arbeidsforhold:")).to.exist;
+    expect(screen.getByText("mangler")).to.exist;
+  });
+
+  it("viser 'ukjent' ved 500-feil fra arbeidsforhold-endepunktet", async () => {
+    queryClient.setQueryDefaults(
+      arbeidsforholdQueryKeys.arbeidsforhold(ARBEIDSTAKER_DEFAULT.personIdent),
+      { retry: false }
+    );
+
+    mockServer.use(
+      http.get(`${SYFOPERSON_ROOT}/person/arbeidsforhold`, () => {
+        return new HttpResponse(null, { status: 500 });
+      })
+    );
+
+    renderPersonkortHeader();
+
+    expect(await screen.findByText("ukjent")).to.exist;
   });
 
   it("viser maksdato og søknad behandlet tom fra API", () => {
