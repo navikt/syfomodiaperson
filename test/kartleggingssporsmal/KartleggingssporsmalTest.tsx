@@ -257,13 +257,13 @@ describe("Kartleggingssporsmal", () => {
     expect(
       screen.getAllByRole("radiogroup", {
         name: RegExp(
-          "Hvordan vil du beskrive samarbeidet og relasjonen mellom deg og arbeidsgiveren din?"
+          "Får du oppfølging av arbeidsgiveren din nå når du er sykmeldt?"
         ),
       })[0]
     ).to.exist;
     expect(
       screen.getByRole("radio", {
-        name: "Jeg opplever samarbeidet og relasjonen som dårlig",
+        name: "Nei, jeg opplever manglende oppfølging og at tilpasninger er vanskelig.",
         checked: true,
       })
     ).to.exist;

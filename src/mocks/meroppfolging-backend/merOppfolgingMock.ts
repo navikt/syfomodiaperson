@@ -82,7 +82,7 @@ export const defaultRadioGroupSporsmal = (
 
 const kartleggingssporsmal: KartleggingssporsmalRadioGroupFieldSnapshot[] = [
   {
-    ...defaultRadioGroupSporsmal("hvorSannsynligTilbakeTilJobben"),
+    ...defaultRadioGroupSporsmal("tilbakeTilJobbenHvorSannsynligFlervalg"),
     label:
       "Hvor sannsynlig er det at du kommer tilbake i jobben du ble sykmeldt fra?",
     options: [
@@ -92,14 +92,16 @@ const kartleggingssporsmal: KartleggingssporsmalRadioGroupFieldSnapshot[] = [
     ],
   },
   {
-    ...defaultRadioGroupSporsmal("arbeidsgiverHvordanErSamarbeidFlervalg"),
-    label:
-      "Hvordan vil du beskrive samarbeidet og relasjonen mellom deg og arbeidsgiveren din?",
+    ...defaultRadioGroupSporsmal("arbeidsgiverFaarDuOppfolgingFlervalg"),
+    label: "Får du oppfølging av arbeidsgiveren din nå når du er sykmeldt?",
     options: [
-      createRadioOption("2a", "Jeg opplever samarbeidet og relasjonen som god"),
       createRadioOption(
-        "2b",
-        "Jeg opplever samarbeidet og relasjonen som dårlig",
+        "ja",
+        "Ja, jeg får oppfølging, og har snakket med arbeidsgiver om dette."
+      ),
+      createRadioOption(
+        "nei",
+        "Nei, jeg opplever manglende oppfølging og at tilpasninger er vanskelig.",
         true
       ),
     ],
@@ -126,11 +128,12 @@ const hvorforUsikkerTextSporsmal: KartleggingssporsmalTextFieldSnapshot = {
   wasRequired: false,
 };
 
-const samarbeidTextSporsmal: KartleggingssporsmalTextFieldSnapshot = {
-  fieldId: "arbeidsgiverSamarbeidDarligBegrunnelse",
+const ikkeOppfolgingTextSporsmal: KartleggingssporsmalTextFieldSnapshot = {
+  fieldId: "arbeidsgiverFaarDuOppfolgingNeiBegrunnelse",
   fieldType: KartleggingssporsmalFormSnapshotFieldType.TEXT,
   description: null,
-  label: "Hva gjør samarbeidet og relasjonen dårlig?",
+  label:
+    "Hva savner du i samarbeidet med arbeidsgiver for at du skal få bedre oppfølging?",
   value: "   ",
   wasRequired: false,
 };
@@ -147,7 +150,7 @@ export const kartleggingssporsmalAnswered: KartleggingssporsmalSvarResponseDTO =
         kartleggingssporsmal[0],
         hvorforUsikkerTextSporsmal,
         ...kartleggingssporsmal.slice(1, 2),
-        samarbeidTextSporsmal,
+        ikkeOppfolgingTextSporsmal,
         ...kartleggingssporsmal.slice(2),
       ],
     },
@@ -163,7 +166,9 @@ export const kartleggingssporsmalLowRiskAnswered: KartleggingssporsmalSvarRespon
       formSemanticVersion: "1.0.0",
       fieldSnapshots: [
         {
-          ...defaultRadioGroupSporsmal("hvorSannsynligTilbakeTilJobben"),
+          ...defaultRadioGroupSporsmal(
+            "tilbakeTilJobbenHvorSannsynligFlervalg"
+          ),
           label:
             "Hvor sannsynlig er det at du kommer tilbake i jobben du ble sykmeldt fra?",
           options: [
@@ -173,20 +178,18 @@ export const kartleggingssporsmalLowRiskAnswered: KartleggingssporsmalSvarRespon
           ],
         },
         {
-          ...defaultRadioGroupSporsmal(
-            "arbeidsgiverHvordanErSamarbeidFlervalg"
-          ),
+          ...defaultRadioGroupSporsmal("arbeidsgiverFaarDuOppfolgingFlervalg"),
           label:
-            "Hvordan vil du beskrive samarbeidet og relasjonen mellom deg og arbeidsgiveren din?",
+            "Får du oppfølging av arbeidsgiveren din nå når du er sykmeldt?",
           options: [
             createRadioOption(
-              "2a",
-              "Jeg opplever samarbeidet og relasjonen som god",
+              "ja",
+              "Ja, jeg får oppfølging, og har snakket med arbeidsgiver om dette.",
               true
             ),
             createRadioOption(
-              "2b",
-              "Jeg opplever samarbeidet og relasjonen som dårlig"
+              "nei",
+              "Nei, jeg opplever manglende oppfølging og at tilpasninger er vanskelig."
             ),
           ],
         },
