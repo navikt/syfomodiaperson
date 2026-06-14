@@ -17,9 +17,9 @@ export function hasRiskoForLangtidsfravar(
       if (!fieldSnapshot) return false;
 
       const option = fieldSnapshot.options?.find(
-        (option) => option.optionId !== answer.optionId
+        (option) => option.optionId === answer.optionId
       );
-      return option?.wasSelected;
+      return option !== undefined && !option.wasSelected;
     });
   }
 }
