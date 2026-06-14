@@ -72,10 +72,58 @@ describe("vurdereBehov", () => {
     expect(hasRisk).to.equal(false);
   });
 
-  it("returns true when one answer differs from low-risk option", () => {
+  it("returns true when hvorSannsynligTilbakeTilJobben is RISK_OPTION_1", () => {
+    const answeredQuestions = createAnsweredQuestions({
+      hvorSannsynligTilbakeTilJobben: "RISK_OPTION_1",
+      arbeidsgiverHvordanErSamarbeidFlervalg: lowRiskAnswers[1].optionId,
+      naarTilbakeTilJobbenFlervalg: lowRiskAnswers[2].optionId,
+    });
+
+    const hasRisk = hasRiskoForLangtidsfravar(answeredQuestions);
+
+    expect(hasRisk).to.equal(true);
+  });
+
+  it("returns true when hvorSannsynligTilbakeTilJobben is RISK_OPTION_2", () => {
+    const answeredQuestions = createAnsweredQuestions({
+      hvorSannsynligTilbakeTilJobben: "RISK_OPTION_2",
+      arbeidsgiverHvordanErSamarbeidFlervalg: lowRiskAnswers[1].optionId,
+      naarTilbakeTilJobbenFlervalg: lowRiskAnswers[2].optionId,
+    });
+
+    const hasRisk = hasRiskoForLangtidsfravar(answeredQuestions);
+
+    expect(hasRisk).to.equal(true);
+  });
+
+  it("returns true when arbeidsgiverHvordanErSamarbeid differs from low-risk option", () => {
+    const answeredQuestions = createAnsweredQuestions({
+      hvorSannsynligTilbakeTilJobben: lowRiskAnswers[0].optionId,
+      arbeidsgiverHvordanErSamarbeidFlervalg: "RISK_OPTION_3",
+      naarTilbakeTilJobbenFlervalg: lowRiskAnswers[2].optionId,
+    });
+
+    const hasRisk = hasRiskoForLangtidsfravar(answeredQuestions);
+
+    expect(hasRisk).to.equal(true);
+  });
+
+  it("returns true when naarTilbakeTilJobben differs from low-risk option", () => {
     const answeredQuestions = createAnsweredQuestions({
       hvorSannsynligTilbakeTilJobben: lowRiskAnswers[0].optionId,
       arbeidsgiverHvordanErSamarbeidFlervalg: lowRiskAnswers[1].optionId,
+      naarTilbakeTilJobbenFlervalg: "RISK_OPTION_4",
+    });
+
+    const hasRisk = hasRiskoForLangtidsfravar(answeredQuestions);
+
+    expect(hasRisk).to.equal(true);
+  });
+
+  it("returns true when all answers differ from low-risk options", () => {
+    const answeredQuestions = createAnsweredQuestions({
+      hvorSannsynligTilbakeTilJobben: "RISK_OPTION_1",
+      arbeidsgiverHvordanErSamarbeidFlervalg: "RISK_OPTION_3",
       naarTilbakeTilJobbenFlervalg: "RISK_OPTION_4",
     });
 
