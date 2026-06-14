@@ -28,8 +28,10 @@ function createRadioGroupFieldSnapshot(
   };
 }
 
+const RISK_OPTION_ID = "RISK_OPTION";
+
 function createAnsweredQuestions(
-  selectedOptionsByField: Record<string, string>
+  overrides: Partial<Record<string, string>> = {}
 ): KartleggingssporsmalSvarResponseDTO {
   return {
     uuid: "test-uuid",
@@ -38,46 +40,44 @@ function createAnsweredQuestions(
     createdAt: new Date("2026-01-01"),
     formSnapshot: {
       formSemanticVersion: "1.0.0",
-      fieldSnapshots: [
+      fieldSnapshots: lowRiskAnswers.map((answer) =>
         createRadioGroupFieldSnapshot(
-          "hvorSannsynligTilbakeTilJobben",
-          selectedOptionsByField.hvorSannsynligTilbakeTilJobben,
-          [lowRiskAnswers[0].optionId, "RISK_OPTION_1", "RISK_OPTION_2"]
-        ),
-        createRadioGroupFieldSnapshot(
-          "arbeidsgiverHvordanErSamarbeidFlervalg",
-          selectedOptionsByField.arbeidsgiverHvordanErSamarbeidFlervalg,
-          [lowRiskAnswers[1].optionId, "RISK_OPTION_3"]
-        ),
-        createRadioGroupFieldSnapshot(
-          "naarTilbakeTilJobbenFlervalg",
-          selectedOptionsByField.naarTilbakeTilJobbenFlervalg,
-          [lowRiskAnswers[2].optionId, "RISK_OPTION_4"]
-        ),
-      ],
+          answer.fieldId,
+          overrides[answer.fieldId] ?? answer.optionId,
+          [answer.optionId, RISK_OPTION_ID]
+        )
+      ),
     },
   };
 }
 
 describe("vurdereBehov", () => {
   it("returns false when all selected options are low-risk answers", () => {
-    const answeredQuestions = createAnsweredQuestions({
-      hvorSannsynligTilbakeTilJobben: lowRiskAnswers[0].optionId,
-      arbeidsgiverHvordanErSamarbeidFlervalg: lowRiskAnswers[1].optionId,
-      naarTilbakeTilJobbenFlervalg: lowRiskAnswers[2].optionId,
-    });
+    const answeredQuestions = createAnsweredQuestions();
 
     const hasRisk = hasRiskoForLangtidsfravar(answeredQuestions);
 
     expect(hasRisk).to.equal(false);
   });
 
-  it("returns true when one answer differs from low-risk option", () => {
-    const answeredQuestions = createAnsweredQuestions({
-      hvorSannsynligTilbakeTilJobben: lowRiskAnswers[0].optionId,
-      arbeidsgiverHvordanErSamarbeidFlervalg: lowRiskAnswers[1].optionId,
-      naarTilbakeTilJobbenFlervalg: "RISK_OPTION_4",
-    });
+  it.each(lowRiskAnswers)(
+    "returns true when $field is answered with a risk option",
+    ({ fieldId }) => {
+      const answeredQuestions = createAnsweredQuestions({
+        [fieldId]: RISK_OPTION_ID,
+      });
+
+      const hasRisk = hasRiskoForLangtidsfravar(answeredQuestions);
+
+      expect(hasRisk).to.equal(true);
+    }
+  );
+
+  it("returns true when all answers differ from low-risk options", () => {
+    const allRiskOptions = Object.fromEntries(
+      lowRiskAnswers.map((answer) => [answer.fieldId, RISK_OPTION_ID])
+    );
+    const answeredQuestions = createAnsweredQuestions(allRiskOptions);
 
     const hasRisk = hasRiskoForLangtidsfravar(answeredQuestions);
 
