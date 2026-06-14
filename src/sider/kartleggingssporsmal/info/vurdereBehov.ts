@@ -30,8 +30,16 @@ export const lowRiskAnswers = [
     optionId: "1a",
   },
   {
+    field: "tilbakeTilJobbenHvorSannsynligFlervalg",
+    optionId: "1a",
+  },
+  {
     field: "arbeidsgiverHvordanErSamarbeidFlervalg",
     optionId: "2a",
+  },
+  {
+    field: "arbeidsgiverFaarDuOppfolgingFlervalg",
+    optionId: "ja",
   },
   {
     field: "naarTilbakeTilJobbenFlervalg",
