@@ -7,7 +7,6 @@ import { queryClientWithAktivBruker } from "../../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
-import { getButton } from "../../testUtils";
 import userEvent from "@testing-library/user-event";
 import { Personkort } from "@/components/personkort/Personkort";
 import { daysFromToday } from "@/utils/datoUtils.ts";
@@ -51,7 +50,7 @@ describe("Personkort", () => {
     );
     await renderAndExpandPersonkort();
 
-    expect(getButton("Sikkerhetstiltak")).to.exist;
+    expect(screen.getByRole("tab", { name: "Sikkerhetstiltak" })).to.exist;
   });
 
   it("Skal ikke vise Sikkerhetstiltak-button-tab hvis bruker mangler sikkerhetstiltak", async () => {
@@ -62,7 +61,7 @@ describe("Personkort", () => {
 
     await renderAndExpandPersonkort();
 
-    expect(screen.queryByRole("button", { name: "Sikkerhetstiltak" })).to.not
+    expect(screen.queryByRole("tab", { name: "Sikkerhetstiltak" })).to.not
       .exist;
   });
 });

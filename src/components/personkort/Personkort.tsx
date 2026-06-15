@@ -20,49 +20,47 @@ export function Personkort() {
   const { hasSikkerhetstiltak } = useNavBrukerData();
 
   return (
-    <div className="personkort">
-      <ExpansionCard size="small" aria-label="Personkort">
-        <ExpansionCard.Header>
-          <ExpansionCard.Title size="small" className="flex w-full">
-            <PersonkortHeader />
-          </ExpansionCard.Title>
-        </ExpansionCard.Header>
-        <ExpansionCard.Content>
-          <Tabs
-            value={visning}
-            size="small"
-            onChange={(value) => setVisning(value)}
-          >
-            <Tabs.List>
+    <ExpansionCard size="small" aria-label="Personkort" className="mb-2">
+      <ExpansionCard.Header>
+        <ExpansionCard.Title size="small" className="flex w-full">
+          <PersonkortHeader />
+        </ExpansionCard.Title>
+      </ExpansionCard.Header>
+      <ExpansionCard.Content>
+        <Tabs
+          value={visning}
+          size="small"
+          onChange={(value) => setVisning(value)}
+        >
+          <Tabs.List>
+            <Tabs.Tab
+              value={PERSONKORTVISNING_TYPE.SYKMELDT}
+              label={texts.buttons.sykmeldt}
+            />
+            <Tabs.Tab
+              value={PERSONKORTVISNING_TYPE.LEDER}
+              label={texts.buttons.leder}
+            />
+            <Tabs.Tab
+              value={PERSONKORTVISNING_TYPE.LEGE}
+              label={texts.buttons.fastlege}
+            />
+            <Tabs.Tab
+              value={PERSONKORTVISNING_TYPE.ENHET}
+              label={texts.buttons.enhet}
+            />
+            {hasSikkerhetstiltak && (
               <Tabs.Tab
-                value={PERSONKORTVISNING_TYPE.SYKMELDT}
-                label={texts.buttons.sykmeldt}
+                value={PERSONKORTVISNING_TYPE.SIKKERHETSTILTAK}
+                label={texts.buttons.sikkerhetstiltak}
               />
-              <Tabs.Tab
-                value={PERSONKORTVISNING_TYPE.LEDER}
-                label={texts.buttons.leder}
-              />
-              <Tabs.Tab
-                value={PERSONKORTVISNING_TYPE.LEGE}
-                label={texts.buttons.fastlege}
-              />
-              <Tabs.Tab
-                value={PERSONKORTVISNING_TYPE.ENHET}
-                label={texts.buttons.enhet}
-              />
-              {hasSikkerhetstiltak && (
-                <Tabs.Tab
-                  value={PERSONKORTVISNING_TYPE.SIKKERHETSTILTAK}
-                  label={texts.buttons.sikkerhetstiltak}
-                />
-              )}
-            </Tabs.List>
-            <Tabs.Panel value={visning} className="mt-4">
-              <PersonkortVisning visning={visning} />
-            </Tabs.Panel>
-          </Tabs>
-        </ExpansionCard.Content>
-      </ExpansionCard>
-    </div>
+            )}
+          </Tabs.List>
+          <Tabs.Panel value={visning} className="mt-4">
+            <PersonkortVisning visning={visning} />
+          </Tabs.Panel>
+        </Tabs>
+      </ExpansionCard.Content>
+    </ExpansionCard>
   );
 }
