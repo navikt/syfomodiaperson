@@ -3,8 +3,7 @@ import { PERSONKORTVISNING_TYPE } from "@/konstanter";
 import { PersonkortVisning } from "./PersonkortVisning";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { PersonkortHeader } from "@/components/personkort/PersonkortHeader/PersonkortHeader";
-import { ExpansionCard } from "@navikt/ds-react";
-import { Tabs } from "@navikt/ds-react";
+import { ExpansionCard, Tabs } from "@navikt/ds-react";
 
 const texts = {
   buttons: {
@@ -52,14 +51,15 @@ export function Personkort() {
                 label={texts.buttons.enhet}
               />
               {hasSikkerhetstiltak && (
-              <Tabs.Tab
-                value={PERSONKORTVISNING_TYPE.SIKKERHETSTILTAK}
-                label={texts.buttons.enhet}
-              />
-              )
-              }
+                <Tabs.Tab
+                  value={PERSONKORTVISNING_TYPE.SIKKERHETSTILTAK}
+                  label={texts.buttons.sikkerhetstiltak}
+                />
+              )}
             </Tabs.List>
-            <PersonkortVisning visning={visning} />
+            <Tabs.Panel value={visning} className="mt-4">
+              <PersonkortVisning visning={visning} />
+            </Tabs.Panel>
           </Tabs>
         </ExpansionCard.Content>
       </ExpansionCard>
