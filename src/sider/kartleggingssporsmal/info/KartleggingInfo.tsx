@@ -44,9 +44,11 @@ export function KartleggingInfo({ answeredQuestions }: Props) {
         <List.Item>
           <div className="flex flex-col">
             <div className="flex items-center">
-              {hasGjentakendeSykefravar
-                ? texts.list.hasGjentakendeSykefravar
-                : boldRegex(texts.list.noGjentakendeSykefravar, "ikke")}
+              <span>
+                {hasGjentakendeSykefravar
+                  ? texts.list.hasGjentakendeSykefravar
+                  : boldRegex(texts.list.noGjentakendeSykefravar, "ikke")}
+              </span>
               <ArrowsCirclepathIcon className="ml-2" />
             </div>
             <ReadMore header="Hva er gjentakende sykefravær?" size="small">
