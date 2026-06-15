@@ -15,6 +15,7 @@ export function hasRisikoForLangtidsfravar(
   const someLowRiskOptionInSnapshotNotSelected = radioFieldSnapshots.some(
     (radioFieldSnapshot) => {
       if (!isKnownRadioFieldId(radioFieldSnapshot.fieldId)) return false;
+
       const lowRiskOptionIdForField =
         lowRiskOptionIdByRadioFieldId[radioFieldSnapshot.fieldId];
 

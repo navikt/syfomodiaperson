@@ -34,7 +34,6 @@ function createRadioGroupFieldSnapshot({
 }
 
 const RISK_OPTION_ID = "RISK_OPTION";
-
 const ALL_FIELDS = "ALL_FIELDS" as const;
 
 function createAnsweredQuestions({
