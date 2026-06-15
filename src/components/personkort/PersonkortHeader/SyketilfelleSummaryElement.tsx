@@ -1,4 +1,5 @@
 import React from "react";
+import { BodyShort } from "@navikt/ds-react";
 
 interface Props {
   keyword: string;
@@ -7,9 +8,9 @@ interface Props {
 
 export function SyketilfelleSummaryElement({ keyword, value }: Props) {
   return (
-    <div className="font-normal">
+    <BodyShort size="small" className="font-normal">
       <span>{keyword}</span>
       <b>{value}</b>
-    </div>
+    </BodyShort>
   );
 }

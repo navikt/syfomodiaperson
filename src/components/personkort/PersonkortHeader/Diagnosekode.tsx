@@ -1,17 +1,12 @@
 import React from "react";
-import styled from "styled-components";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
-import { Tooltip } from "@navikt/ds-react";
-import { MedisinskrinImage } from "../../../../img/ImageComponents";
+import { BodyShort, Tooltip } from "@navikt/ds-react";
+import { MedisinskrinImage } from "../../../../img/ImageComponents.ts";
 import { sykmeldingerSortertNyestTilEldstPeriode } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
 const texts = {
   tooltip: "Siste kjente diagnosekode",
 };
-
-const DiagnosekodeWrapper = styled.div`
-  align-self: end;
-`;
 
 export function Diagnosekode() {
   const { sykmeldinger } = useGetSykmeldingerQuery();
@@ -22,14 +17,14 @@ export function Diagnosekode() {
 
   return (
     !!diagnosekode && (
-      <DiagnosekodeWrapper>
-        <Tooltip content={texts.tooltip}>
-          <div>
-            <img src={MedisinskrinImage} alt="Medisinskrin" />
-            <span className="ml-2">{diagnosekode}</span>
-          </div>
-        </Tooltip>
-      </DiagnosekodeWrapper>
+      <Tooltip content={texts.tooltip}>
+        <div className="flex  items-center">
+          <img src={MedisinskrinImage} alt="Medisinskrin" />
+          <BodyShort size="small" weight="semibold" className="ml-2">
+            {diagnosekode}
+          </BodyShort>
+        </div>
+      </Tooltip>
     )
   );
 }

@@ -4,6 +4,7 @@ import {
 } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import React from "react";
+import { BodyShort } from "@navikt/ds-react";
 
 const texts = {
   startDate: "Sykmeldt: ",
@@ -18,9 +19,13 @@ export function TilfellePeriod() {
   return (
     !!startDate &&
     !!endDate && (
-      <div className="font-normal">
-        <span>{texts.startDate}</span>
-        <b>{periode}</b>
+      <div>
+        <BodyShort size="small" as="span">
+          {texts.startDate}
+        </BodyShort>
+        <BodyShort size="small" weight="semibold" as="span">
+          {periode}
+        </BodyShort>
       </div>
     )
   );
