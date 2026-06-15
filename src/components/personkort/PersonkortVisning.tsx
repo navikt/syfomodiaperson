@@ -5,6 +5,7 @@ import { PersonkortLedere } from "./ledere/PersonkortLedere";
 import { PersonkortSykmeldt } from "./PersonkortSykmeldt";
 import { PersonkortEnhet } from "./PersonkortEnhet";
 import { PersonkortSikkerhetstiltak } from "@/components/personkort/PersonkortSikkerhetstiltak";
+import { Tabs } from "@navikt/ds-react";
 
 interface Props {
   visning: string;
@@ -30,7 +31,9 @@ export function PersonkortVisning({ visning }: Props) {
 
   return (
     <div aria-live="polite" className="personkortVisning">
-      {visningType()}
+      <Tabs.Panel value={visning} className="mt-4">
+        {visningType()}
+      </Tabs.Panel>
     </div>
   );
 }
