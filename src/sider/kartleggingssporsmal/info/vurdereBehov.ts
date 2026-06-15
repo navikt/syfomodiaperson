@@ -1,30 +1,36 @@
 import { KartleggingssporsmalSvarResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes.ts";
 import { KartleggingssporsmalFormSnapshotFieldType } from "@/data/kartleggingssporsmal/kartleggingssporsmalSkjemasvarTypes.ts";
 
-export function hasRiskoForLangtidsfravar(
+export function hasRisikoForLangtidsfravar(
   answeredQuestions: KartleggingssporsmalSvarResponseDTO
-) {
-  if (answeredQuestions.formSnapshot.fieldSnapshots) {
-    const fieldSnapshots = answeredQuestions.formSnapshot.fieldSnapshots.filter(
-      (field) =>
-        field?.fieldType ===
-        KartleggingssporsmalFormSnapshotFieldType.RADIO_GROUP
-    );
-    return lowRiskAnswers.some((lowRiskAnswer) => {
-      const fieldSnapshot = fieldSnapshots.find(
-        (field) => field.fieldId === lowRiskAnswer.fieldId
-      );
-      if (!fieldSnapshot) return false;
+): boolean {
+  const fieldSnapshots = answeredQuestions.formSnapshot.fieldSnapshots;
+  if (!fieldSnapshots) return false;
 
-      const lowRiskOption = fieldSnapshot.options?.find(
-        (option) => option.optionId === lowRiskAnswer.optionId
-      );
-      return lowRiskOption !== undefined && !lowRiskOption.wasSelected;
-    });
-  }
+  const radioFieldSnapshots = fieldSnapshots.filter(
+    (field) =>
+      field?.fieldType === KartleggingssporsmalFormSnapshotFieldType.RADIO_GROUP
+  );
+
+  const someNotLowRiskOptionsSelected = lowRiskOptions.some((lowRiskOption) => {
+    const matchingFieldSnapshot = radioFieldSnapshots.find(
+      (field) => field.fieldId === lowRiskOption.fieldId
+    );
+
+    const lowRiskOptionInSnapshot = matchingFieldSnapshot?.options?.find(
+      (option) => option.optionId === lowRiskOption.optionId
+    );
+
+    return (
+      lowRiskOptionInSnapshot !== undefined &&
+      !lowRiskOptionInSnapshot.wasSelected
+    );
+  });
+
+  return someNotLowRiskOptionsSelected;
 }
 
-export const lowRiskAnswers = [
+export const lowRiskOptions = [
   {
     fieldId: "hvorSannsynligTilbakeTilJobben",
     optionId: "1a",

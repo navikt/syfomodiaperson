@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
-  hasRiskoForLangtidsfravar,
-  lowRiskAnswers,
+  hasRisikoForLangtidsfravar,
+  lowRiskOptions,
 } from "@/sider/kartleggingssporsmal/info/vurdereBehov.ts";
 import {
   KartleggingssporsmalFormSnapshotFieldType,
@@ -40,7 +40,7 @@ function createAnsweredQuestions(
     createdAt: new Date("2026-01-01"),
     formSnapshot: {
       formSemanticVersion: "1.0.0",
-      fieldSnapshots: lowRiskAnswers.map((answer) =>
+      fieldSnapshots: lowRiskOptions.map((answer) =>
         createRadioGroupFieldSnapshot(
           answer.fieldId,
           overrides[answer.fieldId] ?? answer.optionId,
@@ -55,19 +55,19 @@ describe("vurdereBehov", () => {
   it("returns false when all selected options are low-risk answers", () => {
     const answeredQuestions = createAnsweredQuestions();
 
-    const hasRisk = hasRiskoForLangtidsfravar(answeredQuestions);
+    const hasRisk = hasRisikoForLangtidsfravar(answeredQuestions);
 
     expect(hasRisk).to.equal(false);
   });
 
-  it.each(lowRiskAnswers)(
+  it.each(lowRiskOptions)(
     "returns true when $field is answered with a risk option",
     ({ fieldId }) => {
       const answeredQuestions = createAnsweredQuestions({
         [fieldId]: RISK_OPTION_ID,
       });
 
-      const hasRisk = hasRiskoForLangtidsfravar(answeredQuestions);
+      const hasRisk = hasRisikoForLangtidsfravar(answeredQuestions);
 
       expect(hasRisk).to.equal(true);
     }
@@ -75,11 +75,11 @@ describe("vurdereBehov", () => {
 
   it("returns true when all answers differ from low-risk options", () => {
     const allRiskOptions = Object.fromEntries(
-      lowRiskAnswers.map((answer) => [answer.fieldId, RISK_OPTION_ID])
+      lowRiskOptions.map((answer) => [answer.fieldId, RISK_OPTION_ID])
     );
     const answeredQuestions = createAnsweredQuestions(allRiskOptions);
 
-    const hasRisk = hasRiskoForLangtidsfravar(answeredQuestions);
+    const hasRisk = hasRisikoForLangtidsfravar(answeredQuestions);
 
     expect(hasRisk).to.equal(true);
   });
@@ -105,7 +105,7 @@ describe("vurdereBehov", () => {
       },
     };
 
-    const hasRisk = hasRiskoForLangtidsfravar(answeredQuestions);
+    const hasRisk = hasRisikoForLangtidsfravar(answeredQuestions);
 
     expect(hasRisk).to.equal(false);
   });
