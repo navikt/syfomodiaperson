@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   hasRisikoForLangtidsfravar,
+  knownRadioFieldIds,
   lowRiskOptionIdByRadioFieldId,
 } from "@/sider/kartleggingssporsmal/info/vurdereBehov.ts";
 import {
@@ -9,11 +10,15 @@ import {
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalSkjemasvarTypes";
 import { KartleggingssporsmalSvarResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 
-function createRadioGroupFieldSnapshot(
-  fieldId: string,
-  selectedOptionId: string,
-  optionIds: readonly string[]
-): KartleggingssporsmalRadioGroupFieldSnapshot {
+function createRadioGroupFieldSnapshot({
+  fieldId,
+  selectedOptionId,
+  optionIds,
+}: {
+  fieldId: string;
+  selectedOptionId: string;
+  optionIds: readonly string[];
+}): KartleggingssporsmalRadioGroupFieldSnapshot {
   return {
     fieldId,
     fieldType: KartleggingssporsmalFormSnapshotFieldType.RADIO_GROUP,
@@ -30,9 +35,13 @@ function createRadioGroupFieldSnapshot(
 
 const RISK_OPTION_ID = "RISK_OPTION";
 
-function createAnsweredQuestions(
-  overrides: Partial<Record<string, string>> = {}
-): KartleggingssporsmalSvarResponseDTO {
+const ALL_FIELDS = "ALL_FIELDS" as const;
+
+function createAnsweredQuestions({
+  fieldsWithRiskOptionSelected,
+}: {
+  fieldsWithRiskOptionSelected: string[] | typeof ALL_FIELDS;
+}): KartleggingssporsmalSvarResponseDTO {
   return {
     uuid: "test-uuid",
     fnr: "12345678910",
@@ -41,12 +50,19 @@ function createAnsweredQuestions(
     formSnapshot: {
       formSemanticVersion: "1.0.0",
       fieldSnapshots: Object.entries(lowRiskOptionIdByRadioFieldId).map(
-        ([fieldId, optionId]) =>
-          createRadioGroupFieldSnapshot(
+        ([fieldId, lowRiskOptionId]) => {
+          const selectRiskOption =
+            fieldsWithRiskOptionSelected === ALL_FIELDS ||
+            fieldsWithRiskOptionSelected.includes(fieldId);
+
+          return createRadioGroupFieldSnapshot({
             fieldId,
-            overrides[fieldId] ?? optionId,
-            [optionId, RISK_OPTION_ID]
-          )
+            selectedOptionId: selectRiskOption
+              ? RISK_OPTION_ID
+              : lowRiskOptionId,
+            optionIds: [lowRiskOptionId, RISK_OPTION_ID],
+          });
+        }
       ),
     },
   };
@@ -54,18 +70,20 @@ function createAnsweredQuestions(
 
 describe("vurdereBehov", () => {
   it("returns false when all selected options are low-risk answers", () => {
-    const answeredQuestions = createAnsweredQuestions();
+    const answeredQuestions = createAnsweredQuestions({
+      fieldsWithRiskOptionSelected: [],
+    });
 
     const hasRisk = hasRisikoForLangtidsfravar(answeredQuestions);
 
     expect(hasRisk).to.equal(false);
   });
 
-  it.each(Object.keys(lowRiskOptionIdByRadioFieldId))(
+  it.each(knownRadioFieldIds)(
     "returns true when %s is answered with a risk option",
     (fieldId) => {
       const answeredQuestions = createAnsweredQuestions({
-        [fieldId]: RISK_OPTION_ID,
+        fieldsWithRiskOptionSelected: [fieldId],
       });
 
       const hasRisk = hasRisikoForLangtidsfravar(answeredQuestions);
@@ -75,13 +93,9 @@ describe("vurdereBehov", () => {
   );
 
   it("returns true when all answers differ from low-risk options", () => {
-    const allRiskOptions = Object.fromEntries(
-      Object.keys(lowRiskOptionIdByRadioFieldId).map((fieldId) => [
-        fieldId,
-        RISK_OPTION_ID,
-      ])
-    );
-    const answeredQuestions = createAnsweredQuestions(allRiskOptions);
+    const answeredQuestions = createAnsweredQuestions({
+      fieldsWithRiskOptionSelected: ALL_FIELDS,
+    });
 
     const hasRisk = hasRisikoForLangtidsfravar(answeredQuestions);
 
