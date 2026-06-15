@@ -13,9 +13,9 @@ import {
   useCurrentVarighetOppfolgingstilfelle,
   useStartOfLatestOppfolgingstilfelle,
 } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { useArbeidsforholdQuery } from "@/data/arbeidsforhold/arbeidsforholdQueryHooks";
 import { getKvinneImage, getMannImage } from "@/utils/festiveUtils";
 import { KJOENN } from "@/konstanter";
+import { Arbeidsforhold } from "@/components/personkort/PersonkortHeader/Arbeidsforhold.tsx";
 
 const texts = {
   copied: "Kopiert!",
@@ -30,7 +30,6 @@ export function PersonkortHeader() {
   const oppfolgingstilfelleStartDate = useStartOfLatestOppfolgingstilfelle();
   const oppfolgingstilfelleVarighetUker =
     useCurrentVarighetOppfolgingstilfelle();
-  useArbeidsforholdQuery();
 
   const maksdato = getMaksdato.data?.maxDate;
 
@@ -49,16 +48,18 @@ export function PersonkortHeader() {
           />
         )}
         <div>
-          <Heading size="xsmall" level="3">
-            {navbruker.navn}
-            {navbruker.alder !== null && ` (${navbruker.alder} år)`}
-          </Heading>
+          <div className="flex gap-2">
+            <Heading size="xsmall" level="3">
+              {navbruker.navn}
+              {navbruker.alder !== null && ` (${navbruker.alder} år)`}
+            </Heading>
 
-          <div className="flex items-center gap-2 text-base">
-            {formaterFnr(personident)}
-            <CopyButton message={texts.copied} value={personident} />
+            <div className="flex items-center gap-2 text-base">
+              {formaterFnr(personident)}
+              <CopyButton message={texts.copied} value={personident} />
+            </div>
           </div>
-
+          <Arbeidsforhold />
           <HStack gap="space-12">
             <TilfellePeriod />
             {oppfolgingstilfelleStartDate && (
@@ -69,7 +70,6 @@ export function PersonkortHeader() {
             )}
             <Diagnosekode />
           </HStack>
-
           {getMaksdato.isSuccess && <Utbetalingsinfo maksdato={maksdato} />}
         </div>
       </div>
