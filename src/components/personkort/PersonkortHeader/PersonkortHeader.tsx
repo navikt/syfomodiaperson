@@ -1,7 +1,8 @@
 import React from "react";
+import { CopyButton } from "@/components/kopierknapp/CopyButton";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
-import { BodyShort, CopyButton, Heading, HStack } from "@navikt/ds-react";
+import { BodyShort, HStack } from "@navikt/ds-react";
 import { PersonkortHeaderTags } from "@/components/personkort/PersonkortHeader/PersonkortHeaderTags";
 import { TilfellePeriod } from "@/components/personkort/PersonkortHeader/TilfellePeriod";
 import { Diagnosekode } from "@/components/personkort/PersonkortHeader/Diagnosekode";
@@ -17,9 +18,11 @@ import { KJOENN } from "@/konstanter";
 import { Arbeidsforhold } from "@/components/personkort/PersonkortHeader/Arbeidsforhold.tsx";
 
 const texts = {
+  copied: "Kopiert!",
   varighet: "Varighet: ",
   uker: "uker",
   fnr: "F.nr: ",
+  kopiertFnr: "Kopiert fødselsnummer",
 };
 
 export function PersonkortHeader() {
@@ -38,7 +41,7 @@ export function PersonkortHeader() {
         <div className="flex mb-1">
           {navbruker.kjonn !== KJOENN.UKJENT && (
             <img
-              className="mr-4 w-12"
+              className="mr-2 w-12"
               src={
                 navbruker.kjonn === KJOENN.KVINNE
                   ? getKvinneImage()
@@ -48,25 +51,30 @@ export function PersonkortHeader() {
             />
           )}
           <div>
-            <div className="flex gap-2">
-            <Heading size="xsmall" level="3" className="uppercase">
-              {navbruker.navn}
-              {navbruker.alder !== null && ` (${navbruker.alder} år)`}
-            </Heading>
-            <div className="flex items-center gap-2">
-              <div>
-                <BodyShort size="medium" as="span">
-                  {texts.fnr}
-                </BodyShort>
-                <BodyShort size="medium" weight="semibold" as="span">
-                  {formaterFnr(personident)}
-                </BodyShort>
+            <div className="flex gap-3 items-center">
+              <BodyShort size="small" weight="semibold" className="uppercase">
+                {navbruker.navn}
+                {navbruker.alder !== null && ` (${navbruker.alder} år)`}
+              </BodyShort>
+              <div className="flex items-center">
+                <div>
+                  <BodyShort size="small" as="span">
+                    {texts.fnr}
+                  </BodyShort>
+                  <BodyShort size="small" weight="semibold" as="span">
+                    {formaterFnr(personident)}
+                  </BodyShort>
+                </div>
+                <CopyButton
+                  message={texts.copied}
+                  value={personident}
+                  iconTitle={texts.kopiertFnr}
+                />
               </div>
-              <CopyButton copyText={personident} className="p-0" />
             </div>
+            <Arbeidsforhold />
           </div>
         </div>
-        <Arbeidsforhold />
         <HStack gap="space-12">
           <TilfellePeriod />
           {oppfolgingstilfelleStartDate && (
@@ -84,7 +92,6 @@ export function PersonkortHeader() {
           <Diagnosekode />
         </HStack>
         {getMaksdato.isSuccess && <Utbetalingsinfo maksdato={maksdato} />}
-      </div>
       </div>
       <PersonkortHeaderTags />
     </>
