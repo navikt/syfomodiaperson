@@ -12,15 +12,14 @@ export function hasRisikoForLangtidsfravar(
       field?.fieldType === KartleggingssporsmalFormSnapshotFieldType.RADIO_GROUP
   );
 
-  const someLowRiskOptionNotSelected = radioFieldSnapshots.some(
+  const someLowRiskOptionInSnapshotNotSelected = radioFieldSnapshots.some(
     (radioFieldSnapshot) => {
-      const predefinedLowRiskOptionIdForField = lowRiskOptionIdByField.get(
-        radioFieldSnapshot.fieldId as RadioFieldId
-      );
-      if (!predefinedLowRiskOptionIdForField) return false;
+      if (!isKnownRadioFieldId(radioFieldSnapshot.fieldId)) return false;
+      const lowRiskOptionIdForField =
+        lowRiskOptionIdByRadioFieldId[radioFieldSnapshot.fieldId];
 
       const lowRiskOptionFoundInSnapshot = radioFieldSnapshot.options?.find(
-        (option) => option.optionId === predefinedLowRiskOptionIdForField
+        (option) => option.optionId === lowRiskOptionIdForField
       );
 
       return (
@@ -30,20 +29,19 @@ export function hasRisikoForLangtidsfravar(
     }
   );
 
-  return someLowRiskOptionNotSelected;
+  return someLowRiskOptionInSnapshotNotSelected;
 }
 
-type RadioFieldId =
-  | "hvorSannsynligTilbakeTilJobben"
-  | "tilbakeTilJobbenHvorSannsynligFlervalg"
-  | "arbeidsgiverHvordanErSamarbeidFlervalg"
-  | "arbeidsgiverFaarDuOppfolgingFlervalg"
-  | "naarTilbakeTilJobbenFlervalg";
+export const lowRiskOptionIdByRadioFieldId = {
+  hvorSannsynligTilbakeTilJobben: "1a",
+  tilbakeTilJobbenHvorSannsynligFlervalg: "1a",
+  arbeidsgiverHvordanErSamarbeidFlervalg: "2a",
+  arbeidsgiverFaarDuOppfolgingFlervalg: "ja",
+  naarTilbakeTilJobbenFlervalg: "3a",
+} as const;
 
-export const lowRiskOptionIdByField = new Map<RadioFieldId, string>([
-  ["hvorSannsynligTilbakeTilJobben", "1a"],
-  ["tilbakeTilJobbenHvorSannsynligFlervalg", "1a"],
-  ["arbeidsgiverHvordanErSamarbeidFlervalg", "2a"],
-  ["arbeidsgiverFaarDuOppfolgingFlervalg", "ja"],
-  ["naarTilbakeTilJobbenFlervalg", "3a"],
-]);
+type KnownRadioFieldId = keyof typeof lowRiskOptionIdByRadioFieldId;
+
+function isKnownRadioFieldId(fieldId: string): fieldId is KnownRadioFieldId {
+  return fieldId in lowRiskOptionIdByRadioFieldId;
+}

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   hasRisikoForLangtidsfravar,
-  lowRiskOptionIdByField,
+  lowRiskOptionIdByRadioFieldId,
 } from "@/sider/kartleggingssporsmal/info/vurdereBehov.ts";
 import {
   KartleggingssporsmalFormSnapshotFieldType,
@@ -40,11 +40,13 @@ function createAnsweredQuestions(
     createdAt: new Date("2026-01-01"),
     formSnapshot: {
       formSemanticVersion: "1.0.0",
-      fieldSnapshots: [...lowRiskOptionIdByField].map(([fieldId, optionId]) =>
-        createRadioGroupFieldSnapshot(fieldId, overrides[fieldId] ?? optionId, [
-          optionId,
-          RISK_OPTION_ID,
-        ])
+      fieldSnapshots: Object.entries(lowRiskOptionIdByRadioFieldId).map(
+        ([fieldId, optionId]) =>
+          createRadioGroupFieldSnapshot(
+            fieldId,
+            overrides[fieldId] ?? optionId,
+            [optionId, RISK_OPTION_ID]
+          )
       ),
     },
   };
@@ -59,7 +61,7 @@ describe("vurdereBehov", () => {
     expect(hasRisk).to.equal(false);
   });
 
-  it.each([...lowRiskOptionIdByField.keys()])(
+  it.each(Object.keys(lowRiskOptionIdByRadioFieldId))(
     "returns true when %s is answered with a risk option",
     (fieldId) => {
       const answeredQuestions = createAnsweredQuestions({
@@ -74,7 +76,7 @@ describe("vurdereBehov", () => {
 
   it("returns true when all answers differ from low-risk options", () => {
     const allRiskOptions = Object.fromEntries(
-      Array.from(lowRiskOptionIdByField.keys(), (fieldId) => [
+      Object.keys(lowRiskOptionIdByRadioFieldId).map((fieldId) => [
         fieldId,
         RISK_OPTION_ID,
       ])
