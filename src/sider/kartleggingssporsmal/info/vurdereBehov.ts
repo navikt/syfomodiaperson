@@ -12,43 +12,38 @@ export function hasRisikoForLangtidsfravar(
       field?.fieldType === KartleggingssporsmalFormSnapshotFieldType.RADIO_GROUP
   );
 
-  const someNotLowRiskOptionsSelected = lowRiskOptions.some((lowRiskOption) => {
-    const matchingFieldSnapshot = radioFieldSnapshots.find(
-      (field) => field.fieldId === lowRiskOption.fieldId
-    );
+  const someLowRiskOptionNotSelected = radioFieldSnapshots.some(
+    (radioFieldSnapshot) => {
+      const predefinedLowRiskOptionIdForField = lowRiskOptionIdByField.get(
+        radioFieldSnapshot.fieldId as RadioFieldId
+      );
+      if (!predefinedLowRiskOptionIdForField) return false;
 
-    const lowRiskOptionInSnapshot = matchingFieldSnapshot?.options?.find(
-      (option) => option.optionId === lowRiskOption.optionId
-    );
+      const lowRiskOptionFoundInSnapshot = radioFieldSnapshot.options?.find(
+        (option) => option.optionId === predefinedLowRiskOptionIdForField
+      );
 
-    return (
-      lowRiskOptionInSnapshot !== undefined &&
-      !lowRiskOptionInSnapshot.wasSelected
-    );
-  });
+      return (
+        lowRiskOptionFoundInSnapshot &&
+        !lowRiskOptionFoundInSnapshot.wasSelected
+      );
+    }
+  );
 
-  return someNotLowRiskOptionsSelected;
+  return someLowRiskOptionNotSelected;
 }
 
-export const lowRiskOptions = [
-  {
-    fieldId: "hvorSannsynligTilbakeTilJobben",
-    optionId: "1a",
-  },
-  {
-    fieldId: "tilbakeTilJobbenHvorSannsynligFlervalg",
-    optionId: "1a",
-  },
-  {
-    fieldId: "arbeidsgiverHvordanErSamarbeidFlervalg",
-    optionId: "2a",
-  },
-  {
-    fieldId: "arbeidsgiverFaarDuOppfolgingFlervalg",
-    optionId: "ja",
-  },
-  {
-    fieldId: "naarTilbakeTilJobbenFlervalg",
-    optionId: "3a",
-  },
-] as const;
+type RadioFieldId =
+  | "hvorSannsynligTilbakeTilJobben"
+  | "tilbakeTilJobbenHvorSannsynligFlervalg"
+  | "arbeidsgiverHvordanErSamarbeidFlervalg"
+  | "arbeidsgiverFaarDuOppfolgingFlervalg"
+  | "naarTilbakeTilJobbenFlervalg";
+
+export const lowRiskOptionIdByField = new Map<RadioFieldId, string>([
+  ["hvorSannsynligTilbakeTilJobben", "1a"],
+  ["tilbakeTilJobbenHvorSannsynligFlervalg", "1a"],
+  ["arbeidsgiverHvordanErSamarbeidFlervalg", "2a"],
+  ["arbeidsgiverFaarDuOppfolgingFlervalg", "ja"],
+  ["naarTilbakeTilJobbenFlervalg", "3a"],
+]);
