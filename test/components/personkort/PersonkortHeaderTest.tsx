@@ -214,7 +214,7 @@ describe("PersonkortHeader", () => {
     renderPersonkortHeader();
 
     expect(screen.getByText("Arbeidsforhold:")).to.exist;
-    expect(screen.getByText(/Sykepleier i Sykehus AS \(80%\)/)).to.exist;
+    expect(screen.getByText(/Sykepleier i Sykehus AS \(80 %\)/)).to.exist;
     expect(screen.queryByText(",")).to.not.exist;
   });
 
@@ -265,8 +265,8 @@ describe("PersonkortHeader", () => {
     renderPersonkortHeader();
 
     expect(screen.getByText("Arbeidsforhold:")).to.exist;
-    expect(screen.getByText(/Sykepleier i Sykehus AS \(80%\),/)).to.exist;
-    expect(screen.getByText(/Brannmann i Brannvesenet \(40%\)/)).to.exist;
+    expect(screen.getByText(/Sykepleier i Sykehus AS \(80 %\),/)).to.exist;
+    expect(screen.getByText(/Brannmann i Brannvesenet \(40 %\)/)).to.exist;
   });
 
   it("viser 'mangler' når ingen aktive arbeidsforhold finnes", () => {
