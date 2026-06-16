@@ -2,7 +2,7 @@ import React from "react";
 import { BodyShort, Box, Heading, List, ReadMore } from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
 import { KartleggingssporsmalSvarResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes.ts";
-import { hasRiskoForLangtidsfravar } from "@/sider/kartleggingssporsmal/info/vurdereBehov.ts";
+import { hasRisikoForLangtidsfravar } from "@/sider/kartleggingssporsmal/info/vurdereBehov.ts";
 import { ArrowsCirclepathIcon } from "@navikt/aksel-icons";
 
 const texts = {
@@ -64,7 +64,7 @@ export function KartleggingInfo({ answeredQuestions }: Props) {
           </div>
         </List.Item>
         <List.Item>
-          {hasRiskoForLangtidsfravar(answeredQuestions)
+          {hasRisikoForLangtidsfravar(answeredQuestions)
             ? texts.list.hasRiskoForLangtidsfravar
             : boldRegex(texts.list.noRiskoForLangtidsfravar, "ikke")}
         </List.Item>
