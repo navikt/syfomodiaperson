@@ -33,24 +33,19 @@ export function hasRisikoForLangtidsfravar(
   return someLowRiskOptionInSnapshotNotSelected;
 }
 
-export const knownRadioFieldIds = [
-  "hvorSannsynligTilbakeTilJobben",
-  "tilbakeTilJobbenHvorSannsynligFlervalg",
-  "arbeidsgiverHvordanErSamarbeidFlervalg",
-  "arbeidsgiverFaarDuOppfolgingFlervalg",
-  "naarTilbakeTilJobbenFlervalg",
-] as const;
+export const lowRiskOptionIdByRadioFieldId = {
+  hvorSannsynligTilbakeTilJobben: "1a",
+  tilbakeTilJobbenHvorSannsynligFlervalg: "1a",
+  arbeidsgiverHvordanErSamarbeidFlervalg: "2a",
+  arbeidsgiverFaarDuOppfolgingFlervalg: "ja",
+  naarTilbakeTilJobbenFlervalg: "3a",
+} as const;
 
-export const lowRiskOptionIdByRadioFieldId: Record<KnownRadioFieldId, string> =
-  {
-    hvorSannsynligTilbakeTilJobben: "1a",
-    tilbakeTilJobbenHvorSannsynligFlervalg: "1a",
-    arbeidsgiverHvordanErSamarbeidFlervalg: "2a",
-    arbeidsgiverFaarDuOppfolgingFlervalg: "ja",
-    naarTilbakeTilJobbenFlervalg: "3a",
-  } as const;
+export const knownRadioFieldIds = Object.keys(
+  lowRiskOptionIdByRadioFieldId
+) as KnownRadioFieldId[];
 
-type KnownRadioFieldId = (typeof knownRadioFieldIds)[number];
+type KnownRadioFieldId = keyof typeof lowRiskOptionIdByRadioFieldId;
 
 function isKnownRadioFieldId(fieldId: string): fieldId is KnownRadioFieldId {
   return fieldId in lowRiskOptionIdByRadioFieldId;
