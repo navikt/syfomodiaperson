@@ -50,7 +50,7 @@ function logEvent() {
 interface Props {
   nyesteKandidat: KartleggingssporsmalKandidatResponseDTO;
   answeredQuestions: KartleggingssporsmalSvarResponseDTO;
-  // Vi må ta inn denne fordi visning av flexjar-boksen er knyttet til mutation i Kartleggingssporsmal.tsx
+  // Vi må ta inn vurderSvarMutation fordi visning av tilbakemeldingsboksen er knyttet til mutation i KartleggingssporsmalSide.tsx
   // Kan unngå dette når man har én vurderingsside, ikke to ulike måter å vurdere på
   vurderSvarMutation: UseMutationResult<
     KartleggingssporsmalKandidatResponseDTO,

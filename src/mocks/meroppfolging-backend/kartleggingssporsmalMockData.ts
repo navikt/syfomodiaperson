@@ -115,6 +115,7 @@ export const kartleggingssporsmalFlervalgV1Answered: KartleggingssporsmalSvarRes
     createdAt: daysFromToday(-2),
     formSnapshot: {
       formSemanticVersion: "1.0.0",
+      formIdentifier: "skjemavariant",
       fieldSnapshots: [
         tilbakeTilJobbenHvorSannsynligHighRisk,
         arbeidsgiverHvordanErSamarbeidHighRisk,
@@ -132,6 +133,7 @@ export const kartleggingssporsmalFlervalgV1LowRiskAnswered: Kartleggingssporsmal
     createdAt: daysFromToday(-2),
     formSnapshot: {
       formSemanticVersion: "1.0.0",
+      formIdentifier: "skjemavariant",
       fieldSnapshots: [
         tilbakeTilJobbenHvorSannsynligLowRisk,
         arbeidsgiverHvordanErSamarbeidLowRisk,
@@ -255,6 +257,7 @@ export const kartleggingssporsmalFlervalgFritekstV3Answered: Kartleggingssporsma
     createdAt: daysFromToday(-2),
     formSnapshot: {
       formSemanticVersion: "1.0.0",
+      formIdentifier: "skjemavariant",
       fieldSnapshots: [
         mulighetForTilbakeTilJobbenHighRisk,
         mulighetForTilbakeTilJobbenUtfordrendeBegrunnelse,
@@ -274,6 +277,7 @@ export const kartleggingssporsmalFlervalgFritekstV3LowRiskAnswered: Kartleggings
     createdAt: daysFromToday(-2),
     formSnapshot: {
       formSemanticVersion: "1.0.0",
+      formIdentifier: "skjemavariant",
       fieldSnapshots: [
         mulighetForTilbakeTilJobbenLowRisk,
         arbeidsgiverFaarDuOppfolgingLowRisk,

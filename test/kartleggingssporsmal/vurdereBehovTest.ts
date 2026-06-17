@@ -48,6 +48,7 @@ function createAnsweredQuestions({
     createdAt: new Date("2026-01-01"),
     formSnapshot: {
       formSemanticVersion: "1.0.0",
+      formIdentifier: "skjemavariant",
       fieldSnapshots: Object.entries(lowRiskOptionIdByRadioFieldId).map(
         ([fieldId, lowRiskOptionId]) => {
           const selectRiskOption =
@@ -109,6 +110,7 @@ describe("vurdereBehov", () => {
       createdAt: new Date("2026-01-01"),
       formSnapshot: {
         formSemanticVersion: "1.0.0",
+        formIdentifier: "skjemavariant",
         fieldSnapshots: [
           {
             fieldId: "tilleggsinformasjon",

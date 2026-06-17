@@ -1,4 +1,5 @@
 export interface KartleggingssporsmalFormSnapshot {
+  formIdentifier: string;
   formSemanticVersion: string;
   fieldSnapshots: KartleggingssporsmalFieldSnapshotUnion[];
 }
