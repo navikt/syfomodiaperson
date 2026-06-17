@@ -24,7 +24,7 @@ function ArbeidsforholdText({ arbeidsforhold, isLast }: Props) {
   return (
     <>
       {arbeidsforhold.yrke} i {virksomhetsnavn} (
-      {arbeidsforhold.stillingsprosent}%)
+      {arbeidsforhold.stillingsprosent}&nbsp;%)
       {!isLast && ", "}
     </>
   );
