@@ -36,6 +36,7 @@ export function hasRisikoForLangtidsfravar(
 export const lowRiskOptionIdByRadioFieldId = {
   hvorSannsynligTilbakeTilJobben: "1a",
   tilbakeTilJobbenHvorSannsynligFlervalg: "1a",
+  mulighetForTilbakeTilJobbenFlervalg: "kommer_tilbake",
   arbeidsgiverHvordanErSamarbeidFlervalg: "2a",
   arbeidsgiverFaarDuOppfolgingFlervalg: "ja",
   naarTilbakeTilJobbenFlervalg: "3a",

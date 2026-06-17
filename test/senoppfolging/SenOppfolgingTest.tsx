@@ -11,7 +11,6 @@ import {
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
 import { senOppfolgingSvarQueryKeys } from "@/data/senoppfolging/useSenOppfolgingSvarQuery";
-import { merOppfolgingMock } from "@/mocks/meroppfolging-backend/merOppfolgingMock";
 import { senOppfolgingKandidatQueryKeys } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import {
   ferdigbehandletKandidatMock,
@@ -30,6 +29,7 @@ import {
 import { changeTextInput, clickButton, getTextInput } from "../testUtils";
 import { renderWithRouter } from "../testRouterUtils";
 import { senOppfolgingPath } from "@/AppRouter";
+import { snartSluttPaSykepengeneMock } from "@/mocks/meroppfolging-backend/snartSluttPaSykepengeneMockData.ts";
 
 let queryClient: QueryClient;
 
@@ -53,7 +53,7 @@ const mockSenOppfolgingSvar = () => {
     senOppfolgingSvarQueryKeys.senOppfolgingSvar(
       ARBEIDSTAKER_DEFAULT.personIdent
     ),
-    () => merOppfolgingMock
+    () => snartSluttPaSykepengeneMock
   );
 };
 const mockSenOppfolgingKandidat = (
@@ -81,7 +81,7 @@ describe("Sen oppfolging", () => {
         "Den sykmeldte har ikke mottatt varsel om at det snart er slutt på sykepengene enda."
       )
     ).to.exist;
-    merOppfolgingMock.questionResponses.map((questionResponse) => {
+    snartSluttPaSykepengeneMock.questionResponses.map((questionResponse) => {
       expect(screen.queryByText(questionResponse.questionText)).to.not.exist;
       expect(screen.queryByText(questionResponse.answerText)).to.not.exist;
     });
@@ -118,7 +118,7 @@ describe("Sen oppfolging", () => {
     mockSenOppfolgingKandidat([senOppfolgingKandidatMock]);
     renderSenOppfolging();
 
-    merOppfolgingMock.questionResponses.map((questionResponse) => {
+    snartSluttPaSykepengeneMock.questionResponses.map((questionResponse) => {
       expect(screen.getByText(questionResponse.questionText)).to.exist;
       expect(screen.getByText(questionResponse.answerText)).to.exist;
     });

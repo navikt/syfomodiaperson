@@ -15,10 +15,7 @@ import {
   kartleggingssporsmalFerdigbehandlet,
   kartleggingssporsmalVurderingFerdigbehandlet,
 } from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
-import {
-  kartleggingssporsmalAnswered,
-  kartleggingssporsmalLowRiskAnswered,
-} from "@/mocks/meroppfolging-backend/merOppfolgingMock";
+
 import {
   ARBEIDSTAKER_DEFAULT,
   BEHANDLENDE_ENHET_DEFAULT,
@@ -43,6 +40,11 @@ import { ToggleNames } from "@/data/unleash/unleash_types.ts";
 import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock.ts";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
 import { daysFromToday } from "@/utils/datoUtils.ts";
+import {
+  kartleggingssporsmalFlervalgFritekstV3Answered,
+  kartleggingssporsmalFlervalgV1Answered,
+  kartleggingssporsmalFlervalgV1LowRiskAnswered,
+} from "@/mocks/meroppfolging-backend/kartleggingssporsmalMockData.ts";
 
 let queryClient: QueryClient;
 
@@ -226,7 +228,7 @@ describe("Kartleggingssporsmal", () => {
       ARBEIDSTAKER_DEFAULT.personIdent
     );
     mockKartleggingssporsmalSvar(
-      kartleggingssporsmalAnswered,
+      kartleggingssporsmalFlervalgV1Answered,
       kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
     );
 
@@ -290,13 +292,65 @@ describe("Kartleggingssporsmal", () => {
     expect(getButton("Svarene er vurdert, fjern oppgaven")).to.exist;
   });
 
+  it("Sykmeldt is kandidat and has answered FLERVALG_FRITEKST_V3 questions", () => {
+    mockKartleggingssporsmalKandidat(
+      kartleggingIsKandidatAndAnsweredQuestions,
+      ARBEIDSTAKER_DEFAULT.personIdent
+    );
+    mockKartleggingssporsmalSvar(
+      kartleggingssporsmalFlervalgFritekstV3Answered,
+      kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+    );
+
+    renderKartleggingssporsmal();
+
+    expect(
+      screen.getByText(
+        "Hvordan ser du for deg muligheten for å komme tilbake til din nåværende jobb og stilling?"
+      )
+    ).to.exist;
+    expect(
+      screen.getByText(
+        "Jeg ser på det som utfordrende å komme tilbake til samme jobb og stilling"
+      )
+    ).to.exist;
+
+    expect(
+      screen.getByText(
+        "Beskriv hva som er utfordrende, og hva du tror kan hjelpe deg videre"
+      )
+    ).to.exist;
+    expect(
+      screen.getByText(
+        "Får du oppfølging av arbeidsgiveren din nå når du er sykmeldt?"
+      )
+    ).to.exist;
+    expect(
+      screen.getByText(
+        "Nei, jeg opplever manglende oppfølging og at tilpasninger er vanskelig."
+      )
+    ).to.exist;
+    expect(
+      screen.getByText(
+        "Hva savner du i samarbeidet med arbeidsgiver for at du skal få bedre oppfølging?"
+      )
+    ).to.exist;
+    expect(screen.getByDisplayValue("Ingen tekst")).to.exist;
+
+    expect(
+      screen.queryByText(
+        "Hvordan vil du beskrive samarbeidet og relasjonen mellom deg og arbeidsgiveren din?"
+      )
+    ).to.not.exist;
+  });
+
   it("Sykmeldt is ferdigbehandlet", () => {
     mockKartleggingssporsmalKandidat(
       kartleggingssporsmalFerdigbehandlet,
       ARBEIDSTAKER_DEFAULT.personIdent
     );
     mockKartleggingssporsmalSvar(
-      kartleggingssporsmalAnswered,
+      kartleggingssporsmalFlervalgV1Answered,
       kartleggingssporsmalFerdigbehandlet.kandidatUuid
     );
 
@@ -325,7 +379,7 @@ describe("Kartleggingssporsmal", () => {
       ARBEIDSTAKER_DEFAULT.personIdent
     );
     mockKartleggingssporsmalSvar(
-      kartleggingssporsmalAnswered,
+      kartleggingssporsmalFlervalgV1Answered,
       kartleggingssporsmalVurderingFerdigbehandlet.kandidatUuid
     );
 
@@ -356,7 +410,7 @@ describe("Kartleggingssporsmal", () => {
         ARBEIDSTAKER_DEFAULT.personIdent
       );
       mockKartleggingssporsmalSvar(
-        kartleggingssporsmalAnswered,
+        kartleggingssporsmalFlervalgV1Answered,
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
       stubDefaultIsmeroppfolging(false);
@@ -374,7 +428,7 @@ describe("Kartleggingssporsmal", () => {
         ARBEIDSTAKER_DEFAULT.personIdent
       );
       mockKartleggingssporsmalSvar(
-        kartleggingssporsmalAnswered,
+        kartleggingssporsmalFlervalgV1Answered,
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
       stubVurderSvarError();
@@ -399,7 +453,7 @@ describe("Kartleggingssporsmal", () => {
         ARBEIDSTAKER_DEFAULT.personIdent
       );
       mockKartleggingssporsmalSvar(
-        kartleggingssporsmalAnswered,
+        kartleggingssporsmalFlervalgV1Answered,
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
       stubVurderSvarError();
@@ -418,7 +472,7 @@ describe("Kartleggingssporsmal", () => {
         ARBEIDSTAKER_DEFAULT.personIdent
       );
       mockKartleggingssporsmalSvar(
-        kartleggingssporsmalAnswered,
+        kartleggingssporsmalFlervalgV1Answered,
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
       stubDefaultIsmeroppfolging(true);
@@ -443,7 +497,7 @@ describe("Kartleggingssporsmal", () => {
         ARBEIDSTAKER_DEFAULT.personIdent
       );
       mockKartleggingssporsmalSvar(
-        kartleggingssporsmalAnswered,
+        kartleggingssporsmalFlervalgV1Answered,
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
       stubVurderSvarError();
@@ -480,7 +534,7 @@ describe("Kartleggingssporsmal", () => {
         ARBEIDSTAKER_DEFAULT.personIdent
       );
       mockKartleggingssporsmalSvar(
-        kartleggingssporsmalAnswered,
+        kartleggingssporsmalFlervalgV1Answered,
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
 
@@ -498,7 +552,7 @@ describe("Kartleggingssporsmal", () => {
         ARBEIDSTAKER_DEFAULT.personIdent
       );
       mockKartleggingssporsmalSvar(
-        kartleggingssporsmalLowRiskAnswered,
+        kartleggingssporsmalFlervalgV1LowRiskAnswered,
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
 
@@ -521,7 +575,7 @@ describe("Kartleggingssporsmal", () => {
         ARBEIDSTAKER_DEFAULT.personIdent
       );
       mockKartleggingssporsmalSvar(
-        kartleggingssporsmalAnswered,
+        kartleggingssporsmalFlervalgV1Answered,
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
 
@@ -539,7 +593,7 @@ describe("Kartleggingssporsmal", () => {
         ARBEIDSTAKER_DEFAULT.personIdent
       );
       mockKartleggingssporsmalSvar(
-        kartleggingssporsmalAnswered,
+        kartleggingssporsmalFlervalgV1Answered,
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
 
@@ -564,7 +618,7 @@ describe("Kartleggingssporsmal", () => {
         ARBEIDSTAKER_DEFAULT.personIdent
       );
       mockKartleggingssporsmalSvar(
-        kartleggingssporsmalAnswered,
+        kartleggingssporsmalFlervalgV1Answered,
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
 
@@ -604,7 +658,7 @@ describe("Kartleggingssporsmal", () => {
         ARBEIDSTAKER_DEFAULT.personIdent
       );
       mockKartleggingssporsmalSvar(
-        kartleggingssporsmalAnswered,
+        kartleggingssporsmalFlervalgV1Answered,
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
 
@@ -620,7 +674,7 @@ describe("Kartleggingssporsmal", () => {
         ARBEIDSTAKER_DEFAULT.personIdent
       );
       mockKartleggingssporsmalSvar(
-        kartleggingssporsmalAnswered,
+        kartleggingssporsmalFlervalgV1Answered,
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
 
@@ -636,11 +690,11 @@ describe("Kartleggingssporsmal", () => {
         ARBEIDSTAKER_DEFAULT.personIdent
       );
       mockKartleggingssporsmalSvar(
-        kartleggingssporsmalAnswered,
+        kartleggingssporsmalFlervalgV1Answered,
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
       mockKartleggingssporsmalSvar(
-        kartleggingssporsmalAnswered,
+        kartleggingssporsmalFlervalgV1Answered,
         tidligereKandidatMedSvar.kandidatUuid
       );
 
@@ -658,11 +712,11 @@ describe("Kartleggingssporsmal", () => {
         ARBEIDSTAKER_DEFAULT.personIdent
       );
       mockKartleggingssporsmalSvar(
-        kartleggingssporsmalAnswered,
+        kartleggingssporsmalFlervalgV1Answered,
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
       );
       mockKartleggingssporsmalSvar(
-        kartleggingssporsmalAnswered,
+        kartleggingssporsmalFlervalgV1Answered,
         tidligereKandidatMedSvar.kandidatUuid
       );
 
