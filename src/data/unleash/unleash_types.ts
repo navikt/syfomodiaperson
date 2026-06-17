@@ -7,7 +7,7 @@ export enum ToggleNames {
   isVirksomhetsinputEnabled = "isVirksomhetsinputEnabled",
   isTildelOppfolgingsenhetEnabled = "isTildelOppfolgingsenhetEnabled",
   isKartleggingssporsmalEnabled = "isKartleggingssporsmalEnabled",
-  isFlexjarKartleggingssporsmalEnabled = "isFlexjarKartleggingssporsmalEnabled",
+  isFlexjarKartleggingssporsmalEnabled = "isFlexjarKartleggingssporsmalEnabled", // Benytter Lumi, ikke Flexjar
   isForsokForsterketOppfolgingMerkingEnabled = "isForsokForsterketOppfolgingMerkingEnabled",
   isNyTilgangskontrollEnabled = "isNyTilgangskontrollEnabled",
   isVurderingssideKartleggingEnabled = "isVurderingssideKartleggingEnabled",

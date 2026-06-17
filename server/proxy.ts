@@ -306,7 +306,6 @@ export const setupProxy = (): express.Router => {
     "/sykepengedager-informasjon",
     proxyOnBehalfOf(Config.auth.sykepengedagerinformasjon)
   );
-  router.use("/flexjar-backend", proxyOnBehalfOf(Config.auth.flexjar));
   router.use("/lumi-api", proxyOnBehalfOf(Config.auth.lumiApi));
   router.use(
     "/veilarboppfolging",

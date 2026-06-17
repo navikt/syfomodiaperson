@@ -23,19 +23,19 @@ import {
   useKartleggingssporsmalSvarQuery,
   useKartleggingssporsmalVurderSvar,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
-import { getWeeksBetween, tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { EksternLenke } from "@/components/EksternLenke";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { Events, trackEvent } from "@/utils/umami";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";
-import KartleggingssporsmalFlexjar from "@/sider/kartleggingssporsmal/KartleggingssporsmalFlexjar";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import { StoreKey, useLocalStorageState } from "@/hooks/useLocalStorageState";
 import { KartleggingssporsmalHistorikk } from "@/sider/kartleggingssporsmal/historikk/KartleggingssporsmalHistorikk";
 import { KartleggingVurdering } from "@/sider/kartleggingssporsmal/vurdering/KartleggingVurdering.tsx";
 import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessAlert.tsx";
+import LumiSurvey from "@/components/lumi/LumiSurvey.tsx";
+import { kartleggingssporsmalSurvey } from "@/components/lumi/kartleggingssporsmalSurvey.ts";
 
 const texts = {
   title: "Kartleggingsspørsmål",
@@ -152,13 +152,24 @@ export default function KartleggingssporsmalSide(): ReactElement {
   const vurderSvar = useKartleggingssporsmalVurderSvar();
   const kontaktinformasjon = useKontaktinfoQuery();
 
-  const [feedbackDate] = useLocalStorageState<Date | null>(
-    StoreKey.FLEXJAR_KARTLEGGGINSSPORSMAL_FEEDBACK_DATE
-  );
-  const isFlexjarVisible =
+  const isSurveyVisible =
     toggles.isFlexjarKartleggingssporsmalEnabled &&
-    vurderSvar.isSuccess &&
-    (feedbackDate === null || getWeeksBetween(new Date(), feedbackDate) >= 6);
+    answeredQuestions &&
+    vurderSvar.isSuccess;
+
+  const lumiSurvey = isSurveyVisible ? (
+    <LumiSurvey
+      surveyId={"modia-kartleggingssporsmal"}
+      survey={kartleggingssporsmalSurvey}
+      context={{
+        tags: { formIdentifier: answeredQuestions.formSnapshot.formIdentifier },
+      }}
+      behavior={{
+        questionLayout: "steps",
+        dismissCooldownDays: 42,
+      }}
+    />
+  ) : null;
 
   const isPending =
     getKandidater.isPending ||
@@ -179,6 +190,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
     <Side
       tittel={texts.title}
       aktivtMenypunkt={Menypunkter.KARTLEGGINGSSPORSMAL}
+      lumi={lumiSurvey}
     >
       <Sidetopp tittel={texts.title} />
       <SideLaster isLoading={isPending} isError={isError}>
@@ -381,7 +393,6 @@ export default function KartleggingssporsmalSide(): ReactElement {
             </EksternLenke>
           </Box>
         )}
-        {isFlexjarVisible && <KartleggingssporsmalFlexjar />}
       </SideLaster>
     </Side>
   );

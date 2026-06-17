@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "@navikt/ds-css" layer(components);
+@import "@navikt/lumi-survey/styles.css";
 @config '../../tailwind.config.ts';
 
 .ekspanderbartPanel__tittel {

@@ -1,7 +1,7 @@
-import React from "react";
+import React, { ComponentProps } from "react";
 import {
-  LumiSurveyDock,
   type LumiSurveyConfig,
+  LumiSurveyDock,
   type LumiSurveyTransport,
 } from "@navikt/lumi-survey";
 import { LUMI_API_ROOT } from "@/apiConstants";
@@ -13,19 +13,25 @@ const transport: LumiSurveyTransport = {
   },
 };
 
-interface Props {
+type Props = {
   surveyId: string;
   survey: LumiSurveyConfig;
-}
+} & Partial<ComponentProps<typeof LumiSurveyDock>>;
 
 /** Wrapper rundt LumiSurveyDock som sender tilbakemeldinger via BFF-proxyen til lumi-api. */
-export default function LumiSurvey({ surveyId, survey }: Props) {
+export default function LumiSurvey({
+  surveyId,
+  survey,
+  behavior,
+  context,
+}: Props) {
   return (
     <LumiSurveyDock
       surveyId={surveyId}
       survey={survey}
+      context={context}
       transport={transport}
-      behavior={{ storageStrategy: "localStorage" }}
+      behavior={{ storageStrategy: "localStorage", ...behavior }}
     />
   );
 }

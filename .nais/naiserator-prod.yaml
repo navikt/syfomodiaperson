@@ -89,8 +89,6 @@ spec:
           namespace: teamsykmelding
         - application: sykepengesoknad-backend
           namespace: flex
-        - application: flexjar-backend
-          namespace: flex
         - application: lumi-api
           namespace: team-esyfo
         - application: sykepengedager-informasjon
@@ -232,10 +230,6 @@ spec:
       value: "prod-gcp.teamsykefravr.syfoveileder"
     - name: SYFOVEILEDER_HOST
       value: "http://syfoveileder"
-    - name: FLEXJAR_AAD_APP_CLIENT_ID
-      value: "prod-gcp.flex.flexjar-backend"
-    - name: FLEXJAR_HOST
-      value: "http://flexjar-backend.flex"
     - name: LUMI_API_AAD_APP_CLIENT_ID
       value: "prod-gcp.team-esyfo.lumi-api"
     - name: LUMI_API_HOST

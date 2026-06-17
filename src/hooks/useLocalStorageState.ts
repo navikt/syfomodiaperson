@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 export enum StoreKey {
   MALFORM = "malform",
-  FLEXJAR_KARTLEGGGINSSPORSMAL_FEEDBACK_DATE = "flexjarKartleggingssporsmalFeedbackDate",
 }
 
 export function useLocalStorageState<T>(key: StoreKey) {
