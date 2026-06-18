@@ -65,7 +65,7 @@ const handlers = [
   ...mockIsdialogmotekandidat,
   ...mockIsfrisktilarbeid,
   ...mockIsmanglendemedvirkning,
-  ...mockIsmeroppfolging(true),
+  ...mockIsmeroppfolging,
   mockIsnarmesteleder,
   ...mockisoppfolgingsplanForesporsel,
   mockIsoppfolgingstilfelle,

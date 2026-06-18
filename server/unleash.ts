@@ -58,9 +58,5 @@ export function getToggles(veilederId, enhetId) {
       "isNyTilgangskontrollEnabled",
       context
     ),
-    isVurderingssideKartleggingEnabled: unleash.isEnabled(
-      "isVurderingssideKartleggingEnabled",
-      context
-    ),
   };
 }

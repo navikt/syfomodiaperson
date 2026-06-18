@@ -7,13 +7,13 @@ import { get, put } from "@/api/axios";
 import {
   hasAnsweredKartleggingssporsmal,
   KartleggingssporsmalKandidatResponseDTO,
+  KartleggingssporsmalKandidatVurderingRequestDTO,
   KartleggingssporsmalSvarResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { minutesToMillis } from "@/utils/utils";
 import { ApiErrorException } from "@/api/errors";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import { VurderingAlternativ } from "@/sider/kartleggingssporsmal/types.ts";
 
 export const kartleggingssporsmalQueryKeys = {
   kartleggingssporsmalKandidat: (fnr: string) => [
@@ -70,17 +70,14 @@ export const useKartleggingssporsmalSvarQuery = (
 export const useKartleggingssporsmalVurderSvar = () => {
   const fnr = useValgtPersonident();
   const queryClient = useQueryClient();
-  const postVurderSvar = ({
+  const putVurderSvar = ({
     kandidatUuid,
     vurderingAlternativ,
-  }: {
-    kandidatUuid: string;
-    vurderingAlternativ?: VurderingAlternativ;
-  }) => {
+  }: KartleggingssporsmalKandidatVurderingRequestDTO) => {
     const path = `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater/${kandidatUuid}`;
     return put<KartleggingssporsmalKandidatResponseDTO>(
       path,
-      vurderingAlternativ ? { vurderingAlternativ: vurderingAlternativ } : {},
+      { vurderingAlternativ: vurderingAlternativ },
       fnr
     );
   };
@@ -88,7 +85,7 @@ export const useKartleggingssporsmalVurderSvar = () => {
     kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr);
 
   return useMutation({
-    mutationFn: postVurderSvar,
+    mutationFn: putVurderSvar,
     onSuccess: (data: KartleggingssporsmalKandidatResponseDTO) => {
       return queryClient.setQueryData(
         kartleggingssporsmalKandidatQueryKey,

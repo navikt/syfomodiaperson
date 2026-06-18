@@ -15,11 +15,11 @@ import { VurderingAlternativ } from "@/sider/kartleggingssporsmal/types.ts";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil.tsx";
 import React, { useState } from "react";
 import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessAlert.tsx";
-import { UseMutationResult } from "@tanstack/react-query";
 import { finnNaisUrlIntern } from "@/utils/miljoUtil.ts";
 import { EksternLenke } from "@/components/EksternLenke.tsx";
 import { Events, trackEvent } from "@/utils/umami.ts";
 import { KartleggingInfo } from "@/sider/kartleggingssporsmal/info/KartleggingInfo.tsx";
+import { useKartleggingssporsmalVurderSvar } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks.ts";
 
 const texts = {
   heading: "Vurdering",
@@ -50,24 +50,14 @@ function logEvent() {
 interface Props {
   nyesteKandidat: KartleggingssporsmalKandidatResponseDTO;
   answeredQuestions: KartleggingssporsmalSvarResponseDTO;
-  // Vi må ta inn vurderSvarMutation fordi visning av tilbakemeldingsboksen er knyttet til mutation i KartleggingssporsmalSide.tsx
-  // Kan unngå dette når man har én vurderingsside, ikke to ulike måter å vurdere på
-  vurderSvarMutation: UseMutationResult<
-    KartleggingssporsmalKandidatResponseDTO,
-    Error,
-    {
-      kandidatUuid: string;
-      vurderingAlternativ?: VurderingAlternativ;
-    },
-    unknown
-  >;
 }
 
 export function KartleggingVurdering({
   nyesteKandidat,
   answeredQuestions,
-  vurderSvarMutation,
 }: Props) {
+  const vurderSvar = useKartleggingssporsmalVurderSvar();
+
   const [chosenAlternative, setChosenAlternative] =
     useState<VurderingAlternativ | null>(
       nyesteKandidat.vurdering?.vurderingAlternativ ?? null
@@ -102,7 +92,7 @@ export function KartleggingVurdering({
           size="medium"
           onClick={() => {
             if (chosenAlternative) {
-              vurderSvarMutation.mutate({
+              vurderSvar.mutate({
                 kandidatUuid: nyesteKandidat.kandidatUuid,
                 vurderingAlternativ: chosenAlternative,
               });
@@ -110,14 +100,12 @@ export function KartleggingVurdering({
               setChosenAlternativeError(texts.error);
             }
           }}
-          loading={vurderSvarMutation.isPending}
+          loading={vurderSvar.isPending}
         >
           {texts.button}
         </Button>
       )}
-      {vurderSvarMutation.isError && (
-        <SkjemaInnsendingFeil error={vurderSvarMutation.error} />
-      )}
+      {vurderSvar.isError && <SkjemaInnsendingFeil error={vurderSvar.error} />}
       {nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET && (
         <SuccessAlert nyesteKandidat={nyesteKandidat} />
       )}
