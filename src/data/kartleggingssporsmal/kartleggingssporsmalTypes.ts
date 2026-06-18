@@ -18,6 +18,11 @@ export interface KartleggingssporsmalKandidatVurderingResponseDTO {
   vurderingAlternativ?: VurderingAlternativ;
 }
 
+export interface KartleggingssporsmalKandidatVurderingRequestDTO {
+  kandidatUuid: string;
+  vurderingAlternativ: VurderingAlternativ;
+}
+
 export enum KandidatStatus {
   KANDIDAT = "KANDIDAT",
   SVAR_MOTTATT = "SVAR_MOTTATT",

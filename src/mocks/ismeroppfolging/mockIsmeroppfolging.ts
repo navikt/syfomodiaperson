@@ -71,20 +71,6 @@ export const kartleggingIsKandidatAndAnsweredQuestions: KartleggingssporsmalKand
     vurdering: null,
   };
 
-export const kartleggingssporsmalFerdigbehandlet: KartleggingssporsmalKandidatResponseDTO =
-  {
-    ...kartleggingIsKandidatAndReceivedQuestions,
-    status: KandidatStatus.FERDIGBEHANDLET,
-    vurdering: {
-      vurdertAt: daysFromToday(-14),
-      vurdertBy: VEILEDER_DEFAULT.ident,
-    },
-    createdAt: daysFromToday(-20),
-    statusAt: daysFromToday(-20),
-    svarAt: daysFromToday(-15),
-    varsletAt: daysFromToday(-20),
-  };
-
 export const kartleggingssporsmalVurderingFerdigbehandlet: KartleggingssporsmalKandidatResponseDTO =
   {
     ...kartleggingIsKandidatAndReceivedQuestions,
@@ -103,9 +89,7 @@ export const kartleggingssporsmalVurderingFerdigbehandlet: KartleggingssporsmalK
 let kartleggingssporsmalMock: KartleggingssporsmalKandidatResponseDTO =
   kartleggingIsKandidatAndAnsweredQuestions;
 
-export const mockIsmeroppfolging = (
-  isVurderingssideKartleggingEnabled?: boolean
-) => [
+export const mockIsmeroppfolging = [
   http.get(`${ISMEROPPFOLGING_ROOT}/senoppfolging/kandidater`, () => {
     return HttpResponse.json([
       senOppfolgingKandidatMock,
@@ -137,22 +121,15 @@ export const mockIsmeroppfolging = (
   http.get(`${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater`, () => {
     return HttpResponse.json([
       kartleggingssporsmalMock,
-      isVurderingssideKartleggingEnabled
-        ? kartleggingssporsmalVurderingFerdigbehandlet
-        : kartleggingssporsmalFerdigbehandlet,
+      kartleggingssporsmalVurderingFerdigbehandlet,
     ]);
   }),
   http.put(
     `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater/:kandidatUUID`,
     () => {
-      kartleggingssporsmalMock = isVurderingssideKartleggingEnabled
-        ? kartleggingssporsmalVurderingFerdigbehandlet
-        : kartleggingssporsmalFerdigbehandlet;
-      return HttpResponse.json(
-        isVurderingssideKartleggingEnabled
-          ? kartleggingssporsmalVurderingFerdigbehandlet
-          : kartleggingssporsmalFerdigbehandlet
-      );
+      kartleggingssporsmalMock = kartleggingssporsmalVurderingFerdigbehandlet;
+
+      return HttpResponse.json(kartleggingssporsmalVurderingFerdigbehandlet);
     }
   ),
 ];

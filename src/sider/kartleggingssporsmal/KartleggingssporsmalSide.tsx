@@ -8,7 +8,6 @@ import {
   BodyLong,
   BodyShort,
   Box,
-  Button,
   Heading,
   List,
 } from "@navikt/ds-react";
@@ -21,12 +20,10 @@ import {
 import {
   useKartleggingssporsmalKandidaterQuery,
   useKartleggingssporsmalSvarQuery,
-  useKartleggingssporsmalVurderSvar,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { EksternLenke } from "@/components/EksternLenke";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
-import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { Events, trackEvent } from "@/utils/umami";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";
@@ -39,7 +36,6 @@ import { kartleggingssporsmalSurvey } from "@/components/lumi/kartleggingssporsm
 
 const texts = {
   title: "Kartleggingsspørsmål",
-  vurdereOppgaveText: "Svarene er vurdert, fjern oppgaven",
   kandidat: "Spørsmålene ble sendt",
   svart: "Den sykmeldte svarte",
   ikkeSvart: "Den sykmeldte har ikke svart",
@@ -149,13 +145,12 @@ export default function KartleggingssporsmalSide(): ReactElement {
     useKartleggingssporsmalSvarQuery(nyesteKandidat);
   const answeredQuestions = getKartleggingssporsmalSvar.data;
 
-  const vurderSvar = useKartleggingssporsmalVurderSvar();
   const kontaktinformasjon = useKontaktinfoQuery();
 
   const isSurveyVisible =
     toggles.isFlexjarKartleggingssporsmalEnabled &&
     answeredQuestions &&
-    vurderSvar.isSuccess;
+    nyesteKandidat?.status === KandidatStatus.FERDIGBEHANDLET;
 
   const lumiSurvey = isSurveyVisible ? (
     <LumiSurvey
@@ -181,10 +176,8 @@ export default function KartleggingssporsmalSide(): ReactElement {
     kontaktinformasjon.isError;
 
   const behandletWithoutVurdering =
-    nyesteKandidat?.status === "FERDIGBEHANDLET" &&
+    nyesteKandidat?.status === KandidatStatus.FERDIGBEHANDLET &&
     !nyesteKandidat?.vurdering?.vurderingAlternativ;
-  const showKartleggingVurdering =
-    toggles.isVurderingssideKartleggingEnabled && !behandletWithoutVurdering;
 
   return (
     <Side
@@ -217,33 +210,8 @@ export default function KartleggingssporsmalSide(): ReactElement {
                       formSnapshot={answeredQuestions.formSnapshot}
                     />
 
-                    {!showKartleggingVurdering && (
-                      <>
-                        {nyesteKandidat.status ===
-                          KandidatStatus.SVAR_MOTTATT && (
-                          <>
-                            <Button
-                              variant="primary"
-                              size="medium"
-                              onClick={() =>
-                                vurderSvar.mutate({
-                                  kandidatUuid: nyesteKandidat.kandidatUuid,
-                                })
-                              }
-                              loading={vurderSvar.isPending}
-                            >
-                              {texts.vurdereOppgaveText}
-                            </Button>
-                            {vurderSvar.isError && (
-                              <SkjemaInnsendingFeil error={vurderSvar.error} />
-                            )}
-                          </>
-                        )}
-                        {nyesteKandidat.status ===
-                          KandidatStatus.FERDIGBEHANDLET && (
-                          <SuccessAlert nyesteKandidat={nyesteKandidat} />
-                        )}
-                      </>
+                    {behandletWithoutVurdering && (
+                      <SuccessAlert nyesteKandidat={nyesteKandidat} />
                     )}
                   </>
                 ) : (
@@ -282,13 +250,12 @@ export default function KartleggingssporsmalSide(): ReactElement {
                   </>
                 )}
               </Box>
-              {showKartleggingVurdering &&
+              {!behandletWithoutVurdering &&
                 answeredQuestions &&
                 nyesteKandidat.status !== KandidatStatus.KANDIDAT && (
                   <KartleggingVurdering
                     nyesteKandidat={nyesteKandidat}
                     answeredQuestions={answeredQuestions}
-                    vurderSvarMutation={vurderSvar}
                   />
                 )}
               <KartleggingssporsmalHistorikk
