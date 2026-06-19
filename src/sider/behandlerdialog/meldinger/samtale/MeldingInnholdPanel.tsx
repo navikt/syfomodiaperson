@@ -3,7 +3,7 @@ import {
   MeldingDTO,
   MeldingType,
 } from "@/data/behandlerdialog/behandlerdialogTypes";
-import { BodyLong, Detail, Panel } from "@navikt/ds-react";
+import { Box, Detail } from "@navikt/ds-react";
 import { PaperclipIcon } from "@navikt/aksel-icons";
 import styled from "styled-components";
 import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
@@ -15,10 +15,6 @@ import { getHeaderText } from "@/utils/documentComponentUtils";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { meldingTypeTexts } from "@/data/behandlerdialog/behandlerdialogTexts";
 import { ReturLegeerklaringWarningIcon } from "@/sider/behandlerdialog/legeerklaring/ReturLegeerklaringWarningIcon";
-
-const MeldingTekstWrapper = styled(BodyLong)`
-  white-space: pre-wrap;
-`;
 
 const MeldingDetails = styled.div`
   display: flex;
@@ -74,14 +70,14 @@ const MeldingTekst = ({ melding }: MeldingTekstProps): ReactElement => {
     const headerText = getHeaderText(document, DocumentComponentType.HEADER_H1);
     return (
       <>
-        <MeldingTekstWrapper>{headerText}</MeldingTekstWrapper>
+        <div className={"whitespace-pre-wrap wrap-anywhere"}>{headerText}</div>
         <PaminnelseWarningIcon />
       </>
     );
   } else {
     return (
       <>
-        <MeldingTekstWrapper>{tekst}</MeldingTekstWrapper>
+        <div className={"whitespace-pre-wrap wrap-anywhere"}>{tekst}</div>
         {isReturLegeerklaring && <ReturLegeerklaringWarningIcon />}
       </>
     );
@@ -101,7 +97,7 @@ export default function MeldingInnholdPanel({ melding }: Props) {
     : veilederInfo?.fulltNavn() || "";
 
   return (
-    <Panel border>
+    <Box className={"p-4 border rounded-lg bg-surface-default"}>
       <MeldingTekstContainer>
         <MeldingTekst melding={melding} />
       </MeldingTekstContainer>
@@ -125,6 +121,6 @@ export default function MeldingInnholdPanel({ melding }: Props) {
         {avsender && <Detail>{`Skrevet av ${avsender}`}</Detail>}
         {!melding.innkommende && <VisMelding melding={melding} />}
       </MeldingDetails>
-    </Panel>
+    </Box>
   );
 }
