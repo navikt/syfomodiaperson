@@ -9,11 +9,14 @@ import Side from "@/components/side/Side";
 import SideLaster from "@/components/side/SideLaster";
 import Sidetopp from "@/components/side/Sidetopp";
 import Feilmelding from "@/components/Feilmelding";
+import * as Tredelt from "@/components/side/TredeltSide.tsx";
+import { MoteSvarHistorikkSingle } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkSingle.tsx";
 
 interface DialogmoteSideProps {
   title: string;
   header: string;
   children: (dialogmote: DialogmoteDTO) => ReactElement;
+  showMoteSvarHistorikk?: boolean;
 }
 
 const texts = {
@@ -24,6 +27,7 @@ export default function DialogmoteSideContainer({
   title,
   header,
   children,
+  showMoteSvarHistorikk = false,
 }: DialogmoteSideProps): ReactElement {
   const { dialogmoteUuid } = useParams<{
     dialogmoteUuid: string;
@@ -39,11 +43,29 @@ export default function DialogmoteSideContainer({
     <Side tittel={title} aktivtMenypunkt={Menypunkter.DIALOGMOTE}>
       <SideLaster isLoading={isLoading} isError={isError}>
         <Sidetopp tittel={header} />
-        {brukerKanIkkeVarslesDigitalt && (
-          <BrukerKanIkkeVarslesPapirpostAdvarsel />
-        )}
         {dialogmote ? (
-          children(dialogmote)
+          <div>
+            {showMoteSvarHistorikk ? (
+              <Tredelt.Container>
+                <Tredelt.FirstColumn>
+                  {brukerKanIkkeVarslesDigitalt && (
+                    <BrukerKanIkkeVarslesPapirpostAdvarsel />
+                  )}
+                  {children(dialogmote)}
+                </Tredelt.FirstColumn>
+                <Tredelt.SecondColumn>
+                  <MoteSvarHistorikkSingle dialogmote={dialogmote} />
+                </Tredelt.SecondColumn>
+              </Tredelt.Container>
+            ) : (
+              <>
+                {brukerKanIkkeVarslesDigitalt && (
+                  <BrukerKanIkkeVarslesPapirpostAdvarsel />
+                )}
+                {children(dialogmote)}
+              </>
+            )}
+          </div>
         ) : (
           <Feilmelding tittel={texts.moteNotFound} />
         )}

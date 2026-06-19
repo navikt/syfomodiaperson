@@ -12,6 +12,7 @@ export default function AvlysDialogmoteContainer(): ReactElement {
     <DialogmoteSideContainer
       title={texts.avlysDialogmote}
       header={texts.avlysDialogmote}
+      showMoteSvarHistorikk={true}
     >
       {(dialogmote) => (
         <MalformProvider>

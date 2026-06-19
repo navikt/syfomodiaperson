@@ -10,7 +10,11 @@ const texts = {
 
 export default function DialogmoteEndreReferatContainer(): ReactElement {
   return (
-    <DialogmoteSideContainer title={texts.pageTitle} header={texts.pageHeader}>
+    <DialogmoteSideContainer
+      title={texts.pageTitle}
+      header={texts.pageHeader}
+      showMoteSvarHistorikk={true}
+    >
       {(dialogmote) => (
         <MalformProvider>
           <Referat dialogmote={dialogmote} mode={ReferatMode.ENDRET} />

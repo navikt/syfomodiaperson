@@ -10,17 +10,13 @@ import Sidetopp from "@/components/side/Sidetopp";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/sider/dialogmoter/components/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import Feilmelding from "@/components/Feilmelding";
 import * as Tredelt from "@/components/side/TredeltSide";
-import DeltakereSvarInfo from "@/sider/dialogmoter/components/DeltakereSvarInfo";
-import { BodyLong, Box, Heading } from "@navikt/ds-react";
-import { MoteIkonBlaaImage } from "../../../../../img/ImageComponents";
 import { MalformProvider } from "@/context/malform/MalformContext";
+import { MoteSvarHistorikkSingle } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkSingle.tsx";
 
 const texts = {
   pageTitle: "Endre dialogmøte",
   pageHeader: "Endre dialogmøte",
   moteNotFound: "Fant ikke dialogmøte",
-  motesvarHeading: "Møtesvar",
-  motesvarSubheading: "Viser svar på siste innkalling/endring",
 };
 
 export default function EndreDialogmoteContainer() {
@@ -49,18 +45,7 @@ export default function EndreDialogmoteContainer() {
               </MalformProvider>
             </Tredelt.FirstColumn>
             <Tredelt.SecondColumn>
-              <Box background="default" className="flex flex-col gap-4 p-6">
-                <div className="flex gap-4">
-                  <img src={MoteIkonBlaaImage} alt="moteikon" />
-                  <div>
-                    <Heading level="2" size="medium">
-                      {texts.motesvarHeading}
-                    </Heading>
-                    <BodyLong size="small">{texts.motesvarSubheading}</BodyLong>
-                  </div>
-                </div>
-                <DeltakereSvarInfo dialogmote={dialogmote} />
-              </Box>
+              <MoteSvarHistorikkSingle dialogmote={dialogmote} />
             </Tredelt.SecondColumn>
           </Tredelt.Container>
         ) : (
