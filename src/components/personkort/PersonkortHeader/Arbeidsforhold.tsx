@@ -9,11 +9,10 @@ import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { capitalizeAllWords } from "@/utils/stringUtils.ts";
 
 const texts = {
-  label: "Arbeidsforhold: ",
-  unknown: "ukjent",
-  missing: "mangler",
-  moreInAareg: (maxCount: number) =>
-    ` — ${MAX_VISIBLE_ARBEIDSFORHOLD} av ${maxCount}, flere i AA register`,
+  label: `Arbeidsforhold`,
+  unknown: "Ukjent",
+  missing: "Mangler",
+  moreInAareg: " — se flere i AA register",
 };
 
 const MAX_VISIBLE_ARBEIDSFORHOLD = 2;
@@ -67,10 +66,6 @@ export function Arbeidsforhold() {
             isLast={index === visibleArbeidsforhold.length - 1}
           />
         ))}
-        {antallFlereArbeidsforhold > 0 &&
-          texts.moreInAareg(
-            aktiveArbeidsforholdSortertEtterHoyestStillingsprosent.length
-          )}
       </>
     );
   } else if (isError) {
@@ -83,10 +78,18 @@ export function Arbeidsforhold() {
     <>
       <BodyShort as="span" size="small">
         {texts.label}
+        {aktiveArbeidsforholdSortertEtterHoyestStillingsprosent.length > 0 &&
+          ` (${aktiveArbeidsforholdSortertEtterHoyestStillingsprosent.length})`}
+        {`: `}
       </BodyShort>
       <BodyShort as="span" size="small" weight="semibold">
         {content}
       </BodyShort>
+      {antallFlereArbeidsforhold > 0 && (
+        <BodyShort as="span" size="small">
+          {texts.moreInAareg}
+        </BodyShort>
+      )}
     </>
   );
 }

@@ -213,7 +213,7 @@ describe("PersonkortHeader", () => {
 
     renderPersonkortHeader();
 
-    expect(screen.getByText("Arbeidsforhold:")).to.exist;
+    expect(screen.getByText(/Arbeidsforhold\s*\(1\)\s*:/)).to.exist;
     expect(screen.getByText(/Sykepleier i Sykehus AS \(80 %\)/)).to.exist;
     expect(screen.queryByText(",")).to.not.exist;
   });
@@ -264,7 +264,7 @@ describe("PersonkortHeader", () => {
 
     renderPersonkortHeader();
 
-    expect(screen.getByText("Arbeidsforhold:")).to.exist;
+    expect(screen.getByText(/Arbeidsforhold\s*\(2\)\s*:/)).to.exist;
     expect(screen.getByText(/Sykepleier i Sykehus AS \(80 %\)/)).to.exist;
     expect(screen.getByText(/Brannmann i Brannvesenet \(40 %\)/)).to.exist;
   });
@@ -335,7 +335,7 @@ describe("PersonkortHeader", () => {
     expect(screen.getByText(/Sykepleier i Sykehus AS \(80 %\)/)).to.exist;
     expect(screen.queryByText(/Brannmann i Brannvesenet \(40 %\)/)).not.to
       .exist;
-    expect(screen.getByText(/2 av 3, flere i AA register/)).to.exist;
+    expect(screen.getByText(/se flere i AA register/)).to.exist;
   });
 
   it("viser 'mangler' når ingen aktive arbeidsforhold finnes", () => {
@@ -357,8 +357,8 @@ describe("PersonkortHeader", () => {
 
     renderPersonkortHeader();
 
-    expect(screen.getByText("Arbeidsforhold:")).to.exist;
-    expect(screen.getByText("mangler")).to.exist;
+    expect(screen.getByText(/Arbeidsforhold\s*:/)).to.exist;
+    expect(screen.getByText("Mangler")).to.exist;
   });
 
   it("viser 'ukjent' ved 500-feil fra arbeidsforhold-endepunktet", async () => {
@@ -375,7 +375,8 @@ describe("PersonkortHeader", () => {
 
     renderPersonkortHeader();
 
-    expect(await screen.findByText("ukjent")).to.exist;
+    expect(await screen.findByText(/Arbeidsforhold\s*:/)).to.exist;
+    expect(await screen.findByText("Ukjent")).to.exist;
   });
 
   it("viser maksdato og søknad behandlet tom fra API", () => {
