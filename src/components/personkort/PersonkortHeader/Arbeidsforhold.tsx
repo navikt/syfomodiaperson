@@ -52,7 +52,8 @@ export function Arbeidsforhold() {
       MAX_VISIBLE_ARBEIDSFORHOLD
     );
   const antallFlereArbeidsforhold =
-    aktiveArbeidsforholdSortertEtterHoyestStillingsprosent.length;
+    aktiveArbeidsforholdSortertEtterHoyestStillingsprosent.length -
+    visibleArbeidsforhold.length;
 
   let content: React.ReactNode;
 
@@ -67,7 +68,9 @@ export function Arbeidsforhold() {
           />
         ))}
         {antallFlereArbeidsforhold > 0 &&
-          texts.moreInAareg(antallFlereArbeidsforhold)}
+          texts.moreInAareg(
+            aktiveArbeidsforholdSortertEtterHoyestStillingsprosent.length
+          )}
       </>
     );
   } else if (isError) {
