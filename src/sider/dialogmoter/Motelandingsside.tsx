@@ -8,12 +8,12 @@ import * as Tredelt from "@/components/side/TredeltSide";
 import Side from "@/components/side/Side";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import MotehistorikkPanel from "@/sider/dialogmoter/components/motehistorikk/MotehistorikkPanel";
-import MoteSvarHistorikk from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikk";
 import MotebehovHistorikk from "@/sider/dialogmoter/components/motehistorikk/MotebehovHistorikk";
 import { useGetDialogmoteIkkeAktuell } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
 import { MotelandingssidePanels } from "@/sider/dialogmoter/utils/MotelandingssidePanels";
 import { harUbehandletMotebehov } from "@/utils/motebehovUtils";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
+import { MoteSvarHistorikkGroupedByMote } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkGroupedByMote.tsx";
 
 const texts = {
   pageTitle: "Møtelandingsside",
@@ -71,7 +71,9 @@ export default function Motelandingsside() {
               dialogmoteunntak={dialogmoteunntak}
               dialogmoteikkeaktuell={getDialogmoteIkkeAktuell.data}
             />
-            <MoteSvarHistorikk historiskeMoter={historiskeDialogmoter} />
+            <MoteSvarHistorikkGroupedByMote
+              historiskeMoter={historiskeDialogmoter}
+            />
             <MotebehovHistorikk />
           </Tredelt.SecondColumn>
         </Tredelt.Container>
