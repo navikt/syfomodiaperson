@@ -201,7 +201,7 @@ const avlysningTextsBokmal = {
 };
 
 const avlysningTextsNynorsk = {
-  header: "Avlysing dialogmøte",
+  header: "Avlysing av dialogmøte",
   intro1:
     "Nav har tidlegare kalla inn til eit dialogmøte som etter planen skulle vere",
   intro2: "Dette møtet er avlyst.",
@@ -297,7 +297,7 @@ export const referatStandardTekster: Record<StandardtekstKey, StandardTekst> = {
   },
   [StandardtekstKey.ARBEIDSRETTET_REHABILITERING]: {
     label: "Arbeidsrettet rehabilitering",
-    text: "Du kan få individuell veiledning tilpasset behovet ditt, for eksempel hjelp til å kartelegge helse, arbeidsplass og funksjon. Slik kan mulighetene dine til å komme i jobb igjen bli styrket.",
+    text: "Du kan få individuell veiledning tilpasset behovet ditt, for eksempel hjelp til å kartlegge helse, arbeidsplass og funksjon. Slik kan mulighetene dine til å komme i jobb igjen bli styrket.",
   },
   [StandardtekstKey.OPPLAERING_UTDANNING]: {
     label: "Opplæring og utdanning",
@@ -305,7 +305,7 @@ export const referatStandardTekster: Record<StandardtekstKey, StandardTekst> = {
   },
   [StandardtekstKey.UNNTAK_ARBEIDSGIVERPERIODE]: {
     label: "Unntak fra arbeidsgiverperioden - langvarig eller kronisk sykdom",
-    text: "De første 16 dagene av sykefraværet er det arbeidsgiveren som dekker sykepengene. Har du en kronisk eller langvarig sykdom  som gjør at du har mye fravær, kan Nav dekke sykepengene også i arbeidsgiverperioden.",
+    text: "De første 16 dagene av sykefraværet er det arbeidsgiveren som dekker sykepengene. Har du en kronisk eller langvarig sykdom som gjør at du har mye fravær, kan Nav dekke sykepengene også i arbeidsgiverperioden.",
   },
   [StandardtekstKey.REISETILSKUDD]: {
     label: "Reisetilskudd",
