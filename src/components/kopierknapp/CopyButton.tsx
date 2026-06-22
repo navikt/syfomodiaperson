@@ -21,7 +21,7 @@ export function CopyButton({ message, value, iconTitle }: Props) {
   }
 
   return (
-    <div>
+    <span className="relative z-2">
       {/*Uses <span> instead of <button> to avoid nested <button> when rendered inside accordion headers*/}
       <span
         className="m-0 cursor-pointer"
@@ -36,7 +36,7 @@ export function CopyButton({ message, value, iconTitle }: Props) {
           }
         }}
       >
-        <FilesIcon title={iconTitle} fontSize="1.5rem" />
+        <FilesIcon title={iconTitle} fontSize="1.5rem" className="inline" />
       </span>
       <Popover
         open={showPopover}
@@ -45,6 +45,6 @@ export function CopyButton({ message, value, iconTitle }: Props) {
       >
         <Popover.Content>{message}</Popover.Content>
       </Popover>
-    </div>
+    </span>
   );
 }

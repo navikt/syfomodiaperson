@@ -51,20 +51,18 @@ export function PersonkortHeader() {
             />
           )}
           <div>
-            <div className="flex gap-3 items-center">
+            <div className="flex gap-3 items-baseline">
               <BodyShort size="small" weight="semibold" className="uppercase">
                 {navbruker.navn}
                 {navbruker.alder !== null && ` (${navbruker.alder} år)`}
               </BodyShort>
-              <div className="flex items-center">
-                <div>
-                  <BodyShort size="small" as="span">
-                    {texts.fnr}
-                  </BodyShort>
-                  <BodyShort size="small" weight="semibold" as="span">
-                    {formaterFnr(personident)}
-                  </BodyShort>
-                </div>
+              <div>
+                <BodyShort size="small" as="span">
+                  {texts.fnr}
+                </BodyShort>
+                <BodyShort size="small" weight="semibold" as="span">
+                  {formaterFnr(personident)}
+                </BodyShort>
                 <CopyButton
                   message={texts.copied}
                   value={personident}

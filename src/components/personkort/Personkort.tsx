@@ -3,7 +3,7 @@ import { PERSONKORTVISNING_TYPE } from "@/konstanter";
 import { PersonkortVisning } from "./PersonkortVisning";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { PersonkortHeader } from "@/components/personkort/PersonkortHeader/PersonkortHeader";
-import EkspanderbartpanelModule from "nav-frontend-ekspanderbartpanel";
+import { ExpansionCard } from "@navikt/ds-react";
 
 const texts = {
   buttons: {
@@ -19,13 +19,15 @@ export function Personkort() {
   const [visning, setVisning] = useState(PERSONKORTVISNING_TYPE.SYKMELDT);
   const { hasSikkerhetstiltak } = useNavBrukerData();
 
-  const Ekspanderbartpanel =
-    (EkspanderbartpanelModule as any).default ?? EkspanderbartpanelModule;
-
   return (
     <div className="personkort">
-      <Ekspanderbartpanel tittel={<PersonkortHeader />}>
-        <div>
+      <ExpansionCard size="small" aria-label="Personkort">
+        <ExpansionCard.Header>
+          <ExpansionCard.Title size="small" className="flex w-full">
+            <PersonkortHeader />
+          </ExpansionCard.Title>
+        </ExpansionCard.Header>
+        <ExpansionCard.Content>
           <ul>
             <li>
               <button
@@ -103,8 +105,8 @@ export function Personkort() {
             )}
           </ul>
           <PersonkortVisning visning={visning} />
-        </div>
-      </Ekspanderbartpanel>
+        </ExpansionCard.Content>
+      </ExpansionCard>
     </div>
   );
 }
