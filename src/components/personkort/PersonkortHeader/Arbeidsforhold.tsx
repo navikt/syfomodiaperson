@@ -6,12 +6,17 @@ import {
   getActiveArbeidsforhold,
 } from "@/data/arbeidsforhold/ArbeidsforholdDTO";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
+import { capitalizeAllWords } from "@/utils/stringUtils.ts";
 
 const texts = {
   label: "Arbeidsforhold: ",
   unknown: "ukjent",
   missing: "mangler",
+  moreInAareg: (maxCount: number) =>
+    ` — ${MAX_VISIBLE_ARBEIDSFORHOLD} av ${maxCount}, flere i AA register`,
 };
+
+const MAX_VISIBLE_ARBEIDSFORHOLD = 2;
 
 interface Props {
   arbeidsforhold: ArbeidsforholdDTO;
@@ -23,9 +28,9 @@ function ArbeidsforholdText({ arbeidsforhold, isLast }: Props) {
 
   return (
     <>
-      {arbeidsforhold.yrke} i {virksomhetsnavn} (
+      {capitalizeAllWords(arbeidsforhold.yrke)} i {virksomhetsnavn} (
       {arbeidsforhold.stillingsprosent}&nbsp;%)
-      {!isLast && ", "}
+      {!isLast && " — "}
     </>
   );
 }
@@ -37,22 +42,32 @@ export function Arbeidsforhold() {
     return null;
   }
 
-  const aktiveArbeidsforhold = getActiveArbeidsforhold(
-    data?.arbeidsforhold ?? []
-  );
+  const aktiveArbeidsforholdSortertEtterHoyestStillingsprosent =
+    getActiveArbeidsforhold(data?.arbeidsforhold ?? []).sort(
+      (a, b) => parseFloat(b.stillingsprosent) - parseFloat(a.stillingsprosent)
+    );
+  const visibleArbeidsforhold =
+    aktiveArbeidsforholdSortertEtterHoyestStillingsprosent.slice(
+      0,
+      MAX_VISIBLE_ARBEIDSFORHOLD
+    );
+  const antallFlereArbeidsforhold =
+    aktiveArbeidsforholdSortertEtterHoyestStillingsprosent.length;
 
   let content: React.ReactNode;
 
-  if (aktiveArbeidsforhold.length > 0) {
+  if (aktiveArbeidsforholdSortertEtterHoyestStillingsprosent.length > 0) {
     content = (
       <>
-        {aktiveArbeidsforhold.map((forhold, index) => (
+        {visibleArbeidsforhold.map((forhold, index) => (
           <ArbeidsforholdText
             key={forhold.navArbeidsforholdId}
             arbeidsforhold={forhold}
-            isLast={index === aktiveArbeidsforhold.length - 1}
+            isLast={index === visibleArbeidsforhold.length - 1}
           />
         ))}
+        {antallFlereArbeidsforhold > 0 &&
+          texts.moreInAareg(antallFlereArbeidsforhold)}
       </>
     );
   } else if (isError) {
