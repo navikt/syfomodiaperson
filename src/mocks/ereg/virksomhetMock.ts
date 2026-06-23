@@ -13,7 +13,7 @@ export const eregOrganisasjonResponse = (
   return {
     navn: {
       navnelinje1: virksomhetsnavn,
-      redigertnavn: `${virksomhetsnavn}, Oslo`,
+      redigertnavn: `${virksomhetsnavn}`,
     },
   };
 };
