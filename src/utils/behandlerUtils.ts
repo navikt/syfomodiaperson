@@ -3,7 +3,7 @@ import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { capitalizeWord } from "@/utils/stringUtils";
 
 export const behandlerNavn = (
-  behandler: SykmeldingBehandlerDTO | BehandlerDTO
+  behandler: SykmeldingBehandlerDTO | BehandlerDTO,
 ): string => {
   return [behandler.fornavn, behandler.mellomnavn, behandler.etternavn]
     .filter(Boolean)

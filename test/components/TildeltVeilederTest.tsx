@@ -37,7 +37,7 @@ const renderTildelVeileder = () =>
       >
         <TildeltVeileder />
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("TildeltVeileder", () => {
@@ -48,21 +48,21 @@ describe("TildeltVeileder", () => {
     it("viser 'Tildelt veileder' når kall for å hente knytning er success", () => {
       queryClient.setQueryData(
         veilederBrukerKnytningQueryKeys.veilederBrukerKnytning(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => VEILEDER_BRUKER_KNYTNING_DEFAULT
+        () => VEILEDER_BRUKER_KNYTNING_DEFAULT,
       );
       queryClient.setQueryData(
         veilederinfoQueryKeys.veilederinfoByIdent(VEILEDER_IDENT_DEFAULT),
-        () => VEILEDER_DEFAULT
+        () => VEILEDER_DEFAULT,
       );
       renderTildelVeileder();
 
       expect(screen.getByText("Tildelt veileder:")).to.exist;
       expect(
         screen.getByText(
-          `${VEILEDER_DEFAULT.fulltNavn()} (${VEILEDER_DEFAULT.ident})`
-        )
+          `${VEILEDER_DEFAULT.fulltNavn()} (${VEILEDER_DEFAULT.ident})`,
+        ),
       ).to.exist;
     });
 
@@ -84,13 +84,13 @@ describe("TildeltVeileder", () => {
     beforeEach(() => {
       queryClient.setQueryData(
         veilederBrukerKnytningQueryKeys.veilederBrukerKnytning(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => VEILEDER_BRUKER_KNYTNING_DEFAULT
+        () => VEILEDER_BRUKER_KNYTNING_DEFAULT,
       );
       queryClient.setQueryData(
         veilederinfoQueryKeys.veiledereByEnhet(navEnhet.id),
-        () => [VEILEDER_DEFAULT, ANNEN_VEILEDER, INAKTIV_VEILEDER]
+        () => [VEILEDER_DEFAULT, ANNEN_VEILEDER, INAKTIV_VEILEDER],
       );
     });
     it("viser modal for endring av tildelt veileder", async () => {
@@ -100,7 +100,7 @@ describe("TildeltVeileder", () => {
         screen.queryByRole("dialog", {
           hidden: true,
           name: "Tildel veileder",
-        })
+        }),
       ).to.not.exist;
 
       await clickButton("Endre");
@@ -108,7 +108,7 @@ describe("TildeltVeileder", () => {
       expect(
         screen.getByRole("dialog", {
           name: "Tildel veileder",
-        })
+        }),
       ).to.exist;
     });
     it("viser ikke inaktiv veileder i modal for endring av tildelt veileder", async () => {
@@ -145,7 +145,7 @@ describe("TildeltVeileder", () => {
           .getAll()
           .pop();
         expect(tildelVeilederMutation?.state.variables).to.deep.equal(
-          ANNEN_VEILEDER.ident
+          ANNEN_VEILEDER.ident,
         );
       });
     });

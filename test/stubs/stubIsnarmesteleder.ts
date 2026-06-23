@@ -7,6 +7,6 @@ export const stubNarmestelederApi = (ledere: any) =>
   mockServer.use(
     http.get(
       `*${ISNARMESTELEDER_ROOT}${ISNARMESTELEDER_NARMESTELEDERRELASJON_PERSONIDENT_PATH}`,
-      () => HttpResponse.json(ledere)
-    )
+      () => HttpResponse.json(ledere),
+    ),
   );

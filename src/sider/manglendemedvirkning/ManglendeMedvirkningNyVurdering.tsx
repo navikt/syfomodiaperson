@@ -21,15 +21,15 @@ const lastVurderingText = (vurderinger: VurderingResponseDTO[]) => {
     return "Ingen vurderinger har blitt gjort, trykk på 'Start ny vurdering' for å sende forhåndsvarsel.";
   }
   const lastForhandsvarsel = vurderinger.find(
-    ({ vurderingType }) => vurderingType === VurderingType.FORHANDSVARSEL
+    ({ vurderingType }) => vurderingType === VurderingType.FORHANDSVARSEL,
   );
   const lastVurderingType =
     typeTexts[lastVurdering.vurderingType].toLowerCase();
 
   return `Forrige forhåndsvarsel på § 8-8 ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
-    lastForhandsvarsel?.createdAt
+    lastForhandsvarsel?.createdAt,
   )} og det ble vurdert ${lastVurderingType} ${tilLesbarDatoMedArUtenManedNavn(
-    lastVurdering?.createdAt
+    lastVurdering?.createdAt,
   )}.`;
 };
 

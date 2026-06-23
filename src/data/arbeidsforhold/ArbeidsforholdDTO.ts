@@ -17,7 +17,7 @@ export interface ArbeidsforholdPersonDTO {
 }
 
 export function getActiveArbeidsforhold(
-  arbeidsforhold: ArbeidsforholdDTO[]
+  arbeidsforhold: ArbeidsforholdDTO[],
 ): ArbeidsforholdDTO[] {
   return arbeidsforhold.filter((forhold) => forhold.ansettelseSlutt === null);
 }

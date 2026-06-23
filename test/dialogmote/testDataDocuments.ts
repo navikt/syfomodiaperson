@@ -38,7 +38,7 @@ const avlysningTextsBokmal = getAvlysningTexts(Malform.BOKMAL);
 
 const expectedArbeidstakerInnkalling = (
   medBehandler = false,
-  sendtDato: Date
+  sendtDato: Date,
 ): DocumentComponentDto[] => [
   {
     texts: ["Innkalling til dialogmøte"],
@@ -47,7 +47,7 @@ const expectedArbeidstakerInnkalling = (
   {
     texts: [
       tilDatoMedUkedagOgManedNavnOgKlokkeslett(
-        genererDato(mote.datoAsISODateString, mote.klokkeslett)
+        genererDato(mote.datoAsISODateString, mote.klokkeslett),
       ),
     ],
     title: commonTextsBokmal.moteTidTitle,
@@ -101,7 +101,7 @@ const expectedArbeidstakerInnkalling = (
       medBehandler
         ? addBehandlerTypeAndName(
             innkallingTextsBokmal.arbeidstaker.outro1WithBehandler,
-            behandler
+            behandler,
           )
         : innkallingTextsBokmal.arbeidstaker.outro1,
     ],
@@ -132,7 +132,7 @@ const expectedArbeidstakerInnkalling = (
 
 const expectedArbeidsgiverInnkalling = (
   medBehandler = false,
-  sendtDato: Date
+  sendtDato: Date,
 ): DocumentComponentDto[] => [
   {
     texts: ["Innkalling til dialogmøte"],
@@ -141,7 +141,7 @@ const expectedArbeidsgiverInnkalling = (
   {
     texts: [
       tilDatoMedUkedagOgManedNavnOgKlokkeslett(
-        genererDato(mote.datoAsISODateString, mote.klokkeslett)
+        genererDato(mote.datoAsISODateString, mote.klokkeslett),
       ),
     ],
     title: commonTextsBokmal.moteTidTitle,
@@ -187,7 +187,7 @@ const expectedArbeidsgiverInnkalling = (
       medBehandler
         ? addBehandlerTypeAndName(
             innkallingTextsBokmal.arbeidsgiver.outro1WithBehandler,
-            behandler
+            behandler,
           )
         : innkallingTextsBokmal.arbeidsgiver.outro1,
     ],
@@ -224,7 +224,7 @@ const expectedArbeidsgiverInnkalling = (
 ];
 
 const expectedBehandlerInnkalling = (
-  sendtDato: Date
+  sendtDato: Date,
 ): DocumentComponentDto[] => [
   {
     texts: ["Innkalling til dialogmøte, svar ønskes"],
@@ -237,7 +237,7 @@ const expectedBehandlerInnkalling = (
   {
     texts: [
       tilDatoMedUkedagOgManedNavnOgKlokkeslett(
-        genererDato(mote.datoAsISODateString, mote.klokkeslett)
+        genererDato(mote.datoAsISODateString, mote.klokkeslett),
       ),
     ],
     title: commonTextsBokmal.moteTidTitle,
@@ -291,7 +291,7 @@ const expectedBehandlerInnkalling = (
 
 const expectedArbeidsgiverEndringsdokument = (
   medBehandler = false,
-  sendtDato: Date
+  sendtDato: Date,
 ): DocumentComponentDto[] => [
   {
     texts: ["Endret dialogmøte"],
@@ -316,7 +316,7 @@ const expectedArbeidsgiverEndringsdokument = (
   {
     texts: [
       tilDatoMedUkedagOgManedNavnOgKlokkeslett(
-        genererDato(endretMote.datoAsISODateString, endretMote.klokkeslett)
+        genererDato(endretMote.datoAsISODateString, endretMote.klokkeslett),
       ),
     ],
     title: "Møtetidspunkt",
@@ -396,7 +396,7 @@ const expectedArbeidsgiverEndringsdokument = (
 
 const expectedArbeidstakerEndringsdokument = (
   medBehandler = false,
-  sendtDato: Date
+  sendtDato: Date,
 ): DocumentComponentDto[] => [
   {
     texts: ["Endret dialogmøte"],
@@ -421,7 +421,7 @@ const expectedArbeidstakerEndringsdokument = (
   {
     texts: [
       tilDatoMedUkedagOgManedNavnOgKlokkeslett(
-        genererDato(endretMote.datoAsISODateString, endretMote.klokkeslett)
+        genererDato(endretMote.datoAsISODateString, endretMote.klokkeslett),
       ),
     ],
     title: "Møtetidspunkt",
@@ -496,7 +496,7 @@ const expectedArbeidstakerEndringsdokument = (
 ];
 
 const expectedBehandlerEndringsdokument = (
-  sendtDato: Date
+  sendtDato: Date,
 ): DocumentComponentDto[] => [
   {
     texts: ["Endret dialogmøte, svar ønskes"],
@@ -525,7 +525,7 @@ const expectedBehandlerEndringsdokument = (
   {
     texts: [
       tilDatoMedUkedagOgManedNavnOgKlokkeslett(
-        genererDato(endretMote.datoAsISODateString, endretMote.klokkeslett)
+        genererDato(endretMote.datoAsISODateString, endretMote.klokkeslett),
       ),
     ],
     title: "Møtetidspunkt",
@@ -573,7 +573,7 @@ const expectedBehandlerEndringsdokument = (
 ];
 
 const expectedAvlysningArbeidsgiver = (
-  sendtDato: Date
+  sendtDato: Date,
 ): DocumentComponentDto[] => [
   {
     texts: ["Avlysning av dialogmøte"],
@@ -617,7 +617,7 @@ const expectedAvlysningArbeidsgiver = (
 ];
 
 const expectedAvlysningArbeidstaker = (
-  sendtDato: Date
+  sendtDato: Date,
 ): DocumentComponentDto[] => [
   {
     texts: ["Avlysning av dialogmøte"],
@@ -661,7 +661,7 @@ const expectedAvlysningArbeidstaker = (
 ];
 
 const expectedAvlysningBehandler = (
-  sendtDato: Date
+  sendtDato: Date,
 ): DocumentComponentDto[] => [
   {
     texts: ["Avlysning av dialogmøte"],
@@ -705,7 +705,7 @@ const expectedAvlysningBehandler = (
 ];
 
 export const expectedReferatDocument = (
-  sendtDato: Date
+  sendtDato: Date,
 ): DocumentComponentDto[] => [
   {
     texts: [referatTextsBokmal.nyttHeader],
@@ -802,7 +802,7 @@ export const expectedReferatDocument = (
 ];
 
 export const expectedEndretReferatDocument = (
-  sendtDato: Date
+  sendtDato: Date,
 ): DocumentComponentDto[] => [
   {
     texts: [referatTextsBokmal.endretHeader],

@@ -27,7 +27,7 @@ describe("partitionOppfolgingsplanerByActiveTilfelle", () => {
   it("returnerer tom liste når det ikke finnes planer", () => {
     const [aktive, inaktive] = partitionOppfolgingsplanerByActiveTilfelle(
       [],
-      aktivtTilfelle
+      aktivtTilfelle,
     );
 
     expect(aktive).toEqual([]);
@@ -40,7 +40,7 @@ describe("partitionOppfolgingsplanerByActiveTilfelle", () => {
 
     const [aktive, inaktive] = partitionOppfolgingsplanerByActiveTilfelle(
       [gammelPlan, nyPlan],
-      aktivtTilfelle
+      aktivtTilfelle,
     );
 
     expect(aktive).toHaveLength(1);
@@ -56,7 +56,7 @@ describe("partitionOppfolgingsplanerByActiveTilfelle", () => {
 
     const [aktive, inaktive] = partitionOppfolgingsplanerByActiveTilfelle(
       [plan1V1, plan2V1, plan1V2],
-      aktivtTilfelle
+      aktivtTilfelle,
     );
 
     expect(aktive).toHaveLength(2);
@@ -72,7 +72,7 @@ describe("partitionOppfolgingsplanerByActiveTilfelle", () => {
 
     const [aktive, inaktive] = partitionOppfolgingsplanerByActiveTilfelle(
       [planForTilfelle, planInnenforTilfelle],
-      aktivtTilfelle
+      aktivtTilfelle,
     );
 
     expect(aktive).toHaveLength(1);
@@ -86,7 +86,7 @@ describe("partitionOppfolgingsplanerByActiveTilfelle", () => {
 
     const [aktive, inaktive] = partitionOppfolgingsplanerByActiveTilfelle(
       [plan],
-      aktivtTilfelle
+      aktivtTilfelle,
     );
 
     expect(aktive).toHaveLength(1);
@@ -101,7 +101,7 @@ describe("partitionOppfolgingsplanerByActiveTilfelle", () => {
       const [aktive, inaktive] = partitionOppfolgingsplanerByActiveTilfelle(
         [planEtterTilfelle],
         aktivtTilfelle,
-        true
+        true,
       );
 
       expect(aktive).toHaveLength(1);
@@ -115,7 +115,7 @@ describe("partitionOppfolgingsplanerByActiveTilfelle", () => {
       const [aktive, inaktive] = partitionOppfolgingsplanerByActiveTilfelle(
         [planForTilfelle],
         aktivtTilfelle,
-        true
+        true,
       );
 
       expect(aktive).toHaveLength(0);
@@ -129,7 +129,7 @@ describe("partitionOppfolgingsplanerByActiveTilfelle", () => {
       const [aktive, inaktive] = partitionOppfolgingsplanerByActiveTilfelle(
         [planInnenfor, planEtter],
         aktivtTilfelle,
-        true
+        true,
       );
 
       expect(aktive).toHaveLength(1);

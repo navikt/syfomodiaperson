@@ -62,7 +62,7 @@ const renderDialogmoteInnkallingSkjema = () => {
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     dialogmoteRoutePath,
-    [dialogmoteRoutePath]
+    [dialogmoteRoutePath],
   );
 };
 
@@ -78,7 +78,7 @@ describe("DialogmoteInnkallingSkjema", () => {
   it("shows a list of behandlere and possibility to add behandler", () => {
     queryClient.setQueryData(
       behandlereQueryKeys.behandlere(arbeidstaker.personident),
-      () => behandlere
+      () => behandlere,
     );
     renderDialogmoteInnkallingSkjema();
 
@@ -92,7 +92,7 @@ describe("DialogmoteInnkallingSkjema", () => {
   it("Possible to add behandler when no suggested behandlere", () => {
     queryClient.setQueryData(
       behandlereQueryKeys.behandlere(arbeidstaker.personident),
-      () => []
+      () => [],
     );
     renderDialogmoteInnkallingSkjema();
 
@@ -107,7 +107,7 @@ describe("DialogmoteInnkallingSkjema", () => {
     };
     queryClient.setQueryData(
       brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => kanIkkeVarsles
+      () => kanIkkeVarsles,
     );
     renderDialogmoteInnkallingSkjema();
 
@@ -121,7 +121,7 @@ describe("DialogmoteInnkallingSkjema", () => {
     };
     queryClient.setQueryData(
       brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => kanVarsles
+      () => kanVarsles,
     );
     renderDialogmoteInnkallingSkjema();
 
@@ -198,7 +198,7 @@ describe("DialogmoteInnkallingSkjema", () => {
           fritekstInnkalling: moteTekster.fritekstTilArbeidsgiver,
           innkalling: expectedInnkallingDocuments.arbeidsgiver(
             false,
-            expectedSendtDato
+            expectedSendtDato,
           ),
         },
         arbeidstaker: {
@@ -206,7 +206,7 @@ describe("DialogmoteInnkallingSkjema", () => {
           fritekstInnkalling: moteTekster.fritekstTilArbeidstaker,
           innkalling: expectedInnkallingDocuments.arbeidstaker(
             false,
-            expectedSendtDato
+            expectedSendtDato,
           ),
         },
         tidSted: {
@@ -217,7 +217,7 @@ describe("DialogmoteInnkallingSkjema", () => {
       };
 
       expect(innkallingMutation.state.variables).to.deep.equal(
-        expectedInnkallingDto
+        expectedInnkallingDto,
       );
     });
   });
@@ -245,13 +245,13 @@ describe("DialogmoteInnkallingSkjema", () => {
     };
     queryClient.setQueryData(
       oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-        arbeidstaker.personident
+        arbeidstaker.personident,
       ),
-      () => oppfolgingstilfellePerson
+      () => oppfolgingstilfellePerson,
     );
     queryClient.setQueryData(
       ledereQueryKeys.ledere(arbeidstaker.personident),
-      () => []
+      () => [],
     );
     stubInnkallingApi();
     renderDialogmoteInnkallingSkjema();
@@ -277,13 +277,13 @@ describe("DialogmoteInnkallingSkjema", () => {
     };
     queryClient.setQueryData(
       oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-        arbeidstaker.personident
+        arbeidstaker.personident,
       ),
-      () => oppfolgingstilfellePerson
+      () => oppfolgingstilfellePerson,
     );
     queryClient.setQueryData(
       ledereQueryKeys.ledere(arbeidstaker.personident),
-      () => [LEDERE_DEFAULT[0]]
+      () => [LEDERE_DEFAULT[0]],
     );
     stubInnkallingApi();
 
@@ -334,7 +334,7 @@ describe("DialogmoteInnkallingSkjema", () => {
 
     expect(linkDocumentComponents).to.have.length(2);
     linkDocumentComponents.forEach((documentComponentLink) =>
-      expect(documentComponentLink.texts[0]).to.equal(link)
+      expect(documentComponentLink.texts[0]).to.equal(link),
     );
     expect(videoLink).to.equal(link);
   });
@@ -353,7 +353,7 @@ describe("DialogmoteInnkallingSkjema", () => {
     await userEvent.click(forhandsvisningButton);
 
     expect(
-      screen.getByText(getInnkallingTexts(Malform.NYNORSK).arbeidstaker.intro2)
+      screen.getByText(getInnkallingTexts(Malform.NYNORSK).arbeidstaker.intro2),
     ).to.exist;
   });
 });
@@ -367,10 +367,10 @@ const passSkjemaInput = () => {
   const stedInput = getTextInput("Sted");
   const videoLinkInput = getTextInput("Lenke til videomøte (valgfritt)");
   const fritekstArbeidstakerInput = getTextInput(
-    "Fritekst til arbeidstakeren (valgfri)"
+    "Fritekst til arbeidstakeren (valgfri)",
   );
   const fritekstArbeidsgiverInput = getTextInput(
-    "Fritekst til nærmeste leder (valgfri)"
+    "Fritekst til nærmeste leder (valgfri)",
   );
 
   const behandlerSelect = screen.getByRole("radio", {
@@ -386,10 +386,10 @@ const passSkjemaInput = () => {
   changeTextInput(videoLinkInput, mote.videolink);
   changeTextInput(
     fritekstArbeidstakerInput,
-    moteTekster.fritekstTilArbeidstaker
+    moteTekster.fritekstTilArbeidstaker,
   );
   changeTextInput(
     fritekstArbeidsgiverInput,
-    moteTekster.fritekstTilArbeidsgiver
+    moteTekster.fritekstTilArbeidsgiver,
   );
 };

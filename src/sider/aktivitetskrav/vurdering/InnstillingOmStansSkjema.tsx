@@ -98,7 +98,7 @@ export default function InnstillingOmStansSkjema({
       {
         onSuccess: () => setUtkastSavedTime(new Date()),
         onError: () => setUtkastSavedTime(undefined),
-      }
+      },
     );
   }, 750);
 

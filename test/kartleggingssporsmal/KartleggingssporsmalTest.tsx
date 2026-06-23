@@ -49,59 +49,59 @@ let queryClient: QueryClient;
 
 const mockKartleggingssporsmalKandidat = (
   kartleggingssporsmalKandidatResponseDTO: KartleggingssporsmalKandidatResponseDTO | null,
-  fnr: string
+  fnr: string,
 ) => {
   queryClient.setQueryData(
     kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
-    () => [kartleggingssporsmalKandidatResponseDTO]
+    () => [kartleggingssporsmalKandidatResponseDTO],
   );
 };
 
 const mockKartleggingssporsmalKandidater = (
   kartleggingssporsmalKandidatResponseDTOs: KartleggingssporsmalKandidatResponseDTO[],
-  fnr: string
+  fnr: string,
 ) => {
   queryClient.setQueryData(
     kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
-    () => kartleggingssporsmalKandidatResponseDTOs
+    () => kartleggingssporsmalKandidatResponseDTOs,
   );
 };
 
 const mockKartleggingssporsmalSvar = (
   kartleggingssporsmalSvarResponseDTO: KartleggingssporsmalSvarResponseDTO | null,
-  kandidatUuid: string
+  kandidatUuid: string,
 ) => {
   queryClient.setQueryData(
     kartleggingssporsmalQueryKeys.kartleggingssporsmalSvar(kandidatUuid),
-    () => kartleggingssporsmalSvarResponseDTO
+    () => kartleggingssporsmalSvarResponseDTO,
   );
 };
 
 const mockGjentakendeFravar = (hasGjentakendeSykefravar: boolean) =>
   queryClient.setQueryData(
     oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
     () => {
       return {
         ...oppfolgingstilfellePersonMock,
         hasGjentakendeSykefravar: hasGjentakendeSykefravar,
       };
-    }
+    },
   );
 
 const mockEnabledToggles = (enabledToggles: ToggleNames[]) =>
   queryClient.setQueryData(
     unleashQueryKeys.toggles(
       BEHANDLENDE_ENHET_DEFAULT.enhetId,
-      VEILEDER_IDENT_DEFAULT
+      VEILEDER_IDENT_DEFAULT,
     ),
     () => ({
       ...mockUnleashTogglesOffResponse,
       ...enabledToggles.reduce((accumulator, toggleName) => {
         return { ...accumulator, [toggleName]: true };
       }, {}),
-    })
+    }),
   );
 
 const renderKartleggingssporsmal = () => {
@@ -117,7 +117,7 @@ const renderKartleggingssporsmal = () => {
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     `${appRoutePath}/kartleggingssporsmal`,
-    [`${appRoutePath}/kartleggingssporsmal`]
+    [`${appRoutePath}/kartleggingssporsmal`],
   );
 };
 
@@ -126,7 +126,7 @@ describe("Kartleggingssporsmal", () => {
     queryClient = queryClientWithMockData();
     queryClient.setQueryData(
       brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => kontaktinformasjonMock
+      () => kontaktinformasjonMock,
     );
     mockEnabledToggles([]);
   });
@@ -139,14 +139,14 @@ describe("Kartleggingssporsmal", () => {
     expect(
       screen.getByText("Den sykmeldte har ikke mottatt kartleggingsspørsmål", {
         exact: false,
-      })
+      }),
     ).to.exist;
   });
 
   it("Sykmeldt is kandidat and has not answered questions", () => {
     mockKartleggingssporsmalKandidat(
       kartleggingIsKandidatAndReceivedQuestions,
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     );
 
     renderKartleggingssporsmal();
@@ -159,12 +159,12 @@ describe("Kartleggingssporsmal", () => {
     expect(
       screen.queryByText("Ved manglende svar vil vi automatisk sende", {
         exact: false,
-      })
+      }),
     ).to.exist;
     expect(
       screen.queryByText("Svarene fra den sykmeldte skal", {
         exact: false,
-      })
+      }),
     ).to.exist;
 
     expect(queryButton("Lagre vurdering, fjern oppgaven")).to.not.exist;
@@ -177,7 +177,7 @@ describe("Kartleggingssporsmal", () => {
     };
     mockKartleggingssporsmalKandidat(
       kandidatNotVarslet,
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     );
 
     renderKartleggingssporsmal();
@@ -185,14 +185,14 @@ describe("Kartleggingssporsmal", () => {
     expect(
       screen.getByText("Den sykmeldte har ikke mottatt kartleggingsspørsmål", {
         exact: false,
-      })
+      }),
     ).to.exist;
   });
 
   it("Sykmeldt is kandidat, is reservert, and has not answered questions", () => {
     mockKartleggingssporsmalKandidat(
       kartleggingIsKandidatAndReceivedQuestions,
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     );
     const kontaktinfo = {
       ...kontaktinformasjonMock,
@@ -200,7 +200,7 @@ describe("Kartleggingssporsmal", () => {
     };
     queryClient.setQueryData(
       brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => kontaktinfo
+      () => kontaktinfo,
     );
 
     renderKartleggingssporsmal();
@@ -212,8 +212,8 @@ describe("Kartleggingssporsmal", () => {
       .exist;
     expect(
       screen.getByText(
-        "Den sykmeldte er ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på folketrygdloven § 8-8 dersom det ikke kommer inn et svar."
-      )
+        "Den sykmeldte er ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på folketrygdloven § 8-8 dersom det ikke kommer inn et svar.",
+      ),
     ).to.exist;
     expect(screen.getByText("Brukeren er reservert fra digital kommunikasjon"))
       .to.exist;
@@ -224,11 +224,11 @@ describe("Kartleggingssporsmal", () => {
   it("Sykmeldt is kandidat and has answered questions", () => {
     mockKartleggingssporsmalKandidat(
       kartleggingIsKandidatAndAnsweredQuestions,
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     );
     mockKartleggingssporsmalSvar(
       kartleggingssporsmalFlervalgV1Answered,
-      kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+      kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
     );
 
     renderKartleggingssporsmal();
@@ -244,47 +244,47 @@ describe("Kartleggingssporsmal", () => {
     expect(
       screen.getAllByRole("radiogroup", {
         name: RegExp(
-          "Hvor sannsynlig er det at du kommer tilbake i jobben du ble sykmeldt fra?"
+          "Hvor sannsynlig er det at du kommer tilbake i jobben du ble sykmeldt fra?",
         ),
-      })[0]
+      })[0],
     ).to.exist;
     expect(
       screen.getByRole("radio", {
         name: "Jeg er usikker",
         checked: true,
-      })
+      }),
     ).to.exist;
 
     expect(
       screen.getAllByRole("radiogroup", {
         name: RegExp(
-          "Hvordan vil du beskrive samarbeidet og relasjonen mellom deg og arbeidsgiveren din?"
+          "Hvordan vil du beskrive samarbeidet og relasjonen mellom deg og arbeidsgiveren din?",
         ),
-      })[0]
+      })[0],
     ).to.exist;
     expect(
       screen.getByRole("radio", {
         name: "Jeg opplever samarbeidet og relasjonen som dårlig",
         checked: true,
-      })
+      }),
     ).to.exist;
 
     expect(
       screen.getAllByRole("radiogroup", {
         name: RegExp("Hvor lenge tror du at du kommer til å være sykmeldt?"),
-      })[0]
+      })[0],
     ).to.exist;
     expect(
       screen.getByRole("radio", {
         name: "Mindre enn seks måneder",
         checked: true,
-      })
+      }),
     ).to.exist;
 
     expect(
       screen.queryByText("Svarene fra den sykmeldte skal", {
         exact: false,
-      })
+      }),
     ).to.exist;
     expect(screen.queryByText("Utdrag fra sykefraværet")).to.exist;
 
@@ -294,63 +294,63 @@ describe("Kartleggingssporsmal", () => {
   it("Sykmeldt is kandidat and has answered FLERVALG_FRITEKST_V3 questions", () => {
     mockKartleggingssporsmalKandidat(
       kartleggingIsKandidatAndAnsweredQuestions,
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     );
     mockKartleggingssporsmalSvar(
       kartleggingssporsmalFlervalgFritekstV3Answered,
-      kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+      kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
     );
 
     renderKartleggingssporsmal();
 
     expect(
       screen.getByText(
-        "Hvordan ser du for deg muligheten for å komme tilbake til din nåværende jobb og stilling?"
-      )
+        "Hvordan ser du for deg muligheten for å komme tilbake til din nåværende jobb og stilling?",
+      ),
     ).to.exist;
     expect(
       screen.getByText(
-        "Jeg ser på det som utfordrende å komme tilbake til samme jobb og stilling"
-      )
+        "Jeg ser på det som utfordrende å komme tilbake til samme jobb og stilling",
+      ),
     ).to.exist;
 
     expect(
       screen.getByText(
-        "Beskriv hva som er utfordrende, og hva du tror kan hjelpe deg videre"
-      )
+        "Beskriv hva som er utfordrende, og hva du tror kan hjelpe deg videre",
+      ),
     ).to.exist;
     expect(
       screen.getByText(
-        "Får du oppfølging av arbeidsgiveren din nå når du er sykmeldt?"
-      )
+        "Får du oppfølging av arbeidsgiveren din nå når du er sykmeldt?",
+      ),
     ).to.exist;
     expect(
       screen.getByText(
-        "Nei, jeg opplever manglende oppfølging og at tilpasninger er vanskelig."
-      )
+        "Nei, jeg opplever manglende oppfølging og at tilpasninger er vanskelig.",
+      ),
     ).to.exist;
     expect(
       screen.getByText(
-        "Hva savner du i samarbeidet med arbeidsgiver for at du skal få bedre oppfølging?"
-      )
+        "Hva savner du i samarbeidet med arbeidsgiver for at du skal få bedre oppfølging?",
+      ),
     ).to.exist;
     expect(screen.getByDisplayValue("Ingen tekst")).to.exist;
 
     expect(
       screen.queryByText(
-        "Hvordan vil du beskrive samarbeidet og relasjonen mellom deg og arbeidsgiveren din?"
-      )
+        "Hvordan vil du beskrive samarbeidet og relasjonen mellom deg og arbeidsgiveren din?",
+      ),
     ).to.not.exist;
   });
 
   it("Sykmeldt is ferdigbehandlet with vurdering", () => {
     mockKartleggingssporsmalKandidat(
       kartleggingssporsmalVurderingFerdigbehandlet,
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     );
     mockKartleggingssporsmalSvar(
       kartleggingssporsmalFlervalgV1Answered,
-      kartleggingssporsmalVurderingFerdigbehandlet.kandidatUuid
+      kartleggingssporsmalVurderingFerdigbehandlet.kandidatUuid,
     );
 
     renderKartleggingssporsmal();
@@ -363,13 +363,13 @@ describe("Kartleggingssporsmal", () => {
       .exist;
 
     expect(
-      screen.queryByText(`Oppgaven er behandlet av ${VEILEDER_DEFAULT.ident}`)
+      screen.queryByText(`Oppgaven er behandlet av ${VEILEDER_DEFAULT.ident}`),
     ).to.exist;
 
     expect(
       screen.queryByText(
-        `Jeg vurderer at den sykmeldte ikke har behov for oppfølging`
-      )
+        `Jeg vurderer at den sykmeldte ikke har behov for oppfølging`,
+      ),
     ).to.exist;
   });
 
@@ -377,11 +377,11 @@ describe("Kartleggingssporsmal", () => {
     it("Submitting without choosing an option shows error message", async () => {
       mockKartleggingssporsmalKandidat(
         kartleggingIsKandidatAndAnsweredQuestions,
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalFlervalgV1Answered,
-        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
       stubVurderSvarError();
 
@@ -394,11 +394,11 @@ describe("Kartleggingssporsmal", () => {
     it("API returning Ok will show success message", async () => {
       mockKartleggingssporsmalKandidat(
         kartleggingIsKandidatAndAnsweredQuestions,
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalFlervalgV1Answered,
-        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
       stubDefaultIsmeroppfolging();
 
@@ -406,7 +406,7 @@ describe("Kartleggingssporsmal", () => {
 
       await screen
         .getByLabelText(
-          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for oppfølging"
+          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for oppfølging",
         )
         .click();
       await clickButton("Lagre vurdering, fjern oppgaven");
@@ -417,11 +417,11 @@ describe("Kartleggingssporsmal", () => {
     it("API returning error will show error message", async () => {
       mockKartleggingssporsmalKandidat(
         kartleggingIsKandidatAndAnsweredQuestions,
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalFlervalgV1Answered,
-        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
       stubVurderSvarError();
 
@@ -429,14 +429,14 @@ describe("Kartleggingssporsmal", () => {
 
       await screen
         .getByLabelText(
-          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for oppfølging"
+          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for oppfølging",
         )
         .click();
       await clickButton("Lagre vurdering, fjern oppgaven");
       expect(
         await screen.findByText(
-          "Det skjedde en uventet feil. Vennligst prøv igjen senere."
-        )
+          "Det skjedde en uventet feil. Vennligst prøv igjen senere.",
+        ),
       ).to.exist;
     });
   });
@@ -452,11 +452,11 @@ describe("Kartleggingssporsmal", () => {
     it("Shows hasRiskoForLangtidsfravarText when svar indicate risk for langtidsfravar", () => {
       mockKartleggingssporsmalKandidat(
         kartleggingIsKandidatAndAnsweredQuestions,
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalFlervalgV1Answered,
-        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
 
       renderKartleggingssporsmal();
@@ -468,11 +468,11 @@ describe("Kartleggingssporsmal", () => {
     it("Does not show hasRiskoForLangtidsfravarText when all selected radio options are low-risk", () => {
       mockKartleggingssporsmalKandidat(
         kartleggingIsKandidatAndAnsweredQuestions,
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalFlervalgV1LowRiskAnswered,
-        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
 
       renderKartleggingssporsmal();
@@ -480,7 +480,7 @@ describe("Kartleggingssporsmal", () => {
       expect(
         screen
           .getAllByRole("listitem")
-          .some((item) => item.textContent?.includes(noRiskoForLangtidsfravar))
+          .some((item) => item.textContent?.includes(noRiskoForLangtidsfravar)),
       ).to.be.true;
       expect(screen.queryByText(hasRiskoForLangtidsfravar)).to.not.exist;
     });
@@ -489,11 +489,11 @@ describe("Kartleggingssporsmal", () => {
       mockGjentakendeFravar(true);
       mockKartleggingssporsmalKandidat(
         kartleggingIsKandidatAndAnsweredQuestions,
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalFlervalgV1Answered,
-        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
 
       renderKartleggingssporsmal();
@@ -505,22 +505,22 @@ describe("Kartleggingssporsmal", () => {
     it("Shows readmore for gjentakende sykefravær definition", () => {
       mockKartleggingssporsmalKandidat(
         kartleggingIsKandidatAndAnsweredQuestions,
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalFlervalgV1Answered,
-        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
 
       renderKartleggingssporsmal();
 
       expect(
-        screen.getByRole("button", { name: "Hva er gjentakende sykefravær?" })
+        screen.getByRole("button", { name: "Hva er gjentakende sykefravær?" }),
       ).to.exist;
       expect(
         screen.getByText(
-          "Definisjonen på gjentakende sykefravær i Modia er enten:"
-        )
+          "Definisjonen på gjentakende sykefravær i Modia er enten:",
+        ),
       );
     });
 
@@ -528,11 +528,11 @@ describe("Kartleggingssporsmal", () => {
       mockGjentakendeFravar(false);
       mockKartleggingssporsmalKandidat(
         kartleggingIsKandidatAndAnsweredQuestions,
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalFlervalgV1Answered,
-        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
 
       renderKartleggingssporsmal();
@@ -540,7 +540,7 @@ describe("Kartleggingssporsmal", () => {
       expect(
         screen
           .getAllByRole("listitem")
-          .some((item) => item.textContent?.includes(noGjentakendeSykefravar))
+          .some((item) => item.textContent?.includes(noGjentakendeSykefravar)),
       ).to.be.true;
       expect(screen.queryByText(hasGjentakendeSykefravar)).to.not.exist;
     });
@@ -568,11 +568,11 @@ describe("Kartleggingssporsmal", () => {
     it("renders nothing when there are no previous kandidater", () => {
       mockKartleggingssporsmalKandidater(
         [kartleggingIsKandidatAndAnsweredQuestions],
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalFlervalgV1Answered,
-        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
 
       renderKartleggingssporsmal();
@@ -584,11 +584,11 @@ describe("Kartleggingssporsmal", () => {
     it("renders nothing when previous kandidater have not answered", () => {
       mockKartleggingssporsmalKandidater(
         [kartleggingIsKandidatAndAnsweredQuestions, tidligereKandidatUtenSvar],
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalFlervalgV1Answered,
-        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
 
       renderKartleggingssporsmal();
@@ -600,15 +600,15 @@ describe("Kartleggingssporsmal", () => {
     it("renders historikk header when there are previous kandidater with svar", () => {
       mockKartleggingssporsmalKandidater(
         [kartleggingIsKandidatAndAnsweredQuestions, tidligereKandidatMedSvar],
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalFlervalgV1Answered,
-        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalFlervalgV1Answered,
-        tidligereKandidatMedSvar.kandidatUuid
+        tidligereKandidatMedSvar.kandidatUuid,
       );
 
       renderKartleggingssporsmal();
@@ -622,21 +622,21 @@ describe("Kartleggingssporsmal", () => {
     it("renders accordion with svar date as header", () => {
       mockKartleggingssporsmalKandidater(
         [kartleggingIsKandidatAndAnsweredQuestions, tidligereKandidatMedSvar],
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalFlervalgV1Answered,
-        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
       mockKartleggingssporsmalSvar(
         kartleggingssporsmalFlervalgV1Answered,
-        tidligereKandidatMedSvar.kandidatUuid
+        tidligereKandidatMedSvar.kandidatUuid,
       );
 
       renderKartleggingssporsmal();
 
       expect(
-        screen.getAllByText("Sykmeldte svarte", { exact: false }).length
+        screen.getAllByText("Sykmeldte svarte", { exact: false }).length,
       ).toBeGreaterThanOrEqual(1);
     });
   });

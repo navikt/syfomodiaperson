@@ -11,7 +11,7 @@ const texts = {
 };
 
 function arbeidsgiverForskuttererToText(
-  arbeidsgiverForskutterer?: boolean
+  arbeidsgiverForskutterer?: boolean,
 ): string {
   if (arbeidsgiverForskutterer === undefined) {
     return "Forskuttering ikke oppgitt";

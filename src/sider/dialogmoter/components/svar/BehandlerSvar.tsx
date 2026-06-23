@@ -16,10 +16,10 @@ const texts = {
 };
 
 const begrunnelseHeaderTekst = (
-  svar: DialogmotedeltakerBehandlerVarselSvarDTO
+  svar: DialogmotedeltakerBehandlerVarselSvarDTO,
 ) =>
   `${texts.begrunnelseMottattHeader} ${tilLesbarDatoMedArUtenManedNavn(
-    svar.createdAt
+    svar.createdAt,
   )}`;
 
 interface Props {

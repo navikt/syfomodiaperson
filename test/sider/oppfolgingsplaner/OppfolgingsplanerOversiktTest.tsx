@@ -46,7 +46,7 @@ function renderOppfolgingsplanerOversikt() {
           <OppfolgingsplanerOversikt />
         </ValgtEnhetContext.Provider>
       </QueryClientProvider>
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 }
 
@@ -59,9 +59,9 @@ describe("OppfolgingsplanerOversikt", () => {
       const newerOppfolgingsplan = createOppfolgingsplanLps(10, false);
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [olderOppfolgingsplan, newerOppfolgingsplan]
+        () => [olderOppfolgingsplan, newerOppfolgingsplan],
       );
 
       renderOppfolgingsplanerOversikt();
@@ -85,9 +85,9 @@ describe("OppfolgingsplanerOversikt", () => {
       const newerOppfolgingsplan = createOppfolgingsplanLps(10, true);
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [olderOppfolgingsplan, newerOppfolgingsplan]
+        () => [olderOppfolgingsplan, newerOppfolgingsplan],
       );
 
       renderOppfolgingsplanerOversikt();
@@ -100,11 +100,11 @@ describe("OppfolgingsplanerOversikt", () => {
       expect(oppfolgingsplanerLPS.length).to.equal(2);
       expect(oppfolgingsplanerLPS[0].textContent).to.contain(newerDate);
       expect(
-        within(oppfolgingsplanerLPS[0]).queryByText("Marker som behandlet")
+        within(oppfolgingsplanerLPS[0]).queryByText("Marker som behandlet"),
       ).to.be.null;
       expect(oppfolgingsplanerLPS[1].textContent).to.contain(olderDate);
       expect(
-        within(oppfolgingsplanerLPS[1]).queryByText("Marker som behandlet")
+        within(oppfolgingsplanerLPS[1]).queryByText("Marker som behandlet"),
       ).to.be.null;
     });
   });
@@ -113,20 +113,20 @@ describe("OppfolgingsplanerOversikt", () => {
     it("Viser ikke be om oppfølgingsplan funksjonalitet om sykmeldt ikke har aktivt oppfølgingstilfelle", () => {
       queryClient.setQueryData(
         oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => ({
           personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
           oppfolgingstilfelleList: [
             generateOppfolgingstilfelle(daysFromToday(-30), daysFromToday(-20)),
           ],
-        })
+        }),
       );
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => []
+        () => [],
       );
       renderOppfolgingsplanerOversikt();
 
@@ -137,9 +137,9 @@ describe("OppfolgingsplanerOversikt", () => {
     it("Viser be om oppfølgingsplan funksjonalitet om sykmeldt har en arbeidsgiver", () => {
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => []
+        () => [],
       );
       renderOppfolgingsplanerOversikt();
 
@@ -151,13 +151,13 @@ describe("OppfolgingsplanerOversikt", () => {
     it("Viser be om oppfølgingsplan funksjonalitet om sykmeldt har flere arbeidsgivere", () => {
       queryClient.setQueryData(
         ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => [...LEDERE_DEFAULT, ANNEN_LEDER_AKTIV]
+        () => [...LEDERE_DEFAULT, ANNEN_LEDER_AKTIV],
       );
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => []
+        () => [],
       );
       renderOppfolgingsplanerOversikt();
 
@@ -169,9 +169,9 @@ describe("OppfolgingsplanerOversikt", () => {
     it("Viser be om oppfølgingsplan funksjonalitet om det ikke finnes en aktiv oppfølgingsplan", () => {
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => []
+        () => [],
       );
       renderOppfolgingsplanerOversikt();
 
@@ -183,20 +183,20 @@ describe("OppfolgingsplanerOversikt", () => {
       expect(
         screen.queryByRole("button", {
           name: "Dette får nærmeste leder tilsendt i e-posten fra Nav",
-        })
+        }),
       ).to.exist;
       expect(screen.getByRole("button", { name: "Send forespørsel" })).to.exist;
     });
     it("Viser be om oppfølgingsplan funksjonalitet om det ikke finnes aktiv oppfølgingsplan fra alle arbeidsgivere", () => {
       queryClient.setQueryData(
         ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => [...LEDERE_DEFAULT, ANNEN_LEDER_AKTIV]
+        () => [...LEDERE_DEFAULT, ANNEN_LEDER_AKTIV],
       );
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [createOppfolgingsplanLps(10, false)]
+        () => [createOppfolgingsplanLps(10, false)],
       );
       renderOppfolgingsplanerOversikt();
 
@@ -211,15 +211,15 @@ describe("OppfolgingsplanerOversikt", () => {
     it("Viser ikke Lumi survey når det ikke finnes aktive V2-oppfølgingsplaner", () => {
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => []
+        () => [],
       );
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => []
+        () => [],
       );
 
       renderOppfolgingsplanerOversikt();
@@ -239,15 +239,15 @@ describe("OppfolgingsplanerOversikt", () => {
       };
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => []
+        () => [],
       );
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [activePlan]
+        () => [activePlan],
       );
 
       renderOppfolgingsplanerOversikt();
@@ -259,7 +259,7 @@ describe("OppfolgingsplanerOversikt", () => {
 
 const createOppfolgingsplanLps = (
   daysSinceOpprettet: number,
-  behandlet: boolean
+  behandlet: boolean,
 ): OppfolgingsplanLPS => {
   const oppfolgingsplanLPS = {
     uuid: generateUUID(),
@@ -271,14 +271,14 @@ const createOppfolgingsplanLps = (
 
   const existingPersonOppgaver =
     queryClient.getQueryData<PersonOppgave[]>(
-      personoppgaverQueryKeys.personoppgaver(ARBEIDSTAKER_DEFAULT.personIdent)
+      personoppgaverQueryKeys.personoppgaver(ARBEIDSTAKER_DEFAULT.personIdent),
     ) || [];
   queryClient.setQueryData(
     personoppgaverQueryKeys.personoppgaver(ARBEIDSTAKER_DEFAULT.personIdent),
     () => [
       ...existingPersonOppgaver,
       createOppfolgingsplanLpsPersonoppgave(oppfolgingsplanLPS.uuid, behandlet),
-    ]
+    ],
   );
 
   return oppfolgingsplanLPS;
@@ -286,7 +286,7 @@ const createOppfolgingsplanLps = (
 
 const createOppfolgingsplanLpsPersonoppgave = (
   referanseUuid: string,
-  behandlet: boolean
+  behandlet: boolean,
 ): PersonOppgave => {
   return {
     uuid: generateUUID(),

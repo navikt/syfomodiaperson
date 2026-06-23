@@ -43,7 +43,7 @@ const kandidatSvartIkkeVarsletMock = {
 let queryClient: QueryClient;
 
 const renderSenOppfolgingHistorikk = (
-  historikk: SenOppfolgingKandidatResponseDTO[]
+  historikk: SenOppfolgingKandidatResponseDTO[],
 ) =>
   render(
     <QueryClientProvider client={queryClient}>
@@ -52,7 +52,7 @@ const renderSenOppfolgingHistorikk = (
       >
         <SenOppfolgingHistorikk historikk={historikk} />
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("SenOppfolgingHistorikk", () => {
@@ -69,16 +69,16 @@ describe("SenOppfolgingHistorikk", () => {
     expect(
       screen.getByRole("button", {
         name: `Sykmeldte fikk varsel ${toDatePrettyPrint(
-          kandidatSvartOgVarsletMock.varselAt
+          kandidatSvartOgVarsletMock.varselAt,
         )}`,
-      })
+      }),
     ).to.exist;
     expect(
       screen.getByRole("button", {
         name: `Sykmeldte svarte ${toDatePrettyPrint(
-          kandidatSvartIkkeVarsletMock.svar?.svarAt
+          kandidatSvartIkkeVarsletMock.svar?.svarAt,
         )}`,
-      })
+      }),
     ).to.exist;
   });
 
@@ -91,20 +91,20 @@ describe("SenOppfolgingHistorikk", () => {
 
     expect(
       screen.getAllByText(
-        `Sykmeldte fikk varsel ${toDatePrettyPrint(varselAt)}`
-      )
+        `Sykmeldte fikk varsel ${toDatePrettyPrint(varselAt)}`,
+      ),
     ).to.not.be.empty;
     expect(
       screen.getByText(
-        `Sykmeldte svarte ${toDatePrettyPrint(svarAt)}: Ønsker oppfølging`
-      )
+        `Sykmeldte svarte ${toDatePrettyPrint(svarAt)}: Ønsker oppfølging`,
+      ),
     ).to.exist;
     expect(
       screen.getByText(
         `Vurdert av ${VEILEDER_DEFAULT.fulltNavn()} ${toDatePrettyPrint(
-          vurdering.createdAt
-        )}`
-      )
+          vurdering.createdAt,
+        )}`,
+      ),
     );
     expect(screen.getByText("Begrunnelse mangler")).to.exist;
   });

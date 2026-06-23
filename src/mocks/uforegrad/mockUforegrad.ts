@@ -6,7 +6,7 @@ export const mockPensjonPenUforegrad = http.get(
   `${PENSJON_PEN_UFOREGRAD_ROOT}/uforegrad`,
   () => {
     return HttpResponse.json(mockUforegrad);
-  }
+  },
 );
 
 export const mockUforegrad: UforegradResponse = {

@@ -204,8 +204,8 @@ const toNewReferat = (
   dialogmote: DialogmoteDTO,
   values: Partial<ReferatSkjemaValues>,
   getReferatDocument: (
-    values: Partial<ReferatSkjemaValues>
-  ) => DocumentComponentDto[]
+    values: Partial<ReferatSkjemaValues>,
+  ) => DocumentComponentDto[],
 ): NewDialogmoteReferatDTO => ({
   narmesteLederNavn: values.naermesteLeder ?? "",
   situasjon: values.situasjon ?? "",
@@ -246,7 +246,7 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
   const { getReferatDocument } = useReferatDocument(dialogmote, mode);
   const initialValues = useInitialValuesReferat(dialogmote);
   const { standardTekster: standardTeksterForVisning } = getReferatTexts(
-    Malform.BOKMAL
+    Malform.BOKMAL,
   );
   const formMethods = useForm<ReferatSkjemaValues>({
     defaultValues: initialValues,
@@ -279,7 +279,7 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
     const newDialogmoteReferatDTO = toNewReferat(
       dialogmote,
       values,
-      getReferatDocument
+      getReferatDocument,
     );
     if (isEndringAvReferat) {
       endreReferat.mutate(newDialogmoteReferatDTO);
@@ -315,7 +315,7 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
           setLastSavedTime(dayjs());
         },
         onError: () => setShowToast(false),
-      }
+      },
     );
   };
 
@@ -326,7 +326,7 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
       }
     },
     5000,
-    { maxWait: 20000 }
+    { maxWait: 20000 },
   );
   const handleLagreClick = (values: ReferatSkjemaValues) => {
     debouncedAutoSave.cancel();
@@ -349,7 +349,7 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
   const behandlerDeltakerHeading = (
     behandler: DialogmotedeltakerBehandlerDTO,
     deltatt: boolean | undefined,
-    mottarReferat: boolean | undefined
+    mottarReferat: boolean | undefined,
   ): string =>
     `Behandler: ${behandler.behandlerNavn}${
       deltatt === false ? ", deltok ikke" : ", deltok"
@@ -408,14 +408,14 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
                 ariaLabel={behandlerDeltakerHeading(
                   dialogmote.behandler,
                   watch("behandlerDeltatt"),
-                  watch("behandlerMottarReferat")
+                  watch("behandlerMottarReferat"),
                 )}
                 heading={
                   <DeltakerBehandlerHeading>
                     {behandlerDeltakerHeading(
                       dialogmote.behandler,
                       watch("behandlerDeltatt"),
-                      watch("behandlerMottarReferat")
+                      watch("behandlerMottarReferat"),
                     )}
                   </DeltakerBehandlerHeading>
                 }
@@ -549,7 +549,7 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
                   <BodyShort key={index} size="small">
                     {text}
                   </BodyShort>
-                )
+                ),
               )}
             />
             <ReferatTextArea
@@ -632,7 +632,7 @@ const Referat = ({ dialogmote, mode }: ReferatProps): ReactElement => {
                           <Checkbox key={index} size="small" value={key}>
                             {standardtekst.label}
                           </Checkbox>
-                        )
+                        ),
                       )}
                     </CheckboxGroup>
                   )}

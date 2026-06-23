@@ -9,7 +9,7 @@ const texts = {
   title: "Fristen er gått ut",
   passertAlert: (sentDate: Date) =>
     `Fristen for forhåndsvarselet som ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
-      sentDate
+      sentDate,
     )} er gått ut. Trykk på Innstilling om avslag-knappen hvis vilkårene i § 8-4 ikke er oppfylt og rett til videre sykepenger skal avslås.`,
   ikkeAktuell:
     "Velg Ikke aktuell-knappen hvis personen har blitt friskmeldt eller fått vedtak om § 8-5 Friskmelding til arbeidsformidling etter at forhåndsvarselet ble sendt ut.",

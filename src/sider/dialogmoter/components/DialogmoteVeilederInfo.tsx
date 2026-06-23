@@ -14,10 +14,10 @@ interface Props {
 
 export default function DialogmoteVeilederInfo({ dialogmote }: Props) {
   const { data: innkaltVeileder } = useVeilederInfoQuery(
-    dialogmote.opprettetAv
+    dialogmote.opprettetAv,
   );
   const { data: tildeltVeileder } = useVeilederInfoQuery(
-    dialogmote.tildeltVeilederIdent
+    dialogmote.tildeltVeilederIdent,
   );
 
   const veilederTekst = () => {

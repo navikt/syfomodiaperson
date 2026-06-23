@@ -18,7 +18,7 @@ import {
 
 export const meldingTilOgFraBehandler = (
   meldingFraBehandlerUuid: string,
-  withPaminnelse = false
+  withPaminnelse = false,
 ) => {
   return {
     conversations: {
@@ -63,7 +63,7 @@ export const meldingFraBehandlerUtenBehandlernavn = {
 
 export const meldingTilBehandlerMedMeldingStatus = (
   status: MeldingStatusType,
-  tekst: string | null = null
+  tekst: string | null = null,
 ) => {
   return {
     conversations: {

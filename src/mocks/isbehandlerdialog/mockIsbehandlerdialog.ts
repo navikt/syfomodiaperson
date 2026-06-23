@@ -12,7 +12,7 @@ const replaceNumberInString = (originalString: string, searchValue: string) => {
     searchValue,
     replaceValue !== searchValue
       ? replaceValue
-      : Math.round(Math.random() * 10).toString()
+      : Math.round(Math.random() * 10).toString(),
   );
 };
 
@@ -42,7 +42,7 @@ export const mockIsbehandlerdialog = [
         },
       };
       return new HttpResponse(null, { status: 200 });
-    }
+    },
   ),
   http.post(`${ISBEHANDLERDIALOG_ROOT}/melding/:uuid/paminnelse`, () => {
     return new HttpResponse(null, { status: 200 });

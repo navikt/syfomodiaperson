@@ -26,26 +26,26 @@ const sortDateByTidspunkt = (d1: Date | null, d2: Date | null) => {
   return new Date(d2).getTime() - new Date(d1).getTime();
 };
 const getSisteBehandledeBehandlerdialogSvarOppgave = (
-  personOppgaver: PersonOppgave[]
+  personOppgaver: PersonOppgave[],
 ): PersonOppgave | undefined => {
   return getAllBehandledePersonOppgaver(
     personOppgaver,
-    PersonOppgaveType.BEHANDLERDIALOG_SVAR
+    PersonOppgaveType.BEHANDLERDIALOG_SVAR,
   ).sort((a, b) =>
-    sortDateByTidspunkt(a.behandletTidspunkt, b.behandletTidspunkt)
+    sortDateByTidspunkt(a.behandletTidspunkt, b.behandletTidspunkt),
   )[0];
 };
 
 export default function BehandleBehandlerdialogSvarOppgaveKnapp() {
   const { data: personOppgaver } = usePersonoppgaverQuery();
   const hasBehandlerDialogSvarOppgaver = personOppgaver.some(
-    (p) => p.type === PersonOppgaveType.BEHANDLERDIALOG_SVAR
+    (p) => p.type === PersonOppgaveType.BEHANDLERDIALOG_SVAR,
   );
   const fnr = useValgtPersonident();
   const behandleAllPersonoppgaver = useBehandleAllPersonoppgaver();
   const isBehandlet = !hasUbehandletPersonoppgave(
     personOppgaver,
-    PersonOppgaveType.BEHANDLERDIALOG_SVAR
+    PersonOppgaveType.BEHANDLERDIALOG_SVAR,
   );
   const behandlePersonOppgaveRequestDTO: BehandlePersonoppgaveRequestDTO = {
     personIdent: fnr,

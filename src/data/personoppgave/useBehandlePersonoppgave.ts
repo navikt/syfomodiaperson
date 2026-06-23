@@ -38,11 +38,11 @@ export const useBehandleAllPersonoppgaver = () => {
   const fnr = useValgtPersonident();
   const queryClient = useQueryClient();
   const postBehandlePersonoppgaver = (
-    behandlePersonoppgaverRequestDTO: BehandlePersonoppgaveRequestDTO
+    behandlePersonoppgaverRequestDTO: BehandlePersonoppgaveRequestDTO,
   ) =>
     post(
       `${ISPERSONOPPGAVE_ROOT}/personoppgave/behandle`,
-      behandlePersonoppgaverRequestDTO
+      behandlePersonoppgaverRequestDTO,
     );
   const personOppgaverQueryKey = personoppgaverQueryKeys.personoppgaver(fnr);
 

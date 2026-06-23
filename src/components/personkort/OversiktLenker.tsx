@@ -27,14 +27,14 @@ export default function OversiktLenker(): ReactElement {
         <LinkAsTab
           href={fullNaisUrlIntern(
             "syfomoteoversikt",
-            "/syfomoteoversikt/minemoter"
+            "/syfomoteoversikt/minemoter",
           )}
           label={<Heading size="xsmall">{texts.mineMoter}</Heading>}
         />
         <LinkAsTab
           href={fullNaisUrlIntern(
             "syfomoteoversikt",
-            "/syfomoteoversikt/enhetensmoter"
+            "/syfomoteoversikt/enhetensmoter",
           )}
           label={<Heading size="xsmall">{texts.enhetensMoter}</Heading>}
         />

@@ -19,7 +19,7 @@ export const getForhandsvarselTexts = ({
     header: "Varsel om mulig stans av sykepenger",
     intro: introText(mal),
     stans1: `Basert på opplysningene Nav har i saken er du ikke i arbeidsrelatert aktivitet, og det er heller ikke dokumentert at du oppfyller vilkårene for unntak fra aktivitetsplikten. Vi vurderer derfor å stanse sykepengene dine fra og med ${tilDatoMedManedNavn(
-      frist
+      frist,
     )}.`,
     stans2:
       "Vi har ikke tatt en endelig avgjørelse om å stanse dine sykepenger.",
@@ -90,11 +90,11 @@ const tilbakemeldingText = (mal: Brevmal, frist: Date): string => {
     case Brevmal.MED_ARBEIDSGIVER:
     case Brevmal.UTLAND:
       return `Vi ber om tilbakemelding fra deg, arbeidsgiveren din eller den som har sykmeldt deg innen ${tilDatoMedManedNavn(
-        frist
+        frist,
       )}. Etter denne datoen vil Nav vurdere å stanse sykepengene dine.`;
     case Brevmal.UTEN_ARBEIDSGIVER:
       return `Vi ber om tilbakemelding fra deg eller den som har sykmeldt deg innen ${tilDatoMedManedNavn(
-        frist
+        frist,
       )}. Etter denne datoen vil Nav vurdere å stanse sykepengene dine.`;
   }
 };

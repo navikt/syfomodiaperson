@@ -55,7 +55,7 @@ function MotebehovHistorikkEvent({
           <BodyShort className="mt-2">{`Møtebehovet ble vurdert av ${
             motebehov.behandletVeilederIdent
           } den ${tilLesbarDatoMedArstall(
-            motebehov.behandletTidspunkt
+            motebehov.behandletTidspunkt,
           )}.`}</BodyShort>
         )}
       </Accordion.Content>

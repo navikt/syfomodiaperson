@@ -26,12 +26,12 @@ const lastVurderingText = (vurderinger: VurderingResponseDTO[]) => {
 
   if (lastVurdering.type === VurderingType.FORHANDSVARSEL) {
     return `Forrige forhåndsvarsel på 8-4 ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
-      lastVurdering?.createdAt
+      lastVurdering?.createdAt,
     )}`;
   } else {
     const lastVurderingType = typeTexts[lastVurdering.type].toLowerCase();
     return `Siste vurdering var ${lastVurderingType} og ble gjort ${tilLesbarDatoMedArUtenManedNavn(
-      lastVurdering?.createdAt
+      lastVurdering?.createdAt,
     )}`;
   }
 };
@@ -79,7 +79,7 @@ export default function NyVurdering({ handleClick }: Props) {
           {texts.siste}
         </Heading>
         <BodyShort className="mb-4">{`${lastVurderingText(
-          vurderinger
+          vurderinger,
         )}`}</BodyShort>
         <Button onClick={handleClick} variant="secondary">
           {texts.startNyVurderingButton}

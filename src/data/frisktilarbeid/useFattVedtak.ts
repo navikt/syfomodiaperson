@@ -20,7 +20,7 @@ export const useFattVedtak = () => {
     onSuccess: (data: VedtakResponseDTO) => {
       queryClient.setQueryData(
         vedtakQueryKeys.vedtak(personident),
-        (oldData: VedtakResponseDTO[]) => [data, ...oldData]
+        (oldData: VedtakResponseDTO[]) => [data, ...oldData],
       );
     },
   });

@@ -8,7 +8,7 @@ import { navEnhet } from "../dialogmote/testData";
 export const queryHookWrapper = (client: QueryClient) => {
   client.setQueryData(
     modiacontextQueryKeys.aktivbruker,
-    () => AKTIV_BRUKER_DEFAULT
+    () => AKTIV_BRUKER_DEFAULT,
   );
   const wrapper = ({ children }: any) => (
     <QueryClientProvider client={client}>

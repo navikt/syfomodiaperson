@@ -22,7 +22,7 @@ export const NotificationProvider = ({
   children,
 }: NotificationProviderProps) => {
   const [notification, setNotification] = useState<Notification | undefined>(
-    undefined
+    undefined,
   );
   return (
     <NotificationContext.Provider
@@ -40,7 +40,7 @@ export const useNotification = () => {
   const context = React.useContext(NotificationContext);
   if (!context) {
     throw new Error(
-      `useNotifications must be used within a NotificationProvider`
+      `useNotifications must be used within a NotificationProvider`,
     );
   }
   return context;

@@ -24,7 +24,7 @@ describe("oppfolgingstilfellePersonDTO tests", () => {
         hasGjentakendeSykefravar({
           ...tilfellePerson,
           hasGjentakendeSykefravar: hasGjentakendeFravar,
-        })
+        }),
       ).to.be.true;
     });
 
@@ -35,7 +35,10 @@ describe("oppfolgingstilfellePersonDTO tests", () => {
       ];
 
       expect(
-        hasGjentakendeSykefravar({ ...tilfellePerson, oppfolgingstilfelleList })
+        hasGjentakendeSykefravar({
+          ...tilfellePerson,
+          oppfolgingstilfelleList,
+        }),
       ).to.be.true;
     });
 
@@ -45,7 +48,10 @@ describe("oppfolgingstilfellePersonDTO tests", () => {
       ];
 
       expect(
-        hasGjentakendeSykefravar({ ...tilfellePerson, oppfolgingstilfelleList })
+        hasGjentakendeSykefravar({
+          ...tilfellePerson,
+          oppfolgingstilfelleList,
+        }),
       ).to.be.false;
     });
 
@@ -60,7 +66,10 @@ describe("oppfolgingstilfellePersonDTO tests", () => {
       ];
 
       expect(
-        hasGjentakendeSykefravar({ ...tilfellePerson, oppfolgingstilfelleList })
+        hasGjentakendeSykefravar({
+          ...tilfellePerson,
+          oppfolgingstilfelleList,
+        }),
       ).to.be.false;
     });
 
@@ -75,7 +84,10 @@ describe("oppfolgingstilfellePersonDTO tests", () => {
       ];
 
       expect(
-        hasGjentakendeSykefravar({ ...tilfellePerson, oppfolgingstilfelleList })
+        hasGjentakendeSykefravar({
+          ...tilfellePerson,
+          oppfolgingstilfelleList,
+        }),
       ).to.be.true;
     });
 
@@ -89,7 +101,10 @@ describe("oppfolgingstilfellePersonDTO tests", () => {
       ];
 
       expect(
-        hasGjentakendeSykefravar({ ...tilfellePerson, oppfolgingstilfelleList })
+        hasGjentakendeSykefravar({
+          ...tilfellePerson,
+          oppfolgingstilfelleList,
+        }),
       ).to.be.true;
     });
 
@@ -107,7 +122,10 @@ describe("oppfolgingstilfellePersonDTO tests", () => {
       ];
 
       expect(
-        hasGjentakendeSykefravar({ ...tilfellePerson, oppfolgingstilfelleList })
+        hasGjentakendeSykefravar({
+          ...tilfellePerson,
+          oppfolgingstilfelleList,
+        }),
       ).to.be.false;
     });
 
@@ -126,7 +144,10 @@ describe("oppfolgingstilfellePersonDTO tests", () => {
       ];
 
       expect(
-        hasGjentakendeSykefravar({ ...tilfellePerson, oppfolgingstilfelleList })
+        hasGjentakendeSykefravar({
+          ...tilfellePerson,
+          oppfolgingstilfelleList,
+        }),
       ).to.be.true;
     });
   });

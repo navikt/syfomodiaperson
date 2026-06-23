@@ -31,15 +31,15 @@ describe("maksdatoQuery", () => {
 
     // Date fields may arrive as either string (from JSON) or Date depending on runtime parsing.
     expect(toIso(data?.utbetalt_tom)).to.equal(
-      toIso(maksdatoMock.maxDate.utbetalt_tom)
+      toIso(maksdatoMock.maxDate.utbetalt_tom),
     );
     expect(toIso(data?.tom)).to.equal(toIso(maksdatoMock.maxDate.tom));
     expect(toIso(data?.forelopig_beregnet_slutt)).to.equal(
-      toIso(maksdatoMock.maxDate.forelopig_beregnet_slutt)
+      toIso(maksdatoMock.maxDate.forelopig_beregnet_slutt),
     );
 
     expect(data?.gjenstaende_sykedager).to.deep.equal(
-      maksdatoMock.maxDate.gjenstaende_sykedager
+      maksdatoMock.maxDate.gjenstaende_sykedager,
     );
   });
 });

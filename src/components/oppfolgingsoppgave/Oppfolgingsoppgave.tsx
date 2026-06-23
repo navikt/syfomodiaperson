@@ -32,7 +32,7 @@ export default function Oppfolgingsoppgave() {
     aktivOppfolgingsoppgave?.versjoner?.[0];
 
   const { data: veilederinfo } = useVeilederInfoQuery(
-    aktivOppfolgingsoppgaveVersjon?.createdBy ?? ""
+    aktivOppfolgingsoppgaveVersjon?.createdBy ?? "",
   );
   const isExistingOppfolgingsoppgave = !!aktivOppfolgingsoppgave;
   const handleRemoveOppfolgingsoppgave = (uuid: string) => {
@@ -106,12 +106,12 @@ export default function Oppfolgingsoppgave() {
       <div className="mt-2">
         <Detail textColor="subtle" className="text-xs">
           {`Opprettet: ${tilLesbarDatoMedArUtenManedNavn(
-            aktivOppfolgingsoppgave.createdAt
+            aktivOppfolgingsoppgave.createdAt,
           )}`}
         </Detail>
         <Detail textColor="subtle" className="text-xs">
           {`Sist oppdatert: ${tilLesbarDatoMedArUtenManedNavn(
-            aktivOppfolgingsoppgave.updatedAt
+            aktivOppfolgingsoppgave.updatedAt,
           )}`}
         </Detail>
         {veilederinfo && (

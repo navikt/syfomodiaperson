@@ -53,9 +53,9 @@ export function useGetOppfolgingsplanerQuery() {
         query.data?.filter(
           (plan) =>
             plan.status !== "AVBRUTT" &&
-            new Date(plan.godkjentPlan.gyldighetstidspunkt.tom) > new Date()
+            new Date(plan.godkjentPlan.gyldighetstidspunkt.tom) > new Date(),
         ) || [],
-      [query.data]
+      [query.data],
     ),
   };
 }

@@ -84,7 +84,7 @@ const VurderingHistorikkItem = ({ vurdering }: VurderingHistorikkItemProps) => {
 };
 
 function isVurderingResponseDTO(
-  item: HistorikkEntry
+  item: HistorikkEntry,
 ): item is VurderingResponseDTO {
   return "type" in item;
 }
@@ -102,12 +102,12 @@ function sortHistorikkEntriesDesc(a: HistorikkEntry, b: HistorikkEntry) {
 }
 
 function filterSykepengestoppArbeidsuforhet(
-  sykepengestoppList: Sykepengestopp[]
+  sykepengestoppList: Sykepengestopp[],
 ) {
   return sykepengestoppList.filter((sykepengestopp) =>
     sykepengestopp.arsakList.some(
-      (arsak) => arsak.type === ValidSykepengestoppArsakType.MEDISINSK_VILKAR
-    )
+      (arsak) => arsak.type === ValidSykepengestoppArsakType.MEDISINSK_VILKAR,
+    ),
   );
 }
 
@@ -147,7 +147,7 @@ export const VurderingHistorikk = () => {
               key={index}
               sykepengestopp={item as Sykepengestopp}
             />
-          )
+          ),
         )}
       </Accordion>
     </Box>

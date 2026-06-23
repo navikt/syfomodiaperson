@@ -20,7 +20,7 @@ const getLedetekstFraSvar = (svar: string) => {
 
 const erUndersporsmalStilt = (
   svar: SvarDTO[],
-  kriterieForVisningAvUndersporsmal?: VisningskriterieDTO
+  kriterieForVisningAvUndersporsmal?: VisningskriterieDTO,
 ) => svar.some((s) => s.verdi === kriterieForVisningAvUndersporsmal);
 
 export function OppsummeringJaEllerNei({

@@ -35,14 +35,14 @@ const renderDialogmoteOnskePanel = () => {
         <MotebehovKvittering />
         <BehandleMotebehovKnapp />
       </DialogmotePanel>{" "}
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
 function mockMotebehov(motebehov: MotebehovVeilederDTO[]) {
   queryClient.setQueryData(
     motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => motebehov
+    () => motebehov,
   );
 }
 
@@ -53,7 +53,7 @@ function mockVirksomhet() {
       navn: {
         navnelinje1: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
       },
-    })
+    }),
   );
 }
 
@@ -113,15 +113,15 @@ describe("DialogmoteOnskePanel", () => {
 
     expect(
       screen.getByText(
-        "Alle tidligere møtebehov er behandlet, se møtebehovhistorikken for flere detaljer."
-      )
+        "Alle tidligere møtebehov er behandlet, se møtebehovhistorikken for flere detaljer.",
+      ),
     ).to.exist;
     expect(
       screen.queryByText(
         `Møtebehovet ble behandlet av Z990000 den ${toDatePrettyPrint(
-          datoUtenforOppfolgingstilfelle
-        )}.`
-      )
+          datoUtenforOppfolgingstilfelle,
+        )}.`,
+      ),
     ).to.not.exist;
   });
 
@@ -139,15 +139,15 @@ describe("DialogmoteOnskePanel", () => {
 
     expect(
       screen.getByText(
-        "Ubehandlede møtebehov fra tidligere oppfølgingstilfelle:"
-      )
+        "Ubehandlede møtebehov fra tidligere oppfølgingstilfelle:",
+      ),
     ).to.exist;
     expect(
       screen.getByText(
         `Samuel Sam Jones, har svart JA - ${toDatePrettyPrint(
-          datoUtenforOppfolgingstilfelle
-        )}`
-      )
+          datoUtenforOppfolgingstilfelle,
+        )}`,
+      ),
     ).to.exist;
     expect(screen.getByText("Vurder behov for dialogmøte")).to.exist;
   });
@@ -170,23 +170,23 @@ describe("DialogmoteOnskePanel", () => {
     expect(
       screen.getByText(
         `Samuel Sam Jones, har svart NEI - ${toDatePrettyPrint(
-          datoInnenforOppfolgingstilfelle
-        )}`
-      )
+          datoInnenforOppfolgingstilfelle,
+        )}`,
+      ),
     ).to.exist;
     expect(
       screen.getByText(
         `${arbeidsgiverMedVirksomhet}, har svart NEI - ${toDatePrettyPrint(
-          datoInnenforOppfolgingstilfelle
-        )}`
-      )
+          datoInnenforOppfolgingstilfelle,
+        )}`,
+      ),
     ).to.exist;
     expect(
       screen.getByText(
         `Møtebehovet ble behandlet av Z990000 den ${toDatePrettyPrint(
-          behandlingsdatoInnenforOppfolgingstilfelle
-        )}.`
-      )
+          behandlingsdatoInnenforOppfolgingstilfelle,
+        )}.`,
+      ),
     ).to.exist;
   });
 
@@ -203,23 +203,23 @@ describe("DialogmoteOnskePanel", () => {
     expect(
       screen.getByText(
         `Samuel Sam Jones, har svart NEI - ${toDatePrettyPrint(
-          datoInnenforOppfolgingstilfelle
-        )}`
-      )
+          datoInnenforOppfolgingstilfelle,
+        )}`,
+      ),
     ).to.exist;
     expect(
       screen.getByText(
         `${arbeidsgiverMedVirksomhet}, har svart NEI - ${toDatePrettyPrint(
-          datoInnenforOppfolgingstilfelle
-        )}`
-      )
+          datoInnenforOppfolgingstilfelle,
+        )}`,
+      ),
     ).to.exist;
     expect(
       screen.queryByText(
         `Møtebehovet ble behandlet av Z990000 den ${toDatePrettyPrint(
-          datoUtenforOppfolgingstilfelle
-        )}.`
-      )
+          datoUtenforOppfolgingstilfelle,
+        )}.`,
+      ),
     ).to.not.exist;
     expect(screen.queryByText("Vurder møtebehov og fjern oppgaven")).to.not
       .exist;
@@ -285,9 +285,9 @@ describe("DialogmoteOnskePanel", () => {
         renderDialogmoteOnskePanel();
 
         expect(
-          screen.getByText("Les her om tidspunkt og plikt for dialogmøte 2")
+          screen.getByText("Les her om tidspunkt og plikt for dialogmøte 2"),
         ).to.exist;
-      }
+      },
     );
 
     it.each<MotebehovVeilederDTO>([
@@ -301,9 +301,9 @@ describe("DialogmoteOnskePanel", () => {
         renderDialogmoteOnskePanel();
 
         expect(
-          screen.queryByText("Les her om tidspunkt og plikt for dialogmøte 2")
+          screen.queryByText("Les her om tidspunkt og plikt for dialogmøte 2"),
         ).to.not.exist;
-      }
+      },
     );
 
     describe.each<MotebehovVeilederDTO>([
@@ -324,10 +324,10 @@ describe("DialogmoteOnskePanel", () => {
           renderDialogmoteOnskePanel();
 
           expect(
-            screen.getByText("Les her om tidspunkt og plikt for dialogmøte 2")
+            screen.getByText("Les her om tidspunkt og plikt for dialogmøte 2"),
           ).to.exist;
         });
-      }
+      },
     );
 
     it("Ingen har meldt behov - ikke vise hjelpetekst", () => {
@@ -336,7 +336,7 @@ describe("DialogmoteOnskePanel", () => {
       renderDialogmoteOnskePanel();
 
       expect(
-        screen.queryByText("Les her om tidspunkt og plikt for dialogmøte 2")
+        screen.queryByText("Les her om tidspunkt og plikt for dialogmøte 2"),
       ).to.not.exist;
     });
   });

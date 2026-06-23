@@ -15,7 +15,7 @@ import { daysFromToday } from "@/utils/datoUtils.ts";
 const createDialogmoteunntak = (
   arsak: UnntakArsak,
   createdAt: Date,
-  beskrivelse?: string
+  beskrivelse?: string,
 ) => {
   return {
     uuid: generateUUID(),
@@ -30,12 +30,12 @@ const createDialogmoteunntak = (
 export const dialogmoteunntakMedBeskrivelse = createDialogmoteunntak(
   DeprecatedUnntakArsak.ARBEIDSFORHOLD_OPPHORT,
   daysFromToday(-1),
-  "Arbeidstaker jobber ikke lenger hos arbeidsgiver."
+  "Arbeidstaker jobber ikke lenger hos arbeidsgiver.",
 );
 export const dialogmoteunntakUtenBeskrivelse = createDialogmoteunntak(
   ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
   daysFromToday(1),
-  undefined
+  undefined,
 );
 
 export const dialogmoteunntakMock = [
@@ -46,7 +46,7 @@ export const dialogmoteunntakMock = [
 const createDialogmoteikkeaktuell = (
   arsak: IkkeAktuellArsak,
   createdAt: Date,
-  beskrivelse?: string
+  beskrivelse?: string,
 ) => {
   return {
     uuid: generateUUID(),
@@ -62,11 +62,11 @@ export const dialogmoteikkeaktuellMock = [
   createDialogmoteikkeaktuell(
     IkkeAktuellArsak.ARBEIDSTAKER_AAP,
     daysFromToday(-1),
-    "Arbeidstaker mottar AAP."
+    "Arbeidstaker mottar AAP.",
   ),
   createDialogmoteikkeaktuell(
     IkkeAktuellArsak.ARBEIDSTAKER_DOD,
     daysFromToday(1),
-    "Arbeidstaker er død."
+    "Arbeidstaker er død.",
   ),
 ];

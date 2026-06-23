@@ -4,7 +4,7 @@ import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldForma
 import { getDuration, toDate } from "@/utils/datoUtils";
 
 function sorterPerioderEldsteForst(
-  perioder: SykmeldingPeriodeDTO[]
+  perioder: SykmeldingPeriodeDTO[],
 ): SykmeldingPeriodeDTO[] {
   return perioder.sort((a, b) => {
     if (toDate(a.fom)?.getTime() !== toDate(b.fom)?.getTime()) {

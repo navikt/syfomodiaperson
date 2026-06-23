@@ -19,7 +19,7 @@ function getOppgaveText(varselAt: Date): string {
     return "Den sykmeldte har fått en påminnelse om å svare og fortsatt ikke svart. Du kan nå gjøre en vurdering om den sykmeldte trenger oppfølging fra Nav i sen fase av sykefraværet. Hvis den sykmeldte svarer på et senere tidspunkt vil du få en ny oppgave.";
   } else {
     return `Når spørsmålene er besvart eller hvis den sykmeldte ikke svarer innen ${tilLesbarDatoMedArUtenManedNavn(
-      getVarselSvarfrist(varselAt)
+      getVarselSvarfrist(varselAt),
     )}, vil du få en oppgave i oversikten om å vurdere videre oppfølging.`;
   }
 }
@@ -33,7 +33,7 @@ export function KandidatIkkeSvart({ varselAt }: Props) {
     >
       <Heading size="medium">{texts.heading}</Heading>
       <BodyShort size="small">{`Den sykmeldte fikk varsel ${tilLesbarDatoMedArUtenManedNavn(
-        varselAt
+        varselAt,
       )} om at det er snart slutt på sykepengene og kan nå svare på spørsmål rundt sin situasjon på innloggede sider.`}</BodyShort>
       <BodyShort size="small">{getOppgaveText(varselAt)}</BodyShort>
     </Box>

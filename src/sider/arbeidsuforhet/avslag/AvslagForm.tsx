@@ -87,7 +87,7 @@ export function AvslagForm({ sisteVurdering }: Props) {
           begrunnelse: values.begrunnelse,
           fom: values.fom,
         },
-        sisteVurdering.createdAt
+        sisteVurdering.createdAt,
       ),
       gjelderFom: dayjs(values.fom).format("YYYY-MM-DD"),
     };
@@ -167,7 +167,7 @@ export function AvslagForm({ sisteVurdering }: Props) {
                     begrunnelse: watch("begrunnelse"),
                     fom: watch("fom"),
                   },
-                  sisteVurdering.createdAt
+                  sisteVurdering.createdAt,
                 )
               }
             />

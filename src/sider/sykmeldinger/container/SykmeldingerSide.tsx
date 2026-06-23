@@ -20,7 +20,7 @@ export default function SykmeldingerSide(): ReactElement {
 
   const ubehandletBistandsbehovOppgaver = getAllUbehandledePersonOppgaver(
     oppgaver,
-    PersonOppgaveType.BEHANDLER_BER_OM_BISTAND
+    PersonOppgaveType.BEHANDLER_BER_OM_BISTAND,
   );
 
   return (

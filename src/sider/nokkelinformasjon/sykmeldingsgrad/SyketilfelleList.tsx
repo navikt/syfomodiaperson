@@ -20,7 +20,7 @@ const texts = {
 };
 
 export function getDiagnoseFromLatestSykmelding(
-  sykmeldinger: SykmeldingOldFormat[]
+  sykmeldinger: SykmeldingOldFormat[],
 ): SykmeldingDiagnose | undefined {
   const latestSykmelding =
     sykmeldingerSortertNyestTilEldstPeriode(sykmeldinger)[0];
@@ -38,7 +38,7 @@ export default function SyketilfelleList({ setSelectedTilfelle }: Props) {
   const tenLatestTilfeller = tilfellerDescendingStart?.slice(0, 10);
 
   function getDiagnose(
-    tilfelle: OppfolgingstilfelleDTO
+    tilfelle: OppfolgingstilfelleDTO,
   ): SykmeldingDiagnose | undefined {
     const newAndUsedSykmeldinger = newAndActivatedSykmeldinger(sykmeldinger);
     const sykmeldingerIOppfolgingstilfellet =
@@ -50,7 +50,7 @@ export default function SyketilfelleList({ setSelectedTilfelle }: Props) {
   function tilfelleText(tilfelle: OppfolgingstilfelleDTO) {
     return `${tilLesbarPeriodeMedArUtenManednavn(
       tilfelle.start,
-      tilfelle.end
+      tilfelle.end,
     )}`;
   }
 
@@ -85,7 +85,7 @@ export default function SyketilfelleList({ setSelectedTilfelle }: Props) {
               )}
             </div>
           );
-        }
+        },
       )}
     </RadioGroup>
   );

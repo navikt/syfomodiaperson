@@ -72,8 +72,8 @@ export function SendtDato({ sykmelding }: SendtDatoProps) {
     sykmelding.status === BEKREFTET
       ? texts.dato.bekreftet
       : sykmelding.status === AVBRUTT
-      ? texts.dato.avbrutt
-      : texts.dato.sendt;
+        ? texts.dato.avbrutt
+        : texts.dato.sendt;
   return (
     <div className="mb-5">
       <Heading size="xsmall" level="3" className="mb-1">

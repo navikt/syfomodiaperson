@@ -11,7 +11,7 @@ import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 
 export const erBehandlingsdagerEllerReisetilskudd = (
-  sykmelding: SykmeldingOldFormat
+  sykmelding: SykmeldingOldFormat,
 ): boolean => {
   const erEkstraInformasjon =
     sykmelding.mulighetForArbeid.perioder &&
@@ -22,7 +22,7 @@ export const erBehandlingsdagerEllerReisetilskudd = (
 };
 
 export const erEkstraDiagnoseInformasjon = (
-  sykmelding: SykmeldingOldFormat
+  sykmelding: SykmeldingOldFormat,
 ): boolean => {
   const erEkstraInformasjon =
     sykmelding.diagnose &&
@@ -33,7 +33,7 @@ export const erEkstraDiagnoseInformasjon = (
 };
 
 export const erMulighetForArbeidInformasjon = (
-  sykmelding: SykmeldingOldFormat
+  sykmelding: SykmeldingOldFormat,
 ): boolean => {
   const erEkstraInformasjon =
     sykmelding.mulighetForArbeid &&
@@ -47,7 +47,7 @@ export const erMulighetForArbeidInformasjon = (
 };
 
 export const erFriskmeldingInformasjon = (
-  sykmelding: SykmeldingOldFormat
+  sykmelding: SykmeldingOldFormat,
 ): boolean => {
   const erEkstraInformasjon =
     sykmelding.friskmelding &&
@@ -60,7 +60,7 @@ export const erFriskmeldingInformasjon = (
 };
 
 export const erArbeidsforEtterPerioden = (
-  sykmelding: SykmeldingOldFormat
+  sykmelding: SykmeldingOldFormat,
 ): boolean => {
   const erEkstraInformasjon =
     sykmelding.friskmelding && sykmelding.friskmelding.arbeidsfoerEtterPerioden;
@@ -68,7 +68,7 @@ export const erArbeidsforEtterPerioden = (
 };
 
 export const erHensynPaaArbeidsplassenInformasjon = (
-  sykmelding: SykmeldingOldFormat
+  sykmelding: SykmeldingOldFormat,
 ): boolean => {
   const erEkstraInformasjon =
     sykmelding.friskmelding && sykmelding.friskmelding.hensynPaaArbeidsplassen;
@@ -76,7 +76,7 @@ export const erHensynPaaArbeidsplassenInformasjon = (
 };
 
 export const erBedringAvArbeidsevnenInformasjon = (
-  sykmelding: SykmeldingOldFormat
+  sykmelding: SykmeldingOldFormat,
 ): boolean => {
   const erEkstraInformasjon =
     sykmelding.arbeidsevne &&
@@ -87,7 +87,7 @@ export const erBedringAvArbeidsevnenInformasjon = (
 };
 
 export const erMeldingTilNavInformasjon = (
-  sykmelding: SykmeldingOldFormat
+  sykmelding: SykmeldingOldFormat,
 ): boolean => {
   return (
     !!sykmelding.meldingTilNav.navBoerTaTakISaken ||
@@ -96,7 +96,7 @@ export const erMeldingTilNavInformasjon = (
 };
 
 export const erUtdypendeOpplysninger = (
-  sykmelding: SykmeldingOldFormat
+  sykmelding: SykmeldingOldFormat,
 ): boolean => {
   const utdypendeOpplysninger = sykmelding.utdypendeOpplysninger;
   return (
@@ -106,7 +106,7 @@ export const erUtdypendeOpplysninger = (
 };
 
 export const erEkstraInformasjonISykmeldingen = (
-  sykmelding: SykmeldingOldFormat
+  sykmelding: SykmeldingOldFormat,
 ): boolean => {
   return (
     erEkstraDiagnoseInformasjon(sykmelding) ||
@@ -123,7 +123,7 @@ export const erEkstraInformasjonISykmeldingen = (
 };
 
 export const arbeidsgivernavnEllerArbeidssituasjon = (
-  sykmelding: SykmeldingOldFormat
+  sykmelding: SykmeldingOldFormat,
 ): string => {
   if (
     sykmelding.innsendtArbeidsgivernavn &&
@@ -150,26 +150,26 @@ export const arbeidsgivernavnEllerArbeidssituasjon = (
 };
 
 export const sykmeldingperioderSortertEldstTilNyest = (
-  perioder: SykmeldingPeriodeDTO[]
+  perioder: SykmeldingPeriodeDTO[],
 ): SykmeldingPeriodeDTO[] => {
   return perioder.sort((periode1, periode2) => {
     return periode1.fom > periode2.fom
       ? 1
       : periode1.fom < periode2.fom
-      ? -1
-      : 0;
+        ? -1
+        : 0;
   });
 };
 
 export const getSykmeldingStartdato = (
-  sykmelding: SykmeldingOldFormat
+  sykmelding: SykmeldingOldFormat,
 ): Date => {
   const perioder = sykmelding.mulighetForArbeid.perioder;
   return new Date(sykmeldingperioderSortertEldstTilNyest(perioder)[0].fom);
 };
 
 export const newAndActivatedSykmeldinger = (
-  sykmeldinger: SykmeldingOldFormat[]
+  sykmeldinger: SykmeldingOldFormat[],
 ) => {
   return sykmeldinger.filter((sykmelding) => {
     return (
@@ -184,7 +184,7 @@ export const newAndActivatedSykmeldinger = (
 
 export function sykmeldingerInnenforOppfolgingstilfelle(
   sykmeldinger: SykmeldingOldFormat[],
-  oppfolgingstilfelle?: OppfolgingstilfelleDTO
+  oppfolgingstilfelle?: OppfolgingstilfelleDTO,
 ): SykmeldingOldFormat[] {
   if (!oppfolgingstilfelle) {
     return [];
@@ -203,7 +203,7 @@ export function sykmeldingerInnenforOppfolgingstilfelle(
 }
 
 const sykmeldingperioderMedGradering = (
-  sykmeldingperioder: SykmeldingPeriodeDTO[]
+  sykmeldingperioder: SykmeldingPeriodeDTO[],
 ) => {
   return sykmeldingperioder.filter((periode) => {
     return !!periode.grad;
@@ -211,10 +211,10 @@ const sykmeldingperioderMedGradering = (
 };
 
 export const stringMedAlleGraderingerFraSykmeldingPerioder = (
-  sykmeldingPerioderSortertEtterDato: SykmeldingPeriodeDTO[]
+  sykmeldingPerioderSortertEtterDato: SykmeldingPeriodeDTO[],
 ): string => {
   const perioderMedGradering = sykmeldingperioderMedGradering(
-    sykmeldingPerioderSortertEtterDato
+    sykmeldingPerioderSortertEtterDato,
   );
   const stringMedAlleGraderinger = perioderMedGradering
     .map((periode) => {
@@ -235,7 +235,7 @@ const isSykmeldingActiveToday = (sykmelding: SykmeldingOldFormat): boolean => {
 };
 
 export const activeSykmeldingerSentToArbeidsgiver = (
-  sykmeldinger: SykmeldingOldFormat[]
+  sykmeldinger: SykmeldingOldFormat[],
 ): SykmeldingOldFormat[] => {
   return sykmeldinger.filter((sykmelding) => {
     return (

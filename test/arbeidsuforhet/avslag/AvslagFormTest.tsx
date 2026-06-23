@@ -28,7 +28,7 @@ const renderAvslagForm = () => {
     queryClient,
     <AvslagForm sisteVurdering={sisteForhandsvarsel} />,
     arbeidsuforhetOppfyltPath,
-    [arbeidsuforhetOppfyltPath]
+    [arbeidsuforhetOppfyltPath],
   );
 };
 
@@ -45,29 +45,29 @@ describe("AvslagForm", () => {
 
       expect(
         screen.getByText(
-          "Skriv innstilling om avslag til Nav arbeid og ytelser"
-        )
+          "Skriv innstilling om avslag til Nav arbeid og ytelser",
+        ),
       ).to.exist;
       expect(screen.getByText("Innstillingen gjelder fra")).to.exist;
       expect(
-        screen.getByText("Skriv kort hvilke opplysninger", { exact: false })
+        screen.getByText("Skriv kort hvilke opplysninger", { exact: false }),
       ).to.exist;
       expect(
         screen.getByText("friskmelding til arbeidsformidling:", {
           exact: false,
-        })
+        }),
       ).to.exist;
       expect(screen.getByText(begrunnelseLabel)).to.exist;
       expect(
         screen.getByRole("textbox", {
           name: begrunnelseLabel,
-        })
+        }),
       ).to.exist;
       expect(screen.getByText("Videre må du huske å:")).to.exist;
       expect(
         screen.getByText(
-          "Sende beskjed i Gosys til Nav Arbeid og Ytelser. Dette er for å gjøre saksbehandler oppmerksom på at det har kommet en innstilling og at utbetalingen skal stanses."
-        )
+          "Sende beskjed i Gosys til Nav Arbeid og Ytelser. Dette er for å gjøre saksbehandler oppmerksom på at det har kommet en innstilling og at utbetalingen skal stanses.",
+        ),
       ).to.exist;
       expect(screen.getByText("Tema: Sykepenger")).to.exist;
       expect(screen.getByText("Oppgavetype: Vurder konsekvens for ytelse")).to
@@ -76,8 +76,8 @@ describe("AvslagForm", () => {
       expect(screen.getByText("Prioritet: Høy")).to.exist;
       expect(
         screen.getByText(
-          "Send innstilling om avslag og stans automatisk utbetaling"
-        )
+          "Send innstilling om avslag og stans automatisk utbetaling",
+        ),
       ).to.exist;
       expect(screen.getByRole("button", { name: "Send" })).to.exist;
       expect(screen.getByRole("button", { name: "Avbryt" })).to.exist;
@@ -118,12 +118,12 @@ describe("AvslagForm", () => {
           document: getAvslagVurderingDocument(
             begrunnelse,
             fristDate,
-            sisteForhandsvarsel.createdAt
+            sisteForhandsvarsel.createdAt,
           ),
           gjelderFom: dayjs(fristDate).format("YYYY-MM-DD"),
         };
         expect(useSendVurderingArbeidsuforhet.state.variables).to.deep.equal(
-          expectedVurdering
+          expectedVurdering,
         );
       });
     });
@@ -150,12 +150,12 @@ describe("AvslagForm", () => {
         within(forhandsvisningVurdering).getByRole("heading", {
           name: "Vurdering av § 8-4 - Innstilling om avslag",
           hidden: true,
-        })
+        }),
       ).to.exist;
       getAvslagVurderingDocument(
         begrunnelse,
         fristDate,
-        sisteForhandsvarsel.createdAt
+        sisteForhandsvarsel.createdAt,
       )
         .flatMap((documentComponent) => documentComponent.texts)
         .forEach((text) => {

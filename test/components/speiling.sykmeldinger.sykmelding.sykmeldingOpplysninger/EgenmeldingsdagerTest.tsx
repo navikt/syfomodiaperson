@@ -5,7 +5,7 @@ import { render, screen } from "@testing-library/react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
 const mockSykmelding = (
-  data: Partial<SykmeldingOldFormat>
+  data: Partial<SykmeldingOldFormat>,
 ): SykmeldingOldFormat => {
   return data as SykmeldingOldFormat;
 };
@@ -27,7 +27,7 @@ describe("Egenmeldingsdager", () => {
         />
       ) : (
         <div></div>
-      )
+      ),
     );
 
     expect(screen.queryByRole("heading", { name: headerText })).to.not.exist;
@@ -46,7 +46,7 @@ describe("Egenmeldingsdager", () => {
         />
       ) : (
         <div></div>
-      )
+      ),
     );
 
     expect(screen.getByText(headerText)).to.exist;
@@ -70,7 +70,7 @@ describe("Egenmeldingsdager", () => {
         />
       ) : (
         <div></div>
-      )
+      ),
     );
 
     expect(screen.getByText(headerText)).to.exist;

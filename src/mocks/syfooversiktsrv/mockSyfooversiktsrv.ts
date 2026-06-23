@@ -18,7 +18,7 @@ export const mockSyfooversiktsrv = [
         tildeltVeilederident: veilederIdent,
       };
       return new HttpResponse(null, { status: 200 });
-    }
+    },
   ),
   http.get(`${SYFOOVERSIKTSRV_PERSONTILDELING_ROOT}/historikk`, () => {
     return HttpResponse.json([

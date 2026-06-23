@@ -7,11 +7,11 @@ import { behandlerNavn } from "@/utils/behandlerUtils";
 export const useBehandlerNavn = (behandlerRef: string): string => {
   const { data: behandlere } = useBehandlereQuery();
   const behandlerFromBehandlerList = behandlere.find(
-    (behandler) => behandler.behandlerRef === behandlerRef
+    (behandler) => behandler.behandlerRef === behandlerRef,
   );
   const { data: behandler } = useBehandlerByBehandlerRefQuery(
     behandlerRef,
-    !behandlerFromBehandlerList
+    !behandlerFromBehandlerList,
   );
 
   if (behandlerFromBehandlerList) {

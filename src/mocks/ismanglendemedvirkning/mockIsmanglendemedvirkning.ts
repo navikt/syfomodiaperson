@@ -16,7 +16,7 @@ export const mockIsmanglendemedvirkning = [
     `${ISMANGLENDEMEDVIRKNING_ROOT}/manglende-medvirkning/vurderinger`,
     () => {
       return HttpResponse.json(manglendeMedvirkningVurderinger);
-    }
+    },
   ),
 
   http.post<object, NewVurderingRequestDTO>(
@@ -50,6 +50,6 @@ export const mockIsmanglendemedvirkning = [
       ];
 
       return HttpResponse.json(sentVurdering);
-    }
+    },
   ),
 ];

@@ -34,10 +34,10 @@ const DialogmoteInnkallingVelgVirksomhet = () => {
   const virksomheterFromTilfelle =
     latestOppfolgingstilfelle?.virksomhetsnummerList || [];
   const virksomheterFromCurentLedere = currentLedere.map(
-    (leder) => leder.virksomhetsnummer
+    (leder) => leder.virksomhetsnummer,
   );
   const virksomheterWithDuplicates = virksomheterFromTilfelle.concat(
-    virksomheterFromCurentLedere
+    virksomheterFromCurentLedere,
   );
   const virksomheter = [...new Set(virksomheterWithDuplicates)];
   const defaultVirksomhet =
@@ -58,7 +58,7 @@ const DialogmoteInnkallingVelgVirksomhet = () => {
     virksomhetsnummer.length > 0 && virksomhetsnummer !== "VELG";
   const narmesteLeder = narmesteLederForVirksomhet(
     currentLedere,
-    virksomhetsnummer
+    virksomhetsnummer,
   );
   const noNarmesteLeder = !narmesteLeder;
 

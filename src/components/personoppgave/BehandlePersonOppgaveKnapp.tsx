@@ -18,10 +18,10 @@ const getFerdigbehandletPrefixText = (personoppgaveType: PersonOppgaveType) => {
 
 const getFerdigbehandletText = (
   personOppgave: PersonOppgave,
-  veilederNavn: string | undefined
+  veilederNavn: string | undefined,
 ) => {
   const ferdigbehandletPrefixText = getFerdigbehandletPrefixText(
-    personOppgave.type
+    personOppgave.type,
   );
   return `
     ${ferdigbehandletPrefixText} 
@@ -46,7 +46,7 @@ export default function BehandlePersonOppgaveKnapp({
   behandleOppgaveText,
 }: Props) {
   const { data: veilederInfo } = useVeilederInfoQuery(
-    personOppgave?.behandletVeilederIdent ?? ""
+    personOppgave?.behandletVeilederIdent ?? "",
   );
   const oppgaveKnappText =
     isBehandlet && personOppgave

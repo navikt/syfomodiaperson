@@ -53,7 +53,7 @@ function HistorikkItem({ vurdering }: VurderingHistorikkItemProps) {
     vurdering;
   const { data: veilederinfo } = useVeilederInfoQuery(veilederident);
   const header = `${typeTexts[vurderingType]} - ${tilDatoMedManedNavn(
-    createdAt
+    createdAt,
   )}`;
   return (
     <Accordion.Item>
@@ -82,7 +82,7 @@ function HistorikkItem({ vurdering }: VurderingHistorikkItemProps) {
 }
 
 function isVurderingResponseDTO(
-  item: HistorikkEntry
+  item: HistorikkEntry,
 ): item is VurderingResponseDTO {
   return "vurderingType" in item;
 }
@@ -100,13 +100,13 @@ function sortHistorikkEntriesDesc(a: HistorikkEntry, b: HistorikkEntry) {
 }
 
 function filterSykepengestoppManglendeMedvirkning(
-  sykepengestoppList: Sykepengestopp[]
+  sykepengestoppList: Sykepengestopp[],
 ) {
   return sykepengestoppList.filter((sykepengestopp) =>
     sykepengestopp.arsakList.some(
       (arsak) =>
-        arsak.type === ValidSykepengestoppArsakType.MANGLENDE_MEDVIRKING
-    )
+        arsak.type === ValidSykepengestoppArsakType.MANGLENDE_MEDVIRKING,
+    ),
   );
 }
 
@@ -146,7 +146,7 @@ export default function ManglendeMedvirkningHistorikk() {
               key={index}
               sykepengestopp={item as Sykepengestopp}
             />
-          )
+          ),
         )}
       </Accordion>
     </Box>

@@ -22,7 +22,7 @@ const texts = {
 };
 
 function isAktivitetskravVurderingDTO(
-  item: HistorikkEntry
+  item: HistorikkEntry,
 ): item is AktivitetskravVurderingDTO {
   return "arsaker" in item;
 }
@@ -42,8 +42,8 @@ function sortHistorikkEntriesDesc(a: HistorikkEntry, b: HistorikkEntry) {
 function filterStatusAktivitetskrav(sykepengestoppList: Sykepengestopp[]) {
   return sykepengestoppList.filter((sykepengestopp) =>
     sykepengestopp.arsakList.some(
-      (arsak) => arsak.type === ValidSykepengestoppArsakType.AKTIVITETSKRAV
-    )
+      (arsak) => arsak.type === ValidSykepengestoppArsakType.AKTIVITETSKRAV,
+    ),
   );
 }
 
@@ -59,7 +59,7 @@ const isRelevantForHistorikk = (vurdering: AktivitetskravVurderingDTO) =>
 export function AktivitetskravHistorikk() {
   const { data } = useAktivitetskravQuery();
   const vurderinger = data.flatMap((aktivitetskrav) =>
-    aktivitetskrav.vurderinger.filter(isRelevantForHistorikk)
+    aktivitetskrav.vurderinger.filter(isRelevantForHistorikk),
   );
   const { data: sykepengestoppList } = usePengestoppStatusQuery();
   const aktivitetskravSykepengestopp: Sykepengestopp[] =
@@ -93,7 +93,7 @@ export function AktivitetskravHistorikk() {
               key={index}
               sykepengestopp={item as Sykepengestopp}
             />
-          )
+          ),
         )}
       </Accordion>
     </Box>

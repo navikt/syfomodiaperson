@@ -22,7 +22,7 @@ type SortableVarsel = Pick<
 const getEndringVarslerSortedAsc = <T extends SortableVarsel>(varsler: T[]) =>
   varsler
     .filter(
-      ({ varselType }) => varselType == MotedeltakerVarselType.NYTT_TID_STED
+      ({ varselType }) => varselType == MotedeltakerVarselType.NYTT_TID_STED,
     )
     .sort(byCreatedAtAsc);
 
@@ -31,13 +31,13 @@ const byCreatedAtAsc = (v1: SortableVarsel, v2: SortableVarsel) =>
 
 export function MoteSvarHistorikkEndringer({ dialogmote }: Props) {
   const endringVarslerArbeidsgiver = getEndringVarslerSortedAsc(
-    dialogmote.arbeidsgiver.varselList
+    dialogmote.arbeidsgiver.varselList,
   );
   const endringVarslerArbeidstaker = getEndringVarslerSortedAsc(
-    dialogmote.arbeidstaker.varselList
+    dialogmote.arbeidstaker.varselList,
   );
   const endringVarslerBehandler = getEndringVarslerSortedAsc(
-    dialogmote.behandler?.varselList || []
+    dialogmote.behandler?.varselList || [],
   );
 
   return (
@@ -45,7 +45,7 @@ export function MoteSvarHistorikkEndringer({ dialogmote }: Props) {
       {endringVarslerArbeidsgiver.map((arbeidgiverVarsel, index) => (
         <div key={index} className="mt-4">
           <Label size="small">{`Endret tid/sted sendt ${tilDatoMedManedNavn(
-            arbeidgiverVarsel.createdAt
+            arbeidgiverVarsel.createdAt,
           )} - svar:`}</Label>
           <HStack gap="space-16">
             <ArbeidsgiverSvar

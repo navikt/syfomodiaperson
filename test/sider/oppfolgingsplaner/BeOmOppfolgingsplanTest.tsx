@@ -45,7 +45,7 @@ const multipleNarmesteLeder = [
 
 const renderBeOmOppfolgingsplan = (
   narmesteledere: NarmesteLederRelasjonDTO[] = singleNarmesteLeder,
-  tilfelle: OppfolgingstilfelleDTO = currentOppfolgingstilfelle
+  tilfelle: OppfolgingstilfelleDTO = currentOppfolgingstilfelle,
 ) => {
   render(
     <QueryClientProvider client={queryClient}>
@@ -57,7 +57,7 @@ const renderBeOmOppfolgingsplan = (
           currentOppfolgingstilfelle={tilfelle}
         />
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -83,16 +83,16 @@ describe("BeOmOppfolgingsplan", () => {
   it("Viser bekreftelse når bruker sender forespørsel om oppfølgingsplan", async () => {
     queryClient.setQueryData(
       oppfolgingsplanForesporselQueryKeys.foresporsel(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => []
+      () => [],
     );
     renderBeOmOppfolgingsplan();
     mockServer.use(
       http.post(
         `*${ISOPPFOLGINGSPLAN_ROOT}/oppfolgingsplan/foresporsler`,
-        () => new HttpResponse(null, { status: 200 })
-      )
+        () => new HttpResponse(null, { status: 200 }),
+      ),
     );
 
     await clickButton("Send forespørsel");
@@ -108,10 +108,10 @@ describe("BeOmOppfolgingsplan", () => {
         () => {
           HttpResponse.json(
             { error: "Internal server error" },
-            { status: 500 }
+            { status: 500 },
           );
-        }
-      )
+        },
+      ),
     );
     renderBeOmOppfolgingsplan();
     expect(screen.getByRole("button", { name: "Send forespørsel" })).to.exist;
@@ -122,16 +122,16 @@ describe("BeOmOppfolgingsplan", () => {
     await userEvent.click(beOmOppfolgingsplanButton);
     expect(
       await screen.findByText(
-        "Det skjedde en uventet feil. Vennligst prøv igjen senere."
-      )
+        "Det skjedde en uventet feil. Vennligst prøv igjen senere.",
+      ),
     ).to.exist;
   });
   it("Viser bekreftelse på at det er forespurt om oppfølgingsplan tidligere i oppfølgingstilfellet", async () => {
     queryClient.setQueryData(
       oppfolgingsplanForesporselQueryKeys.foresporsel(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => [existingForesporsel]
+      () => [existingForesporsel],
     );
     const virksomhetResponse: EregOrganisasjonResponseDTO = {
       navn: {
@@ -140,7 +140,7 @@ describe("BeOmOppfolgingsplan", () => {
     };
     queryClient.setQueryData(
       virksomhetQueryKeys.virksomhet(VIRKSOMHET_PONTYPANDY.virksomhetsnummer),
-      () => virksomhetResponse
+      () => virksomhetResponse,
     );
     renderBeOmOppfolgingsplan();
 
@@ -148,8 +148,8 @@ describe("BeOmOppfolgingsplan", () => {
       screen.getByText(
         `Obs! Det ble bedt om oppfølgingsplan fra ${
           VIRKSOMHET_PONTYPANDY.virksomhetsnavn
-        } ${tilLesbarDatoMedArUtenManedNavn(existingForesporsel.createdAt)}`
-      )
+        } ${tilLesbarDatoMedArUtenManedNavn(existingForesporsel.createdAt)}`,
+      ),
     ).to.exist;
     expect(screen.getByText("Be om oppfølgingsplan")).to.exist;
     expect(screen.getByRole("button", { name: "Send forespørsel" })).to.exist;
@@ -173,7 +173,7 @@ describe("BeOmOppfolgingsplan", () => {
     await waitFor(() => {
       const foresporselMutation = queryClient.getMutationCache().getAll().pop();
       expect(foresporselMutation?.state.variables).to.deep.equal(
-        expectedForesporselRequest
+        expectedForesporselRequest,
       );
     });
   });
@@ -201,7 +201,7 @@ describe("BeOmOppfolgingsplan", () => {
     expect(screen.queryByText("Nærmeste leder:")).to.not.exist;
 
     const virksomhetRadiobutton = screen.getByText(
-      VIRKSOMHET_PONTYPANDY.virksomhetsnavn
+      VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
     );
     fireEvent.click(virksomhetRadiobutton);
 
@@ -213,7 +213,7 @@ describe("BeOmOppfolgingsplan", () => {
     renderBeOmOppfolgingsplan(multipleNarmesteLeder);
 
     const virksomhetRadiobutton = screen.getByText(
-      VIRKSOMHET_BRANNOGBIL.virksomhetsnavn
+      VIRKSOMHET_BRANNOGBIL.virksomhetsnavn,
     );
     fireEvent.click(virksomhetRadiobutton);
 
@@ -233,7 +233,7 @@ describe("BeOmOppfolgingsplan", () => {
     await waitFor(() => {
       const foresporselMutation = queryClient.getMutationCache().getAll().pop();
       expect(foresporselMutation?.state.variables).to.deep.equal(
-        expectedForesporselRequest
+        expectedForesporselRequest,
       );
     });
   });

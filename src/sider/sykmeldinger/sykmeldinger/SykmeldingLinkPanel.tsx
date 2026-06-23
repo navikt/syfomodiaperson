@@ -31,7 +31,7 @@ const texts = {
 
 const textStatus = (
   status: SykmeldingStatus,
-  behandlingsutfallStatus: BehandlingsutfallStatusDTO
+  behandlingsutfallStatus: BehandlingsutfallStatusDTO,
 ) => {
   if (behandlingsutfallStatus === BehandlingsutfallStatusDTO.INVALID) {
     return texts.avvist;
@@ -106,7 +106,7 @@ export default function SykmeldingLinkPanel({
           <div className="flex justify-between">
             {tilLesbarPeriodeMedArstall(
               tidligsteFom(sykmelding.mulighetForArbeid.perioder),
-              senesteTom(sykmelding.mulighetForArbeid.perioder)
+              senesteTom(sykmelding.mulighetForArbeid.perioder),
             )}
             <div className="flex gap-2 items-center">
               {visStatus && (

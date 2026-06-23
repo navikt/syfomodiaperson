@@ -9,7 +9,7 @@ import { currentOppfolgingstilfelle } from "@/mocks/isoppfolgingstilfelle/oppfol
 
 export const DATO_INNENFOR_OPPFOLGINGSTILFELLE = addDays(
   currentOppfolgingstilfelle.end,
-  -10
+  -10,
 );
 
 export const historikkOppfolgingsoppgaveAktivMock: OppfolgingsoppgaveResponseDTO =

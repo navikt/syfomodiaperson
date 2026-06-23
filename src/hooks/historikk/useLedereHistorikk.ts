@@ -5,7 +5,7 @@ import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function createHistorikkEventsFromLedere(
-  ledere: NarmesteLederRelasjonDTO[]
+  ledere: NarmesteLederRelasjonDTO[],
 ): HistorikkEvent[] {
   return ledere.map((leder) => ({
     opprettetAv: leder.virksomhetsnavn,
@@ -20,7 +20,7 @@ export function useLedereHistorikk(): HistorikkEvents {
 
   const allLedere = useMemo(
     () => [...currentLedere, ...formerLedere],
-    [currentLedere, formerLedere]
+    [currentLedere, formerLedere],
   );
 
   const lederHistorikk = createHistorikkEventsFromLedere(allLedere);

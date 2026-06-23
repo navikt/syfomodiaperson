@@ -51,7 +51,7 @@ export const VEILEDER_DEFAULT = new Veileder(
   VEILEDER_IDENT_DEFAULT,
   "Vetle",
   "Veileder",
-  true
+  true,
 );
 
 export const ANNEN_VEILEDER_IDENT = "Z970000";
@@ -60,7 +60,7 @@ export const ANNEN_VEILEDER = new Veileder(
   ANNEN_VEILEDER_IDENT,
   "Valdemar",
   "Vaileder",
-  true
+  true,
 );
 
 export const INAKTIV_VEILEDER_IDENT = "Z980000";
@@ -69,7 +69,7 @@ export const INAKTIV_VEILEDER = new Veileder(
   INAKTIV_VEILEDER_IDENT,
   "Viktor",
   "Villeder",
-  false
+  false,
 );
 
 export const VIRKSOMHET_PONTYPANDY = {

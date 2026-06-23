@@ -14,7 +14,7 @@ interface VelgSykmeldingSorteringDropdownProps {
   onSorteringChanged: (
     e: ChangeEvent<HTMLSelectElement> & {
       target: { value: SorteringsKriteriumVerdi };
-    }
+    },
   ) => void;
 }
 

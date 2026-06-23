@@ -37,7 +37,7 @@ const texts = {
 
 const toVeilederOptions = (
   veiledere: Veileder[],
-  aktivVeileder: Veileder
+  aktivVeileder: Veileder,
 ): { label: string; value: VeilederIdent }[] => {
   const sortedVeiledere = veiledere.sort((veilederA, veilederB) => {
     const etternavn1 = veilederA.etternavn.toLowerCase();
@@ -57,7 +57,7 @@ const toVeilederOptions = (
         (veileder) =>
           veileder.enabled &&
           veileder.fornavn.length > 0 &&
-          veileder.etternavn.length > 0
+          veileder.etternavn.length > 0,
       )
       .filter((veileder) => veileder.ident !== aktivVeileder.ident)
       .map(toVeilederOption),
@@ -65,7 +65,7 @@ const toVeilederOptions = (
 };
 
 const toVeilederOption = (
-  veileder: Veileder
+  veileder: Veileder,
 ): { label: string; value: VeilederIdent } => ({
   value: veileder.ident,
   label: `${veileder.etternavn}, ${veileder.fornavn}`,
@@ -108,7 +108,7 @@ export default function EndreTildeltVeilederModal({
 
   const selectedOptions = () => {
     const selectedOption = options.find(
-      (option) => option.value === selectedVeilederIdent
+      (option) => option.value === selectedVeilederIdent,
     );
     return selectedOption ? [selectedOption] : [];
   };

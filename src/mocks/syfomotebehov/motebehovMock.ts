@@ -37,28 +37,28 @@ export const createBegrunnelse = (textValue: string): TextFieldSnapshot => ({
 });
 
 export const createOnskerTolk = (
-  isChecked: boolean
+  isChecked: boolean,
 ): SingleCheckboxFieldSnapshot => ({
   ...defaultOnskerTolk,
   value: isChecked,
 });
 
 export const createSykmelderDeltar = (
-  isChecked: boolean
+  isChecked: boolean,
 ): SingleCheckboxFieldSnapshot => ({
   ...defaultOnskerSykmelderDeltar,
   value: isChecked,
 });
 
 export const createSykmelderDeltarBegrunnelse = (
-  textValue: string
+  textValue: string,
 ): TextFieldSnapshot => ({
   ...defaultOnskerSykmelderDeltarBegrunnelse,
   value: textValue,
 });
 
 export const createOnskerTolkBegrunnelse = (
-  textValue: string
+  textValue: string,
 ): TextFieldSnapshot => ({
   ...defaultOnskerTolkBegrunnelse,
   value: textValue,
@@ -76,7 +76,7 @@ export const defaultFormValue: MotebehovFormValuesOutputDTO = {
 
 export const getFormIdentifier = (
   motebehovSkjemaType: MotebehovSkjemaType,
-  motebehovInnmelder: MotebehovInnmelder
+  motebehovInnmelder: MotebehovInnmelder,
 ): FormIdentifier => {
   if (motebehovInnmelder === MotebehovInnmelder.ARBEIDSTAKER) {
     switch (motebehovSkjemaType) {
@@ -105,7 +105,7 @@ export const createFormValues = (
     tolkSprak,
   }: MotebehovFormValuesOutputDTO,
   motebehovSkjemaType: MotebehovSkjemaType,
-  motebehovInnmelder: MotebehovInnmelder
+  motebehovInnmelder: MotebehovInnmelder,
 ): MotebehovFormValuesOutputDTO => ({
   harMotebehov: harMotebehov,
   begrunnelse: begrunnelse,
@@ -187,7 +187,7 @@ const isJaValgt = (value: boolean): FormSnapshotFieldOption[] => [
 ];
 
 export const svarPaBehovForMote = (
-  value: boolean
+  value: boolean,
 ): RadioGroupFieldSnapshot => ({
   fieldId: "harBehovRadioGroup",
   fieldType: FormSnapshotFieldType.RADIO_GROUP,
@@ -224,13 +224,13 @@ export const svartJaMotebehovArbeidstakerUbehandletMock: MotebehovVeilederDTO =
         tolkSprak: null,
       },
       MotebehovSkjemaType.SVAR_BEHOV,
-      MotebehovInnmelder.ARBEIDSTAKER
+      MotebehovInnmelder.ARBEIDSTAKER,
     ),
   };
 
 export const meldtMotebehovArbeidstakerBehandletMock = (
   skjemaType: MotebehovSkjemaType = MotebehovSkjemaType.MELD_BEHOV,
-  innmelderType: MotebehovInnmelder = MotebehovInnmelder.ARBEIDSTAKER
+  innmelderType: MotebehovInnmelder = MotebehovInnmelder.ARBEIDSTAKER,
 ): MotebehovVeilederDTO => {
   return {
     id: "33333333-ee10-44b6-bddf-54d049ef25f2",
@@ -253,14 +253,14 @@ export const meldtMotebehovArbeidstakerBehandletMock = (
         tolkSprak: "Har behov for svensk tolk",
       },
       skjemaType,
-      innmelderType
+      innmelderType,
     ),
   };
 };
 
 export const svartNeiMotebehovArbeidsgiverUbehandletMock = (
   skjemaType: MotebehovSkjemaType = MotebehovSkjemaType.SVAR_BEHOV,
-  innmelderType: MotebehovInnmelder = MotebehovInnmelder.ARBEIDSGIVER
+  innmelderType: MotebehovInnmelder = MotebehovInnmelder.ARBEIDSGIVER,
 ): MotebehovVeilederDTO => {
   return {
     id: "22222222-9e9b-40b0-bd1c-d1c39dc5f481",
@@ -279,14 +279,14 @@ export const svartNeiMotebehovArbeidsgiverUbehandletMock = (
         begrunnelse: "Jeg liker ikke møte!!",
       },
       skjemaType,
-      innmelderType
+      innmelderType,
     ),
   };
 };
 
 export const meldtMotebehovArbeidsgiverBehandletMock = {
   ...svartNeiMotebehovArbeidsgiverUbehandletMock(
-    MotebehovSkjemaType.MELD_BEHOV
+    MotebehovSkjemaType.MELD_BEHOV,
   ),
   opprettetDato: addDays(new Date(), -10),
   behandletTidspunkt: addDays(new Date(), -1),
@@ -298,7 +298,7 @@ export const meldtMotebehovArbeidsgiverBehandletMock = {
       begrunnelse: "Jeg liker møte.",
     },
     MotebehovSkjemaType.MELD_BEHOV,
-    MotebehovInnmelder.ARBEIDSGIVER
+    MotebehovInnmelder.ARBEIDSGIVER,
   ),
 };
 

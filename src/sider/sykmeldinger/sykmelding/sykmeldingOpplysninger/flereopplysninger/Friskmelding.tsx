@@ -46,7 +46,7 @@ export default function Friskmelding(friskmeldingProps: Props) {
           </Heading>
           <BodyShort size="small">
             {tilLesbarDatoMedArstall(
-              sykmelding.friskmelding.antattDatoReturSammeArbeidsgiver
+              sykmelding.friskmelding.antattDatoReturSammeArbeidsgiver,
             )}
           </BodyShort>
         </div>
@@ -67,7 +67,7 @@ export default function Friskmelding(friskmeldingProps: Props) {
             </Heading>
             <BodyShort size="small">
               {tilLesbarDatoMedArstall(
-                sykmelding.friskmelding.tilbakemeldingReturArbeid
+                sykmelding.friskmelding.tilbakemeldingReturArbeid,
               )}
             </BodyShort>
           </div>
@@ -86,7 +86,7 @@ export default function Friskmelding(friskmeldingProps: Props) {
               <BodyShort size="small">
                 {tilLesbarDatoMedArstall(
                   sykmelding.friskmelding
-                    .utenArbeidsgiverAntarTilbakeIArbeidDato
+                    .utenArbeidsgiverAntarTilbakeIArbeidDato,
                 )}
               </BodyShort>
             </div>
@@ -104,7 +104,7 @@ export default function Friskmelding(friskmeldingProps: Props) {
             </Heading>
             <BodyShort size="small">
               {tilLesbarDatoMedArstall(
-                sykmelding.friskmelding.utenArbeidsgiverTilbakemelding
+                sykmelding.friskmelding.utenArbeidsgiverTilbakemelding,
               )}
             </BodyShort>
           </div>

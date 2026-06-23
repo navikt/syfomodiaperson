@@ -198,7 +198,7 @@ export const mockSykmeldingWithTwoPerioder: SykmeldingNewFormatDTO = {
 };
 
 export const mockSykmeldingWithStatus = (
-  status: any
+  status: any,
 ): SykmeldingNewFormatDTO => {
   return {
     ...mockSM,

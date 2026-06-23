@@ -28,7 +28,7 @@ const renderPaminnelseMelding = (melding: MeldingDTO) => {
       >
         <MeldingerISamtale meldinger={[melding]} />
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -48,7 +48,7 @@ describe("PåminnelseMelding", () => {
           ...personOppgaveUbehandletBehandlerdialogUbesvartMelding,
           referanseUuid: meldingTilBehandler.uuid,
         },
-      ]
+      ],
     );
   });
 
@@ -61,7 +61,7 @@ describe("PåminnelseMelding", () => {
     expect(previewModal).to.exist;
 
     const expectedTexts = expectedPaminnelseDocument(
-      meldingTilBehandler
+      meldingTilBehandler,
     ).flatMap((documentComponent) => documentComponent.texts);
     expectedTexts.forEach((text) => {
       expect(within(previewModal).getByText(text)).to.exist;
@@ -71,13 +71,13 @@ describe("PåminnelseMelding", () => {
       within(previewModal).getByRole("button", {
         name: sendButtonText,
         hidden: true,
-      })
+      }),
     ).to.exist;
     expect(
       within(previewModal).getAllByRole("button", {
         name: cancelButtonText,
         hidden: true,
-      })
+      }),
     ).to.not.be.empty;
   });
   it("click cancel in preview closes preview", async () => {
@@ -117,7 +117,7 @@ describe("PåminnelseMelding", () => {
     const paminnelseMutation = queryClient.getMutationCache().getAll()[0];
 
     expect(paminnelseMutation.state.variables).to.deep.equal(
-      expectedPaminnelseDTO
+      expectedPaminnelseDTO,
     );
   });
   it("click fjern oppgave behandler oppgave", async () => {
@@ -128,7 +128,7 @@ describe("PåminnelseMelding", () => {
     const paminnelseMutation = queryClient.getMutationCache().getAll()[0];
 
     expect(paminnelseMutation.state.variables).to.deep.equal(
-      personOppgaveUbehandletBehandlerdialogUbesvartMelding.uuid
+      personOppgaveUbehandletBehandlerdialogUbesvartMelding.uuid,
     );
   });
 });

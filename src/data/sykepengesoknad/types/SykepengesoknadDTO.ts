@@ -135,6 +135,6 @@ export function harJobbet(soknad: SykepengesoknadDTO): boolean {
         sporsmal.tag.includes("TILBAKE_I_ARBEID") ||
         sporsmal.tag.includes("NYTT_ARBEIDSFORHOLD_UNDERVEIS") ||
         sporsmal.tag.includes("JOBBET_DU_GRADERT")) &&
-      sporsmal.svar.some((svar) => svar.verdi === "JA")
+      sporsmal.svar.some((svar) => svar.verdi === "JA"),
   );
 }

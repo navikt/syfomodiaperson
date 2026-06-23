@@ -33,13 +33,13 @@ describe("sykmeldingQueryHooks", () => {
     await waitFor(() => expect(result.current.sykmeldinger).to.not.be.empty);
     expect(result.current.sykmeldinger).to.deep.equal(
       sykmeldingerMockData.map((value) =>
-        newSMFormat2OldFormat(value, ARBEIDSTAKER_DEFAULT.personIdent)
-      )
+        newSMFormat2OldFormat(value, ARBEIDSTAKER_DEFAULT.personIdent),
+      ),
     );
     expect(result.current.arbeidsgiverssykmeldinger).to.deep.equal(
       sykmeldingerMockData.map((value) =>
-        oldFormatSMForAG(value, ARBEIDSTAKER_DEFAULT.personIdent)
-      )
+        oldFormatSMForAG(value, ARBEIDSTAKER_DEFAULT.personIdent),
+      ),
     );
   });
 });

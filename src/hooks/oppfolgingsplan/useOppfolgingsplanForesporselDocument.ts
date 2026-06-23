@@ -15,7 +15,7 @@ export function useOppfolgingsplanForesporselDocument() {
   const { getIntroGjelder } = useDocumentComponents();
 
   function getForesporselDocument(
-    values: ForesporselDocumentValues
+    values: ForesporselDocumentValues,
   ): DocumentComponentDto[] {
     return [
       createHeaderH1(oppfolgingsplanForesporselTexts.title),
@@ -24,13 +24,13 @@ export function useOppfolgingsplanForesporselDocument() {
       createParagraph(
         oppfolgingsplanForesporselTexts.mottaker(
           values.narmesteLeder,
-          values.virksomhetNavn
-        )
+          values.virksomhetNavn,
+        ),
       ),
       createParagraph(oppfolgingsplanForesporselTexts.body.hei),
       createParagraph(
         oppfolgingsplanForesporselTexts.body.info1,
-        oppfolgingsplanForesporselTexts.body.info2
+        oppfolgingsplanForesporselTexts.body.info2,
       ),
       createParagraph(oppfolgingsplanForesporselTexts.body.kontakt),
       createParagraph(oppfolgingsplanForesporselTexts.hilsen),

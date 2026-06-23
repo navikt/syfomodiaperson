@@ -33,7 +33,7 @@ function tilfelleVarighetText(start: Date, end: Date, varighet: number) {
 interface Props {
   selectedOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined;
   setSelectedOppfolgingstilfelle: (
-    oppfolgingstilfelle: OppfolgingstilfelleDTO
+    oppfolgingstilfelle: OppfolgingstilfelleDTO,
   ) => void;
 }
 
@@ -48,19 +48,19 @@ export default function Sykmeldingsgrad({
   const sykmeldingerIOppfolgingstilfelle =
     sykmeldingerInnenforOppfolgingstilfelle(
       newAndUsedSykmeldinger,
-      selectedOppfolgingstilfelle
+      selectedOppfolgingstilfelle,
     );
 
   function harOpplystOmJobbetIOppfolgingstilfelle(
-    sykmeldingerIOppfolgingstilfelle: SykmeldingOldFormat[]
+    sykmeldingerIOppfolgingstilfelle: SykmeldingOldFormat[],
   ): boolean {
     const sykmeldingIds = new Set(
-      sykmeldingerIOppfolgingstilfelle.map((s) => s.id)
+      sykmeldingerIOppfolgingstilfelle.map((s) => s.id),
     );
     return getSykepengesoknader.data
       .filter(
         (soknad) =>
-          soknad.sykmeldingId && sykmeldingIds.has(soknad.sykmeldingId)
+          soknad.sykmeldingId && sykmeldingIds.has(soknad.sykmeldingId),
       )
       .some((soknad: SykepengesoknadDTO) => harJobbet(soknad));
   }
@@ -80,12 +80,12 @@ export default function Sykmeldingsgrad({
           {tilfelleVarighetText(
             selectedOppfolgingstilfelle.start,
             selectedOppfolgingstilfelle.end,
-            selectedOppfolgingstilfelle.varighetUker
+            selectedOppfolgingstilfelle.varighetUker,
           )}
         </BodyShort>
       )}
       {harOpplystOmJobbetIOppfolgingstilfelle(
-        sykmeldingerIOppfolgingstilfelle
+        sykmeldingerIOppfolgingstilfelle,
       ) && (
         <Alert variant="info" size="small" className="mt-2 w-fit">
           {texts.harJobbetUtoverSykmeldingsgrad}

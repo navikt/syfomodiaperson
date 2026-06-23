@@ -12,6 +12,6 @@ export const mockLpsOppfolgingsplanerMottak = [
     `${LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT}/oppfolgingsplan/lps/:uuid`,
     () => {
       return HttpResponse.text("PDF");
-    }
+    },
   ),
 ];

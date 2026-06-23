@@ -62,7 +62,7 @@ export default function MulighetForArbeid({
               >
                 {ikkeMuligTekst}
               </Checkbox>
-            )
+            ),
           )}
           {aarsakAktivitetIkkeMulig433 && (
             <div className="ml-8">
@@ -96,7 +96,7 @@ export default function MulighetForArbeid({
               >
                 {ikkeMuligTekst}
               </Checkbox>
-            )
+            ),
           )}
           {aarsakAktivitetIkkeMulig434 && (
             <div className="ml-8">

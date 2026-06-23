@@ -23,7 +23,7 @@ export const useDialogmoteDocumentComponents = () => {
   const commonTexts = getCommonTexts(malform);
 
   const getVirksomhetsnavn = (
-    virksomhetsnummer: string | undefined
+    virksomhetsnummer: string | undefined,
   ): DocumentComponentDto | undefined => {
     const arbeidsgiver =
       virksomhetsnummer &&
@@ -36,22 +36,22 @@ export const useDialogmoteDocumentComponents = () => {
 
   const getMoteInfo = (
     values: Partial<TidStedSkjemaValues>,
-    virksomhetsnummer: string | undefined
+    virksomhetsnummer: string | undefined,
   ) => {
     const { dato, klokkeslett, sted, videoLink } = values;
     const tidStedTekst =
       dato && klokkeslett
         ? tilDatoMedUkedagOgManedNavnOgKlokkeslett(
             genererDato(dato, klokkeslett),
-            malform
+            malform,
           )
         : "";
     const components: DocumentComponentDto[] = [];
     components.push(
-      createParagraphWithTitle(commonTexts.moteTidTitle, tidStedTekst)
+      createParagraphWithTitle(commonTexts.moteTidTitle, tidStedTekst),
     );
     components.push(
-      createParagraphWithTitle(commonTexts.moteStedTitle, sted || "")
+      createParagraphWithTitle(commonTexts.moteStedTitle, sted || ""),
     );
     if (videoLink) {
       components.push(createLink(commonTexts.videoLinkTitle, videoLink));
@@ -73,8 +73,8 @@ export const useDialogmoteDocumentComponents = () => {
       `Nav`,
       "---",
       `${commonTexts.brevSendt} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
-        new Date()
-      )}`
+        new Date(),
+      )}`,
     );
 
   return {

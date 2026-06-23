@@ -38,7 +38,7 @@ const brukerKanIkkeVarsles = {
 const renderInnkallingDialogmotePanel = (kontaktinfo: KontaktinfoDTO) => {
   queryClient.setQueryData(
     brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => kontaktinfo
+    () => kontaktinfo,
   );
   return render(
     <MemoryRouter>
@@ -49,7 +49,7 @@ const renderInnkallingDialogmotePanel = (kontaktinfo: KontaktinfoDTO) => {
           <InnkallingDialogmotePanel aktivtDialogmote={undefined} />
         </ValgtEnhetContext.Provider>
       </QueryClientProvider>
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 };
 
@@ -65,11 +65,13 @@ describe("InnkallingDialogmotePanel", () => {
       expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
       expect(
         screen.getByText(
-          brukerKanIkkeVarslesPapirpostTexts.brukerKanIkkeVarslesTekst
-        )
+          brukerKanIkkeVarslesPapirpostTexts.brukerKanIkkeVarslesTekst,
+        ),
       ).to.exist;
       expect(
-        screen.getByText(brukerKanIkkeVarslesPapirpostTexts.papirpostDialogmote)
+        screen.getByText(
+          brukerKanIkkeVarslesPapirpostTexts.papirpostDialogmote,
+        ),
       ).to.exist;
     });
     it("viser knapp til Dialogmoteinkalling når bruker ikke kan varsles", async () => {
@@ -86,8 +88,8 @@ describe("InnkallingDialogmotePanel", () => {
       expect(screen.queryByRole("img", { name: "Advarsel" })).to.not.exist;
       expect(
         screen.queryByRole(
-          brukerKanIkkeVarslesPapirpostTexts.brukerKanIkkeVarslesTekst
-        )
+          brukerKanIkkeVarslesPapirpostTexts.brukerKanIkkeVarslesTekst,
+        ),
       ).to.not.exist;
     });
     it("viser knapp til Dialogmoteinkalling  når bruker kan varsles", async () => {
@@ -105,11 +107,11 @@ describe("InnkallingDialogmotePanel", () => {
     it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og ingen ferdigstilte referat ", async () => {
       queryClient.setQueryData(
         dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => dialogmotekandidatMock
+        () => dialogmotekandidatMock,
       );
       queryClient.setQueryData(
         dialogmoterQueryKeys.dialogmoter(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => []
+        () => [],
       );
 
       renderInnkallingDialogmotePanel(brukerKanVarsles);
@@ -121,15 +123,15 @@ describe("InnkallingDialogmotePanel", () => {
     it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og det er et ferdigstilt referat som er opprettet tidligere enn tidspunkt for Kandidat", async () => {
       queryClient.setQueryData(
         dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => dialogmotekandidatMock
+        () => dialogmotekandidatMock,
       );
       const createdAt = dayjs(
-        new Date(dialogmotekandidatMock.kandidatAt)
+        new Date(dialogmotekandidatMock.kandidatAt),
       ).subtract(1, "days");
       const dialogmote = createDialogmote(
         "1",
         DialogmoteStatus.FERDIGSTILT,
-        createdAt.toDate()
+        createdAt.toDate(),
       );
       const dialogmoteFerdigstiltTidligereEnnKandidat = {
         ...dialogmote,
@@ -137,7 +139,7 @@ describe("InnkallingDialogmotePanel", () => {
       };
       queryClient.setQueryData(
         dialogmoterQueryKeys.dialogmoter(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => [dialogmoteFerdigstiltTidligereEnnKandidat]
+        () => [dialogmoteFerdigstiltTidligereEnnKandidat],
       );
 
       renderInnkallingDialogmotePanel(brukerKanVarsles);
@@ -149,16 +151,16 @@ describe("InnkallingDialogmotePanel", () => {
     it("viser ikke knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og det er et ferdigstilt referat som er opprettet etter tidspunkt for Kandidat", () => {
       queryClient.setQueryData(
         dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => dialogmotekandidatMock
+        () => dialogmotekandidatMock,
       );
       const createdAt = dayjs(new Date(dialogmotekandidatMock.kandidatAt)).add(
         1,
-        "days"
+        "days",
       );
       const dialogmote = createDialogmote(
         "1",
         DialogmoteStatus.FERDIGSTILT,
-        createdAt.toDate()
+        createdAt.toDate(),
       );
       const dialogmoteFerdigstiltEtterKandidat = {
         ...dialogmote,
@@ -166,7 +168,7 @@ describe("InnkallingDialogmotePanel", () => {
       };
       queryClient.setQueryData(
         dialogmoterQueryKeys.dialogmoter(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => [dialogmoteFerdigstiltEtterKandidat]
+        () => [dialogmoteFerdigstiltEtterKandidat],
       );
 
       renderInnkallingDialogmotePanel(brukerKanVarsles);
@@ -177,16 +179,16 @@ describe("InnkallingDialogmotePanel", () => {
     it("viser knapp til DialogmoteUnntak når bruker er Dialogmotekandidat og det er et mellomlagret referat som er opprettet etter tidspunkt for Kandidat", async () => {
       queryClient.setQueryData(
         dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => dialogmotekandidatMock
+        () => dialogmotekandidatMock,
       );
       const createdAt = dayjs(new Date(dialogmotekandidatMock.kandidatAt)).add(
         1,
-        "days"
+        "days",
       );
       const dialogmote = createDialogmote(
         "1",
         DialogmoteStatus.FERDIGSTILT,
-        createdAt.toDate()
+        createdAt.toDate(),
       );
 
       const dialogmoteMellomlagreReferatEtterKandidat = {
@@ -195,7 +197,7 @@ describe("InnkallingDialogmotePanel", () => {
       };
       queryClient.setQueryData(
         dialogmoterQueryKeys.dialogmoter(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => [dialogmoteMellomlagreReferatEtterKandidat]
+        () => [dialogmoteMellomlagreReferatEtterKandidat],
       );
 
       renderInnkallingDialogmotePanel(brukerKanVarsles);
@@ -216,7 +218,7 @@ describe("InnkallingDialogmotePanel", () => {
           createdBy: "Z123456",
           beskrivelse: "Vi avventer ny informasjon",
         },
-      ]
+      ],
     );
 
     renderInnkallingDialogmotePanel(brukerKanVarsles);
@@ -229,7 +231,7 @@ describe("InnkallingDialogmotePanel", () => {
   it("viser ikke avvent-banner når avvent-listen er tom (for eksempel etter unntak/ikke-aktuell)", () => {
     queryClient.setQueryData(
       dialogmotekandidatQueryKeys.avvent(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => []
+      () => [],
     );
 
     renderInnkallingDialogmotePanel(brukerKanVarsles);

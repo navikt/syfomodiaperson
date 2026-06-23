@@ -5,7 +5,7 @@ import { MeldingDTO } from "@/data/behandlerdialog/behandlerdialogTypes";
 
 const getVedleggLinkText = (
   melding: MeldingDTO,
-  vedleggNumber: number
+  vedleggNumber: number,
 ): string => {
   if (melding.isFirstVedleggLegeerklaring) {
     return vedleggNumber === 0 ? "Legeerklæring" : `Vedlegg ${vedleggNumber}`;

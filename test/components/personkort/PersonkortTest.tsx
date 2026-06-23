@@ -18,7 +18,7 @@ async function renderAndExpandPersonkort() {
   render(
     <QueryClientProvider client={queryClient}>
       <Personkort />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
   const expandable = screen.getAllByRole("button")[0];
   await userEvent.click(expandable);
@@ -29,7 +29,7 @@ describe("Personkort", () => {
     queryClient = queryClientWithAktivBruker();
     queryClient.setQueryData(
       brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => brukerinfoMock
+      () => brukerinfoMock,
     );
     stubFastlegerApi();
   });
@@ -47,7 +47,7 @@ describe("Personkort", () => {
             gyldigTom: daysFromToday(10),
           },
         ],
-      })
+      }),
     );
     await renderAndExpandPersonkort();
 
@@ -57,7 +57,7 @@ describe("Personkort", () => {
   it("Skal ikke vise Sikkerhetstiltak-button-tab hvis bruker mangler sikkerhetstiltak", async () => {
     queryClient.setQueryData(
       brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => brukerinfoMock
+      () => brukerinfoMock,
     );
 
     await renderAndExpandPersonkort();

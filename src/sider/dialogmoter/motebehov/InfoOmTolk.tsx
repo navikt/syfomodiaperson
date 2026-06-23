@@ -35,7 +35,7 @@ export function InfoOmTolk() {
   const sortertMotebehov = motebehov.sort(sorterMotebehovDataEtterDatoDesc);
   const motebehovInActiveTilfelle = getMotebehovInActiveTilfelle(
     sortertMotebehov,
-    latestOppfolgingstilfelle
+    latestOppfolgingstilfelle,
   );
   const minstEnOnskerTolk = motebehovInActiveTilfelle.some(onskerTolk);
   const visInfoOmRegistrereTolkIPdl =

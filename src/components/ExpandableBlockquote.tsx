@@ -62,10 +62,10 @@ const ExpandButton = ({ setOpen, isOverflow }: ExpandButtonProps) => {
 
 const useIsOverflow = (
   ref: React.RefObject<HTMLDivElement>,
-  callback: (hasOverflow: boolean) => void
+  callback: (hasOverflow: boolean) => void,
 ) => {
   const [isOverflow, setIsOverflow] = React.useState<boolean | undefined>(
-    undefined
+    undefined,
   );
 
   React.useLayoutEffect(() => {

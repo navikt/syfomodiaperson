@@ -35,16 +35,16 @@ const renderStansSide = () => {
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     `${manglendeMedvirkningPath}/stans`,
-    [`${manglendeMedvirkningPath}/stans`]
+    [`${manglendeMedvirkningPath}/stans`],
   );
 };
 
 function mockVurdering(vurdering?: VurderingResponseDTO) {
   queryClient.setQueryData(
     manglendeMedvirkningQueryKeys.manglendeMedvirkning(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => (vurdering ? [vurdering] : [])
+    () => (vurdering ? [vurdering] : []),
   );
 }
 
@@ -60,24 +60,26 @@ describe("Manglendemedvirkning Stans", () => {
       renderStansSide();
 
       expect(
-        screen.getByText("Skriv innstilling om stans til Nav arbeid og ytelser")
+        screen.getByText(
+          "Skriv innstilling om stans til Nav arbeid og ytelser",
+        ),
       ).to.exist;
       expect(screen.getByText("Når du skriver innstillingen")).to.exist;
       expect(
         screen.getByText(
-          "Skriv kort hvilke opplysninger som ligger til grunn for stans, samt din vurdering av hvorfor vilkåret ikke er oppfylt og vurdering av eventuelle nye opplysninger."
-        )
+          "Skriv kort hvilke opplysninger som ligger til grunn for stans, samt din vurdering av hvorfor vilkåret ikke er oppfylt og vurdering av eventuelle nye opplysninger.",
+        ),
       ).to.exist;
       expect(
         screen.getByRole("textbox", {
           name: "Begrunnelse (obligatorisk)",
-        })
+        }),
       ).to.exist;
       expect(screen.getByText("Videre må du huske å:")).to.exist;
       expect(
         screen.getByText(
-          "Sende beskjed i Gosys til Nav Arbeid og Ytelser. Dette er for å gjøre saksbehandler oppmerksom på at det har kommet en innstilling og at utbetalingen skal stanses."
-        )
+          "Sende beskjed i Gosys til Nav Arbeid og Ytelser. Dette er for å gjøre saksbehandler oppmerksom på at det har kommet en innstilling og at utbetalingen skal stanses.",
+        ),
       ).to.exist;
       expect(screen.getByText("Tema: Sykepenger")).to.exist;
       expect(screen.getByText("Gjelder: Aktivitetskrav")).to.exist;
@@ -86,13 +88,13 @@ describe("Manglendemedvirkning Stans", () => {
       expect(screen.getByText("Prioritet: Høy")).to.exist;
       expect(
         screen.getByText(
-          "Send innstilling om stans og stans automatisk utbetaling"
-        )
+          "Send innstilling om stans og stans automatisk utbetaling",
+        ),
       ).to.exist;
       expect(
         screen.getByText(
-          "Når du sender innstillingen blir den journalført og kan sees i Gosys. Den automatiske utbetalingen til bruker stanses og oppgaven blir deretter plukket opp av saksbehandler fra Gosys."
-        )
+          "Når du sender innstillingen blir den journalført og kan sees i Gosys. Den automatiske utbetalingen til bruker stanses og oppgaven blir deretter plukket opp av saksbehandler fra Gosys.",
+        ),
       ).to.exist;
       expect(screen.getByRole("button", { name: "Send" })).to.exist;
       expect(screen.getByRole("button", { name: "Avbryt" })).to.exist;

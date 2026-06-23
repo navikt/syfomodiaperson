@@ -6,6 +6,6 @@ import { http, HttpResponse } from "msw";
 export const stubSykepengesoknadBackendApi = () =>
   mockServer.use(
     http.post(`*${SYKEPENGESOKNAD_BACKEND_ROOT}/veileder/soknader`, () =>
-      HttpResponse.json(soknaderMock)
-    )
+      HttpResponse.json(soknaderMock),
+    ),
   );

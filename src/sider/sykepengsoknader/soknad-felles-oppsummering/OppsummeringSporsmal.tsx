@@ -19,7 +19,7 @@ import { getKey } from "@/sider/sykepengsoknader/soknad-felles-oppsummering/Opps
 import OppsummeringSporsmalscontainer from "@/sider/sykepengsoknader/soknad-felles-oppsummering/OppsummeringSporsmalscontainer";
 
 export default function OppsummeringSporsmal(
-  props: SporsmalDTO
+  props: SporsmalDTO,
 ): ReactElement | null {
   switch (props.svartype) {
     case SvarTypeDTO.CHECKBOX_PANEL:

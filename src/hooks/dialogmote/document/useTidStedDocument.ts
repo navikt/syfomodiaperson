@@ -19,20 +19,20 @@ import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQuery
 
 export interface ITidStedDocument {
   getTidStedDocumentArbeidsgiver(
-    values: Partial<EndreTidStedSkjemaValues>
+    values: Partial<EndreTidStedSkjemaValues>,
   ): DocumentComponentDto[];
 
   getTidStedDocumentArbeidstaker(
-    values: Partial<EndreTidStedSkjemaValues>
+    values: Partial<EndreTidStedSkjemaValues>,
   ): DocumentComponentDto[];
 
   getTidStedDocumentBehandler(
-    values: Partial<EndreTidStedSkjemaValues>
+    values: Partial<EndreTidStedSkjemaValues>,
   ): DocumentComponentDto[];
 }
 
 export const useTidStedDocument = (
-  dialogmote: DialogmoteDTO
+  dialogmote: DialogmoteDTO,
 ): ITidStedDocument => {
   const { tid, arbeidsgiver, behandler } = dialogmote;
   const { malform } = useMalform();
@@ -47,20 +47,20 @@ export const useTidStedDocument = (
   const { getMoteInfo, getIntroHei } = useDialogmoteDocumentComponents();
 
   const gjelderParagraph = createParagraph(
-    `${commonTexts.gjelder} ${navBruker.navn}, f.nr. ${valgtPersonident}.`
+    `${commonTexts.gjelder} ${navBruker.navn}, f.nr. ${valgtPersonident}.`,
   );
 
   const introComponents = [
     createParagraph(
       `${endreTidStedTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
-        tid
-      )}.`
+        tid,
+      )}.`,
     ),
     createParagraph(endreTidStedTexts.intro2),
   ];
 
   const getTidStedDocumentArbeidsgiver = (
-    values: Partial<EndreTidStedSkjemaValues>
+    values: Partial<EndreTidStedSkjemaValues>,
   ) => {
     const documentComponents = [
       createHeaderH1(endreTidStedTexts.header),
@@ -89,20 +89,20 @@ export const useTidStedDocument = (
       createParagraph(outro2),
       createParagraphWithTitle(
         endreTidStedTexts.arbeidsgiver.outro3Title,
-        outro3
+        outro3,
       ),
       hilsenParagraph,
       createParagraph(
         commonTexts.arbeidsgiverTlfLabel,
-        commonTexts.arbeidsgiverTlf
-      )
+        commonTexts.arbeidsgiverTlf,
+      ),
     );
 
     return documentComponents;
   };
 
   const getTidStedDocumentArbeidstaker = (
-    values: Partial<EndreTidStedSkjemaValues>
+    values: Partial<EndreTidStedSkjemaValues>,
   ) => {
     const documentComponents = [
       createHeaderH1(endreTidStedTexts.header),
@@ -131,16 +131,16 @@ export const useTidStedDocument = (
       createParagraph(outro2),
       createParagraphWithTitle(
         endreTidStedTexts.arbeidstaker.outro3Title,
-        outro3
+        outro3,
       ),
-      hilsenParagraph
+      hilsenParagraph,
     );
 
     return documentComponents;
   };
 
   const getTidStedDocumentBehandler = (
-    values: Partial<EndreTidStedSkjemaValues>
+    values: Partial<EndreTidStedSkjemaValues>,
   ) => {
     const documentComponents = [
       createHeaderH1(endreTidStedTexts.behandler.endring),
@@ -155,7 +155,7 @@ export const useTidStedDocument = (
 
     documentComponents.push(
       createParagraph(endreTidStedTexts.behandler.outro),
-      hilsenParagraph
+      hilsenParagraph,
     );
 
     return documentComponents;

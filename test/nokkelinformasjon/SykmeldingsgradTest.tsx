@@ -16,7 +16,7 @@ import {
 let queryClient: QueryClient;
 
 const renderSykmeldingsgrad = (
-  oppfolgingstilfelle: OppfolgingstilfelleDTO | undefined
+  oppfolgingstilfelle: OppfolgingstilfelleDTO | undefined,
 ) =>
   render(
     <QueryClientProvider client={queryClient}>
@@ -26,7 +26,7 @@ const renderSykmeldingsgrad = (
           oppfolgingstilfelle
         }
       />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("Sykmeldingsgrad", () => {
@@ -68,7 +68,7 @@ describe("Sykmeldingsgrad", () => {
     setSykmeldingDataFromOppfolgingstilfelle(
       sykmeldingNow,
       oppfolgingstilfeller,
-      queryClient
+      queryClient,
     );
     renderSykmeldingsgrad(oppfolgingstilfeller[0]);
 
@@ -80,14 +80,14 @@ describe("Sykmeldingsgrad", () => {
       screen.getByText(
         `${tilLesbarPeriodeMedArUtenManednavn(
           oppfolgingstilfeller[0].start,
-          oppfolgingstilfeller[0].end
-        )}`
-      )
+          oppfolgingstilfeller[0].end,
+        )}`,
+      ),
     ).to.exist;
     expect(screen.getByText(`(${oppfolgingstilfeller[0].varighetUker} uker)`))
       .to.exist;
     expect(
-      screen.getByText(sykmeldingNow[0].medisinskVurdering.hovedDiagnose.kode)
+      screen.getByText(sykmeldingNow[0].medisinskVurdering.hovedDiagnose.kode),
     ).to.exist;
   });
 
@@ -96,7 +96,7 @@ describe("Sykmeldingsgrad", () => {
     setSykmeldingDataFromOppfolgingstilfelle(
       [],
       oppfolgingstilfeller,
-      queryClient
+      queryClient,
     );
     renderSykmeldingsgrad(undefined);
 
@@ -112,7 +112,7 @@ describe("Sykmeldingsgrad", () => {
     setSykmeldingDataFromOppfolgingstilfelle(
       sykmeldingEarlier,
       oppfolgingstilfeller,
-      queryClient
+      queryClient,
     );
     renderSykmeldingsgrad(oppfolgingstilfeller[0]);
 
@@ -124,14 +124,14 @@ describe("Sykmeldingsgrad", () => {
       screen.getByText(
         `${tilLesbarPeriodeMedArUtenManednavn(
           oppfolgingstilfeller[0].start,
-          oppfolgingstilfeller[0].end
-        )}`
-      )
+          oppfolgingstilfeller[0].end,
+        )}`,
+      ),
     ).to.exist;
     expect(screen.getByText(`(${oppfolgingstilfeller[0].varighetUker} uker)`))
       .to.exist;
     expect(
-      screen.getByText(sykmeldingNow[0].medisinskVurdering.hovedDiagnose.kode)
+      screen.getByText(sykmeldingNow[0].medisinskVurdering.hovedDiagnose.kode),
     ).to.exist;
   });
 });

@@ -126,11 +126,11 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
     (oppfolgingsplanLPS) =>
       toOppfolgingsplanLPSMedPersonoppgave(
         oppfolgingsplanLPS,
-        personoppgaver.data
-      )
+        personoppgaver.data,
+      ),
   );
   const allMenypunktEntries: [Menypunkter, Menypunkt][] = Object.entries(
-    allMenypunkter
+    allMenypunkter,
   ).map((value) => value as [Menypunkter, Menypunkt]);
 
   const setFocus = (index: number) => {
@@ -195,7 +195,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
           friskmeldingTilArbeidsformidlingVedtak.data,
           manglendeMedvirkningVurdering.sisteVurdering,
           kartleggingssporsmalKandidat.data,
-          aktivePlanerV2.length
+          aktivePlanerV2.length,
         );
 
         return (

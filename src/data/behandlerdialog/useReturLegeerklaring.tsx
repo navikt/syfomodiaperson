@@ -11,7 +11,7 @@ export const useReturLegeerklaring = (legeerklaringUuid: string) => {
   const path = `${ISBEHANDLERDIALOG_ROOT}/melding/${legeerklaringUuid}/retur`;
 
   const postReturLegeerklaring = async (
-    returLegeerklaring: ReturLegeerklaringDTO
+    returLegeerklaring: ReturLegeerklaringDTO,
   ) => {
     await post(path, returLegeerklaring, personident);
   };

@@ -16,13 +16,13 @@ export const mockSyfooppfolgingsplanservice = [
     `${SYFOOPPFOLGINGSPLANSERVICE_V3_ROOT}/oppfolgingsplan/historikk`,
     () => {
       return HttpResponse.json(historikkoppfolgingsplanMock);
-    }
+    },
   ),
 
   http.get(
     `${SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT}/dokument/:id/dokumentinfo`,
     () => {
       return HttpResponse.json(dokumentinfoMock);
-    }
+    },
   ),
 ];

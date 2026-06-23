@@ -14,7 +14,7 @@ export function TilfellePeriod() {
   const startDate = useStartOfLatestOppfolgingstilfelle();
   const endDate = useEndOfLatestOppfolgingstilfelle();
   const periode = `${tilLesbarDatoMedArUtenManedNavn(
-    startDate
+    startDate,
   )} - ${tilLesbarDatoMedArUtenManedNavn(endDate)}`;
   return (
     !!startDate &&

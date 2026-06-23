@@ -20,7 +20,7 @@ export const useSaveVurderingArbeidsuforhet = () => {
     onSuccess: (data: VurderingResponseDTO) => {
       queryClient.setQueryData(
         arbeidsuforhetQueryKeys.arbeidsuforhet(personident),
-        (oldData: VurderingResponseDTO[]) => [data, ...oldData]
+        (oldData: VurderingResponseDTO[]) => [data, ...oldData],
       );
     },
   });

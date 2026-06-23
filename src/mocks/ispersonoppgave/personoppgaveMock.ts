@@ -68,7 +68,7 @@ export const personOppgaveBehandletBehandlerdialogSvar = {
   uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd8",
   referanseUuid: meldingUuids.legeerklaringInnkommende,
   behandletTidspunkt: new Date(
-    dayjs().subtract(1, "days").toJSON()
+    dayjs().subtract(1, "days").toJSON(),
   ).toDateString(),
   behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
 };
@@ -85,7 +85,7 @@ export const personOppgaveBehandletBehandlerdialogUbesvartMelding = {
   uuid: "5f1e2629-063b-442d-ae1g-3b08e9234cd4",
   referanseUuid: meldingUuids.tilleggsopplysningerUtgaaende,
   behandletTidspunkt: new Date(
-    dayjs().subtract(1, "days").toJSON()
+    dayjs().subtract(1, "days").toJSON(),
   ).toDateString(),
   behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
 };
@@ -95,7 +95,7 @@ const personOppgaveBehandletOppfolgingsplanLPS = {
   uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd2",
   referanseUuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd6",
   behandletTidspunkt: new Date(
-    dayjs().subtract(1, "days").toJSON()
+    dayjs().subtract(1, "days").toJSON(),
   ).toDateString(),
   behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
   opprettet: new Date(dayjs().subtract(10, "days").toJSON()).toDateString(),
@@ -106,7 +106,7 @@ export const personOppgaveBehandletDialogmotesvar = {
   uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd3",
   referanseUuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd7",
   behandletTidspunkt: new Date(
-    dayjs().subtract(1, "days").toJSON()
+    dayjs().subtract(1, "days").toJSON(),
   ).toDateString(),
   behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
   opprettet: new Date(dayjs().subtract(10, "days").toJSON()).toDateString(),
@@ -116,7 +116,7 @@ export const makePersonOppgaveBehandlet = (ubehandletPersonOppgave) => {
   return {
     ...ubehandletPersonOppgave,
     behandletTidspunkt: new Date(
-      dayjs().subtract(1, "days").toJSON()
+      dayjs().subtract(1, "days").toJSON(),
     ).toDateString(),
     behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
     opprettet: new Date(dayjs().subtract(10, "days").toJSON()).toDateString(),

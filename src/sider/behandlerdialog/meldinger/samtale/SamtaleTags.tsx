@@ -48,43 +48,43 @@ type SamtaleTagStatus =
 
 function getSamtaleTagStatus(
   meldinger: MeldingDTO[],
-  oppgaver: PersonOppgave[]
+  oppgaver: PersonOppgave[],
 ): SamtaleTagStatus {
   const ubehandledeBehandlerDialogSvarOppgaver =
     getAllUbehandledePersonOppgaver(
       oppgaver,
-      PersonOppgaveType.BEHANDLERDIALOG_SVAR
+      PersonOppgaveType.BEHANDLERDIALOG_SVAR,
     );
   const harMeldingMedUbehandletSvarOppgave = meldinger.some((melding) =>
     ubehandledeBehandlerDialogSvarOppgaver.some(
-      (oppgave) => oppgave.referanseUuid === melding.uuid
-    )
+      (oppgave) => oppgave.referanseUuid === melding.uuid,
+    ),
   );
   const ubehandledePaminnelseOppgaver = getAllUbehandledePersonOppgaver(
     oppgaver,
-    PersonOppgaveType.BEHANDLERDIALOG_MELDING_UBESVART
+    PersonOppgaveType.BEHANDLERDIALOG_MELDING_UBESVART,
   );
   const harMeldingMedUbehandletPaminnelseOppgave = meldinger.some((melding) =>
     ubehandledePaminnelseOppgaver.some(
-      (oppgave) => oppgave.referanseUuid === melding.uuid
-    )
+      (oppgave) => oppgave.referanseUuid === melding.uuid,
+    ),
   );
   const harIngenMeldingMedPaminnelseOppgave = !meldinger.some((melding) =>
     oppgaver.some(
       (oppgave) =>
         oppgave.type === PersonOppgaveType.BEHANDLERDIALOG_MELDING_UBESVART &&
-        oppgave.referanseUuid === melding.uuid
-    )
+        oppgave.referanseUuid === melding.uuid,
+    ),
   );
 
   const innkommende = meldinger.filter((melding) => melding.innkommende);
   const antallReturLegeerklaring = antallOfType(
     meldinger,
-    MeldingType.HENVENDELSE_RETUR_LEGEERKLARING
+    MeldingType.HENVENDELSE_RETUR_LEGEERKLARING,
   );
   const antallInnkommendeLegeerklaringer = antallOfType(
     innkommende,
-    MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING
+    MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING,
   );
 
   const harReturLegeerklaringMelding = antallReturLegeerklaring > 0;
@@ -96,14 +96,14 @@ function getSamtaleTagStatus(
   const utgaendeMeldingForventerSvar = meldinger.some(
     (melding) =>
       !melding.innkommende &&
-      melding.type !== MeldingType.HENVENDELSE_MELDING_FRA_NAV
+      melding.type !== MeldingType.HENVENDELSE_MELDING_FRA_NAV,
   );
   const harPaminnelseMelding = hasMeldingOfType(
     meldinger,
-    MeldingType.FORESPORSEL_PASIENT_PAMINNELSE
+    MeldingType.FORESPORSEL_PASIENT_PAMINNELSE,
   );
   const harAvvistMelding = meldinger.some(
-    (melding) => melding.status?.type === MeldingStatusType.AVVIST
+    (melding) => melding.status?.type === MeldingStatusType.AVVIST,
   );
 
   if (harAvvistMelding) {

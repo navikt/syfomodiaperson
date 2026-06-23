@@ -6,5 +6,5 @@ export const mockSykepengesoknadBackend = http.post(
   `${SYKEPENGESOKNAD_BACKEND_ROOT}/veileder/soknader`,
   () => {
     return HttpResponse.json(soknaderMock);
-  }
+  },
 );

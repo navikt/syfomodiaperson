@@ -82,7 +82,7 @@ describe("oppfolgingsplanerUtils", () => {
       };
       const planMedPersonoppgaveOne = toOppfolgingsplanLPSMedPersonoppgave(
         planOne,
-        []
+        [],
       );
 
       const yesterdayDate = new Date(Date.now() - 24 * 60 * 60 * 1000);
@@ -95,7 +95,7 @@ describe("oppfolgingsplanerUtils", () => {
       };
       const planMedPersonoppgaveTwo = toOppfolgingsplanLPSMedPersonoppgave(
         planTwo,
-        []
+        [],
       );
 
       const planer = [planMedPersonoppgaveOne, planMedPersonoppgaveTwo];

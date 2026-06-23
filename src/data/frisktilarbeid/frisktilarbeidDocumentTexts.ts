@@ -12,11 +12,11 @@ export const getVedtakTexts = ({ fom, tom }: VedtakTextsValues) => ({
     intro:
       "Du oppfyller vilkårene for friskmelding til arbeidsformidling og kan få sykepenger fra Nav mens du ser etter ny jobb.",
     periode: `Vedtaket gjelder for perioden: ${toReadableDateOrEmpty(
-      fom
+      fom,
     )} - ${toReadableDateOrEmpty(tom)}.`,
   },
   maksdato: `Siden din maksdato for sykepenger er beregnet til ${toReadableDateOrEmpty(
-    tom
+    tom,
   )}, vil du ikke få sykepenger etter denne datoen.`,
   begrunnelse: {
     header: "Begrunnelse for vedtaket",

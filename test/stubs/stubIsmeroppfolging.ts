@@ -12,6 +12,6 @@ export const stubVurderSvarError = () =>
       `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater/:kandidatUUID`,
       () => {
         return HttpResponse.text("Internal server error", { status: 500 });
-      }
-    )
+      },
+    ),
   );

@@ -65,7 +65,7 @@ function renderApp() {
         <AppRouter />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-    </ValgtEnhetProvider>
+    </ValgtEnhetProvider>,
   );
 }
 

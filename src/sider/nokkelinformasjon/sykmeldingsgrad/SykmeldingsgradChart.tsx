@@ -14,7 +14,7 @@ export default function SykmeldingsgradChart({ sykmeldingsperioder }: Props) {
       ? 0
       : dagerMellomDatoer(
           sykmeldingsperioder[0].fom,
-          sykmeldingsperioder[sykmeldingsperioder.length - 1].tom
+          sykmeldingsperioder[sykmeldingsperioder.length - 1].tom,
         );
   const oneYearInDays = 52 * 7;
   const DAYS_IN_GRAPH =
@@ -39,7 +39,7 @@ export default function SykmeldingsgradChart({ sykmeldingsperioder }: Props) {
         grad,
         x: index,
       };
-    }
+    },
   );
 
   function renderTick(tickProps: any): ReactElement<SVGElement> {

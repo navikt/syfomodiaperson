@@ -5,15 +5,15 @@ import {
 
 export const hasMeldingOfType = (
   meldinger: MeldingDTO[],
-  type: MeldingType
+  type: MeldingType,
 ): boolean => meldinger.some((melding) => melding.type === type);
 
 export const antallOfType = (
   meldinger: MeldingDTO[],
-  type: MeldingType
+  type: MeldingType,
 ): number => filterOnType(meldinger, type).length;
 
 export const filterOnType = (
   meldinger: MeldingDTO[],
-  type: MeldingType
+  type: MeldingType,
 ): MeldingDTO[] => meldinger.filter((melding) => melding.type === type);

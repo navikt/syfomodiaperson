@@ -10,7 +10,7 @@ import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function getDialogmotekandidatHistorikkText(
   { type, vurdertAv }: DialogmotekandidatHistorikkDTO,
-  person: BrukerinfoDTO
+  person: BrukerinfoDTO,
 ) {
   switch (type) {
     case HistorikkType.KANDIDAT:
@@ -26,7 +26,7 @@ function getDialogmotekandidatHistorikkText(
 
 function createHistorikkEventsFromDialogmotekandidatHistorikk(
   dialogmotekandidatHistorikk: DialogmotekandidatHistorikkDTO[],
-  person: BrukerinfoDTO
+  person: BrukerinfoDTO,
 ): HistorikkEvent[] {
   return dialogmotekandidatHistorikk.map((value) => ({
     opprettetAv: value.vurdertAv ?? undefined,
@@ -47,7 +47,7 @@ export function useDialogmotekandidatHistorikk(): HistorikkEvents {
   const dialogmotekandidatHistorikkEvents =
     createHistorikkEventsFromDialogmotekandidatHistorikk(
       dialogmotekandidatHistorikk || [],
-      person
+      person,
     );
 
   return {

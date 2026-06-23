@@ -28,16 +28,16 @@ export const useFastlegerQuery = () => {
       () =>
         query.data?.find(
           (fastlege) =>
-            fastlege.relasjon.kodeVerdi === RelasjonKodeVerdi.FASTLEGE
+            fastlege.relasjon.kodeVerdi === RelasjonKodeVerdi.FASTLEGE,
         ),
-      [query.data]
+      [query.data],
     ),
     fastlegeVikarer: useMemo(
       () =>
         query.data?.filter(
-          (fastlege) => fastlege.relasjon.kodeVerdi === RelasjonKodeVerdi.VIKAR
+          (fastlege) => fastlege.relasjon.kodeVerdi === RelasjonKodeVerdi.VIKAR,
         ) || [],
-      [query.data]
+      [query.data],
     ),
   };
 };

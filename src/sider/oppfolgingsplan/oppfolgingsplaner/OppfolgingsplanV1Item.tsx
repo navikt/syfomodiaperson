@@ -17,7 +17,7 @@ const texts = {
 function durationText(plan: OppfolgingsplanDTO) {
   return `${texts.duration}: ${tilLesbarPeriodeMedArstall(
     plan.godkjentPlan.gyldighetstidspunkt.fom,
-    plan.godkjentPlan.gyldighetstidspunkt.tom
+    plan.godkjentPlan.gyldighetstidspunkt.tom,
   )}`;
 }
 
@@ -34,7 +34,7 @@ interface Props {
 
 export default function OppfolgingsplanV1Item({ oppfolgingsplan }: Props) {
   const { virksomhetsnavn } = useVirksomhetQuery(
-    oppfolgingsplan.virksomhet.virksomhetsnummer
+    oppfolgingsplan.virksomhet.virksomhetsnummer,
   );
   return (
     <Box background="default" padding="space-16" className="mb-2">

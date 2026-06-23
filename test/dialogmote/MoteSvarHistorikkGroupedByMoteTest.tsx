@@ -30,7 +30,7 @@ const narmesteLederNavnMedVirksomhet = `${NARMESTE_LEDER_DEFAULT.navn} (${VIRKSO
 type InnkallingSvar = Pick<VarselSvarDTO, "svarType" | "svarTekst">;
 const varselAT = (
   svar: InnkallingSvar,
-  varselType: MotedeltakerVarselType
+  varselType: MotedeltakerVarselType,
 ): DialogmotedeltakerArbeidstakerVarselDTO => ({
   uuid: "123",
   createdAt: "2021-05-26T12:56:26.271381",
@@ -46,7 +46,7 @@ const varselAT = (
 });
 const varselAG = (
   svar: InnkallingSvar,
-  varselType: MotedeltakerVarselType
+  varselType: MotedeltakerVarselType,
 ): DialogmotedeltakerArbeidsgiverVarselDTO => ({
   uuid: "456",
   createdAt: "2021-05-26T12:56:26.282386",
@@ -76,13 +76,13 @@ const ferdigstiltMote: DialogmoteDTO = {
         {
           svarType: SvarType.KOMMER,
         },
-        MotedeltakerVarselType.INNKALT
+        MotedeltakerVarselType.INNKALT,
       ),
       varselAT(
         {
           svarType: SvarType.KOMMER,
         },
-        MotedeltakerVarselType.NYTT_TID_STED
+        MotedeltakerVarselType.NYTT_TID_STED,
       ),
     ],
   },
@@ -94,13 +94,13 @@ const ferdigstiltMote: DialogmoteDTO = {
         {
           svarType: SvarType.NYTT_TID_STED,
         },
-        MotedeltakerVarselType.INNKALT
+        MotedeltakerVarselType.INNKALT,
       ),
       varselAG(
         {
           svarType: SvarType.KOMMER,
         },
-        MotedeltakerVarselType.NYTT_TID_STED
+        MotedeltakerVarselType.NYTT_TID_STED,
       ),
     ],
   },
@@ -125,7 +125,7 @@ const avlystMote: DialogmoteDTO = {
           svarType: SvarType.KOMMER_IKKE,
           svarTekst: "Syk",
         },
-        MotedeltakerVarselType.INNKALT
+        MotedeltakerVarselType.INNKALT,
       ),
       {
         uuid: "abc",
@@ -146,7 +146,7 @@ const avlystMote: DialogmoteDTO = {
         {
           svarType: SvarType.KOMMER,
         },
-        MotedeltakerVarselType.INNKALT
+        MotedeltakerVarselType.INNKALT,
       ),
       {
         uuid: "def",
@@ -165,12 +165,12 @@ const avlystMote: DialogmoteDTO = {
 };
 
 const renderMoteSvarHistorikkGroupedByMote = (
-  historiskeMoter: DialogmoteDTO[]
+  historiskeMoter: DialogmoteDTO[],
 ) => {
   render(
     <QueryClientProvider client={queryClient}>
       <MoteSvarHistorikkGroupedByMote historiskeMoter={historiskeMoter} />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -212,13 +212,13 @@ describe("MoteSvarHistorikkGroupedByMote", () => {
 
     assertExpandableWithHeader(
       `${ARBEIDSTAKER_DEFAULT_FULL_NAME}, kommer - Svar mottatt 26.05.2021`,
-      2
+      2,
     );
     assertExpandableWithHeader(
-      `${narmesteLederNavnMedVirksomhet}, kommer - Svar mottatt 26.05.2021`
+      `${narmesteLederNavnMedVirksomhet}, kommer - Svar mottatt 26.05.2021`,
     );
     assertExpandableWithHeader(
-      `${narmesteLederNavnMedVirksomhet}, ønsker å endre tidspunkt eller sted - Svar mottatt 26.05.2021`
+      `${narmesteLederNavnMedVirksomhet}, ønsker å endre tidspunkt eller sted - Svar mottatt 26.05.2021`,
     );
   });
   it("viser innkalling med svar for avlyst møte", async () => {
@@ -230,10 +230,10 @@ describe("MoteSvarHistorikkGroupedByMote", () => {
     await userEvent.click(accordion);
 
     assertExpandableWithHeader(
-      `${narmesteLederNavnMedVirksomhet}, kommer - Svar mottatt 26.05.2021`
+      `${narmesteLederNavnMedVirksomhet}, kommer - Svar mottatt 26.05.2021`,
     );
     assertExpandableWithHeader(
-      `${ARBEIDSTAKER_DEFAULT_FULL_NAME}, ønsker å avlyse - Svar mottatt 26.05.2021`
+      `${ARBEIDSTAKER_DEFAULT_FULL_NAME}, ønsker å avlyse - Svar mottatt 26.05.2021`,
     );
     expect(screen.getByText("Begrunnelse")).to.exist;
     expect(screen.getByText("Syk")).to.exist;

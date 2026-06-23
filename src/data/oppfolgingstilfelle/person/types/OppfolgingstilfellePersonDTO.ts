@@ -27,13 +27,13 @@ export function isInactive(oppfolgingstilfelle: OppfolgingstilfelleDTO) {
 
   return today.isAfter(
     tilfelleEnd.add(ARBEIDSGIVERPERIODE_DAYS, "days"),
-    "date"
+    "date",
   );
 }
 
 export function isDateInOppfolgingstilfelle(
   date: Date,
-  oppfolgingstilfelle: OppfolgingstilfelleDTO
+  oppfolgingstilfelle: OppfolgingstilfelleDTO,
 ) {
   return (
     new Date(oppfolgingstilfelle.start) <= new Date(date) &&
@@ -43,14 +43,14 @@ export function isDateInOppfolgingstilfelle(
 
 export function aktiveNarmesteLedereForOppfolgingstilfelle(
   ledere: NarmesteLederRelasjonDTO[],
-  oppfolgingsTilfelle: OppfolgingstilfelleDTO
+  oppfolgingsTilfelle: OppfolgingstilfelleDTO,
 ): NarmesteLederRelasjonDTO[] {
   return ledere.filter(
     (leder) =>
       leder.status === "INNMELDT_AKTIV" &&
       oppfolgingsTilfelle.virksomhetsnummerList.includes(
-        leder.virksomhetsnummer
-      )
+        leder.virksomhetsnummer,
+      ),
   );
 }
 
@@ -61,7 +61,7 @@ export function aktiveNarmesteLedereForOppfolgingstilfelle(
  * Hvis vi innfører `hasGjentakendeSykefravar` for alle personer i backend, kan vi slette en del logikk her.
  */
 export function hasGjentakendeSykefravar(
-  oppfolgingstilfellePerson: OppfolgingstilfellePersonDTO
+  oppfolgingstilfellePerson: OppfolgingstilfellePersonDTO,
 ): boolean {
   if (oppfolgingstilfellePerson.hasGjentakendeSykefravar !== null) {
     return oppfolgingstilfellePerson.hasGjentakendeSykefravar;

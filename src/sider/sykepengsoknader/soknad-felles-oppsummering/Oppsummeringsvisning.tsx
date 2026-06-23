@@ -20,7 +20,7 @@ export default function Oppsummeringsvisning({ soknad: { sporsmal } }: Props) {
           (sporsmal) =>
             sporsmal.svar.length > 0 ||
             sporsmal.undersporsmal.length > 0 ||
-            sporsmal.svartype === SvarTypeDTO.IKKE_RELEVANT
+            sporsmal.svartype === SvarTypeDTO.IKKE_RELEVANT,
         )
         .map((sporsmal) => (
           <div

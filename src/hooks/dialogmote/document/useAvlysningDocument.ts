@@ -18,20 +18,20 @@ import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQuery
 
 export interface IAvlysningDocument {
   getAvlysningDocumentArbeidstaker(
-    values: Partial<AvlysDialogmoteSkjemaValues>
+    values: Partial<AvlysDialogmoteSkjemaValues>,
   ): DocumentComponentDto[];
 
   getAvlysningDocumentArbeidsgiver(
-    values: Partial<AvlysDialogmoteSkjemaValues>
+    values: Partial<AvlysDialogmoteSkjemaValues>,
   ): DocumentComponentDto[];
 
   getAvlysningDocumentBehandler(
-    values: Partial<AvlysDialogmoteSkjemaValues>
+    values: Partial<AvlysDialogmoteSkjemaValues>,
   ): DocumentComponentDto[];
 }
 
 export const useAvlysningDocument = (
-  dialogmote: DialogmoteDTO
+  dialogmote: DialogmoteDTO,
 ): IAvlysningDocument => {
   const { malform } = useMalform();
   const avlysningTexts = getAvlysningTexts(malform);
@@ -45,20 +45,20 @@ export const useAvlysningDocument = (
 
   // TODO: Alle disse gjelder-paragraphene kan byttes ut når aktivitetskravet også er på nynorsk. Da kan vi lage en felles gjelder-intro igjen basert på målform
   const gjelderParagraph = createParagraph(
-    `${commonTexts.gjelder} ${navBruker.navn}, f.nr. ${valgtPersonident}.`
+    `${commonTexts.gjelder} ${navBruker.navn}, f.nr. ${valgtPersonident}.`,
   );
   // TODO: Samme her
   const hilsenParagraph = getHilsenMedSendtDato(veilederinfo);
 
   const introText = createParagraph(
     `${avlysningTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
-      dialogmote.tid
-    )}. ${avlysningTexts.intro2}`
+      dialogmote.tid,
+    )}. ${avlysningTexts.intro2}`,
   );
 
   const getAvlysningDocument = (
     introHilsen: DocumentComponentDto,
-    begrunnelse?: string
+    begrunnelse?: string,
   ) => {
     const documentComponents = [
       createHeaderH1(avlysningTexts.header),
@@ -70,7 +70,7 @@ export const useAvlysningDocument = (
     }
 
     const virksomhetsnavn = getVirksomhetsnavn(
-      dialogmote.arbeidsgiver.virksomhetsnummer
+      dialogmote.arbeidsgiver.virksomhetsnummer,
     );
     if (virksomhetsnavn) {
       documentComponents.push(virksomhetsnavn);
@@ -83,15 +83,15 @@ export const useAvlysningDocument = (
 
   return {
     getAvlysningDocumentArbeidstaker: (
-      values: Partial<AvlysDialogmoteSkjemaValues>
+      values: Partial<AvlysDialogmoteSkjemaValues>,
     ): DocumentComponentDto[] =>
       getAvlysningDocument(getIntroHei(), values.begrunnelseArbeidstaker),
     getAvlysningDocumentArbeidsgiver: (
-      values: Partial<AvlysDialogmoteSkjemaValues>
+      values: Partial<AvlysDialogmoteSkjemaValues>,
     ): DocumentComponentDto[] =>
       getAvlysningDocument(gjelderParagraph, values.begrunnelseArbeidsgiver),
     getAvlysningDocumentBehandler: (
-      values: Partial<AvlysDialogmoteSkjemaValues>
+      values: Partial<AvlysDialogmoteSkjemaValues>,
     ): DocumentComponentDto[] =>
       getAvlysningDocument(gjelderParagraph, values.begrunnelseBehandler),
   };

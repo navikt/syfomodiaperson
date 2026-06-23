@@ -28,7 +28,7 @@ export function formatPhonenumber(phonenumber: string): string {
   } else if (phonenumber.length === 11) {
     return phonenumber.replace(
       /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,
-      "$1 $2 $3 $4 $5"
+      "$1 $2 $3 $4 $5",
     );
   } else {
     return phonenumber;

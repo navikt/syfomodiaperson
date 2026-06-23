@@ -21,7 +21,7 @@ const renderIkkeAktuell = () => {
     queryClient,
     <ArbeidsuforhetIkkeAktuellSkjema />,
     arbeidsuforhetIkkeAktuellPath,
-    [arbeidsuforhetIkkeAktuellPath]
+    [arbeidsuforhetIkkeAktuellPath],
   );
 };
 
@@ -35,7 +35,7 @@ describe("ArbeidsuforhetIkkeAktuell", () => {
 
     expect(screen.getByRole("radio", { name: "Friskmeldt" })).to.exist;
     expect(
-      screen.getByRole("radio", { name: "Friskmelding til arbeidsformidling" })
+      screen.getByRole("radio", { name: "Friskmelding til arbeidsformidling" }),
     ).to.exist;
 
     expect(screen.getByRole("button", { name: "Lagre" })).to.exist;
@@ -70,7 +70,7 @@ describe("ArbeidsuforhetIkkeAktuell", () => {
         document: getIkkeAktuellVurderingDocument(arsak),
       };
       expect(sendVurderingMutation.state.variables).to.deep.equal(
-        expectedVurdering
+        expectedVurdering,
       );
     });
   });

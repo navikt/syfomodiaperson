@@ -29,7 +29,7 @@ export const dialogmotekandidatQueryKeys = {
 
 export const useIsDialogmoteKandidatWithoutFerdigstiltReferat = (
   kandidat?: boolean,
-  kandidatAt?: string
+  kandidatAt?: string,
 ): boolean => {
   const latestFerdigstiltReferat = useLatestFerdigstiltReferat();
   if (!kandidatAt || !kandidat) {
@@ -51,7 +51,7 @@ const useLatestFerdigstiltReferat = (): ReferatDTO | undefined => {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     })[0];
   return latestFerdigstiltDialogmote?.referatList.filter(
-    (referat) => referat.ferdigstilt
+    (referat) => referat.ferdigstilt,
   )[0];
 };
 
@@ -95,7 +95,7 @@ export const useDialogmotekandidat = () => {
   const isNoFerdigstiltDialogmoteReferatAfterKandidatAt =
     useIsDialogmoteKandidatWithoutFerdigstiltReferat(
       kandidatQuery.data?.kandidat,
-      kandidatQuery.data?.kandidatAt
+      kandidatQuery.data?.kandidatAt,
     );
   const isKandidat: boolean =
     isNoFerdigstiltDialogmoteReferatAfterKandidatAt || false;

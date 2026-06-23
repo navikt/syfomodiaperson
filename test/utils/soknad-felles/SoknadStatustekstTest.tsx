@@ -46,8 +46,8 @@ describe("SoknadStatustekst", () => {
 
     expect(
       screen.getByText(
-        `Sendt til ${arbeidsgiverNavn} (org. nr. ${orgnr}): ${readableDate}`
-      )
+        `Sendt til ${arbeidsgiverNavn} (org. nr. ${orgnr}): ${readableDate}`,
+      ),
     ).to.exist;
   });
 
@@ -71,7 +71,7 @@ describe("SoknadStatustekst", () => {
     const orgnr = soknad.arbeidsgiver?.orgnummer;
 
     expect(
-      `Sendt til Nav og ${arbeidsgiverNavn} (org. nr. ${orgnr}): ${readableNAVDate}`
+      `Sendt til Nav og ${arbeidsgiverNavn} (org. nr. ${orgnr}): ${readableNAVDate}`,
     ).to.exist;
   });
 });

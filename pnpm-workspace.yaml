@@ -6,6 +6,7 @@ allowBuilds:
   styled-components: true
 minimumReleaseAge: 4320 # 3 days
 ignoreScripts: true
+savePrefix: ''
 minimumReleaseAgeExclude:
   - minimatch@9.0.6
   - minimatch@9.0.7

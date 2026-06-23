@@ -2,14 +2,15 @@ import { KartleggingssporsmalSvarResponseDTO } from "@/data/kartleggingssporsmal
 import { KartleggingssporsmalFormSnapshotFieldType } from "@/data/kartleggingssporsmal/kartleggingssporsmalSkjemasvarTypes.ts";
 
 export function hasRisikoForLangtidsfravar(
-  answeredQuestions: KartleggingssporsmalSvarResponseDTO
+  answeredQuestions: KartleggingssporsmalSvarResponseDTO,
 ): boolean {
   const fieldSnapshots = answeredQuestions.formSnapshot.fieldSnapshots;
   if (!fieldSnapshots) return false;
 
   const radioFieldSnapshots = fieldSnapshots.filter(
     (field) =>
-      field?.fieldType === KartleggingssporsmalFormSnapshotFieldType.RADIO_GROUP
+      field?.fieldType ===
+      KartleggingssporsmalFormSnapshotFieldType.RADIO_GROUP,
   );
 
   const someLowRiskOptionInSnapshotNotSelected = radioFieldSnapshots.some(
@@ -20,14 +21,14 @@ export function hasRisikoForLangtidsfravar(
         lowRiskOptionIdByRadioFieldId[radioFieldSnapshot.fieldId];
 
       const lowRiskOptionFoundInSnapshot = radioFieldSnapshot.options?.find(
-        (option) => option.optionId === lowRiskOptionIdForField
+        (option) => option.optionId === lowRiskOptionIdForField,
       );
 
       return (
         lowRiskOptionFoundInSnapshot &&
         !lowRiskOptionFoundInSnapshot.wasSelected
       );
-    }
+    },
   );
 
   return someLowRiskOptionInSnapshotNotSelected;
@@ -43,7 +44,7 @@ export const lowRiskOptionIdByRadioFieldId = {
 } as const;
 
 export const knownRadioFieldIds = Object.keys(
-  lowRiskOptionIdByRadioFieldId
+  lowRiskOptionIdByRadioFieldId,
 ) as KnownRadioFieldId[];
 
 type KnownRadioFieldId = keyof typeof lowRiskOptionIdByRadioFieldId;

@@ -36,8 +36,7 @@ const texts = {
   lagre: "Lagre",
 };
 
-export interface OppfyltAktivitetskravSkjemaValues
-  extends AktivitetskravSkjemaValues {
+export interface OppfyltAktivitetskravSkjemaValues extends AktivitetskravSkjemaValues {
   arsak: OppfyltVurderingArsak;
 }
 
@@ -73,7 +72,7 @@ export function OppfyltAktivitetskravSkjema({
       {
         onSuccess: () => setUtkastSavedTime(new Date()),
         onError: () => setUtkastSavedTime(undefined),
-      }
+      },
     );
   }, 750);
 
@@ -120,7 +119,7 @@ export function OppfyltAktivitetskravSkjema({
               >
                 {text}
               </Radio>
-            )
+            ),
           )}
         </RadioGroup>
         <Textarea

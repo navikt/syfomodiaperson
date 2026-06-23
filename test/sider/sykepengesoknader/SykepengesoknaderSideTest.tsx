@@ -30,7 +30,7 @@ function renderSykepengesoknaderSide() {
           </MemoryRouter>
         </NotificationProvider>
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 }
 
@@ -42,9 +42,9 @@ describe("SykepengesoknaderSideTest", () => {
   it("Viser 'Har jobbet' tag når sykmeldt opplyser om at han har jobbet på søknad", () => {
     queryClient.setQueryData(
       sykepengesoknaderQueryKeys.sykepengesoknader(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => soknaderMock.concat([harJobbetSoknadMock])
+      () => soknaderMock.concat([harJobbetSoknadMock]),
     );
     renderSykepengesoknaderSide();
 
@@ -54,9 +54,9 @@ describe("SykepengesoknaderSideTest", () => {
   it("Viser ikke 'Har jobbet' tag når sykmeldt opplyser om at han ikke har jobbet på søknad", () => {
     queryClient.setQueryData(
       sykepengesoknaderQueryKeys.sykepengesoknader(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => soknaderMock.concat([harIkkeJobbetSoknadMock])
+      () => soknaderMock.concat([harIkkeJobbetSoknadMock]),
     );
     renderSykepengesoknaderSide();
 

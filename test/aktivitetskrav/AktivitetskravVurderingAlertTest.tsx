@@ -26,7 +26,7 @@ import { queryClientWithMockData } from "../testQueryClient";
 let queryClient: QueryClient;
 
 const renderAktivitetskravVurderingAlert = (
-  vurdering: AktivitetskravVurderingDTO
+  vurdering: AktivitetskravVurderingDTO,
 ) => {
   render(
     <QueryClientProvider client={queryClient}>
@@ -35,7 +35,7 @@ const renderAktivitetskravVurderingAlert = (
       >
         <AktivitetskravVurderingAlert vurdering={vurdering} />
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -67,7 +67,7 @@ describe("AktivitetskravVurderingAlert", () => {
         AvventVurderingArsak.DROFTES_MED_ROL,
         AvventVurderingArsak.DROFTES_INTERNT,
       ],
-      beskrivelse
+      beskrivelse,
     );
     renderAktivitetskravVurderingAlert(vurdering);
 
@@ -84,9 +84,9 @@ describe("AktivitetskravVurderingAlert", () => {
     expect(
       screen.getByText(
         `Forhåndsvarsel er sendt ${tilLesbarDatoMedArUtenManedNavn(
-          forhandsvarselVurdering.createdAt
-        )}`
-      )
+          forhandsvarselVurdering.createdAt,
+        )}`,
+      ),
     );
   });
   it("viser warning når siste aktivitetskrav-vurdering er utløpt FORHANDSVARSEL", () => {

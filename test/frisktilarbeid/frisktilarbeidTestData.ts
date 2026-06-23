@@ -11,7 +11,7 @@ import {
 
 export const createVedtak = (
   fom: Date,
-  ferdigbehandletAt: Date | undefined = undefined
+  ferdigbehandletAt: Date | undefined = undefined,
 ): VedtakResponseDTO => ({
   uuid: "123",
   createdAt: new Date(),
@@ -58,7 +58,7 @@ export const getExpectedVedtakDocument = ({
     {
       texts: [
         `Vedtaket gjelder for perioden: ${tilDatoMedManedNavn(
-          fom
+          fom,
         )} - ${tilDatoMedManedNavn(tom)}.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
@@ -68,7 +68,7 @@ export const getExpectedVedtakDocument = ({
           {
             texts: [
               `Siden din maksdato for sykepenger er beregnet til ${tilDatoMedManedNavn(
-                tom
+                tom,
               )}, vil du ikke få sykepenger etter denne datoen.`,
             ],
             type: DocumentComponentType.PARAGRAPH,

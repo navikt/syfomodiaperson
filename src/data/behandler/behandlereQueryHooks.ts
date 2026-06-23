@@ -32,7 +32,7 @@ export const useSokBehandlereQuery = (searchstring: string) => {
     get<BehandlerDTO[]>(
       `${ISDIALOGMELDING_ROOT}/behandler/search`,
       fnr,
-      searchHeader
+      searchHeader,
     );
 
   const query = useQuery({
@@ -48,7 +48,7 @@ export const useSokBehandlereQuery = (searchstring: string) => {
 
 export const useBehandlerByBehandlerRefQuery = (
   behandlerRef: string,
-  isEnabled: boolean
+  isEnabled: boolean,
 ) => {
   const fetchBehandlerByBehandlerRef = () =>
     get<BehandlerDTO>(`${ISDIALOGMELDING_ROOT}/behandler/${behandlerRef}`);

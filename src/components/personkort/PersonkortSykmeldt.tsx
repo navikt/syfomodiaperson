@@ -56,7 +56,7 @@ export function PersonkortSykmeldt() {
   const valgteElementer = Object.assign(
     {},
     valgteElementerKontaktinfo,
-    valgteElementerAdresse
+    valgteElementerAdresse,
   );
 
   return (

@@ -60,7 +60,7 @@ export function KartleggingVurdering({
 
   const [chosenAlternative, setChosenAlternative] =
     useState<VurderingAlternativ | null>(
-      nyesteKandidat.vurdering?.vurderingAlternativ ?? null
+      nyesteKandidat.vurdering?.vurderingAlternativ ?? null,
     );
   const [chosenAlternativeError, setChosenAlternativeError] = useState<
     string | null

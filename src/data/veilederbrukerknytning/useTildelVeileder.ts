@@ -10,7 +10,7 @@ export const useTildelVeileder = () => {
 
   const path = `${SYFOOVERSIKTSRV_PERSONTILDELING_ROOT}/personer/single`;
   const postTildelVeileder = (
-    veilederIdent: VeilederIdent | IkkeTildeltVeileder
+    veilederIdent: VeilederIdent | IkkeTildeltVeileder,
   ) => {
     const veilederBrukerKnytning: VeilederBrukerKnytning = {
       veilederIdent: veilederIdent,

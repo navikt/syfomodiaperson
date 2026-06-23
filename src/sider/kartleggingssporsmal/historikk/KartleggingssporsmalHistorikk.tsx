@@ -23,7 +23,7 @@ interface HistorikkElementProps {
 function HistorikkElement({ tidligereKandidat }: HistorikkElementProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { data: veilederinfo } = useVeilederInfoQuery(
-    tidligereKandidat.vurdering?.vurdertBy || ""
+    tidligereKandidat.vurdering?.vurdertBy || "",
   );
   const { data: svar } = useKartleggingssporsmalSvarQuery(tidligereKandidat);
 
@@ -63,7 +63,7 @@ interface Props {
 
 export function KartleggingssporsmalHistorikk({ tidligereKandidater }: Props) {
   const kandidaterMedSvar = tidligereKandidater.filter((kandidat) =>
-    hasAnsweredKartleggingssporsmal(kandidat)
+    hasAnsweredKartleggingssporsmal(kandidat),
   );
 
   if (kandidaterMedSvar.length === 0) {

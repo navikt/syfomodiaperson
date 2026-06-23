@@ -17,10 +17,10 @@ export const mockSyfoveileder = [
     `${SYFOVEILEDER_ROOT}/veiledere/:ident`,
     ({ params }) => {
       const veileder = veiledereMock.find(
-        (veileder) => veileder.ident === params.ident
+        (veileder) => veileder.ident === params.ident,
       );
 
       return HttpResponse.json(veileder);
-    }
+    },
   ),
 ];

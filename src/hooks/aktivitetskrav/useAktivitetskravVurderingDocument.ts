@@ -36,11 +36,11 @@ type InnstillingOmStansDocumentValues = {
 
 export const useAktivitetskravVurderingDocument = (): {
   getForhandsvarselDocument(
-    values: ForhandsvarselDocumentValues
+    values: ForhandsvarselDocumentValues,
   ): DocumentComponentDto[];
   getVurderingDocument(values: VurderingDocumentValues): DocumentComponentDto[];
   innstillingOmStansDocument(
-    values: InnstillingOmStansDocumentValues
+    values: InnstillingOmStansDocumentValues,
   ): DocumentComponentDto[];
 } => {
   const { getHilsen, getIntroGjelder, getVurdertAv } = useDocumentComponents();
@@ -68,20 +68,20 @@ export const useAktivitetskravVurderingDocument = (): {
       createBulletPoints(
         sendForhandsvarselTexts.unngaStansInfo.tiltak1,
         sendForhandsvarselTexts.unngaStansInfo.tiltak2,
-        sendForhandsvarselTexts.unngaStansInfo.tiltak3
-      )
+        sendForhandsvarselTexts.unngaStansInfo.tiltak3,
+      ),
     );
 
     if (mal === Brevmal.UTLAND) {
       documentComponents.push(
-        createParagraph(sendForhandsvarselTexts.utland.dokumentasjon)
+        createParagraph(sendForhandsvarselTexts.utland.dokumentasjon),
       );
     }
 
     documentComponents.push(
       createHeaderH3(sendForhandsvarselTexts.giOssTilbakemelding.header),
       createParagraph(
-        sendForhandsvarselTexts.giOssTilbakemelding.tilbakemeldingWithFristDate
+        sendForhandsvarselTexts.giOssTilbakemelding.tilbakemeldingWithFristDate,
       ),
       createHeaderH3(sendForhandsvarselTexts.kontaktOss.header),
       createParagraph(sendForhandsvarselTexts.kontaktOss.kontaktOss),
@@ -90,7 +90,7 @@ export const useAktivitetskravVurderingDocument = (): {
       createParagraph(sendForhandsvarselTexts.lovhjemmel.aktivitetsplikten),
       createParagraph(sendForhandsvarselTexts.lovhjemmel.pliktInfo),
 
-      getHilsen()
+      getHilsen(),
     );
 
     return documentComponents;
@@ -109,7 +109,7 @@ export const useAktivitetskravVurderingDocument = (): {
     }
     documentComponents.push(
       createParagraph(getVedtakText(varselType)),
-      getVurdertAv()
+      getVurdertAv(),
     );
 
     return documentComponents;

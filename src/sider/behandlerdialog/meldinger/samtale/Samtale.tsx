@@ -30,7 +30,7 @@ export default function Samtale({ meldinger }: Props) {
   const behandlerRef = firstMelding.behandlerRef;
   const newestMelding = meldinger.slice(-1)[0];
   const dateAndTimeForNewestMelding = `${tilDatoMedManedNavnOgKlokkeslett(
-    newestMelding.tidspunkt
+    newestMelding.tidspunkt,
   )}`;
 
   return (

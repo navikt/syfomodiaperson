@@ -52,7 +52,7 @@ const ferdigstiltDialogmoteTwoMonthsAgo: DialogmoteDTO = {
 };
 
 const renderDialogmoteFerdigstilteReferatPanel = (
-  ferdigstilteMoter: DialogmoteDTO[]
+  ferdigstilteMoter: DialogmoteDTO[],
 ) =>
   render(
     <QueryClientProvider client={queryClient}>
@@ -61,7 +61,7 @@ const renderDialogmoteFerdigstilteReferatPanel = (
           ferdigstilteMoter={ferdigstilteMoter}
         />
       </MemoryRouter>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("DialogmoteFerdigstilteReferatPanel", () => {
@@ -73,7 +73,7 @@ describe("DialogmoteFerdigstilteReferatPanel", () => {
         navn: {
           navnelinje1: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
         },
-      })
+      }),
     );
   });
   it("viser ingenting når ingen ferdigstilte møter kan endre referat", () => {
@@ -86,7 +86,7 @@ describe("DialogmoteFerdigstilteReferatPanel", () => {
     expect(
       screen.queryByRole("heading", {
         name: "Referatet er sendt",
-      })
+      }),
     ).to.not.exist;
   });
   it("kan endre referat for møter inntil 30 dager etter møtetidspunkt", () => {
@@ -102,7 +102,7 @@ describe("DialogmoteFerdigstilteReferatPanel", () => {
     expect(
       screen.getAllByRole("heading", {
         name: "Referatet er sendt",
-      })
+      }),
     ).to.have.length(expectedAntallMoter);
   });
   it("viser liste med ferdigstilte referater for møte som kan endre referat", () => {
@@ -121,10 +121,10 @@ describe("DialogmoteFerdigstilteReferatPanel", () => {
     const referater = screen.getAllByRole("listitem");
     expect(referater).to.have.length(2);
     expect(referater[0].textContent).to.equal(
-      `Endret referat, sendt ${tilLesbarDatoMedArstall(today)}`
+      `Endret referat, sendt ${tilLesbarDatoMedArstall(today)}`,
     );
     expect(referater[1].textContent).to.equal(
-      `Referat, sendt ${tilLesbarDatoMedArstall(yesterday)}`
+      `Referat, sendt ${tilLesbarDatoMedArstall(yesterday)}`,
     );
   });
   it("viser frist for å endre referat", () => {
@@ -139,8 +139,8 @@ describe("DialogmoteFerdigstilteReferatPanel", () => {
     const expectedFrist = dayjs(yesterday).add(30, "days");
     expect(
       screen.getByText(
-        `${fristText} ${tilDatoMedManedNavnOgKlokkeslett(expectedFrist)}`
-      )
+        `${fristText} ${tilDatoMedManedNavnOgKlokkeslett(expectedFrist)}`,
+      ),
     );
   });
   it("viser arbeidsgivers virksomhetsnavn", () => {

@@ -32,11 +32,11 @@ describe("DialogmoteikkeaktuellSkjema", () => {
     queryClient = queryClientWithMockData();
     queryClient.setQueryData(
       dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => dialogmotekandidatMock
+      () => dialogmotekandidatMock,
     );
     queryClient.setQueryData(
       dialogmoterQueryKeys.dialogmoter(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => []
+      () => [],
     );
     stubFeatureTogglesApi();
   });
@@ -48,13 +48,13 @@ describe("DialogmoteikkeaktuellSkjema", () => {
 
     expect(
       screen.getByText(
-        "Det blir ikke sendt ut varsel eller brev til den sykmeldte."
-      )
+        "Det blir ikke sendt ut varsel eller brev til den sykmeldte.",
+      ),
     ).to.not.be.empty;
     expect(
       screen.getByText(
-        `Når du setter ikke aktuell vil arbeidstakeren bli fjernet fra kandidatlisten. Dersom du på et senere tidspunkt vurderer at det likevel er nødvendig med et dialogmøte, kan du kalle inn til dialogmøte ved å søke deg frem til denne arbeidstakeren.`
-      )
+        `Når du setter ikke aktuell vil arbeidstakeren bli fjernet fra kandidatlisten. Dersom du på et senere tidspunkt vurderer at det likevel er nødvendig med et dialogmøte, kan du kalle inn til dialogmøte ved å søke deg frem til denne arbeidstakeren.`,
+      ),
     ).to.not.be.empty;
   });
 
@@ -100,7 +100,7 @@ describe("DialogmoteikkeaktuellSkjema", () => {
       };
 
       expect(ikkeaktuellMutation.state.variables).to.deep.equal(
-        expectedCreateIkkeAktuellDTO
+        expectedCreateIkkeAktuellDTO,
       );
     });
   });
@@ -125,7 +125,7 @@ describe("DialogmoteikkeaktuellSkjema", () => {
       };
 
       expect(ikkeaktuellMutation.state.variables).to.deep.equal(
-        expectedCreateIkkeAktuellDTO
+        expectedCreateIkkeAktuellDTO,
       );
     });
   });
@@ -141,16 +141,16 @@ const renderDialogmoteikkeaktuellSkjema = () => {
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     dialogmoteIkkeAktuellRoutePath,
-    [dialogmoteIkkeAktuellRoutePath]
+    [dialogmoteIkkeAktuellRoutePath],
   );
 };
 
 const passSkjemaInput = (
   ikkeaktuellArsak: IkkeAktuellArsak,
-  beskrivelse?: string
+  beskrivelse?: string,
 ) => {
   const arsakRadioButton = screen.getByText(
-    ikkeAktuellArsakTexts[ikkeaktuellArsak]
+    ikkeAktuellArsakTexts[ikkeaktuellArsak],
   );
   fireEvent.click(arsakRadioButton);
 

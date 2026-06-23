@@ -25,7 +25,7 @@ export const mockisoppfolgingsplanForesporsel = [
       };
       existingOppfolgingsplanMock.push(createdForesporsel);
       return HttpResponse.json(createdForesporsel, { status: 201 });
-    }
+    },
   ),
 ];
 

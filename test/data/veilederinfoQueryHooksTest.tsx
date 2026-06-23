@@ -40,7 +40,7 @@ describe("veilederinfoQueryHooks tests", () => {
       () => useVeilederInfoQuery(VEILEDER_IDENT_DEFAULT),
       {
         wrapper,
-      }
+      },
     );
 
     await waitFor(() => expect(result.current.data).to.not.be.undefined);

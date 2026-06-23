@@ -29,14 +29,14 @@ vi.stubGlobal("umami", {
 
 export const mockServer = setupServer(
   http.get(`*${SYFOVEILEDER_ROOT}/veiledere/self`, () =>
-    HttpResponse.json(VEILEDER_DEFAULT)
+    HttpResponse.json(VEILEDER_DEFAULT),
   ),
   // Catch-all: intercept every unhandled request and return 500 instead of
   // letting jsdom open a real TCP socket. Without this, failed connections
   // trigger a native libuv assertion (uv__stream_destroy) that hard-crashes
   // the Vitest worker process with ERR_IPC_CHANNEL_CLOSED.
   // Specific handlers added via mockServer.use() take priority over this.
-  http.all("*", () => new HttpResponse(null, { status: 500 }))
+  http.all("*", () => new HttpResponse(null, { status: 500 })),
 );
 
 // Start server before all tests

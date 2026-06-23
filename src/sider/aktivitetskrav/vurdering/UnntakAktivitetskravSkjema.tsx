@@ -39,8 +39,7 @@ const texts = {
 
 const begrunnelseMaxLength = 1000;
 
-export interface UnntakAktivitetskravSkjemaValues
-  extends AktivitetskravSkjemaValues {
+export interface UnntakAktivitetskravSkjemaValues extends AktivitetskravSkjemaValues {
   arsak: UnntakVurderingArsak;
 }
 
@@ -74,7 +73,7 @@ export function UnntakAktivitetskravSkjema({
       {
         onSuccess: () => setUtkastSavedTime(new Date()),
         onError: () => setUtkastSavedTime(undefined),
-      }
+      },
     );
   }, 750);
 
@@ -121,7 +120,7 @@ export function UnntakAktivitetskravSkjema({
               >
                 {text}
               </Radio>
-            )
+            ),
           )}
         </RadioGroup>
         <Textarea

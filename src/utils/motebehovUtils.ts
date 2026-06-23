@@ -12,24 +12,24 @@ import { arbeidsgiverNavnEllerTomStreng } from "@/sider/dialogmoter/motebehov/Mo
 
 export const sorterMotebehovDataEtterDatoDesc = (
   a: MotebehovVeilederDTO,
-  b: MotebehovVeilederDTO
+  b: MotebehovVeilederDTO,
 ): number => {
   return b.opprettetDato === a.opprettetDato
     ? 0
     : b.opprettetDato > a.opprettetDato
-    ? 1
-    : -1;
+      ? 1
+      : -1;
 };
 
 // Møtebehov av typen SVAR_BEHOV med harMotebehov = false genererer ikke oppgaver og skal ikke behandles
 export const motebehovUbehandlet = (
-  motebehovListe: MotebehovVeilederDTO[]
+  motebehovListe: MotebehovVeilederDTO[],
 ): MotebehovVeilederDTO[] => {
   return motebehovListe.filter(
     (motebehov) =>
       motebehov.formValues.harMotebehov &&
       !motebehov.behandletTidspunkt &&
-      !motebehov.behandletVeilederIdent
+      !motebehov.behandletVeilederIdent,
   );
 };
 
@@ -37,19 +37,19 @@ const isBehandletMotebehov = (motebehov: MotebehovVeilederDTO): boolean =>
   motebehov.behandletTidspunkt != null;
 
 export const erAlleMotebehovSvarBehandlet = (
-  motebehovListe: MotebehovVeilederDTO[]
+  motebehovListe: MotebehovVeilederDTO[],
 ): boolean => {
   return motebehovUbehandlet(motebehovListe).length === 0;
 };
 
 export const harUbehandletMotebehov = (
-  motebehovListe: MotebehovVeilederDTO[]
+  motebehovListe: MotebehovVeilederDTO[],
 ): boolean => {
   return !erAlleMotebehovSvarBehandlet(motebehovListe);
 };
 
 export const hentSistBehandletMotebehov = (
-  motebehovListe: MotebehovVeilederDTO[]
+  motebehovListe: MotebehovVeilederDTO[],
 ): MotebehovVeilederDTO | undefined =>
   [...motebehovListe]
     .filter(isBehandletMotebehov)
@@ -64,7 +64,7 @@ export const hentSistBehandletMotebehov = (
     })[0];
 
 export function fjerneDuplikatInnsendereMotebehov(
-  motebehovListe: MotebehovVeilederDTO[]
+  motebehovListe: MotebehovVeilederDTO[],
 ): MotebehovVeilederDTO[] {
   const unikeInnsendere = new Map<string, MotebehovVeilederDTO>();
   motebehovListe.forEach((motebehov) => {
@@ -79,27 +79,27 @@ export function fjerneDuplikatInnsendereMotebehov(
 }
 
 export const motebehovlisteMedKunJaSvar = (
-  motebehovliste: MotebehovVeilederDTO[]
+  motebehovliste: MotebehovVeilederDTO[],
 ): MotebehovVeilederDTO[] => {
   return motebehovliste.filter(
-    (motebehov) => motebehov.formValues.harMotebehov
+    (motebehov) => motebehov.formValues.harMotebehov,
   );
 };
 
 export const getMotebehovInActiveTilfelle = (
   sortertMotebehovListe: MotebehovVeilederDTO[],
-  latestOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined
+  latestOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined,
 ): MotebehovVeilederDTO[] => {
   return sortertMotebehovListe.filter(
     (motebehov) =>
       latestOppfolgingstilfelle &&
-      motebehov.opprettetDato >= latestOppfolgingstilfelle.start
+      motebehov.opprettetDato >= latestOppfolgingstilfelle.start,
   );
 };
 
 export const toMotebehovTilbakemeldingDTO = (
   motebehovsvar: MotebehovVeilederDTO,
-  tilbakemelding: string
+  tilbakemelding: string,
 ): MotebehovTilbakemeldingDTO => {
   return {
     varseltekst: tilbakemelding,
@@ -112,7 +112,7 @@ export function isArbeidstakerMotebehov(motebehov: MotebehovVeilederDTO) {
 }
 
 export const onskerTolk = (
-  motebehov: MotebehovVeilederDTO | undefined
+  motebehov: MotebehovVeilederDTO | undefined,
 ): boolean => {
   return !!(
     motebehov &&
@@ -122,11 +122,11 @@ export const onskerTolk = (
 };
 
 export function mapMotebehovToMeldtMotebehovFormat(
-  motebehov: MotebehovVeilederDTO[]
+  motebehov: MotebehovVeilederDTO[],
 ): MeldtMotebehov[] {
   return motebehov
     .filter(
-      (motebehov) => motebehov.skjemaType === MotebehovSkjemaType.MELD_BEHOV
+      (motebehov) => motebehov.skjemaType === MotebehovSkjemaType.MELD_BEHOV,
     )
     .map((motebehov) => {
       return {
@@ -145,11 +145,11 @@ export function mapMotebehovToMeldtMotebehovFormat(
 }
 
 export function mapMotebehovToSvarMotebehovFormat(
-  motebehov: MotebehovVeilederDTO[]
+  motebehov: MotebehovVeilederDTO[],
 ): SvarMotebehov[] {
   return motebehov
     .filter(
-      (motebehov) => motebehov.skjemaType === MotebehovSkjemaType.SVAR_BEHOV
+      (motebehov) => motebehov.skjemaType === MotebehovSkjemaType.SVAR_BEHOV,
     )
     .map((motebehov) => {
       return {
@@ -169,7 +169,7 @@ export function mapMotebehovToSvarMotebehovFormat(
 
 export function arbeidsgiverNavnMedVirksomhet(
   lederNavn: string | null,
-  virksomhet?: string
+  virksomhet?: string,
 ) {
   const lederNavnString = arbeidsgiverNavnEllerTomStreng(lederNavn);
 

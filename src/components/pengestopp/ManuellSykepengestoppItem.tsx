@@ -30,17 +30,17 @@ export default function ManuellSykepengestoppItem({
   const { data: veilederinfo } = useVeilederInfoQuery(veilederIdent.value);
   const { sykmeldinger } = useGetSykmeldingerQuery();
   const header = `${texts.statusStansLabel} - ${tilDatoMedManedNavn(
-    new Date(opprettet)
+    new Date(opprettet),
   )}`;
 
   function getArbeidsgiverNavn(virksomhetNr: VirksomhetNr) {
     const allArbeidsgivere = uniqueArbeidsgivere(
-      sykmeldingerToArbeidsgiver(sykmeldinger)
+      sykmeldingerToArbeidsgiver(sykmeldinger),
     );
 
     return (
       allArbeidsgivere.find(
-        (ag: Arbeidsgiver) => ag.orgnummer === virksomhetNr?.value
+        (ag: Arbeidsgiver) => ag.orgnummer === virksomhetNr?.value,
       )?.navn ?? "Ukjent arbeidsgiver"
     );
   }

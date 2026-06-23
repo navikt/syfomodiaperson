@@ -62,34 +62,34 @@ export function queryClientWithAktivBruker(): QueryClient {
   const queryClient = testQueryClient();
   queryClient.setQueryData(
     modiacontextQueryKeys.aktivbruker,
-    () => AKTIV_BRUKER_DEFAULT
+    () => AKTIV_BRUKER_DEFAULT,
   );
 
   return queryClient;
 }
 
 export function setQueryDataWithPersonkortdata(
-  existingClient: QueryClient
+  existingClient: QueryClient,
 ): void {
   existingClient.setQueryData(
     brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => brukerinfoMock
+    () => brukerinfoMock,
   );
   existingClient.setQueryData(
     diskresjonskodeQueryKeys.diskresjonskode(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => diskresjonskodeMock
+    () => diskresjonskodeMock,
   );
   existingClient.setQueryData(
     egenansattQueryKeys.egenansatt(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => isEgenansattMock
+    () => isEgenansattMock,
   );
   existingClient.setQueryData(
     personinfoQueryKeys.personadresse(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => personAdresseMock
+    () => personAdresseMock,
   );
   existingClient.setQueryData(
     maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => maksdatoMock
+    () => maksdatoMock,
   );
 }
 
@@ -99,87 +99,87 @@ export const queryClientWithMockData = (): QueryClient => {
 
   queryClient.setQueryData(
     veilederinfoQueryKeys.veilederinfo,
-    () => VEILEDER_DEFAULT
+    () => VEILEDER_DEFAULT,
   );
   queryClient.setQueryData(
     veilederinfoQueryKeys.veilederinfoByIdent(VEILEDER_IDENT_DEFAULT),
-    () => VEILEDER_DEFAULT
+    () => VEILEDER_DEFAULT,
   );
   queryClient.setQueryData(
     veilederinfoQueryKeys.veilederinfoByIdent(ANNEN_VEILEDER_IDENT),
-    () => ANNEN_VEILEDER
+    () => ANNEN_VEILEDER,
   );
   queryClient.setQueryData(
     behandlendeEnhetQueryKeys.behandlendeEnhet(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => BEHANDLENDE_ENHET_DEFAULT
+    () => BEHANDLENDE_ENHET_DEFAULT,
   );
   queryClient.setQueryData(
     tilgangQueryKeys.tilgang(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => tilgangBrukerMock
+    () => tilgangBrukerMock,
   );
   queryClient.setQueryData(
     ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => LEDERE_DEFAULT
+    () => LEDERE_DEFAULT,
   );
   queryClient.setQueryData(
     oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => oppfolgingstilfellePersonMock
+    () => oppfolgingstilfellePersonMock,
   );
   queryClient.setQueryData(
     unleashQueryKeys.toggles(
       BEHANDLENDE_ENHET_DEFAULT.enhetId,
-      VEILEDER_IDENT_DEFAULT
+      VEILEDER_IDENT_DEFAULT,
     ),
-    () => mockUnleashResponse
+    () => mockUnleashResponse,
   );
 
   queryClient.setQueryData(
     behandlereQueryKeys.behandlere(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => behandlereDialogmeldingMock
+    () => behandlereDialogmeldingMock,
   );
 
   queryClient.setQueryData(
     behandlerdialogQueryKeys.behandlerdialog(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => behandlerdialogMock
+    () => behandlerdialogMock,
   );
 
   queryClient.setQueryData(
     behandlereQueryKeys.behandlerRef(behandlerRefDoktorLegesen),
-    () => behandlerByBehandlerRefMock
+    () => behandlerByBehandlerRefMock,
   );
 
   queryClient.setQueryData(
     sykmeldingerQueryKeys.sykmeldinger(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => sykmeldingerMock.slice(0, 2)
+    () => sykmeldingerMock.slice(0, 2),
   );
 
   queryClient.setQueryData(
     senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => senOppfolgingKandidatMock
+    () => senOppfolgingKandidatMock,
   );
   queryClient.setQueryData(
     kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => null
+    () => null,
   );
   queryClient.setQueryData(
     oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     oppfolgingsplanQueryKeys.oppfolgingsplaner(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => []
+    () => [],
   );
   const draftCategories = [
     "behandlerdialog-meldingtilbehandler",
@@ -195,7 +195,7 @@ export const queryClientWithMockData = (): QueryClient => {
   draftCategories.forEach((category) => {
     queryClient.setQueryData(
       draftQueryKeys.draft(category, ARBEIDSTAKER_DEFAULT.personIdent),
-      () => null
+      () => null,
     );
   });
   return queryClient;
@@ -204,72 +204,72 @@ export const queryClientWithMockData = (): QueryClient => {
 export function setEmptyQueryData(existingClient: QueryClient): void {
   existingClient.setQueryData(
     oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => []
+    () => [],
   );
   existingClient.setQueryData(
     oppfolgingsplanQueryKeys.oppfolgingsplaner(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => []
+    () => [],
   );
   existingClient.setQueryData(
     oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => []
+    () => [],
   );
   existingClient.setQueryData(
     personoppgaverQueryKeys.personoppgaver(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => []
+    () => [],
   );
   existingClient.setQueryData(
     motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => []
+    () => [],
   );
   existingClient.setQueryData(
     aktivitetskravQueryKeys.aktivitetskrav(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => []
+    () => [],
   );
   existingClient.setQueryData(
     arbeidsuforhetQueryKeys.arbeidsuforhet(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => []
+    () => [],
   );
   existingClient.setQueryData(
     senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => []
+    () => [],
   );
   existingClient.setQueryData(
     vedtakQueryKeys.vedtak(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => []
+    () => [],
   );
   existingClient.setQueryData(
     manglendeMedvirkningQueryKeys.manglendeMedvirkning(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => []
+    () => [],
   );
   existingClient.setQueryData(
     unleashQueryKeys.toggles(navEnhet.id, ""),
-    () => mockUnleashResponse
+    () => mockUnleashResponse,
   );
   existingClient.setQueryData(
     kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => null
+    () => null,
   );
   existingClient.setQueryData(
     oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
     () => ({
       oppfolgingstilfelleList: [],
       personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
       hasGjentakendeSykefravar: false,
-    })
+    }),
   );
 }

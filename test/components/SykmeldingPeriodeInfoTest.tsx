@@ -21,7 +21,7 @@ describe("SykmeldingPeriodeInfo", () => {
       <PeriodeListe
         perioder={[periodeFlereDager]}
         arbeidsgiver={arbeidsgiver}
-      />
+      />,
     );
 
     expect(screen.getByText(`Sykmeldt fra ${arbeidsgiver} i 10 dager`)).to
@@ -30,7 +30,7 @@ describe("SykmeldingPeriodeInfo", () => {
 
   it("viser tekst med én dag når sykmeldt én dag", () => {
     render(
-      <PeriodeListe perioder={[periodeEnDag]} arbeidsgiver={arbeidsgiver} />
+      <PeriodeListe perioder={[periodeEnDag]} arbeidsgiver={arbeidsgiver} />,
     );
 
     expect(screen.getByText(`Sykmeldt fra ${arbeidsgiver} i 1 dag`)).to.exist;
@@ -112,7 +112,7 @@ describe("SykmeldingPeriodeInfo", () => {
     render(<PeriodeListe perioder={[perioder]} arbeidsgiver={arbeidsgiver} />);
 
     expect(
-      screen.getByText(`Avventende sykmelding fra ${arbeidsgiver} i 1 dag`)
+      screen.getByText(`Avventende sykmelding fra ${arbeidsgiver} i 1 dag`),
     ).to.exist;
   });
 
@@ -125,7 +125,7 @@ describe("SykmeldingPeriodeInfo", () => {
     render(<PeriodeListe perioder={[perioder]} arbeidsgiver={arbeidsgiver} />);
 
     expect(
-      screen.getByText(`Avventende sykmelding fra ${arbeidsgiver} i 10 dager`)
+      screen.getByText(`Avventende sykmelding fra ${arbeidsgiver} i 10 dager`),
     ).to.exist;
   });
 

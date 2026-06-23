@@ -8,7 +8,7 @@ import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function manglendemedvirkningText(
   veilederident: string,
-  vurderingType: ManglendemedvirkningVurderingType
+  vurderingType: ManglendemedvirkningVurderingType,
 ): string {
   switch (vurderingType) {
     case ManglendemedvirkningVurderingType.FORHANDSVARSEL:
@@ -25,7 +25,7 @@ function manglendemedvirkningText(
 }
 
 function createHistorikkEventsFromManglendemedvirkning(
-  manglendemedvirkningVurderinger: ManglendemedvirkningVurdering[]
+  manglendemedvirkningVurderinger: ManglendemedvirkningVurdering[],
 ): HistorikkEvent[] {
   return manglendemedvirkningVurderinger.map(
     (vurdering: ManglendemedvirkningVurdering) => {
@@ -33,12 +33,12 @@ function createHistorikkEventsFromManglendemedvirkning(
         opprettetAv: vurdering.veilederident,
         tekst: manglendemedvirkningText(
           vurdering.veilederident,
-          vurdering.vurderingType
+          vurdering.vurderingType,
         ),
         tidspunkt: vurdering.createdAt,
         kilde: "MANGLENDE_MEDVIRKNING",
       };
-    }
+    },
   );
 }
 

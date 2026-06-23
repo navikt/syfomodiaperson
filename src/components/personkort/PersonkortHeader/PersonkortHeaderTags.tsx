@@ -63,12 +63,12 @@ export function PersonkortHeaderTags() {
 
   const nyligsteSendtEllerBekreftetSykmelding =
     sykmeldingerSortertNyestTilEldstPeriode(
-      getSykmeldingerQuery.sykmeldinger
+      getSykmeldingerQuery.sykmeldinger,
     ).find(
       (sykmelding) =>
         !erAvvistSykmelding(sykmelding) &&
         (sykmelding.status === SykmeldingStatus.SENDT ||
-          sykmelding.status === SykmeldingStatus.BEKREFTET)
+          sykmelding.status === SykmeldingStatus.BEKREFTET),
     );
   const harIkkeArbeidsgiver = nyligsteSendtEllerBekreftetSykmelding
     ? erSykmeldingUtenArbeidsgiver(nyligsteSendtEllerBekreftetSykmelding)

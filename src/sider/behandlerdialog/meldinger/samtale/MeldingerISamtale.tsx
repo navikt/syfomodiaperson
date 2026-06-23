@@ -62,7 +62,7 @@ export function MeldingFraBehandler({
   const sentReturForLegeerklaring = meldinger.some(
     (m) =>
       m.type === MeldingType.HENVENDELSE_RETUR_LEGEERKLARING &&
-      m.parentRef === melding.uuid
+      m.parentRef === melding.uuid,
   );
   const showReturLegeerklaring = isLegeerklaring && !sentReturForLegeerklaring;
 
@@ -88,12 +88,12 @@ export function MeldingTilBehandler({ melding }: MeldingInnholdProps) {
   const behandleOppgave = useBehandlePersonoppgave();
   const ubesvartMeldingOppgave = getAllUbehandledePersonOppgaver(
     oppgaver,
-    PersonOppgaveType.BEHANDLERDIALOG_MELDING_UBESVART
+    PersonOppgaveType.BEHANDLERDIALOG_MELDING_UBESVART,
   ).find((oppgave) => oppgave.referanseUuid === melding.uuid);
   const avvistOppgave = oppgaver
     .filter(
       (oppgave) =>
-        oppgave.type === PersonOppgaveType.BEHANDLERDIALOG_MELDING_AVVIST
+        oppgave.type === PersonOppgaveType.BEHANDLERDIALOG_MELDING_AVVIST,
     )
     .find((oppgave) => oppgave.referanseUuid === melding.uuid);
 

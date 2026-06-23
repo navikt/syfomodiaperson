@@ -15,7 +15,7 @@ import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 
 export const getSendForhandsvarselDocument = (
   begrunnelse: string,
-  frist: Date
+  frist: Date,
 ): DocumentComponentDto[] => {
   const forhandsvarselTexts = getForhandsvarselManglendeMedvirkningTexts(frist);
   return [
@@ -70,7 +70,7 @@ export const getSendForhandsvarselDocument = (
 };
 
 export const getOppfyltDocument = (
-  begrunnelse: string
+  begrunnelse: string,
 ): DocumentComponentDto[] => {
   return [
     {
@@ -86,7 +86,7 @@ export const getOppfyltDocument = (
     {
       texts: [
         `I forhåndsvarsel av ${tilDatoMedManedNavn(
-          new Date()
+          new Date(),
         )} ble du informert om at Nav vurderte å stanse dine sykepenger. Vi har nå vurdert at plikten til å medvirke er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
@@ -116,10 +116,10 @@ export const getOppfyltDocument = (
 
 export const getSettUnntakDocument = (
   begrunnelse: string,
-  forhandsvarselSendtDato: Date
+  forhandsvarselSendtDato: Date,
 ): DocumentComponentDto[] => {
   const unntakTexts = getUnntakManglendeMedvirkningTexts(
-    forhandsvarselSendtDato
+    forhandsvarselSendtDato,
   );
   return [
     {
@@ -135,7 +135,7 @@ export const getSettUnntakDocument = (
     {
       texts: [
         `I forhåndsvarsel av ${tilDatoMedManedNavn(
-          forhandsvarselSendtDato
+          forhandsvarselSendtDato,
         )} ble du informert om at Nav vurderte å stanse utbetaling av sykepengene dine. Vi har nå vurdert at du har rimelig grunn til ikke å medvirke i egen sak.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
@@ -160,7 +160,7 @@ export const getSettUnntakDocument = (
 };
 
 export const getIkkeAktuellDocument = (
-  begrunnelse: string
+  begrunnelse: string,
 ): DocumentComponentDto[] => {
   return [
     {
@@ -192,7 +192,7 @@ export const getIkkeAktuellDocument = (
 
 export const getStansDocument = (
   begrunnelse: string,
-  stansdato: Date
+  stansdato: Date,
 ): DocumentComponentDto[] => {
   return [
     {
@@ -202,7 +202,7 @@ export const getStansDocument = (
     {
       texts: [
         `Nav har stanset sykepengene dine fra og med ${tilDatoMedManedNavn(
-          stansdato
+          stansdato,
         )}.`,
       ],
       type: DocumentComponentType.PARAGRAPH,

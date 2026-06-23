@@ -80,7 +80,7 @@ export default function SykmeldingUtdragForSelvstendige({
         <SykmeldingNokkelOpplysning tittel={texts.passer}>
           <BodyShort size="small">
             {textArbeidssituasjon(
-              sykmelding.valgtArbeidssituasjon?.toLowerCase()
+              sykmelding.valgtArbeidssituasjon?.toLowerCase(),
             )}
           </BodyShort>
         </SykmeldingNokkelOpplysning>

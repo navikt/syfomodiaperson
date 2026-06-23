@@ -10,7 +10,7 @@ import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/Oppfol
 import { useOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/useOppfolgingsplaner";
 
 function lpsplanerToHistorikkEvents(
-  oppfolgingsplanerLPS: OppfolgingsplanLPS[]
+  oppfolgingsplanerLPS: OppfolgingsplanLPS[],
 ): HistorikkEvent[] {
   return oppfolgingsplanerLPS.map(({ opprettet, virksomhetsnummer }) => ({
     kilde: "OPPFOLGINGSPLAN_LPS",
@@ -20,26 +20,26 @@ function lpsplanerToHistorikkEvents(
 }
 
 function oppfolgingsplanerV2ToHistorikkEvents(
-  oppfolgingsplanerV2: OppfolgingsplanV2DTO[]
+  oppfolgingsplanerV2: OppfolgingsplanV2DTO[],
 ): HistorikkEvent[] {
   return oppfolgingsplanerV2.map(
     ({ deltMedNavTidspunkt, virksomhetsnummer }) => ({
       kilde: "OPPFOLGINGSPLAN",
       tekst: `Oppfølgingsplanen ble delt med Nav av ${virksomhetsnummer}.`,
       tidspunkt: new Date(deltMedNavTidspunkt),
-    })
+    }),
   );
 }
 
 function foresporslerToHistorikkEvents(
-  oppfolgingsplanForesporsler: OppfolgingsplanForesporselResponse[]
+  oppfolgingsplanForesporsler: OppfolgingsplanForesporselResponse[],
 ): HistorikkEvent[] {
   return oppfolgingsplanForesporsler.map(
     ({ createdAt, virksomhetsnummer, veilederident }) => ({
       kilde: "OPPFOLGINGSPLAN_FORESPORSEL",
       tekst: `${veilederident} ba om oppfølgingsplan fra ${virksomhetsnummer}.`,
       tidspunkt: new Date(createdAt),
-    })
+    }),
   );
 }
 

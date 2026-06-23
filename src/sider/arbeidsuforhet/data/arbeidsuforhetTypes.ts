@@ -1,20 +1,17 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
 import { Sykepengestopp } from "@/data/pengestopp/types/FlaggPerson";
 
-export interface AvslagUtenForhandsvarsel
-  extends ArbeidsuforhetVurdering<VurderingType.AVSLAG_UTEN_FORHANDSVARSEL> {
+export interface AvslagUtenForhandsvarsel extends ArbeidsuforhetVurdering<VurderingType.AVSLAG_UTEN_FORHANDSVARSEL> {
   vurderingInitiertAv: VurderingInitiertAv;
   gjelderFom: string;
   oppgaveFraNayDato?: string;
 }
 
-export interface Forhandsvarsel
-  extends ArbeidsuforhetVurdering<VurderingType.FORHANDSVARSEL> {
+export interface Forhandsvarsel extends ArbeidsuforhetVurdering<VurderingType.FORHANDSVARSEL> {
   frist: string;
 }
 
-export interface IkkeAktuell
-  extends ArbeidsuforhetVurdering<VurderingType.IKKE_AKTUELL> {
+export interface IkkeAktuell extends ArbeidsuforhetVurdering<VurderingType.IKKE_AKTUELL> {
   arsak: VurderingArsak;
 }
 

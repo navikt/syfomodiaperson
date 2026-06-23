@@ -23,7 +23,7 @@ const renderDeltakereSvarInfo = (dialogmote: DialogmoteDTO) =>
   render(
     <QueryClientProvider client={queryClient}>
       <DeltakereSvarInfo dialogmote={dialogmote} />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("DeltakereSvarInfo for arbeidstaker", () => {
@@ -37,9 +37,9 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
       [
         varselArbeidstaker(
           MotedeltakerVarselType.INNKALT,
-          "2021-12-02T12:56:26.271381"
+          "2021-12-02T12:56:26.271381",
         ),
-      ]
+      ],
     );
 
     it("viser arbeidstaker har åpnet innkalling med minus-sirkel-ikon og manglende begrunnelse", () => {
@@ -65,9 +65,9 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
           {
             svarTidspunkt: "2021-12-02T12:56:26.271381",
             svarType: SvarType.KOMMER,
-          }
+          },
         ),
-      ]
+      ],
     );
 
     it("viser arbeidstaker 'kommer' med suksess-ikon og manglende begrunnelse", () => {
@@ -93,9 +93,9 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
             svarType: SvarType.NYTT_TID_STED,
             svarTidspunkt: "2021-12-02T12:56:26.271381",
             svarTekst: "Passer ikke",
-          }
+          },
         ),
-      ]
+      ],
     );
 
     it("viser arbeidstaker ønsker å endre tid/sted med advarsel-ikon og begrunnelse", () => {
@@ -121,9 +121,9 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
             svarType: SvarType.KOMMER_IKKE,
             svarTekst: "Kommer ikke",
             svarTidspunkt: "2021-12-01T12:56:26.271381",
-          }
+          },
         ),
-      ]
+      ],
     );
 
     it("viser arbeidstaker ønsker å avlyse med feil-ikon og begrunnelse", () => {
@@ -141,7 +141,7 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
   describe("arbeidstaker har ikke åpnet innkalling", () => {
     const dialogmoteMedUlestInnkalling = dialogmoteMedVarsel(
       [],
-      [varselArbeidstaker(MotedeltakerVarselType.INNKALT)]
+      [varselArbeidstaker(MotedeltakerVarselType.INNKALT)],
     );
 
     it("viser arbeidstaker har ikke åpnet innkalling med minus-sirkel-ikon og manglende begrunnelse", () => {
@@ -165,9 +165,9 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
       [
         varselArbeidstaker(
           MotedeltakerVarselType.NYTT_TID_STED,
-          "2021-12-04T12:56:26.271381"
+          "2021-12-04T12:56:26.271381",
         ),
-      ]
+      ],
     );
 
     it("viser arbeidstaker har åpnet endring med minus-sirkel-ikon og begrunnelse", () => {
@@ -193,9 +193,9 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
           {
             svarType: SvarType.KOMMER,
             svarTidspunkt: "2021-12-04T12:56:26.271381",
-          }
+          },
         ),
-      ]
+      ],
     );
 
     it("viser arbeidstaker 'kommer' med sukess-ikon og manglende begrunnelse", () => {
@@ -221,9 +221,9 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
             svarType: SvarType.NYTT_TID_STED,
             svarTidspunkt: "2021-12-04T12:56:26.271381",
             svarTekst: "Kan vi endre sted?",
-          }
+          },
         ),
-      ]
+      ],
     );
 
     it("viser arbeidstaker ønsker å endre tid/sted med advarsel-ikon og begrunnelse", () => {
@@ -249,9 +249,9 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
             svarType: SvarType.KOMMER_IKKE,
             svarTidspunkt: "2021-12-04T12:56:26.271381",
             svarTekst: "Jeg kommer ikke",
-          }
+          },
         ),
-      ]
+      ],
     );
 
     it("viser arbeidstaker ønsker å avlyse med feil-ikon og begrunnelse", () => {
@@ -269,7 +269,7 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
   describe("arbeidstaker har ikke åpnet endring", () => {
     const dialogmoteMedUlestEndring = dialogmoteMedVarsel(
       [],
-      [varselArbeidstaker(MotedeltakerVarselType.NYTT_TID_STED)]
+      [varselArbeidstaker(MotedeltakerVarselType.NYTT_TID_STED)],
     );
 
     it("viser arbeidstaker har ikke åpnet endring med minus-sirkel-ikon og manglende begrunnelse", () => {

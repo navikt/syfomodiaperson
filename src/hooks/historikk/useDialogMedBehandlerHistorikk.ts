@@ -14,12 +14,12 @@ interface DialogMedBehandlerHistorikk {
 
 function avsenderText(dialogmelding: MeldingDTO): string {
   return dialogmelding.innkommende
-    ? dialogmelding.behandlerNavn ?? "Mangler navn på behandler"
-    : dialogmelding.veilederIdent ?? "Mangler ident på veileder";
+    ? (dialogmelding.behandlerNavn ?? "Mangler navn på behandler")
+    : (dialogmelding.veilederIdent ?? "Mangler ident på veileder");
 }
 
 function createHistorikkEvents(
-  dialogmeldinger: MeldingDTO[]
+  dialogmeldinger: MeldingDTO[],
 ): HistorikkEvent[] {
   return dialogmeldinger.map((melding) => {
     const avsender = avsenderText(melding);
@@ -33,7 +33,7 @@ function createHistorikkEvents(
 }
 
 function flattenDialogmeldinger(
-  dialogmeldingerMedBehandler: MeldingResponseDTO | undefined
+  dialogmeldingerMedBehandler: MeldingResponseDTO | undefined,
 ): MeldingDTO[] {
   const conversations = dialogmeldingerMedBehandler?.conversations ?? [];
   return Object.entries(conversations).flatMap(([, meldinger]) => meldinger);
@@ -47,7 +47,7 @@ export function useDialogMedBehandlerHistorikk(): DialogMedBehandlerHistorikk {
   } = useBehandlerdialogQuery();
 
   const historikkEvents = createHistorikkEvents(
-    flattenDialogmeldinger(behandlerdialoger)
+    flattenDialogmeldinger(behandlerdialoger),
   );
 
   return {

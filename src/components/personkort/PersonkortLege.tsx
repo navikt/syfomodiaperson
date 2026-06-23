@@ -46,7 +46,7 @@ function hentTekstFastlegePostadresse(postadresse: Adresse): string {
 function fastlegeVikarTekst(fastlegeVikar: Fastlege) {
   const vikarlegeNavn = hentTekstFastlegeNavn(fastlegeVikar);
   const periodeTekst = `${restdatoTilLesbarDato(
-    fastlegeVikar.gyldighet.fom
+    fastlegeVikar.gyldighet.fom,
   )} - ${restdatoTilLesbarDato(fastlegeVikar.gyldighet.tom)}`;
   const stillingsprosentTekst =
     fastlegeVikar.stillingsprosent && `${fastlegeVikar.stillingsprosent}%`;
@@ -126,7 +126,7 @@ export function PersonkortLege() {
       return { besoeksadresse };
     })({
       besoeksadresse: hentTekstFastlegeBesoeksadresse(
-        fastlege.fastlegekontor.besoeksadresse
+        fastlege.fastlegekontor.besoeksadresse,
       ),
     });
 
@@ -136,7 +136,7 @@ export function PersonkortLege() {
       return { postadresse };
     })({
       postadresse: hentTekstFastlegePostadresse(
-        fastlege.fastlegekontor.postadresse
+        fastlege.fastlegekontor.postadresse,
       ),
     });
 

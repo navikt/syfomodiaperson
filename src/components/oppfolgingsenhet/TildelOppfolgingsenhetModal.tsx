@@ -33,13 +33,13 @@ const text = {
 interface Props {
   modalRef: React.RefObject<HTMLDialogElement | null>;
   setTildeltNotification: (
-    tildeltNotification: TildeltNotification | undefined
+    tildeltNotification: TildeltNotification | undefined,
   ) => void;
 }
 
 const tildelOppfolgingsenhetFailed = (
   navn: string,
-  enhet: string
+  enhet: string,
 ): TildeltNotification => {
   return {
     variant: "error",
@@ -49,7 +49,7 @@ const tildelOppfolgingsenhetFailed = (
 
 const tildelOppfolgingsenhetSuccess = (
   navn: string,
-  enhet: string
+  enhet: string,
 ): TildeltNotification => {
   return {
     variant: "success",
@@ -94,7 +94,7 @@ export default function TildelOppfolgingsenhetModal({
     event.preventDefault();
     const isFormValid = oppfolgingsenhet !== "";
     const tildeltOppfolgingsenhet = findEnhetById(
-      getMuligeOppfolgingsenheter.data ?? []
+      getMuligeOppfolgingsenheter.data ?? [],
     );
     const enhet = tildeltOppfolgingsenhet
       ? `${tildeltOppfolgingsenhet.navn} (${tildeltOppfolgingsenhet.enhetId})`
@@ -113,7 +113,7 @@ export default function TildelOppfolgingsenhetModal({
           },
           onError: () =>
             setTildeltNotification(tildelOppfolgingsenhetFailed(navn, enhet)),
-        }
+        },
       );
       modalRef.current?.close();
     }

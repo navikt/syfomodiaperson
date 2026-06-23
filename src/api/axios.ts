@@ -18,7 +18,7 @@ const REQUEST_TIMEOUT = 30 * SECOND_IN_MILLISECONDS;
 
 export const defaultRequestHeaders = (
   personIdent?: string,
-  addHeader?: { [p: string]: string | boolean | number }
+  addHeader?: { [p: string]: string | boolean | number },
 ): Record<string, string> => {
   const headers = {
     "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export const defaultRequestHeaders = (
 
   if (addHeader) {
     Object.keys(addHeader).forEach(
-      (headerKeyName) => (headers[headerKeyName] = addHeader[headerKeyName])
+      (headerKeyName) => (headers[headerKeyName] = addHeader[headerKeyName]),
     );
   }
 
@@ -46,25 +46,25 @@ const handleAxiosError = (error: AxiosError) => {
         window.location.href = `/oauth2/login?redirectTo=${window.location.pathname}`;
         throw new ApiErrorException(
           loginRequiredError(error.message),
-          error.response.status
+          error.response.status,
         );
       }
       case 403: {
         throw new ApiErrorException(
           accessDeniedError(error.message),
-          error.response.status
+          error.response.status,
         );
       }
       case 409: {
         throw new ApiErrorException(
           conflictError(error.message),
-          error.response.status
+          error.response.status,
         );
       }
       default:
         throw new ApiErrorException(
           generalError(error.message),
-          error.response.status
+          error.response.status,
         );
     }
   } else if (error.request) {
@@ -77,7 +77,7 @@ const handleAxiosError = (error: AxiosError) => {
 export const get = <ResponseData>(
   url: string,
   personIdent?: string,
-  addHeader?: { [p: string]: string | boolean | number }
+  addHeader?: { [p: string]: string | boolean | number },
 ): Promise<ResponseData> => {
   return axios
     .get(url, {
@@ -97,7 +97,7 @@ export const get = <ResponseData>(
 export const post = <ResponseData>(
   url: string,
   data: Record<string, any>,
-  personIdent?: string
+  personIdent?: string,
 ): Promise<ResponseData> => {
   return axios
     .post(url, data, {
@@ -116,7 +116,7 @@ export const post = <ResponseData>(
 export async function put<ResponseData>(
   url: string,
   data?: Record<string, any>,
-  personIdent?: string
+  personIdent?: string,
 ): Promise<ResponseData> {
   return axios
     .put(url, data, {
@@ -134,7 +134,7 @@ export async function put<ResponseData>(
 
 export const deleteRequest = <ResponseData>(
   url: string,
-  personIdent?: string
+  personIdent?: string,
 ): Promise<ResponseData> => {
   return axios
     .delete(url, {

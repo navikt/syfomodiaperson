@@ -59,7 +59,7 @@ const renderMotelandingsside = () =>
           <Motelandingsside />
         </MemoryRouter>
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("MotelandingssideSide", () => {
@@ -67,22 +67,22 @@ describe("MotelandingssideSide", () => {
     queryClient = queryClientWithAktivBruker();
     queryClient.setQueryData(
       brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => brukerinfoMock
+      () => brukerinfoMock,
     );
     queryClient.setQueryData(dialogmoterQueryKeys.dialogmoter(fnr), () => []);
     queryClient.setQueryData(
       oppfolgingsplanQueryKeys.oppfolgingsplaner(fnr),
-      () => []
+      () => [],
     );
     queryClient.setQueryData(
       motebehovQueryKeys.motebehov(fnr),
-      () => motebehovData
+      () => motebehovData,
     );
     queryClient.setQueryData(ledereQueryKeys.ledere(fnr), () => LEDERE_DEFAULT);
     queryClient.setQueryData(dialogmoteunntakQueryKeys.unntak(fnr), () => []);
     queryClient.setQueryData(
       dialogmoteIkkeAktuellQueryKeys.ikkeAktuellVurdering(fnr),
-      () => []
+      () => [],
     );
   });
 
@@ -112,21 +112,21 @@ describe("MotelandingssideSide", () => {
     expect(
       await screen.findByRole("heading", {
         name: "Du har ikke tilgang til denne tjenesten",
-      })
+      }),
     ).to.exist;
   });
 
   it("Skal vise Planlegg nytt dialogmøte når det ikke finnes møter", () => {
     queryClient.setQueryData(
       tilgangQueryKeys.tilgang(fnr),
-      () => tilgangBrukerMock
+      () => tilgangBrukerMock,
     );
     renderMotelandingsside();
 
     expect(
       screen.getByRole("heading", {
         name: "Planlegg nytt dialogmøte",
-      })
+      }),
     ).to.exist;
   });
 });

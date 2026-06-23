@@ -25,7 +25,7 @@ describe("SykmeldingUtdrag", () => {
     queryClient = queryClientWithAktivBruker();
     queryClient.setQueryData(
       sykmeldingerQueryKeys.sykmeldinger(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => mockSykmeldinger
+      () => mockSykmeldinger,
     );
   });
 
@@ -33,10 +33,10 @@ describe("SykmeldingUtdrag", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <SykmeldingUtdragContainer soknad={mockSykepengeSoknad} />
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
     expect(sykmelding?.sykmeldingStatus?.arbeidsgiver?.orgNavn).to.equal(
-      VIRKSOMHET_PONTYPANDY.virksomhetsnavn
+      VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
     );
     expect(screen.getByText(VIRKSOMHET_PONTYPANDY.virksomhetsnavn)).to.exist;
   });

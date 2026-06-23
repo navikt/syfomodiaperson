@@ -32,7 +32,7 @@ export const legeerklaringTexts = {
   opplysninger:
     "Nav trenger opplysninger fra deg vedrørende din pasient. Du kan utelate opplysninger som etter din vurdering faller utenfor formålet.",
   frist: `For å kunne behandle din pasient sin sak ber vi om svar så fort som mulig og innen ${tilDatoMedManedNavn(
-    addWeeks(new Date(), 3)
+    addWeeks(new Date(), 3),
   )} (tre uker). Nav kan gi forlenget frist.`,
   takst:
     "«Legeerklæring ved arbeidsuførhet» leveres på blankett Nav 08-07.08, og honoreres med takst L40.",

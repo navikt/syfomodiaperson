@@ -45,7 +45,7 @@ export function usePostOppfolgingsplanForesporsel() {
 
   const path = `${ISOPPFOLGINGSPLAN_ROOT}/oppfolgingsplan/foresporsler`;
   const postOppfolgingsplanForesporsel = (
-    foresporsel: NewOppfolgingsplanForesporselDTO
+    foresporsel: NewOppfolgingsplanForesporselDTO,
   ) => post<OppfolgingsplanForesporselResponse>(path, foresporsel);
 
   return useMutation({
@@ -56,7 +56,7 @@ export function usePostOppfolgingsplanForesporsel() {
         (oldData: OppfolgingsplanForesporselResponse[]) => [
           createdForesporsel,
           ...oldData,
-        ]
+        ],
       );
     },
   });

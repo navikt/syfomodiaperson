@@ -9,7 +9,7 @@ const texts = {
 };
 
 export default function DialogmoteSted(
-  props: Omit<TextFieldProps, "label" | "description" | "maxLength" | "size">
+  props: Omit<TextFieldProps, "label" | "description" | "maxLength" | "size">,
 ) {
   return (
     <TextField

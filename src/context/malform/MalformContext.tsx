@@ -24,10 +24,10 @@ export const MalformContext = React.createContext<
 
 export const MalformProvider = ({ children }: MalformProviderProps) => {
   const [storedMalform, setStoredMalform] = useLocalStorageState<Malform>(
-    StoreKey.MALFORM
+    StoreKey.MALFORM,
   );
   const [malform, setMalform] = useState<Malform>(
-    storedMalform ?? Malform.BOKMAL
+    storedMalform ?? Malform.BOKMAL,
   );
 
   useEffect(() => {

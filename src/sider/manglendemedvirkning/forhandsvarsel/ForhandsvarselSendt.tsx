@@ -10,7 +10,7 @@ interface Props {
 
 export default function ForhandsvarselSendt({ forhandsvarsel }: Props) {
   const isForhandsvarselExpired = isExpiredForhandsvarsel(
-    forhandsvarsel.varsel?.svarfrist
+    forhandsvarsel.varsel?.svarfrist,
   );
 
   return isForhandsvarselExpired ? (

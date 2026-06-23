@@ -43,7 +43,7 @@ const renderSenOppfolging = () =>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     senOppfolgingPath,
-    [senOppfolgingPath]
+    [senOppfolgingPath],
   );
 
 const vurderingButtonText = "Fullfør vurdering";
@@ -51,19 +51,19 @@ const vurderingButtonText = "Fullfør vurdering";
 const mockSenOppfolgingSvar = () => {
   queryClient.setQueryData(
     senOppfolgingSvarQueryKeys.senOppfolgingSvar(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => snartSluttPaSykepengeneMock
+    () => snartSluttPaSykepengeneMock,
   );
 };
 const mockSenOppfolgingKandidat = (
-  kandidater: SenOppfolgingKandidatResponseDTO[]
+  kandidater: SenOppfolgingKandidatResponseDTO[],
 ) => {
   queryClient.setQueryData(
     senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => kandidater
+    () => kandidater,
   );
 };
 
@@ -78,8 +78,8 @@ describe("Sen oppfolging", () => {
 
     expect(
       screen.getByText(
-        "Den sykmeldte har ikke mottatt varsel om at det snart er slutt på sykepengene enda."
-      )
+        "Den sykmeldte har ikke mottatt varsel om at det snart er slutt på sykepengene enda.",
+      ),
     ).to.exist;
     snartSluttPaSykepengeneMock.questionResponses.map((questionResponse) => {
       expect(screen.queryByText(questionResponse.questionText)).to.not.exist;
@@ -104,12 +104,12 @@ describe("Sen oppfolging", () => {
     expect(
       screen.getByText(tilLesbarDatoMedArUtenManedNavn(varselDato), {
         exact: false,
-      })
+      }),
     );
     expect(
       screen.getByText(tilLesbarDatoMedArUtenManedNavn(varselSvarFrist), {
         exact: false,
-      })
+      }),
     );
   });
 
@@ -184,9 +184,9 @@ describe("Sen oppfolging", () => {
     expect(
       screen.getByText(
         `Vurdert av ${VEILEDER_DEFAULT.fulltNavn()} ${toDatePrettyPrint(
-          vurdertDato
-        )}`
-      )
+          vurdertDato,
+        )}`,
+      ),
     ).to.exist;
   });
 
@@ -228,18 +228,18 @@ describe("Sen oppfolging", () => {
     expect(
       screen.getByRole("heading", {
         name: "Sykmeldtes svarskjema",
-      })
+      }),
     ).to.exist;
     const link = screen.getByRole("link", {
       name: "Se nyeste versjon av svarskjemaet her Ekstern lenke",
     });
     expect(link.getAttribute("href")).to.contain(
-      "https://demo.ekstern.dev.nav.no/syk/meroppfolging/snart-slutt-pa-sykepengene"
+      "https://demo.ekstern.dev.nav.no/syk/meroppfolging/snart-slutt-pa-sykepengene",
     );
     expect(
       screen.getByText(
-        "Lenken tar deg til en øvingsside der du trygt kan klikke deg rundt i skjemaet som den sykmeldte svarer på."
-      )
+        "Lenken tar deg til en øvingsside der du trygt kan klikke deg rundt i skjemaet som den sykmeldte svarer på.",
+      ),
     ).to.exist;
   });
 
@@ -250,12 +250,12 @@ describe("Sen oppfolging", () => {
     expect(
       screen.getByRole("heading", {
         name: "Historikk",
-      })
+      }),
     );
     expect(
       screen.getByText(
-        "Det finnes ingen tidligere oppfølging av snart slutt på sykepengene."
-      )
+        "Det finnes ingen tidligere oppfølging av snart slutt på sykepengene.",
+      ),
     );
   });
 
@@ -269,10 +269,10 @@ describe("Sen oppfolging", () => {
     expect(
       screen.getByRole("heading", {
         name: "Historikk",
-      })
+      }),
     );
     expect(
-      screen.getByText("Tidligere oppfølging av snart slutt på sykepengene")
+      screen.getByText("Tidligere oppfølging av snart slutt på sykepengene"),
     );
   });
 });

@@ -42,7 +42,7 @@ const renderSamtaler = () => {
       >
         <Samtaler />
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -73,20 +73,20 @@ describe("Samtaletags", () => {
       const meldingResponse = meldingTilOgFraBehandler(innkommendeMeldingUuid);
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponse
+        () => meldingResponse,
       );
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
             ...personOppgaveUbehandletBehandlerdialogSvar,
             referanseUuid: innkommendeMeldingUuid,
           },
-        ]
+        ],
       );
 
       renderSamtaler();
@@ -97,9 +97,9 @@ describe("Samtaletags", () => {
     it("Viser venter svar-tag på samtale hvis det mangler melding fra behandler og ingen ubesvart melding-oppgave", () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => defaultMeldingResponse
+        () => defaultMeldingResponse,
       );
 
       renderSamtaler();
@@ -111,9 +111,9 @@ describe("Samtaletags", () => {
     it("Viser ikke venter svar-tag på samtale hvis det mangler melding fra behandler, men er en 'melding fra Nav' som ikke nødvendigvis forventer svar", () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingFraNAVConversation
+        () => meldingFraNAVConversation,
       );
 
       renderSamtaler();
@@ -124,9 +124,9 @@ describe("Samtaletags", () => {
     it("Viser påminnelse sendt-tag på samtale hvis påminnelse sendt og det mangler melding fra behandler", () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponseMedPaminnelse
+        () => meldingResponseMedPaminnelse,
       );
 
       renderSamtaler();
@@ -138,9 +138,9 @@ describe("Samtaletags", () => {
     it("Viser retur sendt-tag på samtale hvis retur sendt på eneste legeerklæring fra behandler", () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponseLegeerklaringMedRetur
+        () => meldingResponseLegeerklaringMedRetur,
       );
 
       renderSamtaler();
@@ -152,20 +152,20 @@ describe("Samtaletags", () => {
     it("Viser ny melding-tag på samtale hvis retur sendt på legeerklæring, men fått ny legeerklæring fra behandler med ubehandlet oppgave", () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponseLegeerklaringMedReturOgNyLegeerklaring
+        () => meldingResponseLegeerklaringMedReturOgNyLegeerklaring,
       );
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
             ...personOppgaveUbehandletBehandlerdialogSvar,
             referanseUuid: defaultMeldingInnkommendeLegeerklaringNy.uuid,
           },
-        ]
+        ],
       );
 
       renderSamtaler();
@@ -177,20 +177,20 @@ describe("Samtaletags", () => {
     it("Viser ingen tags på samtale hvis retur sendt på legeerklæring og fått ny legeerklæring fra behandler med behandlet oppgave", () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponseLegeerklaringMedReturOgNyLegeerklaring
+        () => meldingResponseLegeerklaringMedReturOgNyLegeerklaring,
       );
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
             ...personOppgaveBehandletBehandlerdialogSvar,
             referanseUuid: defaultMeldingInnkommendeLegeerklaringNy.uuid,
           },
-        ]
+        ],
       );
 
       renderSamtaler();
@@ -201,20 +201,20 @@ describe("Samtaletags", () => {
     it("Viser vurder påminnelse-tag på samtale hvis retur sendt på legeerklæring med ubehandlet ubesvart melding oppgave for retur", () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponseLegeerklaringMedRetur
+        () => meldingResponseLegeerklaringMedRetur,
       );
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
             ...personOppgaveUbehandletBehandlerdialogUbesvartMelding,
             referanseUuid: returLegeerklaring.uuid,
           },
-        ]
+        ],
       );
 
       renderSamtaler();
@@ -226,20 +226,20 @@ describe("Samtaletags", () => {
     it("Viser retur sendt-tag på samtale hvis retur sendt på legeerklæring og behandlet ubesvart melding oppgave for retur uten påminnelse", () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponseLegeerklaringMedRetur
+        () => meldingResponseLegeerklaringMedRetur,
       );
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
             ...personOppgaveBehandletBehandlerdialogUbesvartMelding,
             referanseUuid: returLegeerklaring.uuid,
           },
-        ]
+        ],
       );
 
       renderSamtaler();
@@ -251,20 +251,20 @@ describe("Samtaletags", () => {
     it("Viser påminnelse sendt-tag hvis retur sendt på legeerklæring og behandlet ubesvart melding oppgave for retur med påminnelse", () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponseLegeerklaringMedReturOgPaminnelse
+        () => meldingResponseLegeerklaringMedReturOgPaminnelse,
       );
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
             ...personOppgaveBehandletBehandlerdialogUbesvartMelding,
             referanseUuid: returLegeerklaring.uuid,
           },
-        ]
+        ],
       );
 
       renderSamtaler();
@@ -277,15 +277,15 @@ describe("Samtaletags", () => {
       const meldingResponse = meldingTilOgFraBehandler("456uio");
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponse
+        () => meldingResponse,
       );
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => []
+        () => [],
       );
 
       renderSamtaler();
@@ -297,15 +297,15 @@ describe("Samtaletags", () => {
       const meldingResponse = meldingTilOgFraBehandler("456uio", true);
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponse
+        () => meldingResponse,
       );
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => []
+        () => [],
       );
 
       renderSamtaler();
@@ -315,13 +315,13 @@ describe("Samtaletags", () => {
 
     it("Viser 'Melding ikke levert'-tag på samtale hvis status for melding er avvist", () => {
       const meldingResponse = meldingTilBehandlerMedMeldingStatus(
-        MeldingStatusType.AVVIST
+        MeldingStatusType.AVVIST,
       );
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponse
+        () => meldingResponse,
       );
 
       renderSamtaler();
@@ -334,20 +334,20 @@ describe("Samtaletags", () => {
       const meldingResponse = meldingTilOgFraBehandler(innkommendeMeldingUuid);
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponse
+        () => meldingResponse,
       );
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
             ...personOppgaveBehandletBehandlerdialogSvar,
             referanseUuid: innkommendeMeldingUuid,
           },
-        ]
+        ],
       );
 
       renderSamtaler();
@@ -358,9 +358,9 @@ describe("Samtaletags", () => {
     it("Viser vurder påminnelse tag når man har en ubehandlet ubesvart melding oppgave", () => {
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [personOppgaveUbehandletBehandlerdialogUbesvartMelding]
+        () => [personOppgaveUbehandletBehandlerdialogUbesvartMelding],
       );
 
       renderSamtaler();
@@ -371,20 +371,20 @@ describe("Samtaletags", () => {
     it("Viser ingen tags på samtale hvis det mangler melding fra behandler, ingen påminnelse sendt og ubesvart melding-oppgave behandlet", () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => defaultMeldingResponse
+        () => defaultMeldingResponse,
       );
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
             ...personOppgaveBehandletBehandlerdialogUbesvartMelding,
             referanseUuid: defaultMelding.uuid,
           },
-        ]
+        ],
       );
 
       renderSamtaler();

@@ -35,7 +35,7 @@ const mapSingleDiagnose = (diagnose: DiagnoseDTO): SykmeldingDiagnose => {
 };
 
 const mapBidiagnoser = (
-  sykmelding: SykmeldingNewFormatDTO
+  sykmelding: SykmeldingNewFormatDTO,
 ): SykmeldingDiagnose[] | undefined => {
   return sykmelding.medisinskVurdering?.biDiagnoser?.map((diagnose) => {
     return mapSingleDiagnose(diagnose);
@@ -68,7 +68,7 @@ const mapDiagnose = (sykmelding: SykmeldingNewFormatDTO) => {
 };
 
 const mapFriskmelding = (
-  sykmelding: SykmeldingNewFormatDTO
+  sykmelding: SykmeldingNewFormatDTO,
 ): FriskmeldingDTO => {
   const prognose = sykmelding.prognose;
   return {
@@ -110,7 +110,7 @@ const mapMottakendeArbeidsgiver = (sykmelding: SykmeldingNewFormatDTO) => {
 };
 
 const periodeWithAktivitetIkkeMulig = (
-  sykmelding: SykmeldingNewFormatDTO
+  sykmelding: SykmeldingNewFormatDTO,
 ): SykmeldingsperiodeDTO | undefined => {
   const perioder = sykmelding.sykmeldingsperioder;
 
@@ -156,10 +156,10 @@ const mapMulighetForArbeid = (sykmelding: SykmeldingNewFormatDTO) => {
     aarsakAktivitetIkkeMulig434:
       aktivitetIkkeMulig?.arbeidsrelatertArsak?.beskrivelse,
     aktivitetIkkeMulig433: aktivitetIkkeMulig?.medisinskArsak?.arsak?.map(
-      (arsakKode) => medisinskArsakTypeTekster[arsakKode]
+      (arsakKode) => medisinskArsakTypeTekster[arsakKode],
     ),
     aktivitetIkkeMulig434: aktivitetIkkeMulig?.arbeidsrelatertArsak?.arsak?.map(
-      (arsakKode) => arbeidsrelatertArsakTypetekster[arsakKode]
+      (arsakKode) => arbeidsrelatertArsakTypetekster[arsakKode],
     ),
     perioder: mapPerioder(sykmelding),
   };
@@ -184,7 +184,7 @@ const mapTilbakedatering = (sykmelding: SykmeldingNewFormatDTO) => {
 
 const sporsmalOfType = (
   sporsmalOgSvarListe: SporsmalDTO[],
-  type: ShortNameDTO
+  type: ShortNameDTO,
 ): SporsmalDTO | undefined => {
   return (
     sporsmalOgSvarListe &&
@@ -202,7 +202,7 @@ const mapEgenmeldingsdager = (sporsmal: SporsmalDTO | undefined): string[] => {
 };
 
 const mapFravaersperioder = (
-  sporsmal: SporsmalDTO | undefined
+  sporsmal: SporsmalDTO | undefined,
 ): Datospenn[] => {
   if (!sporsmal?.svar?.svar) {
     return [];
@@ -214,26 +214,26 @@ const mapSporsmal = (sykmelding: SykmeldingNewFormatDTO) => {
   const sporsmalOgSvarListe = sykmelding.sykmeldingStatus.sporsmalOgSvarListe;
   const arbeidssituasjonSporsmal = sporsmalOfType(
     sporsmalOgSvarListe,
-    ShortNameDTO.ARBEIDSSITUASJON
+    ShortNameDTO.ARBEIDSSITUASJON,
   );
 
   const forsikringSporsmal = sporsmalOfType(
     sporsmalOgSvarListe,
-    ShortNameDTO.FORSIKRING
+    ShortNameDTO.FORSIKRING,
   );
 
   const fravaerSporsmal = sporsmalOfType(
     sporsmalOgSvarListe,
-    ShortNameDTO.FRAVAER
+    ShortNameDTO.FRAVAER,
   );
 
   const periodeSporsmal = sporsmalOfType(
     sporsmalOgSvarListe,
-    ShortNameDTO.PERIODE
+    ShortNameDTO.PERIODE,
   );
   const egenmeldingsDagerSporsmal = sporsmalOfType(
     sporsmalOgSvarListe,
-    ShortNameDTO.EGENMELDINGSDAGER
+    ShortNameDTO.EGENMELDINGSDAGER,
   );
 
   return {
@@ -260,12 +260,12 @@ const mapStatus = (sykmelding: SykmeldingNewFormatDTO): SykmeldingStatus => {
 };
 
 const mapValgtArbeidssituasjon = (
-  sykmelding: SykmeldingNewFormatDTO
+  sykmelding: SykmeldingNewFormatDTO,
 ): string | undefined => {
   const sporsmalOgSvarListe = sykmelding.sykmeldingStatus.sporsmalOgSvarListe;
   const arbeidssituasjonSporsmal = sporsmalOfType(
     sporsmalOgSvarListe,
-    ShortNameDTO.ARBEIDSSITUASJON
+    ShortNameDTO.ARBEIDSSITUASJON,
   );
 
   return arbeidssituasjonSporsmal?.svar.svar;
@@ -273,7 +273,7 @@ const mapValgtArbeidssituasjon = (
 
 export const newSMFormat2OldFormat = (
   sykmelding: SykmeldingNewFormatDTO,
-  fnr: string
+  fnr: string,
 ): SykmeldingOldFormat => {
   return {
     arbeidsevne: mapArbeidsevne(sykmelding),
@@ -316,7 +316,7 @@ export const newSMFormat2OldFormat = (
 
 export const oldFormatSMForAG = (
   sykmelding: SykmeldingNewFormatDTO,
-  fnr: string
+  fnr: string,
 ): SykmeldingOldFormat => {
   const oldFormatSM = newSMFormat2OldFormat(sykmelding, fnr);
 

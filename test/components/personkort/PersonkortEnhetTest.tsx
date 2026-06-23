@@ -18,7 +18,7 @@ const renderPersonkortEnhet = () =>
   render(
     <QueryClientProvider client={queryClient}>
       <PersonkortEnhet />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("PersonkortEnhet", () => {
@@ -40,8 +40,8 @@ describe("PersonkortEnhet", () => {
 
     expect(
       await screen.findByText(
-        "Fant ikke behandlende enhet for person, prøv igjen senere."
-      )
+        "Fant ikke behandlende enhet for person, prøv igjen senere.",
+      ),
     ).to.exist;
   });
 
@@ -68,7 +68,7 @@ describe("PersonkortEnhet", () => {
     expect(
       await screen.findByRole("button", {
         name: "Endre til geografisk enhet (1235)",
-      })
+      }),
     ).to.exist;
   });
 });

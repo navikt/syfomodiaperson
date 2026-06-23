@@ -96,7 +96,7 @@ export function StartNyVurdering({ aktivitetskrav }: StartNyVurderingProps) {
     !!latestOppfolgingstilfelle &&
     isDateInOppfolgingstilfelle(
       aktivitetskrav.stoppunktAt,
-      latestOppfolgingstilfelle
+      latestOppfolgingstilfelle,
     );
 
   const handleStartNyVurdering = () => {

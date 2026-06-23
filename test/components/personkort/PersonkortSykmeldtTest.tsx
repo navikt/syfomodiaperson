@@ -15,7 +15,7 @@ const renderPersonkortSykmeldt = () =>
   render(
     <QueryClientProvider client={queryClient}>
       <PersonkortSykmeldt />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("PersonkortSykmeldt", () => {

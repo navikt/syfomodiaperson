@@ -6,14 +6,14 @@ export const stubSyfooversiktsrvPersontildelingNoContent = () =>
   mockServer.use(
     http.get(
       `*${SYFOOVERSIKTSRV_PERSONTILDELING_ROOT}/personer/single`,
-      () => new HttpResponse(null, { status: 204 })
-    )
+      () => new HttpResponse(null, { status: 204 }),
+    ),
   );
 
 export const stubSyfooversiktsrvPersontildelingRegistrerOK = () =>
   mockServer.use(
     http.get(
       `*${SYFOOVERSIKTSRV_PERSONTILDELING_ROOT}/registrer`,
-      () => new HttpResponse(null, { status: 200 })
-    )
+      () => new HttpResponse(null, { status: 200 }),
+    ),
   );

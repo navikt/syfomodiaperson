@@ -67,12 +67,12 @@ const findEnhetById = (enhetId: string): Enhet | undefined =>
 export function mockGetMuligeTildelinger() {
   return http.get(
     `${SYFOBEHANDLENDEENHET_ROOT}/tilordningsenheter/:enhetId`,
-    () => HttpResponse.json(muligeoppfolgingsenheter)
+    () => HttpResponse.json(muligeoppfolgingsenheter),
   );
 }
 
 function createOppfolgingsenhetDTO(
-  body: TildelOppfolgingsenhetRequestDTO
+  body: TildelOppfolgingsenhetRequestDTO,
 ): OppfolgingsenhetDTO {
   return {
     enhet: {
@@ -138,10 +138,10 @@ export const mockSyfobehandlendeenhet = [
         : createTildeltAvVeileder(body);
 
       tildeltOppfolgingsenhetHistorikk.tildelteOppfolgingsenheter.push(
-        tildeltHistorikk
+        tildeltHistorikk,
       );
 
       return HttpResponse.json(responseDTO);
-    }
+    },
   ),
 ];

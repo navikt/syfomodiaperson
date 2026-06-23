@@ -78,7 +78,7 @@ const renderVurderAktivitetskrav = (aktivitetskravDto: AktivitetskravDTO) =>
           <VurderAktivitetskrav aktivitetskrav={aktivitetskravDto} />
         </NotificationContext.Provider>
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 describe("VurderAktivitetskrav", () => {
   beforeEach(() => {
@@ -118,13 +118,13 @@ describe("VurderAktivitetskrav", () => {
       () => ({
         personIdent: fnr,
         oppfolgingstilfelleList: [oppfolgingstilfelle],
-      })
+      }),
     );
     renderVurderAktivitetskrav(aktivitetskrav);
 
     const periodeText = tilLesbarPeriodeMedArUtenManednavn(
       tilfelleStart,
-      tilfelleEnd
+      tilfelleEnd,
     );
     expect(screen.getByText(`Gjelder tilfelle ${periodeText}`)).to.exist;
   });
@@ -168,12 +168,12 @@ describe("VurderAktivitetskrav", () => {
           document: getOppfyltDocument(enLangBeskrivelse, expectedArsak),
         };
         expect(vurderOppfyltMutation.state.variables).to.deep.equal(
-          expectedVurdering
+          expectedVurdering,
         );
       });
 
       await waitFor(
-        () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist
+        () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist,
       );
     });
   });
@@ -199,7 +199,7 @@ describe("VurderAktivitetskrav", () => {
       expect(
         screen.getByRole("heading", {
           name: "Sett unntak fra aktivitetskravet",
-        })
+        }),
       ).to.exist;
 
       const arsakRadioButton = screen.getByText("Tilrettelegging ikke mulig");
@@ -218,12 +218,12 @@ describe("VurderAktivitetskrav", () => {
           document: getUnntakDocument(enLangBeskrivelse, expectedArsak),
         };
         expect(vurderUnntakMutation.state.variables).to.deep.equal(
-          expectedVurdering
+          expectedVurdering,
         );
       });
 
       await waitFor(
-        () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist
+        () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist,
       );
     });
   });
@@ -271,15 +271,15 @@ describe("VurderAktivitetskrav", () => {
         screen.getByRole("heading", {
           name: "Avvent",
           hidden: true,
-        })
+        }),
       ).to.exist;
 
       const arsakOppfolgingsplanRadioButton = screen.getByText(
-        "Har bedt om oppfølgingsplan fra arbeidsgiver"
+        "Har bedt om oppfølgingsplan fra arbeidsgiver",
       );
       fireEvent.click(arsakOppfolgingsplanRadioButton);
       const arsakBehandlerRadioButton = screen.getByText(
-        "Har bedt om mer informasjon fra behandler"
+        "Har bedt om mer informasjon fra behandler",
       );
       fireEvent.click(arsakBehandlerRadioButton);
       const arsakDroftesMedROLRadioButton = screen.getByText("Drøftes med ROL");
@@ -322,7 +322,7 @@ describe("VurderAktivitetskrav", () => {
           frist: today.format("YYYY-MM-DD"),
         };
         expect(vurderAvventMutation.state.variables).to.deep.equal(
-          expectedVurdering
+          expectedVurdering,
         );
       });
     });
@@ -372,12 +372,12 @@ describe("VurderAktivitetskrav", () => {
         within(ikkeAktuellModal).getByRole("heading", {
           name: "Ikke aktuell",
           hidden: true,
-        })
+        }),
       ).to.exist;
       expect(
         within(ikkeAktuellModal).getByText(
-          /Aktivitetskravet skal ikke vurderes for denne personen/
-        )
+          /Aktivitetskravet skal ikke vurderes for denne personen/,
+        ),
       ).to.exist;
 
       const arsakRadioButton = screen.getByText("Innbygger er innvilget VTA");
@@ -406,7 +406,7 @@ describe("VurderAktivitetskrav", () => {
           document: getIkkeAktuellDocument(enLangBeskrivelse, expectedArsak),
         };
         expect(vurderIkkeAktuellMutation.state.variables).to.deep.equal(
-          expectedVurdering
+          expectedVurdering,
         );
       });
     });
@@ -449,7 +449,7 @@ describe("VurderAktivitetskrav", () => {
       expect(
         screen.getByRole("heading", {
           name: "Skriv innstilling om stans til Nav arbeid og ytelser",
-        })
+        }),
       ).to.exist;
 
       const today = dayjs();
@@ -487,7 +487,7 @@ describe("VurderAktivitetskrav", () => {
       const aktivitetskravAvvent = createAktivitetskrav(
         daysFromToday(20),
         AktivitetskravStatus.AVVENT,
-        [avventVurdering]
+        [avventVurdering],
       );
       renderVurderAktivitetskrav(aktivitetskravAvvent);
 
@@ -502,7 +502,7 @@ describe("VurderAktivitetskrav", () => {
       const aktivitetskravOppfylt = createAktivitetskrav(
         daysFromToday(20),
         AktivitetskravStatus.OPPFYLT,
-        [oppfyltVurdering]
+        [oppfyltVurdering],
       );
       renderVurderAktivitetskrav(aktivitetskravOppfylt);
 

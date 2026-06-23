@@ -81,18 +81,18 @@ describe("EndreDialogmoteSkjemaTest", () => {
       hidden: true,
     });
     const begrunnelseArbeidstakerInput = getTextInput(
-      "Begrunnelse til arbeidstakeren"
+      "Begrunnelse til arbeidstakeren",
     );
     const begrunnelseArbeidsgiverInput = getTextInput(
-      "Begrunnelse til nærmeste leder"
+      "Begrunnelse til nærmeste leder",
     );
     changeTextInput(
       begrunnelseArbeidstakerInput,
-      moteTekster.fritekstTilArbeidstaker
+      moteTekster.fritekstTilArbeidstaker,
     );
     changeTextInput(
       begrunnelseArbeidsgiverInput,
-      moteTekster.fritekstTilArbeidsgiver
+      moteTekster.fritekstTilArbeidsgiver,
     );
     changeTextInput(datoInput, endretMote.dato);
     await clickButton("Send");
@@ -123,11 +123,11 @@ describe("EndreDialogmoteSkjemaTest", () => {
   it("validerer maks lengde på begrunnelser", async () => {
     renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
     const begrunnelseArbeidstakerInput = getTextInput(
-      "Begrunnelse til arbeidstakeren"
+      "Begrunnelse til arbeidstakeren",
     );
 
     const begrunnelseArbeidsgiverInput = getTextInput(
-      "Begrunnelse til nærmeste leder"
+      "Begrunnelse til nærmeste leder",
     );
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
     const tooLongFritekst = getTooLongText(MAX_LENGTH_ENDRE_BEGRUNNELSE);
@@ -155,14 +155,14 @@ describe("EndreDialogmoteSkjemaTest", () => {
           begrunnelse: moteTekster.fritekstTilArbeidsgiver,
           endringsdokument: expectedEndringDocuments.arbeidsgiver(
             false,
-            expectedSendtDato
+            expectedSendtDato,
           ),
         },
         arbeidstaker: {
           begrunnelse: moteTekster.fritekstTilArbeidstaker,
           endringsdokument: expectedEndringDocuments.arbeidstaker(
             false,
-            expectedSendtDato
+            expectedSendtDato,
           ),
         },
         videoLink: endretMote.videolink,
@@ -201,7 +201,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
 
     expect(linkDocumentComponents).to.have.length(2);
     linkDocumentComponents.forEach((documentComponentLink) =>
-      expect(documentComponentLink.texts[0]).to.equal(link)
+      expect(documentComponentLink.texts[0]).to.equal(link),
     );
     expect(videoLink).to.equal(link);
   });
@@ -214,7 +214,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
     changeTextInput(
       begrunnelseBehandlerInput,
-      moteTekster.fritekstTilBehandler
+      moteTekster.fritekstTilBehandler,
     );
 
     const expectedSendtDato = new Date();
@@ -227,14 +227,14 @@ describe("EndreDialogmoteSkjemaTest", () => {
           begrunnelse: moteTekster.fritekstTilArbeidsgiver,
           endringsdokument: expectedEndringDocuments.arbeidsgiver(
             true,
-            expectedSendtDato
+            expectedSendtDato,
           ),
         },
         arbeidstaker: {
           begrunnelse: moteTekster.fritekstTilArbeidstaker,
           endringsdokument: expectedEndringDocuments.arbeidstaker(
             true,
-            expectedSendtDato
+            expectedSendtDato,
           ),
         },
         behandler: {
@@ -269,13 +269,13 @@ describe("EndreDialogmoteSkjemaTest", () => {
       within(forhandsvisningEndringArbeidstaker).getByRole("heading", {
         name: texts.forhandsvisningArbeidstakerTitle,
         hidden: true,
-      })
+      }),
     ).to.exist;
     expect(
       within(forhandsvisningEndringArbeidstaker).getByRole("heading", {
         name: texts.forhandsvisningSubtitle,
         hidden: true,
-      })
+      }),
     ).to.exist;
     expectedEndringDocuments
       .arbeidstaker(false, expectedSendtDato)
@@ -305,13 +305,13 @@ describe("EndreDialogmoteSkjemaTest", () => {
       within(forhandsvisningEndringArbeidsgiver).getByRole("heading", {
         name: texts.forhandsvisningArbeidsgiverTitle,
         hidden: true,
-      })
+      }),
     ).to.exist;
     expect(
       within(forhandsvisningEndringArbeidsgiver).getByRole("heading", {
         name: texts.forhandsvisningSubtitle,
         hidden: true,
-      })
+      }),
     ).to.exist;
     expectedEndringDocuments
       .arbeidsgiver(false, expectedSendtDato)
@@ -328,7 +328,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
     changeTextInput(
       begrunnelseBehandlerInput,
-      moteTekster.fritekstTilBehandler
+      moteTekster.fritekstTilBehandler,
     );
 
     const previewButtons = screen.getAllByRole("button", {
@@ -347,7 +347,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
       within(forhandsvisningEndringBehandler).getByRole("heading", {
         name: texts.forhandsvisningBehandlerTitle,
         hidden: true,
-      })
+      }),
     ).to.exist;
 
     expectedEndringDocuments
@@ -390,7 +390,7 @@ const renderEndreDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     `${dialogmoteRoutePath}/:dialogmoteUuid/endre`,
-    [`${dialogmoteRoutePath}/${dialogmote.uuid}/endre`]
+    [`${dialogmoteRoutePath}/${dialogmote.uuid}/endre`],
   );
 };
 
@@ -400,10 +400,10 @@ const passSkjemaInput = () => {
   const stedInput = getTextInput("Sted");
   const videoLinkInput = getTextInput("Lenke til videomøte (valgfritt)");
   const begrunnelseArbeidstakerInput = getTextInput(
-    "Begrunnelse til arbeidstakeren"
+    "Begrunnelse til arbeidstakeren",
   );
   const begrunnelseArbeidsgiverInput = getTextInput(
-    "Begrunnelse til nærmeste leder"
+    "Begrunnelse til nærmeste leder",
   );
   changeTextInput(datoInput, endretMote.dato);
   fireEvent.blur(datoInput);
@@ -412,10 +412,10 @@ const passSkjemaInput = () => {
   changeTextInput(videoLinkInput, endretMote.videolink);
   changeTextInput(
     begrunnelseArbeidstakerInput,
-    moteTekster.fritekstTilArbeidstaker
+    moteTekster.fritekstTilArbeidstaker,
   );
   changeTextInput(
     begrunnelseArbeidsgiverInput,
-    moteTekster.fritekstTilArbeidsgiver
+    moteTekster.fritekstTilArbeidsgiver,
   );
 };

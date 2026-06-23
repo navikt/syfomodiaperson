@@ -8,7 +8,7 @@ import StansSkjema from "./StansSkjema";
 export default function StansSide() {
   const { sisteVurdering } = useManglendemedvirkningVurderingQuery();
   const isForhandsvarselExpired = isExpiredForhandsvarsel(
-    sisteVurdering?.varsel?.svarfrist
+    sisteVurdering?.varsel?.svarfrist,
   );
   return isForhandsvarselExpired && sisteVurdering?.varsel?.svarfrist ? (
     <StansSkjema varselSvarfrist={sisteVurdering.varsel.svarfrist} />

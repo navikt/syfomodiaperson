@@ -42,7 +42,7 @@ const renderMeldingTilBehandler = () => {
       >
         <MeldingTilBehandler />
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -60,9 +60,9 @@ describe("MeldingTilBehandler", () => {
     };
     queryClient.setQueryData(
       oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => emptyOppfolgingstilfellePersonMock
+      () => emptyOppfolgingstilfellePersonMock,
     );
 
     renderMeldingTilBehandler();
@@ -92,10 +92,10 @@ describe("MeldingTilBehandler", () => {
         screen.getByLabelText(selectLabel);
 
       expect(selectElement.value).to.equal(
-        MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER
+        MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER,
       );
       expect(selectElement.value).to.not.equal(
-        MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING
+        MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING,
       );
 
       fireEvent.change(screen.getByLabelText(selectLabel), {
@@ -103,10 +103,10 @@ describe("MeldingTilBehandler", () => {
       });
 
       expect(selectElement.value).to.equal(
-        MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING
+        MeldingType.FORESPORSEL_PASIENT_LEGEERKLARING,
       );
       expect(selectElement.value).to.not.equal(
-        MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER
+        MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER,
       );
     });
 
@@ -128,7 +128,7 @@ describe("MeldingTilBehandler", () => {
       renderMeldingTilBehandler();
 
       await waitFor(
-        () => expect(screen.queryByText("Ingen behandler")).to.not.exist
+        () => expect(screen.queryByText("Ingen behandler")).to.not.exist,
       );
       expect(screen.getByText("Søk etter behandler")).to.exist;
     });
@@ -155,7 +155,7 @@ describe("MeldingTilBehandler", () => {
       });
 
       const meldingInput = getTextInput(
-        "Skriv inn teksten du ønsker å sende til behandler"
+        "Skriv inn teksten du ønsker å sende til behandler",
       );
       changeTextInput(meldingInput, enMeldingTekst);
 
@@ -170,7 +170,7 @@ describe("MeldingTilBehandler", () => {
       expect(previewModal).to.exist;
 
       const expectedTexts = expectedTilleggsopplysningerDocument(
-        enMeldingTekst
+        enMeldingTekst,
       ).flatMap((documentComponent) => documentComponent.texts);
       expectedTexts.forEach((text) => {
         expect(within(previewModal).getByText(text)).to.exist;
@@ -185,7 +185,7 @@ describe("MeldingTilBehandler", () => {
       });
 
       const meldingInput = getTextInput(
-        "Skriv inn teksten du ønsker å sende til behandler"
+        "Skriv inn teksten du ønsker å sende til behandler",
       );
       changeTextInput(meldingInput, enMeldingTekst);
 
@@ -200,7 +200,7 @@ describe("MeldingTilBehandler", () => {
       expect(previewModal).to.exist;
 
       const expectedTexts = expectedLegeerklaringDocument(
-        enMeldingTekst
+        enMeldingTekst,
       ).flatMap((documentComponent) => documentComponent.texts);
       expectedTexts.forEach((text) => {
         expect(within(previewModal).getByText(text)).to.exist;
@@ -214,7 +214,7 @@ describe("MeldingTilBehandler", () => {
       });
 
       const meldingInput = getTextInput(
-        "Skriv inn teksten du ønsker å sende til behandler"
+        "Skriv inn teksten du ønsker å sende til behandler",
       );
       changeTextInput(meldingInput, enMeldingTekst);
 
@@ -229,7 +229,7 @@ describe("MeldingTilBehandler", () => {
       expect(previewModal).to.exist;
 
       const expectedTexts = expectedMeldingFraNAVDocument(
-        enMeldingTekst
+        enMeldingTekst,
       ).flatMap((documentComponent) => documentComponent.texts);
       expectedTexts.forEach((text) => {
         expect(within(previewModal).getByText(text)).to.exist;
@@ -249,7 +249,7 @@ describe("MeldingTilBehandler", () => {
       });
 
       const meldingInput = getTextInput(
-        "Skriv inn teksten du ønsker å sende til behandler"
+        "Skriv inn teksten du ønsker å sende til behandler",
       );
       changeTextInput(meldingInput, enMeldingTekst);
       await waitFor(() => {
@@ -289,7 +289,7 @@ describe("MeldingTilBehandler", () => {
       });
 
       const meldingInput = getTextInput(
-        "Skriv inn teksten du ønsker å sende til behandler"
+        "Skriv inn teksten du ønsker å sende til behandler",
       );
       changeTextInput(meldingInput, expectedMeldingTilBehandlerDTO.tekst);
 
@@ -301,7 +301,7 @@ describe("MeldingTilBehandler", () => {
           .getAll()[0];
 
         expect(meldingTilBehandlerMutation.state.variables).to.deep.equal(
-          expectedMeldingTilBehandlerDTO
+          expectedMeldingTilBehandlerDTO,
         );
       });
     });
@@ -328,7 +328,7 @@ describe("MeldingTilBehandler", () => {
       });
 
       const meldingInput = getTextInput(
-        "Skriv inn teksten du ønsker å sende til behandler"
+        "Skriv inn teksten du ønsker å sende til behandler",
       );
       changeTextInput(meldingInput, expectedMeldingTilBehandlerDTO.tekst);
 
@@ -340,7 +340,7 @@ describe("MeldingTilBehandler", () => {
           .getAll()[0];
 
         expect(meldingTilBehandlerMutation.state.variables).to.deep.equal(
-          expectedLegeerklaringDTO
+          expectedLegeerklaringDTO,
         );
       });
     });
@@ -348,8 +348,8 @@ describe("MeldingTilBehandler", () => {
     it("Viser feilmelding ved 403-feil fra API", async () => {
       mockServer.use(
         http.post(`*${ISBEHANDLERDIALOG_ROOT}/melding`, () =>
-          HttpResponse.json({ message: "Forbidden" }, { status: 403 })
-        )
+          HttpResponse.json({ message: "Forbidden" }, { status: 403 }),
+        ),
       );
 
       renderMeldingTilBehandler();
@@ -364,7 +364,7 @@ describe("MeldingTilBehandler", () => {
       });
 
       const meldingInput = getTextInput(
-        "Skriv inn teksten du ønsker å sende til behandler"
+        "Skriv inn teksten du ønsker å sende til behandler",
       );
       changeTextInput(meldingInput, enMeldingTekst);
 
@@ -372,7 +372,9 @@ describe("MeldingTilBehandler", () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText("Du har ikke tilgang til å utføre denne handlingen.")
+          screen.getByText(
+            "Du har ikke tilgang til å utføre denne handlingen.",
+          ),
         ).to.exist;
       });
     });

@@ -53,7 +53,7 @@ export const mockIsaktivitetskrav = [
         ...aktivitetskravHistorikk,
       ];
       return new HttpResponse(null, { status: 200 });
-    }
+    },
   ),
   http.post<object, SendForhandsvarselDTO>(
     `${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/:aktivitetskravUuid/forhandsvarsel`,
@@ -95,12 +95,12 @@ export const mockIsaktivitetskrav = [
         ...aktivitetskravHistorikk,
       ];
       return new HttpResponse(null, { status: 201 });
-    }
+    },
   ),
 ];
 
 export function toAktivitetskravVurderingDTO(
-  newVurdering: NewVurderingDTO
+  newVurdering: NewVurderingDTO,
 ): AktivitetskravVurderingDTO {
   switch (newVurdering.status) {
     case AktivitetskravStatus.INNSTILLING_OM_STANS:

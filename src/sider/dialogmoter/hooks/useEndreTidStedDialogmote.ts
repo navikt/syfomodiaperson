@@ -6,7 +6,7 @@ import { dialogmoterQueryKeys } from "@/sider/dialogmoter/hooks/dialogmoteQueryH
 
 export const useEndreTidStedDialogmote = (
   fnr: string,
-  dialogmoteUuid: string
+  dialogmoteUuid: string,
 ) => {
   const queryClient = useQueryClient();
   const path = `${ISDIALOGMOTE_ROOT}/dialogmote/${dialogmoteUuid}/tidsted`;

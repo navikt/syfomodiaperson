@@ -10,7 +10,7 @@ import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function getTextForHistorikk(
   historikk: AktivitetskravHistorikkDTO,
-  person: BrukerinfoDTO
+  person: BrukerinfoDTO,
 ): string {
   switch (historikk.status) {
     case AktivitetskravStatus.NY:
@@ -40,7 +40,7 @@ function getTextForHistorikk(
 
 function createHistorikkEventsFromAktivitetskrav(
   aktivitietskravHistorikkDTO: AktivitetskravHistorikkDTO[],
-  person: BrukerinfoDTO
+  person: BrukerinfoDTO,
 ): HistorikkEvent[] {
   return aktivitietskravHistorikkDTO
     .filter((entry) => entry.status !== AktivitetskravStatus.AUTOMATISK_OPPFYLT)
@@ -62,7 +62,7 @@ export function useAktivitetskravHistorikk(): HistorikkEvents {
 
   const events = createHistorikkEventsFromAktivitetskrav(
     aktivitetskravHistorikk || [],
-    person
+    person,
   );
 
   return {

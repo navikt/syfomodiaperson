@@ -21,7 +21,7 @@ let queryClient: QueryClient;
 
 const today = dayjs();
 const inTwelveWeeksMinusOneDay = dayjs(
-  addDays(addWeeks(today.toDate(), 12), -1)
+  addDays(addWeeks(today.toDate(), 12), -1),
 );
 const inTenWeeks = dayjs(addWeeks(new Date(), 10));
 const threeWeeksAgo = dayjs(addWeeks(today.toDate(), -3));
@@ -37,7 +37,7 @@ const renderFattVedtakSkjema = () =>
           <FattVedtakSkjema />
         </NotificationProvider>
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("FattVedtakSkjema", () => {
@@ -71,7 +71,7 @@ describe("FattVedtakSkjema", () => {
 
     queryClient.setQueryData(
       maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => maksdato
+      () => maksdato,
     );
 
     renderFattVedtakSkjema();
@@ -87,8 +87,8 @@ describe("FattVedtakSkjema", () => {
     expect(
       screen.getByText(
         "Foreløpig beregnet maksdato er tidligere enn 12 uker frem:",
-        { exact: false }
-      )
+        { exact: false },
+      ),
     ).to.exist;
     expect(screen.getByText("Automatisk justert til maksdato")).to.exist;
     expect(screen.queryByText("Automatisk justert 12 uker frem")).to.not.exist;
@@ -104,7 +104,7 @@ describe("FattVedtakSkjema", () => {
 
     queryClient.setQueryData(
       maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => maksdato
+      () => maksdato,
     );
 
     renderFattVedtakSkjema();
@@ -112,8 +112,8 @@ describe("FattVedtakSkjema", () => {
     expect(
       screen.queryByText(
         "Foreløpig beregnet maksdato er tidligere enn 12 uker frem:",
-        { exact: false }
-      )
+        { exact: false },
+      ),
     ).to.not.exist;
   });
 
@@ -139,7 +139,7 @@ describe("FattVedtakSkjema", () => {
 
     queryClient.setQueryData(
       maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => maksdato
+      () => maksdato,
     );
     renderFattVedtakSkjema();
 
@@ -159,13 +159,13 @@ describe("FattVedtakSkjema", () => {
     renderFattVedtakSkjema();
 
     const utbetalingCheckbox: HTMLInputElement = screen.getByLabelText(
-      "Utbetaling må være igangsatt"
+      "Utbetaling må være igangsatt",
     );
     const arbeidsforholdCheckbox: HTMLInputElement = screen.getByLabelText(
-      "Dokumentasjon på at arbeidsforholdet er opphørt"
+      "Dokumentasjon på at arbeidsforholdet er opphørt",
     );
     const fritakCheckbox: HTMLInputElement = screen.getByLabelText(
-      "Fritak fra arbeidsplikten er dokumentert"
+      "Fritak fra arbeidsplikten er dokumentert",
     );
 
     await userEvent.click(utbetalingCheckbox);
@@ -195,7 +195,7 @@ describe("FattVedtakSkjema", () => {
     await waitFor(() => {
       const fattVedtakMutation = queryClient.getMutationCache().getAll().pop();
       expect(fattVedtakMutation?.state.variables).to.deep.equal(
-        expectedVedtakRequest
+        expectedVedtakRequest,
       );
     });
   });
@@ -210,19 +210,19 @@ describe("FattVedtakSkjema", () => {
 
     queryClient.setQueryData(
       maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => maksdato
+      () => maksdato,
     );
 
     renderFattVedtakSkjema();
 
     const utbetalingCheckbox: HTMLInputElement = screen.getByLabelText(
-      "Utbetaling må være igangsatt"
+      "Utbetaling må være igangsatt",
     );
     const arbeidsforholdCheckbox: HTMLInputElement = screen.getByLabelText(
-      "Dokumentasjon på at arbeidsforholdet er opphørt"
+      "Dokumentasjon på at arbeidsforholdet er opphørt",
     );
     const fritakCheckbox: HTMLInputElement = screen.getByLabelText(
-      "Fritak fra arbeidsplikten er dokumentert"
+      "Fritak fra arbeidsplikten er dokumentert",
     );
 
     await userEvent.click(utbetalingCheckbox);
@@ -251,7 +251,7 @@ describe("FattVedtakSkjema", () => {
     await waitFor(() => {
       const fattVedtakMutation = queryClient.getMutationCache().getAll().pop();
       expect(fattVedtakMutation?.state.variables).to.deep.equal(
-        expectedVedtakRequest
+        expectedVedtakRequest,
       );
     });
   });
@@ -270,7 +270,7 @@ describe("FattVedtakSkjema", () => {
       within(forhandsvisModal).getAllByRole("button", {
         name: "Lukk",
         hidden: true,
-      })
+      }),
     ).to.not.be.empty;
   });
 });

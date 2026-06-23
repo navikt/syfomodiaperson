@@ -25,7 +25,7 @@ const dialogmoteBehandlerMedSvar = (
   svarList: Pick<
     DialogmotedeltakerBehandlerVarselSvarDTO,
     "svarType" | "tekst" | "createdAt"
-  >[]
+  >[],
 ): DialogmoteDTO => ({
   ...dialogmoteMedBehandler,
   behandler: {
@@ -49,7 +49,7 @@ const renderDeltakereSvarInfo = (dialogmote: DialogmoteDTO) =>
   render(
     <QueryClientProvider client={queryClient}>
       <DeltakereSvarInfo dialogmote={dialogmote} />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("DeltakereSvarInfo uten behandler", () => {
@@ -61,12 +61,12 @@ describe("DeltakereSvarInfo uten behandler", () => {
     expect(
       screen.queryByRole("button", {
         name: /Behandleren/,
-      })
+      }),
     ).to.not.exist;
     expect(
       screen.queryByRole("region", {
         name: /Behandleren/,
-      })
+      }),
     ).to.not.exist;
   });
 });
@@ -83,14 +83,14 @@ describe("DeltakereSvarInfo med behandler", () => {
       renderDeltakereSvarInfo(dialogmoteMedUbesvartVarsel);
 
       expect(screen.getAllByRole("button", { name: "Vis mer" })).to.have.length(
-        3
+        3,
       );
       expect(screen.getByText("Behandleren:", { exact: false })).to.exist;
       expect(screen.getByText(expectedText, { exact: false })).to.exist;
       expect(
         screen.getAllByRole("img", {
           name: "minus-sirkel-ikon",
-        })
+        }),
       ).to.have.length(3);
       expect(screen.getAllByText(ingenDetaljerTekst)).to.have.length(3);
       expect(screen.queryByText("Begrunnelse")).to.not.exist;
@@ -109,14 +109,14 @@ describe("DeltakereSvarInfo med behandler", () => {
       renderDeltakereSvarInfo(dialogmoteMedSvar);
 
       expect(screen.getAllByRole("button", { name: "Vis mer" })).to.have.length(
-        3
+        3,
       );
       expect(screen.getByText("Behandleren:", { exact: false })).to.exist;
       expect(screen.getByText(expectedText, { exact: false })).to.exist;
       expect(
         screen.getByRole("img", {
           name: "suksess-ikon",
-        })
+        }),
       ).to.exist;
       expect(screen.getAllByText(ingenDetaljerTekst)).to.have.length(3);
       expect(screen.queryByText("Begrunnelse")).to.not.exist;
@@ -136,24 +136,24 @@ describe("DeltakereSvarInfo med behandler", () => {
       renderDeltakereSvarInfo(dialogmoteMedSvar);
 
       expect(screen.getAllByRole("button", { name: "Vis mer" })).to.have.length(
-        3
+        3,
       );
       expect(screen.getByText("Behandleren:", { exact: false })).to.exist;
       expect(screen.getByText(expectedText, { exact: false })).to.exist;
       expect(
         screen.getByRole("img", {
           name: "feil-ikon",
-        })
+        }),
       ).to.exist;
       expect(
         screen.getByText("Begrunnelse mottatt 08.12.2021", {
           exact: false,
-        })
+        }),
       ).to.exist;
       expect(
         screen.getByText("Jeg kan ikke komme", {
           exact: false,
-        })
+        }),
       ).to.exist;
     });
   });
@@ -176,35 +176,35 @@ describe("DeltakereSvarInfo med behandler", () => {
       renderDeltakereSvarInfo(dialogmoteMedSvar);
 
       expect(screen.getAllByRole("button", { name: "Vis mer" })).to.have.length(
-        3
+        3,
       );
       expect(screen.getByText("Behandleren:", { exact: false })).to.exist;
       expect(screen.getByText(expectedText, { exact: false })).to.exist;
       expect(
         screen.getByRole("img", {
           name: "advarsel-ikon",
-        })
+        }),
       ).to.exist;
       expect(
         screen.getByText("Begrunnelse mottatt 08.12.2021", {
           exact: false,
-        })
+        }),
       ).to.exist;
       expect(
         screen.getByText("Tidspunktet passer ikke likevel", {
           exact: false,
-        })
+        }),
       ).to.exist;
       expect(
         screen.getByText("Begrunnelse mottatt 07.12.2021", {
           exact: false,
-        })
+        }),
       ).to.exist;
       expect(screen.getByText("Jeg kommer", { exact: false })).to.exist;
       expect(
         screen.getAllByText(ingenDetaljerTekst, {
           exact: false,
-        })
+        }),
       ).to.have.length(2);
     });
   });
@@ -226,29 +226,29 @@ describe("DeltakereSvarInfo med behandler", () => {
       renderDeltakereSvarInfo(dialogmoteMedSvar);
 
       expect(screen.getAllByRole("button", { name: "Vis mer" })).to.have.length(
-        3
+        3,
       );
       expect(screen.getByText("Behandleren:", { exact: false })).to.exist;
       expect(screen.getByText(expectedText, { exact: false })).to.exist;
       expect(
         screen.getByRole("img", {
           name: "feil-ikon",
-        })
+        }),
       ).to.exist;
       expect(
         screen.getByText("Begrunnelse mottatt 08.12.2021", {
           exact: false,
-        })
+        }),
       ).to.exist;
       expect(
         screen.getByText("Kommer ikke likevel", {
           exact: false,
-        })
+        }),
       ).to.exist;
       expect(
         screen.getAllByText(ingenDetaljerTekst, {
           exact: false,
-        })
+        }),
       ).to.have.length(2);
     });
   });

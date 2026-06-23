@@ -72,7 +72,7 @@ export default function DialogmoteMoteStatusPanel({ dialogmote }: Props) {
   const virksomhetsnummer = arbeidsgiver.virksomhetsnummer;
   const narmesteLeder = narmesteLederForVirksomhet(
     currentLedere,
-    virksomhetsnummer
+    virksomhetsnummer,
   );
   const noNarmesteLeder = !narmesteLeder;
 
@@ -83,7 +83,7 @@ export default function DialogmoteMoteStatusPanel({ dialogmote }: Props) {
 
   const { data: personOppgaver } = usePersonoppgaverQuery();
   const personOppgaveForMote = personOppgaver.find(
-    (oppgave: PersonOppgave) => oppgave.referanseUuid === dialogmote.uuid
+    (oppgave: PersonOppgave) => oppgave.referanseUuid === dialogmote.uuid,
   );
 
   const skalVurderes =
@@ -92,7 +92,7 @@ export default function DialogmoteMoteStatusPanel({ dialogmote }: Props) {
     (personOppgaveForMote.behandletTidspunkt === null ||
       isPersonoppgaveCompletedAfterLastMoteEndring(
         personOppgaveForMote,
-        dialogmote
+        dialogmote,
       ));
 
   return (

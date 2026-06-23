@@ -29,7 +29,7 @@ export function DraftSaveStatus({ isSaveError, savedTime }: Props) {
         <div className="mb-2 font-ax-bold flex gap-2">
           <img src={SaveFile} alt="saved" />
           <span>{`${texts.saved} ${tilLesbarDatoUtenArstall(
-            addDays(savedTime, 7)
+            addDays(savedTime, 7),
           )} ${showTimeIncludingSeconds(savedTime)}`}</span>
         </div>
       )}

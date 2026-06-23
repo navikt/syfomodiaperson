@@ -10,13 +10,13 @@ import {
 export const renderWithRouter = (
   element: React.ReactNode,
   path: string,
-  initialEntries?: MemoryRouterProps["initialEntries"]
+  initialEntries?: MemoryRouterProps["initialEntries"],
 ) => {
   render(
     <MemoryRouter initialEntries={initialEntries}>
       <Routes>
         <Route path={path} element={element} />
       </Routes>
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 };

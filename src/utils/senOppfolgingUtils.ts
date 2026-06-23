@@ -2,7 +2,7 @@ import { SenOppfolgingKandidatResponseDTO } from "@/data/senoppfolging/senOppfol
 import { addDays, dagerMellomDatoerUtenAbs } from "@/utils/datoUtils";
 
 export function isVarselUbesvart(
-  kandidat: SenOppfolgingKandidatResponseDTO
+  kandidat: SenOppfolgingKandidatResponseDTO,
 ): boolean {
   const { svar, varselAt } = kandidat;
   return !svar && !!varselAt ? isVarselSvarfristUtlopt(varselAt) : false;

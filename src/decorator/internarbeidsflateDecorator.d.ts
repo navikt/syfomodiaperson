@@ -41,42 +41,42 @@ interface InternarbeidsflateDecoratorElement extends HTMLElement {
   addEventListener(
     type: "enhet-changed",
     listener: (event: CustomEvent<EnhetChangedDetail>) => void,
-    options?: boolean | AddEventListenerOptions
+    options?: boolean | AddEventListenerOptions,
   ): void;
   addEventListener(
     type: "fnr-changed",
     listener: (event: CustomEvent<FnrChangedDetail>) => void,
-    options?: boolean | AddEventListenerOptions
+    options?: boolean | AddEventListenerOptions,
   ): void;
   addEventListener(
     type: "link-click",
     listener: (event: CustomEvent<LinkClickDetail>) => void,
-    options?: boolean | AddEventListenerOptions
+    options?: boolean | AddEventListenerOptions,
   ): void;
   addEventListener(
     type: string,
     listener: EventListenerOrEventListenerObject,
-    options?: boolean | AddEventListenerOptions
+    options?: boolean | AddEventListenerOptions,
   ): void;
   removeEventListener(
     type: "enhet-changed",
     listener: (event: CustomEvent<EnhetChangedDetail>) => void,
-    options?: boolean | EventListenerOptions
+    options?: boolean | EventListenerOptions,
   ): void;
   removeEventListener(
     type: "fnr-changed",
     listener: (event: CustomEvent<FnrChangedDetail>) => void,
-    options?: boolean | EventListenerOptions
+    options?: boolean | EventListenerOptions,
   ): void;
   removeEventListener(
     type: "link-click",
     listener: (event: CustomEvent<LinkClickDetail>) => void,
-    options?: boolean | EventListenerOptions
+    options?: boolean | EventListenerOptions,
   ): void;
   removeEventListener(
     type: string,
     listener: EventListenerOrEventListenerObject,
-    options?: boolean | EventListenerOptions
+    options?: boolean | EventListenerOptions,
   ): void;
 }
 

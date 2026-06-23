@@ -98,8 +98,8 @@ export default function BekreftetSykmeldingStatuspanel({ sykmelding }: Props) {
         <BodyLong size="small">
           {tilStorForbokstav(
             textArbeidssituasjon(
-              `${sykmelding.valgtArbeidssituasjon?.toLowerCase()}.2`
-            )
+              `${sykmelding.valgtArbeidssituasjon?.toLowerCase()}.2`,
+            ),
           )}
         </BodyLong>
       </div>

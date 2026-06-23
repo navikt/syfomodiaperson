@@ -23,10 +23,10 @@ describe("behandlendeEnhetQueryHooks tests", () => {
 
     await waitFor(() => expect(result.current.data).to.not.be.undefined);
     expect(result.current.data?.geografiskEnhet).to.deep.equal(
-      behandlendeEnhetMockResponse.geografiskEnhet
+      behandlendeEnhetMockResponse.geografiskEnhet,
     );
     expect(result.current.data?.oppfolgingsenhetDTO?.enhet).to.deep.equal(
-      behandlendeEnhetMockResponse.oppfolgingsenhetDTO.enhet
+      behandlendeEnhetMockResponse.oppfolgingsenhetDTO.enhet,
     );
   });
 });

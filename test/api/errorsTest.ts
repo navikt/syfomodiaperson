@@ -13,7 +13,10 @@ describe("errors test", () => {
   describe("isClientError", () => {
     it("returns true from http 400", async () => {
       mockServer.use(
-        http.post(pathBadRequest, () => new HttpResponse(null, { status: 400 }))
+        http.post(
+          pathBadRequest,
+          () => new HttpResponse(null, { status: 400 }),
+        ),
       );
 
       try {
@@ -25,8 +28,8 @@ describe("errors test", () => {
     it("returns true from http 403", async () => {
       mockServer.use(
         http.get(pathAccessDenied, () =>
-          HttpResponse.json({ message: "Denied!" }, { status: 403 })
-        )
+          HttpResponse.json({ message: "Denied!" }, { status: 403 }),
+        ),
       );
 
       try {
@@ -38,8 +41,8 @@ describe("errors test", () => {
     it("returns true from http 404", async () => {
       mockServer.use(
         http.get(pathNotFound, () =>
-          HttpResponse.text("Not found", { status: 404 })
-        )
+          HttpResponse.text("Not found", { status: 404 }),
+        ),
       );
 
       try {
@@ -51,8 +54,8 @@ describe("errors test", () => {
     it("returns false from http 500", async () => {
       mockServer.use(
         http.post(pathInternalServerError, () =>
-          HttpResponse.text("Internal server error", { status: 500 })
-        )
+          HttpResponse.text("Internal server error", { status: 500 }),
+        ),
       );
 
       try {

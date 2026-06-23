@@ -38,7 +38,7 @@ describe("Dialogmoteinnkallingskjema med behandler", () => {
     queryClient = queryClientWithMockData();
     queryClient.setQueryData(
       behandlereQueryKeys.behandlere(arbeidstaker.personident),
-      () => [behandler]
+      () => [behandler],
     );
   });
 
@@ -51,21 +51,21 @@ describe("Dialogmoteinnkallingskjema med behandler", () => {
     await userEvent.click(fastlegeInput);
 
     const fritekstArbeidstakerInput = getTextInput(
-      "Fritekst til arbeidstakeren (valgfri)"
+      "Fritekst til arbeidstakeren (valgfri)",
     );
     const fritekstArbeidsgiverInput = getTextInput(
-      "Fritekst til nærmeste leder (valgfri)"
+      "Fritekst til nærmeste leder (valgfri)",
     );
     const fritekstBehandlerInput = getTextInput(
-      "Fritekst til behandler (valgfri)"
+      "Fritekst til behandler (valgfri)",
     );
     changeTextInput(
       fritekstArbeidstakerInput,
-      moteTekster.fritekstTilArbeidstaker
+      moteTekster.fritekstTilArbeidstaker,
     );
     changeTextInput(
       fritekstArbeidsgiverInput,
-      moteTekster.fritekstTilArbeidsgiver
+      moteTekster.fritekstTilArbeidsgiver,
     );
     changeTextInput(fritekstBehandlerInput, moteTekster.fritekstTilBehandler);
     await clickButton("Send innkallingene");
@@ -97,7 +97,7 @@ describe("Dialogmoteinnkallingskjema med behandler", () => {
           fritekstInnkalling: moteTekster.fritekstTilArbeidsgiver,
           innkalling: expectedInnkallingDocuments.arbeidsgiver(
             true,
-            expectedSendtDato
+            expectedSendtDato,
           ),
         },
         arbeidstaker: {
@@ -105,7 +105,7 @@ describe("Dialogmoteinnkallingskjema med behandler", () => {
           fritekstInnkalling: moteTekster.fritekstTilArbeidstaker,
           innkalling: expectedInnkallingDocuments.arbeidstaker(
             true,
-            expectedSendtDato
+            expectedSendtDato,
           ),
         },
         behandler: {
@@ -124,7 +124,7 @@ describe("Dialogmoteinnkallingskjema med behandler", () => {
       };
 
       expect(innkallingMutation.state.variables).to.deep.equal(
-        expectedInnkallingDto
+        expectedInnkallingDto,
       );
     });
   });
@@ -135,7 +135,7 @@ describe("Dialogmoteinnkallingskjema med behandler", () => {
     expect(
       screen.queryByRole("textbox", {
         name: /Fritekst til behandler/,
-      })
+      }),
     ).to.not.exist;
     const previewButtons = screen.getAllByRole("button", {
       name: "Forhåndsvisning",
@@ -156,7 +156,7 @@ const renderDialogmoteInnkallingSkjema = () => {
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     dialogmoteRoutePath,
-    [dialogmoteRoutePath]
+    [dialogmoteRoutePath],
   );
 };
 
@@ -171,13 +171,13 @@ const passSkjemaInput = async () => {
   const fastlegeInput = screen.getByRole("radio", { name: /Fastlege/ });
   await userEvent.click(fastlegeInput);
   const fritekstArbeidstakerInput = getTextInput(
-    "Fritekst til arbeidstakeren (valgfri)"
+    "Fritekst til arbeidstakeren (valgfri)",
   );
   const fritekstArbeidsgiverInput = getTextInput(
-    "Fritekst til nærmeste leder (valgfri)"
+    "Fritekst til nærmeste leder (valgfri)",
   );
   const fritekstBehandlerInput = getTextInput(
-    "Fritekst til behandler (valgfri)"
+    "Fritekst til behandler (valgfri)",
   );
   fireEvent.click(virksomhetSelect);
   changeTextInput(datoInput, mote.dato);
@@ -187,11 +187,11 @@ const passSkjemaInput = async () => {
   changeTextInput(videoLinkInput, mote.videolink);
   changeTextInput(
     fritekstArbeidstakerInput,
-    moteTekster.fritekstTilArbeidstaker
+    moteTekster.fritekstTilArbeidstaker,
   );
   changeTextInput(
     fritekstArbeidsgiverInput,
-    moteTekster.fritekstTilArbeidsgiver
+    moteTekster.fritekstTilArbeidsgiver,
   );
   changeTextInput(fritekstBehandlerInput, moteTekster.fritekstTilBehandler);
 };

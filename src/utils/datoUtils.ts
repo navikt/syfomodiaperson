@@ -61,7 +61,7 @@ export const tilLesbarDatoUtenArstall = (datoArg): string | null => {
 export const tilLesbarDatoMedArstall = (datoArg): string | undefined => {
   return datoArg
     ? `${tilLesbarDatoUtenArstall(new Date(datoArg))} ${new Date(
-        datoArg
+        datoArg,
       ).getFullYear()}`
     : undefined;
 };
@@ -73,15 +73,15 @@ export const tilLesbarPeriodeMedArstall = (fomArg, tomArg): string => {
   const erSammeManed = fom.getUTCMonth() === tom.getUTCMonth();
   return erSammeAr && erSammeManed
     ? `${fom.getUTCDate()}. ${SKILLETEGN_PERIODE} ${tilLesbarDatoMedArstall(
-        tom
+        tom,
       )}`
     : erSammeAr
-    ? `${tilLesbarDatoUtenArstall(
-        fom
-      )} ${SKILLETEGN_PERIODE} ${tilLesbarDatoMedArstall(tom)}`
-    : `${tilLesbarDatoMedArstall(
-        fom
-      )} ${SKILLETEGN_PERIODE} ${tilLesbarDatoMedArstall(tom)}`;
+      ? `${tilLesbarDatoUtenArstall(
+          fom,
+        )} ${SKILLETEGN_PERIODE} ${tilLesbarDatoMedArstall(tom)}`
+      : `${tilLesbarDatoMedArstall(
+          fom,
+        )} ${SKILLETEGN_PERIODE} ${tilLesbarDatoMedArstall(tom)}`;
 };
 
 export const visDato = (d: Date): string => {
@@ -129,7 +129,7 @@ export const tilDatoMedManedNavn = (dato): string => {
 
 export const tilDatoMedUkedagOgManedNavn = (
   dato: Date | string,
-  malform?: Malform
+  malform?: Malform,
 ): string => {
   const { ukeDag, dag, maaned, aar } = getDatoKomponenter(dato, malform);
   return `${ukeDag} ${dag}. ${maaned} ${aar}`;
@@ -140,7 +140,7 @@ export const getDatoKomponenter = (dato: Date | string, malform?: Malform) => {
   const ukeDag = firstLetterToUpperCase(
     malform !== Malform.NYNORSK
       ? dager[nyDato.getDay()]
-      : nynorskDager[nyDato.getDay()]
+      : nynorskDager[nyDato.getDay()],
   );
   const dag = nyDato.getDate();
   const maaned = maneder[nyDato.getMonth()];
@@ -169,7 +169,7 @@ export const tilDatoMedManedNavnOgKlokkeslett = (dato): string => {
 
 export const tilDatoMedUkedagOgManedNavnOgKlokkeslett = (
   dato: Date | string,
-  malform?: Malform
+  malform?: Malform,
 ): string => {
   const newDate = new Date(dato);
   const date = tilDatoMedUkedagOgManedNavn(newDate, malform);
@@ -191,7 +191,7 @@ export const tilLesbarDatoMedArUtenManedNavn = (datoArg): string => {
 
 export const tilLesbarPeriodeMedArUtenManednavn = (fomArg, tomArg): string => {
   return `${tilLesbarDatoMedArUtenManedNavn(
-    fomArg
+    fomArg,
   )} - ${tilLesbarDatoMedArUtenManedNavn(tomArg)}`;
 };
 
@@ -199,14 +199,14 @@ export const dagerMellomDatoer = (startDato, sluttDato): number => {
   return Math.round(
     Math.abs(
       (new Date(sluttDato).getTime() - new Date(startDato).getTime()) /
-        ANTALL_MS_DAG
-    )
+        ANTALL_MS_DAG,
+    ),
   );
 };
 
 export const dagerMellomDatoerUtenAbs = (startDato, sluttDato): number => {
   return Math.round(
-    (sluttDato.getTime() - startDato.getTime()) / ANTALL_MS_DAG
+    (sluttDato.getTime() - startDato.getTime()) / ANTALL_MS_DAG,
   );
 };
 
@@ -268,8 +268,8 @@ export const getDuration = (from: Date, to: Date): number => {
     Math.round(
       Math.floor(
         toDateWithoutNullCheck(to).getTime() -
-          toDateWithoutNullCheck(from).getTime()
-      ) / ANTALL_MS_DAG
+          toDateWithoutNullCheck(from).getTime(),
+      ) / ANTALL_MS_DAG,
     ) + 1
   );
 };

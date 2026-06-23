@@ -453,7 +453,7 @@ describe("sykmeldingUtils", () => {
       const sykmeldingerIOppfolgingstilfellet =
         sykmeldingerInnenforOppfolgingstilfelle(
           sykmeldinger,
-          oppfolgingstilfelle
+          oppfolgingstilfelle,
         );
 
       expect(sykmeldingerIOppfolgingstilfellet.length).to.equal(1);
@@ -515,13 +515,13 @@ describe("sykmeldingUtils", () => {
       const sykmeldingerIOppfolgingstilfellet =
         sykmeldingerInnenforOppfolgingstilfelle(
           sykmeldinger,
-          oppfolgingstilfelle
+          oppfolgingstilfelle,
         );
 
       expect(sykmeldingerIOppfolgingstilfellet.length).to.equal(2);
       expect(sykmeldingerIOppfolgingstilfellet[0].orgnummer).to.equal("123");
       expect(sykmeldingerIOppfolgingstilfellet[1].orgnummer).to.equal(
-        virksomhetNotInTilfelle
+        virksomhetNotInTilfelle,
       );
     });
   });
@@ -576,19 +576,19 @@ describe("sykmeldingUtils", () => {
 
       expect(sykmeldingerSortertPaaUtstedelsesdato.length).to.equal(5);
       expect(
-        sykmeldingerSortertPaaUtstedelsesdato[0].mulighetForArbeid.perioder[0].fom.getTime()
+        sykmeldingerSortertPaaUtstedelsesdato[0].mulighetForArbeid.perioder[0].fom.getTime(),
       ).to.equal(new Date("2019-01-05").getTime());
       expect(
-        sykmeldingerSortertPaaUtstedelsesdato[1].mulighetForArbeid.perioder[0].fom.getTime()
+        sykmeldingerSortertPaaUtstedelsesdato[1].mulighetForArbeid.perioder[0].fom.getTime(),
       ).to.equal(new Date("2019-01-04").getTime());
       expect(
-        sykmeldingerSortertPaaUtstedelsesdato[2].mulighetForArbeid.perioder[0].fom.getTime()
+        sykmeldingerSortertPaaUtstedelsesdato[2].mulighetForArbeid.perioder[0].fom.getTime(),
       ).to.equal(new Date("2019-01-03").getTime());
       expect(
-        sykmeldingerSortertPaaUtstedelsesdato[3].mulighetForArbeid.perioder[0].fom.getTime()
+        sykmeldingerSortertPaaUtstedelsesdato[3].mulighetForArbeid.perioder[0].fom.getTime(),
       ).to.equal(new Date("2019-01-02").getTime());
       expect(
-        sykmeldingerSortertPaaUtstedelsesdato[4].mulighetForArbeid.perioder[0].fom.getTime()
+        sykmeldingerSortertPaaUtstedelsesdato[4].mulighetForArbeid.perioder[0].fom.getTime(),
       ).to.equal(new Date("2019-01-01").getTime());
     });
   });
@@ -623,19 +623,19 @@ describe("sykmeldingUtils", () => {
 
       expect(sykmeldingperioderSortertEtterDato.length).to.equal(5);
       expect(sykmeldingperioderSortertEtterDato[0].fom.getTime()).to.equal(
-        new Date("2019-01-01").getTime()
+        new Date("2019-01-01").getTime(),
       );
       expect(sykmeldingperioderSortertEtterDato[1].fom.getTime()).to.equal(
-        new Date("2019-01-02").getTime()
+        new Date("2019-01-02").getTime(),
       );
       expect(sykmeldingperioderSortertEtterDato[2].fom.getTime()).to.equal(
-        new Date("2019-01-03").getTime()
+        new Date("2019-01-03").getTime(),
       );
       expect(sykmeldingperioderSortertEtterDato[3].fom.getTime()).to.equal(
-        new Date("2019-01-04").getTime()
+        new Date("2019-01-04").getTime(),
       );
       expect(sykmeldingperioderSortertEtterDato[4].fom.getTime()).to.equal(
-        new Date("2019-01-05").getTime()
+        new Date("2019-01-05").getTime(),
       );
     });
   });
@@ -672,7 +672,7 @@ describe("sykmeldingUtils", () => {
 
       const stringMedAllegraderinger =
         stringMedAlleGraderingerFraSykmeldingPerioder(
-          sykmeldingPerioderSortertEtterDato
+          sykmeldingPerioderSortertEtterDato,
         );
 
       expect(stringMedAllegraderinger).to.equal("20% - 100% - 50%");
@@ -694,7 +694,7 @@ describe("sykmeldingUtils", () => {
 
       const stringMedAllegraderinger =
         stringMedAlleGraderingerFraSykmeldingPerioder(
-          sykmeldingPerioderSortertEtterDato
+          sykmeldingPerioderSortertEtterDato,
         );
 
       expect(stringMedAllegraderinger).to.equal("");
@@ -710,7 +710,7 @@ describe("sykmeldingUtils", () => {
 
     const sykmeldingListContainsStatuser = (
       sykmeldinger: SykmeldingOldFormat[],
-      statuser: SykmeldingStatus[]
+      statuser: SykmeldingStatus[],
     ): boolean => {
       return sykmeldinger.some((sykmelding) => {
         return statuser.includes(sykmelding.status);
@@ -719,7 +719,7 @@ describe("sykmeldingUtils", () => {
 
     it("Returns a list containing no INVALID sykmeldinger only sykmeldinger with status SENDT, BEKREFTET, and NY", () => {
       const sykmeldinglistWithEveryStatus: SykmeldingOldFormat[] = Object.keys(
-        SykmeldingStatus
+        SykmeldingStatus,
       ).map((status) => {
         return {
           ...baseSykmelding,
@@ -728,24 +728,24 @@ describe("sykmeldingUtils", () => {
       });
 
       const newAndUsedSykmeldinger = newAndActivatedSykmeldinger(
-        sykmeldinglistWithEveryStatus
+        sykmeldinglistWithEveryStatus,
       );
 
       const hasSykmeldingWithWrongStatus = sykmeldingListContainsStatuser(
         newAndUsedSykmeldinger,
-        unwantedStatuser
+        unwantedStatuser,
       );
       const hasSendtSykmelding = sykmeldingListContainsStatuser(
         sykmeldinglistWithEveryStatus,
-        [SykmeldingStatus.SENDT]
+        [SykmeldingStatus.SENDT],
       );
       const hasBekreftetSykmelding = sykmeldingListContainsStatuser(
         sykmeldinglistWithEveryStatus,
-        [SykmeldingStatus.BEKREFTET]
+        [SykmeldingStatus.BEKREFTET],
       );
       const hasNySykmelding = sykmeldingListContainsStatuser(
         sykmeldinglistWithEveryStatus,
-        [SykmeldingStatus.NY]
+        [SykmeldingStatus.NY],
       );
       expect(newAndUsedSykmeldinger.length).to.equal(3);
       expect(hasSykmeldingWithWrongStatus).to.be.false;
@@ -764,14 +764,14 @@ describe("sykmeldingUtils", () => {
         });
 
       const newAndUsedSykmeldinger = newAndActivatedSykmeldinger(
-        sykmeldinglistWithEveryStatus
+        sykmeldinglistWithEveryStatus,
       );
 
       expect(newAndUsedSykmeldinger.length).to.equal(0);
     });
     it("Returns an empty list if only invalid behandlingsutfall in sykmelding list", () => {
       const sykmeldinglistWithEveryStatus: SykmeldingOldFormat[] = Object.keys(
-        SykmeldingStatus
+        SykmeldingStatus,
       ).map((status) => {
         return {
           ...baseSykmelding,
@@ -785,7 +785,7 @@ describe("sykmeldingUtils", () => {
       });
 
       const newAndUsedSykmeldinger = newAndActivatedSykmeldinger(
-        sykmeldinglistWithEveryStatus
+        sykmeldinglistWithEveryStatus,
       );
 
       expect(newAndUsedSykmeldinger.length).to.equal(0);

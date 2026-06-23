@@ -10,7 +10,7 @@ export const getForhandsvarselArbeidsuforhetTexts = ({
   varselInfo: {
     header: "Nav vurderer å avslå sykepengene dine",
     introWithFristDate: `Nav vurderer å avslå sykepengene dine fra og med ${tilDatoMedManedNavn(
-      frist
+      frist,
     )}.`,
   },
   begrunnelse: {
@@ -20,11 +20,11 @@ export const getForhandsvarselArbeidsuforhetTexts = ({
   duKanUttaleDeg: {
     header: "Du kan uttale deg",
     tilbakemeldingWithFristDate: `Vi sender deg dette brevet for at du skal ha mulighet til å uttale deg før vi avgjør saken din. Du må sende inn opplysninger eller kontakte oss innen ${tilDatoMedManedNavn(
-      frist
+      frist,
     )}.`,
     etterFrist: "Etter denne datoen vil Nav vurdere å avslå sykepengene dine.",
     friskmeldt: `Dersom du blir friskmeldt før ${tilDatoMedManedNavn(
-      frist
+      frist,
     )} kan du se bort fra dette brevet.`,
     kontaktOss:
       "Kontakt oss gjerne på nav.no/skriv-til-oss eller telefon 55 55 33 33.",
@@ -45,7 +45,7 @@ export const arbeidsuforhetTexts = {
     header: "Du har rett til videre utbetaling av sykepenger",
     previousForhandsvarsel: (forhandsvarselSendtDato: Date) =>
       `I forhåndsvarsel av ${tilDatoMedManedNavn(
-        forhandsvarselSendtDato
+        forhandsvarselSendtDato,
       )} ble du informert om at Nav vurderte å avslå dine sykepenger. Vi har nå vurdert at vilkåret om arbeidsuførhet er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
     forAFaSykepenger: `For å få sykepenger må du ha en sykdom eller skade som gjør at du ikke klarer å være i arbeid, eller at du bare klarer å gjøre deler av arbeidet ditt.`,
     viHarBruktLoven: `Vi har brukt folketrygdloven § 8-4 første ledd når vi har behandlet saken din.`,

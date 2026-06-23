@@ -21,14 +21,14 @@ describe("oppfolgingsplanUtils", () => {
 
     const defaultOppfolgingstilfelle = createOppfolgingstilfellePersonDTO(
       addDays(today, -2),
-      addDays(today, 2)
+      addDays(today, 2),
     ).oppfolgingstilfelleList[0];
 
     it("should return 1 plan if inside an active tilfelle", () => {
       const planer = [defaultLpsplan];
       const activePlaner = lpsPlanerWithActiveTilfelle(
         planer,
-        defaultOppfolgingstilfelle
+        defaultOppfolgingstilfelle,
       );
 
       expect(activePlaner.length).to.be.equal(1);
@@ -67,7 +67,7 @@ describe("oppfolgingsplanUtils", () => {
     it("should return newest plan if more than one is sent in active tilfelle", () => {
       const oppfolgingstilfelle = createOppfolgingstilfellePersonDTO(
         addDays(today, -10),
-        addDays(today, 2)
+        addDays(today, 2),
       ).oppfolgingstilfelleList[0];
 
       const oldestLpsPlan = {
@@ -85,7 +85,7 @@ describe("oppfolgingsplanUtils", () => {
 
       const activePlaner = lpsPlanerWithActiveTilfelle(
         planer,
-        oppfolgingstilfelle
+        oppfolgingstilfelle,
       );
 
       expect(activePlaner.length).to.be.equal(1);
@@ -106,12 +106,12 @@ describe("oppfolgingsplanUtils", () => {
 
       const activePlaner = lpsPlanerWithActiveTilfelle(
         planer,
-        defaultOppfolgingstilfelle
+        defaultOppfolgingstilfelle,
       );
 
       expect(activePlaner.length).to.be.equal(2);
       expect(activePlaner[0].virksomhetsnummer).to.be.not.equal(
-        activePlaner[1].virksomhetsnummer
+        activePlaner[1].virksomhetsnummer,
       );
     });
 
@@ -125,7 +125,7 @@ describe("oppfolgingsplanUtils", () => {
 
       const activePlaner = lpsPlanerWithActiveTilfelle(
         planer,
-        defaultOppfolgingstilfelle
+        defaultOppfolgingstilfelle,
       );
 
       expect(activePlaner.length).to.be.equal(1);
@@ -144,7 +144,7 @@ describe("oppfolgingsplanUtils", () => {
         const activePlaner = lpsPlanerWithActiveTilfelle(
           planer,
           defaultOppfolgingstilfelle,
-          true
+          true,
         );
 
         expect(activePlaner.length).to.be.equal(1);
@@ -161,7 +161,7 @@ describe("oppfolgingsplanUtils", () => {
         const activePlaner = lpsPlanerWithActiveTilfelle(
           planer,
           defaultOppfolgingstilfelle,
-          true
+          true,
         );
 
         expect(activePlaner.length).to.be.equal(0);

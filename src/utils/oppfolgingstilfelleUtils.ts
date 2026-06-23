@@ -2,21 +2,21 @@ import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/
 
 function latestTilfelleDifference(
   a: OppfolgingstilfelleDTO,
-  b: OppfolgingstilfelleDTO
+  b: OppfolgingstilfelleDTO,
 ): number {
   return new Date(b.start).getTime() - new Date(a.start).getTime();
 }
 
 function longestTilfelleDifference(
   a: OppfolgingstilfelleDTO,
-  b: OppfolgingstilfelleDTO
+  b: OppfolgingstilfelleDTO,
 ): number {
   return new Date(b.end).getTime() - new Date(a.end).getTime();
 }
 
 function byLatestAndLongestTilfelle(
   a: OppfolgingstilfelleDTO,
-  b: OppfolgingstilfelleDTO
+  b: OppfolgingstilfelleDTO,
 ): number {
   const startDateDifference = latestTilfelleDifference(a, b);
   if (startDateDifference === 0) {
@@ -26,7 +26,7 @@ function byLatestAndLongestTilfelle(
 }
 
 export function sortByDescendingStart(
-  oppfolgingstilfelleList: OppfolgingstilfelleDTO[]
+  oppfolgingstilfelleList: OppfolgingstilfelleDTO[],
 ): OppfolgingstilfelleDTO[] {
   return oppfolgingstilfelleList.sort(byLatestAndLongestTilfelle);
 }

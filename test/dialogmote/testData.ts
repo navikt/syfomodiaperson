@@ -105,7 +105,7 @@ const dialogmoteMedBehandlerIkkeDeltatt: DialogmoteDTO = {
 export const varselArbeidsgiver = (
   type: MotedeltakerVarselType,
   lestDato?: string,
-  svar?: VarselSvarDTO
+  svar?: VarselSvarDTO,
 ): DialogmotedeltakerArbeidsgiverVarselDTO => ({
   uuid: "",
   varselType: type,
@@ -120,7 +120,7 @@ export const varselArbeidsgiver = (
 export const varselArbeidstaker = (
   type: MotedeltakerVarselType,
   lestDato?: string,
-  svar?: VarselSvarDTO
+  svar?: VarselSvarDTO,
 ): DialogmotedeltakerArbeidstakerVarselDTO => ({
   uuid: "",
   varselType: type,
@@ -134,7 +134,7 @@ export const varselArbeidstaker = (
 
 export const dialogmoteMedVarsel = (
   varselArbeidsgiver: DialogmotedeltakerArbeidsgiverVarselDTO[],
-  varselArbeidstaker: DialogmotedeltakerArbeidstakerVarselDTO[]
+  varselArbeidstaker: DialogmotedeltakerArbeidstakerVarselDTO[],
 ): DialogmoteDTO => ({
   ...dialogmote,
   arbeidsgiver: {
@@ -152,7 +152,7 @@ export const dialogmoteMedVarsel = (
 const moteSted = "Sted for møtet";
 const moteDato = toDatePrettyPrint(dayjs(new Date()).add(1, "days")) as string;
 const moteDatoAsISODateString = dayjs(moteDato, "DD.MM.YYYY").format(
-  "YYYY-MM-DD"
+  "YYYY-MM-DD",
 );
 const moteKlokkeslett = "08:00";
 const moteDatoTid = `${moteDatoAsISODateString}T${moteKlokkeslett}:00`;
@@ -161,11 +161,11 @@ const arbeidsgivernavn = VIRKSOMHET_PONTYPANDY.virksomhetsnavn;
 
 const endretSted = "Videomøte endret";
 const endretDato = toDatePrettyPrint(
-  dayjs(new Date()).add(2, "days")
+  dayjs(new Date()).add(2, "days"),
 ) as string;
 const endretKlokkeslett = "09:00";
 const endretDatoAsISODateString = dayjs(endretDato, "DD.MM.YYYY").format(
-  "YYYY-MM-DD"
+  "YYYY-MM-DD",
 );
 const endretDatoTid = `${endretDatoAsISODateString}T${endretKlokkeslett}:00`;
 const endretVideolink = "https://video.nav.no/asxs";

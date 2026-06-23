@@ -12,7 +12,7 @@ import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { useMalform } from "@/context/malform/MalformContext";
 
 export const useInitialValuesReferat = (
-  dialogmote: DialogmoteDTO
+  dialogmote: DialogmoteDTO,
 ): Partial<ReferatSkjemaValues> => {
   const { getCurrentNarmesteLeder } = useLedereQuery();
   const { malform } = useMalform();
@@ -47,12 +47,12 @@ export const useInitialValuesReferat = (
           ({ navn, funksjon }) => ({
             navn,
             funksjon,
-          })
+          }),
         ),
         standardtekster: Object.keys(
-          getReferatTexts(malform).standardTekster
+          getReferatTexts(malform).standardTekster,
         ).filter((key) =>
-          latestReferat.document.some((value) => value.key === key)
+          latestReferat.document.some((value) => value.key === key),
         ) as StandardtekstKey[],
         ...behandlerInitialValues,
       };

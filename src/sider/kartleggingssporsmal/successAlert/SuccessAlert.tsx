@@ -16,7 +16,7 @@ export const SuccessAlert = ({ nyesteKandidat }: SuccessAlertProps) => (
   <Alert size="medium" variant="success">
     <BodyShort size="small" weight="semibold" className="mb-2">
       {`${texts.svarVurdert} ${tilLesbarDatoMedArstall(
-        nyesteKandidat.vurdering?.vurdertAt
+        nyesteKandidat.vurdering?.vurdertAt,
       )}`}
     </BodyShort>
     <BodyShort size="small">

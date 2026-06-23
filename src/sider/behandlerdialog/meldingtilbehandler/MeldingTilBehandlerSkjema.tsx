@@ -101,7 +101,7 @@ export function MeldingTilBehandlerSkjema({
         },
       });
     },
-    750
+    750,
   );
 
   const meldingTekstErrorMessage =
@@ -136,7 +136,7 @@ export function MeldingTilBehandlerSkjema({
 
         queryClient.setQueryData(
           ["draft", "behandlerdialog-meldingtilbehandler"],
-          null
+          null,
         );
 
         reset();
@@ -145,7 +145,7 @@ export function MeldingTilBehandlerSkjema({
           onSettled: () => {
             queryClient.setQueryData(
               ["draft", "behandlerdialog-meldingtilbehandler"],
-              null
+              null,
             );
           },
         });
@@ -170,7 +170,7 @@ export function MeldingTilBehandlerSkjema({
         {meldingSentTime && (
           <Alert variant="success" size="small">
             {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(
-              meldingSentTime
+              meldingSentTime,
             )}`}
           </Alert>
         )}

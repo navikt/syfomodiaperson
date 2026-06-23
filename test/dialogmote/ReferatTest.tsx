@@ -61,7 +61,7 @@ describe("ReferatTest", () => {
     expect(
       screen.getByRole("heading", {
         name: `${arbeidstaker.navn}, 10. mai 2021, Videomøte`,
-      })
+      }),
     ).to.exist;
   });
 
@@ -69,23 +69,23 @@ describe("ReferatTest", () => {
     renderReferat(dialogmote);
 
     expect(
-      screen.getByRole("heading", { name: `Fra Nav: ${veileder.fulltNavn()}` })
+      screen.getByRole("heading", { name: `Fra Nav: ${veileder.fulltNavn()}` }),
     ).to.exist;
     expect(
       screen.getByRole("heading", {
         name: `Arbeidstaker: ${arbeidstaker.navn}`,
-      })
+      }),
     ).to.exist;
     expect(
       screen.getByRole("heading", {
         name: `Fra arbeidsgiver: ${narmesteLederNavn}`,
-      })
+      }),
     ).to.exist;
 
     expect(
       screen.getByRole("region", {
         name: "Fra arbeidsgiver: Tatten Tattover",
-      })
+      }),
     ).to.exist;
 
     const getFraArbeidsgiverInput = () => screen.getByLabelText("Navn");
@@ -95,8 +95,8 @@ describe("ReferatTest", () => {
     await clickButton("Lagre og send");
     expect(
       screen.getAllByText(
-        referatSkjemaTexts.deltakere.arbeidsgiverDeltakerMissing
-      )
+        referatSkjemaTexts.deltakere.arbeidsgiverDeltakerMissing,
+      ),
     ).to.not.be.empty;
 
     // Sjekk at 'Fra arbeidsgiver' kan endres
@@ -105,7 +105,7 @@ describe("ReferatTest", () => {
     expect(
       await screen.findByRole("heading", {
         name: `Fra arbeidsgiver: Ny Leder`,
-      })
+      }),
     ).to.exist;
   });
 
@@ -115,21 +115,21 @@ describe("ReferatTest", () => {
     expect(
       screen.getByRole("heading", {
         name: `${behandlerDeltakerTekst}, deltok og skal motta referat`,
-      })
+      }),
     ).to.exist;
 
     expect(
       screen.getByRole("region", {
         name: `${behandlerDeltakerTekst}, deltok og skal motta referat`,
-      })
+      }),
     ).to.exist;
 
     const behandlerDeltokInput: HTMLInputElement = screen.getByLabelText(
-      referatSkjemaTexts.deltakere.behandlerDeltokLabel
+      referatSkjemaTexts.deltakere.behandlerDeltokLabel,
     );
     expect(behandlerDeltokInput.checked).to.be.true;
     const behandlerMottarReferatInput: HTMLInputElement = screen.getByLabelText(
-      referatSkjemaTexts.deltakere.behandlerMottaReferatLabel
+      referatSkjemaTexts.deltakere.behandlerMottaReferatLabel,
     );
     expect(behandlerMottarReferatInput.checked).to.be.true;
   });
@@ -141,12 +141,12 @@ describe("ReferatTest", () => {
 
     // Fjern avkrysning på deltakelse og motta referat
     const behandlerDeltokCheckbox: HTMLInputElement = screen.getByLabelText(
-      referatSkjemaTexts.deltakere.behandlerDeltokLabel
+      referatSkjemaTexts.deltakere.behandlerDeltokLabel,
     );
     await userEvent.click(behandlerDeltokCheckbox);
     const behandlerMottaReferatCheckbox: HTMLInputElement =
       screen.getByLabelText(
-        referatSkjemaTexts.deltakere.behandlerMottaReferatLabel
+        referatSkjemaTexts.deltakere.behandlerMottaReferatLabel,
       );
     await userEvent.click(behandlerMottaReferatCheckbox);
 
@@ -161,10 +161,10 @@ describe("ReferatTest", () => {
       behandlerMottarReferat: false,
     });
     const documentDeltakereTexts = newReferat.document.find(
-      (d) => d.title === referatTexts.deltakereTitle
+      (d) => d.title === referatTexts.deltakereTitle,
     )?.texts;
     expect(documentDeltakereTexts).to.deep.include(
-      `${behandlerDeltakerTekst}, deltok ikke`
+      `${behandlerDeltakerTekst}, deltok ikke`,
     );
   });
 
@@ -179,13 +179,13 @@ describe("ReferatTest", () => {
       .to.not.be.empty;
     expect(
       screen.getAllByText(
-        referatSkjemaValideringsTexts.arbeidstakersOppgaveMissing
-      )
+        referatSkjemaValideringsTexts.arbeidstakersOppgaveMissing,
+      ),
     ).to.not.be.empty;
     expect(
       screen.getAllByText(
-        referatSkjemaValideringsTexts.arbeidsgiversOppgaveMissing
-      )
+        referatSkjemaValideringsTexts.arbeidsgiversOppgaveMissing,
+      ),
     ).to.not.be.empty;
   });
 
@@ -198,26 +198,26 @@ describe("ReferatTest", () => {
     // Feilmeldinger i skjema
     expect(
       screen.getAllByText(
-        referatSkjemaTexts.deltakere.andreDeltakereMissingNavn
-      )
+        referatSkjemaTexts.deltakere.andreDeltakereMissingNavn,
+      ),
     ).to.not.be.empty;
     expect(
       screen.getAllByText(
-        referatSkjemaTexts.deltakere.andreDeltakereMissingFunksjon
-      )
+        referatSkjemaTexts.deltakere.andreDeltakereMissingFunksjon,
+      ),
     ).to.not.be.empty;
 
     // Slett deltaker og sjekk at feil forsvinner
     await clickButton("Slett ikon");
     expect(
       screen.queryAllByText(
-        referatSkjemaTexts.deltakere.andreDeltakereMissingNavn
-      )
+        referatSkjemaTexts.deltakere.andreDeltakereMissingNavn,
+      ),
     ).to.be.empty;
     expect(
       screen.queryAllByText(
-        referatSkjemaTexts.deltakere.andreDeltakereMissingFunksjon
-      )
+        referatSkjemaTexts.deltakere.andreDeltakereMissingFunksjon,
+      ),
     ).to.be.empty;
   });
 
@@ -234,19 +234,19 @@ describe("ReferatTest", () => {
     changeTextInput(konklusjonInput, getTooLongText(MAX_LENGTH_KONKLUSJON));
     changeTextInput(
       arbeidstakerInput,
-      getTooLongText(MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE)
+      getTooLongText(MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE),
     );
     changeTextInput(
       arbeidsgiverInput,
-      getTooLongText(MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE)
+      getTooLongText(MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE),
     );
     changeTextInput(
       behandlerInput,
-      getTooLongText(MAX_LENGTH_BEHANDLERS_OPPGAVE)
+      getTooLongText(MAX_LENGTH_BEHANDLERS_OPPGAVE),
     );
     changeTextInput(
       veilederInput,
-      getTooLongText(MAX_LENGTH_VEILEDERS_OPPGAVE)
+      getTooLongText(MAX_LENGTH_VEILEDERS_OPPGAVE),
     );
 
     clickButton("Lagre og send");
@@ -284,7 +284,7 @@ describe("ReferatTest", () => {
       ],
     };
     expect(ferdigstillMutation?.state.variables).to.deep.equal(
-      expectedFerdigstilling
+      expectedFerdigstilling,
     );
   });
 
@@ -334,7 +334,7 @@ const renderReferat = (dialogmoteDTO: DialogmoteDTO) => {
       </MalformProvider>
     </QueryClientProvider>,
     `${dialogmoteRoutePath}/:dialogmoteUuid/referat`,
-    [`${dialogmoteRoutePath}/${dialogmoteDTO.uuid}/referat`]
+    [`${dialogmoteRoutePath}/${dialogmoteDTO.uuid}/referat`],
   );
 };
 

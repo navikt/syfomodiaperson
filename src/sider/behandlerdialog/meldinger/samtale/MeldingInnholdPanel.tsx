@@ -90,7 +90,7 @@ interface Props {
 
 export default function MeldingInnholdPanel({ melding }: Props) {
   const { data: veilederInfo } = useVeilederInfoQuery(
-    melding.veilederIdent ?? ""
+    melding.veilederIdent ?? "",
   );
   const avsender = melding.innkommende
     ? melding.behandlerNavn

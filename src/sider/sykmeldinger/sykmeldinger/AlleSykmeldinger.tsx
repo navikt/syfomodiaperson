@@ -68,7 +68,7 @@ export default function AlleSykmeldinger({
         <Sykmeldinger
           sykmeldinger={sorterSykmeldinger(
             tidligereSykmeldinger,
-            valgtSortering
+            valgtSortering,
           )}
           tittel={texts.tidligereSykmeldinger}
           ingenSykmeldingerMelding={texts.ingenTidligereSykmeldinger}

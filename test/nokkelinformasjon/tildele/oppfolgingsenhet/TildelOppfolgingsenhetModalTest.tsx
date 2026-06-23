@@ -36,7 +36,7 @@ const renderTildelOppfolgingsenhetModal = () =>
           />
         </ValgtEnhetContext.Provider>
       </MemoryRouter>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 const stubTildelOppfolgingsenhet = () => {
@@ -48,23 +48,23 @@ describe("TildelOppfolgingsenhetModal", () => {
     queryClient = queryClientWithMockData();
     queryClient.setQueryData(
       oppfolgingsplanQueryKeys.oppfolgingsplaner(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => []
+      () => [],
     );
     queryClient.setQueryData(
       ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [LEDERE_DEFAULT[0]]
+      () => [LEDERE_DEFAULT[0]],
     );
     queryClient.setQueryData(
       behandlendeEnhetQueryKeys.behandlendeEnhet(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => behandlendeEnhetMockResponse
+      () => behandlendeEnhetMockResponse,
     );
     queryClient.setQueryData(
       virksomhetQueryKeys.virksomhet(undefined),
-      () => undefined
+      () => undefined,
     );
   });
 
@@ -79,12 +79,12 @@ describe("TildelOppfolgingsenhetModal", () => {
       within(modal).getByRole("heading", {
         name: "Endre oppfølgingsenhet",
         hidden: true,
-      })
+      }),
     ).to.exist;
     expect(
       within(modal).getByText(
-        "Her kan du flytte den sykmeldte til en annen oppfølgingsenhet. Dersom den sykemeldte har endret bostedsadresse, skjer flyttingen automatisk."
-      )
+        "Her kan du flytte den sykmeldte til en annen oppfølgingsenhet. Dersom den sykemeldte har endret bostedsadresse, skjer flyttingen automatisk.",
+      ),
     ).to.exist;
   });
 
@@ -99,7 +99,7 @@ describe("TildelOppfolgingsenhetModal", () => {
       within(modal).getByRole("heading", {
         name: "Endre oppfølgingsenhet",
         hidden: true,
-      })
+      }),
     ).to.exist;
 
     const option = screen.getByRole("option", {
@@ -111,8 +111,8 @@ describe("TildelOppfolgingsenhetModal", () => {
 
     expect(
       screen.getByText(
-        /Du tildeler nå Samuel Sam Jones \(19026900010\) uten virksomhet til Nav Fredrikstad \(0106\)./
-      )
+        /Du tildeler nå Samuel Sam Jones \(19026900010\) uten virksomhet til Nav Fredrikstad \(0106\)./,
+      ),
     ).to.exist;
   });
 
@@ -124,7 +124,7 @@ describe("TildelOppfolgingsenhetModal", () => {
           navnelinje1: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
           redigertnavn: undefined,
         },
-      })
+      }),
     );
 
     stubTildelOppfolgingsenhet();
@@ -137,7 +137,7 @@ describe("TildelOppfolgingsenhetModal", () => {
       within(modal).getByRole("heading", {
         name: "Endre oppfølgingsenhet",
         hidden: true,
-      })
+      }),
     ).to.exist;
 
     const option = screen.getByRole("option", {
@@ -149,8 +149,8 @@ describe("TildelOppfolgingsenhetModal", () => {
 
     expect(
       screen.getByText(
-        /Du tildeler nå Samuel Sam Jones \(19026900010\) ved PONTYPANDY FIRE SERVICE til Nav Fredrikstad \(0106\)./
-      )
+        /Du tildeler nå Samuel Sam Jones \(19026900010\) ved PONTYPANDY FIRE SERVICE til Nav Fredrikstad \(0106\)./,
+      ),
     ).to.exist;
   });
 });

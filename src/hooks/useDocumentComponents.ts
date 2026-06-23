@@ -13,7 +13,7 @@ export const useDocumentComponents = () => {
       createParagraph(
         "Med vennlig hilsen",
         veilederinfo?.fulltNavn() || "",
-        "Nav"
+        "Nav",
       ),
     getIntroHei: () => createParagraph(`Hei, ${navBruker.navn}`),
     getIntroGjelder: () =>

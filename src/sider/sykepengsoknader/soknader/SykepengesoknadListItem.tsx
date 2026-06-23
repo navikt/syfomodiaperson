@@ -31,7 +31,7 @@ function SendtUlikt({ soknad }: Props) {
   return (
     <span>
       {`Sendt til ${soknad.arbeidsgiver?.navn} ${toDatePrettyPrint(
-        soknad.sendtTilArbeidsgiverDato
+        soknad.sendtTilArbeidsgiverDato,
       )}`}
       <br />
       {`Sendt til Nav ${toDatePrettyPrint(soknad.sendtTilNAVDato)}`}
@@ -42,7 +42,7 @@ function SendtUlikt({ soknad }: Props) {
 const textSoknadTeaserStatus = (
   key: string,
   dato?: string,
-  arbeidsgiver?: string
+  arbeidsgiver?: string,
 ) => {
   switch (key) {
     case "soknad.teaser.status.SENDT.til-arbeidsgiver":
@@ -74,12 +74,12 @@ function beregnUndertekst(soknad: SykepengesoknadDTO) {
           ) : (
             textSoknadTeaserStatus(
               `soknad.teaser.status.${soknad.status}${getSendtTilSuffix(
-                soknad
+                soknad,
               )}`,
               tilLesbarDatoMedArstall(
-                soknad.sendtTilArbeidsgiverDato || soknad.sendtTilNAVDato
+                soknad.sendtTilArbeidsgiverDato || soknad.sendtTilNAVDato,
               ),
-              soknad.arbeidsgiver ? soknad.arbeidsgiver.navn : ""
+              soknad.arbeidsgiver ? soknad.arbeidsgiver.navn : "",
             )
           );
         }
@@ -95,8 +95,8 @@ function statusText(soknad: SykepengesoknadDTO): string {
   return soknadsStatusText(
     soknad.status,
     tilLesbarDatoMedArstall(
-      soknad.sendtTilArbeidsgiverDato || soknad.sendtTilNAVDato
-    )
+      soknad.sendtTilArbeidsgiverDato || soknad.sendtTilNAVDato,
+    ),
   );
 }
 
@@ -141,7 +141,7 @@ export default function SykepengesoknadListItem({
       <div className="flex flex-row justify-between">
         <div className="flex flex-col gap-2">
           <BodyShort size="small">{`Opprettet ${tilLesbarDatoMedArstall(
-            soknad.opprettetDato
+            soknad.opprettetDato,
           )}`}</BodyShort>
           {soknad.arbeidsgiver && (
             <BodyShort size="small">{soknad.arbeidsgiver.navn}</BodyShort>
@@ -151,7 +151,7 @@ export default function SykepengesoknadListItem({
             <BodyShort size="small">
               {`Gjelder for perioden ${tilLesbarPeriodeMedArstall(
                 soknad.fom,
-                soknad.tom
+                soknad.tom,
               )}
             `}
             </BodyShort>

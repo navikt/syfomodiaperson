@@ -15,21 +15,21 @@ interface Props {
 
 export function MoteSvarHistorikkInnkalling({ dialogmote }: Props) {
   const innkallingArbeidstaker = dialogmote.arbeidstaker.varselList.find(
-    ({ varselType }) => varselType === MotedeltakerVarselType.INNKALT
+    ({ varselType }) => varselType === MotedeltakerVarselType.INNKALT,
   );
   const innkallingArbeidsgiver = dialogmote.arbeidsgiver.varselList.find(
-    ({ varselType }) => varselType === MotedeltakerVarselType.INNKALT
+    ({ varselType }) => varselType === MotedeltakerVarselType.INNKALT,
   );
   const innkallingBehandler =
     dialogmote.behandler &&
     dialogmote.behandler.varselList.find(
-      ({ varselType }) => varselType === MotedeltakerVarselType.INNKALT
+      ({ varselType }) => varselType === MotedeltakerVarselType.INNKALT,
     );
 
   return (
     <div>
       <Label size="small">{`Innkalling sendt ${tilDatoMedManedNavn(
-        dialogmote.createdAt
+        dialogmote.createdAt,
       )} - svar:`}</Label>
       <HStack gap="space-16">
         {innkallingArbeidsgiver && (

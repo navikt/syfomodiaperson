@@ -31,15 +31,15 @@ export const useGetSykmeldingerQuery = () => {
     sykmeldinger: useMemo(
       () =>
         query.data?.map((sykmelding) =>
-          newSMFormat2OldFormat(sykmelding, fnr)
+          newSMFormat2OldFormat(sykmelding, fnr),
         ) || [],
-      [fnr, query.data]
+      [fnr, query.data],
     ),
     arbeidsgiverssykmeldinger: useMemo(
       () =>
         query.data?.map((sykmelding) => oldFormatSMForAG(sykmelding, fnr)) ||
         [],
-      [fnr, query.data]
+      [fnr, query.data],
     ),
   };
 };

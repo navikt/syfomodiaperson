@@ -6,6 +6,6 @@ import { http, HttpResponse } from "msw";
 export const stubPengestoppStatusApi = (created: Date) =>
   mockServer.use(
     http.get(`*${ISPENGESTOPP_ROOT}/person/status`, () =>
-      HttpResponse.json(createStatusList(created))
-    )
+      HttpResponse.json(createStatusList(created)),
+    ),
   );

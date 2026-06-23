@@ -66,7 +66,7 @@ export function DialogmoteAvventModal({
   const deadline = isKandidat ? inTwoMonths : inThreeWeeks;
   const invalidDateMessage = (deadline: Date) =>
     `Vennligst angi en gyldig dato i intervallet ${toDatePrettyPrint(
-      now
+      now,
     )} - ${toDatePrettyPrint(deadline)}`;
 
   const { datepickerProps, inputProps } = useDatepicker({
@@ -110,7 +110,7 @@ export function DialogmoteAvventModal({
         onSuccess: () => {
           onClose();
         },
-      }
+      },
     );
   };
 

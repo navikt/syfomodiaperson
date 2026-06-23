@@ -11,6 +11,6 @@ export const stubMaxdateApi = (maxDate: Date) =>
           ...maksdatoMock.maxDate,
           forelopig_beregnet_slutt: maxDate,
         },
-      })
-    )
+      }),
+    ),
   );

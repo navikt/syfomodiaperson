@@ -15,7 +15,7 @@ interface Props {
 
 export default function OppfolgingsplanV2Item({ oppfolgingsplan }: Props) {
   const { virksomhetsnavn } = useVirksomhetQuery(
-    oppfolgingsplan.virksomhetsnummer
+    oppfolgingsplan.virksomhetsnummer,
   );
   const opprettet = restdatoTilLesbarDato(oppfolgingsplan.opprettet);
   const deltMedNav = restdatoTilLesbarDato(oppfolgingsplan.deltMedNavTidspunkt);

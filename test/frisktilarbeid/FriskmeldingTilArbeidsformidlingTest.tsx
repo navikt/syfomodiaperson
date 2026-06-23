@@ -23,7 +23,7 @@ let queryClient: QueryClient;
 const mockVedtak = (vedtak: VedtakResponseDTO[]) => {
   queryClient.setQueryData(
     vedtakQueryKeys.vedtak(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => vedtak
+    () => vedtak,
   );
 };
 
@@ -37,7 +37,7 @@ const renderFriskmeldingTilArbeidsformidling = () => {
           <FriskmeldingTilArbeidsformidling />
         </NotificationProvider>
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -58,7 +58,7 @@ describe("FriskmeldingTilArbeidsformidling", () => {
   it("viser ferdigbehandlet vedtak når det finnes", () => {
     const vedtak = createVedtak(
       dayjs().subtract(13, "weeks").toDate(),
-      dayjs().subtract(14, "weeks").toDate()
+      dayjs().subtract(14, "weeks").toDate(),
     );
     mockVedtak([vedtak]);
 
@@ -71,7 +71,7 @@ describe("FriskmeldingTilArbeidsformidling", () => {
   it("viser aktivt vedtak når det finnes", () => {
     const vedtak = createVedtak(
       dayjs().subtract(1, "days").toDate(),
-      dayjs().toDate()
+      dayjs().toDate(),
     );
     mockVedtak([vedtak]);
 
@@ -83,11 +83,11 @@ describe("FriskmeldingTilArbeidsformidling", () => {
   it("viser nytt vedtak skjema når bruker trykker 'Nytt vedtak' når ferdigbehandlet vedtak finnes og vedtak sin til og med dato har passert", async () => {
     const vedtak = createVedtak(
       dayjs().subtract(12, "weeks").subtract(1, "day").toDate(),
-      dayjs().toDate()
+      dayjs().toDate(),
     );
     queryClient.setQueryData(
       vedtakQueryKeys.vilkar(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => defaultVilkar
+      () => defaultVilkar,
     );
     mockVedtak([vedtak]);
 
@@ -101,7 +101,7 @@ describe("FriskmeldingTilArbeidsformidling", () => {
       await screen.findByRole("button", {
         hidden: true,
         name: "Fatt vedtak",
-      })
+      }),
     );
   });
 
@@ -111,31 +111,31 @@ describe("FriskmeldingTilArbeidsformidling", () => {
     };
     queryClient.setQueryData(
       vedtakQueryKeys.vilkar(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => vilkar
+      () => vilkar,
     );
 
     renderFriskmeldingTilArbeidsformidling();
 
     expect(
       screen.getByText(
-        "Her kan du fatte et nytt vedtak for § 8-5 friskmelding til arbeidsformidling. Husk å sjekke at alle nødvendige forutsetninger er oppfylt før ordningen starter."
-      )
+        "Her kan du fatte et nytt vedtak for § 8-5 friskmelding til arbeidsformidling. Husk å sjekke at alle nødvendige forutsetninger er oppfylt før ordningen starter.",
+      ),
     ).to.exist;
     expect(
       screen.getByText(
-        "Den sykemeldte er ikke registrert som arbeidssøker. Dette må gjøres før et nytt vedtak kan fattes."
-      )
+        "Den sykemeldte er ikke registrert som arbeidssøker. Dette må gjøres før et nytt vedtak kan fattes.",
+      ),
     ).to.exist;
   });
 
   it("viser alert om at det ikke er mulig å starte nytt vedtak ettersom det finnes et eksisterende aktivt vedtak", () => {
     const vedtak = createVedtak(
       dayjs().subtract(12, "weeks").toDate(),
-      dayjs().toDate()
+      dayjs().toDate(),
     );
     queryClient.setQueryData(
       vedtakQueryKeys.vilkar(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => defaultVilkar
+      () => defaultVilkar,
     );
     mockVedtak([vedtak]);
     renderFriskmeldingTilArbeidsformidling();
@@ -143,8 +143,8 @@ describe("FriskmeldingTilArbeidsformidling", () => {
     expect(screen.getByText("Aktivt vedtak")).to.exist;
     expect(
       screen.getByText(
-        "Tidligst mulig tidspunkt for å fatte et nytt vedtak er dagen etter forrige vedtak er avsluttet."
-      )
+        "Tidligst mulig tidspunkt for å fatte et nytt vedtak er dagen etter forrige vedtak er avsluttet.",
+      ),
     ).to.exist;
   });
 });

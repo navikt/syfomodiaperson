@@ -16,7 +16,7 @@ const texts = {
 function tilfelleText(start: Date, end: Date, varighet: number) {
   return `Gjelder sykefraværet: ${tilLesbarPeriodeMedArstall(
     start,
-    end
+    end,
   )} (${varighet} uker).`;
 }
 
@@ -58,7 +58,7 @@ export default function UtdragFraSykefravaeret({
             {tilfelleText(
               oppfolgingstilfelle?.start,
               oppfolgingstilfelle?.end,
-              oppfolgingstilfelle?.varighetUker
+              oppfolgingstilfelle?.varighetUker,
             )}
           </BodyShort>
         )}

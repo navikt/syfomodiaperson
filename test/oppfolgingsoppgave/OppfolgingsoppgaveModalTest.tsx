@@ -56,7 +56,7 @@ const renderOppfolgingsoppgave = () =>
       <ValgtEnhetProvider>
         <Oppfolgingsoppgave />
       </ValgtEnhetProvider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 async function clickEditButton() {
@@ -86,7 +86,7 @@ describe("Oppfolgingsoppgave", () => {
       expect(
         await screen.findByRole("button", {
           name: "Fjerner oppfølgingsoppgaven fra oversikten",
-        })
+        }),
       ).to.exist;
     });
     it("renders oppfolgingsoppgave-info", async () => {
@@ -94,20 +94,20 @@ describe("Oppfolgingsoppgave", () => {
 
       expect(
         await screen.findByText(
-          `Opprettet: ${tilLesbarDatoMedArUtenManedNavn(new Date())}`
-        )
+          `Opprettet: ${tilLesbarDatoMedArUtenManedNavn(new Date())}`,
+        ),
       ).to.exist;
       expect(
         await screen.findByText(
-          `Sist oppdatert: ${tilLesbarDatoMedArUtenManedNavn(new Date())}`
-        )
+          `Sist oppdatert: ${tilLesbarDatoMedArUtenManedNavn(new Date())}`,
+        ),
       ).to.exist;
       expect(
         await screen.findByText(
           `Sist oppdatert av: ${VEILEDER_DEFAULT.fulltNavn()} (${
             VEILEDER_DEFAULT.ident
-          })`
-        )
+          })`,
+        ),
       ).to.exist;
     });
     it("remove deletes oppfolgingsoppgave", async () => {
@@ -122,7 +122,7 @@ describe("Oppfolgingsoppgave", () => {
         .getMutationCache()
         .getAll()[0];
       expect(fjernOppfolgingsoppgaveMutation.state.variables).to.deep.equal(
-        oppfolgingsoppgave.uuid
+        oppfolgingsoppgave.uuid,
       );
     });
     it("edit opens oppfolgingsoppgavemodal", async () => {
@@ -144,7 +144,7 @@ describe("Oppfolgingsoppgave", () => {
       await clickEditButton();
 
       const selectOppfolgingsgrunn = await screen.findByLabelText(
-        "Hvilken oppfølgingsgrunn har du? (obligatorisk)"
+        "Hvilken oppfølgingsgrunn har du? (obligatorisk)",
       );
       fireEvent.change(selectOppfolgingsgrunn, {
         target: { value: Oppfolgingsgrunn.TA_KONTAKT_SYKEMELDT },
@@ -166,7 +166,7 @@ describe("Oppfolgingsoppgave", () => {
           oppfolgingsgrunn: Oppfolgingsgrunn.TA_KONTAKT_SYKEMELDT,
         };
         expect(
-          endreOppfolgingsoppgaveMutation[0].state.variables
+          endreOppfolgingsoppgaveMutation[0].state.variables,
         ).to.deep.equal(expectedOppfolgingsoppgave);
       });
     });
@@ -176,7 +176,7 @@ describe("Oppfolgingsoppgave", () => {
       await clickEditButton();
 
       const selectOppfolgingsgrunn = await screen.findByLabelText(
-        "Hvilken oppfølgingsgrunn har du? (obligatorisk)"
+        "Hvilken oppfølgingsgrunn har du? (obligatorisk)",
       );
       fireEvent.change(selectOppfolgingsgrunn, {
         target: { value: Oppfolgingsgrunn.TA_KONTAKT_SYKEMELDT },
@@ -204,7 +204,7 @@ describe("Oppfolgingsoppgave", () => {
           oppfolgingsgrunn: Oppfolgingsgrunn.TA_KONTAKT_SYKEMELDT,
         };
         expect(
-          endreOppfolgingsoppgaveMutation[0].state.variables
+          endreOppfolgingsoppgaveMutation[0].state.variables,
         ).to.deep.equal(expectedOppfolgingsoppgave);
       });
     });
@@ -236,7 +236,7 @@ describe("Oppfolgingsoppgave", () => {
           oppfolgingsgrunn: oppfolgingsoppgaveOppfolgingsgrunn,
         };
         expect(
-          endreOppfolgingsoppgaveMutation[0].state.variables
+          endreOppfolgingsoppgaveMutation[0].state.variables,
         ).to.deep.equal(expectedOppfolgingsoppgave);
       });
     });
@@ -249,7 +249,7 @@ describe("Oppfolgingsoppgave", () => {
         screen.getByRole("textbox", {
           hidden: true,
           name: "Frist (obligatorisk)",
-        })
+        }),
       ).to.exist;
 
       const lagreButton = screen.getByRole("button", {
@@ -280,14 +280,14 @@ describe("Oppfolgingsoppgave", () => {
         .exist;
       expect(
         await screen.findByText(
-          "Du kan lage en oppfølgingsoppgave hvis du har behov for å følge opp den sykmeldte utenom de hendelsene Modia lager automatisk. Oppfølgingsbehovet må være hjemlet i folketrygdloven kapittel 8. Den sykmeldte kan kreve innsyn i oppfølgingsoppgavene."
-        )
+          "Du kan lage en oppfølgingsoppgave hvis du har behov for å følge opp den sykmeldte utenom de hendelsene Modia lager automatisk. Oppfølgingsbehovet må være hjemlet i folketrygdloven kapittel 8. Den sykmeldte kan kreve innsyn i oppfølgingsoppgavene.",
+        ),
       ).to.exist;
 
       expect(
         await screen.findByText(
-          "Velg den oppfølgingsgrunnen som passer med formålet for oppfølgingen."
-        )
+          "Velg den oppfølgingsgrunnen som passer med formålet for oppfølgingen.",
+        ),
       ).to.exist;
       expect(screen.getByRole("textbox", { hidden: true, name: "Beskrivelse" }))
         .to.exist;
@@ -295,7 +295,7 @@ describe("Oppfolgingsoppgave", () => {
         screen.getByRole("textbox", {
           hidden: true,
           name: "Frist (obligatorisk)",
-        })
+        }),
       ).to.exist;
       expect(screen.getByRole("button", { hidden: true, name: "Lagre" })).to
         .exist;
@@ -312,7 +312,7 @@ describe("Oppfolgingsoppgave", () => {
       await userEvent.click(openModalButton);
 
       const selectOppfolgingsgrunn = await screen.findByLabelText(
-        "Hvilken oppfølgingsgrunn har du? (obligatorisk)"
+        "Hvilken oppfølgingsgrunn har du? (obligatorisk)",
       );
       fireEvent.change(selectOppfolgingsgrunn, {
         target: { value: Oppfolgingsgrunn.VURDER_DIALOGMOTE_SENERE },
@@ -342,7 +342,7 @@ describe("Oppfolgingsoppgave", () => {
           frist: fristDate.format("YYYY-MM-DD"),
         };
         expect(
-          lagreOppfolgingsoppgaveMutation[0].state.variables
+          lagreOppfolgingsoppgaveMutation[0].state.variables,
         ).to.deep.equal(expectedOppfolgingsoppgave);
       });
     });
@@ -356,15 +356,15 @@ describe("Oppfolgingsoppgave", () => {
       await userEvent.click(openModalButton);
 
       const selectOppfolgingsgrunn = await screen.findByLabelText(
-        "Hvilken oppfølgingsgrunn har du? (obligatorisk)"
+        "Hvilken oppfølgingsgrunn har du? (obligatorisk)",
       );
       fireEvent.change(selectOppfolgingsgrunn, {
         target: { value: Oppfolgingsgrunn.ANNET },
       });
       expect(
         screen.queryByText(
-          "Denne oppgaven skal kun brukes til sykefraværsoppfølging, altså ikke oppgaver knyttet til andre ytelser eller formål. Innbyggeren kan få innsyn i det du skriver her."
-        )
+          "Denne oppgaven skal kun brukes til sykefraværsoppfølging, altså ikke oppgaver knyttet til andre ytelser eller formål. Innbyggeren kan få innsyn i det du skriver her.",
+        ),
       ).to.exist;
     });
     it("does not show extra alert when ANNET oppfolgingsgrunn is NOT chosen", async () => {
@@ -377,15 +377,15 @@ describe("Oppfolgingsoppgave", () => {
       await userEvent.click(openModalButton);
 
       const selectOppfolgingsgrunn = await screen.findByLabelText(
-        "Hvilken oppfølgingsgrunn har du? (obligatorisk)"
+        "Hvilken oppfølgingsgrunn har du? (obligatorisk)",
       );
       fireEvent.change(selectOppfolgingsgrunn, {
         target: { value: Oppfolgingsgrunn.TA_KONTAKT_ARBEIDSGIVER },
       });
       expect(
         screen.queryByText(
-          "Denne oppgaven skal kun brukes til sykefraværsoppfølging, altså ikke oppgaver knyttet til andre ytelser eller formål. Innbyggeren kan få innsyn i det du skriver her."
-        )
+          "Denne oppgaven skal kun brukes til sykefraværsoppfølging, altså ikke oppgaver knyttet til andre ytelser eller formål. Innbyggeren kan få innsyn i det du skriver her.",
+        ),
       ).to.not.exist;
     });
     it("show an alert if oppfolgingsoppgavebeskrivelsen becomes more than 200 characters", async () => {
@@ -404,7 +404,7 @@ describe("Oppfolgingsoppgave", () => {
       const beskrivelseInput = screen.getByLabelText("Beskrivelse");
       changeTextInput(
         beskrivelseInput,
-        "Dette var en veldig god grunn for å lage oppfølgingsoppgave. Faktisk så god grunn at jeg ønsker å skrive så mye som 200 tegn for å sjekke om det kommer opp et varsel med beskrivelse hvis jeg skriver så mange tegn."
+        "Dette var en veldig god grunn for å lage oppfølgingsoppgave. Faktisk så god grunn at jeg ønsker å skrive så mye som 200 tegn for å sjekke om det kommer opp et varsel med beskrivelse hvis jeg skriver så mange tegn.",
       );
       expect(screen.queryByText(lengthBeskrivelseAlert)).to.exist;
     });
