@@ -1,0 +1,28 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "react", "jsx-a11y"],
+  "jsPlugins": ["eslint-plugin-no-only-tests"],
+  "categories": {
+    "correctness": "off"
+  },
+  "env": {
+    "builtin": true
+  },
+  "rules": {
+    "no-only-tests/no-only-tests": "error",
+    "react/jsx-no-useless-fragment": "error",
+    "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["**/test/**"],
+            "message": "Production code must not import from test/. Move shared data/helpers to src/mocks, src/utils, or a domain module."
+          }
+        ]
+      }
+    ]
+  }
+}
