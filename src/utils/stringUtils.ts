@@ -6,16 +6,12 @@ export const capitalizeWord = (word: string): string => {
   return firstLetterToUpperCase(word.toLowerCase());
 };
 
-export const capitalizeAllWords = (word: string): string =>
-  word
-    .split(/\s/)
-    .map((word) =>
-      word
-        .split("-")
-        .map((word) => capitalizeWord(word))
-        .join("-")
-    )
-    .join(" ")
+export const capitalizeAllWords = (text: string): string =>
+  text
+    .toLowerCase()
+    .replace(/(^|[\s(\-])(\p{L})/gu, (_match, prefix, letter) => {
+      return `${prefix}${letter.toUpperCase()}`;
+    })
     .trim();
 
 export const containsWhiteSpace = (str: string) => {

@@ -265,8 +265,77 @@ describe("PersonkortHeader", () => {
     renderPersonkortHeader();
 
     expect(screen.getByText("Arbeidsforhold:")).to.exist;
-    expect(screen.getByText(/Sykepleier i Sykehus AS \(80 %\),/)).to.exist;
+    expect(screen.getByText(/Sykepleier i Sykehus AS \(80 %\)/)).to.exist;
     expect(screen.getByText(/Brannmann i Brannvesenet \(40 %\)/)).to.exist;
+  });
+
+  it("viser kun to arbeidsforhold og indikator naar flere finnes i AaReg", () => {
+    const flereAktiveArbeidsforhold: ArbeidsforholdPersonDTO = {
+      personident: ARBEIDSTAKER_DEFAULT.personIdent,
+      arbeidsforhold: [
+        {
+          ...arbeidsforholdPersonMock.arbeidsforhold[0],
+          navArbeidsforholdId: 301,
+          orgnummer: "333666999",
+          yrke: "Sykepleier",
+          stillingsprosent: "80",
+          ansettelseSlutt: null,
+        },
+        {
+          ...arbeidsforholdPersonMock.arbeidsforhold[1],
+          navArbeidsforholdId: 302,
+          orgnummer: "110110110",
+          yrke: "Brannmann",
+          stillingsprosent: "40",
+          ansettelseSlutt: null,
+        },
+        {
+          ...arbeidsforholdPersonMock.arbeidsforhold[2],
+          navArbeidsforholdId: 303,
+          orgnummer: "999888777",
+          yrke: "Lege",
+          stillingsprosent: "90",
+          ansettelseSlutt: null,
+        },
+      ],
+    };
+
+    queryClient.setQueryData(
+      arbeidsforholdQueryKeys.arbeidsforhold(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => flereAktiveArbeidsforhold
+    );
+    queryClient.setQueryData(
+      virksomhetQueryKeys.virksomhet("333666999"),
+      () => ({
+        navn: {
+          navnelinje1: "Sykehus AS",
+        },
+      })
+    );
+    queryClient.setQueryData(
+      virksomhetQueryKeys.virksomhet("110110110"),
+      () => ({
+        navn: {
+          navnelinje1: "Brannvesenet",
+        },
+      })
+    );
+    queryClient.setQueryData(
+      virksomhetQueryKeys.virksomhet("999888777"),
+      () => ({
+        navn: {
+          navnelinje1: "Legekontoret",
+        },
+      })
+    );
+
+    renderPersonkortHeader();
+
+    expect(screen.getByText(/Lege i Legekontoret \(90 %\)/)).to.exist;
+    expect(screen.getByText(/Sykepleier i Sykehus AS \(80 %\)/)).to.exist;
+    expect(screen.queryByText(/Brannmann i Brannvesenet \(40 %\)/)).not.to
+      .exist;
+    expect(screen.getByText(/2 av 3, flere i AA register/)).to.exist;
   });
 
   it("viser 'mangler' når ingen aktive arbeidsforhold finnes", () => {

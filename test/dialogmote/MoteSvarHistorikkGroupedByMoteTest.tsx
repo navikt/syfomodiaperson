@@ -19,11 +19,10 @@ import {
 import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
-import MoteSvarHistorikk from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikk";
 import { queryClientWithMockData } from "../testQueryClient";
 import { expect, describe, it, beforeEach } from "vitest";
 import userEvent from "@testing-library/user-event";
-
+import { MoteSvarHistorikkGroupedByMote } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkGroupedByMote.tsx";
 let queryClient: QueryClient;
 
 const narmesteLederNavnMedVirksomhet = `${NARMESTE_LEDER_DEFAULT.navn} (${VIRKSOMHET_PONTYPANDY.virksomhetsnavn})`;
@@ -165,20 +164,22 @@ const avlystMote: DialogmoteDTO = {
   referatList: [],
 };
 
-const renderMoteSvarHistorikk = (historiskeMoter: DialogmoteDTO[]) => {
+const renderMoteSvarHistorikkGroupedByMote = (
+  historiskeMoter: DialogmoteDTO[]
+) => {
   render(
     <QueryClientProvider client={queryClient}>
-      <MoteSvarHistorikk historiskeMoter={historiskeMoter} />
+      <MoteSvarHistorikkGroupedByMote historiskeMoter={historiskeMoter} />
     </QueryClientProvider>
   );
 };
 
-describe("MoteSvarHistorikk", () => {
+describe("MoteSvarHistorikkGroupedByMote", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
   });
   it("viser accordion for hvert møte", () => {
-    renderMoteSvarHistorikk([ferdigstiltMote, avlystMote]);
+    renderMoteSvarHistorikkGroupedByMote([ferdigstiltMote, avlystMote]);
 
     const accordions = getAccordionButtons();
     expect(accordions.length).to.equal(2);
@@ -186,7 +187,7 @@ describe("MoteSvarHistorikk", () => {
     expect(accordions[1].textContent).to.contain("Avlyst møte 22. mars 2020");
   });
   it("viser sted og veileder for møte", async () => {
-    renderMoteSvarHistorikk([ferdigstiltMote]);
+    renderMoteSvarHistorikkGroupedByMote([ferdigstiltMote]);
 
     const accordion = screen.getByRole("button", {
       name: "Møte 15. januar 2021",
@@ -198,7 +199,7 @@ describe("MoteSvarHistorikk", () => {
       .exist;
   });
   it("viser innkalling og endring med svar for ferdigstilt møte", async () => {
-    renderMoteSvarHistorikk([ferdigstiltMote]);
+    renderMoteSvarHistorikkGroupedByMote([ferdigstiltMote]);
 
     const accordion = screen.getByRole("button", {
       name: "Møte 15. januar 2021",
@@ -221,7 +222,7 @@ describe("MoteSvarHistorikk", () => {
     );
   });
   it("viser innkalling med svar for avlyst møte", async () => {
-    renderMoteSvarHistorikk([avlystMote]);
+    renderMoteSvarHistorikkGroupedByMote([avlystMote]);
 
     const accordion = screen.getByRole("button", {
       name: "Avlyst møte 22. mars 2020",

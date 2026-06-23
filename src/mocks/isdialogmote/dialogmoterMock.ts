@@ -29,7 +29,10 @@ import { addDays } from "@/utils/datoUtils";
 import { DialogmoteStatusEndringDTO } from "@/sider/dialogmoter/types/dialogmoteStatusEndringTypes";
 
 type VarselOpts = {
-  varselType: MotedeltakerVarselType.INNKALT | MotedeltakerVarselType.AVLYST;
+  varselType:
+    | MotedeltakerVarselType.INNKALT
+    | MotedeltakerVarselType.AVLYST
+    | MotedeltakerVarselType.NYTT_TID_STED;
   uuid: string;
   svar?: VarselSvarDTO;
 };
@@ -43,9 +46,9 @@ const createVarsel = ({
     case MotedeltakerVarselType.INNKALT: {
       return {
         uuid: uuid + 2,
-        createdAt: "2021-05-26T12:56:26.271381",
+        createdAt: dayjs().subtract(10, "days").toISOString(),
         varselType: varselType,
-        lestDato: "2021-05-26T12:56:26.271381",
+        lestDato: dayjs().subtract(9, "days").toISOString(),
         fritekst: "Ipsum lorum",
         ...(svar ? { svar } : {}),
         document: [
@@ -77,9 +80,9 @@ const createVarsel = ({
     case MotedeltakerVarselType.AVLYST: {
       return {
         uuid: uuid + 4,
-        createdAt: "2021-05-26T12:56:26.271381",
+        createdAt: dayjs().subtract(1, "days").toISOString(),
         varselType: varselType,
-        lestDato: "2021-05-26T12:56:26.271381",
+        lestDato: dayjs().subtract(1, "days").toISOString(),
         fritekst: "Ipsum lorum",
         ...(svar ? { svar } : {}),
         document: [
@@ -108,6 +111,23 @@ const createVarsel = ({
         ],
       };
     }
+    case MotedeltakerVarselType.NYTT_TID_STED: {
+      return {
+        uuid: uuid + 5,
+        createdAt: dayjs().subtract(5, "days").toISOString(),
+        varselType: varselType,
+        lestDato: dayjs().subtract(5, "days").toISOString(),
+        fritekst: "Ipsum lorum",
+        ...(svar ? { svar } : {}),
+        document: [
+          {
+            type: DocumentComponentType.PARAGRAPH,
+            title: "Endring",
+            texts: [],
+          },
+        ],
+      };
+    }
   }
 };
 
@@ -121,7 +141,7 @@ export const createDialogmote = (
     {
       ...createVarsel({
         svar: {
-          svarTidspunkt: addDays(moteTid, -3).toJSON(),
+          svarTidspunkt: addDays(moteTid, 1).toISOString(),
           svarType: SvarType.KOMMER,
         },
         uuid,
@@ -129,17 +149,61 @@ export const createDialogmote = (
       }),
       digitalt: true,
     },
+    {
+      ...createVarsel({
+        svar: {
+          svarTidspunkt: addDays(moteTid, 3).toISOString(),
+          svarTekst: "Nei nå har jeg lagt planer gitt!",
+          svarType: SvarType.KOMMER_IKKE,
+        },
+        uuid,
+        varselType: MotedeltakerVarselType.NYTT_TID_STED,
+      }),
+      digitalt: false,
+    },
+    {
+      ...createVarsel({
+        svar: undefined,
+        uuid,
+        varselType: MotedeltakerVarselType.NYTT_TID_STED,
+      }),
+      digitalt: false,
+    },
   ];
   const arbeidsgiverVarselList: DialogmotedeltakerArbeidsgiverVarselDTO[] = [
     {
       ...createVarsel({
         svar: {
-          svarTidspunkt: addDays(moteTid, -3).toJSON(),
+          svarTidspunkt: addDays(moteTid, -3).toISOString(),
           svarTekst: "Passer ikke denne dagen.",
           svarType: SvarType.NYTT_TID_STED,
         },
         uuid,
         varselType: MotedeltakerVarselType.INNKALT,
+      }),
+      status: "",
+    },
+    {
+      ...createVarsel({
+        svar: {
+          svarTidspunkt: addDays(moteTid, 1).toISOString(),
+          svarTekst: "Hva med fredag?",
+          svarType: SvarType.NYTT_TID_STED,
+        },
+        uuid,
+        varselType: MotedeltakerVarselType.NYTT_TID_STED,
+      }),
+      status: "",
+    },
+    {
+      ...createVarsel({
+        svar: {
+          svarTidspunkt: addDays(moteTid, 3).toISOString(),
+          svarTekst: "Jo det passer visst likevel yey!",
+          svarType: SvarType.KOMMER,
+        },
+        uuid,
+        varselType: MotedeltakerVarselType.NYTT_TID_STED,
       }),
       status: "",
     },
@@ -191,7 +255,7 @@ export const createDialogmote = (
     });
     behandlerVarselList.push({
       uuid: uuid + 5,
-      createdAt: addDays(moteTid, -4).toJSON(),
+      createdAt: addDays(moteTid, -4).toISOString(),
       varselType: MotedeltakerVarselType.AVLYST,
       fritekst: "Ipsum lorum behandler",
       document: [],
@@ -201,8 +265,8 @@ export const createDialogmote = (
 
   const dialogMote: DialogmoteDTO = {
     uuid: uuid,
-    createdAt: addDays(moteTid, -4).toJSON(),
-    updatedAt: addDays(moteTid, -4).toJSON(),
+    createdAt: addDays(moteTid, -4).toISOString(),
+    updatedAt: addDays(moteTid, -4).toISOString(),
     status: moteStatus,
     opprettetAv: VEILEDER_IDENT_DEFAULT,
     tildeltVeilederIdent: VEILEDER_IDENT_DEFAULT,
@@ -226,7 +290,7 @@ export const createDialogmote = (
         }
       : {}),
     sted: "This is a very lang text that has a lot of characters and describes where the meeting will take place.",
-    tid: moteTid.toJSON(),
+    tid: moteTid.toISOString(),
     videoLink: "https://video.nav.no/xyz",
     referatList: [],
   };
@@ -294,8 +358,17 @@ export const ferdigstiltDialogmote = createDialogmote(
   DialogmoteStatus.FERDIGSTILT,
   dayjs().subtract(2, "years").toDate()
 );
+export const innkaltDialogmote = createDialogmote(
+  "5f1e2629-062b-442d-ae1f-3b08e9574cd3",
+  DialogmoteStatus.INNKALT,
+  dayjs().add(2, "days").toDate()
+);
 
-export const dialogmoterMock = [avlystDialogmote, ferdigstiltDialogmote];
+export const dialogmoterMock = [
+  innkaltDialogmote,
+  avlystDialogmote,
+  ferdigstiltDialogmote,
+];
 
 export const dialogmoteStatusEndringMock: DialogmoteStatusEndringDTO[] = [
   {

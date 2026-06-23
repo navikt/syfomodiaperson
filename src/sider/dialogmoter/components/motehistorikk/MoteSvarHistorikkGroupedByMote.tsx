@@ -14,7 +14,7 @@ interface Props {
   historiskeMoter: DialogmoteDTO[];
 }
 
-export default function MoteSvarHistorikk({ historiskeMoter }: Props) {
+export function MoteSvarHistorikkGroupedByMote({ historiskeMoter }: Props) {
   const hasMoteHistorikk = historiskeMoter.length > 0;
 
   return (
@@ -25,8 +25,8 @@ export default function MoteSvarHistorikk({ historiskeMoter }: Props) {
       />
       {hasMoteHistorikk ? (
         <Accordion>
-          {historiskeMoter.map((mote, index) => (
-            <MoteSvarHistorikkEvent dialogmote={mote} key={index} />
+          {historiskeMoter.map((mote) => (
+            <MoteSvarHistorikkEvent dialogmote={mote} key={mote.uuid} />
           ))}
         </Accordion>
       ) : (

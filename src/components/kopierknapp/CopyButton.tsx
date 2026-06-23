@@ -1,13 +1,14 @@
 import React, { useRef, useState } from "react";
-import { CopyImage } from "../../../img/ImageComponents";
 import { Popover } from "@navikt/ds-react";
+import { FilesIcon } from "@navikt/aksel-icons";
 
 interface Props {
   message: string;
   value: string;
+  iconTitle: string;
 }
 
-export function CopyButton({ message, value }: Props) {
+export function CopyButton({ message, value, iconTitle }: Props) {
   const [showPopover, setShowPopover] = useState<boolean>(false);
   const triggerRef = useRef<HTMLSpanElement>(null);
 
@@ -35,7 +36,7 @@ export function CopyButton({ message, value }: Props) {
           }
         }}
       >
-        <img alt="kopier" src={CopyImage} className="h-5" />
+        <FilesIcon title={iconTitle} fontSize="1.5rem" />
       </span>
       <Popover
         open={showPopover}
