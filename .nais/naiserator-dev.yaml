@@ -52,6 +52,10 @@ spec:
       claims:
         extra:
           - "NAVident"
+        groups:
+          - "c8957e0a-909c-4b62-8e11-93aae6d295e6" #0000-GA-SYFO-SENSITIV
+          - "d8ff201d-730a-453f-82ab-7ab4748307e3" #0000-CA-MODIA-SYFO-LESETILGANG
+          - "faec0181-2814-4af5-8faf-bd908801fd92" #0000-CA-MODIA-SYFO-VEILEDER
   valkey:
     - instance: cache
       access: readwrite

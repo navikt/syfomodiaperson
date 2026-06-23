@@ -6,6 +6,7 @@ import { logger } from "@navikt/pino-logger";
 interface TokenIntrospectionResponse {
   active: boolean;
   NAVident?: string;
+  groups: string[];
 }
 
 interface TokenExchangeResponse {
@@ -35,7 +36,13 @@ export async function validateToken(req: Request): Promise<boolean> {
   }
 
   const data = (await response.json()) as TokenIntrospectionResponse;
+  logger.info(`user groups: ${data.groups.join(", ")}`);
   return data.active;
+}
+
+function decodeJwtPayload(token: string): Record<string, unknown> {
+  const payload = token.split(".")[1];
+  return JSON.parse(Buffer.from(payload, "base64url").toString("utf-8"));
 }
 
 /** Exchanges the user's bearer token for an OBO token via Texas token exchange. */
@@ -62,7 +69,11 @@ export async function getOnBehalfOfToken(
   }
 
   const data = (await response.json()) as TokenExchangeResponse;
-  return data.access_token;
+  const oboToken = data.access_token;
+  const claims = decodeJwtPayload(oboToken);
+  const groups = Array.isArray(claims.groups) ? claims.groups : [];
+  logger.info(`OBO token groups: ${groups.join(", ")}`);
+  return oboToken;
 }
 
 /** Extracts the NAVident claim from the bearer token via Texas introspection. */
