@@ -9,7 +9,7 @@ import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function arbeidsuforhetText(
   veilederident: string,
-  vurderingType: ArbeidsuforhetVurderingType
+  vurderingType: ArbeidsuforhetVurderingType,
 ): string {
   switch (vurderingType) {
     case ArbeidsuforhetVurderingType.FORHANDSVARSEL:
@@ -29,7 +29,7 @@ function arbeidsuforhetText(
 }
 
 function createHistorikkEventsFromArbeidsuforhet(
-  arbeidsuforhetVurderinger: ArbeidsuforhetVurderinger[]
+  arbeidsuforhetVurderinger: ArbeidsuforhetVurderinger[],
 ): HistorikkEvent[] {
   return arbeidsuforhetVurderinger.map(
     (vurdering: ArbeidsuforhetVurderinger) => {
@@ -39,7 +39,7 @@ function createHistorikkEventsFromArbeidsuforhet(
         tidspunkt: vurdering.createdAt,
         kilde: "ARBEIDSUFORHET",
       };
-    }
+    },
   );
 }
 
@@ -51,7 +51,7 @@ export function useArbeidsuforhetHistorikk(): HistorikkEvents {
   } = useGetArbeidsuforhetVurderingerQuery();
 
   const arbeidsuforhetHistorikk = createHistorikkEventsFromArbeidsuforhet(
-    arbeidsuforhetVurderinger
+    arbeidsuforhetVurderinger,
   );
 
   return {

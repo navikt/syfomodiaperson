@@ -8,7 +8,7 @@ import {
 import { EregOrganisasjonResponseDTO } from "@/data/virksomhet/types/EregOrganisasjonResponseDTO";
 
 export const eregOrganisasjonResponse = (
-  virksomhetsnavn: string
+  virksomhetsnavn: string,
 ): EregOrganisasjonResponseDTO => {
   return {
     navn: {
@@ -26,7 +26,7 @@ export const virksomhetMock = (virksomhetsnummer?: string) => {
       return eregOrganisasjonResponse(VIRKSOMHET_BRANNOGBIL.virksomhetsnavn);
     case VIRKSOMHET_UTEN_NARMESTE_LEDER.virksomhetsnummer:
       return eregOrganisasjonResponse(
-        VIRKSOMHET_UTEN_NARMESTE_LEDER.virksomhetsnavn
+        VIRKSOMHET_UTEN_NARMESTE_LEDER.virksomhetsnavn,
       );
     case VIRKSOMHET_ENTERPRISE.virksomhetsnummer:
       return eregOrganisasjonResponse(VIRKSOMHET_ENTERPRISE.virksomhetsnavn);

@@ -42,7 +42,7 @@ export function isPlanValidNow(plan: OppfolgingsplanDTO): boolean {
 function isPlanWithinOppfolgingstilfelle(
   plan: OppfolgingsplanDTO,
   oppfolgingstilfelle: OppfolgingstilfelleDTO,
-  isLatestTilfelle = false
+  isLatestTilfelle = false,
 ): boolean {
   const planEnd = new Date(plan.godkjentPlan.gyldighetstidspunkt.tom);
   const tilfelleStart = new Date(oppfolgingstilfelle.start);
@@ -62,7 +62,7 @@ function isPlanWithinOppfolgingstilfelle(
 export function filterOppfolgingsplanerByOppfolgingstilfelle(
   planer: OppfolgingsplanDTO[],
   oppfolgingstilfelle: OppfolgingstilfelleDTO | undefined,
-  isLatestTilfelle = false
+  isLatestTilfelle = false,
 ): OppfolgingsplanDTO[] {
   if (!oppfolgingstilfelle) {
     return [];
@@ -75,14 +75,14 @@ export function filterOppfolgingsplanerByOppfolgingstilfelle(
         isPlanWithinOppfolgingstilfelle(
           plan,
           oppfolgingstilfelle,
-          isLatestTilfelle
-        )
-    )
+          isLatestTilfelle,
+        ),
+    ),
   );
 }
 
 export function partitionOppfolgingsplanerByAktivPlan(
-  planer: OppfolgingsplanDTO[]
+  planer: OppfolgingsplanDTO[],
 ): [OppfolgingsplanDTO[], OppfolgingsplanDTO[]] {
   const aktivePlaner = aktiveOppfolgingsplaner(planer);
   const sortedAktivePlaner =
@@ -96,33 +96,33 @@ export function partitionOppfolgingsplanerByAktivPlan(
 }
 
 function planerSortedDescendingByDeltMedNAVTidspunkt(
-  oppfolgingsplaner: OppfolgingsplanDTO[]
+  oppfolgingsplaner: OppfolgingsplanDTO[],
 ) {
   return oppfolgingsplaner.sort(
     (a, b) =>
       new Date(b.godkjentPlan.deltMedNAVTidspunkt).getTime() -
-      new Date(a.godkjentPlan.deltMedNAVTidspunkt).getTime()
+      new Date(a.godkjentPlan.deltMedNAVTidspunkt).getTime(),
   );
 }
 
 function virksomheterWithPlan(
-  oppfolgingsplaner: OppfolgingsplanDTO[]
+  oppfolgingsplaner: OppfolgingsplanDTO[],
 ): string[] {
   const uniqueVirksomheter = new Set(
-    oppfolgingsplaner.map((plan) => plan.virksomhet.virksomhetsnummer)
+    oppfolgingsplaner.map((plan) => plan.virksomhet.virksomhetsnummer),
   );
   return [...uniqueVirksomheter];
 }
 
 function firstPlanForEachVirksomhet(
   oppfolgingsplaner: OppfolgingsplanDTO[],
-  virksomheter: string[]
+  virksomheter: string[],
 ) {
   const newestPlanPerVirksomhet = [] as any[];
 
   virksomheter.forEach((nummer) => {
     const newestPlanForVirksomhetsnummer = oppfolgingsplaner.find(
-      (plan) => plan.virksomhet.virksomhetsnummer === nummer
+      (plan) => plan.virksomhet.virksomhetsnummer === nummer,
     );
     newestPlanPerVirksomhet.push(newestPlanForVirksomhetsnummer);
   });
@@ -131,7 +131,7 @@ function firstPlanForEachVirksomhet(
 }
 
 export function aktiveOppfolgingsplaner(
-  oppfolgingsplaner: OppfolgingsplanDTO[]
+  oppfolgingsplaner: OppfolgingsplanDTO[],
 ): OppfolgingsplanDTO[] {
   const sortedPlaner =
     planerSortedDescendingByDeltMedNAVTidspunkt(oppfolgingsplaner);
@@ -139,6 +139,6 @@ export function aktiveOppfolgingsplaner(
 
   return firstPlanForEachVirksomhet(
     oppfolgingsplaner,
-    virksomheterMedOppfolgingsplan
+    virksomheterMedOppfolgingsplan,
   ).filter((plan) => isPlanValidNow(plan));
 }

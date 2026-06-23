@@ -30,7 +30,7 @@ interface DialogmoteInnkallingBehandlerProps {
 
 function behandlerRefValidationErrors(
   behandlerRef: string | undefined,
-  isBehandlerSelected: boolean
+  isBehandlerSelected: boolean,
 ) {
   if (!isBehandlerSelected) {
     return texts.behandlerNotSelected;

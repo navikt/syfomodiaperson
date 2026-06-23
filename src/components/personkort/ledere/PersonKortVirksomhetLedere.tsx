@@ -27,7 +27,7 @@ const texts = {
 };
 
 const getNarmesteLederRelasjonStatusText = (
-  status: NarmesteLederRelasjonStatus
+  status: NarmesteLederRelasjonStatus,
 ) => {
   switch (status) {
     case NarmesteLederRelasjonStatus.INNMELDT_AKTIV:
@@ -140,7 +140,7 @@ export function PersonKortVirksomhetLedere({
               )}
             </Row>
           );
-        }
+        },
       )}
     </PersonKortVirksomhetHeader>
   );

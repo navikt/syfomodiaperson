@@ -5,7 +5,7 @@ import AppSpinner from "@/components/AppSpinner";
 
 export default function InnstillingUtenForhandsvarselContainer() {
   const draft = useDraftQuery<DraftTextDTO>(
-    "arbeidsuforhet-avslag-uten-forhandsvarsel"
+    "arbeidsuforhet-avslag-uten-forhandsvarsel",
   );
 
   return draft.isPending ? (

@@ -28,7 +28,7 @@ const expectedFristDate = getForhandsvarselFrist();
 
 export const getUnntakDocument = (
   begrunnelse: string,
-  arsak: UnntakVurderingArsak
+  arsak: UnntakVurderingArsak,
 ): DocumentComponentDto[] => {
   return [
     vurderingHeader,
@@ -36,7 +36,7 @@ export const getUnntakDocument = (
     {
       texts: [
         `Det ble vurdert unntak fra aktivitetskravet den ${tilDatoMedManedNavn(
-          new Date()
+          new Date(),
         )}. Årsak: ${unntakVurderingArsakTexts[arsak]}.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
@@ -49,7 +49,7 @@ export const getUnntakDocument = (
 
 export const getIkkeAktuellDocument = (
   begrunnelse: string,
-  arsak: IkkeAktuellArsak
+  arsak: IkkeAktuellArsak,
 ): DocumentComponentDto[] => {
   return [
     vurderingHeader,
@@ -57,7 +57,7 @@ export const getIkkeAktuellDocument = (
     {
       texts: [
         `Det ble vurdert at aktivitetskravet ikke er aktuelt den ${tilDatoMedManedNavn(
-          new Date()
+          new Date(),
         )}. Årsak: ${ikkeAktuellVurderingArsakTexts[arsak]}.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
@@ -70,7 +70,7 @@ export const getIkkeAktuellDocument = (
 
 export const getOppfyltDocument = (
   begrunnelse: string,
-  arsak: OppfyltVurderingArsak
+  arsak: OppfyltVurderingArsak,
 ): DocumentComponentDto[] => {
   return [
     vurderingHeader,
@@ -78,7 +78,7 @@ export const getOppfyltDocument = (
     {
       texts: [
         `Det ble vurdert at aktivitetskravet er oppfylt den ${tilDatoMedManedNavn(
-          new Date()
+          new Date(),
         )}. Årsak: ${oppfyltVurderingArsakTexts[arsak]}.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
@@ -127,7 +127,7 @@ const ikkeAktuellHjemmel = {
 
 export const getSendForhandsvarselDocument = (
   beskrivelse: string,
-  mal: Brevmal = Brevmal.MED_ARBEIDSGIVER
+  mal: Brevmal = Brevmal.MED_ARBEIDSGIVER,
 ): DocumentComponentDto[] => {
   const sendForhandsvarselTexts = getForhandsvarselTexts({
     frist: expectedFristDate,
@@ -209,7 +209,7 @@ export const getSendForhandsvarselDocument = (
     {
       texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "Nav"],
       type: DocumentComponentType.PARAGRAPH,
-    }
+    },
   );
 
   return documentComponents;
@@ -225,7 +225,7 @@ export function innstillingOmStansDocument(beskrivelse: string) {
     {
       texts: [
         `Nav har stanset sykepengene dine fra og med ${tilDatoMedManedNavn(
-          new Date()
+          new Date(),
         )}.`,
       ],
       type: DocumentComponentType.PARAGRAPH,

@@ -20,7 +20,7 @@ describe("ledereUtils", () => {
 
       const hasActiveSykmelding = lederHasActiveSykmelding(
         leder.virksomhetsnummer,
-        sykmeldinger
+        sykmeldinger,
       );
 
       expect(hasActiveSykmelding).to.be.equal(true);
@@ -32,7 +32,7 @@ describe("ledereUtils", () => {
 
       const hasActiveSykmelding = lederHasActiveSykmelding(
         leder.virksomhetsnummer,
-        sykmeldinger
+        sykmeldinger,
       );
 
       expect(hasActiveSykmelding).to.be.equal(false);
@@ -44,7 +44,7 @@ describe("ledereUtils", () => {
 
       const hasActiveSykmelding = lederHasActiveSykmelding(
         leder.virksomhetsnummer,
-        sykmeldinger
+        sykmeldinger,
       );
 
       expect(hasActiveSykmelding).to.be.equal(false);
@@ -56,7 +56,7 @@ describe("ledereUtils", () => {
 
       const hasActiveSykmelding = lederHasActiveSykmelding(
         leder.virksomhetsnummer,
-        sykmeldinger
+        sykmeldinger,
       );
 
       expect(hasActiveSykmelding).to.be.equal(false);
@@ -88,7 +88,7 @@ describe("ledereUtils", () => {
 
       const ledereFromSykmeldinger = virksomheterWithoutLeder(
         lederList,
-        sykmeldinger
+        sykmeldinger,
       );
 
       const expectedLeder = {
@@ -109,7 +109,7 @@ describe("ledereUtils", () => {
 
       const ledereFromSykmeldinger = virksomheterWithoutLeder(
         lederList,
-        sykmeldinger
+        sykmeldinger,
       );
 
       expect(ledereFromSykmeldinger.length).to.be.equal(0);
@@ -121,7 +121,7 @@ describe("ledereUtils", () => {
 
       const ledereFromSykmeldinger = virksomheterWithoutLeder(
         lederList,
-        sykmeldinger
+        sykmeldinger,
       );
 
       expect(ledereFromSykmeldinger.length).to.be.equal(0);
@@ -136,7 +136,7 @@ describe("ledereUtils", () => {
 
       const ledereFromSykmeldinger = virksomheterWithoutLeder(
         lederList,
-        sykmeldinger
+        sykmeldinger,
       );
 
       const expectedLeder = {

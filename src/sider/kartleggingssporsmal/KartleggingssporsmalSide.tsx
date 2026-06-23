@@ -195,12 +195,12 @@ export default function KartleggingssporsmalSide(): ReactElement {
                   <>
                     <BodyShort size="small" weight="semibold">
                       {`${texts.svart} ${tilLesbarDatoMedArstall(
-                        answeredQuestions.createdAt
+                        answeredQuestions.createdAt,
                       )}`}
                     </BodyShort>
                     <BodyShort size="small" weight="semibold">
                       {`${texts.kandidat} ${tilLesbarDatoMedArstall(
-                        nyesteKandidat.varsletAt
+                        nyesteKandidat.varsletAt,
                       )}`}
                     </BodyShort>
                     <EksternLenke href={texts.demoUrl}>
@@ -234,7 +234,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     </BodyShort>
                     <BodyShort size="small" weight="semibold">
                       {`${texts.kandidat} ${tilLesbarDatoMedArstall(
-                        nyesteKandidat.varsletAt
+                        nyesteKandidat.varsletAt,
                       )}`}
                     </BodyShort>
                     <EksternLenke href={texts.demoUrl}>
@@ -275,7 +275,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     onOpenChange={(isOpen) =>
                       trackAccordionApnet(
                         isOpen,
-                        texts.veiledningBox.accordion1
+                        texts.veiledningBox.accordion1,
                       )
                     }
                   >
@@ -292,7 +292,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     onOpenChange={(isOpen) =>
                       trackAccordionApnet(
                         isOpen,
-                        texts.veiledningBox.accordion2
+                        texts.veiledningBox.accordion2,
                       )
                     }
                   >
@@ -309,7 +309,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     onOpenChange={(isOpen) =>
                       trackAccordionApnet(
                         isOpen,
-                        texts.veiledningBox.accordion3
+                        texts.veiledningBox.accordion3,
                       )
                     }
                   >

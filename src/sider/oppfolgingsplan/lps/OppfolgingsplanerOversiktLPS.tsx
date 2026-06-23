@@ -18,7 +18,7 @@ export default function OppfolgingsplanerOversiktLPS({
   oppfolgingsplanLPSBistandsbehov,
 }: Props) {
   const { virksomhetsnavn } = useVirksomhetQuery(
-    oppfolgingsplanLPSBistandsbehov.virksomhetsnummer
+    oppfolgingsplanLPSBistandsbehov.virksomhetsnummer,
   );
 
   return (

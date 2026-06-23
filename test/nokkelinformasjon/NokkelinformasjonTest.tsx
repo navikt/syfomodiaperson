@@ -35,7 +35,7 @@ const renderNokkelinformasjon = () =>
           <Nokkelinformasjon />
         </ValgtEnhetContext.Provider>
       </MemoryRouter>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 const sykmeldingOppfolgingstilfelle1 = {
@@ -78,19 +78,19 @@ describe("Nokkelinformasjon", () => {
     setEmptyQueryData(queryClient);
     queryClient.setQueryData(
       oppfolgingsplanQueryKeys.oppfolgingsplaner(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => []
+      () => [],
     );
     queryClient.setQueryData(
       ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [LEDERE_DEFAULT[0]]
+      () => [LEDERE_DEFAULT[0]],
     );
     queryClient.setQueryData(
       behandlendeEnhetQueryKeys.behandlendeEnhet(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => behandlendeEnhetMockResponse
+      () => behandlendeEnhetMockResponse,
     );
   });
 
@@ -105,7 +105,7 @@ describe("Nokkelinformasjon", () => {
     setSykmeldingDataFromOppfolgingstilfelle(
       [sykmeldingOppfolgingstilfelle1, sykmeldingOppfolgingstilfelle2],
       [oppfolgingstilfelle1, oppfolgingstilfelle2],
-      queryClient
+      queryClient,
     );
 
     renderNokkelinformasjon();

@@ -33,7 +33,7 @@ export async function connectValkey(): Promise<void> {
     if (err.type == SocketClosedUnexpectedlyError) {
       logger.warn(
         { err },
-        "Valkey client socket closed unexpectedly, will attempt to reconnect"
+        "Valkey client socket closed unexpectedly, will attempt to reconnect",
       );
     } else {
       logger.error({ err }, "Valkey client error");

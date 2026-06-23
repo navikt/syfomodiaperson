@@ -31,7 +31,7 @@ const renderVelgBehandler = () =>
       >
         <VelgBehandlerWrapper />
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 const submitText = "Submit";
@@ -95,8 +95,8 @@ describe("VelgBehandler", () => {
   it("kan velge behandler fra søk", async () => {
     mockServer.use(
       http.get(`*${ISDIALOGMELDING_ROOT}/behandler/search`, () =>
-        HttpResponse.json(behandlerSokDialogmeldingMock)
-      )
+        HttpResponse.json(behandlerSokDialogmeldingMock),
+      ),
     );
     renderVelgBehandler();
     const behandlerSearchResultMock = behandlerSokDialogmeldingMock[1];

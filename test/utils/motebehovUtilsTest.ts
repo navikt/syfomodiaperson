@@ -32,7 +32,10 @@ describe("motebehovUtils", () => {
         behandletTidspunkt: null,
       };
       expect(
-        hentSistBehandletMotebehov([motebehovUbehandlet1, motebehovUbehandlet2])
+        hentSistBehandletMotebehov([
+          motebehovUbehandlet1,
+          motebehovUbehandlet2,
+        ]),
       ).to.be.undefined;
     });
     it("Returnerer motebehov med siste behandlet tidspunkt", () => {
@@ -45,7 +48,7 @@ describe("motebehovUtils", () => {
         behandletTidspunkt: new Date("2021-04-08T15:18:24.000Z"),
       };
       expect(
-        hentSistBehandletMotebehov([motebehovBehandlet1, motebehovBehandlet2])
+        hentSistBehandletMotebehov([motebehovBehandlet1, motebehovBehandlet2]),
       ).to.be.deep.equal(motebehovBehandlet2);
     });
   });
@@ -59,7 +62,7 @@ describe("motebehovUtils", () => {
     const motebehov = (
       virksomhetsnummer: Virksomhetsnummer,
       innmelderType: MotebehovInnmelder,
-      opprettetDato: string
+      opprettetDato: string,
     ): MotebehovVeilederDTO => {
       return {
         ...svartJaMotebehovArbeidstakerUbehandletMock,
@@ -108,22 +111,22 @@ describe("motebehovUtils", () => {
         motebehov(
           PONTYPANDY_VIRKSOMHETSNR,
           ARBEIDSGIVER,
-          "2025-04-20T15:05:00.000Z"
+          "2025-04-20T15:05:00.000Z",
         ),
         motebehov(
           PONTYPANDY_VIRKSOMHETSNR,
           ARBEIDSGIVER,
-          "2025-04-20T15:00:00.000Z"
+          "2025-04-20T15:00:00.000Z",
         ),
         motebehov(
           PONTYPANDY_VIRKSOMHETSNR,
           ARBEIDSTAKER,
-          "2025-04-19T14:15:00.000Z"
+          "2025-04-19T14:15:00.000Z",
         ),
         motebehov(
           PONTYPANDY_VIRKSOMHETSNR,
           ARBEIDSTAKER,
-          "2025-04-19T14:10:00.000Z"
+          "2025-04-19T14:10:00.000Z",
         ),
       ];
 
@@ -131,12 +134,12 @@ describe("motebehovUtils", () => {
         motebehov(
           PONTYPANDY_VIRKSOMHETSNR,
           ARBEIDSGIVER,
-          "2025-04-20T15:05:00.000Z"
+          "2025-04-20T15:05:00.000Z",
         ),
         motebehov(
           PONTYPANDY_VIRKSOMHETSNR,
           ARBEIDSTAKER,
-          "2025-04-19T14:15:00.000Z"
+          "2025-04-19T14:15:00.000Z",
         ),
       ];
 

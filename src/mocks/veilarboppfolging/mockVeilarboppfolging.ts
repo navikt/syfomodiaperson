@@ -7,5 +7,5 @@ export const mockVeilarboppfolging = http.post(
     return HttpResponse.json({
       underOppfolging: true,
     });
-  }
+  },
 );

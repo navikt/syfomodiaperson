@@ -28,7 +28,7 @@ const renderVedtakFattet = (vedtak: VedtakResponseDTO) =>
           />
         </NotificationProvider>
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("VedtakFattet", () => {

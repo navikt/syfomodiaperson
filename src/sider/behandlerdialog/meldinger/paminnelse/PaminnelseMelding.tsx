@@ -33,7 +33,7 @@ export default function PaminnelseMelding({ melding, oppgave }: Props) {
   const { getPaminnelseDocument } = useMeldingTilBehandlerDocument();
   const paminnelseTilBehandler = usePaminnelseTilBehandler(
     melding.uuid,
-    oppgave.uuid
+    oppgave.uuid,
   );
   const behandleOppgave = useBehandlePaminnelseOppgave();
   const { documentHeader, documentBody, document } =

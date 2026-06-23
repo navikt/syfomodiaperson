@@ -23,7 +23,7 @@ export interface OppfolgingsplanV2DTO {
 function isOppfolgingsplanWithinActiveTilfelle(
   plan: OppfolgingsplanV2DTO,
   oppfolgingstilfelle: OppfolgingstilfelleDTO,
-  isLatestTilfelle = false
+  isLatestTilfelle = false,
 ): boolean {
   const tilfelleStart = new Date(oppfolgingstilfelle.start);
   const planOpprettet = new Date(plan.opprettet);
@@ -46,7 +46,7 @@ function isOppfolgingsplanWithinActiveTilfelle(
 export function partitionOppfolgingsplanerByActiveTilfelle(
   planer: OppfolgingsplanV2DTO[],
   latestOppfolgingstilfelle: OppfolgingstilfelleDTO,
-  isLatestTilfelle = false
+  isLatestTilfelle = false,
 ): [OppfolgingsplanV2DTO[], OppfolgingsplanV2DTO[]] {
   const planerInnenforTilfelle: OppfolgingsplanV2DTO[] = [];
   const planerUtenforTilfelle: OppfolgingsplanV2DTO[] = [];
@@ -56,7 +56,7 @@ export function partitionOppfolgingsplanerByActiveTilfelle(
       isOppfolgingsplanWithinActiveTilfelle(
         plan,
         latestOppfolgingstilfelle,
-        isLatestTilfelle
+        isLatestTilfelle,
       )
     ) {
       planerInnenforTilfelle.push(plan);

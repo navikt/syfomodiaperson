@@ -16,7 +16,7 @@ const texts = {
 
 const verdiAdjustedIfBelop = (
   svar: SvarDTO,
-  svartype?: SvarTypeDTO
+  svartype?: SvarTypeDTO,
 ): string => {
   if (svartype == SvarTypeDTO.BELOP) {
     return (Number(svar.verdi) / 100).toString();

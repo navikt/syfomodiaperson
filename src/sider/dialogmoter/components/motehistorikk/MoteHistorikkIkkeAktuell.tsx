@@ -19,7 +19,7 @@ const texts = {
 
 function createIkkeAktuellDocument(
   vurdering: IkkeAktuellVurdering,
-  veilederNavn: string | undefined
+  veilederNavn: string | undefined,
 ): DocumentComponentDto[] {
   const arsakText: string = ikkeAktuellArsakTexts[vurdering.arsak];
   const componentList: DocumentComponentDto[] = [
@@ -55,20 +55,20 @@ export default function MoteHistorikkIkkeAktuell({
   ikkeAktuellVurdering,
 }: Props) {
   const { data: veilederinfo } = useVeilederInfoQuery(
-    ikkeAktuellVurdering.createdBy
+    ikkeAktuellVurdering.createdBy,
   );
 
   return (
     <>
       <Accordion.Header>
         {`${texts.ikkeAktuellLenke} ${tilDatoMedManedNavn(
-          ikkeAktuellVurdering.createdAt
+          ikkeAktuellVurdering.createdAt,
         )}`}
       </Accordion.Header>
       <Accordion.Content>
         {createIkkeAktuellDocument(
           ikkeAktuellVurdering,
-          veilederinfo?.fulltNavn()
+          veilederinfo?.fulltNavn(),
         ).map((component, index) => (
           <DocumentComponentVisning key={index} documentComponent={component} />
         ))}

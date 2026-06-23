@@ -18,8 +18,7 @@ export type ModalType = `${Extract<
   AktivitetskravStatus.AVVENT | AktivitetskravStatus.IKKE_AKTUELL
 >}`;
 
-interface VurderAktivitetskravModalProps
-  extends VurderAktivitetskravSkjemaProps {
+interface VurderAktivitetskravModalProps extends VurderAktivitetskravSkjemaProps {
   isOpen: boolean;
   setModalOpen: (modalOpen: boolean) => void;
   modalType: ModalType | undefined;
@@ -63,11 +62,10 @@ export function VurderAktivitetskravModal({
   );
 }
 
-interface VurderAktivitetskravModalContentProps
-  extends Pick<
-    VurderAktivitetskravModalProps,
-    "setModalOpen" | "aktivitetskravUuid" | "modalType"
-  > {
+interface VurderAktivitetskravModalContentProps extends Pick<
+  VurderAktivitetskravModalProps,
+  "setModalOpen" | "aktivitetskravUuid" | "modalType"
+> {
   modalType: ModalType;
 }
 

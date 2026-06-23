@@ -8,7 +8,7 @@ interface EregOrganisasjonNavnDTO {
 }
 
 export const getVirksomhetsnavn = (
-  eregOrganisasjonResponseDTO: EregOrganisasjonResponseDTO
+  eregOrganisasjonResponseDTO: EregOrganisasjonResponseDTO,
 ): string => {
   const redigertnavn = eregOrganisasjonResponseDTO.navn.redigertnavn;
   if (redigertnavn && redigertnavn.length > 0) {

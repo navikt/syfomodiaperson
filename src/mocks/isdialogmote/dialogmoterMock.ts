@@ -135,7 +135,7 @@ export const createDialogmote = (
   uuid: string,
   moteStatus: DialogmoteStatus,
   moteTid: Date,
-  behandler?: DialogmotedeltakerBehandlerDTO
+  behandler?: DialogmotedeltakerBehandlerDTO,
 ) => {
   const arbeidstakerVarselList: DialogmotedeltakerArbeidstakerVarselDTO[] = [
     {
@@ -307,7 +307,7 @@ export const createDialogmote = (
 
 export const createReferat = (
   ferdigstilt: boolean,
-  tid: string
+  tid: string,
 ): ReferatDTO => {
   const standardTekst = getReferatTexts(Malform.BOKMAL).standardTekster
     .OPPFOLGINGSTILTAK;
@@ -351,17 +351,17 @@ export const createReferat = (
 export const avlystDialogmote = createDialogmote(
   "2",
   DialogmoteStatus.AVLYST,
-  dayjs().subtract(2, "weeks").toDate()
+  dayjs().subtract(2, "weeks").toDate(),
 );
 export const ferdigstiltDialogmote = createDialogmote(
   "3",
   DialogmoteStatus.FERDIGSTILT,
-  dayjs().subtract(2, "years").toDate()
+  dayjs().subtract(2, "years").toDate(),
 );
 export const innkaltDialogmote = createDialogmote(
   "5f1e2629-062b-442d-ae1f-3b08e9574cd3",
   DialogmoteStatus.INNKALT,
-  dayjs().add(2, "days").toDate()
+  dayjs().add(2, "days").toDate(),
 );
 
 export const dialogmoterMock = [

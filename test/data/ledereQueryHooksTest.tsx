@@ -47,7 +47,7 @@ describe("ledereQueryHooks tests", () => {
     });
 
     await waitFor(() =>
-      expect(result.current.allLedere?.length).to.be.greaterThan(0)
+      expect(result.current.allLedere?.length).to.be.greaterThan(0),
     );
     expect(result.current.allLedere).to.deep.equal(ledereData);
     expect(result.current.allLedere).to.deep.equal(ledereData);

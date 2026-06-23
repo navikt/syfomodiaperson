@@ -31,7 +31,7 @@ interface Props {
 
 const kanTildeleOppfolgingsenhet = (
   isEgenAnsatt: boolean | undefined,
-  diskresjonskode: string | undefined
+  diskresjonskode: string | undefined,
 ) => {
   const isKode6 = diskresjonskode === "6";
   const isKode7 = diskresjonskode === "7";
@@ -80,7 +80,7 @@ export default function OppfolgingsenhetInnhold({ modalRef }: Props) {
           {behandlendeenhet?.oppfolgingsenhetDTO && (
             <div>
               {`${text.endret}: ${tilLesbarDatoMedArUtenManedNavn(
-                behandlendeenhet.oppfolgingsenhetDTO.createdAt
+                behandlendeenhet.oppfolgingsenhetDTO.createdAt,
               )}`}
             </div>
           )}

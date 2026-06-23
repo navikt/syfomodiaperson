@@ -10,7 +10,7 @@ import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 const OPPRETTET_AV_SYSTEM_DEFAULT = "SYSTEM";
 
 function createHistorikkEvents(
-  senOppfolgingKandidater: SenOppfolgingKandidatResponseDTO[]
+  senOppfolgingKandidater: SenOppfolgingKandidatResponseDTO[],
 ): HistorikkEvent[] {
   return senOppfolgingKandidater.flatMap((kandidat) => {
     const historikkEvents: HistorikkEvent[] = [];
@@ -39,7 +39,7 @@ function createHistorikkEvents(
       kandidat.status === SenOppfolgingStatus.FERDIGBEHANDLET;
     const ferdigbehandletVurdering = kandidat.vurderinger.find(
       (vurdering) =>
-        vurdering.type === SenOppfolgingVurderingType.FERDIGBEHANDLET
+        vurdering.type === SenOppfolgingVurderingType.FERDIGBEHANDLET,
     );
 
     if (isFerdigbehandlet && ferdigbehandletVurdering) {

@@ -6,5 +6,5 @@ export const mockIstilgangskontroll = http.get(
   `${ISTILGANGSKONTROLL_ROOT}/tilgang/navident/person`,
   () => {
     return HttpResponse.json(tilgangBrukerMock);
-  }
+  },
 );

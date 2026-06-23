@@ -116,7 +116,7 @@ const dialogmoter: DialogmoteDTO[] = [ferdigstiltMote, avlystMote];
 const renderMotehistorikk = (
   dialogmoteunntak: UnntakDTO[],
   dialogmoteikkeaktuell: IkkeAktuellVurdering[],
-  historiskeMoter: DialogmoteDTO[]
+  historiskeMoter: DialogmoteDTO[],
 ) => {
   render(
     <QueryClientProvider client={queryClient}>
@@ -125,7 +125,7 @@ const renderMotehistorikk = (
         dialogmoteikkeaktuell={dialogmoteikkeaktuell}
         historiskeMoter={historiskeMoter}
       />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -154,10 +154,10 @@ describe("Historiske dialogmøter", () => {
     const buttons = screen.getAllByRole("button");
     expect(buttons).to.have.length(2);
     expect(buttons[0].textContent).to.contain(
-      "Referat fra møte 15. januar 2021 - Endret 15. januar 2021"
+      "Referat fra møte 15. januar 2021 - Endret 15. januar 2021",
     );
     expect(buttons[1].textContent).to.contain(
-      "Referat fra møte 15. januar 2021"
+      "Referat fra møte 15. januar 2021",
     );
   });
   it("Fremviser dialogmoteunntak", () => {
@@ -187,7 +187,7 @@ describe("Historiske dialogmøter", () => {
     ];
     queryClient.setQueryData(
       veilederinfoQueryKeys.veilederinfoByIdent(VEILEDER_IDENT_DEFAULT),
-      () => VEILEDER_DEFAULT
+      () => VEILEDER_DEFAULT,
     );
     renderMotehistorikk(dialogmoteunntakListe, [], []);
 

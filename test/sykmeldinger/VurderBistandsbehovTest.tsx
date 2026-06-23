@@ -30,7 +30,7 @@ const renderBistandsbehovOppgaver = () => {
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     "/sykefravaer/sykmeldinger/:sykmeldingId",
-    [`/sykefravaer/sykmeldinger/123`]
+    [`/sykefravaer/sykmeldinger/123`],
   );
 };
 
@@ -39,11 +39,11 @@ describe("VurderBistandsbehov", () => {
     queryClient = queryClientWithMockData();
     queryClient.setQueryData(
       personoppgaverQueryKeys.personoppgaver(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [{ ...personOppgaveUbehandletBehandlerBerOmBistand }]
+      () => [{ ...personOppgaveUbehandletBehandlerBerOmBistand }],
     );
     queryClient.setQueryData(
       sykmeldingerQueryKeys.sykmeldinger(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => sykmeldingerMock
+      () => sykmeldingerMock,
     );
   });
 
@@ -56,32 +56,32 @@ describe("VurderBistandsbehov", () => {
     expect(
       screen.getByRole("heading", {
         name: "Vurder bistandsbehovet eller forslag til tiltak fra behandler:",
-      })
+      }),
     ).to.exist;
     expect(
       screen.getByRole("button", {
         name: behandlePersonoppgaveKnappText,
-      })
+      }),
     ).to.exist;
     expect(
       screen.getByText(
-        "Felt 7.2 (Forslag til tiltak i regi fra Nav): Vedlikehold av holodeck"
-      )
+        "Felt 7.2 (Forslag til tiltak i regi fra Nav): Vedlikehold av holodeck",
+      ),
     ).to.exist;
     expect(
       screen.getByText(
-        "Felt 7.3 (Andre innspill til Nav): Mer vedlikehold av holodeck"
-      )
+        "Felt 7.3 (Andre innspill til Nav): Mer vedlikehold av holodeck",
+      ),
     ).to.exist;
     expect(
       screen.getByText(
-        "Felt 8.2 (Melding til Nav): Nav kan vise til egen forskning på faren med phaser blasts"
-      )
+        "Felt 8.2 (Melding til Nav): Nav kan vise til egen forskning på faren med phaser blasts",
+      ),
     ).to.exist;
     expect(
       screen.getByRole("link", {
         name: "Gå til sykmeldingen",
-      })
+      }),
     ).to.exist;
   });
 
@@ -91,29 +91,29 @@ describe("VurderBistandsbehov", () => {
       () => [
         personOppgaveUbehandletBehandlerBerOmBistand,
         personOppgaveUbehandletBehandlerBerOmBistand2,
-      ]
+      ],
     );
     renderBistandsbehovOppgaver();
 
     expect(
       screen.getAllByRole("heading", {
         name: "Vurder bistandsbehovet eller forslag til tiltak fra behandler:",
-      })
+      }),
     ).to.have.length(2);
     expect(
       screen.getAllByRole("button", {
         name: behandlePersonoppgaveKnappText,
-      })
+      }),
     ).to.have.length(2);
     expect(
       screen.getAllByRole("link", {
         name: "Gå til sykmeldingen",
-      })
+      }),
     ).to.have.length(2);
     expect(
       screen.getByRole("link", {
         name: "Gå til tidligere sykmelding med duplikate felter",
-      })
+      }),
     ).to.exist;
     expect(screen.getByText("Mulig duplikat")).to.exist;
   });
@@ -126,7 +126,7 @@ describe("VurderBistandsbehov", () => {
     const behandleMutation = queryClient.getMutationCache().getAll()[0];
 
     expect(behandleMutation.state.variables).to.deep.equal(
-      personOppgaveUbehandletBehandlerBerOmBistand.uuid
+      personOppgaveUbehandletBehandlerBerOmBistand.uuid,
     );
   });
 });

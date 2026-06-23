@@ -27,7 +27,7 @@ export const useUnderArbeidsrettetOppfolgingQuery = () => {
   return useQuery({
     queryKey:
       underArbeidsrettetOppfolgingQueryKeys.underArbeidsrettetOppfolging(
-        personident
+        personident,
       ),
     queryFn: postHentUnderArbeidsrettetOppfolging,
     enabled: !!personident,

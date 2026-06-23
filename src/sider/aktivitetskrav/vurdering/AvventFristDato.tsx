@@ -13,7 +13,7 @@ export function AvventFristDato() {
   const now = new Date();
   const inTwoMonths = dayjs(now).add(2, "months").toDate();
   const invalidDateMessage = `Vennligst angi en gyldig dato innen ${toDatePrettyPrint(
-    inTwoMonths
+    inTwoMonths,
   )}`;
 
   const { field, fieldState } = useController<

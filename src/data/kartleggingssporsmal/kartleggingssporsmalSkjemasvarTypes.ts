@@ -20,15 +20,13 @@ export enum KartleggingssporsmalFormSnapshotFieldType {
   TEXT = "TEXT",
 }
 
-export interface KartleggingssporsmalRadioGroupFieldSnapshot
-  extends KartleggingssporsmalFieldSnapshot {
+export interface KartleggingssporsmalRadioGroupFieldSnapshot extends KartleggingssporsmalFieldSnapshot {
   fieldType: KartleggingssporsmalFormSnapshotFieldType.RADIO_GROUP;
   options: KartleggingssporsmalFormSnapshotFieldOption[];
   wasRequired: boolean | null;
 }
 
-export interface KartleggingssporsmalTextFieldSnapshot
-  extends KartleggingssporsmalFieldSnapshot {
+export interface KartleggingssporsmalTextFieldSnapshot extends KartleggingssporsmalFieldSnapshot {
   fieldType: KartleggingssporsmalFormSnapshotFieldType.TEXT;
   value: string;
   wasRequired: boolean | null;

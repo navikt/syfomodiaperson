@@ -6,5 +6,5 @@ export const mockSykepengedagerInformasjon = http.get(
   `${SYKEPENGEDAGER_INFORMASJON_ROOT}/sykepenger/maxdate`,
   () => {
     return HttpResponse.json(maksdatoMock);
-  }
+  },
 );

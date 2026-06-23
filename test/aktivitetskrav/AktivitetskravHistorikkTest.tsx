@@ -52,23 +52,23 @@ const oppfyltVurdering = createAktivitetskravVurdering(
   AktivitetskravStatus.OPPFYLT,
   [OppfyltVurderingArsak.FRISKMELDT],
   friskmeldtBeskrivelse,
-  today
+  today,
 );
 const oppfyltVurderingWithoutBeskrivelse: AktivitetskravVurderingDTO = {
   ...oppfyltVurdering,
   beskrivelse: undefined,
 };
 const ikkeOppfyltVurdering = createAktivitetskravVurdering(
-  AktivitetskravStatus.IKKE_OPPFYLT
+  AktivitetskravStatus.IKKE_OPPFYLT,
 );
 const unntakVurdering = createAktivitetskravVurdering(
   AktivitetskravStatus.UNNTAK,
   [UnntakVurderingArsak.MEDISINSKE_GRUNNER],
   enBeskrivelse,
-  dayInThePast
+  dayInThePast,
 );
 const stansVurdering = createAktivitetskravVurdering(
-  AktivitetskravStatus.INNSTILLING_OM_STANS
+  AktivitetskravStatus.INNSTILLING_OM_STANS,
 );
 const varsel: AktivitetskravVarselDTO = {
   uuid: "123",
@@ -89,26 +89,26 @@ const forhandsvarselVurdering = createAktivitetskravVurdering(
   today,
   undefined,
   daysFromToday(21),
-  varsel
+  varsel,
 );
 
 const renderAktivitetskravHistorikk = (
   vurderinger: AktivitetskravVurderingDTO[],
-  sykepengestoppList: Sykepengestopp[] = []
+  sykepengestoppList: Sykepengestopp[] = [],
 ) => {
   const aktivitetskrav = createAktivitetskrav(
     daysFromToday(20),
     vurderinger[0].status,
-    vurderinger
+    vurderinger,
   );
   queryClient.setQueryData(aktivitetskravQueryKeys.aktivitetskrav(fnr), () => [
     aktivitetskrav,
   ]);
   queryClient.setQueryData(
     pengestoppStatusQueryKeys.pengestoppStatus(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => sykepengestoppList
+    () => sykepengestoppList,
   );
   return render(
     <QueryClientProvider client={queryClient}>
@@ -117,7 +117,7 @@ const renderAktivitetskravHistorikk = (
       >
         <AktivitetskravHistorikk />
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -126,7 +126,7 @@ describe("AktivitetskravHistorikk", () => {
     queryClient = queryClientWithMockData();
     queryClient.setQueryData(
       veilederinfoQueryKeys.veilederinfoByIdent(VEILEDER_IDENT_DEFAULT),
-      () => VEILEDER_DEFAULT
+      () => VEILEDER_DEFAULT,
     );
   });
   it("viser klikkbar overskrift for hver vurdering, sortert etter dato - nyeste øverst", () => {
@@ -138,20 +138,20 @@ describe("AktivitetskravHistorikk", () => {
 
     const vurderingButtons = getAccordionButtons();
     expect(vurderingButtons[0].textContent).to.contain(
-      `Forhåndsvarsel - ${tilDatoMedManedNavn(today)}`
+      `Forhåndsvarsel - ${tilDatoMedManedNavn(today)}`,
     );
     expect(vurderingButtons[1].textContent).to.contain(
-      `Oppfylt - ${tilDatoMedManedNavn(today)}`
+      `Oppfylt - ${tilDatoMedManedNavn(today)}`,
     );
     expect(vurderingButtons[2].textContent).to.contain(
-      `Unntak - ${tilDatoMedManedNavn(dayInThePast)}`
+      `Unntak - ${tilDatoMedManedNavn(dayInThePast)}`,
     );
   });
   it("klikk på overskrift viser årsak med tittel, beskrivelse med tittel og veileder-navn", async () => {
     renderAktivitetskravHistorikk([oppfyltVurdering]);
 
     const vurderingButton = getButton(
-      `Oppfylt - ${tilDatoMedManedNavn(today)}`
+      `Oppfylt - ${tilDatoMedManedNavn(today)}`,
     );
     await userEvent.click(vurderingButton);
 
@@ -166,7 +166,7 @@ describe("AktivitetskravHistorikk", () => {
     renderAktivitetskravHistorikk([oppfyltVurderingWithoutBeskrivelse]);
 
     const vurderingButton = getButton(
-      `Oppfylt - ${tilDatoMedManedNavn(today)}`
+      `Oppfylt - ${tilDatoMedManedNavn(today)}`,
     );
     await userEvent.click(vurderingButton);
 
@@ -181,7 +181,7 @@ describe("AktivitetskravHistorikk", () => {
     renderAktivitetskravHistorikk([ikkeOppfyltVurdering]);
 
     const vurderingButton = getButton(
-      `Ikke oppfylt - ${tilDatoMedManedNavn(today)}`
+      `Ikke oppfylt - ${tilDatoMedManedNavn(today)}`,
     );
     await userEvent.click(vurderingButton);
 
@@ -210,20 +210,20 @@ describe("AktivitetskravHistorikk", () => {
         AvventVurderingArsak.DROFTES_MED_ROL,
         AvventVurderingArsak.INFORMASJON_BEHANDLER,
       ],
-      "Avventer litt"
+      "Avventer litt",
     );
     renderAktivitetskravHistorikk([avventVurdering]);
 
     const vurderingButton = getButton(
-      `Avventer - ${tilDatoMedManedNavn(today)}`
+      `Avventer - ${tilDatoMedManedNavn(today)}`,
     );
     await userEvent.click(vurderingButton);
 
     expect(screen.getByText(arsakTitle)).to.exist;
     expect(
       screen.getByText(
-        "Drøftes med ROL, Har bedt om mer informasjon fra behandler"
-      )
+        "Drøftes med ROL, Har bedt om mer informasjon fra behandler",
+      ),
     ).to.exist;
     expect(screen.getByText("Beskrivelse")).to.exist;
     expect(screen.getByText("Avventer litt")).to.exist;
@@ -234,7 +234,7 @@ describe("AktivitetskravHistorikk", () => {
     renderAktivitetskravHistorikk([forhandsvarselVurdering]);
 
     const vurderingAccordion = getButton(
-      `Forhåndsvarsel - ${tilDatoMedManedNavn(today)}`
+      `Forhåndsvarsel - ${tilDatoMedManedNavn(today)}`,
     );
     await userEvent.click(vurderingAccordion);
     const button = screen.getByRole("button", { name: "Se hele brevet" });
@@ -253,7 +253,7 @@ describe("AktivitetskravHistorikk", () => {
       within(previewModal).getByRole("heading", {
         name: enBeskrivelse,
         hidden: true,
-      })
+      }),
     ).to.exist;
   });
   describe("Har vurderinger og sykepengestopp", () => {
@@ -297,19 +297,19 @@ describe("AktivitetskravHistorikk", () => {
       expect(accordionButtons.length).toBe(5);
 
       expect(accordionButtons[0].textContent).to.contain(
-        "Innstilling om stans - 22. februar 2025"
+        "Innstilling om stans - 22. februar 2025",
       );
       expect(accordionButtons[1].textContent).to.contain(
-        "Forhåndsvarsel - 21. februar 2025"
+        "Forhåndsvarsel - 21. februar 2025",
       );
       expect(accordionButtons[2].textContent).to.contain(
-        "Automatisk utbetaling stanset - 20. februar 2025"
+        "Automatisk utbetaling stanset - 20. februar 2025",
       );
       expect(accordionButtons[3].textContent).to.contain(
-        "Innstilling om stans - 16. februar 2025"
+        "Innstilling om stans - 16. februar 2025",
       );
       expect(accordionButtons[4].textContent).to.contain(
-        "Forhåndsvarsel - 15. februar 2025"
+        "Forhåndsvarsel - 15. februar 2025",
       );
     });
   });

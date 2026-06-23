@@ -29,7 +29,7 @@ function getTextForMeldtMotebehov(meldtMotebehov: MeldtMotebehov): string {
 }
 
 function createHistorikkEventsFromMeldtMotebehov(
-  meldteMotebehov: MeldtMotebehov[]
+  meldteMotebehov: MeldtMotebehov[],
 ): HistorikkEvent[] {
   const meldteMotebehovEvents: HistorikkEvent[] = [];
   meldteMotebehov.map((motebehov: MeldtMotebehov) => {
@@ -75,7 +75,7 @@ function getTextForSvarMotebehov(svarMotebehov: SvarMotebehov): string {
 }
 
 function createHistorikkEventsFromSvarMotebehov(
-  svarMotebehov: SvarMotebehov[]
+  svarMotebehov: SvarMotebehov[],
 ): HistorikkEvent[] {
   const svarMotebehovEvents: HistorikkEvent[] = [];
   svarMotebehov.map((motebehov: SvarMotebehov) => {

@@ -43,7 +43,7 @@ export function useOppfolgingsplaner(): OppfolgingsplanerResult {
   const [aktivePlanerV2, inaktivePlanerV2] = latestOppfolgingstilfelle
     ? partitionOppfolgingsplanerByActiveTilfelle(
         getOppfolgingsplanerV2Query.data,
-        latestOppfolgingstilfelle
+        latestOppfolgingstilfelle,
       )
     : [[], []];
 

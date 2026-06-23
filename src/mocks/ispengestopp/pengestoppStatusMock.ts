@@ -30,7 +30,7 @@ export const defaultSykepengestopp: Sykepengestopp = {
 
 export const createStatusList = (
   created: Date,
-  stoppAutomatikk = defaultStoppAutomatikk
+  stoppAutomatikk = defaultStoppAutomatikk,
 ) => {
   return stoppAutomatikk.virksomhetNr.map((virksomhet) => {
     return {

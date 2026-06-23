@@ -32,7 +32,7 @@ export const useHistorikkOppfolgingsplan = () => {
 
 export const mapHistorikkEvents = (
   events: HistorikkEvent[],
-  kilde: HistorikkEventType
+  kilde: HistorikkEventType,
 ): HistorikkEvent[] =>
   events.map((event) => ({
     ...event,

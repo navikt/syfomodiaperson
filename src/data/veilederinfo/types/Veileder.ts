@@ -15,7 +15,7 @@ export class Veileder {
     ident: string,
     fornavn: string,
     etternavn: string,
-    enabled: boolean | null
+    enabled: boolean | null,
   ) {
     this.ident = ident;
     this.fornavn = fornavn;

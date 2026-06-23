@@ -20,7 +20,7 @@ export const useCreateOppfolgingsoppgave = (): UseMutationResult<
   const queryClient = useQueryClient();
   const path = `${ISHUSKELAPP_ROOT}/huskelapp`;
   const postOppfolgingsoppgave = (
-    nyOppfolgingsoppgave: OppfolgingsoppgaveRequestDTO
+    nyOppfolgingsoppgave: OppfolgingsoppgaveRequestDTO,
   ) =>
     post<OppfolgingsoppgaveRequestDTO>(path, nyOppfolgingsoppgave, personident);
 

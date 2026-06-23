@@ -20,16 +20,16 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 export interface IInnkallingDocument {
   getInnkallingDocumentArbeidstaker(
     values: Partial<DialogmoteInnkallingSkjemaValues>,
-    valgtBehandler: BehandlerDTO | undefined
+    valgtBehandler: BehandlerDTO | undefined,
   ): DocumentComponentDto[];
 
   getInnkallingDocumentArbeidsgiver(
     values: Partial<DialogmoteInnkallingSkjemaValues>,
-    valgtBehandler: BehandlerDTO | undefined
+    valgtBehandler: BehandlerDTO | undefined,
   ): DocumentComponentDto[];
 
   getInnkallingDocumentBehandler(
-    values: Partial<DialogmoteInnkallingSkjemaValues>
+    values: Partial<DialogmoteInnkallingSkjemaValues>,
   ): DocumentComponentDto[];
 }
 
@@ -47,12 +47,12 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
 
   const hilsenParagraph = getHilsenMedSendtDato(veilederinfo);
   const gjelderParagraph = createParagraph(
-    `${commonTexts.gjelder} ${navBruker.navn}, f.nr. ${valgtPersonident}.`
+    `${commonTexts.gjelder} ${navBruker.navn}, f.nr. ${valgtPersonident}.`,
   );
 
   const getInnkallingDocumentArbeidstaker = (
     values: Partial<DialogmoteInnkallingSkjemaValues>,
-    valgtBehandler: BehandlerDTO | undefined
+    valgtBehandler: BehandlerDTO | undefined,
   ) => {
     const documentComponents = [
       ...introComponents,
@@ -65,7 +65,7 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
     }
     documentComponents.push(
       ...arbeidstakerOutro(valgtBehandler, malform),
-      hilsenParagraph
+      hilsenParagraph,
     );
 
     return documentComponents;
@@ -73,7 +73,7 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
 
   const getInnkallingDocumentArbeidsgiver = (
     values: Partial<DialogmoteInnkallingSkjemaValues>,
-    valgtBehandler: BehandlerDTO | undefined
+    valgtBehandler: BehandlerDTO | undefined,
   ) => {
     const documentComponents = [
       ...introComponents,
@@ -89,15 +89,15 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
       hilsenParagraph,
       createParagraph(
         commonTexts.arbeidsgiverTlfLabel,
-        commonTexts.arbeidsgiverTlf
-      )
+        commonTexts.arbeidsgiverTlf,
+      ),
     );
 
     return documentComponents;
   };
 
   const getInnkallingDocumentBehandler = (
-    values: Partial<DialogmoteInnkallingSkjemaValues>
+    values: Partial<DialogmoteInnkallingSkjemaValues>,
   ) => {
     const documentComponents = [
       createHeaderH1(innkallingTexts.behandler.header),
@@ -111,7 +111,7 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
     }
     documentComponents.push(
       createParagraph(innkallingTexts.behandler.outro),
-      hilsenParagraph
+      hilsenParagraph,
     );
 
     return documentComponents;
@@ -126,7 +126,7 @@ export const useInnkallingDocument = (): IInnkallingDocument => {
 
 const arbeidstakerIntro = (
   valgtBehandler: BehandlerDTO | undefined,
-  malform: Malform
+  malform: Malform,
 ): DocumentComponentDto[] => {
   const innkallingTexts = getInnkallingTexts(malform);
 
@@ -142,21 +142,21 @@ const arbeidstakerIntro = (
 
 export const addBehandlerTypeAndName = (
   preText: string,
-  valgtBehandler: BehandlerDTO
+  valgtBehandler: BehandlerDTO,
 ) => {
   return `${preText} ${behandlerNavn(valgtBehandler)}.`;
 };
 
 const arbeidstakerOutro = (
   valgtBehandler: BehandlerDTO | undefined,
-  malform: Malform
+  malform: Malform,
 ): DocumentComponentDto[] => {
   const innkallingTexts = getInnkallingTexts(malform);
 
   const outro1 = valgtBehandler
     ? addBehandlerTypeAndName(
         innkallingTexts.arbeidstaker.outro1WithBehandler,
-        valgtBehandler
+        valgtBehandler,
       )
     : innkallingTexts.arbeidstaker.outro1;
   const outro2 = valgtBehandler
@@ -172,13 +172,13 @@ const arbeidstakerOutro = (
 
 const arbeidsgiverOutro = (
   valgtBehandler: BehandlerDTO | undefined,
-  malform: Malform
+  malform: Malform,
 ): DocumentComponentDto[] => {
   const innkallingTexts = getInnkallingTexts(malform);
   const outro1 = valgtBehandler
     ? addBehandlerTypeAndName(
         innkallingTexts.arbeidsgiver.outro1WithBehandler,
-        valgtBehandler
+        valgtBehandler,
       )
     : innkallingTexts.arbeidsgiver.outro1;
   const outro2 = valgtBehandler

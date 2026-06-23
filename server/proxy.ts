@@ -33,7 +33,7 @@ function buildTargetUrl(
   req: express.Request,
   applicationName: string,
   removePathPrefix: boolean,
-  rewritePath?: (path: string) => string
+  rewritePath?: (path: string) => string,
 ): string {
   const hostUrl = new URL(host);
   const basePath = hostUrl.pathname === "/" ? "" : hostUrl.pathname;
@@ -58,7 +58,7 @@ function buildTargetUrl(
 function buildForwardedHeaders(
   req: express.Request,
   accessToken?: string,
-  isSyfosmregister = false
+  isSyfosmregister = false,
 ): Record<string, string> {
   const headers: Record<string, string> = {};
 
@@ -94,7 +94,7 @@ function getErrorCode(error: unknown): string | undefined {
 /** Checks if a header key exists in the headers map using case-insensitive comparison. */
 function hasHeader(
   headers: Record<string, string>,
-  headerName: string
+  headerName: string,
 ): boolean {
   const lowerCaseHeaderName = headerName.toLowerCase();
   for (const key in headers) {
@@ -110,7 +110,7 @@ async function sendProxyRequest(
   targetUrl: string,
   req: express.Request,
   res: express.Response,
-  headers: Record<string, string>
+  headers: Record<string, string>,
 ): Promise<void> {
   const hasBody =
     ["POST", "PUT", "PATCH"].includes(req.method) && req.body !== undefined;
@@ -144,7 +144,7 @@ async function sendProxyRequest(
 const proxyOnBehalfOf =
   (
     externalAppConfig: ExternalAppConfig,
-    rewritePath?: (path: string) => string
+    rewritePath?: (path: string) => string,
   ): express.RequestHandler =>
   async (req, res, next) => {
     const {
@@ -174,7 +174,7 @@ const proxyOnBehalfOf =
       req,
       applicationName,
       removePathPrefix,
-      rewritePath
+      rewritePath,
     );
     const isSyfosmregister =
       applicationName === Config.auth.syfosmregister.applicationName;
@@ -187,7 +187,7 @@ const proxyOnBehalfOf =
       logger.error(
         `Error in proxy for ${host} ${
           error instanceof Error ? error.message : error
-        }, ${code}`
+        }, ${code}`,
       );
       if (code && TRANSIENT_ERROR_CODES.has(code)) {
         res.status(502).send({ message: `Could not contact ${host}` });
@@ -211,7 +211,7 @@ const proxyWithoutAuthentication =
       logger.error(
         `Error in proxy for ${host} ${
           error instanceof Error ? error.message : error
-        }, ${code}`
+        }, ${code}`,
       );
       if (code && TRANSIENT_ERROR_CODES.has(code)) {
         res.status(502).send({ message: `Could not contact ${host}` });
@@ -226,98 +226,98 @@ export const setupProxy = (): express.Router => {
 
   router.use(
     "/isaktivitetskrav",
-    proxyOnBehalfOf(Config.auth.isaktivitetskrav)
+    proxyOnBehalfOf(Config.auth.isaktivitetskrav),
   );
   router.use(
     "/isarbeidsuforhet",
-    proxyOnBehalfOf(Config.auth.isarbeidsuforhet)
+    proxyOnBehalfOf(Config.auth.isarbeidsuforhet),
   );
   router.use(
     "/isbehandlerdialog",
-    proxyOnBehalfOf(Config.auth.isbehandlerdialog)
+    proxyOnBehalfOf(Config.auth.isbehandlerdialog),
   );
   router.use("/isdialogmote", proxyOnBehalfOf(Config.auth.isdialogmote));
   router.use(
     "/isdialogmotekandidat",
-    proxyOnBehalfOf(Config.auth.isdialogmotekandidat)
+    proxyOnBehalfOf(Config.auth.isdialogmotekandidat),
   );
   router.use("/isdialogmelding", proxyOnBehalfOf(Config.auth.isdialogmelding));
   router.use(
     "/isfrisktilarbeid",
-    proxyOnBehalfOf(Config.auth.isfrisktilarbeid)
+    proxyOnBehalfOf(Config.auth.isfrisktilarbeid),
   );
   router.use("/ishuskelapp", proxyOnBehalfOf(Config.auth.ishuskelapp));
   router.use("/ismeroppfolging", proxyOnBehalfOf(Config.auth.ismeroppfolging));
   router.use("/isnarmesteleder", proxyOnBehalfOf(Config.auth.isnarmesteleder));
   router.use(
     "/isoppfolgingstilfelle",
-    proxyOnBehalfOf(Config.auth.isoppfolgingstilfelle)
+    proxyOnBehalfOf(Config.auth.isoppfolgingstilfelle),
   );
   router.use("/ispengestopp", proxyOnBehalfOf(Config.auth.ispengestopp));
   router.use("/ispersonoppgave", proxyOnBehalfOf(Config.auth.ispersonoppgave));
   router.use("/fastlegerest", proxyOnBehalfOf(Config.auth.fastlegerest));
   router.use(
     "/modiacontextholder",
-    proxyOnBehalfOf(Config.auth.modiacontextholder)
+    proxyOnBehalfOf(Config.auth.modiacontextholder),
   );
   router.use(
     "/syfobehandlendeenhet",
-    proxyOnBehalfOf(Config.auth.syfobehandlendeenhet)
+    proxyOnBehalfOf(Config.auth.syfobehandlendeenhet),
   );
   router.use("/ereg", proxyWithoutAuthentication(Config.auth.ereg.host));
   router.use("/syfomotebehov", proxyOnBehalfOf(Config.auth.syfomotebehov));
   router.use(
     "/syfooppfolgingsplanservice",
-    proxyOnBehalfOf(Config.auth.syfooppfolgingsplanservice)
+    proxyOnBehalfOf(Config.auth.syfooppfolgingsplanservice),
   );
   router.use(
     "/lps-oppfolgingsplan-mottak",
-    proxyOnBehalfOf(Config.auth.lpsOppfolgingsplanMottak)
+    proxyOnBehalfOf(Config.auth.lpsOppfolgingsplanMottak),
   );
   router.use(
     "/syfo-oppfolgingsplan-backend",
-    proxyOnBehalfOf(Config.auth.syfoOppfolgingsplanBackend)
+    proxyOnBehalfOf(Config.auth.syfoOppfolgingsplanBackend),
   );
   router.use(
     "/api/v2/persontildeling",
-    proxyOnBehalfOf(Config.auth.syfooversiktsrv)
+    proxyOnBehalfOf(Config.auth.syfooversiktsrv),
   );
   router.use("/syfoperson", proxyOnBehalfOf(Config.auth.syfoperson));
   router.use(
     "/syfosmregister",
     proxyOnBehalfOf(Config.auth.syfosmregister, (path) =>
-      path.replace("/sykmeldinger", "/internal/sykmeldinger")
-    )
+      path.replace("/sykmeldinger", "/internal/sykmeldinger"),
+    ),
   );
   router.use(
     "/sykepengesoknad-backend",
-    proxyOnBehalfOf(Config.auth.sykepengesoknadBackend)
+    proxyOnBehalfOf(Config.auth.sykepengesoknadBackend),
   );
   router.use(
     "/istilgangskontroll",
-    proxyOnBehalfOf(Config.auth.istilgangskontroll)
+    proxyOnBehalfOf(Config.auth.istilgangskontroll),
   );
   router.use("/syfoveileder", proxyOnBehalfOf(Config.auth.syfoveileder));
   router.use(
     "/meroppfolging-backend",
-    proxyOnBehalfOf(Config.auth.meroppfolgingBackend)
+    proxyOnBehalfOf(Config.auth.meroppfolgingBackend),
   );
   router.use(
     "/sykepengedager-informasjon",
-    proxyOnBehalfOf(Config.auth.sykepengedagerinformasjon)
+    proxyOnBehalfOf(Config.auth.sykepengedagerinformasjon),
   );
   router.use("/lumi-api", proxyOnBehalfOf(Config.auth.lumiApi));
   router.use(
     "/veilarboppfolging",
-    proxyOnBehalfOf(Config.auth.veilarboppfolging)
+    proxyOnBehalfOf(Config.auth.veilarboppfolging),
   );
   router.use(
     "/ismanglendemedvirkning",
-    proxyOnBehalfOf(Config.auth.ismanglendemedvirkning)
+    proxyOnBehalfOf(Config.auth.ismanglendemedvirkning),
   );
   router.use(
     "/isoppfolgingsplan",
-    proxyOnBehalfOf(Config.auth.isoppfolgingsplan)
+    proxyOnBehalfOf(Config.auth.isoppfolgingsplan),
   );
   router.use("/pensjon-pen", proxyOnBehalfOf(Config.auth.pensjonPenUfore));
 

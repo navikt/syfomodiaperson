@@ -74,7 +74,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
 
   const narmesteLeder = narmesteLederForVirksomhet(
     currentLedere,
-    arbeidsgiver.virksomhetsnummer
+    arbeidsgiver.virksomhetsnummer,
   );
 
   const endreTidStedDialogmote = useEndreTidStedDialogmote(fnr, uuid);
@@ -103,7 +103,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
   } = methods;
 
   function toEndreTidSted(
-    values: EndreTidStedSkjemaValues
+    values: EndreTidStedSkjemaValues,
   ): EndreTidStedDialogmoteDTO {
     const endreTidStedDto: EndreTidStedDialogmoteDTO = {
       ...toTidStedDto(values),

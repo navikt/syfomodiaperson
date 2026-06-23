@@ -36,14 +36,14 @@ const renderMotebehovKvittering = () => {
   render(
     <QueryClientProvider client={queryClient}>
       <MotebehovKvittering />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
 function mockMotebehov(motebehov: MotebehovVeilederDTO[]) {
   queryClient.setQueryData(
     motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => motebehov
+    () => motebehov,
   );
 }
 
@@ -54,7 +54,7 @@ function mockVirksomhet() {
       navn: {
         navnelinje1: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
       },
-    })
+    }),
   );
 }
 
@@ -65,7 +65,7 @@ function mockLedereUtenVirksomhetsnavn() {
       LEDERE_DEFAULT.map((leder) => ({
         ...leder,
         virksomhetsnavn: "",
-      }))
+      })),
   );
 }
 
@@ -79,7 +79,7 @@ const motebehovArbeidstakerInTilfelleUbehandletMock: MotebehovVeilederDTO = {
       begrunnelse: "Jeg, arbeidstaker, har behov for møte.",
     },
     MotebehovSkjemaType.MELD_BEHOV,
-    MotebehovInnmelder.ARBEIDSTAKER
+    MotebehovInnmelder.ARBEIDSTAKER,
   ),
   behandletTidspunkt: null,
   behandletVeilederIdent: null,
@@ -96,7 +96,7 @@ const motebehovArbeidsgiverInTilfelleUbehandletMock: MotebehovVeilederDTO = {
       begrunnelse: "Jeg, arbeidsgiver, har behov for møte.",
     },
     MotebehovSkjemaType.MELD_BEHOV,
-    MotebehovInnmelder.ARBEIDSGIVER
+    MotebehovInnmelder.ARBEIDSGIVER,
   ),
   behandletTidspunkt: null,
   behandletVeilederIdent: null,
@@ -114,7 +114,7 @@ const motebehovArbeidstakerInTilfelleSvartJaUbehandletMock: MotebehovVeilederDTO
         begrunnelse: "Møter er bra!",
       },
       MotebehovSkjemaType.SVAR_BEHOV,
-      MotebehovInnmelder.ARBEIDSTAKER
+      MotebehovInnmelder.ARBEIDSTAKER,
     ),
     behandletTidspunkt: null,
     behandletVeilederIdent: null,
@@ -124,7 +124,7 @@ const motebehovArbeidstakerInTilfelleSvartJaUbehandletMock: MotebehovVeilederDTO
 const motebehovArbeidsgiverInTilfelleSvartNeiUbehandletMock: MotebehovVeilederDTO =
   {
     ...svartNeiMotebehovArbeidsgiverUbehandletMock(
-      MotebehovSkjemaType.SVAR_BEHOV
+      MotebehovSkjemaType.SVAR_BEHOV,
     ),
     opprettetDato: addDays(new Date(), -25),
     formValues: createFormValues(
@@ -134,7 +134,7 @@ const motebehovArbeidsgiverInTilfelleSvartNeiUbehandletMock: MotebehovVeilederDT
         begrunnelse: "Jeg, arbeidsgiver, svarer nei til møte.",
       },
       MotebehovSkjemaType.SVAR_BEHOV,
-      MotebehovInnmelder.ARBEIDSGIVER
+      MotebehovInnmelder.ARBEIDSGIVER,
     ),
     behandletTidspunkt: null,
     behandletVeilederIdent: null,
@@ -178,19 +178,19 @@ describe("MotebehovKvittering", () => {
     expect(
       screen.getByText("Samuel Sam Jones, har meldt behov", {
         exact: false,
-      })
+      }),
     ).to.exist;
     expect(screen.getByText("Jeg, arbeidstaker, har behov for møte.")).to.exist;
 
     expect(
       screen.getByAltText(
-        `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`
-      )
+        `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`,
+      ),
     ).to.exist;
     expect(
       screen.getByText(`${arbeidsgiverMedVirksomhet}, har meldt behov`, {
         exact: false,
-      })
+      }),
     ).to.exist;
     expect(screen.getByText("Jeg, arbeidsgiver, har behov for møte.")).to.exist;
   });
@@ -202,19 +202,19 @@ describe("MotebehovKvittering", () => {
     expect(
       screen.getByText("Samuel Sam Jones, har meldt behov", {
         exact: false,
-      })
+      }),
     ).to.exist;
     expect(screen.getByText("Jeg, arbeidstaker, har behov for møte.")).to.exist;
 
     expect(
       screen.getByAltText(
-        `Arbeidsgiver ${narmesteLederMedVirksomhet} Ikke meldt behov.`
-      )
+        `Arbeidsgiver ${narmesteLederMedVirksomhet} Ikke meldt behov.`,
+      ),
     ).to.exist;
     expect(
       screen.getByText(`${narmesteLederMedVirksomhet}, har ikke meldt behov`, {
         exact: false,
-      })
+      }),
     ).to.exist;
   });
   it("viser virksomhetsnummer når nærmeste leder mangler virksomhetsnavn", () => {
@@ -225,14 +225,14 @@ describe("MotebehovKvittering", () => {
 
     expect(
       screen.getByAltText(
-        `Arbeidsgiver Tatten Tattover (${VIRKSOMHET_PONTYPANDY.virksomhetsnummer}) Ikke meldt behov.`
-      )
+        `Arbeidsgiver Tatten Tattover (${VIRKSOMHET_PONTYPANDY.virksomhetsnummer}) Ikke meldt behov.`,
+      ),
     ).to.exist;
     expect(
       screen.getByText(
         `Tatten Tattover (${VIRKSOMHET_PONTYPANDY.virksomhetsnummer}), har ikke meldt behov`,
-        { exact: false }
-      )
+        { exact: false },
+      ),
     ).to.exist;
   });
   it("viser meldt møtebehov fra arbeidsgiver og sykmeldt når kun arbeidsgiver har meldt behov innenfor tilfelle", () => {
@@ -243,30 +243,30 @@ describe("MotebehovKvittering", () => {
     expect(
       screen.getByText("Samuel Sam Jones, har ikke meldt behov", {
         exact: false,
-      })
+      }),
     ).to.exist;
 
     expect(
       screen.getByAltText(
-        `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`
-      )
+        `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`,
+      ),
     ).to.exist;
     expect(
       screen.getByText(`${arbeidsgiverMedVirksomhet}, har meldt behov`, {
         exact: false,
-      })
+      }),
     ).to.exist;
     expect(screen.getByText("Jeg, arbeidsgiver, har behov for møte.")).to.exist;
   });
   it("viser ingen møtebehov når ingen ubehandlede behov utenfor tilfelle", () => {
     const motebehovArbeidstakerInTilfelleBehandlet = createMotebehovBehandlet(
-      motebehovArbeidstakerInTilfelleUbehandletMock
+      motebehovArbeidstakerInTilfelleUbehandletMock,
     );
     const motebehovArbeidstakerUtenforTilfelleBehandlet =
       createMotebehovUtenforTilfelle(motebehovArbeidstakerInTilfelleBehandlet);
 
     const motebehovArbeidsgiverInTilfelleBehandlet = createMotebehovBehandlet(
-      motebehovArbeidsgiverInTilfelleUbehandletMock
+      motebehovArbeidsgiverInTilfelleUbehandletMock,
     );
     const motebehovArbeidsgiverUtenforTilfelleBehandlet =
       createMotebehovUtenforTilfelle(motebehovArbeidsgiverInTilfelleBehandlet);
@@ -279,18 +279,18 @@ describe("MotebehovKvittering", () => {
     renderMotebehovKvittering();
     expect(
       screen.getByText(
-        "Alle tidligere møtebehov er behandlet, se møtebehovhistorikken for flere detaljer."
-      )
+        "Alle tidligere møtebehov er behandlet, se møtebehovhistorikken for flere detaljer.",
+      ),
     ).to.exist;
   });
   it("viser ubehandlede møtebehov når det finnes ubehandlede behov utenfor tilfelle", () => {
     const motebehovArbeidstakerUtenforTilfelleUbehandlet =
       createMotebehovUtenforTilfelle(
-        motebehovArbeidstakerInTilfelleUbehandletMock
+        motebehovArbeidstakerInTilfelleUbehandletMock,
       );
     const motebehovArbeidsgiverUtenforTilfelleUbehandlet =
       createMotebehovUtenforTilfelle(
-        motebehovArbeidsgiverInTilfelleUbehandletMock
+        motebehovArbeidsgiverInTilfelleUbehandletMock,
       );
 
     mockMotebehov([
@@ -303,19 +303,19 @@ describe("MotebehovKvittering", () => {
     expect(
       screen.getByText("Samuel Sam Jones, har meldt behov", {
         exact: false,
-      })
+      }),
     ).to.exist;
     expect(screen.getByText("Jeg, arbeidstaker, har behov for møte.")).to.exist;
 
     expect(
       screen.getByAltText(
-        `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`
-      )
+        `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`,
+      ),
     ).to.exist;
     expect(
       screen.getByText(`${arbeidsgiverMedVirksomhet}, har meldt behov`, {
         exact: false,
-      })
+      }),
     ).to.exist;
     expect(screen.getByText("Jeg, arbeidsgiver, har behov for møte.")).to.exist;
   });
@@ -327,19 +327,19 @@ describe("MotebehovKvittering", () => {
     expect(
       screen.getByText("Samuel Sam Jones, har svart JA", {
         exact: false,
-      })
+      }),
     ).to.exist;
     expect(screen.getByText("Møter er bra!")).to.exist;
 
     expect(
       screen.getByAltText(
-        `Arbeidsgiver ${narmesteLederMedVirksomhet} Ikke svart.`
-      )
+        `Arbeidsgiver ${narmesteLederMedVirksomhet} Ikke svart.`,
+      ),
     ).to.exist;
     expect(
       screen.getByText(`${narmesteLederMedVirksomhet}, har ikke svart`, {
         exact: false,
-      })
+      }),
     ).to.exist;
   });
   it("viser svar møtebehov fra arbeidsgiver og sykmeldt når kun arbeidsgiver har svart behov innenfor tilfelle", () => {
@@ -350,18 +350,18 @@ describe("MotebehovKvittering", () => {
     expect(
       screen.getByText("Samuel Sam Jones, har ikke svart", {
         exact: false,
-      })
+      }),
     ).to.exist;
 
     expect(
       screen.getByAltText(
-        `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Svart nei.`
-      )
+        `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Svart nei.`,
+      ),
     ).to.exist;
     expect(
       screen.getByText(`${arbeidsgiverMedVirksomhet}, har svart NEI`, {
         exact: false,
-      })
+      }),
     ).to.exist;
     expect(screen.getByText("Jeg, arbeidsgiver, svarer nei til møte.")).to
       .exist;
@@ -369,7 +369,7 @@ describe("MotebehovKvittering", () => {
   it("viser ingen møtebehov når nei-svar utenfor tilfelle, fordi disse kan ikke behandles", () => {
     const motebehovArbeidsgiverUtenforTilfelleUbehandlet =
       createMotebehovUtenforTilfelle(
-        motebehovArbeidsgiverInTilfelleSvartNeiUbehandletMock
+        motebehovArbeidsgiverInTilfelleSvartNeiUbehandletMock,
       );
 
     mockMotebehov([motebehovArbeidsgiverUtenforTilfelleUbehandlet]);
@@ -377,8 +377,8 @@ describe("MotebehovKvittering", () => {
     renderMotebehovKvittering();
     expect(
       screen.getByText(
-        "Alle tidligere møtebehov er behandlet, se møtebehovhistorikken for flere detaljer."
-      )
+        "Alle tidligere møtebehov er behandlet, se møtebehovhistorikken for flere detaljer.",
+      ),
     ).to.exist;
   });
 
@@ -396,29 +396,29 @@ describe("MotebehovKvittering", () => {
         expect(
           screen.getByText("Samuel Sam Jones, har meldt behov", {
             exact: false,
-          })
+          }),
         ).to.exist;
         expect(screen.getByText("Begrunnelse")).to.exist;
         expect(screen.getByText("Møter er bra!")).to.exist;
         expect(
           screen.getByRole("checkbox", {
             name: RegExp(
-              "Jeg ønsker at sykmelder \\(lege/behandler\\) også deltar i møtet\\."
+              "Jeg ønsker at sykmelder \\(lege/behandler\\) også deltar i møtet\\.",
             ),
             checked: true,
-          })
+          }),
         ).to.exist;
         expect(
           screen.getByText(
-            "Hvorfor ønsker du at lege/behandler deltar i møtet?"
-          )
+            "Hvorfor ønsker du at lege/behandler deltar i møtet?",
+          ),
         ).to.exist;
         expect(screen.getByText("Ønsker at legen min er tilstede")).to.exist;
         expect(
           screen.getByRole("checkbox", {
             name: RegExp("Vi har behov for tolk."),
             checked: true,
-          })
+          }),
         ).to.exist;
         expect(screen.getByText("Hva slags tolk har dere behov for?")).to.exist;
         expect(screen.getByText("Har behov for svensk tolk")).to.exist;
@@ -427,8 +427,8 @@ describe("MotebehovKvittering", () => {
             `${narmesteLederMedVirksomhet}, har ikke meldt behov`,
             {
               exact: false,
-            }
-          )
+            },
+          ),
         ).to.exist;
       });
     });
@@ -450,13 +450,13 @@ describe("MotebehovKvittering", () => {
               tolkSprak: "Har behov for svensk tolk",
             },
             MotebehovSkjemaType.SVAR_BEHOV,
-            MotebehovInnmelder.ARBEIDSTAKER
+            MotebehovInnmelder.ARBEIDSTAKER,
           ),
         };
 
         const arbeidsgiver = {
           ...svartNeiMotebehovArbeidsgiverUbehandletMock(
-            MotebehovSkjemaType.SVAR_BEHOV
+            MotebehovSkjemaType.SVAR_BEHOV,
           ),
           formValues: createFormValues(
             {
@@ -469,7 +469,7 @@ describe("MotebehovKvittering", () => {
               tolkSprak: "Svensk",
             },
             MotebehovSkjemaType.SVAR_BEHOV,
-            MotebehovInnmelder.ARBEIDSGIVER
+            MotebehovInnmelder.ARBEIDSGIVER,
           ),
         };
 
@@ -480,45 +480,45 @@ describe("MotebehovKvittering", () => {
         expect(
           screen.getByText("Samuel Sam Jones, har svart JA", {
             exact: false,
-          })
+          }),
         ).to.exist;
         expect(
           screen.getAllByRole("radiogroup", {
             name: RegExp("Har dere behov for et dialogmøte med NAV?"),
-          })[0]
+          })[0],
         ).to.exist;
         expect(
           screen.getAllByRole("radio", {
             name: "Ja, vi har behov for et dialogmøte.",
             checked: true,
-          })[0]
+          })[0],
         ).to.exist;
         expect(
           screen.getAllByRole("radio", {
             name: "Nei, vi har ikke behov for et dialogmøte nå.",
-          })[0]
+          })[0],
         ).to.exist;
         expect(screen.getAllByText("Begrunnelse")[0]).to.exist;
         expect(screen.getByText("Møter er bra!")).to.exist;
         expect(
           screen.getAllByRole("checkbox", {
             name: RegExp(
-              "Jeg ønsker at sykmelder \\(lege/behandler\\) også deltar i møtet\\."
+              "Jeg ønsker at sykmelder \\(lege/behandler\\) også deltar i møtet\\.",
             ),
             checked: true,
-          })[0]
+          })[0],
         ).to.exist;
         expect(
           screen.getAllByText(
-            "Hvorfor ønsker du at lege/behandler deltar i møtet?"
-          )[0]
+            "Hvorfor ønsker du at lege/behandler deltar i møtet?",
+          )[0],
         ).to.exist;
         expect(screen.getByText("Ønsker at legen min er tilstede")).to.exist;
         expect(
           screen.getAllByRole("checkbox", {
             name: RegExp("Vi har behov for tolk."),
             checked: true,
-          })[0]
+          })[0],
         ).to.exist;
         expect(screen.getAllByText("Hva slags tolk har dere behov for?")[0]).to
           .exist;
@@ -527,45 +527,45 @@ describe("MotebehovKvittering", () => {
         expect(
           screen.getByText(`${arbeidsgiverMedVirksomhet}, har svart JA`, {
             exact: false,
-          })
+          }),
         ).to.exist;
         expect(
           screen.getAllByRole("radiogroup", {
             name: RegExp("Har dere behov for et dialogmøte med NAV?"),
-          })[1]
+          })[1],
         ).to.exist;
         expect(
           screen.getAllByRole("radio", {
             name: "Ja, vi har behov for et dialogmøte.",
             checked: true,
-          })[1]
+          })[1],
         ).to.exist;
         expect(
           screen.getAllByRole("radio", {
             name: "Nei, vi har ikke behov for et dialogmøte nå.",
-          })[1]
+          })[1],
         ).to.exist;
         expect(screen.getAllByText("Begrunnelse")[1]).to.exist;
         expect(screen.getByText("Jeg liker ikke møte!!")).to.exist;
         expect(
           screen.getAllByRole("checkbox", {
             name: RegExp(
-              "Jeg ønsker at sykmelder \\(lege/behandler\\) også deltar i møtet\\."
+              "Jeg ønsker at sykmelder \\(lege/behandler\\) også deltar i møtet\\.",
             ),
             checked: true,
-          })[1]
+          })[1],
         ).to.exist;
         expect(
           screen.getAllByText(
-            "Hvorfor ønsker du at lege/behandler deltar i møtet?"
-          )[1]
+            "Hvorfor ønsker du at lege/behandler deltar i møtet?",
+          )[1],
         ).to.exist;
         expect(screen.getByText("Ønsker lege tilstede")).to.exist;
         expect(
           screen.getAllByRole("checkbox", {
             name: RegExp("Vi har behov for tolk."),
             checked: true,
-          })[1]
+          })[1],
         ).to.exist;
         expect(screen.getAllByText("Hva slags tolk har dere behov for?")[1]).to
           .exist;
@@ -587,13 +587,13 @@ describe("MotebehovKvittering", () => {
               onskerTolk: false,
             },
             MotebehovSkjemaType.SVAR_BEHOV,
-            MotebehovInnmelder.ARBEIDSTAKER
+            MotebehovInnmelder.ARBEIDSTAKER,
           ),
         };
 
         const arbeidsgiver = {
           ...svartNeiMotebehovArbeidsgiverUbehandletMock(
-            MotebehovSkjemaType.SVAR_BEHOV
+            MotebehovSkjemaType.SVAR_BEHOV,
           ),
           formValues: createFormValues(
             {
@@ -605,7 +605,7 @@ describe("MotebehovKvittering", () => {
               tolkSprak: "Svensk",
             },
             MotebehovSkjemaType.SVAR_BEHOV,
-            MotebehovInnmelder.ARBEIDSGIVER
+            MotebehovInnmelder.ARBEIDSGIVER,
           ),
         };
 
@@ -616,83 +616,83 @@ describe("MotebehovKvittering", () => {
         expect(
           screen.getByText("Samuel Sam Jones, har svart JA", {
             exact: false,
-          })
+          }),
         ).to.exist;
         expect(
           screen.getAllByRole("radiogroup", {
             name: RegExp("Har dere behov for et dialogmøte med NAV?"),
-          })[0]
+          })[0],
         ).to.exist;
         expect(
           screen.getAllByRole("radio", {
             name: "Ja, vi har behov for et dialogmøte.",
             checked: true,
-          })[0]
+          })[0],
         ).to.exist;
         expect(
           screen.getAllByRole("radio", {
             name: "Nei, vi har ikke behov for et dialogmøte nå.",
-          })[0]
+          })[0],
         ).to.exist;
         expect(screen.getAllByText("Begrunnelse")[0]).to.exist;
         expect(screen.getByText("Møter er bra!")).to.exist;
         expect(
           screen.getByRole("checkbox", {
             name: RegExp(
-              "Jeg ønsker at sykmelder \\(lege/behandler\\) også deltar i møtet\\."
+              "Jeg ønsker at sykmelder \\(lege/behandler\\) også deltar i møtet\\.",
             ),
             checked: true,
-          })
+          }),
         ).to.exist;
         expect(
           screen.getByText(
-            "Hvorfor ønsker du at lege/behandler deltar i møtet?"
-          )
+            "Hvorfor ønsker du at lege/behandler deltar i møtet?",
+          ),
         ).to.exist;
         expect(screen.getByText("Ønsker at legen min er tilstede")).to.exist;
         expect(
           screen.getByRole("checkbox", {
             name: RegExp("Vi har behov for tolk."),
             checked: false,
-          })
+          }),
         ).to.exist;
 
         expect(
           screen.getByText(`${arbeidsgiverMedVirksomhet}, har svart JA`, {
             exact: false,
-          })
+          }),
         ).to.exist;
         expect(
           screen.getAllByRole("radiogroup", {
             name: RegExp("Har dere behov for et dialogmøte med NAV?"),
-          })[1]
+          })[1],
         ).to.exist;
         expect(
           screen.getAllByRole("radio", {
             name: "Ja, vi har behov for et dialogmøte.",
             checked: true,
-          })[1]
+          })[1],
         ).to.exist;
         expect(
           screen.getAllByRole("radio", {
             name: "Nei, vi har ikke behov for et dialogmøte nå.",
-          })[1]
+          })[1],
         ).to.exist;
         expect(screen.getAllByText("Begrunnelse")[1]).to.exist;
         expect(screen.getByText("Jeg liker ikke møte!!")).to.exist;
         expect(
           screen.getByRole("checkbox", {
             name: RegExp(
-              "Jeg ønsker at sykmelder \\(lege/behandler\\) også deltar i møtet\\."
+              "Jeg ønsker at sykmelder \\(lege/behandler\\) også deltar i møtet\\.",
             ),
             checked: true,
-          })
+          }),
         ).to.exist;
         expect(
           screen.getByRole("checkbox", {
             name: RegExp("Vi har behov for tolk."),
             checked: true,
-          })
+          }),
         ).to.exist;
         expect(screen.getByText("Hva slags tolk har dere behov for?")).to.exist;
         expect(screen.getByText("Svensk")).to.exist;
@@ -711,13 +711,13 @@ describe("MotebehovKvittering", () => {
               onskerTolk: false,
             },
             MotebehovSkjemaType.SVAR_BEHOV,
-            MotebehovInnmelder.ARBEIDSTAKER
+            MotebehovInnmelder.ARBEIDSTAKER,
           ),
         };
 
         const arbeidsgiver = {
           ...svartNeiMotebehovArbeidsgiverUbehandletMock(
-            MotebehovSkjemaType.SVAR_BEHOV
+            MotebehovSkjemaType.SVAR_BEHOV,
           ),
           formValues: createFormValues(
             {
@@ -725,7 +725,7 @@ describe("MotebehovKvittering", () => {
               harMotebehov: false,
             },
             MotebehovSkjemaType.SVAR_BEHOV,
-            MotebehovInnmelder.ARBEIDSGIVER
+            MotebehovInnmelder.ARBEIDSGIVER,
           ),
         };
 
@@ -736,63 +736,63 @@ describe("MotebehovKvittering", () => {
         expect(
           screen.getByText("Samuel Sam Jones, har svart JA", {
             exact: false,
-          })
+          }),
         ).to.exist;
         expect(
           screen.getAllByRole("radiogroup", {
             name: RegExp("Har dere behov for et dialogmøte med NAV?"),
-          })[0]
+          })[0],
         ).to.exist;
         expect(
           screen.getByRole("radio", {
             name: "Ja, vi har behov for et dialogmøte.",
             checked: true,
-          })
+          }),
         ).to.exist;
         expect(
           screen.getByRole("radio", {
             name: "Nei, vi har ikke behov for et dialogmøte nå.",
             checked: false,
-          })
+          }),
         ).to.exist;
         expect(screen.getByText("Begrunnelse")).to.exist;
         expect(screen.getByText("Møter er bra!")).to.exist;
         expect(
           screen.getByRole("checkbox", {
             name: RegExp(
-              "Jeg ønsker at sykmelder \\(lege/behandler\\) også deltar i møtet\\."
+              "Jeg ønsker at sykmelder \\(lege/behandler\\) også deltar i møtet\\.",
             ),
             checked: true,
-          })
+          }),
         ).to.exist;
         expect(
           screen.getByRole("checkbox", {
             name: RegExp("Vi har behov for tolk."),
             checked: false,
-          })
+          }),
         ).to.exist;
 
         expect(
           screen.getByText(`${arbeidsgiverMedVirksomhet}, har svart NEI`, {
             exact: false,
-          })
+          }),
         ).to.exist;
         expect(
           screen.getAllByRole("radiogroup", {
             name: RegExp("Har dere behov for et dialogmøte med NAV?"),
-          })[1]
+          })[1],
         ).to.exist;
         expect(
           screen.getByRole("radio", {
             name: "Ja, vi har behov for et dialogmøte.",
             checked: false,
-          })
+          }),
         ).to.exist;
         expect(
           screen.getByRole("radio", {
             name: "Nei, vi har ikke behov for et dialogmøte nå.",
             checked: true,
-          })
+          }),
         ).to.exist;
       });
     });

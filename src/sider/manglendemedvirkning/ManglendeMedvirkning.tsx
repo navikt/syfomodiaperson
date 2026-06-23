@@ -14,7 +14,7 @@ export default function ManglendeMedvirkning() {
   const [showStartetVurdering, setShowStartetVurdering] = useState(false);
 
   const forhandsvarselDraft = useDraftQuery<DraftTextDTO>(
-    "manglendemedvirkning-forhandsvarsel"
+    "manglendemedvirkning-forhandsvarsel",
   );
 
   return showStartetVurdering || isForhandsvarsel ? (

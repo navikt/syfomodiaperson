@@ -38,8 +38,7 @@ const texts = {
 
 const begrunnelseMaxLength = 1000;
 
-interface IkkeAktuellAktivitetskravSkjemaProps
-  extends VurderAktivitetskravSkjemaProps {
+interface IkkeAktuellAktivitetskravSkjemaProps extends VurderAktivitetskravSkjemaProps {
   setModalOpen: (isOpen: boolean) => void;
 }
 

@@ -59,7 +59,7 @@ const textDefault = (dager: number, arbeidsgiver?: string, grad?: number) => {
 
 export function sykmeldingPeriodeTekst(
   periode: SykmeldingPeriodeDTO,
-  arbeidsgiver?: string
+  arbeidsgiver?: string,
 ): string {
   const antallDager = getDuration(periode.fom, periode.tom);
   const sykmeldtEnDag = antallDager === 1;

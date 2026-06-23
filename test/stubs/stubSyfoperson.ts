@@ -7,22 +7,22 @@ import { http, HttpResponse } from "msw";
 export const stubEgenansattApi = (isEgenansatt: boolean) =>
   mockServer.use(
     http.get(`*${SYFOPERSON_ROOT}/person/egenansatt`, () =>
-      HttpResponse.json(isEgenansatt)
-    )
+      HttpResponse.json(isEgenansatt),
+    ),
   );
 
 export const stubDiskresjonskodeApi = (diskresjonskode = "") =>
   mockServer.use(
     http.get(`*${SYFOPERSON_ROOT}/person/diskresjonskode`, () =>
-      HttpResponse.json(diskresjonskode)
-    )
+      HttpResponse.json(diskresjonskode),
+    ),
   );
 
 export const stubPersonadresseApi = () =>
   mockServer.use(
     http.get(`*${SYFOPERSON_ROOT}/person/adresse`, () =>
-      HttpResponse.json(personAdresseMock)
-    )
+      HttpResponse.json(personAdresseMock),
+    ),
   );
 
 interface TilrettelagtKommunikasjon {
@@ -32,7 +32,7 @@ interface TilrettelagtKommunikasjon {
 
 export const stubPersoninfoApi = (
   dodsdato?: string,
-  tilrettelagtKommunikasjon?: TilrettelagtKommunikasjon
+  tilrettelagtKommunikasjon?: TilrettelagtKommunikasjon,
 ) => {
   const brukerinfo = {
     ...brukerinfoMock,
@@ -41,7 +41,7 @@ export const stubPersoninfoApi = (
   };
   mockServer.use(
     http.get(`*${SYFOPERSON_ROOT}/person/brukerinfo`, () =>
-      HttpResponse.json(brukerinfo)
-    )
+      HttpResponse.json(brukerinfo),
+    ),
   );
 };

@@ -36,14 +36,12 @@ const texts = {
 
 const begrunnelseMaxLength = 300;
 
-export interface AvventAktivitetskravSkjemaValues
-  extends AktivitetskravSkjemaValues {
+export interface AvventAktivitetskravSkjemaValues extends AktivitetskravSkjemaValues {
   arsaker: AvventVurderingArsak[];
   fristDato?: string;
 }
 
-interface AvventAktivitetskravSkjemaProps
-  extends VurderAktivitetskravSkjemaProps {
+interface AvventAktivitetskravSkjemaProps extends VurderAktivitetskravSkjemaProps {
   setModalOpen: (isOpen: boolean) => void;
 }
 
@@ -94,7 +92,7 @@ export function AvventAktivitetskravSkjema({
                 >
                   {text}
                 </Checkbox>
-              )
+              ),
             )}
           </CheckboxGroup>
           <Textarea

@@ -23,7 +23,7 @@ const moreKvitteringText = (antall: number, sum: number): string => {
 const sumOfKvitteringer = (svar: SvarDTO[]): number => {
   const total = svar.reduce((previous: number, currentSvar: SvarDTO) => {
     const currentKvittering: Kvittering = JSON.parse(
-      currentSvar.verdi as string
+      currentSvar.verdi as string,
     );
     return previous + currentKvittering.belop;
   }, 0);

@@ -25,7 +25,7 @@ const renderReturLegeerklaring = (melding: MeldingDTO) => {
       >
         <ReturLegeerklaring melding={melding} />
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -48,7 +48,7 @@ describe("ReturLegeerklaring", () => {
     expect(previewModal).to.exist;
 
     const expectedTexts = expectedReturLegeerklaringDocument().flatMap(
-      (documentComponent) => documentComponent.texts
+      (documentComponent) => documentComponent.texts,
     );
     expectedTexts.forEach((text) => {
       expect(within(previewModal).getByText(text)).to.exist;
@@ -58,13 +58,13 @@ describe("ReturLegeerklaring", () => {
       within(previewModal).getByRole("button", {
         name: sendButtonText,
         hidden: true,
-      })
+      }),
     ).to.exist;
     expect(
       within(previewModal).getAllByRole("button", {
         name: cancelButtonText,
         hidden: true,
-      })
+      }),
     ).to.not.be.empty;
   });
   it("click cancel in preview closes preview", async () => {
@@ -151,7 +151,7 @@ describe("ReturLegeerklaring", () => {
         .getAll()[0];
 
       expect(returLegeerklaringMutation.state.variables).to.deep.equal(
-        expectedReturLegeerklaringDTO
+        expectedReturLegeerklaringDTO,
       );
     });
   });

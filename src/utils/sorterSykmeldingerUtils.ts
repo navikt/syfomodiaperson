@@ -6,26 +6,26 @@ import {
 } from "./sykmeldinger/sykmeldingUtils";
 
 export const hentArbeidsgivernavn = (
-  sykmelding: SykmeldingOldFormat
+  sykmelding: SykmeldingOldFormat,
 ): string => {
   return sykmelding.mottakendeArbeidsgiver
     ? sykmelding.mottakendeArbeidsgiver.navn
     : sykmelding.arbeidsgiver
-    ? sykmelding.arbeidsgiver
-    : sykmelding.innsendtArbeidsgivernavn
-    ? sykmelding.innsendtArbeidsgivernavn
-    : "";
+      ? sykmelding.arbeidsgiver
+      : sykmelding.innsendtArbeidsgivernavn
+        ? sykmelding.innsendtArbeidsgivernavn
+        : "";
 };
 
 const sykmeldingerMedPerioderSortertEldstTilNyest = (
-  sykmeldinger: SykmeldingOldFormat[]
+  sykmeldinger: SykmeldingOldFormat[],
 ): SykmeldingOldFormat[] => {
   return sykmeldinger.map((sykmelding) => ({
     ...sykmelding,
     mulighetForArbeid: {
       ...sykmelding.mulighetForArbeid,
       perioder: sykmeldingperioderSortertEldstTilNyest(
-        sykmelding.mulighetForArbeid.perioder
+        sykmelding.mulighetForArbeid.perioder,
       ),
     },
   }));
@@ -33,7 +33,7 @@ const sykmeldingerMedPerioderSortertEldstTilNyest = (
 
 const harUlikStartdato = (
   sykmeldingA: SykmeldingOldFormat,
-  sykmeldingB: SykmeldingOldFormat
+  sykmeldingB: SykmeldingOldFormat,
 ): boolean => {
   return (
     toDate(getSykmeldingStartdato(sykmeldingA))?.getTime() !==
@@ -49,7 +49,7 @@ export type SorteringsKriteriumVerdi = "dato" | "arbeidsgiver";
 
 const compareByDate = (
   sykmeldingA: SykmeldingOldFormat,
-  sykmeldingB: SykmeldingOldFormat
+  sykmeldingB: SykmeldingOldFormat,
 ): number => {
   if (harUlikStartdato(sykmeldingA, sykmeldingB)) {
     return (
@@ -70,7 +70,7 @@ const compareByDate = (
 
 export const sorterSykmeldinger = (
   sykmeldinger: SykmeldingOldFormat[] = [],
-  kriterium: SorteringsKriteriumVerdi = "dato"
+  kriterium: SorteringsKriteriumVerdi = "dato",
 ): SykmeldingOldFormat[] => {
   return sykmeldingerMedPerioderSortertEldstTilNyest(sykmeldinger).sort(
     (sykmeldingA, sykmeldingB) => {
@@ -94,6 +94,6 @@ export const sorterSykmeldinger = (
           return 0;
         }
       }
-    }
+    },
   );
 };

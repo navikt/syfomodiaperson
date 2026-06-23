@@ -26,7 +26,7 @@ describe("historikkQueryHooks", () => {
       (historikkEvent) => ({
         ...historikkEvent,
         kilde: "OPPFOLGINGSPLAN",
-      })
+      }),
     );
     expect(result.current.data).to.deep.equal(expectedHistorikkEvents);
   });

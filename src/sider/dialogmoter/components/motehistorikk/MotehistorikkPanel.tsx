@@ -28,13 +28,13 @@ interface HistorikkEvent {
 function createHistorikkEvents(
   historiskeMoter: DialogmoteDTO[],
   dialogmoteunntak: UnntakDTO[],
-  dialogmoteikkeaktuell: IkkeAktuellVurdering[]
+  dialogmoteikkeaktuell: IkkeAktuellVurdering[],
 ): HistorikkEvent[] {
   const avlysteMoter = historiskeMoter.filter(
-    (mote) => mote.status === DialogmoteStatus.AVLYST
+    (mote) => mote.status === DialogmoteStatus.AVLYST,
   );
   const moterMedReferat = historiskeMoter.filter(
-    (mote) => mote.referatList.length > 0
+    (mote) => mote.referatList.length > 0,
   );
   return [
     ...avlystDialogmoteHistorikkEvents(avlysteMoter),
@@ -45,7 +45,7 @@ function createHistorikkEvents(
 }
 
 function avlystDialogmoteHistorikkEvents(
-  avlysteMoter: DialogmoteDTO[]
+  avlysteMoter: DialogmoteDTO[],
 ): HistorikkEvent[] {
   return avlysteMoter.map((mote) => {
     return {
@@ -56,7 +56,7 @@ function avlystDialogmoteHistorikkEvents(
 }
 
 function referatHistorikkEvents(
-  moterMedReferat: DialogmoteDTO[]
+  moterMedReferat: DialogmoteDTO[],
 ): HistorikkEvent[] {
   return moterMedReferat.flatMap((mote) =>
     getDialogmoteReferat(mote).ferdigstilteReferatList.map(
@@ -71,13 +71,13 @@ function referatHistorikkEvents(
             />
           ),
         };
-      }
-    )
+      },
+    ),
   );
 }
 
 function dialogmoteUnntakEvents(
-  dialogmoteunntak: UnntakDTO[]
+  dialogmoteunntak: UnntakDTO[],
 ): HistorikkEvent[] {
   return dialogmoteunntak.map((unntak) => ({
     eventDate: new Date(unntak.createdAt),
@@ -86,7 +86,7 @@ function dialogmoteUnntakEvents(
 }
 
 function dialogmoteIkkeAktuellEvents(
-  dialogmoteikkeaktuell: IkkeAktuellVurdering[]
+  dialogmoteikkeaktuell: IkkeAktuellVurdering[],
 ): HistorikkEvent[] {
   return dialogmoteikkeaktuell.map((ikkeaktuell) => ({
     eventDate: new Date(ikkeaktuell.createdAt),
@@ -108,7 +108,7 @@ export default function MotehistorikkPanel({
   const historikkEvents = createHistorikkEvents(
     historiskeMoter,
     dialogmoteunntak,
-    dialogmoteikkeaktuell
+    dialogmoteikkeaktuell,
   );
 
   return (

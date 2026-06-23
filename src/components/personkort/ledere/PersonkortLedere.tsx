@@ -18,7 +18,7 @@ const texts = {
 };
 
 function sortLeaderListNewestFomDatoFirst(
-  leaderList: NarmesteLederRelasjonDTO[]
+  leaderList: NarmesteLederRelasjonDTO[],
 ) {
   return [...leaderList].sort((l1, l2) => {
     return new Date(l2.aktivFom).getTime() - new Date(l1.aktivFom).getTime();
@@ -38,16 +38,16 @@ export function PersonkortLedere() {
 
   const virksomheterFromSykmeldinger = virksomheterWithoutLeder(
     getLedereQuery.allLedere,
-    getSykmeldingerQuery.sykmeldinger
+    getSykmeldingerQuery.sykmeldinger,
   );
   const ledereWithActiveFirst = ledereWithActiveLedereFirst(
     getLedereQuery.allLedere,
-    getSykmeldingerQuery.sykmeldinger
+    getSykmeldingerQuery.sykmeldinger,
   );
 
   const virksomhetLederMap = groupArrayByKey(
     sortLeaderListNewestFomDatoFirst(ledereWithActiveFirst),
-    "virksomhetsnummer"
+    "virksomhetsnummer",
   );
   const hasNoLeaders = Object.keys(virksomhetLederMap).length === 0;
 
@@ -80,7 +80,7 @@ export function PersonkortLedere() {
               sykmeldinger={getSykmeldingerQuery.sykmeldinger}
             />
           );
-        }
+        },
       )}
     </div>
   );

@@ -37,7 +37,7 @@ enum Tab {
 }
 
 function isValidStateForForhandsvarsel(
-  aktivitetskravStatus: AktivitetskravStatus
+  aktivitetskravStatus: AktivitetskravStatus,
 ) {
   return (
     aktivitetskravStatus === AktivitetskravStatus.NY ||
@@ -56,7 +56,7 @@ export function VurderAktivitetskravTabs({ aktivitetskrav }: Props) {
     latestVurdering &&
     isExpiredForhandsvarsel(latestVurdering.varsel?.svarfrist);
   const isForhandsvarselTabVisible = isValidStateForForhandsvarsel(
-    aktivitetskrav.status
+    aktivitetskrav.status,
   );
 
   const aktivitetskravUuid = aktivitetskrav.uuid;
@@ -64,10 +64,10 @@ export function VurderAktivitetskravTabs({ aktivitetskrav }: Props) {
   const unntakDraft = useDraftQuery<DraftTextDTO>("aktivitetskrav-unntak");
   const oppfyltDraft = useDraftQuery<DraftTextDTO>("aktivitetskrav-oppfylt");
   const forhandsvarselDraft = useDraftQuery<DraftTextDTO>(
-    "aktivitetskrav-forhandsvarsel"
+    "aktivitetskrav-forhandsvarsel",
   );
   const innstillingOmStansDraft = useDraftQuery<DraftTextDTO>(
-    "aktivitetskrav-innstilling-om-stans"
+    "aktivitetskrav-innstilling-om-stans",
   );
 
   return (

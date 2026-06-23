@@ -53,11 +53,11 @@ export const mockIshuskelapp = [
                 ...oppgave.versjoner,
               ],
             }
-          : oppgave
+          : oppgave,
       );
 
       HttpResponse.json(oppfolgingsoppgaverMock[0]);
-    }
+    },
   ),
   http.post<object, OppfolgingsoppgaveRequestDTO>(
     `${ISHUSKELAPP_ROOT}/huskelapp`,
@@ -85,7 +85,7 @@ export const mockIshuskelapp = [
       ];
 
       return new HttpResponse(null, { status: 200 });
-    }
+    },
   ),
   http.delete(`${ISHUSKELAPP_ROOT}/huskelapp/:huskelappUuid`, ({ params }) => {
     oppfolgingsoppgaverMock = oppfolgingsoppgaverMock.map((oppgave) =>
@@ -96,7 +96,7 @@ export const mockIshuskelapp = [
             removedBy: VEILEDER_IDENT_DEFAULT,
             updatedAt: new Date(),
           }
-        : oppgave
+        : oppgave,
     );
     return new HttpResponse(null, { status: 204 });
   }),

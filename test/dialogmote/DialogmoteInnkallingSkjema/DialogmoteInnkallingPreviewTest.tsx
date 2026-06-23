@@ -50,13 +50,13 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
       within(forhandsvisningInnkallingArbeidstaker).getByRole("heading", {
         name: texts.forhandsvisningArbeidstakerTitle,
         hidden: true,
-      })
+      }),
     ).to.exist;
     expect(
       within(forhandsvisningInnkallingArbeidstaker).getByRole("heading", {
         name: texts.forhandsvisningSubtitle,
         hidden: true,
-      })
+      }),
     ).to.exist;
     expectedInnkallingDocuments
       .arbeidstaker(false, expectedSendtDato)
@@ -86,13 +86,13 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
       within(forhandsvisningInnkallingArbeidsgiver).getByRole("heading", {
         name: texts.forhandsvisningSubtitle,
         hidden: true,
-      })
+      }),
     ).to.exist;
     expect(
       within(forhandsvisningInnkallingArbeidsgiver).getByRole("heading", {
         name: texts.forhandsvisningArbeidsgiverTitle,
         hidden: true,
-      })
+      }),
     ).to.exist;
     expectedInnkallingDocuments
       .arbeidsgiver(false, expectedSendtDato)
@@ -107,7 +107,7 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
     stubFeatureTogglesApi();
     queryClient.setQueryData(
       behandlereQueryKeys.behandlere(arbeidstaker.personident),
-      () => [behandler]
+      () => [behandler],
     );
     renderDialogmoteInnkallingSkjema();
     await passSkjemaInput();
@@ -115,7 +115,7 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
     const fastlegeInput = screen.getByRole("radio", { name: /Fastlege/ });
     await userEvent.click(fastlegeInput);
     const fritekstBehandlerInput = getTextInput(
-      "Fritekst til behandler (valgfri)"
+      "Fritekst til behandler (valgfri)",
     );
     changeTextInput(fritekstBehandlerInput, moteTekster.fritekstTilBehandler);
 
@@ -134,7 +134,7 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
       within(forhandsvisningInnkallingBehandler).getByRole("heading", {
         name: texts.forhandsvisningBehandlerTitle,
         hidden: true,
-      })
+      }),
     ).to.exist;
 
     expectedInnkallingDocuments
@@ -159,7 +159,7 @@ const renderDialogmoteInnkallingSkjema = () =>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     dialogmoteRoutePath,
-    [dialogmoteRoutePath]
+    [dialogmoteRoutePath],
   );
 
 const passSkjemaInput = () => {
@@ -171,10 +171,10 @@ const passSkjemaInput = () => {
   const stedInput = getTextInput("Sted");
   const videoLinkInput = getTextInput("Lenke til videomøte (valgfritt)");
   const fritekstArbeidstakerInput = getTextInput(
-    "Fritekst til arbeidstakeren (valgfri)"
+    "Fritekst til arbeidstakeren (valgfri)",
   );
   const fritekstArbeidsgiverInput = getTextInput(
-    "Fritekst til nærmeste leder (valgfri)"
+    "Fritekst til nærmeste leder (valgfri)",
   );
 
   fireEvent.click(virksomhetSelect);
@@ -185,10 +185,10 @@ const passSkjemaInput = () => {
   changeTextInput(videoLinkInput, mote.videolink);
   changeTextInput(
     fritekstArbeidstakerInput,
-    moteTekster.fritekstTilArbeidstaker
+    moteTekster.fritekstTilArbeidstaker,
   );
   changeTextInput(
     fritekstArbeidsgiverInput,
-    moteTekster.fritekstTilArbeidsgiver
+    moteTekster.fritekstTilArbeidsgiver,
   );
 };

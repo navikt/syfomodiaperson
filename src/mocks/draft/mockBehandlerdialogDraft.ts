@@ -21,7 +21,7 @@ export const mockBehandlerdialogDraft = [
         behandlerRef: body.behandlerRef,
       };
       return new HttpResponse(JSON.stringify(draft), { status: 200 });
-    }
+    },
   ),
   http.delete(`/api/draft/behandlerdialog-meldingtilbehandler`, () => {
     draft = {

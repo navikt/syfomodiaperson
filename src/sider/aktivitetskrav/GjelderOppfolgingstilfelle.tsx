@@ -13,7 +13,7 @@ export const GjelderOppfolgingstilfelle = ({
   return (
     <BodyShort>{`Gjelder tilfelle ${tilLesbarPeriodeMedArUtenManednavn(
       oppfolgingstilfelle.start,
-      oppfolgingstilfelle.end
+      oppfolgingstilfelle.end,
     )}`}</BodyShort>
   );
 };

@@ -116,7 +116,7 @@ export const mockIsmeroppfolging = [
       };
 
       return HttpResponse.json(vurdering);
-    }
+    },
   ),
   http.get(`${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater`, () => {
     return HttpResponse.json([
@@ -130,6 +130,6 @@ export const mockIsmeroppfolging = [
       kartleggingssporsmalMock = kartleggingssporsmalVurderingFerdigbehandlet;
 
       return HttpResponse.json(kartleggingssporsmalVurderingFerdigbehandlet);
-    }
+    },
   ),
 ];

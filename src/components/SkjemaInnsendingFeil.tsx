@@ -9,7 +9,7 @@ interface Props {
 
 function resolveErrorMessage(
   error: unknown,
-  defaultErrorMsgOverride: string
+  defaultErrorMsgOverride: string,
 ): string {
   if (
     error instanceof ApiErrorException &&
@@ -26,7 +26,7 @@ export function SkjemaInnsendingFeil({
 }: Props) {
   const message = resolveErrorMessage(
     error,
-    defaultErrorMsgOverride ?? defaultErrorTexts.generalError
+    defaultErrorMsgOverride ?? defaultErrorTexts.generalError,
   );
   return (
     <HStack className={"my-2"}>

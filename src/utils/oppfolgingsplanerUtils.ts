@@ -7,10 +7,10 @@ import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 
 export function toOppfolgingsplanLPSMedPersonoppgave(
   oppfolgingsplanLPS: OppfolgingsplanLPS,
-  personoppgaver: PersonOppgave[]
+  personoppgaver: PersonOppgave[],
 ): OppfolgingsplanLPSMedPersonoppgave {
   const personoppgave = personoppgaver.find(
-    (personoppgave) => personoppgave.referanseUuid === oppfolgingsplanLPS.uuid
+    (personoppgave) => personoppgave.referanseUuid === oppfolgingsplanLPS.uuid,
   );
 
   if (personoppgave) {
@@ -24,9 +24,9 @@ export function toOppfolgingsplanLPSMedPersonoppgave(
 }
 
 export function oppfolgingsplanerLPSOpprettetIdag(
-  oppfolgingsplaner: OppfolgingsplanLPSMedPersonoppgave[]
+  oppfolgingsplaner: OppfolgingsplanLPSMedPersonoppgave[],
 ) {
   return oppfolgingsplaner.filter(
-    (plan) => erIdag(plan.opprettet) && !plan.personoppgave
+    (plan) => erIdag(plan.opprettet) && !plan.personoppgave,
   );
 }

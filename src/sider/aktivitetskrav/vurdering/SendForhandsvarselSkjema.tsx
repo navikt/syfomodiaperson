@@ -104,7 +104,7 @@ export function SendForhandsvarselSkjema({
       {
         onSuccess: () => setUtkastSavedTime(new Date()),
         onError: () => setUtkastSavedTime(undefined),
-      }
+      },
     );
   }, 750);
 
@@ -138,7 +138,7 @@ export function SendForhandsvarselSkjema({
   };
 
   const handleBrevmalChanged = (
-    e: ChangeEvent<HTMLSelectElement> & { target: { value: Brevmal } }
+    e: ChangeEvent<HTMLSelectElement> & { target: { value: Brevmal } },
   ) => {
     setBrevmal(e.target.value);
   };

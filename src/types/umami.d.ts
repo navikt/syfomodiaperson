@@ -5,7 +5,7 @@ declare global {
     identify: (id: string) => Promise<void> | void;
     track: (
       eventName: string,
-      eventData?: Record<string, unknown>
+      eventData?: Record<string, unknown>,
     ) => Promise<void> | void;
   }
 

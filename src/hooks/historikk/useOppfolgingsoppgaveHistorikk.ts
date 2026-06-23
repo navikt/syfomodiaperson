@@ -7,7 +7,7 @@ import { useOppfolgingsoppgaver } from "@/data/oppfolgingsoppgave/useOppfolgings
 import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function createHistorikkEvents(
-  oppfolgingsoppgaver: OppfolgingsoppgaveResponseDTO[]
+  oppfolgingsoppgaver: OppfolgingsoppgaveResponseDTO[],
 ): HistorikkEvent[] {
   const historikkEvents: HistorikkEvent[] = [];
 

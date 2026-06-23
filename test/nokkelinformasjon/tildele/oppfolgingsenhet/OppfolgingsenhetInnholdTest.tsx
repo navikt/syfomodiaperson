@@ -25,7 +25,7 @@ const renderOppfolgingsenhetInnhold = () =>
   render(
     <QueryClientProvider client={queryClient}>
       <OppfolgingsenhetInnhold modalRef={createRef<HTMLDialogElement>()} />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("Tildele", () => {
@@ -33,38 +33,38 @@ describe("Tildele", () => {
     queryClient = queryClientWithMockData();
     queryClient.setQueryData(
       oppfolgingsplanQueryKeys.oppfolgingsplaner(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => []
+      () => [],
     );
     queryClient.setQueryData(
       ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [LEDERE_DEFAULT[0]]
+      () => [LEDERE_DEFAULT[0]],
     );
     queryClient.setQueryData(
       behandlendeEnhetQueryKeys.behandlendeEnhet(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => behandlendeEnhetMockResponse
+      () => behandlendeEnhetMockResponse,
     );
     queryClient.setQueryData(
       diskresjonskodeQueryKeys.diskresjonskode(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => undefined
+      () => undefined,
     );
     queryClient.setQueryData(
       egenansattQueryKeys.egenansatt(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => undefined
+      () => undefined,
     );
   });
 
   it("Ikke tildelt oppfølgingsenhet", async () => {
     queryClient.setQueryData(
       behandlendeEnhetQueryKeys.behandlendeEnhet(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => ingenTildeltOppfolgingsenhet
+      () => ingenTildeltOppfolgingsenhet,
     );
 
     renderOppfolgingsenhetInnhold();
@@ -93,9 +93,9 @@ describe("Tildele", () => {
   it("Vis varsel hvis syfobehandlendeenhet returnerer noContent (finner ikke geografisk enhet)", async () => {
     queryClient.setQueryData(
       behandlendeEnhetQueryKeys.behandlendeEnhet(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => ""
+      () => "",
     );
 
     renderOppfolgingsenhetInnhold();
@@ -112,19 +112,19 @@ describe("Tildele", () => {
       async (isEgenAnsatt, diskresjonskode) => {
         queryClient.setQueryData(
           diskresjonskodeQueryKeys.diskresjonskode(
-            ARBEIDSTAKER_DEFAULT.personIdent
+            ARBEIDSTAKER_DEFAULT.personIdent,
           ),
-          () => diskresjonskode
+          () => diskresjonskode,
         );
         queryClient.setQueryData(
           egenansattQueryKeys.egenansatt(ARBEIDSTAKER_DEFAULT.personIdent),
-          () => isEgenAnsatt
+          () => isEgenAnsatt,
         );
 
         renderOppfolgingsenhetInnhold();
 
         expect(queryButton("Endre")).to.exist;
-      }
+      },
     );
 
     it.each([
@@ -140,19 +140,19 @@ describe("Tildele", () => {
       async (isEgenAnsatt, diskresjonskode) => {
         queryClient.setQueryData(
           diskresjonskodeQueryKeys.diskresjonskode(
-            ARBEIDSTAKER_DEFAULT.personIdent
+            ARBEIDSTAKER_DEFAULT.personIdent,
           ),
-          () => diskresjonskode
+          () => diskresjonskode,
         );
         queryClient.setQueryData(
           egenansattQueryKeys.egenansatt(ARBEIDSTAKER_DEFAULT.personIdent),
-          () => isEgenAnsatt
+          () => isEgenAnsatt,
         );
 
         renderOppfolgingsenhetInnhold();
 
         expect(queryButton("Endre")).to.not.exist;
-      }
+      },
     );
   });
 });

@@ -24,7 +24,7 @@ const renderForhandsvarselSkjema = () =>
     queryClient,
     <SendForhandsvarselSkjema />,
     arbeidsuforhetPath,
-    [arbeidsuforhetPath]
+    [arbeidsuforhetPath],
   );
 
 describe("Forhandsvarselskjema arbeidsuforhet", () => {
@@ -61,7 +61,7 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
       expect(
         screen.getByRole("heading", {
           name: "Send forhåndsvarsel",
-        })
+        }),
       ).to.exist;
 
       expect(screen.getByRole("textbox", { name: begrunnelseLabel })).to.exist;
@@ -87,7 +87,7 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
       };
       expect(vurdering.type).to.deep.equal(expectedVurdering.type);
       expect(vurdering.begrunnelse).to.deep.equal(
-        expectedVurdering.begrunnelse
+        expectedVurdering.begrunnelse,
       );
       expect(vurdering.document).to.deep.equal(expectedVurdering.document);
       expect(vurdering.frist).to.deep.equal(expectedVurdering.frist);
@@ -113,7 +113,7 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
         within(forhandsvisningForhandsvarsel).getByRole("heading", {
           name: "Nav vurderer å avslå sykepengene dine",
           hidden: true,
-        })
+        }),
       ).to.exist;
       getSendForhandsvarselDocument(begrunnelse)
         .flatMap((documentComponent) => documentComponent.texts)
@@ -149,7 +149,7 @@ describe("Forhandsvarselskjema arbeidsuforhet", () => {
 
       const expectedFrist = dayjs(customFrist).format("YYYY-MM-DD");
       expect(vurdering.frist).to.satisfy(
-        (value: string) => value === expectedFrist || !!value
+        (value: string) => value === expectedFrist || !!value,
       );
     });
   });

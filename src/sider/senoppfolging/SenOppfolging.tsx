@@ -35,7 +35,8 @@ export default function SenOppfolging(): ReactElement {
   const isFerdigbehandlet =
     kandidat?.status === SenOppfolgingStatus.FERDIGBEHANDLET;
   const ferdigbehandletVurdering = kandidat?.vurderinger.find(
-    (vurdering) => vurdering.type === SenOppfolgingVurderingType.FERDIGBEHANDLET
+    (vurdering) =>
+      vurdering.type === SenOppfolgingVurderingType.FERDIGBEHANDLET,
   );
 
   return (

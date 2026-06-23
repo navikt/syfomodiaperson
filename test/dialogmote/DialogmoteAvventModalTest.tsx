@@ -12,12 +12,12 @@ let queryClient: QueryClient;
 
 const renderDialogmoteAvventModal = (
   isKandidat: boolean,
-  onClose: () => void = () => undefined
+  onClose: () => void = () => undefined,
 ) =>
   render(
     <QueryClientProvider client={queryClient}>
       <DialogmoteAvventModal isKandidat={isKandidat} isOpen onClose={onClose} />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("DialogmoteAvventModal", () => {
@@ -37,7 +37,7 @@ describe("DialogmoteAvventModal", () => {
 
     expect(await screen.findByText("Begrunnelse mangler")).to.exist;
     expect(
-      await screen.findByText(/Vennligst angi en gyldig dato i intervallet/)
+      await screen.findByText(/Vennligst angi en gyldig dato i intervallet/),
     ).to.exist;
     if (dateString)
       expect(await screen.findByText(dateString, { exact: false })).to.exist;
@@ -55,7 +55,7 @@ describe("DialogmoteAvventModal", () => {
 
     expect(await screen.findByText("Begrunnelse mangler")).to.exist;
     expect(
-      await screen.findByText(/Vennligst angi en gyldig dato i intervallet/)
+      await screen.findByText(/Vennligst angi en gyldig dato i intervallet/),
     ).to.exist;
     if (dateString)
       expect(await screen.findByText(dateString, { exact: false })).to.exist;

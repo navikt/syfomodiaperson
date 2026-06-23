@@ -47,7 +47,7 @@ interface AktivPlanLenkeProps {
 
 const AktivPlanLenke = ({ aktivPlan }: AktivPlanLenkeProps) => {
   const { virksomhetsnavn } = useVirksomhetQuery(
-    aktivPlan.virksomhet.virksomhetsnummer
+    aktivPlan.virksomhet.virksomhetsnummer,
   );
   return (
     <span>
@@ -70,7 +70,7 @@ const AktivePlaner = ({ aktivePlaner }: AktivePlanerProps) => (
         <span className="ml-8">
           {tilLesbarPeriodeMedArstall(
             plan.godkjentPlan.gyldighetstidspunkt.fom,
-            plan.godkjentPlan.gyldighetstidspunkt.tom
+            plan.godkjentPlan.gyldighetstidspunkt.tom,
           )}
         </span>
       </AktivPlan>
@@ -201,19 +201,19 @@ export default function UtdragOppfolgingsplaner({
     filterOppfolgingsplanerByOppfolgingstilfelle(
       allePlanerV1,
       selectedOppfolgingstilfelle,
-      isLatestTilfelle
+      isLatestTilfelle,
     );
 
   const lpsPlanerByOppfolgingstilfelle = lpsPlanerWithActiveTilfelle(
     lpsPlaner,
     selectedOppfolgingstilfelle,
-    isLatestTilfelle
+    isLatestTilfelle,
   );
   const [planerV2ByOppfolgingstilfelle] = selectedOppfolgingstilfelle
     ? partitionOppfolgingsplanerByActiveTilfelle(
         allePlanerV2,
         selectedOppfolgingstilfelle,
-        isLatestTilfelle
+        isLatestTilfelle,
       )
     : [[]];
 

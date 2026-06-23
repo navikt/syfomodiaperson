@@ -21,7 +21,7 @@ export function useSendVurdering<T extends NewVurderingRequestDTO>() {
     onSuccess: (data: VurderingResponseDTO) => {
       queryClient.setQueryData(
         manglendeMedvirkningQueryKeys.manglendeMedvirkning(personident),
-        (oldData: VurderingResponseDTO[]) => [data, ...oldData]
+        (oldData: VurderingResponseDTO[]) => [data, ...oldData],
       );
     },
   });

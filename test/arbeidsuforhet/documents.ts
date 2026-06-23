@@ -18,7 +18,7 @@ import { getForhandsvarselFrist } from "@/utils/forhandsvarselUtils";
 const expectedFristDate = getForhandsvarselFrist();
 
 export const getSendForhandsvarselDocument = (
-  begrunnelse: string
+  begrunnelse: string,
 ): DocumentComponentDto[] => {
   const sendForhandsvarselTexts = getForhandsvarselArbeidsuforhetTexts({
     frist: expectedFristDate,
@@ -82,7 +82,7 @@ export const getSendForhandsvarselDocument = (
 };
 
 export function getOppfyltDocument(
-  begrunnelse: string
+  begrunnelse: string,
 ): DocumentComponentDto[] {
   return [
     {
@@ -113,7 +113,7 @@ export function getOppfyltDocument(
 }
 
 export function getOppfyltEtterForhandsvarselDocument(
-  begrunnelse: string
+  begrunnelse: string,
 ): DocumentComponentDto[] {
   return [
     {
@@ -129,7 +129,7 @@ export function getOppfyltEtterForhandsvarselDocument(
     {
       texts: [
         `I forhåndsvarsel av ${tilDatoMedManedNavn(
-          weeksFromToday(-12)
+          weeksFromToday(-12),
         )} ble du informert om at Nav vurderte å avslå dine sykepenger. Vi har nå vurdert at vilkåret om arbeidsuførhet er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
@@ -160,7 +160,7 @@ export function getOppfyltEtterForhandsvarselDocument(
 export const getAvslagVurderingDocument = (
   begrunnelse: string,
   fom: Date | undefined,
-  forhandsvarselDate: Date
+  forhandsvarselDate: Date,
 ): DocumentComponentDto[] => {
   return [
     {
@@ -170,7 +170,7 @@ export const getAvslagVurderingDocument = (
     {
       texts: [
         `Det er sendt forhåndsvarsel i denne saken den ${tilDatoMedManedNavn(
-          forhandsvarselDate
+          forhandsvarselDate,
         )}.`,
       ],
       type: DocumentComponentType.PARAGRAPH,
@@ -207,7 +207,7 @@ export const getAvslagVurderingDocument = (
 };
 
 export const getIkkeAktuellVurderingDocument = (
-  arsak: VurderingArsak
+  arsak: VurderingArsak,
 ): DocumentComponentDto[] => {
   return [
     {

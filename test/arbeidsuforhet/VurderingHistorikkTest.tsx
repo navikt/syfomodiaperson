@@ -34,17 +34,17 @@ let queryClient: QueryClient;
 
 const renderVurderingHistorikk = (
   vurderinger: VurderingResponseDTO[],
-  sykepengestoppList: Sykepengestopp[] = []
+  sykepengestoppList: Sykepengestopp[] = [],
 ) => {
   queryClient.setQueryData(
     arbeidsuforhetQueryKeys.arbeidsuforhet(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => vurderinger
+    () => vurderinger,
   );
   queryClient.setQueryData(
     pengestoppStatusQueryKeys.pengestoppStatus(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => sykepengestoppList
+    () => sykepengestoppList,
   );
 
   return render(
@@ -54,7 +54,7 @@ const renderVurderingHistorikk = (
       >
         <VurderingHistorikk />
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -68,13 +68,13 @@ describe("VurderingHistorikk", () => {
 
       expect(
         screen.queryByText(
-          "Tidligere vurderinger av §8-4 arbeidsuførhet i Modia"
-        )
+          "Tidligere vurderinger av §8-4 arbeidsuførhet i Modia",
+        ),
       ).to.not.exist;
       expect(
         screen.getByText(
-          "Det finnes ingen tidligere vurderinger av §8-4 arbeidsuførhet i Modia"
-        )
+          "Det finnes ingen tidligere vurderinger av §8-4 arbeidsuførhet i Modia",
+        ),
       ).to.exist;
     });
   });
@@ -109,11 +109,13 @@ describe("VurderingHistorikk", () => {
 
       expect(
         screen.queryByText(
-          "Det finnes ingen tidligere vurderinger av §8-4 arbeidsuførhet i Modia"
-        )
+          "Det finnes ingen tidligere vurderinger av §8-4 arbeidsuførhet i Modia",
+        ),
       ).to.not.exist;
       expect(
-        screen.getByText("Tidligere vurderinger av §8-4 arbeidsuførhet i Modia")
+        screen.getByText(
+          "Tidligere vurderinger av §8-4 arbeidsuførhet i Modia",
+        ),
       ).to.exist;
     });
 
@@ -123,16 +125,16 @@ describe("VurderingHistorikk", () => {
       const vurderingButtons = getAccordionButtons();
 
       expect(vurderingButtons[0].textContent).to.contain(
-        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`
+        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`,
       );
       expect(vurderingButtons[1].textContent).to.contain(
-        `Forhåndsvarsel - ${tilDatoMedManedNavn(forhandsvarselCreated)}`
+        `Forhåndsvarsel - ${tilDatoMedManedNavn(forhandsvarselCreated)}`,
       );
       expect(vurderingButtons[2].textContent).to.contain(
-        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`
+        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`,
       );
       expect(vurderingButtons[3].textContent).to.contain(
-        `Innstilling om avslag - ${tilDatoMedManedNavn(avslagCreated)}`
+        `Innstilling om avslag - ${tilDatoMedManedNavn(avslagCreated)}`,
       );
     });
 
@@ -140,7 +142,7 @@ describe("VurderingHistorikk", () => {
       renderVurderingHistorikk([oppfylt]);
 
       const vurderingButton = getButton(
-        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`
+        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`,
       );
 
       await userEvent.click(vurderingButton);
@@ -157,7 +159,7 @@ describe("VurderingHistorikk", () => {
       renderVurderingHistorikk([ikkeAktuell]);
 
       const vurderingButton = getButton(
-        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`
+        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`,
       );
 
       await userEvent.click(vurderingButton);
@@ -212,19 +214,19 @@ describe("VurderingHistorikk", () => {
       expect(accordionButtons.length).toBe(5);
 
       expect(accordionButtons[0].textContent).to.contain(
-        "Innstilling om avslag - 22. februar 2025"
+        "Innstilling om avslag - 22. februar 2025",
       );
       expect(accordionButtons[1].textContent).to.contain(
-        "Forhåndsvarsel - 21. februar 2025"
+        "Forhåndsvarsel - 21. februar 2025",
       );
       expect(accordionButtons[2].textContent).to.contain(
-        "Automatisk utbetaling stanset - 20. februar 2025"
+        "Automatisk utbetaling stanset - 20. februar 2025",
       );
       expect(accordionButtons[3].textContent).to.contain(
-        "Innstilling om avslag - 16. februar 2025"
+        "Innstilling om avslag - 16. februar 2025",
       );
       expect(accordionButtons[4].textContent).to.contain(
-        "Forhåndsvarsel - 15. februar 2025"
+        "Forhåndsvarsel - 15. februar 2025",
       );
     });
   });

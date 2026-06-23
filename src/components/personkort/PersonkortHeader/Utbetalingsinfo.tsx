@@ -12,7 +12,7 @@ const texts = {
 
 function isUtbetalingsinfoFromBeforeOppfolgingstilfelleStart(
   maksdato: Maksdato,
-  startDate?: Date
+  startDate?: Date,
 ): boolean {
   return !!startDate && maksdato.opprettet < startDate;
 }
@@ -29,7 +29,7 @@ export default function Utbetalingsinfo({ maksdato }: Props) {
       <MaksdatoSummary maxDate={maksdato} startDate={startDate} />
       {isUtbetalingsinfoFromBeforeOppfolgingstilfelleStart(
         maksdato,
-        startDate
+        startDate,
       ) && (
         <Alert inline variant="warning" size="small">
           {texts.utbetalingsinfoAlert}

@@ -24,7 +24,7 @@ let queryClient: QueryClient;
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 
 const mockOppfolgingstilfellePerson = (
-  oppfolgingstilfeller: OppfolgingstilfelleDTO[]
+  oppfolgingstilfeller: OppfolgingstilfelleDTO[],
 ) => {
   const oppfolgingstilfellePerson: OppfolgingstilfellePersonDTO = {
     personIdent: fnr,
@@ -33,7 +33,7 @@ const mockOppfolgingstilfellePerson = (
   };
   queryClient.setQueryData(
     oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(fnr),
-    () => oppfolgingstilfellePerson
+    () => oppfolgingstilfellePerson,
   );
 };
 
@@ -60,7 +60,7 @@ const renderDialogmoteInnkallingContainer = () =>
           </MalformProvider>
         </ValgtEnhetContext.Provider>
       </QueryClientProvider>
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 
 describe("DialogmoteInnkallingContainer", () => {
@@ -92,8 +92,8 @@ describe("DialogmoteInnkallingContainer", () => {
 
     expect(
       screen.getByText(
-        "Bruker har ikke digital sykmelding. Arbeidsgiver vil derfor ikke få varsel på nav.no, men en kopi av innkallingen i Altinn. Vurder å varsle arbeidsgiver om møtet på annen måte i tillegg."
-      )
+        "Bruker har ikke digital sykmelding. Arbeidsgiver vil derfor ikke få varsel på nav.no, men en kopi av innkallingen i Altinn. Vurder å varsle arbeidsgiver om møtet på annen måte i tillegg.",
+      ),
     ).to.exist;
 
     expect(screen.queryByRole("img", { name: "feil-ikon" })).to.not.exist;
@@ -104,7 +104,7 @@ describe("DialogmoteInnkallingContainer", () => {
     renderDialogmoteInnkallingContainer();
 
     expect(
-      screen.queryByText(/Denne arbeidstakeren har ingen aktiv sykemelding,/)
+      screen.queryByText(/Denne arbeidstakeren har ingen aktiv sykemelding,/),
     ).to.not.exist;
   });
 });

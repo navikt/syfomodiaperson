@@ -22,7 +22,7 @@ const texts = {
 
 function getSykmelding(
   sykmeldinger: SykmeldingOldFormat[],
-  sykmeldingId: string
+  sykmeldingId: string,
 ): SykmeldingOldFormat | undefined {
   return sykmeldinger.find((sykmld) => `${sykmld.id}` === `${sykmeldingId}`);
 }
@@ -44,7 +44,7 @@ export default function SykmeldingSide() {
   ) {
     arbeidsgiversSykmelding = getSykmelding(
       arbeidsgiverssykmeldinger,
-      sykmeldingId
+      sykmeldingId,
     );
   }
 

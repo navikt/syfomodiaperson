@@ -24,7 +24,7 @@ export const getTidligsteSendtDato = (soknad: any) => {
 
 export const sorterEtterDato = (
   soknad1: SykepengesoknadDTO,
-  soknad2: SykepengesoknadDTO
+  soknad2: SykepengesoknadDTO,
 ) => {
   const dato1 = new Date(getTidligsteSendtDato(soknad1));
   const dato2 = new Date(getTidligsteSendtDato(soknad2));
@@ -40,7 +40,7 @@ export const sorterEtterDato = (
 
 export const sorterEtterOpprettetDato = (
   soknad1: SykepengesoknadDTO,
-  soknad2: SykepengesoknadDTO
+  soknad2: SykepengesoknadDTO,
 ) => {
   if (
     new Date(soknad1.opprettetDato).getTime() >
@@ -59,7 +59,7 @@ export const sorterEtterOpprettetDato = (
 
 export const sorterEtterPerioder = (
   soknad1: SykepengesoknadDTO,
-  soknad2: SykepengesoknadDTO
+  soknad2: SykepengesoknadDTO,
 ) => {
   if (new Date(soknad1.tom).getTime() < new Date(soknad2.tom).getTime()) {
     return 1;
@@ -71,7 +71,7 @@ export const sorterEtterPerioder = (
 };
 
 export const erSendtTilBeggeMenIkkeSamtidig = (
-  sykepengesoknad: SykepengesoknadDTO
+  sykepengesoknad: SykepengesoknadDTO,
 ) => {
   return (
     sykepengesoknad.sendtTilNAVDato &&

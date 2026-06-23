@@ -30,9 +30,9 @@ let queryClient: QueryClient;
 const mockVurdering = (vurdering?: VurderingResponseDTO) => {
   queryClient.setQueryData(
     manglendeMedvirkningQueryKeys.manglendeMedvirkning(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => (vurdering ? [vurdering] : [])
+    () => (vurdering ? [vurdering] : []),
   );
 };
 
@@ -48,7 +48,7 @@ const renderOppfyltSide = () => {
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     `${manglendeMedvirkningPath}/oppfylt`,
-    [`${manglendeMedvirkningPath}/oppfylt`]
+    [`${manglendeMedvirkningPath}/oppfylt`],
   );
 };
 
@@ -83,7 +83,7 @@ describe("Manglendemedvirkning Oppfylt", () => {
 
       expect(screen.getByRole("textbox", { name: begrunnelseLabel })).to.exist;
       expect(
-        screen.getByText("Husk å informere bruker om utfallet av vurderingen.")
+        screen.getByText("Husk å informere bruker om utfallet av vurderingen."),
       );
       expect(getButton("Lagre")).to.exist;
       expect(getButton("Avbryt")).to.exist;
@@ -134,7 +134,7 @@ describe("Manglendemedvirkning Oppfylt", () => {
       await waitFor(() => {
         const vurderingMutation = queryClient.getMutationCache().getAll().pop();
         expect(vurderingMutation?.state.variables).to.deep.equal(
-          expectedRequestBody
+          expectedRequestBody,
         );
       });
     });

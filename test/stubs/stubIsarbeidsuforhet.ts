@@ -6,6 +6,6 @@ export const stubArbeidsuforhetForhandsvarselApi = () =>
   mockServer.use(
     http.post(
       `*${ISARBEIDSUFORHET_ROOT}/arbeidsuforhet/forhandsvarsel`,
-      () => new HttpResponse(null, { status: 201 })
-    )
+      () => new HttpResponse(null, { status: 201 }),
+    ),
   );

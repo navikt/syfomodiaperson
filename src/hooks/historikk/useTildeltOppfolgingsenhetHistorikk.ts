@@ -28,8 +28,7 @@ export interface TildeltTilbake extends TildeltOppfolgingsenhetHistorikkDTO {
   veilederident: string;
 }
 
-export interface TildeltTilbakeAvSystem
-  extends TildeltOppfolgingsenhetHistorikkDTO {
+export interface TildeltTilbakeAvSystem extends TildeltOppfolgingsenhetHistorikkDTO {
   createdAt: Date;
   type: TildeltType.TILDELT_TILBAKE_TIL_GEOGRAFISK_ENHET_AV_SYSTEM;
   veilederident: string;
@@ -56,7 +55,7 @@ function getTextForHistorikk(tildeltHistorikk: TildeltHistorikkDTO): string {
 }
 
 function createHistorikkEventsFromTildelHistorikk(
-  tildelHistorikk: TildeltHistorikkDTO[]
+  tildelHistorikk: TildeltHistorikkDTO[],
 ): HistorikkEvent[] {
   return tildelHistorikk.map((entry: TildeltHistorikkDTO) => {
     return {
@@ -76,7 +75,7 @@ export function useTildeltOppfolgingsenhetHistorikk(): HistorikkEvents {
   } = useTildeltOppfolgingsenhetHistorikkQuery();
 
   const events = createHistorikkEventsFromTildelHistorikk(
-    tildeltOppfolgingsenhetHistorikk?.tildelteOppfolgingsenheter ?? []
+    tildeltOppfolgingsenhetHistorikk?.tildelteOppfolgingsenheter ?? [],
   );
 
   return {

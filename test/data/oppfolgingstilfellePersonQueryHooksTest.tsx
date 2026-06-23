@@ -22,7 +22,8 @@ describe("oppfolgingstilfellePersonQueryHooks tests", () => {
     });
 
     await waitFor(
-      () => expect(result.current.latestOppfolgingstilfelle).to.not.be.undefined
+      () =>
+        expect(result.current.latestOppfolgingstilfelle).to.not.be.undefined,
     );
 
     expect(result.current.latestOppfolgingstilfelle).to.exist;

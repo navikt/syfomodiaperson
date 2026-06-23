@@ -66,7 +66,7 @@ export default function OppfolgingsoppgaveModal({
   const [isFormError, setIsFormError] = useState(false);
   const createOppfolgingsoppgave = useCreateOppfolgingsoppgave();
   const editOppfolgingsoppgave = useEditOppfolgingsoppgave(
-    existingOppfolgingsoppgave?.uuid
+    existingOppfolgingsoppgave?.uuid,
   );
   const existingOppfolgingsoppgaveVersjon =
     existingOppfolgingsoppgave?.versjoner?.[0];
@@ -104,7 +104,7 @@ export default function OppfolgingsoppgaveModal({
         watchedValues.beskrivelse !== existingOppfolgingsoppgaveVersjon?.tekst;
       return isFristEdited || isBeskrivelseEdited || isOppfolgingsgrunnEdited;
     },
-    [watchedValues]
+    [watchedValues],
   );
 
   const submit = (values: FormValues) => {
@@ -191,7 +191,7 @@ export default function OppfolgingsoppgaveModal({
                   (oppfolgingsgrunn) =>
                     toggles.isForsokForsterketOppfolgingMerkingEnabled ||
                     oppfolgingsgrunn !==
-                      Oppfolgingsgrunn.DELTAR_FORSOK_FORSTERKET_OPPFOLGING
+                      Oppfolgingsgrunn.DELTAR_FORSOK_FORSTERKET_OPPFOLGING,
                 )
                 .map((oppfolgingsgrunn, index) => (
                   <option key={index} value={oppfolgingsgrunn}>

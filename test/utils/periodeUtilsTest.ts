@@ -7,7 +7,7 @@ import { describe, expect, it } from "vitest";
 
 function periodeOverlapperMedPeriode(
   periodeA_: TilfellePeriode,
-  periodeB_: TilfellePeriode
+  periodeB_: TilfellePeriode,
 ): boolean {
   const periodeA = periodeA_;
   const periodeB = periodeB_;
@@ -97,7 +97,7 @@ describe("periodeUtils", () => {
 
       const periodeneOverlapper = periodeOverlapperMedPeriode(
         periodeA,
-        periodeB
+        periodeB,
       );
 
       expect(periodeneOverlapper).to.equal(true);
@@ -114,7 +114,7 @@ describe("periodeUtils", () => {
 
       const periodeneOverlapper = periodeOverlapperMedPeriode(
         periodeA,
-        periodeB
+        periodeB,
       );
 
       expect(periodeneOverlapper).to.equal(false);

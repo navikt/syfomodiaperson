@@ -11,7 +11,7 @@ function friskTilArbeidText(vedtak: VedtakResponseDTO): string {
 }
 
 function createHistorikkEventsFromFriskTilArbeid(
-  vedtakList: VedtakResponseDTO[]
+  vedtakList: VedtakResponseDTO[],
 ): HistorikkEvent[] {
   return vedtakList.map((vedtak: VedtakResponseDTO) => {
     return {

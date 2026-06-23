@@ -17,11 +17,11 @@ export const isAktivtDialogmote = (dialogmote: DialogmoteDTO): boolean => {
 
 export const isPersonoppgaveCompletedAfterLastMoteEndring = (
   oppgave: PersonOppgave,
-  dialogmote: DialogmoteDTO
+  dialogmote: DialogmoteDTO,
 ) => {
   const behandletTidspunkt = dayjs(oppgave.behandletTidspunkt);
   const lastMoteEndring = dayjs(
-    dialogmote.arbeidstaker.varselList[0]?.createdAt || null
+    dialogmote.arbeidstaker.varselList[0]?.createdAt || null,
   );
 
   return behandletTidspunkt.isAfter(lastMoteEndring);
@@ -30,12 +30,12 @@ export const isPersonoppgaveCompletedAfterLastMoteEndring = (
 export const getSvarTekst = (
   svarTidspunkt: string,
   svarType: SvarType,
-  antallSvar = 1
+  antallSvar = 1,
 ) => {
   const mottattPrefiks =
     antallSvar > 1 ? "Oppdatering mottatt" : "Svar mottatt";
   const mottattTekst = `${mottattPrefiks} ${tilLesbarDatoMedArUtenManedNavn(
-    svarTidspunkt
+    svarTidspunkt,
   )}`;
   switch (svarType) {
     case SvarType.KOMMER:
@@ -49,7 +49,7 @@ export const getSvarTekst = (
 
 export const getHarAapnetTekst = (
   varselType: MotedeltakerVarselType | undefined,
-  lestDato: string | undefined
+  lestDato: string | undefined,
 ): string => {
   const lestDatoString = tilLesbarDatoMedArUtenManedNavn(lestDato);
   switch (varselType) {

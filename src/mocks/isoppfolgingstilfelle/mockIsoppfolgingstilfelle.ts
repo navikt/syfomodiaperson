@@ -6,5 +6,5 @@ export const mockIsoppfolgingstilfelle = http.get(
   `${ISOPPFOLGINGSTILFELLE_ROOT}/oppfolgingstilfelle/personident`,
   () => {
     return HttpResponse.json(oppfolgingstilfellePersonMock);
-  }
+  },
 );

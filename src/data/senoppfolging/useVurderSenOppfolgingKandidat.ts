@@ -23,7 +23,7 @@ export const useVurderSenOppfolgingKandidat = (kandidatUuid: string) => {
         (oldData: SenOppfolgingKandidatResponseDTO[]) => [
           data,
           ...oldData.slice(1),
-        ]
+        ],
       );
     },
   });

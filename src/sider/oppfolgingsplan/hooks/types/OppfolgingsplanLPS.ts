@@ -16,7 +16,7 @@ export type OppfolgingsplanLPSMedPersonoppgave = OppfolgingsplanLPS & {
 export function isPlanWithinActiveTilfelle(
   plan: OppfolgingsplanLPS,
   oppfolgingstilfelle: OppfolgingstilfelleDTO,
-  isLatestTilfelle = false
+  isLatestTilfelle = false,
 ): boolean {
   const tilfelleStart = new Date(oppfolgingstilfelle.start);
   const planOpprettet = new Date(plan.opprettet);

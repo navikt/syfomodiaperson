@@ -23,7 +23,7 @@ export const useFriskmeldingTilArbeidsformidlingDocument = (): {
   const { getHilsen } = useDocumentComponents();
 
   const getVedtakDocument = (
-    values: VedtakDocumentValues
+    values: VedtakDocumentValues,
   ): DocumentComponentDto[] => {
     const vedtakTexts = getVedtakTexts(values);
     const documentComponentDtos = [
@@ -43,7 +43,7 @@ export const useFriskmeldingTilArbeidsformidlingDocument = (): {
     }
     documentComponentDtos.push(createParagraph(vedtakTexts.begrunnelse.body));
     documentComponentDtos.push(
-      createParagraph(vedtakTexts.begrunnelse.paragraf)
+      createParagraph(vedtakTexts.begrunnelse.paragraf),
     );
 
     documentComponentDtos.push(
@@ -56,7 +56,7 @@ export const useFriskmeldingTilArbeidsformidlingDocument = (): {
       createHeaderH2(vedtakTexts.ikkeFarNyJobb.header),
       createParagraph(
         vedtakTexts.ikkeFarNyJobb.body,
-        vedtakTexts.ikkeFarNyJobb.lesMer
+        vedtakTexts.ikkeFarNyJobb.lesMer,
       ),
       createHeaderH2(vedtakTexts.endringSituasjon.header),
       createParagraph(vedtakTexts.endringSituasjon.body),
@@ -71,9 +71,9 @@ export const useFriskmeldingTilArbeidsformidlingDocument = (): {
       createParagraph(vedtakTexts.dineRettigheter.klage.lesMer),
       createBulletPoints(
         vedtakTexts.dineRettigheter.klage.url,
-        vedtakTexts.dineRettigheter.klage.urlSykepenger
+        vedtakTexts.dineRettigheter.klage.urlSykepenger,
       ),
-      getHilsen()
+      getHilsen(),
     );
 
     return documentComponentDtos;

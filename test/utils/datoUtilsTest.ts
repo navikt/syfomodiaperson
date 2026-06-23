@@ -49,7 +49,7 @@ describe("datoUtils", () => {
   describe("tilDatoMedUkedagOgManedNavnOgKlokkeslett", () => {
     it("Skal gi en string med dato, ukedag, månednavn, år og klokkeslett", () => {
       const dato = tilDatoMedUkedagOgManedNavnOgKlokkeslett(
-        "2021-06-04T09:34:55.422796"
+        "2021-06-04T09:34:55.422796",
       );
       expect(dato).to.equal("Fredag 4. juni 2021 kl. 09.34");
     });
@@ -57,7 +57,7 @@ describe("datoUtils", () => {
   describe("tilDatoMedManedNavnOgKlokkeslettSeparatedByComma", () => {
     it("Skal gi en string med dato, månednavn, år og klokkeslett med komma foran klokkeslett", () => {
       const dato = tilDatoMedManedNavnOgKlokkeslettWithComma(
-        "2021-06-04T09:34:55.422796"
+        "2021-06-04T09:34:55.422796",
       );
       expect(dato).to.equal("4. juni 2021, kl. 09.34");
     });
@@ -75,7 +75,7 @@ describe("datoUtils", () => {
       const restDatoTom = "2019-10-02";
       const periode = tilLesbarPeriodeMedArUtenManednavn(
         restDatoFom,
-        restDatoTom
+        restDatoTom,
       );
       expect(periode).to.equal("11.03.2019 - 02.10.2019");
     });

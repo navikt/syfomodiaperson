@@ -51,11 +51,11 @@ export const mockIsdialogmote = [
                 deltatt: true,
                 mottarReferat: true,
               }
-            : undefined
+            : undefined,
         ),
       ];
       return new HttpResponse(null, { status: 200 });
-    }
+    },
   ),
 
   http.get(`${ISDIALOGMOTE_ROOT}/dialogmote/personident`, () => {
@@ -66,7 +66,7 @@ export const mockIsdialogmote = [
     `${ISDIALOGMOTE_ROOT}/dialogmote/personident/motestatusendringer`,
     () => {
       return HttpResponse.json(dialogmoteStatusEndringMock);
-    }
+    },
   ),
 
   http.post<{ moteuuid: string }>(
@@ -77,7 +77,7 @@ export const mockIsdialogmote = [
         mockedDialogmoter.find((dialogmote) => dialogmote.uuid === moteuuid);
       if (!!dialogmoteToUpdate) {
         const filteredDialogmoter = mockedDialogmoter.filter(
-          (dm) => dm.uuid !== dialogmoteToUpdate.uuid
+          (dm) => dm.uuid !== dialogmoteToUpdate.uuid,
         );
         mockedDialogmoter = [
           ...filteredDialogmoter,
@@ -90,7 +90,7 @@ export const mockIsdialogmote = [
       } else {
         return new HttpResponse(null, { status: 500 });
       }
-    }
+    },
   ),
 
   http.post(`${ISDIALOGMOTE_ROOT}/dialogmote/:moteuuid/tidsted`, () => {
@@ -105,7 +105,7 @@ export const mockIsdialogmote = [
         mockedDialogmoter.find((dialogmote) => dialogmote.uuid === moteuuid);
       if (!!dialogmoteToUpdate) {
         const filteredDialogmoter = mockedDialogmoter.filter(
-          (dm) => dm.uuid !== dialogmoteToUpdate.uuid
+          (dm) => dm.uuid !== dialogmoteToUpdate.uuid,
         );
         mockedDialogmoter = [
           ...filteredDialogmoter,
@@ -119,14 +119,14 @@ export const mockIsdialogmote = [
       } else {
         return new HttpResponse(null, { status: 500 });
       }
-    }
+    },
   ),
 
   http.post(
     `${ISDIALOGMOTE_ROOT}/dialogmote/:moteuuid/endreferdigstilt`,
     () => {
       return new HttpResponse(null, { status: 200 });
-    }
+    },
   ),
 
   http.post(`${ISDIALOGMOTE_ROOT}/avvent`, async ({ request }) => {

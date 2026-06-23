@@ -19,7 +19,7 @@ export const AktivitetskravSide = () => {
   const aktivitetskrav = data.find(
     (aktivitetskrav) =>
       aktivitetskrav.status !== AktivitetskravStatus.AUTOMATISK_OPPFYLT &&
-      aktivitetskrav.status !== AktivitetskravStatus.LUKKET
+      aktivitetskrav.status !== AktivitetskravStatus.LUKKET,
   );
   const showStartNyVurdering = !aktivitetskrav || aktivitetskrav.inFinalState;
 

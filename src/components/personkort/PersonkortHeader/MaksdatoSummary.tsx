@@ -27,7 +27,7 @@ export function MaksdatoSummary({ maxDate, startDate }: MaksdatoSummaryProps) {
       <SyketilfelleSummaryElement
         keyword={texts.maksdato}
         value={tilLesbarDatoMedArUtenManedNavn(
-          maxDate.forelopig_beregnet_slutt
+          maxDate.forelopig_beregnet_slutt,
         )}
       />
       <SyketilfelleSummaryElement

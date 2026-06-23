@@ -17,7 +17,7 @@ const renderForhandsvarselSendt = (forhandsvarsel: VurderingResponseDTO) => {
     queryClient,
     <ForhandsvarselSendt forhandsvarsel={forhandsvarsel} />,
     arbeidsuforhetPath,
-    [arbeidsuforhetPath]
+    [arbeidsuforhetPath],
   );
 };
 
@@ -39,19 +39,19 @@ describe("ForhandsvarselSendt", () => {
       expect(screen.getByText("Fristen går ut:")).to.exist;
       expect(
         screen.getByText(
-          "Velg Ikke aktuell-knappen hvis personen har blitt friskmeldt eller fått vedtak om § 8-5 Friskmelding til arbeidsformidling etter at forhåndsvarselet ble sendt ut."
-        )
+          "Velg Ikke aktuell-knappen hvis personen har blitt friskmeldt eller fått vedtak om § 8-5 Friskmelding til arbeidsformidling etter at forhåndsvarselet ble sendt ut.",
+        ),
       ).to.exist;
       expect(
         screen.getByText(
-          "Dersom du har mottatt nye opplysninger og vurdert at bruker likevel oppfyller § 8-4, klikker du på Oppfylt-knappen."
-        )
+          "Dersom du har mottatt nye opplysninger og vurdert at bruker likevel oppfyller § 8-4, klikker du på Oppfylt-knappen.",
+        ),
       ).to.exist;
       expect(screen.getByText("Du kan ikke avslå før fristen er gått ut.")).to
         .exist;
       expect(screen.getByRole("img", { name: "klokkeikon" })).to.exist;
       expect(
-        screen.getByRole("button", { name: "Skriv innstilling om avslag" })
+        screen.getByRole("button", { name: "Skriv innstilling om avslag" }),
       ).to.have.property("disabled", true);
       expect(screen.getByRole("button", { name: "Oppfylt" })).to.exist;
       expect(screen.getByRole("button", { name: "Ikke aktuell" })).to.exist;
@@ -70,8 +70,8 @@ describe("ForhandsvarselSendt", () => {
       expect(screen.getByText("Fristen var:")).to.exist;
       expect(
         screen.getByText(
-          "Velg Ikke aktuell-knappen hvis personen har blitt friskmeldt eller fått vedtak om § 8-5 Friskmelding til arbeidsformidling etter at forhåndsvarselet ble sendt ut."
-        )
+          "Velg Ikke aktuell-knappen hvis personen har blitt friskmeldt eller fått vedtak om § 8-5 Friskmelding til arbeidsformidling etter at forhåndsvarselet ble sendt ut.",
+        ),
       ).to.exist;
       expect(screen.getByText(tilLesbarDatoMedArUtenManedNavn(new Date()))).to
         .exist;
@@ -79,12 +79,12 @@ describe("ForhandsvarselSendt", () => {
       expect(
         screen.getByText(
           `Fristen for forhåndsvarselet som ble sendt ut ${tilLesbarDatoMedArUtenManedNavn(
-            createdAt
-          )} er gått ut. Trykk på Innstilling om avslag-knappen hvis vilkårene i § 8-4 ikke er oppfylt og rett til videre sykepenger skal avslås.`
-        )
+            createdAt,
+          )} er gått ut. Trykk på Innstilling om avslag-knappen hvis vilkårene i § 8-4 ikke er oppfylt og rett til videre sykepenger skal avslås.`,
+        ),
       ).to.exist;
       expect(
-        screen.getByRole("button", { name: "Skriv innstilling om avslag" })
+        screen.getByRole("button", { name: "Skriv innstilling om avslag" }),
       ).to.exist;
       expect(screen.getByRole("button", { name: "Oppfylt" })).to.exist;
       expect(screen.getByRole("button", { name: "Ikke aktuell" })).to.exist;

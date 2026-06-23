@@ -17,7 +17,7 @@ const emdashCharacterCode = 8212;
 const EMDASH = String.fromCharCode(emdashCharacterCode);
 
 export const formaterBostedsadresse = (
-  bostedsadresse: Bostedsadresse | undefined
+  bostedsadresse: Bostedsadresse | undefined,
 ) => {
   if (bostedsadresse) {
     if (bostedsadresse.vegadresse) {
@@ -34,7 +34,7 @@ export const formaterBostedsadresse = (
 };
 
 export const formaterKontaktadresse = (
-  kontaktadresse: Kontaktadresse | undefined
+  kontaktadresse: Kontaktadresse | undefined,
 ) => {
   if (kontaktadresse) {
     if (kontaktadresse.type === KontaktadresseType.Innland) {
@@ -53,7 +53,7 @@ const formaterKontaktadresseInnland = (kontaktadresse: Kontaktadresse) => {
     return formaterVegadresse(kontaktadresse.vegadresse);
   } else if (kontaktadresse.postadresseIFrittFormat) {
     return formaterPostadresseIFrittFormat(
-      kontaktadresse.postadresseIFrittFormat
+      kontaktadresse.postadresseIFrittFormat,
     );
   }
 
@@ -65,7 +65,7 @@ const formaterKontaktadresseUtland = (kontaktadresse: Kontaktadresse) => {
     return formaterUtenlandskAdresse(kontaktadresse.utenlandskAdresse);
   } else if (kontaktadresse.utenlandskAdresseIFrittFormat) {
     return formaterUtenlandskAdresseIFrittFormat(
-      kontaktadresse.utenlandskAdresseIFrittFormat
+      kontaktadresse.utenlandskAdresseIFrittFormat,
     );
   }
 
@@ -73,7 +73,7 @@ const formaterKontaktadresseUtland = (kontaktadresse: Kontaktadresse) => {
 };
 
 export const formaterOppholdsadresse = (
-  oppholdsadresse: Oppholdsadresse | undefined
+  oppholdsadresse: Oppholdsadresse | undefined,
 ) => {
   if (oppholdsadresse) {
     if (oppholdsadresse.vegadresse) {
@@ -99,12 +99,12 @@ const formaterPostboksadresse = (postboksadresse: Postboksadresse) => {
     postboksadresse.postboks,
     `${postboksadresse.postnummer || ""} ${postboksadresse.poststed || ""}`,
     "",
-    ""
+    "",
   );
 };
 
 const formaterPostadresseIFrittFormat = (
-  postadresseIFrittFormat: PostadresseIFrittFormat
+  postadresseIFrittFormat: PostadresseIFrittFormat,
 ) => {
   return hentAdresseRader(
     postadresseIFrittFormat.adresselinje1 || "",
@@ -113,7 +113,7 @@ const formaterPostadresseIFrittFormat = (
     `${postadresseIFrittFormat.postnummer || ""} ${
       postadresseIFrittFormat.poststed || ""
     }`,
-    ""
+    "",
   );
 };
 
@@ -125,7 +125,7 @@ const formaterVegadresse = (vegadresse: Vegadresse) => {
     vegadresse.tilleggsnavn || "",
     `${vegadresse.postnummer || ""} ${vegadresse.poststed || ""}`,
     "",
-    ""
+    "",
   );
 };
 
@@ -135,7 +135,7 @@ const formaterMatrikkeladresse = (matrikkeladresse: Matrikkeladresse) => {
     matrikkeladresse.tilleggsnavn || "",
     `${matrikkeladresse.postnummer || ""} ${matrikkeladresse.poststed || ""}`,
     "",
-    ""
+    "",
   );
 };
 
@@ -147,12 +147,12 @@ const formaterUtenlandskAdresse = (utenlandskAdresse: UtenlandskAdresse) => {
     `${utenlandskAdresse.bySted || ""} ${
       utenlandskAdresse.regionDistriktOmraade || ""
     } `,
-    utenlandskAdresse.landkode
+    utenlandskAdresse.landkode,
   );
 };
 
 const formaterUtenlandskAdresseIFrittFormat = (
-  utenlandskAdresseIFrittFormat: UtenlandskAdresseIFrittFormat
+  utenlandskAdresseIFrittFormat: UtenlandskAdresseIFrittFormat,
 ) => {
   return hentAdresseRader(
     utenlandskAdresseIFrittFormat.adresselinje1 || "",
@@ -161,7 +161,7 @@ const formaterUtenlandskAdresseIFrittFormat = (
     `${utenlandskAdresseIFrittFormat.postkode || ""} ${
       utenlandskAdresseIFrittFormat.byEllerStedsnavn || ""
     }`,
-    utenlandskAdresseIFrittFormat.landkode
+    utenlandskAdresseIFrittFormat.landkode,
   );
 };
 
@@ -174,7 +174,7 @@ const hentAdresseRader = (
   rad2: string,
   rad3: string,
   rad4: string,
-  rad5: string
+  rad5: string,
 ) => {
   return (
     <div>

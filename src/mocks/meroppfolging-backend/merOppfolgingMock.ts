@@ -11,12 +11,12 @@ export const mockMerOppfolging = [
     `${MEROPPFOLGING_BACKEND_V2_ROOT}/senoppfolging/formresponse`,
     () => {
       return HttpResponse.json(snartSluttPaSykepengeneMock);
-    }
+    },
   ),
   http.get(
     `${MEROPPFOLGING_BACKEND_V1_ROOT}/kartleggingssporsmal/kandidat/:kandidatUUID/svar`,
     () => {
       return HttpResponse.json(kartleggingssporsmalFlervalgFritekstV3Answered);
-    }
+    },
   ),
 ];

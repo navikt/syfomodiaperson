@@ -25,7 +25,7 @@ function isValidCategory(category: string): boolean {
 function toDraftCachekey(
   category: Draft,
   veilederIdent: string,
-  personident: string
+  personident: string,
 ): string {
   switch (category) {
     case Draft.MELDING_TIL_BEHANDLER:
@@ -59,7 +59,7 @@ function getPersonident(req: express.Request): string | undefined {
 
 async function draftKey(
   req: express.Request,
-  category: Draft
+  category: Draft,
 ): Promise<string | undefined> {
   const personident = getPersonident(req);
   if (!personident) {
@@ -79,7 +79,7 @@ export function setupDraftEndpoints(server: express.Application) {
     "/api/draft/:category",
     async (
       req: express.Request<{ category: string }>,
-      res: express.Response
+      res: express.Response,
     ) => {
       const { category } = req.params;
       if (!isValidCategory(category)) {
@@ -107,25 +107,25 @@ export function setupDraftEndpoints(server: express.Application) {
         } catch (error: any) {
           logger.error(
             `Failed to parse draft for ${category} from valkey`,
-            error
+            error,
           );
           return res.status(500).send({ message: "Failed to parse draft" });
         }
       } catch (error: any) {
         logger.error(
           `Failed to fetch draft for ${category} from valkey`,
-          error
+          error,
         );
         return res.status(500).send({ message: "Failed to fetch draft" });
       }
-    }
+    },
   );
 
   server.put(
     "/api/draft/:category",
     async (
       req: express.Request<{ category: string }>,
-      res: express.Response
+      res: express.Response,
     ) => {
       const { category } = req.params;
       if (!isValidCategory(category)) {
@@ -148,14 +148,14 @@ export function setupDraftEndpoints(server: express.Application) {
         logger.error(`Failed to save draft for ${category} to valkey`, error);
         return res.status(500).send({ message: "Failed to save draft" });
       }
-    }
+    },
   );
 
   server.delete(
     "/api/draft/:category",
     async (
       req: express.Request<{ category: string }>,
-      res: express.Response
+      res: express.Response,
     ) => {
       const { category } = req.params;
       if (!isValidCategory(category)) {
@@ -177,10 +177,10 @@ export function setupDraftEndpoints(server: express.Application) {
       } catch (error: any) {
         logger.error(
           `Failed to delete draft for ${category} from valkey`,
-          error
+          error,
         );
         return res.status(500).send({ message: "Failed to delete draft" });
       }
-    }
+    },
   );
 }

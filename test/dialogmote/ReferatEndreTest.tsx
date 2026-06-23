@@ -43,14 +43,14 @@ describe("ReferatEndreTest", () => {
 
     expect(
       screen.getAllByText(
-        referatSkjemaValideringsTexts.begrunnelseEndringMissing
-      )
+        referatSkjemaValideringsTexts.begrunnelseEndringMissing,
+      ),
     ).to.not.be.empty;
 
     const begrunnelseInput = getTextInput("Årsaken til at referatet må endres");
     changeTextInput(
       begrunnelseInput,
-      getTooLongText(MAX_LENGTH_BEGRUNNELSE_ENDRING)
+      getTooLongText(MAX_LENGTH_BEGRUNNELSE_ENDRING),
     );
     await clickButton("Lagre og send");
 
@@ -89,11 +89,11 @@ describe("ReferatEndreTest", () => {
       .exist;
     expect(
       within(forhandsvisningReferat).getByText(
-        referatTexts.begrunnelseEndringTitle
-      )
+        referatTexts.begrunnelseEndringTitle,
+      ),
     ).to.exist;
     expect(
-      within(forhandsvisningReferat).getByText(moteTekster.begrunnelseEndring)
+      within(forhandsvisningReferat).getByText(moteTekster.begrunnelseEndring),
     ).to.exist;
   });
 
@@ -119,7 +119,7 @@ describe("ReferatEndreTest", () => {
       andreDeltakere: [],
     };
     expect(endringFerdigstillMutation?.state.variables).to.deep.equal(
-      expectedEndringFerdigstilling
+      expectedEndringFerdigstilling,
     );
   });
 });
@@ -132,7 +132,7 @@ const renderEndreReferat = (dialogmote: DialogmoteDTO) => {
       </MalformProvider>
     </QueryClientProvider>,
     `${dialogmoteRoutePath}/:dialogmoteUuid/referat/endre`,
-    [`${dialogmoteRoutePath}/${dialogmote.uuid}/referat/endre`]
+    [`${dialogmoteRoutePath}/${dialogmote.uuid}/referat/endre`],
   );
 };
 

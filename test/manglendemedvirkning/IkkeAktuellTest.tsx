@@ -30,9 +30,9 @@ let queryClient: QueryClient;
 const mockVurdering = (vurdering?: VurderingResponseDTO) => {
   queryClient.setQueryData(
     manglendeMedvirkningQueryKeys.manglendeMedvirkning(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => (vurdering ? [vurdering] : [])
+    () => (vurdering ? [vurdering] : []),
   );
 };
 
@@ -48,7 +48,7 @@ const renderIkkeAktuellSide = () => {
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     `${manglendeMedvirkningPath}/ikkeaktuell`,
-    [`${manglendeMedvirkningPath}/ikkeaktuell`]
+    [`${manglendeMedvirkningPath}/ikkeaktuell`],
   );
 };
 
@@ -131,7 +131,7 @@ describe("Manglendemedvirkning Ikke aktuell", () => {
       await waitFor(() => {
         const vurderingMutation = queryClient.getMutationCache().getAll().pop();
         expect(vurderingMutation?.state.variables).to.deep.equal(
-          expectedRequestBody
+          expectedRequestBody,
         );
       });
     });

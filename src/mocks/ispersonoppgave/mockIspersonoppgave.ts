@@ -19,7 +19,7 @@ export const mockIspersonoppgave = [
     ({ params }) => {
       const { uuid } = params;
       const gjeldendeOppgave = personOppgaver.find(
-        (oppgave) => oppgave.uuid === uuid
+        (oppgave) => oppgave.uuid === uuid,
       );
       if (!!gjeldendeOppgave) {
         personOppgaver = [
@@ -28,7 +28,7 @@ export const mockIspersonoppgave = [
         ];
       }
       return new HttpResponse(null, { status: 200 });
-    }
+    },
   ),
 
   http.post<object, BehandlePersonoppgaveRequestDTO>(
@@ -36,21 +36,21 @@ export const mockIspersonoppgave = [
     async ({ request }) => {
       const body = await request.json();
       const oppgaverForType = personOppgaver.filter(
-        (oppgave) => oppgave.type === body.personOppgaveType
+        (oppgave) => oppgave.type === body.personOppgaveType,
       );
       const behandledeOppgaver = oppgaverForType.map((oppgave) =>
-        makePersonOppgaveBehandlet(oppgave)
+        makePersonOppgaveBehandlet(oppgave),
       );
       const behandledeOppgaverUuid = behandledeOppgaver.map(
-        (oppgave) => oppgave.uuid
+        (oppgave) => oppgave.uuid,
       );
       personOppgaver = [
         ...behandledeOppgaver,
         ...personOppgaver.filter(
-          (oppgave) => !behandledeOppgaverUuid.includes(oppgave.uuid)
+          (oppgave) => !behandledeOppgaverUuid.includes(oppgave.uuid),
         ),
       ];
       return new HttpResponse(null, { status: 200 });
-    }
+    },
   ),
 ];

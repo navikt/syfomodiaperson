@@ -6,6 +6,6 @@ import { http, HttpResponse } from "msw";
 export const stubTilgangApi = (tilgangMock = tilgangBrukerMock) =>
   mockServer.use(
     http.get(`*${ISTILGANGSKONTROLL_ROOT}/tilgang/navident/person`, () =>
-      HttpResponse.json(tilgangMock)
-    )
+      HttpResponse.json(tilgangMock),
+    ),
   );

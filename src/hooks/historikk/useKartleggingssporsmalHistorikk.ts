@@ -10,7 +10,7 @@ import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 
 function createEventsFromKandidat(
   kandidat: KartleggingssporsmalKandidatResponseDTO,
-  person: BrukerinfoDTO
+  person: BrukerinfoDTO,
 ) {
   const events: HistorikkEvent[] = [];
   if (kandidat.varsletAt) {

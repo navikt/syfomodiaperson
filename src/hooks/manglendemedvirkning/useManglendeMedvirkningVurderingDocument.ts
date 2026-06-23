@@ -39,7 +39,7 @@ type StansDocumentValues = {
 
 interface Documents {
   getForhandsvarselDocument(
-    values: ForhandsvarselDocumentValues
+    values: ForhandsvarselDocumentValues,
   ): DocumentComponentDto[];
 
   getUnntakDocument(values: UnntakDocumentValues): DocumentComponentDto[];
@@ -47,7 +47,7 @@ interface Documents {
   getOppfyltDocument(values: OppfyltDocumentValues): DocumentComponentDto[];
 
   getIkkeAktuellDocument(
-    values: IkkeAktuellDocumentValues
+    values: IkkeAktuellDocumentValues,
   ): DocumentComponentDto[];
 
   getStansDocument(values: StansDocumentValues): DocumentComponentDto[];
@@ -58,10 +58,10 @@ export function useManglendeMedvirkningVurderingDocument(): Documents {
     useDocumentComponents();
 
   function getForhandsvarselDocument(
-    values: ForhandsvarselDocumentValues
+    values: ForhandsvarselDocumentValues,
   ): DocumentComponentDto[] {
     const forhandsvarselTexts = getForhandsvarselManglendeMedvirkningTexts(
-      values.frist
+      values.frist,
     );
     const documentComponents = [
       createHeaderH1(forhandsvarselTexts.title),
@@ -76,19 +76,19 @@ export function useManglendeMedvirkningVurderingDocument(): Documents {
     documentComponents.push(
       createParagraphWithTitle(
         forhandsvarselTexts.tilbakemelding.header,
-        forhandsvarselTexts.tilbakemelding.info
+        forhandsvarselTexts.tilbakemelding.info,
       ),
       createParagraphWithTitle(
         forhandsvarselTexts.kontaktinfo.header,
-        forhandsvarselTexts.kontaktinfo.info
+        forhandsvarselTexts.kontaktinfo.info,
       ),
       createParagraphWithTitle(
         forhandsvarselTexts.lovhjemmel.header,
-        forhandsvarselTexts.lovhjemmel.intro
+        forhandsvarselTexts.lovhjemmel.intro,
       ),
       createParagraph(forhandsvarselTexts.lovhjemmel.pliktInfo1),
       createParagraph(forhandsvarselTexts.lovhjemmel.pliktInfo2),
-      getHilsen()
+      getHilsen(),
     );
 
     return documentComponents;
@@ -99,7 +99,7 @@ export function useManglendeMedvirkningVurderingDocument(): Documents {
     forhandsvarselSendtDato,
   }: OppfyltDocumentValues): DocumentComponentDto[] {
     const oppfyltTexts = getOppfyltManglendeMedvirkningTexts(
-      forhandsvarselSendtDato
+      forhandsvarselSendtDato,
     );
     return [
       createHeaderH1(oppfyltTexts.title),
@@ -113,10 +113,10 @@ export function useManglendeMedvirkningVurderingDocument(): Documents {
   }
 
   function getUnntakDocument(
-    values: UnntakDocumentValues
+    values: UnntakDocumentValues,
   ): DocumentComponentDto[] {
     const unntakTexts = getUnntakManglendeMedvirkningTexts(
-      values.forhandsvarselSendtDato
+      values.forhandsvarselSendtDato,
     );
     return [
       createHeaderH1(unntakTexts.title),
@@ -143,7 +143,7 @@ export function useManglendeMedvirkningVurderingDocument(): Documents {
   };
 
   function getStansDocument(
-    values: StansDocumentValues
+    values: StansDocumentValues,
   ): DocumentComponentDto[] {
     const stansTexts = getStansTexts(values.stansdato);
     return [

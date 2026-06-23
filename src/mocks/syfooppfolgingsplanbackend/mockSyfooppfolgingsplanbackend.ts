@@ -5,6 +5,6 @@ import { oppfolgingsplanV2Mock } from "@/mocks/syfooppfolgingsplanbackend/oppfol
 export const mockSyfooppfolgingsplanbackend = [
   http.post(
     `${SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT}/oppfolgingsplaner/query`,
-    () => HttpResponse.json(oppfolgingsplanV2Mock)
+    () => HttpResponse.json(oppfolgingsplanV2Mock),
   ),
 ];

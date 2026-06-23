@@ -9,24 +9,24 @@ import { daysFromToday } from "@/utils/datoUtils.ts";
 
 export const aktivitetskrav = createAktivitetskrav(
   daysFromToday(5),
-  AktivitetskravStatus.NY
+  AktivitetskravStatus.NY,
 );
 export const forhandsvarselAktivitetskrav = createAktivitetskrav(
   daysFromToday(5),
   AktivitetskravStatus.FORHANDSVARSEL,
-  [forhandsvarselVurdering]
+  [forhandsvarselVurdering],
 );
 export const expiredForhandsvarselAktivitetskrav = createAktivitetskrav(
   daysFromToday(5),
   AktivitetskravStatus.FORHANDSVARSEL,
-  [expiredForhandsvarselVurdering]
+  [expiredForhandsvarselVurdering],
 );
 
 export const tilfelleStart = daysFromToday(-50);
 export const tilfelleEnd = daysFromToday(50);
 export const oppfolgingstilfelle = generateOppfolgingstilfelle(
   tilfelleStart,
-  tilfelleEnd
+  tilfelleEnd,
 );
 
 export const buttonTexts = {

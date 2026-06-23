@@ -58,7 +58,7 @@ describe("LegacyTilgangBanner i Side", () => {
             </Routes>
           </MemoryRouter>
         </ValgtEnhetContext.Provider>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
   }
 
@@ -85,12 +85,12 @@ describe("LegacyTilgangBanner i Side", () => {
     queryClient.setQueryData(
       unleashQueryKeys.toggles(
         BEHANDLENDE_ENHET_DEFAULT.enhetId,
-        VEILEDER_IDENT_DEFAULT
+        VEILEDER_IDENT_DEFAULT,
       ),
       () => ({
         ...mockUnleashResponse,
         [ToggleNames.isNyTilgangskontrollEnabled]: false,
-      })
+      }),
     );
 
     renderSide();
@@ -102,7 +102,7 @@ describe("LegacyTilgangBanner i Side", () => {
   it("vises ikke når legacyTilgang er false", () => {
     queryClient.setQueryData(
       tilgangQueryKeys.tilgang(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => ({ ...tilgangBrukerMock, legacyTilgang: false })
+      () => ({ ...tilgangBrukerMock, legacyTilgang: false }),
     );
 
     renderSide();

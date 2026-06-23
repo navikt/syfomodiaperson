@@ -92,7 +92,7 @@ const aktivitetskravAutomatiskOppfylt: AktivitetskravDTO = {
 
 const getForhandsvarselDocument = (
   begrunnelse: string | undefined,
-  frist: Date
+  frist: Date,
 ) => {
   const sendForhandsvarselTexts = getForhandsvarselTexts({
     frist,
@@ -170,7 +170,7 @@ const getForhandsvarselDocument = (
     {
       type: DocumentComponentType.PARAGRAPH,
       texts: ["Med vennlig hilsen", VEILEDER_DEFAULT.fulltNavn(), "Nav"],
-    }
+    },
   );
 
   return documentComponents;

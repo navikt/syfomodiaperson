@@ -47,7 +47,7 @@ export default function BehandleMotebehovKnapp() {
   const isSistBehandletMotebehovInnenforTilfelle = sistBehandletMotebehov
     ? getMotebehovInActiveTilfelle(
         [sistBehandletMotebehov],
-        latestOppfolgingstilfelle
+        latestOppfolgingstilfelle,
       ).length > 0
     : false;
   const ubehandledeMotebehov = motebehovUbehandlet(motebehovListe);
@@ -58,11 +58,12 @@ export default function BehandleMotebehovKnapp() {
   const [harMoteBehov, setharMoteBehov] = useState(true);
 
   const tilbakemeldinger = unikeInnsendereUbehandledeMotebehov.map(
-    (motebehov) => toMotebehovTilbakemeldingDTO(motebehov, texts.tilbakemelding)
+    (motebehov) =>
+      toMotebehovTilbakemeldingDTO(motebehov, texts.tilbakemelding),
   );
 
   const minstEnHarMeldtBehov = motebehovListe.some(
-    (behov) => behov.skjemaType === MotebehovSkjemaType.MELD_BEHOV
+    (behov) => behov.skjemaType === MotebehovSkjemaType.MELD_BEHOV,
   );
   return ubehandledeMotebehov.length !== 0 ? (
     <VStack className="flex gap-4">
@@ -125,7 +126,7 @@ export default function BehandleMotebehovKnapp() {
           {`Møtebehovet ble behandlet av ${
             sistBehandletMotebehov?.behandletVeilederIdent
           } den ${toDatePrettyPrint(
-            sistBehandletMotebehov?.behandletTidspunkt
+            sistBehandletMotebehov?.behandletTidspunkt,
           )}.`}
         </BodyShort>
       </div>

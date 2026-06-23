@@ -31,7 +31,7 @@ let queryClient: QueryClient;
 const stubArbeidsuforhetVurderinger = (vurderinger: VurderingResponseDTO[]) => {
   queryClient.setQueryData(
     arbeidsuforhetQueryKeys.arbeidsuforhet(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => vurderinger
+    () => vurderinger,
   );
 };
 
@@ -41,9 +41,9 @@ describe("ArbeidsuforhetSide", () => {
     queryClient.setQueryData(
       unleashQueryKeys.toggles(
         BEHANDLENDE_ENHET_DEFAULT.enhetId,
-        VEILEDER_IDENT_DEFAULT
+        VEILEDER_IDENT_DEFAULT,
       ),
-      () => mockUnleashTogglesOffResponse
+      () => mockUnleashTogglesOffResponse,
     );
   });
   const nyVurderingButtonText = "Start ny vurdering";
@@ -55,7 +55,7 @@ describe("ArbeidsuforhetSide", () => {
       queryClient,
       <Arbeidsuforhet />,
       arbeidsuforhetPath,
-      [arbeidsuforhetPath]
+      [arbeidsuforhetPath],
     );
     await clickButton(nyVurderingButtonText);
 
@@ -72,7 +72,7 @@ describe("ArbeidsuforhetSide", () => {
         queryClient,
         <Arbeidsuforhet />,
         arbeidsuforhetPath,
-        [arbeidsuforhetPath]
+        [arbeidsuforhetPath],
       );
 
       expect(screen.getByText("Siste vurdering")).to.exist;
@@ -93,7 +93,7 @@ describe("ArbeidsuforhetSide", () => {
         queryClient,
         <Arbeidsuforhet />,
         arbeidsuforhetPath,
-        [arbeidsuforhetPath]
+        [arbeidsuforhetPath],
       );
 
       expect(screen.getByText("Siste vurdering")).to.exist;
@@ -116,7 +116,7 @@ describe("ArbeidsuforhetSide", () => {
         queryClient,
         <Arbeidsuforhet />,
         arbeidsuforhetPath,
-        [arbeidsuforhetPath]
+        [arbeidsuforhetPath],
       );
 
       expect(screen.getByText("Siste vurdering")).to.exist;
@@ -138,7 +138,7 @@ describe("ArbeidsuforhetSide", () => {
         queryClient,
         <Arbeidsuforhet />,
         arbeidsuforhetPath,
-        [arbeidsuforhetPath]
+        [arbeidsuforhetPath],
       );
 
       expect(screen.queryByRole("button", { name: nyVurderingButtonText })).to
@@ -160,7 +160,7 @@ describe("ArbeidsuforhetSide", () => {
         queryClient,
         <Arbeidsuforhet />,
         arbeidsuforhetPath,
-        [arbeidsuforhetPath]
+        [arbeidsuforhetPath],
       );
 
       expect(screen.queryByRole("button", { name: nyVurderingButtonText })).to

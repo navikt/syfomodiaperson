@@ -5,7 +5,7 @@ import { DialogmoteStatus } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function getDialogmoteStatusEndringText(
-  statusendring: DialogmoteStatusEndringDTO
+  statusendring: DialogmoteStatusEndringDTO,
 ): string {
   switch (statusendring.status) {
     case DialogmoteStatus.INNKALT:
@@ -22,7 +22,7 @@ function getDialogmoteStatusEndringText(
 }
 
 function createHistorikkEvents(
-  statusendringer: DialogmoteStatusEndringDTO[]
+  statusendringer: DialogmoteStatusEndringDTO[],
 ): HistorikkEvent[] {
   return statusendringer.map((statusendring) => {
     return {

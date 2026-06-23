@@ -36,7 +36,7 @@ export default function DialogmoteSideContainer({
   const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
 
   const dialogmote = dialogmoter.find(
-    (dialogmote) => dialogmote.uuid === dialogmoteUuid
+    (dialogmote) => dialogmote.uuid === dialogmoteUuid,
   );
 
   return (

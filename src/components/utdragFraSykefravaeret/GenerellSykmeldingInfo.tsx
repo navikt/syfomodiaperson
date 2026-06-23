@@ -28,7 +28,7 @@ export default function GenerellSykmeldingInfo({ sykmelding }: Props) {
   const biDiagnoser = diagnose.bidiagnoser;
   const sykmeldingPerioderSortertEtterDato =
     sykmeldingperioderSortertEldstTilNyest(
-      sykmelding.mulighetForArbeid.perioder
+      sykmelding.mulighetForArbeid.perioder,
     );
 
   return (

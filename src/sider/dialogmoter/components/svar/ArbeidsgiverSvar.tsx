@@ -27,7 +27,7 @@ export const ArbeidsgiverSvar = ({
   const arbeidsgiverInfo = narmesteLeder
     ? arbeidsgiverNavnMedVirksomhet(
         narmesteLeder.narmesteLederNavn,
-        narmesteLeder.virksomhetsnavn || narmesteLeder.virksomhetsnummer
+        narmesteLeder.virksomhetsnavn || narmesteLeder.virksomhetsnummer,
       )
     : "";
 

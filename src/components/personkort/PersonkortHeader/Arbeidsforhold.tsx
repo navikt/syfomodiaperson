@@ -43,12 +43,12 @@ export function Arbeidsforhold() {
 
   const aktiveArbeidsforholdSortertEtterHoyestStillingsprosent =
     getActiveArbeidsforhold(data?.arbeidsforhold ?? []).sort(
-      (a, b) => parseFloat(b.stillingsprosent) - parseFloat(a.stillingsprosent)
+      (a, b) => parseFloat(b.stillingsprosent) - parseFloat(a.stillingsprosent),
     );
   const visibleArbeidsforhold =
     aktiveArbeidsforholdSortertEtterHoyestStillingsprosent.slice(
       0,
-      MAX_VISIBLE_ARBEIDSFORHOLD
+      MAX_VISIBLE_ARBEIDSFORHOLD,
     );
   const antallFlereArbeidsforhold =
     aktiveArbeidsforholdSortertEtterHoyestStillingsprosent.length -

@@ -6,6 +6,6 @@ import { http, HttpResponse } from "msw";
 export const stubPersonoppgaveApi = () =>
   mockServer.use(
     http.get(`*${ISPERSONOPPGAVE_ROOT}/personoppgave/personident`, () =>
-      HttpResponse.json(personoppgaverMock())
-    )
+      HttpResponse.json(personoppgaverMock()),
+    ),
   );

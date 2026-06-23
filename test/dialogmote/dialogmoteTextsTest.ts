@@ -25,7 +25,7 @@ describe("dialogmoteTexts", () => {
   it("inneholder forventede standardtekst-nøkler", () => {
     expect(Object.values(StandardtekstKey)).to.deep.equal(
       expectedStandardtekstKeys,
-      "har ikke forventede standardtekst-nøkler"
+      "har ikke forventede standardtekst-nøkler",
     );
   });
 
@@ -34,7 +34,7 @@ describe("dialogmoteTexts", () => {
       expectedStandardtekstKeys.forEach((key) => {
         expect(
           getReferatTexts(malform).standardTekster[key],
-          `mangler ${malform} standardtekst for nøkkel ${key}`
+          `mangler ${malform} standardtekst for nøkkel ${key}`,
         ).to.exist;
       });
     });

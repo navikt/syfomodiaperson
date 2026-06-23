@@ -35,11 +35,11 @@ describe("DialogmoteunntakSkjema", () => {
     queryClient = queryClientWithMockData();
     queryClient.setQueryData(
       dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => dialogmotekandidatMock
+      () => dialogmotekandidatMock,
     );
     queryClient.setQueryData(
       dialogmoterQueryKeys.dialogmoter(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => []
+      () => [],
     );
     stubFeatureTogglesApi();
   });
@@ -61,7 +61,7 @@ describe("DialogmoteunntakSkjema", () => {
       .be.empty;
 
     const tooLongBeskrivelse = getTooLongText(
-      dialogmoteunntakSkjemaBeskrivelseMaxLength
+      dialogmoteunntakSkjemaBeskrivelseMaxLength,
     );
     const beskrivelseInput = getTextInput(unntakSkjemaTexts.beskrivelseLabel);
     changeTextInput(beskrivelseInput, tooLongBeskrivelse);
@@ -70,7 +70,7 @@ describe("DialogmoteunntakSkjema", () => {
 
     passSkjemaInput(
       ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
-      "beskrivelse"
+      "beskrivelse",
     );
 
     // Feilmeldinger forsvinner
@@ -102,7 +102,7 @@ describe("DialogmoteunntakSkjema", () => {
       };
 
       expect(unntakMutation.state.variables).to.deep.equal(
-        expectedCreateUnntakDTO
+        expectedCreateUnntakDTO,
       );
     });
   });
@@ -116,7 +116,7 @@ describe("DialogmoteunntakSkjema", () => {
 
     passSkjemaInput(
       ValidUnntakArsak.FORVENTET_FRISKMELDING_INNEN_28UKER,
-      beskrivelse
+      beskrivelse,
     );
 
     await clickButton(submitButtonText);
@@ -130,7 +130,7 @@ describe("DialogmoteunntakSkjema", () => {
       };
 
       expect(unntakMutation.state.variables).to.deep.equal(
-        expectedCreateUnntakDTO
+        expectedCreateUnntakDTO,
       );
     });
   });
@@ -146,7 +146,7 @@ const renderDialogmoteunntakSkjema = () => {
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     dialogmoteUnntakRoutePath,
-    [dialogmoteUnntakRoutePath]
+    [dialogmoteUnntakRoutePath],
   );
 };
 

@@ -40,13 +40,13 @@ const tilfelleStart = daysFromToday(-50);
 const tilfelleEnd = daysFromToday(50);
 const oppfolgingstilfelle = generateOppfolgingstilfelle(
   tilfelleStart,
-  tilfelleEnd
+  tilfelleEnd,
 );
 const tidligereTilfelleStart = daysFromToday(-200);
 const tidligereTilfelleSlutt = daysFromToday(-100);
 const tidligereOppfolgingstilfelle = generateOppfolgingstilfelle(
   tidligereTilfelleStart,
-  tidligereTilfelleSlutt
+  tidligereTilfelleSlutt,
 );
 const unntakBeskrivelse = "Vurdering beskrivelse";
 const unntakArsak = UnntakVurderingArsak.MEDISINSKE_GRUNNER;
@@ -57,9 +57,9 @@ const aktivitetskravUnntak = createAktivitetskrav(
     createAktivitetskravVurdering(
       AktivitetskravStatus.UNNTAK,
       [unntakArsak],
-      unntakBeskrivelse
+      unntakBeskrivelse,
     ),
-  ]
+  ],
 );
 const aktivitetskravIkkeAktuelt = createAktivitetskrav(
   daysFromToday(20),
@@ -68,13 +68,13 @@ const aktivitetskravIkkeAktuelt = createAktivitetskrav(
     createAktivitetskravVurdering(
       AktivitetskravStatus.IKKE_AKTUELL,
       [],
-      undefined
+      undefined,
     ),
-  ]
+  ],
 );
 const aktivitetskravAutomatiskOppfylt = createAktivitetskrav(
   daysFromToday(20),
-  AktivitetskravStatus.AUTOMATISK_OPPFYLT
+  AktivitetskravStatus.AUTOMATISK_OPPFYLT,
 );
 const newVurderingText =
   "Hvis situasjonen har endret seg kan du gjøre en ny vurdering av aktivitetskravet.";
@@ -91,7 +91,7 @@ const renderStartNyVurdering = (aktivitetskrav?: AktivitetskravDTO) => {
           <StartNyVurdering aktivitetskrav={aktivitetskrav} />
         </NotificationContext.Provider>
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -106,7 +106,7 @@ describe("StartNyVurdering", () => {
           oppfolgingstilfelle,
           tidligereOppfolgingstilfelle,
         ],
-      })
+      }),
     );
   });
   it("renders header, tilfelle-text and button to start ny vurdering", () => {
@@ -114,12 +114,12 @@ describe("StartNyVurdering", () => {
 
     const periodeText = tilLesbarPeriodeMedArUtenManednavn(
       tilfelleStart,
-      tilfelleEnd
+      tilfelleEnd,
     );
     expect(
       screen.getByRole("heading", {
         name: "Start ny aktivitetskrav-vurdering",
-      })
+      }),
     ).to.exist;
     expect(screen.getByText(`Gjelder tilfelle ${periodeText}`)).to.exist;
     expect(getButton(buttonText)).to.exist;
@@ -131,7 +131,7 @@ describe("StartNyVurdering", () => {
         () => ({
           personIdent: fnr,
           oppfolgingstilfelleList: [],
-        })
+        }),
       );
       renderStartNyVurdering();
 
@@ -197,9 +197,9 @@ describe("StartNyVurdering", () => {
         createAktivitetskravVurdering(
           AktivitetskravStatus.UNNTAK,
           [unntakArsak],
-          unntakBeskrivelse
+          unntakBeskrivelse,
         ),
-      ]
+      ],
     );
 
     it("renders active tilfelle-text", () => {
@@ -207,7 +207,7 @@ describe("StartNyVurdering", () => {
 
       const periodeText = tilLesbarPeriodeMedArUtenManednavn(
         tilfelleStart,
-        tilfelleEnd
+        tilfelleEnd,
       );
       expect(screen.getByText(`Gjelder tilfelle ${periodeText}`)).to.exist;
     });

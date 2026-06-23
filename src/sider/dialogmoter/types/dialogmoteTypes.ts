@@ -19,13 +19,11 @@ export interface DialogmotedeltakerVarselDTO {
   readonly svar?: VarselSvarDTO;
 }
 
-export interface DialogmotedeltakerArbeidstakerVarselDTO
-  extends DialogmotedeltakerVarselDTO {
+export interface DialogmotedeltakerArbeidstakerVarselDTO extends DialogmotedeltakerVarselDTO {
   readonly digitalt: boolean;
 }
 
-export interface DialogmotedeltakerArbeidsgiverVarselDTO
-  extends DialogmotedeltakerVarselDTO {
+export interface DialogmotedeltakerArbeidsgiverVarselDTO extends DialogmotedeltakerVarselDTO {
   readonly status: string;
 }
 
@@ -35,8 +33,10 @@ export interface VarselSvarDTO {
   readonly svarTekst?: string;
 }
 
-export interface DialogmotedeltakerBehandlerVarselDTO
-  extends Omit<DialogmotedeltakerVarselDTO, "lestDato" | "svar"> {
+export interface DialogmotedeltakerBehandlerVarselDTO extends Omit<
+  DialogmotedeltakerVarselDTO,
+  "lestDato" | "svar"
+> {
   readonly svar: DialogmotedeltakerBehandlerVarselSvarDTO[];
 }
 

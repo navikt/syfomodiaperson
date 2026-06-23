@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function MeldingTilArbeidsgiver(
-  meldingTilArbeidsgiverProps: Props
+  meldingTilArbeidsgiverProps: Props,
 ) {
   const { sykmelding } = meldingTilArbeidsgiverProps;
 

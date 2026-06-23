@@ -38,15 +38,15 @@ interface Props {
 export function SykmeldingTittel({ sykmelding }: Props) {
   const sykmeldingPerioderSortertEtterDato =
     sykmeldingperioderSortertEldstTilNyest(
-      sykmelding.mulighetForArbeid.perioder
+      sykmelding.mulighetForArbeid.perioder,
     );
 
   const periode = `${tilLesbarPeriodeMedArstall(
     tidligsteFom(sykmelding.mulighetForArbeid.perioder),
-    senesteTom(sykmelding.mulighetForArbeid.perioder)
+    senesteTom(sykmelding.mulighetForArbeid.perioder),
   )}: `;
   const graderinger = stringMedAlleGraderingerFraSykmeldingPerioder(
-    sykmeldingPerioderSortertEtterDato
+    sykmeldingPerioderSortertEtterDato,
   );
   const diagnose = `${sykmelding.diagnose.hoveddiagnose?.diagnosekode} (${sykmelding.diagnose.hoveddiagnose?.diagnose})`;
   const erViktigInformasjon = erEkstraInformasjonISykmeldingen(sykmelding);

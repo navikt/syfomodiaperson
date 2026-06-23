@@ -28,13 +28,13 @@ import {
 
 export interface IReferatDocument {
   getReferatDocument(
-    values: Partial<ReferatSkjemaValues>
+    values: Partial<ReferatSkjemaValues>,
   ): DocumentComponentDto[];
 }
 
 export const useReferatDocument = (
   dialogmote: DialogmoteDTO,
-  mode: ReferatMode
+  mode: ReferatMode,
 ): IReferatDocument => {
   const navbruker = useNavBrukerData();
   const { data: veilederinfo } = useAktivVeilederinfoQuery();
@@ -59,7 +59,7 @@ export const useReferatDocument = (
     values: Partial<ReferatSkjemaValues>,
     navbruker: BrukerinfoDTO,
     personident: string,
-    veileder?: Veileder
+    veileder?: Veileder,
   ): DocumentComponentDto[] => {
     const deltakereTekst = [
       `${referatTexts.deltakere.arbeidstaker}: ${navbruker.navn}`,
@@ -74,75 +74,75 @@ export const useReferatDocument = (
           values.behandlerDeltatt === false
             ? `, ${referatTexts.deltakere.deltakelse}`
             : ""
-        }`
+        }`,
       );
     }
     const andreDeltakereTekst =
       values.andreDeltakere?.map(
-        ({ funksjon, navn }) => `${funksjon}: ${navn}`
+        ({ funksjon, navn }) => `${funksjon}: ${navn}`,
       ) || [];
 
     return [
       createParagraph(`F.nr. ${personident}`),
       createParagraphWithTitle(
         commonTexts.moteTidTitle,
-        tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid, malform)
+        tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid, malform),
       ),
       createParagraphWithTitle(commonTexts.moteStedTitle, dialogmote.sted),
       createParagraphWithTitle(
         referatTexts.deltakereTitle,
         ...deltakereTekst,
-        ...andreDeltakereTekst
+        ...andreDeltakereTekst,
       ),
     ];
   };
 
   const fritekster = (
-    values: Partial<ReferatSkjemaValues>
+    values: Partial<ReferatSkjemaValues>,
   ): DocumentComponentDto[] => {
     const documentComponents = [
       createHeaderH2(referatTexts.detteSkjeddeHeader),
       createParagraphWithTitle(
         referatTexts.konklusjonTitle,
-        values.konklusjon || ""
+        values.konklusjon || "",
       ),
       createParagraphWithTitle(
         referatTexts.arbeidstakersOppgaveTitle,
-        values.arbeidstakersOppgave || ""
+        values.arbeidstakersOppgave || "",
       ),
       createParagraphWithTitle(
         referatTexts.arbeidsgiversOppgaveTitle,
-        values.arbeidsgiversOppgave || ""
+        values.arbeidsgiversOppgave || "",
       ),
     ];
     if (values.behandlersOppgave) {
       documentComponents.push(
         createParagraphWithTitle(
           referatTexts.behandlersOppgave,
-          values.behandlersOppgave
-        )
+          values.behandlersOppgave,
+        ),
       );
     }
     if (values.veiledersOppgave) {
       documentComponents.push(
         createParagraphWithTitle(
           referatTexts.navOppgaveTitle,
-          values.veiledersOppgave
-        )
+          values.veiledersOppgave,
+        ),
       );
     }
     documentComponents.push(
       createParagraphWithTitle(
         referatTexts.situasjonTitle,
-        values.situasjon || ""
-      )
+        values.situasjon || "",
+      ),
     );
 
     return documentComponents;
   };
 
   const standardTekster = (
-    values: Partial<ReferatSkjemaValues>
+    values: Partial<ReferatSkjemaValues>,
   ): DocumentComponentDto[] => {
     const documentComponents: DocumentComponentDto[] = [];
     if (values.standardtekster && values.standardtekster.length > 0) {
@@ -159,18 +159,20 @@ export const useReferatDocument = (
             title: standardTekst.label,
             texts: [standardTekst.text],
           };
-        })
+        }),
       );
     }
     return documentComponents;
   };
 
   const getReferatDocument = (
-    values: Partial<ReferatSkjemaValues>
+    values: Partial<ReferatSkjemaValues>,
   ): DocumentComponentDto[] => {
     const documentComponents = [
       createHeaderH1(
-        isEndringAvReferat ? referatTexts.endretHeader : referatTexts.nyttHeader
+        isEndringAvReferat
+          ? referatTexts.endretHeader
+          : referatTexts.nyttHeader,
       ),
     ];
 
@@ -179,18 +181,18 @@ export const useReferatDocument = (
         createParagraph(referatTexts.endring),
         createParagraphWithTitle(
           referatTexts.begrunnelseEndringTitle,
-          values.begrunnelseEndring || ""
-        )
+          values.begrunnelseEndring || "",
+        ),
       );
     }
 
     documentComponents.push(
       createHeaderH2(navbruker?.navn),
-      ...info(dialogmote, values, navbruker, personident, veilederinfo)
+      ...info(dialogmote, values, navbruker, personident, veilederinfo),
     );
 
     const virksomhetsnavn = getVirksomhetsnavn(
-      dialogmote.arbeidsgiver.virksomhetsnummer
+      dialogmote.arbeidsgiver.virksomhetsnummer,
     );
     if (virksomhetsnavn) {
       documentComponents.push(virksomhetsnavn);
@@ -200,7 +202,7 @@ export const useReferatDocument = (
       ...intro(),
       ...fritekster(values),
       ...standardTekster(values),
-      hilsenParagraph
+      hilsenParagraph,
     );
 
     return documentComponents;

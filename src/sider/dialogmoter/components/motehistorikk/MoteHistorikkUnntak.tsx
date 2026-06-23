@@ -27,7 +27,7 @@ export function unntakLenkeText(unntakCreatedAt: Date) {
 
 function createUnntakDocument(
   unntak: UnntakDTO,
-  veilederNavn: string | undefined
+  veilederNavn: string | undefined,
 ): DocumentComponentDto[] {
   const arsakText: string = unntakArsakTexts[unntak.arsak] || unntak.arsak;
   const componentList: DocumentComponentDto[] = [
@@ -63,7 +63,7 @@ export function MoteHistorikkUnntak({ unntak }: Props): ReactElement {
   const { data: veilederinfo } = useVeilederInfoQuery(unntak.createdBy);
   const unntakDocument = createUnntakDocument(
     unntak,
-    veilederinfo?.fulltNavn()
+    veilederinfo?.fulltNavn(),
   );
   return (
     <>

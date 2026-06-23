@@ -17,7 +17,7 @@ export function DialogmoteAvventAlert({ avvent }: Props) {
       <Label size="small">
         {avvent.frist
           ? `${texts.avventerTil} ${tilDatoMedManedNavn(
-              new Date(avvent.frist)
+              new Date(avvent.frist),
             )}`
           : "Avventer"}
       </Label>

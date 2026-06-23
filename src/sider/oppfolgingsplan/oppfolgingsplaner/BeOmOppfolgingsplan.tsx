@@ -93,7 +93,7 @@ export default function BeOmOppfolgingsplan({
     !!lastForesporselCreatedAt && !postOppfolgingsplanForesporsel.isSuccess
       ? isDateInOppfolgingstilfelle(
           lastForesporselCreatedAt,
-          currentOppfolgingstilfelle
+          currentOppfolgingstilfelle,
         )
       : false;
 
@@ -144,7 +144,7 @@ export default function BeOmOppfolgingsplan({
                 value={field.value?.uuid}
                 onChange={(value) => {
                   const selectedNarmesteLeder = activeNarmesteLedere.find(
-                    (nl) => nl.uuid === value
+                    (nl) => nl.uuid === value,
                   );
                   field.onChange(selectedNarmesteLeder);
                 }}
@@ -154,7 +154,7 @@ export default function BeOmOppfolgingsplan({
                     <Radio key={index} value={uuid}>
                       {virksomhetsnavn}
                     </Radio>
-                  )
+                  ),
                 )}
               </RadioGroup>
             )}

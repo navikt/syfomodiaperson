@@ -73,7 +73,7 @@ const toInnkalling = (
   tidStedDto: TidStedDto,
   fnr: string,
   innkallingDocument: IInnkallingDocument,
-  valgtBehandler: BehandlerDTO | undefined
+  valgtBehandler: BehandlerDTO | undefined,
 ): DialogmoteInnkallingDTO => {
   const innkalling: DialogmoteInnkallingDTO = {
     arbeidsgiver: {
@@ -81,7 +81,7 @@ const toInnkalling = (
       fritekstInnkalling: values.fritekstArbeidsgiver,
       innkalling: innkallingDocument.getInnkallingDocumentArbeidsgiver(
         values,
-        valgtBehandler
+        valgtBehandler,
       ),
     },
     arbeidstaker: {
@@ -89,7 +89,7 @@ const toInnkalling = (
       fritekstInnkalling: values.fritekstArbeidstaker,
       innkalling: innkallingDocument.getInnkallingDocumentArbeidstaker(
         values,
-        valgtBehandler
+        valgtBehandler,
       ),
     },
     tidSted: tidStedDto,
@@ -136,7 +136,7 @@ export default function DialogmoteInnkallingSkjema() {
       toTidStedDto(values),
       fnr,
       innkallingDocument,
-      selectedBehandler
+      selectedBehandler,
     );
     opprettInnkalling.mutate(dialogmoteInnkalling);
   };
@@ -202,7 +202,7 @@ export default function DialogmoteInnkallingSkjema() {
               getDocumentComponents={() =>
                 innkallingDocument.getInnkallingDocumentArbeidstaker(
                   getValues(),
-                  selectedBehandler
+                  selectedBehandler,
                 )
               }
               title={texts.forhandsvisningArbeidstakerTitle}
@@ -222,7 +222,7 @@ export default function DialogmoteInnkallingSkjema() {
               getDocumentComponents={() =>
                 innkallingDocument.getInnkallingDocumentArbeidsgiver(
                   getValues(),
-                  selectedBehandler
+                  selectedBehandler,
                 )
               }
               title={texts.forhandsvisningArbeidsgiverTitle}

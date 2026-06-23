@@ -24,7 +24,7 @@ export function useGetMuligeOppfolgingsenheter() {
   return useQuery({
     queryKey: muligeOppfolgingsenhetQueryKeys.muligeOppfolgingsenheter(
       enhetId,
-      personident
+      personident,
     ),
     queryFn: fetchMuligeOppfolgingsenheter,
     enabled: !!personident && !!enhetId,

@@ -27,7 +27,7 @@ export default function EndreDialogmoteContainer() {
   const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
 
   const dialogmote = dialogmoter.find(
-    (dialogmote) => dialogmote.uuid === dialogmoteUuid
+    (dialogmote) => dialogmote.uuid === dialogmoteUuid,
   );
 
   return (

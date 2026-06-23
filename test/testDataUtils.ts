@@ -17,7 +17,7 @@ import { dagerMellomDatoer, daysFromToday } from "@/utils/datoUtils";
 
 export const generateOppfolgingstilfelle = (
   start: Date,
-  end: Date
+  end: Date,
 ): OppfolgingstilfelleDTO => {
   return {
     virksomhetsnummerList: [VIRKSOMHET_PONTYPANDY.virksomhetsnummer],
@@ -32,7 +32,7 @@ export const generateOppfolgingstilfelle = (
 export const createAktivitetskrav = (
   stoppunktAt: Date,
   status: AktivitetskravStatus,
-  vurderinger: AktivitetskravVurderingDTO[] = []
+  vurderinger: AktivitetskravVurderingDTO[] = [],
 ): AktivitetskravDTO => {
   return {
     createdAt: new Date(),
@@ -55,7 +55,7 @@ export function createAktivitetskravVurdering(
   createdAt = new Date(),
   stansFom?: Date,
   frist?: Date,
-  varsel?: AktivitetskravVarselDTO
+  varsel?: AktivitetskravVarselDTO,
 ): AktivitetskravVurderingDTO {
   return {
     beskrivelse,
@@ -79,7 +79,7 @@ export const avventVurdering = createAktivitetskravVurdering(
   "",
   new Date(),
   undefined,
-  new Date()
+  new Date(),
 );
 export const avventVurderingUtenFrist = createAktivitetskravVurdering(
   AktivitetskravStatus.AVVENT,
@@ -88,11 +88,11 @@ export const avventVurderingUtenFrist = createAktivitetskravVurdering(
     AvventVurderingArsak.INFORMASJON_BEHANDLER,
   ],
   "",
-  new Date()
+  new Date(),
 );
 export const oppfyltVurdering = createAktivitetskravVurdering(
   AktivitetskravStatus.OPPFYLT,
-  [OppfyltVurderingArsak.FRISKMELDT]
+  [OppfyltVurderingArsak.FRISKMELDT],
 );
 export const forhandsvarselVurdering = createAktivitetskravVurdering(
   AktivitetskravStatus.FORHANDSVARSEL,
@@ -106,7 +106,7 @@ export const forhandsvarselVurdering = createAktivitetskravVurdering(
     createdAt: new Date(),
     svarfrist: daysFromToday(21),
     document: [],
-  }
+  },
 );
 
 export const expiredForhandsvarselVurdering = createAktivitetskravVurdering(
@@ -121,5 +121,5 @@ export const expiredForhandsvarselVurdering = createAktivitetskravVurdering(
     createdAt: new Date(),
     svarfrist: daysFromToday(-1),
     document: [],
-  }
+  },
 );

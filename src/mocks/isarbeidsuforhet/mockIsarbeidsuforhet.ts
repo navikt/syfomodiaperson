@@ -63,6 +63,6 @@ export const mockIsarbeidsuforhet = [
       arbeidsuforhetVurderinger = [sentVurdering, ...arbeidsuforhetVurderinger];
 
       return HttpResponse.json(sentVurdering);
-    }
+    },
   ),
 ];

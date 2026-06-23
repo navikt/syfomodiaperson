@@ -6,7 +6,7 @@ const texts = {
 };
 
 export default function DialogmoteVideolink(
-  props: Omit<TextFieldProps, "label" | "size">
+  props: Omit<TextFieldProps, "label" | "size">,
 ) {
   return <TextField type="text" size="small" label={texts.label} {...props} />;
 }

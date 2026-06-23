@@ -18,7 +18,7 @@ const renderMotebehovHistorikk = () => {
   render(
     <QueryClientProvider client={queryClient}>
       <MotebehovHistorikk />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -29,7 +29,7 @@ describe("MotebehovHistorikk", () => {
   it("viser alle historiske møtebehov", () => {
     queryClient.setQueryData(
       motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => motebehovMock
+      () => motebehovMock,
     );
 
     renderMotebehovHistorikk();
@@ -40,7 +40,7 @@ describe("MotebehovHistorikk", () => {
     expect(screen.getByText("Møter er bra!")).to.exist;
     expect(screen.getByText("Jeg liker ikke møte!!")).to.exist;
     expect(
-      screen.getAllByText("Møtebehov fra den sykmeldte", { exact: false })
+      screen.getAllByText("Møtebehov fra den sykmeldte", { exact: false }),
     ).to.have.length(2);
     expect(screen.getByText("Møtebehov fra nærmeste leder", { exact: false }))
       .to.exist;
@@ -48,7 +48,7 @@ describe("MotebehovHistorikk", () => {
   it("viser ingen historiske møtebehov", () => {
     queryClient.setQueryData(
       motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => []
+      () => [],
     );
 
     renderMotebehovHistorikk();
@@ -58,7 +58,7 @@ describe("MotebehovHistorikk", () => {
   it("viser kun møtebehov fra arbeidsgiver", () => {
     queryClient.setQueryData(
       motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [svartNeiMotebehovArbeidsgiverUbehandletMock()]
+      () => [svartNeiMotebehovArbeidsgiverUbehandletMock()],
     );
 
     renderMotebehovHistorikk();
@@ -71,7 +71,7 @@ describe("MotebehovHistorikk", () => {
   it("viser kun møtebehov fra arbeidstaker", () => {
     queryClient.setQueryData(
       motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [meldtMotebehovArbeidstakerBehandletMock()]
+      () => [meldtMotebehovArbeidstakerBehandletMock()],
     );
 
     renderMotebehovHistorikk();
@@ -84,7 +84,7 @@ describe("MotebehovHistorikk", () => {
   it("viser at møtebehovet er behandlet", () => {
     queryClient.setQueryData(
       motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [meldtMotebehovArbeidstakerBehandletMock()]
+      () => [meldtMotebehovArbeidstakerBehandletMock()],
     );
 
     renderMotebehovHistorikk();
@@ -92,7 +92,7 @@ describe("MotebehovHistorikk", () => {
     expect(
       screen.getByText("Møtebehovet ble vurdert av Z990000 den", {
         exact: false,
-      })
+      }),
     ).to.exist;
   });
 });

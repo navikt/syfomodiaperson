@@ -4,7 +4,7 @@ import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat
 
 export const lederHasActiveSykmelding = (
   lederVirksomhetsnummer: string,
-  sykmeldinger: SykmeldingOldFormat[]
+  sykmeldinger: SykmeldingOldFormat[],
 ): boolean => {
   const activeSykmeldingerWithArbeidsgiver =
     activeSykmeldingerSentToArbeidsgiver(sykmeldinger);
@@ -12,22 +12,22 @@ export const lederHasActiveSykmelding = (
   return activeSykmeldingerWithArbeidsgiver.some(
     (sykmelding) =>
       sykmelding.mottakendeArbeidsgiver?.virksomhetsnummer ===
-      lederVirksomhetsnummer
+      lederVirksomhetsnummer,
   );
 };
 
 export const ledereWithActiveLedereFirst = (
   ledereData: NarmesteLederRelasjonDTO[],
-  sykmeldinger: SykmeldingOldFormat[]
+  sykmeldinger: SykmeldingOldFormat[],
 ): NarmesteLederRelasjonDTO[] => {
   return ledereData.sort((leder1, leder2) => {
     const leder1Active = lederHasActiveSykmelding(
       leder1.virksomhetsnummer,
-      sykmeldinger
+      sykmeldinger,
     );
     const leder2Active = lederHasActiveSykmelding(
       leder2.virksomhetsnummer,
-      sykmeldinger
+      sykmeldinger,
     );
 
     if (leder1Active && !leder2Active) {
@@ -42,15 +42,15 @@ export const ledereWithActiveLedereFirst = (
 
 const sykmeldingerWithoutMatchingLeder = (
   ledere: NarmesteLederRelasjonDTO[],
-  sykmeldinger: SykmeldingOldFormat[]
+  sykmeldinger: SykmeldingOldFormat[],
 ): SykmeldingOldFormat[] => {
   return sykmeldinger.filter(
     (sykmelding) =>
       !ledere.some(
         (leder) =>
           leder.virksomhetsnummer ===
-          sykmelding.mottakendeArbeidsgiver?.virksomhetsnummer
-      )
+          sykmelding.mottakendeArbeidsgiver?.virksomhetsnummer,
+      ),
   );
 };
 
@@ -70,7 +70,7 @@ const sykmelding2Leder = (sykmelding: SykmeldingOldFormat): SykmeldingLeder => {
 };
 
 const removeDuplicatesFromLederList = (
-  ledere: SykmeldingLeder[]
+  ledere: SykmeldingLeder[],
 ): SykmeldingLeder[] => {
   return ledere.filter((leder, index) => {
     return (
@@ -83,13 +83,13 @@ const removeDuplicatesFromLederList = (
 
 export const virksomheterWithoutLeder = (
   ledere: NarmesteLederRelasjonDTO[],
-  sykmeldinger: SykmeldingOldFormat[]
+  sykmeldinger: SykmeldingOldFormat[],
 ): SykmeldingLeder[] => {
   const activeSykmeldinger = activeSykmeldingerSentToArbeidsgiver(sykmeldinger);
 
   const sykmeldingerWithoutLeder = sykmeldingerWithoutMatchingLeder(
     ledere,
-    activeSykmeldinger
+    activeSykmeldinger,
   );
 
   const virksomheterAsLedere = sykmeldingerWithoutLeder.map(sykmelding2Leder);
@@ -99,7 +99,7 @@ export const virksomheterWithoutLeder = (
 
 export const narmesteLederForVirksomhet = (
   ledere: NarmesteLederRelasjonDTO[],
-  virksomhetsnummer: string
+  virksomhetsnummer: string,
 ): NarmesteLederRelasjonDTO | undefined => {
   return ledere.find((leder) => leder.virksomhetsnummer === virksomhetsnummer);
 };

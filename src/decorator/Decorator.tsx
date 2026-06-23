@@ -49,10 +49,10 @@ const Decorator = () => {
       ref={decoratorRef}
       app-name={decoratorConfig.appName}
       fetch-active-user-on-mount={String(
-        decoratorConfig.fetchActiveUserOnMount
+        decoratorConfig.fetchActiveUserOnMount,
       )}
       fetch-active-enhet-on-mount={String(
-        decoratorConfig.fetchActiveEnhetOnMount
+        decoratorConfig.fetchActiveEnhetOnMount,
       )}
       show-enheter={String(decoratorConfig.showEnheter)}
       show-search-area={String(decoratorConfig.showSearchArea)}

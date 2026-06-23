@@ -26,11 +26,11 @@ describe("SykepengesoknadSide", () => {
     queryClient = queryClientWithAktivBruker();
     queryClient.setQueryData(
       brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => brukerinfoMock
+      () => brukerinfoMock,
     );
     queryClient.setQueryData(
       tilgangQueryKeys.tilgang(fnr),
-      () => tilgangBrukerMock
+      () => tilgangBrukerMock,
     );
     queryClient.setQueryData(sykmeldingerQueryKeys.sykmeldinger(fnr), () => []);
   });
@@ -39,7 +39,7 @@ describe("SykepengesoknadSide", () => {
     it("Skal vise SendtSoknadArbeidstakerNy", () => {
       queryClient.setQueryData(
         sykepengesoknaderQueryKeys.sykepengesoknader(fnr),
-        () => soknaderMock
+        () => soknaderMock,
       );
       renderWithRouter(
         <ValgtEnhetProvider>
@@ -48,13 +48,13 @@ describe("SykepengesoknadSide", () => {
           </QueryClientProvider>
         </ValgtEnhetProvider>,
         "/sykefravaer/sykepengesoknader/:sykepengesoknadId",
-        [`/sykefravaer/sykepengesoknader/${OPPHOLD_UTLAND_ID}`]
+        [`/sykefravaer/sykepengesoknader/${OPPHOLD_UTLAND_ID}`],
       );
 
       expect(
         screen.getByRole("heading", {
           name: "Søknad om sykepenger under opphold utenfor Norge",
-        })
+        }),
       ).to.exist;
     });
   });
@@ -63,7 +63,7 @@ describe("SykepengesoknadSide", () => {
     it("Skal vise feilmelding hvis søknaden er en selvstendig-søknad og henting av selvstendig-søknader feiler", () => {
       queryClient.setQueryData(
         sykepengesoknaderQueryKeys.sykepengesoknader(fnr),
-        () => []
+        () => [],
       );
 
       renderWithRouter(
@@ -73,13 +73,13 @@ describe("SykepengesoknadSide", () => {
           </QueryClientProvider>
         </ValgtEnhetProvider>,
         "/sykefravaer/sykepengesoknader/:sykepengesoknadId",
-        [`/sykefravaer/sykepengesoknader/${NAERINGSDRIVENDESOKNAD_ID}`]
+        [`/sykefravaer/sykepengesoknader/${NAERINGSDRIVENDESOKNAD_ID}`],
       );
 
       expect(
         screen.getByRole("heading", {
           name: "Beklager, det oppstod en feil",
-        })
+        }),
       ).to.exist;
     });
   });

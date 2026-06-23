@@ -42,7 +42,7 @@ const renderForhandsvarselSkjema = () => {
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     manglendeMedvirkningPath,
-    [manglendeMedvirkningPath]
+    [manglendeMedvirkningPath],
   );
 };
 
@@ -58,7 +58,7 @@ const renderForhandsvarselSendt = (forhandsvarsel: VurderingResponseDTO) => {
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     manglendeMedvirkningPath,
-    [manglendeMedvirkningPath]
+    [manglendeMedvirkningPath],
   );
 };
 
@@ -148,37 +148,37 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
       expect(
         screen.getByText(
           `Forhåndsvarselet er sendt ${tilLesbarDatoMedArUtenManedNavn(
-            new Date()
-          )}.`
-        )
+            new Date(),
+          )}.`,
+        ),
       ).to.exist;
       expect(screen.getByText("Venter på svar fra bruker")).to.exist;
       expect(screen.getByText("Fristen går ut:")).to.exist;
       expect(
         screen.getByText(
-          "Du kan ikke stanse før fristen i forhåndsvarselet er gått ut."
-        )
+          "Du kan ikke stanse før fristen i forhåndsvarselet er gått ut.",
+        ),
       ).to.exist;
       expect(screen.getByText("Følgende alternativer er tilgjengelig:")).to
         .exist;
       expect(
         screen.getByText(
-          "dersom bruker har startet å medvirke, og oppfyller medvirkningsplikten."
-        )
+          "dersom bruker har startet å medvirke, og oppfyller medvirkningsplikten.",
+        ),
       ).to.exist;
       expect(
         screen.getByText(
-          "dersom bruker har rimelig grunn til ikke å medvirke, og dermed er unntatt medvirkningsplikten."
-        )
+          "dersom bruker har rimelig grunn til ikke å medvirke, og dermed er unntatt medvirkningsplikten.",
+        ),
       ).to.exist;
       expect(
         screen.getByText(
-          "dersom det ikke lenger er aktuelt å vurdere medvirkningsplikten, for eksempel ved friskmelding."
-        )
+          "dersom det ikke lenger er aktuelt å vurdere medvirkningsplikten, for eksempel ved friskmelding.",
+        ),
       ).to.exist;
       expect(screen.getByRole("img", { name: "klokkeikon" })).to.exist;
       expect(
-        screen.getByRole("button", { name: "Skriv innstilling om stans" })
+        screen.getByRole("button", { name: "Skriv innstilling om stans" }),
       ).to.have.property("disabled", true);
       expect(screen.getByRole("button", { name: "Oppfylt" })).to.exist;
       expect(screen.getByRole("button", { name: "Ikke aktuell" })).to.exist;
@@ -207,23 +207,23 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
         .exist;
       expect(
         screen.getByText(
-          "dersom vilkårene i § 8-8 ikke er oppfylt og rett til videre sykepenger skal stanses."
-        )
+          "dersom vilkårene i § 8-8 ikke er oppfylt og rett til videre sykepenger skal stanses.",
+        ),
       ).to.exist;
       expect(
         screen.getByText(
-          "dersom bruker har startet å medvirke, og oppfyller medvirkningsplikten."
-        )
+          "dersom bruker har startet å medvirke, og oppfyller medvirkningsplikten.",
+        ),
       ).to.exist;
       expect(
         screen.getByText(
-          "dersom bruker har rimelig grunn til ikke å medvirke, og dermed er unntatt medvirkningsplikten."
-        )
+          "dersom bruker har rimelig grunn til ikke å medvirke, og dermed er unntatt medvirkningsplikten.",
+        ),
       ).to.exist;
       expect(
         screen.getByText(
-          "dersom det ikke lenger er aktuelt å vurdere medvirkningsplikten, for eksempel ved friskmelding."
-        )
+          "dersom det ikke lenger er aktuelt å vurdere medvirkningsplikten, for eksempel ved friskmelding.",
+        ),
       ).to.exist;
       expect(screen.getByRole("button", { name: "Skriv innstilling om stans" }))
         .to.exist;

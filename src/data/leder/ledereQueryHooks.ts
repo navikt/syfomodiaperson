@@ -30,18 +30,18 @@ export function useLedereQuery() {
   const currentLedere: NarmesteLederRelasjonDTO[] = useMemo(
     () =>
       query.data?.filter(
-        (leder) => leder.status === NarmesteLederRelasjonStatus.INNMELDT_AKTIV
+        (leder) => leder.status === NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
       ) || [],
-    [query.data]
+    [query.data],
   ).map((leder) => ({
     ...leder,
     narmesteLederNavn: capitalizeAllWords(leder.narmesteLederNavn),
   }));
   const getCurrentNarmesteLeder = (
-    virksomhetsnummer: string
+    virksomhetsnummer: string,
   ): NarmesteLederRelasjonDTO | undefined => {
     return currentLedere.find(
-      (leder) => leder.virksomhetsnummer === virksomhetsnummer
+      (leder) => leder.virksomhetsnummer === virksomhetsnummer,
     );
   };
 
@@ -53,9 +53,10 @@ export function useLedereQuery() {
     formerLedere: useMemo(
       () =>
         query.data?.filter(
-          (leder) => leder.status !== NarmesteLederRelasjonStatus.INNMELDT_AKTIV
+          (leder) =>
+            leder.status !== NarmesteLederRelasjonStatus.INNMELDT_AKTIV,
         ) || [],
-      [query.data]
+      [query.data],
     ),
     allLedere: query.data || [],
   };

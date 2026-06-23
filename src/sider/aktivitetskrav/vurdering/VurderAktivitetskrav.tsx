@@ -21,10 +21,10 @@ export const texts = {
 
 export function oppfolgingstilfelleForAktivitetskrav(
   aktivitetskrav: AktivitetskravDTO,
-  oppfolgingstilfeller: OppfolgingstilfelleDTO[]
+  oppfolgingstilfeller: OppfolgingstilfelleDTO[],
 ): OppfolgingstilfelleDTO | undefined {
   return oppfolgingstilfeller.find((tilfelle) =>
-    isDateInOppfolgingstilfelle(aktivitetskrav.stoppunktAt, tilfelle)
+    isDateInOppfolgingstilfelle(aktivitetskrav.stoppunktAt, tilfelle),
   );
 }
 
@@ -38,7 +38,7 @@ export function VurderAktivitetskrav({
   const { tilfellerDescendingStart } = useOppfolgingstilfellePersonQuery();
   const oppfolgingstilfelle = oppfolgingstilfelleForAktivitetskrav(
     aktivitetskrav,
-    tilfellerDescendingStart
+    tilfellerDescendingStart,
   );
   const currentVurdering = aktivitetskrav.vurderinger[0];
   const showVurderAktivitetskravAlert =

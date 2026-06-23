@@ -10,7 +10,7 @@ import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/p
 import { QueryClient } from "@tanstack/react-query";
 
 export function createOppfolgingstilfelleFromSykmelding(
-  sykmelding?: any[]
+  sykmelding?: any[],
 ): OppfolgingstilfelleDTO[] {
   return sykmelding
     ? [
@@ -20,7 +20,7 @@ export function createOppfolgingstilfelleFromSykmelding(
           end: sykmelding[0].sykmeldingsperioder[0].tom,
           varighetUker: getWeeksBetween(
             sykmelding[0].sykmeldingsperioder[0].fom,
-            sykmelding[0].sykmeldingsperioder[0].tom
+            sykmelding[0].sykmeldingsperioder[0].tom,
           ),
         },
       ]
@@ -29,7 +29,7 @@ export function createOppfolgingstilfelleFromSykmelding(
 
 export function createOppfolgingstilfellePersonDTO(
   fom: Date,
-  tom: Date
+  tom: Date,
 ): OppfolgingstilfellePersonDTO {
   return {
     personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
@@ -48,11 +48,11 @@ export function createOppfolgingstilfellePersonDTO(
 export function setSykmeldingDataFromOppfolgingstilfelle(
   sykmeldinger: any[],
   oppfolgingstilfelle: OppfolgingstilfelleDTO[],
-  queryClient: QueryClient
+  queryClient: QueryClient,
 ) {
   queryClient.setQueryData(
     sykmeldingerQueryKeys.sykmeldinger(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => sykmeldinger
+    () => sykmeldinger,
   );
 
   const oppfolgingstilfellePersonDTO: OppfolgingstilfellePersonDTO = {
@@ -62,8 +62,8 @@ export function setSykmeldingDataFromOppfolgingstilfelle(
 
   queryClient.setQueryData(
     oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => oppfolgingstilfellePersonDTO
+    () => oppfolgingstilfellePersonDTO,
   );
 }

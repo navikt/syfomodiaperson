@@ -156,7 +156,7 @@ export interface SykmeldingOldFormat {
 }
 
 export function erSykmeldingUtenArbeidsgiver(
-  sykmelding: SykmeldingOldFormat
+  sykmelding: SykmeldingOldFormat,
 ): boolean {
   return (
     !sykmelding.orgnummer && sykmelding.status === SykmeldingStatus.BEKREFTET
@@ -170,18 +170,18 @@ export function erAvvistSykmelding(sykmelding: SykmeldingOldFormat): boolean {
 }
 
 export function finnAvventendeSykmeldingTekst(
-  sykmelding: SykmeldingOldFormat
+  sykmelding: SykmeldingOldFormat,
 ): string | undefined {
   const avventendePeriode =
     sykmelding.mulighetForArbeid.perioder &&
     sykmelding.mulighetForArbeid.perioder.find(
-      (periode) => !!periode.avventende
+      (periode) => !!periode.avventende,
     );
   return avventendePeriode?.avventende;
 }
 
 export function sykmeldingerSortertNyestTilEldstPeriode(
-  sykmeldinger: SykmeldingOldFormat[]
+  sykmeldinger: SykmeldingOldFormat[],
 ): SykmeldingOldFormat[] {
   return sykmeldinger.sort((sykmelding1, sykmelding2) => {
     if (
@@ -189,10 +189,10 @@ export function sykmeldingerSortertNyestTilEldstPeriode(
       sykmelding2.mulighetForArbeid.perioder.length > 0
     ) {
       const dato1 = new Date(
-        tidligsteFom(sykmelding1.mulighetForArbeid.perioder)
+        tidligsteFom(sykmelding1.mulighetForArbeid.perioder),
       );
       const dato2 = new Date(
-        tidligsteFom(sykmelding2.mulighetForArbeid.perioder)
+        tidligsteFom(sykmelding2.mulighetForArbeid.perioder),
       );
       if (dato1.getTime() === dato2.getTime()) {
         return sykmelding1.mottattTidspunkt > sykmelding2.mottattTidspunkt

@@ -38,7 +38,7 @@ export const useKartleggingssporsmalKandidaterQuery = () => {
           return [];
         }
         throw error;
-      }
+      },
     );
 
   return useQuery({
@@ -50,7 +50,7 @@ export const useKartleggingssporsmalKandidaterQuery = () => {
 };
 
 export const useKartleggingssporsmalSvarQuery = (
-  kandidat: KartleggingssporsmalKandidatResponseDTO | null | undefined
+  kandidat: KartleggingssporsmalKandidatResponseDTO | null | undefined,
 ) => {
   const path = `${MEROPPFOLGING_BACKEND_V1_ROOT}/kartleggingssporsmal/kandidat/${kandidat?.kandidatUuid}/svar`;
   const getKartleggingssporsmalSvar = () =>
@@ -58,7 +58,7 @@ export const useKartleggingssporsmalSvarQuery = (
 
   return useQuery({
     queryKey: kartleggingssporsmalQueryKeys.kartleggingssporsmalSvar(
-      kandidat?.kandidatUuid
+      kandidat?.kandidatUuid,
     ),
     queryFn: getKartleggingssporsmalSvar,
     enabled:
@@ -78,7 +78,7 @@ export const useKartleggingssporsmalVurderSvar = () => {
     return put<KartleggingssporsmalKandidatResponseDTO>(
       path,
       { vurderingAlternativ: vurderingAlternativ },
-      fnr
+      fnr,
     );
   };
   const kartleggingssporsmalKandidatQueryKey =
@@ -91,7 +91,7 @@ export const useKartleggingssporsmalVurderSvar = () => {
         kartleggingssporsmalKandidatQueryKey,
         (oldData: KartleggingssporsmalKandidatResponseDTO[] = []) => {
           return [data, ...oldData.slice(1)];
-        }
+        },
       );
     },
   });

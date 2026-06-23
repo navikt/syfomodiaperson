@@ -63,7 +63,7 @@ export const mockIsfrisktilarbeid = [
       vedtak = [sentVedtak, ...vedtak];
 
       return HttpResponse.json(sentVedtak);
-    }
+    },
   ),
 
   http.put<{ vedtakUUID: string }>(
@@ -80,6 +80,6 @@ export const mockIsfrisktilarbeid = [
         : HttpResponse.text(`Did not find vedtak with uuid ${vedtakUUID}`, {
             status: 400,
           });
-    }
+    },
   ),
 ];

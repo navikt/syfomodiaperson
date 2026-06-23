@@ -19,7 +19,7 @@ export default function AvlystMoteHistorikkEvent({ mote }: Props) {
   const moteDatoTekst = tilDatoMedManedNavn(mote.tid);
   const document =
     mote.arbeidstaker.varselList.find(
-      (varsel) => varsel.varselType === MotedeltakerVarselType.AVLYST
+      (varsel) => varsel.varselType === MotedeltakerVarselType.AVLYST,
     )?.document || [];
 
   return (

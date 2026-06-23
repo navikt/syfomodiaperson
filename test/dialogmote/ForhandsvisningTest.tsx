@@ -20,7 +20,7 @@ describe("Forhandsvisning", () => {
         isOpen={true}
         handleClose={doNothing}
         getDocumentComponents={() => []}
-      />
+      />,
     );
     expect(screen.getByRole("heading", { name: "Tittel her", hidden: true })).to
       .exist;
@@ -55,7 +55,7 @@ describe("Forhandsvisning", () => {
         isOpen={true}
         handleClose={doNothing}
         getDocumentComponents={() => documentComponents}
-      />
+      />,
     );
     expect(screen.getByRole("heading", { name: "En overskrift", hidden: true }))
       .to.exist;

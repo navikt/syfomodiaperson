@@ -37,7 +37,7 @@ const renderMeldingerISamtale = (meldinger: MeldingDTO[]) => {
       >
         <MeldingerISamtale meldinger={meldinger} />
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -64,14 +64,14 @@ describe("MeldingerISamtale", () => {
     it("render no paminnelse button for melding til behandler med behandlet ubesvart melding-oppgave", () => {
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
             ...personOppgaveBehandletBehandlerdialogUbesvartMelding,
             referanseUuid: foresporselPasientToBehandler.uuid,
           },
-        ]
+        ],
       );
       renderMeldingerISamtale([foresporselPasientToBehandler]);
 
@@ -81,14 +81,14 @@ describe("MeldingerISamtale", () => {
     it("render paminnelse button for melding til behandler med ubehandlet ubesvart melding-oppgave", () => {
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
             ...personOppgaveUbehandletBehandlerdialogUbesvartMelding,
             referanseUuid: foresporselPasientToBehandler.uuid,
           },
-        ]
+        ],
       );
 
       renderMeldingerISamtale([foresporselPasientToBehandler]);
@@ -104,7 +104,7 @@ describe("MeldingerISamtale", () => {
       renderMeldingerISamtale([]);
 
       expect(
-        screen.queryByRole("button", { name: returLegeerklaringButtonText })
+        screen.queryByRole("button", { name: returLegeerklaringButtonText }),
       ).to.not.exist;
     });
     it("renders no retur legeerklæring button when no meldinger of type legeerklaring", () => {
@@ -114,14 +114,14 @@ describe("MeldingerISamtale", () => {
       ]);
 
       expect(
-        screen.queryByRole("button", { name: returLegeerklaringButtonText })
+        screen.queryByRole("button", { name: returLegeerklaringButtonText }),
       ).to.not.exist;
     });
     it("renders no retur legeerklæring button when no melding fra behandler legeerklaring", () => {
       renderMeldingerISamtale([foresporselLegeerklaringTilBehandler]);
 
       expect(
-        screen.queryByRole("button", { name: returLegeerklaringButtonText })
+        screen.queryByRole("button", { name: returLegeerklaringButtonText }),
       ).to.not.exist;
     });
     it("renders no retur legeerklæring button when retur already sent for legeerklæring fra behandler", () => {
@@ -132,7 +132,7 @@ describe("MeldingerISamtale", () => {
       ]);
 
       expect(
-        screen.queryByRole("button", { name: returLegeerklaringButtonText })
+        screen.queryByRole("button", { name: returLegeerklaringButtonText }),
       ).to.not.exist;
     });
     it("renders retur legeerklæring button when melding fra behandler is legeerklæring", () => {
@@ -190,9 +190,9 @@ describe("MeldingerISamtale", () => {
     it("render checkbox when melding with meldingstatus AVVIST and has personoppgave", () => {
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [personOppgaveUbehandletBehandlerdialogAvvistMelding]
+        () => [personOppgaveUbehandletBehandlerdialogAvvistMelding],
       );
 
       const melding = {
@@ -207,9 +207,9 @@ describe("MeldingerISamtale", () => {
     it("render checkbox when melding with meldingstatus AVVIST and has personoppgave", () => {
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [personOppgaveUbehandletBehandlerdialogAvvistMelding]
+        () => [personOppgaveUbehandletBehandlerdialogAvvistMelding],
       );
 
       const melding = {
@@ -228,9 +228,9 @@ describe("MeldingerISamtale", () => {
     it("render checkbox when melding with meldingstatus AVVIST and has behandlet personoppgave", () => {
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [personOppgaveBehandletBehandlerdialogAvvistMelding]
+        () => [personOppgaveBehandletBehandlerdialogAvvistMelding],
       );
 
       const melding = {

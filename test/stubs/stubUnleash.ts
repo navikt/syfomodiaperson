@@ -6,6 +6,6 @@ import { http, HttpResponse } from "msw";
 export const stubFeatureTogglesApi = () =>
   mockServer.use(
     http.get(`*${UNLEASH_ROOT}/toggles`, () =>
-      HttpResponse.json(mockUnleashResponse)
-    )
+      HttpResponse.json(mockUnleashResponse),
+    ),
   );

@@ -4,12 +4,12 @@ import { mockServer } from "../setup";
 import { http, HttpResponse } from "msw";
 
 export const stubOppfolgingsoppgaveApi = (
-  oppfolgingsoppgave: OppfolgingsoppgaveResponseDTO | undefined
+  oppfolgingsoppgave: OppfolgingsoppgaveResponseDTO | undefined,
 ) =>
   mockServer.use(
     http.get(`*${ISHUSKELAPP_ROOT}/huskelapp`, ({ request }) =>
       request.url.includes("?isActive=true")
         ? HttpResponse.json(oppfolgingsoppgave)
-        : HttpResponse.json(null)
-    )
+        : HttpResponse.json(null),
+    ),
   );

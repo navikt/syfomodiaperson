@@ -6,5 +6,5 @@ export const mockFastlegerest = http.get(
   `${FASTLEGEREST_ROOT}/fastleger`,
   () => {
     return HttpResponse.json(fastlegerMock);
-  }
+  },
 );

@@ -52,7 +52,7 @@ const renderPersonkortHeader = () =>
       <ValgtEnhetProvider>
         <PersonkortHeader />
       </ValgtEnhetProvider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("PersonkortHeader", () => {
@@ -64,7 +64,7 @@ describe("PersonkortHeader", () => {
   it("viser 'Egenansatt' når isEgenansatt er true fra API", () => {
     queryClient.setQueryData(
       egenansattQueryKeys.egenansatt(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => true
+      () => true,
     );
     renderPersonkortHeader();
 
@@ -80,9 +80,9 @@ describe("PersonkortHeader", () => {
   it("viser 'Kode 6' når diskresjonskode er 6 fra API", () => {
     queryClient.setQueryData(
       diskresjonskodeQueryKeys.diskresjonskode(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => "6"
+      () => "6",
     );
     renderPersonkortHeader();
 
@@ -92,9 +92,9 @@ describe("PersonkortHeader", () => {
   it("viser 'Kode 7' når diskresjonskode er 7 fra API", () => {
     queryClient.setQueryData(
       diskresjonskodeQueryKeys.diskresjonskode(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => "7"
+      () => "7",
     );
     renderPersonkortHeader();
 
@@ -128,7 +128,7 @@ describe("PersonkortHeader", () => {
           ...brukerinfoMock,
           tilrettelagtKommunikasjon,
         };
-      }
+      },
     );
 
     renderPersonkortHeader();
@@ -153,7 +153,7 @@ describe("PersonkortHeader", () => {
           ...brukerinfoMock,
           tilrettelagtKommunikasjon,
         };
-      }
+      },
     );
 
     renderPersonkortHeader();
@@ -170,7 +170,7 @@ describe("PersonkortHeader", () => {
           ...brukerinfoMock,
           dodsdato: "2023-02-01",
         };
-      }
+      },
     );
     renderPersonkortHeader();
 
@@ -200,7 +200,7 @@ describe("PersonkortHeader", () => {
 
     queryClient.setQueryData(
       arbeidsforholdQueryKeys.arbeidsforhold(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => ettAktivtArbeidsforhold
+      () => ettAktivtArbeidsforhold,
     );
     queryClient.setQueryData(
       virksomhetQueryKeys.virksomhet("333666999"),
@@ -208,7 +208,7 @@ describe("PersonkortHeader", () => {
         navn: {
           navnelinje1: "Sykehus AS",
         },
-      })
+      }),
     );
 
     renderPersonkortHeader();
@@ -243,7 +243,7 @@ describe("PersonkortHeader", () => {
 
     queryClient.setQueryData(
       arbeidsforholdQueryKeys.arbeidsforhold(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => flereAktiveArbeidsforhold
+      () => flereAktiveArbeidsforhold,
     );
     queryClient.setQueryData(
       virksomhetQueryKeys.virksomhet("333666999"),
@@ -251,7 +251,7 @@ describe("PersonkortHeader", () => {
         navn: {
           navnelinje1: "Sykehus AS",
         },
-      })
+      }),
     );
     queryClient.setQueryData(
       virksomhetQueryKeys.virksomhet("110110110"),
@@ -259,7 +259,7 @@ describe("PersonkortHeader", () => {
         navn: {
           navnelinje1: "Brannvesenet",
         },
-      })
+      }),
     );
 
     renderPersonkortHeader();
@@ -302,7 +302,7 @@ describe("PersonkortHeader", () => {
 
     queryClient.setQueryData(
       arbeidsforholdQueryKeys.arbeidsforhold(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => flereAktiveArbeidsforhold
+      () => flereAktiveArbeidsforhold,
     );
     queryClient.setQueryData(
       virksomhetQueryKeys.virksomhet("333666999"),
@@ -310,7 +310,7 @@ describe("PersonkortHeader", () => {
         navn: {
           navnelinje1: "Sykehus AS",
         },
-      })
+      }),
     );
     queryClient.setQueryData(
       virksomhetQueryKeys.virksomhet("110110110"),
@@ -318,7 +318,7 @@ describe("PersonkortHeader", () => {
         navn: {
           navnelinje1: "Brannvesenet",
         },
-      })
+      }),
     );
     queryClient.setQueryData(
       virksomhetQueryKeys.virksomhet("999888777"),
@@ -326,7 +326,7 @@ describe("PersonkortHeader", () => {
         navn: {
           navnelinje1: "Legekontoret",
         },
-      })
+      }),
     );
 
     renderPersonkortHeader();
@@ -352,7 +352,7 @@ describe("PersonkortHeader", () => {
 
     queryClient.setQueryData(
       arbeidsforholdQueryKeys.arbeidsforhold(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => arbeidsforholdUtenAktive
+      () => arbeidsforholdUtenAktive,
     );
 
     renderPersonkortHeader();
@@ -364,13 +364,13 @@ describe("PersonkortHeader", () => {
   it("viser 'ukjent' ved 500-feil fra arbeidsforhold-endepunktet", async () => {
     queryClient.setQueryDefaults(
       arbeidsforholdQueryKeys.arbeidsforhold(ARBEIDSTAKER_DEFAULT.personIdent),
-      { retry: false }
+      { retry: false },
     );
 
     mockServer.use(
       http.get(`${SYFOPERSON_ROOT}/person/arbeidsforhold`, () => {
         return new HttpResponse(null, { status: 500 });
-      })
+      }),
     );
 
     renderPersonkortHeader();
@@ -388,10 +388,10 @@ describe("PersonkortHeader", () => {
 
     const expectedMaksdato = dayjs(maksdato).format("DD.MM.YYYY");
     const expectedUtbetaltTom = tilLesbarDatoMedArUtenManedNavn(
-      maksdatoMock.maxDate.utbetalt_tom
+      maksdatoMock.maxDate.utbetalt_tom,
     );
     const expectedSoknadBehandletTom = tilLesbarDatoMedArUtenManedNavn(
-      maksdatoMock.maxDate.tom
+      maksdatoMock.maxDate.tom,
     );
 
     expect(screen.getByText(expectedMaksdato)).to.exist;
@@ -407,7 +407,7 @@ describe("PersonkortHeader", () => {
           ...maksdatoMock.maxDate,
           utbetalt_tom: null,
         },
-      })
+      }),
     );
 
     renderPersonkortHeader();
@@ -435,9 +435,9 @@ describe("PersonkortHeader", () => {
 
     queryClient.setQueryData(
       oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => oppfolgingstilfelle
+      () => oppfolgingstilfelle,
     );
 
     queryClient.setQueryData(
@@ -447,7 +447,7 @@ describe("PersonkortHeader", () => {
           ...maksdatoMock.maxDate,
           utbetalt_tom: new Date("2025-01-05"), // before start
         },
-      })
+      }),
     );
 
     renderPersonkortHeader();
@@ -476,9 +476,9 @@ describe("PersonkortHeader", () => {
 
     queryClient.setQueryData(
       oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => oppfolgingstilfelle
+      () => oppfolgingstilfelle,
     );
 
     queryClient.setQueryData(
@@ -488,7 +488,7 @@ describe("PersonkortHeader", () => {
           ...maksdatoMock.maxDate,
           utbetalt_tom: utbetaltTomDate, // after start
         },
-      })
+      }),
     );
 
     renderPersonkortHeader();
@@ -527,20 +527,20 @@ describe("PersonkortHeader", () => {
 
       queryClient.setQueryData(
         maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => utebetalingsinfo(opprettet)
+        () => utebetalingsinfo(opprettet),
       );
       queryClient.setQueryData(
         oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => oppfolgingstilfelle
+        () => oppfolgingstilfelle,
       );
       renderPersonkortHeader();
 
       expect(
         screen.getByText(
-          "Maksdatoen kan gjelde et tidligere oppfølgingstilfelle."
-        )
+          "Maksdatoen kan gjelde et tidligere oppfølgingstilfelle.",
+        ),
       ).to.exist;
     });
 
@@ -549,20 +549,20 @@ describe("PersonkortHeader", () => {
 
       queryClient.setQueryData(
         maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => utebetalingsinfo(opprettet)
+        () => utebetalingsinfo(opprettet),
       );
       queryClient.setQueryData(
         oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => oppfolgingstilfelle
+        () => oppfolgingstilfelle,
       );
       renderPersonkortHeader();
 
       expect(
         screen.queryByText(
-          "Maksdatoen kan gjelde et tidligere oppfølgingstilfelle."
-        )
+          "Maksdatoen kan gjelde et tidligere oppfølgingstilfelle.",
+        ),
       ).to.not.exist;
     });
   });
@@ -573,7 +573,7 @@ describe("PersonkortHeader", () => {
       () => ({
         ...brukerinfoMock,
         sikkerhetstiltak: [],
-      })
+      }),
     );
     renderPersonkortHeader();
 
@@ -593,7 +593,7 @@ describe("PersonkortHeader", () => {
             gyldigTom: daysFromToday(10),
           },
         ],
-      })
+      }),
     );
     renderPersonkortHeader();
 
@@ -607,9 +607,9 @@ describe("PersonkortHeader", () => {
       };
     queryClient.setQueryData(
       underArbeidsrettetOppfolgingQueryKeys.underArbeidsrettetOppfolging(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => underArbeidsrettetOppfolging
+      () => underArbeidsrettetOppfolging,
     );
     renderPersonkortHeader();
 
@@ -619,7 +619,7 @@ describe("PersonkortHeader", () => {
   it("viser 8-5 tag når under aktiv fom-tom periode", () => {
     queryClient.setQueryData(
       vedtakQueryKeys.vedtak(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [defaultVedtak]
+      () => [defaultVedtak],
     );
     renderPersonkortHeader();
 
@@ -629,7 +629,7 @@ describe("PersonkortHeader", () => {
   it("viser uføregrad tag", () => {
     queryClient.setQueryData(
       uforegradQueryKeys.uforegrad(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => mockUforegrad
+      () => mockUforegrad,
     );
     renderPersonkortHeader();
 
@@ -639,7 +639,7 @@ describe("PersonkortHeader", () => {
   it("viser ikke uføregrad tag når null", () => {
     queryClient.setQueryData(
       uforegradQueryKeys.uforegrad(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => mockUforegradNull
+      () => mockUforegradNull,
     );
     renderPersonkortHeader();
 
@@ -649,9 +649,9 @@ describe("PersonkortHeader", () => {
   it("viser 'Gjentakende sykefravær' tag når hasGjentakendeSykefravar er true", () => {
     queryClient.setQueryData(
       oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => oppfolgingstilfellePersonMock
+      () => oppfolgingstilfellePersonMock,
     );
 
     renderPersonkortHeader();
@@ -662,12 +662,12 @@ describe("PersonkortHeader", () => {
   it("viser ikke 'Gjentakende sykefravær' tag når hasGjentakendeSykefravar er false", () => {
     queryClient.setQueryData(
       oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
       () => ({
         ...oppfolgingstilfellePersonMock,
         hasGjentakendeSykefravar: false,
-      })
+      }),
     );
 
     renderPersonkortHeader();
@@ -682,7 +682,7 @@ describe("PersonkortHeader", () => {
     };
     queryClient.setQueryData(
       brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => kontaktinfo
+      () => kontaktinfo,
     );
 
     renderPersonkortHeader();
@@ -693,7 +693,7 @@ describe("PersonkortHeader", () => {
   it("Viser ikke reservert KRR tag når bruker ikke er reservert i KRR", () => {
     queryClient.setQueryData(
       brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => kontaktinformasjonMock
+      () => kontaktinformasjonMock,
     );
 
     renderPersonkortHeader();

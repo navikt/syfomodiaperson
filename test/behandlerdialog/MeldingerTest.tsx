@@ -55,7 +55,7 @@ const renderMeldinger = () => {
           <Samtaler />
         </Box>
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -103,14 +103,14 @@ describe("Meldinger panel", () => {
     it("Viser GuidePanel når det ikke finnes dialogmeldinger på personen", () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => behandlerdialogMockEmpty
+        () => behandlerdialogMockEmpty,
       );
       renderMeldinger();
 
       expect(
-        screen.getByText("Her kommer meldinger sendt til og fra behandler.")
+        screen.getByText("Her kommer meldinger sendt til og fra behandler."),
       ).to.exist;
     });
   });
@@ -120,10 +120,10 @@ describe("Meldinger panel", () => {
       renderMeldinger();
 
       expect(screen.getAllByText("Skrevet av Lego Las Legesen")).to.have.length(
-        2
+        2,
       );
       expect(screen.getAllByText("Skrevet av Doktor Legesen")).to.have.length(
-        4
+        4,
       );
     });
 
@@ -132,9 +132,9 @@ describe("Meldinger panel", () => {
         meldingFraBehandlerUtenBehandlernavn;
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponse
+        () => meldingResponse,
       );
 
       renderMeldinger();
@@ -146,7 +146,7 @@ describe("Meldinger panel", () => {
       renderMeldinger();
 
       expect(screen.getAllByText("Skrevet av Vetle Veileder")).to.have.length(
-        11
+        11,
       );
     });
   });
@@ -156,18 +156,18 @@ describe("Meldinger panel", () => {
       const meldingResponse = meldingTilOgFraBehandler("123uid");
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponse
+        () => meldingResponse,
       );
       const antallMeldinger = Object.values(
-        meldingResponse.conversations
+        meldingResponse.conversations,
       ).flat().length;
 
       renderMeldinger();
 
       expect(screen.getAllByText("Tilleggsopplysninger L8")).to.have.length(
-        antallMeldinger
+        antallMeldinger,
       );
     });
 
@@ -175,18 +175,18 @@ describe("Meldinger panel", () => {
       const meldingResponse = meldingResponseLegeerklaring;
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponse
+        () => meldingResponse,
       );
       const antallMeldinger = Object.values(
-        meldingResponse.conversations
+        meldingResponse.conversations,
       ).flat().length;
 
       renderMeldinger();
 
       expect(screen.getAllByText("Legeerklæring L40")).to.have.length(
-        antallMeldinger
+        antallMeldinger,
       );
     });
 
@@ -194,18 +194,18 @@ describe("Meldinger panel", () => {
       const meldingResponse = meldingFraNAVConversationMedSvar;
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponse
+        () => meldingResponse,
       );
       const antallMeldinger = Object.values(
-        meldingResponse.conversations
+        meldingResponse.conversations,
       ).flat().length;
 
       renderMeldinger();
 
       expect(screen.getAllByText("Melding fra Nav")).to.have.length(
-        antallMeldinger
+        antallMeldinger,
       );
     });
 
@@ -213,23 +213,23 @@ describe("Meldinger panel", () => {
       const meldingResponse = meldingTilOgFraBehandler("123uid", true);
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponse
+        () => meldingResponse,
       );
 
       const antallPaminnelseMeldinger = Object.values(
-        meldingResponse.conversations
+        meldingResponse.conversations,
       )
         .flat()
         .filter(
           (melding) =>
-            melding.type === MeldingType.FORESPORSEL_PASIENT_PAMINNELSE
+            melding.type === MeldingType.FORESPORSEL_PASIENT_PAMINNELSE,
         ).length;
       renderMeldinger();
 
       expect(screen.getAllByText("Påminnelse")).to.have.length(
-        antallPaminnelseMeldinger
+        antallPaminnelseMeldinger,
       );
     });
   });
@@ -274,8 +274,8 @@ describe("Meldinger panel", () => {
 
       expect(
         within(seMeldingModal).getByText(
-          "Spørsmål om tilleggsopplysninger vedrørende pasient"
-        )
+          "Spørsmål om tilleggsopplysninger vedrørende pasient",
+        ),
       ).to.exist;
     });
   });
@@ -284,9 +284,9 @@ describe("Meldinger panel", () => {
     beforeEach(() => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponseMedPaminnelse
+        () => meldingResponseMedPaminnelse,
       );
     });
     it("Viser overskrift for påminnelse i samtalen", async () => {
@@ -300,12 +300,12 @@ describe("Meldinger panel", () => {
       }
 
       expect(
-        screen.getByText("Påminnelse om manglende svar vedrørerende pasient")
+        screen.getByText("Påminnelse om manglende svar vedrørerende pasient"),
       ).to.exist;
       expect(
         screen.getAllByRole("img", {
           name: "Bjelle-ikon for påminnelse",
-        })
+        }),
       ).to.have.length(2);
     });
 
@@ -331,8 +331,8 @@ describe("Meldinger panel", () => {
 
       expect(
         within(seMeldingModal).getByText(
-          "Påminnelse om manglende svar vedrørerende pasient"
-        )
+          "Påminnelse om manglende svar vedrørerende pasient",
+        ),
       ).to.exist;
     });
   });
@@ -342,9 +342,9 @@ describe("Meldinger panel", () => {
     beforeEach(() => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponseLegeerklaringMedRetur
+        () => meldingResponseLegeerklaringMedRetur,
       );
     });
     it("Viser begrunnelse for retur i samtalen", async () => {
@@ -361,7 +361,7 @@ describe("Meldinger panel", () => {
       expect(
         screen.getAllByRole("img", {
           name: "Tilbakepil-ikon for retur",
-        })
+        }),
       ).to.have.length(2);
     });
 
@@ -397,17 +397,17 @@ describe("Meldinger panel", () => {
 
         queryClient.setQueryData(
           behandlerdialogQueryKeys.behandlerdialog(
-            ARBEIDSTAKER_DEFAULT.personIdent
+            ARBEIDSTAKER_DEFAULT.personIdent,
           ),
-          () => meldingResponse
+          () => meldingResponse,
         );
 
         const meldingerMedVedlegg = Object.values(
-          meldingResponse.conversations
+          meldingResponse.conversations,
         ).flatMap((meldinger) =>
           meldinger.filter(
-            (melding) => melding.innkommende && melding.antallVedlegg > 0
-          )
+            (melding) => melding.innkommende && melding.antallVedlegg > 0,
+          ),
         );
 
         renderMeldinger();
@@ -424,17 +424,17 @@ describe("Meldinger panel", () => {
         expect(
           screen.getAllByRole("link", {
             name: `Vedlegg ${meldingerMedVedlegg[0].antallVedlegg}`,
-          })
+          }),
         ).to.not.be.empty;
         expect(
           screen.getAllByRole("link", {
             name: `Vedlegg ${meldingerMedVedlegg[1].antallVedlegg}`,
-          })
+          }),
         ).to.not.be.empty;
         expect(
           screen.getAllByRole("link", {
             name: `Vedlegg ${meldingerMedVedlegg[2].antallVedlegg}`,
-          })
+          }),
         ).to.not.be.empty;
       });
     });
@@ -442,9 +442,9 @@ describe("Meldinger panel", () => {
       it("Viser vedlegg-ikon og tekst 'Legeerklæring' for første vedlegg", async () => {
         queryClient.setQueryData(
           behandlerdialogQueryKeys.behandlerdialog(
-            ARBEIDSTAKER_DEFAULT.personIdent
+            ARBEIDSTAKER_DEFAULT.personIdent,
           ),
-          () => meldingResponseLegeerklaring
+          () => meldingResponseLegeerklaring,
         );
 
         renderMeldinger();
@@ -464,9 +464,9 @@ describe("Meldinger panel", () => {
 
         queryClient.setQueryData(
           behandlerdialogQueryKeys.behandlerdialog(
-            ARBEIDSTAKER_DEFAULT.personIdent
+            ARBEIDSTAKER_DEFAULT.personIdent,
           ),
-          () => meldingResponse
+          () => meldingResponse,
         );
 
         renderMeldinger();
@@ -491,14 +491,14 @@ describe("Meldinger panel", () => {
     it("Viser ubehandlet personoppgave for behandlerdialog svar", () => {
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
             ...personOppgaveUbehandletBehandlerdialogSvar,
           },
           personOppgaveBehandletBehandlerdialogSvar,
-        ]
+        ],
       );
 
       renderMeldinger();
@@ -509,13 +509,13 @@ describe("Meldinger panel", () => {
     it("Viser behandlet personoppgave for behandlerdialog svar", () => {
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
             ...personOppgaveBehandletBehandlerdialogSvar,
           },
-        ]
+        ],
       );
       renderMeldinger();
 
@@ -528,7 +528,7 @@ describe("Meldinger panel", () => {
       const threeDaysAgo = dayjs(new Date()).subtract(3, "days");
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
@@ -539,12 +539,12 @@ describe("Meldinger panel", () => {
             ...personOppgaveBehandletBehandlerdialogSvar,
             behandletTidspunkt: threeDaysAgo.toDate(),
           },
-        ]
+        ],
       );
       renderMeldinger();
 
       const expectedFerdigbehandledText = `Siste melding lest av ${VEILEDER_DEFAULT.fulltNavn()} ${twoDaysAgo.format(
-        "DD.MM.YYYY"
+        "DD.MM.YYYY",
       )}`;
       expect(screen.getByText(expectedFerdigbehandledText)).to.exist;
     });
@@ -552,9 +552,9 @@ describe("Meldinger panel", () => {
     it("Viser ingen oppgave når ingen behandlerdialog-oppgaver", () => {
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [{ ...personOppgaveBehandletDialogmotesvar }]
+        () => [{ ...personOppgaveBehandletDialogmotesvar }],
       );
 
       renderMeldinger();
@@ -568,9 +568,9 @@ describe("Meldinger panel", () => {
     it("Viser ingen oppgave når ingen oppgaver", () => {
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => []
+        () => [],
       );
 
       renderMeldinger();

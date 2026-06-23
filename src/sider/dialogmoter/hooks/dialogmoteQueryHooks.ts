@@ -34,23 +34,23 @@ export const useDialogmoterQuery = () => {
     isError: query.isError,
     aktivtDialogmote: useMemo(
       () => query.data?.find((mote) => isAktivtDialogmote(mote)),
-      [query.data]
+      [query.data],
     ),
     ferdigstilteDialogmoter: useMemo(
       () =>
         query.data?.filter(
-          (mote) => mote.status === DialogmoteStatus.FERDIGSTILT
+          (mote) => mote.status === DialogmoteStatus.FERDIGSTILT,
         ) || [],
-      [query.data]
+      [query.data],
     ),
     historiskeDialogmoter: useMemo(
       () =>
         query.data?.filter(
           (mote) =>
             mote.status === DialogmoteStatus.FERDIGSTILT ||
-            mote.status === DialogmoteStatus.AVLYST
+            mote.status === DialogmoteStatus.AVLYST,
         ) || [],
-      [query.data]
+      [query.data],
     ),
   };
 };

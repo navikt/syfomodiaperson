@@ -27,12 +27,12 @@ export function PersonkortSikkerhetstiltak() {
               <Detail textColor="subtle">
                 {`Gyldig: ${tilLesbarPeriodeMedArUtenManednavn(
                   gyldigFom,
-                  gyldigTom
+                  gyldigTom,
                 )}`}
               </Detail>
               {beskrivelse}
             </div>
-          )
+          ),
         )}
       </>
     </PersonkortElement>

@@ -6,24 +6,24 @@ import { http, HttpResponse } from "msw";
 export const stubAktivitetskravApi = () =>
   mockServer.use(
     http.get(`*${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/personident`, () =>
-      HttpResponse.json(aktivitetskravMock)
-    )
+      HttpResponse.json(aktivitetskravMock),
+    ),
   );
 
 export const stubVurderAktivitetskravApi = (aktivitetskravUuid: string) =>
   mockServer.use(
     http.post(
       `*${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/${aktivitetskravUuid}/vurder`,
-      () => new HttpResponse(null, { status: 200 })
-    )
+      () => new HttpResponse(null, { status: 200 }),
+    ),
   );
 
 export const stubVurderAktivitetskravForhandsvarselApi = (
-  aktivitetskravUuid: string
+  aktivitetskravUuid: string,
 ) =>
   mockServer.use(
     http.post(
       `*${ISAKTIVITETSKRAV_ROOT}/aktivitetskrav/${aktivitetskravUuid}/forhandsvarsel`,
-      () => new HttpResponse(null, { status: 200 })
-    )
+      () => new HttpResponse(null, { status: 200 }),
+    ),
   );

@@ -84,7 +84,7 @@ function boldRegex(text: string, searchTerm: string) {
           <strong key={i}>{part}</strong>
         ) : (
           <span key={i}>{part}</span>
-        )
+        ),
       )}
     </>
   );

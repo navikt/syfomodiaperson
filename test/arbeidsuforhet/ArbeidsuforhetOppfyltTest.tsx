@@ -22,7 +22,7 @@ let queryClient: QueryClient;
 const mockArbeidsuforhetVurderinger = (vurderinger: VurderingResponseDTO[]) => {
   queryClient.setQueryData(
     arbeidsuforhetQueryKeys.arbeidsuforhet(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => vurderinger
+    () => vurderinger,
   );
 };
 
@@ -31,7 +31,7 @@ function renderOppfyltForm() {
     queryClient,
     <OppfyltForm />,
     arbeidsuforhetOppfyltPath,
-    [arbeidsuforhetOppfyltPath]
+    [arbeidsuforhetOppfyltPath],
   );
 }
 
@@ -56,13 +56,13 @@ describe("OppfyltSide", () => {
     expect(screen.getByText(begrunnelseLabel)).to.exist;
     expect(
       screen.getByText(
-        "Åpne forhåndsvisning for å se vurderingen. Når du trykker Lagre journalføres vurderingen automatisk."
-      )
+        "Åpne forhåndsvisning for å se vurderingen. Når du trykker Lagre journalføres vurderingen automatisk.",
+      ),
     ).to.exist;
     expect(
       screen.getByRole("textbox", {
         name: begrunnelseLabel,
-      })
+      }),
     ).to.exist;
     expect(screen.getByRole("button", { name: "Journalfør innstilling" })).to
       .exist;
@@ -85,7 +85,7 @@ describe("OppfyltSide", () => {
       within(forhandsvisningVurdering).getByRole("heading", {
         name: "Vilkår i § 8-4 er oppfylt",
         hidden: true,
-      })
+      }),
     ).to.exist;
     const docs = getOppfyltDocument(begrunnelse);
     docs
@@ -109,8 +109,8 @@ describe("OppfyltSide", () => {
       renderOppfyltForm();
       expect(
         screen.queryByText(
-          "Skriv en kort begrunnelse for hvorfor bruker likevel oppfyller vilkårene i § 8-4, og hvilke opplysninger som ligger til grunn for vurderingen."
-        )
+          "Skriv en kort begrunnelse for hvorfor bruker likevel oppfyller vilkårene i § 8-4, og hvilke opplysninger som ligger til grunn for vurderingen.",
+        ),
       );
       expect(screen.getByText("Før du går videre bør du gjøre følgende:")).to
         .exist;
@@ -118,8 +118,8 @@ describe("OppfyltSide", () => {
         .to.exist;
       expect(
         screen.getByText(
-          "Besvare Gosys-oppgaven dersom Nav Arbeid og ytelser ba om vurderingen."
-        )
+          "Besvare Gosys-oppgaven dersom Nav Arbeid og ytelser ba om vurderingen.",
+        ),
       ).to.exist;
       expect(screen.getByRole("button", { name: "Journalfør innstilling" })).to
         .exist;
@@ -131,8 +131,8 @@ describe("OppfyltSide", () => {
 
       expect(
         screen.getByText(
-          "Skriv en kort begrunnelse for hvorfor bruker likevel oppfyller vilkårene i § 8-4, og hvilke opplysninger som ligger til grunn for vurderingen."
-        )
+          "Skriv en kort begrunnelse for hvorfor bruker likevel oppfyller vilkårene i § 8-4, og hvilke opplysninger som ligger til grunn for vurderingen.",
+        ),
       ).to.exist;
     });
 
@@ -141,8 +141,8 @@ describe("OppfyltSide", () => {
 
       expect(
         screen.getByText(
-          "Skriv en kort begrunnelse for hvorfor bruker likevel oppfyller vilkårene i § 8-4, og hvilke opplysninger som ligger til grunn for vurderingen."
-        )
+          "Skriv en kort begrunnelse for hvorfor bruker likevel oppfyller vilkårene i § 8-4, og hvilke opplysninger som ligger til grunn for vurderingen.",
+        ),
       ).to.exist;
     });
 
@@ -162,7 +162,7 @@ describe("OppfyltSide", () => {
         within(forhandsvisningVurdering).getByRole("heading", {
           name: "Du har rett til videre utbetaling av sykepenger",
           hidden: true,
-        })
+        }),
       ).to.exist;
       getOppfyltEtterForhandsvarselDocument(begrunnelse)
         .flatMap((documentComponent) => documentComponent.texts)

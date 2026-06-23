@@ -79,11 +79,11 @@ describe("ReferatMellomlagreTest", () => {
     renderReferat(dialogmoteMedMellomlagretReferatBehandlerIkkeDeltatt);
 
     const behandlerDeltokInput: HTMLInputElement = screen.getByLabelText(
-      referatTexts.deltakere.behandlerDeltokLabel
+      referatTexts.deltakere.behandlerDeltokLabel,
     );
     expect(behandlerDeltokInput.checked).to.be.false;
     const behandlerMottarReferatInput: HTMLInputElement = screen.getByLabelText(
-      referatTexts.deltakere.behandlerMottaReferatLabel
+      referatTexts.deltakere.behandlerMottaReferatLabel,
     );
     expect(behandlerMottarReferatInput.checked).to.be.false;
   });
@@ -97,7 +97,7 @@ const renderReferat = (dialogmoteDTO: DialogmoteDTO) => {
       </MalformProvider>
     </QueryClientProvider>,
     `${dialogmoteRoutePath}/:dialogmoteUuid/referat`,
-    [`${dialogmoteRoutePath}/${dialogmoteDTO.uuid}/referat`]
+    [`${dialogmoteRoutePath}/${dialogmoteDTO.uuid}/referat`],
   );
 };
 

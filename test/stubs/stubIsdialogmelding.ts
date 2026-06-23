@@ -6,6 +6,6 @@ import { http, HttpResponse } from "msw";
 export const stubBehandlereDialogmeldingApi = () =>
   mockServer.use(
     http.get(`*${ISDIALOGMELDING_ROOT}/behandler/personident`, () =>
-      HttpResponse.json(behandlereDialogmeldingMock)
-    )
+      HttpResponse.json(behandlereDialogmeldingMock),
+    ),
   );

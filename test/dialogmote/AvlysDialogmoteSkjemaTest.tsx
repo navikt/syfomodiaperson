@@ -47,13 +47,13 @@ describe("AvlysDialogmoteSkjemaTest", () => {
 
     expect(
       await screen.findByText(
-        avlysningSkjemaTexts.begrunnelseArbeidstakerMissing
-      )
+        avlysningSkjemaTexts.begrunnelseArbeidstakerMissing,
+      ),
     ).to.exist;
     expect(
       await screen.findByText(
-        avlysningSkjemaTexts.begrunnelseArbeidsgiverMissing
-      )
+        avlysningSkjemaTexts.begrunnelseArbeidsgiverMissing,
+      ),
     ).to.exist;
   });
   it("validerer begrunnelse til behandler når behandler er med", async () => {
@@ -61,7 +61,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     await clickButton("Send");
 
     expect(
-      await screen.findByText(avlysningSkjemaTexts.begrunnelseBehandlerMissing)
+      await screen.findByText(avlysningSkjemaTexts.begrunnelseBehandlerMissing),
     ).to.exist;
   });
   it("valideringsmeldinger forsvinner ved utbedring", async () => {
@@ -69,40 +69,40 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     await clickButton("Send");
     expect(
       await screen.findByText(
-        avlysningSkjemaTexts.begrunnelseArbeidstakerMissing
-      )
+        avlysningSkjemaTexts.begrunnelseArbeidstakerMissing,
+      ),
     ).to.exist;
     expect(
       await screen.findByText(
-        avlysningSkjemaTexts.begrunnelseArbeidsgiverMissing
-      )
+        avlysningSkjemaTexts.begrunnelseArbeidsgiverMissing,
+      ),
     ).to.exist;
 
     // Angi begrunnelser
     const begrunnelseArbeidstakerInput = getTextInput(
-      "Begrunnelse til arbeidstakeren"
+      "Begrunnelse til arbeidstakeren",
     );
     const begrunnelseArbeidsgiverInput = getTextInput(
-      "Begrunnelse til nærmeste leder"
+      "Begrunnelse til nærmeste leder",
     );
     changeTextInput(
       begrunnelseArbeidstakerInput,
-      moteTekster.fritekstTilArbeidstaker
+      moteTekster.fritekstTilArbeidstaker,
     );
     changeTextInput(
       begrunnelseArbeidsgiverInput,
-      moteTekster.fritekstTilArbeidsgiver
+      moteTekster.fritekstTilArbeidsgiver,
     );
 
     // Feilmeldinger forsvinner
     await waitFor(() => {
       expect(
-        screen.queryByText(avlysningSkjemaTexts.begrunnelseArbeidstakerMissing)
+        screen.queryByText(avlysningSkjemaTexts.begrunnelseArbeidstakerMissing),
       ).to.not.exist;
     });
     await waitFor(() => {
       expect(
-        screen.queryByText(avlysningSkjemaTexts.begrunnelseArbeidsgiverMissing)
+        screen.queryByText(avlysningSkjemaTexts.begrunnelseArbeidsgiverMissing),
       ).to.not.exist;
     });
 
@@ -113,24 +113,24 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     // Feilmeldinger vises
     expect(
       await screen.findByText(
-        avlysningSkjemaTexts.begrunnelseArbeidstakerMissing
-      )
+        avlysningSkjemaTexts.begrunnelseArbeidstakerMissing,
+      ),
     ).to.exist;
     expect(
       await screen.findByText(
-        avlysningSkjemaTexts.begrunnelseArbeidsgiverMissing
-      )
+        avlysningSkjemaTexts.begrunnelseArbeidsgiverMissing,
+      ),
     ).to.exist;
   });
   it("validerer maks lengde på begrunnelser", async () => {
     renderAvlysDialogmoteSkjema(dialogmoteMedBehandler);
 
     const begrunnelseArbeidstakerInput = getTextInput(
-      "Begrunnelse til arbeidstakeren"
+      "Begrunnelse til arbeidstakeren",
     );
 
     const begrunnelseArbeidsgiverInput = getTextInput(
-      "Begrunnelse til nærmeste leder"
+      "Begrunnelse til nærmeste leder",
     );
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
     const tooLongFritekst = getTooLongText(MAX_LENGTH_AVLYS_BEGRUNNELSE);
@@ -147,18 +147,18 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     renderAvlysDialogmoteSkjema(dialogmote);
 
     const begrunnelseArbeidstakerInput = getTextInput(
-      "Begrunnelse til arbeidstakeren"
+      "Begrunnelse til arbeidstakeren",
     );
     const begrunnelseArbeidsgiverInput = getTextInput(
-      "Begrunnelse til nærmeste leder"
+      "Begrunnelse til nærmeste leder",
     );
     changeTextInput(
       begrunnelseArbeidstakerInput,
-      moteTekster.fritekstTilArbeidstaker
+      moteTekster.fritekstTilArbeidstaker,
     );
     changeTextInput(
       begrunnelseArbeidsgiverInput,
-      moteTekster.fritekstTilArbeidsgiver
+      moteTekster.fritekstTilArbeidsgiver,
     );
 
     const expectedSendtDato = new Date();
@@ -184,23 +184,23 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     renderAvlysDialogmoteSkjema(dialogmoteMedBehandler);
 
     const begrunnelseArbeidstakerInput = getTextInput(
-      "Begrunnelse til arbeidstakeren"
+      "Begrunnelse til arbeidstakeren",
     );
     const begrunnelseArbeidsgiverInput = getTextInput(
-      "Begrunnelse til nærmeste leder"
+      "Begrunnelse til nærmeste leder",
     );
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
     changeTextInput(
       begrunnelseArbeidstakerInput,
-      moteTekster.fritekstTilArbeidstaker
+      moteTekster.fritekstTilArbeidstaker,
     );
     changeTextInput(
       begrunnelseArbeidsgiverInput,
-      moteTekster.fritekstTilArbeidsgiver
+      moteTekster.fritekstTilArbeidsgiver,
     );
     changeTextInput(
       begrunnelseBehandlerInput,
-      moteTekster.fritekstTilBehandler
+      moteTekster.fritekstTilBehandler,
     );
 
     const expectedSendtDato = new Date();
@@ -229,18 +229,18 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     renderAvlysDialogmoteSkjema(dialogmote);
 
     const begrunnelseArbeidstakerInput = getTextInput(
-      "Begrunnelse til arbeidstakeren"
+      "Begrunnelse til arbeidstakeren",
     );
     const begrunnelseArbeidsgiverInput = getTextInput(
-      "Begrunnelse til nærmeste leder"
+      "Begrunnelse til nærmeste leder",
     );
     changeTextInput(
       begrunnelseArbeidstakerInput,
-      moteTekster.fritekstTilArbeidstaker
+      moteTekster.fritekstTilArbeidstaker,
     );
     changeTextInput(
       begrunnelseArbeidsgiverInput,
-      moteTekster.fritekstTilArbeidsgiver
+      moteTekster.fritekstTilArbeidsgiver,
     );
 
     const previewButtons = screen.getAllByRole("button", {
@@ -258,13 +258,13 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       within(forhandsvisningAvlysningArbeidstaker).getByRole("heading", {
         name: avlysningSkjemaTexts.forhandsvisningArbeidstakerTitle,
         hidden: true,
-      })
+      }),
     ).to.exist;
     expect(
       within(forhandsvisningAvlysningArbeidstaker).getByRole("heading", {
         name: avlysningSkjemaTexts.forhandsvisningSubtitle,
         hidden: true,
-      })
+      }),
     ).to.exist;
     expectedAvlysningDocuments
       .arbeidstaker(expectedSendtDato)
@@ -278,18 +278,18 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     renderAvlysDialogmoteSkjema(dialogmote);
 
     const begrunnelseArbeidstakerInput = getTextInput(
-      "Begrunnelse til arbeidstakeren"
+      "Begrunnelse til arbeidstakeren",
     );
     const begrunnelseArbeidsgiverInput = getTextInput(
-      "Begrunnelse til nærmeste leder"
+      "Begrunnelse til nærmeste leder",
     );
     changeTextInput(
       begrunnelseArbeidstakerInput,
-      moteTekster.fritekstTilArbeidstaker
+      moteTekster.fritekstTilArbeidstaker,
     );
     changeTextInput(
       begrunnelseArbeidsgiverInput,
-      moteTekster.fritekstTilArbeidsgiver
+      moteTekster.fritekstTilArbeidsgiver,
     );
 
     const previewButtons = screen.getAllByRole("button", {
@@ -306,13 +306,13 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       within(forhandsvisningAvlysningArbeidsgiver).getByRole("heading", {
         name: avlysningSkjemaTexts.forhandsvisningArbeidsgiverTitle,
         hidden: true,
-      })
+      }),
     ).to.exist;
     expect(
       within(forhandsvisningAvlysningArbeidsgiver).getByRole("heading", {
         name: avlysningSkjemaTexts.forhandsvisningSubtitle,
         hidden: true,
-      })
+      }),
     ).to.exist;
     expectedAvlysningDocuments
       .arbeidsgiver(expectedSendtDato)
@@ -326,23 +326,23 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     renderAvlysDialogmoteSkjema(dialogmoteMedBehandler);
 
     const begrunnelseArbeidstakerInput = getTextInput(
-      "Begrunnelse til arbeidstakeren"
+      "Begrunnelse til arbeidstakeren",
     );
     const begrunnelseArbeidsgiverInput = getTextInput(
-      "Begrunnelse til nærmeste leder"
+      "Begrunnelse til nærmeste leder",
     );
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
     changeTextInput(
       begrunnelseArbeidstakerInput,
-      moteTekster.fritekstTilArbeidstaker
+      moteTekster.fritekstTilArbeidstaker,
     );
     changeTextInput(
       begrunnelseArbeidsgiverInput,
-      moteTekster.fritekstTilArbeidsgiver
+      moteTekster.fritekstTilArbeidsgiver,
     );
     changeTextInput(
       begrunnelseBehandlerInput,
-      moteTekster.fritekstTilBehandler
+      moteTekster.fritekstTilBehandler,
     );
 
     const previewButtons = screen.getAllByRole("button", {
@@ -359,13 +359,13 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       within(forhandsvisningAvlysningBehandler).getByRole("heading", {
         name: avlysningSkjemaTexts.forhandsvisningBehandlerTitle,
         hidden: true,
-      })
+      }),
     ).to.exist;
     expect(
       within(forhandsvisningAvlysningBehandler).getByRole("heading", {
         name: avlysningSkjemaTexts.forhandsvisningSubtitle,
         hidden: true,
-      })
+      }),
     ).to.exist;
     expectedAvlysningDocuments
       .behandler(expectedSendtDato)
@@ -392,7 +392,7 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     expect(
       screen.getByText(getAvlysningTexts(Malform.NYNORSK).intro1, {
         exact: false,
-      })
+      }),
     ).to.exist;
     expect(screen.getByText(getAvlysningTexts(Malform.NYNORSK).header)).to
       .exist;
@@ -407,6 +407,6 @@ const renderAvlysDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
       </MalformProvider>
     </QueryClientProvider>,
     `${dialogmoteRoutePath}/:dialogmoteUuid/avlys`,
-    [`${dialogmoteRoutePath}/123abc/avlys`]
+    [`${dialogmoteRoutePath}/123abc/avlys`],
   );
 };

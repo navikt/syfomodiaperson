@@ -18,7 +18,7 @@ export default function DialogmoteFrist() {
 
   return showFrist ? (
     <p>{`Frist for dialogmøte 2: ${tilLesbarDatoMedArUtenManedNavn(
-      getFrist(latestOppfolgingstilfelle.start)
+      getFrist(latestOppfolgingstilfelle.start),
     )}`}</p>
   ) : null;
 }

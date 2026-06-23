@@ -41,7 +41,7 @@ export async function validateToken(req: Request): Promise<boolean> {
 /** Exchanges the user's bearer token for an OBO token via Texas token exchange. */
 export async function getOnBehalfOfToken(
   req: Request,
-  clientId: string
+  clientId: string,
 ): Promise<string | undefined> {
   const userToken = extractBearerToken(req);
   if (!userToken) return undefined;
@@ -67,7 +67,7 @@ export async function getOnBehalfOfToken(
 
 /** Extracts the NAVident claim from the bearer token via Texas introspection. */
 export async function getVeilederidentFromRequest(
-  req: Request
+  req: Request,
 ): Promise<string | undefined> {
   const token = extractBearerToken(req);
   if (!token) return undefined;

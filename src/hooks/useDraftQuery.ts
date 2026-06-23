@@ -54,7 +54,7 @@ export function useSaveDraft<T extends object>(category: DraftCategory) {
     onSuccess: async (data: T) => {
       await queryClient.setQueryData(
         draftQueryKeys.draft(category, personident),
-        data
+        data,
       );
     },
   });

@@ -6,5 +6,5 @@ export const mockSyfosmregister = http.get(
   `${SYFOSMREGISTER_ROOT}/sykmeldinger`,
   () => {
     return HttpResponse.json(sykmeldingerMock);
-  }
+  },
 );

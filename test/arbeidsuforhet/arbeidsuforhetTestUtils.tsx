@@ -10,7 +10,7 @@ export const renderArbeidsuforhetSide = (
   queryClient: QueryClient,
   element: React.ReactNode,
   path: string,
-  initialEntries?: MemoryRouterProps["initialEntries"]
+  initialEntries?: MemoryRouterProps["initialEntries"],
 ) =>
   renderWithRouter(
     <QueryClientProvider client={queryClient}>
@@ -25,5 +25,5 @@ export const renderArbeidsuforhetSide = (
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     path,
-    initialEntries
+    initialEntries,
   );

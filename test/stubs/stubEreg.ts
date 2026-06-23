@@ -6,6 +6,6 @@ import { http, HttpResponse } from "msw";
 export const stubVirksomhetApi = (orgnummer: string) =>
   mockServer.use(
     http.get(`*${EREG_ROOT}/organisasjon/${orgnummer}`, () =>
-      HttpResponse.json(virksomhetMock())
-    )
+      HttpResponse.json(virksomhetMock()),
+    ),
   );

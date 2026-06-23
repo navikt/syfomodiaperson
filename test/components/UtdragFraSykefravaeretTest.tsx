@@ -36,14 +36,14 @@ import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/Oppfolgi
 let queryClient: QueryClient;
 
 const renderUtdragFraSykefravaeret = (
-  oppfolgingstilfelle?: OppfolgingstilfelleDTO
+  oppfolgingstilfelle?: OppfolgingstilfelleDTO,
 ) => {
   return render(
     <QueryClientProvider client={queryClient}>
       <UtdragFraSykefravaeret
         selectedOppfolgingstilfelle={oppfolgingstilfelle}
       />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 const url = "syfomodiaperson.intern.dev.nav.no";
@@ -79,7 +79,7 @@ function createV1Oppfolgingsplan(
   virksomhetsnummer: string,
   fom: Date,
   tom: Date,
-  deltMedNAV: boolean
+  deltMedNAV: boolean,
 ): OppfolgingsplanDTO {
   return {
     id,
@@ -127,7 +127,7 @@ describe("UtdragFraSykefravaeret", () => {
     setSykmeldingDataFromOppfolgingstilfelle(
       [sykmeldingNow],
       oppfolgingstilfeller,
-      queryClient
+      queryClient,
     );
     renderUtdragFraSykefravaeret(oppfolgingstilfeller[0]);
 
@@ -147,7 +147,7 @@ describe("UtdragFraSykefravaeret", () => {
     setSykmeldingDataFromOppfolgingstilfelle(
       [sykmeldingNow, sykmeldingIkkeTattIBruk],
       oppfolgingstilfeller,
-      queryClient
+      queryClient,
     );
     renderUtdragFraSykefravaeret(oppfolgingstilfeller[0]);
 
@@ -160,15 +160,15 @@ describe("UtdragFraSykefravaeret", () => {
 
   it("Viser sykmelding uten arbeidsgiver tag", () => {
     const sykmeldingUtenArbeidsgiver = sykmeldingerMock.filter(
-      (sykmelding) => sykmelding.id === "8361e922-2c92-4aa8-811d-e53ca958dc6a"
+      (sykmelding) => sykmelding.id === "8361e922-2c92-4aa8-811d-e53ca958dc6a",
     );
     const oppfolgingstilfeller = createOppfolgingstilfelleFromSykmelding(
-      sykmeldingUtenArbeidsgiver
+      sykmeldingUtenArbeidsgiver,
     );
     setSykmeldingDataFromOppfolgingstilfelle(
       sykmeldingUtenArbeidsgiver,
       oppfolgingstilfeller,
-      queryClient
+      queryClient,
     );
     renderUtdragFraSykefravaeret(oppfolgingstilfeller[0]);
 
@@ -183,9 +183,9 @@ describe("UtdragFraSykefravaeret", () => {
     const oppfolgingsplanCreatedAt = new Date();
     queryClient.setQueryData(
       oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => [oppfolgingsplanerLPSMock(oppfolgingsplanCreatedAt)[0]]
+      () => [oppfolgingsplanerLPSMock(oppfolgingsplanCreatedAt)[0]],
     );
     const oppfolgingstilfeller = createOppfolgingstilfelleFromSykmelding([
       sykmeldingNow,
@@ -196,9 +196,9 @@ describe("UtdragFraSykefravaeret", () => {
     expect(
       screen.getByText(
         `innsendt ${tilDatoMedManedNavn(
-          dayjs(oppfolgingsplanCreatedAt).subtract(1, "days").toDate()
-        )} (LPS)`
-      )
+          dayjs(oppfolgingsplanCreatedAt).subtract(1, "days").toDate(),
+        )} (LPS)`,
+      ),
     ).to.exist;
   });
 
@@ -206,9 +206,9 @@ describe("UtdragFraSykefravaeret", () => {
     const oppfolgingsplanCreatedAt = addWeeks(new Date(), -4);
     queryClient.setQueryData(
       oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => [oppfolgingsplanerLPSMock(oppfolgingsplanCreatedAt)[0]]
+      () => [oppfolgingsplanerLPSMock(oppfolgingsplanCreatedAt)[0]],
     );
     const oppfolgingstilfeller = createOppfolgingstilfelleFromSykmelding([
       sykmeldingNow,
@@ -220,9 +220,9 @@ describe("UtdragFraSykefravaeret", () => {
     expect(
       screen.queryByText(
         `innsendt ${tilDatoMedManedNavn(
-          dayjs(oppfolgingsplanCreatedAt).subtract(1, "days").toDate()
-        )} (LPS)`
-      )
+          dayjs(oppfolgingsplanCreatedAt).subtract(1, "days").toDate(),
+        )} (LPS)`,
+      ),
     ).to.not.exist;
   });
 
@@ -242,9 +242,9 @@ describe("UtdragFraSykefravaeret", () => {
     };
     queryClient.setQueryData(
       oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => [planInnenforTilfelle]
+      () => [planInnenforTilfelle],
     );
 
     renderUtdragFraSykefravaeret(tilfelle);
@@ -252,7 +252,7 @@ describe("UtdragFraSykefravaeret", () => {
     expect(
       screen.getByRole("link", {
         name: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-      })
+      }),
     ).to.exist;
     expect(screen.queryByText("Ingen planer er delt med Nav")).to.not.exist;
   });
@@ -273,9 +273,9 @@ describe("UtdragFraSykefravaeret", () => {
     };
     queryClient.setQueryData(
       oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => [planUtenforTilfelle]
+      () => [planUtenforTilfelle],
     );
 
     renderUtdragFraSykefravaeret(tilfelle);
@@ -284,7 +284,7 @@ describe("UtdragFraSykefravaeret", () => {
     expect(
       screen.queryByRole("link", {
         name: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-      })
+      }),
     ).to.not.exist;
   });
 
@@ -298,39 +298,39 @@ describe("UtdragFraSykefravaeret", () => {
       "123456789",
       addDays(new Date(tilfelle.start), 1),
       addDays(new Date(tilfelle.end), -1),
-      true
+      true,
     );
     const planUtenforTilfelle = createV1Oppfolgingsplan(
       2,
       "223456789",
       addWeeks(new Date(tilfelle.start), -6),
       addWeeks(new Date(tilfelle.start), -4),
-      true
+      true,
     );
     const planIkkeDeltMedNAV = createV1Oppfolgingsplan(
       3,
       "323456789",
       addDays(new Date(tilfelle.start), 1),
       addDays(new Date(tilfelle.end), -1),
-      false
+      false,
     );
     queryClient.setQueryData(
       oppfolgingsplanQueryKeys.oppfolgingsplaner(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => [planInnenforTilfelle, planUtenforTilfelle, planIkkeDeltMedNAV]
+      () => [planInnenforTilfelle, planUtenforTilfelle, planIkkeDeltMedNAV],
     );
 
     renderUtdragFraSykefravaeret(tilfelle);
 
     expect(
-      screen.getByRole("link", { name: planInnenforTilfelle.virksomhet.navn })
+      screen.getByRole("link", { name: planInnenforTilfelle.virksomhet.navn }),
     ).to.exist;
     expect(
-      screen.queryByRole("link", { name: planUtenforTilfelle.virksomhet.navn })
+      screen.queryByRole("link", { name: planUtenforTilfelle.virksomhet.navn }),
     ).to.not.exist;
     expect(
-      screen.queryByRole("link", { name: planIkkeDeltMedNAV.virksomhet.navn })
+      screen.queryByRole("link", { name: planIkkeDeltMedNAV.virksomhet.navn }),
     ).to.not.exist;
   });
 
@@ -338,21 +338,21 @@ describe("UtdragFraSykefravaeret", () => {
     beforeEach(() => {
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplaner(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => []
+        () => [],
       );
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => []
+        () => [],
       );
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => []
+        () => [],
       );
     });
     it("Viser LPS-plan opprettet etter tilfelle-slutt når valgt tilfelle er siste", () => {
@@ -362,7 +362,7 @@ describe("UtdragFraSykefravaeret", () => {
       setSykmeldingDataFromOppfolgingstilfelle(
         [sykmeldingNow],
         [tilfelle],
-        queryClient
+        queryClient,
       );
 
       const planEtterTilfelleSlutt: OppfolgingsplanLPS = {
@@ -374,15 +374,15 @@ describe("UtdragFraSykefravaeret", () => {
       };
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [planEtterTilfelleSlutt]
+        () => [planEtterTilfelleSlutt],
       );
 
       renderUtdragFraSykefravaeret(tilfelle);
 
       expect(
-        screen.getByText(`${VIRKSOMHET_PONTYPANDY.virksomhetsnummer} (pdf)`)
+        screen.getByText(`${VIRKSOMHET_PONTYPANDY.virksomhetsnummer} (pdf)`),
       ).to.exist;
       expect(screen.queryByText("Ingen planer er delt med Nav")).to.not.exist;
     });
@@ -394,7 +394,7 @@ describe("UtdragFraSykefravaeret", () => {
       setSykmeldingDataFromOppfolgingstilfelle(
         [sykmeldingNow],
         [tilfelle],
-        queryClient
+        queryClient,
       );
 
       const planForTilfelleStart: OppfolgingsplanLPS = {
@@ -406,9 +406,9 @@ describe("UtdragFraSykefravaeret", () => {
       };
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [planForTilfelleStart]
+        () => [planForTilfelleStart],
       );
 
       renderUtdragFraSykefravaeret(tilfelle);
@@ -423,7 +423,7 @@ describe("UtdragFraSykefravaeret", () => {
       setSykmeldingDataFromOppfolgingstilfelle(
         [sykmeldingNow],
         [tilfelle],
-        queryClient
+        queryClient,
       );
 
       const planEtterTilfelleSlutt: OppfolgingsplanV2DTO = {
@@ -437,9 +437,9 @@ describe("UtdragFraSykefravaeret", () => {
       };
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [planEtterTilfelleSlutt]
+        () => [planEtterTilfelleSlutt],
       );
 
       renderUtdragFraSykefravaeret(tilfelle);
@@ -447,7 +447,7 @@ describe("UtdragFraSykefravaeret", () => {
       expect(
         screen.getByRole("link", {
           name: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-        })
+        }),
       ).to.exist;
       expect(screen.queryByText("Ingen planer er delt med Nav")).to.not.exist;
     });
@@ -459,7 +459,7 @@ describe("UtdragFraSykefravaeret", () => {
       setSykmeldingDataFromOppfolgingstilfelle(
         [sykmeldingNow],
         [tilfelle],
-        queryClient
+        queryClient,
       );
 
       const planMedTomEtterTilfelleStart = createV1Oppfolgingsplan(
@@ -467,13 +467,13 @@ describe("UtdragFraSykefravaeret", () => {
         "999999999",
         addWeeks(new Date(tilfelle.end), 1),
         addWeeks(new Date(tilfelle.end), 5),
-        true
+        true,
       );
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplaner(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [planMedTomEtterTilfelleStart]
+        () => [planMedTomEtterTilfelleStart],
       );
 
       renderUtdragFraSykefravaeret(tilfelle);
@@ -481,7 +481,7 @@ describe("UtdragFraSykefravaeret", () => {
       expect(
         screen.getByRole("link", {
           name: planMedTomEtterTilfelleStart.virksomhet.navn,
-        })
+        }),
       ).to.exist;
     });
   });

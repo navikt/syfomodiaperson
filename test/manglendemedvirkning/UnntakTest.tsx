@@ -34,16 +34,16 @@ const renderUnntakSide = () => {
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     `${manglendeMedvirkningPath}/unntak`,
-    [`${manglendeMedvirkningPath}/unntak`]
+    [`${manglendeMedvirkningPath}/unntak`],
   );
 };
 
 function mockVurdering(vurdering?: VurderingResponseDTO) {
   queryClient.setQueryData(
     manglendeMedvirkningQueryKeys.manglendeMedvirkning(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => (vurdering ? [vurdering] : [])
+    () => (vurdering ? [vurdering] : []),
   );
 }
 
@@ -62,10 +62,10 @@ describe("Manglendemedvirkning Unntak", () => {
       expect(
         screen.getByRole("textbox", {
           name: "Begrunnelse (obligatorisk)",
-        })
+        }),
       ).to.exist;
       expect(
-        screen.getByText("Husk å informere bruker om utfallet av vurderingen.")
+        screen.getByText("Husk å informere bruker om utfallet av vurderingen."),
       );
       expect(screen.getByRole("button", { name: "Sett unntak" })).to.exist;
       expect(screen.getByRole("button", { name: "Forhåndsvisning" })).to.exist;
@@ -99,7 +99,7 @@ describe("Manglendemedvirkning Unntak", () => {
         begrunnelse: begrunnelse,
         document: getSettUnntakDocument(
           begrunnelse,
-          defaultForhandsvarselVurdering.createdAt
+          defaultForhandsvarselVurdering.createdAt,
         ),
       };
 

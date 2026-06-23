@@ -34,10 +34,10 @@ export default function VurderBistandsbehov({ oppgave }: Props) {
   const { sykmeldinger } = useGetSykmeldingerQuery();
 
   const sykmelding = sykmeldinger.find(
-    (sykmelding) => sykmelding.id === oppgave.referanseUuid
+    (sykmelding) => sykmelding.id === oppgave.referanseUuid,
   );
   const sykmeldingDuplikat = sykmeldinger.find(
-    (sykmelding) => sykmelding.id === oppgave.duplikatReferanseUuid
+    (sykmelding) => sykmelding.id === oppgave.duplikatReferanseUuid,
   );
   const tiltakNav = sykmelding?.arbeidsevne.tiltakNAV;
   const tiltakAndre = sykmelding?.arbeidsevne.tiltakAndre;

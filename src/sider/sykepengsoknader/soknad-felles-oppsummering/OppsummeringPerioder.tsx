@@ -24,7 +24,7 @@ export default function OppsummeringPerioder({
           <BodyShort size="small" key={getKey(tag, i)}>
             {textFomTom(
               toDatePrettyPrint(periode.fom),
-              toDatePrettyPrint(periode.tom)
+              toDatePrettyPrint(periode.tom),
             )}
           </BodyShort>
         );

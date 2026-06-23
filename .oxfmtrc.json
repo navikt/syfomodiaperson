@@ -1,0 +1,18 @@
+{
+  "printWidth": 80,
+  "ignorePatterns": [
+    ".idea",
+    "*.iml",
+    "node_modules",
+    "*.log",
+    "npm-debug.log*",
+    "dist/",
+    "public/",
+    "settings.json",
+    "**/.DS_Store",
+    ".floo",
+    ".flooignore",
+    ".vscode/",
+    "*.yaml"
+  ]
+}

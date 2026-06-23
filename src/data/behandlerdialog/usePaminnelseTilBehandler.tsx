@@ -9,7 +9,7 @@ import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQuery
 
 export const usePaminnelseTilBehandler = (
   meldingUuid: string,
-  oppgaveUuid: string
+  oppgaveUuid: string,
 ) => {
   const personident = useValgtPersonident();
   const queryClient = useQueryClient();

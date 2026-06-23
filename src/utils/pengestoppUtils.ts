@@ -2,7 +2,7 @@ import { Arbeidsgiver } from "@/data/pengestopp/types/FlaggPerson";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
 export const sykmeldingerToArbeidsgiver = (
-  sykmeldinger: SykmeldingOldFormat[]
+  sykmeldinger: SykmeldingOldFormat[],
 ) => {
   return sykmeldinger.map((sykmelding) => {
     return {
@@ -13,7 +13,7 @@ export const sykmeldingerToArbeidsgiver = (
 };
 
 export const uniqueArbeidsgivere = (
-  arbeidsgivere: Arbeidsgiver[]
+  arbeidsgivere: Arbeidsgiver[],
 ): Arbeidsgiver[] => {
   return arbeidsgivere.filter((arbeidsgiver, index, self) => {
     return (

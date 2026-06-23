@@ -19,7 +19,7 @@ export const defaultForhandsvarselVurdering: VurderingResponseDTO = {
   begrunnelse: "Dette er en begrunnelse",
   document: getSendForhandsvarselDocument(
     "Dette er en begrunnelse",
-    addWeeks(new Date(), 3)
+    addWeeks(new Date(), 3),
   ),
   varsel: {
     uuid: generateUUID(),
@@ -47,7 +47,7 @@ export const defaultForhandsvarselVurderingAfterDeadline: VurderingResponseDTO =
 export const createManglendeMedvirkningVurdering = (
   type: VurderingType,
   createdAt: Date = new Date(),
-  begrunnelse = ""
+  begrunnelse = "",
 ): VurderingResponseDTO => ({
   personident: ARBEIDSTAKER_DEFAULT.personIdent,
   createdAt: createdAt,

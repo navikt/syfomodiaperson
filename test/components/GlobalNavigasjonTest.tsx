@@ -59,7 +59,7 @@ let queryClient: QueryClient;
 const mockUnleashWithFeatureToggles = () => {
   queryClient.setQueryData(
     unleashQueryKeys.toggles(navEnhet.id, ""),
-    () => mockUnleashResponse
+    () => mockUnleashResponse,
   );
 };
 
@@ -73,7 +73,7 @@ const renderGlobalNavigasjon = () =>
           <GlobalNavigasjon aktivtMenypunkt={Menypunkter.NOKKELINFORMASJON} />
         </ValgtEnhetContext.Provider>
       </MemoryRouter>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("GlobalNavigasjon", () => {
@@ -115,7 +115,7 @@ describe("GlobalNavigasjon", () => {
   });
   it("viser rød prikk for menypunkt Dialogmøter når ubehandlet oppgave dialogmøte-svar", () => {
     queryClient.setQueryData(personoppgaverQueryKeys.personoppgaver(fnr), () =>
-      personoppgaverMock()
+      personoppgaverMock(),
     );
 
     renderGlobalNavigasjon();
@@ -126,7 +126,7 @@ describe("GlobalNavigasjon", () => {
   it("viser én rød prikk for menypunkt Dialog med behandler når ubehandlet oppgave behandlerdialog-svar", () => {
     queryClient.setQueryData(
       personoppgaverQueryKeys.personoppgaver(fnr),
-      () => [personOppgaveUbehandletBehandlerdialogSvar]
+      () => [personOppgaveUbehandletBehandlerdialogSvar],
     );
 
     renderGlobalNavigasjon();
@@ -138,7 +138,7 @@ describe("GlobalNavigasjon", () => {
   it("viser én rød prikk for menypunkt Dialog med behandler når ubehandlet oppgave ubesvart melding", () => {
     queryClient.setQueryData(
       personoppgaverQueryKeys.personoppgaver(fnr),
-      () => [personOppgaveUbehandletBehandlerdialogUbesvartMelding]
+      () => [personOppgaveUbehandletBehandlerdialogUbesvartMelding],
     );
 
     renderGlobalNavigasjon();
@@ -150,7 +150,7 @@ describe("GlobalNavigasjon", () => {
   it("viser én rød prikk for menypunkt Dialog med behandler når ubehandlet oppgave avvist melding", () => {
     queryClient.setQueryData(
       personoppgaverQueryKeys.personoppgaver(fnr),
-      () => [personOppgaveUbehandletBehandlerdialogAvvistMelding]
+      () => [personOppgaveUbehandletBehandlerdialogAvvistMelding],
     );
 
     renderGlobalNavigasjon();
@@ -166,7 +166,7 @@ describe("GlobalNavigasjon", () => {
         personOppgaveUbehandletBehandlerdialogSvar,
         personOppgaveUbehandletBehandlerdialogUbesvartMelding,
         personOppgaveUbehandletBehandlerdialogAvvistMelding,
-      ]
+      ],
     );
 
     renderGlobalNavigasjon();
@@ -214,7 +214,7 @@ describe("GlobalNavigasjon", () => {
     });
     queryClient.setQueryData(
       arbeidsuforhetQueryKeys.arbeidsuforhet(fnr),
-      () => [expiredForhandsvarsel]
+      () => [expiredForhandsvarsel],
     );
     renderGlobalNavigasjon();
 
@@ -229,7 +229,7 @@ describe("GlobalNavigasjon", () => {
     });
     queryClient.setQueryData(
       arbeidsuforhetQueryKeys.arbeidsuforhet(fnr),
-      () => [notExpiredForhandsvarsel]
+      () => [notExpiredForhandsvarsel],
     );
     renderGlobalNavigasjon();
 
@@ -244,7 +244,7 @@ describe("GlobalNavigasjon", () => {
     });
     queryClient.setQueryData(
       arbeidsuforhetQueryKeys.arbeidsuforhet(fnr),
-      () => [oppfyltVurdering]
+      () => [oppfyltVurdering],
     );
     renderGlobalNavigasjon();
 
@@ -259,7 +259,7 @@ describe("GlobalNavigasjon", () => {
     });
     queryClient.setQueryData(
       arbeidsuforhetQueryKeys.arbeidsuforhet(fnr),
-      () => [avslagVurdering]
+      () => [avslagVurdering],
     );
     renderGlobalNavigasjon();
 
@@ -269,7 +269,7 @@ describe("GlobalNavigasjon", () => {
   it("viser ikke rød prikk for menypunkt Arbeidsuforhet når ingen vurdering", () => {
     queryClient.setQueryData(
       arbeidsuforhetQueryKeys.arbeidsuforhet(fnr),
-      () => []
+      () => [],
     );
     renderGlobalNavigasjon();
 
@@ -280,7 +280,7 @@ describe("GlobalNavigasjon", () => {
     mockUnleashWithFeatureToggles();
     queryClient.setQueryData(
       senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(fnr),
-      () => [senOppfolgingKandidatMock]
+      () => [senOppfolgingKandidatMock],
     );
     renderGlobalNavigasjon();
 
@@ -298,7 +298,7 @@ describe("GlobalNavigasjon", () => {
           varselAt: addDays(new Date(), -10),
           svar: undefined,
         },
-      ]
+      ],
     );
     renderGlobalNavigasjon();
 
@@ -316,7 +316,7 @@ describe("GlobalNavigasjon", () => {
           varselAt: new Date(),
           svar: undefined,
         },
-      ]
+      ],
     );
     renderGlobalNavigasjon();
 
@@ -328,7 +328,7 @@ describe("GlobalNavigasjon", () => {
     mockUnleashWithFeatureToggles();
     queryClient.setQueryData(
       senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(fnr),
-      () => [ferdigbehandletKandidatMock]
+      () => [ferdigbehandletKandidatMock],
     );
     renderGlobalNavigasjon();
 
@@ -345,7 +345,7 @@ describe("GlobalNavigasjon", () => {
           ...senOppfolgingKandidatMock,
           svar: undefined,
         },
-      ]
+      ],
     );
     renderGlobalNavigasjon();
 
@@ -363,7 +363,7 @@ describe("GlobalNavigasjon", () => {
     expect(
       screen.getByRole("link", {
         name: "§ 8-5 Friskmelding til arbeidsformidling 1",
-      })
+      }),
     ).to.exist;
   });
 
@@ -382,7 +382,7 @@ describe("GlobalNavigasjon", () => {
     expect(
       screen.getByRole("link", {
         name: "§ 8-5 Friskmelding til arbeidsformidling",
-      })
+      }),
     ).to.exist;
   });
 
@@ -400,7 +400,7 @@ describe("GlobalNavigasjon", () => {
     expect(
       screen.getByRole("link", {
         name: "§ 8-5 Friskmelding til arbeidsformidling",
-      })
+      }),
     ).to.exist;
   });
 
@@ -412,7 +412,7 @@ describe("GlobalNavigasjon", () => {
     expect(
       screen.getByRole("link", {
         name: "§ 8-5 Friskmelding til arbeidsformidling",
-      })
+      }),
     ).to.exist;
   });
 
@@ -420,7 +420,7 @@ describe("GlobalNavigasjon", () => {
     mockUnleashWithFeatureToggles();
     queryClient.setQueryData(
       manglendeMedvirkningQueryKeys.manglendeMedvirkning(fnr),
-      () => [defaultForhandsvarselVurderingAfterDeadline]
+      () => [defaultForhandsvarselVurderingAfterDeadline],
     );
     renderGlobalNavigasjon();
 
@@ -432,7 +432,7 @@ describe("GlobalNavigasjon", () => {
     mockUnleashWithFeatureToggles();
     queryClient.setQueryData(
       manglendeMedvirkningQueryKeys.manglendeMedvirkning(fnr),
-      () => [defaultForhandsvarselVurdering]
+      () => [defaultForhandsvarselVurdering],
     );
     renderGlobalNavigasjon();
 
@@ -443,11 +443,11 @@ describe("GlobalNavigasjon", () => {
   it("viser aktive planer for menypunkt Oppfølgingsplaner når det finnes aktive V2-planer", () => {
     queryClient.setQueryData(
       oppfolgingsplanQueryKeys.oppfolgingsplanerV2(fnr),
-      () => oppfolgingsplanV2Mock
+      () => oppfolgingsplanV2Mock,
     );
     queryClient.setQueryData(
       oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(fnr),
-      () => oppfolgingstilfellePersonMock
+      () => oppfolgingstilfellePersonMock,
     );
     renderGlobalNavigasjon();
 

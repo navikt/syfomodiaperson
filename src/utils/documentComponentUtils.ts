@@ -5,7 +5,7 @@ import {
 
 export const createLink = (
   title: string,
-  text: string
+  text: string,
 ): DocumentComponentDto => ({
   type: DocumentComponentType.LINK,
   title,
@@ -52,7 +52,7 @@ export const getHeaderText = (
     | DocumentComponentType.HEADER
     | DocumentComponentType.HEADER_H1
     | DocumentComponentType.HEADER_H2
-    | DocumentComponentType.HEADER_H3
+    | DocumentComponentType.HEADER_H3,
 ): string => {
   const header = document.find((component) => component.type === type);
   return header?.texts[0] ?? "";

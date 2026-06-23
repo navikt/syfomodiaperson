@@ -62,7 +62,7 @@ function createAnsweredQuestions({
               : lowRiskOptionId,
             optionIds: [lowRiskOptionId, RISK_OPTION_ID],
           });
-        }
+        },
       ),
     },
   };
@@ -89,7 +89,7 @@ describe("vurdereBehov", () => {
       const hasRisk = hasRisikoForLangtidsfravar(answeredQuestions);
 
       expect(hasRisk).to.equal(true);
-    }
+    },
   );
 
   it("returns true when all answers differ from low-risk options", () => {

@@ -12,7 +12,7 @@ export const texts = {
 
 export function validerKlokkeslett(
   dato: string | undefined,
-  klokkeslett: string | undefined
+  klokkeslett: string | undefined,
 ): string | undefined {
   if (!klokkeslett) {
     return texts.timeMissing;

@@ -14,7 +14,7 @@ function createDraftTextMock(category: DraftCategory) {
         const body = await request.json();
         draft = { begrunnelse: body.begrunnelse };
         return new HttpResponse(JSON.stringify(draft), { status: 200 });
-      }
+      },
     ),
     http.delete(`/api/draft/${category}`, () => {
       draft = { begrunnelse: "" };

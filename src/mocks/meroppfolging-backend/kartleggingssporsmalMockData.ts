@@ -12,7 +12,7 @@ import { daysFromToday } from "@/utils/datoUtils.ts";
 function createRadioOption(
   id: string,
   label: string,
-  isSelected = false
+  isSelected = false,
 ): KartleggingssporsmalFormSnapshotFieldOption {
   return {
     optionId: id,
@@ -23,7 +23,7 @@ function createRadioOption(
 
 /** Returns a default RADIO_GROUP field snapshot, useful as a base for spread overrides in tests. */
 export function defaultRadioGroupSporsmal(
-  fieldId: string
+  fieldId: string,
 ): KartleggingssporsmalRadioGroupFieldSnapshot {
   return {
     fieldId: fieldId,
@@ -74,7 +74,7 @@ const arbeidsgiverHvordanErSamarbeidHighRisk: KartleggingssporsmalRadioGroupFiel
       createRadioOption(
         "2b",
         "Jeg opplever samarbeidet og relasjonen som dårlig",
-        true
+        true,
       ),
     ],
   };
@@ -88,11 +88,11 @@ const arbeidsgiverHvordanErSamarbeidLowRisk: KartleggingssporsmalRadioGroupField
       createRadioOption(
         "2a",
         "Jeg opplever samarbeidet og relasjonen som god",
-        true
+        true,
       ),
       createRadioOption(
         "2b",
-        "Jeg opplever samarbeidet og relasjonen som dårlig"
+        "Jeg opplever samarbeidet og relasjonen som dårlig",
       ),
     ],
   };
@@ -154,12 +154,12 @@ const mulighetForTilbakeTilJobbenHighRisk: KartleggingssporsmalRadioGroupFieldSn
     options: [
       createRadioOption(
         "kommer_tilbake",
-        "Jeg har tro på at jeg kommer tilbake til samme jobb og stilling"
+        "Jeg har tro på at jeg kommer tilbake til samme jobb og stilling",
       ),
       createRadioOption(
         "utfordrende",
         "Jeg ser på det som utfordrende å komme tilbake til samme jobb og stilling",
-        true
+        true,
       ),
     ],
   };
@@ -175,11 +175,11 @@ const mulighetForTilbakeTilJobbenLowRisk: KartleggingssporsmalRadioGroupFieldSna
       createRadioOption(
         "kommer_tilbake",
         "Jeg har tro på at jeg kommer tilbake til samme jobb og stilling",
-        true
+        true,
       ),
       createRadioOption(
         "utfordrende",
-        "Jeg ser på det som utfordrende å komme tilbake til samme jobb og stilling"
+        "Jeg ser på det som utfordrende å komme tilbake til samme jobb og stilling",
       ),
     ],
   };
@@ -207,12 +207,12 @@ const arbeidsgiverFaarDuOppfolgingHighRisk: KartleggingssporsmalRadioGroupFieldS
     options: [
       createRadioOption(
         "ja",
-        "Ja, jeg får oppfølging, og har snakket med arbeidsgiver om dette."
+        "Ja, jeg får oppfølging, og har snakket med arbeidsgiver om dette.",
       ),
       createRadioOption(
         "nei",
         "Nei, jeg opplever manglende oppfølging og at tilpasninger er vanskelig.",
-        true
+        true,
       ),
     ],
   };
@@ -227,11 +227,11 @@ const arbeidsgiverFaarDuOppfolgingLowRisk: KartleggingssporsmalRadioGroupFieldSn
       createRadioOption(
         "ja",
         "Ja, jeg får oppfølging, og har snakket med arbeidsgiver om dette.",
-        true
+        true,
       ),
       createRadioOption(
         "nei",
-        "Nei, jeg opplever manglende oppfølging og at tilpasninger er vanskelig."
+        "Nei, jeg opplever manglende oppfølging og at tilpasninger er vanskelig.",
       ),
     ],
   };

@@ -24,8 +24,8 @@ describe("Axios API tests", () => {
     it("returns expected data from http 200", async () => {
       mockServer.use(
         http.get(pathHappyCase, () =>
-          HttpResponse.text(happyCaseMessage, { status: 200 })
-        )
+          HttpResponse.text(happyCaseMessage, { status: 200 }),
+        ),
       );
 
       const result = await get(pathHappyCase);
@@ -37,8 +37,8 @@ describe("Axios API tests", () => {
     it("Throws access denied for http 403, and handles Tilgang-object", async () => {
       mockServer.use(
         http.get(pathAccessDenied, () =>
-          HttpResponse.json(tilgangDenied, { status: 403 })
-        )
+          HttpResponse.json(tilgangDenied, { status: 403 }),
+        ),
       );
 
       try {
@@ -55,8 +55,8 @@ describe("Axios API tests", () => {
     it("Throws access denied for http 403, and handles message", async () => {
       mockServer.use(
         http.post(pathAccessDeniedMessage, () =>
-          HttpResponse.json(tilgangDeniedMessage, { status: 403 })
-        )
+          HttpResponse.json(tilgangDeniedMessage, { status: 403 }),
+        ),
       );
 
       try {
@@ -77,8 +77,8 @@ describe("Axios API tests", () => {
     it("Throws general error for http 404", async () => {
       mockServer.use(
         http.post(pathNotFound, () =>
-          HttpResponse.text("Not found", { status: 404 })
-        )
+          HttpResponse.text("Not found", { status: 404 }),
+        ),
       );
 
       try {
@@ -95,8 +95,8 @@ describe("Axios API tests", () => {
     it("Throws general error for http 500", async () => {
       mockServer.use(
         http.get(pathInternalServerError, () =>
-          HttpResponse.text("Internal server error", { status: 500 })
-        )
+          HttpResponse.text("Internal server error", { status: 500 }),
+        ),
       );
 
       try {

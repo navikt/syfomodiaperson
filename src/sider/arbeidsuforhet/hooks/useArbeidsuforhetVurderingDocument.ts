@@ -51,21 +51,21 @@ type InnstillingUtenForhandsvarselDocumentValues = {
 
 export function useArbeidsuforhetVurderingDocument(): {
   getForhandsvarselDocument(
-    values: ForhandsvarselDocumentValues
+    values: ForhandsvarselDocumentValues,
   ): DocumentComponentDto[];
   getOppfyltDocument(values: OppfyltDocumentValues): DocumentComponentDto[];
   getOppfyltEtterForhandsvarselDocument(
-    values: OppfyltEtterForhandsvarselDocumentValues
+    values: OppfyltEtterForhandsvarselDocumentValues,
   ): DocumentComponentDto[];
   getAvslagDocument(
     values: AvslagDocumentValues,
-    forhandsvarselDate: Date
+    forhandsvarselDate: Date,
   ): DocumentComponentDto[];
   getIkkeAktuellDocument(
-    values: IkkeAktuellDocumentValues
+    values: IkkeAktuellDocumentValues,
   ): DocumentComponentDto[];
   getAvslagUtenForhandsvarselDocument(
-    values: InnstillingUtenForhandsvarselDocumentValues
+    values: InnstillingUtenForhandsvarselDocumentValues,
   ): DocumentComponentDto[];
 } {
   const { getHilsen, getIntroGjelder, getVurdertAv, getVeiledernavn } =
@@ -90,7 +90,7 @@ export function useArbeidsuforhetVurderingDocument(): {
     documentComponents.push(
       createHeaderH3(sendForhandsvarselTexts.duKanUttaleDeg.header),
       createParagraph(
-        sendForhandsvarselTexts.duKanUttaleDeg.tilbakemeldingWithFristDate
+        sendForhandsvarselTexts.duKanUttaleDeg.tilbakemeldingWithFristDate,
       ),
       createParagraph(sendForhandsvarselTexts.duKanUttaleDeg.etterFrist),
       createParagraph(sendForhandsvarselTexts.duKanUttaleDeg.friskmeldt),
@@ -100,7 +100,7 @@ export function useArbeidsuforhetVurderingDocument(): {
       createParagraph(sendForhandsvarselTexts.lovhjemmel.arbeidsuforhet),
       createParagraph(sendForhandsvarselTexts.lovhjemmel.pliktInfo),
 
-      getHilsen()
+      getHilsen(),
     );
 
     return documentComponents;
@@ -108,23 +108,23 @@ export function useArbeidsuforhetVurderingDocument(): {
 
   function getAvslagDocument(
     values: AvslagDocumentValues,
-    forhandsvarselDate: Date
+    forhandsvarselDate: Date,
   ) {
     const { begrunnelse, fom } = values;
     const documentComponents = [
       createHeaderH1("Vurdering av § 8-4 - Innstilling om avslag"),
       createParagraph(
         `Det er sendt forhåndsvarsel i denne saken den ${tilDatoMedManedNavn(
-          forhandsvarselDate
-        )}.`
+          forhandsvarselDate,
+        )}.`,
       ),
       createParagraph(
         `Nav har avslått din søknad om sykepenger fra og med ${
           !!fom ? tilDatoMedManedNavn(fom) : ""
-        }.`
+        }.`,
       ),
       createParagraph(
-        "For å få sykepenger må du ha en sykdom eller skade som gjør at du ikke kan være i arbeid, eller at du bare klarer å gjøre deler av arbeidet ditt."
+        "For å få sykepenger må du ha en sykdom eller skade som gjør at du ikke kan være i arbeid, eller at du bare klarer å gjøre deler av arbeidet ditt.",
       ),
     ];
 
@@ -134,9 +134,9 @@ export function useArbeidsuforhetVurderingDocument(): {
 
     documentComponents.push(
       createParagraph(
-        "Vi har brukt folketrygdloven § 8-4 første ledd når vi har behandlet saken din."
+        "Vi har brukt folketrygdloven § 8-4 første ledd når vi har behandlet saken din.",
       ),
-      getVeiledernavn()
+      getVeiledernavn(),
     );
 
     return documentComponents;
@@ -161,8 +161,8 @@ export function useArbeidsuforhetVurderingDocument(): {
       getIntroGjelder(),
       createParagraph(
         arbeidsuforhetTexts.tilSykmeldt.previousForhandsvarsel(
-          forhandsvarselSendtDato
-        )
+          forhandsvarselSendtDato,
+        ),
       ),
       createParagraph(arbeidsuforhetTexts.tilSykmeldt.forAFaSykepenger),
     ];
@@ -179,7 +179,7 @@ export function useArbeidsuforhetVurderingDocument(): {
       createHeaderH1("Vurdering av § 8-4 arbeidsuførhet"),
       getIntroGjelder(),
       createParagraph(
-        `Det er vurdert at folketrygdloven § 8-4 ikke kommer til anvendelse i dette tilfellet. Årsak: ${arsakTexts[arsak]}.`
+        `Det er vurdert at folketrygdloven § 8-4 ikke kommer til anvendelse i dette tilfellet. Årsak: ${arsakTexts[arsak]}.`,
       ),
       getVurdertAv(),
     ];
@@ -210,21 +210,21 @@ export function useArbeidsuforhetVurderingDocument(): {
       createParagraph("Vurdering av arbeidsuførhet jf. folketrygdloven § 8-4."),
       getIntroGjelder(),
       createParagraph(
-        `Det er ikke sendt forhåndsvarsel i denne saken fordi utbetaling ikke er igangsatt. Vurderingen er initiert av ${vurderingInitiertAvText}`
+        `Det er ikke sendt forhåndsvarsel i denne saken fordi utbetaling ikke er igangsatt. Vurderingen er initiert av ${vurderingInitiertAvText}`,
       ),
       createParagraph(`Nav har vurdert at vilkåret ikke er oppfylt.`),
       createHeaderH3("Begrunnelse for vurderingen"),
       createParagraph(
         `Nav har avslått sykepengene dine fra og med ${tilLesbarDatoMedArstall(
-          avslagFom
-        )}.`
+          avslagFom,
+        )}.`,
       ),
       createParagraph(
-        "For å få sykepenger må du ha en sykdom eller skade som gjør at du ikke kan være i arbeid, eller at du bare klarer å gjøre deler av arbeidet ditt."
+        "For å få sykepenger må du ha en sykdom eller skade som gjør at du ikke kan være i arbeid, eller at du bare klarer å gjøre deler av arbeidet ditt.",
       ),
       createParagraph(begrunnelse),
       createParagraph(
-        "Vi har brukt folketrygdloven § 8-4 første ledd når vi har behandlet saken din."
+        "Vi har brukt folketrygdloven § 8-4 første ledd når vi har behandlet saken din.",
       ),
       getVurdertAv(),
     ];

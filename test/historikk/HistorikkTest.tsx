@@ -82,103 +82,103 @@ const renderHistorikk = () =>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     historikkPath,
-    [historikkPath]
+    [historikkPath],
   );
 
 function setupTestdataHistorikk() {
   queryClient.setQueryData(
     oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => oppfolgingstilfellePersonMock
+    () => oppfolgingstilfellePersonMock,
   );
   queryClient.setQueryData(
     motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     historikkQueryKeys.oppfolgingsplan(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     aktivitetskravQueryKeys.historikk(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     arbeidsuforhetQueryKeys.arbeidsuforhet(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     manglendeMedvirkningQueryKeys.manglendeMedvirkning(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     vedtakQueryKeys.vedtak(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     dialogmotekandidatQueryKeys.historikk(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     veilederBrukerKnytningQueryKeys.historikk(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     behandlerdialogQueryKeys.behandlerdialog(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     dialogmoterQueryKeys.statusendringHistorikk(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     oppfolgingsplanForesporselQueryKeys.foresporsel(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     behandlendeEnhetQueryKeys.historikk(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => []
+    () => [],
   );
   queryClient.setQueryData(
     kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => []
+    () => [],
   );
 }
 
@@ -196,38 +196,38 @@ describe("Historikk", () => {
       .exist;
     expect(
       screen.getByText(
-        "Når en sykmeldt blir fulgt opp vil oppfølgingen bli loggført her slik at du får oversikt over hva som har skjedd og hvem som har vært involvert i oppfølgingen."
-      )
+        "Når en sykmeldt blir fulgt opp vil oppfølgingen bli loggført her slik at du får oversikt over hva som har skjedd og hvem som har vært involvert i oppfølgingen.",
+      ),
     ).to.exist;
   });
 
   it("viser lenke til tiltakshistorikk", async () => {
     queryClient.setQueryData(
       ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => LEDERE_DEFAULT
+      () => LEDERE_DEFAULT,
     );
     renderHistorikk();
 
     expect(await screen.findAllByText("Historikk")).to.exist;
     expect(
-      screen.getByRole("link", { name: "Åpne tiltakshistorikk Ekstern lenke" })
+      screen.getByRole("link", { name: "Åpne tiltakshistorikk Ekstern lenke" }),
     ).to.exist;
   });
 
   it("viser select/dropdown med oppfolgingstilfeller når person har hendelser", async () => {
     queryClient.setQueryData(
       ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => LEDERE_DEFAULT
+      () => LEDERE_DEFAULT,
     );
     renderHistorikk();
 
     expect(await screen.findAllByText("Historikk")).to.exist;
     expect(screen.getByLabelText("Velg sykefraværstilfelle")).to.exist;
     expect(
-      screen.getByRole("option", { name: "6. juni 2019 - 21. januar 2020" })
+      screen.getByRole("option", { name: "6. juni 2019 - 21. januar 2020" }),
     ).to.exist;
     expect(
-      screen.queryByRole("option", { name: "Utenfor sykefraværstilfelle" })
+      screen.queryByRole("option", { name: "Utenfor sykefraværstilfelle" }),
     ).to.not.exist;
   });
 
@@ -245,13 +245,13 @@ describe("Historikk", () => {
           status: AktivitetskravStatus.OPPFYLT,
           vurdertAv: VEILEDER_IDENT_DEFAULT,
         },
-      ]
+      ],
     );
     renderHistorikk();
 
     expect(await screen.findAllByText("Historikk")).to.exist;
     expect(
-      screen.getByRole("option", { name: "6. juni 2019 - 21. januar 2020" })
+      screen.getByRole("option", { name: "6. juni 2019 - 21. januar 2020" }),
     ).to.exist;
     expect(screen.getByRole("option", { name: "Utenfor sykefraværstilfelle" }))
       .to.exist;
@@ -261,9 +261,9 @@ describe("Historikk", () => {
     it("viser veiledertilordninghistorikk", async () => {
       queryClient.setQueryData(
         veilederBrukerKnytningQueryKeys.historikk(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => VEILEDER_TILDELING_HISTORIKK_DEFAULT
+        () => VEILEDER_TILDELING_HISTORIKK_DEFAULT,
       );
       renderHistorikk();
 
@@ -274,23 +274,23 @@ describe("Historikk", () => {
     it("viser veiledertilordninghistorikk satt av annen", async () => {
       queryClient.setQueryData(
         veilederBrukerKnytningQueryKeys.historikk(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => VEILEDER_TILDELING_HISTORIKK_ANNEN
+        () => VEILEDER_TILDELING_HISTORIKK_ANNEN,
       );
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
-        screen.getByText("Z970000 satt Z990000 på enhet 0315 som veileder")
+        screen.getByText("Z970000 satt Z990000 på enhet 0315 som veileder"),
       ).to.exist;
     });
     it("viser veiledertilordninghistorikk satt av systemet", async () => {
       queryClient.setQueryData(
         veilederBrukerKnytningQueryKeys.historikk(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => VEILEDER_TILDELING_HISTORIKK_SYSTEM
+        () => VEILEDER_TILDELING_HISTORIKK_SYSTEM,
       );
       renderHistorikk();
 
@@ -322,9 +322,9 @@ describe("Historikk", () => {
 
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => meldingResponseDTO
+        () => meldingResponseDTO,
       );
 
       renderHistorikk();
@@ -337,7 +337,7 @@ describe("Historikk", () => {
     it("Innkommende false, veilederIdent mangler - Info om navn på veileder mangler", async () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => {
           return {
@@ -352,7 +352,7 @@ describe("Historikk", () => {
               ],
             },
           };
-        }
+        },
       );
 
       renderHistorikk();
@@ -360,15 +360,15 @@ describe("Historikk", () => {
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
         screen.getByText(
-          "Avsender: Mangler ident på veileder - Tilleggsopplysninger L8"
-        )
+          "Avsender: Mangler ident på veileder - Tilleggsopplysninger L8",
+        ),
       ).to.exist;
     });
 
     it("Innkommende false, både veilederIdent og behandlerNavn satt - Veileder som avsender", async () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => {
           return {
@@ -383,7 +383,7 @@ describe("Historikk", () => {
               ],
             },
           };
-        }
+        },
       );
 
       renderHistorikk();
@@ -396,7 +396,7 @@ describe("Historikk", () => {
     it("Innkommende true - Behandler som avsender", async () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => {
           return {
@@ -411,21 +411,21 @@ describe("Historikk", () => {
               ],
             },
           };
-        }
+        },
       );
 
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
-        screen.getByText("Avsender: Ola Nordmann - Tilleggsopplysninger L8")
+        screen.getByText("Avsender: Ola Nordmann - Tilleggsopplysninger L8"),
       ).to.exist;
     });
 
     it("Innkommende true, behandlerNavn mangler - Info om navn på behandler mangler", async () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => {
           return {
@@ -440,7 +440,7 @@ describe("Historikk", () => {
               ],
             },
           };
-        }
+        },
       );
 
       renderHistorikk();
@@ -448,15 +448,15 @@ describe("Historikk", () => {
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
         screen.getByText(
-          "Avsender: Mangler navn på behandler - Tilleggsopplysninger L8"
-        )
+          "Avsender: Mangler navn på behandler - Tilleggsopplysninger L8",
+        ),
       ).to.exist;
     });
 
     it("Innkommende true, både veilederIdent og behandlerNavn satt - Behandler som avsender", async () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => {
           return {
@@ -471,21 +471,21 @@ describe("Historikk", () => {
               ],
             },
           };
-        }
+        },
       );
 
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
-        screen.getByText("Avsender: Ola Nordmann - Tilleggsopplysninger L8")
+        screen.getByText("Avsender: Ola Nordmann - Tilleggsopplysninger L8"),
       ).to.exist;
     });
 
     it("To samtaler - Antall meldinger 3", async () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => {
           return {
@@ -511,50 +511,50 @@ describe("Historikk", () => {
               ],
             },
           };
-        }
+        },
       );
 
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(screen.queryAllByText("Avsender:", { exact: false }).length).toBe(
-        3
+        3,
       );
     });
 
     it("Ingen samtaler - Antall meldinger 0", async () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => {
           return {
             conversations: {},
           };
-        }
+        },
       );
 
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(screen.queryAllByText("Avsender:", { exact: false }).length).toBe(
-        0
+        0,
       );
     });
 
     it("MeldingResponseDTO undefined - Antall meldinger 0", async () => {
       queryClient.setQueryData(
         behandlerdialogQueryKeys.behandlerdialog(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        undefined
+        undefined,
       );
 
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(screen.queryAllByText("Avsender:", { exact: false }).length).toBe(
-        0
+        0,
       );
     });
   });
@@ -596,9 +596,9 @@ describe("Historikk", () => {
     it("Ingen kandidater - 0 rader i oversikten", async () => {
       queryClient.setQueryData(
         senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => []
+        () => [],
       );
       renderHistorikk();
 
@@ -613,7 +613,7 @@ describe("Historikk", () => {
     it("Sykemeldt har svart og er varslet og veileder har ferdigbehandlet - 3 rader i oversikten", async () => {
       queryClient.setQueryData(
         senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
@@ -622,7 +622,7 @@ describe("Historikk", () => {
             ...varsel,
             ...ferdigbehandlet,
           },
-        ]
+        ],
       );
       renderHistorikk();
 
@@ -635,7 +635,7 @@ describe("Historikk", () => {
     it("To kandidater hvor sykemeldt har svart og er varslet og veileder har ferdigbehandlet - 6 rader i oversikten", async () => {
       queryClient.setQueryData(
         senOppfolgingKandidatQueryKeys.senOppfolgingKandidat(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
@@ -650,20 +650,20 @@ describe("Historikk", () => {
             ...varsel,
             ...ferdigbehandlet,
           },
-        ]
+        ],
       );
 
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
-        screen.queryAllByText("Svar mottatt fra den sykmeldte").length
+        screen.queryAllByText("Svar mottatt fra den sykmeldte").length,
       ).toBe(2);
       expect(
-        screen.queryAllByText("Varsel sendt ut til den sykmeldte").length
+        screen.queryAllByText("Varsel sendt ut til den sykmeldte").length,
       ).toBe(2);
       expect(screen.queryAllByText("Ferdigbehandlet av: Z990000").length).toBe(
-        2
+        2,
       );
     });
   });
@@ -672,34 +672,34 @@ describe("Historikk", () => {
     it("viser dialogmoteStatusEndringer", async () => {
       queryClient.setQueryData(
         dialogmoterQueryKeys.statusendringHistorikk(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => dialogmoteStatusEndringMock
+        () => dialogmoteStatusEndringMock,
       );
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
-        screen.getAllByText("Z970000 kalte inn til et dialogmøte")
+        screen.getAllByText("Z970000 kalte inn til et dialogmøte"),
       ).to.have.length(2);
       expect(
         screen.getByText(
-          "Z990000 endret tid eller sted for dialogmøtet opprettet av Z990000"
-        )
+          "Z990000 endret tid eller sted for dialogmøtet opprettet av Z990000",
+        ),
       ).to.exist;
       expect(
-        screen.getByText("Z970000 avlyste dialogmøtet opprettet av Z990000")
+        screen.getByText("Z970000 avlyste dialogmøtet opprettet av Z990000"),
       ).to.exist;
       expect(screen.getByText("Z990000 kalte inn til et dialogmøte")).to.exist;
       expect(
         screen.getByText(
-          "Z990000 skrev referat fra dialogmøtet opprettet av Z970000"
-        )
+          "Z990000 skrev referat fra dialogmøtet opprettet av Z970000",
+        ),
       ).to.exist;
       expect(
         screen.getByText(
-          "Dialogmøtet innkalt av Z970000 ble lukket av systemet"
-        )
+          "Dialogmøtet innkalt av Z970000 ble lukket av systemet",
+        ),
       ).to.exist;
     });
   });
@@ -712,16 +712,16 @@ describe("Historikk", () => {
       };
       queryClient.setQueryData(
         historikkQueryKeys.oppfolgingsplan(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => [oppfolgingsplanHistorikkMock]
+        () => [oppfolgingsplanHistorikkMock],
       );
       const defaultOppfolgingsplanLPS = getDefaultOppfolgingsplanLPS(
-        new Date()
+        new Date(),
       );
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [defaultOppfolgingsplanLPS]
+        () => [defaultOppfolgingsplanLPS],
       );
       renderHistorikk();
 
@@ -729,8 +729,8 @@ describe("Historikk", () => {
         .exist;
       expect(
         screen.getByText(
-          `Oppfølgingsplanen ble delt med Nav av ${defaultOppfolgingsplanLPS.virksomhetsnummer}.`
-        )
+          `Oppfølgingsplanen ble delt med Nav av ${defaultOppfolgingsplanLPS.virksomhetsnummer}.`,
+        ),
       ).to.exist;
       expect(screen.getByText("Oppfølgingsplan")).to.exist;
       expect(screen.getByText("Oppfølgingsplan LPS")).to.exist;
@@ -740,16 +740,16 @@ describe("Historikk", () => {
       const oppfolgingsplanV2 = oppfolgingsplanV2Mock[0];
       queryClient.setQueryData(
         oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [oppfolgingsplanV2]
+        () => [oppfolgingsplanV2],
       );
       renderHistorikk();
 
       expect(
         screen.getByText(
-          `Oppfølgingsplanen ble delt med Nav av ${oppfolgingsplanV2.virksomhetsnummer}.`
-        )
+          `Oppfølgingsplanen ble delt med Nav av ${oppfolgingsplanV2.virksomhetsnummer}.`,
+        ),
       ).to.exist;
     });
   });
@@ -760,25 +760,25 @@ describe("Historikk", () => {
     it("Ingen oppfølgingsoppgaver", async () => {
       queryClient.setQueryData(
         oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => []
+        () => [],
       );
 
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
-        screen.queryAllByRole("row", { name: RegExp("Oppfølgingsoppgave") })
+        screen.queryAllByRole("row", { name: RegExp("Oppfølgingsoppgave") }),
       ).to.be.empty;
     });
 
     it("Opprettet oppfølgingsoppgave med endring", async () => {
       queryClient.setQueryData(
         oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [historikkOppfolgingsoppgaveAktivMock]
+        () => [historikkOppfolgingsoppgaveAktivMock],
       );
 
       renderHistorikk();
@@ -788,28 +788,28 @@ describe("Historikk", () => {
         screen.getByRole("row", {
           name: new RegExp(
             `${expandableToggleText} ${tilLesbarDatoMedArstall(
-              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 1)
-            )} Z990000 endret oppfølgingsoppgave \\(Vurder annen ytelse\\)`
+              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, 1),
+            )} Z990000 endret oppfølgingsoppgave \\(Vurder annen ytelse\\)`,
           ),
-        })
+        }),
       ).to.exist;
       expect(
         screen.getByRole("row", {
           name: new RegExp(
             `${expandableToggleText} ${tilLesbarDatoMedArstall(
-              DATO_INNENFOR_OPPFOLGINGSTILFELLE
-            )} Z990000 opprettet oppfølgingsoppgave \\(Vurder annen ytelse\\)`
+              DATO_INNENFOR_OPPFOLGINGSTILFELLE,
+            )} Z990000 opprettet oppfølgingsoppgave \\(Vurder annen ytelse\\)`,
           ),
-        })
+        }),
       ).to.exist;
     });
 
     it("Fjernet oppfølginsoppgave inkludert endring", async () => {
       queryClient.setQueryData(
         oppfolgingsoppgaverQueryKeys.oppfolgingsoppgaver(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => [historikkOppfolgingsoppgaveFjernetMock]
+        () => [historikkOppfolgingsoppgaveFjernetMock],
       );
 
       renderHistorikk();
@@ -819,46 +819,46 @@ describe("Historikk", () => {
         screen.getByRole("row", {
           name: new RegExp(
             `${tilLesbarDatoMedArstall(
-              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -1)
-            )} Z990000 fjernet oppfølgingsoppgaven \\(Ta kontakt med arbeidsgiver\\)`
+              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -1),
+            )} Z990000 fjernet oppfølgingsoppgaven \\(Ta kontakt med arbeidsgiver\\)`,
           ),
-        })
+        }),
       ).to.exist;
       expect(
         screen.getByRole("row", {
           name: new RegExp(
             `${expandableToggleText} ${tilLesbarDatoMedArstall(
-              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -2)
-            )} Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)`
+              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -2),
+            )} Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)`,
           ),
-        })
+        }),
       ).to.exist;
       expect(
         screen.getByRole("row", {
           name: new RegExp(
             `${expandableToggleText} ${tilLesbarDatoMedArstall(
-              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -3)
-            )} Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)`
+              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -3),
+            )} Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)`,
           ),
-        })
+        }),
       ).to.exist;
       expect(
         screen.getByRole("row", {
           name: new RegExp(
             `${expandableToggleText} ${tilLesbarDatoMedArstall(
-              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -4)
-            )} Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)`
+              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -4),
+            )} Z990000 endret oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)`,
           ),
-        })
+        }),
       ).to.exist;
       expect(
         screen.getByRole("row", {
           name: new RegExp(
             `${expandableToggleText} ${tilLesbarDatoMedArstall(
-              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -5)
-            )} Z990000 opprettet oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)`
+              addDays(DATO_INNENFOR_OPPFOLGINGSTILFELLE, -5),
+            )} Z990000 opprettet oppfølgingsoppgave \\(Ta kontakt med arbeidsgiver\\)`,
           ),
-        })
+        }),
       ).to.exist;
     });
   });
@@ -878,7 +878,7 @@ describe("Historikk", () => {
             status: AktivitetskravStatus.OPPFYLT,
             vurdertAv: VEILEDER_IDENT_DEFAULT,
           },
-        ]
+        ],
       );
 
       renderHistorikk();
@@ -886,12 +886,12 @@ describe("Historikk", () => {
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(screen.getAllByText("Aktivitetskrav")).to.have.length(2);
       expect(
-        screen.getByText("Samuel Sam Jones ble kandidat til aktivitetskravet")
+        screen.getByText("Samuel Sam Jones ble kandidat til aktivitetskravet"),
       ).to.exist;
       expect(
         screen.getByText(
-          `${VEILEDER_IDENT_DEFAULT} vurderte at aktivitetskravet var oppfylt`
-        )
+          `${VEILEDER_IDENT_DEFAULT} vurderte at aktivitetskravet var oppfylt`,
+        ),
       ).to.exist;
     });
   });
@@ -900,7 +900,7 @@ describe("Historikk", () => {
     it("viser meldte møtebehov", async () => {
       queryClient.setQueryData(
         motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => motebehovMock
+        () => motebehovMock,
       );
 
       renderHistorikk();
@@ -909,18 +909,18 @@ describe("Historikk", () => {
       expect(screen.getAllByText("Dialogmøte")).to.have.length(4); // Tre behov, og én behandling
       expect(
         screen.getByText(
-          "Den sykmeldte svarte ja på ønske om dialogmøte. Svaret var: Jeg svarer på møtebehov ved 17 uker"
-        )
+          "Den sykmeldte svarte ja på ønske om dialogmøte. Svaret var: Jeg svarer på møtebehov ved 17 uker",
+        ),
       ).to.exist;
       expect(
         screen.getByText(
-          "Are Arbeidsgiver (Arbeidsgiver) svarte nei på ønske om dialogmøte. Svaret var: Jeg liker ikke møte!!"
-        )
+          "Are Arbeidsgiver (Arbeidsgiver) svarte nei på ønske om dialogmøte. Svaret var: Jeg liker ikke møte!!",
+        ),
       ).to.exist;
       expect(
         screen.getByText(
-          "Den sykmeldte meldte behov for dialogmøte. Begrunnelse: Møter er bra!"
-        )
+          "Den sykmeldte meldte behov for dialogmøte. Begrunnelse: Møter er bra!",
+        ),
       ).to.exist;
       expect(screen.getByText("Z990000 vurderte behovet for dialogmøte")).to
         .exist;
@@ -931,26 +931,26 @@ describe("Historikk", () => {
     it("viser forespørseler om oppfølgingsplan", async () => {
       queryClient.setQueryData(
         oppfolgingsplanForesporselQueryKeys.foresporsel(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => mockForesporseler
+        () => mockForesporseler,
       );
 
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(screen.getAllByText("Forespørsel oppfølgingsplan")).to.have.length(
-        2
+        2,
       );
       expect(
         screen.getByText(
-          `Z990000 ba om oppfølgingsplan fra ${VIRKSOMHET_ENTERPRISE.virksomhetsnummer}.`
-        )
+          `Z990000 ba om oppfølgingsplan fra ${VIRKSOMHET_ENTERPRISE.virksomhetsnummer}.`,
+        ),
       ).to.exist;
       expect(
         screen.getByText(
-          `Z990000 ba om oppfølgingsplan fra ${VIRKSOMHET_BRANNOGBIL.virksomhetsnummer}.`
-        )
+          `Z990000 ba om oppfølgingsplan fra ${VIRKSOMHET_BRANNOGBIL.virksomhetsnummer}.`,
+        ),
       ).to.exist;
     });
   });
@@ -959,7 +959,7 @@ describe("Historikk", () => {
     it("Viser tildelte oppfølgingsenheter", async () => {
       queryClient.setQueryData(
         behandlendeEnhetQueryKeys.historikk(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => tildeltOppfolgingsenhetHistorikk
+        () => tildeltOppfolgingsenhetHistorikk,
       );
 
       renderHistorikk();
@@ -970,28 +970,28 @@ describe("Historikk", () => {
         screen.getByRole("row", {
           name: new RegExp(
             `${tilLesbarDatoMedArstall(
-              addDays(currentOppfolgingstilfelle.start, 5)
-            )} Z990000 tildelte sykmeldt tilbake til geografisk kontortilhørighet`
+              addDays(currentOppfolgingstilfelle.start, 5),
+            )} Z990000 tildelte sykmeldt tilbake til geografisk kontortilhørighet`,
           ),
-        })
+        }),
       ).to.exist;
       expect(
         screen.getByRole("row", {
           name: new RegExp(
             `${tilLesbarDatoMedArstall(
-              addDays(currentOppfolgingstilfelle.start, 3)
-            )} Z990000 tildelte sykmeldt til NAV Grünerløkka \\(0315\\)`
+              addDays(currentOppfolgingstilfelle.start, 3),
+            )} Z990000 tildelte sykmeldt til NAV Grünerløkka \\(0315\\)`,
           ),
-        })
+        }),
       ).to.exist;
       expect(
         screen.getByRole("row", {
           name: new RegExp(
             `${tilLesbarDatoMedArstall(
-              addDays(currentOppfolgingstilfelle.start, 10)
-            )} Systemet tildelte sykmeldt tilbake til geografisk kontortilhørighet`
+              addDays(currentOppfolgingstilfelle.start, 10),
+            )} Systemet tildelte sykmeldt tilbake til geografisk kontortilhørighet`,
           ),
-        })
+        }),
       ).to.exist;
     });
   });
@@ -1012,9 +1012,9 @@ describe("Historikk", () => {
     it("Ingen spørsmål tilsendt - 0 rader i oversikten", async () => {
       queryClient.setQueryData(
         kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
-        () => []
+        () => [],
       );
 
       renderHistorikk();
@@ -1032,7 +1032,7 @@ describe("Historikk", () => {
 
       queryClient.setQueryData(
         kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
@@ -1045,7 +1045,7 @@ describe("Historikk", () => {
               vurdertBy: VEILEDER_IDENT_DEFAULT,
             },
           },
-        ]
+        ],
       );
 
       renderHistorikk();
@@ -1055,8 +1055,8 @@ describe("Historikk", () => {
       expect(screen.getByText(/svarte på kartleggingsspørsmål/)).to.exist;
       expect(
         screen.getByText(
-          `Svar på kartleggingsspørsmål ble vurdert av ${VEILEDER_IDENT_DEFAULT}`
-        )
+          `Svar på kartleggingsspørsmål ble vurdert av ${VEILEDER_IDENT_DEFAULT}`,
+        ),
       ).to.exist;
     });
 
@@ -1066,7 +1066,7 @@ describe("Historikk", () => {
 
       queryClient.setQueryData(
         kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(
-          ARBEIDSTAKER_DEFAULT.personIdent
+          ARBEIDSTAKER_DEFAULT.personIdent,
         ),
         () => [
           {
@@ -1083,17 +1083,17 @@ describe("Historikk", () => {
             svarAt: svarAt,
             status: KandidatStatus.SVAR_MOTTATT,
           },
-        ]
+        ],
       );
 
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
-        screen.queryAllByText(/ble tilsendt kartleggingsspørsmål/).length
+        screen.queryAllByText(/ble tilsendt kartleggingsspørsmål/).length,
       ).toBe(2);
       expect(
-        screen.queryAllByText(/svarte på kartleggingsspørsmål/).length
+        screen.queryAllByText(/svarte på kartleggingsspørsmål/).length,
       ).toBe(2);
     });
   });

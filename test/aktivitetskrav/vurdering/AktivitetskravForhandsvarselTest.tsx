@@ -55,7 +55,7 @@ const renderVurderAktivitetskrav = (aktivitetskravDto: AktivitetskravDTO) =>
           <VurderAktivitetskrav aktivitetskrav={aktivitetskravDto} />
         </NotificationContext.Provider>
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 const expectedFrist = getForhandsvarselFrist();
@@ -82,12 +82,12 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
 
       const velgMalSelect = screen.getByRole("combobox");
       expect(
-        within(velgMalSelect).getByRole("option", { name: "Har arbeidsgiver" })
+        within(velgMalSelect).getByRole("option", { name: "Har arbeidsgiver" }),
       ).to.exist;
       expect(
         within(velgMalSelect).getByRole("option", {
           name: "Har ikke arbeidsgiver",
-        })
+        }),
       ).to.exist;
       expect(screen.getByDisplayValue("Har arbeidsgiver")).to.exist;
       expect(screen.queryByDisplayValue("Har ikke arbeidsgiver")).to.not.exist;
@@ -103,7 +103,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       expect(
         screen.getByRole("heading", {
           name: "Send forhåndsvarsel",
-        })
+        }),
       ).to.exist;
 
       expect(screen.getByRole("textbox", { name: beskrivelseLabel })).to.exist;
@@ -131,7 +131,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       expect(vurdering.frist).to.deep.equal(expectedVurdering.frist);
 
       await waitFor(
-        () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist
+        () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist,
       );
     });
 
@@ -145,7 +145,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       expect(
         screen.getByRole("heading", {
           name: "Send forhåndsvarsel",
-        })
+        }),
       ).to.exist;
 
       expect(screen.getByRole("textbox", { name: beskrivelseLabel })).to.exist;
@@ -172,7 +172,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
         fritekst: enLangBeskrivelse,
         document: getSendForhandsvarselDocument(
           enLangBeskrivelse,
-          Brevmal.UTEN_ARBEIDSGIVER
+          Brevmal.UTEN_ARBEIDSGIVER,
         ),
         frist: dayjs(expectedFrist).format("YYYY-MM-DD"),
       };
@@ -181,7 +181,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       expect(vurdering.frist).to.deep.equal(expectedVurdering.frist);
 
       await waitFor(
-        () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist
+        () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist,
       );
     });
 
@@ -195,7 +195,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       expect(
         screen.getByRole("heading", {
           name: "Send forhåndsvarsel",
-        })
+        }),
       ).to.exist;
 
       expect(screen.getByRole("textbox", { name: beskrivelseLabel })).to.exist;
@@ -222,7 +222,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
         fritekst: enLangBeskrivelse,
         document: getSendForhandsvarselDocument(
           enLangBeskrivelse,
-          Brevmal.UTLAND
+          Brevmal.UTLAND,
         ),
         frist: dayjs(expectedFrist).format("YYYY-MM-DD"),
       };
@@ -231,7 +231,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       expect(vurdering.frist).to.deep.equal(expectedVurdering.frist);
 
       await waitFor(
-        () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist
+        () => expect(screen.queryByText(enLangBeskrivelse)).to.not.exist,
       );
     });
 
@@ -244,7 +244,7 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       expect(
         screen.getByRole("heading", {
           name: "Skriv innstilling om stans til Nav arbeid og ytelser",
-        })
+        }),
       ).to.exist;
     });
     it("Fails to send forhåndsvarsel when no beskrivelse is filled in", async () => {
@@ -341,13 +341,13 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       expect(
         screen.getByRole("heading", {
           name: "Oppsummering av forhåndsvarselet",
-        })
+        }),
       ).to.exist;
       expect(screen.getByText("Frist: ", { exact: false })).to.exist;
       expect(
         screen.getByText(
-          "Husk å sjekke Gosys og Modia for mer informasjon før du vurderer."
-        )
+          "Husk å sjekke Gosys og Modia for mer informasjon før du vurderer.",
+        ),
       ).to.exist;
     });
 
@@ -357,13 +357,13 @@ describe("VurderAktivitetskrav forhåndsvarsel", () => {
       expect(
         screen.queryByRole("heading", {
           name: "Oppsummering av forhåndsvarselet",
-        })
+        }),
       ).to.not.exist;
       expect(screen.queryByText("Frist: ", { exact: false })).to.not.exist;
       expect(
         screen.queryByText(
-          "Husk å sjekke Gosys og Modia for mer informasjon før du vurderer."
-        )
+          "Husk å sjekke Gosys og Modia for mer informasjon før du vurderer.",
+        ),
       ).to.not.exist;
     });
   });

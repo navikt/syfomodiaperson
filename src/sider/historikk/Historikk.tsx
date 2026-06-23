@@ -24,11 +24,11 @@ const byTidspunkt: () => (h1: HistorikkEvent, h2: HistorikkEvent) => number =
 
 function hentEventUtenforTilfelleList(
   tilfelleliste: OppfolgingstilfelleDTO[],
-  historikkEvents: HistorikkEvent[]
+  historikkEvents: HistorikkEvent[],
 ): HistorikkEvent[] {
   return historikkEvents.filter((event) => {
     return !tilfelleliste.some((tilfelle) =>
-      isDateInOppfolgingstilfelle(event.tidspunkt, tilfelle)
+      isDateInOppfolgingstilfelle(event.tidspunkt, tilfelle),
     );
   });
 }
@@ -144,7 +144,7 @@ export default function Historikk({
   const [selectedTilfelleIndex, setSelectedTilfelleIndex] = useState<number>(0);
   const eventUtenforTilfelleList = hentEventUtenforTilfelleList(
     tilfeller,
-    historikkEvents
+    historikkEvents,
   );
 
   function filteredEvents(): HistorikkEvent[] {
@@ -156,14 +156,14 @@ export default function Historikk({
       return historikkEvents.filter((event) =>
         isDateInOppfolgingstilfelle(
           event.tidspunkt,
-          tilfeller[selectedTilfelleIndex - TILFELLE_OPTION_OFFSET]
-        )
+          tilfeller[selectedTilfelleIndex - TILFELLE_OPTION_OFFSET],
+        ),
       );
     }
   }
 
   function sykefravaerstilfelleOnChange(
-    event: React.ChangeEvent<HTMLSelectElement>
+    event: React.ChangeEvent<HTMLSelectElement>,
   ) {
     setSelectedTilfelleIndex(Number(event.target.value));
   }
@@ -185,7 +185,7 @@ export default function Historikk({
               value={index + TILFELLE_OPTION_OFFSET}
             >
               {`${tilLesbarDatoMedArstall(
-                new Date(tilfelle.start)
+                new Date(tilfelle.start),
               )} - ${tilLesbarDatoMedArstall(new Date(tilfelle.end))}`}
             </option>
           ))}
@@ -196,7 +196,7 @@ export default function Historikk({
         <EksternLenke
           href={fullNaisUrlIntern(
             "veilarbpersonflate",
-            "/arbeidsmarkedstiltak"
+            "/arbeidsmarkedstiltak",
           )}
           className="mr-4"
         >
@@ -241,7 +241,7 @@ export default function Historikk({
                     <Table.DataCell>{tagFromKilde(kilde)}</Table.DataCell>
                   </Table.Row>
                 );
-              }
+              },
             )}
           </Table.Body>
         </Table>

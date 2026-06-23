@@ -26,7 +26,7 @@ const renderDialogmoteMoteStatusPanel = (dialogmote: DialogmoteDTO) =>
       <QueryClientProvider client={queryClient}>
         <DialogmoteMoteStatusPanel dialogmote={dialogmote} />
       </QueryClientProvider>
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 
 describe("DialogmoteMoteStatusPanel", () => {
@@ -153,8 +153,8 @@ describe("DialogmoteMoteStatusPanel", () => {
 
       expect(
         screen.getByText(
-          `Innkalt av: ${VEILEDER_DEFAULT.fulltNavn()} (Tildelt: ${ANNEN_VEILEDER.fulltNavn()})`
-        )
+          `Innkalt av: ${VEILEDER_DEFAULT.fulltNavn()} (Tildelt: ${ANNEN_VEILEDER.fulltNavn()})`,
+        ),
       ).to.exist;
     });
     it("Viser navn på veiledere som har innkalt og er tildelt for endret dialogmøte", () => {
@@ -162,8 +162,8 @@ describe("DialogmoteMoteStatusPanel", () => {
 
       expect(
         screen.getByText(
-          `Innkalt av: ${VEILEDER_DEFAULT.fulltNavn()} (Tildelt: ${ANNEN_VEILEDER.fulltNavn()})`
-        )
+          `Innkalt av: ${VEILEDER_DEFAULT.fulltNavn()} (Tildelt: ${ANNEN_VEILEDER.fulltNavn()})`,
+        ),
       ).to.exist;
     });
   });

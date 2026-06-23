@@ -25,7 +25,7 @@ const renderDeltakereSvarInfo = (dialogmote: DialogmoteDTO) =>
   render(
     <QueryClientProvider client={queryClient}>
       <DeltakereSvarInfo dialogmote={dialogmote} />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("DeltakereSvarInfo for arbeidsgiver", () => {
@@ -38,10 +38,10 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
       [
         varselArbeidsgiver(
           MotedeltakerVarselType.INNKALT,
-          "2021-12-01T12:56:26.271381"
+          "2021-12-01T12:56:26.271381",
         ),
       ],
-      []
+      [],
     );
 
     it("viser nærmeste leder har åpnet innkalling med minus-sirkel-ikon og begrunnelse", () => {
@@ -66,10 +66,10 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
           {
             svarTidspunkt: "2021-12-01T12:56:26.271381",
             svarType: SvarType.KOMMER,
-          }
+          },
         ),
       ],
-      []
+      [],
     );
 
     it("viser nærmeste leder 'kommer' med suksess-ikon og manglende begrunnelse", () => {
@@ -94,10 +94,10 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
             svarType: SvarType.NYTT_TID_STED,
             svarTidspunkt: "2021-12-01T12:56:26.271381",
             svarTekst: "Passer ikke",
-          }
+          },
         ),
       ],
-      []
+      [],
     );
 
     it("viser nærmeste leder ønsker å endre tid/sted med advarsel-ikon og begrunnelse", () => {
@@ -122,10 +122,10 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
             svarType: SvarType.KOMMER_IKKE,
             svarTekst: "Kommer ikke",
             svarTidspunkt: "2021-12-01T12:56:26.271381",
-          }
+          },
         ),
       ],
-      []
+      [],
     );
 
     it("viser nærmeste leder ønsker å avlyse med feil-ikon og begrunnelse", () => {
@@ -143,7 +143,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
   describe("arbeidsgiver har ikke åpnet innkalling", () => {
     const dialogmoteMedUlestInnkalling = dialogmoteMedVarsel(
       [varselArbeidsgiver(MotedeltakerVarselType.INNKALT)],
-      []
+      [],
     );
 
     it("viser nærmeste leder har ikke åpnet innkalling med minus-sirkel-ikon og manglende begrunnelse", () => {
@@ -166,10 +166,10 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
       [
         varselArbeidsgiver(
           MotedeltakerVarselType.NYTT_TID_STED,
-          "2021-12-03T12:56:26.271381"
+          "2021-12-03T12:56:26.271381",
         ),
       ],
-      []
+      [],
     );
 
     it("viser nærmeste leder har åpnet endring med minus-sirkel-ikon og manglende begrunnelse", () => {
@@ -194,10 +194,10 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
           {
             svarType: SvarType.KOMMER,
             svarTidspunkt: "2021-12-03T12:56:26.271381",
-          }
+          },
         ),
       ],
-      []
+      [],
     );
 
     it("viser nærmeste leder 'kommer' med suksess-ikon og manglende begrunnelse", () => {
@@ -222,10 +222,10 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
             svarType: SvarType.NYTT_TID_STED,
             svarTidspunkt: "2021-12-03T12:56:26.271381",
             svarTekst: "Kan vi endre sted?",
-          }
+          },
         ),
       ],
-      []
+      [],
     );
 
     it("viser nærmeste leder ønsker å endre tid/sted med advarsel-ikon og begrunnelse", () => {
@@ -250,10 +250,10 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
             svarType: SvarType.KOMMER_IKKE,
             svarTidspunkt: "2021-12-03T12:56:26.271381",
             svarTekst: "Jeg kommer ikke",
-          }
+          },
         ),
       ],
-      []
+      [],
     );
 
     it("viser nærmeste leder ønsker å avlyse med feil-ikon og begrunnelse", () => {
@@ -271,7 +271,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
   describe("arbeidsgiver har ikke åpnet endring", () => {
     const dialogmoteMedUlestEndring = dialogmoteMedVarsel(
       [varselArbeidsgiver(MotedeltakerVarselType.NYTT_TID_STED)],
-      []
+      [],
     );
 
     it("viser nærmeste leder har ikke åpnet endring med minus-sirkel-ikon og manglende begrunnelse", () => {

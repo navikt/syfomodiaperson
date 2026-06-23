@@ -42,13 +42,13 @@ export interface KartleggingssporsmalSvarResponseDTO {
  * Dermed vil noen kandidater ha status KANDIDAT uten varsletAt, og det burde ikke vises til veileder at disse har fått spørsmålene når de ikke har det.
  */
 export function hasMottattKartleggingssporsmal(
-  kartleggingssporsmalKandidat: KartleggingssporsmalKandidatResponseDTO
+  kartleggingssporsmalKandidat: KartleggingssporsmalKandidatResponseDTO,
 ): boolean {
   return kartleggingssporsmalKandidat.varsletAt !== null;
 }
 
 export function hasAnsweredKartleggingssporsmal(
-  kartleggingData: KartleggingssporsmalKandidatResponseDTO | null | undefined
+  kartleggingData: KartleggingssporsmalKandidatResponseDTO | null | undefined,
 ): boolean {
   return (
     kartleggingData?.status === KandidatStatus.SVAR_MOTTATT ||

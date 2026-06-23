@@ -31,7 +31,7 @@ interface Props {
 
 export default function PlanlagtSoknad({ soknad }: Props): ReactElement {
   const soknadTomDato = tilLesbarDatoMedArstall(
-    dayjs(soknad.tom).add(1, "days").toDate()
+    dayjs(soknad.tom).add(1, "days").toDate(),
   );
   const soknadStatusText = textSoknadStatus(soknad.status);
 
@@ -62,7 +62,7 @@ export default function PlanlagtSoknad({ soknad }: Props): ReactElement {
       )}
       <BodyShort size="small">
         {texts.gjelderPerioden(
-          tilLesbarPeriodeMedArstall(soknad.fom, soknad.tom)
+          tilLesbarPeriodeMedArstall(soknad.fom, soknad.tom),
         )}
       </BodyShort>
     </Box>

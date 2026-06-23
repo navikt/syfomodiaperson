@@ -10,7 +10,7 @@ const texts = {
 };
 
 export const Forhandsvisning = (
-  props: Omit<ForhandsvisningModalProps, "isOpen" | "handleClose">
+  props: Omit<ForhandsvisningModalProps, "isOpen" | "handleClose">,
 ) => {
   const [displayForhandsvisning, setDisplayForhandsvisning] = useState(false);
 

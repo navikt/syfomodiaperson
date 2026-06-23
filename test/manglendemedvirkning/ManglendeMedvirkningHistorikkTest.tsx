@@ -33,19 +33,19 @@ let queryClient: QueryClient;
 
 const renderVurderingHistorikk = (
   vurderinger: VurderingResponseDTO[],
-  sykepengestoppList: Sykepengestopp[] = []
+  sykepengestoppList: Sykepengestopp[] = [],
 ) => {
   queryClient.setQueryData(
     manglendeMedvirkningQueryKeys.manglendeMedvirkning(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => vurderinger
+    () => vurderinger,
   );
   queryClient.setQueryData(
     pengestoppStatusQueryKeys.pengestoppStatus(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => sykepengestoppList
+    () => sykepengestoppList,
   );
 
   return render(
@@ -55,7 +55,7 @@ const renderVurderingHistorikk = (
       >
         <ManglendeMedvirkningHistorikk />
       </ValgtEnhetContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
@@ -69,13 +69,13 @@ describe("ManglendeMedvirkningHistorikk", () => {
 
       expect(
         screen.queryByText(
-          "Tidligere vurderinger av § 8-8 medvirkningsplikten i Modia."
-        )
+          "Tidligere vurderinger av § 8-8 medvirkningsplikten i Modia.",
+        ),
       ).to.not.exist;
       expect(
         screen.getByText(
-          "Det finnes ingen tidligere vurderinger av § 8-8 medvirkningsplikten i Modia."
-        )
+          "Det finnes ingen tidligere vurderinger av § 8-8 medvirkningsplikten i Modia.",
+        ),
       ).to.exist;
     });
   });
@@ -84,7 +84,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
     const oppfylt = createManglendeMedvirkningVurdering(
       VurderingType.OPPFYLT,
       oppfyltCreated,
-      "Her er en begrunnelse"
+      "Her er en begrunnelse",
     );
     const forhandsvarselCreated = daysFromToday(20);
     const forhandsvarsel = {
@@ -94,17 +94,17 @@ describe("ManglendeMedvirkningHistorikk", () => {
     const stansCreated = new Date();
     const stans = createManglendeMedvirkningVurdering(
       VurderingType.STANS,
-      stansCreated
+      stansCreated,
     );
     const ikkeAktuellCreated = daysFromToday(10);
     const ikkeAktuell = createManglendeMedvirkningVurdering(
       VurderingType.IKKE_AKTUELL,
-      ikkeAktuellCreated
+      ikkeAktuellCreated,
     );
     const unntakCreated = daysFromToday(50);
     const unntak = createManglendeMedvirkningVurdering(
       VurderingType.UNNTAK,
-      unntakCreated
+      unntakCreated,
     );
 
     it("viser tekst om tidligere vurderinger", () => {
@@ -112,13 +112,13 @@ describe("ManglendeMedvirkningHistorikk", () => {
 
       expect(
         screen.queryByText(
-          "Det finnes ingen tidligere vurderinger av § 8-8 medvirkningsplikten i Modia."
-        )
+          "Det finnes ingen tidligere vurderinger av § 8-8 medvirkningsplikten i Modia.",
+        ),
       ).to.not.exist;
       expect(
         screen.getByText(
-          "Tidligere vurderinger av § 8-8 medvirkningsplikten i Modia."
-        )
+          "Tidligere vurderinger av § 8-8 medvirkningsplikten i Modia.",
+        ),
       ).to.exist;
     });
 
@@ -134,19 +134,19 @@ describe("ManglendeMedvirkningHistorikk", () => {
       const accordionButtons = getAccordionButtons();
 
       expect(accordionButtons[0].textContent).to.contain(
-        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`
+        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`,
       );
       expect(accordionButtons[1].textContent).to.contain(
-        `Unntak - ${tilDatoMedManedNavn(unntakCreated)}`
+        `Unntak - ${tilDatoMedManedNavn(unntakCreated)}`,
       );
       expect(accordionButtons[2].textContent).to.contain(
-        `Forhåndsvarsel - ${tilDatoMedManedNavn(forhandsvarselCreated)}`
+        `Forhåndsvarsel - ${tilDatoMedManedNavn(forhandsvarselCreated)}`,
       );
       expect(accordionButtons[3].textContent).to.contain(
-        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`
+        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`,
       );
       expect(accordionButtons[4].textContent).to.contain(
-        `Innstilling om stans - ${tilDatoMedManedNavn(stansCreated)}`
+        `Innstilling om stans - ${tilDatoMedManedNavn(stansCreated)}`,
       );
     });
 
@@ -154,7 +154,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
       renderVurderingHistorikk([oppfylt]);
 
       const accordionButton = getButton(
-        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`
+        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`,
       );
 
       await userEvent.click(accordionButton);
@@ -171,14 +171,14 @@ describe("ManglendeMedvirkningHistorikk", () => {
       renderVurderingHistorikk([forhandsvarsel]);
 
       const accordionButton = getButton(
-        `Forhåndsvarsel - ${tilDatoMedManedNavn(forhandsvarselCreated)}`
+        `Forhåndsvarsel - ${tilDatoMedManedNavn(forhandsvarselCreated)}`,
       );
 
       await userEvent.click(accordionButton);
 
       expect(screen.getByText("Svarfrist i forhåndsvarselet")).to.exist;
       expect(
-        screen.getByText(tilDatoMedManedNavn(forhandsvarsel.varsel?.svarfrist))
+        screen.getByText(tilDatoMedManedNavn(forhandsvarsel.varsel?.svarfrist)),
       ).to.exist;
       expect(screen.getByText("Begrunnelse")).to.exist;
       expect(screen.getByText(forhandsvarsel.begrunnelse)).to.exist;
@@ -198,7 +198,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
         within(previewModal).getByRole("heading", {
           name: "Varsel om mulig stans av sykepenger",
           hidden: true,
-        })
+        }),
       ).to.exist;
     });
 
@@ -206,7 +206,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
       renderVurderingHistorikk([stans]);
 
       const accordionButton = getButton(
-        `Innstilling om stans - ${tilDatoMedManedNavn(stansCreated)}`
+        `Innstilling om stans - ${tilDatoMedManedNavn(stansCreated)}`,
       );
 
       await userEvent.click(accordionButton);
@@ -219,7 +219,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
       renderVurderingHistorikk([unntak]);
 
       const accordionButton = getButton(
-        `Unntak - ${tilDatoMedManedNavn(unntakCreated)}`
+        `Unntak - ${tilDatoMedManedNavn(unntakCreated)}`,
       );
 
       await userEvent.click(accordionButton);
@@ -231,7 +231,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
       renderVurderingHistorikk([ikkeAktuell]);
 
       const accordionButton = getButton(
-        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`
+        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`,
       );
 
       await userEvent.click(accordionButton);
@@ -260,19 +260,19 @@ describe("ManglendeMedvirkningHistorikk", () => {
       const vurderinger: VurderingResponseDTO[] = [
         createManglendeMedvirkningVurdering(
           VurderingType.FORHANDSVARSEL,
-          new Date("2025-02-15T08:00:00.000Z")
+          new Date("2025-02-15T08:00:00.000Z"),
         ),
         createManglendeMedvirkningVurdering(
           VurderingType.STANS,
-          new Date("2025-02-16T08:00:00.000Z")
+          new Date("2025-02-16T08:00:00.000Z"),
         ),
         createManglendeMedvirkningVurdering(
           VurderingType.FORHANDSVARSEL,
-          new Date("2025-02-21T08:00:00.000Z")
+          new Date("2025-02-21T08:00:00.000Z"),
         ),
         createManglendeMedvirkningVurdering(
           VurderingType.STANS,
-          new Date("2025-02-22T08:00:00.000Z")
+          new Date("2025-02-22T08:00:00.000Z"),
         ),
       ];
 
@@ -283,19 +283,19 @@ describe("ManglendeMedvirkningHistorikk", () => {
       expect(accordionButtons.length).toBe(5);
 
       expect(accordionButtons[0].textContent).to.contain(
-        "Innstilling om stans - 22. februar 2025"
+        "Innstilling om stans - 22. februar 2025",
       );
       expect(accordionButtons[1].textContent).to.contain(
-        "Forhåndsvarsel - 21. februar 2025"
+        "Forhåndsvarsel - 21. februar 2025",
       );
       expect(accordionButtons[2].textContent).to.contain(
-        "Automatisk utbetaling stanset - 20. februar 2025"
+        "Automatisk utbetaling stanset - 20. februar 2025",
       );
       expect(accordionButtons[3].textContent).to.contain(
-        "Innstilling om stans - 16. februar 2025"
+        "Innstilling om stans - 16. februar 2025",
       );
       expect(accordionButtons[4].textContent).to.contain(
-        "Forhåndsvarsel - 15. februar 2025"
+        "Forhåndsvarsel - 15. februar 2025",
       );
     });
   });

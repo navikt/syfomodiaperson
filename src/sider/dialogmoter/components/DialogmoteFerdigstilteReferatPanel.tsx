@@ -29,7 +29,7 @@ const FerdigstilteReferatList = ({ mote }: FerdigstilteReferatListProps) => {
         return (
           <li key={index}>
             {`${referatTekst}, sendt ${tilLesbarDatoMedArstall(
-              referat.updatedAt
+              referat.updatedAt,
             )}`}
           </li>
         );
@@ -49,7 +49,7 @@ const EndreReferatPanel = ({ mote }: EndreReferatPanelProps): ReactElement => {
     <>
       <FerdigstilteReferatList mote={mote} />
       {`${texts.sisteFrist} ${tilDatoMedManedNavnOgKlokkeslett(
-        endreReferatFrist
+        endreReferatFrist,
       )}`}
       <Button
         className="mt-8 w-fit"

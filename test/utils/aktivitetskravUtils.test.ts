@@ -12,7 +12,7 @@ describe("aktivitetskravUtils", () => {
     it("returns oppfolgingstilfelle starting before stoppunkt and ending after stoppunkt for aktivitetskrav", () => {
       const aktivitetskrav = createAktivitetskrav(
         new Date(),
-        AktivitetskravStatus.NY
+        AktivitetskravStatus.NY,
       );
       const tilfeller = [
         generateOppfolgingstilfelle(daysFromToday(-601), daysFromToday(-401)),
@@ -22,7 +22,7 @@ describe("aktivitetskravUtils", () => {
 
       const oppfolgingstilfelleDTO = oppfolgingstilfelleForAktivitetskrav(
         aktivitetskrav,
-        tilfeller
+        tilfeller,
       );
       expect(oppfolgingstilfelleDTO).to.not.be.undefined;
 
@@ -36,7 +36,7 @@ describe("aktivitetskravUtils", () => {
     it("returns undefined when no oppfolgingstilfelle starting before stoppunkt and ending after stoppunkt for aktivitetskrav", () => {
       const aktivitetskrav = createAktivitetskrav(
         new Date(),
-        AktivitetskravStatus.NY
+        AktivitetskravStatus.NY,
       );
       const tilfeller = [
         generateOppfolgingstilfelle(daysFromToday(-601), daysFromToday(-401)),
@@ -45,20 +45,20 @@ describe("aktivitetskravUtils", () => {
 
       const oppfolgingstilfelleDTO = oppfolgingstilfelleForAktivitetskrav(
         aktivitetskrav,
-        tilfeller
+        tilfeller,
       );
       expect(oppfolgingstilfelleDTO).to.be.undefined;
     });
     it("returns undefined when no oppfolgingstilfeller", () => {
       const aktivitetskrav = createAktivitetskrav(
         new Date(),
-        AktivitetskravStatus.NY
+        AktivitetskravStatus.NY,
       );
       const tilfeller = [];
 
       const oppfolgingstilfelleDTO = oppfolgingstilfelleForAktivitetskrav(
         aktivitetskrav,
-        tilfeller
+        tilfeller,
       );
       expect(oppfolgingstilfelleDTO).to.be.undefined;
     });

@@ -6,7 +6,7 @@ const texts = {
 };
 
 export default function DialogmoteKlokkeslett(
-  props: Omit<TextFieldProps, "label" | "size">
+  props: Omit<TextFieldProps, "label" | "size">,
 ) {
   return (
     <TextField

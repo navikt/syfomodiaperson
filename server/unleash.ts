@@ -36,27 +36,27 @@ export function getToggles(veilederId, enhetId) {
   return {
     isVirksomhetsinputEnabled: unleash.isEnabled(
       "isVirksomhetsinputEnabled",
-      context
+      context,
     ),
     isTildelOppfolgingsenhetEnabled: unleash.isEnabled(
       "isTildelOppfolgingsenhetEnabled",
-      context
+      context,
     ),
     isKartleggingssporsmalEnabled: unleash.isEnabled(
       "isKartleggingssporsmalEnabled",
-      context
+      context,
     ),
     isFlexjarKartleggingssporsmalEnabled: unleash.isEnabled(
       "isFlexjarKartleggingssporsmalEnabled",
-      context
+      context,
     ),
     isForsokForsterketOppfolgingMerkingEnabled: unleash.isEnabled(
       "isForsokForsterketOppfolgingMerkingEnabled",
-      context
+      context,
     ),
     isNyTilgangskontrollEnabled: unleash.isEnabled(
       "isNyTilgangskontrollEnabled",
-      context
+      context,
     ),
   };
 }

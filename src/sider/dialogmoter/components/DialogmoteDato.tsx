@@ -10,7 +10,7 @@ export default function DialogmoteDato() {
   const today = dayjs(now);
   const yearFromToday = today.add(1, "year").toDate();
   const invalidDateMessage = `Vennligst angi en gyldig dato innen ${toDatePrettyPrint(
-    yearFromToday
+    yearFromToday,
   )}`;
 
   const { field, fieldState } = useController<TidStedSkjemaValues, "dato">({

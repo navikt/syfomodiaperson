@@ -7,6 +7,6 @@ export const stubOppfolgingstilfellePersonApi = () =>
   mockServer.use(
     http.get(
       `*${ISOPPFOLGINGSTILFELLE_ROOT}/oppfolgingstilfelle/personident`,
-      () => HttpResponse.json(oppfolgingstilfellePersonMock)
-    )
+      () => HttpResponse.json(oppfolgingstilfellePersonMock),
+    ),
   );

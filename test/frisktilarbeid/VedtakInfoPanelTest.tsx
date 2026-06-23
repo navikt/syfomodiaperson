@@ -7,7 +7,7 @@ import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import dayjs from "dayjs";
 
 const getVedtakWith = (
-  overrides: Partial<VedtakResponseDTO>
+  overrides: Partial<VedtakResponseDTO>,
 ): VedtakResponseDTO => ({
   ...(createVedtak(new Date()) as VedtakResponseDTO),
   ...overrides,

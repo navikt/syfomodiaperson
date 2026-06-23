@@ -77,11 +77,11 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         incomingSykmeldingWithArbeidsgiver,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.arbeidsgiver).to.deep.equal(
-        expectedSykmeldingArbeidsgiver
+        expectedSykmeldingArbeidsgiver,
       );
     });
 
@@ -92,7 +92,7 @@ describe("sykmeldingParser", () => {
       const outputSM = newSMFormat2OldFormat(mockSM, sykmeldtFnr);
 
       expect(outputSM.arbeidsgiver).to.deep.equal(
-        expectedSykmeldingArbeidsgiver
+        expectedSykmeldingArbeidsgiver,
       );
     });
   });
@@ -110,7 +110,7 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         incomingSykmeldingWithBekreftelseinfo,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.bekreftelse).to.deep.equal(expectedSykmeldingBekreftelse);
@@ -156,7 +156,7 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         incomingSykmeldingWithDiagnoseinfo,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.diagnose).to.deep.equal(expectedSykmeldingDiagnose);
@@ -179,7 +179,7 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         incomingSykmeldingWithSkjermetForPasient,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.diagnose).to.deep.equal(expectedSykmeldingDiagnose);
@@ -226,11 +226,11 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         incomingSykmeldingWithPrognoseErIArbeid,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.friskmelding).to.deep.equal(
-        expectedSykmeldingFriskmelding
+        expectedSykmeldingFriskmelding,
       );
     });
 
@@ -252,11 +252,11 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         incomingSykmeldingWithPrognoseErIkkeIArbeid,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.friskmelding).to.deep.equal(
-        expectedSykmeldingFriskmelding
+        expectedSykmeldingFriskmelding,
       );
     });
 
@@ -278,7 +278,7 @@ describe("sykmeldingParser", () => {
       const outputSM = newSMFormat2OldFormat(mockSM, sykmeldtFnr);
 
       expect(outputSM.friskmelding).to.deep.equal(
-        expectedSykmeldingFriskmelding
+        expectedSykmeldingFriskmelding,
       );
     });
   });
@@ -314,11 +314,11 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         incomingSykmeldingWithMottakendeArbeidsgiver,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.innsendtArbeidsgivernavn).to.deep.equal(
-        expectedInnsendtArbeidsgivernavn
+        expectedInnsendtArbeidsgivernavn,
       );
     });
 
@@ -331,7 +331,7 @@ describe("sykmeldingParser", () => {
       const outputSM = newSMFormat2OldFormat(mockSM, sykmeldtFnr);
 
       expect(outputSM.innsendtArbeidsgivernavn).to.deep.equal(
-        expectedInnsendtArbeidsgivernavn
+        expectedInnsendtArbeidsgivernavn,
       );
     });
   });
@@ -348,11 +348,11 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         incomingSykmeldingWithMeldingTilArbeidsgiver,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.innspillTilArbeidsgiver).to.deep.equal(
-        expectedInnspillTilArbeidsgiver
+        expectedInnspillTilArbeidsgiver,
       );
     });
 
@@ -377,7 +377,7 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         incomingSykmeldingWithMeldingTilNav,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.meldingTilNav).to.deep.equal(expectedmeldingTilNav);
@@ -410,18 +410,18 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         sykmeldingWithMottakendeArbeidsgiver,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.mottakendeArbeidsgiver).to.deep.equal(
-        expectedMottakendeArbeidsgiver
+        expectedMottakendeArbeidsgiver,
       );
     });
 
     it("Returns correct mottakendeArbeidsgiver withouth info", () => {
       const outputSM = newSMFormat2OldFormat(
         mockSykmeldingWithoutMottakendeArbeidsgiver,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.mottakendeArbeidsgiver).to.deep.equal(undefined);
@@ -456,11 +456,11 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         incomingSykmeldingPeriodeWithAktivitetIkkeMulig,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.mulighetForArbeid).to.deep.equal(
-        expectedMulighetForArbeid
+        expectedMulighetForArbeid,
       );
     });
 
@@ -487,11 +487,11 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         incomingSykmeldingPeriodeWithGradert,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.mulighetForArbeid).to.deep.equal(
-        expectedMulighetForArbeid
+        expectedMulighetForArbeid,
       );
     });
 
@@ -526,11 +526,11 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         incomingSykmeldingPeriodeWithGradert,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.mulighetForArbeid).to.deep.equal(
-        expectedMulighetForArbeid
+        expectedMulighetForArbeid,
       );
     });
   });
@@ -544,7 +544,7 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         sykmeldingWithMottakendeArbeidsgiver,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.orgnummer).to.deep.equal(expectedMottakendeArbeidsgiver);
@@ -577,7 +577,7 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         sykmeldingWithStatusSendt,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.sendtdato).to.deep.equal(expectedMottakendeArbeidsgiver);
@@ -610,7 +610,7 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         sykmeldingWithSporsmalOgSvarListe,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.sporsmal).to.deep.equal(expectedSporsmal);
@@ -644,12 +644,12 @@ describe("sykmeldingParser", () => {
 
     it("Returns correct status when status is APEN", () => {
       const sykmeldingWithStatusApen = mockSykmeldingWithStatus(
-        NyeSykmeldingStatuser.APEN
+        NyeSykmeldingStatuser.APEN,
       );
 
       const outputSM = newSMFormat2OldFormat(
         sykmeldingWithStatusApen,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.status).to.deep.equal(GamleSykmeldingStatuser.NY);
@@ -657,12 +657,12 @@ describe("sykmeldingParser", () => {
 
     it("Returns correct status when status is UTGATT", () => {
       const sykmeldingWithStatusApen = mockSykmeldingWithStatus(
-        NyeSykmeldingStatuser.UTGATT
+        NyeSykmeldingStatuser.UTGATT,
       );
 
       const outputSM = newSMFormat2OldFormat(
         sykmeldingWithStatusApen,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.status).to.deep.equal(GamleSykmeldingStatuser.UTGAATT);
@@ -681,7 +681,7 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         sykmeldingWithKontaktMedPasient,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.tilbakedatering).to.deep.equal(expectedTilbakedatering);
@@ -711,11 +711,11 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         sykmeldingWithUtdypendeOpplysningerPkt62,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.utdypendeOpplysninger).to.deep.equal(
-        expectedUtdypendeOpplysninger
+        expectedUtdypendeOpplysninger,
       );
     });
 
@@ -728,11 +728,11 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         sykmeldingWithUtdypendeOpplysningerPkt63,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.utdypendeOpplysninger).to.deep.equal(
-        expectedUtdypendeOpplysninger
+        expectedUtdypendeOpplysninger,
       );
     });
 
@@ -744,7 +744,7 @@ describe("sykmeldingParser", () => {
       const outputSM = newSMFormat2OldFormat(mockSM, sykmeldtFnr);
 
       expect(outputSM.utdypendeOpplysninger).to.deep.equal(
-        expectedUtdypendeOpplysninger
+        expectedUtdypendeOpplysninger,
       );
     });
 
@@ -758,11 +758,11 @@ describe("sykmeldingParser", () => {
 
       const outputSM = newSMFormat2OldFormat(
         sykmeldingWithUtdypendeOpplysningerPkt62,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.utdypendeOpplysninger).to.deep.equal(
-        expectedUtdypendeOpplysninger
+        expectedUtdypendeOpplysninger,
       );
     });
   });
@@ -771,7 +771,7 @@ describe("sykmeldingParser", () => {
     it("Returns correct valgtArbeidssituasjon arbeidstaker", () => {
       const outputSM = newSMFormat2OldFormat(
         mockSykmeldingWithSporsmalOgSvarListe(),
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.valgtArbeidssituasjon).to.deep.equal("ARBEIDSTAKER");
@@ -790,7 +790,7 @@ describe("sykmeldingParser", () => {
     it("Returns correct egenmeldt", () => {
       const outputSM = newSMFormat2OldFormat(
         mockSykmeldingerWithEgenmeldt,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.egenmeldt).to.deep.equal(true);
@@ -809,7 +809,7 @@ describe("sykmeldingParser", () => {
     it("Returns correct harRedusertArbeidsgiverperiode", () => {
       const outputSM = newSMFormat2OldFormat(
         mockSykmeldingerWithHarRedusertArbeidsgiverperiode,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.harRedusertArbeidsgiverperiode).to.deep.equal(true);
@@ -828,7 +828,7 @@ describe("sykmeldingParser", () => {
     it("Returns correct papirsykmelding", () => {
       const outputSM = newSMFormat2OldFormat(
         mockSykmeldingerWithPapirsykmelding,
-        sykmeldtFnr
+        sykmeldtFnr,
       );
 
       expect(outputSM.papirsykmelding).to.deep.equal(true);
@@ -894,7 +894,7 @@ describe("oldFormatSMForAG", () => {
 
     const outputSM = oldFormatSMForAG(
       sykmeldingWithPrognoseErIArbeid,
-      sykmeldtFnr
+      sykmeldtFnr,
     );
 
     expect(outputSM.friskmelding).to.deep.equal(expectedFriskmelding);
@@ -918,7 +918,7 @@ describe("oldFormatSMForAG", () => {
 
     const outputSM = oldFormatSMForAG(
       sykmeldingWithPrognoseErIkkeIArbeid,
-      sykmeldtFnr
+      sykmeldtFnr,
     );
 
     expect(outputSM.friskmelding).to.deep.equal(expectedFriskmelding);
@@ -962,7 +962,7 @@ describe("oldFormatSMForAG", () => {
 
     const outputSM = oldFormatSMForAG(
       incomingSykmeldingPeriodeWithAktivitetIkkeMulig,
-      sykmeldtFnr
+      sykmeldtFnr,
     );
 
     expect(outputSM.mulighetForArbeid).to.deep.equal(expectedMulighetForArbeid);
@@ -998,7 +998,7 @@ describe("oldFormatSMForAG", () => {
 
     const outputSM = oldFormatSMForAG(
       incomingSykmeldingPeriodeWithGradert,
-      sykmeldtFnr
+      sykmeldtFnr,
     );
 
     expect(outputSM.mulighetForArbeid).to.deep.equal(expectedMulighetForArbeid);
@@ -1014,7 +1014,7 @@ describe("oldFormatSMForAG", () => {
 
     const outputSM = oldFormatSMForAG(
       sykmeldingWithKontaktMedPasient,
-      sykmeldtFnr
+      sykmeldtFnr,
     );
 
     expect(outputSM.tilbakedatering).to.deep.equal(expectedTilbakedatering);
@@ -1023,7 +1023,7 @@ describe("oldFormatSMForAG", () => {
   it("Returns correct AG version with utdypendeOpplysninger removed when pkt 6.2", () => {
     const outputSM = oldFormatSMForAG(
       mockSykmeldingerWithUtdypendeOpplysningerPkt62(),
-      sykmeldtFnr
+      sykmeldtFnr,
     );
 
     expect(outputSM.utdypendeOpplysninger.size).to.equal(0);
@@ -1032,7 +1032,7 @@ describe("oldFormatSMForAG", () => {
   it("Returns correct AG version with utdypendeOpplysninger removed when pkt 6.3", () => {
     const outputSM = oldFormatSMForAG(
       mockSykmeldingerWithUtdypendeOpplysningerPkt63(),
-      sykmeldtFnr
+      sykmeldtFnr,
     );
 
     expect(outputSM.utdypendeOpplysninger.size).to.equal(0);

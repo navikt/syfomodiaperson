@@ -9,6 +9,6 @@ import { mockServer } from "../setup";
 export const stubVeilederinfoApi = () =>
   mockServer.use(
     http.get(`*${SYFOVEILEDER_ROOT}/veiledere/${VEILEDER_IDENT_DEFAULT}`, () =>
-      HttpResponse.json(VEILEDER_DEFAULT)
-    )
+      HttpResponse.json(VEILEDER_DEFAULT),
+    ),
   );

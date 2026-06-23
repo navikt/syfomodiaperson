@@ -21,7 +21,7 @@ const defaultOppfyltBegrunnelse = "Du har rett på sykepenger";
 
 const getSendForhandsvarselDocument = (
   begrunnelse: string,
-  frist: Date
+  frist: Date,
 ): DocumentComponentDto[] => {
   const sendForhandsvarselTexts = getForhandsvarselArbeidsuforhetTexts({
     frist,
@@ -82,7 +82,7 @@ const getSendForhandsvarselDocument = (
 
 const getOppfyltDocument = (
   begrunnelse: string,
-  forhandsvarselSendtDato: Date
+  forhandsvarselSendtDato: Date,
 ): DocumentComponentDto[] => {
   return [
     {
@@ -92,7 +92,7 @@ const getOppfyltDocument = (
     {
       texts: [
         arbeidsuforhetTexts.tilSykmeldt.previousForhandsvarsel(
-          forhandsvarselSendtDato
+          forhandsvarselSendtDato,
         ),
       ],
       type: DocumentComponentType.PARAGRAPH,
@@ -137,7 +137,7 @@ export const mockArbeidsuforhetvurdering: VurderingResponseDTO[] = [
     begrunnelse: defaultOppfyltBegrunnelse,
     document: getSendForhandsvarselDocument(
       "En begrunnelse forhåndsvarsel",
-      daysFromToday(-30)
+      daysFromToday(-30),
     ),
     varsel: mockVarsel,
   },

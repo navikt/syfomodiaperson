@@ -36,12 +36,12 @@ export default function Sykmeldinger({ selectedOppfolgingstilfelle }: Props) {
     (sykmelding) =>
       sykmelding.status === SykmeldingStatus.SENDT ||
       sykmelding.status === SykmeldingStatus.NY ||
-      erSykmeldingUtenArbeidsgiver(sykmelding)
+      erSykmeldingUtenArbeidsgiver(sykmelding),
   );
   const sykmeldingerIOppfolgingstilfellet =
     sykmeldingerInnenforOppfolgingstilfelle(
       aktuelleSykmeldinger,
-      selectedOppfolgingstilfelle
+      selectedOppfolgingstilfelle,
     );
   const sykmeldingerSortertPaaStartDato =
     sykmeldingerSortertNyestTilEldstPeriode(sykmeldingerIOppfolgingstilfellet);

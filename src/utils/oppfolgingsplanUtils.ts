@@ -21,11 +21,11 @@ const newestLpsPlanPerVirksomhet = (lpsplaner: OppfolgingsplanLPS[]) => {
 export function lpsPlanerWithActiveTilfelle(
   lpsplaner: OppfolgingsplanLPS[],
   oppfolgingstilfelle: OppfolgingstilfelleDTO | undefined,
-  isLatestTilfelle = false
+  isLatestTilfelle = false,
 ): OppfolgingsplanLPS[] {
   const aktivePlanerForOppfolgingstilfelle = oppfolgingstilfelle
     ? lpsplaner.filter((plan) =>
-        isPlanWithinActiveTilfelle(plan, oppfolgingstilfelle, isLatestTilfelle)
+        isPlanWithinActiveTilfelle(plan, oppfolgingstilfelle, isLatestTilfelle),
       )
     : [];
 

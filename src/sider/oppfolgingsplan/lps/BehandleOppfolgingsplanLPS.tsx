@@ -20,7 +20,7 @@ export default function BehandleOppfolgingsplanLPS({
 }: Props) {
   const { data: personoppgaver } = usePersonoppgaverQuery();
   const personoppgave = personoppgaver.find(
-    (personoppgave) => personoppgave.referanseUuid === oppfolgingsplanLPS.uuid
+    (personoppgave) => personoppgave.referanseUuid === oppfolgingsplanLPS.uuid,
   );
   const behandlePersonoppgave = useBehandlePersonoppgave();
 
@@ -49,7 +49,7 @@ export default function BehandleOppfolgingsplanLPS({
             className="w-6 h-6"
           />
           {`Ferdigbehandlet: ${toDatePrettyPrint(
-            personoppgave.behandletTidspunkt
+            personoppgave.behandletTidspunkt,
           )} av ${personoppgave.behandletVeilederIdent}`}
         </BodyShort>
       )}

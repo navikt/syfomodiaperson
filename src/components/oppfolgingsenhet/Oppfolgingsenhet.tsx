@@ -5,7 +5,7 @@ import TildelOppfolgingsenhetModal from "@/components/oppfolgingsenhet/TildelOpp
 
 interface Props {
   setTildeltOppfolgingsenhetNotification: (
-    tildeltNotification: TildeltNotification | undefined
+    tildeltNotification: TildeltNotification | undefined,
   ) => void;
 }
 

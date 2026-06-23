@@ -24,7 +24,7 @@ describe("PersonkortVisning", () => {
     queryClient = queryClientWithAktivBruker();
     queryClient.setQueryData(
       brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => brukerinfoMock
+      () => brukerinfoMock,
     );
     stubFastlegerApi();
   });
@@ -33,7 +33,7 @@ describe("PersonkortVisning", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <PersonkortVisning visning={""} />
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
     expect(screen.getByRole("heading", { name: "Kontaktinformasjon" })).to
@@ -45,7 +45,7 @@ describe("PersonkortVisning", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <PersonkortVisning visning={PERSONKORTVISNING_TYPE.LEGE} />
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
     expect(await screen.findByRole("heading", { name: expectedLegeNavn })).to
@@ -56,14 +56,14 @@ describe("PersonkortVisning", () => {
     const enhetNavn = "NAV Oppfølging utland";
     queryClient.setQueryData(
       behandlendeEnhetQueryKeys.behandlendeEnhet(
-        ARBEIDSTAKER_DEFAULT.personIdent
+        ARBEIDSTAKER_DEFAULT.personIdent,
       ),
-      () => behandlendeEnhetMockResponse
+      () => behandlendeEnhetMockResponse,
     );
     render(
       <QueryClientProvider client={queryClient}>
         <PersonkortVisning visning={PERSONKORTVISNING_TYPE.ENHET} />
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
     expect(await screen.findByRole("heading", { name: enhetNavn })).to.exist;
@@ -74,7 +74,7 @@ describe("PersonkortVisning", () => {
     const inTenDays = daysFromToday(10);
     const expectedGyldighetText = `Gyldig: ${tilLesbarPeriodeMedArUtenManednavn(
       tenDaysAgo,
-      inTenDays
+      inTenDays,
     )}`;
 
     queryClient.setQueryData(
@@ -89,13 +89,13 @@ describe("PersonkortVisning", () => {
             gyldigTom: inTenDays,
           },
         ],
-      })
+      }),
     );
 
     render(
       <QueryClientProvider client={queryClient}>
         <PersonkortVisning visning={PERSONKORTVISNING_TYPE.SIKKERHETSTILTAK} />
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
     expect(screen.getByText("Fysisk utestengelse")).to.exist;

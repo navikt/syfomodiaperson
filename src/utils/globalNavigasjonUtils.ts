@@ -33,14 +33,14 @@ import { KartleggingssporsmalKandidatResponseDTO } from "@/data/kartleggingsspor
 
 const getNumberOfMoteOppgaver = (
   motebehov: MotebehovVeilederDTO[],
-  personOppgaver: PersonOppgave[]
+  personOppgaver: PersonOppgave[],
 ): number => {
   const numberOfUbehandledeMotebehov = harUbehandletMotebehov(motebehov)
     ? 1
     : 0;
   const numberOfUbehandledeDialogmotesvar = hasUbehandletPersonoppgave(
     personOppgaver,
-    PersonOppgaveType.DIALOGMOTESVAR
+    PersonOppgaveType.DIALOGMOTESVAR,
   )
     ? 1
     : 0;
@@ -48,7 +48,7 @@ const getNumberOfMoteOppgaver = (
 };
 
 function numberOfActiveLPSOppfolgingsplaner(
-  oppfolgingsplanerLps: OppfolgingsplanLPSMedPersonoppgave[]
+  oppfolgingsplanerLps: OppfolgingsplanLPSMedPersonoppgave[],
 ) {
   const aktiveLPSOppfolgingsplaner =
     oppfolgingsplanerLPSOpprettetIdag(oppfolgingsplanerLps);
@@ -56,7 +56,7 @@ function numberOfActiveLPSOppfolgingsplaner(
 }
 
 const getNumberOfAktivitetskravOppgaver = (
-  aktivitetskrav: AktivitetskravDTO[]
+  aktivitetskrav: AktivitetskravDTO[],
 ) => {
   const newAktivitetskrav = aktivitetskrav.find((krav) => {
     return krav.status === AktivitetskravStatus.NY;
@@ -70,17 +70,17 @@ const getNumberOfAktivitetskravOppgaver = (
 };
 
 const getNumberOfBehandlerDialogOppgaver = (
-  personOppgaver: PersonOppgave[]
+  personOppgaver: PersonOppgave[],
 ) => {
   const numberOfUbehandledeBehandlerDialogSvar = hasUbehandletPersonoppgave(
     personOppgaver,
-    PersonOppgaveType.BEHANDLERDIALOG_SVAR
+    PersonOppgaveType.BEHANDLERDIALOG_SVAR,
   )
     ? 1
     : 0;
   const numberOfUbehandledeBehandlerDialogUbesvart = hasUbehandletPersonoppgave(
     personOppgaver,
-    PersonOppgaveType.BEHANDLERDIALOG_MELDING_UBESVART
+    PersonOppgaveType.BEHANDLERDIALOG_MELDING_UBESVART,
   )
     ? 1
     : 0;
@@ -88,7 +88,7 @@ const getNumberOfBehandlerDialogOppgaver = (
   const numberOfUbehanldedeBehandlerDialogMeldingAvvist =
     hasUbehandletPersonoppgave(
       personOppgaver,
-      PersonOppgaveType.BEHANDLERDIALOG_MELDING_AVVIST
+      PersonOppgaveType.BEHANDLERDIALOG_MELDING_AVVIST,
     )
       ? 1
       : 0;
@@ -101,23 +101,23 @@ const getNumberOfBehandlerDialogOppgaver = (
 };
 
 const getNumberOfBehandlerBerOmBistandOppgaver = (
-  personoppgaver: PersonOppgave[]
+  personoppgaver: PersonOppgave[],
 ): number => {
   return getAllUbehandledePersonOppgaver(
     personoppgaver,
-    PersonOppgaveType.BEHANDLER_BER_OM_BISTAND
+    PersonOppgaveType.BEHANDLER_BER_OM_BISTAND,
   ).length;
 };
 
 const getNumberOfArbeidsuforhetOppgaver = (
-  arbeidsuforhetVurderinger: VurderingResponseDTO[]
+  arbeidsuforhetVurderinger: VurderingResponseDTO[],
 ): number => {
   const sisteVurdering = arbeidsuforhetVurderinger[0];
   return sisteVurdering?.varsel?.isExpired ? 1 : 0;
 };
 
 function getNumberOfActiveSenOppfolgingOppgaver(
-  senOppfolgingKandidatResponseDTO: SenOppfolgingKandidatResponseDTO[]
+  senOppfolgingKandidatResponseDTO: SenOppfolgingKandidatResponseDTO[],
 ) {
   const kandidat: SenOppfolgingKandidatResponseDTO | undefined =
     senOppfolgingKandidatResponseDTO[0];
@@ -131,7 +131,7 @@ function getNumberOfActiveSenOppfolgingOppgaver(
 }
 
 function getNumberOfFriskmeldingTilArbeidsformidlingOppgaver(
-  friskmeldingTilArbeidsformidlingVedtak: VedtakResponseDTO[]
+  friskmeldingTilArbeidsformidlingVedtak: VedtakResponseDTO[],
 ): number {
   const sisteVedtak = friskmeldingTilArbeidsformidlingVedtak[0];
   return !!sisteVedtak &&
@@ -144,10 +144,10 @@ function getNumberOfFriskmeldingTilArbeidsformidlingOppgaver(
 function getNumberOfManglendeMedvirkningOppgaver(
   manglendeMedvirkningVurdering:
     | ManglendeMedvirkningVurderingResponseDTO
-    | undefined
+    | undefined,
 ): number {
   return isExpiredForhandsvarsel(
-    manglendeMedvirkningVurdering?.varsel?.svarfrist
+    manglendeMedvirkningVurdering?.varsel?.svarfrist,
   )
     ? 1
     : 0;
@@ -157,11 +157,11 @@ function getNumberOfKartleggingssporsmalOppgaver(
   kartleggingssporsmalKandidater:
     | KartleggingssporsmalKandidatResponseDTO[]
     | null
-    | undefined
+    | undefined,
 ): number {
   return (
     kartleggingssporsmalKandidater?.filter(
-      (kandidat) => kandidat.status === "SVAR_MOTTATT"
+      (kandidat) => kandidat.status === "SVAR_MOTTATT",
     ).length ?? 0
   );
 }
@@ -183,7 +183,7 @@ export function numberOfTasks(
     | KartleggingssporsmalKandidatResponseDTO[]
     | undefined
     | null,
-  antallAktiveV2Planer: number
+  antallAktiveV2Planer: number,
 ): number {
   switch (menypunkt) {
     case Menypunkter.DIALOGMOTE:
@@ -194,7 +194,7 @@ export function numberOfTasks(
         numberOfActiveLPSOppfolgingsplaner(oppfolgingsplanerlps) +
         numberOfUbehandledePersonOppgaver(
           personOppgaver,
-          PersonOppgaveType.OPPFOLGINGSPLANLPS
+          PersonOppgaveType.OPPFOLGINGSPLANLPS,
         ) +
         antallAktiveV2Planer
       );
@@ -209,15 +209,15 @@ export function numberOfTasks(
       return getNumberOfArbeidsuforhetOppgaver(arbeidsuforhetVurderinger);
     case Menypunkter.SENOPPFOLGING:
       return getNumberOfActiveSenOppfolgingOppgaver(
-        senOppfolgingKandidatOppgaver
+        senOppfolgingKandidatOppgaver,
       );
     case Menypunkter.FRISKTILARBEID:
       return getNumberOfFriskmeldingTilArbeidsformidlingOppgaver(
-        friskmeldingTilArbeidsformidlingVedtak
+        friskmeldingTilArbeidsformidlingVedtak,
       );
     case Menypunkter.MANGLENDE_MEDVIRKNING:
       return getNumberOfManglendeMedvirkningOppgaver(
-        manglendeMedvirkningVurdering
+        manglendeMedvirkningVurdering,
       );
     case Menypunkter.KARTLEGGINGSSPORSMAL:
       return getNumberOfKartleggingssporsmalOppgaver(kartleggingVurderinger);

@@ -30,13 +30,13 @@ server.use(express.json());
 server.use(
   helmet({
     contentSecurityPolicy: false,
-  })
+  }),
 );
 
 const nocache = (
   req: express.Request,
   res: express.Response,
-  next: express.NextFunction
+  next: express.NextFunction,
 ) => {
   res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
   res.header("Expires", "-1");
@@ -47,7 +47,7 @@ const nocache = (
 const redirectIfUnauthorized = async (
   req: express.Request,
   res: express.Response,
-  next: express.NextFunction
+  next: express.NextFunction,
 ) => {
   if (await validateToken(req)) {
     next();
@@ -72,10 +72,10 @@ const setupServer = async () => {
     (req: express.Request, res: express.Response) => {
       const togglesResponse = getToggles(
         req.query.veilederId,
-        req.query.enhetId
+        req.query.enhetId,
       );
       res.status(200).send(togglesResponse);
-    }
+    },
   );
 
   server.get(
@@ -83,21 +83,21 @@ const setupServer = async () => {
     (req: express.Request, res: express.Response) => {
       res.set("Content-Type", prometheus.register.contentType);
       res.end(prometheus.register.metrics());
-    }
+    },
   );
 
   server.get(
     "/health/isAlive",
     (req: express.Request, res: express.Response) => {
       res.sendStatus(200);
-    }
+    },
   );
 
   server.get(
     "/health/isReady",
     (req: express.Request, res: express.Response) => {
       res.sendStatus(200);
-    }
+    },
   );
 
   server.use("/", express.static(DIST_DIR));
@@ -108,14 +108,14 @@ const setupServer = async () => {
     (
       req: express.Request,
       res: express.Response,
-      next: express.NextFunction
+      next: express.NextFunction,
     ) => {
       if (path.extname(req.path)) {
         return next();
       }
 
       res.sendFile(HTML_FILE);
-    }
+    },
   );
 
   const port = 8080;

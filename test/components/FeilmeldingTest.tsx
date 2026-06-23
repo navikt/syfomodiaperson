@@ -9,7 +9,7 @@ describe("Feilmelding", () => {
     render(<Feilmelding />);
 
     expect(
-      screen.getByRole("heading", { name: "Beklager, det oppstod en feil" })
+      screen.getByRole("heading", { name: "Beklager, det oppstod en feil" }),
     ).to.exist;
     expect(screen.getByText("Vennligst prøv igjen litt senere.")).to.exist;
   });

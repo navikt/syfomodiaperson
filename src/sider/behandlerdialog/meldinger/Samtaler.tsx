@@ -24,7 +24,7 @@ const StyledGuidePanel = styled(GuidePanel)`
 const sortMeldingerByTidspunkt = (
   m1: MeldingDTO,
   m2: MeldingDTO,
-  order: "asc" | "desc" = "asc"
+  order: "asc" | "desc" = "asc",
 ) => {
   return order === "desc"
     ? new Date(m2.tidspunkt).getTime() - new Date(m1.tidspunkt).getTime()
@@ -32,7 +32,7 @@ const sortMeldingerByTidspunkt = (
 };
 
 export const sortConversations = (
-  conversations: Conversations
+  conversations: Conversations,
 ): MeldingDTO[][] => {
   const conversationRefs: string[] = Object.keys(conversations);
   conversationRefs.sort((a, b) => {

@@ -35,16 +35,16 @@ const renderManglendeMedvirkning = () => {
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
     manglendeMedvirkningPath,
-    [manglendeMedvirkningPath]
+    [manglendeMedvirkningPath],
   );
 };
 
 function mockVurdering(vurderinger: VurderingResponseDTO[] = []) {
   queryClient.setQueryData(
     manglendeMedvirkningQueryKeys.manglendeMedvirkning(
-      ARBEIDSTAKER_DEFAULT.personIdent
+      ARBEIDSTAKER_DEFAULT.personIdent,
     ),
-    () => vurderinger
+    () => vurderinger,
   );
 }
 
@@ -64,7 +64,7 @@ describe("Manglendemedvirkning", () => {
     });
     it("viser ny vurdering-knapp når forrige vurdering OPPFYLT", () => {
       const oppfyltVurdering = createManglendeMedvirkningVurdering(
-        VurderingType.OPPFYLT
+        VurderingType.OPPFYLT,
       );
       mockVurdering([oppfyltVurdering, defaultForhandsvarselVurdering]);
       renderManglendeMedvirkning();
@@ -75,7 +75,7 @@ describe("Manglendemedvirkning", () => {
     });
     it("viser ny vurdering-knapp når forrige vurdering STANS", () => {
       const stansVurdering = createManglendeMedvirkningVurdering(
-        VurderingType.STANS
+        VurderingType.STANS,
       );
       mockVurdering([stansVurdering, defaultForhandsvarselVurdering]);
       renderManglendeMedvirkning();
@@ -86,7 +86,7 @@ describe("Manglendemedvirkning", () => {
     });
     it("viser ny vurdering-knapp når forrige vurdering IKKE AKTUELL", () => {
       const ikkeAktuellVurdering = createManglendeMedvirkningVurdering(
-        VurderingType.IKKE_AKTUELL
+        VurderingType.IKKE_AKTUELL,
       );
       mockVurdering([ikkeAktuellVurdering, defaultForhandsvarselVurdering]);
       renderManglendeMedvirkning();
@@ -97,7 +97,7 @@ describe("Manglendemedvirkning", () => {
     });
     it("viser ny vurdering-knapp når forrige vurdering UNNTAK", () => {
       const unntakVurdering = createManglendeMedvirkningVurdering(
-        VurderingType.UNNTAK
+        VurderingType.UNNTAK,
       );
       mockVurdering([unntakVurdering]);
       renderManglendeMedvirkning();
@@ -117,7 +117,7 @@ describe("Manglendemedvirkning", () => {
       expect(
         screen.getByRole("textbox", {
           name: "Begrunnelse (obligatorisk)",
-        })
+        }),
       ).to.exist;
       expect(screen.getByRole("button", { name: "Send" })).to.exist;
       expect(screen.getByRole("button", { name: "Forhåndsvisning" })).to.exist;
@@ -125,7 +125,7 @@ describe("Manglendemedvirkning", () => {
 
     it("viser forhandsvarsel-skjema etter klikk på ny vurdering-knapp når forrige vurdering OPPFYLT", async () => {
       const oppfyltVurdering = createManglendeMedvirkningVurdering(
-        VurderingType.OPPFYLT
+        VurderingType.OPPFYLT,
       );
       mockVurdering([oppfyltVurdering, defaultForhandsvarselVurdering]);
       renderManglendeMedvirkning();
@@ -136,7 +136,7 @@ describe("Manglendemedvirkning", () => {
       expect(
         screen.getByRole("textbox", {
           name: "Begrunnelse (obligatorisk)",
-        })
+        }),
       ).to.exist;
       expect(screen.getByRole("button", { name: "Send" })).to.exist;
       expect(screen.getByRole("button", { name: "Forhåndsvisning" })).to.exist;

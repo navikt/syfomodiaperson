@@ -20,7 +20,7 @@ const renderPersonkortLege = () =>
   render(
     <QueryClientProvider client={queryClient}>
       <PersonkortLege />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
 describe("PersonkortLege", () => {
@@ -33,7 +33,7 @@ describe("PersonkortLege", () => {
       "Det kan hende brukeren ikke har en fastlege. Ta kontakt med brukeren for å få behandlers kontaktopplysninger.";
     queryClient.setQueryData(
       fastlegerQueryKeys.fastleger(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => []
+      () => [],
     );
     renderPersonkortLege();
 
@@ -43,7 +43,7 @@ describe("PersonkortLege", () => {
   it("Skal vise overskrifter for aktiv fastlege og fastlegevikarer", async () => {
     queryClient.setQueryData(
       fastlegerQueryKeys.fastleger(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [aktivFastlege, ...fastlegeVikarer]
+      () => [aktivFastlege, ...fastlegeVikarer],
     );
     renderPersonkortLege();
 
@@ -55,7 +55,7 @@ describe("PersonkortLege", () => {
   it("Skal vise vikarlege", async () => {
     queryClient.setQueryData(
       fastlegerQueryKeys.fastleger(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [aktivFastlege, ...fastlegeVikarer]
+      () => [aktivFastlege, ...fastlegeVikarer],
     );
     renderPersonkortLege();
 
@@ -66,7 +66,7 @@ describe("PersonkortLege", () => {
   it("Skal ikke vise fastlegevikarer dersom det ikke er fastlegevikarer", () => {
     queryClient.setQueryData(
       fastlegerQueryKeys.fastleger(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => [aktivFastlege]
+      () => [aktivFastlege],
     );
     renderPersonkortLege();
 

@@ -24,21 +24,21 @@ const renderInfoOmTolk = () => {
   render(
     <QueryClientProvider client={queryClient}>
       <InfoOmTolk />
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 };
 
 function mockMotebehov(
   motebehov: MotebehovVeilederDTO[],
-  brukerinfo: BrukerinfoDTO
+  brukerinfo: BrukerinfoDTO,
 ) {
   queryClient.setQueryData(
     motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => motebehov
+    () => motebehov,
   );
   queryClient.setQueryData(
     brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => brukerinfo
+    () => brukerinfo,
   );
 }
 
@@ -184,10 +184,10 @@ describe("InfoOmTolk", () => {
 
         expect(
           screen.queryByText(
-            "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere."
-          )
+            "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere.",
+          ),
         ).to.not.exist;
-      }
+      },
     );
   });
 
@@ -202,10 +202,10 @@ describe("InfoOmTolk", () => {
 
           expect(
             screen.queryByText(
-              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere."
-            )
+              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere.",
+            ),
           ).to.not.exist;
-        }
+        },
       );
 
       it.each<BrukerinfoDTO>([harIkkeTolkIPdl, harIkkeTolkIPdl2])(
@@ -220,10 +220,10 @@ describe("InfoOmTolk", () => {
               "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere.",
               {
                 exact: false,
-              }
-            )
+              },
+            ),
           ).to.exist;
-        }
+        },
       );
 
       it.each<BrukerinfoDTO>([
@@ -237,17 +237,17 @@ describe("InfoOmTolk", () => {
         (brukerinfo: BrukerinfoDTO) => {
           mockMotebehov(
             [arbeidsgiverOnskerIkkeTolkInnenforTilfelle],
-            brukerinfo
+            brukerinfo,
           );
 
           renderInfoOmTolk();
 
           expect(
             screen.queryByText(
-              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere."
-            )
+              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere.",
+            ),
           ).to.not.exist;
-        }
+        },
       );
     });
 
@@ -261,10 +261,10 @@ describe("InfoOmTolk", () => {
 
           expect(
             screen.queryByText(
-              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere."
-            )
+              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere.",
+            ),
           ).to.not.exist;
-        }
+        },
       );
 
       it.each<BrukerinfoDTO>([harIkkeTolkIPdl, harIkkeTolkIPdl2])(
@@ -279,10 +279,10 @@ describe("InfoOmTolk", () => {
               "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere.",
               {
                 exact: false,
-              }
-            )
+              },
+            ),
           ).to.exist;
-        }
+        },
       );
 
       it.each<BrukerinfoDTO>([
@@ -296,17 +296,17 @@ describe("InfoOmTolk", () => {
         (brukerinfo: BrukerinfoDTO) => {
           mockMotebehov(
             [arbeidstakerOnskerIkkeTolkInnenforTilfelle],
-            brukerinfo
+            brukerinfo,
           );
 
           renderInfoOmTolk();
 
           expect(
             screen.queryByText(
-              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere."
-            )
+              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere.",
+            ),
           ).to.not.exist;
-        }
+        },
       );
     });
 
@@ -319,17 +319,17 @@ describe("InfoOmTolk", () => {
               arbeidsgiverOnskerTolkInnenforTilfelle,
               arbeidstakerOnskerTolkInnenforTilfelle,
             ],
-            brukerinfo
+            brukerinfo,
           );
 
           renderInfoOmTolk();
 
           expect(
             screen.queryByText(
-              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere."
-            )
+              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere.",
+            ),
           ).to.not.exist;
-        }
+        },
       );
 
       it.each<BrukerinfoDTO>([harIkkeTolkIPdl, harIkkeTolkIPdl2])(
@@ -340,7 +340,7 @@ describe("InfoOmTolk", () => {
               arbeidsgiverOnskerTolkInnenforTilfelle,
               arbeidstakerOnskerTolkInnenforTilfelle,
             ],
-            brukerinfo
+            brukerinfo,
           );
 
           renderInfoOmTolk();
@@ -350,10 +350,10 @@ describe("InfoOmTolk", () => {
               "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere.",
               {
                 exact: false,
-              }
-            )
+              },
+            ),
           ).to.exist;
-        }
+        },
       );
     });
   });
@@ -369,10 +369,10 @@ describe("InfoOmTolk", () => {
 
           expect(
             screen.queryByText(
-              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere."
-            )
+              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere.",
+            ),
           ).to.not.exist;
-        }
+        },
       );
 
       it.each<BrukerinfoDTO>([harIkkeTolkIPdl, harIkkeTolkIPdl2])(
@@ -380,17 +380,17 @@ describe("InfoOmTolk", () => {
         (brukerinfo: BrukerinfoDTO) => {
           mockMotebehov(
             [arbeidstakerOnskerIkkeTolkUtenforTilfelle],
-            brukerinfo
+            brukerinfo,
           );
 
           renderInfoOmTolk();
 
           expect(
             screen.queryByText(
-              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere."
-            )
+              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere.",
+            ),
           ).to.not.exist;
-        }
+        },
       );
 
       it.each<BrukerinfoDTO>([
@@ -408,10 +408,10 @@ describe("InfoOmTolk", () => {
 
           expect(
             screen.queryByText(
-              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere."
-            )
+              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere.",
+            ),
           ).to.not.exist;
-        }
+        },
       );
     });
 
@@ -425,10 +425,10 @@ describe("InfoOmTolk", () => {
 
           expect(
             screen.queryByText(
-              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere."
-            )
+              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere.",
+            ),
           ).to.not.exist;
-        }
+        },
       );
 
       it.each<BrukerinfoDTO>([harIkkeTolkIPdl, harIkkeTolkIPdl2])(
@@ -436,17 +436,17 @@ describe("InfoOmTolk", () => {
         (brukerinfo: BrukerinfoDTO) => {
           mockMotebehov(
             [arbeidsgiverOnskerIkkeTolkUtenforTilfelle],
-            brukerinfo
+            brukerinfo,
           );
 
           renderInfoOmTolk();
 
           expect(
             screen.queryByText(
-              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere."
-            )
+              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere.",
+            ),
           ).to.not.exist;
-        }
+        },
       );
 
       it.each<BrukerinfoDTO>([
@@ -464,10 +464,10 @@ describe("InfoOmTolk", () => {
 
           expect(
             screen.queryByText(
-              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere."
-            )
+              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere.",
+            ),
           ).to.not.exist;
-        }
+        },
       );
     });
 
@@ -486,17 +486,17 @@ describe("InfoOmTolk", () => {
               arbeidsgiverOnskerTolkUtenforTilfelle,
               arbeidstakerOnskerTolkUtenforTilfelle,
             ],
-            brukerinfo
+            brukerinfo,
           );
 
           renderInfoOmTolk();
 
           expect(
             screen.queryByText(
-              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere."
-            )
+              "Det har blitt meldt inn et behov for tolk for dialogmøte, og det er ikke registrert tolk på den sykmeldte tidligere.",
+            ),
           ).to.not.exist;
-        }
+        },
       );
     });
   });

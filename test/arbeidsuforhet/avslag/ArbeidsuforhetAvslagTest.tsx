@@ -23,7 +23,7 @@ let queryClient: QueryClient;
 const mockArbeidsuforhetVurderinger = (vurderinger: VurderingResponseDTO[]) => {
   queryClient.setQueryData(
     arbeidsuforhetQueryKeys.arbeidsuforhet(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => vurderinger
+    () => vurderinger,
   );
 };
 
@@ -32,7 +32,7 @@ const renderArbeidsuforhetAvslagSide = () => {
     queryClient,
     <ArbeidsuforhetAvslag />,
     arbeidsuforhetAvslagPath,
-    [arbeidsuforhetAvslagPath]
+    [arbeidsuforhetAvslagPath],
   );
 };
 
@@ -54,8 +54,8 @@ describe("AvslagSide", () => {
 
       expect(
         screen.getByText(
-          "Skriv innstilling om avslag til Nav arbeid og ytelser"
-        )
+          "Skriv innstilling om avslag til Nav arbeid og ytelser",
+        ),
       ).to.exist;
     });
 

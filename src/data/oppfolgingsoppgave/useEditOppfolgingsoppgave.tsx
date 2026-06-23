@@ -12,7 +12,7 @@ import {
 import { ApiErrorException } from "@/api/errors";
 
 export function useEditOppfolgingsoppgave(
-  existingOppfolgingsoppgaveUuid?: string
+  existingOppfolgingsoppgaveUuid?: string,
 ): UseMutationResult<
   EditOppfolgingsoppgaveRequestDTO,
   ApiErrorException,
@@ -22,12 +22,12 @@ export function useEditOppfolgingsoppgave(
   const queryClient = useQueryClient();
   const path = `${ISHUSKELAPP_ROOT}/huskelapp/${existingOppfolgingsoppgaveUuid}`;
   const editOppfolgingsoppgave = (
-    editedOppfolgingsoppgave: EditOppfolgingsoppgaveRequestDTO
+    editedOppfolgingsoppgave: EditOppfolgingsoppgaveRequestDTO,
   ) =>
     post<EditOppfolgingsoppgaveRequestDTO>(
       path,
       editedOppfolgingsoppgave,
-      personident
+      personident,
     );
 
   return useMutation({

@@ -29,13 +29,13 @@ type MeldingTilBehandlerDocument = {
 
 export const useMeldingTilBehandlerDocument = (): {
   getPaminnelseDocument(
-    opprinneligMelding: MeldingDTO
+    opprinneligMelding: MeldingDTO,
   ): MeldingTilBehandlerDocument;
   getReturLegeerklaringDocument(
-    begrunnelse: string | undefined
+    begrunnelse: string | undefined,
   ): MeldingTilBehandlerDocument;
   getMeldingTilBehandlerDocument(
-    values: Partial<MeldingTilBehandlerSkjemaValues>
+    values: Partial<MeldingTilBehandlerSkjemaValues>,
   ): DocumentComponentDto[];
 } => {
   const navBruker = useNavBrukerData();
@@ -43,7 +43,7 @@ export const useMeldingTilBehandlerDocument = (): {
   const { getHilsen } = useDocumentComponents();
 
   const getMeldingTilBehandlerDocument = (
-    values: Partial<MeldingTilBehandlerSkjemaValues>
+    values: Partial<MeldingTilBehandlerSkjemaValues>,
   ): DocumentComponentDto[] => {
     switch (values.meldingType) {
       case MeldingType.FORESPORSEL_PASIENT_TILLEGGSOPPLYSNINGER:
@@ -64,7 +64,7 @@ export const useMeldingTilBehandlerDocument = (): {
   };
 
   const getTilleggsOpplysningerPasientDocument = (
-    values: Partial<MeldingTilBehandlerSkjemaValues>
+    values: Partial<MeldingTilBehandlerSkjemaValues>,
   ) => {
     const documentComponents = [
       createHeaderH1(tilleggsOpplysningerPasientTexts.header),
@@ -80,13 +80,13 @@ export const useMeldingTilBehandlerDocument = (): {
       createParagraph(tilleggsOpplysningerPasientTexts.takst),
       createParagraphWithTitle(
         tilleggsOpplysningerPasientTexts.lovhjemmel.title,
-        tilleggsOpplysningerPasientTexts.lovhjemmel.text
+        tilleggsOpplysningerPasientTexts.lovhjemmel.text,
       ),
       createParagraph(
         tilleggsOpplysningerPasientTexts.klage1,
-        tilleggsOpplysningerPasientTexts.klage2
+        tilleggsOpplysningerPasientTexts.klage2,
       ),
-      getHilsen()
+      getHilsen(),
     );
 
     return documentComponents;
@@ -98,8 +98,8 @@ export const useMeldingTilBehandlerDocument = (): {
       createParagraph(`Gjelder ${navBruker.navn}, f.nr. ${personident}.`),
       createParagraph(
         `${paminnelseTexts.intro.part1} ${tilLesbarDatoMedArUtenManedNavn(
-          opprinneligMelding.tidspunkt
-        )} ${paminnelseTexts.intro.part2}`
+          opprinneligMelding.tidspunkt,
+        )} ${paminnelseTexts.intro.part2}`,
       ),
       createParagraph(paminnelseTexts.text1),
       createParagraph(paminnelseTexts.text2),
@@ -133,7 +133,7 @@ export const useMeldingTilBehandlerDocument = (): {
   };
 
   const getLegeerklaringDocument = (
-    values: Partial<MeldingTilBehandlerSkjemaValues>
+    values: Partial<MeldingTilBehandlerSkjemaValues>,
   ) => {
     const documentComponents = [
       createHeaderH1(legeerklaringTexts.header),
@@ -150,18 +150,18 @@ export const useMeldingTilBehandlerDocument = (): {
     documentComponents.push(
       createParagraphWithTitle(
         legeerklaringTexts.lovhjemmel.title,
-        legeerklaringTexts.lovhjemmel.text
+        legeerklaringTexts.lovhjemmel.text,
       ),
       createParagraph(legeerklaringTexts.klage1),
       createParagraph(legeerklaringTexts.klage2),
-      getHilsen()
+      getHilsen(),
     );
 
     return documentComponents;
   };
 
   const meldingFraNavDocument = (
-    values: Partial<MeldingTilBehandlerSkjemaValues>
+    values: Partial<MeldingTilBehandlerSkjemaValues>,
   ) => {
     const documentComponents = [
       createHeaderH1(meldingFraNavTexts.header),

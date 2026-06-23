@@ -15,7 +15,7 @@ import {
 } from "@/utils/datoUtils";
 
 export const expectedTilleggsopplysningerDocument = (
-  meldingTekst: string
+  meldingTekst: string,
 ): DocumentComponentDto[] => [
   {
     texts: ["Spørsmål om tilleggsopplysninger vedrørende pasient"],
@@ -62,7 +62,7 @@ export const expectedTilleggsopplysningerDocument = (
 ];
 
 export const expectedPaminnelseDocument = (
-  opprinneligMelding: MeldingDTO
+  opprinneligMelding: MeldingDTO,
 ): DocumentComponentDto[] => [
   {
     texts: ["Påminnelse om manglende svar vedrørerende pasient"],
@@ -77,7 +77,7 @@ export const expectedPaminnelseDocument = (
   {
     texts: [
       `Vi viser til tidligere forespørsel av ${tilLesbarDatoMedArUtenManedNavn(
-        opprinneligMelding.tidspunkt
+        opprinneligMelding.tidspunkt,
       )} angående din pasient.`,
     ],
     type: DocumentComponentType.PARAGRAPH,
@@ -101,7 +101,7 @@ export const expectedPaminnelseDocument = (
 ];
 
 export const expectedLegeerklaringDocument = (
-  meldingTekst: string
+  meldingTekst: string,
 ): DocumentComponentDto[] => [
   {
     texts: ["Forespørsel om legeerklæring ved arbeidsuførhet"],
@@ -122,7 +122,7 @@ export const expectedLegeerklaringDocument = (
   {
     texts: [
       `For å kunne behandle din pasient sin sak ber vi om svar så fort som mulig og innen ${tilDatoMedManedNavn(
-        addWeeks(new Date(), 3)
+        addWeeks(new Date(), 3),
       )} (tre uker). Nav kan gi forlenget frist.`,
     ],
     type: DocumentComponentType.PARAGRAPH,
@@ -163,7 +163,7 @@ export const expectedLegeerklaringDocument = (
 ];
 
 export const expectedReturLegeerklaringDocument = (
-  begrunnelse = "(Obligatorisk begrunnelse)"
+  begrunnelse = "(Obligatorisk begrunnelse)",
 ): DocumentComponentDto[] => [
   {
     texts: ["Retur av Legeerklæring ved arbeidsuførhet"],
@@ -210,7 +210,7 @@ export const expectedReturLegeerklaringDocument = (
 ];
 
 export const expectedMeldingFraNAVDocument = (
-  meldingTekst: string
+  meldingTekst: string,
 ): DocumentComponentDto[] => [
   {
     texts: ["Melding fra Nav"],

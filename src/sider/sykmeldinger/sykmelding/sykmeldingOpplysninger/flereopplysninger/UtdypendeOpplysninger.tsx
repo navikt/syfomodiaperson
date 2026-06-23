@@ -19,7 +19,7 @@ function OpplysningsGruppe(opplysningsGruppeProps: {
         </Heading>
         <BodyLong size="small">{sporsmalSvar.svar}</BodyLong>
       </div>
-    )
+    ),
   );
   return <div>{sporsmal}</div>;
 }
@@ -29,7 +29,7 @@ interface Props {
 }
 
 export default function UtdypendeOpplysninger(
-  utdypendeOpplysningerProps: Props
+  utdypendeOpplysningerProps: Props,
 ) {
   const { sykmelding } = utdypendeOpplysningerProps;
   const utdypendeOpplysninger = sykmelding.utdypendeOpplysninger;

@@ -6,14 +6,14 @@ export function getForhandsvarselManglendeMedvirkningTexts(frist: Date) {
     intro: {
       p1: "For å få sykepenger er det et vilkår at du medvirker i egen sak. Dette betyr at du blant annet har en plikt til å gi opplysninger til Nav, delta i dialogmøter og ta imot tilbud om tilrettelegging.",
       p2: `Basert på opplysningene Nav har i saken har du ikke oppfylt plikten din til å medvirke, og det er heller ikke dokumentert at du hadde en rimelig grunn til å ikke medvirke. Vi vurderer derfor å stanse sykepengene dine fra og med ${tilDatoMedManedNavn(
-        frist
+        frist,
       )}.`,
       p3: "Vi har ikke tatt en endelig avgjørelse om å stanse dine sykepenger.",
     },
     tilbakemelding: {
       header: "Gi oss tilbakemelding",
       info: `Vi ber om tilbakemelding fra deg innen ${tilDatoMedManedNavn(
-        frist
+        frist,
       )}. Etter denne datoen vil Nav vurdere å stanse sykepengene dine.`,
     },
     kontaktinfo: {
@@ -33,12 +33,12 @@ export function getForhandsvarselManglendeMedvirkningTexts(frist: Date) {
 }
 
 export function getOppfyltManglendeMedvirkningTexts(
-  forhandsvarselSendtDato: Date
+  forhandsvarselSendtDato: Date,
 ) {
   return {
     title: "Du har rett til videre utbetaling av sykepenger",
     previousForhandsvarsel: `I forhåndsvarsel av ${tilDatoMedManedNavn(
-      forhandsvarselSendtDato
+      forhandsvarselSendtDato,
     )} ble du informert om at Nav vurderte å stanse dine sykepenger. Vi har nå vurdert at plikten til å medvirke er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
     forAFaSykepenger:
       "For å få sykepenger er det et vilkår at du medvirker i egen sak.",
@@ -48,13 +48,13 @@ export function getOppfyltManglendeMedvirkningTexts(
 }
 
 export function getUnntakManglendeMedvirkningTexts(
-  forhandsvarselSendtDato: Date
+  forhandsvarselSendtDato: Date,
 ) {
   return {
     title: "Vurdering av unntak fra medvirkningsplikten",
     info: {
       p1: `I forhåndsvarsel av ${tilDatoMedManedNavn(
-        forhandsvarselSendtDato
+        forhandsvarselSendtDato,
       )} ble du informert om at Nav vurderte å stanse utbetaling av sykepengene dine. Vi har nå vurdert at du har rimelig grunn til ikke å medvirke i egen sak.`,
       p2: "Du har rett til videre utbetaling av sykepenger.",
     },

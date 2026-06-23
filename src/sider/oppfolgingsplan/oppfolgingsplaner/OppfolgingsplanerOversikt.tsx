@@ -65,8 +65,8 @@ export default function OppfolgingsplanerOversikt() {
     (oppfolgingsplanLPS) =>
       toOppfolgingsplanLPSMedPersonoppgave(
         oppfolgingsplanLPS,
-        getPersonOppgaverQuery.data
-      )
+        getPersonOppgaverQuery.data,
+      ),
   );
 
   const oppfolgingsplanerLPSProcessed = oppfolgingsplanerLPSMedPersonOppgave
@@ -89,7 +89,7 @@ export default function OppfolgingsplanerOversikt() {
   const activeNarmesteLedere = !!currentOppfolgingstilfelle
     ? aktiveNarmesteLedereForOppfolgingstilfelle(
         currentLedere,
-        currentOppfolgingstilfelle
+        currentOppfolgingstilfelle,
       )
     : [];
   const isBeOmOppfolgingsplanVisible =

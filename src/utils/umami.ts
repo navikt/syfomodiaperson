@@ -48,7 +48,7 @@ function beforeSendHandler(type, payload) {
 (window as any).beforeSendHandler = beforeSendHandler;
 
 export async function trackEvent<K extends EventName>(
-  event: TaxonomyEvent<K>
+  event: TaxonomyEvent<K>,
 ): Promise<void> {
   await identifierReady;
   umami.track(event.name, { ...event.properties });

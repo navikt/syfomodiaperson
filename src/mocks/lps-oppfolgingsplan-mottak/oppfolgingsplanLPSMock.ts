@@ -7,7 +7,7 @@ import {
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 
 export const getDefaultOppfolgingsplanLPS = (
-  created: Date
+  created: Date,
 ): OppfolgingsplanLPS => {
   return {
     uuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd2",
@@ -23,7 +23,7 @@ export const getDefaultOppfolgingsplanLPS = (
 // Tilfelle 2: 2020-02-21 → 2020-12-10 (Pontypandy)
 // Current tilfelle: ~40 uker siden → ~20 uker frem (Pontypandy + BrannOgBil)
 export const oppfolgingsplanerLPSMock = (
-  created: Date
+  created: Date,
 ): OppfolgingsplanLPS[] => {
   return [
     // Current tilfelle — Pontypandy (1 dag siden)

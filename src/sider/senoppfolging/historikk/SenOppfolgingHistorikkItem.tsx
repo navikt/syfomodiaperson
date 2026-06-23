@@ -56,7 +56,7 @@ function svarTekst(svar: SvarResponseDTO) {
 export function SenOppfolgingHistorikkItem({ kandidat }: Props) {
   const { svar, vurderinger } = kandidat;
   const vurdering = vurderinger.find(
-    ({ type }) => type === SenOppfolgingVurderingType.FERDIGBEHANDLET
+    ({ type }) => type === SenOppfolgingVurderingType.FERDIGBEHANDLET,
   );
 
   return (

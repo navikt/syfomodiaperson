@@ -38,7 +38,7 @@ export function useVurderMotebehov() {
             ...motebehov,
             behandletTidspunkt: new Date(),
             behandletVeilederIdent: veilederIdent,
-          }))
+          })),
         );
       }
     },

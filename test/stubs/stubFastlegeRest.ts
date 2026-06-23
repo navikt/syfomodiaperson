@@ -6,6 +6,6 @@ import { http, HttpResponse } from "msw";
 export const stubFastlegerApi = () =>
   mockServer.use(
     http.get(`*${FASTLEGEREST_ROOT}/fastleger`, () =>
-      HttpResponse.json(fastlegerMock)
-    )
+      HttpResponse.json(fastlegerMock),
+    ),
   );

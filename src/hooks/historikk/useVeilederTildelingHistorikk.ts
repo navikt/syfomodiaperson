@@ -6,7 +6,7 @@ import {
 import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 
 function createHistorikkEventsFromVeilederTildelingHistorikk(
-  veilederTildelingHistorikkDTO: VeilederTildelingHistorikkDTO[]
+  veilederTildelingHistorikkDTO: VeilederTildelingHistorikkDTO[],
 ): HistorikkEvent[] {
   return veilederTildelingHistorikkDTO.map((value) => ({
     opprettetAv: value.tildeltAv,

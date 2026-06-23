@@ -49,7 +49,7 @@ export default function SykepengesoknadSide() {
   const hentingFeilet = hentingFeiletSoknader || hentingSykmeldingerFeilet;
   const soknad = sykepengesoknader.find((s) => s.id === sykepengesoknadId);
   const sykmelding = sykmeldinger.find((sykmld) =>
-    soknad ? sykmld.id === soknad.sykmeldingId : false
+    soknad ? sykmld.id === soknad.sykmeldingId : false,
   );
 
   return (

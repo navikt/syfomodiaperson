@@ -56,7 +56,7 @@ export default function SendtSoknadArbeidstakerNy({
           soknad={{
             ...soknad,
             sporsmal: soknad.sporsmal.filter(
-              (sporsmal) => !erTilSlutt(sporsmal)
+              (sporsmal) => !erTilSlutt(sporsmal),
             ),
           }}
         />
@@ -66,7 +66,7 @@ export default function SendtSoknadArbeidstakerNy({
           soknad={{
             ...soknad,
             sporsmal: soknad.sporsmal.filter((sporsmal) =>
-              erTilSlutt(sporsmal)
+              erTilSlutt(sporsmal),
             ),
           }}
         />

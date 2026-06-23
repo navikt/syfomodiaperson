@@ -83,7 +83,7 @@ describe("dialogmoteutils", () => {
 
       const isCompletedAfter = isPersonoppgaveCompletedAfterLastMoteEndring(
         oppgave,
-        dialogmote
+        dialogmote,
       );
 
       expect(isCompletedAfter).to.be.true;
@@ -105,7 +105,7 @@ describe("dialogmoteutils", () => {
 
       const isCompletedAfter = isPersonoppgaveCompletedAfterLastMoteEndring(
         oppgave,
-        dialogmote
+        dialogmote,
       );
 
       expect(isCompletedAfter).to.be.false;
@@ -127,7 +127,7 @@ describe("dialogmoteutils", () => {
 
       const isCompletedAfter = isPersonoppgaveCompletedAfterLastMoteEndring(
         oppgave,
-        dialogmote
+        dialogmote,
       );
 
       expect(isCompletedAfter).to.be.false;
@@ -145,7 +145,7 @@ describe("dialogmoteutils", () => {
 
       const isCompletedAfter = isPersonoppgaveCompletedAfterLastMoteEndring(
         oppgave,
-        dialogmote
+        dialogmote,
       );
 
       expect(isCompletedAfter).to.be.false;

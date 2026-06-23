@@ -29,7 +29,7 @@ export default function Tilbakedatering(tilbakedateringProps: Props) {
           </Heading>
           <BodyLong size="small">
             {tilLesbarDatoMedArstall(
-              sykmelding.tilbakedatering.dokumenterbarPasientkontakt
+              sykmelding.tilbakedatering.dokumenterbarPasientkontakt,
             )}
           </BodyLong>
         </div>
