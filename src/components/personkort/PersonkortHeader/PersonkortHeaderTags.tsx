@@ -79,7 +79,7 @@ export function PersonkortHeaderTags() {
       apiError={error instanceof ApiErrorException ? error.error : undefined}
       errorMessage={texts.fetchDiskresjonskodeFailed}
     >
-      <div className="flex flex-1 gap-2 h-fit flex-wrap justify-end mr-4">
+      <div className="flex flex-1 gap-2 h-fit flex-wrap justify-end">
         {isKode6 && (
           <Tag data-color="warning" variant="outline" size="small">
             {texts.kode6}

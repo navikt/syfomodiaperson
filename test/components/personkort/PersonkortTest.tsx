@@ -20,7 +20,7 @@ async function renderAndExpandPersonkort() {
       <Personkort />
     </QueryClientProvider>
   );
-  const expandable = screen.getAllByRole("button")[0];
+  const expandable = screen.getAllByRole("button")[1];
   await userEvent.click(expandable);
 }
 
