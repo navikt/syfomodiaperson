@@ -58,5 +58,9 @@ export function getToggles(veilederId, enhetId) {
       "isNyTilgangskontrollEnabled",
       context,
     ),
+    isUtenlandsoppholdEnabled: unleash.isEnabled(
+      "isUtenlandsoppholdEnabled",
+      context,
+    ),
   };
 }
