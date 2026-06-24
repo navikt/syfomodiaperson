@@ -221,6 +221,7 @@ export function numberOfTasks(
       );
     case Menypunkter.KARTLEGGINGSSPORSMAL:
       return getNumberOfKartleggingssporsmalOppgaver(kartleggingVurderinger);
+    case Menypunkter.UTENLANDSOPPHOLD:
     case Menypunkter.NOKKELINFORMASJON:
     case Menypunkter.SYKEPENGESOKNADER:
     case Menypunkter.HISTORIKK: {

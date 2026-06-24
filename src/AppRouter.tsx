@@ -42,6 +42,7 @@ import KartleggingssporsmalSide from "@/sider/kartleggingssporsmal/Kartleggingss
 import * as Umami from "@/utils/umami";
 import OppfolgingsplanerOversikt from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanerOversikt";
 import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { UtenlandsoppholdSide } from "@/sider/utenlandsopphold/UtenlandsoppholdSide.tsx";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -55,6 +56,7 @@ export const arbeidsuforhetAvslagPath = `${appRoutePath}/arbeidsuforhet/avslag`;
 export const arbeidsuforhetIkkeAktuellPath = `${appRoutePath}/arbeidsuforhet/ikkeaktuell`;
 export const arbeidsuforhetPath = `${appRoutePath}/arbeidsuforhet`;
 export const frisktilarbeidPath = `${appRoutePath}/frisktilarbeid`;
+export const utenlandsoppholdPath = `${appRoutePath}/utenlandsopphold`;
 export const senOppfolgingPath = `${appRoutePath}/senoppfolging`;
 export const manglendeMedvirkningPath = `${appRoutePath}/manglendemedvirkning`;
 export const historikkPath = `${appRoutePath}/historikk`;
@@ -174,6 +176,11 @@ function AktivBrukerRouter(): ReactElement {
           <Route
             path={frisktilarbeidPath}
             element={<FriskmeldingTilArbeidsformidlingSide />}
+          />
+
+          <Route
+            path={utenlandsoppholdPath}
+            element={<UtenlandsoppholdSide />}
           />
 
           <Route path={senOppfolgingPath} element={<SenOppfolging />} />

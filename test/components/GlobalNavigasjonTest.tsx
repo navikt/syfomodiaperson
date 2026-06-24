@@ -33,7 +33,10 @@ import { addDays, addWeeks } from "@/utils/datoUtils";
 import { VurderingType } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { senOppfolgingKandidatQueryKeys } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks";
-import { mockUnleashResponse } from "@/mocks/unleashMocks";
+import {
+  mockUnleashResponse,
+  mockUnleashTogglesOffResponse,
+} from "@/mocks/unleashMocks";
 import {
   ferdigbehandletKandidatMock,
   senOppfolgingKandidatMock,
@@ -63,6 +66,13 @@ const mockUnleashWithFeatureToggles = () => {
   );
 };
 
+const mockUnleashWithoutFeatureToggles = () => {
+  queryClient.setQueryData(
+    unleashQueryKeys.toggles(navEnhet.id, ""),
+    () => mockUnleashTogglesOffResponse,
+  );
+};
+
 const renderGlobalNavigasjon = () =>
   render(
     <QueryClientProvider client={queryClient}>
@@ -82,6 +92,40 @@ describe("GlobalNavigasjon", () => {
     setEmptyQueryData(queryClient);
   });
   it("viser linker for alle menypunkter uten toggle", () => {
+    mockUnleashWithoutFeatureToggles();
+
+    renderGlobalNavigasjon();
+    const navnMenypunkter = [
+      "Nøkkelinformasjon",
+      "Sykmeldinger",
+      "Søknader om sykepenger",
+      "Dialog med behandler",
+      "Oppfølgingsplaner",
+      "Dialogmøter",
+      "§ 8-8 Aktivitetskrav",
+      "§ 8-8 Manglende medvirkning",
+      "§ 8-4 Arbeidsuførhet",
+      "§ 8-5 Friskmelding til arbeidsformidling",
+      "Snart slutt på sykepengene",
+      "Historikk",
+      "Vedtak",
+    ];
+    const menypunkterNotShown = [
+      "Kartleggingsspørsmål",
+      "§ 8-9 Søknad om utenlandsopphold",
+    ];
+
+    const linker = screen.getAllByRole("link");
+    linker.forEach((link, index) => {
+      expect(link.textContent).to.equal(navnMenypunkter[index]);
+    });
+    expect(
+      linker.some((link) => menypunkterNotShown.includes(link.textContent)),
+    ).to.equal(false);
+  });
+  it("viser linker for alle menypunkter med toggle", () => {
+    mockUnleashWithFeatureToggles();
+
     renderGlobalNavigasjon();
     const navnMenypunkter = [
       "Nøkkelinformasjon",
@@ -95,6 +139,7 @@ describe("GlobalNavigasjon", () => {
       "§ 8-8 Manglende medvirkning",
       "§ 8-4 Arbeidsuførhet",
       "§ 8-5 Friskmelding til arbeidsformidling",
+      "§ 8-9 Søknad om utenlandsopphold",
       "Snart slutt på sykepengene",
       "Historikk",
       "Vedtak",

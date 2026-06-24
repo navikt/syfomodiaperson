@@ -15,6 +15,7 @@ import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkni
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { useKartleggingssporsmalKandidaterQuery } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 import { useOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/useOppfolgingsplaner";
+import { ToggleNames } from "@/data/unleash/unleash_types.ts";
 
 export enum Menypunkter {
   AKTIVITETSKRAV = "AKTIVITETSKRAV",
@@ -27,6 +28,7 @@ export enum Menypunkter {
   HISTORIKK = "HISTORIKK",
   ARBEIDSUFORHET = "ARBEIDSUFORHET",
   FRISKTILARBEID = "FRISKTILARBEID",
+  UTENLANDSOPPHOLD = "UTENLANDSOPPHOLD",
   SENOPPFOLGING = "SENOPPFOLGING",
   MANGLENDE_MEDVIRKNING = "MANGLENDE_MEDVIRKNING",
   KARTLEGGINGSSPORSMAL = "KARTLEGGINGSSPORSMAL",
@@ -81,6 +83,10 @@ const allMenypunkter: {
     navn: "§ 8-5 Friskmelding til arbeidsformidling",
     sti: "frisktilarbeid",
   },
+  [Menypunkter.UTENLANDSOPPHOLD]: {
+    navn: "§ 8-9 Søknad om utenlandsopphold",
+    sti: "utenlandsopphold",
+  },
   [Menypunkter.SENOPPFOLGING]: {
     navn: "Snart slutt på sykepengene",
     sti: "senoppfolging",
@@ -90,6 +96,11 @@ const allMenypunkter: {
     sti: "historikk",
   },
 };
+
+const activeMenypunktWithToggle: [keyof typeof ToggleNames, Menypunkter][] = [
+  ["isKartleggingssporsmalEnabled", Menypunkter.KARTLEGGINGSSPORSMAL],
+  ["isUtenlandsoppholdEnabled", Menypunkter.UTENLANDSOPPHOLD],
+];
 
 interface Props {
   aktivtMenypunkt: Menypunkter;
@@ -129,9 +140,15 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
         personoppgaver.data,
       ),
   );
-  const allMenypunktEntries: [Menypunkter, Menypunkt][] = Object.entries(
-    allMenypunkter,
-  ).map((value) => value as [Menypunkter, Menypunkt]);
+
+  const allMenypunktEntries = (
+    Object.entries(allMenypunkter) as [Menypunkter, Menypunkt][]
+  ).filter(([menypunkt]) =>
+    activeMenypunktWithToggle.every(
+      ([toggleName, activeMenypunkt]) =>
+        activeMenypunkt !== menypunkt || featureToggles.toggles[toggleName],
+    ),
+  );
 
   const setFocus = (index: number) => {
     if (refs.current[index]) {
@@ -173,12 +190,6 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
   return (
     <ul aria-label="Navigasjon">
       {allMenypunktEntries.map(([menypunkt, { navn, sti }], index) => {
-        if (
-          !featureToggles.toggles.isKartleggingssporsmalEnabled &&
-          menypunkt === Menypunkter.KARTLEGGINGSSPORSMAL
-        ) {
-          return null;
-        }
         const isAktiv = menypunkt === aktivtMenypunkt;
         const className = cn("navigasjonspanel", {
           "navigasjonspanel--aktiv": isAktiv,
