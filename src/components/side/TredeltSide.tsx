@@ -22,7 +22,7 @@ interface Props {
 export function Container({ children, className = "" }: Props) {
   return (
     <div
-      className={`${className} flex flex-row -xl:flex-col -xl:overflow-y-auto`}
+      className={`${className} flex flex-row max-xl:flex-col max-xl:overflow-y-auto`}
     >
       {children}
     </div>
@@ -42,7 +42,7 @@ export function FirstColumn({ children, className }: Props) {
 export function SecondColumn({ children, className }: Props) {
   return (
     <div
-      className={`${className} xl:grow-2 xl:shrink xl:basis-0 xl:h-screen xl:sticky xl:top-2 xl:overflow-y-auto -xl:mt-2 min-w-0 `}
+      className={`${className} xl:grow-2 xl:shrink xl:basis-0 xl:h-screen xl:sticky xl:top-2 xl:overflow-y-auto max-xl:mt-2 min-w-0 `}
     >
       {children}
     </div>
