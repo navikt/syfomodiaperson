@@ -21,8 +21,8 @@ export function Personkort() {
 
   return (
     <ExpansionCard size="small" aria-label="Personkort" className="mb-2">
-      <ExpansionCard.Header>
-        <ExpansionCard.Title size="small" className="flex w-full">
+      <ExpansionCard.Header className="[&>div]:w-full">
+        <ExpansionCard.Title size="small" className="flex">
           <PersonkortHeader />
         </ExpansionCard.Title>
       </ExpansionCard.Header>
