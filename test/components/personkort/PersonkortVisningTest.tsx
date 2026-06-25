@@ -29,17 +29,6 @@ describe("PersonkortVisning", () => {
     stubFastlegerApi();
   });
 
-  it("Skal vise PersonkortSykmeldt, som initielt valg", () => {
-    render(
-      <QueryClientProvider client={queryClient}>
-        <PersonkortVisning visning={""} />
-      </QueryClientProvider>,
-    );
-
-    expect(screen.getByRole("heading", { name: "Kontaktinformasjon" })).to
-      .exist;
-  });
-
   it("Skal vise VisningLege, dersom visning for lege er valgt", async () => {
     const expectedLegeNavn = `${fastlegerMock[0].fornavn} ${fastlegerMock[0].etternavn}`;
     render(

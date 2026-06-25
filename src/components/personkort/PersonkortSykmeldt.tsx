@@ -1,6 +1,4 @@
 import React from "react";
-import { PersonkortElement } from "./PersonkortElement";
-import PersonkortInformasjon from "./PersonkortInformasjon";
 import {
   formaterBostedsadresse,
   formaterKontaktadresse,
@@ -11,7 +9,7 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { formaterFnr } from "@/utils/fnrUtils";
 import { formatPhonenumber } from "@/utils/stringUtils";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
-import { PersonCircleIcon } from "@navikt/aksel-icons";
+import { BodyShort } from "@navikt/ds-react";
 
 const texts = {
   fnr: "F.nummer",
@@ -20,6 +18,7 @@ const texts = {
   bostedsadresse: "Bostedsadresse",
   kontaktadresse: "Kontaktadresse",
   oppholdsadresse: "Oppholdsadresse",
+  empty: "—",
 };
 
 export function PersonkortSykmeldt() {
@@ -60,21 +59,19 @@ export function PersonkortSykmeldt() {
   );
 
   return (
-    <PersonkortElement
-      tittel="Kontaktinformasjon"
-      antallKolonner={3}
-      icon={
-        <PersonCircleIcon
-          fontSize="1.5rem"
-          title="Bilde av person"
-          className="mr-2"
-        />
-      }
-    >
-      <PersonkortInformasjon
-        informasjonNokkelTekster={informasjonNokkelTekster}
-        informasjon={valgteElementer}
-      />
-    </PersonkortElement>
+    <div className="grid grid-cols-3 gap-y-4 gap-x-16 w-fit">
+      {Object.keys(valgteElementer).map((nokkel, idx) => {
+        return (
+          <div key={idx}>
+            <BodyShort size="small" weight="semibold">
+              {informasjonNokkelTekster.get(nokkel)}
+            </BodyShort>
+            <BodyShort size="small">
+              {valgteElementer[nokkel] ? valgteElementer[nokkel] : texts.empty}
+            </BodyShort>
+          </div>
+        );
+      })}
+    </div>
   );
 }
