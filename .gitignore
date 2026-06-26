@@ -16,3 +16,4 @@ mockServiceWorker.js
 .env
 
 !/.idea/externalDependencies.xml
+!/.idea/codeStyles/
