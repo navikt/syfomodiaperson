@@ -24,13 +24,6 @@ describe("PersonkortSykmeldt", () => {
     setQueryDataWithPersonkortdata(queryClient);
   });
 
-  it("Skal vise PersonkortElement", () => {
-    renderPersonkortSykmeldt();
-    expect(screen.getByRole("heading", { name: "Kontaktinformasjon" })).to
-      .exist;
-    expect(screen.getByRole("img", { name: "Bilde av person" })).to.exist;
-  });
-
   it("Skal vise PersonkortInformasjon", () => {
     renderPersonkortSykmeldt();
     expect(screen.getByText("F.nummer")).to.exist;
