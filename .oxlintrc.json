@@ -3,7 +3,7 @@
   "plugins": ["typescript", "react", "jsx-a11y"],
   "jsPlugins": ["eslint-plugin-no-only-tests"],
   "categories": {
-    "correctness": "off"
+    "correctness": "warn"
   },
   "env": {
     "builtin": true
