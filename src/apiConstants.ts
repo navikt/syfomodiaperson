@@ -46,3 +46,4 @@ export const PENSJON_PEN_UFOREGRAD_ROOT = "/pensjon-pen/api/uforetrygd";
 export const LUMI_API_ROOT = "/lumi-api/api/azure/v1";
 export const UNLEASH_ROOT = "/unleash";
 export const VEILARBOPPFOLGING_ROOT = "/veilarboppfolging/api/v2";
+export const ISUTENLANDSOPPHOLD_ROOT = "/isutenlandsopphold/api/v1";

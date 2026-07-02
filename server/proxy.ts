@@ -320,6 +320,10 @@ export const setupProxy = (): express.Router => {
     proxyOnBehalfOf(Config.auth.isoppfolgingsplan),
   );
   router.use("/pensjon-pen", proxyOnBehalfOf(Config.auth.pensjonPenUfore));
+  router.use(
+    "/isutenlandsopphold",
+    proxyOnBehalfOf(Config.auth.isutenlandsopphold),
+  );
 
   return router;
 };

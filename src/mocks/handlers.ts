@@ -22,6 +22,7 @@ import { mockSyfosmregister } from "@/mocks/syfosmregister/mockSyfosmregister";
 import { mockSyfooppfolgingsplanservice } from "@/mocks/syfooppfolgingsplanservice/mockSyfooppfolgingsplanservice";
 import { mockIspersonoppgave } from "@/mocks/ispersonoppgave/mockIspersonoppgave";
 import { mockIstilgangskontroll } from "@/mocks/istilgangskontroll/mockIstilgangskontroll";
+import { mockIsutenlandsopphold } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
 import { mockLpsOppfolgingsplanerMottak } from "@/mocks/lpsoppfolgingsplanmottak/mockLpsOppfolgingsplanMottak";
 import { mockMerOppfolging } from "@/mocks/meroppfolging-backend/merOppfolgingMock";
 import { mockModiacontextholder } from "@/mocks/modiacontextholder/mockModiacontextholder";
@@ -72,6 +73,7 @@ const handlers = [
   ...mockIspengestopp,
   ...mockIspersonoppgave,
   mockIstilgangskontroll,
+  ...mockIsutenlandsopphold,
   ...mockSyfooppfolgingsplanservice,
   ...mockLpsOppfolgingsplanerMottak,
   ...mockSyfooppfolgingsplanbackend,

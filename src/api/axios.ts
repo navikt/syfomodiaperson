@@ -97,7 +97,7 @@ export const get = <ResponseData>(
 export const post = <ResponseData>(
   url: string,
   data: Record<string, any>,
-  personIdent?: string,
+  personIdent?: string, // TODO: Burde ikke være mulig å sende med denne på POST, skal i så fall være i body
 ): Promise<ResponseData> => {
   return axios
     .post(url, data, {
