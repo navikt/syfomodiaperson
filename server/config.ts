@@ -374,6 +374,16 @@ export const auth = {
     }),
     removePathPrefix: true,
   },
+  isutenlandsopphold: {
+    applicationName: "isutenlandsopphold",
+    clientId: envVar({
+      name: "ISUTENLANDSOPPHOLD_AAD_APP_CLIENT_ID",
+    }),
+    host: envVar({
+      name: "ISUTENLANDSOPPHOLD_HOST",
+    }),
+    removePathPrefix: true,
+  },
   pensjonPenUfore: {
     applicationName: "pensjon-pen",
     clientId: envVar({

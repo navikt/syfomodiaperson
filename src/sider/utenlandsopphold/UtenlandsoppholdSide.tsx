@@ -9,7 +9,7 @@ import { Utenlandsopphold } from "@/sider/utenlandsopphold/Utenlandsopphold.tsx"
 import { Box } from "@navikt/ds-react";
 
 const texts = {
-  title: "Søknad om utenlandsopphold",
+  title: "Søknad om sykepenger under opphold utenfor EØS",
 };
 
 export function UtenlandsoppholdSide() {

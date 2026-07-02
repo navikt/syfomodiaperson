@@ -81,6 +81,7 @@ spec:
         - application: ispengestopp
         - application: ispersonoppgave
         - application: istilgangskontroll
+        - application: isutenlandsopphold
         - application: syfobehandlendeenhet
         - application: syfoperson
         - application: syfooversiktsrv
@@ -250,3 +251,7 @@ spec:
       value: "prod-gcp.team-esyfo.sykepengedager-informasjon"
     - name: SYKEPENGEDAGER_INFORMASJON_HOST
       value: "http://sykepengedager-informasjon.team-esyfo"
+    - name: ISUTENLANDSOPPHOLD_AAD_APP_CLIENT_ID
+      value: "prod-gcp.teamsykefravr.isutenlandsopphold"
+    - name: ISUTENLANDSOPPHOLD_HOST
+      value: "http://isutenlandsopphold"
