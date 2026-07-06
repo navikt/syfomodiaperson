@@ -9,6 +9,7 @@ import {
   tilLesbarDatoMedArstall,
   tilLesbarPeriodeMedArUtenManednavn,
 } from "@/utils/datoUtils";
+import { Link } from "react-router-dom";
 
 const texts = {
   pending: "Henter søknader...",
@@ -28,8 +29,12 @@ const statusTexts: { [key in SoknadStatusDTO]: string } = {
 function getStatusColumn(soknad: Soknad) {
   if (!soknad.vedtak) {
     return (
-      // TODO: Legge på onclick til vedtaksiden her
-      <Button size="small" variant="secondary">
+      <Button
+        as={Link}
+        to={`/sykefravaer/utenlandsopphold/${soknad.soknadId}`}
+        size="small"
+        variant="secondary"
+      >
         {texts.startBehandling}
       </Button>
     );
@@ -43,7 +48,7 @@ function sorterEtterInnsendtTidspunktNyestForst(soknader: Soknad[]) {
   );
 }
 
-export function Utenlandsopphold() {
+export function UtenlandsoppholdSoknader() {
   const { data, isPending, isError } = useSoknaderQuery();
 
   return (

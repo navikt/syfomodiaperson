@@ -8,6 +8,7 @@ export interface SoknaderResponseDTO {
 
 export interface SoknadDTO {
   soknadId: string;
+  eksternId: string;
   status: SoknadStatusDTO;
   innsendtTidspunkt: string;
   soktePerioder: PeriodeDTO[];
