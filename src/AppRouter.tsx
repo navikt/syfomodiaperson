@@ -43,6 +43,8 @@ import * as Umami from "@/utils/umami";
 import OppfolgingsplanerOversikt from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanerOversikt";
 import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { UtenlandsoppholdSide } from "@/sider/utenlandsopphold/UtenlandsoppholdSide.tsx";
+import { UtenlandsoppholdSoknader } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknader.tsx";
+import { UtenlandsoppholdSoknad } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknad.tsx";
 
 export const appRoutePath = "/sykefravaer";
 
@@ -178,10 +180,24 @@ function AktivBrukerRouter(): ReactElement {
             element={<FriskmeldingTilArbeidsformidlingSide />}
           />
 
-          <Route
-            path={utenlandsoppholdPath}
-            element={<UtenlandsoppholdSide />}
-          />
+          <Route path={utenlandsoppholdPath}>
+            <Route
+              index
+              element={
+                <UtenlandsoppholdSide>
+                  <UtenlandsoppholdSoknader />
+                </UtenlandsoppholdSide>
+              }
+            />
+            <Route
+              path={":utenlandsoppholdSoknadId"}
+              element={
+                <UtenlandsoppholdSide>
+                  <UtenlandsoppholdSoknad />
+                </UtenlandsoppholdSide>
+              }
+            />
+          </Route>
 
           <Route path={senOppfolgingPath} element={<SenOppfolging />} />
 
