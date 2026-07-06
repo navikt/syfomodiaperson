@@ -11,6 +11,8 @@ import {
 import { useSoknaderQuery } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
 import { Link, useParams } from "react-router-dom";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils.ts";
+import { Forhandsvisning } from "@/components/Forhandsvisning";
+import { useUtenlandsoppholdSoknadDocument } from "@/hooks/utenlandsopphold/useUtenlandsoppholdSoknadDocument";
 
 const texts = {
   pending: "Henter søknader...",
@@ -23,12 +25,13 @@ const texts = {
   singlePeriod: "Perioden det er søkt om innvilges i sin helhet",
   multiplePeriods: "Periodene det er søkt om innvilges i sin helhet",
   sendButton: "Godkjenn og send vedtak",
-  previewButton: "Forhåndsvisning",
+  previewContentLabel: "Forhåndsvisning",
   backButton: "Tilbake",
 };
 
 export function UtenlandsoppholdSoknad() {
   const { data, isPending, isError } = useSoknaderQuery();
+  const { getVedtakDocument } = useUtenlandsoppholdSoknadDocument();
 
   const { utenlandsoppholdSoknadId } = useParams<{
     utenlandsoppholdSoknadId: string;
@@ -76,7 +79,7 @@ export function UtenlandsoppholdSoknad() {
 
           <div>
             <Detail>{periodText}</Detail>
-            {soktePerioder?.map((periode, index) => (
+            {utenlandsoppholdSoknad.soktePerioder.map((periode, index) => (
               <BodyShort key={index} weight={"semibold"}>
                 {tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom)}
               </BodyShort>
@@ -87,7 +90,15 @@ export function UtenlandsoppholdSoknad() {
             <Button as="a" variant="primary">
               {texts.sendButton}
             </Button>
-            <Button variant="secondary">{texts.previewButton}</Button>
+            <Forhandsvisning
+              contentLabel={texts.previewContentLabel}
+              getDocumentComponents={() =>
+                getVedtakDocument({
+                  soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
+                  perioder: utenlandsoppholdSoknad.soktePerioder,
+                })
+              }
+            />
             <Button
               as={Link}
               to={`/sykefravaer/utenlandsopphold`}
