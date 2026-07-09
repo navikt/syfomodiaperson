@@ -15,8 +15,9 @@ import {
   soknadUtenVedtakMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
 import {
-  tilLesbarDatoMedArstall,
+  tilLesbarDatoMedArUtenManedNavn,
   tilLesbarPeriodeMedArUtenManednavn,
+  toDatePrettyPrint,
 } from "@/utils/datoUtils";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { MemoryRouter } from "react-router-dom";
@@ -70,10 +71,10 @@ describe("UtenlandsoppholdSoknader", () => {
     const rowHeaders = await screen.findAllByRole("rowheader");
 
     expect(rowHeaders[0].textContent).to.equal(
-      tilLesbarDatoMedArstall(soknadUtenVedtakMock.innsendtTidspunkt),
+      tilLesbarDatoMedArUtenManedNavn(soknadUtenVedtakMock.innsendtTidspunkt),
     );
     expect(rowHeaders[1].textContent).to.equal(
-      tilLesbarDatoMedArstall(soknadMedVedtakMock.innsendtTidspunkt),
+      tilLesbarDatoMedArUtenManedNavn(soknadMedVedtakMock.innsendtTidspunkt),
     );
   });
 
@@ -117,6 +118,31 @@ describe("UtenlandsoppholdSoknader", () => {
     expect(await screen.findByText("Innvilget")).to.exist;
     expect(screen.queryByRole("button", { name: "Start behandling" })).to.not
       .exist;
+  });
+
+  it("viser hvem som fattet vedtaket og når for en søknad med vedtak", async () => {
+    stubSoknaderQuery({ soknader: [soknadMedVedtakMock] });
+
+    renderUtenlandsopphold();
+
+    expect(
+      await screen.findByText(
+        `Behandlet ${toDatePrettyPrint(
+          soknadMedVedtakMock.vedtak!.fattetTidspunkt,
+        )} av ${soknadMedVedtakMock.vedtak!.fattetAv}`,
+      ),
+    ).to.exist;
+  });
+
+  it("viser ingen informasjon om vedtak for en søknad uten vedtak", async () => {
+    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+
+    renderUtenlandsopphold();
+
+    await screen.findByRole("button", { name: "Start behandling" });
+
+    expect(await screen.findByText("Ubehandlet")).to.exist;
+    expect(screen.queryByText(/^Behandlet /)).to.not.exist;
   });
 
   it("viser melding om ingen søknader når listen er tom", async () => {

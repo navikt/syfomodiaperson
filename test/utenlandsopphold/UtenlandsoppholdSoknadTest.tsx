@@ -9,8 +9,8 @@ import { ISUTENLANDSOPPHOLD_ROOT } from "@/apiConstants";
 import { UtenlandsoppholdSoknad } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknad.tsx";
 import { UtenlandsoppholdSoknader } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknader.tsx";
 import {
-  SoknaderResponseDTO,
   SoknadDTO,
+  SoknaderResponseDTO,
   SoknadStatusDTO,
   SoknadVedtakPostDTO,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
@@ -174,6 +174,11 @@ describe("UtenlandsoppholdSoknad", () => {
     expect(screen.queryByRole("button", { name: "Start behandling" })).to.not
       .exist;
     expect(await screen.findAllByText("Innvilget")).to.have.lengthOf(2);
+    expect(
+      await screen.findAllByText(
+        new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),
+      ),
+    ).to.have.lengthOf(2);
   });
 
   it("navigerer ikke bort og viser ingen notifikasjon hvis sending av vedtak feiler", async () => {
