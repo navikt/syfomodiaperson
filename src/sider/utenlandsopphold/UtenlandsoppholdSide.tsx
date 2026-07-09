@@ -6,7 +6,6 @@ import * as Tredelt from "@/components/side/TredeltSide";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import { UtenlandsoppholdSoknader } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknader.tsx";
-import { Box } from "@navikt/ds-react";
 import { UtenlandsoppholdSoknad } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknad.tsx";
 
 const texts = {
@@ -28,15 +27,6 @@ export function UtenlandsoppholdSide({ children }: Props) {
           <Tredelt.FirstColumn className="-xl:mb-2">
             <NotificationProvider>{children}</NotificationProvider>
           </Tredelt.FirstColumn>
-          <Tredelt.SecondColumn>
-            <Box
-              background="default"
-              padding="space-24"
-              className="flex flex-col *:mb-4"
-            >
-              info og greier
-            </Box>
-          </Tredelt.SecondColumn>
         </Tredelt.Container>
       </SideLaster>
     </Side>

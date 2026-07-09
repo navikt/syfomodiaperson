@@ -6,8 +6,9 @@ import {
   SoknadStatusDTO,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 import {
-  tilLesbarDatoMedArstall,
+  tilLesbarDatoMedArUtenManedNavn,
   tilLesbarPeriodeMedArUtenManednavn,
+  toDatePrettyPrint,
 } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
 import { useNotification } from "@/context/notification/NotificationContext.tsx";
@@ -17,6 +18,10 @@ const texts = {
   error: "Noe gikk galt ved henting av søknader. Vennligst prøv igjen senere.",
   innsendtTidspunkt: "Innsendt tidspunkt",
   periode: "Søkt periode",
+  saksbehandling: "Saksbehandling",
+  saksbehandlingVedtak: (fattetTidspunkt: Date, fattetAv: string) =>
+    `Behandlet ${toDatePrettyPrint(fattetTidspunkt)} av ${fattetAv}`,
+  saksbehandlingIngenVedtak: "Ubehandlet",
   status: "Status",
   startBehandling: "Start behandling",
   ingenSoknader: "Ingen mottatte søknader eller fattede vedtak",
@@ -84,6 +89,9 @@ export function UtenlandsoppholdSoknader() {
                   {texts.innsendtTidspunkt}
                 </Table.HeaderCell>
                 <Table.HeaderCell scope="col">{texts.periode}</Table.HeaderCell>
+                <Table.HeaderCell scope="col">
+                  {texts.saksbehandling}
+                </Table.HeaderCell>
                 <Table.HeaderCell scope="col">{texts.status}</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
@@ -92,7 +100,9 @@ export function UtenlandsoppholdSoknader() {
                 (soknad) => (
                   <Table.Row key={soknad.soknadId}>
                     <Table.HeaderCell scope="row">
-                      {tilLesbarDatoMedArstall(soknad.innsendtTidspunkt)}
+                      {tilLesbarDatoMedArUtenManedNavn(
+                        soknad.innsendtTidspunkt,
+                      )}
                     </Table.HeaderCell>
                     <Table.DataCell>
                       {soknad.soktePerioder.map((periode, index) => (
@@ -104,6 +114,18 @@ export function UtenlandsoppholdSoknader() {
                         </div>
                       ))}
                     </Table.DataCell>
+                    {soknad.vedtak ? (
+                      <Table.DataCell>
+                        {texts.saksbehandlingVedtak(
+                          soknad.vedtak.fattetTidspunkt,
+                          soknad.vedtak.fattetAv,
+                        )}
+                      </Table.DataCell>
+                    ) : (
+                      <Table.DataCell>
+                        <i>{texts.saksbehandlingIngenVedtak}</i>
+                      </Table.DataCell>
+                    )}
                     <Table.DataCell>{getStatusColumn(soknad)}</Table.DataCell>
                   </Table.Row>
                 ),
