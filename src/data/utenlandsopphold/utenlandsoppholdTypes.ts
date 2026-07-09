@@ -1,9 +1,22 @@
-export interface SoknaderRequestDTO {
+// DTOs
+import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes.ts";
+
+export interface SoknaderQueryDTO {
   personident: string;
 }
 
 export interface SoknaderResponseDTO {
   soknader: SoknadDTO[];
+}
+
+export interface SoknadVedtakPostDTO {
+  utfall: "INNVILGET";
+  innvilgetePerioder: PeriodeDTO[];
+  document: DocumentComponentDto[];
+}
+
+export interface SoknadVedtakResponseDTO {
+  soknad: SoknadDTO;
 }
 
 export interface SoknadDTO {
@@ -32,6 +45,7 @@ export enum SoknadStatusDTO {
   INNVILGET = "INNVILGET",
 }
 
+// Types
 export interface Soknad extends Omit<
   SoknadDTO,
   "innsendtTidspunkt" | "soktePerioder" | "vedtak"
@@ -53,3 +67,23 @@ export interface Vedtak extends Omit<
   innvilgetePerioder: Periode[];
   fattetTidspunkt: Date;
 }
+
+// Parsers
+export const parsePeriode = (periode: PeriodeDTO): Periode => ({
+  ...periode,
+  fom: new Date(periode.fom),
+  tom: new Date(periode.tom),
+});
+
+export const parseVedtak = (vedtak: VedtakDTO): Vedtak => ({
+  ...vedtak,
+  innvilgetePerioder: vedtak.innvilgetePerioder.map(parsePeriode),
+  fattetTidspunkt: new Date(vedtak.fattetTidspunkt),
+});
+
+export const parseSoknad = (soknad: SoknadDTO): Soknad => ({
+  ...soknad,
+  innsendtTidspunkt: new Date(soknad.innsendtTidspunkt),
+  soktePerioder: soknad.soktePerioder.map(parsePeriode),
+  vedtak: soknad.vedtak ? parseVedtak(soknad.vedtak) : null,
+});

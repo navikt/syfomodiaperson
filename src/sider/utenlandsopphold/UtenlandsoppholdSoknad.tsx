@@ -8,11 +8,16 @@ import {
   Loader,
   LocalAlert,
 } from "@navikt/ds-react";
-import { useSoknaderQuery } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
-import { Link, useParams } from "react-router-dom";
+import {
+  useSoknaderQuery,
+  useVedtakMutation,
+} from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils.ts";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { useUtenlandsoppholdSoknadDocument } from "@/hooks/utenlandsopphold/useUtenlandsoppholdSoknadDocument";
+import { useNotification } from "@/context/notification/NotificationContext.tsx";
+import { utenlandsoppholdPath } from "@/AppRouter.tsx";
 
 const texts = {
   pending: "Henter søknader...",
@@ -27,11 +32,17 @@ const texts = {
   sendButton: "Godkjenn og send vedtak",
   previewContentLabel: "Forhåndsvisning",
   backButton: "Tilbake",
+  vedtakFattetNotification:
+    "Vedtaket om utenlandsopphold utenfor EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
 };
 
 export function UtenlandsoppholdSoknad() {
   const { data, isPending, isError } = useSoknaderQuery();
+  const { mutate } = useVedtakMutation();
   const { getVedtakDocument } = useUtenlandsoppholdSoknadDocument();
+
+  const navigate = useNavigate();
+  const { setNotification } = useNotification();
 
   const { utenlandsoppholdSoknadId } = useParams<{
     utenlandsoppholdSoknadId: string;
@@ -40,75 +51,103 @@ export function UtenlandsoppholdSoknad() {
   const utenlandsoppholdSoknad = data?.soknader.find(
     (soknad) => soknad.soknadId === utenlandsoppholdSoknadId,
   );
-  const soktePerioder = utenlandsoppholdSoknad?.soktePerioder;
 
+  if (!utenlandsoppholdSoknad) {
+    return (
+      <Box background="default" padding="space-16" className="flex flex-col">
+        {isPending ? (
+          <Loader size="xlarge" title={texts.pending} />
+        ) : isError ? (
+          <Alert size="small" variant="error">
+            {texts.error}
+          </Alert>
+        ) : (
+          <BodyShort>{texts.didNotFindSoknad}</BodyShort>
+        )}
+      </Box>
+    );
+  }
+
+  const soktePerioder = utenlandsoppholdSoknad.soktePerioder;
   const periodText =
-    soktePerioder && soktePerioder?.length > 1
-      ? texts.multiplePeriods
-      : texts.singlePeriod;
+    soktePerioder.length > 1 ? texts.multiplePeriods : texts.singlePeriod;
+  const vedtakDocument = getVedtakDocument({
+    soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
+    perioder: utenlandsoppholdSoknad.soktePerioder,
+  });
 
   return (
     <Box background="default" padding="space-16" className="flex flex-col">
-      {isPending ? (
-        <Loader size="xlarge" title={texts.pending} />
-      ) : isError ? (
-        <Alert size="small" variant="error">
-          {texts.error}
-        </Alert>
-      ) : !utenlandsoppholdSoknad ? (
-        <BodyShort>{texts.didNotFindSoknad}</BodyShort>
-      ) : (
-        <div className={"flex flex-col gap-8"}>
-          <LocalAlert status={"warning"}>
-            <LocalAlert.Header>
-              <LocalAlert.Title>{texts.modiaWarningHeader}</LocalAlert.Title>
-            </LocalAlert.Header>
-            <LocalAlert.Content>{texts.modiaWarningContent}</LocalAlert.Content>
-          </LocalAlert>
+      <div className={"flex flex-col gap-8"}>
+        <LocalAlert status={"warning"}>
+          <LocalAlert.Header>
+            <LocalAlert.Title>{texts.modiaWarningHeader}</LocalAlert.Title>
+          </LocalAlert.Header>
+          <LocalAlert.Content>{texts.modiaWarningContent}</LocalAlert.Content>
+        </LocalAlert>
 
-          <div>
-            <Button
-              as={Link}
-              to={`/sykefravaer/sykepengesoknader/${utenlandsoppholdSoknad.eksternId}`}
-              size="medium"
-              variant="secondary"
-            >
-              {texts.goToSoknad}
-            </Button>
-          </div>
-
-          <div>
-            <Detail>{periodText}</Detail>
-            {utenlandsoppholdSoknad.soktePerioder.map((periode, index) => (
-              <BodyShort key={index} weight={"semibold"}>
-                {tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom)}
-              </BodyShort>
-            ))}
-          </div>
-
-          <div className="flex flex-row gap-4">
-            <Button as="a" variant="primary">
-              {texts.sendButton}
-            </Button>
-            <Forhandsvisning
-              contentLabel={texts.previewContentLabel}
-              getDocumentComponents={() =>
-                getVedtakDocument({
-                  soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
-                  perioder: utenlandsoppholdSoknad.soktePerioder,
-                })
-              }
-            />
-            <Button
-              as={Link}
-              to={`/sykefravaer/utenlandsopphold`}
-              variant="tertiary"
-            >
-              {texts.backButton}
-            </Button>
-          </div>
+        <div>
+          <Button
+            as={Link}
+            to={`/sykefravaer/sykepengesoknader/${utenlandsoppholdSoknad.eksternId}`}
+            size="medium"
+            variant="secondary"
+          >
+            {texts.goToSoknad}
+          </Button>
         </div>
-      )}
+
+        <div>
+          <Detail>{periodText}</Detail>
+          {utenlandsoppholdSoknad.soktePerioder.map((periode, index) => (
+            <BodyShort key={index} weight={"semibold"}>
+              {tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom)}
+            </BodyShort>
+          ))}
+        </div>
+
+        <div className="flex flex-row gap-4">
+          <Button
+            variant="primary"
+            onClick={() =>
+              mutate(
+                {
+                  soknadId: utenlandsoppholdSoknad.soknadId,
+                  vedtak: {
+                    utfall: "INNVILGET",
+                    innvilgetePerioder: soktePerioder.map((periode) => ({
+                      fom: periode.fom.toISOString(),
+                      tom: periode.tom.toISOString(),
+                    })),
+                    document: vedtakDocument,
+                  },
+                },
+                {
+                  onSuccess: () => {
+                    setNotification({
+                      message: texts.vedtakFattetNotification,
+                    });
+                    navigate(`${utenlandsoppholdPath}`);
+                  },
+                },
+              )
+            }
+          >
+            {texts.sendButton}
+          </Button>
+          <Forhandsvisning
+            contentLabel={texts.previewContentLabel}
+            getDocumentComponents={() => vedtakDocument}
+          />
+          <Button
+            as={Link}
+            to={`/sykefravaer/utenlandsopphold`}
+            variant="tertiary"
+          >
+            {texts.backButton}
+          </Button>
+        </div>
+      </div>
     </Box>
   );
 }
