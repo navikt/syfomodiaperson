@@ -20,6 +20,7 @@ import {
 } from "@/utils/datoUtils";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { MemoryRouter } from "react-router-dom";
+import { NotificationProvider } from "@/context/notification/NotificationContext";
 
 let queryClient: QueryClient;
 
@@ -27,7 +28,9 @@ const renderUtenlandsopphold = () =>
   render(
     <QueryClientProvider client={queryClient}>
       <MemoryRouter>
-        <UtenlandsoppholdSoknader />
+        <NotificationProvider>
+          <UtenlandsoppholdSoknader />
+        </NotificationProvider>
       </MemoryRouter>
     </QueryClientProvider>,
   );

@@ -1,20 +1,18 @@
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { ISUTENLANDSOPPHOLD_ROOT } from "@/apiConstants";
 import { post } from "@/api/axios";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  Periode,
-  PeriodeDTO,
-  Soknad,
-  SoknadDTO,
-  SoknaderRequestDTO,
+  parseSoknad,
+  SoknaderQueryDTO,
   SoknaderResponseDTO,
-  Vedtak,
-  VedtakDTO,
+  SoknadVedtakPostDTO,
+  SoknadVedtakResponseDTO,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 
 export const utenlandsoppholdQueryKeys = {
   soknader: (personident: string) => ["utenlandsoppholdSoknader", personident],
+  vedtakMutation: (soknadId: string) => ["vedtakMutation", soknadId],
 };
 
 /**
@@ -24,7 +22,7 @@ export const utenlandsoppholdQueryKeys = {
 export const useSoknaderQuery = () => {
   const personident = useValgtPersonident();
   const path = `${ISUTENLANDSOPPHOLD_ROOT}/soknader/query`;
-  const requestDTO: SoknaderRequestDTO = { personident };
+  const requestDTO: SoknaderQueryDTO = { personident };
   const fetchSoknader = () => post<SoknaderResponseDTO>(path, requestDTO);
 
   return useQuery({
@@ -37,21 +35,34 @@ export const useSoknaderQuery = () => {
   });
 };
 
-const parsePeriode = (periode: PeriodeDTO): Periode => ({
-  ...periode,
-  fom: new Date(periode.fom),
-  tom: new Date(periode.tom),
-});
+export const useVedtakMutation = () => {
+  const personident = useValgtPersonident();
+  const queryClient = useQueryClient();
+  const path = (soknadId: string) =>
+    `${ISUTENLANDSOPPHOLD_ROOT}/soknader/${soknadId}/vedtak`;
+  const postVedtak = ({
+    soknadId,
+    vedtak,
+  }: {
+    soknadId: string;
+    vedtak: SoknadVedtakPostDTO;
+  }) => post<SoknadVedtakResponseDTO>(path(soknadId), vedtak, personident);
 
-const parseVedtak = (vedtak: VedtakDTO): Vedtak => ({
-  ...vedtak,
-  innvilgetePerioder: vedtak.innvilgetePerioder.map(parsePeriode),
-  fattetTidspunkt: new Date(vedtak.fattetTidspunkt),
-});
+  return useMutation({
+    mutationFn: postVedtak,
+    onSuccess: (data: SoknadVedtakResponseDTO) => {
+      queryClient.setQueryData(
+        utenlandsoppholdQueryKeys.soknader(personident),
+        (oldData: SoknaderResponseDTO | undefined) => {
+          if (!oldData) return oldData;
 
-const parseSoknad = (soknad: SoknadDTO): Soknad => ({
-  ...soknad,
-  innsendtTidspunkt: new Date(soknad.innsendtTidspunkt),
-  soktePerioder: soknad.soktePerioder.map(parsePeriode),
-  vedtak: soknad.vedtak ? parseVedtak(soknad.vedtak) : null,
-});
+          return {
+            soknader: oldData.soknader.map((soknad) =>
+              soknad.soknadId === data.soknad.soknadId ? data.soknad : soknad,
+            ),
+          };
+        },
+      );
+    },
+  });
+};

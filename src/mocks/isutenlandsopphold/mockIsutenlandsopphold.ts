@@ -3,8 +3,12 @@ import {
   SoknadDTO,
   SoknaderResponseDTO,
   SoknadStatusDTO,
+  SoknadVedtakPostDTO,
+  SoknadVedtakResponseDTO,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 import { http, HttpResponse } from "msw";
+import dayjs from "dayjs";
+import { NAV_PERSONIDENT_HEADER } from "@/mocks/util/requestUtil.ts";
 
 export const soknadUtenVedtakMock: SoknadDTO = {
   soknadId: "1a2b3c4d-5e6f-7890-abcd-ef0987654321",
@@ -56,4 +60,37 @@ export const mockIsutenlandsopphold = [
   http.post(`${ISUTENLANDSOPPHOLD_ROOT}/soknader/query`, () => {
     return HttpResponse.json(mockSoknaderResponse);
   }),
+
+  http.post<
+    { soknadId: string },
+    SoknadVedtakPostDTO,
+    SoknadVedtakResponseDTO | string
+  >(
+    `${ISUTENLANDSOPPHOLD_ROOT}/soknader/:soknadId/vedtak`,
+    async ({ request, params }) => {
+      const body = await request.json();
+      const soknadId = params.soknadId;
+
+      const existingSoknad = mockSoknaderResponse.soknader.find(
+        (soknad) => soknad.soknadId === soknadId,
+      );
+
+      return existingSoknad
+        ? HttpResponse.json({
+            soknad: {
+              ...existingSoknad,
+              status: SoknadStatusDTO.INNVILGET,
+              vedtak: {
+                utfall: body.utfall,
+                innvilgetePerioder: body.innvilgetePerioder,
+                fattetTidspunkt: dayjs().toISOString(),
+                fattetAv: request.headers.get(NAV_PERSONIDENT_HEADER) ?? "",
+              },
+            },
+          })
+        : HttpResponse.text(`Did not find soknad with uuid ${soknadId}`, {
+            status: 400,
+          });
+    },
+  ),
 ];
