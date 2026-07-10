@@ -8,7 +8,7 @@ import {
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 import { http, HttpResponse } from "msw";
 import dayjs from "dayjs";
-import { NAV_PERSONIDENT_HEADER } from "@/mocks/util/requestUtil.ts";
+import { VEILEDER_IDENT_DEFAULT } from "@/mocks/common/mockConstants.ts";
 
 export const soknadUtenVedtakMock: SoknadDTO = {
   soknadId: "1a2b3c4d-5e6f-7890-abcd-ef0987654321",
@@ -84,7 +84,7 @@ export const mockIsutenlandsopphold = [
                 utfall: body.utfall,
                 innvilgetePerioder: body.innvilgetePerioder,
                 fattetTidspunkt: dayjs().toISOString(),
-                fattetAv: request.headers.get(NAV_PERSONIDENT_HEADER) ?? "",
+                fattetAv: VEILEDER_IDENT_DEFAULT,
               },
             },
           })
