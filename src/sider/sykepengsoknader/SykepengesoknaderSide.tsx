@@ -66,7 +66,7 @@ export default function SykepengesoknaderSide(): ReactElement {
       <SideLaster isLoading={isLoading} isError={isError}>
         <div>
           <Feilstripe
-            className="blokk--s"
+            className="mb-5"
             tekst={texts.errorMessage(sykmeldtNavn)}
             vis={isError}
           />

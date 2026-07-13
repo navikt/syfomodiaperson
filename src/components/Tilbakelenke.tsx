@@ -8,7 +8,7 @@ interface Props {
 
 export default function Tilbakelenke({ to, tekst }: Props) {
   return (
-    <div className="blokk">
+    <div className="mt-2 mb-8">
       <Link to={to} className="tilbakelenke">
         {tekst}
       </Link>
