@@ -69,6 +69,11 @@ describe("LegacyTilgangBanner i Side", () => {
   });
 
   it("vises når toggle er true og legacyTilgang er true", async () => {
+    queryClient.setQueryData(
+      tilgangQueryKeys.tilgang(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => ({ ...tilgangBrukerMock, legacyTilgang: true }),
+    );
+
     renderSide();
 
     expect(screen.getByText(bannerTitle)).to.exist;
