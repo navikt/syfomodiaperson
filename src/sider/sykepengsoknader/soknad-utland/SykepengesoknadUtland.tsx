@@ -45,8 +45,8 @@ export default function SykepengesoknadUtland({ soknad }: Props): ReactElement {
           </BodyShort>
         </div>
       </div>
-      <Box padding="space-16" borderRadius="2">
-        <Heading spacing size="small">
+      <Box background="default" padding="space-24" borderRadius="2">
+        <Heading spacing size="medium" level="2">
           {texts.oppsummering}
         </Heading>
         <Oppsummeringsvisning soknad={soknad} />

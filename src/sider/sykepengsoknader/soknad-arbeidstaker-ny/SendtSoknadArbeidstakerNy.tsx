@@ -48,7 +48,7 @@ export default function SendtSoknadArbeidstakerNy({
       {isSykmeldingUtdragVisible && (
         <SykmeldingUtdrag sykmelding={sykmelding} />
       )}
-      <Box background="default" className="p-4 mb-2">
+      <Box background="default" padding="space-24" borderRadius="2">
         <Heading level="2" size="medium" className="mb-4">
           {texts.oppsummeringTittel}
         </Heading>
