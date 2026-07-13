@@ -18,6 +18,7 @@ import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { useUtenlandsoppholdSoknadDocument } from "@/hooks/utenlandsopphold/useUtenlandsoppholdSoknadDocument";
 import { useNotification } from "@/context/notification/NotificationContext.tsx";
 import { utenlandsoppholdPath } from "@/AppRouter.tsx";
+import { SoknadStatusDTO } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
 
 const texts = {
   pending: "Henter søknader...",
@@ -34,6 +35,7 @@ const texts = {
   backButton: "Tilbake",
   vedtakFattetNotification:
     "Vedtaket om utenlandsopphold utenfor EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
+  alertBehandlet: "Denne søknaden er allerede behandlet",
 };
 
 export function UtenlandsoppholdSoknad() {
@@ -49,7 +51,9 @@ export function UtenlandsoppholdSoknad() {
   }>();
 
   const utenlandsoppholdSoknad = data?.soknader.find(
-    (soknad) => soknad.soknadId === utenlandsoppholdSoknadId,
+    (soknad) =>
+      soknad.soknadId === utenlandsoppholdSoknadId ||
+      soknad.eksternId === utenlandsoppholdSoknadId,
   );
 
   if (!utenlandsoppholdSoknad) {
@@ -68,6 +72,8 @@ export function UtenlandsoppholdSoknad() {
     );
   }
 
+  const soknadBehandlet =
+    utenlandsoppholdSoknad.status !== SoknadStatusDTO.MOTTATT;
   const soktePerioder = utenlandsoppholdSoknad.soktePerioder;
   const periodText =
     soktePerioder.length > 1 ? texts.multiplePeriods : texts.singlePeriod;
@@ -106,43 +112,53 @@ export function UtenlandsoppholdSoknad() {
           ))}
         </div>
 
+        {soknadBehandlet && (
+          <Alert variant="info" size="small" className="w-fit p-4 mb-4">
+            {texts.alertBehandlet}
+          </Alert>
+        )}
+
         <div className="flex flex-row gap-4">
-          <Button
-            variant="primary"
-            onClick={() =>
-              mutate(
-                {
-                  soknadId: utenlandsoppholdSoknad.soknadId,
-                  vedtak: {
-                    utfall: "INNVILGET",
-                    innvilgetePerioder: soktePerioder.map((periode) => ({
-                      fom: periode.fom.toISOString(),
-                      tom: periode.tom.toISOString(),
-                    })),
-                    document: vedtakDocument,
-                  },
-                },
-                {
-                  onSuccess: () => {
-                    setNotification({
-                      message: texts.vedtakFattetNotification,
-                    });
-                    navigate(`${utenlandsoppholdPath}`);
-                  },
-                },
-              )
-            }
-          >
-            {texts.sendButton}
-          </Button>
-          <Forhandsvisning
-            contentLabel={texts.previewContentLabel}
-            getDocumentComponents={() => vedtakDocument}
-          />
+          {!soknadBehandlet && (
+            <>
+              <Button
+                variant="primary"
+                onClick={() =>
+                  mutate(
+                    {
+                      soknadId: utenlandsoppholdSoknad.soknadId,
+                      vedtak: {
+                        utfall: "INNVILGET",
+                        innvilgetePerioder: soktePerioder.map((periode) => ({
+                          fom: periode.fom.toISOString(),
+                          tom: periode.tom.toISOString(),
+                        })),
+                        document: vedtakDocument,
+                      },
+                    },
+                    {
+                      onSuccess: () => {
+                        setNotification({
+                          message: texts.vedtakFattetNotification,
+                        });
+                        navigate(`${utenlandsoppholdPath}`);
+                      },
+                    },
+                  )
+                }
+              >
+                {texts.sendButton}
+              </Button>
+              <Forhandsvisning
+                contentLabel={texts.previewContentLabel}
+                getDocumentComponents={() => vedtakDocument}
+              />
+            </>
+          )}
           <Button
             as={Link}
             to={`/sykefravaer/utenlandsopphold`}
-            variant="tertiary"
+            variant={soknadBehandlet ? "primary" : "tertiary"}
           >
             {texts.backButton}
           </Button>

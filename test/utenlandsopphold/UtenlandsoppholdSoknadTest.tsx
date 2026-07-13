@@ -149,6 +149,19 @@ describe("UtenlandsoppholdSoknad", () => {
     expect(screen.getByRole("button", { name: "Tilbake" })).to.exist;
   });
 
+  it("viser melding om at søknaden er behandlet når status ikke er MOTTATT", async () => {
+    const behandletSoknad = {
+      ...soknadUtenVedtakMock,
+      status: SoknadStatusDTO.INNVILGET,
+    };
+    stubSoknaderQuery({ soknader: [behandletSoknad] });
+
+    renderUtenlandsoppholdSoknad();
+
+    expect(await screen.findByText("Denne søknaden er allerede behandlet")).to
+      .exist;
+  });
+
   it("sender vedtak, viser notifikasjon og navigerer tilbake til listen der søknadens status nå vises som innvilget", async () => {
     stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
 
