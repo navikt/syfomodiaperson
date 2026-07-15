@@ -2,9 +2,13 @@ import {
   ARBEIDSTAKER_DEFAULT,
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
 } from "../common/mockConstants";
-import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
+import {
+  BrukerinfoDTO,
+  Tiltakstype,
+} from "@/data/navbruker/types/BrukerinfoDTO";
 import { ArbeidsforholdPersonDTO } from "@/data/arbeidsforhold/ArbeidsforholdDTO";
 import { daysFromToday, weeksFromToday } from "@/utils/datoUtils.ts";
+import dayjs from "dayjs";
 
 export const kontaktinformasjonMock = {
   epost: ARBEIDSTAKER_DEFAULT.epost,
@@ -21,7 +25,14 @@ export const brukerinfoMock: BrukerinfoDTO = {
   fodselsdato: "1969-02-19",
   alder: 56,
   tilrettelagtKommunikasjon: null,
-  sikkerhetstiltak: [],
+  sikkerhetstiltak: [
+    {
+      type: Tiltakstype.FYUS,
+      beskrivelse: "",
+      gyldigFom: dayjs().add(1, "week").toDate().toString(),
+      gyldigTom: dayjs().subtract(1, "week").toDate().toString(),
+    },
+  ],
 };
 
 export const arbeidsforholdPersonMock: ArbeidsforholdPersonDTO = {

@@ -1,5 +1,4 @@
 import React from "react";
-import { Column, Container, Row } from "nav-frontend-grid";
 import { Infomelding } from "./Infomelding";
 import styled from "styled-components";
 
@@ -14,13 +13,7 @@ const InfoWrapper = styled.div`
 `;
 
 export const PersonsokSide = () => (
-  <Container>
-    <Row>
-      <Column className="col-xs-12">
-        <InfoWrapper>
-          <Infomelding tittel={texts.title} melding={texts.melding} />
-        </InfoWrapper>
-      </Column>
-    </Row>
-  </Container>
+  <InfoWrapper>
+    <Infomelding tittel={texts.title} melding={texts.melding} />
+  </InfoWrapper>
 );

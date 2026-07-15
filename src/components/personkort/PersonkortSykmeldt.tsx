@@ -9,7 +9,7 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { formaterFnr } from "@/utils/fnrUtils";
 import { formatPhonenumber } from "@/utils/stringUtils";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
-import { BodyShort } from "@navikt/ds-react";
+import PersonkortInformasjon from "@/components/personkort/PersonkortInformasjon.tsx";
 
 const texts = {
   fnr: "F.nummer",
@@ -59,19 +59,9 @@ export function PersonkortSykmeldt() {
   );
 
   return (
-    <div className="grid grid-cols-3 gap-y-4 gap-x-16 w-fit">
-      {Object.keys(valgteElementer).map((nokkel, idx) => {
-        return (
-          <div key={idx}>
-            <BodyShort size="small" weight="semibold">
-              {informasjonNokkelTekster.get(nokkel)}
-            </BodyShort>
-            <BodyShort size="small">
-              {valgteElementer[nokkel] ? valgteElementer[nokkel] : texts.empty}
-            </BodyShort>
-          </div>
-        );
-      })}
-    </div>
+    <PersonkortInformasjon
+      informasjonNokkelTekster={informasjonNokkelTekster}
+      informasjon={valgteElementer}
+    />
   );
 }

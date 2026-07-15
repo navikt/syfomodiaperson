@@ -56,7 +56,10 @@ describe("Personkort", () => {
   it("Skal ikke vise Sikkerhetstiltak-button-tab hvis bruker mangler sikkerhetstiltak", async () => {
     queryClient.setQueryData(
       brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => brukerinfoMock,
+      () => ({
+        ...brukerinfoMock,
+        sikkerhetstiltak: [],
+      }),
     );
 
     await renderAndExpandPersonkort();

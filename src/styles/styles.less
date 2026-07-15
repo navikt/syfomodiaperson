@@ -1,17 +1,3 @@
-@import "nav-frontend-core/less/_variabler.less";
-@import "nav-frontend-core/less/_mixins.less";
-@import "nav-frontend-core/less/_elevasjon.less";
-@import "nav-frontend-core/less/print.less";
-@import "nav-frontend-core/less/scaffolding.less";
-@import "nav-frontend-core/less/hide-text.less";
-@import "nav-frontend-core/less/utilities.less";
-@import "nav-frontend-core/less/responsive-utilities.less";
-
-@import "nav-frontend-lenker-style/src/lenker-style";
-@import "nav-frontend-knapper-style/src/index";
-@import "nav-frontend-paneler-style/src/mixins";
-@import "nav-frontend-typografi-style/src/index";
-
 @import "_mixins";
 @import "_antallNytt";
 @import "_gridUtils";
@@ -22,11 +8,28 @@
 @import "_typografi";
 @import "_utils";
 
-@greenLight: #63b282;
-@blueLight: #c3ddf4;
-@textColor: #3e3832;
-@bakgrunnGraa: #efefef;
-@lysGraEtikettBakgrunn: #cec9c5;
+@navGra40: #a0a0a0;
+@navGra60: #6a6a6a;
+@white: #fff;
+@navRod: #c30000;
+@navMorkGra: #262626;
+@navOransjeLighten40: #ffc166;
+@navBla: #0067c5;
+
+@screen-sm: 768px;
+@screen-sm-min: @screen-sm;
+@screen-md: 992px;
+@screen-md-min: @screen-md;
+
+@font-family: "Source Sans Pro", Arial, sans-serif;
+@remUnit: 16;
+@fontWeightNormal: 400;
+.typo-etikett-liten-mixin() {
+  font-family: @font-family;
+  font-size: (14rem / @remUnit);
+  line-height: (20rem / @remUnit);
+  font-weight: @fontWeightNormal;
+}
 
 body {
   background-color: #f1f1f1;
