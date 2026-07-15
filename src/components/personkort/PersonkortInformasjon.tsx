@@ -1,4 +1,5 @@
 import React from "react";
+import { Table } from "@navikt/ds-react";
 
 interface Props {
   informasjonNokkelTekster: Map<string, string>;
@@ -9,19 +10,28 @@ export default function PersonkortInformasjon({
   informasjonNokkelTekster,
   informasjon,
 }: Props) {
+  const nokler = Object.keys(informasjon);
+
   return (
-    <>
-      {Object.keys(informasjon).map((nokkel, idx) => {
-        return (
-          <dl
-            key={`${nokkel}.${idx}`}
-            className="personkortElement__informasjon"
-          >
-            <dt>{informasjonNokkelTekster.get(nokkel)}</dt>
-            <dd>{informasjon[nokkel]}</dd>
-          </dl>
-        );
-      })}
-    </>
+    <Table size="small" className={"mb-4"}>
+      <Table.Header>
+        <Table.Row>
+          {nokler.map((nokkel, idx) => (
+            <Table.ColumnHeader key={`${nokkel}.${idx}`} scope="col">
+              {informasjonNokkelTekster.get(nokkel)}
+            </Table.ColumnHeader>
+          ))}
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          {nokler.map((nokkel, idx) => (
+            <Table.DataCell key={`${nokkel}.${idx}`} textSize="small">
+              {informasjon[nokkel] ?? "—"}
+            </Table.DataCell>
+          ))}
+        </Table.Row>
+      </Table.Body>
+    </Table>
   );
 }

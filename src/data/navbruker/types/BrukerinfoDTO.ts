@@ -28,7 +28,7 @@ interface Sprak {
 }
 
 /* https://pdl-docs.dev.intern.nav.no/ekstern/index.html#_sikkerhetstiltak */
-enum Tiltakstype {
+export enum Tiltakstype {
   FYUS = "FYUS",
   TFUS = "TFUS",
   FTUS = "FTUS",
@@ -39,8 +39,8 @@ enum Tiltakstype {
 interface Sikkerhetstiltak {
   type: Tiltakstype;
   beskrivelse: string;
-  gyldigFom: Date;
-  gyldigTom: Date;
+  gyldigFom: string;
+  gyldigTom: string;
 }
 
 export function mapKjoennFromDto(kjonn: string | null): KJOENN {

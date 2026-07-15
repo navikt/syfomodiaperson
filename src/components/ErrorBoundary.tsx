@@ -1,9 +1,7 @@
 import React, { ReactNode } from "react";
-import { AlertStripeFeil } from "nav-frontend-alertstriper";
-import { Normaltekst } from "nav-frontend-typografi";
 import styled from "styled-components";
 import { ApiError, defaultErrorTexts, ErrorType } from "@/api/errors";
-import { Link } from "@navikt/ds-react";
+import { Alert, Link } from "@navikt/ds-react";
 
 const texts = {
   meldFeil: "Meld oss gjerne om feilen her",
@@ -55,19 +53,17 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, State> {
     //Frontend errors
     if (this.state.hasError) {
       return (
-        <AlertStripeFeil>
+        <Alert variant={"error"}>
           <TextWithJiraLink>{defaultErrorTexts.generalError}</TextWithJiraLink>
-        </AlertStripeFeil>
+        </Alert>
       );
     }
 
     //API errors
     if (this.props.apiError) {
       return (
-        <AlertStripeFeil>
-          {this.props.errorMessage && (
-            <Normaltekst>{this.props.errorMessage}</Normaltekst>
-          )}
+        <Alert variant={"error"}>
+          {this.props.errorMessage && <span>{this.props.errorMessage}</span>}
 
           {this.props.apiError.type === ErrorType.GENERAL_ERROR ? (
             <TextWithJiraLink>
@@ -76,7 +72,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, State> {
           ) : (
             this.props.apiError.defaultErrorMsg
           )}
-        </AlertStripeFeil>
+        </Alert>
       );
     }
 

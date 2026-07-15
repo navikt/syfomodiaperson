@@ -1,8 +1,6 @@
 import React, { ReactElement } from "react";
 import Side from "../../components/side/Side";
-import Feilstripe from "../../components/Feilstripe";
 import SideLaster from "../../components/side/SideLaster";
-import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Sidetopp from "@/components/side/Sidetopp";
@@ -25,8 +23,6 @@ const texts = {
   ingenSoknader: "Det er ingen nye søknader om sykepenger",
   tidligereSoknader: "Tidligere søknader",
   planlagteSoknader: "Planlagte søknader",
-  errorMessage: (sykmeldtNavn: string) =>
-    `Beklager – vi kunne ikke hente alle sykepengesøknadene til ${sykmeldtNavn}`,
 };
 
 export default function SykepengesoknaderSide(): ReactElement {
@@ -57,7 +53,6 @@ export default function SykepengesoknaderSide(): ReactElement {
     .sort(sorterEtterPerioder)
     .reverse();
 
-  const sykmeldtNavn = useNavBrukerData().navn;
   return (
     <Side
       tittel="Sykepengesøknader"
@@ -65,11 +60,6 @@ export default function SykepengesoknaderSide(): ReactElement {
     >
       <SideLaster isLoading={isLoading} isError={isError}>
         <div>
-          <Feilstripe
-            className="mb-5"
-            tekst={texts.errorMessage(sykmeldtNavn)}
-            vis={isError}
-          />
           <Sidetopp tittel={texts.sidetittel} />
           <SoknaderList
             sykepengesoknader={nyeSoknader}

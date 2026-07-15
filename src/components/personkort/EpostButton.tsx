@@ -13,7 +13,7 @@ interface EpostButtonProps {
 
 const EpostButton = ({ epost, isActive }: EpostButtonProps) => {
   return (
-    <div className="flex px-2 col-sm-3 items-center">
+    <div className="flex items-center">
       <BodyShort
         weight={`${isActive ? "semibold" : "regular"}`}
         size="small"

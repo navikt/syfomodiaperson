@@ -2,7 +2,6 @@ import React, { ReactElement } from "react";
 import { restdatoTilLesbarDato } from "@/utils/datoUtils";
 import { Adresse, Fastlege } from "@/data/fastlege/types/Fastlege";
 import { useFastlegerQuery } from "@/data/fastlege/fastlegerQueryHooks";
-import { Column, Row } from "nav-frontend-grid";
 import styled from "styled-components";
 import PersonkortInformasjon from "@/components/personkort/PersonkortInformasjon";
 import { FlexColumn, FlexRow } from "@/components/Layout";
@@ -72,19 +71,15 @@ export const FastlegeVikar = ({
 }: FastlegeVikarProps): ReactElement => {
   return (
     <PersonKortLegeRow>
-      <Column>
-        <Heading size="medium">{texts.vikar}</Heading>
-      </Column>
-      <>
-        {fastlegeVikarer.map((lege, idx) => {
-          return <FlexRow key={idx}>{fastlegeVikarTekst(lege)}</FlexRow>;
-        })}
-      </>
+      <Heading size="medium">{texts.vikar}</Heading>
+      {fastlegeVikarer.map((lege, idx) => {
+        return <FlexRow key={idx}>{fastlegeVikarTekst(lege)}</FlexRow>;
+      })}
     </PersonKortLegeRow>
   );
 };
 
-const PersonKortLegeRow = styled(Row)`
+const PersonKortLegeRow = styled.div`
   margin-left: 0;
   margin-right: 0;
 
@@ -97,25 +92,13 @@ const PersonKortLegeRow = styled(Row)`
   }
 `;
 
-const PersonKortElementLege = styled.div`
-  @media (min-width: 48em) {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 0;
-    .personkortElement__informasjon {
-      width: calc(25% - 1em);
-    }
-  }
-`;
-
 export function PersonkortLege() {
   const { fastlege, fastlegeVikarer, ikkeFunnet } = useFastlegerQuery();
   const fastlegekontor = fastlege?.fastlegekontor;
 
   const informasjonNokkelTekster = new Map([
     ["navn", texts.name],
-    ["telefon", texts.phone],
+    ["tlf", texts.phone],
     ["besoeksadresse", texts.visitingAdress],
     ["postadresse", texts.postalAddress],
   ]);
@@ -161,19 +144,15 @@ export function PersonkortLege() {
     <>
       {fastlege && (
         <PersonKortLegeRow className="no-gutter">
-          <Column>
-            <Heading size="medium">{hentTekstFastlegeNavn(fastlege)}</Heading>
-            <Detail>{hentTekstFastlegePeriode(fastlege)}</Detail>
-          </Column>
+          <Heading size="medium">{hentTekstFastlegeNavn(fastlege)}</Heading>
+          <Detail>{hentTekstFastlegePeriode(fastlege)}</Detail>
         </PersonKortLegeRow>
       )}
       {fastlegekontor && (
-        <PersonKortElementLege>
-          <PersonkortInformasjon
-            informasjonNokkelTekster={informasjonNokkelTekster}
-            informasjon={valgteElementer}
-          />
-        </PersonKortElementLege>
+        <PersonkortInformasjon
+          informasjonNokkelTekster={informasjonNokkelTekster}
+          informasjon={valgteElementer}
+        />
       )}
       {fastlegeVikarer.length > 0 && (
         <FastlegeVikar fastlegeVikarer={fastlegeVikarer} />
