@@ -40,7 +40,7 @@ const texts = {
 
 export function UtenlandsoppholdSoknad() {
   const { data, isPending, isError } = useSoknaderQuery();
-  const { mutate } = useVedtakMutation();
+  const { mutate, isPending: mutateIsPending } = useVedtakMutation();
   const { getVedtakDocument } = useUtenlandsoppholdSoknadDocument();
 
   const navigate = useNavigate();
@@ -146,6 +146,7 @@ export function UtenlandsoppholdSoknad() {
                     },
                   )
                 }
+                loading={mutateIsPending}
               >
                 {texts.sendButton}
               </Button>
