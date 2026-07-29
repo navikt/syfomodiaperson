@@ -38,6 +38,7 @@ const BehandlerSearchResult = ({
       tabIndex={0}
     >
       {behandlere.map((behandler, index) => {
+        const kontor = !!behandler.kontor ? behandler.kontor : "";
         const address = !!behandler.adresse
           ? capitalizeWord(behandler.adresse)
           : "";
@@ -46,7 +47,18 @@ const BehandlerSearchResult = ({
           ? capitalizeWord(behandler.poststed)
           : "";
 
-        const behandlerInfo = `${behandler.etternavn}, ${behandler.fornavn}: ${behandler.kontor} (${address}, ${postnr} ${poststed})`;
+        const postadresse = [postnr, poststed].filter(Boolean).join(" ");
+        const detaljer = [address, postadresse].filter(Boolean).join(", ");
+        const kontorOgDetaljer = [kontor, detaljer ? `(${detaljer})` : ""]
+          .filter(Boolean)
+          .join(" ");
+
+        const behandlerInfo = [
+          `${behandler.etternavn}, ${behandler.fornavn}:`,
+          kontorOgDetaljer,
+        ]
+          .filter(Boolean)
+          .join(" ");
         return (
           <Popover.Content key={index} className="p-0">
             <Button
