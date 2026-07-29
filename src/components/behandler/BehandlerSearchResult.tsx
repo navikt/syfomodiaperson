@@ -2,6 +2,7 @@ import React, { ReactElement } from "react";
 import { Button, Popover } from "@navikt/ds-react";
 import { useSokBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
+import { capitalizeWord } from "@/utils/stringUtils.ts";
 
 interface BehandlerSearchResultProps {
   searchRef: React.MutableRefObject<any>;
@@ -32,12 +33,32 @@ const BehandlerSearchResult = ({
       placement="bottom-start"
       open={behandlere.length > 0 && searchText !== ""}
       onClose={() => null}
-      className="w-[30rem] overflow-auto max-h-60"
+      className="w-[50rem] overflow-auto max-h-60"
       offset={8}
       tabIndex={0}
     >
       {behandlere.map((behandler, index) => {
-        const behandlerInfo = `${behandler.etternavn}, ${behandler.fornavn}: ${behandler.kontor}`;
+        const kontor = !!behandler.kontor ? behandler.kontor : "";
+        const address = !!behandler.adresse
+          ? capitalizeWord(behandler.adresse)
+          : "";
+        const postnr = !!behandler.postnummer ? behandler.postnummer : "";
+        const poststed = !!behandler.poststed
+          ? capitalizeWord(behandler.poststed)
+          : "";
+
+        const postadresse = [postnr, poststed].filter(Boolean).join(" ");
+        const detaljer = [address, postadresse].filter(Boolean).join(", ");
+        const kontorOgDetaljer = [kontor, detaljer ? `(${detaljer})` : ""]
+          .filter(Boolean)
+          .join(" ");
+
+        const behandlerInfo = [
+          `${behandler.etternavn}, ${behandler.fornavn}:`,
+          kontorOgDetaljer,
+        ]
+          .filter(Boolean)
+          .join(" ");
         return (
           <Popover.Content key={index} className="p-0">
             <Button

@@ -13,9 +13,21 @@ export const behandlerNavn = (
 export const behandlerDisplayText = (behandler: BehandlerDTO): string => {
   const name = behandlerNavn(behandler);
   const type = !!behandler.type ? `${capitalizeWord(behandler.type)}:` : "";
-  const typeAndName = `${type} ${name}`;
+  const typeAndName = `${type} ${name}`.trim();
+
   const office = !!behandler.kontor ? capitalizeWord(behandler.kontor) : "";
+  const address = !!behandler.adresse ? capitalizeWord(behandler.adresse) : "";
+  const postnr = !!behandler.postnummer ? behandler.postnummer : "";
+  const poststed = !!behandler.poststed
+    ? capitalizeWord(behandler.poststed)
+    : "";
   const phone = !!behandler.telefon ? `tlf ${behandler.telefon}` : "";
 
-  return [typeAndName, office, phone].filter(Boolean).join(", ");
+  const postadresse = [postnr, poststed].filter(Boolean).join(" ");
+  const detaljer = [address, postadresse, phone].filter(Boolean).join(", ");
+  const officeAndDetaljer = [office, detaljer ? `(${detaljer})` : ""]
+    .filter(Boolean)
+    .join(" ");
+
+  return [typeAndName, officeAndDetaljer].filter(Boolean).join(", ");
 };
