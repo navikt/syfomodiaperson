@@ -112,6 +112,9 @@ describe("VelgBehandler", () => {
     const searchResult = await screen.findByRole("button", {
       name: /Baker/,
     });
+    expect(searchResult.textContent).to.contain(
+      `(${behandlerSearchResultMock.adresse}, ${behandlerSearchResultMock.postnummer} ${behandlerSearchResultMock.poststed})`,
+    );
     await userEvent.click(searchResult);
 
     expect(screen.getByText(behandlerSearchResultMock.fnr)).to.exist;
