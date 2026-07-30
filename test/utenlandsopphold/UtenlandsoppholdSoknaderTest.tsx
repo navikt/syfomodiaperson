@@ -2,12 +2,8 @@ import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
-import { http, HttpResponse } from "msw";
-import { mockServer } from "../setup";
 import { queryClientWithMockData } from "../testQueryClient";
-import { ISUTENLANDSOPPHOLD_ROOT } from "@/apiConstants";
 import { UtenlandsoppholdSoknader } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknader.tsx";
-import { SoknaderResponseDTO } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 import { utenlandsoppholdQueryKeys } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
 import {
   mockSoknaderResponse,
@@ -22,6 +18,7 @@ import {
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { MemoryRouter } from "react-router-dom";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
+import { stubSoknaderQuery } from "../stubs/stubIsutenlandsopphold";
 
 let queryClient: QueryClient;
 
@@ -34,13 +31,6 @@ const renderUtenlandsopphold = () =>
         </NotificationProvider>
       </MemoryRouter>
     </QueryClientProvider>,
-  );
-
-const stubSoknaderQuery = (response: SoknaderResponseDTO) =>
-  mockServer.use(
-    http.post(`*${ISUTENLANDSOPPHOLD_ROOT}/soknader/query`, () =>
-      HttpResponse.json(response),
-    ),
   );
 
 describe("UtenlandsoppholdSoknader", () => {

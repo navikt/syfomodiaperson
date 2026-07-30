@@ -10,7 +10,7 @@ export interface SoknaderResponseDTO {
 }
 
 export interface SoknadVedtakPostDTO {
-  utfall: "INNVILGET";
+  utfall: Utfall;
   innvilgedePerioder: PeriodeDTO[];
   document: DocumentComponentDto[];
 }
@@ -34,7 +34,7 @@ export interface PeriodeDTO {
 }
 
 export interface VedtakDTO {
-  utfall: string;
+  utfall: Utfall;
   innvilgedePerioder: PeriodeDTO[];
   fattetAv: string;
   fattetTidspunkt: string;
@@ -43,9 +43,12 @@ export interface VedtakDTO {
 export enum SoknadStatusDTO {
   MOTTATT = "MOTTATT",
   INNVILGET = "INNVILGET",
+  AVSLAG = "AVSLAG",
 }
 
 // Types
+export type Utfall = "INNVILGET" | "AVSLAG";
+
 export interface Soknad extends Omit<
   SoknadDTO,
   "innsendtTidspunkt" | "soktePerioder" | "vedtak"
