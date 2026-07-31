@@ -129,7 +129,7 @@ export function UtenlandsoppholdSoknad() {
                       soknadId: utenlandsoppholdSoknad.soknadId,
                       vedtak: {
                         utfall: "INNVILGET",
-                        innvilgetePerioder: soktePerioder.map((periode) => ({
+                        innvilgedePerioder: soktePerioder.map((periode) => ({
                           fom: periode.fom.toISOString(),
                           tom: periode.tom.toISOString(),
                         })),

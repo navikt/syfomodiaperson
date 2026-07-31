@@ -41,7 +41,7 @@ export const soknadMedVedtakMock: SoknadDTO = {
   ],
   vedtak: {
     utfall: "INNVILGET",
-    innvilgetePerioder: [
+    innvilgedePerioder: [
       {
         fom: "2026-04-01",
         tom: "2026-04-05",
@@ -82,7 +82,7 @@ export const mockIsutenlandsopphold = [
               status: SoknadStatusDTO.INNVILGET,
               vedtak: {
                 utfall: body.utfall,
-                innvilgetePerioder: body.innvilgetePerioder,
+                innvilgedePerioder: body.innvilgedePerioder,
                 fattetTidspunkt: dayjs().toISOString(),
                 fattetAv: VEILEDER_IDENT_DEFAULT,
               },
