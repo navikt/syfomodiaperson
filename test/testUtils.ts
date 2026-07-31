@@ -7,6 +7,13 @@ export const clickButton = async (buttonText: string) =>
 export const getButton = (buttonText: string) =>
   screen.getByRole("button", { name: buttonText });
 
+export const clickRadio = async (radioLabel: string) =>
+  await userEvent.click(
+    screen.getByRole("radio", {
+      name: radioLabel,
+    }),
+  );
+
 export const clickTab = async (tabTitle: string) =>
   await userEvent.click(getTab(tabTitle));
 

@@ -56,6 +56,32 @@ export const mockSoknaderResponse: SoknaderResponseDTO = {
   soknader: [soknadUtenVedtakMock, soknadMedVedtakMock],
 };
 
+/**
+ * Bygger en oppdatert søknad basert på et innsendt vedtak, slik backend ville
+ * gjort det. Delt mellom msw-handleren under (brukt lokalt i dev) og
+ * test-stubben i test/stubs/stubIsutenlandsopphold.ts, slik at begge
+ * simulerer samme oppførsel når et vedtak fattes.
+ */
+export function byggOppdatertSoknadMedVedtak(
+  soknad: SoknadDTO,
+  vedtak: SoknadVedtakPostDTO,
+  fattetAv: string,
+): SoknadDTO {
+  return {
+    ...soknad,
+    status:
+      vedtak.utfall === "INNVILGET"
+        ? SoknadStatusDTO.INNVILGET
+        : SoknadStatusDTO.AVSLAG,
+    vedtak: {
+      utfall: vedtak.utfall,
+      innvilgedePerioder: vedtak.innvilgedePerioder,
+      fattetAv,
+      fattetTidspunkt: dayjs().toISOString(),
+    },
+  };
+}
+
 export const mockIsutenlandsopphold = [
   http.post(`${ISUTENLANDSOPPHOLD_ROOT}/soknader/query`, () => {
     return HttpResponse.json(mockSoknaderResponse);
@@ -77,16 +103,11 @@ export const mockIsutenlandsopphold = [
 
       return existingSoknad
         ? HttpResponse.json({
-            soknad: {
-              ...existingSoknad,
-              status: SoknadStatusDTO.INNVILGET,
-              vedtak: {
-                utfall: body.utfall,
-                innvilgedePerioder: body.innvilgedePerioder,
-                fattetTidspunkt: dayjs().toISOString(),
-                fattetAv: VEILEDER_IDENT_DEFAULT,
-              },
-            },
+            soknad: byggOppdatertSoknadMedVedtak(
+              existingSoknad,
+              body,
+              VEILEDER_IDENT_DEFAULT,
+            ),
           })
         : HttpResponse.text(`Did not find soknad with uuid ${soknadId}`, {
             status: 400,

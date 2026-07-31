@@ -30,6 +30,7 @@ const texts = {
 const statusTexts: { [key in SoknadStatusDTO]: string } = {
   [SoknadStatusDTO.MOTTATT]: "Mottatt",
   [SoknadStatusDTO.INNVILGET]: "Innvilget",
+  [SoknadStatusDTO.AVSLAG]: "Avslag",
 };
 
 function getStatusColumn(soknad: Soknad) {
