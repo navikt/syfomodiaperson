@@ -13,7 +13,6 @@ import {
 import {
   tilLesbarDatoMedArUtenManedNavn,
   tilLesbarPeriodeMedArUtenManednavn,
-  toDatePrettyPrint,
 } from "@/utils/datoUtils";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { MemoryRouter } from "react-router-dom";
@@ -117,7 +116,7 @@ describe("UtenlandsoppholdSoknader", () => {
 
     expect(
       await screen.findByText(
-        `Behandlet ${toDatePrettyPrint(
+        `Behandlet ${tilLesbarDatoMedArUtenManedNavn(
           soknadMedVedtakMock.vedtak!.fattetTidspunkt,
         )} av ${soknadMedVedtakMock.vedtak!.fattetAv}`,
       ),

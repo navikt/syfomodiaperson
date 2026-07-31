@@ -8,7 +8,6 @@ import {
 import {
   tilLesbarDatoMedArUtenManedNavn,
   tilLesbarPeriodeMedArUtenManednavn,
-  toDatePrettyPrint,
 } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
 import { useNotification } from "@/context/notification/NotificationContext.tsx";
@@ -20,7 +19,7 @@ const texts = {
   periode: "Søkt periode",
   saksbehandling: "Saksbehandling",
   saksbehandlingVedtak: (fattetTidspunkt: Date, fattetAv: string) =>
-    `Behandlet ${toDatePrettyPrint(fattetTidspunkt)} av ${fattetAv}`,
+    `Behandlet ${tilLesbarDatoMedArUtenManedNavn(fattetTidspunkt)} av ${fattetAv}`,
   saksbehandlingIngenVedtak: "Ubehandlet",
   status: "Status",
   startBehandling: "Start behandling",
