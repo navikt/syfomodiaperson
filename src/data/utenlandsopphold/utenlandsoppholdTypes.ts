@@ -11,7 +11,7 @@ export interface SoknaderResponseDTO {
 
 export interface SoknadVedtakPostDTO {
   utfall: "INNVILGET";
-  innvilgetePerioder: PeriodeDTO[];
+  innvilgedePerioder: PeriodeDTO[];
   document: DocumentComponentDto[];
 }
 
@@ -35,7 +35,7 @@ export interface PeriodeDTO {
 
 export interface VedtakDTO {
   utfall: string;
-  innvilgetePerioder: PeriodeDTO[];
+  innvilgedePerioder: PeriodeDTO[];
   fattetAv: string;
   fattetTidspunkt: string;
 }
@@ -62,9 +62,9 @@ export interface Periode extends Omit<PeriodeDTO, "fom" | "tom"> {
 
 export interface Vedtak extends Omit<
   VedtakDTO,
-  "innvilgetePerioder" | "fattetTidspunkt"
+  "innvilgedePerioder" | "fattetTidspunkt"
 > {
-  innvilgetePerioder: Periode[];
+  innvilgedePerioder: Periode[];
   fattetTidspunkt: Date;
 }
 
@@ -77,7 +77,7 @@ export const parsePeriode = (periode: PeriodeDTO): Periode => ({
 
 export const parseVedtak = (vedtak: VedtakDTO): Vedtak => ({
   ...vedtak,
-  innvilgetePerioder: vedtak.innvilgetePerioder.map(parsePeriode),
+  innvilgedePerioder: vedtak.innvilgedePerioder.map(parsePeriode),
   fattetTidspunkt: new Date(vedtak.fattetTidspunkt),
 });
 

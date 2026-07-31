@@ -93,7 +93,7 @@ const stubSoknaderMedMuterbarTilstand = (soknader: SoknadDTO[]) => {
           status: SoknadStatusDTO.INNVILGET,
           vedtak: {
             utfall: vedtak.utfall,
-            innvilgetePerioder: vedtak.innvilgetePerioder,
+            innvilgedePerioder: vedtak.innvilgedePerioder,
             fattetAv: VEILEDER_DEFAULT.ident,
             fattetTidspunkt: new Date().toISOString(),
           },
