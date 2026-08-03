@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
 import {
   Alert,
   BodyShort,
@@ -26,7 +27,7 @@ import {
   SoknadStatusDTO,
   Utfall,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
-import { erProd } from "@/utils/miljoUtil.ts";
+import { erLokal } from "@/utils/miljoUtil.ts";
 
 const texts = {
   pending: "Henter søknader...",
@@ -52,37 +53,44 @@ const texts = {
   vedtakFattetNotification:
     "Vedtaket om utenlandsopphold utenfor EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
   alertBehandlet: "Denne søknaden er allerede behandlet av",
+  missingUtfall: "Du må velge et utfall for å fatte vedtaket",
 };
 
 // En midlertidig lokal feature-toggle, frem til vi har fått brevmaler på plass
-const isAvslagEnabled = !erProd();
+const isAvslagEnabled = erLokal();
+
+interface SkjemaValues {
+  utfall: Utfall;
+}
 
 export function UtenlandsoppholdSoknad() {
   const { data, isPending, isError } = useSoknaderQuery();
   const { mutate, isPending: mutateIsPending } = useVedtakMutation();
   const { getVedtakDocument } = useUtenlandsoppholdSoknadDocument();
-  const [selectedUtfall, setSelectedUtfall] = useState<Utfall | null>(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SkjemaValues>();
 
   const navigate = useNavigate();
   const { setNotification } = useNotification();
 
-  function submit(soknadId: string) {
-    if (!selectedUtfall) {
-      return;
-    }
+  function submit(soknadId: string, values: SkjemaValues) {
+    const { utfall } = values;
     const innvilgedePerioder =
-      selectedUtfall === "INNVILGET"
+      utfall === "INNVILGET"
         ? soktePerioder.map((periode) => ({
             fom: periode.fom.toISOString(),
             tom: periode.tom.toISOString(),
           }))
-        : selectedUtfall === "AVSLAG" // For å være eksplisitt
+        : utfall === "AVSLAG" // For å være eksplisitt
           ? []
           : [];
     const requestDTO = {
       soknadId: soknadId,
       vedtak: {
-        utfall: selectedUtfall,
+        utfall: utfall,
         innvilgedePerioder: innvilgedePerioder,
         document: vedtakDocument, // TODO: Må oppdateres basert på utfall
       },
@@ -193,21 +201,36 @@ export function UtenlandsoppholdSoknad() {
 
         <div className="flex flex-col gap-4">
           {!soknadBehandlet && (
-            <>
+            <form
+              onSubmit={handleSubmit((values) =>
+                submit(utenlandsoppholdSoknad.soknadId, values),
+              )}
+              className="flex flex-col gap-4"
+            >
               <RadioGroup
                 legend={"Velg utfall"}
-                value={selectedUtfall}
-                onChange={setSelectedUtfall}
+                name="utfall"
+                error={errors.utfall && texts.missingUtfall}
               >
-                <Radio value={"INNVILGET"}>{texts.innvilgelse}</Radio>
+                <Radio
+                  value={"INNVILGET"}
+                  {...register("utfall", { required: true })}
+                >
+                  {texts.innvilgelse}
+                </Radio>
                 {isAvslagEnabled && (
-                  <Radio value={"AVSLAG"}>{texts.avslag}</Radio>
+                  <Radio
+                    value={"AVSLAG"}
+                    {...register("utfall", { required: true })}
+                  >
+                    {texts.avslag}
+                  </Radio>
                 )}
               </RadioGroup>
               <div className="flex flex-row gap-4">
                 <Button
                   variant="primary"
-                  onClick={() => submit(utenlandsoppholdSoknad.soknadId)}
+                  type="submit"
                   loading={mutateIsPending}
                 >
                   {texts.sendButton}
@@ -224,7 +247,7 @@ export function UtenlandsoppholdSoknad() {
                   {texts.backButton}
                 </Button>
               </div>
-            </>
+            </form>
           )}
         </div>
       </div>
