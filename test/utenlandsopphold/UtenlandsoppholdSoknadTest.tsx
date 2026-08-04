@@ -168,6 +168,23 @@ describe("UtenlandsoppholdSoknad", () => {
     ).to.have.lengthOf(2);
   });
 
+  it("viser valideringsfeil og sender ikke vedtak når ingen utfall er valgt", async () => {
+    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+
+    renderUtenlandsoppholdSoknad();
+
+    await screen.findByRole("button", { name: "Send vedtak" });
+    await clickButton("Send vedtak");
+
+    expect(
+      await screen.findByText("Du må velge et utfall for å fatte vedtaket"),
+    ).to.exist;
+
+    await waitFor(() => {
+      expect(queryClient.getMutationCache().getAll()).to.have.lengthOf(0);
+    });
+  });
+
   it("navigerer ikke bort og viser ingen notifikasjon hvis sending av vedtak feiler", async () => {
     stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
     mockServer.use(
