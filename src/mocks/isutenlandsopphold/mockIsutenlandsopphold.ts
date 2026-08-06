@@ -72,7 +72,9 @@ export function byggOppdatertSoknadMedVedtak(
     status:
       vedtak.utfall === "INNVILGET"
         ? SoknadStatusDTO.INNVILGET
-        : SoknadStatusDTO.AVSLAG,
+        : vedtak.utfall === "DELVIS_INNVILGET"
+          ? SoknadStatusDTO.DELVIS_INNVILGET
+          : SoknadStatusDTO.AVSLAG,
     vedtak: {
       utfall: vedtak.utfall,
       innvilgedePerioder: vedtak.innvilgedePerioder,

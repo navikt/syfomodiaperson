@@ -41,12 +41,13 @@ export const useVedtakMutation = () => {
   const path = (soknadId: string) =>
     `${ISUTENLANDSOPPHOLD_ROOT}/soknader/${soknadId}/vedtak`;
   const postVedtak = ({
-    soknadId,
+    soknadIdPathParam,
     vedtak,
   }: {
-    soknadId: string;
+    soknadIdPathParam: string;
     vedtak: SoknadVedtakPostDTO;
-  }) => post<SoknadVedtakResponseDTO>(path(soknadId), vedtak, personident);
+  }) =>
+    post<SoknadVedtakResponseDTO>(path(soknadIdPathParam), vedtak, personident);
 
   return useMutation({
     mutationFn: postVedtak,
