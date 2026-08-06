@@ -1,4 +1,5 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
+import dayjs from "dayjs";
 
 export interface VedtakRequestDTO {
   fom: string;
@@ -31,4 +32,10 @@ export enum InfotrygdStatus {
 
 export interface VilkarResponseDTO {
   isArbeidssoker: boolean;
+}
+
+export function isActiveExistingVedtak(vedtak: VedtakResponseDTO): boolean {
+  const vedtakTomDate = dayjs(vedtak.tom);
+  const today = dayjs();
+  return today.isBefore(vedtakTomDate) || today.isSame(vedtakTomDate, "date");
 }
