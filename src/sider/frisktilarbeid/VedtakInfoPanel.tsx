@@ -5,8 +5,10 @@ import {
 } from "@navikt/aksel-icons";
 import React from "react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
-import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
-import dayjs from "dayjs";
+import {
+  isActiveExistingVedtak,
+  VedtakResponseDTO,
+} from "@/data/frisktilarbeid/frisktilarbeidTypes";
 
 const texts = {
   aktivtVedtak: "Aktivt vedtak",
@@ -19,12 +21,6 @@ const texts = {
   vedtakIkkeJournalfort:
     "Feil ved Journalføring av vedtaket. Nytt forsøk gjøres automatisk.",
 };
-
-function isActiveExistingVedtak(vedtak: VedtakResponseDTO): boolean {
-  const vedtakTomDate = dayjs(vedtak.tom);
-  const today = dayjs();
-  return today.isBefore(vedtakTomDate) || today.isSame(vedtakTomDate, "date");
-}
 
 interface Props {
   vedtak: VedtakResponseDTO;

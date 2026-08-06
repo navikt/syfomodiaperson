@@ -9,6 +9,7 @@ import FriskmeldingTilArbeidsformidling from "@/sider/frisktilarbeid/Friskmeldin
 import VeiledningBox from "@/sider/frisktilarbeid/VeiledningBox";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import NyttigeLenkerBox from "@/sider/frisktilarbeid/NyttigeLenkerBox";
+import { FriskmeldingTilArbeidsformidlingHistorikk } from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidlingHistorikk.tsx";
 
 const texts = {
   title: "Friskmelding til arbeidsformidling",
@@ -26,6 +27,7 @@ export default function FriskmeldingTilArbeidsformidlingSide() {
             <NotificationProvider>
               <FriskmeldingTilArbeidsformidling />
             </NotificationProvider>
+            <FriskmeldingTilArbeidsformidlingHistorikk />
           </Tredelt.FirstColumn>
           <Tredelt.SecondColumn>
             <VeiledningBox />
