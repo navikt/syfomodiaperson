@@ -29,6 +29,7 @@ const texts = {
 const statusTexts: { [key in SoknadStatusDTO]: string } = {
   [SoknadStatusDTO.MOTTATT]: "Mottatt",
   [SoknadStatusDTO.INNVILGET]: "Innvilget",
+  [SoknadStatusDTO.DELVIS_INNVILGET]: "Delvis innvilget",
   [SoknadStatusDTO.AVSLAG]: "Avslag",
 };
 
