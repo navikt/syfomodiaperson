@@ -1,10 +1,10 @@
 import {
   Alert,
   BodyLong,
-  BodyShort,
   Box,
   Button,
   Heading,
+  List,
   Radio,
   RadioGroup,
   ReadMore,
@@ -28,6 +28,7 @@ import LabelAndText from "@/components/LabelAndText";
 import { Controller, useForm } from "react-hook-form";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
+import { ListItem } from "@navikt/ds-react/List";
 
 const texts = {
   aktivForesporsel: "Obs! Det ble bedt om oppfølgingsplan fra",
@@ -44,19 +45,38 @@ const texts = {
   button: "Send forespørsel",
   foresporselSendt: "Forespørsel om oppfølgingsplan sendt",
   readMoreText: "Dette får nærmeste leder tilsendt i e-posten fra Nav",
+  readMoreContent: {
+    hei: "Hei,",
+    navBerOm:
+      "Nav ber om at du sender inn oppfølgingsplan for en av dine ansatte som er sykmeldt.",
+    slikGjorDuDet: "Slik gjør du det:",
+    steg1: "Logg inn på 'Min side - arbeidsgiver'.",
+    steg2:
+      "Klikk på 'bjella'. Der finner du meldingen om å lage oppfølgingsplan.",
+    harDuSporsmal: "Har du spørsmål, kan du kontakte oss på 55 55 33 36.",
+    duKanIkkeSvare: "Du kan ikke svare på denne meldingen.",
+    vennligHilsen: "Vennlig hilsen Nav.",
+  },
 };
 
 function ReadMoreContent() {
   return (
-    <BodyShort className="whitespace-pre-line">
-      {`Hei, \n
-      Nav ber om at du sender inn oppfølgingsplan for en av dine ansatte som er sykmeldt.
-      Logg inn på "Min side - arbeidsgiver". Klikk på varselet i "bjella" for å se hvem det gjelder. \n
-      Har du spørsmål, kan du kontakte oss på 55 55 33 36. \n
-      Vennlig hilsen Nav. \n
-      Du kan ikke svare på denne meldingen.
-      `}
-    </BodyShort>
+    <>
+      <BodyLong size="small">{texts.readMoreContent.hei}</BodyLong>
+      <BodyLong size="small" className="mb-4">
+        {texts.readMoreContent.navBerOm}
+      </BodyLong>
+      <Heading size="xsmall" level="4">
+        {texts.readMoreContent.slikGjorDuDet}
+      </Heading>
+      <List as="ol" size="small" className="mb-4">
+        <List.Item>{texts.readMoreContent.steg1}</List.Item>
+        <ListItem>{texts.readMoreContent.steg2}</ListItem>
+      </List>
+      <BodyLong size="small">{texts.readMoreContent.harDuSporsmal}</BodyLong>
+      <BodyLong size="small">{texts.readMoreContent.duKanIkkeSvare}</BodyLong>
+      <BodyLong size="small">{texts.readMoreContent.vennligHilsen}</BodyLong>
+    </>
   );
 }
 
