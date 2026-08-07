@@ -13,6 +13,7 @@ export interface SoknadVedtakPostDTO {
   utfall: Utfall;
   innvilgedePerioder: PeriodeDTO[];
   document: DocumentComponentDto[];
+  begrunnelse: string | null;
 }
 
 export interface SoknadVedtakResponseDTO {
@@ -38,6 +39,7 @@ export interface VedtakDTO {
   innvilgedePerioder: PeriodeDTO[];
   fattetAv: string;
   fattetTidspunkt: string;
+  begrunnelse: string | null;
 }
 
 export enum SoknadStatusDTO {
