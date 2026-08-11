@@ -1,6 +1,7 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
 import { http, HttpResponse } from "msw";
 import { mockServer } from "../setup";
@@ -9,6 +10,7 @@ import { ISUTENLANDSOPPHOLD_ROOT } from "@/apiConstants";
 import { UtenlandsoppholdSoknad } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknad.tsx";
 import { UtenlandsoppholdSoknader } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknader.tsx";
 import { utenlandsoppholdQueryKeys } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
+import { SoknadVedtakPostDTO } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
@@ -21,7 +23,12 @@ import {
   soknadUtenVedtakMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
 import { utenlandsoppholdPath } from "@/AppRouter.tsx";
-import { clickButton, clickRadio } from "../testUtils";
+import {
+  changeTextInput,
+  clickButton,
+  clickRadio,
+  getTextInput,
+} from "../testUtils";
 import {
   stubSoknaderMedMuterbarTilstand,
   stubSoknaderQuery,
@@ -166,6 +173,266 @@ describe("UtenlandsoppholdSoknad", () => {
         new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),
       ),
     ).to.have.lengthOf(2);
+  });
+
+  describe("Delvis innvilgelse", () => {
+    it("viser periode-velger for delvis innvilgelse kun når det utfallet er valgt", async () => {
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+
+      renderUtenlandsoppholdSoknad();
+
+      await screen.findByRole("button", { name: "Send vedtak" });
+
+      expect(screen.queryByRole("textbox", { name: "Fra og med dato" })).to.not
+        .exist;
+
+      await clickRadio("Delvis innvilgelse: Godkjenn deler av perioden");
+
+      expect(await screen.findByRole("textbox", { name: "Fra og med dato" })).to
+        .exist;
+      expect(screen.getByRole("textbox", { name: "Til og med dato" })).to.exist;
+
+      await clickRadio("Innvilgelse: Godkjenn hele perioden");
+
+      expect(screen.queryByRole("textbox", { name: "Fra og med dato" })).to.not
+        .exist;
+    });
+
+    it("viser valideringsfeil og sender ikke vedtak når delvis innvilgelse er valgt uten periode", async () => {
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+
+      renderUtenlandsoppholdSoknad();
+
+      await screen.findByRole("button", { name: "Send vedtak" });
+      await clickRadio("Delvis innvilgelse: Godkjenn deler av perioden");
+      await clickButton("Send vedtak");
+
+      expect(
+        await screen.findAllByText("Vennligst angi periode"),
+      ).to.have.lengthOf(2);
+
+      await waitFor(() => {
+        expect(queryClient.getMutationCache().getAll()).to.have.lengthOf(0);
+      });
+    });
+
+    it("viser valideringsfeil og sender ikke vedtak når valgt periode krysser datoer det ikke er søkt om", async () => {
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+
+      renderUtenlandsoppholdSoknad();
+
+      await screen.findByRole("button", { name: "Send vedtak" });
+      await clickRadio("Delvis innvilgelse: Godkjenn deler av perioden");
+
+      const fomInput = getTextInput("Fra og med dato");
+      const tomInput = getTextInput("Til og med dato");
+      // 05.06.2026 - 11.06.2026 krysser hullet 08.06.2026-09.06.2026 mellom soktePerioder
+      changeTextInput(fomInput, "05.06.2026");
+      changeTextInput(tomInput, "11.06.2026");
+
+      await screen.findByRole("button", { name: "Send vedtak" });
+      await clickButton("Send vedtak");
+
+      expect(
+        await screen.findAllByText(
+          "Perioden kan ikke krysse datoer det ikke er søkt om",
+        ),
+      ).to.have.lengthOf(2);
+
+      await waitFor(() => {
+        expect(queryClient.getMutationCache().getAll()).to.have.lengthOf(0);
+      });
+    });
+
+    it("sender delvis innvilget vedtak med valgt periode, viser notifikasjon og navigerer tilbake til listen der søknadens status nå vises som delvis innvilget", async () => {
+      stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
+
+      renderUtenlandsoppholdSoknad(
+        soknadUtenVedtakMock.soknadId,
+        utenlandsoppholdPath,
+      );
+
+      expect(await screen.findByRole("button", { name: "Start behandling" })).to
+        .exist;
+
+      await clickButton("Start behandling");
+
+      await clickRadio("Delvis innvilgelse: Godkjenn deler av perioden");
+
+      const fomInput = getTextInput("Fra og med dato");
+      const tomInput = getTextInput("Til og med dato");
+      changeTextInput(fomInput, "02.06.2026");
+      changeTextInput(tomInput, "05.06.2026");
+
+      await screen.findByRole("button", { name: "Send vedtak" });
+      await clickButton("Send vedtak");
+
+      expect(
+        await screen.findByText(
+          "Vedtaket om utenlandsopphold utenfor EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
+        ),
+      ).to.exist;
+      expect(screen.queryByText("Fant ikke søknaden")).to.not.exist;
+      expect(screen.queryByRole("button", { name: "Start behandling" })).to.not
+        .exist;
+      expect(await screen.findAllByText("Delvis innvilget")).to.have.lengthOf(
+        1,
+      );
+      expect(
+        await screen.findAllByText(
+          new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),
+        ),
+      ).to.have.lengthOf(2);
+    });
+
+    it("kan legge til og fjerne flere godkjente perioder", async () => {
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+
+      renderUtenlandsoppholdSoknad();
+
+      await screen.findByRole("button", { name: "Send vedtak" });
+      await clickRadio("Delvis innvilgelse: Godkjenn deler av perioden");
+
+      await screen.findByRole("textbox", { name: "Fra og med dato" });
+      expect(screen.queryByRole("button", { name: "Slett ikon" })).to.not.exist;
+
+      await clickButton("Pluss ikon Legg til flere godkjente perioder");
+
+      expect(
+        await screen.findAllByRole("textbox", { name: "Fra og med dato" }),
+      ).to.have.lengthOf(2);
+      const fjernKnapper = screen.getAllByRole("button", {
+        name: "Slett ikon",
+      });
+      expect(fjernKnapper).to.have.lengthOf(2);
+
+      await userEvent.click(fjernKnapper[0]);
+
+      await waitFor(() => {
+        expect(
+          screen.getAllByRole("textbox", { name: "Fra og med dato" }),
+        ).to.have.lengthOf(1);
+      });
+      expect(screen.queryByRole("button", { name: "Slett ikon" })).to.not.exist;
+    });
+
+    it("viser valideringsfeil og sender ikke vedtak når to valgte perioder overlapper hverandre", async () => {
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+
+      renderUtenlandsoppholdSoknad();
+
+      await screen.findByRole("button", { name: "Send vedtak" });
+      await clickRadio("Delvis innvilgelse: Godkjenn deler av perioden");
+      await clickButton("Pluss ikon Legg til flere godkjente perioder");
+
+      const fomInputs = await screen.findAllByRole("textbox", {
+        name: "Fra og med dato",
+      });
+      const tomInputs = screen.getAllByRole("textbox", {
+        name: "Til og med dato",
+      });
+      // Begge periodene ligger innenfor 01.06.2026-07.06.2026, men overlapper hverandre
+      changeTextInput(fomInputs[0], "01.06.2026");
+      changeTextInput(tomInputs[0], "05.06.2026");
+      changeTextInput(fomInputs[1], "03.06.2026");
+      changeTextInput(tomInputs[1], "06.06.2026");
+
+      await clickButton("Send vedtak");
+
+      expect(
+        await screen.findAllByText(
+          "Perioden kan ikke overlappe med en annen periode du har lagt til",
+        ),
+      ).to.have.lengthOf(4);
+
+      await waitFor(() => {
+        expect(queryClient.getMutationCache().getAll()).to.have.lengthOf(0);
+      });
+    });
+
+    it("viser advarsel om at ingen perioder avslås når valgte perioder er like søkte perioder", async () => {
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+
+      renderUtenlandsoppholdSoknad();
+
+      await screen.findByRole("button", { name: "Send vedtak" });
+      await clickRadio("Delvis innvilgelse: Godkjenn deler av perioden");
+      await clickButton("Pluss ikon Legg til flere godkjente perioder");
+
+      const fomInputs = await screen.findAllByRole("textbox", {
+        name: "Fra og med dato",
+      });
+      const tomInputs = screen.getAllByRole("textbox", {
+        name: "Til og med dato",
+      });
+      // Perioden matcher nøyaktig soknadUtenVedtakMock sine soktePerioder
+      changeTextInput(fomInputs[0], "01.06.2026");
+      changeTextInput(tomInputs[0], "07.06.2026");
+      changeTextInput(fomInputs[1], "10.06.2026");
+      changeTextInput(tomInputs[1], "12.06.2026");
+
+      expect(
+        await screen.findByText(
+          "Du har valgt å innvilge alle perioder. Velg 'Innvilgelse' som utfall i stedet for 'Delvis innvilgelse'",
+        ),
+      ).to.exist;
+    });
+
+    it("sender delvis innvilget vedtak med flere valgte perioder", async () => {
+      stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
+
+      renderUtenlandsoppholdSoknad(
+        soknadUtenVedtakMock.soknadId,
+        utenlandsoppholdPath,
+      );
+
+      expect(await screen.findByRole("button", { name: "Start behandling" })).to
+        .exist;
+
+      await clickButton("Start behandling");
+
+      await clickRadio("Delvis innvilgelse: Godkjenn deler av perioden");
+      await screen.findByRole("textbox", { name: "Fra og med dato" });
+      await clickButton("Pluss ikon Legg til flere godkjente perioder");
+
+      const fomInputs = await screen.findAllByRole("textbox", {
+        name: "Fra og med dato",
+      });
+      const tomInputs = screen.getAllByRole("textbox", {
+        name: "Til og med dato",
+      });
+      changeTextInput(fomInputs[0], "02.06.2026");
+      changeTextInput(tomInputs[0], "05.06.2026");
+      changeTextInput(fomInputs[1], "10.06.2026");
+      changeTextInput(tomInputs[1], "12.06.2026");
+
+      await clickButton("Send vedtak");
+
+      expect(
+        await screen.findByText(
+          "Vedtaket om utenlandsopphold utenfor EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
+        ),
+      ).to.exist;
+
+      await waitFor(() => {
+        const vedtakMutation = queryClient.getMutationCache().getAll()[0];
+        const variables = vedtakMutation.state.variables as {
+          soknadId: string;
+          vedtak: SoknadVedtakPostDTO;
+        };
+        expect(variables.vedtak.utfall).to.equal("DELVIS_INNVILGET");
+        expect(variables.vedtak.innvilgedePerioder).to.deep.equal([
+          {
+            fom: "2026-06-02",
+            tom: "2026-06-05",
+          },
+          {
+            fom: "2026-06-10",
+            tom: "2026-06-12",
+          },
+        ]);
+      });
+    });
   });
 
   it("viser valideringsfeil og sender ikke vedtak når ingen utfall er valgt", async () => {
