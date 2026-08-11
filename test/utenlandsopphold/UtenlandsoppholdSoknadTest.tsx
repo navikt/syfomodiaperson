@@ -245,6 +245,20 @@ describe("UtenlandsoppholdSoknad", () => {
       });
     });
 
+    it("viser ikke valideringsfeil på fom-feltet mens brukeren fortsatt bare har satt tom-feltet", async () => {
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+
+      renderUtenlandsoppholdSoknad();
+
+      await screen.findByRole("button", { name: "Send vedtak" });
+      await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
+
+      const tomInput = getTextInput("Til og med dato");
+      changeTextInput(tomInput, "05.06.2026");
+
+      expect(screen.queryByText("Vennligst angi periode")).to.not.exist;
+    });
+
     it("viser valideringsfeil og sender ikke vedtak når valgt periode krysser datoer det ikke er søkt om", async () => {
       stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
 
