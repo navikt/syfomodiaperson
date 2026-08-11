@@ -120,7 +120,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
     await clickButton("Start behandling");
 
-    await clickRadio("Innvilgelse: Godkjenn hele perioden");
+    await clickRadio("Innvilget: Godkjenn hele perioden");
 
     await screen.findByRole("button", { name: "Send vedtak" });
     await clickButton("Send vedtak");
@@ -156,6 +156,11 @@ describe("UtenlandsoppholdSoknad", () => {
 
     await clickRadio("Avslag: Avslå hele perioden");
 
+    changeTextInput(
+      getTextInput("Begrunnelse (obligatorisk)"),
+      "Vurdering av avslag",
+    );
+
     await screen.findByRole("button", { name: "Send vedtak" });
     await clickButton("Send vedtak");
 
@@ -173,6 +178,30 @@ describe("UtenlandsoppholdSoknad", () => {
         new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),
       ),
     ).to.have.lengthOf(2);
+
+    await waitFor(() => {
+      const vedtakMutation = queryClient.getMutationCache().getAll()[0];
+      const variables = vedtakMutation.state.variables as {
+        soknadId: string;
+        vedtak: SoknadVedtakPostDTO;
+      };
+      expect(variables.vedtak.begrunnelse).to.equal("Vurdering av avslag");
+      expect(
+        variables.vedtak.document.some((component) =>
+          component.texts.includes("Vurdering av avslag"),
+        ),
+      ).to.equal(true);
+      // Hele søknadsperioden avslås, siden det ikke er valgt noen innvilgede perioder
+      expect(
+        variables.vedtak.document.some((component) =>
+          component.texts.some(
+            (text) =>
+              text.includes("01.06.2026 til og med 07.06.2026") &&
+              text.includes("10.06.2026 til og med 12.06.2026"),
+          ),
+        ),
+      ).to.equal(true);
+    });
   });
 
   describe("Delvis innvilgelse", () => {
@@ -186,13 +215,13 @@ describe("UtenlandsoppholdSoknad", () => {
       expect(screen.queryByRole("textbox", { name: "Fra og med dato" })).to.not
         .exist;
 
-      await clickRadio("Delvis innvilgelse: Godkjenn deler av perioden");
+      await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
 
       expect(await screen.findByRole("textbox", { name: "Fra og med dato" })).to
         .exist;
       expect(screen.getByRole("textbox", { name: "Til og med dato" })).to.exist;
 
-      await clickRadio("Innvilgelse: Godkjenn hele perioden");
+      await clickRadio("Innvilget: Godkjenn hele perioden");
 
       expect(screen.queryByRole("textbox", { name: "Fra og med dato" })).to.not
         .exist;
@@ -204,7 +233,7 @@ describe("UtenlandsoppholdSoknad", () => {
       renderUtenlandsoppholdSoknad();
 
       await screen.findByRole("button", { name: "Send vedtak" });
-      await clickRadio("Delvis innvilgelse: Godkjenn deler av perioden");
+      await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
       await clickButton("Send vedtak");
 
       expect(
@@ -222,7 +251,7 @@ describe("UtenlandsoppholdSoknad", () => {
       renderUtenlandsoppholdSoknad();
 
       await screen.findByRole("button", { name: "Send vedtak" });
-      await clickRadio("Delvis innvilgelse: Godkjenn deler av perioden");
+      await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
 
       const fomInput = getTextInput("Fra og med dato");
       const tomInput = getTextInput("Til og med dato");
@@ -257,12 +286,16 @@ describe("UtenlandsoppholdSoknad", () => {
 
       await clickButton("Start behandling");
 
-      await clickRadio("Delvis innvilgelse: Godkjenn deler av perioden");
+      await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
 
       const fomInput = getTextInput("Fra og med dato");
       const tomInput = getTextInput("Til og med dato");
       changeTextInput(fomInput, "02.06.2026");
       changeTextInput(tomInput, "05.06.2026");
+      changeTextInput(
+        getTextInput("Begrunnelse (obligatorisk)"),
+        "Vurdering av delvis innvilgelse",
+      );
 
       await screen.findByRole("button", { name: "Send vedtak" });
       await clickButton("Send vedtak");
@@ -283,6 +316,32 @@ describe("UtenlandsoppholdSoknad", () => {
           new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),
         ),
       ).to.have.lengthOf(2);
+
+      await waitFor(() => {
+        const vedtakMutation = queryClient.getMutationCache().getAll()[0];
+        const variables = vedtakMutation.state.variables as {
+          soknadId: string;
+          vedtak: SoknadVedtakPostDTO;
+        };
+        expect(variables.vedtak.begrunnelse).to.equal(
+          "Vurdering av delvis innvilgelse",
+        );
+        expect(
+          variables.vedtak.document.some((component) =>
+            component.texts.includes("Vurdering av delvis innvilgelse"),
+          ),
+        ).to.equal(true);
+        // Innvilget periode 02.06-05.06 fører til at resten av søknadsperiodene avslås
+        expect(
+          variables.vedtak.document.some((component) =>
+            component.texts.some(
+              (text) =>
+                text.includes("02.06.2026 til og med 05.06.2026") &&
+                !text.includes("01.06.2026"),
+            ),
+          ),
+        ).to.equal(true);
+      });
     });
 
     it("kan legge til og fjerne flere godkjente perioder", async () => {
@@ -291,7 +350,7 @@ describe("UtenlandsoppholdSoknad", () => {
       renderUtenlandsoppholdSoknad();
 
       await screen.findByRole("button", { name: "Send vedtak" });
-      await clickRadio("Delvis innvilgelse: Godkjenn deler av perioden");
+      await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
 
       await screen.findByRole("textbox", { name: "Fra og med dato" });
       expect(screen.queryByRole("button", { name: "Slett ikon" })).to.not.exist;
@@ -322,7 +381,7 @@ describe("UtenlandsoppholdSoknad", () => {
       renderUtenlandsoppholdSoknad();
 
       await screen.findByRole("button", { name: "Send vedtak" });
-      await clickRadio("Delvis innvilgelse: Godkjenn deler av perioden");
+      await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
       await clickButton("Pluss ikon Legg til flere godkjente perioder");
 
       const fomInputs = await screen.findAllByRole("textbox", {
@@ -356,7 +415,7 @@ describe("UtenlandsoppholdSoknad", () => {
       renderUtenlandsoppholdSoknad();
 
       await screen.findByRole("button", { name: "Send vedtak" });
-      await clickRadio("Delvis innvilgelse: Godkjenn deler av perioden");
+      await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
       await clickButton("Pluss ikon Legg til flere godkjente perioder");
 
       const fomInputs = await screen.findAllByRole("textbox", {
@@ -376,6 +435,9 @@ describe("UtenlandsoppholdSoknad", () => {
           "Du har valgt å innvilge alle perioder. Velg 'Innvilgelse' som utfall i stedet for 'Delvis innvilgelse'",
         ),
       ).to.exist;
+      expect(
+        screen.getByRole("button", { name: "Send vedtak" }),
+      ).to.have.property("disabled", true);
     });
 
     it("sender delvis innvilget vedtak med flere valgte perioder", async () => {
@@ -391,7 +453,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
       await clickButton("Start behandling");
 
-      await clickRadio("Delvis innvilgelse: Godkjenn deler av perioden");
+      await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
       await screen.findByRole("textbox", { name: "Fra og med dato" });
       await clickButton("Pluss ikon Legg til flere godkjente perioder");
 
@@ -405,6 +467,10 @@ describe("UtenlandsoppholdSoknad", () => {
       changeTextInput(tomInputs[0], "05.06.2026");
       changeTextInput(fomInputs[1], "10.06.2026");
       changeTextInput(tomInputs[1], "12.06.2026");
+      changeTextInput(
+        getTextInput("Begrunnelse (obligatorisk)"),
+        "Vurdering av delvis innvilgelse",
+      );
 
       await clickButton("Send vedtak");
 
@@ -464,7 +530,7 @@ describe("UtenlandsoppholdSoknad", () => {
     renderUtenlandsoppholdSoknad();
 
     await screen.findByRole("button", { name: "Send vedtak" });
-    await clickRadio("Innvilgelse: Godkjenn hele perioden");
+    await clickRadio("Innvilget: Godkjenn hele perioden");
     await clickButton("Send vedtak");
 
     await waitFor(() => {

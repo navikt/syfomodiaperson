@@ -49,6 +49,7 @@ export const soknadMedVedtakMock: SoknadDTO = {
     ],
     fattetAv: "Z990000",
     fattetTidspunkt: "2026-03-02T11:00:00",
+    begrunnelse: null,
   },
 };
 
@@ -80,6 +81,7 @@ export function byggOppdatertSoknadMedVedtak(
       innvilgedePerioder: vedtak.innvilgedePerioder,
       fattetAv,
       fattetTidspunkt: dayjs().format("YYYY-MM-DDTHH:mm:ss"),
+      begrunnelse: vedtak.begrunnelse,
     },
   };
 }

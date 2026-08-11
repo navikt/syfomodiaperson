@@ -11,6 +11,7 @@ import {
   LocalAlert,
   Radio,
   RadioGroup,
+  Textarea,
 } from "@navikt/ds-react";
 import { DelvisInnvilgelsePeriodeDatepicker } from "@/sider/utenlandsopphold/DelvisInnvilgelsePeriodeDatepicker.tsx";
 import {
@@ -28,10 +29,11 @@ import { useNotification } from "@/context/notification/NotificationContext.tsx"
 import { utenlandsoppholdPath } from "@/AppRouter.tsx";
 import {
   beregnAvslattePerioder,
+  Periode,
   SoknadStatusDTO,
   Utfall,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
-import { erLokal } from "@/utils/miljoUtil.ts";
+import { erProd } from "@/utils/miljoUtil.ts";
 
 const texts = {
   pending: "Henter søknader...",
@@ -45,8 +47,8 @@ const texts = {
   singlePeriod: "Perioden det er søkt om:",
   multiplePeriods: "Periodene det er søkt om:",
   radioButtons: {
-    innvilgelse: "Innvilgelse: Godkjenn hele perioden",
-    delvisInnvilgelse: "Delvis innvilgelse: Godkjenn deler av perioden",
+    innvilgelse: "Innvilget: Godkjenn hele perioden",
+    delvisInnvilgelse: "Delvis innvilget: Godkjenn deler av perioden",
     avslag: "Avslag: Avslå hele perioden",
   },
   buttons: {
@@ -60,10 +62,18 @@ const texts = {
     "Vedtaket om utenlandsopphold utenfor EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
   alertBehandlet: "Denne søknaden er allerede behandlet av",
   missingUtfall: "Du må velge et utfall for å fatte vedtaket",
+  begrunnelse: {
+    label: "Begrunnelse (obligatorisk)",
+    description:
+      "Begrunnelsen blir en del av en større brevmal. Åpne forhåndsvisning for å se hele vedtaket.",
+    missing: "Vennligst angi begrunnelse",
+  },
 };
 
+const begrunnelseMaxLength = 5000;
+
 // En midlertidig lokal feature-toggle, frem til vi har fått brevmaler på plass
-const isAvslagAndDelvisInnvilgelseEnabled = erLokal();
+const isAvslagAndDelvisInnvilgelseEnabled = !erProd();
 
 interface InnvilgetPeriode {
   fom?: Date;
@@ -73,12 +83,17 @@ interface InnvilgetPeriode {
 interface SkjemaValues {
   utfall: Utfall;
   innvilgedePerioder: InnvilgetPeriode[];
+  begrunnelse: string;
 }
 
 export function UtenlandsoppholdSoknad() {
   const { data, isPending, isError } = useSoknaderQuery();
   const { mutate, isPending: mutateIsPending } = useVedtakMutation();
-  const { getVedtakDocument } = useUtenlandsoppholdSoknadDocument();
+  const {
+    getInnvilgetDocument,
+    getAvslagDocument,
+    getDelvisInnvilgetDocument,
+  } = useUtenlandsoppholdSoknadDocument();
   const formMethods = useForm<SkjemaValues>({
     defaultValues: { innvilgedePerioder: [] },
   });
@@ -95,6 +110,7 @@ export function UtenlandsoppholdSoknad() {
   const { setNotification } = useNotification();
   const valgtUtfall = watch("utfall");
   const valgteInnvilgedePerioder = watch("innvilgedePerioder");
+  const valgtBegrunnelse = watch("begrunnelse");
 
   function handleUtfallChange(utfall: Utfall) {
     if (utfall === "INNVILGET") {
@@ -105,6 +121,8 @@ export function UtenlandsoppholdSoknad() {
           tom: periode.tom,
         })),
       );
+      setValue("begrunnelse", "");
+      clearErrors("begrunnelse");
     } else {
       // Resetter denne når man velger DELVIS_INNVILGET eller AVSLAG
       setValue("innvilgedePerioder", []);
@@ -113,7 +131,7 @@ export function UtenlandsoppholdSoknad() {
   }
 
   function submit(soknadId: string, values: SkjemaValues) {
-    const { utfall, innvilgedePerioder } = values;
+    const { utfall, innvilgedePerioder, begrunnelse } = values;
     const perioder = innvilgedePerioder
       .filter((periode) => periode.fom && periode.tom)
       .map((periode) => ({
@@ -125,7 +143,8 @@ export function UtenlandsoppholdSoknad() {
       vedtak: {
         utfall: utfall,
         innvilgedePerioder: perioder,
-        document: vedtakDocument, // TODO: Må oppdateres basert på utfall
+        document: vedtakDocument,
+        begrunnelse: utfall === "INNVILGET" ? null : begrunnelse,
       },
     };
     mutate(request, {
@@ -172,11 +191,39 @@ export function UtenlandsoppholdSoknad() {
   const avslattePerioder =
     valgtUtfall === "DELVIS_INNVILGET"
       ? beregnAvslattePerioder(soktePerioder, valgteInnvilgedePerioder)
-      : [];
-  const vedtakDocument = getVedtakDocument({
-    soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
-    perioder: utenlandsoppholdSoknad.soktePerioder,
-  });
+      : valgtUtfall === "AVSLAG"
+        ? soktePerioder
+        : [];
+
+  // Ettersom man kan være i en tilstand der man har valgt fom, men ikke tom, i DELVIS_INNVILGET
+  // må vi filtrere ut undefined-verdier i overgangen fra InnvilgetPeriode-typen til Periode-typen
+  const gyldigeInnvilgedePerioder: Periode[] = valgteInnvilgedePerioder.filter(
+    (periode): periode is Periode => !!periode.fom && !!periode.tom,
+  );
+
+  const vedtakDocument = (() => {
+    switch (valgtUtfall) {
+      case "AVSLAG":
+        return getAvslagDocument({
+          soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
+          avslattePerioder: avslattePerioder,
+          begrunnelse: valgtBegrunnelse ?? "",
+        });
+      case "DELVIS_INNVILGET":
+        return getDelvisInnvilgetDocument({
+          soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
+          innvilgedePerioder: gyldigeInnvilgedePerioder,
+          avslattePerioder: avslattePerioder,
+          begrunnelse: valgtBegrunnelse ?? "",
+        });
+      case "INNVILGET":
+      default:
+        return getInnvilgetDocument({
+          soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
+          innvilgedePerioder: gyldigeInnvilgedePerioder,
+        });
+    }
+  })();
 
   return (
     <Box background="default" padding="space-16" className="flex flex-col">
@@ -310,11 +357,31 @@ export function UtenlandsoppholdSoknad() {
                   )}
                 </Box>
               )}
+              {(valgtUtfall === "DELVIS_INNVILGET" ||
+                valgtUtfall === "AVSLAG") && (
+                <Textarea
+                  {...register("begrunnelse", {
+                    maxLength: begrunnelseMaxLength,
+                    required: texts.begrunnelse.missing,
+                  })}
+                  value={watch("begrunnelse")}
+                  label={texts.begrunnelse.label}
+                  description={texts.begrunnelse.description}
+                  error={errors.begrunnelse?.message}
+                  size="small"
+                  minRows={6}
+                  maxLength={begrunnelseMaxLength}
+                />
+              )}
               <div className="flex flex-row gap-4">
                 <Button
                   variant="primary"
                   type="submit"
                   loading={mutateIsPending}
+                  disabled={
+                    valgtUtfall === "DELVIS_INNVILGET" &&
+                    avslattePerioder.length === 0
+                  }
                 >
                   {texts.buttons.sendButton}
                 </Button>
