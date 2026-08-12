@@ -33,8 +33,11 @@ import {
   stubSoknaderMedMuterbarTilstand,
   stubSoknaderQuery,
 } from "../stubs/stubIsutenlandsopphold";
+import { maksdatoQueryKeys } from "@/data/maksdato/useMaksdatoQuery";
 
 let queryClient: QueryClient;
+const forbeholdOvrigeVilkarText =
+  "Vi gjør oppmerksom på at vedtaket er gjort med forbehold at øvrige vilkår for sykepenger er tilstede.";
 
 const renderUtenlandsoppholdSoknad = (
   soknadId: string = soknadUtenVedtakMock.soknadId,
@@ -139,6 +142,59 @@ describe("UtenlandsoppholdSoknad", () => {
         new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),
       ),
     ).to.have.lengthOf(2);
+
+    await waitFor(() => {
+      const vedtakMutation = queryClient.getMutationCache().getAll()[0];
+      const variables = vedtakMutation.state.variables as {
+        soknadId: string;
+        vedtak: SoknadVedtakPostDTO;
+      };
+      expect(
+        variables.vedtak.document.some((component) =>
+          component.texts.includes(forbeholdOvrigeVilkarText),
+        ),
+      ).to.equal(false);
+    });
+  });
+
+  it("viser varsel til veileder og legger ved forbeholdstekst ved innvilgelse når sykepenger ikke er utbetalt", async () => {
+    stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
+    queryClient.setQueryData(
+      maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => ({ maxDate: null }),
+    );
+
+    renderUtenlandsoppholdSoknad(
+      soknadUtenVedtakMock.soknadId,
+      utenlandsoppholdPath,
+    );
+
+    expect(await screen.findByRole("button", { name: "Start behandling" })).to
+      .exist;
+
+    await clickButton("Start behandling");
+
+    expect(
+      await screen.findByText(
+        "Sykepenger er ikke utbetalt. Ved innvilgelse eller delvis innvilgelse blir vedtaket sendt med forbehold om at øvrige vilkår for sykepenger er tilstede.",
+      ),
+    ).to.exist;
+
+    await clickRadio("Innvilget: Godkjenn hele perioden");
+    await clickButton("Send vedtak");
+
+    await waitFor(() => {
+      const vedtakMutation = queryClient.getMutationCache().getAll()[0];
+      const variables = vedtakMutation.state.variables as {
+        soknadId: string;
+        vedtak: SoknadVedtakPostDTO;
+      };
+      expect(
+        variables.vedtak.document.some((component) =>
+          component.texts.includes(forbeholdOvrigeVilkarText),
+        ),
+      ).to.equal(true);
+    });
   });
 
   it("sender avslag vedtak, viser notifikasjon og navigerer tilbake til listen der søknadens status nå vises som avslag", async () => {

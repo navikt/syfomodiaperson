@@ -23,6 +23,7 @@ describe("utenlandsoppholdDocumentTexts", () => {
       const texts = getInnvilgetTexts({
         soknadDato,
         innvilgedePerioder: enPeriode,
+        medForbeholdOvrigeVilkar: false,
       });
 
       expect(texts.tittel).to.equal(
@@ -37,10 +38,23 @@ describe("utenlandsoppholdDocumentTexts", () => {
       const texts = getInnvilgetTexts({
         soknadDato,
         innvilgedePerioder: flerePerioder,
+        medForbeholdOvrigeVilkar: false,
       });
 
       expect(texts.innvilget.intro).to.contain(
         "01.06.2026 til og med 07.06.2026, og 10.06.2026 til og med 12.06.2026",
+      );
+    });
+
+    it("legger til forbeholdstekst når medForbeholdOvrigeVilkar er true", () => {
+      const texts = getInnvilgetTexts({
+        soknadDato,
+        innvilgedePerioder: enPeriode,
+        medForbeholdOvrigeVilkar: true,
+      });
+
+      expect(texts.oppmerksom.forbehold).to.equal(
+        "Vi gjør oppmerksom på at vedtaket er gjort med forbehold at øvrige vilkår for sykepenger er tilstede.",
       );
     });
   });
@@ -74,6 +88,7 @@ describe("utenlandsoppholdDocumentTexts", () => {
         innvilgedePerioder,
         avslattePerioder,
         begrunnelse: "En begrunnelse",
+        medForbeholdOvrigeVilkar: false,
       });
 
       expect(texts.tittel).to.equal(
@@ -84,6 +99,20 @@ describe("utenlandsoppholdDocumentTexts", () => {
       );
       expect(texts.delvisInnvilget.intro).to.contain(
         "06.06.2026 til og med 07.06.2026",
+      );
+    });
+
+    it("legger til forbeholdstekst når medForbeholdOvrigeVilkar er true", () => {
+      const texts = getDelvisInnvilgetTexts({
+        soknadDato,
+        innvilgedePerioder: enPeriode,
+        avslattePerioder: flerePerioder,
+        begrunnelse: "En begrunnelse",
+        medForbeholdOvrigeVilkar: true,
+      });
+
+      expect(texts.oppmerksom.forbehold).to.equal(
+        "Vi gjør oppmerksom på at vedtaket er gjort med forbehold at øvrige vilkår for sykepenger er tilstede.",
       );
     });
   });

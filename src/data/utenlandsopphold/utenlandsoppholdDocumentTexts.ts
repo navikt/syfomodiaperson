@@ -8,6 +8,7 @@ export type UtenlandsoppholdDocumentTextsValues = {
 export type InnvilgetDocumentTextsValues =
   UtenlandsoppholdDocumentTextsValues & {
     innvilgedePerioder: Periode[];
+    medForbeholdOvrigeVilkar: boolean;
   };
 
 export type AvslagDocumentTextsValues = UtenlandsoppholdDocumentTextsValues & {
@@ -20,6 +21,7 @@ export type DelvisInnvilgetDocumentTextsValues =
     innvilgedePerioder: Periode[];
     avslattePerioder: Periode[];
     begrunnelse: string;
+    medForbeholdOvrigeVilkar: boolean;
   };
 
 function perioderTilTekst(perioder: Periode[]) {
@@ -33,6 +35,8 @@ function perioderTilTekst(perioder: Periode[]) {
     .join(", og ");
 }
 
+const forbeholdOvrigeVilkarText =
+  "Vi gjør oppmerksom på at vedtaket er gjort med forbehold at øvrige vilkår for sykepenger er tilstede.";
 /**
  * Tekster som er identiske uavhengig av utfallet på vedtaket.
  */
@@ -65,6 +69,7 @@ export const getFellesTekster = () => ({
 export const getInnvilgetTexts = ({
   soknadDato,
   innvilgedePerioder,
+  medForbeholdOvrigeVilkar,
 }: InnvilgetDocumentTextsValues) => {
   const soknadDatoTekst = tilLesbarDatoMedArUtenManedNavn(soknadDato);
   const innvilgedePerioderTekst = perioderTilTekst(innvilgedePerioder);
@@ -86,6 +91,9 @@ export const getInnvilgetTexts = ({
       header: "Dette må du være oppmerksom på",
       // TODO: Mulig vi skal endre litt på ordly her
       body: `Det er viktig at du er oppmerksom på at du har fått godkjent å beholde sykepenger under utenlandsopphold i perioden ${innvilgedePerioderTekst}. Dersom du oppholder deg utenfor EU/EØS eller andre områder der trygdeforordningen gjelder lengre enn dette, kan det få betydning for din videre rett til sykepenger.`,
+      forbehold: medForbeholdOvrigeVilkar
+        ? forbeholdOvrigeVilkarText
+        : undefined,
     },
     ...getFellesTekster(),
   };
@@ -123,6 +131,7 @@ export const getDelvisInnvilgetTexts = ({
   soknadDato,
   innvilgedePerioder,
   avslattePerioder,
+  medForbeholdOvrigeVilkar,
 }: DelvisInnvilgetDocumentTextsValues) => {
   const soknadDatoTekst = tilLesbarDatoMedArUtenManedNavn(soknadDato);
   const innvilgedePerioderTekst = perioderTilTekst(innvilgedePerioder);
@@ -146,6 +155,9 @@ export const getDelvisInnvilgetTexts = ({
       header: "Dette må du være oppmerksom på",
       // TODO: Mulig denne skal endres på
       body: `Det er viktig at du er oppmerksom på at du har fått godkjent å beholde sykepenger under utenlandsopphold kun fra ${innvilgedePerioderTekst}. Dersom du oppholder deg utenfor EU/EØS eller andre områder der trygdeforordningen gjelder lengre enn dette, kan det få betydning for din videre rett til sykepenger.`,
+      forbehold: medForbeholdOvrigeVilkar
+        ? forbeholdOvrigeVilkarText
+        : undefined,
     },
     ...getFellesTekster(),
   };

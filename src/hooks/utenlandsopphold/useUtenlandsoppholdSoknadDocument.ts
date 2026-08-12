@@ -66,6 +66,9 @@ export const useUtenlandsoppholdSoknadDocument = (): {
       createParagraph(texts.begrunnelse.paragraf),
       createHeaderH2(texts.oppmerksom.header),
       createParagraph(texts.oppmerksom.body),
+      ...(texts.oppmerksom.forbehold
+        ? [createParagraph(texts.oppmerksom.forbehold)]
+        : []),
       ...createFellesAvslutning(),
     ];
   };
@@ -120,6 +123,9 @@ export const useUtenlandsoppholdSoknadDocument = (): {
       createParagraph(texts.begrunnelse.paragraf),
       createHeaderH2(texts.oppmerksom.header),
       createParagraph(texts.oppmerksom.body),
+      ...(texts.oppmerksom.forbehold
+        ? [createParagraph(texts.oppmerksom.forbehold)]
+        : []),
       ...createFellesAvslutning(),
     );
 
