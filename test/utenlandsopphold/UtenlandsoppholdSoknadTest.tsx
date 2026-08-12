@@ -203,6 +203,47 @@ describe("UtenlandsoppholdSoknad", () => {
     });
   });
 
+  it("viser varsel og forbehold når utbetalingen skjedde før siste oppfolgingstilfelle startet", async () => {
+    stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
+    queryClient.setQueryData(
+      maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => ({
+        maxDate: {
+          ...maksdatoMock.maxDate,
+          utbetalt_tom: new Date("2020-01-01"),
+        },
+      }),
+    );
+
+    renderUtenlandsoppholdSoknad(
+      soknadUtenVedtakMock.soknadId,
+      utenlandsoppholdPath,
+    );
+
+    expect(await screen.findByRole("button", { name: "Start behandling" })).to
+      .exist;
+
+    await clickButton("Start behandling");
+
+    expect(await screen.findByText(/Sykepenger er ikke utbetalt\./)).to.exist;
+
+    await clickRadio("Innvilget: Godkjenn hele perioden");
+    await clickButton("Send vedtak");
+
+    await waitFor(() => {
+      const vedtakMutation = queryClient.getMutationCache().getAll()[0];
+      const variables = vedtakMutation.state.variables as {
+        soknadId: string;
+        vedtak: SoknadVedtakPostDTO;
+      };
+      expect(
+        variables.vedtak.document.some((component) =>
+          component.texts.includes(forbeholdOvrigeVilkarText),
+        ),
+      ).to.equal(true);
+    });
+  });
+
   it("sender avslag vedtak, viser notifikasjon og navigerer tilbake til listen der søknadens status nå vises som avslag", async () => {
     stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
 

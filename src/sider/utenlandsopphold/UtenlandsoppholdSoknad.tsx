@@ -32,7 +32,8 @@ import {
   SoknadStatusDTO,
   Utfall,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
-import { useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
+import { Maksdato, useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
+import { useStartOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 const texts = {
   pending: "Henter søknader...",
@@ -70,6 +71,22 @@ const texts = {
 
 const begrunnelseMaxLength = 5000;
 
+function erSykepengerUtbetalt(
+  maksDato: Maksdato | null | undefined,
+  oppfolgingstilfelleStart: Date | null | undefined,
+): boolean {
+  if (!maksDato) {
+    return false;
+  }
+  if (!oppfolgingstilfelleStart) {
+    return false;
+  }
+  return dayjs(maksDato.utbetalt_tom).isAfter(
+    dayjs(oppfolgingstilfelleStart),
+    "day",
+  );
+}
+
 interface InnvilgetPeriode {
   fom?: Date;
   tom?: Date;
@@ -84,6 +101,7 @@ interface SkjemaValues {
 export function UtenlandsoppholdSoknad() {
   const { data, isPending, isError } = useSoknaderQuery();
   const getMaksdato = useMaksdatoQuery();
+  const oppfolgingstilfelleStart = useStartOfLatestOppfolgingstilfelle();
   const { mutate, isPending: mutateIsPending } = useVedtakMutation();
   const {
     getInnvilgetDocument,
@@ -196,9 +214,10 @@ export function UtenlandsoppholdSoknad() {
   const gyldigeInnvilgedePerioder: Periode[] = valgteInnvilgedePerioder.filter(
     (periode): periode is Periode => !!periode.fom && !!periode.tom,
   );
-  const isSykepengerIkkeUtbetalt =
-    getMaksdato.isSuccess &&
-    (!getMaksdato.data.maxDate || !getMaksdato.data.maxDate.utbetalt_tom);
+  const isSykepengerUtbetalt = erSykepengerUtbetalt(
+    getMaksdato.data?.maxDate,
+    oppfolgingstilfelleStart,
+  );
 
   const vedtakDocument = (() => {
     switch (valgtUtfall) {
@@ -214,14 +233,14 @@ export function UtenlandsoppholdSoknad() {
           innvilgedePerioder: gyldigeInnvilgedePerioder,
           avslattePerioder: avslattePerioder,
           begrunnelse: valgtBegrunnelse ?? "",
-          medForbeholdOvrigeVilkar: isSykepengerIkkeUtbetalt,
+          medForbeholdOvrigeVilkar: !isSykepengerUtbetalt,
         });
       case "INNVILGET":
       default:
         return getInnvilgetDocument({
           soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
           innvilgedePerioder: gyldigeInnvilgedePerioder,
-          medForbeholdOvrigeVilkar: isSykepengerIkkeUtbetalt,
+          medForbeholdOvrigeVilkar: !isSykepengerUtbetalt,
         });
     }
   })();
@@ -285,7 +304,7 @@ export function UtenlandsoppholdSoknad() {
               )}
               className="flex flex-col gap-8"
             >
-              {isSykepengerIkkeUtbetalt && (
+              {!isSykepengerUtbetalt && (
                 <Alert variant="warning" size="small">
                   {texts.ikkeUtbetaltAdvarsel}
                 </Alert>
