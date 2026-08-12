@@ -22,6 +22,7 @@ import {
   soknadMedVedtakMock,
   soknadUtenVedtakMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
+import { maksdatoMock } from "@/mocks/syfoperson/persondataMock";
 import { utenlandsoppholdPath } from "@/AppRouter.tsx";
 import {
   changeTextInput,
@@ -37,7 +38,7 @@ import { maksdatoQueryKeys } from "@/data/maksdato/useMaksdatoQuery";
 
 let queryClient: QueryClient;
 const forbeholdOvrigeVilkarText =
-  "Vi gjør oppmerksom på at vedtaket er gjort med forbehold at øvrige vilkår for sykepenger er tilstede.";
+  "Nav har på nåværende tidspunkt ikke behandlet din sykepengesak eller satt i gang utbetaling av sykepengene dine. Dette vedtaket er fattet med forbehold om at du har rett på sykepenger.";
 
 const renderUtenlandsoppholdSoknad = (
   soknadId: string = soknadUtenVedtakMock.soknadId,
@@ -112,6 +113,15 @@ describe("UtenlandsoppholdSoknad", () => {
 
   it("sender innvilget vedtak, viser notifikasjon og navigerer tilbake til listen der søknadens status nå vises som innvilget", async () => {
     stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
+    queryClient.setQueryData(
+      maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => ({
+        maxDate: {
+          ...maksdatoMock.maxDate,
+          utbetalt_tom: new Date("2026-08-01"),
+        },
+      }),
+    );
 
     renderUtenlandsoppholdSoknad(
       soknadUtenVedtakMock.soknadId,
@@ -174,11 +184,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
     await clickButton("Start behandling");
 
-    expect(
-      await screen.findByText(
-        "Sykepenger er ikke utbetalt. Ved innvilgelse eller delvis innvilgelse blir vedtaket sendt med forbehold om at øvrige vilkår for sykepenger er tilstede.",
-      ),
-    ).to.exist;
+    expect(await screen.findByText(/Sykepenger er ikke utbetalt\./)).to.exist;
 
     await clickRadio("Innvilget: Godkjenn hele perioden");
     await clickButton("Send vedtak");

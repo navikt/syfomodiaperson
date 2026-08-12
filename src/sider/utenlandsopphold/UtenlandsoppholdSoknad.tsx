@@ -59,7 +59,7 @@ const texts = {
   alertBehandlet: "Denne søknaden er allerede behandlet av",
   missingUtfall: "Du må velge et utfall for å fatte vedtaket",
   ikkeUtbetaltAdvarsel:
-    "Sykepenger er ikke utbetalt. Ved innvilgelse eller delvis innvilgelse blir vedtaket sendt med forbehold om at øvrige vilkår for sykepenger er tilstede.",
+    "Sykepenger er ikke utbetalt. Ved innvilgelse eller delvis innvilgelse blir vedtaket sendt med forbehold om at øvrige vilkår for sykepenger er tilstede. Åpne forhåndsvisningen av vedtaket for å se forbeholdet.",
   begrunnelse: {
     label: "Begrunnelse (obligatorisk)",
     description:

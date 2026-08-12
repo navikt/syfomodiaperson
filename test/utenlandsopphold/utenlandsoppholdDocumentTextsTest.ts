@@ -53,8 +53,8 @@ describe("utenlandsoppholdDocumentTexts", () => {
         medForbeholdOvrigeVilkar: true,
       });
 
-      expect(texts.oppmerksom.forbehold).to.equal(
-        "Vi gjør oppmerksom på at vedtaket er gjort med forbehold at øvrige vilkår for sykepenger er tilstede.",
+      expect(texts.innvilget.forbehold).to.equal(
+        "Nav har på nåværende tidspunkt ikke behandlet din sykepengesak eller satt i gang utbetaling av sykepengene dine. Dette vedtaket er fattet med forbehold om at du har rett på sykepenger.",
       );
     });
   });
@@ -111,8 +111,8 @@ describe("utenlandsoppholdDocumentTexts", () => {
         medForbeholdOvrigeVilkar: true,
       });
 
-      expect(texts.oppmerksom.forbehold).to.equal(
-        "Vi gjør oppmerksom på at vedtaket er gjort med forbehold at øvrige vilkår for sykepenger er tilstede.",
+      expect(texts.delvisInnvilget.forbehold).to.equal(
+        "Nav har på nåværende tidspunkt ikke behandlet din sykepengesak eller satt i gang utbetaling av sykepengene dine. Dette vedtaket er fattet med forbehold om at du har rett på sykepenger.",
       );
     });
   });

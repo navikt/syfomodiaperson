@@ -36,7 +36,7 @@ function perioderTilTekst(perioder: Periode[]) {
 }
 
 const forbeholdOvrigeVilkarText =
-  "Vi gjør oppmerksom på at vedtaket er gjort med forbehold at øvrige vilkår for sykepenger er tilstede.";
+  "Nav har på nåværende tidspunkt ikke behandlet din sykepengesak eller satt i gang utbetaling av sykepengene dine. Dette vedtaket er fattet med forbehold om at du har rett på sykepenger.";
 /**
  * Tekster som er identiske uavhengig av utfallet på vedtaket.
  */
@@ -79,6 +79,9 @@ export const getInnvilgetTexts = ({
     innvilget: {
       header: "Du har fått godkjent sykepenger under utenlandsopphold",
       intro: `Vi viser til din søknad av ${soknadDatoTekst} om å beholde sykepengene under opphold i utlandet. Søknaden din er godkjent og du får beholde sykepengene dine ved opphold i utlandet i perioden ${innvilgedePerioderTekst}.`,
+      forbehold: medForbeholdOvrigeVilkar
+        ? forbeholdOvrigeVilkarText
+        : undefined,
     },
     begrunnelse: {
       header: "Begrunnelse for vedtaket",
@@ -91,9 +94,6 @@ export const getInnvilgetTexts = ({
       header: "Dette må du være oppmerksom på",
       // TODO: Mulig vi skal endre litt på ordly her
       body: `Det er viktig at du er oppmerksom på at du har fått godkjent å beholde sykepenger under utenlandsopphold i perioden ${innvilgedePerioderTekst}. Dersom du oppholder deg utenfor EU/EØS eller andre områder der trygdeforordningen gjelder lengre enn dette, kan det få betydning for din videre rett til sykepenger.`,
-      forbehold: medForbeholdOvrigeVilkar
-        ? forbeholdOvrigeVilkarText
-        : undefined,
     },
     ...getFellesTekster(),
   };
@@ -143,6 +143,9 @@ export const getDelvisInnvilgetTexts = ({
       header:
         "Du har fått godkjent deler av perioden med sykepenger under utenlandsopphold",
       intro: `Vi viser til din søknad av ${soknadDatoTekst} om å beholde sykepengene under opphold i utlandet. Søknaden din er delvis godkjent og du får beholde sykepengene dine ved opphold i utlandet i perioden ${innvilgedePerioderTekst}. Du har fått avslag på å beholde sykepengene dine i utlandet i perioden ${avslattePerioderTekst}.`,
+      forbehold: medForbeholdOvrigeVilkar
+        ? forbeholdOvrigeVilkarText
+        : undefined,
     },
     begrunnelse: {
       header: "Begrunnelse for vedtaket",
@@ -155,9 +158,6 @@ export const getDelvisInnvilgetTexts = ({
       header: "Dette må du være oppmerksom på",
       // TODO: Mulig denne skal endres på
       body: `Det er viktig at du er oppmerksom på at du har fått godkjent å beholde sykepenger under utenlandsopphold kun fra ${innvilgedePerioderTekst}. Dersom du oppholder deg utenfor EU/EØS eller andre områder der trygdeforordningen gjelder lengre enn dette, kan det få betydning for din videre rett til sykepenger.`,
-      forbehold: medForbeholdOvrigeVilkar
-        ? forbeholdOvrigeVilkarText
-        : undefined,
     },
     ...getFellesTekster(),
   };
