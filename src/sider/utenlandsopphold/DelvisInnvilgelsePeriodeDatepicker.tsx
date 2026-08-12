@@ -182,7 +182,11 @@ function DelvisInnvilgetPeriodeRad({
     onRangeChange: (range) => {
       fomField.onChange(range?.from);
       tomField.onChange(range?.to);
-      onPeriodeEndret();
+      // Validerer kun når begge datoer er satt.
+      // Om noe fortsatt mangler ved innsending, valideres det som vanlig av handleSubmit.
+      if (range?.from && range?.to) {
+        onPeriodeEndret();
+      }
     },
   });
 

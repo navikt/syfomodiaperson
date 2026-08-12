@@ -33,15 +33,11 @@ import {
   SoknadStatusDTO,
   Utfall,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
-import { erProd } from "@/utils/miljoUtil.ts";
 
 const texts = {
   pending: "Henter søknader...",
   error: "Noe gikk galt ved henting av søknader. Vennligst prøv igjen senere.",
   didNotFindSoknad: "Fant ikke søknaden",
-  modiaWarningHeader: "Begrenset behandling i Modia",
-  modiaWarningContent:
-    "Det er kun mulig med utfallet 'innvilgelse' på søknaden her i Modia. Dersom søknaden skal delvis innvilges eller avslås, må vedtaket fattes i Infotrygd som tidligere.",
   goToSoknad: "Vis hele søknaden",
   soknadTidspunkt: "Søknaden ble innsendt:",
   singlePeriod: "Perioden det er søkt om:",
@@ -71,9 +67,6 @@ const texts = {
 };
 
 const begrunnelseMaxLength = 5000;
-
-// En midlertidig lokal feature-toggle, frem til vi har fått brevmaler på plass
-const isAvslagAndDelvisInnvilgelseEnabled = !erProd();
 
 interface InnvilgetPeriode {
   fom?: Date;
@@ -228,15 +221,6 @@ export function UtenlandsoppholdSoknad() {
   return (
     <Box background="default" padding="space-16" className="flex flex-col">
       <div className={"flex flex-col gap-8"}>
-        {!isAvslagAndDelvisInnvilgelseEnabled && (
-          <LocalAlert status={"warning"}>
-            <LocalAlert.Header>
-              <LocalAlert.Title>{texts.modiaWarningHeader}</LocalAlert.Title>
-            </LocalAlert.Header>
-            <LocalAlert.Content>{texts.modiaWarningContent}</LocalAlert.Content>
-          </LocalAlert>
-        )}
-
         <BodyShort>
           {texts.soknadTidspunkt}{" "}
           {tilLesbarDatoMedArUtenManedNavn(
@@ -306,22 +290,18 @@ export function UtenlandsoppholdSoknad() {
                 >
                   {texts.radioButtons.innvilgelse}
                 </Radio>
-                {isAvslagAndDelvisInnvilgelseEnabled && (
-                  <>
-                    <Radio
-                      value={"DELVIS_INNVILGET"}
-                      {...register("utfall", { required: true })}
-                    >
-                      {texts.radioButtons.delvisInnvilgelse}
-                    </Radio>
-                    <Radio
-                      value={"AVSLAG"}
-                      {...register("utfall", { required: true })}
-                    >
-                      {texts.radioButtons.avslag}
-                    </Radio>
-                  </>
-                )}
+                <Radio
+                  value={"DELVIS_INNVILGET"}
+                  {...register("utfall", { required: true })}
+                >
+                  {texts.radioButtons.delvisInnvilgelse}
+                </Radio>
+                <Radio
+                  value={"AVSLAG"}
+                  {...register("utfall", { required: true })}
+                >
+                  {texts.radioButtons.avslag}
+                </Radio>
               </RadioGroup>
               {valgtUtfall === "DELVIS_INNVILGET" && (
                 <Box className="flex flex-col gap-4">
