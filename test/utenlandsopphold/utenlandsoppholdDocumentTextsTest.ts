@@ -54,7 +54,7 @@ describe("utenlandsoppholdDocumentTexts", () => {
       });
 
       expect(texts.innvilget.forbehold).to.equal(
-        "Nav har på nåværende tidspunkt ikke behandlet din sykepengesak eller satt i gang utbetaling av sykepengene dine. Dette vedtaket er fattet med forbehold om at du har rett på sykepenger.",
+        "Dette vedtaket gir ikke rett på utbetaling av ytelsen sykepenger, men gir deg rett til å beholde sykepengene under utenlandsopphold.",
       );
     });
   });
@@ -112,7 +112,7 @@ describe("utenlandsoppholdDocumentTexts", () => {
       });
 
       expect(texts.delvisInnvilget.forbehold).to.equal(
-        "Nav har på nåværende tidspunkt ikke behandlet din sykepengesak eller satt i gang utbetaling av sykepengene dine. Dette vedtaket er fattet med forbehold om at du har rett på sykepenger.",
+        "Dette vedtaket gir ikke rett på utbetaling av ytelsen sykepenger, men gir deg rett til å beholde sykepengene under utenlandsopphold.",
       );
     });
   });
