@@ -84,7 +84,6 @@ export const useUtenlandsoppholdSoknadDocument = (): {
       createParagraph(texts.avslag.intro),
       createHeaderH2(texts.begrunnelse.header),
       createParagraph(texts.begrunnelse.body),
-      createParagraph(texts.begrunnelse.utfall),
     ];
 
     if (values.begrunnelse) {
@@ -92,6 +91,7 @@ export const useUtenlandsoppholdSoknadDocument = (): {
     }
 
     documentComponents.push(
+      createParagraph(texts.begrunnelse.utfall),
       createParagraph(texts.begrunnelse.paragraf),
       createHeaderH2(texts.oppmerksom.header),
       createParagraph(texts.oppmerksom.body),
@@ -115,7 +115,6 @@ export const useUtenlandsoppholdSoknadDocument = (): {
         : []),
       createHeaderH2(texts.begrunnelse.header),
       createParagraph(texts.begrunnelse.body),
-      createParagraph(texts.begrunnelse.utfall),
     ];
 
     if (values.begrunnelse) {
@@ -123,6 +122,7 @@ export const useUtenlandsoppholdSoknadDocument = (): {
     }
 
     documentComponents.push(
+      createParagraph(texts.begrunnelse.utfall),
       createParagraph(texts.begrunnelse.paragraf),
       createHeaderH2(texts.oppmerksom.header),
       createParagraph(texts.oppmerksom.body),
