@@ -60,6 +60,9 @@ export const useUtenlandsoppholdSoknadDocument = (): {
       createHeaderH1(texts.tittel),
       createHeaderH2(texts.innvilget.header),
       createParagraph(texts.innvilget.intro),
+      ...(texts.innvilget.forbehold
+        ? [createParagraph(texts.innvilget.forbehold)]
+        : []),
       createHeaderH2(texts.begrunnelse.header),
       createParagraph(texts.begrunnelse.body),
       createParagraph(texts.begrunnelse.body2),
@@ -107,6 +110,9 @@ export const useUtenlandsoppholdSoknadDocument = (): {
       createHeaderH1(texts.tittel),
       createHeaderH2(texts.delvisInnvilget.header),
       createParagraph(texts.delvisInnvilget.intro),
+      ...(texts.delvisInnvilget.forbehold
+        ? [createParagraph(texts.delvisInnvilget.forbehold)]
+        : []),
       createHeaderH2(texts.begrunnelse.header),
       createParagraph(texts.begrunnelse.body),
       createParagraph(texts.begrunnelse.utfall),

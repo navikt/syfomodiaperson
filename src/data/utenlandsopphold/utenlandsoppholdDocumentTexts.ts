@@ -8,6 +8,7 @@ export type UtenlandsoppholdDocumentTextsValues = {
 export type InnvilgetDocumentTextsValues =
   UtenlandsoppholdDocumentTextsValues & {
     innvilgedePerioder: Periode[];
+    medForbeholdOvrigeVilkar: boolean;
   };
 
 export type AvslagDocumentTextsValues = UtenlandsoppholdDocumentTextsValues & {
@@ -20,6 +21,7 @@ export type DelvisInnvilgetDocumentTextsValues =
     innvilgedePerioder: Periode[];
     avslattePerioder: Periode[];
     begrunnelse: string;
+    medForbeholdOvrigeVilkar: boolean;
   };
 
 function perioderTilTekst(perioder: Periode[]) {
@@ -33,6 +35,8 @@ function perioderTilTekst(perioder: Periode[]) {
     .join(", og ");
 }
 
+const forbeholdOvrigeVilkarText =
+  "Dette vedtaket gir ikke rett på utbetaling av ytelsen sykepenger, men gir deg rett til å beholde sykepengene under utenlandsopphold.";
 /**
  * Tekster som er identiske uavhengig av utfallet på vedtaket.
  */
@@ -65,6 +69,7 @@ export const getFellesTekster = () => ({
 export const getInnvilgetTexts = ({
   soknadDato,
   innvilgedePerioder,
+  medForbeholdOvrigeVilkar,
 }: InnvilgetDocumentTextsValues) => {
   const soknadDatoTekst = tilLesbarDatoMedArUtenManedNavn(soknadDato);
   const innvilgedePerioderTekst = perioderTilTekst(innvilgedePerioder);
@@ -74,6 +79,9 @@ export const getInnvilgetTexts = ({
     innvilget: {
       header: "Du har fått godkjent sykepenger under utenlandsopphold",
       intro: `Vi viser til din søknad av ${soknadDatoTekst} om å beholde sykepengene under opphold i utlandet. Søknaden din er godkjent og du får beholde sykepengene dine ved opphold i utlandet i perioden ${innvilgedePerioderTekst}.`,
+      forbehold: medForbeholdOvrigeVilkar
+        ? forbeholdOvrigeVilkarText
+        : undefined,
     },
     begrunnelse: {
       header: "Begrunnelse for vedtaket",
@@ -123,6 +131,7 @@ export const getDelvisInnvilgetTexts = ({
   soknadDato,
   innvilgedePerioder,
   avslattePerioder,
+  medForbeholdOvrigeVilkar,
 }: DelvisInnvilgetDocumentTextsValues) => {
   const soknadDatoTekst = tilLesbarDatoMedArUtenManedNavn(soknadDato);
   const innvilgedePerioderTekst = perioderTilTekst(innvilgedePerioder);
@@ -134,6 +143,9 @@ export const getDelvisInnvilgetTexts = ({
       header:
         "Du har fått godkjent deler av perioden med sykepenger under utenlandsopphold",
       intro: `Vi viser til din søknad av ${soknadDatoTekst} om å beholde sykepengene under opphold i utlandet. Søknaden din er delvis godkjent og du får beholde sykepengene dine ved opphold i utlandet i perioden ${innvilgedePerioderTekst}. Du har fått avslag på å beholde sykepengene dine i utlandet i perioden ${avslattePerioderTekst}.`,
+      forbehold: medForbeholdOvrigeVilkar
+        ? forbeholdOvrigeVilkarText
+        : undefined,
     },
     begrunnelse: {
       header: "Begrunnelse for vedtaket",

@@ -8,7 +8,6 @@ import {
   Button,
   InlineMessage,
   Loader,
-  LocalAlert,
   Radio,
   RadioGroup,
   Textarea,
@@ -33,6 +32,8 @@ import {
   SoknadStatusDTO,
   Utfall,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
+import { Maksdato, useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
+import { useStartOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 
 const texts = {
   pending: "Henter søknader...",
@@ -58,6 +59,8 @@ const texts = {
     "Vedtaket om utenlandsopphold utenfor EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
   alertBehandlet: "Denne søknaden er allerede behandlet av",
   missingUtfall: "Du må velge et utfall for å fatte vedtaket",
+  ikkeUtbetaltAdvarsel:
+    "Sykepenger er ikke utbetalt. Ved innvilgelse eller delvis innvilgelse blir vedtaket sendt med forbehold om at øvrige vilkår for sykepenger er tilstede. Åpne forhåndsvisningen av vedtaket for å se forbeholdet.",
   begrunnelse: {
     label: "Begrunnelse (obligatorisk)",
     description:
@@ -67,6 +70,22 @@ const texts = {
 };
 
 const begrunnelseMaxLength = 5000;
+
+function erSykepengerUtbetalt(
+  maksDato: Maksdato | null | undefined,
+  oppfolgingstilfelleStart: Date | null | undefined,
+): boolean {
+  if (!maksDato) {
+    return false;
+  }
+  if (!oppfolgingstilfelleStart) {
+    return false;
+  }
+  return dayjs(maksDato.utbetalt_tom).isAfter(
+    dayjs(oppfolgingstilfelleStart),
+    "day",
+  );
+}
 
 interface InnvilgetPeriode {
   fom?: Date;
@@ -81,6 +100,8 @@ interface SkjemaValues {
 
 export function UtenlandsoppholdSoknad() {
   const { data, isPending, isError } = useSoknaderQuery();
+  const getMaksdato = useMaksdatoQuery();
+  const oppfolgingstilfelleStart = useStartOfLatestOppfolgingstilfelle();
   const { mutate, isPending: mutateIsPending } = useVedtakMutation();
   const {
     getInnvilgetDocument,
@@ -193,6 +214,10 @@ export function UtenlandsoppholdSoknad() {
   const gyldigeInnvilgedePerioder: Periode[] = valgteInnvilgedePerioder.filter(
     (periode): periode is Periode => !!periode.fom && !!periode.tom,
   );
+  const isSykepengerUtbetalt = erSykepengerUtbetalt(
+    getMaksdato.data?.maxDate,
+    oppfolgingstilfelleStart,
+  );
 
   const vedtakDocument = (() => {
     switch (valgtUtfall) {
@@ -208,12 +233,14 @@ export function UtenlandsoppholdSoknad() {
           innvilgedePerioder: gyldigeInnvilgedePerioder,
           avslattePerioder: avslattePerioder,
           begrunnelse: valgtBegrunnelse ?? "",
+          medForbeholdOvrigeVilkar: !isSykepengerUtbetalt,
         });
       case "INNVILGET":
       default:
         return getInnvilgetDocument({
           soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
           innvilgedePerioder: gyldigeInnvilgedePerioder,
+          medForbeholdOvrigeVilkar: !isSykepengerUtbetalt,
         });
     }
   })();
@@ -277,6 +304,11 @@ export function UtenlandsoppholdSoknad() {
               )}
               className="flex flex-col gap-8"
             >
+              {!isSykepengerUtbetalt && (
+                <Alert variant="warning" size="small">
+                  {texts.ikkeUtbetaltAdvarsel}
+                </Alert>
+              )}
               <RadioGroup
                 legend={"Velg utfall"}
                 name="utfall"
