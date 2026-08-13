@@ -9,7 +9,7 @@ import { UtenlandsoppholdSoknader } from "@/sider/utenlandsopphold/Utenlandsopph
 import { UtenlandsoppholdSoknad } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknad.tsx";
 
 const texts = {
-  title: "Søknad om sykepenger under opphold utenfor EØS",
+  title: "Søknad om sykepenger under opphold utenfor EU/EØS",
 };
 
 interface Props {

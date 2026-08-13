@@ -56,7 +56,7 @@ const texts = {
   ingenAvslattePerioderWarning:
     "Du har valgt å innvilge alle perioder. Velg 'Innvilgelse' som utfall i stedet for 'Delvis innvilgelse'",
   vedtakFattetNotification:
-    "Vedtaket om utenlandsopphold utenfor EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
+    "Vedtaket om utenlandsopphold utenfor EU/EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
   alertBehandlet: "Denne søknaden er allerede behandlet av",
   missingUtfall: "Du må velge et utfall for å fatte vedtaket",
   ikkeUtbetaltAdvarsel:

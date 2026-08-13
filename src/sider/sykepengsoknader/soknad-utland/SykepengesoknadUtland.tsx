@@ -12,7 +12,7 @@ import { Link as ReactRouterLink } from "react-router-dom";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks.ts";
 
 const texts = {
-  tittel: "Søknad om sykepenger under opphold utenfor Norge",
+  tittel: "Søknad om sykepenger under opphold utenfor EU/EØS",
   oppsummering: "Oppsummering av søknaden",
   sendt: "Sendt til Nav",
   dato: "Dato",
