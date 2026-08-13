@@ -140,7 +140,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
     expect(
       await screen.findByText(
-        "Vedtaket om utenlandsopphold utenfor EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
+        "Vedtaket om utenlandsopphold utenfor EU/EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
       ),
     ).to.exist;
     expect(screen.queryByText("Fant ikke søknaden")).to.not.exist;
@@ -269,7 +269,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
     expect(
       await screen.findByText(
-        "Vedtaket om utenlandsopphold utenfor EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
+        "Vedtaket om utenlandsopphold utenfor EU/EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
       ),
     ).to.exist;
     expect(screen.queryByText("Fant ikke søknaden")).to.not.exist;
@@ -419,7 +419,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
       expect(
         await screen.findByText(
-          "Vedtaket om utenlandsopphold utenfor EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
+          "Vedtaket om utenlandsopphold utenfor EU/EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
         ),
       ).to.exist;
       expect(screen.queryByText("Fant ikke søknaden")).to.not.exist;
@@ -593,7 +593,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
       expect(
         await screen.findByText(
-          "Vedtaket om utenlandsopphold utenfor EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
+          "Vedtaket om utenlandsopphold utenfor EU/EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
         ),
       ).to.exist;
 

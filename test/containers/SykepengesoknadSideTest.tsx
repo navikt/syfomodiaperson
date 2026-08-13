@@ -53,7 +53,7 @@ describe("SykepengesoknadSide", () => {
 
       expect(
         screen.getByRole("heading", {
-          name: "Søknad om sykepenger under opphold utenfor Norge",
+          name: "Søknad om sykepenger under opphold utenfor EU/EØS",
         }),
       ).to.exist;
     });
