@@ -182,6 +182,19 @@ export const newAndActivatedSykmeldinger = (
   });
 };
 
+/**
+ * Filtrerer ut sykmeldinger som overlapper med et oppfolgingstilfelle.
+ *
+ * En sykmelding regnes som overlappende dersom sykmeldingsperioden og
+ * oppfolgingstilfellet deler minst en dag: sykmeldingen starter senest samme
+ * dag som tilfellet slutter, og slutter tidligst samme dag som tilfellet
+ * starter.
+ *
+ * @param sykmeldinger sykmeldingene som skal filtreres
+ * @param oppfolgingstilfelle oppfolgingstilfellet det sjekkes overlapp mot
+ * @returns sykmeldingene som overlapper med oppfolgingstilfellet, eller en tom
+ *   liste dersom oppfolgingstilfelle mangler
+ */
 export function sykmeldingerInnenforOppfolgingstilfelle(
   sykmeldinger: SykmeldingOldFormat[],
   oppfolgingstilfelle?: OppfolgingstilfelleDTO,
@@ -191,13 +204,16 @@ export function sykmeldingerInnenforOppfolgingstilfelle(
   }
   return sykmeldinger.filter((sykmelding) => {
     const sykmeldingStart = dayjs(getSykmeldingStartdato(sykmelding));
+    const sykmeldingSlutt = dayjs(
+      senesteTom(sykmelding.mulighetForArbeid.perioder),
+    );
     const oppfolgingstilfelleStart = dayjs(oppfolgingstilfelle.start);
     const oppfolgingstilfelleEnd = dayjs(oppfolgingstilfelle.end);
 
     dayjs.extend(isSameOrAfter);
     return (
-      sykmeldingStart.isSameOrAfter(oppfolgingstilfelleStart, "day") &&
-      oppfolgingstilfelleEnd.isSameOrAfter(sykmeldingStart, "day")
+      oppfolgingstilfelleEnd.isSameOrAfter(sykmeldingStart, "day") &&
+      sykmeldingSlutt.isSameOrAfter(oppfolgingstilfelleStart, "day")
     );
   });
 }

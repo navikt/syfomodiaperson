@@ -42,7 +42,7 @@ const SYKMELDING_MYE_INFO = {
           arsak: ["MANGLENDE_TILRETTELEGGING", "ANNET"],
         },
       },
-      fom: "2020-07-22",
+      fom: daysFromToday(-180),
       tom: TODAY,
       gradert: {
         grad: 50,
@@ -55,8 +55,8 @@ const SYKMELDING_MYE_INFO = {
     },
     {
       aktivitetIkkeMulig: null,
-      fom: "2020-06-25",
-      tom: "2021-01-25",
+      fom: daysFromToday(-200),
+      tom: daysFromToday(-30),
       gradert: {
         grad: 50,
         reisetilskudd: false,
@@ -67,8 +67,8 @@ const SYKMELDING_MYE_INFO = {
     },
     {
       aktivitetIkkeMulig: null,
-      fom: "2020-06-25",
-      tom: "2021-01-25",
+      fom: daysFromToday(-200),
+      tom: daysFromToday(-30),
       gradert: null,
       behandlingsdager: null,
       innspillTilArbeidsgiver: null,
@@ -76,8 +76,8 @@ const SYKMELDING_MYE_INFO = {
     },
     {
       aktivitetIkkeMulig: null,
-      fom: "2020-06-25",
-      tom: "2020-06-25",
+      fom: daysFromToday(-200),
+      tom: daysFromToday(-200),
       gradert: null,
       behandlingsdager: null,
       innspillTilArbeidsgiver: null,
@@ -328,7 +328,7 @@ export const sykmeldingerMock = [
             arsak: ["MANGLENDE_TILRETTELEGGING", "ANNET"],
           },
         },
-        fom: "2020-07-22",
+        fom: daysFromToday(-180),
         tom: TODAY,
         gradert: null,
         behandlingsdager: null,
@@ -337,8 +337,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2021-01-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-30),
         gradert: {
           grad: 50,
           reisetilskudd: true,
@@ -349,8 +349,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2021-01-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-30),
         gradert: {
           grad: 50,
           reisetilskudd: false,
@@ -361,8 +361,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2021-01-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-30),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -370,8 +370,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2020-06-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-200),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -379,8 +379,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2020-06-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-200),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -388,8 +388,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-02-25",
-        tom: "2020-04-25",
+        fom: daysFromToday(-270),
+        tom: daysFromToday(-240),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -538,8 +538,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2021-01-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-30),
         gradert: {
           grad: 50,
           reisetilskudd: true,
@@ -550,8 +550,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2021-01-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-30),
         gradert: {
           grad: 50,
           reisetilskudd: false,
@@ -562,8 +562,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2021-01-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-30),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -571,8 +571,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2020-06-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-200),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -580,8 +580,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2020-06-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-200),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -589,8 +589,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-02-25",
-        tom: "2020-04-25",
+        fom: daysFromToday(-270),
+        tom: daysFromToday(-240),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,

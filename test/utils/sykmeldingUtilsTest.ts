@@ -399,7 +399,7 @@ describe("sykmeldingUtils", () => {
   });
 
   describe("sykmeldingerInnenforOppfolgingstilfelle", () => {
-    it("skal returnere en liste med bare sykmeldinger som starter innenfor oppfølgingstilfellet", () => {
+    it("skal returnere en liste med bare sykmeldinger som overlapper oppfølgingstilfellet", () => {
       const startDate = new Date("2023-01-01");
       const endDate = new Date("2023-05-01");
       const oppfolgingstilfelle = {
@@ -523,6 +523,165 @@ describe("sykmeldingUtils", () => {
       expect(sykmeldingerIOppfolgingstilfellet[1].orgnummer).to.equal(
         virksomhetNotInTilfelle,
       );
+    });
+
+    it("skal ta med sykmeldinger som starter før, men overlapper inn i oppfølgingstilfellet", () => {
+      const startDate = new Date("2023-01-01");
+      const endDate = new Date("2023-05-01");
+      const oppfolgingstilfelle = {
+        arbeidstakerAtTilfelleEnd: true,
+        start: startDate,
+        end: endDate,
+        antallSykedager: dagerMellomDatoer(startDate, endDate) + 1,
+        varighetUker: 16,
+        virksomhetsnummerList: ["123"],
+      };
+
+      const sykmeldinger: SykmeldingOldFormat[] = [
+        {
+          ...baseSykmelding,
+          orgnummer: "123",
+          mulighetForArbeid: {
+            perioder: [
+              {
+                fom: new Date("2022-12-01"),
+                tom: new Date("2023-01-15"),
+              },
+            ],
+          },
+        },
+      ];
+
+      const sykmeldingerIOppfolgingstilfellet =
+        sykmeldingerInnenforOppfolgingstilfelle(
+          sykmeldinger,
+          oppfolgingstilfelle,
+        );
+
+      expect(sykmeldingerIOppfolgingstilfellet.length).to.equal(1);
+      expect(sykmeldingerIOppfolgingstilfellet[0].orgnummer).to.equal("123");
+    });
+
+    it("skal ta med sykmeldinger som starter i, men slutter etter oppfølgingstilfellet", () => {
+      const startDate = new Date("2023-01-01");
+      const endDate = new Date("2023-05-01");
+      const oppfolgingstilfelle = {
+        arbeidstakerAtTilfelleEnd: true,
+        start: startDate,
+        end: endDate,
+        antallSykedager: dagerMellomDatoer(startDate, endDate) + 1,
+        varighetUker: 16,
+        virksomhetsnummerList: ["123"],
+      };
+
+      const sykmeldinger: SykmeldingOldFormat[] = [
+        {
+          ...baseSykmelding,
+          orgnummer: "123",
+          mulighetForArbeid: {
+            perioder: [
+              {
+                fom: new Date("2023-04-15"),
+                tom: new Date("2023-06-01"),
+              },
+            ],
+          },
+        },
+      ];
+
+      const sykmeldingerIOppfolgingstilfellet =
+        sykmeldingerInnenforOppfolgingstilfelle(
+          sykmeldinger,
+          oppfolgingstilfelle,
+        );
+
+      expect(sykmeldingerIOppfolgingstilfellet.length).to.equal(1);
+      expect(sykmeldingerIOppfolgingstilfellet[0].orgnummer).to.equal("123");
+    });
+
+    it("skal ta med sykmeldinger som omslutter hele oppfølgingstilfellet", () => {
+      const startDate = new Date("2023-01-01");
+      const endDate = new Date("2023-05-01");
+      const oppfolgingstilfelle = {
+        arbeidstakerAtTilfelleEnd: true,
+        start: startDate,
+        end: endDate,
+        antallSykedager: dagerMellomDatoer(startDate, endDate) + 1,
+        varighetUker: 16,
+        virksomhetsnummerList: ["123"],
+      };
+
+      const sykmeldinger: SykmeldingOldFormat[] = [
+        {
+          ...baseSykmelding,
+          orgnummer: "123",
+          mulighetForArbeid: {
+            perioder: [
+              {
+                fom: new Date("2022-12-01"),
+                tom: new Date("2023-06-01"),
+              },
+            ],
+          },
+        },
+      ];
+
+      const sykmeldingerIOppfolgingstilfellet =
+        sykmeldingerInnenforOppfolgingstilfelle(
+          sykmeldinger,
+          oppfolgingstilfelle,
+        );
+
+      expect(sykmeldingerIOppfolgingstilfellet.length).to.equal(1);
+      expect(sykmeldingerIOppfolgingstilfellet[0].orgnummer).to.equal("123");
+    });
+
+    it("skal ikke ta med sykmeldinger som ligger helt før eller helt etter oppfølgingstilfellet", () => {
+      const startDate = new Date("2023-01-01");
+      const endDate = new Date("2023-05-01");
+      const oppfolgingstilfelle = {
+        arbeidstakerAtTilfelleEnd: true,
+        start: startDate,
+        end: endDate,
+        antallSykedager: dagerMellomDatoer(startDate, endDate) + 1,
+        varighetUker: 16,
+        virksomhetsnummerList: ["123", "321"],
+      };
+
+      const sykmeldinger: SykmeldingOldFormat[] = [
+        {
+          ...baseSykmelding,
+          orgnummer: "123",
+          mulighetForArbeid: {
+            perioder: [
+              {
+                fom: new Date("2022-10-01"),
+                tom: new Date("2022-12-31"),
+              },
+            ],
+          },
+        },
+        {
+          ...baseSykmelding,
+          orgnummer: "321",
+          mulighetForArbeid: {
+            perioder: [
+              {
+                fom: new Date("2023-05-02"),
+                tom: new Date("2023-06-01"),
+              },
+            ],
+          },
+        },
+      ];
+
+      const sykmeldingerIOppfolgingstilfellet =
+        sykmeldingerInnenforOppfolgingstilfelle(
+          sykmeldinger,
+          oppfolgingstilfelle,
+        );
+
+      expect(sykmeldingerIOppfolgingstilfellet.length).to.equal(0);
     });
   });
 
