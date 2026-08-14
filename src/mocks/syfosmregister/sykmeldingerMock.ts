@@ -42,7 +42,7 @@ const SYKMELDING_MYE_INFO = {
           arsak: ["MANGLENDE_TILRETTELEGGING", "ANNET"],
         },
       },
-      fom: "2020-07-22",
+      fom: daysFromToday(-180),
       tom: TODAY,
       gradert: {
         grad: 50,
@@ -55,8 +55,8 @@ const SYKMELDING_MYE_INFO = {
     },
     {
       aktivitetIkkeMulig: null,
-      fom: "2020-06-25",
-      tom: "2021-01-25",
+      fom: daysFromToday(-200),
+      tom: daysFromToday(-30),
       gradert: {
         grad: 50,
         reisetilskudd: false,
@@ -67,8 +67,8 @@ const SYKMELDING_MYE_INFO = {
     },
     {
       aktivitetIkkeMulig: null,
-      fom: "2020-06-25",
-      tom: "2021-01-25",
+      fom: daysFromToday(-200),
+      tom: daysFromToday(-30),
       gradert: null,
       behandlingsdager: null,
       innspillTilArbeidsgiver: null,
@@ -76,8 +76,8 @@ const SYKMELDING_MYE_INFO = {
     },
     {
       aktivitetIkkeMulig: null,
-      fom: "2020-06-25",
-      tom: "2020-06-25",
+      fom: daysFromToday(-200),
+      tom: daysFromToday(-200),
       gradert: null,
       behandlingsdager: null,
       innspillTilArbeidsgiver: null,
@@ -328,7 +328,7 @@ export const sykmeldingerMock = [
             arsak: ["MANGLENDE_TILRETTELEGGING", "ANNET"],
           },
         },
-        fom: "2020-07-22",
+        fom: daysFromToday(-180),
         tom: TODAY,
         gradert: null,
         behandlingsdager: null,
@@ -337,8 +337,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2021-01-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-30),
         gradert: {
           grad: 50,
           reisetilskudd: true,
@@ -349,8 +349,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2021-01-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-30),
         gradert: {
           grad: 50,
           reisetilskudd: false,
@@ -361,8 +361,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2021-01-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-30),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -370,8 +370,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2020-06-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-200),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -379,8 +379,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2020-06-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-200),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -388,8 +388,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-02-25",
-        tom: "2020-04-25",
+        fom: daysFromToday(-270),
+        tom: daysFromToday(-240),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -538,8 +538,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2021-01-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-30),
         gradert: {
           grad: 50,
           reisetilskudd: true,
@@ -550,8 +550,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2021-01-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-30),
         gradert: {
           grad: 50,
           reisetilskudd: false,
@@ -562,8 +562,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2021-01-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-30),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -571,8 +571,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2020-06-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-200),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -580,8 +580,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-06-25",
-        tom: "2020-06-25",
+        fom: daysFromToday(-200),
+        tom: daysFromToday(-200),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -589,8 +589,8 @@ export const sykmeldingerMock = [
       },
       {
         aktivitetIkkeMulig: null,
-        fom: "2020-02-25",
-        tom: "2020-04-25",
+        fom: daysFromToday(-270),
+        tom: daysFromToday(-240),
         gradert: null,
         behandlingsdager: null,
         innspillTilArbeidsgiver: null,
@@ -837,128 +837,6 @@ export const sykmeldingerMock = [
       bistandUmiddelbart: false,
       beskrivBistand: "Mye røykskader pga jobben",
     },
-    meldingTilArbeidsgiver: null,
-    kontaktMedPasient: {
-      kontaktDato: null,
-      begrunnelseIkkeKontakt: null,
-    },
-    behandletTidspunkt: "2020-08-10T22:00:00Z",
-    behandler: {
-      fornavn: "Lego",
-      mellomnavn: "Las",
-      etternavn: "Legesen",
-      aktoerId: "1000014797129",
-      fnr: "99900011122",
-      hpr: null,
-      her: 7777777,
-      adresse: {
-        gate: "Kirkegårdsveien 3",
-        postnummer: 1348,
-        kommune: "Rykkinn",
-        postboks: null,
-        land: "Country",
-      },
-      tlf: "tel:94431152",
-    },
-    syketilfelleStartDato: "2020-07-22",
-    navnFastlege: "Lego Las Legesen",
-    egenmeldt: false,
-    harRedusertArbeidsgiverperiode: false,
-  },
-  {
-    id: "333148ba-4c3c-4b3f-b7a3-385b7e7c927d",
-    mottattTidspunkt: "2020-08-10T23:00:00Z",
-    behandlingsutfall: {
-      status: "INVALID",
-      ruleHits: [
-        {
-          messageForSender:
-            "Sykmeldingen kan ikke rettes, det må skrives en ny. Pasienten har fått beskjed om å vente på ny sykmelding fra deg. Grunnet følgende:Kodeverk for hoveddiagnose er feil eller mangler.",
-          messageForUser: "Den må ha riktig kode for hoveddiagnose.",
-          ruleName: "UGYLDIG_KODEVERK_FOR_HOVEDDIAGNOSE",
-          ruleStatus: "INVALID",
-        },
-      ],
-    },
-    legekontorOrgnummer: "223456789",
-    arbeidsgiver: {
-      navn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
-      yrkesbetegnelse: "Sykepleier",
-      stillingsprosent: 100,
-    },
-    sykmeldingsperioder: [
-      {
-        fom: "2020-04-22",
-        tom: "2020-12-22",
-        gradert: null,
-        behandlingsdager: null,
-        innspillTilArbeidsgiver: null,
-        type: "AKTIVITET_IKKE_MULIG",
-      },
-    ],
-    sykmeldingStatus: {
-      statusEvent: "APEN",
-      timestamp: "2020-02-21T09:38:05.414834Z",
-      arbeidsgiver: null,
-      sporsmalOgSvarListe: null,
-    },
-    medisinskVurdering: {
-      hovedDiagnose: {
-        kode: "L87",
-        system: "2.16.578.1.12.4.1.1.7170",
-        tekst: "TENDINITT INA",
-      },
-      biDiagnoser: [
-        {
-          kode: "L87",
-          system: "2.16.578.1.12.4.1.1.7170",
-          tekst: "GANGLION SENE",
-        },
-      ],
-    },
-    skjermesForPasient: false,
-    prognose: {
-      arbeidsforEtterPeriode: true,
-      hensynArbeidsplassen: "Må ta det pent",
-      erIArbeid: {
-        egetArbeidPaSikt: true,
-        annetArbeidPaSikt: true,
-        arbeidFOM: "2020-07-22",
-        vurderingsdato: "2020-07-22",
-      },
-      erIkkeIArbeid: null,
-    },
-    utdypendeOpplysninger: {
-      6.2: {
-        "6.2.1": {
-          sporsmal:
-            "Beskriv kort sykehistorie, symptomer og funn i dagens situasjon.",
-          svar: "Langvarig korsryggsmerter. Ømhet og smerte",
-          restriksjoner: ["SKJERMET_FOR_ARBEIDSGIVER"],
-        },
-        "6.2.2": {
-          sporsmal: "Hvordan påvirker sykdommen arbeidsevnen",
-          svar: "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket. Duplikatbuster: 6828077b-bfce-488d-b04b-22afe7f64500",
-          restriksjoner: ["SKJERMET_FOR_ARBEIDSGIVER"],
-        },
-        "6.2.3": {
-          sporsmal: "Har behandlingen frem til nå bedret arbeidsevnen?",
-          svar: "Nei",
-          restriksjoner: ["SKJERMET_FOR_ARBEIDSGIVER"],
-        },
-        "6.2.4": {
-          sporsmal:
-            "Beskriv Pågående og planlagt henvisning, utredning og/eller behandling",
-          svar: "Henvist til fysio",
-          restriksjoner: ["SKJERMET_FOR_ARBEIDSGIVER"],
-        },
-      },
-    },
-    tiltakArbeidsplassen: "Fortsett som sist.",
-    tiltakNAV:
-      "Pasienten har plager som er kommet tilbake etter operasjon. Det er nylig tatt MR bildet som viser forandringer i hånd som mulig må opereres. Venter på time. Det er mulig sykemledingen vil vare utover aktuell sm periode. ",
-    andreTiltak: null,
-    meldingTilNAV: null,
     meldingTilArbeidsgiver: null,
     kontaktMedPasient: {
       kontaktDato: null,
@@ -1595,140 +1473,6 @@ export const sykmeldingerMock = [
     egenmeldt: true,
     papirsykmelding: false,
     harRedusertArbeidsgiverperiode: true,
-  },
-  {
-    id: "9999a750-7f39-4974-9a06-fa1775f987c9",
-    mottattTidspunkt: "2020-08-10T23:00:00Z",
-    behandlingsutfall: {
-      status: "MANUAL_PROCESSING",
-      ruleHits: [
-        {
-          messageForSender:
-            "Behandlers TSS-ident er ikke funnet automatisk av systemet",
-          messageForUser:
-            "Behandlers TSS-ident er ikke funnet automatisk av systemet",
-          ruleName: "TSS_IDENT_MANGLER",
-          ruleStatus: "MANUAL_PROCESSING",
-        },
-      ],
-    },
-    legekontorOrgnummer: "223456789",
-    arbeidsgiver: {
-      navn: "X-Files",
-      yrkesbetegnelse: "Senior etterforsker",
-      stillingsprosent: 100,
-    },
-    sykmeldingsperioder: [
-      {
-        aktivitetIkkeMulig: {
-          medisinskArsak: {
-            beskrivelse: "Medisinsk årsak som hindrer arbeid",
-            arsak: ["TILSTAND_HINDRER_AKTIVITET", "ANNET"],
-          },
-          arbeidsrelatertArsak: {
-            beskrivelse: "Forhold på arbeidsplassen vanskeliggjør arbeid",
-            arsak: ["MANGLENDE_TILRETTELEGGING", "ANNET"],
-          },
-        },
-        fom: "2020-03-22",
-        tom: "2020-05-22",
-        gradert: null,
-        behandlingsdager: null,
-        innspillTilArbeidsgiver: null,
-        type: "AKTIVITET_IKKE_MULIG",
-      },
-    ],
-    sykmeldingStatus: {
-      statusEvent: "SENDT",
-      timestamp: "2020-03-29T09:38:05.414834Z",
-      arbeidsgiver: {
-        orgnummer: "333666999",
-        juridiskOrgnummer: "111444777",
-        orgNavn: "X-Files",
-      },
-      sporsmalOgSvarListe: null,
-    },
-    medisinskVurdering: {
-      hovedDiagnose: {
-        kode: "L87",
-        system: "ICD-10",
-        tekst: "TENDINITT INA",
-      },
-      biDiagnoser: [],
-      svangerskap: false,
-      yrkesskade: false,
-      yrkesskadeDato: null,
-    },
-    skjermesForPasient: false,
-    prognose: {
-      arbeidsforEtterPeriode: true,
-      hensynArbeidsplassen: "Må ta det pent",
-      erIArbeid: {
-        egetArbeidPaSikt: true,
-        annetArbeidPaSikt: true,
-        arbeidFOM: "2020-05-22",
-        vurderingsdato: "2020-05-22",
-      },
-      erIkkeIArbeid: null,
-    },
-    utdypendeOpplysninger: {
-      6.2: {
-        "6.2.1": {
-          sporsmal:
-            "Beskriv kort sykehistorie, symptomer og funn i dagens situasjon.",
-          svar: "Langvarig korsryggsmerter. Ømhet og smerte",
-          restriksjoner: ["SKJERMET_FOR_ARBEIDSGIVER"],
-        },
-        "6.2.2": {
-          sporsmal: "Hvordan påvirker sykdommen arbeidsevnen",
-          svar: "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket.",
-          restriksjoner: ["SKJERMET_FOR_ARBEIDSGIVER"],
-        },
-        "6.2.3": {
-          sporsmal: "Har behandlingen frem til nå bedret arbeidsevnen?",
-          svar: "Nei",
-          restriksjoner: ["SKJERMET_FOR_ARBEIDSGIVER"],
-        },
-        "6.2.4": {
-          sporsmal:
-            "Beskriv Pågående og planlagt henvisning, utredning og/eller behandling",
-          svar: "Henvist til fysio",
-          restriksjoner: ["SKJERMET_FOR_ARBEIDSGIVER"],
-        },
-      },
-    },
-    tiltakArbeidsplassen: "Fortsett som sist.",
-    tiltakNAV:
-      "Pasienten har plager som er kommet tilbake etter operasjon. Det er nylig tatt MR bildet som viser forandringer i hånd som mulig må opereres. Venter på time. Det er mulig sykemledingen vil vare utover aktuell sm periode. ",
-    andreTiltak: null,
-    meldingTilNAV: null,
-    meldingTilArbeidsgiver: null,
-    kontaktMedPasient: {
-      kontaktDato: null,
-      begrunnelseIkkeKontakt: null,
-    },
-    behandletTidspunkt: "2020-03-21T22:00:00Z",
-    behandler: {
-      fornavn: "Lego",
-      mellomnavn: "Las",
-      etternavn: "Legesen",
-      aktoerId: "1000014797129",
-      fnr: "99900011122",
-      hpr: null,
-      her: 7777777,
-      adresse: {
-        gate: "Kirkegårdsveien 3",
-        postnummer: 1348,
-        kommune: "Rykkinn",
-        postboks: null,
-        land: "Country",
-      },
-      tlf: "12345678",
-    },
-    syketilfelleStartDato: "2020-07-22",
-    navnFastlege: "Lego Las Legesen",
-    egenmeldt: false,
-    harRedusertArbeidsgiverperiode: false,
   },
   {
     id: "8361e922-2c92-4aa8-811d-e53ca958dc6a",
