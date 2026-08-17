@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import dayjs from "dayjs";
 import { FormProvider, useForm } from "react-hook-form";
 import {
@@ -8,9 +8,9 @@ import {
   Button,
   InlineMessage,
   Loader,
-  LocalAlert,
   Radio,
   RadioGroup,
+  Skeleton,
   Textarea,
 } from "@navikt/ds-react";
 import { DelvisInnvilgelsePeriodeDatepicker } from "@/sider/utenlandsopphold/DelvisInnvilgelsePeriodeDatepicker.tsx";
@@ -33,6 +33,17 @@ import {
   SoknadStatusDTO,
   Utfall,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
+import { useDebouncedCallback } from "use-debounce";
+import {
+  DraftTextDTO,
+  useDeleteDraft,
+  useDraftQuery,
+  useSaveDraft,
+} from "@/hooks/useDraftQuery";
+import { DraftSaveStatus } from "@/components/DraftSaveStatus";
+
+const AVSLAG_CATEGORY = "utenlandsopphold-avslag";
+const DELVIS_INNVILGET_CATEGORY = "utenlandsopphold-delvis-innvilget";
 
 const texts = {
   pending: "Henter søknader...",
@@ -104,6 +115,48 @@ export function UtenlandsoppholdSoknad() {
   const valgtUtfall = watch("utfall");
   const valgteInnvilgedePerioder = watch("innvilgedePerioder");
   const valgtBegrunnelse = watch("begrunnelse");
+  const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
+
+  const avslagDraftQuery = useDraftQuery<DraftTextDTO>(AVSLAG_CATEGORY);
+  const saveAvslagDraft = useSaveDraft<DraftTextDTO>(AVSLAG_CATEGORY);
+  const deleteAvslagDraft = useDeleteDraft(AVSLAG_CATEGORY);
+
+  const delvisInnvilgetDraftQuery = useDraftQuery<DraftTextDTO>(
+    DELVIS_INNVILGET_CATEGORY,
+  );
+  const saveDelvisInnvilgetDraft = useSaveDraft<DraftTextDTO>(
+    DELVIS_INNVILGET_CATEGORY,
+  );
+  const deleteDelvisInnvilgetDraft = useDeleteDraft(DELVIS_INNVILGET_CATEGORY);
+
+  const draftByUtfall = {
+    AVSLAG: { query: avslagDraftQuery, save: saveAvslagDraft },
+    DELVIS_INNVILGET: {
+      query: delvisInnvilgetDraftQuery,
+      save: saveDelvisInnvilgetDraft,
+    },
+  };
+
+  const activeDraft =
+    valgtUtfall === "AVSLAG" || valgtUtfall === "DELVIS_INNVILGET"
+      ? draftByUtfall[valgtUtfall]
+      : null;
+
+  const isDraftPending = activeDraft?.query.isPending ?? false;
+  const activeDraftSave = activeDraft?.save;
+
+  const debouncedAutoSaveDraft = useDebouncedCallback(
+    (begrunnelse: string, save) => {
+      save.mutate(
+        { begrunnelse },
+        {
+          onSuccess: () => setUtkastSavedTime(new Date()),
+          onError: () => setUtkastSavedTime(undefined),
+        },
+      );
+    },
+    750,
+  );
 
   function handleUtfallChange(utfall: Utfall) {
     if (utfall === "INNVILGET") {
@@ -117,8 +170,17 @@ export function UtenlandsoppholdSoknad() {
       setValue("begrunnelse", "");
       clearErrors("begrunnelse");
     } else {
-      // Resetter denne når man velger DELVIS_INNVILGET eller AVSLAG
+      // Resetter innvilgede perioder for DELVIS_INNVILGET eller AVSLAG
       setValue("innvilgedePerioder", []);
+
+      if (utfall === "AVSLAG") {
+        setValue("begrunnelse", avslagDraftQuery.data?.begrunnelse ?? "");
+      } else if (utfall === "DELVIS_INNVILGET") {
+        setValue(
+          "begrunnelse",
+          delvisInnvilgetDraftQuery.data?.begrunnelse ?? "",
+        );
+      }
     }
     clearErrors("innvilgedePerioder");
   }
@@ -145,6 +207,10 @@ export function UtenlandsoppholdSoknad() {
         setNotification({
           message: texts.vedtakFattetNotification,
         });
+        setUtkastSavedTime(undefined);
+        debouncedAutoSaveDraft.cancel();
+        deleteAvslagDraft.mutate(undefined);
+        deleteDelvisInnvilgetDraft.mutate(undefined);
         navigate(`${utenlandsoppholdPath}`);
       },
     });
@@ -338,21 +404,36 @@ export function UtenlandsoppholdSoknad() {
                 </Box>
               )}
               {(valgtUtfall === "DELVIS_INNVILGET" ||
-                valgtUtfall === "AVSLAG") && (
-                <Textarea
-                  {...register("begrunnelse", {
-                    maxLength: begrunnelseMaxLength,
-                    required: texts.begrunnelse.missing,
-                  })}
-                  value={watch("begrunnelse")}
-                  label={texts.begrunnelse.label}
-                  description={texts.begrunnelse.description}
-                  error={errors.begrunnelse?.message}
-                  size="small"
-                  minRows={6}
-                  maxLength={begrunnelseMaxLength}
-                />
-              )}
+                valgtUtfall === "AVSLAG") &&
+                (isDraftPending ? (
+                  <Skeleton variant="rounded" height={150} />
+                ) : (
+                  <>
+                    <Textarea
+                      {...register("begrunnelse", {
+                        maxLength: begrunnelseMaxLength,
+                        required: texts.begrunnelse.missing,
+                        onChange: (e) => {
+                          debouncedAutoSaveDraft(
+                            e.target.value,
+                            activeDraftSave,
+                          );
+                        },
+                      })}
+                      value={watch("begrunnelse")}
+                      label={texts.begrunnelse.label}
+                      description={texts.begrunnelse.description}
+                      error={errors.begrunnelse?.message}
+                      size="small"
+                      minRows={6}
+                      maxLength={begrunnelseMaxLength}
+                    />
+                    <DraftSaveStatus
+                      isSaveError={activeDraftSave?.isError ?? false}
+                      savedTime={utkastSavedTime}
+                    />
+                  </>
+                ))}
               <div className="flex flex-row gap-4">
                 <Button
                   variant="primary"

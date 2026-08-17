@@ -191,6 +191,8 @@ export const queryClientWithMockData = (): QueryClient => {
     "arbeidsuforhet-avslag-uten-forhandsvarsel",
     "arbeidsuforhet-oppfylt",
     "manglendemedvirkning-forhandsvarsel",
+    "utenlandsopphold-avslag",
+    "utenlandsopphold-delvis-innvilget",
   ] as const;
   draftCategories.forEach((category) => {
     queryClient.setQueryData(
