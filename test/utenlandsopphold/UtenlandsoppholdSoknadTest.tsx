@@ -311,8 +311,15 @@ describe("UtenlandsoppholdSoknad", () => {
     ).to.have.lengthOf(2);
 
     await waitFor(() => {
-      const vedtakMutation = queryClient.getMutationCache().getAll()[0];
-      const variables = vedtakMutation.state.variables as {
+      const vedtakMutation = queryClient
+        .getMutationCache()
+        .getAll()
+        .find(
+          (mutation) =>
+            (mutation.state.variables as { vedtak?: SoknadVedtakPostDTO })
+              ?.vedtak,
+        );
+      const variables = vedtakMutation?.state.variables as {
         soknadId: string;
         vedtak: SoknadVedtakPostDTO;
       };
@@ -464,8 +471,15 @@ describe("UtenlandsoppholdSoknad", () => {
       ).to.have.lengthOf(2);
 
       await waitFor(() => {
-        const vedtakMutation = queryClient.getMutationCache().getAll()[0];
-        const variables = vedtakMutation.state.variables as {
+        const vedtakMutation = queryClient
+          .getMutationCache()
+          .getAll()
+          .find(
+            (mutation) =>
+              (mutation.state.variables as { vedtak?: SoknadVedtakPostDTO })
+                ?.vedtak,
+          );
+        const variables = vedtakMutation?.state.variables as {
           soknadId: string;
           vedtak: SoknadVedtakPostDTO;
         };
@@ -628,8 +642,15 @@ describe("UtenlandsoppholdSoknad", () => {
       ).to.exist;
 
       await waitFor(() => {
-        const vedtakMutation = queryClient.getMutationCache().getAll()[0];
-        const variables = vedtakMutation.state.variables as {
+        const vedtakMutation = queryClient
+          .getMutationCache()
+          .getAll()
+          .find(
+            (mutation) =>
+              (mutation.state.variables as { vedtak?: SoknadVedtakPostDTO })
+                ?.vedtak,
+          );
+        const variables = vedtakMutation?.state.variables as {
           soknadId: string;
           vedtak: SoknadVedtakPostDTO;
         };
