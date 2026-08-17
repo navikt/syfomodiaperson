@@ -11,7 +11,9 @@ export type DraftCategory =
   | "aktivitetskrav-forhandsvarsel"
   | "aktivitetskrav-unntak"
   | "aktivitetskrav-oppfylt"
-  | "aktivitetskrav-innstilling-om-stans";
+  | "aktivitetskrav-innstilling-om-stans"
+  | "utenlandsopphold-avslag"
+  | "utenlandsopphold-delvis-innvilget";
 
 function draftPath(category: DraftCategory): string {
   return `/api/draft/${category}`;
