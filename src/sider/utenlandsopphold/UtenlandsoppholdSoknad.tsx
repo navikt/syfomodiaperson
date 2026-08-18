@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import dayjs from "dayjs";
 import { FormProvider, useForm } from "react-hook-form";
 import {
@@ -23,6 +23,7 @@ import {
   tilLesbarPeriodeMedArUtenManednavn,
 } from "@/utils/datoUtils.ts";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
+import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
 import { useUtenlandsoppholdSoknadDocument } from "@/hooks/utenlandsopphold/useUtenlandsoppholdSoknadDocument";
 import { useNotification } from "@/context/notification/NotificationContext.tsx";
 import { utenlandsoppholdPath } from "@/AppRouter.tsx";
@@ -50,6 +51,7 @@ const texts = {
   },
   buttons: {
     sendButton: "Send vedtak",
+    confirmButton: "Bekreft og send",
     previewContentLabel: "Forhåndsvisning",
     backButton: "Tilbake",
   },
@@ -125,6 +127,7 @@ export function UtenlandsoppholdSoknad() {
   const valgtUtfall = watch("utfall");
   const valgteInnvilgedePerioder = watch("innvilgedePerioder");
   const valgtBegrunnelse = watch("begrunnelse");
+  const [visSendForhandsvisning, setVisSendForhandsvisning] = useState(false);
 
   function handleUtfallChange(utfall: Utfall) {
     if (utfall === "INNVILGET") {
@@ -299,9 +302,7 @@ export function UtenlandsoppholdSoknad() {
         {!soknadBehandlet && (
           <FormProvider {...formMethods}>
             <form
-              onSubmit={handleSubmit((values) =>
-                submit(utenlandsoppholdSoknad.soknadId, values),
-              )}
+              onSubmit={handleSubmit(() => setVisSendForhandsvisning(true))}
               className="flex flex-col gap-8"
             >
               {!isSykepengerUtbetalt && (
@@ -389,7 +390,6 @@ export function UtenlandsoppholdSoknad() {
                 <Button
                   variant="primary"
                   type="submit"
-                  loading={mutateIsPending}
                   disabled={
                     valgtUtfall === "DELVIS_INNVILGET" &&
                     avslattePerioder.length === 0
@@ -409,6 +409,17 @@ export function UtenlandsoppholdSoknad() {
                   {texts.buttons.backButton}
                 </Button>
               </div>
+              <ForhandsvisningModal
+                contentLabel={texts.buttons.previewContentLabel}
+                isOpen={visSendForhandsvisning}
+                handleClose={() => setVisSendForhandsvisning(false)}
+                getDocumentComponents={() => vedtakDocument}
+                onConfirm={handleSubmit((values) =>
+                  submit(utenlandsoppholdSoknad.soknadId, values),
+                )}
+                confirmText={texts.buttons.confirmButton}
+                confirmLoading={mutateIsPending}
+              />
             </form>
           </FormProvider>
         )}

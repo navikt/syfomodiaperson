@@ -14,6 +14,9 @@ export interface ForhandsvisningModalProps {
   isOpen: boolean;
   handleClose: () => void;
   getDocumentComponents: () => DocumentComponentDto[];
+  onConfirm?: () => void;
+  confirmText?: string;
+  confirmLoading?: boolean;
 }
 
 export const ForhandsvisningModal = ({
@@ -22,6 +25,9 @@ export const ForhandsvisningModal = ({
   title,
   contentLabel,
   getDocumentComponents,
+  onConfirm,
+  confirmText,
+  confirmLoading,
 }: ForhandsvisningModalProps): ReactElement => {
   const documentComponents = isOpen ? getDocumentComponents() : [];
   return (
@@ -45,7 +51,21 @@ export const ForhandsvisningModal = ({
         ))}
       </Modal.Body>
       <Modal.Footer>
-        <Button type="button" onClick={handleClose}>
+        {onConfirm && confirmText && (
+          <Button
+            type="button"
+            variant="primary"
+            loading={confirmLoading}
+            onClick={onConfirm}
+          >
+            {confirmText}
+          </Button>
+        )}
+        <Button
+          type="button"
+          variant={onConfirm ? "secondary" : "primary"}
+          onClick={handleClose}
+        >
           {texts.close}
         </Button>
       </Modal.Footer>
