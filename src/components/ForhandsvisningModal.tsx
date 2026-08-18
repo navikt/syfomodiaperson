@@ -9,15 +9,19 @@ const texts = {
   cancel: "Avbryt",
 };
 
+interface ActionButtonProps {
+  text: string;
+  onClick: () => void;
+  loading?: boolean;
+}
+
 export interface ForhandsvisningModalProps {
   title?: string;
   contentLabel: string;
   isOpen: boolean;
   handleClose: () => void;
   getDocumentComponents: () => DocumentComponentDto[];
-  onConfirm?: () => void;
-  confirmText?: string;
-  confirmLoading?: boolean;
+  action?: ActionButtonProps;
 }
 
 export const ForhandsvisningModal = ({
@@ -26,9 +30,7 @@ export const ForhandsvisningModal = ({
   title,
   contentLabel,
   getDocumentComponents,
-  onConfirm,
-  confirmText,
-  confirmLoading,
+  action,
 }: ForhandsvisningModalProps): ReactElement => {
   const documentComponents = isOpen ? getDocumentComponents() : [];
   return (
@@ -52,22 +54,22 @@ export const ForhandsvisningModal = ({
         ))}
       </Modal.Body>
       <Modal.Footer>
-        {onConfirm && confirmText && (
+        {action && (
           <Button
             type="button"
             variant="primary"
-            loading={confirmLoading}
-            onClick={onConfirm}
+            loading={action.loading}
+            onClick={action.onClick}
           >
-            {confirmText}
+            {action.text}
           </Button>
         )}
         <Button
           type="button"
-          variant={onConfirm ? "secondary" : "primary"}
+          variant={action ? "secondary" : "primary"}
           onClick={handleClose}
         >
-          {onConfirm ? texts.cancel : texts.close}
+          {action ? texts.cancel : texts.close}
         </Button>
       </Modal.Footer>
     </Modal>

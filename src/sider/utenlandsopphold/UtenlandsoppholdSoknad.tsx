@@ -414,11 +414,13 @@ export function UtenlandsoppholdSoknad() {
                 isOpen={visSendForhandsvisning}
                 handleClose={() => setVisSendForhandsvisning(false)}
                 getDocumentComponents={() => vedtakDocument}
-                onConfirm={handleSubmit((values) =>
-                  submit(utenlandsoppholdSoknad.soknadId, values),
-                )}
-                confirmText={texts.buttons.confirmButton}
-                confirmLoading={mutateIsPending}
+                action={{
+                  text: texts.buttons.confirmButton,
+                  onClick: handleSubmit((values) =>
+                    submit(utenlandsoppholdSoknad.soknadId, values),
+                  ),
+                  loading: mutateIsPending,
+                }}
               />
             </form>
           </FormProvider>
