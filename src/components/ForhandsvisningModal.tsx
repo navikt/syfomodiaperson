@@ -6,6 +6,7 @@ import { Button, Heading, Modal } from "@navikt/ds-react";
 
 const texts = {
   close: "Lukk",
+  cancel: "Avbryt",
 };
 
 export interface ForhandsvisningModalProps {
@@ -66,7 +67,7 @@ export const ForhandsvisningModal = ({
           variant={onConfirm ? "secondary" : "primary"}
           onClick={handleClose}
         >
-          {texts.close}
+          {onConfirm ? texts.cancel : texts.close}
         </Button>
       </Modal.Footer>
     </Modal>
