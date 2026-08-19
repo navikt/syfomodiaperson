@@ -266,7 +266,7 @@ const createOppfolgingsplanLps = (
     fnr: ARBEIDSTAKER_DEFAULT.personIdent,
     virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
     opprettet: dayjs().subtract(daysSinceOpprettet, "days").toJSON(),
-    sistEndret: new Date().toDateString(),
+    sistEndret: new Date().toISOString(),
   };
 
   const existingPersonOppgaver =

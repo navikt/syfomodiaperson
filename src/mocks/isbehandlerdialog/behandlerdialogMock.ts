@@ -192,7 +192,7 @@ export const meldingUuids = {
 
 export const defaultMelding = {
   uuid: meldingUuids.tilleggsopplysningerUtgaaende,
-  conversationRef: "59da3774-40bd-11ee-be56-0242ac120002 ",
+  conversationRef: "59da3774-40bd-11ee-be56-0242ac120002",
   parentRef: null,
   behandlerRef: behandlerRefDoktorLegesen,
   behandlerNavn: null,

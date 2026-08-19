@@ -24,6 +24,7 @@ import BehandlePersonOppgaveKnapp from "@/components/personoppgave/BehandlePerso
 const texts = {
   behandleOppgaveText:
     "Jeg har forstått at meldingen ikke ble levert. Oppgaven kan fjernes.",
+  fjernOppgavenButtonText: "Fjern oppgaven",
 };
 
 const StyledImageWrapper = styled.div<{ innkommende?: boolean }>`
@@ -90,6 +91,7 @@ export function MeldingTilBehandler({ melding }: MeldingInnholdProps) {
     oppgaver,
     PersonOppgaveType.BEHANDLERDIALOG_MELDING_UBESVART,
   ).find((oppgave) => oppgave.referanseUuid === melding.uuid);
+  const avvistMelding = melding.status?.type === MeldingStatusType.AVVIST;
   const avvistOppgave = oppgaver
     .filter(
       (oppgave) =>
@@ -100,19 +102,19 @@ export function MeldingTilBehandler({ melding }: MeldingInnholdProps) {
   return (
     <StyledMelding>
       <StyledInnhold>
-        <MeldingInnholdPanel melding={melding} />
-        {melding.status?.type === MeldingStatusType.AVVIST &&
-          !!avvistOppgave && (
-            <BehandlePersonOppgaveKnapp
-              personOppgave={avvistOppgave}
-              behandleOppgaveText={texts.behandleOppgaveText}
-              handleBehandleOppgave={() =>
-                behandleOppgave.mutate(avvistOppgave.uuid)
-              }
-              isBehandleOppgaveLoading={behandleOppgave.isPending}
-              isBehandlet={isBehandletOppgave(avvistOppgave)}
-            />
-          )}
+        <MeldingInnholdPanel melding={melding} avvist={avvistMelding} />
+        {avvistMelding && !!avvistOppgave && (
+          <BehandlePersonOppgaveKnapp
+            personOppgave={avvistOppgave}
+            handleBehandleOppgave={() =>
+              behandleOppgave.mutate(avvistOppgave.uuid)
+            }
+            isBehandleOppgaveLoading={behandleOppgave.isPending}
+            isBehandlet={isBehandletOppgave(avvistOppgave)}
+            behandleOppgaveText={texts.behandleOppgaveText}
+            buttonText={texts.fjernOppgavenButtonText}
+          />
+        )}
         {!!ubesvartMeldingOppgave && (
           <PaminnelseMelding
             melding={melding}

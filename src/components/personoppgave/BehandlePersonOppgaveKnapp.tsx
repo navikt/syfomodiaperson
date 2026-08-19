@@ -4,7 +4,7 @@ import {
   PersonOppgaveType,
 } from "@/data/personoppgave/types/PersonOppgave";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
-import { Box, Checkbox } from "@navikt/ds-react";
+import { Button, Detail } from "@navikt/ds-react";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
 const getFerdigbehandletPrefixText = (personoppgaveType: PersonOppgaveType) => {
@@ -23,6 +23,7 @@ const getFerdigbehandletText = (
   const ferdigbehandletPrefixText = getFerdigbehandletPrefixText(
     personOppgave.type,
   );
+
   return `
     ${ferdigbehandletPrefixText} 
     ${veilederNavn} 
@@ -36,6 +37,7 @@ interface Props {
   handleBehandleOppgave: () => void;
   isBehandleOppgaveLoading: boolean;
   behandleOppgaveText: string;
+  buttonText: string;
 }
 
 export default function BehandlePersonOppgaveKnapp({
@@ -44,25 +46,33 @@ export default function BehandlePersonOppgaveKnapp({
   handleBehandleOppgave,
   isBehandleOppgaveLoading,
   behandleOppgaveText,
+  buttonText,
 }: Props) {
   const { data: veilederInfo } = useVeilederInfoQuery(
     personOppgave?.behandletVeilederIdent ?? "",
   );
-  const oppgaveKnappText =
-    isBehandlet && personOppgave
-      ? getFerdigbehandletText(personOppgave, veilederInfo?.fulltNavn())
-      : behandleOppgaveText;
 
   return (
-    <Box borderColor="neutral-subtle" borderWidth="1" padding="space-16">
-      <Checkbox
-        onClick={handleBehandleOppgave}
-        disabled={isBehandlet || isBehandleOppgaveLoading}
-        defaultChecked={isBehandlet}
-        size="small"
-      >
-        {oppgaveKnappText}
-      </Checkbox>
-    </Box>
+    <div className={"flex flex-row items-center gap-2"}>
+      {!isBehandlet && (
+        <div className={"flex flex-col  gap-2"}>
+          <Button
+            className={"w-fit"}
+            size={"small"}
+            variant={"secondary"}
+            onClick={handleBehandleOppgave}
+            loading={isBehandleOppgaveLoading}
+          >
+            {buttonText}
+          </Button>
+          <Detail>{behandleOppgaveText}</Detail>
+        </div>
+      )}
+      {isBehandlet && personOppgave && (
+        <Detail>
+          {getFerdigbehandletText(personOppgave, veilederInfo?.fulltNavn())}
+        </Detail>
+      )}
+    </div>
   );
 }

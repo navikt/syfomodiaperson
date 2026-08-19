@@ -17,7 +17,8 @@ import { HStack } from "@navikt/ds-react";
 
 const texts = {
   fjernOppgave:
-    "Marker nye meldinger som lest. Oppgaven vil da fjernes fra oversikten.",
+    "Markerer alle nye meldinger som lest og fjerner oppgavene fra oversikten.",
+  markerLestButtonText: "Marker som lest",
 };
 
 const sortDateByTidspunkt = (d1: Date | null, d2: Date | null) => {
@@ -66,6 +67,7 @@ export default function BehandleBehandlerdialogSvarOppgaveKnapp() {
             }
             isBehandleOppgaveLoading={behandleAllPersonoppgaver.isPending}
             behandleOppgaveText={texts.fjernOppgave}
+            buttonText={texts.markerLestButtonText}
           />
         )}
       </HStack>

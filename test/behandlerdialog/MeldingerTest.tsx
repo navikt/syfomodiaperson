@@ -4,7 +4,7 @@ import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import React from "react";
 import { queryClientWithMockData } from "../testQueryClient";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { behandlerdialogQueryKeys } from "@/data/behandlerdialog/behandlerdialogQueryHooks";
 import {
   ARBEIDSTAKER_DEFAULT,
@@ -25,14 +25,14 @@ import {
 import dayjs from "dayjs";
 import {
   meldingFraBehandlerUtenBehandlernavn,
+  meldingFraNAVConversationMedSvar,
   meldingResponseLegeerklaring,
-  meldingResponseLegeerklaringMedTreVedlegg,
   meldingResponseLegeerklaringMedRetur,
+  meldingResponseLegeerklaringMedTreVedlegg,
   meldingResponseMedPaminnelse,
   meldingResponseMedVedlegg,
   meldingTilOgFraBehandler,
   returLegeerklaring,
-  meldingFraNAVConversationMedSvar,
 } from "./meldingTestdataGenerator";
 import { getManedText } from "@/utils/datoUtils";
 import { Box, Heading } from "@navikt/ds-react";
@@ -487,7 +487,7 @@ describe("Meldinger panel", () => {
 
   describe("Behandling av personoppgave", () => {
     const ubehandletCheckboxTekst =
-      "Marker nye meldinger som lest. Oppgaven vil da fjernes fra oversikten.";
+      "Markerer alle nye meldinger som lest og fjerner oppgavene fra oversikten.";
     it("Viser ubehandlet personoppgave for behandlerdialog svar", () => {
       queryClient.setQueryData(
         personoppgaverQueryKeys.personoppgaver(
