@@ -318,7 +318,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     </Accordion.Header>
                     <Accordion.Content>
                       <BodyLong size="small">
-                        {texts.veiledningBox.info3}
+                        {texts.veiledningBox.info3}{" "}
                         <EksternLenke
                           href={texts.veiledningBox.url}
                           className="mt-2"
