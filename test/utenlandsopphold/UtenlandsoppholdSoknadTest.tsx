@@ -38,7 +38,7 @@ import { maksdatoQueryKeys } from "@/data/maksdato/useMaksdatoQuery";
 
 let queryClient: QueryClient;
 const forbeholdOvrigeVilkarText =
-  "Dette vedtaket gir ikke rett på utbetaling av ytelsen sykepenger, men gir deg rett til å beholde sykepengene under utenlandsopphold.";
+  "Dette vedtaket gjelder kun retten til å beholde ytelsen sykepenger under utenlandsoppholdet, dersom du får innvilget sykepenger.";
 
 const renderUtenlandsoppholdSoknad = (
   soknadId: string = soknadUtenVedtakMock.soknadId,

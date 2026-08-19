@@ -36,7 +36,7 @@ function perioderTilTekst(perioder: Periode[]) {
 }
 
 const forbeholdOvrigeVilkarText =
-  "Dette vedtaket gir ikke rett på utbetaling av ytelsen sykepenger, men gir deg rett til å beholde sykepengene under utenlandsopphold.";
+  "Dette vedtaket gjelder kun retten til å beholde ytelsen sykepenger under utenlandsoppholdet, dersom du får innvilget sykepenger.";
 /**
  * Tekster som er identiske uavhengig av utfallet på vedtaket.
  */
@@ -93,7 +93,7 @@ export const getInnvilgetTexts = ({
     oppmerksom: {
       header: "Dette må du være oppmerksom på",
       // TODO: Mulig vi skal endre litt på ordly her
-      body: `Det er viktig at du er oppmerksom på at du har fått godkjent å beholde sykepenger under utenlandsopphold i perioden ${innvilgedePerioderTekst}. Dersom du oppholder deg utenfor EU/EØS eller andre områder der trygdeforordningen gjelder lengre enn dette, kan det få betydning for din videre rett til sykepenger.`,
+      body: `Det er viktig at du er oppmerksom på at du har fått godkjent å beholde sykepenger under utenlandsopphold i perioden ${innvilgedePerioderTekst}. Dersom du oppholder deg utenfor EU/EØS eller andre områder der trygdeforordningen gjelder lengre enn dette, kan det få betydning for din videre rett til sykepenger.\n\nVi gjør oppmerksom på at vedtaket er gjort med forbehold at øvrige vilkår for sykepenger er tilstede.`,
     },
     ...getFellesTekster(),
   };
