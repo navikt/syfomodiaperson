@@ -73,10 +73,10 @@ const texts = {
       "Spørsmålene tar utgangspunkt i kjente risikofaktorer, og svarene vil derfor gi en indikasjon på hvem som trenger videre vurdering av oppfølgingsbehov. Svarene må ses i sammenheng med andre opplysninger Nav har om situasjonen til den sykmeldte.",
     accordion2: "Ikke behov for videre vurdering av oppfølgingsbehov",
     info2:
-      "Sykmeldte som svarer at de blir sykmeldte mindre enn seks måneder, har god relasjon til arbeidsgiver og som skal tilbake i jobben man er sykmeldt fra, har som hovedregel ikke behov for mer kartlegging og vurdering av oppfølgingsbehov på nåværende tidspunkt.",
+      "Sykmeldte som svarer at de blir sykmeldte mindre enn seks måneder, får god oppfølging av arbeidsgiver og som har tro på at de skal tilbake til samme jobb og stilling, har som hovedregel ikke behov for mer kartlegging og vurdering av oppfølgingsbehov på nåværende tidspunkt.",
     accordion3: "Behov for vurdering av oppfølgingsbehov",
     info3:
-      "Sykmeldte som svarer at de tror de blir sykmeldt mer enn seks måneder, har dårlig relasjon til arbeidsgiver eller som er usikre på om de kommer tilbake til nåværende jobb, gir en indikasjon på behov for nærmere vurdering av oppfølgingsbehov. Dette vil ofte innebære at Nav bør ta kontakt med den sykmeldte og arbeidsgiver.",
+      "Sykmeldte som svarer at de tror de blir sykmeldt mer enn seks måneder, opplever manglende oppfølging av arbeidsgiver eller som ser på det som utfordrende å komme tilbake til samme jobb og stilling, gir en indikasjon på behov for nærmere vurdering av oppfølgingsbehov. Dette vil ofte innebære at Nav bør ta kontakt med den sykmeldte og arbeidsgiver.",
     link: 'Bruk også "Bli kjent og forstå behov"',
     url: "https://navno.sharepoint.com/:u:/r/sites/fag-og-ytelser-veileder-for-arbeidsrettet-brukeroppfolging/SitePages/Start.aspx?csf=1&web=1&e=qc76DU#bli-kjent-og-forst%C3%A5-behov",
   },
