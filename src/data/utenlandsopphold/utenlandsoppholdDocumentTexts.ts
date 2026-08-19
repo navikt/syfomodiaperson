@@ -158,7 +158,7 @@ export const getDelvisInnvilgetTexts = ({
     oppmerksom: {
       header: "Dette må du være oppmerksom på",
       // TODO: Mulig denne skal endres på
-      body: `Det er viktig at du er oppmerksom på at du har fått godkjent å beholde sykepenger under utenlandsopphold kun fra ${innvilgedePerioderTekst}. Dersom du oppholder deg utenfor EU/EØS eller andre områder der trygdeforordningen gjelder lengre enn dette, kan det få betydning for din videre rett til sykepenger.`,
+      body: `Det er viktig at du er oppmerksom på at du har fått godkjent å beholde sykepenger under utenlandsopphold kun fra ${innvilgedePerioderTekst}. Dersom du oppholder deg utenfor EU/EØS eller andre områder der trygdeforordningen gjelder lengre enn dette, kan det få betydning for din videre rett til sykepenger.\n\nVi gjør oppmerksom på at vedtaket er gjort med forbehold at øvrige vilkår for sykepenger er tilstede.`,
     },
     ...getFellesTekster(),
   };
