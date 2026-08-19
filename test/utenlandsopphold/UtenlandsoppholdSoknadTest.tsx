@@ -102,6 +102,29 @@ describe("UtenlandsoppholdSoknad", () => {
     expect(screen.getByRole("button", { name: "Tilbake" })).to.exist;
   });
 
+  it("apner forhandsvisning med Bekreft og send-knapp og sender ikke vedtak for utfallet er bekreftet", async () => {
+    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+
+    renderUtenlandsoppholdSoknad();
+
+    await screen.findByRole("button", { name: "Send vedtak" });
+    await clickRadio("Innvilget: Godkjenn hele perioden");
+    await clickButton("Send vedtak");
+
+    expect(await screen.findByRole("button", { name: "Bekreft og send" })).to
+      .exist;
+    await waitFor(() => {
+      expect(queryClient.getMutationCache().getAll()).to.have.lengthOf(0);
+    });
+
+    await clickButton("Bekreft og send");
+
+    await waitFor(() => {
+      const vedtakMutation = queryClient.getMutationCache().getAll()[0];
+      expect(vedtakMutation).to.exist;
+    });
+  });
+
   it("viser melding om at søknaden er behandlet når status ikke er MOTTATT", async () => {
     stubSoknaderQuery({ soknader: [soknadMedVedtakMock] });
 
@@ -137,6 +160,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
     await screen.findByRole("button", { name: "Send vedtak" });
     await clickButton("Send vedtak");
+    await clickButton("Bekreft og send");
 
     expect(
       await screen.findByText(
@@ -188,6 +212,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
     await clickRadio("Innvilget: Godkjenn hele perioden");
     await clickButton("Send vedtak");
+    await clickButton("Bekreft og send");
 
     await waitFor(() => {
       const vedtakMutation = queryClient.getMutationCache().getAll()[0];
@@ -229,6 +254,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
     await clickRadio("Innvilget: Godkjenn hele perioden");
     await clickButton("Send vedtak");
+    await clickButton("Bekreft og send");
 
     await waitFor(() => {
       const vedtakMutation = queryClient.getMutationCache().getAll()[0];
@@ -266,6 +292,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
     await screen.findByRole("button", { name: "Send vedtak" });
     await clickButton("Send vedtak");
+    await clickButton("Bekreft og send");
 
     expect(
       await screen.findByText(
@@ -416,6 +443,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
       await screen.findByRole("button", { name: "Send vedtak" });
       await clickButton("Send vedtak");
+      await clickButton("Bekreft og send");
 
       expect(
         await screen.findByText(
@@ -590,6 +618,7 @@ describe("UtenlandsoppholdSoknad", () => {
       );
 
       await clickButton("Send vedtak");
+      await clickButton("Bekreft og send");
 
       expect(
         await screen.findByText(
@@ -649,6 +678,7 @@ describe("UtenlandsoppholdSoknad", () => {
     await screen.findByRole("button", { name: "Send vedtak" });
     await clickRadio("Innvilget: Godkjenn hele perioden");
     await clickButton("Send vedtak");
+    await clickButton("Bekreft og send");
 
     await waitFor(() => {
       const vedtakMutation = queryClient.getMutationCache().getAll().pop();
