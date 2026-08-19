@@ -6,7 +6,14 @@ import { Button, Heading, Modal } from "@navikt/ds-react";
 
 const texts = {
   close: "Lukk",
+  cancel: "Avbryt",
 };
+
+interface ActionButtonProps {
+  text: string;
+  onClick: () => void;
+  loading?: boolean;
+}
 
 export interface ForhandsvisningModalProps {
   title?: string;
@@ -14,6 +21,7 @@ export interface ForhandsvisningModalProps {
   isOpen: boolean;
   handleClose: () => void;
   getDocumentComponents: () => DocumentComponentDto[];
+  action?: ActionButtonProps;
 }
 
 export const ForhandsvisningModal = ({
@@ -22,6 +30,7 @@ export const ForhandsvisningModal = ({
   title,
   contentLabel,
   getDocumentComponents,
+  action,
 }: ForhandsvisningModalProps): ReactElement => {
   const documentComponents = isOpen ? getDocumentComponents() : [];
   return (
@@ -45,8 +54,22 @@ export const ForhandsvisningModal = ({
         ))}
       </Modal.Body>
       <Modal.Footer>
-        <Button type="button" onClick={handleClose}>
-          {texts.close}
+        {action && (
+          <Button
+            type="button"
+            variant="primary"
+            loading={action.loading}
+            onClick={action.onClick}
+          >
+            {action.text}
+          </Button>
+        )}
+        <Button
+          type="button"
+          variant={action ? "secondary" : "primary"}
+          onClick={handleClose}
+        >
+          {action ? texts.cancel : texts.close}
         </Button>
       </Modal.Footer>
     </Modal>
