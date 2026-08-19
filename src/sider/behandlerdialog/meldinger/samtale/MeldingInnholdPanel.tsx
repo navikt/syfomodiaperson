@@ -3,8 +3,11 @@ import {
   MeldingDTO,
   MeldingType,
 } from "@/data/behandlerdialog/behandlerdialogTypes";
-import { Box, Detail } from "@navikt/ds-react";
-import { PaperclipIcon } from "@navikt/aksel-icons";
+import { Box, Detail, ErrorMessage } from "@navikt/ds-react";
+import {
+  ExclamationmarkTriangleIcon,
+  PaperclipIcon,
+} from "@navikt/aksel-icons";
 import styled from "styled-components";
 import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { VisMelding } from "@/sider/behandlerdialog/meldinger/samtale/VisMelding";
@@ -15,6 +18,10 @@ import { getHeaderText } from "@/utils/documentComponentUtils";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { meldingTypeTexts } from "@/data/behandlerdialog/behandlerdialogTexts";
 import { ReturLegeerklaringWarningIcon } from "@/sider/behandlerdialog/legeerklaring/ReturLegeerklaringWarningIcon";
+
+const texts = {
+  ikkeLevertError: "Denne meldingen ble ikke levert.",
+};
 
 const MeldingDetails = styled.div`
   display: flex;
@@ -86,9 +93,10 @@ const MeldingTekst = ({ melding }: MeldingTekstProps): ReactElement => {
 
 interface Props {
   melding: MeldingDTO;
+  avvist?: boolean;
 }
 
-export default function MeldingInnholdPanel({ melding }: Props) {
+export default function MeldingInnholdPanel({ melding, avvist }: Props) {
   const { data: veilederInfo } = useVeilederInfoQuery(
     melding.veilederIdent ?? "",
   );
@@ -98,6 +106,12 @@ export default function MeldingInnholdPanel({ melding }: Props) {
 
   return (
     <Box className={"p-4 border rounded-lg bg-surface-default"}>
+      {avvist && (
+        <div className={"flex flex-row items-center gap-2 mb-2"}>
+          <ExclamationmarkTriangleIcon color="var(--ax-text-danger-decoration)" />
+          <ErrorMessage size={"small"}>{texts.ikkeLevertError}</ErrorMessage>
+        </div>
+      )}
       <MeldingTekstContainer>
         <MeldingTekst melding={melding} />
       </MeldingTekstContainer>

@@ -19,7 +19,7 @@ const createDialogmoteunntak = (
 ) => {
   return {
     uuid: generateUUID(),
-    createdAt: createdAt.toDateString(),
+    createdAt: createdAt.toISOString(),
     createdBy: VEILEDER_DEFAULT.ident,
     personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
     arsak,
@@ -50,7 +50,7 @@ const createDialogmoteikkeaktuell = (
 ) => {
   return {
     uuid: generateUUID(),
-    createdAt: createdAt.toDateString(),
+    createdAt: createdAt.toISOString(),
     createdBy: VEILEDER_DEFAULT.ident,
     personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
     arsak,

@@ -6,7 +6,8 @@ import BehandlePersonOppgaveKnapp from "@/components/personoppgave/BehandlePerso
 
 const texts = {
   fjernOppgave:
-    "Jeg har vurdert alle møtesvarene. Oppgaven kan fjernes fra oversikten.",
+    "Markerer alle møtesvar som vurdert og fjerner oppgavene fra oversikten.",
+  markerVurdertOppgaveButtonText: "Marker som vurdert",
 };
 
 interface VurderTilbakemeldingPaInnkallingKnappProps {
@@ -28,6 +29,7 @@ const VurderOppgaveForDialogmotesvarKnapp = ({
       }
       isBehandleOppgaveLoading={behandlePersonOppgave.isPending}
       behandleOppgaveText={texts.fjernOppgave}
+      buttonText={texts.markerVurdertOppgaveButtonText}
     />
   );
 };

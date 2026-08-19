@@ -15,7 +15,7 @@ const personOppgaveUbehandletOppfolgingsplanLPS = {
   type: "OPPFOLGINGSPLANLPS",
   behandletTidspunkt: null,
   behandletVeilederIdent: null,
-  opprettet: new Date().toDateString(),
+  opprettet: new Date().toISOString(),
 };
 
 export const personOppgaveUbehandletBehandlerBerOmBistand = {
@@ -49,10 +49,10 @@ export const personOppgaveUbehandletBehandlerdialogAvvistMelding = {
 
 export const personOppgaveBehandletBehandlerdialogAvvistMelding = {
   ...personOppgaveUbehandletOppfolgingsplanLPS,
-  uuid: "5f1e2629-062b-442d-ae1f-3b08e9574ca2",
+  uuid: "5f1e2629-062b-442d-ae1f-3b08e9574ca3",
   referanseUuid: meldingUuids.avvistMelding2,
   type: PersonOppgaveType.BEHANDLERDIALOG_MELDING_AVVIST,
-  behandletTidspunkt: new Date().toDateString(),
+  behandletTidspunkt: new Date().toISOString(),
   behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
 };
 
@@ -69,7 +69,7 @@ export const personOppgaveBehandletBehandlerdialogSvar = {
   referanseUuid: meldingUuids.legeerklaringInnkommende,
   behandletTidspunkt: new Date(
     dayjs().subtract(1, "days").toJSON(),
-  ).toDateString(),
+  ).toISOString(),
   behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
 };
 
@@ -86,7 +86,7 @@ export const personOppgaveBehandletBehandlerdialogUbesvartMelding = {
   referanseUuid: meldingUuids.tilleggsopplysningerUtgaaende,
   behandletTidspunkt: new Date(
     dayjs().subtract(1, "days").toJSON(),
-  ).toDateString(),
+  ).toISOString(),
   behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
 };
 
@@ -96,9 +96,9 @@ const personOppgaveBehandletOppfolgingsplanLPS = {
   referanseUuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd6",
   behandletTidspunkt: new Date(
     dayjs().subtract(1, "days").toJSON(),
-  ).toDateString(),
+  ).toISOString(),
   behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
-  opprettet: new Date(dayjs().subtract(10, "days").toJSON()).toDateString(),
+  opprettet: new Date(dayjs().subtract(10, "days").toJSON()).toISOString(),
 };
 
 export const personOppgaveBehandletDialogmotesvar = {
@@ -107,19 +107,17 @@ export const personOppgaveBehandletDialogmotesvar = {
   referanseUuid: "5f1e2629-062b-442d-ae1f-3b08e9574cd7",
   behandletTidspunkt: new Date(
     dayjs().subtract(1, "days").toJSON(),
-  ).toDateString(),
+  ).toISOString(),
   behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
-  opprettet: new Date(dayjs().subtract(10, "days").toJSON()).toDateString(),
+  opprettet: new Date(dayjs().subtract(10, "days").toJSON()).toISOString(),
 };
 
 export const makePersonOppgaveBehandlet = (ubehandletPersonOppgave) => {
   return {
     ...ubehandletPersonOppgave,
-    behandletTidspunkt: new Date(
-      dayjs().subtract(1, "days").toJSON(),
-    ).toDateString(),
+    behandletTidspunkt: new Date().toISOString(),
     behandletVeilederIdent: VEILEDER_IDENT_DEFAULT,
-    opprettet: new Date(dayjs().subtract(10, "days").toJSON()).toDateString(),
+    opprettet: new Date(dayjs().subtract(10, "days").toJSON()).toISOString(),
   };
 };
 
