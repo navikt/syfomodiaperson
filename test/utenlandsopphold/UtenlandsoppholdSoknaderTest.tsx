@@ -8,7 +8,7 @@ import { utenlandsoppholdQueryKeys } from "@/data/utenlandsopphold/utenlandsopph
 import {
   mockSoknaderResponse,
   soknadMedVedtakMock,
-  soknadUtenVedtakMock,
+  gammelSoknadMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
 import {
   tilLesbarDatoMedArUtenManedNavn,
@@ -60,7 +60,7 @@ describe("UtenlandsoppholdSoknader", () => {
     const rowHeaders = await screen.findAllByRole("rowheader");
 
     expect(rowHeaders[0].textContent).to.equal(
-      tilLesbarDatoMedArUtenManedNavn(soknadUtenVedtakMock.innsendtTidspunkt),
+      tilLesbarDatoMedArUtenManedNavn(gammelSoknadMock.innsendtTidspunkt),
     );
     expect(rowHeaders[1].textContent).to.equal(
       tilLesbarDatoMedArUtenManedNavn(soknadMedVedtakMock.innsendtTidspunkt),
@@ -75,23 +75,23 @@ describe("UtenlandsoppholdSoknader", () => {
     expect(
       await screen.findByText(
         tilLesbarPeriodeMedArUtenManednavn(
-          soknadUtenVedtakMock.soktePerioder[0].fom,
-          soknadUtenVedtakMock.soktePerioder[0].tom,
+          gammelSoknadMock.soktePerioder[0].fom,
+          gammelSoknadMock.soktePerioder[0].tom,
         ),
       ),
     ).to.exist;
     expect(
       screen.getByText(
         tilLesbarPeriodeMedArUtenManednavn(
-          soknadUtenVedtakMock.soktePerioder[1].fom,
-          soknadUtenVedtakMock.soktePerioder[1].tom,
+          gammelSoknadMock.soktePerioder[1].fom,
+          gammelSoknadMock.soktePerioder[1].tom,
         ),
       ),
     ).to.exist;
   });
 
   it("viser knapp for å starte behandling når søknaden ikke har vedtak", async () => {
-    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+    stubSoknaderQuery({ soknader: [gammelSoknadMock] });
 
     renderUtenlandsopphold();
 
@@ -124,7 +124,7 @@ describe("UtenlandsoppholdSoknader", () => {
   });
 
   it("viser ingen informasjon om vedtak for en søknad uten vedtak", async () => {
-    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+    stubSoknaderQuery({ soknader: [gammelSoknadMock] });
 
     renderUtenlandsopphold();
 

@@ -20,7 +20,7 @@ import { NotificationProvider } from "@/context/notification/NotificationContext
 import {
   mockSoknaderResponse,
   soknadMedVedtakMock,
-  soknadUtenVedtakMock,
+  gammelSoknadMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
 import { maksdatoMock } from "@/mocks/syfoperson/persondataMock";
 import { utenlandsoppholdPath } from "@/AppRouter.tsx";
@@ -41,7 +41,7 @@ const forbeholdOvrigeVilkarText =
   "Dette vedtaket gjelder kun retten til å beholde ytelsen sykepenger under utenlandsoppholdet, dersom du får innvilget sykepenger.";
 
 const renderUtenlandsoppholdSoknad = (
-  soknadId: string = soknadUtenVedtakMock.soknadId,
+  soknadId: string = gammelSoknadMock.soknadId,
   initialPath: string = `${utenlandsoppholdPath}/${soknadId}`,
 ) =>
   render(
@@ -92,7 +92,7 @@ describe("UtenlandsoppholdSoknad", () => {
   });
 
   it("viser søkte perioder og knapp for å sende vedtak", async () => {
-    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+    stubSoknaderQuery({ soknader: [gammelSoknadMock] });
 
     renderUtenlandsoppholdSoknad();
 
@@ -103,7 +103,7 @@ describe("UtenlandsoppholdSoknad", () => {
   });
 
   it("apner forhandsvisning med Bekreft og send-knapp og sender ikke vedtak for utfallet er bekreftet", async () => {
-    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+    stubSoknaderQuery({ soknader: [gammelSoknadMock] });
 
     renderUtenlandsoppholdSoknad();
 
@@ -147,7 +147,7 @@ describe("UtenlandsoppholdSoknad", () => {
     );
 
     renderUtenlandsoppholdSoknad(
-      soknadUtenVedtakMock.soknadId,
+      gammelSoknadMock.soknadId,
       utenlandsoppholdPath,
     );
 
@@ -199,7 +199,7 @@ describe("UtenlandsoppholdSoknad", () => {
     );
 
     renderUtenlandsoppholdSoknad(
-      soknadUtenVedtakMock.soknadId,
+      gammelSoknadMock.soknadId,
       utenlandsoppholdPath,
     );
 
@@ -241,7 +241,7 @@ describe("UtenlandsoppholdSoknad", () => {
     );
 
     renderUtenlandsoppholdSoknad(
-      soknadUtenVedtakMock.soknadId,
+      gammelSoknadMock.soknadId,
       utenlandsoppholdPath,
     );
 
@@ -274,7 +274,7 @@ describe("UtenlandsoppholdSoknad", () => {
     stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
 
     renderUtenlandsoppholdSoknad(
-      soknadUtenVedtakMock.soknadId,
+      gammelSoknadMock.soknadId,
       utenlandsoppholdPath,
     );
 
@@ -336,7 +336,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
   describe("Delvis innvilgelse", () => {
     it("viser periode-velger for delvis innvilgelse kun når det utfallet er valgt", async () => {
-      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+      stubSoknaderQuery({ soknader: [gammelSoknadMock] });
 
       renderUtenlandsoppholdSoknad();
 
@@ -358,7 +358,7 @@ describe("UtenlandsoppholdSoknad", () => {
     });
 
     it("viser valideringsfeil og sender ikke vedtak når delvis innvilgelse er valgt uten periode", async () => {
-      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+      stubSoknaderQuery({ soknader: [gammelSoknadMock] });
 
       renderUtenlandsoppholdSoknad();
 
@@ -376,7 +376,7 @@ describe("UtenlandsoppholdSoknad", () => {
     });
 
     it("viser ikke valideringsfeil på fom-feltet mens brukeren fortsatt bare har satt tom-feltet", async () => {
-      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+      stubSoknaderQuery({ soknader: [gammelSoknadMock] });
 
       renderUtenlandsoppholdSoknad();
 
@@ -390,7 +390,7 @@ describe("UtenlandsoppholdSoknad", () => {
     });
 
     it("viser valideringsfeil og sender ikke vedtak når valgt periode krysser datoer det ikke er søkt om", async () => {
-      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+      stubSoknaderQuery({ soknader: [gammelSoknadMock] });
 
       renderUtenlandsoppholdSoknad();
 
@@ -421,7 +421,7 @@ describe("UtenlandsoppholdSoknad", () => {
       stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
 
       renderUtenlandsoppholdSoknad(
-        soknadUtenVedtakMock.soknadId,
+        gammelSoknadMock.soknadId,
         utenlandsoppholdPath,
       );
 
@@ -490,7 +490,7 @@ describe("UtenlandsoppholdSoknad", () => {
     });
 
     it("kan legge til og fjerne flere godkjente perioder", async () => {
-      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+      stubSoknaderQuery({ soknader: [gammelSoknadMock] });
 
       renderUtenlandsoppholdSoknad();
 
@@ -521,7 +521,7 @@ describe("UtenlandsoppholdSoknad", () => {
     });
 
     it("viser valideringsfeil og sender ikke vedtak når to valgte perioder overlapper hverandre", async () => {
-      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+      stubSoknaderQuery({ soknader: [gammelSoknadMock] });
 
       renderUtenlandsoppholdSoknad();
 
@@ -555,7 +555,7 @@ describe("UtenlandsoppholdSoknad", () => {
     });
 
     it("viser advarsel om at ingen perioder avslås når valgte perioder er like søkte perioder", async () => {
-      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+      stubSoknaderQuery({ soknader: [gammelSoknadMock] });
 
       renderUtenlandsoppholdSoknad();
 
@@ -589,7 +589,7 @@ describe("UtenlandsoppholdSoknad", () => {
       stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
 
       renderUtenlandsoppholdSoknad(
-        soknadUtenVedtakMock.soknadId,
+        gammelSoknadMock.soknadId,
         utenlandsoppholdPath,
       );
 
@@ -648,7 +648,7 @@ describe("UtenlandsoppholdSoknad", () => {
   });
 
   it("viser valideringsfeil og sender ikke vedtak når ingen utfall er valgt", async () => {
-    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+    stubSoknaderQuery({ soknader: [gammelSoknadMock] });
 
     renderUtenlandsoppholdSoknad();
 
@@ -665,7 +665,7 @@ describe("UtenlandsoppholdSoknad", () => {
   });
 
   it("navigerer ikke bort og viser ingen notifikasjon hvis sending av vedtak feiler", async () => {
-    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+    stubSoknaderQuery({ soknader: [gammelSoknadMock] });
     mockServer.use(
       http.post(
         `*${ISUTENLANDSOPPHOLD_ROOT}/soknader/:soknadId/vedtak`,
