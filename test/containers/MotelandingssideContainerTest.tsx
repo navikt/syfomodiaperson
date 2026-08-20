@@ -106,6 +106,8 @@ describe("MotelandingssideSide", () => {
       erGodkjent: false,
       erAvslatt: true,
       legacyTilgang: false,
+      fullTilgang: false,
+      finnfastlegeTilgang: false,
     });
     renderMotelandingsside();
 

@@ -38,6 +38,7 @@ interface Props {
   isBehandleOppgaveLoading: boolean;
   behandleOppgaveText: string;
   buttonText: string;
+  hasWriteAccess: boolean;
 }
 
 export default function BehandlePersonOppgaveKnapp({
@@ -47,6 +48,7 @@ export default function BehandlePersonOppgaveKnapp({
   isBehandleOppgaveLoading,
   behandleOppgaveText,
   buttonText,
+  hasWriteAccess,
 }: Props) {
   const { data: veilederInfo } = useVeilederInfoQuery(
     personOppgave?.behandletVeilederIdent ?? "",
@@ -54,7 +56,7 @@ export default function BehandlePersonOppgaveKnapp({
 
   return (
     <div className={"flex flex-row items-center gap-2"}>
-      {!isBehandlet && (
+      {!isBehandlet && hasWriteAccess && (
         <div className={"flex flex-col  gap-2"}>
           <Button
             className={"w-fit"}

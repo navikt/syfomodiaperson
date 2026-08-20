@@ -20,6 +20,7 @@ import {
 import { PersonOppgaveType } from "@/data/personoppgave/types/PersonOppgave";
 import { useBehandlePersonoppgave } from "@/data/personoppgave/useBehandlePersonoppgave";
 import BehandlePersonOppgaveKnapp from "@/components/personoppgave/BehandlePersonOppgaveKnapp";
+import { useGetTilgangQuery } from "@/data/tilgang/tilgangQueryHooks.ts";
 
 const texts = {
   behandleOppgaveText:
@@ -85,6 +86,8 @@ interface MeldingInnholdProps {
 }
 
 export function MeldingTilBehandler({ melding }: MeldingInnholdProps) {
+  const { data: tilganger } = useGetTilgangQuery();
+
   const { data: oppgaver } = usePersonoppgaverQuery();
   const behandleOppgave = useBehandlePersonoppgave();
   const ubesvartMeldingOppgave = getAllUbehandledePersonOppgaver(
@@ -106,6 +109,7 @@ export function MeldingTilBehandler({ melding }: MeldingInnholdProps) {
         {avvistMelding && !!avvistOppgave && (
           <BehandlePersonOppgaveKnapp
             personOppgave={avvistOppgave}
+            hasWriteAccess={tilganger?.fullTilgang ?? false}
             handleBehandleOppgave={() =>
               behandleOppgave.mutate(avvistOppgave.uuid)
             }

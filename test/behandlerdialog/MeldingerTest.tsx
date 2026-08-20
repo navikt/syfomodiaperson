@@ -38,6 +38,8 @@ import { getManedText } from "@/utils/datoUtils";
 import { Box, Heading } from "@navikt/ds-react";
 import BehandleBehandlerdialogSvarOppgaveKnapp from "@/sider/behandlerdialog/meldinger/BehandleBehandlerdialogSvarOppgaveKnapp";
 import Samtaler from "@/sider/behandlerdialog/meldinger/Samtaler";
+import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks.ts";
+import { tilgangBrukerMock } from "@/mocks/istilgangskontroll/tilgangtilbrukerMock.ts";
 
 let queryClient: QueryClient;
 
@@ -577,6 +579,31 @@ describe("Meldinger panel", () => {
 
       expect(screen.queryByText("Siste melding lest av", { exact: false })).to
         .not.exist;
+      expect(screen.queryByText(ubehandletCheckboxTekst, { exact: false })).to
+        .not.exist;
+    });
+
+    it("Viser ikke knapp for behandling når bruker ikke har tilgang", () => {
+      queryClient.setQueryData(
+        personoppgaverQueryKeys.personoppgaver(
+          ARBEIDSTAKER_DEFAULT.personIdent,
+        ),
+        () => [
+          {
+            ...personOppgaveUbehandletBehandlerdialogSvar,
+          },
+          personOppgaveBehandletBehandlerdialogSvar,
+        ],
+      );
+      queryClient.setQueryData(
+        tilgangQueryKeys.tilgang(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({ ...tilgangBrukerMock, fullTilgang: false }),
+      );
+
+      renderMeldinger();
+
+      expect(screen.queryByText("Marker som lest", { exact: false })).to.not
+        .exist;
       expect(screen.queryByText(ubehandletCheckboxTekst, { exact: false })).to
         .not.exist;
     });

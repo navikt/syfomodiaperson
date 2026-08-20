@@ -3,6 +3,7 @@ import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 import { useBehandlePersonoppgave } from "@/data/personoppgave/useBehandlePersonoppgave";
 import { isBehandletOppgave } from "@/utils/personOppgaveUtils";
 import BehandlePersonOppgaveKnapp from "@/components/personoppgave/BehandlePersonOppgaveKnapp";
+import { useGetTilgangQuery } from "@/data/tilgang/tilgangQueryHooks.ts";
 
 const texts = {
   fjernOppgave:
@@ -17,6 +18,8 @@ interface VurderTilbakemeldingPaInnkallingKnappProps {
 const VurderOppgaveForDialogmotesvarKnapp = ({
   personOppgave,
 }: VurderTilbakemeldingPaInnkallingKnappProps) => {
+  const { data: tilganger } = useGetTilgangQuery();
+
   const isBehandlet = isBehandletOppgave(personOppgave);
   const behandlePersonOppgave = useBehandlePersonoppgave();
 
@@ -24,6 +27,7 @@ const VurderOppgaveForDialogmotesvarKnapp = ({
     <BehandlePersonOppgaveKnapp
       personOppgave={personOppgave}
       isBehandlet={isBehandlet}
+      hasWriteAccess={tilganger?.fullTilgang ?? false}
       handleBehandleOppgave={() =>
         behandlePersonOppgave.mutate(personOppgave.uuid)
       }
