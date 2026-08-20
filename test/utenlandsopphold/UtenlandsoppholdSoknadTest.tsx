@@ -42,7 +42,7 @@ const forbeholdOvrigeVilkarText =
   "Dette vedtaket gjelder kun retten til å beholde ytelsen sykepenger under utenlandsoppholdet, dersom du får innvilget sykepenger.";
 
 const renderUtenlandsoppholdSoknad = (
-  soknadId: string = gammelSoknadMock.soknadId,
+  soknadId: string = soknadUtenVedtakMock.soknadId,
   initialPath: string = `${utenlandsoppholdPath}/${soknadId}`,
 ) =>
   render(
@@ -93,7 +93,7 @@ describe("UtenlandsoppholdSoknad", () => {
   });
 
   it("viser søkte perioder og knapp for å sende vedtak", async () => {
-    stubSoknaderQuery({ soknader: [gammelSoknadMock] });
+    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
 
     renderUtenlandsoppholdSoknad();
 
@@ -104,7 +104,7 @@ describe("UtenlandsoppholdSoknad", () => {
   });
 
   it("apner forhandsvisning med Bekreft og send-knapp og sender ikke vedtak for utfallet er bekreftet", async () => {
-    stubSoknaderQuery({ soknader: [gammelSoknadMock] });
+    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
 
     renderUtenlandsoppholdSoknad();
 
@@ -337,7 +337,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
   describe("Delvis innvilgelse", () => {
     it("viser periode-velger for delvis innvilgelse kun når det utfallet er valgt", async () => {
-      stubSoknaderQuery({ soknader: [gammelSoknadMock] });
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
 
       renderUtenlandsoppholdSoknad();
 
@@ -359,7 +359,7 @@ describe("UtenlandsoppholdSoknad", () => {
     });
 
     it("viser valideringsfeil og sender ikke vedtak når delvis innvilgelse er valgt uten periode", async () => {
-      stubSoknaderQuery({ soknader: [gammelSoknadMock] });
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
 
       renderUtenlandsoppholdSoknad();
 
@@ -377,7 +377,7 @@ describe("UtenlandsoppholdSoknad", () => {
     });
 
     it("viser ikke valideringsfeil på fom-feltet mens brukeren fortsatt bare har satt tom-feltet", async () => {
-      stubSoknaderQuery({ soknader: [gammelSoknadMock] });
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
 
       renderUtenlandsoppholdSoknad();
 
@@ -491,7 +491,7 @@ describe("UtenlandsoppholdSoknad", () => {
     });
 
     it("kan legge til og fjerne flere godkjente perioder", async () => {
-      stubSoknaderQuery({ soknader: [gammelSoknadMock] });
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
 
       renderUtenlandsoppholdSoknad();
 
@@ -522,7 +522,7 @@ describe("UtenlandsoppholdSoknad", () => {
     });
 
     it("viser valideringsfeil og sender ikke vedtak når to valgte perioder overlapper hverandre", async () => {
-      stubSoknaderQuery({ soknader: [gammelSoknadMock] });
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
 
       renderUtenlandsoppholdSoknad();
 
@@ -556,7 +556,7 @@ describe("UtenlandsoppholdSoknad", () => {
     });
 
     it("viser advarsel om at ingen perioder avslås når valgte perioder er like søkte perioder", async () => {
-      stubSoknaderQuery({ soknader: [gammelSoknadMock] });
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
 
       renderUtenlandsoppholdSoknad();
 
@@ -649,7 +649,7 @@ describe("UtenlandsoppholdSoknad", () => {
   });
 
   it("viser valideringsfeil og sender ikke vedtak når ingen utfall er valgt", async () => {
-    stubSoknaderQuery({ soknader: [gammelSoknadMock] });
+    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
 
     renderUtenlandsoppholdSoknad();
 
@@ -666,7 +666,7 @@ describe("UtenlandsoppholdSoknad", () => {
   });
 
   it("navigerer ikke bort og viser ingen notifikasjon hvis sending av vedtak feiler", async () => {
-    stubSoknaderQuery({ soknader: [gammelSoknadMock] });
+    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
     mockServer.use(
       http.post(
         `*${ISUTENLANDSOPPHOLD_ROOT}/soknader/:soknadId/vedtak`,

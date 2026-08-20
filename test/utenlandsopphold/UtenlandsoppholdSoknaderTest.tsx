@@ -79,16 +79,16 @@ describe("UtenlandsoppholdSoknader", () => {
     expect(
       await screen.findByText(
         tilLesbarPeriodeMedArUtenManednavn(
-          gammelSoknadMock.soktePerioder[0].fom,
-          gammelSoknadMock.soktePerioder[0].tom,
+          soknadUtenVedtakMock.soktePerioder[0].fom,
+          soknadUtenVedtakMock.soktePerioder[0].tom,
         ),
       ),
     ).to.exist;
     expect(
       screen.getByText(
         tilLesbarPeriodeMedArUtenManednavn(
-          gammelSoknadMock.soktePerioder[1].fom,
-          gammelSoknadMock.soktePerioder[1].tom,
+          soknadUtenVedtakMock.soktePerioder[1].fom,
+          soknadUtenVedtakMock.soktePerioder[1].tom,
         ),
       ),
     ).to.exist;
