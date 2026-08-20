@@ -9,6 +9,7 @@ import {
   mockSoknaderResponse,
   soknadMedVedtakMock,
   soknadUtenVedtakMock,
+  gammelSoknadMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
 import {
   tilLesbarDatoMedArUtenManedNavn,
@@ -65,6 +66,9 @@ describe("UtenlandsoppholdSoknader", () => {
     expect(rowHeaders[1].textContent).to.equal(
       tilLesbarDatoMedArUtenManedNavn(soknadMedVedtakMock.innsendtTidspunkt),
     );
+    expect(rowHeaders[2].textContent).to.equal(
+      tilLesbarDatoMedArUtenManedNavn(gammelSoknadMock.innsendtTidspunkt),
+    );
   });
 
   it("viser flere søkte perioder for en søknad", async () => {
@@ -99,6 +103,16 @@ describe("UtenlandsoppholdSoknader", () => {
       .exist;
   });
 
+  it("viser at søknaden må behandles i Infotrygd i stedet for knapp når den er innsendt før 1. august 2026", async () => {
+    stubSoknaderQuery({ soknader: [gammelSoknadMock] });
+
+    renderUtenlandsopphold();
+
+    expect(await screen.findByText("Må behandles i Infotrygd")).to.exist;
+    expect(screen.queryByRole("button", { name: "Start behandling" })).to.not
+      .exist;
+  });
+
   it("viser søknadsstatus i stedet for knapp når søknaden har vedtak", async () => {
     stubSoknaderQuery({ soknader: [soknadMedVedtakMock] });
 
@@ -130,7 +144,7 @@ describe("UtenlandsoppholdSoknader", () => {
 
     await screen.findByRole("button", { name: "Start behandling" });
 
-    expect(await screen.findByText("Ubehandlet")).to.exist;
+    expect(await screen.findByText("Ikke behandlet i Modia")).to.exist;
     expect(screen.queryByText(/^Behandlet /)).to.not.exist;
   });
 

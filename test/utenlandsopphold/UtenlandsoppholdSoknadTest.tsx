@@ -21,6 +21,7 @@ import {
   mockSoknaderResponse,
   soknadMedVedtakMock,
   soknadUtenVedtakMock,
+  gammelSoknadMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
 import { maksdatoMock } from "@/mocks/syfoperson/persondataMock";
 import { utenlandsoppholdPath } from "@/AppRouter.tsx";
@@ -326,8 +327,8 @@ describe("UtenlandsoppholdSoknad", () => {
         variables.vedtak.document.some((component) =>
           component.texts.some(
             (text) =>
-              text.includes("01.06.2026 til og med 07.06.2026") &&
-              text.includes("10.06.2026 til og med 12.06.2026"),
+              text.includes("01.09.2026 til og med 07.09.2026") &&
+              text.includes("10.09.2026 til og med 12.09.2026"),
           ),
         ),
       ).to.equal(true);
@@ -384,7 +385,7 @@ describe("UtenlandsoppholdSoknad", () => {
       await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
 
       const tomInput = getTextInput("Til og med dato");
-      changeTextInput(tomInput, "05.06.2026");
+      changeTextInput(tomInput, "05.09.2026");
 
       expect(screen.queryByText("Vennligst angi periode")).to.not.exist;
     });
@@ -400,8 +401,8 @@ describe("UtenlandsoppholdSoknad", () => {
       const fomInput = getTextInput("Fra og med dato");
       const tomInput = getTextInput("Til og med dato");
       // 05.06.2026 - 11.06.2026 krysser hullet 08.06.2026-09.06.2026 mellom soktePerioder
-      changeTextInput(fomInput, "05.06.2026");
-      changeTextInput(tomInput, "11.06.2026");
+      changeTextInput(fomInput, "05.09.2026");
+      changeTextInput(tomInput, "11.09.2026");
 
       await screen.findByRole("button", { name: "Send vedtak" });
       await clickButton("Send vedtak");
@@ -434,8 +435,8 @@ describe("UtenlandsoppholdSoknad", () => {
 
       const fomInput = getTextInput("Fra og med dato");
       const tomInput = getTextInput("Til og med dato");
-      changeTextInput(fomInput, "02.06.2026");
-      changeTextInput(tomInput, "05.06.2026");
+      changeTextInput(fomInput, "02.09.2026");
+      changeTextInput(tomInput, "05.09.2026");
       changeTextInput(
         getTextInput("Begrunnelse (obligatorisk)"),
         "Vurdering av delvis innvilgelse",
@@ -476,13 +477,13 @@ describe("UtenlandsoppholdSoknad", () => {
             component.texts.includes("Vurdering av delvis innvilgelse"),
           ),
         ).to.equal(true);
-        // Innvilget periode 02.06-05.06 fører til at resten av søknadsperiodene avslås
+        // Innvilget periode 02.09-05.09 fører til at resten av søknadsperiodene avslås
         expect(
           variables.vedtak.document.some((component) =>
             component.texts.some(
               (text) =>
-                text.includes("02.06.2026 til og med 05.06.2026") &&
-                !text.includes("01.06.2026"),
+                text.includes("02.09.2026 til og med 05.09.2026") &&
+                !text.includes("01.09.2026"),
             ),
           ),
         ).to.equal(true);
@@ -535,11 +536,11 @@ describe("UtenlandsoppholdSoknad", () => {
       const tomInputs = screen.getAllByRole("textbox", {
         name: "Til og med dato",
       });
-      // Begge periodene ligger innenfor 01.06.2026-07.06.2026, men overlapper hverandre
-      changeTextInput(fomInputs[0], "01.06.2026");
-      changeTextInput(tomInputs[0], "05.06.2026");
-      changeTextInput(fomInputs[1], "03.06.2026");
-      changeTextInput(tomInputs[1], "06.06.2026");
+      // Begge periodene ligger innenfor 01.09.2026-07.09.2026, men overlapper hverandre
+      changeTextInput(fomInputs[0], "01.09.2026");
+      changeTextInput(tomInputs[0], "05.09.2026");
+      changeTextInput(fomInputs[1], "03.09.2026");
+      changeTextInput(tomInputs[1], "06.09.2026");
 
       await clickButton("Send vedtak");
 
@@ -570,10 +571,10 @@ describe("UtenlandsoppholdSoknad", () => {
         name: "Til og med dato",
       });
       // Perioden matcher nøyaktig soknadUtenVedtakMock sine soktePerioder
-      changeTextInput(fomInputs[0], "01.06.2026");
-      changeTextInput(tomInputs[0], "07.06.2026");
-      changeTextInput(fomInputs[1], "10.06.2026");
-      changeTextInput(tomInputs[1], "12.06.2026");
+      changeTextInput(fomInputs[0], "01.09.2026");
+      changeTextInput(tomInputs[0], "07.09.2026");
+      changeTextInput(fomInputs[1], "10.09.2026");
+      changeTextInput(tomInputs[1], "12.09.2026");
 
       expect(
         await screen.findByText(
@@ -608,10 +609,10 @@ describe("UtenlandsoppholdSoknad", () => {
       const tomInputs = screen.getAllByRole("textbox", {
         name: "Til og med dato",
       });
-      changeTextInput(fomInputs[0], "02.06.2026");
-      changeTextInput(tomInputs[0], "05.06.2026");
-      changeTextInput(fomInputs[1], "10.06.2026");
-      changeTextInput(tomInputs[1], "12.06.2026");
+      changeTextInput(fomInputs[0], "02.09.2026");
+      changeTextInput(tomInputs[0], "05.09.2026");
+      changeTextInput(fomInputs[1], "10.09.2026");
+      changeTextInput(tomInputs[1], "12.09.2026");
       changeTextInput(
         getTextInput("Begrunnelse (obligatorisk)"),
         "Vurdering av delvis innvilgelse",
@@ -635,12 +636,12 @@ describe("UtenlandsoppholdSoknad", () => {
         expect(variables.vedtak.utfall).to.equal("DELVIS_INNVILGET");
         expect(variables.vedtak.innvilgedePerioder).to.deep.equal([
           {
-            fom: "2026-06-02",
-            tom: "2026-06-05",
+            fom: "2026-09-02",
+            tom: "2026-09-05",
           },
           {
-            fom: "2026-06-10",
-            tom: "2026-06-12",
+            fom: "2026-09-10",
+            tom: "2026-09-12",
           },
         ]);
       });

@@ -14,6 +14,49 @@ export const soknadUtenVedtakMock: SoknadDTO = {
   soknadId: "1a2b3c4d-5e6f-7890-abcd-ef0987654321",
   eksternId: "e16ff778-8475-47e1-b5dc-d2ce4ad6b9ee",
   status: SoknadStatusDTO.MOTTATT,
+  innsendtTidspunkt: "2026-08-18T11:00:00",
+  soktePerioder: [
+    {
+      fom: "2026-09-01",
+      tom: "2026-09-07",
+    },
+    {
+      fom: "2026-09-10",
+      tom: "2026-09-12",
+    },
+  ],
+  vedtak: null,
+};
+
+export const soknadMedVedtakMock: SoknadDTO = {
+  soknadId: "9b1c2d3e-4f56-7890-abcd-ef1234567890",
+  eksternId: "1735b402-f937-4958-8aa2-fe36aef70826",
+  status: SoknadStatusDTO.INNVILGET,
+  innsendtTidspunkt: "2026-08-05T09:00:00",
+  soktePerioder: [
+    {
+      fom: "2026-08-01",
+      tom: "2026-08-10",
+    },
+  ],
+  vedtak: {
+    utfall: "DELVIS_INNVILGET",
+    innvilgedePerioder: [
+      {
+        fom: "2026-08-01",
+        tom: "2026-08-05",
+      },
+    ],
+    fattetAv: "Z990000",
+    fattetTidspunkt: "2026-03-02T11:00:00",
+    begrunnelse: null,
+  },
+};
+
+export const gammelSoknadMock: SoknadDTO = {
+  soknadId: "3c4d5e6f-7a8b-9012-cdef-345678901234",
+  eksternId: "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+  status: SoknadStatusDTO.MOTTATT,
   innsendtTidspunkt: "2026-05-15T08:30:00",
   soktePerioder: [
     {
@@ -28,33 +71,8 @@ export const soknadUtenVedtakMock: SoknadDTO = {
   vedtak: null,
 };
 
-export const soknadMedVedtakMock: SoknadDTO = {
-  soknadId: "9b1c2d3e-4f56-7890-abcd-ef1234567890",
-  eksternId: "1735b402-f937-4958-8aa2-fe36aef70826",
-  status: SoknadStatusDTO.INNVILGET,
-  innsendtTidspunkt: "2026-03-01T09:00:00",
-  soktePerioder: [
-    {
-      fom: "2026-04-01",
-      tom: "2026-04-10",
-    },
-  ],
-  vedtak: {
-    utfall: "INNVILGET",
-    innvilgedePerioder: [
-      {
-        fom: "2026-04-01",
-        tom: "2026-04-05",
-      },
-    ],
-    fattetAv: "Z990000",
-    fattetTidspunkt: "2026-03-02T11:00:00",
-    begrunnelse: null,
-  },
-};
-
 export const mockSoknaderResponse: SoknaderResponseDTO = {
-  soknader: [soknadUtenVedtakMock, soknadMedVedtakMock],
+  soknader: [soknadUtenVedtakMock, gammelSoknadMock, soknadMedVedtakMock],
 };
 
 /**
