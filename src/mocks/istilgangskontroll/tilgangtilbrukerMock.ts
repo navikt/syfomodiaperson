@@ -4,4 +4,6 @@ export const tilgangBrukerMock: Tilgang = {
   erGodkjent: true,
   erAvslatt: false,
   legacyTilgang: false,
+  fullTilgang: true,
+  finnfastlegeTilgang: true,
 };

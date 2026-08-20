@@ -1,4 +1,4 @@
-import { expect, describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { get, post } from "@/api/axios";
 import { ApiErrorException, ErrorType } from "@/api/errors";
 import { Tilgang } from "@/data/tilgang/tilgangTypes";
@@ -10,6 +10,8 @@ describe("Axios API tests", () => {
     erGodkjent: false,
     erAvslatt: true,
     legacyTilgang: false,
+    fullTilgang: false,
+    finnfastlegeTilgang: false,
   };
   const tilgangDeniedMessage = { message: "Denied!" };
   const happyCaseMessage = "Woop woop";

@@ -14,6 +14,7 @@ import {
 } from "@/utils/personOppgaveUtils";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { HStack } from "@navikt/ds-react";
+import { useGetTilgangQuery } from "@/data/tilgang/tilgangQueryHooks.ts";
 
 const texts = {
   fjernOppgave:
@@ -38,6 +39,8 @@ const getSisteBehandledeBehandlerdialogSvarOppgave = (
 };
 
 export default function BehandleBehandlerdialogSvarOppgaveKnapp() {
+  const { data: tilganger } = useGetTilgangQuery();
+
   const { data: personOppgaver } = usePersonoppgaverQuery();
   const hasBehandlerDialogSvarOppgaver = personOppgaver.some(
     (p) => p.type === PersonOppgaveType.BEHANDLERDIALOG_SVAR,
@@ -65,6 +68,7 @@ export default function BehandleBehandlerdialogSvarOppgaveKnapp() {
             handleBehandleOppgave={() =>
               behandleAllPersonoppgaver.mutate(behandlePersonOppgaveRequestDTO)
             }
+            hasWriteAccess={tilganger?.fullTilgang ?? false}
             isBehandleOppgaveLoading={behandleAllPersonoppgaver.isPending}
             behandleOppgaveText={texts.fjernOppgave}
             buttonText={texts.markerLestButtonText}
