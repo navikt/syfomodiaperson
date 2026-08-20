@@ -20,6 +20,7 @@ import { NotificationProvider } from "@/context/notification/NotificationContext
 import {
   mockSoknaderResponse,
   soknadMedVedtakMock,
+  soknadUtenVedtakMock,
   gammelSoknadMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
 import { maksdatoMock } from "@/mocks/syfoperson/persondataMock";
@@ -147,7 +148,7 @@ describe("UtenlandsoppholdSoknad", () => {
     );
 
     renderUtenlandsoppholdSoknad(
-      gammelSoknadMock.soknadId,
+      soknadUtenVedtakMock.soknadId,
       utenlandsoppholdPath,
     );
 
@@ -199,7 +200,7 @@ describe("UtenlandsoppholdSoknad", () => {
     );
 
     renderUtenlandsoppholdSoknad(
-      gammelSoknadMock.soknadId,
+      soknadUtenVedtakMock.soknadId,
       utenlandsoppholdPath,
     );
 
@@ -241,7 +242,7 @@ describe("UtenlandsoppholdSoknad", () => {
     );
 
     renderUtenlandsoppholdSoknad(
-      gammelSoknadMock.soknadId,
+      soknadUtenVedtakMock.soknadId,
       utenlandsoppholdPath,
     );
 
@@ -274,7 +275,7 @@ describe("UtenlandsoppholdSoknad", () => {
     stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
 
     renderUtenlandsoppholdSoknad(
-      gammelSoknadMock.soknadId,
+      soknadUtenVedtakMock.soknadId,
       utenlandsoppholdPath,
     );
 
@@ -326,8 +327,8 @@ describe("UtenlandsoppholdSoknad", () => {
         variables.vedtak.document.some((component) =>
           component.texts.some(
             (text) =>
-              text.includes("01.06.2026 til og med 07.06.2026") &&
-              text.includes("10.06.2026 til og med 12.06.2026"),
+              text.includes("01.09.2026 til og med 07.09.2026") &&
+              text.includes("10.09.2026 til og med 12.09.2026"),
           ),
         ),
       ).to.equal(true);
@@ -421,7 +422,7 @@ describe("UtenlandsoppholdSoknad", () => {
       stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
 
       renderUtenlandsoppholdSoknad(
-        gammelSoknadMock.soknadId,
+        soknadUtenVedtakMock.soknadId,
         utenlandsoppholdPath,
       );
 
@@ -434,8 +435,8 @@ describe("UtenlandsoppholdSoknad", () => {
 
       const fomInput = getTextInput("Fra og med dato");
       const tomInput = getTextInput("Til og med dato");
-      changeTextInput(fomInput, "02.06.2026");
-      changeTextInput(tomInput, "05.06.2026");
+      changeTextInput(fomInput, "02.09.2026");
+      changeTextInput(tomInput, "05.09.2026");
       changeTextInput(
         getTextInput("Begrunnelse (obligatorisk)"),
         "Vurdering av delvis innvilgelse",
@@ -476,13 +477,13 @@ describe("UtenlandsoppholdSoknad", () => {
             component.texts.includes("Vurdering av delvis innvilgelse"),
           ),
         ).to.equal(true);
-        // Innvilget periode 02.06-05.06 fører til at resten av søknadsperiodene avslås
+        // Innvilget periode 02.09-05.09 fører til at resten av søknadsperiodene avslås
         expect(
           variables.vedtak.document.some((component) =>
             component.texts.some(
               (text) =>
-                text.includes("02.06.2026 til og med 05.06.2026") &&
-                !text.includes("01.06.2026"),
+                text.includes("02.09.2026 til og med 05.09.2026") &&
+                !text.includes("01.09.2026"),
             ),
           ),
         ).to.equal(true);
@@ -589,7 +590,7 @@ describe("UtenlandsoppholdSoknad", () => {
       stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
 
       renderUtenlandsoppholdSoknad(
-        gammelSoknadMock.soknadId,
+        soknadUtenVedtakMock.soknadId,
         utenlandsoppholdPath,
       );
 
@@ -608,10 +609,10 @@ describe("UtenlandsoppholdSoknad", () => {
       const tomInputs = screen.getAllByRole("textbox", {
         name: "Til og med dato",
       });
-      changeTextInput(fomInputs[0], "02.06.2026");
-      changeTextInput(tomInputs[0], "05.06.2026");
-      changeTextInput(fomInputs[1], "10.06.2026");
-      changeTextInput(tomInputs[1], "12.06.2026");
+      changeTextInput(fomInputs[0], "02.09.2026");
+      changeTextInput(tomInputs[0], "05.09.2026");
+      changeTextInput(fomInputs[1], "10.09.2026");
+      changeTextInput(tomInputs[1], "12.09.2026");
       changeTextInput(
         getTextInput("Begrunnelse (obligatorisk)"),
         "Vurdering av delvis innvilgelse",
@@ -635,12 +636,12 @@ describe("UtenlandsoppholdSoknad", () => {
         expect(variables.vedtak.utfall).to.equal("DELVIS_INNVILGET");
         expect(variables.vedtak.innvilgedePerioder).to.deep.equal([
           {
-            fom: "2026-06-02",
-            tom: "2026-06-05",
+            fom: "2026-09-02",
+            tom: "2026-09-05",
           },
           {
-            fom: "2026-06-10",
-            tom: "2026-06-12",
+            fom: "2026-09-10",
+            tom: "2026-09-12",
           },
         ]);
       });

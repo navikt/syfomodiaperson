@@ -18,7 +18,11 @@ export const soknadUtenVedtakMock: SoknadDTO = {
   soktePerioder: [
     {
       fom: "2026-09-01",
-      tom: "2026-09-14",
+      tom: "2026-09-07",
+    },
+    {
+      fom: "2026-09-10",
+      tom: "2026-09-12",
     },
   ],
   vedtak: null,
