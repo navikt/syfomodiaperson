@@ -12,7 +12,16 @@ import {
 import { Link } from "react-router-dom";
 import { useNotification } from "@/context/notification/NotificationContext.tsx";
 
+const TIDLIGST_INNSENDT_TIDSPUNKT_FOR_BEHANDLING_I_MODIA = new Date(
+  // 10. august 2026
+  2026,
+  7,
+  10,
+);
+
 const texts = {
+  infotrygdInfo:
+    "En søknad kan behandles her selv om den allerede er behandlet i Infotrygd. Pass derfor på at ikke en søknad blir behandlet både i Infotrygd og i Modia.",
   pending: "Henter søknader...",
   error: "Noe gikk galt ved henting av søknader. Vennligst prøv igjen senere.",
   innsendtTidspunkt: "Innsendt tidspunkt",
@@ -20,9 +29,11 @@ const texts = {
   saksbehandling: "Saksbehandling",
   saksbehandlingVedtak: (fattetTidspunkt: Date, fattetAv: string) =>
     `Behandlet ${tilLesbarDatoMedArUtenManedNavn(fattetTidspunkt)} av ${fattetAv}`,
-  saksbehandlingIngenVedtak: "Ubehandlet",
+  saksbehandlingIngenVedtak: "Ikke behandlet i Modia",
   status: "Status",
   startBehandling: "Start behandling",
+  forGammelForABehandlesIModia:
+    "Søknaden er for gammel for å bli behandlet i Modia",
   ingenSoknader: "Ingen mottatte søknader eller fattede vedtak",
 };
 
@@ -34,18 +45,27 @@ const statusTexts: { [key in SoknadStatusDTO]: string } = {
 };
 
 function getStatusColumn(soknad: Soknad) {
+  const kanBehandlesIModia =
+    soknad.innsendtTidspunkt >
+    TIDLIGST_INNSENDT_TIDSPUNKT_FOR_BEHANDLING_I_MODIA;
+
   if (!soknad.vedtak) {
-    return (
-      <Button
-        as={Link}
-        to={`/sykefravaer/utenlandsopphold/${soknad.soknadId}`}
-        size="small"
-        variant="secondary"
-      >
-        {texts.startBehandling}
-      </Button>
-    );
+    if (kanBehandlesIModia) {
+      return (
+        <Button
+          as={Link}
+          to={`/sykefravaer/utenlandsopphold/${soknad.soknadId}`}
+          size="small"
+          variant="secondary"
+        >
+          {texts.startBehandling}
+        </Button>
+      );
+    } else {
+      return texts.forGammelForABehandlesIModia;
+    }
   }
+
   return statusTexts[soknad.status] ?? soknad.status; // Forslag: Kan gjøres om til feks grønn, gul og rød Tag etterhvert
 }
 
@@ -72,6 +92,8 @@ export function UtenlandsoppholdSoknader() {
           {notification.message}
         </Alert>
       )}
+
+      <Alert variant="info">{texts.infotrygdInfo}</Alert>
 
       <Box background="default" padding="space-16" className="flex flex-col">
         {isPending ? (

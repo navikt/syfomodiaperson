@@ -53,8 +53,26 @@ export const soknadMedVedtakMock: SoknadDTO = {
   },
 };
 
+export const soknadNyligInnsendtMock: SoknadDTO = {
+  soknadId: "3c4d5e6f-7a8b-9012-cdef-345678901234",
+  eksternId: "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+  status: SoknadStatusDTO.MOTTATT,
+  innsendtTidspunkt: dayjs().format("YYYY-MM-DDTHH:mm:ss"),
+  soktePerioder: [
+    {
+      fom: "2026-09-01",
+      tom: "2026-09-14",
+    },
+  ],
+  vedtak: null,
+};
+
 export const mockSoknaderResponse: SoknaderResponseDTO = {
-  soknader: [soknadUtenVedtakMock, soknadMedVedtakMock],
+  soknader: [
+    soknadNyligInnsendtMock,
+    soknadUtenVedtakMock,
+    soknadMedVedtakMock,
+  ],
 };
 
 /**
