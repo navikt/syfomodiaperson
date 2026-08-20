@@ -8,6 +8,7 @@ import { utenlandsoppholdQueryKeys } from "@/data/utenlandsopphold/utenlandsopph
 import {
   mockSoknaderResponse,
   soknadMedVedtakMock,
+  soknadUtenVedtakMock,
   gammelSoknadMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
 import {
@@ -60,10 +61,13 @@ describe("UtenlandsoppholdSoknader", () => {
     const rowHeaders = await screen.findAllByRole("rowheader");
 
     expect(rowHeaders[0].textContent).to.equal(
-      tilLesbarDatoMedArUtenManedNavn(gammelSoknadMock.innsendtTidspunkt),
+      tilLesbarDatoMedArUtenManedNavn(soknadUtenVedtakMock.innsendtTidspunkt),
     );
     expect(rowHeaders[1].textContent).to.equal(
       tilLesbarDatoMedArUtenManedNavn(soknadMedVedtakMock.innsendtTidspunkt),
+    );
+    expect(rowHeaders[2].textContent).to.equal(
+      tilLesbarDatoMedArUtenManedNavn(gammelSoknadMock.innsendtTidspunkt),
     );
   });
 
@@ -91,11 +95,21 @@ describe("UtenlandsoppholdSoknader", () => {
   });
 
   it("viser knapp for å starte behandling når søknaden ikke har vedtak", async () => {
-    stubSoknaderQuery({ soknader: [gammelSoknadMock] });
+    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
 
     renderUtenlandsopphold();
 
     expect(await screen.findByRole("button", { name: "Start behandling" })).to
+      .exist;
+  });
+
+  it("viser at søknaden må behandles i Infotrygd i stedet for knapp når den er innsendt før 1. august 2026", async () => {
+    stubSoknaderQuery({ soknader: [gammelSoknadMock] });
+
+    renderUtenlandsopphold();
+
+    expect(await screen.findByText("Må behandles i Infotrygd")).to.exist;
+    expect(screen.queryByRole("button", { name: "Start behandling" })).to.not
       .exist;
   });
 
@@ -124,13 +138,13 @@ describe("UtenlandsoppholdSoknader", () => {
   });
 
   it("viser ingen informasjon om vedtak for en søknad uten vedtak", async () => {
-    stubSoknaderQuery({ soknader: [gammelSoknadMock] });
+    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
 
     renderUtenlandsopphold();
 
     await screen.findByRole("button", { name: "Start behandling" });
 
-    expect(await screen.findByText("Ubehandlet")).to.exist;
+    expect(await screen.findByText("Ikke behandlet i Modia")).to.exist;
     expect(screen.queryByText(/^Behandlet /)).to.not.exist;
   });
 

@@ -10,19 +10,15 @@ import { http, HttpResponse } from "msw";
 import dayjs from "dayjs";
 import { VEILEDER_IDENT_DEFAULT } from "@/mocks/common/mockConstants.ts";
 
-export const gammelSoknadMock: SoknadDTO = {
+export const soknadUtenVedtakMock: SoknadDTO = {
   soknadId: "1a2b3c4d-5e6f-7890-abcd-ef0987654321",
   eksternId: "e16ff778-8475-47e1-b5dc-d2ce4ad6b9ee",
   status: SoknadStatusDTO.MOTTATT,
-  innsendtTidspunkt: "2026-05-15T08:30:00",
+  innsendtTidspunkt: "2026-08-18T11:00:00",
   soktePerioder: [
     {
-      fom: "2026-06-01",
-      tom: "2026-06-07",
-    },
-    {
-      fom: "2026-06-10",
-      tom: "2026-06-12",
+      fom: "2026-09-01",
+      tom: "2026-09-14",
     },
   ],
   vedtak: null,
@@ -53,15 +49,19 @@ export const soknadMedVedtakMock: SoknadDTO = {
   },
 };
 
-export const soknadUtenVedtakMock: SoknadDTO = {
+export const gammelSoknadMock: SoknadDTO = {
   soknadId: "3c4d5e6f-7a8b-9012-cdef-345678901234",
   eksternId: "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
   status: SoknadStatusDTO.MOTTATT,
-  innsendtTidspunkt: "2026-08-18T11:00:00",
+  innsendtTidspunkt: "2026-05-15T08:30:00",
   soktePerioder: [
     {
-      fom: "2026-09-01",
-      tom: "2026-09-14",
+      fom: "2026-06-01",
+      tom: "2026-06-07",
+    },
+    {
+      fom: "2026-06-10",
+      tom: "2026-06-12",
     },
   ],
   vedtak: null,
