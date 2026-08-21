@@ -10,12 +10,10 @@
     "noEmit": false,
     "allowImportingTsExtensions": false
   },
-  "include": ["../server.ts", "./**/*.ts"],
-  "exclude": [
-    "../src",
-    "../test",
-    "../node_modules",
-    "../dist",
-    "../dist-server"
-  ]
+  "include": [
+    "../server.ts",
+    "./**/*.ts",
+    "../src/data/unleash/unleash_types.ts"
+  ],
+  "exclude": ["../test", "../node_modules", "../dist", "../dist-server"]
 }
