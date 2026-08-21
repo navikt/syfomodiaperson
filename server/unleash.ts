@@ -1,5 +1,6 @@
 import { initialize, Strategy } from "unleash-client";
 import Config from "./config.js";
+import type { Toggles } from "@/data/unleash/unleash_types.js";
 
 class VeilederIds extends Strategy {
   constructor() {
@@ -28,7 +29,7 @@ export const unleash = initialize({
   strategies: [new VeilederIds(), new EnhetIds()],
 });
 
-export function getToggles(veilederId, enhetId) {
+export function getToggles(veilederId, enhetId): Toggles {
   const context = {
     veilederId: veilederId,
     enhetId: enhetId,
@@ -60,6 +61,10 @@ export function getToggles(veilederId, enhetId) {
     ),
     isUtenlandsoppholdEnabled: unleash.isEnabled(
       "isUtenlandsoppholdEnabled",
+      context,
+    ),
+    isLumiUtenlandsoppholdEnabled: unleash.isEnabled(
+      "isLumiUtenlandsoppholdEnabled",
       context,
     ),
   };
