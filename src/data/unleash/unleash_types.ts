@@ -11,6 +11,7 @@ export enum ToggleNames {
   isForsokForsterketOppfolgingMerkingEnabled = "isForsokForsterketOppfolgingMerkingEnabled",
   isNyTilgangskontrollEnabled = "isNyTilgangskontrollEnabled",
   isUtenlandsoppholdEnabled = "isUtenlandsoppholdEnabled",
+  isLumiUtenlandsoppholdEnabled = "isLumiUtenlandsoppholdEnabled",
 }
 
 export const defaultToggles: Toggles = {
@@ -21,4 +22,5 @@ export const defaultToggles: Toggles = {
   isForsokForsterketOppfolgingMerkingEnabled: false,
   isNyTilgangskontrollEnabled: false,
   isUtenlandsoppholdEnabled: false,
+  isLumiUtenlandsoppholdEnabled: false,
 };
