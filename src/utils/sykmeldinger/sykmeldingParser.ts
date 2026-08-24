@@ -309,7 +309,6 @@ export const newSMFormat2OldFormat = (
     behandlingsutfall: sykmelding.behandlingsutfall,
     egenmeldt: sykmelding.egenmeldt,
     papirsykmelding: sykmelding.papirsykmelding,
-    harRedusertArbeidsgiverperiode: sykmelding.harRedusertArbeidsgiverperiode,
     utenlandskSykmelding: sykmelding.utenlandskSykmelding,
   };
 };

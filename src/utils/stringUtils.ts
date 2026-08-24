@@ -9,7 +9,7 @@ export const capitalizeWord = (word: string): string => {
 export const capitalizeAllWords = (text: string): string =>
   text
     .toLowerCase()
-    .replace(/(^|[\s(\-])(\p{L})/gu, (_match, prefix, letter) => {
+    .replace(/(^|[\s(-])(\p{L})/gu, (_match, prefix, letter) => {
       return `${prefix}${letter.toUpperCase()}`;
     })
     .trim();

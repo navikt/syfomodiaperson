@@ -216,7 +216,6 @@ export const mockOldSykmeldinger: SykmeldingOldFormat[] = [
     },
     egenmeldt: undefined,
     papirsykmelding: undefined,
-    harRedusertArbeidsgiverperiode: undefined,
     utenlandskSykmelding: undefined,
   },
 ];

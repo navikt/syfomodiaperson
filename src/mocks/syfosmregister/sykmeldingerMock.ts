@@ -185,7 +185,6 @@ const SYKMELDING_MYE_INFO = {
   syketilfelleStartDato: "2020-07-22",
   navnFastlege: "Lego Las Legesen",
   egenmeldt: false,
-  harRedusertArbeidsgiverperiode: true,
 };
 
 const SYKMELDING_INVALID = {
@@ -290,7 +289,6 @@ const SYKMELDING_INVALID = {
   navnFastlege: "Victor Frankenstein",
   egenmeldt: false,
   papirsykmelding: false,
-  harRedusertArbeidsgiverperiode: false,
 };
 
 export const sykmeldingerMock = [
@@ -493,7 +491,6 @@ export const sykmeldingerMock = [
     syketilfelleStartDato: "2020-07-22",
     navnFastlege: "Lego Las Legesen",
     egenmeldt: false,
-    harRedusertArbeidsgiverperiode: true,
   },
   {
     id: "1111a750-7f39-4974-9a06-fa1775f987c9",
@@ -694,7 +691,6 @@ export const sykmeldingerMock = [
     syketilfelleStartDato: "2020-07-22",
     navnFastlege: "Lego Las Legesen",
     egenmeldt: false,
-    harRedusertArbeidsgiverperiode: true,
   },
   {
     id: "222248ba-4c3c-4b3f-b7a3-385b7e7c927d",
@@ -863,7 +859,6 @@ export const sykmeldingerMock = [
     syketilfelleStartDato: "2020-07-22",
     navnFastlege: "Lego Las Legesen",
     egenmeldt: false,
-    harRedusertArbeidsgiverperiode: false,
   },
   {
     id: "444148ba-4c3c-4b3f-b7a3-385b7e7c927d",
@@ -986,7 +981,6 @@ export const sykmeldingerMock = [
     syketilfelleStartDato: "2021-01-25",
     navnFastlege: "Lego Las Legesen",
     egenmeldt: false,
-    harRedusertArbeidsgiverperiode: false,
   },
   {
     id: "5555a750-7f39-4974-9a06-fa1775f987c9",
@@ -1177,7 +1171,6 @@ export const sykmeldingerMock = [
     syketilfelleStartDato: "2020-03-22",
     navnFastlege: "Beverly G. Crusher",
     egenmeldt: false,
-    harRedusertArbeidsgiverperiode: true,
   },
   {
     id: "6666cab3-bcb0-4dcb-9c97-bdb2ec867ec8",
@@ -1269,7 +1262,6 @@ export const sykmeldingerMock = [
     navnFastlege: null,
     egenmeldt: true,
     papirsykmelding: false,
-    harRedusertArbeidsgiverperiode: true,
   },
   {
     id: "7777cab3-bcb0-4dcb-9c97-bdb2ec867ec8",
@@ -1378,7 +1370,6 @@ export const sykmeldingerMock = [
     navnFastlege: null,
     egenmeldt: true,
     papirsykmelding: false,
-    harRedusertArbeidsgiverperiode: true,
   },
   {
     id: "8888895e-b124-4c14-bc12-94a182da3ff6",
@@ -1472,7 +1463,6 @@ export const sykmeldingerMock = [
     navnFastlege: null,
     egenmeldt: true,
     papirsykmelding: false,
-    harRedusertArbeidsgiverperiode: true,
   },
   {
     id: "8361e922-2c92-4aa8-811d-e53ca958dc6a",
@@ -1612,7 +1602,6 @@ export const sykmeldingerMock = [
     navnFastlege: "Victor Frankenstein",
     egenmeldt: false,
     papirsykmelding: true,
-    harRedusertArbeidsgiverperiode: false,
   },
   {
     id: "0baf68f6-d926-431a-85fa-245bba515e42",
@@ -1719,7 +1708,6 @@ export const sykmeldingerMock = [
     navnFastlege: "Victor Frankenstein",
     egenmeldt: false,
     papirsykmelding: false,
-    harRedusertArbeidsgiverperiode: false,
     utenlandskSykmelding: {
       land: "NO",
     },

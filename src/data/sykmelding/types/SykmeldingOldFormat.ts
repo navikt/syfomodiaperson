@@ -151,7 +151,6 @@ export interface SykmeldingOldFormat {
   };
   egenmeldt?: boolean;
   papirsykmelding?: boolean;
-  harRedusertArbeidsgiverperiode?: boolean;
   utenlandskSykmelding?: UtenlandskSykmeldingDTO;
 }
 
