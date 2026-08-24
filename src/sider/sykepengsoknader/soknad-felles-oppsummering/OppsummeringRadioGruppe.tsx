@@ -7,7 +7,7 @@ import {
   SvarTypeDTO,
   VisningskriterieDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
-import { Checkbox } from "@navikt/ds-react";
+import { Checkbox, Radio, RadioGroup } from "@navikt/ds-react";
 
 export default function OppsummeringRadiogruppe({
   sporsmalstekst,
@@ -25,9 +25,16 @@ export default function OppsummeringRadiogruppe({
           {sporsmalstekst}
         </OppsummeringSporsmalstekst>
         {svartype === SvarTypeDTO.RADIO_GRUPPE && (
-          <Checkbox size="small" id={id} readOnly checked>
-            {besvartUndersporsmal.sporsmalstekst}
-          </Checkbox>
+          <>
+            {/* <Checkbox size="small" id={id} readOnly checked>
+              {besvartUndersporsmal.sporsmalstekst}
+            </Checkbox> */}
+            <RadioGroup value="checked" legend="" hideLegend readOnly>
+              <Radio size="small" id={id} readOnly value="checked">
+                {besvartUndersporsmal.sporsmalstekst}
+              </Radio>
+            </RadioGroup>
+          </>
         )}
         {besvartUndersporsmal.undersporsmal.length > 0 && (
           <OppsummeringUndersporsmalsliste
