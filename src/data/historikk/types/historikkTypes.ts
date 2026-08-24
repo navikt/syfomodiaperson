@@ -15,7 +15,8 @@ export type HistorikkEventType =
   | "TILDELT_OPPFOLGINGSENHET"
   | "OPPFOLGINGSPLAN_LPS"
   | "OPPFOLGINGSPLAN_FORESPORSEL"
-  | "KARTLEGGINGSPORSMAAL";
+  | "KARTLEGGINGSPORSMAAL"
+  | "UTENLANDSOPPHOLD";
 
 export interface HistorikkEvent {
   opprettetAv?: string;
