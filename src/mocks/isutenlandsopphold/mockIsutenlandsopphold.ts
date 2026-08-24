@@ -49,7 +49,7 @@ export const soknadMedVedtakMock: SoknadDTO = {
     ],
     fattetAv: "Z990000",
     fattetTidspunkt: "2026-03-02T11:00:00",
-    begrunnelse: null,
+    begrunnelse: "Vedtar bare de dagene det er meldt regn på Bali",
   },
 };
 

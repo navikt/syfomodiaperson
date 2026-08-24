@@ -9,6 +9,7 @@ import HistorikkContainer from "@/sider/historikk/container/HistorikkContainer";
 import { renderWithRouter } from "../testRouterUtils";
 import {
   ARBEIDSTAKER_DEFAULT,
+  ARBEIDSTAKER_DEFAULT_FULL_NAME,
   LEDERE_DEFAULT,
   VEILEDER_IDENT_DEFAULT,
   VEILEDER_TILDELING_HISTORIKK_ANNEN,
@@ -69,6 +70,12 @@ import {
   KandidatStatus,
   KartleggingssporsmalKandidatResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
+import { utenlandsoppholdQueryKeys } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks.ts";
+import {
+  mockSoknaderResponse,
+  soknadMedVedtakMock,
+  soknadUtenVedtakMock,
+} from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold.ts";
 
 let queryClient: QueryClient;
 
@@ -179,6 +186,10 @@ function setupTestdataHistorikk() {
       ARBEIDSTAKER_DEFAULT.personIdent,
     ),
     () => [],
+  );
+  queryClient.setQueryData(
+    utenlandsoppholdQueryKeys.soknader(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => ({ soknader: [] }),
   );
 }
 
@@ -1095,6 +1106,71 @@ describe("Historikk", () => {
       expect(
         screen.queryAllByText(/svarte på kartleggingsspørsmål/).length,
       ).toBe(2);
+    });
+  });
+
+  describe("Utenlandsopphold", () => {
+    it("viser innsendt søknad og fattet vedtak i historikken", async () => {
+      queryClient.setQueryData(
+        utenlandsoppholdQueryKeys.soknader(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => mockSoknaderResponse,
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(
+        screen.getAllByRole("row", { name: /Utenlandsopphold/ }).length,
+      ).toBe(4);
+      expect(
+        screen.getAllByText(
+          `${ARBEIDSTAKER_DEFAULT_FULL_NAME} søkte om sykepenger under opphold utenfor EU/EØS`,
+        ).length,
+      ).toBe(3);
+      expect(
+        screen.getByText(
+          "Z990000 fattet vedtak om sykepenger under opphold utenfor EU/EØS",
+        ),
+      ).to.exist;
+    });
+
+    it("viser detaljer om vedtaket når raden utvides", async () => {
+      queryClient.setQueryData(
+        utenlandsoppholdQueryKeys.soknader(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({ soknader: [soknadMedVedtakMock] }),
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(screen.getByText(/Vedtaket ble delvis innvilget\./)).to.exist;
+      expect(screen.getByText(/Innvilgede perioder: 01.08.2026 - 05.08.2026/))
+        .to.exist;
+      expect(
+        screen.getByText(
+          /Begrunnelse: Vedtar bare de dagene det er meldt regn på Bali/,
+        ),
+      ).to.exist;
+    });
+
+    it("viser ikke fattet vedtak-tekst når søknaden ikke er behandlet", async () => {
+      queryClient.setQueryData(
+        utenlandsoppholdQueryKeys.soknader(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({ soknader: [soknadUtenVedtakMock] }),
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(
+        screen.getAllByRole("row", { name: /Utenlandsopphold/ }).length,
+      ).toBe(1);
+      expect(
+        screen.getByText(
+          `${ARBEIDSTAKER_DEFAULT_FULL_NAME} søkte om sykepenger under opphold utenfor EU/EØS`,
+        ),
+      ).to.exist;
+      expect(screen.queryByText(/fattet vedtak/)).to.not.exist;
     });
   });
 });
