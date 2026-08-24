@@ -383,12 +383,6 @@ export const mockSykmeldingerWithEgenmeldt: SykmeldingNewFormatDTO = {
   egenmeldt: true,
 };
 
-export const mockSykmeldingerWithHarRedusertArbeidsgiverperiode: SykmeldingNewFormatDTO =
-  {
-    ...mockSM,
-    harRedusertArbeidsgiverperiode: true,
-  };
-
 export const mockSykmeldingerWithPapirsykmelding: SykmeldingNewFormatDTO = {
   ...mockSM,
   papirsykmelding: true,

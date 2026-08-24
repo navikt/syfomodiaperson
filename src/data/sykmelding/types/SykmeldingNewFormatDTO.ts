@@ -35,7 +35,6 @@ export interface SykmeldingNewFormatDTO {
   readonly navnFastlege?: string;
   readonly egenmeldt?: boolean;
   readonly papirsykmelding?: boolean;
-  readonly harRedusertArbeidsgiverperiode?: boolean;
   readonly merknader?: MerknadDTO[];
   readonly utenlandskSykmelding?: UtenlandskSykmeldingDTO;
 }

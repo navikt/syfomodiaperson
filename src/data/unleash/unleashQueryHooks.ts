@@ -25,9 +25,9 @@ export const useFeatureToggles = () => {
   const {
     data: togglesResponse,
     refetch: refreshToggles,
-    isLoading: isLoading,
-    isPending: isPending,
-    isSuccess: isSuccess,
+    isLoading,
+    isPending,
+    isSuccess,
   } = useQuery({
     queryKey: unleashQueryKeys.toggles(valgtEnhet, veilederIdent),
     queryFn: fetchToggles,

@@ -10,7 +10,6 @@ export const DeltakerBehandlerHeading = ({ children }: Props) => {
   return (
     <HStack gap="space-8">
       <img
-        role="img"
         width={24}
         height={24}
         src={MedisinskrinImage}

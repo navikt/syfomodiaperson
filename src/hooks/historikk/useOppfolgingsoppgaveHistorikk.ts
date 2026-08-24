@@ -53,11 +53,7 @@ function createHistorikkEvents(
 }
 
 export function useOppfolgingsoppgaveHistorikk(): HistorikkEvents {
-  const {
-    oppfolgingsoppgaver: oppfolgingsoppgaver,
-    isLoading,
-    isError,
-  } = useOppfolgingsoppgaver();
+  const { oppfolgingsoppgaver, isLoading, isError } = useOppfolgingsoppgaver();
 
   const historikkEvents = createHistorikkEvents(oppfolgingsoppgaver || []);
 
