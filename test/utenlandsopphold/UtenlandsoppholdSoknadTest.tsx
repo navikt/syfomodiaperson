@@ -99,7 +99,8 @@ describe("UtenlandsoppholdSoknad", () => {
 
     expect(await screen.findByRole("button", { name: "Send vedtak" })).to.exist;
     expect(screen.getByRole("button", { name: "Forhåndsvisning" })).to.exist;
-    expect(screen.getByRole("button", { name: "Vis hele søknaden" })).to.exist;
+    expect(await screen.findByRole("heading", { name: "Søknadens innhold" })).to
+      .exist;
     expect(screen.getByRole("button", { name: "Tilbake" })).to.exist;
   });
 

@@ -16,10 +16,10 @@ export const utenlandsoppholdQueryKeys = {
 };
 
 /**
- * Henter søknader på § 8-9 utenlandsopphold for en person.
+ * Henter søknader på § 8-9 utenlandsopphold for en person fra vår backend.
  * Endepunktet er en POST på personident, men brukes som en GET.
  */
-export const useSoknaderQuery = () => {
+export const useUtenlandsoppholdSoknanderQuery = () => {
   const personident = useValgtPersonident();
   const path = `${ISUTENLANDSOPPHOLD_ROOT}/soknader/query`;
   const requestDTO: SoknaderQueryDTO = { personident };
