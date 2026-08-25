@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Alert, BodyShort, Box, Button, Loader, Table } from "@navikt/ds-react";
-import { useSoknaderQuery } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
+import { useUtenlandsoppholdSoknanderQuery } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
 import {
   Soknad,
   SoknadStatusDTO,
@@ -75,7 +75,7 @@ function sorterEtterInnsendtTidspunktNyestForst(soknader: Soknad[]) {
 }
 
 export function UtenlandsoppholdSoknader() {
-  const { data, isPending, isError } = useSoknaderQuery();
+  const { data, isPending, isError } = useUtenlandsoppholdSoknanderQuery();
 
   const { notification } = useNotification();
   const [isNotificationVisible, setIsNotificationVisible] = useState(true);

@@ -14,6 +14,10 @@ export const sykepengesoknaderQueryKeys = {
   sykepengesoknader: (fnr: string) => ["sykepengesoknader", fnr],
 };
 
+/**
+ * Henter alle sykepengesøknader fra Team Flex for en person.
+ * Søknad om utenalandsopphold (§ 8-9) er en av søknadstypene.
+ */
 export const useSykepengesoknaderQuery = () => {
   const fnr = useValgtPersonident();
   const path = `${SYKEPENGESOKNAD_BACKEND_ROOT}/veileder/soknader`;

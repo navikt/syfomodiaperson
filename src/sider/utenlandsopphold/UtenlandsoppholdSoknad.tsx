@@ -6,6 +6,7 @@ import {
   BodyShort,
   Box,
   Button,
+  Heading,
   InlineMessage,
   Loader,
   Radio,
@@ -14,7 +15,7 @@ import {
 } from "@navikt/ds-react";
 import { DelvisInnvilgelsePeriodeDatepicker } from "@/sider/utenlandsopphold/DelvisInnvilgelsePeriodeDatepicker.tsx";
 import {
-  useSoknaderQuery,
+  useUtenlandsoppholdSoknanderQuery,
   useVedtakMutation,
 } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -35,13 +36,17 @@ import {
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
 import { Maksdato, useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
 import { useStartOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
+import Oppsummeringsvisning from "@/sider/sykepengsoknader/soknad-felles-oppsummering/Oppsummeringsvisning";
 
 const texts = {
   pending: "Henter søknader...",
   error: "Noe gikk galt ved henting av søknader. Vennligst prøv igjen senere.",
   didNotFindSoknad: "Fant ikke søknaden",
-  goToSoknad: "Vis hele søknaden",
-  soknadTidspunkt: "Søknaden ble innsendt:",
+  headerSoknadInnhold: "Søknadens innhold",
+  errorHenteInnholdISoknad:
+    "Noe gikk galt med å hente innholdet i søknaden. Venligst prøv igjen senere.",
+  soknadInnsendtTidspunkt: "Søknaden ble innsendt",
   singlePeriod: "Perioden det er søkt om:",
   multiplePeriods: "Periodene det er søkt om:",
   radioButtons: {
@@ -101,7 +106,20 @@ interface SkjemaValues {
 }
 
 export function UtenlandsoppholdSoknad() {
-  const { data, isPending, isError } = useSoknaderQuery();
+  // Utenlandsopphold-søknader fra vår backend
+  const {
+    data: utenlandsoppholdSoknader,
+    isPending: isLoadingUtenlandsoppholdSoknader,
+    isError: isErrorUtenlandsoppholdSoknader,
+  } = useUtenlandsoppholdSoknanderQuery();
+
+  // Sykepengesøknader fra Flex, blant annet utenlandsopphold-søknader
+  const {
+    data: sykepengeSoknaderFlex,
+    isLoading: isLoadingSykepengesoknaderFlex,
+    isError: isErrorSykepengeSoknaderFlex,
+  } = useSykepengesoknaderQuery();
+
   const getMaksdato = useMaksdatoQuery();
   const oppfolgingstilfelleStart = useStartOfLatestOppfolgingstilfelle();
   const { mutate, isPending: mutateIsPending } = useVedtakMutation();
@@ -110,6 +128,7 @@ export function UtenlandsoppholdSoknad() {
     getAvslagDocument,
     getDelvisInnvilgetDocument,
   } = useUtenlandsoppholdSoknadDocument();
+
   const formMethods = useForm<SkjemaValues>({
     defaultValues: { innvilgedePerioder: [] },
   });
@@ -178,7 +197,7 @@ export function UtenlandsoppholdSoknad() {
     utenlandsoppholdSoknadId: string;
   }>();
 
-  const utenlandsoppholdSoknad = data?.soknader.find(
+  const utenlandsoppholdSoknad = utenlandsoppholdSoknader?.soknader.find(
     (soknad) =>
       soknad.soknadId === utenlandsoppholdSoknadId ||
       soknad.eksternId === utenlandsoppholdSoknadId,
@@ -187,9 +206,9 @@ export function UtenlandsoppholdSoknad() {
   if (!utenlandsoppholdSoknad) {
     return (
       <Box background="default" padding="space-16" className="flex flex-col">
-        {isPending ? (
+        {isLoadingUtenlandsoppholdSoknader ? (
           <Loader size="xlarge" title={texts.pending} />
-        ) : isError ? (
+        ) : isErrorUtenlandsoppholdSoknader ? (
           <Alert size="small" variant="error">
             {texts.error}
           </Alert>
@@ -199,6 +218,10 @@ export function UtenlandsoppholdSoknad() {
       </Box>
     );
   }
+
+  const sykepengesoknadFlex = sykepengeSoknaderFlex.find(
+    (soknad) => soknad.id === utenlandsoppholdSoknad.eksternId,
+  );
 
   const soknadBehandlet =
     utenlandsoppholdSoknad.status !== SoknadStatusDTO.MOTTATT;
@@ -250,35 +273,50 @@ export function UtenlandsoppholdSoknad() {
 
   return (
     <Box background="default" padding="space-16" className="flex flex-col">
-      <div className={"flex flex-col gap-8"}>
-        <BodyShort>
-          {texts.soknadTidspunkt}{" "}
-          {tilLesbarDatoMedArUtenManedNavn(
-            utenlandsoppholdSoknad.innsendtTidspunkt,
-          )}
-        </BodyShort>
-
-        <div>
-          <Button
-            as={Link}
-            to={`/sykefravaer/sykepengesoknader/${utenlandsoppholdSoknad.eksternId}`}
-            size="small"
-            variant="secondary"
-          >
-            {texts.goToSoknad}
-          </Button>
-        </div>
-
-        <div>
-          <BodyShort size="small" weight="semibold">
-            {periodText}
-          </BodyShort>
-          {utenlandsoppholdSoknad.soktePerioder.map((periode, index) => (
-            <BodyShort key={index} size="small">
-              {tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom)}
+      <div className="flex flex-col gap-6">
+        <Box className="flex flex-col gap-2">
+          <Box className="inline-flex gap-2">
+            <BodyShort weight="semibold">
+              {texts.soknadInnsendtTidspunkt}:
             </BodyShort>
-          ))}
-        </div>
+            <BodyShort>
+              {tilLesbarDatoMedArUtenManedNavn(
+                utenlandsoppholdSoknad.innsendtTidspunkt,
+              )}
+            </BodyShort>
+          </Box>
+
+          <div>
+            <BodyShort weight="semibold">{periodText}</BodyShort>
+            {utenlandsoppholdSoknad.soktePerioder.map((periode, index) => (
+              <BodyShort key={index} size="small">
+                {tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom)}
+              </BodyShort>
+            ))}
+          </div>
+        </Box>
+
+        <Box
+          borderWidth="1"
+          borderColor="neutral-strong"
+          borderRadius="12"
+          paddingInline="space-20"
+          paddingBlock="space-16"
+        >
+          <Heading size="small" spacing>
+            {texts.headerSoknadInnhold}
+          </Heading>
+
+          {isLoadingSykepengesoknaderFlex ? (
+            <Loader size="medium" title={texts.pending} />
+          ) : sykepengesoknadFlex ? (
+            <Oppsummeringsvisning soknad={sykepengesoknadFlex} />
+          ) : (
+            <Alert size="small" variant="error">
+              {texts.errorHenteInnholdISoknad}
+            </Alert>
+          )}
+        </Box>
 
         {soknadBehandlet && (
           <>
@@ -298,7 +336,6 @@ export function UtenlandsoppholdSoknad() {
             </Button>
           </>
         )}
-
         {!soknadBehandlet && (
           <FormProvider {...formMethods}>
             <form
@@ -311,7 +348,7 @@ export function UtenlandsoppholdSoknad() {
                 </Alert>
               )}
               <RadioGroup
-                legend={"Velg utfall"}
+                legend="Velg utfall"
                 name="utfall"
                 size="small"
                 error={errors.utfall && texts.missingUtfall}
@@ -336,6 +373,7 @@ export function UtenlandsoppholdSoknad() {
                   {texts.radioButtons.avslag}
                 </Radio>
               </RadioGroup>
+
               {valgtUtfall === "DELVIS_INNVILGET" && (
                 <Box className="flex flex-col gap-4">
                   <BodyShort size="small" weight="semibold">
@@ -370,6 +408,7 @@ export function UtenlandsoppholdSoknad() {
                   )}
                 </Box>
               )}
+
               {(valgtUtfall === "DELVIS_INNVILGET" ||
                 valgtUtfall === "AVSLAG") && (
                 <Textarea
@@ -386,6 +425,7 @@ export function UtenlandsoppholdSoknad() {
                   maxLength={begrunnelseMaxLength}
                 />
               )}
+
               <div className="flex flex-row gap-4">
                 <Button
                   variant="primary"
@@ -409,6 +449,7 @@ export function UtenlandsoppholdSoknad() {
                   {texts.buttons.backButton}
                 </Button>
               </div>
+
               <ForhandsvisningModal
                 contentLabel={texts.buttons.previewContentLabel}
                 isOpen={visSendForhandsvisning}
