@@ -7,11 +7,13 @@ import {
   Box,
   Button,
   Heading,
+  HStack,
   InlineMessage,
   Loader,
   Radio,
   RadioGroup,
   Textarea,
+  VStack,
 } from "@navikt/ds-react";
 import { DelvisInnvilgelsePeriodeDatepicker } from "@/sider/utenlandsopphold/DelvisInnvilgelsePeriodeDatepicker.tsx";
 import {
@@ -46,9 +48,9 @@ const texts = {
   headerSoknadInnhold: "Søknadens innhold",
   errorHenteInnholdISoknad:
     "Noe gikk galt med å hente innholdet i søknaden. Venligst prøv igjen senere.",
-  soknadInnsendtTidspunkt: "Søknaden ble innsendt",
-  singlePeriod: "Perioden det er søkt om:",
-  multiplePeriods: "Periodene det er søkt om:",
+  labelSoknadInnsendtTidspunkt: "Søknaden ble innsendt",
+  labelSoktPeriodeSingular: "Perioden det er søkt om",
+  labelSoktePerioderPlural: "Periodene det er søkt om",
   radioButtons: {
     innvilgelse: "Innvilget: Godkjenn hele perioden",
     delvisInnvilgelse: "Delvis innvilget: Godkjenn deler av perioden",
@@ -117,7 +119,6 @@ export function UtenlandsoppholdSoknad() {
   const {
     data: sykepengeSoknaderFlex,
     isLoading: isLoadingSykepengesoknaderFlex,
-    isError: isErrorSykepengeSoknaderFlex,
   } = useSykepengesoknaderQuery();
 
   const getMaksdato = useMaksdatoQuery();
@@ -227,7 +228,9 @@ export function UtenlandsoppholdSoknad() {
     utenlandsoppholdSoknad.status !== SoknadStatusDTO.MOTTATT;
   const soktePerioder = utenlandsoppholdSoknad.soktePerioder;
   const periodText =
-    soktePerioder.length > 1 ? texts.multiplePeriods : texts.singlePeriod;
+    soktePerioder.length > 1
+      ? texts.labelSoktePerioderPlural
+      : texts.labelSoktPeriodeSingular;
   const avslattePerioder =
     valgtUtfall === "DELVIS_INNVILGET"
       ? beregnAvslattePerioder(soktePerioder, valgteInnvilgedePerioder)
@@ -273,29 +276,33 @@ export function UtenlandsoppholdSoknad() {
 
   return (
     <Box background="default" padding="space-16" className="flex flex-col">
-      <div className="flex flex-col gap-6">
-        <Box className="flex flex-col gap-2">
-          <Box className="inline-flex gap-2">
+      <VStack gap="space-20">
+        {/* Nokkelinfo i soknaden */}
+        <VStack gap="space-8">
+          <HStack gap="space-8">
             <BodyShort weight="semibold">
-              {texts.soknadInnsendtTidspunkt}:
+              {texts.labelSoknadInnsendtTidspunkt}:
             </BodyShort>
+
             <BodyShort>
               {tilLesbarDatoMedArUtenManedNavn(
                 utenlandsoppholdSoknad.innsendtTidspunkt,
               )}
             </BodyShort>
-          </Box>
+          </HStack>
 
-          <div>
-            <BodyShort weight="semibold">{periodText}</BodyShort>
+          <Box>
+            <BodyShort weight="semibold">{periodText}:</BodyShort>
+
             {utenlandsoppholdSoknad.soktePerioder.map((periode, index) => (
               <BodyShort key={index} size="small">
                 {tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom)}
               </BodyShort>
             ))}
-          </div>
-        </Box>
+          </Box>
+        </VStack>
 
+        {/* Visning av soknaden */}
         <Box
           borderWidth="1"
           borderColor="neutral-strong"
@@ -318,6 +325,7 @@ export function UtenlandsoppholdSoknad() {
           )}
         </Box>
 
+        {/* Soknaden er behandlet */}
         {soknadBehandlet && (
           <>
             <Alert variant="info" size="small" className="w-fit p-4">
@@ -336,6 +344,8 @@ export function UtenlandsoppholdSoknad() {
             </Button>
           </>
         )}
+
+        {/* Behandling av soknaden */}
         {!soknadBehandlet && (
           <FormProvider {...formMethods}>
             <form
@@ -466,7 +476,7 @@ export function UtenlandsoppholdSoknad() {
             </form>
           </FormProvider>
         )}
-      </div>
+      </VStack>
     </Box>
   );
 }
