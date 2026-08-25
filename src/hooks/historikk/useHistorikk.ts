@@ -14,6 +14,7 @@ import { useOppfolgingsoppgaveHistorikk } from "@/hooks/historikk/useOppfolgings
 import { useMotebehovHistorikk } from "@/hooks/historikk/useMotebehovHistorikk";
 import { useTildeltOppfolgingsenhetHistorikk } from "@/hooks/historikk/useTildeltOppfolgingsenhetHistorikk";
 import { useKartleggingssporsmalHistorikk } from "@/hooks/historikk/useKartleggingssporsmalHistorikk";
+import { useUtenlandsoppholdHistorikk } from "@/hooks/historikk/useUtenlandsoppholdHistorikk.ts";
 
 export interface HistorikkEvents {
   isLoading: boolean;
@@ -39,6 +40,7 @@ export function useHistorikk(): HistorikkEvents {
   const tildeltOppfolgingsenhetHistorikk =
     useTildeltOppfolgingsenhetHistorikk();
   const kartleggingssporsmalHistorikk = useKartleggingssporsmalHistorikk();
+  const utenlandsoppholdHistorikk = useUtenlandsoppholdHistorikk();
 
   const historikk: HistorikkEvents[] = [
     motebehovHistorikk,
@@ -56,6 +58,7 @@ export function useHistorikk(): HistorikkEvents {
     dialogmoteStatusEndringHistorikk,
     tildeltOppfolgingsenhetHistorikk,
     kartleggingssporsmalHistorikk,
+    utenlandsoppholdHistorikk,
   ];
 
   return {

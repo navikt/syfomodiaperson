@@ -123,8 +123,14 @@ function tagFromKilde(kilde: HistorikkEventType): ReactElement {
       );
     case "KARTLEGGINGSPORSMAAL":
       return (
-        <Tag data-color="warning" variant="moderate">
+        <Tag data-color="warning" variant="outline">
           Kartleggingsspørsmål
+        </Tag>
+      );
+    case "UTENLANDSOPPHOLD":
+      return (
+        <Tag data-color="warning" variant="outline">
+          Utenlandsopphold
         </Tag>
       );
   }

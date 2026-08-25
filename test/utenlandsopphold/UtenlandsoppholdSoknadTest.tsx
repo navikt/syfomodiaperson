@@ -21,7 +21,6 @@ import {
   mockSoknaderResponse,
   soknadMedVedtakMock,
   soknadUtenVedtakMock,
-  gammelSoknadMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
 import { maksdatoMock } from "@/mocks/syfoperson/persondataMock";
 import { utenlandsoppholdPath } from "@/AppRouter.tsx";
@@ -303,7 +302,7 @@ describe("UtenlandsoppholdSoknad", () => {
     expect(screen.queryByText("Fant ikke søknaden")).to.not.exist;
     expect(screen.queryByRole("button", { name: "Start behandling" })).to.not
       .exist;
-    expect(await screen.findAllByText("Avslag")).to.have.lengthOf(1);
+    expect(await screen.findAllByText("Avslått")).to.have.lengthOf(1);
     expect(
       await screen.findAllByText(
         new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),

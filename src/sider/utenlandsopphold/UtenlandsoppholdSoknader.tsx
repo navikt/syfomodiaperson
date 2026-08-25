@@ -36,11 +36,11 @@ const texts = {
   ingenSoknader: "Ingen mottatte søknader eller fattede vedtak",
 };
 
-const statusTexts: { [key in SoknadStatusDTO]: string } = {
+export const statusTexts: { [key in SoknadStatusDTO]: string } = {
   [SoknadStatusDTO.MOTTATT]: "Mottatt",
   [SoknadStatusDTO.INNVILGET]: "Innvilget",
   [SoknadStatusDTO.DELVIS_INNVILGET]: "Delvis innvilget",
-  [SoknadStatusDTO.AVSLAG]: "Avslag",
+  [SoknadStatusDTO.AVSLAG]: "Avslått",
 };
 
 function getStatusColumn(soknad: Soknad) {
