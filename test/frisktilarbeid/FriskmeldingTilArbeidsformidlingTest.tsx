@@ -143,7 +143,7 @@ describe("FriskmeldingTilArbeidsformidling", () => {
 
     expect(
       screen.getByText(
-        "Startdato for arbeidssøkerperioden mangler. Et nytt vedtak kan ikke fattes før startdatoen er tilgjengelig.",
+        "Den sykemeldte er ikke registrert som arbeidssøker. Dette må gjøres før et nytt vedtak kan fattes.",
       ),
     ).to.exist;
     expect(getButton("Nytt vedtak")).to.have.property("disabled", true);
