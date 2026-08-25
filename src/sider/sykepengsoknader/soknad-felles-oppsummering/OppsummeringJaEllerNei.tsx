@@ -68,11 +68,11 @@ export function OppsummeringJaEllerNei({
           </BodyShort>
         ) : (
           <BodyShort>
-            <CircleSlashIcon
+            <CircleIcon
               title="a11y-title"
               fontSize="1.2rem"
               className="inline mr-1 relative -top-0.5"
-              color="var(--ax-text-brand-beige-decoration)"
+              color="var(--ax-text-info-decoration)"
             />
             Nei
           </BodyShort>
