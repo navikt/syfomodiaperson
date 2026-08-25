@@ -9,7 +9,7 @@ export function OppsummeringFritekst({
   svar,
 }: SporsmalDTO): ReactElement {
   return (
-    <div id={id}>
+    <div id={id} className="mb-2">
       <OppsummeringSporsmalstekst>{sporsmalstekst}</OppsummeringSporsmalstekst>
       {svar[0] && <BodyShort size="small">{svar[0].verdi}</BodyShort>}
     </div>
