@@ -32,6 +32,7 @@ export enum InfotrygdStatus {
 
 export interface VilkarResponseDTO {
   isArbeidssoker: boolean;
+  arbeidssokerFom: string | null;
 }
 
 export function isActiveExistingVedtak(vedtak: VedtakResponseDTO): boolean {

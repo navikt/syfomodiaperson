@@ -108,6 +108,7 @@ describe("FriskmeldingTilArbeidsformidling", () => {
   it("viser alert for manglende arbeidssokerregistrering hvis person ikke arbeidssoker", () => {
     const vilkar: VilkarResponseDTO = {
       isArbeidssoker: false,
+      arbeidssokerFom: null,
     };
     queryClient.setQueryData(
       vedtakQueryKeys.vilkar(ARBEIDSTAKER_DEFAULT.personIdent),
@@ -126,6 +127,26 @@ describe("FriskmeldingTilArbeidsformidling", () => {
         "Den sykemeldte er ikke registrert som arbeidssøker. Dette må gjøres før et nytt vedtak kan fattes.",
       ),
     ).to.exist;
+  });
+
+  it("viser alert hvis startdato for arbeidssokerperioden mangler", () => {
+    const vilkar: VilkarResponseDTO = {
+      isArbeidssoker: true,
+      arbeidssokerFom: null,
+    };
+    queryClient.setQueryData(
+      vedtakQueryKeys.vilkar(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => vilkar,
+    );
+
+    renderFriskmeldingTilArbeidsformidling();
+
+    expect(
+      screen.getByText(
+        "Startdato for arbeidssøkerperioden mangler. Et nytt vedtak kan ikke fattes før startdatoen er tilgjengelig.",
+      ),
+    ).to.exist;
+    expect(getButton("Nytt vedtak")).to.have.property("disabled", true);
   });
 
   it("viser alert om at det ikke er mulig å starte nytt vedtak ettersom det finnes et eksisterende aktivt vedtak", () => {

@@ -11,11 +11,13 @@ const texts = {
 interface Props {
   isActiveVedtak: boolean;
   isRegisteredArbeidssoker: boolean;
+  hasArbeidssokerFom: boolean;
 }
 
 export default function KanIkkeFatteNyttVedtakAlert({
   isActiveVedtak,
   isRegisteredArbeidssoker,
+  hasArbeidssokerFom,
 }: Props) {
   if (isActiveVedtak) {
     return (
@@ -24,7 +26,7 @@ export default function KanIkkeFatteNyttVedtakAlert({
       </Alert>
     );
   }
-  if (!isRegisteredArbeidssoker) {
+  if (!isRegisteredArbeidssoker || !hasArbeidssokerFom) {
     return (
       <Alert variant="warning" size="small" className="max-w-fit">
         {texts.arbeidssokerAlert}
