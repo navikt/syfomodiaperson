@@ -18,7 +18,7 @@ const texts = {
   rutineSteps: {
     registrerSomArbeidssoker: {
       title:
-        "Sjekk om bruker har registrert seg som arbeidssøker. Eventuelt kan du i samråd med den sykmeldte benytte “Registrer arbeidssøker”",
+        "Vedtaket kan ikke innvilges for en periode bruker ikke har vært registrert som arbeidssøker. Sjekk om bruker har registrert seg som arbeidssøker. Eventuelt kan du i samråd med den sykmeldte benytte “Registrer arbeidssøker”",
     },
     fatt14aVedtak: "Fatt § 14a-vedtak i Modia arbeidsrettet oppfølging",
     sendVedtak:
