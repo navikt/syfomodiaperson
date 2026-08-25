@@ -35,7 +35,7 @@ export default function Oppsummeringsvisning({ soknad: { sporsmal } }: Props) {
         .map((sporsmal) => (
           <div
             key={getKey(sporsmal.tag, sporsmal.id)}
-            className="border-b border-solid mb-5 pb-3 border-ax-neutral-400 last:border-b-0 last:mb-0 last:pb-0"
+            className="mb-5 pb-3 border-b border-solid border-ax-neutral-400 last:mb-0 last:pb-0 last:border-b-0"
           >
             <OppsummeringSporsmal {...sporsmal} />
           </div>
