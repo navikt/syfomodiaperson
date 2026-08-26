@@ -29,6 +29,7 @@ export const defaultVedtak: VedtakResponseDTO = {
 
 export const defaultVilkar: VilkarResponseDTO = {
   isArbeidssoker: true,
+  arbeidssokerFom: dayjs().subtract(2, "day").format("YYYY-MM-DD"),
 };
 
 let vedtak: VedtakResponseDTO[] = [];

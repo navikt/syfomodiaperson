@@ -10,10 +10,7 @@ import {
 import dayjs from "dayjs";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { useNotification } from "@/context/notification/NotificationContext";
-import {
-  useVedtakQuery,
-  useVilkarForVedtakQuery,
-} from "@/data/frisktilarbeid/vedtakQuery";
+import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import KanIkkeFatteNyttVedtakAlert from "@/sider/frisktilarbeid/KanIkkeFatteNyttVedtakAlert";
 import VedtakInfoPanel from "@/sider/frisktilarbeid/VedtakInfoPanel";
 
@@ -32,17 +29,26 @@ function isActiveExistingVedtak(vedtak: VedtakResponseDTO): boolean {
 
 interface Props {
   setIsNyVurderingStarted: (value: boolean) => void;
+  isRegisteredArbeidssoker: boolean;
+  arbeidssokerFom: string | null | undefined;
+  isVilkarPending: boolean;
 }
 
-export default function NyttVedtak({ setIsNyVurderingStarted }: Props) {
+export default function NyttVedtak({
+  setIsNyVurderingStarted,
+  isRegisteredArbeidssoker,
+  arbeidssokerFom,
+  isVilkarPending,
+}: Props) {
   const { notification } = useNotification();
   const [isNotificationVisible, setIsNotificationVisible] = useState(true);
   const { data } = useVedtakQuery();
-  const { isRegisteredArbeidssoker, isPending } = useVilkarForVedtakQuery();
   const vedtak: VedtakResponseDTO | undefined = data[0];
   const isExistingVedtak = !!vedtak;
   const isActiveVedtak = isExistingVedtak && isActiveExistingVedtak(vedtak);
-  const kanFatteNyttVedtak = !isActiveVedtak && !!isRegisteredArbeidssoker;
+  const hasArbeidssokerFom = !!arbeidssokerFom;
+  const kanFatteNyttVedtak =
+    !isActiveVedtak && isRegisteredArbeidssoker && hasArbeidssokerFom;
 
   return (
     <>
@@ -66,14 +72,15 @@ export default function NyttVedtak({ setIsNyVurderingStarted }: Props) {
           {texts.startNyttVedtak}
         </Heading>
         {!isActiveVedtak && <BodyShort>{texts.nyttVedtak}</BodyShort>}
-        {isPending ? (
+        {isVilkarPending ? (
           <Loader size="xlarge" title="Laster inn vilkår for vedtak" />
         ) : (
           <>
             {!kanFatteNyttVedtak && (
               <KanIkkeFatteNyttVedtakAlert
                 isActiveVedtak={isActiveVedtak}
-                isRegisteredArbeidssoker={!!isRegisteredArbeidssoker}
+                isRegisteredArbeidssoker={isRegisteredArbeidssoker}
+                hasArbeidssokerFom={hasArbeidssokerFom}
               />
             )}
             <Button

@@ -98,7 +98,11 @@ interface FormValues {
   vedtakKrav: VedtakKrav[];
 }
 
-export default function FattVedtakSkjema() {
+interface Props {
+  arbeidssokerFom: string;
+}
+
+export default function FattVedtakSkjema({ arbeidssokerFom }: Props) {
   const fattVedtak = useFattVedtak();
   const { getVedtakDocument } = useFriskmeldingTilArbeidsformidlingDocument();
   const { data: maksDato } = useMaksdatoQuery();
@@ -190,7 +194,10 @@ export default function FattVedtakSkjema() {
             </Checkbox>
           </CheckboxGroup>
           <div className="flex flex-row gap-6">
-            <VedtakFraDato tilDato={tilDato} />
+            <VedtakFraDato
+              tilDato={tilDato}
+              arbeidssokerFom={arbeidssokerFom}
+            />
             <div className="flex flex-col gap-2">
               <DatePicker {...tilDatoDatePicker.datepickerProps}>
                 <DatePicker.Input
