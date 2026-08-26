@@ -11,8 +11,8 @@ const texts = {
   fraDatoMissing: "Vennligst angi dato",
   invalidFraDato: "Dato kan ikke være etter til-dato",
   beforeArbeidssokerFom: "Dato kan ikke være før arbeidssøkerperioden startet",
-  fraDatoLabel: "Friskmeldingen gjelder fra",
-  fraDatoDescription: "Datoen vedtaket starter",
+  fraDatoLabel: "Vedtaket gjelder fra",
+  fraDatoDescription: "Må starte innenfor arbeidssøkerperioden",
 };
 
 interface Props {
