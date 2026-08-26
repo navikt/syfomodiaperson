@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw";
 import { DraftCategory, DraftTextDTO } from "@/hooks/useDraftQuery";
 
-function createDraftTextMock(category: DraftCategory) {
+export function createDraftTextMock(category: DraftCategory) {
   let draft: DraftTextDTO = { begrunnelse: "" };
 
   return [
@@ -32,4 +32,6 @@ export const mockDraftText = [
   ...createDraftTextMock("aktivitetskrav-unntak"),
   ...createDraftTextMock("aktivitetskrav-oppfylt"),
   ...createDraftTextMock("aktivitetskrav-innstilling-om-stans"),
+  ...createDraftTextMock("utenlandsopphold-avslag"),
+  ...createDraftTextMock("utenlandsopphold-delvis-innvilget"),
 ];

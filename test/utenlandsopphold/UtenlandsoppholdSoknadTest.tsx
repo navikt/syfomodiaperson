@@ -35,6 +35,7 @@ import {
   stubSoknaderQuery,
 } from "../stubs/stubIsutenlandsopphold";
 import { maksdatoQueryKeys } from "@/data/maksdato/useMaksdatoQuery";
+import { createDraftTextMock } from "@/mocks/draft/mockDraftText.ts";
 
 let queryClient: QueryClient;
 const forbeholdOvrigeVilkarText =
@@ -51,7 +52,7 @@ const renderUtenlandsoppholdSoknad = (
           <Routes>
             <Route
               path={`${utenlandsoppholdPath}/:utenlandsoppholdSoknadId`}
-              element={<UtenlandsoppholdSoknad />}
+              element={<UtenlandsoppholdSoknad draftDebouncedMs={0} />}
             />
             <Route
               path={utenlandsoppholdPath}
@@ -310,8 +311,15 @@ describe("UtenlandsoppholdSoknad", () => {
     ).to.have.lengthOf(2);
 
     await waitFor(() => {
-      const vedtakMutation = queryClient.getMutationCache().getAll()[0];
-      const variables = vedtakMutation.state.variables as {
+      const vedtakMutation = queryClient
+        .getMutationCache()
+        .getAll()
+        .find(
+          (mutation) =>
+            (mutation.state.variables as { vedtak?: SoknadVedtakPostDTO })
+              ?.vedtak,
+        );
+      const variables = vedtakMutation?.state.variables as {
         soknadId: string;
         vedtak: SoknadVedtakPostDTO;
       };
@@ -463,8 +471,15 @@ describe("UtenlandsoppholdSoknad", () => {
       ).to.have.lengthOf(2);
 
       await waitFor(() => {
-        const vedtakMutation = queryClient.getMutationCache().getAll()[0];
-        const variables = vedtakMutation.state.variables as {
+        const vedtakMutation = queryClient
+          .getMutationCache()
+          .getAll()
+          .find(
+            (mutation) =>
+              (mutation.state.variables as { vedtak?: SoknadVedtakPostDTO })
+                ?.vedtak,
+          );
+        const variables = vedtakMutation?.state.variables as {
           soknadId: string;
           vedtak: SoknadVedtakPostDTO;
         };
@@ -627,8 +642,15 @@ describe("UtenlandsoppholdSoknad", () => {
       ).to.exist;
 
       await waitFor(() => {
-        const vedtakMutation = queryClient.getMutationCache().getAll()[0];
-        const variables = vedtakMutation.state.variables as {
+        const vedtakMutation = queryClient
+          .getMutationCache()
+          .getAll()
+          .find(
+            (mutation) =>
+              (mutation.state.variables as { vedtak?: SoknadVedtakPostDTO })
+                ?.vedtak,
+          );
+        const variables = vedtakMutation?.state.variables as {
           soknadId: string;
           vedtak: SoknadVedtakPostDTO;
         };
@@ -685,5 +707,35 @@ describe("UtenlandsoppholdSoknad", () => {
       expect(vedtakMutation?.state.status).to.equal("error");
     });
     expect(screen.getByRole("button", { name: "Send vedtak" })).to.exist;
+  });
+
+  it("sender riktig draft til riktig draft query", async () => {
+    stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
+    mockServer.use(
+      ...createDraftTextMock("utenlandsopphold-avslag"),
+      ...createDraftTextMock("utenlandsopphold-delvis-innvilget"),
+    );
+
+    renderUtenlandsoppholdSoknad(
+      soknadUtenVedtakMock.soknadId,
+      utenlandsoppholdPath,
+    );
+
+    expect(await screen.findByRole("button", { name: "Start behandling" })).to
+      .exist;
+
+    await clickButton("Start behandling");
+
+    await clickRadio("Avslag: Avslå hele perioden");
+    changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "Draft 1");
+
+    await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
+    changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "Draft 2");
+
+    await clickRadio("Avslag: Avslå hele perioden");
+    expect(await screen.findByText("Draft 1")).to.exist;
+
+    await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
+    expect(await screen.findByText("Draft 2")).to.exist;
   });
 });
