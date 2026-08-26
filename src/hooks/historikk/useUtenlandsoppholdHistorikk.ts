@@ -2,7 +2,7 @@ import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
-import { useSoknaderQuery } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks.ts";
+import { useUtenlandsoppholdSoknanderQuery } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks.ts";
 import { Soknad } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
 import { statusTexts } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknader.tsx";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils.ts";
@@ -42,7 +42,7 @@ function createEventsFromSoknad(soknad: Soknad, person: BrukerinfoDTO) {
 }
 
 export function useUtenlandsoppholdHistorikk(): HistorikkEvents {
-  const { data, isLoading, isError } = useSoknaderQuery();
+  const { data, isLoading, isError } = useUtenlandsoppholdSoknanderQuery();
   const { brukerinfo: person } = useBrukerinfoQuery();
 
   const soknader = data?.soknader || [];
