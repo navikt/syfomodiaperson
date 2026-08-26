@@ -17,15 +17,25 @@ export default function Oppsummeringsvisning({ soknad: { sporsmal } }: Props) {
     <>
       {sporsmal
         .filter(
+          // Det som skal med
           (sporsmal) =>
             sporsmal.svar.length > 0 ||
             sporsmal.undersporsmal.length > 0 ||
             sporsmal.svartype === SvarTypeDTO.IKKE_RELEVANT,
         )
+        .filter(
+          // Det som ikke skal med
+          (sporsmal) =>
+            !(
+              sporsmal.svartype === "OPPSUMMERING" &&
+              sporsmal.tag === "TIL_SLUTT" &&
+              sporsmal.undersporsmal.length === 0
+            ),
+        )
         .map((sporsmal) => (
           <div
             key={getKey(sporsmal.tag, sporsmal.id)}
-            className="border-b border-solid mb-8 pb-8 last:border-b-0 last:mb-0 last:pb-0"
+            className="mb-5 pb-3 border-b border-solid border-ax-neutral-400 last:mb-0 last:pb-0 last:border-b-0"
           >
             <OppsummeringSporsmal {...sporsmal} />
           </div>
