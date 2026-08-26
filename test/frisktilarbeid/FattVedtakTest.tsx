@@ -50,7 +50,7 @@ describe("FattVedtakSkjema", () => {
   it("viser skjema for å fatte vedtak", () => {
     renderFattVedtakSkjema();
 
-    expect(getTextInput("Friskmeldingen gjelder fra")).to.exist;
+    expect(getTextInput("Vedtaket gjelder fra")).to.exist;
     const tilDatoInput = screen.getByRole("textbox", {
       name: /Til dato/,
     });
@@ -78,7 +78,7 @@ describe("FattVedtakSkjema", () => {
 
     renderFattVedtakSkjema();
 
-    const fraDato = getTextInput("Friskmeldingen gjelder fra");
+    const fraDato = getTextInput("Vedtaket gjelder fra");
     changeTextInput(fraDato, threeWeeksAgo.format("DD.MM.YYYY"));
 
     expect(screen.getByText("Automatisk justert 12 uker frem")).to.exist;
@@ -148,7 +148,7 @@ describe("FattVedtakSkjema", () => {
     const begrunnelseInput = getTextInput("Begrunnelse");
     changeTextInput(begrunnelseInput, enBegrunnelse);
 
-    const fraDato = getTextInput("Friskmeldingen gjelder fra");
+    const fraDato = getTextInput("Vedtaket gjelder fra");
     changeTextInput(fraDato, today.format("DD.MM.YYYY"));
 
     await clickButton("Fatt vedtak");
@@ -160,7 +160,7 @@ describe("FattVedtakSkjema", () => {
   it("validerer fra-dato mot starten av arbeidssokerperioden", async () => {
     renderFattVedtakSkjema();
 
-    const fraDato = getTextInput("Friskmeldingen gjelder fra");
+    const fraDato = getTextInput("Vedtaket gjelder fra");
     changeTextInput(
       fraDato,
       threeWeeksAgo.subtract(1, "day").format("DD.MM.YYYY"),
@@ -203,7 +203,7 @@ describe("FattVedtakSkjema", () => {
     await userEvent.click(arbeidsforholdCheckbox);
     await userEvent.click(fritakCheckbox);
 
-    const fraDato = getTextInput("Friskmeldingen gjelder fra");
+    const fraDato = getTextInput("Vedtaket gjelder fra");
     changeTextInput(fraDato, today.format("DD.MM.YYYY"));
 
     const begrunnelseInput = getTextInput("Begrunnelse");
@@ -260,7 +260,7 @@ describe("FattVedtakSkjema", () => {
     await userEvent.click(arbeidsforholdCheckbox);
     await userEvent.click(fritakCheckbox);
 
-    const fraDato = getTextInput("Friskmeldingen gjelder fra");
+    const fraDato = getTextInput("Vedtaket gjelder fra");
     changeTextInput(fraDato, today.format("DD.MM.YYYY"));
     const begrunnelseInput = getTextInput("Begrunnelse");
     changeTextInput(begrunnelseInput, enBegrunnelse);

@@ -96,7 +96,7 @@ describe("FriskmeldingTilArbeidsformidling", () => {
 
     expect(await screen.findByRole("heading", { name: "Fatt vedtak" })).to
       .exist;
-    expect(await screen.findByText("Friskmeldingen gjelder fra")).to.exist;
+    expect(await screen.findByText("Vedtaket gjelder fra")).to.exist;
     expect(
       await screen.findByRole("button", {
         hidden: true,
