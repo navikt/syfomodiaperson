@@ -41,6 +41,43 @@ export function isDateInOppfolgingstilfelle(
   );
 }
 
+/**
+ * Sjekker om en periode ligger helt innenfor et oppfolgingstilfelle, altså at
+ * bade `fom` og `tom` er innenfor tilfellets start og slutt. Sammenligningen
+ * gjores pa dagniva, ettersom soknadsperioder er dato-baserte og tilfellets
+ * start/slutt kan inneholde et klokkeslett.
+ */
+export function isPeriodeInnenforOppfolgingstilfelle(
+  periode: { fom: Date; tom: Date },
+  oppfolgingstilfelle: OppfolgingstilfelleDTO,
+): boolean {
+  const tilfelleStart = dayjs(oppfolgingstilfelle.start);
+  const tilfelleEnd = dayjs(oppfolgingstilfelle.end);
+
+  return (
+    !dayjs(periode.fom).isBefore(tilfelleStart, "day") &&
+    !dayjs(periode.tom).isAfter(tilfelleEnd, "day")
+  );
+}
+
+/**
+ * Avgjor om en eller flere av `perioder` faller helt eller delvis utenfor det
+ * gjeldende oppfolgingstilfellet. Dersom det ikke finnes et oppfolgingstilfelle
+ * a sammenligne mot, regnes periodene som utenfor.
+ */
+export function harPerioderUtenforOppfolgingstilfelle(
+  perioder: { fom: Date; tom: Date }[],
+  oppfolgingstilfelle: OppfolgingstilfelleDTO | undefined,
+): boolean {
+  if (!oppfolgingstilfelle) {
+    return true;
+  }
+  return perioder.some(
+    (periode) =>
+      !isPeriodeInnenforOppfolgingstilfelle(periode, oppfolgingstilfelle),
+  );
+}
+
 export function aktiveNarmesteLedereForOppfolgingstilfelle(
   ledere: NarmesteLederRelasjonDTO[],
   oppfolgingsTilfelle: OppfolgingstilfelleDTO,

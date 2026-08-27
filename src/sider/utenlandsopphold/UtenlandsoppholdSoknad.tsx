@@ -40,7 +40,8 @@ import {
   Utfall,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
 import { Maksdato, useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
-import { useStartOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { harPerioderUtenforOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 import { useDebouncedCallback } from "use-debounce";
 import {
@@ -64,6 +65,8 @@ const texts = {
   labelSoknadInnsendtTidspunkt: "Søknaden ble innsendt",
   labelSoktPeriodeSingular: "Perioden det er søkt om",
   labelSoktePerioderPlural: "Periodene det er søkt om",
+  perioderUtenforTilfelleWarning:
+    "En eller flere av periodene det er søkt om ligger utenfor sykmeldingsperioden.",
   radioButtons: {
     innvilgelse: "Innvilget: Godkjenn hele perioden",
     delvisInnvilgelse: "Delvis innvilget: Godkjenn deler av perioden",
@@ -139,7 +142,8 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
   } = useSykepengesoknaderQuery();
 
   const getMaksdato = useMaksdatoQuery();
-  const oppfolgingstilfelleStart = useStartOfLatestOppfolgingstilfelle();
+  const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
+  const oppfolgingstilfelleStart = latestOppfolgingstilfelle?.start;
   const { mutate, isPending: mutateIsPending } = useVedtakMutation();
   const {
     getInnvilgetDocument,
@@ -304,6 +308,10 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
     soktePerioder.length > 1
       ? texts.labelSoktePerioderPlural
       : texts.labelSoktPeriodeSingular;
+  const harPerioderUtenforTilfelle = harPerioderUtenforOppfolgingstilfelle(
+    soktePerioder,
+    latestOppfolgingstilfelle,
+  );
   const avslattePerioder =
     valgtUtfall === "DELVIS_INNVILGET"
       ? beregnAvslattePerioder(soktePerioder, valgteInnvilgedePerioder)
@@ -373,6 +381,12 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
               </BodyShort>
             ))}
           </Box>
+
+          {harPerioderUtenforTilfelle && (
+            <Alert variant="warning" size="small" className="w-fit">
+              {texts.perioderUtenforTilfelleWarning}
+            </Alert>
+          )}
         </VStack>
 
         {/* Visning av soknaden */}
