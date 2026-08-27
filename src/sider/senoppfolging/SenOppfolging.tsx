@@ -58,6 +58,7 @@ export default function SenOppfolging(): ReactElement {
                 )}
                 <SenOppfolgingHistorikk historikk={tidligereKandidater} />
               </Tredelt.FirstColumn>
+
               <Tredelt.SecondColumn>
                 <VeiledningRutine />
                 <OvingssideLink />

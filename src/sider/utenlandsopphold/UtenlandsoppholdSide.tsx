@@ -10,7 +10,7 @@ import { UtenlandsoppholdSoknad } from "@/sider/utenlandsopphold/Utenlandsopphol
 import LumiSurvey from "@/components/lumi/LumiSurvey.tsx";
 import { utenlandsoppholdSurvey } from "@/components/lumi/utenlandsoppholdSurvey.ts";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks.ts";
-import UtenlandsoppholdVeiledning from "./UtenlandsoppholdVeiledning";
+import VeiledningUtenlandsopphold from "./VeiledningUtenlandsopphold";
 
 const texts = {
   title: "Søknad om sykepenger under opphold utenfor EU/EØS",
@@ -50,7 +50,7 @@ export function UtenlandsoppholdSide({ children }: Props) {
           </Tredelt.FirstColumn>
 
           <Tredelt.SecondColumn>
-            <UtenlandsoppholdVeiledning />
+            <VeiledningUtenlandsopphold />
           </Tredelt.SecondColumn>
         </Tredelt.Container>
       </SideLaster>

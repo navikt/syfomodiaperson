@@ -31,6 +31,7 @@ export function VeiledningRutine() {
         <Heading as="h3" size="xsmall">
           {texts.vurderFolgende}
         </Heading>
+
         <Box marginBlock="space-12" asChild>
           <List as="ul" size="small">
             {texts.rutine.map((text, index) => (

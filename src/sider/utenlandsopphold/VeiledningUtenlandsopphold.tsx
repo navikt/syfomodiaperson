@@ -1,37 +1,18 @@
 import { EksternLenke } from "@/components/EksternLenke";
-import { Box, Heading, List, VStack } from "@navikt/ds-react";
+import { VeiledningBox } from "@/components/veiledning/VeiledningBox";
+import { VeiledningList } from "@/components/veiledning/VeiledningList";
+import { Box, Heading, List } from "@navikt/ds-react";
 import React from "react";
 
 const linkRutineYrkesskade =
   "https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Vurdering-av-%C3%A5rsakssammenheng-ved-yrkesskade-yrkessykdm.aspx";
 
-export default function UtenlandsoppholdVeiledning() {
+export default function VeiledningUtenlandsopphold() {
   return (
-    <Box background="default" padding="space-24">
-      <VStack gap="space-16">
-        <Rutine />
-        <Tilleggsopplysninger />
-      </VStack>
-    </Box>
-  );
-}
-
-function VeiledningList({
-  as,
-  children,
-}: {
-  as: "ol" | "ul";
-  children: React.ReactNode;
-}) {
-  return (
-    <List
-      as={as}
-      size="small"
-      // Korter ned margin i toppen av underlister og avstanden mellom punkter i underlister litt
-      className="[&_ul_ul]:mt-1 [&_ul_ul_li:not(:last-child)]:mb-1"
-    >
-      {children}
-    </List>
+    <VeiledningBox>
+      <Rutine />
+      <Tilleggsopplysninger />
+    </VeiledningBox>
   );
 }
 
