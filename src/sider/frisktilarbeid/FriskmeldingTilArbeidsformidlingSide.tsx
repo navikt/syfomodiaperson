@@ -6,10 +6,11 @@ import * as Tredelt from "@/components/side/TredeltSide";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import FriskmeldingTilArbeidsformidling from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidling";
-import VeiledningBox from "@/sider/frisktilarbeid/VeiledningBox";
+import VeiledningFriskmelding from "@/sider/frisktilarbeid/VeiledningFriskmelding";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import NyttigeLenkerBox from "@/sider/frisktilarbeid/NyttigeLenkerBox";
 import { FriskmeldingTilArbeidsformidlingHistorikk } from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidlingHistorikk.tsx";
+import { VStack } from "@navikt/ds-react";
 
 const texts = {
   title: "Friskmelding til arbeidsformidling",
@@ -31,8 +32,10 @@ export default function FriskmeldingTilArbeidsformidlingSide() {
           </Tredelt.FirstColumn>
 
           <Tredelt.SecondColumn>
-            <VeiledningBox />
-            <NyttigeLenkerBox />
+            <VStack gap="space-8">
+              <VeiledningFriskmelding />
+              <NyttigeLenkerBox />
+            </VStack>
           </Tredelt.SecondColumn>
         </Tredelt.Container>
       </SideLaster>

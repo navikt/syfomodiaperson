@@ -11,6 +11,7 @@ import LumiSurvey from "@/components/lumi/LumiSurvey.tsx";
 import { utenlandsoppholdSurvey } from "@/components/lumi/utenlandsoppholdSurvey.ts";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks.ts";
 import VeiledningUtenlandsopphold from "./VeiledningUtenlandsopphold";
+import { VStack } from "@navikt/ds-react";
 
 const texts = {
   title: "Søknad om sykepenger under opphold utenfor EU/EØS",
@@ -50,7 +51,9 @@ export function UtenlandsoppholdSide({ children }: Props) {
           </Tredelt.FirstColumn>
 
           <Tredelt.SecondColumn>
-            <VeiledningUtenlandsopphold />
+            <VStack gap="space-16">
+              <VeiledningUtenlandsopphold />
+            </VStack>
           </Tredelt.SecondColumn>
         </Tredelt.Container>
       </SideLaster>

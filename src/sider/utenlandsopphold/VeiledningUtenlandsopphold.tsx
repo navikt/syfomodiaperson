@@ -7,15 +7,6 @@ import React from "react";
 const linkRutineYrkesskade =
   "https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Vurdering-av-%C3%A5rsakssammenheng-ved-yrkesskade-yrkessykdm.aspx";
 
-export default function VeiledningUtenlandsopphold() {
-  return (
-    <VeiledningBox>
-      <Rutine />
-      <Tilleggsopplysninger />
-    </VeiledningBox>
-  );
-}
-
 function Rutine() {
   return (
     <Box>
@@ -98,5 +89,14 @@ function Tilleggsopplysninger() {
         </List.Item>
       </VeiledningList>
     </Box>
+  );
+}
+
+export default function VeiledningUtenlandsopphold() {
+  return (
+    <VeiledningBox>
+      <Rutine />
+      <Tilleggsopplysninger />
+    </VeiledningBox>
   );
 }
