@@ -19,6 +19,8 @@ import {
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
 import { ArrowsCirclepathIcon } from "@navikt/aksel-icons";
+import { useAapStatusQuery } from "@/data/aap/aapQueryHooks.ts";
+import { AapTag } from "@/components/personkort/PersonkortHeader/AapTag.tsx";
 
 const texts = {
   fetchDiskresjonskodeFailed: "Klarte ikke hente diskresjonskode for brukeren.",
@@ -48,6 +50,7 @@ export function PersonkortHeaderTags() {
   const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
   const getSykmeldingerQuery = useGetSykmeldingerQuery();
   const { hasGjentakendeSykefravar } = useOppfolgingstilfellePersonQuery();
+  const { data: aapStatus } = useAapStatusQuery();
 
   const isDead = !!dodsdato;
   const dateOfDeath = tilLesbarDatoMedArUtenManedNavn(dodsdato);
@@ -148,6 +151,7 @@ export function PersonkortHeaderTags() {
             {texts.harIkkeArbeidsgiver}
           </Tag>
         )}
+        {aapStatus && <AapTag aapStatus={aapStatus} />}
       </div>
     </ErrorBoundary>
   );
