@@ -68,7 +68,7 @@ const renderUtenlandsoppholdSoknad = (
   );
 
 const perioderUtenforTilfelleWarning =
-  "En eller flere av periodene det er søkt om ligger utenfor utenfor sykmeldingsperioden.";
+  "En eller flere av periodene det er søkt om ligger utenfor sykmeldingsperioden.";
 
 function setOppfolgingstilfeller(
   oppfolgingstilfelleList: OppfolgingstilfelleDTO[],
