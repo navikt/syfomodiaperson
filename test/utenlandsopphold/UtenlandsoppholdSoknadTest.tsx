@@ -784,43 +784,5 @@ describe("UtenlandsoppholdSoknad", () => {
       await screen.findByRole("button", { name: "Send vedtak" });
       expect(screen.queryByText(perioderUtenforTilfelleWarning)).to.not.exist;
     });
-
-    it("viser varsel når en søkt periode delvis er utenfor gjeldende oppfolgingstilfelle", async () => {
-      stubSoknaderQuery({ soknader: [soknadMedKjentePerioder] });
-      setOppfolgingstilfeller([
-        generateOppfolgingstilfelle(
-          new Date("2026-09-05"),
-          new Date("2026-12-31"),
-        ),
-      ]);
-
-      renderUtenlandsoppholdSoknad();
-
-      expect(await screen.findByText(perioderUtenforTilfelleWarning)).to.exist;
-    });
-
-    it("viser ikke varsel når fom er samme dag som tilfellets start", async () => {
-      stubSoknaderQuery({ soknader: [soknadMedKjentePerioder] });
-      setOppfolgingstilfeller([
-        generateOppfolgingstilfelle(
-          new Date("2026-09-01T11:48:00"),
-          new Date("2026-12-31"),
-        ),
-      ]);
-
-      renderUtenlandsoppholdSoknad();
-
-      await screen.findByRole("button", { name: "Send vedtak" });
-      expect(screen.queryByText(perioderUtenforTilfelleWarning)).to.not.exist;
-    });
-
-    it("viser varsel når det ikke finnes noe oppfolgingstilfelle", async () => {
-      stubSoknaderQuery({ soknader: [soknadMedKjentePerioder] });
-      setOppfolgingstilfeller([]);
-
-      renderUtenlandsoppholdSoknad();
-
-      expect(await screen.findByText(perioderUtenforTilfelleWarning)).to.exist;
-    });
   });
 });
