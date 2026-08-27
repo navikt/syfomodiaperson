@@ -1,4 +1,5 @@
 import { Box, VStack } from "@navikt/ds-react";
+import React from "react";
 
 export function VeiledningBox({ children }: { children: React.ReactNode }) {
   return (

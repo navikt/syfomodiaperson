@@ -1,4 +1,5 @@
 import { List } from "@navikt/ds-react";
+import React from "react";
 
 export function VeiledningList({
   as,
