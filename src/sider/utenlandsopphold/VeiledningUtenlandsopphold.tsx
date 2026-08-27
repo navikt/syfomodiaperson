@@ -6,6 +6,10 @@ import React from "react";
 
 const linkRutineYrkesskade =
   "https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Vurdering-av-%C3%A5rsakssammenheng-ved-yrkesskade-yrkessykdm.aspx";
+const linkNavetInfo =
+  "https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Vedtak-om-utenlandsopphold-i-Modia-syfo.aspx";
+const linkLovdataParagraf =
+  "https://lovdata.no/dokument/NL/lov/1997-02-28-19/KAPITTEL_4-4-1#%C2%A78-9";
 
 function Rutine() {
   return (
@@ -34,7 +38,7 @@ function Rutine() {
 
         <List.Item>
           Vurder om:
-          <List as="ul" size="small" className="mt-0">
+          <List as="ul" size="small">
             <List.Item>reisen ikke forlenger sykefraværet</List.Item>
             <List.Item>
               reisen ikke hindrer planlagt oppfølging, aktivitet eller
@@ -92,11 +96,36 @@ function Tilleggsopplysninger() {
   );
 }
 
+function SeOgsaLenker() {
+  return (
+    <Box>
+      <Heading level="3" size="small" spacing>
+        Se også
+      </Heading>
+
+      <VeiledningList as="ul">
+        <List.Item>
+          <EksternLenke href={linkNavetInfo}>
+            Informasjon om denne vedtaksløsningen på Navet
+          </EksternLenke>
+        </List.Item>
+
+        <List.Item>
+          <EksternLenke href={linkLovdataParagraf}>
+            Paragraf § 8-9 på Lovdata.no
+          </EksternLenke>
+        </List.Item>
+      </VeiledningList>
+    </Box>
+  );
+}
+
 export default function VeiledningUtenlandsopphold() {
   return (
     <VeiledningBox>
       <Rutine />
       <Tilleggsopplysninger />
+      <SeOgsaLenker />
     </VeiledningBox>
   );
 }
