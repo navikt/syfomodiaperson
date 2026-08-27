@@ -27,14 +27,16 @@ const inTenWeeks = dayjs(addWeeks(new Date(), 10));
 const threeWeeksAgo = dayjs(addWeeks(today.toDate(), -3));
 const enBegrunnelse = "En begrunnelse";
 
-const renderFattVedtakSkjema = () =>
+const renderFattVedtakSkjema = (
+  arbeidssokerFom = threeWeeksAgo.format("YYYY-MM-DD"),
+) =>
   render(
     <QueryClientProvider client={queryClient}>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
         <NotificationProvider>
-          <FattVedtakSkjema />
+          <FattVedtakSkjema arbeidssokerFom={arbeidssokerFom} />
         </NotificationProvider>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
@@ -48,7 +50,7 @@ describe("FattVedtakSkjema", () => {
   it("viser skjema for å fatte vedtak", () => {
     renderFattVedtakSkjema();
 
-    expect(getTextInput("Friskmeldingen gjelder fra")).to.exist;
+    expect(getTextInput("Vedtaket gjelder fra")).to.exist;
     const tilDatoInput = screen.getByRole("textbox", {
       name: /Til dato/,
     });
@@ -76,7 +78,7 @@ describe("FattVedtakSkjema", () => {
 
     renderFattVedtakSkjema();
 
-    const fraDato = getTextInput("Friskmeldingen gjelder fra");
+    const fraDato = getTextInput("Vedtaket gjelder fra");
     changeTextInput(fraDato, threeWeeksAgo.format("DD.MM.YYYY"));
 
     expect(screen.getByText("Automatisk justert 12 uker frem")).to.exist;
@@ -146,13 +148,42 @@ describe("FattVedtakSkjema", () => {
     const begrunnelseInput = getTextInput("Begrunnelse");
     changeTextInput(begrunnelseInput, enBegrunnelse);
 
-    const fraDato = getTextInput("Friskmeldingen gjelder fra");
+    const fraDato = getTextInput("Vedtaket gjelder fra");
     changeTextInput(fraDato, today.format("DD.MM.YYYY"));
 
     await clickButton("Fatt vedtak");
 
     expect(await screen.findByText("Dato kan ikke være etter til-dato")).to
       .exist;
+  });
+
+  it("validerer fra-dato mot starten av arbeidssokerperioden", async () => {
+    renderFattVedtakSkjema();
+
+    const fraDato = getTextInput("Vedtaket gjelder fra");
+    changeTextInput(
+      fraDato,
+      threeWeeksAgo.subtract(1, "day").format("DD.MM.YYYY"),
+    );
+
+    await clickButton("Fatt vedtak");
+
+    expect(
+      await screen.findByText(
+        "Dato kan ikke være før arbeidssøkerperioden startet",
+      ),
+    ).to.exist;
+
+    changeTextInput(fraDato, threeWeeksAgo.format("DD.MM.YYYY"));
+    await clickButton("Fatt vedtak");
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText(
+          "Dato kan ikke være før arbeidssøkerperioden startet",
+        ),
+      ).to.not.exist;
+    });
   });
 
   it("fatter vedtak med verdier fra skjema", async () => {
@@ -172,7 +203,7 @@ describe("FattVedtakSkjema", () => {
     await userEvent.click(arbeidsforholdCheckbox);
     await userEvent.click(fritakCheckbox);
 
-    const fraDato = getTextInput("Friskmeldingen gjelder fra");
+    const fraDato = getTextInput("Vedtaket gjelder fra");
     changeTextInput(fraDato, today.format("DD.MM.YYYY"));
 
     const begrunnelseInput = getTextInput("Begrunnelse");
@@ -229,7 +260,7 @@ describe("FattVedtakSkjema", () => {
     await userEvent.click(arbeidsforholdCheckbox);
     await userEvent.click(fritakCheckbox);
 
-    const fraDato = getTextInput("Friskmeldingen gjelder fra");
+    const fraDato = getTextInput("Vedtaket gjelder fra");
     changeTextInput(fraDato, today.format("DD.MM.YYYY"));
     const begrunnelseInput = getTextInput("Begrunnelse");
     changeTextInput(begrunnelseInput, enBegrunnelse);

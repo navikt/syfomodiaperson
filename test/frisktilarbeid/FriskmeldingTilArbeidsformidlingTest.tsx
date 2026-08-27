@@ -96,7 +96,7 @@ describe("FriskmeldingTilArbeidsformidling", () => {
 
     expect(await screen.findByRole("heading", { name: "Fatt vedtak" })).to
       .exist;
-    expect(await screen.findByText("Friskmeldingen gjelder fra")).to.exist;
+    expect(await screen.findByText("Vedtaket gjelder fra")).to.exist;
     expect(
       await screen.findByRole("button", {
         hidden: true,
@@ -108,6 +108,7 @@ describe("FriskmeldingTilArbeidsformidling", () => {
   it("viser alert for manglende arbeidssokerregistrering hvis person ikke arbeidssoker", () => {
     const vilkar: VilkarResponseDTO = {
       isArbeidssoker: false,
+      arbeidssokerFom: null,
     };
     queryClient.setQueryData(
       vedtakQueryKeys.vilkar(ARBEIDSTAKER_DEFAULT.personIdent),
@@ -126,6 +127,26 @@ describe("FriskmeldingTilArbeidsformidling", () => {
         "Den sykemeldte er ikke registrert som arbeidssøker. Dette må gjøres før et nytt vedtak kan fattes.",
       ),
     ).to.exist;
+  });
+
+  it("viser alert hvis startdato for arbeidssokerperioden mangler", () => {
+    const vilkar: VilkarResponseDTO = {
+      isArbeidssoker: true,
+      arbeidssokerFom: null,
+    };
+    queryClient.setQueryData(
+      vedtakQueryKeys.vilkar(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => vilkar,
+    );
+
+    renderFriskmeldingTilArbeidsformidling();
+
+    expect(
+      screen.getByText(
+        "Den sykemeldte er ikke registrert som arbeidssøker. Dette må gjøres før et nytt vedtak kan fattes.",
+      ),
+    ).to.exist;
+    expect(getButton("Nytt vedtak")).to.have.property("disabled", true);
   });
 
   it("viser alert om at det ikke er mulig å starte nytt vedtak ettersom det finnes et eksisterende aktivt vedtak", () => {

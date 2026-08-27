@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
+import {
+  useVedtakQuery,
+  useVilkarForVedtakQuery,
+} from "@/data/frisktilarbeid/vedtakQuery";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import FattVedtakSkjema from "@/sider/frisktilarbeid/FattVedtakSkjema";
 import NyttVedtak from "@/sider/frisktilarbeid/NyttVedtak";
@@ -7,6 +10,8 @@ import VedtakFattet from "@/sider/frisktilarbeid/VedtakFattet";
 
 export default function FriskmeldingTilArbeidsformidling() {
   const { data } = useVedtakQuery();
+  const { data: vilkar, isPending: isVilkarPending } =
+    useVilkarForVedtakQuery();
   const [isNyVurderingStarted, setIsNyVurderingStarted] = useState(false);
 
   const vedtak: VedtakResponseDTO | undefined = data[0];
@@ -21,9 +26,16 @@ export default function FriskmeldingTilArbeidsformidling() {
     );
   }
 
-  if (!isNyVurderingStarted) {
-    return <NyttVedtak setIsNyVurderingStarted={setIsNyVurderingStarted} />;
+  if (!isNyVurderingStarted || !vilkar?.arbeidssokerFom) {
+    return (
+      <NyttVedtak
+        setIsNyVurderingStarted={setIsNyVurderingStarted}
+        isRegisteredArbeidssoker={!!vilkar?.isArbeidssoker}
+        arbeidssokerFom={vilkar?.arbeidssokerFom}
+        isVilkarPending={isVilkarPending}
+      />
+    );
   }
 
-  return <FattVedtakSkjema />;
+  return <FattVedtakSkjema arbeidssokerFom={vilkar.arbeidssokerFom} />;
 }
