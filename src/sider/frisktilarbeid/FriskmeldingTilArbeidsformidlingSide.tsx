@@ -29,6 +29,7 @@ export default function FriskmeldingTilArbeidsformidlingSide() {
             </NotificationProvider>
             <FriskmeldingTilArbeidsformidlingHistorikk />
           </Tredelt.FirstColumn>
+
           <Tredelt.SecondColumn>
             <VeiledningBox />
             <NyttigeLenkerBox />
