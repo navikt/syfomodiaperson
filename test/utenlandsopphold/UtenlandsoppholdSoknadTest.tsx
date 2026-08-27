@@ -36,6 +36,9 @@ import {
 } from "../stubs/stubIsutenlandsopphold";
 import { maksdatoQueryKeys } from "@/data/maksdato/useMaksdatoQuery";
 import { createDraftTextMock } from "@/mocks/draft/mockDraftText.ts";
+import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
+import { generateOppfolgingstilfelle } from "../testDataUtils";
 
 let queryClient: QueryClient;
 const forbeholdOvrigeVilkarText =
@@ -63,6 +66,24 @@ const renderUtenlandsoppholdSoknad = (
       </MemoryRouter>
     </QueryClientProvider>,
   );
+
+const perioderUtenforTilfelleWarning =
+  "En eller flere av periodene det er søkt om ligger utenfor utenfor sykmeldingsperioden.";
+
+function setOppfolgingstilfeller(
+  oppfolgingstilfelleList: OppfolgingstilfelleDTO[],
+) {
+  queryClient.setQueryData(
+    oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
+      ARBEIDSTAKER_DEFAULT.personIdent,
+    ),
+    () => ({
+      oppfolgingstilfelleList,
+      personIdent: ARBEIDSTAKER_DEFAULT.personIdent,
+      hasGjentakendeSykefravar: false,
+    }),
+  );
+}
 
 describe("UtenlandsoppholdSoknad", () => {
   beforeEach(() => {
@@ -738,5 +759,68 @@ describe("UtenlandsoppholdSoknad", () => {
 
     await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
     expect(await screen.findByText("Draft 2")).to.exist;
+  });
+
+  describe("varsel om perioder utenfor oppfolgingstilfelle", () => {
+    const soknadMedKjentePerioder = {
+      ...soknadUtenVedtakMock,
+      soktePerioder: [
+        { fom: "2026-09-01", tom: "2026-09-07" },
+        { fom: "2026-09-10", tom: "2026-09-12" },
+      ],
+    };
+
+    it("viser ikke varsel når alle søkte perioder er innenfor gjeldende oppfolgingstilfelle", async () => {
+      stubSoknaderQuery({ soknader: [soknadMedKjentePerioder] });
+      setOppfolgingstilfeller([
+        generateOppfolgingstilfelle(
+          new Date("2026-08-01"),
+          new Date("2026-12-31"),
+        ),
+      ]);
+
+      renderUtenlandsoppholdSoknad();
+
+      await screen.findByRole("button", { name: "Send vedtak" });
+      expect(screen.queryByText(perioderUtenforTilfelleWarning)).to.not.exist;
+    });
+
+    it("viser varsel når en søkt periode delvis er utenfor gjeldende oppfolgingstilfelle", async () => {
+      stubSoknaderQuery({ soknader: [soknadMedKjentePerioder] });
+      setOppfolgingstilfeller([
+        generateOppfolgingstilfelle(
+          new Date("2026-09-05"),
+          new Date("2026-12-31"),
+        ),
+      ]);
+
+      renderUtenlandsoppholdSoknad();
+
+      expect(await screen.findByText(perioderUtenforTilfelleWarning)).to.exist;
+    });
+
+    it("viser ikke varsel når fom er samme dag som tilfellets start", async () => {
+      stubSoknaderQuery({ soknader: [soknadMedKjentePerioder] });
+      setOppfolgingstilfeller([
+        generateOppfolgingstilfelle(
+          new Date("2026-09-01T11:48:00"),
+          new Date("2026-12-31"),
+        ),
+      ]);
+
+      renderUtenlandsoppholdSoknad();
+
+      await screen.findByRole("button", { name: "Send vedtak" });
+      expect(screen.queryByText(perioderUtenforTilfelleWarning)).to.not.exist;
+    });
+
+    it("viser varsel når det ikke finnes noe oppfolgingstilfelle", async () => {
+      stubSoknaderQuery({ soknader: [soknadMedKjentePerioder] });
+      setOppfolgingstilfeller([]);
+
+      renderUtenlandsoppholdSoknad();
+
+      expect(await screen.findByText(perioderUtenforTilfelleWarning)).to.exist;
+    });
   });
 });

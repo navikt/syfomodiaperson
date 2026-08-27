@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
   hasGjentakendeSykefravar,
+  harPerioderUtenforOppfolgingstilfelle,
+  isPeriodeInnenforOppfolgingstilfelle,
   OppfolgingstilfellePersonDTO,
   THREE_YEARS_AGO_IN_MONTHS,
 } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
@@ -148,6 +150,94 @@ describe("oppfolgingstilfellePersonDTO tests", () => {
           ...tilfellePerson,
           oppfolgingstilfelleList,
         }),
+      ).to.be.true;
+    });
+  });
+
+  describe("isPeriodeInnenforOppfolgingstilfelle", () => {
+    const tilfelle = generateOppfolgingstilfelle(
+      new Date("2026-08-01"),
+      new Date("2026-12-31"),
+    );
+
+    it("er true når hele perioden er innenfor tilfellet", () => {
+      expect(
+        isPeriodeInnenforOppfolgingstilfelle(
+          { fom: new Date("2026-09-01"), tom: new Date("2026-09-10") },
+          tilfelle,
+        ),
+      ).to.be.true;
+    });
+
+    it("er false når fom er før tilfellets start", () => {
+      expect(
+        isPeriodeInnenforOppfolgingstilfelle(
+          { fom: new Date("2026-07-25"), tom: new Date("2026-09-10") },
+          tilfelle,
+        ),
+      ).to.be.false;
+    });
+
+    it("er false når tom er etter tilfellets slutt", () => {
+      expect(
+        isPeriodeInnenforOppfolgingstilfelle(
+          { fom: new Date("2026-09-01"), tom: new Date("2027-01-10") },
+          tilfelle,
+        ),
+      ).to.be.false;
+    });
+
+    it("er true når fom er samme dag som tilfellets start, selv om start har klokkeslett", () => {
+      const tilfelleMedKlokkeslett = generateOppfolgingstilfelle(
+        new Date("2026-08-01T11:48:00"),
+        new Date("2026-12-31T11:48:00"),
+      );
+
+      expect(
+        isPeriodeInnenforOppfolgingstilfelle(
+          { fom: new Date("2026-08-01"), tom: new Date("2026-08-10") },
+          tilfelleMedKlokkeslett,
+        ),
+      ).to.be.true;
+    });
+  });
+
+  describe("harPerioderUtenforOppfolgingstilfelle", () => {
+    const tilfelle = generateOppfolgingstilfelle(
+      new Date("2026-08-01"),
+      new Date("2026-12-31"),
+    );
+
+    it("er false når alle perioder er innenfor tilfellet", () => {
+      expect(
+        harPerioderUtenforOppfolgingstilfelle(
+          [
+            { fom: new Date("2026-09-01"), tom: new Date("2026-09-07") },
+            { fom: new Date("2026-09-10"), tom: new Date("2026-09-12") },
+          ],
+          tilfelle,
+        ),
+      ).to.be.false;
+    });
+
+    it("er true når en periode delvis er utenfor tilfellet", () => {
+      expect(
+        harPerioderUtenforOppfolgingstilfelle(
+          [
+            { fom: new Date("2026-09-01"), tom: new Date("2026-09-07") },
+            { fom: new Date("2026-12-20"), tom: new Date("2027-01-05") },
+          ],
+          tilfelle,
+        ),
+      ).to.be.true;
+    });
+
+    it("er true når det ikke finnes noe oppfolgingstilfelle", () => {
+      expect(
+        harPerioderUtenforOppfolgingstilfelle(
+          [{ fom: new Date("2026-09-01"), tom: new Date("2026-09-07") }],
+          undefined,
+        ),
       ).to.be.true;
     });
   });
