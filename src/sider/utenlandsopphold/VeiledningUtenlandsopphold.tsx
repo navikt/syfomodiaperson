@@ -10,15 +10,23 @@ import React from "react";
 
 const linkRutineYrkesskade =
   "https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Vurdering-av-%C3%A5rsakssammenheng-ved-yrkesskade-yrkessykdm.aspx";
-const linkNavetInfo =
+const linkServiceRutine =
+  "https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Utenlandsopphold.aspx";
+const linkTemaside =
+  "https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Sykepenger-ved-opphold-i-utlandet.aspx";
+const linkNyhetssak =
   "https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Vedtak-om-utenlandsopphold-i-Modia-syfo.aspx";
-const linkLovdataParagraf =
-  "https://lovdata.no/dokument/NL/lov/1997-02-28-19/KAPITTEL_4-4-1#%C2%A78-9";
+const linkRundskriv =
+  "https://lovdata.no/pro/#document/NAV/rundskriv/r08-00/KAPITTEL_3-9-3";
 
 const texts = {
   headingRutine: "Rutine",
   headingTilleggsopplysninger: "Tilleggsopplysninger",
   headingSeOgsaaLenker: "Se også",
+  linkServiceRutine: "Servicerutinen om utenlandsopphold",
+  linkTemaside: "Temaside om Sykepenger ved opphold i utlandet",
+  linkNyhetssakNavet: "Nyhetssak om denne løsningen på Navet",
+  linkRundskriv: "Rundskriv til folketrygdloven § 8-9 tredje ledd",
 };
 
 const textsRutineList: NestableListItem[] = [
@@ -97,14 +105,24 @@ function SeOgsaLenker() {
 
       <VeiledningList as="ul">
         <List.Item>
-          <EksternLenke href={linkNavetInfo}>
-            Informasjon om denne vedtaksløsningen på Navet
+          <EksternLenke href={linkServiceRutine}>
+            {texts.linkServiceRutine}
           </EksternLenke>
         </List.Item>
 
         <List.Item>
-          <EksternLenke href={linkLovdataParagraf}>
-            Paragraf § 8-9 på Lovdata.no
+          <EksternLenke href={linkTemaside}>{texts.linkTemaside}</EksternLenke>
+        </List.Item>
+
+        <List.Item>
+          <EksternLenke href={linkNyhetssak}>
+            {texts.linkNyhetssakNavet}
+          </EksternLenke>
+        </List.Item>
+
+        <List.Item>
+          <EksternLenke href={linkRundskriv}>
+            {texts.linkRundskriv}
           </EksternLenke>
         </List.Item>
       </VeiledningList>
