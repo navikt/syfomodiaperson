@@ -1,6 +1,8 @@
 import { Box, Heading, List } from "@navikt/ds-react";
 import React from "react";
 import { EksternLenke } from "@/components/EksternLenke";
+import { VeiledningList } from "@/components/veiledning/VeiledningList";
+import { VeiledningBox } from "@/components/veiledning/VeiledningBox";
 
 const texts = {
   heading: "Veiledning",
@@ -19,27 +21,31 @@ const texts = {
 const rutineUrl =
   "https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Behovsvurdering-og-sykmeldte.aspx?csf=1&web=1&e=94CQ0a&CID=72bd178d-9242-4247-a5ba-c3c758b06a99";
 
-export function VeiledningRutine() {
+function Rutine() {
   return (
-    <Box
-      background="default"
-      padding="space-24"
-      className="flex flex-col gap-4 mb-2"
-    >
-      <Heading size="medium">{texts.heading}</Heading>
-      <div>
-        <Heading as="h3" size="xsmall">
-          {texts.vurderFolgende}
-        </Heading>
-        <Box marginBlock="space-12" asChild>
-          <List as="ul" size="small">
-            {texts.rutine.map((text, index) => (
-              <List.Item key={index}>{text}</List.Item>
-            ))}
-          </List>
-        </Box>
-      </div>
-      <EksternLenke href={rutineUrl}>{texts.link}</EksternLenke>
+    <Box>
+      <Heading size="medium" spacing>
+        {texts.heading}
+      </Heading>
+
+      <Heading as="h3" size="xsmall" spacing>
+        {texts.vurderFolgende}
+      </Heading>
+
+      <VeiledningList as="ul">
+        {texts.rutine.map((text, index) => (
+          <List.Item key={index}>{text}</List.Item>
+        ))}
+      </VeiledningList>
     </Box>
+  );
+}
+
+export function VeiledningSenOppfolging() {
+  return (
+    <VeiledningBox>
+      <Rutine />
+      <EksternLenke href={rutineUrl}>{texts.link}</EksternLenke>
+    </VeiledningBox>
   );
 }

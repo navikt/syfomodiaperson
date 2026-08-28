@@ -1,4 +1,6 @@
-import { BodyShort, Box, Heading, List } from "@navikt/ds-react";
+import { VeiledningBox } from "@/components/veiledning/VeiledningBox";
+import { VeiledningList } from "@/components/veiledning/VeiledningList";
+import { BodyShort, Box, Heading, List, VStack } from "@navikt/ds-react";
 import React from "react";
 
 const texts = {
@@ -35,65 +37,65 @@ const texts = {
 
 function Forberedelser() {
   return (
-    <>
-      <Heading level="3" size="small">
+    <Box>
+      <Heading level="3" size="small" spacing>
         {texts.title}
       </Heading>
-      <BodyShort size="small">{texts.intro}</BodyShort>
-      <Box marginBlock="space-12" asChild>
-        <List as="ul" size="small">
-          {texts.preparations.map((text, index) => (
-            <List.Item key={index}>{text}</List.Item>
-          ))}
-        </List>
-      </Box>
-    </>
+
+      <BodyShort size="small" className="mb-4">
+        {texts.intro}
+      </BodyShort>
+
+      <VeiledningList as="ul">
+        {texts.preparations.map((text, index) => (
+          <List.Item key={index}>{text}</List.Item>
+        ))}
+      </VeiledningList>
+    </Box>
   );
 }
 
 function StegForSteg() {
   return (
-    <>
-      <Heading level="3" size="small">
+    <Box>
+      <Heading level="3" size="small" spacing>
         {texts.rutineTitle}
       </Heading>
-      <Box marginBlock="space-12" asChild>
-        <List as="ol" size="small">
-          <List.Item>
-            {texts.rutineSteps.registrerSomArbeidssoker.title}
-          </List.Item>
-          <List.Item>{texts.rutineSteps.fatt14aVedtak}</List.Item>
-          <List.Item>{texts.rutineSteps.sendVedtak}</List.Item>
-          <List.Item>{texts.rutineSteps.sendGosysOppgave}</List.Item>
-        </List>
-      </Box>
-    </>
+
+      <VeiledningList as="ol">
+        <List.Item>
+          {texts.rutineSteps.registrerSomArbeidssoker.title}
+        </List.Item>
+        <List.Item>{texts.rutineSteps.fatt14aVedtak}</List.Item>
+        <List.Item>{texts.rutineSteps.sendVedtak}</List.Item>
+        <List.Item>{texts.rutineSteps.sendGosysOppgave}</List.Item>
+      </VeiledningList>
+    </Box>
   );
 }
 
 function Tilleggsinformasjon() {
   return (
-    <>
-      <Heading level="4" size="xsmall">
+    <Box>
+      <Heading level="4" size="xsmall" spacing>
         {texts.infoTitle}
       </Heading>
-      <Box marginBlock="space-12" asChild>
-        <List as="ul" size="small">
-          {texts.infoBulletPoints.map((text, index) => (
-            <List.Item key={index}>{text}</List.Item>
-          ))}
-        </List>
-      </Box>
-    </>
+
+      <VeiledningList as="ul">
+        {texts.infoBulletPoints.map((text, index) => (
+          <List.Item key={index}>{text}</List.Item>
+        ))}
+      </VeiledningList>
+    </Box>
   );
 }
 
-export default function VeiledningBox() {
+export default function VeiledningFriskmelding() {
   return (
-    <Box background="default" padding="space-24" className="mb-2">
+    <VeiledningBox>
       <Forberedelser />
       <StegForSteg />
       <Tilleggsinformasjon />
-    </Box>
+    </VeiledningBox>
   );
 }

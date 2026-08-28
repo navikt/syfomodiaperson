@@ -7,7 +7,7 @@ import {
   SenOppfolgingStatus,
   SenOppfolgingVurderingType,
 } from "@/data/senoppfolging/senOppfolgingTypes";
-import { VeiledningRutine } from "@/sider/senoppfolging/VeiledningRutine";
+import { VeiledningSenOppfolging } from "@/sider/senoppfolging/VeiledningSenOppfolging";
 import NewVurderingForm from "@/sider/senoppfolging/NewVurderingForm";
 import OvingssideLink from "@/sider/senoppfolging/OvingssideLink";
 import { KandidatIkkeSvart } from "@/sider/senoppfolging/KandidatIkkeSvart";
@@ -18,6 +18,7 @@ import Side from "@/components/side/Side";
 import SideLaster from "@/components/side/SideLaster";
 import IkkeKandidatInfo from "@/sider/senoppfolging/IkkeKandidatInfo";
 import { SenOppfolgingHistorikk } from "@/sider/senoppfolging/historikk/SenOppfolgingHistorikk";
+import { VStack } from "@navikt/ds-react";
 
 const texts = {
   title: "Snart slutt på sykepengene",
@@ -58,9 +59,12 @@ export default function SenOppfolging(): ReactElement {
                 )}
                 <SenOppfolgingHistorikk historikk={tidligereKandidater} />
               </Tredelt.FirstColumn>
+
               <Tredelt.SecondColumn>
-                <VeiledningRutine />
-                <OvingssideLink />
+                <VStack gap="space-8">
+                  <VeiledningSenOppfolging />
+                  <OvingssideLink />
+                </VStack>
               </Tredelt.SecondColumn>
             </Tredelt.Container>
           </div>
