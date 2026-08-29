@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../../dialogmote/testData";
 import React from "react";
@@ -27,6 +27,7 @@ import { MemoryRouter } from "react-router-dom";
 import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { queryClientWithMockData } from "../../testQueryClient";
 import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
+import { stubLegacyOppfolgingsplanApi } from "../../stubs/stubSyfooppfolgingsplan";
 
 vi.mock("@/components/lumi/LumiSurvey", () => ({
   default: ({ surveyId }: { surveyId: string }) => (
@@ -54,6 +55,34 @@ describe("OppfolgingsplanerOversikt", () => {
   beforeEach(() => (queryClient = queryClientWithMockData()));
 
   describe("Oppfølgingsplaner visning", () => {
+    it("Viser siden når gammelt oppfølgingsplanformat ikke er tilgjengelig", async () => {
+      const legacyRequest = vi.fn();
+      stubLegacyOppfolgingsplanApi(legacyRequest);
+      const legacyQueryKey = [
+        "oppfolgingsplaner",
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      ];
+      queryClient.removeQueries({ queryKey: legacyQueryKey });
+      queryClient.setQueryDefaults(legacyQueryKey, { retry: false });
+      queryClient.setQueryData(
+        oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+          ARBEIDSTAKER_DEFAULT.personIdent,
+        ),
+        () => [],
+      );
+
+      renderOppfolgingsplanerOversikt();
+
+      await waitFor(
+        () =>
+          expect(
+            screen.getByRole("heading", { name: "Aktive oppfølgingsplaner" }),
+          ).to.exist,
+      );
+      expect(queryClient.getQueryState(legacyQueryKey)).to.be.undefined;
+      expect(legacyRequest).not.toHaveBeenCalled();
+    });
+
     it("Sorterer ubehandlede oppfølgingsplan-LPSer etter opprettet dato", () => {
       const olderOppfolgingsplan = createOppfolgingsplanLps(90, false);
       const newerOppfolgingsplan = createOppfolgingsplanLps(10, false);

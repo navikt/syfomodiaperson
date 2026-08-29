@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { createRef } from "react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithMockData } from "../../../testQueryClient";
-import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import {
   ARBEIDSTAKER_DEFAULT,
   LEDERE_DEFAULT,
@@ -31,12 +30,6 @@ const renderOppfolgingsenhetInnhold = () =>
 describe("Tildele", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
-    queryClient.setQueryData(
-      oppfolgingsplanQueryKeys.oppfolgingsplaner(
-        ARBEIDSTAKER_DEFAULT.personIdent,
-      ),
-      () => [],
-    );
     queryClient.setQueryData(
       ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
       () => [LEDERE_DEFAULT[0]],

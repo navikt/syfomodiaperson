@@ -3,9 +3,7 @@ import React from "react";
 import { erIdag } from "@/utils/datoUtils";
 import dayjs from "dayjs";
 import { OppfolgingsplanLPSMedPersonoppgave } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
-import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import OppfolgingsplanerOversiktLPS from "@/sider/oppfolgingsplan/lps/OppfolgingsplanerOversiktLPS";
-import OppfolgingsplanV1Item from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanV1Item.tsx";
 import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 import OppfolgingsplanV2Item from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanV2Item";
 
@@ -15,13 +13,11 @@ const texts = {
 };
 
 interface Props {
-  aktivePlanerV1: OppfolgingsplanDTO[];
   aktivePlanerV2: OppfolgingsplanV2DTO[];
   oppfolgingsplanerLPSMedPersonoppgave: OppfolgingsplanLPSMedPersonoppgave[];
 }
 
 export default function AktiveOppfolgingsplaner({
-  aktivePlanerV1,
   aktivePlanerV2,
   oppfolgingsplanerLPSMedPersonoppgave,
 }: Props) {
@@ -46,9 +42,7 @@ export default function AktiveOppfolgingsplaner({
     });
 
   const hasActivePlan =
-    aktivePlanerV1.length !== 0 ||
-    oppfolgingsplanerLPSUnprocessed.length !== 0 ||
-    aktivePlanerV2.length !== 0;
+    oppfolgingsplanerLPSUnprocessed.length !== 0 || aktivePlanerV2.length !== 0;
 
   return (
     <div className="mb-8">
@@ -65,9 +59,6 @@ export default function AktiveOppfolgingsplaner({
           ))}
           {aktivePlanerV2.map((plan, index) => (
             <OppfolgingsplanV2Item key={index} oppfolgingsplan={plan} />
-          ))}
-          {aktivePlanerV1.map((dialog, index) => (
-            <OppfolgingsplanV1Item key={index} oppfolgingsplan={dialog} />
           ))}
         </>
       ) : (

@@ -3,19 +3,13 @@ import { lpsPlanerWithActiveTilfelle } from "@/utils/oppfolgingsplanUtils";
 import {
   restdatoTilLesbarDato,
   tilLesbarDatoMedArstall,
-  tilLesbarPeriodeMedArstall,
 } from "@/utils/datoUtils";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import {
   LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT,
   SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT,
-  SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT,
 } from "@/apiConstants";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
-import {
-  filterOppfolgingsplanerByOppfolgingstilfelle,
-  OppfolgingsplanDTO,
-} from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import {
   OppfolgingsplanV2DTO,
   partitionOppfolgingsplanerByActiveTilfelle,
@@ -33,50 +27,9 @@ const texts = {
     "Noe gikk galt ved henting av oppfølgingsplaner. Vennligst prøv igjen senere.",
 };
 
-interface AktivePlanerProps {
-  aktivePlaner: OppfolgingsplanDTO[];
-}
-
 function AktivPlan({ children }: { children: React.ReactNode }) {
   return <div className="mt-2 mb-4 [&_a]:capitalize">{children}</div>;
 }
-
-interface AktivPlanLenkeProps {
-  aktivPlan: OppfolgingsplanDTO;
-}
-
-const AktivPlanLenke = ({ aktivPlan }: AktivPlanLenkeProps) => {
-  const { virksomhetsnavn } = useVirksomhetQuery(
-    aktivPlan.virksomhet.virksomhetsnummer,
-  );
-  return (
-    <span>
-      <Link
-        href={`${SYFOOPPFOLGINGSPLANSERVICE_V2_ROOT}/dokument/${aktivPlan.id}`}
-      >
-        {virksomhetsnavn && virksomhetsnavn.length > 0
-          ? virksomhetsnavn.toLowerCase()
-          : aktivPlan.virksomhet.virksomhetsnummer}
-      </Link>
-    </span>
-  );
-};
-
-const AktivePlaner = ({ aktivePlaner }: AktivePlanerProps) => (
-  <>
-    {aktivePlaner.map((plan, index) => (
-      <AktivPlan key={index}>
-        <AktivPlanLenke aktivPlan={plan} />
-        <span className="ml-8">
-          {tilLesbarPeriodeMedArstall(
-            plan.godkjentPlan.gyldighetstidspunkt.fom,
-            plan.godkjentPlan.gyldighetstidspunkt.tom,
-          )}
-        </span>
-      </AktivPlan>
-    ))}
-  </>
-);
 
 interface LpsPlanLenkeProps {
   lpsPlan: OppfolgingsplanLPS;
@@ -154,23 +107,16 @@ function AktivePlanerV2({ aktivePlaner }: AktivePlanerV2Props) {
 }
 
 interface OppfolgingsplanerProps {
-  planerV1: OppfolgingsplanDTO[];
   planerV2: OppfolgingsplanV2DTO[];
   lpsPlaner: OppfolgingsplanLPS[];
 }
 
-function Oppfolgingsplaner({
-  planerV1,
-  planerV2,
-  lpsPlaner,
-}: OppfolgingsplanerProps) {
-  const anyActivePlaner =
-    planerV1.length > 0 || planerV2.length > 0 || lpsPlaner.length > 0;
+function Oppfolgingsplaner({ planerV2, lpsPlaner }: OppfolgingsplanerProps) {
+  const anyActivePlaner = planerV2.length > 0 || lpsPlaner.length > 0;
 
   return anyActivePlaner ? (
     <div>
       <AktivePlanerV2 aktivePlaner={planerV2} />
-      <AktivePlaner aktivePlaner={planerV1} />
       <LPSPlaner lpsPlaner={lpsPlaner} />
     </div>
   ) : (
@@ -185,7 +131,7 @@ interface Props {
 export default function UtdragOppfolgingsplaner({
   selectedOppfolgingstilfelle,
 }: Props) {
-  const { allePlanerV1, allePlanerV2, lpsPlaner, isLoading, isError } =
+  const { allePlanerV2, lpsPlaner, isLoading, isError } =
     useOppfolgingsplaner();
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
 
@@ -196,13 +142,6 @@ export default function UtdragOppfolgingsplaner({
       new Date(latestOppfolgingstilfelle.start).getTime() &&
     new Date(selectedOppfolgingstilfelle.end).getTime() ===
       new Date(latestOppfolgingstilfelle.end).getTime();
-
-  const planerV1ByOppfolgingstilfelle =
-    filterOppfolgingsplanerByOppfolgingstilfelle(
-      allePlanerV1,
-      selectedOppfolgingstilfelle,
-      isLatestTilfelle,
-    );
 
   const lpsPlanerByOppfolgingstilfelle = lpsPlanerWithActiveTilfelle(
     lpsPlaner,
@@ -230,7 +169,6 @@ export default function UtdragOppfolgingsplaner({
         </Alert>
       ) : (
         <Oppfolgingsplaner
-          planerV1={planerV1ByOppfolgingstilfelle}
           planerV2={planerV2ByOppfolgingstilfelle}
           lpsPlaner={lpsPlanerByOppfolgingstilfelle}
         />

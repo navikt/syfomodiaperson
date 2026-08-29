@@ -239,15 +239,6 @@ export const auth = {
       name: "SYFOMOTEBEHOV_HOST",
     }),
   },
-  syfooppfolgingsplanservice: {
-    applicationName: "syfooppfolgingsplanservice",
-    clientId: envVar({
-      name: "SYFOOPPFOLGINGSPLANSERVICE_AAD_APP_CLIENT_ID",
-    }),
-    host: envVar({
-      name: "SYFOOPPFOLGINGSPLANSERVICE_HOST",
-    }),
-  },
   syfoOppfolgingsplanBackend: {
     applicationName: "syfo-oppfolgingsplan-backend",
     clientId: envVar({

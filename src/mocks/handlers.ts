@@ -19,7 +19,6 @@ import { mockIspengestopp } from "@/mocks/ispengestopp/mockIspengestopp";
 import { mockSykepengesoknadBackend } from "@/mocks/sykepengesoknad/mockSykepengesoknadBackend";
 import { mockSyfoveileder } from "@/mocks/syfoveileder/mockSyfoveileder";
 import { mockSyfosmregister } from "@/mocks/syfosmregister/mockSyfosmregister";
-import { mockSyfooppfolgingsplanservice } from "@/mocks/syfooppfolgingsplanservice/mockSyfooppfolgingsplanservice";
 import { mockIspersonoppgave } from "@/mocks/ispersonoppgave/mockIspersonoppgave";
 import { mockIstilgangskontroll } from "@/mocks/istilgangskontroll/mockIstilgangskontroll";
 import { mockIsutenlandsopphold } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
@@ -74,7 +73,6 @@ const handlers = [
   ...mockIspersonoppgave,
   mockIstilgangskontroll,
   ...mockIsutenlandsopphold,
-  ...mockSyfooppfolgingsplanservice,
   ...mockLpsOppfolgingsplanerMottak,
   ...mockSyfooppfolgingsplanbackend,
   ...mockMerOppfolging,

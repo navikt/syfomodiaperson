@@ -1,17 +1,18 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { queryHookWrapper } from "./queryHookTestUtils";
 import {
   useGetLPSOppfolgingsplanerQuery,
-  useGetOppfolgingsplanerQuery,
+  useGetOppfolgingsplanerV2Query,
 } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
-import { oppfolgingsplanMock } from "@/mocks/syfooppfolgingsplanservice/oppfolgingsplanMock";
 import {
-  stubOppfolgingsplanApi,
+  stubGetOppfolgingsplanV2,
   stubOppfolgingsplanLPSApi,
 } from "../stubs/stubSyfooppfolgingsplan";
 import { testQueryClient } from "../testQueryClient";
 import { oppfolgingsplanerLPSMock } from "@/mocks/lps-oppfolgingsplan-mottak/oppfolgingsplanLPSMock";
+import { oppfolgingsplanV2Mock } from "@/mocks/syfooppfolgingsplanbackend/oppfolgingsplanV2Mock";
+import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 
 let queryClient: any;
 
@@ -22,17 +23,21 @@ describe("oppfolgingsplanQueryHooks tests", () => {
     queryClient = testQueryClient();
   });
 
-  it("loads oppfolgingsplaner for valgt personident", async () => {
-    stubOppfolgingsplanApi();
+  it("loads oppfolgingsplaner v2 for valgt personident", async () => {
+    const requestSpy = vi.fn();
+    stubGetOppfolgingsplanV2(requestSpy);
 
     const wrapper = queryHookWrapper(queryClient);
 
-    const { result } = renderHook(() => useGetOppfolgingsplanerQuery(), {
+    const { result } = renderHook(() => useGetOppfolgingsplanerV2Query(), {
       wrapper,
     });
 
     await waitFor(() => expect(result.current.data).to.not.be.empty);
-    expect(result.current.data).to.deep.equal(oppfolgingsplanMock);
+    expect(result.current.data).to.deep.equal(oppfolgingsplanV2Mock);
+    expect(requestSpy).toHaveBeenCalledWith({
+      sykmeldtFnr: ARBEIDSTAKER_DEFAULT.personIdent,
+    });
   });
 
   it("loads oppfolgingsplaner lps for valgt personident", async () => {

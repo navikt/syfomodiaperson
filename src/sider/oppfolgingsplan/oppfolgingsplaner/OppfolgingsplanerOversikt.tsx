@@ -5,7 +5,6 @@ import OppfolgingsplanerOversiktLPS from "../lps/OppfolgingsplanerOversiktLPS";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
 import { BodyShort, Box, Heading, VStack } from "@navikt/ds-react";
-import OppfolgingsplanV1Item from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanV1Item.tsx";
 import * as Tredelt from "@/components/side/TredeltSide";
 import OppfolgingsplanV2Item from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanV2Item";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
@@ -48,8 +47,6 @@ export default function OppfolgingsplanerOversikt() {
   const { latestOppfolgingstilfelle, hasActiveOppfolgingstilfelle } =
     useOppfolgingstilfellePersonQuery();
   const {
-    aktivePlanerV1,
-    inaktivePlanerV1,
     aktivePlanerV2: aktiveOppfolgingsplanerV2,
     inaktivePlanerV2: inaktiveOppfolgingsplanerV2,
     lpsPlaner,
@@ -83,7 +80,6 @@ export default function OppfolgingsplanerOversikt() {
     });
 
   const hasTidligereOppfolgingsplaner =
-    inaktivePlanerV1.length !== 0 ||
     oppfolgingsplanerLPSProcessed.length !== 0 ||
     inaktiveOppfolgingsplanerV2.length !== 0;
 
@@ -115,7 +111,6 @@ export default function OppfolgingsplanerOversikt() {
         <Tredelt.Container className="-xl:flex-col-reverse">
           <Tredelt.FirstColumn className="-xl:mb-2">
             <AktiveOppfolgingsplaner
-              aktivePlanerV1={aktivePlanerV1}
               aktivePlanerV2={aktiveOppfolgingsplanerV2}
               oppfolgingsplanerLPSMedPersonoppgave={
                 oppfolgingsplanerLPSMedPersonOppgave
@@ -138,14 +133,6 @@ export default function OppfolgingsplanerOversikt() {
                 {inaktiveOppfolgingsplanerV2.map((plan, index) => (
                   <OppfolgingsplanV2Item key={index} oppfolgingsplan={plan} />
                 ))}
-                {inaktivePlanerV1.map((dialog, index) => {
-                  return (
-                    <OppfolgingsplanV1Item
-                      key={index}
-                      oppfolgingsplan={dialog}
-                    />
-                  );
-                })}
               </>
             ) : (
               <Box background="default" className="p-4">

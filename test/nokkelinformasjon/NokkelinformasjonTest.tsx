@@ -14,7 +14,6 @@ import { setEmptyQueryData, queryClientWithMockData } from "../testQueryClient";
 import { navEnhet } from "../dialogmote/testData";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { MemoryRouter } from "react-router-dom";
-import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import {
   createOppfolgingstilfelleFromSykmelding,
@@ -76,12 +75,6 @@ describe("Nokkelinformasjon", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
     setEmptyQueryData(queryClient);
-    queryClient.setQueryData(
-      oppfolgingsplanQueryKeys.oppfolgingsplaner(
-        ARBEIDSTAKER_DEFAULT.personIdent,
-      ),
-      () => [],
-    );
     queryClient.setQueryData(
       ledereQueryKeys.ledere(ARBEIDSTAKER_DEFAULT.personIdent),
       () => [LEDERE_DEFAULT[0]],

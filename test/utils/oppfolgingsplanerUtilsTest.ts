@@ -1,11 +1,5 @@
 import { describe, expect, it } from "vitest";
 import {
-  mockAvbruttActiveOppfolgingsplan,
-  mockAvbruttInactiveOppfolgingsplan,
-  mockValidActiveOppfolgingsplan,
-  mockValidActiveOppfolgingsplanWithDifferentVirksomhet,
-} from "../mockdata/mockOppfolgingsplaner";
-import {
   oppfolgingsplanerLPSOpprettetIdag,
   toOppfolgingsplanLPSMedPersonoppgave,
 } from "@/utils/oppfolgingsplanerUtils";
@@ -13,64 +7,9 @@ import {
   ARBEIDSTAKER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
 } from "@/mocks/common/mockConstants";
-import { aktiveOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 
 describe("oppfolgingsplanerUtils", () => {
-  describe("aktiveOppfolgingsplaner", () => {
-    it("Gives a list of one plan, when one is active", () => {
-      const planer = [mockValidActiveOppfolgingsplan];
-
-      const actualPlaner = aktiveOppfolgingsplaner(planer);
-
-      expect(actualPlaner.length).to.be.equal(planer.length);
-      expect(actualPlaner[0]).to.deep.equal(planer[0]);
-    });
-
-    it("Gives a list of one plan, when one is active and avbrutt", () => {
-      const planer = [mockAvbruttActiveOppfolgingsplan];
-
-      const actualPlaner = aktiveOppfolgingsplaner(planer);
-
-      expect(actualPlaner.length).to.be.equal(planer.length);
-      expect(actualPlaner[0]).to.deep.equal(planer[0]);
-    });
-
-    it("Gives empty list if all plans are invalid", () => {
-      const planer = [mockAvbruttInactiveOppfolgingsplan];
-
-      const actualPlaner = aktiveOppfolgingsplaner(planer);
-      expect(actualPlaner.length).to.be.equal(0);
-    });
-
-    it("Gives two plans if the are from different virksomheter", () => {
-      const planer = [
-        mockValidActiveOppfolgingsplanWithDifferentVirksomhet,
-        mockValidActiveOppfolgingsplan,
-      ];
-
-      const actualPlaner = aktiveOppfolgingsplaner(planer);
-
-      expect(actualPlaner.length).to.be.equal(planer.length);
-      expect(actualPlaner[0]).to.deep.equal(planer[0]);
-      expect(actualPlaner[1]).to.deep.equal(planer[1]);
-    });
-
-    it("Gives the plan shared latest, if more than one from a virksomhet", () => {
-      const planer = [
-        mockAvbruttActiveOppfolgingsplan,
-        mockValidActiveOppfolgingsplan,
-      ];
-
-      const expectedPlan = mockValidActiveOppfolgingsplan;
-
-      const actualPlaner = aktiveOppfolgingsplaner(planer);
-
-      expect(actualPlaner.length).to.be.equal(1);
-      expect(actualPlaner[0]).to.deep.equal(expectedPlan);
-    });
-  });
-
   describe("oppfolgingsplanerLPSOpprettetIdag", () => {
     it("Gives the plan created last, if more than one from a virksomhet", () => {
       const planOne: OppfolgingsplanLPS = {

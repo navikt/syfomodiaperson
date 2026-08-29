@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { screen } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { queryClientWithMockData } from "../testQueryClient";
 import React from "react";
 import HistorikkContainer from "@/sider/historikk/container/HistorikkContainer";
@@ -18,7 +18,6 @@ import {
   VIRKSOMHET_BRANNOGBIL,
   VIRKSOMHET_ENTERPRISE,
 } from "@/mocks/common/mockConstants";
-import { historikkQueryKeys } from "@/data/historikk/historikkQueryHooks";
 import { aktivitetskravQueryKeys } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { arbeidsuforhetQueryKeys } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
@@ -65,6 +64,7 @@ import { oppfolgingsplanForesporselQueryKeys } from "@/sider/oppfolgingsplan/hoo
 import { mockForesporseler } from "@/mocks/isoppfolgingsplan/oppfolgingsplanForesporselMocks";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { tildeltOppfolgingsenhetHistorikk } from "@/mocks/syfobehandlendeenhet/mockSyfobehandlendeenhet";
+import { stubLegacyOppfolgingsplanApi } from "../stubs/stubSyfooppfolgingsplan";
 import { kartleggingssporsmalQueryKeys } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 import {
   KandidatStatus,
@@ -101,10 +101,6 @@ function setupTestdataHistorikk() {
   );
   queryClient.setQueryData(
     motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => [],
-  );
-  queryClient.setQueryData(
-    historikkQueryKeys.oppfolgingsplan(ARBEIDSTAKER_DEFAULT.personIdent),
     () => [],
   );
   queryClient.setQueryData(
@@ -716,15 +712,7 @@ describe("Historikk", () => {
   });
 
   describe("Oppfølgingsplaner", () => {
-    it("viser mottatte oppfølgingsplaner", () => {
-      const oppfolgingsplanHistorikkMock = {
-        tekst: "Oppfølgingsplanen ble delt med Nav av TEST.",
-        tidspunkt: new Date().toJSON(),
-      };
-      queryClient.setQueryData(
-        historikkQueryKeys.oppfolgingsplan(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => [oppfolgingsplanHistorikkMock],
-      );
+    it("viser mottatte LPS-oppfølgingsplaner", () => {
       const defaultOppfolgingsplanLPS = getDefaultOppfolgingsplanLPS(
         new Date(),
       );
@@ -736,15 +724,29 @@ describe("Historikk", () => {
       );
       renderHistorikk();
 
-      expect(screen.getByText("Oppfølgingsplanen ble delt med Nav av TEST.")).to
-        .exist;
       expect(
         screen.getByText(
           `Oppfølgingsplanen ble delt med Nav av ${defaultOppfolgingsplanLPS.virksomhetsnummer}.`,
         ),
       ).to.exist;
-      expect(screen.getByText("Oppfølgingsplan")).to.exist;
       expect(screen.getByText("Oppfølgingsplan LPS")).to.exist;
+    });
+
+    it("henter ikke historikk fra gammelt oppfølgingsplanformat", async () => {
+      const legacyRequest = vi.fn();
+      stubLegacyOppfolgingsplanApi(legacyRequest);
+      const legacyHistorikkQueryKey = [
+        "historikk",
+        "oppfolgingsplan",
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      ];
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(queryClient.getQueryState(legacyHistorikkQueryKey)).to.be
+        .undefined;
+      expect(legacyRequest).not.toHaveBeenCalled();
     });
 
     it("viser historikk for V2-oppfølgingsplaner delt med Nav", () => {
