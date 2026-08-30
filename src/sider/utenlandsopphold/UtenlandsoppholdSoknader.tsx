@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Alert, BodyShort, Box, Button, Loader, Table } from "@navikt/ds-react";
 import { useUtenlandsoppholdSoknanderQuery } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
 import {
+  antallDagerIPeriode,
+  Periode,
   Soknad,
   SoknadStatusDTO,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
@@ -11,6 +13,7 @@ import {
 } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
 import { useNotification } from "@/context/notification/NotificationContext.tsx";
+import { tilLesbarPeriodeDatoerOgDager } from "./utils";
 
 const TIDLIGST_INNSENDT_TIDSPUNKT_FOR_BEHANDLING_I_MODIA = new Date(
   // 1. august 2026
@@ -117,6 +120,7 @@ export function UtenlandsoppholdSoknader() {
                 <Table.HeaderCell scope="col">{texts.status}</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
+
             <Table.Body>
               {sorterEtterInnsendtTidspunktNyestForst(data.soknader).map(
                 (soknad) => (
@@ -126,16 +130,15 @@ export function UtenlandsoppholdSoknader() {
                         soknad.innsendtTidspunkt,
                       )}
                     </Table.HeaderCell>
+
                     <Table.DataCell>
                       {soknad.soktePerioder.map((periode, index) => (
                         <div key={index}>
-                          {tilLesbarPeriodeMedArUtenManednavn(
-                            periode.fom,
-                            periode.tom,
-                          )}
+                          {tilLesbarPeriodeDatoerOgDager(periode)}
                         </div>
                       ))}
                     </Table.DataCell>
+
                     {soknad.vedtak ? (
                       <Table.DataCell>
                         {texts.saksbehandlingVedtak(
@@ -148,6 +151,7 @@ export function UtenlandsoppholdSoknader() {
                         <i>{texts.saksbehandlingIngenVedtak}</i>
                       </Table.DataCell>
                     )}
+
                     <Table.DataCell>{getStatusColumn(soknad)}</Table.DataCell>
                   </Table.Row>
                 ),

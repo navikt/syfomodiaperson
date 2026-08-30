@@ -102,6 +102,9 @@ export const parseSoknad = (soknad: SoknadDTO): Soknad => ({
   vedtak: soknad.vedtak ? parseVedtak(soknad.vedtak) : null,
 });
 
+export const antallDagerIPeriode = (periode: Periode): number =>
+  dayjs(periode.tom).diff(dayjs(periode.fom), "day") + 1;
+
 /**
  * Trekker en enkelt periode (`fratrekk`) fra en annen periode (`periode`),
  * og returnerer de(n) resterende delen(e). Kan returnere 0, 1 eller 2
