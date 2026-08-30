@@ -1,11 +1,10 @@
 import { EksternLenke } from "@/components/EksternLenke";
 import { VeiledningBox } from "@/components/veiledning/VeiledningBox";
-import { VeiledningList } from "@/components/veiledning/VeiledningList";
 import {
   NestableListItem,
   VeiledningListForItems,
 } from "@/components/veiledning/VeiledningListForItems";
-import { Box, Heading, List } from "@navikt/ds-react";
+import { Box, Heading } from "@navikt/ds-react";
 import React from "react";
 
 const linkRutineYrkesskade =
