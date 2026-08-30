@@ -14,7 +14,7 @@ const linkServiceRutine =
   "https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Utenlandsopphold.aspx";
 const linkTemaside =
   "https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Sykepenger-ved-opphold-i-utlandet.aspx";
-const linkNyhetssak =
+const linkNyhetssakNavet =
   "https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Vedtak-om-utenlandsopphold-i-Modia-syfo.aspx";
 const linkRundskriv =
   "https://lovdata.no/pro/#document/NAV/rundskriv/r08-00/KAPITTEL_3-9-3";
@@ -29,7 +29,7 @@ const texts = {
   linkRundskriv: "Rundskriv til folketrygdloven § 8-9 tredje ledd",
 };
 
-const textsRutineList: NestableListItem[] = [
+const rutineListItems: NestableListItem[] = [
   {
     text: (
       <>
@@ -54,7 +54,7 @@ const textsRutineList: NestableListItem[] = [
   "Sjekk tidligere godkjente utenlandsopphold siste 12 måneder. Det kan innvilges opphold i inntil 4 uker (28 dager) i løpet av en periode på 12 måneder.",
 ];
 
-const textsTilleggsopplysningerList: NestableListItem[] = [
+const tilleggsopplysningerListItems: NestableListItem[] = [
   "Tredjelandsborgere må som hovedregel oppholde seg i Norge. Unntak kan følge av trygdeavtaler, for eksempel den nordiske konvensjonen.",
   {
     text: "Hvis oppholdet ikke er godkjent, enten fordi det ikke er søkt eller fordi man har fått avslag, utbetales det ikke sykepenger for perioden.",
@@ -72,6 +72,17 @@ const textsTilleggsopplysningerList: NestableListItem[] = [
   "Ved søknad på opphold som varer mer enn 4 uker, skal deler av søknaden avslås på denne bakgrunn.",
 ];
 
+const seOgsaLenkerListItems: NestableListItem[] = [
+  <EksternLenke href={linkServiceRutine}>
+    {texts.linkServiceRutine}
+  </EksternLenke>,
+  <EksternLenke href={linkTemaside}>{texts.linkTemaside}</EksternLenke>,
+  <EksternLenke href={linkNyhetssakNavet}>
+    {texts.linkNyhetssakNavet}
+  </EksternLenke>,
+  <EksternLenke href={linkRundskriv}>{texts.linkRundskriv}</EksternLenke>,
+];
+
 function Rutine() {
   return (
     <Box>
@@ -79,7 +90,7 @@ function Rutine() {
         {texts.headingRutine}
       </Heading>
 
-      <VeiledningListForItems items={textsRutineList} />
+      <VeiledningListForItems items={rutineListItems} />
     </Box>
   );
 }
@@ -91,7 +102,7 @@ function Tilleggsopplysninger() {
         {texts.headingTilleggsopplysninger}
       </Heading>
 
-      <VeiledningListForItems items={textsTilleggsopplysningerList} />
+      <VeiledningListForItems items={tilleggsopplysningerListItems} />
     </Box>
   );
 }
@@ -103,29 +114,7 @@ function SeOgsaLenker() {
         {texts.headingSeOgsaaLenker}
       </Heading>
 
-      <VeiledningList as="ul">
-        <List.Item>
-          <EksternLenke href={linkServiceRutine}>
-            {texts.linkServiceRutine}
-          </EksternLenke>
-        </List.Item>
-
-        <List.Item>
-          <EksternLenke href={linkTemaside}>{texts.linkTemaside}</EksternLenke>
-        </List.Item>
-
-        <List.Item>
-          <EksternLenke href={linkNyhetssak}>
-            {texts.linkNyhetssakNavet}
-          </EksternLenke>
-        </List.Item>
-
-        <List.Item>
-          <EksternLenke href={linkRundskriv}>
-            {texts.linkRundskriv}
-          </EksternLenke>
-        </List.Item>
-      </VeiledningList>
+      <VeiledningListForItems items={seOgsaLenkerListItems} />
     </Box>
   );
 }
