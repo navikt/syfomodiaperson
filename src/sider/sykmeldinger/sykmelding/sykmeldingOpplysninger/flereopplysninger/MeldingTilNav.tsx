@@ -28,7 +28,7 @@ export default function MeldingTilNav({ sykmelding }: Props) {
           <Heading level="4" size="xsmall" className="mb-1">
             {texts.begrunnelse}
           </Heading>
-          <BodyLong size="small">
+          <BodyLong size="small" className="whitespace-pre-line">
             {sykmelding.meldingTilNav.navBoerTaTakISakenBegrunnelse}
           </BodyLong>
         </div>

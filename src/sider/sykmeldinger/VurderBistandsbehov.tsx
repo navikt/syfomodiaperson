@@ -67,17 +67,19 @@ export default function VurderBistandsbehov({ oppgave }: Props) {
         </div>
         <blockquote>
           {tiltakNav && (
-            <BodyShort>
+            <BodyShort className="whitespace-pre-line">
               Felt 7.2 (Forslag til tiltak i regi fra Nav): {tiltakNav}
             </BodyShort>
           )}
           {tiltakAndre && (
-            <BodyShort>
+            <BodyShort className="whitespace-pre-line">
               Felt 7.3 (Andre innspill til Nav): {tiltakAndre}
             </BodyShort>
           )}
           {bistandsbehov && (
-            <BodyShort>Felt 8.2 (Melding til Nav): {bistandsbehov}</BodyShort>
+            <BodyShort className="whitespace-pre-line">
+              Felt 8.2 (Melding til Nav): {bistandsbehov}
+            </BodyShort>
           )}
         </blockquote>
         <div className={"flex flex-row justify-between"}>

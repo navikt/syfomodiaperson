@@ -26,7 +26,7 @@ export default function BedreArbeidsevne(bedreArbeidsevneProps: Props) {
           <Heading level="4" size="xsmall" className="mb-1">
             {texts.tilrettelegging}
           </Heading>
-          <BodyLong size="small">
+          <BodyLong size="small" className="whitespace-pre-line">
             {sykmelding.arbeidsevne.tilretteleggingArbeidsplass}
           </BodyLong>
         </div>
@@ -36,7 +36,9 @@ export default function BedreArbeidsevne(bedreArbeidsevneProps: Props) {
           <Heading level="4" size="xsmall" className="mb-1">
             {texts.tiltakNAV}
           </Heading>
-          <BodyLong size="small">{sykmelding.arbeidsevne.tiltakNAV}</BodyLong>
+          <BodyLong size="small" className="whitespace-pre-line">
+            {sykmelding.arbeidsevne.tiltakNAV}
+          </BodyLong>
         </div>
       )}
       {sykmelding.arbeidsevne.tiltakAndre && (
@@ -44,7 +46,9 @@ export default function BedreArbeidsevne(bedreArbeidsevneProps: Props) {
           <Heading level="4" size="xsmall" className="mb-1">
             {texts.tiltakAndre}
           </Heading>
-          <BodyLong size="small">{sykmelding.arbeidsevne.tiltakAndre}</BodyLong>
+          <BodyLong size="small" className="whitespace-pre-line">
+            {sykmelding.arbeidsevne.tiltakAndre}
+          </BodyLong>
         </div>
       )}
     </>

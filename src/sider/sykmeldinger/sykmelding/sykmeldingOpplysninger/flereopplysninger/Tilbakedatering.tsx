@@ -27,7 +27,7 @@ export default function Tilbakedatering(tilbakedateringProps: Props) {
           <Heading level="4" size="xsmall" className="mb-1">
             {texts.dokumenterbarPasientkontakt}
           </Heading>
-          <BodyLong size="small">
+          <BodyLong size="small" className="whitespace-pre-line">
             {tilLesbarDatoMedArstall(
               sykmelding.tilbakedatering.dokumenterbarPasientkontakt,
             )}
@@ -39,7 +39,7 @@ export default function Tilbakedatering(tilbakedateringProps: Props) {
           <Heading level="4" size="xsmall" className="mb-1">
             {texts.begrunnelse}
           </Heading>
-          <BodyLong size="small">
+          <BodyLong size="small" className="whitespace-pre-line">
             {sykmelding.tilbakedatering.tilbakedatertBegrunnelse}
           </BodyLong>
         </div>
