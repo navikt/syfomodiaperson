@@ -29,12 +29,12 @@ export function SykmeldingPeriode({ periode, antallDager = 1 }: Props) {
       <Heading size="xsmall" level="3" className="mb-1">
         {texts.title}
       </Heading>
-      <BodyLong size="small">
+      <BodyLong size="small" className="whitespace-pre-line">
         <strong>{tilLesbarPeriodeMedArstall(periode.fom, periode.tom)}</strong>{" "}
         &bull; {antallDager}&nbsp;{dayText}
       </BodyLong>
       {periode.grad && (
-        <BodyLong size="small">
+        <BodyLong size="small" className="whitespace-pre-line">
           {periode.grad} % sykmeldt
           {periode.reisetilskudd &&
             periode.grad > 0 &&
@@ -43,19 +43,23 @@ export function SykmeldingPeriode({ periode, antallDager = 1 }: Props) {
         </BodyLong>
       )}
       {periode.behandlingsdager && (
-        <BodyLong size="small">
+        <BodyLong size="small" className="whitespace-pre-line">
           {periode.behandlingsdager} {texts.behandlingsdager}
         </BodyLong>
       )}
       {periode.reisetilskudd && periode.grad === null && (
-        <BodyLong size="small">{texts.reisetilskuddTitle}</BodyLong>
+        <BodyLong size="small" className="whitespace-pre-line">
+          {texts.reisetilskuddTitle}
+        </BodyLong>
       )}
       {periode.avventende && (
         <div>
           <Heading size="xsmall" level="3" className="mb-1">
             {texts.avventendeInspill}
           </Heading>
-          <BodyLong size="small">{periode.avventende}</BodyLong>
+          <BodyLong size="small" className="whitespace-pre-line">
+            {periode.avventende}
+          </BodyLong>
         </div>
       )}
     </div>

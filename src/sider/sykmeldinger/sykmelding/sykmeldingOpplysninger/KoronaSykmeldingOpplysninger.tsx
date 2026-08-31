@@ -40,7 +40,7 @@ export function KoronaSykmeldingOpplysninger({ sykmelding }: Props) {
                 <Heading size="xsmall" level="3" className="mb-1">
                   {texts.diagnosekode}
                 </Heading>
-                <BodyLong>
+                <BodyLong className="whitespace-pre-line">
                   <span>{sykmelding.diagnose.hoveddiagnose.diagnosekode}</span>
                   &nbsp;
                   <span>

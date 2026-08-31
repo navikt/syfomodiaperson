@@ -17,7 +17,9 @@ function OpplysningsGruppe(opplysningsGruppeProps: {
         <Heading level="4" size="xsmall" className="mb-1">
           {sporsmalSvar.sporsmal}
         </Heading>
-        <BodyLong size="small">{sporsmalSvar.svar}</BodyLong>
+        <BodyLong size="small" className="whitespace-pre-line">
+          {sporsmalSvar.svar}
+        </BodyLong>
       </div>
     ),
   );

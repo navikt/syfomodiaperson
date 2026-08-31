@@ -20,7 +20,7 @@ export default function MeldingTilArbeidsgiver(
       <Heading level="3" size="medium">
         {texts.title}
       </Heading>
-      <BodyLong size="small" className="mb-5">
+      <BodyLong size="small" className="mb-5 whitespace-pre-line">
         {sykmelding.innspillTilArbeidsgiver}
       </BodyLong>
     </div>

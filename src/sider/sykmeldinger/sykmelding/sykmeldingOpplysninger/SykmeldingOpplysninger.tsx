@@ -132,7 +132,7 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
             <Heading level="4" size="xsmall" className="mb-1">
               {texts.lovfestetFravaersgrunn}
             </Heading>
-            <BodyLong size="small">
+            <BodyLong size="small" className="whitespace-pre-line">
               {sykmelding.diagnose.fravaersgrunnLovfestet}
             </BodyLong>
           </div>
@@ -142,7 +142,7 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
             <Heading level="4" size="xsmall" className="mb-1">
               {texts.beskrivFravaeret}
             </Heading>
-            <BodyLong size="small">
+            <BodyLong size="small" className="whitespace-pre-line">
               {sykmelding.diagnose.fravaerBeskrivelse}
             </BodyLong>
           </div>
@@ -177,7 +177,7 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
             <Heading level="4" size="xsmall" className="mb-1">
               {texts.hensynTittel}
             </Heading>
-            <BodyLong size="small">
+            <BodyLong size="small" className="whitespace-pre-line">
               {sykmelding.friskmelding.hensynPaaArbeidsplassen}
             </BodyLong>
           </div>
@@ -200,7 +200,9 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
             <Heading level="4" size="xsmall" className="mb-1">
               {texts.avsenderTittel}
             </Heading>
-            <BodyLong size="small">{sykmelding.bekreftelse.sykmelder}</BodyLong>
+            <BodyLong size="small" className="whitespace-pre-line">
+              {sykmelding.bekreftelse.sykmelder}
+            </BodyLong>
           </div>
         )}
       </div>
@@ -234,7 +236,7 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
             <Heading level="4" size="xsmall" className="mb-1">
               {texts.telefonTilLegeSykmelder}
             </Heading>
-            <BodyLong size="small">
+            <BodyLong size="small" className="whitespace-pre-line">
               {sykmelding.bekreftelse.sykmelderTlf}
             </BodyLong>
           </div>
