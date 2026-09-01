@@ -18,7 +18,6 @@ import {
   VIRKSOMHET_BRANNOGBIL,
   VIRKSOMHET_ENTERPRISE,
 } from "@/mocks/common/mockConstants";
-import { historikkQueryKeys } from "@/data/historikk/historikkQueryHooks";
 import { aktivitetskravQueryKeys } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
 import { arbeidsuforhetQueryKeys } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
@@ -101,10 +100,6 @@ function setupTestdataHistorikk() {
   );
   queryClient.setQueryData(
     motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
-    () => [],
-  );
-  queryClient.setQueryData(
-    historikkQueryKeys.oppfolgingsplan(ARBEIDSTAKER_DEFAULT.personIdent),
     () => [],
   );
   queryClient.setQueryData(
@@ -716,15 +711,7 @@ describe("Historikk", () => {
   });
 
   describe("Oppfølgingsplaner", () => {
-    it("viser mottatte oppfølgingsplaner", () => {
-      const oppfolgingsplanHistorikkMock = {
-        tekst: "Oppfølgingsplanen ble delt med Nav av TEST.",
-        tidspunkt: new Date().toJSON(),
-      };
-      queryClient.setQueryData(
-        historikkQueryKeys.oppfolgingsplan(ARBEIDSTAKER_DEFAULT.personIdent),
-        () => [oppfolgingsplanHistorikkMock],
-      );
+    it("viser mottatte LPS-oppfølgingsplaner", () => {
       const defaultOppfolgingsplanLPS = getDefaultOppfolgingsplanLPS(
         new Date(),
       );
@@ -736,14 +723,11 @@ describe("Historikk", () => {
       );
       renderHistorikk();
 
-      expect(screen.getByText("Oppfølgingsplanen ble delt med Nav av TEST.")).to
-        .exist;
       expect(
         screen.getByText(
           `Oppfølgingsplanen ble delt med Nav av ${defaultOppfolgingsplanLPS.virksomhetsnummer}.`,
         ),
       ).to.exist;
-      expect(screen.getByText("Oppfølgingsplan")).to.exist;
       expect(screen.getByText("Oppfølgingsplan LPS")).to.exist;
     });
 

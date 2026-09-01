@@ -61,7 +61,6 @@ spec:
         - host: "login.microsoftonline.com"
         - host: "teamsykefravr-unleash-api.nav.cloud.nais.io"
         - host: "ereg-services.prod-fss-pub.nais.io"
-        - host: "syfooppfolgingsplanservice.prod-fss-pub.nais.io"
         - host: "pensjon-pen.prod-fss-pub.nais.io"
       rules:
         - application: fastlegerest
@@ -191,10 +190,6 @@ spec:
       value: "prod-gcp.team-esyfo.syfomotebehov"
     - name: SYFOMOTEBEHOV_HOST
       value: "http://syfomotebehov.team-esyfo"
-    - name: SYFOOPPFOLGINGSPLANSERVICE_AAD_APP_CLIENT_ID
-      value: "prod-fss.team-esyfo.syfooppfolgingsplanservice"
-    - name: SYFOOPPFOLGINGSPLANSERVICE_HOST
-      value: "https://syfooppfolgingsplanservice.prod-fss-pub.nais.io"
     - name: SYFO_OPPFOLGINGSPLAN_BACKEND_AAD_APP_CLIENT_ID
       value: "prod-gcp.team-esyfo.syfo-oppfolgingsplan-backend"
     - name: SYFO_OPPFOLGINGSPLAN_BACKEND_HOST

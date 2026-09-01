@@ -267,10 +267,6 @@ export const setupProxy = (): express.Router => {
   router.use("/ereg", proxyWithoutAuthentication(Config.auth.ereg.host));
   router.use("/syfomotebehov", proxyOnBehalfOf(Config.auth.syfomotebehov));
   router.use(
-    "/syfooppfolgingsplanservice",
-    proxyOnBehalfOf(Config.auth.syfooppfolgingsplanservice),
-  );
-  router.use(
     "/lps-oppfolgingsplan-mottak",
     proxyOnBehalfOf(Config.auth.lpsOppfolgingsplanMottak),
   );

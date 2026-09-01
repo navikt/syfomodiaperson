@@ -2,13 +2,10 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT,
   SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT,
-  SYFOOPPFOLGINGSPLANSERVICE_V3_ROOT,
 } from "@/apiConstants";
 import { get, post } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
-import { useMemo } from "react";
-import { OppfolgingsplanDTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import { minutesToMillis } from "@/utils/utils";
 import {
   OppfolgingsplanV2DTO,
@@ -20,45 +17,12 @@ export const oppfolgingsplanQueryKeys = {
     "oppfolgingsplanerV2",
     personident,
   ],
-  oppfolgingsplaner: (personident: string) => [
-    "oppfolgingsplaner",
-    personident,
-  ],
   oppfolgingsplanerLPS: (personident: string) => [
     "oppfolgingsplanerLPS",
     personident,
   ],
-  dokumentinfo: (id: number) => ["dokumentinfo", id],
   foresporsel: (personident: string) => ["foresporsel", personident],
 };
-
-export function useGetOppfolgingsplanerQuery() {
-  const fnr = useValgtPersonident();
-  const path = `${SYFOOPPFOLGINGSPLANSERVICE_V3_ROOT}/oppfolgingsplan`;
-  const fetchOppfolgingsplaner = () => get<OppfolgingsplanDTO[]>(path, fnr);
-  const query = useQuery({
-    queryKey: oppfolgingsplanQueryKeys.oppfolgingsplaner(fnr),
-    queryFn: fetchOppfolgingsplaner,
-    enabled: !!fnr,
-    staleTime: minutesToMillis(60 * 12),
-  });
-
-  return {
-    data: query.data || [],
-    isLoading: query.isLoading,
-    isPending: query.isPending,
-    isError: query.isError,
-    aktivePlaner: useMemo(
-      () =>
-        query.data?.filter(
-          (plan) =>
-            plan.status !== "AVBRUTT" &&
-            new Date(plan.godkjentPlan.gyldighetstidspunkt.tom) > new Date(),
-        ) || [],
-      [query.data],
-    ),
-  };
-}
 
 export function useGetLPSOppfolgingsplanerQuery() {
   const fnr = useValgtPersonident();

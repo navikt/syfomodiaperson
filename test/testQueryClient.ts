@@ -175,12 +175,6 @@ export const queryClientWithMockData = (): QueryClient => {
     ),
     () => [],
   );
-  queryClient.setQueryData(
-    oppfolgingsplanQueryKeys.oppfolgingsplaner(
-      ARBEIDSTAKER_DEFAULT.personIdent,
-    ),
-    () => [],
-  );
   const draftCategories = [
     "behandlerdialog-meldingtilbehandler",
     "aktivitetskrav-forhandsvarsel",
@@ -206,12 +200,6 @@ export const queryClientWithMockData = (): QueryClient => {
 export function setEmptyQueryData(existingClient: QueryClient): void {
   existingClient.setQueryData(
     oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
-      ARBEIDSTAKER_DEFAULT.personIdent,
-    ),
-    () => [],
-  );
-  existingClient.setQueryData(
-    oppfolgingsplanQueryKeys.oppfolgingsplaner(
       ARBEIDSTAKER_DEFAULT.personIdent,
     ),
     () => [],

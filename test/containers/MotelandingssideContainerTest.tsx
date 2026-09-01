@@ -12,7 +12,6 @@ import { render, screen } from "@testing-library/react";
 import { stubTilgangApi } from "../stubs/stubIstilgangskontroll";
 import { tilgangQueryKeys } from "@/data/tilgang/tilgangQueryHooks";
 import { tilgangBrukerMock } from "@/mocks/istilgangskontroll/tilgangtilbrukerMock";
-import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { queryClientWithAktivBruker } from "../testQueryClient";
@@ -70,10 +69,6 @@ describe("MotelandingssideSide", () => {
       () => brukerinfoMock,
     );
     queryClient.setQueryData(dialogmoterQueryKeys.dialogmoter(fnr), () => []);
-    queryClient.setQueryData(
-      oppfolgingsplanQueryKeys.oppfolgingsplaner(fnr),
-      () => [],
-    );
     queryClient.setQueryData(
       motebehovQueryKeys.motebehov(fnr),
       () => motebehovData,

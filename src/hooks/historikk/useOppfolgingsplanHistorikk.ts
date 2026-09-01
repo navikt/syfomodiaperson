@@ -1,5 +1,4 @@
 import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
-import { useHistorikkOppfolgingsplan } from "@/data/historikk/historikkQueryHooks";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import { HistorikkEvents } from "@/hooks/historikk/useHistorikk";
 import {
@@ -45,11 +44,6 @@ function foresporslerToHistorikkEvents(
 
 export function useOppfolgingsplanHistorikk(): HistorikkEvents {
   const {
-    data: oppfolgingsplanHistorikk,
-    isLoading: isOppfolgingsplanLoading,
-    isError: isOppfolgingsplanError,
-  } = useHistorikkOppfolgingsplan();
-  const {
     lpsPlaner: oppfolgingsplanerLPS,
     allePlanerV2: oppfolgingsplanerV2,
     isLoading: isOppfolgingsplanerLoading,
@@ -61,20 +55,16 @@ export function useOppfolgingsplanHistorikk(): HistorikkEvents {
     isError: isOppfolgingsplanForesporslerError,
   } = useGetOppfolgingsplanForesporselQuery();
 
-  const oppfolgingsplanHistorikkEvents = oppfolgingsplanHistorikk
-    .concat(lpsplanerToHistorikkEvents(oppfolgingsplanerLPS))
+  const oppfolgingsplanHistorikkEvents = lpsplanerToHistorikkEvents(
+    oppfolgingsplanerLPS,
+  )
     .concat(foresporslerToHistorikkEvents(oppfolgingsplanForesporsler || []))
     .concat(oppfolgingsplanerV2ToHistorikkEvents(oppfolgingsplanerV2));
 
   return {
     isLoading:
-      isOppfolgingsplanLoading ||
-      isOppfolgingsplanerLoading ||
-      isOppfolgingsplanForesporslerLoading,
-    isError:
-      isOppfolgingsplanError ||
-      isOppfolgingsplanerError ||
-      isOppfolgingsplanForesporslerError,
+      isOppfolgingsplanerLoading || isOppfolgingsplanForesporslerLoading,
+    isError: isOppfolgingsplanerError || isOppfolgingsplanForesporslerError,
     events: oppfolgingsplanHistorikkEvents,
   };
 }

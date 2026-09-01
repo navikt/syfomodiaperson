@@ -5,10 +5,6 @@ import {
   PersonOppgaveType,
 } from "@/data/personoppgave/types/PersonOppgave";
 import { OppfolgingsplanLPSMedPersonoppgave } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
-import {
-  aktiveOppfolgingsplaner,
-  OppfolgingsplanDTO,
-} from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanDTO";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import {
   getAllUbehandledePersonOppgaver,
@@ -169,7 +165,6 @@ function getNumberOfKartleggingssporsmalOppgaver(
 export function numberOfTasks(
   menypunkt: Menypunkter,
   motebehov: MotebehovVeilederDTO[],
-  oppfolgingsplaner: OppfolgingsplanDTO[],
   personOppgaver: PersonOppgave[],
   oppfolgingsplanerlps: OppfolgingsplanLPSMedPersonoppgave[],
   aktivitetskrav: AktivitetskravDTO[],
@@ -190,7 +185,6 @@ export function numberOfTasks(
       return getNumberOfMoteOppgaver(motebehov, personOppgaver);
     case Menypunkter.OPPFOELGINGSPLANER: {
       return (
-        aktiveOppfolgingsplaner(oppfolgingsplaner).length +
         numberOfActiveLPSOppfolgingsplaner(oppfolgingsplanerlps) +
         numberOfUbehandledePersonOppgaver(
           personOppgaver,
