@@ -48,10 +48,13 @@ export enum SoknadStatusDTO {
   INNVILGET = "INNVILGET",
   DELVIS_INNVILGET = "DELVIS_INNVILGET",
   AVSLAG = "AVSLAG",
+  // TODO: Placeholder-verdi. Bekreft eksakt enum-streng mot isutenlandsopphold-backend.
+  HENLAGT = "HENLAGT",
 }
 
 // Types
-export type Utfall = "INNVILGET" | "DELVIS_INNVILGET" | "AVSLAG";
+// TODO: "HENLAGT" er en placeholder-verdi. Bekreft eksakt streng mot isutenlandsopphold-backend.
+export type Utfall = "INNVILGET" | "DELVIS_INNVILGET" | "AVSLAG" | "HENLAGT";
 
 export interface Soknad extends Omit<
   SoknadDTO,

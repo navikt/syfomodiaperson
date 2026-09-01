@@ -364,6 +364,73 @@ describe("UtenlandsoppholdSoknad", () => {
     });
   });
 
+  it("sender henleggelse vedtak med forhåndsutfylt begrunnelse, viser notifikasjon og navigerer tilbake til listen der søknadens status nå vises som henlagt", async () => {
+    stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
+
+    renderUtenlandsoppholdSoknad(
+      soknadUtenVedtakMock.soknadId,
+      utenlandsoppholdPath,
+    );
+
+    expect(await screen.findByRole("button", { name: "Start behandling" })).to
+      .exist;
+
+    await clickButton("Start behandling");
+
+    await clickRadio("Henleggelse: Søknaden er trukket");
+
+    const begrunnelseInput = getTextInput("Begrunnelse (obligatorisk)");
+    expect(begrunnelseInput).to.have.property(
+      "value",
+      "I henvendelse til NAV har du gitt beskjed om at du ønsker å trekke søknaden.",
+    );
+
+    changeTextInput(
+      begrunnelseInput,
+      "I telefonsamtale 01.09.2026 har du gitt beskjed om at du ønsker å trekke søknaden.",
+    );
+
+    await screen.findByRole("button", { name: "Send vedtak" });
+    await clickButton("Send vedtak");
+    await clickButton("Bekreft og send");
+
+    expect(
+      await screen.findByText(
+        "Vedtaket om utenlandsopphold utenfor EU/EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
+      ),
+    ).to.exist;
+    expect(screen.queryByText("Fant ikke søknaden")).to.not.exist;
+    expect(screen.queryByRole("button", { name: "Start behandling" })).to.not
+      .exist;
+    expect(await screen.findAllByText("Henlagt")).to.have.lengthOf(1);
+
+    await waitFor(() => {
+      const vedtakMutation = queryClient
+        .getMutationCache()
+        .getAll()
+        .find(
+          (mutation) =>
+            (mutation.state.variables as { vedtak?: SoknadVedtakPostDTO })
+              ?.vedtak,
+        );
+      const variables = vedtakMutation?.state.variables as {
+        soknadId: string;
+        vedtak: SoknadVedtakPostDTO;
+      };
+      expect(variables.vedtak.utfall).to.equal("HENLAGT");
+      expect(variables.vedtak.begrunnelse).to.equal(
+        "I telefonsamtale 01.09.2026 har du gitt beskjed om at du ønsker å trekke søknaden.",
+      );
+      expect(
+        variables.vedtak.document.some((component) =>
+          component.texts.includes(
+            "I telefonsamtale 01.09.2026 har du gitt beskjed om at du ønsker å trekke søknaden.",
+          ),
+        ),
+      ).to.equal(true);
+    });
+  });
+
   describe("Delvis innvilgelse", () => {
     it("viser periode-velger for delvis innvilgelse kun når det utfallet er valgt", async () => {
       stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });

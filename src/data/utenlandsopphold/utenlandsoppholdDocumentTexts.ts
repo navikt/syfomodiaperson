@@ -24,6 +24,19 @@ export type DelvisInnvilgetDocumentTextsValues =
     medForbeholdOvrigeVilkar: boolean;
   };
 
+export type HenleggelseDocumentTextsValues =
+  UtenlandsoppholdDocumentTextsValues & {
+    soktePerioder: Periode[];
+    begrunnelse: string;
+  };
+
+/**
+ * Standardtekst som fylles inn i begrunnelse-feltet ved henleggelse.
+ * Saksbehandler kan redigere denne før vedtaket sendes.
+ */
+export const DEFAULT_HENLEGGELSE_BEGRUNNELSE =
+  "I henvendelse til NAV har du gitt beskjed om at du ønsker å trekke søknaden.";
+
 function perioderTilTekst(perioder: Periode[]) {
   return perioder
     .map(
@@ -161,5 +174,27 @@ export const getDelvisInnvilgetTexts = ({
       body: `Det er viktig at du er oppmerksom på at du har fått godkjent å beholde sykepenger under utenlandsopphold kun fra ${innvilgedePerioderTekst}. Dersom du oppholder deg utenfor EU/EØS eller andre områder der trygdeforordningen gjelder lengre enn dette, kan det få betydning for din videre rett til sykepenger.\n\nVi gjør oppmerksom på at vedtaket er gjort med forbehold at øvrige vilkår for sykepenger er tilstede.`,
     },
     ...getFellesTekster(),
+  };
+};
+
+// TODO: Bekreft endelig tittel/tekst for henleggelsesbrevet.
+export const getHenleggelseTexts = ({
+  soknadDato,
+  soktePerioder,
+  begrunnelse,
+}: HenleggelseDocumentTextsValues) => {
+  const soknadDatoTekst = tilLesbarDatoMedArUtenManedNavn(soknadDato);
+  const soktePerioderTekst = perioderTilTekst(soktePerioder);
+
+  return {
+    tittel: "Vedtak om henleggelse av søknad om utenlandsopphold",
+    henleggelse: {
+      intro: `Vi viser til din søknad av ${soknadDatoTekst} om å beholde sykepengene under opphold i utlandet i perioden ${soktePerioderTekst}.`,
+      begrunnelse,
+      bekreftelse:
+        "Vi bekrefter at vi har registrert søknaden din som trukket. Til orientering kommer ikke Nav til å behandle søknaden.",
+      nySoknad:
+        "Hvis du likevel ønsker at vi behandler søknaden din, må du søke på nytt. Dette gjør du ved å sende inn en ny søknad om å beholde sykepenger i utlandet.",
+    },
   };
 };

@@ -13,7 +13,9 @@ import {
   getAvslagTexts,
   getDelvisInnvilgetTexts,
   getFellesTekster,
+  getHenleggelseTexts,
   getInnvilgetTexts,
+  HenleggelseDocumentTextsValues,
   InnvilgetDocumentTextsValues,
 } from "@/data/utenlandsopphold/utenlandsoppholdDocumentTexts.ts";
 
@@ -24,6 +26,9 @@ export const useUtenlandsoppholdSoknadDocument = (): {
   getAvslagDocument(values: AvslagDocumentTextsValues): DocumentComponentDto[];
   getDelvisInnvilgetDocument(
     values: DelvisInnvilgetDocumentTextsValues,
+  ): DocumentComponentDto[];
+  getHenleggelseDocument(
+    values: HenleggelseDocumentTextsValues,
   ): DocumentComponentDto[];
 } => {
   const { getHilsen } = useDocumentComponents();
@@ -132,9 +137,25 @@ export const useUtenlandsoppholdSoknadDocument = (): {
     return documentComponents;
   };
 
+  const getHenleggelseDocument = (
+    values: HenleggelseDocumentTextsValues,
+  ): DocumentComponentDto[] => {
+    const texts = getHenleggelseTexts(values);
+
+    return [
+      createHeaderH1(texts.tittel),
+      createParagraph(texts.henleggelse.intro),
+      createParagraph(texts.henleggelse.begrunnelse),
+      createParagraph(texts.henleggelse.bekreftelse),
+      createParagraph(texts.henleggelse.nySoknad),
+      getHilsen(),
+    ];
+  };
+
   return {
     getInnvilgetDocument,
     getAvslagDocument,
     getDelvisInnvilgetDocument,
+    getHenleggelseDocument,
   };
 };
