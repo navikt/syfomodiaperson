@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { screen } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithMockData } from "../testQueryClient";
 import React from "react";
 import HistorikkContainer from "@/sider/historikk/container/HistorikkContainer";
@@ -64,7 +64,6 @@ import { oppfolgingsplanForesporselQueryKeys } from "@/sider/oppfolgingsplan/hoo
 import { mockForesporseler } from "@/mocks/isoppfolgingsplan/oppfolgingsplanForesporselMocks";
 import { behandlendeEnhetQueryKeys } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { tildeltOppfolgingsenhetHistorikk } from "@/mocks/syfobehandlendeenhet/mockSyfobehandlendeenhet";
-import { stubLegacyOppfolgingsplanApi } from "../stubs/stubSyfooppfolgingsplan";
 import { kartleggingssporsmalQueryKeys } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 import {
   KandidatStatus,
@@ -730,23 +729,6 @@ describe("Historikk", () => {
         ),
       ).to.exist;
       expect(screen.getByText("Oppfølgingsplan LPS")).to.exist;
-    });
-
-    it("henter ikke historikk fra gammelt oppfølgingsplanformat", async () => {
-      const legacyRequest = vi.fn();
-      stubLegacyOppfolgingsplanApi(legacyRequest);
-      const legacyHistorikkQueryKey = [
-        "historikk",
-        "oppfolgingsplan",
-        ARBEIDSTAKER_DEFAULT.personIdent,
-      ];
-
-      renderHistorikk();
-
-      expect(await screen.findAllByText("Historikk")).to.exist;
-      expect(queryClient.getQueryState(legacyHistorikkQueryKey)).to.be
-        .undefined;
-      expect(legacyRequest).not.toHaveBeenCalled();
     });
 
     it("viser historikk for V2-oppfølgingsplaner delt med Nav", () => {

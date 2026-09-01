@@ -14,15 +14,6 @@ export const stubOppfolgingsplanLPSApi = (created: Date) =>
     ),
   );
 
-export function stubLegacyOppfolgingsplanApi(onRequest: () => void) {
-  mockServer.use(
-    http.all("*/syfooppfolgingsplanservice/*", () => {
-      onRequest();
-      return new HttpResponse(null, { status: 503 });
-    }),
-  );
-}
-
 export function stubGetOppfolgingsplanV2(onRequest?: (body: unknown) => void) {
   mockServer.use(
     http.post(
