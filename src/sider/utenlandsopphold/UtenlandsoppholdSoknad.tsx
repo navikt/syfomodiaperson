@@ -51,7 +51,7 @@ import {
   useSaveDraft,
 } from "@/hooks/useDraftQuery";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
-import { tilLesbarPeriodeDatoerOgDager } from "./utils";
+import { tilLesbarPeriodeDatoerOgDager } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 
 const AVSLAG_CATEGORY = "utenlandsopphold-avslag";
 const DELVIS_INNVILGET_CATEGORY = "utenlandsopphold-delvis-innvilget";

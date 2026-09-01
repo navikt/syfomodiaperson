@@ -16,7 +16,7 @@ import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { MemoryRouter } from "react-router-dom";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import { stubSoknaderQuery } from "../stubs/stubIsutenlandsopphold";
-import { tilLesbarPeriodeDatoerOgDager } from "@/sider/utenlandsopphold/utils";
+import { tilLesbarPeriodeDatoerOgDager } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 import { parsePeriode } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 
 let queryClient: QueryClient;

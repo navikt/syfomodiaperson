@@ -1,5 +1,8 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes.ts";
-import { addDays } from "@/utils/datoUtils.ts";
+import {
+  addDays,
+  tilLesbarPeriodeMedArUtenManednavn,
+} from "@/utils/datoUtils.ts";
 import dayjs from "dayjs";
 
 export interface SoknaderQueryDTO {
@@ -159,4 +162,14 @@ export function beregnAvslattePerioder(
       )
       .filter((periode) => periode.fom <= periode.tom),
   );
+}
+
+export function tilLesbarPeriodeDatoerOgDager(periode: Periode) {
+  const startOgSluttDato = tilLesbarPeriodeMedArUtenManednavn(
+    periode.fom,
+    periode.tom,
+  );
+  const antallDager = antallDagerIPeriode(periode);
+
+  return `${startOgSluttDato} (${antallDager} dager)`;
 }

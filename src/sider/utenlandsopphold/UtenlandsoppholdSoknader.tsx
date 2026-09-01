@@ -13,7 +13,7 @@ import {
 } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
 import { useNotification } from "@/context/notification/NotificationContext.tsx";
-import { tilLesbarPeriodeDatoerOgDager } from "./utils";
+import { tilLesbarPeriodeDatoerOgDager } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 
 const TIDLIGST_INNSENDT_TIDSPUNKT_FOR_BEHANDLING_I_MODIA = new Date(
   // 1. august 2026
