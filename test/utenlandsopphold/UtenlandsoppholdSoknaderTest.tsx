@@ -11,13 +11,14 @@ import {
   soknadUtenVedtakMock,
   gammelSoknadMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import {
+  tilLesbarDatoMedArUtenManedNavn,
+  tilLesbarPeriodeMedArUtenManednavn,
+} from "@/utils/datoUtils";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { MemoryRouter } from "react-router-dom";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import { stubSoknaderQuery } from "../stubs/stubIsutenlandsopphold";
-import { tilLesbarPeriodeDatoerOgDager } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
-import { parsePeriode } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 
 let queryClient: QueryClient;
 
@@ -77,15 +78,17 @@ describe("UtenlandsoppholdSoknader", () => {
 
     expect(
       await screen.findByText(
-        tilLesbarPeriodeDatoerOgDager(
-          parsePeriode(soknadUtenVedtakMock.soktePerioder[0]),
+        tilLesbarPeriodeMedArUtenManednavn(
+          soknadUtenVedtakMock.soktePerioder[0].fom,
+          soknadUtenVedtakMock.soktePerioder[0].tom,
         ),
       ),
     ).to.exist;
     expect(
       screen.getByText(
-        tilLesbarPeriodeDatoerOgDager(
-          parsePeriode(soknadUtenVedtakMock.soktePerioder[1]),
+        tilLesbarPeriodeMedArUtenManednavn(
+          soknadUtenVedtakMock.soktePerioder[1].fom,
+          soknadUtenVedtakMock.soktePerioder[1].tom,
         ),
       ),
     ).to.exist;

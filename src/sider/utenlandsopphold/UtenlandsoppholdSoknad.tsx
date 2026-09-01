@@ -51,7 +51,7 @@ import {
   useSaveDraft,
 } from "@/hooks/useDraftQuery";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
-import { tilLesbarPeriodeDatoerOgDager } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
+import { PeriodeOgAntallDagerTekst } from "./PeriodeOgAntallDagerTekst";
 
 const AVSLAG_CATEGORY = "utenlandsopphold-avslag";
 const DELVIS_INNVILGET_CATEGORY = "utenlandsopphold-delvis-innvilget";
@@ -378,7 +378,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
 
             {utenlandsoppholdSoknad.soktePerioder.map((periode, index) => (
               <BodyShort key={index} size="small">
-                {tilLesbarPeriodeDatoerOgDager(periode)}
+                <PeriodeOgAntallDagerTekst periode={periode} />
               </BodyShort>
             ))}
           </Box>

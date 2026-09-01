@@ -163,13 +163,3 @@ export function beregnAvslattePerioder(
       .filter((periode) => periode.fom <= periode.tom),
   );
 }
-
-export function tilLesbarPeriodeDatoerOgDager(periode: Periode) {
-  const startOgSluttDato = tilLesbarPeriodeMedArUtenManednavn(
-    periode.fom,
-    periode.tom,
-  );
-  const antallDager = antallDagerIPeriode(periode);
-
-  return `${startOgSluttDato} (${antallDager} dager)`;
-}

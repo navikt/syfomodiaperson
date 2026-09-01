@@ -13,7 +13,7 @@ import {
 } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
 import { useNotification } from "@/context/notification/NotificationContext.tsx";
-import { tilLesbarPeriodeDatoerOgDager } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
+import { PeriodeOgAntallDagerTekst } from "./PeriodeOgAntallDagerTekst";
 
 const TIDLIGST_INNSENDT_TIDSPUNKT_FOR_BEHANDLING_I_MODIA = new Date(
   // 1. august 2026
@@ -134,7 +134,7 @@ export function UtenlandsoppholdSoknader() {
                     <Table.DataCell>
                       {soknad.soktePerioder.map((periode, index) => (
                         <div key={index}>
-                          {tilLesbarPeriodeDatoerOgDager(periode)}
+                          <PeriodeOgAntallDagerTekst periode={periode} />
                         </div>
                       ))}
                     </Table.DataCell>
