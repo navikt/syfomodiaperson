@@ -11,19 +11,12 @@ import {
 import { ExpansionCard, Heading } from "@navikt/ds-react";
 import React from "react";
 import SykmeldingUtdragFraSykefravaretVisning from "./SykmeldingUtdragFraSykefravaretVisning";
-import styled from "styled-components";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { SykmeldingTittel } from "@/components/utdragFraSykefravaeret/SykmeldingTittel";
 
 const texts = {
   header: "Sykmeldinger",
 };
-
-const StyledExpantionCardHeader = styled(ExpansionCard.Header)`
-  .aksel-expansioncard__header-content {
-    width: 100%;
-  }
-`;
 
 interface Props {
   selectedOppfolgingstilfelle: OppfolgingstilfelleDTO | undefined;
@@ -57,14 +50,14 @@ export default function Sykmeldinger({ selectedOppfolgingstilfelle }: Props) {
           "Sykmelding uten arbeidsgiver";
         return (
           <ExpansionCard key={sykmelding.id} aria-label={title}>
-            <StyledExpantionCardHeader className="w-full">
+            <ExpansionCard.Header className="w-full">
               <ExpansionCard.Title
                 as="div"
                 className="flex justify-between m-0 text-base"
               >
                 <SykmeldingTittel sykmelding={sykmelding} />
               </ExpansionCard.Title>
-            </StyledExpantionCardHeader>
+            </ExpansionCard.Header>
             <ExpansionCard.Content className={"print:block"}>
               <SykmeldingUtdragFraSykefravaretVisning sykmelding={sykmelding} />
             </ExpansionCard.Content>
