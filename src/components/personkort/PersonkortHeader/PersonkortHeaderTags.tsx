@@ -31,7 +31,7 @@ const texts = {
   tegnsprakTolk: "Tegnspråktolk",
   sikkerhetstiltak: "Sikkerhetstiltak",
   ao: "Under arbeidsrettet oppfølging",
-  friskmeldingTilArbeidsformidling: "Har vedtak om § 8-5",
+  friskmeldingTilArbeidsformidling: "Vedtak § 8-5",
   reservertKRR: "Reservert KRR",
   harIkkeArbeidsgiver: "Uten arbeidsgiver",
 };
