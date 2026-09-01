@@ -27,6 +27,7 @@ import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/p
 import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
 import {
   addDays,
+  addWeeks,
   daysFromToday,
   tilLesbarDatoMedArUtenManedNavn,
 } from "@/utils/datoUtils";
@@ -44,6 +45,7 @@ import { http, HttpResponse } from "msw";
 import { SYFOPERSON_ROOT } from "@/apiConstants";
 import { virksomhetQueryKeys } from "@/data/virksomhet/virksomhetQueryHooks.ts";
 import { aapQueryKeys } from "@/data/aap/aapQueryHooks";
+import { createAapStatusMock } from "@/mocks/aap/mockAapSaker";
 
 let queryClient: any;
 
@@ -702,111 +704,161 @@ describe("PersonkortHeader", () => {
     expect(screen.queryByText("Reservert KRR")).to.not.exist;
   });
 
-  it("Viser AAP tag om aktivt vedtak når bruker har aktivt vedtak om AAP", () => {
+  it("Viser AAP tag om aktivt vedtak når bruker har aktivt vedtak og søknad om AAP", () => {
+    const aktivVedtakAAP = createAapStatusMock({
+      soknad: {
+        statuskode: "SOKNAD_UNDER_BEHANDLING",
+        erAktiv: true,
+      },
+      vedtak: {
+        perioder: [
+          {
+            fraOgMedDato: "2026-08-01",
+            tilOgMedDato: "2026-09-01",
+          },
+        ],
+        erAktivt: true,
+      },
+    });
+
     queryClient.setQueryData(
       aapQueryKeys.aapStatus(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => ({
-        soknader: [
-          {
-            sakid: "sak-1",
-            soknadsdatoer: ["2026-08-01"],
-            statuskode: "UNDER_BEHANDLING",
-            erAktiv: true,
-          },
-        ],
-        vedtak: [
-          {
-            sakid: "sak-1",
-            kilde: "KELVIN",
-            vedtaksdato: "2026-08-15",
-            perioder: [
-              {
-                fraOgMedDato: "2026-08-01",
-                tilOgMedDato: "2026-09-01",
-              },
-            ],
-            erAktivt: true,
-          },
-        ],
-      }),
+      () => aktivVedtakAAP,
     );
 
     renderPersonkortHeader();
 
     expect(screen.getByText("Vedtak AAP")).to.exist;
-    expect(screen.queryByText("Søkt AAP")).to.not.exist;
-    expect(screen.queryByText("Vedtak AAP siste 12mnd")).to.not.exist;
+    expect(screen.queryByText("Søkt AAP")).not.to.exist;
+    expect(screen.queryByText("Vedtak AAP siste 12mnd")).not.to.exist;
   });
 
-  it("Viser AAP tag om aktiv søknad når bruker har aktiv søknad om AAP", () => {
+  it("Viser AAP tag om aktiv søknad når bruker har aktiv søknad og tidligere vedtak om AAP siste 12 mnd", () => {
+    const aktivSoknadAAP = createAapStatusMock({
+      soknad: {
+        statuskode: "SOKNAD_UNDER_BEHANDLING",
+        erAktiv: true,
+      },
+      vedtak: {
+        perioder: [
+          {
+            fraOgMedDato: "2026-08-01",
+            tilOgMedDato: dayjs(addWeeks(new Date(), -2)).format("YYYY-MM-DD"),
+          },
+        ],
+        erAktivt: false,
+      },
+    });
+
     queryClient.setQueryData(
       aapQueryKeys.aapStatus(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => ({
-        soknader: [
-          {
-            sakid: "sak-2",
-            soknadsdatoer: ["2026-08-01"],
-            statuskode: "UNDER_BEHANDLING",
-            erAktiv: true,
-          },
-        ],
-        vedtak: [
-          {
-            sakid: "sak-2",
-            kilde: "KELVIN",
-            vedtaksdato: "2026-08-15",
-            perioder: [
-              {
-                fraOgMedDato: "2026-08-01",
-                tilOgMedDato: "2026-09-01",
-              },
-            ],
-            erAktivt: false,
-          },
-        ],
-      }),
+      () => aktivSoknadAAP,
     );
 
     renderPersonkortHeader();
 
     expect(screen.getByText("Søkt AAP")).to.exist;
-    expect(screen.queryByText("Vedtak AAP")).to.not.exist;
-    expect(screen.queryByText("Vedtak AAP siste 12mnd")).to.not.exist;
+    expect(screen.queryByText("Vedtak AAP")).not.to.exist;
+    expect(screen.queryByText("Vedtak AAP siste 12mnd")).not.to.exist;
   });
 
   it("Viser AAP tag om tidligere vedtak når bruker har tidligere vedtak om AAP", () => {
+    const tidligereVedtakAAP = createAapStatusMock({
+      soknad: {
+        statuskode: "FERDIGBEHANDLET",
+        erAktiv: false,
+      },
+      vedtak: {
+        perioder: [
+          {
+            fraOgMedDato: "2026-08-01",
+            tilOgMedDato: dayjs(addWeeks(new Date(), -2)).format("YYYY-MM-DD"),
+          },
+        ],
+        erAktivt: false,
+      },
+    });
     queryClient.setQueryData(
       aapQueryKeys.aapStatus(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => ({
-        soknader: [
-          {
-            sakid: "sak-3",
-            soknadsdatoer: ["2024-08-01"],
-            statuskode: "FERDIG_BEHANDLET",
-            erAktiv: false,
-          },
-        ],
-        vedtak: [
-          {
-            sakid: "sak-3",
-            kilde: "KELVIN",
-            vedtaksdato: "2026-08-15",
-            perioder: [
-              {
-                fraOgMedDato: "2026-08-01",
-                tilOgMedDato: "2026-09-01",
-              },
-            ],
-            erAktivt: false,
-          },
-        ],
-      }),
+      () => tidligereVedtakAAP,
     );
 
     renderPersonkortHeader();
 
     expect(screen.getByText("Vedtak AAP siste 12mnd")).to.exist;
-    expect(screen.queryByText("Vedtak AAP")).to.not.exist;
-    expect(screen.queryByText("Søkt AAP")).to.not.exist;
+    expect(screen.queryByText("Vedtak AAP")).not.to.exist;
+    expect(screen.queryByText("Søkt AAP")).not.to.exist;
+  });
+
+  it("Viser AAP tag om vedtak når bruker har både aktivt og eldre vedtak om AAP", () => {
+    const aktivOgTidligereVedtakAAP = createAapStatusMock({
+      soknad: {
+        statuskode: "FERDIGBEHANDLET",
+        erAktiv: false,
+      },
+      vedtak: {
+        perioder: [
+          {
+            fraOgMedDato: dayjs(addWeeks(new Date(), -1)).format("YYYY-MM-DD"),
+            tilOgMedDato: dayjs(addWeeks(new Date(), 10)).format("YYYY-MM-DD"),
+          },
+          {
+            fraOgMedDato: "2026-08-01",
+            tilOgMedDato: dayjs(addWeeks(new Date(), -2)).format("YYYY-MM-DD"),
+          },
+        ],
+        erAktivt: true,
+      },
+    });
+    queryClient.setQueryData(
+      aapQueryKeys.aapStatus(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => aktivOgTidligereVedtakAAP,
+    );
+
+    renderPersonkortHeader();
+
+    expect(screen.getByText("Vedtak AAP")).to.exist;
+    expect(screen.queryByText("Søkt AAP")).not.to.exist;
+    expect(screen.queryByText("Vedtak AAP siste 12mnd")).not.to.exist;
+  });
+
+  it("Viser ikke AAP tag når siste vedtak er eldre enn 12 måneder", () => {
+    const gammeltVedtakAAP = createAapStatusMock({
+      vedtak: {
+        perioder: [
+          {
+            fraOgMedDato: "2024-01-01",
+            tilOgMedDato: dayjs()
+              .subtract(1, "year")
+              .subtract(1, "day")
+              .format("YYYY-MM-DD"),
+          },
+        ],
+        erAktivt: false,
+      },
+    });
+    queryClient.setQueryData(
+      aapQueryKeys.aapStatus(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => gammeltVedtakAAP,
+    );
+
+    renderPersonkortHeader();
+
+    expect(screen.queryByText("Vedtak AAP")).not.to.exist;
+    expect(screen.queryByText("Søkt AAP")).not.to.exist;
+    expect(screen.queryByText("Vedtak AAP siste 12mnd")).not.to.exist;
+  });
+
+  it("Viser ikke AAP tag når bruker ikke har søknader eller vedtak", () => {
+    queryClient.setQueryData(
+      aapQueryKeys.aapStatus(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => createAapStatusMock(),
+    );
+
+    renderPersonkortHeader();
+
+    expect(screen.queryByText("Vedtak AAP")).not.to.exist;
+    expect(screen.queryByText("Søkt AAP")).not.to.exist;
+    expect(screen.queryByText("Vedtak AAP siste 12mnd")).not.to.exist;
   });
 });
