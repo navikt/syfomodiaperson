@@ -623,7 +623,7 @@ describe("PersonkortHeader", () => {
     );
     renderPersonkortHeader();
 
-    expect(screen.getByText("Har vedtak om § 8-5")).to.exist;
+    expect(screen.getByText("Vedtak § 8-5")).to.exist;
   });
 
   it("viser uføregrad tag", () => {
