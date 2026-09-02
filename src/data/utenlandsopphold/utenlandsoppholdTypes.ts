@@ -1,5 +1,8 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes.ts";
-import { addDays } from "@/utils/datoUtils.ts";
+import {
+  addDays,
+  tilLesbarPeriodeMedArUtenManednavn,
+} from "@/utils/datoUtils.ts";
 import dayjs from "dayjs";
 
 export interface SoknaderQueryDTO {
@@ -102,6 +105,9 @@ export const parseSoknad = (soknad: SoknadDTO): Soknad => ({
   soktePerioder: soknad.soktePerioder.map(parsePeriode),
   vedtak: soknad.vedtak ? parseVedtak(soknad.vedtak) : null,
 });
+
+export const antallDagerIPeriode = (periode: Periode): number =>
+  dayjs(periode.tom).diff(dayjs(periode.fom), "day") + 1;
 
 /**
  * Trekker en enkelt periode (`fratrekk`) fra en annen periode (`periode`),
