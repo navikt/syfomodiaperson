@@ -76,7 +76,7 @@ const texts = {
     henleggelse: "Henleggelse: Søknaden er trukket",
   },
   buttons: {
-    sendButton: "Send vedtak",
+    sendButton: "Se brev og send",
     confirmButton: "Bekreft og send",
     previewContentLabel: "Forhåndsvisning",
     backButton: "Tilbake",

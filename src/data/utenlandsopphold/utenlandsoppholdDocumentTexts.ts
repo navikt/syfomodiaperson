@@ -30,10 +30,6 @@ export type HenleggelseDocumentTextsValues =
     begrunnelse: string;
   };
 
-/**
- * Standardtekst som fylles inn i begrunnelse-feltet ved henleggelse.
- * Saksbehandler kan redigere denne før vedtaket sendes.
- */
 export const DEFAULT_HENLEGGELSE_BEGRUNNELSE =
   "I henvendelse til NAV har du gitt beskjed om at du ønsker å trekke søknaden.";
 
@@ -177,7 +173,6 @@ export const getDelvisInnvilgetTexts = ({
   };
 };
 
-// TODO: Bekreft endelig tittel/tekst for henleggelsesbrevet.
 export const getHenleggelseTexts = ({
   soknadDato,
   soktePerioder,
@@ -187,7 +182,7 @@ export const getHenleggelseTexts = ({
   const soktePerioderTekst = perioderTilTekst(soktePerioder);
 
   return {
-    tittel: "Vedtak om henleggelse av søknad om utenlandsopphold",
+    tittel: "Din søknad om utenlandsopphold er trukket",
     henleggelse: {
       intro: `Vi viser til din søknad av ${soknadDatoTekst} om å beholde sykepengene under opphold i utlandet i perioden ${soktePerioderTekst}.`,
       begrunnelse,

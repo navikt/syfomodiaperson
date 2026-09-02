@@ -118,7 +118,8 @@ describe("UtenlandsoppholdSoknad", () => {
 
     renderUtenlandsoppholdSoknad();
 
-    expect(await screen.findByRole("button", { name: "Send vedtak" })).to.exist;
+    expect(await screen.findByRole("button", { name: "Se brev og send" })).to
+      .exist;
     expect(screen.getByRole("button", { name: "Forhåndsvisning" })).to.exist;
     expect(await screen.findByRole("heading", { name: "Søknadens innhold" })).to
       .exist;
@@ -130,9 +131,9 @@ describe("UtenlandsoppholdSoknad", () => {
 
     renderUtenlandsoppholdSoknad();
 
-    await screen.findByRole("button", { name: "Send vedtak" });
+    await screen.findByRole("button", { name: "Se brev og send" });
     await clickRadio("Innvilget: Godkjenn hele perioden");
-    await clickButton("Send vedtak");
+    await clickButton("Se brev og send");
 
     expect(await screen.findByRole("button", { name: "Bekreft og send" })).to
       .exist;
@@ -181,8 +182,8 @@ describe("UtenlandsoppholdSoknad", () => {
 
     await clickRadio("Innvilget: Godkjenn hele perioden");
 
-    await screen.findByRole("button", { name: "Send vedtak" });
-    await clickButton("Send vedtak");
+    await screen.findByRole("button", { name: "Se brev og send" });
+    await clickButton("Se brev og send");
     await clickButton("Bekreft og send");
 
     expect(
@@ -234,7 +235,7 @@ describe("UtenlandsoppholdSoknad", () => {
     expect(await screen.findByText(/Sykepenger er ikke utbetalt\./)).to.exist;
 
     await clickRadio("Innvilget: Godkjenn hele perioden");
-    await clickButton("Send vedtak");
+    await clickButton("Se brev og send");
     await clickButton("Bekreft og send");
 
     await waitFor(() => {
@@ -276,7 +277,7 @@ describe("UtenlandsoppholdSoknad", () => {
     expect(await screen.findByText(/Sykepenger er ikke utbetalt\./)).to.exist;
 
     await clickRadio("Innvilget: Godkjenn hele perioden");
-    await clickButton("Send vedtak");
+    await clickButton("Se brev og send");
     await clickButton("Bekreft og send");
 
     await waitFor(() => {
@@ -313,8 +314,8 @@ describe("UtenlandsoppholdSoknad", () => {
       "Vurdering av avslag",
     );
 
-    await screen.findByRole("button", { name: "Send vedtak" });
-    await clickButton("Send vedtak");
+    await screen.findByRole("button", { name: "Se brev og send" });
+    await clickButton("Se brev og send");
     await clickButton("Bekreft og send");
 
     expect(
@@ -390,8 +391,8 @@ describe("UtenlandsoppholdSoknad", () => {
       "I telefonsamtale 01.09.2026 har du gitt beskjed om at du ønsker å trekke søknaden.",
     );
 
-    await screen.findByRole("button", { name: "Send vedtak" });
-    await clickButton("Send vedtak");
+    await screen.findByRole("button", { name: "Se brev og send" });
+    await clickButton("Se brev og send");
     await clickButton("Bekreft og send");
 
     expect(
@@ -437,7 +438,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
       renderUtenlandsoppholdSoknad();
 
-      await screen.findByRole("button", { name: "Send vedtak" });
+      await screen.findByRole("button", { name: "Se brev og send" });
 
       expect(screen.queryByRole("textbox", { name: "Fra og med dato" })).to.not
         .exist;
@@ -459,9 +460,9 @@ describe("UtenlandsoppholdSoknad", () => {
 
       renderUtenlandsoppholdSoknad();
 
-      await screen.findByRole("button", { name: "Send vedtak" });
+      await screen.findByRole("button", { name: "Se brev og send" });
       await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
-      await clickButton("Send vedtak");
+      await clickButton("Se brev og send");
 
       expect(
         await screen.findAllByText("Vennligst angi periode"),
@@ -477,7 +478,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
       renderUtenlandsoppholdSoknad();
 
-      await screen.findByRole("button", { name: "Send vedtak" });
+      await screen.findByRole("button", { name: "Se brev og send" });
       await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
 
       const tomInput = getTextInput("Til og med dato");
@@ -491,7 +492,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
       renderUtenlandsoppholdSoknad();
 
-      await screen.findByRole("button", { name: "Send vedtak" });
+      await screen.findByRole("button", { name: "Se brev og send" });
       await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
 
       const fomInput = getTextInput("Fra og med dato");
@@ -500,8 +501,8 @@ describe("UtenlandsoppholdSoknad", () => {
       changeTextInput(fomInput, "05.09.2026");
       changeTextInput(tomInput, "11.09.2026");
 
-      await screen.findByRole("button", { name: "Send vedtak" });
-      await clickButton("Send vedtak");
+      await screen.findByRole("button", { name: "Se brev og send" });
+      await clickButton("Se brev og send");
 
       expect(
         await screen.findAllByText(
@@ -538,8 +539,8 @@ describe("UtenlandsoppholdSoknad", () => {
         "Vurdering av delvis innvilgelse",
       );
 
-      await screen.findByRole("button", { name: "Send vedtak" });
-      await clickButton("Send vedtak");
+      await screen.findByRole("button", { name: "Se brev og send" });
+      await clickButton("Se brev og send");
       await clickButton("Bekreft og send");
 
       expect(
@@ -598,7 +599,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
       renderUtenlandsoppholdSoknad();
 
-      await screen.findByRole("button", { name: "Send vedtak" });
+      await screen.findByRole("button", { name: "Se brev og send" });
       await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
 
       await screen.findByRole("textbox", { name: "Fra og med dato" });
@@ -629,7 +630,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
       renderUtenlandsoppholdSoknad();
 
-      await screen.findByRole("button", { name: "Send vedtak" });
+      await screen.findByRole("button", { name: "Se brev og send" });
       await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
       await clickButton("Pluss ikon Legg til flere godkjente perioder");
 
@@ -645,7 +646,7 @@ describe("UtenlandsoppholdSoknad", () => {
       changeTextInput(fomInputs[1], "03.09.2026");
       changeTextInput(tomInputs[1], "06.09.2026");
 
-      await clickButton("Send vedtak");
+      await clickButton("Se brev og send");
 
       expect(
         await screen.findAllByText(
@@ -663,7 +664,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
       renderUtenlandsoppholdSoknad();
 
-      await screen.findByRole("button", { name: "Send vedtak" });
+      await screen.findByRole("button", { name: "Se brev og send" });
       await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
       await clickButton("Pluss ikon Legg til flere godkjente perioder");
 
@@ -685,7 +686,7 @@ describe("UtenlandsoppholdSoknad", () => {
         ),
       ).to.exist;
       expect(
-        screen.getByRole("button", { name: "Send vedtak" }),
+        screen.getByRole("button", { name: "Se brev og send" }),
       ).to.have.property("disabled", true);
     });
 
@@ -721,7 +722,7 @@ describe("UtenlandsoppholdSoknad", () => {
         "Vurdering av delvis innvilgelse",
       );
 
-      await clickButton("Send vedtak");
+      await clickButton("Se brev og send");
       await clickButton("Bekreft og send");
 
       expect(
@@ -763,8 +764,8 @@ describe("UtenlandsoppholdSoknad", () => {
 
     renderUtenlandsoppholdSoknad();
 
-    await screen.findByRole("button", { name: "Send vedtak" });
-    await clickButton("Send vedtak");
+    await screen.findByRole("button", { name: "Se brev og send" });
+    await clickButton("Se brev og send");
 
     expect(
       await screen.findByText("Du må velge et utfall for å fatte vedtaket"),
@@ -786,16 +787,16 @@ describe("UtenlandsoppholdSoknad", () => {
 
     renderUtenlandsoppholdSoknad();
 
-    await screen.findByRole("button", { name: "Send vedtak" });
+    await screen.findByRole("button", { name: "Se brev og send" });
     await clickRadio("Innvilget: Godkjenn hele perioden");
-    await clickButton("Send vedtak");
+    await clickButton("Se brev og send");
     await clickButton("Bekreft og send");
 
     await waitFor(() => {
       const vedtakMutation = queryClient.getMutationCache().getAll().pop();
       expect(vedtakMutation?.state.status).to.equal("error");
     });
-    expect(screen.getByRole("button", { name: "Send vedtak" })).to.exist;
+    expect(screen.getByRole("button", { name: "Se brev og send" })).to.exist;
   });
 
   it("sender riktig draft til riktig draft query", async () => {
@@ -848,7 +849,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
       renderUtenlandsoppholdSoknad();
 
-      await screen.findByRole("button", { name: "Send vedtak" });
+      await screen.findByRole("button", { name: "Se brev og send" });
       expect(screen.queryByText(perioderUtenforTilfelleWarning)).to.not.exist;
     });
   });

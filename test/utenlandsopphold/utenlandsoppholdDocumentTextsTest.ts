@@ -127,7 +127,7 @@ describe("utenlandsoppholdDocumentTexts", () => {
       });
 
       expect(texts.tittel).to.equal(
-        "Vedtak om henleggelse av søknad om utenlandsopphold",
+        "Din søknad om utenlandsopphold er trukket",
       );
       expect(texts.henleggelse.intro).to.contain(
         "01.06.2026 til og med 07.06.2026, og 10.06.2026 til og med 12.06.2026",
