@@ -2,7 +2,6 @@ import React from "react";
 import { BodyShort, Box, Heading, List, ReadMore } from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
 import { KartleggingssporsmalSvarResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes.ts";
-import { hasRisikoForLangtidsfravar } from "@/sider/kartleggingssporsmal/info/vurdereBehov.ts";
 import { ArrowsCirclepathIcon } from "@navikt/aksel-icons";
 
 const texts = {
