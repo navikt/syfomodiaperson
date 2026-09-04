@@ -39,6 +39,7 @@ import { mockPensjonPenUforegrad } from "@/mocks/uforegrad/mockUforegrad";
 import { mockSyfooppfolgingsplanbackend } from "@/mocks/syfooppfolgingsplanbackend/mockSyfooppfolgingsplanbackend";
 import { mockBehandlerdialogDraft } from "@/mocks/draft/mockBehandlerdialogDraft";
 import { mockDraftText } from "@/mocks/draft/mockDraftText";
+import { mockAapSaker } from "@/mocks/aap/mockAapSaker";
 
 const handlers = [
   http.post("https://umami.nav.no/api/send", () => {
@@ -88,6 +89,7 @@ const handlers = [
   mockSykepengesoknadBackend,
   mockVeilarboppfolging,
   mockPensjonPenUforegrad,
+  mockAapSaker,
 ];
 
 export default handlers;

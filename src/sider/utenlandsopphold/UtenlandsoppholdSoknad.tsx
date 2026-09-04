@@ -51,6 +51,7 @@ import {
   useSaveDraft,
 } from "@/hooks/useDraftQuery";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
+import { PeriodeOgAntallDagerTekst } from "./PeriodeOgAntallDagerTekst";
 
 const AVSLAG_CATEGORY = "utenlandsopphold-avslag";
 const DELVIS_INNVILGET_CATEGORY = "utenlandsopphold-delvis-innvilget";
@@ -304,7 +305,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
   const soknadBehandlet =
     utenlandsoppholdSoknad.status !== SoknadStatusDTO.MOTTATT;
   const soktePerioder = utenlandsoppholdSoknad.soktePerioder;
-  const periodText =
+  const labelSoktePerioder =
     soktePerioder.length > 1
       ? texts.labelSoktePerioderPlural
       : texts.labelSoktPeriodeSingular;
@@ -373,11 +374,11 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
           </HStack>
 
           <Box>
-            <BodyShort weight="semibold">{periodText}:</BodyShort>
+            <BodyShort weight="semibold">{labelSoktePerioder}:</BodyShort>
 
             {utenlandsoppholdSoknad.soktePerioder.map((periode, index) => (
               <BodyShort key={index} size="small">
-                {tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom)}
+                <PeriodeOgAntallDagerTekst periode={periode} />
               </BodyShort>
             ))}
           </Box>
