@@ -18,6 +18,7 @@ enum Draft {
   AKTIVITETSKRAV_INNSTILLING_OM_STANS = "aktivitetskrav-innstilling-om-stans",
   UTENLANDSOPPHOLD_AVSLAG = "utenlandsopphold-avslag",
   UTENLANDSOPPHOLD_DELVIS_INNVILGET = "utenlandsopphold-delvis-innvilget",
+  UTENLANDSOPPHOLD_HENLEGGELSE = "utenlandsopphold-henleggelse",
 }
 
 function isValidCategory(category: string): boolean {
@@ -52,6 +53,8 @@ function toDraftCachekey(
       return `draft:utenlandsopphold:avslag:${veilederIdent}:${personident}`;
     case Draft.UTENLANDSOPPHOLD_DELVIS_INNVILGET:
       return `draft:utenlandsopphold:delvis-innvilget:${veilederIdent}:${personident}`;
+    case Draft.UTENLANDSOPPHOLD_HENLEGGELSE:
+      return `draft:utenlandsopphold:henleggelse:${veilederIdent}:${personident}`;
   }
 }
 

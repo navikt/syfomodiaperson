@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   getAvslagTexts,
   getDelvisInnvilgetTexts,
+  getHenleggelseTexts,
   getInnvilgetTexts,
 } from "@/data/utenlandsopphold/utenlandsoppholdDocumentTexts.ts";
 import { Periode } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
@@ -113,6 +114,26 @@ describe("utenlandsoppholdDocumentTexts", () => {
 
       expect(texts.delvisInnvilget.forbehold).to.equal(
         "Dette vedtaket gjelder kun retten til å beholde ytelsen sykepenger under utenlandsoppholdet, dersom du får innvilget sykepenger.",
+      );
+    });
+  });
+
+  describe("getHenleggelseTexts", () => {
+    it("viser søkte perioder i introteksten og begrunnelsen uendret", () => {
+      const texts = getHenleggelseTexts({
+        soknadDato,
+        soktePerioder: flerePerioder,
+        begrunnelse: "En begrunnelse om trukket søknad",
+      });
+
+      expect(texts.tittel).to.equal(
+        "Din søknad om utenlandsopphold er trukket",
+      );
+      expect(texts.henleggelse.intro).to.contain(
+        "01.06.2026 til og med 07.06.2026, og 10.06.2026 til og med 12.06.2026",
+      );
+      expect(texts.henleggelse.begrunnelse).to.equal(
+        "En begrunnelse om trukket søknad",
       );
     });
   });

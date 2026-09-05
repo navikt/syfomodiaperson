@@ -51,10 +51,11 @@ export enum SoknadStatusDTO {
   INNVILGET = "INNVILGET",
   DELVIS_INNVILGET = "DELVIS_INNVILGET",
   AVSLAG = "AVSLAG",
+  HENLAGT = "HENLAGT",
 }
 
 // Types
-export type Utfall = "INNVILGET" | "DELVIS_INNVILGET" | "AVSLAG";
+export type Utfall = "INNVILGET" | "DELVIS_INNVILGET" | "AVSLAG" | "HENLAGT";
 
 export interface Soknad extends Omit<
   SoknadDTO,

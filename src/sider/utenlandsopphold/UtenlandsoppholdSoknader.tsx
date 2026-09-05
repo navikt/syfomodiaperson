@@ -44,6 +44,7 @@ export const statusTexts: { [key in SoknadStatusDTO]: string } = {
   [SoknadStatusDTO.INNVILGET]: "Innvilget",
   [SoknadStatusDTO.DELVIS_INNVILGET]: "Delvis innvilget",
   [SoknadStatusDTO.AVSLAG]: "Avslått",
+  [SoknadStatusDTO.HENLAGT]: "Henlagt",
 };
 
 function getStatusColumn(soknad: Soknad) {

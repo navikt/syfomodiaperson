@@ -39,6 +39,7 @@ import {
   SoknadStatusDTO,
   Utfall,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
+import { DEFAULT_HENLEGGELSE_BEGRUNNELSE } from "@/data/utenlandsopphold/utenlandsoppholdDocumentTexts.ts";
 import { Maksdato, useMaksdatoQuery } from "@/data/maksdato/useMaksdatoQuery";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { harPerioderUtenforOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
@@ -55,6 +56,7 @@ import { PeriodeOgAntallDagerTekst } from "./PeriodeOgAntallDagerTekst";
 
 const AVSLAG_CATEGORY = "utenlandsopphold-avslag";
 const DELVIS_INNVILGET_CATEGORY = "utenlandsopphold-delvis-innvilget";
+const HENLEGGELSE_CATEGORY = "utenlandsopphold-henleggelse";
 
 const texts = {
   pending: "Henter søknader...",
@@ -72,9 +74,10 @@ const texts = {
     innvilgelse: "Innvilget: Godkjenn hele perioden",
     delvisInnvilgelse: "Delvis innvilget: Godkjenn deler av perioden",
     avslag: "Avslag: Avslå hele perioden",
+    henleggelse: "Henleggelse: Søknaden er trukket",
   },
   buttons: {
-    sendButton: "Send vedtak",
+    sendButton: "Se brev og send",
     confirmButton: "Bekreft og send",
     previewContentLabel: "Forhåndsvisning",
     backButton: "Tilbake",
@@ -150,6 +153,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
     getInnvilgetDocument,
     getAvslagDocument,
     getDelvisInnvilgetDocument,
+    getHenleggelseDocument,
   } = useUtenlandsoppholdSoknadDocument();
 
   const formMethods = useForm<SkjemaValues>({
@@ -184,16 +188,24 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
   );
   const deleteDelvisInnvilgetDraft = useDeleteDraft(DELVIS_INNVILGET_CATEGORY);
 
+  const henleggelseDraftQuery =
+    useDraftQuery<DraftTextDTO>(HENLEGGELSE_CATEGORY);
+  const saveHenleggelseDraft = useSaveDraft<DraftTextDTO>(HENLEGGELSE_CATEGORY);
+  const deleteHenleggelseDraft = useDeleteDraft(HENLEGGELSE_CATEGORY);
+
   const draftByUtfall = {
     AVSLAG: { query: avslagDraftQuery, save: saveAvslagDraft },
     DELVIS_INNVILGET: {
       query: delvisInnvilgetDraftQuery,
       save: saveDelvisInnvilgetDraft,
     },
+    HENLAGT: { query: henleggelseDraftQuery, save: saveHenleggelseDraft },
   };
 
   const activeDraft =
-    valgtUtfall === "AVSLAG" || valgtUtfall === "DELVIS_INNVILGET"
+    valgtUtfall === "AVSLAG" ||
+    valgtUtfall === "DELVIS_INNVILGET" ||
+    valgtUtfall === "HENLAGT"
       ? draftByUtfall[valgtUtfall]
       : null;
 
@@ -225,7 +237,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
       setValue("begrunnelse", "");
       clearErrors("begrunnelse");
     } else {
-      // Resetter innvilgede perioder for DELVIS_INNVILGET eller AVSLAG
+      // Resetter innvilgede perioder for DELVIS_INNVILGET, AVSLAG eller HENLAGT
       setValue("innvilgedePerioder", []);
 
       if (utfall === "AVSLAG") {
@@ -234,6 +246,12 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
         setValue(
           "begrunnelse",
           delvisInnvilgetDraftQuery.data?.begrunnelse ?? "",
+        );
+      } else if (utfall === "HENLAGT") {
+        setValue(
+          "begrunnelse",
+          henleggelseDraftQuery.data?.begrunnelse ??
+            DEFAULT_HENLEGGELSE_BEGRUNNELSE,
         );
       }
     }
@@ -267,6 +285,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
         debouncedAutoSaveDraft.cancel();
         deleteAvslagDraft.mutate(undefined);
         deleteDelvisInnvilgetDraft.mutate(undefined);
+        deleteHenleggelseDraft.mutate(undefined);
         navigate(`${utenlandsoppholdPath}`);
       },
     });
@@ -345,6 +364,12 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
           avslattePerioder: avslattePerioder,
           begrunnelse: valgtBegrunnelse ?? "",
           medForbeholdOvrigeVilkar: !isSykepengerUtbetalt,
+        });
+      case "HENLAGT":
+        return getHenleggelseDocument({
+          soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
+          soktePerioder: soktePerioder,
+          begrunnelse: valgtBegrunnelse ?? "",
         });
       case "INNVILGET":
       default:
@@ -470,6 +495,12 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
                 >
                   {texts.radioButtons.avslag}
                 </Radio>
+                <Radio
+                  value={"HENLAGT"}
+                  {...register("utfall", { required: true })}
+                >
+                  {texts.radioButtons.henleggelse}
+                </Radio>
               </RadioGroup>
 
               {valgtUtfall === "DELVIS_INNVILGET" && (
@@ -508,7 +539,8 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
               )}
 
               {(valgtUtfall === "DELVIS_INNVILGET" ||
-                valgtUtfall === "AVSLAG") &&
+                valgtUtfall === "AVSLAG" ||
+                valgtUtfall === "HENLAGT") &&
                 (isDraftPending ? (
                   <Skeleton variant="rounded" height={150} />
                 ) : (
