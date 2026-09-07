@@ -73,11 +73,15 @@ export const useKartleggingssporsmalVurderSvar = () => {
   const putVurderSvar = ({
     kandidatUuid,
     vurderingAlternativ,
+    vurderingFritekst,
   }: KartleggingssporsmalKandidatVurderingRequestDTO) => {
     const path = `${ISMEROPPFOLGING_ROOT}/kartleggingssporsmal/kandidater/${kandidatUuid}`;
     return put<KartleggingssporsmalKandidatResponseDTO>(
       path,
-      { vurderingAlternativ: vurderingAlternativ },
+      {
+        vurderingAlternativ: vurderingAlternativ,
+        vurderingFritekst: vurderingFritekst,
+      },
       fnr,
     );
   };
