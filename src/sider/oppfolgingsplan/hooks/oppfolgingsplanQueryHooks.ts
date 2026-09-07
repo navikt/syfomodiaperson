@@ -21,6 +21,10 @@ export const oppfolgingsplanQueryKeys = {
     "oppfolgingsplanerLPS",
     personident,
   ],
+  unntaksvurderinger: (personident: string) => [
+    "unntaksvurderinger",
+    personident,
+  ],
   foresporsel: (personident: string) => ["foresporsel", personident],
 };
 

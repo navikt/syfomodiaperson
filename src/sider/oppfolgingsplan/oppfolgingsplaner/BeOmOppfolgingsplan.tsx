@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Heading,
+  InfoCard,
   List,
   Radio,
   RadioGroup,
@@ -29,6 +30,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { ListItem } from "@navikt/ds-react/List";
+import { useGetUnntaksvurderingerQuery } from "../hooks/unntaksvurderingerQueryHook";
 
 const texts = {
   aktivForesporsel: "Obs! Det ble bedt om oppfølgingsplan fra",
@@ -38,6 +40,11 @@ const texts = {
     info2:
       "Forespørselen blir journalført og vil være tilgjengelig for den sykmeldte på innloggede sider.",
     info3: "Nærmeste leder vil motta et varsel på e-post.",
+  },
+  unntaksvurdering: {
+    header: "Unntak for oppfølgingsplan",
+    content: "Arbeidsgiver har meldt om unntak fra oppfølgingsplan.",
+    inline: "(Unntak for oppfølgingsplan)",
   },
   virksomhet: "Virksomhet:",
   missingVirksomhet: "Vennligst velg arbeidsgiver",
@@ -86,8 +93,12 @@ interface Props {
 }
 
 interface FormValues {
-  narmesteLeder: NarmesteLederRelasjonDTO;
+  narmesteLeder: NarmesteLederMedUnntaksvurdering;
 }
+
+type NarmesteLederMedUnntaksvurdering = NarmesteLederRelasjonDTO & {
+  hasUnntaksVurdering: boolean;
+};
 
 export default function BeOmOppfolgingsplan({
   activeNarmesteLedere,
@@ -98,10 +109,22 @@ export default function BeOmOppfolgingsplan({
   const lastForesporsel = data?.[0];
   const { virksomhetsnavn: lastForesporselVirksomhetsnavn } =
     useVirksomhetQuery(lastForesporsel?.virksomhetsnummer ?? "");
+  const { data: unntaksvurderinger } = useGetUnntaksvurderingerQuery();
   const postOppfolgingsplanForesporsel = usePostOppfolgingsplanForesporsel();
   const { getForesporselDocument } = useOppfolgingsplanForesporselDocument();
+  const activeNarmesteLedereMedUnntaksvurdering: NarmesteLederMedUnntaksvurdering[] =
+    activeNarmesteLedere.map((narmesteLeder) => ({
+      ...narmesteLeder,
+      hasUnntaksVurdering: unntaksvurderinger.some(
+        (unntaksvurdering) =>
+          unntaksvurdering.organisasjonsnummer ===
+          narmesteLeder.virksomhetsnummer,
+      ),
+    }));
   const defaultNarmesteLeder =
-    activeNarmesteLedere.length === 1 ? activeNarmesteLedere[0] : undefined;
+    activeNarmesteLedereMedUnntaksvurdering.length === 1
+      ? activeNarmesteLedereMedUnntaksvurdering[0]
+      : undefined;
   const { control, watch, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       narmesteLeder: defaultNarmesteLeder,
@@ -163,16 +186,18 @@ export default function BeOmOppfolgingsplan({
                 error={error?.message}
                 value={field.value?.uuid}
                 onChange={(value) => {
-                  const selectedNarmesteLeder = activeNarmesteLedere.find(
-                    (nl) => nl.uuid === value,
-                  );
+                  const selectedNarmesteLeder =
+                    activeNarmesteLedereMedUnntaksvurdering.find(
+                      (narmesteLeder) => narmesteLeder.uuid === value,
+                    );
                   field.onChange(selectedNarmesteLeder);
                 }}
               >
-                {activeNarmesteLedere.map(
-                  ({ virksomhetsnavn, uuid }, index) => (
+                {activeNarmesteLedereMedUnntaksvurdering.map(
+                  ({ uuid, virksomhetsnavn, hasUnntaksVurdering }, index) => (
                     <Radio key={index} value={uuid}>
-                      {virksomhetsnavn}
+                      {virksomhetsnavn}{" "}
+                      {hasUnntaksVurdering && texts.unntaksvurdering.inline}
                     </Radio>
                   ),
                 )}
@@ -181,16 +206,30 @@ export default function BeOmOppfolgingsplan({
           />
         )}
         {narmesteLeder && (
-          <div>
-            <LabelAndText
-              label={texts.virksomhet}
-              text={narmesteLeder.virksomhetsnavn}
-            />
-            <LabelAndText
-              label={texts.narmesteLeder}
-              text={narmesteLeder.narmesteLederNavn}
-            />
-          </div>
+          <>
+            {narmesteLeder.hasUnntaksVurdering && (
+              <InfoCard data-color="info">
+                <InfoCard.Header>
+                  <InfoCard.Title>
+                    {texts.unntaksvurdering.header}
+                  </InfoCard.Title>
+                </InfoCard.Header>
+                <InfoCard.Content>
+                  {texts.unntaksvurdering.content}
+                </InfoCard.Content>
+              </InfoCard>
+            )}
+            <div>
+              <LabelAndText
+                label={texts.virksomhet}
+                text={narmesteLeder.virksomhetsnavn}
+              />
+              <LabelAndText
+                label={texts.narmesteLeder}
+                text={narmesteLeder.narmesteLederNavn}
+              />
+            </div>
+          </>
         )}
         <div>
           <BodyLong>{texts.description.info3}</BodyLong>
