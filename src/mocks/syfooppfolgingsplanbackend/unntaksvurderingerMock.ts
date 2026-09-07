@@ -1,4 +1,4 @@
-import { UnntaksvurderingDTO } from "@/sider/oppfolgingsplan/hooks/types/UnntaksvurderingerDTO";
+import { UnntaksvurderingDTO } from "@/sider/oppfolgingsplan/hooks/types/UnntaksvurderingDTO";
 import {
   ARBEIDSTAKER_DEFAULT,
   VIRKSOMHET_PONTYPANDY,
