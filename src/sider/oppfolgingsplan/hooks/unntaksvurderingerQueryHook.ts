@@ -10,7 +10,7 @@ export function useGetUnntaksvurderingerQuery() {
   const fnr = useValgtPersonident();
   const path = `${SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT}/unntaksvurderinger/query`;
   const fetchUnntaksvurderinger = () =>
-    post<UnntaksvurderingDTO[]>(path, { sykmeldtFnr: fnr });
+    post<UnntaksvurderingDTO>(path, { sykmeldtFnr: fnr });
   const query = useQuery({
     queryKey: oppfolgingsplanQueryKeys.unntaksvurderinger(fnr),
     queryFn: fetchUnntaksvurderinger,
@@ -19,7 +19,7 @@ export function useGetUnntaksvurderingerQuery() {
   });
 
   return {
-    data: query.data || [],
+    data: query.data?.unntaksvurderinger || [],
     isLoading: query.isLoading,
     isPending: query.isPending,
     isError: query.isError,
