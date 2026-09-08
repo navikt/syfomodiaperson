@@ -2,7 +2,6 @@ import React from "react";
 import { BodyShort, Box, Heading, List, ReadMore } from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
 import { KartleggingssporsmalSvarResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes.ts";
-import { hasRisikoForLangtidsfravar } from "@/sider/kartleggingssporsmal/info/vurdereBehov.ts";
 import { ArrowsCirclepathIcon } from "@navikt/aksel-icons";
 
 const texts = {
@@ -10,10 +9,6 @@ const texts = {
   list: {
     hasGjentakendeSykefravar: "Den sykmeldte har gjentakende fravær",
     noGjentakendeSykefravar: "Den sykmeldte har ikke gjentakende fravær",
-    hasRiskoForLangtidsfravar:
-      "Svarene indikerer behov for vurdering av oppfølging – se veiledning",
-    noRiskoForLangtidsfravar:
-      "Svarene indikerer ikke behov for videre vurdering av oppfølging – se veiledning",
   },
   gjentakende: {
     definisjon: "Definisjonen på gjentakende sykefravær i Modia er enten:",
@@ -62,11 +57,6 @@ export function KartleggingInfo({ answeredQuestions }: Props) {
               </BodyShort>
             </ReadMore>
           </div>
-        </List.Item>
-        <List.Item>
-          {hasRisikoForLangtidsfravar(answeredQuestions)
-            ? texts.list.hasRiskoForLangtidsfravar
-            : boldRegex(texts.list.noRiskoForLangtidsfravar, "ikke")}
         </List.Item>
       </List>
     </Box>

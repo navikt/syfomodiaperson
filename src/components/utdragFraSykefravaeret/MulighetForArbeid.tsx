@@ -53,15 +53,11 @@ export default function MulighetForArbeid({
 
           {aktivitetIkkeMulig433.map(
             (ikkeMuligTekst: string, index: number) => (
-              <Checkbox
-                key={index}
-                size="small"
-                checked
-                readOnly
-                className="ml-8"
-              >
-                {ikkeMuligTekst}
-              </Checkbox>
+              <div className="ml-8">
+                <Checkbox key={index} size="small" checked readOnly>
+                  {ikkeMuligTekst}
+                </Checkbox>
+              </div>
             ),
           )}
           {aarsakAktivitetIkkeMulig433 && (
@@ -87,15 +83,11 @@ export default function MulighetForArbeid({
 
           {aktivitetIkkeMulig434.map(
             (ikkeMuligTekst: string, index: number) => (
-              <Checkbox
-                key={index}
-                size="small"
-                checked
-                readOnly
-                className="ml-8"
-              >
-                {ikkeMuligTekst}
-              </Checkbox>
+              <div className="ml-8">
+                <Checkbox key={index} size="small" checked readOnly>
+                  {ikkeMuligTekst}
+                </Checkbox>
+              </div>
             ),
           )}
           {aarsakAktivitetIkkeMulig434 && (

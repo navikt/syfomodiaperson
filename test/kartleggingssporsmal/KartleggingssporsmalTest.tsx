@@ -444,46 +444,6 @@ describe("Kartleggingssporsmal", () => {
   describe("Display information box above vurdering", () => {
     const hasGjentakendeSykefravar = "Den sykmeldte har gjentakende fravær";
     const noGjentakendeSykefravar = "Den sykmeldte har ikke gjentakende fravær";
-    const hasRiskoForLangtidsfravar =
-      "Svarene indikerer behov for vurdering av oppfølging – se veiledning";
-    const noRiskoForLangtidsfravar =
-      "Svarene indikerer ikke behov for videre vurdering av oppfølging – se veiledning";
-
-    it("Shows hasRiskoForLangtidsfravarText when svar indicate risk for langtidsfravar", () => {
-      mockKartleggingssporsmalKandidat(
-        kartleggingIsKandidatAndAnsweredQuestions,
-        ARBEIDSTAKER_DEFAULT.personIdent,
-      );
-      mockKartleggingssporsmalSvar(
-        kartleggingssporsmalFlervalgV1Answered,
-        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
-      );
-
-      renderKartleggingssporsmal();
-
-      expect(screen.queryByText(hasRiskoForLangtidsfravar)).to.exist;
-      expect(screen.queryByText(noRiskoForLangtidsfravar)).to.not.exist;
-    });
-
-    it("Does not show hasRiskoForLangtidsfravarText when all selected radio options are low-risk", () => {
-      mockKartleggingssporsmalKandidat(
-        kartleggingIsKandidatAndAnsweredQuestions,
-        ARBEIDSTAKER_DEFAULT.personIdent,
-      );
-      mockKartleggingssporsmalSvar(
-        kartleggingssporsmalFlervalgV1LowRiskAnswered,
-        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
-      );
-
-      renderKartleggingssporsmal();
-
-      expect(
-        screen
-          .getAllByRole("listitem")
-          .some((item) => item.textContent?.includes(noRiskoForLangtidsfravar)),
-      ).to.be.true;
-      expect(screen.queryByText(hasRiskoForLangtidsfravar)).to.not.exist;
-    });
 
     it("Shows hasGjentakendeSykefravarText when hasGjentakendeSykefravar is true", () => {
       mockGjentakendeFravar(true);
