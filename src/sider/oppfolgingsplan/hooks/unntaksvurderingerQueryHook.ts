@@ -1,7 +1,7 @@
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { UnntaksvurderingDTO } from "@/sider/oppfolgingsplan/hooks/types/UnntaksvurderingDTO";
 import { SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT } from "@/apiConstants";
-import { get } from "@/api/axios";
+import { post } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
 import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { minutesToMillis } from "@/utils/utils";
@@ -9,7 +9,8 @@ import { minutesToMillis } from "@/utils/utils";
 export function useGetUnntaksvurderingerQuery() {
   const fnr = useValgtPersonident();
   const path = `${SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT}/unntaksvurderinger/query`;
-  const fetchUnntaksvurderinger = () => get<UnntaksvurderingDTO[]>(path, fnr);
+  const fetchUnntaksvurderinger = () =>
+    post<UnntaksvurderingDTO[]>(path, { fnr });
   const query = useQuery({
     queryKey: oppfolgingsplanQueryKeys.unntaksvurderinger(fnr),
     queryFn: fetchUnntaksvurderinger,
