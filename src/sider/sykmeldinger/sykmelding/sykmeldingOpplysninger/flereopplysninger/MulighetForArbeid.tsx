@@ -25,13 +25,13 @@ function Aarsaker({ aarsaker }: AarsakerProps) {
     return array;
   };
   return (
-    <>
+    <div className="ml-6">
       {fjernAnnet(aarsaker).map((aarsak: string, key: number) => (
-        <Checkbox key={key} checked readOnly size="small" className="ml-6">
+        <Checkbox key={key} checked readOnly size="small">
           {aarsak}
         </Checkbox>
       ))}
-    </>
+    </div>
   );
 }
 
