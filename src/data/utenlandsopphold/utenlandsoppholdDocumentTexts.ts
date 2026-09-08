@@ -180,12 +180,12 @@ export const getHenleggelseTexts = ({
   const soktePerioderTekst = perioderTilTekst(soktePerioder);
 
   return {
-    tittel: "Din søknad om utenlandsopphold er trukket",
+    tittel: "Din søknad om utenlandsopphold er henlagt",
     henleggelse: {
       intro: `Vi viser til din søknad av ${soknadDatoTekst} om å beholde sykepengene under opphold i utlandet i perioden ${soktePerioderTekst}.`,
       begrunnelse,
       bekreftelse:
-        "Vi bekrefter at vi har registrert søknaden din som trukket. Til orientering kommer ikke Nav til å behandle søknaden.",
+        "Vi bekrefter at vi har registrert søknaden din som henlagt. Til orientering kommer ikke Nav til å behandle søknaden.",
       nySoknad:
         "Hvis du likevel ønsker at vi behandler søknaden din, må du søke på nytt. Dette gjør du ved å sende inn en ny søknad om å beholde sykepenger i utlandet.",
     },

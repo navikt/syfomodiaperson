@@ -378,7 +378,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
     await clickButton("Start behandling");
 
-    await clickRadio("Henleggelse: Søknaden er trukket");
+    await clickRadio("Henleggelse: Søknaden er henlagt");
 
     const begrunnelseInput = getTextInput("Begrunnelse (obligatorisk)");
     expect(begrunnelseInput).to.have.property(

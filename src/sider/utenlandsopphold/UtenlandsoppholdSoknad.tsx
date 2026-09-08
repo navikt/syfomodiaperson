@@ -74,7 +74,7 @@ const texts = {
     innvilgelse: "Innvilget: Godkjenn hele perioden",
     delvisInnvilgelse: "Delvis innvilget: Godkjenn deler av perioden",
     avslag: "Avslag: Avslå hele perioden",
-    henleggelse: "Henleggelse: Søknaden er trukket",
+    henleggelse: "Henleggelse: Søknaden er henlagt",
   },
   buttons: {
     sendButton: "Se brev og send",

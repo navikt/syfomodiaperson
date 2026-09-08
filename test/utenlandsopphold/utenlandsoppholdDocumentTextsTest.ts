@@ -123,17 +123,17 @@ describe("utenlandsoppholdDocumentTexts", () => {
       const texts = getHenleggelseTexts({
         soknadDato,
         soktePerioder: flerePerioder,
-        begrunnelse: "En begrunnelse om trukket søknad",
+        begrunnelse: "En begrunnelse om henlagt søknad",
       });
 
       expect(texts.tittel).to.equal(
-        "Din søknad om utenlandsopphold er trukket",
+        "Din søknad om utenlandsopphold er henlagt",
       );
       expect(texts.henleggelse.intro).to.contain(
         "01.06.2026 til og med 07.06.2026, og 10.06.2026 til og med 12.06.2026",
       );
       expect(texts.henleggelse.begrunnelse).to.equal(
-        "En begrunnelse om trukket søknad",
+        "En begrunnelse om henlagt søknad",
       );
     });
   });
