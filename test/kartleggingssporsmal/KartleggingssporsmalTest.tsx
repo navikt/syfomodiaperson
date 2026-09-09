@@ -25,7 +25,13 @@ import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { renderWithRouter } from "../testRouterUtils";
 import { appRoutePath } from "@/AppRouter";
 import { screen } from "@testing-library/react";
-import { clickButton, getButton, queryButton } from "../testUtils";
+import {
+  changeTextInput,
+  clickButton,
+  getButton,
+  getTextInput,
+  queryButton,
+} from "../testUtils";
 import {
   stubDefaultIsmeroppfolging,
   stubVurderSvarError,
@@ -371,6 +377,13 @@ describe("Kartleggingssporsmal", () => {
         `Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging`,
       ),
     ).to.exist;
+
+    expect(screen.getByDisplayValue("Dette er en begrunnelse for vurderingen."))
+      .to.exist;
+    expect(getTextInput("Begrunnelse (valgfritt)")).to.have.property(
+      "readOnly",
+      true,
+    );
   });
 
   describe("Evaluate answers to kartleggingsspørsmål with vurdering", () => {
@@ -436,6 +449,142 @@ describe("Kartleggingssporsmal", () => {
       expect(
         await screen.findByText(
           "Det skjedde en uventet feil. Vennligst prøv igjen senere.",
+        ),
+      ).to.exist;
+    });
+
+    describe("Begrunnelse field visibility", () => {
+      it("is shown regardless of selected alternativ when answers indicate risk", async () => {
+        mockKartleggingssporsmalKandidat(
+          kartleggingIsKandidatAndAnsweredQuestions,
+          ARBEIDSTAKER_DEFAULT.personIdent,
+        );
+        mockKartleggingssporsmalSvar(
+          kartleggingssporsmalFlervalgV1Answered,
+          kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
+        );
+
+        renderKartleggingssporsmal();
+
+        expect(
+          screen.queryByRole("textbox", { name: "Begrunnelse (valgfritt)" }),
+        ).to.not.exist;
+
+        await screen
+          .getByLabelText(
+            "Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging",
+          )
+          .click();
+
+        expect(getTextInput("Begrunnelse (valgfritt)")).to.exist;
+
+        await screen
+          .getByLabelText(
+            "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+          )
+          .click();
+
+        expect(getTextInput("Begrunnelse (valgfritt)")).to.exist;
+      });
+
+      it("is hidden when answers do not indicate risk and IKKE_RISIKO_FOR_LANGTIDSFRAVAR is selected", async () => {
+        mockKartleggingssporsmalKandidat(
+          kartleggingIsKandidatAndAnsweredQuestions,
+          ARBEIDSTAKER_DEFAULT.personIdent,
+        );
+        mockKartleggingssporsmalSvar(
+          kartleggingssporsmalFlervalgV1LowRiskAnswered,
+          kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
+        );
+
+        renderKartleggingssporsmal();
+
+        expect(
+          screen.queryByRole("textbox", { name: "Begrunnelse (valgfritt)" }),
+        ).to.not.exist;
+
+        await screen
+          .getByLabelText(
+            "Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging",
+          )
+          .click();
+
+        expect(
+          screen.queryByRole("textbox", { name: "Begrunnelse (valgfritt)" }),
+        ).to.not.exist;
+      });
+
+      it("is shown when answers do not indicate risk but RISIKO_FOR_LANGTIDSFRAVAR is selected", async () => {
+        mockKartleggingssporsmalKandidat(
+          kartleggingIsKandidatAndAnsweredQuestions,
+          ARBEIDSTAKER_DEFAULT.personIdent,
+        );
+        mockKartleggingssporsmalSvar(
+          kartleggingssporsmalFlervalgV1LowRiskAnswered,
+          kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
+        );
+
+        renderKartleggingssporsmal();
+
+        await screen
+          .getByLabelText(
+            "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+          )
+          .click();
+
+        expect(getTextInput("Begrunnelse (valgfritt)")).to.exist;
+      });
+    });
+
+    it("Begrunnelse is optional, and submitting without one succeeds", async () => {
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalFlervalgV1LowRiskAnswered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
+      );
+      stubDefaultIsmeroppfolging();
+
+      renderKartleggingssporsmal();
+
+      await screen
+        .getByLabelText(
+          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+        )
+        .click();
+      expect(
+        (getTextInput("Begrunnelse (valgfritt)") as HTMLTextAreaElement).value,
+      ).to.equal("");
+      await clickButton("Lagre vurdering, fjern oppgaven");
+      expect(await screen.findByText("Oppgaven er behandlet av Z990000")).to
+        .exist;
+    });
+
+    it("Submitting a begrunnelse longer than 200 characters shows error message", async () => {
+      mockKartleggingssporsmalKandidat(
+        kartleggingIsKandidatAndAnsweredQuestions,
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      );
+      mockKartleggingssporsmalSvar(
+        kartleggingssporsmalFlervalgV1Answered,
+        kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
+      );
+
+      renderKartleggingssporsmal();
+
+      await screen
+        .getByLabelText(
+          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+        )
+        .click();
+      changeTextInput(getTextInput("Begrunnelse (valgfritt)"), "a".repeat(201));
+      await clickButton("Lagre vurdering, fjern oppgaven");
+
+      expect(
+        await screen.findByText(
+          "Begrunnelse kan ikke være lengre enn 200 tegn",
         ),
       ).to.exist;
     });
