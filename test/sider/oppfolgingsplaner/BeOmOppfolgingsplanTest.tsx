@@ -13,6 +13,7 @@ import {
   oppfolgingsplanForesporselQueryKeys,
   OppfolgingsplanForesporselResponse,
 } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanForesporselHooks";
+import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import {
   ANNEN_LEDER_AKTIV,
   ARBEIDSTAKER_DEFAULT,
@@ -22,6 +23,7 @@ import {
   VIRKSOMHET_BRANNOGBIL,
   VIRKSOMHET_PONTYPANDY,
 } from "@/mocks/common/mockConstants";
+import { UnntaksvurderingDTO } from "@/sider/oppfolgingsplan/hooks/types/Unntaksvurdering";
 import { mockServer } from "../../setup";
 import { http, HttpResponse } from "msw";
 import { ISOPPFOLGINGSPLAN_ROOT } from "@/apiConstants";
@@ -236,5 +238,71 @@ describe("BeOmOppfolgingsplan", () => {
         expectedForesporselRequest,
       );
     });
+  });
+});
+
+describe("Unntaksvurdering", () => {
+  beforeEach(() => {
+    queryClient = queryClientWithMockData();
+  });
+
+  it("Viser ikke tekst dersom unntaksvurdering er udefinert", () => {
+    renderBeOmOppfolgingsplan();
+
+    expect(screen.queryByText("Unntak for oppfølgingsplan")).to.not.exist;
+  });
+
+  it("Viser tekst dersom unntaksvurdering er definert", () => {
+    const unntaksvurderinger: UnntaksvurderingDTO = {
+      unntaksvurderinger: [
+        {
+          uuid: generateUUID(),
+          fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+          organisasjonsnummer: LEDERE_DEFAULT[0].virksomhetsnummer,
+          organisasjonsnavn: LEDERE_DEFAULT[0].virksomhetsnavn,
+          meldtTidspunkt: new Date().toISOString(),
+        },
+      ],
+    };
+    queryClient.setQueryData(
+      oppfolgingsplanQueryKeys.unntaksvurderinger(
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      ),
+      () => unntaksvurderinger,
+    );
+    renderBeOmOppfolgingsplan(multipleNarmesteLeder);
+
+    expect(screen.getByText("(Unntak for oppfølgingsplan)")).to.exist;
+  });
+
+  it("Viser ikke tekst dersom unntaksvurdering er definert men det foreligger en nyere forespørsel", () => {
+    const unntaksvurderinger: UnntaksvurderingDTO = {
+      unntaksvurderinger: [
+        {
+          uuid: generateUUID(),
+          fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+          organisasjonsnummer: LEDERE_DEFAULT[0].virksomhetsnummer,
+          organisasjonsnavn: LEDERE_DEFAULT[0].virksomhetsnavn,
+          meldtTidspunkt: new Date(
+            new Date().setDate(new Date().getDate() - 1),
+          ).toISOString(),
+        },
+      ],
+    };
+    queryClient.setQueryData(
+      oppfolgingsplanQueryKeys.unntaksvurderinger(
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      ),
+      () => unntaksvurderinger,
+    );
+    queryClient.setQueryData(
+      oppfolgingsplanForesporselQueryKeys.foresporsel(
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      ),
+      () => [existingForesporsel],
+    );
+    renderBeOmOppfolgingsplan(multipleNarmesteLeder);
+
+    expect(screen.queryByText("(Unntak for oppfølgingsplan)")).to.not.exist;
   });
 });

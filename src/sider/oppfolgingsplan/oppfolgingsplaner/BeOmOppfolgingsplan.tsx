@@ -201,8 +201,11 @@ export default function BeOmOppfolgingsplan({
                 {activeNarmesteLedereMedUnntaksvurdering.map(
                   ({ uuid, virksomhetsnavn, unntaksVurdering }, index) => (
                     <Radio key={index} value={uuid}>
-                      {virksomhetsnavn}{" "}
-                      {!!unntaksVurdering && texts.unntaksvurdering.inline}
+                      {virksomhetsnavn}
+                      <strong>
+                        {!!unntaksVurdering &&
+                          ` ${texts.unntaksvurdering.inline}`}
+                      </strong>
                     </Radio>
                   ),
                 )}
@@ -220,11 +223,9 @@ export default function BeOmOppfolgingsplan({
                   </InfoCard.Title>
                 </InfoCard.Header>
                 <InfoCard.Content>
-                  {dayjs(
+                  {`${dayjs(
                     new Date(narmesteLeder.unntaksVurdering.meldtTidspunkt),
-                  ).format("YYYY-MM-DD")}
-                  {": "}
-                  {texts.unntaksvurdering.content}
+                  ).format("YYYY-MM-DD")}: ${texts.unntaksvurdering.content}`}
                   <div className="mt-2">
                     {texts.unntaksvurdering.date}{" "}
                     {dayjs(
