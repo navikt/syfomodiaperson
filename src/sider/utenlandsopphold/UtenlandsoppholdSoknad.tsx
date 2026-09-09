@@ -94,6 +94,8 @@ const texts = {
     label: "Begrunnelse (obligatorisk)",
     description:
       "Begrunnelsen blir en del av en større brevmal. Åpne forhåndsvisning for å se hele vedtaket.",
+    descriptionHenleggelse:
+      "Begrunnelsen blir en del av en større brevmal. Åpne forhåndsvisning for å se hele henleggelsen.",
     missing: "Vennligst angi begrunnelse",
   },
 };
@@ -558,7 +560,11 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
                       })}
                       value={watch("begrunnelse")}
                       label={texts.begrunnelse.label}
-                      description={texts.begrunnelse.description}
+                      description={
+                        valgtUtfall === "HENLAGT"
+                          ? texts.begrunnelse.descriptionHenleggelse
+                          : texts.begrunnelse.description
+                      }
                       error={errors.begrunnelse?.message}
                       size="small"
                       minRows={6}
