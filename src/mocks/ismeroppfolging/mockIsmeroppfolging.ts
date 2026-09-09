@@ -78,7 +78,8 @@ export const kartleggingssporsmalVurderingFerdigbehandlet: KartleggingssporsmalK
     vurdering: {
       vurdertAt: daysFromToday(-14),
       vurdertBy: VEILEDER_DEFAULT.ident,
-      vurderingAlternativ: "IKKE_RISIKO_FOR_LANGTIDSFRAVAR",
+      vurderingAlternativ: "RISIKO_FOR_LANGTIDSFRAVAR",
+      vurderingFritekst: "Dette er en begrunnelse for vurderingen.",
     },
     createdAt: daysFromToday(-20),
     statusAt: daysFromToday(-20),

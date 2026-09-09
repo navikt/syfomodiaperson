@@ -13,6 +13,7 @@ export default defineConfig({
   },
   build: {
     outDir: "./dist",
+    sourcemap: true,
   },
   base: "/",
   plugins: [react(), svgr({ include: "**/*.svg" }), tailwindcss()],

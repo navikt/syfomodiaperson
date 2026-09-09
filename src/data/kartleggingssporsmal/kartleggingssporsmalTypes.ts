@@ -16,11 +16,13 @@ export interface KartleggingssporsmalKandidatVurderingResponseDTO {
   vurdertAt: Date;
   vurdertBy: string;
   vurderingAlternativ?: VurderingAlternativ;
+  vurderingFritekst?: string;
 }
 
 export interface KartleggingssporsmalKandidatVurderingRequestDTO {
   kandidatUuid: string;
   vurderingAlternativ: VurderingAlternativ;
+  vurderingFritekst?: string;
 }
 
 export enum KandidatStatus {
