@@ -1,5 +1,5 @@
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { UnntaksvurderingDTO } from "@/sider/oppfolgingsplan/hooks/types/UnntaksvurderingDTO";
+import { UnntaksvurderingDTO } from "@/sider/oppfolgingsplan/hooks/types/Unntaksvurdering";
 import { SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT } from "@/apiConstants";
 import { post } from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";

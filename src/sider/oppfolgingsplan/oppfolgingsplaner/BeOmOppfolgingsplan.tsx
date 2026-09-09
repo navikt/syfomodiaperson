@@ -10,7 +10,7 @@ import {
   RadioGroup,
   ReadMore,
 } from "@navikt/ds-react";
-import { PaperplaneIcon } from "@navikt/aksel-icons";
+import { InformationSquareIcon, PaperplaneIcon } from "@navikt/aksel-icons";
 import React from "react";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
@@ -31,6 +31,8 @@ import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { ListItem } from "@navikt/ds-react/List";
 import { useGetUnntaksvurderingerQuery } from "../hooks/unntaksvurderingerQueryHook";
+import { Unntaksvurdering } from "../hooks/types/Unntaksvurdering";
+import dayjs from "dayjs";
 
 const texts = {
   aktivForesporsel: "Obs! Det ble bedt om oppfølgingsplan fra",
@@ -44,6 +46,7 @@ const texts = {
   unntaksvurdering: {
     header: "Unntak for oppfølgingsplan",
     content: "Arbeidsgiver har meldt om unntak fra oppfølgingsplan.",
+    date: "Dato for unntak:",
     inline: "(Unntak for oppfølgingsplan)",
   },
   virksomhet: "Virksomhet:",
@@ -97,7 +100,7 @@ interface FormValues {
 }
 
 type NarmesteLederMedUnntaksvurdering = NarmesteLederRelasjonDTO & {
-  hasUnntaksVurdering: boolean;
+  unntaksVurdering?: Unntaksvurdering;
 };
 
 export default function BeOmOppfolgingsplan({
@@ -107,6 +110,7 @@ export default function BeOmOppfolgingsplan({
   const personident = useValgtPersonident();
   const { data } = useGetOppfolgingsplanForesporselQuery();
   const lastForesporsel = data?.[0];
+  const lastForesporselCreatedAt = lastForesporsel?.createdAt;
   const { virksomhetsnavn: lastForesporselVirksomhetsnavn } =
     useVirksomhetQuery(lastForesporsel?.virksomhetsnummer ?? "");
   const { data: unntaksvurderinger } = useGetUnntaksvurderingerQuery();
@@ -115,10 +119,13 @@ export default function BeOmOppfolgingsplan({
   const activeNarmesteLedereMedUnntaksvurdering: NarmesteLederMedUnntaksvurdering[] =
     activeNarmesteLedere.map((narmesteLeder) => ({
       ...narmesteLeder,
-      hasUnntaksVurdering: unntaksvurderinger.some(
+      unntaksVurdering: unntaksvurderinger.find(
         (unntaksvurdering) =>
           unntaksvurdering.organisasjonsnummer ===
-          narmesteLeder.virksomhetsnummer,
+            narmesteLeder.virksomhetsnummer &&
+          (!lastForesporsel?.createdAt ||
+            new Date(unntaksvurdering.meldtTidspunkt) >=
+              new Date(lastForesporsel.createdAt)),
       ),
     }));
   const defaultNarmesteLeder =
@@ -131,7 +138,6 @@ export default function BeOmOppfolgingsplan({
     },
   });
   const narmesteLeder = watch("narmesteLeder");
-  const lastForesporselCreatedAt = lastForesporsel?.createdAt;
   const isAktivForesporsel =
     !!lastForesporselCreatedAt && !postOppfolgingsplanForesporsel.isSuccess
       ? isDateInOppfolgingstilfelle(
@@ -139,7 +145,6 @@ export default function BeOmOppfolgingsplan({
           currentOppfolgingstilfelle,
         )
       : false;
-
   const aktivForesporselTekst = `${texts.aktivForesporsel} ${
     lastForesporselVirksomhetsnavn ?? lastForesporsel?.virksomhetsnummer
   } ${tilLesbarDatoMedArUtenManedNavn(lastForesporselCreatedAt)}`;
@@ -194,10 +199,10 @@ export default function BeOmOppfolgingsplan({
                 }}
               >
                 {activeNarmesteLedereMedUnntaksvurdering.map(
-                  ({ uuid, virksomhetsnavn, hasUnntaksVurdering }, index) => (
+                  ({ uuid, virksomhetsnavn, unntaksVurdering }, index) => (
                     <Radio key={index} value={uuid}>
                       {virksomhetsnavn}{" "}
-                      {hasUnntaksVurdering && texts.unntaksvurdering.inline}
+                      {!!unntaksVurdering && texts.unntaksvurdering.inline}
                     </Radio>
                   ),
                 )}
@@ -207,15 +212,25 @@ export default function BeOmOppfolgingsplan({
         )}
         {narmesteLeder && (
           <>
-            {narmesteLeder.hasUnntaksVurdering && (
-              <InfoCard data-color="info">
-                <InfoCard.Header>
+            {!!narmesteLeder.unntaksVurdering && (
+              <InfoCard data-color="info" size="small">
+                <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
                   <InfoCard.Title>
                     {texts.unntaksvurdering.header}
                   </InfoCard.Title>
                 </InfoCard.Header>
                 <InfoCard.Content>
+                  {dayjs(
+                    new Date(narmesteLeder.unntaksVurdering.meldtTidspunkt),
+                  ).format("YYYY-MM-DD")}
+                  {": "}
                   {texts.unntaksvurdering.content}
+                  <div className="mt-2">
+                    {texts.unntaksvurdering.date}{" "}
+                    {dayjs(
+                      new Date(narmesteLeder.unntaksVurdering.meldtTidspunkt),
+                    ).format("YYYY-MM-DD")}
+                  </div>
                 </InfoCard.Content>
               </InfoCard>
             )}

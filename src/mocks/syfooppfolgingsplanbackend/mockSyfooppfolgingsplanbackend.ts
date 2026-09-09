@@ -8,7 +8,7 @@ export const mockSyfooppfolgingsplanbackend = [
     `${SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT}/oppfolgingsplaner/query`,
     () => HttpResponse.json(oppfolgingsplanV2Mock),
   ),
-  http.get(
+  http.post(
     `${SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT}/unntaksvurderinger/query`,
     () => HttpResponse.json(unntaksvurderingerMock),
   ),
