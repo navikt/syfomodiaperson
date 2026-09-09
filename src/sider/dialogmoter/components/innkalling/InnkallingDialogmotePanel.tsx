@@ -82,7 +82,8 @@ export default function InnkallingDialogmotePanel({
   const { isKandidat, avvent } = useDialogmotekandidat();
   const { data: motebehovData } = useMotebehovQuery();
   const [visAvventModal, setVisAvventModal] = useState(false);
-  const showAvventButton = isKandidat || harUbehandletMotebehov(motebehovData);
+  const isPossibleToAvvent =
+    isKandidat || harUbehandletMotebehov(motebehovData);
 
   if (aktivtDialogmote) {
     return <DialogmoteMoteStatusPanel dialogmote={aktivtDialogmote} />;
@@ -94,7 +95,9 @@ export default function InnkallingDialogmotePanel({
           isOpen={visAvventModal}
           onClose={() => setVisAvventModal(false)}
         />
-        {avvent && <DialogmoteAvventAlert avvent={avvent} />}
+        {isPossibleToAvvent && avvent && (
+          <DialogmoteAvventAlert avvent={avvent} />
+        )}
         <DialogmotePanel
           icon={MoteIkonBlaaImage}
           header={
@@ -107,7 +110,7 @@ export default function InnkallingDialogmotePanel({
             </>
           }
           headerAction={
-            showAvventButton ? (
+            isPossibleToAvvent ? (
               <AvventDialogmoteButton onClick={() => setVisAvventModal(true)} />
             ) : undefined
           }
