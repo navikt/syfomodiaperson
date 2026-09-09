@@ -208,18 +208,33 @@ describe("InnkallingDialogmotePanel", () => {
     });
   });
 
-  it("viser avvent-banner når det finnes avvent-data", () => {
-    const frist = "2025-01-10";
+  const setAvventData = () => {
     queryClient.setQueryData(
       dialogmotekandidatQueryKeys.avvent(ARBEIDSTAKER_DEFAULT.personIdent),
       () => [
         {
-          frist,
+          frist: "2025-01-10",
           createdBy: "Z123456",
           beskrivelse: "Vi avventer ny informasjon",
         },
       ],
     );
+  };
+
+  const setKandidat = () => {
+    queryClient.setQueryData(
+      dialogmotekandidatQueryKeys.kandidat(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => dialogmotekandidatMock,
+    );
+    queryClient.setQueryData(
+      dialogmoterQueryKeys.dialogmoter(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => [],
+    );
+  };
+
+  it("viser avvent-banner når det finnes avvent-data og bruker er kandidat", () => {
+    setAvventData();
+    setKandidat();
 
     renderInnkallingDialogmotePanel(brukerKanVarsles);
 
@@ -228,11 +243,20 @@ describe("InnkallingDialogmotePanel", () => {
     expect(screen.getByText("Vi avventer ny informasjon")).to.exist;
   });
 
+  it("viser ikke avvent-banner når bruker verken er kandidat eller har motebehov", () => {
+    setAvventData();
+
+    renderInnkallingDialogmotePanel(brukerKanVarsles);
+
+    expect(screen.queryByText("Vi avventer ny informasjon")).to.not.exist;
+  });
+
   it("viser ikke avvent-banner når avvent-listen er tom (for eksempel etter unntak/ikke-aktuell)", () => {
     queryClient.setQueryData(
       dialogmotekandidatQueryKeys.avvent(ARBEIDSTAKER_DEFAULT.personIdent),
       () => [],
     );
+    setKandidat();
 
     renderInnkallingDialogmotePanel(brukerKanVarsles);
 
