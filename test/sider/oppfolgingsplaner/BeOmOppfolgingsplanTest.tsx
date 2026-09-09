@@ -252,7 +252,7 @@ describe("Unntaksvurdering", () => {
     expect(screen.queryByText("Unntak for oppfølgingsplan")).to.not.exist;
   });
 
-  it("Viser tekst dersom unntaksvurdering er definert", () => {
+  it("Viser tekst dersom unntaksvurdering er definert", async () => {
     const unntaksvurderinger: UnntaksvurderingDTO = {
       unntaksvurderinger: [
         {
@@ -271,8 +271,36 @@ describe("Unntaksvurdering", () => {
       () => unntaksvurderinger,
     );
     renderBeOmOppfolgingsplan(multipleNarmesteLeder);
-
     expect(screen.getByText("(Unntak for oppfølgingsplan)")).to.exist;
+  });
+
+  it("Viser unntaksvurdering som hentes etter at eneste leder er valgt", async () => {
+    queryClient.setQueryData(
+      oppfolgingsplanQueryKeys.unntaksvurderinger(
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      ),
+      () => ({ unntaksvurderinger: [] }),
+    );
+    renderBeOmOppfolgingsplan();
+
+    queryClient.setQueryData(
+      oppfolgingsplanQueryKeys.unntaksvurderinger(
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      ),
+      () => ({
+        unntaksvurderinger: [
+          {
+            uuid: generateUUID(),
+            fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+            organisasjonsnummer: LEDERE_DEFAULT[0].virksomhetsnummer,
+            organisasjonsnavn: LEDERE_DEFAULT[0].virksomhetsnavn,
+            meldtTidspunkt: new Date().toISOString(),
+          },
+        ],
+      }),
+    );
+
+    expect(await screen.findByText("Unntak for oppfølgingsplan")).to.exist;
   });
 
   it("Viser ikke tekst dersom unntaksvurdering er definert men det foreligger en nyere forespørsel", () => {

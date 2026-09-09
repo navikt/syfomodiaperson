@@ -45,7 +45,8 @@ const texts = {
   },
   unntaksvurdering: {
     header: "Unntak for oppfølgingsplan",
-    content: "Arbeidsgiver har meldt om unntak fra oppfølgingsplan.",
+    content:
+      "Arbeidsgiver har meldt om unntak fra oppfølgingsplan. Dette betyr at det på nåværende tidspunkt ikke er nødvendig å lage oppfølgingsplan.",
     date: "Dato for unntak:",
     inline: "(Unntak for oppfølgingsplan)",
   },
@@ -138,6 +139,10 @@ export default function BeOmOppfolgingsplan({
     },
   });
   const narmesteLeder = watch("narmesteLeder");
+  const narmesteLederMedUnntaksvurdering =
+    activeNarmesteLedereMedUnntaksvurdering.find(
+      (leder) => leder.uuid === narmesteLeder?.uuid,
+    );
   const isAktivForesporsel =
     !!lastForesporselCreatedAt && !postOppfolgingsplanForesporsel.isSuccess
       ? isDateInOppfolgingstilfelle(
@@ -215,7 +220,7 @@ export default function BeOmOppfolgingsplan({
         )}
         {narmesteLeder && (
           <>
-            {!!narmesteLeder.unntaksVurdering && (
+            {!!narmesteLederMedUnntaksvurdering?.unntaksVurdering && (
               <InfoCard data-color="info" size="small">
                 <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
                   <InfoCard.Title>
@@ -224,13 +229,20 @@ export default function BeOmOppfolgingsplan({
                 </InfoCard.Header>
                 <InfoCard.Content>
                   {`${dayjs(
-                    new Date(narmesteLeder.unntaksVurdering.meldtTidspunkt),
+                    new Date(
+                      narmesteLederMedUnntaksvurdering.unntaksVurdering
+                        .meldtTidspunkt,
+                    ),
                   ).format("YYYY-MM-DD")}: ${texts.unntaksvurdering.content}`}
                   <div className="mt-2">
                     {texts.unntaksvurdering.date}{" "}
                     {dayjs(
-                      new Date(narmesteLeder.unntaksVurdering.meldtTidspunkt),
+                      new Date(
+                        narmesteLederMedUnntaksvurdering.unntaksVurdering
+                          .meldtTidspunkt,
+                      ),
                     ).format("YYYY-MM-DD")}
+                    : ${texts.unntaksvurdering.content}`
                   </div>
                 </InfoCard.Content>
               </InfoCard>
