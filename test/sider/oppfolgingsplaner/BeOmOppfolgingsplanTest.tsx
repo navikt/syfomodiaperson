@@ -286,7 +286,7 @@ describe("Unntaksvurdering", () => {
       () => unntaksvurderinger,
     );
     renderBeOmOppfolgingsplan(multipleNarmesteLeder, oppfolgingsplaner);
-    expect(screen.getByText("(Unntak for oppfølgingsplan)")).to.exist;
+    expect(screen.getByText("(Arbeidsgiver har vurdert unntak)")).to.exist;
   });
 
   it("Viser unntaksvurdering som hentes etter at eneste leder er valgt", async () => {
@@ -347,6 +347,7 @@ describe("Unntaksvurdering", () => {
     ];
     renderBeOmOppfolgingsplan(multipleNarmesteLeder, nyereOppfolgingsplan);
 
-    expect(screen.queryByText("(Unntak for oppfølgingsplan)")).to.not.exist;
+    expect(screen.queryByText("(Arbeidsgiver har vurdert unntak)")).to.not
+      .exist;
   });
 });
