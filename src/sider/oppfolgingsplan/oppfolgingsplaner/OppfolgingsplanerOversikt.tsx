@@ -146,6 +146,10 @@ export default function OppfolgingsplanerOversikt() {
             {isBeOmOppfolgingsplanVisible && (
               <BeOmOppfolgingsplan
                 activeNarmesteLedere={activeNarmesteLedere}
+                oppfolgingsplanerV2={[
+                  ...inaktiveOppfolgingsplanerV2,
+                  ...aktiveOppfolgingsplanerV2,
+                ]}
                 currentOppfolgingstilfelle={currentOppfolgingstilfelle}
               />
             )}

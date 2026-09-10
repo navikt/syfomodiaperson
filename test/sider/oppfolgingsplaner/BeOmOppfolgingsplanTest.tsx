@@ -13,6 +13,7 @@ import {
   oppfolgingsplanForesporselQueryKeys,
   OppfolgingsplanForesporselResponse,
 } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanForesporselHooks";
+import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import {
   ANNEN_LEDER_AKTIV,
   ARBEIDSTAKER_DEFAULT,
@@ -22,6 +23,7 @@ import {
   VIRKSOMHET_BRANNOGBIL,
   VIRKSOMHET_PONTYPANDY,
 } from "@/mocks/common/mockConstants";
+import { UnntaksvurderingDTO } from "@/sider/oppfolgingsplan/hooks/types/Unntaksvurdering";
 import { mockServer } from "../../setup";
 import { http, HttpResponse } from "msw";
 import { ISOPPFOLGINGSPLAN_ROOT } from "@/apiConstants";
@@ -33,6 +35,7 @@ import { currentOppfolgingstilfelle } from "@/mocks/isoppfolgingstilfelle/oppfol
 import userEvent from "@testing-library/user-event";
 import { virksomhetQueryKeys } from "@/data/virksomhet/virksomhetQueryHooks";
 import { EregOrganisasjonResponseDTO } from "@/data/virksomhet/types/EregOrganisasjonResponseDTO";
+import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 
 let queryClient: QueryClient;
 
@@ -43,8 +46,21 @@ const multipleNarmesteLeder = [
   ANNEN_LEDER_AKTIV,
 ] as unknown as NarmesteLederRelasjonDTO[];
 
+const oppfolgingsplaner: OppfolgingsplanV2DTO[] = [
+  {
+    uuid: generateUUID(),
+    fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+    virksomhetsnummer: LEDERE_DEFAULT[0].virksomhetsnummer,
+    deltMedNavTidspunkt: new Date().toISOString(),
+    opprettet: new Date(0).toISOString(),
+    sistEndret: new Date().toISOString(),
+    evalueringsdato: new Date().toISOString(),
+  },
+];
+
 const renderBeOmOppfolgingsplan = (
   narmesteledere: NarmesteLederRelasjonDTO[] = singleNarmesteLeder,
+  oppfolgingsplanerV2: OppfolgingsplanV2DTO[] = oppfolgingsplaner,
   tilfelle: OppfolgingstilfelleDTO = currentOppfolgingstilfelle,
 ) => {
   render(
@@ -54,6 +70,7 @@ const renderBeOmOppfolgingsplan = (
       >
         <BeOmOppfolgingsplan
           activeNarmesteLedere={narmesteledere}
+          oppfolgingsplanerV2={oppfolgingsplanerV2}
           currentOppfolgingstilfelle={tilfelle}
         />
       </ValgtEnhetContext.Provider>
@@ -236,5 +253,101 @@ describe("BeOmOppfolgingsplan", () => {
         expectedForesporselRequest,
       );
     });
+  });
+});
+
+describe("Unntaksvurdering", () => {
+  beforeEach(() => {
+    queryClient = queryClientWithMockData();
+  });
+
+  it("Viser ikke tekst dersom unntaksvurdering er udefinert", () => {
+    renderBeOmOppfolgingsplan();
+
+    expect(screen.queryByText("Unntak for oppfølgingsplan")).to.not.exist;
+  });
+
+  it("Viser tekst dersom unntaksvurdering er definert", async () => {
+    const unntaksvurderinger: UnntaksvurderingDTO = {
+      unntaksvurderinger: [
+        {
+          uuid: generateUUID(),
+          fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+          organisasjonsnummer: LEDERE_DEFAULT[0].virksomhetsnummer,
+          organisasjonsnavn: LEDERE_DEFAULT[0].virksomhetsnavn,
+          meldtTidspunkt: new Date().toISOString(),
+        },
+      ],
+    };
+    queryClient.setQueryData(
+      oppfolgingsplanQueryKeys.unntaksvurderinger(
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      ),
+      () => unntaksvurderinger,
+    );
+    renderBeOmOppfolgingsplan(multipleNarmesteLeder, oppfolgingsplaner);
+    expect(screen.getByText("(Arbeidsgiver har vurdert unntak)")).to.exist;
+  });
+
+  it("Viser unntaksvurdering som hentes etter at eneste leder er valgt", async () => {
+    queryClient.setQueryData(
+      oppfolgingsplanQueryKeys.unntaksvurderinger(
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      ),
+      () => ({ unntaksvurderinger: [] }),
+    );
+    renderBeOmOppfolgingsplan(singleNarmesteLeder, oppfolgingsplaner);
+
+    queryClient.setQueryData(
+      oppfolgingsplanQueryKeys.unntaksvurderinger(
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      ),
+      () => ({
+        unntaksvurderinger: [
+          {
+            uuid: generateUUID(),
+            fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+            organisasjonsnummer: LEDERE_DEFAULT[0].virksomhetsnummer,
+            organisasjonsnavn: LEDERE_DEFAULT[0].virksomhetsnavn,
+            meldtTidspunkt: new Date().toISOString(),
+          },
+        ],
+      }),
+    );
+
+    expect(await screen.findByText("Unntak for oppfølgingsplan")).to.exist;
+  });
+
+  it("Viser ikke tekst dersom unntaksvurdering er definert men det foreligger en nyere oppfolgingsplan", () => {
+    const unntaksvurderinger: UnntaksvurderingDTO = {
+      unntaksvurderinger: [
+        {
+          uuid: generateUUID(),
+          fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+          organisasjonsnummer: LEDERE_DEFAULT[0].virksomhetsnummer,
+          organisasjonsnavn: LEDERE_DEFAULT[0].virksomhetsnavn,
+          meldtTidspunkt: new Date(
+            new Date().setDate(new Date().getDate() - 1),
+          ).toISOString(),
+        },
+      ],
+    };
+    queryClient.setQueryData(
+      oppfolgingsplanQueryKeys.unntaksvurderinger(
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      ),
+      () => unntaksvurderinger,
+    );
+    const nyereOppfolgingsplan: OppfolgingsplanV2DTO[] = [
+      {
+        ...oppfolgingsplaner[0],
+        uuid: generateUUID(),
+        opprettet: new Date().toISOString(),
+      },
+    ];
+    renderBeOmOppfolgingsplan(multipleNarmesteLeder, nyereOppfolgingsplan);
+
+    expect(screen.queryByText("(Arbeidsgiver har vurdert unntak)")).to.not
+      .exist;
   });
 });

@@ -4,12 +4,13 @@ import {
   Box,
   Button,
   Heading,
+  InfoCard,
   List,
   Radio,
   RadioGroup,
   ReadMore,
 } from "@navikt/ds-react";
-import { PaperplaneIcon } from "@navikt/aksel-icons";
+import { InformationSquareIcon, PaperplaneIcon } from "@navikt/aksel-icons";
 import React from "react";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
@@ -29,6 +30,10 @@ import { Controller, useForm } from "react-hook-form";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { ListItem } from "@navikt/ds-react/List";
+import { useGetUnntaksvurderingerQuery } from "../hooks/unntaksvurderingerQueryHook";
+import { Unntaksvurdering } from "../hooks/types/Unntaksvurdering";
+import dayjs from "dayjs";
+import { OppfolgingsplanV2DTO } from "../hooks/types/OppfolgingsplanV2DTO";
 
 const texts = {
   aktivForesporsel: "Obs! Det ble bedt om oppfølgingsplan fra",
@@ -38,6 +43,13 @@ const texts = {
     info2:
       "Forespørselen blir journalført og vil være tilgjengelig for den sykmeldte på innloggede sider.",
     info3: "Nærmeste leder vil motta et varsel på e-post.",
+  },
+  unntaksvurdering: {
+    header: "Unntak for oppfølgingsplan",
+    content:
+      "Det finnes enkelte unntak fra å lage oppfølgingsplan. Feks om arbeidsgiver ikke får kontakt med bruker, alvorlig sykdom hvor man ikke klarer å lage plan, arbeidsforhold som snart avsluttes eller om bruker snart er tilbake i full jobb. Unntakene følger av arbeidsmiljøloven § 4-6 3.ledd.",
+    date: "Dato for unntak:",
+    inline: "(Arbeidsgiver har vurdert unntak)",
   },
   virksomhet: "Virksomhet:",
   missingVirksomhet: "Vennligst velg arbeidsgiver",
@@ -82,33 +94,70 @@ function ReadMoreContent() {
 
 interface Props {
   activeNarmesteLedere: NarmesteLederRelasjonDTO[];
+  oppfolgingsplanerV2: OppfolgingsplanV2DTO[];
   currentOppfolgingstilfelle: OppfolgingstilfelleDTO;
 }
 
 interface FormValues {
-  narmesteLeder: NarmesteLederRelasjonDTO;
+  narmesteLeder: NarmesteLederMedUnntaksvurdering;
 }
+
+type NarmesteLederMedUnntaksvurdering = NarmesteLederRelasjonDTO & {
+  unntaksVurdering?: Unntaksvurdering;
+};
 
 export default function BeOmOppfolgingsplan({
   activeNarmesteLedere,
+  oppfolgingsplanerV2,
   currentOppfolgingstilfelle,
 }: Props) {
   const personident = useValgtPersonident();
   const { data } = useGetOppfolgingsplanForesporselQuery();
   const lastForesporsel = data?.[0];
+  const lastForesporselCreatedAt = lastForesporsel?.createdAt;
   const { virksomhetsnavn: lastForesporselVirksomhetsnavn } =
     useVirksomhetQuery(lastForesporsel?.virksomhetsnummer ?? "");
+  const { data: unntaksvurderinger } = useGetUnntaksvurderingerQuery();
   const postOppfolgingsplanForesporsel = usePostOppfolgingsplanForesporsel();
   const { getForesporselDocument } = useOppfolgingsplanForesporselDocument();
+  const opprettetDatoByVirksomhet = new Map(
+    oppfolgingsplanerV2.map((plan) => [
+      plan.virksomhetsnummer,
+      new Date(plan.sistEndret),
+    ]),
+  );
+
+  const activeNarmesteLedereMedUnntaksvurdering: NarmesteLederMedUnntaksvurdering[] =
+    activeNarmesteLedere.map((narmesteLeder) => ({
+      ...narmesteLeder,
+      unntaksVurdering: unntaksvurderinger.find((unntaksvurdering) => {
+        const opprettetDato = opprettetDatoByVirksomhet.get(
+          narmesteLeder.virksomhetsnummer,
+        );
+
+        return (
+          unntaksvurdering.organisasjonsnummer ===
+            narmesteLeder.virksomhetsnummer &&
+          (!opprettetDato ||
+            new Date(unntaksvurdering.meldtTidspunkt) > opprettetDato)
+        );
+      }),
+    }));
+
   const defaultNarmesteLeder =
-    activeNarmesteLedere.length === 1 ? activeNarmesteLedere[0] : undefined;
+    activeNarmesteLedereMedUnntaksvurdering.length === 1
+      ? activeNarmesteLedereMedUnntaksvurdering[0]
+      : undefined;
   const { control, watch, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       narmesteLeder: defaultNarmesteLeder,
     },
   });
   const narmesteLeder = watch("narmesteLeder");
-  const lastForesporselCreatedAt = lastForesporsel?.createdAt;
+  const narmesteLederMedUnntaksvurdering =
+    activeNarmesteLedereMedUnntaksvurdering.find(
+      (leder) => leder.uuid === narmesteLeder?.uuid,
+    );
   const isAktivForesporsel =
     !!lastForesporselCreatedAt && !postOppfolgingsplanForesporsel.isSuccess
       ? isDateInOppfolgingstilfelle(
@@ -116,7 +165,6 @@ export default function BeOmOppfolgingsplan({
           currentOppfolgingstilfelle,
         )
       : false;
-
   const aktivForesporselTekst = `${texts.aktivForesporsel} ${
     lastForesporselVirksomhetsnavn ?? lastForesporsel?.virksomhetsnummer
   } ${tilLesbarDatoMedArUtenManedNavn(lastForesporselCreatedAt)}`;
@@ -163,16 +211,20 @@ export default function BeOmOppfolgingsplan({
                 error={error?.message}
                 value={field.value?.uuid}
                 onChange={(value) => {
-                  const selectedNarmesteLeder = activeNarmesteLedere.find(
-                    (nl) => nl.uuid === value,
-                  );
+                  const selectedNarmesteLeder =
+                    activeNarmesteLedereMedUnntaksvurdering.find(
+                      (narmesteLeder) => narmesteLeder.uuid === value,
+                    );
                   field.onChange(selectedNarmesteLeder);
                 }}
               >
-                {activeNarmesteLedere.map(
-                  ({ virksomhetsnavn, uuid }, index) => (
+                {activeNarmesteLedereMedUnntaksvurdering.map(
+                  ({ uuid, virksomhetsnavn, unntaksVurdering }, index) => (
                     <Radio key={index} value={uuid}>
                       {virksomhetsnavn}
+                      {!!unntaksVurdering && (
+                        <strong>{` ${texts.unntaksvurdering.inline}`}</strong>
+                      )}
                     </Radio>
                   ),
                 )}
@@ -181,16 +233,39 @@ export default function BeOmOppfolgingsplan({
           />
         )}
         {narmesteLeder && (
-          <div>
-            <LabelAndText
-              label={texts.virksomhet}
-              text={narmesteLeder.virksomhetsnavn}
-            />
-            <LabelAndText
-              label={texts.narmesteLeder}
-              text={narmesteLeder.narmesteLederNavn}
-            />
-          </div>
+          <>
+            {!!narmesteLederMedUnntaksvurdering?.unntaksVurdering && (
+              <InfoCard data-color="info" size="small">
+                <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
+                  <InfoCard.Title>
+                    {texts.unntaksvurdering.header}
+                  </InfoCard.Title>
+                </InfoCard.Header>
+                <InfoCard.Content>
+                  {texts.unntaksvurdering.content}
+                  <div className="mt-2">
+                    {texts.unntaksvurdering.date}{" "}
+                    {dayjs(
+                      new Date(
+                        narmesteLederMedUnntaksvurdering.unntaksVurdering
+                          .meldtTidspunkt,
+                      ),
+                    ).format("DD.MM.YYYY")}
+                  </div>
+                </InfoCard.Content>
+              </InfoCard>
+            )}
+            <div>
+              <LabelAndText
+                label={texts.virksomhet}
+                text={narmesteLeder.virksomhetsnavn}
+              />
+              <LabelAndText
+                label={texts.narmesteLeder}
+                text={narmesteLeder.narmesteLederNavn}
+              />
+            </div>
+          </>
         )}
         <div>
           <BodyLong>{texts.description.info3}</BodyLong>
