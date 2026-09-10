@@ -383,7 +383,7 @@ describe("UtenlandsoppholdSoknad", () => {
     const begrunnelseInput = getTextInput("Begrunnelse (obligatorisk)");
     expect(begrunnelseInput).to.have.property(
       "value",
-      "I henvendelse til NAV har du gitt beskjed om at du ønsker å trekke søknaden.",
+      "I henvendelse til Nav har du gitt beskjed om at du ønsker å trekke søknaden.",
     );
 
     changeTextInput(

@@ -31,7 +31,7 @@ export type HenleggelseDocumentTextsValues =
   };
 
 export const DEFAULT_HENLEGGELSE_BEGRUNNELSE =
-  "I henvendelse til NAV har du gitt beskjed om at du ønsker å trekke søknaden.";
+  "I henvendelse til Nav har du gitt beskjed om at du ønsker å trekke søknaden.";
 
 function perioderTilTekst(perioder: Periode[]) {
   return perioder

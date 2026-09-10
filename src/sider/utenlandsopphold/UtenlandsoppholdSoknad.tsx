@@ -75,6 +75,8 @@ const texts = {
     delvisInnvilgelse: "Delvis innvilget: Godkjenn deler av perioden",
     avslag: "Avslag: Avslå hele perioden",
     henleggelse: "Henleggelse: Søknaden er henlagt",
+    henleggelseDescription:
+      "Brukes når det er avklart med sykmeldt at søknaden ikke skal behandles",
   },
   buttons: {
     sendButton: "Se brev og send",
@@ -499,6 +501,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
                 </Radio>
                 <Radio
                   value={"HENLAGT"}
+                  description={texts.radioButtons.henleggelseDescription}
                   {...register("utfall", { required: true })}
                 >
                   {texts.radioButtons.henleggelse}
