@@ -47,9 +47,9 @@ const texts = {
   unntaksvurdering: {
     header: "Unntak for oppfølgingsplan",
     content:
-      "Arbeidsgiver har meldt om unntak fra oppfølgingsplan. Dette betyr at det på nåværende tidspunkt ikke er nødvendig å lage oppfølgingsplan.",
+      "Det finnes enkelte unntak fra å lage oppfølgingsplan. Feks om arbeidsgiver ikke får kontakt med bruker, alvorlig sykdom hvor man ikke klarer å lage plan, arbeidsforhold som snart avsluttes eller om bruker snart er tilbake i full jobb. Unntakene følger av arbeidsmiljøloven § 4-6 3.ledd.",
     date: "Dato for unntak:",
-    inline: "(Unntak for oppfølgingsplan)",
+    inline: "(Arbeidsgiver har vurdert unntak)",
   },
   virksomhet: "Virksomhet:",
   missingVirksomhet: "Vennligst velg arbeidsgiver",
@@ -250,7 +250,7 @@ export default function BeOmOppfolgingsplan({
                         narmesteLederMedUnntaksvurdering.unntaksVurdering
                           .meldtTidspunkt,
                       ),
-                    ).format("YYYY-MM-DD")}
+                    ).format("DD.MM.YYYY")}
                   </div>
                 </InfoCard.Content>
               </InfoCard>
