@@ -35,6 +35,7 @@ import { currentOppfolgingstilfelle } from "@/mocks/isoppfolgingstilfelle/oppfol
 import userEvent from "@testing-library/user-event";
 import { virksomhetQueryKeys } from "@/data/virksomhet/virksomhetQueryHooks";
 import { EregOrganisasjonResponseDTO } from "@/data/virksomhet/types/EregOrganisasjonResponseDTO";
+import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 
 let queryClient: QueryClient;
 
@@ -45,8 +46,21 @@ const multipleNarmesteLeder = [
   ANNEN_LEDER_AKTIV,
 ] as unknown as NarmesteLederRelasjonDTO[];
 
+const aktivOppfolgingsplan: OppfolgingsplanV2DTO[] = [
+  {
+    uuid: generateUUID(),
+    fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+    virksomhetsnummer: LEDERE_DEFAULT[0].virksomhetsnummer,
+    deltMedNavTidspunkt: new Date().toISOString(),
+    opprettet: new Date(0).toISOString(),
+    sistEndret: new Date().toISOString(),
+    evalueringsdato: new Date().toISOString(),
+  },
+];
+
 const renderBeOmOppfolgingsplan = (
   narmesteledere: NarmesteLederRelasjonDTO[] = singleNarmesteLeder,
+  aktiveOppfolgingsplanerV2: OppfolgingsplanV2DTO[] = aktivOppfolgingsplan,
   tilfelle: OppfolgingstilfelleDTO = currentOppfolgingstilfelle,
 ) => {
   render(
@@ -56,6 +70,7 @@ const renderBeOmOppfolgingsplan = (
       >
         <BeOmOppfolgingsplan
           activeNarmesteLedere={narmesteledere}
+          aktiveOppfolgingsplanerV2={aktiveOppfolgingsplanerV2}
           currentOppfolgingstilfelle={tilfelle}
         />
       </ValgtEnhetContext.Provider>
@@ -270,7 +285,7 @@ describe("Unntaksvurdering", () => {
       ),
       () => unntaksvurderinger,
     );
-    renderBeOmOppfolgingsplan(multipleNarmesteLeder);
+    renderBeOmOppfolgingsplan(multipleNarmesteLeder, aktivOppfolgingsplan);
     expect(screen.getByText("(Unntak for oppfølgingsplan)")).to.exist;
   });
 
@@ -281,7 +296,7 @@ describe("Unntaksvurdering", () => {
       ),
       () => ({ unntaksvurderinger: [] }),
     );
-    renderBeOmOppfolgingsplan();
+    renderBeOmOppfolgingsplan(singleNarmesteLeder, aktivOppfolgingsplan);
 
     queryClient.setQueryData(
       oppfolgingsplanQueryKeys.unntaksvurderinger(
@@ -303,7 +318,7 @@ describe("Unntaksvurdering", () => {
     expect(await screen.findByText("Unntak for oppfølgingsplan")).to.exist;
   });
 
-  it("Viser ikke tekst dersom unntaksvurdering er definert men det foreligger en nyere forespørsel", () => {
+  it("Viser ikke tekst dersom unntaksvurdering er definert men det foreligger en nyere oppfolgingsplan", () => {
     const unntaksvurderinger: UnntaksvurderingDTO = {
       unntaksvurderinger: [
         {
@@ -323,13 +338,14 @@ describe("Unntaksvurdering", () => {
       ),
       () => unntaksvurderinger,
     );
-    queryClient.setQueryData(
-      oppfolgingsplanForesporselQueryKeys.foresporsel(
-        ARBEIDSTAKER_DEFAULT.personIdent,
-      ),
-      () => [existingForesporsel],
-    );
-    renderBeOmOppfolgingsplan(multipleNarmesteLeder);
+    const nyereOppfolgingsplan: OppfolgingsplanV2DTO[] = [
+      {
+        ...aktivOppfolgingsplan[0],
+        uuid: generateUUID(),
+        opprettet: new Date().toISOString(),
+      },
+    ];
+    renderBeOmOppfolgingsplan(multipleNarmesteLeder, nyereOppfolgingsplan);
 
     expect(screen.queryByText("(Unntak for oppfølgingsplan)")).to.not.exist;
   });

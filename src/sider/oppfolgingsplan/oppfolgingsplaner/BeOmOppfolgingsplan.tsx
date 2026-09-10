@@ -33,6 +33,7 @@ import { ListItem } from "@navikt/ds-react/List";
 import { useGetUnntaksvurderingerQuery } from "../hooks/unntaksvurderingerQueryHook";
 import { Unntaksvurdering } from "../hooks/types/Unntaksvurdering";
 import dayjs from "dayjs";
+import { OppfolgingsplanV2DTO } from "../hooks/types/OppfolgingsplanV2DTO";
 
 const texts = {
   aktivForesporsel: "Obs! Det ble bedt om oppfølgingsplan fra",
@@ -93,6 +94,7 @@ function ReadMoreContent() {
 
 interface Props {
   activeNarmesteLedere: NarmesteLederRelasjonDTO[];
+  aktiveOppfolgingsplanerV2: OppfolgingsplanV2DTO[];
   currentOppfolgingstilfelle: OppfolgingstilfelleDTO;
 }
 
@@ -106,6 +108,7 @@ type NarmesteLederMedUnntaksvurdering = NarmesteLederRelasjonDTO & {
 
 export default function BeOmOppfolgingsplan({
   activeNarmesteLedere,
+  aktiveOppfolgingsplanerV2,
   currentOppfolgingstilfelle,
 }: Props) {
   const personident = useValgtPersonident();
@@ -117,18 +120,30 @@ export default function BeOmOppfolgingsplan({
   const { data: unntaksvurderinger } = useGetUnntaksvurderingerQuery();
   const postOppfolgingsplanForesporsel = usePostOppfolgingsplanForesporsel();
   const { getForesporselDocument } = useOppfolgingsplanForesporselDocument();
+  const opprettetDatoByVirksomhet = new Map(
+    aktiveOppfolgingsplanerV2.map((plan) => [
+      plan.virksomhetsnummer,
+      new Date(plan.opprettet),
+    ]),
+  );
+
   const activeNarmesteLedereMedUnntaksvurdering: NarmesteLederMedUnntaksvurdering[] =
     activeNarmesteLedere.map((narmesteLeder) => ({
       ...narmesteLeder,
-      unntaksVurdering: unntaksvurderinger.find(
-        (unntaksvurdering) =>
+      unntaksVurdering: unntaksvurderinger.find((unntaksvurdering) => {
+        const opprettetDato = opprettetDatoByVirksomhet.get(
+          narmesteLeder.virksomhetsnummer,
+        );
+
+        return (
           unntaksvurdering.organisasjonsnummer ===
             narmesteLeder.virksomhetsnummer &&
-          (!lastForesporsel?.createdAt ||
-            new Date(unntaksvurdering.meldtTidspunkt) >=
-              new Date(lastForesporsel.createdAt)),
-      ),
+          opprettetDato !== undefined &&
+          new Date(unntaksvurdering.meldtTidspunkt) >= opprettetDato
+        );
+      }),
     }));
+
   const defaultNarmesteLeder =
     activeNarmesteLedereMedUnntaksvurdering.length === 1
       ? activeNarmesteLedereMedUnntaksvurdering[0]
@@ -228,12 +243,7 @@ export default function BeOmOppfolgingsplan({
                   </InfoCard.Title>
                 </InfoCard.Header>
                 <InfoCard.Content>
-                  {`${dayjs(
-                    new Date(
-                      narmesteLederMedUnntaksvurdering.unntaksVurdering
-                        .meldtTidspunkt,
-                    ),
-                  ).format("YYYY-MM-DD")}: ${texts.unntaksvurdering.content}`}
+                  {texts.unntaksvurdering.content}
                   <div className="mt-2">
                     {texts.unntaksvurdering.date}{" "}
                     {dayjs(
@@ -242,7 +252,6 @@ export default function BeOmOppfolgingsplan({
                           .meldtTidspunkt,
                       ),
                     ).format("YYYY-MM-DD")}
-                    : ${texts.unntaksvurdering.content}`
                   </div>
                 </InfoCard.Content>
               </InfoCard>
