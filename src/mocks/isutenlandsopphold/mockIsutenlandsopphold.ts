@@ -88,12 +88,18 @@ export function byggOppdatertSoknadMedVedtak(
 ): SoknadDTO {
   return {
     ...soknad,
-    status:
-      vedtak.utfall === "INNVILGET"
-        ? SoknadStatusDTO.INNVILGET
-        : vedtak.utfall === "DELVIS_INNVILGET"
-          ? SoknadStatusDTO.DELVIS_INNVILGET
-          : SoknadStatusDTO.AVSLAG,
+    status: (() => {
+      switch (vedtak.utfall) {
+        case "INNVILGET":
+          return SoknadStatusDTO.INNVILGET;
+        case "DELVIS_INNVILGET":
+          return SoknadStatusDTO.DELVIS_INNVILGET;
+        case "HENLAGT":
+          return SoknadStatusDTO.HENLAGT;
+        default:
+          return SoknadStatusDTO.AVSLAG;
+      }
+    })(),
     vedtak: {
       utfall: vedtak.utfall,
       innvilgedePerioder: vedtak.innvilgedePerioder,
