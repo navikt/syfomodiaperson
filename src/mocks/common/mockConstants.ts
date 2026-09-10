@@ -5,7 +5,6 @@ import {
   VeilederBrukerKnytningDTO,
   VeilederTildelingHistorikkDTO,
 } from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
-import { addWeeks } from "@/utils/datoUtils";
 
 export const TODAY = new Date().setHours(0, 0, 0, 0);
 

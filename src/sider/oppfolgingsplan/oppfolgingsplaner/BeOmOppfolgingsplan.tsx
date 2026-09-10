@@ -123,7 +123,7 @@ export default function BeOmOppfolgingsplan({
   const opprettetDatoByVirksomhet = new Map(
     aktiveOppfolgingsplanerV2.map((plan) => [
       plan.virksomhetsnummer,
-      new Date(plan.opprettet),
+      new Date(plan.sistEndret),
     ]),
   );
 
@@ -138,8 +138,8 @@ export default function BeOmOppfolgingsplan({
         return (
           unntaksvurdering.organisasjonsnummer ===
             narmesteLeder.virksomhetsnummer &&
-          opprettetDato !== undefined &&
-          new Date(unntaksvurdering.meldtTidspunkt) >= opprettetDato
+          (!opprettetDato ||
+            new Date(unntaksvurdering.meldtTidspunkt) > opprettetDato)
         );
       }),
     }));
