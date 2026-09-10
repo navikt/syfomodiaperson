@@ -13,7 +13,7 @@ export const unntaksvurderingerMock: UnntaksvurderingDTO = {
       fnr: ARBEIDSTAKER_DEFAULT.personIdent,
       organisasjonsnavn: VIRKSOMHET_PONTYPANDY.virksomhetsnavn,
       organisasjonsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-      meldtTidspunkt: addWeeks(new Date(), -30).toISOString(),
+      meldtTidspunkt: new Date().toISOString(),
     },
     {
       uuid: "b4da6fc4-0dde-40a5-9519-d8aac08f6cf8",

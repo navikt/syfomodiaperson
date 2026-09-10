@@ -94,7 +94,7 @@ function ReadMoreContent() {
 
 interface Props {
   activeNarmesteLedere: NarmesteLederRelasjonDTO[];
-  aktiveOppfolgingsplanerV2: OppfolgingsplanV2DTO[];
+  oppfolgingsplanerV2: OppfolgingsplanV2DTO[];
   currentOppfolgingstilfelle: OppfolgingstilfelleDTO;
 }
 
@@ -108,7 +108,7 @@ type NarmesteLederMedUnntaksvurdering = NarmesteLederRelasjonDTO & {
 
 export default function BeOmOppfolgingsplan({
   activeNarmesteLedere,
-  aktiveOppfolgingsplanerV2,
+  oppfolgingsplanerV2,
   currentOppfolgingstilfelle,
 }: Props) {
   const personident = useValgtPersonident();
@@ -121,7 +121,7 @@ export default function BeOmOppfolgingsplan({
   const postOppfolgingsplanForesporsel = usePostOppfolgingsplanForesporsel();
   const { getForesporselDocument } = useOppfolgingsplanForesporselDocument();
   const opprettetDatoByVirksomhet = new Map(
-    aktiveOppfolgingsplanerV2.map((plan) => [
+    oppfolgingsplanerV2.map((plan) => [
       plan.virksomhetsnummer,
       new Date(plan.sistEndret),
     ]),
@@ -222,10 +222,9 @@ export default function BeOmOppfolgingsplan({
                   ({ uuid, virksomhetsnavn, unntaksVurdering }, index) => (
                     <Radio key={index} value={uuid}>
                       {virksomhetsnavn}
-                      <strong>
-                        {!!unntaksVurdering &&
-                          ` ${texts.unntaksvurdering.inline}`}
-                      </strong>
+                      {!!unntaksVurdering && (
+                        <strong>{` ${texts.unntaksvurdering.inline}`}</strong>
+                      )}
                     </Radio>
                   ),
                 )}

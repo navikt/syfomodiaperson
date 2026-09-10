@@ -46,7 +46,7 @@ const multipleNarmesteLeder = [
   ANNEN_LEDER_AKTIV,
 ] as unknown as NarmesteLederRelasjonDTO[];
 
-const aktivOppfolgingsplan: OppfolgingsplanV2DTO[] = [
+const oppfolgingsplaner: OppfolgingsplanV2DTO[] = [
   {
     uuid: generateUUID(),
     fnr: ARBEIDSTAKER_DEFAULT.personIdent,
@@ -60,7 +60,7 @@ const aktivOppfolgingsplan: OppfolgingsplanV2DTO[] = [
 
 const renderBeOmOppfolgingsplan = (
   narmesteledere: NarmesteLederRelasjonDTO[] = singleNarmesteLeder,
-  aktiveOppfolgingsplanerV2: OppfolgingsplanV2DTO[] = aktivOppfolgingsplan,
+  oppfolgingsplanerV2: OppfolgingsplanV2DTO[] = oppfolgingsplaner,
   tilfelle: OppfolgingstilfelleDTO = currentOppfolgingstilfelle,
 ) => {
   render(
@@ -70,7 +70,7 @@ const renderBeOmOppfolgingsplan = (
       >
         <BeOmOppfolgingsplan
           activeNarmesteLedere={narmesteledere}
-          aktiveOppfolgingsplanerV2={aktiveOppfolgingsplanerV2}
+          oppfolgingsplanerV2={oppfolgingsplanerV2}
           currentOppfolgingstilfelle={tilfelle}
         />
       </ValgtEnhetContext.Provider>
@@ -285,7 +285,7 @@ describe("Unntaksvurdering", () => {
       ),
       () => unntaksvurderinger,
     );
-    renderBeOmOppfolgingsplan(multipleNarmesteLeder, aktivOppfolgingsplan);
+    renderBeOmOppfolgingsplan(multipleNarmesteLeder, oppfolgingsplaner);
     expect(screen.getByText("(Unntak for oppfølgingsplan)")).to.exist;
   });
 
@@ -296,7 +296,7 @@ describe("Unntaksvurdering", () => {
       ),
       () => ({ unntaksvurderinger: [] }),
     );
-    renderBeOmOppfolgingsplan(singleNarmesteLeder, aktivOppfolgingsplan);
+    renderBeOmOppfolgingsplan(singleNarmesteLeder, oppfolgingsplaner);
 
     queryClient.setQueryData(
       oppfolgingsplanQueryKeys.unntaksvurderinger(
@@ -340,7 +340,7 @@ describe("Unntaksvurdering", () => {
     );
     const nyereOppfolgingsplan: OppfolgingsplanV2DTO[] = [
       {
-        ...aktivOppfolgingsplan[0],
+        ...oppfolgingsplaner[0],
         uuid: generateUUID(),
         opprettet: new Date().toISOString(),
       },
