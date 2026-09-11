@@ -75,6 +75,7 @@ import {
   soknadMedVedtakMock,
   soknadUtenVedtakMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold.ts";
+import { unntaksvurderingQueryKeys } from "@/sider/oppfolgingsplan/hooks/unntaksvurderingerQueryHook";
 
 let queryClient: QueryClient;
 
@@ -185,6 +186,12 @@ function setupTestdataHistorikk() {
   queryClient.setQueryData(
     utenlandsoppholdQueryKeys.soknader(ARBEIDSTAKER_DEFAULT.personIdent),
     () => ({ soknader: [] }),
+  );
+  queryClient.setQueryData(
+    unntaksvurderingQueryKeys.unntaksvurderinger(
+      ARBEIDSTAKER_DEFAULT.personIdent,
+    ),
+    () => [],
   );
 }
 

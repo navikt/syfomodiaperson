@@ -2,6 +2,7 @@ export type HistorikkEventType =
   | "MOTER"
   | "MOTEBEHOV"
   | "OPPFOLGINGSPLAN"
+  | "UNNTAKSVURDERING"
   | "LEDER"
   | "AKTIVITETSKRAV"
   | "ARBEIDSUFORHET"
