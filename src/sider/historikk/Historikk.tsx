@@ -133,6 +133,12 @@ function tagFromKilde(kilde: HistorikkEventType): ReactElement {
           Utenlandsopphold
         </Tag>
       );
+    case "UNNTAKSVURDERING":
+      return (
+        <Tag data-color="info" variant="outline">
+          Unntaksvurdering
+        </Tag>
+      );
   }
 }
 

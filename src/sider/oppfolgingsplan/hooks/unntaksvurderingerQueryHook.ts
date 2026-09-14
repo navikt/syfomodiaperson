@@ -6,6 +6,13 @@ import { useQuery } from "@tanstack/react-query";
 import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { minutesToMillis } from "@/utils/utils";
 
+export const unntaksvurderingQueryKeys = {
+  unntaksvurderinger: (personident: string) => [
+    "unntaksvurderinger",
+    personident,
+  ],
+};
+
 export function useGetUnntaksvurderingerQuery() {
   const fnr = useValgtPersonident();
   const path = `${SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT}/unntaksvurderinger/query`;
