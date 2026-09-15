@@ -115,7 +115,7 @@ describe("GlobalNavigasjon", () => {
       "§ 8-9 Søknad om utenlandsopphold",
     ];
 
-    const linker = screen.getAllByRole("link");
+    const linker = screen.getAllByRole("button");
     linker.forEach((link, index) => {
       expect(link.textContent).to.equal(navnMenypunkter[index]);
     });
@@ -145,7 +145,7 @@ describe("GlobalNavigasjon", () => {
       "Vedtak",
     ];
 
-    const linker = screen.getAllByRole("link");
+    const linker = screen.getAllByRole("button");
     linker.forEach((link, index) => {
       expect(link.textContent).to.equal(navnMenypunkter[index]);
     });
@@ -153,8 +153,9 @@ describe("GlobalNavigasjon", () => {
   it("viser aktivt menypunkt", () => {
     renderGlobalNavigasjon();
 
-    const currentMenypunkt = screen.getByRole("listitem", {
+    const currentMenypunkt = screen.getByRole("button", {
       current: true,
+      name: "Nøkkelinformasjon",
     });
     expect(currentMenypunkt.textContent).to.equal("Nøkkelinformasjon");
   });
@@ -165,7 +166,7 @@ describe("GlobalNavigasjon", () => {
 
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Dialogmøter 1" })).to.exist;
+    expect(screen.getByRole("button", { name: "Dialogmøter 1" })).to.exist;
   });
 
   it("viser én rød prikk for menypunkt Dialog med behandler når ubehandlet oppgave behandlerdialog-svar", () => {
@@ -176,7 +177,7 @@ describe("GlobalNavigasjon", () => {
 
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Dialog med behandler 1" })).to
+    expect(screen.getByRole("button", { name: "Dialog med behandler 1" })).to
       .exist;
   });
 
@@ -188,7 +189,7 @@ describe("GlobalNavigasjon", () => {
 
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Dialog med behandler 1" })).to
+    expect(screen.getByRole("button", { name: "Dialog med behandler 1" })).to
       .exist;
   });
 
@@ -200,7 +201,7 @@ describe("GlobalNavigasjon", () => {
 
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Dialog med behandler 1" })).to
+    expect(screen.getByRole("button", { name: "Dialog med behandler 1" })).to
       .exist;
   });
 
@@ -216,7 +217,7 @@ describe("GlobalNavigasjon", () => {
 
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Dialog med behandler 3" })).to
+    expect(screen.getByRole("button", { name: "Dialog med behandler 3" })).to
       .exist;
   });
 
@@ -227,7 +228,7 @@ describe("GlobalNavigasjon", () => {
 
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "§ 8-8 Aktivitetskrav 1" })).to
+    expect(screen.getByRole("button", { name: "§ 8-8 Aktivitetskrav 1" })).to
       .exist;
   });
 
@@ -238,7 +239,7 @@ describe("GlobalNavigasjon", () => {
 
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "§ 8-8 Aktivitetskrav 1" })).to
+    expect(screen.getByRole("button", { name: "§ 8-8 Aktivitetskrav 1" })).to
       .exist;
   });
 
@@ -249,7 +250,8 @@ describe("GlobalNavigasjon", () => {
 
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "§ 8-8 Aktivitetskrav" })).to.exist;
+    expect(screen.getByRole("button", { name: "§ 8-8 Aktivitetskrav" })).to
+      .exist;
   });
 
   it("viser rød prikk for menypunkt Arbeidsuforhet når siste vurdering er utløpt forhåndsvarsel", () => {
@@ -263,7 +265,7 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "§ 8-4 Arbeidsuførhet 1" })).to
+    expect(screen.getByRole("button", { name: "§ 8-4 Arbeidsuførhet 1" })).to
       .exist;
   });
 
@@ -278,7 +280,8 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "§ 8-4 Arbeidsuførhet" })).to.exist;
+    expect(screen.getByRole("button", { name: "§ 8-4 Arbeidsuførhet" })).to
+      .exist;
   });
 
   it("viser ikke rød prikk for menypunkt Arbeidsuforhet når siste vurdering er oppfylt", () => {
@@ -293,7 +296,8 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "§ 8-4 Arbeidsuførhet" })).to.exist;
+    expect(screen.getByRole("button", { name: "§ 8-4 Arbeidsuførhet" })).to
+      .exist;
   });
 
   it("viser ikke rød prikk for menypunkt Arbeidsuforhet når siste vurdering er avslag", () => {
@@ -308,7 +312,8 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "§ 8-4 Arbeidsuførhet" })).to.exist;
+    expect(screen.getByRole("button", { name: "§ 8-4 Arbeidsuførhet" })).to
+      .exist;
   });
 
   it("viser ikke rød prikk for menypunkt Arbeidsuforhet når ingen vurdering", () => {
@@ -318,7 +323,8 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "§ 8-4 Arbeidsuførhet" })).to.exist;
+    expect(screen.getByRole("button", { name: "§ 8-4 Arbeidsuførhet" })).to
+      .exist;
   });
 
   it('viser en rød prikk for menypunkt "Snart slutt på sykepengene" når kandidat med svar', () => {
@@ -329,7 +335,7 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Snart slutt på sykepengene 1" }))
+    expect(screen.getByRole("button", { name: "Snart slutt på sykepengene 1" }))
       .to.exist;
   });
 
@@ -347,7 +353,7 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Snart slutt på sykepengene 1" }))
+    expect(screen.getByRole("button", { name: "Snart slutt på sykepengene 1" }))
       .to.exist;
   });
 
@@ -365,8 +371,8 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Snart slutt på sykepengene" })).to
-      .exist;
+    expect(screen.getByRole("button", { name: "Snart slutt på sykepengene" }))
+      .to.exist;
   });
 
   it('viser ikke en rød prikk for menypunkt "Snart slutt på sykepengene" når kandidat er ferdigbehandlet', () => {
@@ -377,8 +383,8 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Snart slutt på sykepengene" })).to
-      .exist;
+    expect(screen.getByRole("button", { name: "Snart slutt på sykepengene" }))
+      .to.exist;
   });
 
   it("viser ikke en rød prikk for menypunkt Snart slutt på sykepengene når kandidat uten svar", () => {
@@ -394,8 +400,8 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "Snart slutt på sykepengene" })).to
-      .exist;
+    expect(screen.getByRole("button", { name: "Snart slutt på sykepengene" }))
+      .to.exist;
   });
 
   it('viser en rød prikk for menypunkt "Friskmelding til arbeidsformidling" når ikke ferdigbehandlet', () => {
@@ -406,7 +412,7 @@ describe("GlobalNavigasjon", () => {
     renderGlobalNavigasjon();
 
     expect(
-      screen.getByRole("link", {
+      screen.getByRole("button", {
         name: "§ 8-5 Friskmelding til arbeidsformidling 1",
       }),
     ).to.exist;
@@ -425,7 +431,7 @@ describe("GlobalNavigasjon", () => {
     renderGlobalNavigasjon();
 
     expect(
-      screen.getByRole("link", {
+      screen.getByRole("button", {
         name: "§ 8-5 Friskmelding til arbeidsformidling",
       }),
     ).to.exist;
@@ -443,7 +449,7 @@ describe("GlobalNavigasjon", () => {
     renderGlobalNavigasjon();
 
     expect(
-      screen.getByRole("link", {
+      screen.getByRole("button", {
         name: "§ 8-5 Friskmelding til arbeidsformidling",
       }),
     ).to.exist;
@@ -455,7 +461,7 @@ describe("GlobalNavigasjon", () => {
     renderGlobalNavigasjon();
 
     expect(
-      screen.getByRole("link", {
+      screen.getByRole("button", {
         name: "§ 8-5 Friskmelding til arbeidsformidling",
       }),
     ).to.exist;
@@ -469,8 +475,9 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "§ 8-8 Manglende medvirkning 1" }))
-      .to.exist;
+    expect(
+      screen.getByRole("button", { name: "§ 8-8 Manglende medvirkning 1" }),
+    ).to.exist;
   });
 
   it('viser ikke en rød prikk for menypunkt "Manglende Medvirkning" når forhåndsvarselet ikke er utgått', () => {
@@ -481,8 +488,8 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: "§ 8-8 Manglende medvirkning" })).to
-      .exist;
+    expect(screen.getByRole("button", { name: "§ 8-8 Manglende medvirkning" }))
+      .to.exist;
   });
 
   it("viser aktive planer for menypunkt Oppfølgingsplaner når det finnes aktive V2-planer", () => {
@@ -496,7 +503,8 @@ describe("GlobalNavigasjon", () => {
     );
     renderGlobalNavigasjon();
 
-    expect(screen.getByRole("link", { name: /Oppfølgingsplaner \(\d+ aktiv/ }))
-      .to.exist;
+    expect(
+      screen.getByRole("button", { name: /Oppfølgingsplaner \(\d+ aktiv/ }),
+    ).to.exist;
   });
 });

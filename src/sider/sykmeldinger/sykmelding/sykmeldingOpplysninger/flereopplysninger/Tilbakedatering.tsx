@@ -1,10 +1,10 @@
 import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
-import { BodyLong, Heading } from "@navikt/ds-react";
+import { BodyLong, BodyShort, Heading } from "@navikt/ds-react";
 
 const texts = {
-  begrunnelse: "Pasienten har ikke kunne ivareta egne interesser. Begrunn",
+  begrunnelse: "Begrunnelse",
   dokumenterbarPasientkontakt:
     "Oppgi dato for dokumenterbar kontakt med pasienten",
   title: "Tilbakedatering",
@@ -14,9 +14,7 @@ interface Props {
   sykmelding: SykmeldingOldFormat;
 }
 
-export default function Tilbakedatering(tilbakedateringProps: Props) {
-  const { sykmelding } = tilbakedateringProps;
-
+export function TilbakedateringSykmeldingssiden({ sykmelding }: Props) {
   return (
     <>
       <Heading level="3" size="medium">
@@ -45,5 +43,37 @@ export default function Tilbakedatering(tilbakedateringProps: Props) {
         </div>
       )}
     </>
+  );
+}
+
+export function TilbakedateringUtdragFraSykmeldingen({ sykmelding }: Props) {
+  return (
+    <div>
+      <Heading level="3" size="xsmall">
+        {texts.title}
+      </Heading>
+      {sykmelding.tilbakedatering.dokumenterbarPasientkontakt && (
+        <div className="mb-2">
+          <BodyShort size="small" weight="semibold">
+            {texts.dokumenterbarPasientkontakt}
+          </BodyShort>
+          <BodyLong size="small" className="whitespace-pre-line">
+            {tilLesbarDatoMedArstall(
+              sykmelding.tilbakedatering.dokumenterbarPasientkontakt,
+            )}
+          </BodyLong>
+        </div>
+      )}
+      {sykmelding.tilbakedatering.tilbakedatertBegrunnelse && (
+        <div className="mb-2">
+          <BodyShort size="small" weight="semibold">
+            {texts.begrunnelse}
+          </BodyShort>
+          <BodyLong size="small" className="whitespace-pre-line">
+            {sykmelding.tilbakedatering.tilbakedatertBegrunnelse}
+          </BodyLong>
+        </div>
+      )}
+    </div>
   );
 }
