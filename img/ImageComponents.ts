@@ -65,7 +65,6 @@ import SaveFile from "./svg/save-file.svg?url";
 import CheckboxPng from "./png/check-box-1.png?url";
 import KalenderPng from "./png/kalender.png?url";
 import KalenderHoverPng from "./png/kalender--hover.png?url";
-import PilForrigeBlaaPng from "./png/pilForrige--blaa.png?url";
 
 // GIF
 import EasterRoll from "./gif/easter_roll.gif?url";
@@ -134,7 +133,6 @@ export {
   CheckboxPng,
   KalenderPng,
   KalenderHoverPng,
-  PilForrigeBlaaPng,
   UtropstegnImage,
   SaveFile,
 };
