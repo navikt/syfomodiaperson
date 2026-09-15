@@ -1,8 +1,5 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes.ts";
-import {
-  addDays,
-  tilLesbarPeriodeMedArUtenManednavn,
-} from "@/utils/datoUtils.ts";
+import { addDays } from "@/utils/datoUtils.ts";
 import dayjs from "dayjs";
 
 export interface SoknaderQueryDTO {
@@ -24,6 +21,31 @@ export interface SoknadVedtakResponseDTO {
   soknad: SoknadDTO;
 }
 
+/**
+ * Årsaker en veileder kan velge når en søknad settes til «Ikke aktuell».
+ * I motsetning til vedtaksutfallene genererer denne handlingen ikke noe
+ * brev til sykmeldte.
+ */
+export enum IkkeAktuellArsakDTO {
+  BEHANDLET_I_INFOTRYGD = "BEHANDLET_I_INFOTRYGD",
+  DUPLIKAT = "DUPLIKAT",
+  ANNET = "ANNET",
+}
+
+export interface SoknadIkkeAktuellPostDTO {
+  arsak: IkkeAktuellArsakDTO;
+}
+
+export interface SoknadIkkeAktuellResponseDTO {
+  soknad: SoknadDTO;
+}
+
+export interface IkkeAktuellDTO {
+  arsak: IkkeAktuellArsakDTO;
+  registrertAv: string;
+  registrertTidspunkt: string;
+}
+
 export interface SoknadDTO {
   soknadId: string;
   eksternId: string;
@@ -31,6 +53,7 @@ export interface SoknadDTO {
   innsendtTidspunkt: string;
   soktePerioder: PeriodeDTO[];
   vedtak: VedtakDTO | null;
+  ikkeAktuell: IkkeAktuellDTO | null;
 }
 
 export interface PeriodeDTO {
@@ -52,6 +75,7 @@ export enum SoknadStatusDTO {
   DELVIS_INNVILGET = "DELVIS_INNVILGET",
   AVSLAG = "AVSLAG",
   HENLAGT = "HENLAGT",
+  IKKE_AKTUELL = "IKKE_AKTUELL",
 }
 
 // Types
@@ -59,11 +83,19 @@ export type Utfall = "INNVILGET" | "DELVIS_INNVILGET" | "AVSLAG" | "HENLAGT";
 
 export interface Soknad extends Omit<
   SoknadDTO,
-  "innsendtTidspunkt" | "soktePerioder" | "vedtak"
+  "innsendtTidspunkt" | "soktePerioder" | "vedtak" | "ikkeAktuell"
 > {
   innsendtTidspunkt: Date;
   soktePerioder: Periode[];
   vedtak: Vedtak | null;
+  ikkeAktuell: IkkeAktuell | null;
+}
+
+export interface IkkeAktuell extends Omit<
+  IkkeAktuellDTO,
+  "registrertTidspunkt"
+> {
+  registrertTidspunkt: Date;
 }
 
 export interface Periode extends Omit<PeriodeDTO, "fom" | "tom"> {
@@ -99,11 +131,17 @@ export const parseVedtak = (vedtak: VedtakDTO): Vedtak => ({
   fattetTidspunkt: new Date(vedtak.fattetTidspunkt),
 });
 
+export const parseIkkeAktuell = (ikkeAktuell: IkkeAktuellDTO): IkkeAktuell => ({
+  ...ikkeAktuell,
+  registrertTidspunkt: new Date(ikkeAktuell.registrertTidspunkt),
+});
+
 export const parseSoknad = (soknad: SoknadDTO): Soknad => ({
   ...soknad,
   innsendtTidspunkt: new Date(soknad.innsendtTidspunkt),
   soktePerioder: soknad.soktePerioder.map(parsePeriode),
   vedtak: soknad.vedtak ? parseVedtak(soknad.vedtak) : null,
+  ikkeAktuell: soknad.ikkeAktuell ? parseIkkeAktuell(soknad.ikkeAktuell) : null,
 });
 
 export const antallDagerIPeriode = (periode: Periode): number =>

@@ -1,7 +1,10 @@
 import { ISUTENLANDSOPPHOLD_ROOT } from "@/apiConstants";
 import {
+  IkkeAktuellArsakDTO,
   SoknadDTO,
   SoknaderResponseDTO,
+  SoknadIkkeAktuellPostDTO,
+  SoknadIkkeAktuellResponseDTO,
   SoknadStatusDTO,
   SoknadVedtakPostDTO,
   SoknadVedtakResponseDTO,
@@ -26,6 +29,7 @@ export const soknadUtenVedtakMock: SoknadDTO = {
     },
   ],
   vedtak: null,
+  ikkeAktuell: null,
 };
 
 export const soknadMedVedtakMock: SoknadDTO = {
@@ -51,6 +55,26 @@ export const soknadMedVedtakMock: SoknadDTO = {
     fattetTidspunkt: "2026-03-02T11:00:00",
     begrunnelse: "Vedtar bare de dagene det er meldt regn på Bali",
   },
+  ikkeAktuell: null,
+};
+
+export const soknadIkkeAktuellMock: SoknadDTO = {
+  soknadId: "5d6e7f8a-9b0c-1d2e-3f4a-5b6c7d8e9f0a",
+  eksternId: "c7d8e9f0-1a2b-4c3d-9e8f-7a6b5c4d3e2f",
+  status: SoknadStatusDTO.IKKE_AKTUELL,
+  innsendtTidspunkt: "2026-08-10T10:00:00",
+  soktePerioder: [
+    {
+      fom: "2026-08-15",
+      tom: "2026-08-20",
+    },
+  ],
+  vedtak: null,
+  ikkeAktuell: {
+    arsak: IkkeAktuellArsakDTO.BEHANDLET_I_INFOTRYGD,
+    registrertAv: "Z990000",
+    registrertTidspunkt: "2026-08-11T09:00:00",
+  },
 };
 
 export const gammelSoknadMock: SoknadDTO = {
@@ -69,10 +93,16 @@ export const gammelSoknadMock: SoknadDTO = {
     },
   ],
   vedtak: null,
+  ikkeAktuell: null,
 };
 
 export const mockSoknaderResponse: SoknaderResponseDTO = {
-  soknader: [soknadUtenVedtakMock, gammelSoknadMock, soknadMedVedtakMock],
+  soknader: [
+    soknadUtenVedtakMock,
+    gammelSoknadMock,
+    soknadMedVedtakMock,
+    soknadIkkeAktuellMock,
+  ],
 };
 
 /**
@@ -110,6 +140,27 @@ export function byggOppdatertSoknadMedVedtak(
   };
 }
 
+/**
+ * Bygger en oppdatert søknad basert på en innsendt ikke-aktuell-registrering.
+ * Delt mellom msw-handleren under og test-stubben i
+ * test/stubs/stubIsutenlandsopphold.ts.
+ */
+export function byggOppdatertSoknadMedIkkeAktuell(
+  soknad: SoknadDTO,
+  ikkeAktuell: SoknadIkkeAktuellPostDTO,
+  registrertAv: string,
+): SoknadDTO {
+  return {
+    ...soknad,
+    status: SoknadStatusDTO.IKKE_AKTUELL,
+    ikkeAktuell: {
+      arsak: ikkeAktuell.arsak,
+      registrertAv,
+      registrertTidspunkt: dayjs().format("YYYY-MM-DDTHH:mm:ss"),
+    },
+  };
+}
+
 export const mockIsutenlandsopphold = [
   http.post(`${ISUTENLANDSOPPHOLD_ROOT}/soknader/query`, () => {
     return HttpResponse.json(mockSoknaderResponse);
@@ -132,6 +183,34 @@ export const mockIsutenlandsopphold = [
       return existingSoknad
         ? HttpResponse.json({
             soknad: byggOppdatertSoknadMedVedtak(
+              existingSoknad,
+              body,
+              VEILEDER_IDENT_DEFAULT,
+            ),
+          })
+        : HttpResponse.text(`Did not find soknad with uuid ${soknadId}`, {
+            status: 400,
+          });
+    },
+  ),
+
+  http.post<
+    { soknadId: string },
+    SoknadIkkeAktuellPostDTO,
+    SoknadIkkeAktuellResponseDTO | string
+  >(
+    `${ISUTENLANDSOPPHOLD_ROOT}/soknader/:soknadId/ikke-aktuell`,
+    async ({ request, params }) => {
+      const body = await request.json();
+      const soknadId = params.soknadId;
+
+      const existingSoknad = mockSoknaderResponse.soknader.find(
+        (soknad) => soknad.soknadId === soknadId,
+      );
+
+      return existingSoknad
+        ? HttpResponse.json({
+            soknad: byggOppdatertSoknadMedIkkeAktuell(
               existingSoknad,
               body,
               VEILEDER_IDENT_DEFAULT,

@@ -53,6 +53,8 @@ import {
 } from "@/hooks/useDraftQuery";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 import { PeriodeOgAntallDagerTekst } from "./PeriodeOgAntallDagerTekst";
+import { IkkeAktuellModal } from "./IkkeAktuellModal";
+import { ikkeAktuellArsakTexts } from "./ikkeAktuellTexts";
 
 const AVSLAG_CATEGORY = "utenlandsopphold-avslag";
 const DELVIS_INNVILGET_CATEGORY = "utenlandsopphold-delvis-innvilget";
@@ -83,12 +85,14 @@ const texts = {
     confirmButton: "Bekreft og send",
     previewContentLabel: "Forhåndsvisning",
     backButton: "Tilbake",
+    ikkeAktuell: "Ikke aktuell",
   },
   ingenAvslattePerioderWarning:
     "Du har valgt å innvilge alle perioder. Velg 'Innvilgelse' som utfall i stedet for 'Delvis innvilgelse'",
   vedtakFattetNotification:
     "Vedtaket om utenlandsopphold utenfor EU/EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
   alertBehandlet: "Denne søknaden er allerede behandlet av",
+  alertIkkeAktuell: "Denne søknaden er satt til ikke aktuell av",
   missingUtfall: "Du må velge et utfall for å fatte vedtaket",
   ikkeUtbetaltAdvarsel:
     "Sykepenger er ikke utbetalt. Ved innvilgelse eller delvis innvilgelse blir vedtaket sendt med et forbehold om at vedtaket kun gjelder dersom sykmeldt får innvilget sykepenger. Åpne forhåndsvisningen av vedtaket for å se forbeholdet.",
@@ -178,6 +182,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
   const valgteInnvilgedePerioder = watch("innvilgedePerioder");
   const valgtBegrunnelse = watch("begrunnelse");
   const [visSendForhandsvisning, setVisSendForhandsvisning] = useState(false);
+  const [visIkkeAktuellModal, setVisIkkeAktuellModal] = useState(false);
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
 
   const avslagDraftQuery = useDraftQuery<DraftTextDTO>(AVSLAG_CATEGORY);
@@ -445,12 +450,28 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
         {/* Soknaden er behandlet */}
         {soknadBehandlet && (
           <>
-            <Alert variant="info" size="small" className="w-fit p-4">
-              {texts.alertBehandlet} {utenlandsoppholdSoknad.vedtak?.fattetAv}{" "}
-              {tilLesbarDatoMedArUtenManedNavn(
-                utenlandsoppholdSoknad.vedtak?.fattetTidspunkt,
-              )}
-            </Alert>
+            {utenlandsoppholdSoknad.ikkeAktuell ? (
+              <Alert variant="info" size="small" className="w-fit p-4">
+                {texts.alertIkkeAktuell}{" "}
+                {utenlandsoppholdSoknad.ikkeAktuell.registrertAv}{" "}
+                {tilLesbarDatoMedArUtenManedNavn(
+                  utenlandsoppholdSoknad.ikkeAktuell.registrertTidspunkt,
+                )}
+                {" – "}
+                {
+                  ikkeAktuellArsakTexts[
+                    utenlandsoppholdSoknad.ikkeAktuell.arsak
+                  ]
+                }
+              </Alert>
+            ) : (
+              <Alert variant="info" size="small" className="w-fit p-4">
+                {texts.alertBehandlet} {utenlandsoppholdSoknad.vedtak?.fattetAv}{" "}
+                {tilLesbarDatoMedArUtenManedNavn(
+                  utenlandsoppholdSoknad.vedtak?.fattetTidspunkt,
+                )}
+              </Alert>
+            )}
             <Button
               className="w-fit"
               as={Link}
@@ -601,6 +622,14 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
                 >
                   {texts.buttons.backButton}
                 </Button>
+                <Button
+                  variant="secondary"
+                  type="button"
+                  className="ml-auto"
+                  onClick={() => setVisIkkeAktuellModal(true)}
+                >
+                  {texts.buttons.ikkeAktuell}
+                </Button>
               </div>
 
               <ForhandsvisningModal
@@ -615,6 +644,11 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
                   ),
                   loading: mutateIsPending,
                 }}
+              />
+              <IkkeAktuellModal
+                isOpen={visIkkeAktuellModal}
+                setModalOpen={setVisIkkeAktuellModal}
+                soknadId={utenlandsoppholdSoknad.soknadId}
               />
             </form>
           </FormProvider>

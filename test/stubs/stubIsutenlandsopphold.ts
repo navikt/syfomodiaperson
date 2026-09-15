@@ -4,10 +4,14 @@ import { http, HttpResponse } from "msw";
 import {
   SoknadDTO,
   SoknaderResponseDTO,
+  SoknadIkkeAktuellPostDTO,
   SoknadVedtakPostDTO,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 import { VEILEDER_DEFAULT } from "@/mocks/common/mockConstants";
-import { byggOppdatertSoknadMedVedtak } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
+import {
+  byggOppdatertSoknadMedIkkeAktuell,
+  byggOppdatertSoknadMedVedtak,
+} from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
 
 export const stubSoknaderQuery = (response: SoknaderResponseDTO) =>
   mockServer.use(
@@ -47,6 +51,34 @@ export const stubSoknaderMedMuterbarTilstand = (soknader: SoknadDTO[]) => {
         const nySoknad = byggOppdatertSoknadMedVedtak(
           oppdatertSoknad,
           vedtak,
+          VEILEDER_DEFAULT.ident,
+        );
+        tilstand = tilstand.map((soknad) =>
+          soknad.soknadId === soknadId ? nySoknad : soknad,
+        );
+
+        return HttpResponse.json({ soknad: nySoknad });
+      },
+    ),
+    http.post<{ soknadId: string }, SoknadIkkeAktuellPostDTO>(
+      `*${ISUTENLANDSOPPHOLD_ROOT}/soknader/:soknadId/ikke-aktuell`,
+      async ({ request, params }) => {
+        const ikkeAktuell = await request.json();
+        const soknadId = params.soknadId;
+        const oppdatertSoknad = tilstand.find(
+          (soknad) => soknad.soknadId === soknadId,
+        );
+
+        if (!oppdatertSoknad) {
+          return HttpResponse.text(
+            `Did not find soknad with uuid ${soknadId}`,
+            { status: 400 },
+          );
+        }
+
+        const nySoknad = byggOppdatertSoknadMedIkkeAktuell(
+          oppdatertSoknad,
+          ikkeAktuell,
           VEILEDER_DEFAULT.ident,
         );
         tilstand = tilstand.map((soknad) =>
