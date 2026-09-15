@@ -25,7 +25,7 @@ const texts = {
     hasGjentakendeSykefravar: "Den sykmeldte har gjentakende fravær",
     noGjentakendeSykefravar: "Den sykmeldte har ikke gjentakende fravær",
     hasBedtOmBistand:
-      "Behandler har de siste seks månedene bedt om bistand fra Nav i følgende sykmeldinger",
+      "Behandler har de siste seks månedene bedt om bistand fra Nav",
     notBedtOmBistand:
       "Behandler har ikke bedt om bistand fra Nav de siste seks månedene",
   },
@@ -86,16 +86,21 @@ export function KartleggingInfo() {
                   : boldRegex(texts.list.notBedtOmBistand, "ikke")}
               </span>
             </div>
-            <ReadMore header="Se sykemeldinger" size="small">
-              {relevanteSykmeldinger.map((sykmelding) => (
-                <BodyShort size="small" key={`sykmelding-${sykmelding.id}`}>
-                  <Link
-                    as={RouterLink}
-                    to={`/sykefravaer/sykmeldinger/${sykmelding.id}`}
-                  >{`${sykmelding.bekreftelse.sykmelder} ${dayjs(sykmelding.sendtdato).format("DD.MM.YYYY")}`}</Link>
-                </BodyShort>
-              ))}
-            </ReadMore>
+            {relevanteSykmeldinger.length > 0 && (
+              <ReadMore header="Se sykemeldinger" size="small">
+                Sykemeldinger som har relaterte oppgaver fra siste seks måneder:
+                <List>
+                  {relevanteSykmeldinger.map((sykmelding) => (
+                    <List.Item key={`sykmelding-${sykmelding.id}`}>
+                      <Link
+                        as={RouterLink}
+                        to={`/sykefravaer/sykmeldinger/${sykmelding.id}`}
+                      >{`Utstedt ${dayjs(sykmelding.bekreftelse.utstedelsesdato).format("DD.MM.YYYY")}, av ${sykmelding.bekreftelse.sykmelder}`}</Link>
+                    </List.Item>
+                  ))}
+                </List>
+              </ReadMore>
+            )}
           </div>
         </List.Item>
       </List>
