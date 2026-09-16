@@ -38,6 +38,7 @@ export const useBrukerinfoQuery = () => {
       tegnsprakTolk: null,
     },
     sikkerhetstiltak: [],
+    vergemal: [],
   };
 
   return {
