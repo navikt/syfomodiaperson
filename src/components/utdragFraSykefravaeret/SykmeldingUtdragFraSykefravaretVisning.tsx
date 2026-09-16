@@ -17,6 +17,7 @@ import {
   erUtdypendeOpplysninger,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { BodyLong, BodyShort } from "@navikt/ds-react";
+import { TilbakedateringUtdragFraSykmeldingen } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/Tilbakedatering.tsx";
 
 const tekster = {
   meldingTilArbeidsgiver: "Melding til arbeidsgiver",
@@ -35,6 +36,9 @@ export default function SykmeldingUtdragFraSykefravaretVisning({
   const erMulighetForArbeidInformasjonSynlig =
     erMulighetForArbeidInformasjon(sykmelding) ||
     !!finnAvventendeSykmeldingTekst(sykmelding);
+  const erTilbakedatering =
+    sykmelding.tilbakedatering.dokumenterbarPasientkontakt ||
+    sykmelding.tilbakedatering.tilbakedatertBegrunnelse;
 
   return (
     <div className="space-y-4 divide-y divide-ax-neutral-600 whitespace-pre-line">
@@ -63,6 +67,9 @@ export default function SykmeldingUtdragFraSykefravaretVisning({
           </BodyShort>
           <BodyLong size="small">{sykmelding.innspillTilArbeidsgiver}</BodyLong>
         </div>
+      )}
+      {erTilbakedatering && (
+        <TilbakedateringUtdragFraSykmeldingen sykmelding={sykmelding} />
       )}
     </div>
   );

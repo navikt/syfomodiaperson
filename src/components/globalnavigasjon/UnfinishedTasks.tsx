@@ -1,5 +1,6 @@
 import React from "react";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
+import { BodyShort } from "@navikt/ds-react";
 
 const opActivePlanerText = (tasks: number) => {
   const activeText = tasks > 1 ? "aktive" : "aktiv";
@@ -14,8 +15,14 @@ interface Props {
 export default function UnfinishedTasks(unfinishedTasksProps: Props) {
   const { tasks, menypunkt } = unfinishedTasksProps;
   return menypunkt === Menypunkter.OPPFOELGINGSPLANER ? (
-    <p>{opActivePlanerText(tasks)}</p>
+    <BodyShort size="small">{opActivePlanerText(tasks)}</BodyShort>
   ) : (
-    <p className="antallNytt">{tasks}</p>
+    <BodyShort
+      size="small"
+      className="min-w-[1.25em] h-[1.25em] bg-ax-danger-600 rounded-full text-center leading-[1.25em]"
+      textColor="contrast"
+    >
+      {tasks}
+    </BodyShort>
   );
 }

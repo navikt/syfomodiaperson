@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Button } from "@navikt/ds-react";
+import { ArrowLeftIcon } from "@navikt/aksel-icons";
 
 interface Props {
   to: string;
@@ -9,9 +11,15 @@ interface Props {
 export default function Tilbakelenke({ to, tekst }: Props) {
   return (
     <div className="mt-2 mb-8">
-      <Link to={to} className="tilbakelenke">
+      <Button
+        as={Link}
+        to={to}
+        variant="tertiary"
+        size="small"
+        icon={<ArrowLeftIcon title="pil tilbake" fontSize="1.5rem" />}
+      >
         {tekst}
-      </Link>
+      </Button>
     </div>
   );
 }
