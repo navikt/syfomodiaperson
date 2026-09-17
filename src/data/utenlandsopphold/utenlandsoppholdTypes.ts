@@ -194,45 +194,25 @@ export const parsePeriode = (periode: PeriodeDTO): Periode => ({
   tom: dayjs(periode.tom).toDate(),
 });
 
-export const parseBehandling = (behandling: BehandlingDTO): Behandling => {
-  const base = {
-    behandletAv: behandling.behandletAv,
-    behandletTidspunkt: new Date(behandling.behandletTidspunkt),
-  };
-  switch (behandling.utfall) {
-    case "INNVILGET":
-      return {
-        ...base,
-        utfall: behandling.utfall,
-        innvilgedePerioder: behandling.innvilgedePerioder.map(parsePeriode),
-      };
-    case "DELVIS_INNVILGET":
-      return {
-        ...base,
-        utfall: behandling.utfall,
-        innvilgedePerioder: behandling.innvilgedePerioder.map(parsePeriode),
-        begrunnelse: behandling.begrunnelse,
-      };
-    case "AVSLAG":
-      return {
-        ...base,
-        utfall: behandling.utfall,
-        begrunnelse: behandling.begrunnelse,
-      };
-    case "HENLAGT":
-      return {
-        ...base,
-        utfall: behandling.utfall,
-        begrunnelse: behandling.begrunnelse,
-      };
-    case "IKKE_AKTUELL":
-      return {
-        ...base,
-        utfall: behandling.utfall,
-        ikkeAktuellGrunn: behandling.ikkeAktuellGrunn,
-      };
+/**
+ * Konverterer datofeltene i en behandling fra API-format til Date-objekter.
+ */
+export function parseBehandling(behandling: BehandlingDTO): Behandling {
+  const behandletTidspunkt = new Date(behandling.behandletTidspunkt);
+
+  if ("innvilgedePerioder" in behandling) {
+    return {
+      ...behandling,
+      behandletTidspunkt,
+      innvilgedePerioder: behandling.innvilgedePerioder.map(parsePeriode),
+    };
   }
-};
+
+  return {
+    ...behandling,
+    behandletTidspunkt,
+  };
+}
 
 export const parseSoknad = (soknad: SoknadDTO): Soknad => ({
   ...soknad,
