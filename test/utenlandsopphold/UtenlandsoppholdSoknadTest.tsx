@@ -11,7 +11,8 @@ import { UtenlandsoppholdSoknad } from "@/sider/utenlandsopphold/Utenlandsopphol
 import { UtenlandsoppholdSoknader } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknader.tsx";
 import { utenlandsoppholdQueryKeys } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
 import {
-  IkkeAktuellArsakDTO,
+  IkkeAktuellGrunnDTO,
+  SoknadHenleggelsePostDTO,
   SoknadIkkeAktuellPostDTO,
   SoknadVedtakPostDTO,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
@@ -204,7 +205,7 @@ describe("UtenlandsoppholdSoknad", () => {
       await screen.findAllByText(
         new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),
       ),
-    ).to.have.lengthOf(2);
+    ).to.have.lengthOf(3);
 
     await waitFor(() => {
       const vedtakMutation = queryClient.getMutationCache().getAll()[0];
@@ -336,7 +337,7 @@ describe("UtenlandsoppholdSoknad", () => {
       await screen.findAllByText(
         new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),
       ),
-    ).to.have.lengthOf(2);
+    ).to.have.lengthOf(3);
 
     await waitFor(() => {
       const vedtakMutation = queryClient
@@ -411,24 +412,26 @@ describe("UtenlandsoppholdSoknad", () => {
     expect(await screen.findAllByText("Henlagt")).to.have.lengthOf(1);
 
     await waitFor(() => {
-      const vedtakMutation = queryClient
+      const henleggelseMutation = queryClient
         .getMutationCache()
         .getAll()
         .find(
           (mutation) =>
-            (mutation.state.variables as { vedtak?: SoknadVedtakPostDTO })
-              ?.vedtak,
+            (
+              mutation.state.variables as {
+                henleggelse?: SoknadHenleggelsePostDTO;
+              }
+            )?.henleggelse,
         );
-      const variables = vedtakMutation?.state.variables as {
+      const variables = henleggelseMutation?.state.variables as {
         soknadId: string;
-        vedtak: SoknadVedtakPostDTO;
+        henleggelse: SoknadHenleggelsePostDTO;
       };
-      expect(variables.vedtak.utfall).to.equal("HENLAGT");
-      expect(variables.vedtak.begrunnelse).to.equal(
+      expect(variables.henleggelse.begrunnelse).to.equal(
         "I telefonsamtale 01.09.2026 har du gitt beskjed om at du ønsker å trekke søknaden.",
       );
       expect(
-        variables.vedtak.document.some((component) =>
+        variables.henleggelse.document.some((component) =>
           component.texts.includes(
             "I telefonsamtale 01.09.2026 har du gitt beskjed om at du ønsker å trekke søknaden.",
           ),
@@ -563,7 +566,7 @@ describe("UtenlandsoppholdSoknad", () => {
         await screen.findAllByText(
           new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),
         ),
-      ).to.have.lengthOf(2);
+      ).to.have.lengthOf(3);
 
       await waitFor(() => {
         const vedtakMutation = queryClient
@@ -969,7 +972,7 @@ describe("UtenlandsoppholdSoknad", () => {
           ikkeAktuell: SoknadIkkeAktuellPostDTO;
         };
         expect(variables.ikkeAktuell).to.deep.equal({
-          arsak: IkkeAktuellArsakDTO.BEHANDLET_I_INFOTRYGD,
+          grunn: IkkeAktuellGrunnDTO.BEHANDLET_I_INFOTRYGD,
         });
         // Ingen vedtaksmutasjon skal ha blitt opprettet for ikke-aktuell-flyten
         expect(

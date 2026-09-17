@@ -9,7 +9,7 @@ import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
 import { useNotification } from "@/context/notification/NotificationContext.tsx";
 import { PeriodeOgAntallDagerTekst } from "./PeriodeOgAntallDagerTekst";
-import { ikkeAktuellArsakTexts } from "./ikkeAktuellTexts";
+import { ikkeAktuellGrunnTexts } from "./ikkeAktuellTexts";
 
 const TIDLIGST_INNSENDT_TIDSPUNKT_FOR_BEHANDLING_I_MODIA = new Date(
   // 1. august 2026
@@ -26,8 +26,8 @@ const texts = {
   innsendtTidspunkt: "Innsendt tidspunkt",
   periode: "Søkt periode",
   saksbehandling: "Saksbehandling",
-  saksbehandlingVedtak: (fattetTidspunkt: Date, fattetAv: string) =>
-    `Behandlet ${tilLesbarDatoMedArUtenManedNavn(fattetTidspunkt)} av ${fattetAv}`,
+  saksbehandlingVedtak: (behandletTidspunkt: Date, behandletAv: string) =>
+    `Behandlet ${tilLesbarDatoMedArUtenManedNavn(behandletTidspunkt)} av ${behandletAv}`,
   saksbehandlingIngenVedtak: "Ikke behandlet i Modia",
   status: "Status",
   startBehandling: "Start behandling",
@@ -49,7 +49,7 @@ function getStatusColumn(soknad: Soknad) {
     soknad.innsendtTidspunkt >
     TIDLIGST_INNSENDT_TIDSPUNKT_FOR_BEHANDLING_I_MODIA;
 
-  if (!soknad.vedtak && !soknad.ikkeAktuell) {
+  if (!soknad.behandling) {
     if (kanBehandlesIModia) {
       return (
         <Button
@@ -66,8 +66,8 @@ function getStatusColumn(soknad: Soknad) {
     }
   }
 
-  if (soknad.ikkeAktuell) {
-    return `${statusTexts[soknad.status]} (${ikkeAktuellArsakTexts[soknad.ikkeAktuell.arsak]})`;
+  if (soknad.behandling.utfall === "IKKE_AKTUELL") {
+    return `${statusTexts[soknad.status]} (${ikkeAktuellGrunnTexts[soknad.behandling.ikkeAktuellGrunn]})`;
   }
 
   return statusTexts[soknad.status] ?? soknad.status; // Forslag: Kan gjøres om til feks grønn, gul og rød Tag etterhvert
@@ -141,18 +141,11 @@ export function UtenlandsoppholdSoknader() {
                       ))}
                     </Table.DataCell>
 
-                    {soknad.vedtak ? (
+                    {soknad.behandling ? (
                       <Table.DataCell>
                         {texts.saksbehandlingVedtak(
-                          soknad.vedtak.fattetTidspunkt,
-                          soknad.vedtak.fattetAv,
-                        )}
-                      </Table.DataCell>
-                    ) : soknad.ikkeAktuell ? (
-                      <Table.DataCell>
-                        {texts.saksbehandlingVedtak(
-                          soknad.ikkeAktuell.registrertTidspunkt,
-                          soknad.ikkeAktuell.registrertAv,
+                          soknad.behandling.behandletTidspunkt,
+                          soknad.behandling.behandletAv,
                         )}
                       </Table.DataCell>
                     ) : (

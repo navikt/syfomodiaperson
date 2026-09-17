@@ -7,22 +7,24 @@ import {
   SoknaderQueryDTO,
   SoknaderResponseDTO,
   SoknadDTO,
+  SoknadHenleggelsePostDTO,
   SoknadIkkeAktuellPostDTO,
-  SoknadIkkeAktuellResponseDTO,
+  SoknadResponseDTO,
   SoknadVedtakPostDTO,
-  SoknadVedtakResponseDTO,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 
 export const utenlandsoppholdQueryKeys = {
   soknader: (personident: string) => ["utenlandsoppholdSoknader", personident],
   vedtakMutation: (soknadId: string) => ["vedtakMutation", soknadId],
+  henleggelseMutation: (soknadId: string) => ["henleggelseMutation", soknadId],
   ikkeAktuellMutation: (soknadId: string) => ["ikkeAktuellMutation", soknadId],
 };
 
 /**
  * Erstatter søknaden med gitt id i den bufrede søknadslisten. Delt mellom
- * vedtaks- og ikke-aktuell-mutasjonene, som begge oppdaterer én søknad i
- * listen etter at backend har returnert den ferdigbehandlede søknaden.
+ * behandlingsmutasjonene (vedtak, henleggelse og ikke-aktuell), som alle
+ * oppdaterer én søknad i listen etter at backend har returnert den
+ * ferdigbehandlede søknaden.
  */
 function oppdaterSoknadICache(
   queryClient: ReturnType<typeof useQueryClient>,
@@ -76,21 +78,47 @@ export const useVedtakMutation = () => {
   }: {
     soknadIdPathParam: string;
     vedtak: SoknadVedtakPostDTO;
-  }) =>
-    post<SoknadVedtakResponseDTO>(path(soknadIdPathParam), vedtak, personident);
+  }) => post<SoknadResponseDTO>(path(soknadIdPathParam), vedtak, personident);
 
   return useMutation({
     mutationFn: postVedtak,
-    onSuccess: (data: SoknadVedtakResponseDTO) => {
+    onSuccess: (data: SoknadResponseDTO) => {
       oppdaterSoknadICache(queryClient, personident, data.soknad);
     },
   });
 };
 
 /**
- * Setter en søknad til «Ikke aktuell» med en oppgitt årsak. I motsetning til
- * `useVedtakMutation` genererer ikke denne handlingen noe brev eller
- * dokument, og sender derfor ikke noe til sykmeldte.
+ * Henlegger en søknad. I v2 er henleggelse et eget endepunkt, atskilt fra
+ * `/vedtak`. Handlingen genererer et brev til sykmeldte, og krever derfor
+ * alltid en begrunnelse.
+ */
+export const useHenleggelseMutation = () => {
+  const personident = useValgtPersonident();
+  const queryClient = useQueryClient();
+  const path = (soknadId: string) =>
+    `${ISUTENLANDSOPPHOLD_ROOT}/soknader/${soknadId}/henleggelse`;
+  const postHenleggelse = ({
+    soknadIdPathParam,
+    henleggelse,
+  }: {
+    soknadIdPathParam: string;
+    henleggelse: SoknadHenleggelsePostDTO;
+  }) =>
+    post<SoknadResponseDTO>(path(soknadIdPathParam), henleggelse, personident);
+
+  return useMutation({
+    mutationFn: postHenleggelse,
+    onSuccess: (data: SoknadResponseDTO) => {
+      oppdaterSoknadICache(queryClient, personident, data.soknad);
+    },
+  });
+};
+
+/**
+ * Setter en søknad til «Ikke aktuell» med en oppgitt grunn. I motsetning til
+ * `useVedtakMutation` og `useHenleggelseMutation` genererer ikke denne
+ * handlingen noe brev eller dokument, og sender derfor ikke noe til sykmeldte.
  */
 export const useIkkeAktuellMutation = () => {
   const personident = useValgtPersonident();
@@ -104,15 +132,11 @@ export const useIkkeAktuellMutation = () => {
     soknadIdPathParam: string;
     ikkeAktuell: SoknadIkkeAktuellPostDTO;
   }) =>
-    post<SoknadIkkeAktuellResponseDTO>(
-      path(soknadIdPathParam),
-      ikkeAktuell,
-      personident,
-    );
+    post<SoknadResponseDTO>(path(soknadIdPathParam), ikkeAktuell, personident);
 
   return useMutation({
     mutationFn: postIkkeAktuell,
-    onSuccess: (data: SoknadIkkeAktuellResponseDTO) => {
+    onSuccess: (data: SoknadResponseDTO) => {
       oppdaterSoknadICache(queryClient, personident, data.soknad);
     },
   });

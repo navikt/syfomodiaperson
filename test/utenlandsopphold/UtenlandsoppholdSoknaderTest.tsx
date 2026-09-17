@@ -135,8 +135,8 @@ describe("UtenlandsoppholdSoknader", () => {
     expect(
       await screen.findByText(
         `Behandlet ${tilLesbarDatoMedArUtenManedNavn(
-          soknadMedVedtakMock.vedtak!.fattetTidspunkt,
-        )} av ${soknadMedVedtakMock.vedtak!.fattetAv}`,
+          new Date(soknadMedVedtakMock.behandling!.behandletTidspunkt),
+        )} av ${soknadMedVedtakMock.behandling!.behandletAv}`,
       ),
     ).to.exist;
   });
@@ -180,9 +180,9 @@ describe("UtenlandsoppholdSoknader", () => {
 
     expect(
       await screen.findByText(
-        `Satt til ikke aktuell ${tilLesbarDatoMedArUtenManedNavn(
-          soknadIkkeAktuellMock.ikkeAktuell!.registrertTidspunkt,
-        )} av ${soknadIkkeAktuellMock.ikkeAktuell!.registrertAv}`,
+        `Behandlet ${tilLesbarDatoMedArUtenManedNavn(
+          new Date(soknadIkkeAktuellMock.behandling!.behandletTidspunkt),
+        )} av ${soknadIkkeAktuellMock.behandling!.behandletAv}`,
       ),
     ).to.exist;
   });

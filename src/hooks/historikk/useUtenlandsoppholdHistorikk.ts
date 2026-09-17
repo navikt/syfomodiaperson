@@ -3,21 +3,24 @@ import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { useUtenlandsoppholdSoknanderQuery } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks.ts";
-import { Soknad } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
+import {
+  Behandling,
+  Soknad,
+} from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
 import { statusTexts } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknader.tsx";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils.ts";
 
-function toExpandableContent(vedtak: Soknad["vedtak"]): string {
-  if (!vedtak) return "";
-
-  const vedtakText = `Vedtaket ble ${statusTexts[vedtak.utfall].toLocaleLowerCase()}.`;
+function toExpandableContent(behandling: Behandling): string {
+  const vedtakText = `Behandlet som ${statusTexts[behandling.utfall].toLocaleLowerCase()}.`;
+  const innvilgedePerioder =
+    "innvilgedePerioder" in behandling ? behandling.innvilgedePerioder : [];
   const periodeText =
-    vedtak.innvilgedePerioder.length > 0
-      ? `\n\nInnvilgede perioder: ${vedtak.innvilgedePerioder.map((periode) => tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom)).join(", ")}`
+    innvilgedePerioder.length > 0
+      ? `\n\nInnvilgede perioder: ${innvilgedePerioder.map((periode) => tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom)).join(", ")}`
       : "";
-  const begrunnelseText = vedtak.begrunnelse
-    ? `\n\nBegrunnelse: ${vedtak.begrunnelse}`
-    : "";
+  const begrunnelse =
+    "begrunnelse" in behandling ? behandling.begrunnelse : undefined;
+  const begrunnelseText = begrunnelse ? `\n\nBegrunnelse: ${begrunnelse}` : "";
   return `${vedtakText}${periodeText}${begrunnelseText}`;
 }
 
@@ -30,12 +33,13 @@ function createEventsFromSoknad(soknad: Soknad, person: BrukerinfoDTO) {
       kilde: "UTENLANDSOPPHOLD",
     });
   }
-  if (soknad.vedtak) {
+  const { behandling } = soknad;
+  if (behandling && behandling.utfall !== "IKKE_AKTUELL") {
     events.push({
-      tekst: `${soknad.vedtak.fattetAv} fattet vedtak om sykepenger under opphold utenfor EU/EØS`,
-      tidspunkt: new Date(soknad.vedtak.fattetTidspunkt),
+      tekst: `${behandling.behandletAv} behandlet søknad om sykepenger under opphold utenfor EU/EØS`,
+      tidspunkt: new Date(behandling.behandletTidspunkt),
       kilde: "UTENLANDSOPPHOLD",
-      expandableContent: toExpandableContent(soknad.vedtak),
+      expandableContent: toExpandableContent(behandling),
     });
   }
   return events;

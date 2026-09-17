@@ -1112,15 +1112,15 @@ describe("Historikk", () => {
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
         screen.getAllByRole("row", { name: /Utenlandsopphold/ }).length,
-      ).toBe(4);
+      ).toBe(5);
       expect(
         screen.getAllByText(
           `${ARBEIDSTAKER_DEFAULT_FULL_NAME} søkte om sykepenger under opphold utenfor EU/EØS`,
         ).length,
-      ).toBe(3);
+      ).toBe(4);
       expect(
         screen.getByText(
-          "Z990000 fattet vedtak om sykepenger under opphold utenfor EU/EØS",
+          "Z990000 behandlet søknad om sykepenger under opphold utenfor EU/EØS",
         ),
       ).to.exist;
     });
@@ -1134,7 +1134,7 @@ describe("Historikk", () => {
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
-      expect(screen.getByText(/Vedtaket ble delvis innvilget\./)).to.exist;
+      expect(screen.getByText(/Behandlet som delvis innvilget\./)).to.exist;
       expect(screen.getByText(/Innvilgede perioder: 01.08.2026 - 05.08.2026/))
         .to.exist;
       expect(

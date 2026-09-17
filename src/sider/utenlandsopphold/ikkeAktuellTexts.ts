@@ -1,12 +1,12 @@
-import { IkkeAktuellArsakDTO } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
+import { IkkeAktuellGrunnDTO } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
 
 /**
- * Visningstekster for årsakene en veileder kan velge når en søknad
+ * Visningstekster for grunnene en veileder kan velge når en søknad
  * settes til «Ikke aktuell». Delt mellom skjemaet, bekreftelsesdialogen
- * og oversikts-/detaljvisningen, slik at årsaken vises likt overalt.
+ * og oversikts-/detaljvisningen, slik at grunnen vises likt overalt.
  */
-export const ikkeAktuellArsakTexts: Record<IkkeAktuellArsakDTO, string> = {
-  [IkkeAktuellArsakDTO.BEHANDLET_I_INFOTRYGD]: "Behandlet i Infotrygd",
-  [IkkeAktuellArsakDTO.DUPLIKAT]: "Duplikat",
-  [IkkeAktuellArsakDTO.ANNET]: "Annet",
+export const ikkeAktuellGrunnTexts: Record<IkkeAktuellGrunnDTO, string> = {
+  [IkkeAktuellGrunnDTO.BEHANDLET_I_INFOTRYGD]: "Behandlet i Infotrygd",
+  [IkkeAktuellGrunnDTO.DUPLIKAT]: "Duplikat",
+  [IkkeAktuellGrunnDTO.ANNET]: "Annet",
 };
