@@ -861,4 +861,36 @@ describe("PersonkortHeader", () => {
     expect(screen.queryByText("Søkt AAP")).not.to.exist;
     expect(screen.queryByText("Vedtak AAP siste 12mnd")).not.to.exist;
   });
+
+  it('Viser "Under vergemål" tag når bruker har aktivt vergemål', () => {
+    queryClient.setQueryData(
+      brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => ({
+        ...brukerinfoMock,
+        vergemal: [
+          {
+            type: "VOKSEN",
+          },
+        ],
+      }),
+    );
+
+    renderPersonkortHeader();
+
+    expect(screen.getByText("Under vergemål")).to.exist;
+  });
+
+  it('Viser ikke "Under vergemål" tag når bruker ikke har aktivt vergemål', () => {
+    queryClient.setQueryData(
+      brukerQueryKeys.brukerinfo(ARBEIDSTAKER_DEFAULT.personIdent),
+      () => ({
+        ...brukerinfoMock,
+        vergemal: [],
+      }),
+    );
+
+    renderPersonkortHeader();
+
+    expect(screen.queryByText("Under vergemål")).not.to.exist;
+  });
 });

@@ -50,7 +50,7 @@ export default function Side({
   const isPending = diskresjonskode.isPending || brukerinfo.isPending;
 
   return (
-    <div className="mx-6 flex flex-col">
+    <div className="mx-6 mb-5 flex flex-col">
       <div className="flex flex-col gap-2" id={MODIA_HEADER_ID}>
         <div className="flex flex-row w-full bg-ax-bg-default">
           <OversiktLenker />

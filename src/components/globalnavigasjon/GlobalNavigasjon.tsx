@@ -1,13 +1,11 @@
-import React, { ReactElement, useRef, useState } from "react";
-import cn from "classnames";
+import React, { ReactElement } from "react";
 import UnfinishedTasks from "./UnfinishedTasks";
-import { Link } from "react-router-dom";
 import { numberOfTasks } from "@/utils/globalNavigasjonUtils";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
 import { useAktivitetskravQuery } from "@/data/aktivitetskrav/aktivitetskravQueryHooks";
-import { BodyShort, Skeleton, VStack } from "@navikt/ds-react";
+import { BodyShort, Box, Button, Skeleton } from "@navikt/ds-react";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
@@ -16,6 +14,7 @@ import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { useKartleggingssporsmalKandidaterQuery } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 import { useOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/useOppfolgingsplaner";
 import { ToggleNames } from "@/data/unleash/unleash_types.ts";
+import { Link } from "react-router-dom";
 
 export enum Menypunkter {
   AKTIVITETSKRAV = "AKTIVITETSKRAV",
@@ -107,19 +106,10 @@ interface Props {
 }
 
 export function GlobalNavigasjonSkeleton(): ReactElement {
-  return (
-    <VStack gap="space-8" className="mb-2">
-      {Object.values(Menypunkter).map((_, i) => (
-        <Skeleton variant="rectangle" width="100%" height={52} key={i} />
-      ))}
-    </VStack>
-  );
+  return <Skeleton variant="rectangle" height={800} />;
 }
 
 export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
-  const [focusIndex, setFocusIndex] = useState(-1);
-  const refs = useRef<HTMLAnchorElement[]>([]);
-
   const personoppgaver = usePersonoppgaverQuery();
   const { aktivePlanerV2, lpsPlaner } = useOppfolgingsplaner();
   const motebehov = useMotebehovQuery();
@@ -150,94 +140,59 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
     ),
   );
 
-  const setFocus = (index: number) => {
-    if (refs.current[index]) {
-      refs.current[index].focus();
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLAnchorElement>) => {
-    switch (e.key) {
-      case "ArrowDown": {
-        e.preventDefault();
-        const newFocusIndex = focusIndex + 1;
-        if (newFocusIndex === allMenypunktEntries.length) {
-          return;
-        }
-        setFocusIndex(newFocusIndex);
-        setFocus(newFocusIndex);
-        return;
-      }
-      case "ArrowUp": {
-        e.preventDefault();
-        const newFocusIndex = focusIndex - 1;
-        if (newFocusIndex === -1) {
-          return;
-        }
-        setFocusIndex(newFocusIndex);
-        setFocus(newFocusIndex);
-        break;
-      }
-      default:
-        break;
-    }
-  };
-
   if (isPending) {
     return <GlobalNavigasjonSkeleton />;
   }
 
   return (
-    <ul aria-label="Navigasjon">
-      {allMenypunktEntries.map(([menypunkt, { navn, sti }], index) => {
-        const isAktiv = menypunkt === aktivtMenypunkt;
-        const className = cn("navigasjonspanel", {
-          "navigasjonspanel--aktiv": isAktiv,
-        });
-        const tasks = numberOfTasks(
-          menypunkt,
-          motebehov.data,
-          personoppgaver.data,
-          oppfolgingsplanerLPSMedPersonOppgave,
-          aktivitetskrav.data,
-          arbeidsuforhetVurderinger.data,
-          senOppfolgingKandidat.data,
-          friskmeldingTilArbeidsformidlingVedtak.data,
-          manglendeMedvirkningVurdering.sisteVurdering,
-          kartleggingssporsmalKandidat.data,
-          aktivePlanerV2.length,
-        );
+    <Box background="default" className="p-2 mb-2">
+      <nav className="space-y-1">
+        {allMenypunktEntries.map(([menypunkt, { navn, sti }], index) => {
+          const isAktiv = menypunkt === aktivtMenypunkt;
+          const tasks = numberOfTasks(
+            menypunkt,
+            motebehov.data,
+            personoppgaver.data,
+            oppfolgingsplanerLPSMedPersonOppgave,
+            aktivitetskrav.data,
+            arbeidsuforhetVurderinger.data,
+            senOppfolgingKandidat.data,
+            friskmeldingTilArbeidsformidlingVedtak.data,
+            manglendeMedvirkningVurdering.sisteVurdering,
+            kartleggingssporsmalKandidat.data,
+            aktivePlanerV2.length,
+          );
 
-        return (
-          <React.Fragment key={index}>
-            <li aria-current={isAktiv} className="flex">
-              <Link
-                ref={(instance) => {
-                  if (instance) {
-                    refs.current[index] = instance;
-                  }
-                }}
-                className={`flex justify-between ${className}`}
+          return (
+            <React.Fragment key={menypunkt}>
+              <Button
+                as={Link}
+                size="small"
+                variant={isAktiv ? "primary" : "tertiary-neutral"}
                 to={`/sykefravaer/${sti}`}
+                className="w-full justify-between"
+                icon={
+                  tasks > 0 && (
+                    <UnfinishedTasks tasks={tasks} menypunkt={menypunkt} />
+                  )
+                }
+                iconPosition="right"
                 onClick={() => {
                   window.scrollTo(0, 0);
                 }}
-                onFocus={() => {
-                  setFocusIndex(index);
-                }}
-                onKeyDown={(e) => {
-                  handleKeyDown(e);
-                }}
+                aria-current={isAktiv}
               >
-                <BodyShort size="small">{navn}</BodyShort>
-                {tasks > 0 && (
-                  <UnfinishedTasks tasks={tasks} menypunkt={menypunkt} />
-                )}
-              </Link>
-            </li>
-          </React.Fragment>
-        );
-      })}
-    </ul>
+                <BodyShort size="small" className="text-left">
+                  {navn}
+                </BodyShort>
+              </Button>
+              {index < allMenypunktEntries.length - 1 && (
+                <div aria-hidden className="h-px w-full bg-ax-neutral-400" />
+              )}
+            </React.Fragment>
+          );
+        })}
+      </nav>
+    </Box>
   );
 }

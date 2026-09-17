@@ -5,6 +5,7 @@ export const useNavBrukerData = () => {
   const brukerinfo: BrukerinfoDTO = useBrukerinfoQuery().brukerinfo;
   return {
     hasSikkerhetstiltak: brukerinfo.sikkerhetstiltak.length > 0,
+    underVergemal: brukerinfo.vergemal.length > 0,
     ...brukerinfo,
   };
 };

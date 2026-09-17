@@ -25,7 +25,6 @@ import InfoSymbolImage from "./svg/info_symbol.svg?url";
 import InformasjonImage from "./svg/informasjon.svg?url";
 import BlaaKalenderImage from "./svg/kalender--blaa.svg?url";
 import SortKalenderImage from "./svg/kalender--sort.svg?url";
-import KontorByggImage from "./svg/kontorbygg.svg?url";
 import KvinneImage from "./svg/kvinne.svg?url";
 import PepperkakeKvinneImage from "./svg/pepperkakekvinne.svg?url";
 import MannImage from "./svg/mann.svg?url";
@@ -65,7 +64,6 @@ import SaveFile from "./svg/save-file.svg?url";
 import CheckboxPng from "./png/check-box-1.png?url";
 import KalenderPng from "./png/kalender.png?url";
 import KalenderHoverPng from "./png/kalender--hover.png?url";
-import PilForrigeBlaaPng from "./png/pilForrige--blaa.png?url";
 
 // GIF
 import EasterRoll from "./gif/easter_roll.gif?url";
@@ -98,7 +96,6 @@ export {
   InformasjonImage,
   BlaaKalenderImage,
   SortKalenderImage,
-  KontorByggImage,
   KvinneImage,
   MannImage,
   MappeAdvarselImage,
@@ -134,7 +131,6 @@ export {
   CheckboxPng,
   KalenderPng,
   KalenderHoverPng,
-  PilForrigeBlaaPng,
   UtropstegnImage,
   SaveFile,
 };

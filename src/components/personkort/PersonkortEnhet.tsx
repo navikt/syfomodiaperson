@@ -1,13 +1,13 @@
 import React from "react";
 import { PersonkortElement } from "./PersonkortElement";
 import PersonkortInformasjon from "./PersonkortInformasjon";
-import { KontorByggImage } from "../../../img/ImageComponents";
 import ErrorBoundary from "../ErrorBoundary";
 import { useBehandlendeEnhetQuery } from "@/data/behandlendeenhet/behandlendeEnhetQueryHooks";
 import { ApiErrorException } from "@/api/errors";
 import AppSpinner from "@/components/AppSpinner";
 import PersonkortChangeEnhet from "@/components/personkort/PersonkortChangeEnhet";
 import { Alert } from "@navikt/ds-react";
+import { Buildings3Icon } from "@navikt/aksel-icons";
 
 const texts = {
   enhet: "Enhet",
@@ -33,7 +33,13 @@ export function PersonkortEnhet() {
             behandlendeenhet.oppfolgingsenhetDTO?.enhet?.navn ??
             behandlendeenhet.geografiskEnhet.navn
           }
-          icon={<img src={KontorByggImage} alt={"Kontorbygg"} />}
+          icon={
+            <Buildings3Icon
+              title="Nav kontor"
+              fontSize="1.5rem"
+              className="mr-2"
+            />
+          }
         >
           <div className="flex-col w-fit">
             <PersonkortInformasjon

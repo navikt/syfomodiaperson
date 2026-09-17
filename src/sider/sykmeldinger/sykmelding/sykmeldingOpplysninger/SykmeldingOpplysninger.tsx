@@ -19,7 +19,7 @@ import UtdypendeOpplysninger from "@/sider/sykmeldinger/sykmelding/sykmeldingOpp
 import BedreArbeidsevne from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/BedreArbeidsevne";
 import MeldingTilNav from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/MeldingTilNav";
 import MeldingTilArbeidsgiver from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/MeldingTilArbeidsgiver";
-import Tilbakedatering from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/Tilbakedatering";
+import { TilbakedateringSykmeldingssiden } from "@/sider/sykmeldinger/sykmelding/sykmeldingOpplysninger/flereopplysninger/Tilbakedatering";
 import { erMeldingTilNavInformasjon } from "@/utils/sykmeldinger/sykmeldingUtils";
 
 const texts = {
@@ -227,7 +227,9 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
         {sykmelding.innspillTilArbeidsgiver && (
           <MeldingTilArbeidsgiver sykmelding={sykmelding} />
         )}
-        {erTilbakedatering && <Tilbakedatering sykmelding={sykmelding} />}
+        {erTilbakedatering && (
+          <TilbakedateringSykmeldingssiden sykmelding={sykmelding} />
+        )}
         {sykmelding.bekreftelse.sykmelderTlf && (
           <div className="mb-5">
             <Heading level="3" size="medium">
