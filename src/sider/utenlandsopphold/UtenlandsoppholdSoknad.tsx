@@ -674,6 +674,11 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
                 soknadId={utenlandsoppholdSoknad.soknadId}
               />
             </form>
+            <IkkeAktuellModal
+                isOpen={visIkkeAktuellModal}
+                setModalOpen={setVisIkkeAktuellModal}
+                soknadId={utenlandsoppholdSoknad.soknadId}
+            />
           </FormProvider>
         )}
       </VStack>
