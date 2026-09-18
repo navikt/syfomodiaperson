@@ -2,3 +2,15 @@
 @import "@navikt/ds-css" layer(components);
 @import "@navikt/lumi-survey/styles.css";
 @config '../../tailwind.config.ts';
+
+body {
+  background-color: #f1f1f1;
+}
+
+p {
+  margin-top: 0;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
