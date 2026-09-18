@@ -668,11 +668,6 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
                   loading: mutateIsPending,
                 }}
               />
-              <IkkeAktuellModal
-                isOpen={visIkkeAktuellModal}
-                setModalOpen={setVisIkkeAktuellModal}
-                soknadId={utenlandsoppholdSoknad.soknadId}
-              />
             </form>
             <IkkeAktuellModal
               isOpen={visIkkeAktuellModal}
