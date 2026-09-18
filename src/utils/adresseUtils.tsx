@@ -12,6 +12,7 @@ import {
   UtenlandskAdresseIFrittFormat,
   Vegadresse,
 } from "@/data/personinfo/types/PersonAdresse";
+import { BodyShort } from "@navikt/ds-react";
 
 const emdashCharacterCode = 8212;
 const EMDASH = String.fromCharCode(emdashCharacterCode);
@@ -30,7 +31,7 @@ export const formaterBostedsadresse = (
       return formaterUkjentBosted(bostedsadresse.ukjentBosted);
     }
   }
-  return <span className="adresselinje">{EMDASH}</span>;
+  return <BodyShort size="small">{EMDASH}</BodyShort>;
 };
 
 export const formaterKontaktadresse = (
@@ -43,7 +44,7 @@ export const formaterKontaktadresse = (
       return formaterKontaktadresseUtland(kontaktadresse);
     }
   }
-  return <span className="adresselinje">{EMDASH}</span>;
+  return <BodyShort size="small">{EMDASH}</BodyShort>;
 };
 
 const formaterKontaktadresseInnland = (kontaktadresse: Kontaktadresse) => {
@@ -57,7 +58,7 @@ const formaterKontaktadresseInnland = (kontaktadresse: Kontaktadresse) => {
     );
   }
 
-  return <span className="adresselinje">{EMDASH}</span>;
+  return <BodyShort size="small">{EMDASH}</BodyShort>;
 };
 
 const formaterKontaktadresseUtland = (kontaktadresse: Kontaktadresse) => {
@@ -69,7 +70,7 @@ const formaterKontaktadresseUtland = (kontaktadresse: Kontaktadresse) => {
     );
   }
 
-  return <span className="adresselinje">{EMDASH}</span>;
+  return <BodyShort size="small">{EMDASH}</BodyShort>;
 };
 
 export const formaterOppholdsadresse = (
@@ -86,7 +87,7 @@ export const formaterOppholdsadresse = (
       return formaterOppholdAnnetSted(oppholdsadresse.oppholdAnnetSted);
     }
   }
-  return <span className="adresselinje">{EMDASH}</span>;
+  return <BodyShort size="small">{EMDASH}</BodyShort>;
 };
 
 const formaterOppholdAnnetSted = (oppholdAnnetSted: string) => {
@@ -178,11 +179,11 @@ const hentAdresseRader = (
 ) => {
   return (
     <div>
-      <span className="adresselinje">{rad1}</span>
-      <span className="adresselinje">{rad2}</span>
-      <span className="adresselinje">{rad3}</span>
-      <span className="adresselinje">{rad4}</span>
-      <span className="adresselinje">{rad5}</span>
+      <BodyShort size="small">{rad1}</BodyShort>
+      <BodyShort size="small">{rad2}</BodyShort>
+      <BodyShort size="small">{rad3}</BodyShort>
+      <BodyShort size="small">{rad4}</BodyShort>
+      <BodyShort size="small">{rad5}</BodyShort>
     </div>
   );
 };
