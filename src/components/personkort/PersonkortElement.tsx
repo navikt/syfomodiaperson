@@ -1,30 +1,19 @@
 import React, { ReactElement } from "react";
-import cn from "classnames";
 
 interface Props {
   tittel: string;
   icon: ReactElement;
   children: ReactElement;
-  antallKolonner?: number;
 }
 
-export function PersonkortElement({
-  children,
-  icon,
-  tittel,
-  antallKolonner = 2,
-}: Props) {
-  const classNameRad = cn("personkortElement__rad", {
-    "personkortElement__rad--treKolonner": antallKolonner === 3,
-    "personkortElement__rad--toKolonner": antallKolonner === 2,
-  });
+export function PersonkortElement({ children, icon, tittel }: Props) {
   return (
-    <div className="personkortElement">
-      <div className="personkortElement__tittel">
+    <div className="mb-8 w-full last:mb-0">
+      <div className="mb-4 flex items-center border-b border-ax-neutral-400 pb-2">
         {icon}
         <h4>{tittel}</h4>
       </div>
-      <div className={classNameRad}>{children}</div>
+      <div>{children}</div>
     </div>
   );
 }

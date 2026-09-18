@@ -70,27 +70,14 @@ export const FastlegeVikar = ({
   fastlegeVikarer,
 }: FastlegeVikarProps): ReactElement => {
   return (
-    <PersonKortLegeRow>
+    <>
       <Heading size="medium">{texts.vikar}</Heading>
       {fastlegeVikarer.map((lege, idx) => {
         return <FlexRow key={idx}>{fastlegeVikarTekst(lege)}</FlexRow>;
       })}
-    </PersonKortLegeRow>
+    </>
   );
 };
-
-const PersonKortLegeRow = styled.div`
-  margin-left: 0;
-  margin-right: 0;
-
-  &:not(:last-child) {
-    margin-bottom: 1em;
-  }
-
-  ul li {
-    display: block;
-  }
-`;
 
 export function PersonkortLege() {
   const { fastlege, fastlegeVikarer, ikkeFunnet } = useFastlegerQuery();
@@ -143,10 +130,10 @@ export function PersonkortLege() {
   ) : (
     <>
       {fastlege && (
-        <PersonKortLegeRow className="no-gutter">
+        <>
           <Heading size="medium">{hentTekstFastlegeNavn(fastlege)}</Heading>
           <Detail>{hentTekstFastlegePeriode(fastlege)}</Detail>
-        </PersonKortLegeRow>
+        </>
       )}
       {fastlegekontor && (
         <PersonkortInformasjon

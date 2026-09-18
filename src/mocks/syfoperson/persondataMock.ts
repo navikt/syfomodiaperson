@@ -33,6 +33,7 @@ export const brukerinfoMock: BrukerinfoDTO = {
       gyldigTom: dayjs().subtract(1, "week").toDate().toString(),
     },
   ],
+  vergemal: [{ type: "VOKSEN" }],
 };
 
 export const arbeidsforholdPersonMock: ArbeidsforholdPersonDTO = {

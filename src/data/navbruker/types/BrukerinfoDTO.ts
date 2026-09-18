@@ -1,5 +1,3 @@
-import { KJOENN } from "@/konstanter";
-
 export interface KontaktinfoDTO {
   epost?: string;
   tlf?: string;
@@ -16,6 +14,7 @@ export interface BrukerinfoDTO {
   dodsdato: string | null;
   tilrettelagtKommunikasjon: TilrettelagtKommunikasjon | null;
   sikkerhetstiltak: Sikkerhetstiltak[];
+  vergemal: Vergemal[];
 }
 
 interface TilrettelagtKommunikasjon {
@@ -27,7 +26,7 @@ interface Sprak {
   value: string;
 }
 
-/* https://pdl-docs.dev.intern.nav.no/ekstern/index.html#_sikkerhetstiltak */
+// https://pdl-docs.ansatt.nav.no/ekstern/index.html#_sikkerhetstiltak
 export enum Tiltakstype {
   FYUS = "FYUS",
   TFUS = "TFUS",
@@ -43,13 +42,15 @@ interface Sikkerhetstiltak {
   gyldigTom: string;
 }
 
-export function mapKjoennFromDto(kjonn: string | null): KJOENN {
-  switch (kjonn) {
-    case KJOENN.MANN:
-      return KJOENN.MANN;
-    case KJOENN.KVINNE:
-      return KJOENN.KVINNE;
-    default:
-      return KJOENN.UKJENT;
-  }
+// https://pdl-docs.ansatt.nav.no/ekstern/index.html#_vergem%C3%A5l_eller_fremtidsfullmakt
+interface Vergemal {
+  type: VergemalType;
 }
+
+type VergemalType =
+  | "ENSLIG_MINDREARIG_ASYLSOEKER"
+  | "ENSLIG_MINDREARIG_FLYKTNING"
+  | "VOKSEN"
+  | "MIDLERTIDIG_FOR_VOKSEN"
+  | "MINDREARIG"
+  | "MIDLERTIDIG_FOR_MINDREARIG";

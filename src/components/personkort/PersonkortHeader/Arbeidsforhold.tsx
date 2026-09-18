@@ -1,5 +1,5 @@
 import React from "react";
-import { BodyShort } from "@navikt/ds-react";
+import { BodyShort, Skeleton } from "@navikt/ds-react";
 import { useArbeidsforholdQuery } from "@/data/arbeidsforhold/arbeidsforholdQueryHooks";
 import {
   ArbeidsforholdDTO,
@@ -38,7 +38,7 @@ export function Arbeidsforhold() {
   const { data, isError, isPending } = useArbeidsforholdQuery();
 
   if (isPending) {
-    return null;
+    return <Skeleton variant="text" height="1rem" />;
   }
 
   const aktiveArbeidsforholdSortertEtterHoyestStillingsprosent =

@@ -36,12 +36,17 @@ const texts = {
   friskmeldingTilArbeidsformidling: "Vedtak § 8-5",
   reservertKRR: "Reservert KRR",
   harIkkeArbeidsgiver: "Uten arbeidsgiver",
+  underVergemal: "Under vergemål",
 };
 
 export function PersonkortHeaderTags() {
   const { data: isEgenAnsatt } = useEgenansattQuery();
-  const { dodsdato, hasSikkerhetstiltak, tilrettelagtKommunikasjon } =
-    useNavBrukerData();
+  const {
+    dodsdato,
+    hasSikkerhetstiltak,
+    underVergemal,
+    tilrettelagtKommunikasjon,
+  } = useNavBrukerData();
   const { error, data: diskresjonskode } = useDiskresjonskodeQuery();
   const { data: arbeidsrettetOppfolging } =
     useUnderArbeidsrettetOppfolgingQuery();
@@ -152,6 +157,11 @@ export function PersonkortHeaderTags() {
           </Tag>
         )}
         {aapStatus && <AapTag aapStatus={aapStatus} />}
+        {underVergemal && (
+          <Tag data-color="warning" variant="outline" size="small">
+            {texts.underVergemal}
+          </Tag>
+        )}
       </div>
     </ErrorBoundary>
   );

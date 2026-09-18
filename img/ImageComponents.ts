@@ -25,7 +25,6 @@ import InfoSymbolImage from "./svg/info_symbol.svg?url";
 import InformasjonImage from "./svg/informasjon.svg?url";
 import BlaaKalenderImage from "./svg/kalender--blaa.svg?url";
 import SortKalenderImage from "./svg/kalender--sort.svg?url";
-import KontorByggImage from "./svg/kontorbygg.svg?url";
 import KvinneImage from "./svg/kvinne.svg?url";
 import PepperkakeKvinneImage from "./svg/pepperkakekvinne.svg?url";
 import MannImage from "./svg/mann.svg?url";
@@ -97,7 +96,6 @@ export {
   InformasjonImage,
   BlaaKalenderImage,
   SortKalenderImage,
-  KontorByggImage,
   KvinneImage,
   MannImage,
   MappeAdvarselImage,
