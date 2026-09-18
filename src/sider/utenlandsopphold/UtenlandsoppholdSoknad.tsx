@@ -675,9 +675,9 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
               />
             </form>
             <IkkeAktuellModal
-                isOpen={visIkkeAktuellModal}
-                setModalOpen={setVisIkkeAktuellModal}
-                soknadId={utenlandsoppholdSoknad.soknadId}
+              isOpen={visIkkeAktuellModal}
+              setModalOpen={setVisIkkeAktuellModal}
+              soknadId={utenlandsoppholdSoknad.soknadId}
             />
           </FormProvider>
         )}
