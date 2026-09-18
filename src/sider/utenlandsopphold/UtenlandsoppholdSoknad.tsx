@@ -18,6 +18,7 @@ import {
 } from "@navikt/ds-react";
 import { DelvisInnvilgelsePeriodeDatepicker } from "@/sider/utenlandsopphold/DelvisInnvilgelsePeriodeDatepicker.tsx";
 import {
+  useHenleggelseMutation,
   useUtenlandsoppholdSoknanderQuery,
   useVedtakMutation,
 } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
@@ -53,6 +54,8 @@ import {
 } from "@/hooks/useDraftQuery";
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 import { PeriodeOgAntallDagerTekst } from "./PeriodeOgAntallDagerTekst";
+import { IkkeAktuellModal } from "./IkkeAktuellModal";
+import { ikkeAktuellGrunnTexts } from "./ikkeAktuellTexts";
 
 const AVSLAG_CATEGORY = "utenlandsopphold-avslag";
 const DELVIS_INNVILGET_CATEGORY = "utenlandsopphold-delvis-innvilget";
@@ -83,12 +86,14 @@ const texts = {
     confirmButton: "Bekreft og send",
     previewContentLabel: "Forhåndsvisning",
     backButton: "Tilbake",
+    ikkeAktuell: "Ikke aktuell",
   },
   ingenAvslattePerioderWarning:
     "Du har valgt å innvilge alle perioder. Velg 'Innvilgelse' som utfall i stedet for 'Delvis innvilgelse'",
   vedtakFattetNotification:
     "Vedtaket om utenlandsopphold utenfor EU/EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
   alertBehandlet: "Denne søknaden er allerede behandlet av",
+  alertIkkeAktuell: "Denne søknaden er satt til ikke aktuell av",
   missingUtfall: "Du må velge et utfall for å fatte vedtaket",
   ikkeUtbetaltAdvarsel:
     "Sykepenger er ikke utbetalt. Ved innvilgelse eller delvis innvilgelse blir vedtaket sendt med et forbehold om at vedtaket kun gjelder dersom sykmeldt får innvilget sykepenger. Åpne forhåndsvisningen av vedtaket for å se forbeholdet.",
@@ -152,7 +157,11 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
   const getMaksdato = useMaksdatoQuery();
   const { latestOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const oppfolgingstilfelleStart = latestOppfolgingstilfelle?.start;
-  const { mutate, isPending: mutateIsPending } = useVedtakMutation();
+  const { mutate: mutateVedtak, isPending: vedtakIsPending } =
+    useVedtakMutation();
+  const { mutate: mutateHenleggelse, isPending: henleggelseIsPending } =
+    useHenleggelseMutation();
+  const mutateIsPending = vedtakIsPending || henleggelseIsPending;
   const {
     getInnvilgetDocument,
     getAvslagDocument,
@@ -178,6 +187,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
   const valgteInnvilgedePerioder = watch("innvilgedePerioder");
   const valgtBegrunnelse = watch("begrunnelse");
   const [visSendForhandsvisning, setVisSendForhandsvisning] = useState(false);
+  const [visIkkeAktuellModal, setVisIkkeAktuellModal] = useState(false);
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
 
   const avslagDraftQuery = useDraftQuery<DraftTextDTO>(AVSLAG_CATEGORY);
@@ -271,28 +281,45 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
         fom: dayjs(periode.fom).format("YYYY-MM-DD"),
         tom: dayjs(periode.tom).format("YYYY-MM-DD"),
       }));
-    const request = {
-      soknadIdPathParam: soknadId,
-      vedtak: {
-        utfall: utfall,
-        innvilgedePerioder: perioder,
-        document: vedtakDocument,
-        begrunnelse: utfall === "INNVILGET" ? null : begrunnelse,
-      },
+
+    const onSuccess = () => {
+      setNotification({
+        message: texts.vedtakFattetNotification,
+      });
+      setUtkastSavedTime(undefined);
+      debouncedAutoSaveDraft.cancel();
+      deleteAvslagDraft.mutate(undefined);
+      deleteDelvisInnvilgetDraft.mutate(undefined);
+      deleteHenleggelseDraft.mutate(undefined);
+      navigate(`${utenlandsoppholdPath}`);
     };
-    mutate(request, {
-      onSuccess: () => {
-        setNotification({
-          message: texts.vedtakFattetNotification,
-        });
-        setUtkastSavedTime(undefined);
-        debouncedAutoSaveDraft.cancel();
-        deleteAvslagDraft.mutate(undefined);
-        deleteDelvisInnvilgetDraft.mutate(undefined);
-        deleteHenleggelseDraft.mutate(undefined);
-        navigate(`${utenlandsoppholdPath}`);
+
+    if (utfall === "HENLAGT") {
+      mutateHenleggelse(
+        {
+          soknadIdPathParam: soknadId,
+          henleggelse: {
+            document: vedtakDocument,
+            begrunnelse,
+          },
+        },
+        { onSuccess },
+      );
+      return;
+    }
+
+    mutateVedtak(
+      {
+        soknadIdPathParam: soknadId,
+        vedtak: {
+          utfall,
+          innvilgedePerioder: perioder,
+          document: vedtakDocument,
+          begrunnelse: utfall === "INNVILGET" ? null : begrunnelse,
+        },
       },
-    });
+      { onSuccess },
+    );
   }
 
   const { utenlandsoppholdSoknadId } = useParams<{
@@ -445,12 +472,29 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
         {/* Soknaden er behandlet */}
         {soknadBehandlet && (
           <>
-            <Alert variant="info" size="small" className="w-fit p-4">
-              {texts.alertBehandlet} {utenlandsoppholdSoknad.vedtak?.fattetAv}{" "}
-              {tilLesbarDatoMedArUtenManedNavn(
-                utenlandsoppholdSoknad.vedtak?.fattetTidspunkt,
-              )}
-            </Alert>
+            {utenlandsoppholdSoknad.behandling?.utfall === "IKKE_AKTUELL" ? (
+              <Alert variant="info" size="small" className="w-fit p-4">
+                {texts.alertIkkeAktuell}{" "}
+                {utenlandsoppholdSoknad.behandling.behandletAv}{" "}
+                {tilLesbarDatoMedArUtenManedNavn(
+                  utenlandsoppholdSoknad.behandling.behandletTidspunkt,
+                )}
+                {" – "}
+                {
+                  ikkeAktuellGrunnTexts[
+                    utenlandsoppholdSoknad.behandling.ikkeAktuellGrunn
+                  ]
+                }
+              </Alert>
+            ) : (
+              <Alert variant="info" size="small" className="w-fit p-4">
+                {texts.alertBehandlet}{" "}
+                {utenlandsoppholdSoknad.behandling?.behandletAv}{" "}
+                {tilLesbarDatoMedArUtenManedNavn(
+                  utenlandsoppholdSoknad.behandling?.behandletTidspunkt,
+                )}
+              </Alert>
+            )}
             <Button
               className="w-fit"
               as={Link}
@@ -601,6 +645,14 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
                 >
                   {texts.buttons.backButton}
                 </Button>
+                <Button
+                  variant="secondary"
+                  type="button"
+                  className="ml-auto"
+                  onClick={() => setVisIkkeAktuellModal(true)}
+                >
+                  {texts.buttons.ikkeAktuell}
+                </Button>
               </div>
 
               <ForhandsvisningModal
@@ -617,6 +669,11 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
                 }}
               />
             </form>
+            <IkkeAktuellModal
+              isOpen={visIkkeAktuellModal}
+              setModalOpen={setVisIkkeAktuellModal}
+              soknadId={utenlandsoppholdSoknad.soknadId}
+            />
           </FormProvider>
         )}
       </VStack>

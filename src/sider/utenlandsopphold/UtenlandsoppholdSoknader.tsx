@@ -2,18 +2,14 @@ import React, { useState } from "react";
 import { Alert, BodyShort, Box, Button, Loader, Table } from "@navikt/ds-react";
 import { useUtenlandsoppholdSoknanderQuery } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
 import {
-  antallDagerIPeriode,
-  Periode,
   Soknad,
   SoknadStatusDTO,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
-import {
-  tilLesbarDatoMedArUtenManedNavn,
-  tilLesbarPeriodeMedArUtenManednavn,
-} from "@/utils/datoUtils";
+import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
 import { useNotification } from "@/context/notification/NotificationContext.tsx";
 import { PeriodeOgAntallDagerTekst } from "./PeriodeOgAntallDagerTekst";
+import { ikkeAktuellGrunnTexts } from "./ikkeAktuellTexts";
 
 const TIDLIGST_INNSENDT_TIDSPUNKT_FOR_BEHANDLING_I_MODIA = new Date(
   // 1. august 2026
@@ -30,8 +26,8 @@ const texts = {
   innsendtTidspunkt: "Innsendt tidspunkt",
   periode: "Søkt periode",
   saksbehandling: "Saksbehandling",
-  saksbehandlingVedtak: (fattetTidspunkt: Date, fattetAv: string) =>
-    `Behandlet ${tilLesbarDatoMedArUtenManedNavn(fattetTidspunkt)} av ${fattetAv}`,
+  saksbehandlingVedtak: (behandletTidspunkt: Date, behandletAv: string) =>
+    `Behandlet ${tilLesbarDatoMedArUtenManedNavn(behandletTidspunkt)} av ${behandletAv}`,
   saksbehandlingIngenVedtak: "Ikke behandlet i Modia",
   status: "Status",
   startBehandling: "Start behandling",
@@ -45,6 +41,7 @@ export const statusTexts: { [key in SoknadStatusDTO]: string } = {
   [SoknadStatusDTO.DELVIS_INNVILGET]: "Delvis innvilget",
   [SoknadStatusDTO.AVSLAG]: "Avslått",
   [SoknadStatusDTO.HENLAGT]: "Henlagt",
+  [SoknadStatusDTO.IKKE_AKTUELL]: "Ikke aktuell",
 };
 
 function getStatusColumn(soknad: Soknad) {
@@ -52,7 +49,7 @@ function getStatusColumn(soknad: Soknad) {
     soknad.innsendtTidspunkt >
     TIDLIGST_INNSENDT_TIDSPUNKT_FOR_BEHANDLING_I_MODIA;
 
-  if (!soknad.vedtak) {
+  if (!soknad.behandling) {
     if (kanBehandlesIModia) {
       return (
         <Button
@@ -67,6 +64,10 @@ function getStatusColumn(soknad: Soknad) {
     } else {
       return <em>{texts.statusTextSoknadBehandlesIInfotrygd}</em>;
     }
+  }
+
+  if (soknad.behandling.utfall === "IKKE_AKTUELL") {
+    return `${statusTexts[soknad.status]} (${ikkeAktuellGrunnTexts[soknad.behandling.ikkeAktuellGrunn]})`;
   }
 
   return statusTexts[soknad.status] ?? soknad.status; // Forslag: Kan gjøres om til feks grønn, gul og rød Tag etterhvert
@@ -140,11 +141,11 @@ export function UtenlandsoppholdSoknader() {
                       ))}
                     </Table.DataCell>
 
-                    {soknad.vedtak ? (
+                    {soknad.behandling ? (
                       <Table.DataCell>
                         {texts.saksbehandlingVedtak(
-                          soknad.vedtak.fattetTidspunkt,
-                          soknad.vedtak.fattetAv,
+                          soknad.behandling.behandletTidspunkt,
+                          soknad.behandling.behandletAv,
                         )}
                       </Table.DataCell>
                     ) : (

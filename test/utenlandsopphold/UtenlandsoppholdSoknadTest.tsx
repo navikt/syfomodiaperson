@@ -1,6 +1,6 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
 import { http, HttpResponse } from "msw";
@@ -10,7 +10,12 @@ import { ISUTENLANDSOPPHOLD_ROOT } from "@/apiConstants";
 import { UtenlandsoppholdSoknad } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknad.tsx";
 import { UtenlandsoppholdSoknader } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknader.tsx";
 import { utenlandsoppholdQueryKeys } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
-import { SoknadVedtakPostDTO } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
+import {
+  IkkeAktuellGrunnDTO,
+  SoknadHenleggelsePostDTO,
+  SoknadIkkeAktuellPostDTO,
+  SoknadVedtakPostDTO,
+} from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
@@ -19,6 +24,7 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import {
   mockSoknaderResponse,
+  soknadIkkeAktuellMock,
   soknadMedVedtakMock,
   soknadUtenVedtakMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
@@ -199,7 +205,7 @@ describe("UtenlandsoppholdSoknad", () => {
       await screen.findAllByText(
         new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),
       ),
-    ).to.have.lengthOf(2);
+    ).to.have.lengthOf(3);
 
     await waitFor(() => {
       const vedtakMutation = queryClient.getMutationCache().getAll()[0];
@@ -331,7 +337,7 @@ describe("UtenlandsoppholdSoknad", () => {
       await screen.findAllByText(
         new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),
       ),
-    ).to.have.lengthOf(2);
+    ).to.have.lengthOf(3);
 
     await waitFor(() => {
       const vedtakMutation = queryClient
@@ -406,24 +412,26 @@ describe("UtenlandsoppholdSoknad", () => {
     expect(await screen.findAllByText("Henlagt")).to.have.lengthOf(1);
 
     await waitFor(() => {
-      const vedtakMutation = queryClient
+      const henleggelseMutation = queryClient
         .getMutationCache()
         .getAll()
         .find(
           (mutation) =>
-            (mutation.state.variables as { vedtak?: SoknadVedtakPostDTO })
-              ?.vedtak,
+            (
+              mutation.state.variables as {
+                henleggelse?: SoknadHenleggelsePostDTO;
+              }
+            )?.henleggelse,
         );
-      const variables = vedtakMutation?.state.variables as {
+      const variables = henleggelseMutation?.state.variables as {
         soknadId: string;
-        vedtak: SoknadVedtakPostDTO;
+        henleggelse: SoknadHenleggelsePostDTO;
       };
-      expect(variables.vedtak.utfall).to.equal("HENLAGT");
-      expect(variables.vedtak.begrunnelse).to.equal(
+      expect(variables.henleggelse.begrunnelse).to.equal(
         "I telefonsamtale 01.09.2026 har du gitt beskjed om at du ønsker å trekke søknaden.",
       );
       expect(
-        variables.vedtak.document.some((component) =>
+        variables.henleggelse.document.some((component) =>
           component.texts.includes(
             "I telefonsamtale 01.09.2026 har du gitt beskjed om at du ønsker å trekke søknaden.",
           ),
@@ -558,7 +566,7 @@ describe("UtenlandsoppholdSoknad", () => {
         await screen.findAllByText(
           new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),
         ),
-      ).to.have.lengthOf(2);
+      ).to.have.lengthOf(3);
 
       await waitFor(() => {
         const vedtakMutation = queryClient
@@ -851,6 +859,143 @@ describe("UtenlandsoppholdSoknad", () => {
 
       await screen.findByRole("button", { name: "Se brev og send" });
       expect(screen.queryByText(perioderUtenforTilfelleWarning)).to.not.exist;
+    });
+  });
+
+  describe("Ikke aktuell", () => {
+    it("viser alle tre årsaker når Ikke aktuell-knappen trykkes", async () => {
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+
+      renderUtenlandsoppholdSoknad();
+
+      await screen.findByRole("button", { name: "Se brev og send" });
+      await clickButton("Ikke aktuell");
+
+      const dialog = await screen.findByRole("dialog");
+      expect(
+        within(dialog).getByRole("radio", { name: "Behandlet i Infotrygd" }),
+      ).to.exist;
+      expect(within(dialog).getByRole("radio", { name: "Duplikat" })).to.exist;
+      expect(within(dialog).getByRole("radio", { name: "Annet" })).to.exist;
+    });
+
+    it("viser valideringsfeil og sender ingenting når ingen årsak er valgt", async () => {
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+
+      renderUtenlandsoppholdSoknad();
+
+      await screen.findByRole("button", { name: "Se brev og send" });
+      await clickButton("Ikke aktuell");
+      const dialog = await screen.findByRole("dialog");
+      await userEvent.click(
+        within(dialog).getByRole("button", { name: "Bekreft ikke aktuell" }),
+      );
+
+      expect(await screen.findByText("Vennligst angi årsak")).to.exist;
+
+      await waitFor(() => {
+        expect(queryClient.getMutationCache().getAll()).to.have.lengthOf(0);
+      });
+    });
+
+    it("avbryt i dialogen lukker den og sender ingenting", async () => {
+      stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
+
+      renderUtenlandsoppholdSoknad(
+        soknadUtenVedtakMock.soknadId,
+        utenlandsoppholdPath,
+      );
+
+      expect(await screen.findByRole("button", { name: "Start behandling" })).to
+        .exist;
+
+      await clickButton("Start behandling");
+      await clickButton("Ikke aktuell");
+
+      const dialog = await screen.findByRole("dialog");
+      await userEvent.click(
+        within(dialog).getByRole("radio", { name: "Duplikat" }),
+      );
+      await userEvent.click(
+        within(dialog).getByRole("button", { name: "Avbryt" }),
+      );
+
+      expect(screen.queryByRole("dialog")).to.not.exist;
+      await waitFor(() => {
+        expect(queryClient.getMutationCache().getAll()).to.have.lengthOf(0);
+      });
+    });
+
+    it("sender kun årsak til ikke-aktuell-endepunktet, viser notifikasjon og navigerer tilbake til listen der søknadens status nå vises som ikke aktuell", async () => {
+      stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
+
+      renderUtenlandsoppholdSoknad(
+        soknadUtenVedtakMock.soknadId,
+        utenlandsoppholdPath,
+      );
+
+      expect(await screen.findByRole("button", { name: "Start behandling" })).to
+        .exist;
+
+      await clickButton("Start behandling");
+      await clickButton("Ikke aktuell");
+
+      const dialog = await screen.findByRole("dialog");
+      await userEvent.click(
+        within(dialog).getByRole("radio", { name: "Behandlet i Infotrygd" }),
+      );
+      await userEvent.click(
+        within(dialog).getByRole("button", { name: "Bekreft ikke aktuell" }),
+      );
+
+      expect(
+        await screen.findByText("Søknaden er registrert som ikke aktuell."),
+      ).to.exist;
+      expect(screen.queryByText("Fant ikke søknaden")).to.not.exist;
+      expect(screen.queryByRole("button", { name: "Start behandling" })).to.not
+        .exist;
+
+      await waitFor(() => {
+        const ikkeAktuellMutation = queryClient
+          .getMutationCache()
+          .getAll()
+          .find(
+            (mutation) =>
+              (
+                mutation.state.variables as {
+                  ikkeAktuell?: SoknadIkkeAktuellPostDTO;
+                }
+              )?.ikkeAktuell,
+          );
+        const variables = ikkeAktuellMutation?.state.variables as {
+          soknadId: string;
+          ikkeAktuell: SoknadIkkeAktuellPostDTO;
+        };
+        expect(variables.ikkeAktuell).to.deep.equal({
+          grunn: IkkeAktuellGrunnDTO.BEHANDLET_I_INFOTRYGD,
+        });
+        // Ingen vedtaksmutasjon skal ha blitt opprettet for ikke-aktuell-flyten
+        expect(
+          queryClient
+            .getMutationCache()
+            .getAll()
+            .some(
+              (mutation) =>
+                (mutation.state.variables as { vedtak?: SoknadVedtakPostDTO })
+                  ?.vedtak,
+            ),
+        ).to.equal(false);
+      });
+    });
+
+    it("viser registrert årsak, veileder og tidspunkt på detaljsiden etter registrering", async () => {
+      stubSoknaderQuery({ soknader: [soknadIkkeAktuellMock] });
+
+      renderUtenlandsoppholdSoknad(soknadIkkeAktuellMock.soknadId);
+
+      expect(await screen.findByText(/Denne søknaden er satt til ikke aktuell/))
+        .to.exist;
+      expect(screen.getByText(/Behandlet i Infotrygd/)).to.exist;
     });
   });
 });

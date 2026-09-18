@@ -1,8 +1,5 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes.ts";
-import {
-  addDays,
-  tilLesbarPeriodeMedArUtenManednavn,
-} from "@/utils/datoUtils.ts";
+import { addDays } from "@/utils/datoUtils.ts";
 import dayjs from "dayjs";
 
 export interface SoknaderQueryDTO {
@@ -13,15 +10,45 @@ export interface SoknaderResponseDTO {
   soknader: SoknadDTO[];
 }
 
+/**
+ * Felles responstype for handlingene som behandler én søknad (vedtak,
+ * henleggelse og ikke-aktuell). Alle returnerer den ferdigbehandlede
+ * søknaden slik den nå ser ut i backend.
+ */
+export interface SoknadResponseDTO {
+  soknad: SoknadDTO;
+}
+
 export interface SoknadVedtakPostDTO {
-  utfall: Utfall;
+  utfall: VedtakUtfall;
   innvilgedePerioder: PeriodeDTO[];
   document: DocumentComponentDto[];
   begrunnelse: string | null;
 }
 
-export interface SoknadVedtakResponseDTO {
-  soknad: SoknadDTO;
+/**
+ * Henleggelse er et eget endepunkt i v2, atskilt fra `/vedtak`. En
+ * henleggelse genererer et brev, men er ikke et vedtaksutfall, og krever
+ * derfor alltid en begrunnelse.
+ */
+export interface SoknadHenleggelsePostDTO {
+  document: DocumentComponentDto[];
+  begrunnelse: string;
+}
+
+/**
+ * Grunner en veileder kan velge når en søknad settes til «Ikke aktuell».
+ * I motsetning til vedtaksutfallene genererer denne handlingen ikke noe
+ * brev til sykmeldte.
+ */
+export enum IkkeAktuellGrunnDTO {
+  BEHANDLET_I_INFOTRYGD = "BEHANDLET_I_INFOTRYGD",
+  DUPLIKAT = "DUPLIKAT",
+  ANNET = "ANNET",
+}
+
+export interface SoknadIkkeAktuellPostDTO {
+  grunn: IkkeAktuellGrunnDTO;
 }
 
 export interface SoknadDTO {
@@ -30,7 +57,7 @@ export interface SoknadDTO {
   status: SoknadStatusDTO;
   innsendtTidspunkt: string;
   soktePerioder: PeriodeDTO[];
-  vedtak: VedtakDTO | null;
+  behandling: BehandlingDTO | null;
 }
 
 export interface PeriodeDTO {
@@ -38,13 +65,48 @@ export interface PeriodeDTO {
   tom: string;
 }
 
-export interface VedtakDTO {
-  utfall: Utfall;
-  innvilgedePerioder: PeriodeDTO[];
-  fattetAv: string;
-  fattetTidspunkt: string;
-  begrunnelse: string | null;
+interface BehandlingBaseDTO {
+  behandletAv: string;
+  behandletTidspunkt: string;
 }
+
+export interface InnvilgetBehandlingDTO extends BehandlingBaseDTO {
+  utfall: "INNVILGET";
+  innvilgedePerioder: PeriodeDTO[];
+}
+
+export interface DelvisInnvilgetBehandlingDTO extends BehandlingBaseDTO {
+  utfall: "DELVIS_INNVILGET";
+  innvilgedePerioder: PeriodeDTO[];
+  begrunnelse: string;
+}
+
+export interface AvslagBehandlingDTO extends BehandlingBaseDTO {
+  utfall: "AVSLAG";
+  begrunnelse: string;
+}
+
+export interface HenlagtBehandlingDTO extends BehandlingBaseDTO {
+  utfall: "HENLAGT";
+  begrunnelse: string;
+}
+
+export interface IkkeAktuellBehandlingDTO extends BehandlingBaseDTO {
+  utfall: "IKKE_AKTUELL";
+  ikkeAktuellGrunn: IkkeAktuellGrunnDTO;
+}
+
+/**
+ * Behandlingen slik den kommer fra v2-backend. Ett polymorft felt der `utfall`
+ * skiller variantene, slik at hver variant kun bærer feltene som gjelder for
+ * sitt utfall.
+ */
+export type BehandlingDTO =
+  | InnvilgetBehandlingDTO
+  | DelvisInnvilgetBehandlingDTO
+  | AvslagBehandlingDTO
+  | HenlagtBehandlingDTO
+  | IkkeAktuellBehandlingDTO;
 
 export enum SoknadStatusDTO {
   MOTTATT = "MOTTATT",
@@ -52,31 +114,70 @@ export enum SoknadStatusDTO {
   DELVIS_INNVILGET = "DELVIS_INNVILGET",
   AVSLAG = "AVSLAG",
   HENLAGT = "HENLAGT",
+  IKKE_AKTUELL = "IKKE_AKTUELL",
 }
 
 // Types
 export type Utfall = "INNVILGET" | "DELVIS_INNVILGET" | "AVSLAG" | "HENLAGT";
 
+/**
+ * Utfallene `/vedtak`-endepunktet i v2 tar imot. Henleggelse har fått eget
+ * endepunkt, så `HENLAGT` er ikke lenger et gyldig vedtaksutfall.
+ */
+export type VedtakUtfall = Exclude<Utfall, "HENLAGT">;
+
+export type BehandlingUtfall = Utfall | "IKKE_AKTUELL";
+
 export interface Soknad extends Omit<
   SoknadDTO,
-  "innsendtTidspunkt" | "soktePerioder" | "vedtak"
+  "innsendtTidspunkt" | "soktePerioder" | "behandling"
 > {
   innsendtTidspunkt: Date;
   soktePerioder: Periode[];
-  vedtak: Vedtak | null;
+  behandling: Behandling | null;
 }
+
+interface BehandlingBase {
+  behandletAv: string;
+  behandletTidspunkt: Date;
+}
+
+export interface InnvilgetBehandling extends BehandlingBase {
+  utfall: "INNVILGET";
+  innvilgedePerioder: Periode[];
+}
+
+export interface DelvisInnvilgetBehandling extends BehandlingBase {
+  utfall: "DELVIS_INNVILGET";
+  innvilgedePerioder: Periode[];
+  begrunnelse: string;
+}
+
+export interface AvslagBehandling extends BehandlingBase {
+  utfall: "AVSLAG";
+  begrunnelse: string;
+}
+
+export interface HenlagtBehandling extends BehandlingBase {
+  utfall: "HENLAGT";
+  begrunnelse: string;
+}
+
+export interface IkkeAktuellBehandling extends BehandlingBase {
+  utfall: "IKKE_AKTUELL";
+  ikkeAktuellGrunn: IkkeAktuellGrunnDTO;
+}
+
+export type Behandling =
+  | InnvilgetBehandling
+  | DelvisInnvilgetBehandling
+  | AvslagBehandling
+  | HenlagtBehandling
+  | IkkeAktuellBehandling;
 
 export interface Periode extends Omit<PeriodeDTO, "fom" | "tom"> {
   fom: Date;
   tom: Date;
-}
-
-export interface Vedtak extends Omit<
-  VedtakDTO,
-  "innvilgedePerioder" | "fattetTidspunkt"
-> {
-  innvilgedePerioder: Periode[];
-  fattetTidspunkt: Date;
 }
 
 // Parsers
@@ -93,17 +194,31 @@ export const parsePeriode = (periode: PeriodeDTO): Periode => ({
   tom: dayjs(periode.tom).toDate(),
 });
 
-export const parseVedtak = (vedtak: VedtakDTO): Vedtak => ({
-  ...vedtak,
-  innvilgedePerioder: vedtak.innvilgedePerioder.map(parsePeriode),
-  fattetTidspunkt: new Date(vedtak.fattetTidspunkt),
-});
+/**
+ * Konverterer datofeltene i en behandling fra API-format til Date-objekter.
+ */
+export function parseBehandling(behandling: BehandlingDTO): Behandling {
+  const behandletTidspunkt = new Date(behandling.behandletTidspunkt);
+
+  if ("innvilgedePerioder" in behandling) {
+    return {
+      ...behandling,
+      behandletTidspunkt,
+      innvilgedePerioder: behandling.innvilgedePerioder.map(parsePeriode),
+    };
+  }
+
+  return {
+    ...behandling,
+    behandletTidspunkt,
+  };
+}
 
 export const parseSoknad = (soknad: SoknadDTO): Soknad => ({
   ...soknad,
   innsendtTidspunkt: new Date(soknad.innsendtTidspunkt),
   soktePerioder: soknad.soktePerioder.map(parsePeriode),
-  vedtak: soknad.vedtak ? parseVedtak(soknad.vedtak) : null,
+  behandling: soknad.behandling ? parseBehandling(soknad.behandling) : null,
 });
 
 export const antallDagerIPeriode = (periode: Periode): number =>
