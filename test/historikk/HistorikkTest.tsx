@@ -1112,7 +1112,7 @@ describe("Historikk", () => {
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
         screen.getAllByRole("row", { name: /Utenlandsopphold/ }).length,
-      ).toBe(5);
+      ).toBe(6);
       expect(
         screen.getAllByText(
           `${ARBEIDSTAKER_DEFAULT_FULL_NAME} søkte om sykepenger under opphold utenfor EU/EØS`,

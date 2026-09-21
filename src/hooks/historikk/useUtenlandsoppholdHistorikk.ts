@@ -8,6 +8,7 @@ import {
   Soknad,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
 import { statusTexts } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknader.tsx";
+import { ikkeAktuellGrunnTexts } from "@/sider/utenlandsopphold/ikkeAktuellTexts.ts";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils.ts";
 
 function toExpandableContent(behandling: Behandling): string {
@@ -21,7 +22,14 @@ function toExpandableContent(behandling: Behandling): string {
   const begrunnelse =
     "begrunnelse" in behandling ? behandling.begrunnelse : undefined;
   const begrunnelseText = begrunnelse ? `\n\nBegrunnelse: ${begrunnelse}` : "";
-  return `${vedtakText}${periodeText}${begrunnelseText}`;
+  const ikkeAktuellGrunn =
+    "ikkeAktuellGrunn" in behandling
+      ? behandling.ikkeAktuellGrunn
+      : undefined;
+  const grunnText = ikkeAktuellGrunn
+    ? `\n\nGrunn: ${ikkeAktuellGrunnTexts[ikkeAktuellGrunn]}`
+    : "";
+  return `${vedtakText}${periodeText}${begrunnelseText}${grunnText}`;
 }
 
 function createEventsFromSoknad(soknad: Soknad, person: BrukerinfoDTO) {
@@ -34,7 +42,7 @@ function createEventsFromSoknad(soknad: Soknad, person: BrukerinfoDTO) {
     });
   }
   const { behandling } = soknad;
-  if (behandling && behandling.utfall !== "IKKE_AKTUELL") {
+  if (behandling) {
     events.push({
       tekst: `${behandling.behandletAv} behandlet søknad om sykepenger under opphold utenfor EU/EØS`,
       tidspunkt: new Date(behandling.behandletTidspunkt),
