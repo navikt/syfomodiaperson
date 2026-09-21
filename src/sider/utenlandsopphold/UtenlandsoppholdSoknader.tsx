@@ -9,7 +9,7 @@ import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
 import { useNotification } from "@/context/notification/NotificationContext.tsx";
 import { PeriodeOgAntallDagerTekst } from "./PeriodeOgAntallDagerTekst";
-import { ikkeAktuellGrunnTexts } from "./ikkeAktuellTexts";
+import { ikkeAktuellArsakTexts } from "./ikkeAktuellTexts";
 
 const TIDLIGST_INNSENDT_TIDSPUNKT_FOR_BEHANDLING_I_MODIA = new Date(
   // 1. august 2026
@@ -67,7 +67,7 @@ function getStatusColumn(soknad: Soknad) {
   }
 
   if (soknad.behandling.utfall === "IKKE_AKTUELL") {
-    return `${statusTexts[soknad.status]} (${ikkeAktuellGrunnTexts[soknad.behandling.ikkeAktuellGrunn]})`;
+    return `${statusTexts[soknad.status]} (${ikkeAktuellArsakTexts[soknad.behandling.ikkeAktuellArsak]})`;
   }
 
   return statusTexts[soknad.status] ?? soknad.status; // Forslag: Kan gjøres om til feks grønn, gul og rød Tag etterhvert

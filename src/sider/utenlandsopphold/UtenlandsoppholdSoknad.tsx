@@ -55,7 +55,7 @@ import {
 import { DraftSaveStatus } from "@/components/DraftSaveStatus";
 import { PeriodeOgAntallDagerTekst } from "./PeriodeOgAntallDagerTekst";
 import { IkkeAktuellModal } from "./IkkeAktuellModal";
-import { ikkeAktuellGrunnTexts } from "./ikkeAktuellTexts";
+import { ikkeAktuellArsakTexts } from "./ikkeAktuellTexts";
 
 const AVSLAG_CATEGORY = "utenlandsopphold-avslag";
 const DELVIS_INNVILGET_CATEGORY = "utenlandsopphold-delvis-innvilget";
@@ -481,8 +481,8 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
                 )}
                 {" – "}
                 {
-                  ikkeAktuellGrunnTexts[
-                    utenlandsoppholdSoknad.behandling.ikkeAktuellGrunn
+                  ikkeAktuellArsakTexts[
+                    utenlandsoppholdSoknad.behandling.ikkeAktuellArsak
                   ]
                 }
               </Alert>

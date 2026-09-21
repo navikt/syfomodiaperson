@@ -116,7 +116,7 @@ export const useHenleggelseMutation = () => {
 };
 
 /**
- * Setter en søknad til «Ikke aktuell» med en oppgitt grunn. I motsetning til
+ * Setter en søknad til «Ikke aktuell» med en oppgitt årsak. I motsetning til
  * `useVedtakMutation` og `useHenleggelseMutation` genererer ikke denne
  * handlingen noe brev eller dokument, og sender derfor ikke noe til sykmeldte.
  */

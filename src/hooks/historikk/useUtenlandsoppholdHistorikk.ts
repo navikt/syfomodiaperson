@@ -9,7 +9,7 @@ import {
   Soknad,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
 import { statusTexts } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknader.tsx";
-import { ikkeAktuellGrunnTexts } from "@/sider/utenlandsopphold/ikkeAktuellTexts.ts";
+import { ikkeAktuellArsakTexts } from "@/sider/utenlandsopphold/ikkeAktuellTexts.ts";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils.ts";
 
 function tilInnvilgedePerioderText(perioder: Periode[]): string {
@@ -34,7 +34,7 @@ function toExpandableContent(behandling: Behandling): string {
     case "HENLAGT":
       return `${vedtakText}\n\nBegrunnelse: ${behandling.begrunnelse}`;
     case "IKKE_AKTUELL":
-      return `${vedtakText}\n\nGrunn: ${ikkeAktuellGrunnTexts[behandling.ikkeAktuellGrunn]}`;
+      return `${vedtakText}\n\nGrunn: ${ikkeAktuellArsakTexts[behandling.ikkeAktuellArsak]}`;
   }
 }
 

@@ -4,15 +4,15 @@ import { BodyShort, Button, Radio, RadioGroup } from "@navikt/ds-react";
 import { ButtonRow } from "@/components/Layout";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useIkkeAktuellMutation } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
-import { IkkeAktuellGrunnDTO } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
+import { IkkeAktuellArsakDTO } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
 import { useNotification } from "@/context/notification/NotificationContext.tsx";
 import { useNavigate } from "react-router-dom";
 import { utenlandsoppholdPath } from "@/AppRouter.tsx";
-import { ikkeAktuellGrunnTexts } from "./ikkeAktuellTexts";
+import { ikkeAktuellArsakTexts } from "./ikkeAktuellTexts";
 
 const texts = {
   body: "Søknaden skal ikke behandles i Modia. Det vil ikke bli sendt brev til den sykmeldte, og det journalføres ikke i Gosys.",
-  grunn: {
+  arsak: {
     label: "Velg årsak",
     missing: "Vennligst angi årsak",
   },
@@ -22,7 +22,7 @@ const texts = {
 };
 
 interface SkjemaValues {
-  grunn: IkkeAktuellGrunnDTO;
+  arsak: IkkeAktuellArsakDTO;
 }
 
 interface Props {
@@ -43,7 +43,7 @@ export function IkkeAktuellSkjema({ soknadId, setModalOpen }: Props) {
 
   const onSubmit = (values: SkjemaValues) => {
     ikkeAktuellMutation.mutate(
-      { soknadIdPathParam: soknadId, ikkeAktuell: { grunn: values.grunn } },
+      { soknadIdPathParam: soknadId, ikkeAktuell: { arsak: values.arsak } },
       {
         onSuccess: () => {
           setModalOpen(false);
@@ -60,19 +60,19 @@ export function IkkeAktuellSkjema({ soknadId, setModalOpen }: Props) {
         {texts.body}
       </BodyShort>
       <RadioGroup
-        name="grunn"
+        name="arsak"
         size="small"
-        legend={texts.grunn.label}
-        error={errors.grunn && texts.grunn.missing}
+        legend={texts.arsak.label}
+        error={errors.arsak && texts.arsak.missing}
         className="mb-8"
       >
-        {Object.values(IkkeAktuellGrunnDTO).map((grunn) => (
+        {Object.values(IkkeAktuellArsakDTO).map((arsak) => (
           <Radio
-            key={grunn}
-            value={grunn}
-            {...register("grunn", { required: true })}
+            key={arsak}
+            value={arsak}
+            {...register("arsak", { required: true })}
           >
-            {ikkeAktuellGrunnTexts[grunn]}
+            {ikkeAktuellArsakTexts[arsak]}
           </Radio>
         ))}
       </RadioGroup>

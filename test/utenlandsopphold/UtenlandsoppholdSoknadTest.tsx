@@ -11,7 +11,7 @@ import { UtenlandsoppholdSoknad } from "@/sider/utenlandsopphold/Utenlandsopphol
 import { UtenlandsoppholdSoknader } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknader.tsx";
 import { utenlandsoppholdQueryKeys } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
 import {
-  IkkeAktuellGrunnDTO,
+  IkkeAktuellArsakDTO,
   SoknadHenleggelsePostDTO,
   SoknadIkkeAktuellPostDTO,
   SoknadVedtakPostDTO,
@@ -972,7 +972,7 @@ describe("UtenlandsoppholdSoknad", () => {
           ikkeAktuell: SoknadIkkeAktuellPostDTO;
         };
         expect(variables.ikkeAktuell).to.deep.equal({
-          grunn: IkkeAktuellGrunnDTO.BEHANDLET_I_INFOTRYGD,
+          arsak: IkkeAktuellArsakDTO.BEHANDLET_I_INFOTRYGD,
         });
         // Ingen vedtaksmutasjon skal ha blitt opprettet for ikke-aktuell-flyten
         expect(

@@ -37,18 +37,18 @@ export interface SoknadHenleggelsePostDTO {
 }
 
 /**
- * Grunner en veileder kan velge når en søknad settes til «Ikke aktuell».
+ * Årsaker en veileder kan velge når en søknad settes til «Ikke aktuell».
  * I motsetning til vedtaksutfallene genererer denne handlingen ikke noe
  * brev til sykmeldte.
  */
-export enum IkkeAktuellGrunnDTO {
+export enum IkkeAktuellArsakDTO {
   BEHANDLET_I_INFOTRYGD = "BEHANDLET_I_INFOTRYGD",
   DUPLIKAT = "DUPLIKAT",
   ANNET = "ANNET",
 }
 
 export interface SoknadIkkeAktuellPostDTO {
-  grunn: IkkeAktuellGrunnDTO;
+  arsak: IkkeAktuellArsakDTO;
 }
 
 export interface SoknadDTO {
@@ -93,7 +93,7 @@ export interface HenlagtBehandlingDTO extends BehandlingBaseDTO {
 
 export interface IkkeAktuellBehandlingDTO extends BehandlingBaseDTO {
   utfall: "IKKE_AKTUELL";
-  ikkeAktuellGrunn: IkkeAktuellGrunnDTO;
+  ikkeAktuellArsak: IkkeAktuellArsakDTO;
 }
 
 /**
@@ -165,7 +165,7 @@ export interface HenlagtBehandling extends BehandlingBase {
 
 export interface IkkeAktuellBehandling extends BehandlingBase {
   utfall: "IKKE_AKTUELL";
-  ikkeAktuellGrunn: IkkeAktuellGrunnDTO;
+  ikkeAktuellArsak: IkkeAktuellArsakDTO;
 }
 
 export type Behandling =

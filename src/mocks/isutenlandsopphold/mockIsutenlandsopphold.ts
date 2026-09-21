@@ -1,6 +1,6 @@
 import { ISUTENLANDSOPPHOLD_ROOT } from "@/apiConstants";
 import {
-  IkkeAktuellGrunnDTO,
+  IkkeAktuellArsakDTO,
   SoknadDTO,
   SoknaderResponseDTO,
   SoknadHenleggelsePostDTO,
@@ -69,7 +69,7 @@ export const soknadIkkeAktuellMock: SoknadDTO = {
   ],
   behandling: {
     utfall: "IKKE_AKTUELL",
-    ikkeAktuellGrunn: IkkeAktuellGrunnDTO.BEHANDLET_I_INFOTRYGD,
+    ikkeAktuellArsak: IkkeAktuellArsakDTO.BEHANDLET_I_INFOTRYGD,
     behandletAv: "Z990000",
     behandletTidspunkt: "2026-08-11T09:00:00",
   },
@@ -188,7 +188,7 @@ export function byggOppdatertSoknadMedIkkeAktuell(
     status: SoknadStatusDTO.IKKE_AKTUELL,
     behandling: {
       utfall: "IKKE_AKTUELL",
-      ikkeAktuellGrunn: ikkeAktuell.grunn,
+      ikkeAktuellArsak: ikkeAktuell.arsak,
       behandletAv,
       behandletTidspunkt: dayjs().format("YYYY-MM-DDTHH:mm:ss"),
     },
