@@ -69,7 +69,6 @@
     "eslint-plugin-no-only-tests": "3.3.0",
     "husky": "8.0.3",
     "jsdom": "26.1.0",
-    "less": "4.6.4",
     "lint-staged": "13.2.1",
     "msw": "2.13.4",
     "oxfmt": "0.55.0",
