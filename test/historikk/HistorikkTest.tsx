@@ -72,6 +72,7 @@ import {
 import { utenlandsoppholdQueryKeys } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks.ts";
 import {
   mockSoknaderResponse,
+  soknadIkkeAktuellMock,
   soknadMedVedtakMock,
   soknadUtenVedtakMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold.ts";
@@ -1119,10 +1120,10 @@ describe("Historikk", () => {
         ).length,
       ).toBe(4);
       expect(
-        screen.getByText(
+        screen.getAllByText(
           "Z990000 behandlet søknad om sykepenger under opphold utenfor EU/EØS",
-        ),
-      ).to.exist;
+        ).length,
+      ).toBe(2);
     });
 
     it("viser detaljer om vedtaket når raden utvides", async () => {
@@ -1142,6 +1143,19 @@ describe("Historikk", () => {
           /Begrunnelse: Vedtar bare de dagene det er meldt regn på Bali/,
         ),
       ).to.exist;
+    });
+
+    it("viser detaljer om ikke aktuell-behandlingen når raden utvides", async () => {
+      queryClient.setQueryData(
+        utenlandsoppholdQueryKeys.soknader(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({ soknader: [soknadIkkeAktuellMock] }),
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(screen.getByText(/Behandlet som ikke aktuell\./)).to.exist;
+      expect(screen.getByText(/Grunn: Behandlet i Infotrygd/)).to.exist;
     });
 
     it("viser ikke fattet vedtak-tekst når søknaden ikke er behandlet", async () => {

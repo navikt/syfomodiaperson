@@ -5,29 +5,37 @@ import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { useUtenlandsoppholdSoknanderQuery } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks.ts";
 import {
   Behandling,
+  Periode,
   Soknad,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
 import { statusTexts } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknader.tsx";
 import { ikkeAktuellGrunnTexts } from "@/sider/utenlandsopphold/ikkeAktuellTexts.ts";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils.ts";
 
+function tilInnvilgedePerioderText(perioder: Periode[]): string {
+  return perioder.length > 0
+    ? `\n\nInnvilgede perioder: ${perioder
+        .map((periode) =>
+          tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom),
+        )
+        .join(", ")}`
+    : "";
+}
+
 function toExpandableContent(behandling: Behandling): string {
   const vedtakText = `Behandlet som ${statusTexts[behandling.utfall].toLocaleLowerCase()}.`;
-  const innvilgedePerioder =
-    "innvilgedePerioder" in behandling ? behandling.innvilgedePerioder : [];
-  const periodeText =
-    innvilgedePerioder.length > 0
-      ? `\n\nInnvilgede perioder: ${innvilgedePerioder.map((periode) => tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom)).join(", ")}`
-      : "";
-  const begrunnelse =
-    "begrunnelse" in behandling ? behandling.begrunnelse : undefined;
-  const begrunnelseText = begrunnelse ? `\n\nBegrunnelse: ${begrunnelse}` : "";
-  const ikkeAktuellGrunn =
-    "ikkeAktuellGrunn" in behandling ? behandling.ikkeAktuellGrunn : undefined;
-  const grunnText = ikkeAktuellGrunn
-    ? `\n\nGrunn: ${ikkeAktuellGrunnTexts[ikkeAktuellGrunn]}`
-    : "";
-  return `${vedtakText}${periodeText}${begrunnelseText}${grunnText}`;
+
+  switch (behandling.utfall) {
+    case "INNVILGET":
+      return `${vedtakText}${tilInnvilgedePerioderText(behandling.innvilgedePerioder)}`;
+    case "DELVIS_INNVILGET":
+      return `${vedtakText}${tilInnvilgedePerioderText(behandling.innvilgedePerioder)}\n\nBegrunnelse: ${behandling.begrunnelse}`;
+    case "AVSLAG":
+    case "HENLAGT":
+      return `${vedtakText}\n\nBegrunnelse: ${behandling.begrunnelse}`;
+    case "IKKE_AKTUELL":
+      return `${vedtakText}\n\nGrunn: ${ikkeAktuellGrunnTexts[behandling.ikkeAktuellGrunn]}`;
+  }
 }
 
 function createEventsFromSoknad(soknad: Soknad, person: BrukerinfoDTO) {
