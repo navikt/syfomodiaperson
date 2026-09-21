@@ -11,7 +11,7 @@ import { utenlandsoppholdPath } from "@/AppRouter.tsx";
 import { ikkeAktuellGrunnTexts } from "./ikkeAktuellTexts";
 
 const texts = {
-  body: "Søknaden skal ikke behandles i Modia. Denne handlingen sender ikke noe brev til den sykmeldte, og journalfører ikke noe i Gosys.",
+  body: "Søknaden skal ikke behandles i Modia. Det vil ikke bli sendt brev til den sykmeldte, og det journalføres ikke i Gosys.",
   grunn: {
     label: "Velg årsak",
     missing: "Vennligst angi årsak",
