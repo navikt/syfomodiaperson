@@ -23,9 +23,7 @@ function toExpandableContent(behandling: Behandling): string {
     "begrunnelse" in behandling ? behandling.begrunnelse : undefined;
   const begrunnelseText = begrunnelse ? `\n\nBegrunnelse: ${begrunnelse}` : "";
   const ikkeAktuellGrunn =
-    "ikkeAktuellGrunn" in behandling
-      ? behandling.ikkeAktuellGrunn
-      : undefined;
+    "ikkeAktuellGrunn" in behandling ? behandling.ikkeAktuellGrunn : undefined;
   const grunnText = ikkeAktuellGrunn
     ? `\n\nGrunn: ${ikkeAktuellGrunnTexts[ikkeAktuellGrunn]}`
     : "";
