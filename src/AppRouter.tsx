@@ -38,7 +38,7 @@ import IkkeAktuellSide from "@/sider/manglendemedvirkning/ikkeaktuell/IkkeAktuel
 import UnntakSide from "@/sider/manglendemedvirkning/unntak/UnntakSide";
 import { AktivitetskravContainer } from "@/sider/aktivitetskrav/AktivitetskravContainer";
 import OppfyltFormContainer from "@/sider/arbeidsuforhet/oppfylt/OppfyltFormContainer";
-import KartleggingssporsmalSide from "@/sider/kartleggingssporsmal/KartleggingssporsmalSide";
+import TidligOppfolgingSide from "@/sider/tidligoppfolging/TidligOppfolgingSide.tsx";
 import * as Umami from "@/utils/umami";
 import OppfolgingsplanerOversikt from "@/sider/oppfolgingsplan/oppfolgingsplaner/OppfolgingsplanerOversikt";
 import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
@@ -129,8 +129,8 @@ function AktivBrukerRouter(): ReactElement {
           />
 
           <Route
-            path={`${appRoutePath}/kartleggingssporsmal`}
-            element={<KartleggingssporsmalSide />}
+            path={`${appRoutePath}/tidlig-oppfolging`}
+            element={<TidligOppfolgingSide />}
           />
 
           <Route

@@ -3,7 +3,7 @@ import {
   hasRisikoForLangtidsfravar,
   knownRadioFieldIds,
   lowRiskOptionIdByRadioFieldId,
-} from "@/sider/kartleggingssporsmal/info/vurdereBehov.ts";
+} from "@/sider/tidligoppfolging/info/vurdereBehov.ts";
 import {
   KartleggingssporsmalFormSnapshotFieldType,
   KartleggingssporsmalRadioGroupFieldSnapshot,

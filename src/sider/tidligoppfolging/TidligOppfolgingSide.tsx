@@ -25,20 +25,21 @@ import { EksternLenke } from "@/components/EksternLenke";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { Events, trackEvent } from "@/utils/umami";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
-import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";
+import { KartleggingssporsmalSkjemasvar } from "@/sider/tidligoppfolging/skjemasvar/KartleggingssporsmalSkjemasvar";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
-import { KartleggingssporsmalHistorikk } from "@/sider/kartleggingssporsmal/historikk/KartleggingssporsmalHistorikk";
-import { KartleggingVurdering } from "@/sider/kartleggingssporsmal/vurdering/KartleggingVurdering.tsx";
-import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessAlert.tsx";
+import { KartleggingssporsmalHistorikk } from "@/sider/tidligoppfolging/historikk/KartleggingssporsmalHistorikk";
+import { TidligOppfolgingVurdering } from "@/sider/tidligoppfolging/vurdering/TidligOppfolgingVurdering.tsx";
+import { SuccessAlert } from "@/sider/tidligoppfolging/successAlert/SuccessAlert.tsx";
 import LumiSurvey from "@/components/lumi/LumiSurvey.tsx";
 import { kartleggingssporsmalSurvey } from "@/components/lumi/kartleggingssporsmalSurvey.ts";
 import { ReactElement } from "react";
 
 const texts = {
-  title: "Kartleggingsspørsmål",
+  title: "Tidlig oppfølging",
+  subtitle: "Kartleggingsspørsmål",
   kandidat: "Spørsmålene ble sendt",
   svart: "Den sykmeldte svarte",
-  ikkeSvart: "Den sykmeldte har ikke svart",
+  ikkeSvart: "Den sykmeldte har ikke svart.",
   extraInfo:
     "Ved manglende svar vil vi automatisk sende et nytt varsel på SMS etter syv dager, du trenger ikke å purre manuelt. Den sykmeldte er ikke pålagt å svare. Det skal derfor ikke sendes forhåndsvarsel for brudd på folketrygdloven § 8-8 dersom det ikke kommer inn et svar.",
   extraInfoReservert:
@@ -88,9 +89,9 @@ function PilotInfo() {
       background="accent-soft"
       borderColor="brand-blue"
       borderWidth="1"
-      className="flex flex-col rounded p-4 mt-2 gap-4"
+      className="flex flex-col rounded p-4 mt-2 gap-2"
     >
-      <Heading size="small">
+      <Heading size="xsmall">
         Send inn feil, mangler eller annet du lurer på
       </Heading>
       <div>
@@ -98,6 +99,7 @@ function PilotInfo() {
           Generelle tilbakemeldinger sendes på Teams.
         </BodyShort>
         <EksternLenke
+          className="text-[16px]"
           href={
             "https://teams.microsoft.com/l/channel/19%3A53f937eda2124d29938e4278a1cb106c%40thread.tacv2/Pilot%20kartleggingssp%C3%B8rsm%C3%A5l?groupId=05b6c0d2-b6db-4440-96b4-4de66c09b3c6&tenantId=62366534-1ec3-4962-8869-9b5535279d0b&ngc=true"
           }
@@ -111,6 +113,7 @@ function PilotInfo() {
           tittel [Pilot Modia syfo].
         </BodyShort>
         <EksternLenke
+          className="text-[16px]"
           href={
             "https://jira.adeo.no/plugins/servlet/desk/portal/541/create/1401"
           }
@@ -134,7 +137,7 @@ function trackAccordionApnet(isOpen: boolean, accordionTekst: string): void {
   }
 }
 
-export default function KartleggingssporsmalSide(): ReactElement {
+export default function TidligOppfolgingSide(): ReactElement {
   const { toggles } = useFeatureToggles();
 
   const getKandidater = useKartleggingssporsmalKandidaterQuery();
@@ -182,7 +185,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
   return (
     <Side
       tittel={texts.title}
-      aktivtMenypunkt={Menypunkter.KARTLEGGINGSSPORSMAL}
+      aktivtMenypunkt={Menypunkter.TIDLIG_OPPFOLGING}
       lumi={lumiSurvey}
     >
       <Sidetopp tittel={texts.title} />
@@ -190,22 +193,27 @@ export default function KartleggingssporsmalSide(): ReactElement {
         {nyesteKandidat && hasMottattKartleggingssporsmal(nyesteKandidat) ? (
           <Tredelt.Container>
             <Tredelt.FirstColumn className="-xl:mb-2">
-              <Box background="default" className="p-8 gap-6 [&>*]:mb-4 mb-4">
+              <Box
+                background="default"
+                className="p-6 flex flex-col gap-4 mb-2"
+              >
+                <Heading size="small" level="2">
+                  {texts.subtitle}
+                </Heading>
                 {answeredQuestions ? (
                   <>
-                    <BodyShort size="small" weight="semibold">
-                      {`${texts.svart} ${tilLesbarDatoMedArstall(
-                        answeredQuestions.createdAt,
-                      )}`}
+                    <BodyShort size="small" className="flex flex-col">
+                      <span>
+                        {`${texts.svart} ${tilLesbarDatoMedArstall(
+                          answeredQuestions.createdAt,
+                        )}.`}
+                      </span>
+                      <span>
+                        {`${texts.kandidat} ${tilLesbarDatoMedArstall(
+                          nyesteKandidat.varsletAt,
+                        )}.`}
+                      </span>
                     </BodyShort>
-                    <BodyShort size="small" weight="semibold">
-                      {`${texts.kandidat} ${tilLesbarDatoMedArstall(
-                        nyesteKandidat.varsletAt,
-                      )}`}
-                    </BodyShort>
-                    <EksternLenke href={texts.demoUrl}>
-                      {texts.link}
-                    </EksternLenke>
                     <KartleggingssporsmalSkjemasvar
                       formSnapshot={answeredQuestions.formSnapshot}
                     />
@@ -229,17 +237,14 @@ export default function KartleggingssporsmalSide(): ReactElement {
                         </BodyShort>
                       </Alert>
                     )}
-                    <BodyShort size="small" weight="semibold">
-                      {texts.ikkeSvart}
+                    <BodyShort size="small" className="flex flex-col">
+                      <span>{texts.ikkeSvart}</span>
+                      <span>
+                        {`${texts.kandidat} ${tilLesbarDatoMedArstall(
+                          nyesteKandidat.varsletAt,
+                        )}.`}
+                      </span>
                     </BodyShort>
-                    <BodyShort size="small" weight="semibold">
-                      {`${texts.kandidat} ${tilLesbarDatoMedArstall(
-                        nyesteKandidat.varsletAt,
-                      )}`}
-                    </BodyShort>
-                    <EksternLenke href={texts.demoUrl}>
-                      {texts.link}
-                    </EksternLenke>
                     {kontaktinformasjon.brukerKanIkkeVarslesDigitalt ? (
                       <BodyShort size="small">
                         {texts.extraInfoReservert}
@@ -253,7 +258,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
               {!behandletWithoutVurdering &&
                 answeredQuestions &&
                 nyesteKandidat.status !== KandidatStatus.KANDIDAT && (
-                  <KartleggingVurdering
+                  <TidligOppfolgingVurdering
                     nyesteKandidat={nyesteKandidat}
                     answeredQuestions={answeredQuestions}
                   />
@@ -263,13 +268,16 @@ export default function KartleggingssporsmalSide(): ReactElement {
               />
             </Tredelt.FirstColumn>
             <Tredelt.SecondColumn>
-              <Box background="default" padding="space-24" className="mb-4">
+              <Box background="default" padding="space-24" className="mb-2">
                 <Heading level="2" size="medium">
                   {texts.veiledningBox.heading}
                 </Heading>
                 <BodyLong size="small" className="mb-4 whitespace-pre-line">
                   {texts.veiledningBox.intro}
                 </BodyLong>
+                <EksternLenke href={texts.demoUrl} className="text-[16px] mb-4">
+                  {texts.link}
+                </EksternLenke>
                 <Accordion size="small">
                   <Accordion.Item
                     onOpenChange={(isOpen) =>

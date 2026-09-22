@@ -111,7 +111,7 @@ describe("GlobalNavigasjon", () => {
       "Vedtak",
     ];
     const menypunkterNotShown = [
-      "Kartleggingsspørsmål",
+      "Tidlig oppfølging",
       "§ 8-9 Søknad om utenlandsopphold",
     ];
 
@@ -133,8 +133,8 @@ describe("GlobalNavigasjon", () => {
       "Søknader om sykepenger",
       "Dialog med behandler",
       "Oppfølgingsplaner",
+      "Tidlig oppfølging",
       "Dialogmøter",
-      "Kartleggingsspørsmål",
       "§ 8-8 Aktivitetskrav",
       "§ 8-8 Manglende medvirkning",
       "§ 8-4 Arbeidsuførhet",

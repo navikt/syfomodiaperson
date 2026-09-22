@@ -1,5 +1,5 @@
-import { KartleggingssporsmalRadioGroupSvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalRadioGroupSvar";
-import { KartleggingssporsmalTextSvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalTextSvar";
+import { KartleggingssporsmalRadioGroupSvar } from "@/sider/tidligoppfolging/skjemasvar/KartleggingssporsmalRadioGroupSvar";
+import { KartleggingssporsmalTextSvar } from "@/sider/tidligoppfolging/skjemasvar/KartleggingssporsmalTextSvar";
 import {
   KartleggingssporsmalFormSnapshot,
   KartleggingssporsmalFormSnapshotFieldType,

@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-import KartleggingssporsmalSide from "@/sider/kartleggingssporsmal/KartleggingssporsmalSide";
+import TidligOppfolgingSide from "@/sider/tidligoppfolging/TidligOppfolgingSide.tsx";
 import { kartleggingssporsmalQueryKeys } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 import {
   KandidatStatus,
@@ -110,7 +109,7 @@ const mockEnabledToggles = (enabledToggles: ToggleNames[]) =>
     }),
   );
 
-const renderKartleggingssporsmal = () => {
+const renderTidligOppfolging = () => {
   renderWithRouter(
     <QueryClientProvider client={queryClient}>
       <ValgtEnhetContext.Provider
@@ -119,15 +118,15 @@ const renderKartleggingssporsmal = () => {
           setValgtEnhet: () => void 0,
         }}
       >
-        <KartleggingssporsmalSide />
+        <TidligOppfolgingSide />
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
-    `${appRoutePath}/kartleggingssporsmal`,
-    [`${appRoutePath}/kartleggingssporsmal`],
+    `${appRoutePath}/tidlig-oppfolging`,
+    [`${appRoutePath}/tidlig-oppfolging`],
   );
 };
 
-describe("Kartleggingssporsmal", () => {
+describe("Tidlig oppfølging", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
     queryClient.setQueryData(
@@ -140,7 +139,7 @@ describe("Kartleggingssporsmal", () => {
   it("Sykmeldt is not kandidat", () => {
     mockKartleggingssporsmalKandidat(null, ARBEIDSTAKER_DEFAULT.personIdent);
 
-    renderKartleggingssporsmal();
+    renderTidligOppfolging();
 
     expect(
       screen.getByText("Den sykmeldte har ikke mottatt kartleggingsspørsmål", {
@@ -155,9 +154,9 @@ describe("Kartleggingssporsmal", () => {
       ARBEIDSTAKER_DEFAULT.personIdent,
     );
 
-    renderKartleggingssporsmal();
+    renderTidligOppfolging();
 
-    expect(screen.queryByText("Den sykmeldte har ikke svart")).to.exist;
+    expect(screen.queryByText("Den sykmeldte har ikke svart.")).to.exist;
     expect(screen.queryByText("Spørsmålene ble sendt", { exact: false })).to
       .exist;
     expect(screen.queryByText("Slik ser spørsmålene ut for den sykmeldte")).to
@@ -186,7 +185,7 @@ describe("Kartleggingssporsmal", () => {
       ARBEIDSTAKER_DEFAULT.personIdent,
     );
 
-    renderKartleggingssporsmal();
+    renderTidligOppfolging();
 
     expect(
       screen.getByText("Den sykmeldte har ikke mottatt kartleggingsspørsmål", {
@@ -209,9 +208,9 @@ describe("Kartleggingssporsmal", () => {
       () => kontaktinfo,
     );
 
-    renderKartleggingssporsmal();
+    renderTidligOppfolging();
 
-    expect(screen.getByText("Den sykmeldte har ikke svart")).to.exist;
+    expect(screen.getByText("Den sykmeldte har ikke svart.")).to.exist;
     expect(screen.getByText("Spørsmålene ble sendt", { exact: false })).to
       .exist;
     expect(screen.getByText("Slik ser spørsmålene ut for den sykmeldte")).to
@@ -237,7 +236,7 @@ describe("Kartleggingssporsmal", () => {
       kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
     );
 
-    renderKartleggingssporsmal();
+    renderTidligOppfolging();
 
     expect(screen.queryByText("Den sykmeldte svarte", { exact: false })).to
       .exist;
@@ -307,7 +306,7 @@ describe("Kartleggingssporsmal", () => {
       kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
     );
 
-    renderKartleggingssporsmal();
+    renderTidligOppfolging();
 
     expect(
       screen.getByText(
@@ -359,7 +358,7 @@ describe("Kartleggingssporsmal", () => {
       kartleggingssporsmalVurderingFerdigbehandlet.kandidatUuid,
     );
 
-    renderKartleggingssporsmal();
+    renderTidligOppfolging();
 
     expect(screen.queryByText("Den sykmeldte svarte", { exact: false })).to
       .exist;
@@ -369,7 +368,7 @@ describe("Kartleggingssporsmal", () => {
       .exist;
 
     expect(
-      screen.queryByText(`Oppgaven er behandlet av ${VEILEDER_DEFAULT.ident}`),
+      screen.queryByText(`Oppgaven er behandlet av ${VEILEDER_DEFAULT.ident}.`),
     ).to.exist;
 
     expect(
@@ -398,7 +397,7 @@ describe("Kartleggingssporsmal", () => {
       );
       stubVurderSvarError();
 
-      renderKartleggingssporsmal();
+      renderTidligOppfolging();
 
       await clickButton("Lagre vurdering, fjern oppgaven");
       expect(await screen.findByText("Du må velge et alternativ")).to.exist;
@@ -415,7 +414,7 @@ describe("Kartleggingssporsmal", () => {
       );
       stubDefaultIsmeroppfolging();
 
-      renderKartleggingssporsmal();
+      renderTidligOppfolging();
 
       await screen
         .getByLabelText(
@@ -423,7 +422,7 @@ describe("Kartleggingssporsmal", () => {
         )
         .click();
       await clickButton("Lagre vurdering, fjern oppgaven");
-      expect(await screen.findByText("Oppgaven er behandlet av Z990000")).to
+      expect(await screen.findByText("Oppgaven er behandlet av Z990000.")).to
         .exist;
     });
 
@@ -438,7 +437,7 @@ describe("Kartleggingssporsmal", () => {
       );
       stubVurderSvarError();
 
-      renderKartleggingssporsmal();
+      renderTidligOppfolging();
 
       await screen
         .getByLabelText(
@@ -464,7 +463,7 @@ describe("Kartleggingssporsmal", () => {
           kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
         );
 
-        renderKartleggingssporsmal();
+        renderTidligOppfolging();
 
         expect(
           screen.queryByRole("textbox", { name: "Begrunnelse (valgfritt)" }),
@@ -497,7 +496,7 @@ describe("Kartleggingssporsmal", () => {
           kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
         );
 
-        renderKartleggingssporsmal();
+        renderTidligOppfolging();
 
         expect(
           screen.queryByRole("textbox", { name: "Begrunnelse (valgfritt)" }),
@@ -524,7 +523,7 @@ describe("Kartleggingssporsmal", () => {
           kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
         );
 
-        renderKartleggingssporsmal();
+        renderTidligOppfolging();
 
         await screen
           .getByLabelText(
@@ -547,7 +546,7 @@ describe("Kartleggingssporsmal", () => {
       );
       stubDefaultIsmeroppfolging();
 
-      renderKartleggingssporsmal();
+      renderTidligOppfolging();
 
       await screen
         .getByLabelText(
@@ -558,7 +557,7 @@ describe("Kartleggingssporsmal", () => {
         (getTextInput("Begrunnelse (valgfritt)") as HTMLTextAreaElement).value,
       ).to.equal("");
       await clickButton("Lagre vurdering, fjern oppgaven");
-      expect(await screen.findByText("Oppgaven er behandlet av Z990000")).to
+      expect(await screen.findByText("Oppgaven er behandlet av Z990000.")).to
         .exist;
     });
 
@@ -572,7 +571,7 @@ describe("Kartleggingssporsmal", () => {
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
 
-      renderKartleggingssporsmal();
+      renderTidligOppfolging();
 
       await screen
         .getByLabelText(
@@ -605,7 +604,7 @@ describe("Kartleggingssporsmal", () => {
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
 
-      renderKartleggingssporsmal();
+      renderTidligOppfolging();
 
       expect(screen.queryByText(hasGjentakendeSykefravar)).to.exist;
       expect(screen.queryByText(noGjentakendeSykefravar)).to.not.exist;
@@ -621,7 +620,7 @@ describe("Kartleggingssporsmal", () => {
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
 
-      renderKartleggingssporsmal();
+      renderTidligOppfolging();
 
       expect(
         screen.getByRole("button", { name: "Hva er gjentakende sykefravær?" }),
@@ -644,7 +643,7 @@ describe("Kartleggingssporsmal", () => {
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
 
-      renderKartleggingssporsmal();
+      renderTidligOppfolging();
 
       expect(
         screen
@@ -684,7 +683,7 @@ describe("Kartleggingssporsmal", () => {
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
 
-      renderKartleggingssporsmal();
+      renderTidligOppfolging();
 
       expect(screen.queryByRole("heading", { level: 2, name: "Historikk" })).to
         .not.exist;
@@ -700,7 +699,7 @@ describe("Kartleggingssporsmal", () => {
         kartleggingIsKandidatAndAnsweredQuestions.kandidatUuid,
       );
 
-      renderKartleggingssporsmal();
+      renderTidligOppfolging();
 
       expect(screen.queryByRole("heading", { level: 2, name: "Historikk" })).to
         .not.exist;
@@ -720,7 +719,7 @@ describe("Kartleggingssporsmal", () => {
         tidligereKandidatMedSvar.kandidatUuid,
       );
 
-      renderKartleggingssporsmal();
+      renderTidligOppfolging();
 
       expect(screen.queryByRole("heading", { level: 2, name: "Historikk" })).to
         .exist;
@@ -742,7 +741,7 @@ describe("Kartleggingssporsmal", () => {
         tidligereKandidatMedSvar.kandidatUuid,
       );
 
-      renderKartleggingssporsmal();
+      renderTidligOppfolging();
 
       expect(
         screen.getAllByText("Sykmeldte svarte", { exact: false }).length,

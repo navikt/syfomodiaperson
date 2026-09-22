@@ -149,7 +149,7 @@ function getNumberOfManglendeMedvirkningOppgaver(
     : 0;
 }
 
-function getNumberOfKartleggingssporsmalOppgaver(
+function getNumberOfTidligOppfolgingOppgaver(
   kartleggingssporsmalKandidater:
     | KartleggingssporsmalKandidatResponseDTO[]
     | null
@@ -213,8 +213,8 @@ export function numberOfTasks(
       return getNumberOfManglendeMedvirkningOppgaver(
         manglendeMedvirkningVurdering,
       );
-    case Menypunkter.KARTLEGGINGSSPORSMAL:
-      return getNumberOfKartleggingssporsmalOppgaver(kartleggingVurderinger);
+    case Menypunkter.TIDLIG_OPPFOLGING:
+      return getNumberOfTidligOppfolgingOppgaver(kartleggingVurderinger);
     case Menypunkter.UTENLANDSOPPHOLD:
     case Menypunkter.NOKKELINFORMASJON:
     case Menypunkter.SYKEPENGESOKNADER:

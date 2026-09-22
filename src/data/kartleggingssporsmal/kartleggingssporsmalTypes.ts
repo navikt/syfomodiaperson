@@ -1,5 +1,5 @@
 import { KartleggingssporsmalFormSnapshot } from "@/data/kartleggingssporsmal/kartleggingssporsmalSkjemasvarTypes";
-import { VurderingAlternativ } from "@/sider/kartleggingssporsmal/types.ts";
+import { VurderingAlternativ } from "@/sider/tidligoppfolging/types.ts";
 
 export interface KartleggingssporsmalKandidatResponseDTO {
   kandidatUuid: string;

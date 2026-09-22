@@ -30,7 +30,7 @@ export enum Menypunkter {
   UTENLANDSOPPHOLD = "UTENLANDSOPPHOLD",
   SENOPPFOLGING = "SENOPPFOLGING",
   MANGLENDE_MEDVIRKNING = "MANGLENDE_MEDVIRKNING",
-  KARTLEGGINGSSPORSMAL = "KARTLEGGINGSSPORSMAL",
+  TIDLIG_OPPFOLGING = "TIDLIG_OPPFOLGING",
 }
 
 type Menypunkt = { navn: string; sti: string };
@@ -58,13 +58,13 @@ const allMenypunkter: {
     navn: "Oppfølgingsplaner",
     sti: "oppfoelgingsplaner",
   },
+  [Menypunkter.TIDLIG_OPPFOLGING]: {
+    navn: "Tidlig oppfølging",
+    sti: "tidlig-oppfolging",
+  },
   [Menypunkter.DIALOGMOTE]: {
     navn: "Dialogmøter",
     sti: "moteoversikt",
-  },
-  [Menypunkter.KARTLEGGINGSSPORSMAL]: {
-    navn: "Kartleggingsspørsmål",
-    sti: "kartleggingssporsmal",
   },
   [Menypunkter.AKTIVITETSKRAV]: {
     navn: "§ 8-8 Aktivitetskrav",
@@ -97,7 +97,7 @@ const allMenypunkter: {
 };
 
 const activeMenypunktWithToggle: [keyof typeof ToggleNames, Menypunkter][] = [
-  ["isKartleggingssporsmalEnabled", Menypunkter.KARTLEGGINGSSPORSMAL],
+  ["isKartleggingssporsmalEnabled", Menypunkter.TIDLIG_OPPFOLGING],
   ["isUtenlandsoppholdEnabled", Menypunkter.UTENLANDSOPPHOLD],
 ];
 

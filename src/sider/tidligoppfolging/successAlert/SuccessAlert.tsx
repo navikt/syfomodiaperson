@@ -20,7 +20,7 @@ export const SuccessAlert = ({ nyesteKandidat }: SuccessAlertProps) => (
       )}`}
     </BodyShort>
     <BodyShort size="small">
-      {`${texts.svarVurdertAv} ${nyesteKandidat.vurdering?.vurdertBy}`}
+      {`${texts.svarVurdertAv} ${nyesteKandidat.vurdering?.vurdertBy}.`}
     </BodyShort>
   </Alert>
 );

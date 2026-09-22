@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Accordion, BodyShort, Box, Heading } from "@navikt/ds-react";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
-import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";
+import { KartleggingssporsmalSkjemasvar } from "@/sider/tidligoppfolging/skjemasvar/KartleggingssporsmalSkjemasvar";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { Paragraph } from "@/components/Paragraph";
 import {

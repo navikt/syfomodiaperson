@@ -1,8 +1,11 @@
 import {
   BodyLong,
+  BodyShort,
   Box,
   Button,
   Heading,
+  Label,
+  List,
   Radio,
   RadioGroup,
   Textarea,
@@ -12,22 +15,22 @@ import {
   KartleggingssporsmalKandidatResponseDTO,
   KartleggingssporsmalSvarResponseDTO,
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes.ts";
-import { VurderingAlternativ } from "@/sider/kartleggingssporsmal/types.ts";
+import { VurderingAlternativ } from "@/sider/tidligoppfolging/types.ts";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil.tsx";
 import { useState } from "react";
-import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessAlert.tsx";
+import { SuccessAlert } from "@/sider/tidligoppfolging/successAlert/SuccessAlert.tsx";
 import { finnNaisUrlIntern } from "@/utils/miljoUtil.ts";
 import { EksternLenke } from "@/components/EksternLenke.tsx";
 import { Events, trackEvent } from "@/utils/umami.ts";
-import { KartleggingInfo } from "@/sider/kartleggingssporsmal/info/KartleggingInfo.tsx";
+import { TidligOppfolgingInfo } from "@/sider/tidligoppfolging/info/TidligOppfolgingInfo.tsx";
 import { useKartleggingssporsmalVurderSvar } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks.ts";
-import { hasRisikoForLangtidsfravar } from "@/sider/kartleggingssporsmal/info/vurdereBehov.ts";
+import { hasRisikoForLangtidsfravar } from "@/sider/tidligoppfolging/info/vurdereBehov.ts";
 
 const VURDERING_MAX_LENGTH = 200;
 const LINK_14A = `https://veilarbpersonflate${finnNaisUrlIntern()}/vedtaksstotte`;
 
 const texts = {
-  heading: "Vurdering",
+  heading: "Vurder tidlig oppfølging",
   radioLegend: "Velg alternativet som passer vurderingen",
   textLegend: "Begrunnelse (valgfritt)",
   RISIKO_FOR_LANGTIDSFRAVAR:
@@ -38,7 +41,7 @@ const texts = {
   vurderingIkkeValgtError: "Du må velge et alternativ",
   begrunnelseForLangError: `Begrunnelse kan ikke være lengre enn ${VURDERING_MAX_LENGTH} tegn`,
   vurdertRisikoForLangtidsfravar:
-    "Det er vurdert risiko for langtidsfravær. Da kan det være aktuelt å gjøre en § 14a-vurdering i ",
+    "Det er vurdert behov for tidlig oppfølging. Da kan det være aktuelt å gjøre en § 14a-vurdering i ",
   lenkeTilModiaAO: "vedtaksstøtteløsningen i Modia Arbeidsrettet oppfølging.",
 };
 
@@ -57,7 +60,7 @@ interface Props {
   answeredQuestions: KartleggingssporsmalSvarResponseDTO;
 }
 
-export function KartleggingVurdering({
+export function TidligOppfolgingVurdering({
   nyesteKandidat,
   answeredQuestions,
 }: Props) {
@@ -85,10 +88,33 @@ export function KartleggingVurdering({
       hasRisikoForLangtidsfravar(answeredQuestions));
 
   return (
-    <Box background="default" className="p-6 gap-6 [&>*]:mb-4 mb-4">
-      <KartleggingInfo />
-
+    <Box background="default" className="p-6 gap-4 flex flex-col mb-2">
       <Heading size={"medium"}>{texts.heading}</Heading>
+      <TidligOppfolgingInfo />
+
+      <Label size="small">
+        Basert på informasjonen som er tilgjengelig her og nå, vurder to
+        faktorer:
+      </Label>
+
+      <List size="small" as="ol">
+        <List.Item>
+          Er det risiko for langtidsfravær (mer enn 9 mnd sykefravær)?
+        </List.Item>
+        <List.Item>
+          Er det hensiktsmessig at Nav gir oppfølging på nåværende tidspunkt?
+        </List.Item>
+      </List>
+
+      <BodyShort size="small">
+        Begge faktorer må være til stede for at det skal være behov for tidlig
+        oppfølging fra Nav på nåværende tidspunkt.
+      </BodyShort>
+      <BodyShort size="small">
+        Husk at det er arbeidsgiver som har hovedansvaret for oppfølging, særlig
+        tidlig i sykefraværet.
+      </BodyShort>
+
       <RadioGroup
         legend={texts.radioLegend}
         size="small"
@@ -128,7 +154,7 @@ export function KartleggingVurdering({
       {nyesteKandidat.status === KandidatStatus.SVAR_MOTTATT && (
         <Button
           variant="primary"
-          size="medium"
+          className="w-fit"
           onClick={() => {
             setVurderingError({
               vurderingAlternativError: null,
