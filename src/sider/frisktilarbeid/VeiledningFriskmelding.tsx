@@ -1,7 +1,6 @@
 import { VeiledningBox } from "@/components/veiledning/VeiledningBox";
 import { VeiledningList } from "@/components/veiledning/VeiledningList";
-import { BodyShort, Box, Heading, List, VStack } from "@navikt/ds-react";
-import React from "react";
+import { BodyShort, Box, Heading, List } from "@navikt/ds-react";
 
 const texts = {
   title: "Forberedelser",

@@ -1,16 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Alert, BodyShort, Box, Button, Loader, Table } from "@navikt/ds-react";
 import { useUtenlandsoppholdSoknanderQuery } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
 import {
-  antallDagerIPeriode,
-  Periode,
   Soknad,
   SoknadStatusDTO,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
-import {
-  tilLesbarDatoMedArUtenManedNavn,
-  tilLesbarPeriodeMedArUtenManednavn,
-} from "@/utils/datoUtils";
+import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
 import { useNotification } from "@/context/notification/NotificationContext.tsx";
 import { PeriodeOgAntallDagerTekst } from "./PeriodeOgAntallDagerTekst";

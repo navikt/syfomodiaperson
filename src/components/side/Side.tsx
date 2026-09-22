@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { Personkort } from "../personkort/Personkort";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import GlobalNavigasjon, {

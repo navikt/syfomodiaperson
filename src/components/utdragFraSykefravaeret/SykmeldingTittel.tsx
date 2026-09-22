@@ -13,7 +13,6 @@ import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
 import { Tag } from "@navikt/ds-react";
 import ImportantInformationIcon from "@/components/ImportantInformationIcon";
-import React from "react";
 
 const texts = {
   utenArbeidsgiver: "Uten arbeidsgiver",

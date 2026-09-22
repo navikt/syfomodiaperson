@@ -2,7 +2,7 @@ import {
   InfotrygdStatus,
   VedtakResponseDTO,
 } from "@/data/frisktilarbeid/frisktilarbeidTypes";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Alert,
   BodyLong,

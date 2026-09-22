@@ -1,6 +1,6 @@
 import { Accordion, BodyShort, Box, Heading } from "@navikt/ds-react";
 import { isActiveExistingVedtak } from "@/data/frisktilarbeid/frisktilarbeidTypes.ts";
-import React from "react";
+
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery.ts";
 import { VisBrev } from "@/components/VisBrev.tsx";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils.ts";

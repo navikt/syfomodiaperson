@@ -1,4 +1,3 @@
-import React from "react";
 import TilbakeTilSoknader from "./TilbakeTilSoknader";
 import { Box, Heading } from "@navikt/ds-react";
 

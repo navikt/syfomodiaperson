@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { useBehandlerdialogQuery } from "@/data/behandlerdialog/behandlerdialogQueryHooks";
 import {
   Conversations,

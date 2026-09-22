@@ -1,4 +1,3 @@
-import React from "react";
 import { Heading } from "@navikt/ds-react";
 
 const SIDETOPP_ID = "sidetopp";

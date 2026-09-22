@@ -1,4 +1,3 @@
-import React from "react";
 import ForhandsvarselBeforeDeadline from "@/sider/arbeidsuforhet/ForhandsvarselBeforeDeadline";
 import ForhandsvarselAfterDeadline from "@/sider/arbeidsuforhet/ForhandsvarselAfterDeadline";
 import { VurderingResponseDTO } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";

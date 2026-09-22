@@ -11,7 +11,7 @@ import {
   ReadMore,
 } from "@navikt/ds-react";
 import { InformationSquareIcon, PaperplaneIcon } from "@navikt/aksel-icons";
-import React from "react";
+
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { NarmesteLederRelasjonDTO } from "@/data/leder/ledereTypes";
 import {

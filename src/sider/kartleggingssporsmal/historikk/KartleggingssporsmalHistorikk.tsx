@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Accordion, BodyShort, Box, Heading } from "@navikt/ds-react";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { KartleggingssporsmalSkjemasvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalSkjemasvar";

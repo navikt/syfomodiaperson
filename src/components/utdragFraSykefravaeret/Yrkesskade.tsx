@@ -1,5 +1,5 @@
 import { tilDatoMedUkedagOgManedNavn } from "@/utils/datoUtils";
-import React from "react";
+
 import { BodyShort, Checkbox } from "@navikt/ds-react";
 
 const tekster = {

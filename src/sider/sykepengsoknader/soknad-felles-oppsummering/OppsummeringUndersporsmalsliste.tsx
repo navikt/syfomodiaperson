@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import OppsummeringSporsmal from "./OppsummeringSporsmal";
 import { getKey } from "./Oppsummeringsvisning";
 import { SporsmalDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";

@@ -1,5 +1,4 @@
 import { BodyLong, BodyShort, Label } from "@navikt/ds-react";
-import React from "react";
 
 const texts = {
   label: "Begrunnelse",

@@ -1,4 +1,3 @@
-import React from "react";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks.ts";
 import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils.ts";
 import { BodyShort } from "@navikt/ds-react";

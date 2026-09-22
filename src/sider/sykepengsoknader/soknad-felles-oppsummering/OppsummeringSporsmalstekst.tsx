@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { Label } from "@navikt/ds-react";
 
 interface Props {

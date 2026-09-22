@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import React from "react";
+
 import { screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import {

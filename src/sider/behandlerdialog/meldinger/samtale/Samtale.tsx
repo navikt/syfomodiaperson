@@ -1,4 +1,3 @@
-import React from "react";
 import { MeldingDTO } from "@/data/behandlerdialog/behandlerdialogTypes";
 import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { Accordion } from "@navikt/ds-react";

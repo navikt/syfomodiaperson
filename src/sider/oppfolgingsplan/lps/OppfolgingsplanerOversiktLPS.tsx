@@ -1,4 +1,3 @@
-import React from "react";
 import { restdatoTilLesbarDato } from "@/utils/datoUtils";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import BehandleOppfolgingsplanLPS from "./BehandleOppfolgingsplanLPS";

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { ReactNode, useState } from "react";
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
 
 interface Props {
   fromDate: Date;
   toDate: Date;
-  label: React.ReactNode;
+  label: ReactNode;
   error?: string;
   defaultSelected: Date;
   onChange: (date: Date | undefined) => void;

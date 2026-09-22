@@ -1,6 +1,6 @@
 import { BodyShort } from "@navikt/ds-react";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
-import React from "react";
+
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
 interface GjelderOppfolgingstilfelleProps {

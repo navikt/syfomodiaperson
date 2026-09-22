@@ -1,4 +1,3 @@
-import React from "react";
 import dayjs from "dayjs";
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
 import { useController } from "react-hook-form";

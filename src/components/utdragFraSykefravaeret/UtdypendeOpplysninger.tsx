@@ -1,4 +1,3 @@
-import React from "react";
 import { SporsmalSvarDTO } from "@/data/sykmelding/types/SporsmalSvarDTO";
 import { BodyLong, BodyShort, VStack } from "@navikt/ds-react";
 

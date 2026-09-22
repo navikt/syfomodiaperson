@@ -1,4 +1,3 @@
-import React from "react";
 import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
 import { useBehandlePersonoppgave } from "@/data/personoppgave/useBehandlePersonoppgave";
 import { isBehandletOppgave } from "@/utils/personOppgaveUtils";

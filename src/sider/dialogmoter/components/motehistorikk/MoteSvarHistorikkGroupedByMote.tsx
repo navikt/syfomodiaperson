@@ -1,6 +1,6 @@
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { Accordion, BodyShort, Box } from "@navikt/ds-react";
-import React from "react";
+
 import MoteSvarHistorikkEvent from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkEvent";
 import DialogmoteHistorikkHeader from "@/sider/dialogmoter/components/motehistorikk/DialogmoteHistorikkHeader";
 

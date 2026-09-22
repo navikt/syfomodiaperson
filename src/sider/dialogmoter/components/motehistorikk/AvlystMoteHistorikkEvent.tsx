@@ -4,7 +4,7 @@ import {
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { Accordion } from "@navikt/ds-react";
 import DocumentComponentVisning from "@/components/document/DocumentComponentVisning";
-import React from "react";
+
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 
 const texts = {

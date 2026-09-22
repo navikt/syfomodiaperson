@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Button, DatePicker, useRangeDatepicker } from "@navikt/ds-react";
 import { PlusIcon, TrashIcon } from "@navikt/aksel-icons";
 import { useController, useFieldArray, useFormContext } from "react-hook-form";

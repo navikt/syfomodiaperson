@@ -1,5 +1,5 @@
 import { ApiErrorException, defaultErrorTexts, ErrorType } from "@/api/errors";
-import React from "react";
+
 import { Alert, HStack } from "@navikt/ds-react";
 
 interface Props {

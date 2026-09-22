@@ -1,5 +1,5 @@
 import { Tag, TagProps } from "@navikt/ds-react";
-import React from "react";
+
 import {
   MeldingDTO,
   MeldingStatusType,
@@ -17,6 +17,7 @@ import {
   antallOfType,
   hasMeldingOfType,
 } from "../../../../utils/behandlerdialogUtils.ts";
+import { ReactElement } from "react";
 
 const texts = {
   nyMelding: "Ny melding",
@@ -127,9 +128,7 @@ function getSamtaleTagStatus(
   }
 }
 
-export default function SamtaleTags({
-  meldinger,
-}: Props): React.ReactElement | null {
+export default function SamtaleTags({ meldinger }: Props): ReactElement | null {
   const { data: oppgaver } = usePersonoppgaverQuery();
   const samtaleTagStatus = getSamtaleTagStatus(meldinger, oppgaver);
 

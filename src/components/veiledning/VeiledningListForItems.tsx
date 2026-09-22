@@ -1,7 +1,8 @@
 import { List } from "@navikt/ds-react";
 import { VeiledningList } from "./VeiledningList";
+import { ReactNode } from "react";
 
-type TextContent = string | React.ReactNode;
+type TextContent = string | ReactNode;
 
 export type NestableListItem =
   | TextContent

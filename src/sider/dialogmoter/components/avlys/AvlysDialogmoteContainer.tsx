@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import AvlysDialogmoteSkjema from "./AvlysDialogmoteSkjema";
 import { MalformProvider } from "@/context/malform/MalformContext";
 import DialogmoteSideContainer from "@/sider/dialogmoter/components/DialogmoteSideContainer";

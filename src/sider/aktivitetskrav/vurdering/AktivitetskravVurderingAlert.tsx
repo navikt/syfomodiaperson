@@ -7,7 +7,7 @@ import {
   tilDatoMedManedNavn,
   tilLesbarDatoMedArUtenManedNavn,
 } from "@/utils/datoUtils";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { avventVurderingArsakTexts } from "@/data/aktivitetskrav/aktivitetskravTexts";
 import { Alert, BodyLong, BodyShort, Label } from "@navikt/ds-react";
 

@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { ExpansionCard } from "@navikt/ds-react";
 
 interface Props {

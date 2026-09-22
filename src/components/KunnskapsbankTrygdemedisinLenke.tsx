@@ -1,4 +1,3 @@
-import React from "react";
 import { EksternLenke } from "@/components/EksternLenke";
 
 const texts = {

@@ -1,5 +1,5 @@
 import { fullNaisUrlIntern } from "@/utils/miljoUtil";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { Heading, Tabs } from "@navikt/ds-react";
 import LinkAsTab from "@/components/LinkAsTab";
 import { MagnifyingGlassIcon } from "@navikt/aksel-icons";

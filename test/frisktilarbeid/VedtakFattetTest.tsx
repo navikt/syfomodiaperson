@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
-import React from "react";
+
 import VedtakFattet from "@/sider/frisktilarbeid/VedtakFattet";
 import {
   InfotrygdStatus,

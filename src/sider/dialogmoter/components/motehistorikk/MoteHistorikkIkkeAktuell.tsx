@@ -1,4 +1,3 @@
-import React from "react";
 import { IkkeAktuellVurdering } from "../../hooks/useGetDialogmoteIkkeAktuell";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import {

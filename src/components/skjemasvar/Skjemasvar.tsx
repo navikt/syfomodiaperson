@@ -1,7 +1,7 @@
 import { TextSvar } from "@/components/skjemasvar/TextSvar";
 import { CheckboxSvar } from "@/components/skjemasvar/CheckboxSvar";
 import { RadioGroupSvar } from "@/components/skjemasvar/RadioGroupSvar";
-import React from "react";
+
 import {
   FormSnapshot,
   FormSnapshotFieldType,

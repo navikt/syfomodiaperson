@@ -6,7 +6,7 @@ import {
   Skeleton,
   UNSAFE_Combobox,
 } from "@navikt/ds-react";
-import React, { useState } from "react";
+import { FormEvent, RefObject, useState } from "react";
 import {
   Enhet,
   useGetMuligeOppfolgingsenheter,
@@ -31,7 +31,7 @@ const text = {
 };
 
 interface Props {
-  modalRef: React.RefObject<HTMLDialogElement | null>;
+  modalRef: RefObject<HTMLDialogElement | null>;
   setTildeltNotification: (
     tildeltNotification: TildeltNotification | undefined,
   ) => void;
@@ -90,7 +90,7 @@ export default function TildelOppfolgingsenhetModal({
   const findEnhetById = (enheter: Enhet[]): Enhet | undefined =>
     enheter.find((enhet) => enhet.enhetId === oppfolgingsenhet);
 
-  function onSubmit(event: React.FormEvent) {
+  function onSubmit(event: FormEvent) {
     event.preventDefault();
     const isFormValid = oppfolgingsenhet !== "";
     const tildeltOppfolgingsenhet = findEnhetById(

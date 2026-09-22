@@ -1,5 +1,4 @@
 import { BellIcon } from "@navikt/aksel-icons";
-import React from "react";
 
 export const PaminnelseWarningIcon = () => (
   <BellIcon

@@ -1,6 +1,6 @@
 import { changeTextInput, clickButton } from "../testUtils";
 import { render, screen, waitFor, within } from "@testing-library/react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
   MeldingDTO,
   ReturLegeerklaringDTO,
@@ -8,7 +8,7 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
-import React from "react";
+
 import { ReturLegeerklaring } from "@/sider/behandlerdialog/legeerklaring/ReturLegeerklaring";
 import { queryClientWithMockData } from "../testQueryClient";
 import { foresporselLegeerklaringFraBehandler } from "./meldingTestdataGenerator";

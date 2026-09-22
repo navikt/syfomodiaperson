@@ -1,11 +1,11 @@
-import React, { ReactElement } from "react";
+import { MutableRefObject, ReactElement } from "react";
 import { Button, Popover } from "@navikt/ds-react";
 import { useSokBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { capitalizeWord } from "@/utils/stringUtils.ts";
 
 interface BehandlerSearchResultProps {
-  searchRef: React.MutableRefObject<any>;
+  searchRef: MutableRefObject<any>;
   searchText: string;
   setPopoverIsOpen: (value: boolean) => void;
   setSelectedBehandler: (behandler?: BehandlerDTO) => void;

@@ -1,5 +1,5 @@
 import { Radio, RadioGroup } from "@navikt/ds-react";
-import React from "react";
+
 import { KartleggingssporsmalRadioGroupFieldSnapshot } from "@/data/kartleggingssporsmal/kartleggingssporsmalSkjemasvarTypes";
 
 interface Props {

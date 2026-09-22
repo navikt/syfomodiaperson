@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import * as avvisningsregelnavn from "../../../../utils/sykmeldinger/avvisningsregelnavn";
 import { Alert, BodyShort, Box, Heading, List } from "@navikt/ds-react";

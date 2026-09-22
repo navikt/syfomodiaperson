@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { getKey } from "./Oppsummeringsvisning";
 import { toDatePrettyPrint } from "@/utils/datoUtils";
 import OppsummeringSporsmalscontainer from "./OppsummeringSporsmalscontainer";

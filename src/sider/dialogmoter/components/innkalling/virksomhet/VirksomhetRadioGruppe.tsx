@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 import { VirksomhetRadio } from "@/sider/dialogmoter/components/innkalling/virksomhet/VirksomhetRadio";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 import { Radio, RadioGroup } from "@navikt/ds-react";

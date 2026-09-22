@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode, useState } from "react";
+import { ReactElement, ReactNode, useState } from "react";
 import { VirksomhetInput } from "@/sider/dialogmoter/components/innkalling/virksomhet/VirksomhetInput";
 import { VirksomhetRadioGruppe } from "@/sider/dialogmoter/components/innkalling/virksomhet/VirksomhetRadioGruppe";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";

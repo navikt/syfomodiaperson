@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { SyntheticEvent, useRef, useState } from "react";
 import { Popover } from "@navikt/ds-react";
 import { FilesIcon } from "@navikt/aksel-icons";
 
@@ -12,7 +12,7 @@ export function CopyButton({ message, value, iconTitle }: Props) {
   const [showPopover, setShowPopover] = useState<boolean>(false);
   const triggerRef = useRef<HTMLSpanElement>(null);
 
-  function handleCopy(event: React.SyntheticEvent) {
+  function handleCopy(event: SyntheticEvent) {
     event.stopPropagation();
     setShowPopover(!showPopover);
     if (value) {

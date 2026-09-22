@@ -1,4 +1,3 @@
-import React from "react";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BodyShort, HGrid } from "@navikt/ds-react";

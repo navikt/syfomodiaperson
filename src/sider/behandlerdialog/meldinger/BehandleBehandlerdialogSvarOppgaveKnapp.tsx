@@ -1,4 +1,3 @@
-import React from "react";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { useBehandleAllPersonoppgaver } from "@/data/personoppgave/useBehandlePersonoppgave";
 import BehandlePersonOppgaveKnapp from "@/components/personoppgave/BehandlePersonOppgaveKnapp";

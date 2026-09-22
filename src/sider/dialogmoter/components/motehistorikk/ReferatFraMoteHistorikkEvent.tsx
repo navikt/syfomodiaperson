@@ -1,4 +1,3 @@
-import React from "react";
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import DocumentComponentVisning from "@/components/document/DocumentComponentVisning";

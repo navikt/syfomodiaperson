@@ -1,16 +1,18 @@
 import { dialogmoteRoutePath } from "@/AppRouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React from "react";
-import EndreDialogmoteSkjema from "@/sider/dialogmoter/components/endre/EndreDialogmoteSkjema";
+
+import EndreDialogmoteSkjema, {
+  MAX_LENGTH_ENDRE_BEGRUNNELSE,
+  texts,
+} from "@/sider/dialogmoter/components/endre/EndreDialogmoteSkjema";
 import {
   changeTextInput,
   clickButton,
   getTextInput,
   getTooLongText,
 } from "../testUtils";
-import { expect, describe, it, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { stubEndreApi } from "../stubs/stubIsdialogmote";
-import { texts } from "@/sider/dialogmoter/components/endre/EndreDialogmoteSkjema";
 import {
   dialogmote,
   dialogmoteMedBehandler,
@@ -24,7 +26,6 @@ import {
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MAX_LENGTH_ENDRE_BEGRUNNELSE } from "@/sider/dialogmoter/components/endre/EndreDialogmoteSkjema";
 import { expectedEndringDocuments } from "./testDataDocuments";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { renderWithRouter } from "../testRouterUtils";

@@ -3,8 +3,8 @@ import { ISHUSKELAPP_ROOT } from "@/apiConstants";
 import { post } from "@/api/axios";
 import {
   useMutation,
-  useQueryClient,
   type UseMutationResult,
+  useQueryClient,
 } from "@tanstack/react-query";
 import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useOppfolgingsoppgaver";
 import { aktivOppfolgingsoppgaveQueryKeys } from "@/data/oppfolgingsoppgave/useAktivOppfolgingsoppgave";

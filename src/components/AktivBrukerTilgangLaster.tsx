@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 import AppSpinner from "./AppSpinner";
 import Feilmelding from "./Feilmelding";
 import { useGetTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";

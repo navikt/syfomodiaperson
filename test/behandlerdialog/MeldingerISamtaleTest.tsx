@@ -7,9 +7,9 @@ import { render, screen } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import { MeldingerISamtale } from "@/sider/behandlerdialog/meldinger/samtale/MeldingerISamtale";
-import React from "react";
+
 import { queryClientWithMockData } from "../testQueryClient";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import {

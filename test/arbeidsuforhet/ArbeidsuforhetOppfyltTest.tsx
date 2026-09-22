@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import React from "react";
+
 import { queryClientWithMockData } from "../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { screen, within } from "@testing-library/react";

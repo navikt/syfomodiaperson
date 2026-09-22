@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import OppsummeringPerioder from "./OppsummeringPerioder";
 import OppsummeringDato from "./OppsummeringDato";
 import OppsummeringTall from "./OppsummeringTall";

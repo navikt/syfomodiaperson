@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { decoratorConfig } from "./decoratorConfig";
 import { fullNaisUrlIntern } from "@/utils/miljoUtil.ts";
 import { useValgtEnhet } from "@/context/ValgtEnhetContext.tsx";

@@ -3,7 +3,7 @@ import {
   useStartOfLatestOppfolgingstilfelle,
 } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
-import React from "react";
+
 import { BodyShort } from "@navikt/ds-react";
 
 const texts = {

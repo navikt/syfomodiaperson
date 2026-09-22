@@ -1,8 +1,14 @@
-import React, { useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import {
   StoreKey,
   useLocalStorageState,
-} from "../../hooks/useLocalStorageState";
+} from "@/hooks/useLocalStorageState.ts";
 
 export enum Malform {
   BOKMAL = "nb",
@@ -10,7 +16,7 @@ export enum Malform {
 }
 
 type MalformProviderProps = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 type MalformContextState = {
@@ -18,9 +24,9 @@ type MalformContextState = {
   malform: Malform;
 };
 
-export const MalformContext = React.createContext<
-  MalformContextState | undefined
->(undefined);
+export const MalformContext = createContext<MalformContextState | undefined>(
+  undefined,
+);
 
 export const MalformProvider = ({ children }: MalformProviderProps) => {
   const [storedMalform, setStoredMalform] = useLocalStorageState<Malform>(
@@ -47,7 +53,7 @@ export const MalformProvider = ({ children }: MalformProviderProps) => {
 };
 
 export const useMalform = () => {
-  const context = React.useContext(MalformContext);
+  const context = useContext(MalformContext);
   if (!context) {
     throw new Error(`useMalform must be used within a MalformProvider`);
   }

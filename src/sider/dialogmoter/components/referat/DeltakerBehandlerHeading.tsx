@@ -1,6 +1,5 @@
 import { MedisinskrinImage } from "../../../../../img/ImageComponents";
 import { Heading, HStack } from "@navikt/ds-react";
-import React from "react";
 
 interface Props {
   children: string;

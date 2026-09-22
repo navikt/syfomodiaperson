@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import { VurderingType } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import ManglendeMedvirkningNyVurdering from "@/sider/manglendemedvirkning/ManglendeMedvirkningNyVurdering";

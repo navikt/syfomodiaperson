@@ -1,5 +1,5 @@
-import React from "react";
 import { TextField } from "@navikt/ds-react";
+import { ReactElement } from "react";
 
 const texts = {
   label: "Oppgi virksomhetsnummer",
@@ -11,7 +11,7 @@ interface VirksomhetInputProps {
 
 export const VirksomhetInput = ({
   velgVirksomhet,
-}: VirksomhetInputProps): React.ReactElement => (
+}: VirksomhetInputProps): ReactElement => (
   <TextField
     className="mt-4 max-w-xs"
     id="virksomhetInput"

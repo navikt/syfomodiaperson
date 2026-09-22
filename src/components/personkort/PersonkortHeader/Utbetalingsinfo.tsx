@@ -1,4 +1,3 @@
-import React from "react";
 import { Alert, Tag } from "@navikt/ds-react";
 import { MaksdatoSummary } from "@/components/personkort/PersonkortHeader/MaksdatoSummary";
 import { useStartOfLatestOppfolgingstilfelle } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";

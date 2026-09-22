@@ -1,6 +1,6 @@
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { Box } from "@navikt/ds-react";
-import React from "react";
+
 import { MoteSvarHistorikkInnkalling } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkInnkalling.tsx";
 import { MoteSvarHistorikkEndringer } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkEndringer.tsx";
 import DialogmoteHistorikkHeader from "@/sider/dialogmoter/components/motehistorikk/DialogmoteHistorikkHeader.tsx";

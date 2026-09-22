@@ -1,8 +1,5 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes.ts";
-import {
-  addDays,
-  tilLesbarPeriodeMedArUtenManednavn,
-} from "@/utils/datoUtils.ts";
+import { addDays } from "@/utils/datoUtils.ts";
 import dayjs from "dayjs";
 
 export interface SoknaderQueryDTO {

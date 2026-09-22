@@ -1,6 +1,5 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import VedtakInfoPanel from "@/sider/frisktilarbeid/VedtakInfoPanel";
 import { createVedtak } from "./frisktilarbeidTestData";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";

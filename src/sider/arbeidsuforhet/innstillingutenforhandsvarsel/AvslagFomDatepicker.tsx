@@ -1,6 +1,5 @@
 import { useController, useFormContext } from "react-hook-form";
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
-import React from "react";
 
 const texts = {
   label: "Vilkåret er ikke oppfylt fra og med dato (obligatorisk)",

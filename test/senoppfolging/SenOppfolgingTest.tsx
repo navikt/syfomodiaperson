@@ -4,7 +4,7 @@ import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithMockData } from "../testQueryClient";
-import React from "react";
+
 import SenOppfolging from "@/sider/senoppfolging/SenOppfolging";
 import {
   ARBEIDSTAKER_DEFAULT,

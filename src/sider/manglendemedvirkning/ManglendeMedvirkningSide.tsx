@@ -1,4 +1,3 @@
-import React from "react";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import Sidetopp from "@/components/side/Sidetopp";
 import Side from "@/components/side/Side";

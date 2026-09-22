@@ -2,8 +2,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen, within } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
-import React from "react";
-import { expect, describe, it, beforeEach } from "vitest";
+
+import { beforeEach, describe, expect, it } from "vitest";
 import {
   MeldingDTO,
   PaminnelseDTO,

@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { formaterOrgnr } from "@/utils";
 import { lederHasActiveSykmelding } from "@/utils/ledereUtils";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";

@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { useParams } from "react-router-dom";
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/sider/dialogmoter/components/BrukerKanIkkeVarslesPapirpostAdvarsel";
