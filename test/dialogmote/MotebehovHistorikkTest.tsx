@@ -2,14 +2,14 @@ import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithMockData } from "../testQueryClient";
-import React from "react";
+
 import MotebehovHistorikk from "@/sider/dialogmoter/components/motehistorikk/MotebehovHistorikk";
 import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import {
-  svartNeiMotebehovArbeidsgiverUbehandletMock,
   meldtMotebehovArbeidstakerBehandletMock,
   motebehovMock,
+  svartNeiMotebehovArbeidsgiverUbehandletMock,
 } from "@/mocks/syfomotebehov/motebehovMock";
 
 let queryClient: QueryClient;

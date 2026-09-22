@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 import { IconHeader } from "@/components/IconHeader";
 import { Box } from "@navikt/ds-react";
 

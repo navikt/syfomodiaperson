@@ -1,5 +1,4 @@
 import { ArrowUndoIcon } from "@navikt/aksel-icons";
-import React from "react";
 
 export const ReturLegeerklaringWarningIcon = () => (
   <ArrowUndoIcon

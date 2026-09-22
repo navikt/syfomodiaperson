@@ -1,4 +1,3 @@
-import React from "react";
 import { render } from "@testing-library/react";
 import {
   MemoryRouter,
@@ -6,9 +5,10 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
+import { ReactNode } from "react";
 
 export const renderWithRouter = (
-  element: React.ReactNode,
+  element: ReactNode,
   path: string,
   initialEntries?: MemoryRouterProps["initialEntries"],
 ) => {

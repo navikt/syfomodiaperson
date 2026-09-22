@@ -1,6 +1,6 @@
 import { PersonIcon } from "@navikt/aksel-icons";
 import { Heading, HStack } from "@navikt/ds-react";
-import React from "react";
+
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 
 export const DeltakerArbeidstakerHeading = () => {

@@ -1,4 +1,3 @@
-import React from "react";
 import { useBehandlePersonoppgave } from "@/data/personoppgave/useBehandlePersonoppgave";
 import { StatusKanImage } from "../../../../img/ImageComponents";
 import { toDatePrettyPrint } from "@/utils/datoUtils";

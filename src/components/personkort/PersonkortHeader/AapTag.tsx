@@ -1,6 +1,6 @@
 import { Tag } from "@navikt/ds-react";
 import { AapStatusDTO } from "@/data/aap/aapTypes";
-import React from "react";
+
 import dayjs from "dayjs";
 
 const texts = {

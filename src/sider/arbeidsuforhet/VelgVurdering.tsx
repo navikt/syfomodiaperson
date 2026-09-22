@@ -1,4 +1,3 @@
-import React from "react";
 import { BodyShort, Box, Button, Heading, ReadMore } from "@navikt/ds-react";
 import { arbeidsuforhetPath } from "@/AppRouter";
 import { useNavigate } from "react-router-dom";

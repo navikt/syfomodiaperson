@@ -1,6 +1,5 @@
 import { FlexColumn, FlexRow, PaddingSize } from "@/components/Layout";
 import { BodyShort, Heading } from "@navikt/ds-react";
-import React from "react";
 
 interface VurderAktivitetskravSkjemaHeadingProps {
   title: string;

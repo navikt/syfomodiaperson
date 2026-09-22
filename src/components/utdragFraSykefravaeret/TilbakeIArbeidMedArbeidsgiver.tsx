@@ -1,4 +1,3 @@
-import React from "react";
 import { TilbakeIArbeidCheckboxMedSporsmalOgDato } from "@/components/utdragFraSykefravaeret/TilbakeIArbeidCheckboxMedSporsmalOgDato";
 import { FriskmeldingDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BodyShort, Checkbox, VStack } from "@navikt/ds-react";

@@ -1,4 +1,3 @@
-import React from "react";
 import { lpsPlanerWithActiveTilfelle } from "@/utils/oppfolgingsplanUtils";
 import {
   restdatoTilLesbarDato,
@@ -18,6 +17,7 @@ import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/
 import { Alert, Heading, Link, Loader } from "@navikt/ds-react";
 import { useOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/useOppfolgingsplaner";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
+import { ReactNode } from "react";
 
 const texts = {
   header: "Oppfølgingsplan",
@@ -27,7 +27,7 @@ const texts = {
     "Noe gikk galt ved henting av oppfølgingsplaner. Vennligst prøv igjen senere.",
 };
 
-function AktivPlan({ children }: { children: React.ReactNode }) {
+function AktivPlan({ children }: { children: ReactNode }) {
   return <div className="mt-2 mb-4 [&_a]:capitalize">{children}</div>;
 }
 

@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import GlobalNavigasjon, {
   Menypunkter,
 } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import React from "react";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { beforeEach, describe, expect, it } from "vitest";
 import { MemoryRouter } from "react-router-dom";

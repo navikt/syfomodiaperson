@@ -1,10 +1,10 @@
 import { DocumentComponentDto } from "@/data/documentcomponent/documentComponentTypes";
 import { useDocumentComponents } from "@/hooks/useDocumentComponents";
 import {
+  createBulletPoints,
   createHeaderH1,
   createHeaderH2,
   createHeaderH3,
-  createBulletPoints,
   createParagraph,
 } from "@/utils/documentComponentUtils";
 import {

@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { senesteTom, tidligsteFom } from "@/utils/periodeUtils";
@@ -8,7 +8,7 @@ import {
   SykmeldingStatus,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
-import { Heading, LinkPanel, List, Box } from "@navikt/ds-react";
+import { Box, Heading, LinkPanel, List } from "@navikt/ds-react";
 import styled from "styled-components";
 import { PapirsykmeldingTag } from "@/components/PapirsykmeldingTag";
 import { erEkstraInformasjonISykmeldingen } from "@/utils/sykmeldinger/sykmeldingUtils";

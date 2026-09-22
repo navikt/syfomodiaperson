@@ -1,4 +1,3 @@
-import React from "react";
 import { BodyShort, CopyButton as CopyButtonAksel } from "@navikt/ds-react";
 import { CheckmarkIcon } from "@navikt/aksel-icons";
 

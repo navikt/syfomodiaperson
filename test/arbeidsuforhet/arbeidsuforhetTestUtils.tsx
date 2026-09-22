@@ -3,12 +3,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import { NotificationContext } from "@/context/notification/NotificationContext";
-import React from "react";
+
 import type { MemoryRouterProps } from "react-router-dom";
+import { ReactNode } from "react";
 
 export const renderArbeidsuforhetSide = (
   queryClient: QueryClient,
-  element: React.ReactNode,
+  element: ReactNode,
   path: string,
   initialEntries?: MemoryRouterProps["initialEntries"],
 ) =>

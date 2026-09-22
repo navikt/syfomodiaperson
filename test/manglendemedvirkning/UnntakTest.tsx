@@ -10,7 +10,7 @@ import {
 } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { getSettUnntakDocument } from "./vurderingDocuments";
-import React from "react";
+
 import { renderWithRouter } from "../testRouterUtils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";

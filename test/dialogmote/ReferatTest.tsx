@@ -1,4 +1,3 @@
-import React from "react";
 import Referat, {
   MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE,
   MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE,

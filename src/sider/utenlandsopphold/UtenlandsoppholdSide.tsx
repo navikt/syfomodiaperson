@@ -1,4 +1,3 @@
-import React from "react";
 import Side from "@/components/side/Side";
 import Sidetopp from "@/components/side/Sidetopp";
 import SideLaster from "@/components/side/SideLaster";
@@ -12,6 +11,7 @@ import { utenlandsoppholdSurvey } from "@/components/lumi/utenlandsoppholdSurvey
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks.ts";
 import VeiledningUtenlandsopphold from "./VeiledningUtenlandsopphold";
 import { VStack } from "@navikt/ds-react";
+import { ReactElement } from "react";
 
 const texts = {
   title: "Søknad om sykepenger under opphold utenfor EU/EØS",
@@ -19,8 +19,8 @@ const texts = {
 
 interface Props {
   children:
-    | React.ReactElement<typeof UtenlandsoppholdSoknader>
-    | React.ReactElement<typeof UtenlandsoppholdSoknad>;
+    | ReactElement<typeof UtenlandsoppholdSoknader>
+    | ReactElement<typeof UtenlandsoppholdSoknad>;
 }
 
 export function UtenlandsoppholdSide({ children }: Props) {

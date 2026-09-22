@@ -1,4 +1,3 @@
-import React from "react";
 import { KartleggingssporsmalRadioGroupSvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalRadioGroupSvar";
 import { KartleggingssporsmalTextSvar } from "@/sider/kartleggingssporsmal/skjemasvar/KartleggingssporsmalTextSvar";
 import {

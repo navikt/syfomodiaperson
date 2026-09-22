@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "@navikt/ds-react";
 import { ISBEHANDLERDIALOG_ROOT } from "@/apiConstants";
 import { MeldingDTO } from "@/data/behandlerdialog/behandlerdialogTypes";

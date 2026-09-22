@@ -1,6 +1,5 @@
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
 import { useController, useFormContext } from "react-hook-form";
-import React from "react";
 
 const texts = {
   label: "Frist (obligatorisk)",

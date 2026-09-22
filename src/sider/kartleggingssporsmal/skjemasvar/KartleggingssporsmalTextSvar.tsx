@@ -1,5 +1,5 @@
 import { Textarea } from "@navikt/ds-react";
-import React from "react";
+
 import { KartleggingssporsmalTextFieldSnapshot } from "@/data/kartleggingssporsmal/kartleggingssporsmalSkjemasvarTypes";
 
 interface Props {

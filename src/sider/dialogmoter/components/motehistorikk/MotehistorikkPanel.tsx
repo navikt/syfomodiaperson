@@ -1,4 +1,3 @@
-import React from "react";
 import {
   DialogmoteDTO,
   DialogmoteStatus,
@@ -12,6 +11,7 @@ import { IkkeAktuellVurdering } from "@/sider/dialogmoter/hooks/useGetDialogmote
 import MoteHistorikkIkkeAktuell from "@/sider/dialogmoter/components/motehistorikk/MoteHistorikkIkkeAktuell";
 import AvlystMoteHistorikkEvent from "@/sider/dialogmoter/components/motehistorikk/AvlystMoteHistorikkEvent";
 import ReferatFraMoteHistorikkEvent from "@/sider/dialogmoter/components/motehistorikk/ReferatFraMoteHistorikkEvent";
+import { ReactNode } from "react";
 
 const texts = {
   header: "Møtehistorikk",
@@ -22,7 +22,7 @@ const texts = {
 
 interface HistorikkEvent {
   eventDate: Date;
-  content: React.ReactNode;
+  content: ReactNode;
 }
 
 function createHistorikkEvents(

@@ -1,4 +1,3 @@
-import React from "react";
 import { DraftTextDTO, useDraftQuery } from "@/hooks/useDraftQuery";
 import SendForhandsvarselSkjema from "@/sider/arbeidsuforhet/SendForhandsvarselSkjema";
 import AppSpinner from "@/components/AppSpinner";

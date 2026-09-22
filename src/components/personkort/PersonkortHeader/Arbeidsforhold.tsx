@@ -1,4 +1,3 @@
-import React from "react";
 import { BodyShort, Skeleton } from "@navikt/ds-react";
 import { useArbeidsforholdQuery } from "@/data/arbeidsforhold/arbeidsforholdQueryHooks";
 import {
@@ -7,6 +6,7 @@ import {
 } from "@/data/arbeidsforhold/ArbeidsforholdDTO";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { capitalizeAllWords } from "@/utils/stringUtils.ts";
+import { ReactNode } from "react";
 
 const texts = {
   label: `Arbeidsforhold`,
@@ -54,7 +54,7 @@ export function Arbeidsforhold() {
     aktiveArbeidsforholdSortertEtterHoyestStillingsprosent.length -
     visibleArbeidsforhold.length;
 
-  let content: React.ReactNode;
+  let content: ReactNode;
 
   if (aktiveArbeidsforholdSortertEtterHoyestStillingsprosent.length > 0) {
     content = (

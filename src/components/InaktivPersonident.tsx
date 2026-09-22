@@ -1,5 +1,5 @@
 import { Alert, BodyShort, Button, Link, Modal } from "@navikt/ds-react";
-import React, { ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 import { usePostAktivBruker } from "@/data/modiacontext/usePostAktivBruker";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 

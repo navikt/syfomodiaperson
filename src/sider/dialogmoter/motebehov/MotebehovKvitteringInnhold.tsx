@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
 import {
   MotebehovIkkeSvartImage,

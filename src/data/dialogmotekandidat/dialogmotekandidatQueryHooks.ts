@@ -1,12 +1,12 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { get, post } from "@/api/axios";
 import { ISDIALOGMOTE_ROOT, ISDIALOGMOTEKANDIDAT_ROOT } from "@/apiConstants";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
-  DialogmotekandidatDTO,
-  DialogmotekandidatHistorikkDTO,
   AvventDTO,
   CreateAvventDTO,
+  DialogmotekandidatDTO,
+  DialogmotekandidatHistorikkDTO,
 } from "@/data/dialogmotekandidat/dialogmotekandidatTypes";
 import { minutesToMillis } from "@/utils/utils";
 import { ReferatDTO } from "@/sider/dialogmoter/types/dialogmoteReferatTypes";

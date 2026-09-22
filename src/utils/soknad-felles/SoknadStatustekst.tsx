@@ -1,4 +1,3 @@
-import React from "react";
 import { tilLesbarDatoMedArstall } from "../datoUtils";
 import { formaterOrgnr } from "@/utils";
 import {

@@ -1,4 +1,3 @@
-import React from "react";
 import { Alert, BodyShort, Label } from "@navikt/ds-react";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { AvventDTO } from "@/data/dialogmotekandidat/dialogmotekandidatTypes";

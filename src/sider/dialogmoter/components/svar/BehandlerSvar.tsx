@@ -4,7 +4,7 @@ import {
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { getSvarTekst } from "@/utils/dialogmoteUtils";
 import { SvarIcon } from "@/sider/dialogmoter/components/svar/SvarIcon";
-import React from "react";
+
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { SvarDetaljer } from "@/sider/dialogmoter/components/svar/SvarDetaljer";
 import { EkspanderbartSvarPanel } from "@/sider/dialogmoter/components/svar/EkspanderbartSvarPanel";

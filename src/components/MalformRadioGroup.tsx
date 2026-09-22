@@ -1,4 +1,3 @@
-import React from "react";
 import { Radio, RadioGroup } from "@navikt/ds-react";
 import { Malform, useMalform } from "@/context/malform/MalformContext";
 

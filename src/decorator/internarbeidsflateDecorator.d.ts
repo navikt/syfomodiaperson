@@ -83,8 +83,8 @@ interface InternarbeidsflateDecoratorElement extends HTMLElement {
 declare namespace React {
   namespace JSX {
     interface IntrinsicElements {
-      "internarbeidsflate-decorator": React.HTMLAttributes<HTMLElement> &
-        React.RefAttributes<InternarbeidsflateDecoratorElement> &
+      "internarbeidsflate-decorator": HTMLAttributes<HTMLElement> &
+        RefAttributes<InternarbeidsflateDecoratorElement> &
         DecoratorElementAttributes;
     }
   }

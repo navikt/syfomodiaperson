@@ -1,4 +1,3 @@
-import React from "react";
 import { BodyLong, BodyShort, Checkbox } from "@navikt/ds-react";
 
 const tekster = {

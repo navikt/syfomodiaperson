@@ -1,4 +1,3 @@
-import React from "react";
 import Side from "@/components/side/Side";
 import Sidetopp from "@/components/side/Sidetopp";
 import SideLaster from "@/components/side/SideLaster";

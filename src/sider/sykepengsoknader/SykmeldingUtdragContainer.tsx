@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import SykmeldingUtdrag from "./soknad-felles/SykmeldingUtdrag";
 import {
   Soknadstype,

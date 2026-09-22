@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { SvarType } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import {
   CheckmarkCircleFillIcon,

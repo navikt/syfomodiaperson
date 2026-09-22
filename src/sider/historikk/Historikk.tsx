@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import { ChangeEvent, ReactElement, useState } from "react";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import {
   HistorikkEvent,
@@ -174,9 +174,7 @@ export default function Historikk({
     }
   }
 
-  function sykefravaerstilfelleOnChange(
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) {
+  function sykefravaerstilfelleOnChange(event: ChangeEvent<HTMLSelectElement>) {
     setSelectedTilfelleIndex(Number(event.target.value));
   }
 

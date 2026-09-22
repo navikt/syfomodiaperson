@@ -5,7 +5,6 @@ import {
   VeiledningListForItems,
 } from "@/components/veiledning/VeiledningListForItems";
 import { Box, Heading } from "@navikt/ds-react";
-import React from "react";
 
 const linkRutineYrkesskade =
   "https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Vurdering-av-%C3%A5rsakssammenheng-ved-yrkesskade-yrkessykdm.aspx";

@@ -3,7 +3,7 @@ import {
   DialogmoteStatus,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { tilDatoMedManedNavn } from "@/utils/datoUtils";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Accordion, BodyShort, HStack } from "@navikt/ds-react";
 import DialogmoteVeilederInfo from "@/sider/dialogmoter/components/DialogmoteVeilederInfo";
 import { MoteSvarHistorikkInnkalling } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkInnkalling";

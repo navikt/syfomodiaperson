@@ -1,12 +1,12 @@
 import { List } from "@navikt/ds-react";
-import React from "react";
+import { ReactNode } from "react";
 
 export function VeiledningList({
   as,
   children,
 }: {
   as: "ol" | "ul";
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <List

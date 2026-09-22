@@ -1,4 +1,3 @@
-import React from "react";
 import { Accordion, BodyShort, Box, Heading } from "@navikt/ds-react";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { Paragraph } from "@/components/Paragraph";

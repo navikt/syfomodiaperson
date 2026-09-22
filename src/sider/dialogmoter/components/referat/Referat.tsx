@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import {
   DialogmotedeltakerBehandlerDTO,

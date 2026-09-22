@@ -4,7 +4,7 @@ import {
   IkkeAktuellArsak,
   VarselType,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import React from "react";
+
 import { useVurderAktivitetskrav } from "@/data/aktivitetskrav/useVurderAktivitetskrav";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { ButtonRow } from "@/components/Layout";

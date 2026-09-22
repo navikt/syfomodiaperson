@@ -10,7 +10,7 @@ import {
   AktivitetskravVurderingDTO,
   AvventVurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import {
   tilDatoMedManedNavn,
@@ -19,7 +19,7 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
-import React from "react";
+
 import { AktivitetskravVurderingAlert } from "@/sider/aktivitetskrav/vurdering/AktivitetskravVurderingAlert";
 import { queryClientWithMockData } from "../testQueryClient";
 

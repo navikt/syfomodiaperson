@@ -7,7 +7,7 @@ import {
   waitFor,
   within,
 } from "@testing-library/react";
-import React from "react";
+
 import { VEILEDER_DEFAULT } from "@/mocks/common/mockConstants";
 import {
   EditOppfolgingsoppgaveRequestDTO,

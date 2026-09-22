@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import SykmeldingLinkPanel from "./SykmeldingLinkPanel";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";

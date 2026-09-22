@@ -5,7 +5,7 @@ import { renderWithRouter } from "../testRouterUtils";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
-import React from "react";
+
 import { manglendeMedvirkningPath } from "@/AppRouter";
 import {
   IkkeAktuellVurdering,

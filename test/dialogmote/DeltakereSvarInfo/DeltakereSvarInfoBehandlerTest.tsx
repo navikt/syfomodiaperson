@@ -11,8 +11,8 @@ import {
   dialogmoteMedBehandler,
 } from "../testData";
 import { render, screen } from "@testing-library/react";
-import React from "react";
-import { expect, describe, it, beforeEach } from "vitest";
+
+import { beforeEach, describe, expect, it } from "vitest";
 import {
   queryClientWithMockData,
   testQueryClient,

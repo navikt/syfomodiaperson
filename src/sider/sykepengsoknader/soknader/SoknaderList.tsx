@@ -1,4 +1,3 @@
-import React from "react";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import SykepengesoknadListItem from "@/sider/sykepengsoknader/soknader/SykepengesoknadListItem";

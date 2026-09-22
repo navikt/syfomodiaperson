@@ -1,5 +1,5 @@
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
-import React from "react";
+
 import { EksternLenke } from "@/components/EksternLenke";
 
 const texts = {

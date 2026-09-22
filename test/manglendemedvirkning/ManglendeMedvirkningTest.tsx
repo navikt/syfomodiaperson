@@ -6,7 +6,7 @@ import { manglendeMedvirkningQueryKeys } from "@/data/manglendemedvirkning/mangl
 import { screen } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
-import React from "react";
+
 import {
   VurderingResponseDTO,
   VurderingType,

@@ -1,5 +1,5 @@
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import dayjs from "dayjs";
 import { dagerMellomDatoer, getDatoKomponenter } from "@/utils/datoUtils";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";

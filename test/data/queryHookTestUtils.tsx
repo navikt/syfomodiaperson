@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React from "react";
+
 import { modiacontextQueryKeys } from "@/data/modiacontext/modiacontextQueryHooks";
 import { AKTIV_BRUKER_DEFAULT } from "@/mocks/common/mockConstants";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";

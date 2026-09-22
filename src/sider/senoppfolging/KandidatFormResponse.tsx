@@ -1,6 +1,5 @@
 import { useSenOppfolgingSvarQuery } from "@/data/senoppfolging/useSenOppfolgingSvarQuery";
 import { Alert, BodyShort, Label, Loader } from "@navikt/ds-react";
-import React from "react";
 
 const texts = {
   pending: "Henter spørsmål og svar...",

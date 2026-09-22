@@ -18,11 +18,12 @@ import {
 } from "@/mocks/common/mockConstants";
 import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React from "react";
+
 import { queryClientWithMockData } from "../testQueryClient";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { MoteSvarHistorikkGroupedByMote } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkGroupedByMote.tsx";
+
 let queryClient: QueryClient;
 
 const narmesteLederNavnMedVirksomhet = `${NARMESTE_LEDER_DEFAULT.navn} (${VIRKSOMHET_PONTYPANDY.virksomhetsnavn})`;

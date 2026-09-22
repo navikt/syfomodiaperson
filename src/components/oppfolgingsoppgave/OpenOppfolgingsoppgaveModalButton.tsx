@@ -1,5 +1,5 @@
 import { Button } from "@navikt/ds-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import OppfolgingsoppgaveModal from "@/components/oppfolgingsoppgave/OppfolgingsoppgaveModal";
 import { PlusCircleIcon } from "@navikt/aksel-icons";
 

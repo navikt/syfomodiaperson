@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { Component, ReactNode } from "react";
 import styled from "styled-components";
 import { ApiError, defaultErrorTexts, ErrorType } from "@/api/errors";
 import { Alert, Link } from "@navikt/ds-react";
@@ -39,8 +39,8 @@ type State = {
   hasError: boolean;
 };
 
-class ErrorBoundary extends React.Component<ErrorBoundaryProps, State> {
-  constructor(props: any) {
+class ErrorBoundary extends Component<ErrorBoundaryProps, State> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }

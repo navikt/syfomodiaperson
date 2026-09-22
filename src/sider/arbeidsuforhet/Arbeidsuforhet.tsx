@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import { VurderingType } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import NyVurdering from "@/sider/arbeidsuforhet/NyVurdering";

@@ -3,7 +3,7 @@ import {
   CheckmarkCircleIcon,
   ExclamationmarkTriangleIcon,
 } from "@navikt/aksel-icons";
-import React from "react";
+
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import {
   isActiveExistingVedtak,

@@ -1,5 +1,5 @@
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
-import { get, put, deleteRequest } from "@/api/axios";
+import { deleteRequest, get, put } from "@/api/axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export type DraftCategory =

@@ -9,7 +9,7 @@ import {
   sykmeldingerInnenforOppfolgingstilfelle,
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { ExpansionCard, Heading } from "@navikt/ds-react";
-import React from "react";
+
 import SykmeldingUtdragFraSykefravaretVisning from "./SykmeldingUtdragFraSykefravaretVisning";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { SykmeldingTittel } from "@/components/utdragFraSykefravaeret/SykmeldingTittel";

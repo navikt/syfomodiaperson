@@ -1,4 +1,3 @@
-import React from "react";
 import { restdatoTildato } from "@/utils/datoUtils";
 import { PersonKortVirksomhetHeader } from "./PersonKortVirksomhetHeader";
 import EpostButton from "../EpostButton";

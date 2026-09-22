@@ -1,5 +1,5 @@
 import { Box, Heading, List } from "@navikt/ds-react";
-import React from "react";
+
 import { EksternLenke } from "@/components/EksternLenke";
 import { VeiledningList } from "@/components/veiledning/VeiledningList";
 import { VeiledningBox } from "@/components/veiledning/VeiledningBox";

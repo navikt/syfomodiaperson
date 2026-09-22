@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React, { createRef } from "react";
+import { createRef } from "react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithMockData } from "../../../testQueryClient";
 import {

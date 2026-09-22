@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import Side from "../../../components/side/Side";
 import AlleSykmeldinger from "../sykmeldinger/AlleSykmeldinger";
 import SideLaster from "../../../components/side/SideLaster";

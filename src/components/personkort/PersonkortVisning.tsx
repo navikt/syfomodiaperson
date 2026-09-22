@@ -1,10 +1,10 @@
-import React from "react";
 import { PERSONKORTVISNING_TYPE } from "@/konstanter";
 import { PersonkortLege } from "./PersonkortLege";
 import { PersonkortLedere } from "./ledere/PersonkortLedere";
 import { PersonkortSykmeldt } from "./PersonkortSykmeldt";
 import { PersonkortEnhet } from "./PersonkortEnhet";
 import { PersonkortSikkerhetstiltak } from "@/components/personkort/PersonkortSikkerhetstiltak";
+import { ReactNode } from "react";
 
 interface Props {
   visning: string;
@@ -13,7 +13,7 @@ interface Props {
 export function PersonkortVisning({ visning }: Props) {
   const { LEGE, LEDER, ENHET, SIKKERHETSTILTAK } = PERSONKORTVISNING_TYPE;
 
-  function visningType(): React.ReactNode {
+  function visningType(): ReactNode {
     switch (visning) {
       case LEGE:
         return <PersonkortLege />;
