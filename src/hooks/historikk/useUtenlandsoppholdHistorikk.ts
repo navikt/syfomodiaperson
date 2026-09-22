@@ -3,22 +3,39 @@ import { HistorikkEvent } from "@/data/historikk/types/historikkTypes";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { BrukerinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
 import { useUtenlandsoppholdSoknanderQuery } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks.ts";
-import { Soknad } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
+import {
+  Behandling,
+  Periode,
+  Soknad,
+} from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
 import { statusTexts } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknader.tsx";
+import { ikkeAktuellArsakTexts } from "@/sider/utenlandsopphold/ikkeAktuellTexts.ts";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils.ts";
 
-function toExpandableContent(vedtak: Soknad["vedtak"]): string {
-  if (!vedtak) return "";
-
-  const vedtakText = `Vedtaket ble ${statusTexts[vedtak.utfall].toLocaleLowerCase()}.`;
-  const periodeText =
-    vedtak.innvilgedePerioder.length > 0
-      ? `\n\nInnvilgede perioder: ${vedtak.innvilgedePerioder.map((periode) => tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom)).join(", ")}`
-      : "";
-  const begrunnelseText = vedtak.begrunnelse
-    ? `\n\nBegrunnelse: ${vedtak.begrunnelse}`
+function tilInnvilgedePerioderText(perioder: Periode[]): string {
+  return perioder.length > 0
+    ? `\n\nInnvilgede perioder: ${perioder
+        .map((periode) =>
+          tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom),
+        )
+        .join(", ")}`
     : "";
-  return `${vedtakText}${periodeText}${begrunnelseText}`;
+}
+
+function toExpandableContent(behandling: Behandling): string {
+  const vedtakText = `Behandlet som ${statusTexts[behandling.utfall].toLocaleLowerCase()}.`;
+
+  switch (behandling.utfall) {
+    case "INNVILGET":
+      return `${vedtakText}${tilInnvilgedePerioderText(behandling.innvilgedePerioder)}`;
+    case "DELVIS_INNVILGET":
+      return `${vedtakText}${tilInnvilgedePerioderText(behandling.innvilgedePerioder)}\n\nBegrunnelse: ${behandling.begrunnelse}`;
+    case "AVSLAG":
+    case "HENLAGT":
+      return `${vedtakText}\n\nBegrunnelse: ${behandling.begrunnelse}`;
+    case "IKKE_AKTUELL":
+      return `${vedtakText}\n\nGrunn: ${ikkeAktuellArsakTexts[behandling.ikkeAktuellArsak]}`;
+  }
 }
 
 function createEventsFromSoknad(soknad: Soknad, person: BrukerinfoDTO) {
@@ -30,12 +47,13 @@ function createEventsFromSoknad(soknad: Soknad, person: BrukerinfoDTO) {
       kilde: "UTENLANDSOPPHOLD",
     });
   }
-  if (soknad.vedtak) {
+  const { behandling } = soknad;
+  if (behandling) {
     events.push({
-      tekst: `${soknad.vedtak.fattetAv} fattet vedtak om sykepenger under opphold utenfor EU/EØS`,
-      tidspunkt: new Date(soknad.vedtak.fattetTidspunkt),
+      tekst: `${behandling.behandletAv} behandlet søknad om sykepenger under opphold utenfor EU/EØS`,
+      tidspunkt: new Date(behandling.behandletTidspunkt),
       kilde: "UTENLANDSOPPHOLD",
-      expandableContent: toExpandableContent(soknad.vedtak),
+      expandableContent: toExpandableContent(behandling),
     });
   }
   return events;

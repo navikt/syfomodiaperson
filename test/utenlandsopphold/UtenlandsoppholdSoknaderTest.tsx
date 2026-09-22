@@ -7,6 +7,7 @@ import { utenlandsoppholdQueryKeys } from "@/data/utenlandsopphold/utenlandsopph
 import {
   gammelSoknadMock,
   mockSoknaderResponse,
+  soknadIkkeAktuellMock,
   soknadMedVedtakMock,
   soknadUtenVedtakMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold";
@@ -63,9 +64,12 @@ describe("UtenlandsoppholdSoknader", () => {
       tilLesbarDatoMedArUtenManedNavn(soknadUtenVedtakMock.innsendtTidspunkt),
     );
     expect(rowHeaders[1].textContent).to.equal(
-      tilLesbarDatoMedArUtenManedNavn(soknadMedVedtakMock.innsendtTidspunkt),
+      tilLesbarDatoMedArUtenManedNavn(soknadIkkeAktuellMock.innsendtTidspunkt),
     );
     expect(rowHeaders[2].textContent).to.equal(
+      tilLesbarDatoMedArUtenManedNavn(soknadMedVedtakMock.innsendtTidspunkt),
+    );
+    expect(rowHeaders[3].textContent).to.equal(
       tilLesbarDatoMedArUtenManedNavn(gammelSoknadMock.innsendtTidspunkt),
     );
   });
@@ -130,8 +134,8 @@ describe("UtenlandsoppholdSoknader", () => {
     expect(
       await screen.findByText(
         `Behandlet ${tilLesbarDatoMedArUtenManedNavn(
-          soknadMedVedtakMock.vedtak!.fattetTidspunkt,
-        )} av ${soknadMedVedtakMock.vedtak!.fattetAv}`,
+          new Date(soknadMedVedtakMock.behandling!.behandletTidspunkt),
+        )} av ${soknadMedVedtakMock.behandling!.behandletAv}`,
       ),
     ).to.exist;
   });
@@ -154,6 +158,31 @@ describe("UtenlandsoppholdSoknader", () => {
 
     expect(
       await screen.findByText("Ingen mottatte søknader eller fattede vedtak"),
+    ).to.exist;
+  });
+
+  it("viser status og årsak for en søknad satt til ikke aktuell, uten knapp for å starte behandling", async () => {
+    stubSoknaderQuery({ soknader: [soknadIkkeAktuellMock] });
+
+    renderUtenlandsopphold();
+
+    expect(await screen.findByText("Ikke aktuell (Behandlet i Infotrygd)")).to
+      .exist;
+    expect(screen.queryByRole("button", { name: "Start behandling" })).to.not
+      .exist;
+  });
+
+  it("viser hvem som registrerte og når for en søknad satt til ikke aktuell", async () => {
+    stubSoknaderQuery({ soknader: [soknadIkkeAktuellMock] });
+
+    renderUtenlandsopphold();
+
+    expect(
+      await screen.findByText(
+        `Behandlet ${tilLesbarDatoMedArUtenManedNavn(
+          new Date(soknadIkkeAktuellMock.behandling!.behandletTidspunkt),
+        )} av ${soknadIkkeAktuellMock.behandling!.behandletAv}`,
+      ),
     ).to.exist;
   });
 });

@@ -72,6 +72,7 @@ import {
 import { utenlandsoppholdQueryKeys } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks.ts";
 import {
   mockSoknaderResponse,
+  soknadIkkeAktuellMock,
   soknadMedVedtakMock,
   soknadUtenVedtakMock,
 } from "@/mocks/isutenlandsopphold/mockIsutenlandsopphold.ts";
@@ -1112,17 +1113,17 @@ describe("Historikk", () => {
       expect(await screen.findAllByText("Historikk")).to.exist;
       expect(
         screen.getAllByRole("row", { name: /Utenlandsopphold/ }).length,
-      ).toBe(4);
+      ).toBe(6);
       expect(
         screen.getAllByText(
           `${ARBEIDSTAKER_DEFAULT_FULL_NAME} søkte om sykepenger under opphold utenfor EU/EØS`,
         ).length,
-      ).toBe(3);
+      ).toBe(4);
       expect(
-        screen.getByText(
-          "Z990000 fattet vedtak om sykepenger under opphold utenfor EU/EØS",
-        ),
-      ).to.exist;
+        screen.getAllByText(
+          "Z990000 behandlet søknad om sykepenger under opphold utenfor EU/EØS",
+        ).length,
+      ).toBe(2);
     });
 
     it("viser detaljer om vedtaket når raden utvides", async () => {
@@ -1134,7 +1135,7 @@ describe("Historikk", () => {
       renderHistorikk();
 
       expect(await screen.findAllByText("Historikk")).to.exist;
-      expect(screen.getByText(/Vedtaket ble delvis innvilget\./)).to.exist;
+      expect(screen.getByText(/Behandlet som delvis innvilget\./)).to.exist;
       expect(screen.getByText(/Innvilgede perioder: 01.08.2026 - 05.08.2026/))
         .to.exist;
       expect(
@@ -1142,6 +1143,19 @@ describe("Historikk", () => {
           /Begrunnelse: Vedtar bare de dagene det er meldt regn på Bali/,
         ),
       ).to.exist;
+    });
+
+    it("viser detaljer om ikke aktuell-behandlingen når raden utvides", async () => {
+      queryClient.setQueryData(
+        utenlandsoppholdQueryKeys.soknader(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({ soknader: [soknadIkkeAktuellMock] }),
+      );
+
+      renderHistorikk();
+
+      expect(await screen.findAllByText("Historikk")).to.exist;
+      expect(screen.getByText(/Behandlet som ikke aktuell\./)).to.exist;
+      expect(screen.getByText(/Grunn: Behandlet i Infotrygd/)).to.exist;
     });
 
     it("viser ikke fattet vedtak-tekst når søknaden ikke er behandlet", async () => {

@@ -1,8 +1,63 @@
 import { describe, expect, it } from "vitest";
 import {
   beregnAvslattePerioder,
+  DelvisInnvilgetBehandlingDTO,
+  InnvilgetBehandlingDTO,
+  parseBehandling,
   parsePeriode,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
+
+describe("parseBehandling", () => {
+  it("parser innvilget behandling med perioder", () => {
+    const behandling: InnvilgetBehandlingDTO = {
+      utfall: "INNVILGET",
+      behandletAv: "Z123456",
+      behandletTidspunkt: "2026-09-17T10:15:00",
+      innvilgedePerioder: [{ fom: "2026-09-20", tom: "2026-09-25" }],
+    };
+
+    const parsedBehandling = parseBehandling(behandling);
+
+    expect(parsedBehandling).to.deep.equal({
+      utfall: "INNVILGET",
+      behandletAv: "Z123456",
+      behandletTidspunkt: new Date("2026-09-17T10:15:00"),
+      innvilgedePerioder: [
+        {
+          fom: new Date(2026, 8, 20),
+          tom: new Date(2026, 8, 25),
+        },
+      ],
+    });
+    expect(behandling.behandletTidspunkt).to.equal("2026-09-17T10:15:00");
+    expect(behandling.innvilgedePerioder[0]).to.deep.equal({
+      fom: "2026-09-20",
+      tom: "2026-09-25",
+    });
+  });
+
+  it("parser delvis innvilget behandling med perioder", () => {
+    const behandling: DelvisInnvilgetBehandlingDTO = {
+      utfall: "DELVIS_INNVILGET",
+      behandletAv: "Z123456",
+      behandletTidspunkt: "2026-09-17T10:15:00",
+      innvilgedePerioder: [{ fom: "2026-09-20", tom: "2026-09-25" }],
+      begrunnelse: "Bare deler av perioden innvilges.",
+    };
+
+    const parsedBehandling = parseBehandling(behandling);
+
+    expect(parsedBehandling).to.deep.equal({
+      utfall: "DELVIS_INNVILGET",
+      behandletAv: "Z123456",
+      behandletTidspunkt: new Date("2026-09-17T10:15:00"),
+      innvilgedePerioder: [
+        { fom: new Date(2026, 8, 20), tom: new Date(2026, 8, 25) },
+      ],
+      begrunnelse: "Bare deler av perioden innvilges.",
+    });
+  });
+});
 
 describe("beregnAvslattePerioder", () => {
   it("regner ut avslått periode i starten av en søkt periode uten å miste dager pga tidssone-avvik", () => {

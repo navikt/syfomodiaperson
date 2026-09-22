@@ -1,10 +1,13 @@
 import { ISUTENLANDSOPPHOLD_ROOT } from "@/apiConstants";
 import {
+  IkkeAktuellArsakDTO,
   SoknadDTO,
   SoknaderResponseDTO,
+  SoknadHenleggelsePostDTO,
+  SoknadIkkeAktuellPostDTO,
+  SoknadResponseDTO,
   SoknadStatusDTO,
   SoknadVedtakPostDTO,
-  SoknadVedtakResponseDTO,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 import { http, HttpResponse } from "msw";
 import dayjs from "dayjs";
@@ -25,7 +28,7 @@ export const soknadUtenVedtakMock: SoknadDTO = {
       tom: "2026-09-12",
     },
   ],
-  vedtak: null,
+  behandling: null,
 };
 
 export const soknadMedVedtakMock: SoknadDTO = {
@@ -39,7 +42,7 @@ export const soknadMedVedtakMock: SoknadDTO = {
       tom: "2026-08-10",
     },
   ],
-  vedtak: {
+  behandling: {
     utfall: "DELVIS_INNVILGET",
     innvilgedePerioder: [
       {
@@ -47,9 +50,28 @@ export const soknadMedVedtakMock: SoknadDTO = {
         tom: "2026-08-05",
       },
     ],
-    fattetAv: "Z990000",
-    fattetTidspunkt: "2026-03-02T11:00:00",
+    behandletAv: "Z990000",
+    behandletTidspunkt: "2026-03-02T11:00:00",
     begrunnelse: "Vedtar bare de dagene det er meldt regn på Bali",
+  },
+};
+
+export const soknadIkkeAktuellMock: SoknadDTO = {
+  soknadId: "5d6e7f8a-9b0c-1d2e-3f4a-5b6c7d8e9f0a",
+  eksternId: "c7d8e9f0-1a2b-4c3d-9e8f-7a6b5c4d3e2f",
+  status: SoknadStatusDTO.IKKE_AKTUELL,
+  innsendtTidspunkt: "2026-08-10T10:00:00",
+  soktePerioder: [
+    {
+      fom: "2026-08-15",
+      tom: "2026-08-20",
+    },
+  ],
+  behandling: {
+    utfall: "IKKE_AKTUELL",
+    ikkeAktuellArsak: IkkeAktuellArsakDTO.BEHANDLET_I_INFOTRYGD,
+    behandletAv: "Z990000",
+    behandletTidspunkt: "2026-08-11T09:00:00",
   },
 };
 
@@ -68,11 +90,16 @@ export const gammelSoknadMock: SoknadDTO = {
       tom: "2026-06-12",
     },
   ],
-  vedtak: null,
+  behandling: null,
 };
 
 export const mockSoknaderResponse: SoknaderResponseDTO = {
-  soknader: [soknadUtenVedtakMock, gammelSoknadMock, soknadMedVedtakMock],
+  soknader: [
+    soknadUtenVedtakMock,
+    gammelSoknadMock,
+    soknadMedVedtakMock,
+    soknadIkkeAktuellMock,
+  ],
 };
 
 /**
@@ -84,28 +111,86 @@ export const mockSoknaderResponse: SoknaderResponseDTO = {
 export function byggOppdatertSoknadMedVedtak(
   soknad: SoknadDTO,
   vedtak: SoknadVedtakPostDTO,
-  fattetAv: string,
+  behandletAv: string,
+): SoknadDTO {
+  const behandletTidspunkt = dayjs().format("YYYY-MM-DDTHH:mm:ss");
+  switch (vedtak.utfall) {
+    case "INNVILGET":
+      return {
+        ...soknad,
+        status: SoknadStatusDTO.INNVILGET,
+        behandling: {
+          utfall: "INNVILGET",
+          innvilgedePerioder: vedtak.innvilgedePerioder,
+          behandletAv,
+          behandletTidspunkt,
+        },
+      };
+    case "DELVIS_INNVILGET":
+      return {
+        ...soknad,
+        status: SoknadStatusDTO.DELVIS_INNVILGET,
+        behandling: {
+          utfall: "DELVIS_INNVILGET",
+          innvilgedePerioder: vedtak.innvilgedePerioder,
+          behandletAv,
+          behandletTidspunkt,
+          begrunnelse: vedtak.begrunnelse ?? "",
+        },
+      };
+    case "AVSLAG":
+      return {
+        ...soknad,
+        status: SoknadStatusDTO.AVSLAG,
+        behandling: {
+          utfall: "AVSLAG",
+          behandletAv,
+          behandletTidspunkt,
+          begrunnelse: vedtak.begrunnelse ?? "",
+        },
+      };
+  }
+}
+
+/**
+ * Bygger en oppdatert søknad basert på en innsendt henleggelse. Delt mellom
+ * msw-handleren under og test-stubben i test/stubs/stubIsutenlandsopphold.ts.
+ */
+export function byggOppdatertSoknadMedHenleggelse(
+  soknad: SoknadDTO,
+  henleggelse: SoknadHenleggelsePostDTO,
+  behandletAv: string,
 ): SoknadDTO {
   return {
     ...soknad,
-    status: (() => {
-      switch (vedtak.utfall) {
-        case "INNVILGET":
-          return SoknadStatusDTO.INNVILGET;
-        case "DELVIS_INNVILGET":
-          return SoknadStatusDTO.DELVIS_INNVILGET;
-        case "HENLAGT":
-          return SoknadStatusDTO.HENLAGT;
-        default:
-          return SoknadStatusDTO.AVSLAG;
-      }
-    })(),
-    vedtak: {
-      utfall: vedtak.utfall,
-      innvilgedePerioder: vedtak.innvilgedePerioder,
-      fattetAv,
-      fattetTidspunkt: dayjs().format("YYYY-MM-DDTHH:mm:ss"),
-      begrunnelse: vedtak.begrunnelse,
+    status: SoknadStatusDTO.HENLAGT,
+    behandling: {
+      utfall: "HENLAGT",
+      behandletAv,
+      behandletTidspunkt: dayjs().format("YYYY-MM-DDTHH:mm:ss"),
+      begrunnelse: henleggelse.begrunnelse,
+    },
+  };
+}
+
+/**
+ * Bygger en oppdatert søknad basert på en innsendt ikke-aktuell-registrering.
+ * Delt mellom msw-handleren under og test-stubben i
+ * test/stubs/stubIsutenlandsopphold.ts.
+ */
+export function byggOppdatertSoknadMedIkkeAktuell(
+  soknad: SoknadDTO,
+  ikkeAktuell: SoknadIkkeAktuellPostDTO,
+  behandletAv: string,
+): SoknadDTO {
+  return {
+    ...soknad,
+    status: SoknadStatusDTO.IKKE_AKTUELL,
+    behandling: {
+      utfall: "IKKE_AKTUELL",
+      ikkeAktuellArsak: ikkeAktuell.arsak,
+      behandletAv,
+      behandletTidspunkt: dayjs().format("YYYY-MM-DDTHH:mm:ss"),
     },
   };
 }
@@ -118,7 +203,7 @@ export const mockIsutenlandsopphold = [
   http.post<
     { soknadId: string },
     SoknadVedtakPostDTO,
-    SoknadVedtakResponseDTO | string
+    SoknadResponseDTO | string
   >(
     `${ISUTENLANDSOPPHOLD_ROOT}/soknader/:soknadId/vedtak`,
     async ({ request, params }) => {
@@ -132,6 +217,62 @@ export const mockIsutenlandsopphold = [
       return existingSoknad
         ? HttpResponse.json({
             soknad: byggOppdatertSoknadMedVedtak(
+              existingSoknad,
+              body,
+              VEILEDER_IDENT_DEFAULT,
+            ),
+          })
+        : HttpResponse.text(`Did not find soknad with uuid ${soknadId}`, {
+            status: 400,
+          });
+    },
+  ),
+
+  http.post<
+    { soknadId: string },
+    SoknadHenleggelsePostDTO,
+    SoknadResponseDTO | string
+  >(
+    `${ISUTENLANDSOPPHOLD_ROOT}/soknader/:soknadId/henleggelse`,
+    async ({ request, params }) => {
+      const body = await request.json();
+      const soknadId = params.soknadId;
+
+      const existingSoknad = mockSoknaderResponse.soknader.find(
+        (soknad) => soknad.soknadId === soknadId,
+      );
+
+      return existingSoknad
+        ? HttpResponse.json({
+            soknad: byggOppdatertSoknadMedHenleggelse(
+              existingSoknad,
+              body,
+              VEILEDER_IDENT_DEFAULT,
+            ),
+          })
+        : HttpResponse.text(`Did not find soknad with uuid ${soknadId}`, {
+            status: 400,
+          });
+    },
+  ),
+
+  http.post<
+    { soknadId: string },
+    SoknadIkkeAktuellPostDTO,
+    SoknadResponseDTO | string
+  >(
+    `${ISUTENLANDSOPPHOLD_ROOT}/soknader/:soknadId/ikke-aktuell`,
+    async ({ request, params }) => {
+      const body = await request.json();
+      const soknadId = params.soknadId;
+
+      const existingSoknad = mockSoknaderResponse.soknader.find(
+        (soknad) => soknad.soknadId === soknadId,
+      );
+
+      return existingSoknad
+        ? HttpResponse.json({
+            soknad: byggOppdatertSoknadMedIkkeAktuell(
               existingSoknad,
               body,
               VEILEDER_IDENT_DEFAULT,
