@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, render, screen } from "@testing-library/react";
-import React from "react";
+
 import Nokkelinformasjon from "@/sider/nokkelinformasjon/Nokkelinformasjon";
 import { addDays } from "@/utils/datoUtils";
 import {
@@ -10,7 +10,7 @@ import {
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 import { PeriodetypeDTO } from "@/data/sykmelding/types/PeriodetypeDTO";
 import { beforeEach, describe, expect, it } from "vitest";
-import { setEmptyQueryData, queryClientWithMockData } from "../testQueryClient";
+import { queryClientWithMockData, setEmptyQueryData } from "../testQueryClient";
 import { navEnhet } from "../dialogmote/testData";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { MemoryRouter } from "react-router-dom";

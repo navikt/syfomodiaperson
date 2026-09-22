@@ -3,14 +3,14 @@ import { queryClientWithMockData } from "../testQueryClient";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { clickButton } from "../testUtils";
 import {
+  IkkeAktuell,
   VurderingArsak,
   VurderingType,
-  IkkeAktuell,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { QueryClient } from "@tanstack/react-query";
 import { renderArbeidsuforhetSide } from "./arbeidsuforhetTestUtils";
 import { arbeidsuforhetIkkeAktuellPath } from "@/AppRouter";
-import React from "react";
+
 import ArbeidsuforhetIkkeAktuellSkjema from "@/sider/arbeidsuforhet/ikkeaktuell/ArbeidsuforhetIkkeAktuellSkjema";
 import { getIkkeAktuellVurderingDocument } from "./documents";
 

@@ -1,4 +1,3 @@
-import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BodyShort, Checkbox, Heading } from "@navikt/ds-react";
 

@@ -1,5 +1,4 @@
 import { MerInformasjonImage } from "../../img/ImageComponents";
-import React from "react";
 
 export default function ImportantInformationIcon() {
   return (

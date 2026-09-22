@@ -1,4 +1,3 @@
-import React from "react";
 import { Infomelding } from "./Infomelding";
 import Decorator from "../decorator/Decorator";
 import styled from "styled-components";

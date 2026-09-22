@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import { ReactElement, useState } from "react";
 import { MoteIkonBlaaImage } from "../../../../../img/ImageComponents";
 import DialogmotePanel from "../DialogmotePanel";
 import DialogmoteMoteStatusPanel from "./DialogmoteMoteStatusPanel";

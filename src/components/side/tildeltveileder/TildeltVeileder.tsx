@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, Tag } from "@navikt/ds-react";
 import { useGetVeilederBrukerKnytning } from "@/data/veilederbrukerknytning/useGetVeilederBrukerKnytning";
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";

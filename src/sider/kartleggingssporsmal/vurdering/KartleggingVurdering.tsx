@@ -14,7 +14,7 @@ import {
 } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes.ts";
 import { VurderingAlternativ } from "@/sider/kartleggingssporsmal/types.ts";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil.tsx";
-import React, { useState } from "react";
+import { useState } from "react";
 import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessAlert.tsx";
 import { finnNaisUrlIntern } from "@/utils/miljoUtil.ts";
 import { EksternLenke } from "@/components/EksternLenke.tsx";

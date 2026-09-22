@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 type ValgtEnhetProviderProps = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 type ValgtEnhetContextState = {
@@ -9,7 +9,7 @@ type ValgtEnhetContextState = {
   valgtEnhet: string;
 };
 
-export const ValgtEnhetContext = React.createContext<
+export const ValgtEnhetContext = createContext<
   ValgtEnhetContextState | undefined
 >(undefined);
 
@@ -28,7 +28,7 @@ export const ValgtEnhetProvider = ({ children }: ValgtEnhetProviderProps) => {
 };
 
 export const useValgtEnhet = () => {
-  const context = React.useContext(ValgtEnhetContext);
+  const context = useContext(ValgtEnhetContext);
   if (!context) {
     throw new Error(`useValgtEnhet must be used within a ValgtEnhetProvider`);
   }

@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { Heading } from "@navikt/ds-react";
 
 interface IconHeaderProps {

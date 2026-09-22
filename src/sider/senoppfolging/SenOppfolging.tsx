@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { useSenOppfolgingKandidatQuery } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { KandidatSvar } from "@/sider/senoppfolging/KandidatSvar";
 import { VurdertKandidat } from "@/sider/senoppfolging/VurdertKandidat";

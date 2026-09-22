@@ -1,5 +1,4 @@
 import { Accordion, BodyLong } from "@navikt/ds-react";
-import React from "react";
 
 const texts = {
   header: "Les her om tidspunkt og plikt for dialogmøte 2",

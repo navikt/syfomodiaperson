@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Alert, Button, Select, Textarea } from "@navikt/ds-react";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import {

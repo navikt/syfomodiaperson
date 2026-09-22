@@ -1,4 +1,3 @@
-import React from "react";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { SykmeldingUtdragContainer } from "../SykmeldingUtdragContainer";

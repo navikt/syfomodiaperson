@@ -1,4 +1,3 @@
-import React from "react";
 import { narmesteLederForVirksomhet } from "@/utils/ledereUtils";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { NoNarmesteLederAlert } from "@/sider/dialogmoter/components/innkalling/NoNarmestLederAlert";

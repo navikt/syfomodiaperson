@@ -3,7 +3,7 @@ import { queryClientWithMockData } from "../testQueryClient";
 import { render, screen, within } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
-import React from "react";
+
 import { beforeEach, describe, expect, it } from "vitest";
 import { getButton } from "../testUtils";
 import { daysFromToday, tilDatoMedManedNavn } from "@/utils/datoUtils";

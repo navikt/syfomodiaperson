@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { restdatoTilLesbarDato } from "@/utils/datoUtils";
 import { Adresse, Fastlege } from "@/data/fastlege/types/Fastlege";
 import { useFastlegerQuery } from "@/data/fastlege/fastlegerQueryHooks";

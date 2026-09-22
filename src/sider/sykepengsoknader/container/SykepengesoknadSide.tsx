@@ -1,4 +1,3 @@
-import React from "react";
 import Feilmelding from "../../../components/Feilmelding";
 import SykepengesoknadSelvstendig from "../soknad-selvstendig/SykepengesoknadSelvstendig";
 import SykepengesoknadUtland from "../soknad-utland/SykepengesoknadUtland";

@@ -1,4 +1,3 @@
-import React from "react";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import { BodyShort, Tooltip } from "@navikt/ds-react";
 import { MedisinskrinImage } from "../../../../img/ImageComponents.ts";

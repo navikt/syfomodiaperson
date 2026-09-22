@@ -8,10 +8,10 @@ import {
   navEnhet,
 } from "../testData";
 import { fireEvent, screen, within } from "@testing-library/react";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { dialogmoteRoutePath } from "@/AppRouter";
-import React from "react";
+
 import { changeTextInput, getTextInput } from "../../testUtils";
 import { expectedInnkallingDocuments } from "../testDataDocuments";
 import { queryClientWithMockData } from "../../testQueryClient";

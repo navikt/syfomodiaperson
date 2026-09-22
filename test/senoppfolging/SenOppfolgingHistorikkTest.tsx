@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { SenOppfolgingHistorikk } from "@/sider/senoppfolging/historikk/SenOppfolgingHistorikk";
 import { ferdigbehandletKandidatMock } from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
-import React from "react";
+
 import { generateUUID } from "@/utils/utils";
 import { addWeeks, toDatePrettyPrint } from "@/utils/datoUtils";
 import {

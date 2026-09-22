@@ -1,9 +1,8 @@
 import {
-  Periode,
   antallDagerIPeriode,
+  Periode,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
-import React from "react";
 
 export function PeriodeOgAntallDagerTekst({ periode }: { periode: Periode }) {
   const startOgSluttDato = tilLesbarPeriodeMedArUtenManednavn(

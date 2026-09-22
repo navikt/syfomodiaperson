@@ -1,14 +1,14 @@
-import React from "react";
 import UtdragFraSykefravaeretPanel from "../../../components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { MotebehovPanel } from "@/sider/dialogmoter/motebehov/MotebehovPanel";
 import InnkallingDialogmotePanel from "@/sider/dialogmoter/components/innkalling/InnkallingDialogmotePanel";
 import { DialogmoteFerdigstilteReferatPanel } from "@/sider/dialogmoter/components/DialogmoteFerdigstilteReferatPanel";
+import { Fragment, ReactElement } from "react";
 
 interface Panel {
   key: string;
   priority: number;
-  element: React.ReactElement;
+  element: ReactElement;
 }
 
 interface MotelandingssidePanelsProps {
@@ -55,7 +55,7 @@ export const MotelandingssidePanels = ({
   return (
     <>
       {sortedPanels.map((panel) => (
-        <React.Fragment key={panel.key}>{panel.element}</React.Fragment>
+        <Fragment key={panel.key}>{panel.element}</Fragment>
       ))}
     </>
   );

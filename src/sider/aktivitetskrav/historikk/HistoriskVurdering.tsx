@@ -1,4 +1,3 @@
-import React from "react";
 import { Paragraph } from "@/components/Paragraph";
 import { VisBrev } from "@/components/VisBrev";
 import { vurderingArsakTexts } from "@/data/aktivitetskrav/aktivitetskravTexts";

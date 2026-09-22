@@ -1,4 +1,3 @@
-import React from "react";
 import { SykmeldingPeriode } from "./SykmeldingPeriode";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { getDuration, toDate } from "@/utils/datoUtils";

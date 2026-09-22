@@ -1,6 +1,6 @@
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
-import React from "react";
+
 import { SvarResponseDTO } from "@/data/senoppfolging/senOppfolgingTypes";
 import { KandidatFormResponse } from "@/sider/senoppfolging/KandidatFormResponse";
 

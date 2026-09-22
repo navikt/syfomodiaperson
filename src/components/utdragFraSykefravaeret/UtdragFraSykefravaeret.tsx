@@ -1,4 +1,3 @@
-import React from "react";
 import UtdragOppfolgingsplaner from "./UtdragOppfolgingsplaner";
 import { BodyShort, Box, Heading, Link } from "@navikt/ds-react";
 import Sykmeldinger from "./Sykmeldinger";

@@ -1,4 +1,3 @@
-import React from "react";
 import { MeldingTilNav } from "./MeldingTilNav";
 import { BedreArbeidsevnen } from "./BedreArbeidsevnen";
 import { UtdypendeOpplysninger } from "./UtdypendeOpplysninger";

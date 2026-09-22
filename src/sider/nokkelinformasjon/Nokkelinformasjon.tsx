@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import UtdragFraSykefravaeret from "../../components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
 import Sykmeldingsgrad from "@/sider/nokkelinformasjon/sykmeldingsgrad/Sykmeldingsgrad";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";

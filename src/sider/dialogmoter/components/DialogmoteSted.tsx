@@ -1,5 +1,4 @@
 import { TextField, TextFieldProps } from "@navikt/ds-react";
-import React from "react";
 
 export const MAX_LENGTH_STED = 200;
 

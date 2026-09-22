@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@navikt/ds-react";
 import { ArrowLeftIcon } from "@navikt/aksel-icons";

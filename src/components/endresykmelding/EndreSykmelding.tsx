@@ -1,4 +1,3 @@
-import React from "react";
 import { erDev } from "@/utils/miljoUtil";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
 

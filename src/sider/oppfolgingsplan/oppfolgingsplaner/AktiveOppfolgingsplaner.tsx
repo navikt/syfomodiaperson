@@ -1,5 +1,5 @@
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
-import React from "react";
+
 import { erIdag } from "@/utils/datoUtils";
 import dayjs from "dayjs";
 import { OppfolgingsplanLPSMedPersonoppgave } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";

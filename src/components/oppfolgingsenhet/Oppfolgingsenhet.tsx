@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from "react";
+import { ReactNode, useRef } from "react";
 import { AlertProps, Box, HGrid } from "@navikt/ds-react";
 import OppfolgingsenhetInnhold from "@/components/oppfolgingsenhet/OppfolgingsenhetInnhold";
 import TildelOppfolgingsenhetModal from "@/components/oppfolgingsenhet/TildelOppfolgingsenhetModal";

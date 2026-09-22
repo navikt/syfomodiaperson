@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "@navikt/ds-react";
 import { EyeWithPupilIcon } from "@navikt/aksel-icons";
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";

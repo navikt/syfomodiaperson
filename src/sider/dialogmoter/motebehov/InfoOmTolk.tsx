@@ -1,7 +1,7 @@
 import { BodyLong, Box, Heading, HStack } from "@navikt/ds-react";
 import { LanguageIcon } from "@navikt/aksel-icons";
 import { EksternLenke } from "@/components/EksternLenke";
-import React from "react";
+
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";

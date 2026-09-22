@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import DialogmoteSideContainer from "../DialogmoteSideContainer";
 import Referat, { ReferatMode } from "./Referat";
 import { MalformProvider } from "@/context/malform/MalformContext";

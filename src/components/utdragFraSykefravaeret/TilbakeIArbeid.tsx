@@ -1,4 +1,3 @@
-import React from "react";
 import { TilbakeIArbeidMedArbeidsgiver } from "./TilbakeIArbeidMedArbeidsgiver";
 import { TilbakeIArbeidUtenArbeidsgiver } from "./TilbakeIArbeidUtenArbeidsgiver";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";

@@ -1,4 +1,3 @@
-import React from "react";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { ApiErrorException } from "@/api/errors";
 import { Tag } from "@navikt/ds-react";

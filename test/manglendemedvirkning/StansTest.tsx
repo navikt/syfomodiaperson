@@ -1,4 +1,3 @@
-import React from "react";
 import { manglendeMedvirkningPath } from "@/AppRouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { navEnhet } from "../dialogmote/testData";

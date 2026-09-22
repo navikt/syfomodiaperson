@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
-import React from "react";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   afterAll,

@@ -1,9 +1,9 @@
 import { BodyShort, ExpansionCard, Label } from "@navikt/ds-react";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 
 interface Props {
   title: {
-    icon: React.ReactElement;
+    icon: ReactElement;
     label: string;
     body: string;
   };

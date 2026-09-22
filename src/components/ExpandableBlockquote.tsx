@@ -1,4 +1,4 @@
-import React, { ReactNode, RefObject } from "react";
+import { ReactNode, RefObject, useLayoutEffect, useRef, useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@navikt/aksel-icons";
 import { Button } from "@navikt/ds-react";
 
@@ -16,8 +16,8 @@ export const ExpandableBlockquote = ({
   className,
   children,
 }: ExpandableBlockquoteProps) => {
-  const [viewAll, setViewAll] = React.useState<boolean>(false);
-  const ref = React.useRef(null) as RefObject<any>;
+  const [viewAll, setViewAll] = useState<boolean>(false);
+  const ref = useRef(null) as RefObject<any>;
   const isOverflow = useIsOverflow(ref, () => {
     /*noop*/
   });
@@ -61,14 +61,12 @@ const ExpandButton = ({ setOpen, isOverflow }: ExpandButtonProps) => {
 };
 
 const useIsOverflow = (
-  ref: React.RefObject<HTMLDivElement>,
+  ref: RefObject<HTMLDivElement>,
   callback: (hasOverflow: boolean) => void,
 ) => {
-  const [isOverflow, setIsOverflow] = React.useState<boolean | undefined>(
-    undefined,
-  );
+  const [isOverflow, setIsOverflow] = useState<boolean | undefined>(undefined);
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     const { current } = ref;
     if (!current) return;
 

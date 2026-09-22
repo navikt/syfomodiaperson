@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import AppSpinner from "@/components/AppSpinner";
 import { useBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { PERSONKORTVISNING_TYPE } from "@/konstanter";
 import { PersonkortVisning } from "./PersonkortVisning";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";

@@ -1,4 +1,3 @@
-import React from "react";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BodyLong, Heading } from "@navikt/ds-react";
 

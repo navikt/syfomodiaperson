@@ -1,4 +1,3 @@
-import React from "react";
 import { SykmeldingDiagnose } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BodyShort, HGrid } from "@navikt/ds-react";
 

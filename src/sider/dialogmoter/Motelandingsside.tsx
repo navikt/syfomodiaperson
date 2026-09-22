@@ -1,4 +1,3 @@
-import React from "react";
 import Sidetopp from "../../components/side/Sidetopp";
 import SideLaster from "../../components/side/SideLaster";
 import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";

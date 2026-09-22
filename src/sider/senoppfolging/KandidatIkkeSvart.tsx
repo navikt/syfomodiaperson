@@ -1,4 +1,3 @@
-import React from "react";
 import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import {

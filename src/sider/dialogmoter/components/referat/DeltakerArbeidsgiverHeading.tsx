@@ -1,5 +1,5 @@
 import { PersonSuitIcon } from "@navikt/aksel-icons";
-import React from "react";
+
 import { Heading, HStack } from "@navikt/ds-react";
 
 interface Props {

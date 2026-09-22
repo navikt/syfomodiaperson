@@ -1,4 +1,3 @@
-import React from "react";
 import { CopyButton } from "@/components/kopierknapp/CopyButton";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";

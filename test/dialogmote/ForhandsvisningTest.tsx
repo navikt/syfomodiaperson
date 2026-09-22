@@ -1,6 +1,5 @@
-import React from "react";
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
-import { expect, describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import {
   DocumentComponentDto,

@@ -1,5 +1,5 @@
 import { MeldingType } from "@/data/behandlerdialog/behandlerdialogTypes";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import {
   BlueDocumentImage,
   BlyantImage,

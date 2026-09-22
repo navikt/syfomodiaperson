@@ -5,8 +5,8 @@ import {
   FastlegeVikar,
   PersonkortLege,
 } from "@/components/personkort/PersonkortLege";
-import { expect, describe, it, beforeEach } from "vitest";
-import React from "react";
+import { beforeEach, describe, expect, it } from "vitest";
+
 import { fastlegerMock } from "@/mocks/fastlegerest/fastlegerMock";
 import { queryClientWithAktivBruker } from "../../testQueryClient";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";

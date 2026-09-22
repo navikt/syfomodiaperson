@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { AktivitetskravStatus } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { AvventAktivitetskravSkjema } from "@/sider/aktivitetskrav/vurdering/AvventAktivitetskravSkjema";
 import { IkkeAktuellAktivitetskravSkjema } from "@/sider/aktivitetskrav/vurdering/IkkeAktuellAktivitetskravSkjema";

@@ -1,4 +1,3 @@
-import React from "react";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import AvlysDialogmoteSkjema, {
   MAX_LENGTH_AVLYS_BEGRUNNELSE,

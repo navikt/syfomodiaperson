@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import Oppsummeringsvisning from "../soknad-felles-oppsummering/Oppsummeringsvisning";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { RelaterteSoknader } from "../soknad-arbeidstaker/RelaterteSoknader";

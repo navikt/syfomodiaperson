@@ -3,7 +3,7 @@ import { queryClientWithMockData } from "../testQueryClient";
 import { render, screen } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
-import React from "react";
+
 import FriskmeldingTilArbeidsformidling from "@/sider/frisktilarbeid/FriskmeldingTilArbeidsformidling";
 import { beforeEach, describe, expect, it } from "vitest";
 import { clickButton, getButton } from "../testUtils";

@@ -1,4 +1,3 @@
-import React from "react";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { BodyLong, Heading } from "@navikt/ds-react";

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Alert,
   BodyShort,
@@ -16,6 +15,7 @@ import { ApiErrorException } from "@/api/errors";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import { useEgenansattQuery } from "@/data/egenansatt/egenansattQueryHooks";
+import { RefObject } from "react";
 
 const text = {
   header: "Oppfølgingsenhet",
@@ -26,7 +26,7 @@ const text = {
 };
 
 interface Props {
-  modalRef: React.RefObject<HTMLDialogElement | null>;
+  modalRef: RefObject<HTMLDialogElement | null>;
 }
 
 const kanTildeleOppfolgingsenhet = (

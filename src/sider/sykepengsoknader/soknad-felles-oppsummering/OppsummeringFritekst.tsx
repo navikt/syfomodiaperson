@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import OppsummeringSporsmalstekst from "@/sider/sykepengsoknader/soknad-felles-oppsummering/OppsummeringSporsmalstekst";
 import { BodyShort } from "@navikt/ds-react";
 import { SporsmalDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";

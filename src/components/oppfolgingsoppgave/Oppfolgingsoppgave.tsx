@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from "@navikt/ds-react";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
-import React, { useState } from "react";
+import { useState } from "react";
 import OpenOppfolgingsoppgaveModalButton from "@/components/oppfolgingsoppgave/OpenOppfolgingsoppgaveModalButton";
 import { useAktivOppfolgingsoppgave } from "@/data/oppfolgingsoppgave/useAktivOppfolgingsoppgave";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";

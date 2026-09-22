@@ -1,7 +1,7 @@
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import { manglendeMedvirkningPath } from "@/AppRouter";
 import { Box, Button, Heading, HStack, List, Textarea } from "@navikt/ds-react";
-import React from "react";
+
 import { FormProvider, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useManglendeMedvirkningVurderingDocument } from "@/hooks/manglendemedvirkning/useManglendeMedvirkningVurderingDocument";

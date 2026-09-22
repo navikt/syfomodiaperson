@@ -1,5 +1,4 @@
 import { Button } from "@navikt/ds-react";
-import React from "react";
 
 const texts = {
   previewKnapp: "Forhåndsvisning",

@@ -1,4 +1,3 @@
-import React from "react";
 import { beforeEach, describe, expect, it } from "vitest";
 import Motelandingsside from "@/sider/dialogmoter/Motelandingsside";
 import { QueryClientProvider } from "@tanstack/react-query";

@@ -1,4 +1,3 @@
-import React from "react";
 import { PersonPencilIcon } from "@navikt/aksel-icons";
 import { Heading, HStack } from "@navikt/ds-react";
 import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";

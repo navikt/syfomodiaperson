@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useMotebehovQuery } from "@/data/motebehov/motebehovQueryHooks";
 import { isArbeidstakerMotebehov } from "@/utils/motebehovUtils";
 import { Accordion, BodyShort, Box } from "@navikt/ds-react";

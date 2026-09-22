@@ -1,7 +1,7 @@
 import {
+  useDeleteDraft,
   useDraftQuery,
   useSaveDraft,
-  useDeleteDraft,
 } from "@/hooks/useDraftQuery";
 import { MeldingType } from "./behandlerdialogTypes";
 

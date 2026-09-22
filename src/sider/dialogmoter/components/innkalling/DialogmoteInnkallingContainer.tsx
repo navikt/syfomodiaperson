@@ -1,5 +1,5 @@
 import Side from "../../../../components/side/Side";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import Sidetopp from "../../../../components/side/Sidetopp";
 import SideLaster from "../../../../components/side/SideLaster";
 import { BrukerKanIkkeVarslesPapirpostAdvarsel } from "@/sider/dialogmoter/components/BrukerKanIkkeVarslesPapirpostAdvarsel";
