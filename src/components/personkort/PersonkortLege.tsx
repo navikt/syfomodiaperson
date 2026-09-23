@@ -2,7 +2,6 @@ import { ReactElement } from "react";
 import { restdatoTilLesbarDato } from "@/utils/datoUtils";
 import { Adresse, Fastlege } from "@/data/fastlege/types/Fastlege";
 import { useFastlegerQuery } from "@/data/fastlege/fastlegerQueryHooks";
-import styled from "styled-components";
 import PersonkortInformasjon from "@/components/personkort/PersonkortInformasjon";
 import { FlexColumn, FlexRow } from "@/components/Layout";
 import { Alert, Detail, Heading } from "@navikt/ds-react";
@@ -17,10 +16,6 @@ const texts = {
   error:
     "Det kan hende brukeren ikke har en fastlege. Ta kontakt med brukeren for å få behandlers kontaktopplysninger.",
 };
-
-const FastlegeVikarTekst = styled(FlexColumn)`
-  margin-right: 1.5em;
-`;
 
 function hentTekstFastlegeNavn(fastlege?: Fastlege) {
   return fastlege ? `${fastlege.fornavn} ${fastlege.etternavn}` : "";
@@ -51,17 +46,16 @@ function fastlegeVikarTekst(fastlegeVikar: Fastlege) {
     fastlegeVikar.stillingsprosent && `${fastlegeVikar.stillingsprosent}%`;
   return (
     <>
-      <FastlegeVikarTekst>
+      <FlexColumn className="mr-[1.5em]">
         <b>{vikarlegeNavn}</b>
-      </FastlegeVikarTekst>
-      <FastlegeVikarTekst>{periodeTekst}</FastlegeVikarTekst>
+      </FlexColumn>
+      <FlexColumn className="mr-[1.5em]">{periodeTekst}</FlexColumn>
       {stillingsprosentTekst && (
-        <FastlegeVikarTekst>{stillingsprosentTekst}</FastlegeVikarTekst>
+        <FlexColumn className="mr-[1.5em]">{stillingsprosentTekst}</FlexColumn>
       )}
     </>
   );
 }
-
 interface FastlegeVikarProps {
   fastlegeVikarer: Fastlege[];
 }

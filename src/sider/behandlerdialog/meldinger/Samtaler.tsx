@@ -5,21 +5,12 @@ import {
   MeldingDTO,
 } from "@/data/behandlerdialog/behandlerdialogTypes";
 import { Accordion, GuidePanel } from "@navikt/ds-react";
-import styled from "styled-components";
 import Samtale from "@/sider/behandlerdialog/meldinger/samtale/Samtale";
 import AppSpinner from "@/components/AppSpinner";
 
 const texts = {
   guidePanel: "Her kommer meldinger sendt til og fra behandler.",
 };
-
-const StyledGuidePanel = styled(GuidePanel)`
-  margin-bottom: 1.5em;
-
-  > * {
-    min-height: 0;
-  }
-`;
 
 const sortMeldingerByTidspunkt = (
   m1: MeldingDTO,
@@ -66,7 +57,9 @@ export default function Samtaler() {
           ))}
         </Accordion>
       ) : (
-        <StyledGuidePanel>{texts.guidePanel}</StyledGuidePanel>
+        <GuidePanel className="mb-[1.5em] [&>*]:min-h-0">
+          {texts.guidePanel}
+        </GuidePanel>
       )}
     </div>
   );

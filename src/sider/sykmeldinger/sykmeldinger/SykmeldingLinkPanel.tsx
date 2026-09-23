@@ -9,7 +9,6 @@ import {
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
 import { Box, Heading, LinkPanel, List } from "@navikt/ds-react";
-import styled from "styled-components";
 import { PapirsykmeldingTag } from "@/components/PapirsykmeldingTag";
 import { erEkstraInformasjonISykmeldingen } from "@/utils/sykmeldinger/sykmeldingUtils";
 import ImportantInformationIcon from "@/components/ImportantInformationIcon";
@@ -71,14 +70,6 @@ export function PeriodeListe({ perioder, arbeidsgiver }: PeriodeListeProps) {
   );
 }
 
-const StyledLinkPanel = styled(LinkPanel)`
-  margin-bottom: 0.1em;
-
-  .aksel-link-panel__content {
-    width: 100%;
-  }
-`;
-
 interface Props {
   sykmelding: SykmeldingOldFormat;
 }
@@ -96,8 +87,9 @@ export default function SykmeldingLinkPanel({
   const erViktigInformasjon = erEkstraInformasjonISykmeldingen(sykmelding);
 
   return (
-    <StyledLinkPanel
-      forwardedAs={Link}
+    <LinkPanel
+      className="mb-[0.1em] [&_.aksel-link-panel__content]:w-full"
+      as={Link}
       to={`/sykefravaer/sykmeldinger/${sykmelding.id}`}
       border={false}
     >
@@ -142,6 +134,6 @@ export default function SykmeldingLinkPanel({
           />
         </div>
       </div>
-    </StyledLinkPanel>
+    </LinkPanel>
   );
 }

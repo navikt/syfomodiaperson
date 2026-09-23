@@ -7,7 +7,6 @@ import { UnntakAktivitetskravSkjema } from "@/sider/aktivitetskrav/vurdering/Unn
 import { OppfyltAktivitetskravSkjema } from "@/sider/aktivitetskrav/vurdering/OppfyltAktivitetskravSkjema";
 import { SendForhandsvarselSkjema } from "@/sider/aktivitetskrav/vurdering/SendForhandsvarselSkjema";
 import InnstillingOmStansSkjema from "@/sider/aktivitetskrav/vurdering/InnstillingOmStansSkjema";
-import styled from "styled-components";
 import { isExpiredForhandsvarsel } from "@/utils/datoUtils";
 import { DraftTextDTO, useDraftQuery } from "@/hooks/useDraftQuery";
 import AppSpinner from "@/components/AppSpinner";
@@ -18,15 +17,6 @@ const texts = {
   forhandsvarsel: "Send forhåndsvarsel",
   innstillingOmStans: "Skriv innstilling om stans",
 };
-
-const StyledTabs = styled(Tabs)`
-  margin-top: 1rem;
-  width: 100%;
-
-  .aksel-tabs__tablist-wrapper {
-    width: max-content;
-  }
-`;
 
 enum Tab {
   UNNTAK = "UNNTAK",
@@ -70,7 +60,10 @@ export function VurderAktivitetskravTabs({ aktivitetskrav }: Props) {
   );
 
   return (
-    <StyledTabs defaultValue={Tab.UNNTAK}>
+    <Tabs
+      className="mt-4 w-full [&_.aksel-tabs__tablist-wrapper]:w-max"
+      defaultValue={Tab.UNNTAK}
+    >
       <Tabs.List>
         <Tabs.Tab value={Tab.UNNTAK} label={texts.unntak} />
         <Tabs.Tab value={Tab.OPPFYLT} label={texts.oppfylt} />
@@ -130,6 +123,6 @@ export function VurderAktivitetskravTabs({ aktivitetskrav }: Props) {
             )}
           </Tabs.Panel>
         )}
-    </StyledTabs>
+    </Tabs>
   );
 }

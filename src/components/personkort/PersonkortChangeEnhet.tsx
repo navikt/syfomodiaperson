@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { BodyLong, Button, Heading, Modal } from "@navikt/ds-react";
-import styled from "styled-components";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   BehandlendeEnhetResponseDTO,
@@ -26,12 +25,6 @@ const texts = {
 };
 
 const NAV_UTLAND = "0393";
-
-const ButtonGroup = styled.div`
-  > * {
-    margin-right: 1em;
-  }
-`;
 
 interface PersonkortChangeEnhetProps {
   behandlendeEnhet: BehandlendeEnhetResponseDTO;
@@ -100,7 +93,7 @@ const PersonkortChangeEnhet = ({
           )}
         </Modal.Body>
         <Modal.Footer>
-          <ButtonGroup>
+          <div className="flex gap-[1em]">
             <Button
               data-color="danger"
               variant="primary"
@@ -112,7 +105,7 @@ const PersonkortChangeEnhet = ({
             <Button variant="tertiary" onClick={() => setOpen(false)}>
               Avbryt
             </Button>
-          </ButtonGroup>
+          </div>
         </Modal.Footer>
       </Modal>
     </>
