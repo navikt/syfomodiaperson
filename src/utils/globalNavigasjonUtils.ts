@@ -155,11 +155,10 @@ function getNumberOfKartleggingssporsmalOppgaver(
     | null
     | undefined,
 ): number {
-  return (
-    kartleggingssporsmalKandidater?.filter(
-      (kandidat) => kandidat.status === "SVAR_MOTTATT",
-    ).length ?? 0
-  );
+  const newestKandidat = kartleggingssporsmalKandidater?.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  )[0];
+  return newestKandidat?.status === "SVAR_MOTTATT" ? 1 : 0;
 }
 
 export function numberOfTasks(
