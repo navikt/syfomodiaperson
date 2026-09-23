@@ -62,12 +62,12 @@ import { ExpansionCardFormField } from "@/components/ExpansionCardFormField";
 import { PlusIcon, TrashIcon } from "@navikt/aksel-icons";
 import { EksternLenke } from "@/components/EksternLenke";
 
-export const MAX_LENGTH_SITUASJON = 6500;
-export const MAX_LENGTH_KONKLUSJON = 1500;
-export const MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE = 600;
-export const MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE = 600;
-export const MAX_LENGTH_BEHANDLERS_OPPGAVE = 600;
-export const MAX_LENGTH_VEILEDERS_OPPGAVE = 600;
+export const MAX_LENGTH_SITUASJON = 10000;
+export const MAX_LENGTH_KONKLUSJON = 2500;
+export const MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE = 1500;
+export const MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE = 1500;
+export const MAX_LENGTH_BEHANDLERS_OPPGAVE = 1500;
+export const MAX_LENGTH_VEILEDERS_OPPGAVE = 1500;
 export const MAX_LENGTH_BEGRUNNELSE_ENDRING = 500;
 
 export const texts = {
