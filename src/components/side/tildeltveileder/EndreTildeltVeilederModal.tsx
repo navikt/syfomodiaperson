@@ -17,7 +17,6 @@ import {
 } from "@navikt/ds-react";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { Veileder } from "@/data/veilederinfo/types/Veileder";
-import styled from "styled-components";
 
 const texts = {
   heading: "Tildel veileder",
@@ -70,12 +69,6 @@ const toVeilederOption = (
   value: veileder.ident,
   label: `${veileder.etternavn}, ${veileder.fornavn}`,
 });
-
-const StyledCombobox = styled(UNSAFE_Combobox)`
-  .aksel-combobox__list {
-    max-height: 15rem;
-  }
-`;
 
 interface Props {
   open: boolean;
@@ -154,7 +147,8 @@ export default function EndreTildeltVeilederModal({
         <Alert variant="warning" size="small">
           {texts.alert}
         </Alert>
-        <StyledCombobox
+        <UNSAFE_Combobox
+          className="[&_.aksel-combobox__list]:max-h-60"
           shouldAutocomplete
           isLoading={henterVeilederData}
           label={`${texts.combobox.label} ${valgtEnhet}`}

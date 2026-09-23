@@ -1,5 +1,4 @@
 import { Component, ReactNode } from "react";
-import styled from "styled-components";
 import { ApiError, defaultErrorTexts, ErrorType } from "@/api/errors";
 import { Alert, Link } from "@navikt/ds-react";
 
@@ -10,10 +9,6 @@ const texts = {
 const newJiraTicketUrl =
   "https://jira.adeo.no/plugins/servlet/desk/portal/541/create/1401";
 
-const InlineLenke = styled(Link)`
-  margin-left: 0.2em;
-`;
-
 interface TextWithJiraLinkProps {
   children: string;
 }
@@ -22,9 +17,9 @@ const TextWithJiraLink = ({ children }: TextWithJiraLinkProps) => {
   return (
     <>
       <span>{children}</span>
-      <InlineLenke target="_blank" href={newJiraTicketUrl}>
+      <Link className="ml-[0.2em]" target="_blank" href={newJiraTicketUrl}>
         {texts.meldFeil}
-      </InlineLenke>
+      </Link>
     </>
   );
 };

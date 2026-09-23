@@ -1,12 +1,11 @@
-import styled from "styled-components";
-import { PaddingSize } from "@/components/Layout";
+import { ReactNode } from "react";
 
-export const SkjemaFieldContainer = styled.div`
-  > * {
-    padding-bottom: ${PaddingSize.SM};
+interface Props {
+  children?: ReactNode;
+}
 
-    &:last-child {
-      padding-bottom: ${PaddingSize.MD};
-    }
-  }
-`;
+export function SkjemaFieldContainer({ children }: Props) {
+  return (
+    <div className="[&>*]:pb-[1em] [&>*:last-child]:pb-[2em]">{children}</div>
+  );
+}

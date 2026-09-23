@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import { CSSProperties, ReactNode } from "react";
+import cx from "classnames";
 
 export enum JustifyContentType {
   CENTER = "center",
@@ -7,27 +8,52 @@ export enum JustifyContentType {
   SPACE_BETWEEN = "space-between",
 }
 
+const justifyContentClasses: Record<JustifyContentType, string> = {
+  [JustifyContentType.CENTER]: "justify-center",
+  [JustifyContentType.FLEX_END]: "justify-end",
+  [JustifyContentType.FLEX_START]: "justify-start",
+  [JustifyContentType.SPACE_BETWEEN]: "justify-between",
+};
+
 interface FlexColumnProps {
+  children?: ReactNode;
+  className?: string;
   justifyContent?: JustifyContentType;
   flex?: number;
 }
 
-export const FlexColumn = styled.div<FlexColumnProps>`
-  display: flex;
-  flex-direction: column;
-  justify-content: ${(props) =>
-    props.justifyContent || JustifyContentType.FLEX_START};
-  ${(props) =>
-    props.flex && {
-      flex: props.flex,
-    }};
-`;
+export function FlexColumn({
+  children,
+  className,
+  justifyContent = JustifyContentType.FLEX_START,
+  flex,
+}: FlexColumnProps) {
+  const style: CSSProperties | undefined = flex ? { flex } : undefined;
+  return (
+    <div
+      className={cx(
+        "flex flex-col",
+        justifyContentClasses[justifyContent],
+        className,
+      )}
+      style={style}
+    >
+      {children}
+    </div>
+  );
+}
 
 export enum FlexGapSize {
   SM = "1em",
   MD = "2em",
   LG = "3em",
 }
+
+const columnGapClasses: Record<FlexGapSize, string> = {
+  [FlexGapSize.SM]: "gap-x-[1em]",
+  [FlexGapSize.MD]: "gap-x-[2em]",
+  [FlexGapSize.LG]: "gap-x-[3em]",
+};
 
 export enum PaddingSize {
   NONE = "",
@@ -36,7 +62,30 @@ export enum PaddingSize {
   LG = "3em",
 }
 
+const topPaddingClasses: Record<PaddingSize, string> = {
+  [PaddingSize.NONE]: "",
+  [PaddingSize.SM]: "pt-[1em]",
+  [PaddingSize.MD]: "pt-[2em]",
+  [PaddingSize.LG]: "pt-[3em]",
+};
+
+const bottomPaddingClasses: Record<PaddingSize, string> = {
+  [PaddingSize.NONE]: "",
+  [PaddingSize.SM]: "pb-[1em]",
+  [PaddingSize.MD]: "pb-[2em]",
+  [PaddingSize.LG]: "pb-[3em]",
+};
+
+const leftPaddingClasses: Record<PaddingSize, string> = {
+  [PaddingSize.NONE]: "",
+  [PaddingSize.SM]: "pl-[1em]",
+  [PaddingSize.MD]: "pl-[2em]",
+  [PaddingSize.LG]: "pl-[3em]",
+};
+
 export interface RowProps {
+  children?: ReactNode;
+  className?: string;
   columnGap?: FlexGapSize;
   topPadding?: PaddingSize;
   bottomPadding?: PaddingSize;
@@ -44,29 +93,55 @@ export interface RowProps {
   justifyContent?: JustifyContentType;
 }
 
-export const FlexRow = styled.div<RowProps>`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
-  column-gap: ${(props) => props.columnGap || 0};
-  padding-top: ${(props) => props.topPadding || 0};
-  padding-bottom: ${(props) => props.bottomPadding || 0};
-  padding-left: ${(props) => props.leftPadding || 0};
-  justify-content: ${(props) =>
-    props.justifyContent || JustifyContentType.FLEX_START};
-`;
+export function FlexRow({
+  children,
+  className,
+  columnGap,
+  topPadding = PaddingSize.NONE,
+  bottomPadding = PaddingSize.NONE,
+  leftPadding = PaddingSize.NONE,
+  justifyContent = JustifyContentType.FLEX_START,
+}: RowProps) {
+  return (
+    <div
+      className={cx(
+        "flex flex-row flex-wrap w-full",
+        columnGap && columnGapClasses[columnGap],
+        topPaddingClasses[topPadding],
+        bottomPaddingClasses[bottomPadding],
+        leftPaddingClasses[leftPadding],
+        justifyContentClasses[justifyContent],
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
 
 interface ButtonRowProps {
+  children?: ReactNode;
+  className?: string;
   topPadding?: PaddingSize;
   bottomPadding?: PaddingSize;
 }
 
-export const ButtonRow = styled.div<ButtonRowProps>`
-  display: flex;
-  justify-content: flex-start;
-  flex-flow: row wrap;
-  gap: 1em;
-  padding-top: ${(props) => props.topPadding || 0};
-  padding-bottom: ${(props) => props.bottomPadding || 0};
-`;
+export function ButtonRow({
+  children,
+  className,
+  topPadding = PaddingSize.NONE,
+  bottomPadding = PaddingSize.NONE,
+}: ButtonRowProps) {
+  return (
+    <div
+      className={cx(
+        "flex justify-start flex-row flex-wrap gap-[1em]",
+        topPaddingClasses[topPadding],
+        bottomPaddingClasses[bottomPadding],
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}

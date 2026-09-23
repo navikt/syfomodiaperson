@@ -4,30 +4,19 @@ import {
   DocumentComponentType,
 } from "@/data/documentcomponent/documentComponentTypes";
 import { FlexRow, PaddingSize } from "@/components/Layout";
-import styled from "styled-components";
 import { BodyLong, Box, Heading, Label, Link, List } from "@navikt/ds-react";
 import { DocumentComponentHeaderH1 } from "@/components/document/DocumentComponentHeaderH1";
-
-const Paragraph = styled.div`
-  margin-bottom: 1em;
-  white-space: pre-wrap;
-`;
-
-const TitledParagraph = styled.div`
-  margin: 1em 0;
-  white-space: pre-wrap;
-`;
 
 const DocumentComponentLink = (texts: string[], title?: string) => {
   const link = texts.length === 0 ? "" : texts[0];
   return (
-    <TitledParagraph>
+    <div className="my-[1em] whitespace-pre-wrap">
       <Label size="small">{title ?? ""}</Label>
       <br />
       <Link target="_blank" rel="noopener noreferrer" href={link}>
         {link}
       </Link>
-    </TitledParagraph>
+    </div>
   );
 };
 
@@ -64,12 +53,12 @@ const DocumentComponentParagraph = (texts: string[], title?: string) => {
   );
 
   return title ? (
-    <TitledParagraph>
+    <div className="my-[1em] whitespace-pre-wrap">
       <Label size="small">{title}</Label>
       {paragraphText}
-    </TitledParagraph>
+    </div>
   ) : (
-    <Paragraph>{paragraphText}</Paragraph>
+    <div className="mb-[1em] whitespace-pre-wrap">{paragraphText}</div>
   );
 };
 
