@@ -8,7 +8,6 @@ import {
   ExclamationmarkTriangleIcon,
   PaperclipIcon,
 } from "@navikt/aksel-icons";
-import styled from "styled-components";
 import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
 import { VisMelding } from "@/sider/behandlerdialog/meldinger/samtale/VisMelding";
 import PdfVedleggLink from "@/sider/behandlerdialog/meldinger/PdfVedleggLink";
@@ -22,45 +21,6 @@ import { ReturLegeerklaringWarningIcon } from "@/sider/behandlerdialog/legeerkla
 const texts = {
   ikkeLevertError: "Denne meldingen ble ikke levert.",
 };
-
-const MeldingDetails = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: center;
-
-  > * {
-    &:not(:last-child) {
-      margin-right: 1em;
-    }
-  }
-`;
-
-const DetailCentered = styled(Detail)`
-  align-self: center;
-`;
-
-const VedleggDetails = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin-bottom: 0.75em;
-
-  > * {
-    &:not(:last-child) {
-      margin-right: 0.25em;
-    }
-  }
-`;
-
-const MeldingTekstContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  flex-flow: row wrap;
-  gap: 0.2em;
-  align-items: center;
-  margin-bottom: 0.75em;
-`;
 
 interface MeldingTekstProps {
   melding: MeldingDTO;
@@ -112,11 +72,11 @@ export default function MeldingInnholdPanel({ melding, avvist }: Props) {
           <ErrorMessage size={"small"}>{texts.ikkeLevertError}</ErrorMessage>
         </div>
       )}
-      <MeldingTekstContainer>
+      <div className="flex justify-start flex-row flex-wrap gap-[0.2em] items-center mb-[0.75em]">
         <MeldingTekst melding={melding} />
-      </MeldingTekstContainer>
+      </div>
       {melding.innkommende && melding.antallVedlegg > 0 && (
-        <VedleggDetails>
+        <div className="flex flex-row flex-wrap mb-[0.75em] gap-x-[0.25em]">
           <PaperclipIcon title="Binders-ikon for vedlegg" fontSize="1.25em" />
           {[...Array(melding.antallVedlegg)].map((_, index) => (
             <PdfVedleggLink
@@ -125,16 +85,18 @@ export default function MeldingInnholdPanel({ melding, avvist }: Props) {
               key={index}
             />
           ))}
-        </VedleggDetails>
+        </div>
       )}
-      <MeldingDetails>
-        <DetailCentered>
+      <div className="flex flex-row justify-start items-center gap-[1em]">
+        <Detail className="self-center">
           {tilDatoMedManedNavnOgKlokkeslett(melding.tidspunkt)}
-        </DetailCentered>
-        <DetailCentered>{meldingTypeTexts[melding.type]}</DetailCentered>
+        </Detail>
+        <Detail className="self-center">
+          {meldingTypeTexts[melding.type]}
+        </Detail>
         {avsender && <Detail>{`Skrevet av ${avsender}`}</Detail>}
         {!melding.innkommende && <VisMelding melding={melding} />}
-      </MeldingDetails>
+      </div>
     </Box>
   );
 }
