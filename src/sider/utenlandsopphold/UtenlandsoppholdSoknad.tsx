@@ -60,6 +60,7 @@ import { ikkeAktuellArsakTexts } from "./ikkeAktuellTexts";
 const AVSLAG_CATEGORY = "utenlandsopphold-avslag";
 const DELVIS_INNVILGET_CATEGORY = "utenlandsopphold-delvis-innvilget";
 const HENLEGGELSE_CATEGORY = "utenlandsopphold-henleggelse";
+const INNVILGET_CATEGORY = "utenlandsopphold-innvilget";
 
 const texts = {
   pending: "Henter søknader...",
@@ -99,6 +100,7 @@ const texts = {
     "Sykepenger er ikke utbetalt. Ved innvilgelse eller delvis innvilgelse blir vedtaket sendt med et forbehold om at vedtaket kun gjelder dersom sykmeldt får innvilget sykepenger. Åpne forhåndsvisningen av vedtaket for å se forbeholdet.",
   begrunnelse: {
     label: "Begrunnelse (obligatorisk)",
+    labelValgfri: "Begrunnelse (valgfritt)",
     description:
       "Begrunnelsen blir en del av en større brevmal. Åpne forhåndsvisning for å se hele vedtaket.",
     descriptionHenleggelse:
@@ -134,6 +136,25 @@ interface SkjemaValues {
   utfall: Utfall;
   innvilgedePerioder: InnvilgetPeriode[];
   begrunnelse: string;
+}
+
+/**
+ * Et felt som bare består av mellomrom regnes ikke som utfylt.
+ */
+function feltHarTekst(verdi: string): boolean {
+  return verdi.trim().length > 0;
+}
+
+/**
+ * Begrunnelse er valgfri ved innvilgelse og påkrevd ved de øvrige utfallene.
+ */
+function validerBegrunnelse(
+  begrunnelse: string,
+  erValgfri: boolean,
+): true | string {
+  return erValgfri || feltHarTekst(begrunnelse)
+    ? true
+    : texts.begrunnelse.missing;
 }
 
 interface Props {
@@ -185,14 +206,16 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
   const { setNotification } = useNotification();
   const valgtUtfall = watch("utfall");
   const valgteInnvilgedePerioder = watch("innvilgedePerioder");
-  const valgtBegrunnelse = watch("begrunnelse");
+  const begrunnelse = watch("begrunnelse");
   const [visSendForhandsvisning, setVisSendForhandsvisning] = useState(false);
   const [visIkkeAktuellModal, setVisIkkeAktuellModal] = useState(false);
   const [utkastSavedTime, setUtkastSavedTime] = useState<Date>();
 
-  const avslagDraftQuery = useDraftQuery<DraftTextDTO>(AVSLAG_CATEGORY);
-  const saveAvslagDraft = useSaveDraft<DraftTextDTO>(AVSLAG_CATEGORY);
-  const deleteAvslagDraft = useDeleteDraft(AVSLAG_CATEGORY);
+  const erBegrunnelseValgfri = valgtUtfall === "INNVILGET";
+
+  const innvilgetDraftQuery = useDraftQuery<DraftTextDTO>(INNVILGET_CATEGORY);
+  const saveInnvilgetDraft = useSaveDraft<DraftTextDTO>(INNVILGET_CATEGORY);
+  const deleteInnvilgetDraft = useDeleteDraft(INNVILGET_CATEGORY);
 
   const delvisInnvilgetDraftQuery = useDraftQuery<DraftTextDTO>(
     DELVIS_INNVILGET_CATEGORY,
@@ -202,26 +225,26 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
   );
   const deleteDelvisInnvilgetDraft = useDeleteDraft(DELVIS_INNVILGET_CATEGORY);
 
+  const avslagDraftQuery = useDraftQuery<DraftTextDTO>(AVSLAG_CATEGORY);
+  const saveAvslagDraft = useSaveDraft<DraftTextDTO>(AVSLAG_CATEGORY);
+  const deleteAvslagDraft = useDeleteDraft(AVSLAG_CATEGORY);
+
   const henleggelseDraftQuery =
     useDraftQuery<DraftTextDTO>(HENLEGGELSE_CATEGORY);
   const saveHenleggelseDraft = useSaveDraft<DraftTextDTO>(HENLEGGELSE_CATEGORY);
   const deleteHenleggelseDraft = useDeleteDraft(HENLEGGELSE_CATEGORY);
 
   const draftByUtfall = {
-    AVSLAG: { query: avslagDraftQuery, save: saveAvslagDraft },
+    INNVILGET: { query: innvilgetDraftQuery, save: saveInnvilgetDraft },
     DELVIS_INNVILGET: {
       query: delvisInnvilgetDraftQuery,
       save: saveDelvisInnvilgetDraft,
     },
+    AVSLAG: { query: avslagDraftQuery, save: saveAvslagDraft },
     HENLAGT: { query: henleggelseDraftQuery, save: saveHenleggelseDraft },
   };
 
-  const activeDraft =
-    valgtUtfall === "AVSLAG" ||
-    valgtUtfall === "DELVIS_INNVILGET" ||
-    valgtUtfall === "HENLAGT"
-      ? draftByUtfall[valgtUtfall]
-      : null;
+  const activeDraft = valgtUtfall ? draftByUtfall[valgtUtfall] : null;
 
   const isDraftPending = activeDraft?.query.isPending ?? false;
   const activeDraftSave = activeDraft?.save;
@@ -248,7 +271,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
           tom: periode.tom,
         })),
       );
-      setValue("begrunnelse", "");
+      setValue("begrunnelse", innvilgetDraftQuery.data?.begrunnelse ?? "");
       clearErrors("begrunnelse");
     } else {
       // Resetter innvilgede perioder for DELVIS_INNVILGET, AVSLAG eller HENLAGT
@@ -288,8 +311,9 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
       });
       setUtkastSavedTime(undefined);
       debouncedAutoSaveDraft.cancel();
-      deleteAvslagDraft.mutate(undefined);
+      deleteInnvilgetDraft.mutate(undefined);
       deleteDelvisInnvilgetDraft.mutate(undefined);
+      deleteAvslagDraft.mutate(undefined);
       deleteHenleggelseDraft.mutate(undefined);
       navigate(`${utenlandsoppholdPath}`);
     };
@@ -315,7 +339,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
           utfall,
           innvilgedePerioder: perioder,
           document: vedtakDocument,
-          begrunnelse: utfall === "INNVILGET" ? null : begrunnelse,
+          begrunnelse: feltHarTekst(begrunnelse) ? begrunnelse : null,
         },
       },
       { onSuccess },
@@ -382,32 +406,33 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
 
   const vedtakDocument = (() => {
     switch (valgtUtfall) {
-      case "AVSLAG":
-        return getAvslagDocument({
-          soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
-          avslattePerioder: avslattePerioder,
-          begrunnelse: valgtBegrunnelse ?? "",
-        });
-      case "DELVIS_INNVILGET":
-        return getDelvisInnvilgetDocument({
-          soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
-          innvilgedePerioder: gyldigeInnvilgedePerioder,
-          avslattePerioder: avslattePerioder,
-          begrunnelse: valgtBegrunnelse ?? "",
-          medForbeholdOvrigeVilkar: !isSykepengerUtbetalt,
-        });
-      case "HENLAGT":
-        return getHenleggelseDocument({
-          soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
-          soktePerioder: soktePerioder,
-          begrunnelse: valgtBegrunnelse ?? "",
-        });
       case "INNVILGET":
       default:
         return getInnvilgetDocument({
           soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
           innvilgedePerioder: gyldigeInnvilgedePerioder,
           medForbeholdOvrigeVilkar: !isSykepengerUtbetalt,
+          begrunnelse: begrunnelse ?? "",
+        });
+      case "DELVIS_INNVILGET":
+        return getDelvisInnvilgetDocument({
+          soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
+          innvilgedePerioder: gyldigeInnvilgedePerioder,
+          avslattePerioder: avslattePerioder,
+          begrunnelse: begrunnelse ?? "",
+          medForbeholdOvrigeVilkar: !isSykepengerUtbetalt,
+        });
+      case "AVSLAG":
+        return getAvslagDocument({
+          soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
+          avslattePerioder: avslattePerioder,
+          begrunnelse: begrunnelse ?? "",
+        });
+      case "HENLAGT":
+        return getHenleggelseDocument({
+          soknadDato: utenlandsoppholdSoknad.innsendtTidspunkt,
+          soktePerioder: soktePerioder,
+          begrunnelse: begrunnelse ?? "",
         });
     }
   })();
@@ -587,9 +612,7 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
                 </Box>
               )}
 
-              {(valgtUtfall === "DELVIS_INNVILGET" ||
-                valgtUtfall === "AVSLAG" ||
-                valgtUtfall === "HENLAGT") &&
+              {valgtUtfall &&
                 (isDraftPending ? (
                   <Skeleton variant="rounded" height={150} />
                 ) : (
@@ -597,7 +620,8 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
                     <Textarea
                       {...register("begrunnelse", {
                         maxLength: begrunnelseMaxLength,
-                        required: texts.begrunnelse.missing,
+                        validate: (begrunnelse) =>
+                          validerBegrunnelse(begrunnelse, erBegrunnelseValgfri),
                         onChange: (e) => {
                           debouncedAutoSaveDraft(
                             e.target.value,
@@ -606,7 +630,11 @@ export function UtenlandsoppholdSoknad({ draftDebouncedMs = 750 }: Props) {
                         },
                       })}
                       value={watch("begrunnelse")}
-                      label={texts.begrunnelse.label}
+                      label={
+                        erBegrunnelseValgfri
+                          ? texts.begrunnelse.labelValgfri
+                          : texts.begrunnelse.label
+                      }
                       description={
                         valgtUtfall === "HENLAGT"
                           ? texts.begrunnelse.descriptionHenleggelse
