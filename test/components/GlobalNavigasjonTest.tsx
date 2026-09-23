@@ -29,7 +29,7 @@ import {
   createForhandsvarsel,
   createVurdering,
 } from "../arbeidsuforhet/arbeidsuforhetTestData";
-import { addDays, addWeeks } from "@/utils/datoUtils";
+import { addDays, addWeeks, daysFromToday } from "@/utils/datoUtils";
 import { VurderingType } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
 import { senOppfolgingKandidatQueryKeys } from "@/data/senoppfolging/useSenOppfolgingKandidatQuery";
 import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks";
@@ -39,6 +39,9 @@ import {
 } from "@/mocks/unleashMocks";
 import {
   ferdigbehandletKandidatMock,
+  kartleggingIsKandidatAndAnsweredQuestions,
+  kartleggingIsKandidatAndReceivedQuestions,
+  kartleggingssporsmalVurderingFerdigbehandlet,
   senOppfolgingKandidatMock,
 } from "@/mocks/ismeroppfolging/mockIsmeroppfolging";
 import { vedtakQueryKeys } from "@/data/frisktilarbeid/vedtakQuery";
@@ -55,6 +58,7 @@ import {
   defaultForhandsvarselVurdering,
   defaultForhandsvarselVurderingAfterDeadline,
 } from "../manglendemedvirkning/manglendeMedvirkningTestData";
+import { kartleggingssporsmalQueryKeys } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks.ts";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: QueryClient;
@@ -91,6 +95,7 @@ describe("GlobalNavigasjon", () => {
     queryClient = queryClientWithAktivBruker();
     setEmptyQueryData(queryClient);
   });
+
   it("viser linker for alle menypunkter uten toggle", () => {
     mockUnleashWithoutFeatureToggles();
 
@@ -123,6 +128,7 @@ describe("GlobalNavigasjon", () => {
       linker.some((link) => menypunkterNotShown.includes(link.textContent)),
     ).to.equal(false);
   });
+
   it("viser linker for alle menypunkter med toggle", () => {
     mockUnleashWithFeatureToggles();
 
@@ -150,6 +156,7 @@ describe("GlobalNavigasjon", () => {
       expect(link.textContent).to.equal(navnMenypunkter[index]);
     });
   });
+
   it("viser aktivt menypunkt", () => {
     renderGlobalNavigasjon();
 
@@ -159,6 +166,7 @@ describe("GlobalNavigasjon", () => {
     });
     expect(currentMenypunkt.textContent).to.equal("Nøkkelinformasjon");
   });
+
   it("viser rød prikk for menypunkt Dialogmøter når ubehandlet oppgave dialogmøte-svar", () => {
     queryClient.setQueryData(personoppgaverQueryKeys.personoppgaver(fnr), () =>
       personoppgaverMock(),
@@ -506,5 +514,47 @@ describe("GlobalNavigasjon", () => {
     expect(
       screen.getByRole("button", { name: /Oppfølgingsplaner \(\d+ aktiv/ }),
     ).to.exist;
+  });
+
+  it("viser én rød prikk for menypunkt Kartleggingsspørsmål når siste kandidat finnes med svar", () => {
+    mockUnleashWithFeatureToggles();
+    queryClient.setQueryData(
+      kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
+      () => [kartleggingIsKandidatAndAnsweredQuestions],
+    );
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("button", { name: "Kartleggingsspørsmål 1" })).to
+      .exist;
+  });
+
+  it("viser ikke rød prikk for menypunkt Kartleggingsspørsmål når siste kandidat finnes uten svar", () => {
+    mockUnleashWithFeatureToggles();
+    queryClient.setQueryData(
+      kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
+      () => [kartleggingIsKandidatAndReceivedQuestions],
+    );
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("button", { name: "Kartleggingsspørsmål" })).to
+      .exist;
+  });
+
+  it("viser ikke rød prikk for menypunkt Kartleggingsspørsmål når siste kandidat finnes med svar og er vurdert", () => {
+    mockUnleashWithFeatureToggles();
+    queryClient.setQueryData(
+      kartleggingssporsmalQueryKeys.kartleggingssporsmalKandidat(fnr),
+      () => [
+        {
+          ...kartleggingIsKandidatAndAnsweredQuestions,
+          createdAt: daysFromToday(-100),
+        },
+        kartleggingssporsmalVurderingFerdigbehandlet,
+      ],
+    );
+    renderGlobalNavigasjon();
+
+    expect(screen.getByRole("button", { name: "Kartleggingsspørsmål" })).to
+      .exist;
   });
 });
