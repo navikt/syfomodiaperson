@@ -1,12 +1,36 @@
-import { BodyShort, Box, Heading, List, ReadMore } from "@navikt/ds-react";
+import {
+  BodyShort,
+  Box,
+  Heading,
+  List,
+  ReadMore,
+  Link,
+} from "@navikt/ds-react";
+
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
 import { ArrowsCirclepathIcon } from "@navikt/aksel-icons";
+import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
+import { Link as RouterLink } from "react-router-dom";
+import {
+  PersonOppgave,
+  PersonOppgaveType,
+} from "@/data/personoppgave/types/PersonOppgave";
+import dayjs from "dayjs";
+import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
+import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
 const texts = {
   heading: "Oppsummering av den sykmeldtes situasjon",
   list: {
     hasGjentakendeSykefravar: "Den sykmeldte har gjentakende fravær",
     noGjentakendeSykefravar: "Den sykmeldte har ikke gjentakende fravær",
+    hasBedtOmBistand:
+      "Behandler har de siste seks månedene bedt om bistand fra Nav",
+    notBedtOmBistand:
+      "Behandler har ikke bedt om bistand fra Nav de siste seks månedene",
+  },
+  bistand: {
+    readMore: "Relaterte sykmeldinger",
   },
   gjentakende: {
     definisjon: "Definisjonen på gjentakende sykefravær i Modia er enten:",
@@ -20,6 +44,10 @@ const texts = {
 
 export function KartleggingInfo() {
   const { hasGjentakendeSykefravar } = useOppfolgingstilfellePersonQuery();
+  const { data: oppgaver } = usePersonoppgaverQuery();
+  const { sykmeldinger } = useGetSykmeldingerQuery();
+
+  const relevanteSykmeldinger = handleOppgaver(oppgaver, sykmeldinger);
 
   return (
     <Box
@@ -52,6 +80,31 @@ export function KartleggingInfo() {
             </ReadMore>
           </div>
         </List.Item>
+        <List.Item>
+          <div className="flex flex-col">
+            <div className="flex items-center">
+              <span>
+                {relevanteSykmeldinger.length > 0
+                  ? texts.list.hasBedtOmBistand
+                  : boldRegex(texts.list.notBedtOmBistand, "ikke")}
+              </span>
+            </div>
+            {relevanteSykmeldinger.length > 0 && (
+              <ReadMore header={texts.bistand.readMore} size="small">
+                <List>
+                  {relevanteSykmeldinger.map((sykmelding, index) => (
+                    <List.Item key={`relatert-sykmelding-${index}`}>
+                      <Link
+                        as={RouterLink}
+                        to={`/sykefravaer/sykmeldinger/${sykmelding.id}`}
+                      >{`Utstedt ${dayjs(sykmelding.bekreftelse.utstedelsesdato).format("DD.MM.YYYY")}, av ${sykmelding.bekreftelse.sykmelder}`}</Link>
+                    </List.Item>
+                  ))}
+                </List>
+              </ReadMore>
+            )}
+          </div>
+        </List.Item>
       </List>
     </Box>
   );
@@ -71,5 +124,20 @@ function boldRegex(text: string, searchTerm: string) {
         ),
       )}
     </>
+  );
+}
+
+function handleOppgaver(
+  oppgaver: PersonOppgave[],
+  sykmeldinger: SykmeldingOldFormat[],
+) {
+  const nyeOppgaver = oppgaver.filter(
+    (oppgave) =>
+      oppgave.type === PersonOppgaveType.BEHANDLER_BER_OM_BISTAND &&
+      dayjs(oppgave.opprettet).add(6, "months").isAfter(dayjs()),
+  );
+
+  return sykmeldinger.filter((sykmelding) =>
+    nyeOppgaver.some((oppgave) => oppgave.referanseUuid === sykmelding.id),
   );
 }
