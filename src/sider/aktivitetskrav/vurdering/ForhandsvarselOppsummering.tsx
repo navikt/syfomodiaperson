@@ -1,4 +1,3 @@
-import React from "react";
 import { AktivitetskravVarselDTO } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { BodyShort, Heading, Panel, Tag } from "@navikt/ds-react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";

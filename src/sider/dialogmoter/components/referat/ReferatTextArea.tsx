@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { Textarea, TextareaProps } from "@navikt/ds-react";
 import { ReferatInfoBox } from "@/sider/dialogmoter/components/referat/ReferatInfoBox";
 

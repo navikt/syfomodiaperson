@@ -7,6 +7,7 @@ import {
   ReadMore,
   Link,
 } from "@navikt/ds-react";
+
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
 import { ArrowsCirclepathIcon } from "@navikt/aksel-icons";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";

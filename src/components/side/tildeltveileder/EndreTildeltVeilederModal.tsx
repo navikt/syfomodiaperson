@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useValgtEnhet } from "@/context/ValgtEnhetContext";
 import {
   useAktivVeilederinfoQuery,

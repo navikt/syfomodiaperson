@@ -1,8 +1,8 @@
-import { beforeEach, describe, it, expect } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithMockData } from "../../testQueryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
-import React from "react";
+
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../../dialogmote/testData";
 import { NotificationProvider } from "@/context/notification/NotificationContext";

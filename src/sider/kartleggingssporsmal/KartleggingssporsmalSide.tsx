@@ -1,4 +1,3 @@
-import React, { ReactElement } from "react";
 import Side from "@/components/side/Side";
 import Sidetopp from "@/components/side/Sidetopp";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
@@ -33,6 +32,7 @@ import { KartleggingVurdering } from "@/sider/kartleggingssporsmal/vurdering/Kar
 import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessAlert.tsx";
 import LumiSurvey from "@/components/lumi/LumiSurvey.tsx";
 import { kartleggingssporsmalSurvey } from "@/components/lumi/kartleggingssporsmalSurvey.ts";
+import { ReactElement } from "react";
 
 const texts = {
   title: "Kartleggingsspørsmål",

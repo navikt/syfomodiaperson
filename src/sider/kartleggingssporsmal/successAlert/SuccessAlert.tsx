@@ -1,6 +1,6 @@
 import { Alert, BodyShort } from "@navikt/ds-react";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils.ts";
-import React from "react";
+
 import { KartleggingssporsmalKandidatResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes.ts";
 
 const texts = {

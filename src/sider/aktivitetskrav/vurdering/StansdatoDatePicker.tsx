@@ -1,6 +1,6 @@
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
 import { useController } from "react-hook-form";
-import React from "react";
+
 import { FormValues } from "@/sider/aktivitetskrav/vurdering/InnstillingOmStansSkjema";
 
 const texts = {

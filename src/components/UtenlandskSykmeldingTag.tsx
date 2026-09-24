@@ -1,4 +1,3 @@
-import React from "react";
 import { Tag } from "@navikt/ds-react";
 
 const texts = {

@@ -5,7 +5,7 @@ import {
   arbeidsuforhetIkkeAktuellPath,
   arbeidsuforhetOppfyltPath,
 } from "@/AppRouter";
-import React from "react";
+import { ComponentPropsWithoutRef } from "react";
 
 const texts = {
   avslag: "Skriv innstilling om avslag",
@@ -17,7 +17,7 @@ interface Props {
   isBeforeForhandsvarselDeadline: boolean;
 }
 
-const AvslagButton = (props: React.ComponentPropsWithoutRef<typeof Button>) => (
+const AvslagButton = (props: ComponentPropsWithoutRef<typeof Button>) => (
   <Button {...props} variant="primary">
     {texts.avslag}
   </Button>

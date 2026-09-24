@@ -1,4 +1,3 @@
-import React from "react";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import { BodyShort } from "@navikt/ds-react";
 

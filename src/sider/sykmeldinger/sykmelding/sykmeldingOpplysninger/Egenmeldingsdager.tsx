@@ -1,4 +1,3 @@
-import React from "react";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import dayjs from "dayjs";
 import { BodyLong, Heading } from "@navikt/ds-react";

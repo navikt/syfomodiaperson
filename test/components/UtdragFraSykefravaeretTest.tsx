@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import UtdragFraSykefravaeret from "@/components/utdragFraSykefravaeret/UtdragFraSykefravaeret";
-import React from "react";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   afterAll,
@@ -31,6 +31,10 @@ import {
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
+import {
+  LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT,
+  SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT,
+} from "@/apiConstants";
 
 let queryClient: QueryClient;
 
@@ -157,12 +161,15 @@ describe("UtdragFraSykefravaeret", () => {
     ]);
     renderUtdragFraSykefravaeret(oppfolgingstilfeller[0]);
 
-    expect(screen.getByText("110110110 (pdf)")).to.exist;
+    expect(screen.getByText("Virksomhet: 110110110.", { exact: false })).to
+      .exist;
+    const planLink = screen.getByRole("link", { name: "Åpne planen" });
+    expect(planLink.parentElement?.className).toContain("grid-cols-subgrid");
     expect(
       screen.getByText(
-        `innsendt ${tilDatoMedManedNavn(
+        `Innsendt ${tilDatoMedManedNavn(
           dayjs(oppfolgingsplanCreatedAt).subtract(1, "days").toDate(),
-        )} (LPS)`,
+        )}.`,
       ),
     ).to.exist;
   });
@@ -181,12 +188,12 @@ describe("UtdragFraSykefravaeret", () => {
     renderUtdragFraSykefravaeret(oppfolgingstilfeller[0]);
 
     expect(screen.getByText("Ingen planer er delt med Nav")).to.exist;
-    expect(screen.queryByText("110110110 (pdf)")).to.not.exist;
+    expect(screen.queryByRole("link", { name: "Åpne planen" })).to.not.exist;
     expect(
       screen.queryByText(
-        `innsendt ${tilDatoMedManedNavn(
+        `Innsendt ${tilDatoMedManedNavn(
           dayjs(oppfolgingsplanCreatedAt).subtract(1, "days").toDate(),
-        )} (LPS)`,
+        )}.`,
       ),
     ).to.not.exist;
   });
@@ -215,10 +222,14 @@ describe("UtdragFraSykefravaeret", () => {
     renderUtdragFraSykefravaeret(tilfelle);
 
     expect(
-      screen.getByRole("link", {
-        name: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
-      }),
+      screen.getByText(
+        `Virksomhet: ${VIRKSOMHET_PONTYPANDY.virksomhetsnummer}.`,
+        { exact: false },
+      ),
     ).to.exist;
+    const planLink = screen.getByRole("link", { name: "Åpne planen" });
+    expect(planLink.parentElement?.className).toContain("grid-cols-subgrid");
+    expect(screen.getByText("Delt med Nav", { exact: false })).to.exist;
     expect(screen.queryByText("Ingen planer er delt med Nav")).to.not.exist;
   });
 
@@ -248,9 +259,58 @@ describe("UtdragFraSykefravaeret", () => {
     expect(screen.getByText("Ingen planer er delt med Nav")).to.exist;
     expect(
       screen.queryByRole("link", {
-        name: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+        name: "Åpne planen",
       }),
     ).to.not.exist;
+  });
+
+  it("Plasserer lenker for V2 og LPS i samme gridkolonne", () => {
+    const oppfolgingstilfeller = createOppfolgingstilfelleFromSykmelding([
+      sykmeldingNow,
+    ]);
+    const lpsPlan = oppfolgingsplanerLPSMock(new Date())[0];
+    queryClient.setQueryData(
+      oppfolgingsplanQueryKeys.oppfolgingsplanerV2(
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      ),
+      () => [
+        {
+          uuid: "test-uuid-v2",
+          fnr: ARBEIDSTAKER_DEFAULT.personIdent,
+          virksomhetsnummer: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+          opprettet: new Date().toISOString(),
+          deltMedNavTidspunkt: new Date().toISOString(),
+          sistEndret: new Date().toISOString(),
+          evalueringsdato: addDays(new Date(), 7).toISOString(),
+        } satisfies OppfolgingsplanV2DTO,
+      ],
+    );
+    queryClient.setQueryData(
+      oppfolgingsplanQueryKeys.oppfolgingsplanerLPS(
+        ARBEIDSTAKER_DEFAULT.personIdent,
+      ),
+      () => [lpsPlan],
+    );
+
+    renderUtdragFraSykefravaeret(oppfolgingstilfeller[0]);
+
+    const [planV2Link, lpsLink] = screen.getAllByRole("link", {
+      name: "Åpne planen",
+    });
+    expect(planV2Link.getAttribute("href")).toBe(
+      `${SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT}/oppfolgingsplaner/test-uuid-v2`,
+    );
+    expect(lpsLink.getAttribute("href")).toBe(
+      `${LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT}/oppfolgingsplan/lps/${lpsPlan.uuid}`,
+    );
+    const planV2Row = planV2Link.parentElement?.parentElement;
+    const lpsRow = lpsLink.parentElement?.parentElement;
+    expect(planV2Row?.parentElement).toBe(lpsRow?.parentElement);
+    expect(planV2Row?.parentElement?.className).toContain(
+      "grid-cols-[max-content_max-content]",
+    );
+    expect(planV2Row?.className).toContain("grid-cols-subgrid");
+    expect(lpsRow?.className).toContain("grid-cols-subgrid");
   });
 
   describe("Siste oppfølgingstilfelle (isLatestTilfelle = true)", () => {
@@ -295,8 +355,12 @@ describe("UtdragFraSykefravaeret", () => {
       renderUtdragFraSykefravaeret(tilfelle);
 
       expect(
-        screen.getByText(`${VIRKSOMHET_PONTYPANDY.virksomhetsnummer} (pdf)`),
+        screen.getByText(
+          `Virksomhet: ${VIRKSOMHET_PONTYPANDY.virksomhetsnummer}.`,
+          { exact: false },
+        ),
       ).to.exist;
+      expect(screen.getByRole("link", { name: "Åpne planen" })).to.exist;
       expect(screen.queryByText("Ingen planer er delt med Nav")).to.not.exist;
     });
 
@@ -358,8 +422,14 @@ describe("UtdragFraSykefravaeret", () => {
       renderUtdragFraSykefravaeret(tilfelle);
 
       expect(
+        screen.getByText(
+          `Virksomhet: ${VIRKSOMHET_PONTYPANDY.virksomhetsnummer}.`,
+          { exact: false },
+        ),
+      ).to.exist;
+      expect(
         screen.getByRole("link", {
-          name: VIRKSOMHET_PONTYPANDY.virksomhetsnummer,
+          name: "Åpne planen",
         }),
       ).to.exist;
       expect(screen.queryByText("Ingen planer er delt med Nav")).to.not.exist;

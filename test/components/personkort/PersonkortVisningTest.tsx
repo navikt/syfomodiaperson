@@ -1,4 +1,3 @@
-import React from "react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { PERSONKORTVISNING_TYPE } from "@/konstanter";
 import { QueryClientProvider } from "@tanstack/react-query";

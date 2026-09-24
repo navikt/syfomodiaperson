@@ -1,8 +1,8 @@
 import { UnntaksvurderingDTO } from "@/sider/oppfolgingsplan/hooks/types/Unntaksvurdering";
 import {
   ARBEIDSTAKER_DEFAULT,
-  VIRKSOMHET_PONTYPANDY,
   VIRKSOMHET_BRANNOGBIL,
+  VIRKSOMHET_PONTYPANDY,
 } from "../common/mockConstants";
 import { addWeeks } from "@/utils/datoUtils";
 

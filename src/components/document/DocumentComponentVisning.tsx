@@ -1,11 +1,11 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import {
   DocumentComponentDto,
   DocumentComponentType,
 } from "@/data/documentcomponent/documentComponentTypes";
 import { FlexRow, PaddingSize } from "@/components/Layout";
 import styled from "styled-components";
-import { BodyLong, Heading, Label, Link, List, Box } from "@navikt/ds-react";
+import { BodyLong, Box, Heading, Label, Link, List } from "@navikt/ds-react";
 import { DocumentComponentHeaderH1 } from "@/components/document/DocumentComponentHeaderH1";
 
 const Paragraph = styled.div`

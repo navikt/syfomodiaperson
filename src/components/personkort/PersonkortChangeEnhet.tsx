@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { BodyLong, Button, Heading, Modal } from "@navikt/ds-react";
 import styled from "styled-components";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";

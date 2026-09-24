@@ -3,7 +3,7 @@ import { tilDatoMedManedNavn } from "@/utils/datoUtils";
 import { ArbeidsgiverSvar } from "@/sider/dialogmoter/components/svar/ArbeidsgiverSvar";
 import { ArbeidstakerSvar } from "@/sider/dialogmoter/components/svar/ArbeidstakerSvar";
 import { BehandlerSvar } from "@/sider/dialogmoter/components/svar/BehandlerSvar";
-import React from "react";
+
 import {
   DialogmoteDTO,
   MotedeltakerVarselType,

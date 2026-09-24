@@ -1,6 +1,6 @@
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { BodyShort } from "@navikt/ds-react";
-import React from "react";
+
 import { useVeilederInfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
 const texts = {

@@ -3,7 +3,7 @@ import { render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../../../dialogmote/testData";
-import React, { createRef } from "react";
+import { createRef } from "react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithMockData } from "../../../testQueryClient";
 import {

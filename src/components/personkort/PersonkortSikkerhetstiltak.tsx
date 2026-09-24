@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { Detail } from "@navikt/ds-react";
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";

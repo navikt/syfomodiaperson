@@ -1,6 +1,6 @@
 import { BodyShort, Box, Heading, Link } from "@navikt/ds-react";
 import { restdatoTilLesbarDato } from "@/utils/datoUtils";
-import React from "react";
+
 import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
 import { SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT } from "@/apiConstants";

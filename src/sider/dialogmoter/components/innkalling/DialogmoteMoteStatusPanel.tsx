@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { MoteIkonBlaaImage } from "../../../../../img/ImageComponents";
 import DialogmotePanel from "../DialogmotePanel";
 import {

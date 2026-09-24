@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import AppSpinner from "@/components/AppSpinner";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { useBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";

@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
-import React from "react";
+
 import { StartNyVurdering } from "@/sider/aktivitetskrav/vurdering/StartNyVurdering";
 import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithMockData } from "../testQueryClient";

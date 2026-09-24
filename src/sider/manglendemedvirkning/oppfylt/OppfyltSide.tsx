@@ -1,4 +1,3 @@
-import React from "react";
 import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import { Navigate } from "react-router-dom";
 import { manglendeMedvirkningPath } from "@/AppRouter";

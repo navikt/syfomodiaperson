@@ -1,5 +1,4 @@
-import { List, Heading, Box } from "@navikt/ds-react";
-import React from "react";
+import { Box, Heading, List } from "@navikt/ds-react";
 
 const texts = {
   listTitle: "Følgende alternativer er tilgjengelig:",

@@ -1,6 +1,6 @@
 import { BellIcon } from "@navikt/aksel-icons";
 import { Button, Modal } from "@navikt/ds-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   MeldingDTO,
   PaminnelseDTO,

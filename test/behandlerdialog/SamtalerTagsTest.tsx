@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
-import React from "react";
+
 import Samtaler from "@/sider/behandlerdialog/meldinger/Samtaler";
 import { queryClientWithMockData } from "../testQueryClient";
 import {
@@ -25,7 +25,7 @@ import {
   personOppgaveUbehandletBehandlerdialogSvar,
   personOppgaveUbehandletBehandlerdialogUbesvartMelding,
 } from "@/mocks/ispersonoppgave/personoppgaveMock";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { MeldingStatusType } from "@/data/behandlerdialog/behandlerdialogTypes";
 import {
   defaultMelding,

@@ -1,9 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { queryClientWithMockData } from "../testQueryClient";
-import React from "react";
+
 import { render, screen } from "@testing-library/react";
 import Sykmeldingsgrad from "@/sider/nokkelinformasjon/sykmeldingsgrad/Sykmeldingsgrad";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { sykmeldingerMock } from "@/mocks/syfosmregister/sykmeldingerMock";
 import { addDays, tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
 import { PeriodetypeDTO } from "@/data/sykmelding/types/PeriodetypeDTO";

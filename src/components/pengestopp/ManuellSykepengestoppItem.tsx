@@ -12,7 +12,6 @@ import {
 } from "@/utils/pengestoppUtils";
 import { Accordion } from "@navikt/ds-react";
 import { Paragraph } from "@/components/Paragraph";
-import React from "react";
 
 const texts = {
   vurdertLabel: "Vurdert av",

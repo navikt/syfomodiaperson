@@ -1,4 +1,3 @@
-import React from "react";
 import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { Maksdato } from "@/data/maksdato/useMaksdatoQuery";
 import { SyketilfelleSummaryElement } from "@/components/personkort/PersonkortHeader/SyketilfelleSummaryElement";

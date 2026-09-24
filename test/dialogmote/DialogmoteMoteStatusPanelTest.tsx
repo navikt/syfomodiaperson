@@ -3,7 +3,7 @@ import {
   DialogmoteStatus,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { render, screen } from "@testing-library/react";
-import React from "react";
+
 import DialogmoteMoteStatusPanel from "@/sider/dialogmoter/components/innkalling/DialogmoteMoteStatusPanel";
 import { dialogmote, dialogmoteMedMellomlagretReferat } from "./testData";
 import { QueryClientProvider } from "@tanstack/react-query";

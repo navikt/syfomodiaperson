@@ -1,5 +1,5 @@
 import { Accordion, BodyShort, Label, VStack } from "@navikt/ds-react";
-import React from "react";
+
 import {
   SenOppfolgingKandidatResponseDTO,
   SenOppfolgingVurderingResponseDTO,

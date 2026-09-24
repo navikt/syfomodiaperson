@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import OppsummeringSporsmalscontainer from "./OppsummeringSporsmalscontainer";
 import OppsummeringSporsmalstekst from "@/sider/sykepengsoknader/soknad-felles-oppsummering/OppsummeringSporsmalstekst";
 import OppsummeringUndersporsmalsliste from "./OppsummeringUndersporsmalsliste";

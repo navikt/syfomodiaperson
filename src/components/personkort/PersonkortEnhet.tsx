@@ -1,4 +1,3 @@
-import React from "react";
 import { PersonkortElement } from "./PersonkortElement";
 import PersonkortInformasjon from "./PersonkortInformasjon";
 import ErrorBoundary from "../ErrorBoundary";

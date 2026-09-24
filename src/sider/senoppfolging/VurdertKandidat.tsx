@@ -1,7 +1,7 @@
 import { SenOppfolgingVurderingResponseDTO } from "@/data/senoppfolging/senOppfolgingTypes";
 import { CheckmarkCircleFillIcon } from "@navikt/aksel-icons";
 import { BodyLong, Box, Heading } from "@navikt/ds-react";
-import React from "react";
+
 import VurdertAv from "@/sider/senoppfolging/VurdertAv";
 
 const texts = {

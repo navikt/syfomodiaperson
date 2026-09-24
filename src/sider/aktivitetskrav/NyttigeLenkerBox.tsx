@@ -1,5 +1,5 @@
 import { Box, Heading } from "@navikt/ds-react";
-import React from "react";
+
 import { EksternLenke } from "@/components/EksternLenke";
 import KunnskapsbankTrygdemedisinLenke from "@/components/KunnskapsbankTrygdemedisinLenke";
 

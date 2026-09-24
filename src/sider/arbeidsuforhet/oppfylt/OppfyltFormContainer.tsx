@@ -1,4 +1,3 @@
-import React from "react";
 import { DraftTextDTO, useDraftQuery } from "@/hooks/useDraftQuery";
 import OppfyltForm from "@/sider/arbeidsuforhet/oppfylt/OppfyltForm";
 import AppSpinner from "@/components/AppSpinner";

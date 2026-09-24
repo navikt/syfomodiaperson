@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import SoknadStatustekst from "@/utils/soknad-felles/SoknadStatustekst";
 import { Heading } from "@navikt/ds-react";

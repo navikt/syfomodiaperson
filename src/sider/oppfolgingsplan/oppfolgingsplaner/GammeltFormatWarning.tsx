@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, LocalAlert } from "@navikt/ds-react";
 
 const texts = {

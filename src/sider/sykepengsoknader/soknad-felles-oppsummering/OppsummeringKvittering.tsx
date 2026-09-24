@@ -1,4 +1,3 @@
-import React from "react";
 import OppsummeringSporsmalstekst from "@/sider/sykepengsoknader/soknad-felles-oppsummering/OppsummeringSporsmalstekst";
 import {
   Kvittering,

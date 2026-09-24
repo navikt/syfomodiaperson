@@ -1,5 +1,4 @@
 import { TextField, TextFieldProps } from "@navikt/ds-react";
-import React from "react";
 
 const texts = {
   label: "Lenke til videomøte (valgfritt)",

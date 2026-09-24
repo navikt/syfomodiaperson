@@ -1,6 +1,6 @@
 import { SenOppfolgingKandidatResponseDTO } from "@/data/senoppfolging/senOppfolgingTypes";
 import { Accordion, BodyShort, Box, Heading, VStack } from "@navikt/ds-react";
-import React from "react";
+
 import { SenOppfolgingHistorikkItem } from "@/sider/senoppfolging/historikk/SenOppfolgingHistorikkItem";
 
 const texts = {

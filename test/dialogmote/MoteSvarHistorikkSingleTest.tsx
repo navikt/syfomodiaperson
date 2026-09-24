@@ -5,9 +5,9 @@ import {
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React from "react";
+
 import { queryClientWithMockData } from "../testQueryClient";
-import { expect, describe, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { MoteSvarHistorikkSingle } from "@/sider/dialogmoter/components/motehistorikk/MoteSvarHistorikkSingle.tsx";
 import { createDialogmote } from "@/mocks/isdialogmote/dialogmoterMock";
 import dayjs from "dayjs";

@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { Fragment, ReactElement } from "react";
 import UnfinishedTasks from "./UnfinishedTasks";
 import { numberOfTasks } from "@/utils/globalNavigasjonUtils";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
@@ -164,7 +164,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
           );
 
           return (
-            <React.Fragment key={menypunkt}>
+            <Fragment key={menypunkt}>
               <Button
                 as={Link}
                 size="small"
@@ -189,7 +189,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
               {index < allMenypunktEntries.length - 1 && (
                 <div aria-hidden className="h-px w-full bg-ax-neutral-400" />
               )}
-            </React.Fragment>
+            </Fragment>
           );
         })}
       </nav>

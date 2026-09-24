@@ -1,7 +1,6 @@
 import { Button, HStack } from "@navikt/ds-react";
 import { Link } from "react-router-dom";
 import { manglendeMedvirkningPath } from "@/AppRouter";
-import React from "react";
 
 const texts = {
   stans: "Skriv innstilling om stans",

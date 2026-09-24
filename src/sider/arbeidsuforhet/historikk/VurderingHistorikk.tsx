@@ -1,4 +1,3 @@
-import React from "react";
 import { Accordion, BodyShort, Box, Heading } from "@navikt/ds-react";
 import { useGetArbeidsuforhetVurderingerQuery } from "@/sider/arbeidsuforhet/hooks/arbeidsuforhetQueryHooks";
 import {

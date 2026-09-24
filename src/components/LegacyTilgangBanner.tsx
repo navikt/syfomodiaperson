@@ -1,7 +1,7 @@
 import { Events, trackEvent } from "@/utils/umami";
 import { ExternalLinkIcon } from "@navikt/aksel-icons";
 import { GlobalAlert, Link } from "@navikt/ds-react";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 function logShowingBannerEvent() {
   trackEvent({

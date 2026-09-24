@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { SykepengesoknadDTO } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import { BodyShort, Heading } from "@navikt/ds-react";

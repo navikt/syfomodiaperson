@@ -1,4 +1,3 @@
-import React from "react";
 import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
 import { BodyShort, Checkbox } from "@navikt/ds-react";
 

@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
-import React, { useState } from "react";
+import { useState } from "react";
 import { VelgBehandler } from "@/components/behandler/VelgBehandler";
 import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { FormProvider, useForm } from "react-hook-form";

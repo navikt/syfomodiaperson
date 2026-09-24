@@ -2,7 +2,7 @@ import {
   SenOppfolgingKandidatResponseDTO,
   SenOppfolgingVurderingType,
 } from "@/data/senoppfolging/senOppfolgingTypes";
-import React, { useState } from "react";
+import { useState } from "react";
 import { BodyShort, Box, Button, Heading, Textarea } from "@navikt/ds-react";
 import { useVurderSenOppfolgingKandidat } from "@/data/senoppfolging/useVurderSenOppfolgingKandidat";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";

@@ -6,8 +6,8 @@ import { oppfolgingsoppgaverQueryKeys } from "@/data/oppfolgingsoppgave/useOppfo
 import { aktivOppfolgingsoppgaveQueryKeys } from "@/data/oppfolgingsoppgave/useAktivOppfolgingsoppgave";
 import {
   useMutation,
-  useQueryClient,
   type UseMutationResult,
+  useQueryClient,
 } from "@tanstack/react-query";
 import { ApiErrorException } from "@/api/errors";
 
