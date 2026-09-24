@@ -29,6 +29,9 @@ const texts = {
     notBedtOmBistand:
       "Behandler har ikke bedt om bistand fra Nav de siste seks månedene",
   },
+  bistand: {
+    readMore: "Relaterte sykmeldinger",
+  },
   gjentakende: {
     definisjon: "Definisjonen på gjentakende sykefravær i Modia er enten:",
     hyppigeFravar:
@@ -87,11 +90,10 @@ export function KartleggingInfo() {
               </span>
             </div>
             {relevanteSykmeldinger.length > 0 && (
-              <ReadMore header="Se sykemeldinger" size="small">
-                Sykemeldinger som har relaterte oppgaver fra siste seks måneder:
+              <ReadMore header={texts.bistand.readMore} size="small">
                 <List>
-                  {relevanteSykmeldinger.map((sykmelding) => (
-                    <List.Item key={`sykmelding-${sykmelding.id}`}>
+                  {relevanteSykmeldinger.map((sykmelding, index) => (
+                    <List.Item key={`relatert-sykmelding-${index}`}>
                       <Link
                         as={RouterLink}
                         to={`/sykefravaer/sykmeldinger/${sykmelding.id}`}
