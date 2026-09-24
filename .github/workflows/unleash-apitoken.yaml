@@ -17,12 +17,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
       - name: Deploy to dev
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/unleash/unleash-apitoken-dev.yaml
       - name: Deploy to prod
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           CLUSTER: prod-gcp
           RESOURCE: .nais/unleash/unleash-apitoken-prod.yaml
