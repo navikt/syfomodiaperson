@@ -14,10 +14,9 @@ import {
   partitionOppfolgingsplanerByActiveTilfelle,
 } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { Alert, Heading, Link, Loader } from "@navikt/ds-react";
+import { Alert, BodyShort, Box, Heading, Link, Loader } from "@navikt/ds-react";
 import { useOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/useOppfolgingsplaner";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
-import { ReactNode } from "react";
 
 const texts = {
   header: "Oppfølgingsplan",
@@ -25,29 +24,31 @@ const texts = {
   pending: "Henter oppfølgingsplaner...",
   error:
     "Noe gikk galt ved henting av oppfølgingsplaner. Vennligst prøv igjen senere.",
+  virksomhet: "Virksomhet:",
+  apne: "Åpne planen",
 };
 
-function AktivPlan({ children }: { children: ReactNode }) {
-  return <div className="mt-2 mb-4 [&_a]:capitalize">{children}</div>;
+interface OppfolgingsplanLenkeProps {
+  virksomhetsnummer: string;
+  href: string;
 }
 
-interface LpsPlanLenkeProps {
-  lpsPlan: OppfolgingsplanLPS;
-}
-
-const LpsPlanLenke = ({ lpsPlan }: LpsPlanLenkeProps) => {
-  const { virksomhetsnavn } = useVirksomhetQuery(lpsPlan.virksomhetsnummer);
-  const virksomhetsNavn = virksomhetsnavn || lpsPlan.virksomhetsnummer;
+function OppfolgingsplanLenke({
+  virksomhetsnummer,
+  href,
+}: OppfolgingsplanLenkeProps) {
+  const { virksomhetsnavn } = useVirksomhetQuery(virksomhetsnummer);
   return (
-    <Link
-      href={`${LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT}/oppfolgingsplan/lps/${lpsPlan.uuid}`}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {`${virksomhetsNavn} (pdf)`}
-    </Link>
+    <BodyShort size="small" className="col-span-2 grid grid-cols-subgrid">
+      <span>
+        {texts.virksomhet} {virksomhetsnavn || virksomhetsnummer}.
+      </span>
+      <Link href={href} target="_blank" rel="noopener noreferrer">
+        {texts.apne}
+      </Link>
+    </BodyShort>
   );
-};
+}
 
 interface LpsPlanerProps {
   lpsPlaner: OppfolgingsplanLPS[];
@@ -59,36 +60,37 @@ function LPSPlaner({ lpsPlaner }: LpsPlanerProps) {
       {lpsPlaner.map((plan, index) => {
         const lesbarDato = tilLesbarDatoMedArstall(plan.opprettet);
         return (
-          <div key={index}>
-            <LpsPlanLenke lpsPlan={plan} />
-            <span>{` innsendt ${lesbarDato} (LPS)`}</span>
-          </div>
+          <Box key={index} className="col-span-2 grid grid-cols-subgrid">
+            <OppfolgingsplanLenke
+              virksomhetsnummer={plan.virksomhetsnummer}
+              href={`${LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT}/oppfolgingsplan/lps/${plan.uuid}`}
+            />
+            <BodyShort size="small" className="col-span-2">
+              {`Innsendt ${lesbarDato}.`}
+            </BodyShort>
+          </Box>
         );
       })}
     </>
   );
 }
 
-interface AktivPlanV2LenkeProps {
+interface AktivPlanV2Props {
   aktivPlan: OppfolgingsplanV2DTO;
 }
 
-function AktivPlanV2Lenke({ aktivPlan }: AktivPlanV2LenkeProps) {
-  const { virksomhetsnavn } = useVirksomhetQuery(aktivPlan.virksomhetsnummer);
+function AktivPlanV2({ aktivPlan }: AktivPlanV2Props) {
   const deltMedNav = restdatoTilLesbarDato(aktivPlan.deltMedNavTidspunkt);
   return (
-    <AktivPlan>
-      <Link
+    <div className="col-span-2 grid grid-cols-subgrid">
+      <OppfolgingsplanLenke
+        virksomhetsnummer={aktivPlan.virksomhetsnummer}
         href={`${SYFO_OPPFOLGINGSPLAN_BACKEND_ROOT}/oppfolgingsplaner/${aktivPlan.uuid}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {virksomhetsnavn && virksomhetsnavn.length > 0
-          ? virksomhetsnavn.toLowerCase()
-          : aktivPlan.virksomhetsnummer}
-      </Link>
-      <span className="ml-8">{`delt med Nav ${deltMedNav}`}</span>
-    </AktivPlan>
+      />
+      <BodyShort size="small" className="col-span-2">
+        {`Delt med Nav ${deltMedNav}.`}
+      </BodyShort>
+    </div>
   );
 }
 
@@ -100,7 +102,7 @@ function AktivePlanerV2({ aktivePlaner }: AktivePlanerV2Props) {
   return (
     <>
       {aktivePlaner.map((plan, index) => (
-        <AktivPlanV2Lenke key={index} aktivPlan={plan} />
+        <AktivPlanV2 key={index} aktivPlan={plan} />
       ))}
     </>
   );
@@ -115,12 +117,12 @@ function Oppfolgingsplaner({ planerV2, lpsPlaner }: OppfolgingsplanerProps) {
   const anyActivePlaner = planerV2.length > 0 || lpsPlaner.length > 0;
 
   return anyActivePlaner ? (
-    <div>
+    <Box className="grid grid-cols-[max-content_max-content] gap-x-4 gap-y-4">
       <AktivePlanerV2 aktivePlaner={planerV2} />
       <LPSPlaner lpsPlaner={lpsPlaner} />
-    </div>
+    </Box>
   ) : (
-    <p>{texts.ingenPlanerDelt}</p>
+    <BodyShort size="small">{texts.ingenPlanerDelt}</BodyShort>
   );
 }
 
