@@ -1,11 +1,5 @@
 import { useState } from "react";
 import { EasterRoll } from "../../../img/ImageComponents";
-import styled from "styled-components";
-
-const EasterGif = styled.img`
-  width: 100%;
-  flex: 1;
-`;
 
 export const Easter = () => {
   const [imgSrc, setImgSrc] = useState<string>(EasterRoll);
@@ -19,7 +13,12 @@ export const Easter = () => {
 
   return (
     <div>
-      <EasterGif src={imgSrc} alt="påskekylling gif" onClick={replayGif} />
+      <img
+        className="w-full flex-1"
+        src={imgSrc}
+        alt="påskekylling gif"
+        onClick={replayGif}
+      />
     </div>
   );
 };

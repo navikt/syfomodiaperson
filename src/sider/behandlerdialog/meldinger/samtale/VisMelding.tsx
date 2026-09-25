@@ -3,7 +3,6 @@ import { EyeWithPupilIcon } from "@navikt/aksel-icons";
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
 import { useState } from "react";
 import { MeldingDTO } from "@/data/behandlerdialog/behandlerdialogTypes";
-import styled from "styled-components";
 
 const texts = {
   visButton: "Se hele meldingen",
@@ -14,22 +13,19 @@ interface VisMeldingProps {
   melding: MeldingDTO;
 }
 
-const VisMeldingButton = styled(Button)`
-  margin-left: auto;
-`;
-
 export const VisMelding = ({ melding }: VisMeldingProps) => {
   const [visMelding, setVisMelding] = useState(false);
   return (
     <>
-      <VisMeldingButton
+      <Button
+        className="ml-auto"
         onClick={() => setVisMelding(true)}
         variant="secondary"
         size="small"
         icon={<EyeWithPupilIcon aria-hidden />}
       >
         {texts.visButton}
-      </VisMeldingButton>
+      </Button>
       <ForhandsvisningModal
         contentLabel={texts.visContentLabel}
         isOpen={visMelding}

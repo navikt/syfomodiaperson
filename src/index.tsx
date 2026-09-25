@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import AppRouter from "./AppRouter";
-import "./styles/style.css";
+import "./style.css";
 import "@navikt/lumi-survey/styles.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";

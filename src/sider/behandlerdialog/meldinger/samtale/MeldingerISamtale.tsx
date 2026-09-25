@@ -4,7 +4,7 @@ import {
   MeldingType,
 } from "@/data/behandlerdialog/behandlerdialogTypes";
 import MeldingInnholdPanel from "@/sider/behandlerdialog/meldinger/samtale/MeldingInnholdPanel";
-import styled from "styled-components";
+import cx from "classnames";
 import {
   NavLogoRod,
   StetoskopIkonBakgrunn,
@@ -27,27 +27,36 @@ const texts = {
   fjernOppgavenButtonText: "Fjern oppgaven",
 };
 
-const StyledImageWrapper = styled.div<{ innkommende?: boolean }>`
-  margin: ${(props) => (props.innkommende ? "0 1em 0 0" : "0 0 0 1em")};
-`;
+interface ImageWrapperProps {
+  innkommende?: boolean;
+  children: React.ReactNode;
+}
 
-const StyledMelding = styled.div<{ innkommende?: boolean }>`
-  display: flex;
-  flex-direction: row;
-  justify-content: ${(props) => (props.innkommende ? "start" : "end")};
-`;
+const ImageWrapper = ({ innkommende, children }: ImageWrapperProps) => (
+  <div className={innkommende ? "mr-[1em]" : "ml-[1em]"}>{children}</div>
+);
 
-const StyledInnhold = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 80%;
+interface MeldingProps {
+  innkommende?: boolean;
+  children: React.ReactNode;
+}
 
-  > * {
-    &:not(:last-child) {
-      margin-bottom: 1em;
-    }
-  }
-`;
+const Melding = ({ innkommende, children }: MeldingProps) => (
+  <div
+    className={cx(
+      "flex flex-row",
+      innkommende ? "justify-start" : "justify-end",
+    )}
+  >
+    {children}
+  </div>
+);
+
+const Innhold = ({ children }: { children: React.ReactNode }) => (
+  <div className="flex flex-col w-4/5 [&>*:not(:last-child)]:mb-[1em]">
+    {children}
+  </div>
+);
 
 interface MeldingFraBehandlerProps {
   meldinger: MeldingDTO[];
@@ -68,15 +77,15 @@ export function MeldingFraBehandler({
   const showReturLegeerklaring = isLegeerklaring && !sentReturForLegeerklaring;
 
   return (
-    <StyledMelding innkommende>
-      <StyledImageWrapper innkommende>
+    <Melding innkommende>
+      <ImageWrapper innkommende>
         <img src={StetoskopIkonBakgrunn} alt="Stetoskopikon for behandler" />
-      </StyledImageWrapper>
-      <StyledInnhold>
+      </ImageWrapper>
+      <Innhold>
         <MeldingInnholdPanel melding={melding} />
         {showReturLegeerklaring && <ReturLegeerklaring melding={melding} />}
-      </StyledInnhold>
-    </StyledMelding>
+      </Innhold>
+    </Melding>
   );
 }
 
@@ -102,8 +111,8 @@ export function MeldingTilBehandler({ melding }: MeldingInnholdProps) {
     .find((oppgave) => oppgave.referanseUuid === melding.uuid);
 
   return (
-    <StyledMelding>
-      <StyledInnhold>
+    <Melding>
+      <Innhold>
         <MeldingInnholdPanel melding={melding} avvist={avvistMelding} />
         {avvistMelding && !!avvistOppgave && (
           <BehandlePersonOppgaveKnapp
@@ -124,11 +133,11 @@ export function MeldingTilBehandler({ melding }: MeldingInnholdProps) {
             oppgave={ubesvartMeldingOppgave}
           />
         )}
-      </StyledInnhold>
-      <StyledImageWrapper>
+      </Innhold>
+      <ImageWrapper>
         <img src={NavLogoRod} alt="Rød Nav-logo" />
-      </StyledImageWrapper>
-    </StyledMelding>
+      </ImageWrapper>
+    </Melding>
   );
 }
 
