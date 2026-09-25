@@ -12,8 +12,9 @@ export type DraftCategory =
   | "aktivitetskrav-unntak"
   | "aktivitetskrav-oppfylt"
   | "aktivitetskrav-innstilling-om-stans"
-  | "utenlandsopphold-avslag"
+  | "utenlandsopphold-innvilget"
   | "utenlandsopphold-delvis-innvilget"
+  | "utenlandsopphold-avslag"
   | "utenlandsopphold-henleggelse";
 
 function draftPath(category: DraftCategory): string {

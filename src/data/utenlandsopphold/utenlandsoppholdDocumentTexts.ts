@@ -9,6 +9,7 @@ export type InnvilgetDocumentTextsValues =
   UtenlandsoppholdDocumentTextsValues & {
     innvilgedePerioder: Periode[];
     medForbeholdOvrigeVilkar: boolean;
+    begrunnelse?: string;
   };
 
 export type AvslagDocumentTextsValues = UtenlandsoppholdDocumentTextsValues & {
