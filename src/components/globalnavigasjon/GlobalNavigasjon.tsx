@@ -15,6 +15,7 @@ import { useKartleggingssporsmalKandidaterQuery } from "@/data/kartleggingsspors
 import { useOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/useOppfolgingsplaner";
 import { ToggleNames } from "@/data/unleash/unleash_types.ts";
 import { Link } from "react-router-dom";
+import { useUtenlandsoppholdSoknanderQuery } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
 
 export enum Menypunkter {
   AKTIVITETSKRAV = "AKTIVITETSKRAV",
@@ -119,6 +120,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
   const friskmeldingTilArbeidsformidlingVedtak = useVedtakQuery();
   const manglendeMedvirkningVurdering = useManglendemedvirkningVurderingQuery();
   const kartleggingssporsmalKandidat = useKartleggingssporsmalKandidaterQuery();
+  const utenlandsoppholdSoknader = useUtenlandsoppholdSoknanderQuery();
   const featureToggles = useFeatureToggles();
 
   const isPending = featureToggles.isPending;
@@ -161,6 +163,7 @@ export default function GlobalNavigasjon({ aktivtMenypunkt }: Props) {
             manglendeMedvirkningVurdering.sisteVurdering,
             kartleggingssporsmalKandidat.data,
             aktivePlanerV2.length,
+            utenlandsoppholdSoknader.data?.soknader ?? [],
           );
 
           return (

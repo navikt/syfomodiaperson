@@ -26,6 +26,14 @@ import { VurderingResponseDTO as ManglendeMedvirkningVurderingResponseDTO } from
 import { isExpiredForhandsvarsel } from "@/utils/datoUtils";
 import { isVarselUbesvart } from "@/utils/senOppfolgingUtils";
 import { KartleggingssporsmalKandidatResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
+import {
+  Soknad,
+  SoknadStatusDTO,
+} from "@/data/utenlandsopphold/utenlandsoppholdTypes";
+import dayjs from "dayjs";
+
+/** Første dato en mottatt søknad om utenlandsopphold skal varsles i sidemenyen. */
+export const UTENLANDSOPPHOLD_VARSEL_CUTOFF_DATO = "2026-09-25";
 
 const getNumberOfMoteOppgaver = (
   motebehov: MotebehovVeilederDTO[],
@@ -161,6 +169,17 @@ function getNumberOfKartleggingssporsmalOppgaver(
   return newestKandidat?.status === "SVAR_MOTTATT" ? 1 : 0;
 }
 
+function getNumberOfUtenlandsoppholdOppgaver(soknader: Soknad[]): number {
+  return soknader.filter(
+    (soknad) =>
+      soknad.status === SoknadStatusDTO.MOTTATT &&
+      !dayjs(soknad.innsendtTidspunkt).isBefore(
+        UTENLANDSOPPHOLD_VARSEL_CUTOFF_DATO,
+        "day",
+      ),
+  ).length;
+}
+
 export function numberOfTasks(
   menypunkt: Menypunkter,
   motebehov: MotebehovVeilederDTO[],
@@ -178,6 +197,7 @@ export function numberOfTasks(
     | undefined
     | null,
   antallAktiveV2Planer: number,
+  utenlandsoppholdSoknader: Soknad[],
 ): number {
   switch (menypunkt) {
     case Menypunkter.DIALOGMOTE:
@@ -215,6 +235,7 @@ export function numberOfTasks(
     case Menypunkter.KARTLEGGINGSSPORSMAL:
       return getNumberOfKartleggingssporsmalOppgaver(kartleggingVurderinger);
     case Menypunkter.UTENLANDSOPPHOLD:
+      return getNumberOfUtenlandsoppholdOppgaver(utenlandsoppholdSoknader);
     case Menypunkter.NOKKELINFORMASJON:
     case Menypunkter.SYKEPENGESOKNADER:
     case Menypunkter.HISTORIKK: {
