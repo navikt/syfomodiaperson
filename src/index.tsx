@@ -9,6 +9,7 @@ import { ValgtEnhetProvider } from "@/context/ValgtEnhetContext";
 import { isClientError } from "@/api/errors";
 import "@/naisApm.ts";
 import { erLokal, erProd } from "@/utils/miljoUtil";
+import { loadDecoratorScript } from "@/decorator/loadDecoratorScript";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -54,7 +55,10 @@ function addUmamiScript() {
 }
 
 function renderApp() {
-  addUmamiScript();
+  if (!erLokal()) {
+    addUmamiScript();
+  }
+  loadDecoratorScript();
   root.render(
     <ValgtEnhetProvider>
       <QueryClientProvider client={queryClient}>
