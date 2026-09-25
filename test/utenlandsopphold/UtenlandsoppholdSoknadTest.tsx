@@ -46,8 +46,13 @@ import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/
 import { generateOppfolgingstilfelle } from "../testDataUtils";
 
 let queryClient: QueryClient;
-const forbeholdOvrigeVilkarText =
+
+const forbeholdOvrigeVilkarBrevText =
   "Dette vedtaket gjelder kun retten til å beholde ytelsen sykepenger under utenlandsoppholdet, dersom du får innvilget sykepenger.";
+
+const perioderUtenforTilfelleWarning =
+  "En eller flere av periodene det er søkt om ligger utenfor sykmeldingsperioden.";
+const sykepengerIkkeUtbetaltWarning = /Sykepenger er ikke utbetalt\./;
 
 const renderUtenlandsoppholdSoknad = (
   soknadId: string = soknadUtenVedtakMock.soknadId,
@@ -71,9 +76,6 @@ const renderUtenlandsoppholdSoknad = (
       </MemoryRouter>
     </QueryClientProvider>,
   );
-
-const perioderUtenforTilfelleWarning =
-  "En eller flere av periodene det er søkt om ligger utenfor sykmeldingsperioden.";
 
 function setOppfolgingstilfeller(
   oppfolgingstilfelleList: OppfolgingstilfelleDTO[],
@@ -163,68 +165,51 @@ describe("UtenlandsoppholdSoknad", () => {
       .exist;
   });
 
-  it("sender innvilget vedtak, viser notifikasjon og navigerer tilbake til listen der søknadens status nå vises som innvilget", async () => {
-    stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
-    queryClient.setQueryData(
-      maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => ({
-        maxDate: {
-          ...maksdatoMock.maxDate,
-          utbetalt_tom: new Date("2026-08-01"),
-        },
-      }),
-    );
+  it("viser valideringsfeil og sender ikke vedtak når ingen utfall er valgt", async () => {
+    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
 
-    renderUtenlandsoppholdSoknad(
-      soknadUtenVedtakMock.soknadId,
-      utenlandsoppholdPath,
-    );
-
-    expect(await screen.findByRole("button", { name: "Start behandling" })).to
-      .exist;
-
-    await clickButton("Start behandling");
-
-    await clickRadio("Innvilget: Godkjenn hele perioden");
+    renderUtenlandsoppholdSoknad();
 
     await screen.findByRole("button", { name: "Se brev og send" });
     await clickButton("Se brev og send");
-    await clickButton("Bekreft og send");
 
     expect(
-      await screen.findByText(
-        "Vedtaket om utenlandsopphold utenfor EU/EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
-      ),
+      await screen.findByText("Du må velge et utfall for å fatte vedtaket"),
     ).to.exist;
-    expect(screen.queryByText("Fant ikke søknaden")).to.not.exist;
-    expect(screen.queryByRole("button", { name: "Start behandling" })).to.not
-      .exist;
-    expect(await screen.findAllByText("Innvilget")).to.have.lengthOf(2);
-    expect(
-      await screen.findAllByText(
-        new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),
+
+    await waitFor(() => {
+      expect(queryClient.getMutationCache().getAll()).to.have.lengthOf(0);
+    });
+  });
+
+  it("navigerer ikke bort og viser ingen notifikasjon hvis sending av vedtak feiler", async () => {
+    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+    mockServer.use(
+      http.post(
+        `*${ISUTENLANDSOPPHOLD_ROOT}/soknader/:soknadId/vedtak`,
+        () => new HttpResponse(null, { status: 500 }),
       ),
-    ).to.have.lengthOf(3);
+    );
+
+    renderUtenlandsoppholdSoknad();
+
+    await screen.findByRole("button", { name: "Se brev og send" });
+    await clickRadio("Innvilget: Godkjenn hele perioden");
+    await clickButton("Se brev og send");
+    await clickButton("Bekreft og send");
 
     await waitFor(() => {
-      const vedtakMutation = queryClient.getMutationCache().getAll()[0];
-      const variables = vedtakMutation.state.variables as {
-        soknadId: string;
-        vedtak: SoknadVedtakPostDTO;
-      };
-      expect(
-        variables.vedtak.document.some((component) =>
-          component.texts.includes(forbeholdOvrigeVilkarText),
-        ),
-      ).to.equal(false);
+      const vedtakMutation = queryClient.getMutationCache().getAll().pop();
+      expect(vedtakMutation?.state.status).to.equal("error");
     });
+    expect(screen.getByRole("button", { name: "Se brev og send" })).to.exist;
   });
 
-  it("viser varsel til veileder og legger ved forbeholdstekst ved innvilgelse når sykepenger ikke er utbetalt", async () => {
+  it("sender riktig draft til riktig draft query", async () => {
     stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
-    queryClient.setQueryData(
-      maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => ({ maxDate: null }),
+    mockServer.use(
+      ...createDraftTextMock("utenlandsopphold-avslag"),
+      ...createDraftTextMock("utenlandsopphold-delvis-innvilget"),
     );
 
     renderUtenlandsoppholdSoknad(
@@ -237,282 +222,137 @@ describe("UtenlandsoppholdSoknad", () => {
 
     await clickButton("Start behandling");
 
-    expect(await screen.findByText(/Sykepenger er ikke utbetalt\./)).to.exist;
+    await clickRadio("Avslag: Avslå hele perioden");
+    changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "Draft 1");
 
-    await clickRadio("Innvilget: Godkjenn hele perioden");
-    await clickButton("Se brev og send");
-    await clickButton("Bekreft og send");
+    await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
+    changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "Draft 2");
 
-    await waitFor(() => {
-      const vedtakMutation = queryClient.getMutationCache().getAll()[0];
-      const variables = vedtakMutation.state.variables as {
-        soknadId: string;
-        vedtak: SoknadVedtakPostDTO;
-      };
+    await clickRadio("Avslag: Avslå hele perioden");
+    expect(await screen.findByText("Draft 1")).to.exist;
+
+    await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
+    expect(await screen.findByText("Draft 2")).to.exist;
+  });
+
+  describe("Innvilgelse", () => {
+    it("sender innvilget vedtak, viser notifikasjon og navigerer tilbake til listen der søknadens status nå vises som innvilget", async () => {
+      stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
+      queryClient.setQueryData(
+        maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({
+          maxDate: {
+            ...maksdatoMock.maxDate,
+            utbetalt_tom: new Date("2026-08-01"),
+          },
+        }),
+      );
+
+      renderUtenlandsoppholdSoknad(
+        soknadUtenVedtakMock.soknadId,
+        utenlandsoppholdPath,
+      );
+
+      expect(await screen.findByRole("button", { name: "Start behandling" })).to
+        .exist;
+
+      await clickButton("Start behandling");
+
+      await clickRadio("Innvilget: Godkjenn hele perioden");
+
+      await screen.findByRole("button", { name: "Se brev og send" });
+      await clickButton("Se brev og send");
+      await clickButton("Bekreft og send");
+
       expect(
-        variables.vedtak.document.some((component) =>
-          component.texts.includes(forbeholdOvrigeVilkarText),
+        await screen.findByText(
+          "Vedtaket om utenlandsopphold utenfor EU/EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
         ),
-      ).to.equal(true);
-    });
-  });
-
-  it("viser varsel og forbehold når utbetalingen skjedde før siste oppfolgingstilfelle startet", async () => {
-    stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
-    queryClient.setQueryData(
-      maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
-      () => ({
-        maxDate: {
-          ...maksdatoMock.maxDate,
-          utbetalt_tom: new Date("2020-01-01"),
-        },
-      }),
-    );
-
-    renderUtenlandsoppholdSoknad(
-      soknadUtenVedtakMock.soknadId,
-      utenlandsoppholdPath,
-    );
-
-    expect(await screen.findByRole("button", { name: "Start behandling" })).to
-      .exist;
-
-    await clickButton("Start behandling");
-
-    expect(await screen.findByText(/Sykepenger er ikke utbetalt\./)).to.exist;
-
-    await clickRadio("Innvilget: Godkjenn hele perioden");
-    await clickButton("Se brev og send");
-    await clickButton("Bekreft og send");
-
-    await waitFor(() => {
-      const vedtakMutation = queryClient.getMutationCache().getAll()[0];
-      const variables = vedtakMutation.state.variables as {
-        soknadId: string;
-        vedtak: SoknadVedtakPostDTO;
-      };
+      ).to.exist;
+      expect(screen.queryByText("Fant ikke søknaden")).to.not.exist;
+      expect(screen.queryByRole("button", { name: "Start behandling" })).to.not
+        .exist;
+      expect(await screen.findAllByText("Innvilget")).to.have.lengthOf(2);
       expect(
-        variables.vedtak.document.some((component) =>
-          component.texts.includes(forbeholdOvrigeVilkarText),
+        await screen.findAllByText(
+          new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),
         ),
-      ).to.equal(true);
+      ).to.have.lengthOf(3);
+
+      await waitFor(() => {
+        const vedtakMutation = queryClient.getMutationCache().getAll()[0];
+        const variables = vedtakMutation.state.variables as {
+          soknadId: string;
+          vedtak: SoknadVedtakPostDTO;
+        };
+        expect(
+          variables.vedtak.document.some((component) =>
+            component.texts.includes(forbeholdOvrigeVilkarBrevText),
+          ),
+        ).to.equal(false);
+      });
     });
-  });
 
-  it("sender innvilget vedtak uten begrunnelse som null", async () => {
-    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+    it("sender innvilget vedtak uten begrunnelse som null", async () => {
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
 
-    renderUtenlandsoppholdSoknad();
+      renderUtenlandsoppholdSoknad();
 
-    await screen.findByRole("button", { name: "Se brev og send" });
-    await clickRadio("Innvilget: Godkjenn hele perioden");
-    await clickButton("Se brev og send");
-    await clickButton("Bekreft og send");
+      await screen.findByRole("button", { name: "Se brev og send" });
+      await clickRadio("Innvilget: Godkjenn hele perioden");
+      await clickButton("Se brev og send");
+      await clickButton("Bekreft og send");
 
-    await waitFor(() => {
-      const vedtakMutation = queryClient.getMutationCache().getAll()[0];
-      const variables = vedtakMutation.state.variables as {
-        soknadId: string;
-        vedtak: SoknadVedtakPostDTO;
-      };
-      expect(variables.vedtak.begrunnelse).to.equal(null);
+      await waitFor(() => {
+        const vedtakMutation = queryClient.getMutationCache().getAll()[0];
+        const variables = vedtakMutation.state.variables as {
+          soknadId: string;
+          vedtak: SoknadVedtakPostDTO;
+        };
+        expect(variables.vedtak.begrunnelse).to.equal(null);
+      });
     });
-  });
 
-  it("sender innvilget vedtak med utfylt begrunnelse og tar den med i brevet", async () => {
-    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+    it("sender innvilget vedtak med utfylt begrunnelse og tar den med i brevet", async () => {
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
 
-    renderUtenlandsoppholdSoknad();
+      renderUtenlandsoppholdSoknad();
 
-    await screen.findByRole("button", { name: "Se brev og send" });
-    await clickRadio("Innvilget: Godkjenn hele perioden");
+      await screen.findByRole("button", { name: "Se brev og send" });
+      await clickRadio("Innvilget: Godkjenn hele perioden");
 
-    changeTextInput(
-      getTextInput("Begrunnelse (valgfritt)"),
-      "Oppholdet hindrer ikke planlagt behandling",
-    );
-
-    await clickButton("Se brev og send");
-    await clickButton("Bekreft og send");
-
-    await waitFor(() => {
-      const vedtakMutation = queryClient
-        .getMutationCache()
-        .getAll()
-        .find(
-          (mutation) =>
-            (mutation.state.variables as { vedtak?: SoknadVedtakPostDTO })
-              ?.vedtak,
-        );
-      const variables = vedtakMutation?.state.variables as {
-        soknadId: string;
-        vedtak: SoknadVedtakPostDTO;
-      };
-      expect(variables.vedtak.begrunnelse).to.equal(
+      changeTextInput(
+        getTextInput("Begrunnelse (valgfritt)"),
         "Oppholdet hindrer ikke planlagt behandling",
       );
-      expect(
-        variables.vedtak.document.some((component) =>
-          component.texts.includes(
-            "Oppholdet hindrer ikke planlagt behandling",
-          ),
-        ),
-      ).to.equal(true);
-    });
-  });
 
-  it("godtar ikke begrunnelse med bare mellomrom ved avslag", async () => {
-    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+      await clickButton("Se brev og send");
+      await clickButton("Bekreft og send");
 
-    renderUtenlandsoppholdSoknad();
-
-    await screen.findByRole("button", { name: "Se brev og send" });
-    await clickRadio("Avslag: Avslå hele perioden");
-    changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "   ");
-    await clickButton("Se brev og send");
-
-    expect(await screen.findByText("Vennligst angi begrunnelse")).to.exist;
-    expect(screen.queryByRole("button", { name: "Bekreft og send" })).to.not
-      .exist;
-  });
-
-  it("sender avslag vedtak, viser notifikasjon og navigerer tilbake til listen der søknadens status nå vises som avslag", async () => {
-    stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
-
-    renderUtenlandsoppholdSoknad(
-      soknadUtenVedtakMock.soknadId,
-      utenlandsoppholdPath,
-    );
-
-    expect(await screen.findByRole("button", { name: "Start behandling" })).to
-      .exist;
-
-    await clickButton("Start behandling");
-
-    await clickRadio("Avslag: Avslå hele perioden");
-
-    changeTextInput(
-      getTextInput("Begrunnelse (obligatorisk)"),
-      "Vurdering av avslag",
-    );
-
-    await screen.findByRole("button", { name: "Se brev og send" });
-    await clickButton("Se brev og send");
-    await clickButton("Bekreft og send");
-
-    expect(
-      await screen.findByText(
-        "Vedtaket om utenlandsopphold utenfor EU/EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
-      ),
-    ).to.exist;
-    expect(screen.queryByText("Fant ikke søknaden")).to.not.exist;
-    expect(screen.queryByRole("button", { name: "Start behandling" })).to.not
-      .exist;
-    expect(await screen.findAllByText("Avslått")).to.have.lengthOf(1);
-    expect(
-      await screen.findAllByText(
-        new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),
-      ),
-    ).to.have.lengthOf(3);
-
-    await waitFor(() => {
-      const vedtakMutation = queryClient
-        .getMutationCache()
-        .getAll()
-        .find(
-          (mutation) =>
-            (mutation.state.variables as { vedtak?: SoknadVedtakPostDTO })
-              ?.vedtak,
+      await waitFor(() => {
+        const vedtakMutation = queryClient
+          .getMutationCache()
+          .getAll()
+          .find(
+            (mutation) =>
+              (mutation.state.variables as { vedtak?: SoknadVedtakPostDTO })
+                ?.vedtak,
+          );
+        const variables = vedtakMutation?.state.variables as {
+          soknadId: string;
+          vedtak: SoknadVedtakPostDTO;
+        };
+        expect(variables.vedtak.begrunnelse).to.equal(
+          "Oppholdet hindrer ikke planlagt behandling",
         );
-      const variables = vedtakMutation?.state.variables as {
-        soknadId: string;
-        vedtak: SoknadVedtakPostDTO;
-      };
-      expect(variables.vedtak.begrunnelse).to.equal("Vurdering av avslag");
-      expect(
-        variables.vedtak.document.some((component) =>
-          component.texts.includes("Vurdering av avslag"),
-        ),
-      ).to.equal(true);
-      // Hele søknadsperioden avslås, siden det ikke er valgt noen innvilgede perioder
-      expect(
-        variables.vedtak.document.some((component) =>
-          component.texts.some(
-            (text) =>
-              text.includes("01.09.2026 til og med 07.09.2026") &&
-              text.includes("10.09.2026 til og med 12.09.2026"),
+        expect(
+          variables.vedtak.document.some((component) =>
+            component.texts.includes(
+              "Oppholdet hindrer ikke planlagt behandling",
+            ),
           ),
-        ),
-      ).to.equal(true);
-    });
-  });
-
-  it("sender henleggelse vedtak med forhåndsutfylt begrunnelse, viser notifikasjon og navigerer tilbake til listen der søknadens status nå vises som henlagt", async () => {
-    stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
-
-    renderUtenlandsoppholdSoknad(
-      soknadUtenVedtakMock.soknadId,
-      utenlandsoppholdPath,
-    );
-
-    expect(await screen.findByRole("button", { name: "Start behandling" })).to
-      .exist;
-
-    await clickButton("Start behandling");
-
-    await clickRadio("Henleggelse: Søknaden er henlagt");
-
-    const begrunnelseInput = getTextInput("Begrunnelse (obligatorisk)");
-    expect(begrunnelseInput).to.have.property(
-      "value",
-      "I henvendelse til Nav har du gitt beskjed om at du ønsker å trekke søknaden.",
-    );
-
-    changeTextInput(
-      begrunnelseInput,
-      "I telefonsamtale 01.09.2026 har du gitt beskjed om at du ønsker å trekke søknaden.",
-    );
-
-    await screen.findByRole("button", { name: "Se brev og send" });
-    await clickButton("Se brev og send");
-    await clickButton("Bekreft og send");
-
-    expect(
-      await screen.findByText(
-        "Vedtaket om utenlandsopphold utenfor EU/EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
-      ),
-    ).to.exist;
-    expect(screen.queryByText("Fant ikke søknaden")).to.not.exist;
-    expect(screen.queryByRole("button", { name: "Start behandling" })).to.not
-      .exist;
-    expect(await screen.findAllByText("Henlagt")).to.have.lengthOf(1);
-
-    await waitFor(() => {
-      const henleggelseMutation = queryClient
-        .getMutationCache()
-        .getAll()
-        .find(
-          (mutation) =>
-            (
-              mutation.state.variables as {
-                henleggelse?: SoknadHenleggelsePostDTO;
-              }
-            )?.henleggelse,
-        );
-      const variables = henleggelseMutation?.state.variables as {
-        soknadId: string;
-        henleggelse: SoknadHenleggelsePostDTO;
-      };
-      expect(variables.henleggelse.begrunnelse).to.equal(
-        "I telefonsamtale 01.09.2026 har du gitt beskjed om at du ønsker å trekke søknaden.",
-      );
-      expect(
-        variables.henleggelse.document.some((component) =>
-          component.texts.includes(
-            "I telefonsamtale 01.09.2026 har du gitt beskjed om at du ønsker å trekke søknaden.",
-          ),
-        ),
-      ).to.equal(true);
+        ).to.equal(true);
+      });
     });
   });
 
@@ -843,98 +683,162 @@ describe("UtenlandsoppholdSoknad", () => {
     });
   });
 
-  it("viser valideringsfeil og sender ikke vedtak når ingen utfall er valgt", async () => {
-    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+  describe("Avslag", () => {
+    it("sender avslag vedtak, viser notifikasjon og navigerer tilbake til listen der søknadens status nå vises som avslag", async () => {
+      stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
 
-    renderUtenlandsoppholdSoknad();
+      renderUtenlandsoppholdSoknad(
+        soknadUtenVedtakMock.soknadId,
+        utenlandsoppholdPath,
+      );
 
-    await screen.findByRole("button", { name: "Se brev og send" });
-    await clickButton("Se brev og send");
+      expect(await screen.findByRole("button", { name: "Start behandling" })).to
+        .exist;
 
-    expect(
-      await screen.findByText("Du må velge et utfall for å fatte vedtaket"),
-    ).to.exist;
+      await clickButton("Start behandling");
 
-    await waitFor(() => {
-      expect(queryClient.getMutationCache().getAll()).to.have.lengthOf(0);
-    });
-  });
+      await clickRadio("Avslag: Avslå hele perioden");
 
-  it("navigerer ikke bort og viser ingen notifikasjon hvis sending av vedtak feiler", async () => {
-    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
-    mockServer.use(
-      http.post(
-        `*${ISUTENLANDSOPPHOLD_ROOT}/soknader/:soknadId/vedtak`,
-        () => new HttpResponse(null, { status: 500 }),
-      ),
-    );
+      changeTextInput(
+        getTextInput("Begrunnelse (obligatorisk)"),
+        "Vurdering av avslag",
+      );
 
-    renderUtenlandsoppholdSoknad();
+      await screen.findByRole("button", { name: "Se brev og send" });
+      await clickButton("Se brev og send");
+      await clickButton("Bekreft og send");
 
-    await screen.findByRole("button", { name: "Se brev og send" });
-    await clickRadio("Innvilget: Godkjenn hele perioden");
-    await clickButton("Se brev og send");
-    await clickButton("Bekreft og send");
-
-    await waitFor(() => {
-      const vedtakMutation = queryClient.getMutationCache().getAll().pop();
-      expect(vedtakMutation?.state.status).to.equal("error");
-    });
-    expect(screen.getByRole("button", { name: "Se brev og send" })).to.exist;
-  });
-
-  it("sender riktig draft til riktig draft query", async () => {
-    stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
-    mockServer.use(
-      ...createDraftTextMock("utenlandsopphold-avslag"),
-      ...createDraftTextMock("utenlandsopphold-delvis-innvilget"),
-    );
-
-    renderUtenlandsoppholdSoknad(
-      soknadUtenVedtakMock.soknadId,
-      utenlandsoppholdPath,
-    );
-
-    expect(await screen.findByRole("button", { name: "Start behandling" })).to
-      .exist;
-
-    await clickButton("Start behandling");
-
-    await clickRadio("Avslag: Avslå hele perioden");
-    changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "Draft 1");
-
-    await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
-    changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "Draft 2");
-
-    await clickRadio("Avslag: Avslå hele perioden");
-    expect(await screen.findByText("Draft 1")).to.exist;
-
-    await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
-    expect(await screen.findByText("Draft 2")).to.exist;
-  });
-
-  describe("varsel om perioder utenfor oppfolgingstilfelle", () => {
-    const soknadMedKjentePerioder = {
-      ...soknadUtenVedtakMock,
-      soktePerioder: [
-        { fom: "2026-09-01", tom: "2026-09-07" },
-        { fom: "2026-09-10", tom: "2026-09-12" },
-      ],
-    };
-
-    it("viser ikke varsel når alle søkte perioder er innenfor gjeldende oppfolgingstilfelle", async () => {
-      stubSoknaderQuery({ soknader: [soknadMedKjentePerioder] });
-      setOppfolgingstilfeller([
-        generateOppfolgingstilfelle(
-          new Date("2026-08-01"),
-          new Date("2026-12-31"),
+      expect(
+        await screen.findByText(
+          "Vedtaket om utenlandsopphold utenfor EU/EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
         ),
-      ]);
+      ).to.exist;
+      expect(screen.queryByText("Fant ikke søknaden")).to.not.exist;
+      expect(screen.queryByRole("button", { name: "Start behandling" })).to.not
+        .exist;
+      expect(await screen.findAllByText("Avslått")).to.have.lengthOf(1);
+      expect(
+        await screen.findAllByText(
+          new RegExp(`^Behandlet .* av ${VEILEDER_DEFAULT.ident}$`),
+        ),
+      ).to.have.lengthOf(3);
+
+      await waitFor(() => {
+        const vedtakMutation = queryClient
+          .getMutationCache()
+          .getAll()
+          .find(
+            (mutation) =>
+              (mutation.state.variables as { vedtak?: SoknadVedtakPostDTO })
+                ?.vedtak,
+          );
+        const variables = vedtakMutation?.state.variables as {
+          soknadId: string;
+          vedtak: SoknadVedtakPostDTO;
+        };
+        expect(variables.vedtak.begrunnelse).to.equal("Vurdering av avslag");
+        expect(
+          variables.vedtak.document.some((component) =>
+            component.texts.includes("Vurdering av avslag"),
+          ),
+        ).to.equal(true);
+        // Hele søknadsperioden avslås, siden det ikke er valgt noen innvilgede perioder
+        expect(
+          variables.vedtak.document.some((component) =>
+            component.texts.some(
+              (text) =>
+                text.includes("01.09.2026 til og med 07.09.2026") &&
+                text.includes("10.09.2026 til og med 12.09.2026"),
+            ),
+          ),
+        ).to.equal(true);
+      });
+    });
+
+    it("godtar ikke begrunnelse med bare mellomrom ved avslag", async () => {
+      stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
 
       renderUtenlandsoppholdSoknad();
 
       await screen.findByRole("button", { name: "Se brev og send" });
-      expect(screen.queryByText(perioderUtenforTilfelleWarning)).to.not.exist;
+      await clickRadio("Avslag: Avslå hele perioden");
+      changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "   ");
+      await clickButton("Se brev og send");
+
+      expect(await screen.findByText("Vennligst angi begrunnelse")).to.exist;
+      expect(screen.queryByRole("button", { name: "Bekreft og send" })).to.not
+        .exist;
+    });
+  });
+
+  describe("Henleggelse", () => {
+    it("sender henleggelse vedtak med forhåndsutfylt begrunnelse, viser notifikasjon og navigerer tilbake til listen der søknadens status nå vises som henlagt", async () => {
+      stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
+
+      renderUtenlandsoppholdSoknad(
+        soknadUtenVedtakMock.soknadId,
+        utenlandsoppholdPath,
+      );
+
+      expect(await screen.findByRole("button", { name: "Start behandling" })).to
+        .exist;
+
+      await clickButton("Start behandling");
+
+      await clickRadio("Henleggelse: Søknaden er henlagt");
+
+      const begrunnelseInput = getTextInput("Begrunnelse (obligatorisk)");
+      expect(begrunnelseInput).to.have.property(
+        "value",
+        "I henvendelse til Nav har du gitt beskjed om at du ønsker å trekke søknaden.",
+      );
+
+      changeTextInput(
+        begrunnelseInput,
+        "I telefonsamtale 01.09.2026 har du gitt beskjed om at du ønsker å trekke søknaden.",
+      );
+
+      await screen.findByRole("button", { name: "Se brev og send" });
+      await clickButton("Se brev og send");
+      await clickButton("Bekreft og send");
+
+      expect(
+        await screen.findByText(
+          "Vedtaket om utenlandsopphold utenfor EU/EØS er fattet og sendt til bruker. Dokumentet er journalført i Gosys.",
+        ),
+      ).to.exist;
+      expect(screen.queryByText("Fant ikke søknaden")).to.not.exist;
+      expect(screen.queryByRole("button", { name: "Start behandling" })).to.not
+        .exist;
+      expect(await screen.findAllByText("Henlagt")).to.have.lengthOf(1);
+
+      await waitFor(() => {
+        const henleggelseMutation = queryClient
+          .getMutationCache()
+          .getAll()
+          .find(
+            (mutation) =>
+              (
+                mutation.state.variables as {
+                  henleggelse?: SoknadHenleggelsePostDTO;
+                }
+              )?.henleggelse,
+          );
+        const variables = henleggelseMutation?.state.variables as {
+          soknadId: string;
+          henleggelse: SoknadHenleggelsePostDTO;
+        };
+        expect(variables.henleggelse.begrunnelse).to.equal(
+          "I telefonsamtale 01.09.2026 har du gitt beskjed om at du ønsker å trekke søknaden.",
+        );
+        expect(
+          variables.henleggelse.document.some((component) =>
+            component.texts.includes(
+              "I telefonsamtale 01.09.2026 har du gitt beskjed om at du ønsker å trekke søknaden.",
+            ),
+          ),
+        ).to.equal(true);
+      });
     });
   });
 
@@ -1072,6 +976,112 @@ describe("UtenlandsoppholdSoknad", () => {
       expect(await screen.findByText(/Denne søknaden er satt til ikke aktuell/))
         .to.exist;
       expect(screen.getByText(/Behandlet i Infotrygd/)).to.exist;
+    });
+  });
+
+  describe("varsel om perioder utenfor oppfolgingstilfelle", () => {
+    const soknadMedKjentePerioder = {
+      ...soknadUtenVedtakMock,
+      soktePerioder: [
+        { fom: "2026-09-01", tom: "2026-09-07" },
+        { fom: "2026-09-10", tom: "2026-09-12" },
+      ],
+    };
+
+    it("viser ikke varsel når alle søkte perioder er innenfor gjeldende oppfolgingstilfelle", async () => {
+      stubSoknaderQuery({ soknader: [soknadMedKjentePerioder] });
+      setOppfolgingstilfeller([
+        generateOppfolgingstilfelle(
+          new Date("2026-08-01"),
+          new Date("2026-12-31"),
+        ),
+      ]);
+
+      renderUtenlandsoppholdSoknad();
+
+      await screen.findByRole("button", { name: "Se brev og send" });
+      expect(screen.queryByText(perioderUtenforTilfelleWarning)).to.not.exist;
+    });
+  });
+
+  describe("varsel og forbehold i brev knyttet til at sykepenger ikke er utbetalt", () => {
+    it("viser varsel og legger til forbehold i brev ved innvilgelse når sykepenger ikke er utbetalt", async () => {
+      stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
+      queryClient.setQueryData(
+        maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({ maxDate: null }),
+      );
+
+      renderUtenlandsoppholdSoknad(
+        soknadUtenVedtakMock.soknadId,
+        utenlandsoppholdPath,
+      );
+
+      expect(await screen.findByRole("button", { name: "Start behandling" })).to
+        .exist;
+
+      await clickButton("Start behandling");
+
+      expect(await screen.findByText(sykepengerIkkeUtbetaltWarning)).to.exist;
+
+      await clickRadio("Innvilget: Godkjenn hele perioden");
+      await clickButton("Se brev og send");
+      await clickButton("Bekreft og send");
+
+      await waitFor(() => {
+        const vedtakMutation = queryClient.getMutationCache().getAll()[0];
+        const variables = vedtakMutation.state.variables as {
+          soknadId: string;
+          vedtak: SoknadVedtakPostDTO;
+        };
+        expect(
+          variables.vedtak.document.some((component) =>
+            component.texts.includes(forbeholdOvrigeVilkarBrevText),
+          ),
+        ).to.equal(true);
+      });
+    });
+
+    it("viser varsel og legger til forbehold i brev når utbetalingen skjedde før siste oppfolgingstilfelle startet", async () => {
+      stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
+      queryClient.setQueryData(
+        maksdatoQueryKeys.maksdato(ARBEIDSTAKER_DEFAULT.personIdent),
+        () => ({
+          maxDate: {
+            ...maksdatoMock.maxDate,
+            utbetalt_tom: new Date("2020-01-01"),
+          },
+        }),
+      );
+
+      renderUtenlandsoppholdSoknad(
+        soknadUtenVedtakMock.soknadId,
+        utenlandsoppholdPath,
+      );
+
+      expect(await screen.findByRole("button", { name: "Start behandling" })).to
+        .exist;
+
+      await clickButton("Start behandling");
+
+      expect(await screen.findByText(sykepengerIkkeUtbetaltWarning)).to.exist;
+
+      await clickRadio("Innvilget: Godkjenn hele perioden");
+      await clickButton("Se brev og send");
+      await clickButton("Bekreft og send");
+
+      await waitFor(() => {
+        const vedtakMutation = queryClient.getMutationCache().getAll()[0];
+        const variables = vedtakMutation.state.variables as {
+          soknadId: string;
+          vedtak: SoknadVedtakPostDTO;
+        };
+        expect(
+          variables.vedtak.document.some((component) =>
+            component.texts.includes(forbeholdOvrigeVilkarBrevText),
+          ),
+        ).to.equal(true);
+      });
     });
   });
 });
