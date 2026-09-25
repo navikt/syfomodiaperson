@@ -53,6 +53,7 @@ import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgi
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { kartleggingssporsmalQueryKeys } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks";
 import { draftQueryKeys } from "@/hooks/useDraftQuery";
+import { utenlandsoppholdQueryKeys } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
 
 export const testQueryClient = (): QueryClient => {
   return new QueryClient();
@@ -251,6 +252,10 @@ export function setEmptyQueryData(existingClient: QueryClient): void {
       ARBEIDSTAKER_DEFAULT.personIdent,
     ),
     () => null,
+  );
+  existingClient.setQueryData(
+    utenlandsoppholdQueryKeys.soknader(ARBEIDSTAKER_DEFAULT.personIdent),
+    () => ({ soknader: [] }),
   );
   existingClient.setQueryData(
     oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(

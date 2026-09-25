@@ -59,9 +59,35 @@ import {
   defaultForhandsvarselVurderingAfterDeadline,
 } from "../manglendemedvirkning/manglendeMedvirkningTestData";
 import { kartleggingssporsmalQueryKeys } from "@/data/kartleggingssporsmal/kartleggingssporsmalQueryHooks.ts";
+import { utenlandsoppholdQueryKeys } from "@/data/utenlandsopphold/utenlandsoppholdQueryHooks";
+import {
+  SoknadDTO,
+  SoknadStatusDTO,
+} from "@/data/utenlandsopphold/utenlandsoppholdTypes";
+import { UTENLANDSOPPHOLD_VARSEL_CUTOFF_DATO } from "@/utils/globalNavigasjonUtils";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: QueryClient;
+
+function createUtenlandsoppholdSoknad(
+  overrides: Partial<SoknadDTO> = {},
+): SoknadDTO {
+  return {
+    soknadId: crypto.randomUUID(),
+    eksternId: crypto.randomUUID(),
+    status: SoknadStatusDTO.MOTTATT,
+    innsendtTidspunkt: `${UTENLANDSOPPHOLD_VARSEL_CUTOFF_DATO}T12:00:00`,
+    soktePerioder: [],
+    behandling: null,
+    ...overrides,
+  };
+}
+
+function setUtenlandsoppholdData(soknader: SoknadDTO[]): void {
+  queryClient.setQueryData(utenlandsoppholdQueryKeys.soknader(fnr), () => ({
+    soknader,
+  }));
+}
 
 const mockUnleashWithFeatureToggles = () => {
   queryClient.setQueryData(
@@ -556,5 +582,62 @@ describe("GlobalNavigasjon", () => {
 
     expect(screen.getByRole("button", { name: "Kartleggingsspørsmål" })).to
       .exist;
+  });
+
+  describe("utenlandsopphold", () => {
+    beforeEach(() => {
+      mockUnleashWithFeatureToggles();
+    });
+
+    it("viser antall mottatte søknader etter cutoff", () => {
+      setUtenlandsoppholdData([
+        createUtenlandsoppholdSoknad(),
+        createUtenlandsoppholdSoknad({
+          soknadId: "soknad-2",
+          eksternId: "ekstern-2",
+          innsendtTidspunkt: "2026-09-26T12:00:00",
+        }),
+      ]);
+
+      renderGlobalNavigasjon();
+
+      expect(
+        screen.getByRole("button", {
+          name: "§ 8-9 Søknad om utenlandsopphold 2",
+        }),
+      ).to.exist;
+    });
+
+    it("viser ikke prikk for behandlet søknad", () => {
+      setUtenlandsoppholdData([
+        createUtenlandsoppholdSoknad({
+          status: SoknadStatusDTO.INNVILGET,
+        }),
+      ]);
+
+      renderGlobalNavigasjon();
+
+      expect(
+        screen.getByRole("button", {
+          name: "§ 8-9 Søknad om utenlandsopphold",
+        }),
+      ).to.exist;
+    });
+
+    it("viser ikke prikk for søknad mottatt før cutoff", () => {
+      setUtenlandsoppholdData([
+        createUtenlandsoppholdSoknad({
+          innsendtTidspunkt: "2026-09-24T12:00:00",
+        }),
+      ]);
+
+      renderGlobalNavigasjon();
+
+      expect(
+        screen.getByRole("button", {
+          name: "§ 8-9 Søknad om utenlandsopphold",
+        }),
+      ).to.exist;
+    });
   });
 });
