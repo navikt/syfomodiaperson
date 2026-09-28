@@ -4,7 +4,7 @@ metadata:
   name: syfomodiaperson
   namespace: teamsykefravr
   labels:
-    team: teamsykefravr
+    team: iSYFO
   annotations:
     texas.nais.io/enabled: "true"
 spec:
