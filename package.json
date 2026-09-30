@@ -22,13 +22,13 @@
     "msw:update": "msw init . --save"
   },
   "dependencies": {
-    "@nais/apm": "0.6.3",
+    "@nais/apm": "0.7.2",
     "@navikt/aksel-icons": "8.10.0",
     "@navikt/analytics-types": "0.0.9",
     "@navikt/ds-css": "8.10.0",
     "@navikt/ds-react": "8.10.0",
     "@navikt/ds-tailwind": "8.10.0",
-    "@navikt/lumi-survey": "^0.4.0",
+    "@navikt/lumi-survey": "0.4.0",
     "@navikt/pino-logger": "5.0.0",
     "@tanstack/react-query": "5.99.2",
     "@tanstack/react-query-devtools": "5.99.2",
@@ -49,10 +49,10 @@
     "react-collapse": "5.1.1",
     "react-dom": "19.2.5",
     "react-hook-form": "7.72.1",
-    "react-router-dom": "6.30.4",
+    "react-router-dom": "6.30.6",
     "recharts": "2.15.3",
     "redis": "5.11.0",
-    "unleash-client": "6.10.1",
+    "unleash-client": "6.12.1",
     "use-debounce": "10.1.1"
   },
   "devDependencies": {
@@ -76,7 +76,7 @@
     "typescript": "5.9.3",
     "vite": "8.0.16",
     "vite-plugin-svgr": "5.2.0",
-    "vitest": "4.1.5"
+    "vitest": "4.1.11"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,scss,md,less,html}": [
