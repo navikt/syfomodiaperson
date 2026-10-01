@@ -97,6 +97,9 @@ export const getInnvilgetTexts = ({
       header: "Begrunnelse for vedtaket",
       body: "Du er for tiden sykmeldt og har søkt om å beholde sykepengene på reise utenfor EU/EØS. Som hovedregel kan du få utbetalt sykepenger under utenlandsopphold utenfor EU/EØS eller andre områder der trygdeforordningen gjelder i inntil fire uker (28 kalenderdager) i løpet av en tolvmånedersperiode.",
       body2: `Du bekrefter i søknaden at det er avklart med arbeidsgiver og sykmelder at reisen ikke vil være til hinder for planlagt aktivitet og behandling. Vi vurderer videre at oppholdet ikke vil hindre Navs kontroll og oppfølging. Du får derfor innvilget din søknad om å beholde sykepenger ved opphold i utlandet i perioden ${innvilgedePerioderTekst}.`,
+      body2BeforeFritekstBegrunnelse:
+        "Du bekrefter i søknaden at det er avklart med arbeidsgiver og sykmelder at reisen ikke vil være til hinder for planlagt aktivitet og behandling. Vi vurderer videre at oppholdet ikke vil hindre Navs kontroll og oppfølging.",
+      body2AfterFritekstBegrunnelse: `Du får derfor innvilget din søknad om å beholde sykepenger ved opphold i utlandet i perioden ${innvilgedePerioderTekst}.`,
       paragraf:
         "Dette vedtaket er gjort etter folketrygdloven § 8-9 tredje ledd.",
     },

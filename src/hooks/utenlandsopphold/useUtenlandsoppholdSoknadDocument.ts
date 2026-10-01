@@ -70,11 +70,19 @@ export const useUtenlandsoppholdSoknadDocument = (): {
         : []),
       createHeaderH2(texts.begrunnelse.header),
       createParagraph(texts.begrunnelse.body),
-      createParagraph(texts.begrunnelse.body2),
     ];
 
+    if (!values.begrunnelse) {
+      documentComponents.push(createParagraph(texts.begrunnelse.body2));
+    }
     if (values.begrunnelse) {
+      documentComponents.push(
+        createParagraph(texts.begrunnelse.body2BeforeFritekstBegrunnelse),
+      );
       documentComponents.push(createParagraph(values.begrunnelse));
+      documentComponents.push(
+        createParagraph(texts.begrunnelse.body2AfterFritekstBegrunnelse),
+      );
     }
 
     documentComponents.push(
