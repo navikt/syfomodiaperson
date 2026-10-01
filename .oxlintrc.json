@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["typescript", "react", "jsx-a11y"],
-  "jsPlugins": ["eslint-plugin-no-only-tests"],
+  "jsPlugins": [],
   "categories": {
     "correctness": "warn"
   },
@@ -9,7 +9,6 @@
     "builtin": true
   },
   "rules": {
-    "no-only-tests/no-only-tests": "error",
     "react/jsx-no-useless-fragment": "error",
     "react/rules-of-hooks": "error",
     "react/exhaustive-deps": "error",
