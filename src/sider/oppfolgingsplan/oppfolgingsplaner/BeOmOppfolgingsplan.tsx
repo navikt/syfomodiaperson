@@ -36,7 +36,12 @@ import dayjs from "dayjs";
 import { OppfolgingsplanV2DTO } from "../hooks/types/OppfolgingsplanV2DTO";
 
 const texts = {
-  aktivForesporsel: "Obs! Det ble bedt om oppfølgingsplan fra",
+  aktivForesporsel: (
+    veilederident: string,
+    virksomhetsnummer: string,
+    dato: string,
+  ) =>
+    `${veilederident} ba om oppfølgingsplan fra ${virksomhetsnummer} den ${dato}`,
   header: "Be om oppfølgingsplan",
   description: {
     info1: "Her kan du be om oppfølgingsplan fra arbeidsgiver.",
@@ -165,9 +170,11 @@ export default function BeOmOppfolgingsplan({
           currentOppfolgingstilfelle,
         )
       : false;
-  const aktivForesporselTekst = `${texts.aktivForesporsel} ${
-    lastForesporselVirksomhetsnavn ?? lastForesporsel?.virksomhetsnummer
-  } ${tilLesbarDatoMedArUtenManedNavn(lastForesporselCreatedAt)}`;
+  const aktivForesporselTekst = texts.aktivForesporsel(
+    lastForesporsel?.veilederident ?? "",
+    lastForesporselVirksomhetsnavn ?? lastForesporsel?.virksomhetsnummer ?? "",
+    tilLesbarDatoMedArUtenManedNavn(lastForesporselCreatedAt),
+  );
 
   function submit(values: FormValues) {
     const foresporsel: NewOppfolgingsplanForesporselDTO = {

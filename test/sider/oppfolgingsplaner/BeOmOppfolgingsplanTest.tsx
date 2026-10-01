@@ -28,7 +28,6 @@ import { mockServer } from "../../setup";
 import { http, HttpResponse } from "msw";
 import { ISOPPFOLGINGSPLAN_ROOT } from "@/apiConstants";
 import { clickButton } from "../../testUtils";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 import { getExpectedForesporselDocument } from "./oppfolgingsplanTestdata";
 import { generateUUID } from "@/utils/utils";
 import { currentOppfolgingstilfelle } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock";
@@ -36,6 +35,7 @@ import userEvent from "@testing-library/user-event";
 import { virksomhetQueryKeys } from "@/data/virksomhet/virksomhetQueryHooks";
 import { EregOrganisasjonResponseDTO } from "@/data/virksomhet/types/EregOrganisasjonResponseDTO";
 import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
+import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils.ts";
 
 let queryClient: QueryClient;
 
@@ -163,9 +163,7 @@ describe("BeOmOppfolgingsplan", () => {
 
     expect(
       screen.getByText(
-        `Obs! Det ble bedt om oppfølgingsplan fra ${
-          VIRKSOMHET_PONTYPANDY.virksomhetsnavn
-        } ${tilLesbarDatoMedArUtenManedNavn(existingForesporsel.createdAt)}`,
+        `${VEILEDER_DEFAULT.ident} ba om oppfølgingsplan fra ${VIRKSOMHET_PONTYPANDY.virksomhetsnavn} den ${tilLesbarDatoMedArUtenManedNavn(existingForesporsel.createdAt)}`,
       ),
     ).to.exist;
     expect(screen.getByText("Be om oppfølgingsplan")).to.exist;
