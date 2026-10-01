@@ -18,7 +18,6 @@ import { oppfolgingsplanSurvey } from "@/components/lumi/oppfolgingsplanSurvey";
 import { useOppfolgingsplaner } from "@/sider/oppfolgingsplan/hooks/useOppfolgingsplaner";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
 import { EksternLenke } from "@/components/EksternLenke.tsx";
-import { GammeltFormatWarning } from "@/sider/oppfolgingsplan/oppfolgingsplaner/GammeltFormatWarning.tsx";
 
 const texts = {
   pageTitle: "Oppfølgingsplaner",
@@ -106,7 +105,7 @@ export default function OppfolgingsplanerOversikt() {
     >
       <SideLaster isLoading={isLoading} isError={isError}>
         <Sidetopp tittel={texts.pageTitle} />
-        <GammeltFormatWarning />
+
         <Tredelt.Container className="-xl:flex-col-reverse">
           <Tredelt.FirstColumn className="-xl:mb-2">
             <AktiveOppfolgingsplaner

@@ -5,18 +5,14 @@ import GlobalNavigasjon, {
   GlobalNavigasjonSkeleton,
   Menypunkter,
 } from "@/components/globalnavigasjon/GlobalNavigasjon";
-import { isEaster, isPride } from "@/utils/festiveUtils";
+import { isEaster } from "@/utils/festiveUtils";
 import { Easter } from "@/components/festive/Easter";
-import { Pride } from "@/components/festive/Pride";
 import Oppfolgingsoppgave from "@/components/oppfolgingsoppgave/Oppfolgingsoppgave";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
 import TildeltVeileder from "@/components/side/tildeltveileder/TildeltVeileder";
 import { useBrukerinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
 import { InaktivPersonident } from "@/components/InaktivPersonident";
 import OversiktLenker from "@/components/personkort/OversiktLenker";
-import LegacyTilgangBanner from "@/components/LegacyTilgangBanner";
-import { useGetTilgangQuery } from "@/data/tilgang/tilgangQueryHooks";
-import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
 
 const MODIA_HEADER_ID = "modia-header";
 
@@ -35,11 +31,6 @@ export default function Side({
 }: Props) {
   const diskresjonskode = useDiskresjonskodeQuery();
   const brukerinfo = useBrukerinfoQuery();
-  const tilgangQuery = useGetTilgangQuery();
-  const { toggles } = useFeatureToggles();
-  const showLegacyTilgangBanner =
-    tilgangQuery.data?.legacyTilgang === true &&
-    toggles.isNyTilgangskontrollEnabled;
 
   useDocumentTitle(tittel);
 
@@ -56,9 +47,7 @@ export default function Side({
           <OversiktLenker />
           <TildeltVeileder />
         </div>
-        {showLegacyTilgangBanner && <LegacyTilgangBanner />}
         {brukerinfo.isInaktivPersonident && <InaktivPersonident />}
-        {isPride() && <Pride>&nbsp;</Pride>}
         <Personkort />
       </div>
       <div className={"flex -md:flex-wrap"}>
