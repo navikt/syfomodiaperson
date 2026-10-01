@@ -1,7 +1,7 @@
 import express from "express";
 import helmet from "helmet";
 import path from "path";
-import prometheus from "prom-client";
+import * as prometheus from "@prometheus-io/client";
 import { fileURLToPath } from "url";
 import { getToggles } from "./server/unleash.js";
 import { validateToken } from "./server/authUtils.js";
@@ -15,15 +15,8 @@ const __dirname = path.dirname(__filename);
 
 // Prometheus metrics
 const collectDefaultMetrics = prometheus.collectDefaultMetrics;
-collectDefaultMetrics({ timeout: 5000 });
+collectDefaultMetrics();
 
-const httpRequestDurationMicroseconds = new prometheus.Histogram({
-  name: "http_request_duration_ms",
-  help: "Duration of HTTP requests in ms",
-  labelNames: ["route"],
-  // buckets for response time from 0.1ms to 500ms
-  buckets: [0.1, 5, 15, 50, 100, 200, 300, 400, 500],
-});
 const server = express();
 
 server.use(express.json());
@@ -80,22 +73,22 @@ const setupServer = async () => {
 
   server.get(
     "/actuator/metrics",
-    (req: express.Request, res: express.Response) => {
+    async (_req: express.Request, res: express.Response) => {
       res.set("Content-Type", prometheus.register.contentType);
-      res.end(prometheus.register.metrics());
+      res.end(await prometheus.register.metrics());
     },
   );
 
   server.get(
     "/health/isAlive",
-    (req: express.Request, res: express.Response) => {
+    (_req: express.Request, res: express.Response) => {
       res.sendStatus(200);
     },
   );
 
   server.get(
     "/health/isReady",
-    (req: express.Request, res: express.Response) => {
+    (_req: express.Request, res: express.Response) => {
       res.sendStatus(200);
     },
   );
