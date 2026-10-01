@@ -1,7 +1,6 @@
 import express from "express";
 import helmet from "helmet";
 import path from "path";
-import * as prometheus from "@prometheus-io/client";
 import { fileURLToPath } from "url";
 import { getToggles } from "./server/unleash.js";
 import { validateToken } from "./server/authUtils.js";
@@ -12,10 +11,6 @@ import { logger } from "@navikt/pino-logger";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Prometheus metrics
-const collectDefaultMetrics = prometheus.collectDefaultMetrics;
-collectDefaultMetrics();
 
 const server = express();
 
@@ -68,14 +63,6 @@ const setupServer = async () => {
         req.query.enhetId,
       );
       res.status(200).send(togglesResponse);
-    },
-  );
-
-  server.get(
-    "/actuator/metrics",
-    async (_req: express.Request, res: express.Response) => {
-      res.set("Content-Type", prometheus.register.contentType);
-      res.end(await prometheus.register.metrics());
     },
   );
 
