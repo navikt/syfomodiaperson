@@ -55,10 +55,6 @@ export function getToggles(veilederId, enhetId): Toggles {
       "isForsokForsterketOppfolgingMerkingEnabled",
       context,
     ),
-    isNyTilgangskontrollEnabled: unleash.isEnabled(
-      "isNyTilgangskontrollEnabled",
-      context,
-    ),
     isUtenlandsoppholdEnabled: unleash.isEnabled(
       "isUtenlandsoppholdEnabled",
       context,

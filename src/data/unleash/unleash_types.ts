@@ -9,7 +9,6 @@ export enum ToggleNames {
   isKartleggingssporsmalEnabled = "isKartleggingssporsmalEnabled",
   isFlexjarKartleggingssporsmalEnabled = "isFlexjarKartleggingssporsmalEnabled", // Benytter Lumi, ikke Flexjar
   isForsokForsterketOppfolgingMerkingEnabled = "isForsokForsterketOppfolgingMerkingEnabled",
-  isNyTilgangskontrollEnabled = "isNyTilgangskontrollEnabled",
   isUtenlandsoppholdEnabled = "isUtenlandsoppholdEnabled",
   isLumiUtenlandsoppholdEnabled = "isLumiUtenlandsoppholdEnabled",
 }
@@ -20,7 +19,6 @@ export const defaultToggles: Toggles = {
   isKartleggingssporsmalEnabled: false,
   isFlexjarKartleggingssporsmalEnabled: false,
   isForsokForsterketOppfolgingMerkingEnabled: false,
-  isNyTilgangskontrollEnabled: false,
   isUtenlandsoppholdEnabled: false,
   isLumiUtenlandsoppholdEnabled: false,
 };
