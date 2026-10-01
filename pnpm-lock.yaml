@@ -133,6 +133,9 @@ importers:
       '@navikt/pino-logger':
         specifier: 5.0.0
         version: 5.0.0(pino@10.3.1)
+      '@prometheus-io/client':
+        specifier: 0.16.1
+        version: 0.16.1
       '@tanstack/react-query':
         specifier: 5.99.2
         version: 5.99.2(react@19.2.5)
@@ -175,9 +178,6 @@ importers:
       pino:
         specifier: 10.3.1
         version: 10.3.1
-      prom-client:
-        specifier: 11.5.3
-        version: 11.5.3
       react:
         specifier: 19.2.5
         version: 19.2.5
@@ -942,6 +942,10 @@ packages:
 
   '@pinojs/redact@0.4.0':
     resolution: {integrity: sha512-k2ENnmBugE/rzQfEcdWHcCY+/FM3VLzH9cYEsbdsoqrvzAKRhUZeRNhAZvB8OitQJ1TBed3yqWtdjzS6wJKBwg==}
+
+  '@prometheus-io/client@0.16.1':
+    resolution: {integrity: sha512-XkFPsGFGoSs/UMg/vh0QLDpanl/tsrOV5PLHdpGe8Ho+ir/Llhytr15j6y8ZwLrpIGzK9gTVVpIalA6C4UjUZw==}
+    engines: {node: ^22 || ^24 || >=26}
 
   '@redis/bloom@5.11.0':
     resolution: {integrity: sha512-KYiVilAhAFN3057afUb/tfYJpsEyTkQB+tQcn5gVVA7DgcNOAj8lLxe4j8ov8BF6I9C1Fe/kwlbuAICcTMX8Lw==}
@@ -2669,11 +2673,6 @@ packages:
   process-warning@5.0.0:
     resolution: {integrity: sha512-a39t9ApHNx2L4+HBnQKqxxHNs1r7KF+Intd8Q/g1bUh6q0WIp9voPXJ/x0j+ZL45KF1pJd9+q2jLIRMfvEshkA==}
 
-  prom-client@11.5.3:
-    resolution: {integrity: sha512-iz22FmTbtkyL2vt0MdDFY+kWof+S9UB/NACxSn2aJcewtw+EERsen0urSkZ2WrHseNdydsvcxCTAnPcSMZZv4Q==}
-    engines: {node: '>=6.1'}
-    deprecated: prom-client has been replaced by @prometheus-io/client
-
   prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
 
@@ -3981,6 +3980,11 @@ snapshots:
     optional: true
 
   '@pinojs/redact@0.4.0': {}
+
+  '@prometheus-io/client@0.16.1':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+      tdigest: 0.1.2
 
   '@redis/bloom@5.11.0(@redis/client@5.11.0)':
     dependencies:
@@ -5597,10 +5601,6 @@ snapshots:
   proc-log@6.1.0: {}
 
   process-warning@5.0.0: {}
-
-  prom-client@11.5.3:
-    dependencies:
-      tdigest: 0.1.2
 
   prop-types@15.8.1:
     dependencies:
