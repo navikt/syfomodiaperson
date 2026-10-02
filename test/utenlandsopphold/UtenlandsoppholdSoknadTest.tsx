@@ -40,7 +40,7 @@ import {
   stubSoknaderQuery,
 } from "../stubs/stubIsutenlandsopphold";
 import { maksdatoQueryKeys } from "@/data/maksdato/useMaksdatoQuery";
-import { createDraftTextMock } from "@/mocks/draft/mockDraftText.ts";
+import { mockDraftText } from "@/mocks/draft/mockDraftText.ts";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { generateOppfolgingstilfelle } from "../testDataUtils";
@@ -885,10 +885,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
   it("sender riktig draft til riktig draft query", async () => {
     stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
-    mockServer.use(
-      ...createDraftTextMock("utenlandsopphold-avslag"),
-      ...createDraftTextMock("utenlandsopphold-delvis-innvilget"),
-    );
+    mockServer.use(...mockDraftText);
 
     renderUtenlandsoppholdSoknad(
       soknadUtenVedtakMock.soknadId,
@@ -900,17 +897,26 @@ describe("UtenlandsoppholdSoknad", () => {
 
     await clickButton("Start behandling");
 
-    await clickRadio("Avslag: Avslå hele perioden");
-    changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "Draft 1");
+    await clickRadio("Innvilget: Godkjenn hele perioden");
+    changeTextInput(getTextInput("Begrunnelse (valgfritt)"), "Draft innvilget");
 
     await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
-    changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "Draft 2");
+    changeTextInput(
+      getTextInput("Begrunnelse (obligatorisk)"),
+      "Draft delvis innvilget",
+    );
 
     await clickRadio("Avslag: Avslå hele perioden");
-    expect(await screen.findByText("Draft 1")).to.exist;
+    changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "Draft avslag");
+
+    await clickRadio("Innvilget: Godkjenn hele perioden");
+    expect(await screen.findByText("Draft innvilget")).to.exist;
 
     await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
-    expect(await screen.findByText("Draft 2")).to.exist;
+    expect(await screen.findByText("Draft delvis innvilget")).to.exist;
+
+    await clickRadio("Avslag: Avslå hele perioden");
+    expect(await screen.findByText("Draft avslag")).to.exist;
   });
 
   describe("varsel om perioder utenfor oppfolgingstilfelle", () => {
