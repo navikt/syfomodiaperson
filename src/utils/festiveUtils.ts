@@ -5,8 +5,6 @@ import {
   PepperkakeMannImage,
 } from "../../img/ImageComponents";
 import dayjs from "dayjs";
-import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
-import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 
 enum Month {
   DECEMBER = 11,
@@ -85,16 +83,4 @@ const isEasterDate = (date: Date) => {
 export const isEaster = () => {
   const today = new Date(Date.now());
   return isEasterDate(today);
-};
-
-export const isPride = () => {
-  dayjs.extend(isSameOrAfter);
-  dayjs.extend(isSameOrBefore);
-
-  const prideStart = dayjs("2023-06-23");
-  const prideEnd = dayjs("2023-07-01");
-  const now = dayjs();
-  return (
-    now.isSameOrAfter(prideStart, "day") && now.isSameOrBefore(prideEnd, "day")
-  );
 };
