@@ -61,7 +61,7 @@ export const useUtenlandsoppholdSoknadDocument = (): {
   ): DocumentComponentDto[] => {
     const texts = getInnvilgetTexts(values);
 
-    return [
+    const documentComponents = [
       createHeaderH1(texts.tittel),
       createHeaderH2(texts.innvilget.header),
       createParagraph(texts.innvilget.intro),
@@ -70,12 +70,29 @@ export const useUtenlandsoppholdSoknadDocument = (): {
         : []),
       createHeaderH2(texts.begrunnelse.header),
       createParagraph(texts.begrunnelse.body),
-      createParagraph(texts.begrunnelse.body2),
+    ];
+
+    if (!values.begrunnelse) {
+      documentComponents.push(createParagraph(texts.begrunnelse.body2));
+    }
+    if (values.begrunnelse) {
+      documentComponents.push(
+        createParagraph(texts.begrunnelse.body2BeforeFritekstBegrunnelse),
+      );
+      documentComponents.push(createParagraph(values.begrunnelse));
+      documentComponents.push(
+        createParagraph(texts.begrunnelse.body2AfterFritekstBegrunnelse),
+      );
+    }
+
+    documentComponents.push(
       createParagraph(texts.begrunnelse.paragraf),
       createHeaderH2(texts.oppmerksom.header),
       createParagraph(texts.oppmerksom.body),
       ...createFellesAvslutning(),
-    ];
+    );
+
+    return documentComponents;
   };
 
   const getAvslagDocument = (

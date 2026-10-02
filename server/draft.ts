@@ -16,8 +16,9 @@ enum Draft {
   AKTIVITETSKRAV_UNNTAK = "aktivitetskrav-unntak",
   AKTIVITETSKRAV_OPPFYLT = "aktivitetskrav-oppfylt",
   AKTIVITETSKRAV_INNSTILLING_OM_STANS = "aktivitetskrav-innstilling-om-stans",
-  UTENLANDSOPPHOLD_AVSLAG = "utenlandsopphold-avslag",
+  UTENLANDSOPPHOLD_INNVILGET = "utenlandsopphold-innvilget",
   UTENLANDSOPPHOLD_DELVIS_INNVILGET = "utenlandsopphold-delvis-innvilget",
+  UTENLANDSOPPHOLD_AVSLAG = "utenlandsopphold-avslag",
   UTENLANDSOPPHOLD_HENLEGGELSE = "utenlandsopphold-henleggelse",
 }
 
@@ -55,6 +56,8 @@ function toDraftCachekey(
       return `draft:utenlandsopphold:delvis-innvilget:${veilederIdent}:${personident}`;
     case Draft.UTENLANDSOPPHOLD_HENLEGGELSE:
       return `draft:utenlandsopphold:henleggelse:${veilederIdent}:${personident}`;
+    case Draft.UTENLANDSOPPHOLD_INNVILGET:
+      return `draft:utenlandsopphold:innvilget:${veilederIdent}:${personident}`;
   }
 }
 

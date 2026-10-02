@@ -32,6 +32,7 @@ export const mockDraftText = [
   ...createDraftTextMock("aktivitetskrav-unntak"),
   ...createDraftTextMock("aktivitetskrav-oppfylt"),
   ...createDraftTextMock("aktivitetskrav-innstilling-om-stans"),
-  ...createDraftTextMock("utenlandsopphold-avslag"),
+  ...createDraftTextMock("utenlandsopphold-innvilget"),
   ...createDraftTextMock("utenlandsopphold-delvis-innvilget"),
+  ...createDraftTextMock("utenlandsopphold-avslag"),
 ];

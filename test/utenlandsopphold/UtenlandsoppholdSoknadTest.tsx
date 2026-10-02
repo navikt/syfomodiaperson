@@ -40,7 +40,7 @@ import {
   stubSoknaderQuery,
 } from "../stubs/stubIsutenlandsopphold";
 import { maksdatoQueryKeys } from "@/data/maksdato/useMaksdatoQuery";
-import { createDraftTextMock } from "@/mocks/draft/mockDraftText.ts";
+import { mockDraftText } from "@/mocks/draft/mockDraftText.ts";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { generateOppfolgingstilfelle } from "../testDataUtils";
@@ -297,6 +297,83 @@ describe("UtenlandsoppholdSoknad", () => {
         ),
       ).to.equal(true);
     });
+  });
+
+  it("sender innvilget vedtak uten begrunnelse som null", async () => {
+    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+
+    renderUtenlandsoppholdSoknad();
+
+    await screen.findByRole("button", { name: "Se brev og send" });
+    await clickRadio("Innvilget: Godkjenn hele perioden");
+    await clickButton("Se brev og send");
+    await clickButton("Bekreft og send");
+
+    await waitFor(() => {
+      const vedtakMutation = queryClient.getMutationCache().getAll()[0];
+      const variables = vedtakMutation.state.variables as {
+        soknadId: string;
+        vedtak: SoknadVedtakPostDTO;
+      };
+      expect(variables.vedtak.begrunnelse).to.equal(null);
+    });
+  });
+
+  it("sender innvilget vedtak med utfylt begrunnelse og tar den med i brevet", async () => {
+    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+
+    renderUtenlandsoppholdSoknad();
+
+    await screen.findByRole("button", { name: "Se brev og send" });
+    await clickRadio("Innvilget: Godkjenn hele perioden");
+
+    changeTextInput(
+      getTextInput("Begrunnelse (valgfritt)"),
+      "Oppholdet hindrer ikke planlagt behandling",
+    );
+
+    await clickButton("Se brev og send");
+    await clickButton("Bekreft og send");
+
+    await waitFor(() => {
+      const vedtakMutation = queryClient
+        .getMutationCache()
+        .getAll()
+        .find(
+          (mutation) =>
+            (mutation.state.variables as { vedtak?: SoknadVedtakPostDTO })
+              ?.vedtak,
+        );
+      const variables = vedtakMutation?.state.variables as {
+        soknadId: string;
+        vedtak: SoknadVedtakPostDTO;
+      };
+      expect(variables.vedtak.begrunnelse).to.equal(
+        "Oppholdet hindrer ikke planlagt behandling",
+      );
+      expect(
+        variables.vedtak.document.some((component) =>
+          component.texts.includes(
+            "Oppholdet hindrer ikke planlagt behandling",
+          ),
+        ),
+      ).to.equal(true);
+    });
+  });
+
+  it("godtar ikke begrunnelse med bare mellomrom ved avslag", async () => {
+    stubSoknaderQuery({ soknader: [soknadUtenVedtakMock] });
+
+    renderUtenlandsoppholdSoknad();
+
+    await screen.findByRole("button", { name: "Se brev og send" });
+    await clickRadio("Avslag: Avslå hele perioden");
+    changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "   ");
+    await clickButton("Se brev og send");
+
+    expect(await screen.findByText("Vennligst angi begrunnelse")).to.exist;
+    expect(screen.queryByRole("button", { name: "Bekreft og send" })).to.not
+      .exist;
   });
 
   it("sender avslag vedtak, viser notifikasjon og navigerer tilbake til listen der søknadens status nå vises som avslag", async () => {
@@ -808,10 +885,7 @@ describe("UtenlandsoppholdSoknad", () => {
 
   it("sender riktig draft til riktig draft query", async () => {
     stubSoknaderMedMuterbarTilstand(mockSoknaderResponse.soknader);
-    mockServer.use(
-      ...createDraftTextMock("utenlandsopphold-avslag"),
-      ...createDraftTextMock("utenlandsopphold-delvis-innvilget"),
-    );
+    mockServer.use(...mockDraftText);
 
     renderUtenlandsoppholdSoknad(
       soknadUtenVedtakMock.soknadId,
@@ -823,17 +897,26 @@ describe("UtenlandsoppholdSoknad", () => {
 
     await clickButton("Start behandling");
 
-    await clickRadio("Avslag: Avslå hele perioden");
-    changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "Draft 1");
+    await clickRadio("Innvilget: Godkjenn hele perioden");
+    changeTextInput(getTextInput("Begrunnelse (valgfritt)"), "Draft innvilget");
 
     await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
-    changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "Draft 2");
+    changeTextInput(
+      getTextInput("Begrunnelse (obligatorisk)"),
+      "Draft delvis innvilget",
+    );
 
     await clickRadio("Avslag: Avslå hele perioden");
-    expect(await screen.findByText("Draft 1")).to.exist;
+    changeTextInput(getTextInput("Begrunnelse (obligatorisk)"), "Draft avslag");
+
+    await clickRadio("Innvilget: Godkjenn hele perioden");
+    expect(await screen.findByText("Draft innvilget")).to.exist;
 
     await clickRadio("Delvis innvilget: Godkjenn deler av perioden");
-    expect(await screen.findByText("Draft 2")).to.exist;
+    expect(await screen.findByText("Draft delvis innvilget")).to.exist;
+
+    await clickRadio("Avslag: Avslå hele perioden");
+    expect(await screen.findByText("Draft avslag")).to.exist;
   });
 
   describe("varsel om perioder utenfor oppfolgingstilfelle", () => {
