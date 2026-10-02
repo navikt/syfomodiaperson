@@ -111,7 +111,7 @@ importers:
     dependencies:
       '@nais/apm':
         specifier: 0.7.2
-        version: 0.7.2(@grafana/faro-react@2.11.0(react-dom@19.2.5(react@19.2.5))(react-router-dom@6.30.6(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.18.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)(supports-color@5.5.0))(react-dom@19.2.5(react@19.2.5))(react-router-dom@6.30.6(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.18.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)(supports-color@5.5.0)
+        version: 0.7.2(@grafana/faro-react@2.11.0(react-dom@19.2.5(react@19.2.5))(react-router-dom@7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)(supports-color@5.5.0))(react-dom@19.2.5(react@19.2.5))(react-router-dom@7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)(supports-color@5.5.0)
       '@navikt/aksel-icons':
         specifier: 8.10.0
         version: 8.10.0
@@ -182,8 +182,8 @@ importers:
         specifier: 7.72.1
         version: 7.72.1(react@19.2.5)
       react-router-dom:
-        specifier: 6.30.6
-        version: 6.30.6(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+        specifier: 7.18.4
+        version: 7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       recharts:
         specifier: 2.15.3
         version: 2.15.3(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -963,10 +963,6 @@ packages:
     engines: {node: '>= 18'}
     peerDependencies:
       '@redis/client': ^5.11.0
-
-  '@remix-run/router@1.23.4':
-    resolution: {integrity: sha512-q7j5geK7xs3UJSdm9/iytUNclBnLmYx1EnSeCFXHPeutdqgIMeFeHtUZgS3EhlKxdBEAu8OwtJCwmLrEzpSs7Q==}
-    engines: {node: '>=14.0.0'}
 
   '@rolldown/binding-android-arm64@1.0.3':
     resolution: {integrity: sha512-454rs7jHngixp/NMxd5srYD57OnzSlZ/eFTETjORQHLwJG1lRtmNOJcBerZlfu4GjKqeq8aCCIQrMdHyhI51Hw==}
@@ -2694,21 +2690,15 @@ packages:
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
-  react-router-dom@6.30.6:
-    resolution: {integrity: sha512-0RHKZz7wwffvkU+2MFVT2NnjK44ssLEV+m0CAJaS2Ksmorrwj7WxH00jO0SOCW26/tINUnJHToXblDs33I38YQ==}
-    engines: {node: '>=14.0.0'}
+  react-router-dom@7.18.4:
+    resolution: {integrity: sha512-yrfmJHIpDG7taCpqKjT1G5B6q3O2K+RN8/fgNf0lTjCwiPbQ0ei6vXX9ZjQR+7ld8Tr7Z5xmyMnZ8YJrphWQUw==}
+    engines: {node: '>=20.0.0'}
     peerDependencies:
-      react: '>=16.8'
-      react-dom: '>=16.8'
+      react: '>=18'
+      react-dom: '>=18'
 
-  react-router@6.30.6:
-    resolution: {integrity: sha512-5HfK7k5im7LTOB0EqCQmfvy4C13G92Ssj1VTmouTK3AJvyjKTnFuCV0vcMAD/JS+JC4DvDIBRrlAeJIFjh5VWg==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      react: '>=16.8'
-
-  react-router@7.18.0:
-    resolution: {integrity: sha512-pTTGt8J+ji1NOmYnjzT+bAJy/1zD+Jp4ziO6cL7T3ZLvXKtusO7BpFqlRXitqpcPVqllsIXFHRMt+2/k3Xn6HQ==}
+  react-router@7.18.4:
+    resolution: {integrity: sha512-PUPQcMhMGRAslLcvtlPz/kmzBEWPhLdgLFrL7pLNepBL6dX0lWj4WD2cUYVgYCuT3jxvghYFg81cDTj44DhetQ==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       react: '>=18'
@@ -3494,7 +3484,7 @@ snapshots:
       '@opentelemetry/api': 1.9.1
       '@opentelemetry/otlp-transformer': 0.221.0(@opentelemetry/api@1.9.1)
 
-  '@grafana/faro-react@2.11.0(react-dom@19.2.5(react@19.2.5))(react-router-dom@6.30.6(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.18.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)(supports-color@5.5.0)':
+  '@grafana/faro-react@2.11.0(react-dom@19.2.5(react@19.2.5))(react-router-dom@7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)(supports-color@5.5.0)':
     dependencies:
       '@grafana/faro-web-sdk': 2.11.0
       '@grafana/faro-web-tracing': 2.11.0(supports-color@5.5.0)
@@ -3502,8 +3492,8 @@ snapshots:
       react: 19.2.5
     optionalDependencies:
       react-dom: 19.2.5(react@19.2.5)
-      react-router: 7.18.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      react-router-dom: 6.30.6(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      react-router: 7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      react-router-dom: 7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
     transitivePeerDependencies:
       - supports-color
 
@@ -3609,9 +3599,9 @@ snapshots:
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
 
-  '@nais/apm@0.7.2(@grafana/faro-react@2.11.0(react-dom@19.2.5(react@19.2.5))(react-router-dom@6.30.6(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.18.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)(supports-color@5.5.0))(react-dom@19.2.5(react@19.2.5))(react-router-dom@6.30.6(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.18.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)(supports-color@5.5.0)':
+  '@nais/apm@0.7.2(@grafana/faro-react@2.11.0(react-dom@19.2.5(react@19.2.5))(react-router-dom@7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)(supports-color@5.5.0))(react-dom@19.2.5(react@19.2.5))(react-router-dom@7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)(supports-color@5.5.0)':
     dependencies:
-      '@grafana/faro-react': 2.11.0(react-dom@19.2.5(react@19.2.5))(react-router-dom@6.30.6(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.18.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)(supports-color@5.5.0)
+      '@grafana/faro-react': 2.11.0(react-dom@19.2.5(react@19.2.5))(react-router-dom@7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-router@7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)(supports-color@5.5.0)
       '@grafana/faro-web-sdk': 2.11.0
       '@grafana/faro-web-tracing': 2.11.0(supports-color@5.5.0)
       '@grafana/rrweb': 2.0.0-grafana.2
@@ -3619,8 +3609,8 @@ snapshots:
       fflate: 0.8.3
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
-      react-router: 7.18.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      react-router-dom: 6.30.6(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      react-router: 7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      react-router-dom: 7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
     transitivePeerDependencies:
       - supports-color
 
@@ -3937,8 +3927,6 @@ snapshots:
   '@redis/time-series@5.11.0(@redis/client@5.11.0)':
     dependencies:
       '@redis/client': 5.11.0
-
-  '@remix-run/router@1.23.4': {}
 
   '@rolldown/binding-android-arm64@1.0.3':
     optional: true
@@ -5553,19 +5541,13 @@ snapshots:
 
   react-is@18.3.1: {}
 
-  react-router-dom@6.30.6(react-dom@19.2.5(react@19.2.5))(react@19.2.5):
+  react-router-dom@7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5):
     dependencies:
-      '@remix-run/router': 1.23.4
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
-      react-router: 6.30.6(react@19.2.5)
+      react-router: 7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
 
-  react-router@6.30.6(react@19.2.5):
-    dependencies:
-      '@remix-run/router': 1.23.4
-      react: 19.2.5
-
-  react-router@7.18.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5):
+  react-router@7.18.4(react-dom@19.2.5(react@19.2.5))(react@19.2.5):
     dependencies:
       cookie: 1.1.1
       react: 19.2.5
