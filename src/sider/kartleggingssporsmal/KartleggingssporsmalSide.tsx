@@ -145,7 +145,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
     useKartleggingssporsmalSvarQuery(nyesteKandidat);
   const answeredQuestions = getKartleggingssporsmalSvar.data;
 
-  const kontaktinformasjon = useKontaktinfoQuery();
+  const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
 
   const isSurveyVisible =
     toggles.isFlexjarKartleggingssporsmalEnabled &&
@@ -167,13 +167,8 @@ export default function KartleggingssporsmalSide(): ReactElement {
   ) : null;
 
   const isPending =
-    getKandidater.isPending ||
-    getKartleggingssporsmalSvar.isLoading ||
-    kontaktinformasjon.isPending;
-  const isError =
-    getKandidater.isError ||
-    getKartleggingssporsmalSvar.isError ||
-    kontaktinformasjon.isError;
+    getKandidater.isPending || getKartleggingssporsmalSvar.isLoading;
+  const isError = getKandidater.isError || getKartleggingssporsmalSvar.isError;
 
   const behandletWithoutVurdering =
     nyesteKandidat?.status === KandidatStatus.FERDIGBEHANDLET &&
@@ -216,7 +211,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                   </>
                 ) : (
                   <>
-                    {kontaktinformasjon.brukerKanIkkeVarslesDigitalt && (
+                    {brukerKanIkkeVarslesDigitalt && (
                       <Alert variant="warning" size="small">
                         <Heading size="xsmall">
                           {texts.reservertWarning.header}
@@ -240,7 +235,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                     <EksternLenke href={texts.demoUrl}>
                       {texts.link}
                     </EksternLenke>
-                    {kontaktinformasjon.brukerKanIkkeVarslesDigitalt ? (
+                    {brukerKanIkkeVarslesDigitalt ? (
                       <BodyShort size="small">
                         {texts.extraInfoReservert}
                       </BodyShort>
