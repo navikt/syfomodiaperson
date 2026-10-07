@@ -152,8 +152,8 @@ importers:
         specifier: 2.10.1
         version: 2.10.1
       axios:
-        specifier: 1.18.0
-        version: 1.18.0(debug@4.4.3(supports-color@5.5.0))(supports-color@5.5.0)
+        specifier: 1.20.0
+        version: 1.20.0(debug@4.4.3(supports-color@5.5.0))(supports-color@5.5.0)
       classnames:
         specifier: 2.5.1
         version: 2.5.1
@@ -1490,8 +1490,8 @@ packages:
     peerDependencies:
       postcss: ^8.1.0
 
-  axios@1.18.0:
-    resolution: {integrity: sha512-E32NzpYKp++W7XRe52rHiXV2ehxmh3wbdgO7MHeFM+vqxLBYHzt0ElkiImtOBxtOmyp0yoC8C6uESVV84Y2/hw==}
+  axios@1.20.0:
+    resolution: {integrity: sha512-r8aOh8j9cGKpgQAqpzrUHnSIc6a59Y3Xf/cv8sy1DrHCkZHzQGEuoq1tARk6qSyDdtQGSDgpb9kFlruzPvrgwg==}
 
   backoff@2.5.0:
     resolution: {integrity: sha512-wC5ihrnUXmR2douXmXLCe5O3zg3GKIyvRi/hi58a/XyRxVI+3/yM0PYueQOZXPXQ9pxBislYkw+sF9b7C/RuMA==}
@@ -4363,7 +4363,7 @@ snapshots:
       postcss: 8.5.26
       postcss-value-parser: 4.2.0
 
-  axios@1.18.0(debug@4.4.3(supports-color@5.5.0))(supports-color@5.5.0):
+  axios@1.20.0(debug@4.4.3(supports-color@5.5.0))(supports-color@5.5.0):
     dependencies:
       follow-redirects: 1.16.0(debug@4.4.3(supports-color@5.5.0))
       form-data: 4.0.6
