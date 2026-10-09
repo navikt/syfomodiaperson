@@ -24,7 +24,7 @@ import {
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { renderWithRouter } from "../testRouterUtils";
 import { appRoutePath } from "@/AppRouter";
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import {
   changeTextInput,
   clickButton,
@@ -174,6 +174,37 @@ describe("Kartleggingssporsmal", () => {
     ).to.exist;
 
     expect(queryButton("Lagre vurdering, fjern oppgaven")).to.not.exist;
+  });
+
+  it("Sykmeldt is kandidat and shows syketilfellehistorikk", () => {
+    mockKartleggingssporsmalKandidat(
+      kartleggingIsKandidatAndReceivedQuestions,
+      ARBEIDSTAKER_DEFAULT.personIdent,
+    );
+
+    renderKartleggingssporsmal();
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Sykefraværhistorikk",
+      }),
+    ).to.exist;
+
+    const historikk = screen.getByRole("heading", {
+      name: "Sykefraværhistorikk",
+    });
+    const container = historikk.closest("section") ?? historikk.parentElement!;
+    const scoped = within(container);
+
+    expect(scoped.getByText("05.01.2026 - 01.03.2027")).to.exist;
+    expect(scoped.getByText("21.02.2020 - 10.12.2020")).to.exist;
+    expect(scoped.getByText("06.06.2019 - 21.01.2020")).to.exist;
+
+    expect(scoped.getAllByText("(48 uker)").length).to.equal(2);
+    expect(scoped.getByText("(25 uker)")).to.exist;
+
+    expect(scoped.getByText("R28")).to.exist;
+    expect(scoped.getAllByAltText("Medisinskrin").length).to.be.greaterThan(0);
   });
 
   it("Sykmeldt is kandidat, but was not varslet (kandidat pre-pilot)", () => {

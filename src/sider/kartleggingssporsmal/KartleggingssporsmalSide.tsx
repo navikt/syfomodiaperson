@@ -33,6 +33,7 @@ import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessA
 import LumiSurvey from "@/components/lumi/LumiSurvey.tsx";
 import { kartleggingssporsmalSurvey } from "@/components/lumi/kartleggingssporsmalSurvey.ts";
 import { ReactElement } from "react";
+import { SyketilfelleList } from "@/components/syketilfelleList/SyketilfelleList.tsx";
 
 const texts = {
   title: "Kartleggingsspørsmål",
@@ -181,6 +182,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
       lumi={lumiSurvey}
     >
       <Sidetopp tittel={texts.title} />
+
       <SideLaster isLoading={isPending} isError={isError}>
         {nyesteKandidat && hasMottattKartleggingssporsmal(nyesteKandidat) ? (
           <Tredelt.Container>
@@ -257,6 +259,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                 tidligereKandidater={kandidater.slice(1)}
               />
             </Tredelt.FirstColumn>
+
             <Tredelt.SecondColumn>
               <Box background="default" padding="space-24" className="mb-4">
                 <Heading level="2" size="medium">
@@ -326,6 +329,9 @@ export default function KartleggingssporsmalSide(): ReactElement {
                   <PilotInfo />
                 </Accordion>
               </Box>
+
+              <SyketilfelleList />
+
               {answeredQuestions && <UtdragFraSykefravaeret />}
             </Tredelt.SecondColumn>
           </Tredelt.Container>

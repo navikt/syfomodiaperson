@@ -24,7 +24,8 @@ import {
 import { BehandlingsutfallStatusDTO } from "@/data/sykmelding/types/BehandlingsutfallStatusDTO";
 import { SporsmalSvarDTO } from "@/data/sykmelding/types/SporsmalSvarDTO";
 import dayjs from "dayjs";
-import { getDiagnoseFromLatestSykmelding } from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleList";
+
+import { getDiagnoseFromLatestSykmelding } from "@/utils/diagnoseUtils.ts";
 
 const baseSykmelding: SykmeldingOldFormat = {
   arbeidsevne: {},
