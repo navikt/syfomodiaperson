@@ -19,6 +19,7 @@ export const currentOppfolgingstilfelle = {
   antallSykedager: 294,
   varighetUker: 48,
 };
+
 export const oppfolgingstilfellePersonMock: OppfolgingstilfellePersonDTO = {
   oppfolgingstilfelleList: [
     {
