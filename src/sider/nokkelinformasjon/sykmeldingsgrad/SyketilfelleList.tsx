@@ -65,12 +65,14 @@ export default function SyketilfelleList({ setSelectedTilfelle }: Props) {
           const diagnose = getDiagnose(tilfelle);
           return (
             <div
-              className="flex items-center gap-2 w-full justify-between"
+              className="flex items-center gap-2 w-full justify-between whitespace-nowrap"
               key={index}
             >
               <div className="flex gap-2 items-center">
                 <Radio key={index} value={tilfelle}>
-                  {tilfelleText(tilfelle)}
+                  <span className="whitespace-nowrap">
+                    {tilfelleText(tilfelle)}
+                  </span>
                 </Radio>
                 <BodyShort size="small">{`(${tilfelle.varighetUker} uker)`}</BodyShort>
               </div>

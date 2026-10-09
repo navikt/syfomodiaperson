@@ -6,23 +6,35 @@ import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import SyketilfelleList from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleList";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
-import { Alert, BodyShort, Box, Heading } from "@navikt/ds-react";
+import { Alert, BodyShort, Box, Tabs } from "@navikt/ds-react";
 import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
-import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
+import {
+  SykmeldingOldFormat,
+  SykmeldingPeriodeDTO,
+} from "@/data/sykmelding/types/SykmeldingOldFormat";
 import {
   harJobbet,
   SykepengesoknadDTO,
 } from "@/data/sykepengesoknad/types/SykepengesoknadDTO";
 import SykmeldingsgradChart from "@/sider/nokkelinformasjon/sykmeldingsgrad/SykmeldingsgradChart";
+import SykmeldingshendelserTimelineMock from "@/sider/nokkelinformasjon/sykmeldingsgrad/SykmeldingshendelserTimelineMock";
+import { useState } from "react";
 
 const texts = {
-  title: "Sykmeldingsgrad",
-  subtitle: "Endringer i sykmeldingsgrad",
   xAxis: "X-akse: måned i tilfellet",
   yAxis: "Y-akse: sykmeldingsgrad",
+  tabs: {
+    sykmeldingsgrad: "Sykmeldingsgrad",
+    hendelser: "Hendelser i tilfelle",
+  },
   harJobbetUtoverSykmeldingsgrad:
     "Har jobbet utover sykmeldingsgrad. Se sykepengesøknader for mer informasjon.",
 };
+
+const SykmeldingsvisningTab = {
+  sykmeldingsgrad: "sykmeldingsgrad",
+  hendelser: "hendelser",
+} as const;
 
 function tilfelleVarighetText(start: Date, end: Date, varighet: number) {
   return `Valgt tilfelle sin varighet: ${tilLesbarPeriodeMedArstall(start, end)}
@@ -40,6 +52,9 @@ export default function Sykmeldingsgrad({
   selectedOppfolgingstilfelle,
   setSelectedOppfolgingstilfelle,
 }: Props) {
+  const [visning, setVisning] = useState<string>(
+    SykmeldingsvisningTab.sykmeldingsgrad,
+  );
   const { sykmeldinger } = useGetSykmeldingerQuery();
   const getSykepengesoknader = useSykepengesoknaderQuery();
 
@@ -66,14 +81,12 @@ export default function Sykmeldingsgrad({
 
   const sortedSykmeldingsperioder = sykmeldingerIOppfolgingstilfelle
     .flatMap((sykmelding) => sykmelding.mulighetForArbeid.perioder)
-    .sort((a, b) => a.fom.getTime() - b.fom.getTime());
+    .sort((a: SykmeldingPeriodeDTO, b: SykmeldingPeriodeDTO) => {
+      return a.fom.getTime() - b.fom.getTime();
+    });
 
   return (
     <Box background="default" padding="space-16" className="mb-4">
-      <Heading size="medium" level="2">
-        {texts.title}
-      </Heading>
-      <BodyShort size="small">{texts.subtitle}</BodyShort>
       {selectedOppfolgingstilfelle && sortedSykmeldingsperioder.length > 0 && (
         <BodyShort size="small">
           {tilfelleVarighetText(
@@ -90,15 +103,54 @@ export default function Sykmeldingsgrad({
           {texts.harJobbetUtoverSykmeldingsgrad}
         </Alert>
       )}
-      <div className="flex flex-row">
-        <SykmeldingsgradChart sykmeldingsperioder={sortedSykmeldingsperioder} />
-
-        <SyketilfelleList
-          setSelectedTilfelle={setSelectedOppfolgingstilfelle}
-        />
+      <div className="flex flex-row gap-8">
+        <div className="w-full min-w-0">
+          <Tabs
+            value={visning}
+            size="small"
+            onChange={(value) => setVisning(value)}
+          >
+            <Tabs.List>
+              <Tabs.Tab
+                value={SykmeldingsvisningTab.sykmeldingsgrad}
+                label={texts.tabs.sykmeldingsgrad}
+              />
+              <Tabs.Tab
+                value={SykmeldingsvisningTab.hendelser}
+                label={texts.tabs.hendelser}
+              />
+            </Tabs.List>
+            <Tabs.Panel
+              value={SykmeldingsvisningTab.sykmeldingsgrad}
+              className="mt-4"
+            >
+              <SykmeldingsgradChart
+                sykmeldingsperioder={sortedSykmeldingsperioder}
+              />
+            </Tabs.Panel>
+            <Tabs.Panel
+              value={SykmeldingsvisningTab.hendelser}
+              className="mt-4"
+            >
+              <SykmeldingshendelserTimelineMock
+                selectedOppfolgingstilfelle={selectedOppfolgingstilfelle}
+                sykmeldingsperioder={sortedSykmeldingsperioder}
+              />
+            </Tabs.Panel>
+          </Tabs>
+          {visning === SykmeldingsvisningTab.sykmeldingsgrad && (
+            <>
+              <BodyShort size="small">{texts.yAxis}</BodyShort>
+              <BodyShort size="small">{texts.xAxis}</BodyShort>
+            </>
+          )}
+        </div>
+        <div className="shrink-0 min-w-max">
+          <SyketilfelleList
+            setSelectedTilfelle={setSelectedOppfolgingstilfelle}
+          />
+        </div>
       </div>
-      <BodyShort size="small">{texts.yAxis}</BodyShort>
-      <BodyShort size="small">{texts.xAxis}</BodyShort>
     </Box>
   );
 }

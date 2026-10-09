@@ -5,7 +5,6 @@ import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQue
 import Side from "@/components/side/Side";
 import { Menypunkter } from "@/components/globalnavigasjon/GlobalNavigasjon";
 import SideLaster from "@/components/side/SideLaster";
-import { Heading } from "@navikt/ds-react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { useFeatureToggles } from "@/data/unleash/unleashQueryHooks";
@@ -13,6 +12,7 @@ import Oppfolgingsenhet, {
   TildeltNotification,
 } from "@/components/oppfolgingsenhet/Oppfolgingsenhet";
 import TildeltOppfolgingsenhetAlert from "@/components/oppfolgingsenhet/TildeltOppfolgingsenhetAlert";
+import Sidetopp from "@/components/side/Sidetopp.tsx";
 
 const texts = {
   pageTitle: "Nøkkelinformasjon",
@@ -35,15 +35,11 @@ export default function Nokkelinformasjon() {
       tittel={texts.pageTitle}
       aktivtMenypunkt={Menypunkter.NOKKELINFORMASJON}
     >
+      <Sidetopp tittel={texts.pageTitle} />
       <SideLaster
         isLoading={henterSykmeldinger}
         isError={henterSykmeldingerFeilet}
       >
-        <header>
-          <Heading spacing size="large" className="hidden" level="1">
-            {texts.pageTitle}
-          </Heading>
-        </header>
         {tildeltNotification && (
           <TildeltOppfolgingsenhetAlert
             tildeltNotification={tildeltNotification}

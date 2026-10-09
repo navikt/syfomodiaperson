@@ -63,7 +63,7 @@ export default function SykmeldingsgradChart({ sykmeldingsperioder }: Props) {
   }
 
   return (
-    <ResponsiveContainer width="70%" height={360}>
+    <ResponsiveContainer height={360}>
       <AreaChart
         data={dataBarChart}
         margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
