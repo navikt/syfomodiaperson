@@ -22,6 +22,8 @@ const texts = {
   link: "Gå til sykmeldingen",
   linkDuplicate: "Gå til tidligere sykmelding med duplikate felter",
   behandleOppgaveText: "Jeg har vurdert behovet, fjern oppgaven.",
+  annetArbeidPaSikt:
+    "Felt 5.2.2 (Prognose): Jeg antar at pasienten på sikt kan komme i arbeid hos annen arbeidsgiver",
 };
 
 interface Props {
@@ -41,6 +43,8 @@ export default function VurderBistandsbehov({ oppgave }: Props) {
   const tiltakNav = sykmelding?.arbeidsevne.tiltakNAV;
   const tiltakAndre = sykmelding?.arbeidsevne.tiltakAndre;
   const bistandsbehov = sykmelding?.meldingTilNav.navBoerTaTakISakenBegrunnelse;
+  const isAnnetArbeidPaSikt =
+    sykmelding?.friskmelding.antarReturAnnenArbeidsgiver === true;
   return (
     !!sykmelding && (
       <Box background="default" className="mb-4 p-4">
@@ -65,6 +69,11 @@ export default function VurderBistandsbehov({ oppgave }: Props) {
           </div>
         </div>
         <blockquote>
+          {isAnnetArbeidPaSikt && (
+            <BodyShort className="whitespace-pre-line">
+              {texts.annetArbeidPaSikt}
+            </BodyShort>
+          )}
           {tiltakNav && (
             <BodyShort className="whitespace-pre-line">
               Felt 7.2 (Forslag til tiltak i regi fra Nav): {tiltakNav}
