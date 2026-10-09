@@ -3,48 +3,22 @@ import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/
 import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
 import { BodyShort, Radio, RadioGroup, Tooltip } from "@navikt/ds-react";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
-import {
-  newAndActivatedSykmeldinger,
-  sykmeldingerInnenforOppfolgingstilfelle,
-} from "@/utils/sykmeldinger/sykmeldingUtils";
 import { MedisinskrinImage } from "../../../../img/ImageComponents";
-import {
-  SykmeldingDiagnose,
-  sykmeldingerSortertNyestTilEldstPeriode,
-  SykmeldingOldFormat,
-} from "@/data/sykmelding/types/SykmeldingOldFormat";
+import { getDiagnoseFromTilfelle } from "@/utils/diagnoseUtils.ts";
 
 const texts = {
   title: "Siste sykefravær",
 };
 
-export function getDiagnoseFromLatestSykmelding(
-  sykmeldinger: SykmeldingOldFormat[],
-): SykmeldingDiagnose | undefined {
-  const latestSykmelding =
-    sykmeldingerSortertNyestTilEldstPeriode(sykmeldinger)[0];
-  return latestSykmelding?.diagnose?.hoveddiagnose;
-}
-
 interface Props {
   setSelectedTilfelle: (value: OppfolgingstilfelleDTO) => void;
 }
 
-export default function SyketilfelleList({ setSelectedTilfelle }: Props) {
+export default function SyketilfelleRadioList({ setSelectedTilfelle }: Props) {
   const { tilfellerDescendingStart } = useOppfolgingstilfellePersonQuery();
   const { sykmeldinger } = useGetSykmeldingerQuery();
 
   const tenLatestTilfeller = tilfellerDescendingStart?.slice(0, 10);
-
-  function getDiagnose(
-    tilfelle: OppfolgingstilfelleDTO,
-  ): SykmeldingDiagnose | undefined {
-    const newAndUsedSykmeldinger = newAndActivatedSykmeldinger(sykmeldinger);
-    const sykmeldingerIOppfolgingstilfellet =
-      sykmeldingerInnenforOppfolgingstilfelle(newAndUsedSykmeldinger, tilfelle);
-
-    return getDiagnoseFromLatestSykmelding(sykmeldingerIOppfolgingstilfellet);
-  }
 
   function tilfelleText(tilfelle: OppfolgingstilfelleDTO) {
     return `${tilLesbarPeriodeMedArUtenManednavn(
@@ -62,7 +36,7 @@ export default function SyketilfelleList({ setSelectedTilfelle }: Props) {
     >
       {tenLatestTilfeller.map(
         (tilfelle: OppfolgingstilfelleDTO, index: number) => {
-          const diagnose = getDiagnose(tilfelle);
+          const diagnose = getDiagnoseFromTilfelle(tilfelle, sykmeldinger);
           return (
             <div
               className="flex items-center gap-2 w-full justify-between"

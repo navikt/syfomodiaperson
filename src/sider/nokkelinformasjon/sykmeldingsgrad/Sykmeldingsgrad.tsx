@@ -4,7 +4,7 @@ import {
 } from "@/utils/sykmeldinger/sykmeldingUtils";
 import { tilLesbarPeriodeMedArstall } from "@/utils/datoUtils";
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
-import SyketilfelleList from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleList";
+import SyketilfelleRadioList from "@/sider/nokkelinformasjon/sykmeldingsgrad/SyketilfelleRadioList.tsx";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { Alert, BodyShort, Box, Heading } from "@navikt/ds-react";
 import { useSykepengesoknaderQuery } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
@@ -93,7 +93,7 @@ export default function Sykmeldingsgrad({
       <div className="flex flex-row">
         <SykmeldingsgradChart sykmeldingsperioder={sortedSykmeldingsperioder} />
 
-        <SyketilfelleList
+        <SyketilfelleRadioList
           setSelectedTilfelle={setSelectedOppfolgingstilfelle}
         />
       </div>

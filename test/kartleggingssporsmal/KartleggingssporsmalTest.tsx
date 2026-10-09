@@ -176,6 +176,22 @@ describe("Kartleggingssporsmal", () => {
     expect(queryButton("Lagre vurdering, fjern oppgaven")).to.not.exist;
   });
 
+  it("Sykmeldt is kandidat and shows syketilfellehistorikk", () => {
+    mockKartleggingssporsmalKandidat(
+      kartleggingIsKandidatAndReceivedQuestions,
+      ARBEIDSTAKER_DEFAULT.personIdent,
+    );
+
+    renderKartleggingssporsmal();
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Sykefraværhistorikk",
+      }),
+    ).to.exist;
+    expect(screen.getAllByText(/\(\d+ uker\)/).length).to.equal(3);
+  });
+
   it("Sykmeldt is kandidat, but was not varslet (kandidat pre-pilot)", () => {
     const kandidatNotVarslet = {
       ...kartleggingIsKandidatAndReceivedQuestions,

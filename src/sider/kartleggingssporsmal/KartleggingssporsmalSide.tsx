@@ -33,6 +33,9 @@ import { SuccessAlert } from "@/sider/kartleggingssporsmal/successAlert/SuccessA
 import LumiSurvey from "@/components/lumi/LumiSurvey.tsx";
 import { kartleggingssporsmalSurvey } from "@/components/lumi/kartleggingssporsmalSurvey.ts";
 import { ReactElement } from "react";
+import { SyketilfelleList } from "@/components/syketilfelleList/SyketilfelleList.tsx";
+import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
+import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery.ts";
 
 const texts = {
   title: "Kartleggingsspørsmål",
@@ -145,6 +148,18 @@ export default function KartleggingssporsmalSide(): ReactElement {
     useKartleggingssporsmalSvarQuery(nyesteKandidat);
   const answeredQuestions = getKartleggingssporsmalSvar.data;
 
+  const {
+    tilfellerDescendingStart,
+    isLoading: isTilfellerLoading,
+    isError: isTilfellerError,
+  } = useOppfolgingstilfellePersonQuery();
+  const oppfolgingstilfeller = tilfellerDescendingStart || [];
+  const {
+    sykmeldinger,
+    isLoading: isSykmeldingerLoading,
+    isError: isSykmeldingerError,
+  } = useGetSykmeldingerQuery();
+
   const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
 
   const isSurveyVisible =
@@ -167,8 +182,15 @@ export default function KartleggingssporsmalSide(): ReactElement {
   ) : null;
 
   const isPending =
-    getKandidater.isPending || getKartleggingssporsmalSvar.isLoading;
-  const isError = getKandidater.isError || getKartleggingssporsmalSvar.isError;
+    getKandidater.isPending ||
+    getKartleggingssporsmalSvar.isLoading ||
+    isTilfellerLoading ||
+    isSykmeldingerLoading;
+  const isError =
+    getKandidater.isError ||
+    getKartleggingssporsmalSvar.isError ||
+    isTilfellerError ||
+    isSykmeldingerError;
 
   const behandletWithoutVurdering =
     nyesteKandidat?.status === KandidatStatus.FERDIGBEHANDLET &&
@@ -181,6 +203,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
       lumi={lumiSurvey}
     >
       <Sidetopp tittel={texts.title} />
+
       <SideLaster isLoading={isPending} isError={isError}>
         {nyesteKandidat && hasMottattKartleggingssporsmal(nyesteKandidat) ? (
           <Tredelt.Container>
@@ -257,6 +280,7 @@ export default function KartleggingssporsmalSide(): ReactElement {
                 tidligereKandidater={kandidater.slice(1)}
               />
             </Tredelt.FirstColumn>
+
             <Tredelt.SecondColumn>
               <Box background="default" padding="space-24" className="mb-4">
                 <Heading level="2" size="medium">
@@ -326,6 +350,12 @@ export default function KartleggingssporsmalSide(): ReactElement {
                   <PilotInfo />
                 </Accordion>
               </Box>
+
+              <SyketilfelleList
+                oppfolgingstilfeller={oppfolgingstilfeller}
+                sykmeldinger={sykmeldinger}
+              />
+
               {answeredQuestions && <UtdragFraSykefravaeret />}
             </Tredelt.SecondColumn>
           </Tredelt.Container>
