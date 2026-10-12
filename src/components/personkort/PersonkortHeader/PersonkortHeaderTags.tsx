@@ -42,7 +42,7 @@ export function PersonkortHeaderTags() {
   const { data: isEgenAnsatt } = useEgenansattQuery();
   const {
     dodsdato,
-    hasSikkerhetstiltak,
+    sikkerhetstiltak,
     underVergemal,
     tilrettelagtKommunikasjon,
   } = useNavBrukerData();
@@ -140,11 +140,11 @@ export function PersonkortHeaderTags() {
             size="small"
           >{`${texts.dod} ${dateOfDeath}`}</Tag>
         )}
-        {hasSikkerhetstiltak && (
-          <Tag data-color="danger" variant="outline" size="small">
-            {texts.sikkerhetstiltak}
+        {sikkerhetstiltak.map(({ beskrivelse }, index) => (
+          <Tag key={index} data-color="danger" variant="outline" size="small">
+            {`${texts.sikkerhetstiltak}: ${beskrivelse}`}
           </Tag>
-        )}
+        ))}
         {brukerKanIkkeVarslesDigitalt && (
           <Tag data-color="warning" variant="outline" size="small">
             {texts.reservertKRR}
