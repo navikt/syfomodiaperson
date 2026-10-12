@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BodyLong, Button, Heading, Modal } from "@navikt/ds-react";
+import { BodyLong, BodyShort, Button, Heading, Modal } from "@navikt/ds-react";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import {
   BehandlendeEnhetResponseDTO,
@@ -85,8 +85,8 @@ const PersonkortChangeEnhet = ({
         </Modal.Header>
         <Modal.Body>
           <BodyLong as={"div"} spacing={true}>
-            <p>{modalText1}</p>
-            <p>{modalText2}</p>
+            <BodyShort>{modalText1}</BodyShort>
+            <BodyShort>{modalText2}</BodyShort>
           </BodyLong>
           {changeEnhet.isError && (
             <SkjemaInnsendingFeil error={changeEnhet.error} />
