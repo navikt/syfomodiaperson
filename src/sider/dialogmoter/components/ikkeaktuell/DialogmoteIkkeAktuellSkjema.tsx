@@ -12,6 +12,7 @@ import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   Alert,
+  BodyShort,
   Box,
   Button,
   Radio,
@@ -65,7 +66,7 @@ export default function DialogmoteIkkeAktuellSkjema() {
       <Alert variant="info" size="small" className="p-4 mb-4">
         {texts.noBrev}
       </Alert>
-      <p>{texts.infoKandidatlist}</p>
+      <BodyShort>{texts.infoKandidatlist}</BodyShort>
       <form onSubmit={handleSubmit(onSubmit)}>
         {settDialogmoteikkeaktuell.isError && (
           <SkjemaInnsendingFeil error={settDialogmoteikkeaktuell.error} />

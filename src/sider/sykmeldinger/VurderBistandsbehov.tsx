@@ -1,9 +1,9 @@
 import { useGetSykmeldingerQuery } from "@/data/sykmelding/useGetSykmeldingerQuery";
 import {
   BodyShort,
+  Heading,
   Box,
   Button,
-  Heading,
   HelpText,
   Link,
   Tag,
@@ -123,7 +123,7 @@ export default function VurderBistandsbehov({ oppgave }: Props) {
                   className={"w-6 h-6"}
                 />
               </span>
-              <p>Ferdigbehandlet</p>
+              <BodyShort>Ferdigbehandlet</BodyShort>
             </div>
           )}
         </div>
