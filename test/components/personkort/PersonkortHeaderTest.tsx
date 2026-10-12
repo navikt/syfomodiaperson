@@ -600,7 +600,7 @@ describe("PersonkortHeader", () => {
     );
     renderPersonkortHeader();
 
-    expect(screen.getByText("Sikkerhetstiltak")).to.exist;
+    expect(screen.getByText("Sikkerhetstiltak: Fysisk utestengelse")).to.exist;
   });
 
   it("viser under-arbeidsrettet-oppfølging tag når under arbeidsrettet oppfølging", () => {

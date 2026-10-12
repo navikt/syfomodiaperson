@@ -28,7 +28,13 @@ export const brukerinfoMock: BrukerinfoDTO = {
   sikkerhetstiltak: [
     {
       type: Tiltakstype.FYUS,
-      beskrivelse: "",
+      beskrivelse: "Fysisk utestengelse",
+      gyldigFom: dayjs().add(1, "week").toDate().toString(),
+      gyldigTom: dayjs().subtract(1, "week").toDate().toString(),
+    },
+    {
+      type: Tiltakstype.TOAN,
+      beskrivelse: "To ansatte i samtale",
       gyldigFom: dayjs().add(1, "week").toDate().toString(),
       gyldigTom: dayjs().subtract(1, "week").toDate().toString(),
     },
