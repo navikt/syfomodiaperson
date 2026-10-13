@@ -24,6 +24,7 @@ export const renderWithRouter = (
     >
       <Routes>
         <Route path={path} element={element} />
+        <Route path="*" element={null} />
       </Routes>
     </MemoryRouter>,
   );

@@ -216,7 +216,7 @@ export default function BeOmOppfolgingsplan({
                 size="small"
                 legend="Arbeidsgiver"
                 error={error?.message}
-                value={field.value?.uuid}
+                value={field.value?.uuid ?? ""}
                 onChange={(value) => {
                   const selectedNarmesteLeder =
                     activeNarmesteLedereMedUnntaksvurdering.find(
