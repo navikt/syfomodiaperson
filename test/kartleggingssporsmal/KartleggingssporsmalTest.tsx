@@ -44,7 +44,11 @@ import { unleashQueryKeys } from "@/data/unleash/unleashQueryHooks.ts";
 import { ToggleNames } from "@/data/unleash/unleash_types.ts";
 import { oppfolgingstilfellePersonMock } from "@/mocks/isoppfolgingstilfelle/oppfolgingstilfellePersonMock.ts";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
-import { daysFromToday } from "@/utils/datoUtils.ts";
+import {
+  addWeeks,
+  daysFromToday,
+  tilLesbarDatoMedArUtenManedNavn,
+} from "@/utils/datoUtils.ts";
 import {
   kartleggingssporsmalFlervalgFritekstV3Answered,
   kartleggingssporsmalFlervalgV1Answered,
@@ -94,6 +98,16 @@ const mockGjentakendeFravar = (hasGjentakendeSykefravar: boolean) =>
         hasGjentakendeSykefravar: hasGjentakendeSykefravar,
       };
     },
+  );
+
+const mockOppfolgingstilfellePerson = (
+  oppfolgingstilfellePerson: typeof oppfolgingstilfellePersonMock,
+) =>
+  queryClient.setQueryData(
+    oppfolgingstilfellePersonQueryKeys.oppfolgingstilfelleperson(
+      ARBEIDSTAKER_DEFAULT.personIdent,
+    ),
+    () => oppfolgingstilfellePerson,
   );
 
 const mockEnabledToggles = (enabledToggles: ToggleNames[]) =>
@@ -196,7 +210,14 @@ describe("Kartleggingssporsmal", () => {
     const container = historikk.closest("section") ?? historikk.parentElement!;
     const scoped = within(container);
 
-    expect(scoped.getByText("05.01.2026 - 01.03.2027")).to.exist;
+    const currentTilfelleStart = addWeeks(new Date(), -40);
+    const currentTilfelleEnd = addWeeks(new Date(), 20);
+
+    expect(
+      scoped.getByText(
+        `${tilLesbarDatoMedArUtenManedNavn(currentTilfelleStart)} - ${tilLesbarDatoMedArUtenManedNavn(currentTilfelleEnd)}`,
+      ),
+    ).to.exist;
     expect(scoped.getByText("21.02.2020 - 10.12.2020")).to.exist;
     expect(scoped.getByText("06.06.2019 - 21.01.2020")).to.exist;
 
