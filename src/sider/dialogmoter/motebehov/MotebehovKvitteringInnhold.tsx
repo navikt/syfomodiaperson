@@ -57,8 +57,8 @@ export default function MotebehovKvitteringInnhold({
     <Box padding={"space-12"}>
       <VStack gap={"space-16"}>
         <HStack gap={"space-12"} align="center">
-          <div className="w-6">{setSvarIkon(deltakerOnskerMote)}</div>
-          <div>{tekst}</div>
+          {setSvarIkon(deltakerOnskerMote)}
+          {tekst}
         </HStack>
         {motebehov && (
           <Skjemasvar formSnapshot={motebehov.formValues.formSnapshot} />
