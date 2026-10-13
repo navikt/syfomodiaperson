@@ -104,8 +104,8 @@ describe("AvslagForm", () => {
       const dateInput = getTextInput(dateLabel);
       const begrunnelseInput = getTextInput(begrunnelseLabel);
 
-      changeTextInput(dateInput, toDatePrettyPrint(fristDate) as string);
-      changeTextInput(begrunnelseInput, begrunnelse);
+      await changeTextInput(dateInput, toDatePrettyPrint(fristDate) as string);
+      await changeTextInput(begrunnelseInput, begrunnelse);
       await clickButton("Send");
 
       await waitFor(() => {
@@ -137,8 +137,8 @@ describe("AvslagForm", () => {
       const dateInput = getTextInput(dateLabel);
       const begrunnelseInput = getTextInput(begrunnelseLabel);
 
-      changeTextInput(dateInput, toDatePrettyPrint(fristDate) as string);
-      changeTextInput(begrunnelseInput, begrunnelse);
+      await changeTextInput(dateInput, toDatePrettyPrint(fristDate) as string);
+      await changeTextInput(begrunnelseInput, begrunnelse);
 
       await clickButton("Forhåndsvisning");
 

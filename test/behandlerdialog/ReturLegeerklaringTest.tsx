@@ -86,16 +86,16 @@ describe("ReturLegeerklaring", () => {
     expect(screen.queryByRole("button", { name: cancelButtonText })).to.not
       .exist;
   });
-  it("previews begrunnelse", () => {
+  it("previews begrunnelse", async () => {
     renderReturLegeerklaring(foresporselLegeerklaringFraBehandler);
 
-    clickButton(returButtonText);
+    await clickButton(returButtonText);
 
     const begrunnelseInput = screen.getByRole("textbox", {
       name: "Begrunnelse",
       hidden: true,
     });
-    changeTextInput(begrunnelseInput, enBegrunnelseTekst);
+    await changeTextInput(begrunnelseInput, enBegrunnelseTekst);
 
     // Vises i forhåndsvisning og i textarea
     expect(screen.getAllByText(enBegrunnelseTekst)).to.have.length(2);
@@ -116,7 +116,7 @@ describe("ReturLegeerklaring", () => {
       name: "Begrunnelse",
       hidden: true,
     });
-    changeTextInput(begrunnelseInput, enBegrunnelseTekst);
+    await changeTextInput(begrunnelseInput, enBegrunnelseTekst);
     await userEvent.click(sendButton);
 
     await waitFor(() => {
@@ -137,7 +137,7 @@ describe("ReturLegeerklaring", () => {
       name: "Begrunnelse",
       hidden: true,
     });
-    changeTextInput(begrunnelseInput, enBegrunnelseTekst);
+    await changeTextInput(begrunnelseInput, enBegrunnelseTekst);
 
     const sendButton = screen.getByRole("button", {
       name: sendButtonText,

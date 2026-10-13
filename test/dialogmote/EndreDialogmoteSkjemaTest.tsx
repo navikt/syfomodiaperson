@@ -87,15 +87,15 @@ describe("EndreDialogmoteSkjemaTest", () => {
     const begrunnelseArbeidsgiverInput = getTextInput(
       "Begrunnelse til nærmeste leder",
     );
-    changeTextInput(
+    await changeTextInput(
       begrunnelseArbeidstakerInput,
       moteTekster.fritekstTilArbeidstaker,
     );
-    changeTextInput(
+    await changeTextInput(
       begrunnelseArbeidsgiverInput,
       moteTekster.fritekstTilArbeidsgiver,
     );
-    changeTextInput(datoInput, endretMote.dato);
+    await changeTextInput(datoInput, endretMote.dato);
     await clickButton("Send");
 
     // Feilmeldinger forsvinner
@@ -112,8 +112,8 @@ describe("EndreDialogmoteSkjemaTest", () => {
     });
 
     // Fjern begrunnelser
-    changeTextInput(begrunnelseArbeidstakerInput, "");
-    changeTextInput(begrunnelseArbeidsgiverInput, "");
+    await changeTextInput(begrunnelseArbeidstakerInput, "");
+    await changeTextInput(begrunnelseArbeidsgiverInput, "");
 
     // Feilmeldinger vises
     expect(await screen.findByText(texts.begrunnelseArbeidstakerMissing)).to
@@ -132,9 +132,9 @@ describe("EndreDialogmoteSkjemaTest", () => {
     );
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
     const tooLongFritekst = getTooLongText(MAX_LENGTH_ENDRE_BEGRUNNELSE);
-    changeTextInput(begrunnelseArbeidstakerInput, tooLongFritekst);
-    changeTextInput(begrunnelseArbeidsgiverInput, tooLongFritekst);
-    changeTextInput(begrunnelseBehandlerInput, tooLongFritekst);
+    await changeTextInput(begrunnelseArbeidstakerInput, tooLongFritekst);
+    await changeTextInput(begrunnelseArbeidsgiverInput, tooLongFritekst);
+    await changeTextInput(begrunnelseBehandlerInput, tooLongFritekst);
 
     await clickButton("Send");
 
@@ -144,7 +144,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
   it("endrer møte ved submit", async () => {
     stubEndreApi(dialogmote.uuid);
     renderEndreDialogmoteSkjema(dialogmote);
-    passSkjemaInput();
+    await passSkjemaInput();
 
     const expectedSendtDato = new Date();
     await clickButton("Send");
@@ -177,12 +177,12 @@ describe("EndreDialogmoteSkjemaTest", () => {
   it("trimmer videolenke i endring som sendes til api", async () => {
     stubEndreApi(dialogmote.uuid);
     renderEndreDialogmoteSkjema(dialogmote);
-    passSkjemaInput();
+    await passSkjemaInput();
 
     const link = "https://video.nav.no/abc";
     const videoLinkInput = getTextInput("Lenke til videomøte (valgfritt)");
     const linkWithWhitespace = `   ${link}  `;
-    changeTextInput(videoLinkInput, linkWithWhitespace);
+    await changeTextInput(videoLinkInput, linkWithWhitespace);
 
     await clickButton("Send");
 
@@ -211,9 +211,9 @@ describe("EndreDialogmoteSkjemaTest", () => {
     stubEndreApi(dialogmote.uuid);
     stubFeatureTogglesApi();
     renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
-    passSkjemaInput();
+    await passSkjemaInput();
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
-    changeTextInput(
+    await changeTextInput(
       begrunnelseBehandlerInput,
       moteTekster.fritekstTilBehandler,
     );
@@ -252,7 +252,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
   });
   it("forhåndsviser endret tid og sted til arbeidstaker", async () => {
     renderEndreDialogmoteSkjema(dialogmote);
-    passSkjemaInput();
+    await passSkjemaInput();
 
     const previewButtons = screen.getAllByRole("button", {
       name: "Forhåndsvisning",
@@ -288,7 +288,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
   });
   it("forhåndsviser endret tid og sted til arbeidsgiver", async () => {
     renderEndreDialogmoteSkjema(dialogmote);
-    passSkjemaInput();
+    await passSkjemaInput();
 
     const previewButtons = screen.getAllByRole("button", {
       name: "Forhåndsvisning",
@@ -325,9 +325,9 @@ describe("EndreDialogmoteSkjemaTest", () => {
   it("forhåndsviser endret tid og sted til behandler når behandler er med", async () => {
     stubFeatureTogglesApi();
     renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
-    passSkjemaInput();
+    await passSkjemaInput();
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
-    changeTextInput(
+    await changeTextInput(
       begrunnelseBehandlerInput,
       moteTekster.fritekstTilBehandler,
     );
@@ -362,7 +362,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
 
   it("forhåndsviser endring med nynorsktekster hvis dette er valgt", async () => {
     renderEndreDialogmoteSkjema(dialogmoteMedBehandler);
-    passSkjemaInput();
+    await passSkjemaInput();
 
     const malformRadioNynorsk = screen.getByRole("radio", {
       name: "Nynorsk",
@@ -395,7 +395,7 @@ const renderEndreDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
   );
 };
 
-const passSkjemaInput = () => {
+const passSkjemaInput = async () => {
   const datoInput = getTextInput("Dato");
   const klokkeslettInput = screen.getByLabelText("Klokkeslett");
   const stedInput = getTextInput("Sted");
@@ -406,16 +406,16 @@ const passSkjemaInput = () => {
   const begrunnelseArbeidsgiverInput = getTextInput(
     "Begrunnelse til nærmeste leder",
   );
-  changeTextInput(datoInput, endretMote.dato);
+  await changeTextInput(datoInput, endretMote.dato);
   fireEvent.blur(datoInput);
-  changeTextInput(klokkeslettInput, endretMote.klokkeslett);
-  changeTextInput(stedInput, endretMote.sted);
-  changeTextInput(videoLinkInput, endretMote.videolink);
-  changeTextInput(
+  await changeTextInput(klokkeslettInput, endretMote.klokkeslett);
+  await changeTextInput(stedInput, endretMote.sted);
+  await changeTextInput(videoLinkInput, endretMote.videolink);
+  await changeTextInput(
     begrunnelseArbeidstakerInput,
     moteTekster.fritekstTilArbeidstaker,
   );
-  changeTextInput(
+  await changeTextInput(
     begrunnelseArbeidsgiverInput,
     moteTekster.fritekstTilArbeidsgiver,
   );

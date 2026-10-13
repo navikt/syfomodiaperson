@@ -75,7 +75,7 @@ describe("OppfyltSide", () => {
     const begrunnelseLabel = "Begrunnelse (obligatorisk)";
     const begrunnelseInput = getTextInput(begrunnelseLabel);
 
-    changeTextInput(begrunnelseInput, begrunnelse);
+    await changeTextInput(begrunnelseInput, begrunnelse);
     await clickButton("Forhåndsvisning");
 
     const forhandsvisningVurdering = screen.getAllByRole("dialog", {
@@ -152,7 +152,7 @@ describe("OppfyltSide", () => {
       const begrunnelseLabel = "Begrunnelse (obligatorisk)";
       const begrunnelseInput = getTextInput(begrunnelseLabel);
 
-      changeTextInput(begrunnelseInput, begrunnelse);
+      await changeTextInput(begrunnelseInput, begrunnelse);
       await clickButton("Forhåndsvisning");
 
       const forhandsvisningVurdering = screen.getAllByRole("dialog", {

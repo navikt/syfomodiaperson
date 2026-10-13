@@ -33,7 +33,7 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
 
   it("previews innkalling to arbeidstaker", async () => {
     renderDialogmoteInnkallingSkjema();
-    passSkjemaInput();
+    await passSkjemaInput();
 
     const previewButtons = screen.getAllByRole("button", {
       name: "Forhåndsvisning",
@@ -69,7 +69,7 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
 
   it("previews innkalling to arbeidsgiver", async () => {
     renderDialogmoteInnkallingSkjema();
-    passSkjemaInput();
+    await passSkjemaInput();
 
     const previewButtons = screen.getAllByRole("button", {
       name: "Forhåndsvisning",
@@ -117,7 +117,10 @@ describe("Dialogmoteinnkallingskjema forhåndsvisning", () => {
     const fritekstBehandlerInput = getTextInput(
       "Fritekst til behandler (valgfri)",
     );
-    changeTextInput(fritekstBehandlerInput, moteTekster.fritekstTilBehandler);
+    await changeTextInput(
+      fritekstBehandlerInput,
+      moteTekster.fritekstTilBehandler,
+    );
 
     const previewButtons = screen.getAllByRole("button", {
       name: "Forhåndsvisning",
@@ -162,7 +165,7 @@ const renderDialogmoteInnkallingSkjema = () =>
     [dialogmoteRoutePath],
   );
 
-const passSkjemaInput = () => {
+const passSkjemaInput = async () => {
   const virksomhetSelect = screen.getByRole("radio", {
     name: `Fant ikke virksomhetsnavn for ${arbeidsgiver.orgnr}`,
   });
@@ -178,16 +181,16 @@ const passSkjemaInput = () => {
   );
 
   fireEvent.click(virksomhetSelect);
-  changeTextInput(datoInput, mote.dato);
+  await changeTextInput(datoInput, mote.dato);
   fireEvent.blur(datoInput);
-  changeTextInput(klokkeslettInput, mote.klokkeslett);
-  changeTextInput(stedInput, mote.sted);
-  changeTextInput(videoLinkInput, mote.videolink);
-  changeTextInput(
+  await changeTextInput(klokkeslettInput, mote.klokkeslett);
+  await changeTextInput(stedInput, mote.sted);
+  await changeTextInput(videoLinkInput, mote.videolink);
+  await changeTextInput(
     fritekstArbeidstakerInput,
     moteTekster.fritekstTilArbeidstaker,
   );
-  changeTextInput(
+  await changeTextInput(
     fritekstArbeidsgiverInput,
     moteTekster.fritekstTilArbeidsgiver,
   );

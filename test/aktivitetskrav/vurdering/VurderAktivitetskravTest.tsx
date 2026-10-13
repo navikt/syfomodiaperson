@@ -136,7 +136,7 @@ describe("VurderAktivitetskrav", () => {
       await clickTab(tabTexts["OPPFYLT"]);
       const tooLongBeskrivelse = getTooLongText(1000);
       const beskrivelseInput = getTextInput("Begrunnelse");
-      changeTextInput(beskrivelseInput, tooLongBeskrivelse);
+      await changeTextInput(beskrivelseInput, tooLongBeskrivelse);
       await clickButton("Lagre");
 
       expect(await screen.findByText("Vennligst angi årsak")).to.exist;
@@ -153,7 +153,7 @@ describe("VurderAktivitetskrav", () => {
       const arsakRadioButton = screen.getByText("Friskmeldt");
       fireEvent.click(arsakRadioButton);
       const beskrivelseInput = getTextInput("Begrunnelse");
-      changeTextInput(beskrivelseInput, enLangBeskrivelse);
+      await changeTextInput(beskrivelseInput, enLangBeskrivelse);
       await clickButton("Lagre");
 
       await waitFor(() => {
@@ -184,7 +184,7 @@ describe("VurderAktivitetskrav", () => {
       await clickTab(tabTexts["UNNTAK"]);
       const tooLongBeskrivelse = getTooLongText(1000);
       const beskrivelseInput = getTextInput("Begrunnelse (obligatorisk)");
-      changeTextInput(beskrivelseInput, tooLongBeskrivelse);
+      await changeTextInput(beskrivelseInput, tooLongBeskrivelse);
       await clickButton("Lagre");
 
       expect(await screen.findByText("Vennligst angi årsak")).to.exist;
@@ -205,7 +205,7 @@ describe("VurderAktivitetskrav", () => {
       const arsakRadioButton = screen.getByText("Tilrettelegging ikke mulig");
       fireEvent.click(arsakRadioButton);
       const beskrivelseInput = getTextInput("Begrunnelse (obligatorisk)");
-      changeTextInput(beskrivelseInput, enLangBeskrivelse);
+      await changeTextInput(beskrivelseInput, enLangBeskrivelse);
       await clickButton("Lagre");
 
       await waitFor(() => {
@@ -242,7 +242,7 @@ describe("VurderAktivitetskrav", () => {
         name: "Beskrivelse",
         hidden: true,
       });
-      changeTextInput(beskrivelseInput, tooLongBeskrivelse);
+      await changeTextInput(beskrivelseInput, tooLongBeskrivelse);
       fireEvent.click(lagreButton);
 
       expect(await screen.findByText("1 tegn for mye")).to.exist;
@@ -292,14 +292,14 @@ describe("VurderAktivitetskrav", () => {
         name: "Beskrivelse",
         hidden: true,
       });
-      changeTextInput(beskrivelseInput, enKortBeskrivelse);
+      await changeTextInput(beskrivelseInput, enKortBeskrivelse);
 
       const today = dayjs();
       const datoInput = screen.getByRole("textbox", {
         name: "Avventer til",
         hidden: true,
       });
-      changeTextInput(datoInput, today.format("DD.MM.YYYY"));
+      await changeTextInput(datoInput, today.format("DD.MM.YYYY"));
 
       const avventModal = screen.getAllByRole("dialog", { hidden: true })[0];
       const lagreButton = within(avventModal).getByRole("button", {
@@ -349,7 +349,7 @@ describe("VurderAktivitetskrav", () => {
         name: "Begrunnelse",
         hidden: true,
       });
-      changeTextInput(beskrivelseInputs, tooLongBeskrivelse);
+      await changeTextInput(beskrivelseInputs, tooLongBeskrivelse);
       const lagreButton = within(ikkeAktuellModal).getByRole("button", {
         name: "Lagre",
         hidden: true,
@@ -387,7 +387,7 @@ describe("VurderAktivitetskrav", () => {
         name: "Begrunnelse",
         hidden: true,
       });
-      changeTextInput(beskrivelseInputs, enLangBeskrivelse);
+      await changeTextInput(beskrivelseInputs, enLangBeskrivelse);
 
       const lagreButton = within(ikkeAktuellModal).getByRole("button", {
         name: "Lagre",
@@ -457,11 +457,11 @@ describe("VurderAktivitetskrav", () => {
         name: "Innstillingen gjelder fra",
         hidden: true,
       });
-      changeTextInput(datoInput, today.format("DD.MM.YYYY"));
+      await changeTextInput(datoInput, today.format("DD.MM.YYYY"));
 
       const beskrivelseInput = getTextInput("Begrunnelse (obligatorisk)");
       const beskrivelse = "Flott beskrivelse";
-      changeTextInput(beskrivelseInput, beskrivelse);
+      await changeTextInput(beskrivelseInput, beskrivelse);
 
       await clickButton("Send");
 

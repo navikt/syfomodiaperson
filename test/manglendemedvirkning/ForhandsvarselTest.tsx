@@ -83,7 +83,7 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
       const begrunnelse = "En begrunnelse";
 
       const begrunnelseInput = getTextInput("Begrunnelse (obligatorisk)");
-      changeTextInput(begrunnelseInput, begrunnelse);
+      await changeTextInput(begrunnelseInput, begrunnelse);
 
       await clickButton("Send");
 
@@ -111,13 +111,13 @@ describe("Manglendemedvirkning Forhandsvarsel", () => {
       renderForhandsvarselSkjema();
       const begrunnelse = "En begrunnelse";
       const begrunnelseInput = getTextInput("Begrunnelse (obligatorisk)");
-      changeTextInput(begrunnelseInput, begrunnelse);
+      await changeTextInput(begrunnelseInput, begrunnelse);
       const customFrist = addWeeks(new Date(), 5);
       const datepickerInput = screen.getByRole("textbox", {
         name: /Svarfrist/,
       });
       const formatted = dayjs(customFrist).format("DD.MM.YYYY");
-      changeTextInput(datepickerInput, formatted);
+      await changeTextInput(datepickerInput, formatted);
 
       await clickButton("Send");
       const expectedRequestBody: ForhandsvarselVurdering = {

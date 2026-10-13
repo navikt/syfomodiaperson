@@ -84,11 +84,11 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     const begrunnelseArbeidsgiverInput = getTextInput(
       "Begrunnelse til nærmeste leder",
     );
-    changeTextInput(
+    await changeTextInput(
       begrunnelseArbeidstakerInput,
       moteTekster.fritekstTilArbeidstaker,
     );
-    changeTextInput(
+    await changeTextInput(
       begrunnelseArbeidsgiverInput,
       moteTekster.fritekstTilArbeidsgiver,
     );
@@ -106,8 +106,8 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     });
 
     // Fjern begrunnelser
-    changeTextInput(begrunnelseArbeidstakerInput, "");
-    changeTextInput(begrunnelseArbeidsgiverInput, "");
+    await changeTextInput(begrunnelseArbeidstakerInput, "");
+    await changeTextInput(begrunnelseArbeidsgiverInput, "");
 
     // Feilmeldinger vises
     expect(
@@ -133,9 +133,9 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     );
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
     const tooLongFritekst = getTooLongText(MAX_LENGTH_AVLYS_BEGRUNNELSE);
-    changeTextInput(begrunnelseArbeidstakerInput, tooLongFritekst);
-    changeTextInput(begrunnelseArbeidsgiverInput, tooLongFritekst);
-    changeTextInput(begrunnelseBehandlerInput, tooLongFritekst);
+    await changeTextInput(begrunnelseArbeidstakerInput, tooLongFritekst);
+    await changeTextInput(begrunnelseArbeidsgiverInput, tooLongFritekst);
+    await changeTextInput(begrunnelseBehandlerInput, tooLongFritekst);
 
     await clickButton("Send");
 
@@ -151,11 +151,11 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     const begrunnelseArbeidsgiverInput = getTextInput(
       "Begrunnelse til nærmeste leder",
     );
-    changeTextInput(
+    await changeTextInput(
       begrunnelseArbeidstakerInput,
       moteTekster.fritekstTilArbeidstaker,
     );
-    changeTextInput(
+    await changeTextInput(
       begrunnelseArbeidsgiverInput,
       moteTekster.fritekstTilArbeidsgiver,
     );
@@ -189,15 +189,15 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       "Begrunnelse til nærmeste leder",
     );
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
-    changeTextInput(
+    await changeTextInput(
       begrunnelseArbeidstakerInput,
       moteTekster.fritekstTilArbeidstaker,
     );
-    changeTextInput(
+    await changeTextInput(
       begrunnelseArbeidsgiverInput,
       moteTekster.fritekstTilArbeidsgiver,
     );
-    changeTextInput(
+    await changeTextInput(
       begrunnelseBehandlerInput,
       moteTekster.fritekstTilBehandler,
     );
@@ -233,11 +233,11 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     const begrunnelseArbeidsgiverInput = getTextInput(
       "Begrunnelse til nærmeste leder",
     );
-    changeTextInput(
+    await changeTextInput(
       begrunnelseArbeidstakerInput,
       moteTekster.fritekstTilArbeidstaker,
     );
-    changeTextInput(
+    await changeTextInput(
       begrunnelseArbeidsgiverInput,
       moteTekster.fritekstTilArbeidsgiver,
     );
@@ -282,11 +282,11 @@ describe("AvlysDialogmoteSkjemaTest", () => {
     const begrunnelseArbeidsgiverInput = getTextInput(
       "Begrunnelse til nærmeste leder",
     );
-    changeTextInput(
+    await changeTextInput(
       begrunnelseArbeidstakerInput,
       moteTekster.fritekstTilArbeidstaker,
     );
-    changeTextInput(
+    await changeTextInput(
       begrunnelseArbeidsgiverInput,
       moteTekster.fritekstTilArbeidsgiver,
     );
@@ -331,15 +331,15 @@ describe("AvlysDialogmoteSkjemaTest", () => {
       "Begrunnelse til nærmeste leder",
     );
     const begrunnelseBehandlerInput = getTextInput("Begrunnelse til behandler");
-    changeTextInput(
+    await changeTextInput(
       begrunnelseArbeidstakerInput,
       moteTekster.fritekstTilArbeidstaker,
     );
-    changeTextInput(
+    await changeTextInput(
       begrunnelseArbeidsgiverInput,
       moteTekster.fritekstTilArbeidsgiver,
     );
-    changeTextInput(
+    await changeTextInput(
       begrunnelseBehandlerInput,
       moteTekster.fritekstTilBehandler,
     );
