@@ -90,7 +90,7 @@ describe("ReferatTest", () => {
     const getFraArbeidsgiverInput = () => screen.getByLabelText("Navn");
 
     // Sjekk at 'Fra arbeidsgiver' valideres
-    changeTextInput(getFraArbeidsgiverInput(), "");
+    await changeTextInput(getFraArbeidsgiverInput(), "");
     await clickButton("Lagre og send");
     expect(
       screen.getAllByText(
@@ -100,7 +100,7 @@ describe("ReferatTest", () => {
 
     // Sjekk at 'Fra arbeidsgiver' kan endres
     const endretFraArbeidsgiver = "Ny Leder";
-    changeTextInput(getFraArbeidsgiverInput(), endretFraArbeidsgiver);
+    await changeTextInput(getFraArbeidsgiverInput(), endretFraArbeidsgiver);
     expect(
       await screen.findByRole("heading", {
         name: `Fra arbeidsgiver: Ny Leder`,
@@ -136,7 +136,7 @@ describe("ReferatTest", () => {
   it("kan endre behandlers deltakelse", async () => {
     stubFerdigstillApi(dialogmoteMedBehandler.uuid);
     renderReferat(dialogmoteMedBehandler);
-    passSkjemaTekstInput();
+    await passSkjemaTekstInput();
 
     // Fjern avkrysning på deltakelse og motta referat
     const behandlerDeltokCheckbox: HTMLInputElement = screen.getByLabelText(
@@ -220,7 +220,7 @@ describe("ReferatTest", () => {
     ).to.be.empty;
   });
 
-  it("validerer maks lengde på fritekstfelter", () => {
+  it("validerer maks lengde på fritekstfelter", async () => {
     renderReferat(dialogmoteMedBehandler);
 
     const situasjonInput = getTextInput("Situasjon og muligheter");
@@ -229,39 +229,42 @@ describe("ReferatTest", () => {
     const arbeidsgiverInput = getTextInput("Arbeidsgiverens oppgave:");
     const behandlerInput = getTextInput("Behandlerens oppgave (valgfri):");
     const veilederInput = getTextInput("Veilederens oppgave (valgfri):");
-    changeTextInput(situasjonInput, getTooLongText(MAX_LENGTH_SITUASJON));
-    changeTextInput(konklusjonInput, getTooLongText(MAX_LENGTH_KONKLUSJON));
-    changeTextInput(
+    await changeTextInput(situasjonInput, getTooLongText(MAX_LENGTH_SITUASJON));
+    await changeTextInput(
+      konklusjonInput,
+      getTooLongText(MAX_LENGTH_KONKLUSJON),
+    );
+    await changeTextInput(
       arbeidstakerInput,
       getTooLongText(MAX_LENGTH_ARBEIDSTAKERS_OPPGAVE),
     );
-    changeTextInput(
+    await changeTextInput(
       arbeidsgiverInput,
       getTooLongText(MAX_LENGTH_ARBEIDSGIVERS_OPPGAVE),
     );
-    changeTextInput(
+    await changeTextInput(
       behandlerInput,
       getTooLongText(MAX_LENGTH_BEHANDLERS_OPPGAVE),
     );
-    changeTextInput(
+    await changeTextInput(
       veilederInput,
       getTooLongText(MAX_LENGTH_VEILEDERS_OPPGAVE),
     );
 
-    clickButton("Lagre og send");
+    await clickButton("Lagre og send");
   });
 
   it("ferdigstiller dialogmote ved submit av skjema", async () => {
     stubFerdigstillApi(dialogmoteMedBehandler.uuid);
     renderReferat(dialogmoteMedBehandler);
 
-    passSkjemaTekstInput();
+    await passSkjemaTekstInput();
 
     await clickButton("Pluss ikon Legg til en deltaker");
     const annenDeltakerNavnInput = getTextInput("Navn");
     const annenDeltakerFunksjonInput = getTextInput("Funksjon");
-    changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
-    changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
+    await changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
+    await changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
 
     const expectedSendtDato = new Date();
     await clickButton("Lagre og send");
@@ -289,13 +292,13 @@ describe("ReferatTest", () => {
 
   it("forhåndsviser referat", async () => {
     renderReferat(dialogmoteMedBehandler);
-    passSkjemaTekstInput();
+    await passSkjemaTekstInput();
 
     await clickButton("Pluss ikon Legg til en deltaker");
     const annenDeltakerNavnInput = getTextInput("Navn");
     const annenDeltakerFunksjonInput = getTextInput("Funksjon");
-    changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
-    changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
+    await changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
+    await changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
 
     const expectedSendtDato = new Date();
     await clickButton("Forhåndsvisning");
@@ -312,7 +315,7 @@ describe("ReferatTest", () => {
 
   it("forhåndsviser referat med nynorsktekster hvis dette er valgt", async () => {
     renderReferat(dialogmoteMedBehandler);
-    passSkjemaTekstInput();
+    await passSkjemaTekstInput();
 
     const malformRadioNynorsk = screen.getByRole("radio", {
       name: "Nynorsk",
@@ -337,17 +340,17 @@ const renderReferat = (dialogmoteDTO: DialogmoteDTO) => {
   );
 };
 
-const passSkjemaTekstInput = () => {
+const passSkjemaTekstInput = async () => {
   const situasjonInput = getTextInput("Situasjon og muligheter");
   const konklusjonInput = getTextInput("Konklusjon");
   const arbeidstakerInput = getTextInput("Arbeidstakerens oppgave:");
   const arbeidsgiverInput = getTextInput("Arbeidsgiverens oppgave:");
   const behandlerInput = getTextInput("Behandlerens oppgave (valgfri):");
   const veilederInput = getTextInput("Veilederens oppgave (valgfri):");
-  changeTextInput(situasjonInput, moteTekster.situasjonTekst);
-  changeTextInput(konklusjonInput, moteTekster.konklusjonTekst);
-  changeTextInput(arbeidstakerInput, moteTekster.arbeidstakersOppgave);
-  changeTextInput(arbeidsgiverInput, moteTekster.arbeidsgiversOppgave);
-  changeTextInput(behandlerInput, moteTekster.behandlersOppgave);
-  changeTextInput(veilederInput, moteTekster.veiledersOppgave);
+  await changeTextInput(situasjonInput, moteTekster.situasjonTekst);
+  await changeTextInput(konklusjonInput, moteTekster.konklusjonTekst);
+  await changeTextInput(arbeidstakerInput, moteTekster.arbeidstakersOppgave);
+  await changeTextInput(arbeidsgiverInput, moteTekster.arbeidsgiversOppgave);
+  await changeTextInput(behandlerInput, moteTekster.behandlersOppgave);
+  await changeTextInput(veilederInput, moteTekster.veiledersOppgave);
 };

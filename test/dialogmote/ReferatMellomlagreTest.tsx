@@ -112,12 +112,12 @@ const passSkjemaTekstInput = async () => {
   const annenDeltakerNavnInput = getTextInput("Navn");
   const annenDeltakerFunksjonInput = getTextInput("Funksjon");
 
-  changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
-  changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
-  changeTextInput(situasjonInput, moteTekster.situasjonTekst);
-  changeTextInput(konklusjonInput, moteTekster.konklusjonTekst);
-  changeTextInput(arbeidstakerInput, moteTekster.arbeidstakersOppgave);
-  changeTextInput(arbeidsgiverInput, moteTekster.arbeidsgiversOppgave);
-  changeTextInput(behandlerInput, moteTekster.behandlersOppgave);
-  changeTextInput(veilederInput, moteTekster.veiledersOppgave);
+  await changeTextInput(annenDeltakerNavnInput, annenDeltakerNavn);
+  await changeTextInput(annenDeltakerFunksjonInput, annenDeltakerFunksjon);
+  await changeTextInput(situasjonInput, moteTekster.situasjonTekst);
+  await changeTextInput(konklusjonInput, moteTekster.konklusjonTekst);
+  await changeTextInput(arbeidstakerInput, moteTekster.arbeidstakersOppgave);
+  await changeTextInput(arbeidsgiverInput, moteTekster.arbeidsgiversOppgave);
+  await changeTextInput(behandlerInput, moteTekster.behandlersOppgave);
+  await changeTextInput(veilederInput, moteTekster.veiledersOppgave);
 };

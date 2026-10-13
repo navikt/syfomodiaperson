@@ -58,22 +58,25 @@ describe("Dialogmoteinnkallingskjema med behandler", () => {
     const fritekstBehandlerInput = getTextInput(
       "Fritekst til behandler (valgfri)",
     );
-    changeTextInput(
+    await changeTextInput(
       fritekstArbeidstakerInput,
       moteTekster.fritekstTilArbeidstaker,
     );
-    changeTextInput(
+    await changeTextInput(
       fritekstArbeidsgiverInput,
       moteTekster.fritekstTilArbeidsgiver,
     );
-    changeTextInput(fritekstBehandlerInput, moteTekster.fritekstTilBehandler);
+    await changeTextInput(
+      fritekstBehandlerInput,
+      moteTekster.fritekstTilBehandler,
+    );
     await clickButton("Send innkallingene");
 
     expect(screen.queryAllByText(maxLengthErrorMsg)).to.have.length(0);
 
-    changeTextInput(fritekstArbeidstakerInput, tooLongFritekst);
-    changeTextInput(fritekstArbeidsgiverInput, tooLongFritekst);
-    changeTextInput(fritekstBehandlerInput, tooLongFritekst);
+    await changeTextInput(fritekstArbeidstakerInput, tooLongFritekst);
+    await changeTextInput(fritekstArbeidsgiverInput, tooLongFritekst);
+    await changeTextInput(fritekstBehandlerInput, tooLongFritekst);
     await clickButton("Send innkallingene");
 
     expect(await screen.findAllByText(maxLengthErrorMsg)).to.have.length(3);
@@ -179,18 +182,21 @@ const passSkjemaInput = async () => {
     "Fritekst til behandler (valgfri)",
   );
   fireEvent.click(virksomhetSelect);
-  changeTextInput(datoInput, mote.dato);
+  await changeTextInput(datoInput, mote.dato);
   fireEvent.blur(datoInput);
-  changeTextInput(klokkeslettInput, mote.klokkeslett);
-  changeTextInput(stedInput, mote.sted);
-  changeTextInput(videoLinkInput, mote.videolink);
-  changeTextInput(
+  await changeTextInput(klokkeslettInput, mote.klokkeslett);
+  await changeTextInput(stedInput, mote.sted);
+  await changeTextInput(videoLinkInput, mote.videolink);
+  await changeTextInput(
     fritekstArbeidstakerInput,
     moteTekster.fritekstTilArbeidstaker,
   );
-  changeTextInput(
+  await changeTextInput(
     fritekstArbeidsgiverInput,
     moteTekster.fritekstTilArbeidsgiver,
   );
-  changeTextInput(fritekstBehandlerInput, moteTekster.fritekstTilBehandler);
+  await changeTextInput(
+    fritekstBehandlerInput,
+    moteTekster.fritekstTilBehandler,
+  );
 };

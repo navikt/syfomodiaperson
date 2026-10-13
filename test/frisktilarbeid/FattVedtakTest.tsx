@@ -63,7 +63,7 @@ describe("FattVedtakSkjema", () => {
     expect(screen.getByRole("button", { name: "Forhåndsvisning" })).to.exist;
   });
 
-  it("beregner tom-dato basert på maksdato", () => {
+  it("beregner tom-dato basert på maksdato", async () => {
     const maksdato = {
       maxDate: {
         ...maksdatoMock.maxDate,
@@ -79,12 +79,12 @@ describe("FattVedtakSkjema", () => {
     renderFattVedtakSkjema();
 
     const fraDato = getTextInput("Vedtaket gjelder fra");
-    changeTextInput(fraDato, threeWeeksAgo.format("DD.MM.YYYY"));
+    await changeTextInput(fraDato, threeWeeksAgo.format("DD.MM.YYYY"));
 
     expect(screen.getByText("Automatisk justert 12 uker frem")).to.exist;
     expect(screen.queryByText("Automatisk justert til maksdato")).to.not.exist;
 
-    changeTextInput(fraDato, today.format("DD.MM.YYYY"));
+    await changeTextInput(fraDato, today.format("DD.MM.YYYY"));
 
     expect(
       screen.getByText(
@@ -123,7 +123,7 @@ describe("FattVedtakSkjema", () => {
     renderFattVedtakSkjema();
 
     const begrunnelseInput = getTextInput("Begrunnelse");
-    changeTextInput(begrunnelseInput, "");
+    await changeTextInput(begrunnelseInput, "");
 
     await clickButton("Fatt vedtak");
 
@@ -146,10 +146,10 @@ describe("FattVedtakSkjema", () => {
     renderFattVedtakSkjema();
 
     const begrunnelseInput = getTextInput("Begrunnelse");
-    changeTextInput(begrunnelseInput, enBegrunnelse);
+    await changeTextInput(begrunnelseInput, enBegrunnelse);
 
     const fraDato = getTextInput("Vedtaket gjelder fra");
-    changeTextInput(fraDato, today.format("DD.MM.YYYY"));
+    await changeTextInput(fraDato, today.format("DD.MM.YYYY"));
 
     await clickButton("Fatt vedtak");
 
@@ -161,7 +161,7 @@ describe("FattVedtakSkjema", () => {
     renderFattVedtakSkjema();
 
     const fraDato = getTextInput("Vedtaket gjelder fra");
-    changeTextInput(
+    await changeTextInput(
       fraDato,
       threeWeeksAgo.subtract(1, "day").format("DD.MM.YYYY"),
     );
@@ -174,7 +174,7 @@ describe("FattVedtakSkjema", () => {
       ),
     ).to.exist;
 
-    changeTextInput(fraDato, threeWeeksAgo.format("DD.MM.YYYY"));
+    await changeTextInput(fraDato, threeWeeksAgo.format("DD.MM.YYYY"));
     await clickButton("Fatt vedtak");
 
     await waitFor(() => {
@@ -204,10 +204,10 @@ describe("FattVedtakSkjema", () => {
     await userEvent.click(fritakCheckbox);
 
     const fraDato = getTextInput("Vedtaket gjelder fra");
-    changeTextInput(fraDato, today.format("DD.MM.YYYY"));
+    await changeTextInput(fraDato, today.format("DD.MM.YYYY"));
 
     const begrunnelseInput = getTextInput("Begrunnelse");
-    changeTextInput(begrunnelseInput, enBegrunnelse);
+    await changeTextInput(begrunnelseInput, enBegrunnelse);
 
     await clickButton("Fatt vedtak");
 
@@ -261,9 +261,9 @@ describe("FattVedtakSkjema", () => {
     await userEvent.click(fritakCheckbox);
 
     const fraDato = getTextInput("Vedtaket gjelder fra");
-    changeTextInput(fraDato, today.format("DD.MM.YYYY"));
+    await changeTextInput(fraDato, today.format("DD.MM.YYYY"));
     const begrunnelseInput = getTextInput("Begrunnelse");
-    changeTextInput(begrunnelseInput, enBegrunnelse);
+    await changeTextInput(begrunnelseInput, enBegrunnelse);
 
     await clickButton("Fatt vedtak");
 

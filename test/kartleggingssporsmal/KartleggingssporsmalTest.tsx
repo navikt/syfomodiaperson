@@ -28,6 +28,7 @@ import { screen, within } from "@testing-library/react";
 import {
   changeTextInput,
   clickButton,
+  clickRadio,
   getButton,
   getTextInput,
   queryButton,
@@ -469,11 +470,9 @@ describe("Kartleggingssporsmal", () => {
 
       renderKartleggingssporsmal();
 
-      await screen
-        .getByLabelText(
-          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
-        )
-        .click();
+      await clickRadio(
+        "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+      );
       await clickButton("Lagre vurdering, fjern oppgaven");
       expect(await screen.findByText("Oppgaven er behandlet av Z990000")).to
         .exist;
@@ -492,11 +491,9 @@ describe("Kartleggingssporsmal", () => {
 
       renderKartleggingssporsmal();
 
-      await screen
-        .getByLabelText(
-          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
-        )
-        .click();
+      await clickRadio(
+        "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+      );
       await clickButton("Lagre vurdering, fjern oppgaven");
       expect(
         await screen.findByText(
@@ -522,19 +519,15 @@ describe("Kartleggingssporsmal", () => {
           screen.queryByRole("textbox", { name: "Begrunnelse (valgfritt)" }),
         ).to.not.exist;
 
-        await screen
-          .getByLabelText(
-            "Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging",
-          )
-          .click();
+        await clickRadio(
+          "Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging",
+        );
 
         expect(getTextInput("Begrunnelse (valgfritt)")).to.exist;
 
-        await screen
-          .getByLabelText(
-            "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
-          )
-          .click();
+        await clickRadio(
+          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+        );
 
         expect(getTextInput("Begrunnelse (valgfritt)")).to.exist;
       });
@@ -555,11 +548,9 @@ describe("Kartleggingssporsmal", () => {
           screen.queryByRole("textbox", { name: "Begrunnelse (valgfritt)" }),
         ).to.not.exist;
 
-        await screen
-          .getByLabelText(
-            "Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging",
-          )
-          .click();
+        await clickRadio(
+          "Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging",
+        );
 
         expect(
           screen.queryByRole("textbox", { name: "Begrunnelse (valgfritt)" }),
@@ -578,11 +569,9 @@ describe("Kartleggingssporsmal", () => {
 
         renderKartleggingssporsmal();
 
-        await screen
-          .getByLabelText(
-            "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
-          )
-          .click();
+        await clickRadio(
+          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+        );
 
         expect(getTextInput("Begrunnelse (valgfritt)")).to.exist;
       });
@@ -601,11 +590,9 @@ describe("Kartleggingssporsmal", () => {
 
       renderKartleggingssporsmal();
 
-      await screen
-        .getByLabelText(
-          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
-        )
-        .click();
+      await clickRadio(
+        "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+      );
       expect(
         (getTextInput("Begrunnelse (valgfritt)") as HTMLTextAreaElement).value,
       ).to.equal("");
@@ -626,12 +613,13 @@ describe("Kartleggingssporsmal", () => {
 
       renderKartleggingssporsmal();
 
-      await screen
-        .getByLabelText(
-          "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
-        )
-        .click();
-      changeTextInput(getTextInput("Begrunnelse (valgfritt)"), "a".repeat(201));
+      await clickRadio(
+        "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+      );
+      await changeTextInput(
+        getTextInput("Begrunnelse (valgfritt)"),
+        "a".repeat(201),
+      );
       await clickButton("Lagre vurdering, fjern oppgaven");
 
       expect(

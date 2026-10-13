@@ -157,7 +157,7 @@ describe("MeldingTilBehandler", () => {
       const meldingInput = getTextInput(
         "Skriv inn teksten du ønsker å sende til behandler",
       );
-      changeTextInput(meldingInput, enMeldingTekst);
+      await changeTextInput(meldingInput, enMeldingTekst);
 
       const previewButton = screen.getByRole("button", {
         name: "Forhåndsvisning",
@@ -187,7 +187,7 @@ describe("MeldingTilBehandler", () => {
       const meldingInput = getTextInput(
         "Skriv inn teksten du ønsker å sende til behandler",
       );
-      changeTextInput(meldingInput, enMeldingTekst);
+      await changeTextInput(meldingInput, enMeldingTekst);
 
       const previewButton = screen.getByRole("button", {
         name: "Forhåndsvisning",
@@ -216,7 +216,7 @@ describe("MeldingTilBehandler", () => {
       const meldingInput = getTextInput(
         "Skriv inn teksten du ønsker å sende til behandler",
       );
-      changeTextInput(meldingInput, enMeldingTekst);
+      await changeTextInput(meldingInput, enMeldingTekst);
 
       const previewButton = screen.getByRole("button", {
         name: "Forhåndsvisning",
@@ -251,7 +251,7 @@ describe("MeldingTilBehandler", () => {
       const meldingInput = getTextInput(
         "Skriv inn teksten du ønsker å sende til behandler",
       );
-      changeTextInput(meldingInput, enMeldingTekst);
+      await changeTextInput(meldingInput, enMeldingTekst);
       await waitFor(() => {
         expect(screen.queryByText("Vennligst angi meldingstekst")).to.not.exist;
       });
@@ -291,7 +291,7 @@ describe("MeldingTilBehandler", () => {
       const meldingInput = getTextInput(
         "Skriv inn teksten du ønsker å sende til behandler",
       );
-      changeTextInput(meldingInput, expectedMeldingTilBehandlerDTO.tekst);
+      await changeTextInput(meldingInput, expectedMeldingTilBehandlerDTO.tekst);
 
       await clickButton("Send til behandler");
 
@@ -330,7 +330,7 @@ describe("MeldingTilBehandler", () => {
       const meldingInput = getTextInput(
         "Skriv inn teksten du ønsker å sende til behandler",
       );
-      changeTextInput(meldingInput, expectedMeldingTilBehandlerDTO.tekst);
+      await changeTextInput(meldingInput, expectedMeldingTilBehandlerDTO.tekst);
 
       await clickButton("Send til behandler");
 
@@ -366,7 +366,7 @@ describe("MeldingTilBehandler", () => {
       const meldingInput = getTextInput(
         "Skriv inn teksten du ønsker å sende til behandler",
       );
-      changeTextInput(meldingInput, enMeldingTekst);
+      await changeTextInput(meldingInput, enMeldingTekst);
 
       await clickButton("Send til behandler");
 

@@ -107,7 +107,7 @@ describe("VelgBehandler", () => {
     fireEvent.click(searchBehandlerOption);
 
     const searchbox = screen.getByRole("searchbox");
-    changeTextInput(searchbox, "Baker");
+    await changeTextInput(searchbox, "Baker");
 
     const searchResult = await screen.findByRole("button", {
       name: /Baker/,
