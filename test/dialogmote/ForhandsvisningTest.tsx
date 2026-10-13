@@ -1,6 +1,6 @@
 import { ForhandsvisningModal } from "@/components/ForhandsvisningModal";
 import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import {
   DocumentComponentDto,
   DocumentComponentType,
@@ -11,22 +11,24 @@ const doNothing = () => {
 };
 
 describe("Forhandsvisning", () => {
-  it("inneholder tittel, undertittel og knapper", () => {
-    render(
-      <ForhandsvisningModal
-        title={"Tittel her"}
-        contentLabel={"Test"}
-        isOpen={true}
-        handleClose={doNothing}
-        getDocumentComponents={() => []}
-      />,
-    );
+  it("inneholder tittel, undertittel og knapper", async () => {
+    await act(async () => {
+      render(
+        <ForhandsvisningModal
+          title={"Tittel her"}
+          contentLabel={"Test"}
+          isOpen={true}
+          handleClose={doNothing}
+          getDocumentComponents={() => []}
+        />,
+      );
+    });
     expect(screen.getByRole("heading", { name: "Tittel her", hidden: true })).to
       .exist;
     expect(screen.getAllByRole("button", { name: "Lukk", hidden: true })).to.not
       .be.empty;
   });
-  it("rendrer document components", () => {
+  it("rendrer document components", async () => {
     const documentComponents: DocumentComponentDto[] = [
       {
         type: DocumentComponentType.LINK,
@@ -47,15 +49,17 @@ describe("Forhandsvisning", () => {
         texts: ["En overskrift"],
       },
     ];
-    render(
-      <ForhandsvisningModal
-        title={"Tittel her"}
-        contentLabel={"Test"}
-        isOpen={true}
-        handleClose={doNothing}
-        getDocumentComponents={() => documentComponents}
-      />,
-    );
+    await act(async () => {
+      render(
+        <ForhandsvisningModal
+          title={"Tittel her"}
+          contentLabel={"Test"}
+          isOpen={true}
+          handleClose={doNothing}
+          getDocumentComponents={() => documentComponents}
+        />,
+      );
+    });
     expect(screen.getByRole("heading", { name: "En overskrift", hidden: true }))
       .to.exist;
     expect(screen.getByRole("link", { name: "www.test.no", hidden: true })).to

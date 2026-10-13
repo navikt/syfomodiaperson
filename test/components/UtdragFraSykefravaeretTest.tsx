@@ -65,6 +65,7 @@ const sykmeldingNow = {
 
 const sykmeldingIkkeTattIBruk = {
   ...sykmeldingNow,
+  id: "1111a750-7f39-4974-9a06-fa1775f987d2",
   sykmeldingStatus: {
     statusEvent: "APEN",
     timestamp: "2020-01-29T09:38:05.414834Z",
