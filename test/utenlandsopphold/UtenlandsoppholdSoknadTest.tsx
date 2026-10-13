@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
 import { http, HttpResponse } from "msw";
@@ -19,7 +19,7 @@ import {
   ARBEIDSTAKER_DEFAULT,
   VEILEDER_DEFAULT,
 } from "@/mocks/common/mockConstants";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import {
   mockSoknaderResponse,
@@ -44,6 +44,7 @@ import { mockDraftText } from "@/mocks/draft/mockDraftText.ts";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 import { generateOppfolgingstilfelle } from "../testDataUtils";
+import { renderWithRouter } from "../testRouterUtils";
 
 let queryClient: QueryClient;
 
@@ -58,23 +59,23 @@ const renderUtenlandsoppholdSoknad = (
   soknadId: string = soknadUtenVedtakMock.soknadId,
   initialPath: string = `${utenlandsoppholdPath}/${soknadId}`,
 ) =>
-  render(
+  renderWithRouter(
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter initialEntries={[initialPath]}>
-        <NotificationProvider>
-          <Routes>
-            <Route
-              path={`${utenlandsoppholdPath}/:utenlandsoppholdSoknadId`}
-              element={<UtenlandsoppholdSoknad draftDebouncedMs={0} />}
-            />
-            <Route
-              path={utenlandsoppholdPath}
-              element={<UtenlandsoppholdSoknader />}
-            />
-          </Routes>
-        </NotificationProvider>
-      </MemoryRouter>
+      <NotificationProvider>
+        <Routes>
+          <Route
+            path={`${utenlandsoppholdPath}/:utenlandsoppholdSoknadId`}
+            element={<UtenlandsoppholdSoknad draftDebouncedMs={0} />}
+          />
+          <Route
+            path={utenlandsoppholdPath}
+            element={<UtenlandsoppholdSoknader />}
+          />
+        </Routes>
+      </NotificationProvider>
     </QueryClientProvider>,
+    "*",
+    [initialPath],
   );
 
 function setOppfolgingstilfeller(

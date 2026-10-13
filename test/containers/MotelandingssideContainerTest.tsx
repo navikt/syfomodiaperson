@@ -15,7 +15,6 @@ import { motebehovQueryKeys } from "@/data/motebehov/motebehovQueryHooks";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
 import { queryClientWithAktivBruker } from "../testQueryClient";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
-import { MemoryRouter } from "react-router-dom";
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { dialogmoteunntakQueryKeys } from "@/data/dialogmotekandidat/useGetDialogmoteunntakQuery";
 import { brukerinfoMock } from "@/mocks/syfoperson/persondataMock";
@@ -26,6 +25,7 @@ import {
 } from "@/data/motebehov/types/motebehovTypes";
 import { defaultFormValue } from "@/mocks/syfomotebehov/motebehovMock";
 import { dialogmoteIkkeAktuellQueryKeys } from "@/sider/dialogmoter/hooks/useGetDialogmoteIkkeAktuell";
+import { renderWithRouter } from "../testRouterUtils";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: any;
@@ -48,16 +48,15 @@ const motebehovData: MotebehovVeilederDTO[] = [
 ];
 
 const renderMotelandingsside = () =>
-  render(
+  renderWithRouter(
     <QueryClientProvider client={queryClient}>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: "", setValgtEnhet: () => void 0 }}
       >
-        <MemoryRouter>
-          <Motelandingsside />
-        </MemoryRouter>
+        <Motelandingsside />
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
+    "*",
   );
 
 describe("MotelandingssideSide", () => {

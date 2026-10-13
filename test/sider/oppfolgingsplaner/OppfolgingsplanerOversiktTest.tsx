@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen, within } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../../dialogmote/testData";
 
@@ -23,10 +23,10 @@ import { generateUUID } from "@/utils/utils";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
 import { generateOppfolgingstilfelle } from "../../testDataUtils";
 import { ledereQueryKeys } from "@/data/leder/ledereQueryHooks";
-import { MemoryRouter } from "react-router-dom";
 import { oppfolgingsplanQueryKeys } from "@/sider/oppfolgingsplan/hooks/oppfolgingsplanQueryHooks";
 import { queryClientWithMockData } from "../../testQueryClient";
 import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
+import { renderWithRouter } from "../../testRouterUtils";
 
 vi.mock("@/components/lumi/LumiSurvey", () => ({
   default: ({ surveyId }: { surveyId: string }) => (
@@ -37,16 +37,15 @@ vi.mock("@/components/lumi/LumiSurvey", () => ({
 let queryClient: QueryClient;
 
 function renderOppfolgingsplanerOversikt() {
-  return render(
-    <MemoryRouter>
-      <QueryClientProvider client={queryClient}>
-        <ValgtEnhetContext.Provider
-          value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-        >
-          <OppfolgingsplanerOversikt />
-        </ValgtEnhetContext.Provider>
-      </QueryClientProvider>
-    </MemoryRouter>,
+  return renderWithRouter(
+    <QueryClientProvider client={queryClient}>
+      <ValgtEnhetContext.Provider
+        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+      >
+        <OppfolgingsplanerOversikt />
+      </ValgtEnhetContext.Provider>
+    </QueryClientProvider>,
+    "*",
   );
 }
 
