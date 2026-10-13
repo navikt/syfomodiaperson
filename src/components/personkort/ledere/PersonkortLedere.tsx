@@ -61,7 +61,7 @@ export function PersonkortLedere() {
       {Object.keys(virksomhetLederMap).map((virksomhetsnummer, idx) => {
         return (
           <PersonKortVirksomhetLedere
-            key={idx}
+            key={`virksomhetLederMap-${idx}-${virksomhetsnummer}`}
             sykmeldinger={getSykmeldingerQuery.sykmeldinger}
             virksomhetLederMap={virksomhetLederMap}
             virksomhetsnummer={virksomhetsnummer}
@@ -72,7 +72,7 @@ export function PersonkortLedere() {
         (virksomhet: SykmeldingLeder, idx: number) => {
           return (
             <PersonKortVirksomhetHeader
-              key={idx}
+              key={`virksomheterFromSykmeldinger-${idx}-${virksomhet.virksomhetsnummer}`}
               arbeidsgiverForskutterer={virksomhet.arbeidsgiverForskutterer}
               virksomhetsnavn={virksomhet.virksomhetsnavn}
               virksomhetsnummer={virksomhet.virksomhetsnummer}

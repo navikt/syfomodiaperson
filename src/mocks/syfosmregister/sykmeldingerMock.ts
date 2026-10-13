@@ -9,7 +9,7 @@ import {
 import { daysFromToday } from "@/utils/datoUtils.ts";
 
 const SYKMELDING_MYE_INFO = {
-  id: "1111a750-7f39-4974-9a06-fa1775f987d1",
+  id: "1111a750-7f39-4974-9a06-fa1775f987d2",
   mottattTidspunkt: "2020-08-10T23:00:00Z",
   behandlingsutfall: {
     status: "MANUAL_PROCESSING",

@@ -37,7 +37,7 @@ export function FriskmeldingTilArbeidsformidlingHistorikk() {
       </div>
       <Accordion>
         {alleVedtak.map((vedtak) => (
-          <Accordion.Item>
+          <Accordion.Item key={vedtak.uuid}>
             <Accordion.Header>
               {isActiveExistingVedtak(vedtak)
                 ? texts.aktivtVedtak
