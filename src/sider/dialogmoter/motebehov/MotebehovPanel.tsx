@@ -6,7 +6,7 @@ import DialogmotePanel from "@/sider/dialogmoter/components/DialogmotePanel";
 import { InfoOmTolk } from "@/sider/dialogmoter/motebehov/InfoOmTolk";
 
 const texts = {
-  behovForDialogmote: "Behov for dialogmøte!",
+  behovForDialogmote: "Behov for dialogmøte",
 };
 
 export const MotebehovPanel = () => {
