@@ -187,9 +187,7 @@ describe("MotebehovKvittering", () => {
     expect(screen.getByText("Jeg, arbeidstaker, har behov for møte.")).to.exist;
 
     expect(
-      getSvarIkon(
-        `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`,
-      ),
+      getSvarIkon(`Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`),
     ).to.exist;
     expect(
       screen.getByText(`${arbeidsgiverMedVirksomhet}, har meldt behov`, {
@@ -251,9 +249,7 @@ describe("MotebehovKvittering", () => {
     ).to.exist;
 
     expect(
-      getSvarIkon(
-        `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`,
-      ),
+      getSvarIkon(`Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`),
     ).to.exist;
     expect(
       screen.getByText(`${arbeidsgiverMedVirksomhet}, har meldt behov`, {
@@ -312,9 +308,7 @@ describe("MotebehovKvittering", () => {
     expect(screen.getByText("Jeg, arbeidstaker, har behov for møte.")).to.exist;
 
     expect(
-      getSvarIkon(
-        `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`,
-      ),
+      getSvarIkon(`Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`),
     ).to.exist;
     expect(
       screen.getByText(`${arbeidsgiverMedVirksomhet}, har meldt behov`, {
@@ -336,9 +330,7 @@ describe("MotebehovKvittering", () => {
     expect(screen.getByText("Møter er bra!")).to.exist;
 
     expect(
-      getSvarIkon(
-        `Arbeidsgiver ${narmesteLederMedVirksomhet} Ikke svart.`,
-      ),
+      getSvarIkon(`Arbeidsgiver ${narmesteLederMedVirksomhet} Ikke svart.`),
     ).to.exist;
     expect(
       screen.getByText(`${narmesteLederMedVirksomhet}, har ikke svart`, {
@@ -357,11 +349,8 @@ describe("MotebehovKvittering", () => {
       }),
     ).to.exist;
 
-    expect(
-      getSvarIkon(
-        `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Svart nei.`,
-      ),
-    ).to.exist;
+    expect(getSvarIkon(`Arbeidsgiver ${arbeidsgiverMedVirksomhet} Svart nei.`))
+      .to.exist;
     expect(
       screen.getByText(`${arbeidsgiverMedVirksomhet}, har svart NEI`, {
         exact: false,
