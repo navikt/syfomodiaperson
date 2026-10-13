@@ -1,23 +1,41 @@
-import { ReactElement } from "react";
+import { ReactElement, ReactNode } from "react";
 import { MotebehovVeilederDTO } from "@/data/motebehov/types/motebehovTypes";
-import {
-  MotebehovIkkeSvartImage,
-  MotebehovKanIkkeImage,
-  MotebehovKanImage,
-} from "../../../../img/ImageComponents";
 import { Box, HStack, VStack } from "@navikt/ds-react";
 import { Skjemasvar } from "@/components/skjemasvar/Skjemasvar";
+import {
+  CheckmarkCircleFillIcon,
+  MinusCircleFillIcon,
+  QuestionmarkCircleFillIcon,
+} from "@navikt/aksel-icons";
 
-const setSvarIkon = (deltakerOnskerMote?: boolean): string => {
+const setSvarIkon = (deltakerOnskerMote?: boolean): ReactNode => {
   switch (deltakerOnskerMote) {
     case true: {
-      return MotebehovKanImage;
+      return (
+        <CheckmarkCircleFillIcon
+          title="a11y-title"
+          fontSize="1.7rem"
+          color="var(--ax-bg-success-strong)"
+        />
+      );
     }
     case false: {
-      return MotebehovKanIkkeImage;
+      return (
+        <MinusCircleFillIcon
+          title="a11y-title"
+          fontSize="1.7rem"
+          color="var(--ax-bg-danger-strong)"
+        />
+      );
     }
     default: {
-      return MotebehovIkkeSvartImage;
+      return (
+        <QuestionmarkCircleFillIcon
+          title="a11y-title"
+          fontSize="1.7rem"
+          color="var(--ax-bg-neutral-strong)"
+        />
+      );
     }
   }
 };
@@ -38,12 +56,8 @@ export default function MotebehovKvitteringInnhold({
   return (
     <Box padding={"space-12"}>
       <VStack gap={"space-16"}>
-        <HStack>
-          <img
-            src={setSvarIkon(deltakerOnskerMote)}
-            alt={ikonAltTekst}
-            className="mr-4 w-6"
-          />
+        <HStack gap={"space-12"} align="center">
+          <div className="w-6">{setSvarIkon(deltakerOnskerMote)}</div>
           <div>{tekst}</div>
         </HStack>
         {motebehov && (

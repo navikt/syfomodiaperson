@@ -7,9 +7,6 @@ import MannImage from "./svg/mann.svg?url";
 import PepperkakeMannImage from "./svg/pepperkakemann.svg?url";
 import MedisinskrinImage from "./svg/medisinskrin.svg?url";
 import MerInformasjonImage from "./svg/merInformasjon.svg?url";
-import MotebehovIkkeSvartImage from "./svg/motebehov--ikkesvart.svg?url";
-import MotebehovKanImage from "./svg/motebehov--kan.svg?url";
-import MotebehovKanIkkeImage from "./svg/motebehov--kanikke.svg?url";
 import MoteIkonBlaaImage from "./svg/moteikon_blaabg.svg?url";
 import NavLogoRod from "./svg/nav_logo_rod.svg?url";
 import StatusKanImage from "./svg/status--kan.svg?url";
@@ -30,9 +27,6 @@ export {
   MannImage, // Used
   MedisinskrinImage, // Used
   MerInformasjonImage, // Used
-  MotebehovIkkeSvartImage, // Used
-  MotebehovKanImage, // Used
-  MotebehovKanIkkeImage, // Used
   MoteIkonBlaaImage, // Used
   NavLogoRod, // Used
   PepperkakeKvinneImage, // Used
