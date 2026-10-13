@@ -8,12 +8,15 @@ import {
   QuestionmarkCircleFillIcon,
 } from "@navikt/aksel-icons";
 
-const setSvarIkon = (deltakerOnskerMote?: boolean): ReactNode => {
+const setSvarIkon = (
+  deltakerOnskerMote: boolean | undefined,
+  ikonAltTekst: string,
+): ReactNode => {
   switch (deltakerOnskerMote) {
     case true: {
       return (
         <CheckmarkCircleFillIcon
-          title="a11y-title"
+          title={ikonAltTekst}
           fontSize="1.7rem"
           color="var(--ax-bg-success-strong)"
         />
@@ -22,7 +25,7 @@ const setSvarIkon = (deltakerOnskerMote?: boolean): ReactNode => {
     case false: {
       return (
         <MinusCircleFillIcon
-          title="a11y-title"
+          title={ikonAltTekst}
           fontSize="1.7rem"
           color="var(--ax-bg-danger-strong)"
         />
@@ -31,7 +34,7 @@ const setSvarIkon = (deltakerOnskerMote?: boolean): ReactNode => {
     default: {
       return (
         <QuestionmarkCircleFillIcon
-          title="a11y-title"
+          title={ikonAltTekst}
           fontSize="1.7rem"
           color="var(--ax-bg-neutral-strong)"
         />
@@ -57,7 +60,7 @@ export default function MotebehovKvitteringInnhold({
     <Box padding={"space-12"}>
       <VStack gap={"space-16"}>
         <HStack gap={"space-12"} align="center">
-          {setSvarIkon(deltakerOnskerMote)}
+          {setSvarIkon(deltakerOnskerMote, ikonAltTekst)}
           {tekst}
         </HStack>
         {motebehov && (

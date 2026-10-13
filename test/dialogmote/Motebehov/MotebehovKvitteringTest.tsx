@@ -40,6 +40,10 @@ const renderMotebehovKvittering = () => {
   );
 };
 
+function getSvarIkon(name: string) {
+  return screen.getByRole("img", { name });
+}
+
 function mockMotebehov(motebehov: MotebehovVeilederDTO[]) {
   queryClient.setQueryData(
     motebehovQueryKeys.motebehov(ARBEIDSTAKER_DEFAULT.personIdent),
@@ -174,7 +178,7 @@ describe("MotebehovKvittering", () => {
 
     renderMotebehovKvittering();
 
-    expect(screen.getByAltText("Sykmeldt Meldt behov.")).to.exist;
+    expect(getSvarIkon("Sykmeldt Meldt behov.")).to.exist;
     expect(
       screen.getByText("Samuel Sam Jones, har meldt behov", {
         exact: false,
@@ -183,7 +187,7 @@ describe("MotebehovKvittering", () => {
     expect(screen.getByText("Jeg, arbeidstaker, har behov for møte.")).to.exist;
 
     expect(
-      screen.getByAltText(
+      getSvarIkon(
         `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`,
       ),
     ).to.exist;
@@ -198,7 +202,7 @@ describe("MotebehovKvittering", () => {
     mockMotebehov([motebehovArbeidstakerInTilfelleUbehandletMock]);
 
     renderMotebehovKvittering();
-    expect(screen.getByAltText("Sykmeldt Meldt behov.")).to.exist;
+    expect(getSvarIkon("Sykmeldt Meldt behov.")).to.exist;
     expect(
       screen.getByText("Samuel Sam Jones, har meldt behov", {
         exact: false,
@@ -207,7 +211,7 @@ describe("MotebehovKvittering", () => {
     expect(screen.getByText("Jeg, arbeidstaker, har behov for møte.")).to.exist;
 
     expect(
-      screen.getByAltText(
+      getSvarIkon(
         `Arbeidsgiver ${narmesteLederMedVirksomhet} Ikke meldt behov.`,
       ),
     ).to.exist;
@@ -224,7 +228,7 @@ describe("MotebehovKvittering", () => {
     renderMotebehovKvittering();
 
     expect(
-      screen.getByAltText(
+      getSvarIkon(
         `Arbeidsgiver Tatten Tattover (${VIRKSOMHET_PONTYPANDY.virksomhetsnummer}) Ikke meldt behov.`,
       ),
     ).to.exist;
@@ -239,7 +243,7 @@ describe("MotebehovKvittering", () => {
     mockMotebehov([motebehovArbeidsgiverInTilfelleUbehandletMock]);
 
     renderMotebehovKvittering();
-    expect(screen.getByAltText("Sykmeldt Ikke meldt behov.")).to.exist;
+    expect(getSvarIkon("Sykmeldt Ikke meldt behov.")).to.exist;
     expect(
       screen.getByText("Samuel Sam Jones, har ikke meldt behov", {
         exact: false,
@@ -247,7 +251,7 @@ describe("MotebehovKvittering", () => {
     ).to.exist;
 
     expect(
-      screen.getByAltText(
+      getSvarIkon(
         `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`,
       ),
     ).to.exist;
@@ -299,7 +303,7 @@ describe("MotebehovKvittering", () => {
     ]);
 
     renderMotebehovKvittering();
-    expect(screen.getByAltText("Sykmeldt Meldt behov.")).to.exist;
+    expect(getSvarIkon("Sykmeldt Meldt behov.")).to.exist;
     expect(
       screen.getByText("Samuel Sam Jones, har meldt behov", {
         exact: false,
@@ -308,7 +312,7 @@ describe("MotebehovKvittering", () => {
     expect(screen.getByText("Jeg, arbeidstaker, har behov for møte.")).to.exist;
 
     expect(
-      screen.getByAltText(
+      getSvarIkon(
         `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Meldt behov.`,
       ),
     ).to.exist;
@@ -323,7 +327,7 @@ describe("MotebehovKvittering", () => {
     mockMotebehov([motebehovArbeidstakerInTilfelleSvartJaUbehandletMock]);
 
     renderMotebehovKvittering();
-    expect(screen.getByAltText("Sykmeldt Svart ja.")).to.exist;
+    expect(getSvarIkon("Sykmeldt Svart ja.")).to.exist;
     expect(
       screen.getByText("Samuel Sam Jones, har svart JA", {
         exact: false,
@@ -332,7 +336,7 @@ describe("MotebehovKvittering", () => {
     expect(screen.getByText("Møter er bra!")).to.exist;
 
     expect(
-      screen.getByAltText(
+      getSvarIkon(
         `Arbeidsgiver ${narmesteLederMedVirksomhet} Ikke svart.`,
       ),
     ).to.exist;
@@ -346,7 +350,7 @@ describe("MotebehovKvittering", () => {
     mockMotebehov([motebehovArbeidsgiverInTilfelleSvartNeiUbehandletMock]);
 
     renderMotebehovKvittering();
-    expect(screen.getByAltText("Sykmeldt Ikke svart.")).to.exist;
+    expect(getSvarIkon("Sykmeldt Ikke svart.")).to.exist;
     expect(
       screen.getByText("Samuel Sam Jones, har ikke svart", {
         exact: false,
@@ -354,7 +358,7 @@ describe("MotebehovKvittering", () => {
     ).to.exist;
 
     expect(
-      screen.getByAltText(
+      getSvarIkon(
         `Arbeidsgiver ${arbeidsgiverMedVirksomhet} Svart nei.`,
       ),
     ).to.exist;
