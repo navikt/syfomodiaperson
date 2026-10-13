@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen, within } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { screen, within } from "@testing-library/react";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../../../dialogmote/testData";
 import { createRef } from "react";
@@ -19,23 +18,23 @@ import { mockServer } from "../../../setup";
 import { mockGetMuligeTildelinger } from "@/mocks/syfobehandlendeenhet/mockSyfobehandlendeenhet";
 import { virksomhetQueryKeys } from "@/data/virksomhet/virksomhetQueryHooks";
 import TildelOppfolgingsenhetModal from "@/components/oppfolgingsenhet/TildelOppfolgingsenhetModal";
+import { renderWithRouter } from "../../../testRouterUtils";
 
 let queryClient: QueryClient;
 
 const renderTildelOppfolgingsenhetModal = () =>
-  render(
+  renderWithRouter(
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter>
-        <ValgtEnhetContext.Provider
-          value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-        >
-          <TildelOppfolgingsenhetModal
-            modalRef={createRef<HTMLDialogElement>()}
-            setTildeltNotification={() => void 0}
-          />
-        </ValgtEnhetContext.Provider>
-      </MemoryRouter>
+      <ValgtEnhetContext.Provider
+        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+      >
+        <TildelOppfolgingsenhetModal
+          modalRef={createRef<HTMLDialogElement>()}
+          setTildeltNotification={() => void 0}
+        />
+      </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
+    "*",
   );
 
 const stubTildelOppfolgingsenhet = () => {

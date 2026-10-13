@@ -1,11 +1,10 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { MemoryRouter } from "react-router-dom";
 
 import dayjs from "dayjs";
 import InnkallingDialogmotePanel from "@/sider/dialogmoter/components/innkalling/InnkallingDialogmotePanel";
 import { texts as brukerKanIkkeVarslesPapirpostTexts } from "../../src/sider/dialogmoter/components/BrukerKanIkkeVarslesPapirpostAdvarsel";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { createMellomlagretReferat, navEnhet } from "./testData";
@@ -23,6 +22,7 @@ import {
 import { brukerQueryKeys } from "@/data/navbruker/navbrukerQueryHooks";
 import { kontaktinformasjonMock } from "@/mocks/syfoperson/persondataMock";
 import { KontaktinfoDTO } from "@/data/navbruker/types/BrukerinfoDTO";
+import { renderWithRouter } from "../testRouterUtils";
 
 let queryClient: QueryClient;
 
@@ -40,16 +40,15 @@ const renderInnkallingDialogmotePanel = (kontaktinfo: KontaktinfoDTO) => {
     brukerQueryKeys.kontaktinfo(ARBEIDSTAKER_DEFAULT.personIdent),
     () => kontaktinfo,
   );
-  return render(
-    <MemoryRouter>
-      <QueryClientProvider client={queryClient}>
-        <ValgtEnhetContext.Provider
-          value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-        >
-          <InnkallingDialogmotePanel aktivtDialogmote={undefined} />
-        </ValgtEnhetContext.Provider>
-      </QueryClientProvider>
-    </MemoryRouter>,
+  return renderWithRouter(
+    <QueryClientProvider client={queryClient}>
+      <ValgtEnhetContext.Provider
+        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+      >
+        <InnkallingDialogmotePanel aktivtDialogmote={undefined} />
+      </ValgtEnhetContext.Provider>
+    </QueryClientProvider>,
+    "*",
   );
 };
 

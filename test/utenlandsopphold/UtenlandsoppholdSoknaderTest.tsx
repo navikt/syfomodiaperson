@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithMockData } from "../testQueryClient";
 import { UtenlandsoppholdSoknader } from "@/sider/utenlandsopphold/UtenlandsoppholdSoknader.tsx";
@@ -16,21 +16,20 @@ import {
   tilLesbarPeriodeMedArUtenManednavn,
 } from "@/utils/datoUtils";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
-import { MemoryRouter } from "react-router-dom";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import { stubSoknaderQuery } from "../stubs/stubIsutenlandsopphold";
+import { renderWithRouter } from "../testRouterUtils";
 
 let queryClient: QueryClient;
 
 const renderUtenlandsopphold = () =>
-  render(
+  renderWithRouter(
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter>
-        <NotificationProvider>
-          <UtenlandsoppholdSoknader />
-        </NotificationProvider>
-      </MemoryRouter>
+      <NotificationProvider>
+        <UtenlandsoppholdSoknader />
+      </NotificationProvider>
     </QueryClientProvider>,
+    "*",
   );
 
 describe("UtenlandsoppholdSoknader", () => {

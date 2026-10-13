@@ -1,7 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 
 import { queryClientWithMockData } from "../testQueryClient";
-import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks";
@@ -18,6 +17,7 @@ import { navEnhet } from "./testData";
 import { MalformProvider } from "@/context/malform/MalformContext";
 import { dagerMellomDatoer, daysFromToday } from "@/utils/datoUtils";
 import DialogmoteInnkallingContainer from "@/sider/dialogmoter/components/innkalling/DialogmoteInnkallingContainer";
+import { renderWithRouter } from "../testRouterUtils";
 
 let queryClient: QueryClient;
 
@@ -49,18 +49,17 @@ const createOppfolgingstilfelle = (end: Date): OppfolgingstilfelleDTO => {
 };
 
 const renderDialogmoteInnkallingContainer = () =>
-  render(
-    <MemoryRouter>
-      <QueryClientProvider client={queryClient}>
-        <ValgtEnhetContext.Provider
-          value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-        >
-          <MalformProvider>
-            <DialogmoteInnkallingContainer />
-          </MalformProvider>
-        </ValgtEnhetContext.Provider>
-      </QueryClientProvider>
-    </MemoryRouter>,
+  renderWithRouter(
+    <QueryClientProvider client={queryClient}>
+      <ValgtEnhetContext.Provider
+        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+      >
+        <MalformProvider>
+          <DialogmoteInnkallingContainer />
+        </MalformProvider>
+      </ValgtEnhetContext.Provider>
+    </QueryClientProvider>,
+    "*",
   );
 
 describe("DialogmoteInnkallingContainer", () => {

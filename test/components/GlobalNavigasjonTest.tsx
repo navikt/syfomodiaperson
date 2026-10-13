@@ -1,11 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import GlobalNavigasjon, {
   Menypunkter,
 } from "@/components/globalnavigasjon/GlobalNavigasjon";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { beforeEach, describe, expect, it } from "vitest";
-import { MemoryRouter } from "react-router-dom";
 import { personoppgaverQueryKeys } from "@/data/personoppgave/personoppgaveQueryHooks";
 import {
   queryClientWithAktivBruker,
@@ -65,6 +64,7 @@ import {
   SoknadStatusDTO,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
 import { UTENLANDSOPPHOLD_VARSEL_CUTOFF_DATO } from "@/utils/globalNavigasjonUtils";
+import { renderWithRouter } from "../testRouterUtils";
 
 const fnr = ARBEIDSTAKER_DEFAULT.personIdent;
 let queryClient: QueryClient;
@@ -104,16 +104,15 @@ const mockUnleashWithoutFeatureToggles = () => {
 };
 
 const renderGlobalNavigasjon = () =>
-  render(
+  renderWithRouter(
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter>
-        <ValgtEnhetContext.Provider
-          value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
-        >
-          <GlobalNavigasjon aktivtMenypunkt={Menypunkter.NOKKELINFORMASJON} />
-        </ValgtEnhetContext.Provider>
-      </MemoryRouter>
+      <ValgtEnhetContext.Provider
+        value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
+      >
+        <GlobalNavigasjon aktivtMenypunkt={Menypunkter.NOKKELINFORMASJON} />
+      </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
+    "*",
   );
 
 describe("GlobalNavigasjon", () => {

@@ -2,11 +2,7 @@
  See documentation for naming guidelines: https://startumami.ansatt.nav.no/taksonomi
  Other documentation for umami on Aksel: https://aksel.nav.no/god-praksis/artikler/male-brukeradferd-med-umami
  */
-export {
-  Events,
-  type TaxonomyEvent,
-  type EventName,
-} from "@navikt/analytics-types";
+export { Events } from "@navikt/analytics-types";
 
 import type { EventName, TaxonomyEvent } from "@navikt/analytics-types";
 
@@ -37,7 +33,7 @@ async function hashId(id: string): Promise<string> {
     .slice(0, 40);
 }
 
-function beforeSendHandler(type, payload) {
+function beforeSendHandler(_, payload) {
   if (payload.id != null) {
     return payload;
   }

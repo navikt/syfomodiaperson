@@ -1,13 +1,12 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { queryClientWithMockData } from "../../testQueryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../../dialogmote/testData";
 import { NotificationProvider } from "@/context/notification/NotificationContext";
 import SykepengesoknaderSide from "@/sider/sykepengsoknader/SykepengesoknaderSide";
-import { MemoryRouter } from "react-router-dom";
 import { sykepengesoknaderQueryKeys } from "@/data/sykepengesoknad/sykepengesoknadQueryHooks";
 import {
   harIkkeJobbetSoknadMock,
@@ -15,22 +14,22 @@ import {
   soknaderMock,
 } from "@/mocks/sykepengesoknad/soknaderMock";
 import { ARBEIDSTAKER_DEFAULT } from "@/mocks/common/mockConstants";
+import { renderWithRouter } from "../../testRouterUtils";
 
 let queryClient: any;
 
 function renderSykepengesoknaderSide() {
-  return render(
+  return renderWithRouter(
     <QueryClientProvider client={queryClient}>
       <ValgtEnhetContext.Provider
         value={{ valgtEnhet: navEnhet.id, setValgtEnhet: () => void 0 }}
       >
         <NotificationProvider>
-          <MemoryRouter>
-            <SykepengesoknaderSide />
-          </MemoryRouter>
+          <SykepengesoknaderSide />
         </NotificationProvider>
       </ValgtEnhetContext.Provider>
     </QueryClientProvider>,
+    "*",
   );
 }
 
