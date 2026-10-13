@@ -71,14 +71,18 @@ const tilleggsopplysningerListItems: NestableListItem[] = [
 ];
 
 const seOgsaLenkerListItems: NestableListItem[] = [
-  <EksternLenke href={linkServiceRutine}>
+  <EksternLenke key={"linkServiceRutine"} href={linkServiceRutine}>
     {texts.linkServiceRutine}
   </EksternLenke>,
-  <EksternLenke href={linkTemaside}>{texts.linkTemaside}</EksternLenke>,
-  <EksternLenke href={linkNyhetssakNavet}>
+  <EksternLenke key={"linkTemaside"} href={linkTemaside}>
+    {texts.linkTemaside}
+  </EksternLenke>,
+  <EksternLenke key={"linkNyhetssakNavet"} href={linkNyhetssakNavet}>
     {texts.linkNyhetssakNavet}
   </EksternLenke>,
-  <EksternLenke href={linkRundskriv}>{texts.linkRundskriv}</EksternLenke>,
+  <EksternLenke key={"linkRundskriv"} href={linkRundskriv}>
+    {texts.linkRundskriv}
+  </EksternLenke>,
 ];
 
 function Rutine() {

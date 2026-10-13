@@ -52,8 +52,8 @@ export default function MulighetForArbeid({
 
           {aktivitetIkkeMulig433.map(
             (ikkeMuligTekst: string, index: number) => (
-              <div className="ml-8">
-                <Checkbox key={index} size="small" checked readOnly>
+              <div key={index} className="ml-8">
+                <Checkbox size="small" checked readOnly>
                   {ikkeMuligTekst}
                 </Checkbox>
               </div>
@@ -82,8 +82,8 @@ export default function MulighetForArbeid({
 
           {aktivitetIkkeMulig434.map(
             (ikkeMuligTekst: string, index: number) => (
-              <div className="ml-8">
-                <Checkbox key={index} size="small" checked readOnly>
+              <div key={index} className="ml-8">
+                <Checkbox size="small" checked readOnly>
                   {ikkeMuligTekst}
                 </Checkbox>
               </div>

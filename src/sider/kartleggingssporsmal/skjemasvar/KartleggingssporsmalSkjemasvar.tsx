@@ -36,7 +36,7 @@ export function KartleggingssporsmalSkjemasvar({ formSnapshot }: Props) {
             );
           default:
             return (
-              <Alert className="w-1/2" variant={"error"}>
+              <Alert key={index} className="w-1/2" variant={"error"}>
                 Mottok spørsmål av typen: {fieldType} som fremvisningen ikke
                 støtter. Send en sak i Porten der du melder ifra om dette.
               </Alert>
