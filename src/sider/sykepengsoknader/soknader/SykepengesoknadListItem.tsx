@@ -61,6 +61,7 @@ function beregnUndertekst(soknad: SykepengesoknadDTO) {
     case Soknadstype.OPPHOLD_UTLAND:
     case Soknadstype.ARBEIDSLEDIG:
     case Soknadstype.ANNET_ARBEIDSFORHOLD:
+    case Soknadstype.FISKERE:
     case Soknadstype.SELVSTENDIGE_OG_FRILANSERE: {
       return soknad.status === Soknadstatus.SENDT && soknad.sendtTilNAVDato
         ? `Sendt til Nav ${tilLesbarDatoMedArstall(soknad.sendtTilNAVDato)}`
