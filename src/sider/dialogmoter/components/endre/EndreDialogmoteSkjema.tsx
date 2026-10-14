@@ -5,7 +5,7 @@ import { validerKlokkeslett, validerVideoLink } from "@/utils/valideringUtils";
 import { useTidStedDocument } from "@/hooks/dialogmote/document/useTidStedDocument";
 import {
   DialogmoteDTO,
-  EndreTidStedDialogmoteDTO,
+  EndreDialogmoteDTO,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { moteoversiktRoutePath } from "@/AppRouter";
 import { useEndreTidStedDialogmote } from "@/sider/dialogmoter/hooks/useEndreTidStedDialogmote";
@@ -103,8 +103,8 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
 
   function toEndreTidSted(
     values: EndreTidStedSkjemaValues,
-  ): EndreTidStedDialogmoteDTO {
-    const endreTidStedDto: EndreTidStedDialogmoteDTO = {
+  ): EndreDialogmoteDTO {
+    const endreTidStedDto: EndreDialogmoteDTO = {
       ...toTidStedDto(values),
       arbeidstaker: {
         begrunnelse: values.begrunnelseArbeidstaker,
@@ -118,7 +118,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
     if (behandler) {
       endreTidStedDto.behandler = {
         begrunnelse: values.begrunnelseBehandler || "",
-        endringsdokument: getTidStedDocumentBehandler(values),
+        moteDokument: getTidStedDocumentBehandler(values),
       };
     }
 
