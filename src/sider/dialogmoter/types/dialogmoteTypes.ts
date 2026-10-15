@@ -125,7 +125,7 @@ export interface EndreDialogmoteDTO extends TidStedDto {
 }
 
 interface BehandlerDto {
-  personIdent: string;
+  personIdent?: string;
   behandlerRef: string;
   behandlerNavn: string;
   behandlerKontor: string;
