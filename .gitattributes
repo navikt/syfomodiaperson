@@ -6,3 +6,5 @@
 *.xml text eol=lf
 *.java text eol=lf
 *.html text eol=lf
+
+.github/workflows/*.lock.yml linguist-generated=true
