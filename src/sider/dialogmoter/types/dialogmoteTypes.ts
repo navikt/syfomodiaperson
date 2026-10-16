@@ -108,7 +108,7 @@ export interface DialogmoteInnkallingDTO {
   tidSted: TidStedDto;
 }
 
-export interface EndreTidStedDialogmoteDTO extends TidStedDto {
+export interface EndreDialogmoteDTO extends TidStedDto {
   arbeidstaker: {
     begrunnelse: string;
     endringsdokument: DocumentComponentDto[];
@@ -119,8 +119,16 @@ export interface EndreTidStedDialogmoteDTO extends TidStedDto {
   };
   behandler?: {
     begrunnelse: string;
-    endringsdokument: DocumentComponentDto[];
+    moteDokument: DocumentComponentDto[];
+    behandler?: BehandlerDto;
   };
+}
+
+interface BehandlerDto {
+  personIdent?: string;
+  behandlerRef: string;
+  behandlerNavn: string;
+  behandlerKontor: string;
 }
 
 export interface TidStedDto {

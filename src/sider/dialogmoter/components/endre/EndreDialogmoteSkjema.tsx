@@ -5,14 +5,14 @@ import { validerKlokkeslett, validerVideoLink } from "@/utils/valideringUtils";
 import { useTidStedDocument } from "@/hooks/dialogmote/document/useTidStedDocument";
 import {
   DialogmoteDTO,
-  EndreTidStedDialogmoteDTO,
+  EndreDialogmoteDTO,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { moteoversiktRoutePath } from "@/AppRouter";
 import { useEndreTidStedDialogmote } from "@/sider/dialogmoter/hooks/useEndreTidStedDialogmote";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
 import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
-import { Alert, Box, Button } from "@navikt/ds-react";
+import { Alert, Box, Button, Label } from "@navikt/ds-react";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { narmesteLederForVirksomhet } from "@/utils/ledereUtils";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
@@ -26,6 +26,11 @@ import DialogmoteKlokkeslett from "@/sider/dialogmoter/components/DialogmoteKlok
 import MalformRadioGroup from "@/components/MalformRadioGroup";
 import TextareaField from "@/sider/dialogmoter/components/TextareaField";
 import DialogmoteFrist from "@/sider/dialogmoter/components/DialogmoteFrist";
+import { DialogmoteInnkallingBehandler } from "../innkalling/DialogmoteInnkallingBehandler";
+import { useState } from "react";
+import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
+import { behandlerNavn } from "@/utils/behandlerUtils";
+import { useInnkallingDocument } from "@/hooks/dialogmote/document/useInnkallingDocument";
 
 export const texts = {
   send: "Send",
@@ -70,6 +75,11 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
   const { sted, arbeidsgiver, tid, uuid, behandler, videoLink } = dialogmote;
   const fnr = useValgtPersonident();
   const { currentLedere } = useLedereQuery();
+  const innkallingDocument = useInnkallingDocument();
+
+  const [selectedBehandler, setSelectedBehandler] = useState<
+    BehandlerDTO | undefined
+  >(undefined);
 
   const narmesteLeder = narmesteLederForVirksomhet(
     currentLedere,
@@ -103,8 +113,8 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
 
   function toEndreTidSted(
     values: EndreTidStedSkjemaValues,
-  ): EndreTidStedDialogmoteDTO {
-    const endreTidStedDto: EndreTidStedDialogmoteDTO = {
+  ): EndreDialogmoteDTO {
+    const endreTidStedDto: EndreDialogmoteDTO = {
       ...toTidStedDto(values),
       arbeidstaker: {
         begrunnelse: values.begrunnelseArbeidstaker,
@@ -118,7 +128,19 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
     if (behandler) {
       endreTidStedDto.behandler = {
         begrunnelse: values.begrunnelseBehandler || "",
-        endringsdokument: getTidStedDocumentBehandler(values),
+        moteDokument: getTidStedDocumentBehandler(values),
+      };
+    }
+    if (selectedBehandler) {
+      endreTidStedDto.behandler = {
+        begrunnelse: values.begrunnelseBehandler || "",
+        moteDokument: innkallingDocument.getInnkallingDocumentBehandler(values),
+        behandler: {
+          personIdent: selectedBehandler.fnr,
+          behandlerRef: selectedBehandler.behandlerRef,
+          behandlerNavn: behandlerNavn(selectedBehandler),
+          behandlerKontor: selectedBehandler.kontor ?? "",
+        },
       };
     }
 
@@ -137,38 +159,47 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
   return (
     <Box background="default" padding="space-24" className="mb-2">
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(submit)}>
-          <div className="flex flex-col gap-4 mb-6">
-            <MalformRadioGroup />
-            <DialogmoteFrist />
-            <div className="flex gap-4 items-start">
-              <DialogmoteDato />
-              <DialogmoteKlokkeslett
-                {...register("klokkeslett", {
-                  validate: (value, formValues) =>
-                    validerKlokkeslett(formValues.dato, value),
-                })}
-                value={watch("klokkeslett")}
-                error={errors.klokkeslett?.message}
-              />
-            </div>
-            <DialogmoteSted
-              {...register("sted", {
-                maxLength: MAX_LENGTH_STED,
-                required: texts.stedMissing,
+        <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-4">
+          <MalformRadioGroup />
+          <DialogmoteFrist />
+          <div className="flex gap-4 items-start">
+            <DialogmoteDato />
+            <DialogmoteKlokkeslett
+              {...register("klokkeslett", {
+                validate: (value, formValues) =>
+                  validerKlokkeslett(formValues.dato, value),
               })}
-              value={watch("sted")}
-              error={errors.sted?.message}
-            />
-            <DialogmoteVideolink
-              {...register("videoLink", {
-                validate: (value) => validerVideoLink(value),
-              })}
-              value={watch("videoLink")}
-              error={errors.videoLink?.message}
+              value={watch("klokkeslett")}
+              error={errors.klokkeslett?.message}
             />
           </div>
-          <div className="mb-8">
+          <DialogmoteSted
+            {...register("sted", {
+              maxLength: MAX_LENGTH_STED,
+              required: texts.stedMissing,
+            })}
+            value={watch("sted")}
+            error={errors.sted?.message}
+          />
+          <DialogmoteVideolink
+            {...register("videoLink", {
+              validate: (value) => validerVideoLink(value),
+            })}
+            value={watch("videoLink")}
+            error={errors.videoLink?.message}
+          />
+          {behandler ? (
+            <div>
+              <Label size="small">Behandler</Label>
+              {behandler.behandlerNavn}
+            </div>
+          ) : (
+            <DialogmoteInnkallingBehandler
+              setSelectedBehandler={setSelectedBehandler}
+              selectedbehandler={selectedBehandler}
+            />
+          )}
+          <div>
             <TextareaField
               {...register("begrunnelseArbeidstaker", {
                 maxLength: MAX_LENGTH_ENDRE_BEGRUNNELSE,
@@ -187,7 +218,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
               title={texts.forhandsvisningArbeidstakerTitle}
             />
           </div>
-          <div className="mb-8">
+          <div>
             <TextareaField
               {...register("begrunnelseArbeidsgiver", {
                 maxLength: MAX_LENGTH_ENDRE_BEGRUNNELSE,
@@ -216,7 +247,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
             />
           </div>
           {behandler && (
-            <div className="mb-8">
+            <div>
               <TextareaField
                 {...register("begrunnelseBehandler", {
                   maxLength: MAX_LENGTH_ENDRE_BEGRUNNELSE,
