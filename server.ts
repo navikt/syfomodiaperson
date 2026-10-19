@@ -8,18 +8,46 @@ import { setupProxy } from "./server/proxy.js";
 import { setupDraftEndpoints } from "./server/draft.js";
 import { connectValkey } from "./server/valkey.js";
 import { logger } from "@navikt/pino-logger";
+import { setupCspReporting } from "./server/csp.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const server = express();
 
-server.use(express.json());
 server.use(
   helmet({
-    contentSecurityPolicy: false,
+    contentSecurityPolicy: {
+      reportOnly: true,
+      useDefaults: false,
+      directives: {
+        defaultSrc: ["'self'"],
+        baseUri: ["'self'"],
+        objectSrc: ["'none'"],
+        formAction: ["'self'"],
+        frameAncestors: ["'none'"],
+        scriptSrc: ["'self'", "https://cdn.nav.no"],
+        styleSrc: ["'self'"],
+        fontSrc: ["'self'", "https://cdn.nav.no"],
+        imgSrc: ["'self'", "data:"],
+        connectSrc: [
+          "'self'",
+          "wss://modiacontextholder.intern.nav.no",
+          "wss://modiacontextholder.intern.dev.nav.no",
+          "https://telemetry.ekstern.nav.no",
+          "https://telemetry.ekstern.dev.nav.no",
+          "https://umami.nav.no",
+          "https://reops-event-proxy.nav.no",
+          "https://reops-event-proxy.ekstern.dev.nav.no",
+        ],
+        reportUri: ["/csp-report"],
+        reportTo: ["csp-endpoint"],
+      },
+    },
   }),
 );
+setupCspReporting(server);
+server.use(express.json());
 
 const nocache = (
   req: express.Request,
