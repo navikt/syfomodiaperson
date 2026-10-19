@@ -114,7 +114,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
   function toEndreTidSted(
     values: EndreTidStedSkjemaValues,
   ): EndreDialogmoteDTO {
-    const endreTidStedDto: EndreDialogmoteDTO = {
+    const endreDialogmoteDto: EndreDialogmoteDTO = {
       ...toTidStedDto(values),
       arbeidstaker: {
         begrunnelse: values.begrunnelseArbeidstaker,
@@ -126,13 +126,13 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
       },
     };
     if (behandler) {
-      endreTidStedDto.behandler = {
+      endreDialogmoteDto.behandler = {
         begrunnelse: values.begrunnelseBehandler || "",
         moteDokument: getTidStedDocumentBehandler(values),
       };
     }
     if (selectedBehandler) {
-      endreTidStedDto.behandler = {
+      endreDialogmoteDto.behandler = {
         begrunnelse: values.begrunnelseBehandler || "",
         moteDokument: innkallingDocument.getInnkallingDocumentBehandler(values),
         behandler: {
@@ -144,7 +144,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
       };
     }
 
-    return endreTidStedDto;
+    return endreDialogmoteDto;
   }
 
   const submit = (values: EndreTidStedSkjemaValues) => {
