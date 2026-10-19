@@ -22,7 +22,7 @@ import {
 } from "./testData";
 import {
   DialogmoteDTO,
-  EndreTidStedDialogmoteDTO,
+  EndreDialogmoteDTO,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -193,7 +193,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
     });
 
     const { videoLink, arbeidsgiver, arbeidstaker } = endreMutation.state
-      .variables as unknown as EndreTidStedDialogmoteDTO;
+      .variables as unknown as EndreDialogmoteDTO;
 
     const linkDocumentComponents = [
       ...arbeidsgiver.endringsdokument,
@@ -240,7 +240,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
         },
         behandler: {
           begrunnelse: moteTekster.fritekstTilBehandler,
-          endringsdokument:
+          moteDokument:
             expectedEndringDocuments.behandler(expectedSendtDato),
         },
         videoLink: endretMote.videolink,
@@ -396,6 +396,12 @@ const renderEndreDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
 };
 
 const passSkjemaInput = async () => {
+  const noBehandlerRadio = screen.queryByRole("radio", {
+    name: "Ingen behandler",
+  });
+  if (noBehandlerRadio) {
+    await userEvent.click(noBehandlerRadio);
+  }
   const datoInput = getTextInput("Dato");
   const klokkeslettInput = screen.getByLabelText("Klokkeslett");
   const stedInput = getTextInput("Sted");

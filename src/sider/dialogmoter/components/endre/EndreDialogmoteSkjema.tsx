@@ -8,7 +8,7 @@ import {
   EndreDialogmoteDTO,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { moteoversiktRoutePath } from "@/AppRouter";
-import { useEndreTidStedDialogmote } from "@/sider/dialogmoter/hooks/useEndreTidStedDialogmote";
+import { useEndreDialogmote } from "@/sider/dialogmoter/hooks/useEndreTidStedDialogmote";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
 import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
@@ -86,7 +86,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
     arbeidsgiver.virksomhetsnummer,
   );
 
-  const endreTidStedDialogmote = useEndreTidStedDialogmote(fnr, uuid);
+  const endreTidStedDialogmote = useEndreDialogmote(fnr, uuid);
 
   const {
     getTidStedDocumentArbeidstaker,
