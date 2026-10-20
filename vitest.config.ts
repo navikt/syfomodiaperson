@@ -2,6 +2,9 @@ import { defineConfig } from "vitest/config";
 import svgr from "vite-plugin-svgr";
 import path from "path";
 
+// Locks the timezone so date tests behave the same locally and in CI.
+process.env.TZ = "Europe/Oslo";
+
 export default defineConfig({
   resolve: {
     tsconfigPaths: true,
