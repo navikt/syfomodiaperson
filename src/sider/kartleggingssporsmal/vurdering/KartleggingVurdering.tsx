@@ -1,5 +1,6 @@
 import {
   BodyLong,
+  BodyShort,
   Box,
   Button,
   Heading,
@@ -25,10 +26,17 @@ import { hasRisikoForLangtidsfravar } from "@/sider/kartleggingssporsmal/info/vu
 
 const VURDERING_MAX_LENGTH = 200;
 const LINK_14A = `https://veilarbpersonflate${finnNaisUrlIntern()}/vedtaksstotte`;
+const LINK_RUTINE =
+  "https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Bruk-av-kartleggingssp%C3%B8rsm%C3%A5l-i-sykefrav%C3%A6rsoppf%C3%B8lgingen.aspx";
 
 const texts = {
   heading: "Vurdering",
   radioLegend: "Velg alternativet som passer vurderingen",
+  rutine: {
+    info: "Vurderingen av svarene skal gjøres basert på ",
+    linkText:
+      "rutine for bruk av kartleggingsspørsmålene i sykefraværsoppfølgingen.",
+  },
   textLegend: "Begrunnelse (valgfritt)",
   RISIKO_FOR_LANGTIDSFRAVAR:
     "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
@@ -42,12 +50,12 @@ const texts = {
   lenkeTilModiaAO: "vedtaksstøtteløsningen i Modia Arbeidsrettet oppfølging.",
 };
 
-function logEvent() {
+function logLinkEvent(tekst: string, href: string) {
   trackEvent({
     name: Events.LINK_KLIKKET,
     properties: {
-      tekst: texts.lenkeTilModiaAO,
-      href: LINK_14A,
+      tekst,
+      href,
     },
   });
 }
@@ -89,6 +97,15 @@ export function KartleggingVurdering({
       <KartleggingInfo />
 
       <Heading size={"medium"}>{texts.heading}</Heading>
+      <BodyShort size="small">
+        {texts.rutine.info}
+        <EksternLenke
+          href={LINK_RUTINE}
+          onClick={() => logLinkEvent(texts.rutine.linkText, LINK_RUTINE)}
+        >
+          {texts.rutine.linkText}
+        </EksternLenke>
+      </BodyShort>
       <RadioGroup
         legend={texts.radioLegend}
         size="small"
@@ -177,7 +194,10 @@ export function KartleggingVurdering({
         shouldShowBegrunnelse && (
           <BodyLong size="small">
             {texts.vurdertRisikoForLangtidsfravar}
-            <EksternLenke href={LINK_14A} onClick={logEvent}>
+            <EksternLenke
+              href={LINK_14A}
+              onClick={() => logLinkEvent(texts.lenkeTilModiaAO, LINK_14A)}
+            >
               {texts.lenkeTilModiaAO}
             </EksternLenke>
           </BodyLong>

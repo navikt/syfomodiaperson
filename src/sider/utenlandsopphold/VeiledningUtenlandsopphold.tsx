@@ -4,7 +4,7 @@ import {
   NestableListItem,
   VeiledningListForItems,
 } from "@/components/veiledning/VeiledningListForItems";
-import { Box, Heading } from "@navikt/ds-react";
+import { Box, Heading, LocalAlert } from "@navikt/ds-react";
 
 const linkRutineYrkesskade =
   "https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Vurdering-av-%C3%A5rsakssammenheng-ved-yrkesskade-yrkessykdm.aspx";
@@ -25,6 +25,10 @@ const texts = {
   linkTemaside: "Temaside om Sykepenger ved opphold i utlandet",
   linkNyhetssakNavet: "Nyhetssak om denne løsningen på Navet",
   linkRundskriv: "Rundskriv til folketrygdloven § 8-9 tredje ledd",
+  warningStorbritanniaHeading: "Midlertidig opphold i Storbritannia",
+  warningStorbritanniaContent:
+    "Sykmeldte som midlertidig oppholder seg i Storbritannia skal ikke søke om å beholde sykepenger under oppholdet.",
+  warningStorbritanniaLinkText: "Se fagmelding",
 };
 
 const rutineListItems: NestableListItem[] = [
@@ -88,6 +92,20 @@ const seOgsaLenkerListItems: NestableListItem[] = [
 function Rutine() {
   return (
     <Box>
+      <LocalAlert status={"warning"} className="mb-4">
+        <LocalAlert.Header>
+          <LocalAlert.Title>
+            {texts.warningStorbritanniaHeading}
+          </LocalAlert.Title>
+        </LocalAlert.Header>
+        <LocalAlert.Content>
+          {texts.warningStorbritanniaContent}{" "}
+          <EksternLenke href="https://navno.sharepoint.com/sites/fag-og-ytelser-arbeid-sykefravarsoppfolging-og-sykepenger/SitePages/Sykepenger-under-opphold-i-Storbritannia.aspx?web=1">
+            {texts.warningStorbritanniaLinkText}
+          </EksternLenke>
+        </LocalAlert.Content>
+      </LocalAlert>
+
       <Heading level="3" size="small" spacing>
         {texts.headingRutine}
       </Heading>
