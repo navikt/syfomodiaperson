@@ -14,6 +14,19 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const server = express();
+const isProdCluster = process.env.NAIS_CLUSTER_NAME === "prod-gcp";
+
+const connectSrcProd = [
+  "wss://modiacontextholder.intern.nav.no",
+  "https://telemetry.nav.no",
+  "https://reops-event-proxy.nav.no",
+];
+
+const connectSrcDev = [
+  "wss://modiacontextholder.intern.dev.nav.no",
+  "https://telemetry.ekstern.dev.nav.no",
+  "https://reops-event-proxy.ekstern.dev.nav.no",
+];
 
 server.use(
   helmet({
@@ -32,13 +45,7 @@ server.use(
         imgSrc: ["'self'", "data:"],
         connectSrc: [
           "'self'",
-          "wss://modiacontextholder.intern.nav.no",
-          "wss://modiacontextholder.intern.dev.nav.no",
-          "https://telemetry.nav.no",
-          "https://telemetry.ekstern.dev.nav.no",
-          "https://umami.nav.no",
-          "https://reops-event-proxy.nav.no",
-          "https://reops-event-proxy.ekstern.dev.nav.no",
+          ...(isProdCluster ? connectSrcProd : connectSrcDev),
         ],
         reportUri: ["/csp-report"],
         reportTo: ["csp-endpoint"],
