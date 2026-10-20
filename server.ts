@@ -34,7 +34,7 @@ server.use(
           "'self'",
           "wss://modiacontextholder.intern.nav.no",
           "wss://modiacontextholder.intern.dev.nav.no",
-          "https://telemetry.ekstern.nav.no",
+          "https://telemetry.nav.no",
           "https://telemetry.ekstern.dev.nav.no",
           "https://umami.nav.no",
           "https://reops-event-proxy.nav.no",
