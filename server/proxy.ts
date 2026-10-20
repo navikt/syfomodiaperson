@@ -26,6 +26,7 @@ const EXCLUDED_HEADERS = new Set([
   "upgrade",
   "content-length",
   "content-encoding",
+  "accept-language",
 ]);
 
 function buildTargetUrl(
