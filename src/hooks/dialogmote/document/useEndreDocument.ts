@@ -1,13 +1,13 @@
-import { EndreTidStedSkjemaValues } from "@/sider/dialogmoter/components/endre/EndreDialogmoteSkjema";
 import {
   createHeaderH1,
   createParagraph,
   createParagraphWithTitle,
 } from "@/utils/documentComponentUtils";
+import { EndreSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
 import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
 import {
   getCommonTexts,
-  getEndreTidStedTexts,
+  getEndreTexts,
 } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import { DialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { useDialogmoteDocumentComponents } from "@/hooks/dialogmote/document/useDialogmoteDocumentComponents";
@@ -17,27 +17,25 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 
-export interface ITidStedDocument {
-  getTidStedDocumentArbeidsgiver(
-    values: Partial<EndreTidStedSkjemaValues>,
+export interface IEndreDocument {
+  getEndreDocumentArbeidsgiver(
+    values: Partial<EndreSkjemaValues>,
   ): DocumentComponentDto[];
 
-  getTidStedDocumentArbeidstaker(
-    values: Partial<EndreTidStedSkjemaValues>,
+  getEndreDocumentArbeidstaker(
+    values: Partial<EndreSkjemaValues>,
   ): DocumentComponentDto[];
 
-  getTidStedDocumentBehandler(
-    values: Partial<EndreTidStedSkjemaValues>,
+  getEndreDocumentBehandler(
+    values: Partial<EndreSkjemaValues>,
   ): DocumentComponentDto[];
 }
 
-export const useTidStedDocument = (
-  dialogmote: DialogmoteDTO,
-): ITidStedDocument => {
+export const useEndreDocument = (dialogmote: DialogmoteDTO): IEndreDocument => {
   const { tid, arbeidsgiver, behandler } = dialogmote;
   const { malform } = useMalform();
   const { data: veilederinfo } = useAktivVeilederinfoQuery();
-  const endreTidStedTexts = getEndreTidStedTexts(malform);
+  const endreEndreTexts = getEndreTexts(malform);
   const commonTexts = getCommonTexts(malform);
   const valgtPersonident = useValgtPersonident();
   const navBruker = useNavBrukerData();
@@ -52,18 +50,16 @@ export const useTidStedDocument = (
 
   const introComponents = [
     createParagraph(
-      `${endreTidStedTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
+      `${endreEndreTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
         tid,
       )}.`,
     ),
-    createParagraph(endreTidStedTexts.intro2),
+    createParagraph(endreEndreTexts.intro2),
   ];
 
-  const getTidStedDocumentArbeidsgiver = (
-    values: Partial<EndreTidStedSkjemaValues>,
-  ) => {
+  const getEndreDocumentArbeidsgiver = (values: Partial<EndreSkjemaValues>) => {
     const documentComponents = [
-      createHeaderH1(endreTidStedTexts.header),
+      createHeaderH1(endreEndreTexts.header),
       gjelderParagraph,
       ...introComponents,
       ...getMoteInfo(values, arbeidsgiver.virksomhetsnummer),
@@ -74,21 +70,21 @@ export const useTidStedDocument = (
     }
 
     const outro1 = behandler
-      ? endreTidStedTexts.arbeidsgiver.outro1WithBehandler
-      : endreTidStedTexts.arbeidsgiver.outro1;
+      ? endreEndreTexts.arbeidsgiver.outro1WithBehandler
+      : endreEndreTexts.arbeidsgiver.outro1;
     const outro2 = behandler
-      ? `${endreTidStedTexts.arbeidsgiver.outro2WithBehandler} ${behandler.behandlerNavn}.`
-      : endreTidStedTexts.arbeidsgiver.outro2;
+      ? `${endreEndreTexts.arbeidsgiver.outro2WithBehandler} ${behandler.behandlerNavn}.`
+      : endreEndreTexts.arbeidsgiver.outro2;
     const outro3 = behandler
-      ? endreTidStedTexts.arbeidsgiver.outro3WithBehandler
-      : endreTidStedTexts.arbeidsgiver.outro3;
+      ? endreEndreTexts.arbeidsgiver.outro3WithBehandler
+      : endreEndreTexts.arbeidsgiver.outro3;
 
     documentComponents.push(
       createParagraph(outro1),
-      createParagraph(endreTidStedTexts.arbeidsgiver.outroObligatorisk),
+      createParagraph(endreEndreTexts.arbeidsgiver.outroObligatorisk),
       createParagraph(outro2),
       createParagraphWithTitle(
-        endreTidStedTexts.arbeidsgiver.outro3Title,
+        endreEndreTexts.arbeidsgiver.outro3Title,
         outro3,
       ),
       hilsenParagraph,
@@ -101,11 +97,9 @@ export const useTidStedDocument = (
     return documentComponents;
   };
 
-  const getTidStedDocumentArbeidstaker = (
-    values: Partial<EndreTidStedSkjemaValues>,
-  ) => {
+  const getEndreDocumentArbeidstaker = (values: Partial<EndreSkjemaValues>) => {
     const documentComponents = [
-      createHeaderH1(endreTidStedTexts.header),
+      createHeaderH1(endreEndreTexts.header),
       getIntroHei(),
       ...introComponents,
       ...getMoteInfo(values, arbeidsgiver.virksomhetsnummer),
@@ -116,21 +110,21 @@ export const useTidStedDocument = (
     }
 
     const outro1 = behandler
-      ? endreTidStedTexts.arbeidstaker.outro1WithBehandler
-      : endreTidStedTexts.arbeidstaker.outro1;
+      ? endreEndreTexts.arbeidstaker.outro1WithBehandler
+      : endreEndreTexts.arbeidstaker.outro1;
     const outro2 = behandler
-      ? `${endreTidStedTexts.arbeidstaker.outro2WithBehandler} ${behandler.behandlerNavn}.`
-      : endreTidStedTexts.arbeidstaker.outro2;
+      ? `${endreEndreTexts.arbeidstaker.outro2WithBehandler} ${behandler.behandlerNavn}.`
+      : endreEndreTexts.arbeidstaker.outro2;
     const outro3 = behandler
-      ? endreTidStedTexts.arbeidstaker.outro3WithBehandler
-      : endreTidStedTexts.arbeidstaker.outro3;
+      ? endreEndreTexts.arbeidstaker.outro3WithBehandler
+      : endreEndreTexts.arbeidstaker.outro3;
 
     documentComponents.push(
       createParagraph(outro1),
-      createParagraph(endreTidStedTexts.arbeidstaker.outroObligatorisk),
+      createParagraph(endreEndreTexts.arbeidstaker.outroObligatorisk),
       createParagraph(outro2),
       createParagraphWithTitle(
-        endreTidStedTexts.arbeidstaker.outro3Title,
+        endreEndreTexts.arbeidstaker.outro3Title,
         outro3,
       ),
       hilsenParagraph,
@@ -139,12 +133,10 @@ export const useTidStedDocument = (
     return documentComponents;
   };
 
-  const getTidStedDocumentBehandler = (
-    values: Partial<EndreTidStedSkjemaValues>,
-  ) => {
+  const getEndreDocumentBehandler = (values: Partial<EndreSkjemaValues>) => {
     const documentComponents = [
-      createHeaderH1(endreTidStedTexts.behandler.endring),
-      createParagraph(endreTidStedTexts.behandler.intro),
+      createHeaderH1(endreEndreTexts.behandler.endring),
+      createParagraph(endreEndreTexts.behandler.intro),
       gjelderParagraph,
       ...introComponents,
       ...getMoteInfo(values, arbeidsgiver.virksomhetsnummer),
@@ -154,7 +146,7 @@ export const useTidStedDocument = (
     }
 
     documentComponents.push(
-      createParagraph(endreTidStedTexts.behandler.outro),
+      createParagraph(endreEndreTexts.behandler.outro),
       hilsenParagraph,
     );
 
@@ -162,8 +154,8 @@ export const useTidStedDocument = (
   };
 
   return {
-    getTidStedDocumentArbeidstaker,
-    getTidStedDocumentArbeidsgiver,
-    getTidStedDocumentBehandler,
+    getEndreDocumentArbeidstaker,
+    getEndreDocumentArbeidsgiver,
+    getEndreDocumentBehandler,
   };
 };

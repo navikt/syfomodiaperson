@@ -21,7 +21,7 @@ export const SvarIcon = ({ svarType }: Props): ReactElement => {
           title="suksess-ikon"
         />
       );
-    case SvarType.NYTT_TID_STED:
+    case SvarType.ENDRE:
       return (
         <ExclamationmarkTriangleFillIcon
           fontSize="1.5em"

@@ -94,7 +94,7 @@ export const getInnkallingTexts = (malform: Malform) => {
     : innkallingTextsBokmal;
 };
 
-const endreTidStedTextsBokmal = {
+const endreTextsBokmal = {
   header: "Endret dialogmøte",
   intro1:
     "Du har tidligere blitt innkalt til et dialogmøte. Møtet skulle vært avholdt",
@@ -141,7 +141,7 @@ const endreTidStedTextsBokmal = {
   },
 };
 
-const endreTidStedTextsNynorsk = {
+const endreTextsNynorsk = {
   header: "Endra dialogmøte",
   intro1:
     "Du har tidlegare blitt kalla inn til dialogmøte. Møtet skulle etter planen ha vore",
@@ -188,10 +188,8 @@ const endreTidStedTextsNynorsk = {
   },
 };
 
-export const getEndreTidStedTexts = (malform: Malform) => {
-  return malform === Malform.NYNORSK
-    ? endreTidStedTextsNynorsk
-    : endreTidStedTextsBokmal;
+export const getEndreTexts = (malform: Malform) => {
+  return malform === Malform.NYNORSK ? endreTextsNynorsk : endreTextsBokmal;
 };
 
 const avlysningTextsBokmal = {

@@ -82,7 +82,7 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
     });
   });
 
-  describe("arbeidstaker har åpnet innkalling og svart NYTT_TID_STED med begrunnelse", () => {
+  describe("arbeidstaker har åpnet innkalling og svart ENDRE med begrunnelse", () => {
     const dialogmoteMedLestInnkalling = dialogmoteMedVarsel(
       [],
       [
@@ -90,7 +90,7 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
           MotedeltakerVarselType.INNKALT,
           "2021-12-02T12:56:26.271381",
           {
-            svarType: SvarType.NYTT_TID_STED,
+            svarType: SvarType.ENDRE,
             svarTidspunkt: "2021-12-02T12:56:26.271381",
             svarTekst: "Passer ikke",
           },
@@ -164,7 +164,7 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
       [],
       [
         varselArbeidstaker(
-          MotedeltakerVarselType.NYTT_TID_STED,
+          MotedeltakerVarselType.ENDRE,
           "2021-12-04T12:56:26.271381",
         ),
       ],
@@ -188,7 +188,7 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
       [],
       [
         varselArbeidstaker(
-          MotedeltakerVarselType.NYTT_TID_STED,
+          MotedeltakerVarselType.ENDRE,
           "2021-12-04T12:56:26.271381",
           {
             svarType: SvarType.KOMMER,
@@ -210,15 +210,15 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
     });
   });
 
-  describe("arbeidstaker har åpnet endring og svart NYTT_TID_STED med begrunnelse", () => {
+  describe("arbeidstaker har åpnet endring og svart ENDRE med begrunnelse", () => {
     const dialogmoteMedLestEndring = dialogmoteMedVarsel(
       [],
       [
         varselArbeidstaker(
-          MotedeltakerVarselType.NYTT_TID_STED,
+          MotedeltakerVarselType.ENDRE,
           "2021-12-04T12:56:26.271381",
           {
-            svarType: SvarType.NYTT_TID_STED,
+            svarType: SvarType.ENDRE,
             svarTidspunkt: "2021-12-04T12:56:26.271381",
             svarTekst: "Kan vi endre sted?",
           },
@@ -243,7 +243,7 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
       [],
       [
         varselArbeidstaker(
-          MotedeltakerVarselType.NYTT_TID_STED,
+          MotedeltakerVarselType.ENDRE,
           "2021-12-04T12:56:26.271381",
           {
             svarType: SvarType.KOMMER_IKKE,
@@ -269,7 +269,7 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
   describe("arbeidstaker har ikke åpnet endring", () => {
     const dialogmoteMedUlestEndring = dialogmoteMedVarsel(
       [],
-      [varselArbeidstaker(MotedeltakerVarselType.NYTT_TID_STED)],
+      [varselArbeidstaker(MotedeltakerVarselType.ENDRE)],
     );
 
     it("viser arbeidstaker har ikke åpnet endring med minus-sirkel-ikon og manglende begrunnelse", () => {

@@ -10,7 +10,7 @@ function getDialogmoteStatusEndringText(
   switch (statusendring.status) {
     case DialogmoteStatus.INNKALT:
       return `${statusendring.statusEndringOpprettetAv} kalte inn til et dialogmøte`;
-    case DialogmoteStatus.NYTT_TID_STED:
+    case DialogmoteStatus.ENDRE:
       return `${statusendring.statusEndringOpprettetAv} endret tid eller sted for dialogmøtet opprettet av ${statusendring.dialogmoteOpprettetAv}`;
     case DialogmoteStatus.AVLYST:
       return `${statusendring.statusEndringOpprettetAv} avlyste dialogmøtet opprettet av ${statusendring.dialogmoteOpprettetAv}`;

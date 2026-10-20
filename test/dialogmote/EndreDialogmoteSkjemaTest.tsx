@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import EndreDialogmoteSkjema, {
   MAX_LENGTH_ENDRE_BEGRUNNELSE,
   texts,
-} from "@/sider/dialogmoter/components/endre/EndreDialogmoteSkjema";
+} from "@/sider/dialogmoter/components/endre/components/EndreDialogmoteSkjema";
 import {
   changeTextInput,
   clickButton,
@@ -240,8 +240,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
         },
         behandler: {
           begrunnelse: moteTekster.fritekstTilBehandler,
-          moteDokument:
-            expectedEndringDocuments.behandler(expectedSendtDato),
+          moteDokument: expectedEndringDocuments.behandler(expectedSendtDato),
         },
         videoLink: endretMote.videolink,
         sted: endretMote.sted,
