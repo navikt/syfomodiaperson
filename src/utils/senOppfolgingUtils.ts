@@ -1,5 +1,5 @@
 import { SenOppfolgingKandidatResponseDTO } from "@/data/senoppfolging/senOppfolgingTypes";
-import { addDays, dagerMellomDatoerUtenAbs } from "@/utils/datoUtils";
+import { addDays, kalenderdagerMellom } from "@/utils/datoUtils";
 
 export function isVarselUbesvart(
   kandidat: SenOppfolgingKandidatResponseDTO,
@@ -9,9 +9,7 @@ export function isVarselUbesvart(
 }
 
 export function isVarselSvarfristUtlopt(varselAt: Date): boolean {
-  return (
-    dagerMellomDatoerUtenAbs(getVarselSvarfrist(varselAt), new Date()) >= 0
-  );
+  return kalenderdagerMellom(getVarselSvarfrist(varselAt), new Date()) >= 0;
 }
 
 export function getVarselSvarfrist(varselAt: Date): Date {

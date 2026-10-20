@@ -112,16 +112,6 @@ export function tilDatoMedUkedagOgManedNavn(
   return tekst ? firstLetterToUpperCase(tekst) : "";
 }
 
-export function getDatoKomponenter(dato: ValgfriDato, malform?: Malform) {
-  const parsed = parseDato(dato)?.locale(getLocale(malform));
-  return {
-    ukeDag: parsed ? firstLetterToUpperCase(parsed.format("dddd")) : "",
-    dag: parsed ? parsed.date() : NaN,
-    maaned: parsed ? parsed.format("MMMM") : "",
-    aar: parsed ? parsed.year() : NaN,
-  };
-}
-
 export function tilDatoMedManedNavnOgKlokkeslettWithComma(
   dato: ValgfriDato,
 ): string {
@@ -151,7 +141,7 @@ export function tilLesbarPeriodeMedArUtenManednavn(
   return `${tilLesbarDatoMedArUtenManedNavn(fom)} - ${tilLesbarDatoMedArUtenManedNavn(tom)}`;
 }
 
-function kalenderdagerMellom(startDato: Dato, sluttDato: Dato): number {
+export function kalenderdagerMellom(startDato: Dato, sluttDato: Dato): number {
   return dayjs(sluttDato)
     .startOf("day")
     .diff(dayjs(startDato).startOf("day"), "day");
@@ -159,13 +149,6 @@ function kalenderdagerMellom(startDato: Dato, sluttDato: Dato): number {
 
 export function dagerMellomDatoer(startDato: Dato, sluttDato: Dato): number {
   return Math.abs(kalenderdagerMellom(startDato, sluttDato));
-}
-
-export function dagerMellomDatoerUtenAbs(
-  startDato: Dato,
-  sluttDato: Dato,
-): number {
-  return kalenderdagerMellom(startDato, sluttDato);
 }
 
 export function erIdag(dato: ValgfriDato): boolean {
@@ -192,9 +175,12 @@ export function getDuration(from: Dato, to: Dato): number {
   return kalenderdagerMellom(from, to) + 1;
 }
 
-export function manederMellomDatoer(d1: ValgfriDato, d2: ValgfriDato): number {
-  const fra = parseDato(d1);
-  const til = parseDato(d2);
+export function manederMellomDatoer(
+  dato1: ValgfriDato,
+  dato2: ValgfriDato,
+): number {
+  const fra = parseDato(dato1);
+  const til = parseDato(dato2);
   if (!fra || !til) {
     return 0;
   }
