@@ -1,3 +1,4 @@
+import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 import { DialogmotedeltakerBehandlerDTO } from "./dialogmoteTypes";
 
 export interface EndreSkjemaValues extends TidStedSkjemaValues {
@@ -5,6 +6,7 @@ export interface EndreSkjemaValues extends TidStedSkjemaValues {
   begrunnelseArbeidstaker: string;
   begrunnelseBehandler?: string;
   behandler?: DialogmotedeltakerBehandlerDTO;
+  nyBehandler?: BehandlerDTO;
 }
 
 export interface TidStedSkjemaValues {

@@ -25,10 +25,8 @@ import DialogmoteKlokkeslett from "@/sider/dialogmoter/components/DialogmoteKlok
 import MalformRadioGroup from "@/components/MalformRadioGroup";
 import TextareaField from "@/sider/dialogmoter/components/TextareaField";
 import DialogmoteFrist from "@/sider/dialogmoter/components/DialogmoteFrist";
-import { useState } from "react";
 import { useInnkallingDocument } from "@/hooks/dialogmote/document/useInnkallingDocument";
-import { DialogmoteInnkallingBehandler } from "../../innkalling/DialogmoteInnkallingBehandler";
-import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
+import { DialogmoteEndringBehandler } from "@/sider/dialogmoter/components/endre/components/DialogmoteEndringBehandler";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import dayjs from "dayjs";
 
@@ -71,10 +69,6 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
   const { currentLedere } = useLedereQuery();
   const innkallingDocument = useInnkallingDocument();
 
-  const [selectedBehandler, setSelectedBehandler] = useState<
-    BehandlerDTO | undefined
-  >(undefined);
-
   const narmesteLeder = narmesteLederForVirksomhet(
     currentLedere,
     arbeidsgiver.virksomhetsnummer,
@@ -87,11 +81,11 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
     getEndreDocumentArbeidsgiver,
     getEndreDocumentBehandler,
   } = useEndreDocument(dialogmote);
-  const { toEndreDto } = useSkjemaValuesToDto();
+  const { toDialogmoteEndringDto } = useSkjemaValuesToDto();
 
   const methods = useForm<EndreSkjemaValues>({
     defaultValues: {
-      dato: tid,
+      dato: dayjs(tid).format("YYYY-MM-DD"),
       klokkeslett: dayjs(tid).format("HH:mm"),
       sted,
       behandler,
@@ -106,9 +100,9 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
     watch,
   } = methods;
 
-  function toEndreTidSted(values: EndreSkjemaValues): EndreDialogmoteDTO {
+  function toDialogmoteEndring(values: EndreSkjemaValues): EndreDialogmoteDTO {
     const endreDialogmoteDto: EndreDialogmoteDTO = {
-      ...toEndreDto(values),
+      ...toDialogmoteEndringDto(values),
       arbeidstaker: {
         begrunnelse: values.begrunnelseArbeidstaker,
         endringsdokument: getEndreDocumentArbeidstaker(values),
@@ -124,15 +118,16 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
         moteDokument: getEndreDocumentBehandler(values),
       };
     }
-    if (selectedBehandler) {
+    const { nyBehandler } = values;
+    if (nyBehandler) {
       endreDialogmoteDto.behandler = {
         begrunnelse: values.begrunnelseBehandler || "",
         moteDokument: innkallingDocument.getInnkallingDocumentBehandler(values),
         behandler: {
-          personIdent: selectedBehandler.fnr,
-          behandlerRef: selectedBehandler.behandlerRef,
-          behandlerNavn: behandlerNavn(selectedBehandler),
-          behandlerKontor: selectedBehandler.kontor ?? "",
+          personIdent: nyBehandler.fnr,
+          behandlerRef: nyBehandler.behandlerRef,
+          behandlerNavn: behandlerNavn(nyBehandler),
+          behandlerKontor: nyBehandler.kontor ?? "",
         },
       };
     }
@@ -141,7 +136,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
   }
 
   const submit = (values: EndreSkjemaValues) => {
-    const dialogmoteEndring = toEndreTidSted(values);
+    const dialogmoteEndring = toDialogmoteEndring(values);
     endreDialogmote.mutate(dialogmoteEndring);
   };
 
@@ -187,10 +182,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
               {behandler.behandlerNavn}
             </div>
           ) : (
-            <DialogmoteInnkallingBehandler
-              setSelectedBehandler={setSelectedBehandler}
-              selectedbehandler={selectedBehandler}
-            />
+            <DialogmoteEndringBehandler />
           )}
           <div>
             <TextareaField

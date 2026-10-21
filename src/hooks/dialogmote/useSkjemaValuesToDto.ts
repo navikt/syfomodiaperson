@@ -4,7 +4,7 @@ import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
 
 export const useSkjemaValuesToDto = () => {
   return {
-    toEndreDto: (values: TidStedSkjemaValues): TidStedDto => {
+    toDialogmoteEndringDto: (values: TidStedSkjemaValues): TidStedDto => {
       return {
         sted: values.sted,
         tid: genererDato(values.dato, values.klokkeslett),
