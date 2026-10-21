@@ -31,7 +31,6 @@ const connectSrcDev = [
 server.use(
   helmet({
     contentSecurityPolicy: {
-      reportOnly: true,
       useDefaults: false,
       directives: {
         defaultSrc: ["'self'"],
