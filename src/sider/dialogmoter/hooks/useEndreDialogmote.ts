@@ -6,7 +6,7 @@ import { dialogmoterQueryKeys } from "@/sider/dialogmoter/hooks/dialogmoteQueryH
 
 export const useEndreDialogmote = (fnr: string, dialogmoteUuid: string) => {
   const queryClient = useQueryClient();
-  const path = `${ISDIALOGMOTE_ROOT}/dialogmote/${dialogmoteUuid}/`;
+  const path = `${ISDIALOGMOTE_ROOT}/dialogmote/${dialogmoteUuid}/endre`;
   const postEndre = (endring: EndreDialogmoteDTO) => post(path, endring);
 
   return useMutation({

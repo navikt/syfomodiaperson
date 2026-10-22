@@ -114,16 +114,16 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
     };
     if (behandler) {
       endreDialogmoteDto.behandler = {
-        begrunnelse: values.begrunnelseBehandler || "",
+        fritekst: values.begrunnelseBehandler || "",
         moteDokument: getEndreDocumentBehandler(values),
       };
     }
     const { nyBehandler } = values;
     if (nyBehandler) {
       endreDialogmoteDto.behandler = {
-        begrunnelse: values.begrunnelseBehandler || "",
+        fritekst: values.begrunnelseBehandler || "",
         moteDokument: innkallingDocument.getInnkallingDocumentBehandler(values),
-        behandler: {
+        deltaker: {
           personIdent: nyBehandler.fnr,
           behandlerRef: nyBehandler.behandlerRef,
           behandlerNavn: behandlerNavn(nyBehandler),

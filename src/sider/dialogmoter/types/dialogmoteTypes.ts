@@ -118,9 +118,9 @@ export interface EndreDialogmoteDTO extends TidStedDto {
     endringsdokument: DocumentComponentDto[];
   };
   behandler?: {
-    begrunnelse: string;
+    fritekst: string;
     moteDokument: DocumentComponentDto[];
-    behandler?: BehandlerDto;
+    deltaker?: BehandlerDto;
   };
 }
 
