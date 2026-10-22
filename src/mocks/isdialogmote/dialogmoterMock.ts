@@ -32,7 +32,7 @@ type VarselOpts = {
   varselType:
     | MotedeltakerVarselType.INNKALT
     | MotedeltakerVarselType.AVLYST
-    | MotedeltakerVarselType.ENDRE;
+    | MotedeltakerVarselType.ENDRET;
   uuid: string;
   svar?: VarselSvarDTO;
 };
@@ -111,7 +111,7 @@ const createVarsel = ({
         ],
       };
     }
-    case MotedeltakerVarselType.ENDRE: {
+    case MotedeltakerVarselType.ENDRET: {
       return {
         uuid: uuid + 5,
         createdAt: dayjs().subtract(5, "days").toISOString(),
@@ -157,7 +157,7 @@ export const createDialogmote = (
           svarType: SvarType.KOMMER_IKKE,
         },
         uuid,
-        varselType: MotedeltakerVarselType.ENDRE,
+        varselType: MotedeltakerVarselType.ENDRET,
       }),
       digitalt: false,
     },
@@ -165,7 +165,7 @@ export const createDialogmote = (
       ...createVarsel({
         svar: undefined,
         uuid,
-        varselType: MotedeltakerVarselType.ENDRE,
+        varselType: MotedeltakerVarselType.ENDRET,
       }),
       digitalt: false,
     },
@@ -191,7 +191,7 @@ export const createDialogmote = (
           svarType: SvarType.NYTT_TID_STED,
         },
         uuid,
-        varselType: MotedeltakerVarselType.ENDRE,
+        varselType: MotedeltakerVarselType.ENDRET,
       }),
       status: "",
     },
@@ -203,7 +203,7 @@ export const createDialogmote = (
           svarType: SvarType.KOMMER,
         },
         uuid,
-        varselType: MotedeltakerVarselType.ENDRE,
+        varselType: MotedeltakerVarselType.ENDRET,
       }),
       status: "",
     },

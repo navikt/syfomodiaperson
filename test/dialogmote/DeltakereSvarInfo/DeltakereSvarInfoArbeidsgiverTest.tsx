@@ -165,7 +165,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     const dialogmoteMedLestEndring = dialogmoteMedVarsel(
       [
         varselArbeidsgiver(
-          MotedeltakerVarselType.ENDRE,
+          MotedeltakerVarselType.ENDRET,
           "2021-12-03T12:56:26.271381",
         ),
       ],
@@ -189,7 +189,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     const dialogmoteMedLestEndring = dialogmoteMedVarsel(
       [
         varselArbeidsgiver(
-          MotedeltakerVarselType.ENDRE,
+          MotedeltakerVarselType.ENDRET,
           "2021-12-03T12:56:26.271381",
           {
             svarType: SvarType.KOMMER,
@@ -216,7 +216,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     const dialogmoteMedLestEndring = dialogmoteMedVarsel(
       [
         varselArbeidsgiver(
-          MotedeltakerVarselType.ENDRE,
+          MotedeltakerVarselType.ENDRET,
           "2021-12-03T12:56:26.271381",
           {
             svarType: SvarType.NYTT_TID_STED,
@@ -244,7 +244,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
     const dialogmoteMedLestEndring = dialogmoteMedVarsel(
       [
         varselArbeidsgiver(
-          MotedeltakerVarselType.ENDRE,
+          MotedeltakerVarselType.ENDRET,
           "2021-12-03T12:56:26.271381",
           {
             svarType: SvarType.KOMMER_IKKE,
@@ -270,7 +270,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
 
   describe("arbeidsgiver har ikke åpnet endring", () => {
     const dialogmoteMedUlestEndring = dialogmoteMedVarsel(
-      [varselArbeidsgiver(MotedeltakerVarselType.ENDRE)],
+      [varselArbeidsgiver(MotedeltakerVarselType.ENDRET)],
       [],
     );
 

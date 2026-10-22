@@ -164,7 +164,7 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
       [],
       [
         varselArbeidstaker(
-          MotedeltakerVarselType.ENDRE,
+          MotedeltakerVarselType.ENDRET,
           "2021-12-04T12:56:26.271381",
         ),
       ],
@@ -188,7 +188,7 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
       [],
       [
         varselArbeidstaker(
-          MotedeltakerVarselType.ENDRE,
+          MotedeltakerVarselType.ENDRET,
           "2021-12-04T12:56:26.271381",
           {
             svarType: SvarType.KOMMER,
@@ -215,7 +215,7 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
       [],
       [
         varselArbeidstaker(
-          MotedeltakerVarselType.ENDRE,
+          MotedeltakerVarselType.ENDRET,
           "2021-12-04T12:56:26.271381",
           {
             svarType: SvarType.NYTT_TID_STED,
@@ -243,7 +243,7 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
       [],
       [
         varselArbeidstaker(
-          MotedeltakerVarselType.ENDRE,
+          MotedeltakerVarselType.ENDRET,
           "2021-12-04T12:56:26.271381",
           {
             svarType: SvarType.KOMMER_IKKE,
@@ -269,7 +269,7 @@ describe("DeltakereSvarInfo for arbeidstaker", () => {
   describe("arbeidstaker har ikke åpnet endring", () => {
     const dialogmoteMedUlestEndring = dialogmoteMedVarsel(
       [],
-      [varselArbeidstaker(MotedeltakerVarselType.ENDRE)],
+      [varselArbeidstaker(MotedeltakerVarselType.ENDRET)],
     );
 
     it("viser arbeidstaker har ikke åpnet endring med minus-sirkel-ikon og manglende begrunnelse", () => {

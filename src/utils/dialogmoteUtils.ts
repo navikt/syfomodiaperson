@@ -57,7 +57,7 @@ export const getHarAapnetTekst = (
       return lestDato
         ? `åpnet innkallingen ${lestDatoString} - Har ikke gitt svar`
         : "har ikke åpnet innkallingen";
-    case MotedeltakerVarselType.ENDRE:
+    case MotedeltakerVarselType.ENDRET:
       return lestDato
         ? `åpnet endringen ${lestDatoString} - Har ikke gitt svar`
         : "har ikke åpnet endringen";
