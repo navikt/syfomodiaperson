@@ -49,7 +49,7 @@ export interface DialogmotedeltakerBehandlerVarselSvarDTO {
 
 export enum SvarType {
   KOMMER = "KOMMER",
-  ENDRE = "ENDRE",
+  NYTT_TID_STED = "NYTT_TID_STED",
   KOMMER_IKKE = "KOMMER_IKKE",
 }
 
@@ -57,7 +57,7 @@ export enum DialogmoteStatus {
   INNKALT = "INNKALT",
   AVLYST = "AVLYST",
   FERDIGSTILT = "FERDIGSTILT",
-  ENDRE = "ENDRE",
+  ENDRET = "ENDRET",
   LUKKET = "LUKKET",
 }
 

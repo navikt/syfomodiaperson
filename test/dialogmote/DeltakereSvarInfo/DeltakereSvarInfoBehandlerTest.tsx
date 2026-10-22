@@ -160,7 +160,7 @@ describe("DeltakereSvarInfo med behandler", () => {
   describe("behandler har svart 'nytt tid/sted' med begrunnelse etter 'kommer' med begrunnelse", () => {
     const dialogmoteMedSvar = dialogmoteBehandlerMedSvar([
       {
-        svarType: SvarType.ENDRE,
+        svarType: SvarType.NYTT_TID_STED,
         tekst: "Tidspunktet passer ikke likevel",
         createdAt: "2021-12-08T12:56:26.271381",
       },

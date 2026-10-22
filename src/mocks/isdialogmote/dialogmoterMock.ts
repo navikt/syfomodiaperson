@@ -176,7 +176,7 @@ export const createDialogmote = (
         svar: {
           svarTidspunkt: addDays(moteTid, -3).toISOString(),
           svarTekst: "Passer ikke denne dagen.",
-          svarType: SvarType.ENDRE,
+          svarType: SvarType.NYTT_TID_STED,
         },
         uuid,
         varselType: MotedeltakerVarselType.INNKALT,
@@ -188,7 +188,7 @@ export const createDialogmote = (
         svar: {
           svarTidspunkt: addDays(moteTid, 1).toISOString(),
           svarTekst: "Hva med fredag?",
-          svarType: SvarType.ENDRE,
+          svarType: SvarType.NYTT_TID_STED,
         },
         uuid,
         varselType: MotedeltakerVarselType.ENDRE,
@@ -225,7 +225,7 @@ export const createDialogmote = (
         {
           uuid: uuid + 7,
           createdAt: "2021-12-04T13:56:26.282386",
-          svarType: SvarType.ENDRE,
+          svarType: SvarType.NYTT_TID_STED,
           tekst: "Jeg vil endre møtet!",
         },
         {
@@ -384,7 +384,7 @@ export const dialogmoteStatusEndringMock: DialogmoteStatusEndringDTO[] = [
     createdAt: addDays(new Date(), -7),
     dialogmoteId: 1,
     dialogmoteOpprettetAv: VEILEDER_IDENT_DEFAULT,
-    status: DialogmoteStatus.ENDRE,
+    status: DialogmoteStatus.ENDRET,
     statusEndringOpprettetAv: VEILEDER_IDENT_DEFAULT,
   },
   {

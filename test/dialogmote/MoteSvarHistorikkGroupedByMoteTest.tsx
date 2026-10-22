@@ -93,7 +93,7 @@ const ferdigstiltMote: DialogmoteDTO = {
     varselList: [
       varselAG(
         {
-          svarType: SvarType.ENDRE,
+          svarType: SvarType.NYTT_TID_STED,
         },
         MotedeltakerVarselType.INNKALT,
       ),

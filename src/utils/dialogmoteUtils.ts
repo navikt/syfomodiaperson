@@ -11,7 +11,7 @@ import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 export const isAktivtDialogmote = (dialogmote: DialogmoteDTO): boolean => {
   return (
     dialogmote.status === DialogmoteStatus.INNKALT ||
-    dialogmote.status === DialogmoteStatus.ENDRE
+    dialogmote.status === DialogmoteStatus.ENDRET
   );
 };
 
@@ -40,7 +40,7 @@ export const getSvarTekst = (
   switch (svarType) {
     case SvarType.KOMMER:
       return `kommer - ${mottattTekst}`;
-    case SvarType.ENDRE:
+    case SvarType.NYTT_TID_STED:
       return `ønsker å endre tidspunkt eller sted - ${mottattTekst}`;
     case SvarType.KOMMER_IKKE:
       return `ønsker å avlyse - ${mottattTekst}`;

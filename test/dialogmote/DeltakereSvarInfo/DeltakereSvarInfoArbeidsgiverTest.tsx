@@ -91,7 +91,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
           MotedeltakerVarselType.INNKALT,
           "2021-12-01T12:56:26.271381",
           {
-            svarType: SvarType.ENDRE,
+            svarType: SvarType.NYTT_TID_STED,
             svarTidspunkt: "2021-12-01T12:56:26.271381",
             svarTekst: "Passer ikke",
           },
@@ -219,7 +219,7 @@ describe("DeltakereSvarInfo for arbeidsgiver", () => {
           MotedeltakerVarselType.ENDRE,
           "2021-12-03T12:56:26.271381",
           {
-            svarType: SvarType.ENDRE,
+            svarType: SvarType.NYTT_TID_STED,
             svarTidspunkt: "2021-12-03T12:56:26.271381",
             svarTekst: "Kan vi endre sted?",
           },

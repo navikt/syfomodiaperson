@@ -56,7 +56,7 @@ describe("DialogmoteMoteStatusPanel", () => {
   it("Viser overskrift 'Endringen er sendt' for endret dialogmøte i morgen", () => {
     const endretDialogmote: DialogmoteDTO = {
       ...dialogmote,
-      status: DialogmoteStatus.ENDRE,
+      status: DialogmoteStatus.ENDRET,
       tid: daysFromToday(1).toISOString(),
     };
     renderDialogmoteMoteStatusPanel(endretDialogmote);
@@ -77,7 +77,7 @@ describe("DialogmoteMoteStatusPanel", () => {
   it("Viser overskrift 'Møtedato er passert' for endret dialogmøte i går", () => {
     const endretDialogmote: DialogmoteDTO = {
       ...dialogmote,
-      status: DialogmoteStatus.ENDRE,
+      status: DialogmoteStatus.ENDRET,
       tid: daysFromToday(-1).toISOString(),
     };
     renderDialogmoteMoteStatusPanel(endretDialogmote);
@@ -98,7 +98,7 @@ describe("DialogmoteMoteStatusPanel", () => {
   it("Viser overskrift 'Endringen er sendt' for endret dialogmøte i dag", () => {
     const endretDialogmote: DialogmoteDTO = {
       ...dialogmote,
-      status: DialogmoteStatus.ENDRE,
+      status: DialogmoteStatus.ENDRET,
       tid: new Date().toISOString(),
     };
     renderDialogmoteMoteStatusPanel(endretDialogmote);
@@ -115,7 +115,7 @@ describe("DialogmoteMoteStatusPanel", () => {
     };
     const endretDialogmote: DialogmoteDTO = {
       ...dialogmote,
-      status: DialogmoteStatus.ENDRE,
+      status: DialogmoteStatus.ENDRET,
       opprettetAv: VEILEDER_DEFAULT.ident,
       tildeltVeilederIdent: VEILEDER_DEFAULT.ident,
     };
@@ -142,7 +142,7 @@ describe("DialogmoteMoteStatusPanel", () => {
     };
     const endretDialogmote: DialogmoteDTO = {
       ...dialogmote,
-      status: DialogmoteStatus.ENDRE,
+      status: DialogmoteStatus.ENDRET,
       opprettetAv: VEILEDER_DEFAULT.ident,
       tildeltVeilederIdent: ANNEN_VEILEDER_IDENT,
     };
