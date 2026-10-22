@@ -16,6 +16,7 @@ export default defineConfig({
     environment: "jsdom",
     include: ["test/**/*{test,Test}.*"],
     setupFiles: ["test/setup.ts"],
+    execArgv: ["--no-webstorage"],
     deps: {
       web: {
         transformAssets: false,
