@@ -1,20 +1,27 @@
-import { expect, describe, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   addWeeks,
   dagerMellomDatoer,
   erIdag,
   erIkkeIdag,
   getWeeksBetween,
+  isExpiredForhandsvarsel,
   manederMellomDatoer,
   restdatoTildato,
   restdatoTilLesbarDato,
+  tilDatoMedManedNavn,
+  tilDatoMedManedNavnOgKlokkeslett,
   tilDatoMedManedNavnOgKlokkeslettWithComma,
   tilDatoMedUkedagOgManedNavn,
   tilDatoMedUkedagOgManedNavnOgKlokkeslett,
   tilLesbarDatoMedArUtenManedNavn,
+  tilLesbarPeriodeMedArstall,
   tilLesbarPeriodeMedArUtenManednavn,
+  toDate,
+  toDatePrettyPrint,
   visKlokkeslett,
 } from "@/utils/datoUtils";
+import { Malform } from "@/context/malform/MalformContext";
 
 describe("datoUtils", () => {
   describe("visKlokkeslett", () => {
@@ -186,6 +193,148 @@ describe("datoUtils", () => {
 
       const weeks = getWeeksBetween(date1, date2);
       expect(weeks).to.equal(7);
+    });
+  });
+
+  describe("edge cases", () => {
+    describe("tidssoner", () => {
+      const tidssoner = [
+        { tidssone: "Europe/Oslo", offsetIJanuar: -60 },
+        { tidssone: "UTC", offsetIJanuar: 0 },
+        { tidssone: "America/New_York", offsetIJanuar: 300 },
+        { tidssone: "Pacific/Kiritimati", offsetIJanuar: -840 },
+      ];
+      let opprinneligTidssone: string | undefined;
+
+      beforeEach(() => {
+        opprinneligTidssone = process.env.TZ;
+      });
+
+      afterEach(() => {
+        process.env.TZ = opprinneligTidssone;
+      });
+
+      it.each(tidssoner)(
+        "viser samme kalenderdato i $tidssone",
+        ({ tidssone, offsetIJanuar }) => {
+          process.env.TZ = tidssone;
+
+          const offset = new Date(2024, 0, 1).getTimezoneOffset();
+          const datoUtenKlokkeslett = toDatePrettyPrint("2019-03-11");
+          const localDateTime = tilDatoMedManedNavnOgKlokkeslett(
+            "2021-06-04T23:30:00.123456",
+          );
+          const rettEtterMidnatt = toDatePrettyPrint(
+            new Date(2024, 0, 15, 0, 30),
+          );
+
+          expect(offset).to.equal(offsetIJanuar);
+          expect(datoUtenKlokkeslett).to.equal("11.03.2019");
+          expect(localDateTime).to.equal("4. juni 2021 kl. 23.30");
+          expect(rettEtterMidnatt).to.equal("15.01.2024");
+        },
+      );
+    });
+
+    it("viser UTC-tidspunkt i lokal tid", () => {
+      const utcTidspunkt = "2020-08-10T22:00:00Z";
+
+      const dato = toDatePrettyPrint(utcTidspunkt);
+      const klokkeslett = visKlokkeslett(utcTidspunkt);
+
+      expect(dato).to.equal("11.08.2020");
+      expect(klokkeslett).to.equal("00.00");
+    });
+
+    it("tolker tidspunkt med offset", () => {
+      const dato = toDate("2024-01-01T10:00:00+01:00");
+
+      expect(dato?.getTime()).to.equal(Date.UTC(2024, 0, 1, 9, 0));
+    });
+
+    it.each([null, undefined, "", "tull", "2024-02-30"])(
+      "gir tom verdi for ugyldig eller manglende dato: %s",
+      (verdi) => {
+        expect(toDatePrettyPrint(verdi)).to.equal(undefined);
+        expect(visKlokkeslett(verdi)).to.equal(null);
+        expect(tilDatoMedManedNavn(verdi)).to.equal("");
+        expect(toDate(verdi)).to.equal(undefined);
+      },
+    );
+
+    it("formaterer periode med lokale datoer rundt midnatt", () => {
+      const fom = new Date(2024, 2, 1, 0, 30);
+      const tom = new Date(2024, 2, 15, 23, 30);
+
+      const periode = tilLesbarPeriodeMedArstall(fom, tom);
+
+      expect(periode).to.equal("1. – 15. mars 2024");
+    });
+
+    it("bruker nynorske ukedager", () => {
+      const tysdag = tilDatoMedUkedagOgManedNavn("2024-03-12", Malform.NYNORSK);
+      const sundag = tilDatoMedUkedagOgManedNavn("2024-03-10", Malform.NYNORSK);
+
+      expect(tysdag).to.equal("Tysdag 12. mars 2024");
+      expect(sundag).to.equal("Sundag 10. mars 2024");
+    });
+
+    it("teller kalenderdager uavhengig av klokkeslett", () => {
+      const sentPaKvelden = new Date(2024, 0, 1, 23, 0);
+      const tidligNesteDag = new Date(2024, 0, 2, 1, 0);
+
+      const dager = dagerMellomDatoer(sentPaKvelden, tidligNesteDag);
+
+      expect(dager).to.equal(1);
+    });
+
+    it("teller ett døgn over overgang til sommertid og vintertid", () => {
+      const overSommertid = dagerMellomDatoer(
+        new Date(2024, 2, 31),
+        new Date(2024, 3, 1),
+      );
+      const overVintertid = dagerMellomDatoer(
+        new Date(2024, 9, 27),
+        new Date(2024, 9, 28),
+      );
+
+      expect(overSommertid).to.equal(1);
+      expect(overVintertid).to.equal(1);
+    });
+
+    it("håndterer månedsslutt i manederMellomDatoer", () => {
+      const tilSisteDagIFebruar = manederMellomDatoer(
+        "2024-01-31",
+        "2024-02-29",
+      );
+      const tilNestSisteDagIFebruar = manederMellomDatoer(
+        "2024-01-31",
+        "2024-02-28",
+      );
+
+      expect(tilSisteDagIFebruar).to.equal(1);
+      expect(tilNestSisteDagIFebruar).to.equal(0);
+    });
+
+    describe("forhåndsvarsel", () => {
+      beforeEach(() => {
+        vi.useFakeTimers({ toFake: ["Date"] });
+        vi.setSystemTime(new Date(2024, 2, 31, 0, 30));
+      });
+
+      afterEach(() => {
+        vi.useRealTimers();
+      });
+
+      it("er utløpt først dagen etter fristen", () => {
+        const fristIdag = isExpiredForhandsvarsel(new Date(2024, 2, 31, 0, 0));
+        const fristIgar = isExpiredForhandsvarsel(
+          new Date(2024, 2, 30, 23, 59),
+        );
+
+        expect(fristIdag).to.equal(false);
+        expect(fristIgar).to.equal(true);
+      });
     });
   });
 });

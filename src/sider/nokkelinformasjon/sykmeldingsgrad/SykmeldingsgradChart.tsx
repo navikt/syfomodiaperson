@@ -1,7 +1,7 @@
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { ReactElement } from "react";
 import dayjs from "dayjs";
-import { dagerMellomDatoer, getDatoKomponenter } from "@/utils/datoUtils";
+import { dagerMellomDatoer, getManedText } from "@/utils/datoUtils";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 
 interface Props {
@@ -55,7 +55,7 @@ export default function SykmeldingsgradChart({ sykmeldingsperioder }: Props) {
     } else if (currentDate.getDate() === 15) {
       return (
         <text x={x} y={y + 8} textAnchor="middle" fill="#666">
-          {getDatoKomponenter(currentDate).maaned.substring(0, 3)}
+          {getManedText(currentDate).substring(0, 3)}
         </text>
       );
     }
