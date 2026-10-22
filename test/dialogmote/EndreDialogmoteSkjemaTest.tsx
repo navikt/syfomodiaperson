@@ -240,7 +240,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
           ),
         },
         behandler: {
-          begrunnelse: moteTekster.fritekstTilBehandler,
+          fritekst: moteTekster.fritekstTilBehandler,
           moteDokument: expectedEndringDocuments.behandler(expectedSendtDato),
         },
         videoLink: endretMote.videolink,
