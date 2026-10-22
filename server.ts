@@ -8,18 +8,53 @@ import { setupProxy } from "./server/proxy.js";
 import { setupDraftEndpoints } from "./server/draft.js";
 import { connectValkey } from "./server/valkey.js";
 import { logger } from "@navikt/pino-logger";
+import { setupCspReporting } from "./server/csp.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const server = express();
+const isProdCluster = process.env.NAIS_CLUSTER_NAME === "prod-gcp";
 
-server.use(express.json());
+const connectSrcProd = [
+  "wss://modiacontextholder.intern.nav.no",
+  "https://telemetry.nav.no",
+  "https://reops-event-proxy.nav.no",
+];
+
+const connectSrcDev = [
+  "wss://modiacontextholder.intern.dev.nav.no",
+  "https://telemetry.ekstern.dev.nav.no",
+  "https://reops-event-proxy.ekstern.dev.nav.no",
+];
+
 server.use(
   helmet({
-    contentSecurityPolicy: false,
+    contentSecurityPolicy: {
+      reportOnly: true,
+      useDefaults: false,
+      directives: {
+        defaultSrc: ["'self'"],
+        baseUri: ["'self'"],
+        objectSrc: ["'none'"],
+        formAction: ["'self'"],
+        frameAncestors: ["'none'"],
+        scriptSrc: ["'self'", "https://cdn.nav.no"],
+        styleSrc: ["'self'"],
+        fontSrc: ["'self'", "https://cdn.nav.no"],
+        imgSrc: ["'self'", "data:"],
+        connectSrc: [
+          "'self'",
+          ...(isProdCluster ? connectSrcProd : connectSrcDev),
+        ],
+        reportUri: ["/csp-report"],
+        reportTo: ["csp-endpoint"],
+      },
+    },
   }),
 );
+setupCspReporting(server);
+server.use(express.json());
 
 const nocache = (
   req: express.Request,

@@ -59,6 +59,7 @@ export default function SykepengesoknadSide() {
             case Soknadstype.SELVSTENDIGE_OG_FRILANSERE:
             case Soknadstype.ARBEIDSLEDIG:
             case Soknadstype.FRISKMELDT_TIL_ARBEIDSFORMIDLING:
+            case Soknadstype.FISKERE:
             case Soknadstype.ANNET_ARBEIDSFORHOLD: {
               return (
                 <SykepengesoknadSelvstendig
