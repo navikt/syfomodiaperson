@@ -54,9 +54,9 @@ export function KartleggingInfo() {
       background="accent-soft"
       borderColor="brand-blue"
       borderWidth="1"
-      className="flex flex-col rounded p-4 mt-2 gap-4"
+      className="flex flex-col rounded p-4 mt-2 gap-2"
     >
-      <Heading size="small">{texts.heading}</Heading>
+      <Heading size="xsmall">{texts.heading}</Heading>
       <List as="ul" size="small">
         <List.Item>
           <div className="flex flex-col">

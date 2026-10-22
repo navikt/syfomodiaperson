@@ -183,9 +183,9 @@ describe("Kartleggingssporsmal", () => {
       }),
     ).to.exist;
     expect(
-      screen.queryByText("Svarene fra den sykmeldte skal", {
-        exact: false,
-      }),
+      screen.queryByText(
+        "Svarene skal hjelpe deg å tidlig identifisere sykmeldte med risiko for langtidsfravær eller fare for å falle ut av arbeidslivet.",
+      ),
     ).to.exist;
 
     expect(queryButton("Lagre vurdering, fjern oppgaven")).to.not.exist;
@@ -341,9 +341,9 @@ describe("Kartleggingssporsmal", () => {
     ).to.exist;
 
     expect(
-      screen.queryByText("Svarene fra den sykmeldte skal", {
-        exact: false,
-      }),
+      screen.queryByText(
+        "Svarene skal hjelpe deg å tidlig identifisere sykmeldte med risiko for langtidsfravær eller fare for å falle ut av arbeidslivet.",
+      ),
     ).to.exist;
     expect(screen.queryByText("Utdrag fra sykefraværet")).to.exist;
 

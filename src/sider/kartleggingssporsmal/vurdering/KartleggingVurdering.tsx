@@ -4,6 +4,8 @@ import {
   Box,
   Button,
   Heading,
+  Label,
+  List,
   Radio,
   RadioGroup,
   Textarea,
@@ -31,17 +33,39 @@ const LINK_RUTINE =
 
 const texts = {
   heading: "Vurdering",
-  radioLegend: "Velg alternativet som passer vurderingen",
+  radioLegend: "Velg alternativet som passer",
   rutine: {
+    intro:
+      "Her skal du vurdere om den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging. Ta utgangspunkt i veiledningen på høyre side når du vurderer saken.",
+    senereOppfolgingspunkter:
+      "Husk at den sykmeldte fanges opp på senere oppfølgingspunkter i sykefraværet, og at arbeidsgiver har hovedansvaret for oppfølgingen.",
+    vurderRisiko: {
+      heading: "Vurder om svarene indikerer risiko for langtidsfravær",
+      info: "Når svarene fra den sykmeldte ikke indikerer risiko for langvarig sykefravær, skal saken som hovedregel ikke følges opp videre på dette tidspunktet.",
+    },
+    vurderKontakt: {
+      heading:
+        "Vurder om det er behov for kontakt med Nav der det indikeres risiko",
+      info: "Se på svarene og annen tilgjengelig informasjon i saken. Vurder ut fra de samlede opplysningene om det er behov for å forstå situasjonen bedre, eller om det ikke er behov for oppfølging fra Nav på nåværende tidspunkt.",
+    },
+    behovForOppfolging: {
+      heading: "Dersom det er behov for oppfølging fra Nav",
+      info: "Vurder hvordan du skal følge opp saken. Dette kan innebære kontakt med den sykmeldte per telefon eller digital dialog, individuell samtale, eller dialogmøte med arbeidsgiver. Planlegg videre oppfølging før du avslutter oppgaven.",
+    },
     info: "Vurderingen av svarene skal gjøres basert på ",
     linkText:
       "rutine for bruk av kartleggingsspørsmålene i sykefraværsoppfølgingen.",
   },
   textLegend: "Begrunnelse (valgfritt)",
-  RISIKO_FOR_LANGTIDSFRAVAR:
-    "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
-  IKKE_RISIKO_FOR_LANGTIDSFRAVAR:
-    "Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging",
+  radioOptions: {
+    RISIKO_FOR_LANGTIDSFRAVAR:
+      "Jeg vurderer at den sykmeldte har risiko for langtidsfravær og behov for tidlig oppfølging",
+    IKKE_RISIKO_FOR_LANGTIDSFRAVAR:
+      "Jeg vurderer at den sykmeldte ikke har behov for tidlig oppfølging",
+    risikoDescription: "Velg denne der du har satt i gang videre oppfølging.",
+    ikkeRisikoDescription:
+      "Velg denne der det ikke er risiko, eller der det er risiko, men ikke behov for oppfølging fra Nav på nåværende tidspunkt.",
+  },
   button: "Lagre vurdering, fjern oppgaven",
   vurderingIkkeValgtError: "Du må velge et alternativ",
   begrunnelseForLangError: `Begrunnelse kan ikke være lengre enn ${VURDERING_MAX_LENGTH} tegn`,
@@ -93,10 +117,9 @@ export function KartleggingVurdering({
       hasRisikoForLangtidsfravar(answeredQuestions));
 
   return (
-    <Box background="default" className="p-6 gap-6 [&>*]:mb-4 mb-4">
-      <KartleggingInfo />
-
+    <Box background="default" className="flex flex-col p-6 gap-4 mb-2">
       <Heading size={"medium"}>{texts.heading}</Heading>
+      <BodyShort size="small">{texts.rutine.intro}</BodyShort>
       <BodyShort size="small">
         {texts.rutine.info}
         <EksternLenke
@@ -106,8 +129,32 @@ export function KartleggingVurdering({
           {texts.rutine.linkText}
         </EksternLenke>
       </BodyShort>
+      <BodyShort size="small">
+        {texts.rutine.senereOppfolgingspunkter}
+      </BodyShort>
+      <KartleggingInfo />
+
+      <List as="ol" className="[&>ol]:space-y-6">
+        <List.Item>
+          <Label size="small">{texts.rutine.vurderRisiko.heading}</Label>
+          <BodyShort size="small">{texts.rutine.vurderRisiko.info}</BodyShort>
+        </List.Item>
+        <List.Item>
+          <Label size="small">{texts.rutine.vurderKontakt.heading}</Label>
+          <BodyShort size="small">{texts.rutine.vurderKontakt.info}</BodyShort>
+        </List.Item>
+
+        <List.Item>
+          <Label size="small">{texts.rutine.behovForOppfolging.heading}</Label>
+          <BodyShort size="small">
+            {texts.rutine.behovForOppfolging.info}
+          </BodyShort>
+        </List.Item>
+      </List>
+
       <RadioGroup
         legend={texts.radioLegend}
+        className="mt-2"
         size="small"
         value={vurdering.vurderingAlternativ}
         readOnly={nyesteKandidat.status === KandidatStatus.FERDIGBEHANDLET}
@@ -119,11 +166,17 @@ export function KartleggingVurdering({
           }))
         }
       >
-        <Radio value="RISIKO_FOR_LANGTIDSFRAVAR">
-          {texts.RISIKO_FOR_LANGTIDSFRAVAR}
+        <Radio
+          value="RISIKO_FOR_LANGTIDSFRAVAR"
+          description={texts.radioOptions.risikoDescription}
+        >
+          {texts.radioOptions.RISIKO_FOR_LANGTIDSFRAVAR}
         </Radio>
-        <Radio value="IKKE_RISIKO_FOR_LANGTIDSFRAVAR">
-          {texts.IKKE_RISIKO_FOR_LANGTIDSFRAVAR}
+        <Radio
+          value="IKKE_RISIKO_FOR_LANGTIDSFRAVAR"
+          description={texts.radioOptions.ikkeRisikoDescription}
+        >
+          {texts.radioOptions.IKKE_RISIKO_FOR_LANGTIDSFRAVAR}
         </Radio>
       </RadioGroup>
       {shouldShowBegrunnelse && (
@@ -145,7 +198,7 @@ export function KartleggingVurdering({
       {nyesteKandidat.status === KandidatStatus.SVAR_MOTTATT && (
         <Button
           variant="primary"
-          size="medium"
+          className="w-fit"
           onClick={() => {
             setVurderingError({
               vurderingAlternativError: null,
