@@ -265,7 +265,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
         const endreMutation = queryClient.getMutationCache().getAll()[0];
         const { behandler } = endreMutation.state
           .variables as unknown as EndreDialogmoteDTO;
-        expect(behandler?.behandler).to.deep.equal({
+        expect(behandler?.deltaker).to.deep.equal({
           personIdent: behandlerLegoLasLegesen.fnr,
           behandlerRef: behandlerLegoLasLegesen.behandlerRef,
           behandlerNavn: "Lego Las Legesen",

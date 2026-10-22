@@ -6,7 +6,7 @@ export enum MotedeltakerVarselType {
   AVLYST = "AVLYST",
   INNKALT = "INNKALT",
   REFERAT = "REFERAT",
-  ENDRE = "ENDRE",
+  ENDRET = "ENDRET",
 }
 
 export interface DialogmotedeltakerVarselDTO {
