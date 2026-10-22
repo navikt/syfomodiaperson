@@ -114,7 +114,7 @@ export default function DialogmoteInnkallingSkjema() {
   const { brukerKanIkkeVarslesDigitalt } = useKontaktinfoQuery();
   const [selectedBehandler, setSelectedBehandler] = useState<BehandlerDTO>();
   const innkallingDocument = useInnkallingDocument();
-  const { toTidStedDto } = useSkjemaValuesToDto();
+  const { toDialogmoteEndringDto } = useSkjemaValuesToDto();
   const opprettInnkalling = useOpprettInnkallingDialogmote(fnr);
   const { hasActiveOppfolgingstilfelle } = useOppfolgingstilfellePersonQuery();
   const methods = useForm<DialogmoteInnkallingSkjemaValues>();
@@ -133,7 +133,7 @@ export default function DialogmoteInnkallingSkjema() {
   const submit = (values: DialogmoteInnkallingSkjemaValues) => {
     const dialogmoteInnkalling = toInnkalling(
       values,
-      toTidStedDto(values),
+      toDialogmoteEndringDto(values),
       fnr,
       innkallingDocument,
       selectedBehandler,
