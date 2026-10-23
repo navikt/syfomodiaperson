@@ -17,10 +17,6 @@ const texts = {
 const INGEN_BEHANDLER = "INGEN_BEHANDLER";
 const SOK_BEHANDLER = "SOK_BEHANDLER";
 
-/**
- * Lar veileder legge til en ny behandler i et dialogmøte som endres.
- * Valgt behandler lagres i skjemafeltet `nyBehandler`.
- */
 export function DialogmoteEndringBehandler() {
   const [valgtRadio, setValgtRadio] = useState<string>(INGEN_BEHANDLER);
   const { field, fieldState } = useController<EndreSkjemaValues, "nyBehandler">(

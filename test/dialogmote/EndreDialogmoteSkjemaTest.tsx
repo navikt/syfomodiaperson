@@ -273,8 +273,14 @@ describe("EndreDialogmoteSkjemaTest", () => {
 
       await waitFor(() => {
         const endreMutation = queryClient.getMutationCache().getAll()[0];
-        const { behandler } = endreMutation.state
+        const { behandler, arbeidstaker, arbeidsgiver } = endreMutation.state
           .variables as unknown as EndreDialogmoteDTO;
+        expect(JSON.stringify(arbeidstaker.endringsdokument)).to.contain(
+          "Lego Las Legesen",
+        );
+        expect(JSON.stringify(arbeidsgiver.endringsdokument)).to.contain(
+          "Lego Las Legesen",
+        );
         expect(behandler?.deltaker).to.deep.equal({
           personIdent: behandlerLegoLasLegesen.fnr,
           behandlerRef: behandlerLegoLasLegesen.behandlerRef,

@@ -16,6 +16,7 @@ import { useMalform } from "@/context/malform/MalformContext";
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
+import { behandlerNavn } from "@/utils/behandlerUtils";
 
 export interface IEndreDocument {
   getEndreDocumentArbeidsgiver(
@@ -57,6 +58,15 @@ export const useEndreDocument = (dialogmote: DialogmoteDTO): IEndreDocument => {
     createParagraph(dialogmoteEndringTexts.intro2),
   ];
 
+  function getDeltakerBehandlerNavn(
+    values: Partial<EndreSkjemaValues>,
+  ): string | undefined {
+    if (behandler) {
+      return behandler.behandlerNavn;
+    }
+    return values.nyBehandler && behandlerNavn(values.nyBehandler);
+  }
+
   const getEndreDocumentArbeidsgiver = (values: Partial<EndreSkjemaValues>) => {
     const documentComponents = [
       createHeaderH1(dialogmoteEndringTexts.header),
@@ -69,13 +79,14 @@ export const useEndreDocument = (dialogmote: DialogmoteDTO): IEndreDocument => {
       documentComponents.push(createParagraph(values.begrunnelseArbeidsgiver));
     }
 
-    const outro1 = behandler
+    const deltakerBehandlerNavn = getDeltakerBehandlerNavn(values);
+    const outro1 = deltakerBehandlerNavn
       ? dialogmoteEndringTexts.arbeidsgiver.outro1WithBehandler
       : dialogmoteEndringTexts.arbeidsgiver.outro1;
-    const outro2 = behandler
-      ? `${dialogmoteEndringTexts.arbeidsgiver.outro2WithBehandler} ${behandler.behandlerNavn}.`
+    const outro2 = deltakerBehandlerNavn
+      ? `${dialogmoteEndringTexts.arbeidsgiver.outro2WithBehandler} ${deltakerBehandlerNavn}.`
       : dialogmoteEndringTexts.arbeidsgiver.outro2;
-    const outro3 = behandler
+    const outro3 = deltakerBehandlerNavn
       ? dialogmoteEndringTexts.arbeidsgiver.outro3WithBehandler
       : dialogmoteEndringTexts.arbeidsgiver.outro3;
 
@@ -109,13 +120,14 @@ export const useEndreDocument = (dialogmote: DialogmoteDTO): IEndreDocument => {
       documentComponents.push(createParagraph(values.begrunnelseArbeidstaker));
     }
 
-    const outro1 = behandler
+    const deltakerBehandlerNavn = getDeltakerBehandlerNavn(values);
+    const outro1 = deltakerBehandlerNavn
       ? dialogmoteEndringTexts.arbeidstaker.outro1WithBehandler
       : dialogmoteEndringTexts.arbeidstaker.outro1;
-    const outro2 = behandler
-      ? `${dialogmoteEndringTexts.arbeidstaker.outro2WithBehandler} ${behandler.behandlerNavn}.`
+    const outro2 = deltakerBehandlerNavn
+      ? `${dialogmoteEndringTexts.arbeidstaker.outro2WithBehandler} ${deltakerBehandlerNavn}.`
       : dialogmoteEndringTexts.arbeidstaker.outro2;
-    const outro3 = behandler
+    const outro3 = deltakerBehandlerNavn
       ? dialogmoteEndringTexts.arbeidstaker.outro3WithBehandler
       : dialogmoteEndringTexts.arbeidstaker.outro3;
 
