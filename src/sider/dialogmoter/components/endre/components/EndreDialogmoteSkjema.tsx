@@ -231,7 +231,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
               title={texts.forhandsvisningArbeidsgiverTitle}
             />
           </div>
-          {behandler && (
+          {(behandler || getValues().nyBehandler) && (
             <div>
               <TextareaField
                 {...register("begrunnelseBehandler", {
