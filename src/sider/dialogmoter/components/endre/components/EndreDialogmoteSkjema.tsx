@@ -26,10 +26,7 @@ import MalformRadioGroup from "@/components/MalformRadioGroup";
 import TextareaField from "@/sider/dialogmoter/components/TextareaField";
 import DialogmoteFrist from "@/sider/dialogmoter/components/DialogmoteFrist";
 import { useInnkallingDocument } from "@/hooks/dialogmote/document/useInnkallingDocument";
-import {
-  DialogmoteEndringBehandler,
-  INGEN_BEHANDLER,
-} from "@/sider/dialogmoter/components/endre/components/DialogmoteEndringBehandler";
+import { DialogmoteEndringBehandler } from "@/sider/dialogmoter/components/endre/components/DialogmoteEndringBehandler";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import dayjs from "dayjs";
 
@@ -93,7 +90,6 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
       sted,
       behandler,
       videoLink,
-      behandlerValg: INGEN_BEHANDLER,
     },
   });
   const {
@@ -235,7 +231,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
               title={texts.forhandsvisningArbeidsgiverTitle}
             />
           </div>
-          {(behandler || getValues().nyBehandler) && (
+          {(behandler || watch("nyBehandler")) && (
             <div>
               <TextareaField
                 {...register("begrunnelseBehandler", {
@@ -250,7 +246,11 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
               <Forhandsvisning
                 contentLabel={texts.forhandsvisningBehandlerContentLabel}
                 getDocumentComponents={() =>
-                  getEndreDocumentBehandler(getValues())
+                  behandler
+                    ? getEndreDocumentBehandler(getValues())
+                    : innkallingDocument.getInnkallingDocumentBehandler(
+                        getValues(),
+                      )
                 }
                 title={texts.forhandsvisningBehandlerTitle}
               />

@@ -35,7 +35,13 @@ import { DocumentComponentType } from "@/data/documentcomponent/documentComponen
 import { Malform, MalformProvider } from "@/context/malform/MalformContext";
 import { getEndreTexts } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import { StoreKey } from "@/hooks/useLocalStorageState";
-import { behandlerLegoLasLegesen } from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
+import {
+  behandlerLegoLasLegesen,
+  behandlerSokDialogmeldingMock,
+} from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
+import { ISDIALOGMELDING_ROOT } from "@/apiConstants";
 
 let queryClient: QueryClient;
 
@@ -291,6 +297,26 @@ describe("EndreDialogmoteSkjemaTest", () => {
 
       expect(await screen.findByText("Vennligst velg behandler")).to.exist;
       expect(queryClient.getMutationCache().getAll()).to.be.empty;
+    });
+
+    it("viser begrunnelse til behandler når behandler velges fra søk", async () => {
+      mockServer.use(
+        http.get(`*${ISDIALOGMELDING_ROOT}/behandler/search`, () =>
+          HttpResponse.json(behandlerSokDialogmeldingMock),
+        ),
+      );
+      renderEndreDialogmoteSkjema(dialogmote);
+      await userEvent.click(
+        screen.getByRole("radio", { name: "Legg til en behandler" }),
+      );
+      expect(screen.queryByLabelText("Begrunnelse til behandler")).to.not.exist;
+
+      await changeTextInput(screen.getByRole("searchbox"), "Baker");
+      await userEvent.click(
+        await screen.findByRole("button", { name: /Baker/ }),
+      );
+
+      expect(screen.getByLabelText("Begrunnelse til behandler")).to.exist;
     });
   });
 
