@@ -26,7 +26,10 @@ import MalformRadioGroup from "@/components/MalformRadioGroup";
 import TextareaField from "@/sider/dialogmoter/components/TextareaField";
 import DialogmoteFrist from "@/sider/dialogmoter/components/DialogmoteFrist";
 import { useInnkallingDocument } from "@/hooks/dialogmote/document/useInnkallingDocument";
-import { DialogmoteEndringBehandler } from "@/sider/dialogmoter/components/endre/components/DialogmoteEndringBehandler";
+import {
+  DialogmoteEndringBehandler,
+  INGEN_BEHANDLER,
+} from "@/sider/dialogmoter/components/endre/components/DialogmoteEndringBehandler";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import dayjs from "dayjs";
 
@@ -90,6 +93,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
       sted,
       behandler,
       videoLink,
+      behandlerValg: INGEN_BEHANDLER,
     },
   });
   const {

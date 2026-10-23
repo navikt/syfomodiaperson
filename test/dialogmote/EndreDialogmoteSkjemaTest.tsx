@@ -259,6 +259,10 @@ describe("EndreDialogmoteSkjemaTest", () => {
       await userEvent.click(
         screen.getByRole("radio", { name: /Lego Las Legesen/ }),
       );
+      await changeTextInput(
+        getTextInput("Begrunnelse til behandler"),
+        moteTekster.fritekstTilBehandler,
+      );
       await clickButton("Send");
 
       await waitFor(() => {
@@ -271,6 +275,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
           behandlerNavn: "Lego Las Legesen",
           behandlerKontor: behandlerLegoLasLegesen.kontor,
         });
+        expect(behandler?.fritekst).to.equal(moteTekster.fritekstTilBehandler);
         expect(behandler?.moteDokument).to.not.be.empty;
       });
     });

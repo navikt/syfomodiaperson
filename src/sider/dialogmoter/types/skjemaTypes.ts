@@ -6,6 +6,7 @@ export interface EndreSkjemaValues extends TidStedSkjemaValues {
   begrunnelseArbeidstaker: string;
   begrunnelseBehandler?: string;
   behandler?: DialogmotedeltakerBehandlerDTO;
+  behandlerValg?: string;
   nyBehandler?: BehandlerDTO;
 }
 

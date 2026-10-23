@@ -4,8 +4,8 @@ import { useBehandlereQuery } from "@/data/behandler/behandlereQueryHooks";
 import { EndreSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
 import { behandlerDisplayText } from "@/utils/behandlerUtils";
 import { Radio, RadioGroup } from "@navikt/ds-react";
-import { useState } from "react";
-import { useController } from "react-hook-form";
+import { ChangeEvent } from "react";
+import { useController, useFormContext } from "react-hook-form";
 
 const texts = {
   label: "Behandler",
@@ -14,27 +14,28 @@ const texts = {
   behandlerMissing: "Vennligst velg behandler",
 };
 
-const INGEN_BEHANDLER = "INGEN_BEHANDLER";
+export const INGEN_BEHANDLER = "INGEN_BEHANDLER";
 const SOK_BEHANDLER = "SOK_BEHANDLER";
 
 export function DialogmoteEndringBehandler() {
-  const [valgtRadio, setValgtRadio] = useState<string>(INGEN_BEHANDLER);
+  const { register, watch } = useFormContext<EndreSkjemaValues>();
   const { field, fieldState } = useController<EndreSkjemaValues, "nyBehandler">(
     {
       name: "nyBehandler",
       rules: {
-        validate: (value) =>
-          valgtRadio === SOK_BEHANDLER && !value
+        validate: (value, formValues) =>
+          formValues.behandlerValg === SOK_BEHANDLER && !value
             ? texts.behandlerMissing
-            : undefined,
+            : true,
       },
     },
   );
   const { data: behandlere, isLoading } = useBehandlereQuery();
 
-  function handleRadioChange(verdi: string) {
-    setValgtRadio(verdi);
-    field.onChange(behandlere.find((b) => b.behandlerRef === verdi));
+  function handleBehandlerValgChange(event: ChangeEvent<HTMLInputElement>) {
+    field.onChange(
+      behandlere.find((b) => b.behandlerRef === event.target.value),
+    );
   }
 
   if (isLoading) {
@@ -45,20 +46,40 @@ export function DialogmoteEndringBehandler() {
     <div>
       <RadioGroup
         legend={texts.label}
+        name="behandlerValg"
         size="small"
-        value={valgtRadio}
-        onChange={handleRadioChange}
+        value={watch("behandlerValg")}
         error={fieldState.error?.message}
       >
-        <Radio value={INGEN_BEHANDLER}>{texts.noBehandler}</Radio>
+        <Radio
+          value={INGEN_BEHANDLER}
+          {...register("behandlerValg", {
+            onChange: handleBehandlerValgChange,
+          })}
+        >
+          {texts.noBehandler}
+        </Radio>
         {behandlere.map((behandler) => (
-          <Radio key={behandler.behandlerRef} value={behandler.behandlerRef}>
+          <Radio
+            key={behandler.behandlerRef}
+            value={behandler.behandlerRef}
+            {...register("behandlerValg", {
+              onChange: handleBehandlerValgChange,
+            })}
+          >
             {behandlerDisplayText(behandler)}
           </Radio>
         ))}
-        <Radio value={SOK_BEHANDLER}>{texts.behandlersokTekst}</Radio>
+        <Radio
+          value={SOK_BEHANDLER}
+          {...register("behandlerValg", {
+            onChange: handleBehandlerValgChange,
+          })}
+        >
+          {texts.behandlersokTekst}
+        </Radio>
       </RadioGroup>
-      {valgtRadio === SOK_BEHANDLER && (
+      {watch("behandlerValg") === SOK_BEHANDLER && (
         <BehandlerSearch
           setSelectedBehandler={field.onChange}
           label={texts.behandlersokTekst}
