@@ -114,14 +114,14 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
     };
     if (behandler) {
       endreDialogmoteDto.behandler = {
-        fritekst: values.begrunnelseBehandler || "",
+        fritekst: values.fritekstBehandler || "",
         moteDokument: getEndreDocumentBehandler(values),
       };
     }
     const { nyBehandler } = values;
     if (nyBehandler) {
       endreDialogmoteDto.behandler = {
-        fritekst: values.begrunnelseBehandler || "",
+        fritekst: values.fritekstBehandler || "",
         moteDokument: innkallingDocument.getInnkallingDocumentBehandler(values),
         deltaker: {
           personIdent: nyBehandler.fnr,
@@ -234,12 +234,12 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
           {(behandler || watch("nyBehandler")) && (
             <div>
               <TextareaField
-                {...register("begrunnelseBehandler", {
+                {...register("fritekstBehandler", {
                   maxLength: MAX_LENGTH_ENDRE_BEGRUNNELSE,
                   required: texts.begrunnelseBehandlerMissing,
                 })}
-                value={watch("begrunnelseBehandler")}
-                error={errors.begrunnelseBehandler?.message}
+                value={watch("fritekstBehandler")}
+                error={errors.fritekstBehandler?.message}
                 label={texts.begrunnelseBehandler}
                 maxLength={MAX_LENGTH_ENDRE_BEGRUNNELSE}
               />

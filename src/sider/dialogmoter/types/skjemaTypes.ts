@@ -4,7 +4,7 @@ import { DialogmotedeltakerBehandlerDTO } from "./dialogmoteTypes";
 export interface EndreSkjemaValues extends TidStedSkjemaValues {
   begrunnelseArbeidsgiver: string;
   begrunnelseArbeidstaker: string;
-  begrunnelseBehandler?: string;
+  fritekstBehandler?: string;
   behandler?: DialogmotedeltakerBehandlerDTO;
   nyBehandler?: BehandlerDTO;
 }

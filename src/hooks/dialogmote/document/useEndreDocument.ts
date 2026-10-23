@@ -153,8 +153,8 @@ export const useEndreDocument = (dialogmote: DialogmoteDTO): IEndreDocument => {
       ...introComponents,
       ...getMoteInfo(values, arbeidsgiver.virksomhetsnummer),
     ];
-    if (values.begrunnelseBehandler) {
-      documentComponents.push(createParagraph(values.begrunnelseBehandler));
+    if (values.fritekstBehandler) {
+      documentComponents.push(createParagraph(values.fritekstBehandler));
     }
 
     documentComponents.push(
