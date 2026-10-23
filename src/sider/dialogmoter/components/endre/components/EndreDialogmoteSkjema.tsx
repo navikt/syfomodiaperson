@@ -11,7 +11,7 @@ import { useEndreDialogmote } from "@/sider/dialogmoter/hooks/useEndreDialogmote
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
 import { EndreSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
-import { Alert, Box, Button, Label } from "@navikt/ds-react";
+import { Alert, Box, Button, Label, VStack } from "@navikt/ds-react";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { narmesteLederForVirksomhet } from "@/utils/ledereUtils";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
@@ -177,10 +177,10 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
             error={errors.videoLink?.message}
           />
           {behandler ? (
-            <div>
+            <VStack>
               <Label size="small">Behandler</Label>
               {behandler.behandlerNavn}
-            </div>
+            </VStack>
           ) : (
             <DialogmoteEndringBehandler />
           )}
