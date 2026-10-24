@@ -17,8 +17,8 @@ on:
         type: string
 
 concurrency:
-  group: "security-review-${{ github.event.issue.number || github.event.inputs.pr-number || github.run_id }}"
-  job-discriminator: ${{ github.event.issue.number || github.event.inputs.pr-number || github.run_id }}
+  group: "security-review-${{ github.event.pull_request.number || github.event.issue.number || github.event.inputs.pr-number || github.run_id }}"
+  job-discriminator: ${{ github.event.pull_request.number || github.event.issue.number || github.event.inputs.pr-number || github.run_id }}
 
 max-ai-credits: 100
 max-daily-ai-credits: 1000
@@ -49,14 +49,14 @@ safe-outputs:
 
 # Security review
 
-Review pull request #${{ github.event.issue.number || github.event.inputs.pr-number }} and the touched logic for security issues. If no pull request number is available, stop without posting a comment. Use the GitHub tools only to read this pull request (metadata, diff, changed files) and the files it touches. Post the report only on this pull request.
+Review pull request #${{ github.event.pull_request.number || github.event.issue.number || github.event.inputs.pr-number }} and the touched logic for security issues. If no pull request number is available, stop without posting a comment. Use the GitHub tools only to read this pull request (metadata, diff, changed files) and the files it touches. Post the report only on this pull request.
 
 This is a React and TypeScript frontend with an Express backend-for-frontend in `/server`. It handles health and employment data about sykmeldt (the sick person), so pay extra attention to:
 
 - New or changed dependencies with known risks.
-- Routes in `/server` that return data without authentication, or without checking that the veileder may access that sykmeldt.
 - Secrets, tokens, or personal identifiers (fnr, names, sykmelding content) in logs, client code, URLs, localStorage, responses, or Umami event properties.
-- Unsafe HTML rendering (`dangerouslySetInnerHTML`), unvalidated redirects, and user input passed to Axios URLs.
+- Unsafe HTML rendering, unvalidated redirects, and user input passed to Axios URLs.
+- Routes in `/server`
 
 Security rules:
 
