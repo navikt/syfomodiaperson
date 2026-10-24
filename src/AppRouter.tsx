@@ -9,7 +9,7 @@ import DialogmoteInnkallingContainer from "./sider/dialogmoter/components/innkal
 import AvlysDialogmoteContainer from "@/sider/dialogmoter/components/avlys/AvlysDialogmoteContainer";
 import AppSpinner from "./components/AppSpinner";
 import DialogmoteReferatContainer from "./sider/dialogmoter/components/referat/DialogmoteReferatContainer";
-import EndreDialogmoteContainer from "@/sider/dialogmoter/components/endre/EndreDialogmoteContainer";
+import EndreDialogmote from "@/sider/dialogmoter/components/endre/EndreDialogmote";
 import { IngenBrukerSide } from "@/components/IngenBrukerSide";
 import { useAktivBruker } from "@/data/modiacontext/modiacontextQueryHooks";
 import DialogmoteunntakSkjemaContainer from "@/components/dialogmoteunntak/DialogmoteunntakSkjemaContainer";
@@ -113,10 +113,7 @@ function AktivBrukerRouter(): ReactElement {
               path=":dialogmoteUuid/referat/endre"
               element={<DialogmoteEndreReferatContainer />}
             />
-            <Route
-              path=":dialogmoteUuid/endre"
-              element={<EndreDialogmoteContainer />}
-            />
+            <Route path=":dialogmoteUuid/endre" element={<EndreDialogmote />} />
           </Route>
 
           <Route

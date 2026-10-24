@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import EndreDialogmoteSkjema, {
   MAX_LENGTH_ENDRE_BEGRUNNELSE,
   texts,
-} from "@/sider/dialogmoter/components/endre/EndreDialogmoteSkjema";
+} from "@/sider/dialogmoter/components/endre/components/EndreDialogmoteSkjema";
 import {
   changeTextInput,
   clickButton,
@@ -22,7 +22,7 @@ import {
 } from "./testData";
 import {
   DialogmoteDTO,
-  EndreTidStedDialogmoteDTO,
+  EndreDialogmoteDTO,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -33,8 +33,15 @@ import { stubFeatureTogglesApi } from "../stubs/stubUnleash";
 import { queryClientWithMockData } from "../testQueryClient";
 import { DocumentComponentType } from "@/data/documentcomponent/documentComponentTypes";
 import { Malform, MalformProvider } from "@/context/malform/MalformContext";
-import { getEndreTidStedTexts } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
+import { getEndreTexts } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import { StoreKey } from "@/hooks/useLocalStorageState";
+import {
+  behandlerLegoLasLegesen,
+  behandlerSokDialogmeldingMock,
+} from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
+import { mockServer } from "../setup";
+import { http, HttpResponse } from "msw";
+import { ISDIALOGMELDING_ROOT } from "@/apiConstants";
 
 let queryClient: QueryClient;
 
@@ -193,7 +200,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
     });
 
     const { videoLink, arbeidsgiver, arbeidstaker } = endreMutation.state
-      .variables as unknown as EndreTidStedDialogmoteDTO;
+      .variables as unknown as EndreDialogmoteDTO;
 
     const linkDocumentComponents = [
       ...arbeidsgiver.endringsdokument,
@@ -239,9 +246,8 @@ describe("EndreDialogmoteSkjemaTest", () => {
           ),
         },
         behandler: {
-          begrunnelse: moteTekster.fritekstTilBehandler,
-          endringsdokument:
-            expectedEndringDocuments.behandler(expectedSendtDato),
+          fritekst: moteTekster.fritekstTilBehandler,
+          moteDokument: expectedEndringDocuments.behandler(expectedSendtDato),
         },
         videoLink: endretMote.videolink,
         sted: endretMote.sted,
@@ -250,6 +256,76 @@ describe("EndreDialogmoteSkjemaTest", () => {
       expect(endreMutation.state.variables).to.deep.equal(expectedEndring);
     });
   });
+  describe("ny behandler", () => {
+    it("legger til valgt behandler i endring som sendes til api", async () => {
+      stubEndreApi(dialogmote.uuid);
+      renderEndreDialogmoteSkjema(dialogmote);
+      await passSkjemaInput();
+
+      await userEvent.click(
+        screen.getByRole("radio", { name: /Lego Las Legesen/ }),
+      );
+      await changeTextInput(
+        getTextInput("Begrunnelse til behandler"),
+        moteTekster.fritekstTilBehandler,
+      );
+      await clickButton("Send");
+
+      await waitFor(() => {
+        const endreMutation = queryClient.getMutationCache().getAll()[0];
+        const { behandler, arbeidstaker, arbeidsgiver } = endreMutation.state
+          .variables as unknown as EndreDialogmoteDTO;
+        expect(JSON.stringify(arbeidstaker.endringsdokument)).to.contain(
+          "Lego Las Legesen",
+        );
+        expect(JSON.stringify(arbeidsgiver.endringsdokument)).to.contain(
+          "Lego Las Legesen",
+        );
+        expect(behandler?.deltaker).to.deep.equal({
+          personIdent: behandlerLegoLasLegesen.fnr,
+          behandlerRef: behandlerLegoLasLegesen.behandlerRef,
+          behandlerNavn: "Lego Las Legesen",
+          behandlerKontor: behandlerLegoLasLegesen.kontor,
+        });
+        expect(behandler?.fritekst).to.equal(moteTekster.fritekstTilBehandler);
+        expect(behandler?.moteDokument).to.not.be.empty;
+      });
+    });
+
+    it("validerer at behandler er valgt når søk er valgt", async () => {
+      renderEndreDialogmoteSkjema(dialogmote);
+      await passSkjemaInput();
+
+      await userEvent.click(
+        screen.getByRole("radio", { name: "Legg til en behandler" }),
+      );
+      await clickButton("Send");
+
+      expect(await screen.findByText("Vennligst velg behandler")).to.exist;
+      expect(queryClient.getMutationCache().getAll()).to.be.empty;
+    });
+
+    it("viser begrunnelse til behandler når behandler velges fra søk", async () => {
+      mockServer.use(
+        http.get(`*${ISDIALOGMELDING_ROOT}/behandler/search`, () =>
+          HttpResponse.json(behandlerSokDialogmeldingMock),
+        ),
+      );
+      renderEndreDialogmoteSkjema(dialogmote);
+      await userEvent.click(
+        screen.getByRole("radio", { name: "Legg til en behandler" }),
+      );
+      expect(screen.queryByLabelText("Begrunnelse til behandler")).to.not.exist;
+
+      await changeTextInput(screen.getByRole("searchbox"), "Baker");
+      await userEvent.click(
+        await screen.findByRole("button", { name: /Baker/ }),
+      );
+
+      expect(screen.getByLabelText("Begrunnelse til behandler")).to.exist;
+    });
+  });
+
   it("forhåndsviser endret tid og sted til arbeidstaker", async () => {
     renderEndreDialogmoteSkjema(dialogmote);
     await passSkjemaInput();
@@ -374,8 +450,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
     })[0];
     await userEvent.click(forhandsvisningButton);
 
-    expect(screen.getByText(getEndreTidStedTexts(Malform.NYNORSK).intro2)).to
-      .exist;
+    expect(screen.getByText(getEndreTexts(Malform.NYNORSK).intro2)).to.exist;
   });
 });
 

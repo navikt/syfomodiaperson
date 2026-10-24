@@ -13,7 +13,7 @@ import {
 import {
   getAvlysningTexts,
   getCommonTexts,
-  getEndreTidStedTexts,
+  getEndreTexts,
   getInnkallingTexts,
   getReferatTexts,
 } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
@@ -33,7 +33,7 @@ import { behandlerNavn } from "@/utils/behandlerUtils";
 const innkallingTextsBokmal = getInnkallingTexts(Malform.BOKMAL);
 const referatTextsBokmal = getReferatTexts(Malform.BOKMAL);
 const commonTextsBokmal = getCommonTexts(Malform.BOKMAL);
-const endreTidStedTextsBokmal = getEndreTidStedTexts(Malform.BOKMAL);
+const endreTidStedTextsBokmal = getEndreTexts(Malform.BOKMAL);
 const avlysningTextsBokmal = getAvlysningTexts(Malform.BOKMAL);
 
 const expectedArbeidstakerInnkalling = (

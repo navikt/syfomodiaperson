@@ -1,4 +1,4 @@
-import EndreDialogmoteSkjema from "./EndreDialogmoteSkjema";
+import EndreDialogmoteSkjema from "./components/EndreDialogmoteSkjema";
 import { useParams } from "react-router-dom";
 import { useDialogmoterQuery } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 import { useKontaktinfoQuery } from "@/data/navbruker/navbrukerQueryHooks";
@@ -18,7 +18,7 @@ const texts = {
   moteNotFound: "Fant ikke dialogmøte",
 };
 
-export default function EndreDialogmoteContainer() {
+export default function EndreDialogmote() {
   const { dialogmoteUuid } = useParams<{
     dialogmoteUuid: string;
   }>();

@@ -1,20 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ISDIALOGMOTE_ROOT } from "@/apiConstants";
-import { EndreTidStedDialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
+import { EndreDialogmoteDTO } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { post } from "@/api/axios";
 import { dialogmoterQueryKeys } from "@/sider/dialogmoter/hooks/dialogmoteQueryHooks";
 
-export const useEndreTidStedDialogmote = (
-  fnr: string,
-  dialogmoteUuid: string,
-) => {
+export const useEndreDialogmote = (fnr: string, dialogmoteUuid: string) => {
   const queryClient = useQueryClient();
-  const path = `${ISDIALOGMOTE_ROOT}/dialogmote/${dialogmoteUuid}/tidsted`;
-  const postEndreTidSted = (endring: EndreTidStedDialogmoteDTO) =>
-    post(path, endring);
+  const path = `${ISDIALOGMOTE_ROOT}/dialogmote/${dialogmoteUuid}/endre`;
+  const postEndre = (endring: EndreDialogmoteDTO) => post(path, endring);
 
   return useMutation({
-    mutationFn: postEndreTidSted,
+    mutationFn: postEndre,
     onSettled: () =>
       queryClient.invalidateQueries({
         queryKey: dialogmoterQueryKeys.dialogmoter(fnr),

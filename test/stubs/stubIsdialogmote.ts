@@ -13,7 +13,7 @@ export const stubDialogmoterApi = () =>
 export const stubEndreApi = (dialogmoteUuid: string) =>
   mockServer.use(
     http.post(
-      `*${ISDIALOGMOTE_ROOT}/dialogmote/${dialogmoteUuid}/endre`,
+      `*${ISDIALOGMOTE_ROOT}/dialogmote/${dialogmoteUuid}/`,
       () => new HttpResponse(null, { status: 200 }),
     ),
   );
