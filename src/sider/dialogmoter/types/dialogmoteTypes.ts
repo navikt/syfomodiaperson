@@ -6,6 +6,8 @@ export enum MotedeltakerVarselType {
   AVLYST = "AVLYST",
   INNKALT = "INNKALT",
   REFERAT = "REFERAT",
+  /** Erstattet av ENDRET, men beholdes for eksisterende data fra isdialogmote */
+  NYTT_TID_STED = "NYTT_TID_STED",
   ENDRET = "ENDRET",
 }
 
