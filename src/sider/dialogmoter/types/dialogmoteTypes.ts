@@ -8,8 +8,6 @@ export enum MotedeltakerVarselType {
   REFERAT = "REFERAT",
   /** Erstattet av ENDRET, men beholdes for eksisterende data fra isdialogmote */
   NYTT_TID_STED = "NYTT_TID_STED",
-  /** Erstattet av ENDRET, men beholdes for eksisterende data fra isdialogmote */
-  NYTT_TID_STED = "NYTT_TID_STED",
   ENDRET = "ENDRET",
 }
 
@@ -61,8 +59,6 @@ export enum DialogmoteStatus {
   INNKALT = "INNKALT",
   AVLYST = "AVLYST",
   FERDIGSTILT = "FERDIGSTILT",
-  /** Erstattet av ENDRET, men beholdes for eksisterende data fra isdialogmote */
-  NYTT_TID_STED = "NYTT_TID_STED",
   /** Erstattet av ENDRET, men beholdes for eksisterende data fra isdialogmote */
   NYTT_TID_STED = "NYTT_TID_STED",
   ENDRET = "ENDRET",
