@@ -11,6 +11,7 @@ import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
 export const isAktivtDialogmote = (dialogmote: DialogmoteDTO): boolean => {
   return (
     dialogmote.status === DialogmoteStatus.INNKALT ||
+    dialogmote.status === DialogmoteStatus.NYTT_TID_STED ||
     dialogmote.status === DialogmoteStatus.ENDRET
   );
 };
@@ -57,6 +58,7 @@ export const getHarAapnetTekst = (
       return lestDato
         ? `åpnet innkallingen ${lestDatoString} - Har ikke gitt svar`
         : "har ikke åpnet innkallingen";
+    case MotedeltakerVarselType.NYTT_TID_STED:
     case MotedeltakerVarselType.ENDRET:
       return lestDato
         ? `åpnet endringen ${lestDatoString} - Har ikke gitt svar`

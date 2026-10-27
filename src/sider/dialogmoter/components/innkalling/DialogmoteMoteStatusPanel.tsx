@@ -56,7 +56,8 @@ function headerText(dialogmote: DialogmoteDTO): string {
     return texts.headerMotedatoPassert;
   }
 
-  return dialogmote.status === DialogmoteStatus.ENDRET
+  return dialogmote.status === DialogmoteStatus.ENDRET ||
+    dialogmote.status === DialogmoteStatus.NYTT_TID_STED
     ? texts.headerEndring
     : texts.headerInnkalling;
 }
