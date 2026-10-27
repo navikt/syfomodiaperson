@@ -122,7 +122,10 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
     if (nyBehandler) {
       endreDialogmoteDto.behandler = {
         fritekst: values.fritekstBehandler || "",
-        moteDokument: innkallingDocument.getInnkallingDocumentBehandler(values),
+        moteDokument: innkallingDocument.getInnkallingDocumentBehandler({
+          ...values,
+          arbeidsgiver: arbeidsgiver.virksomhetsnummer,
+        }),
         deltaker: {
           personIdent: nyBehandler.fnr,
           behandlerRef: nyBehandler.behandlerRef,
@@ -248,9 +251,10 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
                 getDocumentComponents={() =>
                   behandler
                     ? getEndreDocumentBehandler(getValues())
-                    : innkallingDocument.getInnkallingDocumentBehandler(
-                        getValues(),
-                      )
+                    : innkallingDocument.getInnkallingDocumentBehandler({
+                        ...getValues(),
+                        arbeidsgiver: arbeidsgiver.virksomhetsnummer,
+                      })
                 }
                 title={texts.forhandsvisningBehandlerTitle}
               />
