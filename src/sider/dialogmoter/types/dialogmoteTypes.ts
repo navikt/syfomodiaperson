@@ -61,6 +61,8 @@ export enum DialogmoteStatus {
   FERDIGSTILT = "FERDIGSTILT",
   /** Erstattet av ENDRET, men beholdes for eksisterende data fra isdialogmote */
   NYTT_TID_STED = "NYTT_TID_STED",
+  /** Erstattet av ENDRET, men beholdes for eksisterende data fra isdialogmote */
+  NYTT_TID_STED = "NYTT_TID_STED",
   ENDRET = "ENDRET",
   LUKKET = "LUKKET",
 }
