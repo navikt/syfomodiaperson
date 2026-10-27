@@ -2,7 +2,7 @@
 name: Security review
 description: Advisory security and personal data review of pull requests, posted as a PR comment.
 engine: copilot
-model: gpt-6.1-sol
+model: claude-opus-5.5
 
 on:
   slash_command:
