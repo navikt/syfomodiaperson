@@ -18,6 +18,8 @@ function getDialogmoteStatusEndringText(
       return `${statusendring.statusEndringOpprettetAv} skrev referat fra dialogmøtet opprettet av ${statusendring.dialogmoteOpprettetAv}`;
     case DialogmoteStatus.LUKKET:
       return `Dialogmøtet innkalt av ${statusendring.dialogmoteOpprettetAv} ble lukket av systemet`;
+    default:
+      return "";
   }
 }
 
