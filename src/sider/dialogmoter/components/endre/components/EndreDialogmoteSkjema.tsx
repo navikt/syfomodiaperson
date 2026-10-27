@@ -115,14 +115,14 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
     };
     if (behandler) {
       endreDialogmoteDto.behandler = {
-        fritekst: values.fritekstBehandler || "",
+        fritekst: values.fritekstBehandler || undefined,
         moteDokument: getEndreDocumentBehandler(values),
       };
     }
     const { nyBehandler } = values;
     if (nyBehandler) {
       endreDialogmoteDto.behandler = {
-        fritekst: values.fritekstBehandler || "",
+        fritekst: values.fritekstBehandler || undefined,
         moteDokument: innkallingDocument.getInnkallingDocumentBehandler({
           ...values,
           arbeidsgiver: arbeidsgiver.virksomhetsnummer,
@@ -240,7 +240,9 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
               <TextareaField
                 {...register("fritekstBehandler", {
                   maxLength: MAX_LENGTH_ENDRE_BEGRUNNELSE,
-                  required: texts.begrunnelseBehandlerMissing,
+                  required: behandler
+                    ? texts.begrunnelseBehandlerMissing
+                    : false,
                 })}
                 value={watch("fritekstBehandler")}
                 error={errors.fritekstBehandler?.message}

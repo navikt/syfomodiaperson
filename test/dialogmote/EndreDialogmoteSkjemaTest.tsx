@@ -266,7 +266,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
         screen.getByRole("radio", { name: /Lego Las Legesen/ }),
       );
       await changeTextInput(
-        getTextInput("Begrunnelse til behandler"),
+        getTextInput(texts.fritekstBehandler),
         moteTekster.fritekstTilBehandler,
       );
       await clickButton("Send");
@@ -289,6 +289,37 @@ describe("EndreDialogmoteSkjemaTest", () => {
         });
         expect(behandler?.fritekst).to.equal(moteTekster.fritekstTilBehandler);
         expect(behandler?.moteDokument).to.not.be.empty;
+      });
+    });
+
+    it("submits a new behandler without optional fritekst", async () => {
+      stubEndreApi(dialogmote.uuid);
+      renderEndreDialogmoteSkjema(dialogmote);
+      await passSkjemaInput();
+      await userEvent.click(
+        screen.getByRole("radio", { name: /Lego Las Legesen/ }),
+      );
+
+      await clickButton("Send");
+
+      await waitFor(() => {
+        const endreMutation = queryClient.getMutationCache().getAll()[0];
+        expect(endreMutation?.state.variables).toMatchObject({
+          behandler: {
+            fritekst: undefined,
+            deltaker: {
+              behandlerRef: behandlerLegoLasLegesen.behandlerRef,
+            },
+            moteDokument: expect.arrayContaining([
+              expect.objectContaining({
+                type: DocumentComponentType.HEADER_H1,
+              }),
+            ]),
+          },
+        });
+        expect(JSON.stringify(endreMutation.state.variables)).not.toContain(
+          '"fritekst":',
+        );
       });
     });
 
@@ -315,14 +346,14 @@ describe("EndreDialogmoteSkjemaTest", () => {
       await userEvent.click(
         screen.getByRole("radio", { name: "Legg til en behandler" }),
       );
-      expect(screen.queryByLabelText("Begrunnelse til behandler")).to.not.exist;
+      expect(screen.queryByLabelText(texts.fritekstBehandler)).to.not.exist;
 
       await changeTextInput(screen.getByRole("searchbox"), "Baker");
       await userEvent.click(
         await screen.findByRole("button", { name: /Baker/ }),
       );
 
-      expect(screen.getByLabelText("Begrunnelse til behandler")).to.exist;
+      expect(screen.getByLabelText(texts.fritekstBehandler)).to.exist;
     });
   });
 
