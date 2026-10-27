@@ -36,6 +36,7 @@ export const texts = {
   begrunnelseArbeidsgiver: "Begrunnelse til nærmeste leder",
   begrunnelseArbeidstaker: "Begrunnelse til arbeidstakeren",
   begrunnelseBehandler: "Begrunnelse til behandler",
+  fritekstBehandler: "Fritekst til behandler (valgfri)",
   forhandsvisningSubtitle: "Endret dialogmøte",
   forhandsvisningArbeidstakerTitle: "Brev til arbeidstakeren",
   forhandsvisningArbeidstakerContentLabel:
@@ -243,7 +244,11 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
                 })}
                 value={watch("fritekstBehandler")}
                 error={errors.fritekstBehandler?.message}
-                label={texts.begrunnelseBehandler}
+                label={
+                  behandler
+                    ? texts.begrunnelseBehandler
+                    : texts.fritekstBehandler
+                }
                 maxLength={MAX_LENGTH_ENDRE_BEGRUNNELSE}
               />
               <Forhandsvisning
