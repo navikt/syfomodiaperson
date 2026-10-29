@@ -46,7 +46,7 @@
     "react": "19.2.5",
     "react-dom": "19.2.5",
     "react-hook-form": "7.72.1",
-    "react-router-dom": "6.30.6",
+    "react-router-dom": "7.18.4",
     "recharts": "2.15.3",
     "redis": "5.11.0",
     "unleash-client": "6.12.1",
