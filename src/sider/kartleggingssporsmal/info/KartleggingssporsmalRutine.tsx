@@ -49,7 +49,6 @@ const texts = {
   demoUrl: "https://demo.ekstern.dev.nav.no/syk/kartleggingssporsmal",
 };
 
-
 function trackAccordionApnet(isOpen: boolean, accordionTekst: string): void {
   if (isOpen) {
     trackEvent({
