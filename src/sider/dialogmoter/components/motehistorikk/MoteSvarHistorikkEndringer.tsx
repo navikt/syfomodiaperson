@@ -21,7 +21,9 @@ type SortableVarsel = Pick<
 const getEndringVarslerSortedAsc = <T extends SortableVarsel>(varsler: T[]) =>
   varsler
     .filter(
-      ({ varselType }) => varselType == MotedeltakerVarselType.NYTT_TID_STED,
+      ({ varselType }) =>
+        varselType === MotedeltakerVarselType.ENDRET ||
+        varselType === MotedeltakerVarselType.NYTT_TID_STED,
     )
     .sort(byCreatedAtAsc);
 

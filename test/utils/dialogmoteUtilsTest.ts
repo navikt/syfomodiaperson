@@ -24,7 +24,7 @@ describe("dialogmoteutils", () => {
 
     it("returns true if status is endring", () => {
       const dialogmote = {
-        status: DialogmoteStatus.NYTT_TID_STED,
+        status: DialogmoteStatus.ENDRET,
       } as DialogmoteDTO;
 
       const isActive = isAktivtDialogmote(dialogmote);
