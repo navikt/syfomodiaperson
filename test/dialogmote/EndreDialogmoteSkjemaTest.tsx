@@ -12,7 +12,7 @@ import {
   getTooLongText,
 } from "../testUtils";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { stubEndreApi } from "../stubs/stubIsdialogmote";
+import { stubDialogmoterApi, stubEndreApi } from "../stubs/stubIsdialogmote";
 import {
   dialogmote,
   dialogmoteMedBehandler,
@@ -49,6 +49,7 @@ let queryClient: QueryClient;
 describe("EndreDialogmoteSkjemaTest", () => {
   beforeEach(() => {
     queryClient = queryClientWithMockData();
+    stubDialogmoterApi();
   });
 
   afterEach(() => {
@@ -179,6 +180,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
         tid: endretMote.datoTid,
       };
       expect(endreMutation.state.variables).to.deep.equal(expectedEndring);
+      expect(endreMutation.state.status).to.equal("success");
     });
   });
 
@@ -197,7 +199,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
     let endreMutation;
     await waitFor(() => {
       endreMutation = queryClient.getMutationCache().getAll()[0];
-      expect(endreMutation).to.exist;
+      expect(endreMutation?.state.status).to.equal("success");
     });
 
     const { videoLink, arbeidsgiver, arbeidstaker } = endreMutation.state
@@ -255,6 +257,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
         tid: endretMote.datoTid,
       };
       expect(endreMutation.state.variables).to.deep.equal(expectedEndring);
+      expect(endreMutation.state.status).to.equal("success");
     });
   });
   describe("ny behandler", () => {
@@ -304,6 +307,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
         });
         expect(behandler?.fritekst).to.equal(moteTekster.fritekstTilBehandler);
         expect(behandler?.moteDokument).to.not.be.empty;
+        expect(endreMutation.state.status).to.equal("success");
       });
     });
 
@@ -351,6 +355,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
             tilDatoMedManedNavnOgKlokkeslettWithComma(endretMote.datoTid),
           ),
         );
+        expect(mutation.state.status).to.equal("success");
       });
     });
 
@@ -382,6 +387,7 @@ describe("EndreDialogmoteSkjemaTest", () => {
         expect(JSON.stringify(endreMutation.state.variables)).not.toContain(
           '"fritekst":',
         );
+        expect(endreMutation.state.status).to.equal("success");
       });
     });
 
