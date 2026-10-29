@@ -302,15 +302,20 @@ const expectedArbeidsgiverEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
+    texts: [endreTidStedTextsBokmal.intro],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [
-      `${
-        endreTidStedTextsBokmal.intro1
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid)}.`,
+      endreTidStedTextsBokmal.endretTidspunkt.replace(
+        "{tidspunkt}",
+        tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid),
+      ),
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [endreTidStedTextsBokmal.intro2],
+    texts: [endreTidStedTextsBokmal.endretSted],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -407,15 +412,20 @@ const expectedArbeidstakerEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
+    texts: [endreTidStedTextsBokmal.intro],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [
-      `${
-        endreTidStedTextsBokmal.intro1
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid)}.`,
+      endreTidStedTextsBokmal.endretTidspunkt.replace(
+        "{tidspunkt}",
+        tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid),
+      ),
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [endreTidStedTextsBokmal.intro2],
+    texts: [endreTidStedTextsBokmal.endretSted],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -511,15 +521,20 @@ const expectedBehandlerEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
+    texts: [endreTidStedTextsBokmal.intro],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [
-      `${
-        endreTidStedTextsBokmal.intro1
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid)}.`,
+      endreTidStedTextsBokmal.endretTidspunkt.replace(
+        "{tidspunkt}",
+        tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid),
+      ),
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [endreTidStedTextsBokmal.intro2],
+    texts: [endreTidStedTextsBokmal.endretSted],
     type: DocumentComponentType.PARAGRAPH,
   },
   {

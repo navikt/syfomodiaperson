@@ -42,6 +42,7 @@ import {
 import { mockServer } from "../setup";
 import { http, HttpResponse } from "msw";
 import { ISDIALOGMELDING_ROOT } from "@/apiConstants";
+import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
 
 let queryClient: QueryClient;
 
@@ -281,6 +282,20 @@ describe("EndreDialogmoteSkjemaTest", () => {
         expect(JSON.stringify(arbeidsgiver.endringsdokument)).to.contain(
           "Lego Las Legesen",
         );
+        [arbeidstaker.endringsdokument, arbeidsgiver.endringsdokument].forEach(
+          (document) => {
+            const paragraphs = document.flatMap((component) => component.texts);
+            expect(paragraphs).toContain(
+              getEndreTexts(Malform.BOKMAL).lagtTilBehandler,
+            );
+            expect(paragraphs).toContain(
+              getEndreTexts(Malform.BOKMAL).endretTidspunkt.replace(
+                "{tidspunkt}",
+                tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid),
+              ),
+            );
+          },
+        );
         expect(behandler?.deltaker).to.deep.equal({
           personIdent: behandlerLegoLasLegesen.fnr,
           behandlerRef: behandlerLegoLasLegesen.behandlerRef,
@@ -289,6 +304,53 @@ describe("EndreDialogmoteSkjemaTest", () => {
         });
         expect(behandler?.fritekst).to.equal(moteTekster.fritekstTilBehandler);
         expect(behandler?.moteDokument).to.not.be.empty;
+      });
+    });
+
+    it("does not describe rescheduling when only adding a behandler", async () => {
+      stubEndreApi(dialogmote.uuid);
+      renderEndreDialogmoteSkjema({
+        ...dialogmote,
+        tid: endretMote.datoTid,
+      });
+      await passSkjemaInput();
+      await userEvent.click(
+        screen.getByRole("radio", { name: /Lego Las Legesen/ }),
+      );
+
+      await clickButton("Send");
+
+      await waitFor(() => {
+        const mutation = queryClient.getMutationCache().getAll()[0];
+        expect(mutation?.state.variables).toMatchObject({
+          arbeidstaker: {
+            endringsdokument: expect.arrayContaining([
+              expect.objectContaining({
+                texts: [getEndreTexts(Malform.BOKMAL).lagtTilBehandler],
+              }),
+            ]),
+          },
+          arbeidsgiver: {
+            endringsdokument: expect.arrayContaining([
+              expect.objectContaining({
+                texts: [getEndreTexts(Malform.BOKMAL).lagtTilBehandler],
+              }),
+            ]),
+          },
+          behandler: {
+            moteDokument: expect.arrayContaining([
+              expect.objectContaining({
+                texts: ["Innkalling til dialogmøte, svar ønskes"],
+              }),
+            ]),
+          },
+        });
+        expect(JSON.stringify(mutation.state.variables)).not.toContain(
+          getEndreTexts(Malform.BOKMAL).endretTidspunkt.replace(
+            "{tidspunkt}",
+            tilDatoMedManedNavnOgKlokkeslettWithComma(endretMote.datoTid),
+          ),
+        );
       });
     });
 
@@ -481,7 +543,14 @@ describe("EndreDialogmoteSkjemaTest", () => {
     })[0];
     await userEvent.click(forhandsvisningButton);
 
-    expect(screen.getByText(getEndreTexts(Malform.NYNORSK).intro2)).to.exist;
+    expect(
+      screen.getByText(
+        getEndreTexts(Malform.NYNORSK).endretTidspunkt.replace(
+          "{tidspunkt}",
+          tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmoteMedBehandler.tid),
+        ),
+      ),
+    ).to.exist;
   });
 });
 

@@ -17,6 +17,7 @@ import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useAktivVeilederinfoQuery } from "@/data/veilederinfo/veilederinfoQueryHooks";
 import { behandlerNavn } from "@/utils/behandlerUtils";
+import dayjs from "dayjs";
 
 export interface IEndreDocument {
   getEndreDocumentArbeidsgiver(
@@ -33,7 +34,7 @@ export interface IEndreDocument {
 }
 
 export const useEndreDocument = (dialogmote: DialogmoteDTO): IEndreDocument => {
-  const { tid, arbeidsgiver, behandler } = dialogmote;
+  const { tid, sted, arbeidsgiver, behandler } = dialogmote;
   const { malform } = useMalform();
   const { data: veilederinfo } = useAktivVeilederinfoQuery();
   const dialogmoteEndringTexts = getEndreTexts(malform);
@@ -49,14 +50,35 @@ export const useEndreDocument = (dialogmote: DialogmoteDTO): IEndreDocument => {
     `${commonTexts.gjelder} ${navBruker.navn}, f.nr. ${valgtPersonident}.`,
   );
 
-  const introComponents = [
-    createParagraph(
-      `${dialogmoteEndringTexts.intro1} ${tilDatoMedManedNavnOgKlokkeslettWithComma(
-        tid,
-      )}.`,
-    ),
-    createParagraph(dialogmoteEndringTexts.intro2),
-  ];
+  const getIntroComponents = (
+    values: Partial<EndreSkjemaValues>,
+  ): DocumentComponentDto[] => {
+    const hasEndretTidspunkt = Boolean(
+      (values.dato && values.dato !== dayjs(tid).format("YYYY-MM-DD")) ||
+      (values.klokkeslett && values.klokkeslett !== dayjs(tid).format("HH:mm")),
+    );
+    const hasEndretSted = Boolean(values.sted && values.sted !== sted);
+    const hasLagtTilBehandler = !behandler && Boolean(values.nyBehandler);
+    const components = [createParagraph(dialogmoteEndringTexts.intro)];
+
+    if (hasEndretTidspunkt) {
+      components.push(
+        createParagraph(
+          dialogmoteEndringTexts.endretTidspunkt.replace(
+            "{tidspunkt}",
+            tilDatoMedManedNavnOgKlokkeslettWithComma(tid),
+          ),
+        ),
+      );
+    }
+    if (hasEndretSted) {
+      components.push(createParagraph(dialogmoteEndringTexts.endretSted));
+    }
+    if (hasLagtTilBehandler) {
+      components.push(createParagraph(dialogmoteEndringTexts.lagtTilBehandler));
+    }
+    return components;
+  };
 
   function getDeltakerBehandlerNavn(
     values: Partial<EndreSkjemaValues>,
@@ -71,7 +93,7 @@ export const useEndreDocument = (dialogmote: DialogmoteDTO): IEndreDocument => {
     const documentComponents = [
       createHeaderH1(dialogmoteEndringTexts.header),
       gjelderParagraph,
-      ...introComponents,
+      ...getIntroComponents(values),
       ...getMoteInfo(values, arbeidsgiver.virksomhetsnummer),
     ];
 
@@ -112,7 +134,7 @@ export const useEndreDocument = (dialogmote: DialogmoteDTO): IEndreDocument => {
     const documentComponents = [
       createHeaderH1(dialogmoteEndringTexts.header),
       getIntroHei(),
-      ...introComponents,
+      ...getIntroComponents(values),
       ...getMoteInfo(values, arbeidsgiver.virksomhetsnummer),
     ];
 
@@ -150,7 +172,7 @@ export const useEndreDocument = (dialogmote: DialogmoteDTO): IEndreDocument => {
       createHeaderH1(dialogmoteEndringTexts.behandler.endring),
       createParagraph(dialogmoteEndringTexts.behandler.intro),
       gjelderParagraph,
-      ...introComponents,
+      ...getIntroComponents(values),
       ...getMoteInfo(values, arbeidsgiver.virksomhetsnummer),
     ];
     if (values.fritekstBehandler) {
