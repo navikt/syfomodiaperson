@@ -41,7 +41,8 @@ import {
 } from "@/mocks/isdialogmelding/behandlereDialogmeldingMock";
 import { mockServer } from "../setup";
 import { http, HttpResponse } from "msw";
-import { ISDIALOGMELDING_ROOT } from "@/apiConstants";
+import { ISDIALOGMELDING_ROOT, ISDIALOGMOTE_ROOT } from "@/apiConstants";
+import { defaultErrorTexts } from "@/api/errors";
 import { tilDatoMedManedNavnOgKlokkeslettWithComma } from "@/utils/datoUtils";
 
 let queryClient: QueryClient;
@@ -425,6 +426,81 @@ describe("EndreDialogmoteSkjemaTest", () => {
     });
   });
 
+  describe("ingen endring", () => {
+    const uendretDialogmote: DialogmoteDTO = {
+      ...dialogmote,
+      tid: endretMote.datoTid,
+    };
+
+    beforeEach(() => {
+      renderEndreDialogmoteSkjema(uendretDialogmote);
+    });
+
+    it("viser feilmelding og sender ikke endring når ingenting er endret", async () => {
+      await fillBegrunnelser();
+
+      await clickButton("Send");
+
+      expect(await screen.findByText(texts.ingenEndring)).to.exist;
+      expect(queryClient.getMutationCache().getAll()).to.be.empty;
+    });
+
+    it("sender endring når kun sted er endret", async () => {
+      stubEndreApi(dialogmote.uuid);
+      await fillBegrunnelser();
+      await changeTextInput(getTextInput("Sted"), endretMote.sted);
+
+      await clickButton("Send");
+
+      await waitFor(() => {
+        const endreMutation = queryClient.getMutationCache().getAll()[0];
+        expect(endreMutation?.state.status).to.equal("success");
+      });
+      expect(screen.queryByText(texts.ingenEndring)).to.not.exist;
+    });
+
+    it("sender endring når kun videolenke er endret", async () => {
+      stubEndreApi(dialogmote.uuid);
+      await fillBegrunnelser();
+      await changeTextInput(
+        getTextInput("Lenke til videomøte (valgfritt)"),
+        endretMote.videolink,
+      );
+
+      await clickButton("Send");
+
+      await waitFor(() => {
+        const endreMutation = queryClient.getMutationCache().getAll()[0];
+        expect(endreMutation?.state.status).to.equal("success");
+      });
+    });
+  });
+
+  describe("feil fra api", () => {
+    beforeEach(() => {
+      renderEndreDialogmoteSkjema(dialogmote);
+    });
+
+    it("viser melding om manglende endring når api svarer 400", async () => {
+      stubEndreApiWithStatus(400);
+      await passSkjemaInput();
+
+      await clickButton("Send");
+
+      expect(await screen.findByText(texts.ingenEndring)).to.exist;
+    });
+
+    it("viser generell feilmelding når api svarer 500", async () => {
+      stubEndreApiWithStatus(500);
+      await passSkjemaInput();
+
+      await clickButton("Send");
+
+      expect(await screen.findByText(defaultErrorTexts.generalError)).to.exist;
+      expect(screen.queryByText(texts.ingenEndring)).to.not.exist;
+    });
+  });
+
   it("forhåndsviser endret tid og sted til arbeidstaker", async () => {
     renderEndreDialogmoteSkjema(dialogmote);
     await passSkjemaInput();
@@ -575,6 +651,26 @@ const renderEndreDialogmoteSkjema = (dialogmote: DialogmoteDTO) => {
     [`${dialogmoteRoutePath}/${dialogmote.uuid}/endre`],
   );
 };
+
+const fillBegrunnelser = async () => {
+  await changeTextInput(
+    getTextInput("Begrunnelse til arbeidstakeren"),
+    moteTekster.fritekstTilArbeidstaker,
+  );
+  await changeTextInput(
+    getTextInput("Begrunnelse til nærmeste leder"),
+    moteTekster.fritekstTilArbeidsgiver,
+  );
+};
+
+const stubEndreApiWithStatus = (status: number) =>
+  mockServer.use(
+    http.post(`*${ISDIALOGMOTE_ROOT}/dialogmote/${dialogmote.uuid}/endre`, () =>
+      HttpResponse.text("Failed to change dialogmote: nothing changed", {
+        status,
+      }),
+    ),
+  );
 
 const passSkjemaInput = async () => {
   const datoInput = getTextInput("Dato");

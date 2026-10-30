@@ -1,4 +1,5 @@
 import {
+  harEndringer,
   isAktivtDialogmote,
   isPersonoppgaveCompletedAfterLastMoteEndring,
 } from "@/utils/dialogmoteUtils";
@@ -9,6 +10,8 @@ import {
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import dayjs from "dayjs";
 import { PersonOppgave } from "@/data/personoppgave/types/PersonOppgave";
+import { EndreSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
+import { BehandlerDTO } from "@/data/behandler/BehandlerDTO";
 
 describe("dialogmoteutils", () => {
   describe("isAktivtDialogmote", () => {
@@ -149,6 +152,75 @@ describe("dialogmoteutils", () => {
       );
 
       expect(isCompletedAfter).to.be.false;
+    });
+  });
+
+  describe("harEndringer", () => {
+    const dialogmote = {
+      tid: "2030-05-10T09:00:00",
+      sted: "Nav-kontoret",
+      videoLink: "https://video.nav.no/abc",
+    } as DialogmoteDTO;
+    const uendretValues: EndreSkjemaValues = {
+      dato: "2030-05-10",
+      klokkeslett: "09:00",
+      sted: "Nav-kontoret",
+      videoLink: "https://video.nav.no/abc",
+      begrunnelseArbeidstaker: "Begrunnelse",
+      begrunnelseArbeidsgiver: "Begrunnelse",
+    };
+
+    it("returns false when only begrunnelser are filled in", () => {
+      expect(harEndringer(dialogmote, uendretValues)).to.be.false;
+    });
+
+    it("returns false when videoLink only differs by whitespace", () => {
+      const values = {
+        ...uendretValues,
+        videoLink: "  https://video.nav.no/abc ",
+      };
+
+      expect(harEndringer(dialogmote, values)).to.be.false;
+    });
+
+    it("treats missing and empty videoLink as equal", () => {
+      const dialogmoteUtenVideoLink = { ...dialogmote, videoLink: undefined };
+      const values = { ...uendretValues, videoLink: "" };
+
+      expect(harEndringer(dialogmoteUtenVideoLink, values)).to.be.false;
+    });
+
+    it("returns true when dato is changed", () => {
+      const values = { ...uendretValues, dato: "2030-05-11" };
+
+      expect(harEndringer(dialogmote, values)).to.be.true;
+    });
+
+    it("returns true when klokkeslett is changed", () => {
+      const values = { ...uendretValues, klokkeslett: "10:00" };
+
+      expect(harEndringer(dialogmote, values)).to.be.true;
+    });
+
+    it("returns true when sted is changed", () => {
+      const values = { ...uendretValues, sted: "Arbeidsplassen" };
+
+      expect(harEndringer(dialogmote, values)).to.be.true;
+    });
+
+    it("returns true when videoLink is changed", () => {
+      const values = {
+        ...uendretValues,
+        videoLink: "https://video.nav.no/xyz",
+      };
+
+      expect(harEndringer(dialogmote, values)).to.be.true;
+    });
+
+    it("returns true when ny behandler is added", () => {
+      const values = { ...uendretValues, nyBehandler: {} as BehandlerDTO };
+
+      expect(harEndringer(dialogmote, values)).to.be.true;
     });
   });
 });

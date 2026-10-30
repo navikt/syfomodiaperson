@@ -29,6 +29,8 @@ import { useInnkallingDocument } from "@/hooks/dialogmote/document/useInnkalling
 import { DialogmoteEndringBehandler } from "@/sider/dialogmoter/components/endre/components/DialogmoteEndringBehandler";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import dayjs from "dayjs";
+import { ApiErrorException } from "@/api/errors";
+import { harEndringer } from "@/utils/dialogmoteUtils";
 
 export const texts = {
   send: "Send",
@@ -56,7 +58,13 @@ export const texts = {
   begrunnelseArbeidsgiverMissing:
     "Vennligst angi begrunnelse til nærmeste leder",
   begrunnelseBehandlerMissing: "Vennligst angi begrunnelse til behandler",
+  ingenEndring:
+    "Du må endre tidspunkt, sted, videolenke eller legge til behandler for å kunne sende endring av dialogmøtet.",
 };
+
+function isBadRequest(error: unknown): boolean {
+  return error instanceof ApiErrorException && error.code === 400;
+}
 
 export const MAX_LENGTH_ENDRE_BEGRUNNELSE = 2000;
 
@@ -97,6 +105,7 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
     register,
     handleSubmit,
     getValues,
+    setError,
     formState: { errors },
     watch,
   } = methods;
@@ -140,6 +149,11 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
   }
 
   const submit = (values: EndreSkjemaValues) => {
+    if (!harEndringer(dialogmote, values)) {
+      endreDialogmote.reset();
+      setError("root.ingenEndring", { message: texts.ingenEndring });
+      return;
+    }
     const dialogmoteEndring = toDialogmoteEndring(values);
     endreDialogmote.mutate(dialogmoteEndring);
   };
@@ -267,8 +281,20 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
               />
             </div>
           )}
+          {errors.root?.ingenEndring && (
+            <Alert variant="error" size="small">
+              {errors.root.ingenEndring.message}
+            </Alert>
+          )}
           {endreDialogmote.isError && (
-            <SkjemaInnsendingFeil error={endreDialogmote.error} />
+            <SkjemaInnsendingFeil
+              error={endreDialogmote.error}
+              defaultErrorMsgOverride={
+                isBadRequest(endreDialogmote.error)
+                  ? texts.ingenEndring
+                  : undefined
+              }
+            />
           )}
           <div className="flex gap-4">
             <Button
