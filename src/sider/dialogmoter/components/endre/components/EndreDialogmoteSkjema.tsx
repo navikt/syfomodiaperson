@@ -1,18 +1,17 @@
 import { Link, Navigate } from "react-router-dom";
-
 import { useValgtPersonident } from "@/hooks/useValgtBruker";
 import { validerKlokkeslett, validerVideoLink } from "@/utils/valideringUtils";
-import { useTidStedDocument } from "@/hooks/dialogmote/document/useTidStedDocument";
+import { useEndreDocument } from "@/hooks/dialogmote/document/useEndreDocument";
 import {
   DialogmoteDTO,
-  EndreTidStedDialogmoteDTO,
+  EndreDialogmoteDTO,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
 import { moteoversiktRoutePath } from "@/AppRouter";
-import { useEndreTidStedDialogmote } from "@/sider/dialogmoter/hooks/useEndreTidStedDialogmote";
+import { useEndreDialogmote } from "@/sider/dialogmoter/hooks/useEndreDialogmote";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { useSkjemaValuesToDto } from "@/hooks/dialogmote/useSkjemaValuesToDto";
-import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
-import { Alert, Box, Button } from "@navikt/ds-react";
+import { EndreSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
+import { Alert, Box, Button, Label, VStack } from "@navikt/ds-react";
 import { useLedereQuery } from "@/data/leder/ledereQueryHooks";
 import { narmesteLederForVirksomhet } from "@/utils/ledereUtils";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
@@ -26,6 +25,10 @@ import DialogmoteKlokkeslett from "@/sider/dialogmoter/components/DialogmoteKlok
 import MalformRadioGroup from "@/components/MalformRadioGroup";
 import TextareaField from "@/sider/dialogmoter/components/TextareaField";
 import DialogmoteFrist from "@/sider/dialogmoter/components/DialogmoteFrist";
+import { useInnkallingDocument } from "@/hooks/dialogmote/document/useInnkallingDocument";
+import { DialogmoteEndringBehandler } from "@/sider/dialogmoter/components/endre/components/DialogmoteEndringBehandler";
+import { behandlerNavn } from "@/utils/behandlerUtils";
+import dayjs from "dayjs";
 
 export const texts = {
   send: "Send",
@@ -33,6 +36,7 @@ export const texts = {
   begrunnelseArbeidsgiver: "Begrunnelse til nærmeste leder",
   begrunnelseArbeidstaker: "Begrunnelse til arbeidstakeren",
   begrunnelseBehandler: "Begrunnelse til behandler",
+  fritekstBehandler: "Fritekst til behandler (valgfri)",
   forhandsvisningSubtitle: "Endret dialogmøte",
   forhandsvisningArbeidstakerTitle: "Brev til arbeidstakeren",
   forhandsvisningArbeidstakerContentLabel:
@@ -56,12 +60,6 @@ export const texts = {
 
 export const MAX_LENGTH_ENDRE_BEGRUNNELSE = 2000;
 
-export interface EndreTidStedSkjemaValues extends TidStedSkjemaValues {
-  begrunnelseArbeidsgiver: string;
-  begrunnelseArbeidstaker: string;
-  begrunnelseBehandler?: string;
-}
-
 interface Props {
   dialogmote: DialogmoteDTO;
 }
@@ -70,26 +68,28 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
   const { sted, arbeidsgiver, tid, uuid, behandler, videoLink } = dialogmote;
   const fnr = useValgtPersonident();
   const { currentLedere } = useLedereQuery();
+  const innkallingDocument = useInnkallingDocument();
 
   const narmesteLeder = narmesteLederForVirksomhet(
     currentLedere,
     arbeidsgiver.virksomhetsnummer,
   );
 
-  const endreTidStedDialogmote = useEndreTidStedDialogmote(fnr, uuid);
+  const endreDialogmote = useEndreDialogmote(fnr, uuid);
 
   const {
-    getTidStedDocumentArbeidstaker,
-    getTidStedDocumentArbeidsgiver,
-    getTidStedDocumentBehandler,
-  } = useTidStedDocument(dialogmote);
-  const { toTidStedDto } = useSkjemaValuesToDto();
+    getEndreDocumentArbeidstaker,
+    getEndreDocumentArbeidsgiver,
+    getEndreDocumentBehandler,
+  } = useEndreDocument(dialogmote);
+  const { toDialogmoteEndringDto } = useSkjemaValuesToDto();
 
-  const methods = useForm<EndreTidStedSkjemaValues>({
+  const methods = useForm<EndreSkjemaValues>({
     defaultValues: {
-      dato: tid.split("T")[0],
-      klokkeslett: tid.split("T")[1].substring(0, 5),
+      dato: dayjs(tid).format("YYYY-MM-DD"),
+      klokkeslett: dayjs(tid).format("HH:mm"),
       sted,
+      behandler,
       videoLink,
     },
   });
@@ -101,74 +101,94 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
     watch,
   } = methods;
 
-  function toEndreTidSted(
-    values: EndreTidStedSkjemaValues,
-  ): EndreTidStedDialogmoteDTO {
-    const endreTidStedDto: EndreTidStedDialogmoteDTO = {
-      ...toTidStedDto(values),
+  function toDialogmoteEndring(values: EndreSkjemaValues): EndreDialogmoteDTO {
+    const endreDialogmoteDto: EndreDialogmoteDTO = {
+      ...toDialogmoteEndringDto(values),
       arbeidstaker: {
         begrunnelse: values.begrunnelseArbeidstaker,
-        endringsdokument: getTidStedDocumentArbeidstaker(values),
+        endringsdokument: getEndreDocumentArbeidstaker(values),
       },
       arbeidsgiver: {
         begrunnelse: values.begrunnelseArbeidsgiver,
-        endringsdokument: getTidStedDocumentArbeidsgiver(values),
+        endringsdokument: getEndreDocumentArbeidsgiver(values),
       },
     };
     if (behandler) {
-      endreTidStedDto.behandler = {
-        begrunnelse: values.begrunnelseBehandler || "",
-        endringsdokument: getTidStedDocumentBehandler(values),
+      endreDialogmoteDto.behandler = {
+        fritekst: values.fritekstBehandler || undefined,
+        moteDokument: getEndreDocumentBehandler(values),
+      };
+    }
+    const { nyBehandler } = values;
+    if (nyBehandler) {
+      endreDialogmoteDto.behandler = {
+        fritekst: values.fritekstBehandler || undefined,
+        moteDokument: innkallingDocument.getInnkallingDocumentBehandler({
+          ...values,
+          arbeidsgiver: arbeidsgiver.virksomhetsnummer,
+        }),
+        deltaker: {
+          personIdent: nyBehandler.fnr,
+          behandlerRef: nyBehandler.behandlerRef,
+          behandlerNavn: behandlerNavn(nyBehandler),
+          behandlerKontor: nyBehandler.kontor ?? "",
+        },
       };
     }
 
-    return endreTidStedDto;
+    return endreDialogmoteDto;
   }
 
-  const submit = (values: EndreTidStedSkjemaValues) => {
-    const dialogmoteEndring = toEndreTidSted(values);
-    endreTidStedDialogmote.mutate(dialogmoteEndring);
+  const submit = (values: EndreSkjemaValues) => {
+    const dialogmoteEndring = toDialogmoteEndring(values);
+    endreDialogmote.mutate(dialogmoteEndring);
   };
 
-  if (endreTidStedDialogmote.isSuccess) {
+  if (endreDialogmote.isSuccess) {
     return <Navigate to={moteoversiktRoutePath} />;
   }
 
   return (
     <Box background="default" padding="space-24" className="mb-2">
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(submit)}>
-          <div className="flex flex-col gap-4 mb-6">
-            <MalformRadioGroup />
-            <DialogmoteFrist />
-            <div className="flex gap-4 items-start">
-              <DialogmoteDato />
-              <DialogmoteKlokkeslett
-                {...register("klokkeslett", {
-                  validate: (value, formValues) =>
-                    validerKlokkeslett(formValues.dato, value),
-                })}
-                value={watch("klokkeslett")}
-                error={errors.klokkeslett?.message}
-              />
-            </div>
-            <DialogmoteSted
-              {...register("sted", {
-                maxLength: MAX_LENGTH_STED,
-                required: texts.stedMissing,
+        <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-4">
+          <MalformRadioGroup />
+          <DialogmoteFrist />
+          <div className="flex gap-4 items-start">
+            <DialogmoteDato />
+            <DialogmoteKlokkeslett
+              {...register("klokkeslett", {
+                validate: (value, formValues) =>
+                  validerKlokkeslett(formValues.dato, value),
               })}
-              value={watch("sted")}
-              error={errors.sted?.message}
-            />
-            <DialogmoteVideolink
-              {...register("videoLink", {
-                validate: (value) => validerVideoLink(value),
-              })}
-              value={watch("videoLink")}
-              error={errors.videoLink?.message}
+              value={watch("klokkeslett")}
+              error={errors.klokkeslett?.message}
             />
           </div>
-          <div className="mb-8">
+          <DialogmoteSted
+            {...register("sted", {
+              maxLength: MAX_LENGTH_STED,
+              required: texts.stedMissing,
+            })}
+            value={watch("sted")}
+            error={errors.sted?.message}
+          />
+          <DialogmoteVideolink
+            {...register("videoLink", {
+              validate: (value) => validerVideoLink(value),
+            })}
+            value={watch("videoLink")}
+            error={errors.videoLink?.message}
+          />
+          {behandler ? (
+            <VStack>
+              <Label size="small">Behandler</Label>
+              {behandler.behandlerNavn}
+            </VStack>
+          ) : (
+            <DialogmoteEndringBehandler />
+          )}
+          <div>
             <TextareaField
               {...register("begrunnelseArbeidstaker", {
                 maxLength: MAX_LENGTH_ENDRE_BEGRUNNELSE,
@@ -182,12 +202,12 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
             <Forhandsvisning
               contentLabel={texts.forhandsvisningArbeidstakerContentLabel}
               getDocumentComponents={() =>
-                getTidStedDocumentArbeidstaker(getValues())
+                getEndreDocumentArbeidstaker(getValues())
               }
               title={texts.forhandsvisningArbeidstakerTitle}
             />
           </div>
-          <div className="mb-8">
+          <div>
             <TextareaField
               {...register("begrunnelseArbeidsgiver", {
                 maxLength: MAX_LENGTH_ENDRE_BEGRUNNELSE,
@@ -210,40 +230,51 @@ export default function EndreDialogmoteSkjema({ dialogmote }: Props) {
             <Forhandsvisning
               contentLabel={texts.forhandsvisningArbeidsgiverContentLabel}
               getDocumentComponents={() =>
-                getTidStedDocumentArbeidsgiver(getValues())
+                getEndreDocumentArbeidsgiver(getValues())
               }
               title={texts.forhandsvisningArbeidsgiverTitle}
             />
           </div>
-          {behandler && (
-            <div className="mb-8">
+          {(behandler || watch("nyBehandler")) && (
+            <div>
               <TextareaField
-                {...register("begrunnelseBehandler", {
+                {...register("fritekstBehandler", {
                   maxLength: MAX_LENGTH_ENDRE_BEGRUNNELSE,
-                  required: texts.begrunnelseBehandlerMissing,
+                  required: behandler
+                    ? texts.begrunnelseBehandlerMissing
+                    : false,
                 })}
-                value={watch("begrunnelseBehandler")}
-                error={errors.begrunnelseBehandler?.message}
-                label={texts.begrunnelseBehandler}
+                value={watch("fritekstBehandler")}
+                error={errors.fritekstBehandler?.message}
+                label={
+                  behandler
+                    ? texts.begrunnelseBehandler
+                    : texts.fritekstBehandler
+                }
                 maxLength={MAX_LENGTH_ENDRE_BEGRUNNELSE}
               />
               <Forhandsvisning
                 contentLabel={texts.forhandsvisningBehandlerContentLabel}
                 getDocumentComponents={() =>
-                  getTidStedDocumentBehandler(getValues())
+                  behandler
+                    ? getEndreDocumentBehandler(getValues())
+                    : innkallingDocument.getInnkallingDocumentBehandler({
+                        ...getValues(),
+                        arbeidsgiver: arbeidsgiver.virksomhetsnummer,
+                      })
                 }
                 title={texts.forhandsvisningBehandlerTitle}
               />
             </div>
           )}
-          {endreTidStedDialogmote.isError && (
-            <SkjemaInnsendingFeil error={endreTidStedDialogmote.error} />
+          {endreDialogmote.isError && (
+            <SkjemaInnsendingFeil error={endreDialogmote.error} />
           )}
           <div className="flex gap-4">
             <Button
               type="submit"
               variant="primary"
-              loading={endreTidStedDialogmote.isPending}
+              loading={endreDialogmote.isPending}
             >
               {texts.send}
             </Button>

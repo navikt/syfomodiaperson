@@ -93,7 +93,7 @@ export const mockIsdialogmote = [
     },
   ),
 
-  http.post(`${ISDIALOGMOTE_ROOT}/dialogmote/:moteuuid/tidsted`, () => {
+  http.post(`${ISDIALOGMOTE_ROOT}/dialogmote/:moteuuid/endre`, () => {
     return new HttpResponse(null, { status: 200 });
   }),
 

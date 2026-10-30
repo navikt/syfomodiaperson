@@ -13,7 +13,7 @@ import {
 import {
   getAvlysningTexts,
   getCommonTexts,
-  getEndreTidStedTexts,
+  getEndreTexts,
   getInnkallingTexts,
   getReferatTexts,
 } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
@@ -33,7 +33,7 @@ import { behandlerNavn } from "@/utils/behandlerUtils";
 const innkallingTextsBokmal = getInnkallingTexts(Malform.BOKMAL);
 const referatTextsBokmal = getReferatTexts(Malform.BOKMAL);
 const commonTextsBokmal = getCommonTexts(Malform.BOKMAL);
-const endreTidStedTextsBokmal = getEndreTidStedTexts(Malform.BOKMAL);
+const endreTidStedTextsBokmal = getEndreTexts(Malform.BOKMAL);
 const avlysningTextsBokmal = getAvlysningTexts(Malform.BOKMAL);
 
 const expectedArbeidstakerInnkalling = (
@@ -302,15 +302,20 @@ const expectedArbeidsgiverEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
+    texts: [endreTidStedTextsBokmal.intro],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [
-      `${
-        endreTidStedTextsBokmal.intro1
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid)}.`,
+      endreTidStedTextsBokmal.endretTidspunkt.replace(
+        "{tidspunkt}",
+        tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid),
+      ),
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [endreTidStedTextsBokmal.intro2],
+    texts: [endreTidStedTextsBokmal.endretSted],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -407,15 +412,20 @@ const expectedArbeidstakerEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
+    texts: [endreTidStedTextsBokmal.intro],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [
-      `${
-        endreTidStedTextsBokmal.intro1
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid)}.`,
+      endreTidStedTextsBokmal.endretTidspunkt.replace(
+        "{tidspunkt}",
+        tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid),
+      ),
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [endreTidStedTextsBokmal.intro2],
+    texts: [endreTidStedTextsBokmal.endretSted],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
@@ -511,15 +521,20 @@ const expectedBehandlerEndringsdokument = (
     type: DocumentComponentType.PARAGRAPH,
   },
   {
+    texts: [endreTidStedTextsBokmal.intro],
+    type: DocumentComponentType.PARAGRAPH,
+  },
+  {
     texts: [
-      `${
-        endreTidStedTextsBokmal.intro1
-      } ${tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid)}.`,
+      endreTidStedTextsBokmal.endretTidspunkt.replace(
+        "{tidspunkt}",
+        tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid),
+      ),
     ],
     type: DocumentComponentType.PARAGRAPH,
   },
   {
-    texts: [endreTidStedTextsBokmal.intro2],
+    texts: [endreTidStedTextsBokmal.endretSted],
     type: DocumentComponentType.PARAGRAPH,
   },
   {

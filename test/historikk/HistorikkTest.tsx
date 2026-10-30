@@ -697,9 +697,7 @@ describe("Historikk", () => {
         screen.getAllByText("Z970000 kalte inn til et dialogmøte"),
       ).to.have.length(2);
       expect(
-        screen.getByText(
-          "Z990000 endret tid eller sted for dialogmøtet opprettet av Z990000",
-        ),
+        screen.getByText("Z990000 endret dialogmøtet opprettet av Z990000"),
       ).to.exist;
       expect(
         screen.getByText("Z970000 avlyste dialogmøtet opprettet av Z990000"),
