@@ -1,4 +1,4 @@
-import { restdatoTilLesbarDato } from "@/utils/datoUtils";
+import { formatReadableDate } from "@/utils/datoUtils";
 import { OppfolgingsplanLPS } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanLPS";
 import BehandleOppfolgingsplanLPS from "./BehandleOppfolgingsplanLPS";
 import { LPS_OPPFOLGINGSPLAN_MOTTAK_V1_ROOT } from "@/apiConstants";
@@ -31,7 +31,7 @@ export default function OppfolgingsplanerOversiktLPS({
       <VStack align="baseline" gap="space-4">
         <BodyShort size="small">
           Mottatt:{" "}
-          {restdatoTilLesbarDato(oppfolgingsplanLPSBistandsbehov.opprettet)}
+          {formatReadableDate(oppfolgingsplanLPSBistandsbehov.opprettet)}
         </BodyShort>
         <Tag data-color="info" variant="outline">
           LPS

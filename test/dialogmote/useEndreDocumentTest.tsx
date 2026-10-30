@@ -11,8 +11,8 @@ import {
 } from "@/sider/dialogmoter/hooks/dialogmoteTexts";
 import { EndreSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
 import {
-  tilDatoMedManedNavnOgKlokkeslettWithComma,
-  tilDatoMedUkedagOgManedNavnOgKlokkeslett,
+  formatDateTimeWithComma,
+  formatDateTimeWithWeekday,
 } from "@/utils/datoUtils";
 import { queryClientWithMockData } from "../testQueryClient";
 import { behandler, dialogmote, dialogmoteMedBehandler } from "./testData";
@@ -29,7 +29,7 @@ describe.each([Malform.BOKMAL, Malform.NYNORSK])(
     const commonTexts = getCommonTexts(malform);
     const tidspunktParagraph = texts.endretTidspunkt.replace(
       "{tidspunkt}",
-      tilDatoMedManedNavnOgKlokkeslettWithComma(dialogmote.tid),
+      formatDateTimeWithComma(dialogmote.tid),
     );
     const wrapper = ({ children }: Props) => (
       <QueryClientProvider client={queryClient}>
@@ -122,7 +122,7 @@ describe.each([Malform.BOKMAL, Malform.NYNORSK])(
               expect.objectContaining({
                 title: commonTexts.moteTidTitle,
                 texts: [
-                  tilDatoMedUkedagOgManedNavnOgKlokkeslett(
+                  formatDateTimeWithWeekday(
                     `${dato}T${klokkeslett}:00`,
                     malform,
                   ),
@@ -204,7 +204,7 @@ describe.each([Malform.BOKMAL, Malform.NYNORSK])(
       expect(document.flatMap((component) => component.texts)).not.toContain(
         texts.endretTidspunkt.replace(
           "{tidspunkt}",
-          tilDatoMedManedNavnOgKlokkeslettWithComma(mote.tid),
+          formatDateTimeWithComma(mote.tid),
         ),
       );
     });

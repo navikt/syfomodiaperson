@@ -12,10 +12,7 @@ import {
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { beforeEach, describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
-import {
-  tilDatoMedManedNavn,
-  tilLesbarDatoMedArUtenManedNavn,
-} from "@/utils/datoUtils";
+import { formatDateWithMonthName, formatNumericDate } from "@/utils/datoUtils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ValgtEnhetContext } from "@/context/ValgtEnhetContext";
 import { navEnhet } from "../dialogmote/testData";
@@ -48,8 +45,9 @@ describe("AktivitetskravVurderingAlert", () => {
     renderAktivitetskravVurderingAlert(avventVurdering);
 
     expect(screen.getByRole("img", { name: "Advarsel" })).to.exist;
-    expect(screen.getByText(`Avventer til ${tilDatoMedManedNavn(new Date())}`))
-      .to.exist;
+    expect(
+      screen.getByText(`Avventer til ${formatDateWithMonthName(new Date())}`),
+    ).to.exist;
   });
   it("viser advarsel uten frist når siste aktivitetskrav-vurdering er AVVENT uten frist", () => {
     renderAktivitetskravVurderingAlert(avventVurderingUtenFrist);
@@ -83,7 +81,7 @@ describe("AktivitetskravVurderingAlert", () => {
     expect(screen.getByRole("img", { name: "Informasjon" })).to.exist;
     expect(
       screen.getByText(
-        `Forhåndsvarsel er sendt ${tilLesbarDatoMedArUtenManedNavn(
+        `Forhåndsvarsel er sendt ${formatNumericDate(
           forhandsvarselVurdering.createdAt,
         )}`,
       ),

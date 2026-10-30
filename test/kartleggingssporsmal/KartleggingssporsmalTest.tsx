@@ -48,7 +48,7 @@ import { oppfolgingstilfellePersonQueryKeys } from "@/data/oppfolgingstilfelle/p
 import {
   addWeeks,
   daysFromToday,
-  tilLesbarDatoMedArUtenManedNavn,
+  formatNumericDate,
 } from "@/utils/datoUtils.ts";
 import {
   kartleggingssporsmalFlervalgFritekstV3Answered,
@@ -216,7 +216,7 @@ describe("Kartleggingssporsmal", () => {
 
     expect(
       scoped.getByText(
-        `${tilLesbarDatoMedArUtenManedNavn(currentTilfelleStart)} - ${tilLesbarDatoMedArUtenManedNavn(currentTilfelleEnd)}`,
+        `${formatNumericDate(currentTilfelleStart)} - ${formatNumericDate(currentTilfelleEnd)}`,
       ),
     ).to.exist;
     expect(scoped.getByText("21.02.2020 - 10.12.2020")).to.exist;

@@ -1,5 +1,5 @@
 import { BodyShort, Box, Heading, Link } from "@navikt/ds-react";
-import { restdatoTilLesbarDato } from "@/utils/datoUtils";
+import { formatReadableDate } from "@/utils/datoUtils";
 
 import { OppfolgingsplanV2DTO } from "@/sider/oppfolgingsplan/hooks/types/OppfolgingsplanV2DTO";
 import { useVirksomhetQuery } from "@/data/virksomhet/virksomhetQueryHooks";
@@ -17,8 +17,8 @@ export default function OppfolgingsplanV2Item({ oppfolgingsplan }: Props) {
   const { virksomhetsnavn } = useVirksomhetQuery(
     oppfolgingsplan.virksomhetsnummer,
   );
-  const opprettet = restdatoTilLesbarDato(oppfolgingsplan.opprettet);
-  const deltMedNav = restdatoTilLesbarDato(oppfolgingsplan.deltMedNavTidspunkt);
+  const opprettet = formatReadableDate(oppfolgingsplan.opprettet);
+  const deltMedNav = formatReadableDate(oppfolgingsplan.deltMedNavTidspunkt);
 
   return (
     <Box background="default" padding="space-16" className="mb-2">

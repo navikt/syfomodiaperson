@@ -1,4 +1,4 @@
-import { erIdag } from "./datoUtils";
+import { isToday } from "./datoUtils";
 import {
   OppfolgingsplanLPS,
   OppfolgingsplanLPSMedPersonoppgave,
@@ -27,6 +27,6 @@ export function oppfolgingsplanerLPSOpprettetIdag(
   oppfolgingsplaner: OppfolgingsplanLPSMedPersonoppgave[],
 ) {
   return oppfolgingsplaner.filter(
-    (plan) => erIdag(plan.opprettet) && !plan.personoppgave,
+    (plan) => isToday(plan.opprettet) && !plan.personoppgave,
   );
 }

@@ -1,5 +1,5 @@
 import { Periode } from "@/data/utenlandsopphold/utenlandsoppholdTypes.ts";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils.ts";
+import { formatNumericDate } from "@/utils/datoUtils.ts";
 
 export type UtenlandsoppholdDocumentTextsValues = {
   soknadDato: Date;
@@ -38,9 +38,9 @@ function perioderTilTekst(perioder: Periode[]) {
   return perioder
     .map(
       (periode) =>
-        `${tilLesbarDatoMedArUtenManedNavn(
+        `${formatNumericDate(
           periode.fom,
-        )} til og med ${tilLesbarDatoMedArUtenManedNavn(periode.tom)}`,
+        )} til og med ${formatNumericDate(periode.tom)}`,
     )
     .join(", og ");
 }
@@ -81,7 +81,7 @@ export const getInnvilgetTexts = ({
   innvilgedePerioder,
   medForbeholdOvrigeVilkar,
 }: InnvilgetDocumentTextsValues) => {
-  const soknadDatoTekst = tilLesbarDatoMedArUtenManedNavn(soknadDato);
+  const soknadDatoTekst = formatNumericDate(soknadDato);
   const innvilgedePerioderTekst = perioderTilTekst(innvilgedePerioder);
 
   return {
@@ -115,7 +115,7 @@ export const getAvslagTexts = ({
   soknadDato,
   avslattePerioder,
 }: AvslagDocumentTextsValues) => {
-  const soknadDatoTekst = tilLesbarDatoMedArUtenManedNavn(soknadDato);
+  const soknadDatoTekst = formatNumericDate(soknadDato);
   const avslattePerioderTekst = perioderTilTekst(avslattePerioder);
 
   return {
@@ -145,7 +145,7 @@ export const getDelvisInnvilgetTexts = ({
   avslattePerioder,
   medForbeholdOvrigeVilkar,
 }: DelvisInnvilgetDocumentTextsValues) => {
-  const soknadDatoTekst = tilLesbarDatoMedArUtenManedNavn(soknadDato);
+  const soknadDatoTekst = formatNumericDate(soknadDato);
   const innvilgedePerioderTekst = perioderTilTekst(innvilgedePerioder);
   const avslattePerioderTekst = perioderTilTekst(avslattePerioder);
 
@@ -180,7 +180,7 @@ export const getHenleggelseTexts = ({
   soktePerioder,
   begrunnelse,
 }: HenleggelseDocumentTextsValues) => {
-  const soknadDatoTekst = tilLesbarDatoMedArUtenManedNavn(soknadDato);
+  const soknadDatoTekst = formatNumericDate(soknadDato);
   const soktePerioderTekst = perioderTilTekst(soktePerioder);
 
   return {

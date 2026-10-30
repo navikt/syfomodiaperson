@@ -4,7 +4,7 @@ import { Tag } from "@navikt/ds-react";
 import { useEgenansattQuery } from "@/data/egenansatt/egenansattQueryHooks";
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { useDiskresjonskodeQuery } from "@/data/diskresjonskode/diskresjonskodeQueryHooks";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import { useUnderArbeidsrettetOppfolgingQuery } from "@/data/veilarboppfolging/useUnderArbeidsrettetOppfolgingQuery";
 import { useVedtakQuery } from "@/data/frisktilarbeid/vedtakQuery";
 import { useUforegradQuery } from "@/data/uforegrad/uforegradQueryHooks";
@@ -57,7 +57,7 @@ export function PersonkortHeaderTags() {
   const { data: aapStatus } = useAapStatusQuery();
 
   const isDead = !!dodsdato;
-  const dateOfDeath = tilLesbarDatoMedArUtenManedNavn(dodsdato);
+  const dateOfDeath = formatNumericDate(dodsdato);
   const isKode6 = diskresjonskode === "6";
   const isKode7 = diskresjonskode === "7";
   const talesprakTolkSprakkode =

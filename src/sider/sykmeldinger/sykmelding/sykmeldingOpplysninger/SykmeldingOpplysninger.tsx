@@ -2,7 +2,7 @@ import {
   SykmeldingDiagnose,
   SykmeldingOldFormat,
 } from "@/data/sykmelding/types/SykmeldingOldFormat";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import SykmeldingPerioder from "./SykmeldingPerioder";
 import { Egenmeldingsdager } from "./Egenmeldingsdager";
 import {
@@ -161,7 +161,7 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
                 {texts.skadedato}
               </BodyShort>
               <BodyShort size="small">
-                {tilLesbarDatoMedArstall(sykmelding.diagnose.yrkesskadeDato)}
+                {formatDateWithYear(sykmelding.diagnose.yrkesskadeDato)}
               </BodyShort>
             </div>
           </div>
@@ -212,7 +212,7 @@ export function SykmeldingOpplysninger({ sykmelding }: Props) {
               {texts.utstedelsesdato}
             </Heading>
             <BodyShort size="small">
-              {tilLesbarDatoMedArstall(sykmelding.bekreftelse.utstedelsesdato)}
+              {formatDateWithYear(sykmelding.bekreftelse.utstedelsesdato)}
             </BodyShort>
           </div>
         )}

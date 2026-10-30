@@ -2,7 +2,7 @@ import {
   DialogmoteDTO,
   DialogmoteStatus,
 } from "@/sider/dialogmoter/types/dialogmoteTypes";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 import { useState } from "react";
 import { Accordion, BodyShort, HStack } from "@navikt/ds-react";
 import DialogmoteVeilederInfo from "@/sider/dialogmoter/components/DialogmoteVeilederInfo";
@@ -14,7 +14,7 @@ const texts = {
 };
 
 const getHeaderText = (mote: DialogmoteDTO): string => {
-  const moteDato = tilDatoMedManedNavn(mote.tid);
+  const moteDato = formatDateWithMonthName(mote.tid);
   switch (mote.status) {
     case DialogmoteStatus.AVLYST:
       return `Avlyst møte ${moteDato}`;

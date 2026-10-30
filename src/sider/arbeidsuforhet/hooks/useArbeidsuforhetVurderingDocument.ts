@@ -14,10 +14,7 @@ import {
   VurderingArsak,
   VurderingInitiertAv,
 } from "@/sider/arbeidsuforhet/data/arbeidsuforhetTypes";
-import {
-  tilDatoMedManedNavn,
-  tilLesbarDatoMedArstall,
-} from "@/utils/datoUtils";
+import { formatDateWithMonthName, formatDateWithYear } from "@/utils/datoUtils";
 
 type ForhandsvarselDocumentValues = {
   begrunnelse: string;
@@ -114,13 +111,13 @@ export function useArbeidsuforhetVurderingDocument(): {
     const documentComponents = [
       createHeaderH1("Vurdering av § 8-4 - Innstilling om avslag"),
       createParagraph(
-        `Det er sendt forhåndsvarsel i denne saken den ${tilDatoMedManedNavn(
+        `Det er sendt forhåndsvarsel i denne saken den ${formatDateWithMonthName(
           forhandsvarselDate,
         )}.`,
       ),
       createParagraph(
         `Nav har avslått din søknad om sykepenger fra og med ${
-          !!fom ? tilDatoMedManedNavn(fom) : ""
+          !!fom ? formatDateWithMonthName(fom) : ""
         }.`,
       ),
       createParagraph(
@@ -198,9 +195,7 @@ export function useArbeidsuforhetVurderingDocument(): {
         break;
       case VurderingInitiertAv.NAY:
         vurderingInitiertAvText = `Nav arbeid og ytelser. Forespørselen fra Nav arbeid og ytelser om en vurdering ble sendt i Gosys${
-          oppgaveFraNayDato
-            ? ` ${tilLesbarDatoMedArstall(oppgaveFraNayDato)}.`
-            : "."
+          oppgaveFraNayDato ? ` ${formatDateWithYear(oppgaveFraNayDato)}.` : "."
         }`;
         break;
     }
@@ -215,7 +210,7 @@ export function useArbeidsuforhetVurderingDocument(): {
       createParagraph(`Nav har vurdert at vilkåret ikke er oppfylt.`),
       createHeaderH3("Begrunnelse for vurderingen"),
       createParagraph(
-        `Nav har avslått sykepengene dine fra og med ${tilLesbarDatoMedArstall(
+        `Nav har avslått sykepengene dine fra og med ${formatDateWithYear(
           avslagFom,
         )}.`,
       ),

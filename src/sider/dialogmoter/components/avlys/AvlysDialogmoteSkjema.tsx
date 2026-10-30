@@ -10,7 +10,7 @@ import { moteoversiktRoutePath } from "@/AppRouter";
 import { useAvlysDialogmote } from "@/sider/dialogmoter/hooks/useAvlysDialogmote";
 import { SkjemaInnsendingFeil } from "@/components/SkjemaInnsendingFeil";
 import { Alert, Box, Button, Label } from "@navikt/ds-react";
-import { tilDatoMedUkedagOgManedNavnOgKlokkeslett } from "@/utils/datoUtils";
+import { formatDateTimeWithWeekday } from "@/utils/datoUtils";
 import { useForm } from "react-hook-form";
 import { Forhandsvisning } from "@/components/Forhandsvisning";
 import MalformRadioGroup from "@/components/MalformRadioGroup";
@@ -106,7 +106,7 @@ const AvlysDialogmoteSkjema = ({
         <MalformRadioGroup />
         <div className="mb-8 flex flex-col">
           <Label size="small">{texts.gjelderTitle}</Label>
-          {tilDatoMedUkedagOgManedNavnOgKlokkeslett(dialogmote.tid)}
+          {formatDateTimeWithWeekday(dialogmote.tid)}
         </div>
         <div className="mb-8">
           <TextareaField

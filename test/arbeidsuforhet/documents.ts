@@ -2,7 +2,7 @@ import {
   DocumentComponentDto,
   DocumentComponentType,
 } from "@/data/documentcomponent/documentComponentTypes";
-import { tilDatoMedManedNavn, weeksFromToday } from "@/utils/datoUtils";
+import { formatDateWithMonthName, weeksFromToday } from "@/utils/datoUtils";
 import {
   ARBEIDSTAKER_DEFAULT,
   ARBEIDSTAKER_DEFAULT_FULL_NAME,
@@ -128,7 +128,7 @@ export function getOppfyltEtterForhandsvarselDocument(
     },
     {
       texts: [
-        `I forhåndsvarsel av ${tilDatoMedManedNavn(
+        `I forhåndsvarsel av ${formatDateWithMonthName(
           weeksFromToday(-12),
         )} ble du informert om at Nav vurderte å avslå dine sykepenger. Vi har nå vurdert at vilkåret om arbeidsuførhet er oppfylt, og at du har rett til videre utbetaling av sykepenger.`,
       ],
@@ -169,7 +169,7 @@ export const getAvslagVurderingDocument = (
     },
     {
       texts: [
-        `Det er sendt forhåndsvarsel i denne saken den ${tilDatoMedManedNavn(
+        `Det er sendt forhåndsvarsel i denne saken den ${formatDateWithMonthName(
           forhandsvarselDate,
         )}.`,
       ],
@@ -178,7 +178,7 @@ export const getAvslagVurderingDocument = (
     {
       texts: [
         `Nav har avslått din søknad om sykepenger fra og med ${
-          !!fom ? tilDatoMedManedNavn(fom) : ""
+          !!fom ? formatDateWithMonthName(fom) : ""
         }.`,
       ],
       type: DocumentComponentType.PARAGRAPH,

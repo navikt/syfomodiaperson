@@ -5,7 +5,7 @@ import {
   Soknad,
   SoknadStatusDTO,
 } from "@/data/utenlandsopphold/utenlandsoppholdTypes";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import { Link } from "react-router-dom";
 import { useNotification } from "@/context/notification/NotificationContext.tsx";
 import { PeriodeOgAntallDagerTekst } from "./PeriodeOgAntallDagerTekst";
@@ -27,7 +27,7 @@ const texts = {
   periode: "Søkt periode",
   saksbehandling: "Saksbehandling",
   saksbehandlingVedtak: (behandletTidspunkt: Date, behandletAv: string) =>
-    `Behandlet ${tilLesbarDatoMedArUtenManedNavn(behandletTidspunkt)} av ${behandletAv}`,
+    `Behandlet ${formatNumericDate(behandletTidspunkt)} av ${behandletAv}`,
   saksbehandlingIngenVedtak: "Ikke behandlet i Modia",
   status: "Status",
   startBehandling: "Start behandling",
@@ -128,9 +128,7 @@ export function UtenlandsoppholdSoknader() {
                 (soknad) => (
                   <Table.Row key={soknad.soknadId}>
                     <Table.HeaderCell scope="row">
-                      {tilLesbarDatoMedArUtenManedNavn(
-                        soknad.innsendtTidspunkt,
-                      )}
+                      {formatNumericDate(soknad.innsendtTidspunkt)}
                     </Table.HeaderCell>
 
                     <Table.DataCell>

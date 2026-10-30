@@ -1,4 +1,4 @@
-import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
+import { formatNumericDateRange } from "@/utils/datoUtils";
 import { SykmeldingPeriodeDTO } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BodyShort, HGrid } from "@navikt/ds-react";
 
@@ -33,7 +33,7 @@ export function Perioder({ perioder }: Props) {
         return (
           <HGrid key={index} gap="space-16" columns={2}>
             <BodyShort size="small">
-              {tilLesbarPeriodeMedArUtenManednavn(periode.fom, periode.tom)}
+              {formatNumericDateRange(periode.fom, periode.tom)}
             </BodyShort>
             <BodyShort size="small">{kolonne2Tekst(periode)}</BodyShort>
           </HGrid>

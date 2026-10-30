@@ -1,6 +1,6 @@
 import { useNavBrukerData } from "@/data/navbruker/navbruker_hooks";
 import { Detail } from "@navikt/ds-react";
-import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
+import { formatNumericDateRange } from "@/utils/datoUtils";
 import { PersonkortElement } from "@/components/personkort/PersonkortElement";
 import { ExclamationmarkTriangleFillIcon } from "@navikt/aksel-icons";
 
@@ -24,10 +24,7 @@ export function PersonkortSikkerhetstiltak() {
           ({ beskrivelse, gyldigFom, gyldigTom }, index) => (
             <div key={index}>
               <Detail textColor="subtle">
-                {`Gyldig: ${tilLesbarPeriodeMedArUtenManednavn(
-                  gyldigFom,
-                  gyldigTom,
-                )}`}
+                {`Gyldig: ${formatNumericDateRange(gyldigFom, gyldigTom)}`}
               </Detail>
               {beskrivelse}
             </div>

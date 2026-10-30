@@ -6,10 +6,7 @@ import {
 import DialogmotePanel from "@/sider/dialogmoter/components/DialogmotePanel";
 import { BlueDocumentImage } from "../../../../img/ImageComponents";
 import dayjs from "dayjs";
-import {
-  tilDatoMedManedNavnOgKlokkeslett,
-  tilLesbarDatoMedArstall,
-} from "@/utils/datoUtils";
+import { formatDateTime, formatDateWithYear } from "@/utils/datoUtils";
 
 import { dialogmoteRoutePath } from "@/AppRouter";
 import { Link } from "react-router-dom";
@@ -28,9 +25,7 @@ const FerdigstilteReferatList = ({ mote }: FerdigstilteReferatListProps) => {
         const referatTekst = isEndretReferat ? "Endret referat" : "Referat";
         return (
           <li key={index}>
-            {`${referatTekst}, sendt ${tilLesbarDatoMedArstall(
-              referat.updatedAt,
-            )}`}
+            {`${referatTekst}, sendt ${formatDateWithYear(referat.updatedAt)}`}
           </li>
         );
       })}
@@ -48,9 +43,7 @@ const EndreReferatPanel = ({ mote }: EndreReferatPanelProps): ReactElement => {
   return (
     <>
       <FerdigstilteReferatList mote={mote} />
-      {`${texts.sisteFrist} ${tilDatoMedManedNavnOgKlokkeslett(
-        endreReferatFrist,
-      )}`}
+      {`${texts.sisteFrist} ${formatDateTime(endreReferatFrist)}`}
       <Button
         className="mt-8 w-fit"
         variant={latestReferat.ferdigstilt ? "secondary" : "primary"}

@@ -1,15 +1,13 @@
 import { useManglendemedvirkningVurderingQuery } from "@/data/manglendemedvirkning/manglendeMedvirkningQueryHooks";
 import { manglendeMedvirkningPath } from "@/AppRouter";
-import { isExpiredForhandsvarsel } from "@/utils/datoUtils";
+import { isExpired } from "@/utils/datoUtils";
 
 import { Navigate } from "react-router-dom";
 import StansSkjema from "./StansSkjema";
 
 export default function StansSide() {
   const { sisteVurdering } = useManglendemedvirkningVurderingQuery();
-  const isForhandsvarselExpired = isExpiredForhandsvarsel(
-    sisteVurdering?.varsel?.svarfrist,
-  );
+  const isForhandsvarselExpired = isExpired(sisteVurdering?.varsel?.svarfrist);
   return isForhandsvarselExpired && sisteVurdering?.varsel?.svarfrist ? (
     <StansSkjema varselSvarfrist={sisteVurdering.varsel.svarfrist} />
   ) : (

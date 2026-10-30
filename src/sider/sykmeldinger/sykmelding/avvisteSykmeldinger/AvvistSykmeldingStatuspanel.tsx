@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import { SykmeldingOldFormat } from "@/data/sykmelding/types/SykmeldingOldFormat";
 import { BodyShort, Heading } from "@navikt/ds-react";
 
@@ -30,7 +30,7 @@ export default function AvvistSykmeldingStatuspanel({
           {texts.datoAvvist}
         </Heading>
         <BodyShort size="small">
-          {tilLesbarDatoMedArstall(sykmelding.mottattTidspunkt)}
+          {formatDateWithYear(sykmelding.mottattTidspunkt)}
         </BodyShort>
       </div>
       <div>
@@ -38,7 +38,7 @@ export default function AvvistSykmeldingStatuspanel({
           {texts.bekreftetAvDenSykmeldte}
         </Heading>
         <BodyShort size="small">
-          {tilLesbarDatoMedArstall(sykmelding.sendtdato)}
+          {formatDateWithYear(sykmelding.sendtdato)}
         </BodyShort>
       </div>
     </div>

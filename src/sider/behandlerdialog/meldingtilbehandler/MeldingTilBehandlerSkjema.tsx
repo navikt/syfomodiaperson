@@ -6,7 +6,7 @@ import {
   MeldingType,
 } from "@/data/behandlerdialog/behandlerdialogTypes";
 import { useMeldingTilBehandler } from "@/data/behandlerdialog/useMeldingTilBehandler";
-import { tilDatoMedManedNavnOgKlokkeslett } from "@/utils/datoUtils";
+import { formatDateTime } from "@/utils/datoUtils";
 import { useMeldingTilBehandlerDocument } from "@/hooks/behandlerdialog/document/useMeldingTilBehandlerDocument";
 import { behandlerNavn } from "@/utils/behandlerUtils";
 import { MeldingsTypeInfo } from "@/sider/behandlerdialog/meldingtilbehandler/MeldingsTypeInfo";
@@ -169,9 +169,7 @@ export function MeldingTilBehandlerSkjema({
       >
         {meldingSentTime && (
           <Alert variant="success" size="small">
-            {`Meldingen ble sendt ${tilDatoMedManedNavnOgKlokkeslett(
-              meldingSentTime,
-            )}`}
+            {`Meldingen ble sendt ${formatDateTime(meldingSentTime)}`}
           </Alert>
         )}
         <div className="max-w-[23rem]">

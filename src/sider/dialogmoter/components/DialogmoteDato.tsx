@@ -1,14 +1,14 @@
 import dayjs from "dayjs";
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
 import { useController } from "react-hook-form";
-import { toDatePrettyPrint } from "@/utils/datoUtils";
+import { formatShortDateOrUndefined } from "@/utils/datoUtils";
 import { TidStedSkjemaValues } from "@/sider/dialogmoter/types/skjemaTypes";
 
 export default function DialogmoteDato() {
   const now = new Date();
   const today = dayjs(now);
   const yearFromToday = today.add(1, "year").toDate();
-  const invalidDateMessage = `Vennligst angi en gyldig dato innen ${toDatePrettyPrint(
+  const invalidDateMessage = `Vennligst angi en gyldig dato innen ${formatShortDateOrUndefined(
     yearFromToday,
   )}`;
 

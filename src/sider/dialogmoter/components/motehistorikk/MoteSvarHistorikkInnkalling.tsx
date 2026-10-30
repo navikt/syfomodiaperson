@@ -1,5 +1,5 @@
 import { HStack, Label } from "@navikt/ds-react";
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 import { ArbeidsgiverSvar } from "@/sider/dialogmoter/components/svar/ArbeidsgiverSvar";
 import { ArbeidstakerSvar } from "@/sider/dialogmoter/components/svar/ArbeidstakerSvar";
 import { BehandlerSvar } from "@/sider/dialogmoter/components/svar/BehandlerSvar";
@@ -28,7 +28,7 @@ export function MoteSvarHistorikkInnkalling({ dialogmote }: Props) {
 
   return (
     <div>
-      <Label size="small">{`Innkalling sendt ${tilDatoMedManedNavn(
+      <Label size="small">{`Innkalling sendt ${formatDateWithMonthName(
         dialogmote.createdAt,
       )} - svar:`}</Label>
       <HStack gap="space-16">

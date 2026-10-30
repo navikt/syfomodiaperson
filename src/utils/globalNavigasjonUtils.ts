@@ -23,7 +23,7 @@ import {
 } from "@/data/senoppfolging/senOppfolgingTypes";
 import { VedtakResponseDTO } from "@/data/frisktilarbeid/frisktilarbeidTypes";
 import { VurderingResponseDTO as ManglendeMedvirkningVurderingResponseDTO } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
-import { isExpiredForhandsvarsel } from "@/utils/datoUtils";
+import { isExpired } from "@/utils/datoUtils";
 import { isVarselUbesvart } from "@/utils/senOppfolgingUtils";
 import { KartleggingssporsmalKandidatResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes";
 import {
@@ -66,11 +66,10 @@ const getNumberOfAktivitetskravOppgaver = (
     return krav.status === AktivitetskravStatus.NY;
   });
   const latestVurdering = aktivitetskrav[0]?.vurderinger[0];
-  const latestVurderingIsExpiredForhandsvarsel =
-    latestVurdering &&
-    isExpiredForhandsvarsel(latestVurdering.varsel?.svarfrist);
+  const latestVurderingisExpired =
+    latestVurdering && isExpired(latestVurdering.varsel?.svarfrist);
 
-  return newAktivitetskrav || latestVurderingIsExpiredForhandsvarsel ? 1 : 0;
+  return newAktivitetskrav || latestVurderingisExpired ? 1 : 0;
 };
 
 const getNumberOfBehandlerDialogOppgaver = (
@@ -150,11 +149,7 @@ function getNumberOfManglendeMedvirkningOppgaver(
     | ManglendeMedvirkningVurderingResponseDTO
     | undefined,
 ): number {
-  return isExpiredForhandsvarsel(
-    manglendeMedvirkningVurdering?.varsel?.svarfrist,
-  )
-    ? 1
-    : 0;
+  return isExpired(manglendeMedvirkningVurdering?.varsel?.svarfrist) ? 1 : 0;
 }
 
 function getNumberOfKartleggingssporsmalOppgaver(

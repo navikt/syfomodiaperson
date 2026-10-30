@@ -6,7 +6,7 @@ import { navEnhet } from "../dialogmote/testData";
 
 import { beforeEach, describe, expect, it } from "vitest";
 import { getButton } from "../testUtils";
-import { daysFromToday, tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { daysFromToday, formatDateWithMonthName } from "@/utils/datoUtils";
 import userEvent from "@testing-library/user-event";
 import {
   VurderingResponseDTO,
@@ -134,19 +134,19 @@ describe("ManglendeMedvirkningHistorikk", () => {
       const accordionButtons = getAccordionButtons();
 
       expect(accordionButtons[0].textContent).to.contain(
-        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`,
+        `Oppfylt - ${formatDateWithMonthName(oppfyltCreated)}`,
       );
       expect(accordionButtons[1].textContent).to.contain(
-        `Unntak - ${tilDatoMedManedNavn(unntakCreated)}`,
+        `Unntak - ${formatDateWithMonthName(unntakCreated)}`,
       );
       expect(accordionButtons[2].textContent).to.contain(
-        `Forhåndsvarsel - ${tilDatoMedManedNavn(forhandsvarselCreated)}`,
+        `Forhåndsvarsel - ${formatDateWithMonthName(forhandsvarselCreated)}`,
       );
       expect(accordionButtons[3].textContent).to.contain(
-        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`,
+        `Ikke aktuell - ${formatDateWithMonthName(ikkeAktuellCreated)}`,
       );
       expect(accordionButtons[4].textContent).to.contain(
-        `Innstilling om stans - ${tilDatoMedManedNavn(stansCreated)}`,
+        `Innstilling om stans - ${formatDateWithMonthName(stansCreated)}`,
       );
     });
 
@@ -154,7 +154,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
       renderVurderingHistorikk([oppfylt]);
 
       const accordionButton = getButton(
-        `Oppfylt - ${tilDatoMedManedNavn(oppfyltCreated)}`,
+        `Oppfylt - ${formatDateWithMonthName(oppfyltCreated)}`,
       );
 
       await userEvent.click(accordionButton);
@@ -171,14 +171,16 @@ describe("ManglendeMedvirkningHistorikk", () => {
       renderVurderingHistorikk([forhandsvarsel]);
 
       const accordionButton = getButton(
-        `Forhåndsvarsel - ${tilDatoMedManedNavn(forhandsvarselCreated)}`,
+        `Forhåndsvarsel - ${formatDateWithMonthName(forhandsvarselCreated)}`,
       );
 
       await userEvent.click(accordionButton);
 
       expect(screen.getByText("Svarfrist i forhåndsvarselet")).to.exist;
       expect(
-        screen.getByText(tilDatoMedManedNavn(forhandsvarsel.varsel?.svarfrist)),
+        screen.getByText(
+          formatDateWithMonthName(forhandsvarsel.varsel?.svarfrist),
+        ),
       ).to.exist;
       expect(screen.getByText("Begrunnelse")).to.exist;
       expect(screen.getByText(forhandsvarsel.begrunnelse)).to.exist;
@@ -206,7 +208,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
       renderVurderingHistorikk([stans]);
 
       const accordionButton = getButton(
-        `Innstilling om stans - ${tilDatoMedManedNavn(stansCreated)}`,
+        `Innstilling om stans - ${formatDateWithMonthName(stansCreated)}`,
       );
 
       await userEvent.click(accordionButton);
@@ -219,7 +221,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
       renderVurderingHistorikk([unntak]);
 
       const accordionButton = getButton(
-        `Unntak - ${tilDatoMedManedNavn(unntakCreated)}`,
+        `Unntak - ${formatDateWithMonthName(unntakCreated)}`,
       );
 
       await userEvent.click(accordionButton);
@@ -231,7 +233,7 @@ describe("ManglendeMedvirkningHistorikk", () => {
       renderVurderingHistorikk([ikkeAktuell]);
 
       const accordionButton = getButton(
-        `Ikke aktuell - ${tilDatoMedManedNavn(ikkeAktuellCreated)}`,
+        `Ikke aktuell - ${formatDateWithMonthName(ikkeAktuellCreated)}`,
       );
 
       await userEvent.click(accordionButton);

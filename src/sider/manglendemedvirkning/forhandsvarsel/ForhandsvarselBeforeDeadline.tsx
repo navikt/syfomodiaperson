@@ -1,5 +1,5 @@
 import { Alert, BodyShort, Box, Heading, HStack } from "@navikt/ds-react";
-import { tilLesbarDatoMedArUtenManedNavn } from "@/utils/datoUtils";
+import { formatNumericDate } from "@/utils/datoUtils";
 import { ClockIcon } from "@navikt/aksel-icons";
 import ManglendeMedvirkningButtons from "@/sider/manglendemedvirkning/ManglendeMedvirkningButtons";
 import { VurderingResponseDTO } from "@/data/manglendemedvirkning/manglendeMedvirkningTypes";
@@ -9,7 +9,7 @@ const texts = {
   title: "Venter på svar fra bruker",
   sentAlert: {
     isSent: (sentDate: Date) =>
-      `Forhåndsvarselet er sendt ${tilLesbarDatoMedArUtenManedNavn(sentDate)}.`,
+      `Forhåndsvarselet er sendt ${formatNumericDate(sentDate)}.`,
     oversikten:
       "Personen ligger nå i oversikten og kan finnes under filteret for § 8-8 manglende medvirkning.",
   },
@@ -46,7 +46,7 @@ export default function ForhandsvarselBeforeDeadline({
           </Heading>
           <Box className="flex ml-auto mr-2 gap-1">
             <BodyShort weight="semibold">{texts.frist}</BodyShort>
-            <BodyShort>{tilLesbarDatoMedArUtenManedNavn(frist)}</BodyShort>
+            <BodyShort>{formatNumericDate(frist)}</BodyShort>
           </Box>
           <ClockIcon title="klokkeikon" fontSize="2em" />
         </HStack>

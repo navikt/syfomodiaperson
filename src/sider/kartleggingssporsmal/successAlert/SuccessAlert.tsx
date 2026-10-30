@@ -1,5 +1,5 @@
 import { Alert, BodyShort } from "@navikt/ds-react";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils.ts";
+import { formatDateWithYear } from "@/utils/datoUtils.ts";
 
 import { KartleggingssporsmalKandidatResponseDTO } from "@/data/kartleggingssporsmal/kartleggingssporsmalTypes.ts";
 
@@ -15,7 +15,7 @@ interface SuccessAlertProps {
 export const SuccessAlert = ({ nyesteKandidat }: SuccessAlertProps) => (
   <Alert size="medium" variant="success">
     <BodyShort size="small" weight="semibold" className="mb-2">
-      {`${texts.svarVurdert} ${tilLesbarDatoMedArstall(
+      {`${texts.svarVurdert} ${formatDateWithYear(
         nyesteKandidat.vurdering?.vurdertAt,
       )}`}
     </BodyShort>

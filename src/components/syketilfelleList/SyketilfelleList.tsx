@@ -8,7 +8,7 @@ import {
 } from "@navikt/ds-react";
 import { MedisinskrinImage } from "../../../img/ImageComponents.ts";
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO.ts";
-import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils.ts";
+import { formatNumericDateRange } from "@/utils/datoUtils.ts";
 import { getDiagnoseFromTilfelle } from "@/utils/diagnoseUtils.ts";
 import { Fragment, useState } from "react";
 import { useOppfolgingstilfellePersonQuery } from "@/data/oppfolgingstilfelle/person/oppfolgingstilfellePersonQueryHooks.ts";
@@ -82,10 +82,7 @@ export function SyketilfelleList() {
             return (
               <Fragment key={index}>
                 <div className="flex gap-2 items-center w-full ">
-                  {`${tilLesbarPeriodeMedArUtenManednavn(
-                    tilfelle.start,
-                    tilfelle.end,
-                  )}`}
+                  {`${formatNumericDateRange(tilfelle.start, tilfelle.end)}`}
                   <BodyShort size="small">{`(${tilfelle.varighetUker} ${texts.weeks})`}</BodyShort>
                 </div>
 

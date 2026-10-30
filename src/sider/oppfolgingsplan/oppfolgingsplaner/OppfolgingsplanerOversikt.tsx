@@ -1,5 +1,5 @@
 import Sidetopp from "../../../components/side/Sidetopp";
-import { erIkkeIdag } from "@/utils/datoUtils";
+import { isNotToday } from "@/utils/datoUtils";
 import OppfolgingsplanerOversiktLPS from "../lps/OppfolgingsplanerOversiktLPS";
 import { usePersonoppgaverQuery } from "@/data/personoppgave/personoppgaveQueryHooks";
 import { toOppfolgingsplanLPSMedPersonoppgave } from "@/utils/oppfolgingsplanerUtils";
@@ -70,7 +70,7 @@ export default function OppfolgingsplanerOversikt() {
       if (oppfolgingsplanLPS.personoppgave) {
         return oppfolgingsplanLPS.personoppgave.behandletTidspunkt;
       } else {
-        return erIkkeIdag(oppfolgingsplanLPS.opprettet);
+        return isNotToday(oppfolgingsplanLPS.opprettet);
       }
     })
     .sort((a, b) => {

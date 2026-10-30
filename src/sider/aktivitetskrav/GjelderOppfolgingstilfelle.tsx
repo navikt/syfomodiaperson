@@ -1,5 +1,5 @@
 import { BodyShort } from "@navikt/ds-react";
-import { tilLesbarPeriodeMedArUtenManednavn } from "@/utils/datoUtils";
+import { formatNumericDateRange } from "@/utils/datoUtils";
 
 import { OppfolgingstilfelleDTO } from "@/data/oppfolgingstilfelle/person/types/OppfolgingstilfellePersonDTO";
 
@@ -11,7 +11,7 @@ export const GjelderOppfolgingstilfelle = ({
   oppfolgingstilfelle,
 }: GjelderOppfolgingstilfelleProps) => {
   return (
-    <BodyShort>{`Gjelder tilfelle ${tilLesbarPeriodeMedArUtenManednavn(
+    <BodyShort>{`Gjelder tilfelle ${formatNumericDateRange(
       oppfolgingstilfelle.start,
       oppfolgingstilfelle.end,
     )}`}</BodyShort>

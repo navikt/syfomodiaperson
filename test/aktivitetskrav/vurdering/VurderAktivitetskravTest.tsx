@@ -34,10 +34,7 @@ import {
   UnntakVurderingArsak,
 } from "@/data/aktivitetskrav/aktivitetskravTypes";
 import { beforeEach, describe, expect, it } from "vitest";
-import {
-  daysFromToday,
-  tilLesbarPeriodeMedArUtenManednavn,
-} from "@/utils/datoUtils";
+import { daysFromToday, formatNumericDateRange } from "@/utils/datoUtils";
 import dayjs from "dayjs";
 import {
   getIkkeAktuellDocument,
@@ -122,10 +119,7 @@ describe("VurderAktivitetskrav", () => {
     );
     renderVurderAktivitetskrav(aktivitetskrav);
 
-    const periodeText = tilLesbarPeriodeMedArUtenManednavn(
-      tilfelleStart,
-      tilfelleEnd,
-    );
+    const periodeText = formatNumericDateRange(tilfelleStart, tilfelleEnd);
     expect(screen.getByText(`Gjelder tilfelle ${periodeText}`)).to.exist;
   });
 

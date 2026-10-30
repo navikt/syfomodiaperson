@@ -1,5 +1,5 @@
 import { ChangeEvent, ReactElement, useState } from "react";
-import { tilLesbarDatoMedArstall } from "@/utils/datoUtils";
+import { formatDateWithYear } from "@/utils/datoUtils";
 import {
   HistorikkEvent,
   HistorikkEventType,
@@ -194,9 +194,9 @@ export default function Historikk({
               key={index + TILFELLE_OPTION_OFFSET}
               value={index + TILFELLE_OPTION_OFFSET}
             >
-              {`${tilLesbarDatoMedArstall(
+              {`${formatDateWithYear(
                 new Date(tilfelle.start),
-              )} - ${tilLesbarDatoMedArstall(new Date(tilfelle.end))}`}
+              )} - ${formatDateWithYear(new Date(tilfelle.end))}`}
             </option>
           ))}
           {eventUtenforTilfelleList.length > 0 && (
@@ -236,7 +236,7 @@ export default function Historikk({
                     }
                   >
                     <Table.DataCell>
-                      {tilLesbarDatoMedArstall(tidspunkt)}
+                      {formatDateWithYear(tidspunkt)}
                     </Table.DataCell>
                     <Table.DataCell>{tekst}</Table.DataCell>
                     <Table.DataCell>{tagFromKilde(kilde)}</Table.DataCell>
@@ -245,7 +245,7 @@ export default function Historikk({
                   <Table.Row key={i}>
                     <Table.DataCell></Table.DataCell>
                     <Table.DataCell>
-                      {tilLesbarDatoMedArstall(tidspunkt)}
+                      {formatDateWithYear(tidspunkt)}
                     </Table.DataCell>
                     <Table.DataCell>{tekst}</Table.DataCell>
                     <Table.DataCell>{tagFromKilde(kilde)}</Table.DataCell>

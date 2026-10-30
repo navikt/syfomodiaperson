@@ -1,4 +1,4 @@
-import { tilDatoMedManedNavn } from "@/utils/datoUtils";
+import { formatDateWithMonthName } from "@/utils/datoUtils";
 
 export type VedtakTextsValues = {
   fom: Date | undefined;
@@ -66,4 +66,4 @@ export const getVedtakTexts = ({ fom, tom }: VedtakTextsValues) => ({
 });
 
 const toReadableDateOrEmpty = (date: Date | undefined) =>
-  date ? tilDatoMedManedNavn(date) : "";
+  date ? formatDateWithMonthName(date) : "";
